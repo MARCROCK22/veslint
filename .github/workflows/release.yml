@@ -44,7 +44,8 @@ jobs:
         run: ./veslint app.ts | diff - tests/expected/app.txt
       - name: Package
         run: |
-          name=veslint-$GITHUB_REF_NAME-linux-x64
+          # The version without the `v` of the tag, as in the name of the .vsix.
+          name=veslint-${GITHUB_REF_NAME#v}-linux-x64
           mkdir -p "dist/$name/node_modules/@typescript"
           cp veslint README.md "dist/$name/"
           cp -r node_modules/@typescript/typescript-linux-x64 "dist/$name/node_modules/@typescript/"
@@ -88,7 +89,8 @@ jobs:
       - name: Package
         shell: pwsh
         run: |
-          $name = "veslint-$env:GITHUB_REF_NAME-win32-x64"
+          $version = $env:GITHUB_REF_NAME -replace '^v', ''
+          $name = "veslint-$version-win32-x64"
           New-Item -ItemType Directory -Force "dist/$name/node_modules/@typescript" | Out-Null
           Copy-Item veslint.exe, README.md "dist/$name/"
           Copy-Item -Recurse node_modules/@typescript/typescript-win32-x64 "dist/$name/node_modules/@typescript/"
