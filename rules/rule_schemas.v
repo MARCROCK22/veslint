@@ -130,6 +130,8 @@ const rule_option_schemas = {
 	'valid-typeof':                                                    '{"type":"array","items":[{"type":"object","properties":{"requireStringLiterals":{"type":"boolean"}},"additionalProperties":false}],"minItems":0,"maxItems":1}'
 	'no-dupe-else-if':                                                 '{"type":"array","minItems":0,"maxItems":0}'
 	'no-duplicate-case':                                               '{"type":"array","minItems":0,"maxItems":0}'
+	'no-self-compare':                                                 '{"type":"array","minItems":0,"maxItems":0}'
+	'no-self-assign':                                                  '{"type":"array","items":[{"type":"object","properties":{"props":{"type":"boolean"}},"additionalProperties":false}],"minItems":0,"maxItems":1}'
 }
 
 // eslint_rule_default_options are the meta.defaultOptions of the rules of ESLint and of

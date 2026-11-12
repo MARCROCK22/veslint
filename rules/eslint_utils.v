@@ -1,6 +1,6 @@
 module rules
 
-import treesitter { named_children, node_end, node_field, node_kind, node_start }
+import treesitter { children, named_children, node_end, node_field, node_kind, node_start }
 
 // Ports of the helpers of ESLint 10.6.0's lib/rules/utils/ast-utils.js that the rules of ESLint
 // core use. A tree-sitter node stands for the ESTree node it is without its parentheses, which
@@ -100,4 +100,130 @@ fn es_sequence_last(n C.TSNode) C.TSNode {
 		node = unwrap_parens(named.last())
 	}
 	return node
+}
+
+// es_reference_type is the ESTree type isSameReference compares: Super, ThisExpression,
+// Identifier, PrivateIdentifier, Literal and MemberExpression (`a.b` and `a?.b` alike: there is
+// no ChainExpression); the tree-sitter kind otherwise.
+fn es_reference_type(n C.TSNode) string {
+	kind := node_kind(n)
+	return match kind {
+		'super' { 'Super' }
+		'this' { 'ThisExpression' }
+		'identifier', 'undefined', 'property_identifier', 'shorthand_property_identifier',
+		'shorthand_property_identifier_pattern' {
+			'Identifier'
+		}
+		'private_property_identifier' { 'PrivateIdentifier' }
+		'string', 'number', 'true', 'false', 'null', 'regex' { 'Literal' }
+		'member_expression', 'subscript_expression' { 'MemberExpression' }
+		else { kind }
+	}
+}
+
+// es_is_same_reference ports isSameReference: the two expressions reference the same value
+// (`a.b` and `a["b"]`, `this.#x`, `a[0]` and `a[0]`).
+fn (c &Checker) es_is_same_reference(a C.TSNode, b C.TSNode, disable_static_computed_key bool) bool {
+	left := unwrap_parens(a)
+	right := unwrap_parens(b)
+	kind := es_reference_type(left)
+	if kind != es_reference_type(right) {
+		return false
+	}
+	match kind {
+		'Super', 'ThisExpression' {
+			return true
+		}
+		'Identifier', 'PrivateIdentifier' {
+			return c.identifier_name(left) == c.identifier_name(right)
+		}
+		'Literal' {
+			return c.es_equal_literal_value(left, right)
+		}
+		'MemberExpression' {
+			left_object := node_field(left, 'object') or { return false }
+			right_object := node_field(right, 'object') or { return false }
+			if !disable_static_computed_key {
+				if name := c.es_static_property_name(left) {
+					return c.es_is_same_reference(left_object, right_object, disable_static_computed_key)
+						&& (c.es_static_property_name(right) or { return false }) == name
+				}
+			}
+			computed := node_kind(left) == 'subscript_expression'
+			if computed != (node_kind(right) == 'subscript_expression') {
+				return false
+			}
+			field := if computed { 'index' } else { 'property' }
+			left_property := node_field(left, field) or { return false }
+			right_property := node_field(right, field) or { return false }
+			return c.es_is_same_reference(left_object, right_object, disable_static_computed_key)
+				&& c.es_is_same_reference(left_property, right_property, disable_static_computed_key)
+		}
+		else {
+			return false
+		}
+	}
+}
+
+// es_equal_literal_value ports equalLiteralValue: regular expressions by pattern and flags, BigInt
+// literals by their `bigint` (the digits without `n` and separators), others by their value.
+fn (c &Checker) es_equal_literal_value(a C.TSNode, b C.TSNode) bool {
+	ka := node_kind(a)
+	kb := node_kind(b)
+	if ka == 'regex' || kb == 'regex' {
+		return ka == kb && c.text(a) == c.text(b)
+	}
+	ta := c.text(a)
+	tb := c.text(b)
+	a_big := ka == 'number' && ta.ends_with('n')
+	b_big := kb == 'number' && tb.ends_with('n')
+	if a_big || b_big {
+		return a_big && b_big && ta.replace('_', '') == tb.replace('_', '')
+	}
+	if ka == 'number' || kb == 'number' {
+		if ka != kb {
+			return false
+		}
+		x := number_literal_value(ta) or { return false }
+		y := number_literal_value(tb) or { return false }
+		return x == y
+	}
+	if ka == 'string' || kb == 'string' {
+		return ka == kb && (c.literal_name(a) or { return false }) == (c.literal_name(b) or {
+			return false
+		})
+	}
+	return ka == kb
+}
+
+// EsElement is an element of an ArrayExpression or ArrayPattern, or a hole.
+struct EsElement {
+	node C.TSNode
+	hole bool
+}
+
+// es_array_elements are the `elements` of an array literal or pattern, with its holes.
+fn es_array_elements(n C.TSNode) []EsElement {
+	mut out := []EsElement{}
+	mut expect_element := true
+	for child in children(n) {
+		kind := node_kind(child)
+		if kind == ',' {
+			if expect_element {
+				out << EsElement{
+					hole: true
+				}
+			}
+			expect_element = true
+			continue
+		}
+		if !C.ts_node_is_named(child) || kind == 'comment' {
+			continue
+		}
+		out << EsElement{
+			node: child
+		}
+		expect_element = false
+	}
+	return out
 }

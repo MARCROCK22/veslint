@@ -137,6 +137,8 @@ pub const use_isnan = 'use-isnan'
 pub const valid_typeof = 'valid-typeof'
 pub const no_dupe_else_if = 'no-dupe-else-if'
 pub const no_duplicate_case = 'no-duplicate-case'
+pub const no_self_compare = 'no-self-compare'
+pub const no_self_assign = 'no-self-assign'
 pub const names = [no_floating_promises, await_thenable, require_await, return_await,
 	no_misused_promises, no_unsafe_call, no_unsafe_member_access, no_unsafe_return,
 	no_unsafe_assignment, no_unsafe_argument, restrict_template_expressions,
@@ -172,7 +174,7 @@ pub const names = [no_floating_promises, await_thenable, require_await, return_a
 	seyfert_context_menu_declare, seyfert_required_options_order, seyfert_options_use_builders,
 	seyfert_declare_description, seyfert_no_deep_imports, seyfert_no_hanging_middleware,
 	seyfert_group_exists, no_compare_neg_zero, use_isnan, valid_typeof, no_dupe_else_if,
-	no_duplicate_case]
+	no_duplicate_case, no_self_compare, no_self_assign]
 
 // untyped_rules are the ported rules that need no types (`meta.docs.requiresTypeChecking` is false
 // in typescript-eslint): with only these, the command line makes no snapshot (Checker.make_snapshot).
@@ -189,7 +191,7 @@ pub const untyped_rules = [adjacent_overload_signatures, array_type, class_liter
 	no_useless_constructor, no_useless_empty_export, no_wrapper_object_types, prefer_as_const,
 	prefer_enum_initializers, prefer_for_of, prefer_function_type, prefer_namespace_keyword,
 	triple_slash_reference, unified_signatures, no_compare_neg_zero, use_isnan, valid_typeof,
-	no_dupe_else_if, no_duplicate_case]
+	no_dupe_else_if, no_duplicate_case, no_self_compare, no_self_assign]
 
 // needs_types tells whether a rule asks tsgo for the types of the program.
 pub fn needs_types(rule string) bool {
@@ -325,6 +327,8 @@ pub const default_options = {
 	valid_typeof:                                 '[{"requireStringLiterals":false}]'
 	no_dupe_else_if:                              '[]'
 	no_duplicate_case:                            '[]'
+	no_self_compare:                              '[]'
+	no_self_assign:                               '[{"props":true}]'
 }
 
 // Finding is a problem a rule found at a node.
@@ -583,6 +587,8 @@ pub fn message(rule string, finding Finding) string {
 		valid_typeof { vt_messages }
 		no_dupe_else_if { ndei_messages }
 		no_duplicate_case { ndc_messages }
+		no_self_compare { nsc_messages }
+		no_self_assign { nsa_messages }
 		else { map[string]string{} }
 	}
 	return interpolate(messages[finding.message_id] or { finding.message_id }, finding.data)
@@ -1096,6 +1102,12 @@ fn (mut c Checker) lint_rule(rule string, root C.TSNode, abs_path string, mut st
 		}
 		no_duplicate_case {
 			return c.lint_no_duplicate_case(root, abs_path, mut stats)!
+		}
+		no_self_compare {
+			return c.lint_no_self_compare(root, abs_path, mut stats)!
+		}
+		no_self_assign {
+			return c.lint_no_self_assign(root, abs_path, mut stats)!
 		}
 		else { return error('unknown rule: ${rule}') }
 	}
