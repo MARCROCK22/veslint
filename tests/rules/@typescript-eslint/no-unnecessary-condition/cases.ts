@@ -208,3 +208,7 @@ export const d1 = deep.a?.b! ?? 'x';
 export const d2 = (deep.a?.b)?.length;
 export const d3 = deep.a!?.b;
 export const d4 = maybeFn!?.();
+
+// The left operand of a comparison is typed as a whole, a negation included.
+const negatedLeft1 = !1 < 2;
+const negatedLeft2 = (!0) === true;

@@ -172,6 +172,11 @@ fn (c &Checker) nuco_spans(n C.TSNode, mut spans []Span) {
 			if left := node_field(n, 'left') {
 				c.nuco_check_spans(left, mut spans, 0)
 				nuco_chain_spans(unwrap_parens(left), mut spans)
+				// The left operand of a comparison is compared as a whole (`!a < b`), not as a
+				// condition.
+				if operator_of(n) in nuco_bool_operators {
+					spans << node_span(unwrap_parens(left))
+				}
 			}
 			if right := node_field(n, 'right') {
 				nuco_expr_spans(unwrap_parens(right), mut spans)
