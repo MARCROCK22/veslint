@@ -80,8 +80,9 @@ build: veslint
 
 # LARGE_CONFIG builds libgc to grow its heap up to 16 MiB at a time instead of 8: it collects fully
 # after each growth, so a live heap that only grows (the doubling constants of README) is walked
-# half as often. It costs about 1 MB of larger black-list tables, and up to 16 MiB more heap from
-# the larger steps (Spider-Byte with every rule: 96 MiB instead of 86). V caches gc.o by its flags.
+# half as often. It costs about 0.5 MB of larger black-list tables (two of 256 KB instead of 32 KB),
+# and up to 16 MiB more heap from the larger steps (Spider-Byte with every rule: 96 MiB instead of
+# 86). V caches gc.o by its flags.
 veslint: $(LIBS) $(TSGO) $(SOURCES) $(V_BIN)
 	$(V) -prod -cc gcc -cflags -DLARGE_CONFIG=1 -o veslint .
 
