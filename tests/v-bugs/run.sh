@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 # Runs every V bug repro of tests/v-bugs/ and tells, per repro, whether the bug is FIXED or still
-# there (BUG). See docs/v-bugs.md.
+# there (BUG). Each repro is a bug of V (the compiler or vlib) found while building veslint.
 #
 # Usage: tests/v-bugs/run.sh [path/to/v]   (default: $V, then `v`)
 #
