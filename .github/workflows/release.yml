@@ -107,7 +107,10 @@ jobs:
           node-version: 22
       - name: Package
         working-directory: editors/vscode
-        run: npx --yes @vscode/vsce@4.1.0 package --no-dependencies --skip-license --allow-missing-repository -o ../../dist/
+        # vsce does not create the directory it writes the package to.
+        run: |
+          mkdir -p ../../dist
+          npx --yes @vscode/vsce@4.1.0 package --no-dependencies --skip-license --allow-missing-repository -o ../../dist/
       - uses: actions/upload-artifact@v4
         with:
           name: extension
