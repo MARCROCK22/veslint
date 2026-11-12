@@ -1,0 +1,7 @@
+tests/rules/no-duplicate-case/cases.ts:11:3	no-duplicate-case	unexpected	Duplicate case label.
+tests/rules/no-duplicate-case/cases.ts:16:3	no-duplicate-case	unexpected	Duplicate case label.
+tests/rules/no-duplicate-case/cases.ts:19:3	no-duplicate-case	unexpected	Duplicate case label.
+tests/rules/no-duplicate-case/cases.ts:22:3	no-duplicate-case	unexpected	Duplicate case label.
+tests/rules/no-duplicate-case/cases.ts:38:3	no-duplicate-case	unexpected	Duplicate case label.
+tests/rules/no-duplicate-case/cases.ts:45:3	no-duplicate-case	unexpected	Duplicate case label.
+tests/rules/no-duplicate-case/cases.ts:48:3	no-duplicate-case	unexpected	Duplicate case label.

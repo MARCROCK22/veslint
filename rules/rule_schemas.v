@@ -129,6 +129,7 @@ const rule_option_schemas = {
 	'use-isnan':                                                       '{"type":"array","items":[{"type":"object","properties":{"enforceForSwitchCase":{"type":"boolean"},"enforceForIndexOf":{"type":"boolean"}},"additionalProperties":false}],"minItems":0,"maxItems":1}'
 	'valid-typeof':                                                    '{"type":"array","items":[{"type":"object","properties":{"requireStringLiterals":{"type":"boolean"}},"additionalProperties":false}],"minItems":0,"maxItems":1}'
 	'no-dupe-else-if':                                                 '{"type":"array","minItems":0,"maxItems":0}'
+	'no-duplicate-case':                                               '{"type":"array","minItems":0,"maxItems":0}'
 }
 
 // eslint_rule_default_options are the meta.defaultOptions of the rules of ESLint and of
