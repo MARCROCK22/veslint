@@ -86,7 +86,8 @@ fn setup_of(text string) !RuleSetup {
 
 fn test_rule_setup_names() {
 	// A rule of veslint is named by its full ESLint id. A name without a plugin is a rule of ESLint
-	// core, which veslint does not have, and the rules of other plugins are ignored (when active).
+	// core (`require-await` and `semi` are not ported), and the rules of other plugins are ignored
+	// (when active).
 	s := setup_of('{"require-await": [0], "@typescript-eslint/require-await": [2], "no-unsafe-call": "warn", "@typescript-eslint/no-unsafe-call": "warn", "@typescript-eslint/await-thenable": "off", "await-thenable": "error", "semi": 2, "quotes": 0}') or {
 		panic(err)
 	}
@@ -94,8 +95,15 @@ fn test_rule_setup_names() {
 		'@typescript-eslint/no-unsafe-call']
 	assert s.rules.map(it.error) == [true, false]
 	assert s.ignored == ['no-unsafe-call', 'await-thenable', 'semi']
-	// The name of every ported rule without the prefix of its plugin turns on no rule of veslint.
+	// The name of every ported rule of a plugin without its prefix turns on no rule of veslint; a
+	// rule of ESLint core is named without one.
 	for name in rules.names {
+		if !name.contains('/') {
+			u := setup_of('{"${name}": "error"}') or { panic(err) }
+			assert u.rules.map(it.name) == [name], name
+			assert u.ignored.len == 0, name
+			continue
+		}
 		assert name.starts_with(rules.typescript_eslint_prefix) || name.starts_with('seyfert/'), name
 		short := name.all_after_last('/')
 		u := setup_of('{"${short}": "error"}') or { panic(err) }

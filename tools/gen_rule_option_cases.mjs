@@ -298,7 +298,8 @@ for (const id of ids) {
   schemas[namespace === '@typescript-eslint' ? name : id] = schema;
   const first = [...(rule.defaultOptions ? [rule.defaultOptions] : []), ...fixtureOptions(namespace === '@typescript-eslint' ? name : id), ...(extra[name] ?? [])];
   const limit = name === 'naming-convention' ? first.length + 90 : 600;
-  rules.push({ rule: namespace === '@typescript-eslint' ? name : id, cases: casesOf(namespace, standIns[namespace], id, schema, first, limit) });
+  // A rule of ESLint core has no prefix either: `core` tells it from a typescript-eslint one.
+  rules.push({ rule: namespace === '@typescript-eslint' ? name : id, ...(namespace === '' ? { core: true } : {}), cases: casesOf(namespace, standIns[namespace], id, schema, first, limit) });
 }
 
 // Schemas for what the rules do not exercise. Each is the meta.schema of a rule of its own.
@@ -404,7 +405,7 @@ const values = ruleValues.map(value => ({ value, message: valueMessage('@typescr
 const file = path.join(root, 'tests/rule_option_cases.json');
 const versions = { node: process.version, eslint: version('eslint'), 'typescript-eslint': version('@typescript-eslint/eslint-plugin'), ajv: version('ajv') };
 // One case per line: the file is large, and a change in it should read as the cases that changed.
-const group = (key, entry) => `{${JSON.stringify(key)}:${JSON.stringify(entry[key])},${entry.schema ? `"schema":${JSON.stringify(entry.schema)},` : ''}"cases":[\n${entry.cases.map(({ rejected, ...c }) => JSON.stringify(c)).join(',\n')}\n]}`;
+const group = (key, entry) => `{${JSON.stringify(key)}:${JSON.stringify(entry[key])},${entry.core ? '"core":true,' : ''}${entry.schema ? `"schema":${JSON.stringify(entry.schema)},` : ''}"cases":[\n${entry.cases.map(({ rejected, ...c }) => JSON.stringify(c)).join(',\n')}\n]}`;
 fs.writeFileSync(file, `{"versions":${JSON.stringify(versions)},\n"schemas":${JSON.stringify(schemas)},\n"ruleDefaults":${JSON.stringify(Object.fromEntries(ruleDefaults(builtinRules, { '@typescript-eslint': plugin, seyfert: seyfertPlugin(root) })))},\n"rules":[\n${rules.map(entry => group('rule', entry)).join(',\n')}\n],\n"synthetic":[\n${synthetic.map(entry => group('name', entry)).join(',\n')}\n],\n"values":[\n${values.map(entry => JSON.stringify(entry)).join(',\n')}\n]}\n`);
 const count = groups => groups.reduce((sum, entry) => sum + entry.cases.length, 0);
 const invalid = groups => groups.reduce((sum, entry) => sum + entry.cases.filter(c => c.rejected).length, 0);

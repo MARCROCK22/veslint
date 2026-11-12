@@ -97,9 +97,10 @@ fn test_rule_options_are_validated_like_eslint() {
 	mut wrong := []string{}
 	for group in data['rules'] or { panic('no rules') }.as_array() {
 		name := group.as_map()['rule'] or { panic('no rule') }.str()
-		// The cases name the typescript-eslint rules without their prefix (the others by their id);
-		// veslint, by their id.
-		id := if name.contains('/') { name } else { typescript_eslint_prefix + name }
+		// The cases name the typescript-eslint rules without their prefix (the others by their id,
+		// which for a rule of ESLint core, marked `core`, has none); veslint, by their id.
+		core := (group.as_map()['core'] or { json2.Any(false) }).bool()
+		id := if name.contains('/') || core { name } else { typescript_eslint_prefix + name }
 		for item in group.as_map()['cases'] or { panic('no cases') }.as_array() {
 			case := option_case(id, item)
 			// ESLint does not validate the options of a rule a configuration turns off.

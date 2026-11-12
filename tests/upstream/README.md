@@ -1,4 +1,4 @@
-# typescript-eslint's own tests
+# The own tests of the ported rules
 
 Every rule veslint ports carries the test cases of its own upstream test, besides its fixtures in
 `tests/rules/<rule>/`. For the 105 rules of typescript-eslint they are the cases of
@@ -95,3 +95,25 @@ They need:
 types). `tools/gen_upstream_cases.mjs seyfert/<rule>…` regenerates their cases (without ids, those
 of every rule with an `expected.txt`). The same seyfert and types are linked by
 `tests/rules/seyfert/setup.sh` into `tests/rules/seyfert/node_modules`, for the rules' own fixtures.
+
+## ESLint core
+
+The 13 rules of ESLint core of batch C1 come with the cases of their tests in ESLint v10.6.0
+(`tests/lib/rules/<rule>.js`), in the same `upstream.json` form: 1,512 cases. The cases are
+JavaScript and veslint lints only TypeScript, so they run in the fixtures of typescript-eslint
+above: each one is the text of `file.ts` (`react.tsx` when it has JSX), with the `languageOptions`
+of its test (its `ecmaVersion`, `sourceType` and `globals`). ESLint runs them with typescript-eslint's
+parser; one case does not give what its test expects there (`known.txt`). They need a sparse clone
+of ESLint at v10.6.0 in `build/upstream/eslint`:
+
+```sh
+git clone --depth 1 --branch v10.6.0 --filter=blob:none --sparse \
+  https://github.com/eslint/eslint build/upstream/eslint
+cd build/upstream/eslint
+git sparse-checkout set tests/lib/rules tests/fixtures lib conf /package.json /LICENSE
+cd ../../..
+bun tools/gen_upstream_cases.mjs no-cond-assign   # a name without a plugin is a rule of ESLint core
+```
+
+The test files are loaded with a stub of ESLint's RuleTester (`tests/lib/rules/*.js` require it from
+`lib/rule-tester`) that records the cases, and the rules' `meta.messages` come from the rules of the clone.
