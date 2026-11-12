@@ -1,0 +1,32 @@
+tests/rules/no-constant-binary-expression/cases.ts:6:12	no-constant-binary-expression	constantShortCircuit	Unexpected constant truthiness on the left-hand side of a `&&` expression.
+tests/rules/no-constant-binary-expression/cases.ts:7:12	no-constant-binary-expression	constantShortCircuit	Unexpected constant truthiness on the left-hand side of a `||` expression.
+tests/rules/no-constant-binary-expression/cases.ts:8:19	no-constant-binary-expression	constantShortCircuit	Unexpected constant truthiness on the left-hand side of a `&&` expression.
+tests/rules/no-constant-binary-expression/cases.ts:9:13	no-constant-binary-expression	constantShortCircuit	Unexpected constant truthiness on the left-hand side of a `&&` expression.
+tests/rules/no-constant-binary-expression/cases.ts:10:12	no-constant-binary-expression	constantShortCircuit	Unexpected constant nullishness on the left-hand side of a `??` expression.
+tests/rules/no-constant-binary-expression/cases.ts:11:12	no-constant-binary-expression	constantShortCircuit	Unexpected constant nullishness on the left-hand side of a `??` expression.
+tests/rules/no-constant-binary-expression/cases.ts:12:13	no-constant-binary-expression	constantShortCircuit	Unexpected constant nullishness on the left-hand side of a `??` expression.
+tests/rules/no-constant-binary-expression/cases.ts:13:12	no-constant-binary-expression	constantShortCircuit	Unexpected constant nullishness on the left-hand side of a `??` expression.
+tests/rules/no-constant-binary-expression/cases.ts:14:12	no-constant-binary-expression	constantShortCircuit	Unexpected constant nullishness on the left-hand side of a `??` expression.
+tests/rules/no-constant-binary-expression/cases.ts:16:13	no-constant-binary-expression	constantShortCircuit	Unexpected constant nullishness on the left-hand side of a `??` expression.
+tests/rules/no-constant-binary-expression/cases.ts:19:12	no-constant-binary-expression	constantBinaryOperand	Unexpected constant binary expression. Compares constantly with the right-hand side of the `==`.
+tests/rules/no-constant-binary-expression/cases.ts:20:21	no-constant-binary-expression	constantBinaryOperand	Unexpected constant binary expression. Compares constantly with the left-hand side of the `===`.
+tests/rules/no-constant-binary-expression/cases.ts:21:25	no-constant-binary-expression	constantBinaryOperand	Unexpected constant binary expression. Compares constantly with the left-hand side of the `==`.
+tests/rules/no-constant-binary-expression/cases.ts:22:12	no-constant-binary-expression	constantBinaryOperand	Unexpected constant binary expression. Compares constantly with the right-hand side of the `!==`.
+tests/rules/no-constant-binary-expression/cases.ts:23:20	no-constant-binary-expression	constantBinaryOperand	Unexpected constant binary expression. Compares constantly with the left-hand side of the `==`.
+tests/rules/no-constant-binary-expression/cases.ts:25:26	no-constant-binary-expression	constantBinaryOperand	Unexpected constant binary expression. Compares constantly with the left-hand side of the `==`.
+tests/rules/no-constant-binary-expression/cases.ts:26:22	no-constant-binary-expression	constantBinaryOperand	Unexpected constant binary expression. Compares constantly with the left-hand side of the `===`.
+tests/rules/no-constant-binary-expression/cases.ts:27:21	no-constant-binary-expression	constantBinaryOperand	Unexpected constant binary expression. Compares constantly with the left-hand side of the `!==`.
+tests/rules/no-constant-binary-expression/cases.ts:28:24	no-constant-binary-expression	constantBinaryOperand	Unexpected constant binary expression. Compares constantly with the left-hand side of the `==`.
+tests/rules/no-constant-binary-expression/cases.ts:32:18	no-constant-binary-expression	alwaysNew	Unexpected comparison to newly constructed object. These two values can never be equal.
+tests/rules/no-constant-binary-expression/cases.ts:33:12	no-constant-binary-expression	alwaysNew	Unexpected comparison to newly constructed object. These two values can never be equal.
+tests/rules/no-constant-binary-expression/cases.ts:34:18	no-constant-binary-expression	alwaysNew	Unexpected comparison to newly constructed object. These two values can never be equal.
+tests/rules/no-constant-binary-expression/cases.ts:35:18	no-constant-binary-expression	alwaysNew	Unexpected comparison to newly constructed object. These two values can never be equal.
+tests/rules/no-constant-binary-expression/cases.ts:36:19	no-constant-binary-expression	alwaysNew	Unexpected comparison to newly constructed object. These two values can never be equal.
+tests/rules/no-constant-binary-expression/cases.ts:37:12	no-constant-binary-expression	bothAlwaysNew	Unexpected comparison of two newly constructed objects. These two values can never be equal.
+tests/rules/no-constant-binary-expression/cases.ts:38:19	no-constant-binary-expression	alwaysNew	Unexpected comparison to newly constructed object. These two values can never be equal.
+tests/rules/no-constant-binary-expression/relational/cases.ts:4:12	no-constant-binary-expression	constantRelationalComparison	Unexpected constant relational comparison. Both sides of the `<` are literal values.
+tests/rules/no-constant-binary-expression/relational/cases.ts:5:12	no-constant-binary-expression	constantRelationalComparison	Unexpected constant relational comparison. Both sides of the `>=` are literal values.
+tests/rules/no-constant-binary-expression/relational/cases.ts:6:12	no-constant-binary-expression	constantRelationalComparison	Unexpected constant relational comparison. Both sides of the `<=` are literal values.
+tests/rules/no-constant-binary-expression/relational/cases.ts:7:12	no-constant-binary-expression	constantRelationalComparison	Unexpected constant relational comparison. Both sides of the `>` are literal values.
+tests/rules/no-constant-binary-expression/relational/cases.ts:8:12	no-constant-binary-expression	constantRelationalComparison	Unexpected constant relational comparison. Both sides of the `<` are literal values.
+tests/rules/no-constant-binary-expression/relational/cases.ts:9:12	no-constant-binary-expression	constantRelationalComparison	Unexpected constant relational comparison. Both sides of the `<` are literal values.

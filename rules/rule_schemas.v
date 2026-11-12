@@ -137,6 +137,7 @@ const rule_option_schemas = {
 	'no-cond-assign':                                                  '{"type":"array","items":[{"enum":["except-parens","always"]}],"minItems":0,"maxItems":1}'
 	'for-direction':                                                   '{"type":"array","minItems":0,"maxItems":0}'
 	'no-constant-condition':                                           '{"type":"array","items":[{"type":"object","properties":{"checkLoops":{"enum":["all","allExceptWhileTrue","none",true,false]}},"additionalProperties":false}],"minItems":0,"maxItems":1}'
+	'no-constant-binary-expression':                                   '{"type":"array","items":[{"type":"object","properties":{"checkRelationalComparisons":{"type":"boolean"}},"additionalProperties":false}],"minItems":0,"maxItems":1}'
 }
 
 // eslint_rule_default_options are the meta.defaultOptions of the rules of ESLint and of
