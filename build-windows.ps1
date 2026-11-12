@@ -23,8 +23,9 @@ if (-not (Test-Path $v)) {
 	try {
 		powershell -NoProfile -ExecutionPolicy Bypass -File cmd/tools/vc_compat_uint.ps1 -Source vc/v_win.c -Destination vc/v_win_compat.c
 		gcc -DCUSTOM_DEFINE_v1_fallback -std=c99 -municode -w -o v1.exe vc/v_win_compat.c -lws2_32 -lbcrypt
-		./v1.exe -no-parallel -o v2.exe -gc none cmd/v
-		./v2.exe -nocache -o v.exe -gc none cmd/v
+		# gcc in every stage: without -cc, V on Windows looks for a C compiler of its own choosing.
+		./v1.exe -no-parallel -cc gcc -o v2.exe -gc none cmd/v
+		./v2.exe -nocache -cc gcc -o v.exe -gc none cmd/v
 		Remove-Item v1.exe, v2.exe, vc/v_win_compat.c
 	} finally {
 		Pop-Location
@@ -35,7 +36,7 @@ if (-not (Test-Path $v)) {
 # patch it generated it from next to it (with LF line endings, as in the repository).
 $stamp = 'build/tree-sitter-typescript/patch.sha256'
 if (-not (Test-Path $stamp)) {
-	throw "missing $stamp: copy build/tree-sitter-typescript from a Linux checkout that ran ``make deps``"
+	throw "missing ${stamp}: copy build/tree-sitter-typescript from a Linux checkout that ran ``make deps``"
 }
 $patch = [IO.File]::ReadAllBytes("$PSScriptRoot/patches/tree-sitter-typescript.patch")
 $patch = [Text.Encoding]::UTF8.GetBytes([Text.Encoding]::UTF8.GetString($patch).Replace("`r`n", "`n"))
