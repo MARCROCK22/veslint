@@ -135,6 +135,7 @@ pub const seyfert_group_exists = 'seyfert/group-exists'
 pub const no_compare_neg_zero = 'no-compare-neg-zero'
 pub const use_isnan = 'use-isnan'
 pub const valid_typeof = 'valid-typeof'
+pub const no_dupe_else_if = 'no-dupe-else-if'
 pub const names = [no_floating_promises, await_thenable, require_await, return_await,
 	no_misused_promises, no_unsafe_call, no_unsafe_member_access, no_unsafe_return,
 	no_unsafe_assignment, no_unsafe_argument, restrict_template_expressions,
@@ -169,7 +170,7 @@ pub const names = [no_floating_promises, await_thenable, require_await, return_a
 	seyfert_i18n_resolve_with_get, seyfert_no_method_destructure, seyfert_require_declare,
 	seyfert_context_menu_declare, seyfert_required_options_order, seyfert_options_use_builders,
 	seyfert_declare_description, seyfert_no_deep_imports, seyfert_no_hanging_middleware,
-	seyfert_group_exists, no_compare_neg_zero, use_isnan, valid_typeof]
+	seyfert_group_exists, no_compare_neg_zero, use_isnan, valid_typeof, no_dupe_else_if]
 
 // untyped_rules are the ported rules that need no types (`meta.docs.requiresTypeChecking` is false
 // in typescript-eslint): with only these, the command line makes no snapshot (Checker.make_snapshot).
@@ -185,7 +186,8 @@ pub const untyped_rules = [adjacent_overload_signatures, array_type, class_liter
 	no_unused_expressions, no_unused_private_class_members, no_unused_vars, no_use_before_define,
 	no_useless_constructor, no_useless_empty_export, no_wrapper_object_types, prefer_as_const,
 	prefer_enum_initializers, prefer_for_of, prefer_function_type, prefer_namespace_keyword,
-	triple_slash_reference, unified_signatures, no_compare_neg_zero, use_isnan, valid_typeof]
+	triple_slash_reference, unified_signatures, no_compare_neg_zero, use_isnan, valid_typeof,
+	no_dupe_else_if]
 
 // needs_types tells whether a rule asks tsgo for the types of the program.
 pub fn needs_types(rule string) bool {
@@ -319,6 +321,7 @@ pub const default_options = {
 	no_compare_neg_zero:                          '[]'
 	use_isnan:                                    '[{"enforceForIndexOf":false,"enforceForSwitchCase":true}]'
 	valid_typeof:                                 '[{"requireStringLiterals":false}]'
+	no_dupe_else_if:                              '[]'
 }
 
 // Finding is a problem a rule found at a node.
@@ -575,6 +578,7 @@ pub fn message(rule string, finding Finding) string {
 		no_compare_neg_zero { ncnz_messages }
 		use_isnan { uin_messages }
 		valid_typeof { vt_messages }
+		no_dupe_else_if { ndei_messages }
 		else { map[string]string{} }
 	}
 	return interpolate(messages[finding.message_id] or { finding.message_id }, finding.data)
@@ -1082,6 +1086,9 @@ fn (mut c Checker) lint_rule(rule string, root C.TSNode, abs_path string, mut st
 		}
 		valid_typeof {
 			return c.lint_valid_typeof(root, abs_path, mut stats)!
+		}
+		no_dupe_else_if {
+			return c.lint_no_dupe_else_if(root, abs_path, mut stats)!
 		}
 		else { return error('unknown rule: ${rule}') }
 	}

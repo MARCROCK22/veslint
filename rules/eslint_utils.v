@@ -1,6 +1,6 @@
 module rules
 
-import treesitter { named_children, node_field, node_kind }
+import treesitter { named_children, node_end, node_field, node_kind, node_start }
 
 // Ports of the helpers of ESLint 10.6.0's lib/rules/utils/ast-utils.js that the rules of ESLint
 // core use. A tree-sitter node stands for the ESTree node it is without its parentheses, which
@@ -65,6 +65,25 @@ fn (c &Checker) es_is_specific_member_access(n C.TSNode, object string, property
 	if property != '' {
 		name := c.es_static_property_name(node) or { return false }
 		return name == property
+	}
+	return true
+}
+
+// es_equal_tokens ports equalTokens: the tokens of the two nodes (comments aside) have the same
+// types and values.
+fn (mut c Checker) es_equal_tokens(a C.TSNode, b C.TSNode) bool {
+	tokens := c.source_tokens(a)
+	left := unwrap_parens(a)
+	right := unwrap_parens(b)
+	ta := tokens.inside(node_start(left), node_end(left), false)
+	tb := tokens.inside(node_start(right), node_end(right), false)
+	if ta.len != tb.len {
+		return false
+	}
+	for i in 0 .. ta.len {
+		if ta[i].kind != tb[i].kind || c.src[ta[i].start..ta[i].end] != c.src[tb[i].start..tb[i].end] {
+			return false
+		}
 	}
 	return true
 }
