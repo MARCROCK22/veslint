@@ -70,6 +70,7 @@ pub fn check_options(rule string, options []json2.Any) !bool {
 		use_isnan { uin_options(options)! }
 		valid_typeof { vt_options(options)! }
 		no_self_assign { nsa_options(options)! }
+		no_unsafe_negation { nun_options(options)! }
 		else { return false }
 	}
 	return true

@@ -1,0 +1,16 @@
+tests/rules/no-unsafe-negation/cases.ts:12:5	no-unsafe-negation	unexpected	Unexpected negating the left operand of 'in' operator.
+tests/rules/no-unsafe-negation/cases.ts:13:5	no-unsafe-negation	unexpected	Unexpected negating the left operand of 'instanceof' operator.
+tests/rules/no-unsafe-negation/cases.ts:14:12	no-unsafe-negation	unexpected	Unexpected negating the left operand of 'instanceof' operator.
+tests/rules/no-unsafe-negation/cases.ts:15:12	no-unsafe-negation	unexpected	Unexpected negating the left operand of 'in' operator.
+tests/rules/no-unsafe-negation/cases.ts:16:12	no-unsafe-negation	unexpected	Unexpected negating the left operand of 'in' operator.
+tests/rules/no-unsafe-negation/cases.ts:17:12	no-unsafe-negation	unexpected	Unexpected negating the left operand of 'in' operator.
+tests/rules/no-unsafe-negation/cases.ts:18:13	no-unsafe-negation	unexpected	Unexpected negating the left operand of 'in' operator.
+tests/rules/no-unsafe-negation/cases.ts:18:26	no-unsafe-negation	unexpected	Unexpected negating the left operand of 'instanceof' operator.
+tests/rules/no-unsafe-negation/cases.ts:19:12	no-unsafe-negation	unexpected	Unexpected negating the left operand of 'in' operator.
+tests/rules/no-unsafe-negation/cases.ts:20:12	no-unsafe-negation	unexpected	Unexpected negating the left operand of 'in' operator.
+tests/rules/no-unsafe-negation/ordering/cases.ts:5:5	no-unsafe-negation	unexpected	Unexpected negating the left operand of '<' operator.
+tests/rules/no-unsafe-negation/ordering/cases.ts:6:5	no-unsafe-negation	unexpected	Unexpected negating the left operand of '>' operator.
+tests/rules/no-unsafe-negation/ordering/cases.ts:7:5	no-unsafe-negation	unexpected	Unexpected negating the left operand of '<=' operator.
+tests/rules/no-unsafe-negation/ordering/cases.ts:8:5	no-unsafe-negation	unexpected	Unexpected negating the left operand of '>=' operator.
+tests/rules/no-unsafe-negation/ordering/cases.ts:9:11	no-unsafe-negation	unexpected	Unexpected negating the left operand of 'in' operator.
+tests/rules/no-unsafe-negation/ordering/cases.ts:10:5	no-unsafe-negation	unexpected	Unexpected negating the left operand of '<' operator.
