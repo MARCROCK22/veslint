@@ -1,0 +1,18 @@
+tests/rules/valid-typeof/cases.ts:14:18	valid-typeof	invalidValue	Invalid typeof comparison value.
+tests/rules/valid-typeof/cases.ts:15:5	valid-typeof	invalidValue	Invalid typeof comparison value.
+tests/rules/valid-typeof/cases.ts:16:17	valid-typeof	invalidValue	Invalid typeof comparison value.
+tests/rules/valid-typeof/cases.ts:17:18	valid-typeof	invalidValue	Invalid typeof comparison value.
+tests/rules/valid-typeof/cases.ts:18:18	valid-typeof	invalidValue	Invalid typeof comparison value.
+tests/rules/valid-typeof/cases.ts:19:18	valid-typeof	invalidValue	Invalid typeof comparison value.
+tests/rules/valid-typeof/cases.ts:20:18	valid-typeof	invalidValue	Invalid typeof comparison value.
+tests/rules/valid-typeof/cases.ts:21:18	valid-typeof	invalidValue	Invalid typeof comparison value.
+tests/rules/valid-typeof/cases.ts:22:21	valid-typeof	invalidValue	Invalid typeof comparison value.
+tests/rules/valid-typeof/cases.ts:23:34	valid-typeof	invalidValue	Invalid typeof comparison value.
+tests/rules/valid-typeof/cases.ts:26:18	valid-typeof	invalidValue	Invalid typeof comparison value.	suggestion	suggestString	Use `"undefined"` instead of `undefined`.	795	804	"undefined"
+tests/rules/valid-typeof/cases.ts:27:5	valid-typeof	invalidValue	Invalid typeof comparison value.	suggestion	suggestString	Use `"undefined"` instead of `undefined`.	813	822	"undefined"
+tests/rules/valid-typeof/require-strings/cases.ts:5:18	valid-typeof	notString	Typeof comparisons should be to string literals.
+tests/rules/valid-typeof/require-strings/cases.ts:9:18	valid-typeof	notString	Typeof comparisons should be to string literals.	suggestion	suggestString	Use `"undefined"` instead of `undefined`.	268	277	"undefined"
+tests/rules/valid-typeof/require-strings/cases.ts:10:18	valid-typeof	notString	Typeof comparisons should be to string literals.
+tests/rules/valid-typeof/require-strings/cases.ts:11:18	valid-typeof	notString	Typeof comparisons should be to string literals.
+tests/rules/valid-typeof/require-strings/cases.ts:12:19	valid-typeof	notString	Typeof comparisons should be to string literals.
+tests/rules/valid-typeof/require-strings/cases.ts:13:18	valid-typeof	invalidValue	Invalid typeof comparison value.

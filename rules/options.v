@@ -68,6 +68,7 @@ pub fn check_options(rule string, options []json2.Any) !bool {
 		array_type { arty_options(options)! }
 		consistent_indexed_object_style { cios_options(options)! }
 		use_isnan { uin_options(options)! }
+		valid_typeof { vt_options(options)! }
 		else { return false }
 	}
 	return true
