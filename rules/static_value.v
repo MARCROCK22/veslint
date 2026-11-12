@@ -99,6 +99,9 @@ mut:
 	aborted   bool
 	steps     int
 	exhausted bool // the evaluation was aborted by `max_steps`
+	// What stv_mutated found for a variable (by its index in the file's scope tree) without
+	// evaluating anything, which depends only on the tree.
+	mutated map[int]bool
 }
 
 // abort ends the evaluation: the value is not static.
@@ -556,14 +559,35 @@ fn (mut c Checker) stv_identifier(n C.TSNode, mut ctx StvContext) StaticValue {
 	init := c.stv_eval(init_node, mut ctx)
 	if init.found
 		&& init.value.kind in [.array_, .object_, .regexp_, .namespace_, .map_, .set_, .iterator_]
-		&& c.stv_has_mutation_in_property(tree, variable, mut ctx) {
+		&& c.stv_mutated(tree, v, variable, mut ctx) {
 		return StaticValue{}
 	}
 	return init
 }
 
-// stv_scope_tree is the scope tree of the file of `n`.
+// stv_mutated is stv_has_mutation_in_property for the variable of index `v`, kept for the rest of
+// the evaluation when finding it evaluated nothing (no method name to compute): the answer then
+// depends only on the tree, and a constant used again (`const b = [a, a]`) does not look at the
+// parents of every reference of `a` at each use.
+fn (mut c Checker) stv_mutated(tree &ScopeTree, v int, variable ScopeVariable, mut ctx StvContext) bool {
+	if known := ctx.mutated[v] {
+		return known
+	}
+	steps := ctx.steps
+	mutated := c.stv_has_mutation_in_property(tree, variable, mut ctx)
+	if ctx.steps == steps && !ctx.aborted {
+		ctx.mutated[v] = mutated
+	}
+	return mutated
+}
+
+// stv_scope_tree is the scope tree of the file of `n`: the one the checker keeps (scope_tree
+// builds it once per file, from the root), so that only the first identifier of a file climbs to
+// the root (ts_node_parent descends from the root at every step).
 fn (mut c Checker) stv_scope_tree(n C.TSNode) &ScopeTree {
+	if c.file_scopes != unsafe { nil } {
+		return c.file_scopes
+	}
 	mut root := n
 	for {
 		root = node_parent(root) or { break }
@@ -687,7 +711,9 @@ fn (mut c Checker) stv_literal(n C.TSNode, mut ctx StvContext) StaticValue {
 				value := integer_literal(text[..text.len - 1]) or { return StaticValue{} }
 				return stv_found(js_any_bigint(value))
 			}
-			value := if is_integer_literal(text) {
+			value := if small := small_decimal_literal(text) {
+				small
+			} else if is_integer_literal(text) {
 				integer_to_f64(integer_literal(text) or { return StaticValue{} })
 			} else {
 				js_atof64(text) or { return StaticValue{} }

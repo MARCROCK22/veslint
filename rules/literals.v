@@ -196,6 +196,23 @@ fn is_integer_literal(t string) bool {
 	return t.len > 0 && t.bytes().all(it.is_digit())
 }
 
+// small_decimal_literal is the value of a decimal integer literal of at most 15 digits without a
+// leading zero (`0` itself is one), which a double holds exactly: what integer_to_f64 of
+// integer_literal gives, without math.big. Any other literal is none.
+fn small_decimal_literal(t string) ?f64 {
+	if t.len == 0 || t.len > 15 || (t.len > 1 && t[0] == `0`) {
+		return none
+	}
+	mut value := u64(0)
+	for ch in t {
+		if !ch.is_digit() {
+			return none
+		}
+		value = value * 10 + u64(ch - `0`)
+	}
+	return f64(value)
+}
+
 // integer_literal is the value of an integer literal: decimal, hexadecimal, octal, binary or
 // legacy octal (`017`; with an 8 or a 9 it is decimal).
 fn integer_literal(t string) ?big.Integer {
