@@ -80,4 +80,5 @@ if (-not (Test-Path build/libtree-sitter-typescript.a) -or -not (Test-Path $buil
 # (-O3 -flto: consistent-type-assertions crashes; -O2 -flto: it gives wrong findings; -O3 without
 # LTO: no-unnecessary-type-parameters crashes). Unoptimized, every rule gives exactly its expected
 # output, and a run takes the same time: tsgo is most of it.
-& $v -cc gcc -o veslint.exe .
+# LARGE_CONFIG, as the Makefile builds it on Linux: libgc grows its heap up to 16 MiB at a time.
+& $v -cc gcc -cflags '-DLARGE_CONFIG=1' -o veslint.exe .
