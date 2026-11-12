@@ -8,7 +8,8 @@ import { createRequire } from 'node:module';
 // (`@typescript-eslint/await-thenable`, `seyfert/require-declare`).
 export function portedRules(root) {
   const source = fs.readFileSync(path.join(root, 'rules/rules.v'), 'utf8');
-  const byConst = new Map([...source.matchAll(/^pub const (\w+) = '((?:@typescript-eslint|seyfert)\/[a-z0-9-]+)'$/gm)].map(m => [m[1], m[2]]));
+  // A rule id with a plugin, or without one (ESLint core).
+  const byConst = new Map([...source.matchAll(/^pub const (\w+) = '((?:(?:@typescript-eslint|seyfert)\/)?[a-z0-9-]+)'$/gm)].map(m => [m[1], m[2]]));
   const list = /^pub const names = \[([^\]]+)\]/m.exec(source);
   if (!list) {
     throw new Error('rules/rules.v: `names` not found');
@@ -25,8 +26,11 @@ export function portedRules(root) {
 // ruleDefaults are the meta.defaultOptions of the rules of ESLint (`builtinRules`) and of the
 // plugins (`plugins`, by namespace) that have any, as [rule id, options], sorted by id.
 export function ruleDefaults(builtinRules, plugins) {
+  // ESLint core (plugins['']) is builtinRules itself.
   const all = [...builtinRules].concat(
-    Object.entries(plugins).flatMap(([namespace, plugin]) => Object.entries(plugin.rules).map(([name, rule]) => [`${namespace}/${name}`, rule])),
+    Object.entries(plugins)
+      .filter(([namespace]) => namespace)
+      .flatMap(([namespace, plugin]) => Object.entries(plugin.rules).map(([name, rule]) => [`${namespace}/${name}`, rule])),
   );
   return all
     .filter(([, rule]) => Array.isArray(rule.meta?.defaultOptions) && rule.meta.defaultOptions.length > 0)
@@ -104,6 +108,8 @@ export function seyfertPlugin(root) {
 
 // pluginOf is the namespace, the plugin and the name in it of a ported rule.
 export function pluginOf(id, plugins) {
+  // ESLint core: a rule id without a plugin; plugins[''] holds its rules.
+  if (!id.includes('/')) return ['', plugins[''], id];
   const namespace = id.startsWith('seyfert/') ? 'seyfert' : '@typescript-eslint';
   return [namespace, plugins[namespace], id.slice(namespace.length + 1)];
 }

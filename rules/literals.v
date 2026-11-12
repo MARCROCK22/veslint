@@ -196,6 +196,22 @@ fn is_integer_literal(t string) bool {
 	return t.len > 0 && t.bytes().all(it.is_digit())
 }
 
+// number_literal_value is the value of a number literal as written (`1_000`, `0x1F`, `017`, `.5`,
+// `1e3`); none for a BigInt literal (`0n`, whose value is no number) or what is not a number.
+fn number_literal_value(text string) ?f64 {
+	t := text.replace('_', '')
+	if t.ends_with('n') {
+		return none
+	}
+	if small := small_decimal_literal(t) {
+		return small
+	}
+	if is_integer_literal(t) {
+		return integer_to_f64(integer_literal(t)?)
+	}
+	return js_atof64(t) or { return none }
+}
+
 // small_decimal_literal is the value of a decimal integer literal of at most 15 digits without a
 // leading zero (`0` itself is one), which a double holds exactly: what integer_to_f64 of
 // integer_literal gives, without math.big. Any other literal is none.

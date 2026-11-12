@@ -26,7 +26,7 @@ const version = name => JSON.parse(fs.readFileSync(path.join(modules, name, 'pac
 const literal = text => `'${text.replace(/\\/g, '\\\\').replace(/'/g, "\\'").replace(/\$/g, '\\$')}'`;
 
 const schemas = [];
-const plugins = { '@typescript-eslint': plugin, seyfert: seyfertPlugin(root) };
+const plugins = { '': { rules: Object.fromEntries(builtinRules) }, '@typescript-eslint': plugin, seyfert: seyfertPlugin(root) };
 for (const id of portedRules(root)) {
   const [namespace, owner, name] = pluginOf(id, plugins);
   const rule = owner.rules[name];

@@ -30,6 +30,7 @@ const TYPESCRIPT_ESLINT = path.join(ROOT, 'build/upstream/typescript-eslint');
 const EXTRA = path.join(ROOT, 'build/upstream/extra');
 const SEYFERT_PACKAGE = path.join(EXTRA, 'packages/eslint-plugin');
 const SEYFERT = path.join(ROOT, 'build/upstream/seyfert/node_modules/seyfert');
+const ESLINT = path.join(ROOT, 'build/upstream/eslint');
 
 // Where the tests of each plugin come from. `fixtures` is the directory the tests lint in, the one
 // the files of the cases are written relative to.
@@ -54,9 +55,23 @@ const SOURCES = {
     leave: ['seyfert', '@slipher'],
     extra: { seyfert: SEYFERT },
   },
+  // ESLint core (a rule id without a plugin): tests/lib/rules/<rule>.js of ESLint v10.6.0, written
+  // for JavaScript. Each case is linted as TypeScript, in the file.ts (react.tsx with JSX) of
+  // typescript-eslint's fixtures, without types.
+  '': {
+    label: 'eslint v10.6.0',
+    core: true,
+    clone: ESLINT,
+    tests: path.join(ESLINT, 'tests/lib/rules'),
+    fixtures: realDir(path.join(TYPESCRIPT_ESLINT, 'packages/eslint-plugin/tests/fixtures')),
+    modules: path.join(ESLINT, 'node_modules'),
+    needs: [path.join(ESLINT, 'tests/lib/rules'), path.join(ESLINT, 'lib/rules')],
+  },
 };
 
-const sourceOf = rule => Object.entries(SOURCES).find(([prefix]) => rule.startsWith(prefix));
+// A rule id with a plugin (`@typescript-eslint/…`, `seyfert/…`) or without one (ESLint core).
+const sourceOf = rule =>
+  rule.includes('/') ? Object.entries(SOURCES).find(([prefix]) => prefix && rule.startsWith(prefix)) : ['', SOURCES['']];
 
 // <clone>/node_modules (for @slipher/eslint-plugin, its package's): the packages of build/eval
 // (typescript-eslint 8.62.0, TypeScript 6.0.3), with the two stubs in place of the test framework.
@@ -146,10 +161,22 @@ function normalize(run, raw, kind, index, prefix, source) {
   const fixtureRelative = file => path.relative(fixtures, file).split(path.sep).join('/');
   const test = typeof raw === 'string' ? { code: raw } : raw;
   const id = `${prefix}/${kind[0]}${index}`;
-  const { parser: _parser, parserOptions: caseParserOptions, ...languageOptions } = test.languageOptions ?? {};
+  const { parser: caseParser, parserOptions: caseParserOptions, ...caseLanguageOptions } = test.languageOptions ?? {};
+  // ESLint core: the RuleTester's own languageOptions (ecmaVersion, sourceType, globals) under the
+  // case's, as flat config merges them.
+  const { parser: _runParser, parserOptions: _runParserOptions, ...runLanguageOptions } = source.core
+    ? (run.config.languageOptions ?? {})
+    : {};
+  const languageOptions = deepMerge(runLanguageOptions, caseLanguageOptions);
   const parserOptions = deepMerge(run.config.languageOptions?.parserOptions, caseParserOptions);
   const root = parserOptions.tsconfigRootDir ?? process.cwd();
-  let filename = test.filename ?? (parserOptions.ecmaFeatures?.jsx ? 'react.tsx' : 'file.ts');
+  // The cases of ESLint core are JavaScript, linted as TypeScript: file.ts, or react.tsx with JSX
+  // (the file name the test gives, a .js one, stays in `filename`).
+  let filename = source.core
+    ? parserOptions.ecmaFeatures?.jsx || /\.[jt]sx$/.test(test.filename ?? '')
+      ? 'react.tsx'
+      : 'file.ts'
+    : (test.filename ?? (parserOptions.ecmaFeatures?.jsx ? 'react.tsx' : 'file.ts'));
   if (parserOptions.project) filename = path.join(root, filename);
   const file = path.isAbsolute(filename) ? filename : path.resolve(root, filename);
   // How the parser gets the types: the project service (the closest tsconfig.json), or the
@@ -196,6 +223,9 @@ function normalize(run, raw, kind, index, prefix, source) {
   if (isObject(projectService)) out.projectService = projectService;
   if (Object.keys(otherParserOptions).length) out.parserOptions = otherParserOptions;
   if (Object.keys(languageOptions).length) out.languageOptions = languageOptions;
+  if (source.core && test.filename) out.filename = test.filename;
+  // A case of ESLint core with a parser of its own (one of its fixtures, often for TypeScript).
+  if (source.core && caseParser) out.parser = caseParser.meta?.name ?? 'custom';
   if (test.settings) out.settings = test.settings;
   if (kind === 'invalid') {
     out.errors = test.errors;
@@ -213,6 +243,10 @@ const camelCase = name => name.replace(/-([a-z])/g, (_, letter) => letter.toUppe
 
 // The test files of a rule (its name without the prefix of its plugin).
 function testFiles(name, source) {
+  if (source.core) {
+    const file = path.join(source.tests, `${name}.js`);
+    return fs.existsSync(file) ? [file] : [];
+  }
   if (source === SOURCES['seyfert/']) {
     const file = path.join(source.tests, `${camelCase(name)}.test.mts`);
     return fs.existsSync(file) ? [file] : [];
@@ -233,6 +267,8 @@ function testFiles(name, source) {
 // @slipher/eslint-plugin make the rule from its factory themselves, and run it under its name.
 async function ruleObjectOf(name, source) {
   if (source === SOURCES['seyfert/']) return null;
+  // The module the test file requires, the same object.
+  if (source.core) return createRequire(path.join(source.clone, 'package.json'))(path.join(source.clone, 'lib/rules', `${name}.js`));
   return (await import(pathToFileURL(path.join(source.clone, 'packages/eslint-plugin/src/rules', `${name}.ts`)).href)).default;
 }
 
@@ -263,6 +299,36 @@ export async function lintProject(files: Record<string, string>, rules: Linter.R
     });
   },
 });
+
+// ESLint's own RuleTester, while the tests of ESLint core load (they require it by its path): in
+// require's cache under that path, so that `run` records the cases, as the stub of tools/upstream/
+// does for typescript-eslint's.
+class EslintRuleTester {
+  constructor(config = {}) {
+    this.config = config;
+  }
+
+  run(name, rule, tests) {
+    (globalThis.__veslintRecorded ??= []).push({ name, rule, config: this.config, tests, messages: rule?.meta?.messages ?? {} });
+  }
+
+  static only(item) {
+    return typeof item === 'string' ? { code: item, only: true } : { ...item, only: true };
+  }
+
+  static setDefaultConfig() {}
+
+  static resetDefaultConfig() {}
+
+  static getDefaultConfig() {
+    return {};
+  }
+}
+function stubEslintRuleTester() {
+  const file = path.join(realDir(ESLINT), 'lib/rule-tester/rule-tester.js');
+  const req = createRequire(path.join(realDir(ESLINT), 'package.json'));
+  req.cache[file] = { id: file, filename: file, loaded: true, exports: EslintRuleTester, children: [], paths: [] };
+}
 
 // A project recorded by `lintProject`: the file of each result as the test names it (the longest
 // name the absolute path of the temporary project ends with), and its messages.
@@ -311,6 +377,7 @@ for (const rule of rules.sort()) {
   if (!overlaid.has(source)) {
     overlay(source);
     overlaid.add(source);
+    if (source.core) stubEslintRuleTester();
   }
   const name = rule.slice(prefix.length);
   const files = testFiles(name, source);
@@ -347,7 +414,7 @@ for (const rule of rules.sort()) {
     const runs = recorded.slice(before);
     if (runs.length) messages = runs[0].messages;
     const stem =
-      source === SOURCES['seyfert/']
+      source === SOURCES['seyfert/'] || source.core
         ? name
         : path.relative(path.join(source.tests, 'rules'), file).replace(/\.test\.ts$/, '').split(path.sep).join('/');
     runs.forEach((run, r) => {

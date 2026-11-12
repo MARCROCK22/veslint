@@ -751,6 +751,9 @@ upstream_rules_of() { # plugin directory of tests/rules
 }
 mapfile -t typescript_eslint_upstream < <(upstream_rules_of @typescript-eslint)
 mapfile -t seyfert_upstream < <(upstream_rules_of seyfert)
+# The rules of ESLint core (tests/rules/<rule>/upstream.json, from tests/lib/rules/<rule>.js of
+# ESLint 10.6.0): their JavaScript cases are linted as TypeScript in typescript-eslint's fixtures.
+mapfile -t core_upstream < <(find tests/rules -mindepth 2 -maxdepth 2 -name upstream.json | sed -E 's|^tests/rules/(.*)/upstream\.json$|\1|' | sorted)
 if tests/upstream/setup.sh "$TMP/upstream" 2> "$TMP/upstream-setup.err"; then
 	code=0
 	python3 tests/upstream_check.py ./veslint "$TMP/upstream" "$TMP/upstream-configs" "${typescript_eslint_upstream[@]}" > "$TMP/upstream.out" 2>&1 || code=$?
@@ -759,6 +762,16 @@ if tests/upstream/setup.sh "$TMP/upstream" 2> "$TMP/upstream-setup.err"; then
 	else
 		ko "typescript-eslint's own tests (code $code)"
 		grep -v '^ok' "$TMP/upstream.out"
+	fi
+	if [[ ${#core_upstream[@]} -gt 0 ]]; then
+		code=0
+		python3 tests/upstream_check.py ./veslint "$TMP/upstream" "$TMP/upstream-core-configs" "${core_upstream[@]}" > "$TMP/upstream-core.out" 2>&1 || code=$?
+		if [[ $code -eq 0 ]]; then
+			ok "ESLint's own tests of its core rules: $(tail -1 "$TMP/upstream-core.out")"
+		else
+			ko "ESLint's own tests of its core rules (code $code)"
+			grep -v '^ok' "$TMP/upstream-core.out"
+		fi
 	fi
 else
 	echo "skip   typescript-eslint's own tests: $(cat "$TMP/upstream-setup.err")"

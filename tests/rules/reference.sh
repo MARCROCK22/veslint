@@ -153,7 +153,13 @@ upstream_tests() { # label setup plugin-directory
 		fail=1
 		return
 	fi
-	mapfile -t rules < <(find "tests/rules/$dir" -name upstream.json | sed -E 's|^tests/rules/(.*)/upstream\.json$|\1|' | sort)
+	if [[ $dir == core ]]; then
+		# ESLint core: tests/rules/<rule>/upstream.json, one level down.
+		mapfile -t rules < <(find tests/rules -mindepth 2 -maxdepth 2 -name upstream.json | sed -E 's|^tests/rules/(.*)/upstream\.json$|\1|' | sort)
+	else
+		mapfile -t rules < <(find "tests/rules/$dir" -name upstream.json | sed -E 's|^tests/rules/(.*)/upstream\.json$|\1|' | sort)
+	fi
+	[[ ${#rules[@]} -gt 0 ]] || return 0
 	if node tests/rules/upstream_eslint.mjs "$fixtures" "$TMP/upstream-eslint-$dir" "${rules[@]}" > "$TMP/upstream-eslint.out" 2>&1; then
 		echo "ok     $label: ESLint gives what they expect in the ${#rules[@]} rules (known.txt aside)"
 	else
@@ -174,4 +180,6 @@ upstream_tests() { # label setup plugin-directory
 }
 upstream_tests "upstream tests" tests/upstream/setup.sh @typescript-eslint
 upstream_tests "@slipher/eslint-plugin's tests" tests/upstream/seyfert/setup.sh seyfert
+# ESLint's own tests of its core rules, linted as TypeScript in typescript-eslint's fixtures.
+upstream_tests "ESLint's tests" tests/upstream/setup.sh core
 exit $fail

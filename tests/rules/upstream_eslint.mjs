@@ -31,8 +31,11 @@ const { clearCaches } = require('@typescript-eslint/parser');
 const SEYFERT_PLUGIN = path.join(ROOT, 'build/upstream/seyfert/node_modules/@slipher/eslint-plugin');
 const seyfert = fs.existsSync(SEYFERT_PLUGIN) ? require(SEYFERT_PLUGIN).plugin : null;
 
-// The plugin of a rule and its name there.
+const { builtinRules } = require('eslint/use-at-your-own-risk');
+
+// The plugin of a rule and its name there; a rule of ESLint core has none.
 function pluginOf(rule) {
+  if (!rule.includes('/')) return ['', null, rule];
   if (rule.startsWith('seyfert/')) {
     if (!seyfert) throw new Error(`missing ${SEYFERT_PLUGIN}: see tests/upstream/README.md`);
     return ['seyfert', seyfert, rule.slice('seyfert/'.length)];
@@ -57,8 +60,8 @@ function linterFor(cwd) {
 
 function configOf(rule, c, root) {
   const parserOptions = {
-    ecmaVersion: 'latest',
-    sourceType: 'module',
+    ecmaVersion: c.languageOptions?.ecmaVersion ?? 'latest',
+    sourceType: c.languageOptions?.sourceType ?? 'module',
     ...c.parserOptions,
     disallowAutomaticSingleRunInference: true,
     tsconfigRootDir: root,
@@ -72,7 +75,7 @@ function configOf(rule, c, root) {
       files: ['**/*.ts', '**/*.tsx', '**/*.mts', '**/*.cts'],
       languageOptions: { ...c.languageOptions, parser: tseslint.parser, parserOptions },
       linterOptions: { reportUnusedDisableDirectives: 1 },
-      plugins: { [prefix]: plugin },
+      plugins: prefix ? { [prefix]: plugin } : {},
       rules: { [rule]: ['error', ...(c.options ?? [])] },
       settings: c.settings ?? {},
     },
@@ -108,7 +111,7 @@ function check(rule, c, messages, outputs) {
     return problems;
   }
   const [, plugin, name] = pluginOf(rule);
-  const meta = plugin.rules[name].meta;
+  const meta = plugin ? plugin.rules[name].meta : builtinRules.get(name).meta;
   const expected = typeof c.errors === 'number' ? null : c.errors;
   const count = typeof c.errors === 'number' ? c.errors : c.errors.length;
   if (messages.length !== count) say(`${messages.length} problem(s), expected ${count}`);

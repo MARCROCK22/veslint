@@ -35,7 +35,8 @@ const standIn = rule => ({ meta: rule.meta, create: () => ({}) });
 // ask gives ESLint the options of rule `id` of a plugin, with that severity: in a configuration
 // and in a configuration comment.
 function ask(namespace, rules, id, options, severity) {
-  const plugins = { [namespace]: { rules } };
+  // A rule of ESLint core is the real one (on an empty file it reports nothing).
+  const plugins = namespace ? { [namespace]: { rules } } : {};
   const value = [severity, ...options];
   let config = null;
   try {
@@ -282,7 +283,7 @@ const extra = {
 };
 
 const ids = portedRules(root);
-const plugins = { '@typescript-eslint': plugin, seyfert: seyfertPlugin(root) };
+const plugins = { '': { rules: Object.fromEntries(builtinRules) }, '@typescript-eslint': plugin, seyfert: seyfertPlugin(root) };
 const standIns = {};
 for (const id of ids) {
   const [namespace, owner, name] = pluginOf(id, plugins);

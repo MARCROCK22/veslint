@@ -131,6 +131,8 @@ pub const seyfert_declare_description = 'seyfert/declare-description'
 pub const seyfert_no_deep_imports = 'seyfert/no-deep-imports'
 pub const seyfert_no_hanging_middleware = 'seyfert/no-hanging-middleware'
 pub const seyfert_group_exists = 'seyfert/group-exists'
+// ESLint core 10.6.0: a rule id without a plugin.
+pub const no_compare_neg_zero = 'no-compare-neg-zero'
 pub const names = [no_floating_promises, await_thenable, require_await, return_await,
 	no_misused_promises, no_unsafe_call, no_unsafe_member_access, no_unsafe_return,
 	no_unsafe_assignment, no_unsafe_argument, restrict_template_expressions,
@@ -165,7 +167,7 @@ pub const names = [no_floating_promises, await_thenable, require_await, return_a
 	seyfert_i18n_resolve_with_get, seyfert_no_method_destructure, seyfert_require_declare,
 	seyfert_context_menu_declare, seyfert_required_options_order, seyfert_options_use_builders,
 	seyfert_declare_description, seyfert_no_deep_imports, seyfert_no_hanging_middleware,
-	seyfert_group_exists]
+	seyfert_group_exists, no_compare_neg_zero]
 
 // untyped_rules are the ported rules that need no types (`meta.docs.requiresTypeChecking` is false
 // in typescript-eslint): with only these, the command line makes no snapshot (Checker.make_snapshot).
@@ -181,7 +183,7 @@ pub const untyped_rules = [adjacent_overload_signatures, array_type, class_liter
 	no_unused_expressions, no_unused_private_class_members, no_unused_vars, no_use_before_define,
 	no_useless_constructor, no_useless_empty_export, no_wrapper_object_types, prefer_as_const,
 	prefer_enum_initializers, prefer_for_of, prefer_function_type, prefer_namespace_keyword,
-	triple_slash_reference, unified_signatures]
+	triple_slash_reference, unified_signatures, no_compare_neg_zero]
 
 // needs_types tells whether a rule asks tsgo for the types of the program.
 pub fn needs_types(rule string) bool {
@@ -312,6 +314,7 @@ pub const default_options = {
 	seyfert_no_deep_imports:                      '[]'
 	seyfert_no_hanging_middleware:                '[]'
 	seyfert_group_exists:                         '[]'
+	no_compare_neg_zero:                          '[]'
 }
 
 // Finding is a problem a rule found at a node.
@@ -565,6 +568,7 @@ pub fn message(rule string, finding Finding) string {
 		seyfert_no_deep_imports { sy_ndi_messages }
 		seyfert_no_hanging_middleware { sy_nhm_messages }
 		seyfert_group_exists { sy_ge_messages }
+		no_compare_neg_zero { ncnz_messages }
 		else { map[string]string{} }
 	}
 	return interpolate(messages[finding.message_id] or { finding.message_id }, finding.data)
@@ -1063,6 +1067,9 @@ fn (mut c Checker) lint_rule(rule string, root C.TSNode, abs_path string, mut st
 		}
 		seyfert_group_exists {
 			return c.lint_seyfert_group_exists(root, abs_path, mut stats)!
+		}
+		no_compare_neg_zero {
+			return c.lint_no_compare_neg_zero(root, abs_path, mut stats)!
 		}
 		else { return error('unknown rule: ${rule}') }
 	}

@@ -125,6 +125,7 @@ const rule_option_schemas = {
 	'seyfert/no-deep-imports':                                         '{"type":"array","minItems":0,"maxItems":0}'
 	'seyfert/no-hanging-middleware':                                   '{"type":"array","minItems":0,"maxItems":0}'
 	'seyfert/group-exists':                                            '{"type":"array","minItems":0,"maxItems":0}'
+	'no-compare-neg-zero':                                             '{"type":"array","minItems":0,"maxItems":0}'
 }
 
 // eslint_rule_default_options are the meta.defaultOptions of the rules of ESLint and of
