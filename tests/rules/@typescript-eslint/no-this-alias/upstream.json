@@ -1,0 +1,14 @@
+{"rule": "@typescript-eslint/no-this-alias", "upstream": "typescript-eslint v8.62.0", "files": ["packages/eslint-plugin/tests/rules/no-this-alias.test.ts"],
+"messages": {"thisAssignment":"Unexpected aliasing of 'this' to local variable.","thisDestructure":"Unexpected aliasing of members of 'this' to local variables."},
+"cases": [
+{"id":"no-this-alias/v0","kind":"valid","code":"const self = foo(this);","file":"file.ts","tsconfig":null},
+{"id":"no-this-alias/v1","kind":"valid","code":"\nconst { props, state } = this;\nconst { length } = this;\nconst { length, toString } = this;\nconst [foo] = this;\nconst [foo, bar] = this;\n      ","options":[{"allowDestructuring":true}],"file":"file.ts","tsconfig":null},
+{"id":"no-this-alias/v2","kind":"valid","code":"const self = this;","options":[{"allowedNames":["self"]}],"file":"file.ts","tsconfig":null},
+{"id":"no-this-alias/v3","kind":"valid","code":"\ndeclare module 'foo' {\n  declare const aVar: string;\n}\n    ","file":"file.ts","tsconfig":null},
+{"id":"no-this-alias/i0","kind":"invalid","code":"const self = this;","options":[{"allowDestructuring":true}],"file":"file.ts","tsconfig":null,"errors":[{"messageId":"thisAssignment"}]},
+{"id":"no-this-alias/i1","kind":"invalid","code":"const self = this;","file":"file.ts","tsconfig":null,"errors":[{"messageId":"thisAssignment"}]},
+{"id":"no-this-alias/i2","kind":"invalid","code":"\nlet that;\nthat = this;\n      ","file":"file.ts","tsconfig":null,"errors":[{"messageId":"thisAssignment"}]},
+{"id":"no-this-alias/i3","kind":"invalid","code":"const { props, state } = this;","options":[{"allowDestructuring":false}],"file":"file.ts","tsconfig":null,"errors":[{"messageId":"thisDestructure"}]},
+{"id":"no-this-alias/i4","kind":"invalid","code":"\nvar unscoped = this;\n\nfunction testFunction() {\n  let inFunction = this;\n}\nconst testLambda = () => {\n  const inLambda = this;\n};\n      ","file":"file.ts","tsconfig":null,"errors":[{"messageId":"thisAssignment"},{"messageId":"thisAssignment"},{"messageId":"thisAssignment"}]},
+{"id":"no-this-alias/i5","kind":"invalid","code":"\nclass TestClass {\n  constructor() {\n    const inConstructor = this;\n    const asThis: this = this;\n\n    const asString = 'this';\n    const asArray = [this];\n    const asArrayString = ['this'];\n  }\n\n  public act(scope: this = this) {\n    const inMemberFunction = this;\n    const { act } = this;\n    const { act, constructor } = this;\n    const [foo] = this;\n    const [foo, bar] = this;\n  }\n}\n      ","options":[{"allowDestructuring":false}],"file":"file.ts","tsconfig":null,"errors":[{"messageId":"thisAssignment"},{"messageId":"thisAssignment"},{"messageId":"thisAssignment"},{"messageId":"thisDestructure"},{"messageId":"thisDestructure"},{"messageId":"thisDestructure"},{"messageId":"thisDestructure"}]}
+]}

@@ -1,0 +1,4 @@
+Key "rules": Key "@typescript-eslint/dot-notation":
+	Value {"allowIndexSignaturePropertyAccess":false,"allowKeywords":true,"allowPattern":"^x","allowPrivateClassPropertyAccess":false,"allowProtectedClassPropertyAccess":false,"allowKeyword":false} should NOT have additional properties.
+		Unexpected property "allowKeyword". Expected properties: "allowIndexSignaturePropertyAccess", "allowKeywords", "allowPattern", "allowPrivateClassPropertyAccess", "allowProtectedClassPropertyAccess".
+

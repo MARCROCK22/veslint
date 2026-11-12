@@ -1,0 +1,94 @@
+tests/rules/@typescript-eslint/await-thenable/cases.ts:19:3	@typescript-eslint/await-thenable	await	Unexpected `await` of a non-Promise (non-"Thenable") value.
+tests/rules/@typescript-eslint/await-thenable/cases.ts:24:3	@typescript-eslint/await-thenable	await	Unexpected `await` of a non-Promise (non-"Thenable") value.
+tests/rules/@typescript-eslint/await-thenable/cases.ts:25:3	@typescript-eslint/await-thenable	await	Unexpected `await` of a non-Promise (non-"Thenable") value.
+tests/rules/@typescript-eslint/await-thenable/cases.ts:26:3	@typescript-eslint/await-thenable	await	Unexpected `await` of a non-Promise (non-"Thenable") value.
+tests/rules/@typescript-eslint/await-thenable/cases.ts:31:3	@typescript-eslint/await-thenable	await	Unexpected `await` of a non-Promise (non-"Thenable") value.
+tests/rules/@typescript-eslint/await-thenable/cases.ts:33:3	@typescript-eslint/await-thenable	await	Unexpected `await` of a non-Promise (non-"Thenable") value.
+tests/rules/@typescript-eslint/await-thenable/cases.ts:36:30	@typescript-eslint/await-thenable	invalidPromiseAggregatorInput	Unexpected iterable of non-Promise (non-"Thenable") values passed to promise aggregator.
+tests/rules/@typescript-eslint/await-thenable/cases.ts:37:29	@typescript-eslint/await-thenable	invalidPromiseAggregatorInput	Unexpected iterable of non-Promise (non-"Thenable") values passed to promise aggregator.
+tests/rules/@typescript-eslint/await-thenable/cases.ts:38:21	@typescript-eslint/await-thenable	invalidPromiseAggregatorInput	Unexpected iterable of non-Promise (non-"Thenable") values passed to promise aggregator.
+tests/rules/@typescript-eslint/await-thenable/cases.ts:40:3	@typescript-eslint/await-thenable	forAwaitOfNonAsyncIterable	Unexpected `for await...of` of a value that is not async iterable.
+tests/rules/@typescript-eslint/await-thenable/cases.ts:46:3	@typescript-eslint/await-thenable	forAwaitOfNonAsyncIterable	Unexpected `for await...of` of a value that is not async iterable.
+tests/rules/@typescript-eslint/await-thenable/cases.ts:58:3	@typescript-eslint/await-thenable	await	Unexpected `await` of a non-Promise (non-"Thenable") value.
+tests/rules/@typescript-eslint/await-thenable/cases.ts:60:3	@typescript-eslint/await-thenable	await	Unexpected `await` of a non-Promise (non-"Thenable") value.
+tests/rules/@typescript-eslint/await-thenable/cases.ts:62:3	@typescript-eslint/await-thenable	await	Unexpected `await` of a non-Promise (non-"Thenable") value.
+tests/rules/@typescript-eslint/await-thenable/cases.ts:80:3	@typescript-eslint/await-thenable	await	Unexpected `await` of a non-Promise (non-"Thenable") value.
+tests/rules/@typescript-eslint/await-thenable/cases.ts:81:3	@typescript-eslint/await-thenable	await	Unexpected `await` of a non-Promise (non-"Thenable") value.
+tests/rules/@typescript-eslint/await-thenable/cases.ts:84:3	@typescript-eslint/await-thenable	await	Unexpected `await` of a non-Promise (non-"Thenable") value.
+tests/rules/@typescript-eslint/await-thenable/cases.ts:85:3	@typescript-eslint/await-thenable	await	Unexpected `await` of a non-Promise (non-"Thenable") value.
+tests/rules/@typescript-eslint/await-thenable/cases.ts:86:3	@typescript-eslint/await-thenable	await	Unexpected `await` of a non-Promise (non-"Thenable") value.
+tests/rules/@typescript-eslint/await-thenable/cases.ts:87:3	@typescript-eslint/await-thenable	await	Unexpected `await` of a non-Promise (non-"Thenable") value.
+tests/rules/@typescript-eslint/await-thenable/cases.ts:88:3	@typescript-eslint/await-thenable	await	Unexpected `await` of a non-Promise (non-"Thenable") value.
+tests/rules/@typescript-eslint/await-thenable/cases.ts:89:3	@typescript-eslint/await-thenable	await	Unexpected `await` of a non-Promise (non-"Thenable") value.
+tests/rules/@typescript-eslint/await-thenable/cases.ts:90:3	@typescript-eslint/await-thenable	await	Unexpected `await` of a non-Promise (non-"Thenable") value.
+tests/rules/@typescript-eslint/await-thenable/cases.ts:92:3	@typescript-eslint/await-thenable	await	Unexpected `await` of a non-Promise (non-"Thenable") value.
+tests/rules/@typescript-eslint/await-thenable/cases.ts:92:9	@typescript-eslint/await-thenable	await	Unexpected `await` of a non-Promise (non-"Thenable") value.
+tests/rules/@typescript-eslint/await-thenable/cases.ts:93:29	@typescript-eslint/await-thenable	await	Unexpected `await` of a non-Promise (non-"Thenable") value.
+tests/rules/@typescript-eslint/await-thenable/cases.ts:105:23	@typescript-eslint/await-thenable	invalidPromiseAggregatorInput	Unexpected iterable of non-Promise (non-"Thenable") values passed to promise aggregator.
+tests/rules/@typescript-eslint/await-thenable/cases.ts:106:21	@typescript-eslint/await-thenable	invalidPromiseAggregatorInput	Unexpected iterable of non-Promise (non-"Thenable") values passed to promise aggregator.
+tests/rules/@typescript-eslint/await-thenable/cases.ts:109:21	@typescript-eslint/await-thenable	invalidPromiseAggregatorInput	Unexpected iterable of non-Promise (non-"Thenable") values passed to promise aggregator.
+tests/rules/@typescript-eslint/await-thenable/cases.ts:110:21	@typescript-eslint/await-thenable	invalidPromiseAggregatorInput	Unexpected iterable of non-Promise (non-"Thenable") values passed to promise aggregator.
+tests/rules/@typescript-eslint/await-thenable/cases.ts:111:21	@typescript-eslint/await-thenable	invalidPromiseAggregatorInput	Unexpected iterable of non-Promise (non-"Thenable") values passed to promise aggregator.
+tests/rules/@typescript-eslint/await-thenable/cases.ts:113:22	@typescript-eslint/await-thenable	invalidPromiseAggregatorInput	Unexpected iterable of non-Promise (non-"Thenable") values passed to promise aggregator.
+tests/rules/@typescript-eslint/await-thenable/cases.ts:114:22	@typescript-eslint/await-thenable	invalidPromiseAggregatorInput	Unexpected iterable of non-Promise (non-"Thenable") values passed to promise aggregator.
+tests/rules/@typescript-eslint/await-thenable/cases.ts:115:25	@typescript-eslint/await-thenable	invalidPromiseAggregatorInput	Unexpected iterable of non-Promise (non-"Thenable") values passed to promise aggregator.
+tests/rules/@typescript-eslint/await-thenable/cases.ts:116:25	@typescript-eslint/await-thenable	invalidPromiseAggregatorInput	Unexpected iterable of non-Promise (non-"Thenable") values passed to promise aggregator.
+tests/rules/@typescript-eslint/await-thenable/cases.ts:117:24	@typescript-eslint/await-thenable	invalidPromiseAggregatorInput	Unexpected iterable of non-Promise (non-"Thenable") values passed to promise aggregator.
+tests/rules/@typescript-eslint/await-thenable/cases.ts:118:23	@typescript-eslint/await-thenable	invalidPromiseAggregatorInput	Unexpected iterable of non-Promise (non-"Thenable") values passed to promise aggregator.
+tests/rules/@typescript-eslint/await-thenable/cases.ts:138:3	@typescript-eslint/await-thenable	forAwaitOfNonAsyncIterable	Unexpected `for await...of` of a value that is not async iterable.
+tests/rules/@typescript-eslint/await-thenable/cases.ts:154:23	@typescript-eslint/await-thenable	invalidPromiseAggregatorInput	Unexpected iterable of non-Promise (non-"Thenable") values passed to promise aggregator.
+tests/rules/@typescript-eslint/await-thenable/cases.ts:154:26	@typescript-eslint/await-thenable	invalidPromiseAggregatorInput	Unexpected iterable of non-Promise (non-"Thenable") values passed to promise aggregator.
+tests/rules/@typescript-eslint/await-thenable/cases.ts:155:23	@typescript-eslint/await-thenable	invalidPromiseAggregatorInput	Unexpected iterable of non-Promise (non-"Thenable") values passed to promise aggregator.
+tests/rules/@typescript-eslint/await-thenable/cases.ts:155:37	@typescript-eslint/await-thenable	invalidPromiseAggregatorInput	Unexpected iterable of non-Promise (non-"Thenable") values passed to promise aggregator.
+tests/rules/@typescript-eslint/await-thenable/cases.ts:156:22	@typescript-eslint/await-thenable	invalidPromiseAggregatorInput	Unexpected iterable of non-Promise (non-"Thenable") values passed to promise aggregator.
+tests/rules/@typescript-eslint/await-thenable/cases.ts:162:3	@typescript-eslint/await-thenable	await	Unexpected `await` of a non-Promise (non-"Thenable") value.
+tests/rules/@typescript-eslint/await-thenable/cases.ts:163:3	@typescript-eslint/await-thenable	await	Unexpected `await` of a non-Promise (non-"Thenable") value.
+tests/rules/@typescript-eslint/await-thenable/checker-calls/cases.ts:10:5	@typescript-eslint/await-thenable	await	Unexpected `await` of a non-Promise (non-"Thenable") value.
+tests/rules/@typescript-eslint/await-thenable/checker-calls/cases.ts:11:5	@typescript-eslint/await-thenable	await	Unexpected `await` of a non-Promise (non-"Thenable") value.
+tests/rules/@typescript-eslint/await-thenable/checker-calls/cases.ts:15:24	@typescript-eslint/await-thenable	invalidPromiseAggregatorInput	Unexpected iterable of non-Promise (non-"Thenable") values passed to promise aggregator.
+tests/rules/@typescript-eslint/await-thenable/checker-calls/cases.ts:16:25	@typescript-eslint/await-thenable	invalidPromiseAggregatorInput	Unexpected iterable of non-Promise (non-"Thenable") values passed to promise aggregator.
+tests/rules/@typescript-eslint/await-thenable/grammar/cases.ts:7:17	@typescript-eslint/await-thenable	await	Unexpected `await` of a non-Promise (non-"Thenable") value.
+tests/rules/@typescript-eslint/await-thenable/grammar/cases.ts:8:18	@typescript-eslint/await-thenable	await	Unexpected `await` of a non-Promise (non-"Thenable") value.
+tests/rules/@typescript-eslint/await-thenable/grammar/cases.ts:9:3	@typescript-eslint/await-thenable	await	Unexpected `await` of a non-Promise (non-"Thenable") value.
+tests/rules/@typescript-eslint/await-thenable/grammar/cases.ts:10:3	@typescript-eslint/await-thenable	await	Unexpected `await` of a non-Promise (non-"Thenable") value.
+tests/rules/@typescript-eslint/await-thenable/grammar/cases.ts:20:20	@typescript-eslint/await-thenable	await	Unexpected `await` of a non-Promise (non-"Thenable") value.
+tests/rules/@typescript-eslint/await-thenable/no-semicolons/cases.ts:5:3	@typescript-eslint/await-thenable	await	Unexpected `await` of a non-Promise (non-"Thenable") value.
+tests/rules/@typescript-eslint/await-thenable/no-semicolons/cases.ts:6:3	@typescript-eslint/await-thenable	await	Unexpected `await` of a non-Promise (non-"Thenable") value.
+tests/rules/@typescript-eslint/await-thenable/no-semicolons/cases.ts:7:3	@typescript-eslint/await-thenable	forAwaitOfNonAsyncIterable	Unexpected `for await...of` of a value that is not async iterable.
+tests/rules/@typescript-eslint/await-thenable/no-semicolons/cases.ts:8:22	@typescript-eslint/await-thenable	invalidPromiseAggregatorInput	Unexpected iterable of non-Promise (non-"Thenable") values passed to promise aggregator.
+tests/rules/@typescript-eslint/await-thenable/no-semicolons/cases.ts:8:25	@typescript-eslint/await-thenable	invalidPromiseAggregatorInput	Unexpected iterable of non-Promise (non-"Thenable") values passed to promise aggregator.
+tests/rules/@typescript-eslint/await-thenable/static-names/cases.ts:4:26	@typescript-eslint/await-thenable	invalidPromiseAggregatorInput	Unexpected iterable of non-Promise (non-"Thenable") values passed to promise aggregator.
+tests/rules/@typescript-eslint/await-thenable/static-names/cases.ts:4:29	@typescript-eslint/await-thenable	invalidPromiseAggregatorInput	Unexpected iterable of non-Promise (non-"Thenable") values passed to promise aggregator.
+tests/rules/@typescript-eslint/await-thenable/static-names/cases.ts:5:31	@typescript-eslint/await-thenable	invalidPromiseAggregatorInput	Unexpected iterable of non-Promise (non-"Thenable") values passed to promise aggregator.
+tests/rules/@typescript-eslint/await-thenable/static-names/cases.ts:5:34	@typescript-eslint/await-thenable	invalidPromiseAggregatorInput	Unexpected iterable of non-Promise (non-"Thenable") values passed to promise aggregator.
+tests/rules/@typescript-eslint/await-thenable/static-names/cases.ts:6:25	@typescript-eslint/await-thenable	invalidPromiseAggregatorInput	Unexpected iterable of non-Promise (non-"Thenable") values passed to promise aggregator.
+tests/rules/@typescript-eslint/await-thenable/static-names/cases.ts:6:28	@typescript-eslint/await-thenable	invalidPromiseAggregatorInput	Unexpected iterable of non-Promise (non-"Thenable") values passed to promise aggregator.
+tests/rules/@typescript-eslint/await-thenable/static-names/cases.ts:7:35	@typescript-eslint/await-thenable	invalidPromiseAggregatorInput	Unexpected iterable of non-Promise (non-"Thenable") values passed to promise aggregator.
+tests/rules/@typescript-eslint/await-thenable/static-names/cases.ts:7:38	@typescript-eslint/await-thenable	invalidPromiseAggregatorInput	Unexpected iterable of non-Promise (non-"Thenable") values passed to promise aggregator.
+tests/rules/@typescript-eslint/await-thenable/suggestions/cases.ts:8:3	@typescript-eslint/await-thenable	await	Unexpected `await` of a non-Promise (non-"Thenable") value.
+tests/rules/@typescript-eslint/await-thenable/suggestions/cases.ts:9:3	@typescript-eslint/await-thenable	await	Unexpected `await` of a non-Promise (non-"Thenable") value.
+tests/rules/@typescript-eslint/await-thenable/suggestions/cases.ts:10:3	@typescript-eslint/await-thenable	await	Unexpected `await` of a non-Promise (non-"Thenable") value.
+tests/rules/@typescript-eslint/await-thenable/suggestions/cases.ts:11:3	@typescript-eslint/await-thenable	await	Unexpected `await` of a non-Promise (non-"Thenable") value.
+tests/rules/@typescript-eslint/await-thenable/suggestions/cases.ts:13:3	@typescript-eslint/await-thenable	await	Unexpected `await` of a non-Promise (non-"Thenable") value.
+tests/rules/@typescript-eslint/await-thenable/suggestions/cases.ts:13:9	@typescript-eslint/await-thenable	await	Unexpected `await` of a non-Promise (non-"Thenable") value.
+tests/rules/@typescript-eslint/await-thenable/suggestions/cases.ts:14:16	@typescript-eslint/await-thenable	await	Unexpected `await` of a non-Promise (non-"Thenable") value.
+tests/rules/@typescript-eslint/await-thenable/suggestions/cases.ts:14:32	@typescript-eslint/await-thenable	await	Unexpected `await` of a non-Promise (non-"Thenable") value.
+tests/rules/@typescript-eslint/await-thenable/suggestions/cases.ts:15:9	@typescript-eslint/await-thenable	await	Unexpected `await` of a non-Promise (non-"Thenable") value.
+tests/rules/@typescript-eslint/await-thenable/suggestions/cases.ts:15:22	@typescript-eslint/await-thenable	await	Unexpected `await` of a non-Promise (non-"Thenable") value.
+tests/rules/@typescript-eslint/await-thenable/suggestions/cases.ts:16:3	@typescript-eslint/await-thenable	forAwaitOfNonAsyncIterable	Unexpected `for await...of` of a value that is not async iterable.
+tests/rules/@typescript-eslint/await-thenable/suggestions/cases.ts:19:3	@typescript-eslint/await-thenable	forAwaitOfNonAsyncIterable	Unexpected `for await...of` of a value that is not async iterable.
+tests/rules/@typescript-eslint/await-thenable/suggestions/cases.ts:22:3	@typescript-eslint/await-thenable	forAwaitOfNonAsyncIterable	Unexpected `for await...of` of a value that is not async iterable.
+tests/rules/@typescript-eslint/await-thenable/suggestions/cases.ts:27:21	@typescript-eslint/await-thenable	awaitUsingOfNonAsyncDisposable	Unexpected `await using` of a value that is not async disposable.
+tests/rules/@typescript-eslint/await-thenable/suggestions/cases.ts:28:21	@typescript-eslint/await-thenable	awaitUsingOfNonAsyncDisposable	Unexpected `await using` of a value that is not async disposable.
+tests/rules/@typescript-eslint/await-thenable/suggestions/cases.ts:28:37	@typescript-eslint/await-thenable	awaitUsingOfNonAsyncDisposable	Unexpected `await using` of a value that is not async disposable.
+tests/rules/@typescript-eslint/await-thenable/suggestions/cases.ts:29:39	@typescript-eslint/await-thenable	awaitUsingOfNonAsyncDisposable	Unexpected `await using` of a value that is not async disposable.
+tests/rules/@typescript-eslint/await-thenable/suggestions/cases.ts:30:30	@typescript-eslint/await-thenable	awaitUsingOfNonAsyncDisposable	Unexpected `await using` of a value that is not async disposable.
+tests/rules/@typescript-eslint/await-thenable/suggestions/cases.ts:31:35	@typescript-eslint/await-thenable	awaitUsingOfNonAsyncDisposable	Unexpected `await using` of a value that is not async disposable.
+tests/rules/@typescript-eslint/await-thenable/suggestions/cases.ts:32:25	@typescript-eslint/await-thenable	await	Unexpected `await` of a non-Promise (non-"Thenable") value.
+tests/rules/@typescript-eslint/await-thenable/user-promise-constructor/cases.ts:13:3	@typescript-eslint/await-thenable	await	Unexpected `await` of a non-Promise (non-"Thenable") value.
+tests/rules/@typescript-eslint/await-thenable/using/cases.ts:11:19	@typescript-eslint/await-thenable	awaitUsingOfNonAsyncDisposable	Unexpected `await using` of a value that is not async disposable.
+tests/rules/@typescript-eslint/await-thenable/using/cases.ts:15:19	@typescript-eslint/await-thenable	awaitUsingOfNonAsyncDisposable	Unexpected `await using` of a value that is not async disposable.
+tests/rules/@typescript-eslint/await-thenable/using/cases.ts:15:46	@typescript-eslint/await-thenable	awaitUsingOfNonAsyncDisposable	Unexpected `await using` of a value that is not async disposable.
+tests/rules/@typescript-eslint/await-thenable/using/cases.ts:16:19	@typescript-eslint/await-thenable	awaitUsingOfNonAsyncDisposable	Unexpected `await using` of a value that is not async disposable.
+tests/rules/@typescript-eslint/await-thenable/using/cases.ts:22:31	@typescript-eslint/await-thenable	awaitUsingOfNonAsyncDisposable	Unexpected `await using` of a value that is not async disposable.
+tests/rules/@typescript-eslint/await-thenable/using/cases.ts:30:3	@typescript-eslint/await-thenable	forAwaitOfNonAsyncIterable	Unexpected `for await...of` of a value that is not async iterable.

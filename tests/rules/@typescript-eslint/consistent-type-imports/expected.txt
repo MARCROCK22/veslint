@@ -1,0 +1,128 @@
+tests/rules/@typescript-eslint/consistent-type-imports/allow-annotations/cases.ts:2:1	@typescript-eslint/consistent-type-imports	typeOverValue	All imports in the declaration are only used as types. Use `import type`.
+tests/rules/@typescript-eslint/consistent-type-imports/allow-annotations/cases.ts:4:1	@typescript-eslint/consistent-type-imports	someImportsAreOnlyTypes	Imports "A2" are only used as type.
+tests/rules/@typescript-eslint/consistent-type-imports/allow-annotations/cases.ts:7:1	@typescript-eslint/consistent-type-imports	typeOverValue	All imports in the declaration are only used as types. Use `import type`.
+tests/rules/@typescript-eslint/consistent-type-imports/allow-annotations/cases.ts:9:1	@typescript-eslint/consistent-type-imports	typeOverValue	All imports in the declaration are only used as types. Use `import type`.
+tests/rules/@typescript-eslint/consistent-type-imports/allow-annotations/cases.ts:13:1	@typescript-eslint/consistent-type-imports	typeOverValue	All imports in the declaration are only used as types. Use `import type`.
+tests/rules/@typescript-eslint/consistent-type-imports/allow-annotations/cases.ts:15:1	@typescript-eslint/consistent-type-imports	someImportsAreOnlyTypes	Imports "F6" are only used as type.
+tests/rules/@typescript-eslint/consistent-type-imports/allow-annotations/cases.ts:18:1	@typescript-eslint/consistent-type-imports	someImportsAreOnlyTypes	Imports "NS7" are only used as type.
+tests/rules/@typescript-eslint/consistent-type-imports/allow-annotations/cases.ts:21:1	@typescript-eslint/consistent-type-imports	someImportsAreOnlyTypes	Imports "Def8" are only used as type.
+tests/rules/@typescript-eslint/consistent-type-imports/allow-annotations/cases.ts:24:1	@typescript-eslint/consistent-type-imports	typeOverValue	All imports in the declaration are only used as types. Use `import type`.
+tests/rules/@typescript-eslint/consistent-type-imports/allow-annotations/cases.ts:29:1	@typescript-eslint/consistent-type-imports	someImportsAreOnlyTypes	Imports "H11" are only used as type.
+tests/rules/@typescript-eslint/consistent-type-imports/allow-annotations/cases.ts:32:1	@typescript-eslint/consistent-type-imports	someImportsAreOnlyTypes	Imports "I1" are only used as type.
+tests/rules/@typescript-eslint/consistent-type-imports/allow-annotations/cases.ts:37:1	@typescript-eslint/consistent-type-imports	typeOverValue	All imports in the declaration are only used as types. Use `import type`.
+tests/rules/@typescript-eslint/consistent-type-imports/allow-annotations/cases.ts:41:1	@typescript-eslint/consistent-type-imports	someImportsAreOnlyTypes	Imports "K1" are only used as type.
+tests/rules/@typescript-eslint/consistent-type-imports/allow-annotations/cases.ts:43:1	@typescript-eslint/consistent-type-imports	typeOverValue	All imports in the declaration are only used as types. Use `import type`.
+tests/rules/@typescript-eslint/consistent-type-imports/allow-annotations/cases.ts:50:1	@typescript-eslint/consistent-type-imports	typeOverValue	All imports in the declaration are only used as types. Use `import type`.
+tests/rules/@typescript-eslint/consistent-type-imports/allow-annotations/cases.ts:52:1	@typescript-eslint/consistent-type-imports	typeOverValue	All imports in the declaration are only used as types. Use `import type`.
+tests/rules/@typescript-eslint/consistent-type-imports/allow-annotations/cases.ts:54:1	@typescript-eslint/consistent-type-imports	typeOverValue	All imports in the declaration are only used as types. Use `import type`.
+tests/rules/@typescript-eslint/consistent-type-imports/allow-annotations/cases.ts:66:1	@typescript-eslint/consistent-type-imports	typeOverValue	All imports in the declaration are only used as types. Use `import type`.
+tests/rules/@typescript-eslint/consistent-type-imports/allow-annotations/cases.ts:72:1	@typescript-eslint/consistent-type-imports	typeOverValue	All imports in the declaration are only used as types. Use `import type`.
+tests/rules/@typescript-eslint/consistent-type-imports/allow-annotations/cases.ts:80:1	@typescript-eslint/consistent-type-imports	someImportsAreOnlyTypes	Imports "R1", "R2" and "R4" are only used as type.
+tests/rules/@typescript-eslint/consistent-type-imports/allow-annotations/cases.ts:84:1	@typescript-eslint/consistent-type-imports	someImportsAreOnlyTypes	Imports "S1" are only used as type.
+tests/rules/@typescript-eslint/consistent-type-imports/allow-annotations/cases.ts:87:1	@typescript-eslint/consistent-type-imports	someImportsAreOnlyTypes	Imports "S4" are only used as type.
+tests/rules/@typescript-eslint/consistent-type-imports/allow-annotations/cases.ts:90:1	@typescript-eslint/consistent-type-imports	someImportsAreOnlyTypes	Imports "S6" and "S7" are only used as type.
+tests/rules/@typescript-eslint/consistent-type-imports/allow-annotations/cases.ts:105:1	@typescript-eslint/consistent-type-imports	typeOverValue	All imports in the declaration are only used as types. Use `import type`.
+tests/rules/@typescript-eslint/consistent-type-imports/allow-annotations/cases.ts:111:1	@typescript-eslint/consistent-type-imports	typeOverValue	All imports in the declaration are only used as types. Use `import type`.
+tests/rules/@typescript-eslint/consistent-type-imports/cases.ts:2:1	@typescript-eslint/consistent-type-imports	typeOverValue	All imports in the declaration are only used as types. Use `import type`.
+tests/rules/@typescript-eslint/consistent-type-imports/cases.ts:4:1	@typescript-eslint/consistent-type-imports	someImportsAreOnlyTypes	Imports "A2" are only used as type.
+tests/rules/@typescript-eslint/consistent-type-imports/cases.ts:7:1	@typescript-eslint/consistent-type-imports	typeOverValue	All imports in the declaration are only used as types. Use `import type`.
+tests/rules/@typescript-eslint/consistent-type-imports/cases.ts:9:1	@typescript-eslint/consistent-type-imports	typeOverValue	All imports in the declaration are only used as types. Use `import type`.
+tests/rules/@typescript-eslint/consistent-type-imports/cases.ts:13:1	@typescript-eslint/consistent-type-imports	typeOverValue	All imports in the declaration are only used as types. Use `import type`.
+tests/rules/@typescript-eslint/consistent-type-imports/cases.ts:15:1	@typescript-eslint/consistent-type-imports	someImportsAreOnlyTypes	Imports "F6" are only used as type.
+tests/rules/@typescript-eslint/consistent-type-imports/cases.ts:18:1	@typescript-eslint/consistent-type-imports	someImportsAreOnlyTypes	Imports "NS7" are only used as type.
+tests/rules/@typescript-eslint/consistent-type-imports/cases.ts:21:1	@typescript-eslint/consistent-type-imports	someImportsAreOnlyTypes	Imports "Def8" are only used as type.
+tests/rules/@typescript-eslint/consistent-type-imports/cases.ts:24:1	@typescript-eslint/consistent-type-imports	typeOverValue	All imports in the declaration are only used as types. Use `import type`.
+tests/rules/@typescript-eslint/consistent-type-imports/cases.ts:29:1	@typescript-eslint/consistent-type-imports	someImportsAreOnlyTypes	Imports "H11" are only used as type.
+tests/rules/@typescript-eslint/consistent-type-imports/cases.ts:32:1	@typescript-eslint/consistent-type-imports	someImportsAreOnlyTypes	Imports "I1" are only used as type.
+tests/rules/@typescript-eslint/consistent-type-imports/cases.ts:37:1	@typescript-eslint/consistent-type-imports	typeOverValue	All imports in the declaration are only used as types. Use `import type`.
+tests/rules/@typescript-eslint/consistent-type-imports/cases.ts:41:1	@typescript-eslint/consistent-type-imports	someImportsAreOnlyTypes	Imports "K1" are only used as type.
+tests/rules/@typescript-eslint/consistent-type-imports/cases.ts:43:1	@typescript-eslint/consistent-type-imports	typeOverValue	All imports in the declaration are only used as types. Use `import type`.
+tests/rules/@typescript-eslint/consistent-type-imports/cases.ts:50:1	@typescript-eslint/consistent-type-imports	typeOverValue	All imports in the declaration are only used as types. Use `import type`.
+tests/rules/@typescript-eslint/consistent-type-imports/cases.ts:52:1	@typescript-eslint/consistent-type-imports	typeOverValue	All imports in the declaration are only used as types. Use `import type`.
+tests/rules/@typescript-eslint/consistent-type-imports/cases.ts:54:1	@typescript-eslint/consistent-type-imports	typeOverValue	All imports in the declaration are only used as types. Use `import type`.
+tests/rules/@typescript-eslint/consistent-type-imports/cases.ts:66:1	@typescript-eslint/consistent-type-imports	typeOverValue	All imports in the declaration are only used as types. Use `import type`.
+tests/rules/@typescript-eslint/consistent-type-imports/cases.ts:72:1	@typescript-eslint/consistent-type-imports	typeOverValue	All imports in the declaration are only used as types. Use `import type`.
+tests/rules/@typescript-eslint/consistent-type-imports/cases.ts:80:1	@typescript-eslint/consistent-type-imports	someImportsAreOnlyTypes	Imports "R1", "R2" and "R4" are only used as type.
+tests/rules/@typescript-eslint/consistent-type-imports/cases.ts:84:1	@typescript-eslint/consistent-type-imports	someImportsAreOnlyTypes	Imports "S1" are only used as type.
+tests/rules/@typescript-eslint/consistent-type-imports/cases.ts:87:1	@typescript-eslint/consistent-type-imports	someImportsAreOnlyTypes	Imports "S4" are only used as type.
+tests/rules/@typescript-eslint/consistent-type-imports/cases.ts:90:1	@typescript-eslint/consistent-type-imports	someImportsAreOnlyTypes	Imports "S6" and "S7" are only used as type.
+tests/rules/@typescript-eslint/consistent-type-imports/cases.ts:105:1	@typescript-eslint/consistent-type-imports	typeOverValue	All imports in the declaration are only used as types. Use `import type`.
+tests/rules/@typescript-eslint/consistent-type-imports/cases.ts:111:1	@typescript-eslint/consistent-type-imports	typeOverValue	All imports in the declaration are only used as types. Use `import type`.
+tests/rules/@typescript-eslint/consistent-type-imports/cases.ts:113:10	@typescript-eslint/consistent-type-imports	noImportTypeAnnotations	`import()` type annotations are forbidden.
+tests/rules/@typescript-eslint/consistent-type-imports/cases.ts:114:19	@typescript-eslint/consistent-type-imports	noImportTypeAnnotations	`import()` type annotations are forbidden.
+tests/rules/@typescript-eslint/consistent-type-imports/cases.ts:115:12	@typescript-eslint/consistent-type-imports	noImportTypeAnnotations	`import()` type annotations are forbidden.
+tests/rules/@typescript-eslint/consistent-type-imports/cases.ts:115:28	@typescript-eslint/consistent-type-imports	noImportTypeAnnotations	`import()` type annotations are forbidden.
+tests/rules/@typescript-eslint/consistent-type-imports/decorator-metadata/cases.ts:11:17	@typescript-eslint/consistent-type-imports	noImportTypeAnnotations	`import()` type annotations are forbidden.
+tests/rules/@typescript-eslint/consistent-type-imports/experimental-decorators/cases.ts:3:1	@typescript-eslint/consistent-type-imports	typeOverValue	All imports in the declaration are only used as types. Use `import type`.
+tests/rules/@typescript-eslint/consistent-type-imports/experimental-decorators/cases.ts:4:1	@typescript-eslint/consistent-type-imports	someImportsAreOnlyTypes	Imports "Bar" are only used as type.
+tests/rules/@typescript-eslint/consistent-type-imports/experimental-decorators/cases.ts:11:17	@typescript-eslint/consistent-type-imports	noImportTypeAnnotations	`import()` type annotations are forbidden.
+tests/rules/@typescript-eslint/consistent-type-imports/inline/cases.ts:2:1	@typescript-eslint/consistent-type-imports	typeOverValue	All imports in the declaration are only used as types. Use `import type`.
+tests/rules/@typescript-eslint/consistent-type-imports/inline/cases.ts:4:1	@typescript-eslint/consistent-type-imports	someImportsAreOnlyTypes	Imports "A2" are only used as type.
+tests/rules/@typescript-eslint/consistent-type-imports/inline/cases.ts:7:1	@typescript-eslint/consistent-type-imports	typeOverValue	All imports in the declaration are only used as types. Use `import type`.
+tests/rules/@typescript-eslint/consistent-type-imports/inline/cases.ts:9:1	@typescript-eslint/consistent-type-imports	typeOverValue	All imports in the declaration are only used as types. Use `import type`.
+tests/rules/@typescript-eslint/consistent-type-imports/inline/cases.ts:13:1	@typescript-eslint/consistent-type-imports	typeOverValue	All imports in the declaration are only used as types. Use `import type`.
+tests/rules/@typescript-eslint/consistent-type-imports/inline/cases.ts:15:1	@typescript-eslint/consistent-type-imports	someImportsAreOnlyTypes	Imports "F6" are only used as type.
+tests/rules/@typescript-eslint/consistent-type-imports/inline/cases.ts:18:1	@typescript-eslint/consistent-type-imports	someImportsAreOnlyTypes	Imports "NS7" are only used as type.
+tests/rules/@typescript-eslint/consistent-type-imports/inline/cases.ts:21:1	@typescript-eslint/consistent-type-imports	someImportsAreOnlyTypes	Imports "Def8" are only used as type.
+tests/rules/@typescript-eslint/consistent-type-imports/inline/cases.ts:24:1	@typescript-eslint/consistent-type-imports	typeOverValue	All imports in the declaration are only used as types. Use `import type`.
+tests/rules/@typescript-eslint/consistent-type-imports/inline/cases.ts:29:1	@typescript-eslint/consistent-type-imports	someImportsAreOnlyTypes	Imports "H11" are only used as type.
+tests/rules/@typescript-eslint/consistent-type-imports/inline/cases.ts:32:1	@typescript-eslint/consistent-type-imports	someImportsAreOnlyTypes	Imports "I1" are only used as type.
+tests/rules/@typescript-eslint/consistent-type-imports/inline/cases.ts:37:1	@typescript-eslint/consistent-type-imports	typeOverValue	All imports in the declaration are only used as types. Use `import type`.
+tests/rules/@typescript-eslint/consistent-type-imports/inline/cases.ts:41:1	@typescript-eslint/consistent-type-imports	someImportsAreOnlyTypes	Imports "K1" are only used as type.
+tests/rules/@typescript-eslint/consistent-type-imports/inline/cases.ts:43:1	@typescript-eslint/consistent-type-imports	typeOverValue	All imports in the declaration are only used as types. Use `import type`.
+tests/rules/@typescript-eslint/consistent-type-imports/inline/cases.ts:50:1	@typescript-eslint/consistent-type-imports	typeOverValue	All imports in the declaration are only used as types. Use `import type`.
+tests/rules/@typescript-eslint/consistent-type-imports/inline/cases.ts:52:1	@typescript-eslint/consistent-type-imports	typeOverValue	All imports in the declaration are only used as types. Use `import type`.
+tests/rules/@typescript-eslint/consistent-type-imports/inline/cases.ts:54:1	@typescript-eslint/consistent-type-imports	typeOverValue	All imports in the declaration are only used as types. Use `import type`.
+tests/rules/@typescript-eslint/consistent-type-imports/inline/cases.ts:66:1	@typescript-eslint/consistent-type-imports	typeOverValue	All imports in the declaration are only used as types. Use `import type`.
+tests/rules/@typescript-eslint/consistent-type-imports/inline/cases.ts:72:1	@typescript-eslint/consistent-type-imports	typeOverValue	All imports in the declaration are only used as types. Use `import type`.
+tests/rules/@typescript-eslint/consistent-type-imports/inline/cases.ts:80:1	@typescript-eslint/consistent-type-imports	someImportsAreOnlyTypes	Imports "R1", "R2" and "R4" are only used as type.
+tests/rules/@typescript-eslint/consistent-type-imports/inline/cases.ts:84:1	@typescript-eslint/consistent-type-imports	someImportsAreOnlyTypes	Imports "S1" are only used as type.
+tests/rules/@typescript-eslint/consistent-type-imports/inline/cases.ts:87:1	@typescript-eslint/consistent-type-imports	someImportsAreOnlyTypes	Imports "S4" are only used as type.
+tests/rules/@typescript-eslint/consistent-type-imports/inline/cases.ts:90:1	@typescript-eslint/consistent-type-imports	someImportsAreOnlyTypes	Imports "S6" and "S7" are only used as type.
+tests/rules/@typescript-eslint/consistent-type-imports/inline/cases.ts:105:1	@typescript-eslint/consistent-type-imports	typeOverValue	All imports in the declaration are only used as types. Use `import type`.
+tests/rules/@typescript-eslint/consistent-type-imports/inline/cases.ts:111:1	@typescript-eslint/consistent-type-imports	typeOverValue	All imports in the declaration are only used as types. Use `import type`.
+tests/rules/@typescript-eslint/consistent-type-imports/inline/cases.ts:113:10	@typescript-eslint/consistent-type-imports	noImportTypeAnnotations	`import()` type annotations are forbidden.
+tests/rules/@typescript-eslint/consistent-type-imports/inline/cases.ts:114:19	@typescript-eslint/consistent-type-imports	noImportTypeAnnotations	`import()` type annotations are forbidden.
+tests/rules/@typescript-eslint/consistent-type-imports/inline/cases.ts:115:12	@typescript-eslint/consistent-type-imports	noImportTypeAnnotations	`import()` type annotations are forbidden.
+tests/rules/@typescript-eslint/consistent-type-imports/inline/cases.ts:115:28	@typescript-eslint/consistent-type-imports	noImportTypeAnnotations	`import()` type annotations are forbidden.
+tests/rules/@typescript-eslint/consistent-type-imports/no-type-imports-inline/cases.ts:28:1	@typescript-eslint/consistent-type-imports	avoidImportType	Use an `import` instead of an `import type`.
+tests/rules/@typescript-eslint/consistent-type-imports/no-type-imports-inline/cases.ts:33:1	@typescript-eslint/consistent-type-imports	avoidImportType	Use an `import` instead of an `import type`.
+tests/rules/@typescript-eslint/consistent-type-imports/no-type-imports-inline/cases.ts:36:1	@typescript-eslint/consistent-type-imports	avoidImportType	Use an `import` instead of an `import type`.
+tests/rules/@typescript-eslint/consistent-type-imports/no-type-imports-inline/cases.ts:43:10	@typescript-eslint/consistent-type-imports	avoidImportType	Use an `import` instead of an `import type`.
+tests/rules/@typescript-eslint/consistent-type-imports/no-type-imports-inline/cases.ts:45:10	@typescript-eslint/consistent-type-imports	avoidImportType	Use an `import` instead of an `import type`.
+tests/rules/@typescript-eslint/consistent-type-imports/no-type-imports-inline/cases.ts:62:1	@typescript-eslint/consistent-type-imports	avoidImportType	Use an `import` instead of an `import type`.
+tests/rules/@typescript-eslint/consistent-type-imports/no-type-imports/cases.ts:28:1	@typescript-eslint/consistent-type-imports	avoidImportType	Use an `import` instead of an `import type`.
+tests/rules/@typescript-eslint/consistent-type-imports/no-type-imports/cases.ts:33:1	@typescript-eslint/consistent-type-imports	avoidImportType	Use an `import` instead of an `import type`.
+tests/rules/@typescript-eslint/consistent-type-imports/no-type-imports/cases.ts:36:1	@typescript-eslint/consistent-type-imports	avoidImportType	Use an `import` instead of an `import type`.
+tests/rules/@typescript-eslint/consistent-type-imports/no-type-imports/cases.ts:43:10	@typescript-eslint/consistent-type-imports	avoidImportType	Use an `import` instead of an `import type`.
+tests/rules/@typescript-eslint/consistent-type-imports/no-type-imports/cases.ts:45:10	@typescript-eslint/consistent-type-imports	avoidImportType	Use an `import` instead of an `import type`.
+tests/rules/@typescript-eslint/consistent-type-imports/no-type-imports/cases.ts:62:1	@typescript-eslint/consistent-type-imports	avoidImportType	Use an `import` instead of an `import type`.
+tests/rules/@typescript-eslint/consistent-type-imports/no-type-imports/cases.ts:113:10	@typescript-eslint/consistent-type-imports	noImportTypeAnnotations	`import()` type annotations are forbidden.
+tests/rules/@typescript-eslint/consistent-type-imports/no-type-imports/cases.ts:114:19	@typescript-eslint/consistent-type-imports	noImportTypeAnnotations	`import()` type annotations are forbidden.
+tests/rules/@typescript-eslint/consistent-type-imports/no-type-imports/cases.ts:115:12	@typescript-eslint/consistent-type-imports	noImportTypeAnnotations	`import()` type annotations are forbidden.
+tests/rules/@typescript-eslint/consistent-type-imports/no-type-imports/cases.ts:115:28	@typescript-eslint/consistent-type-imports	noImportTypeAnnotations	`import()` type annotations are forbidden.
+tests/rules/@typescript-eslint/consistent-type-imports/someday/cases.ts:2:1	@typescript-eslint/consistent-type-imports	typeOverValue	All imports in the declaration are only used as types. Use `import type`.
+tests/rules/@typescript-eslint/consistent-type-imports/someday/cases.ts:4:1	@typescript-eslint/consistent-type-imports	someImportsAreOnlyTypes	Imports "A2" are only used as type.
+tests/rules/@typescript-eslint/consistent-type-imports/someday/cases.ts:7:1	@typescript-eslint/consistent-type-imports	typeOverValue	All imports in the declaration are only used as types. Use `import type`.
+tests/rules/@typescript-eslint/consistent-type-imports/someday/cases.ts:9:1	@typescript-eslint/consistent-type-imports	typeOverValue	All imports in the declaration are only used as types. Use `import type`.
+tests/rules/@typescript-eslint/consistent-type-imports/someday/cases.ts:13:1	@typescript-eslint/consistent-type-imports	typeOverValue	All imports in the declaration are only used as types. Use `import type`.
+tests/rules/@typescript-eslint/consistent-type-imports/someday/cases.ts:15:1	@typescript-eslint/consistent-type-imports	someImportsAreOnlyTypes	Imports "F6" are only used as type.
+tests/rules/@typescript-eslint/consistent-type-imports/someday/cases.ts:18:1	@typescript-eslint/consistent-type-imports	someImportsAreOnlyTypes	Imports "NS7" are only used as type.
+tests/rules/@typescript-eslint/consistent-type-imports/someday/cases.ts:21:1	@typescript-eslint/consistent-type-imports	someImportsAreOnlyTypes	Imports "Def8" are only used as type.
+tests/rules/@typescript-eslint/consistent-type-imports/someday/cases.ts:24:1	@typescript-eslint/consistent-type-imports	typeOverValue	All imports in the declaration are only used as types. Use `import type`.
+tests/rules/@typescript-eslint/consistent-type-imports/someday/cases.ts:29:1	@typescript-eslint/consistent-type-imports	someImportsAreOnlyTypes	Imports "H11" are only used as type.
+tests/rules/@typescript-eslint/consistent-type-imports/someday/cases.ts:32:1	@typescript-eslint/consistent-type-imports	someImportsAreOnlyTypes	Imports "I1" are only used as type.
+tests/rules/@typescript-eslint/consistent-type-imports/someday/cases.ts:37:1	@typescript-eslint/consistent-type-imports	typeOverValue	All imports in the declaration are only used as types. Use `import type`.
+tests/rules/@typescript-eslint/consistent-type-imports/someday/cases.ts:41:1	@typescript-eslint/consistent-type-imports	someImportsAreOnlyTypes	Imports "K1" are only used as type.
+tests/rules/@typescript-eslint/consistent-type-imports/someday/cases.ts:43:1	@typescript-eslint/consistent-type-imports	typeOverValue	All imports in the declaration are only used as types. Use `import type`.
+tests/rules/@typescript-eslint/consistent-type-imports/someday/cases.ts:50:1	@typescript-eslint/consistent-type-imports	typeOverValue	All imports in the declaration are only used as types. Use `import type`.
+tests/rules/@typescript-eslint/consistent-type-imports/someday/cases.ts:52:1	@typescript-eslint/consistent-type-imports	typeOverValue	All imports in the declaration are only used as types. Use `import type`.
+tests/rules/@typescript-eslint/consistent-type-imports/someday/cases.ts:54:1	@typescript-eslint/consistent-type-imports	typeOverValue	All imports in the declaration are only used as types. Use `import type`.
+tests/rules/@typescript-eslint/consistent-type-imports/someday/cases.ts:66:1	@typescript-eslint/consistent-type-imports	typeOverValue	All imports in the declaration are only used as types. Use `import type`.
+tests/rules/@typescript-eslint/consistent-type-imports/someday/cases.ts:72:1	@typescript-eslint/consistent-type-imports	typeOverValue	All imports in the declaration are only used as types. Use `import type`.
+tests/rules/@typescript-eslint/consistent-type-imports/someday/cases.ts:80:1	@typescript-eslint/consistent-type-imports	someImportsAreOnlyTypes	Imports "R1", "R2" and "R4" are only used as type.
+tests/rules/@typescript-eslint/consistent-type-imports/someday/cases.ts:84:1	@typescript-eslint/consistent-type-imports	someImportsAreOnlyTypes	Imports "S1" are only used as type.
+tests/rules/@typescript-eslint/consistent-type-imports/someday/cases.ts:87:1	@typescript-eslint/consistent-type-imports	someImportsAreOnlyTypes	Imports "S4" are only used as type.
+tests/rules/@typescript-eslint/consistent-type-imports/someday/cases.ts:90:1	@typescript-eslint/consistent-type-imports	someImportsAreOnlyTypes	Imports "S6" and "S7" are only used as type.
+tests/rules/@typescript-eslint/consistent-type-imports/someday/cases.ts:105:1	@typescript-eslint/consistent-type-imports	typeOverValue	All imports in the declaration are only used as types. Use `import type`.
+tests/rules/@typescript-eslint/consistent-type-imports/someday/cases.ts:111:1	@typescript-eslint/consistent-type-imports	typeOverValue	All imports in the declaration are only used as types. Use `import type`.

@@ -1,0 +1,4 @@
+tests/fixtures/underscore.ts:1:7	__filename	"x"	(base: string)
+tests/fixtures/underscore.ts:2:10	__f	(__p: number) => number
+tests/fixtures/underscore.ts:2:14	__p	number
+tests/fixtures/underscore.ts:5:7	_one	1	(base: number)

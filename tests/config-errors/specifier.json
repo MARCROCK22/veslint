@@ -1,0 +1,1 @@
+{"rules": {"@typescript-eslint/restrict-template-expressions": ["error", {"allow": ["Error", {"from": "package", "name": ["a", "a"]}]}]}}

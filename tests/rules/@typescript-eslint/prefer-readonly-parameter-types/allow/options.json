@@ -1,0 +1,1 @@
+[{"allow": ["Mutable", {"from": "lib", "name": ["Map", "HTMLElement", "RegExp"]}, {"from": "file", "name": "Point"}]}]

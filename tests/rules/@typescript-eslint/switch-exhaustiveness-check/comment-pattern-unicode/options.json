@@ -1,0 +1,1 @@
+[{"defaultCaseCommentPattern": "^(?i:skip)\\s\\p{L}+(?s:.)*$", "requireDefaultForNonUnion": true}]

@@ -1,0 +1,2 @@
+tests/fixtures/emoji.ts:1:7	s	"🎉🎉🎉"	(base: string)
+tests/fixtures/emoji.ts:1:27	x	1	(base: number)

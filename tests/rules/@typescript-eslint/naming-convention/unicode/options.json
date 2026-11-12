@@ -1,0 +1,8 @@
+[{"selector": "variable", "format": ["camelCase"]},
+ {"selector": "function", "format": ["strictCamelCase"]},
+ {"selector": "class", "format": ["PascalCase"]},
+ {"selector": "interface", "format": ["StrictPascalCase"]},
+ {"selector": "parameter", "format": ["snake_case"]},
+ {"selector": "enumMember", "format": ["UPPER_CASE"]},
+ {"selector": "typeAlias", "format": ["PascalCase", "UPPER_CASE"]},
+ {"selector": "classProperty", "format": ["strictCamelCase", "StrictPascalCase"]}]

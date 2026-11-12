@@ -1,0 +1,19 @@
+{"rule": "@typescript-eslint/no-import-type-side-effects", "upstream": "typescript-eslint v8.62.0", "files": ["packages/eslint-plugin/tests/rules/no-import-type-side-effects.test.ts"],
+"messages": {"useTopLevelQualifier":"TypeScript will only remove the inline type specifiers which will leave behind a side effect import at runtime. Convert this to a top-level type qualifier to properly remove the entire import."},
+"cases": [
+{"id":"no-import-type-side-effects/v0","kind":"valid","code":"import T from 'mod';","file":"file.ts","tsconfig":null},
+{"id":"no-import-type-side-effects/v1","kind":"valid","code":"import * as T from 'mod';","file":"file.ts","tsconfig":null},
+{"id":"no-import-type-side-effects/v2","kind":"valid","code":"import { T } from 'mod';","file":"file.ts","tsconfig":null},
+{"id":"no-import-type-side-effects/v3","kind":"valid","code":"import type { T } from 'mod';","file":"file.ts","tsconfig":null},
+{"id":"no-import-type-side-effects/v4","kind":"valid","code":"import type { T, U } from 'mod';","file":"file.ts","tsconfig":null},
+{"id":"no-import-type-side-effects/v5","kind":"valid","code":"import { type T, U } from 'mod';","file":"file.ts","tsconfig":null},
+{"id":"no-import-type-side-effects/v6","kind":"valid","code":"import { T, type U } from 'mod';","file":"file.ts","tsconfig":null},
+{"id":"no-import-type-side-effects/v7","kind":"valid","code":"import type T from 'mod';","file":"file.ts","tsconfig":null},
+{"id":"no-import-type-side-effects/v8","kind":"valid","code":"import T, { type U } from 'mod';","file":"file.ts","tsconfig":null},
+{"id":"no-import-type-side-effects/v9","kind":"valid","code":"import type * as T from 'mod';","file":"file.ts","tsconfig":null},
+{"id":"no-import-type-side-effects/v10","kind":"valid","code":"import 'mod';","file":"file.ts","tsconfig":null},
+{"id":"no-import-type-side-effects/i0","kind":"invalid","code":"import { type A } from 'mod';","file":"file.ts","tsconfig":null,"errors":[{"messageId":"useTopLevelQualifier"}],"output":"import type { A } from 'mod';"},
+{"id":"no-import-type-side-effects/i1","kind":"invalid","code":"import { type A as AA } from 'mod';","file":"file.ts","tsconfig":null,"errors":[{"messageId":"useTopLevelQualifier"}],"output":"import type { A as AA } from 'mod';"},
+{"id":"no-import-type-side-effects/i2","kind":"invalid","code":"import { type A, type B } from 'mod';","file":"file.ts","tsconfig":null,"errors":[{"messageId":"useTopLevelQualifier"}],"output":"import type { A, B } from 'mod';"},
+{"id":"no-import-type-side-effects/i3","kind":"invalid","code":"import { type A as AA, type B as BB } from 'mod';","file":"file.ts","tsconfig":null,"errors":[{"messageId":"useTopLevelQualifier"}],"output":"import type { A as AA, B as BB } from 'mod';"}
+]}

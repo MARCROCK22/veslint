@@ -1,0 +1,4 @@
+tests/fixtures/crlf.ts:1:7	one	1	(base: number)
+tests/fixtures/crlf.ts:2:5	two	string
+tests/fixtures/crlf.ts:3:10	three	(n: number) => number
+tests/fixtures/crlf.ts:3:16	n	number

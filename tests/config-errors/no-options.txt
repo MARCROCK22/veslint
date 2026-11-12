@@ -1,0 +1,3 @@
+Key "rules": Key "@typescript-eslint/await-thenable":
+	Value [{},"x"] should NOT have more than 0 items.
+

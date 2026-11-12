@@ -1,0 +1,12 @@
+tests/rules/@typescript-eslint/prefer-as-const/cases.ts:4:16	@typescript-eslint/prefer-as-const	preferConstAssertion	Expected a `const` instead of a literal type assertion.
+tests/rules/@typescript-eslint/prefer-as-const/cases.ts:5:10	@typescript-eslint/prefer-as-const	preferConstAssertion	Expected a `const` instead of a literal type assertion.
+tests/rules/@typescript-eslint/prefer-as-const/cases.ts:6:14	@typescript-eslint/prefer-as-const	preferConstAssertion	Expected a `const` instead of a literal type assertion.
+tests/rules/@typescript-eslint/prefer-as-const/cases.ts:7:17	@typescript-eslint/prefer-as-const	preferConstAssertion	Expected a `const` instead of a literal type assertion.
+tests/rules/@typescript-eslint/prefer-as-const/cases.ts:8:16	@typescript-eslint/prefer-as-const	preferConstAssertion	Expected a `const` instead of a literal type assertion.
+tests/rules/@typescript-eslint/prefer-as-const/cases.ts:9:19	@typescript-eslint/prefer-as-const	preferConstAssertion	Expected a `const` instead of a literal type assertion.
+tests/rules/@typescript-eslint/prefer-as-const/cases.ts:10:8	@typescript-eslint/prefer-as-const	variableConstAssertion	Expected a `const` assertion instead of a literal type annotation.
+tests/rules/@typescript-eslint/prefer-as-const/cases.ts:11:8	@typescript-eslint/prefer-as-const	variableConstAssertion	Expected a `const` assertion instead of a literal type annotation.
+tests/rules/@typescript-eslint/prefer-as-const/cases.ts:12:8	@typescript-eslint/prefer-as-const	variableConstAssertion	Expected a `const` assertion instead of a literal type annotation.
+tests/rules/@typescript-eslint/prefer-as-const/cases.ts:14:6	@typescript-eslint/prefer-as-const	variableConstAssertion	Expected a `const` assertion instead of a literal type annotation.
+tests/rules/@typescript-eslint/prefer-as-const/cases.ts:15:13	@typescript-eslint/prefer-as-const	variableConstAssertion	Expected a `const` assertion instead of a literal type annotation.
+tests/rules/@typescript-eslint/prefer-as-const/cases.ts:16:16	@typescript-eslint/prefer-as-const	variableConstAssertion	Expected a `const` assertion instead of a literal type annotation.

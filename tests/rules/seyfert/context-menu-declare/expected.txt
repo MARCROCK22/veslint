@@ -1,0 +1,19 @@
+tests/rules/seyfert/context-menu-declare/cases.ts:20:1	seyfert/context-menu-declare	missingType	A context-menu command's `@Declare` must set `type: ApplicationCommandType.User` or `.Message`.
+tests/rules/seyfert/context-menu-declare/cases.ts:25:3	seyfert/context-menu-declare	hasDescription	A context-menu command's `@Declare` must not include a `description`.
+tests/rules/seyfert/context-menu-declare/cases.ts:29:1	seyfert/context-menu-declare	missingType	A context-menu command's `@Declare` must set `type: ApplicationCommandType.User` or `.Message`.
+tests/rules/seyfert/context-menu-declare/cases.ts:29:26	seyfert/context-menu-declare	hasDescription	A context-menu command's `@Declare` must not include a `description`.
+tests/rules/seyfert/context-menu-declare/cases.ts:31:35	seyfert/context-menu-declare	hasDescription	A context-menu command's `@Declare` must not include a `description`.
+tests/rules/seyfert/context-menu-declare/cases.ts:33:37	seyfert/context-menu-declare	hasDescription	A context-menu command's `@Declare` must not include a `description`.
+tests/rules/seyfert/context-menu-declare/cases.ts:35:1	seyfert/context-menu-declare	missingType	A context-menu command's `@Declare` must set `type: ApplicationCommandType.User` or `.Message`.
+tests/rules/seyfert/context-menu-declare/cases.ts:37:1	seyfert/context-menu-declare	missingType	A context-menu command's `@Declare` must set `type: ApplicationCommandType.User` or `.Message`.
+tests/rules/seyfert/context-menu-declare/cases.ts:37:30	seyfert/context-menu-declare	hasDescription	A context-menu command's `@Declare` must not include a `description`.
+tests/rules/seyfert/context-menu-declare/cases.ts:39:10	seyfert/context-menu-declare	missingType	A context-menu command's `@Declare` must set `type: ApplicationCommandType.User` or `.Message`.
+tests/rules/seyfert/context-menu-declare/cases.ts:39:45	seyfert/context-menu-declare	hasDescription	A context-menu command's `@Declare` must not include a `description`.
+tests/rules/seyfert/context-menu-declare/cases.ts:44:3	seyfert/context-menu-declare	hasDescription	A context-menu command's `@Declare` must not include a `description`.
+tests/rules/seyfert/context-menu-declare/cases.ts:47:1	seyfert/context-menu-declare	missingType	A context-menu command's `@Declare` must set `type: ApplicationCommandType.User` or `.Message`.
+tests/rules/seyfert/context-menu-declare/cases.ts:51:1	seyfert/context-menu-declare	hasDescription	A context-menu command's `@Declare` must not include a `description`.
+tests/rules/seyfert/context-menu-declare/cases.ts:53:1	seyfert/context-menu-declare	missingType	A context-menu command's `@Declare` must set `type: ApplicationCommandType.User` or `.Message`.
+tests/rules/seyfert/context-menu-declare/cases.ts:55:1	seyfert/context-menu-declare	missingType	A context-menu command's `@Declare` must set `type: ApplicationCommandType.User` or `.Message`.
+tests/rules/seyfert/context-menu-declare/cases.ts:83:1	seyfert/context-menu-declare	missingType	A context-menu command's `@Declare` must set `type: ApplicationCommandType.User` or `.Message`.
+tests/rules/seyfert/context-menu-declare/cases.ts:83:31	seyfert/context-menu-declare	hasDescription	A context-menu command's `@Declare` must not include a `description`.
+tests/rules/seyfert/context-menu-declare/cases.ts:86:20	seyfert/context-menu-declare	missingType	A context-menu command's `@Declare` must set `type: ApplicationCommandType.User` or `.Message`.

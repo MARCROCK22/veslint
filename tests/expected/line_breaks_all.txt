@@ -1,0 +1,18 @@
+tests/fixtures/line_breaks.ts:2:7	lbAfterLs	1	(base: number)
+tests/fixtures/line_breaks.ts:4:7	lbAfterPs	2	(base: number)
+tests/fixtures/line_breaks.ts:6:7	lbAfterCr	3	(base: number)
+tests/fixtures/line_breaks.ts:11:11	lbAfterBlock	4	(base: number)
+tests/fixtures/line_breaks.ts:12:7	lbString	"a\u2028b\u2029c"	(base: string)
+tests/fixtures/line_breaks.ts:14:5	lbAfterString	""	(base: string)
+tests/fixtures/line_breaks.ts:16:7	lbTemplate	"\n\u2028\u2029\na\u2028b\u2029c\n"	(base: string)
+tests/fixtures/line_breaks.ts:20:3	lbString	"a\u2028b\u2029c"	(base: string)
+tests/fixtures/line_breaks.ts:21:4	lbAfterTemplate	1	(base: number)
+tests/fixtures/line_breaks.ts:21:22	lbAfterLs	1	(base: number)
+tests/fixtures/line_breaks.ts:22:10	lbFunction	(lbParam: number, lbOther?: string | undefined) => number
+tests/fixtures/line_breaks.ts:22:21	lbParam	number
+tests/fixtures/line_breaks.ts:23:3	lbOther	string | undefined
+tests/fixtures/line_breaks.ts:24:10	lbParam	number
+tests/fixtures/line_breaks.ts:26:7	lbEmoji	"🎉"	(base: string)
+tests/fixtures/line_breaks.ts:26:38	lbAfterEmoji	number
+tests/fixtures/line_breaks.ts:26:53	lbFunction	(lbParam: number, lbOther?: string | undefined) => number
+tests/fixtures/line_breaks.ts:27:1	lbAfterCr	3	(base: number)

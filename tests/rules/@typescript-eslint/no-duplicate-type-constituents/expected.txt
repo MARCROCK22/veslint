@@ -1,0 +1,94 @@
+tests/rules/@typescript-eslint/no-duplicate-type-constituents/cases.ts:16:19	@typescript-eslint/no-duplicate-type-constituents	duplicate	Union type constituent is duplicated with string.
+tests/rules/@typescript-eslint/no-duplicate-type-constituents/cases.ts:17:28	@typescript-eslint/no-duplicate-type-constituents	duplicate	Union type constituent is duplicated with string.
+tests/rules/@typescript-eslint/no-duplicate-type-constituents/cases.ts:18:30	@typescript-eslint/no-duplicate-type-constituents	duplicate	Union type constituent is duplicated with string.
+tests/rules/@typescript-eslint/no-duplicate-type-constituents/cases.ts:19:20	@typescript-eslint/no-duplicate-type-constituents	duplicate	Union type constituent is duplicated with string.
+tests/rules/@typescript-eslint/no-duplicate-type-constituents/cases.ts:20:16	@typescript-eslint/no-duplicate-type-constituents	duplicate	Union type constituent is duplicated with 'a'.
+tests/rules/@typescript-eslint/no-duplicate-type-constituents/cases.ts:21:26	@typescript-eslint/no-duplicate-type-constituents	duplicate	Union type constituent is duplicated with Array<string>.
+tests/rules/@typescript-eslint/no-duplicate-type-constituents/cases.ts:22:26	@typescript-eslint/no-duplicate-type-constituents	duplicate	Union type constituent is duplicated with { a: string }.
+tests/rules/@typescript-eslint/no-duplicate-type-constituents/cases.ts:23:27	@typescript-eslint/no-duplicate-type-constituents	duplicate	Union type constituent is duplicated with { a: string; }.
+tests/rules/@typescript-eslint/no-duplicate-type-constituents/cases.ts:24:26	@typescript-eslint/no-duplicate-type-constituents	duplicate	Union type constituent is duplicated with () => void.
+tests/rules/@typescript-eslint/no-duplicate-type-constituents/cases.ts:25:18	@typescript-eslint/no-duplicate-type-constituents	duplicate	Union type constituent is duplicated with Alias.
+tests/rules/@typescript-eslint/no-duplicate-type-constituents/cases.ts:26:21	@typescript-eslint/no-duplicate-type-constituents	duplicate	Union type constituent is duplicated with string.
+tests/rules/@typescript-eslint/no-duplicate-type-constituents/cases.ts:27:14	@typescript-eslint/no-duplicate-type-constituents	duplicate	Union type constituent is duplicated with 1.
+tests/rules/@typescript-eslint/no-duplicate-type-constituents/cases.ts:28:22	@typescript-eslint/no-duplicate-type-constituents	duplicate	Union type constituent is duplicated with Color.Red.
+tests/rules/@typescript-eslint/no-duplicate-type-constituents/cases.ts:29:26	@typescript-eslint/no-duplicate-type-constituents	duplicate	Union type constituent is duplicated with typeof sample.
+tests/rules/@typescript-eslint/no-duplicate-type-constituents/cases.ts:30:17	@typescript-eslint/no-duplicate-type-constituents	duplicate	Union type constituent is duplicated with T.
+tests/rules/@typescript-eslint/no-duplicate-type-constituents/cases.ts:31:25	@typescript-eslint/no-duplicate-type-constituents	duplicate	Union type constituent is duplicated with string.
+tests/rules/@typescript-eslint/no-duplicate-type-constituents/cases.ts:34:5	@typescript-eslint/no-duplicate-type-constituents	duplicate	Union type constituent is duplicated with {\n  a: string;\n}.
+tests/rules/@typescript-eslint/no-duplicate-type-constituents/cases.ts:37:21	@typescript-eslint/no-duplicate-type-constituents	duplicate	Union type constituent is duplicated with string.
+tests/rules/@typescript-eslint/no-duplicate-type-constituents/cases.ts:47:16	@typescript-eslint/no-duplicate-type-constituents	duplicate	Intersection type constituent is duplicated with Box.
+tests/rules/@typescript-eslint/no-duplicate-type-constituents/cases.ts:48:24	@typescript-eslint/no-duplicate-type-constituents	duplicate	Intersection type constituent is duplicated with Box.
+tests/rules/@typescript-eslint/no-duplicate-type-constituents/cases.ts:49:26	@typescript-eslint/no-duplicate-type-constituents	duplicate	Intersection type constituent is duplicated with Box.
+tests/rules/@typescript-eslint/no-duplicate-type-constituents/cases.ts:50:21	@typescript-eslint/no-duplicate-type-constituents	duplicate	Union type constituent is duplicated with string.
+tests/rules/@typescript-eslint/no-duplicate-type-constituents/cases.ts:51:18	@typescript-eslint/no-duplicate-type-constituents	duplicate	Intersection type constituent is duplicated with Box.
+tests/rules/@typescript-eslint/no-duplicate-type-constituents/cases.ts:52:26	@typescript-eslint/no-duplicate-type-constituents	duplicate	Intersection type constituent is duplicated with Box.
+tests/rules/@typescript-eslint/no-duplicate-type-constituents/cases.ts:55:32	@typescript-eslint/no-duplicate-type-constituents	unnecessary	Explicit undefined is unnecessary on an optional parameter.
+tests/rules/@typescript-eslint/no-duplicate-type-constituents/cases.ts:56:20	@typescript-eslint/no-duplicate-type-constituents	unnecessary	Explicit undefined is unnecessary on an optional parameter.
+tests/rules/@typescript-eslint/no-duplicate-type-constituents/cases.ts:57:32	@typescript-eslint/no-duplicate-type-constituents	unnecessary	Explicit undefined is unnecessary on an optional parameter.
+tests/rules/@typescript-eslint/no-duplicate-type-constituents/cases.ts:58:40	@typescript-eslint/no-duplicate-type-constituents	unnecessary	Explicit undefined is unnecessary on an optional parameter.
+tests/rules/@typescript-eslint/no-duplicate-type-constituents/cases.ts:59:31	@typescript-eslint/no-duplicate-type-constituents	unnecessary	Explicit undefined is unnecessary on an optional parameter.
+tests/rules/@typescript-eslint/no-duplicate-type-constituents/cases.ts:60:29	@typescript-eslint/no-duplicate-type-constituents	unnecessary	Explicit undefined is unnecessary on an optional parameter.
+tests/rules/@typescript-eslint/no-duplicate-type-constituents/cases.ts:60:41	@typescript-eslint/no-duplicate-type-constituents	duplicate	Union type constituent is duplicated with undefined.
+tests/rules/@typescript-eslint/no-duplicate-type-constituents/cases.ts:61:29	@typescript-eslint/no-duplicate-type-constituents	unnecessary	Explicit undefined is unnecessary on an optional parameter.
+tests/rules/@typescript-eslint/no-duplicate-type-constituents/cases.ts:62:31	@typescript-eslint/no-duplicate-type-constituents	unnecessary	Explicit undefined is unnecessary on an optional parameter.
+tests/rules/@typescript-eslint/no-duplicate-type-constituents/cases.ts:63:38	@typescript-eslint/no-duplicate-type-constituents	unnecessary	Explicit undefined is unnecessary on an optional parameter.
+tests/rules/@typescript-eslint/no-duplicate-type-constituents/cases.ts:65:23	@typescript-eslint/no-duplicate-type-constituents	unnecessary	Explicit undefined is unnecessary on an optional parameter.
+tests/rules/@typescript-eslint/no-duplicate-type-constituents/cases.ts:66:17	@typescript-eslint/no-duplicate-type-constituents	unnecessary	Explicit undefined is unnecessary on an optional parameter.
+tests/rules/@typescript-eslint/no-duplicate-type-constituents/cases.ts:67:21	@typescript-eslint/no-duplicate-type-constituents	unnecessary	Explicit undefined is unnecessary on an optional parameter.
+tests/rules/@typescript-eslint/no-duplicate-type-constituents/cases.ts:69:40	@typescript-eslint/no-duplicate-type-constituents	unnecessary	Explicit undefined is unnecessary on an optional parameter.
+tests/rules/@typescript-eslint/no-duplicate-type-constituents/cases.ts:72:23	@typescript-eslint/no-duplicate-type-constituents	unnecessary	Explicit undefined is unnecessary on an optional parameter.
+tests/rules/@typescript-eslint/no-duplicate-type-constituents/cases.ts:73:25	@typescript-eslint/no-duplicate-type-constituents	unnecessary	Explicit undefined is unnecessary on an optional parameter.
+tests/rules/@typescript-eslint/no-duplicate-type-constituents/cases.ts:74:25	@typescript-eslint/no-duplicate-type-constituents	unnecessary	Explicit undefined is unnecessary on an optional parameter.
+tests/rules/@typescript-eslint/no-duplicate-type-constituents/cases.ts:77:29	@typescript-eslint/no-duplicate-type-constituents	unnecessary	Explicit undefined is unnecessary on an optional parameter.
+tests/rules/@typescript-eslint/no-duplicate-type-constituents/cases.ts:80:23	@typescript-eslint/no-duplicate-type-constituents	unnecessary	Explicit undefined is unnecessary on an optional parameter.
+tests/rules/@typescript-eslint/no-duplicate-type-constituents/fixes/cases.ts:1:20	@typescript-eslint/no-duplicate-type-constituents	duplicate	Union type constituent is duplicated with string.
+tests/rules/@typescript-eslint/no-duplicate-type-constituents/fixes/cases.ts:2:29	@typescript-eslint/no-duplicate-type-constituents	duplicate	Union type constituent is duplicated with string.
+tests/rules/@typescript-eslint/no-duplicate-type-constituents/fixes/cases.ts:3:31	@typescript-eslint/no-duplicate-type-constituents	duplicate	Union type constituent is duplicated with string.
+tests/rules/@typescript-eslint/no-duplicate-type-constituents/fixes/cases.ts:4:21	@typescript-eslint/no-duplicate-type-constituents	duplicate	Union type constituent is duplicated with string.
+tests/rules/@typescript-eslint/no-duplicate-type-constituents/fixes/cases.ts:5:22	@typescript-eslint/no-duplicate-type-constituents	duplicate	Union type constituent is duplicated with string.
+tests/rules/@typescript-eslint/no-duplicate-type-constituents/fixes/cases.ts:6:49	@typescript-eslint/no-duplicate-type-constituents	duplicate	Union type constituent is duplicated with number.
+tests/rules/@typescript-eslint/no-duplicate-type-constituents/fixes/cases.ts:7:32	@typescript-eslint/no-duplicate-type-constituents	duplicate	Intersection type constituent is duplicated with string | number.
+tests/rules/@typescript-eslint/no-duplicate-type-constituents/fixes/cases.ts:8:21	@typescript-eslint/no-duplicate-type-constituents	duplicate	Union type constituent is duplicated with string.
+tests/rules/@typescript-eslint/no-duplicate-type-constituents/fixes/cases.ts:9:30	@typescript-eslint/no-duplicate-type-constituents	duplicate	Union type constituent is duplicated with string.
+tests/rules/@typescript-eslint/no-duplicate-type-constituents/fixes/cases.ts:10:23	@typescript-eslint/no-duplicate-type-constituents	duplicate	Intersection type constituent is duplicated with { a: 1 }.
+tests/rules/@typescript-eslint/no-duplicate-type-constituents/fixes/cases.ts:14:5	@typescript-eslint/no-duplicate-type-constituents	duplicate	Union type constituent is duplicated with 'a'.
+tests/rules/@typescript-eslint/no-duplicate-type-constituents/fixes/cases.ts:16:5	@typescript-eslint/no-duplicate-type-constituents	duplicate	Union type constituent is duplicated with string.
+tests/rules/@typescript-eslint/no-duplicate-type-constituents/fixes/cases.ts:17:17	@typescript-eslint/no-duplicate-type-constituents	unnecessary	Explicit undefined is unnecessary on an optional parameter.
+tests/rules/@typescript-eslint/no-duplicate-type-constituents/fixes/cases.ts:18:26	@typescript-eslint/no-duplicate-type-constituents	unnecessary	Explicit undefined is unnecessary on an optional parameter.
+tests/rules/@typescript-eslint/no-duplicate-type-constituents/fixes/cases.ts:19:19	@typescript-eslint/no-duplicate-type-constituents	unnecessary	Explicit undefined is unnecessary on an optional parameter.
+tests/rules/@typescript-eslint/no-duplicate-type-constituents/fixes/cases.ts:20:18	@typescript-eslint/no-duplicate-type-constituents	unnecessary	Explicit undefined is unnecessary on an optional parameter.
+tests/rules/@typescript-eslint/no-duplicate-type-constituents/fixes/cases.ts:21:27	@typescript-eslint/no-duplicate-type-constituents	unnecessary	Explicit undefined is unnecessary on an optional parameter.
+tests/rules/@typescript-eslint/no-duplicate-type-constituents/fixes/cases.ts:22:31	@typescript-eslint/no-duplicate-type-constituents	unnecessary	Explicit undefined is unnecessary on an optional parameter.
+tests/rules/@typescript-eslint/no-duplicate-type-constituents/fixes/cases.ts:23:42	@typescript-eslint/no-duplicate-type-constituents	duplicate	Union type constituent is duplicated with string.
+tests/rules/@typescript-eslint/no-duplicate-type-constituents/fixes/cases.ts:24:24	@typescript-eslint/no-duplicate-type-constituents	duplicate	Union type constituent is duplicated with string.
+tests/rules/@typescript-eslint/no-duplicate-type-constituents/fixes/cases.ts:25:36	@typescript-eslint/no-duplicate-type-constituents	duplicate	Union type constituent is duplicated with string.
+tests/rules/@typescript-eslint/no-duplicate-type-constituents/fixes/cases.ts:26:33	@typescript-eslint/no-duplicate-type-constituents	duplicate	Union type constituent is duplicated with string.
+tests/rules/@typescript-eslint/no-duplicate-type-constituents/fixes/cases.ts:26:42	@typescript-eslint/no-duplicate-type-constituents	duplicate	Union type constituent is duplicated with number.
+tests/rules/@typescript-eslint/no-duplicate-type-constituents/fixes/cases.ts:27:23	@typescript-eslint/no-duplicate-type-constituents	duplicate	Union type constituent is duplicated with string.
+tests/rules/@typescript-eslint/no-duplicate-type-constituents/fixes/cases.ts:28:28	@typescript-eslint/no-duplicate-type-constituents	duplicate	Intersection type constituent is duplicated with Array<string>.
+tests/rules/@typescript-eslint/no-duplicate-type-constituents/fixes/cases.ts:28:65	@typescript-eslint/no-duplicate-type-constituents	duplicate	Intersection type constituent is duplicated with Array<string>.
+tests/rules/@typescript-eslint/no-duplicate-type-constituents/fixes/cases.ts:29:30	@typescript-eslint/no-duplicate-type-constituents	duplicate	Union type constituent is duplicated with string.
+tests/rules/@typescript-eslint/no-duplicate-type-constituents/fixes/cases.ts:29:39	@typescript-eslint/no-duplicate-type-constituents	duplicate	Union type constituent is duplicated with number.
+tests/rules/@typescript-eslint/no-duplicate-type-constituents/fixes/cases.ts:29:48	@typescript-eslint/no-duplicate-type-constituents	duplicate	Union type constituent is duplicated with string.
+tests/rules/@typescript-eslint/no-duplicate-type-constituents/fixes/cases.ts:30:28	@typescript-eslint/no-duplicate-type-constituents	duplicate	Union type constituent is duplicated with () => void.
+tests/rules/@typescript-eslint/no-duplicate-type-constituents/fixes/cases.ts:33:5	@typescript-eslint/no-duplicate-type-constituents	duplicate	Union type constituent is duplicated with string.
+tests/rules/@typescript-eslint/no-duplicate-type-constituents/grammar/cases.ts:3:27	@typescript-eslint/no-duplicate-type-constituents	duplicate	Union type constituent is duplicated with A.
+tests/rules/@typescript-eslint/no-duplicate-type-constituents/grammar/cases.ts:4:47	@typescript-eslint/no-duplicate-type-constituents	duplicate	Union type constituent is duplicated with import('./mod').Box<number>.
+tests/rules/@typescript-eslint/no-duplicate-type-constituents/grammar/cases.ts:5:39	@typescript-eslint/no-duplicate-type-constituents	duplicate	Union type constituent is duplicated with typeof import('./mod').
+tests/rules/@typescript-eslint/no-duplicate-type-constituents/grammar/cases.ts:6:56	@typescript-eslint/no-duplicate-type-constituents	duplicate	Union type constituent is duplicated with string.
+tests/rules/@typescript-eslint/no-duplicate-type-constituents/grammar/cases.ts:9:18	@typescript-eslint/no-duplicate-type-constituents	duplicate	Union type constituent is duplicated with T.
+tests/rules/@typescript-eslint/no-duplicate-type-constituents/grammar/cases.ts:14:19	@typescript-eslint/no-duplicate-type-constituents	duplicate	Union type constituent is duplicated with string.
+tests/rules/@typescript-eslint/no-duplicate-type-constituents/grammar/cases.ts:20:31	@typescript-eslint/no-duplicate-type-constituents	duplicate	Union type constituent is duplicated with readonly string[].
+tests/rules/@typescript-eslint/no-duplicate-type-constituents/grammar/cases.ts:21:41	@typescript-eslint/no-duplicate-type-constituents	duplicate	Union type constituent is duplicated with string.
+tests/rules/@typescript-eslint/no-duplicate-type-constituents/grammar/cases.ts:22:32	@typescript-eslint/no-duplicate-type-constituents	duplicate	Intersection type constituent is duplicated with readonly string[].
+tests/rules/@typescript-eslint/no-duplicate-type-constituents/grammar/cases.ts:26:49	@typescript-eslint/no-duplicate-type-constituents	duplicate	Union type constituent is duplicated with (typeof import('./mod').value)[].
+tests/rules/@typescript-eslint/no-duplicate-type-constituents/grammar/cases.ts:27:47	@typescript-eslint/no-duplicate-type-constituents	duplicate	Union type constituent is duplicated with import('./mod').Box<number>[].
+tests/rules/@typescript-eslint/no-duplicate-type-constituents/grammar/cases.ts:31:5	@typescript-eslint/no-duplicate-type-constituents	duplicate	Union type constituent is duplicated with A.
+tests/rules/@typescript-eslint/no-duplicate-type-constituents/grammar/cases.ts:32:32	@typescript-eslint/no-duplicate-type-constituents	duplicate	Intersection type constituent is duplicated with A.
+tests/rules/@typescript-eslint/no-duplicate-type-constituents/grammar/cases.ts:36:5	@typescript-eslint/no-duplicate-type-constituents	duplicate	Union type constituent is duplicated with A.
+tests/rules/@typescript-eslint/no-duplicate-type-constituents/ignore-intersections/cases.ts:5:19	@typescript-eslint/no-duplicate-type-constituents	duplicate	Union type constituent is duplicated with string.
+tests/rules/@typescript-eslint/no-duplicate-type-constituents/ignore-intersections/cases.ts:7:25	@typescript-eslint/no-duplicate-type-constituents	duplicate	Union type constituent is duplicated with string | string.
+tests/rules/@typescript-eslint/no-duplicate-type-constituents/ignore-intersections/cases.ts:7:34	@typescript-eslint/no-duplicate-type-constituents	duplicate	Union type constituent is duplicated with string | string.
+tests/rules/@typescript-eslint/no-duplicate-type-constituents/ignore-intersections/cases.ts:8:32	@typescript-eslint/no-duplicate-type-constituents	unnecessary	Explicit undefined is unnecessary on an optional parameter.
+tests/rules/@typescript-eslint/no-duplicate-type-constituents/ignore-unions/cases.ts:6:16	@typescript-eslint/no-duplicate-type-constituents	duplicate	Intersection type constituent is duplicated with Box.
+tests/rules/@typescript-eslint/no-duplicate-type-constituents/ignore-unions/cases.ts:7:17	@typescript-eslint/no-duplicate-type-constituents	duplicate	Intersection type constituent is duplicated with Box.

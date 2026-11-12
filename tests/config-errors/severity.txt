@@ -1,0 +1,6 @@
+Configuration for rule "@typescript-eslint/no-floating-promises" is invalid. Expected severity of "off", 0, "warn", 1, "error", or 2.
+
+You passed '"fatal"'.
+
+See https://eslint.org/docs/latest/use/configure/rules#use-configuration-files for configuring rules.
+

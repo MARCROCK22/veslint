@@ -1,0 +1,67 @@
+tests/rules/@typescript-eslint/no-unsafe-return/awaited/cases.ts:24:31	@typescript-eslint/no-unsafe-return	unsafeReturn	Unsafe return of a value of type `Promise<any>`.
+tests/rules/@typescript-eslint/no-unsafe-return/awaited/cases.ts:25:31	@typescript-eslint/no-unsafe-return	unsafeReturn	Unsafe return of a value of type `Promise<any>`.
+tests/rules/@typescript-eslint/no-unsafe-return/awaited/cases.ts:37:31	@typescript-eslint/no-unsafe-return	unsafeReturn	Unsafe return of a value of type `Promise<any>`.
+tests/rules/@typescript-eslint/no-unsafe-return/awaited/cases.ts:39:31	@typescript-eslint/no-unsafe-return	unsafeReturn	Unsafe return of a value of type `Promise<any>`.
+tests/rules/@typescript-eslint/no-unsafe-return/awaited/cases.ts:62:30	@typescript-eslint/no-unsafe-return	unsafeReturn	Unsafe return of a value of type `Promise<any>`.
+tests/rules/@typescript-eslint/no-unsafe-return/awaited/cases.ts:63:30	@typescript-eslint/no-unsafe-return	unsafeReturn	Unsafe return of a value of type `Promise<any>`.
+tests/rules/@typescript-eslint/no-unsafe-return/awaited/cases.ts:65:30	@typescript-eslint/no-unsafe-return	unsafeReturn	Unsafe return of a value of type `Promise<any>`.
+tests/rules/@typescript-eslint/no-unsafe-return/awaited/cases.ts:66:47	@typescript-eslint/no-unsafe-return	unsafeReturn	Unsafe return of a value of type `Promise<any>`.
+tests/rules/@typescript-eslint/no-unsafe-return/awaited/cases.ts:80:35	@typescript-eslint/no-unsafe-return	unsafeReturn	Unsafe return of a value of type `Promise<any>`.
+tests/rules/@typescript-eslint/no-unsafe-return/awaited/cases.ts:81:35	@typescript-eslint/no-unsafe-return	unsafeReturn	Unsafe return of a value of type `Promise<any>`.
+tests/rules/@typescript-eslint/no-unsafe-return/awaited/cases.ts:82:35	@typescript-eslint/no-unsafe-return	unsafeReturn	Unsafe return of a value of type `Promise<any>`.
+tests/rules/@typescript-eslint/no-unsafe-return/awaited/cases.ts:89:26	@typescript-eslint/no-unsafe-return	unsafeReturn	Unsafe return of a value of type `Promise<any>`.
+tests/rules/@typescript-eslint/no-unsafe-return/awaited/cases.ts:90:26	@typescript-eslint/no-unsafe-return	unsafeReturn	Unsafe return of a value of type `Promise<any>`.
+tests/rules/@typescript-eslint/no-unsafe-return/awaited/cases.ts:103:48	@typescript-eslint/no-unsafe-return	unsafeReturnAssignment	Unsafe return of type `Settles<any>` from function with return type `Settles<string>`.
+tests/rules/@typescript-eslint/no-unsafe-return/awaited/cases.ts:114:28	@typescript-eslint/no-unsafe-return	unsafeReturn	Unsafe return of a value of type `Promise<any>`.
+tests/rules/@typescript-eslint/no-unsafe-return/awaited/cases.ts:121:28	@typescript-eslint/no-unsafe-return	unsafeReturn	Unsafe return of a value of type `Promise<any>`.
+tests/rules/@typescript-eslint/no-unsafe-return/awaited/cases.ts:122:45	@typescript-eslint/no-unsafe-return	unsafeReturn	Unsafe return of a value of type `Promise<any>`.
+tests/rules/@typescript-eslint/no-unsafe-return/awaited/cases.ts:126:45	@typescript-eslint/no-unsafe-return	unsafeReturn	Unsafe return of a value of type `any[]`.
+tests/rules/@typescript-eslint/no-unsafe-return/awaited/cases.ts:130:48	@typescript-eslint/no-unsafe-return	unsafeReturnAssignment	Unsafe return of type `Promise<Set<any>>` from function with return type `Promise<Set<string>>`.
+tests/rules/@typescript-eslint/no-unsafe-return/awaited/cases.ts:134:44	@typescript-eslint/no-unsafe-return	unsafeReturn	Unsafe return of a value of type `Promise<any>`.
+tests/rules/@typescript-eslint/no-unsafe-return/awaited/cases.ts:142:68	@typescript-eslint/no-unsafe-return	unsafeReturn	Unsafe return of a value of type `any`.
+tests/rules/@typescript-eslint/no-unsafe-return/awaited/cases.ts:146:74	@typescript-eslint/no-unsafe-return	unsafeReturn	Unsafe return of a value of type `any`.
+tests/rules/@typescript-eslint/no-unsafe-return/awaited/cases.ts:147:54	@typescript-eslint/no-unsafe-return	unsafeReturn	Unsafe return of a value of type `Promise<any>`.
+tests/rules/@typescript-eslint/no-unsafe-return/awaited/cases.ts:148:63	@typescript-eslint/no-unsafe-return	unsafeReturn	Unsafe return of a value of type `any[]`.
+tests/rules/@typescript-eslint/no-unsafe-return/awaited/cases.ts:150:94	@typescript-eslint/no-unsafe-return	unsafeReturn	Unsafe return of a value of type `Promise<any>`.
+tests/rules/@typescript-eslint/no-unsafe-return/awaited/cases.ts:154:32	@typescript-eslint/no-unsafe-return	unsafeReturn	Unsafe return of a value of type `Promise<any>`.
+tests/rules/@typescript-eslint/no-unsafe-return/awaited/cases.ts:174:30	@typescript-eslint/no-unsafe-return	unsafeReturn	Unsafe return of a value of type `Promise<any>`.
+tests/rules/@typescript-eslint/no-unsafe-return/awaited/cases.ts:176:30	@typescript-eslint/no-unsafe-return	unsafeReturn	Unsafe return of a value of type `Promise<any>`.
+tests/rules/@typescript-eslint/no-unsafe-return/awaited/cases.ts:178:30	@typescript-eslint/no-unsafe-return	unsafeReturn	Unsafe return of a value of type `Promise<any>`.
+tests/rules/@typescript-eslint/no-unsafe-return/awaited/cases.ts:179:30	@typescript-eslint/no-unsafe-return	unsafeReturn	Unsafe return of a value of type `Promise<any>`.
+tests/rules/@typescript-eslint/no-unsafe-return/awaited/cases.ts:184:31	@typescript-eslint/no-unsafe-return	unsafeReturn	Unsafe return of a value of type `Promise<any>`.
+tests/rules/@typescript-eslint/no-unsafe-return/awaited/cases.ts:188:110	@typescript-eslint/no-unsafe-return	unsafeReturn	Unsafe return of a value of type `any`.
+tests/rules/@typescript-eslint/no-unsafe-return/awaited/cases.ts:214:30	@typescript-eslint/no-unsafe-return	unsafeReturn	Unsafe return of a value of type `Promise<any>`.
+tests/rules/@typescript-eslint/no-unsafe-return/awaited/cases.ts:220:38	@typescript-eslint/no-unsafe-return	unsafeReturn	Unsafe return of a value of type `Promise<any>`.
+tests/rules/@typescript-eslint/no-unsafe-return/cases.ts:8:17	@typescript-eslint/no-unsafe-return	unsafeReturn	Unsafe return of a value of type `any`.
+tests/rules/@typescript-eslint/no-unsafe-return/cases.ts:9:17	@typescript-eslint/no-unsafe-return	unsafeReturn	Unsafe return of a value of type `any[]`.
+tests/rules/@typescript-eslint/no-unsafe-return/cases.ts:10:23	@typescript-eslint/no-unsafe-return	unsafeReturn	Unsafe return of a value of type `Promise<any>`.
+tests/rules/@typescript-eslint/no-unsafe-return/cases.ts:15:18	@typescript-eslint/no-unsafe-return	unsafeReturn	Unsafe return of a value of type `any`.
+tests/rules/@typescript-eslint/no-unsafe-return/cases.ts:16:32	@typescript-eslint/no-unsafe-return	unsafeReturn	Unsafe return of a value of type `any`.
+tests/rules/@typescript-eslint/no-unsafe-return/cases.ts:18:31	@typescript-eslint/no-unsafe-return	unsafeReturnAssignment	Unsafe return of type `Set<any>` from function with return type `Set<string>`.
+tests/rules/@typescript-eslint/no-unsafe-return/cases.ts:19:38	@typescript-eslint/no-unsafe-return	unsafeReturnAssignment	Unsafe return of type `Set<any>` from function with return type `Set<string>`.
+tests/rules/@typescript-eslint/no-unsafe-return/cases.ts:21:41	@typescript-eslint/no-unsafe-return	unsafeReturn	Unsafe return of a value of type `any`.
+tests/rules/@typescript-eslint/no-unsafe-return/cases.ts:23:31	@typescript-eslint/no-unsafe-return	unsafeReturnAssignment	Unsafe return of type `Set<any>` from function with return type `Set<string>`.
+tests/rules/@typescript-eslint/no-unsafe-return/cases.ts:24:32	@typescript-eslint/no-unsafe-return	unsafeReturnAssignment	Unsafe return of type `Set<any>` from function with return type `Set<string>`.
+tests/rules/@typescript-eslint/no-unsafe-return/cases.ts:25:49	@typescript-eslint/no-unsafe-return	unsafeReturn	Unsafe return of a value of type `any`.
+tests/rules/@typescript-eslint/no-unsafe-return/cases.ts:26:19	@typescript-eslint/no-unsafe-return	unsafeReturn	Unsafe return of a value of type error.
+tests/rules/@typescript-eslint/no-unsafe-return/cases.ts:27:18	@typescript-eslint/no-unsafe-return	unsafeReturn	Unsafe return of a value of type `any[]`.
+tests/rules/@typescript-eslint/no-unsafe-return/cases.ts:28:34	@typescript-eslint/no-unsafe-return	unsafeReturn	Unsafe return of a value of type `any`.
+tests/rules/@typescript-eslint/no-unsafe-return/cases.ts:29:30	@typescript-eslint/no-unsafe-return	unsafeReturn	Unsafe return of a value of type `any`.
+tests/rules/@typescript-eslint/no-unsafe-return/cases.ts:30:15	@typescript-eslint/no-unsafe-return	unsafeReturn	Unsafe return of a value of type `any`.
+tests/rules/@typescript-eslint/no-unsafe-return/cases.ts:31:23	@typescript-eslint/no-unsafe-return	unsafeReturn	Unsafe return of a value of type `any`.
+tests/rules/@typescript-eslint/no-unsafe-return/cases.ts:39:52	@typescript-eslint/no-unsafe-return	unsafeReturn	Unsafe return of a value of type `any`.
+tests/rules/@typescript-eslint/no-unsafe-return/exported/cases.ts:5:30	@typescript-eslint/no-unsafe-return	unsafeReturn	Unsafe return of a value of type `any`.
+tests/rules/@typescript-eslint/no-unsafe-return/exported/cases.ts:7:34	@typescript-eslint/no-unsafe-return	unsafeReturn	Unsafe return of a value of type `any`.
+tests/rules/@typescript-eslint/no-unsafe-return/exported/cases.ts:8:43	@typescript-eslint/no-unsafe-return	unsafeReturnAssignment	Unsafe return of type `Set<any>` from function with return type `Set<string>`.
+tests/rules/@typescript-eslint/no-unsafe-return/exported/cases.ts:10:33	@typescript-eslint/no-unsafe-return	unsafeReturnAssignment	Unsafe return of type `Set<any>` from function with return type `Set<string>`.
+tests/rules/@typescript-eslint/no-unsafe-return/exported/cases.ts:11:26	@typescript-eslint/no-unsafe-return	unsafeReturn	Unsafe return of a value of type `any`.
+tests/rules/@typescript-eslint/no-unsafe-return/exported/cases.ts:13:28	@typescript-eslint/no-unsafe-return	unsafeReturn	Unsafe return of a value of type `any`.
+tests/rules/@typescript-eslint/no-unsafe-return/grammar/cases.ts:9:3	@typescript-eslint/no-unsafe-return	unsafeReturn	Unsafe return of a value of type `any`.
+tests/rules/@typescript-eslint/no-unsafe-return/line-breaks-no-semicolons/cases.ts:21:3	@typescript-eslint/no-unsafe-return	unsafeReturn	Unsafe return of a value of type `any`.
+tests/rules/@typescript-eslint/no-unsafe-return/no-semicolons/cases.ts:3:39	@typescript-eslint/no-unsafe-return	unsafeReturn	Unsafe return of a value of type `any`.
+tests/rules/@typescript-eslint/no-unsafe-return/no-semicolons/cases.ts:4:18	@typescript-eslint/no-unsafe-return	unsafeReturn	Unsafe return of a value of type `any`.
+tests/rules/@typescript-eslint/no-unsafe-return/no-semicolons/cases.ts:5:30	@typescript-eslint/no-unsafe-return	unsafeReturnAssignment	Unsafe return of type `Set<any>` from function with return type `Set<string>`.
+tests/rules/@typescript-eslint/no-unsafe-return/no-semicolons/cases.ts:6:24	@typescript-eslint/no-unsafe-return	unsafeReturn	Unsafe return of a value of type `Promise<any>`.
+tests/rules/@typescript-eslint/no-unsafe-return/this/cases.ts:2:23	@typescript-eslint/no-unsafe-return	unsafeReturnThis	Unsafe return of a value of type ``any``. `this` is typed as `any`.\nYou can try to fix this by turning on the `noImplicitThis` compiler option, or adding a `this` parameter to the function.
+tests/rules/@typescript-eslint/no-unsafe-return/this/cases.ts:3:29	@typescript-eslint/no-unsafe-return	unsafeReturnThis	Unsafe return of a value of type ``any``. `this` is typed as `any`.\nYou can try to fix this by turning on the `noImplicitThis` compiler option, or adding a `this` parameter to the function.
+tests/rules/@typescript-eslint/no-unsafe-return/this/cases.ts:4:29	@typescript-eslint/no-unsafe-return	unsafeReturnThis	Unsafe return of a value of type ``any``. `this` is typed as `any`.\nYou can try to fix this by turning on the `noImplicitThis` compiler option, or adding a `this` parameter to the function.

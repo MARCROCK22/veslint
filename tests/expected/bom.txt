@@ -1,0 +1,1 @@
+tests/fixtures/bom.ts:1:5	bb	number

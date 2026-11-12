@@ -1,0 +1,20 @@
+// allowOptionalChaining: an access with `?.` on `any` is not reported, nor is its computed name;
+// the accesses after it in the chain are checked on their own.
+declare const anything: any;
+declare const key: any;
+declare const safe: { a?: { b: number } };
+anything?.a;
+anything.a;
+anything?.a.b;
+anything?.a?.b;
+anything.a?.b;
+anything?.[key];
+anything[key];
+anything?.[key].c;
+anything?.a[key];
+(anything?.a).b;
+anything?.a!.b;
+safe?.a?.b;
+safe.a?.[key];
+anything?.a.b.c;
+anything?.a().b;

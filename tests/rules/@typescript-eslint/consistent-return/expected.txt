@@ -1,0 +1,146 @@
+tests/rules/@typescript-eslint/consistent-return/cases.ts:11:3	@typescript-eslint/consistent-return	missingReturnValue	Function 'mixed' expected a return value.
+tests/rules/@typescript-eslint/consistent-return/cases.ts:17:3	@typescript-eslint/consistent-return	unexpectedReturnValue	Function 'mixedReverse' expected no return value.
+tests/rules/@typescript-eslint/consistent-return/cases.ts:31:10	@typescript-eslint/consistent-return	missingReturn	Expected to return a value at the end of function 'missingAtEnd'.
+tests/rules/@typescript-eslint/consistent-return/cases.ts:58:3	@typescript-eslint/consistent-return	unexpectedReturnValue	Async function 'asyncNumber' expected no return value.
+tests/rules/@typescript-eslint/consistent-return/cases.ts:70:3	@typescript-eslint/consistent-return	missingReturnValue	Function 'undefinedValue' expected a return value.
+tests/rules/@typescript-eslint/consistent-return/cases.ts:76:3	@typescript-eslint/consistent-return	missingReturnValue	Function 'voidValue' expected a return value.
+tests/rules/@typescript-eslint/consistent-return/cases.ts:83:5	@typescript-eslint/consistent-return	missingReturnValue	Function 'threeReturns' expected a return value.
+tests/rules/@typescript-eslint/consistent-return/cases.ts:85:3	@typescript-eslint/consistent-return	missingReturnValue	Function 'threeReturns' expected a return value.
+tests/rules/@typescript-eslint/consistent-return/cases.ts:87:20	@typescript-eslint/consistent-return	missingReturn	Expected to return a value at the end of function.
+tests/rules/@typescript-eslint/consistent-return/cases.ts:96:3	@typescript-eslint/consistent-return	missingReturnValue	Function 'inner' expected a return value.
+tests/rules/@typescript-eslint/consistent-return/cases.ts:98:18	@typescript-eslint/consistent-return	missingReturn	Expected to return a value at the end of arrow function.
+tests/rules/@typescript-eslint/consistent-return/cases.ts:107:3	@typescript-eslint/consistent-return	missingReturnValue	Async arrow function expected a return value.
+tests/rules/@typescript-eslint/consistent-return/cases.ts:110:11	@typescript-eslint/consistent-return	missingReturn	Expected to return a value at the end of generator function 'generator'.
+tests/rules/@typescript-eslint/consistent-return/cases.ts:120:3	@typescript-eslint/consistent-return	missingReturnValue	Async generator function 'asyncGenerator' expected a return value.
+tests/rules/@typescript-eslint/consistent-return/cases.ts:132:16	@typescript-eslint/consistent-return	missingReturn	Expected to return a value at the end of function.
+tests/rules/@typescript-eslint/consistent-return/cases.ts:144:3	@typescript-eslint/consistent-return	missingReturn	Expected to return a value at the end of method 'method'.
+tests/rules/@typescript-eslint/consistent-return/cases.ts:153:5	@typescript-eslint/consistent-return	missingReturnValue	Static method 'shared' expected a return value.
+tests/rules/@typescript-eslint/consistent-return/cases.ts:155:9	@typescript-eslint/consistent-return	missingReturn	Expected to return a value at the end of async method 'later'.
+tests/rules/@typescript-eslint/consistent-return/cases.ts:160:17	@typescript-eslint/consistent-return	missingReturn	Expected to return a value at the end of static async generator method 'stream'.
+tests/rules/@typescript-eslint/consistent-return/cases.ts:165:7	@typescript-eslint/consistent-return	missingReturn	Expected to return a value at the end of getter 'accessor'.
+tests/rules/@typescript-eslint/consistent-return/cases.ts:174:5	@typescript-eslint/consistent-return	missingReturnValue	Setter 'accessor' expected a return value.
+tests/rules/@typescript-eslint/consistent-return/cases.ts:176:3	@typescript-eslint/consistent-return	missingReturn	Expected to return a value at the end of private method #hidden.
+tests/rules/@typescript-eslint/consistent-return/cases.ts:185:5	@typescript-eslint/consistent-return	missingReturnValue	Static private method #secret expected a return value.
+tests/rules/@typescript-eslint/consistent-return/cases.ts:187:4	@typescript-eslint/consistent-return	missingReturn	Expected to return a value at the end of method 'computed'.
+tests/rules/@typescript-eslint/consistent-return/cases.ts:192:4	@typescript-eslint/consistent-return	missingReturn	Expected to return a value at the end of method 'template'.
+tests/rules/@typescript-eslint/consistent-return/cases.ts:197:4	@typescript-eslint/consistent-return	missingReturn	Expected to return a value at the end of method.
+tests/rules/@typescript-eslint/consistent-return/cases.ts:202:3	@typescript-eslint/consistent-return	missingReturn	Expected to return a value at the end of method 'quoted name'.
+tests/rules/@typescript-eslint/consistent-return/cases.ts:207:3	@typescript-eslint/consistent-return	missingReturn	Expected to return a value at the end of method '123'.
+tests/rules/@typescript-eslint/consistent-return/cases.ts:212:14	@typescript-eslint/consistent-return	missingReturn	Expected to return a value at the end of method 'field'.
+tests/rules/@typescript-eslint/consistent-return/cases.ts:221:5	@typescript-eslint/consistent-return	missingReturnValue	Static method 'functionField' expected a return value.
+tests/rules/@typescript-eslint/consistent-return/cases.ts:223:34	@typescript-eslint/consistent-return	missingReturn	Expected to return a value at the end of private async method #privateField.
+tests/rules/@typescript-eslint/consistent-return/cases.ts:230:3	@typescript-eslint/consistent-return	missingReturn	Expected to return a value at the end of method 'method'.
+tests/rules/@typescript-eslint/consistent-return/cases.ts:239:5	@typescript-eslint/consistent-return	missingReturnValue	Method 'property' expected a return value.
+tests/rules/@typescript-eslint/consistent-return/cases.ts:241:21	@typescript-eslint/consistent-return	missingReturn	Expected to return a value at the end of method 'arrowProperty'.
+tests/rules/@typescript-eslint/consistent-return/cases.ts:246:27	@typescript-eslint/consistent-return	missingReturn	Expected to return a value at the end of method 'namedProperty'.
+tests/rules/@typescript-eslint/consistent-return/cases.ts:251:9	@typescript-eslint/consistent-return	missingReturn	Expected to return a value at the end of async method 'asyncMethod'.
+tests/rules/@typescript-eslint/consistent-return/cases.ts:256:4	@typescript-eslint/consistent-return	missingReturn	Expected to return a value at the end of generator method 'generatorMethod'.
+tests/rules/@typescript-eslint/consistent-return/cases.ts:261:13	@typescript-eslint/consistent-return	missingReturn	Expected to return a value at the end of getter 'getter'.
+tests/rules/@typescript-eslint/consistent-return/cases.ts:270:5	@typescript-eslint/consistent-return	missingReturnValue	Setter 'setter' expected a return value.
+tests/rules/@typescript-eslint/consistent-return/cases.ts:272:12	@typescript-eslint/consistent-return	missingReturn	Expected to return a value at the end of method.
+tests/rules/@typescript-eslint/consistent-return/cases.ts:277:19	@typescript-eslint/consistent-return	missingReturn	Expected to return a value at the end of method 'literal'.
+tests/rules/@typescript-eslint/consistent-return/cases.ts:282:6	@typescript-eslint/consistent-return	missingReturn	Expected to return a value at the end of method '1'.
+tests/rules/@typescript-eslint/consistent-return/cases.ts:324:10	@typescript-eslint/consistent-return	missingReturn	Expected to return a value at the end of function 'finiteWhileZero'.
+tests/rules/@typescript-eslint/consistent-return/cases.ts:329:10	@typescript-eslint/consistent-return	missingReturn	Expected to return a value at the end of function 'whileNotLiteral'.
+tests/rules/@typescript-eslint/consistent-return/cases.ts:336:10	@typescript-eslint/consistent-return	missingReturn	Expected to return a value at the end of function 'whileBreak'.
+tests/rules/@typescript-eslint/consistent-return/cases.ts:351:10	@typescript-eslint/consistent-return	missingReturn	Expected to return a value at the end of function 'forWithTest'.
+tests/rules/@typescript-eslint/consistent-return/cases.ts:363:10	@typescript-eslint/consistent-return	missingReturn	Expected to return a value at the end of function 'forOf'.
+tests/rules/@typescript-eslint/consistent-return/cases.ts:368:10	@typescript-eslint/consistent-return	missingReturn	Expected to return a value at the end of function 'forIn'.
+tests/rules/@typescript-eslint/consistent-return/cases.ts:380:10	@typescript-eslint/consistent-return	missingReturn	Expected to return a value at the end of function 'doWhileCondition'.
+tests/rules/@typescript-eslint/consistent-return/cases.ts:392:10	@typescript-eslint/consistent-return	missingReturn	Expected to return a value at the end of function 'doWhileContinue'.
+tests/rules/@typescript-eslint/consistent-return/cases.ts:400:10	@typescript-eslint/consistent-return	missingReturn	Expected to return a value at the end of function 'labeledBreak'.
+tests/rules/@typescript-eslint/consistent-return/cases.ts:410:10	@typescript-eslint/consistent-return	missingReturn	Expected to return a value at the end of function 'labeledBlock'.
+tests/rules/@typescript-eslint/consistent-return/cases.ts:441:10	@typescript-eslint/consistent-return	missingReturn	Expected to return a value at the end of function 'switchNoDefault'.
+tests/rules/@typescript-eslint/consistent-return/cases.ts:449:10	@typescript-eslint/consistent-return	missingReturn	Expected to return a value at the end of function 'switchBreak'.
+tests/rules/@typescript-eslint/consistent-return/cases.ts:474:10	@typescript-eslint/consistent-return	missingReturn	Expected to return a value at the end of function 'switchDefaultMiddleFalls'.
+tests/rules/@typescript-eslint/consistent-return/cases.ts:483:10	@typescript-eslint/consistent-return	missingReturn	Expected to return a value at the end of function 'switchEmpty'.
+tests/rules/@typescript-eslint/consistent-return/cases.ts:490:10	@typescript-eslint/consistent-return	missingReturn	Expected to return a value at the end of function 'switchLastFalls'.
+tests/rules/@typescript-eslint/consistent-return/cases.ts:505:10	@typescript-eslint/consistent-return	missingReturn	Expected to return a value at the end of function 'tryCatchFalls'.
+tests/rules/@typescript-eslint/consistent-return/cases.ts:519:10	@typescript-eslint/consistent-return	missingReturn	Expected to return a value at the end of function 'tryIdentifierCatchFalls'.
+tests/rules/@typescript-eslint/consistent-return/cases.ts:531:10	@typescript-eslint/consistent-return	missingReturn	Expected to return a value at the end of function 'tryThrowLiteral'.
+tests/rules/@typescript-eslint/consistent-return/cases.ts:547:10	@typescript-eslint/consistent-return	missingReturn	Expected to return a value at the end of function 'tryFinallyFalls'.
+tests/rules/@typescript-eslint/consistent-return/cases.ts:583:10	@typescript-eslint/consistent-return	missingReturn	Expected to return a value at the end of function 'tryCatchFallsFinally'.
+tests/rules/@typescript-eslint/consistent-return/cases.ts:614:10	@typescript-eslint/consistent-return	missingReturn	Expected to return a value at the end of function 'typeAnnotationInTry'.
+tests/rules/@typescript-eslint/consistent-return/cases.ts:633:5	@typescript-eslint/consistent-return	missingReturnValue	Arrow function expected a return value.
+tests/rules/@typescript-eslint/consistent-return/cases.ts:647:10	@typescript-eslint/consistent-return	missingReturn	Expected to return a value at the end of function 'withBlock'.
+tests/rules/@typescript-eslint/consistent-return/cases.ts:654:10	@typescript-eslint/consistent-return	missingReturn	Expected to return a value at the end of function 'ifWithoutElse'.
+tests/rules/@typescript-eslint/consistent-return/cases.ts:662:3	@typescript-eslint/consistent-return	missingReturnValue	Function 'parenthesized' expected a return value.
+tests/rules/@typescript-eslint/consistent-return/cases.ts:669:10	@typescript-eslint/consistent-return	missingReturn	Expected to return a value at the end of function 'émile'.
+tests/rules/@typescript-eslint/consistent-return/cases.ts:675:10	@typescript-eslint/consistent-return	missingReturn	Expected to return a value at the end of function 'ǆungla'.
+tests/rules/@typescript-eslint/consistent-return/cases.ts:681:10	@typescript-eslint/consistent-return	missingReturn	Expected to return a value at the end of function 'ıter'.
+tests/rules/@typescript-eslint/consistent-return/cases.ts:684:10	@typescript-eslint/consistent-return	missingReturn	Expected to return a value at the end of function 'ßeta'.
+tests/rules/@typescript-eslint/consistent-return/cases.ts:690:10	@typescript-eslint/consistent-return	missingReturn	Expected to return a value at the end of function '日本'.
+tests/rules/@typescript-eslint/consistent-return/catch-finally/cases.ts:5:17	@typescript-eslint/consistent-return	missingReturn	Expected to return a value at the end of function 'throughOuterCatch'.
+tests/rules/@typescript-eslint/consistent-return/catch-finally/cases.ts:20:17	@typescript-eslint/consistent-return	missingReturn	Expected to return a value at the end of function 'withoutFinally'.
+tests/rules/@typescript-eslint/consistent-return/grammar/cases.ts:7:3	@typescript-eslint/consistent-return	unexpectedReturnValue	Function 'afterComment' expected no return value.
+tests/rules/@typescript-eslint/consistent-return/grammar/cases.ts:13:3	@typescript-eslint/consistent-return	missingReturnValue	Function 'sameLine' expected a return value.
+tests/rules/@typescript-eslint/consistent-return/program/cases.ts:1:1	@typescript-eslint/consistent-return	missingReturn	Expected to return a value at the end of program.
+tests/rules/@typescript-eslint/consistent-return/program/cases.ts:7:3	@typescript-eslint/consistent-return	missingReturnValue	Program expected a return value.
+tests/rules/@typescript-eslint/consistent-return/undefined-unspecified/cases.ts:11:3	@typescript-eslint/consistent-return	missingReturnValue	Function 'mixed' expected a return value.
+tests/rules/@typescript-eslint/consistent-return/undefined-unspecified/cases.ts:17:3	@typescript-eslint/consistent-return	unexpectedReturnValue	Function 'mixedReverse' expected no return value.
+tests/rules/@typescript-eslint/consistent-return/undefined-unspecified/cases.ts:31:10	@typescript-eslint/consistent-return	missingReturn	Expected to return a value at the end of function 'missingAtEnd'.
+tests/rules/@typescript-eslint/consistent-return/undefined-unspecified/cases.ts:58:3	@typescript-eslint/consistent-return	unexpectedReturnValue	Async function 'asyncNumber' expected no return value.
+tests/rules/@typescript-eslint/consistent-return/undefined-unspecified/cases.ts:83:5	@typescript-eslint/consistent-return	missingReturnValue	Function 'threeReturns' expected a return value.
+tests/rules/@typescript-eslint/consistent-return/undefined-unspecified/cases.ts:85:3	@typescript-eslint/consistent-return	missingReturnValue	Function 'threeReturns' expected a return value.
+tests/rules/@typescript-eslint/consistent-return/undefined-unspecified/cases.ts:87:20	@typescript-eslint/consistent-return	missingReturn	Expected to return a value at the end of function.
+tests/rules/@typescript-eslint/consistent-return/undefined-unspecified/cases.ts:96:3	@typescript-eslint/consistent-return	missingReturnValue	Function 'inner' expected a return value.
+tests/rules/@typescript-eslint/consistent-return/undefined-unspecified/cases.ts:98:18	@typescript-eslint/consistent-return	missingReturn	Expected to return a value at the end of arrow function.
+tests/rules/@typescript-eslint/consistent-return/undefined-unspecified/cases.ts:107:3	@typescript-eslint/consistent-return	missingReturnValue	Async arrow function expected a return value.
+tests/rules/@typescript-eslint/consistent-return/undefined-unspecified/cases.ts:110:11	@typescript-eslint/consistent-return	missingReturn	Expected to return a value at the end of generator function 'generator'.
+tests/rules/@typescript-eslint/consistent-return/undefined-unspecified/cases.ts:120:3	@typescript-eslint/consistent-return	missingReturnValue	Async generator function 'asyncGenerator' expected a return value.
+tests/rules/@typescript-eslint/consistent-return/undefined-unspecified/cases.ts:132:16	@typescript-eslint/consistent-return	missingReturn	Expected to return a value at the end of function.
+tests/rules/@typescript-eslint/consistent-return/undefined-unspecified/cases.ts:144:3	@typescript-eslint/consistent-return	missingReturn	Expected to return a value at the end of method 'method'.
+tests/rules/@typescript-eslint/consistent-return/undefined-unspecified/cases.ts:153:5	@typescript-eslint/consistent-return	missingReturnValue	Static method 'shared' expected a return value.
+tests/rules/@typescript-eslint/consistent-return/undefined-unspecified/cases.ts:155:9	@typescript-eslint/consistent-return	missingReturn	Expected to return a value at the end of async method 'later'.
+tests/rules/@typescript-eslint/consistent-return/undefined-unspecified/cases.ts:160:17	@typescript-eslint/consistent-return	missingReturn	Expected to return a value at the end of static async generator method 'stream'.
+tests/rules/@typescript-eslint/consistent-return/undefined-unspecified/cases.ts:165:7	@typescript-eslint/consistent-return	missingReturn	Expected to return a value at the end of getter 'accessor'.
+tests/rules/@typescript-eslint/consistent-return/undefined-unspecified/cases.ts:174:5	@typescript-eslint/consistent-return	missingReturnValue	Setter 'accessor' expected a return value.
+tests/rules/@typescript-eslint/consistent-return/undefined-unspecified/cases.ts:176:3	@typescript-eslint/consistent-return	missingReturn	Expected to return a value at the end of private method #hidden.
+tests/rules/@typescript-eslint/consistent-return/undefined-unspecified/cases.ts:185:5	@typescript-eslint/consistent-return	missingReturnValue	Static private method #secret expected a return value.
+tests/rules/@typescript-eslint/consistent-return/undefined-unspecified/cases.ts:187:4	@typescript-eslint/consistent-return	missingReturn	Expected to return a value at the end of method 'computed'.
+tests/rules/@typescript-eslint/consistent-return/undefined-unspecified/cases.ts:192:4	@typescript-eslint/consistent-return	missingReturn	Expected to return a value at the end of method 'template'.
+tests/rules/@typescript-eslint/consistent-return/undefined-unspecified/cases.ts:197:4	@typescript-eslint/consistent-return	missingReturn	Expected to return a value at the end of method.
+tests/rules/@typescript-eslint/consistent-return/undefined-unspecified/cases.ts:202:3	@typescript-eslint/consistent-return	missingReturn	Expected to return a value at the end of method 'quoted name'.
+tests/rules/@typescript-eslint/consistent-return/undefined-unspecified/cases.ts:207:3	@typescript-eslint/consistent-return	missingReturn	Expected to return a value at the end of method '123'.
+tests/rules/@typescript-eslint/consistent-return/undefined-unspecified/cases.ts:212:14	@typescript-eslint/consistent-return	missingReturn	Expected to return a value at the end of method 'field'.
+tests/rules/@typescript-eslint/consistent-return/undefined-unspecified/cases.ts:221:5	@typescript-eslint/consistent-return	missingReturnValue	Static method 'functionField' expected a return value.
+tests/rules/@typescript-eslint/consistent-return/undefined-unspecified/cases.ts:223:34	@typescript-eslint/consistent-return	missingReturn	Expected to return a value at the end of private async method #privateField.
+tests/rules/@typescript-eslint/consistent-return/undefined-unspecified/cases.ts:230:3	@typescript-eslint/consistent-return	missingReturn	Expected to return a value at the end of method 'method'.
+tests/rules/@typescript-eslint/consistent-return/undefined-unspecified/cases.ts:239:5	@typescript-eslint/consistent-return	missingReturnValue	Method 'property' expected a return value.
+tests/rules/@typescript-eslint/consistent-return/undefined-unspecified/cases.ts:241:21	@typescript-eslint/consistent-return	missingReturn	Expected to return a value at the end of method 'arrowProperty'.
+tests/rules/@typescript-eslint/consistent-return/undefined-unspecified/cases.ts:246:27	@typescript-eslint/consistent-return	missingReturn	Expected to return a value at the end of method 'namedProperty'.
+tests/rules/@typescript-eslint/consistent-return/undefined-unspecified/cases.ts:251:9	@typescript-eslint/consistent-return	missingReturn	Expected to return a value at the end of async method 'asyncMethod'.
+tests/rules/@typescript-eslint/consistent-return/undefined-unspecified/cases.ts:256:4	@typescript-eslint/consistent-return	missingReturn	Expected to return a value at the end of generator method 'generatorMethod'.
+tests/rules/@typescript-eslint/consistent-return/undefined-unspecified/cases.ts:261:13	@typescript-eslint/consistent-return	missingReturn	Expected to return a value at the end of getter 'getter'.
+tests/rules/@typescript-eslint/consistent-return/undefined-unspecified/cases.ts:270:5	@typescript-eslint/consistent-return	missingReturnValue	Setter 'setter' expected a return value.
+tests/rules/@typescript-eslint/consistent-return/undefined-unspecified/cases.ts:272:12	@typescript-eslint/consistent-return	missingReturn	Expected to return a value at the end of method.
+tests/rules/@typescript-eslint/consistent-return/undefined-unspecified/cases.ts:277:19	@typescript-eslint/consistent-return	missingReturn	Expected to return a value at the end of method 'literal'.
+tests/rules/@typescript-eslint/consistent-return/undefined-unspecified/cases.ts:282:6	@typescript-eslint/consistent-return	missingReturn	Expected to return a value at the end of method '1'.
+tests/rules/@typescript-eslint/consistent-return/undefined-unspecified/cases.ts:324:10	@typescript-eslint/consistent-return	missingReturn	Expected to return a value at the end of function 'finiteWhileZero'.
+tests/rules/@typescript-eslint/consistent-return/undefined-unspecified/cases.ts:329:10	@typescript-eslint/consistent-return	missingReturn	Expected to return a value at the end of function 'whileNotLiteral'.
+tests/rules/@typescript-eslint/consistent-return/undefined-unspecified/cases.ts:336:10	@typescript-eslint/consistent-return	missingReturn	Expected to return a value at the end of function 'whileBreak'.
+tests/rules/@typescript-eslint/consistent-return/undefined-unspecified/cases.ts:351:10	@typescript-eslint/consistent-return	missingReturn	Expected to return a value at the end of function 'forWithTest'.
+tests/rules/@typescript-eslint/consistent-return/undefined-unspecified/cases.ts:363:10	@typescript-eslint/consistent-return	missingReturn	Expected to return a value at the end of function 'forOf'.
+tests/rules/@typescript-eslint/consistent-return/undefined-unspecified/cases.ts:368:10	@typescript-eslint/consistent-return	missingReturn	Expected to return a value at the end of function 'forIn'.
+tests/rules/@typescript-eslint/consistent-return/undefined-unspecified/cases.ts:380:10	@typescript-eslint/consistent-return	missingReturn	Expected to return a value at the end of function 'doWhileCondition'.
+tests/rules/@typescript-eslint/consistent-return/undefined-unspecified/cases.ts:392:10	@typescript-eslint/consistent-return	missingReturn	Expected to return a value at the end of function 'doWhileContinue'.
+tests/rules/@typescript-eslint/consistent-return/undefined-unspecified/cases.ts:400:10	@typescript-eslint/consistent-return	missingReturn	Expected to return a value at the end of function 'labeledBreak'.
+tests/rules/@typescript-eslint/consistent-return/undefined-unspecified/cases.ts:410:10	@typescript-eslint/consistent-return	missingReturn	Expected to return a value at the end of function 'labeledBlock'.
+tests/rules/@typescript-eslint/consistent-return/undefined-unspecified/cases.ts:441:10	@typescript-eslint/consistent-return	missingReturn	Expected to return a value at the end of function 'switchNoDefault'.
+tests/rules/@typescript-eslint/consistent-return/undefined-unspecified/cases.ts:449:10	@typescript-eslint/consistent-return	missingReturn	Expected to return a value at the end of function 'switchBreak'.
+tests/rules/@typescript-eslint/consistent-return/undefined-unspecified/cases.ts:474:10	@typescript-eslint/consistent-return	missingReturn	Expected to return a value at the end of function 'switchDefaultMiddleFalls'.
+tests/rules/@typescript-eslint/consistent-return/undefined-unspecified/cases.ts:483:10	@typescript-eslint/consistent-return	missingReturn	Expected to return a value at the end of function 'switchEmpty'.
+tests/rules/@typescript-eslint/consistent-return/undefined-unspecified/cases.ts:490:10	@typescript-eslint/consistent-return	missingReturn	Expected to return a value at the end of function 'switchLastFalls'.
+tests/rules/@typescript-eslint/consistent-return/undefined-unspecified/cases.ts:505:10	@typescript-eslint/consistent-return	missingReturn	Expected to return a value at the end of function 'tryCatchFalls'.
+tests/rules/@typescript-eslint/consistent-return/undefined-unspecified/cases.ts:519:10	@typescript-eslint/consistent-return	missingReturn	Expected to return a value at the end of function 'tryIdentifierCatchFalls'.
+tests/rules/@typescript-eslint/consistent-return/undefined-unspecified/cases.ts:531:10	@typescript-eslint/consistent-return	missingReturn	Expected to return a value at the end of function 'tryThrowLiteral'.
+tests/rules/@typescript-eslint/consistent-return/undefined-unspecified/cases.ts:547:10	@typescript-eslint/consistent-return	missingReturn	Expected to return a value at the end of function 'tryFinallyFalls'.
+tests/rules/@typescript-eslint/consistent-return/undefined-unspecified/cases.ts:583:10	@typescript-eslint/consistent-return	missingReturn	Expected to return a value at the end of function 'tryCatchFallsFinally'.
+tests/rules/@typescript-eslint/consistent-return/undefined-unspecified/cases.ts:614:10	@typescript-eslint/consistent-return	missingReturn	Expected to return a value at the end of function 'typeAnnotationInTry'.
+tests/rules/@typescript-eslint/consistent-return/undefined-unspecified/cases.ts:633:5	@typescript-eslint/consistent-return	missingReturnValue	Arrow function expected a return value.
+tests/rules/@typescript-eslint/consistent-return/undefined-unspecified/cases.ts:647:10	@typescript-eslint/consistent-return	missingReturn	Expected to return a value at the end of function 'withBlock'.
+tests/rules/@typescript-eslint/consistent-return/undefined-unspecified/cases.ts:654:10	@typescript-eslint/consistent-return	missingReturn	Expected to return a value at the end of function 'ifWithoutElse'.
+tests/rules/@typescript-eslint/consistent-return/undefined-unspecified/cases.ts:662:3	@typescript-eslint/consistent-return	missingReturnValue	Function 'parenthesized' expected a return value.
+tests/rules/@typescript-eslint/consistent-return/undefined-unspecified/cases.ts:676:3	@typescript-eslint/consistent-return	missingReturnValue	Function 'returnsMaybe' expected a return value.
+tests/rules/@typescript-eslint/consistent-return/undefined-unspecified/cases.ts:682:3	@typescript-eslint/consistent-return	unexpectedReturnValue	Function 'returnsUndefinedAndValue' expected no return value.
+tests/rules/@typescript-eslint/consistent-return/undefined-unspecified/cases.ts:688:3	@typescript-eslint/consistent-return	unexpectedReturnValue	Function 'returnsVoidAndValue' expected no return value.

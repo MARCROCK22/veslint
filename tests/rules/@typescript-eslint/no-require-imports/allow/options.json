@@ -1,0 +1,1 @@
+[{"allow": ["/package\\.json$", "^allowed-", "^\\p{Lu}", "^.$", "^(?i:case)$"]}]

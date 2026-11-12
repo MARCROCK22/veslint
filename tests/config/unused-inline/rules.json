@@ -1,0 +1,13 @@
+{
+  "linterOptions": {"reportUnusedInlineConfigs": "error"},
+  "rules": {
+    "@typescript-eslint/no-floating-promises": ["error", {"ignoreVoid": false}],
+    "@typescript-eslint/await-thenable": "warn",
+    "curly": ["error", "multi"],
+    "eqeqeq": "warn",
+    "no-console": "off",
+    "no-unused-vars": ["error", {"args": "none"}],
+    "@typescript-eslint/no-array-delete": "error",
+    "@typescript-eslint/dot-notation": ["warn", {"allowKeywords": true}]
+  }
+}

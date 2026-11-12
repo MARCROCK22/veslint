@@ -1,0 +1,1 @@
+{"languageOptions": {"ecmaVersion": 2022, "globals": {"zeta": true, "fromConfig": "readonly", "alpha": false, "fromBoth": "readable", "3": "writeable", "nullish": null, "quoted": "off", "double": "true", "Array": "off", "WeakRef": "writable", "__proto__": "readonly"}}}

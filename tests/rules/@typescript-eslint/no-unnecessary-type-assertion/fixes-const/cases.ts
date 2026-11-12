@@ -1,0 +1,11 @@
+const k1 = <const>'a';
+const k2 = 'b' as const;
+const k3 = <const>1;
+const k4 = < /* c */ const /* d */ >true;
+const k5 = 'e' /* c */ as /* d */ const;
+const k6 = () => <const>'f';
+const k7 = (<const>'g').length;
+const k8 = ('h' as const).length;
+let k9 = 'i' as const;
+const k10 = <const>{ a: 1 };
+void [k1, k2, k3, k4, k5, k6, k7, k8, k9, k10];

@@ -1,0 +1,26 @@
+Configuration for rule "@typescript-eslint/no-floating-promises" is invalid. Each rule must have a severity ("off", 0, "warn", 1, "error", or 2) and may be followed by additional options for the rule.
+
+You passed '{
+        "ignoreVoid": false,
+        "allowForKnownSafeCalls": [
+            {
+                "from": "lib",
+                "name": "x"
+            }
+        ]
+    }', which doesn't contain a valid severity.
+
+If you're attempting to configure rule options, perhaps you meant:
+
+    "@typescript-eslint/no-floating-promises": ["error", {
+            "ignoreVoid": false,
+            "allowForKnownSafeCalls": [
+                {
+                    "from": "lib",
+                    "name": "x"
+                }
+            ]
+        }]
+
+See https://eslint.org/docs/latest/use/configure/rules#use-configuration-files for configuring rules.
+

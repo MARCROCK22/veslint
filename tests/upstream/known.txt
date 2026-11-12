@@ -1,0 +1,51 @@
+# The cases of typescript-eslint's own tests that do not give what the test expects, and why.
+# A line is `<tool><TAB><case id><TAB><reason>`. tool is veslint (tests/upstream_check.py, run by
+# tests/run.sh) or eslint (tests/rules/upstream_eslint.mjs, run by tests/rules/reference.sh). Each
+# listed case must fail and every other case must pass; tests/rules/reference.sh does not compare the
+# two tools on a listed case.
+#
+# TypeScript 7 orders the members of a union in another way than TypeScript 6, which orders them by
+# the creation of their types: the message lists the missing cases in that order, and so does the
+# suggestion. ESLint with TypeScript 6's stableTypeOrdering gives what veslint gives.
+veslint	switch-exhaustiveness-check/i14	TypeScript 7 orders `true | 1` as `1 | true`
+veslint	switch-exhaustiveness-check/i18	TypeScript 7 orders the days by name, TypeScript 6 as declared
+veslint	switch-exhaustiveness-check/i21	TypeScript 7 orders `true | 1` as `1 | true`
+veslint	switch-exhaustiveness-check/i23	TypeScript 7 orders the days by name, TypeScript 6 as declared
+# The first member of the union of `cond ? new Foo() : Math` with a `floor` decides the messageId:
+# Math's method (unboundWithoutThisAnnotation) with TypeScript 6, Foo's property (unbound) with 7.
+veslint	unbound-method/i50	TypeScript 7 puts `Foo` before `Math` in the union
+# tree-sitter reads a `new` followed by a line break as the identifier `new` and an automatic `;`
+# (`const a = new` and then the statement `Foo()`), with no syntax error: a grammar bug.
+veslint	consistent-generic-constructors/i8	tree-sitter reads `new \n Foo<string> \n ()` as `new;` and `Foo<string>()`
+veslint	consistent-generic-constructors/i23	tree-sitter reads `new \n Foo \n ()` as `new;` and `Foo()`
+# tree-sitter's grammar requires the type of a mapped type: `{ [k in string]; }`, which TypeScript
+# reads as a mapped type without one, is an ERROR node.
+veslint	consistent-indexed-object-style/i54	tree-sitter reads `{ [k in string]; }` as an ERROR node
+# The last block of consistent-type-imports' test runs without a program and sets
+# emitDecoratorMetadata and experimentalDecorators in parserOptions, which typescript-eslint reads
+# only when it has no program. veslint always has one, here the fixtures' tsconfig.json (which sets
+# experimentalDecorators only), so it checks these files with decorators. The rule's fixtures set
+# both options in a tsconfig, where both tools leave such a file alone.
+veslint	consistent-type-imports/r3/v0	without a program typescript-eslint reads emitDecoratorMetadata from parserOptions
+veslint	consistent-type-imports/r3/v1	without a program typescript-eslint reads emitDecoratorMetadata from parserOptions
+veslint	consistent-type-imports/r3/v2	without a program typescript-eslint reads emitDecoratorMetadata from parserOptions
+veslint	consistent-type-imports/r3/v3	without a program typescript-eslint reads emitDecoratorMetadata from parserOptions
+veslint	consistent-type-imports/r3/v4	without a program typescript-eslint reads emitDecoratorMetadata from parserOptions
+veslint	consistent-type-imports/r3/v5	without a program typescript-eslint reads emitDecoratorMetadata from parserOptions
+veslint	consistent-type-imports/r3/v6	without a program typescript-eslint reads emitDecoratorMetadata from parserOptions
+veslint	consistent-type-imports/r3/v7	without a program typescript-eslint reads emitDecoratorMetadata from parserOptions
+veslint	consistent-type-imports/r3/v9	without a program typescript-eslint reads emitDecoratorMetadata from parserOptions
+veslint	consistent-type-imports/r3/v13	without a program typescript-eslint reads emitDecoratorMetadata from parserOptions
+# These cases of no-unused-vars turn on a rule their test file defines with RuleTester.defineRule:
+# `@rule-tester/use-every-a` marks every variable `a` as used, `@rule-tester/collect-unused-vars`
+# runs collectVariables before no-unused-vars. Neither ESLint's run here nor veslint has them
+# (veslint gives v128 what its test expects anyway).
+eslint	no-unused-vars/no-unused-vars-eslint/v73	turns on @rule-tester/use-every-a, a rule of the test file
+eslint	no-unused-vars/no-unused-vars-eslint/v74	turns on @rule-tester/use-every-a, a rule of the test file
+eslint	no-unused-vars/no-unused-vars-eslint/v75	turns on @rule-tester/use-every-a, a rule of the test file
+eslint	no-unused-vars/no-unused-vars-eslint/v137	turns on @rule-tester/use-every-a, a rule of the test file
+eslint	no-unused-vars/no-unused-vars/v128	turns on @rule-tester/collect-unused-vars, a rule of the test file
+veslint	no-unused-vars/no-unused-vars-eslint/v73	turns on @rule-tester/use-every-a, a rule of the test file
+veslint	no-unused-vars/no-unused-vars-eslint/v74	turns on @rule-tester/use-every-a, a rule of the test file
+veslint	no-unused-vars/no-unused-vars-eslint/v75	turns on @rule-tester/use-every-a, a rule of the test file
+veslint	no-unused-vars/no-unused-vars-eslint/v137	turns on @rule-tester/use-every-a, a rule of the test file

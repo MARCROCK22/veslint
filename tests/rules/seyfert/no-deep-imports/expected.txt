@@ -1,0 +1,14 @@
+tests/rules/seyfert/no-deep-imports/cases.ts:5:10	seyfert/no-deep-imports	preferRoot	'Command' is exported from 'seyfert'; import it from the package root, not 'seyfert/lib/commands'.
+tests/rules/seyfert/no-deep-imports/cases.ts:6:10	seyfert/no-deep-imports	preferRoot	'Declare' is exported from 'seyfert'; import it from the package root, not 'seyfert/lib/commands/decorators'.
+tests/rules/seyfert/no-deep-imports/cases.ts:6:19	seyfert/no-deep-imports	preferRoot	'Options' is exported from 'seyfert'; import it from the package root, not 'seyfert/lib/commands/decorators'.
+tests/rules/seyfert/no-deep-imports/cases.ts:7:15	seyfert/no-deep-imports	preferRoot	'CommandContext' is exported from 'seyfert'; import it from the package root, not 'seyfert/lib/commands'.
+tests/rules/seyfert/no-deep-imports/cases.ts:8:10	seyfert/no-deep-imports	preferRoot	'OptionsRecord' is exported from 'seyfert'; import it from the package root, not 'seyfert/lib/commands/applications/chat'.
+tests/rules/seyfert/no-deep-imports/cases.ts:8:30	seyfert/no-deep-imports	preferRoot	'SubCommand' is exported from 'seyfert'; import it from the package root, not 'seyfert/lib/commands/applications/chat'.
+tests/rules/seyfert/no-deep-imports/cases.ts:9:10	seyfert/no-deep-imports	preferRoot	'Formatter' is exported from 'seyfert'; import it from the package root, not 'seyfert/lib/common'.
+tests/rules/seyfert/no-deep-imports/cases.ts:10:10	seyfert/no-deep-imports	preferRoot	'Logger' is exported from 'seyfert'; import it from the package root, not 'seyfert/lib'.
+tests/rules/seyfert/no-deep-imports/cases.ts:13:3	seyfert/no-deep-imports	preferRoot	'Client' is exported from 'seyfert'; import it from the package root, not 'seyfert/lib/client'.
+tests/rules/seyfert/no-deep-imports/cases.ts:15:19	seyfert/no-deep-imports	preferRoot	'createStringOption' is exported from 'seyfert'; import it from the package root, not 'seyfert/lib/commands/applications/options'.
+tests/rules/seyfert/no-deep-imports/cases.ts:16:10	seyfert/no-deep-imports	preferRoot	'createIntegerOption' is exported from 'seyfert'; import it from the package root, not 'seyfert/lib/commands/applications/options'.
+tests/rules/seyfert/no-deep-imports/cases.ts:19:17	seyfert/no-deep-imports	preferRoot	'Formatter' is exported from 'seyfert'; import it from the package root, not 'seyfert/lib/common'.
+tests/rules/seyfert/no-deep-imports/cases.ts:20:19	seyfert/no-deep-imports	preferRoot	'Logger' is exported from 'seyfert'; import it from the package root, not 'seyfert/lib/common'.
+tests/rules/seyfert/no-deep-imports/deep-only/cases.ts:2:10	seyfert/no-deep-imports	preferRoot	'Command' is exported from 'seyfert'; import it from the package root, not 'seyfert/lib/commands'.

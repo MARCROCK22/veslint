@@ -1,0 +1,13 @@
+app.ts:2:7	saludo	"Hola Vlang"	(base: string)
+app.ts:3:5	mensaje	string
+app.ts:4:7	año	2026	(base: number)
+app.ts:4:25	fiesta	"🎉"	(base: string)
+app.ts:4:46	x	1	(base: number)
+app.ts:5:7	nada	null
+app.ts:6:10	suma	(a: number, b?: number | undefined) => number
+app.ts:6:15	a	number
+app.ts:6:26	b	number | undefined
+app.ts:7:10	a	number
+app.ts:7:15	b	number | undefined
+app.ts:9:7	resultado	number
+app.ts:9:19	suma	(a: number, b?: number | undefined) => number

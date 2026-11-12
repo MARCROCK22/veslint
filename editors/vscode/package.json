@@ -1,0 +1,127 @@
+{
+  "name": "veslint",
+  "displayName": "veslint",
+  "description": "typescript-eslint rules from veslint, a TypeScript linter that talks to the TypeScript 7 compiler: problems, fixes and suggestions in the editor.",
+  "version": "0.5.0",
+  "publisher": "veslint",
+  "engines": {
+    "vscode": "^1.90.0"
+  },
+  "categories": [
+    "Linters"
+  ],
+  "keywords": [
+    "typescript",
+    "lint",
+    "typescript-eslint",
+    "veslint"
+  ],
+  "main": "./extension.js",
+  "activationEvents": [
+    "onLanguage:typescript",
+    "onLanguage:typescriptreact"
+  ],
+  "contributes": {
+    "commands": [
+      {
+        "command": "veslint.lintFile",
+        "title": "Lint This File",
+        "category": "veslint"
+      },
+      {
+        "command": "veslint.lintOpenFiles",
+        "title": "Lint All Open Files",
+        "category": "veslint"
+      },
+      {
+        "command": "veslint.fixFile",
+        "title": "Fix All Problems That Have a Fix",
+        "category": "veslint"
+      },
+      {
+        "command": "veslint.reloadConfiguration",
+        "title": "Reload the ESLint Configuration",
+        "category": "veslint"
+      },
+      {
+        "command": "veslint.showOutput",
+        "title": "Show Output",
+        "category": "veslint"
+      }
+    ],
+    "configuration": {
+      "title": "veslint",
+      "properties": {
+        "veslint.enable": {
+          "type": "boolean",
+          "default": true,
+          "scope": "resource",
+          "description": "Lint TypeScript files with veslint."
+        },
+        "veslint.path": {
+          "type": "string",
+          "default": "veslint",
+          "scope": "machine-overridable",
+          "markdownDescription": "The veslint binary: a name to look up in `PATH`, an absolute path, or a path relative to the workspace folder. The binary looks for the TypeScript 7 compiler in the `node_modules` next to it."
+        },
+        "veslint.config": {
+          "type": "string",
+          "default": "",
+          "scope": "resource",
+          "markdownDescription": "The configuration to lint with: an ESLint configuration file (`eslint.config.mjs` and the like, which needs `bun`), the JSON that `veslint --print-config` prints, or a JSON with a `rules` section. Relative to the workspace folder. When empty, the `eslint.config.*` file at the root of the folder is used."
+        },
+        "veslint.project": {
+          "type": "string",
+          "default": "",
+          "scope": "resource",
+          "markdownDescription": "The `tsconfig.json` to use (`--project`). When empty, veslint takes the closest one to each file."
+        },
+        "veslint.run": {
+          "type": "string",
+          "enum": [
+            "onType",
+            "onSave",
+            "manual"
+          ],
+          "enumDescriptions": [
+            "Lint a file when it is opened, saved, and as you type (its unsaved text, through the veslint server), after `veslint.typingDelay`.",
+            "Lint a file when it is opened and when it is saved.",
+            "Lint only with the veslint commands."
+          ],
+          "default": "onType",
+          "scope": "resource",
+          "markdownDescription": "When files are linted. Unsaved text is linted through `veslint --server`; with a veslint without it, only saved text is."
+        },
+        "veslint.typingDelay": {
+          "type": "integer",
+          "default": 0,
+          "minimum": 0,
+          "scope": "resource",
+          "markdownDescription": "Milliseconds that typing must pause before a file is linted, when `veslint.run` is `onType`. `0` lints after every change: a lint that has not started when the text changes again is skipped, and the problems of a text that changed while it was linted are not shown. A larger value lints less often while you type, which saves CPU on large files."
+        },
+        "veslint.severity": {
+          "type": "string",
+          "enum": [
+            "error",
+            "warning",
+            "information",
+            "hint"
+          ],
+          "default": "warning",
+          "scope": "resource",
+          "markdownDescription": "How the problems of the rules are shown. veslint's output does not tell whether a rule is set to `error` or to `warn`, so all of them get this severity; unused directive comments and configuration errors keep their own."
+        },
+        "veslint.timeout": {
+          "type": "number",
+          "default": 120000,
+          "minimum": 1000,
+          "scope": "resource",
+          "description": "Milliseconds after which a run that has not finished is stopped."
+        }
+      }
+    }
+  },
+  "scripts": {
+    "test": "node --test test/"
+  }
+}

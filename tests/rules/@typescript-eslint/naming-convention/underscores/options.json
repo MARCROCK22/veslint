@@ -1,0 +1,8 @@
+[{"selector": "variable", "format": ["camelCase"], "leadingUnderscore": "forbid", "trailingUnderscore": "forbid"},
+ {"selector": "function", "format": ["camelCase"], "leadingUnderscore": "require"},
+ {"selector": "parameter", "format": ["camelCase"], "leadingUnderscore": "allowDouble", "trailingUnderscore": "allowSingleOrDouble"},
+ {"selector": "classProperty", "format": ["camelCase"], "leadingUnderscore": "requireDouble"},
+ {"selector": "classMethod", "format": ["camelCase"], "leadingUnderscore": "allowSingleOrDouble", "trailingUnderscore": "require"},
+ {"selector": "typeLike", "format": ["PascalCase"], "leadingUnderscore": "allow", "trailingUnderscore": "allowDouble"},
+ {"selector": "enumMember", "format": ["UPPER_CASE"], "trailingUnderscore": "requireDouble"},
+ {"selector": "objectLiteralProperty", "format": ["strictCamelCase", "StrictPascalCase"], "leadingUnderscore": "allow"}]

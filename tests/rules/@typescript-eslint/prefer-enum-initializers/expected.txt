@@ -1,0 +1,6 @@
+tests/rules/@typescript-eslint/prefer-enum-initializers/cases.ts:5:3	@typescript-eslint/prefer-enum-initializers	defineInitializer	The value of the member 'Up' should be explicitly defined.
+tests/rules/@typescript-eslint/prefer-enum-initializers/cases.ts:8:3	@typescript-eslint/prefer-enum-initializers	defineInitializer	The value of the member 'Left' should be explicitly defined.
+tests/rules/@typescript-eslint/prefer-enum-initializers/cases.ts:9:3	@typescript-eslint/prefer-enum-initializers	defineInitializer	The value of the member 'Right' should be explicitly defined.
+tests/rules/@typescript-eslint/prefer-enum-initializers/cases.ts:13:3	@typescript-eslint/prefer-enum-initializers	defineInitializer	The value of the member ''with space'' should be explicitly defined.
+tests/rules/@typescript-eslint/prefer-enum-initializers/cases.ts:14:3	@typescript-eslint/prefer-enum-initializers	defineInitializer	The value of the member 'plain' should be explicitly defined.
+tests/rules/@typescript-eslint/prefer-enum-initializers/cases.ts:20:3	@typescript-eslint/prefer-enum-initializers	defineInitializer	The value of the member 'A' should be explicitly defined.

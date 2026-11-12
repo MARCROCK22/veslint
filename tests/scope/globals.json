@@ -1,0 +1,1 @@
+{"languageOptions": {"ecmaVersion": 2019, "globals": {"configGlobal": "readonly", "configOff": "off", "configWritable": true, "Map": "off", "20": "writable", "parseFloat": "off", "Promise": "writable"}}}

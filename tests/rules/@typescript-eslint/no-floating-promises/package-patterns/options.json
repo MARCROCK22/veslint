@@ -1,0 +1,17 @@
+[{"allowForKnownSafePromises": [
+  {"from": "package", "name": "AnchoredPromise", "package": "^fake-pkg/"},
+  {"from": "package", "name": "AnchoredWrong", "package": "^ake-pkg"},
+  {"from": "package", "name": ["EitherPromise", "OtherEither"], "package": "(fake|other)-pkg"},
+  {"from": "package", "name": "LookPromise", "package": "fake(?=-pkg)(?!-pkgs)"},
+  {"from": "package", "name": "EmptyPromise", "package": ""},
+  {"from": "package", "name": "LiteralBrace", "package": "fake{"},
+  {"from": "package", "name": "UnitPromise", "package": "^.{8}/index\\.d\\.ts$"},
+  {"from": "package", "name": "ClassPromise", "package": "[f-o]+ther-pkg"},
+  {"from": "package", "name": "BracePromise", "package": "o{1}ther"},
+  {"from": "package", "name": "BackPromise", "package": "(o)the(r)-pkg\\/inde\\x78\\.d\\.ts|\\1\\2"},
+  {"from": "package", "name": "PlusPromise", "package": "x+y"},
+  {"from": "package", "name": "EscapedPlus", "package": "x\\+y"},
+  {"from": "package", "name": "ScopedDot", "package": "@scope/p.g"},
+  {"from": "package", "name": "ScopedTypes", "package": "@Scope/pkg"},
+  {"from": "package", "name": "NeverSeen", "package": "("}
+]}]

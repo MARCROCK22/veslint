@@ -1,0 +1,2 @@
+tests/fixtures/syntax_error.ts:1:7	ok	1	(base: number)
+tests/fixtures/syntax_error.ts:3:7	ok2	"s"	(base: string)

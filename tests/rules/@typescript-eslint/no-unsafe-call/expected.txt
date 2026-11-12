@@ -1,0 +1,64 @@
+tests/rules/@typescript-eslint/no-unsafe-call/await-outside-async/cases.ts:7:3	@typescript-eslint/no-unsafe-call	errorCall	Unsafe call of a type that could not be resolved.
+tests/rules/@typescript-eslint/no-unsafe-call/await-outside-async/cases.ts:8:3	@typescript-eslint/no-unsafe-call	errorCall	Unsafe call of a type that could not be resolved.
+tests/rules/@typescript-eslint/no-unsafe-call/await-outside-async/cases.ts:9:3	@typescript-eslint/no-unsafe-call	errorTemplateTag	Unsafe use of a template tag whose type could not be resolved.
+tests/rules/@typescript-eslint/no-unsafe-call/await-outside-async/cases.ts:10:3	@typescript-eslint/no-unsafe-call	errorTemplateTag	Unsafe use of a template tag whose type could not be resolved.
+tests/rules/@typescript-eslint/no-unsafe-call/await-outside-async/cases.ts:13:10	@typescript-eslint/no-unsafe-call	errorTemplateTag	Unsafe use of a template tag whose type could not be resolved.
+tests/rules/@typescript-eslint/no-unsafe-call/await-outside-async/cases.ts:24:3	@typescript-eslint/no-unsafe-call	errorCall	Unsafe call of a type that could not be resolved.
+tests/rules/@typescript-eslint/no-unsafe-call/await-outside-async/cases.ts:24:3	@typescript-eslint/no-unsafe-call	errorCall	Unsafe call of a type that could not be resolved.
+tests/rules/@typescript-eslint/no-unsafe-call/await-outside-async/cases.ts:25:3	@typescript-eslint/no-unsafe-call	errorCall	Unsafe call of a type that could not be resolved.
+tests/rules/@typescript-eslint/no-unsafe-call/await-outside-async/cases.ts:25:3	@typescript-eslint/no-unsafe-call	errorCall	Unsafe call of a type that could not be resolved.
+tests/rules/@typescript-eslint/no-unsafe-call/await-outside-async/cases.ts:25:3	@typescript-eslint/no-unsafe-call	errorCall	Unsafe call of a type that could not be resolved.
+tests/rules/@typescript-eslint/no-unsafe-call/await-outside-async/cases.ts:26:3	@typescript-eslint/no-unsafe-call	errorCall	Unsafe call of a type that could not be resolved.
+tests/rules/@typescript-eslint/no-unsafe-call/await-outside-async/cases.ts:26:3	@typescript-eslint/no-unsafe-call	errorCall	Unsafe call of a type that could not be resolved.
+tests/rules/@typescript-eslint/no-unsafe-call/await-outside-async/cases.ts:27:3	@typescript-eslint/no-unsafe-call	errorCall	Unsafe call of a type that could not be resolved.
+tests/rules/@typescript-eslint/no-unsafe-call/await-outside-async/cases.ts:27:3	@typescript-eslint/no-unsafe-call	errorCall	Unsafe call of a type that could not be resolved.
+tests/rules/@typescript-eslint/no-unsafe-call/await-outside-async/cases.ts:28:3	@typescript-eslint/no-unsafe-call	errorCall	Unsafe call of a type that could not be resolved.
+tests/rules/@typescript-eslint/no-unsafe-call/await-outside-async/cases.ts:29:3	@typescript-eslint/no-unsafe-call	errorCall	Unsafe call of a type that could not be resolved.
+tests/rules/@typescript-eslint/no-unsafe-call/await-outside-async/cases.ts:30:3	@typescript-eslint/no-unsafe-call	errorCall	Unsafe call of a type that could not be resolved.
+tests/rules/@typescript-eslint/no-unsafe-call/await-outside-async/cases.ts:30:3	@typescript-eslint/no-unsafe-call	errorTemplateTag	Unsafe use of a template tag whose type could not be resolved.
+tests/rules/@typescript-eslint/no-unsafe-call/await-outside-async/cases.ts:31:3	@typescript-eslint/no-unsafe-call	errorCall	Unsafe call of a type that could not be resolved.
+tests/rules/@typescript-eslint/no-unsafe-call/await-outside-async/cases.ts:31:3	@typescript-eslint/no-unsafe-call	errorTemplateTag	Unsafe use of a template tag whose type could not be resolved.
+tests/rules/@typescript-eslint/no-unsafe-call/await-outside-async/cases.ts:32:3	@typescript-eslint/no-unsafe-call	errorCall	Unsafe call of a type that could not be resolved.
+tests/rules/@typescript-eslint/no-unsafe-call/await-outside-async/cases.ts:32:3	@typescript-eslint/no-unsafe-call	errorTemplateTag	Unsafe use of a template tag whose type could not be resolved.
+tests/rules/@typescript-eslint/no-unsafe-call/await-outside-async/cases.ts:33:3	@typescript-eslint/no-unsafe-call	errorCall	Unsafe call of a type that could not be resolved.
+tests/rules/@typescript-eslint/no-unsafe-call/await-outside-async/cases.ts:33:3	@typescript-eslint/no-unsafe-call	errorCall	Unsafe call of a type that could not be resolved.
+tests/rules/@typescript-eslint/no-unsafe-call/await-outside-async/cases.ts:34:3	@typescript-eslint/no-unsafe-call	errorCall	Unsafe call of a type that could not be resolved.
+tests/rules/@typescript-eslint/no-unsafe-call/await-outside-async/cases.ts:34:3	@typescript-eslint/no-unsafe-call	errorCall	Unsafe call of a type that could not be resolved.
+tests/rules/@typescript-eslint/no-unsafe-call/await-outside-async/cases.ts:34:10	@typescript-eslint/no-unsafe-call	unsafeCall	Unsafe call of an `any` typed value.
+tests/rules/@typescript-eslint/no-unsafe-call/await-outside-async/cases.ts:35:3	@typescript-eslint/no-unsafe-call	errorNew	Unsafe construction of a type that could not be resolved.
+tests/rules/@typescript-eslint/no-unsafe-call/await-outside-async/cases.ts:35:8	@typescript-eslint/no-unsafe-call	errorCall	Unsafe call of a type that could not be resolved.
+tests/rules/@typescript-eslint/no-unsafe-call/await-outside-async/cases.ts:36:10	@typescript-eslint/no-unsafe-call	unsafeCall	Unsafe call of an `any` typed value.
+tests/rules/@typescript-eslint/no-unsafe-call/await-outside-async/cases.ts:37:10	@typescript-eslint/no-unsafe-call	errorCall	Unsafe call of a type that could not be resolved.
+tests/rules/@typescript-eslint/no-unsafe-call/await-outside-async/cases.ts:37:10	@typescript-eslint/no-unsafe-call	errorCall	Unsafe call of a type that could not be resolved.
+tests/rules/@typescript-eslint/no-unsafe-call/await-outside-async/cases.ts:40:10	@typescript-eslint/no-unsafe-call	unsafeCall	Unsafe call of an `any` typed value.
+tests/rules/@typescript-eslint/no-unsafe-call/await-outside-async/cases.ts:41:9	@typescript-eslint/no-unsafe-call	unsafeCall	Unsafe call of an `any` typed value.
+tests/rules/@typescript-eslint/no-unsafe-call/await-outside-async/cases.ts:44:21	@typescript-eslint/no-unsafe-call	errorCall	Unsafe call of a type that could not be resolved.
+tests/rules/@typescript-eslint/no-unsafe-call/await-outside-async/cases.ts:44:21	@typescript-eslint/no-unsafe-call	errorCall	Unsafe call of a type that could not be resolved.
+tests/rules/@typescript-eslint/no-unsafe-call/await-outside-async/cases.ts:46:11	@typescript-eslint/no-unsafe-call	errorCall	Unsafe call of a type that could not be resolved.
+tests/rules/@typescript-eslint/no-unsafe-call/await-outside-async/cases.ts:46:11	@typescript-eslint/no-unsafe-call	errorCall	Unsafe call of a type that could not be resolved.
+tests/rules/@typescript-eslint/no-unsafe-call/cases.ts:15:3	@typescript-eslint/no-unsafe-call	unsafeCall	Unsafe call of an `any` typed value.
+tests/rules/@typescript-eslint/no-unsafe-call/cases.ts:16:3	@typescript-eslint/no-unsafe-call	unsafeCall	Unsafe call of an `any` typed value.
+tests/rules/@typescript-eslint/no-unsafe-call/cases.ts:17:3	@typescript-eslint/no-unsafe-call	unsafeCall	Unsafe call of an `any` typed value.
+tests/rules/@typescript-eslint/no-unsafe-call/cases.ts:18:3	@typescript-eslint/no-unsafe-call	unsafeCall	Unsafe call of an `any` typed value.
+tests/rules/@typescript-eslint/no-unsafe-call/cases.ts:19:4	@typescript-eslint/no-unsafe-call	unsafeCall	Unsafe call of an `any` typed value.
+tests/rules/@typescript-eslint/no-unsafe-call/cases.ts:20:3	@typescript-eslint/no-unsafe-call	unsafeNew	Unsafe construction of an `any` typed value.
+tests/rules/@typescript-eslint/no-unsafe-call/cases.ts:21:3	@typescript-eslint/no-unsafe-call	unsafeNew	Unsafe construction of an `any` typed value.
+tests/rules/@typescript-eslint/no-unsafe-call/cases.ts:22:3	@typescript-eslint/no-unsafe-call	unsafeTemplateTag	Unsafe use of an `any` typed template tag.
+tests/rules/@typescript-eslint/no-unsafe-call/cases.ts:23:3	@typescript-eslint/no-unsafe-call	unsafeTemplateTag	Unsafe use of an `any` typed template tag.
+tests/rules/@typescript-eslint/no-unsafe-call/cases.ts:24:3	@typescript-eslint/no-unsafe-call	unsafeCall	Unsafe call of a `Function` typed value.
+tests/rules/@typescript-eslint/no-unsafe-call/cases.ts:25:3	@typescript-eslint/no-unsafe-call	unsafeNew	Unsafe construction of a `Function` typed value.
+tests/rules/@typescript-eslint/no-unsafe-call/cases.ts:26:3	@typescript-eslint/no-unsafe-call	unsafeTemplateTag	Unsafe use of a `Function` typed template tag.
+tests/rules/@typescript-eslint/no-unsafe-call/cases.ts:27:3	@typescript-eslint/no-unsafe-call	unsafeCall	Unsafe call of a `Function` typed value.
+tests/rules/@typescript-eslint/no-unsafe-call/cases.ts:29:3	@typescript-eslint/no-unsafe-call	unsafeNew	Unsafe construction of a `Function` typed value.
+tests/rules/@typescript-eslint/no-unsafe-call/cases.ts:31:3	@typescript-eslint/no-unsafe-call	unsafeNew	Unsafe construction of a `Function` typed value.
+tests/rules/@typescript-eslint/no-unsafe-call/cases.ts:36:3	@typescript-eslint/no-unsafe-call	errorCall	Unsafe call of a type that could not be resolved.
+tests/rules/@typescript-eslint/no-unsafe-call/cases.ts:37:3	@typescript-eslint/no-unsafe-call	errorNew	Unsafe construction of a type that could not be resolved.
+tests/rules/@typescript-eslint/no-unsafe-call/no-semicolons/cases.ts:3:23	@typescript-eslint/no-unsafe-call	unsafeCall	Unsafe call of an `any` typed value.
+tests/rules/@typescript-eslint/no-unsafe-call/no-semicolons/cases.ts:4:1	@typescript-eslint/no-unsafe-call	unsafeCall	Unsafe call of an `any` typed value.
+tests/rules/@typescript-eslint/no-unsafe-call/no-semicolons/cases.ts:5:1	@typescript-eslint/no-unsafe-call	unsafeNew	Unsafe construction of an `any` typed value.
+tests/rules/@typescript-eslint/no-unsafe-call/no-semicolons/cases.ts:6:1	@typescript-eslint/no-unsafe-call	unsafeTemplateTag	Unsafe use of an `any` typed template tag.
+tests/rules/@typescript-eslint/no-unsafe-call/no-semicolons/cases.ts:8:3	@typescript-eslint/no-unsafe-call	unsafeCall	Unsafe call of an `any` typed value.
+tests/rules/@typescript-eslint/no-unsafe-call/this/cases.ts:3:3	@typescript-eslint/no-unsafe-call	unsafeCallThis	Unsafe call of an `any` typed value. `this` is typed as an `any`.\nYou can try to fix this by turning on the `noImplicitThis` compiler option, or adding a `this` parameter to the function.
+tests/rules/@typescript-eslint/no-unsafe-call/this/cases.ts:4:3	@typescript-eslint/no-unsafe-call	unsafeCallThis	Unsafe call of an `any` typed value. `this` is typed as an `any`.\nYou can try to fix this by turning on the `noImplicitThis` compiler option, or adding a `this` parameter to the function.
+tests/rules/@typescript-eslint/no-unsafe-call/this/cases.ts:5:3	@typescript-eslint/no-unsafe-call	unsafeCallThis	Unsafe call of an `any` typed value. `this` is typed as an `any`.\nYou can try to fix this by turning on the `noImplicitThis` compiler option, or adding a `this` parameter to the function.
+tests/rules/@typescript-eslint/no-unsafe-call/this/cases.ts:6:3	@typescript-eslint/no-unsafe-call	unsafeCallThis	Unsafe call of an `any` typed value. `this` is typed as an `any`.\nYou can try to fix this by turning on the `noImplicitThis` compiler option, or adding a `this` parameter to the function.

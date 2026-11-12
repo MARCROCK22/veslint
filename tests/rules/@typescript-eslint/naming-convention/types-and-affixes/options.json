@@ -1,0 +1,9 @@
+[{"selector": "variable", "types": ["boolean"], "format": ["PascalCase"], "prefix": ["is", "has", "should"]},
+ {"selector": "variable", "types": ["array"], "format": ["camelCase"], "suffix": ["s", "List"]},
+ {"selector": "variable", "types": ["function"], "format": ["camelCase"], "prefix": ["on", "handle"]},
+ {"selector": "variable", "types": ["string", "number"], "format": ["camelCase", "UPPER_CASE"]},
+ {"selector": "parameter", "types": ["boolean"], "format": ["PascalCase"], "prefix": ["is"]},
+ {"selector": ["classProperty", "typeProperty", "objectLiteralProperty"], "types": ["boolean"], "format": ["PascalCase"], "prefix": ["is", "has"]},
+ {"selector": "classicAccessor", "types": ["number"], "format": ["UPPER_CASE"]},
+ {"selector": "parameterProperty", "types": ["array"], "format": ["snake_case"]},
+ {"selector": "default", "format": ["camelCase", "PascalCase"], "leadingUnderscore": "allow"}]

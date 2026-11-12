@@ -1,0 +1,28 @@
+{"id": 1, "code": 0, "stdout": "", "stderr": "0 problems in 1 files\n"}
+{"id": 2, "code": 0, "stdout": "", "stderr": "0 problems in 1 files\n"}
+{"id": 3, "code": 1, "stdout": "<cwd>/b.ts:3:1\t@typescript-eslint/no-floating-promises\tfloatingVoid\tPromises must be awaited, end with a call to .catch, end with a call to .then with a rejection handler or be explicitly marked as ignored with the `void` operator.\tsuggestion\tfloatingFixVoid\tAdd void operator to ignore.\t32\t32\tvoid \tsuggestion\tfloatingFixAwait\tAdd await operator.\t32\t32\tawait \n", "stderr": "1 problems in 1 files\n"}
+{"id": 4, "code": 1, "stdout": "<cwd>/b.ts:3:1\t@typescript-eslint/no-floating-promises\tfloatingVoid\tPromises must be awaited, end with a call to .catch, end with a call to .then with a rejection handler or be explicitly marked as ignored with the `void` operator.\tsuggestion\tfloatingFixVoid\tAdd void operator to ignore.\t32\t32\tvoid \tsuggestion\tfloatingFixAwait\tAdd await operator.\t32\t32\tawait \n<cwd>/b.ts:4:1\t@typescript-eslint/await-thenable\tawait\tUnexpected `await` of a non-Promise (non-\"Thenable\") value.\tsuggestion\tremoveAwait\tRemove unnecessary `await`.\t40\t45\t\n", "stderr": "2 problems in 1 files (1 of them warnings)\n"}
+{"id": 5, "code": 0, "stdout": "", "stderr": ""}
+{"id": 6, "code": 0, "stdout": "", "stderr": "0 problems in 1 files\n"}
+{"id": 7, "code": 0, "stdout": "", "stderr": "0 problems in 1 files\n"}
+{"id": 8, "code": 1, "stdout": "<cwd>/b.ts:3:1\t@typescript-eslint/no-floating-promises\tfloatingVoid\tPromises must be awaited, end with a call to .catch, end with a call to .then with a rejection handler or be explicitly marked as ignored with the `void` operator.\tsuggestion\tfloatingFixVoid\tAdd void operator to ignore.\t32\t32\tvoid \tsuggestion\tfloatingFixAwait\tAdd await operator.\t32\t32\tawait \n", "stderr": "1 problems in 1 files\n"}
+{"id": 9, "code": 0, "stdout": "", "stderr": ""}
+{"id": 10, "code": 0, "stdout": "", "stderr": "0 problems in 1 files\n"}
+{"id": 11, "code": 2, "stdout": "", "stderr": "veslint: cannot read missing.json: failed to open file \"missing.json\"\n"}
+{"id": 12, "code": 2, "stdout": "", "stderr": "veslint: a request with files needs a configuration (`config`)\n"}
+{"id": 13, "code": 1, "stdout": "<cwd>/b.ts:3:1\t@typescript-eslint/no-floating-promises\tfloatingVoid\tPromises must be awaited, end with a call to .catch, end with a call to .then with a rejection handler or be explicitly marked as ignored with the `void` operator.\n", "stderr": "1 problems in 1 files\n"}
+{"id": -1, "code": 2, "stdout": "", "stderr": "veslint: a request is one JSON object per line\n"}
+{"id": 14, "code": 0, "stdout": "", "stderr": "0 problems in 1 files\n"}
+{"id": 15, "code": 1, "stdout": "b.ts:3:1\t@typescript-eslint/no-floating-promises\tfloatingVoid\tPromises must be awaited, end with a call to .catch, end with a call to .then with a rejection handler or be explicitly marked as ignored with the `void` operator.\tsuggestion\tfloatingFixVoid\tAdd void operator to ignore.\t32\t32\tvoid \tsuggestion\tfloatingFixAwait\tAdd await operator.\t32\t32\tawait \n", "stderr": "1 problems in 1 files\n"}
+{"id": 16, "code": 0, "stdout": "", "stderr": ""}
+{"id": 17, "code": 0, "stdout": "", "stderr": "0 problems in 1 files\n"}
+{"id": 18, "code": 2, "stdout": "", "stderr": "veslint: c.js: veslint only reads TypeScript (.ts, .mts, .cts, .tsx)\n"}
+{"id": 19, "code": 0, "stdout": "", "stderr": "0 problems in 1 files\n"}
+{"id": 20, "code": 1, "stdout": "<cwd>/uses.ts:3:34\t@typescript-eslint/dot-notation\tuseDot\t[\"secret\"] is better written in dot notation.\tfix\t70\t80\t.secret\n", "stderr": "1 problems in 1 files\n"}
+{"id": 21, "code": 1, "stdout": "<cwd>/uses.ts:3:34\t@typescript-eslint/dot-notation\tuseDot\t[\"secret\"] is better written in dot notation.\tfix\t70\t80\t.secret\n", "stderr": "1 problems in 1 files\n"}
+{"id": 22, "code": 0, "stdout": "", "stderr": ""}
+{"id": 23, "code": 0, "stdout": "", "stderr": "0 problems in 1 files\n"}
+{"id": 24, "code": 0, "stdout": "", "stderr": "0 problems in 1 files\n"}
+{"id": 25, "code": 1, "stdout": "<cwd>/uses.ts:3:34\t@typescript-eslint/dot-notation\tuseDot\t[\"secret\"] is better written in dot notation.\tfix\t70\t80\t.secret\n", "stderr": "1 problems in 1 files\n"}
+{"id": 26, "code": 0, "stdout": "", "stderr": ""}
+{"id": 27, "code": 0, "stdout": "", "stderr": "0 problems in 1 files\n"}

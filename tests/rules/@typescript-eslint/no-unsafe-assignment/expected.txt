@@ -1,0 +1,87 @@
+tests/rules/@typescript-eslint/no-unsafe-assignment/cases.ts:7:7	@typescript-eslint/no-unsafe-assignment	anyAssignment	Unsafe assignment of an `any` value.
+tests/rules/@typescript-eslint/no-unsafe-assignment/cases.ts:10:1	@typescript-eslint/no-unsafe-assignment	anyAssignment	Unsafe assignment of an `any` value.
+tests/rules/@typescript-eslint/no-unsafe-assignment/cases.ts:11:7	@typescript-eslint/no-unsafe-assignment	unsafeAssignment	Unsafe assignment of type `Set<any>` to a variable of type `Set<string>`.
+tests/rules/@typescript-eslint/no-unsafe-assignment/cases.ts:12:7	@typescript-eslint/no-unsafe-assignment	unsafeArrayPattern	Unsafe array destructuring of an `any` array value.
+tests/rules/@typescript-eslint/no-unsafe-assignment/cases.ts:13:12	@typescript-eslint/no-unsafe-assignment	unsafeArrayPatternFromTuple	Unsafe array destructuring of a tuple element with an `any` value.
+tests/rules/@typescript-eslint/no-unsafe-assignment/cases.ts:14:12	@typescript-eslint/no-unsafe-assignment	unsafeObjectPattern	Unsafe object destructuring of a property with an `any` value.
+tests/rules/@typescript-eslint/no-unsafe-assignment/cases.ts:15:17	@typescript-eslint/no-unsafe-assignment	unsafeObjectPattern	Unsafe object destructuring of a property with an `any` value.
+tests/rules/@typescript-eslint/no-unsafe-assignment/cases.ts:16:14	@typescript-eslint/no-unsafe-assignment	anyAssignment	Unsafe assignment of an `any` value.
+tests/rules/@typescript-eslint/no-unsafe-assignment/cases.ts:18:36	@typescript-eslint/no-unsafe-assignment	unsafeAssignment	Unsafe assignment of type `Set<any>` to a variable of type `Set<string>`.
+tests/rules/@typescript-eslint/no-unsafe-assignment/cases.ts:19:14	@typescript-eslint/no-unsafe-assignment	unsafeArraySpread	Unsafe spread of an `any` value in an array.
+tests/rules/@typescript-eslint/no-unsafe-assignment/cases.ts:20:15	@typescript-eslint/no-unsafe-assignment	unsafeArraySpread	Unsafe spread of an `any` value in an array.
+tests/rules/@typescript-eslint/no-unsafe-assignment/cases.ts:23:3	@typescript-eslint/no-unsafe-assignment	anyAssignment	Unsafe assignment of an `any` value.
+tests/rules/@typescript-eslint/no-unsafe-assignment/cases.ts:25:3	@typescript-eslint/no-unsafe-assignment	unsafeAssignment	Unsafe assignment of type `Set<any>` to a variable of type `Set<string>`.
+tests/rules/@typescript-eslint/no-unsafe-assignment/cases.ts:27:14	@typescript-eslint/no-unsafe-assignment	anyAssignment	Unsafe assignment of an `any` value.
+tests/rules/@typescript-eslint/no-unsafe-assignment/cases.ts:30:1	@typescript-eslint/no-unsafe-assignment	unsafeAssignment	Unsafe assignment of type `Set<any>` to a variable of type `Set<string>`.
+tests/rules/@typescript-eslint/no-unsafe-assignment/cases.ts:33:9	@typescript-eslint/no-unsafe-assignment	unsafeArrayPatternFromTuple	Unsafe array destructuring of a tuple element with an `any` value.
+tests/rules/@typescript-eslint/no-unsafe-assignment/cases.ts:34:16	@typescript-eslint/no-unsafe-assignment	unsafeObjectPattern	Unsafe object destructuring of a property with an `any` value.
+tests/rules/@typescript-eslint/no-unsafe-assignment/cases.ts:34:26	@typescript-eslint/no-unsafe-assignment	anyAssignment	Unsafe assignment of an `any` value.
+tests/rules/@typescript-eslint/no-unsafe-assignment/cases.ts:35:7	@typescript-eslint/no-unsafe-assignment	anyAssignment	Unsafe assignment of an error typed value.
+tests/rules/@typescript-eslint/no-unsafe-assignment/cases.ts:41:14	@typescript-eslint/no-unsafe-assignment	anyAssignment	Unsafe assignment of an `any` value.
+tests/rules/@typescript-eslint/no-unsafe-assignment/cases.ts:41:44	@typescript-eslint/no-unsafe-assignment	anyAssignment	Unsafe assignment of an `any` value.
+tests/rules/@typescript-eslint/no-unsafe-assignment/cases.ts:43:3	@typescript-eslint/no-unsafe-assignment	anyAssignment	Unsafe assignment of an `any` value.
+tests/rules/@typescript-eslint/no-unsafe-assignment/cases.ts:44:3	@typescript-eslint/no-unsafe-assignment	anyAssignment	Unsafe assignment of an `any` value.
+tests/rules/@typescript-eslint/no-unsafe-assignment/cases.ts:45:3	@typescript-eslint/no-unsafe-assignment	anyAssignment	Unsafe assignment of an `any` value.
+tests/rules/@typescript-eslint/no-unsafe-assignment/cases.ts:46:3	@typescript-eslint/no-unsafe-assignment	anyAssignment	Unsafe assignment of an `any` value.
+tests/rules/@typescript-eslint/no-unsafe-assignment/cases.ts:48:32	@typescript-eslint/no-unsafe-assignment	anyAssignment	Unsafe assignment of an `any` value.
+tests/rules/@typescript-eslint/no-unsafe-assignment/cases.ts:48:53	@typescript-eslint/no-unsafe-assignment	anyAssignment	Unsafe assignment of an `any` value.
+tests/rules/@typescript-eslint/no-unsafe-assignment/cases.ts:51:14	@typescript-eslint/no-unsafe-assignment	unsafeObjectPattern	Unsafe object destructuring of a property with an `any` value.
+tests/rules/@typescript-eslint/no-unsafe-assignment/cases.ts:51:24	@typescript-eslint/no-unsafe-assignment	unsafeObjectPattern	Unsafe object destructuring of a property with an `any` value.
+tests/rules/@typescript-eslint/no-unsafe-assignment/cases.ts:51:32	@typescript-eslint/no-unsafe-assignment	unsafeObjectPattern	Unsafe object destructuring of a property with an `any` value.
+tests/rules/@typescript-eslint/no-unsafe-assignment/cases.ts:52:10	@typescript-eslint/no-unsafe-assignment	unsafeArrayPatternFromTuple	Unsafe array destructuring of a tuple element with an `any` value.
+tests/rules/@typescript-eslint/no-unsafe-assignment/cases.ts:52:16	@typescript-eslint/no-unsafe-assignment	unsafeArrayPatternFromTuple	Unsafe array destructuring of a tuple element with an `any` value.
+tests/rules/@typescript-eslint/no-unsafe-assignment/cases.ts:53:9	@typescript-eslint/no-unsafe-assignment	anyAssignment	Unsafe assignment of an `any` value.
+tests/rules/@typescript-eslint/no-unsafe-assignment/cases.ts:54:8	@typescript-eslint/no-unsafe-assignment	anyAssignment	Unsafe assignment of an `any` value.
+tests/rules/@typescript-eslint/no-unsafe-assignment/cases.ts:55:14	@typescript-eslint/no-unsafe-assignment	anyAssignment	Unsafe assignment of an `any` value.
+tests/rules/@typescript-eslint/no-unsafe-assignment/cases.ts:55:38	@typescript-eslint/no-unsafe-assignment	anyAssignment	Unsafe assignment of an `any` value.
+tests/rules/@typescript-eslint/no-unsafe-assignment/cases.ts:55:57	@typescript-eslint/no-unsafe-assignment	anyAssignment	Unsafe assignment of an `any` value.
+tests/rules/@typescript-eslint/no-unsafe-assignment/cases.ts:55:70	@typescript-eslint/no-unsafe-assignment	anyAssignment	Unsafe assignment of an `any` value.
+tests/rules/@typescript-eslint/no-unsafe-assignment/cases.ts:57:7	@typescript-eslint/no-unsafe-assignment	unsafeObjectPattern	Unsafe object destructuring of a property with an `any` value.
+tests/rules/@typescript-eslint/no-unsafe-assignment/cases.ts:59:7	@typescript-eslint/no-unsafe-assignment	anyAssignment	Unsafe assignment of an `any` value.
+tests/rules/@typescript-eslint/no-unsafe-assignment/cases.ts:64:17	@typescript-eslint/no-unsafe-assignment	unsafeObjectPattern	Unsafe object destructuring of a property with an `any` value.
+tests/rules/@typescript-eslint/no-unsafe-assignment/cases.ts:64:27	@typescript-eslint/no-unsafe-assignment	unsafeObjectPattern	Unsafe object destructuring of a property with an `any` value.
+tests/rules/@typescript-eslint/no-unsafe-assignment/cases.ts:64:37	@typescript-eslint/no-unsafe-assignment	unsafeObjectPattern	Unsafe object destructuring of a property with an `any` value.
+tests/rules/@typescript-eslint/no-unsafe-assignment/cases.ts:64:47	@typescript-eslint/no-unsafe-assignment	unsafeObjectPattern	Unsafe object destructuring of a property with an `any` value.
+tests/rules/@typescript-eslint/no-unsafe-assignment/cases.ts:64:66	@typescript-eslint/no-unsafe-assignment	unsafeObjectPattern	Unsafe object destructuring of a property with an `any` value.
+tests/rules/@typescript-eslint/no-unsafe-assignment/cases.ts:64:73	@typescript-eslint/no-unsafe-assignment	unsafeObjectPattern	Unsafe object destructuring of a property with an `any` value.
+tests/rules/@typescript-eslint/no-unsafe-assignment/cases.ts:65:19	@typescript-eslint/no-unsafe-assignment	unsafeObjectPattern	Unsafe object destructuring of a property with an `any` value.
+tests/rules/@typescript-eslint/no-unsafe-assignment/cases.ts:65:34	@typescript-eslint/no-unsafe-assignment	unsafeObjectPattern	Unsafe object destructuring of a property with an `any` value.
+tests/rules/@typescript-eslint/no-unsafe-assignment/cases.ts:65:42	@typescript-eslint/no-unsafe-assignment	unsafeObjectPattern	Unsafe object destructuring of a property with an `any` value.
+tests/rules/@typescript-eslint/no-unsafe-assignment/cases.ts:71:3	@typescript-eslint/no-unsafe-assignment	anyAssignment	Unsafe assignment of an `any` value.
+tests/rules/@typescript-eslint/no-unsafe-assignment/cases.ts:72:3	@typescript-eslint/no-unsafe-assignment	anyAssignment	Unsafe assignment of an `any` value.
+tests/rules/@typescript-eslint/no-unsafe-assignment/cases.ts:73:3	@typescript-eslint/no-unsafe-assignment	anyAssignment	Unsafe assignment of an `any` value.
+tests/rules/@typescript-eslint/no-unsafe-assignment/cases.ts:74:3	@typescript-eslint/no-unsafe-assignment	anyAssignment	Unsafe assignment of an `any` value.
+tests/rules/@typescript-eslint/no-unsafe-assignment/empty-tuple/cases.ts:12:7	@typescript-eslint/no-unsafe-assignment	anyAssignment	Unsafe assignment of an `any` value.
+tests/rules/@typescript-eslint/no-unsafe-assignment/empty-tuple/cases.ts:14:7	@typescript-eslint/no-unsafe-assignment	anyAssignment	Unsafe assignment of an `any` value.
+tests/rules/@typescript-eslint/no-unsafe-assignment/import-attributes/cases.ts:9:53	@typescript-eslint/no-unsafe-assignment	anyAssignment	Unsafe assignment of an `any` value.
+tests/rules/@typescript-eslint/no-unsafe-assignment/import-attributes/cases.ts:10:18	@typescript-eslint/no-unsafe-assignment	anyAssignment	Unsafe assignment of an `any` value.
+tests/rules/@typescript-eslint/no-unsafe-assignment/jsx/cases.tsx:16:25	@typescript-eslint/no-unsafe-assignment	anyAssignment	Unsafe assignment of an `any` value.
+tests/rules/@typescript-eslint/no-unsafe-assignment/jsx/cases.tsx:17:26	@typescript-eslint/no-unsafe-assignment	anyAssignment	Unsafe assignment of an `any` value.
+tests/rules/@typescript-eslint/no-unsafe-assignment/jsx/cases.tsx:18:24	@typescript-eslint/no-unsafe-assignment	anyAssignment	Unsafe assignment of an `any` value.
+tests/rules/@typescript-eslint/no-unsafe-assignment/jsx/cases.tsx:18:44	@typescript-eslint/no-unsafe-assignment	anyAssignment	Unsafe assignment of an `any` value.
+tests/rules/@typescript-eslint/no-unsafe-assignment/jsx/cases.tsx:19:25	@typescript-eslint/no-unsafe-assignment	anyAssignment	Unsafe assignment of an `any` value.
+tests/rules/@typescript-eslint/no-unsafe-assignment/no-semicolons/cases.ts:4:29	@typescript-eslint/no-unsafe-assignment	anyAssignment	Unsafe assignment of an `any` value.
+tests/rules/@typescript-eslint/no-unsafe-assignment/no-semicolons/cases.ts:5:7	@typescript-eslint/no-unsafe-assignment	unsafeArrayPattern	Unsafe array destructuring of an `any` array value.
+tests/rules/@typescript-eslint/no-unsafe-assignment/no-semicolons/cases.ts:7:3	@typescript-eslint/no-unsafe-assignment	anyAssignment	Unsafe assignment of an `any` value.
+tests/rules/@typescript-eslint/no-unsafe-assignment/no-semicolons/cases.ts:8:3	@typescript-eslint/no-unsafe-assignment	unsafeAssignment	Unsafe assignment of type `Set<any>` to a variable of type `Set<string>`.
+tests/rules/@typescript-eslint/no-unsafe-assignment/no-semicolons/cases.ts:10:13	@typescript-eslint/no-unsafe-assignment	anyAssignment	Unsafe assignment of an `any` value.
+tests/rules/@typescript-eslint/no-unsafe-assignment/no-semicolons/cases.ts:11:14	@typescript-eslint/no-unsafe-assignment	unsafeArraySpread	Unsafe spread of an `any` value in an array.
+tests/rules/@typescript-eslint/no-unsafe-assignment/optional/cases.ts:5:13	@typescript-eslint/no-unsafe-assignment	unsafeArrayPatternFromTuple	Unsafe array destructuring of a tuple element with an `any` value.
+tests/rules/@typescript-eslint/no-unsafe-assignment/optional/cases.ts:5:17	@typescript-eslint/no-unsafe-assignment	unsafeObjectPattern	Unsafe object destructuring of a property with an `any` value.
+tests/rules/@typescript-eslint/no-unsafe-assignment/regexp-keys/cases.ts:15:16	@typescript-eslint/no-unsafe-assignment	unsafeObjectPattern	Unsafe object destructuring of a property with an `any` value.
+tests/rules/@typescript-eslint/no-unsafe-assignment/regexp-keys/cases.ts:16:18	@typescript-eslint/no-unsafe-assignment	unsafeObjectPattern	Unsafe object destructuring of a property with an `any` value.
+tests/rules/@typescript-eslint/no-unsafe-assignment/regexp-keys/cases.ts:17:18	@typescript-eslint/no-unsafe-assignment	unsafeObjectPattern	Unsafe object destructuring of a property with an `any` value.
+tests/rules/@typescript-eslint/no-unsafe-assignment/regexp-keys/cases.ts:19:22	@typescript-eslint/no-unsafe-assignment	unsafeObjectPattern	Unsafe object destructuring of a property with an `any` value.
+tests/rules/@typescript-eslint/no-unsafe-assignment/regexp-keys/cases.ts:20:24	@typescript-eslint/no-unsafe-assignment	unsafeObjectPattern	Unsafe object destructuring of a property with an `any` value.
+tests/rules/@typescript-eslint/no-unsafe-assignment/regexp-keys/cases.ts:22:18	@typescript-eslint/no-unsafe-assignment	unsafeObjectPattern	Unsafe object destructuring of a property with an `any` value.
+tests/rules/@typescript-eslint/no-unsafe-assignment/regexp-keys/cases.ts:23:17	@typescript-eslint/no-unsafe-assignment	unsafeArrayPatternFromTuple	Unsafe array destructuring of a tuple element with an `any` value.
+tests/rules/@typescript-eslint/no-unsafe-assignment/regexp-keys/cases.ts:24:18	@typescript-eslint/no-unsafe-assignment	unsafeObjectPattern	Unsafe object destructuring of a property with an `any` value.
+tests/rules/@typescript-eslint/no-unsafe-assignment/regexp-keys/cases.ts:27:18	@typescript-eslint/no-unsafe-assignment	unsafeObjectPattern	Unsafe object destructuring of a property with an `any` value.
+tests/rules/@typescript-eslint/no-unsafe-assignment/regexp-keys/cases.ts:28:18	@typescript-eslint/no-unsafe-assignment	unsafeObjectPattern	Unsafe object destructuring of a property with an `any` value.
+tests/rules/@typescript-eslint/no-unsafe-assignment/regexp-keys/cases.ts:30:24	@typescript-eslint/no-unsafe-assignment	unsafeObjectPattern	Unsafe object destructuring of a property with an `any` value.
+tests/rules/@typescript-eslint/no-unsafe-assignment/regexp-keys/cases.ts:31:29	@typescript-eslint/no-unsafe-assignment	unsafeObjectPattern	Unsafe object destructuring of a property with an `any` value.
+tests/rules/@typescript-eslint/no-unsafe-assignment/regexp-keys/cases.ts:32:21	@typescript-eslint/no-unsafe-assignment	unsafeObjectPattern	Unsafe object destructuring of a property with an `any` value.
+tests/rules/@typescript-eslint/no-unsafe-assignment/regexp-keys/cases.ts:35:11	@typescript-eslint/no-unsafe-assignment	unsafeObjectPattern	Unsafe object destructuring of a property with an `any` value.
+tests/rules/@typescript-eslint/no-unsafe-assignment/this/cases.ts:3:9	@typescript-eslint/no-unsafe-assignment	anyAssignmentThis	Unsafe assignment of an `any` value. `this` is typed as `any`.\nYou can try to fix this by turning on the `noImplicitThis` compiler option, or adding a `this` parameter to the function.
+tests/rules/@typescript-eslint/no-unsafe-assignment/this/cases.ts:4:9	@typescript-eslint/no-unsafe-assignment	anyAssignmentThis	Unsafe assignment of an `any` value. `this` is typed as `any`.\nYou can try to fix this by turning on the `noImplicitThis` compiler option, or adding a `this` parameter to the function.
+tests/rules/@typescript-eslint/no-unsafe-assignment/this/cases.ts:6:3	@typescript-eslint/no-unsafe-assignment	anyAssignmentThis	Unsafe assignment of an `any` value. `this` is typed as `any`.\nYou can try to fix this by turning on the `noImplicitThis` compiler option, or adding a `this` parameter to the function.

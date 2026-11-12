@@ -1,0 +1,132 @@
+tests/rules/@typescript-eslint/prefer-destructuring/annotations/cases.ts:21:9	@typescript-eslint/prefer-destructuring	preferDestructuring	Use object destructuring.	fix	617	633	{foo} = object
+tests/rules/@typescript-eslint/prefer-destructuring/annotations/cases.ts:22:9	@typescript-eslint/prefer-destructuring	preferDestructuring	Use object destructuring.
+tests/rules/@typescript-eslint/prefer-destructuring/annotations/cases.ts:24:9	@typescript-eslint/prefer-destructuring	preferDestructuring	Use object destructuring.	fix	702	722	{qux} = object.baz
+tests/rules/@typescript-eslint/prefer-destructuring/annotations/cases.ts:26:9	@typescript-eslint/prefer-destructuring	preferDestructuring	Use array destructuring.
+tests/rules/@typescript-eslint/prefer-destructuring/annotations/cases.ts:27:9	@typescript-eslint/prefer-destructuring	preferDestructuring	Use array destructuring.
+tests/rules/@typescript-eslint/prefer-destructuring/annotations/cases.ts:28:9	@typescript-eslint/prefer-destructuring	preferDestructuring	Use array destructuring.
+tests/rules/@typescript-eslint/prefer-destructuring/annotations/cases.ts:29:9	@typescript-eslint/prefer-destructuring	preferDestructuring	Use array destructuring.
+tests/rules/@typescript-eslint/prefer-destructuring/annotations/cases.ts:32:9	@typescript-eslint/prefer-destructuring	preferDestructuring	Use array destructuring.
+tests/rules/@typescript-eslint/prefer-destructuring/annotations/cases.ts:39:9	@typescript-eslint/prefer-destructuring	preferDestructuring	Use array destructuring.
+tests/rules/@typescript-eslint/prefer-destructuring/annotations/cases.ts:40:9	@typescript-eslint/prefer-destructuring	preferDestructuring	Use array destructuring.
+tests/rules/@typescript-eslint/prefer-destructuring/annotations/cases.ts:43:7	@typescript-eslint/prefer-destructuring	preferDestructuring	Use object destructuring.	fix	1274	1296	{legacy} = object
+tests/rules/@typescript-eslint/prefer-destructuring/annotations/cases.ts:50:9	@typescript-eslint/prefer-destructuring	preferDestructuring	Use object destructuring.
+tests/rules/@typescript-eslint/prefer-destructuring/annotations/cases.ts:51:9	@typescript-eslint/prefer-destructuring	preferDestructuring	Use array destructuring.
+tests/rules/@typescript-eslint/prefer-destructuring/annotations/cases.ts:59:9	@typescript-eslint/prefer-destructuring	preferDestructuring	Use object destructuring.	fix	1851	1868	{bar} = (object!)
+tests/rules/@typescript-eslint/prefer-destructuring/annotations/cases.ts:60:9	@typescript-eslint/prefer-destructuring	preferDestructuring	Use object destructuring.	fix	1878	1905	{baz} = (object as Shape)
+tests/rules/@typescript-eslint/prefer-destructuring/annotations/cases.ts:61:9	@typescript-eslint/prefer-destructuring	preferDestructuring	Use object destructuring.	fix	1915	1949	{legacy} = (anyValue, object)
+tests/rules/@typescript-eslint/prefer-destructuring/annotations/cases.ts:62:9	@typescript-eslint/prefer-destructuring	preferDestructuring	Use object destructuring.	fix	1959	1984	{qux} = getObject().baz
+tests/rules/@typescript-eslint/prefer-destructuring/annotations/cases.ts:66:9	@typescript-eslint/prefer-destructuring	preferDestructuring	Use object destructuring.
+tests/rules/@typescript-eslint/prefer-destructuring/annotations/cases.ts:67:9	@typescript-eslint/prefer-destructuring	preferDestructuring	Use object destructuring.
+tests/rules/@typescript-eslint/prefer-destructuring/annotations/cases.ts:68:9	@typescript-eslint/prefer-destructuring	preferDestructuring	Use object destructuring.	fix	2136	2173	{baz} = getObject(/* inside */ 'x')
+tests/rules/@typescript-eslint/prefer-destructuring/annotations/cases.ts:69:9	@typescript-eslint/prefer-destructuring	preferDestructuring	Use object destructuring.	fix	2183	2207	{legacy} = object
+tests/rules/@typescript-eslint/prefer-destructuring/annotations/cases.ts:81:3	@typescript-eslint/prefer-destructuring	preferDestructuring	Use object destructuring.
+tests/rules/@typescript-eslint/prefer-destructuring/annotations/cases.ts:82:3	@typescript-eslint/prefer-destructuring	preferDestructuring	Use object destructuring.
+tests/rules/@typescript-eslint/prefer-destructuring/annotations/cases.ts:83:3	@typescript-eslint/prefer-destructuring	preferDestructuring	Use array destructuring.
+tests/rules/@typescript-eslint/prefer-destructuring/annotations/cases.ts:89:3	@typescript-eslint/prefer-destructuring	preferDestructuring	Use object destructuring.
+tests/rules/@typescript-eslint/prefer-destructuring/annotations/cases.ts:91:3	@typescript-eslint/prefer-destructuring	preferDestructuring	Use array destructuring.
+tests/rules/@typescript-eslint/prefer-destructuring/annotations/cases.ts:92:3	@typescript-eslint/prefer-destructuring	preferDestructuring	Use object destructuring.
+tests/rules/@typescript-eslint/prefer-destructuring/annotations/cases.ts:106:11	@typescript-eslint/prefer-destructuring	preferDestructuring	Use object destructuring.	fix	2953	2967	{bar} = this
+tests/rules/@typescript-eslint/prefer-destructuring/annotations/cases.ts:119:10	@typescript-eslint/prefer-destructuring	preferDestructuring	Use array destructuring.
+tests/rules/@typescript-eslint/prefer-destructuring/annotations/cases.ts:119:28	@typescript-eslint/prefer-destructuring	preferDestructuring	Use object destructuring.	fix	3339	3355	{foo} = object
+tests/rules/@typescript-eslint/prefer-destructuring/cases.ts:21:9	@typescript-eslint/prefer-destructuring	preferDestructuring	Use object destructuring.	fix	617	633	{foo} = object
+tests/rules/@typescript-eslint/prefer-destructuring/cases.ts:22:9	@typescript-eslint/prefer-destructuring	preferDestructuring	Use object destructuring.
+tests/rules/@typescript-eslint/prefer-destructuring/cases.ts:24:9	@typescript-eslint/prefer-destructuring	preferDestructuring	Use object destructuring.	fix	702	722	{qux} = object.baz
+tests/rules/@typescript-eslint/prefer-destructuring/cases.ts:26:9	@typescript-eslint/prefer-destructuring	preferDestructuring	Use array destructuring.
+tests/rules/@typescript-eslint/prefer-destructuring/cases.ts:27:9	@typescript-eslint/prefer-destructuring	preferDestructuring	Use array destructuring.
+tests/rules/@typescript-eslint/prefer-destructuring/cases.ts:28:9	@typescript-eslint/prefer-destructuring	preferDestructuring	Use array destructuring.
+tests/rules/@typescript-eslint/prefer-destructuring/cases.ts:29:9	@typescript-eslint/prefer-destructuring	preferDestructuring	Use array destructuring.
+tests/rules/@typescript-eslint/prefer-destructuring/cases.ts:32:9	@typescript-eslint/prefer-destructuring	preferDestructuring	Use array destructuring.
+tests/rules/@typescript-eslint/prefer-destructuring/cases.ts:39:9	@typescript-eslint/prefer-destructuring	preferDestructuring	Use array destructuring.
+tests/rules/@typescript-eslint/prefer-destructuring/cases.ts:40:9	@typescript-eslint/prefer-destructuring	preferDestructuring	Use array destructuring.
+tests/rules/@typescript-eslint/prefer-destructuring/cases.ts:43:7	@typescript-eslint/prefer-destructuring	preferDestructuring	Use object destructuring.	fix	1274	1296	{legacy} = object
+tests/rules/@typescript-eslint/prefer-destructuring/cases.ts:59:9	@typescript-eslint/prefer-destructuring	preferDestructuring	Use object destructuring.	fix	1851	1868	{bar} = (object!)
+tests/rules/@typescript-eslint/prefer-destructuring/cases.ts:60:9	@typescript-eslint/prefer-destructuring	preferDestructuring	Use object destructuring.	fix	1878	1905	{baz} = (object as Shape)
+tests/rules/@typescript-eslint/prefer-destructuring/cases.ts:61:9	@typescript-eslint/prefer-destructuring	preferDestructuring	Use object destructuring.	fix	1915	1949	{legacy} = (anyValue, object)
+tests/rules/@typescript-eslint/prefer-destructuring/cases.ts:62:9	@typescript-eslint/prefer-destructuring	preferDestructuring	Use object destructuring.	fix	1959	1984	{qux} = getObject().baz
+tests/rules/@typescript-eslint/prefer-destructuring/cases.ts:66:9	@typescript-eslint/prefer-destructuring	preferDestructuring	Use object destructuring.
+tests/rules/@typescript-eslint/prefer-destructuring/cases.ts:67:9	@typescript-eslint/prefer-destructuring	preferDestructuring	Use object destructuring.
+tests/rules/@typescript-eslint/prefer-destructuring/cases.ts:68:9	@typescript-eslint/prefer-destructuring	preferDestructuring	Use object destructuring.	fix	2136	2173	{baz} = getObject(/* inside */ 'x')
+tests/rules/@typescript-eslint/prefer-destructuring/cases.ts:69:9	@typescript-eslint/prefer-destructuring	preferDestructuring	Use object destructuring.	fix	2183	2207	{legacy} = object
+tests/rules/@typescript-eslint/prefer-destructuring/cases.ts:81:3	@typescript-eslint/prefer-destructuring	preferDestructuring	Use object destructuring.
+tests/rules/@typescript-eslint/prefer-destructuring/cases.ts:82:3	@typescript-eslint/prefer-destructuring	preferDestructuring	Use object destructuring.
+tests/rules/@typescript-eslint/prefer-destructuring/cases.ts:83:3	@typescript-eslint/prefer-destructuring	preferDestructuring	Use array destructuring.
+tests/rules/@typescript-eslint/prefer-destructuring/cases.ts:89:3	@typescript-eslint/prefer-destructuring	preferDestructuring	Use object destructuring.
+tests/rules/@typescript-eslint/prefer-destructuring/cases.ts:91:3	@typescript-eslint/prefer-destructuring	preferDestructuring	Use array destructuring.
+tests/rules/@typescript-eslint/prefer-destructuring/cases.ts:92:3	@typescript-eslint/prefer-destructuring	preferDestructuring	Use object destructuring.
+tests/rules/@typescript-eslint/prefer-destructuring/cases.ts:106:11	@typescript-eslint/prefer-destructuring	preferDestructuring	Use object destructuring.	fix	2953	2967	{bar} = this
+tests/rules/@typescript-eslint/prefer-destructuring/cases.ts:119:10	@typescript-eslint/prefer-destructuring	preferDestructuring	Use array destructuring.
+tests/rules/@typescript-eslint/prefer-destructuring/cases.ts:119:28	@typescript-eslint/prefer-destructuring	preferDestructuring	Use object destructuring.	fix	3339	3355	{foo} = object
+tests/rules/@typescript-eslint/prefer-destructuring/declarator-only/cases.ts:26:9	@typescript-eslint/prefer-destructuring	preferDestructuring	Use array destructuring.
+tests/rules/@typescript-eslint/prefer-destructuring/declarator-only/cases.ts:27:9	@typescript-eslint/prefer-destructuring	preferDestructuring	Use array destructuring.
+tests/rules/@typescript-eslint/prefer-destructuring/declarator-only/cases.ts:28:9	@typescript-eslint/prefer-destructuring	preferDestructuring	Use array destructuring.
+tests/rules/@typescript-eslint/prefer-destructuring/declarator-only/cases.ts:29:9	@typescript-eslint/prefer-destructuring	preferDestructuring	Use array destructuring.
+tests/rules/@typescript-eslint/prefer-destructuring/declarator-only/cases.ts:32:9	@typescript-eslint/prefer-destructuring	preferDestructuring	Use array destructuring.
+tests/rules/@typescript-eslint/prefer-destructuring/declarator-only/cases.ts:39:9	@typescript-eslint/prefer-destructuring	preferDestructuring	Use array destructuring.
+tests/rules/@typescript-eslint/prefer-destructuring/declarator-only/cases.ts:40:9	@typescript-eslint/prefer-destructuring	preferDestructuring	Use array destructuring.
+tests/rules/@typescript-eslint/prefer-destructuring/declarator-only/cases.ts:119:10	@typescript-eslint/prefer-destructuring	preferDestructuring	Use array destructuring.
+tests/rules/@typescript-eslint/prefer-destructuring/object-only/cases.ts:21:9	@typescript-eslint/prefer-destructuring	preferDestructuring	Use object destructuring.	fix	617	633	{foo} = object
+tests/rules/@typescript-eslint/prefer-destructuring/object-only/cases.ts:22:9	@typescript-eslint/prefer-destructuring	preferDestructuring	Use object destructuring.
+tests/rules/@typescript-eslint/prefer-destructuring/object-only/cases.ts:24:9	@typescript-eslint/prefer-destructuring	preferDestructuring	Use object destructuring.	fix	702	722	{qux} = object.baz
+tests/rules/@typescript-eslint/prefer-destructuring/object-only/cases.ts:43:7	@typescript-eslint/prefer-destructuring	preferDestructuring	Use object destructuring.	fix	1274	1296	{legacy} = object
+tests/rules/@typescript-eslint/prefer-destructuring/object-only/cases.ts:59:9	@typescript-eslint/prefer-destructuring	preferDestructuring	Use object destructuring.	fix	1851	1868	{bar} = (object!)
+tests/rules/@typescript-eslint/prefer-destructuring/object-only/cases.ts:60:9	@typescript-eslint/prefer-destructuring	preferDestructuring	Use object destructuring.	fix	1878	1905	{baz} = (object as Shape)
+tests/rules/@typescript-eslint/prefer-destructuring/object-only/cases.ts:61:9	@typescript-eslint/prefer-destructuring	preferDestructuring	Use object destructuring.	fix	1915	1949	{legacy} = (anyValue, object)
+tests/rules/@typescript-eslint/prefer-destructuring/object-only/cases.ts:62:9	@typescript-eslint/prefer-destructuring	preferDestructuring	Use object destructuring.	fix	1959	1984	{qux} = getObject().baz
+tests/rules/@typescript-eslint/prefer-destructuring/object-only/cases.ts:66:9	@typescript-eslint/prefer-destructuring	preferDestructuring	Use object destructuring.
+tests/rules/@typescript-eslint/prefer-destructuring/object-only/cases.ts:67:9	@typescript-eslint/prefer-destructuring	preferDestructuring	Use object destructuring.
+tests/rules/@typescript-eslint/prefer-destructuring/object-only/cases.ts:68:9	@typescript-eslint/prefer-destructuring	preferDestructuring	Use object destructuring.	fix	2136	2173	{baz} = getObject(/* inside */ 'x')
+tests/rules/@typescript-eslint/prefer-destructuring/object-only/cases.ts:69:9	@typescript-eslint/prefer-destructuring	preferDestructuring	Use object destructuring.	fix	2183	2207	{legacy} = object
+tests/rules/@typescript-eslint/prefer-destructuring/object-only/cases.ts:81:3	@typescript-eslint/prefer-destructuring	preferDestructuring	Use object destructuring.
+tests/rules/@typescript-eslint/prefer-destructuring/object-only/cases.ts:82:3	@typescript-eslint/prefer-destructuring	preferDestructuring	Use object destructuring.
+tests/rules/@typescript-eslint/prefer-destructuring/object-only/cases.ts:89:3	@typescript-eslint/prefer-destructuring	preferDestructuring	Use object destructuring.
+tests/rules/@typescript-eslint/prefer-destructuring/object-only/cases.ts:92:3	@typescript-eslint/prefer-destructuring	preferDestructuring	Use object destructuring.
+tests/rules/@typescript-eslint/prefer-destructuring/object-only/cases.ts:106:11	@typescript-eslint/prefer-destructuring	preferDestructuring	Use object destructuring.	fix	2953	2967	{bar} = this
+tests/rules/@typescript-eslint/prefer-destructuring/object-only/cases.ts:119:28	@typescript-eslint/prefer-destructuring	preferDestructuring	Use object destructuring.	fix	3339	3355	{foo} = object
+tests/rules/@typescript-eslint/prefer-destructuring/renamed-defaults/cases.ts:30:9	@typescript-eslint/prefer-destructuring	preferDestructuring	Use object destructuring.
+tests/rules/@typescript-eslint/prefer-destructuring/renamed-defaults/cases.ts:31:9	@typescript-eslint/prefer-destructuring	preferDestructuring	Use object destructuring.
+tests/rules/@typescript-eslint/prefer-destructuring/renamed-defaults/cases.ts:33:9	@typescript-eslint/prefer-destructuring	preferDestructuring	Use object destructuring.
+tests/rules/@typescript-eslint/prefer-destructuring/renamed-defaults/cases.ts:85:3	@typescript-eslint/prefer-destructuring	preferDestructuring	Use object destructuring.
+tests/rules/@typescript-eslint/prefer-destructuring/renamed/cases.ts:21:9	@typescript-eslint/prefer-destructuring	preferDestructuring	Use object destructuring.	fix	617	633	{foo} = object
+tests/rules/@typescript-eslint/prefer-destructuring/renamed/cases.ts:22:9	@typescript-eslint/prefer-destructuring	preferDestructuring	Use object destructuring.
+tests/rules/@typescript-eslint/prefer-destructuring/renamed/cases.ts:23:9	@typescript-eslint/prefer-destructuring	preferDestructuring	Use object destructuring.
+tests/rules/@typescript-eslint/prefer-destructuring/renamed/cases.ts:24:9	@typescript-eslint/prefer-destructuring	preferDestructuring	Use object destructuring.	fix	702	722	{qux} = object.baz
+tests/rules/@typescript-eslint/prefer-destructuring/renamed/cases.ts:25:9	@typescript-eslint/prefer-destructuring	preferDestructuring	Use object destructuring.
+tests/rules/@typescript-eslint/prefer-destructuring/renamed/cases.ts:26:9	@typescript-eslint/prefer-destructuring	preferDestructuring	Use array destructuring.
+tests/rules/@typescript-eslint/prefer-destructuring/renamed/cases.ts:27:9	@typescript-eslint/prefer-destructuring	preferDestructuring	Use array destructuring.
+tests/rules/@typescript-eslint/prefer-destructuring/renamed/cases.ts:28:9	@typescript-eslint/prefer-destructuring	preferDestructuring	Use array destructuring.
+tests/rules/@typescript-eslint/prefer-destructuring/renamed/cases.ts:29:9	@typescript-eslint/prefer-destructuring	preferDestructuring	Use array destructuring.
+tests/rules/@typescript-eslint/prefer-destructuring/renamed/cases.ts:30:9	@typescript-eslint/prefer-destructuring	preferDestructuring	Use object destructuring.
+tests/rules/@typescript-eslint/prefer-destructuring/renamed/cases.ts:31:9	@typescript-eslint/prefer-destructuring	preferDestructuring	Use object destructuring.
+tests/rules/@typescript-eslint/prefer-destructuring/renamed/cases.ts:32:9	@typescript-eslint/prefer-destructuring	preferDestructuring	Use array destructuring.
+tests/rules/@typescript-eslint/prefer-destructuring/renamed/cases.ts:33:9	@typescript-eslint/prefer-destructuring	preferDestructuring	Use object destructuring.
+tests/rules/@typescript-eslint/prefer-destructuring/renamed/cases.ts:34:9	@typescript-eslint/prefer-destructuring	preferDestructuring	Use object destructuring.
+tests/rules/@typescript-eslint/prefer-destructuring/renamed/cases.ts:35:9	@typescript-eslint/prefer-destructuring	preferDestructuring	Use object destructuring.
+tests/rules/@typescript-eslint/prefer-destructuring/renamed/cases.ts:36:9	@typescript-eslint/prefer-destructuring	preferDestructuring	Use object destructuring.
+tests/rules/@typescript-eslint/prefer-destructuring/renamed/cases.ts:37:9	@typescript-eslint/prefer-destructuring	preferDestructuring	Use object destructuring.
+tests/rules/@typescript-eslint/prefer-destructuring/renamed/cases.ts:38:9	@typescript-eslint/prefer-destructuring	preferDestructuring	Use object destructuring.
+tests/rules/@typescript-eslint/prefer-destructuring/renamed/cases.ts:39:9	@typescript-eslint/prefer-destructuring	preferDestructuring	Use array destructuring.
+tests/rules/@typescript-eslint/prefer-destructuring/renamed/cases.ts:40:9	@typescript-eslint/prefer-destructuring	preferDestructuring	Use array destructuring.
+tests/rules/@typescript-eslint/prefer-destructuring/renamed/cases.ts:43:7	@typescript-eslint/prefer-destructuring	preferDestructuring	Use object destructuring.	fix	1274	1296	{legacy} = object
+tests/rules/@typescript-eslint/prefer-destructuring/renamed/cases.ts:59:9	@typescript-eslint/prefer-destructuring	preferDestructuring	Use object destructuring.	fix	1851	1868	{bar} = (object!)
+tests/rules/@typescript-eslint/prefer-destructuring/renamed/cases.ts:60:9	@typescript-eslint/prefer-destructuring	preferDestructuring	Use object destructuring.	fix	1878	1905	{baz} = (object as Shape)
+tests/rules/@typescript-eslint/prefer-destructuring/renamed/cases.ts:61:9	@typescript-eslint/prefer-destructuring	preferDestructuring	Use object destructuring.	fix	1915	1949	{legacy} = (anyValue, object)
+tests/rules/@typescript-eslint/prefer-destructuring/renamed/cases.ts:62:9	@typescript-eslint/prefer-destructuring	preferDestructuring	Use object destructuring.	fix	1959	1984	{qux} = getObject().baz
+tests/rules/@typescript-eslint/prefer-destructuring/renamed/cases.ts:66:9	@typescript-eslint/prefer-destructuring	preferDestructuring	Use object destructuring.
+tests/rules/@typescript-eslint/prefer-destructuring/renamed/cases.ts:67:9	@typescript-eslint/prefer-destructuring	preferDestructuring	Use object destructuring.
+tests/rules/@typescript-eslint/prefer-destructuring/renamed/cases.ts:68:9	@typescript-eslint/prefer-destructuring	preferDestructuring	Use object destructuring.	fix	2136	2173	{baz} = getObject(/* inside */ 'x')
+tests/rules/@typescript-eslint/prefer-destructuring/renamed/cases.ts:69:9	@typescript-eslint/prefer-destructuring	preferDestructuring	Use object destructuring.	fix	2183	2207	{legacy} = object
+tests/rules/@typescript-eslint/prefer-destructuring/renamed/cases.ts:70:9	@typescript-eslint/prefer-destructuring	preferDestructuring	Use object destructuring.
+tests/rules/@typescript-eslint/prefer-destructuring/renamed/cases.ts:71:9	@typescript-eslint/prefer-destructuring	preferDestructuring	Use object destructuring.
+tests/rules/@typescript-eslint/prefer-destructuring/renamed/cases.ts:81:3	@typescript-eslint/prefer-destructuring	preferDestructuring	Use object destructuring.
+tests/rules/@typescript-eslint/prefer-destructuring/renamed/cases.ts:82:3	@typescript-eslint/prefer-destructuring	preferDestructuring	Use object destructuring.
+tests/rules/@typescript-eslint/prefer-destructuring/renamed/cases.ts:83:3	@typescript-eslint/prefer-destructuring	preferDestructuring	Use array destructuring.
+tests/rules/@typescript-eslint/prefer-destructuring/renamed/cases.ts:84:3	@typescript-eslint/prefer-destructuring	preferDestructuring	Use object destructuring.
+tests/rules/@typescript-eslint/prefer-destructuring/renamed/cases.ts:85:3	@typescript-eslint/prefer-destructuring	preferDestructuring	Use object destructuring.
+tests/rules/@typescript-eslint/prefer-destructuring/renamed/cases.ts:89:3	@typescript-eslint/prefer-destructuring	preferDestructuring	Use object destructuring.
+tests/rules/@typescript-eslint/prefer-destructuring/renamed/cases.ts:90:3	@typescript-eslint/prefer-destructuring	preferDestructuring	Use object destructuring.
+tests/rules/@typescript-eslint/prefer-destructuring/renamed/cases.ts:91:3	@typescript-eslint/prefer-destructuring	preferDestructuring	Use array destructuring.
+tests/rules/@typescript-eslint/prefer-destructuring/renamed/cases.ts:92:3	@typescript-eslint/prefer-destructuring	preferDestructuring	Use object destructuring.
+tests/rules/@typescript-eslint/prefer-destructuring/renamed/cases.ts:106:11	@typescript-eslint/prefer-destructuring	preferDestructuring	Use object destructuring.	fix	2953	2967	{bar} = this
+tests/rules/@typescript-eslint/prefer-destructuring/renamed/cases.ts:109:5	@typescript-eslint/prefer-destructuring	preferDestructuring	Use object destructuring.
+tests/rules/@typescript-eslint/prefer-destructuring/renamed/cases.ts:119:10	@typescript-eslint/prefer-destructuring	preferDestructuring	Use array destructuring.
+tests/rules/@typescript-eslint/prefer-destructuring/renamed/cases.ts:119:28	@typescript-eslint/prefer-destructuring	preferDestructuring	Use object destructuring.	fix	3339	3355	{foo} = object

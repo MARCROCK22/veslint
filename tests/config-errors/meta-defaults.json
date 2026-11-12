@@ -1,0 +1,1 @@
+{"rules": {"@typescript-eslint/dot-notation": ["error", {"allowPattern": "^x", "allowKeyword": false}]}}

@@ -1,0 +1,32 @@
+{"id": 1, "config": "rules.json", "files": ["<cwd>/b.ts"]}
+{"id": 2, "config": "rules.json", "files": ["<cwd>/a.ts"], "texts": {"<cwd>/a.ts": "export async function work(): Promise<number> {\n  return 1;\n}\n"}}
+{"id": 3, "config": "rules.json", "files": ["<cwd>/b.ts"]}
+{"id": 4, "config": "rules.json", "files": ["<cwd>/b.ts"], "texts": {"<cwd>/b.ts": "import { work } from './a.js';\n\nwork();\nawait 1;\nexport const x = 1;\n"}}
+{"id": 5, "forget": ["<cwd>/a.ts"]}
+{"id": 6, "config": "rules.json", "files": ["<cwd>/b.ts"]}
+{"write": "<cwd>/a.ts", "text": "export async function work(): Promise<number> {\n  return 1;\n}\n"}
+{"id": 7, "config": "rules.json", "files": ["<cwd>/b.ts"]}
+{"id": 8, "config": "rules.json", "files": ["<cwd>/b.ts"], "changed": ["<cwd>/a.ts"]}
+{"write": "<cwd>/a.ts", "text": "export function work(): number {\n  return 1;\n}\n"}
+{"id": 9, "reset": true}
+{"id": 10, "config": "rules.json", "files": ["<cwd>/b.ts"]}
+{"id": 11, "config": "missing.json", "files": ["<cwd>/b.ts"]}
+{"id": 12, "files": ["<cwd>/b.ts"]}
+{"id": 13, "config": "rules.json", "files": ["<cwd>/b.ts"], "fixes": false, "texts": {"<cwd>/b.ts": "import { work } from './a.js';\n\nPromise.resolve(work());\n"}}
+this line is not JSON
+{"id": 14, "config": "rules.json", "files": ["<cwd>/b.ts"]}
+{"id": 15, "config": "rules.json", "files": ["b.ts"], "texts": {"a.ts": "export async function work(): Promise<number> {\n  return 1;\n}\n"}}
+{"id": 16, "forget": ["a.ts"]}
+{"id": 17, "config": "rules.json", "files": ["b.ts"]}
+{"id": 18, "config": "rules.json", "files": ["b.ts", "c.js"]}
+{"id": 19, "config": "dot.json", "files": ["<cwd>/uses.ts"]}
+{"id": 20, "config": "dot.json", "files": ["<cwd>/uses.ts"], "texts": {"<cwd>/secret.ts": "export class Vault {\n  protected secret = 1;\n}\n"}}
+{"id": 21, "config": "dot.json", "files": ["<cwd>/uses.ts"]}
+{"id": 22, "forget": ["<cwd>/secret.ts"]}
+{"id": 23, "config": "dot.json", "files": ["<cwd>/uses.ts"]}
+{"write": "<cwd>/secret.ts", "text": "export class Vault {\n  protected secret = 1;\n}\n"}
+{"id": 24, "config": "dot.json", "files": ["<cwd>/uses.ts"]}
+{"id": 25, "config": "dot.json", "files": ["<cwd>/uses.ts"], "changed": ["<cwd>/secret.ts"]}
+{"write": "<cwd>/secret.ts", "text": "export class Vault {\n  private secret = 1;\n}\n"}
+{"id": 26, "reset": true}
+{"id": 27, "config": "dot.json", "files": ["<cwd>/uses.ts"]}

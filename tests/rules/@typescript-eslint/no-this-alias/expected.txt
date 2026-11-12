@@ -1,0 +1,29 @@
+tests/rules/@typescript-eslint/no-this-alias/allowed-names/cases.ts:11:11	@typescript-eslint/no-this-alias	thisAssignment	Unexpected aliasing of 'this' to local variable.
+tests/rules/@typescript-eslint/no-this-alias/allowed-names/cases.ts:12:11	@typescript-eslint/no-this-alias	thisAssignment	Unexpected aliasing of 'this' to local variable.
+tests/rules/@typescript-eslint/no-this-alias/both/cases.ts:9:11	@typescript-eslint/no-this-alias	thisDestructure	Unexpected aliasing of members of 'this' to local variables.
+tests/rules/@typescript-eslint/no-this-alias/both/cases.ts:10:11	@typescript-eslint/no-this-alias	thisDestructure	Unexpected aliasing of members of 'this' to local variables.
+tests/rules/@typescript-eslint/no-this-alias/both/cases.ts:12:11	@typescript-eslint/no-this-alias	thisDestructure	Unexpected aliasing of members of 'this' to local variables.
+tests/rules/@typescript-eslint/no-this-alias/both/cases.ts:14:5	@typescript-eslint/no-this-alias	thisDestructure	Unexpected aliasing of members of 'this' to local variables.
+tests/rules/@typescript-eslint/no-this-alias/both/cases.ts:15:5	@typescript-eslint/no-this-alias	thisDestructure	Unexpected aliasing of members of 'this' to local variables.
+tests/rules/@typescript-eslint/no-this-alias/both/cases.ts:16:6	@typescript-eslint/no-this-alias	thisDestructure	Unexpected aliasing of members of 'this' to local variables.
+tests/rules/@typescript-eslint/no-this-alias/both/cases.ts:17:5	@typescript-eslint/no-this-alias	thisDestructure	Unexpected aliasing of members of 'this' to local variables.
+tests/rules/@typescript-eslint/no-this-alias/both/cases.ts:18:5	@typescript-eslint/no-this-alias	thisDestructure	Unexpected aliasing of members of 'this' to local variables.
+tests/rules/@typescript-eslint/no-this-alias/cases.ts:9:11	@typescript-eslint/no-this-alias	thisAssignment	Unexpected aliasing of 'this' to local variable.
+tests/rules/@typescript-eslint/no-this-alias/cases.ts:11:5	@typescript-eslint/no-this-alias	thisAssignment	Unexpected aliasing of 'this' to local variable.
+tests/rules/@typescript-eslint/no-this-alias/cases.ts:12:9	@typescript-eslint/no-this-alias	thisAssignment	Unexpected aliasing of 'this' to local variable.
+tests/rules/@typescript-eslint/no-this-alias/cases.ts:14:5	@typescript-eslint/no-this-alias	thisAssignment	Unexpected aliasing of 'this' to local variable.
+tests/rules/@typescript-eslint/no-this-alias/cases.ts:15:5	@typescript-eslint/no-this-alias	thisAssignment	Unexpected aliasing of 'this' to local variable.
+tests/rules/@typescript-eslint/no-this-alias/cases.ts:16:6	@typescript-eslint/no-this-alias	thisAssignment	Unexpected aliasing of 'this' to local variable.
+tests/rules/@typescript-eslint/no-this-alias/cases.ts:17:11	@typescript-eslint/no-this-alias	thisAssignment	Unexpected aliasing of 'this' to local variable.
+tests/rules/@typescript-eslint/no-this-alias/cases.ts:18:24	@typescript-eslint/no-this-alias	thisAssignment	Unexpected aliasing of 'this' to local variable.
+tests/rules/@typescript-eslint/no-this-alias/cases.ts:32:9	@typescript-eslint/no-this-alias	thisAssignment	Unexpected aliasing of 'this' to local variable.
+tests/rules/@typescript-eslint/no-this-alias/cases.ts:49:12	@typescript-eslint/no-this-alias	thisAssignment	Unexpected aliasing of 'this' to local variable.
+tests/rules/@typescript-eslint/no-this-alias/no-destructuring/cases.ts:8:11	@typescript-eslint/no-this-alias	thisAssignment	Unexpected aliasing of 'this' to local variable.
+tests/rules/@typescript-eslint/no-this-alias/no-destructuring/cases.ts:9:11	@typescript-eslint/no-this-alias	thisDestructure	Unexpected aliasing of members of 'this' to local variables.
+tests/rules/@typescript-eslint/no-this-alias/no-destructuring/cases.ts:10:11	@typescript-eslint/no-this-alias	thisDestructure	Unexpected aliasing of members of 'this' to local variables.
+tests/rules/@typescript-eslint/no-this-alias/no-destructuring/cases.ts:12:11	@typescript-eslint/no-this-alias	thisDestructure	Unexpected aliasing of members of 'this' to local variables.
+tests/rules/@typescript-eslint/no-this-alias/no-destructuring/cases.ts:14:5	@typescript-eslint/no-this-alias	thisDestructure	Unexpected aliasing of members of 'this' to local variables.
+tests/rules/@typescript-eslint/no-this-alias/no-destructuring/cases.ts:15:5	@typescript-eslint/no-this-alias	thisDestructure	Unexpected aliasing of members of 'this' to local variables.
+tests/rules/@typescript-eslint/no-this-alias/no-destructuring/cases.ts:16:6	@typescript-eslint/no-this-alias	thisDestructure	Unexpected aliasing of members of 'this' to local variables.
+tests/rules/@typescript-eslint/no-this-alias/no-destructuring/cases.ts:17:5	@typescript-eslint/no-this-alias	thisDestructure	Unexpected aliasing of members of 'this' to local variables.
+tests/rules/@typescript-eslint/no-this-alias/no-destructuring/cases.ts:18:5	@typescript-eslint/no-this-alias	thisDestructure	Unexpected aliasing of members of 'this' to local variables.

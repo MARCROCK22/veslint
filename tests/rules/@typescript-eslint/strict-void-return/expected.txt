@@ -1,0 +1,206 @@
+tests/rules/@typescript-eslint/strict-void-return/allow-any/cases.ts:26:11	@typescript-eslint/strict-void-return	nonVoidReturn	Value returned in a context where a void return is expected.
+tests/rules/@typescript-eslint/strict-void-return/allow-any/cases.ts:27:12	@typescript-eslint/strict-void-return	nonVoidReturn	Value returned in a context where a void return is expected.
+tests/rules/@typescript-eslint/strict-void-return/allow-any/cases.ts:29:3	@typescript-eslint/strict-void-return	nonVoidReturn	Value returned in a context where a void return is expected.
+tests/rules/@typescript-eslint/strict-void-return/allow-any/cases.ts:40:14	@typescript-eslint/strict-void-return	asyncFunc	Async function used in a context where a void function is expected.
+tests/rules/@typescript-eslint/strict-void-return/allow-any/cases.ts:41:14	@typescript-eslint/strict-void-return	asyncFunc	Async function used in a context where a void function is expected.
+tests/rules/@typescript-eslint/strict-void-return/allow-any/cases.ts:43:3	@typescript-eslint/strict-void-return	nonVoidReturn	Value returned in a context where a void return is expected.
+tests/rules/@typescript-eslint/strict-void-return/allow-any/cases.ts:45:5	@typescript-eslint/strict-void-return	nonVoidFunc	Value-returning function used in a context where a void function is expected.
+tests/rules/@typescript-eslint/strict-void-return/allow-any/cases.ts:46:5	@typescript-eslint/strict-void-return	asyncFunc	Async function used in a context where a void function is expected.
+tests/rules/@typescript-eslint/strict-void-return/allow-any/cases.ts:47:5	@typescript-eslint/strict-void-return	nonVoidFunc	Value-returning function used in a context where a void function is expected.
+tests/rules/@typescript-eslint/strict-void-return/allow-any/cases.ts:52:5	@typescript-eslint/strict-void-return	nonVoidFunc	Value-returning function used in a context where a void function is expected.
+tests/rules/@typescript-eslint/strict-void-return/allow-any/cases.ts:53:5	@typescript-eslint/strict-void-return	nonVoidFunc	Value-returning function used in a context where a void function is expected.
+tests/rules/@typescript-eslint/strict-void-return/allow-any/cases.ts:54:5	@typescript-eslint/strict-void-return	nonVoidFunc	Value-returning function used in a context where a void function is expected.
+tests/rules/@typescript-eslint/strict-void-return/allow-any/cases.ts:59:9	@typescript-eslint/strict-void-return	nonVoidFunc	Value-returning function used in a context where a void function is expected.
+tests/rules/@typescript-eslint/strict-void-return/allow-any/cases.ts:65:18	@typescript-eslint/strict-void-return	nonVoidFunc	Value-returning function used in a context where a void function is expected.
+tests/rules/@typescript-eslint/strict-void-return/allow-any/cases.ts:71:5	@typescript-eslint/strict-void-return	nonVoidReturn	Value returned in a context where a void return is expected.
+tests/rules/@typescript-eslint/strict-void-return/allow-any/cases.ts:73:5	@typescript-eslint/strict-void-return	nonVoidReturn	Value returned in a context where a void return is expected.
+tests/rules/@typescript-eslint/strict-void-return/allow-any/cases.ts:76:5	@typescript-eslint/strict-void-return	nonVoidReturn	Value returned in a context where a void return is expected.
+tests/rules/@typescript-eslint/strict-void-return/allow-any/cases.ts:79:5	@typescript-eslint/strict-void-return	nonVoidReturn	Value returned in a context where a void return is expected.
+tests/rules/@typescript-eslint/strict-void-return/allow-any/cases.ts:82:5	@typescript-eslint/strict-void-return	nonVoidReturn	Value returned in a context where a void return is expected.
+tests/rules/@typescript-eslint/strict-void-return/allow-any/cases.ts:86:7	@typescript-eslint/strict-void-return	nonVoidReturn	Value returned in a context where a void return is expected.
+tests/rules/@typescript-eslint/strict-void-return/allow-any/cases.ts:88:7	@typescript-eslint/strict-void-return	nonVoidReturn	Value returned in a context where a void return is expected.
+tests/rules/@typescript-eslint/strict-void-return/allow-any/cases.ts:92:5	@typescript-eslint/strict-void-return	nonVoidReturn	Value returned in a context where a void return is expected.
+tests/rules/@typescript-eslint/strict-void-return/allow-any/cases.ts:94:5	@typescript-eslint/strict-void-return	nonVoidReturn	Value returned in a context where a void return is expected.
+tests/rules/@typescript-eslint/strict-void-return/allow-any/cases.ts:96:5	@typescript-eslint/strict-void-return	nonVoidReturn	Value returned in a context where a void return is expected.
+tests/rules/@typescript-eslint/strict-void-return/allow-any/cases.ts:99:5	@typescript-eslint/strict-void-return	nonVoidReturn	Value returned in a context where a void return is expected.
+tests/rules/@typescript-eslint/strict-void-return/allow-any/cases.ts:109:3	@typescript-eslint/strict-void-return	nonVoidReturn	Value returned in a context where a void return is expected.
+tests/rules/@typescript-eslint/strict-void-return/allow-any/cases.ts:111:17	@typescript-eslint/strict-void-return	nonVoidReturn	Value returned in a context where a void return is expected.
+tests/rules/@typescript-eslint/strict-void-return/allow-any/cases.ts:113:3	@typescript-eslint/strict-void-return	nonVoidReturn	Value returned in a context where a void return is expected.
+tests/rules/@typescript-eslint/strict-void-return/allow-any/cases.ts:115:13	@typescript-eslint/strict-void-return	nonVoidReturn	Value returned in a context where a void return is expected.
+tests/rules/@typescript-eslint/strict-void-return/allow-any/cases.ts:116:14	@typescript-eslint/strict-void-return	nonVoidReturn	Value returned in a context where a void return is expected.
+tests/rules/@typescript-eslint/strict-void-return/allow-any/cases.ts:118:12	@typescript-eslint/strict-void-return	nonVoidReturn	Value returned in a context where a void return is expected.
+tests/rules/@typescript-eslint/strict-void-return/allow-any/cases.ts:118:34	@typescript-eslint/strict-void-return	asyncFunc	Async function used in a context where a void function is expected.
+tests/rules/@typescript-eslint/strict-void-return/allow-any/cases.ts:123:24	@typescript-eslint/strict-void-return	nonVoidReturn	Value returned in a context where a void return is expected.
+tests/rules/@typescript-eslint/strict-void-return/allow-any/cases.ts:124:24	@typescript-eslint/strict-void-return	nonVoidReturn	Value returned in a context where a void return is expected.
+tests/rules/@typescript-eslint/strict-void-return/allow-any/cases.ts:125:20	@typescript-eslint/strict-void-return	nonVoidReturn	Value returned in a context where a void return is expected.
+tests/rules/@typescript-eslint/strict-void-return/allow-any/cases.ts:126:19	@typescript-eslint/strict-void-return	nonVoidReturn	Value returned in a context where a void return is expected.
+tests/rules/@typescript-eslint/strict-void-return/allow-any/cases.ts:128:21	@typescript-eslint/strict-void-return	nonVoidReturn	Value returned in a context where a void return is expected.
+tests/rules/@typescript-eslint/strict-void-return/allow-any/cases.ts:130:3	@typescript-eslint/strict-void-return	nonVoidReturn	Value returned in a context where a void return is expected.
+tests/rules/@typescript-eslint/strict-void-return/allow-any/cases.ts:134:40	@typescript-eslint/strict-void-return	nonVoidReturn	Value returned in a context where a void return is expected.
+tests/rules/@typescript-eslint/strict-void-return/allow-any/cases.ts:136:42	@typescript-eslint/strict-void-return	nonVoidReturn	Value returned in a context where a void return is expected.
+tests/rules/@typescript-eslint/strict-void-return/allow-any/cases.ts:137:45	@typescript-eslint/strict-void-return	asyncFunc	Async function used in a context where a void function is expected.
+tests/rules/@typescript-eslint/strict-void-return/allow-any/cases.ts:141:33	@typescript-eslint/strict-void-return	nonVoidReturn	Value returned in a context where a void return is expected.
+tests/rules/@typescript-eslint/strict-void-return/allow-any/cases.ts:143:3	@typescript-eslint/strict-void-return	nonVoidReturn	Value returned in a context where a void return is expected.
+tests/rules/@typescript-eslint/strict-void-return/allow-any/cases.ts:145:41	@typescript-eslint/strict-void-return	asyncFunc	Async function used in a context where a void function is expected.
+tests/rules/@typescript-eslint/strict-void-return/allow-any/cases.ts:146:36	@typescript-eslint/strict-void-return	nonVoidFunc	Value-returning function used in a context where a void function is expected.
+tests/rules/@typescript-eslint/strict-void-return/allow-any/cases.ts:149:15	@typescript-eslint/strict-void-return	nonVoidReturn	Value returned in a context where a void return is expected.
+tests/rules/@typescript-eslint/strict-void-return/allow-any/cases.ts:150:9	@typescript-eslint/strict-void-return	nonVoidFunc	Value-returning function used in a context where a void function is expected.
+tests/rules/@typescript-eslint/strict-void-return/allow-any/cases.ts:152:18	@typescript-eslint/strict-void-return	nonVoidReturn	Value returned in a context where a void return is expected.
+tests/rules/@typescript-eslint/strict-void-return/allow-any/cases.ts:153:20	@typescript-eslint/strict-void-return	nonVoidReturn	Value returned in a context where a void return is expected.
+tests/rules/@typescript-eslint/strict-void-return/allow-any/cases.ts:156:37	@typescript-eslint/strict-void-return	nonVoidReturn	Value returned in a context where a void return is expected.
+tests/rules/@typescript-eslint/strict-void-return/allow-any/cases.ts:156:50	@typescript-eslint/strict-void-return	nonVoidFunc	Value-returning function used in a context where a void function is expected.
+tests/rules/@typescript-eslint/strict-void-return/allow-any/cases.ts:156:69	@typescript-eslint/strict-void-return	asyncFunc	Async function used in a context where a void function is expected.
+tests/rules/@typescript-eslint/strict-void-return/allow-any/cases.ts:157:50	@typescript-eslint/strict-void-return	nonVoidReturn	Value returned in a context where a void return is expected.
+tests/rules/@typescript-eslint/strict-void-return/allow-any/cases.ts:158:41	@typescript-eslint/strict-void-return	nonVoidReturn	Value returned in a context where a void return is expected.
+tests/rules/@typescript-eslint/strict-void-return/allow-any/cases.ts:169:18	@typescript-eslint/strict-void-return	nonVoidReturn	Value returned in a context where a void return is expected.
+tests/rules/@typescript-eslint/strict-void-return/allow-any/cases.ts:171:5	@typescript-eslint/strict-void-return	nonVoidReturn	Value returned in a context where a void return is expected.
+tests/rules/@typescript-eslint/strict-void-return/allow-any/cases.ts:173:3	@typescript-eslint/strict-void-return	asyncFunc	Async function used in a context where a void function is expected.
+tests/rules/@typescript-eslint/strict-void-return/allow-any/cases.ts:181:66	@typescript-eslint/strict-void-return	nonVoidFunc	Value-returning function used in a context where a void function is expected.
+tests/rules/@typescript-eslint/strict-void-return/allow-any/cases.ts:184:5	@typescript-eslint/strict-void-return	nonVoidReturn	Value returned in a context where a void return is expected.
+tests/rules/@typescript-eslint/strict-void-return/allow-any/cases.ts:186:3	@typescript-eslint/strict-void-return	asyncFunc	Async function used in a context where a void function is expected.
+tests/rules/@typescript-eslint/strict-void-return/allow-any/cases.ts:190:3	@typescript-eslint/strict-void-return	nonVoidFunc	Value-returning function used in a context where a void function is expected.
+tests/rules/@typescript-eslint/strict-void-return/allow-any/cases.ts:192:5	@typescript-eslint/strict-void-return	nonVoidReturn	Value returned in a context where a void return is expected.
+tests/rules/@typescript-eslint/strict-void-return/allow-any/cases.ts:195:5	@typescript-eslint/strict-void-return	nonVoidReturn	Value returned in a context where a void return is expected.
+tests/rules/@typescript-eslint/strict-void-return/allow-any/cases.ts:198:56	@typescript-eslint/strict-void-return	nonVoidReturn	Value returned in a context where a void return is expected.
+tests/rules/@typescript-eslint/strict-void-return/allow-any/cases.ts:214:16	@typescript-eslint/strict-void-return	nonVoidReturn	Value returned in a context where a void return is expected.
+tests/rules/@typescript-eslint/strict-void-return/allow-any/cases.ts:217:10	@typescript-eslint/strict-void-return	nonVoidFunc	Value-returning function used in a context where a void function is expected.
+tests/rules/@typescript-eslint/strict-void-return/allow-any/cases.ts:219:48	@typescript-eslint/strict-void-return	nonVoidReturn	Value returned in a context where a void return is expected.
+tests/rules/@typescript-eslint/strict-void-return/allow-any/cases.ts:221:22	@typescript-eslint/strict-void-return	nonVoidReturn	Value returned in a context where a void return is expected.
+tests/rules/@typescript-eslint/strict-void-return/allow-any/cases.ts:242:5	@typescript-eslint/strict-void-return	nonVoidReturn	Value returned in a context where a void return is expected.
+tests/rules/@typescript-eslint/strict-void-return/allow-any/cases.ts:244:20	@typescript-eslint/strict-void-return	nonVoidReturn	Value returned in a context where a void return is expected.
+tests/rules/@typescript-eslint/strict-void-return/allow-any/cases.ts:254:5	@typescript-eslint/strict-void-return	nonVoidReturn	Value returned in a context where a void return is expected.
+tests/rules/@typescript-eslint/strict-void-return/allow-any/cases.ts:256:20	@typescript-eslint/strict-void-return	nonVoidReturn	Value returned in a context where a void return is expected.
+tests/rules/@typescript-eslint/strict-void-return/allow-any/cases.ts:261:5	@typescript-eslint/strict-void-return	nonVoidReturn	Value returned in a context where a void return is expected.
+tests/rules/@typescript-eslint/strict-void-return/allow-any/cases.ts:269:3	@typescript-eslint/strict-void-return	asyncFunc	Async function used in a context where a void function is expected.
+tests/rules/@typescript-eslint/strict-void-return/allow-any/cases.ts:270:3	@typescript-eslint/strict-void-return	asyncFunc	Async function used in a context where a void function is expected.
+tests/rules/@typescript-eslint/strict-void-return/allow-any/cases.ts:274:22	@typescript-eslint/strict-void-return	nonVoidFunc	Value-returning function used in a context where a void function is expected.
+tests/rules/@typescript-eslint/strict-void-return/allow-any/cases.ts:277:37	@typescript-eslint/strict-void-return	nonVoidReturn	Value returned in a context where a void return is expected.
+tests/rules/@typescript-eslint/strict-void-return/allow-any/cases.ts:280:5	@typescript-eslint/strict-void-return	nonVoidReturn	Value returned in a context where a void return is expected.
+tests/rules/@typescript-eslint/strict-void-return/allow-any/cases.ts:289:5	@typescript-eslint/strict-void-return	nonVoidReturn	Value returned in a context where a void return is expected.
+tests/rules/@typescript-eslint/strict-void-return/allow-any/cases.ts:291:19	@typescript-eslint/strict-void-return	nonVoidReturn	Value returned in a context where a void return is expected.
+tests/rules/@typescript-eslint/strict-void-return/allow-any/cases.ts:295:5	@typescript-eslint/strict-void-return	nonVoidReturn	Value returned in a context where a void return is expected.
+tests/rules/@typescript-eslint/strict-void-return/allow-any/cases.ts:300:32	@typescript-eslint/strict-void-return	nonVoidReturn	Value returned in a context where a void return is expected.
+tests/rules/@typescript-eslint/strict-void-return/allow-any/cases.ts:304:5	@typescript-eslint/strict-void-return	nonVoidReturn	Value returned in a context where a void return is expected.
+tests/rules/@typescript-eslint/strict-void-return/allow-any/cases.ts:306:26	@typescript-eslint/strict-void-return	nonVoidReturn	Value returned in a context where a void return is expected.
+tests/rules/@typescript-eslint/strict-void-return/allow-any/cases.ts:314:5	@typescript-eslint/strict-void-return	nonVoidFunc	Value-returning function used in a context where a void function is expected.
+tests/rules/@typescript-eslint/strict-void-return/allow-any/cases.ts:316:17	@typescript-eslint/strict-void-return	nonVoidReturn	Value returned in a context where a void return is expected.
+tests/rules/@typescript-eslint/strict-void-return/allow-any/cases.ts:317:11	@typescript-eslint/strict-void-return	nonVoidFunc	Value-returning function used in a context where a void function is expected.
+tests/rules/@typescript-eslint/strict-void-return/allow-any/cases.ts:318:20	@typescript-eslint/strict-void-return	nonVoidReturn	Value returned in a context where a void return is expected.
+tests/rules/@typescript-eslint/strict-void-return/allow-any/cases.ts:319:61	@typescript-eslint/strict-void-return	nonVoidReturn	Value returned in a context where a void return is expected.
+tests/rules/@typescript-eslint/strict-void-return/callable-primitive/cases.ts:14:11	@typescript-eslint/strict-void-return	nonVoidFunc	Value-returning function used in a context where a void function is expected.
+tests/rules/@typescript-eslint/strict-void-return/callable-primitive/cases.ts:15:11	@typescript-eslint/strict-void-return	nonVoidFunc	Value-returning function used in a context where a void function is expected.
+tests/rules/@typescript-eslint/strict-void-return/callable-primitive/cases.ts:16:11	@typescript-eslint/strict-void-return	nonVoidFunc	Value-returning function used in a context where a void function is expected.
+tests/rules/@typescript-eslint/strict-void-return/callable-primitive/cases.ts:19:11	@typescript-eslint/strict-void-return	nonVoidFunc	Value-returning function used in a context where a void function is expected.
+tests/rules/@typescript-eslint/strict-void-return/callable-primitive/cases.ts:21:30	@typescript-eslint/strict-void-return	nonVoidFunc	Value-returning function used in a context where a void function is expected.
+tests/rules/@typescript-eslint/strict-void-return/callable-primitive/cases.ts:23:31	@typescript-eslint/strict-void-return	nonVoidFunc	Value-returning function used in a context where a void function is expected.
+tests/rules/@typescript-eslint/strict-void-return/callable-primitive/cases.ts:23:37	@typescript-eslint/strict-void-return	nonVoidFunc	Value-returning function used in a context where a void function is expected.
+tests/rules/@typescript-eslint/strict-void-return/callable-primitive/cases.ts:24:62	@typescript-eslint/strict-void-return	nonVoidFunc	Value-returning function used in a context where a void function is expected.
+tests/rules/@typescript-eslint/strict-void-return/callable-primitive/cases.ts:26:10	@typescript-eslint/strict-void-return	nonVoidFunc	Value-returning function used in a context where a void function is expected.
+tests/rules/@typescript-eslint/strict-void-return/callable-primitive/cases.ts:29:26	@typescript-eslint/strict-void-return	nonVoidFunc	Value-returning function used in a context where a void function is expected.
+tests/rules/@typescript-eslint/strict-void-return/cases.ts:26:11	@typescript-eslint/strict-void-return	nonVoidReturn	Value returned in a context where a void return is expected.
+tests/rules/@typescript-eslint/strict-void-return/cases.ts:27:12	@typescript-eslint/strict-void-return	nonVoidReturn	Value returned in a context where a void return is expected.
+tests/rules/@typescript-eslint/strict-void-return/cases.ts:29:3	@typescript-eslint/strict-void-return	nonVoidReturn	Value returned in a context where a void return is expected.
+tests/rules/@typescript-eslint/strict-void-return/cases.ts:40:14	@typescript-eslint/strict-void-return	asyncFunc	Async function used in a context where a void function is expected.
+tests/rules/@typescript-eslint/strict-void-return/cases.ts:41:14	@typescript-eslint/strict-void-return	asyncFunc	Async function used in a context where a void function is expected.
+tests/rules/@typescript-eslint/strict-void-return/cases.ts:43:3	@typescript-eslint/strict-void-return	nonVoidReturn	Value returned in a context where a void return is expected.
+tests/rules/@typescript-eslint/strict-void-return/cases.ts:45:5	@typescript-eslint/strict-void-return	nonVoidFunc	Value-returning function used in a context where a void function is expected.
+tests/rules/@typescript-eslint/strict-void-return/cases.ts:46:5	@typescript-eslint/strict-void-return	asyncFunc	Async function used in a context where a void function is expected.
+tests/rules/@typescript-eslint/strict-void-return/cases.ts:47:5	@typescript-eslint/strict-void-return	nonVoidFunc	Value-returning function used in a context where a void function is expected.
+tests/rules/@typescript-eslint/strict-void-return/cases.ts:51:5	@typescript-eslint/strict-void-return	nonVoidFunc	Value-returning function used in a context where a void function is expected.
+tests/rules/@typescript-eslint/strict-void-return/cases.ts:52:5	@typescript-eslint/strict-void-return	nonVoidFunc	Value-returning function used in a context where a void function is expected.
+tests/rules/@typescript-eslint/strict-void-return/cases.ts:53:5	@typescript-eslint/strict-void-return	nonVoidFunc	Value-returning function used in a context where a void function is expected.
+tests/rules/@typescript-eslint/strict-void-return/cases.ts:54:5	@typescript-eslint/strict-void-return	nonVoidFunc	Value-returning function used in a context where a void function is expected.
+tests/rules/@typescript-eslint/strict-void-return/cases.ts:55:11	@typescript-eslint/strict-void-return	nonVoidReturn	Value returned in a context where a void return is expected.
+tests/rules/@typescript-eslint/strict-void-return/cases.ts:57:3	@typescript-eslint/strict-void-return	nonVoidReturn	Value returned in a context where a void return is expected.
+tests/rules/@typescript-eslint/strict-void-return/cases.ts:59:9	@typescript-eslint/strict-void-return	nonVoidFunc	Value-returning function used in a context where a void function is expected.
+tests/rules/@typescript-eslint/strict-void-return/cases.ts:65:18	@typescript-eslint/strict-void-return	nonVoidFunc	Value-returning function used in a context where a void function is expected.
+tests/rules/@typescript-eslint/strict-void-return/cases.ts:71:5	@typescript-eslint/strict-void-return	nonVoidReturn	Value returned in a context where a void return is expected.
+tests/rules/@typescript-eslint/strict-void-return/cases.ts:73:5	@typescript-eslint/strict-void-return	nonVoidReturn	Value returned in a context where a void return is expected.
+tests/rules/@typescript-eslint/strict-void-return/cases.ts:76:5	@typescript-eslint/strict-void-return	nonVoidReturn	Value returned in a context where a void return is expected.
+tests/rules/@typescript-eslint/strict-void-return/cases.ts:79:5	@typescript-eslint/strict-void-return	nonVoidReturn	Value returned in a context where a void return is expected.
+tests/rules/@typescript-eslint/strict-void-return/cases.ts:82:5	@typescript-eslint/strict-void-return	nonVoidReturn	Value returned in a context where a void return is expected.
+tests/rules/@typescript-eslint/strict-void-return/cases.ts:86:7	@typescript-eslint/strict-void-return	nonVoidReturn	Value returned in a context where a void return is expected.
+tests/rules/@typescript-eslint/strict-void-return/cases.ts:88:7	@typescript-eslint/strict-void-return	nonVoidReturn	Value returned in a context where a void return is expected.
+tests/rules/@typescript-eslint/strict-void-return/cases.ts:92:5	@typescript-eslint/strict-void-return	nonVoidReturn	Value returned in a context where a void return is expected.
+tests/rules/@typescript-eslint/strict-void-return/cases.ts:94:5	@typescript-eslint/strict-void-return	nonVoidReturn	Value returned in a context where a void return is expected.
+tests/rules/@typescript-eslint/strict-void-return/cases.ts:96:5	@typescript-eslint/strict-void-return	nonVoidReturn	Value returned in a context where a void return is expected.
+tests/rules/@typescript-eslint/strict-void-return/cases.ts:99:5	@typescript-eslint/strict-void-return	nonVoidReturn	Value returned in a context where a void return is expected.
+tests/rules/@typescript-eslint/strict-void-return/cases.ts:109:3	@typescript-eslint/strict-void-return	nonVoidReturn	Value returned in a context where a void return is expected.
+tests/rules/@typescript-eslint/strict-void-return/cases.ts:111:17	@typescript-eslint/strict-void-return	nonVoidReturn	Value returned in a context where a void return is expected.
+tests/rules/@typescript-eslint/strict-void-return/cases.ts:113:3	@typescript-eslint/strict-void-return	nonVoidReturn	Value returned in a context where a void return is expected.
+tests/rules/@typescript-eslint/strict-void-return/cases.ts:115:13	@typescript-eslint/strict-void-return	nonVoidReturn	Value returned in a context where a void return is expected.
+tests/rules/@typescript-eslint/strict-void-return/cases.ts:116:14	@typescript-eslint/strict-void-return	nonVoidReturn	Value returned in a context where a void return is expected.
+tests/rules/@typescript-eslint/strict-void-return/cases.ts:118:12	@typescript-eslint/strict-void-return	nonVoidReturn	Value returned in a context where a void return is expected.
+tests/rules/@typescript-eslint/strict-void-return/cases.ts:118:34	@typescript-eslint/strict-void-return	asyncFunc	Async function used in a context where a void function is expected.
+tests/rules/@typescript-eslint/strict-void-return/cases.ts:123:24	@typescript-eslint/strict-void-return	nonVoidReturn	Value returned in a context where a void return is expected.
+tests/rules/@typescript-eslint/strict-void-return/cases.ts:124:24	@typescript-eslint/strict-void-return	nonVoidReturn	Value returned in a context where a void return is expected.
+tests/rules/@typescript-eslint/strict-void-return/cases.ts:125:20	@typescript-eslint/strict-void-return	nonVoidReturn	Value returned in a context where a void return is expected.
+tests/rules/@typescript-eslint/strict-void-return/cases.ts:126:19	@typescript-eslint/strict-void-return	nonVoidReturn	Value returned in a context where a void return is expected.
+tests/rules/@typescript-eslint/strict-void-return/cases.ts:128:21	@typescript-eslint/strict-void-return	nonVoidReturn	Value returned in a context where a void return is expected.
+tests/rules/@typescript-eslint/strict-void-return/cases.ts:130:3	@typescript-eslint/strict-void-return	nonVoidReturn	Value returned in a context where a void return is expected.
+tests/rules/@typescript-eslint/strict-void-return/cases.ts:134:40	@typescript-eslint/strict-void-return	nonVoidReturn	Value returned in a context where a void return is expected.
+tests/rules/@typescript-eslint/strict-void-return/cases.ts:136:42	@typescript-eslint/strict-void-return	nonVoidReturn	Value returned in a context where a void return is expected.
+tests/rules/@typescript-eslint/strict-void-return/cases.ts:137:45	@typescript-eslint/strict-void-return	asyncFunc	Async function used in a context where a void function is expected.
+tests/rules/@typescript-eslint/strict-void-return/cases.ts:141:33	@typescript-eslint/strict-void-return	nonVoidReturn	Value returned in a context where a void return is expected.
+tests/rules/@typescript-eslint/strict-void-return/cases.ts:143:3	@typescript-eslint/strict-void-return	nonVoidReturn	Value returned in a context where a void return is expected.
+tests/rules/@typescript-eslint/strict-void-return/cases.ts:145:41	@typescript-eslint/strict-void-return	asyncFunc	Async function used in a context where a void function is expected.
+tests/rules/@typescript-eslint/strict-void-return/cases.ts:146:36	@typescript-eslint/strict-void-return	nonVoidFunc	Value-returning function used in a context where a void function is expected.
+tests/rules/@typescript-eslint/strict-void-return/cases.ts:149:15	@typescript-eslint/strict-void-return	nonVoidReturn	Value returned in a context where a void return is expected.
+tests/rules/@typescript-eslint/strict-void-return/cases.ts:150:9	@typescript-eslint/strict-void-return	nonVoidFunc	Value-returning function used in a context where a void function is expected.
+tests/rules/@typescript-eslint/strict-void-return/cases.ts:152:18	@typescript-eslint/strict-void-return	nonVoidReturn	Value returned in a context where a void return is expected.
+tests/rules/@typescript-eslint/strict-void-return/cases.ts:153:20	@typescript-eslint/strict-void-return	nonVoidReturn	Value returned in a context where a void return is expected.
+tests/rules/@typescript-eslint/strict-void-return/cases.ts:156:37	@typescript-eslint/strict-void-return	nonVoidReturn	Value returned in a context where a void return is expected.
+tests/rules/@typescript-eslint/strict-void-return/cases.ts:156:50	@typescript-eslint/strict-void-return	nonVoidFunc	Value-returning function used in a context where a void function is expected.
+tests/rules/@typescript-eslint/strict-void-return/cases.ts:156:69	@typescript-eslint/strict-void-return	asyncFunc	Async function used in a context where a void function is expected.
+tests/rules/@typescript-eslint/strict-void-return/cases.ts:157:50	@typescript-eslint/strict-void-return	nonVoidReturn	Value returned in a context where a void return is expected.
+tests/rules/@typescript-eslint/strict-void-return/cases.ts:158:41	@typescript-eslint/strict-void-return	nonVoidReturn	Value returned in a context where a void return is expected.
+tests/rules/@typescript-eslint/strict-void-return/cases.ts:169:18	@typescript-eslint/strict-void-return	nonVoidReturn	Value returned in a context where a void return is expected.
+tests/rules/@typescript-eslint/strict-void-return/cases.ts:171:5	@typescript-eslint/strict-void-return	nonVoidReturn	Value returned in a context where a void return is expected.
+tests/rules/@typescript-eslint/strict-void-return/cases.ts:173:3	@typescript-eslint/strict-void-return	asyncFunc	Async function used in a context where a void function is expected.
+tests/rules/@typescript-eslint/strict-void-return/cases.ts:181:66	@typescript-eslint/strict-void-return	nonVoidFunc	Value-returning function used in a context where a void function is expected.
+tests/rules/@typescript-eslint/strict-void-return/cases.ts:184:5	@typescript-eslint/strict-void-return	nonVoidReturn	Value returned in a context where a void return is expected.
+tests/rules/@typescript-eslint/strict-void-return/cases.ts:186:3	@typescript-eslint/strict-void-return	asyncFunc	Async function used in a context where a void function is expected.
+tests/rules/@typescript-eslint/strict-void-return/cases.ts:190:3	@typescript-eslint/strict-void-return	nonVoidFunc	Value-returning function used in a context where a void function is expected.
+tests/rules/@typescript-eslint/strict-void-return/cases.ts:192:5	@typescript-eslint/strict-void-return	nonVoidReturn	Value returned in a context where a void return is expected.
+tests/rules/@typescript-eslint/strict-void-return/cases.ts:195:5	@typescript-eslint/strict-void-return	nonVoidReturn	Value returned in a context where a void return is expected.
+tests/rules/@typescript-eslint/strict-void-return/cases.ts:198:56	@typescript-eslint/strict-void-return	nonVoidReturn	Value returned in a context where a void return is expected.
+tests/rules/@typescript-eslint/strict-void-return/cases.ts:214:16	@typescript-eslint/strict-void-return	nonVoidReturn	Value returned in a context where a void return is expected.
+tests/rules/@typescript-eslint/strict-void-return/cases.ts:217:10	@typescript-eslint/strict-void-return	nonVoidFunc	Value-returning function used in a context where a void function is expected.
+tests/rules/@typescript-eslint/strict-void-return/cases.ts:219:48	@typescript-eslint/strict-void-return	nonVoidReturn	Value returned in a context where a void return is expected.
+tests/rules/@typescript-eslint/strict-void-return/cases.ts:221:22	@typescript-eslint/strict-void-return	nonVoidReturn	Value returned in a context where a void return is expected.
+tests/rules/@typescript-eslint/strict-void-return/cases.ts:242:5	@typescript-eslint/strict-void-return	nonVoidReturn	Value returned in a context where a void return is expected.
+tests/rules/@typescript-eslint/strict-void-return/cases.ts:244:20	@typescript-eslint/strict-void-return	nonVoidReturn	Value returned in a context where a void return is expected.
+tests/rules/@typescript-eslint/strict-void-return/cases.ts:254:5	@typescript-eslint/strict-void-return	nonVoidReturn	Value returned in a context where a void return is expected.
+tests/rules/@typescript-eslint/strict-void-return/cases.ts:256:20	@typescript-eslint/strict-void-return	nonVoidReturn	Value returned in a context where a void return is expected.
+tests/rules/@typescript-eslint/strict-void-return/cases.ts:261:5	@typescript-eslint/strict-void-return	nonVoidReturn	Value returned in a context where a void return is expected.
+tests/rules/@typescript-eslint/strict-void-return/cases.ts:269:3	@typescript-eslint/strict-void-return	asyncFunc	Async function used in a context where a void function is expected.
+tests/rules/@typescript-eslint/strict-void-return/cases.ts:270:3	@typescript-eslint/strict-void-return	asyncFunc	Async function used in a context where a void function is expected.
+tests/rules/@typescript-eslint/strict-void-return/cases.ts:274:22	@typescript-eslint/strict-void-return	nonVoidFunc	Value-returning function used in a context where a void function is expected.
+tests/rules/@typescript-eslint/strict-void-return/cases.ts:277:37	@typescript-eslint/strict-void-return	nonVoidReturn	Value returned in a context where a void return is expected.
+tests/rules/@typescript-eslint/strict-void-return/cases.ts:280:5	@typescript-eslint/strict-void-return	nonVoidReturn	Value returned in a context where a void return is expected.
+tests/rules/@typescript-eslint/strict-void-return/cases.ts:289:5	@typescript-eslint/strict-void-return	nonVoidReturn	Value returned in a context where a void return is expected.
+tests/rules/@typescript-eslint/strict-void-return/cases.ts:291:19	@typescript-eslint/strict-void-return	nonVoidReturn	Value returned in a context where a void return is expected.
+tests/rules/@typescript-eslint/strict-void-return/cases.ts:295:5	@typescript-eslint/strict-void-return	nonVoidReturn	Value returned in a context where a void return is expected.
+tests/rules/@typescript-eslint/strict-void-return/cases.ts:300:32	@typescript-eslint/strict-void-return	nonVoidReturn	Value returned in a context where a void return is expected.
+tests/rules/@typescript-eslint/strict-void-return/cases.ts:304:5	@typescript-eslint/strict-void-return	nonVoidReturn	Value returned in a context where a void return is expected.
+tests/rules/@typescript-eslint/strict-void-return/cases.ts:306:26	@typescript-eslint/strict-void-return	nonVoidReturn	Value returned in a context where a void return is expected.
+tests/rules/@typescript-eslint/strict-void-return/cases.ts:314:5	@typescript-eslint/strict-void-return	nonVoidFunc	Value-returning function used in a context where a void function is expected.
+tests/rules/@typescript-eslint/strict-void-return/cases.ts:316:17	@typescript-eslint/strict-void-return	nonVoidReturn	Value returned in a context where a void return is expected.
+tests/rules/@typescript-eslint/strict-void-return/cases.ts:317:11	@typescript-eslint/strict-void-return	nonVoidFunc	Value-returning function used in a context where a void function is expected.
+tests/rules/@typescript-eslint/strict-void-return/cases.ts:318:20	@typescript-eslint/strict-void-return	nonVoidReturn	Value returned in a context where a void return is expected.
+tests/rules/@typescript-eslint/strict-void-return/cases.ts:319:61	@typescript-eslint/strict-void-return	nonVoidReturn	Value returned in a context where a void return is expected.
+tests/rules/@typescript-eslint/strict-void-return/jsx/cases.tsx:14:34	@typescript-eslint/strict-void-return	nonVoidReturn	Value returned in a context where a void return is expected.
+tests/rules/@typescript-eslint/strict-void-return/jsx/cases.tsx:16:28	@typescript-eslint/strict-void-return	nonVoidFunc	Value-returning function used in a context where a void function is expected.
+tests/rules/@typescript-eslint/strict-void-return/jsx/cases.tsx:17:37	@typescript-eslint/strict-void-return	asyncFunc	Async function used in a context where a void function is expected.
+tests/rules/@typescript-eslint/strict-void-return/jsx/cases.tsx:18:37	@typescript-eslint/strict-void-return	nonVoidReturn	Value returned in a context where a void return is expected.
+tests/rules/@typescript-eslint/strict-void-return/jsx/cases.tsx:19:33	@typescript-eslint/strict-void-return	nonVoidReturn	Value returned in a context where a void return is expected.
+tests/rules/@typescript-eslint/strict-void-return/jsx/cases.tsx:20:41	@typescript-eslint/strict-void-return	nonVoidReturn	Value returned in a context where a void return is expected.
+tests/rules/@typescript-eslint/strict-void-return/underscore-names/cases.ts:14:3	@typescript-eslint/strict-void-return	asyncFunc	Async function used in a context where a void function is expected.
+tests/rules/@typescript-eslint/strict-void-return/underscore-names/cases.ts:15:3	@typescript-eslint/strict-void-return	asyncFunc	Async function used in a context where a void function is expected.
+tests/rules/@typescript-eslint/strict-void-return/underscore-names/cases.ts:16:3	@typescript-eslint/strict-void-return	asyncFunc	Async function used in a context where a void function is expected.
+tests/rules/@typescript-eslint/strict-void-return/underscore-names/cases.ts:17:3	@typescript-eslint/strict-void-return	asyncFunc	Async function used in a context where a void function is expected.
+tests/rules/@typescript-eslint/strict-void-return/underscore-names/cases.ts:18:3	@typescript-eslint/strict-void-return	asyncFunc	Async function used in a context where a void function is expected.
+tests/rules/@typescript-eslint/strict-void-return/underscore-names/cases.ts:19:3	@typescript-eslint/strict-void-return	asyncFunc	Async function used in a context where a void function is expected.
+tests/rules/@typescript-eslint/strict-void-return/underscore-names/cases.ts:20:3	@typescript-eslint/strict-void-return	asyncFunc	Async function used in a context where a void function is expected.
+tests/rules/@typescript-eslint/strict-void-return/underscore-names/cases.ts:30:3	@typescript-eslint/strict-void-return	asyncFunc	Async function used in a context where a void function is expected.
+tests/rules/@typescript-eslint/strict-void-return/underscore-names/cases.ts:31:3	@typescript-eslint/strict-void-return	asyncFunc	Async function used in a context where a void function is expected.

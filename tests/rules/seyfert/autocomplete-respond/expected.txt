@@ -1,0 +1,17 @@
+tests/rules/seyfert/autocomplete-respond/cases.ts:21:11	seyfert/autocomplete-respond	useRespond	Use `.respond()` on an autocomplete interaction; `.reply()` is internal and throws.
+tests/rules/seyfert/autocomplete-respond/cases.ts:34:13	seyfert/autocomplete-respond	useRespond	Use `.respond()` on an autocomplete interaction; `.reply()` is internal and throws.
+tests/rules/seyfert/autocomplete-respond/cases.ts:35:7	seyfert/autocomplete-respond	useRespond	Use `.respond()` on an autocomplete interaction; `.reply()` is internal and throws.
+tests/rules/seyfert/autocomplete-respond/cases.ts:36:12	seyfert/autocomplete-respond	useRespond	Use `.respond()` on an autocomplete interaction; `.reply()` is internal and throws.
+tests/rules/seyfert/autocomplete-respond/cases.ts:37:9	seyfert/autocomplete-respond	useRespond	Use `.respond()` on an autocomplete interaction; `.reply()` is internal and throws.
+tests/rules/seyfert/autocomplete-respond/cases.ts:38:6	seyfert/autocomplete-respond	useRespond	Use `.respond()` on an autocomplete interaction; `.reply()` is internal and throws.
+tests/rules/seyfert/autocomplete-respond/cases.ts:39:7	seyfert/autocomplete-respond	useRespond	Use `.respond()` on an autocomplete interaction; `.reply()` is internal and throws.
+tests/rules/seyfert/autocomplete-respond/cases.ts:40:20	seyfert/autocomplete-respond	useRespond	Use `.respond()` on an autocomplete interaction; `.reply()` is internal and throws.
+tests/rules/seyfert/autocomplete-respond/cases.ts:41:8	seyfert/autocomplete-respond	useRespond	Use `.respond()` on an autocomplete interaction; `.reply()` is internal and throws.
+tests/rules/seyfert/autocomplete-respond/cases.ts:42:42	seyfert/autocomplete-respond	useRespond	Use `.respond()` on an autocomplete interaction; `.reply()` is internal and throws.
+tests/rules/seyfert/autocomplete-respond/cases.ts:43:37	seyfert/autocomplete-respond	useRespond	Use `.respond()` on an autocomplete interaction; `.reply()` is internal and throws.
+tests/rules/seyfert/autocomplete-respond/cases.ts:46:4	seyfert/autocomplete-respond	useRespond	Use `.respond()` on an autocomplete interaction; `.reply()` is internal and throws.
+tests/rules/seyfert/autocomplete-respond/cases.ts:47:24	seyfert/autocomplete-respond	useRespond	Use `.respond()` on an autocomplete interaction; `.reply()` is internal and throws.
+tests/rules/seyfert/autocomplete-respond/cases.ts:48:18	seyfert/autocomplete-respond	useRespond	Use `.respond()` on an autocomplete interaction; `.reply()` is internal and throws.
+tests/rules/seyfert/autocomplete-respond/cases.ts:48:49	seyfert/autocomplete-respond	useRespond	Use `.respond()` on an autocomplete interaction; `.reply()` is internal and throws.
+tests/rules/seyfert/autocomplete-respond/cases.ts:70:46	seyfert/autocomplete-respond	useRespond	Use `.respond()` on an autocomplete interaction; `.reply()` is internal and throws.
+tests/rules/seyfert/autocomplete-respond/cases.ts:81:23	seyfert/autocomplete-respond	useRespond	Use `.respond()` on an autocomplete interaction; `.reply()` is internal and throws.

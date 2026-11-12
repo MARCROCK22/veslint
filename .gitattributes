@@ -1,0 +1,4 @@
+# The files are kept byte for byte on every system: no conversion of line endings on checkout (Git
+# for Windows turns LF into CRLF by default). The fixtures and their expected outputs depend on
+# them: CRLF and lone CR cases, and fixes given in UTF-16 offsets.
+* -text

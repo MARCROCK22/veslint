@@ -1,0 +1,7 @@
+Key "rules": Key "@typescript-eslint/return-await":
+	Value "sometimes" should be equal to one of the allowed values.
+	Value "sometimes" should be equal to one of the allowed values.
+	Value "sometimes" should be equal to one of the allowed values.
+	Value "sometimes" should be equal to one of the allowed values.
+	Value "sometimes" should match exactly one schema in oneOf.
+

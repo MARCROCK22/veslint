@@ -1,0 +1,23 @@
+{"rule": "@typescript-eslint/no-misused-new", "upstream": "typescript-eslint v8.62.0", "files": ["packages/eslint-plugin/tests/rules/no-misused-new.test.ts"],
+"messages": {"errorMessageClass":"Class cannot have method named `new`.","errorMessageInterface":"Interfaces cannot be constructed, only classes."},
+"cases": [
+{"id":"no-misused-new/v0","kind":"valid","code":"\ndeclare abstract class C {\n  foo() {}\n  get new();\n  bar();\n}\n    ","file":"file.ts","tsconfig":null},
+{"id":"no-misused-new/v1","kind":"valid","code":"\nclass C {\n  constructor();\n}\n    ","file":"file.ts","tsconfig":null},
+{"id":"no-misused-new/v2","kind":"valid","code":"\nconst foo = class {\n  constructor();\n};\n    ","file":"file.ts","tsconfig":null},
+{"id":"no-misused-new/v3","kind":"valid","code":"\nconst foo = class {\n  new(): X;\n};\n    ","file":"file.ts","tsconfig":null},
+{"id":"no-misused-new/v4","kind":"valid","code":"\nclass C {\n  new() {}\n}\n    ","file":"file.ts","tsconfig":null},
+{"id":"no-misused-new/v5","kind":"valid","code":"\nclass C {\n  constructor() {}\n}\n    ","file":"file.ts","tsconfig":null},
+{"id":"no-misused-new/v6","kind":"valid","code":"\nconst foo = class {\n  new() {}\n};\n    ","file":"file.ts","tsconfig":null},
+{"id":"no-misused-new/v7","kind":"valid","code":"\nconst foo = class {\n  constructor() {}\n};\n    ","file":"file.ts","tsconfig":null},
+{"id":"no-misused-new/v8","kind":"valid","code":"\ninterface I {\n  new (): {};\n}\n    ","file":"file.ts","tsconfig":null},
+{"id":"no-misused-new/v9","kind":"valid","code":"type T = { new (): T };","file":"file.ts","tsconfig":null},
+{"id":"no-misused-new/v10","kind":"valid","code":"\nexport default class {\n  constructor();\n}\n    ","file":"file.ts","tsconfig":null},
+{"id":"no-misused-new/v11","kind":"valid","code":"\ninterface foo {\n  new <T>(): bar<T>;\n}\n    ","file":"file.ts","tsconfig":null},
+{"id":"no-misused-new/v12","kind":"valid","code":"\ninterface foo {\n  new <T>(): 'x';\n}\n    ","file":"file.ts","tsconfig":null},
+{"id":"no-misused-new/i0","kind":"invalid","code":"\ninterface I {\n  new (): I;\n  constructor(): void;\n}\n      ","file":"file.ts","tsconfig":null,"errors":[{"column":3,"line":3,"messageId":"errorMessageInterface"},{"column":3,"line":4,"messageId":"errorMessageInterface"}]},
+{"id":"no-misused-new/i1","kind":"invalid","code":"\ninterface G {\n  new <T>(): G<T>;\n}\n      ","file":"file.ts","tsconfig":null,"errors":[{"column":3,"line":3,"messageId":"errorMessageInterface"}]},
+{"id":"no-misused-new/i2","kind":"invalid","code":"\ntype T = {\n  constructor(): void;\n};\n      ","file":"file.ts","tsconfig":null,"errors":[{"column":3,"line":3,"messageId":"errorMessageInterface"}]},
+{"id":"no-misused-new/i3","kind":"invalid","code":"\nclass C {\n  new(): C;\n}\n      ","file":"file.ts","tsconfig":null,"errors":[{"column":3,"line":3,"messageId":"errorMessageClass"}]},
+{"id":"no-misused-new/i4","kind":"invalid","code":"\ndeclare abstract class C {\n  new(): C;\n}\n      ","file":"file.ts","tsconfig":null,"errors":[{"column":3,"line":3,"messageId":"errorMessageClass"}]},
+{"id":"no-misused-new/i5","kind":"invalid","code":"\ninterface I {\n  constructor(): '';\n}\n      ","file":"file.ts","tsconfig":null,"errors":[{"column":3,"line":3,"messageId":"errorMessageInterface"}]}
+]}

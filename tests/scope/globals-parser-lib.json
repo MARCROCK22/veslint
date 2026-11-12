@@ -1,0 +1,1 @@
+{"languageOptions": {"parserOptions": {"lib": ["ES2015", "WebWorker"]}}, "compilerOptions": {"lib": ["es2022", "dom"]}}

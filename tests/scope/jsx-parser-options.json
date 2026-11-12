@@ -1,0 +1,1 @@
+{"languageOptions": {"parserOptions": {"jsxPragma": "createElement", "jsxFragmentName": "Frag"}}, "compilerOptions": {"jsx": "react", "jsxFactory": "h", "jsxFragmentFactory": "Fragment"}}

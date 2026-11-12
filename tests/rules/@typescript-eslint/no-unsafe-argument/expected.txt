@@ -1,0 +1,40 @@
+tests/rules/@typescript-eslint/no-unsafe-argument/await-script/cases.ts:6:10	@typescript-eslint/no-unsafe-argument	unsafeArgument	Unsafe argument of type `any` assigned to a parameter of type `number`.
+tests/rules/@typescript-eslint/no-unsafe-argument/await-script/cases.ts:7:13	@typescript-eslint/no-unsafe-argument	unsafeArgument	Unsafe argument of type `any` assigned to a parameter of type `number`.
+tests/rules/@typescript-eslint/no-unsafe-argument/await-script/cases.ts:8:12	@typescript-eslint/no-unsafe-argument	unsafeArgument	Unsafe argument of type `any` assigned to a parameter of type `number`.
+tests/rules/@typescript-eslint/no-unsafe-argument/await-script/cases.ts:17:30	@typescript-eslint/no-unsafe-argument	unsafeArgument	Unsafe argument of type `any` assigned to a parameter of type `number`.
+tests/rules/@typescript-eslint/no-unsafe-argument/await-script/cases.ts:18:10	@typescript-eslint/no-unsafe-argument	unsafeArgument	Unsafe argument of type `any` assigned to a parameter of type `number`.
+tests/rules/@typescript-eslint/no-unsafe-argument/await-script/cases.ts:18:37	@typescript-eslint/no-unsafe-argument	unsafeArgument	Unsafe argument of type `any` assigned to a parameter of type `number`.
+tests/rules/@typescript-eslint/no-unsafe-argument/await-script/cases.ts:19:22	@typescript-eslint/no-unsafe-argument	unsafeArgument	Unsafe argument of type `any` assigned to a parameter of type `((reason: any) => PromiseLike<never>) | null | undefined`.
+tests/rules/@typescript-eslint/no-unsafe-argument/await-script/cases.ts:20:24	@typescript-eslint/no-unsafe-argument	unsafeArgument	Unsafe argument of type `any` assigned to a parameter of type `(() => void) | null | undefined`.
+tests/rules/@typescript-eslint/no-unsafe-argument/await-script/cases.ts:21:15	@typescript-eslint/no-unsafe-argument	unsafeArgument	Unsafe argument of type error typed assigned to a parameter of type `number`.
+tests/rules/@typescript-eslint/no-unsafe-argument/await-script/cases.ts:22:18	@typescript-eslint/no-unsafe-argument	unsafeArgument	Unsafe argument of type error typed assigned to a parameter of type `number`.
+tests/rules/@typescript-eslint/no-unsafe-argument/await-script/cases.ts:22:25	@typescript-eslint/no-unsafe-argument	unsafeArgument	Unsafe argument of type `any` assigned to a parameter of type `number`.
+tests/rules/@typescript-eslint/no-unsafe-argument/await-script/cases.ts:25:37	@typescript-eslint/no-unsafe-argument	unsafeArgument	Unsafe argument of type `any` assigned to a parameter of type `number`.
+tests/rules/@typescript-eslint/no-unsafe-argument/await-script/cases.ts:26:15	@typescript-eslint/no-unsafe-argument	unsafeArgument	Unsafe argument of type `any` assigned to a parameter of type `number`.
+tests/rules/@typescript-eslint/no-unsafe-argument/cases.ts:15:13	@typescript-eslint/no-unsafe-argument	unsafeArgument	Unsafe argument of type `any` assigned to a parameter of type `number`.
+tests/rules/@typescript-eslint/no-unsafe-argument/cases.ts:17:13	@typescript-eslint/no-unsafe-argument	unsafeArgument	Unsafe argument of type `any` assigned to a parameter of type `number`.
+tests/rules/@typescript-eslint/no-unsafe-argument/cases.ts:18:10	@typescript-eslint/no-unsafe-argument	unsafeArraySpread	Unsafe spread of an `any[]` array type.
+tests/rules/@typescript-eslint/no-unsafe-argument/cases.ts:19:10	@typescript-eslint/no-unsafe-argument	unsafeSpread	Unsafe spread of an `any` type.
+tests/rules/@typescript-eslint/no-unsafe-argument/cases.ts:20:10	@typescript-eslint/no-unsafe-argument	unsafeArgument	Unsafe argument of type `any` assigned to a parameter of type `string`.
+tests/rules/@typescript-eslint/no-unsafe-argument/cases.ts:21:10	@typescript-eslint/no-unsafe-argument	unsafeTupleSpread	Unsafe spread of a tuple type. The argument is of type `any` and is assigned to a parameter of type `number`.
+tests/rules/@typescript-eslint/no-unsafe-argument/cases.ts:22:5	@typescript-eslint/no-unsafe-argument	unsafeTupleSpread	Unsafe spread of a tuple type. The argument is of type `any` and is assigned to a parameter of type `string`.
+tests/rules/@typescript-eslint/no-unsafe-argument/cases.ts:23:9	@typescript-eslint/no-unsafe-argument	unsafeArgument	Unsafe argument of type `Set<any>` assigned to a parameter of type `Set<string>`.
+tests/rules/@typescript-eslint/no-unsafe-argument/cases.ts:25:15	@typescript-eslint/no-unsafe-argument	unsafeArgument	Unsafe argument of type `any` assigned to a parameter of type `number`.
+tests/rules/@typescript-eslint/no-unsafe-argument/cases.ts:26:10	@typescript-eslint/no-unsafe-argument	unsafeArgument	Unsafe argument of type `any` assigned to a parameter of type `number`.
+tests/rules/@typescript-eslint/no-unsafe-argument/cases.ts:27:13	@typescript-eslint/no-unsafe-argument	unsafeArgument	Unsafe argument of type error typed assigned to a parameter of type `number`.
+tests/rules/@typescript-eslint/no-unsafe-argument/cases.ts:29:8	@typescript-eslint/no-unsafe-argument	unsafeTupleSpread	Unsafe spread of a tuple type. The argument is of type `any` and is assigned to a parameter of type `string`.
+tests/rules/@typescript-eslint/no-unsafe-argument/cases.ts:41:12	@typescript-eslint/no-unsafe-argument	unsafeArgument	Unsafe argument of type `any` assigned to a parameter of type `number`.
+tests/rules/@typescript-eslint/no-unsafe-argument/cases.ts:42:17	@typescript-eslint/no-unsafe-argument	unsafeArgument	Unsafe argument of type `any` assigned to a parameter of type `number`.
+tests/rules/@typescript-eslint/no-unsafe-argument/cases.ts:44:16	@typescript-eslint/no-unsafe-argument	unsafeArgument	Unsafe argument of type `any` assigned to a parameter of type `number`.
+tests/rules/@typescript-eslint/no-unsafe-argument/cases.ts:44:29	@typescript-eslint/no-unsafe-argument	unsafeArgument	Unsafe argument of type `any` assigned to a parameter of type `number`.
+tests/rules/@typescript-eslint/no-unsafe-argument/cases.ts:45:14	@typescript-eslint/no-unsafe-argument	unsafeArgument	Unsafe argument of type `any` assigned to a parameter of type `number`.
+tests/rules/@typescript-eslint/no-unsafe-argument/cases.ts:46:9	@typescript-eslint/no-unsafe-argument	unsafeArgument	Unsafe argument of type `Set<Map<string, any>>` assigned to a parameter of type `Set<Map<string, number>>`.
+tests/rules/@typescript-eslint/no-unsafe-argument/cases.ts:47:19	@typescript-eslint/no-unsafe-argument	unsafeArgument	Unsafe argument of type `any` assigned to a parameter of type `string`.
+tests/rules/@typescript-eslint/no-unsafe-argument/cases.ts:48:11	@typescript-eslint/no-unsafe-argument	unsafeTupleSpread	Unsafe spread of a tuple type. The argument is of type `any` and is assigned to a parameter of type `string`.
+tests/rules/@typescript-eslint/no-unsafe-argument/cases.ts:48:28	@typescript-eslint/no-unsafe-argument	unsafeArgument	Unsafe argument of type `any` assigned to a parameter of type `string`.
+tests/rules/@typescript-eslint/no-unsafe-argument/cases.ts:50:50	@typescript-eslint/no-unsafe-argument	unsafeArgument	Unsafe argument of type `any` assigned to a parameter of type `number`.
+tests/rules/@typescript-eslint/no-unsafe-argument/cases.ts:52:24	@typescript-eslint/no-unsafe-argument	unsafeArgument	Unsafe argument of type `any` assigned to a parameter of type `number`.
+tests/rules/@typescript-eslint/no-unsafe-argument/no-semicolons/cases.ts:5:35	@typescript-eslint/no-unsafe-argument	unsafeArgument	Unsafe argument of type `any` assigned to a parameter of type `number`.
+tests/rules/@typescript-eslint/no-unsafe-argument/no-semicolons/cases.ts:6:14	@typescript-eslint/no-unsafe-argument	unsafeArgument	Unsafe argument of type `any` assigned to a parameter of type `number`.
+tests/rules/@typescript-eslint/no-unsafe-argument/no-semicolons/cases.ts:7:10	@typescript-eslint/no-unsafe-argument	unsafeArgument	Unsafe argument of type `any` assigned to a parameter of type `number`.
+tests/rules/@typescript-eslint/no-unsafe-argument/no-semicolons/cases.ts:8:13	@typescript-eslint/no-unsafe-argument	unsafeTupleSpread	Unsafe spread of a tuple type. The argument is of type `any` and is assigned to a parameter of type `number`.

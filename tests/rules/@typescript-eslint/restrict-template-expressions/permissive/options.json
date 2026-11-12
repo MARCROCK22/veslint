@@ -1,0 +1,1 @@
+[{"allowAny": true, "allowBoolean": true, "allowNullish": true, "allowNumber": true, "allowRegExp": true, "allowNever": true, "allowArray": true, "allow": ["Alias", "Date", {"from": "lib", "name": "Map"}, {"from": "lib", "name": ["Promise", "MyError"]}]}]

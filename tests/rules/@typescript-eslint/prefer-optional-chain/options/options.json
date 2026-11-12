@@ -1,0 +1,1 @@
+[{"requireNullish": true, "checkString": false, "checkAny": false, "checkNumber": false, "checkBoolean": false, "checkBigInt": false, "checkUnknown": false, "allowPotentiallyUnsafeFixesThatModifyTheReturnTypeIKnowWhatImDoing": true}]

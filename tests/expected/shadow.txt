@@ -1,0 +1,4 @@
+tests/fixtures/shadow.ts:1:7	v	1	(base: number)
+tests/fixtures/shadow.ts:3:9	v	"s"	(base: string)
+tests/fixtures/shadow.ts:5:10	f	(v: boolean) => boolean
+tests/fixtures/shadow.ts:5:12	v	boolean

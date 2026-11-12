@@ -1,0 +1,287 @@
+tests/rules/@typescript-eslint/prefer-includes/cases.ts:36:1	@typescript-eslint/prefer-includes	preferIncludes	Use 'includes()' method instead.
+tests/rules/@typescript-eslint/prefer-includes/cases.ts:37:1	@typescript-eslint/prefer-includes	preferIncludes	Use 'includes()' method instead.
+tests/rules/@typescript-eslint/prefer-includes/cases.ts:38:1	@typescript-eslint/prefer-includes	preferIncludes	Use 'includes()' method instead.
+tests/rules/@typescript-eslint/prefer-includes/cases.ts:39:1	@typescript-eslint/prefer-includes	preferIncludes	Use 'includes()' method instead.
+tests/rules/@typescript-eslint/prefer-includes/cases.ts:40:1	@typescript-eslint/prefer-includes	preferIncludes	Use 'includes()' method instead.
+tests/rules/@typescript-eslint/prefer-includes/cases.ts:41:1	@typescript-eslint/prefer-includes	preferIncludes	Use 'includes()' method instead.
+tests/rules/@typescript-eslint/prefer-includes/cases.ts:42:1	@typescript-eslint/prefer-includes	preferIncludes	Use 'includes()' method instead.
+tests/rules/@typescript-eslint/prefer-includes/cases.ts:43:1	@typescript-eslint/prefer-includes	preferIncludes	Use 'includes()' method instead.
+tests/rules/@typescript-eslint/prefer-includes/cases.ts:44:1	@typescript-eslint/prefer-includes	preferIncludes	Use 'includes()' method instead.
+tests/rules/@typescript-eslint/prefer-includes/cases.ts:45:1	@typescript-eslint/prefer-includes	preferIncludes	Use 'includes()' method instead.
+tests/rules/@typescript-eslint/prefer-includes/cases.ts:46:1	@typescript-eslint/prefer-includes	preferIncludes	Use 'includes()' method instead.
+tests/rules/@typescript-eslint/prefer-includes/cases.ts:47:1	@typescript-eslint/prefer-includes	preferIncludes	Use 'includes()' method instead.
+tests/rules/@typescript-eslint/prefer-includes/cases.ts:48:1	@typescript-eslint/prefer-includes	preferIncludes	Use 'includes()' method instead.
+tests/rules/@typescript-eslint/prefer-includes/cases.ts:49:1	@typescript-eslint/prefer-includes	preferIncludes	Use 'includes()' method instead.
+tests/rules/@typescript-eslint/prefer-includes/cases.ts:50:1	@typescript-eslint/prefer-includes	preferIncludes	Use 'includes()' method instead.
+tests/rules/@typescript-eslint/prefer-includes/cases.ts:51:1	@typescript-eslint/prefer-includes	preferIncludes	Use 'includes()' method instead.
+tests/rules/@typescript-eslint/prefer-includes/cases.ts:52:1	@typescript-eslint/prefer-includes	preferIncludes	Use 'includes()' method instead.
+tests/rules/@typescript-eslint/prefer-includes/cases.ts:53:1	@typescript-eslint/prefer-includes	preferIncludes	Use 'includes()' method instead.
+tests/rules/@typescript-eslint/prefer-includes/cases.ts:54:1	@typescript-eslint/prefer-includes	preferIncludes	Use 'includes()' method instead.
+tests/rules/@typescript-eslint/prefer-includes/cases.ts:55:10	@typescript-eslint/prefer-includes	preferIncludes	Use 'includes()' method instead.
+tests/rules/@typescript-eslint/prefer-includes/cases.ts:57:1	@typescript-eslint/prefer-includes	preferIncludes	Use 'includes()' method instead.
+tests/rules/@typescript-eslint/prefer-includes/cases.ts:58:2	@typescript-eslint/prefer-includes	preferIncludes	Use 'includes()' method instead.
+tests/rules/@typescript-eslint/prefer-includes/cases.ts:62:1	@typescript-eslint/prefer-includes	preferIncludes	Use 'includes()' method instead.
+tests/rules/@typescript-eslint/prefer-includes/cases.ts:63:1	@typescript-eslint/prefer-includes	preferIncludes	Use 'includes()' method instead.
+tests/rules/@typescript-eslint/prefer-includes/cases.ts:80:1	@typescript-eslint/prefer-includes	preferStringIncludes	Use `String#includes()` method with a string instead.
+tests/rules/@typescript-eslint/prefer-includes/cases.ts:81:1	@typescript-eslint/prefer-includes	preferStringIncludes	Use `String#includes()` method with a string instead.
+tests/rules/@typescript-eslint/prefer-includes/cases.ts:82:1	@typescript-eslint/prefer-includes	preferStringIncludes	Use `String#includes()` method with a string instead.
+tests/rules/@typescript-eslint/prefer-includes/cases.ts:83:1	@typescript-eslint/prefer-includes	preferStringIncludes	Use `String#includes()` method with a string instead.
+tests/rules/@typescript-eslint/prefer-includes/cases.ts:84:1	@typescript-eslint/prefer-includes	preferStringIncludes	Use `String#includes()` method with a string instead.
+tests/rules/@typescript-eslint/prefer-includes/cases.ts:85:1	@typescript-eslint/prefer-includes	preferStringIncludes	Use `String#includes()` method with a string instead.
+tests/rules/@typescript-eslint/prefer-includes/cases.ts:86:1	@typescript-eslint/prefer-includes	preferStringIncludes	Use `String#includes()` method with a string instead.
+tests/rules/@typescript-eslint/prefer-includes/cases.ts:87:1	@typescript-eslint/prefer-includes	preferStringIncludes	Use `String#includes()` method with a string instead.
+tests/rules/@typescript-eslint/prefer-includes/cases.ts:88:1	@typescript-eslint/prefer-includes	preferStringIncludes	Use `String#includes()` method with a string instead.
+tests/rules/@typescript-eslint/prefer-includes/cases.ts:89:1	@typescript-eslint/prefer-includes	preferStringIncludes	Use `String#includes()` method with a string instead.
+tests/rules/@typescript-eslint/prefer-includes/cases.ts:93:1	@typescript-eslint/prefer-includes	preferStringIncludes	Use `String#includes()` method with a string instead.
+tests/rules/@typescript-eslint/prefer-includes/cases.ts:118:1	@typescript-eslint/prefer-includes	preferStringIncludes	Use `String#includes()` method with a string instead.
+tests/rules/@typescript-eslint/prefer-includes/cases.ts:119:1	@typescript-eslint/prefer-includes	preferStringIncludes	Use `String#includes()` method with a string instead.
+tests/rules/@typescript-eslint/prefer-includes/cases.ts:120:1	@typescript-eslint/prefer-includes	preferStringIncludes	Use `String#includes()` method with a string instead.
+tests/rules/@typescript-eslint/prefer-includes/cases.ts:121:1	@typescript-eslint/prefer-includes	preferStringIncludes	Use `String#includes()` method with a string instead.
+tests/rules/@typescript-eslint/prefer-includes/cases.ts:122:1	@typescript-eslint/prefer-includes	preferStringIncludes	Use `String#includes()` method with a string instead.
+tests/rules/@typescript-eslint/prefer-includes/cases.ts:123:1	@typescript-eslint/prefer-includes	preferStringIncludes	Use `String#includes()` method with a string instead.
+tests/rules/@typescript-eslint/prefer-includes/cases.ts:124:1	@typescript-eslint/prefer-includes	preferStringIncludes	Use `String#includes()` method with a string instead.
+tests/rules/@typescript-eslint/prefer-includes/fixes/cases.ts:11:1	@typescript-eslint/prefer-includes	preferIncludes	Use 'includes()' method instead.
+tests/rules/@typescript-eslint/prefer-includes/fixes/cases.ts:12:1	@typescript-eslint/prefer-includes	preferIncludes	Use 'includes()' method instead.
+tests/rules/@typescript-eslint/prefer-includes/fixes/cases.ts:13:1	@typescript-eslint/prefer-includes	preferIncludes	Use 'includes()' method instead.
+tests/rules/@typescript-eslint/prefer-includes/fixes/cases.ts:14:1	@typescript-eslint/prefer-includes	preferIncludes	Use 'includes()' method instead.
+tests/rules/@typescript-eslint/prefer-includes/fixes/cases.ts:16:1	@typescript-eslint/prefer-includes	preferIncludes	Use 'includes()' method instead.
+tests/rules/@typescript-eslint/prefer-includes/fixes/cases.ts:17:1	@typescript-eslint/prefer-includes	preferIncludes	Use 'includes()' method instead.
+tests/rules/@typescript-eslint/prefer-includes/fixes/cases.ts:18:1	@typescript-eslint/prefer-includes	preferIncludes	Use 'includes()' method instead.
+tests/rules/@typescript-eslint/prefer-includes/fixes/cases.ts:19:1	@typescript-eslint/prefer-includes	preferIncludes	Use 'includes()' method instead.
+tests/rules/@typescript-eslint/prefer-includes/fixes/cases.ts:20:1	@typescript-eslint/prefer-includes	preferIncludes	Use 'includes()' method instead.
+tests/rules/@typescript-eslint/prefer-includes/fixes/cases.ts:22:1	@typescript-eslint/prefer-includes	preferIncludes	Use 'includes()' method instead.
+tests/rules/@typescript-eslint/prefer-includes/fixes/cases.ts:23:1	@typescript-eslint/prefer-includes	preferIncludes	Use 'includes()' method instead.
+tests/rules/@typescript-eslint/prefer-includes/fixes/cases.ts:24:1	@typescript-eslint/prefer-includes	preferIncludes	Use 'includes()' method instead.
+tests/rules/@typescript-eslint/prefer-includes/fixes/cases.ts:25:1	@typescript-eslint/prefer-includes	preferIncludes	Use 'includes()' method instead.
+tests/rules/@typescript-eslint/prefer-includes/fixes/cases.ts:26:2	@typescript-eslint/prefer-includes	preferIncludes	Use 'includes()' method instead.
+tests/rules/@typescript-eslint/prefer-includes/fixes/cases.ts:27:1	@typescript-eslint/prefer-includes	preferIncludes	Use 'includes()' method instead.
+tests/rules/@typescript-eslint/prefer-includes/fixes/cases.ts:28:1	@typescript-eslint/prefer-includes	preferIncludes	Use 'includes()' method instead.
+tests/rules/@typescript-eslint/prefer-includes/fixes/cases.ts:29:1	@typescript-eslint/prefer-includes	preferIncludes	Use 'includes()' method instead.
+tests/rules/@typescript-eslint/prefer-includes/fixes/cases.ts:32:5	@typescript-eslint/prefer-includes	preferIncludes	Use 'includes()' method instead.
+tests/rules/@typescript-eslint/prefer-includes/fixes/cases.ts:34:27	@typescript-eslint/prefer-includes	preferIncludes	Use 'includes()' method instead.
+tests/rules/@typescript-eslint/prefer-includes/fixes/cases.ts:35:19	@typescript-eslint/prefer-includes	preferIncludes	Use 'includes()' method instead.
+tests/rules/@typescript-eslint/prefer-includes/fixes/cases.ts:37:1	@typescript-eslint/prefer-includes	preferIncludes	Use 'includes()' method instead.
+tests/rules/@typescript-eslint/prefer-includes/fixes/cases.ts:38:1	@typescript-eslint/prefer-includes	preferIncludes	Use 'includes()' method instead.
+tests/rules/@typescript-eslint/prefer-includes/fixes/cases.ts:41:1	@typescript-eslint/prefer-includes	preferStringIncludes	Use `String#includes()` method with a string instead.
+tests/rules/@typescript-eslint/prefer-includes/fixes/cases.ts:42:1	@typescript-eslint/prefer-includes	preferStringIncludes	Use `String#includes()` method with a string instead.
+tests/rules/@typescript-eslint/prefer-includes/fixes/cases.ts:43:1	@typescript-eslint/prefer-includes	preferStringIncludes	Use `String#includes()` method with a string instead.
+tests/rules/@typescript-eslint/prefer-includes/fixes/cases.ts:44:1	@typescript-eslint/prefer-includes	preferStringIncludes	Use `String#includes()` method with a string instead.
+tests/rules/@typescript-eslint/prefer-includes/fixes/cases.ts:45:1	@typescript-eslint/prefer-includes	preferStringIncludes	Use `String#includes()` method with a string instead.
+tests/rules/@typescript-eslint/prefer-includes/fixes/cases.ts:46:1	@typescript-eslint/prefer-includes	preferStringIncludes	Use `String#includes()` method with a string instead.
+tests/rules/@typescript-eslint/prefer-includes/fixes/cases.ts:48:1	@typescript-eslint/prefer-includes	preferStringIncludes	Use `String#includes()` method with a string instead.
+tests/rules/@typescript-eslint/prefer-includes/fixes/cases.ts:49:1	@typescript-eslint/prefer-includes	preferStringIncludes	Use `String#includes()` method with a string instead.
+tests/rules/@typescript-eslint/prefer-includes/fixes/cases.ts:50:1	@typescript-eslint/prefer-includes	preferStringIncludes	Use `String#includes()` method with a string instead.
+tests/rules/@typescript-eslint/prefer-includes/fixes/cases.ts:51:1	@typescript-eslint/prefer-includes	preferStringIncludes	Use `String#includes()` method with a string instead.
+tests/rules/@typescript-eslint/prefer-includes/fixes/cases.ts:52:1	@typescript-eslint/prefer-includes	preferStringIncludes	Use `String#includes()` method with a string instead.
+tests/rules/@typescript-eslint/prefer-includes/fixes/cases.ts:53:1	@typescript-eslint/prefer-includes	preferStringIncludes	Use `String#includes()` method with a string instead.
+tests/rules/@typescript-eslint/prefer-includes/fixes/cases.ts:54:1	@typescript-eslint/prefer-includes	preferStringIncludes	Use `String#includes()` method with a string instead.
+tests/rules/@typescript-eslint/prefer-includes/fixes/cases.ts:55:1	@typescript-eslint/prefer-includes	preferStringIncludes	Use `String#includes()` method with a string instead.
+tests/rules/@typescript-eslint/prefer-includes/fixes/cases.ts:56:1	@typescript-eslint/prefer-includes	preferStringIncludes	Use `String#includes()` method with a string instead.
+tests/rules/@typescript-eslint/prefer-includes/fixes/cases.ts:58:1	@typescript-eslint/prefer-includes	preferStringIncludes	Use `String#includes()` method with a string instead.
+tests/rules/@typescript-eslint/prefer-includes/fixes/cases.ts:59:1	@typescript-eslint/prefer-includes	preferStringIncludes	Use `String#includes()` method with a string instead.
+tests/rules/@typescript-eslint/prefer-includes/fixes/cases.ts:60:1	@typescript-eslint/prefer-includes	preferStringIncludes	Use `String#includes()` method with a string instead.
+tests/rules/@typescript-eslint/prefer-includes/fixes/cases.ts:61:1	@typescript-eslint/prefer-includes	preferStringIncludes	Use `String#includes()` method with a string instead.
+tests/rules/@typescript-eslint/prefer-includes/fixes/cases.ts:62:1	@typescript-eslint/prefer-includes	preferStringIncludes	Use `String#includes()` method with a string instead.
+tests/rules/@typescript-eslint/prefer-includes/fixes/cases.ts:63:1	@typescript-eslint/prefer-includes	preferStringIncludes	Use `String#includes()` method with a string instead.
+tests/rules/@typescript-eslint/prefer-includes/fixes/cases.ts:64:1	@typescript-eslint/prefer-includes	preferStringIncludes	Use `String#includes()` method with a string instead.
+tests/rules/@typescript-eslint/prefer-includes/fixes/cases.ts:65:1	@typescript-eslint/prefer-includes	preferStringIncludes	Use `String#includes()` method with a string instead.
+tests/rules/@typescript-eslint/prefer-includes/fixes/cases.ts:67:1	@typescript-eslint/prefer-includes	preferStringIncludes	Use `String#includes()` method with a string instead.
+tests/rules/@typescript-eslint/prefer-includes/fixes/cases.ts:69:1	@typescript-eslint/prefer-includes	preferStringIncludes	Use `String#includes()` method with a string instead.
+tests/rules/@typescript-eslint/prefer-includes/fixes/cases.ts:71:1	@typescript-eslint/prefer-includes	preferStringIncludes	Use `String#includes()` method with a string instead.
+tests/rules/@typescript-eslint/prefer-includes/fixes/cases.ts:72:1	@typescript-eslint/prefer-includes	preferStringIncludes	Use `String#includes()` method with a string instead.
+tests/rules/@typescript-eslint/prefer-includes/fixes/cases.ts:77:17	@typescript-eslint/prefer-includes	preferStringIncludes	Use `String#includes()` method with a string instead.
+tests/rules/@typescript-eslint/prefer-includes/fixes/cases.ts:77:43	@typescript-eslint/prefer-includes	preferIncludes	Use 'includes()' method instead.
+tests/rules/@typescript-eslint/prefer-includes/globals/cases.ts:4:1	@typescript-eslint/prefer-includes	preferIncludes	Use 'includes()' method instead.
+tests/rules/@typescript-eslint/prefer-includes/globals/cases.ts:5:1	@typescript-eslint/prefer-includes	preferStringIncludes	Use `String#includes()` method with a string instead.
+tests/rules/@typescript-eslint/prefer-includes/globals/cases.ts:6:1	@typescript-eslint/prefer-includes	preferStringIncludes	Use `String#includes()` method with a string instead.
+tests/rules/@typescript-eslint/prefer-includes/globals/cases.ts:7:1	@typescript-eslint/prefer-includes	preferStringIncludes	Use `String#includes()` method with a string instead.
+tests/rules/@typescript-eslint/prefer-includes/globals/cases.ts:8:1	@typescript-eslint/prefer-includes	preferStringIncludes	Use `String#includes()` method with a string instead.
+tests/rules/@typescript-eslint/prefer-includes/static-collections/cases.ts:6:1	@typescript-eslint/prefer-includes	preferStringIncludes	Use `String#includes()` method with a string instead.
+tests/rules/@typescript-eslint/prefer-includes/static-collections/cases.ts:7:1	@typescript-eslint/prefer-includes	preferStringIncludes	Use `String#includes()` method with a string instead.
+tests/rules/@typescript-eslint/prefer-includes/static-collections/cases.ts:8:1	@typescript-eslint/prefer-includes	preferStringIncludes	Use `String#includes()` method with a string instead.
+tests/rules/@typescript-eslint/prefer-includes/static-collections/cases.ts:9:1	@typescript-eslint/prefer-includes	preferStringIncludes	Use `String#includes()` method with a string instead.
+tests/rules/@typescript-eslint/prefer-includes/static-collections/cases.ts:10:1	@typescript-eslint/prefer-includes	preferStringIncludes	Use `String#includes()` method with a string instead.
+tests/rules/@typescript-eslint/prefer-includes/static-collections/cases.ts:11:1	@typescript-eslint/prefer-includes	preferStringIncludes	Use `String#includes()` method with a string instead.
+tests/rules/@typescript-eslint/prefer-includes/static-collections/cases.ts:12:1	@typescript-eslint/prefer-includes	preferStringIncludes	Use `String#includes()` method with a string instead.
+tests/rules/@typescript-eslint/prefer-includes/static-collections/cases.ts:13:1	@typescript-eslint/prefer-includes	preferStringIncludes	Use `String#includes()` method with a string instead.
+tests/rules/@typescript-eslint/prefer-includes/static-collections/cases.ts:14:1	@typescript-eslint/prefer-includes	preferStringIncludes	Use `String#includes()` method with a string instead.
+tests/rules/@typescript-eslint/prefer-includes/static-collections/cases.ts:15:1	@typescript-eslint/prefer-includes	preferStringIncludes	Use `String#includes()` method with a string instead.
+tests/rules/@typescript-eslint/prefer-includes/static-collections/cases.ts:16:1	@typescript-eslint/prefer-includes	preferStringIncludes	Use `String#includes()` method with a string instead.
+tests/rules/@typescript-eslint/prefer-includes/static-collections/cases.ts:17:1	@typescript-eslint/prefer-includes	preferStringIncludes	Use `String#includes()` method with a string instead.
+tests/rules/@typescript-eslint/prefer-includes/static-collections/cases.ts:18:1	@typescript-eslint/prefer-includes	preferStringIncludes	Use `String#includes()` method with a string instead.
+tests/rules/@typescript-eslint/prefer-includes/static-collections/cases.ts:19:1	@typescript-eslint/prefer-includes	preferStringIncludes	Use `String#includes()` method with a string instead.
+tests/rules/@typescript-eslint/prefer-includes/static-collections/cases.ts:20:1	@typescript-eslint/prefer-includes	preferStringIncludes	Use `String#includes()` method with a string instead.
+tests/rules/@typescript-eslint/prefer-includes/static-collections/cases.ts:21:1	@typescript-eslint/prefer-includes	preferStringIncludes	Use `String#includes()` method with a string instead.
+tests/rules/@typescript-eslint/prefer-includes/static-collections/cases.ts:22:1	@typescript-eslint/prefer-includes	preferStringIncludes	Use `String#includes()` method with a string instead.
+tests/rules/@typescript-eslint/prefer-includes/static-collections/cases.ts:23:1	@typescript-eslint/prefer-includes	preferStringIncludes	Use `String#includes()` method with a string instead.
+tests/rules/@typescript-eslint/prefer-includes/static-collections/cases.ts:24:1	@typescript-eslint/prefer-includes	preferStringIncludes	Use `String#includes()` method with a string instead.
+tests/rules/@typescript-eslint/prefer-includes/static-collections/cases.ts:25:1	@typescript-eslint/prefer-includes	preferStringIncludes	Use `String#includes()` method with a string instead.
+tests/rules/@typescript-eslint/prefer-includes/static-collections/cases.ts:26:1	@typescript-eslint/prefer-includes	preferStringIncludes	Use `String#includes()` method with a string instead.
+tests/rules/@typescript-eslint/prefer-includes/static-collections/cases.ts:27:1	@typescript-eslint/prefer-includes	preferStringIncludes	Use `String#includes()` method with a string instead.
+tests/rules/@typescript-eslint/prefer-includes/static-collections/cases.ts:28:1	@typescript-eslint/prefer-includes	preferStringIncludes	Use `String#includes()` method with a string instead.
+tests/rules/@typescript-eslint/prefer-includes/static-collections/cases.ts:29:1	@typescript-eslint/prefer-includes	preferStringIncludes	Use `String#includes()` method with a string instead.
+tests/rules/@typescript-eslint/prefer-includes/static-collections/cases.ts:30:1	@typescript-eslint/prefer-includes	preferStringIncludes	Use `String#includes()` method with a string instead.
+tests/rules/@typescript-eslint/prefer-includes/static-collections/cases.ts:31:1	@typescript-eslint/prefer-includes	preferStringIncludes	Use `String#includes()` method with a string instead.
+tests/rules/@typescript-eslint/prefer-includes/static-collections/cases.ts:32:1	@typescript-eslint/prefer-includes	preferStringIncludes	Use `String#includes()` method with a string instead.
+tests/rules/@typescript-eslint/prefer-includes/static-collections/cases.ts:33:1	@typescript-eslint/prefer-includes	preferStringIncludes	Use `String#includes()` method with a string instead.
+tests/rules/@typescript-eslint/prefer-includes/static-collections/cases.ts:34:1	@typescript-eslint/prefer-includes	preferStringIncludes	Use `String#includes()` method with a string instead.
+tests/rules/@typescript-eslint/prefer-includes/static-collections/cases.ts:35:1	@typescript-eslint/prefer-includes	preferStringIncludes	Use `String#includes()` method with a string instead.
+tests/rules/@typescript-eslint/prefer-includes/static-collections/cases.ts:36:1	@typescript-eslint/prefer-includes	preferStringIncludes	Use `String#includes()` method with a string instead.
+tests/rules/@typescript-eslint/prefer-includes/static-collections/cases.ts:37:1	@typescript-eslint/prefer-includes	preferStringIncludes	Use `String#includes()` method with a string instead.
+tests/rules/@typescript-eslint/prefer-includes/static-collections/cases.ts:38:1	@typescript-eslint/prefer-includes	preferStringIncludes	Use `String#includes()` method with a string instead.
+tests/rules/@typescript-eslint/prefer-includes/static-collections/cases.ts:39:1	@typescript-eslint/prefer-includes	preferStringIncludes	Use `String#includes()` method with a string instead.
+tests/rules/@typescript-eslint/prefer-includes/static-collections/cases.ts:40:1	@typescript-eslint/prefer-includes	preferStringIncludes	Use `String#includes()` method with a string instead.
+tests/rules/@typescript-eslint/prefer-includes/static-collections/cases.ts:41:1	@typescript-eslint/prefer-includes	preferStringIncludes	Use `String#includes()` method with a string instead.
+tests/rules/@typescript-eslint/prefer-includes/static-collections/cases.ts:42:1	@typescript-eslint/prefer-includes	preferStringIncludes	Use `String#includes()` method with a string instead.
+tests/rules/@typescript-eslint/prefer-includes/static-collections/cases.ts:43:1	@typescript-eslint/prefer-includes	preferStringIncludes	Use `String#includes()` method with a string instead.
+tests/rules/@typescript-eslint/prefer-includes/static-collections/cases.ts:44:1	@typescript-eslint/prefer-includes	preferStringIncludes	Use `String#includes()` method with a string instead.
+tests/rules/@typescript-eslint/prefer-includes/static-collections/cases.ts:45:1	@typescript-eslint/prefer-includes	preferStringIncludes	Use `String#includes()` method with a string instead.
+tests/rules/@typescript-eslint/prefer-includes/static-collections/cases.ts:46:1	@typescript-eslint/prefer-includes	preferStringIncludes	Use `String#includes()` method with a string instead.
+tests/rules/@typescript-eslint/prefer-includes/static-collections/cases.ts:47:1	@typescript-eslint/prefer-includes	preferStringIncludes	Use `String#includes()` method with a string instead.
+tests/rules/@typescript-eslint/prefer-includes/static-collections/cases.ts:48:1	@typescript-eslint/prefer-includes	preferStringIncludes	Use `String#includes()` method with a string instead.
+tests/rules/@typescript-eslint/prefer-includes/static-collections/cases.ts:49:1	@typescript-eslint/prefer-includes	preferStringIncludes	Use `String#includes()` method with a string instead.
+tests/rules/@typescript-eslint/prefer-includes/static-collections/cases.ts:50:1	@typescript-eslint/prefer-includes	preferStringIncludes	Use `String#includes()` method with a string instead.
+tests/rules/@typescript-eslint/prefer-includes/static-collections/cases.ts:51:1	@typescript-eslint/prefer-includes	preferStringIncludes	Use `String#includes()` method with a string instead.
+tests/rules/@typescript-eslint/prefer-includes/static-collections/cases.ts:52:1	@typescript-eslint/prefer-includes	preferStringIncludes	Use `String#includes()` method with a string instead.
+tests/rules/@typescript-eslint/prefer-includes/static-collections/cases.ts:53:1	@typescript-eslint/prefer-includes	preferStringIncludes	Use `String#includes()` method with a string instead.
+tests/rules/@typescript-eslint/prefer-includes/static-collections/cases.ts:54:1	@typescript-eslint/prefer-includes	preferStringIncludes	Use `String#includes()` method with a string instead.
+tests/rules/@typescript-eslint/prefer-includes/static-collections/cases.ts:58:1	@typescript-eslint/prefer-includes	preferStringIncludes	Use `String#includes()` method with a string instead.
+tests/rules/@typescript-eslint/prefer-includes/static-collections/cases.ts:59:1	@typescript-eslint/prefer-includes	preferStringIncludes	Use `String#includes()` method with a string instead.
+tests/rules/@typescript-eslint/prefer-includes/static-collections/cases.ts:79:1	@typescript-eslint/prefer-includes	preferStringIncludes	Use `String#includes()` method with a string instead.
+tests/rules/@typescript-eslint/prefer-includes/static-collections/cases.ts:81:1	@typescript-eslint/prefer-includes	preferStringIncludes	Use `String#includes()` method with a string instead.
+tests/rules/@typescript-eslint/prefer-includes/static-functions/cases.ts:4:1	@typescript-eslint/prefer-includes	preferStringIncludes	Use `String#includes()` method with a string instead.
+tests/rules/@typescript-eslint/prefer-includes/static-functions/cases.ts:5:1	@typescript-eslint/prefer-includes	preferStringIncludes	Use `String#includes()` method with a string instead.
+tests/rules/@typescript-eslint/prefer-includes/static-functions/cases.ts:6:1	@typescript-eslint/prefer-includes	preferStringIncludes	Use `String#includes()` method with a string instead.
+tests/rules/@typescript-eslint/prefer-includes/static-functions/cases.ts:7:1	@typescript-eslint/prefer-includes	preferStringIncludes	Use `String#includes()` method with a string instead.
+tests/rules/@typescript-eslint/prefer-includes/static-functions/cases.ts:8:1	@typescript-eslint/prefer-includes	preferStringIncludes	Use `String#includes()` method with a string instead.
+tests/rules/@typescript-eslint/prefer-includes/static-functions/cases.ts:9:1	@typescript-eslint/prefer-includes	preferStringIncludes	Use `String#includes()` method with a string instead.
+tests/rules/@typescript-eslint/prefer-includes/static-functions/cases.ts:10:1	@typescript-eslint/prefer-includes	preferStringIncludes	Use `String#includes()` method with a string instead.
+tests/rules/@typescript-eslint/prefer-includes/static-functions/cases.ts:11:1	@typescript-eslint/prefer-includes	preferStringIncludes	Use `String#includes()` method with a string instead.
+tests/rules/@typescript-eslint/prefer-includes/static-functions/cases.ts:12:1	@typescript-eslint/prefer-includes	preferStringIncludes	Use `String#includes()` method with a string instead.
+tests/rules/@typescript-eslint/prefer-includes/static-functions/cases.ts:13:1	@typescript-eslint/prefer-includes	preferStringIncludes	Use `String#includes()` method with a string instead.
+tests/rules/@typescript-eslint/prefer-includes/static-functions/cases.ts:14:1	@typescript-eslint/prefer-includes	preferStringIncludes	Use `String#includes()` method with a string instead.
+tests/rules/@typescript-eslint/prefer-includes/static-functions/cases.ts:15:1	@typescript-eslint/prefer-includes	preferStringIncludes	Use `String#includes()` method with a string instead.
+tests/rules/@typescript-eslint/prefer-includes/static-functions/cases.ts:16:1	@typescript-eslint/prefer-includes	preferStringIncludes	Use `String#includes()` method with a string instead.
+tests/rules/@typescript-eslint/prefer-includes/static-functions/cases.ts:17:1	@typescript-eslint/prefer-includes	preferStringIncludes	Use `String#includes()` method with a string instead.
+tests/rules/@typescript-eslint/prefer-includes/static-functions/cases.ts:18:1	@typescript-eslint/prefer-includes	preferStringIncludes	Use `String#includes()` method with a string instead.
+tests/rules/@typescript-eslint/prefer-includes/static-functions/cases.ts:19:1	@typescript-eslint/prefer-includes	preferStringIncludes	Use `String#includes()` method with a string instead.
+tests/rules/@typescript-eslint/prefer-includes/static-functions/cases.ts:20:1	@typescript-eslint/prefer-includes	preferStringIncludes	Use `String#includes()` method with a string instead.
+tests/rules/@typescript-eslint/prefer-includes/static-functions/cases.ts:21:1	@typescript-eslint/prefer-includes	preferStringIncludes	Use `String#includes()` method with a string instead.
+tests/rules/@typescript-eslint/prefer-includes/static-functions/cases.ts:22:1	@typescript-eslint/prefer-includes	preferStringIncludes	Use `String#includes()` method with a string instead.
+tests/rules/@typescript-eslint/prefer-includes/static-functions/cases.ts:23:1	@typescript-eslint/prefer-includes	preferStringIncludes	Use `String#includes()` method with a string instead.
+tests/rules/@typescript-eslint/prefer-includes/static-functions/cases.ts:24:1	@typescript-eslint/prefer-includes	preferStringIncludes	Use `String#includes()` method with a string instead.
+tests/rules/@typescript-eslint/prefer-includes/static-functions/cases.ts:25:1	@typescript-eslint/prefer-includes	preferStringIncludes	Use `String#includes()` method with a string instead.
+tests/rules/@typescript-eslint/prefer-includes/static-functions/cases.ts:26:1	@typescript-eslint/prefer-includes	preferStringIncludes	Use `String#includes()` method with a string instead.
+tests/rules/@typescript-eslint/prefer-includes/static-functions/cases.ts:27:1	@typescript-eslint/prefer-includes	preferStringIncludes	Use `String#includes()` method with a string instead.
+tests/rules/@typescript-eslint/prefer-includes/static-functions/cases.ts:28:1	@typescript-eslint/prefer-includes	preferStringIncludes	Use `String#includes()` method with a string instead.
+tests/rules/@typescript-eslint/prefer-includes/static-functions/cases.ts:29:1	@typescript-eslint/prefer-includes	preferStringIncludes	Use `String#includes()` method with a string instead.
+tests/rules/@typescript-eslint/prefer-includes/static-functions/cases.ts:30:1	@typescript-eslint/prefer-includes	preferStringIncludes	Use `String#includes()` method with a string instead.
+tests/rules/@typescript-eslint/prefer-includes/static-functions/cases.ts:31:1	@typescript-eslint/prefer-includes	preferStringIncludes	Use `String#includes()` method with a string instead.
+tests/rules/@typescript-eslint/prefer-includes/static-functions/cases.ts:32:1	@typescript-eslint/prefer-includes	preferStringIncludes	Use `String#includes()` method with a string instead.
+tests/rules/@typescript-eslint/prefer-includes/static-functions/cases.ts:33:1	@typescript-eslint/prefer-includes	preferStringIncludes	Use `String#includes()` method with a string instead.
+tests/rules/@typescript-eslint/prefer-includes/static-functions/cases.ts:34:1	@typescript-eslint/prefer-includes	preferStringIncludes	Use `String#includes()` method with a string instead.
+tests/rules/@typescript-eslint/prefer-includes/static-functions/cases.ts:35:1	@typescript-eslint/prefer-includes	preferStringIncludes	Use `String#includes()` method with a string instead.
+tests/rules/@typescript-eslint/prefer-includes/static-functions/cases.ts:36:1	@typescript-eslint/prefer-includes	preferStringIncludes	Use `String#includes()` method with a string instead.
+tests/rules/@typescript-eslint/prefer-includes/static-functions/cases.ts:37:1	@typescript-eslint/prefer-includes	preferStringIncludes	Use `String#includes()` method with a string instead.
+tests/rules/@typescript-eslint/prefer-includes/static-functions/cases.ts:38:1	@typescript-eslint/prefer-includes	preferStringIncludes	Use `String#includes()` method with a string instead.
+tests/rules/@typescript-eslint/prefer-includes/static-functions/cases.ts:39:1	@typescript-eslint/prefer-includes	preferStringIncludes	Use `String#includes()` method with a string instead.
+tests/rules/@typescript-eslint/prefer-includes/static-functions/cases.ts:40:1	@typescript-eslint/prefer-includes	preferStringIncludes	Use `String#includes()` method with a string instead.
+tests/rules/@typescript-eslint/prefer-includes/static-functions/cases.ts:41:1	@typescript-eslint/prefer-includes	preferStringIncludes	Use `String#includes()` method with a string instead.
+tests/rules/@typescript-eslint/prefer-includes/static-functions/cases.ts:42:1	@typescript-eslint/prefer-includes	preferStringIncludes	Use `String#includes()` method with a string instead.
+tests/rules/@typescript-eslint/prefer-includes/static-functions/cases.ts:43:1	@typescript-eslint/prefer-includes	preferStringIncludes	Use `String#includes()` method with a string instead.
+tests/rules/@typescript-eslint/prefer-includes/static-functions/cases.ts:44:1	@typescript-eslint/prefer-includes	preferStringIncludes	Use `String#includes()` method with a string instead.
+tests/rules/@typescript-eslint/prefer-includes/static-functions/cases.ts:45:1	@typescript-eslint/prefer-includes	preferStringIncludes	Use `String#includes()` method with a string instead.
+tests/rules/@typescript-eslint/prefer-includes/static-functions/cases.ts:46:1	@typescript-eslint/prefer-includes	preferStringIncludes	Use `String#includes()` method with a string instead.
+tests/rules/@typescript-eslint/prefer-includes/static-functions/cases.ts:47:1	@typescript-eslint/prefer-includes	preferStringIncludes	Use `String#includes()` method with a string instead.
+tests/rules/@typescript-eslint/prefer-includes/static-functions/cases.ts:48:1	@typescript-eslint/prefer-includes	preferStringIncludes	Use `String#includes()` method with a string instead.
+tests/rules/@typescript-eslint/prefer-includes/static-functions/cases.ts:49:1	@typescript-eslint/prefer-includes	preferStringIncludes	Use `String#includes()` method with a string instead.
+tests/rules/@typescript-eslint/prefer-includes/static-functions/cases.ts:50:1	@typescript-eslint/prefer-includes	preferStringIncludes	Use `String#includes()` method with a string instead.
+tests/rules/@typescript-eslint/prefer-includes/static-functions/cases.ts:54:1	@typescript-eslint/prefer-includes	preferStringIncludes	Use `String#includes()` method with a string instead.
+tests/rules/@typescript-eslint/prefer-includes/static-functions/cases.ts:55:1	@typescript-eslint/prefer-includes	preferStringIncludes	Use `String#includes()` method with a string instead.
+tests/rules/@typescript-eslint/prefer-includes/static-functions/cases.ts:56:1	@typescript-eslint/prefer-includes	preferStringIncludes	Use `String#includes()` method with a string instead.
+tests/rules/@typescript-eslint/prefer-includes/static-functions/cases.ts:57:1	@typescript-eslint/prefer-includes	preferStringIncludes	Use `String#includes()` method with a string instead.
+tests/rules/@typescript-eslint/prefer-includes/static-functions/cases.ts:58:1	@typescript-eslint/prefer-includes	preferStringIncludes	Use `String#includes()` method with a string instead.
+tests/rules/@typescript-eslint/prefer-includes/static-functions/cases.ts:59:1	@typescript-eslint/prefer-includes	preferStringIncludes	Use `String#includes()` method with a string instead.
+tests/rules/@typescript-eslint/prefer-includes/static-functions/cases.ts:60:1	@typescript-eslint/prefer-includes	preferStringIncludes	Use `String#includes()` method with a string instead.
+tests/rules/@typescript-eslint/prefer-includes/static-functions/cases.ts:61:1	@typescript-eslint/prefer-includes	preferStringIncludes	Use `String#includes()` method with a string instead.
+tests/rules/@typescript-eslint/prefer-includes/static-functions/cases.ts:62:1	@typescript-eslint/prefer-includes	preferStringIncludes	Use `String#includes()` method with a string instead.
+tests/rules/@typescript-eslint/prefer-includes/static-functions/cases.ts:63:1	@typescript-eslint/prefer-includes	preferStringIncludes	Use `String#includes()` method with a string instead.
+tests/rules/@typescript-eslint/prefer-includes/static-functions/cases.ts:64:1	@typescript-eslint/prefer-includes	preferStringIncludes	Use `String#includes()` method with a string instead.
+tests/rules/@typescript-eslint/prefer-includes/static-functions/cases.ts:65:1	@typescript-eslint/prefer-includes	preferStringIncludes	Use `String#includes()` method with a string instead.
+tests/rules/@typescript-eslint/prefer-includes/static-functions/cases.ts:66:1	@typescript-eslint/prefer-includes	preferStringIncludes	Use `String#includes()` method with a string instead.
+tests/rules/@typescript-eslint/prefer-includes/static-functions/cases.ts:67:1	@typescript-eslint/prefer-includes	preferStringIncludes	Use `String#includes()` method with a string instead.
+tests/rules/@typescript-eslint/prefer-includes/static-functions/cases.ts:68:1	@typescript-eslint/prefer-includes	preferStringIncludes	Use `String#includes()` method with a string instead.
+tests/rules/@typescript-eslint/prefer-includes/static-functions/cases.ts:69:1	@typescript-eslint/prefer-includes	preferStringIncludes	Use `String#includes()` method with a string instead.
+tests/rules/@typescript-eslint/prefer-includes/static-functions/cases.ts:70:1	@typescript-eslint/prefer-includes	preferStringIncludes	Use `String#includes()` method with a string instead.
+tests/rules/@typescript-eslint/prefer-includes/static-functions/cases.ts:71:1	@typescript-eslint/prefer-includes	preferStringIncludes	Use `String#includes()` method with a string instead.
+tests/rules/@typescript-eslint/prefer-includes/static-functions/cases.ts:72:1	@typescript-eslint/prefer-includes	preferStringIncludes	Use `String#includes()` method with a string instead.
+tests/rules/@typescript-eslint/prefer-includes/static-functions/cases.ts:73:1	@typescript-eslint/prefer-includes	preferStringIncludes	Use `String#includes()` method with a string instead.
+tests/rules/@typescript-eslint/prefer-includes/static-functions/cases.ts:74:1	@typescript-eslint/prefer-includes	preferStringIncludes	Use `String#includes()` method with a string instead.
+tests/rules/@typescript-eslint/prefer-includes/static-functions/cases.ts:75:1	@typescript-eslint/prefer-includes	preferStringIncludes	Use `String#includes()` method with a string instead.
+tests/rules/@typescript-eslint/prefer-includes/static-functions/cases.ts:76:1	@typescript-eslint/prefer-includes	preferStringIncludes	Use `String#includes()` method with a string instead.
+tests/rules/@typescript-eslint/prefer-includes/static-functions/cases.ts:77:1	@typescript-eslint/prefer-includes	preferStringIncludes	Use `String#includes()` method with a string instead.
+tests/rules/@typescript-eslint/prefer-includes/static-functions/cases.ts:78:1	@typescript-eslint/prefer-includes	preferStringIncludes	Use `String#includes()` method with a string instead.
+tests/rules/@typescript-eslint/prefer-includes/static-functions/cases.ts:79:1	@typescript-eslint/prefer-includes	preferStringIncludes	Use `String#includes()` method with a string instead.
+tests/rules/@typescript-eslint/prefer-includes/static-functions/cases.ts:80:1	@typescript-eslint/prefer-includes	preferStringIncludes	Use `String#includes()` method with a string instead.
+tests/rules/@typescript-eslint/prefer-includes/static-functions/cases.ts:81:1	@typescript-eslint/prefer-includes	preferStringIncludes	Use `String#includes()` method with a string instead.
+tests/rules/@typescript-eslint/prefer-includes/static-functions/cases.ts:82:1	@typescript-eslint/prefer-includes	preferStringIncludes	Use `String#includes()` method with a string instead.
+tests/rules/@typescript-eslint/prefer-includes/static-functions/cases.ts:83:1	@typescript-eslint/prefer-includes	preferStringIncludes	Use `String#includes()` method with a string instead.
+tests/rules/@typescript-eslint/prefer-includes/static-functions/cases.ts:84:1	@typescript-eslint/prefer-includes	preferStringIncludes	Use `String#includes()` method with a string instead.
+tests/rules/@typescript-eslint/prefer-includes/static-functions/cases.ts:85:1	@typescript-eslint/prefer-includes	preferStringIncludes	Use `String#includes()` method with a string instead.
+tests/rules/@typescript-eslint/prefer-includes/static-functions/cases.ts:86:1	@typescript-eslint/prefer-includes	preferStringIncludes	Use `String#includes()` method with a string instead.
+tests/rules/@typescript-eslint/prefer-includes/static-functions/cases.ts:87:1	@typescript-eslint/prefer-includes	preferStringIncludes	Use `String#includes()` method with a string instead.
+tests/rules/@typescript-eslint/prefer-includes/static-functions/cases.ts:88:1	@typescript-eslint/prefer-includes	preferStringIncludes	Use `String#includes()` method with a string instead.
+tests/rules/@typescript-eslint/prefer-includes/static-functions/cases.ts:89:1	@typescript-eslint/prefer-includes	preferStringIncludes	Use `String#includes()` method with a string instead.
+tests/rules/@typescript-eslint/prefer-includes/static-functions/cases.ts:90:1	@typescript-eslint/prefer-includes	preferStringIncludes	Use `String#includes()` method with a string instead.
+tests/rules/@typescript-eslint/prefer-includes/static-functions/cases.ts:91:1	@typescript-eslint/prefer-includes	preferStringIncludes	Use `String#includes()` method with a string instead.
+tests/rules/@typescript-eslint/prefer-includes/static-functions/cases.ts:92:1	@typescript-eslint/prefer-includes	preferStringIncludes	Use `String#includes()` method with a string instead.
+tests/rules/@typescript-eslint/prefer-includes/static-functions/cases.ts:93:1	@typescript-eslint/prefer-includes	preferStringIncludes	Use `String#includes()` method with a string instead.
+tests/rules/@typescript-eslint/prefer-includes/static-functions/cases.ts:94:1	@typescript-eslint/prefer-includes	preferStringIncludes	Use `String#includes()` method with a string instead.
+tests/rules/@typescript-eslint/prefer-includes/static-functions/cases.ts:95:1	@typescript-eslint/prefer-includes	preferStringIncludes	Use `String#includes()` method with a string instead.
+tests/rules/@typescript-eslint/prefer-includes/static-functions/cases.ts:96:1	@typescript-eslint/prefer-includes	preferStringIncludes	Use `String#includes()` method with a string instead.
+tests/rules/@typescript-eslint/prefer-includes/static-functions/cases.ts:97:1	@typescript-eslint/prefer-includes	preferStringIncludes	Use `String#includes()` method with a string instead.
+tests/rules/@typescript-eslint/prefer-includes/static-functions/cases.ts:98:1	@typescript-eslint/prefer-includes	preferStringIncludes	Use `String#includes()` method with a string instead.
+tests/rules/@typescript-eslint/prefer-includes/static-functions/cases.ts:99:1	@typescript-eslint/prefer-includes	preferStringIncludes	Use `String#includes()` method with a string instead.
+tests/rules/@typescript-eslint/prefer-includes/static-functions/cases.ts:100:1	@typescript-eslint/prefer-includes	preferStringIncludes	Use `String#includes()` method with a string instead.
+tests/rules/@typescript-eslint/prefer-includes/static-functions/cases.ts:104:1	@typescript-eslint/prefer-includes	preferStringIncludes	Use `String#includes()` method with a string instead.
+tests/rules/@typescript-eslint/prefer-includes/static-functions/cases.ts:105:1	@typescript-eslint/prefer-includes	preferStringIncludes	Use `String#includes()` method with a string instead.
+tests/rules/@typescript-eslint/prefer-includes/static-functions/cases.ts:106:1	@typescript-eslint/prefer-includes	preferStringIncludes	Use `String#includes()` method with a string instead.
+tests/rules/@typescript-eslint/prefer-includes/static-functions/cases.ts:107:1	@typescript-eslint/prefer-includes	preferStringIncludes	Use `String#includes()` method with a string instead.
+tests/rules/@typescript-eslint/prefer-includes/static-functions/cases.ts:108:1	@typescript-eslint/prefer-includes	preferStringIncludes	Use `String#includes()` method with a string instead.
+tests/rules/@typescript-eslint/prefer-includes/static-functions/cases.ts:109:1	@typescript-eslint/prefer-includes	preferStringIncludes	Use `String#includes()` method with a string instead.
+tests/rules/@typescript-eslint/prefer-includes/static-functions/cases.ts:110:1	@typescript-eslint/prefer-includes	preferStringIncludes	Use `String#includes()` method with a string instead.
+tests/rules/@typescript-eslint/prefer-includes/static-functions/cases.ts:111:1	@typescript-eslint/prefer-includes	preferStringIncludes	Use `String#includes()` method with a string instead.
+tests/rules/@typescript-eslint/prefer-includes/static-functions/cases.ts:112:1	@typescript-eslint/prefer-includes	preferStringIncludes	Use `String#includes()` method with a string instead.
+tests/rules/@typescript-eslint/prefer-includes/static-functions/cases.ts:113:1	@typescript-eslint/prefer-includes	preferStringIncludes	Use `String#includes()` method with a string instead.
+tests/rules/@typescript-eslint/prefer-includes/static-functions/cases.ts:114:1	@typescript-eslint/prefer-includes	preferStringIncludes	Use `String#includes()` method with a string instead.
+tests/rules/@typescript-eslint/prefer-includes/static-functions/cases.ts:115:1	@typescript-eslint/prefer-includes	preferStringIncludes	Use `String#includes()` method with a string instead.
+tests/rules/@typescript-eslint/prefer-includes/static-functions/cases.ts:116:1	@typescript-eslint/prefer-includes	preferStringIncludes	Use `String#includes()` method with a string instead.
+tests/rules/@typescript-eslint/prefer-includes/static-functions/cases.ts:117:1	@typescript-eslint/prefer-includes	preferStringIncludes	Use `String#includes()` method with a string instead.
+tests/rules/@typescript-eslint/prefer-includes/static-functions/cases.ts:118:1	@typescript-eslint/prefer-includes	preferStringIncludes	Use `String#includes()` method with a string instead.
+tests/rules/@typescript-eslint/prefer-includes/static-functions/cases.ts:119:1	@typescript-eslint/prefer-includes	preferStringIncludes	Use `String#includes()` method with a string instead.
+tests/rules/@typescript-eslint/prefer-includes/static-functions/cases.ts:129:1	@typescript-eslint/prefer-includes	preferStringIncludes	Use `String#includes()` method with a string instead.
+tests/rules/@typescript-eslint/prefer-includes/static-functions/cases.ts:130:1	@typescript-eslint/prefer-includes	preferStringIncludes	Use `String#includes()` method with a string instead.
+tests/rules/@typescript-eslint/prefer-includes/static-functions/cases.ts:131:1	@typescript-eslint/prefer-includes	preferStringIncludes	Use `String#includes()` method with a string instead.
+tests/rules/@typescript-eslint/prefer-includes/static-functions/cases.ts:132:1	@typescript-eslint/prefer-includes	preferStringIncludes	Use `String#includes()` method with a string instead.
+tests/rules/@typescript-eslint/prefer-includes/static-functions/cases.ts:133:1	@typescript-eslint/prefer-includes	preferStringIncludes	Use `String#includes()` method with a string instead.
+tests/rules/@typescript-eslint/prefer-includes/static-functions/cases.ts:134:1	@typescript-eslint/prefer-includes	preferStringIncludes	Use `String#includes()` method with a string instead.
+tests/rules/@typescript-eslint/prefer-includes/static-functions/cases.ts:135:1	@typescript-eslint/prefer-includes	preferStringIncludes	Use `String#includes()` method with a string instead.
+tests/rules/@typescript-eslint/prefer-includes/static-functions/cases.ts:136:1	@typescript-eslint/prefer-includes	preferStringIncludes	Use `String#includes()` method with a string instead.
+tests/rules/@typescript-eslint/prefer-includes/static-functions/cases.ts:137:1	@typescript-eslint/prefer-includes	preferStringIncludes	Use `String#includes()` method with a string instead.
+tests/rules/@typescript-eslint/prefer-includes/static-functions/cases.ts:138:1	@typescript-eslint/prefer-includes	preferStringIncludes	Use `String#includes()` method with a string instead.
+tests/rules/@typescript-eslint/prefer-includes/static-functions/cases.ts:139:1	@typescript-eslint/prefer-includes	preferStringIncludes	Use `String#includes()` method with a string instead.
+tests/rules/@typescript-eslint/prefer-includes/static-functions/cases.ts:141:1	@typescript-eslint/prefer-includes	preferStringIncludes	Use `String#includes()` method with a string instead.
+tests/rules/@typescript-eslint/prefer-includes/static-functions/cases.ts:142:1	@typescript-eslint/prefer-includes	preferStringIncludes	Use `String#includes()` method with a string instead.
+tests/rules/@typescript-eslint/prefer-includes/static-functions/cases.ts:143:1	@typescript-eslint/prefer-includes	preferStringIncludes	Use `String#includes()` method with a string instead.
+tests/rules/@typescript-eslint/prefer-includes/static-functions/cases.ts:144:1	@typescript-eslint/prefer-includes	preferStringIncludes	Use `String#includes()` method with a string instead.
+tests/rules/@typescript-eslint/prefer-includes/static-functions/cases.ts:145:1	@typescript-eslint/prefer-includes	preferStringIncludes	Use `String#includes()` method with a string instead.
+tests/rules/@typescript-eslint/prefer-includes/static-throws/cases.ts:10:1	@typescript-eslint/prefer-includes	preferStringIncludes	Use `String#includes()` method with a string instead.
+tests/rules/@typescript-eslint/prefer-includes/static-throws/cases.ts:11:1	@typescript-eslint/prefer-includes	preferStringIncludes	Use `String#includes()` method with a string instead.
+tests/rules/@typescript-eslint/prefer-includes/static-throws/cases.ts:22:1	@typescript-eslint/prefer-includes	preferStringIncludes	Use `String#includes()` method with a string instead.
+tests/rules/@typescript-eslint/prefer-includes/static-throws/cases.ts:64:1	@typescript-eslint/prefer-includes	preferStringIncludes	Use `String#includes()` method with a string instead.
+tests/rules/@typescript-eslint/prefer-includes/static-throws/cases.ts:67:1	@typescript-eslint/prefer-includes	preferStringIncludes	Use `String#includes()` method with a string instead.
+tests/rules/@typescript-eslint/prefer-includes/static-throws/cases.ts:70:1	@typescript-eslint/prefer-includes	preferStringIncludes	Use `String#includes()` method with a string instead.
+tests/rules/@typescript-eslint/prefer-includes/static-throws/cases.ts:73:1	@typescript-eslint/prefer-includes	preferStringIncludes	Use `String#includes()` method with a string instead.
+tests/rules/@typescript-eslint/prefer-includes/static-throws/cases.ts:76:1	@typescript-eslint/prefer-includes	preferStringIncludes	Use `String#includes()` method with a string instead.
+tests/rules/@typescript-eslint/prefer-includes/static-throws/cases.ts:79:1	@typescript-eslint/prefer-includes	preferStringIncludes	Use `String#includes()` method with a string instead.
+tests/rules/@typescript-eslint/prefer-includes/static-throws/cases.ts:86:1	@typescript-eslint/prefer-includes	preferStringIncludes	Use `String#includes()` method with a string instead.

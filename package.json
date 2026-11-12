@@ -1,0 +1,14 @@
+{
+  "name": "veslint",
+  "private": true,
+  "description": "Pins the native TypeScript 7 binary (tsc --api) veslint uses and the tree-sitter CLI that regenerates the patched grammar (only at build time). There is no JS code at runtime.",
+  "dependencies": {
+    "typescript": "7.1.0-beta"
+  },
+  "devDependencies": {
+    "tree-sitter-cli": "0.24.4"
+  },
+  "allowScripts": {
+    "tree-sitter-cli@0.24.4": true
+  }
+}

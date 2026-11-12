@@ -1,0 +1,129 @@
+name: Release
+
+# On a tag `v*` (or by hand, without publishing): veslint for Linux x64 and Windows x64, each with
+# the TypeScript 7 compiler it runs, and the VS Code extension; with a tag, a GitHub release of it.
+on:
+  push:
+    tags: ['v*']
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+env:
+  # The V the project is built with: a commit of github.com/vlang/v and the vlang/vc commit generated
+  # from it (also in build-windows.ps1).
+  V_COMMIT: 841595141fbb045527fd0ac986e8b6cb8aee5bcb
+  VC_COMMIT: 45add16eb714cb4bd00acff989cd40b28185fc1f
+
+jobs:
+  linux:
+    runs-on: ubuntu-22.04
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: V
+        run: |
+          git init -q vendor/v
+          git -C vendor/v fetch -q --depth 1 https://github.com/vlang/v "$V_COMMIT"
+          git -C vendor/v checkout -q FETCH_HEAD
+          git init -q vendor/v/vc
+          git -C vendor/v/vc fetch -q --depth 1 https://github.com/vlang/vc "$VC_COMMIT"
+          git -C vendor/v/vc checkout -q FETCH_HEAD
+          cd vendor/v
+          # As V's GNUmakefile does, with the vc commit pinned.
+          sh ./cmd/tools/vc_compat.sh ./vc/v.c cc -DCUSTOM_DEFINE_v1_fallback -std=c99 -w -o v1 -- -lm -lpthread
+          ./v1 -no-parallel -o v2 -gc none cmd/v
+          ./v2 -nocache -o v -gc none cmd/v
+          rm v1 v2
+      - name: veslint
+        run: make veslint V=vendor/v/v
+      - name: Check
+        run: ./veslint app.ts | diff - tests/expected/app.txt
+      - name: Package
+        run: |
+          name=veslint-$GITHUB_REF_NAME-linux-x64
+          mkdir -p "dist/$name/node_modules/@typescript"
+          cp veslint README.md "dist/$name/"
+          cp -r node_modules/@typescript/typescript-linux-x64 "dist/$name/node_modules/@typescript/"
+          tar -C dist -czf "dist/$name.tar.gz" "$name"
+      - uses: actions/upload-artifact@v4
+        with:
+          name: linux
+          path: dist/*.tar.gz
+      # The generated grammar, which the Windows build takes from Linux.
+      - uses: actions/upload-artifact@v4
+        with:
+          name: grammar
+          path: build/tree-sitter-typescript
+
+  windows:
+    needs: linux
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - uses: msys2/setup-msys2@v2
+        id: msys2
+        with:
+          msystem: UCRT64
+          install: mingw-w64-ucrt-x86_64-gcc
+      - name: gcc in PATH
+        shell: pwsh
+        run: Add-Content $env:GITHUB_PATH "${{ steps.msys2.outputs.msys2-location }}\ucrt64\bin"
+      - uses: actions/download-artifact@v4
+        with:
+          name: grammar
+          path: build/tree-sitter-typescript
+      - name: veslint.exe
+        shell: pwsh
+        run: ./build-windows.ps1
+      - name: Check
+        shell: bash
+        run: ./veslint.exe app.ts | diff - tests/expected/app.txt
+      - name: Package
+        shell: pwsh
+        run: |
+          $name = "veslint-$env:GITHUB_REF_NAME-win32-x64"
+          New-Item -ItemType Directory -Force "dist/$name/node_modules/@typescript" | Out-Null
+          Copy-Item veslint.exe, README.md "dist/$name/"
+          Copy-Item -Recurse node_modules/@typescript/typescript-win32-x64 "dist/$name/node_modules/@typescript/"
+          Compress-Archive -Path "dist/$name" -DestinationPath "dist/$name.zip"
+      - uses: actions/upload-artifact@v4
+        with:
+          name: windows
+          path: dist/*.zip
+
+  extension:
+    runs-on: ubuntu-22.04
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: Package
+        working-directory: editors/vscode
+        run: npx --yes @vscode/vsce@4.1.0 package --no-dependencies --skip-license --allow-missing-repository -o ../../dist/
+      - uses: actions/upload-artifact@v4
+        with:
+          name: extension
+          path: dist/*.vsix
+
+  release:
+    needs: [linux, windows, extension]
+    if: startsWith(github.ref, 'refs/tags/v')
+    runs-on: ubuntu-22.04
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          pattern: '{linux,windows,extension}'
+          path: dist
+          merge-multiple: true
+      - name: Release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: gh release create "$GITHUB_REF_NAME" dist/*.tar.gz dist/*.zip dist/*.vsix --repo "$GITHUB_REPOSITORY" --title "veslint $GITHUB_REF_NAME" --generate-notes

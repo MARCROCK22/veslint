@@ -1,0 +1,87 @@
+base.ts:5:3	@typescript-eslint/no-floating-promises	floatingVoid	Promises must be awaited, end with a call to .catch, end with a call to .then with a rejection handler or be explicitly marked as ignored with the `void` operator.	suggestion	floatingFixVoid	Add void operator to ignore.	144	144	void 	suggestion	floatingFixAwait	Add await operator.	144	144	await 
+base.ts:7:3	@typescript-eslint/await-thenable	await	Unexpected `await` of a non-Promise (non-"Thenable") value.	suggestion	removeAwait	Remove unnecessary `await`.	159	164	
+base.ts:11:3	eslint	warning	Unused eslint-disable directive (no problems were reported from '@typescript-eslint/no-array-delete').	fix	263	325	 
+base.ts:12:3	@typescript-eslint/await-thenable	await	Unexpected `await` of a non-Promise (non-"Thenable") value.	suggestion	removeAwait	Remove unnecessary `await`.	328	333	
+base.ts:13:3	eslint	warning	Unused eslint-disable directive (no problems were reported).	fix	339	366	 
+globals/a.ts:6:1	@typescript-eslint/prefer-find	preferFind	Prefer .find(...) instead of .filter(...)[0].	suggestion	preferFindSuggestion	Use .find(...) instead of .filter(...)[0].	204	239	find(x => x > 1)
+globals/a.ts:10:1	@typescript-eslint/prefer-find	preferFind	Prefer .find(...) instead of .filter(...)[0].	suggestion	preferFindSuggestion	Use .find(...) instead of .filter(...)[0].	457	488	find(x => x > 1)
+globals/a.ts:12:1	@typescript-eslint/prefer-find	preferFind	Prefer .find(...) instead of .filter(...)[0].	suggestion	preferFindSuggestion	Use .find(...) instead of .filter(...)[0].	530	566	find(x => x > 1)
+ignored/a.ts:0:0	eslint	warning	File ignored because of a matching ignore pattern. Use "--no-ignore" to disable file ignore settings or use "--no-warn-ignored" to suppress this warning.
+locked/a.ts:5:3	@typescript-eslint/no-floating-promises	floatingVoid	Promises must be awaited, end with a call to .catch, end with a call to .then with a rejection handler or be explicitly marked as ignored with the `void` operator.	suggestion	floatingFixVoid	Add void operator to ignore.	144	144	void 	suggestion	floatingFixAwait	Add await operator.	144	144	await 
+locked/a.ts:7:3	@typescript-eslint/await-thenable	await	Unexpected `await` of a non-Promise (non-"Thenable") value.	suggestion	removeAwait	Remove unnecessary `await`.	159	164	
+locked/a.ts:9:3	eslint	warning	'// eslint-disable-next-line @typescript-eslint/no-floating-promises' has no effect because you have 'noInlineConfig' setting in your config.
+locked/a.ts:10:3	@typescript-eslint/no-floating-promises	floatingVoid	Promises must be awaited, end with a call to .catch, end with a call to .then with a rejection handler or be explicitly marked as ignored with the `void` operator.	suggestion	floatingFixVoid	Add void operator to ignore.	258	258	void 	suggestion	floatingFixAwait	Add await operator.	258	258	await 
+locked/a.ts:11:3	eslint	warning	'// eslint-disable-next-line @typescript-eslint/no-array-delete' has no effect because you have 'noInlineConfig' setting in your config.
+locked/a.ts:12:3	@typescript-eslint/await-thenable	await	Unexpected `await` of a non-Promise (non-"Thenable") value.	suggestion	removeAwait	Remove unnecessary `await`.	328	333	
+locked/a.ts:13:3	eslint	warning	'// eslint-disable-next-line' has no effect because you have 'noInlineConfig' setting in your config.
+neighbours/a.ts:6:3	eslint	warning	Unused eslint-disable directive (no problems were reported from '@typescript-eslint/no-floating-promises').	fix	359	400	
+neighbours/a.ts:8:3	eslint	warning	Unused eslint-disable directive (no problems were reported from '@typescript-eslint/no-floating-promises').	fix	450	491	
+neighbours/a.ts:16:3	eslint	warning	Unused eslint-enable directive (no matching eslint-disable directives were found for 'no-console').	fix	857	887	 
+neighbours/a.ts:20:3	eslint	warning	Unused eslint-enable directive (no matching eslint-disable directives were found for 'no-debugger' or '@typescript-eslint/no-floating-promises').	fix	975	1047	 
+neighbours/a.ts:23:3	eslint	warning	Unused eslint-disable directive (no problems were reported from '@typescript-eslint/await-thenable').	fix	1198	1259	 
+neighbours/a.ts:25:3	eslint	warning	Unused eslint-disable directive (no problems were reported from 'no-alert').	fix	1273	1309	 
+neighbours/a.ts:27:3	eslint	warning	Unused eslint-disable directive (no problems were reported from 'no-alert').	fix	1352	1362	
+neighbours/a.ts:29:3	eslint	warning	Unused eslint-disable directive (no problems were reported from 'no-alert').	fix	1409	1438	 
+neighbours/a.ts:33:3	not-a/plugin-rule	error	Definition for rule 'not-a/plugin-rule' was not found.
+neighbours/a.ts:35:3	not-a/plugin-rule	error	Definition for rule 'not-a/plugin-rule' was not found.
+neighbours/b.ts:4:1	not-a/plugin-rule	error	Definition for rule 'not-a/plugin-rule' was not found.
+neighbours/b.ts:7:3	eslint	warning	Unused eslint-disable directive (no problems were reported from 'no-debugger').	fix	321	360	 
+neighbours/b.ts:8:3	@typescript-eslint/no-floating-promises	floatingVoid	Promises must be awaited, end with a call to .catch, end with a call to .then with a rejection handler or be explicitly marked as ignored with the `void` operator.	suggestion	floatingFixVoid	Add void operator to ignore.	363	363	void 	suggestion	floatingFixAwait	Add await operator.	363	363	await 
+neighbours/b.ts:9:3	eslint	warning	Unused eslint-disable directive (no problems were reported from 'no-console').	fix	396	408	
+neighbours/b.ts:11:3	eslint	warning	Unused eslint-disable directive (no problems were reported).	fix	455	482	 
+neighbours/b.ts:15:3	eslint	warning	Unused eslint-disable directive (no problems were reported from 'no-console' or 'no-debugger').	fix	530	574	 
+neighbours/c.ts:10:3	eslint	warning	Unused eslint-disable directive (no problems were reported from '@typescript-eslint/no-floating-promises').	fix	389	430	
+other/a.ts:9:3	eslint	warning	Unused eslint-disable directive (no problems were reported from '@typescript-eslint/await-thenable' or 'no-alert').	fix	400	471	 
+other/a.ts:10:3	@typescript-eslint/no-floating-promises	floatingVoid	Promises must be awaited, end with a call to .catch, end with a call to .then with a rejection handler or be explicitly marked as ignored with the `void` operator.	suggestion	floatingFixVoid	Add void operator to ignore.	474	474	void 	suggestion	floatingFixAwait	Add await operator.	474	474	await 
+other/a.ts:11:3	not-a/plugin-rule	error	Definition for rule 'not-a/plugin-rule' was not found.
+other/a.ts:12:3	@typescript-eslint/no-floating-promises	floatingVoid	Promises must be awaited, end with a call to .catch, end with a call to .then with a rejection handler or be explicitly marked as ignored with the `void` operator.	suggestion	floatingFixVoid	Add void operator to ignore.	527	527	void 	suggestion	floatingFixAwait	Add await operator.	527	527	await 
+program-dir/project/a.ts:10:3	@typescript-eslint/no-floating-promises	floatingVoid	Promises must be awaited, end with a call to .catch, end with a call to .then with a rejection handler or be explicitly marked as ignored with the `void` operator.	suggestion	floatingFixVoid	Add void operator to ignore.	494	494	void 	suggestion	floatingFixAwait	Add await operator.	494	494	await 
+program-dir/service/a.ts:9:3	@typescript-eslint/no-floating-promises	floatingVoid	Promises must be awaited, end with a call to .catch, end with a call to .then with a rejection handler or be explicitly marked as ignored with the `void` operator.	suggestion	floatingFixVoid	Add void operator to ignore.	469	469	void 	suggestion	floatingFixAwait	Add await operator.	469	469	await 
+program-dir/service/a.ts:11:3	@typescript-eslint/no-floating-promises	floatingVoid	Promises must be awaited, end with a call to .catch, end with a call to .then with a rejection handler or be explicitly marked as ignored with the `void` operator.	suggestion	floatingFixVoid	Add void operator to ignore.	513	513	void 	suggestion	floatingFixAwait	Add await operator.	513	513	await 
+quiet/a.ts:7:3	@typescript-eslint/await-thenable	await	Unexpected `await` of a non-Promise (non-"Thenable") value.	suggestion	removeAwait	Remove unnecessary `await`.	159	164	
+quiet/a.ts:12:3	@typescript-eslint/await-thenable	await	Unexpected `await` of a non-Promise (non-"Thenable") value.	suggestion	removeAwait	Remove unnecessary `await`.	328	333	
+scopes/commonjs.ts:4:51	@typescript-eslint/naming-convention	missingUnderscore	Class name `exports` must have one leading underscore(s).
+scopes/commonjs.ts:4:69	@typescript-eslint/naming-convention	missingUnderscore	Class name `global` must have one leading underscore(s).
+scopes/globals.ts:4:24	@typescript-eslint/naming-convention	missingUnderscore	Class name `configUnused` must have one leading underscore(s).
+scopes/lib.ts:3:24	@typescript-eslint/naming-convention	missingUnderscore	Class name `WeakMap` must have one leading underscore(s).
+scopes/script.ts:5:5	@typescript-eslint/naming-convention	missingUnderscore	Variable name `unusedTop` must have one leading underscore(s).
+scopes/script.ts:7:10	@typescript-eslint/naming-convention	missingUnderscore	Function name `unusedFn` must have one leading underscore(s).
+scopes/script.ts:8:7	@typescript-eslint/naming-convention	missingUnderscore	Class name `configUnused` must have one leading underscore(s).
+skipped.gen.ts:0:0	eslint	warning	File ignored because of a matching ignore pattern. Use "--no-ignore" to disable file ignore settings or use "--no-warn-ignored" to suppress this warning.
+strict/a.ts:5:3	@typescript-eslint/no-floating-promises	floating	Promises must be awaited, end with a call to .catch, or end with a call to .then with a rejection handler.	suggestion	floatingFixAwait	Add await operator.	144	144	await 
+strict/a.ts:6:3	@typescript-eslint/no-floating-promises	floating	Promises must be awaited, end with a call to .catch, or end with a call to .then with a rejection handler.	suggestion	floatingFixAwait	Add await operator.	149	153	await
+strict/a.ts:7:3	@typescript-eslint/await-thenable	await	Unexpected `await` of a non-Promise (non-"Thenable") value.	suggestion	removeAwait	Remove unnecessary `await`.	159	164	
+strict/a.ts:8:3	@typescript-eslint/no-array-delete	noArrayDelete	Using the `delete` operator with an array expression is unsafe.	suggestion	useSplice	Use `array.splice()` instead.	170	184	list.splice(0, 1)
+strict/a.ts:11:3	eslint	warning	Unused eslint-disable directive (no problems were reported from '@typescript-eslint/no-array-delete').	fix	263	325	 
+strict/a.ts:12:3	@typescript-eslint/await-thenable	await	Unexpected `await` of a non-Promise (non-"Thenable") value.	suggestion	removeAwait	Remove unnecessary `await`.	328	333	
+strict/a.ts:13:3	eslint	warning	Unused eslint-disable directive (no problems were reported).	fix	339	366	 
+unused-error/a.ts:5:3	@typescript-eslint/no-floating-promises	floatingVoid	Promises must be awaited, end with a call to .catch, end with a call to .then with a rejection handler or be explicitly marked as ignored with the `void` operator.	suggestion	floatingFixVoid	Add void operator to ignore.	144	144	void 	suggestion	floatingFixAwait	Add await operator.	144	144	await 
+unused-error/a.ts:7:3	@typescript-eslint/await-thenable	await	Unexpected `await` of a non-Promise (non-"Thenable") value.	suggestion	removeAwait	Remove unnecessary `await`.	159	164	
+unused-error/a.ts:11:3	eslint	error	Unused eslint-disable directive (no problems were reported from '@typescript-eslint/no-array-delete').	fix	263	325	 
+unused-error/a.ts:12:3	@typescript-eslint/await-thenable	await	Unexpected `await` of a non-Promise (non-"Thenable") value.	suggestion	removeAwait	Remove unnecessary `await`.	328	333	
+unused-error/a.ts:13:3	eslint	error	Unused eslint-disable directive (no problems were reported).	fix	339	366	 
+unused-inline/a.ts:2:1	eslint	error	Unused inline config ('curly' is already configured to 'error').
+unused-inline/a.ts:3:1	eslint	error	Unused inline config ('eqeqeq' is already configured to 'warn').
+unused-inline/a.ts:4:1	eslint	error	Unused inline config ('no-console' is already configured to 'off').
+unused-inline/a.ts:5:1	eslint	error	Unused inline config ('no-debugger' is not enabled so can't be turned off).
+unused-inline/a.ts:6:1	eslint	error	Unused inline config ('no-alert' is not enabled so can't be turned off).
+unused-inline/a.ts:7:1	eslint	error	Unused inline config ('no-unused-vars' is already configured to 'error' with the same options).
+unused-inline/a.ts:8:1	eslint	error	Unused inline config ('@typescript-eslint/no-floating-promises' is already configured to 'error' with the same options).
+unused-inline/a.ts:9:1	eslint	error	Unused inline config ('@typescript-eslint/no-array-delete' is already configured to 'error').
+unused-inline/b.ts:2:1	eslint	error	Unused inline config ('curly' is already configured to 'error' with the same options).
+unused-inline/b.ts:3:1	eslint	error	Unused inline config ('eqeqeq' is already configured to 'warn' with the same options).
+unused-inline/b.ts:4:1	eslint	error	Unused inline config ('no-console' is already configured to 'off').
+unused-inline/b.ts:5:1	eslint	error	Unused inline config ('no-unused-vars' is already configured to 'error' with the same options).
+unused-inline/b.ts:7:1	eslint	error	Unused inline config ('@typescript-eslint/no-array-delete' is already configured to 'error').
+unused-inline/b.ts:8:1	eslint	error	Unused inline config ('@typescript-eslint/dot-notation' is already configured to 'warn').
+unused-inline/b.ts:10:1	eslint	error	Unused inline config ('no-var' is not enabled so can't be turned off).
+unused-inline/c.ts:5:1	eslint	error	Unused inline config ('no-unused-vars' is already configured to 'error').
+unused-inline/c.ts:6:1	eslint	error	Unused inline config ('@typescript-eslint/no-floating-promises' is already configured to 'error').
+unused-inline/c.ts:7:1	eslint	error	Unused inline config ('@typescript-eslint/await-thenable' is already configured to 'warn').
+unused-inline/c.ts:7:1	eslint	error	Unused inline config ('@typescript-eslint/no-array-delete' is already configured to 'error').
+unused-inline/c.ts:8:1	eslint	error	Unused inline config ('@typescript-eslint/dot-notation' is already configured to 'warn' with the same options).
+unused-inline/c.ts:9:1	eslint	error	Unused inline config ('@typescript-eslint/no-misused-promises' is not enabled so can't be turned off).
+unused-inline/c.ts:9:1	eslint	error	Unused inline config ('@typescript-eslint/require-await' is not enabled so can't be turned off).
+unused-inline/warned.ts:2:1	eslint	warning	Unused inline config ('curly' is already configured to 'error').
+unused-inline/warned.ts:2:1	eslint	warning	Unused inline config ('no-console' is already configured to 'off').
+unused-inline/warned.ts:3:1	eslint	warning	Unused inline config ('@typescript-eslint/no-array-delete' is already configured to 'error').

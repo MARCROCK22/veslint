@@ -1,0 +1,16 @@
+tests/rules/@typescript-eslint/no-extra-non-null-assertion/cases.ts:8:1	@typescript-eslint/no-extra-non-null-assertion	noExtraNonNullAssertion	Forbidden extra non-null assertion.	fix	345	346	
+tests/rules/@typescript-eslint/no-extra-non-null-assertion/cases.ts:9:1	@typescript-eslint/no-extra-non-null-assertion	noExtraNonNullAssertion	Forbidden extra non-null assertion.	fix	351	352	
+tests/rules/@typescript-eslint/no-extra-non-null-assertion/cases.ts:9:1	@typescript-eslint/no-extra-non-null-assertion	noExtraNonNullAssertion	Forbidden extra non-null assertion.	fix	350	351	
+tests/rules/@typescript-eslint/no-extra-non-null-assertion/cases.ts:10:2	@typescript-eslint/no-extra-non-null-assertion	noExtraNonNullAssertion	Forbidden extra non-null assertion.	fix	357	358	
+tests/rules/@typescript-eslint/no-extra-non-null-assertion/cases.ts:11:3	@typescript-eslint/no-extra-non-null-assertion	noExtraNonNullAssertion	Forbidden extra non-null assertion.	fix	365	366	
+tests/rules/@typescript-eslint/no-extra-non-null-assertion/cases.ts:12:1	@typescript-eslint/no-extra-non-null-assertion	noExtraNonNullAssertion	Forbidden extra non-null assertion.	fix	372	373	
+tests/rules/@typescript-eslint/no-extra-non-null-assertion/cases.ts:13:1	@typescript-eslint/no-extra-non-null-assertion	noExtraNonNullAssertion	Forbidden extra non-null assertion.	fix	380	381	
+tests/rules/@typescript-eslint/no-extra-non-null-assertion/cases.ts:13:1	@typescript-eslint/no-extra-non-null-assertion	noExtraNonNullAssertion	Forbidden extra non-null assertion.	fix	379	380	
+tests/rules/@typescript-eslint/no-extra-non-null-assertion/cases.ts:14:2	@typescript-eslint/no-extra-non-null-assertion	noExtraNonNullAssertion	Forbidden extra non-null assertion.	fix	388	389	
+tests/rules/@typescript-eslint/no-extra-non-null-assertion/cases.ts:15:1	@typescript-eslint/no-extra-non-null-assertion	noExtraNonNullAssertion	Forbidden extra non-null assertion.	fix	397	398	
+tests/rules/@typescript-eslint/no-extra-non-null-assertion/cases.ts:16:1	@typescript-eslint/no-extra-non-null-assertion	noExtraNonNullAssertion	Forbidden extra non-null assertion.	fix	406	407	
+tests/rules/@typescript-eslint/no-extra-non-null-assertion/cases.ts:17:2	@typescript-eslint/no-extra-non-null-assertion	noExtraNonNullAssertion	Forbidden extra non-null assertion.	fix	415	416	
+tests/rules/@typescript-eslint/no-extra-non-null-assertion/cases.ts:18:1	@typescript-eslint/no-extra-non-null-assertion	noExtraNonNullAssertion	Forbidden extra non-null assertion.	fix	427	428	
+tests/rules/@typescript-eslint/no-extra-non-null-assertion/cases.ts:19:1	@typescript-eslint/no-extra-non-null-assertion	noExtraNonNullAssertion	Forbidden extra non-null assertion.	fix	435	436	
+tests/rules/@typescript-eslint/no-extra-non-null-assertion/cases.ts:20:1	@typescript-eslint/no-extra-non-null-assertion	noExtraNonNullAssertion	Forbidden extra non-null assertion.	fix	459	460	
+tests/rules/@typescript-eslint/no-extra-non-null-assertion/cases.ts:37:1	@typescript-eslint/no-extra-non-null-assertion	noExtraNonNullAssertion	Forbidden extra non-null assertion.	fix	719	720	

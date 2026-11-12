@@ -1,0 +1,15 @@
+{"rule": "@typescript-eslint/no-unsafe-declaration-merging", "upstream": "typescript-eslint v8.62.0", "files": ["packages/eslint-plugin/tests/rules/no-unsafe-declaration-merging.test.ts"],
+"messages": {"unsafeMerging":"Unsafe declaration merging between classes and interfaces."},
+"cases": [
+{"id":"no-unsafe-declaration-merging/v0","kind":"valid","code":"\ninterface Foo {}\nclass Bar implements Foo {}\n    ","file":"file.ts","tsconfig":"tsconfig.json","via":"service"},
+{"id":"no-unsafe-declaration-merging/v1","kind":"valid","code":"\nnamespace Foo {}\nnamespace Foo {}\n    ","file":"file.ts","tsconfig":"tsconfig.json","via":"service"},
+{"id":"no-unsafe-declaration-merging/v2","kind":"valid","code":"\nenum Foo {}\nnamespace Foo {}\n    ","file":"file.ts","tsconfig":"tsconfig.json","via":"service"},
+{"id":"no-unsafe-declaration-merging/v3","kind":"valid","code":"\nnamespace Fooo {}\nfunction Foo() {}\n    ","file":"file.ts","tsconfig":"tsconfig.json","via":"service"},
+{"id":"no-unsafe-declaration-merging/v4","kind":"valid","code":"\nconst Foo = class {};\n    ","file":"file.ts","tsconfig":"tsconfig.json","via":"service"},
+{"id":"no-unsafe-declaration-merging/v5","kind":"valid","code":"\ninterface Foo {\n  props: string;\n}\n\nfunction bar() {\n  return class Foo {};\n}\n    ","file":"file.ts","tsconfig":"tsconfig.json","via":"service"},
+{"id":"no-unsafe-declaration-merging/v6","kind":"valid","code":"\ninterface Foo {\n  props: string;\n}\n\n(function bar() {\n  class Foo {}\n})();\n    ","file":"file.ts","tsconfig":"tsconfig.json","via":"service"},
+{"id":"no-unsafe-declaration-merging/v7","kind":"valid","code":"\ndeclare global {\n  interface Foo {}\n}\n\nclass Foo {}\n    ","file":"file.ts","tsconfig":"tsconfig.json","via":"service"},
+{"id":"no-unsafe-declaration-merging/i0","kind":"invalid","code":"\ninterface Foo {}\nclass Foo {}\n      ","file":"file.ts","tsconfig":"tsconfig.json","via":"service","errors":[{"column":11,"line":2,"messageId":"unsafeMerging"},{"column":7,"line":3,"messageId":"unsafeMerging"}]},
+{"id":"no-unsafe-declaration-merging/i1","kind":"invalid","code":"\nclass Foo {}\ninterface Foo {}\n      ","file":"file.ts","tsconfig":"tsconfig.json","via":"service","errors":[{"column":7,"line":2,"messageId":"unsafeMerging"},{"column":11,"line":3,"messageId":"unsafeMerging"}]},
+{"id":"no-unsafe-declaration-merging/i2","kind":"invalid","code":"\ndeclare global {\n  interface Foo {}\n  class Foo {}\n}\n      ","file":"file.ts","tsconfig":"tsconfig.json","via":"service","errors":[{"column":13,"line":3,"messageId":"unsafeMerging"},{"column":9,"line":4,"messageId":"unsafeMerging"}]}
+]}

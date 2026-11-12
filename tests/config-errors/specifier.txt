@@ -1,0 +1,9 @@
+Key "rules": Key "@typescript-eslint/restrict-template-expressions":
+	Value {"from":"package","name":["a","a"]} should be string.
+	Value "package" should be equal to one of the allowed values.
+	Value "package" should be equal to one of the allowed values.
+	Value ["a","a"] should be string.
+	Value ["a","a"] should NOT have duplicate items (items ## 1 and 0 are identical).
+	Value ["a","a"] should match exactly one schema in oneOf.
+	Value {"from":"package","name":["a","a"]} should match exactly one schema in oneOf.
+

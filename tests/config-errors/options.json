@@ -1,0 +1,1 @@
+{"rules": {"@typescript-eslint/await-thenable": "error", "@typescript-eslint/return-await": ["warn", "sometimes"], "@typescript-eslint/no-floating-promises": ["error", {"ignoreVoid": "yes", "nope": 1}]}}

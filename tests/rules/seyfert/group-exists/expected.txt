@@ -1,0 +1,17 @@
+tests/rules/seyfert/group-exists/autoload/cases.ts:5:1	seyfert/group-exists	unknownGroupAutoload	Subcommand `Upper` (`Upper.ts`) uses group `upper`, not declared in this command's `@Groups`/`@GroupsT`.
+tests/rules/seyfert/group-exists/autoload/cases.ts:5:1	seyfert/group-exists	unknownGroupAutoload	Subcommand `(default export)` (`a.ts`) uses group `anonymous`, not declared in this command's `@Groups`/`@GroupsT`.
+tests/rules/seyfert/group-exists/autoload/cases.ts:5:1	seyfert/group-exists	unknownGroupAutoload	Subcommand `Kick` (`kick.ts`) uses group `kick`, not declared in this command's `@Groups`/`@GroupsT`.
+tests/rules/seyfert/group-exists/autoload/cases.ts:5:1	seyfert/group-exists	unknownGroupAutoload	Subcommand `Named` (`z.ts`) uses group `named`, not declared in this command's `@Groups`/`@GroupsT`.
+tests/rules/seyfert/group-exists/autoload/cases.ts:5:1	seyfert/group-exists	unknownGroupAutoload	Subcommand `Warn` (`b-nested/deep/warn.ts`) uses group `warn`, not declared in this command's `@Groups`/`@GroupsT`.
+tests/rules/seyfert/group-exists/cases.ts:15:16	seyfert/group-exists	unknownGroup	Group `typo` is not declared in this command's `@Groups`/`@GroupsT`.
+tests/rules/seyfert/group-exists/cases.ts:15:32	seyfert/group-exists	unknownGroup	Group `mdo` is not declared in this command's `@Groups`/`@GroupsT`.
+tests/rules/seyfert/group-exists/cases.ts:15:43	seyfert/group-exists	unknownGroup	Group `templated` is not declared in this command's `@Groups`/`@GroupsT`.
+tests/rules/seyfert/group-exists/cases.ts:15:54	seyfert/group-exists	unknownGroup	Group `sys` is not declared in this command's `@Groups`/`@GroupsT`.
+tests/rules/seyfert/group-exists/cases.ts:20:10	seyfert/group-exists	unknownGroup	Group `typo` is not declared in this command's `@Groups`/`@GroupsT`.
+tests/rules/seyfert/group-exists/cases.ts:20:10	seyfert/group-exists	unknownGroup	Group `mdo` is not declared in this command's `@Groups`/`@GroupsT`.
+tests/rules/seyfert/group-exists/cases.ts:26:34	seyfert/group-exists	unknownGroup	Group `typo` is not declared in this command's `@Groups`/`@GroupsT`.
+tests/rules/seyfert/group-exists/cases.ts:26:40	seyfert/group-exists	unknownGroup	Group `templated` is not declared in this command's `@Groups`/`@GroupsT`.
+tests/rules/seyfert/group-exists/cases.ts:32:33	seyfert/group-exists	unknownGroup	Group `mdo` is not declared in this command's `@Groups`/`@GroupsT`.
+tests/rules/seyfert/group-exists/cases.ts:39:16	seyfert/group-exists	unknownGroup	Group `typo` is not declared in this command's `@Groups`/`@GroupsT`.
+tests/rules/seyfert/group-exists/cases.ts:42:11	seyfert/group-exists	unknownGroup	Group `mod` is not declared in this command's `@Groups`/`@GroupsT`.
+tests/rules/seyfert/group-exists/cases.ts:77:1	seyfert/group-exists	unknownGroupAutoload	Subcommand `DefaultSub` (`groups.ts`) uses group `elsewhere`, not declared in this command's `@Groups`/`@GroupsT`.

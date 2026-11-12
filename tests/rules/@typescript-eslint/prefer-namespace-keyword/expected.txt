@@ -1,0 +1,17 @@
+tests/rules/@typescript-eslint/prefer-namespace-keyword/cases.ts:2:1	@typescript-eslint/prefer-namespace-keyword	useNamespace	Use 'namespace' instead of 'module' to declare custom TypeScript modules.
+tests/rules/@typescript-eslint/prefer-namespace-keyword/cases.ts:3:1	@typescript-eslint/prefer-namespace-keyword	useNamespace	Use 'namespace' instead of 'module' to declare custom TypeScript modules.
+tests/rules/@typescript-eslint/prefer-namespace-keyword/cases.ts:4:1	@typescript-eslint/prefer-namespace-keyword	useNamespace	Use 'namespace' instead of 'module' to declare custom TypeScript modules.
+tests/rules/@typescript-eslint/prefer-namespace-keyword/cases.ts:5:8	@typescript-eslint/prefer-namespace-keyword	useNamespace	Use 'namespace' instead of 'module' to declare custom TypeScript modules.
+tests/rules/@typescript-eslint/prefer-namespace-keyword/cases.ts:6:8	@typescript-eslint/prefer-namespace-keyword	useNamespace	Use 'namespace' instead of 'module' to declare custom TypeScript modules.
+tests/rules/@typescript-eslint/prefer-namespace-keyword/cases.ts:7:1	@typescript-eslint/prefer-namespace-keyword	useNamespace	Use 'namespace' instead of 'module' to declare custom TypeScript modules.
+tests/rules/@typescript-eslint/prefer-namespace-keyword/cases.ts:8:1	@typescript-eslint/prefer-namespace-keyword	useNamespace	Use 'namespace' instead of 'module' to declare custom TypeScript modules.
+tests/rules/@typescript-eslint/prefer-namespace-keyword/cases.ts:9:3	@typescript-eslint/prefer-namespace-keyword	useNamespace	Use 'namespace' instead of 'module' to declare custom TypeScript modules.
+tests/rules/@typescript-eslint/prefer-namespace-keyword/cases.ts:11:3	@typescript-eslint/prefer-namespace-keyword	useNamespace	Use 'namespace' instead of 'module' to declare custom TypeScript modules.
+tests/rules/@typescript-eslint/prefer-namespace-keyword/cases.ts:12:5	@typescript-eslint/prefer-namespace-keyword	useNamespace	Use 'namespace' instead of 'module' to declare custom TypeScript modules.
+tests/rules/@typescript-eslint/prefer-namespace-keyword/cases.ts:16:10	@typescript-eslint/prefer-namespace-keyword	useNamespace	Use 'namespace' instead of 'module' to declare custom TypeScript modules.
+tests/rules/@typescript-eslint/prefer-namespace-keyword/cases.ts:18:1	@typescript-eslint/prefer-namespace-keyword	useNamespace	Use 'namespace' instead of 'module' to declare custom TypeScript modules.
+tests/rules/@typescript-eslint/prefer-namespace-keyword/cases.ts:19:1	@typescript-eslint/prefer-namespace-keyword	useNamespace	Use 'namespace' instead of 'module' to declare custom TypeScript modules.
+tests/rules/@typescript-eslint/prefer-namespace-keyword/crlf/cases.ts:2:1	@typescript-eslint/prefer-namespace-keyword	useNamespace	Use 'namespace' instead of 'module' to declare custom TypeScript modules.
+tests/rules/@typescript-eslint/prefer-namespace-keyword/crlf/cases.ts:4:1	@typescript-eslint/prefer-namespace-keyword	useNamespace	Use 'namespace' instead of 'module' to declare custom TypeScript modules.
+tests/rules/@typescript-eslint/prefer-namespace-keyword/crlf/cases.ts:5:3	@typescript-eslint/prefer-namespace-keyword	useNamespace	Use 'namespace' instead of 'module' to declare custom TypeScript modules.
+tests/rules/@typescript-eslint/prefer-namespace-keyword/crlf/cases.ts:7:1	@typescript-eslint/prefer-namespace-keyword	useNamespace	Use 'namespace' instead of 'module' to declare custom TypeScript modules.

@@ -1,0 +1,17 @@
+tests/rules/seyfert/i18n-resolve-with-get/cases.ts:10:35	seyfert/i18n-resolve-with-get	callGet	`ctx.t` returns a locale proxy — resolve it with `.get()` before using it as a string.
+tests/rules/seyfert/i18n-resolve-with-get/cases.ts:11:27	seyfert/i18n-resolve-with-get	callGet	`ctx.t` returns a locale proxy — resolve it with `.get()` before using it as a string.
+tests/rules/seyfert/i18n-resolve-with-get/cases.ts:12:15	seyfert/i18n-resolve-with-get	callGet	`ctx.t` returns a locale proxy — resolve it with `.get()` before using it as a string.
+tests/rules/seyfert/i18n-resolve-with-get/cases.ts:14:15	seyfert/i18n-resolve-with-get	callGet	`ctx.t` returns a locale proxy — resolve it with `.get()` before using it as a string.
+tests/rules/seyfert/i18n-resolve-with-get/cases.ts:14:32	seyfert/i18n-resolve-with-get	callGet	`ctx.t` returns a locale proxy — resolve it with `.get()` before using it as a string.
+tests/rules/seyfert/i18n-resolve-with-get/cases.ts:15:18	seyfert/i18n-resolve-with-get	callGet	`ctx.t` returns a locale proxy — resolve it with `.get()` before using it as a string.
+tests/rules/seyfert/i18n-resolve-with-get/cases.ts:15:43	seyfert/i18n-resolve-with-get	callGet	`ctx.t` returns a locale proxy — resolve it with `.get()` before using it as a string.
+tests/rules/seyfert/i18n-resolve-with-get/cases.ts:16:21	seyfert/i18n-resolve-with-get	callGet	`ctx.t` returns a locale proxy — resolve it with `.get()` before using it as a string.
+tests/rules/seyfert/i18n-resolve-with-get/cases.ts:17:21	seyfert/i18n-resolve-with-get	callGet	`ctx.t` returns a locale proxy — resolve it with `.get()` before using it as a string.
+tests/rules/seyfert/i18n-resolve-with-get/cases.ts:18:16	seyfert/i18n-resolve-with-get	callGet	`ctx.t` returns a locale proxy — resolve it with `.get()` before using it as a string.
+tests/rules/seyfert/i18n-resolve-with-get/cases.ts:20:23	seyfert/i18n-resolve-with-get	callGet	`ctx.t` returns a locale proxy — resolve it with `.get()` before using it as a string.
+tests/rules/seyfert/i18n-resolve-with-get/cases.ts:21:18	seyfert/i18n-resolve-with-get	callGet	`ctx.t` returns a locale proxy — resolve it with `.get()` before using it as a string.
+tests/rules/seyfert/i18n-resolve-with-get/cases.ts:22:29	seyfert/i18n-resolve-with-get	callGet	`ctx.t` returns a locale proxy — resolve it with `.get()` before using it as a string.
+tests/rules/seyfert/i18n-resolve-with-get/cases.ts:24:9	seyfert/i18n-resolve-with-get	callGet	`ctx.t` returns a locale proxy — resolve it with `.get()` before using it as a string.
+tests/rules/seyfert/i18n-resolve-with-get/cases.ts:25:18	seyfert/i18n-resolve-with-get	callGet	`ctx.t` returns a locale proxy — resolve it with `.get()` before using it as a string.
+tests/rules/seyfert/i18n-resolve-with-get/cases.ts:36:18	seyfert/i18n-resolve-with-get	callGet	`ctx.t` returns a locale proxy — resolve it with `.get()` before using it as a string.
+tests/rules/seyfert/i18n-resolve-with-get/cases.ts:44:47	seyfert/i18n-resolve-with-get	callGet	`ctx.t` returns a locale proxy — resolve it with `.get()` before using it as a string.

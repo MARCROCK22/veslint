@@ -1,0 +1,12 @@
+{"rule": "@typescript-eslint/no-unsafe-function-type", "upstream": "typescript-eslint v8.62.0", "files": ["packages/eslint-plugin/tests/rules/no-unsafe-function-type.test.ts"],
+"messages": {"bannedFunctionType":"The `Function` type accepts any function-like value.\nPrefer explicitly defining any function parameters and return type."},
+"cases": [
+{"id":"no-unsafe-function-type/v0","kind":"valid","code":"let value: () => void;","file":"file.ts","tsconfig":null},
+{"id":"no-unsafe-function-type/v1","kind":"valid","code":"let value: <T>(t: T) => T;","file":"file.ts","tsconfig":null},
+{"id":"no-unsafe-function-type/v2","kind":"valid","code":"\n      // create a scope since it's illegal to declare a duplicate identifier\n      // 'Function' in the global script scope.\n      {\n        type Function = () => void;\n        let value: Function;\n      }\n    ","file":"file.ts","tsconfig":null},
+{"id":"no-unsafe-function-type/i0","kind":"invalid","code":"let value: Function;","file":"file.ts","tsconfig":null,"errors":[{"column":12,"line":1,"messageId":"bannedFunctionType"}],"output":null},
+{"id":"no-unsafe-function-type/i1","kind":"invalid","code":"let value: Function[];","file":"file.ts","tsconfig":null,"errors":[{"column":12,"line":1,"messageId":"bannedFunctionType"}],"output":null},
+{"id":"no-unsafe-function-type/i2","kind":"invalid","code":"let value: Function | number;","file":"file.ts","tsconfig":null,"errors":[{"column":12,"line":1,"messageId":"bannedFunctionType"}],"output":null},
+{"id":"no-unsafe-function-type/i3","kind":"invalid","code":"\n        class Weird implements Function {\n          // ...\n        }\n      ","file":"file.ts","tsconfig":null,"errors":[{"column":32,"line":2,"messageId":"bannedFunctionType"}],"output":null},
+{"id":"no-unsafe-function-type/i4","kind":"invalid","code":"\n        interface Weird extends Function {\n          // ...\n        }\n      ","file":"file.ts","tsconfig":null,"errors":[{"column":33,"line":2,"messageId":"bannedFunctionType"}],"output":null}
+]}

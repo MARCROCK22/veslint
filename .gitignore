@@ -1,0 +1,8 @@
+/vendor/
+/build/
+/node_modules/
+/veslint
+/.session-invariants.md
+/scratch/
+/tests/rules/seyfert/node_modules/
+/.claude/

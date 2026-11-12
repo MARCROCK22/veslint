@@ -1,0 +1,15 @@
+tests/rules/@typescript-eslint/related-getter-setter-pairs/cases.ts:6:16	@typescript-eslint/related-getter-setter-pairs	mismatch	`get()` type should be assignable to its equivalent `set()` type.
+tests/rules/@typescript-eslint/related-getter-setter-pairs/cases.ts:32:16	@typescript-eslint/related-getter-setter-pairs	mismatch	`get()` type should be assignable to its equivalent `set()` type.
+tests/rules/@typescript-eslint/related-getter-setter-pairs/cases.ts:46:18	@typescript-eslint/related-getter-setter-pairs	mismatch	`get()` type should be assignable to its equivalent `set()` type.
+tests/rules/@typescript-eslint/related-getter-setter-pairs/cases.ts:50:19	@typescript-eslint/related-getter-setter-pairs	mismatch	`get()` type should be assignable to its equivalent `set()` type.
+tests/rules/@typescript-eslint/related-getter-setter-pairs/cases.ts:54:12	@typescript-eslint/related-getter-setter-pairs	mismatch	`get()` type should be assignable to its equivalent `set()` type.
+tests/rules/@typescript-eslint/related-getter-setter-pairs/cases.ts:62:24	@typescript-eslint/related-getter-setter-pairs	mismatch	`get()` type should be assignable to its equivalent `set()` type.
+tests/rules/@typescript-eslint/related-getter-setter-pairs/cases.ts:70:17	@typescript-eslint/related-getter-setter-pairs	mismatch	`get()` type should be assignable to its equivalent `set()` type.
+tests/rules/@typescript-eslint/related-getter-setter-pairs/cases.ts:77:16	@typescript-eslint/related-getter-setter-pairs	mismatch	`get()` type should be assignable to its equivalent `set()` type.
+tests/rules/@typescript-eslint/related-getter-setter-pairs/cases.ts:84:16	@typescript-eslint/related-getter-setter-pairs	mismatch	`get()` type should be assignable to its equivalent `set()` type.
+tests/rules/@typescript-eslint/related-getter-setter-pairs/cases.ts:94:16	@typescript-eslint/related-getter-setter-pairs	mismatch	`get()` type should be assignable to its equivalent `set()` type.
+tests/rules/@typescript-eslint/related-getter-setter-pairs/cases.ts:101:16	@typescript-eslint/related-getter-setter-pairs	mismatch	`get()` type should be assignable to its equivalent `set()` type.
+tests/rules/@typescript-eslint/related-getter-setter-pairs/cases.ts:113:16	@typescript-eslint/related-getter-setter-pairs	mismatch	`get()` type should be assignable to its equivalent `set()` type.
+tests/rules/@typescript-eslint/related-getter-setter-pairs/cases.ts:119:20	@typescript-eslint/related-getter-setter-pairs	mismatch	`get()` type should be assignable to its equivalent `set()` type.
+tests/rules/@typescript-eslint/related-getter-setter-pairs/cases.ts:129:16	@typescript-eslint/related-getter-setter-pairs	mismatch	`get()` type should be assignable to its equivalent `set()` type.
+tests/rules/@typescript-eslint/related-getter-setter-pairs/cases.ts:133:26	@typescript-eslint/related-getter-setter-pairs	mismatch	`get()` type should be assignable to its equivalent `set()` type.

@@ -1,0 +1,2 @@
+[{"selector": "default", "format": ["camelCase", "PascalCase", "UPPER_CASE"], "leadingUnderscore": "forbid"},
+ {"selector": ["variable", "parameter", "function", "class", "enum", "interface", "typeAlias", "typeParameter"], "modifiers": ["unused"], "format": ["camelCase", "PascalCase", "UPPER_CASE"], "leadingUnderscore": "require"}]

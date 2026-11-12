@@ -1,0 +1,1 @@
+{"compilerOptions": {"lib": ["ES2022", "DOM.Iterable", "dom", "esnext.disposable"], "target": "es2022"}}

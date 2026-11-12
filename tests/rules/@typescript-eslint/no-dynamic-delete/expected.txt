@@ -1,0 +1,11 @@
+tests/rules/@typescript-eslint/no-dynamic-delete/cases.ts:7:18	@typescript-eslint/no-dynamic-delete	dynamicDelete	Do not delete dynamically computed property keys.
+tests/rules/@typescript-eslint/no-dynamic-delete/cases.ts:8:18	@typescript-eslint/no-dynamic-delete	dynamicDelete	Do not delete dynamically computed property keys.
+tests/rules/@typescript-eslint/no-dynamic-delete/cases.ts:9:18	@typescript-eslint/no-dynamic-delete	dynamicDelete	Do not delete dynamically computed property keys.
+tests/rules/@typescript-eslint/no-dynamic-delete/cases.ts:10:18	@typescript-eslint/no-dynamic-delete	dynamicDelete	Do not delete dynamically computed property keys.
+tests/rules/@typescript-eslint/no-dynamic-delete/cases.ts:11:18	@typescript-eslint/no-dynamic-delete	dynamicDelete	Do not delete dynamically computed property keys.
+tests/rules/@typescript-eslint/no-dynamic-delete/cases.ts:12:18	@typescript-eslint/no-dynamic-delete	dynamicDelete	Do not delete dynamically computed property keys.
+tests/rules/@typescript-eslint/no-dynamic-delete/cases.ts:13:18	@typescript-eslint/no-dynamic-delete	dynamicDelete	Do not delete dynamically computed property keys.
+tests/rules/@typescript-eslint/no-dynamic-delete/cases.ts:14:18	@typescript-eslint/no-dynamic-delete	dynamicDelete	Do not delete dynamically computed property keys.
+tests/rules/@typescript-eslint/no-dynamic-delete/cases.ts:15:18	@typescript-eslint/no-dynamic-delete	dynamicDelete	Do not delete dynamically computed property keys.
+tests/rules/@typescript-eslint/no-dynamic-delete/cases.ts:16:19	@typescript-eslint/no-dynamic-delete	dynamicDelete	Do not delete dynamically computed property keys.
+tests/rules/@typescript-eslint/no-dynamic-delete/cases.ts:17:19	@typescript-eslint/no-dynamic-delete	dynamicDelete	Do not delete dynamically computed property keys.

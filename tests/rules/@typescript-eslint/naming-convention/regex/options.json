@@ -1,0 +1,7 @@
+[{"selector": "variable", "format": null, "custom": {"regex": "^\\p{Lu}[\\p{L}\\p{N}]*$", "match": true}},
+ {"selector": "function", "format": null, "custom": {"regex": "^(?i:get|set)\\p{Lu}", "match": true}},
+ {"selector": "parameter", "format": null, "custom": {"regex": "(?i:te?mp)|\\p{Script=Greek}", "match": false}},
+ {"selector": "typeLike", "format": ["PascalCase"], "filter": {"regex": "^(?i:xml)", "match": false}},
+ {"selector": "classProperty", "format": null, "custom": {"regex": "^\\p{Ll}+(?:_[\\p{Ll}\\p{Nd}]+)*$", "match": true}, "filter": "^(?!(?i:id)$)"},
+ {"selector": "typeProperty", "format": null, "custom": {"regex": "^(?i:[a-k]+)$", "match": true}},
+ {"selector": "enumMember", "format": null, "custom": {"regex": "(?m:^\\P{Ll}+$)", "match": true}}]
