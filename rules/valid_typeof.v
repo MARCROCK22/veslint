@@ -58,7 +58,7 @@ fn (mut c Checker) lint_valid_typeof(root C.TSNode, abs_path string, mut stats S
 				message_id: 'invalidValue'
 			}
 		} else if c.es_is_specific_id(sibling, 'undefined')
-			&& c.vt_is_global_reference(root, sibling, 'undefined') {
+			&& c.es_is_global_reference(root, sibling) {
 			_, suggestion := c.suggestion('suggestString', {
 				'type': 'undefined'
 			}, [fix_replace(sibling, '"undefined"')])!
@@ -110,16 +110,4 @@ fn (c &Checker) vt_literal_value(n C.TSNode) ?string {
 		return none
 	}
 	return c.literal_name(n)
-}
-
-// vt_is_global_reference ports isReferenceToGlobalVariable: the variable `name` of the global
-// scope has no definition, and `n` is one of its references (it is declared nowhere above it).
-fn (mut c Checker) vt_is_global_reference(root C.TSNode, n C.TSNode, name string) bool {
-	tree := c.scope_tree(root)
-	v := tree.own_variable(tree.global_scope(), name)
-	if v < 0 || tree.variables[v].defs.len > 0 {
-		return false
-	}
-	key := node_key(n)
-	return tree.variables[v].references.any(node_key(tree.references[it].identifier) == key)
 }

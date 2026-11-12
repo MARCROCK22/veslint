@@ -1,4 +1,5 @@
-# The cases of typescript-eslint's own tests that do not give what the test expects, and why.
+# The cases of the own tests of typescript-eslint and of ESLint's core rules that do not give what
+# the test expects, and why.
 # A line is `<tool><TAB><case id><TAB><reason>`. tool is veslint (tests/upstream_check.py, run by
 # tests/run.sh) or eslint (tests/rules/upstream_eslint.mjs, run by tests/rules/reference.sh). Each
 # listed case must fail and every other case must pass; tests/rules/reference.sh does not compare the
@@ -49,3 +50,8 @@ veslint	no-unused-vars/no-unused-vars-eslint/v73	turns on @rule-tester/use-every
 veslint	no-unused-vars/no-unused-vars-eslint/v74	turns on @rule-tester/use-every-a, a rule of the test file
 veslint	no-unused-vars/no-unused-vars-eslint/v75	turns on @rule-tester/use-every-a, a rule of the test file
 veslint	no-unused-vars/no-unused-vars-eslint/v137	turns on @rule-tester/use-every-a, a rule of the test file
+# ESLint's core tests are JavaScript linted as TypeScript with typescript-eslint's parser, whose
+# scope manager adds the variables of TypeScript's lib: `globals: {Boolean: "off"}` does not remove
+# the global `Boolean` it declares, so `Boolean()` still references a builtin.
+eslint	no-constant-condition/v153	typescript-eslint's lib declares `Boolean`, which `globals: {Boolean: "off"}` does not remove
+veslint	no-constant-condition/v153	typescript-eslint's lib declares `Boolean`, which `globals: {Boolean: "off"}` does not remove

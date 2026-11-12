@@ -73,6 +73,7 @@ pub fn check_options(rule string, options []json2.Any) !bool {
 		no_unsafe_negation { nun_options(options)! }
 		no_unsafe_optional_chaining { nuoc_options(options)! }
 		no_cond_assign { nca_always(options)! }
+		no_constant_condition { ncc_check_loops(options)! }
 		else { return false }
 	}
 	return true
