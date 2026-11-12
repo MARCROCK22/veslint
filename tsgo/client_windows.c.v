@@ -7,13 +7,13 @@ import time
 // veslint on Linux only. V's os.Process keeps the pipes of a child as HANDLEs in os.WProcess, not
 // in p.stdio_fd, and on Windows its close() closes none of them: adopt_pipes puts them in
 // p.stdio_fd, where the rest of the client looks for them, and release_pipes closes them. A HANDLE
-// survives the trip through an int: on 64-bit Windows its value has 32 significant bits (that is
-// how 32-bit processes share handles).
+// fits in an int, which V makes as wide as a pointer (and on 64-bit Windows a HANDLE has 32
+// significant bits anyway: that is how 32-bit processes share handles).
 
 fn C.SetNamedPipeHandleState(pipe voidptr, mode &u32, max_collection_count voidptr, collect_data_timeout voidptr) bool
 
 fn handle(fd int) voidptr {
-	return voidptr(isize(fd))
+	return voidptr(fd)
 }
 
 // adopt_pipes takes the pipes of a process started with set_redirect_stdio and makes its stdin
@@ -21,9 +21,9 @@ fn handle(fd int) voidptr {
 // reads, which only matters for a child that stops reading.
 fn adopt_pipes(mut p os.Process) {
 	w := unsafe { &os.WProcess(p.wdata) }
-	p.stdio_fd[0] = int(isize(voidptr(w.child_stdin_write)))
-	p.stdio_fd[1] = int(isize(voidptr(w.child_stdout_read)))
-	p.stdio_fd[2] = int(isize(voidptr(w.child_stderr_read)))
+	p.stdio_fd[0] = int(voidptr(w.child_stdin_write))
+	p.stdio_fd[1] = int(voidptr(w.child_stdout_read))
+	p.stdio_fd[2] = int(voidptr(w.child_stderr_read))
 	mode := u32(C.PIPE_NOWAIT)
 	C.SetNamedPipeHandleState(handle(p.stdio_fd[0]), &mode, unsafe { nil }, unsafe { nil })
 }
