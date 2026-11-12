@@ -33,13 +33,93 @@ import tsgo
 // the command line would print on each stream and its exit code, so a client reads it as it would
 // read the command line; only the usage text that follows the command line's errors in what it is
 // given (code 2) is left out.
+//
+// A client may send a request before the answer to the previous one: a thread reads them as they
+// come. A request whose files a later request lints too (an editor sends one for each change of a
+// file) is given up, before it starts or between two rules, and answered
+// {"id": 1, "code": 0, "stdout": "", "stderr": "", "cancelled": true}; its changes and texts count
+// all the same.
 
 // ServerAnswer is the answer to a request.
 struct ServerAnswer {
-	id     i64
-	code   int
-	stdout string
-	stderr string
+	id        i64
+	code      int
+	stdout    string
+	stderr    string
+	cancelled bool @[omitempty] // given up for a later request with the same files
+}
+
+// ServerRequest is a line of stdin as the reader thread parsed it.
+struct ServerRequest {
+	request map[string]json2.Any
+	files   string // the files it lints, joined: a later request with the same ones supersedes it
+	error   string // the error answered (code 2) to a line that is not a request object
+}
+
+// RequestQueue holds the requests read and not answered yet: those the reader thread sends through
+// `requests`, and those taken from it to see whether a later request supersedes the current one.
+@[heap]
+struct RequestQueue {
+	requests chan ServerRequest
+mut:
+	waiting []ServerRequest
+	current string // the files of the request being answered
+}
+
+// next is the next request to answer, or none once stdin ended and every request was answered.
+fn (mut q RequestQueue) next() ?ServerRequest {
+	if q.waiting.len > 0 {
+		first := q.waiting[0]
+		q.waiting.delete(0)
+		return first
+	}
+	return <-q.requests or { return none }
+}
+
+// stop tells whether a request read after the current one lints the same files (rules.LintStop):
+// only the answer to the last one matters.
+fn (mut q RequestQueue) stop() bool {
+	for {
+		mut later := ServerRequest{}
+		if q.requests.try_pop(mut later) != .success {
+			break
+		}
+		q.waiting << later
+	}
+	return q.current != '' && q.waiting.any(it.files == q.current)
+}
+
+// read_requests reads the requests of stdin, one per line, until it ends.
+fn read_requests(requests chan ServerRequest) {
+	for {
+		line := os.get_raw_line()
+		if line.len == 0 {
+			break
+		}
+		if line.trim_space().len == 0 {
+			continue
+		}
+		requests <- parse_request(line)
+	}
+	requests.close()
+}
+
+fn parse_request(line string) ServerRequest {
+	root := json2.decode[json2.Any](line) or {
+		return ServerRequest{
+			error: 'veslint: a request is one JSON object per line\n'
+		}
+	}
+	if root !is map[string]json2.Any {
+		return ServerRequest{
+			error: 'veslint: a request is a JSON object\n'
+		}
+	}
+	request := root.as_map()
+	return ServerRequest{
+		request: request
+		files:   request_list(request, 'files').join('\n')
+	}
 }
 
 @[heap]
@@ -60,12 +140,17 @@ mut:
 	// text of a file that is not valid UTF-8 (as the command line serves it).
 	served  map[string]string
 	changes tsgo.FileChangeSet // what changed since the last snapshot
+	queue   &RequestQueue = unsafe { nil }
 }
 
 // serve answers requests until stdin ends.
 fn serve(timeout time.Duration) {
+	requests := chan ServerRequest{cap: 64}
 	mut s := &Server{
 		timeout:    timeout
+		queue:      &RequestQueue{
+			requests: requests
+		}
 		parser:     treesitter.new_parser() or {
 			eprintln('veslint: ${err.msg()}')
 			exit(1)
@@ -80,17 +165,12 @@ fn serve(timeout time.Duration) {
 		s.parser.close()
 		s.tsx_parser.close()
 	}
+	reader := spawn read_requests(requests)
 	for {
-		line := os.get_raw_line()
-		if line.len == 0 {
-			break
-		}
-		if line.trim_space().len == 0 {
-			continue
-		}
-		answer := s.handle(line)
-		println(json2.encode(answer))
+		request := s.queue.next() or { break }
+		println(json2.encode(s.handle(request)))
 	}
+	reader.wait()
 }
 
 // stop shuts tsgo down; the next request starts it again, with what it has to serve.
@@ -149,22 +229,15 @@ fn request_bool(request map[string]json2.Any, key string, default_value bool) bo
 	return if value is bool { value } else { default_value }
 }
 
-fn (mut s Server) handle(line string) ServerAnswer {
-	root := json2.decode[json2.Any](line) or {
+fn (mut s Server) handle(item ServerRequest) ServerAnswer {
+	if item.error != '' {
 		return ServerAnswer{
 			id:     -1
 			code:   2
-			stderr: 'veslint: a request is one JSON object per line\n'
+			stderr: item.error
 		}
 	}
-	if root !is map[string]json2.Any {
-		return ServerAnswer{
-			id:     -1
-			code:   2
-			stderr: 'veslint: a request is a JSON object\n'
-		}
-	}
-	request := root.as_map()
+	request := item.request
 	id := (request['id'] or { json2.Any(i64(-1)) }).i64()
 	s.changes.changed << request_paths(request, 'changed')
 	s.changes.created << request_paths(request, 'created')
@@ -201,6 +274,13 @@ fn (mut s Server) handle(line string) ServerAnswer {
 			id:     id
 			code:   2
 			stderr: 'veslint: a request with files needs a configuration (`config`)\n'
+		}
+	}
+	s.queue.current = item.files
+	if s.queue.stop() {
+		return ServerAnswer{
+			id:        id
+			cancelled: true
 		}
 	}
 	return s.lint(id, config, request_string(request, 'project'), files, texts, request_bool(request,
@@ -394,6 +474,12 @@ fn (mut s Server) lint(id i64, config string, project string, files []string, te
 	}
 	mut stats := rules.Stats{}
 	for f in entries {
+		if s.queue.stop() {
+			return ServerAnswer{
+				id:        id
+				cancelled: true
+			}
+		}
 		if f.note != '' {
 			out.writeln('${f.path}:0:0\t${rules.problem_rule}\twarning\t${tsv_field(f.note)}')
 			problems++
@@ -423,11 +509,19 @@ fn (mut s Server) lint(id i64, config string, project string, files []string, te
 			s.checkers[project_id] = checker
 		}
 		mut checker := s.checkers[project_id] or { continue }
+		checker.set_lint_stop(s.queue)
 		result := checker.lint_file(if treesitter.uses_jsx_dialect(f.path) {
 			s.tsx_parser
 		} else {
 			s.parser
 		}, lint_config, f.src, f.abs_path, mut stats) or {
+			if err.msg() == rules.lint_stopped {
+				// Given up between two rules: what the checker holds is what tsgo answered.
+				return ServerAnswer{
+					id:        id
+					cancelled: true
+				}
+			}
 			// The checkers of this snapshot may hold what that run left half done.
 			s.stop()
 			errors.writeln('veslint: ${f.path}: ${err.msg()}')

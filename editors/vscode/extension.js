@@ -47,8 +47,13 @@ const typing = new Map();
 const linted = new Map();
 /** The run of each file that has not finished, to stop it when a newer one starts. */
 const running = new Map();
-/** Lints go one at a time, as a server answers them. */
+/**
+ * Lints go one at a time until their request is sent, and their answers are awaited out of it: a
+ * server answers in order, and gives up a request that a later one for the same file made useless.
+ */
 let queue = Promise.resolve();
+/** Settles once every lint started so far has ended (what `lint` gives back). */
+let settled = Promise.resolve();
 const told = new Set();
 
 /**
@@ -191,6 +196,8 @@ async function lintThroughServer(folder, binary, options, request) {
   }
   try {
     const answer = await server.request(request);
+    // Given up for a later request of the same file, whose answer is the one to show.
+    if (answer.cancelled) return { cancelled: true };
     return { code: answer.code, problems: parseOutput(answer.stdout), ...parseStderr(answer.stderr), cancelled: false };
   } catch (error) {
     if (servers.get(folder) === server) servers.delete(folder);
@@ -208,23 +215,38 @@ async function lintThroughServer(folder, binary, options, request) {
 
 /**
  * Lints a document. With a server, a document with unsaved changes is linted with its text;
- * without one, only as it is on disk.
+ * without one, only as it is on disk. What it gives back settles once every lint started so far
+ * has ended.
  */
 function lint(document, manual = false) {
-  if (!lintable(document)) return queue;
+  if (!lintable(document)) return settled;
   const binary = resolveSetting(folderOf(document.uri), settings(document.uri).binary);
   if (document.isDirty && unsupported.has(binary)) {
     if (manual) vscode.window.showInformationMessage('This veslint has no server mode: it lints the file on disk, so save it first.');
-    return queue;
+    return settled;
   }
   const key = document.uri.toString();
   running.get(key)?.abort();
   const controller = new AbortController();
   running.set(key, controller);
-  queue = queue.then(() => lintNow(document, controller)).catch(error => output.appendLine(`veslint: ${error?.stack ?? error}`));
-  return queue;
+  // The queue goes on once the request is sent: `sent` holds the end of the lint in an object, so
+  // that the queue does not wait for it.
+  const sent = queue.then(() => lintNow(document, controller));
+  queue = sent.then(
+    () => {},
+    () => {},
+  );
+  const done = sent.then(turn => turn?.done).catch(error => output.appendLine(`veslint: ${error?.stack ?? error}`));
+  settled = Promise.all([settled, done]).then(() => {});
+  return settled;
 }
 
+/**
+ * The turn of a lint in the queue: it resolves the configuration and sends the request, and gives
+ * back the end of the lint (`done`), awaited out of the queue so that the next lint does not wait
+ * for this one's answer (the server gives this one up when the next one lints the same file).
+ * Without a server, the whole lint happens in its turn.
+ */
 async function lintNow(document, controller) {
   const key = document.uri.toString();
   if (controller.signal.aborted || document.isClosed) return;
@@ -237,12 +259,17 @@ async function lintNow(document, controller) {
     setStatus('circle-slash', `No configuration for ${folder}: set veslint.config or add an eslint.config file`);
     return;
   }
-  let version = document.version;
   const file = document.uri.fsPath;
   const binary = resolveSetting(folder, options.binary);
   setStatus('sync~spin', `Linting ${path.basename(file)}`);
   const started = Date.now();
-  let result;
+  const cannotRun = error => {
+    if (running.get(key) === controller) running.delete(key);
+    setStatus('error', `Cannot run ${options.binary}`);
+    output.appendLine(`cannot run ${options.binary}: ${error.message}`);
+    tellOnce('binary', `veslint: cannot run \`${options.binary}\` (${error.code ?? error.message}). Set "veslint.path" to the veslint binary.`, 'Open Settings');
+  };
+  let resolution;
   try {
     // The open files of this folder that have no resolved configuration yet get it now too:
     // ESLint starts once for all of them.
@@ -250,69 +277,81 @@ async function lintNow(document, controller) {
       .filter(other => other !== document && lintable(other) && folderOf(other.uri) === folder)
       .map(other => other.uri.fsPath)
       .filter(other => !cache.has(other, config));
-    const resolution = await cache.configsFor({ binary, cwd: folder, config, files: [file, ...others], timeout: options.timeout, signal: controller.signal });
-    if (resolution.resolved > 0) {
-      output.appendLine(`resolved the configuration of ${resolution.resolved} files in ${((Date.now() - started) / 1000).toFixed(2)} s (${path.basename(config)})`);
-    }
-    for (const error of resolution.errors) output.appendLine(`  configuration: ${error}`);
-    if (controller.signal.aborted) {
-      if (running.get(key) === controller) running.delete(key);
-      return;
-    }
-    const lintConfig = resolution.configs.get(file) ?? config;
-    const project = resolveSetting(folder, options.project) || undefined;
-    // The text and its version are taken together: the problems are about that text.
-    const dirty = document.isDirty;
-    version = document.version;
-    result = await lintThroughServer(folder, binary, options, {
-      config: lintConfig,
-      project: project ?? '',
-      files: [file],
-      texts: dirty ? { [file]: document.getText() } : {},
-      fixes: true,
-      ...takeChanges(folder),
-    });
-    if (!result) {
-      if (dirty) {
+    resolution = await cache.configsFor({ binary, cwd: folder, config, files: [file, ...others], timeout: options.timeout, signal: controller.signal });
+  } catch (error) {
+    cannotRun(error);
+    return;
+  }
+  if (resolution.resolved > 0) {
+    output.appendLine(`resolved the configuration of ${resolution.resolved} files in ${((Date.now() - started) / 1000).toFixed(2)} s (${path.basename(config)})`);
+  }
+  for (const error of resolution.errors) output.appendLine(`  configuration: ${error}`);
+  if (controller.signal.aborted) {
+    if (running.get(key) === controller) running.delete(key);
+    return;
+  }
+  const lintConfig = resolution.configs.get(file) ?? config;
+  const project = resolveSetting(folder, options.project) || undefined;
+  // The text and its version are taken together: the problems are about that text.
+  const dirty = document.isDirty;
+  const version = document.version;
+  const request = {
+    config: lintConfig,
+    project: project ?? '',
+    files: [file],
+    texts: dirty ? { [file]: document.getText() } : {},
+    fixes: true,
+    ...takeChanges(folder),
+  };
+  const finish = async answer => {
+    let result;
+    try {
+      result = await answer;
+      if (!result) {
+        if (dirty) {
+          if (running.get(key) === controller) running.delete(key);
+          setStatus('circle-slash', 'Save the file to lint it: this veslint has no server mode');
+          return;
+        }
+        result = await runVeslint({ binary, cwd: folder, config: lintConfig, files: [file], project, timeout: options.timeout, signal: controller.signal });
+      }
+      if (controller.signal.aborted) {
         if (running.get(key) === controller) running.delete(key);
-        setStatus('circle-slash', 'Save the file to lint it: this veslint has no server mode');
         return;
       }
-      result = await runVeslint({ binary, cwd: folder, config: lintConfig, files: [file], project, timeout: options.timeout, signal: controller.signal });
-    }
-    if (controller.signal.aborted) {
-      if (running.get(key) === controller) running.delete(key);
+    } catch (error) {
+      cannotRun(error);
       return;
     }
-  } catch (error) {
     if (running.get(key) === controller) running.delete(key);
-    setStatus('error', `Cannot run ${options.binary}`);
-    output.appendLine(`cannot run ${options.binary}: ${error.message}`);
-    tellOnce('binary', `veslint: cannot run \`${options.binary}\` (${error.code ?? error.message}). Set "veslint.path" to the veslint binary.`, 'Open Settings');
+    if (result.cancelled) return;
+    const seconds = ((Date.now() - started) / 1000).toFixed(2);
+    output.appendLine(`${path.relative(folder, file)}: ${result.problems.length} problems in ${seconds} s (${path.basename(config)})`);
+    for (const warning of result.warnings) output.appendLine(`  warning: ${warning}`);
+    if (result.errors.length > 0) {
+      for (const error of result.errors) output.appendLine(`  error: ${error}`);
+      setStatus('error', result.errors[0]);
+      tellOnce(`error:${result.errors[0]}`, `veslint: ${result.errors[0].split('\n')[0]}`, 'Show Output');
+      return;
+    }
+    // Only the problems of this file: the paths veslint prints are relative to the folder.
+    const mine = result.problems.filter(problem => path.resolve(folder, problem.path) === file);
+    if (document.version !== version || document.isClosed) {
+      // The text changed while it was linted: the lint of the new text will show its problems, and
+      // until then the last ones stay.
+      setStatus('check', result.summary || `${mine.length} problems`);
+      return;
+    }
+    linted.set(key, { version, problems: mine });
+    diagnostics.set(document.uri, mine.map(problem => toDiagnostic(document, problem, options.severity)));
+    setStatus(mine.length > 0 ? 'warning' : 'check', result.summary || `${mine.length} problems`);
+  };
+  // A veslint without the server mode runs once for each lint, one at a time.
+  if (unsupported.has(binary)) {
+    await finish(null);
     return;
   }
-  if (running.get(key) === controller) running.delete(key);
-  if (result.cancelled) return;
-  const seconds = ((Date.now() - started) / 1000).toFixed(2);
-  output.appendLine(`${path.relative(folder, file)}: ${result.problems.length} problems in ${seconds} s (${path.basename(config)})`);
-  for (const warning of result.warnings) output.appendLine(`  warning: ${warning}`);
-  if (result.errors.length > 0) {
-    for (const error of result.errors) output.appendLine(`  error: ${error}`);
-    setStatus('error', result.errors[0]);
-    tellOnce(`error:${result.errors[0]}`, `veslint: ${result.errors[0].split('\n')[0]}`, 'Show Output');
-    return;
-  }
-  // Only the problems of this file: the paths veslint prints are relative to the folder.
-  const mine = result.problems.filter(problem => path.resolve(folder, problem.path) === file);
-  if (document.version !== version || document.isClosed) {
-    // The text changed while it was linted: the lint of the new text will show its problems, and
-    // until then the last ones stay.
-    setStatus('check', result.summary || `${mine.length} problems`);
-    return;
-  }
-  linted.set(key, { version, problems: mine });
-  diagnostics.set(document.uri, mine.map(problem => toDiagnostic(document, problem, options.severity)));
-  setStatus(mine.length > 0 ? 'warning' : 'check', result.summary || `${mine.length} problems`);
+  return { done: finish(lintThroughServer(folder, binary, options, request)) };
 }
 
 /** The problems of the last run that are still about the text of the document. */
@@ -399,7 +438,7 @@ function reloadConfiguration(always) {
   for (const document of vscode.workspace.textDocuments) {
     if (always || settings(document.uri).run !== 'manual') lint(document);
   }
-  return queue;
+  return settled;
 }
 
 function activate(context) {
@@ -483,7 +522,7 @@ function activate(context) {
     }),
     vscode.commands.registerCommand('veslint.lintOpenFiles', () => {
       for (const document of vscode.workspace.textDocuments) lint(document);
-      return queue;
+      return settled;
     }),
     vscode.commands.registerCommand('veslint.fixFile', async () => {
       const document = vscode.window.activeTextEditor?.document;

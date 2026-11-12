@@ -97,7 +97,7 @@
           "default": 0,
           "minimum": 0,
           "scope": "resource",
-          "markdownDescription": "Milliseconds that typing must pause before a file is linted, when `veslint.run` is `onType`. `0` lints after every change: a lint that has not started when the text changes again is skipped, and the problems of a text that changed while it was linted are not shown. A larger value lints less often while you type, which saves CPU on large files."
+          "markdownDescription": "Milliseconds that typing must pause before a file is linted, when `veslint.run` is `onType`. `0` lints after every change: a lint that the next change makes useless is skipped if it has not started, and given up by the server if it has; the problems of a text that changed while it was linted are not shown. A larger value lints less often while you type, which saves CPU on large files."
         },
         "veslint.severity": {
           "type": "string",

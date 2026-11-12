@@ -314,6 +314,48 @@ test('veslint.typingDelay: 0 by default, the changes of one moment linted once, 
   assert.ok(Date.now() - typedAt >= 390);
 });
 
+test('a lint does not wait for the answer to an earlier lint of the same file', { skip: !built }, async t => {
+  const { VeslintServer } = require('../lib/server');
+  const request = VeslintServer.prototype.request;
+  const pendingAtSend = [];
+  let onSend = () => {};
+  VeslintServer.prototype.request = function (...args) {
+    pendingAtSend.push(this.pending.length);
+    const answer = request.apply(this, args);
+    onSend();
+    return answer;
+  };
+  t.after(() => {
+    VeslintServer.prototype.request = request;
+  });
+  const { state, TextDocument, activate } = loadExtension(t);
+  state.folder = fixture;
+  state.settings = { path: binary, config: 'resolved.json' };
+  const document = new TextDocument(path.join(fixture, 'base.ts'));
+  state.documents.push(document);
+  activate();
+  await state.commands['veslint.lintOpenFiles']();
+  const shown = () => state.diagnostics.get(document.uri.toString()).length;
+  const before = shown();
+  const saved = document.text;
+  const type = text => {
+    Object.assign(document, { text, isDirty: true, version: document.version + 1 });
+    state.handlers.change({ document, contentChanges: [{}] });
+  };
+  // The second change comes as soon as the request of the first one is sent: its lint sends its
+  // request while the first one still waits for its answer (which the server may give up), and
+  // its problems (one more floating promise) are shown.
+  const sent = pendingAtSend.length;
+  onSend = () => {
+    onSend = () => {};
+    type(`${saved}\nPromise.resolve(1);\n`);
+  };
+  type(`${saved}\n// typed\n`);
+  await until(() => pendingAtSend.length >= sent + 2);
+  assert.deepEqual(pendingAtSend.slice(sent, sent + 2), [0, 1]);
+  await until(() => shown() === before + 1);
+});
+
 test('a server that stops is reported, and the next lint starts another', { skip: !built }, async t => {
   const directory = fs.mkdtempSync(path.join(os.tmpdir(), 'veslint-failing-'));
   const failing = path.join(directory, 'veslint-failing');

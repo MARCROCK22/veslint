@@ -686,6 +686,15 @@ else
 	ko "--server: not the output of the command line for tests/config"
 	cat "$TMP/server-config.err"
 fi
+# Requests written before the answers to the previous ones, as an editor sends them while a file
+# is typed (tests/server_pipeline.py): answered in order, and given up when a later one lints the
+# same file.
+if python3 tests/server_pipeline.py ./veslint > "$TMP/server-pipeline.out" 2>&1; then
+	ok "--server: requests sent together are answered in order, and given up for a later one of the same file"
+else
+	ko "--server: requests sent together (tests/server_pipeline.py)"
+	cat "$TMP/server-pipeline.out"
+fi
 # A server keeps every thread of its own and of its tsgo on two CPUs as well (cpus.v): looked at
 # after its first lint, while both are alive (on Linux only).
 if [[ $windows -eq 1 ]]; then

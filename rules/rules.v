@@ -621,6 +621,28 @@ pub:
 // lint_file applies the `selected` rules to a file (BOM already stripped), with a single parse and
 // a single tsgo AST; types a rule already requested are not requested again for the next ones.
 // Findings come out by position and, at the same position, in the order of `names`.
+// lint_stopped is the error of lint_file when its LintStop told it to give the lint up.
+pub const lint_stopped = 'the lint was given up: a newer request for the same files arrived'
+
+// LintStop is asked before each rule of a file whether to give the lint up: `veslint --server`
+// gives up a lint that a newer request for the same files made useless (server.v).
+pub interface LintStop {
+mut:
+	stop() bool
+}
+
+// NoLintStop never gives a lint up (the command line).
+struct NoLintStop {}
+
+fn (mut n NoLintStop) stop() bool {
+	return false
+}
+
+// set_lint_stop makes lint_file ask `stop` before each rule whether to give the lint up.
+pub fn (mut c Checker) set_lint_stop(stop LintStop) {
+	c.lint_stop = stop
+}
+
 pub fn (mut c Checker) lint_file(parser Parser, config LintConfig, src string, abs_path string, mut stats Stats) !FileLint {
 	sw := time.new_stopwatch()
 	mut tree := parser.parse(src)!
@@ -655,6 +677,9 @@ pub fn (mut c Checker) lint_file(parser Parser, config LintConfig, src string, a
 	c.scope_setup = c.file_scope_setup(config, inline)
 	mut findings := []Finding{}
 	for setting in inline.rules {
+		if c.lint_stop.stop() {
+			return error(lint_stopped)
+		}
 		if needs_types(setting.name) {
 			c.make_snapshot()!
 		}
@@ -1133,6 +1158,8 @@ mut:
 	scope_setup      ScopeSetup
 	scope_libs_cache map[string]&ScopeLibs
 	nc_unused        map[int]bool // naming-convention: the unused variables of the file
+	// asked before each rule of a file whether to give the lint up (set_lint_stop)
+	lint_stop LintStop = NoLintStop{}
 	// tokens and comments of the file (source_tokens), built on first use (per file)
 	file_tokens &SourceTokens = unsafe { nil }
 	// no-deprecated: the reason of the first @deprecated tag of each symbol, or ndep_not_deprecated;

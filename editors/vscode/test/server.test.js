@@ -31,13 +31,20 @@ test('the server answers what the command line prints, request after request', {
   await server.request({ forget: [file] });
   const again = await server.request({ config: 'resolved.json', files: [file] });
   assert.equal(again.stdout.split('\n').filter(Boolean).length, cli.problems.length);
-  // Requests sent together are answered in order.
-  const both = await Promise.all([
+  // Requests sent together are answered in order. One whose file a later request lints too may be
+  // given up (`cancelled`, nothing else); the one for another file and the last one are not.
+  const other = path.join(fixture, 'other/a.ts');
+  const otherCli = await runVeslint({ binary, cwd: fixture, config: path.join(fixture, 'resolved.json'), files: [other] });
+  const together = await Promise.all([
     server.request({ config: 'resolved.json', files: [file] }),
+    server.request({ config: 'resolved.json', files: [other] }),
     server.request({ config: 'missing.json', files: [file] }),
   ]);
-  assert.equal(both[0].code, cli.code);
-  assert.equal(both[1].code, 2);
+  assert.ok(together[0].cancelled ? together[0].stdout === '' && together[0].code === 0 : together[0].code === cli.code);
+  assert.equal(together[1].cancelled, undefined);
+  assert.equal(together[1].code, otherCli.code);
+  assert.equal(together[2].cancelled, undefined);
+  assert.equal(together[2].code, 2);
 });
 
 test('a server that dies fails its requests, and the next request starts another', { skip: !built }, async t => {
