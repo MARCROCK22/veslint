@@ -134,6 +134,7 @@ const rule_option_schemas = {
 	'no-self-assign':                                                  '{"type":"array","items":[{"type":"object","properties":{"props":{"type":"boolean"}},"additionalProperties":false}],"minItems":0,"maxItems":1}'
 	'no-unsafe-negation':                                              '{"type":"array","items":[{"type":"object","properties":{"enforceForOrderingRelations":{"type":"boolean"}},"additionalProperties":false}],"minItems":0,"maxItems":1}'
 	'no-unsafe-optional-chaining':                                     '{"type":"array","items":[{"type":"object","properties":{"disallowArithmeticOperators":{"type":"boolean"}},"additionalProperties":false}],"minItems":0,"maxItems":1}'
+	'no-cond-assign':                                                  '{"type":"array","items":[{"enum":["except-parens","always"]}],"minItems":0,"maxItems":1}'
 }
 
 // eslint_rule_default_options are the meta.defaultOptions of the rules of ESLint and of

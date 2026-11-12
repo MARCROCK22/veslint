@@ -1,0 +1,21 @@
+tests/rules/no-cond-assign/always/cases.ts:7:6	no-cond-assign	unexpected	Unexpected assignment within an 'if' statement.
+tests/rules/no-cond-assign/always/cases.ts:8:9	no-cond-assign	unexpected	Unexpected assignment within a 'while' statement.
+tests/rules/no-cond-assign/always/cases.ts:9:15	no-cond-assign	unexpected	Unexpected assignment within a 'do...while' statement.
+tests/rules/no-cond-assign/always/cases.ts:10:9	no-cond-assign	unexpected	Unexpected assignment within a 'for' statement.
+tests/rules/no-cond-assign/always/cases.ts:11:14	no-cond-assign	unexpected	Unexpected assignment within ConditionalExpression.
+tests/rules/no-cond-assign/always/cases.ts:12:6	no-cond-assign	unexpected	Unexpected assignment within an 'if' statement.
+tests/rules/no-cond-assign/always/cases.ts:13:7	no-cond-assign	unexpected	Unexpected assignment within an 'if' statement.
+tests/rules/no-cond-assign/always/cases.ts:16:20	no-cond-assign	unexpected	Unexpected assignment within an 'if' statement.
+tests/rules/no-cond-assign/always/cases.ts:17:26	no-cond-assign	unexpected	Unexpected assignment within an 'if' statement.
+tests/rules/no-cond-assign/always/cases.ts:18:24	no-cond-assign	unexpected	Unexpected assignment within an 'if' statement.
+tests/rules/no-cond-assign/always/cases.ts:21:8	no-cond-assign	unexpected	Unexpected assignment within a 'while' statement.
+tests/rules/no-cond-assign/always/cases.ts:22:13	no-cond-assign	unexpected	Unexpected assignment within ConditionalExpression.
+tests/rules/no-cond-assign/always/cases.ts:22:24	no-cond-assign	unexpected	Unexpected assignment within ConditionalExpression.
+tests/rules/no-cond-assign/cases.ts:6:5	no-cond-assign	missing	Expected a conditional expression and instead saw an assignment.
+tests/rules/no-cond-assign/cases.ts:7:8	no-cond-assign	missing	Expected a conditional expression and instead saw an assignment.
+tests/rules/no-cond-assign/cases.ts:8:14	no-cond-assign	missing	Expected a conditional expression and instead saw an assignment.
+tests/rules/no-cond-assign/cases.ts:9:8	no-cond-assign	missing	Expected a conditional expression and instead saw an assignment.
+tests/rules/no-cond-assign/cases.ts:10:13	no-cond-assign	missing	Expected a conditional expression and instead saw an assignment.
+tests/rules/no-cond-assign/cases.ts:11:5	no-cond-assign	missing	Expected a conditional expression and instead saw an assignment.
+tests/rules/no-cond-assign/cases.ts:12:5	no-cond-assign	missing	Expected a conditional expression and instead saw an assignment.
+tests/rules/no-cond-assign/cases.ts:15:13	no-cond-assign	missing	Expected a conditional expression and instead saw an assignment.
