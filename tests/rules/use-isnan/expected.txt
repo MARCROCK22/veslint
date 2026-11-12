@@ -1,0 +1,30 @@
+tests/rules/use-isnan/cases.ts:7:5	use-isnan	comparisonWithNaN	Use the isNaN function to compare with NaN.
+tests/rules/use-isnan/cases.ts:8:5	use-isnan	comparisonWithNaN	Use the isNaN function to compare with NaN.
+tests/rules/use-isnan/cases.ts:9:5	use-isnan	comparisonWithNaN	Use the isNaN function to compare with NaN.
+tests/rules/use-isnan/cases.ts:10:5	use-isnan	comparisonWithNaN	Use the isNaN function to compare with NaN.
+tests/rules/use-isnan/cases.ts:11:5	use-isnan	comparisonWithNaN	Use the isNaN function to compare with NaN.
+tests/rules/use-isnan/cases.ts:12:5	use-isnan	comparisonWithNaN	Use the isNaN function to compare with NaN.
+tests/rules/use-isnan/cases.ts:13:5	use-isnan	comparisonWithNaN	Use the isNaN function to compare with NaN.
+tests/rules/use-isnan/cases.ts:14:5	use-isnan	comparisonWithNaN	Use the isNaN function to compare with NaN.
+tests/rules/use-isnan/cases.ts:15:5	use-isnan	comparisonWithNaN	Use the isNaN function to compare with NaN.
+tests/rules/use-isnan/cases.ts:16:5	use-isnan	comparisonWithNaN	Use the isNaN function to compare with NaN.
+tests/rules/use-isnan/cases.ts:17:5	use-isnan	comparisonWithNaN	Use the isNaN function to compare with NaN.
+tests/rules/use-isnan/cases.ts:18:5	use-isnan	comparisonWithNaN	Use the isNaN function to compare with NaN.
+tests/rules/use-isnan/cases.ts:19:5	use-isnan	comparisonWithNaN	Use the isNaN function to compare with NaN.
+tests/rules/use-isnan/cases.ts:20:14	use-isnan	comparisonWithNaN	Use the isNaN function to compare with NaN.
+tests/rules/use-isnan/cases.ts:31:1	use-isnan	switchNaN	'switch(NaN)' can never match a case clause. Use Number.isNaN instead of the switch.
+tests/rules/use-isnan/cases.ts:36:3	use-isnan	caseNaN	'case NaN' can never match. Use Number.isNaN before the switch.
+tests/rules/use-isnan/cases.ts:38:3	use-isnan	caseNaN	'case NaN' can never match. Use Number.isNaN before the switch.
+tests/rules/use-isnan/cases.ts:40:3	use-isnan	caseNaN	'case NaN' can never match. Use Number.isNaN before the switch.
+tests/rules/use-isnan/index-of/cases.ts:6:1	use-isnan	indexOfNaN	Array prototype method 'indexOf' cannot find NaN.
+tests/rules/use-isnan/index-of/cases.ts:7:1	use-isnan	indexOfNaN	Array prototype method 'lastIndexOf' cannot find NaN.
+tests/rules/use-isnan/index-of/cases.ts:8:1	use-isnan	indexOfNaN	Array prototype method 'indexOf' cannot find NaN.
+tests/rules/use-isnan/index-of/cases.ts:9:1	use-isnan	indexOfNaN	Array prototype method 'indexOf' cannot find NaN.
+tests/rules/use-isnan/index-of/cases.ts:10:1	use-isnan	indexOfNaN	Array prototype method 'lastIndexOf' cannot find NaN.
+tests/rules/use-isnan/index-of/cases.ts:11:1	use-isnan	indexOfNaN	Array prototype method 'indexOf' cannot find NaN.
+tests/rules/use-isnan/index-of/cases.ts:12:1	use-isnan	indexOfNaN	Array prototype method 'indexOf' cannot find NaN.
+tests/rules/use-isnan/index-of/cases.ts:13:1	use-isnan	indexOfNaN	Array prototype method 'indexOf' cannot find NaN.
+tests/rules/use-isnan/index-of/cases.ts:14:1	use-isnan	indexOfNaN	Array prototype method 'indexOf' cannot find NaN.
+tests/rules/use-isnan/index-of/cases.ts:15:1	use-isnan	indexOfNaN	Array prototype method 'indexOf' cannot find NaN.
+tests/rules/use-isnan/index-of/cases.ts:21:1	use-isnan	indexOfNaN	Array prototype method 'indexOf' cannot find NaN.
+tests/rules/use-isnan/no-switch/cases.ts:8:5	use-isnan	comparisonWithNaN	Use the isNaN function to compare with NaN.

@@ -67,6 +67,7 @@ pub fn check_options(rule string, options []json2.Any) !bool {
 		no_require_imports { nri_options(options)! }
 		array_type { arty_options(options)! }
 		consistent_indexed_object_style { cios_options(options)! }
+		use_isnan { uin_options(options)! }
 		else { return false }
 	}
 	return true

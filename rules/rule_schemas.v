@@ -126,6 +126,7 @@ const rule_option_schemas = {
 	'seyfert/no-hanging-middleware':                                   '{"type":"array","minItems":0,"maxItems":0}'
 	'seyfert/group-exists':                                            '{"type":"array","minItems":0,"maxItems":0}'
 	'no-compare-neg-zero':                                             '{"type":"array","minItems":0,"maxItems":0}'
+	'use-isnan':                                                       '{"type":"array","items":[{"type":"object","properties":{"enforceForSwitchCase":{"type":"boolean"},"enforceForIndexOf":{"type":"boolean"}},"additionalProperties":false}],"minItems":0,"maxItems":1}'
 }
 
 // eslint_rule_default_options are the meta.defaultOptions of the rules of ESLint and of
