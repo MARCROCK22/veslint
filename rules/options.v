@@ -71,6 +71,7 @@ pub fn check_options(rule string, options []json2.Any) !bool {
 		valid_typeof { vt_options(options)! }
 		no_self_assign { nsa_options(options)! }
 		no_unsafe_negation { nun_options(options)! }
+		no_unsafe_optional_chaining { nuoc_options(options)! }
 		else { return false }
 	}
 	return true
