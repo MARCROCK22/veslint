@@ -1,0 +1,25 @@
+tests/rules/no-extra-boolean-cast/cases.ts:5:5	no-extra-boolean-cast	unexpectedNegation	Redundant double negation.	fix	62	65	a
+tests/rules/no-extra-boolean-cast/cases.ts:6:5	no-extra-boolean-cast	unexpectedCall	Redundant Boolean call.	fix	74	84	a
+tests/rules/no-extra-boolean-cast/cases.ts:7:8	no-extra-boolean-cast	unexpectedNegation	Redundant double negation.	fix	96	99	a
+tests/rules/no-extra-boolean-cast/cases.ts:8:14	no-extra-boolean-cast	unexpectedCall	Redundant Boolean call.	fix	117	127	a
+tests/rules/no-extra-boolean-cast/cases.ts:9:8	no-extra-boolean-cast	unexpectedNegation	Redundant double negation.	fix	137	140	a
+tests/rules/no-extra-boolean-cast/cases.ts:10:12	no-extra-boolean-cast	unexpectedNegation	Redundant double negation.	fix	158	161	a
+tests/rules/no-extra-boolean-cast/cases.ts:11:13	no-extra-boolean-cast	unexpectedNegation	Redundant double negation.	fix	183	186	a
+tests/rules/no-extra-boolean-cast/cases.ts:12:13	no-extra-boolean-cast	unexpectedCall	Redundant Boolean call.	fix	200	210	a
+tests/rules/no-extra-boolean-cast/cases.ts:13:20	no-extra-boolean-cast	unexpectedNegation	Redundant double negation.	fix	231	234	a
+tests/rules/no-extra-boolean-cast/cases.ts:14:24	no-extra-boolean-cast	unexpectedNegation	Redundant double negation.	fix	260	263	a
+tests/rules/no-extra-boolean-cast/cases.ts:15:5	no-extra-boolean-cast	unexpectedCall	Redundant Boolean call.	fix	270	279	false
+tests/rules/no-extra-boolean-cast/cases.ts:16:13	no-extra-boolean-cast	unexpectedCall	Redundant Boolean call.	fix	295	305	true
+tests/rules/no-extra-boolean-cast/cases.ts:17:5	no-extra-boolean-cast	unexpectedNegation	Redundant double negation.	fix	311	319	a, b
+tests/rules/no-extra-boolean-cast/cases.ts:18:5	no-extra-boolean-cast	unexpectedCall	Redundant Boolean call.	fix	328	346	a ? 1 : 2
+tests/rules/no-extra-boolean-cast/cases.ts:19:14	no-extra-boolean-cast	unexpectedNegation	Redundant double negation.	fix	364	367	a
+tests/rules/no-extra-boolean-cast/cases.ts:20:5	no-extra-boolean-cast	unexpectedNegation	Redundant double negation.
+tests/rules/no-extra-boolean-cast/inner/cases.ts:5:9	no-extra-boolean-cast	unexpectedNegation	Redundant double negation.	fix	98	101	b
+tests/rules/no-extra-boolean-cast/inner/cases.ts:5:15	no-extra-boolean-cast	unexpectedCall	Redundant Boolean call.	fix	104	114	a
+tests/rules/no-extra-boolean-cast/inner/cases.ts:6:10	no-extra-boolean-cast	unexpectedNegation	Redundant double negation.	fix	128	131	b
+tests/rules/no-extra-boolean-cast/inner/cases.ts:7:9	no-extra-boolean-cast	unexpectedNegation	Redundant double negation.	fix	144	147	b
+tests/rules/no-extra-boolean-cast/inner/cases.ts:8:10	no-extra-boolean-cast	unexpectedNegation	Redundant double negation.	fix	162	165	b
+tests/rules/no-extra-boolean-cast/logical/cases.ts:5:10	no-extra-boolean-cast	unexpectedNegation	Redundant double negation.	fix	98	101	b
+tests/rules/no-extra-boolean-cast/logical/cases.ts:6:5	no-extra-boolean-cast	unexpectedNegation	Redundant double negation.	fix	110	113	a
+tests/rules/no-extra-boolean-cast/logical/cases.ts:6:12	no-extra-boolean-cast	unexpectedCall	Redundant Boolean call.	fix	117	127	b
+tests/rules/no-extra-boolean-cast/logical/cases.ts:7:9	no-extra-boolean-cast	unexpectedNegation	Redundant double negation.	fix	140	143	a

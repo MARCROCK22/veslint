@@ -1,0 +1,17 @@
+tests/rules/operator-assignment/cases.ts:6:1	operator-assignment	replaced	Assignment (=) can be replaced with operator assignment (+=).
+tests/rules/operator-assignment/cases.ts:7:1	operator-assignment	replaced	Assignment (=) can be replaced with operator assignment (-=).
+tests/rules/operator-assignment/cases.ts:8:1	operator-assignment	replaced	Assignment (=) can be replaced with operator assignment (*=).
+tests/rules/operator-assignment/cases.ts:9:1	operator-assignment	replaced	Assignment (=) can be replaced with operator assignment (*=).
+tests/rules/operator-assignment/cases.ts:10:1	operator-assignment	replaced	Assignment (=) can be replaced with operator assignment (**=).
+tests/rules/operator-assignment/cases.ts:11:1	operator-assignment	replaced	Assignment (=) can be replaced with operator assignment (+=).
+tests/rules/operator-assignment/cases.ts:12:1	operator-assignment	replaced	Assignment (=) can be replaced with operator assignment (*=).
+tests/rules/operator-assignment/cases.ts:13:1	operator-assignment	replaced	Assignment (=) can be replaced with operator assignment (|=).
+tests/rules/operator-assignment/cases.ts:14:1	operator-assignment	replaced	Assignment (=) can be replaced with operator assignment (+=).
+tests/rules/operator-assignment/cases.ts:15:1	operator-assignment	replaced	Assignment (=) can be replaced with operator assignment (+=).
+tests/rules/operator-assignment/never/cases.ts:6:1	operator-assignment	unexpected	Unexpected operator assignment (+=) shorthand.
+tests/rules/operator-assignment/never/cases.ts:7:1	operator-assignment	unexpected	Unexpected operator assignment (-=) shorthand.
+tests/rules/operator-assignment/never/cases.ts:8:1	operator-assignment	unexpected	Unexpected operator assignment (*=) shorthand.
+tests/rules/operator-assignment/never/cases.ts:9:1	operator-assignment	unexpected	Unexpected operator assignment (+=) shorthand.
+tests/rules/operator-assignment/never/cases.ts:10:1	operator-assignment	unexpected	Unexpected operator assignment (+=) shorthand.
+tests/rules/operator-assignment/never/cases.ts:11:1	operator-assignment	unexpected	Unexpected operator assignment (**=) shorthand.
+tests/rules/operator-assignment/never/cases.ts:12:1	operator-assignment	unexpected	Unexpected operator assignment (-=) shorthand.

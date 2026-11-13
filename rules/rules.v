@@ -171,6 +171,17 @@ pub const no_useless_rename = 'no-useless-rename'
 pub const no_useless_computed_key = 'no-useless-computed-key'
 pub const object_shorthand = 'object-shorthand'
 pub const require_yield = 'require-yield'
+pub const eqeqeq = 'eqeqeq'
+pub const yoda = 'yoda'
+pub const no_eq_null = 'no-eq-null'
+pub const no_extra_boolean_cast = 'no-extra-boolean-cast'
+pub const no_implicit_coercion = 'no-implicit-coercion'
+pub const logical_assignment_operators = 'logical-assignment-operators'
+pub const operator_assignment = 'operator-assignment'
+pub const prefer_exponentiation_operator = 'prefer-exponentiation-operator'
+pub const no_sequences = 'no-sequences'
+pub const no_return_assign = 'no-return-assign'
+pub const no_unexpected_multiline = 'no-unexpected-multiline'
 pub const names = [no_floating_promises, await_thenable, require_await, return_await,
 	no_misused_promises, no_unsafe_call, no_unsafe_member_access, no_unsafe_return,
 	no_unsafe_assignment, no_unsafe_argument, restrict_template_expressions,
@@ -213,7 +224,9 @@ pub const names = [no_floating_promises, await_thenable, require_await, return_a
 	no_debugger, no_unsafe_finally, no_useless_catch, arrow_body_style, prefer_arrow_callback,
 	func_name_matching, func_names, grouped_accessor_pairs, no_setter_return, no_dupe_args,
 	no_dupe_keys, no_empty_pattern, no_useless_rename, no_useless_computed_key, object_shorthand,
-	require_yield]
+	require_yield, eqeqeq, yoda, no_eq_null, no_extra_boolean_cast, no_implicit_coercion,
+	logical_assignment_operators, operator_assignment, prefer_exponentiation_operator, no_sequences,
+	no_return_assign, no_unexpected_multiline]
 
 // untyped_rules are the ported rules that need no types (`meta.docs.requiresTypeChecking` is false
 // in typescript-eslint): with only these, the command line makes no snapshot (Checker.make_snapshot).
@@ -237,7 +250,9 @@ pub const untyped_rules = [adjacent_overload_signatures, array_type, class_liter
 	no_debugger, no_unsafe_finally, no_useless_catch, arrow_body_style, prefer_arrow_callback,
 	func_name_matching, func_names, grouped_accessor_pairs, no_setter_return, no_dupe_args,
 	no_dupe_keys, no_empty_pattern, no_useless_rename, no_useless_computed_key, object_shorthand,
-	require_yield]
+	require_yield, eqeqeq, yoda, no_eq_null, no_extra_boolean_cast, no_implicit_coercion,
+	logical_assignment_operators, operator_assignment, prefer_exponentiation_operator, no_sequences,
+	no_return_assign, no_unexpected_multiline]
 
 // needs_types tells whether a rule asks tsgo for the types of the program.
 pub fn needs_types(rule string) bool {
@@ -407,6 +422,17 @@ pub const default_options = {
 	no_useless_computed_key:                      '[{"enforceForClassMembers":true}]'
 	object_shorthand:                             '["always"]'
 	require_yield:                                '[]'
+	eqeqeq:                                       '["always"]'
+	yoda:                                         '["never",{"exceptRange":false,"onlyEquality":false}]'
+	no_eq_null:                                   '[]'
+	no_extra_boolean_cast:                        '[{}]'
+	no_implicit_coercion:                         '[{"allow":[],"boolean":true,"disallowTemplateShorthand":false,"number":true,"string":true}]'
+	logical_assignment_operators:                 '["always"]'
+	operator_assignment:                          '["always"]'
+	prefer_exponentiation_operator:               '[]'
+	no_sequences:                                 '[{"allowInParentheses":true}]'
+	no_return_assign:                             '["except-parens"]'
+	no_unexpected_multiline:                      '[]'
 }
 
 // Finding is a problem a rule found at a node.
@@ -699,6 +725,17 @@ pub fn message(rule string, finding Finding) string {
 		no_useless_computed_key { nuck_messages }
 		object_shorthand { os_messages }
 		require_yield { ry_messages }
+		eqeqeq { eqe_messages }
+		yoda { yoda_messages }
+		no_eq_null { neqn_messages }
+		no_extra_boolean_cast { nebc_messages }
+		no_implicit_coercion { nic_messages }
+		logical_assignment_operators { lao_messages }
+		operator_assignment { oa_messages }
+		prefer_exponentiation_operator { peo_messages }
+		no_sequences { nseq_messages }
+		no_return_assign { nra_messages }
+		no_unexpected_multiline { num_messages }
 		else { map[string]string{} }
 	}
 	return interpolate(messages[finding.message_id] or { finding.message_id }, finding.data)
@@ -1315,6 +1352,39 @@ fn (mut c Checker) lint_rule(rule string, root C.TSNode, abs_path string, mut st
 		}
 		require_yield {
 			return c.lint_require_yield(root, abs_path, mut stats)!
+		}
+		eqeqeq {
+			return c.lint_eqeqeq(root, abs_path, mut stats)!
+		}
+		yoda {
+			return c.lint_yoda(root, abs_path, mut stats)!
+		}
+		no_eq_null {
+			return c.lint_no_eq_null(root, abs_path, mut stats)!
+		}
+		no_extra_boolean_cast {
+			return c.lint_no_extra_boolean_cast(root, abs_path, mut stats)!
+		}
+		no_implicit_coercion {
+			return c.lint_no_implicit_coercion(root, abs_path, mut stats)!
+		}
+		logical_assignment_operators {
+			return c.lint_logical_assignment_operators(root, abs_path, mut stats)!
+		}
+		operator_assignment {
+			return c.lint_operator_assignment(root, abs_path, mut stats)!
+		}
+		prefer_exponentiation_operator {
+			return c.lint_prefer_exponentiation_operator(root, abs_path, mut stats)!
+		}
+		no_sequences {
+			return c.lint_no_sequences(root, abs_path, mut stats)!
+		}
+		no_return_assign {
+			return c.lint_no_return_assign(root, abs_path, mut stats)!
+		}
+		no_unexpected_multiline {
+			return c.lint_no_unexpected_multiline(root, abs_path, mut stats)!
 		}
 		else { return error('unknown rule: ${rule}') }
 	}

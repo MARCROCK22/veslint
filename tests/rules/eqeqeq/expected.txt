@@ -1,0 +1,15 @@
+tests/rules/eqeqeq/cases.ts:5:7	eqeqeq	unexpected	Expected '===' and instead saw '=='.
+tests/rules/eqeqeq/cases.ts:6:7	eqeqeq	unexpected	Expected '!==' and instead saw '!='.
+tests/rules/eqeqeq/cases.ts:7:14	eqeqeq	unexpected	Expected '===' and instead saw '=='.
+tests/rules/eqeqeq/cases.ts:8:9	eqeqeq	unexpected	Expected '!==' and instead saw '!='.
+tests/rules/eqeqeq/cases.ts:9:7	eqeqeq	unexpected	Expected '===' and instead saw '=='.
+tests/rules/eqeqeq/cases.ts:10:7	eqeqeq	unexpected	Expected '===' and instead saw '=='.
+tests/rules/eqeqeq/cases.ts:11:10	eqeqeq	unexpected	Expected '===' and instead saw '=='.
+tests/rules/eqeqeq/cases.ts:12:10	eqeqeq	unexpected	Expected '===' and instead saw '=='.
+tests/rules/eqeqeq/cases.ts:13:17	eqeqeq	unexpected	Expected '===' and instead saw '=='.
+tests/rules/eqeqeq/null-ignore/cases.ts:4:7	eqeqeq	unexpected	Expected '===' and instead saw '=='.
+tests/rules/eqeqeq/null-never/cases.ts:4:7	eqeqeq	unexpected	Expected '==' and instead saw '==='.
+tests/rules/eqeqeq/null-never/cases.ts:5:10	eqeqeq	unexpected	Expected '!=' and instead saw '!=='.
+tests/rules/eqeqeq/null-never/cases.ts:6:7	eqeqeq	unexpected	Expected '===' and instead saw '=='.
+tests/rules/eqeqeq/smart/cases.ts:5:7	eqeqeq	unexpected	Expected '===' and instead saw '=='.
+tests/rules/eqeqeq/smart/cases.ts:6:7	eqeqeq	unexpected	Expected '!==' and instead saw '!='.

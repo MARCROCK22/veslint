@@ -1,0 +1,14 @@
+tests/rules/yoda/always/cases.ts:4:5	yoda	expected	Expected literal to be on the left side of ===.
+tests/rules/yoda/always/cases.ts:5:5	yoda	expected	Expected literal to be on the left side of ==.
+tests/rules/yoda/cases.ts:4:5	yoda	expected	Expected literal to be on the right side of ===.
+tests/rules/yoda/cases.ts:5:5	yoda	expected	Expected literal to be on the right side of ==.
+tests/rules/yoda/cases.ts:6:5	yoda	expected	Expected literal to be on the right side of >.
+tests/rules/yoda/cases.ts:7:5	yoda	expected	Expected literal to be on the right side of <.
+tests/rules/yoda/cases.ts:8:5	yoda	expected	Expected literal to be on the right side of !==.
+tests/rules/yoda/cases.ts:9:5	yoda	expected	Expected literal to be on the right side of !=.
+tests/rules/yoda/cases.ts:10:5	yoda	expected	Expected literal to be on the right side of <=.
+tests/rules/yoda/cases.ts:11:5	yoda	expected	Expected literal to be on the right side of <.
+tests/rules/yoda/cases.ts:12:11	yoda	expected	Expected literal to be on the right side of <.
+tests/rules/yoda/cases.ts:13:5	yoda	expected	Expected literal to be on the right side of ===.
+tests/rules/yoda/except-range/cases.ts:9:5	yoda	expected	Expected literal to be on the right side of <=.
+tests/rules/yoda/except-range/cases.ts:10:5	yoda	expected	Expected literal to be on the right side of <.

@@ -1,0 +1,4 @@
+tests/rules/no-unexpected-multiline/cases.ts:8:1	no-unexpected-multiline	function	Unexpected newline between function and ( of function call.
+tests/rules/no-unexpected-multiline/cases.ts:10:1	no-unexpected-multiline	property	Unexpected newline between object and [ of property access.
+tests/rules/no-unexpected-multiline/cases.ts:12:1	no-unexpected-multiline	taggedTemplate	Unexpected newline between template tag and template literal.
+tests/rules/no-unexpected-multiline/cases.ts:14:1	no-unexpected-multiline	function	Unexpected newline between function and ( of function call.

@@ -527,3 +527,380 @@ fn (c &Checker) es_function_head(f C.TSNode) Ident {
 	}
 	return c.position_at(node_start(f))
 }
+
+// es_is_parenthesised_twice: two pairs of parentheses around the node (the token before the one
+// before it is `(`, and the token after the one after it `)`).
+fn (mut c Checker) es_is_parenthesised_twice(n C.TSNode) bool {
+	if !c.es_is_parenthesised(n) {
+		return false
+	}
+	tokens := c.source_tokens(n)
+	before := tokens.before(node_start(n), false) or { return false }
+	after := tokens.after(c.es_end(n), false) or { return false }
+	outer_before := tokens.before(before.start, false) or { return false }
+	outer_after := tokens.after(after.end, false) or { return false }
+	return c.src[outer_before.start..outer_before.end] == '('
+		&& c.src[outer_after.start..outer_after.end] == ')'
+}
+
+// es_precedence ports getPrecedence of ESLint's ast-utils for the ESTree node of `n`: 20 for the
+// standard nodes it does not list, -1 for the others (TypeScript's).
+fn es_precedence(n C.TSNode) int {
+	node := unwrap_parens(n)
+	kind := node_kind(node)
+	match kind {
+		'sequence_expression' {
+			return 0
+		}
+		'assignment_expression', 'augmented_assignment_expression', 'arrow_function',
+		'yield_expression' {
+			return 1
+		}
+		'ternary_expression' {
+			return 3
+		}
+		'binary_expression' {
+			return match operator_of(node) {
+				'||', '??' { 4 }
+				'&&' { 5 }
+				'|' { 6 }
+				'^' { 7 }
+				'&' { 8 }
+				'==', '!=', '===', '!==' { 9 }
+				'<', '<=', '>', '>=', 'in', 'instanceof' { 10 }
+				'<<', '>>', '>>>' { 11 }
+				'+', '-' { 12 }
+				'*', '/', '%' { 13 }
+				'**' { 15 }
+				else { 16 }
+			}
+		}
+		'unary_expression', 'await_expression' {
+			return 16
+		}
+		'update_expression' {
+			return 17
+		}
+		'call_expression' {
+			// A tagged template is a TaggedTemplateExpression; an optional chain a ChainExpression.
+			if args := node_field(node, 'arguments') {
+				if node_kind(args) != 'arguments' {
+					return 20
+				}
+			}
+			return 18
+		}
+		'new_expression' {
+			return 19
+		}
+		'member_expression', 'subscript_expression' {
+			return if is_estree_chain_root(node) { 18 } else { 20 }
+		}
+		'as_expression', 'satisfies_expression', 'non_null_expression', 'type_assertion',
+		'instantiation_expression' {
+			return -1
+		}
+		else {
+			return 20
+		}
+	}
+}
+
+// es_can_adjacent is canTokensBeAdjacent on the kinds and the texts of two tokens.
+fn es_can_adjacent(lk SourceTokenKind, left_text string, rk SourceTokenKind, right_text string) bool {
+	if lk == .shebang_comment {
+		return false
+	}
+	if lk == .punctuator || rk == .punctuator {
+		if lk == .punctuator && rk == .punctuator {
+			plus := ['+', '++']
+			minus := ['-', '--']
+			return !((left_text in plus && right_text in plus)
+				|| (left_text in minus && right_text in minus))
+		}
+		if lk == .punctuator && left_text == '/' {
+			return rk !in [.block_comment, .line_comment, .regular_expression]
+		}
+		return true
+	}
+	if lk in [.string_, .template] || rk in [.string_, .template] {
+		return true
+	}
+	if lk != .numeric && rk == .numeric && right_text.starts_with('.') {
+		return true
+	}
+	if lk == .block_comment || rk in [.block_comment, .line_comment] {
+		return true
+	}
+	return rk == .private_identifier
+}
+
+// es_property_name_unscoped ports getPropertyName of eslint-utils without a scope, for a
+// MemberExpression: a name, or the constant of a computed key where no identifier is static.
+fn (mut c Checker) es_property_name_unscoped(member C.TSNode) ?string {
+	match node_kind(member) {
+		'member_expression' {
+			property := node_field(member, 'property')?
+			if node_kind(property) == 'private_property_identifier' {
+				return none
+			}
+			return c.text(property)
+		}
+		'subscript_expression' {
+			return c.string_if_constant_unscoped(node_field(member, 'index')?)
+		}
+		else {
+			return none
+		}
+	}
+}
+
+// EsTrace is a trace map of ReferenceTracker: what to report at a path (READ, CALL, CONSTRUCT)
+// and the properties to follow.
+struct EsTrace {
+	read      bool
+	call      bool
+	construct bool
+	children  map[string]EsTrace
+}
+
+// EsTraced is a reference ReferenceTracker reports: the node, its path and how it is used
+// ('read', 'call' or 'construct').
+struct EsTraced {
+	node C.TSNode
+	path []string
+	kind string
+}
+
+// es_global_references ports ReferenceTracker#iterateGlobalReferences (mode "strict"): the reads,
+// calls and constructions of the paths of the trace map from the global variables that are not
+// modified, through `globalThis`, `global`, `self` and `window`, aliases and destructurings.
+fn (mut c Checker) es_global_references(root C.TSNode, trace map[string]EsTrace) []EsTraced {
+	mut out := []EsTraced{}
+	tree := c.scope_tree(root)
+	mut stack := []int{}
+	for key, next in trace {
+		v := tree.own_variable(0, key)
+		if es_is_modified_global(tree, v) {
+			continue
+		}
+		c.es_trace_variable(root, v, [key], next, true, mut stack, mut out)
+	}
+	root_trace := EsTrace{
+		children: trace
+	}
+	for key in ['global', 'globalThis', 'self', 'window'] {
+		v := tree.own_variable(0, key)
+		if es_is_modified_global(tree, v) {
+			continue
+		}
+		c.es_trace_variable(root, v, []string{}, root_trace, false, mut stack, mut out)
+	}
+	return out
+}
+
+fn es_is_modified_global(tree &ScopeTree, v int) bool {
+	if v < 0 {
+		return true
+	}
+	variable := tree.variables[v]
+	return variable.defs.len > 0 || variable.references.any(tree.references[it].write)
+}
+
+fn (mut c Checker) es_trace_variable(root C.TSNode, v int, path []string, trace EsTrace, report bool, mut stack []int, mut out []EsTraced) {
+	if v in stack {
+		return
+	}
+	stack << v
+	tree := c.scope_tree(root)
+	for r in tree.variables[v].references {
+		reference := tree.references[r]
+		if !reference.read {
+			continue
+		}
+		if report && trace.read {
+			out << EsTraced{
+				node: reference.identifier
+				path: path
+				kind: 'read'
+			}
+		}
+		c.es_trace_properties(root, reference.identifier, path, trace, mut stack, mut out)
+	}
+	stack.pop()
+}
+
+// es_is_pass_through ports isPassThrough: the parent gives the value of the node.
+fn es_is_pass_through(n C.TSNode) bool {
+	parent := cti_estree_parent(n) or { return false }
+	match node_kind(parent) {
+		'ternary_expression' {
+			key := node_key(n)
+			consequence := node_field(parent, 'consequence') or { return false }
+			alternative := node_field(parent, 'alternative') or { return false }
+			return node_key(unwrap_parens(consequence)) == key
+				|| node_key(unwrap_parens(alternative)) == key
+		}
+		'binary_expression' {
+			return estree_binary_kind(parent) == 'LogicalExpression'
+		}
+		'sequence_expression' {
+			return node_key(es_sequence_last(parent)) == node_key(n)
+		}
+		'as_expression', 'satisfies_expression', 'type_assertion', 'non_null_expression',
+		'instantiation_expression' {
+			return true
+		}
+		else {
+			return false
+		}
+	}
+}
+
+fn (mut c Checker) es_trace_properties(root C.TSNode, from C.TSNode, path []string, trace EsTrace, mut stack []int, mut out []EsTraced) {
+	mut node := from
+	for es_is_pass_through(node) {
+		node = cti_estree_parent(node) or { break }
+		// A sequence nested by tree-sitter is one SequenceExpression.
+		for node_kind(node) == 'sequence_expression' {
+			outer := cti_estree_parent(node) or { break }
+			if node_kind(outer) != 'sequence_expression' {
+				break
+			}
+			node = outer
+		}
+	}
+	parent := cti_estree_parent(node) or { return }
+	key := node_key(node)
+	match node_kind(parent) {
+		'member_expression', 'subscript_expression' {
+			object := node_field(parent, 'object') or { return }
+			if node_key(unwrap_parens(object)) != key {
+				return
+			}
+			name := c.es_property_name_unscoped(parent) or { return }
+			next := trace.children[name] or { return }
+			mut next_path := path.clone()
+			next_path << name
+			if next.read {
+				out << EsTraced{
+					node: parent
+					path: next_path
+					kind: 'read'
+				}
+			}
+			c.es_trace_properties(root, parent, next_path, next, mut stack, mut out)
+		}
+		'call_expression' {
+			callee := node_field(parent, 'function') or { return }
+			args := node_field(parent, 'arguments') or { return }
+			if node_kind(args) == 'arguments' && node_key(unwrap_parens(callee)) == key && trace.call {
+				out << EsTraced{
+					node: parent
+					path: path
+					kind: 'call'
+				}
+			}
+		}
+		'new_expression' {
+			callee := node_field(parent, 'constructor') or { return }
+			if node_key(unwrap_parens(callee)) == key && trace.construct {
+				out << EsTraced{
+					node: parent
+					path: path
+					kind: 'construct'
+				}
+			}
+		}
+		'assignment_expression' {
+			right := node_field(parent, 'right') or { return }
+			if node_key(unwrap_parens(right)) == key {
+				c.es_trace_lhs(root, node_field(parent, 'left') or { return }, path, trace, mut
+					stack, mut out)
+				c.es_trace_properties(root, parent, path, trace, mut stack, mut out)
+			}
+		}
+		'assignment_pattern', 'object_assignment_pattern' {
+			right := node_field(parent, 'right') or { return }
+			if node_key(unwrap_parens(right)) == key {
+				c.es_trace_lhs(root, node_field(parent, 'left') or { return }, path, trace, mut
+					stack, mut out)
+			}
+		}
+		'required_parameter', 'optional_parameter' {
+			value := node_field(parent, 'value') or { return }
+			if node_key(unwrap_parens(value)) == key {
+				c.es_trace_lhs(root, node_field(parent, 'pattern') or { return }, path, trace, mut
+					stack, mut out)
+			}
+		}
+		'variable_declarator' {
+			value := node_field(parent, 'value') or { return }
+			if node_key(unwrap_parens(value)) == key {
+				c.es_trace_lhs(root, node_field(parent, 'name') or { return }, path, trace, mut
+					stack, mut out)
+			}
+		}
+		else {}
+	}
+}
+
+// es_trace_lhs ports _iterateLhsReferences: a variable the value goes to, the properties of an
+// object pattern, the target of a default value.
+fn (mut c Checker) es_trace_lhs(root C.TSNode, pattern C.TSNode, path []string, trace EsTrace, mut stack []int, mut out []EsTraced) {
+	match node_kind(pattern) {
+		'identifier', 'shorthand_property_identifier_pattern' {
+			tree := c.scope_tree(root)
+			v := tree.find_variable(0, c.text(pattern), node_start(pattern))
+			if v >= 0 {
+				c.es_trace_variable(root, v, path, trace, false, mut stack, mut out)
+			}
+		}
+		'object_pattern' {
+			for property in named_children(pattern) {
+				kind := node_kind(property)
+				if kind !in ['pair_pattern', 'shorthand_property_identifier_pattern',
+					'object_assignment_pattern'] {
+					continue
+				}
+				name := c.es_static_key_name(property) or { continue }
+				next := trace.children[name] or { continue }
+				mut next_path := path.clone()
+				next_path << name
+				if next.read {
+					out << EsTraced{
+						node: property
+						path: next_path
+						kind: 'read'
+					}
+				}
+				value := match kind {
+					'pair_pattern' { node_field(property, 'value') or { continue } }
+					else { property }
+				}
+				c.es_trace_lhs(root, value, next_path, next, mut stack, mut out)
+			}
+		}
+		'assignment_pattern', 'object_assignment_pattern' {
+			c.es_trace_lhs(root, node_field(pattern, 'left') or { return }, path, trace, mut stack, mut
+				out)
+		}
+		else {}
+	}
+}
+
+// es_binary_precedence is getPrecedence of a BinaryExpression with that operator.
+fn es_binary_precedence(operator string) int {
+	return match operator {
+		'|' { 6 }
+		'^' { 7 }
+		'&' { 8 }
+		'==', '!=', '===', '!==' { 9 }
+		'<', '<=', '>', '>=', 'in', 'instanceof' { 10 }
+		'<<', '>>', '>>>' { 11 }
+		'+', '-' { 12 }
+		'*', '/', '%' { 13 }
+		'**' { 15 }
+		else { 16 }
+	}
+}

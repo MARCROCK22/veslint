@@ -1,0 +1,15 @@
+tests/rules/eqeqeq/cases.ts:5:7	eqeqeq	unexpected	Expected '===' and instead saw '=='.	suggestion	replaceOperator	Use '===' instead of '=='.	139	141	===
+tests/rules/eqeqeq/cases.ts:6:7	eqeqeq	unexpected	Expected '!==' and instead saw '!='.	suggestion	replaceOperator	Use '!==' instead of '!='.	154	156	!==
+tests/rules/eqeqeq/cases.ts:7:14	eqeqeq	unexpected	Expected '===' and instead saw '=='.	fix	176	178	===
+tests/rules/eqeqeq/cases.ts:8:9	eqeqeq	unexpected	Expected '!==' and instead saw '!='.	fix	200	202	!==
+tests/rules/eqeqeq/cases.ts:9:7	eqeqeq	unexpected	Expected '===' and instead saw '=='.	fix	217	219	===
+tests/rules/eqeqeq/cases.ts:10:7	eqeqeq	unexpected	Expected '===' and instead saw '=='.	suggestion	replaceOperator	Use '===' instead of '=='.	232	234	===
+tests/rules/eqeqeq/cases.ts:11:10	eqeqeq	unexpected	Expected '===' and instead saw '=='.	fix	253	255	===
+tests/rules/eqeqeq/cases.ts:12:10	eqeqeq	unexpected	Expected '===' and instead saw '=='.	fix	275	277	===
+tests/rules/eqeqeq/cases.ts:13:17	eqeqeq	unexpected	Expected '===' and instead saw '=='.	suggestion	replaceOperator	Use '===' instead of '=='.	303	305	===
+tests/rules/eqeqeq/null-ignore/cases.ts:4:7	eqeqeq	unexpected	Expected '===' and instead saw '=='.	suggestion	replaceOperator	Use '===' instead of '=='.	61	63	===
+tests/rules/eqeqeq/null-never/cases.ts:4:7	eqeqeq	unexpected	Expected '==' and instead saw '==='.	suggestion	replaceOperator	Use '==' instead of '==='.	60	63	==
+tests/rules/eqeqeq/null-never/cases.ts:5:10	eqeqeq	unexpected	Expected '!=' and instead saw '!=='.	suggestion	replaceOperator	Use '!=' instead of '!=='.	82	85	!=
+tests/rules/eqeqeq/null-never/cases.ts:6:7	eqeqeq	unexpected	Expected '===' and instead saw '=='.	suggestion	replaceOperator	Use '===' instead of '=='.	98	100	===
+tests/rules/eqeqeq/smart/cases.ts:5:7	eqeqeq	unexpected	Expected '===' and instead saw '=='.	suggestion	replaceOperator	Use '===' instead of '=='.	77	79	===
+tests/rules/eqeqeq/smart/cases.ts:6:7	eqeqeq	unexpected	Expected '!==' and instead saw '!='.	suggestion	replaceOperator	Use '!==' instead of '!='.	92	94	!==

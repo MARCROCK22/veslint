@@ -1,0 +1,25 @@
+tests/rules/logical-assignment-operators/cases.ts:6:1	logical-assignment-operators	assignment	Assignment (=) can be replaced with operator assignment (||=).
+tests/rules/logical-assignment-operators/cases.ts:7:1	logical-assignment-operators	assignment	Assignment (=) can be replaced with operator assignment (&&=).
+tests/rules/logical-assignment-operators/cases.ts:8:1	logical-assignment-operators	assignment	Assignment (=) can be replaced with operator assignment (??=).
+tests/rules/logical-assignment-operators/cases.ts:9:1	logical-assignment-operators	assignment	Assignment (=) can be replaced with operator assignment (||=).
+tests/rules/logical-assignment-operators/cases.ts:10:1	logical-assignment-operators	assignment	Assignment (=) can be replaced with operator assignment (??=).
+tests/rules/logical-assignment-operators/cases.ts:11:1	logical-assignment-operators	assignment	Assignment (=) can be replaced with operator assignment (||=).
+tests/rules/logical-assignment-operators/cases.ts:12:1	logical-assignment-operators	logical	Logical expression can be replaced with an assignment (||=).
+tests/rules/logical-assignment-operators/cases.ts:13:1	logical-assignment-operators	logical	Logical expression can be replaced with an assignment (&&=).
+tests/rules/logical-assignment-operators/cases.ts:14:1	logical-assignment-operators	logical	Logical expression can be replaced with an assignment (??=).
+tests/rules/logical-assignment-operators/cases.ts:15:11	logical-assignment-operators	logical	Logical expression can be replaced with an assignment (||=).
+tests/rules/logical-assignment-operators/cases.ts:16:1	logical-assignment-operators	assignment	Assignment (=) can be replaced with operator assignment (||=).
+tests/rules/logical-assignment-operators/if/cases.ts:6:1	logical-assignment-operators	if	'if' statement can be replaced with a logical operator assignment with operator &&=.
+tests/rules/logical-assignment-operators/if/cases.ts:7:1	logical-assignment-operators	if	'if' statement can be replaced with a logical operator assignment with operator ||=.
+tests/rules/logical-assignment-operators/if/cases.ts:8:1	logical-assignment-operators	if	'if' statement can be replaced with a logical operator assignment with operator ??=.
+tests/rules/logical-assignment-operators/if/cases.ts:9:1	logical-assignment-operators	if	'if' statement can be replaced with a logical operator assignment with operator ??=.
+tests/rules/logical-assignment-operators/if/cases.ts:10:1	logical-assignment-operators	if	'if' statement can be replaced with a logical operator assignment with operator &&=.
+tests/rules/logical-assignment-operators/if/cases.ts:13:1	logical-assignment-operators	if	'if' statement can be replaced with a logical operator assignment with operator &&=.
+tests/rules/logical-assignment-operators/if/cases.ts:14:1	logical-assignment-operators	if	'if' statement can be replaced with a logical operator assignment with operator &&=.
+tests/rules/logical-assignment-operators/never/cases.ts:6:1	logical-assignment-operators	unexpected	Unexpected logical operator assignment (||=) shorthand.
+tests/rules/logical-assignment-operators/never/cases.ts:7:1	logical-assignment-operators	unexpected	Unexpected logical operator assignment (&&=) shorthand.
+tests/rules/logical-assignment-operators/never/cases.ts:8:1	logical-assignment-operators	unexpected	Unexpected logical operator assignment (??=) shorthand.
+tests/rules/logical-assignment-operators/never/cases.ts:9:1	logical-assignment-operators	unexpected	Unexpected logical operator assignment (||=) shorthand.
+tests/rules/logical-assignment-operators/never/cases.ts:10:1	logical-assignment-operators	unexpected	Unexpected logical operator assignment (||=) shorthand.
+tests/rules/logical-assignment-operators/never/cases.ts:11:1	logical-assignment-operators	unexpected	Unexpected logical operator assignment (??=) shorthand.
+tests/rules/logical-assignment-operators/never/cases.ts:12:1	logical-assignment-operators	unexpected	Unexpected logical operator assignment (&&=) shorthand.

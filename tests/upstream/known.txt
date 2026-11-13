@@ -66,3 +66,8 @@ eslint	no-dupe-keys/v14	typescript-eslint's parser rejects the octal literal `01
 eslint	no-dupe-keys/i5	typescript-eslint's parser rejects the octal literal `012`
 # tree-sitter reads `static get` before a line break as a field named `get` and an automatic `;`.
 veslint	grouped-accessor-pairs/r0/i56	tree-sitter reads `static get \n a(){}` as the field `get` and the method `a`
+veslint	no-extra-boolean-cast/v19	typescript-eslint's lib declares `Boolean`, which `globals: {Boolean: "off"}` does not remove
+eslint	no-extra-boolean-cast/v19	typescript-eslint's lib declares `Boolean`, which `globals: {Boolean: "off"}` does not remove
+veslint	no-implicit-coercion/i3	typescript-eslint's lib declares `Boolean`, which `globals: {Boolean: "off"}` does not remove: veslint fixes instead of suggesting
+eslint	no-implicit-coercion/i3	typescript-eslint's lib declares `Boolean`, which `globals: {Boolean: "off"}` does not remove: ESLint fixes instead of suggesting
+veslint	prefer-exponentiation-operator/v14	in a module, ESLint with typescript-eslint's scope manager leaves `Math` unresolved after `/* globals Math:off */`; veslint resolves it to the lib's

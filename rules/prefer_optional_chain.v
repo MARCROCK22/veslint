@@ -735,7 +735,7 @@ fn (mut c Checker) poc_binary_operand(operand C.TSNode, chain_operator string) P
 		value = c.poc_comparison_value_type(left)
 		is_yoda = true
 	}
-	yoda := if is_yoda { PocYoda.yes } else { PocYoda.no }
+	yoda_kind := if is_yoda { PocYoda.yes } else { PocYoda.no }
 	negated := operator.starts_with('!')
 	if value == .undefined_string {
 		if node_kind(compared) == 'unary_expression' && operator_of(compared) == 'typeof' {
@@ -753,7 +753,7 @@ fn (mut c Checker) poc_binary_operand(operand C.TSNode, chain_operator string) P
 				} else {
 					.strict_equal_undefined
 				}
-				yoda:          yoda
+				yoda:          yoda_kind
 			}
 		}
 		return invalid
@@ -769,7 +769,7 @@ fn (mut c Checker) poc_binary_operand(operand C.TSNode, chain_operator string) P
 				} else {
 					.equal_null_or_undefined
 				}
-				yoda:          yoda
+				yoda:          yoda_kind
 			}
 		}
 		if operator in ['!==', '==='] && value == .null_ {
@@ -778,7 +778,7 @@ fn (mut c Checker) poc_binary_operand(operand C.TSNode, chain_operator string) P
 				node:          operand
 				compared_name: poc_view(compared)
 				nullish:       if negated { .not_strict_equal_null } else { .strict_equal_null }
-				yoda:          yoda
+				yoda:          yoda_kind
 			}
 		}
 		if operator in ['!==', '==='] && value == .undefined_ {
@@ -791,7 +791,7 @@ fn (mut c Checker) poc_binary_operand(operand C.TSNode, chain_operator string) P
 				} else {
 					.strict_equal_undefined
 				}
-				yoda:          yoda
+				yoda:          yoda_kind
 			}
 		}
 	}

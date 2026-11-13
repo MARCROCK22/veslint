@@ -1,0 +1,3 @@
+tests/rules/no-eq-null/cases.ts:4:5	no-eq-null	unexpected	Use '===' to compare with null.
+tests/rules/no-eq-null/cases.ts:5:5	no-eq-null	unexpected	Use '===' to compare with null.
+tests/rules/no-eq-null/cases.ts:6:11	no-eq-null	unexpected	Use '===' to compare with null.

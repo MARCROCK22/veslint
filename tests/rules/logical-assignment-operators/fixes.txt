@@ -1,0 +1,25 @@
+tests/rules/logical-assignment-operators/cases.ts:6:1	logical-assignment-operators	assignment	Assignment (=) can be replaced with operator assignment (||=).	fix	92	99	||= 
+tests/rules/logical-assignment-operators/cases.ts:7:1	logical-assignment-operators	assignment	Assignment (=) can be replaced with operator assignment (&&=).	fix	104	111	&&= 
+tests/rules/logical-assignment-operators/cases.ts:8:1	logical-assignment-operators	assignment	Assignment (=) can be replaced with operator assignment (??=).	fix	116	123	??= 
+tests/rules/logical-assignment-operators/cases.ts:9:1	logical-assignment-operators	assignment	Assignment (=) can be replaced with operator assignment (||=).	suggestion	useLogicalOperator	Convert this assignment to use the operator ||=.	130	139	||= 
+tests/rules/logical-assignment-operators/cases.ts:10:1	logical-assignment-operators	assignment	Assignment (=) can be replaced with operator assignment (??=).	suggestion	useLogicalOperator	Convert this assignment to use the operator ??=.	149	161	??= 
+tests/rules/logical-assignment-operators/cases.ts:11:1	logical-assignment-operators	assignment	Assignment (=) can be replaced with operator assignment (||=).	fix	166	173	||= 
+tests/rules/logical-assignment-operators/cases.ts:12:1	logical-assignment-operators	logical	Logical expression can be replaced with an assignment (||=).	fix	181	193	a ||= b
+tests/rules/logical-assignment-operators/cases.ts:13:1	logical-assignment-operators	logical	Logical expression can be replaced with an assignment (&&=).	fix	195	207	a &&= b
+tests/rules/logical-assignment-operators/cases.ts:14:1	logical-assignment-operators	logical	Logical expression can be replaced with an assignment (??=).	fix	209	225	o.p ??= b
+tests/rules/logical-assignment-operators/cases.ts:15:11	logical-assignment-operators	logical	Logical expression can be replaced with an assignment (||=).	fix	237	249	(a ||= b)
+tests/rules/logical-assignment-operators/cases.ts:16:1	logical-assignment-operators	assignment	Assignment (=) can be replaced with operator assignment (||=).	fix	253	261	||= (
+tests/rules/logical-assignment-operators/if/cases.ts:6:1	logical-assignment-operators	if	'if' statement can be replaced with a logical operator assignment with operator &&=.	fix	104	117	a &&= b;
+tests/rules/logical-assignment-operators/if/cases.ts:7:1	logical-assignment-operators	if	'if' statement can be replaced with a logical operator assignment with operator ||=.	fix	118	132	a ||= b;
+tests/rules/logical-assignment-operators/if/cases.ts:8:1	logical-assignment-operators	if	'if' statement can be replaced with a logical operator assignment with operator ??=.	fix	133	154	a ??= b;
+tests/rules/logical-assignment-operators/if/cases.ts:9:1	logical-assignment-operators	if	'if' statement can be replaced with a logical operator assignment with operator ??=.	fix	155	196	a ??= b;
+tests/rules/logical-assignment-operators/if/cases.ts:10:1	logical-assignment-operators	if	'if' statement can be replaced with a logical operator assignment with operator &&=.	fix	197	220	o.p &&= b;
+tests/rules/logical-assignment-operators/if/cases.ts:13:1	logical-assignment-operators	if	'if' statement can be replaced with a logical operator assignment with operator &&=.	fix	221	243	a &&= b;
+tests/rules/logical-assignment-operators/if/cases.ts:14:1	logical-assignment-operators	if	'if' statement can be replaced with a logical operator assignment with operator &&=.	fix	244	259	a &&= b;
+tests/rules/logical-assignment-operators/never/cases.ts:6:1	logical-assignment-operators	unexpected	Unexpected logical operator assignment (||=) shorthand.	fix	91	94	= a ||
+tests/rules/logical-assignment-operators/never/cases.ts:7:1	logical-assignment-operators	unexpected	Unexpected logical operator assignment (&&=) shorthand.	fix	100	103	= a &&
+tests/rules/logical-assignment-operators/never/cases.ts:8:1	logical-assignment-operators	unexpected	Unexpected logical operator assignment (??=) shorthand.	fix	109	112	= a ??
+tests/rules/logical-assignment-operators/never/cases.ts:9:1	logical-assignment-operators	unexpected	Unexpected logical operator assignment (||=) shorthand.	suggestion	separate	Separate the logical assignment into an assignment with a logical operator.	120	123	= o.p ||
+tests/rules/logical-assignment-operators/never/cases.ts:10:1	logical-assignment-operators	unexpected	Unexpected logical operator assignment (||=) shorthand.	fix	129	139	= a || (b || 1)
+tests/rules/logical-assignment-operators/never/cases.ts:11:1	logical-assignment-operators	unexpected	Unexpected logical operator assignment (??=) shorthand.	fix	143	153	= a ?? (b || 1)
+tests/rules/logical-assignment-operators/never/cases.ts:12:1	logical-assignment-operators	unexpected	Unexpected logical operator assignment (&&=) shorthand.	fix	157	170	= a && (b ? 1 : 2)

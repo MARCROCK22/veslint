@@ -1,0 +1,15 @@
+tests/rules/no-implicit-coercion/cases.ts:5:12	no-implicit-coercion	implicitCoercion	Unexpected implicit coercion encountered. Use `Boolean(a)` instead.
+tests/rules/no-implicit-coercion/cases.ts:6:12	no-implicit-coercion	implicitCoercion	Unexpected implicit coercion encountered. Use `Number(a)` instead.
+tests/rules/no-implicit-coercion/cases.ts:7:12	no-implicit-coercion	implicitCoercion	Unexpected implicit coercion encountered. Use `Number(a)` instead.
+tests/rules/no-implicit-coercion/cases.ts:8:12	no-implicit-coercion	implicitCoercion	Unexpected implicit coercion encountered. Use `Number(a)` instead.
+tests/rules/no-implicit-coercion/cases.ts:9:12	no-implicit-coercion	implicitCoercion	Unexpected implicit coercion encountered. Use `Number(a)` instead.
+tests/rules/no-implicit-coercion/cases.ts:10:12	no-implicit-coercion	implicitCoercion	Unexpected implicit coercion encountered. Use `Number(a)` instead.
+tests/rules/no-implicit-coercion/cases.ts:11:12	no-implicit-coercion	implicitCoercion	Unexpected implicit coercion encountered. Use `String(a)` instead.
+tests/rules/no-implicit-coercion/cases.ts:12:12	no-implicit-coercion	implicitCoercion	Unexpected implicit coercion encountered. Use `String(a)` instead.
+tests/rules/no-implicit-coercion/cases.ts:13:12	no-implicit-coercion	implicitCoercion	Unexpected implicit coercion encountered. Use `String(a)` instead.
+tests/rules/no-implicit-coercion/cases.ts:14:1	no-implicit-coercion	implicitCoercion	Unexpected implicit coercion encountered. Use `a = String(a)` instead.
+tests/rules/no-implicit-coercion/cases.ts:15:12	no-implicit-coercion	implicitCoercion	Unexpected implicit coercion encountered. Use `s.indexOf('x') !== -1` instead.
+tests/rules/no-implicit-coercion/cases.ts:16:12	no-implicit-coercion	implicitCoercion	Unexpected implicit coercion encountered. Use `s?.lastIndexOf('x') >= 0` instead.
+tests/rules/no-implicit-coercion/cases.ts:17:18	no-implicit-coercion	implicitCoercion	Unexpected implicit coercion encountered. Use `Number(a)` instead.
+tests/rules/no-implicit-coercion/options/cases.ts:4:12	no-implicit-coercion	implicitCoercion	Unexpected implicit coercion encountered. Use `String(a)` instead.
+tests/rules/no-implicit-coercion/options/cases.ts:5:12	no-implicit-coercion	implicitCoercion	Unexpected implicit coercion encountered. Use `Number(a)` instead.

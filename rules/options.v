@@ -88,6 +88,14 @@ pub fn check_options(rule string, options []json2.Any) !bool {
 		no_useless_rename { nur_options(options)! }
 		no_useless_computed_key { nuck_class_members(options)! }
 		object_shorthand { os_options(options)! }
+		eqeqeq { eqe_options(options)! }
+		yoda { yoda_options(options)! }
+		no_extra_boolean_cast { nebc_options(options)! }
+		no_implicit_coercion { nic_options(options)! }
+		logical_assignment_operators { lao_options(options)! }
+		operator_assignment { oa_never(options)! }
+		no_sequences { nseq_allow_parentheses(options)! }
+		no_return_assign { nra_always(options)! }
 		else { return false }
 	}
 	return true
