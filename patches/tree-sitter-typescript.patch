@@ -892,7 +892,35 @@
              } else {
                  return false;
              }
-@@ -82,6 +105,7 @@
+@@ -79,9 +102,35 @@
+     }
+ }
+ 
++// veslint: after a line break, `in` or `instanceof` that cannot be the operator, because no
++// expression ends before it (a binary operator is not valid, as for `[` and `(` before a new line),
++// is the name of the next member when what follows can only come after a name: a `?`, `:`, `(` or
++// `<`, as in a type or a class without `;` (`{ a?: string⏎ in?: string[] }`, which Prisma
++// generates, or `in(): void`), or the end of the member. After an expression it is still the
++// operator, as for TypeScript (`a = 1⏎ in?: T` in a class is a syntax error).
++static bool scan_operator_word_is_name(TSLexer *lexer, const bool *valid_symbols, bool *scanned_comment) {
++    if (valid_symbols[LOGICAL_OR] || !scan_whitespace_and_comments(lexer, scanned_comment)) {
++        return false;
++    }
++    switch (lexer->lookahead) {
++        case 0:
++        case '?':
++        case ':':
++        case '(':
++        case '<':
++        case ';':
++        case ',':
++        case '}':
++            return true;
++        default:
++            return false;
++    }
++}
++
  static bool scan_automatic_semicolon(TSLexer *lexer, const bool *valid_symbols, bool *scanned_comment) {
      lexer->result_symbol = AUTOMATIC_SEMICOLON;
      lexer->mark_end(lexer);
@@ -900,7 +928,7 @@
  
      for (;;) {
          if (lexer->lookahead == 0) {
-@@ -94,22 +118,77 @@
+@@ -94,22 +143,77 @@
              // Therefore, disable automatic semicolons when followed by typing
              do {
                  skip(lexer);
@@ -983,7 +1011,7 @@
  
      if (!scan_whitespace_and_comments(lexer, scanned_comment)) {
          return false;
-@@ -123,7 +202,6 @@
+@@ -123,7 +227,6 @@
          case '*':
          case '%':
          case '>':
@@ -991,7 +1019,7 @@
          case '=':
          case '?':
          case '^':
-@@ -142,9 +220,14 @@
+@@ -142,9 +245,14 @@
              // Don't insert a semicolon before a '[' or '(', unless we're parsing
              // a type. Detect whether we're parsing a type or an expression using
              // the validity of a binary operator token.
@@ -1007,27 +1035,31 @@
                  return false;
              }
              break;
-@@ -172,7 +255,9 @@
+@@ -172,8 +280,10 @@
              }
              skip(lexer);
  
 -            if (!iswalpha(lexer->lookahead)) {
+-                return false;
 +            // veslint: the word ends here, so it is `in`: a name goes on with any character of a
 +            // name (`in_range`, `in2`), not only with a letter.
 +            if (!is_word_char(lexer->lookahead)) {
-                 return false;
++                return scan_operator_word_is_name(lexer, valid_symbols, scanned_comment);
              }
  
-@@ -183,7 +268,7 @@
+             for (unsigned i = 0; i < 8; i++) {
+@@ -183,8 +293,8 @@
                  skip(lexer);
              }
  
 -            if (!iswalpha(lexer->lookahead)) {
+-                return false;
 +            if (!is_word_char(lexer->lookahead)) {
-                 return false;
++                return scan_operator_word_is_name(lexer, valid_symbols, scanned_comment);
              }
              break;
-@@ -194,7 +279,7 @@
+     }
+@@ -194,7 +304,7 @@
  
  static bool scan_ternary_qmark(TSLexer *lexer) {
      for (;;) {
@@ -1036,7 +1068,7 @@
              break;
          }
          skip(lexer);
-@@ -214,7 +299,7 @@
+@@ -214,7 +324,7 @@
          /* TypeScript optional arguments contain the ?: sequence, possibly
             with whitespace. */
          for (;;) {
@@ -1045,7 +1077,7 @@
                  break;
              }
              advance(lexer);
-@@ -237,7 +322,7 @@
+@@ -237,7 +347,7 @@
  }
  
  static bool scan_closing_comment(TSLexer *lexer) {
@@ -1054,7 +1086,7 @@
          skip(lexer);
      }
  
-@@ -262,8 +347,7 @@
+@@ -262,8 +372,7 @@
          return false;
      }
  
@@ -1064,7 +1096,7 @@
          advance(lexer);
      }
  
-@@ -281,40 +365,205 @@
+@@ -281,40 +390,205 @@
      // immediately follows a newline.
      bool at_newline = false;
  
