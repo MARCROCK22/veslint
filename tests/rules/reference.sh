@@ -26,16 +26,19 @@ reference_of() { # files...: adds ESLint's lines on the files to reference.txt a
 	python3 tests/eslint_lines.py < "$TMP/eslint.json" >> "$TMP/reference.txt"
 	python3 tests/eslint_lines.py fixes < "$TMP/eslint.json" >> "$TMP/reference.fixes.txt"
 }
-# One ESLint process for the fixtures of the seyfert/* rules and another for the rest. In a single
-# process with all of them, V8 (Node 26.13.0) stops matching an alternation in a regexp modifier
-# group with the `u` flag at some point of the run: `/^(?i:get|set)\p{Lu}/u` of naming-convention's
-# regex fixture no longer matches `SetÉtat`, which it matches in a new process (and in veslint).
+# One ESLint process for the fixtures of the typescript-eslint rules, one for those of ESLint core
+# and one for those of the seyfert/* rules. In a single process with more of them, V8 (Node
+# 26.13.0) stops matching an alternation in a regexp modifier group with the `u` flag at some point
+# of the run: `/^(?i:get|set)\p{Lu}/u` of naming-convention's regex fixture no longer matches
+# `SetÉtat`, which it matches in a new process (and in veslint).
 mapfile -t cases < <(find tests/rules -name cases.ts -o -name cases.tsx | sort)
 mapfile -t seyfert_cases < <(printf '%s\n' "${cases[@]}" | grep '^tests/rules/seyfert/')
-mapfile -t other_cases < <(printf '%s\n' "${cases[@]}" | grep -v '^tests/rules/seyfert/')
+mapfile -t ts_cases < <(printf '%s\n' "${cases[@]}" | grep '^tests/rules/@typescript-eslint/')
+mapfile -t core_cases < <(printf '%s\n' "${cases[@]}" | grep -v '^tests/rules/seyfert/\|^tests/rules/@typescript-eslint/')
 : > "$TMP/reference.txt"
 : > "$TMP/reference.fixes.txt"
-reference_of "${other_cases[@]}"
+reference_of "${ts_cases[@]}"
+[[ ${#core_cases[@]} -eq 0 ]] || reference_of "${core_cases[@]}"
 [[ ${#seyfert_cases[@]} -eq 0 ]] || reference_of "${seyfert_cases[@]}"
 fail=0
 # A rule's directory is tests/rules/<rule id>, the one with an expected.txt.
