@@ -430,7 +430,7 @@ expect_usage_error "--config rejects unknown options" \
 printf '{"rules": {"@typescript-eslint/restrict-template-expressions": ["error", {"allowAny": "yes"}]}}' > "$TMP/type.json"
 expect_usage_error "--config rejects an option of the wrong type" \
 	'Value "yes" should be boolean.' --config "$TMP/type.json" app.ts
-printf '{"rules": {"require-await": "error", "dot-notation": ["error", {"allowKeywords": true}], "no-implied-eval": "error", "await-thenable": "error", "no-floating-promises": "error"}}' > "$TMP/core.json"
+printf '{"rules": {"require-await": "error", "semi": ["error", "always"], "quotes": "error", "await-thenable": "error", "no-floating-promises": "error"}}' > "$TMP/core.json"
 expect_usage_error "--config: a name without its plugin is a rule of ESLint core, not one of veslint" \
 	"does not enable any veslint rule" --config "$TMP/core.json" app.ts
 # What ESLint does not take in a configuration (tests/config-errors): the error is
