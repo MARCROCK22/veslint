@@ -1,9 +1,22 @@
 {
   "name": "veslint",
   "displayName": "veslint",
-  "description": "typescript-eslint rules from veslint, a TypeScript linter that talks to the TypeScript 7 compiler: problems, fixes and suggestions in the editor.",
-  "version": "0.12.0",
-  "publisher": "veslint",
+  "description": "ESLint, typescript-eslint and plugin rules from veslint, a TypeScript linter written in V that talks to the TypeScript 7 compiler: problems, fixes and suggestions as you type.",
+  "version": "0.13.0",
+  "publisher": "MARCROCK22",
+  "icon": "images/icon.png",
+  "galleryBanner": {
+    "color": "#1e2327",
+    "theme": "dark"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/MARCROCK22/veslint"
+  },
+  "homepage": "https://github.com/MARCROCK22/veslint#readme",
+  "bugs": {
+    "url": "https://github.com/MARCROCK22/veslint/issues"
+  },
   "engines": {
     "vscode": "^1.90.0"
   },
@@ -47,6 +60,11 @@
         "command": "veslint.showOutput",
         "title": "Show Output",
         "category": "veslint"
+      },
+      {
+        "command": "veslint.update",
+        "title": "Update veslint",
+        "category": "veslint"
       }
     ],
     "configuration": {
@@ -62,7 +80,7 @@
           "type": "string",
           "default": "veslint",
           "scope": "machine-overridable",
-          "markdownDescription": "The veslint binary: a name to look up in `PATH`, an absolute path, or a path relative to the workspace folder. The binary looks for the TypeScript 7 compiler in the `node_modules` next to it."
+          "markdownDescription": "The veslint binary: a name to look up in `PATH`, an absolute path, or a path relative to the workspace folder. The binary looks for the TypeScript 7 compiler in the `node_modules` next to it. When it is not set, the binary that `veslint: Update veslint` installed is used, or else `veslint` in `PATH`."
         },
         "veslint.config": {
           "type": "string",
@@ -117,6 +135,12 @@
           "minimum": 1000,
           "scope": "resource",
           "description": "Milliseconds after which a run that has not finished is stopped."
+        },
+        "veslint.checkForUpdates": {
+          "type": "boolean",
+          "default": true,
+          "scope": "application",
+          "markdownDescription": "Look for a newer veslint release (at most once a day) and ask whether to install it. `veslint: Update veslint` looks for one whenever it is run."
         }
       }
     }

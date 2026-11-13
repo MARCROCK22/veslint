@@ -149,7 +149,11 @@ function create() {
       createStatusBarItem: () => Object.assign(state.status, { show() {}, dispose() {} }),
       showWarningMessage: async message => void state.messages.push(message),
       showInformationMessage: async message => void state.messages.push(message),
+      showErrorMessage: async message => void state.messages.push(message),
+      withProgress: async (options, task) => task({ report() {} }),
     },
+    ProgressLocation: { Notification: 15 },
+    env: { openExternal: async uri => void (state.opened = [...(state.opened ?? []), uri.toString()]) },
     workspace: {
       get textDocuments() {
         return state.documents;
@@ -193,4 +197,16 @@ function create() {
   return { vscode, state, TextDocument };
 }
 
-module.exports = { create };
+/**
+ * The global state of an extension's context. The last update check is now, so that the extension
+ * does not look for a release on its own during the tests.
+ */
+function memento(initial = { 'veslint.lastUpdateCheck': Date.now() }) {
+  const values = new Map(Object.entries(initial));
+  return {
+    get: (key, fallback) => (values.has(key) ? values.get(key) : fallback),
+    update: async (key, value) => void values.set(key, value),
+  };
+}
+
+module.exports = { create, memento };

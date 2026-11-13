@@ -14,6 +14,7 @@ const { runVeslint, findConfig, isTypeScriptPath } = require('./lib/runner');
 const { ConfigCache } = require('./lib/configCache');
 const { VeslintServer, ServerError } = require('./lib/server');
 const { parseOutput, parseStderr, ruleDocumentation } = require('./lib/parse');
+const updater = require('./lib/updater');
 
 const selector = [
   { language: 'typescript', scheme: 'file' },
@@ -55,6 +56,11 @@ let queue = Promise.resolve();
 /** Settles once every lint started so far has ended (what `lint` gives back). */
 let settled = Promise.resolve();
 const told = new Set();
+/** Where `veslint: Update veslint` installs the binary, and what it installed (null: nothing). */
+let storage = null;
+let managed = null;
+/** The extension's context, for its global state (the version not to tell about again). */
+let extensionContext = null;
 
 /**
  * When files are linted. Only a value that was set counts: after an update without a reload of the
@@ -80,7 +86,7 @@ function settings(uri) {
   const config = vscode.workspace.getConfiguration('veslint', uri);
   return {
     enable: config.get('enable', true),
-    binary: config.get('path', 'veslint') || 'veslint',
+    binary: binarySetting(config),
     config: config.get('config', ''),
     project: config.get('project', ''),
     run: runSetting(config),
@@ -88,6 +94,20 @@ function settings(uri) {
     severity: severities[config.get('severity', 'warning')] ?? vscode.DiagnosticSeverity.Warning,
     timeout: config.get('timeout', 120000),
   };
+}
+
+/** The value of `veslint.path` that was set, if any (an empty one counts as not set). */
+function explicitPath(config) {
+  const info = config.inspect('path');
+  return [info?.workspaceFolderValue, info?.workspaceValue, info?.globalValue].find(value => value !== undefined && value !== '');
+}
+
+/**
+ * The binary: the one of `veslint.path` when it was set; otherwise the one `veslint: Update
+ * veslint` installed, or `veslint` in PATH.
+ */
+function binarySetting(config) {
+  return explicitPath(config) ?? managed?.binary ?? 'veslint';
 }
 
 /** The directory veslint runs in for a file: its workspace folder, or its own directory. */
@@ -107,6 +127,7 @@ function tellOnce(key, message, ...actions) {
   vscode.window.showWarningMessage(message, ...actions).then(choice => {
     if (choice === 'Open Settings') vscode.commands.executeCommand('workbench.action.openSettings', 'veslint');
     if (choice === 'Show Output') output.show(true);
+    if (choice === 'Download veslint') vscode.commands.executeCommand('veslint.update');
   });
 }
 
@@ -274,7 +295,12 @@ async function lintNow(document, controller) {
     if (running.get(key) === controller) running.delete(key);
     setStatus('error', `Cannot run ${options.binary}`);
     output.appendLine(`cannot run ${options.binary}: ${error.message}`);
-    tellOnce('binary', `veslint: cannot run \`${options.binary}\` (${error.code ?? error.message}). Set "veslint.path" to the veslint binary.`, 'Open Settings');
+    const download = updater.platformPackage() && !explicitPath(vscode.workspace.getConfiguration('veslint', document.uri));
+    if (download) {
+      tellOnce('binary', `veslint: cannot run \`${options.binary}\` (${error.code ?? error.message}). Download the latest veslint, or set "veslint.path" to a veslint binary.`, 'Download veslint', 'Open Settings');
+    } else {
+      tellOnce('binary', `veslint: cannot run \`${options.binary}\` (${error.code ?? error.message}). Set "veslint.path" to the veslint binary.`, 'Open Settings');
+    }
   };
   let resolution;
   try {
@@ -448,7 +474,115 @@ function reloadConfiguration(always) {
   return settled;
 }
 
+/**
+ * The binary and the directory to ask its version in: those of the first workspace folder (or of
+ * no folder).
+ */
+function versionTarget() {
+  const folder = vscode.workspace.workspaceFolders?.[0]?.uri;
+  const cwd = folder?.fsPath ?? require('node:os').homedir();
+  return { binary: resolveSetting(cwd, settings(folder).binary), cwd };
+}
+
+/**
+ * Downloads and installs a release (lib/updater.js), and lints the open files again with it. When
+ * `veslint.path` is set, the installed binary is not used: the message says so.
+ */
+async function installRelease(release) {
+  if (!updater.platformPackage()) {
+    vscode.window.showWarningMessage(`veslint: there is no veslint release for ${process.platform}-${process.arch}. Build it from source (see the README) and set "veslint.path".`);
+    return false;
+  }
+  // A running binary cannot be replaced on Windows: the servers stop first.
+  stopServers();
+  let current;
+  try {
+    current = await vscode.window.withProgress(
+      { location: vscode.ProgressLocation.Notification, title: `Downloading veslint ${release.version}…` },
+      () => updater.install(release, storage),
+    );
+  } catch (error) {
+    output.appendLine(`update: ${error.message}`);
+    vscode.window.showErrorMessage(`veslint: the update to ${release.version} failed: ${error.message}`, 'Show Output').then(choice => {
+      if (choice === 'Show Output') output.show(true);
+    });
+    return false;
+  }
+  managed = current;
+  output.appendLine(`veslint ${current.version} installed: ${current.binary}`);
+  told.clear();
+  cache.clear();
+  unsupported.clear();
+  stopServers();
+  const setting = explicitPath(vscode.workspace.getConfiguration('veslint'));
+  if (setting) {
+    vscode.window.showWarningMessage(`veslint ${current.version} is installed, but "veslint.path" (${setting}) is used. Clear that setting to use the installed one.`, 'Open Settings').then(choice => {
+      if (choice === 'Open Settings') vscode.commands.executeCommand('workbench.action.openSettings', 'veslint.path');
+    });
+  } else {
+    vscode.window.showInformationMessage(`veslint updated to ${current.version}.`, 'Release Notes').then(choice => {
+      if (choice === 'Release Notes') vscode.env.openExternal(vscode.Uri.parse(release.url));
+    });
+  }
+  for (const document of vscode.workspace.textDocuments) {
+    if (lintable(document) && settings(document.uri).run !== 'manual') lint(document);
+  }
+  return true;
+}
+
+/**
+ * Looks for a newer veslint release. Asked for (`veslint: Update veslint`), it installs it; on its
+ * own (at most once a day, with `veslint.checkForUpdates`), it asks first, and a version the user
+ * skipped is not told about again.
+ */
+async function checkForUpdates(asked) {
+  let release;
+  try {
+    release = await updater.latestRelease();
+  } catch (error) {
+    output.appendLine(`update check: ${error.message}`);
+    if (asked) vscode.window.showErrorMessage(`veslint: cannot get the latest release: ${error.message}`);
+    return;
+  }
+  const { binary, cwd } = versionTarget();
+  const current = await updater.binaryVersion(binary, cwd);
+  if (current && updater.compareVersions(release.version, current) <= 0) {
+    if (asked) vscode.window.showInformationMessage(`veslint ${current} is the latest version.`);
+    return;
+  }
+  if (asked) {
+    await installRelease(release);
+    return;
+  }
+  if (!updater.platformPackage() || extensionContext.globalState.get('veslint.skippedVersion') === release.version) return;
+  const have = current ? ` (you have ${current})` : '';
+  const choice = await vscode.window.showInformationMessage(
+    `veslint ${release.version} is available${have}. Do you want to update?`,
+    'Update',
+    'Release Notes',
+    'Skip This Version',
+  );
+  if (choice === 'Update') await installRelease(release);
+  else if (choice === 'Release Notes') vscode.env.openExternal(vscode.Uri.parse(release.url));
+  else if (choice === 'Skip This Version') await extensionContext.globalState.update('veslint.skippedVersion', release.version);
+}
+
+/** The check on its own: once a day at most, a few seconds after the extension starts. */
+function scheduleUpdateCheck() {
+  if (!vscode.workspace.getConfiguration('veslint').get('checkForUpdates', true)) return;
+  const last = extensionContext.globalState.get('veslint.lastUpdateCheck', 0);
+  if (Date.now() - last < 24 * 60 * 60 * 1000) return;
+  const timer = setTimeout(async () => {
+    await extensionContext.globalState.update('veslint.lastUpdateCheck', Date.now());
+    await checkForUpdates(false);
+  }, 10000);
+  extensionContext.subscriptions.push({ dispose: () => clearTimeout(timer) });
+}
+
 function activate(context) {
+  extensionContext = context;
+  storage = path.join(context.globalStorageUri.fsPath, 'binary');
+  managed = updater.installed(storage);
   cache = new ConfigCache(path.join(context.globalStorageUri.fsPath, 'resolved'));
   diagnostics = vscode.languages.createDiagnosticCollection('veslint');
   output = vscode.window.createOutputChannel('veslint');
@@ -540,6 +674,7 @@ function activate(context) {
     }),
     vscode.commands.registerCommand('veslint.showOutput', () => output.show(true)),
     vscode.commands.registerCommand('veslint.reloadConfiguration', () => reloadConfiguration(true)),
+    vscode.commands.registerCommand('veslint.update', () => checkForUpdates(true)),
   );
   // A configuration file that changes, appears or goes: the resolved copies may be wrong.
   const configWatcher = vscode.workspace.createFileSystemWatcher('**/eslint.config.{js,mjs,cjs,ts,mts,cts}');
@@ -560,6 +695,7 @@ function activate(context) {
   }
   context.subscriptions.push(configWatcher, sourceWatcher, projectWatcher);
   for (const document of vscode.workspace.textDocuments) automatic(document);
+  scheduleUpdateCheck();
 }
 
 function deactivate() {

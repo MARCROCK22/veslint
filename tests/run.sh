@@ -60,6 +60,14 @@ else
 	ko "syntax error warning in syntax_error.ts"
 fi
 
+# --version gives the version of the release, which is also the extension's.
+extension_version=$(sed -n 's/^  "version": "\(.*\)",$/\1/p' editors/vscode/package.json)
+if [[ $(./veslint --version) == "veslint $extension_version" ]]; then
+	ok "--version: veslint $extension_version, as the extension"
+else
+	ko "--version: $(./veslint --version), the extension is $extension_version"
+fi
+
 # A symlinked file is analyzed by the path it is given, not by its target (which here is outside
 # any project).
 mkdir -p "$TMP/symlink" "$TMP/outside"

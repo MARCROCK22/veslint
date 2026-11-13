@@ -7,7 +7,7 @@ const fs = require('node:fs');
 const os = require('node:os');
 const path = require('node:path');
 const Module = require('node:module');
-const { create } = require('./vscode-stub');
+const { create, memento } = require('./vscode-stub');
 const { runVeslint, findConfig, isTypeScriptPath } = require('../lib/runner');
 
 const root = path.resolve(__dirname, '../../..');
@@ -38,7 +38,7 @@ function loadExtension(t) {
   Module._load = load;
   t.after(() => extension.deactivate());
   const activate = () =>
-    extension.activate({ subscriptions: [], globalStorageUri: { fsPath: fs.mkdtempSync(path.join(os.tmpdir(), 'veslint-extension-')) } });
+    extension.activate({ subscriptions: [], globalStorageUri: { fsPath: fs.mkdtempSync(path.join(os.tmpdir(), 'veslint-extension-')) }, globalState: memento() });
   return { vscode, state, TextDocument, activate };
 }
 
@@ -94,7 +94,7 @@ test('the extension shows the problems and offers the fixes', { skip: !built }, 
   state.settings = { path: binary, config: 'resolved.json', severity: 'information' };
   const document = new TextDocument(path.join(fixture, 'base.ts'));
   state.documents.push(document);
-  const context = { subscriptions: [], globalStorageUri: { fsPath: fs.mkdtempSync(path.join(os.tmpdir(), 'veslint-extension-')) } };
+  const context = { subscriptions: [], globalStorageUri: { fsPath: fs.mkdtempSync(path.join(os.tmpdir(), 'veslint-extension-')) }, globalState: memento() };
   extension.activate(context);
   // Open documents are linted when the extension starts.
   await state.commands['veslint.lintOpenFiles']();
@@ -408,7 +408,7 @@ test('a veslint without the server mode lints saved files only', { skip: !built 
   state.settings = { path: old, config: 'resolved.json' };
   const document = new TextDocument(path.join(fixture, 'base.ts'));
   state.documents.push(document);
-  extension.activate({ subscriptions: [], globalStorageUri: { fsPath: fs.mkdtempSync(path.join(os.tmpdir(), 'veslint-extension-')) } });
+  extension.activate({ subscriptions: [], globalStorageUri: { fsPath: fs.mkdtempSync(path.join(os.tmpdir(), 'veslint-extension-')) }, globalState: memento() });
   await state.commands['veslint.lintOpenFiles']();
   const expected = fs
     .readFileSync(path.join(fixture, 'expected.txt'), 'utf8')

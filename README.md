@@ -1,3 +1,11 @@
+<p align="center">
+  <picture>
+    <source media="(prefers-color-scheme: dark)" srcset="assets/veslint-logo-dark.svg">
+    <img alt="veslint" src="assets/veslint-logo.svg" height="72">
+  </picture>
+</p>
+<p align="center">A TypeScript linter in V that talks to TypeScript 7 (<code>tsc --api</code>) directly</p>
+
 # veslint
 
 A TypeScript linter PoC written in V:
@@ -6,6 +14,13 @@ A TypeScript linter PoC written in V:
 - it gets inferred types from **native TypeScript 7** (`tsc --api`, formerly "tsgo") by speaking its IPC protocol directly, **without Node at runtime**;
 - it applies typescript-eslint rules ported to V, with messages, fixes and suggestions identical to the original ones (see "Rules");
 - it honors ESLint's directive comments (`eslint-disable`, `/* eslint rule: … */`) and reads ESLint configurations, also `eslint.config.mjs`.
+
+## Install
+
+- **VS Code:** install the veslint extension from the Visual Studio Marketplace, then run `veslint: Update veslint`: it downloads the binary of the latest release for Linux x64 or Windows x64, and tells you when a newer one comes out (see "VS Code").
+- **Command line:** download `veslint-<version>-linux-x64.tar.gz` or `veslint-<version>-win32-x64.zip` from the [releases](https://github.com/MARCROCK22/veslint/releases) and unpack it: it holds `veslint` with the TypeScript 7 compiler it runs, in the `node_modules` next to it. `veslint --version` tells which one you have.
+- **What changed** in each version: [CHANGELOG.md](CHANGELOG.md), which is also the text of each release.
+- **From source:** see the requirements below.
 
 ## Requirements
 
@@ -70,6 +85,7 @@ veslint <file.ts | directory>... [--project <tsconfig.json>] [--all-identifiers]
   ```
 - **Directories:** `veslint .` or `veslint src` lints the TypeScript files (`.ts`, `.mts`, `.cts`, `.tsx`) under the directory, as `eslint .` walks it: `node_modules` and `.git` (ESLint's default ignores) are not entered, nor symbolic links to directories, and the files ESLint's configuration does not lint (its `ignores`, or files no configuration object with `files` matches) are left out without a word, where a file given by name gets ESLint's warning. Without `--config` nor `--rule`, veslint finds the closest `eslint.config.*` from the first directory up (ESLint's names and order) and lets ESLint find the configuration of each file, as the `eslint` command does (through `bun`, as `--config`); with `--config`, that configuration applies to every file; with `--rule`, only the default ignores apply. As in ESLint, a directory without TypeScript files (`No files matching the pattern "dir" were found.`) or whose files are all ignored is an error. JavaScript files in a directory are skipped (veslint only reads TypeScript), where `eslint .` lints them.
 - **Files:** `.ts`, `.mts`, `.cts` and `.tsx` (with the grammar's tsx dialect), given by name or found in a directory. A JavaScript file (`.js`, `.jsx`, `.mjs`, `.cjs`) is a usage error: veslint only reads TypeScript.
+- **`--version`:** prints `veslint <version>` (the VS Code extension reads it to tell whether there is a newer release).
 - **`--server`:** a process for editors that stays alive between lints: it keeps tsgo, the project it has open and the parsers, and is given the text of files that are not saved (see "Server mode").
 
 - **Output (type mode):** one line per identifier, with TAB-separated fields: `path:line:col`, `name`, `type` and, if the type is a literal, `(base: X)`.
@@ -103,7 +119,7 @@ app.ts:9:7	resultado	number
 
 ## VS Code
 
-`editors/vscode/` is an extension that shows what veslint reports for the TypeScript files you open, save and type: the problems (underlined over the range ESLint gives each one, from where it starts to where it ends), their fixes and suggestions as quick fixes, a comment that disables a rule for a line, and a fix-all action (`source.fixAll.veslint`). Each workspace folder has a `veslint --server`, which is given the text of a file with unsaved changes as it is typed (after `veslint.typingDelay` milliseconds, 0 by default), and is told which files changed on disk; with a veslint without the server mode, each lint runs veslint again and only saved text is linted. It asks ESLint for the configuration of each file once and keeps it until a configuration file changes. It is plain JavaScript without dependencies, so there is nothing to compile: `vsce package` builds the `.vsix` (the command is in its README, with its settings and its limits). Its tests (`npm test` in that directory) are the parser of the output, the runner and the server client with the real binary on `tests/config` and `tests/server`, and the extension itself against a stub of the editor's API; it has not been driven inside a running editor.
+`editors/vscode/` is an extension that shows what veslint reports for the TypeScript files you open, save and type: the problems (underlined over the range ESLint gives each one, from where it starts to where it ends), their fixes and suggestions as quick fixes, a comment that disables a rule for a line, and a fix-all action (`source.fixAll.veslint`). Each workspace folder has a `veslint --server`, which is given the text of a file with unsaved changes as it is typed (after `veslint.typingDelay` milliseconds, 0 by default), and is told which files changed on disk; with a veslint without the server mode, each lint runs veslint again and only saved text is linted. It asks ESLint for the configuration of each file once and keeps it until a configuration file changes. `veslint: Update veslint` downloads the binary of the latest GitHub release into the extension's storage and uses it unless `veslint.path` is set; once a day at most the extension looks for a newer release (`veslint --version` tells the one in use) and asks before installing it (`veslint.checkForUpdates`). It is published to the Visual Studio Marketplace by the release workflow. It is plain JavaScript without dependencies, so there is nothing to compile: `vsce package` builds the `.vsix` (the command is in its README, with its settings and its limits). Its tests (`npm test` in that directory) are the parser of the output, the runner and the server client with the real binary on `tests/config` and `tests/server`, the updater with a release made by the test and a fake GitHub, and the extension itself against a stub of the editor's API; it has not been driven inside a running editor.
 
 ## Server mode
 

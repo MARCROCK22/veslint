@@ -1,7 +1,9 @@
 name: Release
 
 # On a tag `v*` (or by hand, without publishing): veslint for Linux x64 and Windows x64, each with
-# the TypeScript 7 compiler it runs, and the VS Code extension; with a tag, a GitHub release of it.
+# the TypeScript 7 compiler it runs, and the VS Code extension; with a tag, a GitHub release of it
+# whose text is the section of the version in CHANGELOG.md, and the extension published to the
+# Visual Studio Marketplace (publisher MARCROCK22, with the secret VSCE_PAT).
 on:
   push:
     tags: ['v*']
@@ -109,10 +111,14 @@ jobs:
           node-version: 22
       - name: Package
         working-directory: editors/vscode
-        # vsce does not create the directory it writes the package to.
+        # vsce does not create the directory it writes the package to. The changelog is the
+        # project's; the images of the README are those of this directory on GitHub.
         run: |
           mkdir -p ../../dist
-          npx --yes @vscode/vsce@4.1.0 package --no-dependencies --skip-license --allow-missing-repository -o ../../dist/
+          cp ../../CHANGELOG.md .
+          npx --yes @vscode/vsce@4.1.0 package --no-dependencies --skip-license -o ../../dist/ \
+            --baseImagesUrl https://raw.githubusercontent.com/MARCROCK22/veslint/main/editors/vscode \
+            --baseContentUrl https://github.com/MARCROCK22/veslint/blob/main/editors/vscode
       - uses: actions/upload-artifact@v4
         with:
           name: extension
@@ -122,13 +128,32 @@ jobs:
     needs: [linux, windows, extension]
     if: startsWith(github.ref, 'refs/tags/v')
     runs-on: ubuntu-22.04
+    env:
+      VSCE_PAT: ${{ secrets.VSCE_PAT }}
     steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
       - uses: actions/download-artifact@v4
         with:
           pattern: '{linux,windows,extension}'
           path: dist
           merge-multiple: true
+      - name: Release notes
+        # The section `## <version>` of CHANGELOG.md, up to the next one; a version without one is
+        # an error.
+        run: |
+          version=${GITHUB_REF_NAME#v}
+          awk -v head="## $version" '$0 == head { found = 1; next } /^## / && found { exit } found' CHANGELOG.md > notes.md
+          if ! grep -q '[^[:space:]]' notes.md; then
+            echo "CHANGELOG.md has no section for $version" >&2
+            exit 1
+          fi
       - name: Release
         env:
           GH_TOKEN: ${{ github.token }}
-        run: gh release create "$GITHUB_REF_NAME" dist/*.tar.gz dist/*.zip dist/*.vsix --repo "$GITHUB_REPOSITORY" --title "veslint $GITHUB_REF_NAME" --generate-notes
+        run: gh release create "$GITHUB_REF_NAME" dist/*.tar.gz dist/*.zip dist/*.vsix --repo "$GITHUB_REPOSITORY" --title "veslint $GITHUB_REF_NAME" --notes-file notes.md
+      - name: Visual Studio Marketplace
+        if: env.VSCE_PAT != ''
+        run: npx --yes @vscode/vsce@4.1.0 publish --packagePath dist/*.vsix

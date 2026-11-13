@@ -7,7 +7,7 @@ const os = require('node:os');
 const path = require('node:path');
 const Module = require('node:module');
 const { execFileSync } = require('node:child_process');
-const { create } = require('./vscode-stub');
+const { create, memento } = require('./vscode-stub');
 const { runVeslint, splitResolved } = require('../lib/runner');
 const { ConfigCache, isEslintConfig } = require('../lib/configCache');
 
@@ -107,7 +107,7 @@ test('the extension resolves once and again when a configuration file changes', 
   const base = new TextDocument(path.join(fixture, 'base.ts'));
   const quiet = new TextDocument(path.join(fixture, 'quiet/a.ts'));
   state.documents.push(base, quiet);
-  extension.activate({ subscriptions: [], globalStorageUri: { fsPath: fs.mkdtempSync(path.join(os.tmpdir(), 'veslint-extension-')) } });
+  extension.activate({ subscriptions: [], globalStorageUri: { fsPath: fs.mkdtempSync(path.join(os.tmpdir(), 'veslint-extension-')) }, globalState: memento() });
   await state.commands['veslint.lintOpenFiles']();
   const resolvedOnce = state.output.filter(line => line.startsWith('resolved the configuration of'));
   // Both open files were resolved by the first run, in one call.

@@ -12,7 +12,7 @@ import tsgo
 // veslint: parses TypeScript with tree-sitter and asks tsgo (`tsc --api`) for the types.
 // Flow from PROMPT.md §4.
 
-const usage = 'usage: veslint <file.ts | directory>... [--project <tsconfig.json>] [--all-identifiers] [--bench] [--per-identifier] [--rule <rule> | --config <eslint.config.mjs | rules.json> [--print-config]] [--fix] [--fixes | --summary] | veslint --server'
+const usage = 'usage: veslint <file.ts | directory>... [--project <tsconfig.json>] [--all-identifiers] [--bench] [--per-identifier] [--rule <rule> | --config <eslint.config.mjs | rules.json> [--print-config]] [--fix] [--fixes | --summary] | veslint --server | veslint --version'
 const default_timeout_ms = 30000
 // ESLint's MAX_AUTOFIX_PASSES.
 const max_fix_passes = 10
@@ -106,6 +106,10 @@ fn main() {
 	args := os.args[1..]
 	if '-h' in args || '--help' in args {
 		println(usage)
+		return
+	}
+	if args == ['--version'] {
+		println('veslint ${version}')
 		return
 	}
 	opts := parse_args(args) or {
