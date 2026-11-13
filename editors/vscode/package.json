@@ -2,7 +2,7 @@
   "name": "veslint",
   "displayName": "veslint",
   "description": "typescript-eslint rules from veslint, a TypeScript linter that talks to the TypeScript 7 compiler: problems, fixes and suggestions in the editor.",
-  "version": "0.3.0",
+  "version": "0.4.0",
   "publisher": "veslint",
   "engines": {
     "vscode": "^1.90.0"
