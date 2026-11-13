@@ -21,3 +21,13 @@ class L {
   m() {}
 }
 function decl() {}
+
+// Decorated members, auto-accessors and overloads.
+declare function wrap(...a: unknown[]): any;
+class Decorated {
+  @wrap p = function () {};
+  @wrap
+  q = function () {};
+  @wrap m() {}
+  accessor t = function () {};
+}

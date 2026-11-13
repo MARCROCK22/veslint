@@ -83,6 +83,7 @@ fn C.ts_node_named_child_count(self C.TSNode) u32
 fn C.ts_node_child_by_field_name(self C.TSNode, name &char, name_length u32) C.TSNode
 fn C.ts_node_parent(self C.TSNode) C.TSNode
 fn C.ts_node_prev_sibling(self C.TSNode) C.TSNode
+fn C.ts_node_prev_named_sibling(self C.TSNode) C.TSNode
 fn C.ts_node_next_sibling(self C.TSNode) C.TSNode
 fn C.ts_node_is_extra(self C.TSNode) bool
 

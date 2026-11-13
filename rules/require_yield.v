@@ -30,7 +30,7 @@ fn (mut c Checker) lint_require_yield(root C.TSNode, abs_path string, mut stats 
 			continue
 		}
 		findings << Finding{
-			stmt:       function_head(node)
+			stmt:       c.es_function_head(node)
 			message_id: 'missingYield'
 		}
 	}

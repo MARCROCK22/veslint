@@ -23,3 +23,18 @@ class H {
   static ['constructor'] = 1;
   ['constructor2'] = 1;
 }
+
+// Decorated members, auto-accessors and overloads.
+declare function wrap(...a: unknown[]): any;
+class Decorated {
+  @wrap ['m']() {}
+  @wrap
+  ['n']() {}
+  @wrap ['p'] = 1;
+  accessor ['t'] = 1;
+  ['u'](): void;
+  ['u']() {}
+}
+abstract class Abstract {
+  abstract ['v'](): void;
+}

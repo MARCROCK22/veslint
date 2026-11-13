@@ -2,7 +2,7 @@ module rules
 
 import json2
 import time
-import treesitter { node_kind, node_parent, node_start, position_of }
+import treesitter { node_kind, node_parent, node_start }
 
 // Port of the `no-useless-computed-key` rule of ESLint 10.6.0, with its option and its fix.
 
@@ -20,10 +20,15 @@ fn (mut c Checker) lint_no_useless_computed_key(root C.TSNode, abs_path string, 
 	sw := time.new_stopwatch()
 	class_members := nuck_class_members(c.rule_options(no_useless_computed_key))!
 	mut findings := []Finding{}
-	kinds := ['pair', 'pair_pattern', 'method_definition', 'public_field_definition']
+	kinds := ['pair', 'pair_pattern', 'method_definition', 'method_signature',
+		'public_field_definition']
 	for node in c.nodes_of_kinds(root, kinds, []) {
 		parent := node_parent(node) or { continue }
 		in_class := node_kind(parent) == 'class_body'
+		// An overload is a MethodDefinition too; an auto-accessor is not a PropertyDefinition.
+		if (node_kind(node) == 'method_signature' && !in_class) || es_is_accessor_field(node) {
+			continue
+		}
 		if in_class && !class_members {
 			continue
 		}
@@ -49,7 +54,7 @@ fn (mut c Checker) lint_no_useless_computed_key(root C.TSNode, abs_path string, 
 		}
 		has_fix, fix := c.nuck_fix(root, key)
 		findings << Finding{
-			stmt:       position_of(node)
+			stmt:       c.position_at(es_member_start(node))
 			message_id: 'unnecessarilyComputedProperty'
 			data:       {
 				'property': c.text(key)

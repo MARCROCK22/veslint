@@ -96,7 +96,9 @@ fn (mut c Checker) lint_func_name_matching(root C.TSNode, abs_path string, mut s
 				}
 			}
 			else {
-				c.fnm_property(root, o, node, mut findings)
+				if !es_is_accessor_field(node) {
+					c.fnm_property(root, o, node, mut findings)
+				}
 			}
 		}
 	}

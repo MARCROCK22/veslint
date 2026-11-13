@@ -1,6 +1,6 @@
 module rules
 
-import treesitter { children, named_children, node_end, node_field, node_kind, node_parent, node_start }
+import treesitter { Ident, children, named_children, node_end, node_field, node_kind, node_parent, node_start }
 
 // Ports of the helpers of ESLint 10.6.0's lib/rules/utils/ast-utils.js that the rules of ESLint
 // core use. A tree-sitter node stands for the ESTree node it is without its parentheses, which
@@ -397,7 +397,7 @@ fn (c &Checker) es_function_name_with_kind(f C.TSNode) string {
 	parent_kind := node_kind(parent)
 	is_method := kind == 'method_definition'
 	in_class := is_method && node_kind(node_parent(f) or { f }) == 'class_body'
-	is_field := parent_kind == 'public_field_definition'
+	is_field := parent_kind == 'public_field_definition' && !es_is_accessor_field(parent)
 	is_property := (is_method && !in_class) || parent_kind == 'pair'
 	mut private := false
 	mut computed := false
@@ -472,4 +472,58 @@ fn (mut c Checker) es_is_parenthesised(n C.TSNode) bool {
 	before := tokens.before(node_start(n), false) or { return false }
 	after := tokens.after(c.es_end(n), false) or { return false }
 	return c.src[before.start..before.end] == '(' && c.src[after.start..after.end] == ')'
+}
+
+// es_member_start is where an ESTree class member starts: at its first decorator (tree-sitter
+// puts the decorators of a method before it, in the class body).
+fn es_member_start(member C.TSNode) int {
+	mut start := node_start(member)
+	parent := node_parent(member) or { return start }
+	if node_kind(parent) != 'class_body' {
+		return start
+	}
+	mut previous := C.ts_node_prev_named_sibling(member)
+	for !C.ts_node_is_null(previous) {
+		kind := node_kind(previous)
+		if kind == 'decorator' {
+			start = node_start(previous)
+		} else if kind != 'comment' {
+			break
+		}
+		previous = C.ts_node_prev_named_sibling(previous)
+	}
+	return start
+}
+
+// es_is_accessor_field: a class field with `accessor`, an ESTree AccessorProperty (not a
+// PropertyDefinition).
+fn es_is_accessor_field(n C.TSNode) bool {
+	return node_kind(n) == 'public_field_definition' && children(n).any(node_kind(it) == 'accessor')
+}
+
+// es_function_head ports the start of getFunctionHeadLoc of ESLint's ast-utils: the Property,
+// MethodDefinition or PropertyDefinition the function is the value of (its decorators included),
+// the `=>` of another arrow, or the start of the function.
+fn (c &Checker) es_function_head(f C.TSNode) Ident {
+	if node_kind(f) == 'method_definition' {
+		return c.position_at(es_member_start(f))
+	}
+	if parent := cti_estree_parent(f) {
+		kind := node_kind(parent)
+		if kind == 'pair' || (kind == 'public_field_definition' && !es_is_accessor_field(parent)) {
+			if value := node_field(parent, 'value') {
+				if node_key(unwrap_parens(value)) == node_key(f) {
+					return c.position_at(node_start(parent))
+				}
+			}
+		}
+	}
+	if node_kind(f) == 'arrow_function' {
+		for child in children(f) {
+			if node_kind(child) == '=>' {
+				return c.position_at(node_start(child))
+			}
+		}
+	}
+	return c.position_at(node_start(f))
 }

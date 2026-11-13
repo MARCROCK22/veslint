@@ -36,3 +36,12 @@ class D {
   set y(_: number) {}
   get y() { return 1; }
 }
+
+// Decorated accessors.
+declare function wrap(...a: unknown[]): any;
+class Decorated {
+  @wrap get ['r']() { return 1; }
+  s() {}
+  @wrap
+  set r(_: number) {}
+}

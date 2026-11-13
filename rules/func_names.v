@@ -87,7 +87,7 @@ fn (mut c Checker) lint_func_names(root C.TSNode, abs_path string, mut stats Sta
 		}
 		if message_id != '' {
 			findings << Finding{
-				stmt:       function_head(node)
+				stmt:       c.es_function_head(node)
 				message_id: message_id
 				data:       {
 					'name': c.es_function_name_with_kind(node)
@@ -115,8 +115,11 @@ fn (c &Checker) fn_has_inferred_name(f C.TSNode) bool {
 			name := node_field(parent, 'name') or { return false }
 			return node_kind(name) == 'identifier' && is_value('value', parent, f)
 		}
-		'pair', 'public_field_definition' {
+		'pair' {
 			return is_value('value', parent, f)
+		}
+		'public_field_definition' {
+			return !es_is_accessor_field(parent) && is_value('value', parent, f)
 		}
 		'assignment_expression', 'augmented_assignment_expression', 'assignment_pattern',
 		'object_assignment_pattern' {

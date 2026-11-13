@@ -2,7 +2,7 @@ module rules
 
 import json2
 import time
-import treesitter { named_children, node_kind, node_start, position_of }
+import treesitter { named_children, node_kind, node_start }
 
 // Port of the `grouped-accessor-pairs` rule of ESLint 10.6.0, with its options.
 
@@ -144,7 +144,7 @@ fn (mut c Checker) gap_check(o GapOptions, members []C.TSNode, checked []bool, m
 		}
 		if message_id != '' {
 			findings << Finding{
-				stmt:       position_of(latter)
+				stmt:       c.position_at(es_member_start(latter))
 				message_id: message_id
 				data:       {
 					'formerName': c.gap_name(former)

@@ -11,4 +11,9 @@ tests/rules/no-useless-computed-key/cases.ts:11:3	no-useless-computed-key	unnece
 tests/rules/no-useless-computed-key/cases.ts:14:13	no-useless-computed-key	unnecessarilyComputedProperty	Unnecessarily computed property ['e'] found.
 tests/rules/no-useless-computed-key/cases.ts:15:13	no-useless-computed-key	unnecessarilyComputedProperty	Unnecessarily computed property ['f'] found.
 tests/rules/no-useless-computed-key/cases.ts:24:3	no-useless-computed-key	unnecessarilyComputedProperty	Unnecessarily computed property ['constructor2'] found.
+tests/rules/no-useless-computed-key/cases.ts:30:3	no-useless-computed-key	unnecessarilyComputedProperty	Unnecessarily computed property ['m'] found.
+tests/rules/no-useless-computed-key/cases.ts:31:3	no-useless-computed-key	unnecessarilyComputedProperty	Unnecessarily computed property ['n'] found.
+tests/rules/no-useless-computed-key/cases.ts:33:3	no-useless-computed-key	unnecessarilyComputedProperty	Unnecessarily computed property ['p'] found.
+tests/rules/no-useless-computed-key/cases.ts:35:3	no-useless-computed-key	unnecessarilyComputedProperty	Unnecessarily computed property ['u'] found.
+tests/rules/no-useless-computed-key/cases.ts:36:3	no-useless-computed-key	unnecessarilyComputedProperty	Unnecessarily computed property ['u'] found.
 tests/rules/no-useless-computed-key/no-class-members/cases.ts:8:13	no-useless-computed-key	unnecessarilyComputedProperty	Unnecessarily computed property ['x'] found.
