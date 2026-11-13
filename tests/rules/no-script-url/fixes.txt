@@ -1,0 +1,3 @@
+tests/rules/no-script-url/cases.ts:4:17	no-script-url	unexpectedScriptURL	Script URL is a form of eval.	end	4	37
+tests/rules/no-script-url/cases.ts:5:11	no-script-url	unexpectedScriptURL	Script URL is a form of eval.	end	5	32
+tests/rules/no-script-url/cases.ts:6:11	no-script-url	unexpectedScriptURL	Script URL is a form of eval.	end	6	25

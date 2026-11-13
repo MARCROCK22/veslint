@@ -357,6 +357,19 @@ pub fn (t &AstTree) node_is_export_equals(index int) bool {
 	return t.node_kind(index) == 279 && (t.field(index, node_offset_data) >> 24) & 1 != 0
 }
 
+// node_end_byte is the byte offset in the source text of the file where a node ends (its `end`,
+// where ESLint's node ends too); -1 for an invalid node.
+pub fn (t &AstTree) node_end_byte(index int) int {
+	if !t.valid(index) {
+		return -1
+	}
+	end := int(i32(t.field(index, node_offset_end)))
+	if end < 0 {
+		return -1
+	}
+	return t.text_byte(end) - t.text_start
+}
+
 // node_token_start is the byte offset in the source text of the file where a node starts without
 // its leading trivia (TypeScript's getStart(), where ESLint reports the node); -1 for an invalid
 // node.

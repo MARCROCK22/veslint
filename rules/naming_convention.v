@@ -495,20 +495,20 @@ fn (mut c Checker) nc_validate(item NcItem, configs []NcConfig) ![]Finding {
 				'forbid' {
 					if single {
 						data['count'] = 'one'
-						return [nc_finding(item, 'unexpectedUnderscore', data)]
+						return [c.nc_finding(item, 'unexpectedUnderscore', data)]
 					}
 				}
 				'require' {
 					if !single {
 						data['count'] = 'one'
-						return [nc_finding(item, 'missingUnderscore', data)]
+						return [c.nc_finding(item, 'missingUnderscore', data)]
 					}
 					name = trim(name, 1)
 				}
 				'requireDouble' {
 					if !double {
 						data['count'] = 'two'
-						return [nc_finding(item, 'missingUnderscore', data)]
+						return [c.nc_finding(item, 'missingUnderscore', data)]
 					}
 					name = trim(name, 2)
 				}
@@ -538,7 +538,7 @@ fn (mut c Checker) nc_validate(item NcItem, configs []NcConfig) ![]Finding {
 			if !found {
 				data['position'] = position
 				data['affixes'] = affixes.join(', ')
-				return [nc_finding(item, 'missingAffix', data)]
+				return [c.nc_finding(item, 'missingAffix', data)]
 			}
 		}
 		// validateCustom
@@ -546,7 +546,7 @@ fn (mut c Checker) nc_validate(item NcItem, configs []NcConfig) ![]Finding {
 			if jsregexp.regexp_test(config.custom.program, name)! != config.custom.is_match {
 				data['regex'] = config.custom.text
 				data['regexMatch'] = if config.custom.is_match { 'match' } else { 'not match' }
-				return [nc_finding(item, 'satisfyCustom', data)]
+				return [c.nc_finding(item, 'satisfyCustom', data)]
 			}
 		}
 		// validatePredefinedFormat: a name that needs quotes fits no format.
@@ -564,7 +564,7 @@ fn (mut c Checker) nc_validate(item NcItem, configs []NcConfig) ![]Finding {
 				data['formats'] = config.formats.map(nc_formats[it - 1]).join(', ')
 				data['processedName'] = name
 				return [
-					nc_finding(item, if original == name {
+					c.nc_finding(item, if original == name {
 						'doesNotMatchFormat'
 					} else {
 						'doesNotMatchFormatTrimmed'
@@ -577,9 +577,9 @@ fn (mut c Checker) nc_validate(item NcItem, configs []NcConfig) ![]Finding {
 	return []Finding{}
 }
 
-fn nc_finding(item NcItem, message_id string, data map[string]string) Finding {
+fn (c &Checker) nc_finding(item NcItem, message_id string, data map[string]string) Finding {
 	return Finding{
-		stmt:       position_of(item.node)
+		stmt:       c.es_binding_position(item.node)
 		message_id: message_id
 		data:       data
 	}

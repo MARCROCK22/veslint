@@ -70,7 +70,7 @@ fn (mut c Checker) lint_no_shadow(root C.TSNode, abs_path string, mut stats Stat
 			shadowed_variable := tree.variables[shadowed]
 			if shadowed_variable.identifiers.len == 0 {
 				findings << Finding{
-					stmt:       position_of(variable.identifiers[0])
+					stmt:       c.es_binding_position(variable.identifiers[0])
 					message_id: 'noShadowGlobal'
 					data:       {
 						'name': variable.name
@@ -84,7 +84,7 @@ fn (mut c Checker) lint_no_shadow(root C.TSNode, abs_path string, mut stats Stat
 			}
 			line, column := c.line_column(lines, node_start(shadowed_variable.identifiers[0]))
 			findings << Finding{
-				stmt:       position_of(variable.identifiers[0])
+				stmt:       c.es_binding_position(variable.identifiers[0])
 				message_id: 'noShadow'
 				data:       {
 					'name':           variable.name

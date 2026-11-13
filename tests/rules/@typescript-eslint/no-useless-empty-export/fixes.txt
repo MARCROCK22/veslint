@@ -1,15 +1,15 @@
-tests/rules/@typescript-eslint/no-useless-empty-export/cases.ts:4:1	@typescript-eslint/no-useless-empty-export	uselessExport	Empty export does nothing and can be removed.	fix	170	180	
-tests/rules/@typescript-eslint/no-useless-empty-export/cases.ts:5:1	@typescript-eslint/no-useless-empty-export	uselessExport	Empty export does nothing and can be removed.	fix	181	206	
-tests/rules/@typescript-eslint/no-useless-empty-export/cases.ts:6:1	@typescript-eslint/no-useless-empty-export	uselessExport	Empty export does nothing and can be removed.	fix	207	222	
-tests/rules/@typescript-eslint/no-useless-empty-export/cases.ts:7:1	@typescript-eslint/no-useless-empty-export	uselessExport	Empty export does nothing and can be removed.	fix	223	260	
-tests/rules/@typescript-eslint/no-useless-empty-export/crlf/cases.ts:3:1	@typescript-eslint/no-useless-empty-export	uselessExport	Empty export does nothing and can be removed.	fix	64	74	
-tests/rules/@typescript-eslint/no-useless-empty-export/crlf/cases.ts:4:1	@typescript-eslint/no-useless-empty-export	uselessExport	Empty export does nothing and can be removed.	fix	76	85	
-tests/rules/@typescript-eslint/no-useless-empty-export/with-default/cases.ts:4:1	@typescript-eslint/no-useless-empty-export	uselessExport	Empty export does nothing and can be removed.	fix	59	69	
-tests/rules/@typescript-eslint/no-useless-empty-export/with-export-all/cases.ts:2:1	@typescript-eslint/no-useless-empty-export	uselessExport	Empty export does nothing and can be removed.	fix	35	45	
-tests/rules/@typescript-eslint/no-useless-empty-export/with-export-assignment/cases.ts:2:1	@typescript-eslint/no-useless-empty-export	uselessExport	Empty export does nothing and can be removed.	fix	50	60	
-tests/rules/@typescript-eslint/no-useless-empty-export/with-export-import/cases.ts:4:1	@typescript-eslint/no-useless-empty-export	uselessExport	Empty export does nothing and can be removed.	fix	108	118	
-tests/rules/@typescript-eslint/no-useless-empty-export/with-import-alias/cases.ts:4:1	@typescript-eslint/no-useless-empty-export	uselessExport	Empty export does nothing and can be removed.	fix	125	135	
-tests/rules/@typescript-eslint/no-useless-empty-export/with-import-equals/cases.ts:3:1	@typescript-eslint/no-useless-empty-export	uselessExport	Empty export does nothing and can be removed.	fix	102	112	
-tests/rules/@typescript-eslint/no-useless-empty-export/with-import-equals/cases.ts:4:1	@typescript-eslint/no-useless-empty-export	uselessExport	Empty export does nothing and can be removed.	fix	113	123	
-tests/rules/@typescript-eslint/no-useless-empty-export/with-import/cases.ts:3:1	@typescript-eslint/no-useless-empty-export	uselessExport	Empty export does nothing and can be removed.	fix	77	87	
-tests/rules/@typescript-eslint/no-useless-empty-export/with-type-export/cases.ts:2:1	@typescript-eslint/no-useless-empty-export	uselessExport	Empty export does nothing and can be removed.	fix	25	35	
+tests/rules/@typescript-eslint/no-useless-empty-export/cases.ts:4:1	@typescript-eslint/no-useless-empty-export	uselessExport	Empty export does nothing and can be removed.	fix	170	180		end	4	11
+tests/rules/@typescript-eslint/no-useless-empty-export/cases.ts:5:1	@typescript-eslint/no-useless-empty-export	uselessExport	Empty export does nothing and can be removed.	fix	181	206		end	5	26
+tests/rules/@typescript-eslint/no-useless-empty-export/cases.ts:6:1	@typescript-eslint/no-useless-empty-export	uselessExport	Empty export does nothing and can be removed.	fix	207	222		end	6	16
+tests/rules/@typescript-eslint/no-useless-empty-export/cases.ts:7:1	@typescript-eslint/no-useless-empty-export	uselessExport	Empty export does nothing and can be removed.	fix	223	260		end	7	38
+tests/rules/@typescript-eslint/no-useless-empty-export/crlf/cases.ts:3:1	@typescript-eslint/no-useless-empty-export	uselessExport	Empty export does nothing and can be removed.	fix	64	74		end	3	11
+tests/rules/@typescript-eslint/no-useless-empty-export/crlf/cases.ts:4:1	@typescript-eslint/no-useless-empty-export	uselessExport	Empty export does nothing and can be removed.	fix	76	85		end	4	10
+tests/rules/@typescript-eslint/no-useless-empty-export/with-default/cases.ts:4:1	@typescript-eslint/no-useless-empty-export	uselessExport	Empty export does nothing and can be removed.	fix	59	69		end	4	11
+tests/rules/@typescript-eslint/no-useless-empty-export/with-export-all/cases.ts:2:1	@typescript-eslint/no-useless-empty-export	uselessExport	Empty export does nothing and can be removed.	fix	35	45		end	2	11
+tests/rules/@typescript-eslint/no-useless-empty-export/with-export-assignment/cases.ts:2:1	@typescript-eslint/no-useless-empty-export	uselessExport	Empty export does nothing and can be removed.	fix	50	60		end	2	11
+tests/rules/@typescript-eslint/no-useless-empty-export/with-export-import/cases.ts:4:1	@typescript-eslint/no-useless-empty-export	uselessExport	Empty export does nothing and can be removed.	fix	108	118		end	4	11
+tests/rules/@typescript-eslint/no-useless-empty-export/with-import-alias/cases.ts:4:1	@typescript-eslint/no-useless-empty-export	uselessExport	Empty export does nothing and can be removed.	fix	125	135		end	4	11
+tests/rules/@typescript-eslint/no-useless-empty-export/with-import-equals/cases.ts:3:1	@typescript-eslint/no-useless-empty-export	uselessExport	Empty export does nothing and can be removed.	fix	102	112		end	3	11
+tests/rules/@typescript-eslint/no-useless-empty-export/with-import-equals/cases.ts:4:1	@typescript-eslint/no-useless-empty-export	uselessExport	Empty export does nothing and can be removed.	fix	113	123		end	4	11
+tests/rules/@typescript-eslint/no-useless-empty-export/with-import/cases.ts:3:1	@typescript-eslint/no-useless-empty-export	uselessExport	Empty export does nothing and can be removed.	fix	77	87		end	3	11
+tests/rules/@typescript-eslint/no-useless-empty-export/with-type-export/cases.ts:2:1	@typescript-eslint/no-useless-empty-export	uselessExport	Empty export does nothing and can be removed.	fix	25	35		end	2	11

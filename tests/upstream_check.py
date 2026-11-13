@@ -10,11 +10,11 @@ gave the fixtures are forgotten before the next test file.
 What each case expects is checked as RuleTester checks it:
 - a valid case has no problem;
 - an invalid case has as many problems as its errors, each with the messageId, the message (as
-  written, or built from the data and meta.messages), the line, the column and the suggestions
+  written, or built from the data and meta.messages), the line, the column, where it ends
+  (endLine and endColumn) and the suggestions
   (messageId, description and the text each one leaves) the test gives;
 - the fixes leave the output the test gives, pass after pass, applied as ESLint's SourceCodeFixer
   applies them (ranges in UTF-16 units).
-endLine and endColumn are not checked: veslint prints where a problem starts.
 
 The cases listed for veslint in tests/upstream/known.txt must fail; any other failure, or a listed
 case that passes, makes the exit code 1. With --lines, veslint's output lines (with --fixes, the id
@@ -82,7 +82,8 @@ def parse_line(line, prefix):
     head, rule, message_id, message, *rest = line.split('\t')
     line_number, column = head[len(prefix):].split(':')
     finding = {'line': int(line_number), 'column': int(column), 'rule': rule, 'messageId': message_id,
-               'message': unescape(message), 'fix': None, 'suggestions': []}
+               'message': unescape(message), 'fix': None, 'suggestions': [], 'endLine': None,
+               'endColumn': None}
     i = 0
     while i < len(rest):
         if rest[i] == 'fix':
@@ -92,6 +93,9 @@ def parse_line(line, prefix):
             finding['suggestions'].append({'messageId': rest[i + 1], 'desc': unescape(rest[i + 2]),
                                            'fix': (int(rest[i + 3]), int(rest[i + 4]), unescape(rest[i + 5]))})
             i += 6
+        elif rest[i] == 'end':
+            finding['endLine'], finding['endColumn'] = int(rest[i + 1]), int(rest[i + 2])
+            i += 3
         else:
             raise ValueError(f'unexpected field {rest[i]!r} in {line!r}')
     return finding
@@ -272,7 +276,7 @@ def check(case, messages, findings, outputs):
                 wanted = interpolate(messages[expected['messageId']], expected['data'])
                 if found['message'] != wanted:
                     problems.append(f'error {i}: message {found["message"]!r}, the data expect {wanted!r}')
-            for key in ('line', 'column'):
+            for key in ('line', 'column', 'endLine', 'endColumn'):
                 if key in expected and found[key] != expected[key]:
                     problems.append(f'error {i}: {key} {found[key]}, expected {expected[key]}')
             if 'suggestions' in expected:

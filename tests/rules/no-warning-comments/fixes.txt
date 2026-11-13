@@ -1,0 +1,13 @@
+tests/rules/no-warning-comments/anywhere/cases.ts:1:1	no-warning-comments	unexpectedComment	Unexpected 'todo' comment: 'TODO: reported at the start.'.	end	1	32
+tests/rules/no-warning-comments/anywhere/cases.ts:2:1	no-warning-comments	unexpectedComment	Unexpected 'todo' comment: 'todo lowercase too'.	end	2	22
+tests/rules/no-warning-comments/anywhere/cases.ts:5:1	no-warning-comments	unexpectedComment	Unexpected 'todo' comment: '* todo after decoration is not at the...'.	end	5	69
+tests/rules/no-warning-comments/anywhere/cases.ts:6:1	no-warning-comments	unexpectedComment	Unexpected 'todo' comment: 'not a todo in the middle with location...'.	end	6	48
+tests/rules/no-warning-comments/anywhere/cases.ts:7:1	no-warning-comments	unexpectedComment	Unexpected 'todo' comment: 'global todo'.	end	7	18
+tests/rules/no-warning-comments/anywhere/cases.ts:9:14	no-warning-comments	unexpectedComment	Unexpected 'todo' comment: 'todo trailing comment'.	end	9	38
+tests/rules/no-warning-comments/anywhere/cases.ts:11:1	no-warning-comments	unexpectedComment	Unexpected 'fix me' comment: 'we should fix me later'.	end	11	29
+tests/rules/no-warning-comments/anywhere/cases.ts:12:1	no-warning-comments	unexpectedComment	Unexpected '@hack' comment: 'see @hack and todolist'.	end	12	26
+tests/rules/no-warning-comments/anywhere/cases.ts:13:1	no-warning-comments	unexpectedComment	Unexpected 'todo' comment: '**/ todo after decoration'.	end	13	29
+tests/rules/no-warning-comments/cases.ts:1:1	no-warning-comments	unexpectedComment	Unexpected 'todo' comment: 'TODO: reported at the start.'.	end	1	32
+tests/rules/no-warning-comments/cases.ts:2:1	no-warning-comments	unexpectedComment	Unexpected 'todo' comment: 'todo lowercase too'.	end	2	22
+tests/rules/no-warning-comments/cases.ts:3:1	no-warning-comments	unexpectedComment	Unexpected 'fixme' comment: 'FIXME: a block comment that is long...'.	end	3	86
+tests/rules/no-warning-comments/cases.ts:9:14	no-warning-comments	unexpectedComment	Unexpected 'todo' comment: 'todo trailing comment'.	end	9	38

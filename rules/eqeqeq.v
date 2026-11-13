@@ -99,7 +99,7 @@ fn (mut c Checker) eqe_report(root C.TSNode, node C.TSNode, left C.TSNode, right
 	fix := fix_replace_range(token.start, token.end, expected)
 	if c.eqe_typeof_binary(left, right) || c.eqe_same_type_literals(left, right) {
 		findings << Finding{
-			stmt:       c.position_at(token.start)
+			stmt:       c.position_range(token.start, token.end)
 			message_id: 'unexpected'
 			data:       data
 			has_fix:    true
@@ -109,7 +109,7 @@ fn (mut c Checker) eqe_report(root C.TSNode, node C.TSNode, left C.TSNode, right
 	}
 	_, suggestion := c.suggestion('replaceOperator', data, [fix])!
 	findings << Finding{
-		stmt:        c.position_at(token.start)
+		stmt:        c.position_range(token.start, token.end)
 		message_id:  'unexpected'
 		data:        data
 		suggestions: [suggestion]

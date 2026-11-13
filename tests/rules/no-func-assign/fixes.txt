@@ -1,0 +1,4 @@
+tests/rules/no-func-assign/cases.ts:6:1	no-func-assign	isAFunction	'a' is a function.	end	6	2
+tests/rules/no-func-assign/cases.ts:9:3	no-func-assign	isAFunction	'b' is a function.	end	9	4
+tests/rules/no-func-assign/cases.ts:13:3	no-func-assign	isAFunction	'd' is a function.	end	13	4
+tests/rules/no-func-assign/cases.ts:17:2	no-func-assign	isAFunction	'e' is a function.	end	17	3

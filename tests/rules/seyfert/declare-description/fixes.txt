@@ -1,0 +1,19 @@
+tests/rules/seyfert/declare-description/cases.ts:25:40	seyfert/declare-description	emptyDescription	Command description must not be empty.	end	25	42
+tests/rules/seyfert/declare-description/cases.ts:27:39	seyfert/declare-description	descriptionTooLong	Command description must be at most 100 characters (got 101).	end	27	142
+tests/rules/seyfert/declare-description/cases.ts:29:46	seyfert/declare-description	descriptionTooLong	Command description must be at most 100 characters (got 101).	end	29	250
+tests/rules/seyfert/declare-description/cases.ts:31:49	seyfert/declare-description	descriptionTooLong	Command description must be at most 100 characters (got 102).	end	31	153
+tests/rules/seyfert/declare-description/cases.ts:33:47	seyfert/declare-description	descriptionTooLong	Command description must be at most 100 characters (got 101).	end	33	958
+tests/rules/seyfert/declare-description/cases.ts:35:51	seyfert/declare-description	emptyDescription	Command description must not be empty.	end	35	53
+tests/rules/seyfert/declare-description/cases.ts:37:43	seyfert/declare-description	emptyDescription	Command description must not be empty.	end	37	45
+tests/rules/seyfert/declare-description/cases.ts:39:37	seyfert/declare-description	emptyDescription	Command description must not be empty.	end	39	49
+tests/rules/seyfert/declare-description/cases.ts:41:43	seyfert/declare-description	emptyDescription	Command description must not be empty.	end	41	46
+tests/rules/seyfert/declare-description/cases.ts:43:58	seyfert/declare-description	emptyDescription	Command description must not be empty.	end	43	60
+tests/rules/seyfert/declare-description/cases.ts:47:5	seyfert/declare-description	emptyDescription	Command description must not be empty.	end	47	7
+tests/rules/seyfert/declare-description/cases.ts:71:16	seyfert/declare-description	emptyDescription	Command description must not be empty.	end	71	18
+tests/rules/seyfert/declare-description/cases.ts:75:10	seyfert/declare-description	emptyDescription	Command description must not be empty.	end	75	23
+tests/rules/seyfert/declare-description/cases.ts:79:35	seyfert/declare-description	descriptionTooLong	Option description must be at most 100 characters (got 101).	end	79	138
+tests/rules/seyfert/declare-description/cases.ts:82:44	seyfert/declare-description	emptyDescription	Option description must not be empty.	end	82	46
+tests/rules/seyfert/declare-description/cases.ts:83:44	seyfert/declare-description	descriptionTooLong	Option description must be at most 100 characters (got 101).	end	83	147
+tests/rules/seyfert/declare-description/cases.ts:85:32	seyfert/declare-description	emptyDescription	Option description must not be empty.	end	85	34
+tests/rules/seyfert/declare-description/cases.ts:86:58	seyfert/declare-description	emptyDescription	Option description must not be empty.	end	86	60
+tests/rules/seyfert/declare-description/cases.ts:88:11	seyfert/declare-description	emptyDescription	Option description must not be empty.	end	88	43

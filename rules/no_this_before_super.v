@@ -68,7 +68,7 @@ fn (mut c Checker) lint_no_this_before_super(root C.TSNode, abs_path string, mut
 						}
 						reported[node] = true
 						findings << Finding{
-							stmt:       c.position_at(t.nodes[node].start)
+							stmt:       c.es_tree_position(t, node)
 							message_id: 'noBeforeSuper'
 							data:       {
 								'kind': if t.typ(node) == .super { 'super' } else { 'this' }

@@ -87,7 +87,7 @@ fn (mut c Checker) aos_check_body(members []C.TSNode, mut findings []Finding) {
 				node_start(member)
 			}
 			findings << Finding{
-				stmt:       c.position_at(start)
+				stmt:       c.position_range(start, c.es_member_end(member))
 				message_id: 'adjacentSignature'
 				data:       {
 					'name': if method.static == .true_ {

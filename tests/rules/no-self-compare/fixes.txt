@@ -1,0 +1,12 @@
+tests/rules/no-self-compare/cases.ts:6:5	no-self-compare	comparingToSelf	Comparing to itself is potentially pointless.	end	6	12
+tests/rules/no-self-compare/cases.ts:7:5	no-self-compare	comparingToSelf	Comparing to itself is potentially pointless.	end	7	12
+tests/rules/no-self-compare/cases.ts:8:5	no-self-compare	comparingToSelf	Comparing to itself is potentially pointless.	end	8	11
+tests/rules/no-self-compare/cases.ts:9:5	no-self-compare	comparingToSelf	Comparing to itself is potentially pointless.	end	9	10
+tests/rules/no-self-compare/cases.ts:10:5	no-self-compare	comparingToSelf	Comparing to itself is potentially pointless.	end	10	11
+tests/rules/no-self-compare/cases.ts:11:5	no-self-compare	comparingToSelf	Comparing to itself is potentially pointless.	end	11	14
+tests/rules/no-self-compare/cases.ts:12:5	no-self-compare	comparingToSelf	Comparing to itself is potentially pointless.	end	12	16
+tests/rules/no-self-compare/cases.ts:13:5	no-self-compare	comparingToSelf	Comparing to itself is potentially pointless.	end	13	22
+tests/rules/no-self-compare/cases.ts:14:5	no-self-compare	comparingToSelf	Comparing to itself is potentially pointless.	end	14	16
+tests/rules/no-self-compare/cases.ts:15:5	no-self-compare	comparingToSelf	Comparing to itself is potentially pointless.	end	15	32
+tests/rules/no-self-compare/cases.ts:16:5	no-self-compare	comparingToSelf	Comparing to itself is potentially pointless.	end	16	18
+tests/rules/no-self-compare/cases.ts:23:5	no-self-compare	comparingToSelf	Comparing to itself is potentially pointless.	end	23	14

@@ -116,9 +116,16 @@ function setStatus(icon, tooltip) {
   status.show();
 }
 
-/** The range of a problem: veslint gives where it starts; the word there is underlined. */
+/**
+ * The range of a problem: from where it starts to where it ends, as ESLint's; without an end (or
+ * with an empty range), the word where it starts.
+ */
 function problemRange(document, problem) {
   const start = document.validatePosition(new vscode.Position(problem.line - 1, problem.column - 1));
+  if (problem.endLine != null) {
+    const end = document.validatePosition(new vscode.Position(problem.endLine - 1, problem.endColumn - 1));
+    if (end.isAfter(start)) return new vscode.Range(start, end);
+  }
   const word = document.getWordRangeAtPosition(start);
   if (word && word.end.isAfter(start)) return new vscode.Range(start, word.end);
   const end = document.validatePosition(start.translate(0, 1));

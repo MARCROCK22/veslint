@@ -1,6 +1,6 @@
-tests/rules/no-extra-bind/cases.ts:6:3	no-extra-bind	unexpected	The function binding is unnecessary.	fix	73	81	
-tests/rules/no-extra-bind/cases.ts:7:21	no-extra-bind	unexpected	The function binding is unnecessary.	fix	102	110	
-tests/rules/no-extra-bind/cases.ts:10:3	no-extra-bind	unexpected	The function binding is unnecessary.	fix	155	166	
-tests/rules/no-extra-bind/cases.ts:11:28	no-extra-bind	unexpected	The function binding is unnecessary.	fix	194	202	
-tests/rules/no-extra-bind/cases.ts:12:26	no-extra-bind	unexpected	The function binding is unnecessary.
-tests/rules/no-extra-bind/cases.ts:17:3	no-extra-bind	unexpected	The function binding is unnecessary.	fix	316	324	
+tests/rules/no-extra-bind/cases.ts:6:3	no-extra-bind	unexpected	The function binding is unnecessary.	fix	73	81		end	6	7
+tests/rules/no-extra-bind/cases.ts:7:21	no-extra-bind	unexpected	The function binding is unnecessary.	fix	102	110		end	7	25
+tests/rules/no-extra-bind/cases.ts:10:3	no-extra-bind	unexpected	The function binding is unnecessary.	fix	155	166		end	10	7
+tests/rules/no-extra-bind/cases.ts:11:28	no-extra-bind	unexpected	The function binding is unnecessary.	fix	194	202		end	11	32
+tests/rules/no-extra-bind/cases.ts:12:26	no-extra-bind	unexpected	The function binding is unnecessary.	end	12	30
+tests/rules/no-extra-bind/cases.ts:17:3	no-extra-bind	unexpected	The function binding is unnecessary.	fix	316	324		end	17	7

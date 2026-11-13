@@ -87,7 +87,7 @@ fn (mut c Checker) lint_triple_slash_reference(root C.TSNode, abs_path string, m
 
 fn (c &Checker) tsr_finding(comment SourceToken, name string) Finding {
 	return Finding{
-		stmt:       c.position_at(comment.start)
+		stmt:       c.position_range(comment.start, comment.end)
 		message_id: 'tripleSlashReference'
 		data:       {
 			'module': name

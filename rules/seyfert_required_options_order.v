@@ -1,7 +1,7 @@
 module rules
 
 import time
-import treesitter { node_start }
+import treesitter { node_start, position_of }
 
 // Port of the `required-options-order` rule of @slipher/eslint-plugin 1.1.0 (it has no options): in
 // the object of seyfert's `@Options`, an option made with a `createXOption` builder whose
@@ -67,9 +67,9 @@ fn (mut c Checker) lint_seyfert_required_options_order(root C.TSNode, abs_path s
 			}
 			if required == 1 {
 				if saw_optional {
-					offset := c.sy_position_of(property) or { node_start(arguments[i]) }
+					place := c.sy_place_of(property) or { position_of(arguments[i]) }
 					findings << Finding{
-						stmt:       c.position_at(offset)
+						stmt:       place
 						message_id: 'requiredAfterOptional'
 						data:       {
 							'name': sy_property_name(property.child('name'))

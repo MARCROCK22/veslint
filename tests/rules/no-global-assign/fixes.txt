@@ -1,0 +1,4 @@
+tests/rules/no-global-assign/cases.ts:3:1	no-global-assign	globalShouldNotBeModified	Read-only global 'Object' should not be modified.	end	3	7
+tests/rules/no-global-assign/cases.ts:5:1	no-global-assign	globalShouldNotBeModified	Read-only global 'undefined' should not be modified.	end	5	10
+tests/rules/no-global-assign/cases.ts:7:1	no-global-assign	globalShouldNotBeModified	Read-only global 'Math' should not be modified.	end	7	5
+tests/rules/no-global-assign/exceptions/cases.ts:7:1	no-global-assign	globalShouldNotBeModified	Read-only global 'JSON' should not be modified.	end	7	5

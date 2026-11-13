@@ -60,7 +60,8 @@ fn (mut c Checker) lint_strict(root C.TSNode, abs_path string, mut stats Stats) 
 	if mode == 'global' {
 		if statements.len > 0 && directives.len == 0 {
 			st.findings << Finding{
-				stmt:       position_of(statements[0])
+				// The Program: from its first token to the end of its last one.
+				stmt:       c.position_range(node_start(statements[0]), c.es_end(statements.last()))
 				message_id: 'global'
 			}
 		}

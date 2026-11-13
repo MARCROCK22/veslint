@@ -70,10 +70,10 @@ fn (mut c Checker) lint_no_unused_private_class_members(root C.TSNode, abs_path 
 	c.nupcm_visit(mut a, tree, root, 0)
 	for class in a.classes {
 		for _, index in class.instance {
-			nupcm_report(a.members[index], mut findings)
+			c.nupcm_report(a.members[index], mut findings)
 		}
 		for _, index in class.statics {
-			nupcm_report(a.members[index], mut findings)
+			c.nupcm_report(a.members[index], mut findings)
 		}
 	}
 	stats.eval_ms += ms(sw.elapsed())
@@ -83,12 +83,12 @@ fn (mut c Checker) lint_no_unused_private_class_members(root C.TSNode, abs_path 
 
 // nupcm_report reports a private member that is not used: never read, and, if it is an accessor
 // (which may have side effects), never written either.
-fn nupcm_report(m NupcmMember, mut findings []Finding) {
+fn (c &Checker) nupcm_report(m NupcmMember, mut findings []Finding) {
 	if (!m.is_private && !m.is_hash) || m.reads > 0 || (m.writes > 0 && m.is_accessor) {
 		return
 	}
 	findings << Finding{
-		stmt:       position_of(m.name_node)
+		stmt:       c.es_binding_position(m.name_node)
 		message_id: 'unusedPrivateClassMember'
 		data:       {
 			'classMemberName': m.name

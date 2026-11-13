@@ -1,0 +1,4 @@
+tests/rules/no-unreachable-loop/cases.ts:4:3	no-unreachable-loop	invalid	Invalid loop. Its body allows only one iteration.	end	7	4
+tests/rules/no-unreachable-loop/cases.ts:8:3	no-unreachable-loop	invalid	Invalid loop. Its body allows only one iteration.	end	10	4
+tests/rules/no-unreachable-loop/cases.ts:11:3	no-unreachable-loop	invalid	Invalid loop. Its body allows only one iteration.	end	13	21
+tests/rules/no-unreachable-loop/ignore/cases.ts:4:3	no-unreachable-loop	invalid	Invalid loop. Its body allows only one iteration.	end	7	4

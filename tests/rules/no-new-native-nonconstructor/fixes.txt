@@ -1,0 +1,2 @@
+tests/rules/no-new-native-nonconstructor/cases.ts:14:15	no-new-native-nonconstructor	noNewNonconstructor	`Symbol` cannot be called as a constructor.	end	14	21
+tests/rules/no-new-native-nonconstructor/cases.ts:16:15	no-new-native-nonconstructor	noNewNonconstructor	`BigInt` cannot be called as a constructor.	end	16	21

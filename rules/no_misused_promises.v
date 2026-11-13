@@ -686,7 +686,7 @@ fn (mut c Checker) misused_property(prop C.TSNode) ![]Ident {
 				|| !c.is_void_returning_function_type(contextual, c.symbol_location(value))! {
 				return []Ident{}
 			}
-			return [function_report_position(unwrap_parens(value))]
+			return [c.function_report_position(unwrap_parens(value))]
 		}
 		'shorthand_property_identifier' {
 			if !c.returns_thenable(prop)! {
@@ -729,14 +729,14 @@ fn (mut c Checker) misused_property(prop C.TSNode) ![]Ident {
 			if !c.is_void_returning_function_type(c.symbol_type_at(property, at)!, at)! {
 				return []Ident{}
 			}
-			return [function_report_position(prop)]
+			return [c.function_report_position(prop)]
 		}
 	}
 }
 
 // function_report_position: a function is reported at its annotated return type or, without one,
 // at the start of getFunctionHeadLoc; any other value, at its start.
-fn function_report_position(value C.TSNode) Ident {
+fn (mut c Checker) function_report_position(value C.TSNode) Ident {
 	if node_kind(value) !in ['arrow_function', 'function_expression', 'generator_function',
 		'method_definition'] {
 		return position_of(value)
@@ -746,7 +746,7 @@ fn function_report_position(value C.TSNode) Ident {
 			return position_of(annotated)
 		}
 	}
-	return function_head(value)
+	return c.function_head(value)
 }
 
 // is_possibly_function_type ports isPossiblyFunctionType on a type annotation: a syntactic check
@@ -901,7 +901,7 @@ fn (mut c Checker) inherited_method_findings(class_like ClassLike) ![]Finding {
 				continue
 			}
 			findings << Finding{
-				stmt:       position_of(member.span.first)
+				stmt:       c.position_range(node_start(member.span.first), c.tokens.last_end(member.span.end))
 				message_id: 'voidReturnInheritedMethod'
 				data:       {
 					'heritageTypeName': c.client.type_to_string(c.snapshot, c.project, heritage.id)!

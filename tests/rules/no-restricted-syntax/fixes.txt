@@ -1,0 +1,6 @@
+tests/rules/no-restricted-syntax/selectors/cases.ts:2:1	no-restricted-syntax	restrictedSyntax	Using 'TSEnumDeclaration' is not allowed.	end	5	2
+tests/rules/no-restricted-syntax/selectors/cases.ts:6:25	no-restricted-syntax	restrictedSyntax	Using 'TSAsExpression:exit' is not allowed.	end	6	45
+tests/rules/no-restricted-syntax/selectors/cases.ts:7:10	no-restricted-syntax	restrictedSyntax	Using 'FunctionDeclaration:has(CallExpression) > Identifier.id' is not allowed.	end	7	14
+tests/rules/no-restricted-syntax/selectors/cases.ts:8:3	no-restricted-syntax	restrictedSyntax	Do not use eval.	end	8	12
+tests/rules/no-restricted-syntax/selectors/cases.ts:10:31	no-restricted-syntax	restrictedSyntax	Using 'ConditionalExpression > Literal.consequent' is not allowed.	end	10	32
+tests/rules/no-restricted-syntax/selectors/cases.ts:13:10	no-restricted-syntax	restrictedSyntax	Using 'FunctionDeclaration:has(CallExpression) > Identifier.id' is not allowed.	end	13	15

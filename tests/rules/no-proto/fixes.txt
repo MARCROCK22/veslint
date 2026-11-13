@@ -1,0 +1,2 @@
+tests/rules/no-proto/cases.ts:4:11	no-proto	unexpectedProto	The '__proto__' property is deprecated.	end	4	22
+tests/rules/no-proto/cases.ts:5:1	no-proto	unexpectedProto	The '__proto__' property is deprecated.	end	5	15

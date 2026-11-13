@@ -1,0 +1,141 @@
+tests/rules/@typescript-eslint/no-deprecated/allow/cases.ts:6:1	@typescript-eslint/no-deprecated	deprecatedWithReason	`notAllowed` is deprecated. Not allowed.	end	6	11
+tests/rules/@typescript-eslint/no-deprecated/allow/cases.ts:19:12	@typescript-eslint/no-deprecated	deprecatedWithReason	`held` is deprecated. Other.	end	19	18
+tests/rules/@typescript-eslint/no-deprecated/allow/cases.ts:20:13	@typescript-eslint/no-deprecated	deprecatedWithReason	`held` is deprecated. Held.	end	20	17
+tests/rules/@typescript-eslint/no-deprecated/allow/cases.ts:21:12	@typescript-eslint/no-deprecated	deprecatedWithReason	`held` is deprecated. Other.	end	21	16
+tests/rules/@typescript-eslint/no-deprecated/allow/cases.ts:27:6	@typescript-eslint/no-deprecated	deprecatedWithReason	`escape` is deprecated. A legacy feature for browser compatibility	end	27	12
+tests/rules/@typescript-eslint/no-deprecated/calls/cases.ts:9:1	@typescript-eslint/no-deprecated	deprecatedWithReason	`over` is deprecated. Number overload.	end	9	5
+tests/rules/@typescript-eslint/no-deprecated/calls/cases.ts:11:5	@typescript-eslint/no-deprecated	deprecatedWithReason	`over` is deprecated. Number overload.	end	11	9
+tests/rules/@typescript-eslint/no-deprecated/calls/cases.ts:12:1	@typescript-eslint/no-deprecated	deprecatedWithReason	`old` is deprecated. Old function.	end	12	4
+tests/rules/@typescript-eslint/no-deprecated/calls/cases.ts:13:6	@typescript-eslint/no-deprecated	deprecatedWithReason	`old` is deprecated. Old function.	end	13	9
+tests/rules/@typescript-eslint/no-deprecated/calls/cases.ts:21:12	@typescript-eslint/no-deprecated	deprecatedWithReason	`k` is deprecated. Call signature.	end	21	13
+tests/rules/@typescript-eslint/no-deprecated/calls/cases.ts:23:1	@typescript-eslint/no-deprecated	deprecatedWithReason	`callable` is deprecated. Call signature.	end	23	9
+tests/rules/@typescript-eslint/no-deprecated/calls/cases.ts:31:6	@typescript-eslint/no-deprecated	deprecatedWithReason	`tag` is deprecated. Tag function.	end	31	9
+tests/rules/@typescript-eslint/no-deprecated/calls/cases.ts:43:2	@typescript-eslint/no-deprecated	deprecatedWithReason	`decorate` is deprecated. Decorator.	end	43	10
+tests/rules/@typescript-eslint/no-deprecated/calls/cases.ts:44:2	@typescript-eslint/no-deprecated	deprecatedWithReason	`factory` is deprecated. Decorator factory.	end	44	9
+tests/rules/@typescript-eslint/no-deprecated/calls/cases.ts:54:8	@typescript-eslint/no-deprecated	deprecatedWithReason	`method` is deprecated. Chained method.	end	54	14
+tests/rules/@typescript-eslint/no-deprecated/calls/cases.ts:55:9	@typescript-eslint/no-deprecated	deprecatedWithReason	`method` is deprecated. Chained method.	end	55	15
+tests/rules/@typescript-eslint/no-deprecated/calls/cases.ts:56:16	@typescript-eslint/no-deprecated	deprecatedWithReason	`method` is deprecated. Chained method.	end	56	22
+tests/rules/@typescript-eslint/no-deprecated/calls/cases.ts:57:8	@typescript-eslint/no-deprecated	deprecatedWithReason	`method` is deprecated. Chained method.	end	57	14
+tests/rules/@typescript-eslint/no-deprecated/calls/cases.ts:76:15	@typescript-eslint/no-deprecated	deprecatedWithReason	`x` is deprecated. Base getter only.	end	76	16
+tests/rules/@typescript-eslint/no-deprecated/calls/cases.ts:89:16	@typescript-eslint/no-deprecated	deprecatedWithReason	`pp` is deprecated. Base property.	end	89	18
+tests/rules/@typescript-eslint/no-deprecated/calls/cases.ts:105:11	@typescript-eslint/no-deprecated	deprecatedWithReason	`T` is deprecated. Named like a type parameter.	end	105	12
+tests/rules/@typescript-eslint/no-deprecated/calls/cases.ts:117:10	@typescript-eslint/no-deprecated	deprecatedWithReason	`m` is deprecated. Inherited doc.	end	117	11
+tests/rules/@typescript-eslint/no-deprecated/calls/cases.ts:126:10	@typescript-eslint/no-deprecated	deprecatedWithReason	`im` is deprecated. Interface method.	end	126	12
+tests/rules/@typescript-eslint/no-deprecated/calls/cases.ts:131:4	@typescript-eslint/no-deprecated	deprecatedWithReason	`im` is deprecated. Interface method.	end	131	6
+tests/rules/@typescript-eslint/no-deprecated/calls/cases.ts:147:10	@typescript-eslint/no-deprecated	deprecatedWithReason	`om` is deprecated. Overridden.	end	147	12
+tests/rules/@typescript-eslint/no-deprecated/calls/cases.ts:156:10	@typescript-eslint/no-deprecated	deprecatedWithReason	`om` is deprecated. Overridden.	end	156	12
+tests/rules/@typescript-eslint/no-deprecated/calls/cases.ts:167:7	@typescript-eslint/no-deprecated	deprecatedWithReason	`m` is deprecated. In A.	end	167	8
+tests/rules/@typescript-eslint/no-deprecated/calls/cases.ts:169:6	@typescript-eslint/no-deprecated	deprecatedWithReason	`m` is deprecated. In A.	end	169	7
+tests/rules/@typescript-eslint/no-deprecated/calls/cases.ts:172:10	@typescript-eslint/no-deprecated	deprecatedWithReason	`p` is deprecated. Parameter.	end	172	11
+tests/rules/@typescript-eslint/no-deprecated/calls/cases.ts:174:66	@typescript-eslint/no-deprecated	deprecatedWithReason	`x` is deprecated. Function type parameter.	end	174	75
+tests/rules/@typescript-eslint/no-deprecated/calls/cases.ts:181:7	@typescript-eslint/no-deprecated	deprecatedWithReason	`A` is deprecated. First.	end	181	8
+tests/rules/@typescript-eslint/no-deprecated/calls/cases.ts:189:11	@typescript-eslint/no-deprecated	deprecatedWithReason	`Dep` is deprecated. Deprecated namespace.	end	189	14
+tests/rules/@typescript-eslint/no-deprecated/calls/cases.ts:192:16	@typescript-eslint/no-deprecated	deprecatedWithReason	`Dep` is deprecated. Deprecated namespace.	end	192	19
+tests/rules/@typescript-eslint/no-deprecated/calls/cases.ts:202:12	@typescript-eslint/no-deprecated	deprecatedWithReason	`method` is deprecated. Use {@link other} or {@link Base.other}.	end	202	18
+tests/rules/@typescript-eslint/no-deprecated/calls/cases.ts:210:1	@typescript-eslint/no-deprecated	deprecatedWithReason	`withLinks` is deprecated. Use {@link p} or {@link T}.	end	210	10
+tests/rules/@typescript-eslint/no-deprecated/calls/cases.ts:220:9	@typescript-eslint/no-deprecated	deprecatedWithReason	`method` is deprecated. Literal method.	end	220	15
+tests/rules/@typescript-eslint/no-deprecated/calls/cases.ts:221:14	@typescript-eslint/no-deprecated	deprecatedWithReason	`g` is deprecated. Literal getter.	end	221	15
+tests/rules/@typescript-eslint/no-deprecated/cases.ts:7:1	@typescript-eslint/no-deprecated	deprecatedWithReason	`stale` is deprecated. Use `fresh` instead.	end	7	6
+tests/rules/@typescript-eslint/no-deprecated/cases.ts:9:6	@typescript-eslint/no-deprecated	deprecated	`oldValue` is deprecated.	end	9	14
+tests/rules/@typescript-eslint/no-deprecated/cases.ts:11:5	@typescript-eslint/no-deprecated	deprecatedWithReason	`OldClass` is deprecated. Old class.	end	11	13
+tests/rules/@typescript-eslint/no-deprecated/cases.ts:12:5	@typescript-eslint/no-deprecated	deprecatedWithReason	`Ctor` is deprecated. Do not construct without arguments.	end	12	9
+tests/rules/@typescript-eslint/no-deprecated/cases.ts:14:6	@typescript-eslint/no-deprecated	deprecatedWithReason	`aliasedLocal` is deprecated. The alias is deprecated.	end	14	18
+tests/rules/@typescript-eslint/no-deprecated/cases.ts:16:6	@typescript-eslint/no-deprecated	deprecated	`def` is deprecated.	end	16	9
+tests/rules/@typescript-eslint/no-deprecated/cases.ts:17:4	@typescript-eslint/no-deprecated	deprecatedWithReason	`stale` is deprecated. Use `fresh` instead.	end	17	9
+tests/rules/@typescript-eslint/no-deprecated/cases.ts:18:9	@typescript-eslint/no-deprecated	deprecated	`oldValue` is deprecated.	end	18	17
+tests/rules/@typescript-eslint/no-deprecated/cases.ts:19:6	@typescript-eslint/no-deprecated	deprecatedWithReason	`OldNs` is deprecated. The whole namespace.	end	19	11
+tests/rules/@typescript-eslint/no-deprecated/cases.ts:20:1	@typescript-eslint/no-deprecated	deprecatedWithReason	`staleAgain` is deprecated. Use `fresh` instead.	end	20	11
+tests/rules/@typescript-eslint/no-deprecated/cases.ts:21:1	@typescript-eslint/no-deprecated	deprecatedWithReason	`freshDeprecatedAlias` is deprecated. Deprecated re-export.	end	21	21
+tests/rules/@typescript-eslint/no-deprecated/cases.ts:24:7	@typescript-eslint/no-deprecated	deprecatedWithReason	`area` is deprecated. Use area2.	end	24	11
+tests/rules/@typescript-eslint/no-deprecated/cases.ts:26:12	@typescript-eslint/no-deprecated	deprecatedWithReason	`prop` is deprecated. Property doc.	end	26	16
+tests/rules/@typescript-eslint/no-deprecated/cases.ts:28:7	@typescript-eslint/no-deprecated	deprecatedWithReason	`deprecatedFnProp` is deprecated. Function property.	end	28	23
+tests/rules/@typescript-eslint/no-deprecated/cases.ts:29:9	@typescript-eslint/no-deprecated	deprecatedWithReason	`prop` is deprecated. Property doc.	end	29	13
+tests/rules/@typescript-eslint/no-deprecated/cases.ts:30:9	@typescript-eslint/no-deprecated	deprecatedWithReason	`prop` is deprecated. Property doc.	end	30	13
+tests/rules/@typescript-eslint/no-deprecated/cases.ts:31:12	@typescript-eslint/no-deprecated	deprecatedWithReason	`prop` is deprecated. Property doc.	end	31	18
+tests/rules/@typescript-eslint/no-deprecated/cases.ts:33:12	@typescript-eslint/no-deprecated	deprecatedWithReason	`prop` is deprecated. Property doc.	end	33	15
+tests/rules/@typescript-eslint/no-deprecated/cases.ts:38:1	@typescript-eslint/no-deprecated	deprecatedWithReason	`localOld` is deprecated. Local function.	end	38	9
+tests/rules/@typescript-eslint/no-deprecated/cases.ts:39:15	@typescript-eslint/no-deprecated	deprecatedWithReason	`localOld` is deprecated. Local function.	end	39	23
+tests/rules/@typescript-eslint/no-deprecated/cases.ts:42:1	@typescript-eslint/no-deprecated	deprecated	`counter` is deprecated.	end	42	8
+tests/rules/@typescript-eslint/no-deprecated/cases.ts:43:1	@typescript-eslint/no-deprecated	deprecated	`counter` is deprecated.	end	43	8
+tests/rules/@typescript-eslint/no-deprecated/cases.ts:44:21	@typescript-eslint/no-deprecated	deprecated	`counter` is deprecated.	end	44	28
+tests/rules/@typescript-eslint/no-deprecated/cases.ts:45:23	@typescript-eslint/no-deprecated	deprecated	`counter` is deprecated.	end	45	30
+tests/rules/@typescript-eslint/no-deprecated/cases.ts:48:10	@typescript-eslint/no-deprecated	deprecated	`counter` is deprecated.	end	48	17
+tests/rules/@typescript-eslint/no-deprecated/cases.ts:50:26	@typescript-eslint/no-deprecated	deprecated	`counter` is deprecated.	end	50	33
+tests/rules/@typescript-eslint/no-deprecated/cases.ts:75:10	@typescript-eslint/no-deprecated	deprecatedWithReason	`m` is deprecated. Base method.	end	75	11
+tests/rules/@typescript-eslint/no-deprecated/cases.ts:76:13	@typescript-eslint/no-deprecated	deprecatedWithReason	`s` is deprecated. Static base.	end	76	14
+tests/rules/@typescript-eslint/no-deprecated/cases.ts:77:15	@typescript-eslint/no-deprecated	deprecatedWithReason	`field` is deprecated. Base field.	end	77	20
+tests/rules/@typescript-eslint/no-deprecated/cases.ts:78:15	@typescript-eslint/no-deprecated	deprecatedWithReason	`acc` is deprecated. Base getter.	end	78	18
+tests/rules/@typescript-eslint/no-deprecated/cases.ts:79:11	@typescript-eslint/no-deprecated	deprecatedWithReason	`m` is deprecated. Base method.	end	79	12
+tests/rules/@typescript-eslint/no-deprecated/cases.ts:82:15	@typescript-eslint/no-deprecated	deprecatedWithReason	`m` is deprecated. Base method.	end	82	16
+tests/rules/@typescript-eslint/no-deprecated/cases.ts:83:9	@typescript-eslint/no-deprecated	deprecatedWithReason	`s` is deprecated. Static base.	end	83	10
+tests/rules/@typescript-eslint/no-deprecated/cases.ts:92:1	@typescript-eslint/no-deprecated	deprecatedWithReason	`over` is deprecated. Number overload.	end	92	5
+tests/rules/@typescript-eslint/no-deprecated/cases.ts:93:19	@typescript-eslint/no-deprecated	deprecatedWithReason	`over` is deprecated. Number overload.	end	93	23
+tests/rules/@typescript-eslint/no-deprecated/cases.ts:98:1	@typescript-eslint/no-deprecated	deprecatedWithReason	`linked` is deprecated. Use {@link fresh} or {@link freshthe fresh one} or {@linkcode freshtext}.	end	98	7
+tests/rules/@typescript-eslint/no-deprecated/cases.ts:101:1	@typescript-eslint/no-deprecated	deprecatedWithReason	`linked2` is deprecated. See {@link Nope } and {@link https://example.com docs} or {@link https://example.com}.	end	101	8
+tests/rules/@typescript-eslint/no-deprecated/cases.ts:104:1	@typescript-eslint/no-deprecated	deprecatedWithReason	`linked3` is deprecated. {@link Base#m } member and {@link Base.s} static and {@link Nope.deep }.	end	104	8
+tests/rules/@typescript-eslint/no-deprecated/cases.ts:107:1	@typescript-eslint/no-deprecated	deprecatedWithReason	`linked4` is deprecated. {@linkplain fresh}{@link fresh()} {@link Base<number> generic} {@link }	end	107	8
+tests/rules/@typescript-eslint/no-deprecated/cases.ts:114:1	@typescript-eslint/no-deprecated	deprecatedWithReason	`linked5` is deprecated. Use {@link * fresh} across lines, {@link fresh* and more}.	end	114	8
+tests/rules/@typescript-eslint/no-deprecated/cases.ts:121:1	@typescript-eslint/no-deprecated	deprecatedWithReason	`overLinked` is deprecated. Use {@link freshFresh}.	end	121	11
+tests/rules/@typescript-eslint/no-deprecated/cases.ts:125:21	@typescript-eslint/no-deprecated	deprecatedWithReason	`OldBase` is deprecated. Old base class.	end	125	28
+tests/rules/@typescript-eslint/no-deprecated/cases.ts:127:5	@typescript-eslint/no-deprecated	deprecatedWithReason	`super` is deprecated. Old base class.	end	127	10
+tests/rules/@typescript-eslint/no-deprecated/cases.ts:134:15	@typescript-eslint/no-deprecated	deprecatedWithReason	`#p` is deprecated. Private field.	end	134	17
+tests/rules/@typescript-eslint/no-deprecated/cases.ts:135:10	@typescript-eslint/no-deprecated	deprecatedWithReason	`#pm` is deprecated. Private method.	end	135	13
+tests/rules/@typescript-eslint/no-deprecated/cases.ts:136:12	@typescript-eslint/no-deprecated	deprecatedWithReason	`#p` is deprecated. Private field.	end	136	14
+tests/rules/@typescript-eslint/no-deprecated/cases.ts:143:14	@typescript-eslint/no-deprecated	deprecatedWithReason	`OldType` is deprecated. Old type.	end	143	21
+tests/rules/@typescript-eslint/no-deprecated/cases.ts:146:23	@typescript-eslint/no-deprecated	deprecatedWithReason	`OldIface` is deprecated. Old interface.	end	146	31
+tests/rules/@typescript-eslint/no-deprecated/cases.ts:147:28	@typescript-eslint/no-deprecated	deprecatedWithReason	`OldType` is deprecated. Old type.	end	147	35
+tests/rules/@typescript-eslint/no-deprecated/cases.ts:150:21	@typescript-eslint/no-deprecated	deprecatedWithReason	`localOld` is deprecated. Local function.	end	150	29
+tests/rules/@typescript-eslint/no-deprecated/cases.ts:159:12	@typescript-eslint/no-deprecated	deprecatedWithReason	`Red` is deprecated. Use Blue.	end	159	15
+tests/rules/@typescript-eslint/no-deprecated/cases.ts:160:12	@typescript-eslint/no-deprecated	deprecatedWithReason	`Red` is deprecated. Use Blue.	end	160	17
+tests/rules/@typescript-eslint/no-deprecated/cases.ts:165:12	@typescript-eslint/no-deprecated	deprecatedWithReason	`am` is deprecated. Abstract method.	end	165	14
+tests/rules/@typescript-eslint/no-deprecated/cases.ts:167:12	@typescript-eslint/no-deprecated	deprecatedWithReason	`ap` is deprecated. Abstract property.	end	167	14
+tests/rules/@typescript-eslint/no-deprecated/cases.ts:171:10	@typescript-eslint/no-deprecated	deprecatedWithReason	`localOld` is deprecated. Local function.	end	171	18
+tests/rules/@typescript-eslint/no-deprecated/cases.ts:172:22	@typescript-eslint/no-deprecated	deprecatedWithReason	`renamedOld` is deprecated. Local function.	end	172	32
+tests/rules/@typescript-eslint/no-deprecated/cases.ts:181:14	@typescript-eslint/no-deprecated	deprecatedWithReason	`target` is deprecated. Old with new.target.	end	181	20
+tests/rules/@typescript-eslint/no-deprecated/cases.ts:184:6	@typescript-eslint/no-deprecated	deprecatedWithReason	`WithNewTarget` is deprecated. Old with new.target.	end	184	19
+tests/rules/@typescript-eslint/no-deprecated/cases.ts:189:1	@typescript-eslint/no-deprecated	deprecatedWithReason	`secondDeclarator` is deprecated. Statement doc.	end	189	17
+tests/rules/@typescript-eslint/no-deprecated/cases.ts:191:6	@typescript-eslint/no-deprecated	deprecatedWithReason	`firstDeclarator` is deprecated. Statement doc.	end	191	21
+tests/rules/@typescript-eslint/no-deprecated/cases.ts:194:1	@typescript-eslint/no-deprecated	deprecatedWithReason	`initArrow` is deprecated. Initializer arrow.	end	194	10
+tests/rules/@typescript-eslint/no-deprecated/cases.ts:195:6	@typescript-eslint/no-deprecated	deprecatedWithReason	`initArrow` is deprecated. Initializer arrow.	end	195	15
+tests/rules/@typescript-eslint/no-deprecated/cases.ts:200:12	@typescript-eslint/no-deprecated	deprecatedWithReason	`p2` is deprecated. Inner.	end	200	14
+tests/rules/@typescript-eslint/no-deprecated/cases.ts:202:12	@typescript-eslint/no-deprecated	deprecatedWithReason	`substr` is deprecated. A legacy feature for browser compatibility	end	202	18
+tests/rules/@typescript-eslint/no-deprecated/cases.ts:214:16	@typescript-eslint/no-deprecated	deprecatedWithReason	`v` is deprecated. Getter.	end	214	17
+tests/rules/@typescript-eslint/no-deprecated/cases.ts:215:11	@typescript-eslint/no-deprecated	deprecatedWithReason	`v` is deprecated. Getter.	end	215	12
+tests/rules/@typescript-eslint/no-deprecated/jsdoc/cases.ts:6:1	@typescript-eslint/no-deprecated	deprecatedWithReason	`twice` is deprecated. First reason.	end	6	6
+tests/rules/@typescript-eslint/no-deprecated/jsdoc/cases.ts:27:1	@typescript-eslint/no-deprecated	deprecatedWithReason	`typedefWithParam` is deprecated. Typedef with a parameter.	end	27	17
+tests/rules/@typescript-eslint/no-deprecated/jsdoc/cases.ts:40:11	@typescript-eslint/no-deprecated	deprecatedWithReason	`m` is deprecated. Base reason.	end	40	12
+tests/rules/@typescript-eslint/no-deprecated/jsdoc/cases.ts:44:9	@typescript-eslint/no-deprecated	deprecatedWithReason	`prop` is deprecated. Expando property.	end	44	13
+tests/rules/@typescript-eslint/no-deprecated/jsdoc/cases.ts:45:9	@typescript-eslint/no-deprecated	deprecatedWithReason	`prop` is deprecated. Expando property.	end	45	13
+tests/rules/@typescript-eslint/no-deprecated/jsdoc/cases.ts:48:1	@typescript-eslint/no-deprecated	deprecatedWithReason	`expando2` is deprecated. Defaulted.	end	48	9
+tests/rules/@typescript-eslint/no-deprecated/jsdoc/cases.ts:48:10	@typescript-eslint/no-deprecated	deprecatedWithReason	`prop` is deprecated. Defaulted.	end	48	14
+tests/rules/@typescript-eslint/no-deprecated/jsdoc/cases.ts:49:3	@typescript-eslint/no-deprecated	deprecatedWithReason	`named` is deprecated. Defaulted.	end	49	8
+tests/rules/@typescript-eslint/no-deprecated/jsdoc/cases.ts:51:6	@typescript-eslint/no-deprecated	deprecatedWithReason	`expando2` is deprecated. Defaulted.	end	51	14
+tests/rules/@typescript-eslint/no-deprecated/jsdoc/cases.ts:51:15	@typescript-eslint/no-deprecated	deprecatedWithReason	`prop` is deprecated. Defaulted.	end	51	19
+tests/rules/@typescript-eslint/no-deprecated/jsdoc/cases.ts:67:22	@typescript-eslint/no-deprecated	deprecatedWithReason	`prop` is deprecated. Property doc.	end	67	26
+tests/rules/@typescript-eslint/no-deprecated/jsdoc/cases.ts:73:14	@typescript-eslint/no-deprecated	deprecatedWithReason	`prop` is deprecated. Property doc.	end	73	18
+tests/rules/@typescript-eslint/no-deprecated/jsdoc/cases.ts:76:9	@typescript-eslint/no-deprecated	deprecatedWithReason	`prop` is deprecated. Property doc.	end	76	13
+tests/rules/@typescript-eslint/no-deprecated/jsdoc/cases.ts:77:14	@typescript-eslint/no-deprecated	deprecatedWithReason	`prop` is deprecated. Property doc.	end	77	20
+tests/rules/@typescript-eslint/no-deprecated/jsdoc/cases.ts:78:12	@typescript-eslint/no-deprecated	deprecatedWithReason	`prop` is deprecated. Property doc.	end	78	18
+tests/rules/@typescript-eslint/no-deprecated/jsdoc/cases.ts:84:27	@typescript-eslint/no-deprecated	deprecatedWithReason	`prop` is deprecated. Property doc.	end	84	31
+tests/rules/@typescript-eslint/no-deprecated/jsdoc/cases.ts:90:16	@typescript-eslint/no-deprecated	deprecatedWithReason	`defaulted` is deprecated. Default export.	end	90	25
+tests/rules/@typescript-eslint/no-deprecated/jsdoc/cases.ts:96:1	@typescript-eslint/no-deprecated	deprecatedWithReason	`arrowExpando` is deprecated. Arrow defaulted.	end	96	13
+tests/rules/@typescript-eslint/no-deprecated/jsdoc/cases.ts:96:14	@typescript-eslint/no-deprecated	deprecatedWithReason	`prop` is deprecated. Arrow defaulted.	end	96	18
+tests/rules/@typescript-eslint/no-deprecated/jsdoc/cases.ts:97:1	@typescript-eslint/no-deprecated	deprecatedWithReason	`arrowExpando` is deprecated. Arrow defaulted.	end	97	13
+tests/rules/@typescript-eslint/no-deprecated/jsdoc/cases.ts:98:6	@typescript-eslint/no-deprecated	deprecatedWithReason	`arrowExpando` is deprecated. Arrow defaulted.	end	98	18
+tests/rules/@typescript-eslint/no-deprecated/jsdoc/cases.ts:109:23	@typescript-eslint/no-deprecated	deprecatedWithReason	`prop` is deprecated. Chained.	end	109	27
+tests/rules/@typescript-eslint/no-deprecated/jsdoc/cases.ts:114:1	@typescript-eslint/no-deprecated	deprecatedWithReason	`elementExpando` is deprecated. Element access.	end	114	15
+tests/rules/@typescript-eslint/no-deprecated/jsdoc/cases.ts:114:16	@typescript-eslint/no-deprecated	deprecatedWithReason	`prop` is deprecated. Element access.	end	114	22
+tests/rules/@typescript-eslint/no-deprecated/jsdoc/cases.ts:115:6	@typescript-eslint/no-deprecated	deprecatedWithReason	`elementExpando` is deprecated. Element access.	end	115	20
+tests/rules/@typescript-eslint/no-deprecated/jsdoc/cases.ts:118:14	@typescript-eslint/no-deprecated	deprecatedWithReason	`prop` is deprecated. Not defaulted.	end	118	18
+tests/rules/@typescript-eslint/no-deprecated/jsdoc/cases.ts:120:19	@typescript-eslint/no-deprecated	deprecatedWithReason	`prop` is deprecated. Not defaulted.	end	120	23
+tests/rules/@typescript-eslint/no-deprecated/jsx-elements/cases.tsx:36:12	@typescript-eslint/no-deprecated	deprecatedWithReason	`OldButton` is deprecated. Use NewButton.	end	36	21
+tests/rules/@typescript-eslint/no-deprecated/jsx-elements/cases.tsx:37:12	@typescript-eslint/no-deprecated	deprecatedWithReason	`OldButton` is deprecated. Use NewButton.	end	37	21
+tests/rules/@typescript-eslint/no-deprecated/jsx-elements/cases.tsx:38:32	@typescript-eslint/no-deprecated	deprecatedWithReason	`text` is deprecated. Use label.	end	38	36
+tests/rules/@typescript-eslint/no-deprecated/jsx-elements/cases.tsx:39:12	@typescript-eslint/no-deprecated	deprecatedWithReason	`Overloaded` is deprecated. The form with a title.	end	39	22
+tests/rules/@typescript-eslint/no-deprecated/jsx-elements/cases.tsx:41:15	@typescript-eslint/no-deprecated	deprecatedWithReason	`Old` is deprecated. Use Ns.New.	end	41	18
+tests/rules/@typescript-eslint/no-deprecated/jsx-elements/cases.tsx:43:12	@typescript-eslint/no-deprecated	deprecatedWithReason	`OldNs` is deprecated. Whole namespace.	end	43	17
+tests/rules/@typescript-eslint/no-deprecated/jsx-elements/cases.tsx:43:25	@typescript-eslint/no-deprecated	deprecatedWithReason	`OldNs` is deprecated. Whole namespace.	end	43	30
+tests/rules/@typescript-eslint/no-deprecated/jsx-elements/cases.tsx:44:12	@typescript-eslint/no-deprecated	deprecatedWithReason	`center` is deprecated. Use section.	end	44	18
+tests/rules/@typescript-eslint/no-deprecated/jsx-elements/cases.tsx:45:16	@typescript-eslint/no-deprecated	deprecatedWithReason	`class` is deprecated. Use className.	end	45	21
+tests/rules/@typescript-eslint/no-deprecated/jsx-elements/cases.tsx:47:14	@typescript-eslint/no-deprecated	deprecatedWithReason	`text` is deprecated. Use label.	end	47	18
+tests/rules/@typescript-eslint/no-deprecated/jsx-elements/cases.tsx:48:6	@typescript-eslint/no-deprecated	deprecatedWithReason	`OldButton` is deprecated. Use NewButton.	end	48	15

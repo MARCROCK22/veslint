@@ -1,0 +1,5 @@
+tests/rules/no-useless-concat/cases.ts:4:16	no-useless-concat	unexpectedConcat	Unexpected string concatenation of literals.	end	4	17
+tests/rules/no-useless-concat/cases.ts:5:16	no-useless-concat	unexpectedConcat	Unexpected string concatenation of literals.	end	5	17
+tests/rules/no-useless-concat/cases.ts:6:20	no-useless-concat	unexpectedConcat	Unexpected string concatenation of literals.	end	6	21
+tests/rules/no-useless-concat/cases.ts:7:18	no-useless-concat	unexpectedConcat	Unexpected string concatenation of literals.	end	7	19
+tests/rules/no-useless-concat/cases.ts:8:16	no-useless-concat	unexpectedConcat	Unexpected string concatenation of literals.	end	8	17

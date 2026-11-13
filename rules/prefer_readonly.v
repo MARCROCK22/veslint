@@ -274,7 +274,9 @@ fn (mut c Checker) lint_prefer_readonly(root C.TSNode, abs_path string, mut stat
 			fixes << fix_insert_at(node_end(member.name_node), ': ${annotation}')
 		}
 		findings << c.with_fixes(Finding{
-			stmt:       member_start(member.node)
+			// getMemberHeadLoc: to the end of the key (its `]` when computed), or of the name of
+			// a parameter property.
+			stmt:       c.position_range(member_start(member.node).start_byte, c.prd_key_end(member))
 			message_id: 'preferReadonly'
 			data:       {
 				'name': c.prd_name_text(member)
@@ -585,4 +587,15 @@ fn (mut c Checker) prd_type_annotation(report PrdReport) !string {
 		}
 	}
 	return annotation
+}
+
+// prd_key_end is where the head of a member ends (getMemberHeadLoc): after its key, or the `]`
+// of a computed one.
+fn (c &Checker) prd_key_end(member PrdMember) int {
+	if parent := node_parent(member.name_node) {
+		if node_kind(parent) == 'computed_property_name' {
+			return node_end(parent)
+		}
+	}
+	return node_end(member.name_node)
 }

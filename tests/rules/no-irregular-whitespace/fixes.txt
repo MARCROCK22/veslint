@@ -1,0 +1,7 @@
+tests/rules/no-irregular-whitespace/cases.ts:2:14	no-irregular-whitespace	noIrregularWhitespace	Irregular whitespace not allowed.	end	2	15
+tests/rules/no-irregular-whitespace/cases.ts:3:6	no-irregular-whitespace	noIrregularWhitespace	Irregular whitespace not allowed.	end	3	7
+tests/rules/no-irregular-whitespace/cases.ts:4:14	no-irregular-whitespace	noIrregularWhitespace	Irregular whitespace not allowed.	end	5	1
+tests/rules/no-irregular-whitespace/cases.ts:6:11	no-irregular-whitespace	noIrregularWhitespace	Irregular whitespace not allowed.	end	6	12
+tests/rules/no-irregular-whitespace/cases.ts:7:14	no-irregular-whitespace	noIrregularWhitespace	Irregular whitespace not allowed.	end	7	15
+tests/rules/no-irregular-whitespace/cases.ts:11:13	no-irregular-whitespace	noIrregularWhitespace	Irregular whitespace not allowed.	end	11	14
+tests/rules/no-irregular-whitespace/options/cases.ts:5:13	no-irregular-whitespace	noIrregularWhitespace	Irregular whitespace not allowed.	end	5	14

@@ -1,0 +1,3 @@
+tests/rules/no-template-curly-in-string/cases.ts:4:12	no-template-curly-in-string	unexpectedTemplateExpression	Unexpected template string expression.	end	4	27
+tests/rules/no-template-curly-in-string/cases.ts:5:12	no-template-curly-in-string	unexpectedTemplateExpression	Unexpected template string expression.	end	5	27
+tests/rules/no-template-curly-in-string/cases.ts:6:12	no-template-curly-in-string	unexpectedTemplateExpression	Unexpected template string expression.	end	6	25

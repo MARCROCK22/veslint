@@ -111,7 +111,7 @@ fn (mut c Checker) lint_require_await(root C.TSNode, abs_path string, mut stats 
 	for candidate in candidates {
 		if c.reports_missing_await(candidate)! {
 			findings << Finding{
-				stmt:        function_head(candidate.node)
+				stmt:        c.function_head(candidate.node)
 				message_id:  'missingAwait'
 				data:        {
 					'name': c.function_name(candidate.node)
@@ -361,21 +361,21 @@ fn is_value_of(member C.TSNode, f C.TSNode) bool {
 	return node_key(unwrap_parens(value)) == node_key(f)
 }
 
-// function_head ports the start of getFunctionHeadLoc, which is where the rule reports: the class
-// member (without its decorators) or the property whose value the function is, the `=>` of other
-// arrows and, otherwise, the start of the function.
-fn function_head(f C.TSNode) Ident {
+// function_head ports typescript-eslint's getFunctionHeadLoc, which is where the rules report:
+// from the class member (without its decorators) or the property whose value the function is,
+// or from the function, to the opening paren of its parameters; or the `=>` of other arrows.
+fn (mut c Checker) function_head(f C.TSNode) Ident {
 	kind := node_kind(f)
 	if kind == 'method_definition' {
-		return position_of(f)
+		return c.position_range(node_start(f), c.es_params_paren(f))
 	}
 	if parent := estree_parent(f) {
 		parent_kind := node_kind(parent)
 		if parent_kind == 'public_field_definition' && is_value_of(parent, f) {
-			return member_start(parent)
+			return c.position_range(member_start(parent).start_byte, c.es_params_paren(f))
 		}
 		if parent_kind == 'pair' && is_value_of(parent, f) {
-			return position_of(parent)
+			return c.position_range(node_start(parent), c.es_params_paren(f))
 		}
 	}
 	if kind == 'arrow_function' {
@@ -385,7 +385,7 @@ fn function_head(f C.TSNode) Ident {
 			}
 		}
 	}
-	return position_of(f)
+	return c.position_range(node_start(f), c.es_params_paren(f))
 }
 
 // member_start is the first token of a class member after its decorators.

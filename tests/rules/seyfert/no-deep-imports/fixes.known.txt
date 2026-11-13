@@ -1,4 +1,4 @@
 # The plugin always writes the root source with single quotes; veslint keeps the quotes the source
 # was written with (see "seyfert/*" in the README).
-eslint	tests/rules/seyfert/no-deep-imports/cases.ts:9:10	seyfert/no-deep-imports	preferRoot	'Formatter' is exported from 'seyfert'; import it from the package root, not 'seyfert/lib/common'.	fix	498	518	'seyfert'
-veslint	tests/rules/seyfert/no-deep-imports/cases.ts:9:10	seyfert/no-deep-imports	preferRoot	'Formatter' is exported from 'seyfert'; import it from the package root, not 'seyfert/lib/common'.	fix	498	518	"seyfert"
+eslint	tests/rules/seyfert/no-deep-imports/cases.ts:9:10	seyfert/no-deep-imports	preferRoot	'Formatter' is exported from 'seyfert'; import it from the package root, not 'seyfert/lib/common'.	fix	498	518	'seyfert'	end	9	19
+veslint	tests/rules/seyfert/no-deep-imports/cases.ts:9:10	seyfert/no-deep-imports	preferRoot	'Formatter' is exported from 'seyfert'; import it from the package root, not 'seyfert/lib/common'.	fix	498	518	"seyfert"	end	9	19

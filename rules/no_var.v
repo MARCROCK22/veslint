@@ -47,11 +47,11 @@ fn (mut c Checker) lint_no_var(root C.TSNode, abs_path string, mut stats Stats) 
 		}
 		has_fix := c.nvar_can_fix(root, node, estree)
 		findings << Finding{
-			stmt:       position_of(if node_kind(node) == 'for_in_statement' {
-				var_token
+			stmt:       if node_kind(node) == 'for_in_statement' || node_key(estree) == node_key(node) {
+				c.es_declaration_position(node)
 			} else {
-				estree
-			})
+				position_of(estree)
+			}
 			message_id: 'unexpectedVar'
 			has_fix:    has_fix
 			fix:        if has_fix {

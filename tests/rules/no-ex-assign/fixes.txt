@@ -1,0 +1,3 @@
+tests/rules/no-ex-assign/cases.ts:6:3	no-ex-assign	unexpected	Do not assign to the exception parameter.	end	6	4
+tests/rules/no-ex-assign/cases.ts:10:3	no-ex-assign	unexpected	Do not assign to the exception parameter.	end	10	10
+tests/rules/no-ex-assign/cases.ts:14:4	no-ex-assign	unexpected	Do not assign to the exception parameter.	end	14	5

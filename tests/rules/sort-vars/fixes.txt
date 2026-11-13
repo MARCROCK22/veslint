@@ -1,13 +1,13 @@
-tests/rules/sort-vars/cases.ts:2:12	sort-vars	sortVars	Variables within the same declaration block should be sorted alphabetically.	fix	73	85	a = 2, b = 1
-tests/rules/sort-vars/cases.ts:3:14	sort-vars	sortVars	Variables within the same declaration block should be sorted alphabetically.	fix	91	128	B = /re/, c = null, d = 'x', e = true
-tests/rules/sort-vars/cases.ts:3:34	sort-vars	sortVars	Variables within the same declaration block should be sorted alphabetically.
-tests/rules/sort-vars/cases.ts:4:22	sort-vars	sortVars	Variables within the same declaration block should be sorted alphabetically.	fix	136	173	x = 3, y: string = 'y', z: number = 1
-tests/rules/sort-vars/cases.ts:4:39	sort-vars	sortVars	Variables within the same declaration block should be sorted alphabetically.
-tests/rules/sort-vars/cases.ts:5:32	sort-vars	sortVars	Variables within the same declaration block should be sorted alphabetically.	fix	194	225	alpha = 4, beta = 3, second = 2
-tests/rules/sort-vars/cases.ts:5:42	sort-vars	sortVars	Variables within the same declaration block should be sorted alphabetically.
-tests/rules/sort-vars/cases.ts:6:12	sort-vars	sortVars	Variables within the same declaration block should be sorted alphabetically.
-tests/rules/sort-vars/cases.ts:7:13	sort-vars	sortVars	Variables within the same declaration block should be sorted alphabetically.
-tests/rules/sort-vars/cases.ts:8:18	sort-vars	sortVars	Variables within the same declaration block should be sorted alphabetically.	fix	282	301	ac = 2, \\u0062c = 1
-tests/rules/sort-vars/ignore-case/cases.ts:2:12	sort-vars	sortVars	Variables within the same declaration block should be sorted alphabetically.	fix	17	29	A = 2, b = 1
-tests/rules/sort-vars/ignore-case/cases.ts:3:12	sort-vars	sortVars	Variables within the same declaration block should be sorted alphabetically.	fix	35	55	a = 3, b2 = 2, C = 1
-tests/rules/sort-vars/ignore-case/cases.ts:3:20	sort-vars	sortVars	Variables within the same declaration block should be sorted alphabetically.
+tests/rules/sort-vars/cases.ts:2:12	sort-vars	sortVars	Variables within the same declaration block should be sorted alphabetically.	fix	73	85	a = 2, b = 1	end	2	17
+tests/rules/sort-vars/cases.ts:3:14	sort-vars	sortVars	Variables within the same declaration block should be sorted alphabetically.	fix	91	128	B = /re/, c = null, d = 'x', e = true	end	3	22
+tests/rules/sort-vars/cases.ts:3:34	sort-vars	sortVars	Variables within the same declaration block should be sorted alphabetically.	end	3	42
+tests/rules/sort-vars/cases.ts:4:22	sort-vars	sortVars	Variables within the same declaration block should be sorted alphabetically.	fix	136	173	x = 3, y: string = 'y', z: number = 1	end	4	37
+tests/rules/sort-vars/cases.ts:4:39	sort-vars	sortVars	Variables within the same declaration block should be sorted alphabetically.	end	4	44
+tests/rules/sort-vars/cases.ts:5:32	sort-vars	sortVars	Variables within the same declaration block should be sorted alphabetically.	fix	194	225	alpha = 4, beta = 3, second = 2	end	5	40
+tests/rules/sort-vars/cases.ts:5:42	sort-vars	sortVars	Variables within the same declaration block should be sorted alphabetically.	end	5	51
+tests/rules/sort-vars/cases.ts:6:12	sort-vars	sortVars	Variables within the same declaration block should be sorted alphabetically.	end	6	30
+tests/rules/sort-vars/cases.ts:7:13	sort-vars	sortVars	Variables within the same declaration block should be sorted alphabetically.	end	7	19
+tests/rules/sort-vars/cases.ts:8:18	sort-vars	sortVars	Variables within the same declaration block should be sorted alphabetically.	fix	282	301	ac = 2, \\u0062c = 1	end	8	24
+tests/rules/sort-vars/ignore-case/cases.ts:2:12	sort-vars	sortVars	Variables within the same declaration block should be sorted alphabetically.	fix	17	29	A = 2, b = 1	end	2	17
+tests/rules/sort-vars/ignore-case/cases.ts:3:12	sort-vars	sortVars	Variables within the same declaration block should be sorted alphabetically.	fix	35	55	a = 3, b2 = 2, C = 1	end	3	18
+tests/rules/sort-vars/ignore-case/cases.ts:3:20	sort-vars	sortVars	Variables within the same declaration block should be sorted alphabetically.	end	3	25

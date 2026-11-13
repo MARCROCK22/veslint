@@ -5,7 +5,7 @@
 # text) must be the expected ones plus those listed in limitations.txt (cases the reference reports
 # and veslint does not, documented in the README). Where a rule has a fixes.txt (the output of
 # veslint with --fixes), its lines must be the reference's findings with the fix and the
-# suggestions of each one (range in UTF-16 units and text).
+# suggestions of each one (range in UTF-16 units and text) and where it ends (endLine, endColumn).
 # Needs the build/eval dependencies, installed by tests/eval_spider_byte.sh, and build/upstream/seyfert
 # (tests/upstream/README.md), which tests/rules/seyfert/setup.sh links next to the seyfert fixtures.
 set -uo pipefail

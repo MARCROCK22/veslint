@@ -33,7 +33,7 @@ fn (mut c Checker) lint_no_for_in_array(root C.TSNode, abs_path string, mut stat
 		if c.nfia_is_array_like(c.constrained(t)!, 0)! {
 			// getForStatementHeadLoc starts at the `for` keyword.
 			findings << Finding{
-				stmt:       position_of(loop)
+				stmt:       c.es_for_head_position(loop)
 				message_id: 'forInViolation'
 			}
 		}

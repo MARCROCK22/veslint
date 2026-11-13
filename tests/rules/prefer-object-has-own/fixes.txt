@@ -1,5 +1,5 @@
-tests/rules/prefer-object-has-own/cases.ts:4:1	prefer-object-has-own	useHasOwn	Use 'Object.hasOwn()' instead of 'Object.prototype.hasOwnProperty.call()'.	fix	38	74	Object.hasOwn
-tests/rules/prefer-object-has-own/cases.ts:5:1	prefer-object-has-own	useHasOwn	Use 'Object.hasOwn()' instead of 'Object.prototype.hasOwnProperty.call()'.	fix	86	110	Object.hasOwn
-tests/rules/prefer-object-has-own/cases.ts:6:1	prefer-object-has-own	useHasOwn	Use 'Object.hasOwn()' instead of 'Object.prototype.hasOwnProperty.call()'.	fix	122	148	Object.hasOwn
-tests/rules/prefer-object-has-own/cases.ts:7:12	prefer-object-has-own	useHasOwn	Use 'Object.hasOwn()' instead of 'Object.prototype.hasOwnProperty.call()'.	fix	171	207	Object.hasOwn
-tests/rules/prefer-object-has-own/cases.ts:8:11	prefer-object-has-own	useHasOwn	Use 'Object.hasOwn()' instead of 'Object.prototype.hasOwnProperty.call()'.	fix	229	274	Object.hasOwn
+tests/rules/prefer-object-has-own/cases.ts:4:1	prefer-object-has-own	useHasOwn	Use 'Object.hasOwn()' instead of 'Object.prototype.hasOwnProperty.call()'.	fix	38	74	Object.hasOwn	end	4	47
+tests/rules/prefer-object-has-own/cases.ts:5:1	prefer-object-has-own	useHasOwn	Use 'Object.hasOwn()' instead of 'Object.prototype.hasOwnProperty.call()'.	fix	86	110	Object.hasOwn	end	5	35
+tests/rules/prefer-object-has-own/cases.ts:6:1	prefer-object-has-own	useHasOwn	Use 'Object.hasOwn()' instead of 'Object.prototype.hasOwnProperty.call()'.	fix	122	148	Object.hasOwn	end	6	37
+tests/rules/prefer-object-has-own/cases.ts:7:12	prefer-object-has-own	useHasOwn	Use 'Object.hasOwn()' instead of 'Object.prototype.hasOwnProperty.call()'.	fix	171	207	Object.hasOwn	end	7	58
+tests/rules/prefer-object-has-own/cases.ts:8:11	prefer-object-has-own	useHasOwn	Use 'Object.hasOwn()' instead of 'Object.prototype.hasOwnProperty.call()'.	fix	229	274	Object.hasOwn	end	8	66

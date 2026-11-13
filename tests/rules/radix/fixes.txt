@@ -1,8 +1,8 @@
-tests/rules/radix/cases.ts:2:11	radix	missingRadix	Missing radix parameter.	suggestion	addRadixParameter10	Add radix parameter `10` for parsing decimal numbers.	36	36	, 10
-tests/rules/radix/cases.ts:3:11	radix	missingParameters	Missing parameters.
-tests/rules/radix/cases.ts:4:11	radix	invalidRadix	Invalid radix parameter, must be an integer between 2 and 36.
-tests/rules/radix/cases.ts:5:11	radix	invalidRadix	Invalid radix parameter, must be an integer between 2 and 36.
-tests/rules/radix/cases.ts:6:11	radix	invalidRadix	Invalid radix parameter, must be an integer between 2 and 36.
-tests/rules/radix/cases.ts:7:11	radix	missingRadix	Missing radix parameter.	suggestion	addRadixParameter10	Add radix parameter `10` for parsing decimal numbers.	187	187	, 10
-tests/rules/radix/cases.ts:8:11	radix	missingRadix	Missing radix parameter.	suggestion	addRadixParameter10	Add radix parameter `10` for parsing decimal numbers.	214	214	 10,
-tests/rules/radix/cases.ts:10:11	radix	invalidRadix	Invalid radix parameter, must be an integer between 2 and 36.
+tests/rules/radix/cases.ts:2:11	radix	missingRadix	Missing radix parameter.	suggestion	addRadixParameter10	Add radix parameter `10` for parsing decimal numbers.	36	36	, 10	end	2	25
+tests/rules/radix/cases.ts:3:11	radix	missingParameters	Missing parameters.	end	3	21
+tests/rules/radix/cases.ts:4:11	radix	invalidRadix	Invalid radix parameter, must be an integer between 2 and 36.	end	4	28
+tests/rules/radix/cases.ts:5:11	radix	invalidRadix	Invalid radix parameter, must be an integer between 2 and 36.	end	5	29
+tests/rules/radix/cases.ts:6:11	radix	invalidRadix	Invalid radix parameter, must be an integer between 2 and 36.	end	6	36
+tests/rules/radix/cases.ts:7:11	radix	missingRadix	Missing radix parameter.	suggestion	addRadixParameter10	Add radix parameter `10` for parsing decimal numbers.	187	187	, 10	end	7	32
+tests/rules/radix/cases.ts:8:11	radix	missingRadix	Missing radix parameter.	suggestion	addRadixParameter10	Add radix parameter `10` for parsing decimal numbers.	214	214	 10,	end	8	26
+tests/rules/radix/cases.ts:10:11	radix	invalidRadix	Invalid radix parameter, must be an integer between 2 and 36.	end	10	35

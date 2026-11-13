@@ -1,7 +1,7 @@
 module rules
 
 import time
-import treesitter { node_start }
+import treesitter { node_start, position_of }
 
 // Port of the `options-use-builders` rule of @slipher/eslint-plugin 1.1.0 (it has no options): in
 // the object of seyfert's `@Options` (through `const` bindings, imports and spreads), a value that
@@ -45,9 +45,9 @@ fn (mut c Checker) lint_seyfert_options_use_builders(root C.TSNode, abs_path str
 		mut seen := map[string]bool{}
 		c.sy_oub_check_object(options, options, mut seen, mut violations)!
 		for violation in violations {
-			offset := c.sy_position_of(violation.node) or { node_start(arguments[i]) }
+			place := c.sy_place_of(violation.node) or { position_of(arguments[i]) }
 			findings << Finding{
-				stmt:       c.position_at(offset)
+				stmt:       place
 				message_id: 'useBuilder'
 				data:       {
 					'name': violation.name

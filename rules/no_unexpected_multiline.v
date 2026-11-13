@@ -33,7 +33,7 @@ fn (mut c Checker) lint_no_unexpected_multiline(root C.TSNode, abs_path string, 
 					before := tokens.before(node_start(args), false) or { continue }
 					if es_has_line_break(c.src[before.end..node_start(args)]) {
 						findings << Finding{
-							stmt:       c.position_at(node_start(args))
+							stmt:       c.position_range(node_start(args), node_start(args) + 1)
 							message_id: 'taggedTemplate'
 						}
 					}
@@ -84,7 +84,7 @@ fn (mut c Checker) num_check_break_after(root C.TSNode, n C.TSNode, message_id s
 	end := tokens.before(open.start, false) or { return }
 	if es_has_line_break(c.src[end.end..open.start]) {
 		findings << Finding{
-			stmt:       c.position_at(open.start)
+			stmt:       c.position_range(open.start, open.end)
 			message_id: message_id
 		}
 	}

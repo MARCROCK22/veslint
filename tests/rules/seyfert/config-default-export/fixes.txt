@@ -1,0 +1,17 @@
+tests/rules/seyfert/config-default-export/cases.ts:10:13	seyfert/config-default-export	mustDefaultExport	The result of `config.bot()` must be the file's `export default`.	end	10	50
+tests/rules/seyfert/config-default-export/cases.ts:11:23	seyfert/config-default-export	mustDefaultExport	The result of `config.http()` must be the file's `export default`.	end	11	40
+tests/rules/seyfert/config-default-export/cases.ts:12:1	seyfert/config-default-export	mustDefaultExport	The result of `config.bot()` must be the file's `export default`.	end	12	45
+tests/rules/seyfert/config-default-export/cases.ts:13:1	seyfert/config-default-export	mustDefaultExport	The result of `config.http()` must be the file's `export default`.	end	13	26
+tests/rules/seyfert/config-default-export/cases.ts:14:1	seyfert/config-default-export	mustDefaultExport	The result of `config.bot()` must be the file's `export default`.	end	14	45
+tests/rules/seyfert/config-default-export/cases.ts:16:10	seyfert/config-default-export	mustDefaultExport	The result of `config.bot()` must be the file's `export default`.	end	16	47
+tests/rules/seyfert/config-default-export/cases.ts:18:26	seyfert/config-default-export	mustDefaultExport	The result of `config.bot()` must be the file's `export default`.	end	18	63
+tests/rules/seyfert/config-default-export/cases.ts:19:24	seyfert/config-default-export	mustDefaultExport	The result of `config.bot()` must be the file's `export default`.	end	19	61
+tests/rules/seyfert/config-default-export/cases.ts:20:31	seyfert/config-default-export	mustDefaultExport	The result of `config.bot()` must be the file's `export default`.	end	20	68
+tests/rules/seyfert/config-default-export/cases.ts:21:24	seyfert/config-default-export	mustDefaultExport	The result of `config.bot()` must be the file's `export default`.	end	21	62
+tests/rules/seyfert/config-default-export/cases.ts:22:22	seyfert/config-default-export	mustDefaultExport	The result of `config.bot()` must be the file's `export default`.	end	22	59
+tests/rules/seyfert/config-default-export/cases.ts:22:70	seyfert/config-default-export	mustDefaultExport	The result of `config.http()` must be the file's `export default`.	end	22	87
+tests/rules/seyfert/config-default-export/cases.ts:24:3	seyfert/config-default-export	mustDefaultExport	The result of `config.http()` must be the file's `export default`.	end	25	16
+tests/rules/seyfert/config-default-export/default-variable/cases.ts:3:13	seyfert/config-default-export	mustDefaultExport	The result of `config.bot()` must be the file's `export default`.	end	3	67
+tests/rules/seyfert/config-default-export/export-equals/cases.ts:4:10	seyfert/config-default-export	mustDefaultExport	The result of `config.bot()` must be the file's `export default`.	end	4	64
+tests/rules/seyfert/config-default-export/namespace/cases.ts:4:1	seyfert/config-default-export	mustDefaultExport	The result of `config.bot()` must be the file's `export default`.	end	4	63
+tests/rules/seyfert/config-default-export/optional-chain/cases.ts:3:16	seyfert/config-default-export	mustDefaultExport	The result of `config.bot()` must be the file's `export default`.	end	3	71

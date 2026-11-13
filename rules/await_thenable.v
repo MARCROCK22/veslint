@@ -155,7 +155,7 @@ fn (mut c Checker) check_await_thenable(targets AwaitThenableTargets) ![]Finding
 			// Note that this suggestion breaks the code for sync iterables of promises, since the
 			// loop variable is not awaited.
 			findings << Finding{
-				stmt:        position_of(loop)
+				stmt:        c.es_for_head_position(loop)
 				message_id:  'forAwaitOfNonAsyncIterable'
 				suggestions: c.at_remove_await(loop, 'convertToOrdinaryFor')!
 			}

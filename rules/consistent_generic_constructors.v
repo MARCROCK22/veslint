@@ -81,7 +81,11 @@ fn (mut c Checker) lint_consistent_generic_constructors(root C.TSNode, abs_path 
 			type_arguments := node_field(rhs, 'type_arguments') or { continue }
 			text := c.text(callee) + c.text(type_arguments)
 			findings << c.with_fixes(Finding{
-				stmt:       c.position_at(site.start)
+				stmt:       c.position_range(site.start, if node_kind(site.node) == 'public_field_definition' {
+					c.es_member_end(site.node)
+				} else {
+					c.es_end(site.node)
+				})
 				message_id: 'preferTypeAnnotation'
 			}, [fix_remove(type_arguments), fix_insert_at(c.cgc_annotation_offset(site), ': ${text}')])!
 			continue
@@ -92,7 +96,11 @@ fn (mut c Checker) lint_consistent_generic_constructors(root C.TSNode, abs_path 
 		annotation := site.annotation or { continue }
 		type_arguments := node_field(lhs, 'type_arguments') or { continue }
 		findings << c.with_fixes(Finding{
-			stmt:       c.position_at(site.start)
+			stmt:       c.position_range(site.start, if node_kind(site.node) == 'public_field_definition' {
+				c.es_member_end(site.node)
+			} else {
+				c.es_end(site.node)
+			})
 			message_id: 'preferConstructor'
 		}, c.cgc_constructor_fixes(annotation, type_arguments, callee))!
 	}

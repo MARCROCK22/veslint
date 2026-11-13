@@ -1,7 +1,7 @@
 module rules
 
 import time
-import treesitter { named_children, node_field, node_kind, node_parent, position_of }
+import treesitter { named_children, node_field, node_kind, node_parent, node_start, position_of }
 
 // Port of the `no-misused-new` rule of typescript-eslint 8.62.0 (it has no options).
 
@@ -24,7 +24,7 @@ fn (mut c Checker) lint_no_misused_new(root C.TSNode, abs_path string, mut stats
 			checked++
 			if c.nmn_returns_parent(node_parent(parent) or { continue }, node) {
 				findings << Finding{
-					stmt:       position_of(node)
+					stmt:       c.position_range(node_start(node), c.es_member_end(node))
 					message_id: 'errorMessageInterface'
 				}
 			}
@@ -40,7 +40,7 @@ fn (mut c Checker) lint_no_misused_new(root C.TSNode, abs_path string, mut stats
 			checked++
 			if c.nmn_returns_parent(node_parent(parent) or { continue }, node) {
 				findings << Finding{
-					stmt:       c.position_at(cm_start(node))
+					stmt:       c.position_range(cm_start(node), c.es_member_end(node))
 					message_id: 'errorMessageClass'
 				}
 			}
@@ -50,7 +50,7 @@ fn (mut c Checker) lint_no_misused_new(root C.TSNode, abs_path string, mut stats
 		if c.nmn_key_name(name) == 'constructor' {
 			checked++
 			findings << Finding{
-				stmt:       position_of(node)
+				stmt:       c.position_range(node_start(node), c.es_member_end(node))
 				message_id: 'errorMessageInterface'
 			}
 		}

@@ -54,16 +54,19 @@ fn (mut c Checker) lint_no_irregular_whitespace(root C.TSNode, abs_path string, 
 		stats.eval_ms += ms(sw.elapsed())
 		return findings
 	}
-	// The runs of irregular whitespace, then the irregular line terminators, by byte offset.
-	mut errors := []int{}
+	// The runs of irregular whitespace, then the irregular line terminators, as [start, end) byte
+	// ranges (ESLint's `loc` of each: the run, or the terminator to the start of the next line).
+	mut errors := [][]int{}
 	mut i := 0
 	mut in_run := false
 	for i < c.src.len {
 		r, size := niw_rune_at(c.src, i)
 		if r in niw_spaces {
 			if !in_run {
-				errors << i
+				errors << [i, i + size]
 				in_run = true
+			} else {
+				errors[errors.len - 1][1] = i + size
 			}
 		} else {
 			in_run = false
@@ -74,7 +77,7 @@ fn (mut c Checker) lint_no_irregular_whitespace(root C.TSNode, abs_path string, 
 	for i < c.src.len {
 		r, size := niw_rune_at(c.src, i)
 		if r in niw_terminators {
-			errors << i
+			errors << [i, i + size]
 		}
 		i += size
 	}
@@ -132,12 +135,13 @@ fn (mut c Checker) lint_no_irregular_whitespace(root C.TSNode, abs_path string, 
 			}
 		}
 	}
-	for offset in errors {
+	for error in errors {
+		offset := error[0]
 		if allowed.any(offset >= it[0] && offset < it[1]) {
 			continue
 		}
 		findings << Finding{
-			stmt:       c.position_at(offset)
+			stmt:       c.position_range(offset, error[1])
 			message_id: 'noIrregularWhitespace'
 		}
 	}

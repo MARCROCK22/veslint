@@ -1,27 +1,27 @@
-tests/rules/object-shorthand/avoid-quotes/cases.ts:4:14	object-shorthand	expectedLiteralMethodLongform	Expected longform method syntax for string literal keys.	fix	69	72	'f': function
-tests/rules/object-shorthand/avoid-quotes/cases.ts:5:14	object-shorthand	expectedMethodShorthand	Expected method shorthand.	fix	94	111	g () {}
-tests/rules/object-shorthand/avoid-quotes/cases.ts:6:14	object-shorthand	expectedPropertyShorthand	Expected property shorthand.	fix	128	132	a
-tests/rules/object-shorthand/cases.ts:5:14	object-shorthand	expectedPropertyShorthand	Expected property shorthand.	fix	91	95	a
-tests/rules/object-shorthand/cases.ts:6:14	object-shorthand	expectedPropertyShorthand	Expected property shorthand.	fix	112	118	b
-tests/rules/object-shorthand/cases.ts:7:14	object-shorthand	expectedMethodShorthand	Expected method shorthand.	fix	135	152	f () {}
-tests/rules/object-shorthand/cases.ts:8:14	object-shorthand	expectedMethodShorthand	Expected method shorthand.	fix	169	192	async g () {}
-tests/rules/object-shorthand/cases.ts:9:14	object-shorthand	expectedMethodShorthand	Expected method shorthand.	fix	209	227	*h () {}
-tests/rules/object-shorthand/cases.ts:10:14	object-shorthand	expectedMethodShorthand	Expected method shorthand.	fix	244	265	['k'] () {}
-tests/rules/object-shorthand/cases.ts:11:14	object-shorthand	expectedMethodShorthand	Expected method shorthand.	fix	282	327	m (x: number): number { return x; }
-tests/rules/object-shorthand/cases.ts:12:22	object-shorthand	expectedPropertyShorthand	Expected property shorthand.	fix	352	356	a
-tests/rules/object-shorthand/consistent-as-needed/cases.ts:5:12	object-shorthand	expectedAllPropertiesShorthanded	Expected shorthand for all properties.
-tests/rules/object-shorthand/consistent-as-needed/cases.ts:6:12	object-shorthand	expectedAllPropertiesShorthanded	Expected shorthand for all properties.
-tests/rules/object-shorthand/consistent-as-needed/cases.ts:7:12	object-shorthand	unexpectedMix	Unexpected mix of shorthand and non-shorthand properties.
-tests/rules/object-shorthand/consistent/cases.ts:5:12	object-shorthand	unexpectedMix	Unexpected mix of shorthand and non-shorthand properties.
-tests/rules/object-shorthand/consistent/cases.ts:6:12	object-shorthand	unexpectedMix	Unexpected mix of shorthand and non-shorthand properties.
-tests/rules/object-shorthand/methods-options/cases.ts:2:14	object-shorthand	expectedMethodShorthand	Expected method shorthand.	fix	57	74	f () {}
-tests/rules/object-shorthand/methods-options/cases.ts:3:14	object-shorthand	expectedMethodShorthand	Expected method shorthand.	fix	91	113	g() { return 1; }
-tests/rules/object-shorthand/methods-options/cases.ts:4:14	object-shorthand	expectedMethodShorthand	Expected method shorthand.	fix	130	167	async h(x: number) { return x; }
-tests/rules/object-shorthand/methods-options/cases.ts:5:14	object-shorthand	expectedMethodShorthand	Expected method shorthand.	fix	184	205	i(x) { return x; }
-tests/rules/object-shorthand/never/cases.ts:4:14	object-shorthand	expectedPropertyLongform	Expected longform property syntax.	fix	66	66	: a
-tests/rules/object-shorthand/never/cases.ts:5:14	object-shorthand	expectedMethodLongform	Expected longform method syntax.	fix	83	84	f: function
-tests/rules/object-shorthand/never/cases.ts:6:14	object-shorthand	expectedMethodLongform	Expected longform method syntax.	fix	106	113	g: async function
-tests/rules/object-shorthand/never/cases.ts:7:14	object-shorthand	expectedMethodLongform	Expected longform method syntax.	fix	135	137	h: function*
-tests/rules/object-shorthand/never/cases.ts:8:14	object-shorthand	expectedMethodLongform	Expected longform method syntax.	fix	159	167	i: async function*
-tests/rules/object-shorthand/never/cases.ts:9:14	object-shorthand	expectedMethodLongform	Expected longform method syntax.	fix	189	194	['k']: function
-tests/rules/object-shorthand/never/cases.ts:10:14	object-shorthand	expectedMethodLongform	Expected longform method syntax.	fix	216	219	'l': function
+tests/rules/object-shorthand/avoid-quotes/cases.ts:4:14	object-shorthand	expectedLiteralMethodLongform	Expected longform method syntax for string literal keys.	fix	69	72	'f': function	end	4	22
+tests/rules/object-shorthand/avoid-quotes/cases.ts:5:14	object-shorthand	expectedMethodShorthand	Expected method shorthand.	fix	94	111	g () {}	end	5	31
+tests/rules/object-shorthand/avoid-quotes/cases.ts:6:14	object-shorthand	expectedPropertyShorthand	Expected property shorthand.	fix	128	132	a	end	6	18
+tests/rules/object-shorthand/cases.ts:5:14	object-shorthand	expectedPropertyShorthand	Expected property shorthand.	fix	91	95	a	end	5	18
+tests/rules/object-shorthand/cases.ts:6:14	object-shorthand	expectedPropertyShorthand	Expected property shorthand.	fix	112	118	b	end	6	20
+tests/rules/object-shorthand/cases.ts:7:14	object-shorthand	expectedMethodShorthand	Expected method shorthand.	fix	135	152	f () {}	end	7	31
+tests/rules/object-shorthand/cases.ts:8:14	object-shorthand	expectedMethodShorthand	Expected method shorthand.	fix	169	192	async g () {}	end	8	37
+tests/rules/object-shorthand/cases.ts:9:14	object-shorthand	expectedMethodShorthand	Expected method shorthand.	fix	209	227	*h () {}	end	9	32
+tests/rules/object-shorthand/cases.ts:10:14	object-shorthand	expectedMethodShorthand	Expected method shorthand.	fix	244	265	['k'] () {}	end	10	35
+tests/rules/object-shorthand/cases.ts:11:14	object-shorthand	expectedMethodShorthand	Expected method shorthand.	fix	282	327	m (x: number): number { return x; }	end	11	59
+tests/rules/object-shorthand/cases.ts:12:22	object-shorthand	expectedPropertyShorthand	Expected property shorthand.	fix	352	356	a	end	12	26
+tests/rules/object-shorthand/consistent-as-needed/cases.ts:5:12	object-shorthand	expectedAllPropertiesShorthanded	Expected shorthand for all properties.	end	5	26
+tests/rules/object-shorthand/consistent-as-needed/cases.ts:6:12	object-shorthand	expectedAllPropertiesShorthanded	Expected shorthand for all properties.	end	6	39
+tests/rules/object-shorthand/consistent-as-needed/cases.ts:7:12	object-shorthand	unexpectedMix	Unexpected mix of shorthand and non-shorthand properties.	end	7	23
+tests/rules/object-shorthand/consistent/cases.ts:5:12	object-shorthand	unexpectedMix	Unexpected mix of shorthand and non-shorthand properties.	end	5	23
+tests/rules/object-shorthand/consistent/cases.ts:6:12	object-shorthand	unexpectedMix	Unexpected mix of shorthand and non-shorthand properties.	end	6	36
+tests/rules/object-shorthand/methods-options/cases.ts:2:14	object-shorthand	expectedMethodShorthand	Expected method shorthand.	fix	57	74	f () {}	end	2	31
+tests/rules/object-shorthand/methods-options/cases.ts:3:14	object-shorthand	expectedMethodShorthand	Expected method shorthand.	fix	91	113	g() { return 1; }	end	3	36
+tests/rules/object-shorthand/methods-options/cases.ts:4:14	object-shorthand	expectedMethodShorthand	Expected method shorthand.	fix	130	167	async h(x: number) { return x; }	end	4	51
+tests/rules/object-shorthand/methods-options/cases.ts:5:14	object-shorthand	expectedMethodShorthand	Expected method shorthand.	fix	184	205	i(x) { return x; }	end	5	35
+tests/rules/object-shorthand/never/cases.ts:4:14	object-shorthand	expectedPropertyLongform	Expected longform property syntax.	fix	66	66	: a	end	4	15
+tests/rules/object-shorthand/never/cases.ts:5:14	object-shorthand	expectedMethodLongform	Expected longform method syntax.	fix	83	84	f: function	end	5	20
+tests/rules/object-shorthand/never/cases.ts:6:14	object-shorthand	expectedMethodLongform	Expected longform method syntax.	fix	106	113	g: async function	end	6	26
+tests/rules/object-shorthand/never/cases.ts:7:14	object-shorthand	expectedMethodLongform	Expected longform method syntax.	fix	135	137	h: function*	end	7	21
+tests/rules/object-shorthand/never/cases.ts:8:14	object-shorthand	expectedMethodLongform	Expected longform method syntax.	fix	159	167	i: async function*	end	8	27
+tests/rules/object-shorthand/never/cases.ts:9:14	object-shorthand	expectedMethodLongform	Expected longform method syntax.	fix	189	194	['k']: function	end	9	24
+tests/rules/object-shorthand/never/cases.ts:10:14	object-shorthand	expectedMethodLongform	Expected longform method syntax.	fix	216	219	'l': function	end	10	22

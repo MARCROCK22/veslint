@@ -1,0 +1,3 @@
+tests/rules/no-new-wrappers/cases.ts:2:11	no-new-wrappers	noConstructor	Do not use String as a constructor.	end	2	26
+tests/rules/no-new-wrappers/cases.ts:3:11	no-new-wrappers	noConstructor	Do not use Number as a constructor.	end	3	24
+tests/rules/no-new-wrappers/cases.ts:4:11	no-new-wrappers	noConstructor	Do not use Boolean as a constructor.	end	4	28

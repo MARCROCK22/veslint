@@ -3,7 +3,7 @@ module rules
 import json2
 import strings
 import time
-import treesitter { children, has_child_kind, named_children, node_end, node_field, node_kind, node_parent, node_start, nodes_of_kinds, position_of }
+import treesitter { Ident, children, has_child_kind, named_children, node_end, node_field, node_kind, node_parent, node_start, nodes_of_kinds, position_of }
 
 // Port of the `no-duplicate-type-constituents` rule of typescript-eslint 8.62.0, with all its
 // options and its fix.
@@ -144,7 +144,7 @@ fn (mut c Checker) ndtc_check_recursively(check NdtcCheck, constituent C.TSNode,
 	// forEachNodeType: tsutils.isTypeFlagSet, on the type's own flags.
 	if check.optional_parameter && t.flags & type_flag_undefined != 0 {
 		findings << c.with_fixes(Finding{
-			stmt:       position_of(constituent)
+			stmt:       c.ndtc_place(constituent)
 			message_id: 'unnecessary'
 		}, ndtc_removal(constituent))!
 	}
@@ -160,7 +160,7 @@ fn (mut c Checker) ndtc_check_recursively(check NdtcCheck, constituent C.TSNode,
 
 fn (c &Checker) ndtc_duplicate(check NdtcCheck, constituent C.TSNode, previous C.TSNode) !Finding {
 	return c.with_fixes(Finding{
-		stmt:       position_of(constituent)
+		stmt:       c.ndtc_place(constituent)
 		message_id: 'duplicate'
 		data:       {
 			'type':     if check.kind == 'union_type' { 'Union' } else { 'Intersection' }
@@ -173,6 +173,20 @@ fn (c &Checker) ndtc_duplicate(check NdtcCheck, constituent C.TSNode, previous C
 // (the tokens between it and the operator, and as many on its other side) and the `|` or `&` before
 // it or, for the first constituent of its union or intersection, the one after it. ESLint merges
 // these removals into one fix that keeps the text between them.
+// ndtc_place is where a constituent is reported: from its start to the end of the parentheses
+// around it (the brackets after it, as many as there are before it).
+fn (c &Checker) ndtc_place(constituent C.TSNode) Ident {
+	mut outer := constituent
+	for {
+		parent := node_parent(outer) or { break }
+		if node_kind(parent) != 'parenthesized_type' {
+			break
+		}
+		outer = parent
+	}
+	return c.position_range(node_start(constituent), c.es_end(outer))
+}
+
 fn ndtc_removal(constituent C.TSNode) []Fix {
 	mut fixes := [fix_remove(constituent)]
 	mut outer := constituent

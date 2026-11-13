@@ -118,6 +118,12 @@ pub:
 	start_byte int
 	row        int // tree-sitter's 0-based row; negative for a report without a place in the file
 	col_bytes  int // tree-sitter's 0-based column, in bytes from the last `\n`
+	// end_byte is where a reported range ends (the end of ESLint's `loc`), -1 when only its start
+	// is known.
+	end_byte int = -1
+	// node_end: end_byte is the end of a tree-sitter node, which may hold the comments that
+	// follow it (the rules end the report at its last token).
+	node_end bool
 }
 
 pub struct Parser {
@@ -468,5 +474,7 @@ pub fn position_of(node C.TSNode) Ident {
 		start_byte: node_start(node)
 		row:        int(point.row)
 		col_bytes:  int(point.column)
+		end_byte:   node_end(node)
+		node_end:   true
 	}
 }

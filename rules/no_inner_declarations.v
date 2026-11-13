@@ -44,7 +44,11 @@ fn (mut c Checker) lint_no_inner_declarations(root C.TSNode, abs_path string, mu
 		stats.checked++
 		mut estree := node
 		mut parent := node_parent(node) or { continue }
-		mut position := position_of(node)
+		mut position := if node_kind(node) == 'variable_declaration' {
+			c.es_declaration_position(node)
+		} else {
+			position_of(node)
+		}
 		match node_kind(node) {
 			'for_in_statement' {
 				// `for (var a in b)`: the declaration is part of the for-in for tree-sitter.
@@ -53,7 +57,7 @@ fn (mut c Checker) lint_no_inner_declarations(root C.TSNode, abs_path string, mu
 					continue
 				}
 				parent = node
-				position = position_of(kind)
+				position = c.es_declaration_position(node)
 			}
 			'function_declaration', 'generator_function_declaration' {
 				tree := c.scope_tree(root)

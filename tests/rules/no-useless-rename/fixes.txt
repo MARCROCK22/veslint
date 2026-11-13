@@ -1,11 +1,11 @@
-tests/rules/no-useless-rename/cases.ts:1:10	no-useless-rename	unnecessarilyRenamed	Import readFile unnecessarily renamed.	fix	9	29	readFile
-tests/rules/no-useless-rename/cases.ts:2:10	no-useless-rename	unnecessarilyRenamed	Import stat unnecessarily renamed.	fix	68	82	stat
-tests/rules/no-useless-rename/cases.ts:7:9	no-useless-rename	unnecessarilyRenamed	Destructuring assignment a unnecessarily renamed.	fix	148	152	a
-tests/rules/no-useless-rename/cases.ts:8:9	no-useless-rename	unnecessarilyRenamed	Destructuring assignment b unnecessarily renamed.	fix	170	176	b
-tests/rules/no-useless-rename/cases.ts:9:9	no-useless-rename	unnecessarilyRenamed	Destructuring assignment c unnecessarily renamed.	fix	194	202	c = 1
-tests/rules/no-useless-rename/cases.ts:10:9	no-useless-rename	unnecessarilyRenamed	Destructuring assignment d unnecessarily renamed.
-tests/rules/no-useless-rename/cases.ts:11:9	no-useless-rename	unnecessarilyRenamed	Destructuring assignment e unnecessarily renamed.	fix	256	260	e
-tests/rules/no-useless-rename/cases.ts:13:4	no-useless-rename	unnecessarilyRenamed	Destructuring assignment f unnecessarily renamed.	fix	298	302	f
-tests/rules/no-useless-rename/cases.ts:14:14	no-useless-rename	unnecessarilyRenamed	Destructuring assignment h unnecessarily renamed.	fix	326	330	h
-tests/rules/no-useless-rename/cases.ts:16:10	no-useless-rename	unnecessarilyRenamed	Export i unnecessarily renamed.	fix	364	370	i
-tests/rules/no-useless-rename/cases.ts:17:21	no-useless-rename	unnecessarilyRenamed	Export g unnecessarily renamed.	fix	394	402	g
+tests/rules/no-useless-rename/cases.ts:1:10	no-useless-rename	unnecessarilyRenamed	Import readFile unnecessarily renamed.	fix	9	29	readFile	end	1	30
+tests/rules/no-useless-rename/cases.ts:2:10	no-useless-rename	unnecessarilyRenamed	Import stat unnecessarily renamed.	fix	68	82	stat	end	2	24
+tests/rules/no-useless-rename/cases.ts:7:9	no-useless-rename	unnecessarilyRenamed	Destructuring assignment a unnecessarily renamed.	fix	148	152	a	end	7	13
+tests/rules/no-useless-rename/cases.ts:8:9	no-useless-rename	unnecessarilyRenamed	Destructuring assignment b unnecessarily renamed.	fix	170	176	b	end	8	15
+tests/rules/no-useless-rename/cases.ts:9:9	no-useless-rename	unnecessarilyRenamed	Destructuring assignment c unnecessarily renamed.	fix	194	202	c = 1	end	9	17
+tests/rules/no-useless-rename/cases.ts:10:9	no-useless-rename	unnecessarilyRenamed	Destructuring assignment d unnecessarily renamed.	end	10	27
+tests/rules/no-useless-rename/cases.ts:11:9	no-useless-rename	unnecessarilyRenamed	Destructuring assignment e unnecessarily renamed.	fix	256	260	e	end	11	13
+tests/rules/no-useless-rename/cases.ts:13:4	no-useless-rename	unnecessarilyRenamed	Destructuring assignment f unnecessarily renamed.	fix	298	302	f	end	13	8
+tests/rules/no-useless-rename/cases.ts:14:14	no-useless-rename	unnecessarilyRenamed	Destructuring assignment h unnecessarily renamed.	fix	326	330	h	end	14	18
+tests/rules/no-useless-rename/cases.ts:16:10	no-useless-rename	unnecessarilyRenamed	Export i unnecessarily renamed.	fix	364	370	i	end	16	16
+tests/rules/no-useless-rename/cases.ts:17:21	no-useless-rename	unnecessarilyRenamed	Export g unnecessarily renamed.	fix	394	402	g	end	17	29

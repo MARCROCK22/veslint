@@ -118,6 +118,12 @@ test('the extension shows the problems and offers the fixes', { skip: !built }, 
       assert.equal(shown[index].severity, vscode.DiagnosticSeverity.Information);
     }
     assert.ok(shown[index].range.end.isAfter(shown[index].range.start));
+    // Where the problem ends, as veslint gives it (ESLint's endLine and endColumn).
+    const end = /\tend\t(\d+)\t(\d+)$/.exec(line);
+    if (end) {
+      assert.equal(shown[index].range.end.line, Number(end[1]) - 1);
+      assert.equal(shown[index].range.end.character, Number(end[2]) - 1);
+    }
   }
 
   // Quick fixes: the suggestions of a rule, the fix of an unused directive, and the comment that

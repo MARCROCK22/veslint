@@ -464,15 +464,20 @@ fn (mut c Checker) nmcc_verify(node C.TSNode, pattern []u16, flags string, fix ?
 		}
 		for m in matches {
 			first := ast.nodes[m[0]].start
+			last := ast.nodes[m.last()].end - 1
 			mut start := 0
+			mut end := 0
 			if kind == 'regex' {
 				start = 1 + first
+				end = 1 + last + 1
 			} else {
 				start = units[first].start
+				end = units[last].end
 			}
 			offset := node_start(node) + es_units_byte_offset(c.text(node), start)
+			end_offset := node_start(node) + es_units_byte_offset(c.text(node), end)
 			st.findings << Finding{
-				stmt:        c.position_at(offset)
+				stmt:        c.position_range(offset, end_offset)
 				message_id:  k
 				suggestions: suggestions
 			}

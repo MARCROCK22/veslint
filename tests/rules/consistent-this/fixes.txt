@@ -1,0 +1,9 @@
+tests/rules/consistent-this/aliases/cases.ts:3:9	consistent-this	unexpectedAlias	Unexpected alias 'that' for 'this'.	end	3	20
+tests/rules/consistent-this/aliases/cases.ts:4:9	consistent-this	aliasNotAssignedToThis	Designated alias 'self' is not assigned to 'this'.	end	4	17
+tests/rules/consistent-this/cases.ts:4:11	consistent-this	unexpectedAlias	Unexpected alias 'self' for 'this'.	end	4	22
+tests/rules/consistent-this/cases.ts:5:11	consistent-this	aliasNotAssignedToThis	Designated alias 'that' is not assigned to 'this'.	end	5	19
+tests/rules/consistent-this/cases.ts:11:7	consistent-this	aliasNotAssignedToThis	Designated alias 'that' is not assigned to 'this'.	end	11	11
+tests/rules/consistent-this/cases.ts:12:3	consistent-this	aliasNotAssignedToThis	Designated alias 'that' is not assigned to 'this'.	end	12	11
+tests/rules/consistent-this/three-aliases/cases.ts:3:9	consistent-this	aliasNotAssignedToThis	Designated alias 'context' is not assigned to 'this'.	end	3	20
+tests/rules/consistent-this/three-aliases/cases.ts:4:9	consistent-this	aliasNotAssignedToThis	Designated alias 'me' is not assigned to 'this'.	end	4	15
+tests/rules/consistent-this/three-aliases/cases.ts:5:9	consistent-this	aliasNotAssignedToThis	Designated alias 'self' is not assigned to 'this'.	end	5	17

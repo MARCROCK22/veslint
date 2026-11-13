@@ -181,14 +181,19 @@ fn (c &Checker) es_tree_function_name(t &estree.EsTree, node int) string {
 	return tokens.join(' ')
 }
 
-// es_tree_function_head ports the start of getFunctionHeadLoc: the Property, MethodDefinition,
-// PropertyDefinition, TSPropertySignature or TSMethodSignature the function is the value of, the
-// `=>` of an arrow function, or the start of the function.
+// es_tree_position is the place of a report on an ESTree node: its range.
+fn (c &Checker) es_tree_position(t &estree.EsTree, node int) Ident {
+	return c.position_range(t.nodes[node].start, t.nodes[node].end)
+}
+
+// es_tree_function_head ports getFunctionHeadLoc: from the Property, MethodDefinition,
+// PropertyDefinition, TSPropertySignature or TSMethodSignature the function is the value of (or
+// the function) to the opening paren of its parameters, or the `=>` of an arrow function.
 fn (mut c Checker) es_tree_function_head(t &estree.EsTree, node int) Ident {
 	parent := t.nodes[node].parent
 	if parent >= 0 && t.typ(parent) in [.property, .method_definition, .property_definition,
 		.ts_property_signature, .ts_method_signature] {
-		return c.position_at(t.nodes[parent].start)
+		return c.position_range(t.nodes[parent].start, c.es_tree_params_paren(t, node))
 	}
 	if t.typ(node) == .arrow_function_expression {
 		if body := t.node(node, .body) {
@@ -197,11 +202,40 @@ fn (mut c Checker) es_tree_function_head(t &estree.EsTree, node int) Ident {
 			for {
 				token := tokens.before(at, false) or { break }
 				if c.src[token.start..token.end] == '=>' {
-					return c.position_at(token.start)
+					return c.position_range(token.start, token.end)
 				}
 				at = token.start
 			}
 		}
 	}
-	return c.position_at(t.nodes[node].start)
+	return c.position_range(t.nodes[node].start, c.es_tree_params_paren(t, node))
+}
+
+// es_tree_params_paren ports the start of getOpeningParenOfParams: the `(` of the parameters (the
+// first one after the id, or in the function), or, for an arrow function with a single parameter
+// without parentheses, the parameter.
+fn (mut c Checker) es_tree_params_paren(t &estree.EsTree, node int) int {
+	tokens := c.source_tokens(t.nodes[t.root].ts)
+	params := t.list(node, .params) or { []int{} }
+	if t.typ(node) == .arrow_function_expression && params.len == 1 {
+		arg := t.nodes[params[0]].start
+		if before := tokens.before(arg, false) {
+			if c.src[before.start..before.end] == '(' {
+				return before.start
+			}
+		}
+		return arg
+	}
+	mut at := if id := t.node(node, .id) { t.nodes[id].end } else { t.nodes[node].start }
+	for {
+		token := tokens.after(at, false) or { break }
+		if token.start >= t.nodes[node].end {
+			break
+		}
+		if c.src[token.start..token.end] == '(' {
+			return token.start
+		}
+		at = token.end
+	}
+	return t.nodes[node].start
 }

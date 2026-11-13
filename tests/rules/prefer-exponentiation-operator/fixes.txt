@@ -1,18 +1,18 @@
-tests/rules/prefer-exponentiation-operator/cases.ts:5:12	prefer-exponentiation-operator	useExponentiation	Use the '**' operator instead of 'Math.pow'.	fix	75	89	a**b
-tests/rules/prefer-exponentiation-operator/cases.ts:6:12	prefer-exponentiation-operator	useExponentiation	Use the '**' operator instead of 'Math.pow'.	fix	102	120	(a + 1)**b
-tests/rules/prefer-exponentiation-operator/cases.ts:7:12	prefer-exponentiation-operator	useExponentiation	Use the '**' operator instead of 'Math.pow'.	fix	133	151	a**(b + 1)
-tests/rules/prefer-exponentiation-operator/cases.ts:8:12	prefer-exponentiation-operator	useExponentiation	Use the '**' operator instead of 'Math.pow'.	fix	164	179	(-a)**b
-tests/rules/prefer-exponentiation-operator/cases.ts:9:16	prefer-exponentiation-operator	useExponentiation	Use the '**' operator instead of 'Math.pow'.	fix	196	210	a**b
-tests/rules/prefer-exponentiation-operator/cases.ts:10:13	prefer-exponentiation-operator	useExponentiation	Use the '**' operator instead of 'Math.pow'.	fix	224	238	(a**b)
-tests/rules/prefer-exponentiation-operator/cases.ts:11:12	prefer-exponentiation-operator	useExponentiation	Use the '**' operator instead of 'Math.pow'.	fix	251	265	(a**b)
-tests/rules/prefer-exponentiation-operator/cases.ts:12:17	prefer-exponentiation-operator	useExponentiation	Use the '**' operator instead of 'Math.pow'.	fix	288	302	a**b
-tests/rules/prefer-exponentiation-operator/cases.ts:13:12	prefer-exponentiation-operator	useExponentiation	Use the '**' operator instead of 'Math.pow'.	fix	315	332	a**b
-tests/rules/prefer-exponentiation-operator/cases.ts:15:13	prefer-exponentiation-operator	useExponentiation	Use the '**' operator instead of 'Math.pow'.	fix	362	373	a**b
-tests/rules/prefer-exponentiation-operator/cases.ts:17:13	prefer-exponentiation-operator	useExponentiation	Use the '**' operator instead of 'Math.pow'.	fix	409	418	a**b
-tests/rules/prefer-exponentiation-operator/cases.ts:18:13	prefer-exponentiation-operator	useExponentiation	Use the '**' operator instead of 'Math.pow'.	fix	432	457	a**b
-tests/rules/prefer-exponentiation-operator/cases.ts:19:13	prefer-exponentiation-operator	useExponentiation	Use the '**' operator instead of 'Math.pow'.
-tests/rules/prefer-exponentiation-operator/cases.ts:20:13	prefer-exponentiation-operator	useExponentiation	Use the '**' operator instead of 'Math.pow'.
-tests/rules/prefer-exponentiation-operator/cases.ts:21:13	prefer-exponentiation-operator	useExponentiation	Use the '**' operator instead of 'Math.pow'.
-tests/rules/prefer-exponentiation-operator/cases.ts:22:1	prefer-exponentiation-operator	useExponentiation	Use the '**' operator instead of 'Math.pow'.	fix	553	567	a**b
-tests/rules/prefer-exponentiation-operator/cases.ts:23:15	prefer-exponentiation-operator	useExponentiation	Use the '**' operator instead of 'Math.pow'.	fix	583	598	(-b)**2
-tests/rules/prefer-exponentiation-operator/cases.ts:24:14	prefer-exponentiation-operator	useExponentiation	Use the '**' operator instead of 'Math.pow'.	fix	613	627	a**b
+tests/rules/prefer-exponentiation-operator/cases.ts:5:12	prefer-exponentiation-operator	useExponentiation	Use the '**' operator instead of 'Math.pow'.	fix	75	89	a**b	end	5	26
+tests/rules/prefer-exponentiation-operator/cases.ts:6:12	prefer-exponentiation-operator	useExponentiation	Use the '**' operator instead of 'Math.pow'.	fix	102	120	(a + 1)**b	end	6	30
+tests/rules/prefer-exponentiation-operator/cases.ts:7:12	prefer-exponentiation-operator	useExponentiation	Use the '**' operator instead of 'Math.pow'.	fix	133	151	a**(b + 1)	end	7	30
+tests/rules/prefer-exponentiation-operator/cases.ts:8:12	prefer-exponentiation-operator	useExponentiation	Use the '**' operator instead of 'Math.pow'.	fix	164	179	(-a)**b	end	8	27
+tests/rules/prefer-exponentiation-operator/cases.ts:9:16	prefer-exponentiation-operator	useExponentiation	Use the '**' operator instead of 'Math.pow'.	fix	196	210	a**b	end	9	30
+tests/rules/prefer-exponentiation-operator/cases.ts:10:13	prefer-exponentiation-operator	useExponentiation	Use the '**' operator instead of 'Math.pow'.	fix	224	238	(a**b)	end	10	27
+tests/rules/prefer-exponentiation-operator/cases.ts:11:12	prefer-exponentiation-operator	useExponentiation	Use the '**' operator instead of 'Math.pow'.	fix	251	265	(a**b)	end	11	26
+tests/rules/prefer-exponentiation-operator/cases.ts:12:17	prefer-exponentiation-operator	useExponentiation	Use the '**' operator instead of 'Math.pow'.	fix	288	302	a**b	end	12	31
+tests/rules/prefer-exponentiation-operator/cases.ts:13:12	prefer-exponentiation-operator	useExponentiation	Use the '**' operator instead of 'Math.pow'.	fix	315	332	a**b	end	13	29
+tests/rules/prefer-exponentiation-operator/cases.ts:15:13	prefer-exponentiation-operator	useExponentiation	Use the '**' operator instead of 'Math.pow'.	fix	362	373	a**b	end	15	24
+tests/rules/prefer-exponentiation-operator/cases.ts:17:13	prefer-exponentiation-operator	useExponentiation	Use the '**' operator instead of 'Math.pow'.	fix	409	418	a**b	end	17	22
+tests/rules/prefer-exponentiation-operator/cases.ts:18:13	prefer-exponentiation-operator	useExponentiation	Use the '**' operator instead of 'Math.pow'.	fix	432	457	a**b	end	18	38
+tests/rules/prefer-exponentiation-operator/cases.ts:19:13	prefer-exponentiation-operator	useExponentiation	Use the '**' operator instead of 'Math.pow'.	end	19	35
+tests/rules/prefer-exponentiation-operator/cases.ts:20:13	prefer-exponentiation-operator	useExponentiation	Use the '**' operator instead of 'Math.pow'.	end	20	32
+tests/rules/prefer-exponentiation-operator/cases.ts:21:13	prefer-exponentiation-operator	useExponentiation	Use the '**' operator instead of 'Math.pow'.	end	21	24
+tests/rules/prefer-exponentiation-operator/cases.ts:22:1	prefer-exponentiation-operator	useExponentiation	Use the '**' operator instead of 'Math.pow'.	fix	553	567	a**b	end	22	15
+tests/rules/prefer-exponentiation-operator/cases.ts:23:15	prefer-exponentiation-operator	useExponentiation	Use the '**' operator instead of 'Math.pow'.	fix	583	598	(-b)**2	end	23	30
+tests/rules/prefer-exponentiation-operator/cases.ts:24:14	prefer-exponentiation-operator	useExponentiation	Use the '**' operator instead of 'Math.pow'.	fix	613	627	a**b	end	24	28

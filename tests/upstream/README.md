@@ -21,10 +21,10 @@ through `dependencyConstraints`.
   one `veslint --server`, with the code of the case as the unsaved text of its file, and checks what
   the test expects as RuleTester checks it: no problem for a valid case; for an invalid one, the
   number of problems, their messageId, the message (as written, or built from the data and
-  `meta.messages`), the line, the column and the suggestions (messageId, description and the text
-  each one leaves), and the output of the fixes, pass after pass, applied as ESLint's
-  SourceCodeFixer applies them. endLine and endColumn are not checked: veslint prints where a
-  problem starts. It takes about 2 minutes on one core.
+  `meta.messages`), the line, the column, the endLine and endColumn when the test gives them, and
+  the suggestions (messageId, description and the text each one leaves), and the output of the
+  fixes, pass after pass, applied as ESLint's SourceCodeFixer applies them. It takes about 2
+  minutes on one core.
 - **ESLint** (`tests/rules/reference.sh`): `tests/rules/upstream_eslint.mjs` runs ESLint 10.6.0 with
   typescript-eslint 8.62.0 the way RuleTester does (ecmaVersion "latest", sourceType "module",
   unused disable directives reported, the parser's caches cleared between test files) and checks

@@ -1,0 +1,13 @@
+tests/rules/no-invalid-regexp/allow-flags/cases.ts:2:11	no-invalid-regexp	regexMessage	Invalid regular expression: /[/: Unterminated character class.	end	2	22
+tests/rules/no-invalid-regexp/allow-flags/cases.ts:4:11	no-invalid-regexp	regexMessage	Regex 'u' and 'v' flags cannot be used together.	end	4	32
+tests/rules/no-invalid-regexp/allow-flags/cases.ts:5:11	no-invalid-regexp	regexMessage	Duplicate flags ('g') supplied to RegExp constructor.	end	5	32
+tests/rules/no-invalid-regexp/allow-flags/cases.ts:6:11	no-invalid-regexp	regexMessage	Invalid regular expression: /\\p{Foo}/u: Invalid property name.	end	6	38
+tests/rules/no-invalid-regexp/allow-flags/cases.ts:8:11	no-invalid-regexp	regexMessage	Invalid regular expression: /(?<a>)(?<a>)/: Duplicate capture group name.	end	8	44
+tests/rules/no-invalid-regexp/allow-flags/cases.ts:11:11	no-invalid-regexp	regexMessage	Invalid regular expression: /[/: Unterminated character class.	end	11	66
+tests/rules/no-invalid-regexp/cases.ts:2:11	no-invalid-regexp	regexMessage	Invalid regular expression: /[/: Unterminated character class.	end	2	22
+tests/rules/no-invalid-regexp/cases.ts:3:11	no-invalid-regexp	regexMessage	Invalid flags supplied to RegExp constructor 'z'.	end	3	31
+tests/rules/no-invalid-regexp/cases.ts:4:11	no-invalid-regexp	regexMessage	Regex 'u' and 'v' flags cannot be used together.	end	4	32
+tests/rules/no-invalid-regexp/cases.ts:5:11	no-invalid-regexp	regexMessage	Duplicate flags ('g') supplied to RegExp constructor.	end	5	32
+tests/rules/no-invalid-regexp/cases.ts:6:11	no-invalid-regexp	regexMessage	Invalid regular expression: /\\p{Foo}/u: Invalid property name.	end	6	38
+tests/rules/no-invalid-regexp/cases.ts:8:11	no-invalid-regexp	regexMessage	Invalid regular expression: /(?<a>)(?<a>)/: Duplicate capture group name.	end	8	44
+tests/rules/no-invalid-regexp/cases.ts:11:11	no-invalid-regexp	regexMessage	Invalid regular expression: /[/: Unterminated character class.	end	11	66

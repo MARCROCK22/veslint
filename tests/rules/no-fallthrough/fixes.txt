@@ -1,0 +1,6 @@
+tests/rules/no-fallthrough/cases.ts:12:5	no-fallthrough	case	Expected a 'break' statement before 'case'.	end	13	15
+tests/rules/no-fallthrough/cases.ts:14:5	no-fallthrough	default	Expected a 'break' statement before 'default'.	end	15	15
+tests/rules/no-fallthrough/cases.ts:23:5	no-fallthrough	case	Expected a 'break' statement before 'case'.	end	24	15
+tests/rules/no-fallthrough/cases.ts:31:5	no-fallthrough	case	Expected a 'break' statement before 'case'.	end	33	13
+tests/rules/no-fallthrough/options/cases.ts:8:5	no-fallthrough	case	Expected a 'break' statement before 'case'.	end	10	13
+tests/rules/no-fallthrough/options/cases.ts:11:5	no-fallthrough	unusedFallthroughComment	Found a comment that would permit fallthrough, but case cannot fall through.	end	11	21

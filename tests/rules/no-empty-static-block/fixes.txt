@@ -1,5 +1,5 @@
-tests/rules/no-empty-static-block/cases.ts:3:10	no-empty-static-block	unexpected	Unexpected empty static block.	suggestion	suggestComment	Add comment inside empty static block.	33	33	 /* empty */ 
-tests/rules/no-empty-static-block/cases.ts:6:10	no-empty-static-block	unexpected	Unexpected empty static block.	suggestion	suggestComment	Add comment inside empty static block.	57	61	 /* empty */ 
-tests/rules/no-empty-static-block/cases.ts:11:10	no-empty-static-block	unexpected	Unexpected empty static block.	suggestion	suggestComment	Add comment inside empty static block.	93	93	 /* empty */ 
-tests/rules/no-empty-static-block/cases.ts:12:10	no-empty-static-block	unexpected	Unexpected empty static block.	suggestion	suggestComment	Add comment inside empty static block.	105	108	 /* empty */ 
-tests/rules/no-empty-static-block/cases.ts:33:23	no-empty-static-block	unexpected	Unexpected empty static block.	suggestion	suggestComment	Add comment inside empty static block.	369	369	 /* empty */ 
+tests/rules/no-empty-static-block/cases.ts:3:10	no-empty-static-block	unexpected	Unexpected empty static block.	suggestion	suggestComment	Add comment inside empty static block.	33	33	 /* empty */ 	end	3	12
+tests/rules/no-empty-static-block/cases.ts:6:10	no-empty-static-block	unexpected	Unexpected empty static block.	suggestion	suggestComment	Add comment inside empty static block.	57	61	 /* empty */ 	end	8	4
+tests/rules/no-empty-static-block/cases.ts:11:10	no-empty-static-block	unexpected	Unexpected empty static block.	suggestion	suggestComment	Add comment inside empty static block.	93	93	 /* empty */ 	end	11	12
+tests/rules/no-empty-static-block/cases.ts:12:10	no-empty-static-block	unexpected	Unexpected empty static block.	suggestion	suggestComment	Add comment inside empty static block.	105	108	 /* empty */ 	end	13	4
+tests/rules/no-empty-static-block/cases.ts:33:23	no-empty-static-block	unexpected	Unexpected empty static block.	suggestion	suggestComment	Add comment inside empty static block.	369	369	 /* empty */ 	end	33	25

@@ -86,7 +86,7 @@ fn (mut c Checker) lint_no_fallthrough(root C.TSNode, abs_path string, mut stats
 							opts.comment_pattern)
 						if prev.is_fallthrough && comment == none {
 							findings << Finding{
-								stmt:       c.position_at(t.nodes[ev.node].start)
+								stmt:       c.es_tree_position(t, ev.node)
 								message_id: if t.node(ev.node, .test) != none {
 									'case'
 								} else {
@@ -97,7 +97,7 @@ fn (mut c Checker) lint_no_fallthrough(root C.TSNode, abs_path string, mut stats
 							&& !prev.is_switch_exit_reachable {
 							if found := comment {
 								findings << Finding{
-									stmt:       c.position_at(found.start)
+									stmt:       c.position_range(found.start, found.end)
 									message_id: 'unusedFallthroughComment'
 								}
 							}

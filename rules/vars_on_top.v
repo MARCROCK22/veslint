@@ -20,7 +20,7 @@ fn (mut c Checker) lint_vars_on_top(root C.TSNode, abs_path string, mut stats St
 			if node_kind(kind) == 'var' {
 				stats.checked++
 				findings << Finding{
-					stmt:       position_of(kind)
+					stmt:       c.es_declaration_position(node)
 					message_id: 'top'
 				}
 			}
@@ -61,7 +61,11 @@ fn (mut c Checker) lint_vars_on_top(root C.TSNode, abs_path string, mut stats St
 		}
 		if !on_top {
 			findings << Finding{
-				stmt:       position_of(estree)
+				stmt:       if node_key(estree) == node_key(node) {
+					c.es_declaration_position(node)
+				} else {
+					position_of(estree)
+				}
 				message_id: 'top'
 			}
 		}

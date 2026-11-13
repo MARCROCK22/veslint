@@ -1,14 +1,14 @@
-tests/rules/no-misleading-character-class/allow-escape/cases.ts:2:14	no-misleading-character-class	surrogatePairWithoutUFlag	Unexpected surrogate pair in character class. Use 'u' flag.	suggestion	suggestUnicodeFlag	Add unicode 'u' flag to regex.	31	31	u
-tests/rules/no-misleading-character-class/allow-escape/cases.ts:4:14	no-misleading-character-class	emojiModifier	Unexpected modified Emoji in character class.
-tests/rules/no-misleading-character-class/allow-escape/cases.ts:5:14	no-misleading-character-class	regionalIndicatorSymbol	Unexpected national flag in character class.
-tests/rules/no-misleading-character-class/allow-escape/cases.ts:6:14	no-misleading-character-class	zwj	Unexpected joined character sequence in character class.
-tests/rules/no-misleading-character-class/allow-escape/cases.ts:7:24	no-misleading-character-class	surrogatePairWithoutUFlag	Unexpected surrogate pair in character class. Use 'u' flag.	suggestion	suggestUnicodeFlag	Add unicode 'u' flag to regex.	153	153	, "u"
-tests/rules/no-misleading-character-class/allow-escape/cases.ts:8:25	no-misleading-character-class	combiningClass	Unexpected combined character in character class.
-tests/rules/no-misleading-character-class/allow-escape/cases.ts:9:14	no-misleading-character-class	combiningClass	Unexpected combined character in character class.
-tests/rules/no-misleading-character-class/cases.ts:2:14	no-misleading-character-class	surrogatePairWithoutUFlag	Unexpected surrogate pair in character class. Use 'u' flag.	suggestion	suggestUnicodeFlag	Add unicode 'u' flag to regex.	31	31	u
-tests/rules/no-misleading-character-class/cases.ts:4:14	no-misleading-character-class	emojiModifier	Unexpected modified Emoji in character class.
-tests/rules/no-misleading-character-class/cases.ts:5:14	no-misleading-character-class	regionalIndicatorSymbol	Unexpected national flag in character class.
-tests/rules/no-misleading-character-class/cases.ts:6:14	no-misleading-character-class	zwj	Unexpected joined character sequence in character class.
-tests/rules/no-misleading-character-class/cases.ts:7:24	no-misleading-character-class	surrogatePairWithoutUFlag	Unexpected surrogate pair in character class. Use 'u' flag.	suggestion	suggestUnicodeFlag	Add unicode 'u' flag to regex.	153	153	, "u"
-tests/rules/no-misleading-character-class/cases.ts:8:25	no-misleading-character-class	combiningClass	Unexpected combined character in character class.
-tests/rules/no-misleading-character-class/cases.ts:9:14	no-misleading-character-class	combiningClass	Unexpected combined character in character class.
+tests/rules/no-misleading-character-class/allow-escape/cases.ts:2:14	no-misleading-character-class	surrogatePairWithoutUFlag	Unexpected surrogate pair in character class. Use 'u' flag.	suggestion	suggestUnicodeFlag	Add unicode 'u' flag to regex.	31	31	u	end	2	16
+tests/rules/no-misleading-character-class/allow-escape/cases.ts:4:14	no-misleading-character-class	emojiModifier	Unexpected modified Emoji in character class.	end	4	18
+tests/rules/no-misleading-character-class/allow-escape/cases.ts:5:14	no-misleading-character-class	regionalIndicatorSymbol	Unexpected national flag in character class.	end	5	18
+tests/rules/no-misleading-character-class/allow-escape/cases.ts:6:14	no-misleading-character-class	zwj	Unexpected joined character sequence in character class.	end	6	22
+tests/rules/no-misleading-character-class/allow-escape/cases.ts:7:24	no-misleading-character-class	surrogatePairWithoutUFlag	Unexpected surrogate pair in character class. Use 'u' flag.	suggestion	suggestUnicodeFlag	Add unicode 'u' flag to regex.	153	153	, "u"	end	7	26
+tests/rules/no-misleading-character-class/allow-escape/cases.ts:8:25	no-misleading-character-class	combiningClass	Unexpected combined character in character class.	end	8	27
+tests/rules/no-misleading-character-class/allow-escape/cases.ts:9:14	no-misleading-character-class	combiningClass	Unexpected combined character in character class.	end	9	16
+tests/rules/no-misleading-character-class/cases.ts:2:14	no-misleading-character-class	surrogatePairWithoutUFlag	Unexpected surrogate pair in character class. Use 'u' flag.	suggestion	suggestUnicodeFlag	Add unicode 'u' flag to regex.	31	31	u	end	2	16
+tests/rules/no-misleading-character-class/cases.ts:4:14	no-misleading-character-class	emojiModifier	Unexpected modified Emoji in character class.	end	4	18
+tests/rules/no-misleading-character-class/cases.ts:5:14	no-misleading-character-class	regionalIndicatorSymbol	Unexpected national flag in character class.	end	5	18
+tests/rules/no-misleading-character-class/cases.ts:6:14	no-misleading-character-class	zwj	Unexpected joined character sequence in character class.	end	6	22
+tests/rules/no-misleading-character-class/cases.ts:7:24	no-misleading-character-class	surrogatePairWithoutUFlag	Unexpected surrogate pair in character class. Use 'u' flag.	suggestion	suggestUnicodeFlag	Add unicode 'u' flag to regex.	153	153	, "u"	end	7	26
+tests/rules/no-misleading-character-class/cases.ts:8:25	no-misleading-character-class	combiningClass	Unexpected combined character in character class.	end	8	27
+tests/rules/no-misleading-character-class/cases.ts:9:14	no-misleading-character-class	combiningClass	Unexpected combined character in character class.	end	9	16

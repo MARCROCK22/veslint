@@ -1,0 +1,2 @@
+tests/rules/no-async-promise-executor/cases.ts:2:23	no-async-promise-executor	async	Promise executor functions should not be async.	end	2	28
+tests/rules/no-async-promise-executor/cases.ts:3:23	no-async-promise-executor	async	Promise executor functions should not be async.	end	3	28

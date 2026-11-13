@@ -56,7 +56,7 @@ fn (mut c Checker) lint_no_sequences(root C.TSNode, abs_path string, mut stats S
 			comma = tokens.after(comma.end, false) or { break }
 		}
 		findings << Finding{
-			stmt:       c.position_at(comma.start)
+			stmt:       c.position_range(comma.start, comma.end)
 			message_id: 'unexpectedCommaExpression'
 		}
 	}

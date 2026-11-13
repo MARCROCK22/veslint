@@ -149,6 +149,21 @@ fn (c &Checker) sy_position_of(n SyNode) ?int {
 	return offset
 }
 
+// sy_place_of is the place of a report on the counterpart of a node of the file being linted:
+// from sy_position_of to where the node ends; none for a node of another file.
+fn (c &Checker) sy_place_of(n SyNode) ?treesitter.Ident {
+	start := c.sy_position_of(n)?
+	mut node := n
+	for node.kind() == sy_kind_parenthesized_expression {
+		node = node.child('expression')
+	}
+	end := node.tree.node_end_byte(node.index)
+	if end < start || end > c.src.len {
+		return c.position_at(start)
+	}
+	return c.position_range(start, end)
+}
+
 // sy_prefetch_symbols asks in one request the symbols of the requested tree-sitter nodes that
 // have a counterpart and were not asked yet.
 fn (mut c Checker) sy_prefetch_symbols(nodes []C.TSNode) ! {

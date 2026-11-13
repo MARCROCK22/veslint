@@ -261,7 +261,7 @@ fn (mut c Checker) lint_no_unused_vars(root C.TSNode, abs_path string, mut stats
 			// The first `/* global */` comment that names it.
 			offset := c.nuv_global_comment_location(root, variable.name) or { continue }
 			state.findings << Finding{
-				stmt:       c.position_at(offset)
+				stmt:       c.position_range(offset, offset + variable.name.len)
 				message_id: 'unusedVar'
 				data:       {
 					'action':     'defined'

@@ -60,7 +60,7 @@ fn (mut c Checker) lint_no_restricted_syntax(root C.TSNode, abs_path string, mut
 	for m in esquery.run(t, opts.selectors)! {
 		stats.checked++
 		findings << Finding{
-			stmt:       c.position_at(t.nodes[m.node].start)
+			stmt:       c.es_tree_position(t, m.node)
 			message_id: 'restrictedSyntax'
 			data:       {
 				'message': opts.messages[m.selector]

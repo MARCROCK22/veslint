@@ -1,14 +1,14 @@
-tests/rules/yoda/always/cases.ts:4:5	yoda	expected	Expected literal to be on the left side of ===.	fix	69	80	'red' === a
-tests/rules/yoda/always/cases.ts:5:5	yoda	expected	Expected literal to be on the left side of ==.	fix	89	95	1 == a
-tests/rules/yoda/cases.ts:4:5	yoda	expected	Expected literal to be on the right side of ===.	fix	51	62	a === 'red'
-tests/rules/yoda/cases.ts:5:5	yoda	expected	Expected literal to be on the right side of ==.	fix	71	80	a == true
-tests/rules/yoda/cases.ts:6:5	yoda	expected	Expected literal to be on the right side of >.	fix	89	94	a < 5
-tests/rules/yoda/cases.ts:7:5	yoda	expected	Expected literal to be on the right side of <.	fix	103	109	a > -1
-tests/rules/yoda/cases.ts:8:5	yoda	expected	Expected literal to be on the right side of !==.	fix	118	127	a !== `x`
-tests/rules/yoda/cases.ts:9:5	yoda	expected	Expected literal to be on the right side of !=.	fix	136	145	a != null
-tests/rules/yoda/cases.ts:10:5	yoda	expected	Expected literal to be on the right side of <=.	fix	154	167	a.length >= 0
-tests/rules/yoda/cases.ts:11:5	yoda	expected	Expected literal to be on the right side of <.	fix	176	181	a > 1
-tests/rules/yoda/cases.ts:12:11	yoda	expected	Expected literal to be on the right side of <.	fix	203	206	a>1
-tests/rules/yoda/cases.ts:13:5	yoda	expected	Expected literal to be on the right side of ===.	fix	212	223	(a) === (1)
-tests/rules/yoda/except-range/cases.ts:9:5	yoda	expected	Expected literal to be on the right side of <=.	fix	159	165	a >= 0
-tests/rules/yoda/except-range/cases.ts:10:5	yoda	expected	Expected literal to be on the right side of <.	fix	174	180	a > 10
+tests/rules/yoda/always/cases.ts:4:5	yoda	expected	Expected literal to be on the left side of ===.	fix	69	80	'red' === a	end	4	16
+tests/rules/yoda/always/cases.ts:5:5	yoda	expected	Expected literal to be on the left side of ==.	fix	89	95	1 == a	end	5	11
+tests/rules/yoda/cases.ts:4:5	yoda	expected	Expected literal to be on the right side of ===.	fix	51	62	a === 'red'	end	4	16
+tests/rules/yoda/cases.ts:5:5	yoda	expected	Expected literal to be on the right side of ==.	fix	71	80	a == true	end	5	14
+tests/rules/yoda/cases.ts:6:5	yoda	expected	Expected literal to be on the right side of >.	fix	89	94	a < 5	end	6	10
+tests/rules/yoda/cases.ts:7:5	yoda	expected	Expected literal to be on the right side of <.	fix	103	109	a > -1	end	7	11
+tests/rules/yoda/cases.ts:8:5	yoda	expected	Expected literal to be on the right side of !==.	fix	118	127	a !== `x`	end	8	14
+tests/rules/yoda/cases.ts:9:5	yoda	expected	Expected literal to be on the right side of !=.	fix	136	145	a != null	end	9	14
+tests/rules/yoda/cases.ts:10:5	yoda	expected	Expected literal to be on the right side of <=.	fix	154	167	a.length >= 0	end	10	18
+tests/rules/yoda/cases.ts:11:5	yoda	expected	Expected literal to be on the right side of <.	fix	176	181	a > 1	end	11	10
+tests/rules/yoda/cases.ts:12:11	yoda	expected	Expected literal to be on the right side of <.	fix	203	206	a>1	end	12	14
+tests/rules/yoda/cases.ts:13:5	yoda	expected	Expected literal to be on the right side of ===.	fix	212	223	(a) === (1)	end	13	16
+tests/rules/yoda/except-range/cases.ts:9:5	yoda	expected	Expected literal to be on the right side of <=.	fix	159	165	a >= 0	end	9	11
+tests/rules/yoda/except-range/cases.ts:10:5	yoda	expected	Expected literal to be on the right side of <.	fix	174	180	a > 10	end	10	11

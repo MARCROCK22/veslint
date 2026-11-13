@@ -196,7 +196,7 @@ fn (mut c Checker) nuret_report(t &estree.EsTree, node int) Finding {
 	end := t.nodes[node].end
 	parent := t.nodes[node].parent
 	mut finding := Finding{
-		stmt:       c.position_at(start)
+		stmt:       c.position_range(start, end)
 		message_id: 'unnecessaryReturn'
 	}
 	if t.typ(parent) !in [.program, .block_statement, .static_block, .switch_case] {

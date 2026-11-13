@@ -1,7 +1,7 @@
-tests/rules/no-useless-return/cases.ts:5:3	no-useless-return	unnecessaryReturn	Unnecessary return statement.	fix	44	89	function last(): void {\n  work();\n  \n}
-tests/rules/no-useless-return/cases.ts:10:5	no-useless-return	unnecessaryReturn	Unnecessary return statement.	fix	90	199	function inBranches(flag: boolean): void {\n  if (flag) {\n    work();\n    \n  } else {\n    return;\n  }\n}
-tests/rules/no-useless-return/cases.ts:12:5	no-useless-return	unnecessaryReturn	Unnecessary return statement.	fix	90	199	function inBranches(flag: boolean): void {\n  if (flag) {\n    work();\n    return;\n  } else {\n    \n  }\n}
-tests/rules/no-useless-return/cases.ts:17:3	no-useless-return	unnecessaryReturn	Unnecessary return statement.	fix	214	249	(): void => {\n  work();\n  \n}
-tests/rules/no-useless-return/cases.ts:24:7	no-useless-return	unnecessaryReturn	Unnecessary return statement.	fix	272	344	(): void {\n    try {\n      work();\n    } catch {\n      \n    }\n  }
-tests/rules/no-useless-return/cases.ts:32:7	no-useless-return	unnecessaryReturn	Unnecessary return statement.	fix	347	444	function inSwitch(n: number): void {\n  switch (n) {\n    case 1:\n      work();\n      \n  }\n}
-tests/rules/no-useless-return/cases.ts:37:3	no-useless-return	unnecessaryReturn	Unnecessary return statement.
+tests/rules/no-useless-return/cases.ts:5:3	no-useless-return	unnecessaryReturn	Unnecessary return statement.	fix	44	89	function last(): void {\n  work();\n  \n}	end	5	10
+tests/rules/no-useless-return/cases.ts:10:5	no-useless-return	unnecessaryReturn	Unnecessary return statement.	fix	90	199	function inBranches(flag: boolean): void {\n  if (flag) {\n    work();\n    \n  } else {\n    return;\n  }\n}	end	10	12
+tests/rules/no-useless-return/cases.ts:12:5	no-useless-return	unnecessaryReturn	Unnecessary return statement.	fix	90	199	function inBranches(flag: boolean): void {\n  if (flag) {\n    work();\n    return;\n  } else {\n    \n  }\n}	end	12	12
+tests/rules/no-useless-return/cases.ts:17:3	no-useless-return	unnecessaryReturn	Unnecessary return statement.	fix	214	249	(): void => {\n  work();\n  \n}	end	17	10
+tests/rules/no-useless-return/cases.ts:24:7	no-useless-return	unnecessaryReturn	Unnecessary return statement.	fix	272	344	(): void {\n    try {\n      work();\n    } catch {\n      \n    }\n  }	end	24	14
+tests/rules/no-useless-return/cases.ts:32:7	no-useless-return	unnecessaryReturn	Unnecessary return statement.	fix	347	444	function inSwitch(n: number): void {\n  switch (n) {\n    case 1:\n      work();\n      \n  }\n}	end	32	14
+tests/rules/no-useless-return/cases.ts:37:3	no-useless-return	unnecessaryReturn	Unnecessary return statement.	end	37	20

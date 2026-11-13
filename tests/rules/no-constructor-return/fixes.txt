@@ -1,0 +1,2 @@
+tests/rules/no-constructor-return/cases.ts:5:7	no-constructor-return	unexpected	Unexpected return statement in constructor.	end	5	22
+tests/rules/no-constructor-return/cases.ts:7:5	no-constructor-return	unexpected	Unexpected return statement in constructor.	end	7	17

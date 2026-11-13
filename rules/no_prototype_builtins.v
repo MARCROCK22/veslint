@@ -1,7 +1,7 @@
 module rules
 
 import time
-import treesitter { node_field, node_kind, node_start }
+import treesitter { node_field, node_kind, node_start, position_of }
 
 // Port of the `no-prototype-builtins` rule of ESLint 10.6.0, with its suggestion (it has no
 // options).
@@ -42,7 +42,7 @@ fn (mut c Checker) lint_no_prototype_builtins(root C.TSNode, abs_path string, mu
 			suggestions << suggestion
 		}
 		findings << Finding{
-			stmt:        c.position_at(node_start(property))
+			stmt:        position_of(property)
 			message_id:  'prototypeBuildIn'
 			data:        data
 			suggestions: suggestions

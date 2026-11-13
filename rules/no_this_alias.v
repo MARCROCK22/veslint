@@ -51,7 +51,7 @@ fn (mut c Checker) lint_no_this_alias(root C.TSNode, abs_path string, mut stats 
 			continue
 		}
 		findings << Finding{
-			stmt:       position_of(id)
+			stmt:       c.es_binding_position(id)
 			message_id: if is_identifier { 'thisAssignment' } else { 'thisDestructure' }
 		}
 	}

@@ -1,7 +1,7 @@
 module rules
 
 import time
-import treesitter { node_field, node_kind, node_start }
+import treesitter { node_field, node_kind, node_start, position_of }
 
 // Port of the `no-extra-bind` rule of ESLint 10.6.0, with its fix (it has no options).
 
@@ -31,7 +31,7 @@ fn (mut c Checker) lint_no_extra_bind(root C.TSNode, abs_path string, mut stats 
 		}) or { continue })
 		has_fix, fix := c.neb_fix(root, member, call)
 		findings << Finding{
-			stmt:       c.position_at(node_start(property))
+			stmt:       position_of(property)
 			message_id: 'unexpected'
 			has_fix:    has_fix
 			fix:        fix

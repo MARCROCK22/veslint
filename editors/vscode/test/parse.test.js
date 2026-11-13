@@ -18,7 +18,19 @@ test('a problem with two suggestions', () => {
       { messageId: 'floatingFixVoid', message: 'Add void operator to ignore.', start: 144, end: 144, text: 'void ' },
       { messageId: 'floatingFixAwait', message: 'Add await operator.', start: 144, end: 144, text: 'await ' },
     ],
+    endLine: null,
+    endColumn: null,
   });
+});
+
+test('where a problem ends, after its fix and its suggestions', () => {
+  const problem = parseLine('a.ts:3:7	no-var	unexpectedVar	Unexpected var, use let or const instead.	fix	32	35	let	end	4	2');
+  assert.deepEqual(problem.fix, { start: 32, end: 35, text: 'let' });
+  assert.equal(problem.endLine, 4);
+  assert.equal(problem.endColumn, 2);
+  // A field this version does not know ends the problem, which is still a problem.
+  const later = parseLine('a.ts:3:7	no-var	unexpectedVar	m	end	3	9	new	1');
+  assert.equal(later.endColumn, 9);
 });
 
 test('a problem with a fix whose text is one space, and one without any', () => {

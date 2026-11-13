@@ -25,7 +25,7 @@ fn (mut c Checker) lint_no_empty_pattern(root C.TSNode, abs_path string, mut sta
 		if node_kind(node) == 'array_pattern' {
 			if es_array_elements(node).len == 0 {
 				findings << Finding{
-					stmt:       position_of(node)
+					stmt:       c.es_binding_position(node)
 					message_id: 'unexpected'
 					data:       {
 						'type': 'array'
@@ -41,7 +41,7 @@ fn (mut c Checker) lint_no_empty_pattern(root C.TSNode, abs_path string, mut sta
 			continue
 		}
 		findings << Finding{
-			stmt:       position_of(node)
+			stmt:       c.es_binding_position(node)
 			message_id: 'unexpected'
 			data:       {
 				'type': 'object'

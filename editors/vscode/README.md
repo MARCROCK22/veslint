@@ -35,7 +35,7 @@ Shows in the editor what veslint reports: 105 rules of typescript-eslint (its 61
 - **Each server keeps the TypeScript compiler of its folder in memory** while VS Code is open, as the TypeScript language service does.
 - **A resolved configuration is renewed when an `eslint.config.*` file changes** (or with the reload command), not when something it imports changes.
 - **One severity for every rule.** veslint's output does not tell `error` from `warn`, so the problems of the rules are shown with `veslint.severity`.
-- **A problem is underlined from where it starts to the end of the word there:** veslint's output has the start of each problem, not its end.
+- **A problem is underlined over ESLint's range,** from where it starts to where it ends (veslint 0.12.0 and later); with an older veslint, whose output has only where a problem starts, from there to the end of the word.
 - **After an update, reload the window** (`Developer: Reload Window`): VS Code keeps the settings of the version it loaded first until then (in the Settings editor, `veslint.run` may still show `onSave` as its default). The extension lints while typing anyway, unless `veslint.run` is set.
 - JavaScript files are not linted: veslint only reads TypeScript.
 

@@ -144,7 +144,7 @@ fn (mut c Checker) gap_check(o GapOptions, members []C.TSNode, checked []bool, m
 		}
 		if message_id != '' {
 			findings << Finding{
-				stmt:       c.position_at(es_member_start(latter))
+				stmt:       c.es_function_head(latter)
 				message_id: message_id
 				data:       {
 					'formerName': c.gap_name(former)

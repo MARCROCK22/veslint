@@ -1,7 +1,7 @@
 module rules
 
 import time
-import treesitter { position_of }
+import treesitter { children, position_of }
 
 // Port of the `no-with` rule of ESLint 10.6.0 (it has no options).
 
@@ -16,7 +16,7 @@ fn (mut c Checker) lint_no_with(root C.TSNode, abs_path string, mut stats Stats)
 		stats.checked++
 		// At the `with` keyword, the first token of the statement.
 		findings << Finding{
-			stmt:       position_of(node)
+			stmt:       position_of(children(node)[0])
 			message_id: 'unexpectedWith'
 		}
 	}

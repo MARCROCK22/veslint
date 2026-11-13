@@ -1,7 +1,7 @@
 module rules
 
 import time
-import treesitter { has_child_kind, named_children, node_field, node_kind, node_parent }
+import treesitter { has_child_kind, named_children, node_end, node_field, node_kind, node_parent }
 
 // Port of the `no-useless-constructor` rule of typescript-eslint 8.62.0 (it has no options), which
 // extends the rule of ESLint 10.6.0 with the same name, with its suggestion. The wrapper's checks
@@ -59,7 +59,7 @@ fn (mut c Checker) lint_no_useless_constructor(root C.TSNode, abs_path string, m
 			fix_replace_range(start, end, if add_semicolon { ';' } else { '' }),
 		])!
 		findings << Finding{
-			stmt:        c.position_at(start)
+			stmt:        c.position_range(start, node_end(node_field(node, 'name') or { node }))
 			message_id:  'noUselessConstructor'
 			suggestions: [suggestion]
 		}

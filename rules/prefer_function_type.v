@@ -92,7 +92,7 @@ fn (mut c Checker) pft_check_member(member C.TSNode, node C.TSNode, this_types [
 		return
 	}
 	finding := Finding{
-		stmt:       position_of(member)
+		stmt:       c.position_range(node_start(member), c.es_member_end(member))
 		message_id: 'functionTypeOverCallableType'
 		data:       {
 			'literalOrInterface': if is_interface { 'Interface' } else { 'Type literal' }

@@ -1,0 +1,20 @@
+tests/rules/func-names/as-needed/cases.ts:5:5	func-names	unnamed	Unexpected unnamed function.	end	5	14
+tests/rules/func-names/as-needed/cases.ts:6:2	func-names	unnamed	Unexpected unnamed function.	end	6	11
+tests/rules/func-names/as-needed/cases.ts:7:14	func-names	unnamed	Unexpected unnamed function.	end	7	23
+tests/rules/func-names/cases.ts:4:5	func-names	unnamed	Unexpected unnamed function.	end	4	14
+tests/rules/func-names/cases.ts:5:5	func-names	unnamed	Unexpected unnamed async function.	end	5	20
+tests/rules/func-names/cases.ts:6:5	func-names	unnamed	Unexpected unnamed generator function.	end	6	15
+tests/rules/func-names/cases.ts:7:11	func-names	unnamed	Unexpected unnamed function.	end	7	20
+tests/rules/func-names/cases.ts:8:13	func-names	unnamed	Unexpected unnamed method 'b'.	end	8	25
+tests/rules/func-names/cases.ts:8:32	func-names	unnamed	Unexpected unnamed method 'c'.	end	8	48
+tests/rules/func-names/cases.ts:8:55	func-names	unnamed	Unexpected unnamed method.	end	8	83
+tests/rules/func-names/cases.ts:10:3	func-names	unnamed	Unexpected unnamed method 'p'.	end	10	16
+tests/rules/func-names/cases.ts:11:3	func-names	unnamed	Unexpected unnamed static async method 'q'.	end	11	29
+tests/rules/func-names/cases.ts:12:3	func-names	unnamed	Unexpected unnamed private method #r.	end	12	17
+tests/rules/func-names/cases.ts:14:16	func-names	unnamed	Unexpected unnamed function.	end	14	25
+tests/rules/func-names/cases.ts:28:3	func-names	unnamed	Unexpected unnamed method 'p'.	end	28	22
+tests/rules/func-names/cases.ts:29:3	func-names	unnamed	Unexpected unnamed method 'q'.	end	30	16
+tests/rules/func-names/cases.ts:32:16	func-names	unnamed	Unexpected unnamed function.	end	32	25
+tests/rules/func-names/never/cases.ts:4:5	func-names	named	Unexpected named function 'named'.	end	4	19
+tests/rules/func-names/never/cases.ts:5:11	func-names	named	Unexpected named function 'b'.	end	5	21
+tests/rules/func-names/never/cases.ts:6:5	func-names	unnamed	Unexpected unnamed generator function.	end	6	15

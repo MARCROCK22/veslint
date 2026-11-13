@@ -1,0 +1,7 @@
+tests/rules/no-return-assign/always/cases.ts:5:3	no-return-assign	returnAssignment	Return statement should not contain assignment.	end	5	18
+tests/rules/no-return-assign/always/cases.ts:7:11	no-return-assign	arrowAssignment	Arrow function should not return assignment.	end	7	24
+tests/rules/no-return-assign/cases.ts:5:3	no-return-assign	returnAssignment	Return statement should not contain assignment.	end	5	16
+tests/rules/no-return-assign/cases.ts:8:3	no-return-assign	returnAssignment	Return statement should not contain assignment.	end	8	17
+tests/rules/no-return-assign/cases.ts:10:12	no-return-assign	arrowAssignment	Arrow function should not return assignment.	end	10	23
+tests/rules/no-return-assign/cases.ts:12:3	no-return-assign	returnAssignment	Return statement should not contain assignment.	end	12	19
+tests/rules/no-return-assign/cases.ts:15:3	no-return-assign	returnAssignment	Return statement should not contain assignment.	end	15	24

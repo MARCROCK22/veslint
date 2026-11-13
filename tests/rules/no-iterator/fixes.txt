@@ -1,0 +1,3 @@
+tests/rules/no-iterator/cases.ts:4:1	no-iterator	noIterator	Reserved name '__iterator__'.	end	4	15
+tests/rules/no-iterator/cases.ts:5:11	no-iterator	noIterator	Reserved name '__iterator__'.	end	5	28
+tests/rules/no-iterator/cases.ts:6:11	no-iterator	noIterator	Reserved name '__iterator__'.	end	6	28

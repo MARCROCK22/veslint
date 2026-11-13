@@ -94,7 +94,7 @@ fn (c &Checker) nue_report(node C.TSNode, offset int, character string, no_backs
 		}
 	}
 	return Finding{
-		stmt:        c.position_at(offset)
+		stmt:        c.position_range(offset, offset + 1)
 		message_id:  'unnecessaryEscape'
 		data:        {
 			'character': character

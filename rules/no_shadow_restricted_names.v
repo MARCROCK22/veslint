@@ -44,7 +44,7 @@ fn (mut c Checker) lint_no_shadow_restricted_names(root C.TSNode, abs_path strin
 				}
 				reported[key] = true
 				findings << Finding{
-					stmt:       position_of(def.name)
+					stmt:       c.es_binding_position(def.name)
 					message_id: 'shadowingRestrictedName'
 					data:       {
 						'name': variable.name

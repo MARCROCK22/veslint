@@ -35,6 +35,7 @@ fn us_options(options []json2.Any) !UsOptions {
 struct UsParam {
 	kind      string
 	start     int
+	end       int // where the ESTree parameter ends (its annotation or default value included)
 	optional  bool
 	has_type  bool
 	type_node C.TSNode // the type of the annotation, without parentheses
@@ -131,7 +132,7 @@ fn (mut c Checker) lint_unified_signatures(root C.TSNode, abs_path string, mut s
 						p0 := a.params[index]
 						p1 := b.params[index]
 						findings << Finding{
-							stmt:       c.position_at(p1.start)
+							stmt:       c.position_range(p1.start, p1.end)
 							message_id: 'singleParameterDifference'
 							data:       {
 								'failureStringStart': us_failure_start(only2, lines, p0.start)
@@ -143,7 +144,7 @@ fn (mut c Checker) lint_unified_signatures(root C.TSNode, abs_path string, mut s
 					}
 					extra, other := c.us_optional_or_rest_difference(a, b) or { continue }
 					findings << Finding{
-						stmt:       c.position_at(extra.start)
+						stmt:       c.position_range(extra.start, extra.end)
 						message_id: if extra.kind == 'RestElement' {
 							'omittingRestParameter'
 						} else {
@@ -408,6 +409,7 @@ fn (c &Checker) us_param(p C.TSNode) UsParam {
 		|| has_child_kind(p, 'readonly') {
 		// Its `parameter` is the pattern, or an AssignmentPattern without optional nor annotation.
 		return UsParam{
+			end:       c.es_end(p)
 			kind:      'TSParameterProperty'
 			start:     node_start(p)
 			optional:  question && !has_value
@@ -419,6 +421,7 @@ fn (c &Checker) us_param(p C.TSNode) UsParam {
 		argument := first_named(pattern) or { pattern }
 		is_name := node_kind(argument) == 'identifier'
 		return UsParam{
+			end:       c.es_end(p)
 			kind:      'RestElement'
 			start:     node_start(p)
 			has_type:  has_type
@@ -429,6 +432,7 @@ fn (c &Checker) us_param(p C.TSNode) UsParam {
 	}
 	if has_value {
 		return UsParam{
+			end:       c.es_end(p)
 			kind:      'AssignmentPattern'
 			start:     node_start(pattern)
 			type_node: type_node
@@ -441,6 +445,7 @@ fn (c &Checker) us_param(p C.TSNode) UsParam {
 	}
 	is_this := node_kind(pattern) == 'this'
 	return UsParam{
+		end:       c.es_end(p)
 		kind:      kind
 		start:     node_start(pattern)
 		optional:  question

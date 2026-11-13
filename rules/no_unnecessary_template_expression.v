@@ -463,5 +463,10 @@ fn (c &Checker) nute_position_before(n C.TSNode, units int) Ident {
 		left -= if offset - prev == 4 { 2 } else { 1 }
 		offset = prev
 	}
-	return c.position_at(offset)
+	// To one code unit after the interpolation (the `}`, or what follows the expression).
+	mut end := c.es_end(n)
+	if end < c.src.len {
+		end += utf8_char_len(c.src[end])
+	}
+	return c.position_range(offset, end)
 }

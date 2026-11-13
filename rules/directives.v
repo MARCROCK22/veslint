@@ -1006,9 +1006,16 @@ fn unused_directive_finding(comment DirectiveComment, enable bool, description s
 	} else {
 		'Unused eslint-disable directive (no problems were reported).'
 	}
+	problem := directive_problem(comment, if config.report_unused == 1 { 'warning' } else { 'error' },
+		problem_rule, text)
 	return Finding{
-		...directive_problem(comment, if config.report_unused == 1 { 'warning' } else { 'error' },
-			problem_rule, text)
+		...problem
+		// ESLint gives where the comment starts, and no end (applyDirectives reports a `loc` that
+		// is a position).
+		stmt:    Ident{
+			...problem.stmt
+			end_byte: -1
+		}
 		has_fix: has_fix
 		fix:     fix
 	}

@@ -1,0 +1,17 @@
+tests/rules/seyfert/decorator-target/cases.ts:38:1	seyfert/decorator-target	wrongTarget	`@AutoLoad` can only be used on a class that extends seyfert's `Command`.	end	38	8
+tests/rules/seyfert/decorator-target/cases.ts:40:1	seyfert/decorator-target	wrongTarget	`@Group` can only be used on a class that extends seyfert's `SubCommand`.	end	40	18
+tests/rules/seyfert/decorator-target/cases.ts:40:19	seyfert/decorator-target	wrongTarget	`@GroupsT` can only be used on a class that extends seyfert's `Command`.	end	40	39
+tests/rules/seyfert/decorator-target/cases.ts:42:1	seyfert/decorator-target	wrongTarget	`@Group` can only be used on a class that extends seyfert's `SubCommand`.	end	42	16
+tests/rules/seyfert/decorator-target/cases.ts:44:1	seyfert/decorator-target	wrongTarget	`@Groups` can only be used on a class that extends seyfert's `Command`.	end	44	12
+tests/rules/seyfert/decorator-target/cases.ts:46:1	seyfert/decorator-target	wrongTarget	`@AutoLoad` can only be used on a class that extends seyfert's `Command`.	end	46	12
+tests/rules/seyfert/decorator-target/cases.ts:48:1	seyfert/decorator-target	wrongTarget	`@Group` can only be used on a class that extends seyfert's `SubCommand`.	end	48	16
+tests/rules/seyfert/decorator-target/cases.ts:50:1	seyfert/decorator-target	wrongTarget	`@GroupsT` can only be used on a class that extends seyfert's `Command`.	end	50	13
+tests/rules/seyfert/decorator-target/cases.ts:53:1	seyfert/decorator-target	wrongTarget	`@AutoLoad` can only be used on a class that extends seyfert's `Command`.	end	53	10
+tests/rules/seyfert/decorator-target/cases.ts:57:1	seyfert/decorator-target	wrongTarget	`@Groups` can only be used on a class that extends seyfert's `Command`.	end	57	12
+tests/rules/seyfert/decorator-target/cases.ts:59:68	seyfert/decorator-target	wrongTarget	`@Group` can only be used on a class that extends seyfert's `SubCommand`.	end	59	83
+tests/rules/seyfert/decorator-target/cases.ts:62:20	seyfert/decorator-target	wrongTarget	`@Group` can only be used on a class that extends seyfert's `SubCommand`.	end	62	35
+tests/rules/seyfert/decorator-target/cases.ts:64:1	seyfert/decorator-target	wrongTarget	`@Group` can only be used on a class that extends seyfert's `SubCommand`.	end	64	16
+tests/rules/seyfert/decorator-target/cases.ts:66:8	seyfert/decorator-target	wrongTarget	`@Groups` can only be used on a class that extends seyfert's `Command`.	end	66	19
+tests/rules/seyfert/decorator-target/cases.ts:68:3	seyfert/decorator-target	wrongTarget	`@AutoLoad` can only be used on a class that extends seyfert's `Command`.	end	68	14
+tests/rules/seyfert/decorator-target/export-default-after/cases.ts:4:16	seyfert/decorator-target	wrongTarget	`@Group` can only be used on a class that extends seyfert's `SubCommand`.	end	4	31
+tests/rules/seyfert/decorator-target/export-default-before/cases.ts:4:1	seyfert/decorator-target	wrongTarget	`@Groups` can only be used on a class that extends seyfert's `Command`.	end	4	12

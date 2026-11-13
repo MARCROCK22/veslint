@@ -141,7 +141,7 @@ fn (mut c Checker) nunr_report_if_unreachable(t &estree.EsTree, an &codepath.Ana
 	}
 	if rng.start_node >= 0 && rng.end_node >= 0 {
 		findings << Finding{
-			stmt:       c.position_at(t.nodes[rng.start_node].start)
+			stmt:       c.position_range(t.nodes[rng.start_node].start, t.nodes[rng.end_node].end)
 			message_id: 'unreachableCode'
 		}
 	}

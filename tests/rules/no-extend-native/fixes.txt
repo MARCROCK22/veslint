@@ -1,0 +1,2 @@
+tests/rules/no-extend-native/cases.ts:6:1	no-extend-native	unexpected	Number prototype is read only, properties should not be added.	end	6	59
+tests/rules/no-extend-native/cases.ts:7:1	no-extend-native	unexpected	String prototype is read only, properties should not be added.	end	7	63

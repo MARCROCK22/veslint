@@ -1,0 +1,5 @@
+tests/rules/no-control-regex/cases.ts:2:11	no-control-regex	unexpected	Unexpected control character(s) in regular expression: \\x1f.	end	2	17
+tests/rules/no-control-regex/cases.ts:3:11	no-control-regex	unexpected	Unexpected control character(s) in regular expression: \\x1f.	end	3	20
+tests/rules/no-control-regex/cases.ts:4:22	no-control-regex	unexpected	Unexpected control character(s) in regular expression: \\x0c.	end	4	28
+tests/rules/no-control-regex/cases.ts:5:18	no-control-regex	unexpected	Unexpected control character(s) in regular expression: \\x1f.	end	5	25
+tests/rules/no-control-regex/cases.ts:6:11	no-control-regex	unexpected	Unexpected control character(s) in regular expression: \\x00.	end	6	28

@@ -1,7 +1,7 @@
 module rules
 
 import time
-import treesitter { children, node_field, node_kind }
+import treesitter { children, node_field, node_kind, position_of }
 
 // Port of the `no-async-promise-executor` rule of ESLint 10.6.0 (it has no options).
 
@@ -33,7 +33,7 @@ fn (mut c Checker) lint_no_async_promise_executor(root C.TSNode, abs_path string
 		for child in children(executor) {
 			if node_kind(child) == 'async' {
 				findings << Finding{
-					stmt:       c.position_at(treesitter.node_start(child))
+					stmt:       position_of(child)
 					message_id: 'async'
 				}
 				break

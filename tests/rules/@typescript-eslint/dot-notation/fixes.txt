@@ -1,136 +1,136 @@
-tests/rules/@typescript-eslint/dot-notation/allow-pattern-literals/cases.ts:5:10	@typescript-eslint/dot-notation	useDot	[false] is better written in dot notation.	fix	190	197	.false
-tests/rules/@typescript-eslint/dot-notation/allow-pattern-literals/cases.ts:8:5	@typescript-eslint/dot-notation	useDot	["item12"] is better written in dot notation.	fix	234	244	.item12
-tests/rules/@typescript-eslint/dot-notation/allow-pattern-literals/cases.ts:10:5	@typescript-eslint/dot-notation	useDot	["abc"] is better written in dot notation.	fix	260	267	.abc
-tests/rules/@typescript-eslint/dot-notation/allow-pattern-unicode/cases.ts:5:3	@typescript-eslint/dot-notation	useDot	["camelCase"] is better written in dot notation.	fix	145	158	.camelCase
-tests/rules/@typescript-eslint/dot-notation/allow-pattern-unicode/cases.ts:12:3	@typescript-eslint/dot-notation	useDot	["ab"] is better written in dot notation.	fix	227	233	.ab
-tests/rules/@typescript-eslint/dot-notation/allow-pattern-unicode/cases.ts:15:3	@typescript-eslint/dot-notation	useDot	["a"] is better written in dot notation.	fix	253	258	.a
-tests/rules/@typescript-eslint/dot-notation/allow-pattern/cases.ts:4:5	@typescript-eslint/dot-notation	useDot	["camelCase"] is better written in dot notation.	fix	149	162	.camelCase
-tests/rules/@typescript-eslint/dot-notation/allow-pattern/cases.ts:6:5	@typescript-eslint/dot-notation	useDot	["plain"] is better written in dot notation.	fix	181	190	.plain
-tests/rules/@typescript-eslint/dot-notation/allow-pattern/cases.ts:7:5	@typescript-eslint/dot-notation	useDot	["Snake_case"] is better written in dot notation.	fix	195	209	.Snake_case
-tests/rules/@typescript-eslint/dot-notation/allow-pattern/cases.ts:8:5	@typescript-eslint/dot-notation	useDot	["snake_"] is better written in dot notation.	fix	214	224	.snake_
-tests/rules/@typescript-eslint/dot-notation/allow-pattern/cases.ts:10:5	@typescript-eslint/dot-notation	useDot	[`plain`] is better written in dot notation.	fix	248	257	.plain
-tests/rules/@typescript-eslint/dot-notation/allow-pattern/cases.ts:12:5	@typescript-eslint/dot-notation	useDot	["$dollar"] is better written in dot notation.	fix	283	294	.$dollar
-tests/rules/@typescript-eslint/dot-notation/cases.ts:6:3	@typescript-eslint/dot-notation	useDot	["foo"] is better written in dot notation.	fix	226	233	.foo
-tests/rules/@typescript-eslint/dot-notation/cases.ts:7:3	@typescript-eslint/dot-notation	useDot	["foo"] is better written in dot notation.	fix	236	243	.foo
-tests/rules/@typescript-eslint/dot-notation/cases.ts:8:3	@typescript-eslint/dot-notation	useDot	[`foo`] is better written in dot notation.	fix	246	253	.foo
-tests/rules/@typescript-eslint/dot-notation/cases.ts:9:3	@typescript-eslint/dot-notation	useDot	["class"] is better written in dot notation.	fix	256	265	.class
-tests/rules/@typescript-eslint/dot-notation/cases.ts:10:3	@typescript-eslint/dot-notation	useDot	["foo"] is better written in dot notation.	fix	268	275	.foo
-tests/rules/@typescript-eslint/dot-notation/cases.ts:11:3	@typescript-eslint/dot-notation	useDot	["$dollar"] is better written in dot notation.	fix	278	289	.$dollar
-tests/rules/@typescript-eslint/dot-notation/cases.ts:12:3	@typescript-eslint/dot-notation	useDot	["_under"] is better written in dot notation.	fix	292	302	._under
-tests/rules/@typescript-eslint/dot-notation/cases.ts:13:3	@typescript-eslint/dot-notation	useDot	["foo"] is better written in dot notation.	fix	305	312	.foo
-tests/rules/@typescript-eslint/dot-notation/cases.ts:13:10	@typescript-eslint/dot-notation	useDot	["b"] is better written in dot notation.	fix	312	317	.b
-tests/rules/@typescript-eslint/dot-notation/cases.ts:14:3	@typescript-eslint/dot-notation	useDot	["foo"] is better written in dot notation.	fix	320	327	.foo
-tests/rules/@typescript-eslint/dot-notation/cases.ts:15:4	@typescript-eslint/dot-notation	useDot	["foo"] is better written in dot notation.	fix	348	355	.foo
-tests/rules/@typescript-eslint/dot-notation/cases.ts:16:9	@typescript-eslint/dot-notation	useDot	["foo"] is better written in dot notation.	fix	364	371	foo
-tests/rules/@typescript-eslint/dot-notation/cases.ts:16:18	@typescript-eslint/dot-notation	useDot	["bar"] is better written in dot notation.	fix	373	380	bar
-tests/rules/@typescript-eslint/dot-notation/cases.ts:17:4	@typescript-eslint/dot-notation	useDot	["foo"] is better written in dot notation.	fix	383	392	.foo
-tests/rules/@typescript-eslint/dot-notation/cases.ts:18:12	@typescript-eslint/dot-notation	useDot	["emoji"] is better written in dot notation.	fix	404	413	.emoji
-tests/rules/@typescript-eslint/dot-notation/cases.ts:22:3	@typescript-eslint/dot-notation	useDot	[true] is better written in dot notation.	fix	518	524	.true
-tests/rules/@typescript-eslint/dot-notation/cases.ts:24:3	@typescript-eslint/dot-notation	useDot	[false] is better written in dot notation.	fix	585	592	.false
-tests/rules/@typescript-eslint/dot-notation/cases.ts:26:3	@typescript-eslint/dot-notation	useDot	[null] is better written in dot notation.	fix	652	658	.null
-tests/rules/@typescript-eslint/dot-notation/cases.ts:54:18	@typescript-eslint/dot-notation	useDot	["method"] is better written in dot notation.	fix	1188	1198	.method
-tests/rules/@typescript-eslint/dot-notation/fixes-keywords/cases.ts:6:3	@typescript-eslint/dot-notation	useBrackets	.class is a syntax error.	fix	234	240	["class"]
-tests/rules/@typescript-eslint/dot-notation/fixes-keywords/cases.ts:7:3	@typescript-eslint/dot-notation	useBrackets	.if is a syntax error.	fix	243	246	["if"]
-tests/rules/@typescript-eslint/dot-notation/fixes-keywords/cases.ts:7:6	@typescript-eslint/dot-notation	useBrackets	.else is a syntax error.	fix	246	251	["else"]
-tests/rules/@typescript-eslint/dot-notation/fixes-keywords/cases.ts:8:3	@typescript-eslint/dot-notation	useBrackets	.null is a syntax error.	fix	254	259	["null"]
-tests/rules/@typescript-eslint/dot-notation/fixes-keywords/cases.ts:9:3	@typescript-eslint/dot-notation	useBrackets	.true is a syntax error.	fix	262	267	["true"]
-tests/rules/@typescript-eslint/dot-notation/fixes-keywords/cases.ts:10:3	@typescript-eslint/dot-notation	useBrackets	.new is a syntax error.	fix	272	276	["new"]
-tests/rules/@typescript-eslint/dot-notation/fixes-keywords/cases.ts:11:3	@typescript-eslint/dot-notation	useBrackets	.default is a syntax error.	fix	281	289	["default"]
-tests/rules/@typescript-eslint/dot-notation/fixes-keywords/cases.ts:13:4	@typescript-eslint/dot-notation	useBrackets	.class is a syntax error.	fix	313	318	["class"]
-tests/rules/@typescript-eslint/dot-notation/fixes-keywords/cases.ts:14:6	@typescript-eslint/dot-notation	useBrackets	.class is a syntax error.	fix	324	330	["class"]
-tests/rules/@typescript-eslint/dot-notation/fixes-keywords/cases.ts:15:6	@typescript-eslint/dot-notation	useBrackets	.delete is a syntax error.	fix	337	343	["delete"]
-tests/rules/@typescript-eslint/dot-notation/fixes-keywords/cases.ts:17:5	@typescript-eslint/dot-notation	useBrackets	.class is a syntax error.	fix	390	396	["class"]
-tests/rules/@typescript-eslint/dot-notation/fixes-keywords/cases.ts:18:5	@typescript-eslint/dot-notation	useBrackets	.class is a syntax error.	fix	400	407	 ["class"]
-tests/rules/@typescript-eslint/dot-notation/fixes-keywords/cases.ts:20:4	@typescript-eslint/dot-notation	useBrackets	.class is a syntax error.	fix	413	419	["class"]
-tests/rules/@typescript-eslint/dot-notation/fixes-keywords/cases.ts:22:3	@typescript-eslint/dot-notation	useBrackets	.class is a syntax error.	fix	422	431	\n  ["class"]
-tests/rules/@typescript-eslint/dot-notation/fixes-keywords/cases.ts:24:16	@typescript-eslint/dot-notation	useBrackets	.class is a syntax error.
-tests/rules/@typescript-eslint/dot-notation/fixes-keywords/cases.ts:26:3	@typescript-eslint/dot-notation	useBrackets	.class is a syntax error.
-tests/rules/@typescript-eslint/dot-notation/fixes-keywords/cases.ts:27:17	@typescript-eslint/dot-notation	useBrackets	.class is a syntax error.	fix	570	576	["class"]
-tests/rules/@typescript-eslint/dot-notation/fixes-keywords/cases.ts:30:3	@typescript-eslint/dot-notation	useDot	["b"] is better written in dot notation.	fix	650	655	.b
-tests/rules/@typescript-eslint/dot-notation/fixes-keywords/cases.ts:32:19	@typescript-eslint/dot-notation	useBrackets	.class is a syntax error.	fix	710	716	["class"]
-tests/rules/@typescript-eslint/dot-notation/fixes-keywords/cases.ts:32:40	@typescript-eslint/dot-notation	useBrackets	.typeof is a syntax error.	fix	732	738	["typeof"]
-tests/rules/@typescript-eslint/dot-notation/fixes/cases.ts:6:3	@typescript-eslint/dot-notation	useDot	["b"] is better written in dot notation.	fix	208	213	.b
-tests/rules/@typescript-eslint/dot-notation/fixes/cases.ts:7:3	@typescript-eslint/dot-notation	useDot	["b"] is better written in dot notation.	fix	216	221	.b
-tests/rules/@typescript-eslint/dot-notation/fixes/cases.ts:8:3	@typescript-eslint/dot-notation	useDot	[`b`] is better written in dot notation.	fix	224	229	.b
-tests/rules/@typescript-eslint/dot-notation/fixes/cases.ts:9:3	@typescript-eslint/dot-notation	useDot	["b"] is better written in dot notation.	fix	232	237	.b
-tests/rules/@typescript-eslint/dot-notation/fixes/cases.ts:10:3	@typescript-eslint/dot-notation	useDot	["b"] is better written in dot notation.	fix	242	247	.b
-tests/rules/@typescript-eslint/dot-notation/fixes/cases.ts:10:8	@typescript-eslint/dot-notation	useDot	["c"] is better written in dot notation.	fix	247	252	.c
-tests/rules/@typescript-eslint/dot-notation/fixes/cases.ts:11:3	@typescript-eslint/dot-notation	useDot	["$dollar"] is better written in dot notation.	fix	255	266	.$dollar
-tests/rules/@typescript-eslint/dot-notation/fixes/cases.ts:12:3	@typescript-eslint/dot-notation	useDot	["_under"] is better written in dot notation.	fix	269	279	._under
-tests/rules/@typescript-eslint/dot-notation/fixes/cases.ts:13:3	@typescript-eslint/dot-notation	useDot	["true"] is better written in dot notation.	fix	282	290	.true
-tests/rules/@typescript-eslint/dot-notation/fixes/cases.ts:14:3	@typescript-eslint/dot-notation	useDot	[true] is better written in dot notation.	fix	293	299	.true
-tests/rules/@typescript-eslint/dot-notation/fixes/cases.ts:15:3	@typescript-eslint/dot-notation	useDot	[null] is better written in dot notation.	fix	302	308	.null
-tests/rules/@typescript-eslint/dot-notation/fixes/cases.ts:16:3	@typescript-eslint/dot-notation	useDot	["if"] is better written in dot notation.	fix	311	317	.if
-tests/rules/@typescript-eslint/dot-notation/fixes/cases.ts:17:3	@typescript-eslint/dot-notation	useDot	["b"] is better written in dot notation.	fix	320	325	.b
-tests/rules/@typescript-eslint/dot-notation/fixes/cases.ts:18:10	@typescript-eslint/dot-notation	useDot	["b"] is better written in dot notation.	fix	339	344	.b
-tests/rules/@typescript-eslint/dot-notation/fixes/cases.ts:19:10	@typescript-eslint/dot-notation	useDot	["b"] is better written in dot notation.	fix	354	359	.b
-tests/rules/@typescript-eslint/dot-notation/fixes/cases.ts:21:5	@typescript-eslint/dot-notation	useDot	["b"] is better written in dot notation.	fix	402	407	b
-tests/rules/@typescript-eslint/dot-notation/fixes/cases.ts:22:5	@typescript-eslint/dot-notation	useDot	["b"] is better written in dot notation.	fix	412	417	b
-tests/rules/@typescript-eslint/dot-notation/fixes/cases.ts:22:12	@typescript-eslint/dot-notation	useDot	["c"] is better written in dot notation.	fix	419	424	c
-tests/rules/@typescript-eslint/dot-notation/fixes/cases.ts:23:6	@typescript-eslint/dot-notation	useDot	["c"] is better written in dot notation.	fix	430	435	.c
-tests/rules/@typescript-eslint/dot-notation/fixes/cases.ts:25:5	@typescript-eslint/dot-notation	useDot	["b"] is better written in dot notation.	fix	482	487	.b
-tests/rules/@typescript-eslint/dot-notation/fixes/cases.ts:26:4	@typescript-eslint/dot-notation	useDot	["b"] is better written in dot notation.	fix	490	497	.b
-tests/rules/@typescript-eslint/dot-notation/fixes/cases.ts:27:4	@typescript-eslint/dot-notation	useDot	["b"] is better written in dot notation.	fix	500	507	.b
-tests/rules/@typescript-eslint/dot-notation/fixes/cases.ts:29:4	@typescript-eslint/dot-notation	useDot	["b"] is better written in dot notation.	fix	513	518	.b
-tests/rules/@typescript-eslint/dot-notation/fixes/cases.ts:31:3	@typescript-eslint/dot-notation	useDot	["b"] is better written in dot notation.	fix	521	530	.b
-tests/rules/@typescript-eslint/dot-notation/fixes/cases.ts:34:16	@typescript-eslint/dot-notation	useDot	["b"] is better written in dot notation.
-tests/rules/@typescript-eslint/dot-notation/fixes/cases.ts:35:3	@typescript-eslint/dot-notation	useDot	["b"] is better written in dot notation.
-tests/rules/@typescript-eslint/dot-notation/fixes/cases.ts:38:3	@typescript-eslint/dot-notation	useDot	["b"] is better written in dot notation.
-tests/rules/@typescript-eslint/dot-notation/fixes/cases.ts:40:18	@typescript-eslint/dot-notation	useDot	["b"] is better written in dot notation.	fix	675	680	.b
-tests/rules/@typescript-eslint/dot-notation/fixes/cases.ts:42:3	@typescript-eslint/dot-notation	useDot	["toString"] is better written in dot notation.	fix	745	757	 .toString
-tests/rules/@typescript-eslint/dot-notation/fixes/cases.ts:43:7	@typescript-eslint/dot-notation	useDot	["toString"] is better written in dot notation.	fix	764	776	 .toString
-tests/rules/@typescript-eslint/dot-notation/fixes/cases.ts:44:3	@typescript-eslint/dot-notation	useDot	["toString"] is better written in dot notation.	fix	779	791	 .toString
-tests/rules/@typescript-eslint/dot-notation/fixes/cases.ts:45:5	@typescript-eslint/dot-notation	useDot	["toString"] is better written in dot notation.	fix	796	808	 .toString
-tests/rules/@typescript-eslint/dot-notation/fixes/cases.ts:46:5	@typescript-eslint/dot-notation	useDot	["toFixed"] is better written in dot notation.	fix	813	824	.toFixed
-tests/rules/@typescript-eslint/dot-notation/fixes/cases.ts:47:4	@typescript-eslint/dot-notation	useDot	["toString"] is better written in dot notation.	fix	828	840	.toString
-tests/rules/@typescript-eslint/dot-notation/fixes/cases.ts:48:6	@typescript-eslint/dot-notation	useDot	["toString"] is better written in dot notation.	fix	846	858	.toString
-tests/rules/@typescript-eslint/dot-notation/fixes/cases.ts:49:5	@typescript-eslint/dot-notation	useDot	["toString"] is better written in dot notation.	fix	863	875	.toString
-tests/rules/@typescript-eslint/dot-notation/fixes/cases.ts:51:3	@typescript-eslint/dot-notation	useDot	["b"] is better written in dot notation.	fix	939	944	.b 
-tests/rules/@typescript-eslint/dot-notation/fixes/cases.ts:52:3	@typescript-eslint/dot-notation	useDot	["b"] is better written in dot notation.	fix	951	956	.b 
-tests/rules/@typescript-eslint/dot-notation/fixes/cases.ts:53:3	@typescript-eslint/dot-notation	useDot	["b"] is better written in dot notation.	fix	976	981	.b 
-tests/rules/@typescript-eslint/dot-notation/fixes/cases.ts:54:3	@typescript-eslint/dot-notation	useDot	["b"] is better written in dot notation.	fix	994	999	.b
-tests/rules/@typescript-eslint/dot-notation/fixes/cases.ts:55:3	@typescript-eslint/dot-notation	useDot	["b"] is better written in dot notation.	fix	1004	1009	.b
-tests/rules/@typescript-eslint/dot-notation/fixes/cases.ts:56:3	@typescript-eslint/dot-notation	useDot	["b"] is better written in dot notation.	fix	1015	1020	.b
-tests/rules/@typescript-eslint/dot-notation/fixes/cases.ts:57:3	@typescript-eslint/dot-notation	useDot	["b"] is better written in dot notation.	fix	1024	1029	.b
-tests/rules/@typescript-eslint/dot-notation/fixes/cases.ts:58:3	@typescript-eslint/dot-notation	useDot	["b"] is better written in dot notation.	fix	1034	1039	.b
-tests/rules/@typescript-eslint/dot-notation/fixes/cases.ts:59:19	@typescript-eslint/dot-notation	useDot	["b"] is better written in dot notation.	fix	1075	1080	.b 
-tests/rules/@typescript-eslint/dot-notation/fixes/cases.ts:62:19	@typescript-eslint/dot-notation	useDot	["b"] is better written in dot notation.	fix	1153	1158	.b
-tests/rules/@typescript-eslint/dot-notation/fixes/cases.ts:62:40	@typescript-eslint/dot-notation	useDot	["c"] is better written in dot notation.	fix	1174	1179	c
-tests/rules/@typescript-eslint/dot-notation/index-signature/cases.ts:25:7	@typescript-eslint/dot-notation	useDot	["known"] is better written in dot notation.	fix	723	732	.known
-tests/rules/@typescript-eslint/dot-notation/index-signature/cases.ts:26:7	@typescript-eslint/dot-notation	useDot	[`known`] is better written in dot notation.	fix	739	748	.known
-tests/rules/@typescript-eslint/dot-notation/index-signature/cases.ts:27:8	@typescript-eslint/dot-notation	useDot	["known"] is better written in dot notation.	fix	755	766	.known
-tests/rules/@typescript-eslint/dot-notation/index-signature/cases.ts:28:12	@typescript-eslint/dot-notation	useDot	["known"] is better written in dot notation.	fix	778	787	known
-tests/rules/@typescript-eslint/dot-notation/index-signature/cases.ts:29:11	@typescript-eslint/dot-notation	useDot	["plain"] is better written in dot notation.	fix	798	807	.plain
-tests/rules/@typescript-eslint/dot-notation/index-signature/cases.ts:30:7	@typescript-eslint/dot-notation	useDot	["__proto"] is better written in dot notation.	fix	814	825	.__proto
-tests/rules/@typescript-eslint/dot-notation/index-signature/cases.ts:36:9	@typescript-eslint/dot-notation	useDot	["length"] is better written in dot notation.	fix	979	989	.length
-tests/rules/@typescript-eslint/dot-notation/index-signature/cases.ts:38:9	@typescript-eslint/dot-notation	useDot	["other"] is better written in dot notation.	fix	1053	1062	.other
-tests/rules/@typescript-eslint/dot-notation/index-signature/cases.ts:45:17	@typescript-eslint/dot-notation	useDot	["hidden"] is better written in dot notation.	fix	1237	1247	.hidden
-tests/rules/@typescript-eslint/dot-notation/index-signature/cases.ts:45:34	@typescript-eslint/dot-notation	useDot	["guarded"] is better written in dot notation.	fix	1254	1265	.guarded
-tests/rules/@typescript-eslint/dot-notation/keywords/cases.ts:6:3	@typescript-eslint/dot-notation	useBrackets	.class is a syntax error.	fix	182	188	["class"]
-tests/rules/@typescript-eslint/dot-notation/keywords/cases.ts:7:3	@typescript-eslint/dot-notation	useBrackets	.default is a syntax error.	fix	191	199	["default"]
-tests/rules/@typescript-eslint/dot-notation/keywords/cases.ts:8:3	@typescript-eslint/dot-notation	useBrackets	.if is a syntax error.	fix	202	205	["if"]
-tests/rules/@typescript-eslint/dot-notation/keywords/cases.ts:9:9	@typescript-eslint/dot-notation	useBrackets	.class is a syntax error.	fix	215	220	["class"]
-tests/rules/@typescript-eslint/dot-notation/keywords/cases.ts:9:15	@typescript-eslint/dot-notation	useBrackets	.if is a syntax error.	fix	220	223	["if"]
-tests/rules/@typescript-eslint/dot-notation/keywords/cases.ts:20:3	@typescript-eslint/dot-notation	useDot	["foo"] is better written in dot notation.	fix	445	452	.foo
-tests/rules/@typescript-eslint/dot-notation/keywords/cases.ts:21:3	@typescript-eslint/dot-notation	useDot	[`bar`] is better written in dot notation.	fix	455	462	.bar
-tests/rules/@typescript-eslint/dot-notation/no-property-access/cases.ts:25:7	@typescript-eslint/dot-notation	useDot	["known"] is better written in dot notation.	fix	758	767	.known
-tests/rules/@typescript-eslint/dot-notation/no-property-access/cases.ts:26:7	@typescript-eslint/dot-notation	useDot	[`known`] is better written in dot notation.	fix	774	783	.known
-tests/rules/@typescript-eslint/dot-notation/no-property-access/cases.ts:27:8	@typescript-eslint/dot-notation	useDot	["known"] is better written in dot notation.	fix	790	801	.known
-tests/rules/@typescript-eslint/dot-notation/no-property-access/cases.ts:28:12	@typescript-eslint/dot-notation	useDot	["known"] is better written in dot notation.	fix	813	822	known
-tests/rules/@typescript-eslint/dot-notation/no-property-access/cases.ts:29:11	@typescript-eslint/dot-notation	useDot	["plain"] is better written in dot notation.	fix	833	842	.plain
-tests/rules/@typescript-eslint/dot-notation/no-property-access/cases.ts:30:7	@typescript-eslint/dot-notation	useDot	["__proto"] is better written in dot notation.	fix	849	860	.__proto
-tests/rules/@typescript-eslint/dot-notation/no-property-access/cases.ts:36:9	@typescript-eslint/dot-notation	useDot	["length"] is better written in dot notation.	fix	1014	1024	.length
-tests/rules/@typescript-eslint/dot-notation/no-property-access/cases.ts:38:9	@typescript-eslint/dot-notation	useDot	["other"] is better written in dot notation.	fix	1088	1097	.other
-tests/rules/@typescript-eslint/dot-notation/no-property-access/cases.ts:45:17	@typescript-eslint/dot-notation	useDot	["hidden"] is better written in dot notation.	fix	1272	1282	.hidden
-tests/rules/@typescript-eslint/dot-notation/no-property-access/cases.ts:45:34	@typescript-eslint/dot-notation	useDot	["guarded"] is better written in dot notation.	fix	1289	1300	.guarded
-tests/rules/@typescript-eslint/dot-notation/private/cases.ts:39:12	@typescript-eslint/dot-notation	useDot	["declared"] is better written in dot notation.	fix	994	1006	.declared
-tests/rules/@typescript-eslint/dot-notation/private/cases.ts:40:14	@typescript-eslint/dot-notation	useDot	["constant"] is better written in dot notation.	fix	1021	1033	.constant
-tests/rules/@typescript-eslint/dot-notation/private/cases.ts:41:12	@typescript-eslint/dot-notation	useDot	["open"] is better written in dot notation.	fix	1046	1054	.open
-tests/rules/@typescript-eslint/dot-notation/private/cases.ts:42:12	@typescript-eslint/dot-notation	useDot	["plain"] is better written in dot notation.	fix	1067	1076	.plain
-tests/rules/@typescript-eslint/dot-notation/private/cases.ts:43:12	@typescript-eslint/dot-notation	useDot	["guarded"] is better written in dot notation.	fix	1089	1100	.guarded
-tests/rules/@typescript-eslint/dot-notation/private/cases.ts:53:10	@typescript-eslint/dot-notation	useDot	["length"] is better written in dot notation.	fix	1350	1360	.length
-tests/rules/@typescript-eslint/dot-notation/private/cases.ts:54:20	@typescript-eslint/dot-notation	useDot	["hidden"] is better written in dot notation.	fix	1380	1390	.hidden
-tests/rules/@typescript-eslint/dot-notation/protected/cases.ts:15:82	@typescript-eslint/dot-notation	useDot	["secret"] is better written in dot notation.	fix	542	552	.secret
-tests/rules/@typescript-eslint/dot-notation/protected/cases.ts:25:10	@typescript-eslint/dot-notation	useDot	["known"] is better written in dot notation.	fix	725	734	.known
-tests/rules/@typescript-eslint/dot-notation/spider-byte/cases.ts:6:5	@typescript-eslint/dot-notation	useDot	["TOKEN"] is better written in dot notation.	fix	226	235	.TOKEN
-tests/rules/@typescript-eslint/dot-notation/spider-byte/cases.ts:7:10	@typescript-eslint/dot-notation	useDot	["theme"] is better written in dot notation.	fix	245	254	.theme
+tests/rules/@typescript-eslint/dot-notation/allow-pattern-literals/cases.ts:5:10	@typescript-eslint/dot-notation	useDot	[false] is better written in dot notation.	fix	190	197	.false	end	5	15
+tests/rules/@typescript-eslint/dot-notation/allow-pattern-literals/cases.ts:8:5	@typescript-eslint/dot-notation	useDot	["item12"] is better written in dot notation.	fix	234	244	.item12	end	8	13
+tests/rules/@typescript-eslint/dot-notation/allow-pattern-literals/cases.ts:10:5	@typescript-eslint/dot-notation	useDot	["abc"] is better written in dot notation.	fix	260	267	.abc	end	10	10
+tests/rules/@typescript-eslint/dot-notation/allow-pattern-unicode/cases.ts:5:3	@typescript-eslint/dot-notation	useDot	["camelCase"] is better written in dot notation.	fix	145	158	.camelCase	end	5	14
+tests/rules/@typescript-eslint/dot-notation/allow-pattern-unicode/cases.ts:12:3	@typescript-eslint/dot-notation	useDot	["ab"] is better written in dot notation.	fix	227	233	.ab	end	12	7
+tests/rules/@typescript-eslint/dot-notation/allow-pattern-unicode/cases.ts:15:3	@typescript-eslint/dot-notation	useDot	["a"] is better written in dot notation.	fix	253	258	.a	end	15	6
+tests/rules/@typescript-eslint/dot-notation/allow-pattern/cases.ts:4:5	@typescript-eslint/dot-notation	useDot	["camelCase"] is better written in dot notation.	fix	149	162	.camelCase	end	4	16
+tests/rules/@typescript-eslint/dot-notation/allow-pattern/cases.ts:6:5	@typescript-eslint/dot-notation	useDot	["plain"] is better written in dot notation.	fix	181	190	.plain	end	6	12
+tests/rules/@typescript-eslint/dot-notation/allow-pattern/cases.ts:7:5	@typescript-eslint/dot-notation	useDot	["Snake_case"] is better written in dot notation.	fix	195	209	.Snake_case	end	7	17
+tests/rules/@typescript-eslint/dot-notation/allow-pattern/cases.ts:8:5	@typescript-eslint/dot-notation	useDot	["snake_"] is better written in dot notation.	fix	214	224	.snake_	end	8	13
+tests/rules/@typescript-eslint/dot-notation/allow-pattern/cases.ts:10:5	@typescript-eslint/dot-notation	useDot	[`plain`] is better written in dot notation.	fix	248	257	.plain	end	10	12
+tests/rules/@typescript-eslint/dot-notation/allow-pattern/cases.ts:12:5	@typescript-eslint/dot-notation	useDot	["$dollar"] is better written in dot notation.	fix	283	294	.$dollar	end	12	14
+tests/rules/@typescript-eslint/dot-notation/cases.ts:6:3	@typescript-eslint/dot-notation	useDot	["foo"] is better written in dot notation.	fix	226	233	.foo	end	6	8
+tests/rules/@typescript-eslint/dot-notation/cases.ts:7:3	@typescript-eslint/dot-notation	useDot	["foo"] is better written in dot notation.	fix	236	243	.foo	end	7	8
+tests/rules/@typescript-eslint/dot-notation/cases.ts:8:3	@typescript-eslint/dot-notation	useDot	[`foo`] is better written in dot notation.	fix	246	253	.foo	end	8	8
+tests/rules/@typescript-eslint/dot-notation/cases.ts:9:3	@typescript-eslint/dot-notation	useDot	["class"] is better written in dot notation.	fix	256	265	.class	end	9	10
+tests/rules/@typescript-eslint/dot-notation/cases.ts:10:3	@typescript-eslint/dot-notation	useDot	["foo"] is better written in dot notation.	fix	268	275	.foo	end	10	8
+tests/rules/@typescript-eslint/dot-notation/cases.ts:11:3	@typescript-eslint/dot-notation	useDot	["$dollar"] is better written in dot notation.	fix	278	289	.$dollar	end	11	12
+tests/rules/@typescript-eslint/dot-notation/cases.ts:12:3	@typescript-eslint/dot-notation	useDot	["_under"] is better written in dot notation.	fix	292	302	._under	end	12	11
+tests/rules/@typescript-eslint/dot-notation/cases.ts:13:3	@typescript-eslint/dot-notation	useDot	["foo"] is better written in dot notation.	fix	305	312	.foo	end	13	8
+tests/rules/@typescript-eslint/dot-notation/cases.ts:13:10	@typescript-eslint/dot-notation	useDot	["b"] is better written in dot notation.	fix	312	317	.b	end	13	13
+tests/rules/@typescript-eslint/dot-notation/cases.ts:14:3	@typescript-eslint/dot-notation	useDot	["foo"] is better written in dot notation.	fix	320	327	.foo	end	14	8
+tests/rules/@typescript-eslint/dot-notation/cases.ts:15:4	@typescript-eslint/dot-notation	useDot	["foo"] is better written in dot notation.	fix	348	355	.foo	end	15	9
+tests/rules/@typescript-eslint/dot-notation/cases.ts:16:9	@typescript-eslint/dot-notation	useDot	["foo"] is better written in dot notation.	fix	364	371	foo	end	16	14
+tests/rules/@typescript-eslint/dot-notation/cases.ts:16:18	@typescript-eslint/dot-notation	useDot	["bar"] is better written in dot notation.	fix	373	380	bar	end	16	23
+tests/rules/@typescript-eslint/dot-notation/cases.ts:17:4	@typescript-eslint/dot-notation	useDot	["foo"] is better written in dot notation.	fix	383	392	.foo	end	17	9
+tests/rules/@typescript-eslint/dot-notation/cases.ts:18:12	@typescript-eslint/dot-notation	useDot	["emoji"] is better written in dot notation.	fix	404	413	.emoji	end	18	19
+tests/rules/@typescript-eslint/dot-notation/cases.ts:22:3	@typescript-eslint/dot-notation	useDot	[true] is better written in dot notation.	fix	518	524	.true	end	22	7
+tests/rules/@typescript-eslint/dot-notation/cases.ts:24:3	@typescript-eslint/dot-notation	useDot	[false] is better written in dot notation.	fix	585	592	.false	end	24	8
+tests/rules/@typescript-eslint/dot-notation/cases.ts:26:3	@typescript-eslint/dot-notation	useDot	[null] is better written in dot notation.	fix	652	658	.null	end	26	7
+tests/rules/@typescript-eslint/dot-notation/cases.ts:54:18	@typescript-eslint/dot-notation	useDot	["method"] is better written in dot notation.	fix	1188	1198	.method	end	54	26
+tests/rules/@typescript-eslint/dot-notation/fixes-keywords/cases.ts:6:3	@typescript-eslint/dot-notation	useBrackets	.class is a syntax error.	fix	234	240	["class"]	end	6	8
+tests/rules/@typescript-eslint/dot-notation/fixes-keywords/cases.ts:7:3	@typescript-eslint/dot-notation	useBrackets	.if is a syntax error.	fix	243	246	["if"]	end	7	5
+tests/rules/@typescript-eslint/dot-notation/fixes-keywords/cases.ts:7:6	@typescript-eslint/dot-notation	useBrackets	.else is a syntax error.	fix	246	251	["else"]	end	7	10
+tests/rules/@typescript-eslint/dot-notation/fixes-keywords/cases.ts:8:3	@typescript-eslint/dot-notation	useBrackets	.null is a syntax error.	fix	254	259	["null"]	end	8	7
+tests/rules/@typescript-eslint/dot-notation/fixes-keywords/cases.ts:9:3	@typescript-eslint/dot-notation	useBrackets	.true is a syntax error.	fix	262	267	["true"]	end	9	7
+tests/rules/@typescript-eslint/dot-notation/fixes-keywords/cases.ts:10:3	@typescript-eslint/dot-notation	useBrackets	.new is a syntax error.	fix	272	276	["new"]	end	10	6
+tests/rules/@typescript-eslint/dot-notation/fixes-keywords/cases.ts:11:3	@typescript-eslint/dot-notation	useBrackets	.default is a syntax error.	fix	281	289	["default"]	end	11	10
+tests/rules/@typescript-eslint/dot-notation/fixes-keywords/cases.ts:13:4	@typescript-eslint/dot-notation	useBrackets	.class is a syntax error.	fix	313	318	["class"]	end	13	9
+tests/rules/@typescript-eslint/dot-notation/fixes-keywords/cases.ts:14:6	@typescript-eslint/dot-notation	useBrackets	.class is a syntax error.	fix	324	330	["class"]	end	14	11
+tests/rules/@typescript-eslint/dot-notation/fixes-keywords/cases.ts:15:6	@typescript-eslint/dot-notation	useBrackets	.delete is a syntax error.	fix	337	343	["delete"]	end	15	12
+tests/rules/@typescript-eslint/dot-notation/fixes-keywords/cases.ts:17:5	@typescript-eslint/dot-notation	useBrackets	.class is a syntax error.	fix	390	396	["class"]	end	17	10
+tests/rules/@typescript-eslint/dot-notation/fixes-keywords/cases.ts:18:5	@typescript-eslint/dot-notation	useBrackets	.class is a syntax error.	fix	400	407	 ["class"]	end	18	10
+tests/rules/@typescript-eslint/dot-notation/fixes-keywords/cases.ts:20:4	@typescript-eslint/dot-notation	useBrackets	.class is a syntax error.	fix	413	419	["class"]	end	20	9
+tests/rules/@typescript-eslint/dot-notation/fixes-keywords/cases.ts:22:3	@typescript-eslint/dot-notation	useBrackets	.class is a syntax error.	fix	422	431	\n  ["class"]	end	22	8
+tests/rules/@typescript-eslint/dot-notation/fixes-keywords/cases.ts:24:16	@typescript-eslint/dot-notation	useBrackets	.class is a syntax error.	end	24	21
+tests/rules/@typescript-eslint/dot-notation/fixes-keywords/cases.ts:26:3	@typescript-eslint/dot-notation	useBrackets	.class is a syntax error.	end	26	8
+tests/rules/@typescript-eslint/dot-notation/fixes-keywords/cases.ts:27:17	@typescript-eslint/dot-notation	useBrackets	.class is a syntax error.	fix	570	576	["class"]	end	27	22
+tests/rules/@typescript-eslint/dot-notation/fixes-keywords/cases.ts:30:3	@typescript-eslint/dot-notation	useDot	["b"] is better written in dot notation.	fix	650	655	.b	end	30	6
+tests/rules/@typescript-eslint/dot-notation/fixes-keywords/cases.ts:32:19	@typescript-eslint/dot-notation	useBrackets	.class is a syntax error.	fix	710	716	["class"]	end	32	24
+tests/rules/@typescript-eslint/dot-notation/fixes-keywords/cases.ts:32:40	@typescript-eslint/dot-notation	useBrackets	.typeof is a syntax error.	fix	732	738	["typeof"]	end	32	46
+tests/rules/@typescript-eslint/dot-notation/fixes/cases.ts:6:3	@typescript-eslint/dot-notation	useDot	["b"] is better written in dot notation.	fix	208	213	.b	end	6	6
+tests/rules/@typescript-eslint/dot-notation/fixes/cases.ts:7:3	@typescript-eslint/dot-notation	useDot	["b"] is better written in dot notation.	fix	216	221	.b	end	7	6
+tests/rules/@typescript-eslint/dot-notation/fixes/cases.ts:8:3	@typescript-eslint/dot-notation	useDot	[`b`] is better written in dot notation.	fix	224	229	.b	end	8	6
+tests/rules/@typescript-eslint/dot-notation/fixes/cases.ts:9:3	@typescript-eslint/dot-notation	useDot	["b"] is better written in dot notation.	fix	232	237	.b	end	9	6
+tests/rules/@typescript-eslint/dot-notation/fixes/cases.ts:10:3	@typescript-eslint/dot-notation	useDot	["b"] is better written in dot notation.	fix	242	247	.b	end	10	6
+tests/rules/@typescript-eslint/dot-notation/fixes/cases.ts:10:8	@typescript-eslint/dot-notation	useDot	["c"] is better written in dot notation.	fix	247	252	.c	end	10	11
+tests/rules/@typescript-eslint/dot-notation/fixes/cases.ts:11:3	@typescript-eslint/dot-notation	useDot	["$dollar"] is better written in dot notation.	fix	255	266	.$dollar	end	11	12
+tests/rules/@typescript-eslint/dot-notation/fixes/cases.ts:12:3	@typescript-eslint/dot-notation	useDot	["_under"] is better written in dot notation.	fix	269	279	._under	end	12	11
+tests/rules/@typescript-eslint/dot-notation/fixes/cases.ts:13:3	@typescript-eslint/dot-notation	useDot	["true"] is better written in dot notation.	fix	282	290	.true	end	13	9
+tests/rules/@typescript-eslint/dot-notation/fixes/cases.ts:14:3	@typescript-eslint/dot-notation	useDot	[true] is better written in dot notation.	fix	293	299	.true	end	14	7
+tests/rules/@typescript-eslint/dot-notation/fixes/cases.ts:15:3	@typescript-eslint/dot-notation	useDot	[null] is better written in dot notation.	fix	302	308	.null	end	15	7
+tests/rules/@typescript-eslint/dot-notation/fixes/cases.ts:16:3	@typescript-eslint/dot-notation	useDot	["if"] is better written in dot notation.	fix	311	317	.if	end	16	7
+tests/rules/@typescript-eslint/dot-notation/fixes/cases.ts:17:3	@typescript-eslint/dot-notation	useDot	["b"] is better written in dot notation.	fix	320	325	.b	end	17	6
+tests/rules/@typescript-eslint/dot-notation/fixes/cases.ts:18:10	@typescript-eslint/dot-notation	useDot	["b"] is better written in dot notation.	fix	339	344	.b	end	18	13
+tests/rules/@typescript-eslint/dot-notation/fixes/cases.ts:19:10	@typescript-eslint/dot-notation	useDot	["b"] is better written in dot notation.	fix	354	359	.b	end	19	13
+tests/rules/@typescript-eslint/dot-notation/fixes/cases.ts:21:5	@typescript-eslint/dot-notation	useDot	["b"] is better written in dot notation.	fix	402	407	b	end	21	8
+tests/rules/@typescript-eslint/dot-notation/fixes/cases.ts:22:5	@typescript-eslint/dot-notation	useDot	["b"] is better written in dot notation.	fix	412	417	b	end	22	8
+tests/rules/@typescript-eslint/dot-notation/fixes/cases.ts:22:12	@typescript-eslint/dot-notation	useDot	["c"] is better written in dot notation.	fix	419	424	c	end	22	15
+tests/rules/@typescript-eslint/dot-notation/fixes/cases.ts:23:6	@typescript-eslint/dot-notation	useDot	["c"] is better written in dot notation.	fix	430	435	.c	end	23	9
+tests/rules/@typescript-eslint/dot-notation/fixes/cases.ts:25:5	@typescript-eslint/dot-notation	useDot	["b"] is better written in dot notation.	fix	482	487	.b	end	25	8
+tests/rules/@typescript-eslint/dot-notation/fixes/cases.ts:26:4	@typescript-eslint/dot-notation	useDot	["b"] is better written in dot notation.	fix	490	497	.b	end	26	7
+tests/rules/@typescript-eslint/dot-notation/fixes/cases.ts:27:4	@typescript-eslint/dot-notation	useDot	["b"] is better written in dot notation.	fix	500	507	.b	end	27	7
+tests/rules/@typescript-eslint/dot-notation/fixes/cases.ts:29:4	@typescript-eslint/dot-notation	useDot	["b"] is better written in dot notation.	fix	513	518	.b	end	29	7
+tests/rules/@typescript-eslint/dot-notation/fixes/cases.ts:31:3	@typescript-eslint/dot-notation	useDot	["b"] is better written in dot notation.	fix	521	530	.b	end	31	6
+tests/rules/@typescript-eslint/dot-notation/fixes/cases.ts:34:16	@typescript-eslint/dot-notation	useDot	["b"] is better written in dot notation.	end	34	19
+tests/rules/@typescript-eslint/dot-notation/fixes/cases.ts:35:3	@typescript-eslint/dot-notation	useDot	["b"] is better written in dot notation.	end	35	6
+tests/rules/@typescript-eslint/dot-notation/fixes/cases.ts:38:3	@typescript-eslint/dot-notation	useDot	["b"] is better written in dot notation.	end	38	6
+tests/rules/@typescript-eslint/dot-notation/fixes/cases.ts:40:18	@typescript-eslint/dot-notation	useDot	["b"] is better written in dot notation.	fix	675	680	.b	end	40	21
+tests/rules/@typescript-eslint/dot-notation/fixes/cases.ts:42:3	@typescript-eslint/dot-notation	useDot	["toString"] is better written in dot notation.	fix	745	757	 .toString	end	42	13
+tests/rules/@typescript-eslint/dot-notation/fixes/cases.ts:43:7	@typescript-eslint/dot-notation	useDot	["toString"] is better written in dot notation.	fix	764	776	 .toString	end	43	17
+tests/rules/@typescript-eslint/dot-notation/fixes/cases.ts:44:3	@typescript-eslint/dot-notation	useDot	["toString"] is better written in dot notation.	fix	779	791	 .toString	end	44	13
+tests/rules/@typescript-eslint/dot-notation/fixes/cases.ts:45:5	@typescript-eslint/dot-notation	useDot	["toString"] is better written in dot notation.	fix	796	808	 .toString	end	45	15
+tests/rules/@typescript-eslint/dot-notation/fixes/cases.ts:46:5	@typescript-eslint/dot-notation	useDot	["toFixed"] is better written in dot notation.	fix	813	824	.toFixed	end	46	14
+tests/rules/@typescript-eslint/dot-notation/fixes/cases.ts:47:4	@typescript-eslint/dot-notation	useDot	["toString"] is better written in dot notation.	fix	828	840	.toString	end	47	14
+tests/rules/@typescript-eslint/dot-notation/fixes/cases.ts:48:6	@typescript-eslint/dot-notation	useDot	["toString"] is better written in dot notation.	fix	846	858	.toString	end	48	16
+tests/rules/@typescript-eslint/dot-notation/fixes/cases.ts:49:5	@typescript-eslint/dot-notation	useDot	["toString"] is better written in dot notation.	fix	863	875	.toString	end	49	15
+tests/rules/@typescript-eslint/dot-notation/fixes/cases.ts:51:3	@typescript-eslint/dot-notation	useDot	["b"] is better written in dot notation.	fix	939	944	.b 	end	51	6
+tests/rules/@typescript-eslint/dot-notation/fixes/cases.ts:52:3	@typescript-eslint/dot-notation	useDot	["b"] is better written in dot notation.	fix	951	956	.b 	end	52	6
+tests/rules/@typescript-eslint/dot-notation/fixes/cases.ts:53:3	@typescript-eslint/dot-notation	useDot	["b"] is better written in dot notation.	fix	976	981	.b 	end	53	6
+tests/rules/@typescript-eslint/dot-notation/fixes/cases.ts:54:3	@typescript-eslint/dot-notation	useDot	["b"] is better written in dot notation.	fix	994	999	.b	end	54	6
+tests/rules/@typescript-eslint/dot-notation/fixes/cases.ts:55:3	@typescript-eslint/dot-notation	useDot	["b"] is better written in dot notation.	fix	1004	1009	.b	end	55	6
+tests/rules/@typescript-eslint/dot-notation/fixes/cases.ts:56:3	@typescript-eslint/dot-notation	useDot	["b"] is better written in dot notation.	fix	1015	1020	.b	end	56	6
+tests/rules/@typescript-eslint/dot-notation/fixes/cases.ts:57:3	@typescript-eslint/dot-notation	useDot	["b"] is better written in dot notation.	fix	1024	1029	.b	end	57	6
+tests/rules/@typescript-eslint/dot-notation/fixes/cases.ts:58:3	@typescript-eslint/dot-notation	useDot	["b"] is better written in dot notation.	fix	1034	1039	.b	end	58	6
+tests/rules/@typescript-eslint/dot-notation/fixes/cases.ts:59:19	@typescript-eslint/dot-notation	useDot	["b"] is better written in dot notation.	fix	1075	1080	.b 	end	59	22
+tests/rules/@typescript-eslint/dot-notation/fixes/cases.ts:62:19	@typescript-eslint/dot-notation	useDot	["b"] is better written in dot notation.	fix	1153	1158	.b	end	62	22
+tests/rules/@typescript-eslint/dot-notation/fixes/cases.ts:62:40	@typescript-eslint/dot-notation	useDot	["c"] is better written in dot notation.	fix	1174	1179	c	end	62	43
+tests/rules/@typescript-eslint/dot-notation/index-signature/cases.ts:25:7	@typescript-eslint/dot-notation	useDot	["known"] is better written in dot notation.	fix	723	732	.known	end	25	14
+tests/rules/@typescript-eslint/dot-notation/index-signature/cases.ts:26:7	@typescript-eslint/dot-notation	useDot	[`known`] is better written in dot notation.	fix	739	748	.known	end	26	14
+tests/rules/@typescript-eslint/dot-notation/index-signature/cases.ts:27:8	@typescript-eslint/dot-notation	useDot	["known"] is better written in dot notation.	fix	755	766	.known	end	27	15
+tests/rules/@typescript-eslint/dot-notation/index-signature/cases.ts:28:12	@typescript-eslint/dot-notation	useDot	["known"] is better written in dot notation.	fix	778	787	known	end	28	19
+tests/rules/@typescript-eslint/dot-notation/index-signature/cases.ts:29:11	@typescript-eslint/dot-notation	useDot	["plain"] is better written in dot notation.	fix	798	807	.plain	end	29	18
+tests/rules/@typescript-eslint/dot-notation/index-signature/cases.ts:30:7	@typescript-eslint/dot-notation	useDot	["__proto"] is better written in dot notation.	fix	814	825	.__proto	end	30	16
+tests/rules/@typescript-eslint/dot-notation/index-signature/cases.ts:36:9	@typescript-eslint/dot-notation	useDot	["length"] is better written in dot notation.	fix	979	989	.length	end	36	17
+tests/rules/@typescript-eslint/dot-notation/index-signature/cases.ts:38:9	@typescript-eslint/dot-notation	useDot	["other"] is better written in dot notation.	fix	1053	1062	.other	end	38	16
+tests/rules/@typescript-eslint/dot-notation/index-signature/cases.ts:45:17	@typescript-eslint/dot-notation	useDot	["hidden"] is better written in dot notation.	fix	1237	1247	.hidden	end	45	25
+tests/rules/@typescript-eslint/dot-notation/index-signature/cases.ts:45:34	@typescript-eslint/dot-notation	useDot	["guarded"] is better written in dot notation.	fix	1254	1265	.guarded	end	45	43
+tests/rules/@typescript-eslint/dot-notation/keywords/cases.ts:6:3	@typescript-eslint/dot-notation	useBrackets	.class is a syntax error.	fix	182	188	["class"]	end	6	8
+tests/rules/@typescript-eslint/dot-notation/keywords/cases.ts:7:3	@typescript-eslint/dot-notation	useBrackets	.default is a syntax error.	fix	191	199	["default"]	end	7	10
+tests/rules/@typescript-eslint/dot-notation/keywords/cases.ts:8:3	@typescript-eslint/dot-notation	useBrackets	.if is a syntax error.	fix	202	205	["if"]	end	8	5
+tests/rules/@typescript-eslint/dot-notation/keywords/cases.ts:9:9	@typescript-eslint/dot-notation	useBrackets	.class is a syntax error.	fix	215	220	["class"]	end	9	14
+tests/rules/@typescript-eslint/dot-notation/keywords/cases.ts:9:15	@typescript-eslint/dot-notation	useBrackets	.if is a syntax error.	fix	220	223	["if"]	end	9	17
+tests/rules/@typescript-eslint/dot-notation/keywords/cases.ts:20:3	@typescript-eslint/dot-notation	useDot	["foo"] is better written in dot notation.	fix	445	452	.foo	end	20	8
+tests/rules/@typescript-eslint/dot-notation/keywords/cases.ts:21:3	@typescript-eslint/dot-notation	useDot	[`bar`] is better written in dot notation.	fix	455	462	.bar	end	21	8
+tests/rules/@typescript-eslint/dot-notation/no-property-access/cases.ts:25:7	@typescript-eslint/dot-notation	useDot	["known"] is better written in dot notation.	fix	758	767	.known	end	25	14
+tests/rules/@typescript-eslint/dot-notation/no-property-access/cases.ts:26:7	@typescript-eslint/dot-notation	useDot	[`known`] is better written in dot notation.	fix	774	783	.known	end	26	14
+tests/rules/@typescript-eslint/dot-notation/no-property-access/cases.ts:27:8	@typescript-eslint/dot-notation	useDot	["known"] is better written in dot notation.	fix	790	801	.known	end	27	15
+tests/rules/@typescript-eslint/dot-notation/no-property-access/cases.ts:28:12	@typescript-eslint/dot-notation	useDot	["known"] is better written in dot notation.	fix	813	822	known	end	28	19
+tests/rules/@typescript-eslint/dot-notation/no-property-access/cases.ts:29:11	@typescript-eslint/dot-notation	useDot	["plain"] is better written in dot notation.	fix	833	842	.plain	end	29	18
+tests/rules/@typescript-eslint/dot-notation/no-property-access/cases.ts:30:7	@typescript-eslint/dot-notation	useDot	["__proto"] is better written in dot notation.	fix	849	860	.__proto	end	30	16
+tests/rules/@typescript-eslint/dot-notation/no-property-access/cases.ts:36:9	@typescript-eslint/dot-notation	useDot	["length"] is better written in dot notation.	fix	1014	1024	.length	end	36	17
+tests/rules/@typescript-eslint/dot-notation/no-property-access/cases.ts:38:9	@typescript-eslint/dot-notation	useDot	["other"] is better written in dot notation.	fix	1088	1097	.other	end	38	16
+tests/rules/@typescript-eslint/dot-notation/no-property-access/cases.ts:45:17	@typescript-eslint/dot-notation	useDot	["hidden"] is better written in dot notation.	fix	1272	1282	.hidden	end	45	25
+tests/rules/@typescript-eslint/dot-notation/no-property-access/cases.ts:45:34	@typescript-eslint/dot-notation	useDot	["guarded"] is better written in dot notation.	fix	1289	1300	.guarded	end	45	43
+tests/rules/@typescript-eslint/dot-notation/private/cases.ts:39:12	@typescript-eslint/dot-notation	useDot	["declared"] is better written in dot notation.	fix	994	1006	.declared	end	39	22
+tests/rules/@typescript-eslint/dot-notation/private/cases.ts:40:14	@typescript-eslint/dot-notation	useDot	["constant"] is better written in dot notation.	fix	1021	1033	.constant	end	40	24
+tests/rules/@typescript-eslint/dot-notation/private/cases.ts:41:12	@typescript-eslint/dot-notation	useDot	["open"] is better written in dot notation.	fix	1046	1054	.open	end	41	18
+tests/rules/@typescript-eslint/dot-notation/private/cases.ts:42:12	@typescript-eslint/dot-notation	useDot	["plain"] is better written in dot notation.	fix	1067	1076	.plain	end	42	19
+tests/rules/@typescript-eslint/dot-notation/private/cases.ts:43:12	@typescript-eslint/dot-notation	useDot	["guarded"] is better written in dot notation.	fix	1089	1100	.guarded	end	43	21
+tests/rules/@typescript-eslint/dot-notation/private/cases.ts:53:10	@typescript-eslint/dot-notation	useDot	["length"] is better written in dot notation.	fix	1350	1360	.length	end	53	18
+tests/rules/@typescript-eslint/dot-notation/private/cases.ts:54:20	@typescript-eslint/dot-notation	useDot	["hidden"] is better written in dot notation.	fix	1380	1390	.hidden	end	54	28
+tests/rules/@typescript-eslint/dot-notation/protected/cases.ts:15:82	@typescript-eslint/dot-notation	useDot	["secret"] is better written in dot notation.	fix	542	552	.secret	end	15	90
+tests/rules/@typescript-eslint/dot-notation/protected/cases.ts:25:10	@typescript-eslint/dot-notation	useDot	["known"] is better written in dot notation.	fix	725	734	.known	end	25	17
+tests/rules/@typescript-eslint/dot-notation/spider-byte/cases.ts:6:5	@typescript-eslint/dot-notation	useDot	["TOKEN"] is better written in dot notation.	fix	226	235	.TOKEN	end	6	12
+tests/rules/@typescript-eslint/dot-notation/spider-byte/cases.ts:7:10	@typescript-eslint/dot-notation	useDot	["theme"] is better written in dot notation.	fix	245	254	.theme	end	7	17

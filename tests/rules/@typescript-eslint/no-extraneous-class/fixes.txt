@@ -1,0 +1,86 @@
+tests/rules/@typescript-eslint/no-extraneous-class/allow-constructor-only/cases.ts:8:7	@typescript-eslint/no-extraneous-class	empty	Unexpected empty class.	end	8	12
+tests/rules/@typescript-eslint/no-extraneous-class/allow-constructor-only/cases.ts:9:7	@typescript-eslint/no-extraneous-class	empty	Unexpected empty class.	end	9	18
+tests/rules/@typescript-eslint/no-extraneous-class/allow-constructor-only/cases.ts:12:7	@typescript-eslint/no-extraneous-class	empty	Unexpected empty class.	end	12	17
+tests/rules/@typescript-eslint/no-extraneous-class/allow-constructor-only/cases.ts:31:7	@typescript-eslint/no-extraneous-class	onlyStatic	Unexpected class with only static properties.	end	31	17
+tests/rules/@typescript-eslint/no-extraneous-class/allow-constructor-only/cases.ts:40:7	@typescript-eslint/no-extraneous-class	onlyStatic	Unexpected class with only static properties.	end	40	18
+tests/rules/@typescript-eslint/no-extraneous-class/allow-constructor-only/cases.ts:43:7	@typescript-eslint/no-extraneous-class	onlyStatic	Unexpected class with only static properties.	end	43	24
+tests/rules/@typescript-eslint/no-extraneous-class/allow-constructor-only/cases.ts:46:7	@typescript-eslint/no-extraneous-class	onlyStatic	Unexpected class with only static properties.	end	46	27
+tests/rules/@typescript-eslint/no-extraneous-class/allow-constructor-only/cases.ts:70:16	@typescript-eslint/no-extraneous-class	onlyStatic	Unexpected class with only static properties.	end	70	30
+tests/rules/@typescript-eslint/no-extraneous-class/allow-constructor-only/cases.ts:77:7	@typescript-eslint/no-extraneous-class	empty	Unexpected empty class.	end	77	11
+tests/rules/@typescript-eslint/no-extraneous-class/allow-constructor-only/cases.ts:78:20	@typescript-eslint/no-extraneous-class	empty	Unexpected empty class.	end	78	28
+tests/rules/@typescript-eslint/no-extraneous-class/allow-constructor-only/cases.ts:79:15	@typescript-eslint/no-extraneous-class	empty	Unexpected empty class.	end	79	29
+tests/rules/@typescript-eslint/no-extraneous-class/allow-constructor-only/cases.ts:80:26	@typescript-eslint/no-extraneous-class	onlyStatic	Unexpected class with only static properties.	end	82	2
+tests/rules/@typescript-eslint/no-extraneous-class/allow-constructor-only/cases.ts:84:7	@typescript-eslint/no-extraneous-class	empty	Unexpected empty class.	end	84	16
+tests/rules/@typescript-eslint/no-extraneous-class/allow-constructor-only/cases.ts:86:14	@typescript-eslint/no-extraneous-class	empty	Unexpected empty class.	end	86	31
+tests/rules/@typescript-eslint/no-extraneous-class/allow-constructor-only/cases.ts:87:14	@typescript-eslint/no-extraneous-class	onlyStatic	Unexpected class with only static properties.	end	87	22
+tests/rules/@typescript-eslint/no-extraneous-class/allow-constructor-only/cases.ts:90:15	@typescript-eslint/no-extraneous-class	empty	Unexpected empty class.	end	90	23
+tests/rules/@typescript-eslint/no-extraneous-class/allow-constructor-only/cases.ts:91:16	@typescript-eslint/no-extraneous-class	empty	Unexpected empty class.	end	91	24
+tests/rules/@typescript-eslint/no-extraneous-class/allow-constructor-only/cases.ts:93:9	@typescript-eslint/no-extraneous-class	empty	Unexpected empty class.	end	93	14
+tests/rules/@typescript-eslint/no-extraneous-class/allow-empty/cases.ts:15:7	@typescript-eslint/no-extraneous-class	onlyConstructor	Unexpected class with only a constructor.	end	15	22
+tests/rules/@typescript-eslint/no-extraneous-class/allow-empty/cases.ts:18:7	@typescript-eslint/no-extraneous-class	onlyConstructor	Unexpected class with only a constructor.	end	18	31
+tests/rules/@typescript-eslint/no-extraneous-class/allow-empty/cases.ts:22:7	@typescript-eslint/no-extraneous-class	onlyConstructor	Unexpected class with only a constructor.	end	22	24
+tests/rules/@typescript-eslint/no-extraneous-class/allow-empty/cases.ts:31:7	@typescript-eslint/no-extraneous-class	onlyStatic	Unexpected class with only static properties.	end	31	17
+tests/rules/@typescript-eslint/no-extraneous-class/allow-empty/cases.ts:40:7	@typescript-eslint/no-extraneous-class	onlyStatic	Unexpected class with only static properties.	end	40	18
+tests/rules/@typescript-eslint/no-extraneous-class/allow-empty/cases.ts:43:7	@typescript-eslint/no-extraneous-class	onlyStatic	Unexpected class with only static properties.	end	43	24
+tests/rules/@typescript-eslint/no-extraneous-class/allow-empty/cases.ts:46:7	@typescript-eslint/no-extraneous-class	onlyStatic	Unexpected class with only static properties.	end	46	27
+tests/rules/@typescript-eslint/no-extraneous-class/allow-empty/cases.ts:70:16	@typescript-eslint/no-extraneous-class	onlyStatic	Unexpected class with only static properties.	end	70	30
+tests/rules/@typescript-eslint/no-extraneous-class/allow-empty/cases.ts:80:26	@typescript-eslint/no-extraneous-class	onlyStatic	Unexpected class with only static properties.	end	82	2
+tests/rules/@typescript-eslint/no-extraneous-class/allow-empty/cases.ts:87:14	@typescript-eslint/no-extraneous-class	onlyStatic	Unexpected class with only static properties.	end	87	22
+tests/rules/@typescript-eslint/no-extraneous-class/allow-empty/cases.ts:94:10	@typescript-eslint/no-extraneous-class	onlyConstructor	Unexpected class with only a constructor.	end	96	4
+tests/rules/@typescript-eslint/no-extraneous-class/allow-static-only/cases.ts:8:7	@typescript-eslint/no-extraneous-class	empty	Unexpected empty class.	end	8	12
+tests/rules/@typescript-eslint/no-extraneous-class/allow-static-only/cases.ts:9:7	@typescript-eslint/no-extraneous-class	empty	Unexpected empty class.	end	9	18
+tests/rules/@typescript-eslint/no-extraneous-class/allow-static-only/cases.ts:12:7	@typescript-eslint/no-extraneous-class	empty	Unexpected empty class.	end	12	17
+tests/rules/@typescript-eslint/no-extraneous-class/allow-static-only/cases.ts:15:7	@typescript-eslint/no-extraneous-class	onlyConstructor	Unexpected class with only a constructor.	end	15	22
+tests/rules/@typescript-eslint/no-extraneous-class/allow-static-only/cases.ts:18:7	@typescript-eslint/no-extraneous-class	onlyConstructor	Unexpected class with only a constructor.	end	18	31
+tests/rules/@typescript-eslint/no-extraneous-class/allow-static-only/cases.ts:22:7	@typescript-eslint/no-extraneous-class	onlyConstructor	Unexpected class with only a constructor.	end	22	24
+tests/rules/@typescript-eslint/no-extraneous-class/allow-static-only/cases.ts:77:7	@typescript-eslint/no-extraneous-class	empty	Unexpected empty class.	end	77	11
+tests/rules/@typescript-eslint/no-extraneous-class/allow-static-only/cases.ts:78:20	@typescript-eslint/no-extraneous-class	empty	Unexpected empty class.	end	78	28
+tests/rules/@typescript-eslint/no-extraneous-class/allow-static-only/cases.ts:79:15	@typescript-eslint/no-extraneous-class	empty	Unexpected empty class.	end	79	29
+tests/rules/@typescript-eslint/no-extraneous-class/allow-static-only/cases.ts:84:7	@typescript-eslint/no-extraneous-class	empty	Unexpected empty class.	end	84	16
+tests/rules/@typescript-eslint/no-extraneous-class/allow-static-only/cases.ts:86:14	@typescript-eslint/no-extraneous-class	empty	Unexpected empty class.	end	86	31
+tests/rules/@typescript-eslint/no-extraneous-class/allow-static-only/cases.ts:90:15	@typescript-eslint/no-extraneous-class	empty	Unexpected empty class.	end	90	23
+tests/rules/@typescript-eslint/no-extraneous-class/allow-static-only/cases.ts:91:16	@typescript-eslint/no-extraneous-class	empty	Unexpected empty class.	end	91	24
+tests/rules/@typescript-eslint/no-extraneous-class/allow-static-only/cases.ts:93:9	@typescript-eslint/no-extraneous-class	empty	Unexpected empty class.	end	93	14
+tests/rules/@typescript-eslint/no-extraneous-class/allow-static-only/cases.ts:94:10	@typescript-eslint/no-extraneous-class	onlyConstructor	Unexpected class with only a constructor.	end	96	4
+tests/rules/@typescript-eslint/no-extraneous-class/allow-with-decorator/cases.ts:8:7	@typescript-eslint/no-extraneous-class	empty	Unexpected empty class.	end	8	12
+tests/rules/@typescript-eslint/no-extraneous-class/allow-with-decorator/cases.ts:9:7	@typescript-eslint/no-extraneous-class	empty	Unexpected empty class.	end	9	18
+tests/rules/@typescript-eslint/no-extraneous-class/allow-with-decorator/cases.ts:12:7	@typescript-eslint/no-extraneous-class	empty	Unexpected empty class.	end	12	17
+tests/rules/@typescript-eslint/no-extraneous-class/allow-with-decorator/cases.ts:15:7	@typescript-eslint/no-extraneous-class	onlyConstructor	Unexpected class with only a constructor.	end	15	22
+tests/rules/@typescript-eslint/no-extraneous-class/allow-with-decorator/cases.ts:18:7	@typescript-eslint/no-extraneous-class	onlyConstructor	Unexpected class with only a constructor.	end	18	31
+tests/rules/@typescript-eslint/no-extraneous-class/allow-with-decorator/cases.ts:22:7	@typescript-eslint/no-extraneous-class	onlyConstructor	Unexpected class with only a constructor.	end	22	24
+tests/rules/@typescript-eslint/no-extraneous-class/allow-with-decorator/cases.ts:31:7	@typescript-eslint/no-extraneous-class	onlyStatic	Unexpected class with only static properties.	end	31	17
+tests/rules/@typescript-eslint/no-extraneous-class/allow-with-decorator/cases.ts:40:7	@typescript-eslint/no-extraneous-class	onlyStatic	Unexpected class with only static properties.	end	40	18
+tests/rules/@typescript-eslint/no-extraneous-class/allow-with-decorator/cases.ts:43:7	@typescript-eslint/no-extraneous-class	onlyStatic	Unexpected class with only static properties.	end	43	24
+tests/rules/@typescript-eslint/no-extraneous-class/allow-with-decorator/cases.ts:46:7	@typescript-eslint/no-extraneous-class	onlyStatic	Unexpected class with only static properties.	end	46	27
+tests/rules/@typescript-eslint/no-extraneous-class/allow-with-decorator/cases.ts:70:16	@typescript-eslint/no-extraneous-class	onlyStatic	Unexpected class with only static properties.	end	70	30
+tests/rules/@typescript-eslint/no-extraneous-class/allow-with-decorator/cases.ts:77:7	@typescript-eslint/no-extraneous-class	empty	Unexpected empty class.	end	77	11
+tests/rules/@typescript-eslint/no-extraneous-class/allow-with-decorator/cases.ts:78:20	@typescript-eslint/no-extraneous-class	empty	Unexpected empty class.	end	78	28
+tests/rules/@typescript-eslint/no-extraneous-class/allow-with-decorator/cases.ts:79:15	@typescript-eslint/no-extraneous-class	empty	Unexpected empty class.	end	79	29
+tests/rules/@typescript-eslint/no-extraneous-class/allow-with-decorator/cases.ts:80:26	@typescript-eslint/no-extraneous-class	onlyStatic	Unexpected class with only static properties.	end	82	2
+tests/rules/@typescript-eslint/no-extraneous-class/allow-with-decorator/cases.ts:87:14	@typescript-eslint/no-extraneous-class	onlyStatic	Unexpected class with only static properties.	end	87	22
+tests/rules/@typescript-eslint/no-extraneous-class/allow-with-decorator/cases.ts:90:15	@typescript-eslint/no-extraneous-class	empty	Unexpected empty class.	end	90	23
+tests/rules/@typescript-eslint/no-extraneous-class/allow-with-decorator/cases.ts:91:16	@typescript-eslint/no-extraneous-class	empty	Unexpected empty class.	end	91	24
+tests/rules/@typescript-eslint/no-extraneous-class/allow-with-decorator/cases.ts:93:9	@typescript-eslint/no-extraneous-class	empty	Unexpected empty class.	end	93	14
+tests/rules/@typescript-eslint/no-extraneous-class/allow-with-decorator/cases.ts:94:10	@typescript-eslint/no-extraneous-class	onlyConstructor	Unexpected class with only a constructor.	end	96	4
+tests/rules/@typescript-eslint/no-extraneous-class/cases.ts:8:7	@typescript-eslint/no-extraneous-class	empty	Unexpected empty class.	end	8	12
+tests/rules/@typescript-eslint/no-extraneous-class/cases.ts:9:7	@typescript-eslint/no-extraneous-class	empty	Unexpected empty class.	end	9	18
+tests/rules/@typescript-eslint/no-extraneous-class/cases.ts:12:7	@typescript-eslint/no-extraneous-class	empty	Unexpected empty class.	end	12	17
+tests/rules/@typescript-eslint/no-extraneous-class/cases.ts:15:7	@typescript-eslint/no-extraneous-class	onlyConstructor	Unexpected class with only a constructor.	end	15	22
+tests/rules/@typescript-eslint/no-extraneous-class/cases.ts:18:7	@typescript-eslint/no-extraneous-class	onlyConstructor	Unexpected class with only a constructor.	end	18	31
+tests/rules/@typescript-eslint/no-extraneous-class/cases.ts:22:7	@typescript-eslint/no-extraneous-class	onlyConstructor	Unexpected class with only a constructor.	end	22	24
+tests/rules/@typescript-eslint/no-extraneous-class/cases.ts:31:7	@typescript-eslint/no-extraneous-class	onlyStatic	Unexpected class with only static properties.	end	31	17
+tests/rules/@typescript-eslint/no-extraneous-class/cases.ts:40:7	@typescript-eslint/no-extraneous-class	onlyStatic	Unexpected class with only static properties.	end	40	18
+tests/rules/@typescript-eslint/no-extraneous-class/cases.ts:43:7	@typescript-eslint/no-extraneous-class	onlyStatic	Unexpected class with only static properties.	end	43	24
+tests/rules/@typescript-eslint/no-extraneous-class/cases.ts:46:7	@typescript-eslint/no-extraneous-class	onlyStatic	Unexpected class with only static properties.	end	46	27
+tests/rules/@typescript-eslint/no-extraneous-class/cases.ts:70:16	@typescript-eslint/no-extraneous-class	onlyStatic	Unexpected class with only static properties.	end	70	30
+tests/rules/@typescript-eslint/no-extraneous-class/cases.ts:77:7	@typescript-eslint/no-extraneous-class	empty	Unexpected empty class.	end	77	11
+tests/rules/@typescript-eslint/no-extraneous-class/cases.ts:78:20	@typescript-eslint/no-extraneous-class	empty	Unexpected empty class.	end	78	28
+tests/rules/@typescript-eslint/no-extraneous-class/cases.ts:79:15	@typescript-eslint/no-extraneous-class	empty	Unexpected empty class.	end	79	29
+tests/rules/@typescript-eslint/no-extraneous-class/cases.ts:80:26	@typescript-eslint/no-extraneous-class	onlyStatic	Unexpected class with only static properties.	end	82	2
+tests/rules/@typescript-eslint/no-extraneous-class/cases.ts:84:7	@typescript-eslint/no-extraneous-class	empty	Unexpected empty class.	end	84	16
+tests/rules/@typescript-eslint/no-extraneous-class/cases.ts:86:14	@typescript-eslint/no-extraneous-class	empty	Unexpected empty class.	end	86	31
+tests/rules/@typescript-eslint/no-extraneous-class/cases.ts:87:14	@typescript-eslint/no-extraneous-class	onlyStatic	Unexpected class with only static properties.	end	87	22
+tests/rules/@typescript-eslint/no-extraneous-class/cases.ts:90:15	@typescript-eslint/no-extraneous-class	empty	Unexpected empty class.	end	90	23
+tests/rules/@typescript-eslint/no-extraneous-class/cases.ts:91:16	@typescript-eslint/no-extraneous-class	empty	Unexpected empty class.	end	91	24
+tests/rules/@typescript-eslint/no-extraneous-class/cases.ts:93:9	@typescript-eslint/no-extraneous-class	empty	Unexpected empty class.	end	93	14
+tests/rules/@typescript-eslint/no-extraneous-class/cases.ts:94:10	@typescript-eslint/no-extraneous-class	onlyConstructor	Unexpected class with only a constructor.	end	96	4

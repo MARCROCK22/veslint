@@ -1157,6 +1157,7 @@ pub fn (mut c Checker) lint_file(parser Parser, config LintConfig, src string, a
 		for f in c.lint_rule(setting.name, root, abs_path, mut stats)! {
 			findings << Finding{
 				...f
+				stmt:     c.trimmed_end(f.stmt)
 				rule:     setting.name
 				severity: setting.severity
 			}
@@ -2198,5 +2199,57 @@ fn (c &Checker) text(n C.TSNode) string {
 fn (c &Checker) position_at(offset int) Ident {
 	return Ident{
 		start_byte: offset
+	}
+}
+
+// trimmed_end ends the report on a tree-sitter node at its last token, as an ESTree node ends:
+// tree-sitter may put the comments and spaces that follow a node inside it.
+fn (c &Checker) trimmed_end(place Ident) Ident {
+	if !place.node_end || place.end_byte <= place.start_byte {
+		return place
+	}
+	last := c.tokens.last_end(place.end_byte)
+	if last <= place.start_byte || last >= place.end_byte
+		|| !only_trivia(c.src[last..place.end_byte]) {
+		return place
+	}
+	return Ident{
+		...place
+		end_byte: last
+	}
+}
+
+// only_trivia: the text is only white space, line breaks and comments.
+fn only_trivia(text string) bool {
+	mut i := 0
+	for i < text.len {
+		ch := text[i]
+		if ch in [` `, `\t`, `\n`, `\r`, `\v`, `\f`] {
+			i++
+		} else if text[i..].starts_with('//') {
+			end := text.index_after('\n', i) or { text.len }
+			i = end
+		} else if text[i..].starts_with('/*') {
+			end := text.index_after('*/', i + 2) or { return false }
+			i = end + 2
+		} else if ch >= 0x80 {
+			// Other white space (U+00A0, U+FEFF, U+2028…).
+			r := text[i..].runes()[0]
+			if !is_js_space(r) {
+				return false
+			}
+			i += r.length_in_bytes()
+		} else {
+			return false
+		}
+	}
+	return true
+}
+
+// position_range is the place of a report from byte `start` to byte `end` (ESLint's `loc`).
+fn (c &Checker) position_range(start int, end int) Ident {
+	return Ident{
+		start_byte: start
+		end_byte:   end
 	}
 }

@@ -49,7 +49,7 @@ fn (mut c Checker) lint_no_nonoctal_decimal_escape(root C.TSNode, abs_path strin
 				suggestions << c.nnde_suggestion('escapeBackslash', escape_start, escape_end,
 					'\\${decimal}')!
 				findings << Finding{
-					stmt:        c.position_at(escape_start)
+					stmt:        c.position_range(escape_start, escape_end)
 					message_id:  'decimalEscape'
 					data:        {
 						'decimalEscape': decimal

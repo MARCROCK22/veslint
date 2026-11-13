@@ -1329,7 +1329,7 @@ fn (mut c Checker) poc_report(logical PocLogical, chain []PocOperand, has_last b
 	end := c.poc_report_end(last.node, logical.node)
 	fix := c.poc_fix(logical.node, start, end, new_code)
 	finding := Finding{
-		stmt:       c.poc_ident_at(start)
+		stmt:       c.position_range(start, end)
 		message_id: 'preferOptionalChain'
 	}
 	if use_suggestion {

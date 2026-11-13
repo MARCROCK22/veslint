@@ -1,30 +1,30 @@
-tests/rules/use-isnan/cases.ts:7:5	use-isnan	comparisonWithNaN	Use the isNaN function to compare with NaN.	suggestion	replaceWithIsNaN	Replace with Number.isNaN.	247	256	Number.isNaN(x)
-tests/rules/use-isnan/cases.ts:8:5	use-isnan	comparisonWithNaN	Use the isNaN function to compare with NaN.	suggestion	replaceWithIsNaN	Replace with Number.isNaN.	265	274	Number.isNaN(x)
-tests/rules/use-isnan/cases.ts:9:5	use-isnan	comparisonWithNaN	Use the isNaN function to compare with NaN.	suggestion	replaceWithIsNaN	Replace with Number.isNaN.	283	291	Number.isNaN(x)	suggestion	replaceWithCastingAndIsNaN	Replace with Number.isNaN and cast to a Number.	283	291	Number.isNaN(Number(x))
-tests/rules/use-isnan/cases.ts:10:5	use-isnan	comparisonWithNaN	Use the isNaN function to compare with NaN.	suggestion	replaceWithIsNaN	Replace with Number.isNaN.	300	309	!Number.isNaN(x)
-tests/rules/use-isnan/cases.ts:11:5	use-isnan	comparisonWithNaN	Use the isNaN function to compare with NaN.	suggestion	replaceWithIsNaN	Replace with Number.isNaN.	318	333	!Number.isNaN(x)	suggestion	replaceWithCastingAndIsNaN	Replace with Number.isNaN and cast to a Number.	318	333	!Number.isNaN(Number(x))
-tests/rules/use-isnan/cases.ts:12:5	use-isnan	comparisonWithNaN	Use the isNaN function to compare with NaN.
-tests/rules/use-isnan/cases.ts:13:5	use-isnan	comparisonWithNaN	Use the isNaN function to compare with NaN.
-tests/rules/use-isnan/cases.ts:14:5	use-isnan	comparisonWithNaN	Use the isNaN function to compare with NaN.	suggestion	replaceWithIsNaN	Replace with Number.isNaN.	382	395	Number.isNaN(x)
-tests/rules/use-isnan/cases.ts:15:5	use-isnan	comparisonWithNaN	Use the isNaN function to compare with NaN.	suggestion	replaceWithIsNaN	Replace with Number.isNaN.	404	423	Number.isNaN(x)
-tests/rules/use-isnan/cases.ts:16:5	use-isnan	comparisonWithNaN	Use the isNaN function to compare with NaN.	suggestion	replaceWithIsNaN	Replace with Number.isNaN.	432	449	Number.isNaN(x)
-tests/rules/use-isnan/cases.ts:17:5	use-isnan	comparisonWithNaN	Use the isNaN function to compare with NaN.	suggestion	replaceWithIsNaN	Replace with Number.isNaN.	458	471	Number.isNaN(x + 1)
-tests/rules/use-isnan/cases.ts:18:5	use-isnan	comparisonWithNaN	Use the isNaN function to compare with NaN.	suggestion	replaceWithIsNaN	Replace with Number.isNaN.	480	505	Number.isNaN((sideEffect(), x))
-tests/rules/use-isnan/cases.ts:19:5	use-isnan	comparisonWithNaN	Use the isNaN function to compare with NaN.
-tests/rules/use-isnan/cases.ts:20:14	use-isnan	comparisonWithNaN	Use the isNaN function to compare with NaN.	suggestion	replaceWithIsNaN	Replace with Number.isNaN.	557	572	!Number.isNaN(list[0])
-tests/rules/use-isnan/cases.ts:31:1	use-isnan	switchNaN	'switch(NaN)' can never match a case clause. Use Number.isNaN instead of the switch.
-tests/rules/use-isnan/cases.ts:36:3	use-isnan	caseNaN	'case NaN' can never match. Use Number.isNaN before the switch.
-tests/rules/use-isnan/cases.ts:38:3	use-isnan	caseNaN	'case NaN' can never match. Use Number.isNaN before the switch.
-tests/rules/use-isnan/cases.ts:40:3	use-isnan	caseNaN	'case NaN' can never match. Use Number.isNaN before the switch.
-tests/rules/use-isnan/index-of/cases.ts:6:1	use-isnan	indexOfNaN	Array prototype method 'indexOf' cannot find NaN.	suggestion	replaceWithFindIndex	Replace with Array.prototype.findIndex.	177	188	findIndex(Number.isNaN
-tests/rules/use-isnan/index-of/cases.ts:7:1	use-isnan	indexOfNaN	Array prototype method 'lastIndexOf' cannot find NaN.	suggestion	replaceWithFindIndex	Replace with Array.prototype.findLastIndex.	196	211	findLastIndex(Number.isNaN
-tests/rules/use-isnan/index-of/cases.ts:8:1	use-isnan	indexOfNaN	Array prototype method 'indexOf' cannot find NaN.	suggestion	replaceWithFindIndex	Replace with Array.prototype.findIndex.	219	237	findIndex(Number.isNaN
-tests/rules/use-isnan/index-of/cases.ts:9:1	use-isnan	indexOfNaN	Array prototype method 'indexOf' cannot find NaN.	suggestion	replaceWithFindIndex	Replace with Array.prototype.findIndex.	245	259	"findIndex"](Number.isNaN
-tests/rules/use-isnan/index-of/cases.ts:10:1	use-isnan	indexOfNaN	Array prototype method 'lastIndexOf' cannot find NaN.	suggestion	replaceWithFindIndex	Replace with Array.prototype.findLastIndex.	267	285	"findLastIndex"](Number.isNaN
-tests/rules/use-isnan/index-of/cases.ts:11:1	use-isnan	indexOfNaN	Array prototype method 'indexOf' cannot find NaN.	suggestion	replaceWithFindIndex	Replace with Array.prototype.findIndex.	294	305	findIndex(Number.isNaN
-tests/rules/use-isnan/index-of/cases.ts:12:1	use-isnan	indexOfNaN	Array prototype method 'indexOf' cannot find NaN.	suggestion	replaceWithFindIndex	Replace with Array.prototype.findIndex.	314	326	findIndex)(Number.isNaN
-tests/rules/use-isnan/index-of/cases.ts:13:1	use-isnan	indexOfNaN	Array prototype method 'indexOf' cannot find NaN.	suggestion	replaceWithFindIndex	Replace with Array.prototype.findIndex.	334	346	findIndex((Number.isNaN
-tests/rules/use-isnan/index-of/cases.ts:14:1	use-isnan	indexOfNaN	Array prototype method 'indexOf' cannot find NaN.
-tests/rules/use-isnan/index-of/cases.ts:15:1	use-isnan	indexOfNaN	Array prototype method 'indexOf' cannot find NaN.
-tests/rules/use-isnan/index-of/cases.ts:21:1	use-isnan	indexOfNaN	Array prototype method 'indexOf' cannot find NaN.	suggestion	replaceWithFindIndex	Replace with Array.prototype.findIndex.	554	573	findIndex<number>(Number.isNaN
-tests/rules/use-isnan/no-switch/cases.ts:8:5	use-isnan	comparisonWithNaN	Use the isNaN function to compare with NaN.	suggestion	replaceWithIsNaN	Replace with Number.isNaN.	134	143	Number.isNaN(x)
+tests/rules/use-isnan/cases.ts:7:5	use-isnan	comparisonWithNaN	Use the isNaN function to compare with NaN.	suggestion	replaceWithIsNaN	Replace with Number.isNaN.	247	256	Number.isNaN(x)	end	7	14
+tests/rules/use-isnan/cases.ts:8:5	use-isnan	comparisonWithNaN	Use the isNaN function to compare with NaN.	suggestion	replaceWithIsNaN	Replace with Number.isNaN.	265	274	Number.isNaN(x)	end	8	14
+tests/rules/use-isnan/cases.ts:9:5	use-isnan	comparisonWithNaN	Use the isNaN function to compare with NaN.	suggestion	replaceWithIsNaN	Replace with Number.isNaN.	283	291	Number.isNaN(x)	suggestion	replaceWithCastingAndIsNaN	Replace with Number.isNaN and cast to a Number.	283	291	Number.isNaN(Number(x))	end	9	13
+tests/rules/use-isnan/cases.ts:10:5	use-isnan	comparisonWithNaN	Use the isNaN function to compare with NaN.	suggestion	replaceWithIsNaN	Replace with Number.isNaN.	300	309	!Number.isNaN(x)	end	10	14
+tests/rules/use-isnan/cases.ts:11:5	use-isnan	comparisonWithNaN	Use the isNaN function to compare with NaN.	suggestion	replaceWithIsNaN	Replace with Number.isNaN.	318	333	!Number.isNaN(x)	suggestion	replaceWithCastingAndIsNaN	Replace with Number.isNaN and cast to a Number.	318	333	!Number.isNaN(Number(x))	end	11	20
+tests/rules/use-isnan/cases.ts:12:5	use-isnan	comparisonWithNaN	Use the isNaN function to compare with NaN.	end	12	12
+tests/rules/use-isnan/cases.ts:13:5	use-isnan	comparisonWithNaN	Use the isNaN function to compare with NaN.	end	13	20
+tests/rules/use-isnan/cases.ts:14:5	use-isnan	comparisonWithNaN	Use the isNaN function to compare with NaN.	suggestion	replaceWithIsNaN	Replace with Number.isNaN.	382	395	Number.isNaN(x)	end	14	18
+tests/rules/use-isnan/cases.ts:15:5	use-isnan	comparisonWithNaN	Use the isNaN function to compare with NaN.	suggestion	replaceWithIsNaN	Replace with Number.isNaN.	404	423	Number.isNaN(x)	end	15	24
+tests/rules/use-isnan/cases.ts:16:5	use-isnan	comparisonWithNaN	Use the isNaN function to compare with NaN.	suggestion	replaceWithIsNaN	Replace with Number.isNaN.	432	449	Number.isNaN(x)	end	16	22
+tests/rules/use-isnan/cases.ts:17:5	use-isnan	comparisonWithNaN	Use the isNaN function to compare with NaN.	suggestion	replaceWithIsNaN	Replace with Number.isNaN.	458	471	Number.isNaN(x + 1)	end	17	18
+tests/rules/use-isnan/cases.ts:18:5	use-isnan	comparisonWithNaN	Use the isNaN function to compare with NaN.	suggestion	replaceWithIsNaN	Replace with Number.isNaN.	480	505	Number.isNaN((sideEffect(), x))	end	18	30
+tests/rules/use-isnan/cases.ts:19:5	use-isnan	comparisonWithNaN	Use the isNaN function to compare with NaN.	end	19	30
+tests/rules/use-isnan/cases.ts:20:14	use-isnan	comparisonWithNaN	Use the isNaN function to compare with NaN.	suggestion	replaceWithIsNaN	Replace with Number.isNaN.	557	572	!Number.isNaN(list[0])	end	20	29
+tests/rules/use-isnan/cases.ts:31:1	use-isnan	switchNaN	'switch(NaN)' can never match a case clause. Use Number.isNaN instead of the switch.	end	34	2
+tests/rules/use-isnan/cases.ts:36:3	use-isnan	caseNaN	'case NaN' can never match. Use Number.isNaN before the switch.	end	37	11
+tests/rules/use-isnan/cases.ts:38:3	use-isnan	caseNaN	'case NaN' can never match. Use Number.isNaN before the switch.	end	39	11
+tests/rules/use-isnan/cases.ts:40:3	use-isnan	caseNaN	'case NaN' can never match. Use Number.isNaN before the switch.	end	41	11
+tests/rules/use-isnan/index-of/cases.ts:6:1	use-isnan	indexOfNaN	Array prototype method 'indexOf' cannot find NaN.	suggestion	replaceWithFindIndex	Replace with Array.prototype.findIndex.	177	188	findIndex(Number.isNaN	end	6	18
+tests/rules/use-isnan/index-of/cases.ts:7:1	use-isnan	indexOfNaN	Array prototype method 'lastIndexOf' cannot find NaN.	suggestion	replaceWithFindIndex	Replace with Array.prototype.findLastIndex.	196	211	findLastIndex(Number.isNaN	end	7	22
+tests/rules/use-isnan/index-of/cases.ts:8:1	use-isnan	indexOfNaN	Array prototype method 'indexOf' cannot find NaN.	suggestion	replaceWithFindIndex	Replace with Array.prototype.findIndex.	219	237	findIndex(Number.isNaN	end	8	25
+tests/rules/use-isnan/index-of/cases.ts:9:1	use-isnan	indexOfNaN	Array prototype method 'indexOf' cannot find NaN.	suggestion	replaceWithFindIndex	Replace with Array.prototype.findIndex.	245	259	"findIndex"](Number.isNaN	end	9	21
+tests/rules/use-isnan/index-of/cases.ts:10:1	use-isnan	indexOfNaN	Array prototype method 'lastIndexOf' cannot find NaN.	suggestion	replaceWithFindIndex	Replace with Array.prototype.findLastIndex.	267	285	"findLastIndex"](Number.isNaN	end	10	25
+tests/rules/use-isnan/index-of/cases.ts:11:1	use-isnan	indexOfNaN	Array prototype method 'indexOf' cannot find NaN.	suggestion	replaceWithFindIndex	Replace with Array.prototype.findIndex.	294	305	findIndex(Number.isNaN	end	11	19
+tests/rules/use-isnan/index-of/cases.ts:12:1	use-isnan	indexOfNaN	Array prototype method 'indexOf' cannot find NaN.	suggestion	replaceWithFindIndex	Replace with Array.prototype.findIndex.	314	326	findIndex)(Number.isNaN	end	12	20
+tests/rules/use-isnan/index-of/cases.ts:13:1	use-isnan	indexOfNaN	Array prototype method 'indexOf' cannot find NaN.	suggestion	replaceWithFindIndex	Replace with Array.prototype.findIndex.	334	346	findIndex((Number.isNaN	end	13	20
+tests/rules/use-isnan/index-of/cases.ts:14:1	use-isnan	indexOfNaN	Array prototype method 'indexOf' cannot find NaN.	end	14	21
+tests/rules/use-isnan/index-of/cases.ts:15:1	use-isnan	indexOfNaN	Array prototype method 'indexOf' cannot find NaN.	end	15	34
+tests/rules/use-isnan/index-of/cases.ts:21:1	use-isnan	indexOfNaN	Array prototype method 'indexOf' cannot find NaN.	suggestion	replaceWithFindIndex	Replace with Array.prototype.findIndex.	554	573	findIndex<number>(Number.isNaN	end	21	26
+tests/rules/use-isnan/no-switch/cases.ts:8:5	use-isnan	comparisonWithNaN	Use the isNaN function to compare with NaN.	suggestion	replaceWithIsNaN	Replace with Number.isNaN.	134	143	Number.isNaN(x)	end	8	14

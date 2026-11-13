@@ -1,7 +1,7 @@
 module rules
 
 import time
-import treesitter { node_start }
+import treesitter { node_start, position_of }
 
 // Port of the `declare-description` rule of @slipher/eslint-plugin 1.1.0 (it has no options): the
 // literal `description` of the `@Declare` of a class that extends seyfert's Command or SubCommand,
@@ -75,7 +75,7 @@ fn (mut c Checker) lint_seyfert_declare_description(root C.TSNode, abs_path stri
 		mut seen := map[string]bool{}
 		object := c.sy_resolve_object_literal(argument_node, mut seen)!
 		if object.exists() {
-			c.sy_dd_check_description(object, 'Command', node_start(arguments[i]), mut findings)
+			c.sy_dd_check_description(object, 'Command', position_of(arguments[i]), mut findings)
 		}
 	}
 	for call in calls {
@@ -90,7 +90,7 @@ fn (mut c Checker) lint_seyfert_declare_description(root C.TSNode, abs_path stri
 		mut seen := map[string]bool{}
 		object := c.sy_resolve_object_literal(call_arguments_list[0], mut seen)!
 		if object.exists() {
-			c.sy_dd_check_description(object, 'Option', node_start(call), mut findings)
+			c.sy_dd_check_description(object, 'Option', position_of(call), mut findings)
 		}
 	}
 	stats.eval_ms += ms(sw.elapsed())
@@ -100,7 +100,7 @@ fn (mut c Checker) lint_seyfert_declare_description(root C.TSNode, abs_path stri
 
 // sy_dd_check_description ports checkDescription: a literal description that is empty or longer
 // than 100 code points is reported where ESLint has its node, or else at `fallback`.
-fn (c &Checker) sy_dd_check_description(object SyNode, what string, fallback int, mut findings []Finding) {
+fn (c &Checker) sy_dd_check_description(object SyNode, what string, fallback treesitter.Ident, mut findings []Finding) {
 	description := sy_object_property(object, 'description')
 	if !description.exists() {
 		return
@@ -110,10 +110,10 @@ fn (c &Checker) sy_dd_check_description(object SyNode, what string, fallback int
 	if value != '' && length <= sy_dd_max_description {
 		return
 	}
-	offset := c.sy_position_of(description) or { fallback }
+	place := c.sy_place_of(description) or { fallback }
 	findings << if value == '' {
 		Finding{
-			stmt:       c.position_at(offset)
+			stmt:       place
 			message_id: 'emptyDescription'
 			data:       {
 				'what': what
@@ -121,7 +121,7 @@ fn (c &Checker) sy_dd_check_description(object SyNode, what string, fallback int
 		}
 	} else {
 		Finding{
-			stmt:       c.position_at(offset)
+			stmt:       place
 			message_id: 'descriptionTooLong'
 			data:       {
 				'what':   what

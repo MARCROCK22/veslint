@@ -1,0 +1,4 @@
+tests/rules/no-dupe-args/cases.ts:2:11	no-dupe-args	unexpected	Duplicate param 'x'.	end	2	33
+tests/rules/no-dupe-args/cases.ts:3:20	no-dupe-args	unexpected	Duplicate param 'y'.	end	3	64
+tests/rules/no-dupe-args/cases.ts:3:20	no-dupe-args	unexpected	Duplicate param 'z'.	end	3	64
+tests/rules/no-dupe-args/cases.ts:4:11	no-dupe-args	unexpected	Duplicate param 'd'.	end	4	44

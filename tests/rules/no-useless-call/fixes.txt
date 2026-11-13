@@ -1,0 +1,8 @@
+tests/rules/no-useless-call/cases.ts:5:1	no-useless-call	unnecessaryCall	Unnecessary '.call()'.	end	5	26
+tests/rules/no-useless-call/cases.ts:6:1	no-useless-call	unnecessaryCall	Unnecessary '.call()'.	end	6	20
+tests/rules/no-useless-call/cases.ts:7:1	no-useless-call	unnecessaryCall	Unnecessary '.call()'.	end	7	18
+tests/rules/no-useless-call/cases.ts:8:1	no-useless-call	unnecessaryCall	Unnecessary '.apply()'.	end	8	29
+tests/rules/no-useless-call/cases.ts:9:1	no-useless-call	unnecessaryCall	Unnecessary '.call()'.	end	9	21
+tests/rules/no-useless-call/cases.ts:10:1	no-useless-call	unnecessaryCall	Unnecessary '.apply()'.	end	10	24
+tests/rules/no-useless-call/cases.ts:11:1	no-useless-call	unnecessaryCall	Unnecessary '.call()'.	end	11	23
+tests/rules/no-useless-call/cases.ts:18:1	no-useless-call	unnecessaryCall	Unnecessary '.call()'.	end	18	24

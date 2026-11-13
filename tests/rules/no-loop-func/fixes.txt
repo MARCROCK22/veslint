@@ -1,0 +1,3 @@
+tests/rules/no-loop-func/cases.ts:4:14	no-loop-func	unsafeRefs	Function declared in a loop contains unsafe references to variable(s) 'i'.	end	6	4
+tests/rules/no-loop-func/cases.ts:7:14	no-loop-func	unsafeRefs	Function declared in a loop contains unsafe references to variable(s) 'i', 'counter'.	end	7	31
+tests/rules/no-loop-func/cases.ts:12:15	no-loop-func	unsafeRefs	Function declared in a loop contains unsafe references to variable(s) 'total'.	end	12	26

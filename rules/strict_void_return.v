@@ -272,7 +272,7 @@ fn (mut c Checker) lint_strict_void_return(root C.TSNode, abs_path string, mut s
 				continue
 			}
 			// The `return` keyword.
-			state.findings << finding_at(statement, 'nonVoidReturn')
+			state.findings << finding_at(children(statement)[0] or { statement }, 'nonVoidReturn')
 		}
 	}
 	state.findings.sort_with_compare(compare_findings)
@@ -497,14 +497,14 @@ fn (mut c Checker) svr_report_if_non_void_function(node C.TSNode, mut state SvrS
 	}
 	if is_generator(node) {
 		state.findings << Finding{
-			stmt:       function_head(node)
+			stmt:       c.function_head(node)
 			message_id: 'nonVoidFunc'
 		}
 		return
 	}
 	if has_child_kind(node, 'async') {
 		state.findings << Finding{
-			stmt:       function_head(node)
+			stmt:       c.function_head(node)
 			message_id: 'asyncFunc'
 		}
 		return

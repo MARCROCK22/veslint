@@ -72,7 +72,7 @@ fn (mut c Checker) lint_promise_function_async(root C.TSNode, abs_path string, m
 		if !options.allow_any && any_or_unknown {
 			// Reported without a fix, as the return type is unknown.
 			findings << Finding{
-				stmt:       function_head(f)
+				stmt:       c.function_head(f)
 				message_id: 'missingAsync'
 			}
 			continue
@@ -100,7 +100,7 @@ fn (mut c Checker) lint_promise_function_async(root C.TSNode, abs_path string, m
 			continue
 		}
 		findings << Finding{
-			stmt:       function_head(f)
+			stmt:       c.function_head(f)
 			message_id: if hybrid { 'missingAsyncHybridReturn' } else { 'missingAsync' }
 			has_fix:    true
 			fix:        c.pfa_fix(f)

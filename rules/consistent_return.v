@@ -4,7 +4,7 @@ import json2
 import jsregexp
 import time
 import tsgo { TypeResponse }
-import treesitter { Ident, children, has_child_kind, named_children, node_field, node_kind, node_parent, nodes_of_kind, nodes_of_kinds, position_of }
+import treesitter { Ident, children, has_child_kind, named_children, node_field, node_kind, node_parent, nodes_of_kind, nodes_of_kinds, node_start, position_of }
 
 // Port of the `consistent-return` rule of typescript-eslint 8.62.0, which extends the rule of
 // ESLint 10.6.0 with the same name, with its `treatUndefinedAsUnspecified` option. Whether the
@@ -413,14 +413,17 @@ fn (c &Checker) cr_missing_return_position(function C.TSNode) Ident {
 			}
 			return position_of(key)
 		}
-		// The accessor of an object literal: the function starts at its parameters.
+		// The accessor of an object literal: the first token of the function, which starts at its
+		// parameters.
 		if parameters := node_field(function, 'parameters') {
-			return position_of(parameters)
+			return c.position_range(node_start(parameters), node_start(parameters) + 1)
 		}
 		return position_of(function)
 	}
 	if name := node_field(function, 'name') {
 		return position_of(name)
 	}
-	return position_of(function)
+	// The first token of the function: `function` or `async`.
+	first := children(function)[0] or { return position_of(function) }
+	return position_of(first)
 }

@@ -756,6 +756,14 @@ fn file_report(path string, src string, result rules.FileLint, fixes bool) FileR
 		}
 	}
 	_, display := offsets.utf16_positions(src, findings.map(it.stmt))
+	// Where each report ends, for --fixes (an editor underlines the range).
+	mut ends := []offsets.DisplayPos{}
+	if fixes {
+		_, ends = offsets.utf16_positions(src, findings.map(treesitter.Ident{
+			start_byte: if it.stmt.end_byte >= 0 { it.stmt.end_byte } else { it.stmt.start_byte }
+			row:        it.stmt.row
+		}))
+	}
 	mut out := strings.new_builder(findings.len * 200)
 	mut warnings := 0
 	for i, finding in findings {
@@ -765,6 +773,9 @@ fn file_report(path string, src string, result rules.FileLint, fixes bool) FileR
 		out.write_string('${path}:${d.line}:${d.col}\t${finding.rule}\t${finding.message_id}\t${msg}')
 		if fixes {
 			out.write_string(fix_fields(src, finding))
+			if finding.stmt.end_byte >= 0 && finding.stmt.row >= 0 {
+				out.write_string('\tend\t${ends[i].line}\t${ends[i].col}')
+			}
 		}
 		out.writeln('')
 		if finding.severity == 1 {

@@ -1,0 +1,8 @@
+tests/rules/no-sequences/cases.ts:6:6	no-sequences	unexpectedCommaExpression	Unexpected use of comma operator.	end	6	7
+tests/rules/no-sequences/cases.ts:7:4	no-sequences	unexpectedCommaExpression	Unexpected use of comma operator.	end	7	5
+tests/rules/no-sequences/cases.ts:9:6	no-sequences	unexpectedCommaExpression	Unexpected use of comma operator.	end	9	7
+tests/rules/no-sequences/cases.ts:10:9	no-sequences	unexpectedCommaExpression	Unexpected use of comma operator.	end	10	10
+tests/rules/no-sequences/cases.ts:11:10	no-sequences	unexpectedCommaExpression	Unexpected use of comma operator.	end	11	11
+tests/rules/no-sequences/cases.ts:12:19	no-sequences	unexpectedCommaExpression	Unexpected use of comma operator.	end	12	20
+tests/rules/no-sequences/no-parens/cases.ts:5:13	no-sequences	unexpectedCommaExpression	Unexpected use of comma operator.	end	5	14
+tests/rules/no-sequences/no-parens/cases.ts:6:7	no-sequences	unexpectedCommaExpression	Unexpected use of comma operator.	end	6	8

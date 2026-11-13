@@ -1,0 +1,15 @@
+tests/rules/no-empty-pattern/cases.ts:4:7	no-empty-pattern	unexpected	Unexpected empty object pattern.	end	4	9
+tests/rules/no-empty-pattern/cases.ts:5:7	no-empty-pattern	unexpected	Unexpected empty array pattern.	end	5	9
+tests/rules/no-empty-pattern/cases.ts:6:13	no-empty-pattern	unexpected	Unexpected empty object pattern.	end	6	23
+tests/rules/no-empty-pattern/cases.ts:7:13	no-empty-pattern	unexpected	Unexpected empty array pattern.	end	7	26
+tests/rules/no-empty-pattern/cases.ts:8:12	no-empty-pattern	unexpected	Unexpected empty object pattern.	end	8	14
+tests/rules/no-empty-pattern/cases.ts:9:12	no-empty-pattern	unexpected	Unexpected empty array pattern.	end	9	14
+tests/rules/no-empty-pattern/cases.ts:10:13	no-empty-pattern	unexpected	Unexpected empty object pattern.	end	10	15
+tests/rules/no-empty-pattern/cases.ts:11:12	no-empty-pattern	unexpected	Unexpected empty object pattern.	end	11	14
+tests/rules/no-empty-pattern/cases.ts:13:2	no-empty-pattern	unexpected	Unexpected empty object pattern.	end	13	4
+tests/rules/no-empty-pattern/cases.ts:14:1	no-empty-pattern	unexpected	Unexpected empty array pattern.	end	14	3
+tests/rules/no-empty-pattern/cases.ts:15:12	no-empty-pattern	unexpected	Unexpected empty object pattern.	end	15	14
+tests/rules/no-empty-pattern/parameters/cases.ts:8:13	no-empty-pattern	unexpected	Unexpected empty object pattern.	end	8	15
+tests/rules/no-empty-pattern/parameters/cases.ts:9:18	no-empty-pattern	unexpected	Unexpected empty object pattern.	end	9	20
+tests/rules/no-empty-pattern/parameters/cases.ts:10:13	no-empty-pattern	unexpected	Unexpected empty array pattern.	end	10	26
+tests/rules/no-empty-pattern/parameters/cases.ts:11:7	no-empty-pattern	unexpected	Unexpected empty object pattern.	end	11	9

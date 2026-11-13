@@ -1,12 +1,12 @@
-tests/rules/prefer-arrow-callback/cases.ts:5:5	prefer-arrow-callback	preferArrowCallback	Unexpected function expression.	fix	85	96	() =>
-tests/rules/prefer-arrow-callback/cases.ts:6:5	prefer-arrow-callback	preferArrowCallback	Unexpected function expression.	fix	106	126	(x: number) =>
-tests/rules/prefer-arrow-callback/cases.ts:9:5	prefer-arrow-callback	preferArrowCallback	Unexpected function expression.	fix	155	166	() =>
-tests/rules/prefer-arrow-callback/cases.ts:10:5	prefer-arrow-callback	preferArrowCallback	Unexpected function expression.	fix	176	192	() =>
-tests/rules/prefer-arrow-callback/cases.ts:11:10	prefer-arrow-callback	preferArrowCallback	Unexpected function expression.	fix	207	221	(() => {})
-tests/rules/prefer-arrow-callback/cases.ts:12:9	prefer-arrow-callback	preferArrowCallback	Unexpected function expression.	fix	232	243	() =>
-tests/rules/prefer-arrow-callback/cases.ts:13:13	prefer-arrow-callback	preferArrowCallback	Unexpected function expression.	fix	268	286	(resolve) =>
-tests/rules/prefer-arrow-callback/cases.ts:16:5	prefer-arrow-callback	preferArrowCallback	Unexpected function expression.	fix	311	352	() => {\n  return this;\n}
-tests/rules/prefer-arrow-callback/cases.ts:19:5	prefer-arrow-callback	preferArrowCallback	Unexpected function expression.	fix	359	386	(() => {\n  return 1;\n})
-tests/rules/prefer-arrow-callback/cases.ts:22:5	prefer-arrow-callback	preferArrowCallback	Unexpected function expression.
-tests/rules/prefer-arrow-callback/cases.ts:23:5	prefer-arrow-callback	preferArrowCallback	Unexpected function expression.
-tests/rules/prefer-arrow-callback/options/cases.ts:4:5	prefer-arrow-callback	preferArrowCallback	Unexpected function expression.
+tests/rules/prefer-arrow-callback/cases.ts:5:5	prefer-arrow-callback	preferArrowCallback	Unexpected function expression.	fix	85	96	() =>	end	5	19
+tests/rules/prefer-arrow-callback/cases.ts:6:5	prefer-arrow-callback	preferArrowCallback	Unexpected function expression.	fix	106	126	(x: number) =>	end	8	2
+tests/rules/prefer-arrow-callback/cases.ts:9:5	prefer-arrow-callback	preferArrowCallback	Unexpected function expression.	fix	155	166	() =>	end	9	25
+tests/rules/prefer-arrow-callback/cases.ts:10:5	prefer-arrow-callback	preferArrowCallback	Unexpected function expression.	fix	176	192	() =>	end	10	24
+tests/rules/prefer-arrow-callback/cases.ts:11:10	prefer-arrow-callback	preferArrowCallback	Unexpected function expression.	fix	207	221	(() => {})	end	11	24
+tests/rules/prefer-arrow-callback/cases.ts:12:9	prefer-arrow-callback	preferArrowCallback	Unexpected function expression.	fix	232	243	() =>	end	12	23
+tests/rules/prefer-arrow-callback/cases.ts:13:13	prefer-arrow-callback	preferArrowCallback	Unexpected function expression.	fix	268	286	(resolve) =>	end	15	2
+tests/rules/prefer-arrow-callback/cases.ts:16:5	prefer-arrow-callback	preferArrowCallback	Unexpected function expression.	fix	311	352	() => {\n  return this;\n}	end	18	2
+tests/rules/prefer-arrow-callback/cases.ts:19:5	prefer-arrow-callback	preferArrowCallback	Unexpected function expression.	fix	359	386	(() => {\n  return 1;\n})	end	21	2
+tests/rules/prefer-arrow-callback/cases.ts:22:5	prefer-arrow-callback	preferArrowCallback	Unexpected function expression.	end	22	23
+tests/rules/prefer-arrow-callback/cases.ts:23:5	prefer-arrow-callback	preferArrowCallback	Unexpected function expression.	end	23	28
+tests/rules/prefer-arrow-callback/options/cases.ts:4:5	prefer-arrow-callback	preferArrowCallback	Unexpected function expression.	end	6	2

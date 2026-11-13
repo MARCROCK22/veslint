@@ -64,7 +64,7 @@ fn (mut c Checker) lint_getter_return(root C.TSNode, abs_path string, mut stats 
 					stats.checked++
 					if !allow_implicit && t.node(ev.node, .argument) == none {
 						findings << Finding{
-							stmt:       c.position_at(t.nodes[ev.node].start)
+							stmt:       c.es_tree_position(t, ev.node)
 							message_id: 'expected'
 							data:       {
 								'name': c.es_tree_function_name(t, stack[top].node)

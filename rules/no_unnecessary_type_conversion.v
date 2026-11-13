@@ -203,14 +203,14 @@ fn (c &Checker) nutc_candidates(node C.TSNode, mut out []NutcCandidate) {
 					kind:    .concat_right
 					node:    node
 					operand: left
-					at:      c.position_at(c.tokens.last_end(node_end(left)))
+					at:      c.position_range(c.tokens.last_end(node_end(left)), c.es_end(node))
 				}
 			} else if c.nutc_is_empty_string(left) {
 				out << NutcCandidate{
 					kind:    .concat_left
 					node:    node
 					operand: right
-					at:      position_of(node)
+					at:      c.position_range(node_start(node), node_start(right))
 				}
 			}
 		}
@@ -240,7 +240,7 @@ fn (c &Checker) nutc_candidates(node C.TSNode, mut out []NutcCandidate) {
 					kind:    .to_string
 					node:    node
 					operand: unwrap_parens(object)
-					at:      position_of(property)
+					at:      c.position_range(node_start(property), c.es_end(node))
 				}
 			}
 		}
@@ -252,7 +252,7 @@ fn (c &Checker) nutc_candidates(node C.TSNode, mut out []NutcCandidate) {
 					kind:    .unary_plus
 					node:    node
 					operand: argument
-					at:      position_of(node)
+					at:      c.position_range(node_start(node), node_start(node) + 1)
 				}
 				return
 			}
@@ -273,7 +273,7 @@ fn (c &Checker) nutc_candidates(node C.TSNode, mut out []NutcCandidate) {
 				kind:    if operator == '!' { NutcKind.double_not } else { NutcKind.double_tilde }
 				node:    node
 				operand: argument
-				at:      position_of(parent)
+				at:      c.position_range(node_start(parent), node_start(node) + 1)
 			}
 		}
 		else {}

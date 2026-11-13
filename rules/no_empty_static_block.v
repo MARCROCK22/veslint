@@ -29,7 +29,7 @@ fn (mut c Checker) lint_no_empty_static_block(root C.TSNode, abs_path string, mu
 			fix_replace_range(open, close, ' /* empty */ '),
 		])!
 		findings << Finding{
-			stmt:        c.position_at(node_start(body))
+			stmt:        c.position_range(node_start(body), close + 1)
 			message_id:  'unexpected'
 			suggestions: [suggestion]
 		}

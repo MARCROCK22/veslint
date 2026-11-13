@@ -2,7 +2,7 @@ module rules
 
 import math
 import time
-import treesitter { named_children, node_field, node_kind, position_of }
+import treesitter { named_children, node_end, node_field, node_kind, node_start, position_of }
 
 // Port of the `for-direction` rule of ESLint 10.6.0 (it has no options).
 
@@ -42,8 +42,15 @@ fn (mut c Checker) lint_for_direction(root C.TSNode, abs_path string, mut stats 
 			mut mutating := []C.TSNode{}
 			c.fd_modifying(update, counter, mut mutating)
 			if mutating.len == 1 && c.fd_direction(mutating[0], counter) == wrong {
+				// From the `for` to the token before the body (its `)`).
+				body := node_field(node, 'body') or { node }
+				before := c.source_tokens(node).before(node_start(body), false) or {
+					SourceToken{
+						end: node_end(node)
+					}
+				}
 				findings << Finding{
-					stmt:       position_of(node)
+					stmt:       c.position_range(node_start(node), before.end)
 					message_id: 'incorrectDirection'
 				}
 			}

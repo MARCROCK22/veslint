@@ -482,7 +482,7 @@ fn (c &Checker) pconst_check_group(nodes []?C.TSNode, o PconstOptions, mut st Pc
 				c.src[node_end(d.kind_tok)..end]}
 		}
 		findings << Finding{
-			stmt:       position_of(node)
+			stmt:       c.es_binding_position(node)
 			message_id: 'useConst'
 			data:       {
 				'name': c.identifier_name(node)

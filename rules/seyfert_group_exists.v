@@ -422,7 +422,7 @@ fn (mut c Checker) sy_ge_check_autoload(decorator C.TSNode, abs_path string, val
 		}
 		name := sub.child('name')
 		findings << Finding{
-			stmt:       c.position_at(node_start(decorator))
+			stmt:       position_of(decorator)
 			message_id: 'unknownGroupAutoload'
 			data:       {
 				'group': group

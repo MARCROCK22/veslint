@@ -1,0 +1,7 @@
+tests/rules/no-unsafe-finally/cases.ts:8:5	no-unsafe-finally	unsafeUsage	Unsafe usage of ReturnStatement.	end	8	14
+tests/rules/no-unsafe-finally/cases.ts:14:5	no-unsafe-finally	unsafeUsage	Unsafe usage of ThrowStatement.	end	14	23
+tests/rules/no-unsafe-finally/cases.ts:21:7	no-unsafe-finally	unsafeUsage	Unsafe usage of BreakStatement.	end	21	13
+tests/rules/no-unsafe-finally/cases.ts:29:7	no-unsafe-finally	unsafeUsage	Unsafe usage of ContinueStatement.	end	29	16
+tests/rules/no-unsafe-finally/cases.ts:37:7	no-unsafe-finally	unsafeUsage	Unsafe usage of BreakStatement.	end	37	19
+tests/rules/no-unsafe-finally/cases.ts:45:7	no-unsafe-finally	unsafeUsage	Unsafe usage of ReturnStatement.	end	45	14
+tests/rules/no-unsafe-finally/cases.ts:52:5	no-unsafe-finally	unsafeUsage	Unsafe usage of BreakStatement.	end	52	17

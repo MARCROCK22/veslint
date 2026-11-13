@@ -83,8 +83,8 @@ fi
 # subdirectories, each with its own tsconfig and, if its cases use other options, with an
 # options.json holding the list of ESLint options) exactly expected.txt, whose lines are validated
 # against typescript-eslint by tests/rules/reference.sh, and exits with code 1. Files go in order,
-# grouped by options: the output is that of a single run. A rule with fixes or suggestions also has
-# a fixes.txt: its exact output with --fixes (each line with the fix and the suggestions).
+# grouped by options: the output is that of a single run. A rule with findings also has a
+# fixes.txt: its exact output with --fixes (each line with the fix, the suggestions and the end).
 extra_args=()
 lint_cases() { # rule files...
 	local rule=$1 key group_key='' status=0 f

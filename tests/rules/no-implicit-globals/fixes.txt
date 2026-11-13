@@ -1,0 +1,4 @@
+tests/rules/no-implicit-globals/cases.ts:8:1	no-implicit-globals	assignmentToReadonlyGlobal	Unexpected assignment to read-only global variable.	end	8	21
+tests/rules/no-implicit-globals/cases.ts:9:1	no-implicit-globals	assignmentToReadonlyGlobal	Unexpected assignment to read-only global variable.	end	10	2
+tests/rules/no-implicit-globals/lexical-bindings/cases.ts:8:1	no-implicit-globals	assignmentToReadonlyGlobal	Unexpected assignment to read-only global variable.	end	8	21
+tests/rules/no-implicit-globals/lexical-bindings/cases.ts:9:1	no-implicit-globals	assignmentToReadonlyGlobal	Unexpected assignment to read-only global variable.	end	10	2

@@ -3,7 +3,7 @@ module rules
 import json2
 import time
 import tsgo
-import treesitter { has_child_kind, named_children, node_field, node_kind, nodes_of_kinds, position_of }
+import treesitter { Ident, has_child_kind, named_children, node_field, node_kind, node_parent, node_start, nodes_of_kinds, position_of }
 
 // Port of the `prefer-readonly-parameter-types` rule of typescript-eslint 8.62.0, with its
 // options.
@@ -74,7 +74,7 @@ fn (mut c Checker) lint_prefer_readonly_parameter_types(root C.TSNode, abs_path 
 		if !c.is_type_readonly(t, options.readonlyness, c.prpt_annotation(parameter))!
 			&& !c.is_type_branded_literal_like(t)! {
 			findings << Finding{
-				stmt:       position_of(parameter.report)
+				stmt:       c.prpt_place(parameter.report)
 				message_id: 'shouldBeReadonly'
 			}
 		}
@@ -146,4 +146,17 @@ fn prpt_parameters(function C.TSNode, options PrptOptions) []PrptParameter {
 		}
 	}
 	return out
+}
+
+// prpt_place is where a parameter is reported: its ESTree node, an AssignmentPattern to its
+// default value, or the name or pattern with its type annotation.
+fn (c &Checker) prpt_place(report C.TSNode) Ident {
+	if parent := node_parent(report) {
+		if node_kind(parent) in ['required_parameter', 'optional_parameter'] {
+			if _ := node_field(parent, 'value') {
+				return c.position_range(node_start(report), c.es_end(parent))
+			}
+		}
+	}
+	return c.es_binding_position(report)
 }

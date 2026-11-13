@@ -3,7 +3,7 @@ module rules
 import jsregexp
 import time
 import tsgo { SymbolResponse, TypeResponse }
-import treesitter { children, first_named_child, has_child_kind, named_children, node_field, node_kind, node_parent, nodes_of_kinds, position_of }
+import treesitter { Ident, children, first_named_child, has_child_kind, named_children, node_end, node_field, node_kind, node_parent, node_start, nodes_of_kinds, position_of }
 
 // Port of the `no-unsafe-assignment` rule of typescript-eslint 8.62.0 (it has no options). Limits
 // of the port: README, "Rules" section.
@@ -31,6 +31,7 @@ struct Assignment {
 	receiver    C.TSNode
 	sender      C.TSNode
 	reporting   C.TSNode
+	report_end  int = -1 // where the reported ESTree node ends, when not where `reporting` does
 	comparison  Comparison
 	destructure bool
 }
@@ -126,6 +127,7 @@ fn (c &Checker) collect_assignments(root C.TSNode) ([]Assignment, []C.TSNode) {
 					receiver:    pattern
 					sender:      unwrap_parens(value)
 					reporting:   pattern
+					report_end:  node_end(node)
 					comparison:  .basic
 					destructure: true
 				}
@@ -280,7 +282,7 @@ fn (mut c Checker) check_assignment(a Assignment, mut findings []Finding) !bool 
 			return false
 		}
 		findings << Finding{
-			stmt:       position_of(a.reporting)
+			stmt:       c.nua_place(a)
 			message_id: if c.this_is_any(a.sender)! { 'anyAssignmentThis' } else { 'anyAssignment' }
 			data:       {
 				'sender': any_text(sender_type)
@@ -296,7 +298,7 @@ fn (mut c Checker) check_assignment(a Assignment, mut findings []Finding) !bool 
 		return false
 	}
 	findings << Finding{
-		stmt:       position_of(a.reporting)
+		stmt:       c.nua_place(a)
 		message_id: 'unsafeAssignment'
 		data:       {
 			'sender':   '`${c.client.type_to_string(c.snapshot, c.project, pair.sender.id)!}`'
@@ -530,4 +532,16 @@ fn (c &Checker) literal_name(n C.TSNode) ?string {
 // (`__a` is `___a`).
 fn unescape_name(name string) string {
 	return if name.starts_with('___') { name[1..] } else { name }
+}
+
+// nua_place is where an assignment is reported: its reporting node (a field to its `;`, the
+// AssignmentPattern of a parameter to its default value).
+fn (mut c Checker) nua_place(a Assignment) Ident {
+	if a.report_end >= 0 {
+		return c.position_range(node_start(a.reporting), c.tokens.last_end(a.report_end))
+	}
+	if node_kind(a.reporting) == 'public_field_definition' {
+		return c.position_range(node_start(a.reporting), c.es_member_end(a.reporting))
+	}
+	return position_of(a.reporting)
 }

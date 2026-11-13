@@ -20,8 +20,7 @@ fn (mut c Checker) lint_no_useless_computed_key(root C.TSNode, abs_path string, 
 	sw := time.new_stopwatch()
 	class_members := nuck_class_members(c.rule_options(no_useless_computed_key))!
 	mut findings := []Finding{}
-	kinds := ['pair', 'pair_pattern', 'method_definition', 'method_signature',
-		'public_field_definition']
+	kinds := ['pair', 'pair_pattern', 'method_definition', 'method_signature', 'public_field_definition']
 	for node in c.nodes_of_kinds(root, kinds, []) {
 		parent := node_parent(node) or { continue }
 		in_class := node_kind(parent) == 'class_body'
@@ -54,7 +53,7 @@ fn (mut c Checker) lint_no_useless_computed_key(root C.TSNode, abs_path string, 
 		}
 		has_fix, fix := c.nuck_fix(root, key)
 		findings << Finding{
-			stmt:       c.position_at(es_member_start(node))
+			stmt:       c.position_range(es_member_start(node), c.es_member_end(node))
 			message_id: 'unnecessarilyComputedProperty'
 			data:       {
 				'property': c.text(key)

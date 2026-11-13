@@ -71,9 +71,9 @@ fn (mut c Checker) lint_seyfert_context_menu_declare(root C.TSNode, abs_path str
 			} else {
 				description
 			}
-			offset := c.sy_position_of(property) or { node_start(decorator) }
+			place := c.sy_place_of(property) or { position_of(decorator) }
 			findings << Finding{
-				stmt:       c.position_at(offset)
+				stmt:       place
 				message_id: 'hasDescription'
 			}
 		}

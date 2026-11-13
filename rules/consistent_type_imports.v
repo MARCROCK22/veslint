@@ -94,8 +94,20 @@ fn (mut c Checker) lint_consistent_type_imports(root C.TSNode, abs_path string, 
 		// TSImportType
 		for node in c.nodes_of_kind(root, c'import_type') {
 			checked++
+			// The TSImportType has the type arguments: `import('x').A<T>` is a generic_type around
+			// the import_type for tree-sitter.
+			mut whole := node
+			if parent := node_parent(node) {
+				if node_kind(parent) == 'generic_type' {
+					if name := node_field(parent, 'name') {
+						if node_key(name) == node_key(node) {
+							whole = parent
+						}
+					}
+				}
+			}
 			findings << Finding{
-				stmt:       position_of(node)
+				stmt:       c.position_range(node_start(node), c.es_end(whole))
 				message_id: 'noImportTypeAnnotations'
 			}
 		}

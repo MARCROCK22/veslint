@@ -69,7 +69,7 @@ fn (mut c Checker) lint_constructor_super(root C.TSNode, abs_path string, mut st
 					it))
 				if !called_in_every_paths {
 					findings << Finding{
-						stmt:       c.position_at(t.nodes[t.nodes[ev.node].parent].start)
+						stmt:       c.es_tree_position(t, t.nodes[ev.node].parent)
 						message_id: if called_in_some_paths { 'missingSome' } else { 'missingAll' }
 					}
 				}
@@ -139,7 +139,7 @@ fn (mut c Checker) lint_constructor_super(root C.TSNode, abs_path string, mut st
 						infos[segment].valid_nodes = []int{}
 						for node in nodes {
 							findings << Finding{
-								stmt:       c.position_at(t.nodes[node].start)
+								stmt:       c.es_tree_position(t, node)
 								message_id: 'duplicate'
 							}
 						}
@@ -173,12 +173,12 @@ fn (mut c Checker) lint_constructor_super(root C.TSNode, abs_path string, mut st
 				if last >= 0 {
 					if duplicate {
 						findings << Finding{
-							stmt:       c.position_at(t.nodes[ev.node].start)
+							stmt:       c.es_tree_position(t, ev.node)
 							message_id: 'duplicate'
 						}
 					} else if !info.super_is_constructor {
 						findings << Finding{
-							stmt:       c.position_at(t.nodes[ev.node].start)
+							stmt:       c.es_tree_position(t, ev.node)
 							message_id: 'badSuper'
 						}
 					} else {

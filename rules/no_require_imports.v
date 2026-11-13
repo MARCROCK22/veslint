@@ -3,7 +3,7 @@ module rules
 import json2
 import jsregexp
 import time
-import treesitter { children, node_field, node_kind, position_of }
+import treesitter { children, node_end, node_field, node_kind, node_parent, node_start, position_of }
 
 // Port of the `no-require-imports` rule of typescript-eslint 8.62.0, with its options `allow`
 // (patterns of the import paths that may be required, `new RegExp(pattern, 'u')`) and
@@ -54,8 +54,18 @@ fn (mut c Checker) lint_no_require_imports(root C.TSNode, abs_path string, mut s
 			if o.allow_as_import {
 				continue
 			}
+			// The TSExternalModuleReference: `require(…)`, to its `)`.
+			mut end := node_end(keyword[0])
+			if clause := node_parent(keyword[0]) {
+				for child in children(clause) {
+					if node_kind(child) == ')' && node_start(child) >= end {
+						end = node_end(child)
+						break
+					}
+				}
+			}
 			findings << Finding{
-				stmt:       position_of(keyword[0])
+				stmt:       c.position_range(node_start(keyword[0]), end)
 				message_id: 'noRequireImports'
 			}
 			continue

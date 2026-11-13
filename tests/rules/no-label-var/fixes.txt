@@ -1,0 +1,2 @@
+tests/rules/no-label-var/cases.ts:5:1	no-label-var	identifierClashWithLabel	Found identifier with same name as label.	end	7	2
+tests/rules/no-label-var/cases.ts:9:3	no-label-var	identifierClashWithLabel	Found identifier with same name as label.	end	11	4

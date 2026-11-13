@@ -35,7 +35,7 @@ fn (mut c Checker) lint_no_sparse_arrays(root C.TSNode, abs_path string, mut sta
 			after = comma.end
 			if element.hole {
 				findings << Finding{
-					stmt:       c.position_at(comma.start)
+					stmt:       c.position_range(comma.start, comma.end)
 					message_id: 'unexpectedSparseArray'
 				}
 			}

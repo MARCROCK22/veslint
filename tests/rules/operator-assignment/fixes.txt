@@ -1,17 +1,17 @@
-tests/rules/operator-assignment/cases.ts:6:1	operator-assignment	replaced	Assignment (=) can be replaced with operator assignment (+=).	fix	96	105	a += b
-tests/rules/operator-assignment/cases.ts:7:1	operator-assignment	replaced	Assignment (=) can be replaced with operator assignment (-=).	fix	107	116	a -= b
-tests/rules/operator-assignment/cases.ts:8:1	operator-assignment	replaced	Assignment (=) can be replaced with operator assignment (*=).	fix	118	127	a *= b
-tests/rules/operator-assignment/cases.ts:9:1	operator-assignment	replaced	Assignment (=) can be replaced with operator assignment (*=).
-tests/rules/operator-assignment/cases.ts:10:1	operator-assignment	replaced	Assignment (=) can be replaced with operator assignment (**=).	fix	140	150	a **= 2
-tests/rules/operator-assignment/cases.ts:11:1	operator-assignment	replaced	Assignment (=) can be replaced with operator assignment (+=).	fix	152	165	o.p += 1
-tests/rules/operator-assignment/cases.ts:12:1	operator-assignment	replaced	Assignment (=) can be replaced with operator assignment (*=).	fix	167	186	o['q'] *= 2
-tests/rules/operator-assignment/cases.ts:13:1	operator-assignment	replaced	Assignment (=) can be replaced with operator assignment (|=).	fix	188	207	this.x |= 1
-tests/rules/operator-assignment/cases.ts:14:1	operator-assignment	replaced	Assignment (=) can be replaced with operator assignment (+=).
-tests/rules/operator-assignment/cases.ts:15:1	operator-assignment	replaced	Assignment (=) can be replaced with operator assignment (+=).
-tests/rules/operator-assignment/never/cases.ts:6:1	operator-assignment	unexpected	Unexpected operator assignment (+=) shorthand.	fix	95	101	a = a + b
-tests/rules/operator-assignment/never/cases.ts:7:1	operator-assignment	unexpected	Unexpected operator assignment (-=) shorthand.	fix	103	113	a = a - (b + 1)
-tests/rules/operator-assignment/never/cases.ts:8:1	operator-assignment	unexpected	Unexpected operator assignment (*=) shorthand.	fix	115	125	a = a * (b + 1)
-tests/rules/operator-assignment/never/cases.ts:9:1	operator-assignment	unexpected	Unexpected operator assignment (+=) shorthand.	fix	127	135	o.p = o.p + 1
-tests/rules/operator-assignment/never/cases.ts:10:1	operator-assignment	unexpected	Unexpected operator assignment (+=) shorthand.	fix	137	142	a= a+ +b
-tests/rules/operator-assignment/never/cases.ts:11:1	operator-assignment	unexpected	Unexpected operator assignment (**=) shorthand.	fix	144	151	a = a ** 2
-tests/rules/operator-assignment/never/cases.ts:12:1	operator-assignment	unexpected	Unexpected operator assignment (-=) shorthand.
+tests/rules/operator-assignment/cases.ts:6:1	operator-assignment	replaced	Assignment (=) can be replaced with operator assignment (+=).	fix	96	105	a += b	end	6	10
+tests/rules/operator-assignment/cases.ts:7:1	operator-assignment	replaced	Assignment (=) can be replaced with operator assignment (-=).	fix	107	116	a -= b	end	7	10
+tests/rules/operator-assignment/cases.ts:8:1	operator-assignment	replaced	Assignment (=) can be replaced with operator assignment (*=).	fix	118	127	a *= b	end	8	10
+tests/rules/operator-assignment/cases.ts:9:1	operator-assignment	replaced	Assignment (=) can be replaced with operator assignment (*=).	end	9	10
+tests/rules/operator-assignment/cases.ts:10:1	operator-assignment	replaced	Assignment (=) can be replaced with operator assignment (**=).	fix	140	150	a **= 2	end	10	11
+tests/rules/operator-assignment/cases.ts:11:1	operator-assignment	replaced	Assignment (=) can be replaced with operator assignment (+=).	fix	152	165	o.p += 1	end	11	14
+tests/rules/operator-assignment/cases.ts:12:1	operator-assignment	replaced	Assignment (=) can be replaced with operator assignment (*=).	fix	167	186	o['q'] *= 2	end	12	20
+tests/rules/operator-assignment/cases.ts:13:1	operator-assignment	replaced	Assignment (=) can be replaced with operator assignment (|=).	fix	188	207	this.x |= 1	end	13	20
+tests/rules/operator-assignment/cases.ts:14:1	operator-assignment	replaced	Assignment (=) can be replaced with operator assignment (+=).	end	14	18
+tests/rules/operator-assignment/cases.ts:15:1	operator-assignment	replaced	Assignment (=) can be replaced with operator assignment (+=).	end	15	18
+tests/rules/operator-assignment/never/cases.ts:6:1	operator-assignment	unexpected	Unexpected operator assignment (+=) shorthand.	fix	95	101	a = a + b	end	6	7
+tests/rules/operator-assignment/never/cases.ts:7:1	operator-assignment	unexpected	Unexpected operator assignment (-=) shorthand.	fix	103	113	a = a - (b + 1)	end	7	11
+tests/rules/operator-assignment/never/cases.ts:8:1	operator-assignment	unexpected	Unexpected operator assignment (*=) shorthand.	fix	115	125	a = a * (b + 1)	end	8	11
+tests/rules/operator-assignment/never/cases.ts:9:1	operator-assignment	unexpected	Unexpected operator assignment (+=) shorthand.	fix	127	135	o.p = o.p + 1	end	9	9
+tests/rules/operator-assignment/never/cases.ts:10:1	operator-assignment	unexpected	Unexpected operator assignment (+=) shorthand.	fix	137	142	a= a+ +b	end	10	6
+tests/rules/operator-assignment/never/cases.ts:11:1	operator-assignment	unexpected	Unexpected operator assignment (**=) shorthand.	fix	144	151	a = a ** 2	end	11	8
+tests/rules/operator-assignment/never/cases.ts:12:1	operator-assignment	unexpected	Unexpected operator assignment (-=) shorthand.	end	12	11

@@ -81,7 +81,7 @@ fn (mut c Checker) lint_no_unreachable_loop(root C.TSNode, abs_path string, mut 
 	}
 	for loop in loops_to_report {
 		findings << Finding{
-			stmt:       c.position_at(t.nodes[loop].start)
+			stmt:       c.es_tree_position(t, loop)
 			message_id: 'invalid'
 		}
 	}

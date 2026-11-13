@@ -2,7 +2,7 @@ module rules
 
 import json2
 import time
-import treesitter { has_child_kind, node_field, node_kind, node_parent, node_start, position_of }
+import treesitter { Ident, has_child_kind, node_field, node_kind, node_parent, node_start, position_of }
 
 // Port of the `no-inferrable-types` rule of typescript-eslint 8.62.0, with its options
 // `ignoreParameters` and `ignoreProperties`, and its fix.
@@ -42,7 +42,8 @@ fn (mut c Checker) lint_no_inferrable_types(root C.TSNode, abs_path string, mut 
 			'variable_declarator' {
 				// VariableDeclarator: the annotation of its id and its init.
 				checked++
-				c.nit_check(node_start(node), annotation, init, false, mut findings)!
+				c.nit_check(c.position_range(node_start(node), c.es_end(node)), annotation, init, false, mut
+					findings)!
 			}
 			'public_field_definition' {
 				// PropertyDefinition and AccessorProperty (not the abstract ones), neither readonly
@@ -53,7 +54,8 @@ fn (mut c Checker) lint_no_inferrable_types(root C.TSNode, abs_path string, mut 
 				}
 				checked++
 				definite := has_child_kind(node, '!') && !has_child_kind(node, 'accessor')
-				c.nit_check(node_start(node), annotation, init, definite, mut findings)!
+				c.nit_check(c.position_range(node_start(node), c.es_member_end(node)), annotation,
+					init, definite, mut findings)!
 			}
 			else {
 				// A parameter with a default (an AssignmentPattern, also inside a
@@ -68,7 +70,7 @@ fn (mut c Checker) lint_no_inferrable_types(root C.TSNode, abs_path string, mut 
 					continue
 				}
 				checked++
-				c.nit_check(nit_assignment_start(node), annotation, init, node_kind(node) == 'optional_parameter', mut
+				c.nit_check(c.position_range(nit_assignment_start(node), c.es_end(node)), annotation, init, node_kind(node) == 'optional_parameter', mut
 					findings)!
 			}
 		}
@@ -93,7 +95,7 @@ fn nit_assignment_start(parameter C.TSNode) int {
 // nit_check ports reportInferrableType for a type annotation (the TSTypeAnnotation, from its `:`)
 // and an initial value. The fix removes the annotation and, with `remove_before`, the token
 // before it.
-fn (mut c Checker) nit_check(at int, annotation C.TSNode, init_node C.TSNode, remove_before bool, mut findings []Finding) ! {
+fn (mut c Checker) nit_check(at Ident, annotation C.TSNode, init_node C.TSNode, remove_before bool, mut findings []Finding) ! {
 	type_node := unwrap_type_parens(first_named(annotation) or { return })
 	type_name := c.nit_inferrable(type_node, unwrap_parens(init_node)) or { return }
 	mut fixes := []Fix{}
@@ -104,7 +106,7 @@ fn (mut c Checker) nit_check(at int, annotation C.TSNode, init_node C.TSNode, re
 	}
 	fixes << fix_remove(annotation)
 	findings << c.with_fixes(Finding{
-		stmt:       c.position_at(at)
+		stmt:       at
 		message_id: 'noInferrableType'
 		data:       {
 			'type': type_name

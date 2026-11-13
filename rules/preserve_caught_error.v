@@ -110,7 +110,7 @@ fn (mut c Checker) lint_preserve_caught_error(root C.TSNode, abs_path string, mu
 			}
 			// The ESTree value of a method is its FunctionExpression, from its parameters.
 			at := if node_kind(value) == 'method_definition' {
-				c.position_at(ner_function_start(value))
+				c.position_range(ner_function_start(value), c.es_end(value))
 			} else {
 				position_of(value)
 			}

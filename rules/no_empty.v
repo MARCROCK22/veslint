@@ -71,7 +71,7 @@ fn (mut c Checker) lint_no_empty(root C.TSNode, abs_path string, mut stats Stats
 			fix_replace_range(node_start(body) + 1, body_end - 1, ' /* empty */ '),
 		])!
 		findings << Finding{
-			stmt:        c.position_at(node_start(body))
+			stmt:        c.position_range(node_start(body), body_end)
 			message_id:  'unexpected'
 			data:        data
 			suggestions: [suggestion]

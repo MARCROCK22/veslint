@@ -1,0 +1,8 @@
+tests/rules/vars-on-top/cases.ts:9:1	vars-on-top	top	All 'var' declarations must be at the top of the function scope.	end	9	18
+tests/rules/vars-on-top/cases.ts:16:5	vars-on-top	top	All 'var' declarations must be at the top of the function scope.	end	16	15
+tests/rules/vars-on-top/cases.ts:18:8	vars-on-top	top	All 'var' declarations must be at the top of the function scope.	end	18	17
+tests/rules/vars-on-top/cases.ts:19:8	vars-on-top	top	All 'var' declarations must be at the top of the function scope.	end	19	13
+tests/rules/vars-on-top/cases.ts:27:3	vars-on-top	top	All 'var' declarations must be at the top of the function scope.	end	27	13
+tests/rules/vars-on-top/cases.ts:35:5	vars-on-top	top	All 'var' declarations must be at the top of the function scope.	end	35	15
+tests/rules/vars-on-top/cases.ts:44:3	vars-on-top	top	All 'var' declarations must be at the top of the function scope.	end	44	13
+tests/rules/vars-on-top/cases.ts:49:3	vars-on-top	top	All 'var' declarations must be at the top of the function scope.	end	49	25

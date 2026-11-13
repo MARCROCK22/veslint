@@ -65,7 +65,7 @@ fn (mut c Checker) lint_func_name_matching(root C.TSNode, abs_path string, mut s
 				}
 				func_name := c.text(es_function_id(function) or { continue })
 				if fnm_should_warn(o, c.text(id), func_name) {
-					fnm_report(o, node, c.text(id), func_name, false, mut findings)
+					c.fnm_report(o, node, c.text(id), func_name, false, mut findings)
 				}
 			}
 			'assignment_expression', 'augmented_assignment_expression' {
@@ -93,7 +93,7 @@ fn (mut c Checker) lint_func_name_matching(root C.TSNode, abs_path string, mut s
 				// isIdentifier(name) is called without the ecmaVersion: ES5's rules.
 				if name != '' && fnm_is_identifier(name, true)
 					&& fnm_should_warn(o, name, c.text(id)) {
-					fnm_report(o, node, name, c.text(id), is_prop, mut findings)
+					c.fnm_report(o, node, name, c.text(id), is_prop, mut findings)
 				}
 			}
 			else {
@@ -120,7 +120,7 @@ fn fnm_should_warn(o FnmOptions, x string, y string) bool {
 	return (o.always && x != y) || (!o.always && x == y)
 }
 
-fn fnm_report(o FnmOptions, node C.TSNode, name string, func_name string, is_prop bool, mut findings []Finding) {
+fn (mut c Checker) fnm_report(o FnmOptions, node C.TSNode, name string, func_name string, is_prop bool, mut findings []Finding) {
 	message_id := if o.always && is_prop {
 		'matchProperty'
 	} else if o.always {
@@ -131,7 +131,12 @@ fn fnm_report(o FnmOptions, node C.TSNode, name string, func_name string, is_pro
 		'notMatchVariable'
 	}
 	findings << Finding{
-		stmt:       position_of(node)
+		// A field (PropertyDefinition) ends after its `;`.
+		stmt:       if node_kind(node) == 'public_field_definition' {
+			c.es_member_position(node)
+		} else {
+			position_of(node)
+		}
 		message_id: message_id
 		data:       {
 			'name':     name
@@ -198,7 +203,7 @@ fn (mut c Checker) fnm_property(root C.TSNode, o FnmOptions, node C.TSNode, mut 
 					if node_kind(property) == 'string' {
 						value := c.literal_name(property) or { return }
 						if fnm_should_warn(o, value, func_name) {
-							fnm_report(o, node, value, func_name, true, mut findings)
+							c.fnm_report(o, node, value, func_name, true, mut findings)
 						}
 					}
 				}
@@ -219,20 +224,20 @@ fn (mut c Checker) fnm_property(root C.TSNode, o FnmOptions, node C.TSNode, mut 
 					'undefined'
 				}
 				if !outer_computed && fnm_should_warn(o, name, func_name) {
-					fnm_report(o, node, name, func_name, true, mut findings)
+					c.fnm_report(o, node, name, func_name, true, mut findings)
 				}
 				return
 			}
 		}
 		if fnm_should_warn(o, property_name, func_name) {
-			fnm_report(o, node, property_name, func_name, true, mut findings)
+			c.fnm_report(o, node, property_name, func_name, true, mut findings)
 		}
 		return
 	}
 	if node_kind(key) == 'string' {
 		value := c.literal_name(key) or { return }
 		if fnm_is_identifier(value, c.ecma_version < 2015) && fnm_should_warn(o, value, func_name) {
-			fnm_report(o, node, value, func_name, true, mut findings)
+			c.fnm_report(o, node, value, func_name, true, mut findings)
 		}
 	}
 }

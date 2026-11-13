@@ -1,0 +1,13 @@
+tests/rules/no-dupe-else-if/cases.ts:7:20	no-dupe-else-if	unexpected	This branch can never execute. Its condition is a duplicate or covered by previous conditions in the if-else-if chain.	end	7	21
+tests/rules/no-dupe-else-if/cases.ts:8:47	no-dupe-else-if	unexpected	This branch can never execute. Its condition is a duplicate or covered by previous conditions in the if-else-if chain.	end	8	54
+tests/rules/no-dupe-else-if/cases.ts:9:24	no-dupe-else-if	unexpected	This branch can never execute. Its condition is a duplicate or covered by previous conditions in the if-else-if chain.	end	9	28
+tests/rules/no-dupe-else-if/cases.ts:10:44	no-dupe-else-if	unexpected	This branch can never execute. Its condition is a duplicate or covered by previous conditions in the if-else-if chain.	end	10	45
+tests/rules/no-dupe-else-if/cases.ts:11:24	no-dupe-else-if	unexpected	This branch can never execute. Its condition is a duplicate or covered by previous conditions in the if-else-if chain.	end	11	43
+tests/rules/no-dupe-else-if/cases.ts:14:25	no-dupe-else-if	unexpected	This branch can never execute. Its condition is a duplicate or covered by previous conditions in the if-else-if chain.	end	14	26
+tests/rules/no-dupe-else-if/cases.ts:15:35	no-dupe-else-if	unexpected	This branch can never execute. Its condition is a duplicate or covered by previous conditions in the if-else-if chain.	end	15	41
+tests/rules/no-dupe-else-if/cases.ts:16:25	no-dupe-else-if	unexpected	This branch can never execute. Its condition is a duplicate or covered by previous conditions in the if-else-if chain.	end	16	36
+tests/rules/no-dupe-else-if/cases.ts:17:20	no-dupe-else-if	unexpected	This branch can never execute. Its condition is a duplicate or covered by previous conditions in the if-else-if chain.	end	17	26
+tests/rules/no-dupe-else-if/cases.ts:18:25	no-dupe-else-if	unexpected	This branch can never execute. Its condition is a duplicate or covered by previous conditions in the if-else-if chain.	end	18	31
+tests/rules/no-dupe-else-if/cases.ts:19:32	no-dupe-else-if	unexpected	This branch can never execute. Its condition is a duplicate or covered by previous conditions in the if-else-if chain.	end	19	45
+tests/rules/no-dupe-else-if/cases.ts:31:40	no-dupe-else-if	unexpected	This branch can never execute. Its condition is a duplicate or covered by previous conditions in the if-else-if chain.	end	31	61
+tests/rules/no-dupe-else-if/cases.ts:32:39	no-dupe-else-if	unexpected	This branch can never execute. Its condition is a duplicate or covered by previous conditions in the if-else-if chain.	end	32	59

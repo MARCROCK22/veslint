@@ -307,7 +307,7 @@ fn (mut c Checker) nuas_verify(t &estree.EsTree, an &codepath.Analysis, scopes &
 		for assignment in assignments {
 			if c.nuas_is_unused(t, an, scopes, starts, target, assignment, assignments) {
 				findings << Finding{
-					stmt:       c.position_at(t.nodes[assignment.identifier].start)
+					stmt:       c.es_tree_position(t, assignment.identifier)
 					message_id: 'unnecessaryAssignment'
 					data:       {
 						'name': t.string_of(assignment.identifier, .name) or { '' }

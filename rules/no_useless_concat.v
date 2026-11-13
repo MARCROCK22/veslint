@@ -40,7 +40,7 @@ fn (mut c Checker) lint_no_useless_concat(root C.TSNode, abs_path string, mut st
 			operator = tokens.after(operator.end, false) or { break }
 		}
 		findings << Finding{
-			stmt:       c.position_at(operator.start)
+			stmt:       c.position_range(operator.start, operator.end)
 			message_id: 'unexpectedConcat'
 		}
 	}

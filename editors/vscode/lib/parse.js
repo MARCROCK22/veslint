@@ -1,9 +1,10 @@
 'use strict';
 // The output of `veslint --fixes`: one line per problem, with TAB-separated fields:
 //
-//   path:line:col  rule  messageId  message  [fix  start  end  text]  [suggestion  messageId  message  start  end  text]...
+//   path:line:col  rule  messageId  message  [fix  start  end  text]  [suggestion  messageId  message  start  end  text]...  [end  line  col]
 //
-// Lines and columns start at 1 and columns count UTF-16 units, like ESLint's; the ranges of fixes
+// Lines and columns start at 1 and columns count UTF-16 units, like ESLint's (`end` is where the
+// problem ends, ESLint's endLine and endColumn, when it has one); the ranges of fixes
 // and suggestions are offsets in UTF-16 units from the start of the text (without the BOM). In a
 // message or a text, a backslash, a line feed, a carriage return and a tab are written `\\`, `\n`,
 // `\r` and `\t`. A problem that is not of a rule (a directive comment, a parse error) has the rule
@@ -32,6 +33,8 @@ function parseLine(line) {
     message: unescapeField(fields[3]),
     fix: null,
     suggestions: [],
+    endLine: null,
+    endColumn: null,
   };
   let i = 4;
   while (i < fields.length) {
@@ -47,6 +50,10 @@ function parseLine(line) {
         text: unescapeField(fields[i + 5]),
       });
       i += 6;
+    } else if (fields[i] === 'end' && i + 2 < fields.length) {
+      problem.endLine = Number(fields[i + 1]);
+      problem.endColumn = Number(fields[i + 2]);
+      i += 3;
     } else {
       // A field this version does not know: the problem is still a problem.
       break;

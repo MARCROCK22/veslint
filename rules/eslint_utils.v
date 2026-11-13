@@ -1,7 +1,7 @@
 module rules
 
 import jsregexp
-import treesitter { Ident, children, named_children, node_end, node_field, node_kind, node_parent, node_start, position_of }
+import treesitter { Ident, children, named_children, next_sibling, node_end, node_field, node_kind, node_parent, node_start, position_of }
 
 // Ports of the helpers of ESLint 10.6.0's lib/rules/utils/ast-utils.js that the rules of ESLint
 // core use. A tree-sitter node stands for the ESTree node it is without its parentheses, which
@@ -242,6 +242,52 @@ fn (c &Checker) es_end(n C.TSNode) int {
 	return c.tokens.last_end(node_end(n))
 }
 
+// es_binding_end is where the ESTree node of a binding name or pattern ends: typescript-estree
+// puts its type annotation in it (`x: T` as a declarator's id, a parameter, a catch clause's
+// parameter), and the `?` of an optional parameter.
+fn (c &Checker) es_binding_end(n C.TSNode) int {
+	parent := node_parent(n) or { return c.es_end(n) }
+	field := match node_kind(parent) {
+		'required_parameter', 'optional_parameter' { 'pattern' }
+		'variable_declarator' { 'name' }
+		'catch_clause' { 'parameter' }
+		else { return c.es_end(n) }
+	}
+	binding := node_field(parent, field) or { return c.es_end(n) }
+	if node_key(binding) != node_key(n) {
+		return c.es_end(n)
+	}
+	if typ := node_field(parent, 'type') {
+		return c.es_end(typ)
+	}
+	return c.es_end(n)
+}
+
+// es_binding_position is the place of a report on a binding name or pattern (es_binding_end).
+fn (c &Checker) es_binding_position(n C.TSNode) Ident {
+	return c.position_range(node_start(n), c.es_binding_end(n))
+}
+
+// es_declaration_position is the place of a report on a VariableDeclaration: in the head of a
+// `for`, it ends before the `;` tree-sitter puts in it, and in `for (var a in b)`, where
+// tree-sitter has no node for it, it goes from `var` to the end of the name.
+fn (c &Checker) es_declaration_position(n C.TSNode) Ident {
+	if node_kind(n) == 'for_in_statement' {
+		kind := node_field(n, 'kind') or { return position_of(n) }
+		left := node_field(n, 'left') or { return position_of(kind) }
+		return c.position_range(node_start(kind), c.es_end(left))
+	}
+	mut end := c.es_end(n)
+	if end > node_start(n) && c.src[end - 1] == `;` {
+		if parent := node_parent(n) {
+			if node_kind(parent) == 'for_statement' {
+				end = c.tokens.last_end(end - 1)
+			}
+		}
+	}
+	return c.position_range(node_start(n), end)
+}
+
 // es_text ports sourceCode.getText(node): the text of the node without a trailing comment.
 fn (c &Checker) es_text(n C.TSNode) string {
 	return c.src[node_start(n)..c.es_end(n)]
@@ -475,6 +521,61 @@ fn (mut c Checker) es_is_parenthesised(n C.TSNode) bool {
 	return c.src[before.start..before.end] == '(' && c.src[after.start..after.end] == ')'
 }
 
+// es_for_head_position ports typescript-eslint's getForStatementHeadLoc: from the start of the
+// loop to the end of the `)` before its body.
+fn (mut c Checker) es_for_head_position(loop C.TSNode) Ident {
+	body := node_field(loop, 'body') or { return position_of(loop) }
+	tokens := c.source_tokens(loop)
+	mut at := node_start(body)
+	for {
+		token := tokens.before(at, false) or { break }
+		if token.start < node_start(loop) {
+			break
+		}
+		if c.src[token.start..token.end] == ')' {
+			return c.position_range(node_start(loop), token.end)
+		}
+		at = token.start
+	}
+	return position_of(loop)
+}
+
+// es_member_end is where the ESTree node of a member ends: a class member as cm_end gives it
+// (after the `;` of a field, an overload or an abstract member), and a member of an interface or
+// a type literal after its `;` or `,`, which TypeScript puts in the member.
+fn (mut c Checker) es_member_end(member C.TSNode) int {
+	parent := node_parent(member) or { return c.es_end(member) }
+	match node_kind(parent) {
+		'class_body' {
+			return c.cm_end(member)
+		}
+		'interface_body', 'object_type' {
+			mut node := member
+			for {
+				node = next_sibling(node) or { break }
+				kind := node_kind(node)
+				if kind == 'comment' {
+					continue
+				}
+				if kind in [';', ','] && node_end(node) > node_start(node) {
+					return node_end(node)
+				}
+				break
+			}
+			return c.es_end(member)
+		}
+		else {
+			return c.es_end(member)
+		}
+	}
+}
+
+// es_member_position is the place of a report on a class member, its decorators and its `;`
+// included.
+fn (mut c Checker) es_member_position(member C.TSNode) Ident {
+	return c.position_range(es_member_start(member), c.es_member_end(member))
+}
+
 // es_member_start is where an ESTree class member starts: at its first decorator (tree-sitter
 // puts the decorators of a method before it, in the class body).
 fn es_member_start(member C.TSNode) int {
@@ -502,19 +603,19 @@ fn es_is_accessor_field(n C.TSNode) bool {
 	return node_kind(n) == 'public_field_definition' && children(n).any(node_kind(it) == 'accessor')
 }
 
-// es_function_head ports the start of getFunctionHeadLoc of ESLint's ast-utils: the Property,
+// es_function_head ports getFunctionHeadLoc of ESLint's ast-utils: from the Property,
 // MethodDefinition or PropertyDefinition the function is the value of (its decorators included),
-// the `=>` of another arrow, or the start of the function.
-fn (c &Checker) es_function_head(f C.TSNode) Ident {
+// or from the function, to the opening paren of its parameters; or the `=>` of another arrow.
+fn (mut c Checker) es_function_head(f C.TSNode) Ident {
 	if node_kind(f) == 'method_definition' {
-		return c.position_at(es_member_start(f))
+		return c.position_range(es_member_start(f), c.es_params_paren(f))
 	}
 	if parent := cti_estree_parent(f) {
 		kind := node_kind(parent)
 		if kind == 'pair' || (kind == 'public_field_definition' && !es_is_accessor_field(parent)) {
 			if value := node_field(parent, 'value') {
 				if node_key(unwrap_parens(value)) == node_key(f) {
-					return c.position_at(node_start(parent))
+					return c.position_range(node_start(parent), c.es_params_paren(f))
 				}
 			}
 		}
@@ -522,11 +623,44 @@ fn (c &Checker) es_function_head(f C.TSNode) Ident {
 	if node_kind(f) == 'arrow_function' {
 		for child in children(f) {
 			if node_kind(child) == '=>' {
-				return c.position_at(node_start(child))
+				return c.position_range(node_start(child), node_end(child))
 			}
 		}
 	}
-	return c.position_at(node_start(f))
+	return c.position_range(node_start(f), c.es_params_paren(f))
+}
+
+// es_params_paren ports the start of getOpeningParenOfParams: for an arrow function with a single
+// parameter, the `(` before it or the parameter itself; otherwise the first `(` after the name of
+// the function, or in the function.
+fn (mut c Checker) es_params_paren(f C.TSNode) int {
+	tokens := c.source_tokens(f)
+	if node_kind(f) == 'arrow_function' {
+		if param := node_field(f, 'parameter') {
+			return node_start(param)
+		}
+		if params := node_field(f, 'parameters') {
+			if named_children(params).filter(node_kind(it) != 'comment').len == 1 {
+				// A single parameter: the `(` before it, as the token before the parameter is.
+				return node_start(params)
+			}
+		}
+	}
+	mut at := node_start(f)
+	if name := node_field(f, 'name') {
+		at = node_end(name)
+	}
+	for {
+		token := tokens.after(at, false) or { break }
+		if token.start >= node_end(f) {
+			break
+		}
+		if c.src[token.start..token.end] == '(' {
+			return token.start
+		}
+		at = token.end
+	}
+	return node_start(f)
 }
 
 // es_is_parenthesised_twice: two pairs of parentheses around the node (the token before the one

@@ -427,7 +427,7 @@ fn ndep_call_kind(call C.TSNode) u32 {
 // `super`) and the position of the reported node.
 fn (c &Checker) ndep_reported_name(chk NdepCheck) (string, string, Ident) {
 	if chk.meta_name {
-		return 'target', 'target', c.position_at(node_end(chk.node) - 'target'.len)
+		return 'target', 'target', c.position_range(node_end(chk.node) - 'target'.len, node_end(chk.node))
 	}
 	match node_kind(chk.node) {
 		'super' {
@@ -442,7 +442,8 @@ fn (c &Checker) ndep_reported_name(chk NdepCheck) (string, string, Ident) {
 		}
 		else {
 			name := c.identifier_name(chk.node)
-			return name, name, position_of(chk.node)
+			// A parameter or a declarator's name has its type annotation in ESTree.
+			return name, name, c.es_binding_position(chk.node)
 		}
 	}
 }

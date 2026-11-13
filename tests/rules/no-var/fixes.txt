@@ -1,19 +1,19 @@
-tests/rules/no-var/cases.ts:2:1	no-var	unexpectedVar	Unexpected var, use let or const instead.	fix	32	35	let
-tests/rules/no-var/cases.ts:4:3	no-var	unexpectedVar	Unexpected var, use let or const instead.	fix	60	63	let
-tests/rules/no-var/cases.ts:5:8	no-var	unexpectedVar	Unexpected var, use let or const instead.	fix	78	81	let
-tests/rules/no-var/cases.ts:6:8	no-var	unexpectedVar	Unexpected var, use let or const instead.	fix	111	114	let
-tests/rules/no-var/cases.ts:9:8	no-var	unexpectedVar	Unexpected var, use let or const instead.	fix	157	160	let
-tests/rules/no-var/cases.ts:17:13	no-var	unexpectedVar	Unexpected var, use let or const instead.
-tests/rules/no-var/cases.ts:20:7	no-var	unexpectedVar	Unexpected var, use let or const instead.
-tests/rules/no-var/cases.ts:22:3	no-var	unexpectedVar	Unexpected var, use let or const instead.
-tests/rules/no-var/cases.ts:24:3	no-var	unexpectedVar	Unexpected var, use let or const instead.
-tests/rules/no-var/cases.ts:25:3	no-var	unexpectedVar	Unexpected var, use let or const instead.
-tests/rules/no-var/cases.ts:26:3	no-var	unexpectedVar	Unexpected var, use let or const instead.
-tests/rules/no-var/cases.ts:27:3	no-var	unexpectedVar	Unexpected var, use let or const instead.
-tests/rules/no-var/cases.ts:28:3	no-var	unexpectedVar	Unexpected var, use let or const instead.	fix	442	445	let
-tests/rules/no-var/cases.ts:30:5	no-var	unexpectedVar	Unexpected var, use let or const instead.
-tests/rules/no-var/cases.ts:34:6	no-var	unexpectedVar	Unexpected var, use let or const instead.
-tests/rules/no-var/cases.ts:38:3	no-var	unexpectedVar	Unexpected var, use let or const instead.
-tests/rules/no-var/cases.ts:40:1	no-var	unexpectedVar	Unexpected var, use let or const instead.	fix	609	612	let
-tests/rules/no-var/cases.ts:41:8	no-var	unexpectedVar	Unexpected var, use let or const instead.
-tests/rules/no-var/cases.ts:43:3	no-var	unexpectedVar	Unexpected var, use let or const instead.	fix	658	661	let
+tests/rules/no-var/cases.ts:2:1	no-var	unexpectedVar	Unexpected var, use let or const instead.	fix	32	35	let	end	2	11
+tests/rules/no-var/cases.ts:4:3	no-var	unexpectedVar	Unexpected var, use let or const instead.	fix	60	63	let	end	4	13
+tests/rules/no-var/cases.ts:5:8	no-var	unexpectedVar	Unexpected var, use let or const instead.	fix	78	81	let	end	5	17
+tests/rules/no-var/cases.ts:6:8	no-var	unexpectedVar	Unexpected var, use let or const instead.	fix	111	114	let	end	6	13
+tests/rules/no-var/cases.ts:9:8	no-var	unexpectedVar	Unexpected var, use let or const instead.	fix	157	160	let	end	9	13
+tests/rules/no-var/cases.ts:17:13	no-var	unexpectedVar	Unexpected var, use let or const instead.	end	17	23
+tests/rules/no-var/cases.ts:20:7	no-var	unexpectedVar	Unexpected var, use let or const instead.	end	20	17
+tests/rules/no-var/cases.ts:22:3	no-var	unexpectedVar	Unexpected var, use let or const instead.	end	22	13
+tests/rules/no-var/cases.ts:24:3	no-var	unexpectedVar	Unexpected var, use let or const instead.	end	24	13
+tests/rules/no-var/cases.ts:25:3	no-var	unexpectedVar	Unexpected var, use let or const instead.	end	25	13
+tests/rules/no-var/cases.ts:26:3	no-var	unexpectedVar	Unexpected var, use let or const instead.	end	26	13
+tests/rules/no-var/cases.ts:27:3	no-var	unexpectedVar	Unexpected var, use let or const instead.	end	27	28
+tests/rules/no-var/cases.ts:28:3	no-var	unexpectedVar	Unexpected var, use let or const instead.	fix	442	445	let	end	28	16
+tests/rules/no-var/cases.ts:30:5	no-var	unexpectedVar	Unexpected var, use let or const instead.	end	30	19
+tests/rules/no-var/cases.ts:34:6	no-var	unexpectedVar	Unexpected var, use let or const instead.	end	34	15
+tests/rules/no-var/cases.ts:38:3	no-var	unexpectedVar	Unexpected var, use let or const instead.	end	38	14
+tests/rules/no-var/cases.ts:40:1	no-var	unexpectedVar	Unexpected var, use let or const instead.	fix	609	612	let	end	40	23
+tests/rules/no-var/cases.ts:41:8	no-var	unexpectedVar	Unexpected var, use let or const instead.	end	41	18
+tests/rules/no-var/cases.ts:43:3	no-var	unexpectedVar	Unexpected var, use let or const instead.	fix	658	661	let	end	43	13
