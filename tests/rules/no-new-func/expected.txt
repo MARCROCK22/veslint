@@ -1,0 +1,6 @@
+tests/rules/no-new-func/cases.ts:2:11	no-new-func	noFunctionConstructor	The Function constructor is eval.
+tests/rules/no-new-func/cases.ts:3:11	no-new-func	noFunctionConstructor	The Function constructor is eval.
+tests/rules/no-new-func/cases.ts:4:11	no-new-func	noFunctionConstructor	The Function constructor is eval.
+tests/rules/no-new-func/cases.ts:5:11	no-new-func	noFunctionConstructor	The Function constructor is eval.
+tests/rules/no-new-func/cases.ts:6:11	no-new-func	noFunctionConstructor	The Function constructor is eval.
+tests/rules/no-new-func/cases.ts:7:11	no-new-func	noFunctionConstructor	The Function constructor is eval.

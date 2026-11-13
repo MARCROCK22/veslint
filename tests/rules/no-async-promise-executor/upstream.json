@@ -1,0 +1,15 @@
+{"rule": "no-async-promise-executor", "upstream": "eslint v10.6.0", "files": ["tests/lib/rules/no-async-promise-executor.js"],
+"messages": {"async":"Promise executor functions should not be async."},
+"cases": [
+{"id":"no-async-promise-executor/v0","kind":"valid","code":"new Promise((resolve, reject) => {})","file":"file.ts","tsconfig":null,"languageOptions":{"ecmaVersion":8}},
+{"id":"no-async-promise-executor/v1","kind":"valid","code":"new Promise((resolve, reject) => {}, async function unrelated() {})","file":"file.ts","tsconfig":null,"languageOptions":{"ecmaVersion":8}},
+{"id":"no-async-promise-executor/v2","kind":"valid","code":"new Foo(async (resolve, reject) => {})","file":"file.ts","tsconfig":null,"languageOptions":{"ecmaVersion":8}},
+{"id":"no-async-promise-executor/v3","kind":"valid","code":"/* global Promise:off */ new Promise(async (resolve, reject) => {})","file":"file.ts","tsconfig":null,"languageOptions":{"ecmaVersion":8}},
+{"id":"no-async-promise-executor/v4","kind":"valid","code":"new Promise(async (resolve, reject) => {})","file":"file.ts","tsconfig":null,"languageOptions":{"ecmaVersion":8,"globals":{"Promise":"off"}}},
+{"id":"no-async-promise-executor/v5","kind":"valid","code":"let Promise; new Promise(async (resolve, reject) => {})","file":"file.ts","tsconfig":null,"languageOptions":{"ecmaVersion":8}},
+{"id":"no-async-promise-executor/v6","kind":"valid","code":"function f() { new Promise(async (resolve, reject) => {}); var Promise; }","file":"file.ts","tsconfig":null,"languageOptions":{"ecmaVersion":8}},
+{"id":"no-async-promise-executor/v7","kind":"valid","code":"function f(Promise) { new Promise(async (resolve, reject) => {}); }","file":"file.ts","tsconfig":null,"languageOptions":{"ecmaVersion":8}},
+{"id":"no-async-promise-executor/i0","kind":"invalid","code":"new Promise(async function foo(resolve, reject) {})","file":"file.ts","tsconfig":null,"languageOptions":{"ecmaVersion":8},"errors":[{"messageId":"async","line":1,"column":13,"endLine":1,"endColumn":18}]},
+{"id":"no-async-promise-executor/i1","kind":"invalid","code":"new Promise(async (resolve, reject) => {})","file":"file.ts","tsconfig":null,"languageOptions":{"ecmaVersion":8},"errors":[{"messageId":"async","line":1,"column":13,"endLine":1,"endColumn":18}]},
+{"id":"no-async-promise-executor/i2","kind":"invalid","code":"new Promise(((((async () => {})))))","file":"file.ts","tsconfig":null,"languageOptions":{"ecmaVersion":8},"errors":[{"messageId":"async","line":1,"column":17,"endLine":1,"endColumn":22}]}
+]}

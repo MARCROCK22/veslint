@@ -1,0 +1,12 @@
+{"rule": "symbol-description", "upstream": "eslint v10.6.0", "files": ["tests/lib/rules/symbol-description.js"],
+"messages": {"expected":"Expected Symbol to have a description."},
+"cases": [
+{"id":"symbol-description/v0","kind":"valid","code":"Symbol(\"Foo\");","file":"file.ts","tsconfig":null,"languageOptions":{"ecmaVersion":6,"sourceType":"script"}},
+{"id":"symbol-description/v1","kind":"valid","code":"var foo = \"foo\"; Symbol(foo);","file":"file.ts","tsconfig":null,"languageOptions":{"ecmaVersion":6,"sourceType":"script"}},
+{"id":"symbol-description/v2","kind":"valid","code":"var Symbol = function () {}; Symbol();","file":"file.ts","tsconfig":null,"languageOptions":{"ecmaVersion":6,"sourceType":"script"}},
+{"id":"symbol-description/v3","kind":"valid","code":"Symbol(); var Symbol = function () {};","file":"file.ts","tsconfig":null,"languageOptions":{"ecmaVersion":6,"sourceType":"script"}},
+{"id":"symbol-description/v4","kind":"valid","code":"function bar() { var Symbol = function () {}; Symbol(); }","file":"file.ts","tsconfig":null,"languageOptions":{"ecmaVersion":6,"sourceType":"script"}},
+{"id":"symbol-description/v5","kind":"valid","code":"function bar(Symbol) { Symbol(); }","file":"file.ts","tsconfig":null,"languageOptions":{"ecmaVersion":6,"sourceType":"script"}},
+{"id":"symbol-description/i0","kind":"invalid","code":"Symbol();","file":"file.ts","tsconfig":null,"languageOptions":{"ecmaVersion":6,"sourceType":"script"},"errors":[{"messageId":"expected"}]},
+{"id":"symbol-description/i1","kind":"invalid","code":"Symbol(); Symbol = function () {};","file":"file.ts","tsconfig":null,"languageOptions":{"ecmaVersion":6,"sourceType":"script"},"errors":[{"messageId":"expected"}]}
+]}

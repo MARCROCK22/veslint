@@ -214,3 +214,34 @@ eslint	prefer-template/i28	typescript-eslint's parser: Escape sequence '\8' is n
 eslint	prefer-template/i29	typescript-eslint's parser: Octal escape sequences are not allowed. Use the syntax '\x1b'.
 eslint	prefer-template/i30	typescript-eslint's parser: Octal escape sequences are not allowed. Use the syntax '\x01'.
 eslint	prefer-template/i31	typescript-eslint's parser: Octal escape sequences are not allowed. Use the syntax '\x00'.
+# ESLint with typescript-eslint's scope manager: the globals of TypeScript's lib are there even when
+# the ecmaVersion does not have them or `globals` turns them off, and the rule reports as for any
+# builtin; the test expects otherwise.
+eslint	no-new-wrappers/v5	typescript-eslint's lib declares the global, which `off` or the ecmaVersion does not remove
+veslint	no-new-wrappers/v5	typescript-eslint's lib declares the global, which `off` or the ecmaVersion does not remove
+eslint	no-new-wrappers/v6	typescript-eslint's lib declares the global, which `off` or the ecmaVersion does not remove
+veslint	no-new-wrappers/v6	typescript-eslint's lib declares the global, which `off` or the ecmaVersion does not remove
+eslint	no-obj-calls/v36	typescript-eslint's lib declares the global, which `off` or the ecmaVersion does not remove
+veslint	no-obj-calls/v36	typescript-eslint's lib declares the global, which `off` or the ecmaVersion does not remove
+eslint	no-obj-calls/v38	typescript-eslint's lib declares the global, which `off` or the ecmaVersion does not remove
+veslint	no-obj-calls/v38	typescript-eslint's lib declares the global, which `off` or the ecmaVersion does not remove
+eslint	no-obj-calls/v41	typescript-eslint's lib declares the global, which `off` or the ecmaVersion does not remove
+veslint	no-obj-calls/v41	typescript-eslint's lib declares the global, which `off` or the ecmaVersion does not remove
+eslint	no-obj-calls/v42	typescript-eslint's lib declares the global, which `off` or the ecmaVersion does not remove
+veslint	no-obj-calls/v42	typescript-eslint's lib declares the global, which `off` or the ecmaVersion does not remove
+eslint	no-obj-calls/v43	typescript-eslint's lib declares the global, which `off` or the ecmaVersion does not remove
+veslint	no-obj-calls/v43	typescript-eslint's lib declares the global, which `off` or the ecmaVersion does not remove
+eslint	no-obj-calls/v44	typescript-eslint's lib declares the global, which `off` or the ecmaVersion does not remove
+veslint	no-obj-calls/v44	typescript-eslint's lib declares the global, which `off` or the ecmaVersion does not remove
+eslint	no-object-constructor/v5	typescript-eslint's lib declares the global, which `off` or the ecmaVersion does not remove
+veslint	no-object-constructor/v5	typescript-eslint's lib declares the global, which `off` or the ecmaVersion does not remove
+# A global of the lib that `off` (in a comment or in `globals`) or the ecmaVersion leaves out: ESLint
+# does not resolve its references there, veslint resolves them to the lib's variable.
+veslint	no-obj-calls/v32	veslint resolves the global to TypeScript's lib, where ESLint leaves the reference unresolved
+veslint	no-obj-calls/v33	veslint resolves the global to TypeScript's lib, where ESLint leaves the reference unresolved
+veslint	no-obj-calls/v34	veslint resolves the global to TypeScript's lib, where ESLint leaves the reference unresolved
+veslint	no-obj-calls/v35	veslint resolves the global to TypeScript's lib, where ESLint leaves the reference unresolved
+veslint	no-obj-calls/v37	veslint resolves the global to TypeScript's lib, where ESLint leaves the reference unresolved
+veslint	no-obj-calls/v39	veslint resolves the global to TypeScript's lib, where ESLint leaves the reference unresolved
+veslint	no-obj-calls/v40	veslint resolves the global to TypeScript's lib, where ESLint leaves the reference unresolved
+veslint	radix/v18	veslint resolves the global to TypeScript's lib, where ESLint leaves the reference unresolved

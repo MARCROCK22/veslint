@@ -1,0 +1,15 @@
+{"rule": "prefer-rest-params", "upstream": "eslint v10.6.0", "files": ["tests/lib/rules/prefer-rest-params.js"],
+"messages": {"preferRestParams":"Use the rest parameters instead of 'arguments'."},
+"cases": [
+{"id":"prefer-rest-params/v0","kind":"valid","code":"arguments;","file":"file.ts","tsconfig":null,"languageOptions":{"ecmaVersion":6,"sourceType":"script"}},
+{"id":"prefer-rest-params/v1","kind":"valid","code":"function foo(arguments) { arguments; }","file":"file.ts","tsconfig":null,"languageOptions":{"ecmaVersion":6,"sourceType":"script"}},
+{"id":"prefer-rest-params/v2","kind":"valid","code":"function foo() { var arguments; arguments; }","file":"file.ts","tsconfig":null,"languageOptions":{"ecmaVersion":6,"sourceType":"script"}},
+{"id":"prefer-rest-params/v3","kind":"valid","code":"var foo = () => arguments;","file":"file.ts","tsconfig":null,"languageOptions":{"ecmaVersion":6,"sourceType":"script"}},
+{"id":"prefer-rest-params/v4","kind":"valid","code":"function foo(...args) { args; }","file":"file.ts","tsconfig":null,"languageOptions":{"ecmaVersion":6,"sourceType":"script"}},
+{"id":"prefer-rest-params/v5","kind":"valid","code":"function foo() { arguments.length; }","file":"file.ts","tsconfig":null,"languageOptions":{"ecmaVersion":6,"sourceType":"script"}},
+{"id":"prefer-rest-params/v6","kind":"valid","code":"function foo() { arguments.callee; }","file":"file.ts","tsconfig":null,"languageOptions":{"ecmaVersion":6,"sourceType":"script"}},
+{"id":"prefer-rest-params/i0","kind":"invalid","code":"function foo() { arguments; }","file":"file.ts","tsconfig":null,"languageOptions":{"ecmaVersion":6,"sourceType":"script"},"errors":[{"messageId":"preferRestParams"}]},
+{"id":"prefer-rest-params/i1","kind":"invalid","code":"function foo() { arguments[0]; }","file":"file.ts","tsconfig":null,"languageOptions":{"ecmaVersion":6,"sourceType":"script"},"errors":[{"messageId":"preferRestParams"}]},
+{"id":"prefer-rest-params/i2","kind":"invalid","code":"function foo() { arguments[1]; }","file":"file.ts","tsconfig":null,"languageOptions":{"ecmaVersion":6,"sourceType":"script"},"errors":[{"messageId":"preferRestParams"}]},
+{"id":"prefer-rest-params/i3","kind":"invalid","code":"function foo() { arguments[Symbol.iterator]; }","file":"file.ts","tsconfig":null,"languageOptions":{"ecmaVersion":6,"sourceType":"script"},"errors":[{"messageId":"preferRestParams"}]}
+]}

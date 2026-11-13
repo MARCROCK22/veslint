@@ -98,6 +98,7 @@ pub fn check_options(rule string, options []json2.Any) !bool {
 		no_return_assign { nra_always(options)! }
 		no_irregular_whitespace { niw_options(options)! }
 		unicode_bom { ubom_always(options)! }
+		radix_rule { radix_options(options)! }
 		else { return false }
 	}
 	return true

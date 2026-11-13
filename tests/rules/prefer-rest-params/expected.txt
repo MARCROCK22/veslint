@@ -1,0 +1,5 @@
+tests/rules/prefer-rest-params/cases.ts:3:10	prefer-rest-params	preferRestParams	Use the rest parameters instead of 'arguments'.
+tests/rules/prefer-rest-params/cases.ts:6:21	prefer-rest-params	preferRestParams	Use the rest parameters instead of 'arguments'.
+tests/rules/prefer-rest-params/cases.ts:9:10	prefer-rest-params	preferRestParams	Use the rest parameters instead of 'arguments'.
+tests/rules/prefer-rest-params/cases.ts:12:19	prefer-rest-params	preferRestParams	Use the rest parameters instead of 'arguments'.
+tests/rules/prefer-rest-params/cases.ts:17:12	prefer-rest-params	preferRestParams	Use the rest parameters instead of 'arguments'.

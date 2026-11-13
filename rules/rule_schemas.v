@@ -187,6 +187,19 @@ const rule_option_schemas = {
 	'no-irregular-whitespace':                                         '{"type":"array","items":[{"type":"object","properties":{"skipComments":{"type":"boolean"},"skipStrings":{"type":"boolean"},"skipTemplates":{"type":"boolean"},"skipRegExps":{"type":"boolean"},"skipJSXText":{"type":"boolean"}},"additionalProperties":false}],"minItems":0,"maxItems":1}'
 	'unicode-bom':                                                     '{"type":"array","items":[{"enum":["always","never"]}],"minItems":0,"maxItems":1}'
 	'no-sparse-arrays':                                                '{"type":"array","minItems":0,"maxItems":0}'
+	'no-new':                                                          '{"type":"array","minItems":0,"maxItems":0}'
+	'no-new-func':                                                     '{"type":"array","minItems":0,"maxItems":0}'
+	'no-new-wrappers':                                                 '{"type":"array","minItems":0,"maxItems":0}'
+	'no-new-native-nonconstructor':                                    '{"type":"array","minItems":0,"maxItems":0}'
+	'no-obj-calls':                                                    '{"type":"array","minItems":0,"maxItems":0}'
+	'no-object-constructor':                                           '{"type":"array","minItems":0,"maxItems":0}'
+	'no-async-promise-executor':                                       '{"type":"array","minItems":0,"maxItems":0}'
+	'no-extra-bind':                                                   '{"type":"array","minItems":0,"maxItems":0}'
+	'no-useless-call':                                                 '{"type":"array","minItems":0,"maxItems":0}'
+	'prefer-spread':                                                   '{"type":"array","minItems":0,"maxItems":0}'
+	'prefer-rest-params':                                              '{"type":"array","minItems":0,"maxItems":0}'
+	'symbol-description':                                              '{"type":"array","minItems":0,"maxItems":0}'
+	'radix':                                                           '{"type":"array","items":[{"enum":["always","as-needed"]}],"minItems":0,"maxItems":1}'
 }
 
 // eslint_rule_default_options are the meta.defaultOptions of the rules of ESLint and of

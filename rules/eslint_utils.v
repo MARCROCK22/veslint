@@ -904,3 +904,48 @@ fn es_binary_precedence(operator string) int {
 		else { 16 }
 	}
 }
+
+// es_global_variable_references are the references of the global variable `name` when it has no
+// definition (a builtin global), in order.
+fn (mut c Checker) es_global_variable_references(root C.TSNode, name string) []C.TSNode {
+	tree := c.scope_tree(root)
+	v := tree.own_variable(0, name)
+	if v < 0 || tree.variables[v].defs.len > 0 {
+		return []C.TSNode{}
+	}
+	return tree.variables[v].references.map(tree.references[it].identifier)
+}
+
+// es_callee_of is the call or `new` whose callee the node is.
+fn es_callee_of(n C.TSNode) ?C.TSNode {
+	parent := cti_estree_parent(n)?
+	field := match node_kind(parent) {
+		'call_expression' { 'function' }
+		'new_expression' { 'constructor' }
+		else { return none }
+	}
+	if node_kind(parent) == 'call_expression' {
+		args := node_field(parent, 'arguments')?
+		if node_kind(args) != 'arguments' {
+			return none
+		}
+	}
+	callee := node_field(parent, field)?
+	if node_key(unwrap_parens(callee)) != node_key(n) {
+		return none
+	}
+	return parent
+}
+
+// es_valid_this_arg ports isValidThisArg of no-useless-call and prefer-spread: the `this` of the
+// call is the object of the member applied, or null or undefined for another callee.
+fn (mut c Checker) es_valid_this_arg(applied C.TSNode, this_arg C.TSNode) bool {
+	arg := unwrap_parens(this_arg)
+	if node_kind(applied) !in ['member_expression', 'subscript_expression'] {
+		kind := node_kind(arg)
+		return kind == 'null' || (kind in ['identifier', 'undefined'] && c.identifier_name(arg) == 'undefined')
+			|| (kind == 'unary_expression' && operator_of(arg) == 'void')
+	}
+	expected := node_field(applied, 'object') or { return false }
+	return c.es_equal_tokens(expected, arg)
+}

@@ -1,0 +1,6 @@
+tests/rules/no-object-constructor/cases.ts:4:12	no-object-constructor	preferLiteral	The object literal notation {} is preferable.	suggestion	useLiteral	Replace with '{}'.	45	57	{}
+tests/rules/no-object-constructor/cases.ts:5:12	no-object-constructor	preferLiteral	The object literal notation {} is preferable.	suggestion	useLiteral	Replace with '{}'.	70	78	{}
+tests/rules/no-object-constructor/cases.ts:6:12	no-object-constructor	preferLiteral	The object literal notation {} is preferable.	suggestion	useLiteral	Replace with '{}'.	91	101	{}
+tests/rules/no-object-constructor/cases.ts:7:17	no-object-constructor	preferLiteral	The object literal notation {} is preferable.	suggestion	useLiteral	Replace with '({})'.	119	127	({})
+tests/rules/no-object-constructor/cases.ts:8:1	no-object-constructor	preferLiteral	The object literal notation {} is preferable.	suggestion	useLiteral	Replace with '({})'.	129	137	({})
+tests/rules/no-object-constructor/cases.ts:10:1	no-object-constructor	preferLiteral	The object literal notation {} is preferable.	suggestion	useLiteralAfterSemicolon	Replace with '({})', add preceding semicolon.	141	153	;({})

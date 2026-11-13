@@ -1,0 +1,7 @@
+{"rule": "no-new", "upstream": "eslint v10.6.0", "files": ["tests/lib/rules/no-new.js"],
+"messages": {"noNewStatement":"Do not use 'new' for side effects."},
+"cases": [
+{"id":"no-new/v0","kind":"valid","code":"var a = new Date()","file":"file.ts","tsconfig":null},
+{"id":"no-new/v1","kind":"valid","code":"var a; if (a === new Date()) { a = false; }","file":"file.ts","tsconfig":null},
+{"id":"no-new/i0","kind":"invalid","code":"new Date()","file":"file.ts","tsconfig":null,"errors":[{"messageId":"noNewStatement"}]}
+]}

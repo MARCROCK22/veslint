@@ -1,0 +1,5 @@
+tests/rules/prefer-spread/cases.ts:6:1	prefer-spread	preferSpread	Use the spread operator instead of '.apply()'.
+tests/rules/prefer-spread/cases.ts:7:1	prefer-spread	preferSpread	Use the spread operator instead of '.apply()'.
+tests/rules/prefer-spread/cases.ts:8:1	prefer-spread	preferSpread	Use the spread operator instead of '.apply()'.
+tests/rules/prefer-spread/cases.ts:9:1	prefer-spread	preferSpread	Use the spread operator instead of '.apply()'.
+tests/rules/prefer-spread/cases.ts:10:1	prefer-spread	preferSpread	Use the spread operator instead of '.apply()'.

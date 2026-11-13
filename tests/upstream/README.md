@@ -98,8 +98,8 @@ of every rule with an `expected.txt`). The same seyfert and types are linked by
 
 ## ESLint core
 
-The 62 rules of ESLint core of batches C1 to C5 come with the cases of their tests in ESLint
-v10.6.0 (`tests/lib/rules/<rule>.js`), in the same `upstream.json` form: 5,944 cases. ESLint's
+The 75 rules of ESLint core of batches C1 to C6 come with the cases of their tests in ESLint
+v10.6.0 (`tests/lib/rules/<rule>.js`), in the same `upstream.json` form: 6,384 cases. ESLint's
 RuleTester makes one pass of fixes (an `output` is the text after it), typescript-eslint's up to 10:
 both scripts make the passes of the rule's own RuleTester. The cases are
 JavaScript and veslint lints only TypeScript, so they run in the fixtures of typescript-eslint

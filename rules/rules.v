@@ -194,6 +194,19 @@ pub const prefer_template = 'prefer-template'
 pub const no_irregular_whitespace = 'no-irregular-whitespace'
 pub const unicode_bom = 'unicode-bom'
 pub const no_sparse_arrays = 'no-sparse-arrays'
+pub const no_new = 'no-new'
+pub const no_new_func = 'no-new-func'
+pub const no_new_wrappers = 'no-new-wrappers'
+pub const no_new_native_nonconstructor = 'no-new-native-nonconstructor'
+pub const no_obj_calls = 'no-obj-calls'
+pub const no_object_constructor = 'no-object-constructor'
+pub const no_async_promise_executor = 'no-async-promise-executor'
+pub const no_extra_bind = 'no-extra-bind'
+pub const no_useless_call = 'no-useless-call'
+pub const prefer_spread = 'prefer-spread'
+pub const prefer_rest_params = 'prefer-rest-params'
+pub const symbol_description = 'symbol-description'
+pub const radix_rule = 'radix'
 pub const names = [no_floating_promises, await_thenable, require_await, return_await,
 	no_misused_promises, no_unsafe_call, no_unsafe_member_access, no_unsafe_return,
 	no_unsafe_assignment, no_unsafe_argument, restrict_template_expressions,
@@ -240,7 +253,10 @@ pub const names = [no_floating_promises, await_thenable, require_await, return_a
 	logical_assignment_operators, operator_assignment, prefer_exponentiation_operator, no_sequences,
 	no_return_assign, no_unexpected_multiline, no_loss_of_precision, no_nonoctal_decimal_escape,
 	no_octal, no_octal_escape, prefer_numeric_literals, no_multi_str, no_template_curly_in_string,
-	no_useless_concat, prefer_template, no_irregular_whitespace, unicode_bom, no_sparse_arrays]
+	no_useless_concat, prefer_template, no_irregular_whitespace, unicode_bom, no_sparse_arrays,
+	no_new, no_new_func, no_new_wrappers, no_new_native_nonconstructor, no_obj_calls,
+	no_object_constructor, no_async_promise_executor, no_extra_bind, no_useless_call, prefer_spread,
+	prefer_rest_params, symbol_description, radix_rule]
 
 // untyped_rules are the ported rules that need no types (`meta.docs.requiresTypeChecking` is false
 // in typescript-eslint): with only these, the command line makes no snapshot (Checker.make_snapshot).
@@ -268,7 +284,10 @@ pub const untyped_rules = [adjacent_overload_signatures, array_type, class_liter
 	logical_assignment_operators, operator_assignment, prefer_exponentiation_operator, no_sequences,
 	no_return_assign, no_unexpected_multiline, no_loss_of_precision, no_nonoctal_decimal_escape,
 	no_octal, no_octal_escape, prefer_numeric_literals, no_multi_str, no_template_curly_in_string,
-	no_useless_concat, prefer_template, no_irregular_whitespace, unicode_bom, no_sparse_arrays]
+	no_useless_concat, prefer_template, no_irregular_whitespace, unicode_bom, no_sparse_arrays,
+	no_new, no_new_func, no_new_wrappers, no_new_native_nonconstructor, no_obj_calls,
+	no_object_constructor, no_async_promise_executor, no_extra_bind, no_useless_call, prefer_spread,
+	prefer_rest_params, symbol_description, radix_rule]
 
 // needs_types tells whether a rule asks tsgo for the types of the program.
 pub fn needs_types(rule string) bool {
@@ -461,6 +480,19 @@ pub const default_options = {
 	no_irregular_whitespace:                      '[{"skipComments":false,"skipJSXText":false,"skipRegExps":false,"skipStrings":true,"skipTemplates":false}]'
 	unicode_bom:                                  '["never"]'
 	no_sparse_arrays:                             '[]'
+	no_new:                                       '[]'
+	no_new_func:                                  '[]'
+	no_new_wrappers:                              '[]'
+	no_new_native_nonconstructor:                 '[]'
+	no_obj_calls:                                 '[]'
+	no_object_constructor:                        '[]'
+	no_async_promise_executor:                    '[]'
+	no_extra_bind:                                '[]'
+	no_useless_call:                              '[]'
+	prefer_spread:                                '[]'
+	prefer_rest_params:                           '[]'
+	symbol_description:                           '[]'
+	radix_rule:                                   '["always"]'
 }
 
 // Finding is a problem a rule found at a node.
@@ -776,6 +808,19 @@ pub fn message(rule string, finding Finding) string {
 		no_irregular_whitespace { niw_messages }
 		unicode_bom { ubom_messages }
 		no_sparse_arrays { nsa2_messages }
+		no_new { nnew_messages }
+		no_new_func { nnf_messages }
+		no_new_wrappers { nnwr_messages }
+		no_new_native_nonconstructor { nnnn_messages }
+		no_obj_calls { noc2_messages }
+		no_object_constructor { nobc_messages }
+		no_async_promise_executor { nape_messages }
+		no_extra_bind { neb_messages }
+		no_useless_call { nuca2_messages }
+		prefer_spread { psp_messages }
+		prefer_rest_params { prp_messages }
+		symbol_description { sd_messages }
+		radix_rule { radix_messages }
 		else { map[string]string{} }
 	}
 	return interpolate(messages[finding.message_id] or { finding.message_id }, finding.data)
@@ -1467,6 +1512,45 @@ fn (mut c Checker) lint_rule(rule string, root C.TSNode, abs_path string, mut st
 		}
 		no_sparse_arrays {
 			return c.lint_no_sparse_arrays(root, abs_path, mut stats)!
+		}
+		no_new {
+			return c.lint_no_new(root, abs_path, mut stats)!
+		}
+		no_new_func {
+			return c.lint_no_new_func(root, abs_path, mut stats)!
+		}
+		no_new_wrappers {
+			return c.lint_no_new_wrappers(root, abs_path, mut stats)!
+		}
+		no_new_native_nonconstructor {
+			return c.lint_no_new_native_nonconstructor(root, abs_path, mut stats)!
+		}
+		no_obj_calls {
+			return c.lint_no_obj_calls(root, abs_path, mut stats)!
+		}
+		no_object_constructor {
+			return c.lint_no_object_constructor(root, abs_path, mut stats)!
+		}
+		no_async_promise_executor {
+			return c.lint_no_async_promise_executor(root, abs_path, mut stats)!
+		}
+		no_extra_bind {
+			return c.lint_no_extra_bind(root, abs_path, mut stats)!
+		}
+		no_useless_call {
+			return c.lint_no_useless_call(root, abs_path, mut stats)!
+		}
+		prefer_spread {
+			return c.lint_prefer_spread(root, abs_path, mut stats)!
+		}
+		prefer_rest_params {
+			return c.lint_prefer_rest_params(root, abs_path, mut stats)!
+		}
+		symbol_description {
+			return c.lint_symbol_description(root, abs_path, mut stats)!
+		}
+		radix_rule {
+			return c.lint_radix(root, abs_path, mut stats)!
 		}
 		else { return error('unknown rule: ${rule}') }
 	}

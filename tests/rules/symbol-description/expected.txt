@@ -1,0 +1,2 @@
+tests/rules/symbol-description/cases.ts:2:11	symbol-description	expected	Expected Symbol to have a description.
+tests/rules/symbol-description/cases.ts:3:11	symbol-description	expected	Expected Symbol to have a description.

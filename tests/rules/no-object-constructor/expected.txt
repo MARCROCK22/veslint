@@ -1,0 +1,6 @@
+tests/rules/no-object-constructor/cases.ts:4:12	no-object-constructor	preferLiteral	The object literal notation {} is preferable.
+tests/rules/no-object-constructor/cases.ts:5:12	no-object-constructor	preferLiteral	The object literal notation {} is preferable.
+tests/rules/no-object-constructor/cases.ts:6:12	no-object-constructor	preferLiteral	The object literal notation {} is preferable.
+tests/rules/no-object-constructor/cases.ts:7:17	no-object-constructor	preferLiteral	The object literal notation {} is preferable.
+tests/rules/no-object-constructor/cases.ts:8:1	no-object-constructor	preferLiteral	The object literal notation {} is preferable.
+tests/rules/no-object-constructor/cases.ts:10:1	no-object-constructor	preferLiteral	The object literal notation {} is preferable.

@@ -1,0 +1,15 @@
+{"rule": "no-new-wrappers", "upstream": "eslint v10.6.0", "files": ["tests/lib/rules/no-new-wrappers.js"],
+"messages": {"noConstructor":"Do not use {{fn}} as a constructor."},
+"cases": [
+{"id":"no-new-wrappers/v0","kind":"valid","code":"var a = new Object();","file":"file.ts","tsconfig":null},
+{"id":"no-new-wrappers/v1","kind":"valid","code":"var a = String('test'), b = String.fromCharCode(32);","file":"file.ts","tsconfig":null},
+{"id":"no-new-wrappers/v2","kind":"valid","code":"\n        function test(Number) {\n            return new Number;\n        }\n        ","file":"file.ts","tsconfig":null},
+{"id":"no-new-wrappers/v3","kind":"valid","code":"\n            import String from \"./string\";\n            const str = new String(42);\n            ","file":"file.ts","tsconfig":null,"languageOptions":{"ecmaVersion":6,"sourceType":"module"}},
+{"id":"no-new-wrappers/v4","kind":"valid","code":"\n        if (foo) {\n            result = new Boolean(bar);\n        } else {\n            var Boolean = CustomBoolean;\n        }\n        ","file":"file.ts","tsconfig":null},
+{"id":"no-new-wrappers/v5","kind":"valid","code":"new String()","file":"file.ts","tsconfig":null,"languageOptions":{"globals":{"String":"off"}}},
+{"id":"no-new-wrappers/v6","kind":"valid","code":"\n        /* global Boolean:off */\n        assert(new Boolean);\n        ","file":"file.ts","tsconfig":null},
+{"id":"no-new-wrappers/i0","kind":"invalid","code":"var a = new String('hello');","file":"file.ts","tsconfig":null,"errors":[{"messageId":"noConstructor","data":{"fn":"String"}}]},
+{"id":"no-new-wrappers/i1","kind":"invalid","code":"var a = new Number(10);","file":"file.ts","tsconfig":null,"errors":[{"messageId":"noConstructor","data":{"fn":"Number"}}]},
+{"id":"no-new-wrappers/i2","kind":"invalid","code":"var a = new Boolean(false);","file":"file.ts","tsconfig":null,"errors":[{"messageId":"noConstructor","data":{"fn":"Boolean"}}]},
+{"id":"no-new-wrappers/i3","kind":"invalid","code":"\n            const a = new String('bar');\n            {\n                const String = CustomString;\n                const b = new String('foo');\n            }\n            ","file":"file.ts","tsconfig":null,"languageOptions":{"ecmaVersion":6},"errors":[{"messageId":"noConstructor","data":{"fn":"String"},"line":2}]}
+]}

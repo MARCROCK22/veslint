@@ -1,0 +1,6 @@
+tests/rules/no-obj-calls/cases.ts:4:11	no-obj-calls	unexpectedRefCall	'undefined' is reference to 'Math', which is not a function.
+tests/rules/no-obj-calls/cases.ts:5:11	no-obj-calls	unexpectedRefCall	'undefined' is reference to 'JSON', which is not a function.
+tests/rules/no-obj-calls/cases.ts:6:11	no-obj-calls	unexpectedRefCall	'undefined' is reference to 'Reflect', which is not a function.
+tests/rules/no-obj-calls/cases.ts:8:11	no-obj-calls	unexpectedRefCall	'm' is reference to 'Math', which is not a function.
+tests/rules/no-obj-calls/cases.ts:9:11	no-obj-calls	unexpectedRefCall	'undefined' is reference to 'Math', which is not a function.
+tests/rules/no-obj-calls/cases.ts:10:11	no-obj-calls	unexpectedRefCall	'undefined' is reference to 'Intl', which is not a function.

@@ -1,0 +1,6 @@
+tests/rules/no-extra-bind/cases.ts:6:3	no-extra-bind	unexpected	The function binding is unnecessary.
+tests/rules/no-extra-bind/cases.ts:7:21	no-extra-bind	unexpected	The function binding is unnecessary.
+tests/rules/no-extra-bind/cases.ts:10:3	no-extra-bind	unexpected	The function binding is unnecessary.
+tests/rules/no-extra-bind/cases.ts:11:28	no-extra-bind	unexpected	The function binding is unnecessary.
+tests/rules/no-extra-bind/cases.ts:12:26	no-extra-bind	unexpected	The function binding is unnecessary.
+tests/rules/no-extra-bind/cases.ts:17:3	no-extra-bind	unexpected	The function binding is unnecessary.
