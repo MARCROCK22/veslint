@@ -13,6 +13,13 @@ tests/rules/curly/cases.ts:27:8	curly	missingCurlyAfterCondition	Expected { afte
 tests/rules/curly/consistent/cases.ts:6:8	curly	unexpectedCurlyAfterCondition	Unnecessary { after 'if' condition.	fix	131	141	\n  f();\n
 tests/rules/curly/consistent/cases.ts:9:8	curly	missingCurlyAfterCondition	Expected { after 'if' condition.	fix	159	163	{f();}
 tests/rules/curly/consistent/cases.ts:13:8	curly	missingCurlyAfter	Expected { after 'else'.	fix	199	203	{f();}
+tests/rules/curly/multi-line/cases.ts:6:3	curly	missingCurlyAfterCondition	Expected { after 'if' condition.	fix	113	117	{f();}
+tests/rules/curly/multi-line/cases.ts:8:3	curly	missingCurlyAfterCondition	Expected { after 'while' condition.	fix	130	134	{f();}
+tests/rules/curly/multi-line/cases.ts:9:8	curly	missingCurlyAfterCondition	Expected { after 'if' condition.	fix	142	152	{f(1,\n  2);}
+tests/rules/curly/multi-line/cases.ts:12:3	curly	missingCurlyAfter	Expected { after 'else'.	fix	172	176	{f();}
+tests/rules/curly/multi-or-nest/cases.ts:5:8	curly	unexpectedCurlyAfterCondition	Unnecessary { after 'if' condition.	fix	114	124	\n  f();\n
+tests/rules/curly/multi-or-nest/cases.ts:9:3	curly	missingCurlyAfterCondition	Expected { after 'if' condition.	fix	134	146	{f(1,\n    2);}
+tests/rules/curly/multi-or-nest/cases.ts:13:11	curly	unexpectedCurlyAfterCondition	Unnecessary { after 'while' condition.	fix	181	189	 f(); 
 tests/rules/curly/multi/cases.ts:6:8	curly	unexpectedCurlyAfterCondition	Unnecessary { after 'if' condition.	fix	114	124	\n  f();\n
 tests/rules/curly/multi/cases.ts:9:11	curly	unexpectedCurlyAfterCondition	Unnecessary { after 'while' condition.	fix	135	143	 f(); 
 tests/rules/curly/multi/cases.ts:10:4	curly	unexpectedCurlyAfter	Unnecessary { after 'do'.	fix	147	155	 f(); 
@@ -25,10 +32,3 @@ tests/rules/curly/multi/cases.ts:19:8	curly	unexpectedCurlyAfterCondition	Unnece
 tests/rules/curly/multi/cases.ts:22:8	curly	unexpectedCurlyAfterCondition	Unnecessary { after 'if' condition.	fix	331	339	 f(); 
 tests/rules/curly/multi/cases.ts:22:22	curly	unexpectedCurlyAfter	Unnecessary { after 'else'.	fix	345	353	 f(); 
 tests/rules/curly/multi/cases.ts:38:8	curly	unexpectedCurlyAfterCondition	Unnecessary { after 'if' condition.	fix	508	516	 f(); 
-tests/rules/curly/multi-line/cases.ts:6:3	curly	missingCurlyAfterCondition	Expected { after 'if' condition.	fix	113	117	{f();}
-tests/rules/curly/multi-line/cases.ts:8:3	curly	missingCurlyAfterCondition	Expected { after 'while' condition.	fix	130	134	{f();}
-tests/rules/curly/multi-line/cases.ts:9:8	curly	missingCurlyAfterCondition	Expected { after 'if' condition.	fix	142	152	{f(1,\n  2);}
-tests/rules/curly/multi-line/cases.ts:12:3	curly	missingCurlyAfter	Expected { after 'else'.	fix	172	176	{f();}
-tests/rules/curly/multi-or-nest/cases.ts:5:8	curly	unexpectedCurlyAfterCondition	Unnecessary { after 'if' condition.	fix	114	124	\n  f();\n
-tests/rules/curly/multi-or-nest/cases.ts:9:3	curly	missingCurlyAfterCondition	Expected { after 'if' condition.	fix	134	146	{f(1,\n    2);}
-tests/rules/curly/multi-or-nest/cases.ts:13:11	curly	unexpectedCurlyAfterCondition	Unnecessary { after 'while' condition.	fix	181	189	 f(); 
