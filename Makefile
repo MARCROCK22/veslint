@@ -18,7 +18,7 @@ V ?= v
 V_BIN := $(shell command -v $(V))
 
 LIBS    := vendor/tree-sitter/libtree-sitter.a build/libtree-sitter-typescript.a
-SOURCES := $(filter-out %_test.v,$(wildcard *.v tsgo/*.v treesitter/*.v offsets/*.v rules/*.v))
+SOURCES := $(filter-out %_test.v,$(wildcard *.v tsgo/*.v treesitter/*.v offsets/*.v rules/*.v jsregexp/*.v regexpp/*.v estree/*.v esquery/*.v codepath/*.v))
 
 .PHONY: deps build run test bench clean
 

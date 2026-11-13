@@ -1,0 +1,11 @@
+tests/rules/no-invalid-this/cases.ts:2:13	no-invalid-this	unexpectedThis	Unexpected 'this'.
+tests/rules/no-invalid-this/cases.ts:4:10	no-invalid-this	unexpectedThis	Unexpected 'this'.
+tests/rules/no-invalid-this/cases.ts:6:21	no-invalid-this	unexpectedThis	Unexpected 'this'.
+tests/rules/no-invalid-this/cases.ts:8:10	no-invalid-this	unexpectedThis	Unexpected 'this'.
+tests/rules/no-invalid-this/cases.ts:11:16	no-invalid-this	unexpectedThis	Unexpected 'this'.
+tests/rules/no-invalid-this/no-cap/cases.ts:2:13	no-invalid-this	unexpectedThis	Unexpected 'this'.
+tests/rules/no-invalid-this/no-cap/cases.ts:4:10	no-invalid-this	unexpectedThis	Unexpected 'this'.
+tests/rules/no-invalid-this/no-cap/cases.ts:6:21	no-invalid-this	unexpectedThis	Unexpected 'this'.
+tests/rules/no-invalid-this/no-cap/cases.ts:8:10	no-invalid-this	unexpectedThis	Unexpected 'this'.
+tests/rules/no-invalid-this/no-cap/cases.ts:11:16	no-invalid-this	unexpectedThis	Unexpected 'this'.
+tests/rules/no-invalid-this/no-cap/cases.ts:21:10	no-invalid-this	unexpectedThis	Unexpected 'this'.

@@ -16,7 +16,10 @@ import rules
 
 // eslint_resolver is the script: its arguments are the directory veslint runs in (ESLint's `cwd`:
 // with `--config`, the patterns of the configuration are relative to it, as in `eslint -c`), the
-// configuration file and a JSON file with the files to lint (absolute paths). A configuration
+// configuration file, a JSON file with the files to lint (absolute paths) and the mode: `lookup`
+// when no `--config` was given (a directory to lint), where ESLint finds the configuration of each
+// file as the eslint command does (the closest eslint.config.* from the file's directory up), and
+// the given file is only where `eslint` and typescript-eslint are resolved from. A configuration
 // ESLint does not take gives `error`: what the eslint command prints for it (getErrorMessage of
 // bin/eslint.js), which is the text of the message template of the error or, without one, its
 // message (the command prints the stack too).
@@ -26,7 +29,7 @@ import { builtinRules } from 'eslint/use-at-your-own-risk';
 import fs from 'node:fs';
 import path from 'node:path';
 import { createRequire } from 'node:module';
-const [, cwd, configPath, listPath] = process.argv;
+const [, cwd, configPath, listPath, mode] = process.argv;
 const { files } = JSON.parse(fs.readFileSync(listPath, 'utf8'));
 // The typescript-estree that typescript-eslint uses in this project: its resolveProjectList and
 // the tsconfigRootDir it infers from where its configs were read.
@@ -73,7 +76,7 @@ const projectList = given => {
   return paths.length > 0 ? paths : true;
 };
 try {
-const eslint = new ESLint({ cwd, overrideConfigFile: configPath });
+const eslint = new ESLint(mode === 'lookup' ? { cwd } : { cwd, overrideConfigFile: configPath });
 const configs = [];
 const indexes = new Map();
 const pluginRules = new Set();
@@ -314,11 +317,18 @@ fn (l &LoadedConfig) lint_config(index int) rules.LintConfig {
 // (and may have `linterOptions` and `languageOptions` sections, as the output of
 // `eslint --print-config` does).
 fn load_config_for(path string, files []string) !LoadedConfig {
+	return load_config_with(path, files, false)
+}
+
+// load_config_with is load_config_for; with `lookup`, `path` is an ESLint configuration file that
+// was found, not given, and ESLint finds the configuration of each file itself (see
+// eslint_resolver).
+fn load_config_with(path string, files []string, lookup bool) !LoadedConfig {
 	if os.file_ext(path) in eslint_config_extensions {
 		if !os.is_file(path) {
 			return error('cannot read ${path}')
 		}
-		resolved := resolve_with_bun(os.abs_path(path), files.map(os.abs_path(it)))!
+		resolved := resolve_with_bun(os.abs_path(path), files.map(os.abs_path(it)), lookup)!
 		return loaded_from_resolved(resolved, path, os.dir(os.abs_path(path)), files)!
 	}
 	text := os.read_file(path) or { return error('cannot read ${path}: ${err.msg()}') }
@@ -380,7 +390,7 @@ fn load_config_for(path string, files []string) !LoadedConfig {
 
 // resolve_with_bun runs the resolver with bun. `eslint` is resolved from the directory of the
 // configuration (the project's own ESLint), or from VESLINT_ESLINT_DIR when it is set.
-fn resolve_with_bun(config_path string, files []string) !string {
+fn resolve_with_bun(config_path string, files []string, lookup bool) !string {
 	bun := os.find_abs_path_of_executable('bun') or {
 		return error('reading ${config_path} needs `bun` in PATH: an ESLint configuration is JavaScript, and ESLint itself resolves it. Without bun, pass a resolved JSON (see --print-config)')
 	}
@@ -397,7 +407,7 @@ fn resolve_with_bun(config_path string, files []string) !string {
 	mut process := os.new_process(bun)
 	eslint_dir := os.getenv_opt('VESLINT_ESLINT_DIR') or { os.dir(config_path) }
 	process.set_args(['--cwd=${os.abs_path(eslint_dir)}', '-e', eslint_resolver, '--', os.getwd(),
-		config_path, list_path])
+		config_path, list_path, if lookup { 'lookup' } else { 'config' }])
 	process.set_redirect_stdio()
 	process.run()
 	output := process.stdout_slurp()

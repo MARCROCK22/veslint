@@ -1,0 +1,3 @@
+tests/rules/no-restricted-globals/options/cases.ts:4:23	no-restricted-globals	defaultMessage	Unexpected use of 'event'.
+tests/rules/no-restricted-globals/options/cases.ts:6:28	no-restricted-globals	defaultMessage	Unexpected use of 'Promise'.
+tests/rules/no-restricted-globals/options/cases.ts:8:12	no-restricted-globals	defaultMessage	Unexpected use of 'Promise'.

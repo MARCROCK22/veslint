@@ -1,0 +1,13 @@
+# Findings of a rule alone (--rule) that --config with every rule does not give, as ESLint does not:
+# typescript-eslint's naming-convention runs collectUnusedVariables when it is created, which
+# marks variables of the shared scope manager as used (eslintUsed, here the names in the
+# parameters of a function type), and no-useless-assignment skips those.
+tests/rules/@typescript-eslint/no-use-before-define/all-off/cases.ts:98:7	no-useless-assignment	unnecessaryAssignment	The value assigned to 'callbackValue' is not used in subsequent statements.
+tests/rules/@typescript-eslint/no-use-before-define/cases.ts:98:7	no-useless-assignment	unnecessaryAssignment	The value assigned to 'callbackValue' is not used in subsequent statements.
+tests/rules/@typescript-eslint/no-use-before-define/empty/cases.ts:98:7	no-useless-assignment	unnecessaryAssignment	The value assigned to 'callbackValue' is not used in subsequent statements.
+tests/rules/@typescript-eslint/no-use-before-define/enums-off/cases.ts:98:7	no-useless-assignment	unnecessaryAssignment	The value assigned to 'callbackValue' is not used in subsequent statements.
+tests/rules/@typescript-eslint/no-use-before-define/named-exports/cases.ts:98:7	no-useless-assignment	unnecessaryAssignment	The value assigned to 'callbackValue' is not used in subsequent statements.
+tests/rules/@typescript-eslint/no-use-before-define/nofunc/cases.ts:98:7	no-useless-assignment	unnecessaryAssignment	The value assigned to 'callbackValue' is not used in subsequent statements.
+tests/rules/@typescript-eslint/no-use-before-define/someday/cases.ts:98:7	no-useless-assignment	unnecessaryAssignment	The value assigned to 'callbackValue' is not used in subsequent statements.
+tests/rules/@typescript-eslint/no-use-before-define/type-references/cases.ts:98:7	no-useless-assignment	unnecessaryAssignment	The value assigned to 'callbackValue' is not used in subsequent statements.
+tests/rules/@typescript-eslint/no-use-before-define/typedefs-off/cases.ts:98:7	no-useless-assignment	unnecessaryAssignment	The value assigned to 'callbackValue' is not used in subsequent statements.

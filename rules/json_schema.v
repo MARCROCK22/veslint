@@ -1,6 +1,7 @@
 module rules
 
 import json2
+import jsregexp
 import math
 
 // ESLint validates the options of a rule against the JSON schema of its meta with ajv 6.15.0
@@ -43,7 +44,7 @@ const schema_rule_keywords = ['type', '\$comment', 'maximum', 'exclusiveMaximum'
 
 // The rules of each group of ajv's RULES that this validator implements, in ajv's order. A group
 // with a type only runs on data of that type.
-const schema_string_rules = ['maxLength', 'minLength']
+const schema_string_rules = ['maxLength', 'minLength', 'pattern']
 const schema_array_rules = ['maxItems', 'minItems', 'items', 'uniqueItems']
 const schema_object_rules = ['maxProperties', 'minProperties', 'required', 'properties',
 	'additionalProperties']
@@ -282,8 +283,8 @@ fn schema_has_no_ref(schema json2.Any) bool {
 	return true
 }
 
-// string_rules are maxLength and minLength (lib/dot/_limitLength.jst); the length is counted in
-// code points (ucs2length).
+// string_rules are maxLength and minLength (lib/dot/_limitLength.jst; the length is counted in
+// code points, ucs2length) and pattern (lib/dot/pattern.jst: `new RegExp(pattern)`, without flags).
 fn (mut v SchemaValidator) string_rules(s map[string]json2.Any, data json2.Any) bool {
 	length := f64(data.str().runes().len)
 	if limit := schema_number(s, 'maxLength') {
@@ -298,6 +299,21 @@ fn (mut v SchemaValidator) string_rules(s map[string]json2.Any, data json2.Any) 
 			v.add('minLength', 'should NOT be shorter than ${js_number_to_string(limit)} characters',
 				data)
 			return false
+		}
+	}
+	if pattern := s['pattern'] {
+		if pattern is string {
+			units := utf16_units(pattern)
+			prog := jsregexp.regexp_compile_annex_b(units) or {
+				// ajv throws when it compiles the schema; ESLint validates the schemas of its
+				// rules before, so this does not happen with them.
+				v.add('pattern', 'should match pattern "${pattern}"', data)
+				return false
+			}
+			if !(jsregexp.regexp_test_annex_b(prog, utf16_units(data.str())) or { false }) {
+				v.add('pattern', 'should match pattern "${pattern}"', data)
+				return false
+			}
 		}
 	}
 	return true

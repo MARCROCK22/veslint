@@ -42,7 +42,7 @@ export function ruleDefaults(builtinRules, plugins) {
 // subschemas, and the ones ajv ignores when it validates.
 const jsonTypes = ['array', 'boolean', 'integer', 'null', 'number', 'object', 'string'];
 const supported = new Set(['type', 'enum', 'const', 'properties', 'additionalProperties', 'required', 'items',
-  'additionalItems', 'minItems', 'maxItems', 'uniqueItems', 'minLength', 'maxLength', 'minProperties',
+  'additionalItems', 'minItems', 'maxItems', 'uniqueItems', 'minLength', 'maxLength', 'pattern', 'minProperties',
   'maxProperties', 'oneOf', 'anyOf', 'allOf', 'not', '$ref']);
 const annotations = new Set(['description', 'title', '$defs', 'definitions']);
 

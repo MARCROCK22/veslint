@@ -1,0 +1,1 @@
+["TSEnumDeclaration",{"selector":"CallExpression[callee.name=\"eval\"]","message":"Do not use eval."},"ConditionalExpression > Literal.consequent","FunctionDeclaration:has(CallExpression) > Identifier.id","TSAsExpression:exit"]

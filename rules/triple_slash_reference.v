@@ -2,6 +2,7 @@ module rules
 
 import encoding.utf8
 import json2
+import jsregexp
 import time
 import treesitter { named_children, node_field, node_kind }
 
@@ -177,8 +178,8 @@ fn tsr_skip_space(value string, i int) int {
 }
 
 fn tsr_is_space(r u32) bool {
-	for k := 0; k < rx_space.len; k += 2 {
-		if r >= rx_space[k] && r <= rx_space[k + 1] {
+	for k := 0; k < jsregexp.rx_space.len; k += 2 {
+		if r >= jsregexp.rx_space[k] && r <= jsregexp.rx_space[k + 1] {
 			return true
 		}
 	}

@@ -1,0 +1,10 @@
+tests/rules/getter-return/allow-implicit/cases.ts:3:3	getter-return	expected	Expected to return a value in getter 'a'.
+tests/rules/getter-return/cases.ts:4:3	getter-return	expectedAlways	Expected getter 'value' to always return a value.
+tests/rules/getter-return/cases.ts:6:7	getter-return	expected	Expected to return a value in getter 'value'.
+tests/rules/getter-return/cases.ts:9:3	getter-return	expected	Expected to return a value in static getter 'empty'.
+tests/rules/getter-return/cases.ts:12:3	getter-return	expected	Expected to return a value in getter.
+tests/rules/getter-return/cases.ts:15:3	getter-return	expectedAlways	Expected getter 'area' to always return a value.
+tests/rules/getter-return/cases.ts:22:3	getter-return	expected	Expected to return a value in method 'get'.
+tests/rules/getter-return/cases.ts:27:3	getter-return	expectedAlways	Expected method 'get' to always return a value.
+tests/rules/getter-return/cases.ts:36:7	getter-return	expected	Expected to return a value in method 'get'.
+tests/rules/getter-return/cases.ts:41:12	getter-return	expected	Expected to return a value in method 'get'.

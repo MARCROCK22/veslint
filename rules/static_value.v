@@ -1,5 +1,6 @@
 module rules
 
+import jsregexp
 import math
 import math.big
 import treesitter { children, named_children, node_end, node_field, node_kind, node_parent, node_start }
@@ -71,7 +72,7 @@ struct JsAny {
 	elements []JsAny
 	keys     []string
 	values   []JsAny
-	regexp   RegexpValue
+	regexp   jsregexp.RegexpValue
 	// A symbol of the registry of Symbol.for.
 	registered bool
 }
@@ -254,7 +255,7 @@ fn stv_key_units(key string) []u16 {
 			}
 		}
 		i += size
-		append_utf16(mut out, code)
+		jsregexp.append_utf16(mut out, code)
 	}
 	return out
 }
@@ -731,7 +732,7 @@ fn (mut c Checker) stv_literal(n C.TSNode, mut ctx StvContext) StaticValue {
 		else {
 			pattern := node_field(n, 'pattern') or { return StaticValue{} }
 			flags := if f := node_field(n, 'flags') { c.text(f) } else { '' }
-			re := regexp_new(utf16_units(c.text(pattern)), flags) or { return StaticValue{} }
+			re := jsregexp.regexp_new(utf16_units(c.text(pattern)), flags) or { return StaticValue{} }
 			return stv_found(JsAny{
 				kind:   .regexp_
 				id:     ctx.new_id()
@@ -2515,7 +2516,7 @@ fn stv_missing(key string) ?JsAny {
 	return js_any_undefined()
 }
 
-fn stv_regexp_getter(re RegexpValue, key string) JsAny {
+fn stv_regexp_getter(re jsregexp.RegexpValue, key string) JsAny {
 	return match key {
 		'source' { js_any_string(re.source) }
 		'flags' { js_any_text(re.flags) }
@@ -3068,7 +3069,7 @@ fn stv_regexp_construct(args []JsAny, is_new bool, mut ctx StvContext) ?JsAny {
 			flag_text = stv_units_string(stv_to_string(flags)?)
 		}
 	}
-	re := regexp_new(source, flag_text)?
+	re := jsregexp.regexp_new(source, flag_text)?
 	return JsAny{
 		kind:   .regexp_
 		id:     ctx.new_id()
@@ -3363,7 +3364,7 @@ fn stv_string_method(name string, s []u16, args []JsAny) ?JsAny {
 			return js_any_string(s)
 		}
 		'toUpperCase' {
-			return js_any_string(js_to_upper(s))
+			return js_any_string(jsregexp.js_to_upper(s))
 		}
 		'normalize' {
 			// ToString(form), NFC when it is undefined; a RangeError for another form
@@ -3379,7 +3380,7 @@ fn stv_string_method(name string, s []u16, args []JsAny) ?JsAny {
 			return js_any_string(js_normalize(s, form))
 		}
 		'toLowerCase' {
-			return js_any_string(js_to_lower(s))
+			return js_any_string(jsregexp.js_to_lower(s))
 		}
 		'trim' {
 			return js_any_string(stv_trim_units(s, true, true))

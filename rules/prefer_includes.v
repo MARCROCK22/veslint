@@ -1,5 +1,6 @@
 module rules
 
+import jsregexp
 import time
 import tsgo { handle_index, handle_kind, handle_path }
 import treesitter { node_end, node_field, node_kind, node_start, nodes_of_kind, position_of }
@@ -293,7 +294,7 @@ fn (mut c Checker) pinc_regexp_text(n C.TSNode) ?string {
 	if re.flags.contains('i') || re.flags.contains('g') {
 		return none
 	}
-	pattern := regexp_parse(re.source, regexp_mode(re.flags))
+	pattern := jsregexp.regexp_parse(re.source, jsregexp.regexp_mode(re.flags))
 	if !pattern.valid || pattern.alternatives.len != 1 {
 		return none
 	}

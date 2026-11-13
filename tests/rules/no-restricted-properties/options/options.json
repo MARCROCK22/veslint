@@ -1,0 +1,1 @@
+[{"object":"Math","property":"pow","message":"Use the ** operator."},{"property":"__defineGetter__"},{"object":"require"},{"property":"forEach","allowObjects":["arr"]},{"object":"config","allowProperties":["debug"]}]

@@ -1,6 +1,7 @@
 module rules
 
 import json2
+import jsregexp
 import time
 import treesitter { Ident, children, named_children, node_end, node_field, node_kind, node_start, nodes_of_kinds, position_of }
 
@@ -474,8 +475,12 @@ fn (mut c Checker) pssew_parse_regexp(n C.TSNode) ?PssewRegexp {
 	if starts == ends || re.flags.contains('i') || re.flags.contains('m') {
 		return none
 	}
-	mode := if re.flags.contains('u') { RegexpMode.unicode } else { RegexpMode.annex_b }
-	pattern := regexp_parse(source, mode)
+	mode := if re.flags.contains('u') {
+		jsregexp.RegexpMode.unicode
+	} else {
+		jsregexp.RegexpMode.annex_b
+	}
+	pattern := jsregexp.regexp_parse(source, mode)
 	if !pattern.valid || pattern.alternatives.len != 1 {
 		return none
 	}

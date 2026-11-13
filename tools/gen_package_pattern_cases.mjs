@@ -1,4 +1,4 @@
-// Generates tests/package_pattern_cases.json for rules/regexp_annex_b_test.v: for the `package` of a
+// Generates tests/package_pattern_cases.json for rules/package_pattern_test.v: for the `package` of a
 // type specifier, the regular expression typescript-eslint makes of it
 // (typeDeclaredInDeclarationFile of type-utils: `new RegExp(`${packageName}|${typesPackageName}`)`)
 // and, for each of the texts, whether it matches in the Node that runs this script (V8); or that V8

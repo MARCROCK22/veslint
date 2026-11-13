@@ -1,6 +1,7 @@
 module rules
 
 import json2
+import jsregexp
 import time
 import treesitter { children, has_child_kind, named_children, node_field, node_kind, node_parent, nodes_of_kinds, position_of }
 
@@ -88,7 +89,7 @@ const nc_selectors_with_types = 1 | 4 | 512 | 1024 | 2048 | 8 | 16
 struct NcRegex {
 	has      bool
 	is_match bool
-	program  RegexpProgram
+	program  jsregexp.RegexpProgram
 	text     string // RegExp.prototype.toString()
 }
 
@@ -183,7 +184,7 @@ fn nc_regexp_text(pattern string) string {
 }
 
 fn nc_regex(pattern string, is_match bool) !NcRegex {
-	program := regexp_compile(pattern) or {
+	program := jsregexp.regexp_compile(pattern) or {
 		return error('`${naming_convention}`: veslint cannot use the regular expression `${pattern}`: ${err.msg()}')
 	}
 	return NcRegex{
@@ -435,7 +436,7 @@ fn (mut c Checker) nc_validate(item NcItem, configs []NcConfig) ![]Finding {
 	original := c.nc_name(item.node)
 	for config in configs {
 		if config.filter.has {
-			if regexp_test(config.filter.program, original)! != config.filter.is_match {
+			if jsregexp.regexp_test(config.filter.program, original)! != config.filter.is_match {
 				continue
 			}
 		}
@@ -542,7 +543,7 @@ fn (mut c Checker) nc_validate(item NcItem, configs []NcConfig) ![]Finding {
 		}
 		// validateCustom
 		if config.custom.has {
-			if regexp_test(config.custom.program, name)! != config.custom.is_match {
+			if jsregexp.regexp_test(config.custom.program, name)! != config.custom.is_match {
 				data['regex'] = config.custom.text
 				data['regexMatch'] = if config.custom.is_match { 'match' } else { 'not match' }
 				return [nc_finding(item, 'satisfyCustom', data)]
@@ -656,12 +657,16 @@ fn nc_fits_format(name string, format int) bool {
 	units := utf16_units(name)
 	first := units[..1]
 	return match nc_formats[format - 1] {
-		'camelCase' { js_to_lower(first) == first && !name.contains('_') }
-		'strictCamelCase' { js_to_lower(first) == first && nc_has_strict_camel_humps(units, false) }
-		'PascalCase' { js_to_upper(first) == first && !name.contains('_') }
-		'StrictPascalCase' { js_to_upper(first) == first && nc_has_strict_camel_humps(units, true) }
-		'snake_case' { js_to_lower(units) == units && nc_valid_underscores(name) }
-		else { js_to_upper(units) == units && nc_valid_underscores(name) }
+		'camelCase' { jsregexp.js_to_lower(first) == first && !name.contains('_') }
+		'strictCamelCase' {
+			jsregexp.js_to_lower(first) == first && nc_has_strict_camel_humps(units, false)
+		}
+		'PascalCase' { jsregexp.js_to_upper(first) == first && !name.contains('_') }
+		'StrictPascalCase' {
+			jsregexp.js_to_upper(first) == first && nc_has_strict_camel_humps(units, true)
+		}
+		'snake_case' { jsregexp.js_to_lower(units) == units && nc_valid_underscores(name) }
+		else { jsregexp.js_to_upper(units) == units && nc_valid_underscores(name) }
 	}
 }
 
@@ -675,7 +680,7 @@ fn nc_has_strict_camel_humps(units []u16, starts_upper bool) bool {
 			return false
 		}
 		letter := units[i..i + 1]
-		is_uppercase_char := js_to_upper(letter) == letter && js_to_lower(letter) != letter
+		is_uppercase_char := jsregexp.js_to_upper(letter) == letter && jsregexp.js_to_lower(letter) != letter
 		if is_upper == is_uppercase_char {
 			if is_upper {
 				return false

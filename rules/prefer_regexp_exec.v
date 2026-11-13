@@ -1,5 +1,6 @@
 module rules
 
+import jsregexp
 import time
 import treesitter { named_children, node_field, node_kind, nodes_of_kind, position_of }
 
@@ -126,7 +127,7 @@ fn (mut c Checker) prx_candidate(call C.TSNode, member C.TSNode, argument C.TSNo
 		// Literal.value, in UTF-16 units.
 		quoted := c.text(argument)
 		units := cooked_units(quoted[1..quoted.len - 1], false) or { return none }
-		value_regexp := regexp_new(units, '')?
+		value_regexp := jsregexp.regexp_new(units, '')?
 		string_literal = true
 		regexp = '/${stv_units_string(value_regexp.source)}/${value_regexp.flags}'
 	}

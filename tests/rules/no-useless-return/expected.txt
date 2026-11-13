@@ -1,0 +1,7 @@
+tests/rules/no-useless-return/cases.ts:5:3	no-useless-return	unnecessaryReturn	Unnecessary return statement.
+tests/rules/no-useless-return/cases.ts:10:5	no-useless-return	unnecessaryReturn	Unnecessary return statement.
+tests/rules/no-useless-return/cases.ts:12:5	no-useless-return	unnecessaryReturn	Unnecessary return statement.
+tests/rules/no-useless-return/cases.ts:17:3	no-useless-return	unnecessaryReturn	Unnecessary return statement.
+tests/rules/no-useless-return/cases.ts:24:7	no-useless-return	unnecessaryReturn	Unnecessary return statement.
+tests/rules/no-useless-return/cases.ts:32:7	no-useless-return	unnecessaryReturn	Unnecessary return statement.
+tests/rules/no-useless-return/cases.ts:37:3	no-useless-return	unnecessaryReturn	Unnecessary return statement.

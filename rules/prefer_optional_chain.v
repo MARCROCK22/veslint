@@ -1,6 +1,7 @@
 module rules
 
 import json2
+import jsregexp
 import time
 import tsgo { TypeResponse }
 import treesitter { Ident, named_children, node_end, node_field, node_kind, node_start, nodes_of_kinds, position_of }
@@ -364,7 +365,7 @@ fn (c &Checker) poc_literal_equal(a C.TSNode, b C.TSNode) bool {
 	if node_kind(a) == 'regex' {
 		pattern := node_field(a, 'pattern') or { return false }
 		flags := if f := node_field(a, 'flags') { c.text(f) } else { '' }
-		return regexp_new(utf16_units(c.text(pattern)), flags) == none
+		return jsregexp.regexp_new(utf16_units(c.text(pattern)), flags) == none
 	}
 	return true
 }

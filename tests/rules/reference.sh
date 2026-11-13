@@ -57,6 +57,24 @@ for dir in "${rule_dirs[@]}"; do
 	fi
 	if [[ -f $dir/fixes.txt ]]; then
 		grep -P "^tests/rules/${rule}/(.+/)?cases\.tsx?:.*\t${rule}\t" "$TMP/reference.fixes.txt" | sort > "$TMP/ref.txt"
+		# fixes.known.txt: where veslint fixes on purpose otherwise than the reference, pairs of
+		# lines `eslint<TAB><its line>` and `veslint<TAB><veslint's line>` (documented in the README).
+		if [[ -f $dir/fixes.known.txt ]]; then
+			python3 - "$dir/fixes.known.txt" "$TMP/ref.txt" <<'PY'
+import sys
+pairs = [line.rstrip('\n') for line in open(sys.argv[1], encoding='utf-8') if line.strip() and not line.startswith('#')]
+swap = {}
+for eslint, veslint in zip(pairs[0::2], pairs[1::2]):
+    assert eslint.startswith('eslint\t') and veslint.startswith('veslint\t'), (eslint, veslint)
+    swap[eslint[len('eslint\t'):]] = veslint[len('veslint\t'):]
+lines = open(sys.argv[2], encoding='utf-8').read().splitlines()
+missing = [k for k in swap if k not in lines]
+if missing:
+    sys.exit(f'fixes.known.txt: the reference no longer gives {missing}')
+open(sys.argv[2], 'w', encoding='utf-8').write(''.join(swap.get(line, line) + '\n' for line in lines))
+PY
+			sort "$TMP/ref.txt" -o "$TMP/ref.txt"
+		fi
 		if sort "$dir/fixes.txt" | diff -u "$TMP/ref.txt" - > "$TMP/diff.txt"; then
 			echo "ok     $rule: fixes and suggestions of $(grep -cP '\t(fix|suggestion)\t' "$TMP/ref.txt") findings"
 		else

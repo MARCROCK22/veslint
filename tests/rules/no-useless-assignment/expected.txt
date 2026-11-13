@@ -1,0 +1,7 @@
+tests/rules/no-useless-assignment/cases.ts:4:7	no-useless-assignment	unnecessaryAssignment	The value assigned to 'value' is not used in subsequent statements.
+tests/rules/no-useless-assignment/cases.ts:11:3	no-useless-assignment	unnecessaryAssignment	The value assigned to 'total' is not used in subsequent statements.
+tests/rules/no-useless-assignment/cases.ts:17:6	no-useless-assignment	unnecessaryAssignment	The value assigned to 'a' is not used in subsequent statements.
+tests/rules/no-useless-assignment/cases.ts:17:9	no-useless-assignment	unnecessaryAssignment	The value assigned to 'b' is not used in subsequent statements.
+tests/rules/no-useless-assignment/cases.ts:20:7	no-useless-assignment	unnecessaryAssignment	The value assigned to 'result' is not used in subsequent statements.
+tests/rules/no-useless-assignment/cases.ts:31:3	no-useless-assignment	unnecessaryAssignment	The value assigned to 'count' is not used in subsequent statements.
+tests/rules/no-useless-assignment/cases.ts:67:1	no-useless-assignment	unnecessaryAssignment	The value assigned to 'moduleValue' is not used in subsequent statements.

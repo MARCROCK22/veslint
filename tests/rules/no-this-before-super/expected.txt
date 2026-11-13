@@ -1,0 +1,6 @@
+tests/rules/no-this-before-super/cases.ts:10:5	no-this-before-super	noBeforeSuper	'this' is not allowed before 'super()'.
+tests/rules/no-this-before-super/cases.ts:16:5	no-this-before-super	noBeforeSuper	'super' is not allowed before 'super()'.
+tests/rules/no-this-before-super/cases.ts:22:11	no-this-before-super	noBeforeSuper	'this' is not allowed before 'super()'.
+tests/rules/no-this-before-super/cases.ts:30:5	no-this-before-super	noBeforeSuper	'this' is not allowed before 'super()'.
+tests/rules/no-this-before-super/cases.ts:35:9	no-this-before-super	noBeforeSuper	'this' is not allowed before 'super()'.
+tests/rules/no-this-before-super/cases.ts:64:5	no-this-before-super	noBeforeSuper	'this' is not allowed before 'super()'.

@@ -1,6 +1,7 @@
 module rules
 
 import json2
+import jsregexp
 import regexpp
 import time
 import treesitter { children, named_children, node_field, node_kind, node_start, position_of }
@@ -35,7 +36,7 @@ struct NmccCodeUnit {
 struct NmccState {
 	allow_escape bool
 	ecma_version int
-	marks        RegexpProgram // /^\p{M}$/u
+	marks        jsregexp.RegexpProgram // /^\p{M}$/u
 mut:
 	findings []Finding
 }
@@ -45,7 +46,7 @@ fn (mut c Checker) lint_no_misleading_character_class(root C.TSNode, abs_path st
 	mut st := NmccState{
 		allow_escape: nmcc_options(c.rule_options(no_misleading_character_class))!
 		ecma_version: c.ecma_version
-		marks:        regexp_compile('^\\p{M}$')!
+		marks:        jsregexp.regexp_compile('^\\p{M}$')!
 	}
 	mut checked := map[u64]bool{}
 	// The patterns given to the global RegExp.
@@ -163,7 +164,7 @@ fn (st &NmccState) is_combining(code int) bool {
 	if code < 0 || code > 0x10ffff || (code >= 0xd800 && code <= 0xdfff) {
 		return false
 	}
-	return regexp_test(st.marks, rune(code).str()) or { false }
+	return jsregexp.regexp_test(st.marks, rune(code).str()) or { false }
 }
 
 // nmcc_is_code_point_escape: the raw is `\u{…}`.

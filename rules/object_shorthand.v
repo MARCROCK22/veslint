@@ -1,6 +1,7 @@
 module rules
 
 import json2
+import jsregexp
 import time
 import treesitter { named_children, node_field, node_kind, node_parent, node_start, position_of }
 
@@ -23,7 +24,7 @@ const os_function_kinds = ['function_declaration', 'function_expression', 'gener
 struct OsOptions {
 	apply                        string
 	ignore_constructors          bool
-	methods_ignore               ?RegexpProgram
+	methods_ignore               ?jsregexp.RegexpProgram
 	avoid_quotes                 bool
 	avoid_explicit_return_arrows bool
 }
@@ -38,9 +39,9 @@ fn os_options(options []json2.Any) !OsOptions {
 	o := option_object(object_shorthand, if options.len > 1 { options[1..] } else { []json2.Any{} },
 		['ignoreConstructors', 'methodsIgnorePattern', 'avoidQuotes', 'avoidExplicitReturnArrows'])!
 	pattern := o.values['methodsIgnorePattern'] or { json2.Any('') }
-	mut program := ?RegexpProgram(none)
+	mut program := ?jsregexp.RegexpProgram(none)
 	if pattern is string && pattern.str() != '' {
-		program = regexp_compile(pattern.str()) or {
+		program = jsregexp.regexp_compile(pattern.str()) or {
 			return error('`methodsIgnorePattern` of `${object_shorthand}` is not a valid regular expression')
 		}
 	}
@@ -168,7 +169,7 @@ fn (mut c Checker) os_property(root C.TSNode, o OsOptions, property C.TSNode, mu
 		}
 		if program := o.methods_ignore {
 			if name := c.es_static_key_name(property) {
-				if regexp_test(program, name) or { false } {
+				if jsregexp.regexp_test(program, name) or { false } {
 					return
 				}
 			}
@@ -233,7 +234,7 @@ fn os_is_constructor(name string) bool {
 		if unit == `_` || unit == `$` || (unit >= `0` && unit <= `9`) {
 			continue
 		}
-		return js_to_upper(units[i..i + 1]) == units[i..i + 1]
+		return jsregexp.js_to_upper(units[i..i + 1]) == units[i..i + 1]
 	}
 	return false
 }

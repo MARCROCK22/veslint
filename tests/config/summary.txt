@@ -1,0 +1,8 @@
+Rule                                     Problems  Errors  Warnings  Files
+eslint                                         48      24        24     12
+@typescript-eslint/no-floating-promises        12      12         0      8
+@typescript-eslint/await-thenable              10       2         8      5
+@typescript-eslint/naming-convention            7       7         0      4
+not-a/plugin-rule                               4       4         0      3
+@typescript-eslint/prefer-find                  3       3         0      1
+@typescript-eslint/no-array-delete              1       1         0      1

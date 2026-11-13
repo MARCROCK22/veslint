@@ -1,5 +1,6 @@
 module rules
 
+import jsregexp
 import treesitter { Ident, children, named_children, node_end, node_field, node_kind, node_parent, node_start, position_of }
 
 // Ports of the helpers of ESLint 10.6.0's lib/rules/utils/ast-utils.js that the rules of ESLint
@@ -43,7 +44,7 @@ fn (c &Checker) es_static_string_value(n C.TSNode) ?string {
 	if node_kind(node) == 'regex' {
 		pattern := node_field(node, 'pattern') or { return none }
 		flags := if f := node_field(node, 'flags') { c.text(f) } else { '' }
-		re := regexp_new(utf16_units(c.text(pattern)), flags) or {
+		re := jsregexp.regexp_new(utf16_units(c.text(pattern)), flags) or {
 			return '/${c.text(pattern)}/${flags}'
 		}
 		return '/${c.text(pattern)}/${re.flags}'

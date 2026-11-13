@@ -1,0 +1,6 @@
+tests/rules/no-unreachable/cases.ts:5:3	no-unreachable	unreachableCode	Unreachable code.
+tests/rules/no-unreachable/cases.ts:10:3	no-unreachable	unreachableCode	Unreachable code.
+tests/rules/no-unreachable/cases.ts:16:3	no-unreachable	unreachableCode	Unreachable code.
+tests/rules/no-unreachable/cases.ts:21:5	no-unreachable	unreachableCode	Unreachable code.
+tests/rules/no-unreachable/cases.ts:30:3	no-unreachable	unreachableCode	Unreachable code.
+tests/rules/no-unreachable/cases.ts:34:3	no-unreachable	unreachableCode	Unreachable code.

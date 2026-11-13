@@ -1,5 +1,6 @@
 module rules
 
+import jsregexp
 import time
 import tsgo { SymbolResponse, TypeResponse }
 import treesitter { children, first_named_child, has_child_kind, named_children, node_field, node_kind, node_parent, nodes_of_kinds, position_of }
@@ -516,7 +517,7 @@ fn (c &Checker) literal_name(n C.TSNode) ?string {
 			// and String(null) is its name.
 			pattern := node_field(n, 'pattern') or { return 'null' }
 			flags := if f := node_field(n, 'flags') { c.text(f) } else { '' }
-			re := regexp_new(utf16_units(c.text(pattern)), flags) or { return 'null' }
+			re := jsregexp.regexp_new(utf16_units(c.text(pattern)), flags) or { return 'null' }
 			return '/${c.text(pattern)}/${re.flags}'
 		}
 		else {

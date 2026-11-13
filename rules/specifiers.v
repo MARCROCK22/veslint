@@ -1,6 +1,7 @@
 module rules
 
 import json2
+import jsregexp
 import os
 import tsgo { TypeResponse, handle_index, handle_path }
 
@@ -314,11 +315,11 @@ fn types_package_name(pkg string) string {
 fn (mut c Checker) package_pattern_matches(pkg string, text string) !bool {
 	if pkg !in c.package_patterns {
 		pattern := package_pattern(pkg)
-		c.package_patterns[pkg] = regexp_compile_annex_b(utf16_units(pattern)) or {
+		c.package_patterns[pkg] = jsregexp.regexp_compile_annex_b(utf16_units(pattern)) or {
 			return error("the `package` of a type specifier, ${json2.encode(pkg)}, is not a name typescript-eslint can look for: ${err.msg()} (it makes a regular expression of the name, and ESLint stops with V8's error for it)")
 		}
 	}
-	return regexp_test_annex_b(c.package_patterns[pkg], utf16_units(text))
+	return jsregexp.regexp_test_annex_b(c.package_patterns[pkg], utf16_units(text))
 }
 
 // package_pattern is the pattern typescript-eslint makes of a package name: the name, or the one

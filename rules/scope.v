@@ -1,6 +1,7 @@
 module rules
 
 import json2
+import jsregexp
 import math
 import tsgo { CompilerOptions }
 import treesitter { TokenEnds, children, has_child_kind, named_children, next_sibling, node_end, node_field, node_kind, node_parent, node_start }
@@ -1408,7 +1409,7 @@ fn (mut b ScopeBuilder) visit_jsx_name(name C.TSNode) {
 			text := b.text(name)
 			// `name[0].toUpperCase() === name[0]`
 			units := utf16_units(text)
-			if text == 'this' || (units.len > 0 && js_to_upper(units[..1]) == units[..1]) {
+			if text == 'this' || (units.len > 0 && jsregexp.js_to_upper(units[..1]) == units[..1]) {
 				b.read_value(name)
 			}
 		}

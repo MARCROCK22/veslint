@@ -1,6 +1,7 @@
 module rules
 
 import json2
+import jsregexp
 import time
 import tsgo { TypeResponse }
 import treesitter { Ident, children, has_child_kind, named_children, node_field, node_kind, node_parent, nodes_of_kind, nodes_of_kinds, position_of }
@@ -219,7 +220,7 @@ fn (c &Checker) cr_is_es5_constructor(function C.TSNode) bool {
 	if units.len == 0 {
 		return false
 	}
-	return js_to_lower(units[..1]) != units[..1]
+	return jsregexp.js_to_lower(units[..1]) != units[..1]
 }
 
 // cr_is_class_constructor ports isClassConstructor.

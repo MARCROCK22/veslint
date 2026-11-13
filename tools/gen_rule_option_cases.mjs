@@ -51,7 +51,14 @@ function ask(namespace, rules, id, options, severity) {
   }
   // A rule of ESLint core runs for real: what it reports (with a messageId, as `unicode-bom`
   // "always" on a file without a BOM) is not about the configuration.
-  const messages = linter.verify(`/* eslint ${comment} */\n`, [{ plugins }], { filename: 'a.js' }).filter(m => !m.messageId);
+  let messages;
+  try {
+    messages = linter.verify(`/* eslint ${comment} */\n`, [{ plugins }], { filename: 'a.js' }).filter(m => !m.messageId);
+  } catch {
+    // The rule itself throws when it runs with these options (no-restricted-syntax with a
+    // selector esquery does not read): that is not a case of the configuration.
+    return null;
+  }
   if (messages.length > 1 || (messages.length === 1 && messages[0].ruleId !== id)) {
     throw new Error(`unexpected messages for ${comment}: ${JSON.stringify(messages)}`);
   }
@@ -229,14 +236,24 @@ function optionLists(schema, first) {
 const severities = [2, 'error', 1, 'warn', 0, 'off'];
 
 function casesOf(namespace, rules, id, schema, first, limit) {
-  const lists = spread(optionLists(schema, first), limit, first.length + 2);
-  const cases = lists.map(options => ask(namespace, rules, id, options, 2));
+  const lists = [];
+  const cases = [];
+  for (const options of spread(optionLists(schema, first), limit, first.length + 2)) {
+    const found = ask(namespace, rules, id, options, 2);
+    if (found) {
+      lists.push(options);
+      cases.push(found);
+    }
+  }
   // Every severity, for a few lists that fit and a few that do not.
   const invalid = lists.filter((_, i) => cases[i].rejected).slice(0, 3);
   const valid = lists.filter((_, i) => !cases[i].rejected).slice(0, 2);
   for (const options of [...invalid, ...valid]) {
     for (const severity of severities.slice(1)) {
-      cases.push(ask(namespace, rules, id, options, severity));
+      const found = ask(namespace, rules, id, options, severity);
+      if (found) {
+        cases.push(found);
+      }
     }
   }
   return cases;

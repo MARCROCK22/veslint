@@ -1,6 +1,7 @@
 module rules
 
 import json2
+import jsregexp
 import time
 import treesitter { Ident, node_end, node_field, node_kind, node_parent, node_start, nodes_of_kinds, position_of }
 import offsets { utf16_offsets }
@@ -29,7 +30,7 @@ struct DotnOptions {
 	allow_private_class_property_access   bool
 	allow_protected_class_property_access bool
 	has_pattern                           bool
-	pattern                               RegexpProgram // allowPattern
+	pattern                               jsregexp.RegexpProgram // allowPattern
 }
 
 // dotn_options reads the options of typescript-eslint's rule, or of the core rule (`core`), which
@@ -45,13 +46,13 @@ fn dotn_options(options []json2.Any, core bool) !DotnOptions {
 	o := option_object(rule, options, keys)!
 	// `new RegExp(allowPattern, 'u')`, when the option is not empty.
 	mut has_pattern := false
-	mut allow_pattern := RegexpProgram{}
+	mut allow_pattern := jsregexp.RegexpProgram{}
 	if pattern := o.values['allowPattern'] {
 		if pattern !is string {
 			return error('option `allowPattern` of `${rule}` must be a string')
 		}
 		if (pattern as string) != '' {
-			allow_pattern = regexp_compile(pattern as string) or {
+			allow_pattern = jsregexp.regexp_compile(pattern as string) or {
 				return error('option `allowPattern` of `${rule}`: ${err.msg()}')
 			}
 			has_pattern = true
@@ -144,7 +145,7 @@ fn (mut c Checker) dotn_lint(root C.TSNode, abs_path string, o DotnOptions, type
 			continue
 		}
 		if o.has_pattern {
-			allowed := regexp_test(o.pattern, value) or {
+			allowed := jsregexp.regexp_test(o.pattern, value) or {
 				return error('option `allowPattern` of `${dot_notation}`: ${err.msg()}')
 			}
 			if allowed {

@@ -1,6 +1,7 @@
 module rules
 
 import json2
+import jsregexp
 import math
 
 // ESLint reads the text of a `/* eslint … */` comment first with levn 0.4.1, as an Object
@@ -316,7 +317,7 @@ fn levn_cast_text(text string) !(json2.Any, bool) {
 		slash := text.last_index('/') or { 0 }
 		flags := text[slash + 1..]
 		if slash > 0 && flags.bytes().all(it in [`g`, `i`, `m`, `y`]) {
-			regexp_new(utf16_units(text[1..slash]), flags) or {
+			jsregexp.regexp_new(utf16_units(text[1..slash]), flags) or {
 				return error('levn: invalid regular expression')
 			}
 			// A RegExp has no properties of its own: for the options of a rule it is an object

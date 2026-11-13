@@ -1,0 +1,8 @@
+tests/rules/no-restricted-properties/options/cases.ts:5:11	no-restricted-properties	restrictedObjectProperty	'Math.pow' is restricted from being used. Use the ** operator.
+tests/rules/no-restricted-properties/options/cases.ts:6:11	no-restricted-properties	restrictedObjectProperty	'Math.pow' is restricted from being used. Use the ** operator.
+tests/rules/no-restricted-properties/options/cases.ts:7:1	no-restricted-properties	restrictedProperty	'__defineGetter__' is restricted from being used.
+tests/rules/no-restricted-properties/options/cases.ts:8:7	no-restricted-properties	restrictedObjectProperty	'Math.pow' is restricted from being used. Use the ** operator.
+tests/rules/no-restricted-properties/options/cases.ts:9:1	no-restricted-properties	restrictedProperty	'forEach' is restricted from being used. Property 'forEach' is only allowed on these objects: arr.
+tests/rules/no-restricted-properties/options/cases.ts:10:15	no-restricted-properties	restrictedObjectProperty	'config.level' is restricted from being used. Only these properties are allowed: debug.
+tests/rules/no-restricted-properties/options/cases.ts:11:7	no-restricted-properties	restrictedObjectProperty	'config.level' is restricted from being used. Only these properties are allowed: debug.
+tests/rules/no-restricted-properties/options/cases.ts:12:12	no-restricted-properties	restrictedObjectProperty	'Math.pow' is restricted from being used. Use the ** operator.

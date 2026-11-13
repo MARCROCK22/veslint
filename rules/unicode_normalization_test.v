@@ -1,6 +1,7 @@
 module rules
 
 import json2
+import jsregexp
 import os
 
 // The cases come from tools/gen_unicode_normalization.mjs: what normalize gives in V8 for chosen
@@ -43,7 +44,7 @@ fn normalization_digest(strings [][]u32, form string) string {
 	for points in strings {
 		mut units := []u16{}
 		for cp in points {
-			append_utf16(mut units, cp)
+			jsregexp.append_utf16(mut units, cp)
 		}
 		for unit in js_normalize(units, form) {
 			h = (h ^ u32(unit)) * u32(0x01000193)
@@ -74,7 +75,7 @@ fn normalization_block_digest(first int, count int, form string) string {
 	mut units := []u16{cap: 2}
 	for cp in first .. first + count {
 		units.clear()
-		append_utf16(mut units, u32(cp))
+		jsregexp.append_utf16(mut units, u32(cp))
 		for unit in if form == '' { units } else { js_normalize(units, form) } {
 			h = (h ^ u32(unit)) * u32(0x01000193)
 		}

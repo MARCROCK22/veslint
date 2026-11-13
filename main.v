@@ -12,7 +12,7 @@ import tsgo
 // veslint: parses TypeScript with tree-sitter and asks tsgo (`tsc --api`) for the types.
 // Flow from PROMPT.md §4.
 
-const usage = 'usage: veslint <file.ts>... [--project <tsconfig.json>] [--all-identifiers] [--bench] [--per-identifier] [--rule <rule> | --config <eslint.config.mjs | rules.json> [--print-config]] [--fix] [--fixes] | veslint --server'
+const usage = 'usage: veslint <file.ts | directory>... [--project <tsconfig.json>] [--all-identifiers] [--bench] [--per-identifier] [--rule <rule> | --config <eslint.config.mjs | rules.json> [--print-config]] [--fix] [--fixes | --summary] | veslint --server'
 const default_timeout_ms = 30000
 // ESLint's MAX_AUTOFIX_PASSES.
 const max_fix_passes = 10
@@ -27,6 +27,7 @@ mut:
 	fixes           bool         // --fixes: print the fix and the suggestions of each finding
 	fix             bool         // --fix: apply the fixes and write the files, like `eslint --fix`
 	print_config    bool         // --print-config: print the resolved configuration and exit
+	summary         bool         // --summary: a table of the rules that report problems, not a line per problem
 	server          bool         // --server: lint the requests of an editor until stdin ends (server.v)
 	rules           []RuleConfig // the rules of --rule or of every configuration of --config
 	ignored         []string     // active rules from --config that veslint does not have
@@ -147,6 +148,7 @@ fn parse_args(args []string) !Options {
 	mut opts := Options{}
 	mut rule := ''
 	mut config := ''
+	mut targets := []string{} // the files and directories, in their order
 	mut i := 0
 	for i < args.len {
 		arg := args[i]
@@ -175,6 +177,9 @@ fn parse_args(args []string) !Options {
 			}
 			'--print-config' {
 				opts.print_config = true
+			}
+			'--summary' {
+				opts.summary = true
 			}
 			'--server' {
 				opts.server = true
@@ -206,10 +211,10 @@ fn parse_args(args []string) !Options {
 				if arg.starts_with('-') {
 					return error('unknown option: ${arg}')
 				}
-				if treesitter.is_javascript_path(arg) {
+				if !os.is_dir(arg) && treesitter.is_javascript_path(arg) {
 					return error('${arg}: veslint only reads TypeScript (.ts, .mts, .cts, .tsx)')
 				}
-				opts.files << arg
+				targets << arg
 			}
 		}
 		i++
@@ -221,8 +226,46 @@ fn parse_args(args []string) !Options {
 		}
 		return opts
 	}
-	if opts.files.len == 0 {
+	if targets.len == 0 {
 		return error('missing file to analyze')
+	}
+	// A directory brings its TypeScript files (directories.v); the ones ESLint's configuration does
+	// not lint are dropped below, without a word, as ESLint skips them.
+	mut dirs := []string{}
+	mut from_dir := map[string]string{} // the directory each file of a directory comes from (absolute path)
+	mut seen := map[string]bool{}
+	for target in targets {
+		if !os.is_dir(target) {
+			seen[os.abs_path(target)] = true
+			opts.files << target
+			continue
+		}
+		dirs << target
+		found := directory_files(target)
+		if found.len == 0 {
+			return error('No files matching the pattern "${target}" were found.')
+		}
+		for file in found {
+			abs := os.abs_path(file)
+			if abs in seen {
+				continue
+			}
+			seen[abs] = true
+			from_dir[abs] = target
+			opts.files << file
+		}
+	}
+	// With a directory and neither --rule nor --config, ESLint's configuration is the one the
+	// eslint command would use: ESLint finds the closest eslint.config.* of each file.
+	mut lookup := false
+	if dirs.len > 0 && rule == '' && config == '' {
+		config = find_flat_config(dirs[0]) or {
+			return error('no ESLint configuration (${flat_config_names.join(', ')}) in ${dirs[0]} or a directory above it; give one with --config, or a rule with --rule')
+		}
+		lookup = true
+	}
+	if opts.summary && opts.fixes {
+		return error('--summary and --fixes cannot be combined: --summary prints no problem lines')
 	}
 	if rule != '' && config != '' {
 		return error('--rule and --config cannot be combined')
@@ -256,7 +299,10 @@ fn parse_args(args []string) !Options {
 		return error('--print-config needs --config with an ESLint configuration file')
 	}
 	if config != '' {
-		opts.loaded = load_config_for(config, opts.files)!
+		opts.loaded = load_config_with(config, opts.files, lookup)!
+		if from_dir.len > 0 && !opts.print_config {
+			drop_unlinted(mut opts, from_dir, dirs)!
+		}
 		// The rules and the ignored ones of every configuration, for the mode and the warning.
 		for entry in opts.loaded.configs {
 			for r in entry.setup.rules {
@@ -274,7 +320,35 @@ fn parse_args(args []string) !Options {
 			return error('${config}: does not enable any veslint rule (${rules.names.join(', ')})')
 		}
 	}
+	if opts.summary && opts.rules.len == 0 {
+		return error('--summary needs rules: --rule, --config, or a directory with an ESLint configuration')
+	}
 	return opts
+}
+
+// drop_unlinted takes out of the run the files of a directory that ESLint does not lint (ignored by
+// the configuration, or matched by none of its `files`), as ESLint skips them when it walks a
+// directory. A directory left without files is an error, as in ESLint.
+fn drop_unlinted(mut opts Options, from_dir map[string]string, dirs []string) ! {
+	mut kept := []string{}
+	mut linted := map[string]bool{}
+	for file in opts.files {
+		abs := os.abs_path(file)
+		if dir := from_dir[abs] {
+			if abs in opts.loaded.file_notes {
+				opts.loaded.file_notes.delete(abs)
+				continue
+			}
+			linted[dir] = true
+		}
+		kept << file
+	}
+	for dir in dirs {
+		if dir !in linted {
+			return error('You are linting "${dir}", but all of the files matching the glob pattern "${dir}" are ignored.')
+		}
+	}
+	opts.files = kept
 }
 
 // timeout_from_env lowers the per-request timeout (30 s by default), to test the timeout case of
@@ -474,9 +548,15 @@ fn run_rules(opts Options, timeout time.Duration) !int {
 	bench.files = files.len
 	if tsconfigs.len == 0 {
 		// ESLint lints none of the files: only its message for each one.
+		mut summary := RuleSummary{}
 		for f in files {
-			println('${f.path}:0:0\t${rules.problem_rule}\twarning\t${tsv_field(f.note)}')
+			if opts.summary {
+				summary.add(rules.problem_rule, f.path, true)
+			} else {
+				println('${f.path}:0:0\t${rules.problem_rule}\twarning\t${tsv_field(f.note)}')
+			}
 		}
+		print(summary.table())
 		eprintln('${files.len} problems in ${files.len} files (${files.len} of them warnings)')
 		return 0
 	}
@@ -525,9 +605,14 @@ fn run_rules(opts Options, timeout time.Duration) !int {
 	mut warnings := 0
 	mut fixed_files := 0
 	mut stats := rules.Stats{}
+	mut summary := RuleSummary{}
 	for f in files {
 		if f.note != '' {
-			println('${f.path}:0:0\t${rules.problem_rule}\twarning\t${tsv_field(f.note)}')
+			if opts.summary {
+				summary.add(rules.problem_rule, f.path, true)
+			} else {
+				println('${f.path}:0:0\t${rules.problem_rule}\twarning\t${tsv_field(f.note)}')
+			}
 			problems++
 			warnings++
 			continue
@@ -606,7 +691,13 @@ fn run_rules(opts Options, timeout time.Duration) !int {
 		}
 		report := file_report(f.path, src, result, opts.fixes)
 		eprint(report.stderr)
-		print(report.stdout)
+		if opts.summary {
+			for finding in result.findings {
+				summary.add(finding.rule, f.path, finding.severity == 1)
+			}
+		} else {
+			print(report.stdout)
+		}
 		problems += report.problems
 		warnings += report.warnings
 	}
@@ -618,6 +709,7 @@ fn run_rules(opts Options, timeout time.Duration) !int {
 	bench.rule_types_ms = stats.types_ms
 	bench.rule_eval_ms = stats.eval_ms
 	bench.tsgo_requests = client.request_count()
+	print(summary.table())
 	fixed_note := if opts.fix { '; ${fixed_files} files fixed' } else { '' }
 	eprintln(summary_line(problems, files.len, warnings) + fixed_note)
 	print_bench(opts, mut bench, total)

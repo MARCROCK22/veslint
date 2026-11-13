@@ -114,6 +114,17 @@ pub fn check_options(rule string, options []json2.Any) !bool {
 		no_misleading_character_class { nmcc_options(options)! }
 		no_useless_escape { nue_options(options)! }
 		prefer_regex_literals { prl_options(options)! }
+		no_warning_comments { nwc_options(options)! }
+		no_restricted_globals { nrg_options(options)! }
+		no_restricted_properties { nrp_options(options)! }
+		no_restricted_exports { nre_options(options)! }
+		no_restricted_imports { nrim_options(options)! }
+		no_promise_executor_return { npe_options(options)! }
+		no_invalid_this { nith_options(options)! }
+		getter_return { gr_options(options)! }
+		no_unreachable_loop { nurl_options(options)! }
+		no_fallthrough { nft_options(options)! }
+		no_restricted_syntax { nrsx_options(options)! }
 		else { return false }
 	}
 	return true

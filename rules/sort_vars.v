@@ -1,6 +1,7 @@
 module rules
 
 import json2
+import jsregexp
 import time
 import treesitter { named_children, node_end, node_field, node_kind, node_start, position_of }
 
@@ -34,7 +35,7 @@ fn (mut c Checker) lint_sort_vars(root C.TSNode, abs_path string, mut stats Stat
 			}
 			declarations << declarator
 			units := utf16_units(c.identifier_name(id))
-			sortable << if ignore_case { js_to_lower(units) } else { units }
+			sortable << if ignore_case { jsregexp.js_to_lower(units) } else { units }
 			if init := node_field(declarator, 'value') {
 				if node_kind(unwrap_parens(init)) !in literal_kinds {
 					unfixable = true

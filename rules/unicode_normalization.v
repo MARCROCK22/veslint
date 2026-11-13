@@ -1,5 +1,7 @@
 module rules
 
+import jsregexp
+
 // String.prototype.normalize as V8 does it with ICU: the algorithm of UAX #15 on the tables of
 // unicode_normalization_data.v, which tools/gen_unicode_normalization.mjs takes from V8 itself
 // (the full decomposition of each code point, the order of the canonical combining classes and
@@ -22,13 +24,13 @@ const unicode_first_decomposable = u32(0xa0)
 // js_normalize ports String.prototype.normalize for one of the forms NFC, NFD, NFKC and NFKD.
 fn js_normalize(units []u16, form string) []u16 {
 	compatible := form == 'NFKC' || form == 'NFKD'
-	mut points := unicode_decompose(utf16_code_points(units), compatible)
+	mut points := unicode_decompose(jsregexp.utf16_code_points(units), compatible)
 	if form == 'NFC' || form == 'NFKC' {
 		points = unicode_compose(points)
 	}
 	mut out := []u16{cap: points.len}
 	for cp in points {
-		append_utf16(mut out, cp)
+		jsregexp.append_utf16(mut out, cp)
 	}
 	return out
 }
@@ -43,7 +45,7 @@ fn unicode_class_rank(cp u32) u32 {
 	if cp < unicode_class_ranks[0] {
 		return 0
 	}
-	i := unicode_case_entry(unicode_class_ranks, 2, cp)
+	i := jsregexp.unicode_case_entry(unicode_class_ranks, 2, cp)
 	return if i >= 0 { unicode_class_ranks[i + 1] } else { 0 }
 }
 

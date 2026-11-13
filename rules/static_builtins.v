@@ -1,5 +1,6 @@
 module rules
 
+import jsregexp
 import math
 
 // More callAllowed functions for static_value.v, with their exceptions (`none`, which ends the
@@ -159,7 +160,7 @@ fn stv_uri_decode(s []u16, preserve string) ?[]u16 {
 		if cp < minimum || (cp >= 0xD800 && cp <= 0xDFFF) || cp > 0x10FFFF {
 			return none
 		}
-		append_utf16(mut out, cp)
+		jsregexp.append_utf16(mut out, cp)
 		k++
 	}
 	return out
@@ -230,7 +231,7 @@ fn stv_from_code_point(args []JsAny) ?[]u16 {
 		if math.is_nan(n) || math.is_inf(n, 0) || n != math.trunc(n) || n < 0 || n > 0x10FFFF {
 			return none
 		}
-		append_utf16(mut out, u32(n))
+		jsregexp.append_utf16(mut out, u32(n))
 	}
 	return out
 }

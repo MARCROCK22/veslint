@@ -1,6 +1,9 @@
 module rules
 
+import codepath
+import estree
 import json2
+import jsregexp
 import time
 import tsgo { Client, CompilerOptions, ParameterResponse, SignatureResponse, SourceFileAst, SymbolResponse, TypeResponse }
 import treesitter { Ident, Parser, TokenEnds, children, first_named_child, named_children, node_end, node_field, node_kind, node_start, root_node, token_ends, tree_delete, tree_has_error }
@@ -249,6 +252,23 @@ pub const no_regex_spaces = 'no-regex-spaces'
 pub const no_useless_backreference = 'no-useless-backreference'
 pub const no_useless_escape = 'no-useless-escape'
 pub const prefer_regex_literals = 'prefer-regex-literals'
+pub const no_warning_comments = 'no-warning-comments'
+pub const no_restricted_globals = 'no-restricted-globals'
+pub const no_restricted_properties = 'no-restricted-properties'
+pub const no_restricted_exports = 'no-restricted-exports'
+pub const no_restricted_imports = 'no-restricted-imports'
+pub const no_constructor_return = 'no-constructor-return'
+pub const no_promise_executor_return = 'no-promise-executor-return'
+pub const no_invalid_this = 'no-invalid-this'
+pub const getter_return = 'getter-return'
+pub const no_unreachable_loop = 'no-unreachable-loop'
+pub const no_useless_return = 'no-useless-return'
+pub const no_unreachable = 'no-unreachable'
+pub const no_fallthrough = 'no-fallthrough'
+pub const constructor_super = 'constructor-super'
+pub const no_this_before_super = 'no-this-before-super'
+pub const no_useless_assignment = 'no-useless-assignment'
+pub const no_restricted_syntax = 'no-restricted-syntax'
 pub const names = [no_floating_promises, await_thenable, require_await, return_await,
 	no_misused_promises, no_unsafe_call, no_unsafe_member_access, no_unsafe_return,
 	no_unsafe_assignment, no_unsafe_argument, restrict_template_expressions,
@@ -306,7 +326,11 @@ pub const names = [no_floating_promises, await_thenable, require_await, return_a
 	no_var, prefer_const, vars_on_top, sort_vars, strict_rule, no_inner_declarations, no_lone_blocks,
 	no_loop_func, no_implicit_globals, no_unmodified_loop_condition, no_control_regex, no_div_regex,
 	no_empty_character_class, no_invalid_regexp, no_misleading_character_class, no_regex_spaces,
-	no_useless_backreference, no_useless_escape, prefer_regex_literals]
+	no_useless_backreference, no_useless_escape, prefer_regex_literals, no_warning_comments,
+	no_restricted_globals, no_restricted_properties, no_restricted_exports, no_restricted_imports,
+	no_constructor_return, no_promise_executor_return, no_invalid_this, getter_return,
+	no_unreachable_loop, no_useless_return, no_unreachable, no_fallthrough, constructor_super,
+	no_this_before_super, no_useless_assignment, no_restricted_syntax]
 
 // untyped_rules are the ported rules that need no types (`meta.docs.requiresTypeChecking` is false
 // in typescript-eslint): with only these, the command line makes no snapshot (Checker.make_snapshot).
@@ -345,7 +369,11 @@ pub const untyped_rules = [adjacent_overload_signatures, array_type, class_liter
 	no_var, prefer_const, vars_on_top, sort_vars, strict_rule, no_inner_declarations, no_lone_blocks,
 	no_loop_func, no_implicit_globals, no_unmodified_loop_condition, no_control_regex, no_div_regex,
 	no_empty_character_class, no_invalid_regexp, no_misleading_character_class, no_regex_spaces,
-	no_useless_backreference, no_useless_escape, prefer_regex_literals]
+	no_useless_backreference, no_useless_escape, prefer_regex_literals, no_warning_comments,
+	no_restricted_globals, no_restricted_properties, no_restricted_exports, no_restricted_imports,
+	no_constructor_return, no_promise_executor_return, no_invalid_this, getter_return,
+	no_unreachable_loop, no_useless_return, no_unreachable, no_fallthrough, constructor_super,
+	no_this_before_super, no_useless_assignment, no_restricted_syntax]
 
 // needs_types tells whether a rule asks tsgo for the types of the program.
 pub fn needs_types(rule string) bool {
@@ -593,6 +621,23 @@ pub const default_options = {
 	no_useless_backreference:                     '[]'
 	no_useless_escape:                            '[{"allowRegexCharacters":[]}]'
 	prefer_regex_literals:                        '[{"disallowRedundantWrapping":false}]'
+	no_warning_comments:                          '[{"location":"start","terms":["todo","fixme","xxx"]}]'
+	no_restricted_globals:                        '[]'
+	no_restricted_properties:                     '[]'
+	no_restricted_exports:                        '[{}]'
+	no_restricted_imports:                        '[]'
+	no_constructor_return:                        '[]'
+	no_promise_executor_return:                   '[{"allowVoid":false}]'
+	no_invalid_this:                              '[{"capIsConstructor":true}]'
+	getter_return:                                '[{"allowImplicit":false}]'
+	no_unreachable_loop:                          '[{"ignore":[]}]'
+	no_useless_return:                            '[]'
+	no_unreachable:                               '[]'
+	no_fallthrough:                               '[{"allowEmptyCase":false,"reportUnusedFallthroughComment":false}]'
+	constructor_super:                            '[]'
+	no_this_before_super:                         '[]'
+	no_useless_assignment:                        '[]'
+	no_restricted_syntax:                         '[]'
 }
 
 // Finding is a problem a rule found at a node.
@@ -963,6 +1008,23 @@ pub fn message(rule string, finding Finding) string {
 		no_useless_backreference { nub_messages }
 		no_useless_escape { nue_messages }
 		prefer_regex_literals { prl_messages }
+		no_warning_comments { nwc_messages }
+		no_restricted_globals { nrg_messages }
+		no_restricted_properties { nrp_messages }
+		no_restricted_exports { nre_messages }
+		no_restricted_imports { nrim_messages }
+		no_constructor_return { ncr_messages }
+		no_promise_executor_return { npe_messages }
+		no_invalid_this { nith_messages }
+		getter_return { gr_messages }
+		no_unreachable_loop { nurl_messages }
+		no_useless_return { nuret_messages }
+		no_unreachable { nunr_messages }
+		no_fallthrough { nft_messages }
+		constructor_super { csup_messages }
+		no_this_before_super { ntbs_messages }
+		no_useless_assignment { nuas_messages }
+		no_restricted_syntax { nrsx_messages }
 		else { map[string]string{} }
 	}
 	return interpolate(messages[finding.message_id] or { finding.message_id }, finding.data)
@@ -1082,6 +1144,7 @@ pub fn (mut c Checker) lint_file(parser Parser, config LintConfig, src string, a
 	inline := c.inline_config(root, config)
 	c.scope_setup = c.file_scope_setup(config, inline)
 	mut findings := []Finding{}
+	c.file_rules = inline.rules.map(it.name)
 	for setting in inline.rules {
 		if c.lint_stop.stop() {
 			return error(lint_stopped)
@@ -1821,6 +1884,57 @@ fn (mut c Checker) lint_rule(rule string, root C.TSNode, abs_path string, mut st
 		prefer_regex_literals {
 			return c.lint_prefer_regex_literals(root, abs_path, mut stats)!
 		}
+		no_warning_comments {
+			return c.lint_no_warning_comments(root, abs_path, mut stats)!
+		}
+		no_restricted_globals {
+			return c.lint_no_restricted_globals(root, abs_path, mut stats)!
+		}
+		no_restricted_properties {
+			return c.lint_no_restricted_properties(root, abs_path, mut stats)!
+		}
+		no_restricted_exports {
+			return c.lint_no_restricted_exports(root, abs_path, mut stats)!
+		}
+		no_restricted_imports {
+			return c.lint_no_restricted_imports(root, abs_path, mut stats)!
+		}
+		no_constructor_return {
+			return c.lint_no_constructor_return(root, abs_path, mut stats)!
+		}
+		no_promise_executor_return {
+			return c.lint_no_promise_executor_return(root, abs_path, mut stats)!
+		}
+		no_invalid_this {
+			return c.lint_no_invalid_this(root, abs_path, mut stats)!
+		}
+		getter_return {
+			return c.lint_getter_return(root, abs_path, mut stats)!
+		}
+		no_unreachable_loop {
+			return c.lint_no_unreachable_loop(root, abs_path, mut stats)!
+		}
+		no_useless_return {
+			return c.lint_no_useless_return(root, abs_path, mut stats)!
+		}
+		no_unreachable {
+			return c.lint_no_unreachable(root, abs_path, mut stats)!
+		}
+		no_fallthrough {
+			return c.lint_no_fallthrough(root, abs_path, mut stats)!
+		}
+		constructor_super {
+			return c.lint_constructor_super(root, abs_path, mut stats)!
+		}
+		no_this_before_super {
+			return c.lint_no_this_before_super(root, abs_path, mut stats)!
+		}
+		no_useless_assignment {
+			return c.lint_no_useless_assignment(root, abs_path, mut stats)!
+		}
+		no_restricted_syntax {
+			return c.lint_no_restricted_syntax(root, abs_path, mut stats)!
+		}
 		else { return error('unknown rule: ${rule}') }
 	}
 }
@@ -1892,7 +2006,7 @@ mut:
 	targets_unsigned    map[u64]bool                       // generic types an instance of which has no signatures, by kind of signature
 	file_metadata_cache map[string]tsgo.SourceFileMetadata // by tsgo path (file_metadata)
 	package_name_cache  map[string]string                  // package.json name of each package directory; '' if it gives no package id
-	package_patterns    map[string]RegexpProgram           // the regular expression typescript-eslint makes of the `package` of a type specifier
+	package_patterns    map[string]jsregexp.RegexpProgram  // the regular expression typescript-eslint makes of the `package` of a type specifier
 	project_directory   string          // directory of the tsconfig (set_project_directory): what `from: "file"` specifiers are relative to
 	program_directory   string          // or this one, when the configuration of the file gives it (LintConfig.program_directory)
 	ecma_version        int             // the normalized languageOptions.ecmaVersion of the file being linted
@@ -1918,10 +2032,19 @@ mut:
 	scope_setup      ScopeSetup
 	scope_libs_cache map[string]&ScopeLibs
 	nc_unused        map[int]bool // naming-convention: the unused variables of the file
+	// file_rules are the rules that run on the file being linted (what one rule may see of
+	// another: ESLint runs them on the same scope manager)
+	file_rules []string
 	// asked before each rule of a file whether to give the lint up (set_lint_stop)
 	lint_stop LintStop = NoLintStop{}
 	// tokens and comments of the file (source_tokens), built on first use (per file)
 	file_tokens &SourceTokens = unsafe { nil }
+	// the ESTree of the file and its code path analysis (estree_bridge.v), built on first use (per
+	// file)
+	file_es_state         EsFileState
+	file_es               estree.EsTree
+	file_code_paths       codepath.Analysis
+	file_code_paths_built bool
 	// no-deprecated: the reason of the first @deprecated tag of each symbol, or ndep_not_deprecated;
 	// kept for the whole run, as symbol ids are fixed for a Checker
 	jsdoc_deprecation_cache map[int]string

@@ -1,0 +1,1 @@
+[{"paths":["fs",{"name":"lodash","importNames":["chain"],"message":"Use native methods."},{"name":"react","allowImportNames":["useState"]},{"name":"types-only","allowTypeImports":true}],"patterns":[{"group":["app/legacy/*","!app/legacy/ok"],"message":"Legacy code."},{"regex":"^@internal/","caseSensitive":true},{"group":["utils/*"],"importNamePattern":"^unsafe"}]}]

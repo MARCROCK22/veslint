@@ -1,4 +1,4 @@
-// Generates tests/regexp_match_cases.json for rules/regexp_match_test.v: for each pattern and
+// Generates tests/regexp_match_cases.json for jsregexp/regexp_match_test.v: for each pattern and
 // text, whether `new RegExp(pattern, 'u').test(text)` is true in the Node that runs this script
 // (V8). Dev-time only: run `node tools/gen_regexp_match_cases.mjs` after adding cases.
 import { execFileSync } from 'node:child_process';
@@ -303,7 +303,7 @@ cases.push(...randomCases);
 // `/\\p{Lu}S/iu` does), and without them it misses others (`/(?m:(?im:s+))+?/u` does not match
 // `S`). It stops optimizing by itself once a process has generated much regexp code. Only the
 // cases that V8 answers the same both ways are kept, each batch of patterns in two new
-// processes: rules/regexp_match.v follows the specification there.
+// processes: jsregexp/regexp_match.v follows the specification there.
 const worker = `
 const optimized = process.execArgv.includes('--regexp-optimization');
 const cases = JSON.parse(require('node:fs').readFileSync(0, 'utf8'));

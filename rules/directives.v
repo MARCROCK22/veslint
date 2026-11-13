@@ -1,6 +1,7 @@
 module rules
 
 import json2
+import jsregexp
 import offsets
 import treesitter { Ident, node_end, node_start, nodes_of_kind, position_of }
 
@@ -1031,8 +1032,8 @@ fn (mut c Checker) directive_rule_removal(comment DirectiveComment, rule string)
 		escaped << ch
 	}
 	pattern := '(?:^|\\s*,\\s*)(?<quote>[\'"]?)${escaped.bytestr()}\\k<quote>(?:\\s*,\\s*|$)'
-	prog := regexp_compile(pattern) or { return false, Fix{} }
-	found, from, to := regexp_search(prog, list_text) or { return false, Fix{} }
+	prog := jsregexp.regexp_compile(pattern) or { return false, Fix{} }
+	found, from, to := jsregexp.regexp_search(prog, list_text) or { return false, Fix{} }
 	if !found {
 		return false, Fix{}
 	}

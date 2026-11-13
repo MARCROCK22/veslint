@@ -7,7 +7,8 @@ import treesitter { named_children, node_field, node_kind, position_of }
 // Port of the `no-deep-imports` rule of @slipher/eslint-plugin 1.1.0 (it has no options): a named
 // import from `seyfert/lib` or a path under it of a name the root of the package (`seyfert`, as it
 // resolves from the file) exports. When every specifier of the import is such a name, the first
-// report fixes the source into 'seyfert'.
+// report fixes the source into 'seyfert', with the quotes it was written with (the plugin always
+// writes single quotes).
 
 const sy_ndi_messages = {
 	'preferRoot': "'{{name}}' is exported from 'seyfert'; import it from the package root, not '{{source}}'."
@@ -54,7 +55,7 @@ fn (mut c Checker) lint_seyfert_no_deep_imports(root C.TSNode, abs_path string, 
 					message_id: 'preferRoot'
 					data:       data
 					has_fix:    true
-					fix:        fix_replace(source_node, "'seyfert'")
+					fix:        fix_replace(source_node, sy_ndi_root_source(c.text(source_node)))
 				}
 			} else {
 				Finding{
@@ -101,4 +102,11 @@ fn (c &Checker) sy_ndi_imported_name(specifier C.TSNode) string {
 		return c.literal_string_value(name) or { '' }
 	}
 	return c.identifier_name(name)
+}
+
+// sy_ndi_root_source is the fixed source: `seyfert` with the quotes the source was written with
+// (the plugin always writes single quotes).
+fn sy_ndi_root_source(source string) string {
+	quote := if source.starts_with('"') { '"' } else { "'" }
+	return '${quote}seyfert${quote}'
 }

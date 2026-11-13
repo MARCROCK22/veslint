@@ -398,6 +398,7 @@ fn (mut c Checker) reset_file_types() {
 	c.attempted = map[u64]bool{}
 	c.file_scopes = unsafe { nil }
 	c.file_tokens = unsafe { nil }
+	c.reset_es_file()
 }
 
 // resolve_new requests in a single getTypeAtLocations the types of the spans not yet tried in

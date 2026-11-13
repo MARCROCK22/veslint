@@ -1,0 +1,5 @@
+tests/rules/constructor-super/cases.ts:6:3	constructor-super	missingAll	Expected to call 'super()'.
+tests/rules/constructor-super/cases.ts:11:3	constructor-super	missingSome	Lacked a call of 'super()' in some code paths.
+tests/rules/constructor-super/cases.ts:20:5	constructor-super	duplicate	Unexpected duplicate 'super()'.
+tests/rules/constructor-super/cases.ts:24:3	constructor-super	missingAll	Expected to call 'super()'.
+tests/rules/constructor-super/cases.ts:33:5	constructor-super	badSuper	Unexpected 'super()' because 'super' is not a constructor.

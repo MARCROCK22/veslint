@@ -323,6 +323,47 @@ else
 	ko "a VESLINT_CPUS that is not a number of CPUs (code $code)"
 	cat "$TMP/cpus.err"
 fi
+# Directories (directories.v): `veslint .` lints the TypeScript files under the directory, as
+# `eslint .` walks it, without the ones ESLint's configuration does not lint (tests/config ignores
+# ignored/** and **/*.gen.ts, which a file given by name reports): with --config, and with bun
+# finding eslint.config.mjs as the eslint command does. --summary prints the table of the rules
+# that report problems (tests/config/summary.txt).
+grep -v '^ignored/a\.ts:\|^skipped\.gen\.ts:' tests/config/expected.txt > "$TMP/dir-expected.txt"
+code=0
+(cd tests/config && ../../veslint --config resolved.json --fixes .) > "$TMP/dir.out" 2> "$TMP/dir.err" || code=$?
+if [[ $code -eq 1 ]] && diff -u "$TMP/dir-expected.txt" "$TMP/dir.out"; then
+	ok "a directory with --config: the files the configuration lints ($(wc -l < "$TMP/dir-expected.txt") lines)"
+else
+	ko "a directory with --config (code $code)"
+	cat "$TMP/dir.err"
+fi
+if command -v bun > /dev/null && [[ -d build/eval/spider-byte/node_modules/eslint ]]; then
+	code=0
+	(cd tests/config && VESLINT_ESLINT_DIR=../../build/eval/spider-byte ../../veslint --fixes .) > "$TMP/dir-bun.out" 2> "$TMP/dir-bun.err" || code=$?
+	if [[ $code -eq 1 ]] && diff -u "$TMP/dir-expected.txt" "$TMP/dir-bun.out"; then
+		ok "a directory without --config: the closest eslint.config.mjs, through bun"
+	else
+		ko "a directory without --config, through bun (code $code)"
+		cat "$TMP/dir-bun.err"
+	fi
+fi
+code=0
+(cd tests/config && ../../veslint --config resolved.json --summary .) > "$TMP/summary.out" 2> "$TMP/summary.err" || code=$?
+if [[ $code -eq 1 ]] && diff -u tests/config/summary.txt "$TMP/summary.out" &&
+	[[ $(tail -1 "$TMP/summary.err") == "$(tail -1 "$TMP/dir.err")" ]]; then
+	ok "--summary: the table of the rules that report problems"
+else
+	ko "--summary (code $code)"
+	cat "$TMP/summary.err"
+fi
+mkdir -p "$TMP/no-ts/sub" "$TMP/no-config"
+echo 'let x = 1;' > "$TMP/no-config/a.ts"
+expect_usage_error "a directory whose files are all ignored" 'all of the files matching the glob pattern "tests/config/ignored" are ignored' \
+	--config tests/config/resolved.json tests/config/ignored
+expect_usage_error "a directory without TypeScript files" "No files matching the pattern" "$TMP/no-ts"
+expect_usage_error "a directory without --config and no eslint.config.* above it" "no ESLint configuration" "$TMP/no-config"
+expect_usage_error "--summary cannot be combined with --fixes" "cannot be combined" --summary --fixes --rule no-var app.ts
+expect_usage_error "--summary needs rules" "--summary needs rules" --summary app.ts
 expect_usage_error "--rule takes a single rule" "a single rule" \
 	--rule @typescript-eslint/no-floating-promises --rule @typescript-eslint/await-thenable app.ts
 expect_usage_error "--rule cannot be combined with --all-identifiers" "cannot be combined" \
@@ -400,7 +441,9 @@ code=0
 : > "$TMP/all.out"
 : > "$TMP/all.err"
 veslint_batched "$TMP/all.out" "$TMP/all.err" --config "$TMP/all.json" -- "${all_cases[@]}" || code=$?
-if [[ $code -eq 1 ]] && diff <(sort "$TMP/all.out") <(sort "$TMP/per-rule.out") > /dev/null &&
+# tests/rules/every.known.txt: findings of a rule alone that the run with every rule does not give
+# (one rule sees what another did to the scope manager, as in ESLint).
+if [[ $code -eq 1 ]] && diff <(sort "$TMP/all.out") <(grep -vxF -f <(grep -v '^#' tests/rules/every.known.txt) "$TMP/per-rule.out" | sort) > /dev/null &&
 	grep -q 'ignores them: semi, @stylistic/indent$' "$TMP/all.err"; then
 	ok "--config with every rule: the same findings as each --rule ($(wc -l < "$TMP/all.out"))"
 else

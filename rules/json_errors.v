@@ -1,5 +1,7 @@
 module rules
 
+import jsregexp
+
 // The message of the SyntaxError V8 (the engine ESLint runs on) throws from `JSON.parse(text)`,
 // for the error ESLint prints when a `/* eslint … */` comment cannot be read ("Failed to parse
 // JSON from '…': <that message>"). It follows V8's JsonParser: the same order of checks, the
@@ -96,18 +98,18 @@ fn (mut p JsonErrorParser) unexpected() bool {
 	}
 	token := stv_units_string([ch])
 	if p.src.len < json_min_length_for_context {
-		p.error = "Unexpected token '${token}', \"${stv_units_string(p.src)}\" is not valid JSON"
+		p.error = 'Unexpected token \'${token}\', "${stv_units_string(p.src)}" is not valid JSON'
 		return false
 	}
 	if p.pos < json_max_context {
 		context := stv_units_string(p.src[..p.pos + json_max_context])
-		p.error = "Unexpected token '${token}', \"${context}\"... is not valid JSON"
+		p.error = 'Unexpected token \'${token}\', "${context}"... is not valid JSON'
 	} else if p.pos < p.src.len - json_max_context {
 		context := stv_units_string(p.src[p.pos - json_max_context..p.pos + json_max_context])
-		p.error = "Unexpected token '${token}', ...\"${context}\"... is not valid JSON"
+		p.error = 'Unexpected token \'${token}\', ..."${context}"... is not valid JSON'
 	} else {
 		context := stv_units_string(p.src[p.pos - json_max_context..])
-		p.error = "Unexpected token '${token}', ...\"${context}\" is not valid JSON"
+		p.error = 'Unexpected token \'${token}\', ..."${context}" is not valid JSON'
 	}
 	return false
 }
@@ -227,7 +229,7 @@ fn (mut p JsonErrorParser) string() bool {
 		escape := p.src[p.pos]
 		if escape == `u` {
 			for i in 1 .. 5 {
-				if p.pos + i >= p.src.len || regexp_hex_value(u32(p.src[p.pos + i])) < 0 {
+				if p.pos + i >= p.src.len || jsregexp.regexp_hex_value(u32(p.src[p.pos + i])) < 0 {
 					p.pos += i
 					return p.fail('Bad Unicode escape')
 				}

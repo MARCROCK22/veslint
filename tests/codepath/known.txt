@@ -1,0 +1,4 @@
+# Files of the corpus of tests/codepath/run.sh whose code path events differ from ESLint's, with the
+# reason (paths relative to the corpus directory; up/ holds the code of the upstream cases).
+up/1c2abd520cb29f92.ts	its ESTree differs (tests/estree/known.txt)
+up/1fb4d0f5d103cd90.ts	its ESTree differs (tests/estree/known.txt)

@@ -1,0 +1,11 @@
+tests/rules/no-restricted-exports/options/cases.ts:4:10	no-restricted-exports	restrictedNamed	'foo' is restricted from being used as an exported name.
+tests/rules/no-restricted-exports/options/cases.ts:5:14	no-restricted-exports	restrictedNamed	'barOne' is restricted from being used as an exported name.
+tests/rules/no-restricted-exports/options/cases.ts:5:28	no-restricted-exports	restrictedNamed	'barTwo' is restricted from being used as an exported name.
+tests/rules/no-restricted-exports/options/cases.ts:6:17	no-restricted-exports	restrictedNamed	'then' is restricted from being used as an exported name.
+tests/rules/no-restricted-exports/options/cases.ts:7:14	no-restricted-exports	restrictedNamed	'barClass' is restricted from being used as an exported name.
+tests/rules/no-restricted-exports/options/cases.ts:8:17	no-restricted-exports	restrictedDefault	Exporting 'default' is restricted.
+tests/rules/no-restricted-exports/options/cases.ts:10:17	no-restricted-exports	restrictedDefault	Exporting 'default' is restricted.
+tests/rules/no-restricted-exports/options/cases.ts:11:10	no-restricted-exports	restrictedDefault	Exporting 'default' is restricted.
+tests/rules/no-restricted-exports/options/cases.ts:12:13	no-restricted-exports	restrictedDefault	Exporting 'default' is restricted.
+tests/rules/no-restricted-exports/options/cases.ts:13:13	no-restricted-exports	restrictedNamed	'bar' is restricted from being used as an exported name.
+tests/rules/no-restricted-exports/options/cases.ts:14:1	no-restricted-exports	restrictedDefault	Exporting 'default' is restricted.

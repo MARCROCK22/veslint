@@ -1,6 +1,7 @@
 module rules
 
 import json2
+import jsregexp
 import time
 import treesitter { node_field, node_kind, node_parent, position_of }
 
@@ -151,8 +152,8 @@ fn fnm_is_identifier(name string, es5 bool) bool {
 	} else {
 		'^[\\p{ID_Start}$_][\\p{ID_Continue}$\\u200C\\u200D]*$'
 	}
-	program := regexp_compile(pattern) or { return false }
-	return regexp_test(program, name) or { false }
+	program := jsregexp.regexp_compile(pattern) or { return false }
+	return jsregexp.regexp_test(program, name) or { false }
 }
 
 // fnm_is_module_exports ports isModuleExports: `module.exports` or `module["exports"]`.

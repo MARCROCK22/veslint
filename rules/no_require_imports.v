@@ -1,6 +1,7 @@
 module rules
 
 import json2
+import jsregexp
 import time
 import treesitter { children, node_field, node_kind, position_of }
 
@@ -13,15 +14,15 @@ const nri_messages = {
 }
 
 struct NriOptions {
-	allow           []RegexpProgram
+	allow           []jsregexp.RegexpProgram
 	allow_as_import bool
 }
 
 fn nri_options(options []json2.Any) !NriOptions {
 	o := option_object(no_require_imports, options, ['allow', 'allowAsImport'])!
-	mut allow := []RegexpProgram{}
+	mut allow := []jsregexp.RegexpProgram{}
 	for pattern in o.string_list('allow')! {
-		allow << regexp_compile(pattern) or {
+		allow << jsregexp.regexp_compile(pattern) or {
 			return error('option `allow` of `${no_require_imports}`: ${err.msg()}')
 		}
 	}
@@ -97,7 +98,7 @@ fn (c &Checker) nri_is_allowed(o NriOptions, argument C.TSNode) !bool {
 	// A template with substitutions has no static value.
 	value := c.literal_name(node) or { return false }
 	for pattern in o.allow {
-		matched := regexp_test(pattern, value) or {
+		matched := jsregexp.regexp_test(pattern, value) or {
 			return error('option `allow` of `${no_require_imports}`: ${err.msg()}')
 		}
 		if matched {

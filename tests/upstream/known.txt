@@ -290,3 +290,101 @@ veslint	no-misleading-character-class/i113	veslint resolves the global to TypeSc
 veslint	no-misleading-character-class/v44	the code has a lone surrogate, which a UTF-8 file cannot hold
 eslint	no-misleading-character-class/i116	typescript-eslint's parser: Octal escape sequences are not allowed.
 veslint	no-misleading-character-class/i116	TypeScript does not allow octal escapes in strings: veslint gives the string no value
+# C11: typescript-eslint's scope manager ignores ecmaFeatures.impliedStrict, and reads a 'use strict'
+# directive in ECMAScript 3 too (no-invalid-this asks whether the scope is strict).
+eslint	no-invalid-this/r0/i2	typescript-eslint's scope manager ignores ecmaFeatures.impliedStrict
+veslint	no-invalid-this/r0/i2	typescript-eslint's scope manager ignores ecmaFeatures.impliedStrict
+eslint	no-invalid-this/r0/i7	typescript-eslint's scope manager ignores ecmaFeatures.impliedStrict
+veslint	no-invalid-this/r0/i7	typescript-eslint's scope manager ignores ecmaFeatures.impliedStrict
+eslint	no-invalid-this/r0/i10	typescript-eslint's scope manager ignores ecmaFeatures.impliedStrict
+veslint	no-invalid-this/r0/i10	typescript-eslint's scope manager ignores ecmaFeatures.impliedStrict
+eslint	no-invalid-this/r0/i13	typescript-eslint's scope manager ignores ecmaFeatures.impliedStrict
+veslint	no-invalid-this/r0/i13	typescript-eslint's scope manager ignores ecmaFeatures.impliedStrict
+eslint	no-invalid-this/r0/i16	typescript-eslint's scope manager ignores ecmaFeatures.impliedStrict
+veslint	no-invalid-this/r0/i16	typescript-eslint's scope manager ignores ecmaFeatures.impliedStrict
+eslint	no-invalid-this/r0/i27	typescript-eslint's scope manager ignores ecmaFeatures.impliedStrict
+veslint	no-invalid-this/r0/i27	typescript-eslint's scope manager ignores ecmaFeatures.impliedStrict
+eslint	no-invalid-this/r0/i29	typescript-eslint's scope manager ignores ecmaFeatures.impliedStrict
+veslint	no-invalid-this/r0/i29	typescript-eslint's scope manager ignores ecmaFeatures.impliedStrict
+eslint	no-invalid-this/r0/i32	typescript-eslint's scope manager ignores ecmaFeatures.impliedStrict
+veslint	no-invalid-this/r0/i32	typescript-eslint's scope manager ignores ecmaFeatures.impliedStrict
+eslint	no-invalid-this/r0/i35	typescript-eslint's scope manager ignores ecmaFeatures.impliedStrict
+veslint	no-invalid-this/r0/i35	typescript-eslint's scope manager ignores ecmaFeatures.impliedStrict
+eslint	no-invalid-this/r0/i38	typescript-eslint's scope manager ignores ecmaFeatures.impliedStrict
+veslint	no-invalid-this/r0/i38	typescript-eslint's scope manager ignores ecmaFeatures.impliedStrict
+eslint	no-invalid-this/r0/i45	typescript-eslint's scope manager ignores ecmaFeatures.impliedStrict
+veslint	no-invalid-this/r0/i45	typescript-eslint's scope manager ignores ecmaFeatures.impliedStrict
+eslint	no-invalid-this/r0/i56	typescript-eslint's scope manager ignores ecmaFeatures.impliedStrict
+veslint	no-invalid-this/r0/i56	typescript-eslint's scope manager ignores ecmaFeatures.impliedStrict
+eslint	no-invalid-this/r0/i60	typescript-eslint's scope manager ignores ecmaFeatures.impliedStrict
+veslint	no-invalid-this/r0/i60	typescript-eslint's scope manager ignores ecmaFeatures.impliedStrict
+eslint	no-invalid-this/r0/i63	typescript-eslint's scope manager ignores ecmaFeatures.impliedStrict
+veslint	no-invalid-this/r0/i63	typescript-eslint's scope manager ignores ecmaFeatures.impliedStrict
+eslint	no-invalid-this/r0/i66	typescript-eslint's scope manager ignores ecmaFeatures.impliedStrict
+veslint	no-invalid-this/r0/i66	typescript-eslint's scope manager ignores ecmaFeatures.impliedStrict
+eslint	no-invalid-this/r0/i69	typescript-eslint's scope manager ignores ecmaFeatures.impliedStrict
+veslint	no-invalid-this/r0/i69	typescript-eslint's scope manager ignores ecmaFeatures.impliedStrict
+eslint	no-invalid-this/r0/i72	typescript-eslint's scope manager ignores ecmaFeatures.impliedStrict
+veslint	no-invalid-this/r0/i72	typescript-eslint's scope manager ignores ecmaFeatures.impliedStrict
+eslint	no-invalid-this/r0/i75	typescript-eslint's scope manager ignores ecmaFeatures.impliedStrict
+veslint	no-invalid-this/r0/i75	typescript-eslint's scope manager ignores ecmaFeatures.impliedStrict
+eslint	no-invalid-this/r0/i78	typescript-eslint's scope manager ignores ecmaFeatures.impliedStrict
+veslint	no-invalid-this/r0/i78	typescript-eslint's scope manager ignores ecmaFeatures.impliedStrict
+eslint	no-invalid-this/r0/i81	typescript-eslint's scope manager ignores ecmaFeatures.impliedStrict
+veslint	no-invalid-this/r0/i81	typescript-eslint's scope manager ignores ecmaFeatures.impliedStrict
+eslint	no-invalid-this/r0/i84	typescript-eslint's scope manager ignores ecmaFeatures.impliedStrict
+veslint	no-invalid-this/r0/i84	typescript-eslint's scope manager ignores ecmaFeatures.impliedStrict
+eslint	no-invalid-this/r0/i87	typescript-eslint's scope manager ignores ecmaFeatures.impliedStrict
+veslint	no-invalid-this/r0/i87	typescript-eslint's scope manager ignores ecmaFeatures.impliedStrict
+eslint	no-invalid-this/r0/i90	typescript-eslint's scope manager ignores ecmaFeatures.impliedStrict
+veslint	no-invalid-this/r0/i90	typescript-eslint's scope manager ignores ecmaFeatures.impliedStrict
+eslint	no-invalid-this/r0/i93	typescript-eslint's scope manager ignores ecmaFeatures.impliedStrict
+veslint	no-invalid-this/r0/i93	typescript-eslint's scope manager ignores ecmaFeatures.impliedStrict
+eslint	no-invalid-this/r0/i96	typescript-eslint's scope manager ignores ecmaFeatures.impliedStrict
+veslint	no-invalid-this/r0/i96	typescript-eslint's scope manager ignores ecmaFeatures.impliedStrict
+eslint	no-invalid-this/r0/i99	typescript-eslint's scope manager ignores ecmaFeatures.impliedStrict
+veslint	no-invalid-this/r0/i99	typescript-eslint's scope manager ignores ecmaFeatures.impliedStrict
+eslint	no-invalid-this/r0/i102	typescript-eslint's scope manager ignores ecmaFeatures.impliedStrict
+veslint	no-invalid-this/r0/i102	typescript-eslint's scope manager ignores ecmaFeatures.impliedStrict
+eslint	no-invalid-this/r0/i105	typescript-eslint's scope manager ignores ecmaFeatures.impliedStrict
+veslint	no-invalid-this/r0/i105	typescript-eslint's scope manager ignores ecmaFeatures.impliedStrict
+eslint	no-invalid-this/r0/i108	typescript-eslint's scope manager ignores ecmaFeatures.impliedStrict
+veslint	no-invalid-this/r0/i108	typescript-eslint's scope manager ignores ecmaFeatures.impliedStrict
+eslint	no-invalid-this/r0/i111	typescript-eslint's scope manager ignores ecmaFeatures.impliedStrict
+veslint	no-invalid-this/r0/i111	typescript-eslint's scope manager ignores ecmaFeatures.impliedStrict
+eslint	no-invalid-this/r0/i114	typescript-eslint's scope manager ignores ecmaFeatures.impliedStrict
+veslint	no-invalid-this/r0/i114	typescript-eslint's scope manager ignores ecmaFeatures.impliedStrict
+eslint	no-invalid-this/r0/i117	typescript-eslint's scope manager ignores ecmaFeatures.impliedStrict
+veslint	no-invalid-this/r0/i117	typescript-eslint's scope manager ignores ecmaFeatures.impliedStrict
+eslint	no-invalid-this/r0/i120	typescript-eslint's scope manager ignores ecmaFeatures.impliedStrict
+veslint	no-invalid-this/r0/i120	typescript-eslint's scope manager ignores ecmaFeatures.impliedStrict
+eslint	no-invalid-this/r0/i123	typescript-eslint's scope manager ignores ecmaFeatures.impliedStrict
+veslint	no-invalid-this/r0/i123	typescript-eslint's scope manager ignores ecmaFeatures.impliedStrict
+eslint	no-invalid-this/r0/i126	typescript-eslint's scope manager ignores ecmaFeatures.impliedStrict
+veslint	no-invalid-this/r0/i126	typescript-eslint's scope manager ignores ecmaFeatures.impliedStrict
+eslint	no-invalid-this/r0/i129	typescript-eslint's scope manager ignores ecmaFeatures.impliedStrict
+veslint	no-invalid-this/r0/i129	typescript-eslint's scope manager ignores ecmaFeatures.impliedStrict
+eslint	no-invalid-this/r0/i132	typescript-eslint's scope manager ignores ecmaFeatures.impliedStrict
+veslint	no-invalid-this/r0/i132	typescript-eslint's scope manager ignores ecmaFeatures.impliedStrict
+eslint	no-invalid-this/r0/i135	typescript-eslint's scope manager ignores ecmaFeatures.impliedStrict
+veslint	no-invalid-this/r0/i135	typescript-eslint's scope manager ignores ecmaFeatures.impliedStrict
+eslint	no-invalid-this/r0/v319	typescript-eslint's scope manager reads 'use strict' in ECMAScript 3
+veslint	no-invalid-this/r0/v319	typescript-eslint's scope manager reads 'use strict' in ECMAScript 3
+eslint	no-invalid-this/r0/v320	typescript-eslint's scope manager reads 'use strict' in ECMAScript 3
+veslint	no-invalid-this/r0/v320	typescript-eslint's scope manager reads 'use strict' in ECMAScript 3
+eslint	no-invalid-this/r0/v321	typescript-eslint's scope manager ignores ecmaFeatures.impliedStrict
+veslint	no-invalid-this/r0/v321	typescript-eslint's scope manager ignores ecmaFeatures.impliedStrict
+# C11: cases that disable the rule by the name RuleTester gives it, or turn on rules their test file
+# defines.
+eslint	no-fallthrough/v38	disables rule-to-test/no-fallthrough, the name RuleTester gives the rule
+veslint	no-fallthrough/v38	disables rule-to-test/no-fallthrough, the name RuleTester gives the rule
+eslint	no-fallthrough/v40	disables rule-to-test/no-fallthrough, the name RuleTester gives the rule
+veslint	no-fallthrough/v40	disables rule-to-test/no-fallthrough, the name RuleTester gives the rule
+eslint	no-useless-assignment/v19	turns on test/use-a, a rule of the test file
+veslint	no-useless-assignment/v19	turns on test/use-a, a rule of the test file
+eslint	no-useless-assignment/v58	turns on test/unknown-ref, a rule of the test file
+veslint	no-useless-assignment/v58	turns on test/unknown-ref, a rule of the test file
+eslint	no-useless-assignment/v59	turns on test/unknown-ref, a rule of the test file
+veslint	no-useless-assignment/v59	turns on test/unknown-ref, a rule of the test file
+eslint	no-useless-assignment/v60	turns on test/unknown-ref, a rule of the test file
+veslint	no-useless-assignment/v60	turns on test/unknown-ref, a rule of the test file

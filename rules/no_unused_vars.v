@@ -1,6 +1,7 @@
 module rules
 
 import json2
+import jsregexp
 import offsets
 import time
 import treesitter { has_child_kind, named_children, node_end, node_field, node_kind, node_parent, node_start, position_of }
@@ -24,7 +25,7 @@ const nuv_messages = {
 // NuvPattern is an ignore pattern: `new RegExp(pattern, 'u')`, when the option is a non-empty text.
 struct NuvPattern {
 	has     bool
-	program RegexpProgram
+	program jsregexp.RegexpProgram
 	text    string // RegExp.prototype.toString()
 }
 
@@ -95,7 +96,7 @@ fn nuv_pattern(o OptionObject, key string) !NuvPattern {
 	if pattern == '' {
 		return NuvPattern{}
 	}
-	program := regexp_compile(pattern) or {
+	program := jsregexp.regexp_compile(pattern) or {
 		return error('`${no_unused_vars}`: veslint cannot use the regular expression `${pattern}`: ${err.msg()}')
 	}
 	return NuvPattern{
@@ -170,7 +171,7 @@ fn nuv_test(pattern NuvPattern, name string) !bool {
 	if !pattern.has {
 		return false
 	}
-	return regexp_test(pattern.program, name)
+	return jsregexp.regexp_test(pattern.program, name)
 }
 
 // NuvType is the VariableType of a definition, as far as the messages and the fixers tell them

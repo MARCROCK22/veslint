@@ -1,6 +1,7 @@
 module rules
 
 import json2
+import jsregexp
 import time
 import tsgo { TypeResponse }
 import treesitter { Ident, children, named_children, node_end, node_field, node_kind, node_start, nodes_of_kind, position_of }
@@ -26,7 +27,7 @@ struct SecOptions {
 	consider_default_exhaustive_for_unions   bool
 	require_default_for_non_union            bool
 	has_comment_pattern                      bool
-	comment_pattern                          RegexpProgram // defaultCaseCommentPattern
+	comment_pattern                          jsregexp.RegexpProgram // defaultCaseCommentPattern
 }
 
 fn sec_options(options []json2.Any) !SecOptions {
@@ -38,12 +39,12 @@ fn sec_options(options []json2.Any) !SecOptions {
 	])!
 	// `new RegExp(defaultCaseCommentPattern, 'u')`; without the option, /^no default$/iu.
 	mut has_comment_pattern := false
-	mut comment_pattern := RegexpProgram{}
+	mut comment_pattern := jsregexp.RegexpProgram{}
 	if pattern := o.values['defaultCaseCommentPattern'] {
 		if pattern !is string {
 			return error('option `defaultCaseCommentPattern` of `${switch_exhaustiveness_check}` must be a string')
 		}
-		comment_pattern = regexp_compile(pattern as string) or {
+		comment_pattern = jsregexp.regexp_compile(pattern as string) or {
 			return error('option `defaultCaseCommentPattern` of `${switch_exhaustiveness_check}`: ${err.msg()}')
 		}
 		has_comment_pattern = true
@@ -95,7 +96,7 @@ fn (mut c Checker) lint_switch_exhaustiveness_check(root C.TSNode, abs_path stri
 					text[2..text.len - 2]
 				})
 				is_default := if options.has_comment_pattern {
-					regexp_test(options.comment_pattern, value) or {
+					jsregexp.regexp_test(options.comment_pattern, value) or {
 						return error('option `defaultCaseCommentPattern` of `${switch_exhaustiveness_check}`: ${err.msg()}')
 					}
 				} else {
