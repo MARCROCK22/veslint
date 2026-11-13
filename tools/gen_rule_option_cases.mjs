@@ -49,7 +49,9 @@ function ask(namespace, rules, id, options, severity) {
   if (comment.includes('*/') || /\s-{2,}\s/u.test(comment)) {
     throw new Error(`a case cannot be written in a comment: ${comment}`);
   }
-  const messages = linter.verify(`/* eslint ${comment} */\n`, [{ plugins }], { filename: 'a.js' });
+  // A rule of ESLint core runs for real: what it reports (with a messageId, as `unicode-bom`
+  // "always" on a file without a BOM) is not about the configuration.
+  const messages = linter.verify(`/* eslint ${comment} */\n`, [{ plugins }], { filename: 'a.js' }).filter(m => !m.messageId);
   if (messages.length > 1 || (messages.length === 1 && messages[0].ruleId !== id)) {
     throw new Error(`unexpected messages for ${comment}: ${JSON.stringify(messages)}`);
   }
