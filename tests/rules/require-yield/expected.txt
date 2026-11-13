@@ -1,0 +1,6 @@
+tests/rules/require-yield/cases.ts:4:1	require-yield	missingYield	This generator function does not have 'yield'.
+tests/rules/require-yield/cases.ts:7:11	require-yield	missingYield	This generator function does not have 'yield'.
+tests/rules/require-yield/cases.ts:11:3	require-yield	missingYield	This generator function does not have 'yield'.
+tests/rules/require-yield/cases.ts:14:3	require-yield	missingYield	This generator function does not have 'yield'.
+tests/rules/require-yield/cases.ts:19:3	require-yield	missingYield	This generator function does not have 'yield'.
+tests/rules/require-yield/cases.ts:23:1	require-yield	missingYield	This generator function does not have 'yield'.

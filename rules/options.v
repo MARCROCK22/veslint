@@ -79,6 +79,15 @@ pub fn check_options(rule string, options []json2.Any) !bool {
 		no_else_return { ner_allow_else_if(options)! }
 		no_empty { ne_allow_empty_catch(options)! }
 		no_labels { nl_options(options)! }
+		arrow_body_style { abs_options(options)! }
+		prefer_arrow_callback { pac_options(options)! }
+		func_name_matching { fnm_options(options)! }
+		func_names { fn_options(options)! }
+		grouped_accessor_pairs { gap_options(options)! }
+		no_empty_pattern { nep_allow_parameters(options)! }
+		no_useless_rename { nur_options(options)! }
+		no_useless_computed_key { nuck_class_members(options)! }
+		object_shorthand { os_options(options)! }
 		else { return false }
 	}
 	return true
@@ -122,16 +131,10 @@ pub fn effective_options(name string, options []json2.Any) ![]json2.Any {
 	}
 	reads := check_options(name, merged) or { return error('`${name}`: ${err.msg()}') }
 	if reads {
-		// A rule takes as many options as it has defaults for, and at least one; `curly` has a
-		// second one ("consistent") without a default.
-		limit := if name == curly {
-			2
-		} else if defaults.len > 1 {
-			defaults.len
-		} else {
-			1
-		}
-		if options.len > limit {
+		// A rule takes as many options as it has defaults for, and at least one; the schema of a
+		// rule of ESLint core limits its options (`curly` has a second one without a default).
+		limit := if defaults.len > 1 { defaults.len } else { 1 }
+		if name.contains('/') && options.len > limit {
 			return error('`${name}` takes ${if limit == 1 {
 				'a single option'
 			} else {

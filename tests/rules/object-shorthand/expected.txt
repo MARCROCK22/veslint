@@ -1,0 +1,27 @@
+tests/rules/object-shorthand/avoid-quotes/cases.ts:4:14	object-shorthand	expectedLiteralMethodLongform	Expected longform method syntax for string literal keys.
+tests/rules/object-shorthand/avoid-quotes/cases.ts:5:14	object-shorthand	expectedMethodShorthand	Expected method shorthand.
+tests/rules/object-shorthand/avoid-quotes/cases.ts:6:14	object-shorthand	expectedPropertyShorthand	Expected property shorthand.
+tests/rules/object-shorthand/cases.ts:5:14	object-shorthand	expectedPropertyShorthand	Expected property shorthand.
+tests/rules/object-shorthand/cases.ts:6:14	object-shorthand	expectedPropertyShorthand	Expected property shorthand.
+tests/rules/object-shorthand/cases.ts:7:14	object-shorthand	expectedMethodShorthand	Expected method shorthand.
+tests/rules/object-shorthand/cases.ts:8:14	object-shorthand	expectedMethodShorthand	Expected method shorthand.
+tests/rules/object-shorthand/cases.ts:9:14	object-shorthand	expectedMethodShorthand	Expected method shorthand.
+tests/rules/object-shorthand/cases.ts:10:14	object-shorthand	expectedMethodShorthand	Expected method shorthand.
+tests/rules/object-shorthand/cases.ts:11:14	object-shorthand	expectedMethodShorthand	Expected method shorthand.
+tests/rules/object-shorthand/cases.ts:12:22	object-shorthand	expectedPropertyShorthand	Expected property shorthand.
+tests/rules/object-shorthand/consistent-as-needed/cases.ts:5:12	object-shorthand	expectedAllPropertiesShorthanded	Expected shorthand for all properties.
+tests/rules/object-shorthand/consistent-as-needed/cases.ts:6:12	object-shorthand	expectedAllPropertiesShorthanded	Expected shorthand for all properties.
+tests/rules/object-shorthand/consistent-as-needed/cases.ts:7:12	object-shorthand	unexpectedMix	Unexpected mix of shorthand and non-shorthand properties.
+tests/rules/object-shorthand/consistent/cases.ts:5:12	object-shorthand	unexpectedMix	Unexpected mix of shorthand and non-shorthand properties.
+tests/rules/object-shorthand/consistent/cases.ts:6:12	object-shorthand	unexpectedMix	Unexpected mix of shorthand and non-shorthand properties.
+tests/rules/object-shorthand/methods-options/cases.ts:2:14	object-shorthand	expectedMethodShorthand	Expected method shorthand.
+tests/rules/object-shorthand/methods-options/cases.ts:3:14	object-shorthand	expectedMethodShorthand	Expected method shorthand.
+tests/rules/object-shorthand/methods-options/cases.ts:4:14	object-shorthand	expectedMethodShorthand	Expected method shorthand.
+tests/rules/object-shorthand/methods-options/cases.ts:5:14	object-shorthand	expectedMethodShorthand	Expected method shorthand.
+tests/rules/object-shorthand/never/cases.ts:4:14	object-shorthand	expectedPropertyLongform	Expected longform property syntax.
+tests/rules/object-shorthand/never/cases.ts:5:14	object-shorthand	expectedMethodLongform	Expected longform method syntax.
+tests/rules/object-shorthand/never/cases.ts:6:14	object-shorthand	expectedMethodLongform	Expected longform method syntax.
+tests/rules/object-shorthand/never/cases.ts:7:14	object-shorthand	expectedMethodLongform	Expected longform method syntax.
+tests/rules/object-shorthand/never/cases.ts:8:14	object-shorthand	expectedMethodLongform	Expected longform method syntax.
+tests/rules/object-shorthand/never/cases.ts:9:14	object-shorthand	expectedMethodLongform	Expected longform method syntax.
+tests/rules/object-shorthand/never/cases.ts:10:14	object-shorthand	expectedMethodLongform	Expected longform method syntax.

@@ -1,0 +1,14 @@
+tests/rules/no-useless-computed-key/cases.ts:4:13	no-useless-computed-key	unnecessarilyComputedProperty	Unnecessarily computed property ['x'] found.
+tests/rules/no-useless-computed-key/cases.ts:4:23	no-useless-computed-key	unnecessarilyComputedProperty	Unnecessarily computed property [1] found.
+tests/rules/no-useless-computed-key/cases.ts:4:31	no-useless-computed-key	unnecessarilyComputedProperty	Unnecessarily computed property ['y'] found.
+tests/rules/no-useless-computed-key/cases.ts:4:43	no-useless-computed-key	unnecessarilyComputedProperty	Unnecessarily computed property [0x10] found.
+tests/rules/no-useless-computed-key/cases.ts:5:9	no-useless-computed-key	unnecessarilyComputedProperty	Unnecessarily computed property ['z'] found.
+tests/rules/no-useless-computed-key/cases.ts:7:3	no-useless-computed-key	unnecessarilyComputedProperty	Unnecessarily computed property ['m'] found.
+tests/rules/no-useless-computed-key/cases.ts:8:3	no-useless-computed-key	unnecessarilyComputedProperty	Unnecessarily computed property ['n'] found.
+tests/rules/no-useless-computed-key/cases.ts:9:3	no-useless-computed-key	unnecessarilyComputedProperty	Unnecessarily computed property ['p'] found.
+tests/rules/no-useless-computed-key/cases.ts:10:3	no-useless-computed-key	unnecessarilyComputedProperty	Unnecessarily computed property ['prototype2'] found.
+tests/rules/no-useless-computed-key/cases.ts:11:3	no-useless-computed-key	unnecessarilyComputedProperty	Unnecessarily computed property ['q'] found.
+tests/rules/no-useless-computed-key/cases.ts:14:13	no-useless-computed-key	unnecessarilyComputedProperty	Unnecessarily computed property ['e'] found.
+tests/rules/no-useless-computed-key/cases.ts:15:13	no-useless-computed-key	unnecessarilyComputedProperty	Unnecessarily computed property ['f'] found.
+tests/rules/no-useless-computed-key/cases.ts:24:3	no-useless-computed-key	unnecessarilyComputedProperty	Unnecessarily computed property ['constructor2'] found.
+tests/rules/no-useless-computed-key/no-class-members/cases.ts:8:13	no-useless-computed-key	unnecessarilyComputedProperty	Unnecessarily computed property ['x'] found.

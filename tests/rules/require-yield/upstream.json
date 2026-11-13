@@ -1,0 +1,19 @@
+{"rule": "require-yield", "upstream": "eslint v10.6.0", "files": ["tests/lib/rules/require-yield.js"],
+"messages": {"missingYield":"This generator function does not have 'yield'."},
+"cases": [
+{"id":"require-yield/v0","kind":"valid","code":"function foo() { return 0; }","file":"file.ts","tsconfig":null,"languageOptions":{"ecmaVersion":6}},
+{"id":"require-yield/v1","kind":"valid","code":"function* foo() { yield 0; }","file":"file.ts","tsconfig":null,"languageOptions":{"ecmaVersion":6}},
+{"id":"require-yield/v2","kind":"valid","code":"function* foo() { }","file":"file.ts","tsconfig":null,"languageOptions":{"ecmaVersion":6}},
+{"id":"require-yield/v3","kind":"valid","code":"(function* foo() { yield 0; })();","file":"file.ts","tsconfig":null,"languageOptions":{"ecmaVersion":6}},
+{"id":"require-yield/v4","kind":"valid","code":"(function* foo() { })();","file":"file.ts","tsconfig":null,"languageOptions":{"ecmaVersion":6}},
+{"id":"require-yield/v5","kind":"valid","code":"var obj = { *foo() { yield 0; } };","file":"file.ts","tsconfig":null,"languageOptions":{"ecmaVersion":6}},
+{"id":"require-yield/v6","kind":"valid","code":"var obj = { *foo() { } };","file":"file.ts","tsconfig":null,"languageOptions":{"ecmaVersion":6}},
+{"id":"require-yield/v7","kind":"valid","code":"class A { *foo() { yield 0; } };","file":"file.ts","tsconfig":null,"languageOptions":{"ecmaVersion":6}},
+{"id":"require-yield/v8","kind":"valid","code":"class A { *foo() { } };","file":"file.ts","tsconfig":null,"languageOptions":{"ecmaVersion":6}},
+{"id":"require-yield/i0","kind":"invalid","code":"function* foo() { return 0; }","file":"file.ts","tsconfig":null,"languageOptions":{"ecmaVersion":6},"errors":[{"messageId":"missingYield","line":1,"column":1,"endLine":1,"endColumn":14}]},
+{"id":"require-yield/i1","kind":"invalid","code":"(function* foo() { return 0; })();","file":"file.ts","tsconfig":null,"languageOptions":{"ecmaVersion":6},"errors":[{"messageId":"missingYield","line":1,"column":2,"endLine":1,"endColumn":15}]},
+{"id":"require-yield/i2","kind":"invalid","code":"var obj = { *foo() { return 0; } }","file":"file.ts","tsconfig":null,"languageOptions":{"ecmaVersion":6},"errors":[{"messageId":"missingYield","line":1,"column":13,"endLine":1,"endColumn":17}]},
+{"id":"require-yield/i3","kind":"invalid","code":"class A { *foo() { return 0; } }","file":"file.ts","tsconfig":null,"languageOptions":{"ecmaVersion":6},"errors":[{"messageId":"missingYield","line":1,"column":11,"endLine":1,"endColumn":15}]},
+{"id":"require-yield/i4","kind":"invalid","code":"function* foo() { function* bar() { yield 0; } }","file":"file.ts","tsconfig":null,"languageOptions":{"ecmaVersion":6},"errors":[{"messageId":"missingYield","line":1,"column":1,"endLine":1,"endColumn":14}]},
+{"id":"require-yield/i5","kind":"invalid","code":"function* foo() { function* bar() { return 0; } yield 0; }","file":"file.ts","tsconfig":null,"languageOptions":{"ecmaVersion":6},"errors":[{"messageId":"missingYield","line":1,"column":19,"endLine":1,"endColumn":32}]}
+]}

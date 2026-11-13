@@ -1,0 +1,18 @@
+tests/rules/arrow-body-style/always/cases.ts:4:18	arrow-body-style	expectedBlock	Expected block statement surrounding arrow body.
+tests/rules/arrow-body-style/always/cases.ts:5:19	arrow-body-style	expectedBlock	Expected block statement surrounding arrow body.
+tests/rules/arrow-body-style/always/cases.ts:7:3	arrow-body-style	expectedBlock	Expected block statement surrounding arrow body.
+tests/rules/arrow-body-style/always/cases.ts:9:33	arrow-body-style	expectedBlock	Expected block statement surrounding arrow body.
+tests/rules/arrow-body-style/cases.ts:5:18	arrow-body-style	unexpectedSingleBlock	Unexpected block statement surrounding arrow body; move the returned value immediately after the `=>`.
+tests/rules/arrow-body-style/cases.ts:8:18	arrow-body-style	unexpectedObjectBlock	Unexpected block statement surrounding arrow body; parenthesize the returned value and move it immediately after the `=>`.
+tests/rules/arrow-body-style/cases.ts:9:18	arrow-body-style	unexpectedSingleBlock	Unexpected block statement surrounding arrow body; move the returned value immediately after the `=>`.
+tests/rules/arrow-body-style/cases.ts:12:18	arrow-body-style	unexpectedSingleBlock	Unexpected block statement surrounding arrow body; move the returned value immediately after the `=>`.
+tests/rules/arrow-body-style/cases.ts:16:26	arrow-body-style	unexpectedSingleBlock	Unexpected block statement surrounding arrow body; move the returned value immediately after the `=>`.
+tests/rules/arrow-body-style/cases.ts:19:18	arrow-body-style	unexpectedSingleBlock	Unexpected block statement surrounding arrow body; move the returned value immediately after the `=>`.
+tests/rules/arrow-body-style/cases.ts:22:18	arrow-body-style	unexpectedSingleBlock	Unexpected block statement surrounding arrow body; move the returned value immediately after the `=>`.
+tests/rules/arrow-body-style/cases.ts:24:23	arrow-body-style	unexpectedSingleBlock	Unexpected block statement surrounding arrow body; move the returned value immediately after the `=>`.
+tests/rules/arrow-body-style/never/cases.ts:4:18	arrow-body-style	unexpectedSingleBlock	Unexpected block statement surrounding arrow body; move the returned value immediately after the `=>`.
+tests/rules/arrow-body-style/never/cases.ts:7:18	arrow-body-style	unexpectedEmptyBlock	Unexpected block statement surrounding arrow body; put a value of `undefined` immediately after the `=>`.
+tests/rules/arrow-body-style/never/cases.ts:8:18	arrow-body-style	unexpectedOtherBlock	Unexpected block statement surrounding arrow body.
+tests/rules/arrow-body-style/never/cases.ts:11:18	arrow-body-style	unexpectedOtherBlock	Unexpected block statement surrounding arrow body.
+tests/rules/arrow-body-style/object-literal/cases.ts:2:19	arrow-body-style	expectedBlock	Expected block statement surrounding arrow body.
+tests/rules/arrow-body-style/object-literal/cases.ts:3:18	arrow-body-style	unexpectedSingleBlock	Unexpected block statement surrounding arrow body; move the returned value immediately after the `=>`.

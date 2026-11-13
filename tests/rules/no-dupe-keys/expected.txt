@@ -1,0 +1,11 @@
+tests/rules/no-dupe-keys/cases.ts:4:19	no-dupe-keys	unexpected	Duplicate key 'x'.
+tests/rules/no-dupe-keys/cases.ts:5:21	no-dupe-keys	unexpected	Duplicate key 'y'.
+tests/rules/no-dupe-keys/cases.ts:6:19	no-dupe-keys	unexpected	Duplicate key '1'.
+tests/rules/no-dupe-keys/cases.ts:7:21	no-dupe-keys	unexpected	Duplicate key '1'.
+tests/rules/no-dupe-keys/cases.ts:8:23	no-dupe-keys	unexpected	Duplicate key 'z'.
+tests/rules/no-dupe-keys/cases.ts:9:40	no-dupe-keys	unexpected	Duplicate key 'w'.
+tests/rules/no-dupe-keys/cases.ts:10:38	no-dupe-keys	unexpected	Duplicate key 'w'.
+tests/rules/no-dupe-keys/cases.ts:11:21	no-dupe-keys	unexpected	Duplicate key 'm'.
+tests/rules/no-dupe-keys/cases.ts:12:16	no-dupe-keys	unexpected	Duplicate key 'v'.
+tests/rules/no-dupe-keys/cases.ts:13:23	no-dupe-keys	unexpected	Duplicate key 'k'.
+tests/rules/no-dupe-keys/cases.ts:14:23	no-dupe-keys	unexpected	Duplicate key 't'.

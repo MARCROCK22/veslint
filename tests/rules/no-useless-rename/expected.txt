@@ -1,0 +1,11 @@
+tests/rules/no-useless-rename/cases.ts:1:10	no-useless-rename	unnecessarilyRenamed	Import readFile unnecessarily renamed.
+tests/rules/no-useless-rename/cases.ts:2:10	no-useless-rename	unnecessarilyRenamed	Import stat unnecessarily renamed.
+tests/rules/no-useless-rename/cases.ts:7:9	no-useless-rename	unnecessarilyRenamed	Destructuring assignment a unnecessarily renamed.
+tests/rules/no-useless-rename/cases.ts:8:9	no-useless-rename	unnecessarilyRenamed	Destructuring assignment b unnecessarily renamed.
+tests/rules/no-useless-rename/cases.ts:9:9	no-useless-rename	unnecessarilyRenamed	Destructuring assignment c unnecessarily renamed.
+tests/rules/no-useless-rename/cases.ts:10:9	no-useless-rename	unnecessarilyRenamed	Destructuring assignment d unnecessarily renamed.
+tests/rules/no-useless-rename/cases.ts:11:9	no-useless-rename	unnecessarilyRenamed	Destructuring assignment e unnecessarily renamed.
+tests/rules/no-useless-rename/cases.ts:13:4	no-useless-rename	unnecessarilyRenamed	Destructuring assignment f unnecessarily renamed.
+tests/rules/no-useless-rename/cases.ts:14:14	no-useless-rename	unnecessarilyRenamed	Destructuring assignment h unnecessarily renamed.
+tests/rules/no-useless-rename/cases.ts:16:10	no-useless-rename	unnecessarilyRenamed	Export i unnecessarily renamed.
+tests/rules/no-useless-rename/cases.ts:17:21	no-useless-rename	unnecessarilyRenamed	Export g unnecessarily renamed.

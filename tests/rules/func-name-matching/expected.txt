@@ -1,0 +1,16 @@
+tests/rules/func-name-matching/cases.ts:6:7	func-name-matching	matchVariable	Function name `b` should match variable name `a`.
+tests/rules/func-name-matching/cases.ts:7:1	func-name-matching	matchVariable	Function name `y` should match variable name `x`.
+tests/rules/func-name-matching/cases.ts:8:1	func-name-matching	matchProperty	Function name `q` should match property name `p`.
+tests/rules/func-name-matching/cases.ts:9:1	func-name-matching	matchProperty	Function name `s` should match property name `r`.
+tests/rules/func-name-matching/cases.ts:10:13	func-name-matching	matchProperty	Function name `u` should match property name `t`.
+tests/rules/func-name-matching/cases.ts:10:33	func-name-matching	matchProperty	Function name `w` should match property name `v`.
+tests/rules/func-name-matching/cases.ts:10:55	func-name-matching	matchProperty	Function name `k2` should match property name `k`.
+tests/rules/func-name-matching/cases.ts:12:3	func-name-matching	matchProperty	Function name `n` should match property name `m`.
+tests/rules/func-name-matching/descriptor/cases.ts:4:37	func-name-matching	matchProperty	Function name `bar` should match property name `foo`.
+tests/rules/func-name-matching/descriptor/cases.ts:5:38	func-name-matching	matchProperty	Function name `bar` should match property name `foo`.
+tests/rules/func-name-matching/descriptor/cases.ts:6:39	func-name-matching	matchProperty	Function name `bar` should match property name `foo`.
+tests/rules/func-name-matching/descriptor/cases.ts:7:29	func-name-matching	matchProperty	Function name `bar` should match property name `foo`.
+tests/rules/func-name-matching/never/cases.ts:5:7	func-name-matching	notMatchVariable	Function name `a` should not match variable name `a`.
+tests/rules/func-name-matching/never/cases.ts:6:1	func-name-matching	notMatchProperty	Function name `p` should not match property name `p`.
+tests/rules/func-name-matching/never/cases.ts:7:13	func-name-matching	notMatchProperty	Function name `t` should not match property name `t`.
+tests/rules/func-name-matching/never/cases.ts:8:1	func-name-matching	notMatchProperty	Function name `exports` should not match property name `exports`.

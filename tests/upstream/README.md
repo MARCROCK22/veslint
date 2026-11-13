@@ -98,8 +98,8 @@ of every rule with an `expected.txt`). The same seyfert and types are linked by
 
 ## ESLint core
 
-The 26 rules of ESLint core of batches C1 and C2 come with the cases of their tests in ESLint
-v10.6.0 (`tests/lib/rules/<rule>.js`), in the same `upstream.json` form: 2,057 cases. ESLint's
+The 39 rules of ESLint core of batches C1 to C3 come with the cases of their tests in ESLint
+v10.6.0 (`tests/lib/rules/<rule>.js`), in the same `upstream.json` form: 3,500 cases. ESLint's
 RuleTester makes one pass of fixes (an `output` is the text after it), typescript-eslint's up to 10:
 both scripts make the passes of the rule's own RuleTester. The cases are
 JavaScript and veslint lints only TypeScript, so they run in the fixtures of typescript-eslint
@@ -112,10 +112,10 @@ of ESLint at v10.6.0 in `build/upstream/eslint`:
 git clone --depth 1 --branch v10.6.0 --filter=blob:none --sparse \
   https://github.com/eslint/eslint build/upstream/eslint
 cd build/upstream/eslint
-git sparse-checkout set tests/lib/rules tests/fixtures lib conf /package.json /LICENSE
+git sparse-checkout set tests/lib/rules tests/_utils tests/fixtures lib conf /package.json /LICENSE
 cd ../../..
 bun tools/gen_upstream_cases.mjs no-cond-assign   # a name without a plugin is a rule of ESLint core
 ```
 
-The test files are loaded with a stub of ESLint's RuleTester (`tests/lib/rules/*.js` require it from
+The test files are loaded with a stub of ESLint's RuleTester and of `tests/_utils` (only its `unIndent`; the rest needs fs-teardown) (`tests/lib/rules/*.js` require it from
 `lib/rule-tester`) that records the cases, and the rules' `meta.messages` come from the rules of the clone.

@@ -55,3 +55,14 @@ veslint	no-unused-vars/no-unused-vars-eslint/v137	turns on @rule-tester/use-ever
 # the global `Boolean` it declares, so `Boolean()` still references a builtin.
 eslint	no-constant-condition/v153	typescript-eslint's lib declares `Boolean`, which `globals: {Boolean: "off"}` does not remove
 veslint	no-constant-condition/v153	typescript-eslint's lib declares `Boolean`, which `globals: {Boolean: "off"}` does not remove
+veslint	no-setter-return/v100	typescript-eslint's lib declares `Reflect`, which `globals: {Reflect: "off"}` does not remove
+eslint	no-setter-return/v100	typescript-eslint's lib declares `Reflect`, which `globals: {Reflect: "off"}` does not remove
+veslint	no-setter-return/v101	typescript-eslint's lib declares `Object`, which `/* globals Object:off */` does not remove
+eslint	no-setter-return/v101	typescript-eslint's lib declares `Object`, which `/* globals Object:off */` does not remove
+veslint	no-setter-return/v102	typescript-eslint's lib declares `Object`, which `globals: {Object: "off"}` does not remove
+eslint	no-setter-return/v102	typescript-eslint's lib declares `Object`, which `globals: {Object: "off"}` does not remove
+# TypeScript does not parse the octal literal `012` (typescript-eslint's parser fails); tree-sitter does.
+eslint	no-dupe-keys/v14	typescript-eslint's parser rejects the octal literal `012`
+eslint	no-dupe-keys/i5	typescript-eslint's parser rejects the octal literal `012`
+# tree-sitter reads `static get` before a line break as a field named `get` and an automatic `;`.
+veslint	grouped-accessor-pairs/r0/i56	tree-sitter reads `static get \n a(){}` as the field `get` and the method `a`

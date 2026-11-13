@@ -158,6 +158,19 @@ pub const no_with = 'no-with'
 pub const no_debugger = 'no-debugger'
 pub const no_unsafe_finally = 'no-unsafe-finally'
 pub const no_useless_catch = 'no-useless-catch'
+pub const arrow_body_style = 'arrow-body-style'
+pub const prefer_arrow_callback = 'prefer-arrow-callback'
+pub const func_name_matching = 'func-name-matching'
+pub const func_names = 'func-names'
+pub const grouped_accessor_pairs = 'grouped-accessor-pairs'
+pub const no_setter_return = 'no-setter-return'
+pub const no_dupe_args = 'no-dupe-args'
+pub const no_dupe_keys = 'no-dupe-keys'
+pub const no_empty_pattern = 'no-empty-pattern'
+pub const no_useless_rename = 'no-useless-rename'
+pub const no_useless_computed_key = 'no-useless-computed-key'
+pub const object_shorthand = 'object-shorthand'
+pub const require_yield = 'require-yield'
 pub const names = [no_floating_promises, await_thenable, require_await, return_await,
 	no_misused_promises, no_unsafe_call, no_unsafe_member_access, no_unsafe_return,
 	no_unsafe_assignment, no_unsafe_argument, restrict_template_expressions,
@@ -197,7 +210,10 @@ pub const names = [no_floating_promises, await_thenable, require_await, return_a
 	no_unsafe_optional_chaining, no_cond_assign, for_direction, no_constant_condition,
 	no_constant_binary_expression, curly, no_else_return, no_empty, no_empty_static_block,
 	default_case_last, no_case_declarations, no_labels, no_extra_label, no_unused_labels, no_with,
-	no_debugger, no_unsafe_finally, no_useless_catch]
+	no_debugger, no_unsafe_finally, no_useless_catch, arrow_body_style, prefer_arrow_callback,
+	func_name_matching, func_names, grouped_accessor_pairs, no_setter_return, no_dupe_args,
+	no_dupe_keys, no_empty_pattern, no_useless_rename, no_useless_computed_key, object_shorthand,
+	require_yield]
 
 // untyped_rules are the ported rules that need no types (`meta.docs.requiresTypeChecking` is false
 // in typescript-eslint): with only these, the command line makes no snapshot (Checker.make_snapshot).
@@ -218,7 +234,10 @@ pub const untyped_rules = [adjacent_overload_signatures, array_type, class_liter
 	no_unsafe_optional_chaining, no_cond_assign, for_direction, no_constant_condition,
 	no_constant_binary_expression, curly, no_else_return, no_empty, no_empty_static_block,
 	default_case_last, no_case_declarations, no_labels, no_extra_label, no_unused_labels, no_with,
-	no_debugger, no_unsafe_finally, no_useless_catch]
+	no_debugger, no_unsafe_finally, no_useless_catch, arrow_body_style, prefer_arrow_callback,
+	func_name_matching, func_names, grouped_accessor_pairs, no_setter_return, no_dupe_args,
+	no_dupe_keys, no_empty_pattern, no_useless_rename, no_useless_computed_key, object_shorthand,
+	require_yield]
 
 // needs_types tells whether a rule asks tsgo for the types of the program.
 pub fn needs_types(rule string) bool {
@@ -375,6 +394,19 @@ pub const default_options = {
 	no_debugger:                                  '[]'
 	no_unsafe_finally:                            '[]'
 	no_useless_catch:                             '[]'
+	arrow_body_style:                             '["as-needed"]'
+	prefer_arrow_callback:                        '[{"allowNamedFunctions":false,"allowUnboundThis":true}]'
+	func_name_matching:                           '["always"]'
+	func_names:                                   '["always",{}]'
+	grouped_accessor_pairs:                       '["anyOrder",{"enforceForTSTypes":false}]'
+	no_setter_return:                             '[]'
+	no_dupe_args:                                 '[]'
+	no_dupe_keys:                                 '[]'
+	no_empty_pattern:                             '[{"allowObjectPatternsAsParameters":false}]'
+	no_useless_rename:                            '[{"ignoreDestructuring":false,"ignoreImport":false,"ignoreExport":false}]'
+	no_useless_computed_key:                      '[{"enforceForClassMembers":true}]'
+	object_shorthand:                             '["always"]'
+	require_yield:                                '[]'
 }
 
 // Finding is a problem a rule found at a node.
@@ -654,6 +686,19 @@ pub fn message(rule string, finding Finding) string {
 		no_debugger { nd_messages }
 		no_unsafe_finally { nuf_messages }
 		no_useless_catch { nuca_messages }
+		arrow_body_style { abs_messages }
+		prefer_arrow_callback { parc_messages }
+		func_name_matching { fnm_messages }
+		func_names { fn_messages }
+		grouped_accessor_pairs { gap_messages }
+		no_setter_return { nsr_messages }
+		no_dupe_args { nda_messages }
+		no_dupe_keys { ndk_messages }
+		no_empty_pattern { nep_messages }
+		no_useless_rename { nurn_messages }
+		no_useless_computed_key { nuck_messages }
+		object_shorthand { os_messages }
+		require_yield { ry_messages }
 		else { map[string]string{} }
 	}
 	return interpolate(messages[finding.message_id] or { finding.message_id }, finding.data)
@@ -746,6 +791,7 @@ pub fn (mut c Checker) lint_file(parser Parser, config LintConfig, src string, a
 	c.node_index = treesitter.new_node_index(root)
 	c.ast_path = ''
 	c.program_directory = config.program_directory
+	c.ecma_version = config.language.ecma_version
 	c.reset_file_types()
 	// Where TypeScript read an `await` as an identifier, the file is parsed again that way
 	// (rules/await_identifier.v).
@@ -1231,6 +1277,45 @@ fn (mut c Checker) lint_rule(rule string, root C.TSNode, abs_path string, mut st
 		no_useless_catch {
 			return c.lint_no_useless_catch(root, abs_path, mut stats)!
 		}
+		arrow_body_style {
+			return c.lint_arrow_body_style(root, abs_path, mut stats)!
+		}
+		prefer_arrow_callback {
+			return c.lint_prefer_arrow_callback(root, abs_path, mut stats)!
+		}
+		func_name_matching {
+			return c.lint_func_name_matching(root, abs_path, mut stats)!
+		}
+		func_names {
+			return c.lint_func_names(root, abs_path, mut stats)!
+		}
+		grouped_accessor_pairs {
+			return c.lint_grouped_accessor_pairs(root, abs_path, mut stats)!
+		}
+		no_setter_return {
+			return c.lint_no_setter_return(root, abs_path, mut stats)!
+		}
+		no_dupe_args {
+			return c.lint_no_dupe_args(root, abs_path, mut stats)!
+		}
+		no_dupe_keys {
+			return c.lint_no_dupe_keys(root, abs_path, mut stats)!
+		}
+		no_empty_pattern {
+			return c.lint_no_empty_pattern(root, abs_path, mut stats)!
+		}
+		no_useless_rename {
+			return c.lint_no_useless_rename(root, abs_path, mut stats)!
+		}
+		no_useless_computed_key {
+			return c.lint_no_useless_computed_key(root, abs_path, mut stats)!
+		}
+		object_shorthand {
+			return c.lint_object_shorthand(root, abs_path, mut stats)!
+		}
+		require_yield {
+			return c.lint_require_yield(root, abs_path, mut stats)!
+		}
 		else { return error('unknown rule: ${rule}') }
 	}
 }
@@ -1305,6 +1390,7 @@ mut:
 	package_patterns    map[string]RegexpProgram           // the regular expression typescript-eslint makes of the `package` of a type specifier
 	project_directory   string // directory of the tsconfig (set_project_directory): what `from: "file"` specifiers are relative to
 	program_directory   string // or this one, when the configuration of the file gives it (LintConfig.program_directory)
+	ecma_version        int    // the normalized languageOptions.ecmaVersion of the file being linted
 	base_types_cache    map[int][]TypeResponse
 	target_cache        map[int]TypeResponse
 	// The `seyfert/*` rules (seyfert.v): getSymbolAtLocation and getTypeAtLocation of each queried

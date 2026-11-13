@@ -1,0 +1,10 @@
+tests/rules/grouped-accessor-pairs/cases.ts:5:3	grouped-accessor-pairs	notGrouped	Accessor pair getter 'x' and setter 'x' should be grouped.
+tests/rules/grouped-accessor-pairs/cases.ts:10:3	grouped-accessor-pairs	notGrouped	Accessor pair setter 'x' and getter 'x' should be grouped.
+tests/rules/grouped-accessor-pairs/cases.ts:13:3	grouped-accessor-pairs	notGrouped	Accessor pair static getter 's' and static setter 's' should be grouped.
+tests/rules/grouped-accessor-pairs/cases.ts:16:3	grouped-accessor-pairs	notGrouped	Accessor pair private getter #p and private setter #p should be grouped.
+tests/rules/grouped-accessor-pairs/cases.ts:19:3	grouped-accessor-pairs	notGrouped	Accessor pair getter and setter should be grouped.
+tests/rules/grouped-accessor-pairs/cases.ts:22:3	grouped-accessor-pairs	notGrouped	Accessor pair getter 'lit' and setter 'lit' should be grouped.
+tests/rules/grouped-accessor-pairs/get-before-set/cases.ts:4:3	grouped-accessor-pairs	invalidOrder	Expected getter 'x' to be before setter 'x'.
+tests/rules/grouped-accessor-pairs/get-before-set/cases.ts:8:3	grouped-accessor-pairs	invalidOrder	Expected static getter 's' to be before static setter 's'.
+tests/rules/grouped-accessor-pairs/ts-types/cases.ts:5:3	grouped-accessor-pairs	notGrouped	Accessor pair getter 'x' and setter 'x' should be grouped.
+tests/rules/grouped-accessor-pairs/ts-types/cases.ts:15:3	grouped-accessor-pairs	invalidOrder	Expected setter 'x' to be before getter 'x'.

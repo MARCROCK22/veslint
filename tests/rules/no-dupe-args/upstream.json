@@ -1,0 +1,17 @@
+{"rule": "no-dupe-args", "upstream": "eslint v10.6.0", "files": ["tests/lib/rules/no-dupe-args.js"],
+"messages": {"unexpected":"Duplicate param '{{name}}'."},
+"cases": [
+{"id":"no-dupe-args/v0","kind":"valid","code":"function a(a, b, c){}","file":"file.ts","tsconfig":null,"languageOptions":{"ecmaVersion":5,"sourceType":"script"}},
+{"id":"no-dupe-args/v1","kind":"valid","code":"var a = function(a, b, c){}","file":"file.ts","tsconfig":null,"languageOptions":{"ecmaVersion":5,"sourceType":"script"}},
+{"id":"no-dupe-args/v2","kind":"valid","code":"function a({a, b}, {c, d}){}","file":"file.ts","tsconfig":null,"languageOptions":{"ecmaVersion":6,"sourceType":"script"}},
+{"id":"no-dupe-args/v3","kind":"valid","code":"function a([ , a]) {}","file":"file.ts","tsconfig":null,"languageOptions":{"ecmaVersion":6,"sourceType":"script"}},
+{"id":"no-dupe-args/v4","kind":"valid","code":"function foo([[a, b], [c, d]]) {}","file":"file.ts","tsconfig":null,"languageOptions":{"ecmaVersion":6,"sourceType":"script"}},
+{"id":"no-dupe-args/i0","kind":"invalid","code":"function a(a, b, b) {}","file":"file.ts","tsconfig":null,"languageOptions":{"ecmaVersion":5,"sourceType":"script"},"errors":[{"messageId":"unexpected","data":{"name":"b"},"line":1,"column":11,"endLine":1,"endColumn":20}]},
+{"id":"no-dupe-args/i1","kind":"invalid","code":"function a(a, a, a) {}","file":"file.ts","tsconfig":null,"languageOptions":{"ecmaVersion":5,"sourceType":"script"},"errors":[{"messageId":"unexpected","data":{"name":"a"},"line":1,"column":11,"endLine":1,"endColumn":20}]},
+{"id":"no-dupe-args/i2","kind":"invalid","code":"function a(a, b, a) {}","file":"file.ts","tsconfig":null,"languageOptions":{"ecmaVersion":5,"sourceType":"script"},"errors":[{"messageId":"unexpected","data":{"name":"a"},"line":1,"column":11,"endLine":1,"endColumn":20}]},
+{"id":"no-dupe-args/i3","kind":"invalid","code":"function a(a, b, a, b) {}","file":"file.ts","tsconfig":null,"languageOptions":{"ecmaVersion":5,"sourceType":"script"},"errors":[{"messageId":"unexpected","data":{"name":"a"},"line":1,"column":11,"endLine":1,"endColumn":23},{"messageId":"unexpected","data":{"name":"b"},"line":1,"column":11,"endLine":1,"endColumn":23}]},
+{"id":"no-dupe-args/i4","kind":"invalid","code":"var a = function(a, b, b) {}","file":"file.ts","tsconfig":null,"languageOptions":{"ecmaVersion":5,"sourceType":"script"},"errors":[{"messageId":"unexpected","data":{"name":"b"},"line":1,"column":17,"endLine":1,"endColumn":26}]},
+{"id":"no-dupe-args/i5","kind":"invalid","code":"var a = function(a, a, a) {}","file":"file.ts","tsconfig":null,"languageOptions":{"ecmaVersion":5,"sourceType":"script"},"errors":[{"messageId":"unexpected","data":{"name":"a"},"line":1,"column":17,"endLine":1,"endColumn":26}]},
+{"id":"no-dupe-args/i6","kind":"invalid","code":"var a = function(a, b, a) {}","file":"file.ts","tsconfig":null,"languageOptions":{"ecmaVersion":5,"sourceType":"script"},"errors":[{"messageId":"unexpected","data":{"name":"a"},"line":1,"column":17,"endLine":1,"endColumn":26}]},
+{"id":"no-dupe-args/i7","kind":"invalid","code":"var a = function(a, b, a, b) {}","file":"file.ts","tsconfig":null,"languageOptions":{"ecmaVersion":5,"sourceType":"script"},"errors":[{"messageId":"unexpected","data":{"name":"a"},"line":1,"column":17,"endLine":1,"endColumn":29},{"messageId":"unexpected","data":{"name":"b"},"line":1,"column":17,"endLine":1,"endColumn":29}]}
+]}

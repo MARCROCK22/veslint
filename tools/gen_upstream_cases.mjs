@@ -328,6 +328,15 @@ function stubEslintRuleTester() {
   const file = path.join(realDir(ESLINT), 'lib/rule-tester/rule-tester.js');
   const req = createRequire(path.join(realDir(ESLINT), 'package.json'));
   req.cache[file] = { id: file, filename: file, loaded: true, exports: EslintRuleTester, children: [], paths: [] };
+  // tests/_utils requires fs-teardown, which is not installed, for createCustomTeardown; the rule
+  // tests use only its unIndent, taken from its source.
+  const utils = path.join(realDir(ESLINT), 'tests/_utils/index.js');
+  const source = fs.readFileSync(utils, 'utf8');
+  const unIndent = new Function(`${source.match(/^function unIndent[\s\S]*?^\}$/mu)[0]}\nreturn unIndent;`)();
+  const createCustomTeardown = () => {
+    throw new Error('createCustomTeardown is not stubbed');
+  };
+  req.cache[utils] = { id: utils, filename: utils, loaded: true, exports: { unIndent, createCustomTeardown }, children: [], paths: [] };
 }
 
 // A project recorded by `lintProject`: the file of each result as the test names it (the longest
