@@ -223,6 +223,16 @@ const rule_option_schemas = {
 	'no-delete-var':                                                   '{"type":"array","minItems":0,"maxItems":0}'
 	'block-scoped-var':                                                '{"type":"array","minItems":0,"maxItems":0}'
 	'consistent-this':                                                 '{"type":"array","items":{"type":"string","minLength":1},"uniqueItems":true}'
+	'no-var':                                                          '{"type":"array","minItems":0,"maxItems":0}'
+	'prefer-const':                                                    '{"type":"array","items":[{"type":"object","properties":{"destructuring":{"enum":["any","all"]},"ignoreReadBeforeAssign":{"type":"boolean"}},"additionalProperties":false}],"minItems":0,"maxItems":1}'
+	'vars-on-top':                                                     '{"type":"array","minItems":0,"maxItems":0}'
+	'sort-vars':                                                       '{"type":"array","items":[{"type":"object","properties":{"ignoreCase":{"type":"boolean"}},"additionalProperties":false}],"minItems":0,"maxItems":1}'
+	'strict':                                                          '{"type":"array","items":[{"enum":["never","global","function","safe"]}],"minItems":0,"maxItems":1}'
+	'no-inner-declarations':                                           '{"type":"array","items":[{"enum":["functions","both"]},{"type":"object","properties":{"blockScopedFunctions":{"enum":["allow","disallow"]}},"additionalProperties":false}],"minItems":0,"maxItems":2}'
+	'no-lone-blocks':                                                  '{"type":"array","minItems":0,"maxItems":0}'
+	'no-loop-func':                                                    '{"type":"array","minItems":0,"maxItems":0}'
+	'no-implicit-globals':                                             '{"type":"array","items":[{"type":"object","properties":{"lexicalBindings":{"type":"boolean"}},"additionalProperties":false}],"minItems":0,"maxItems":1}'
+	'no-unmodified-loop-condition':                                    '{"type":"array","minItems":0,"maxItems":0}'
 }
 
 // eslint_rule_default_options are the meta.defaultOptions of the rules of ESLint and of

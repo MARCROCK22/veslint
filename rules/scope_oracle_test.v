@@ -11,11 +11,12 @@ import treesitter { node_start, root_node, token_ends }
 // @typescript-eslint/parser and scope-manager inside ESLint's Linter with the languageOptions,
 // linterOptions and compilerOptions of the case, and writes every scope, variable and reference.
 // The test gives the same options to the code a lint run uses (inline_config, file_scope_setup
-// and scope_tree) and compares everything: the scopes (type, range, upper and variable scope),
-// their variables in order (definitions, identifiers and references in resolution order), their
-// references in order (identifier, read/write/init flags, type/value kind, variable resolved to;
-// of an identifier, its name and where it starts: ESTree's range includes a type annotation),
-// the unresolved references and, through a digest, every variable of the global scope with what
+// and scope_tree) and compares everything: the scopes (type, range, upper and variable scope,
+// isStrict and the references left to the upper scope), their variables in order (definitions,
+// identifiers and references in resolution order), their references in order (identifier,
+// read/write/init flags, type/value kind, variable resolved to; of an identifier, its name and
+// where it starts: ESTree's range includes a type annotation), the unresolved references, the
+// implicit global variables and, through a digest, every variable of the global scope with what
 // ESLint sets on it.
 
 const scope_oracle_types = {
@@ -127,8 +128,9 @@ fn scope_oracle_compare(item map[string]json2.Any) []string {
 		want_type := scope_oracle_field(want, 'type').str()
 		want_start := scope_oracle_int(want, 'start')
 		label := 'scope ${s} (${want_type} ${scope_oracle_field(want, 'block').str()} at line ${line(want_start)})'
-		got_head := '${scope_oracle_types[scope.kind]} [${scope.start},${scope.end}) upper ${scope.upper} variableScope ${scope.variable_scope}'
-		want_head := '${want_type} [${want_start},${scope_oracle_int(want, 'end')}) upper ${scope_oracle_int(want, 'upper')} variableScope ${scope_oracle_int(want, 'variableScope')}'
+		got_head := '${scope_oracle_types[scope.kind]} [${scope.start},${scope.end}) upper ${scope.upper} variableScope ${scope.variable_scope} strict ${t.is_strict(s)} through ${scope.through.map(ids[it])}'
+		want_through := scope_oracle_field(want, 'through').as_array().map(it.int())
+		want_head := '${want_type} [${want_start},${scope_oracle_int(want, 'end')}) upper ${scope_oracle_int(want, 'upper')} variableScope ${scope_oracle_int(want, 'variableScope')} strict ${scope_oracle_field(want, 'isStrict').bool()} through ${want_through}'
 		if got_head != want_head {
 			out << '${label}: ${got_head}, ESLint has ${want_head}'
 		}
@@ -194,6 +196,18 @@ fn scope_oracle_compare(item map[string]json2.Any) []string {
 	want_through := scope_oracle_field(global, 'through').as_array().map(it.int())
 	if through != want_through {
 		out << 'through: ${through}, ESLint has ${want_through}'
+	}
+	implicit := t.implicit.map('${it.name}${it.defs.map('[${node_start(it.name)}, ${node_start(it.node)}]')}')
+	want_implicit := scope_oracle_field(global, 'implicit').as_array().map(fn (entry json2.Any) string {
+		variable := entry.as_map()
+		defs := scope_oracle_field(variable, 'defs').as_array().map(fn (def json2.Any) string {
+			pair := def.as_array()
+			return '[${pair[0].int()}, ${pair[1].int()}]'
+		})
+		return '${scope_oracle_field(variable, 'name').str()}${defs}'
+	})
+	if implicit != want_implicit {
+		out << 'implicit: ${implicit}, ESLint has ${want_implicit}'
 	}
 	lines := scope_oracle_global_lines(t)
 	digest := sha1.hexhash(lines.join('\n'))

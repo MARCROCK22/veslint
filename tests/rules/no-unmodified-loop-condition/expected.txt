@@ -1,0 +1,8 @@
+tests/rules/no-unmodified-loop-condition/cases.ts:7:8	no-unmodified-loop-condition	loopConditionNotModified	'node' is not modified in this loop.
+tests/rules/no-unmodified-loop-condition/cases.ts:10:8	no-unmodified-loop-condition	loopConditionNotModified	'done' is not modified in this loop.
+tests/rules/no-unmodified-loop-condition/cases.ts:13:17	no-unmodified-loop-condition	loopConditionNotModified	'i' is not modified in this loop.
+tests/rules/no-unmodified-loop-condition/cases.ts:13:21	no-unmodified-loop-condition	loopConditionNotModified	'limit' is not modified in this loop.
+tests/rules/no-unmodified-loop-condition/cases.ts:16:10	no-unmodified-loop-condition	loopConditionNotModified	'i' is not modified in this loop.
+tests/rules/no-unmodified-loop-condition/cases.ts:16:14	no-unmodified-loop-condition	loopConditionNotModified	'limit' is not modified in this loop.
+tests/rules/no-unmodified-loop-condition/cases.ts:18:8	no-unmodified-loop-condition	loopConditionNotModified	'a' is not modified in this loop.
+tests/rules/no-unmodified-loop-condition/cases.ts:18:12	no-unmodified-loop-condition	loopConditionNotModified	'b' is not modified in this loop.

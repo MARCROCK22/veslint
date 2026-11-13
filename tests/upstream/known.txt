@@ -256,3 +256,21 @@ eslint	dot-notation/i26	typescript-eslint's parser: Octal literals are not allow
 eslint	dot-notation/i27	typescript-eslint's parser: Decimals with leading zeros are not allowed.
 eslint	dot-notation/i28	typescript-eslint's parser: Decimals with leading zeros are not allowed.
 eslint	dot-notation/i29	typescript-eslint's parser: Decimals with leading zeros are not allowed.
+# C9: an initializer in `declare var` is a syntax error for typescript-eslint's parser; tree-sitter
+# parses it.
+eslint	no-var/r0/i30	typescript-eslint's parser: Initializers are not permitted in ambient contexts.
+# These cases turn on a rule the test file defines (custom/use-x, rule-to-test/strict for a disable
+# comment) or a core rule veslint does not port (no-undef-init).
+eslint	prefer-const/i32	turns on custom/use-x, a rule of the test file
+eslint	prefer-const/i33	turns on custom/use-x, a rule of the test file
+veslint	prefer-const/i49	turns on no-undef-init, which veslint does not port
+eslint	strict/v13	disables rule-to-test/strict, the name RuleTester gives the rule
+veslint	strict/v13	disables rule-to-test/strict, the name RuleTester gives the rule
+# typescript-eslint's scope manager does not read ecmaFeatures.impliedStrict, nor wraps a CommonJS
+# script in a function scope (only ecmaFeatures.globalReturn does).
+eslint	no-lone-blocks/v6	typescript-eslint's scope manager ignores ecmaFeatures.impliedStrict
+veslint	no-lone-blocks/v6	typescript-eslint's scope manager ignores ecmaFeatures.impliedStrict
+eslint	no-implicit-globals/v43	typescript-eslint's scope manager has no function scope for a CommonJS script
+veslint	no-implicit-globals/v43	typescript-eslint's scope manager has no function scope for a CommonJS script
+eslint	no-implicit-globals/v44	typescript-eslint's scope manager has no function scope for a CommonJS script
+veslint	no-implicit-globals/v44	typescript-eslint's scope manager has no function scope for a CommonJS script

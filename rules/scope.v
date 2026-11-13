@@ -19,10 +19,9 @@ import treesitter { TokenEnds, children, has_child_kind, named_children, next_si
 // ESLint's order. tests/scope_cases.json (tools/gen_scope_cases.mjs) has what the real scope
 // manager gives for the programs of tests/scope/, and scope_oracle_test.v requires the same.
 //
-// Known differences with ESLint: the implicit variables of a script that assigns to an
-// undeclared name (`globalScope.implicit`) and the strictness of a scope are not kept; where
-// typescript-eslint fails (an unknown lib, the JSX pragma naming a variable without identifiers,
-// an import in a script), veslint goes on without that lib or reference.
+// Known differences with ESLint: where typescript-eslint fails (an unknown lib, the JSX pragma
+// naming a variable without identifiers, an import in a script), veslint goes on without that lib
+// or reference.
 
 // ScopeKind is the `type` of an ESLint scope.
 pub enum ScopeKind {
@@ -87,6 +86,7 @@ pub mut:
 	set        map[string]int // own variables by name
 	variables  []int          // own variables, in definition order
 	references []int          // references created in this scope, in creation order
+	through    []int          // the references it left to the upper scope, in that order (scope.through)
 }
 
 // ScopeVariable is an ESLint variable. `lib` marks an implicit variable of a lib
@@ -160,11 +160,29 @@ pub:
 	value_ref  bool
 pub mut:
 	resolved int = -1
+	// implicit is the node of maybeImplicitGlobal: the `=` assignment or for-in/of statement that
+	// writes it outside strict code.
+	implicit ?C.TSNode
 }
 
 // is_read_only ports Reference.isReadOnly.
 pub fn (r ScopeReference) is_read_only() bool {
 	return r.read && !r.write
+}
+
+// ImplicitGlobal is an implicit global variable: the name assigned and, for each assignment, the
+// identifier and def.node (the assignment expression or for-in/of statement).
+pub struct ImplicitGlobal {
+pub:
+	name string
+pub mut:
+	defs []ImplicitGlobalDef
+}
+
+pub struct ImplicitGlobalDef {
+pub:
+	name C.TSNode
+	node C.TSNode
 }
 
 // ScopeTree holds the scopes of a file. The global scope is 0 and, in a module, the module
@@ -175,6 +193,10 @@ pub mut:
 	variables  []ScopeVariable
 	references []ScopeReference
 	through    []int
+	strict     []bool // scope.isStrict of each scope
+	// implicit are globalScope.implicit.variables, by first assignment.
+	implicit     []ImplicitGlobal
+	implicit_set map[string]int
 mut:
 	by_block map[string][]int // scopes created by each block node (scope_block_key)
 	declared map[u64]int      // variable of each definition name node
@@ -236,6 +258,7 @@ pub:
 	jsx_fragment_name_state OptionState
 	jsx_fragment_name       string
 	global_return           bool
+	implied_strict          bool // ecmaFeatures.impliedStrict, which the strict rule reads
 	// parserOptions.isolatedDeclarations (truthy), which consistent-generic-constructors reads
 	isolated_declarations bool
 }
@@ -280,9 +303,11 @@ pub fn parse_language_options(value json2.Any) LanguageOptions {
 	pragma_state, pragma := scope_name_option(parser, 'jsxPragma')
 	fragment_state, fragment := scope_name_option(parser, 'jsxFragmentName')
 	mut global_return := false
+	mut implied_strict := false
 	if features := parser['ecmaFeatures'] {
 		if features is map[string]json2.Any {
 			global_return = (features.as_map()['globalReturn'] or { json2.Any(false) }).json_str() == 'true'
+			implied_strict = (features.as_map()['impliedStrict'] or { json2.Any(false) }).json_str() == 'true'
 		}
 	}
 	parser_source_type := parser['sourceType'] or { json2.Any('') }
@@ -296,6 +321,7 @@ pub fn parse_language_options(value json2.Any) LanguageOptions {
 		parser_source_type:      if parser_source_type is string { parser_source_type } else { '' }
 		has_lib:                 has_lib
 		lib:                     lib
+		implied_strict:          implied_strict
 		jsx_pragma_state:        pragma_state
 		jsx_pragma:              pragma
 		jsx_fragment_name_state: fragment_state
@@ -639,6 +665,17 @@ pub fn (t &ScopeTree) get_scope(n C.TSNode) int {
 	return 0
 }
 
+// function_scope_of is the function scope a function or method creates, -1 if none.
+pub fn (t &ScopeTree) function_scope_of(n C.TSNode) int {
+	scopes := t.by_block[scope_block_key(n)] or { return -1 }
+	for i := scopes.len - 1; i >= 0; i-- {
+		if t.scopes[scopes[i]].kind == .function {
+			return scopes[i]
+		}
+	}
+	return -1
+}
+
 // find_variable ports eslint-utils findVariable: from `scope` (descending first, if `location` is a
 // byte offset, into the innermost child scope whose block contains it, like getInnermostScope), the
 // first scope upward that declares `name`; -1 if none.
@@ -768,6 +805,7 @@ fn build_scope_tree_with(root C.TSNode, src string, tokens TokenEnds, setup Scop
 	}
 	b.tree.by_block[scope_block_key(root)] << 0
 	b.left << []int{}
+	b.tree.strict << b.is_strict_scope(0)
 	// populateGlobalsFromLib: the implicit variables of the libs and `const`.
 	if setup.libs != unsafe { nil } {
 		b.tree.variables = setup.libs.variables.clone()
@@ -787,6 +825,7 @@ fn build_scope_tree_with(root C.TSNode, src string, tokens TokenEnds, setup Scop
 	for b.current >= 0 {
 		b.close()
 	}
+	b.implicit_globals()
 	b.add_globals(setup.declared)
 	// markExportedVariables: only the variables of the global scope.
 	for name in setup.exported {
@@ -797,6 +836,88 @@ fn build_scope_tree_with(root C.TSNode, src string, tokens TokenEnds, setup Scop
 	return &b.tree
 }
 
+// is_strict_scope ports isStrictScope of typescript-eslint's ScopeBase, when the scope is created
+// (its upper scopes are done). Only a class method's function is a method definition there, and
+// its upper class scope is strict anyway.
+fn (b &ScopeBuilder) is_strict_scope(s int) bool {
+	scope := b.tree.scopes[s]
+	if scope.upper >= 0 && b.tree.strict[scope.upper] {
+		return true
+	}
+	match scope.kind {
+		.class_scope, .conditional_type, .function_type, .mapped_type, .esmodule, .ts_enum,
+		.ts_module, .type_scope {
+			return true
+		}
+		.function {
+			if node_kind(scope.block) == 'program' {
+				return b.has_use_strict(scope.block)
+			}
+			body := node_field(scope.block, 'body') or { return false }
+			if node_kind(body) != 'statement_block' {
+				return false
+			}
+			return b.has_use_strict(body)
+		}
+		.global {
+			return b.has_use_strict(scope.block)
+		}
+		else {
+			return false
+		}
+	}
+}
+
+// has_use_strict: the directive prologue of a program or function body has 'use strict' (the raw
+// text between the quotes, as ESTree's `directive`).
+fn (b &ScopeBuilder) has_use_strict(body C.TSNode) bool {
+	for stmt in named_children(body) {
+		kind := node_kind(stmt)
+		if kind in ['comment', 'hash_bang_line', 'html_comment'] {
+			continue
+		}
+		if kind != 'expression_statement' {
+			return false
+		}
+		expr := named_children(stmt).filter(node_kind(it) != 'comment')
+		if expr.len == 0 || node_kind(expr[0]) != 'string' {
+			return false
+		}
+		text := b.text(expr[0])
+		if text.len >= 2 && text[1..text.len - 1] == 'use strict' {
+			return true
+		}
+	}
+	return false
+}
+
+// is_strict is scope.isStrict.
+pub fn (t &ScopeTree) is_strict(s int) bool {
+	return s >= 0 && s < t.strict.len && t.strict[s]
+}
+
+// implicit_globals ports what GlobalScope.close does with the references it has left: an
+// assignment to an undeclared name outside strict code defines an implicit global variable
+// (globalScope.implicit.variables), one per name, with a definition per assignment.
+fn (mut b ScopeBuilder) implicit_globals() {
+	for r in b.tree.through {
+		ref := b.tree.references[r]
+		node := ref.implicit or { continue }
+		if ref.name in b.tree.scopes[0].set {
+			continue
+		}
+		if i := b.tree.implicit_set[ref.name] {
+			b.tree.implicit[i].defs << ImplicitGlobalDef{ref.identifier, node}
+		} else {
+			b.tree.implicit_set[ref.name] = b.tree.implicit.len
+			b.tree.implicit << ImplicitGlobal{
+				name: ref.name
+				defs: [ImplicitGlobalDef{ref.identifier, node}]
+			}
+		}
+	}
+}
+
 // add_globals ports GlobalScope.addVariables and the rest of ESLint's addDeclaredGlobals: each
 // global gets a variable unless the scope has one with its name, the references nothing resolved
 // that have one of those names resolve to it, and the variable takes the values of the global.
@@ -804,6 +925,13 @@ fn (mut b ScopeBuilder) add_globals(declared []ScopeGlobal) {
 	mut variables := map[string]int{}
 	for global in declared {
 		variables[global.name] = b.define_variable(0, global.name)
+	}
+	if b.tree.implicit.len > 0 {
+		b.tree.implicit = b.tree.implicit.filter(it.name !in variables)
+		b.tree.implicit_set = map[string]int{}
+		for i, g in b.tree.implicit {
+			b.tree.implicit_set[g.name] = i
+		}
 	}
 	mut through := []int{cap: b.tree.through.len}
 	for r in b.tree.through {
@@ -815,6 +943,9 @@ fn (mut b ScopeBuilder) add_globals(declared []ScopeGlobal) {
 		}
 	}
 	b.tree.through = through
+	if declared.len > 0 {
+		b.tree.scopes[0].through = b.tree.scopes[0].through.filter(b.tree.references[it].name !in variables)
+	}
 	for global in declared {
 		v := variables[global.name]
 		b.tree.variables[v].eslint_implicit_global_setting = global.config
@@ -864,6 +995,7 @@ fn (mut b ScopeBuilder) nest_function(kind ScopeKind, block C.TSNode, start int,
 	b.tree.scopes[upper].children << index
 	b.tree.by_block[scope_block_key(block)] << index
 	b.left << []int{}
+	b.tree.strict << b.is_strict_scope(index)
 	b.current = index
 	return index
 }
@@ -881,6 +1013,7 @@ fn (mut b ScopeBuilder) close() {
 		if !dynamic && b.resolve_in(scope, r) {
 			continue
 		}
+		b.tree.scopes[scope].through << r
 		if upper >= 0 {
 			b.left[upper] << r
 		} else {
@@ -984,6 +1117,15 @@ fn (mut b ScopeBuilder) read_value(ident C.TSNode) {
 
 fn (mut b ScopeBuilder) write_value(ident C.TSNode, read bool, init bool) {
 	b.reference(ident, b.name_of(ident), read, true, init, false, true)
+}
+
+// write_implicit is a write with maybeImplicitGlobal: by `node` when the scope is not strict.
+fn (mut b ScopeBuilder) write_implicit(ident C.TSNode, node C.TSNode) {
+	before := b.tree.references.len
+	b.write_value(ident, false, false)
+	if b.tree.references.len > before && !b.tree.strict[b.current] {
+		b.tree.references[before].implicit = node
+	}
 }
 
 fn (mut b ScopeBuilder) read_type(ident C.TSNode) {
@@ -2252,9 +2394,9 @@ fn (mut b ScopeBuilder) visit_assignment(n C.TSNode) {
 			b.collect_pattern(left, []C.TSNode{}, -1, mut targets, mut rhs)
 			for t in targets {
 				for _ in t.defaults {
-					b.write_value(t.ident, false, false)
+					b.write_implicit(t.ident, n)
 				}
-				b.write_value(t.ident, false, false)
+				b.write_implicit(t.ident, n)
 			}
 			for r in rhs {
 				b.visit(r)
@@ -2334,9 +2476,9 @@ fn (mut b ScopeBuilder) visit_for_in(n C.TSNode) {
 	b.collect_pattern(unwrap_parens(left), []C.TSNode{}, -1, mut targets, mut rhs)
 	for t in targets {
 		for _ in t.defaults {
-			b.write_value(t.ident, false, false)
+			b.write_implicit(t.ident, n)
 		}
-		b.write_value(t.ident, false, false)
+		b.write_implicit(t.ident, n)
 	}
 	for r in rhs {
 		b.visit(r)

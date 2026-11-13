@@ -230,6 +230,16 @@ pub const no_unassigned_vars = 'no-unassigned-vars'
 pub const no_delete_var = 'no-delete-var'
 pub const block_scoped_var = 'block-scoped-var'
 pub const consistent_this = 'consistent-this'
+pub const no_var = 'no-var'
+pub const prefer_const = 'prefer-const'
+pub const vars_on_top = 'vars-on-top'
+pub const sort_vars = 'sort-vars'
+pub const strict_rule = 'strict'
+pub const no_inner_declarations = 'no-inner-declarations'
+pub const no_lone_blocks = 'no-lone-blocks'
+pub const no_loop_func = 'no-loop-func'
+pub const no_implicit_globals = 'no-implicit-globals'
+pub const no_unmodified_loop_condition = 'no-unmodified-loop-condition'
 pub const names = [no_floating_promises, await_thenable, require_await, return_await,
 	no_misused_promises, no_unsafe_call, no_unsafe_member_access, no_unsafe_return,
 	no_unsafe_assignment, no_unsafe_argument, restrict_template_expressions,
@@ -283,7 +293,9 @@ pub const names = [no_floating_promises, await_thenable, require_await, return_a
 	no_caller, no_iterator, no_proto, no_script_url, no_prototype_builtins, prefer_object_has_own,
 	prefer_object_spread, core_dot_notation, preserve_caught_error, no_class_assign, no_const_assign,
 	no_ex_assign, no_func_assign, no_global_assign, no_import_assign, no_label_var,
-	no_shadow_restricted_names, no_unassigned_vars, no_delete_var, block_scoped_var, consistent_this]
+	no_shadow_restricted_names, no_unassigned_vars, no_delete_var, block_scoped_var, consistent_this,
+	no_var, prefer_const, vars_on_top, sort_vars, strict_rule, no_inner_declarations, no_lone_blocks,
+	no_loop_func, no_implicit_globals, no_unmodified_loop_condition]
 
 // untyped_rules are the ported rules that need no types (`meta.docs.requiresTypeChecking` is false
 // in typescript-eslint): with only these, the command line makes no snapshot (Checker.make_snapshot).
@@ -318,7 +330,9 @@ pub const untyped_rules = [adjacent_overload_signatures, array_type, class_liter
 	no_caller, no_iterator, no_proto, no_script_url, no_prototype_builtins, prefer_object_has_own,
 	prefer_object_spread, core_dot_notation, preserve_caught_error, no_class_assign, no_const_assign,
 	no_ex_assign, no_func_assign, no_global_assign, no_import_assign, no_label_var,
-	no_shadow_restricted_names, no_unassigned_vars, no_delete_var, block_scoped_var, consistent_this]
+	no_shadow_restricted_names, no_unassigned_vars, no_delete_var, block_scoped_var, consistent_this,
+	no_var, prefer_const, vars_on_top, sort_vars, strict_rule, no_inner_declarations, no_lone_blocks,
+	no_loop_func, no_implicit_globals, no_unmodified_loop_condition]
 
 // needs_types tells whether a rule asks tsgo for the types of the program.
 pub fn needs_types(rule string) bool {
@@ -547,6 +561,16 @@ pub const default_options = {
 	no_delete_var:                                '[]'
 	block_scoped_var:                             '[]'
 	consistent_this:                              '["that"]'
+	no_var:                                       '[]'
+	prefer_const:                                 '[{"destructuring":"any","ignoreReadBeforeAssign":false}]'
+	vars_on_top:                                  '[]'
+	sort_vars:                                    '[{"ignoreCase":false}]'
+	strict_rule:                                  '["safe"]'
+	no_inner_declarations:                        '["functions",{"blockScopedFunctions":"allow"}]'
+	no_lone_blocks:                               '[]'
+	no_loop_func:                                 '[]'
+	no_implicit_globals:                          '[{"lexicalBindings":false}]'
+	no_unmodified_loop_condition:                 '[]'
 }
 
 // Finding is a problem a rule found at a node.
@@ -898,6 +922,16 @@ pub fn message(rule string, finding Finding) string {
 		no_delete_var { ndv_messages }
 		block_scoped_var { bsv_messages }
 		consistent_this { cth_messages }
+		no_var { nvar_messages }
+		prefer_const { pconst_messages }
+		vars_on_top { vot_messages }
+		sort_vars { svars_messages }
+		strict_rule { strict_messages }
+		no_inner_declarations { nid_messages }
+		no_lone_blocks { nlb_messages }
+		no_loop_func { nlf_messages }
+		no_implicit_globals { nig_messages }
+		no_unmodified_loop_condition { nulc_messages }
 		else { map[string]string{} }
 	}
 	return interpolate(messages[finding.message_id] or { finding.message_id }, finding.data)
@@ -997,6 +1031,7 @@ pub fn (mut c Checker) lint_file(parser Parser, config LintConfig, src string, a
 	c.ast_path = ''
 	c.program_directory = config.program_directory
 	c.ecma_version = config.language.ecma_version
+	c.language = config.language
 	c.reset_file_types()
 	// Where TypeScript read an `await` as an identifier, the file is parsed again that way
 	// (rules/await_identifier.v).
@@ -1698,6 +1733,36 @@ fn (mut c Checker) lint_rule(rule string, root C.TSNode, abs_path string, mut st
 		consistent_this {
 			return c.lint_consistent_this(root, abs_path, mut stats)!
 		}
+		no_var {
+			return c.lint_no_var(root, abs_path, mut stats)!
+		}
+		prefer_const {
+			return c.lint_prefer_const(root, abs_path, mut stats)!
+		}
+		vars_on_top {
+			return c.lint_vars_on_top(root, abs_path, mut stats)!
+		}
+		sort_vars {
+			return c.lint_sort_vars(root, abs_path, mut stats)!
+		}
+		strict_rule {
+			return c.lint_strict(root, abs_path, mut stats)!
+		}
+		no_inner_declarations {
+			return c.lint_no_inner_declarations(root, abs_path, mut stats)!
+		}
+		no_lone_blocks {
+			return c.lint_no_lone_blocks(root, abs_path, mut stats)!
+		}
+		no_loop_func {
+			return c.lint_no_loop_func(root, abs_path, mut stats)!
+		}
+		no_implicit_globals {
+			return c.lint_no_implicit_globals(root, abs_path, mut stats)!
+		}
+		no_unmodified_loop_condition {
+			return c.lint_no_unmodified_loop_condition(root, abs_path, mut stats)!
+		}
 		else { return error('unknown rule: ${rule}') }
 	}
 }
@@ -1770,10 +1835,11 @@ mut:
 	file_metadata_cache map[string]tsgo.SourceFileMetadata // by tsgo path (file_metadata)
 	package_name_cache  map[string]string                  // package.json name of each package directory; '' if it gives no package id
 	package_patterns    map[string]RegexpProgram           // the regular expression typescript-eslint makes of the `package` of a type specifier
-	project_directory   string // directory of the tsconfig (set_project_directory): what `from: "file"` specifiers are relative to
-	program_directory   string // or this one, when the configuration of the file gives it (LintConfig.program_directory)
-	ecma_version        int    // the normalized languageOptions.ecmaVersion of the file being linted
-	has_bom             bool   // the file being linted had a BOM, which its text does not have (set_has_bom)
+	project_directory   string          // directory of the tsconfig (set_project_directory): what `from: "file"` specifiers are relative to
+	program_directory   string          // or this one, when the configuration of the file gives it (LintConfig.program_directory)
+	ecma_version        int             // the normalized languageOptions.ecmaVersion of the file being linted
+	language            LanguageOptions // the languageOptions of the file being linted
+	has_bom             bool            // the file being linted had a BOM, which its text does not have (set_has_bom)
 	base_types_cache    map[int][]TypeResponse
 	target_cache        map[int]TypeResponse
 	// The `seyfert/*` rules (seyfert.v): getSymbolAtLocation and getTypeAtLocation of each queried

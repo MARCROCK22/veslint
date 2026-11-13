@@ -1,0 +1,29 @@
+tests/rules/prefer-const/cases.ts:2:5	prefer-const	useConst	'a' is never reassigned. Use 'const' instead.	fix	63	73	const a = 1;
+tests/rules/prefer-const/cases.ts:3:5	prefer-const	useConst	'b' is never reassigned. Use 'const' instead.
+tests/rules/prefer-const/cases.ts:3:12	prefer-const	useConst	'c' is never reassigned. Use 'const' instead.	fix	74	91	const b = 2, c = 3;
+tests/rules/prefer-const/cases.ts:4:7	prefer-const	useConst	'd' is never reassigned. Use 'const' instead.	fix	92	122	const { d, e } = { d: 1, e: 2 };
+tests/rules/prefer-const/cases.ts:4:10	prefer-const	useConst	'e' is never reassigned. Use 'const' instead.	fix	92	122	const { d, e } = { d: 1, e: 2 };
+tests/rules/prefer-const/cases.ts:5:6	prefer-const	useConst	'f' is never reassigned. Use 'const' instead.	fix	123	143	const [f, g] = [1, 2];
+tests/rules/prefer-const/cases.ts:5:9	prefer-const	useConst	'g' is never reassigned. Use 'const' instead.	fix	123	143	const [f, g] = [1, 2];
+tests/rules/prefer-const/cases.ts:7:1	prefer-const	useConst	'h' is never reassigned. Use 'const' instead.
+tests/rules/prefer-const/cases.ts:8:10	prefer-const	useConst	'i' is never reassigned. Use 'const' instead.	fix	163	168	const i
+tests/rules/prefer-const/cases.ts:11:10	prefer-const	useConst	'k' is never reassigned. Use 'const' instead.	fix	207	212	const k
+tests/rules/prefer-const/cases.ts:14:5	prefer-const	useConst	'partial' is never reassigned. Use 'const' instead.
+tests/rules/prefer-const/cases.ts:17:7	prefer-const	useConst	'inBlock' is never reassigned. Use 'const' instead.	fix	289	305	const inBlock = 1;
+tests/rules/prefer-const/cases.ts:20:5	prefer-const	useConst	'readFirst' is never reassigned. Use 'const' instead.
+tests/rules/prefer-const/cases.ts:28:10	prefer-const	useConst	'y' is never reassigned. Use 'const' instead.
+tests/rules/prefer-const/cases.ts:32:4	prefer-const	useConst	'inner' is never reassigned. Use 'const' instead.
+tests/rules/prefer-const/cases.ts:38:5	prefer-const	useConst	'objectTarget' is never reassigned. Use 'const' instead.	fix	643	681	const objectTarget: { p?: number } = {};
+tests/rules/prefer-const/destructuring-all/cases.ts:2:5	prefer-const	useConst	'a' is never reassigned. Use 'const' instead.	fix	63	73	const a = 1;
+tests/rules/prefer-const/destructuring-all/cases.ts:3:5	prefer-const	useConst	'b' is never reassigned. Use 'const' instead.
+tests/rules/prefer-const/destructuring-all/cases.ts:3:12	prefer-const	useConst	'c' is never reassigned. Use 'const' instead.	fix	74	91	const b = 2, c = 3;
+tests/rules/prefer-const/destructuring-all/cases.ts:4:7	prefer-const	useConst	'd' is never reassigned. Use 'const' instead.	fix	92	122	const { d, e } = { d: 1, e: 2 };
+tests/rules/prefer-const/destructuring-all/cases.ts:4:10	prefer-const	useConst	'e' is never reassigned. Use 'const' instead.	fix	92	122	const { d, e } = { d: 1, e: 2 };
+tests/rules/prefer-const/destructuring-all/cases.ts:5:6	prefer-const	useConst	'f' is never reassigned. Use 'const' instead.	fix	123	143	const [f, g] = [1, 2];
+tests/rules/prefer-const/destructuring-all/cases.ts:5:9	prefer-const	useConst	'g' is never reassigned. Use 'const' instead.	fix	123	143	const [f, g] = [1, 2];
+tests/rules/prefer-const/destructuring-all/cases.ts:7:1	prefer-const	useConst	'h' is never reassigned. Use 'const' instead.
+tests/rules/prefer-const/destructuring-all/cases.ts:8:10	prefer-const	useConst	'i' is never reassigned. Use 'const' instead.	fix	163	168	const i
+tests/rules/prefer-const/destructuring-all/cases.ts:11:10	prefer-const	useConst	'k' is never reassigned. Use 'const' instead.	fix	207	212	const k
+tests/rules/prefer-const/destructuring-all/cases.ts:14:5	prefer-const	useConst	'partial' is never reassigned. Use 'const' instead.
+tests/rules/prefer-const/destructuring-all/cases.ts:17:7	prefer-const	useConst	'inBlock' is never reassigned. Use 'const' instead.	fix	289	305	const inBlock = 1;
+tests/rules/prefer-const/destructuring-all/cases.ts:38:5	prefer-const	useConst	'objectTarget' is never reassigned. Use 'const' instead.	fix	643	681	const objectTarget: { p?: number } = {};

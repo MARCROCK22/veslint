@@ -1,0 +1,9 @@
+tests/rules/no-inner-declarations/both-disallow/cases.ts:3:3	no-inner-declarations	moveDeclToRoot	Move function declaration to program root.
+tests/rules/no-inner-declarations/both-disallow/cases.ts:5:3	no-inner-declarations	moveDeclToRoot	Move variable declaration to program root.
+tests/rules/no-inner-declarations/both-disallow/cases.ts:9:5	no-inner-declarations	moveDeclToRoot	Move variable declaration to function body root.
+tests/rules/no-inner-declarations/both-disallow/cases.ts:10:5	no-inner-declarations	moveDeclToRoot	Move function declaration to function body root.
+tests/rules/no-inner-declarations/both-disallow/cases.ts:13:8	no-inner-declarations	moveDeclToRoot	Move variable declaration to function body root.
+tests/rules/no-inner-declarations/both-disallow/cases.ts:14:8	no-inner-declarations	moveDeclToRoot	Move variable declaration to function body root.
+tests/rules/no-inner-declarations/both-disallow/cases.ts:20:7	no-inner-declarations	moveDeclToRoot	Move function declaration to class static block body root.
+tests/rules/no-inner-declarations/both-disallow/cases.ts:26:3	no-inner-declarations	moveDeclToRoot	Move function declaration to program root.
+tests/rules/no-inner-declarations/both-disallow/cases.ts:27:3	no-inner-declarations	moveDeclToRoot	Move variable declaration to program root.

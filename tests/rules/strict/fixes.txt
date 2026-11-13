@@ -1,0 +1,28 @@
+tests/rules/strict/cases.ts:2:1	strict	module	'use strict' is unnecessary inside of modules.	fix	56	69	
+tests/rules/strict/cases.ts:3:1	strict	module	'use strict' is unnecessary inside of modules.	fix	70	83	
+tests/rules/strict/cases.ts:6:3	strict	module	'use strict' is unnecessary inside of modules.	fix	102	115	
+tests/rules/strict/cases.ts:11:3	strict	nonSimpleParameterList	'use strict' directive inside a function with non-simple parameter list throws a syntax error since ES2016.
+tests/rules/strict/cases.ts:17:5	strict	module	'use strict' is unnecessary inside of modules.	fix	208	221	
+tests/rules/strict/cases.ts:22:3	strict	module	'use strict' is unnecessary inside of modules.	fix	246	259	
+tests/rules/strict/cases.ts:23:3	strict	module	'use strict' is unnecessary inside of modules.	fix	262	277	
+tests/rules/strict/function/cases.ts:2:1	strict	module	'use strict' is unnecessary inside of modules.	fix	56	69	
+tests/rules/strict/function/cases.ts:3:1	strict	module	'use strict' is unnecessary inside of modules.	fix	70	83	
+tests/rules/strict/function/cases.ts:6:3	strict	module	'use strict' is unnecessary inside of modules.	fix	102	115	
+tests/rules/strict/function/cases.ts:11:3	strict	nonSimpleParameterList	'use strict' directive inside a function with non-simple parameter list throws a syntax error since ES2016.
+tests/rules/strict/function/cases.ts:17:5	strict	module	'use strict' is unnecessary inside of modules.	fix	208	221	
+tests/rules/strict/function/cases.ts:22:3	strict	module	'use strict' is unnecessary inside of modules.	fix	246	259	
+tests/rules/strict/function/cases.ts:23:3	strict	module	'use strict' is unnecessary inside of modules.	fix	262	277	
+tests/rules/strict/global/cases.ts:2:1	strict	module	'use strict' is unnecessary inside of modules.	fix	56	69	
+tests/rules/strict/global/cases.ts:3:1	strict	module	'use strict' is unnecessary inside of modules.	fix	70	83	
+tests/rules/strict/global/cases.ts:6:3	strict	module	'use strict' is unnecessary inside of modules.	fix	102	115	
+tests/rules/strict/global/cases.ts:11:3	strict	nonSimpleParameterList	'use strict' directive inside a function with non-simple parameter list throws a syntax error since ES2016.
+tests/rules/strict/global/cases.ts:17:5	strict	module	'use strict' is unnecessary inside of modules.	fix	208	221	
+tests/rules/strict/global/cases.ts:22:3	strict	module	'use strict' is unnecessary inside of modules.	fix	246	259	
+tests/rules/strict/global/cases.ts:23:3	strict	module	'use strict' is unnecessary inside of modules.	fix	262	277	
+tests/rules/strict/never/cases.ts:2:1	strict	module	'use strict' is unnecessary inside of modules.	fix	56	69	
+tests/rules/strict/never/cases.ts:3:1	strict	module	'use strict' is unnecessary inside of modules.	fix	70	83	
+tests/rules/strict/never/cases.ts:6:3	strict	module	'use strict' is unnecessary inside of modules.	fix	102	115	
+tests/rules/strict/never/cases.ts:11:3	strict	nonSimpleParameterList	'use strict' directive inside a function with non-simple parameter list throws a syntax error since ES2016.
+tests/rules/strict/never/cases.ts:17:5	strict	module	'use strict' is unnecessary inside of modules.	fix	208	221	
+tests/rules/strict/never/cases.ts:22:3	strict	module	'use strict' is unnecessary inside of modules.	fix	246	259	
+tests/rules/strict/never/cases.ts:23:3	strict	module	'use strict' is unnecessary inside of modules.	fix	262	277	

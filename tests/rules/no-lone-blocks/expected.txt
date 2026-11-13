@@ -1,0 +1,8 @@
+tests/rules/no-lone-blocks/cases.ts:2:1	no-lone-blocks	redundantBlock	Block is redundant.
+tests/rules/no-lone-blocks/cases.ts:3:1	no-lone-blocks	redundantBlock	Block is redundant.
+tests/rules/no-lone-blocks/cases.ts:7:3	no-lone-blocks	redundantNestedBlock	Nested block is redundant.
+tests/rules/no-lone-blocks/cases.ts:8:5	no-lone-blocks	redundantNestedBlock	Nested block is redundant.
+tests/rules/no-lone-blocks/cases.ts:12:3	no-lone-blocks	redundantNestedBlock	Nested block is redundant.
+tests/rules/no-lone-blocks/cases.ts:18:11	no-lone-blocks	redundantBlock	Block is redundant.
+tests/rules/no-lone-blocks/cases.ts:24:5	no-lone-blocks	redundantBlock	Block is redundant.
+tests/rules/no-lone-blocks/cases.ts:30:5	no-lone-blocks	redundantNestedBlock	Nested block is redundant.

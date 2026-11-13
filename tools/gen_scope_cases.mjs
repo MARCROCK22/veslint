@@ -3,13 +3,16 @@
 // ESLint has finished it (SourceCode#finalize): the real @typescript-eslint/parser and
 // @typescript-eslint/scope-manager analyze the program inside the real ESLint Linter, with the
 // languageOptions, linterOptions and (through a project on disk) compilerOptions of the case.
-// Per scope: its type, block range, upper and variable scope; its variables in order, each with
+// Per scope: its type, block range, upper and variable scope, isStrict and the references it left to
+// the upper scope (through); its variables in order, each with
 // its definitions (type and start of the name), identifiers and the references that resolved to
 // it, in ESLint's order; and its references in order, each with its identifier, read/write/init
 // flags, type/value kind and the variable it resolved to. Of the global scope only the variables
 // that are not implicit lib variables or that have references are listed; all of them, with their
 // flags, are in `global.digest` (SHA-1 of one line per variable). Positions are byte offsets; of
-// an identifier only the start is kept, as ESTree's range includes its type annotation.
+// an identifier only the start is kept, as ESTree's range includes its type annotation. Of the
+// global scope, also its implicit variables (an assignment to an undeclared name outside strict
+// code) with the start of each definition's name and node.
 //
 // A case is a file of tests/scope/: `<name>.ts` or `<name>.tsx`, with an optional
 // `<name>.json` next to it: {"languageOptions": {…}, "linterOptions": {…}, "compilerOptions": {…}}.
@@ -123,6 +126,8 @@ function analyze(file) {
     end: bytes(scope.block.range[1]),
     upper: scope.upper ? scopeIndex.get(scope.upper) : -1,
     variableScope: scopeIndex.get(scope.variableScope),
+    isStrict: scope.isStrict,
+    through: scope.through.map(reference => referenceId.get(reference)),
     variables: scope.variables
       .map((variable, position) => ({ variable, position }))
       .filter(({ variable }) => index !== 0 || variable.constructor.name !== 'ImplicitLibVariable' || variable.references.length > 0)
@@ -181,6 +186,10 @@ function analyze(file) {
       count: globalScope.variables.length,
       digest: crypto.createHash('sha1').update(lines.join('\n')).digest('hex'),
       through: globalScope.through.map(reference => referenceId.get(reference)),
+      implicit: globalScope.implicit.variables.map(variable => ({
+        name: variable.name,
+        defs: variable.defs.map(def => [bytes(def.name.range[0]), bytes(def.node.range[0])]),
+      })),
     },
   };
 }

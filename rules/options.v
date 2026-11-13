@@ -105,6 +105,11 @@ pub fn check_options(rule string, options []json2.Any) !bool {
 		no_global_assign { nga_exceptions(options)! }
 		no_shadow_restricted_names { nsrn_report_global_this(options)! }
 		consistent_this { cth_aliases(options)! }
+		prefer_const { pconst_options(options)! }
+		sort_vars { svars_options(options)! }
+		strict_rule { strict_options(options)! }
+		no_inner_declarations { nid_options(options)! }
+		no_implicit_globals { nig_options(options)! }
 		else { return false }
 	}
 	return true

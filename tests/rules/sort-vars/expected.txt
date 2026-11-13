@@ -1,0 +1,13 @@
+tests/rules/sort-vars/cases.ts:2:12	sort-vars	sortVars	Variables within the same declaration block should be sorted alphabetically.
+tests/rules/sort-vars/cases.ts:3:14	sort-vars	sortVars	Variables within the same declaration block should be sorted alphabetically.
+tests/rules/sort-vars/cases.ts:3:34	sort-vars	sortVars	Variables within the same declaration block should be sorted alphabetically.
+tests/rules/sort-vars/cases.ts:4:22	sort-vars	sortVars	Variables within the same declaration block should be sorted alphabetically.
+tests/rules/sort-vars/cases.ts:4:39	sort-vars	sortVars	Variables within the same declaration block should be sorted alphabetically.
+tests/rules/sort-vars/cases.ts:5:32	sort-vars	sortVars	Variables within the same declaration block should be sorted alphabetically.
+tests/rules/sort-vars/cases.ts:5:42	sort-vars	sortVars	Variables within the same declaration block should be sorted alphabetically.
+tests/rules/sort-vars/cases.ts:6:12	sort-vars	sortVars	Variables within the same declaration block should be sorted alphabetically.
+tests/rules/sort-vars/cases.ts:7:13	sort-vars	sortVars	Variables within the same declaration block should be sorted alphabetically.
+tests/rules/sort-vars/cases.ts:8:18	sort-vars	sortVars	Variables within the same declaration block should be sorted alphabetically.
+tests/rules/sort-vars/ignore-case/cases.ts:2:12	sort-vars	sortVars	Variables within the same declaration block should be sorted alphabetically.
+tests/rules/sort-vars/ignore-case/cases.ts:3:12	sort-vars	sortVars	Variables within the same declaration block should be sorted alphabetically.
+tests/rules/sort-vars/ignore-case/cases.ts:3:20	sort-vars	sortVars	Variables within the same declaration block should be sorted alphabetically.

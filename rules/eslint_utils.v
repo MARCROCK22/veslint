@@ -1,6 +1,6 @@
 module rules
 
-import treesitter { Ident, children, named_children, node_end, node_field, node_kind, node_parent, node_start }
+import treesitter { Ident, children, named_children, node_end, node_field, node_kind, node_parent, node_start, position_of }
 
 // Ports of the helpers of ESLint 10.6.0's lib/rules/utils/ast-utils.js that the rules of ESLint
 // core use. A tree-sitter node stands for the ESTree node it is without its parentheses, which
@@ -1019,4 +1019,18 @@ fn es_modifying_references(tree &ScopeTree, v int) []int {
 		out << r
 	}
 	return out
+}
+
+// es_function_position is where the ESTree function starts: the function of a method starts at its
+// type parameters or parameters.
+fn es_function_position(f C.TSNode) Ident {
+	if node_kind(f) == 'method_definition' {
+		if type_parameters := node_field(f, 'type_parameters') {
+			return position_of(type_parameters)
+		}
+		if parameters := node_field(f, 'parameters') {
+			return position_of(parameters)
+		}
+	}
+	return position_of(f)
 }
