@@ -1,0 +1,10 @@
+{"rule": "no-sparse-arrays", "upstream": "eslint v10.6.0", "files": ["tests/lib/rules/no-sparse-arrays.js"],
+"messages": {"unexpectedSparseArray":"Unexpected comma in middle of array."},
+"cases": [
+{"id":"no-sparse-arrays/v0","kind":"valid","code":"var a = [ 1, 2, ]","file":"file.ts","tsconfig":null},
+{"id":"no-sparse-arrays/i0","kind":"invalid","code":"var a = [,];","file":"file.ts","tsconfig":null,"errors":[{"messageId":"unexpectedSparseArray","line":1,"column":10,"endLine":1,"endColumn":11}]},
+{"id":"no-sparse-arrays/i1","kind":"invalid","code":"var a = [ 1,, 2];","file":"file.ts","tsconfig":null,"errors":[{"messageId":"unexpectedSparseArray","line":1,"column":13,"endLine":1,"endColumn":14}]},
+{"id":"no-sparse-arrays/i2","kind":"invalid","code":"[\r\n\t/* comment */,\n// comment\n ,];","file":"file.ts","tsconfig":null,"errors":[{"messageId":"unexpectedSparseArray","line":2,"column":15,"endLine":2,"endColumn":16},{"messageId":"unexpectedSparseArray","line":4,"column":2,"endLine":4,"endColumn":3}]},
+{"id":"no-sparse-arrays/i3","kind":"invalid","code":"[(( [a,] )),,,];","file":"file.ts","tsconfig":null,"errors":[{"messageId":"unexpectedSparseArray","line":1,"column":13,"endLine":1,"endColumn":14},{"messageId":"unexpectedSparseArray","line":1,"column":14,"endLine":1,"endColumn":15}]},
+{"id":"no-sparse-arrays/i4","kind":"invalid","code":"[,(( [a,] )),,];","file":"file.ts","tsconfig":null,"errors":[{"messageId":"unexpectedSparseArray","line":1,"column":2,"endLine":1,"endColumn":3},{"messageId":"unexpectedSparseArray","line":1,"column":14,"endLine":1,"endColumn":15}]}
+]}

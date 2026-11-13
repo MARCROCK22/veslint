@@ -1,0 +1,2 @@
+tests/rules/no-multi-str/cases.ts:2:12	no-multi-str	multilineString	Multiline support is limited to browsers supporting ES5 only.
+tests/rules/no-multi-str/cases.ts:4:12	no-multi-str	multilineString	Multiline support is limited to browsers supporting ES5 only.

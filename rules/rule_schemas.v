@@ -175,6 +175,18 @@ const rule_option_schemas = {
 	'no-sequences':                                                    '{"type":"array","items":[{"type":"object","properties":{"allowInParentheses":{"type":"boolean"}},"additionalProperties":false}],"minItems":0,"maxItems":1}'
 	'no-return-assign':                                                '{"type":"array","items":[{"enum":["except-parens","always"]}],"minItems":0,"maxItems":1}'
 	'no-unexpected-multiline':                                         '{"type":"array","minItems":0,"maxItems":0}'
+	'no-loss-of-precision':                                            '{"type":"array","minItems":0,"maxItems":0}'
+	'no-nonoctal-decimal-escape':                                      '{"type":"array","minItems":0,"maxItems":0}'
+	'no-octal':                                                        '{"type":"array","minItems":0,"maxItems":0}'
+	'no-octal-escape':                                                 '{"type":"array","minItems":0,"maxItems":0}'
+	'prefer-numeric-literals':                                         '{"type":"array","minItems":0,"maxItems":0}'
+	'no-multi-str':                                                    '{"type":"array","minItems":0,"maxItems":0}'
+	'no-template-curly-in-string':                                     '{"type":"array","minItems":0,"maxItems":0}'
+	'no-useless-concat':                                               '{"type":"array","minItems":0,"maxItems":0}'
+	'prefer-template':                                                 '{"type":"array","minItems":0,"maxItems":0}'
+	'no-irregular-whitespace':                                         '{"type":"array","items":[{"type":"object","properties":{"skipComments":{"type":"boolean"},"skipStrings":{"type":"boolean"},"skipTemplates":{"type":"boolean"},"skipRegExps":{"type":"boolean"},"skipJSXText":{"type":"boolean"}},"additionalProperties":false}],"minItems":0,"maxItems":1}'
+	'unicode-bom':                                                     '{"type":"array","items":[{"enum":["always","never"]}],"minItems":0,"maxItems":1}'
+	'no-sparse-arrays':                                                '{"type":"array","minItems":0,"maxItems":0}'
 }
 
 // eslint_rule_default_options are the meta.defaultOptions of the rules of ESLint and of

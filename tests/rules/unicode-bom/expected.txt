@@ -1,0 +1,2 @@
+tests/rules/unicode-bom/always/cases.ts:1:1	unicode-bom	expected	Expected Unicode BOM (Byte Order Mark).
+tests/rules/unicode-bom/bom/cases.ts:1:1	unicode-bom	unexpected	Unexpected Unicode BOM (Byte Order Mark).

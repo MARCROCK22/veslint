@@ -135,6 +135,14 @@ pub fn apply_fixes(src string, findings []Finding) (bool, string) {
 	mut last := -1 // the end of the last fix applied; -1 before the first one
 	for index in order {
 		fix := fixable[index].fix
+		// The range [-1, 0] is the BOM, which is not in the text: removing it changes nothing
+		// here (the caller drops it).
+		if fix.start < 0 {
+			if last < 0 {
+				last = 0
+			}
+			continue
+		}
 		if last >= fix.start || fix.start > fix.end {
 			continue
 		}

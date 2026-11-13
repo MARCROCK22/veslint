@@ -182,6 +182,18 @@ pub const prefer_exponentiation_operator = 'prefer-exponentiation-operator'
 pub const no_sequences = 'no-sequences'
 pub const no_return_assign = 'no-return-assign'
 pub const no_unexpected_multiline = 'no-unexpected-multiline'
+pub const no_loss_of_precision = 'no-loss-of-precision'
+pub const no_nonoctal_decimal_escape = 'no-nonoctal-decimal-escape'
+pub const no_octal = 'no-octal'
+pub const no_octal_escape = 'no-octal-escape'
+pub const prefer_numeric_literals = 'prefer-numeric-literals'
+pub const no_multi_str = 'no-multi-str'
+pub const no_template_curly_in_string = 'no-template-curly-in-string'
+pub const no_useless_concat = 'no-useless-concat'
+pub const prefer_template = 'prefer-template'
+pub const no_irregular_whitespace = 'no-irregular-whitespace'
+pub const unicode_bom = 'unicode-bom'
+pub const no_sparse_arrays = 'no-sparse-arrays'
 pub const names = [no_floating_promises, await_thenable, require_await, return_await,
 	no_misused_promises, no_unsafe_call, no_unsafe_member_access, no_unsafe_return,
 	no_unsafe_assignment, no_unsafe_argument, restrict_template_expressions,
@@ -226,7 +238,9 @@ pub const names = [no_floating_promises, await_thenable, require_await, return_a
 	no_dupe_keys, no_empty_pattern, no_useless_rename, no_useless_computed_key, object_shorthand,
 	require_yield, eqeqeq, yoda, no_eq_null, no_extra_boolean_cast, no_implicit_coercion,
 	logical_assignment_operators, operator_assignment, prefer_exponentiation_operator, no_sequences,
-	no_return_assign, no_unexpected_multiline]
+	no_return_assign, no_unexpected_multiline, no_loss_of_precision, no_nonoctal_decimal_escape,
+	no_octal, no_octal_escape, prefer_numeric_literals, no_multi_str, no_template_curly_in_string,
+	no_useless_concat, prefer_template, no_irregular_whitespace, unicode_bom, no_sparse_arrays]
 
 // untyped_rules are the ported rules that need no types (`meta.docs.requiresTypeChecking` is false
 // in typescript-eslint): with only these, the command line makes no snapshot (Checker.make_snapshot).
@@ -252,7 +266,9 @@ pub const untyped_rules = [adjacent_overload_signatures, array_type, class_liter
 	no_dupe_keys, no_empty_pattern, no_useless_rename, no_useless_computed_key, object_shorthand,
 	require_yield, eqeqeq, yoda, no_eq_null, no_extra_boolean_cast, no_implicit_coercion,
 	logical_assignment_operators, operator_assignment, prefer_exponentiation_operator, no_sequences,
-	no_return_assign, no_unexpected_multiline]
+	no_return_assign, no_unexpected_multiline, no_loss_of_precision, no_nonoctal_decimal_escape,
+	no_octal, no_octal_escape, prefer_numeric_literals, no_multi_str, no_template_curly_in_string,
+	no_useless_concat, prefer_template, no_irregular_whitespace, unicode_bom, no_sparse_arrays]
 
 // needs_types tells whether a rule asks tsgo for the types of the program.
 pub fn needs_types(rule string) bool {
@@ -433,6 +449,18 @@ pub const default_options = {
 	no_sequences:                                 '[{"allowInParentheses":true}]'
 	no_return_assign:                             '["except-parens"]'
 	no_unexpected_multiline:                      '[]'
+	no_loss_of_precision:                         '[]'
+	no_nonoctal_decimal_escape:                   '[]'
+	no_octal:                                     '[]'
+	no_octal_escape:                              '[]'
+	prefer_numeric_literals:                      '[]'
+	no_multi_str:                                 '[]'
+	no_template_curly_in_string:                  '[]'
+	no_useless_concat:                            '[]'
+	prefer_template:                              '[]'
+	no_irregular_whitespace:                      '[{"skipComments":false,"skipJSXText":false,"skipRegExps":false,"skipStrings":true,"skipTemplates":false}]'
+	unicode_bom:                                  '["never"]'
+	no_sparse_arrays:                             '[]'
 }
 
 // Finding is a problem a rule found at a node.
@@ -736,6 +764,18 @@ pub fn message(rule string, finding Finding) string {
 		no_sequences { nseq_messages }
 		no_return_assign { nra_messages }
 		no_unexpected_multiline { num_messages }
+		no_loss_of_precision { nlop_messages }
+		no_nonoctal_decimal_escape { nnde_messages }
+		no_octal { noc_messages }
+		no_octal_escape { noe_messages }
+		prefer_numeric_literals { pnl_messages }
+		no_multi_str { nmstr_messages }
+		no_template_curly_in_string { ntcis_messages }
+		no_useless_concat { nuconcat_messages }
+		prefer_template { ptpl_messages }
+		no_irregular_whitespace { niw_messages }
+		unicode_bom { ubom_messages }
+		no_sparse_arrays { nsa2_messages }
 		else { map[string]string{} }
 	}
 	return interpolate(messages[finding.message_id] or { finding.message_id }, finding.data)
@@ -812,6 +852,12 @@ fn (mut n NoLintStop) stop() bool {
 // set_lint_stop makes lint_file ask `stop` before each rule whether to give the lint up.
 pub fn (mut c Checker) set_lint_stop(stop LintStop) {
 	c.lint_stop = stop
+}
+
+// set_has_bom tells the Checker whether the next file it lints had a BOM (unicode-bom): its text
+// comes without it, as ESLint's does.
+pub fn (mut c Checker) set_has_bom(has_bom bool) {
+	c.has_bom = has_bom
 }
 
 pub fn (mut c Checker) lint_file(parser Parser, config LintConfig, src string, abs_path string, mut stats Stats) !FileLint {
@@ -1386,6 +1432,42 @@ fn (mut c Checker) lint_rule(rule string, root C.TSNode, abs_path string, mut st
 		no_unexpected_multiline {
 			return c.lint_no_unexpected_multiline(root, abs_path, mut stats)!
 		}
+		no_loss_of_precision {
+			return c.lint_no_loss_of_precision(root, abs_path, mut stats)!
+		}
+		no_nonoctal_decimal_escape {
+			return c.lint_no_nonoctal_decimal_escape(root, abs_path, mut stats)!
+		}
+		no_octal {
+			return c.lint_no_octal(root, abs_path, mut stats)!
+		}
+		no_octal_escape {
+			return c.lint_no_octal_escape(root, abs_path, mut stats)!
+		}
+		prefer_numeric_literals {
+			return c.lint_prefer_numeric_literals(root, abs_path, mut stats)!
+		}
+		no_multi_str {
+			return c.lint_no_multi_str(root, abs_path, mut stats)!
+		}
+		no_template_curly_in_string {
+			return c.lint_no_template_curly_in_string(root, abs_path, mut stats)!
+		}
+		no_useless_concat {
+			return c.lint_no_useless_concat(root, abs_path, mut stats)!
+		}
+		prefer_template {
+			return c.lint_prefer_template(root, abs_path, mut stats)!
+		}
+		no_irregular_whitespace {
+			return c.lint_no_irregular_whitespace(root, abs_path, mut stats)!
+		}
+		unicode_bom {
+			return c.lint_unicode_bom(root, abs_path, mut stats)!
+		}
+		no_sparse_arrays {
+			return c.lint_no_sparse_arrays(root, abs_path, mut stats)!
+		}
 		else { return error('unknown rule: ${rule}') }
 	}
 }
@@ -1461,6 +1543,7 @@ mut:
 	project_directory   string // directory of the tsconfig (set_project_directory): what `from: "file"` specifiers are relative to
 	program_directory   string // or this one, when the configuration of the file gives it (LintConfig.program_directory)
 	ecma_version        int    // the normalized languageOptions.ecmaVersion of the file being linted
+	has_bom             bool   // the file being linted had a BOM, which its text does not have (set_has_bom)
 	base_types_cache    map[int][]TypeResponse
 	target_cache        map[int]TypeResponse
 	// The `seyfert/*` rules (seyfert.v): getSymbolAtLocation and getTypeAtLocation of each queried

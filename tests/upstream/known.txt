@@ -71,3 +71,146 @@ eslint	no-extra-boolean-cast/v19	typescript-eslint's lib declares `Boolean`, whi
 veslint	no-implicit-coercion/i3	typescript-eslint's lib declares `Boolean`, which `globals: {Boolean: "off"}` does not remove: veslint fixes instead of suggesting
 eslint	no-implicit-coercion/i3	typescript-eslint's lib declares `Boolean`, which `globals: {Boolean: "off"}` does not remove: ESLint fixes instead of suggesting
 veslint	prefer-exponentiation-operator/v14	in a module, ESLint with typescript-eslint's scope manager leaves `Math` unresolved after `/* globals Math:off */`; veslint resolves it to the lib's
+# TypeScript rejects octal literals and escapes, decimals with leading zeros and `\8`/`\9`
+# escapes: typescript-eslint's parser fails on these cases; tree-sitter parses them.
+eslint	no-loss-of-precision/r0/v30	typescript-eslint's parser: Decimals with leading zeros are not allowed.
+eslint	no-loss-of-precision/r0/v31	typescript-eslint's parser: Decimals with leading zeros are not allowed.
+eslint	no-loss-of-precision/r0/v32	typescript-eslint's parser: Decimals with leading zeros are not allowed.
+eslint	no-loss-of-precision/r0/v33	typescript-eslint's parser: Decimals with leading zeros are not allowed.
+eslint	no-loss-of-precision/r0/v59	typescript-eslint's parser: Octal literals are not allowed. Use the syntax '0o377777777777777777'.
+eslint	no-loss-of-precision/r0/i26	typescript-eslint's parser: Octal literals are not allowed. Use the syntax '0o400000000000000000'.
+eslint	no-nonoctal-decimal-escape/v14	typescript-eslint's parser: Octal escape sequences are not allowed. Use the syntax '\x01'.
+eslint	no-nonoctal-decimal-escape/v15	typescript-eslint's parser: Octal escape sequences are not allowed. Use the syntax '\x07'.
+eslint	no-nonoctal-decimal-escape/v16	typescript-eslint's parser: Octal escape sequences are not allowed. Use the syntax '\x01'.
+eslint	no-nonoctal-decimal-escape/v17	typescript-eslint's parser: Octal escape sequences are not allowed. Use the syntax '\x00'.
+eslint	no-nonoctal-decimal-escape/v18	typescript-eslint's parser: Octal escape sequences are not allowed. Use the syntax '\x01'.
+eslint	no-nonoctal-decimal-escape/v33	typescript-eslint's parser: Octal escape sequences are not allowed. Use the syntax '\x01'.
+eslint	no-nonoctal-decimal-escape/v34	typescript-eslint's parser: Octal escape sequences are not allowed. Use the syntax '\x01'.
+eslint	no-nonoctal-decimal-escape/i0	typescript-eslint's parser: Escape sequence '\8' is not allowed.
+eslint	no-nonoctal-decimal-escape/i1	typescript-eslint's parser: Escape sequence '\9' is not allowed.
+eslint	no-nonoctal-decimal-escape/i2	typescript-eslint's parser: Escape sequence '\8' is not allowed.
+eslint	no-nonoctal-decimal-escape/i3	typescript-eslint's parser: Escape sequence '\9' is not allowed.
+eslint	no-nonoctal-decimal-escape/i4	typescript-eslint's parser: Escape sequence '\9' is not allowed.
+eslint	no-nonoctal-decimal-escape/i5	typescript-eslint's parser: Escape sequence '\9' is not allowed.
+eslint	no-nonoctal-decimal-escape/i6	typescript-eslint's parser: Escape sequence '\8' is not allowed.
+eslint	no-nonoctal-decimal-escape/i7	typescript-eslint's parser: Escape sequence '\8' is not allowed.
+eslint	no-nonoctal-decimal-escape/i8	typescript-eslint's parser: Escape sequence '\8' is not allowed.
+eslint	no-nonoctal-decimal-escape/i9	typescript-eslint's parser: Escape sequence '\9' is not allowed.
+eslint	no-nonoctal-decimal-escape/i10	typescript-eslint's parser: Escape sequence '\8' is not allowed.
+eslint	no-nonoctal-decimal-escape/i11	typescript-eslint's parser: Escape sequence '\8' is not allowed.
+eslint	no-nonoctal-decimal-escape/i12	typescript-eslint's parser: Octal escape sequences are not allowed. Use the syntax '\x01'.
+eslint	no-nonoctal-decimal-escape/i13	typescript-eslint's parser: Octal escape sequences are not allowed. Use the syntax '\x01'.
+eslint	no-nonoctal-decimal-escape/i14	typescript-eslint's parser: Escape sequence '\8' is not allowed.
+eslint	no-nonoctal-decimal-escape/i15	typescript-eslint's parser: Escape sequence '\8' is not allowed.
+eslint	no-nonoctal-decimal-escape/i16	typescript-eslint's parser: Escape sequence '\8' is not allowed.
+eslint	no-nonoctal-decimal-escape/i17	typescript-eslint's parser: Escape sequence '\8' is not allowed.
+eslint	no-nonoctal-decimal-escape/i18	typescript-eslint's parser: Escape sequence '\9' is not allowed.
+eslint	no-nonoctal-decimal-escape/i19	typescript-eslint's parser: Escape sequence '\8' is not allowed.
+eslint	no-nonoctal-decimal-escape/i20	typescript-eslint's parser: Escape sequence '\8' is not allowed.
+eslint	no-nonoctal-decimal-escape/i21	typescript-eslint's parser: Escape sequence '\8' is not allowed.
+eslint	no-nonoctal-decimal-escape/i22	typescript-eslint's parser: Escape sequence '\9' is not allowed.
+eslint	no-nonoctal-decimal-escape/i23	typescript-eslint's parser: Escape sequence '\8' is not allowed.
+eslint	no-nonoctal-decimal-escape/i24	typescript-eslint's parser: Escape sequence '\8' is not allowed.
+eslint	no-nonoctal-decimal-escape/i25	typescript-eslint's parser: Escape sequence '\9' is not allowed.
+eslint	no-nonoctal-decimal-escape/i26	typescript-eslint's parser: Escape sequence '\8' is not allowed.
+eslint	no-nonoctal-decimal-escape/i27	typescript-eslint's parser: Escape sequence '\8' is not allowed.
+eslint	no-nonoctal-decimal-escape/i28	typescript-eslint's parser: Escape sequence '\9' is not allowed.
+eslint	no-nonoctal-decimal-escape/i29	typescript-eslint's parser: Escape sequence '\8' is not allowed.
+eslint	no-nonoctal-decimal-escape/i30	typescript-eslint's parser: Escape sequence '\9' is not allowed.
+eslint	no-nonoctal-decimal-escape/i31	typescript-eslint's parser: Escape sequence '\8' is not allowed.
+eslint	no-nonoctal-decimal-escape/i32	typescript-eslint's parser: Escape sequence '\9' is not allowed.
+eslint	no-nonoctal-decimal-escape/i33	typescript-eslint's parser: Escape sequence '\8' is not allowed.
+eslint	no-nonoctal-decimal-escape/i34	typescript-eslint's parser: Escape sequence '\9' is not allowed.
+eslint	no-nonoctal-decimal-escape/i35	typescript-eslint's parser: Octal escape sequences are not allowed. Use the syntax '\x01'.
+eslint	no-nonoctal-decimal-escape/i36	typescript-eslint's parser: Escape sequence '\8' is not allowed.
+eslint	no-nonoctal-decimal-escape/i37	typescript-eslint's parser: Escape sequence '\8' is not allowed.
+eslint	no-nonoctal-decimal-escape/i38	typescript-eslint's parser: Escape sequence '\8' is not allowed.
+eslint	no-nonoctal-decimal-escape/i39	typescript-eslint's parser: Escape sequence '\8' is not allowed.
+eslint	no-nonoctal-decimal-escape/i40	typescript-eslint's parser: Escape sequence '\8' is not allowed.
+eslint	no-nonoctal-decimal-escape/i41	typescript-eslint's parser: Octal escape sequences are not allowed. Use the syntax '\x01'.
+eslint	no-nonoctal-decimal-escape/i42	typescript-eslint's parser: Octal escape sequences are not allowed. Use the syntax '\x01'.
+eslint	no-nonoctal-decimal-escape/i43	typescript-eslint's parser: Escape sequence '\8' is not allowed.
+eslint	no-octal/i0	typescript-eslint's parser: Octal literals are not allowed. Use the syntax '0o1234'.
+eslint	no-octal/i1	typescript-eslint's parser: Octal literals are not allowed. Use the syntax '0o1234'.
+eslint	no-octal/i2	typescript-eslint's parser: Octal literals are not allowed. Use the syntax '0o0'.
+eslint	no-octal/i3	typescript-eslint's parser: Decimals with leading zeros are not allowed.
+eslint	no-octal/i4	typescript-eslint's parser: Decimals with leading zeros are not allowed.
+eslint	no-octal/i5	typescript-eslint's parser: Decimals with leading zeros are not allowed.
+eslint	no-octal/i6	typescript-eslint's parser: Decimals with leading zeros are not allowed.
+eslint	no-octal/i7	typescript-eslint's parser: Decimals with leading zeros are not allowed.
+eslint	no-octal/i8	typescript-eslint's parser: Decimals with leading zeros are not allowed.
+eslint	no-octal/i9	typescript-eslint's parser: Decimals with leading zeros are not allowed.
+eslint	no-octal/i10	typescript-eslint's parser: Decimals with leading zeros are not allowed.
+eslint	no-octal-escape/v5	typescript-eslint's parser: Escape sequence '\8' is not allowed.
+eslint	no-octal-escape/v6	typescript-eslint's parser: Escape sequence '\9' is not allowed.
+eslint	no-octal-escape/v11	typescript-eslint's parser: Escape sequence '\8' is not allowed.
+eslint	no-octal-escape/v12	typescript-eslint's parser: Escape sequence '\8' is not allowed.
+eslint	no-octal-escape/v13	typescript-eslint's parser: Escape sequence '\8' is not allowed.
+eslint	no-octal-escape/v14	typescript-eslint's parser: Escape sequence '\8' is not allowed.
+eslint	no-octal-escape/v15	typescript-eslint's parser: Escape sequence '\8' is not allowed.
+eslint	no-octal-escape/v23	typescript-eslint's parser: Escape sequence '\8' is not allowed.
+eslint	no-octal-escape/i0	typescript-eslint's parser: Octal escape sequences are not allowed. Use the syntax '\x01'.
+eslint	no-octal-escape/i1	typescript-eslint's parser: Octal escape sequences are not allowed. Use the syntax '\x00'.
+eslint	no-octal-escape/i2	typescript-eslint's parser: Octal escape sequences are not allowed. Use the syntax '\xff'.
+eslint	no-octal-escape/i3	typescript-eslint's parser: Octal escape sequences are not allowed. Use the syntax '\x1f'.
+eslint	no-octal-escape/i4	typescript-eslint's parser: Octal escape sequences are not allowed. Use the syntax '\x1f'.
+eslint	no-octal-escape/i5	typescript-eslint's parser: Octal escape sequences are not allowed. Use the syntax '\x03'.
+eslint	no-octal-escape/i6	typescript-eslint's parser: Octal escape sequences are not allowed. Use the syntax '\x03'.
+eslint	no-octal-escape/i7	typescript-eslint's parser: Octal escape sequences are not allowed. Use the syntax '\xa9'.
+eslint	no-octal-escape/i8	typescript-eslint's parser: Octal escape sequences are not allowed. Use the syntax '\x15'.
+eslint	no-octal-escape/i9	typescript-eslint's parser: Octal escape sequences are not allowed. Use the syntax '\x15'.
+eslint	no-octal-escape/i10	typescript-eslint's parser: Octal escape sequences are not allowed. Use the syntax '\x03'.
+eslint	no-octal-escape/i11	typescript-eslint's parser: Octal escape sequences are not allowed. Use the syntax '\x3f'.
+eslint	no-octal-escape/i12	typescript-eslint's parser: Octal escape sequences are not allowed. Use the syntax '\x07'.
+eslint	no-octal-escape/i13	typescript-eslint's parser: Octal escape sequences are not allowed. Use the syntax '\x05'.
+eslint	no-octal-escape/i14	typescript-eslint's parser: Octal escape sequences are not allowed. Use the syntax '\x3d'.
+eslint	no-octal-escape/i15	typescript-eslint's parser: Octal escape sequences are not allowed. Use the syntax '\x20'.
+eslint	no-octal-escape/i16	typescript-eslint's parser: Octal escape sequences are not allowed. Use the syntax '\x01'.
+eslint	no-octal-escape/i17	typescript-eslint's parser: Octal escape sequences are not allowed. Use the syntax '\x3d'.
+eslint	no-octal-escape/i18	typescript-eslint's parser: Octal escape sequences are not allowed. Use the syntax '\x01'.
+eslint	no-octal-escape/i19	typescript-eslint's parser: Octal escape sequences are not allowed. Use the syntax '\x01'.
+eslint	no-octal-escape/i20	typescript-eslint's parser: Octal escape sequences are not allowed. Use the syntax '\x01'.
+eslint	no-octal-escape/i21	typescript-eslint's parser: Octal escape sequences are not allowed. Use the syntax '\x01'.
+eslint	no-octal-escape/i22	typescript-eslint's parser: Octal escape sequences are not allowed. Use the syntax '\x01'.
+eslint	no-octal-escape/i23	typescript-eslint's parser: Octal escape sequences are not allowed. Use the syntax '\x01'.
+eslint	no-octal-escape/i24	typescript-eslint's parser: Octal escape sequences are not allowed. Use the syntax '\x00'.
+eslint	no-octal-escape/i25	typescript-eslint's parser: Octal escape sequences are not allowed. Use the syntax '\x01'.
+eslint	no-octal-escape/i26	typescript-eslint's parser: Octal escape sequences are not allowed. Use the syntax '\x02'.
+eslint	no-octal-escape/i27	typescript-eslint's parser: Octal escape sequences are not allowed. Use the syntax '\x07'.
+eslint	no-octal-escape/i28	typescript-eslint's parser: Octal escape sequences are not allowed. Use the syntax '\x00'.
+eslint	no-octal-escape/i29	typescript-eslint's parser: Octal escape sequences are not allowed. Use the syntax '\x01'.
+eslint	no-octal-escape/i30	typescript-eslint's parser: Octal escape sequences are not allowed. Use the syntax '\x02'.
+eslint	no-octal-escape/i31	typescript-eslint's parser: Octal escape sequences are not allowed. Use the syntax '\x07'.
+eslint	no-octal-escape/i32	typescript-eslint's parser: Octal escape sequences are not allowed. Use the syntax '\x00'.
+eslint	no-octal-escape/i33	typescript-eslint's parser: Octal escape sequences are not allowed. Use the syntax '\x00'.
+eslint	no-octal-escape/i34	typescript-eslint's parser: Octal escape sequences are not allowed. Use the syntax '\x08'.
+eslint	no-octal-escape/i35	typescript-eslint's parser: Octal escape sequences are not allowed. Use the syntax '\x0a'.
+eslint	no-octal-escape/i36	typescript-eslint's parser: Octal escape sequences are not allowed. Use the syntax '\x01'.
+eslint	no-octal-escape/i37	typescript-eslint's parser: Octal escape sequences are not allowed. Use the syntax '\x01'.
+eslint	no-octal-escape/i38	typescript-eslint's parser: Octal escape sequences are not allowed. Use the syntax '\x01'.
+eslint	no-octal-escape/i39	typescript-eslint's parser: Octal escape sequences are not allowed. Use the syntax '\x01'.
+eslint	no-octal-escape/i40	typescript-eslint's parser: Octal escape sequences are not allowed. Use the syntax '\x01'.
+eslint	no-octal-escape/i41	typescript-eslint's parser: Octal escape sequences are not allowed. Use the syntax '\x01'.
+eslint	no-octal-escape/i42	typescript-eslint's parser: Octal escape sequences are not allowed. Use the syntax '\x01'.
+eslint	no-octal-escape/i43	typescript-eslint's parser: Octal escape sequences are not allowed. Use the syntax '\x01'.
+eslint	no-octal-escape/i44	typescript-eslint's parser: Octal escape sequences are not allowed. Use the syntax '\x01'.
+eslint	no-octal-escape/i45	typescript-eslint's parser: Octal escape sequences are not allowed. Use the syntax '\x01'.
+eslint	no-octal-escape/i46	typescript-eslint's parser: Octal escape sequences are not allowed. Use the syntax '\x00'.
+eslint	no-octal-escape/i47	typescript-eslint's parser: Octal escape sequences are not allowed. Use the syntax '\x01'.
+eslint	no-octal-escape/i48	typescript-eslint's parser: Octal escape sequences are not allowed. Use the syntax '\x01'.
+eslint	no-octal-escape/i49	typescript-eslint's parser: Octal escape sequences are not allowed. Use the syntax '\x00'.
+eslint	no-octal-escape/i50	typescript-eslint's parser: Octal escape sequences are not allowed. Use the syntax '\x01'.
+eslint	no-octal-escape/i51	typescript-eslint's parser: Octal escape sequences are not allowed. Use the syntax '\x01'.
+eslint	no-octal-escape/i52	typescript-eslint's parser: Octal escape sequences are not allowed. Use the syntax '\x00'.
+eslint	no-octal-escape/i53	typescript-eslint's parser: Octal escape sequences are not allowed. Use the syntax '\x01'.
+eslint	no-octal-escape/i54	typescript-eslint's parser: Octal escape sequences are not allowed. Use the syntax '\x01'.
+eslint	no-octal-escape/i55	typescript-eslint's parser: Octal escape sequences are not allowed. Use the syntax '\x02'.
+eslint	no-octal-escape/i56	typescript-eslint's parser: Octal escape sequences are not allowed. Use the syntax '\x01'.
+eslint	no-octal-escape/i57	typescript-eslint's parser: Octal escape sequences are not allowed. Use the syntax '\x02'.
+eslint	no-octal-escape/i58	typescript-eslint's parser: Octal escape sequences are not allowed. Use the syntax '\x00'.
+eslint	no-octal-escape/i59	typescript-eslint's parser: Octal escape sequences are not allowed. Use the syntax '\x01'.
+eslint	prefer-template/i27	typescript-eslint's parser: Octal escape sequences are not allowed. Use the syntax '\x1b'.
+eslint	prefer-template/i28	typescript-eslint's parser: Escape sequence '\8' is not allowed.
+eslint	prefer-template/i29	typescript-eslint's parser: Octal escape sequences are not allowed. Use the syntax '\x1b'.
+eslint	prefer-template/i30	typescript-eslint's parser: Octal escape sequences are not allowed. Use the syntax '\x01'.
+eslint	prefer-template/i31	typescript-eslint's parser: Octal escape sequences are not allowed. Use the syntax '\x00'.

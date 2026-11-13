@@ -1,0 +1,9 @@
+tests/rules/prefer-template/cases.ts:5:12	prefer-template	unexpectedStringConcatenation	Unexpected string concatenation.	fix	69	88	`Hello, ${  a  }!`
+tests/rules/prefer-template/cases.ts:6:12	prefer-template	unexpectedStringConcatenation	Unexpected string concatenation.	fix	101	108	`${a  }x`
+tests/rules/prefer-template/cases.ts:7:12	prefer-template	unexpectedStringConcatenation	Unexpected string concatenation.	fix	121	132	`x${  a  }${b}`
+tests/rules/prefer-template/cases.ts:8:12	prefer-template	unexpectedStringConcatenation	Unexpected string concatenation.	fix	145	158	`x${  a + b}`
+tests/rules/prefer-template/cases.ts:9:12	prefer-template	unexpectedStringConcatenation	Unexpected string concatenation.	fix	171	182	`x${a}${  b}`
+tests/rules/prefer-template/cases.ts:10:12	prefer-template	unexpectedStringConcatenation	Unexpected string concatenation.	fix	195	207	`it's ${  a}`
+tests/rules/prefer-template/cases.ts:11:12	prefer-template	unexpectedStringConcatenation	Unexpected string concatenation.	fix	220	237	`a \\${b} \\`c\\` ${  a}`
+tests/rules/prefer-template/cases.ts:12:12	prefer-template	unexpectedStringConcatenation	Unexpected string concatenation.	fix	250	265	`x${ /* c */  a}`
+tests/rules/prefer-template/cases.ts:13:13	prefer-template	unexpectedStringConcatenation	Unexpected string concatenation.	fix	279	290	`${1  }x${  2}`

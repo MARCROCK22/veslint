@@ -1,0 +1,9 @@
+tests/rules/prefer-template/cases.ts:5:12	prefer-template	unexpectedStringConcatenation	Unexpected string concatenation.
+tests/rules/prefer-template/cases.ts:6:12	prefer-template	unexpectedStringConcatenation	Unexpected string concatenation.
+tests/rules/prefer-template/cases.ts:7:12	prefer-template	unexpectedStringConcatenation	Unexpected string concatenation.
+tests/rules/prefer-template/cases.ts:8:12	prefer-template	unexpectedStringConcatenation	Unexpected string concatenation.
+tests/rules/prefer-template/cases.ts:9:12	prefer-template	unexpectedStringConcatenation	Unexpected string concatenation.
+tests/rules/prefer-template/cases.ts:10:12	prefer-template	unexpectedStringConcatenation	Unexpected string concatenation.
+tests/rules/prefer-template/cases.ts:11:12	prefer-template	unexpectedStringConcatenation	Unexpected string concatenation.
+tests/rules/prefer-template/cases.ts:12:12	prefer-template	unexpectedStringConcatenation	Unexpected string concatenation.
+tests/rules/prefer-template/cases.ts:13:13	prefer-template	unexpectedStringConcatenation	Unexpected string concatenation.

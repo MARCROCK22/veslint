@@ -534,6 +534,7 @@ fn run_rules(opts Options, timeout time.Duration) !int {
 		}
 		lint_config := lint_configs[opts.loaded.file_config[f.abs_path] or { 0 }]
 		mut src := f.src
+		mut has_bom := f.has_bom
 		mut result := rules.FileLint{}
 		// --fix ports ESLint's verifyAndFix: lint, apply the fixes that do not overlap, and lint the
 		// result again, up to 10 passes or until two passes give the same text. tsgo only reads
@@ -554,6 +555,7 @@ fn run_rules(opts Options, timeout time.Duration) !int {
 				checkers[project] = new_checker
 			}
 			mut checker := checkers[project] or { return error('no checker for ${project}') }
+			checker.set_has_bom(has_bom)
 			result = checker.lint_file(if treesitter.uses_jsx_dialect(f.path) {
 				tsx_parser
 			} else {
@@ -578,7 +580,11 @@ fn run_rules(opts Options, timeout time.Duration) !int {
 			second_previous = previous
 			previous = src
 			src = output
-			os.write_file(f.path, if f.has_bom { offsets.utf8_bom + src } else { src }) or {
+			// A fix of the range [-1, 0] removes the BOM, which is before the text (unicode-bom).
+			if result.findings.any(it.has_fix && it.fix.start < 0) {
+				has_bom = false
+			}
+			os.write_file(f.path, if has_bom { offsets.utf8_bom + src } else { src }) or {
 				return error('cannot write ${f.path}: ${err.msg()}')
 			}
 			// What is on disk now is valid UTF-8: tsgo reads it from there.
@@ -897,7 +903,13 @@ fn fix_fields(src string, finding rules.Finding) string {
 	if byte_offsets.len == 0 {
 		return ''
 	}
-	units := offsets.utf16_offsets(src, byte_offsets)
+	// The range [-1, 0] is the BOM, before the text (unicode-bom): it stays -1.
+	mut units := offsets.utf16_offsets(src, byte_offsets.map(if it < 0 { 0 } else { it }))
+	for i, offset in byte_offsets {
+		if offset < 0 {
+			units[i] = offset
+		}
+	}
 	mut out := strings.new_builder(200)
 	mut next := 0
 	if finding.has_fix {

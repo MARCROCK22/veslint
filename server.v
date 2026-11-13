@@ -1,6 +1,7 @@
 module main
 
 import json2
+import offsets
 import os
 import strings
 import time
@@ -383,10 +384,13 @@ fn (mut s Server) lint(id i64, config string, project string, files []string, te
 			continue
 		}
 		mut src := ''
+		mut has_bom := false
 		if text := texts[abs_path] {
-			src = text
+			// The text of the editor, without a BOM; the file has one when it starts so on disk.
+			src, has_bom = offsets.strip_bom(text)
+			has_bom = has_bom || disk_has_bom(abs_path)
 		} else {
-			disk, _, not_utf8 := read_source(path) or {
+			disk, bom, not_utf8 := read_source(path) or {
 				errors.writeln('veslint: ${err.msg()}')
 				return ServerAnswer{
 					id:     id
@@ -395,6 +399,7 @@ fn (mut s Server) lint(id i64, config string, project string, files []string, te
 				}
 			}
 			src = disk
+			has_bom = bom
 			if not_utf8 {
 				s.set_served(abs_path, disk)
 			} else {
@@ -434,6 +439,7 @@ fn (mut s Server) lint(id i64, config string, project string, files []string, te
 			tsconfig: tsconfig
 			named:    named
 			src:      src
+			has_bom:  has_bom
 		}
 	}
 	mut out := strings.new_builder(4096)
@@ -510,6 +516,7 @@ fn (mut s Server) lint(id i64, config string, project string, files []string, te
 		}
 		mut checker := s.checkers[project_id] or { continue }
 		checker.set_lint_stop(s.queue)
+		checker.set_has_bom(f.has_bom)
 		result := checker.lint_file(if treesitter.uses_jsx_dialect(f.path) {
 			s.tsx_parser
 		} else {
@@ -584,4 +591,15 @@ fn (mut s Server) snapshot_for(tsconfigs []string) ! {
 	if previous != s.snap.snapshot {
 		s.client.release_snapshot(previous)!
 	}
+}
+
+// disk_has_bom: the file starts with a UTF-8 BOM on disk.
+fn disk_has_bom(path string) bool {
+	mut f := os.open(path) or { return false }
+	defer {
+		f.close()
+	}
+	mut head := []u8{len: 3}
+	n := f.read(mut head) or { return false }
+	return n == 3 && head.bytestr() == offsets.utf8_bom
 }

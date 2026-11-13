@@ -1,0 +1,8 @@
+tests/rules/prefer-numeric-literals/cases.ts:2:12	prefer-numeric-literals	useLiteral	Use binary literals instead of parseInt().
+tests/rules/prefer-numeric-literals/cases.ts:3:12	prefer-numeric-literals	useLiteral	Use octal literals instead of Number.parseInt().
+tests/rules/prefer-numeric-literals/cases.ts:4:12	prefer-numeric-literals	useLiteral	Use hexadecimal literals instead of parseInt().
+tests/rules/prefer-numeric-literals/cases.ts:5:12	prefer-numeric-literals	useLiteral	Use hexadecimal literals instead of parseInt().
+tests/rules/prefer-numeric-literals/cases.ts:6:12	prefer-numeric-literals	useLiteral	Use hexadecimal literals instead of parseInt().
+tests/rules/prefer-numeric-literals/cases.ts:7:12	prefer-numeric-literals	useLiteral	Use binary literals instead of parseInt().
+tests/rules/prefer-numeric-literals/cases.ts:8:14	prefer-numeric-literals	useLiteral	Use binary literals instead of parseInt().
+tests/rules/prefer-numeric-literals/cases.ts:9:12	prefer-numeric-literals	useLiteral	Use binary literals instead of parseInt().

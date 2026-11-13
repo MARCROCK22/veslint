@@ -1,0 +1,21 @@
+{"rule": "no-octal", "upstream": "eslint v10.6.0", "files": ["tests/lib/rules/no-octal.js"],
+"messages": {"noOctal":"Octal literals should not be used."},
+"cases": [
+{"id":"no-octal/v0","kind":"valid","code":"var a = 'hello world';","file":"file.ts","tsconfig":null,"languageOptions":{"ecmaVersion":5,"sourceType":"script"}},
+{"id":"no-octal/v1","kind":"valid","code":"0x1234","file":"file.ts","tsconfig":null,"languageOptions":{"ecmaVersion":5,"sourceType":"script"}},
+{"id":"no-octal/v2","kind":"valid","code":"0X5;","file":"file.ts","tsconfig":null,"languageOptions":{"ecmaVersion":5,"sourceType":"script"}},
+{"id":"no-octal/v3","kind":"valid","code":"a = 0;","file":"file.ts","tsconfig":null,"languageOptions":{"ecmaVersion":5,"sourceType":"script"}},
+{"id":"no-octal/v4","kind":"valid","code":"0.1","file":"file.ts","tsconfig":null,"languageOptions":{"ecmaVersion":5,"sourceType":"script"}},
+{"id":"no-octal/v5","kind":"valid","code":"0.5e1","file":"file.ts","tsconfig":null,"languageOptions":{"ecmaVersion":5,"sourceType":"script"}},
+{"id":"no-octal/i0","kind":"invalid","code":"var a = 01234;","file":"file.ts","tsconfig":null,"languageOptions":{"ecmaVersion":5,"sourceType":"script"},"errors":[{"messageId":"noOctal"}]},
+{"id":"no-octal/i1","kind":"invalid","code":"a = 1 + 01234;","file":"file.ts","tsconfig":null,"languageOptions":{"ecmaVersion":5,"sourceType":"script"},"errors":[{"messageId":"noOctal"}]},
+{"id":"no-octal/i2","kind":"invalid","code":"00","file":"file.ts","tsconfig":null,"languageOptions":{"ecmaVersion":5,"sourceType":"script"},"errors":[{"messageId":"noOctal"}]},
+{"id":"no-octal/i3","kind":"invalid","code":"08","file":"file.ts","tsconfig":null,"languageOptions":{"ecmaVersion":5,"sourceType":"script"},"errors":[{"messageId":"noOctal"}]},
+{"id":"no-octal/i4","kind":"invalid","code":"09.1","file":"file.ts","tsconfig":null,"languageOptions":{"ecmaVersion":5,"sourceType":"script"},"errors":[{"messageId":"noOctal"}]},
+{"id":"no-octal/i5","kind":"invalid","code":"09e1","file":"file.ts","tsconfig":null,"languageOptions":{"ecmaVersion":5,"sourceType":"script"},"errors":[{"messageId":"noOctal"}]},
+{"id":"no-octal/i6","kind":"invalid","code":"09.1e1","file":"file.ts","tsconfig":null,"languageOptions":{"ecmaVersion":5,"sourceType":"script"},"errors":[{"messageId":"noOctal"}]},
+{"id":"no-octal/i7","kind":"invalid","code":"018","file":"file.ts","tsconfig":null,"languageOptions":{"ecmaVersion":5,"sourceType":"script"},"errors":[{"messageId":"noOctal"}]},
+{"id":"no-octal/i8","kind":"invalid","code":"019.1","file":"file.ts","tsconfig":null,"languageOptions":{"ecmaVersion":5,"sourceType":"script"},"errors":[{"messageId":"noOctal"}]},
+{"id":"no-octal/i9","kind":"invalid","code":"019e1","file":"file.ts","tsconfig":null,"languageOptions":{"ecmaVersion":5,"sourceType":"script"},"errors":[{"messageId":"noOctal"}]},
+{"id":"no-octal/i10","kind":"invalid","code":"019.1e1","file":"file.ts","tsconfig":null,"languageOptions":{"ecmaVersion":5,"sourceType":"script"},"errors":[{"messageId":"noOctal"}]}
+]}

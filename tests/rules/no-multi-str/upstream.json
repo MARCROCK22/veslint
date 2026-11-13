@@ -1,0 +1,11 @@
+{"rule": "no-multi-str", "upstream": "eslint v10.6.0", "files": ["tests/lib/rules/no-multi-str.js"],
+"messages": {"multilineString":"Multiline support is limited to browsers supporting ES5 only."},
+"cases": [
+{"id":"no-multi-str/v0","kind":"valid","code":"var a = 'Line 1 Line 2';","file":"file.ts","tsconfig":null},
+{"id":"no-multi-str/v1","kind":"valid","code":"var a = <div>\n<h1>Wat</h1>\n</div>;","file":"react.tsx","tsconfig":null,"parserOptions":{"ecmaFeatures":{"jsx":true}},"languageOptions":{"ecmaVersion":6}},
+{"id":"no-multi-str/i0","kind":"invalid","code":"var x = 'Line 1 \\\n Line 2'","file":"file.ts","tsconfig":null,"errors":[{"messageId":"multilineString"}]},
+{"id":"no-multi-str/i1","kind":"invalid","code":"test('Line 1 \\\n Line 2');","file":"file.ts","tsconfig":null,"errors":[{"messageId":"multilineString"}]},
+{"id":"no-multi-str/i2","kind":"invalid","code":"'foo\\\rbar';","file":"file.ts","tsconfig":null,"errors":[{"messageId":"multilineString"}]},
+{"id":"no-multi-str/i3","kind":"invalid","code":"'foo\\ bar';","file":"file.ts","tsconfig":null,"errors":[{"messageId":"multilineString"}]},
+{"id":"no-multi-str/i4","kind":"invalid","code":"'foo\\ ar';","file":"file.ts","tsconfig":null,"errors":[{"messageId":"multilineString"}]}
+]}

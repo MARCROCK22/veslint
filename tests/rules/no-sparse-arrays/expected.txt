@@ -1,0 +1,8 @@
+tests/rules/no-sparse-arrays/cases.ts:2:13	no-sparse-arrays	unexpectedSparseArray	Unexpected comma in middle of array.
+tests/rules/no-sparse-arrays/cases.ts:3:16	no-sparse-arrays	unexpectedSparseArray	Unexpected comma in middle of array.
+tests/rules/no-sparse-arrays/cases.ts:4:16	no-sparse-arrays	unexpectedSparseArray	Unexpected comma in middle of array.
+tests/rules/no-sparse-arrays/cases.ts:4:18	no-sparse-arrays	unexpectedSparseArray	Unexpected comma in middle of array.
+tests/rules/no-sparse-arrays/cases.ts:5:13	no-sparse-arrays	unexpectedSparseArray	Unexpected comma in middle of array.
+tests/rules/no-sparse-arrays/cases.ts:6:13	no-sparse-arrays	unexpectedSparseArray	Unexpected comma in middle of array.
+tests/rules/no-sparse-arrays/cases.ts:6:15	no-sparse-arrays	unexpectedSparseArray	Unexpected comma in middle of array.
+tests/rules/no-sparse-arrays/cases.ts:7:24	no-sparse-arrays	unexpectedSparseArray	Unexpected comma in middle of array.

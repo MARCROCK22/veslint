@@ -96,6 +96,8 @@ pub fn check_options(rule string, options []json2.Any) !bool {
 		operator_assignment { oa_never(options)! }
 		no_sequences { nseq_allow_parentheses(options)! }
 		no_return_assign { nra_always(options)! }
+		no_irregular_whitespace { niw_options(options)! }
+		unicode_bom { ubom_always(options)! }
 		else { return false }
 	}
 	return true
