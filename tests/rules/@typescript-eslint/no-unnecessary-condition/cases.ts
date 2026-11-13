@@ -212,3 +212,5 @@ export const d4 = maybeFn!?.();
 // The left operand of a comparison is typed as a whole, a negation included.
 const negatedLeft1 = !1 < 2;
 const negatedLeft2 = (!0) === true;
+declare const nullishLeft: string;
+export const negatedNullish = !!nullishLeft ?? 'x';
