@@ -9,7 +9,7 @@ trap 'rm -rf "$TMP"' EXIT
 pass=0
 fail=0
 # On Windows (Git Bash or MSYS2) the binary is veslint.exe and some tests run another way or are
-# skipped; see README, "Windows".
+# skipped; see internals.md, "Windows".
 windows=0
 case $(uname -s) in MINGW* | MSYS* | CYGWIN*) windows=1 ;; esac
 exe=''
@@ -28,6 +28,24 @@ ok() {
 ko() {
 	echo "FAIL   $1"
 	fail=$((fail + 1))
+}
+
+# The slow checks (each rule on its fixtures, each rule on every fixture, the upstream tests) run
+# JOBS at a time (the CPUs by default), each with its veslint and its tsgo; their lines are printed
+# in the order of a serial run.
+JOBS=${JOBS:-$(nproc 2> /dev/null || echo 2)}
+[[ $JOBS -ge 1 ]] || JOBS=1
+# throttle waits until fewer than JOBS background jobs run.
+throttle() {
+	while [[ $(jobs -rp | wc -l) -ge $JOBS ]]; do
+		wait -n
+	done
+}
+# report prints the lines a job wrote to its log and counts its `ok` and `FAIL` lines.
+report() { # log
+	cat "$1"
+	pass=$((pass + $(grep -c '^ok     ' "$1")))
+	fail=$((fail + $(grep -c '^FAIL   ' "$1")))
 }
 
 # 1. Exact outputs: app.ts (§5), each fixture (§7) and the --all-identifiers and
@@ -66,6 +84,18 @@ if [[ $(./veslint --version) == "veslint $extension_version" ]]; then
 	ok "--version: veslint $extension_version, as the extension"
 else
 	ko "--version: $(./veslint --version), the extension is $extension_version"
+fi
+
+# The README lists every rule veslint has (the list `--rule` gives with an unknown rule).
+mapfile -t ported < <(./veslint --rule no-such-rule app.ts 2>&1 | sed -n 's/.*(available: \(.*\))$/\1/p' | tr ',' '\n' | sed 's/^ *//')
+unlisted=()
+for rule in "${ported[@]}"; do
+	grep -qF "\`$rule\`" README.md || unlisted+=("$rule")
+done
+if [[ ${#ported[@]} -gt 0 && ${#unlisted[@]} -eq 0 ]]; then
+	ok "README.md lists the ${#ported[@]} rules"
+else
+	ko "README.md does not list: ${unlisted[*]:-(no rules read)}"
 fi
 
 # A symlinked file is analyzed by the path it is given, not by its target (which here is outside
@@ -138,7 +168,8 @@ if ! tests/rules/seyfert/setup.sh 2> "$TMP/seyfert-setup.err"; then
 	mapfile -t rule_dirs < <(printf '%s\n' "${rule_dirs[@]}" | grep -v '^tests/rules/seyfert/')
 	echo "skip   the fixtures of the seyfert/* rules: $(cat "$TMP/seyfert-setup.err")"
 fi
-for dir in "${rule_dirs[@]}"; do
+check_rule() { # directory of the rule
+	local dir=$1 rule out code cases
 	rule=${dir#tests/rules/}
 	out=${rule//\//__}
 	mapfile -t cases < <(find "$dir" -name cases.ts -o -name cases.tsx | sorted)
@@ -164,6 +195,16 @@ for dir in "${rule_dirs[@]}"; do
 			cat "$TMP/$out.err"
 		fi
 	fi
+}
+jobs_started=0
+for dir in "${rule_dirs[@]}"; do
+	throttle
+	check_rule "$dir" > "$TMP/check-rule.$jobs_started.log" 2>&1 &
+	jobs_started=$((jobs_started + 1))
+done
+wait
+for ((i = 0; i < jobs_started; i++)); do
+	report "$TMP/check-rule.$i.log"
 done
 # The comments that configure ESLint (tests/directives): disable directives, the ones without use
 # and inline configuration, with the fixes; validated against ESLint by tests/rules/reference.sh.
@@ -441,14 +482,25 @@ for dir in "${rule_dirs[@]}"; do
 	grep -q "\"$r\"" "$TMP/all.json" || printf ', "%s": [2]\n' "$r" >> "$TMP/all.json"
 done
 echo '}}' >> "$TMP/all.json"
-: > "$TMP/per-rule.out"
-for dir in "${rule_dirs[@]}"; do
-	veslint_batched "$TMP/per-rule.out" /dev/null --rule "${dir#tests/rules/}" -- "${all_cases[@]}"
-done
-code=0
+# Every rule alone on every fixture (in any order: the findings are compared sorted), and every rule
+# at once, side by side.
 : > "$TMP/all.out"
 : > "$TMP/all.err"
-veslint_batched "$TMP/all.out" "$TMP/all.err" --config "$TMP/all.json" -- "${all_cases[@]}" || code=$?
+(
+	code=0
+	veslint_batched "$TMP/all.out" "$TMP/all.err" --config "$TMP/all.json" -- "${all_cases[@]}" || code=$?
+	echo "$code" > "$TMP/all.code"
+) &
+jobs_started=0
+for dir in "${rule_dirs[@]}"; do
+	throttle
+	: > "$TMP/per-rule.$jobs_started.out"
+	veslint_batched "$TMP/per-rule.$jobs_started.out" /dev/null --rule "${dir#tests/rules/}" -- "${all_cases[@]}" &
+	jobs_started=$((jobs_started + 1))
+done
+wait
+cat "$TMP"/per-rule.*.out > "$TMP/per-rule.out"
+code=$(< "$TMP/all.code")
 # tests/rules/every.known.txt: findings of a rule alone that the run with every rule does not give
 # (one rule sees what another did to the scope manager, as in ESLint).
 if [[ $code -eq 1 ]] && diff <(sort "$TMP/all.out") <(grep -vxF -f <(grep -v '^#' tests/rules/every.known.txt) "$TMP/per-rule.out" | sort) > /dev/null &&
@@ -799,6 +851,43 @@ fi
 # fixtures; without them they are skipped, and the line says so.
 # The tests of each plugin run in their own fixtures: those of @slipher/eslint-plugin (the
 # `seyfert/*` rules) in the ones tests/upstream/seyfert/setup.sh makes.
+# upstream_check LABEL FIXTURES CONFIGS RULES...: tests/upstream_check.py on the rules, split in JOBS
+# groups that run at once (each with its veslint --server), and one line for all of them.
+upstream_check() {
+	local label=$1 fixtures=$2 configs=$3
+	shift 3
+	local groups=$JOBS k rule index pids=() codes=0 cases=0 unexpected=0 known=0 summary
+	[[ $groups -le $# ]] || groups=$#
+	for ((k = 0; k < groups; k++)); do
+		local group=()
+		index=0
+		for rule in "$@"; do
+			[[ $((index % groups)) -eq $k ]] && group+=("$rule")
+			index=$((index + 1))
+		done
+		python3 tests/upstream_check.py ./veslint "$fixtures" "$configs.$k" "${group[@]}" > "$configs.$k.out" 2>&1 &
+		pids+=($!)
+	done
+	for k in "${!pids[@]}"; do
+		wait "${pids[$k]}" || codes=1
+		summary=$(tail -1 "$configs.$k.out")
+		if [[ $summary =~ ^([0-9]+)\ cases\;\ ([0-9]+)\ unexpected.*\;\ ([0-9]+)\ known ]]; then
+			cases=$((cases + BASH_REMATCH[1]))
+			unexpected=$((unexpected + BASH_REMATCH[2]))
+			known=$((known + BASH_REMATCH[3]))
+		else
+			codes=1
+		fi
+	done
+	if [[ $codes -eq 0 ]]; then
+		ok "$label: $cases cases; $unexpected unexpected failure(s); $known known difference(s) (tests/upstream/known.txt)"
+	else
+		ko "$label"
+		for k in "${!pids[@]}"; do
+			grep -v '^ok' "$configs.$k.out"
+		done
+	fi
+}
 upstream_rules_of() { # plugin directory of tests/rules
 	find "tests/rules/$1" -name upstream.json | sed -E 's|^tests/rules/(.*)/upstream\.json$|\1|' | sorted
 }
@@ -807,37 +896,20 @@ mapfile -t seyfert_upstream < <(upstream_rules_of seyfert)
 # The rules of ESLint core (tests/rules/<rule>/upstream.json, from tests/lib/rules/<rule>.js of
 # ESLint 10.6.0): their JavaScript cases are linted as TypeScript in typescript-eslint's fixtures.
 mapfile -t core_upstream < <(find tests/rules -mindepth 2 -maxdepth 2 -name upstream.json | sed -E 's|^tests/rules/(.*)/upstream\.json$|\1|' | sorted)
+# The rules of eslint-plugin-unicorn (tests/rules/unicorn/<rule>/upstream.json, from test/<rule>.js
+# of v64.0.0), the same way.
+mapfile -t unicorn_upstream < <(upstream_rules_of unicorn)
 if tests/upstream/setup.sh "$TMP/upstream" 2> "$TMP/upstream-setup.err"; then
-	code=0
-	python3 tests/upstream_check.py ./veslint "$TMP/upstream" "$TMP/upstream-configs" "${typescript_eslint_upstream[@]}" > "$TMP/upstream.out" 2>&1 || code=$?
-	if [[ $code -eq 0 ]]; then
-		ok "typescript-eslint's own tests: $(tail -1 "$TMP/upstream.out")"
-	else
-		ko "typescript-eslint's own tests (code $code)"
-		grep -v '^ok' "$TMP/upstream.out"
-	fi
-	if [[ ${#core_upstream[@]} -gt 0 ]]; then
-		code=0
-		python3 tests/upstream_check.py ./veslint "$TMP/upstream" "$TMP/upstream-core-configs" "${core_upstream[@]}" > "$TMP/upstream-core.out" 2>&1 || code=$?
-		if [[ $code -eq 0 ]]; then
-			ok "ESLint's own tests of its core rules: $(tail -1 "$TMP/upstream-core.out")"
-		else
-			ko "ESLint's own tests of its core rules (code $code)"
-			grep -v '^ok' "$TMP/upstream-core.out"
-		fi
-	fi
+	upstream_check "typescript-eslint's own tests" "$TMP/upstream" "$TMP/upstream-configs" "${typescript_eslint_upstream[@]}"
+	[[ ${#core_upstream[@]} -eq 0 ]] ||
+		upstream_check "ESLint's own tests of its core rules" "$TMP/upstream" "$TMP/upstream-core-configs" "${core_upstream[@]}"
+	[[ ${#unicorn_upstream[@]} -eq 0 ]] ||
+		upstream_check "eslint-plugin-unicorn's own tests" "$TMP/upstream" "$TMP/upstream-unicorn-configs" "${unicorn_upstream[@]}"
 else
 	echo "skip   typescript-eslint's own tests: $(cat "$TMP/upstream-setup.err")"
 fi
 if tests/upstream/seyfert/setup.sh "$TMP/upstream-seyfert" 2> "$TMP/upstream-seyfert-setup.err"; then
-	code=0
-	python3 tests/upstream_check.py ./veslint "$TMP/upstream-seyfert" "$TMP/upstream-seyfert-configs" "${seyfert_upstream[@]}" > "$TMP/upstream-seyfert.out" 2>&1 || code=$?
-	if [[ $code -eq 0 ]]; then
-		ok "@slipher/eslint-plugin's own tests: $(tail -1 "$TMP/upstream-seyfert.out")"
-	else
-		ko "@slipher/eslint-plugin's own tests (code $code)"
-		grep -v '^ok' "$TMP/upstream-seyfert.out"
-	fi
+	upstream_check "@slipher/eslint-plugin's own tests" "$TMP/upstream-seyfert" "$TMP/upstream-seyfert-configs" "${seyfert_upstream[@]}"
 else
 	echo "skip   @slipher/eslint-plugin's own tests: $(cat "$TMP/upstream-seyfert-setup.err")"
 fi

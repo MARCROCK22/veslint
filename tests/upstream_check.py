@@ -148,12 +148,20 @@ class Runner:
         self.configs = configs
         self.served = set()
         self.test_file = None
+        # The languageOptions of every case of the rule (upstream.json's own), under the case's.
+        self.defaults = {}
 
-    def config_path(self, rule, case):
-        language = dict(case.get('languageOptions', {}))
+    def config_path(self, rule, case, defaults=None):
+        defaults = defaults or {}
+        language = {**defaults, **case.get('languageOptions', {})}
+        if 'globals' in defaults or 'globals' in case.get('languageOptions', {}):
+            language['globals'] = {**defaults.get('globals', {}), **case.get('languageOptions', {}).get('globals', {})}
         if case.get('parserOptions'):
             language['parserOptions'] = case['parserOptions']
-        config = {'languageOptions': language, 'linterOptions': {'reportUnusedDisableDirectives': 1},
+        # eslint-plugin-unicorn's tests (ESLint's RuleTester through eslint-ava-rule-tester) do not
+        # report unused disable directives.
+        report = 0 if rule.startswith('unicorn/') else 1
+        config = {'languageOptions': language, 'linterOptions': {'reportUnusedDisableDirectives': report},
                   'rules': {rule: ['error', *case.get('options', [])]}}
         text = json.dumps(config, sort_keys=True)
         path = os.path.join(self.configs, hashlib.sha1(text.encode()).hexdigest()[:16] + '.json')
@@ -191,7 +199,7 @@ class Runner:
         file = os.path.join(self.fixtures, case['file']) if case.get('tsconfig') else os.path.join(base, case['file'])
         tsconfig = case.get('tsconfig')
         self.served.add(file)
-        answer = self.server.request({'config': self.config_path(rule, case),
+        answer = self.server.request({'config': self.config_path(rule, case, self.defaults),
                                       'project': self.project_of(case, file) if tsconfig else '',
                                       'files': [file], 'texts': {file: code}, 'fixes': True})
         return answer['code'], file, answer['stdout'].splitlines(), answer['stderr']
@@ -250,6 +258,13 @@ def fix_passes(lint, code, findings, max_passes=10):
         pass_number += 1
         findings = lint(code)
     return outputs
+
+
+def max_passes_of(rule):
+    """The passes of fixes of the RuleTester of the rule's tests: typescript-eslint's (also for
+    @slipher/eslint-plugin) makes up to 10; ESLint's, which ESLint core and eslint-plugin-unicorn
+    (through eslint-ava-rule-tester) use, one."""
+    return 10 if rule.startswith(('@typescript-eslint/', 'seyfert/')) else 1
 
 
 def check(case, messages, findings, outputs):
@@ -343,6 +358,7 @@ def main():
         with open(os.path.join(ROOT, 'tests/rules', rule, 'upstream.json'), encoding='utf-8') as f:
             data = json.load(f)
         messages = data['messages']
+        runner.defaults = data.get('languageOptions', {})
         cases = [c for c in data['cases'] if not c.get('skip')]
         failed = 0
         for case in cases:
@@ -362,7 +378,7 @@ def main():
 
                 # After the passes, the file keeps the text the last one left, as in RuleTester
                 # and in tests/rules/upstream_eslint.mjs.
-                outputs = fix_passes(relint, case['code'], findings, 10 if '/' in rule else 1) if case['kind'] == 'invalid' and 'output' in case else []
+                outputs = fix_passes(relint, case['code'], findings, max_passes_of(rule)) if case['kind'] == 'invalid' and 'output' in case else []
                 problems = check(case, messages, findings, outputs)
             if problems:
                 failing.add(case['id'])

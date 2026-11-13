@@ -1,0 +1,6 @@
+tests/rules/unicorn/no-useless-switch-case/cases.ts:10:3	unicorn/no-useless-switch-case	no-useless-switch-case/error	Useless case in switch statement.
+tests/rules/unicorn/no-useless-switch-case/cases.ts:11:3	unicorn/no-useless-switch-case	no-useless-switch-case/error	Useless case in switch statement.
+tests/rules/unicorn/no-useless-switch-case/cases.ts:16:3	unicorn/no-useless-switch-case	no-useless-switch-case/error	Useless case in switch statement.
+tests/rules/unicorn/no-useless-switch-case/cases.ts:17:3	unicorn/no-useless-switch-case	no-useless-switch-case/error	Useless case in switch statement.
+tests/rules/unicorn/no-useless-switch-case/cases.ts:18:3	unicorn/no-useless-switch-case	no-useless-switch-case/error	Useless case in switch statement.
+tests/rules/unicorn/no-useless-switch-case/cases.ts:23:3	unicorn/no-useless-switch-case	no-useless-switch-case/error	Useless case in switch statement.

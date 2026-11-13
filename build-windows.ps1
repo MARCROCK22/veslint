@@ -1,5 +1,5 @@
 # Builds veslint.exe on Windows x64 with MSYS2's UCRT64 gcc (PowerShell 7); the Makefile is
-# Linux-only. See README, "Windows". The patched grammar in build/tree-sitter-typescript is copied
+# Linux-only. See README, "Building from source", and internals.md, "Windows". The patched grammar in build/tree-sitter-typescript is copied
 # from a Linux checkout that ran `make deps` (regenerating it needs the tree-sitter CLI), and it must
 # be the one of patches/tree-sitter-typescript.patch. Delete a .a, or vendor/v, to rebuild it.
 $ErrorActionPreference = 'Stop'

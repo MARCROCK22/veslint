@@ -1,0 +1,16 @@
+tests/rules/unicorn/no-negated-condition/cases.ts:9:5	unicorn/no-negated-condition	no-negated-condition	Unexpected negated condition.
+tests/rules/unicorn/no-negated-condition/cases.ts:14:5	unicorn/no-negated-condition	no-negated-condition	Unexpected negated condition.
+tests/rules/unicorn/no-negated-condition/cases.ts:19:5	unicorn/no-negated-condition	no-negated-condition	Unexpected negated condition.
+tests/rules/unicorn/no-negated-condition/cases.ts:21:5	unicorn/no-negated-condition	no-negated-condition	Unexpected negated condition.
+tests/rules/unicorn/no-negated-condition/cases.ts:22:12	unicorn/no-negated-condition	no-negated-condition	Unexpected negated condition.
+tests/rules/unicorn/no-negated-condition/cases.ts:23:12	unicorn/no-negated-condition	no-negated-condition	Unexpected negated condition.
+tests/rules/unicorn/no-negated-condition/cases.ts:24:13	unicorn/no-negated-condition	no-negated-condition	Unexpected negated condition.
+tests/rules/unicorn/no-negated-condition/cases.ts:26:5	unicorn/no-negated-condition	no-negated-condition	Unexpected negated condition.
+tests/rules/unicorn/no-negated-condition/cases.ts:33:5	unicorn/no-negated-condition	no-negated-condition	Unexpected negated condition.
+tests/rules/unicorn/no-negated-condition/cases.ts:38:12	unicorn/no-negated-condition	no-negated-condition	Unexpected negated condition.
+tests/rules/unicorn/no-negated-condition/cases.ts:42:9	unicorn/no-negated-condition	no-negated-condition	Unexpected negated condition.
+tests/rules/unicorn/no-negated-condition/cases.ts:45:8	unicorn/no-negated-condition	no-negated-condition	Unexpected negated condition.
+tests/rules/unicorn/no-negated-condition/cases.ts:49:10	unicorn/no-negated-condition	no-negated-condition	Unexpected negated condition.
+tests/rules/unicorn/no-negated-condition/cases.ts:53:9	unicorn/no-negated-condition	no-negated-condition	Unexpected negated condition.
+tests/rules/unicorn/no-negated-condition/cases.ts:58:1	unicorn/no-negated-condition	no-negated-condition	Unexpected negated condition.
+tests/rules/unicorn/no-negated-condition/cases.ts:60:1	unicorn/no-negated-condition	no-negated-condition	Unexpected negated condition.

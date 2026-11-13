@@ -125,6 +125,10 @@ pub fn check_options(rule string, options []json2.Any) !bool {
 		no_unreachable_loop { nurl_options(options)! }
 		no_fallthrough { nft_options(options)! }
 		no_restricted_syntax { nrsx_options(options)! }
+		unicorn_no_typeof_undefined { unty_options(options)! }
+		unicorn_prefer_ternary { upt_options(options)! }
+		unicorn_prefer_switch { ups_options(options)! }
+		unicorn_switch_case_braces { uscb_options(options)! }
 		else { return false }
 	}
 	return true

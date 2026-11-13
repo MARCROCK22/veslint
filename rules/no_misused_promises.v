@@ -8,7 +8,7 @@ import treesitter { Ident, first_named_child, has_child_kind, named_children, ne
 // Port of the `no-misused-promises` rule of typescript-eslint 8.62.0 with its default options:
 // checksConditionals, checksSpreads and checksVoidReturn (arguments, properties, return values,
 // variables and inherited methods; not JSX attributes, since veslint does not read .tsx). Limits
-// of the port: README, "Rules" section.
+// of the port: internals.md, "Rules" section.
 
 const nmp_messages = {
 	'conditional':               'Expected non-Promise value in a boolean conditional.'

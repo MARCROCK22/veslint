@@ -44,6 +44,7 @@ const schema_rule_keywords = ['type', '\$comment', 'maximum', 'exclusiveMaximum'
 
 // The rules of each group of ajv's RULES that this validator implements, in ajv's order. A group
 // with a type only runs on data of that type.
+const schema_number_rules = ['maximum', 'minimum']
 const schema_string_rules = ['maxLength', 'minLength', 'pattern']
 const schema_array_rules = ['maxItems', 'minItems', 'items', 'uniqueItems']
 const schema_object_rules = ['maxProperties', 'minProperties', 'required', 'properties',
@@ -153,6 +154,16 @@ fn (mut v SchemaValidator) validate(schema json2.Any, data json2.Any, composite 
 	if reference != '' {
 		v.validate_ref(reference, data, composite)
 		return v.problems.len == start
+	}
+	if schema_uses(s, schema_number_rules) {
+		if json_is_number(data) {
+			v.number_rules(s, data)
+		} else if single == 'number' {
+			v.add('type', 'should be number', data)
+		}
+		if v.problems.len != start {
+			return false
+		}
 	}
 	if schema_uses(s, schema_string_rules) {
 		if data is string {
@@ -281,6 +292,38 @@ fn schema_has_no_ref(schema json2.Any) bool {
 		}
 	}
 	return true
+}
+
+// number_rules are maximum and minimum (lib/dot/_limit.jst, with the boolean exclusiveMaximum and
+// exclusiveMinimum of draft-04 next to them).
+fn (mut v SchemaValidator) number_rules(s map[string]json2.Any, data json2.Any) bool {
+	value := json_number(data)
+	if limit := schema_number(s, 'maximum') {
+		exclusive := schema_true(s, 'exclusiveMaximum')
+		if (exclusive && value >= limit) || (!exclusive && value > limit) {
+			v.add('maximum', 'should be ${if exclusive { '<' } else { '<=' }} ${js_number_to_string(limit)}',
+				data)
+			return false
+		}
+	}
+	if limit := schema_number(s, 'minimum') {
+		exclusive := schema_true(s, 'exclusiveMinimum')
+		if (exclusive && value <= limit) || (!exclusive && value < limit) {
+			v.add('minimum', 'should be ${if exclusive { '>' } else { '>=' }} ${js_number_to_string(limit)}',
+				data)
+			return false
+		}
+	}
+	return true
+}
+
+// schema_true: the keyword is the boolean true.
+fn schema_true(s map[string]json2.Any, key string) bool {
+	value := s[key] or { return false }
+	if value is bool {
+		return value
+	}
+	return false
 }
 
 // string_rules are maxLength and minLength (lib/dot/_limitLength.jst; the length is counted in
@@ -620,9 +663,10 @@ fn schema_uses(s map[string]json2.Any, keywords []string) bool {
 }
 
 // schema_uses_group_of: the schema has a rule of the group of that type (RULES.types). The types
-// without a group of rules, and `number`, whose rules are not implemented, have none.
+// without a group of rules (`integer` among them) have none.
 fn schema_uses_group_of(s map[string]json2.Any, type_name string) bool {
 	return match type_name {
+		'number' { schema_uses(s, schema_number_rules) }
 		'string' { schema_uses(s, schema_string_rules) }
 		'array' { schema_uses(s, schema_array_rules) }
 		'object' { schema_uses(s, schema_object_rules) }

@@ -5,7 +5,7 @@
 # reference.sh only runs each rule on its own fixtures; this also tells what a rule reports on the
 # code written for the others. ESLint lints each file on its own (cross_eslint.mjs), since a rule of
 # typescript-eslint that throws stops a whole run: such a file, and one ESLint cannot parse, is not
-# compared. The differences must be the ones of cross.known.txt, which the README explains. Like
+# compared. The differences must be the ones of cross.known.txt, which internals.md explains. Like
 # reference.sh, it is outside `make test` and needs the dependencies tests/eval_spider_byte.sh
 # installs and build/upstream/seyfert (tests/rules/seyfert/setup.sh).
 set -uo pipefail

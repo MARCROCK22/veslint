@@ -3,7 +3,7 @@
 # implementation, typescript-eslint 8.62.0 (and @slipher/eslint-plugin 1.1.0 for the `seyfert/*`
 # rules): its findings on each cases.ts or cases.tsx (position, rule, messageId and full message
 # text) must be the expected ones plus those listed in limitations.txt (cases the reference reports
-# and veslint does not, documented in the README). Where a rule has a fixes.txt (the output of
+# and veslint does not, documented in internals.md). Where a rule has a fixes.txt (the output of
 # veslint with --fixes), its lines must be the reference's findings with the fix and the
 # suggestions of each one (range in UTF-16 units and text) and where it ends (endLine, endColumn).
 # Needs the build/eval dependencies, installed by tests/eval_spider_byte.sh, and build/upstream/seyfert
@@ -58,7 +58,7 @@ for dir in "${rule_dirs[@]}"; do
 	if [[ -f $dir/fixes.txt ]]; then
 		grep -P "^tests/rules/${rule}/(.+/)?cases\.tsx?:.*\t${rule}\t" "$TMP/reference.fixes.txt" | sort > "$TMP/ref.txt"
 		# fixes.known.txt: where veslint fixes on purpose otherwise than the reference, pairs of
-		# lines `eslint<TAB><its line>` and `veslint<TAB><veslint's line>` (documented in the README).
+		# lines `eslint<TAB><its line>` and `veslint<TAB><veslint's line>` (documented in internals.md).
 		if [[ -f $dir/fixes.known.txt ]]; then
 			python3 - "$dir/fixes.known.txt" "$TMP/ref.txt" <<'PY'
 import sys
@@ -155,7 +155,7 @@ for json in tests/config-errors/*.json; do
 	fi
 done
 # Any other message (parse errors, a rule in another rule's file) is a failure.
-if grep -vP "^tests/rules/((?:@[^/]+/|seyfert/)?[^/]+)/(?:.+/)?cases\.tsx?:[0-9]+:[0-9]+\t\1\t" "$TMP/reference.txt" > "$TMP/others.txt"; then
+if grep -vP "^tests/rules/((?:@[^/]+/|seyfert/|unicorn/)?[^/]+)/(?:.+/)?cases\.tsx?:[0-9]+:[0-9]+\t\1\t" "$TMP/reference.txt" > "$TMP/others.txt"; then
 	echo "FAIL   unexpected ESLint messages:"
 	cat "$TMP/others.txt"
 	fail=1
@@ -203,4 +203,6 @@ upstream_tests "upstream tests" tests/upstream/setup.sh @typescript-eslint
 upstream_tests "@slipher/eslint-plugin's tests" tests/upstream/seyfert/setup.sh seyfert
 # ESLint's own tests of its core rules, linted as TypeScript in typescript-eslint's fixtures.
 upstream_tests "ESLint's tests" tests/upstream/setup.sh core
+# eslint-plugin-unicorn's tests, the same way.
+upstream_tests "eslint-plugin-unicorn's tests" tests/upstream/setup.sh unicorn
 exit $fail

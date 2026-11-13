@@ -6,7 +6,7 @@ import treesitter { children, first_named_child, named_children, node_field, nod
 
 // Port of the `await-thenable` rule of typescript-eslint 8.62.0 (it has no options), with its
 // suggestions. It uses the exact type of each expression (getTypeAtLocations). Limits of the port:
-// README, "Rules" section.
+// internals.md, "Rules" section.
 
 // typescript-eslint messages.
 const at_messages = {

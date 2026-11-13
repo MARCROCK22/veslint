@@ -119,3 +119,28 @@ bun tools/gen_upstream_cases.mjs no-cond-assign   # a name without a plugin is a
 
 The test files are loaded with a stub of ESLint's RuleTester and of `tests/_utils` (only its `unIndent`; the rest needs fs-teardown) (`tests/lib/rules/*.js` require it from
 `lib/rule-tester`) that records the cases, and the rules' `meta.messages` come from the rules of the clone.
+
+## eslint-plugin-unicorn (the `unicorn/*` rules)
+
+The `unicorn/*` rules carry the cases of `test/<rule>.js` of eslint-plugin-unicorn v64.0.0, the
+version of `build/eval`. Its tests run with AVA through `test/utils/test.js`, which
+`tools/upstream/unicorn-test.mjs` stands in for while `tools/gen_upstream_cases.mjs` loads them:
+`test(…)` and `test.typescript(…)` record their cases with the errors they expect, and
+`test.snapshot(…)` its cases without them. The expectation of a snapshot case is what ESLint
+gives with the configuration of those tests (espree and the globals of
+`test/utils/language-options.js`), which is what wrote the snapshot; the generator checks that
+the snapshots of the file (`test/snapshots/<rule>.js.md`) are as many as those cases, and
+`upstream.json` carries those globals for every case. The cases are JavaScript, linted as
+TypeScript in the fixtures of typescript-eslint, like those of ESLint core:
+`tests/rules/reference.sh` checks that ESLint with typescript-eslint's parser gives there what
+espree gave, and that veslint prints what ESLint gives. ESLint's RuleTester, which these tests use,
+makes one pass of fixes and does not report unused disable directives. A case of `test.vue(…)` is
+skipped. They need a sparse clone of the plugin and `outdent`, which the tests import:
+
+```sh
+git clone --depth 1 --branch v64.0.0 --filter=blob:none --sparse \
+  https://github.com/sindresorhus/eslint-plugin-unicorn build/upstream/unicorn
+git -C build/upstream/unicorn sparse-checkout set test rules /package.json /license
+mkdir -p build/upstream/unicorn-deps
+(cd build/upstream/unicorn-deps && echo '{"private":true}' > package.json && npm install outdent@0.8.0)
+```

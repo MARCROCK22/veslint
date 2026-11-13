@@ -1,0 +1,13 @@
+tests/rules/unicorn/no-negation-in-equality-check/cases.ts:6:12	unicorn/no-negation-in-equality-check	no-negation-in-equality-check/error	Negated expression is not allowed in equality check.
+tests/rules/unicorn/no-negation-in-equality-check/cases.ts:7:12	unicorn/no-negation-in-equality-check	no-negation-in-equality-check/error	Negated expression is not allowed in equality check.
+tests/rules/unicorn/no-negation-in-equality-check/cases.ts:8:12	unicorn/no-negation-in-equality-check	no-negation-in-equality-check/error	Negated expression is not allowed in equality check.
+tests/rules/unicorn/no-negation-in-equality-check/cases.ts:9:12	unicorn/no-negation-in-equality-check	no-negation-in-equality-check/error	Negated expression is not allowed in equality check.
+tests/rules/unicorn/no-negation-in-equality-check/cases.ts:10:12	unicorn/no-negation-in-equality-check	no-negation-in-equality-check/error	Negated expression is not allowed in equality check.
+tests/rules/unicorn/no-negation-in-equality-check/cases.ts:11:12	unicorn/no-negation-in-equality-check	no-negation-in-equality-check/error	Negated expression is not allowed in equality check.
+tests/rules/unicorn/no-negation-in-equality-check/cases.ts:12:12	unicorn/no-negation-in-equality-check	no-negation-in-equality-check/error	Negated expression is not allowed in equality check.
+tests/rules/unicorn/no-negation-in-equality-check/cases.ts:14:13	unicorn/no-negation-in-equality-check	no-negation-in-equality-check/error	Negated expression is not allowed in equality check.
+tests/rules/unicorn/no-negation-in-equality-check/cases.ts:18:9	unicorn/no-negation-in-equality-check	no-negation-in-equality-check/error	Negated expression is not allowed in equality check.
+tests/rules/unicorn/no-negation-in-equality-check/cases.ts:21:10	unicorn/no-negation-in-equality-check	no-negation-in-equality-check/error	Negated expression is not allowed in equality check.
+tests/rules/unicorn/no-negation-in-equality-check/cases.ts:25:9	unicorn/no-negation-in-equality-check	no-negation-in-equality-check/error	Negated expression is not allowed in equality check.
+tests/rules/unicorn/no-negation-in-equality-check/cases.ts:30:1	unicorn/no-negation-in-equality-check	no-negation-in-equality-check/error	Negated expression is not allowed in equality check.
+tests/rules/unicorn/no-negation-in-equality-check/cases.ts:32:1	unicorn/no-negation-in-equality-check	no-negation-in-equality-check/error	Negated expression is not allowed in equality check.

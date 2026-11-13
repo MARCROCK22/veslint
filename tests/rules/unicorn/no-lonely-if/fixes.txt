@@ -1,0 +1,15 @@
+tests/rules/unicorn/no-lonely-if/cases.ts:9:3	unicorn/no-lonely-if	no-lonely-if	Unexpected `if` as the only statement in a `if` block without `else`.	fix	282	304	(a && b) {\n  }	end	10	4
+tests/rules/unicorn/no-lonely-if/cases.ts:12:8	unicorn/no-lonely-if	no-lonely-if	Unexpected `if` as the only statement in a `if` block without `else`.	fix	308	319	(a && b) 	end	14	2
+tests/rules/unicorn/no-lonely-if/cases.ts:16:3	unicorn/no-lonely-if	no-lonely-if	Unexpected `if` as the only statement in a `if` block without `else`.	fix	335	358	(a && b) foo();	end	16	16
+tests/rules/unicorn/no-lonely-if/cases.ts:18:8	unicorn/no-lonely-if	no-lonely-if	Unexpected `if` as the only statement in a `if` block without `else`.	fix	362	373	(a && b) 	end	18	21
+tests/rules/unicorn/no-lonely-if/cases.ts:19:8	unicorn/no-lonely-if	no-lonely-if	Unexpected `if` as the only statement in a `if` block without `else`.	fix	383	393	(a && b)	end	19	15
+tests/rules/unicorn/no-lonely-if/cases.ts:23:3	unicorn/no-lonely-if	no-lonely-if	Unexpected `if` as the only statement in a `if` block without `else`.	fix	466	509	((a || b) && (c ?? a)) {\n    foo();\n  }	end	25	4
+tests/rules/unicorn/no-lonely-if/cases.ts:28:3	unicorn/no-lonely-if	no-lonely-if	Unexpected `if` as the only statement in a `if` block without `else`.	fix	513	560	((a ? b : c) && (d = 1)) {\n    foo();\n  }	end	30	4
+tests/rules/unicorn/no-lonely-if/cases.ts:33:3	unicorn/no-lonely-if	no-lonely-if	Unexpected `if` as the only statement in a `if` block without `else`.	fix	564	604	(((a)) && (b, c)) {\n    foo();\n  }	end	35	4
+tests/rules/unicorn/no-lonely-if/cases.ts:40:3	unicorn/no-lonely-if	no-lonely-if	Unexpected `if` as the only statement in a `if` block without `else`.	fix	686	739	(a as boolean && <boolean>b) {\n    foo();\n  }	end	42	4
+tests/rules/unicorn/no-lonely-if/cases.ts:45:3	unicorn/no-lonely-if	no-lonely-if	Unexpected `if` as the only statement in a `if` block without `else`.	fix	743	795	(a satisfies boolean && c!) {\n    foo();\n  }	end	47	4
+tests/rules/unicorn/no-lonely-if/cases.ts:53:3	unicorn/no-lonely-if	no-lonely-if	Unexpected `if` as the only statement in a `if` block without `else`.	fix	836	922	(a && // leading comment\n  b) {\n    foo(); // trailing comment\n  }\n  /* end */	end	55	4
+tests/rules/unicorn/no-lonely-if/cases.ts:61:3	unicorn/no-lonely-if	no-lonely-if	Unexpected `if` as the only statement in a `if` block without `else`.	fix	1004	1027	(a && b) foo()\n;	end	61	15
+tests/rules/unicorn/no-lonely-if/cases.ts:65:3	unicorn/no-lonely-if	no-lonely-if	Unexpected `if` as the only statement in a `if` block without `else`.	fix	1051	1073	(a && b) foo()	end	65	15
+tests/rules/unicorn/no-lonely-if/cases.ts:71:3	unicorn/no-lonely-if	no-lonely-if	Unexpected `if` as the only statement in a `if` block without `else`.	fix	1137	1191	(a && b) {\n    if (c) {\n      foo();\n    }\n  }	end	75	4
+tests/rules/unicorn/no-lonely-if/cases.ts:72:5	unicorn/no-lonely-if	no-lonely-if	Unexpected `if` as the only statement in a `if` block without `else`.	fix	1148	1189	(b && c) {\n      foo();\n    }	end	74	6

@@ -31,6 +31,8 @@ const EXTRA = path.join(ROOT, 'build/upstream/extra');
 const SEYFERT_PACKAGE = path.join(EXTRA, 'packages/eslint-plugin');
 const SEYFERT = path.join(ROOT, 'build/upstream/seyfert/node_modules/seyfert');
 const ESLINT = path.join(ROOT, 'build/upstream/eslint');
+const UNICORN = path.join(ROOT, 'build/upstream/unicorn');
+const UNICORN_DEPS = path.join(ROOT, 'build/upstream/unicorn-deps/node_modules');
 
 // Where the tests of each plugin come from. `fixtures` is the directory the tests lint in, the one
 // the files of the cases are written relative to.
@@ -66,6 +68,21 @@ const SOURCES = {
     fixtures: realDir(path.join(TYPESCRIPT_ESLINT, 'packages/eslint-plugin/tests/fixtures')),
     modules: path.join(ESLINT, 'node_modules'),
     needs: [path.join(ESLINT, 'tests/lib/rules'), path.join(ESLINT, 'lib/rules')],
+  },
+  // eslint-plugin-unicorn v64.0.0 (the `unicorn/*` rules): test/<rule>.js, written for JavaScript
+  // and linted, like ESLint core's, as TypeScript in the file.ts (react.tsx with JSX) of
+  // typescript-eslint's fixtures. The cases of `test.snapshot` have no errors written: their
+  // expectation is what ESLint gives with the configuration of the tests (espree and the globals of
+  // test/utils/language-options.js), what made the snapshot.
+  'unicorn/': {
+    label: 'eslint-plugin-unicorn v64.0.0',
+    unicorn: true,
+    clone: UNICORN,
+    tests: path.join(UNICORN, 'test'),
+    fixtures: realDir(path.join(TYPESCRIPT_ESLINT, 'packages/eslint-plugin/tests/fixtures')),
+    modules: path.join(UNICORN, 'node_modules'),
+    needs: [path.join(UNICORN, 'test'), path.join(UNICORN_DEPS, 'outdent')],
+    extra: { outdent: path.join(UNICORN_DEPS, 'outdent') },
   },
 };
 
@@ -164,7 +181,8 @@ function normalize(run, raw, kind, index, prefix, source) {
   const { parser: caseParser, parserOptions: caseParserOptions, ...caseLanguageOptions } = test.languageOptions ?? {};
   // ESLint core: the RuleTester's own languageOptions (ecmaVersion, sourceType, globals) under the
   // case's, as flat config merges them.
-  const { parser: _runParser, parserOptions: _runParserOptions, ...runLanguageOptions } = source.core
+  const jsTests = source.core || source.unicorn;
+  const { parser: runParser, parserOptions: _runParserOptions, ...runLanguageOptions } = jsTests
     ? (run.config.languageOptions ?? {})
     : {};
   const languageOptions = deepMerge(runLanguageOptions, caseLanguageOptions);
@@ -172,7 +190,7 @@ function normalize(run, raw, kind, index, prefix, source) {
   const root = parserOptions.tsconfigRootDir ?? process.cwd();
   // The cases of ESLint core are JavaScript, linted as TypeScript: file.ts, or react.tsx with JSX
   // (the file name the test gives, a .js one, stays in `filename`).
-  let filename = source.core
+  let filename = jsTests
     ? parserOptions.ecmaFeatures?.jsx || /\.[jt]sx$/.test(test.filename ?? '')
       ? 'react.tsx'
       : 'file.ts'
@@ -223,17 +241,23 @@ function normalize(run, raw, kind, index, prefix, source) {
   if (isObject(projectService)) out.projectService = projectService;
   if (Object.keys(otherParserOptions).length) out.parserOptions = otherParserOptions;
   if (Object.keys(languageOptions).length) out.languageOptions = languageOptions;
-  if (source.core && test.filename) out.filename = test.filename;
-  // A case of ESLint core with a parser of its own (one of its fixtures, often for TypeScript).
+  if (jsTests && test.filename) out.filename = test.filename;
+  // A case of ESLint core with a parser of its own (one of its fixtures, often for TypeScript), or
+  // one of unicorn's with the parser of `test.typescript` or `test.vue`.
   if (source.core && caseParser) out.parser = caseParser.meta?.name ?? 'custom';
+  if (source.unicorn && (caseParser ?? runParser)) out.parser = (caseParser ?? runParser).meta?.name ?? 'custom';
   if (test.settings) out.settings = test.settings;
-  if (kind === 'invalid') {
+  if (kind === 'invalid' && run.mode === 'snapshot') {
+    out.snapshot = true;
+    Object.assign(out, unicornSnapshotExpectation(run, test, source));
+  } else if (kind === 'invalid') {
     out.errors = test.errors;
     if ('output' in test) out.output = test.output;
   }
   if (test.before || test.after) out.hooks = true;
   if (test.only) out.only = true;
   if (test.skip) out.skip = 'skipped upstream';
+  else if (out.parser === 'vue') out.skip = 'vue-eslint-parser: a Vue file, not TypeScript';
   else if (!satisfies(test.dependencyConstraints)) out.skip = `dependencyConstraints ${JSON.stringify(test.dependencyConstraints)}`;
   assertPlain(out, id);
   return out;
@@ -244,6 +268,10 @@ const camelCase = name => name.replace(/-([a-z])/g, (_, letter) => letter.toUppe
 // The test files of a rule (its name without the prefix of its plugin).
 function testFiles(name, source) {
   if (source.core) {
+    const file = path.join(source.tests, `${name}.js`);
+    return fs.existsSync(file) ? [file] : [];
+  }
+  if (source.unicorn) {
     const file = path.join(source.tests, `${name}.js`);
     return fs.existsSync(file) ? [file] : [];
   }
@@ -267,6 +295,7 @@ function testFiles(name, source) {
 // @slipher/eslint-plugin make the rule from its factory themselves, and run it under its name.
 async function ruleObjectOf(name, source) {
   if (source === SOURCES['seyfert/']) return null;
+  if (source.unicorn) return (await unicornPlugin()).rules[name];
   // The module the test file requires, the same object.
   if (source.core) return createRequire(path.join(source.clone, 'package.json'))(path.join(source.clone, 'lib/rules', `${name}.js`));
   return (await import(pathToFileURL(path.join(source.clone, 'packages/eslint-plugin/src/rules', `${name}.ts`)).href)).default;
@@ -378,6 +407,71 @@ function stubEslintRuleTester() {
   req.cache[utils] = { id: utils, filename: utils, loaded: true, exports: { unIndent, createCustomTeardown }, children: [], paths: [] };
 }
 
+// eslint-plugin-unicorn's test/utils/test.js, the harness of its tests, is the stub of
+// tools/upstream/unicorn-test.mjs while they load: it records their cases.
+Bun.plugin({
+  name: 'veslint-unicorn-tester',
+  setup(build) {
+    build.onLoad({ filter: /[\\/]unicorn[\\/]test[\\/]utils[\\/]test\.js$/ }, () => ({
+      contents: `export * from ${JSON.stringify(path.join(ROOT, 'tools/upstream/unicorn-test.mjs'))};`,
+      loader: 'js',
+    }));
+  },
+});
+
+// The plugin of build/eval (eslint-plugin-unicorn 64.0.0), the one Spider-Byte's configuration uses.
+let unicornPluginCache;
+async function unicornPlugin() {
+  unicornPluginCache ??= (await import(pathToFileURL(requireDependency.resolve('eslint-plugin-unicorn')).href)).default;
+  return unicornPluginCache;
+}
+
+// What the snapshot of an invalid case of `test.snapshot` holds, as RuleTester expectations: ESLint
+// 10.6.0 run as test/utils/snapshot-rule-tester.js runs it (espree, or typescript-eslint's parser
+// for `test.typescript`, and the globals of test/utils/language-options.js): each problem with its
+// message, its range and its suggestions (with the text each one leaves), and the output of one
+// pass of fixes (null when nothing is fixed).
+const { Linter } = requireDependency('eslint');
+const SourceCodeFixer = requireDependency(path.join(DEPENDENCIES, 'eslint/lib/linter/source-code-fixer.js'));
+const globals = requireDependency('globals');
+const UNICORN_GLOBALS = { ...globals.builtin, ...globals.node, ...globals.browser };
+const JS_FILES = ['js', 'jsx', 'mjs', 'cjs', 'ts', 'tsx', 'mts', 'cts', 'vue'].map(extension => `**/*.${extension}`);
+const snapshotLinter = new Linter({ configType: 'flat' });
+function unicornSnapshotExpectation(run, test, source) {
+  const name = run.name;
+  const { parser: runParser, ...runLanguageOptions } = run.config.languageOptions ?? {};
+  const { parser: caseParser, ...caseLanguageOptions } = test.languageOptions ?? {};
+  const parserName = (caseParser ?? runParser)?.name;
+  if (parserName === 'vue') return { errors: [] };
+  const languageOptions = deepMerge(deepMerge({ globals: UNICORN_GLOBALS }, runLanguageOptions), caseLanguageOptions);
+  if (parserName === 'typescript') languageOptions.parser = requireDependency('@typescript-eslint/parser');
+  const config = [
+    {
+      files: JS_FILES,
+      languageOptions,
+      plugins: { unicorn: unicornPluginCache },
+      rules: { [`unicorn/${name}`]: ['error', ...(test.options ?? [])] },
+      settings: { ...run.config.settings, ...test.settings },
+    },
+  ];
+  const filename = test.filename ?? (parserName === 'typescript' ? 'file.ts' : 'file.js');
+  const messages = snapshotLinter.verify(test.code, config, filename);
+  const fatal = messages.find(m => m.fatal);
+  if (fatal) throw new Error(`unicorn/${name}: a snapshot case does not parse: ${fatal.message}\n${test.code}`);
+  const errors = messages.map(m => {
+    const error = { messageId: m.messageId, message: m.message, line: m.line, column: m.column };
+    if (m.endLine !== undefined) Object.assign(error, { endLine: m.endLine, endColumn: m.endColumn });
+    error.suggestions = (m.suggestions ?? []).map(s => ({
+      ...(s.messageId ? { messageId: s.messageId } : {}),
+      desc: s.desc,
+      output: SourceCodeFixer.applyFixes(test.code, [s]).output,
+    }));
+    return error;
+  });
+  const fixed = SourceCodeFixer.applyFixes(test.code, messages);
+  return { errors, output: fixed.output === test.code ? null : fixed.output };
+}
+
 // A project recorded by `lintProject`: the file of each result as the test names it (the longest
 // name the absolute path of the temporary project ends with), and its messages.
 function normalizeProject(project, id, name) {
@@ -470,9 +564,19 @@ for (const rule of rules.sort()) {
     globalThis.__veslintTests = undefined;
     globalThis.__veslintProjects = undefined;
     const runs = recorded.slice(before);
-    if (runs.length) messages = runs[0].messages;
+    if (runs.length) messages = source.unicorn ? (ruleObject.meta.messages ?? {}) : runs[0].messages;
+    // Every snapshot of unicorn's test file is one of the recorded invalid cases.
+    if (source.unicorn) {
+      const snapshotFile = path.join(source.tests, 'snapshots', `${name}.js.md`);
+      const snapshots = fs.existsSync(snapshotFile) ? (fs.readFileSync(snapshotFile, 'utf8').match(/^## invalid\(/gmu) ?? []).length : 0;
+      const invalid = runs.filter(r => r.mode === 'snapshot').reduce((n, r) => n + (r.tests.invalid?.length ?? 0), 0);
+      if (snapshots !== invalid) {
+        console.error(`${rule}: ${invalid} invalid snapshot cases, ${snapshots} in ${path.relative(ROOT, snapshotFile)}`);
+        failed = true;
+      }
+    }
     const stem =
-      source === SOURCES['seyfert/'] || source.core
+      source === SOURCES['seyfert/'] || source.core || source.unicorn
         ? name
         : path.relative(path.join(source.tests, 'rules'), file).replace(/\.test\.ts$/, '').split(path.sep).join('/');
     runs.forEach((run, r) => {
@@ -491,7 +595,11 @@ for (const rule of rules.sort()) {
   const sourceFiles = files.map(f => path.relative(source.clone, f).split(path.sep).join('/'));
   const lines = cases.map(c => JSON.stringify(c));
   // meta.messages, to build the message of an expected error from its data, as RuleTester does.
-  let text = `{"rule": ${JSON.stringify(rule)}, "upstream": "${source.label}", "files": ${JSON.stringify(sourceFiles)},\n"messages": ${JSON.stringify(messages)},\n"cases": [\n${lines.join(',\n')}\n]`;
+  let text = `{"rule": ${JSON.stringify(rule)}, "upstream": "${source.label}", "files": ${JSON.stringify(sourceFiles)},\n"messages": ${JSON.stringify(messages)},\n`;
+  // The languageOptions every case has under its own: unicorn's tests give the globals of
+  // test/utils/language-options.js.
+  if (source.unicorn) text += `"languageOptions": ${JSON.stringify({ globals: UNICORN_GLOBALS })},\n`;
+  text += `"cases": [\n${lines.join(',\n')}\n]`;
   if (projects.length) text += `,\n"projects": [\n${projects.map(p => JSON.stringify(p)).join(',\n')}\n]`;
   text += '}\n';
   fs.writeFileSync(path.join(ROOT, 'tests/rules', rule, 'upstream.json'), text);

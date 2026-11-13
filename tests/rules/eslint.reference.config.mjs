@@ -7,6 +7,7 @@ import fs from 'node:fs';
 import { createRequire } from 'node:module';
 import path from 'node:path';
 import tseslint from '../../build/eval/spider-byte/node_modules/typescript-eslint/dist/index.js';
+import unicorn from '../../build/eval/spider-byte/node_modules/eslint-plugin-unicorn/index.js';
 
 const { plugin: seyfert } = createRequire(import.meta.url)(
   '../../build/upstream/seyfert/node_modules/@slipher/eslint-plugin',
@@ -26,7 +27,7 @@ const withDefaults = ported.map(rule => ({
     parser: tseslint.parser,
     parserOptions: { projectService: true, tsconfigRootDir: import.meta.dirname },
   },
-  plugins: { '@typescript-eslint': tseslint.plugin, seyfert },
+  plugins: { '@typescript-eslint': tseslint.plugin, seyfert, unicorn },
   rules: { [rule]: 'error' },
 }));
 

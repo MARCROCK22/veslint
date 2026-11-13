@@ -38,7 +38,7 @@ vendor/tree-sitter/libtree-sitter.a: | vendor/tree-sitter
 	$(MAKE) -C vendor/tree-sitter libtree-sitter.a
 
 # Copies the grammar, applies the patch and regenerates parser.c with the pinned CLI (0.24.4, the one
-# upstream generated v0.23.2's with: without the patch it comes out identical). See README, "Grammar".
+# upstream generated v0.23.2's with: without the patch it comes out identical). See internals.md, "Grammar".
 $(TSTS_SRC)/parser.c: $(GRAMMAR_PATCH) $(TS_CLI) | vendor/tree-sitter-typescript vendor/tree-sitter-javascript
 	rm -rf $(GRAMMAR)
 	mkdir -p $(GRAMMAR)
@@ -79,7 +79,7 @@ $(TS_CLI): $(TSGO)
 build: veslint
 
 # LARGE_CONFIG builds libgc to grow its heap up to 16 MiB at a time instead of 8: it collects fully
-# after each growth, so a live heap that only grows (the doubling constants of README) is walked
+# after each growth, so a live heap that only grows (the doubling constants of internals.md) is walked
 # half as often. It costs about 0.5 MB of larger black-list tables (two of 256 KB instead of 32 KB),
 # and up to 16 MiB more heap from the larger steps (Spider-Byte with every rule: 96 MiB instead of
 # 86). V caches gc.o by its flags.

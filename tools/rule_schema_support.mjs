@@ -9,7 +9,7 @@ import { createRequire } from 'node:module';
 export function portedRules(root) {
   const source = fs.readFileSync(path.join(root, 'rules/rules.v'), 'utf8');
   // A rule id with a plugin, or without one (ESLint core).
-  const byConst = new Map([...source.matchAll(/^pub const (\w+) = '((?:(?:@typescript-eslint|seyfert)\/)?[a-z0-9-]+)'$/gm)].map(m => [m[1], m[2]]));
+  const byConst = new Map([...source.matchAll(/^pub const (\w+) = '((?:(?:@typescript-eslint|seyfert|unicorn)\/)?[a-z0-9-]+)'$/gm)].map(m => [m[1], m[2]]));
   const list = /^pub const names = \[([^\]]+)\]/m.exec(source);
   if (!list) {
     throw new Error('rules/rules.v: `names` not found');
@@ -41,7 +41,7 @@ export function ruleDefaults(builtinRules, plugins) {
 // The keywords rules/json_schema.v validates (schema_rule_groups there), the ones that hold
 // subschemas, and the ones ajv ignores when it validates.
 const jsonTypes = ['array', 'boolean', 'integer', 'null', 'number', 'object', 'string'];
-const supported = new Set(['type', 'enum', 'const', 'properties', 'additionalProperties', 'required', 'items',
+const supported = new Set(['type', 'enum', 'const', 'maximum', 'minimum', 'properties', 'additionalProperties', 'required', 'items',
   'additionalItems', 'minItems', 'maxItems', 'uniqueItems', 'minLength', 'maxLength', 'pattern', 'minProperties',
   'maxProperties', 'oneOf', 'anyOf', 'allOf', 'not', '$ref']);
 const annotations = new Set(['description', 'title', '$defs', 'definitions']);
@@ -106,10 +106,18 @@ export function seyfertPlugin(root) {
   return require('@slipher/eslint-plugin').plugin;
 }
 
+// unicornPlugin is eslint-plugin-unicorn 64.0.0, the plugin of the `unicorn/*` rules, from
+// build/eval.
+export function unicornPlugin(root) {
+  const require = createRequire(path.join(root, 'build/eval/spider-byte/package.json'));
+  const module = require('eslint-plugin-unicorn');
+  return module.default ?? module;
+}
+
 // pluginOf is the namespace, the plugin and the name in it of a ported rule.
 export function pluginOf(id, plugins) {
   // ESLint core: a rule id without a plugin; plugins[''] holds its rules.
   if (!id.includes('/')) return ['', plugins[''], id];
-  const namespace = id.startsWith('seyfert/') ? 'seyfert' : '@typescript-eslint';
+  const namespace = id.startsWith('seyfert/') ? 'seyfert' : id.startsWith('unicorn/') ? 'unicorn' : '@typescript-eslint';
   return [namespace, plugins[namespace], id.slice(namespace.length + 1)];
 }

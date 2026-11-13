@@ -269,6 +269,18 @@ pub const constructor_super = 'constructor-super'
 pub const no_this_before_super = 'no-this-before-super'
 pub const no_useless_assignment = 'no-useless-assignment'
 pub const no_restricted_syntax = 'no-restricted-syntax'
+pub const unicorn_no_lonely_if = 'unicorn/no-lonely-if'
+pub const unicorn_no_negated_condition = 'unicorn/no-negated-condition'
+pub const unicorn_no_negation_in_equality_check = 'unicorn/no-negation-in-equality-check'
+pub const unicorn_no_nested_ternary = 'unicorn/no-nested-ternary'
+pub const unicorn_no_typeof_undefined = 'unicorn/no-typeof-undefined'
+pub const unicorn_prefer_logical_operator_over_ternary = 'unicorn/prefer-logical-operator-over-ternary'
+pub const unicorn_prefer_ternary = 'unicorn/prefer-ternary'
+pub const unicorn_prefer_switch = 'unicorn/prefer-switch'
+pub const unicorn_switch_case_braces = 'unicorn/switch-case-braces'
+pub const unicorn_switch_case_break_position = 'unicorn/switch-case-break-position'
+pub const unicorn_no_useless_switch_case = 'unicorn/no-useless-switch-case'
+pub const unicorn_prefer_simple_condition_first = 'unicorn/prefer-simple-condition-first'
 pub const names = [no_floating_promises, await_thenable, require_await, return_await,
 	no_misused_promises, no_unsafe_call, no_unsafe_member_access, no_unsafe_return,
 	no_unsafe_assignment, no_unsafe_argument, restrict_template_expressions,
@@ -330,7 +342,11 @@ pub const names = [no_floating_promises, await_thenable, require_await, return_a
 	no_restricted_globals, no_restricted_properties, no_restricted_exports, no_restricted_imports,
 	no_constructor_return, no_promise_executor_return, no_invalid_this, getter_return,
 	no_unreachable_loop, no_useless_return, no_unreachable, no_fallthrough, constructor_super,
-	no_this_before_super, no_useless_assignment, no_restricted_syntax]
+	no_this_before_super, no_useless_assignment, no_restricted_syntax, unicorn_no_lonely_if,
+	unicorn_no_negated_condition, unicorn_no_negation_in_equality_check, unicorn_no_nested_ternary,
+	unicorn_no_typeof_undefined, unicorn_prefer_logical_operator_over_ternary, unicorn_prefer_ternary,
+	unicorn_prefer_switch, unicorn_switch_case_braces, unicorn_switch_case_break_position,
+	unicorn_no_useless_switch_case, unicorn_prefer_simple_condition_first]
 
 // untyped_rules are the ported rules that need no types (`meta.docs.requiresTypeChecking` is false
 // in typescript-eslint): with only these, the command line makes no snapshot (Checker.make_snapshot).
@@ -373,7 +389,11 @@ pub const untyped_rules = [adjacent_overload_signatures, array_type, class_liter
 	no_restricted_globals, no_restricted_properties, no_restricted_exports, no_restricted_imports,
 	no_constructor_return, no_promise_executor_return, no_invalid_this, getter_return,
 	no_unreachable_loop, no_useless_return, no_unreachable, no_fallthrough, constructor_super,
-	no_this_before_super, no_useless_assignment, no_restricted_syntax]
+	no_this_before_super, no_useless_assignment, no_restricted_syntax, unicorn_no_lonely_if,
+	unicorn_no_negated_condition, unicorn_no_negation_in_equality_check, unicorn_no_nested_ternary,
+	unicorn_no_typeof_undefined, unicorn_prefer_logical_operator_over_ternary, unicorn_prefer_ternary,
+	unicorn_prefer_switch, unicorn_switch_case_braces, unicorn_switch_case_break_position,
+	unicorn_no_useless_switch_case, unicorn_prefer_simple_condition_first]
 
 // needs_types tells whether a rule asks tsgo for the types of the program.
 pub fn needs_types(rule string) bool {
@@ -638,6 +658,18 @@ pub const default_options = {
 	no_this_before_super:                         '[]'
 	no_useless_assignment:                        '[]'
 	no_restricted_syntax:                         '[]'
+	unicorn_no_lonely_if:                         '[]'
+	unicorn_no_negated_condition:                 '[]'
+	unicorn_no_negation_in_equality_check:        '[]'
+	unicorn_no_nested_ternary:                    '[]'
+	unicorn_no_typeof_undefined:                  '[{"checkGlobalVariables":false}]'
+	unicorn_prefer_logical_operator_over_ternary: '[]'
+	unicorn_prefer_ternary:                       '["always"]'
+	unicorn_prefer_switch:                        '[{"minimumCases":3,"emptyDefaultCase":"no-default-comment"}]'
+	unicorn_switch_case_braces:                   '["always"]'
+	unicorn_switch_case_break_position:           '[]'
+	unicorn_no_useless_switch_case:               '[]'
+	unicorn_prefer_simple_condition_first:        '[]'
 }
 
 // Finding is a problem a rule found at a node.
@@ -1025,6 +1057,18 @@ pub fn message(rule string, finding Finding) string {
 		no_this_before_super { ntbs_messages }
 		no_useless_assignment { nuas_messages }
 		no_restricted_syntax { nrsx_messages }
+		unicorn_no_lonely_if { unli_messages }
+		unicorn_no_negated_condition { unnc_messages }
+		unicorn_no_negation_in_equality_check { unnec_messages }
+		unicorn_no_nested_ternary { unnt_messages }
+		unicorn_no_typeof_undefined { unty_messages }
+		unicorn_prefer_logical_operator_over_ternary { uploot_messages }
+		unicorn_prefer_ternary { upt_messages }
+		unicorn_prefer_switch { ups_messages }
+		unicorn_switch_case_braces { uscb_messages }
+		unicorn_switch_case_break_position { uscbp_messages }
+		unicorn_no_useless_switch_case { unusc_messages }
+		unicorn_prefer_simple_condition_first { upscf_messages }
 		else { map[string]string{} }
 	}
 	return interpolate(messages[finding.message_id] or { finding.message_id }, finding.data)
@@ -1935,6 +1979,42 @@ fn (mut c Checker) lint_rule(rule string, root C.TSNode, abs_path string, mut st
 		}
 		no_restricted_syntax {
 			return c.lint_no_restricted_syntax(root, abs_path, mut stats)!
+		}
+		unicorn_no_lonely_if {
+			return c.lint_unicorn_no_lonely_if(root, abs_path, mut stats)!
+		}
+		unicorn_no_negated_condition {
+			return c.lint_unicorn_no_negated_condition(root, abs_path, mut stats)!
+		}
+		unicorn_no_negation_in_equality_check {
+			return c.lint_unicorn_no_negation_in_equality_check(root, abs_path, mut stats)!
+		}
+		unicorn_no_nested_ternary {
+			return c.lint_unicorn_no_nested_ternary(root, abs_path, mut stats)!
+		}
+		unicorn_no_typeof_undefined {
+			return c.lint_unicorn_no_typeof_undefined(root, abs_path, mut stats)!
+		}
+		unicorn_prefer_logical_operator_over_ternary {
+			return c.lint_unicorn_prefer_logical_operator_over_ternary(root, abs_path, mut stats)!
+		}
+		unicorn_prefer_ternary {
+			return c.lint_unicorn_prefer_ternary(root, abs_path, mut stats)!
+		}
+		unicorn_prefer_switch {
+			return c.lint_unicorn_prefer_switch(root, abs_path, mut stats)!
+		}
+		unicorn_switch_case_braces {
+			return c.lint_unicorn_switch_case_braces(root, abs_path, mut stats)!
+		}
+		unicorn_switch_case_break_position {
+			return c.lint_unicorn_switch_case_break_position(root, abs_path, mut stats)!
+		}
+		unicorn_no_useless_switch_case {
+			return c.lint_unicorn_no_useless_switch_case(root, abs_path, mut stats)!
+		}
+		unicorn_prefer_simple_condition_first {
+			return c.lint_unicorn_prefer_simple_condition_first(root, abs_path, mut stats)!
 		}
 		else { return error('unknown rule: ${rule}') }
 	}

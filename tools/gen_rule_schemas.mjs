@@ -12,7 +12,7 @@ import fs from 'node:fs';
 import path from 'node:path';
 import { createRequire } from 'node:module';
 import { execFileSync } from 'node:child_process';
-import { portedRules, checkSchema, ruleDefaults, seyfertPlugin, pluginOf } from './rule_schema_support.mjs';
+import { portedRules, checkSchema, ruleDefaults, seyfertPlugin, unicornPlugin, pluginOf } from './rule_schema_support.mjs';
 
 const root = path.resolve(import.meta.dirname, '..');
 const modules = path.join(root, 'build/eval/spider-byte/node_modules');
@@ -26,7 +26,7 @@ const version = name => JSON.parse(fs.readFileSync(path.join(modules, name, 'pac
 const literal = text => `'${text.replace(/\\/g, '\\\\').replace(/'/g, "\\'").replace(/\$/g, '\\$')}'`;
 
 const schemas = [];
-const plugins = { '': { rules: Object.fromEntries(builtinRules) }, '@typescript-eslint': plugin, seyfert: seyfertPlugin(root) };
+const plugins = { '': { rules: Object.fromEntries(builtinRules) }, '@typescript-eslint': plugin, seyfert: seyfertPlugin(root), unicorn: unicornPlugin(root) };
 for (const id of portedRules(root)) {
   const [namespace, owner, name] = pluginOf(id, plugins);
   const rule = owner.rules[name];

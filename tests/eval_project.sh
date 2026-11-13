@@ -170,6 +170,7 @@ cat > "$PACKAGE/veslint-eval.eslint.config.mjs" << CFG
 import fs from 'node:fs';
 import { createRequire } from 'node:module';
 import tseslint from '$ESLINT_DIR/node_modules/typescript-eslint/dist/index.js';
+import unicorn from '$ESLINT_DIR/node_modules/eslint-plugin-unicorn/index.js';
 const { plugin: seyfert } = createRequire(import.meta.url)('$SEYFERT_PLUGIN');
 const { rules } = JSON.parse(fs.readFileSync(process.env.VESLINT_EVAL_CONFIG, 'utf8'));
 export default [
@@ -179,7 +180,7 @@ export default [
       parser: tseslint.parser,
       parserOptions: { project: ['tsconfig.veslint.json'], tsconfigRootDir: import.meta.dirname },
     },
-    plugins: { '@typescript-eslint': tseslint.plugin, seyfert },
+    plugins: { '@typescript-eslint': tseslint.plugin, seyfert, unicorn },
     rules,
   },
 ];

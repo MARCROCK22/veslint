@@ -1,0 +1,11 @@
+tests/rules/unicorn/switch-case-braces/avoid/cases.ts:11:11	unicorn/switch-case-braces	switch-case-braces/unnecessary	Unnecessary braces in case clause.
+tests/rules/unicorn/switch-case-braces/avoid/cases.ts:27:11	unicorn/switch-case-braces	switch-case-braces/empty	Unexpected braces in empty case clause.
+tests/rules/unicorn/switch-case-braces/avoid/cases.ts:37:11	unicorn/switch-case-braces	switch-case-braces/empty	Unexpected braces in empty case clause.
+tests/rules/unicorn/switch-case-braces/avoid/cases.ts:39:12	unicorn/switch-case-braces	switch-case-braces/empty	Unexpected braces in empty case clause.
+tests/rules/unicorn/switch-case-braces/cases.ts:8:3	unicorn/switch-case-braces	switch-case-braces/missing	Missing braces in case clause.
+tests/rules/unicorn/switch-case-braces/cases.ts:25:3	unicorn/switch-case-braces	switch-case-braces/missing	Missing braces in case clause.
+tests/rules/unicorn/switch-case-braces/cases.ts:27:11	unicorn/switch-case-braces	switch-case-braces/empty	Unexpected braces in empty case clause.
+tests/rules/unicorn/switch-case-braces/cases.ts:28:3	unicorn/switch-case-braces	switch-case-braces/missing	Missing braces in case clause.
+tests/rules/unicorn/switch-case-braces/cases.ts:33:3	unicorn/switch-case-braces	switch-case-braces/missing	Missing braces in case clause.
+tests/rules/unicorn/switch-case-braces/cases.ts:37:11	unicorn/switch-case-braces	switch-case-braces/empty	Unexpected braces in empty case clause.
+tests/rules/unicorn/switch-case-braces/cases.ts:39:12	unicorn/switch-case-braces	switch-case-braces/empty	Unexpected braces in empty case clause.

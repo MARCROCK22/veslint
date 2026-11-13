@@ -15,7 +15,7 @@
 import fs from 'node:fs';
 import path from 'node:path';
 import { createRequire } from 'node:module';
-import { portedRules, checkSchema, ruleDefaults, seyfertPlugin, pluginOf } from './rule_schema_support.mjs';
+import { portedRules, checkSchema, ruleDefaults, seyfertPlugin, unicornPlugin, pluginOf } from './rule_schema_support.mjs';
 
 const root = path.resolve(import.meta.dirname, '..');
 const modules = path.join(root, 'build/eval/spider-byte/node_modules');
@@ -302,7 +302,7 @@ const extra = {
 };
 
 const ids = portedRules(root);
-const plugins = { '': { rules: Object.fromEntries(builtinRules) }, '@typescript-eslint': plugin, seyfert: seyfertPlugin(root) };
+const plugins = { '': { rules: Object.fromEntries(builtinRules) }, '@typescript-eslint': plugin, seyfert: seyfertPlugin(root), unicorn: unicornPlugin(root) };
 const standIns = {};
 for (const id of ids) {
   const [namespace, owner, name] = pluginOf(id, plugins);
@@ -426,7 +426,7 @@ const file = path.join(root, 'tests/rule_option_cases.json');
 const versions = { node: process.version, eslint: version('eslint'), 'typescript-eslint': version('@typescript-eslint/eslint-plugin'), ajv: version('ajv') };
 // One case per line: the file is large, and a change in it should read as the cases that changed.
 const group = (key, entry) => `{${JSON.stringify(key)}:${JSON.stringify(entry[key])},${entry.core ? '"core":true,' : ''}${entry.schema ? `"schema":${JSON.stringify(entry.schema)},` : ''}"cases":[\n${entry.cases.map(({ rejected, ...c }) => JSON.stringify(c)).join(',\n')}\n]}`;
-fs.writeFileSync(file, `{"versions":${JSON.stringify(versions)},\n"schemas":${JSON.stringify(schemas)},\n"ruleDefaults":${JSON.stringify(Object.fromEntries(ruleDefaults(builtinRules, { '@typescript-eslint': plugin, seyfert: seyfertPlugin(root) })))},\n"rules":[\n${rules.map(entry => group('rule', entry)).join(',\n')}\n],\n"synthetic":[\n${synthetic.map(entry => group('name', entry)).join(',\n')}\n],\n"values":[\n${values.map(entry => JSON.stringify(entry)).join(',\n')}\n]}\n`);
+fs.writeFileSync(file, `{"versions":${JSON.stringify(versions)},\n"schemas":${JSON.stringify(schemas)},\n"ruleDefaults":${JSON.stringify(Object.fromEntries(ruleDefaults(builtinRules, { '@typescript-eslint': plugin, seyfert: seyfertPlugin(root), unicorn: unicornPlugin(root) })))},\n"rules":[\n${rules.map(entry => group('rule', entry)).join(',\n')}\n],\n"synthetic":[\n${synthetic.map(entry => group('name', entry)).join(',\n')}\n],\n"values":[\n${values.map(entry => JSON.stringify(entry)).join(',\n')}\n]}\n`);
 const count = groups => groups.reduce((sum, entry) => sum + entry.cases.length, 0);
 const invalid = groups => groups.reduce((sum, entry) => sum + entry.cases.filter(c => c.rejected).length, 0);
 console.log(`${count(rules)} cases of ${rules.length} rules (${invalid(rules)} that ESLint rejects), ${count(synthetic)} of ${synthetic.length} other schemas (${invalid(synthetic)}), ${values.length} values of a rule; ${(fs.statSync(file).size / 1024).toFixed(0)} KiB`);

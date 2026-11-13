@@ -1,0 +1,22 @@
+{"rule": "unicorn/no-nested-ternary", "upstream": "eslint-plugin-unicorn v64.0.0", "files": ["test/no-nested-ternary.js"],
+"messages": {"too-deep":"Do not nest ternary expressions.","should-parenthesized":"Nested ternary expression should be parenthesized."},
+"cases": [
+{"id":"no-nested-ternary/r0/v0","kind":"valid","code":"const foo = i > 5 ? true : false;","file":"file.ts","tsconfig":null},
+{"id":"no-nested-ternary/r0/v1","kind":"valid","code":"const foo = i > 5 ? true : (i < 100 ? true : false);","file":"file.ts","tsconfig":null},
+{"id":"no-nested-ternary/r0/v2","kind":"valid","code":"const foo = i > 5 ? (i < 100 ? true : false) : true;","file":"file.ts","tsconfig":null},
+{"id":"no-nested-ternary/r0/v3","kind":"valid","code":"const foo = i > 5 ? (i < 100 ? true : false) : (i < 100 ? true : false);","file":"file.ts","tsconfig":null},
+{"id":"no-nested-ternary/r0/v4","kind":"valid","code":"const foo = i > 5 ? true : (i < 100 ? FOO(i > 50 ? false : true) : false);","file":"file.ts","tsconfig":null},
+{"id":"no-nested-ternary/r0/v5","kind":"valid","code":"foo ? doBar() : doBaz();","file":"file.ts","tsconfig":null},
+{"id":"no-nested-ternary/r0/v6","kind":"valid","code":"var foo = bar === baz ? qux : quxx;","file":"file.ts","tsconfig":null},
+{"id":"no-nested-ternary/r0/i0","kind":"invalid","code":"const foo = i > 5 ? true : (i < 100 ? true : (i < 1000 ? true : false));","file":"file.ts","tsconfig":null,"errors":1},
+{"id":"no-nested-ternary/r0/i1","kind":"invalid","code":"const foo = i > 5 ? true : (i < 100 ? (i > 50 ? false : true) : false);","file":"file.ts","tsconfig":null,"errors":1},
+{"id":"no-nested-ternary/r0/i2","kind":"invalid","code":"const foo = i > 5 ? i < 100 ? true : false : true;","file":"file.ts","tsconfig":null,"errors":1,"output":"const foo = i > 5 ? (i < 100 ? true : false) : true;"},
+{"id":"no-nested-ternary/r0/i3","kind":"invalid","code":"const foo = i > 5 ? i < 100 ? true : false : i < 100 ? true : false;","file":"file.ts","tsconfig":null,"errors":2,"output":"const foo = i > 5 ? (i < 100 ? true : false) : (i < 100 ? true : false);"},
+{"id":"no-nested-ternary/r0/i4","kind":"invalid","code":"const foo = i > 5 ? true : i < 100 ? true : false;","file":"file.ts","tsconfig":null,"errors":1,"output":"const foo = i > 5 ? true : (i < 100 ? true : false);"},
+{"id":"no-nested-ternary/r0/i5","kind":"invalid","code":"foo ? bar : baz === qux ? quxx : foobar;","file":"file.ts","tsconfig":null,"errors":1,"output":"foo ? bar : (baz === qux ? quxx : foobar);"},
+{"id":"no-nested-ternary/r0/i6","kind":"invalid","code":"foo ? baz === qux ? quxx : foobar : bar;","file":"file.ts","tsconfig":null,"errors":1,"output":"foo ? (baz === qux ? quxx : foobar) : bar;"},
+{"id":"no-nested-ternary/r1/v0","kind":"valid","code":"const pluginName = isAbsolute ?\n\tpluginPath.slice(pluginPath.lastIndexOf('/') + 1) :\n\t(\n\t\tisNamespaced ?\n\t\tpluginPath.split('@')[1].split('/')[1] :\n\t\tpluginPath\n\t);","file":"file.ts","tsconfig":null,"parser":"typescript"},
+{"id":"no-nested-ternary/r2/i0","kind":"invalid","code":"const foo = i > 5 ? i < 100 ? true : false : i < 100 ? true : false;","file":"file.ts","tsconfig":null,"snapshot":true,"errors":[{"messageId":"should-parenthesized","message":"Nested ternary expression should be parenthesized.","line":1,"column":21,"endLine":1,"endColumn":43,"suggestions":[]},{"messageId":"should-parenthesized","message":"Nested ternary expression should be parenthesized.","line":1,"column":46,"endLine":1,"endColumn":68,"suggestions":[]}],"output":"const foo = i > 5 ? (i < 100 ? true : false) : (i < 100 ? true : false);"},
+{"id":"no-nested-ternary/r2/i1","kind":"invalid","code":"const foo = i > 5 ? true : (i < 100 ? true : (i < 1000 ? true : false));","file":"file.ts","tsconfig":null,"snapshot":true,"errors":[{"messageId":"too-deep","message":"Do not nest ternary expressions.","line":1,"column":47,"endLine":1,"endColumn":70,"suggestions":[]}],"output":null},
+{"id":"no-nested-ternary/r2/i2","kind":"invalid","code":"const foo = a ?\n\tb :\n\t(\n\t\tc ?\n\t\t\td :\n\t\t\t(\n\t\t\t\te ?\n\t\t\t\t\tf :\n\t\t\t\t\t(g ? h : i)\n\t\t\t)\n\t)","file":"file.ts","tsconfig":null,"snapshot":true,"errors":[{"messageId":"too-deep","message":"Do not nest ternary expressions.","line":7,"column":5,"endLine":9,"endColumn":17,"suggestions":[]}],"output":null}
+]}

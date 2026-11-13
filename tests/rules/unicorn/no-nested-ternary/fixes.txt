@@ -1,0 +1,6 @@
+tests/rules/unicorn/no-nested-ternary/cases.ts:5:20	unicorn/no-nested-ternary	should-parenthesized	Nested ternary expression should be parenthesized.	fix	233	242	(c ? 1 : 2)	end	5	29
+tests/rules/unicorn/no-nested-ternary/cases.ts:6:16	unicorn/no-nested-ternary	should-parenthesized	Nested ternary expression should be parenthesized.	fix	259	268	(b ? 1 : 2)	end	6	25
+tests/rules/unicorn/no-nested-ternary/cases.ts:7:28	unicorn/no-nested-ternary	too-deep	Do not nest ternary expressions.	end	7	37
+tests/rules/unicorn/no-nested-ternary/cases.ts:9:22	unicorn/no-nested-ternary	too-deep	Do not nest ternary expressions.	end	9	31
+tests/rules/unicorn/no-nested-ternary/cases.ts:10:22	unicorn/no-nested-ternary	too-deep	Do not nest ternary expressions.	end	10	41
+tests/rules/unicorn/no-nested-ternary/cases.ts:11:30	unicorn/no-nested-ternary	too-deep	Do not nest ternary expressions.	end	11	39

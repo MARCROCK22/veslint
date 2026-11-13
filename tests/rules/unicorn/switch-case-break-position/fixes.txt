@@ -1,0 +1,8 @@
+tests/rules/unicorn/switch-case-break-position/cases.ts:12:7	unicorn/switch-case-break-position	switch-case-break-position	Move `break` inside the block statement.	fix	320	341	\n        break;\n      }	end	12	13
+tests/rules/unicorn/switch-case-break-position/cases.ts:17:7	unicorn/switch-case-break-position	switch-case-break-position	Move `continue` inside the block statement.	fix	412	436	\n        continue;\n      }	end	17	16
+tests/rules/unicorn/switch-case-break-position/cases.ts:21:7	unicorn/switch-case-break-position	switch-case-break-position	Move `return` inside the block statement.	end	21	14
+tests/rules/unicorn/switch-case-break-position/cases.ts:25:7	unicorn/switch-case-break-position	switch-case-break-position	Move `throw` inside the block statement.	end	25	28
+tests/rules/unicorn/switch-case-break-position/cases.ts:31:7	unicorn/switch-case-break-position	switch-case-break-position	Move `break` inside the block statement.	end	31	13
+tests/rules/unicorn/switch-case-break-position/cases.ts:33:7	unicorn/switch-case-break-position	switch-case-break-position	Move `break` inside the block statement.	end	33	13
+tests/rules/unicorn/switch-case-break-position/cases.ts:37:7	unicorn/switch-case-break-position	switch-case-break-position	Move `break` inside the block statement.	end	37	13
+tests/rules/unicorn/switch-case-break-position/cases.ts:41:7	unicorn/switch-case-break-position	switch-case-break-position	Move `break` inside the block statement.	fix	840	860	\n        break\n      }	end	41	12

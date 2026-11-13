@@ -2,6 +2,13 @@
 
 Each version is a release on GitHub with the veslint binaries (Linux x64, Windows x64) and the VS Code extension. The section of a version is the text of its release.
 
+## 0.14.0
+
+- **12 rules of eslint-plugin-unicorn for conditions and switches:** `unicorn/no-lonely-if`, `unicorn/no-negated-condition`, `unicorn/no-negation-in-equality-check`, `unicorn/no-nested-ternary`, `unicorn/no-typeof-undefined`, `unicorn/no-useless-switch-case`, `unicorn/prefer-logical-operator-over-ternary`, `unicorn/prefer-simple-condition-first`, `unicorn/prefer-switch`, `unicorn/prefer-ternary`, `unicorn/switch-case-braces` and `unicorn/switch-case-break-position`. They come with their options, fixes and suggestions, and pass the cases of unicorn's own tests.
+- **Rule options:** the `minimum` and `maximum` keywords of a rule's schema are now validated, as ESLint does.
+- **The README** is shorter: install, usage, configuration and the list of supported rules.
+- **Development:** `make test` runs its slow checks in parallel (`JOBS`, the CPUs by default): about 18 minutes instead of 45 on four CPUs.
+
 ## 0.13.0
 
 - **The VS Code extension is on the Visual Studio Marketplace** as `MARCROCK22.veslint`, with the veslint logo. A `.vsix` installed from an earlier release has the identifier `veslint.veslint`: uninstall it, so that only one runs.

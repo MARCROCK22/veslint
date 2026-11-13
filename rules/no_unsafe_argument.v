@@ -5,7 +5,7 @@ import tsgo { TypeResponse }
 import treesitter { first_named_child, named_children, node_field, node_kind, nodes_of_kinds, position_of }
 
 // Port of the `no-unsafe-argument` rule of typescript-eslint 8.62.0 (it has no options). Limits of
-// the port: README, "Rules" section.
+// the port: internals.md, "Rules" section.
 
 const nuarg_messages = {
 	'unsafeArgument':    'Unsafe argument of type {{sender}} assigned to a parameter of type {{receiver}}.'

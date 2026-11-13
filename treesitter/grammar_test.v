@@ -1,6 +1,6 @@
 module treesitter
 
-// What the patched grammar reads as TypeScript does (README, "Grammar"), by the shape of the
+// What the patched grammar reads as TypeScript does (internals.md, "Grammar"), by the shape of the
 // tree: the kind of each node with its named children, comments apart, in parentheses.
 
 fn shape(n C.TSNode) string {

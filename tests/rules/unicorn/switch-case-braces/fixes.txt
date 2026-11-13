@@ -1,0 +1,11 @@
+tests/rules/unicorn/switch-case-braces/avoid/cases.ts:11:11	unicorn/switch-case-braces	switch-case-braces/unnecessary	Unnecessary braces in case clause.	fix	325	352	\n    f(2);\n    break;\n  	end	11	12
+tests/rules/unicorn/switch-case-braces/avoid/cases.ts:27:11	unicorn/switch-case-braces	switch-case-braces/empty	Unexpected braces in empty case clause.	fix	516	519		end	27	12
+tests/rules/unicorn/switch-case-braces/avoid/cases.ts:37:11	unicorn/switch-case-braces	switch-case-braces/empty	Unexpected braces in empty case clause.	fix	609	615	\n  	end	37	12
+tests/rules/unicorn/switch-case-braces/avoid/cases.ts:39:12	unicorn/switch-case-braces	switch-case-braces/empty	Unexpected braces in empty case clause.	fix	626	654	\n    // only a comment\n  	end	39	13
+tests/rules/unicorn/switch-case-braces/cases.ts:8:3	unicorn/switch-case-braces	switch-case-braces/missing	Missing braces in case clause.	fix	294	315	 {\n    f(1);\n    break;\n  }	end	8	10
+tests/rules/unicorn/switch-case-braces/cases.ts:25:3	unicorn/switch-case-braces	switch-case-braces/missing	Missing braces in case clause.	fix	480	486	 { f(5);\n  }	end	25	12
+tests/rules/unicorn/switch-case-braces/cases.ts:27:11	unicorn/switch-case-braces	switch-case-braces/empty	Unexpected braces in empty case clause.	fix	516	519		end	27	12
+tests/rules/unicorn/switch-case-braces/cases.ts:28:3	unicorn/switch-case-braces	switch-case-braces/missing	Missing braces in case clause.	fix	529	563	 {\n    {\n      f(8);\n    }\n    f(8);\n  }	end	28	10
+tests/rules/unicorn/switch-case-braces/cases.ts:33:3	unicorn/switch-case-braces	switch-case-braces/missing	Missing braces in case clause.	fix	574	584	 {\n    f(0);\n  }	end	33	11
+tests/rules/unicorn/switch-case-braces/cases.ts:37:11	unicorn/switch-case-braces	switch-case-braces/empty	Unexpected braces in empty case clause.	fix	609	615	\n  	end	37	12
+tests/rules/unicorn/switch-case-braces/cases.ts:39:12	unicorn/switch-case-braces	switch-case-braces/empty	Unexpected braces in empty case clause.	fix	626	654	\n    // only a comment\n  	end	39	13

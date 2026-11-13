@@ -30,6 +30,7 @@ const tseslint = (await import(path.join(NM, 'typescript-eslint/dist/index.js'))
 const { clearCaches } = require('@typescript-eslint/parser');
 const SEYFERT_PLUGIN = path.join(ROOT, 'build/upstream/seyfert/node_modules/@slipher/eslint-plugin');
 const seyfert = fs.existsSync(SEYFERT_PLUGIN) ? require(SEYFERT_PLUGIN).plugin : null;
+const unicorn = (await import(require.resolve('eslint-plugin-unicorn'))).default;
 
 const { builtinRules } = require('eslint/use-at-your-own-risk');
 
@@ -40,6 +41,7 @@ function pluginOf(rule) {
     if (!seyfert) throw new Error(`missing ${SEYFERT_PLUGIN}: see tests/upstream/README.md`);
     return ['seyfert', seyfert, rule.slice('seyfert/'.length)];
   }
+  if (rule.startsWith('unicorn/')) return ['unicorn', unicorn, rule.slice('unicorn/'.length)];
   return ['@typescript-eslint', tseslint.plugin, rule.replace('@typescript-eslint/', '')];
 }
 
@@ -58,10 +60,17 @@ function linterFor(cwd) {
   return linters.get(cwd);
 }
 
-function configOf(rule, c, root) {
+// The passes of fixes of the RuleTester of the rule's tests: typescript-eslint's (also for
+// @slipher/eslint-plugin) makes up to 10; ESLint's, which ESLint core and eslint-plugin-unicorn
+// (through eslint-ava-rule-tester) use, one.
+const maxPassesOf = rule => (rule.startsWith('@typescript-eslint/') || rule.startsWith('seyfert/') ? 10 : 1);
+
+function configOf(rule, c, root, defaults = {}) {
+  const languageOptions = { ...defaults, ...c.languageOptions };
+  if (defaults.globals || c.languageOptions?.globals) languageOptions.globals = { ...defaults.globals, ...c.languageOptions?.globals };
   const parserOptions = {
-    ecmaVersion: c.languageOptions?.ecmaVersion ?? 'latest',
-    sourceType: c.languageOptions?.sourceType ?? 'module',
+    ecmaVersion: languageOptions.ecmaVersion ?? 'latest',
+    sourceType: languageOptions.sourceType ?? 'module',
     ...c.parserOptions,
     disallowAutomaticSingleRunInference: true,
     tsconfigRootDir: root,
@@ -73,8 +82,10 @@ function configOf(rule, c, root) {
     {
       // A pattern that matches every file does not make ESLint lint one: name the extensions.
       files: ['**/*.ts', '**/*.tsx', '**/*.mts', '**/*.cts'],
-      languageOptions: { ...c.languageOptions, parser: tseslint.parser, parserOptions },
-      linterOptions: { reportUnusedDisableDirectives: 1 },
+      languageOptions: { ...languageOptions, parser: tseslint.parser, parserOptions },
+      // eslint-plugin-unicorn's tests (ESLint's RuleTester through eslint-ava-rule-tester) do not
+      // report unused disable directives.
+      linterOptions: { reportUnusedDisableDirectives: rule.startsWith('unicorn/') ? 0 : 1 },
       plugins: prefix ? { [prefix]: plugin } : {},
       rules: { [rule]: ['error', ...(c.options ?? [])] },
       settings: c.settings ?? {},
@@ -234,7 +245,7 @@ for (const rule of ruleNames) {
     }
     const root = path.join(FIXTURES, c.root ?? '');
     const file = c.tsconfig ? path.join(FIXTURES, c.file) : path.join(root, c.file);
-    const config = configOf(rule, c, root);
+    const config = configOf(rule, c, root, data.languageOptions);
     const linter = linterFor(root);
     let messages;
     try {
@@ -244,7 +255,7 @@ for (const rule of ruleNames) {
       continue;
     }
     results.push({ filePath: c.id, messages });
-    const outputs = c.kind === 'invalid' && 'output' in c ? fixPasses(linter, c.code, config, file, messages, rule.includes('/') ? 10 : 1) : [];
+    const outputs = c.kind === 'invalid' && 'output' in c ? fixPasses(linter, c.code, config, file, messages, maxPassesOf(rule)) : [];
     const caseProblems = check(rule, c, messages, outputs);
     if (caseProblems.length && !known.has(c.id)) problems.push(...caseProblems);
     if (!caseProblems.length && known.has(c.id)) problems.push(`${c.id}: listed in tests/upstream/known.txt, but passes`);

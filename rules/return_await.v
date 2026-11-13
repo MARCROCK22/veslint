@@ -7,7 +7,7 @@ import treesitter { first_named_child, has_child_kind, named_children, node_end,
 // Port of the `return-await` rule of typescript-eslint 8.62.0 with its option, its fix and its
 // suggestions: whether a returned Promise must be awaited, must not, or either, in an
 // error-handling context and outside of it (the default, 'in-try-catch': it must inside, and must
-// not outside). Limits of the port: README, "Rules" section.
+// not outside). Limits of the port: internals.md, "Rules" section.
 
 const rw_messages = {
 	'disallowedPromiseAwait':           'Returning an awaited promise is not allowed in this context.'
