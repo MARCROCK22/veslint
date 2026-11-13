@@ -146,8 +146,11 @@ pub fn effective_options(name string, options []json2.Any) ![]json2.Any {
 	// ESLint merges the options of its core rules with deepMergeArrays, which keeps the options
 	// past the defaults (`curly`'s "consistent").
 	if !name.contains('/') && options.len > merged.len {
-		// One by one: `<<` of an array would add it as one value (json2.Any has arrays).
-		for option in options[merged.len..] {
+		// One by one: `<<` of an array would add it as one value (json2.Any has arrays). The
+		// slice is taken before the loop: V evaluates `options[merged.len..]` again on every
+		// iteration (tests/v-bugs/13-for-in-slice-start-reevaluated).
+		extra := options[merged.len..].clone()
+		for option in extra {
 			merged << option
 		}
 	}
