@@ -1,0 +1,9 @@
+{"rule": "no-label-var", "upstream": "eslint v10.6.0", "files": ["tests/lib/rules/no-label-var.js"],
+"messages": {"identifierClashWithLabel":"Found identifier with same name as label."},
+"cases": [
+{"id":"no-label-var/v0","kind":"valid","code":"function bar() { q: for(;;) { break q; } } function foo () { var q = t; }","file":"file.ts","tsconfig":null},
+{"id":"no-label-var/v1","kind":"valid","code":"function bar() { var x = foo; q: for(;;) { break q; } }","file":"file.ts","tsconfig":null},
+{"id":"no-label-var/i0","kind":"invalid","code":"var x = foo; function bar() { x: for(;;) { break x; } }","file":"file.ts","tsconfig":null,"errors":[{"messageId":"identifierClashWithLabel"}]},
+{"id":"no-label-var/i1","kind":"invalid","code":"function bar() { var x = foo; x: for(;;) { break x; } }","file":"file.ts","tsconfig":null,"errors":[{"messageId":"identifierClashWithLabel"}]},
+{"id":"no-label-var/i2","kind":"invalid","code":"function bar(x) { x: for(;;) { break x; } }","file":"file.ts","tsconfig":null,"errors":[{"messageId":"identifierClashWithLabel"}]}
+]}

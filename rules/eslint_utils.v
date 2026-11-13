@@ -949,3 +949,74 @@ fn (mut c Checker) es_valid_this_arg(applied C.TSNode, this_arg C.TSNode) bool {
 	expected := node_field(applied, 'object') or { return false }
 	return c.es_equal_tokens(expected, arg)
 }
+
+// es_def_parent is the `parent` of an ESLint definition: the VariableDeclaration of a variable,
+// the ImportDeclaration of an import; none for the others.
+fn es_def_parent(def ScopeDefinition) ?C.TSNode {
+	match def.kind {
+		.variable {
+			mut node := def.node
+			for {
+				node = node_parent(node)?
+				if node_kind(node) in ['lexical_declaration', 'variable_declaration'] {
+					return node
+				}
+				if node_kind(node) in ['for_in_statement', 'for_statement'] {
+					return node
+				}
+			}
+		}
+		.import_binding {
+			mut node := def.node
+			for {
+				node = node_parent(node)?
+				if node_kind(node) == 'import_statement' {
+					return node
+				}
+			}
+		}
+		else {}
+	}
+	return none
+}
+
+// es_declared_variables ports getDeclaredVariables: the variables with a definition whose node or
+// parent is the node.
+fn (mut c Checker) es_declared_variables(root C.TSNode, n C.TSNode) []int {
+	tree := c.scope_tree(root)
+	key := node_key(n)
+	mut out := []int{}
+	for v, variable in tree.variables {
+		for def in variable.defs {
+			if node_key(def.node) == key {
+				out << v
+				break
+			}
+			if parent := es_def_parent(def) {
+				if node_key(parent) == key {
+					out << v
+					break
+				}
+			}
+		}
+	}
+	return out
+}
+
+// es_modifying_references ports getModifyingReferences: the writes that are not the initializer,
+// one per identifier (a destructuring default writes it twice).
+fn es_modifying_references(tree &ScopeTree, v int) []int {
+	mut out := []int{}
+	references := tree.variables[v].references
+	for i, r in references {
+		reference := tree.references[r]
+		if reference.init || !reference.write {
+			continue
+		}
+		if i > 0 && node_key(tree.references[references[i - 1]].identifier) == node_key(reference.identifier) {
+			continue
+		}
+		out << r
+	}
+	return out
+}

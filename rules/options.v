@@ -102,6 +102,9 @@ pub fn check_options(rule string, options []json2.Any) !bool {
 		no_extend_native { nen_exceptions(options)! }
 		core_dot_notation { dotn_core_options(options)! }
 		preserve_caught_error { pce_require_parameter(options)! }
+		no_global_assign { nga_exceptions(options)! }
+		no_shadow_restricted_names { nsrn_report_global_this(options)! }
+		consistent_this { cth_aliases(options)! }
 		else { return false }
 	}
 	return true

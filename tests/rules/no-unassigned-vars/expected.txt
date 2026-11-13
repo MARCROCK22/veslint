@@ -1,0 +1,3 @@
+tests/rules/no-unassigned-vars/cases.ts:2:5	no-unassigned-vars	unassigned	'a' is always 'undefined' because it's never assigned.
+tests/rules/no-unassigned-vars/cases.ts:4:5	no-unassigned-vars	unassigned	'b' is always 'undefined' because it's never assigned.
+tests/rules/no-unassigned-vars/cases.ts:7:7	no-unassigned-vars	unassigned	'c' is always 'undefined' because it's never assigned.

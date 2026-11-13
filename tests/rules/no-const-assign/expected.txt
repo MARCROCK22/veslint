@@ -1,0 +1,5 @@
+tests/rules/no-const-assign/cases.ts:6:1	no-const-assign	const	'a' is constant.
+tests/rules/no-const-assign/cases.ts:9:1	no-const-assign	const	'b' is constant.
+tests/rules/no-const-assign/cases.ts:12:1	no-const-assign	const	'c' is constant.
+tests/rules/no-const-assign/cases.ts:15:1	no-const-assign	const	'd' is constant.
+tests/rules/no-const-assign/cases.ts:18:6	no-const-assign	const	'e' is constant.

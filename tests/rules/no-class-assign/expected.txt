@@ -1,0 +1,4 @@
+tests/rules/no-class-assign/cases.ts:6:1	no-class-assign	class	'A' is a class.
+tests/rules/no-class-assign/cases.ts:10:5	no-class-assign	class	'B' is a class.
+tests/rules/no-class-assign/cases.ts:16:5	no-class-assign	class	'D' is a class.
+tests/rules/no-class-assign/cases.ts:21:4	no-class-assign	class	'E' is a class.

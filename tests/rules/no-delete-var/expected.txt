@@ -1,0 +1,2 @@
+tests/rules/no-delete-var/cases.ts:5:1	no-delete-var	unexpected	Variables should not be deleted.
+tests/rules/no-delete-var/cases.ts:7:1	no-delete-var	unexpected	Variables should not be deleted.

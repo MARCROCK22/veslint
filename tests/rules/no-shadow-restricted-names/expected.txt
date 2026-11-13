@@ -1,0 +1,7 @@
+tests/rules/no-shadow-restricted-names/cases.ts:2:10	no-shadow-restricted-names	shadowingRestrictedName	Shadowing of global property 'NaN'.
+tests/rules/no-shadow-restricted-names/cases.ts:3:7	no-shadow-restricted-names	shadowingRestrictedName	Shadowing of global property 'Infinity'.
+tests/rules/no-shadow-restricted-names/cases.ts:4:12	no-shadow-restricted-names	shadowingRestrictedName	Shadowing of global property 'undefined'.
+tests/rules/no-shadow-restricted-names/cases.ts:6:10	no-shadow-restricted-names	shadowingRestrictedName	Shadowing of global property 'eval'.
+tests/rules/no-shadow-restricted-names/cases.ts:8:7	no-shadow-restricted-names	shadowingRestrictedName	Shadowing of global property 'globalThis'.
+tests/rules/no-shadow-restricted-names/cases.ts:9:20	no-shadow-restricted-names	shadowingRestrictedName	Shadowing of global property 'arguments'.
+tests/rules/no-shadow-restricted-names/cases.ts:10:12	no-shadow-restricted-names	shadowingRestrictedName	Shadowing of global property 'NaN'.

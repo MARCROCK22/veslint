@@ -1,0 +1,6 @@
+{"rule": "no-delete-var", "upstream": "eslint v10.6.0", "files": ["tests/lib/rules/no-delete-var.js"],
+"messages": {"unexpected":"Variables should not be deleted."},
+"cases": [
+{"id":"no-delete-var/v0","kind":"valid","code":"delete x.prop;","file":"file.ts","tsconfig":null,"languageOptions":{"ecmaVersion":5,"sourceType":"script"}},
+{"id":"no-delete-var/i0","kind":"invalid","code":"delete x","file":"file.ts","tsconfig":null,"languageOptions":{"ecmaVersion":5,"sourceType":"script"},"errors":[{"messageId":"unexpected"}]}
+]}

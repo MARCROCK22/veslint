@@ -1,0 +1,22 @@
+{"rule": "no-class-assign", "upstream": "eslint v10.6.0", "files": ["tests/lib/rules/no-class-assign.js"],
+"messages": {"class":"'{{name}}' is a class."},
+"cases": [
+{"id":"no-class-assign/v0","kind":"valid","code":"class A { } foo(A);","file":"file.ts","tsconfig":null,"languageOptions":{"ecmaVersion":6}},
+{"id":"no-class-assign/v1","kind":"valid","code":"let A = class A { }; foo(A);","file":"file.ts","tsconfig":null,"languageOptions":{"ecmaVersion":6}},
+{"id":"no-class-assign/v2","kind":"valid","code":"class A { b(A) { A = 0; } }","file":"file.ts","tsconfig":null,"languageOptions":{"ecmaVersion":6}},
+{"id":"no-class-assign/v3","kind":"valid","code":"class A { b() { let A; A = 0; } }","file":"file.ts","tsconfig":null,"languageOptions":{"ecmaVersion":6}},
+{"id":"no-class-assign/v4","kind":"valid","code":"let A = class { b() { A = 0; } }","file":"file.ts","tsconfig":null,"languageOptions":{"ecmaVersion":6}},
+{"id":"no-class-assign/v5","kind":"valid","code":"var x = 0; x = 1;","file":"file.ts","tsconfig":null,"languageOptions":{"ecmaVersion":6}},
+{"id":"no-class-assign/v6","kind":"valid","code":"let x = 0; x = 1;","file":"file.ts","tsconfig":null,"languageOptions":{"ecmaVersion":6}},
+{"id":"no-class-assign/v7","kind":"valid","code":"const x = 0; x = 1;","file":"file.ts","tsconfig":null,"languageOptions":{"ecmaVersion":6}},
+{"id":"no-class-assign/v8","kind":"valid","code":"function x() {} x = 1;","file":"file.ts","tsconfig":null,"languageOptions":{"ecmaVersion":6}},
+{"id":"no-class-assign/v9","kind":"valid","code":"function foo(x) { x = 1; }","file":"file.ts","tsconfig":null,"languageOptions":{"ecmaVersion":6}},
+{"id":"no-class-assign/v10","kind":"valid","code":"try {} catch (x) { x = 1; }","file":"file.ts","tsconfig":null,"languageOptions":{"ecmaVersion":6}},
+{"id":"no-class-assign/i0","kind":"invalid","code":"class A { } A = 0;","file":"file.ts","tsconfig":null,"languageOptions":{"ecmaVersion":6},"errors":[{"messageId":"class","data":{"name":"A"}}]},
+{"id":"no-class-assign/i1","kind":"invalid","code":"class A { } ({A} = 0);","file":"file.ts","tsconfig":null,"languageOptions":{"ecmaVersion":6},"errors":[{"messageId":"class","data":{"name":"A"}}]},
+{"id":"no-class-assign/i2","kind":"invalid","code":"class A { } ({b: A = 0} = {});","file":"file.ts","tsconfig":null,"languageOptions":{"ecmaVersion":6},"errors":[{"messageId":"class","data":{"name":"A"}}]},
+{"id":"no-class-assign/i3","kind":"invalid","code":"A = 0; class A { }","file":"file.ts","tsconfig":null,"languageOptions":{"ecmaVersion":6},"errors":[{"messageId":"class","data":{"name":"A"}}]},
+{"id":"no-class-assign/i4","kind":"invalid","code":"class A { b() { A = 0; } }","file":"file.ts","tsconfig":null,"languageOptions":{"ecmaVersion":6},"errors":[{"messageId":"class","data":{"name":"A"}}]},
+{"id":"no-class-assign/i5","kind":"invalid","code":"let A = class A { b() { A = 0; } }","file":"file.ts","tsconfig":null,"languageOptions":{"ecmaVersion":6},"errors":[{"messageId":"class","data":{"name":"A"}}]},
+{"id":"no-class-assign/i6","kind":"invalid","code":"class A { } A = 0; A = 1;","file":"file.ts","tsconfig":null,"languageOptions":{"ecmaVersion":6},"errors":[{"messageId":"class","data":{"name":"A"},"line":1,"column":13},{"messageId":"class","data":{"name":"A"},"line":1,"column":20}]}
+]}

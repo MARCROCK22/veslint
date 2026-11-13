@@ -211,6 +211,18 @@ const rule_option_schemas = {
 	'prefer-object-spread':                                            '{"type":"array","minItems":0,"maxItems":0}'
 	'dot-notation':                                                    '{"type":"array","items":[{"type":"object","properties":{"allowKeywords":{"type":"boolean"},"allowPattern":{"type":"string"}},"additionalProperties":false}],"minItems":0,"maxItems":1}'
 	'preserve-caught-error':                                           '{"type":"array","items":[{"type":"object","properties":{"requireCatchParameter":{"type":"boolean","description":"Requires the catch blocks to always have the caught error parameter so it is not discarded."}},"additionalProperties":false}],"minItems":0,"maxItems":1}'
+	'no-class-assign':                                                 '{"type":"array","minItems":0,"maxItems":0}'
+	'no-const-assign':                                                 '{"type":"array","minItems":0,"maxItems":0}'
+	'no-ex-assign':                                                    '{"type":"array","minItems":0,"maxItems":0}'
+	'no-func-assign':                                                  '{"type":"array","minItems":0,"maxItems":0}'
+	'no-global-assign':                                                '{"type":"array","items":[{"type":"object","properties":{"exceptions":{"type":"array","items":{"type":"string"},"uniqueItems":true}},"additionalProperties":false}],"minItems":0,"maxItems":1}'
+	'no-import-assign':                                                '{"type":"array","minItems":0,"maxItems":0}'
+	'no-label-var':                                                    '{"type":"array","minItems":0,"maxItems":0}'
+	'no-shadow-restricted-names':                                      '{"type":"array","items":[{"type":"object","properties":{"reportGlobalThis":{"type":"boolean"}},"additionalProperties":false}],"minItems":0,"maxItems":1}'
+	'no-unassigned-vars':                                              '{"type":"array","minItems":0,"maxItems":0}'
+	'no-delete-var':                                                   '{"type":"array","minItems":0,"maxItems":0}'
+	'block-scoped-var':                                                '{"type":"array","minItems":0,"maxItems":0}'
+	'consistent-this':                                                 '{"type":"array","items":{"type":"string","minLength":1},"uniqueItems":true}'
 }
 
 // eslint_rule_default_options are the meta.defaultOptions of the rules of ESLint and of

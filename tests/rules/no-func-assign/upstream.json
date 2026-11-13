@@ -1,0 +1,19 @@
+{"rule": "no-func-assign", "upstream": "eslint v10.6.0", "files": ["tests/lib/rules/no-func-assign.js"],
+"messages": {"isAFunction":"'{{name}}' is a function."},
+"cases": [
+{"id":"no-func-assign/v0","kind":"valid","code":"function foo() { var foo = bar; }","file":"file.ts","tsconfig":null},
+{"id":"no-func-assign/v1","kind":"valid","code":"function foo(foo) { foo = bar; }","file":"file.ts","tsconfig":null},
+{"id":"no-func-assign/v2","kind":"valid","code":"function foo() { var foo; foo = bar; }","file":"file.ts","tsconfig":null},
+{"id":"no-func-assign/v3","kind":"valid","code":"var foo = () => {}; foo = bar;","file":"file.ts","tsconfig":null,"languageOptions":{"ecmaVersion":6}},
+{"id":"no-func-assign/v4","kind":"valid","code":"var foo = function() {}; foo = bar;","file":"file.ts","tsconfig":null},
+{"id":"no-func-assign/v5","kind":"valid","code":"var foo = function() { foo = bar; };","file":"file.ts","tsconfig":null},
+{"id":"no-func-assign/v6","kind":"valid","code":"import bar from 'bar'; function foo() { var foo = bar; }","file":"file.ts","tsconfig":null,"languageOptions":{"ecmaVersion":6,"sourceType":"module"}},
+{"id":"no-func-assign/i0","kind":"invalid","code":"function foo() {}; foo = bar;","file":"file.ts","tsconfig":null,"errors":[{"messageId":"isAFunction","data":{"name":"foo"}}]},
+{"id":"no-func-assign/i1","kind":"invalid","code":"function foo() { foo = bar; }","file":"file.ts","tsconfig":null,"errors":[{"messageId":"isAFunction","data":{"name":"foo"}}]},
+{"id":"no-func-assign/i2","kind":"invalid","code":"foo = bar; function foo() { };","file":"file.ts","tsconfig":null,"errors":[{"messageId":"isAFunction","data":{"name":"foo"}}]},
+{"id":"no-func-assign/i3","kind":"invalid","code":"[foo] = bar; function foo() { };","file":"file.ts","tsconfig":null,"languageOptions":{"ecmaVersion":6},"errors":[{"messageId":"isAFunction","data":{"name":"foo"}}]},
+{"id":"no-func-assign/i4","kind":"invalid","code":"({x: foo = 0} = bar); function foo() { };","file":"file.ts","tsconfig":null,"languageOptions":{"ecmaVersion":6},"errors":[{"messageId":"isAFunction","data":{"name":"foo"}}]},
+{"id":"no-func-assign/i5","kind":"invalid","code":"function foo() { [foo] = bar; }","file":"file.ts","tsconfig":null,"languageOptions":{"ecmaVersion":6},"errors":[{"messageId":"isAFunction","data":{"name":"foo"}}]},
+{"id":"no-func-assign/i6","kind":"invalid","code":"(function() { ({x: foo = 0} = bar); function foo() { }; })();","file":"file.ts","tsconfig":null,"languageOptions":{"ecmaVersion":6},"errors":[{"messageId":"isAFunction","data":{"name":"foo"}}]},
+{"id":"no-func-assign/i7","kind":"invalid","code":"var a = function foo() { foo = 123; };","file":"file.ts","tsconfig":null,"errors":[{"messageId":"isAFunction","data":{"name":"foo"}}]}
+]}

@@ -1,0 +1,7 @@
+tests/rules/no-import-assign/cases.ts:7:1	no-import-assign	readonly	'fs' is read-only.
+tests/rules/no-import-assign/cases.ts:9:1	no-import-assign	readonly	'readFile' is read-only.
+tests/rules/no-import-assign/cases.ts:11:1	no-import-assign	readonlyMember	The members of 'path' are read-only.
+tests/rules/no-import-assign/cases.ts:13:1	no-import-assign	readonlyMember	The members of 'path' are read-only.
+tests/rules/no-import-assign/cases.ts:15:1	no-import-assign	readonlyMember	The members of 'path' are read-only.
+tests/rules/no-import-assign/cases.ts:16:1	no-import-assign	readonlyMember	The members of 'path' are read-only.
+tests/rules/no-import-assign/cases.ts:18:1	no-import-assign	readonlyMember	The members of 'path' are read-only.

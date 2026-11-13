@@ -218,6 +218,18 @@ pub const prefer_object_has_own = 'prefer-object-has-own'
 pub const prefer_object_spread = 'prefer-object-spread'
 pub const core_dot_notation = 'dot-notation'
 pub const preserve_caught_error = 'preserve-caught-error'
+pub const no_class_assign = 'no-class-assign'
+pub const no_const_assign = 'no-const-assign'
+pub const no_ex_assign = 'no-ex-assign'
+pub const no_func_assign = 'no-func-assign'
+pub const no_global_assign = 'no-global-assign'
+pub const no_import_assign = 'no-import-assign'
+pub const no_label_var = 'no-label-var'
+pub const no_shadow_restricted_names = 'no-shadow-restricted-names'
+pub const no_unassigned_vars = 'no-unassigned-vars'
+pub const no_delete_var = 'no-delete-var'
+pub const block_scoped_var = 'block-scoped-var'
+pub const consistent_this = 'consistent-this'
 pub const names = [no_floating_promises, await_thenable, require_await, return_await,
 	no_misused_promises, no_unsafe_call, no_unsafe_member_access, no_unsafe_return,
 	no_unsafe_assignment, no_unsafe_argument, restrict_template_expressions,
@@ -269,7 +281,9 @@ pub const names = [no_floating_promises, await_thenable, require_await, return_a
 	no_object_constructor, no_async_promise_executor, no_extra_bind, no_useless_call, prefer_spread,
 	prefer_rest_params, symbol_description, radix_rule, no_extend_native, core_no_implied_eval,
 	no_caller, no_iterator, no_proto, no_script_url, no_prototype_builtins, prefer_object_has_own,
-	prefer_object_spread, core_dot_notation, preserve_caught_error]
+	prefer_object_spread, core_dot_notation, preserve_caught_error, no_class_assign, no_const_assign,
+	no_ex_assign, no_func_assign, no_global_assign, no_import_assign, no_label_var,
+	no_shadow_restricted_names, no_unassigned_vars, no_delete_var, block_scoped_var, consistent_this]
 
 // untyped_rules are the ported rules that need no types (`meta.docs.requiresTypeChecking` is false
 // in typescript-eslint): with only these, the command line makes no snapshot (Checker.make_snapshot).
@@ -302,7 +316,9 @@ pub const untyped_rules = [adjacent_overload_signatures, array_type, class_liter
 	no_object_constructor, no_async_promise_executor, no_extra_bind, no_useless_call, prefer_spread,
 	prefer_rest_params, symbol_description, radix_rule, no_extend_native, core_no_implied_eval,
 	no_caller, no_iterator, no_proto, no_script_url, no_prototype_builtins, prefer_object_has_own,
-	prefer_object_spread, core_dot_notation, preserve_caught_error]
+	prefer_object_spread, core_dot_notation, preserve_caught_error, no_class_assign, no_const_assign,
+	no_ex_assign, no_func_assign, no_global_assign, no_import_assign, no_label_var,
+	no_shadow_restricted_names, no_unassigned_vars, no_delete_var, block_scoped_var, consistent_this]
 
 // needs_types tells whether a rule asks tsgo for the types of the program.
 pub fn needs_types(rule string) bool {
@@ -519,6 +535,18 @@ pub const default_options = {
 	prefer_object_spread:                         '[]'
 	core_dot_notation:                            '[{"allowKeywords":true,"allowPattern":""}]'
 	preserve_caught_error:                        '[{"requireCatchParameter":false}]'
+	no_class_assign:                              '[]'
+	no_const_assign:                              '[]'
+	no_ex_assign:                                 '[]'
+	no_func_assign:                               '[]'
+	no_global_assign:                             '[{"exceptions":[]}]'
+	no_import_assign:                             '[]'
+	no_label_var:                                 '[]'
+	no_shadow_restricted_names:                   '[{"reportGlobalThis":true}]'
+	no_unassigned_vars:                           '[]'
+	no_delete_var:                                '[]'
+	block_scoped_var:                             '[]'
+	consistent_this:                              '["that"]'
 }
 
 // Finding is a problem a rule found at a node.
@@ -858,6 +886,18 @@ pub fn message(rule string, finding Finding) string {
 		prefer_object_spread { pos_messages }
 		core_dot_notation { dotn_messages }
 		preserve_caught_error { pce_messages }
+		no_class_assign { nclsa_messages }
+		no_const_assign { ncona_messages }
+		no_ex_assign { nexa_messages }
+		no_func_assign { nfa_messages }
+		no_global_assign { nga_messages }
+		no_import_assign { nia_messages }
+		no_label_var { nlv_messages }
+		no_shadow_restricted_names { nsrn_messages }
+		no_unassigned_vars { nuv2_messages }
+		no_delete_var { ndv_messages }
+		block_scoped_var { bsv_messages }
+		consistent_this { cth_messages }
 		else { map[string]string{} }
 	}
 	return interpolate(messages[finding.message_id] or { finding.message_id }, finding.data)
@@ -1621,6 +1661,42 @@ fn (mut c Checker) lint_rule(rule string, root C.TSNode, abs_path string, mut st
 		}
 		preserve_caught_error {
 			return c.lint_preserve_caught_error(root, abs_path, mut stats)!
+		}
+		no_class_assign {
+			return c.lint_no_class_assign(root, abs_path, mut stats)!
+		}
+		no_const_assign {
+			return c.lint_no_const_assign(root, abs_path, mut stats)!
+		}
+		no_ex_assign {
+			return c.lint_no_ex_assign(root, abs_path, mut stats)!
+		}
+		no_func_assign {
+			return c.lint_no_func_assign(root, abs_path, mut stats)!
+		}
+		no_global_assign {
+			return c.lint_no_global_assign(root, abs_path, mut stats)!
+		}
+		no_import_assign {
+			return c.lint_no_import_assign(root, abs_path, mut stats)!
+		}
+		no_label_var {
+			return c.lint_no_label_var(root, abs_path, mut stats)!
+		}
+		no_shadow_restricted_names {
+			return c.lint_no_shadow_restricted_names(root, abs_path, mut stats)!
+		}
+		no_unassigned_vars {
+			return c.lint_no_unassigned_vars(root, abs_path, mut stats)!
+		}
+		no_delete_var {
+			return c.lint_no_delete_var(root, abs_path, mut stats)!
+		}
+		block_scoped_var {
+			return c.lint_block_scoped_var(root, abs_path, mut stats)!
+		}
+		consistent_this {
+			return c.lint_consistent_this(root, abs_path, mut stats)!
 		}
 		else { return error('unknown rule: ${rule}') }
 	}
