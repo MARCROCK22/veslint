@@ -32,19 +32,27 @@ struct DotnOptions {
 	pattern                               RegexpProgram // allowPattern
 }
 
-fn dotn_options(options []json2.Any) !DotnOptions {
-	o := option_object(dot_notation, options, ['allowIndexSignaturePropertyAccess', 'allowKeywords',
-		'allowPattern', 'allowPrivateClassPropertyAccess', 'allowProtectedClassPropertyAccess'])!
+// dotn_options reads the options of typescript-eslint's rule, or of the core rule (`core`), which
+// has only allowKeywords and allowPattern.
+fn dotn_options(options []json2.Any, core bool) !DotnOptions {
+	rule := if core { core_dot_notation } else { dot_notation }
+	keys := if core {
+		['allowKeywords', 'allowPattern']
+	} else {
+		['allowIndexSignaturePropertyAccess', 'allowKeywords', 'allowPattern',
+			'allowPrivateClassPropertyAccess', 'allowProtectedClassPropertyAccess']
+	}
+	o := option_object(rule, options, keys)!
 	// `new RegExp(allowPattern, 'u')`, when the option is not empty.
 	mut has_pattern := false
 	mut allow_pattern := RegexpProgram{}
 	if pattern := o.values['allowPattern'] {
 		if pattern !is string {
-			return error('option `allowPattern` of `${dot_notation}` must be a string')
+			return error('option `allowPattern` of `${rule}` must be a string')
 		}
 		if (pattern as string) != '' {
 			allow_pattern = regexp_compile(pattern as string) or {
-				return error('option `allowPattern` of `${dot_notation}`: ${err.msg()}')
+				return error('option `allowPattern` of `${rule}`: ${err.msg()}')
 			}
 			has_pattern = true
 		}
@@ -53,9 +61,11 @@ fn dotn_options(options []json2.Any) !DotnOptions {
 		has_pattern:                           has_pattern
 		pattern:                               allow_pattern
 		allow_keywords:                        o.bool_value('allowKeywords')!
-		allow_index_signature_property_access: o.bool_value('allowIndexSignaturePropertyAccess')!
-		allow_private_class_property_access:   o.bool_value('allowPrivateClassPropertyAccess')!
-		allow_protected_class_property_access: o.bool_value('allowProtectedClassPropertyAccess')!
+		allow_index_signature_property_access: !core
+			&& o.bool_value('allowIndexSignaturePropertyAccess')!
+		allow_private_class_property_access:   !core && o.bool_value('allowPrivateClassPropertyAccess')!
+		allow_protected_class_property_access: !core
+			&& o.bool_value('allowProtectedClassPropertyAccess')!
 	}
 }
 
@@ -70,10 +80,21 @@ struct DotnComputed {
 }
 
 fn (mut c Checker) lint_dot_notation(root C.TSNode, abs_path string, mut stats Stats) ![]Finding {
+	o := dotn_options(c.rule_options(dot_notation), false)!
+	return c.dotn_lint(root, abs_path, o, true, mut stats)!
+}
+
+// lint_core_dot_notation is the `dot-notation` rule of ESLint 10.6.0: typescript-eslint's without
+// the options and the checks that need types.
+fn (mut c Checker) lint_core_dot_notation(root C.TSNode, abs_path string, mut stats Stats) ![]Finding {
+	o := dotn_options(c.rule_options(core_dot_notation), true)!
+	return c.dotn_lint(root, abs_path, o, false, mut stats)!
+}
+
+fn (mut c Checker) dotn_lint(root C.TSNode, abs_path string, o DotnOptions, typed bool, mut stats Stats) ![]Finding {
 	mut sw := time.new_stopwatch()
-	o := dotn_options(c.rule_options(dot_notation))!
-	index_access := o.allow_index_signature_property_access
-		|| c.no_property_access_from_index_signature
+	index_access := typed && (o.allow_index_signature_property_access
+		|| c.no_property_access_from_index_signature)
 	mut findings := []Finding{}
 	mut computed := []DotnComputed{}
 	for member in c.nodes_of_kinds(root, member_kinds, type_name_kinds) {
@@ -366,4 +387,9 @@ fn (mut c Checker) dotn_use_brackets_fixes(member C.TSNode, property C.TSNode, n
 	}
 	fixes << fix_replace(property, '["${name}"]')
 	return fixes
+}
+
+// dotn_core_options reads the options of the core rule.
+fn dotn_core_options(options []json2.Any) !DotnOptions {
+	return dotn_options(options, true)
 }

@@ -1,0 +1,9 @@
+tests/rules/prefer-object-spread/cases.ts:5:12	prefer-object-spread	useSpreadMessage	Use an object spread instead of `Object.assign` eg: `{ ...foo }`.	fix	69	89	{ ...a}
+tests/rules/prefer-object-spread/cases.ts:6:12	prefer-object-spread	useSpreadMessage	Use an object spread instead of `Object.assign` eg: `{ ...foo }`.	fix	102	125	{ ...a, ...b}
+tests/rules/prefer-object-spread/cases.ts:7:12	prefer-object-spread	useSpreadMessage	Use an object spread instead of `Object.assign` eg: `{ ...foo }`.	fix	138	164	{x: 1, ...a}
+tests/rules/prefer-object-spread/cases.ts:8:12	prefer-object-spread	useLiteralMessage	Use an object literal instead of `Object.assign`. eg: `{ foo: bar }`.	fix	177	194	{}
+tests/rules/prefer-object-spread/cases.ts:9:12	prefer-object-spread	useSpreadMessage	Use an object spread instead of `Object.assign` eg: `{ ...foo }`.	fix	207	234	{ y: 2}
+tests/rules/prefer-object-spread/cases.ts:10:12	prefer-object-spread	useSpreadMessage	Use an object spread instead of `Object.assign` eg: `{ ...foo }`.	fix	247	271	{ ...(a)}
+tests/rules/prefer-object-spread/cases.ts:11:12	prefer-object-spread	useSpreadMessage	Use an object spread instead of `Object.assign` eg: `{ ...foo }`.	fix	284	312	{ ...(a ? b : a)}
+tests/rules/prefer-object-spread/cases.ts:12:1	prefer-object-spread	useSpreadMessage	Use an object spread instead of `Object.assign` eg: `{ ...foo }`.	fix	314	334	({ ...a})
+tests/rules/prefer-object-spread/cases.ts:14:10	prefer-object-spread	useSpreadMessage	Use an object spread instead of `Object.assign` eg: `{ ...foo }`.	fix	360	380	{ ...a}

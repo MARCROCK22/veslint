@@ -1,0 +1,10 @@
+tests/rules/dot-notation/cases.ts:4:13	dot-notation	useDot	["b"] is better written in dot notation.
+tests/rules/dot-notation/cases.ts:5:13	dot-notation	useDot	["c"] is better written in dot notation.
+tests/rules/dot-notation/cases.ts:6:13	dot-notation	useDot	[`d`] is better written in dot notation.
+tests/rules/dot-notation/cases.ts:7:13	dot-notation	useDot	["true"] is better written in dot notation.
+tests/rules/dot-notation/cases.ts:10:15	dot-notation	useDot	["h"] is better written in dot notation.
+tests/rules/dot-notation/cases.ts:11:13	dot-notation	useDot	["toString"] is better written in dot notation.
+tests/rules/dot-notation/cases.ts:12:13	dot-notation	useDot	["class"] is better written in dot notation.
+tests/rules/dot-notation/no-keywords/cases.ts:4:13	dot-notation	useBrackets	.class is a syntax error.
+tests/rules/dot-notation/no-keywords/cases.ts:5:14	dot-notation	useBrackets	.delete is a syntax error.
+tests/rules/dot-notation/no-keywords/cases.ts:6:13	dot-notation	useDot	["e"] is better written in dot notation.

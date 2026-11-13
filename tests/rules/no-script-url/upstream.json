@@ -1,0 +1,14 @@
+{"rule": "no-script-url", "upstream": "eslint v10.6.0", "files": ["tests/lib/rules/no-script-url.js"],
+"messages": {"unexpectedScriptURL":"Script URL is a form of eval."},
+"cases": [
+{"id":"no-script-url/v0","kind":"valid","code":"var a = 'Hello World!';","file":"file.ts","tsconfig":null},
+{"id":"no-script-url/v1","kind":"valid","code":"var a = 10;","file":"file.ts","tsconfig":null},
+{"id":"no-script-url/v2","kind":"valid","code":"var url = 'xjavascript:'","file":"file.ts","tsconfig":null},
+{"id":"no-script-url/v3","kind":"valid","code":"var url = `xjavascript:`","file":"file.ts","tsconfig":null,"languageOptions":{"ecmaVersion":6}},
+{"id":"no-script-url/v4","kind":"valid","code":"var url = `${foo}javascript:`","file":"file.ts","tsconfig":null,"languageOptions":{"ecmaVersion":6}},
+{"id":"no-script-url/v5","kind":"valid","code":"var a = foo`javaScript:`;","file":"file.ts","tsconfig":null,"languageOptions":{"ecmaVersion":6}},
+{"id":"no-script-url/i0","kind":"invalid","code":"var a = 'javascript:void(0);';","file":"file.ts","tsconfig":null,"errors":[{"messageId":"unexpectedScriptURL"}]},
+{"id":"no-script-url/i1","kind":"invalid","code":"var a = 'javascript:';","file":"file.ts","tsconfig":null,"errors":[{"messageId":"unexpectedScriptURL"}]},
+{"id":"no-script-url/i2","kind":"invalid","code":"var a = `javascript:`;","file":"file.ts","tsconfig":null,"languageOptions":{"ecmaVersion":6},"errors":[{"messageId":"unexpectedScriptURL"}]},
+{"id":"no-script-url/i3","kind":"invalid","code":"var a = `JavaScript:`;","file":"file.ts","tsconfig":null,"languageOptions":{"ecmaVersion":6},"errors":[{"messageId":"unexpectedScriptURL"}]}
+]}

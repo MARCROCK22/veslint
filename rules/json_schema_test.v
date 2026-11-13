@@ -75,7 +75,13 @@ fn test_rule_schemas_are_those_of_eslint() {
 			panic(err)
 		}
 		// The cases name the typescript-eslint rules without their prefix.
-		assert js_json_stringify(table) == js_json_stringify(schemas[name.all_after(typescript_eslint_prefix)] or {
+		// The rules of ESLint core are `core/<id>` (dot-notation is also a typescript-eslint name).
+		key := if name.contains('/') {
+			name.all_after(typescript_eslint_prefix)
+		} else {
+			'core/' + name
+		}
+		assert js_json_stringify(table) == js_json_stringify(schemas[key] or {
 			panic('ESLint has no schema of ${name}')
 		}), name
 	}

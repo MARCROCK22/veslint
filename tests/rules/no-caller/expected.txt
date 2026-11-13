@@ -1,0 +1,1 @@
+tests/rules/no-caller/cases.ts:3:13	no-caller	unexpected	Avoid arguments.callee.

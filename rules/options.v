@@ -24,7 +24,7 @@ pub fn check_options(rule string, options []json2.Any) !bool {
 		no_unnecessary_boolean_literal_compare { nublc_options(options)! }
 		no_meaningless_void_operator { nmvo_options(options)! }
 		no_duplicate_type_constituents { ndtc_options(options)! }
-		dot_notation { dotn_options(options)! }
+		dot_notation { dotn_options(options, false)! }
 		restrict_plus_operands { rpo_options(options)! }
 		no_confusing_void_expression { ncve_options(options)! }
 		no_misused_spread { nms_options(options)! }
@@ -99,6 +99,9 @@ pub fn check_options(rule string, options []json2.Any) !bool {
 		no_irregular_whitespace { niw_options(options)! }
 		unicode_bom { ubom_always(options)! }
 		radix_rule { radix_options(options)! }
+		no_extend_native { nen_exceptions(options)! }
+		core_dot_notation { dotn_core_options(options)! }
+		preserve_caught_error { pce_require_parameter(options)! }
 		else { return false }
 	}
 	return true

@@ -1,0 +1,1 @@
+tests/rules/no-implied-eval/cases.ts:10:1	no-implied-eval	impliedEval	Implied eval. Consider passing a function instead of a string.

@@ -200,6 +200,17 @@ const rule_option_schemas = {
 	'prefer-rest-params':                                              '{"type":"array","minItems":0,"maxItems":0}'
 	'symbol-description':                                              '{"type":"array","minItems":0,"maxItems":0}'
 	'radix':                                                           '{"type":"array","items":[{"enum":["always","as-needed"]}],"minItems":0,"maxItems":1}'
+	'no-extend-native':                                                '{"type":"array","items":[{"type":"object","properties":{"exceptions":{"type":"array","items":{"type":"string"},"uniqueItems":true}},"additionalProperties":false}],"minItems":0,"maxItems":1}'
+	'no-implied-eval':                                                 '{"type":"array","minItems":0,"maxItems":0}'
+	'no-caller':                                                       '{"type":"array","minItems":0,"maxItems":0}'
+	'no-iterator':                                                     '{"type":"array","minItems":0,"maxItems":0}'
+	'no-proto':                                                        '{"type":"array","minItems":0,"maxItems":0}'
+	'no-script-url':                                                   '{"type":"array","minItems":0,"maxItems":0}'
+	'no-prototype-builtins':                                           '{"type":"array","minItems":0,"maxItems":0}'
+	'prefer-object-has-own':                                           '{"type":"array","minItems":0,"maxItems":0}'
+	'prefer-object-spread':                                            '{"type":"array","minItems":0,"maxItems":0}'
+	'dot-notation':                                                    '{"type":"array","items":[{"type":"object","properties":{"allowKeywords":{"type":"boolean"},"allowPattern":{"type":"string"}},"additionalProperties":false}],"minItems":0,"maxItems":1}'
+	'preserve-caught-error':                                           '{"type":"array","items":[{"type":"object","properties":{"requireCatchParameter":{"type":"boolean","description":"Requires the catch blocks to always have the caught error parameter so it is not discarded."}},"additionalProperties":false}],"minItems":0,"maxItems":1}'
 }
 
 // eslint_rule_default_options are the meta.defaultOptions of the rules of ESLint and of

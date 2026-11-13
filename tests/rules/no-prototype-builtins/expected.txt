@@ -1,0 +1,8 @@
+tests/rules/no-prototype-builtins/cases.ts:5:5	no-prototype-builtins	prototypeBuildIn	Do not access Object.prototype method 'hasOwnProperty' from target object.
+tests/rules/no-prototype-builtins/cases.ts:6:5	no-prototype-builtins	prototypeBuildIn	Do not access Object.prototype method 'isPrototypeOf' from target object.
+tests/rules/no-prototype-builtins/cases.ts:7:5	no-prototype-builtins	prototypeBuildIn	Do not access Object.prototype method 'propertyIsEnumerable' from target object.
+tests/rules/no-prototype-builtins/cases.ts:8:9	no-prototype-builtins	prototypeBuildIn	Do not access Object.prototype method 'hasOwnProperty' from target object.
+tests/rules/no-prototype-builtins/cases.ts:9:5	no-prototype-builtins	prototypeBuildIn	Do not access Object.prototype method 'hasOwnProperty' from target object.
+tests/rules/no-prototype-builtins/cases.ts:10:6	no-prototype-builtins	prototypeBuildIn	Do not access Object.prototype method 'hasOwnProperty' from target object.
+tests/rules/no-prototype-builtins/cases.ts:11:12	no-prototype-builtins	prototypeBuildIn	Do not access Object.prototype method 'hasOwnProperty' from target object.
+tests/rules/no-prototype-builtins/cases.ts:12:5	no-prototype-builtins	prototypeBuildIn	Do not access Object.prototype method 'hasOwnProperty' from target object.

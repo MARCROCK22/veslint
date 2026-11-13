@@ -297,8 +297,9 @@ for (const id of ids) {
   const [namespace, owner, name] = pluginOf(id, plugins);
   const rule = owner.rules[name];
   const schema = Config.getRuleOptionsSchema(rule);
-  schemas[namespace === '@typescript-eslint' ? name : id] = schema;
-  const first = [...(rule.defaultOptions ? [rule.defaultOptions] : []), ...fixtureOptions(namespace === '@typescript-eslint' ? name : id), ...(extra[name] ?? [])];
+  // A rule of ESLint core is `core/<id>`: dot-notation is both a core and a typescript-eslint name.
+  schemas[namespace === '@typescript-eslint' ? name : namespace === '' ? `core/${id}` : id] = schema;
+  const first = [...(rule.defaultOptions ? [rule.defaultOptions] : []), ...fixtureOptions(namespace === '@typescript-eslint' ? `@typescript-eslint/${name}` : id), ...(extra[name] ?? [])];
   const limit = name === 'naming-convention' ? first.length + 90 : 600;
   // A rule of ESLint core has no prefix either: `core` tells it from a typescript-eslint one.
   rules.push({ rule: namespace === '@typescript-eslint' ? name : id, ...(namespace === '' ? { core: true } : {}), cases: casesOf(namespace, standIns[namespace], id, schema, first, limit) });

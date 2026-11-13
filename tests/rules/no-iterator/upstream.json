@@ -1,0 +1,13 @@
+{"rule": "no-iterator", "upstream": "eslint v10.6.0", "files": ["tests/lib/rules/no-iterator.js"],
+"messages": {"noIterator":"Reserved name '__iterator__'."},
+"cases": [
+{"id":"no-iterator/v0","kind":"valid","code":"var a = test[__iterator__];","file":"file.ts","tsconfig":null},
+{"id":"no-iterator/v1","kind":"valid","code":"var __iterator__ = null;","file":"file.ts","tsconfig":null},
+{"id":"no-iterator/v2","kind":"valid","code":"foo[`__iterator`] = null;","file":"file.ts","tsconfig":null,"languageOptions":{"ecmaVersion":6}},
+{"id":"no-iterator/v3","kind":"valid","code":"foo[`__iterator__\n`] = null;","file":"file.ts","tsconfig":null,"languageOptions":{"ecmaVersion":6}},
+{"id":"no-iterator/i0","kind":"invalid","code":"var a = test.__iterator__;","file":"file.ts","tsconfig":null,"errors":[{"messageId":"noIterator"}]},
+{"id":"no-iterator/i1","kind":"invalid","code":"Foo.prototype.__iterator__ = function() {};","file":"file.ts","tsconfig":null,"errors":[{"messageId":"noIterator"}]},
+{"id":"no-iterator/i2","kind":"invalid","code":"var a = test['__iterator__'];","file":"file.ts","tsconfig":null,"errors":[{"messageId":"noIterator"}]},
+{"id":"no-iterator/i3","kind":"invalid","code":"var a = test[`__iterator__`];","file":"file.ts","tsconfig":null,"languageOptions":{"ecmaVersion":6},"errors":[{"messageId":"noIterator"}]},
+{"id":"no-iterator/i4","kind":"invalid","code":"test[`__iterator__`] = function () {};","file":"file.ts","tsconfig":null,"languageOptions":{"ecmaVersion":6},"errors":[{"messageId":"noIterator"}]}
+]}

@@ -207,6 +207,17 @@ pub const prefer_spread = 'prefer-spread'
 pub const prefer_rest_params = 'prefer-rest-params'
 pub const symbol_description = 'symbol-description'
 pub const radix_rule = 'radix'
+pub const no_extend_native = 'no-extend-native'
+pub const core_no_implied_eval = 'no-implied-eval'
+pub const no_caller = 'no-caller'
+pub const no_iterator = 'no-iterator'
+pub const no_proto = 'no-proto'
+pub const no_script_url = 'no-script-url'
+pub const no_prototype_builtins = 'no-prototype-builtins'
+pub const prefer_object_has_own = 'prefer-object-has-own'
+pub const prefer_object_spread = 'prefer-object-spread'
+pub const core_dot_notation = 'dot-notation'
+pub const preserve_caught_error = 'preserve-caught-error'
 pub const names = [no_floating_promises, await_thenable, require_await, return_await,
 	no_misused_promises, no_unsafe_call, no_unsafe_member_access, no_unsafe_return,
 	no_unsafe_assignment, no_unsafe_argument, restrict_template_expressions,
@@ -256,7 +267,9 @@ pub const names = [no_floating_promises, await_thenable, require_await, return_a
 	no_useless_concat, prefer_template, no_irregular_whitespace, unicode_bom, no_sparse_arrays,
 	no_new, no_new_func, no_new_wrappers, no_new_native_nonconstructor, no_obj_calls,
 	no_object_constructor, no_async_promise_executor, no_extra_bind, no_useless_call, prefer_spread,
-	prefer_rest_params, symbol_description, radix_rule]
+	prefer_rest_params, symbol_description, radix_rule, no_extend_native, core_no_implied_eval,
+	no_caller, no_iterator, no_proto, no_script_url, no_prototype_builtins, prefer_object_has_own,
+	prefer_object_spread, core_dot_notation, preserve_caught_error]
 
 // untyped_rules are the ported rules that need no types (`meta.docs.requiresTypeChecking` is false
 // in typescript-eslint): with only these, the command line makes no snapshot (Checker.make_snapshot).
@@ -287,7 +300,9 @@ pub const untyped_rules = [adjacent_overload_signatures, array_type, class_liter
 	no_useless_concat, prefer_template, no_irregular_whitespace, unicode_bom, no_sparse_arrays,
 	no_new, no_new_func, no_new_wrappers, no_new_native_nonconstructor, no_obj_calls,
 	no_object_constructor, no_async_promise_executor, no_extra_bind, no_useless_call, prefer_spread,
-	prefer_rest_params, symbol_description, radix_rule]
+	prefer_rest_params, symbol_description, radix_rule, no_extend_native, core_no_implied_eval,
+	no_caller, no_iterator, no_proto, no_script_url, no_prototype_builtins, prefer_object_has_own,
+	prefer_object_spread, core_dot_notation, preserve_caught_error]
 
 // needs_types tells whether a rule asks tsgo for the types of the program.
 pub fn needs_types(rule string) bool {
@@ -493,6 +508,17 @@ pub const default_options = {
 	prefer_rest_params:                           '[]'
 	symbol_description:                           '[]'
 	radix_rule:                                   '["always"]'
+	no_extend_native:                             '[{"exceptions":[]}]'
+	core_no_implied_eval:                         '[]'
+	no_caller:                                    '[]'
+	no_iterator:                                  '[]'
+	no_proto:                                     '[]'
+	no_script_url:                                '[]'
+	no_prototype_builtins:                        '[]'
+	prefer_object_has_own:                        '[]'
+	prefer_object_spread:                         '[]'
+	core_dot_notation:                            '[{"allowKeywords":true,"allowPattern":""}]'
+	preserve_caught_error:                        '[{"requireCatchParameter":false}]'
 }
 
 // Finding is a problem a rule found at a node.
@@ -821,6 +847,17 @@ pub fn message(rule string, finding Finding) string {
 		prefer_rest_params { prp_messages }
 		symbol_description { sd_messages }
 		radix_rule { radix_messages }
+		no_extend_native { nen_messages }
+		core_no_implied_eval { niec_messages }
+		no_caller { ncal_messages }
+		no_iterator { nitr_messages }
+		no_proto { nprt_messages }
+		no_script_url { nsu_messages }
+		no_prototype_builtins { npb_messages }
+		prefer_object_has_own { poho_messages }
+		prefer_object_spread { pos_messages }
+		core_dot_notation { dotn_messages }
+		preserve_caught_error { pce_messages }
 		else { map[string]string{} }
 	}
 	return interpolate(messages[finding.message_id] or { finding.message_id }, finding.data)
@@ -1551,6 +1588,39 @@ fn (mut c Checker) lint_rule(rule string, root C.TSNode, abs_path string, mut st
 		}
 		radix_rule {
 			return c.lint_radix(root, abs_path, mut stats)!
+		}
+		no_extend_native {
+			return c.lint_no_extend_native(root, abs_path, mut stats)!
+		}
+		core_no_implied_eval {
+			return c.lint_core_no_implied_eval(root, abs_path, mut stats)!
+		}
+		no_caller {
+			return c.lint_no_caller(root, abs_path, mut stats)!
+		}
+		no_iterator {
+			return c.lint_no_iterator(root, abs_path, mut stats)!
+		}
+		no_proto {
+			return c.lint_no_proto(root, abs_path, mut stats)!
+		}
+		no_script_url {
+			return c.lint_no_script_url(root, abs_path, mut stats)!
+		}
+		no_prototype_builtins {
+			return c.lint_no_prototype_builtins(root, abs_path, mut stats)!
+		}
+		prefer_object_has_own {
+			return c.lint_prefer_object_has_own(root, abs_path, mut stats)!
+		}
+		prefer_object_spread {
+			return c.lint_prefer_object_spread(root, abs_path, mut stats)!
+		}
+		core_dot_notation {
+			return c.lint_core_dot_notation(root, abs_path, mut stats)!
+		}
+		preserve_caught_error {
+			return c.lint_preserve_caught_error(root, abs_path, mut stats)!
 		}
 		else { return error('unknown rule: ${rule}') }
 	}

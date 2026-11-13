@@ -21,7 +21,7 @@ const ported = fs
   .sort();
 
 const withDefaults = ported.map(rule => ({
-  files: [`**/${rule}/**/cases.ts`, `**/${rule}/**/cases.tsx`],
+  files: [`**/rules/${rule}/**/cases.ts`, `**/rules/${rule}/**/cases.tsx`],
   languageOptions: {
     parser: tseslint.parser,
     parserOptions: { projectService: true, tsconfigRootDir: import.meta.dirname },
@@ -36,7 +36,7 @@ const withOptions = ported.flatMap(rule =>
     .readdirSync(path.join(import.meta.dirname, rule), { recursive: true })
     .filter(file => path.basename(file) === 'options.json')
     .map(file => ({
-      files: [`**/${rule}/${path.dirname(file)}/cases.ts`, `**/${rule}/${path.dirname(file)}/cases.tsx`],
+      files: [`**/rules/${rule}/${path.dirname(file)}/cases.ts`, `**/rules/${rule}/${path.dirname(file)}/cases.tsx`],
       rules: {
         [rule]: [
           'error',

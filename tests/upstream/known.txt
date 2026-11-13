@@ -245,3 +245,14 @@ veslint	no-obj-calls/v37	veslint resolves the global to TypeScript's lib, where 
 veslint	no-obj-calls/v39	veslint resolves the global to TypeScript's lib, where ESLint leaves the reference unresolved
 veslint	no-obj-calls/v40	veslint resolves the global to TypeScript's lib, where ESLint leaves the reference unresolved
 veslint	radix/v18	veslint resolves the global to TypeScript's lib, where ESLint leaves the reference unresolved
+eslint	no-prototype-builtins/i9	typescript-eslint's lib declares `Object`, which `globals: {Object: "off"}` does not remove
+veslint	no-prototype-builtins/i9	typescript-eslint's lib declares `Object`, which `globals: {Object: "off"}` does not remove
+eslint	prefer-object-has-own/v58	typescript-eslint's lib declares `Object`, which `/* global Object: off */` does not remove
+veslint	prefer-object-has-own/v58	typescript-eslint's lib declares `Object`, which `/* global Object: off */` does not remove
+eslint	prefer-object-spread/i15	TypeScript has no HTML-like comments (`<!--`): typescript-eslint's parser fails
+veslint	prefer-object-spread/i15	TypeScript has no HTML-like comments (`<!--`): tree-sitter reads them otherwise
+eslint	dot-notation/i25	typescript-eslint's parser: Octal literals are not allowed.
+eslint	dot-notation/i26	typescript-eslint's parser: Octal literals are not allowed.
+eslint	dot-notation/i27	typescript-eslint's parser: Decimals with leading zeros are not allowed.
+eslint	dot-notation/i28	typescript-eslint's parser: Decimals with leading zeros are not allowed.
+eslint	dot-notation/i29	typescript-eslint's parser: Decimals with leading zeros are not allowed.
