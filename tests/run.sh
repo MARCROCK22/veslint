@@ -136,7 +136,9 @@ for dir in "${rule_dirs[@]}"; do
 	mapfile -t cases < <(find "$dir" -name cases.ts -o -name cases.tsx | sorted)
 	code=0
 	lint_cases "$rule" "${cases[@]}" || code=$?
-	if [[ $code -eq 1 ]] && diff -u "$dir/expected.txt" "$TMP/$out.out"; then
+	# A rule whose findings TypeScript does not allow in a file (no-octal) has none: code 0.
+	if { [[ $code -eq 1 ]] || [[ $code -eq 0 && ! -s $dir/expected.txt ]]; } &&
+		diff -u "$dir/expected.txt" "$TMP/$out.out"; then
 		ok "rule $rule: $(wc -l < "$dir/expected.txt") expected findings"
 	else
 		ko "rule $rule (code $code)"
