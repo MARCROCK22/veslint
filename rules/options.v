@@ -110,6 +110,10 @@ pub fn check_options(rule string, options []json2.Any) !bool {
 		strict_rule { strict_options(options)! }
 		no_inner_declarations { nid_options(options)! }
 		no_implicit_globals { nig_options(options)! }
+		no_invalid_regexp { nir_options(options)! }
+		no_misleading_character_class { nmcc_options(options)! }
+		no_useless_escape { nue_options(options)! }
+		prefer_regex_literals { prl_options(options)! }
 		else { return false }
 	}
 	return true

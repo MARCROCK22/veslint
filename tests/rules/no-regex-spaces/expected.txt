@@ -1,0 +1,4 @@
+tests/rules/no-regex-spaces/cases.ts:2:11	no-regex-spaces	multipleSpaces	Spaces are hard to count. Use {3}.
+tests/rules/no-regex-spaces/cases.ts:4:11	no-regex-spaces	multipleSpaces	Spaces are hard to count. Use {3}.
+tests/rules/no-regex-spaces/cases.ts:5:11	no-regex-spaces	multipleSpaces	Spaces are hard to count. Use {2}.
+tests/rules/no-regex-spaces/cases.ts:6:11	no-regex-spaces	multipleSpaces	Spaces are hard to count. Use {3}.

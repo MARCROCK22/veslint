@@ -1,0 +1,7 @@
+{"rule": "no-div-regex", "upstream": "eslint v10.6.0", "files": ["tests/lib/rules/no-div-regex.js"],
+"messages": {"unexpected":"A regular expression literal can be confused with '/='."},
+"cases": [
+{"id":"no-div-regex/v0","kind":"valid","code":"var f = function() { return /foo/ig.test('bar'); };","file":"file.ts","tsconfig":null},
+{"id":"no-div-regex/v1","kind":"valid","code":"var f = function() { return /\\=foo/; };","file":"file.ts","tsconfig":null},
+{"id":"no-div-regex/i0","kind":"invalid","code":"var f = function() { return /=foo/; };","file":"file.ts","tsconfig":null,"errors":[{"messageId":"unexpected"}],"output":"var f = function() { return /[=]foo/; };"}
+]}

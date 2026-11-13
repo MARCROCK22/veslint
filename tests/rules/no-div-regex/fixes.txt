@@ -1,0 +1,1 @@
+tests/rules/no-div-regex/cases.ts:3:10	no-div-regex	unexpected	A regular expression literal can be confused with '/='.	fix	48	49	[=]

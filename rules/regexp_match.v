@@ -963,6 +963,26 @@ fn regexp_search(prog RegexpProgram, text string) !(bool, int, int) {
 	return false, 0, 0
 }
 
+// regexp_exec ports `regexp.exec(text)` from the code point `from` (a `lastIndex`): whether there
+// is a match, its start and end, and the capture slots (2 per group, group 0 unused, -1 when the
+// group did not take part), as indexes of code points.
+fn regexp_exec(prog RegexpProgram, input []rune, from int) !(bool, int, int, []int) {
+	mut m := RxMatcher{
+		prog:  prog
+		input: input.map(u32(it))
+	}
+	for start in from .. m.input.len + 1 {
+		mut slots := []int{len: prog.slots, init: -1}
+		if m.run(0, start, mut slots) {
+			return true, start, m.end, slots[..2 * (prog.groups + 1)]
+		}
+		if m.aborted {
+			return error('the regular expression takes too long')
+		}
+	}
+	return false, 0, 0, []int{}
+}
+
 // rx_in_ranges: whether a code point is in sorted, disjoint ranges.
 fn rx_in_ranges(ranges []u32, c u32) bool {
 	mut low := 0

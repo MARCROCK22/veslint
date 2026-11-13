@@ -300,6 +300,45 @@ export async function lintProject(files: Record<string, string>, rules: Linter.R
   },
 });
 
+// Bun's transpiler rewrites the raw text of a template literal (`String.raw\`👍\`` gives
+// `\u{1f44d}`), so a test file of ESLint core loads from a copy next to it (its relative requires
+// still resolve) where each String.raw template is the string it gives, computed from the raw
+// parts espree reads.
+const espree = requireDependency('espree');
+function inlineStringRaw(text) {
+  const ast = espree.parse(text, { ecmaVersion: 'latest', sourceType: 'script', range: true });
+  const edits = [];
+  const walk = node => {
+    if (!node || typeof node.type !== 'string') return;
+    const tag = node.type === 'TaggedTemplateExpression' ? node.tag : null;
+    if (
+      tag?.type === 'MemberExpression' &&
+      !tag.computed &&
+      tag.object.type === 'Identifier' &&
+      tag.object.name === 'String' &&
+      tag.property.name === 'raw'
+    ) {
+      const parts = [];
+      node.quasi.quasis.forEach((quasi, i) => {
+        parts.push(JSON.stringify(quasi.value.raw));
+        const expression = node.quasi.expressions[i];
+        if (expression) parts.push(`String(${text.slice(...expression.range)})`);
+      });
+      edits.push([node.range[0], node.range[1], `(${parts.join(' + ')})`]);
+      return;
+    }
+    for (const [key, value] of Object.entries(node)) {
+      if (key === 'parent') continue;
+      if (Array.isArray(value)) value.forEach(walk);
+      else if (value && typeof value.type === 'string') walk(value);
+    }
+  };
+  walk(ast);
+  for (const [start, end, replacement] of edits.sort((a, b) => b[0] - a[0])) {
+    text = text.slice(0, start) + replacement + text.slice(end);
+  }
+  return text;
+}
 // ESLint's own RuleTester, while the tests of ESLint core load (they require it by its path): in
 // require's cache under that path, so that `run` records the cases, as the stub of tools/upstream/
 // does for typescript-eslint's.
@@ -403,7 +442,17 @@ for (const rule of rules.sort()) {
     const before = recorded.length;
     const tests = source === SOURCES['seyfert/'] ? [] : undefined;
     globalThis.__veslintTests = tests;
-    await import(pathToFileURL(file).href);
+    if (source.core) {
+      const copy = file.replace(/\.js$/u, '.veslint-raw.js');
+      fs.writeFileSync(copy, inlineStringRaw(fs.readFileSync(file, 'utf8')));
+      try {
+        await import(pathToFileURL(copy).href);
+      } finally {
+        fs.rmSync(copy);
+      }
+    } else {
+      await import(pathToFileURL(file).href);
+    }
     // The tests of the projects on disk, with ESLint: each must pass, as upstream.
     globalThis.__veslintProjects = [];
     for (const test of tests ?? []) {

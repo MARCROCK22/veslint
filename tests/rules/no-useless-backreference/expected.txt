@@ -1,0 +1,6 @@
+tests/rules/no-useless-backreference/cases.ts:2:11	no-useless-backreference	disjunctive	Backreference '\\1' will be ignored. It references group '(a)' which is in another alternative.
+tests/rules/no-useless-backreference/cases.ts:3:11	no-useless-backreference	forward	Backreference '\\1' will be ignored. It references group '(a)' which appears later in the pattern.
+tests/rules/no-useless-backreference/cases.ts:4:11	no-useless-backreference	nested	Backreference '\\1' will be ignored. It references group '(a\\1)' from within that group.
+tests/rules/no-useless-backreference/cases.ts:5:11	no-useless-backreference	backward	Backreference '\\1' will be ignored. It references group '(a)' which appears before in the same lookbehind.
+tests/rules/no-useless-backreference/cases.ts:6:11	no-useless-backreference	intoNegativeLookaround	Backreference '\\1' will be ignored. It references group '(a)' which is in a negative lookaround.
+tests/rules/no-useless-backreference/cases.ts:7:11	no-useless-backreference	disjunctive	Backreference '\\k<n>' will be ignored. It references group '(?<n>a)' which is in another alternative.

@@ -21,7 +21,9 @@ struct OffsetRef {
 
 // utf16_offsets converts UTF-8 byte offsets (tree-sitter's) into UTF-16 unit offsets (what tsgo
 // expects) with a single pass over `src`. The first byte of each character adds 1 unit, or 2 if
-// the character takes 4 bytes (in UTF-16 it is a surrogate pair). Valid UTF-8 is assumed.
+// the character takes 4 bytes (in UTF-16 it is a surrogate pair). Valid UTF-8 is assumed. An
+// offset inside a character of 4 bytes stands for its second unit (the low surrogate): ESLint
+// reports some problems there (no-misleading-character-class).
 pub fn utf16_offsets(src string, byte_offsets []int) []int {
 	mut refs := []OffsetRef{cap: byte_offsets.len}
 	for i, off in byte_offsets {
@@ -42,7 +44,17 @@ pub fn utf16_offsets(src string, byte_offsets []int) []int {
 			}
 			pos++
 		}
-		result[r.idx] = units
+		mut at := units
+		if r.off < src.len && (src[r.off] & 0xC0) == 0x80 {
+			mut lead := r.off
+			for lead > 0 && r.off - lead < 3 && (src[lead] & 0xC0) == 0x80 {
+				lead--
+			}
+			if src[lead] >= 0xF0 {
+				at--
+			}
+		}
+		result[r.idx] = at
 	}
 	return result
 }

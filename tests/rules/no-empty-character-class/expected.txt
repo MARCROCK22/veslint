@@ -1,0 +1,3 @@
+tests/rules/no-empty-character-class/cases.ts:2:11	no-empty-character-class	unexpected	Empty class.
+tests/rules/no-empty-character-class/cases.ts:3:11	no-empty-character-class	unexpected	Empty class.
+tests/rules/no-empty-character-class/cases.ts:4:11	no-empty-character-class	unexpected	Empty class.

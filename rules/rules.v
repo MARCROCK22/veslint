@@ -240,6 +240,15 @@ pub const no_lone_blocks = 'no-lone-blocks'
 pub const no_loop_func = 'no-loop-func'
 pub const no_implicit_globals = 'no-implicit-globals'
 pub const no_unmodified_loop_condition = 'no-unmodified-loop-condition'
+pub const no_control_regex = 'no-control-regex'
+pub const no_div_regex = 'no-div-regex'
+pub const no_empty_character_class = 'no-empty-character-class'
+pub const no_invalid_regexp = 'no-invalid-regexp'
+pub const no_misleading_character_class = 'no-misleading-character-class'
+pub const no_regex_spaces = 'no-regex-spaces'
+pub const no_useless_backreference = 'no-useless-backreference'
+pub const no_useless_escape = 'no-useless-escape'
+pub const prefer_regex_literals = 'prefer-regex-literals'
 pub const names = [no_floating_promises, await_thenable, require_await, return_await,
 	no_misused_promises, no_unsafe_call, no_unsafe_member_access, no_unsafe_return,
 	no_unsafe_assignment, no_unsafe_argument, restrict_template_expressions,
@@ -295,7 +304,9 @@ pub const names = [no_floating_promises, await_thenable, require_await, return_a
 	no_ex_assign, no_func_assign, no_global_assign, no_import_assign, no_label_var,
 	no_shadow_restricted_names, no_unassigned_vars, no_delete_var, block_scoped_var, consistent_this,
 	no_var, prefer_const, vars_on_top, sort_vars, strict_rule, no_inner_declarations, no_lone_blocks,
-	no_loop_func, no_implicit_globals, no_unmodified_loop_condition]
+	no_loop_func, no_implicit_globals, no_unmodified_loop_condition, no_control_regex, no_div_regex,
+	no_empty_character_class, no_invalid_regexp, no_misleading_character_class, no_regex_spaces,
+	no_useless_backreference, no_useless_escape, prefer_regex_literals]
 
 // untyped_rules are the ported rules that need no types (`meta.docs.requiresTypeChecking` is false
 // in typescript-eslint): with only these, the command line makes no snapshot (Checker.make_snapshot).
@@ -332,7 +343,9 @@ pub const untyped_rules = [adjacent_overload_signatures, array_type, class_liter
 	no_ex_assign, no_func_assign, no_global_assign, no_import_assign, no_label_var,
 	no_shadow_restricted_names, no_unassigned_vars, no_delete_var, block_scoped_var, consistent_this,
 	no_var, prefer_const, vars_on_top, sort_vars, strict_rule, no_inner_declarations, no_lone_blocks,
-	no_loop_func, no_implicit_globals, no_unmodified_loop_condition]
+	no_loop_func, no_implicit_globals, no_unmodified_loop_condition, no_control_regex, no_div_regex,
+	no_empty_character_class, no_invalid_regexp, no_misleading_character_class, no_regex_spaces,
+	no_useless_backreference, no_useless_escape, prefer_regex_literals]
 
 // needs_types tells whether a rule asks tsgo for the types of the program.
 pub fn needs_types(rule string) bool {
@@ -571,6 +584,15 @@ pub const default_options = {
 	no_loop_func:                                 '[]'
 	no_implicit_globals:                          '[{"lexicalBindings":false}]'
 	no_unmodified_loop_condition:                 '[]'
+	no_control_regex:                             '[]'
+	no_div_regex:                                 '[]'
+	no_empty_character_class:                     '[]'
+	no_invalid_regexp:                            '[{}]'
+	no_misleading_character_class:                '[{"allowEscape":false}]'
+	no_regex_spaces:                              '[]'
+	no_useless_backreference:                     '[]'
+	no_useless_escape:                            '[{"allowRegexCharacters":[]}]'
+	prefer_regex_literals:                        '[{"disallowRedundantWrapping":false}]'
 }
 
 // Finding is a problem a rule found at a node.
@@ -932,6 +954,15 @@ pub fn message(rule string, finding Finding) string {
 		no_loop_func { nlf_messages }
 		no_implicit_globals { nig_messages }
 		no_unmodified_loop_condition { nulc_messages }
+		no_control_regex { ncrx_messages }
+		no_div_regex { ndr_messages }
+		no_empty_character_class { necc_messages }
+		no_invalid_regexp { nir_messages }
+		no_misleading_character_class { nmcc_messages }
+		no_regex_spaces { nrs_messages }
+		no_useless_backreference { nub_messages }
+		no_useless_escape { nue_messages }
+		prefer_regex_literals { prl_messages }
 		else { map[string]string{} }
 	}
 	return interpolate(messages[finding.message_id] or { finding.message_id }, finding.data)
@@ -1762,6 +1793,33 @@ fn (mut c Checker) lint_rule(rule string, root C.TSNode, abs_path string, mut st
 		}
 		no_unmodified_loop_condition {
 			return c.lint_no_unmodified_loop_condition(root, abs_path, mut stats)!
+		}
+		no_control_regex {
+			return c.lint_no_control_regex(root, abs_path, mut stats)!
+		}
+		no_div_regex {
+			return c.lint_no_div_regex(root, abs_path, mut stats)!
+		}
+		no_empty_character_class {
+			return c.lint_no_empty_character_class(root, abs_path, mut stats)!
+		}
+		no_invalid_regexp {
+			return c.lint_no_invalid_regexp(root, abs_path, mut stats)!
+		}
+		no_misleading_character_class {
+			return c.lint_no_misleading_character_class(root, abs_path, mut stats)!
+		}
+		no_regex_spaces {
+			return c.lint_no_regex_spaces(root, abs_path, mut stats)!
+		}
+		no_useless_backreference {
+			return c.lint_no_useless_backreference(root, abs_path, mut stats)!
+		}
+		no_useless_escape {
+			return c.lint_no_useless_escape(root, abs_path, mut stats)!
+		}
+		prefer_regex_literals {
+			return c.lint_prefer_regex_literals(root, abs_path, mut stats)!
 		}
 		else { return error('unknown rule: ${rule}') }
 	}

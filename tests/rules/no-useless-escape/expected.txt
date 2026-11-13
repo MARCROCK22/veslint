@@ -1,0 +1,14 @@
+tests/rules/no-useless-escape/allow/cases.ts:2:12	no-useless-escape	unnecessaryEscape	Unnecessary escape character: \\a.
+tests/rules/no-useless-escape/allow/cases.ts:3:12	no-useless-escape	unnecessaryEscape	Unnecessary escape character: \\'.
+tests/rules/no-useless-escape/allow/cases.ts:4:12	no-useless-escape	unnecessaryEscape	Unnecessary escape character: \\".
+tests/rules/no-useless-escape/allow/cases.ts:4:18	no-useless-escape	unnecessaryEscape	Unnecessary escape character: \\#.
+tests/rules/no-useless-escape/allow/cases.ts:5:12	no-useless-escape	unnecessaryEscape	Unnecessary escape character: \\!.
+tests/rules/no-useless-escape/allow/cases.ts:6:13	no-useless-escape	unnecessaryEscape	Unnecessary escape character: \\..
+tests/rules/no-useless-escape/cases.ts:2:12	no-useless-escape	unnecessaryEscape	Unnecessary escape character: \\a.
+tests/rules/no-useless-escape/cases.ts:3:12	no-useless-escape	unnecessaryEscape	Unnecessary escape character: \\'.
+tests/rules/no-useless-escape/cases.ts:4:12	no-useless-escape	unnecessaryEscape	Unnecessary escape character: \\".
+tests/rules/no-useless-escape/cases.ts:4:18	no-useless-escape	unnecessaryEscape	Unnecessary escape character: \\#.
+tests/rules/no-useless-escape/cases.ts:5:12	no-useless-escape	unnecessaryEscape	Unnecessary escape character: \\!.
+tests/rules/no-useless-escape/cases.ts:6:13	no-useless-escape	unnecessaryEscape	Unnecessary escape character: \\..
+tests/rules/no-useless-escape/cases.ts:7:13	no-useless-escape	unnecessaryEscape	Unnecessary escape character: \\-.
+tests/rules/no-useless-escape/cases.ts:13:13	no-useless-escape	unnecessaryEscape	Unnecessary escape character: \\-.

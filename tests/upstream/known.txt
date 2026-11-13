@@ -274,3 +274,19 @@ eslint	no-implicit-globals/v43	typescript-eslint's scope manager has no function
 veslint	no-implicit-globals/v43	typescript-eslint's scope manager has no function scope for a CommonJS script
 eslint	no-implicit-globals/v44	typescript-eslint's scope manager has no function scope for a CommonJS script
 veslint	no-implicit-globals/v44	typescript-eslint's scope manager has no function scope for a CommonJS script
+# C10: a global of the lib that `off` leaves out (RegExp, String): ESLint leaves the reference
+# unresolved, veslint resolves it to the lib's variable.
+veslint	no-useless-backreference/v13	veslint resolves the global to TypeScript's lib, where ESLint leaves the reference unresolved
+veslint	no-useless-backreference/v14	veslint resolves the global to TypeScript's lib, where ESLint leaves the reference unresolved
+veslint	prefer-regex-literals/v54	veslint resolves the global to TypeScript's lib, where ESLint leaves the reference unresolved
+veslint	prefer-regex-literals/v55	veslint resolves the global to TypeScript's lib, where ESLint leaves the reference unresolved
+veslint	prefer-regex-literals/v63	veslint resolves the global to TypeScript's lib, where ESLint leaves the reference unresolved
+veslint	prefer-regex-literals/v64	veslint resolves the global to TypeScript's lib, where ESLint leaves the reference unresolved
+eslint	no-useless-backreference/v0	typescript-eslint's parser: Octal escape sequences are not allowed.
+eslint	no-useless-backreference/v28	typescript-eslint's parser: Octal escape sequences are not allowed.
+eslint	no-useless-escape/v17	typescript-eslint's parser: Octal escape sequences are not allowed.
+veslint	no-misleading-character-class/v14	veslint resolves the global to TypeScript's lib, where ESLint leaves the reference unresolved
+veslint	no-misleading-character-class/i113	veslint resolves the global to TypeScript's lib, where ESLint leaves the reference unresolved
+veslint	no-misleading-character-class/v44	the code has a lone surrogate, which a UTF-8 file cannot hold
+eslint	no-misleading-character-class/i116	typescript-eslint's parser: Octal escape sequences are not allowed.
+veslint	no-misleading-character-class/i116	TypeScript does not allow octal escapes in strings: veslint gives the string no value

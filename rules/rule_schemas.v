@@ -233,6 +233,15 @@ const rule_option_schemas = {
 	'no-loop-func':                                                    '{"type":"array","minItems":0,"maxItems":0}'
 	'no-implicit-globals':                                             '{"type":"array","items":[{"type":"object","properties":{"lexicalBindings":{"type":"boolean"}},"additionalProperties":false}],"minItems":0,"maxItems":1}'
 	'no-unmodified-loop-condition':                                    '{"type":"array","minItems":0,"maxItems":0}'
+	'no-control-regex':                                                '{"type":"array","minItems":0,"maxItems":0}'
+	'no-div-regex':                                                    '{"type":"array","minItems":0,"maxItems":0}'
+	'no-empty-character-class':                                        '{"type":"array","minItems":0,"maxItems":0}'
+	'no-invalid-regexp':                                               '{"type":"array","items":[{"type":"object","properties":{"allowConstructorFlags":{"type":"array","items":{"type":"string"},"uniqueItems":true}},"additionalProperties":false}],"minItems":0,"maxItems":1}'
+	'no-misleading-character-class':                                   '{"type":"array","items":[{"type":"object","properties":{"allowEscape":{"type":"boolean"}},"additionalProperties":false}],"minItems":0,"maxItems":1}'
+	'no-regex-spaces':                                                 '{"type":"array","minItems":0,"maxItems":0}'
+	'no-useless-backreference':                                        '{"type":"array","minItems":0,"maxItems":0}'
+	'no-useless-escape':                                               '{"type":"array","items":[{"type":"object","properties":{"allowRegexCharacters":{"type":"array","items":{"type":"string"},"uniqueItems":true}},"additionalProperties":false}],"minItems":0,"maxItems":1}'
+	'prefer-regex-literals':                                           '{"type":"array","items":[{"type":"object","properties":{"disallowRedundantWrapping":{"type":"boolean"}},"additionalProperties":false}],"minItems":0,"maxItems":1}'
 }
 
 // eslint_rule_default_options are the meta.defaultOptions of the rules of ESLint and of

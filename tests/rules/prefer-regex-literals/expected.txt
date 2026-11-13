@@ -1,0 +1,12 @@
+tests/rules/prefer-regex-literals/cases.ts:2:11	prefer-regex-literals	unexpectedRegExp	Use a regular expression literal instead of the 'RegExp' constructor.
+tests/rules/prefer-regex-literals/cases.ts:3:11	prefer-regex-literals	unexpectedRegExp	Use a regular expression literal instead of the 'RegExp' constructor.
+tests/rules/prefer-regex-literals/cases.ts:4:11	prefer-regex-literals	unexpectedRegExp	Use a regular expression literal instead of the 'RegExp' constructor.
+tests/rules/prefer-regex-literals/cases.ts:5:11	prefer-regex-literals	unexpectedRegExp	Use a regular expression literal instead of the 'RegExp' constructor.
+tests/rules/prefer-regex-literals/cases.ts:6:11	prefer-regex-literals	unexpectedRegExp	Use a regular expression literal instead of the 'RegExp' constructor.
+tests/rules/prefer-regex-literals/redundant/cases.ts:2:11	prefer-regex-literals	unexpectedRegExp	Use a regular expression literal instead of the 'RegExp' constructor.
+tests/rules/prefer-regex-literals/redundant/cases.ts:3:11	prefer-regex-literals	unexpectedRegExp	Use a regular expression literal instead of the 'RegExp' constructor.
+tests/rules/prefer-regex-literals/redundant/cases.ts:4:11	prefer-regex-literals	unexpectedRegExp	Use a regular expression literal instead of the 'RegExp' constructor.
+tests/rules/prefer-regex-literals/redundant/cases.ts:5:11	prefer-regex-literals	unexpectedRegExp	Use a regular expression literal instead of the 'RegExp' constructor.
+tests/rules/prefer-regex-literals/redundant/cases.ts:6:11	prefer-regex-literals	unexpectedRegExp	Use a regular expression literal instead of the 'RegExp' constructor.
+tests/rules/prefer-regex-literals/redundant/cases.ts:7:11	prefer-regex-literals	unexpectedRedundantRegExp	Regular expression literal is unnecessarily wrapped within a 'RegExp' constructor.
+tests/rules/prefer-regex-literals/redundant/cases.ts:8:11	prefer-regex-literals	unexpectedRedundantRegExpWithFlags	Use regular expression literal with flags instead of the 'RegExp' constructor.

@@ -247,3 +247,13 @@ fn test_all_identifiers_includes_usages() {
 	assert idents.map(it.text) == ['a', 'b', 'a', 'a']
 	assert idents.map(it.start_byte) == [6, 19, 23, 27]
 }
+
+// An offset inside a character of 4 bytes stands for its low surrogate: ESLint reports some
+// problems there (no-misleading-character-class).
+fn test_utf16_offsets_inside_a_surrogate_pair() {
+	src := 'a👍b'
+	// 'a' is byte 0, the emoji bytes 1 to 4 (units 1 and 2), 'b' byte 5 (unit 3).
+	assert utf16_offsets(src, [0, 1, 2, 3, 4, 5]) == [0, 1, 2, 2, 2, 3]
+	// A character of 3 bytes is one unit: inside it, the offset is the one after it.
+	assert utf16_offsets('é€', [2, 3, 4]) == [1, 2, 2]
+}
