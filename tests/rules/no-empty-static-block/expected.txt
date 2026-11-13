@@ -1,0 +1,5 @@
+tests/rules/no-empty-static-block/cases.ts:3:10	no-empty-static-block	unexpected	Unexpected empty static block.
+tests/rules/no-empty-static-block/cases.ts:6:10	no-empty-static-block	unexpected	Unexpected empty static block.
+tests/rules/no-empty-static-block/cases.ts:11:10	no-empty-static-block	unexpected	Unexpected empty static block.
+tests/rules/no-empty-static-block/cases.ts:12:10	no-empty-static-block	unexpected	Unexpected empty static block.
+tests/rules/no-empty-static-block/cases.ts:33:23	no-empty-static-block	unexpected	Unexpected empty static block.

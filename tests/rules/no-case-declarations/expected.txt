@@ -1,0 +1,7 @@
+tests/rules/no-case-declarations/cases.ts:7:5	no-case-declarations	unexpected	Unexpected lexical declaration in case block.
+tests/rules/no-case-declarations/cases.ts:10:5	no-case-declarations	unexpected	Unexpected lexical declaration in case block.
+tests/rules/no-case-declarations/cases.ts:13:5	no-case-declarations	unexpected	Unexpected lexical declaration in case block.
+tests/rules/no-case-declarations/cases.ts:15:5	no-case-declarations	unexpected	Unexpected lexical declaration in case block.
+tests/rules/no-case-declarations/cases.ts:17:5	no-case-declarations	unexpected	Unexpected lexical declaration in case block.
+tests/rules/no-case-declarations/cases.ts:22:5	no-case-declarations	unexpected	Unexpected lexical declaration in case block.
+tests/rules/no-case-declarations/cases.ts:42:5	no-case-declarations	unexpected	Unexpected lexical declaration in case block.

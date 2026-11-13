@@ -1,0 +1,7 @@
+tests/rules/no-case-declarations/cases.ts:7:5	no-case-declarations	unexpected	Unexpected lexical declaration in case block.	suggestion	addBrackets	Add {} brackets around the case block.	94	115	{ let a = 1;\n    break; }
+tests/rules/no-case-declarations/cases.ts:10:5	no-case-declarations	unexpected	Unexpected lexical declaration in case block.	suggestion	addBrackets	Add {} brackets around the case block.	130	151	{ const b = 2;\n    g(); }
+tests/rules/no-case-declarations/cases.ts:13:5	no-case-declarations	unexpected	Unexpected lexical declaration in case block.	suggestion	addBrackets	Add {} brackets around the case block.	166	181	{ function f() {} }
+tests/rules/no-case-declarations/cases.ts:15:5	no-case-declarations	unexpected	Unexpected lexical declaration in case block.	suggestion	addBrackets	Add {} brackets around the case block.	196	206	{ class C {} }
+tests/rules/no-case-declarations/cases.ts:17:5	no-case-declarations	unexpected	Unexpected lexical declaration in case block.	suggestion	addBrackets	Add {} brackets around the case block.	222	239	{ let d = 1, e = 2; }
+tests/rules/no-case-declarations/cases.ts:22:5	no-case-declarations	unexpected	Unexpected lexical declaration in case block.	suggestion	addBrackets	Add {} brackets around the case block.	280	299	{ g();\n    let a = 1; }
+tests/rules/no-case-declarations/cases.ts:42:5	no-case-declarations	unexpected	Unexpected lexical declaration in case block.	suggestion	addBrackets	Add {} brackets around the case block.	524	537	{ let last = 1; }

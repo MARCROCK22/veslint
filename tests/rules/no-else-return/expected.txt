@@ -1,0 +1,14 @@
+tests/rules/no-else-return/cases.ts:8:10	no-else-return	unexpected	Unnecessary 'else' after 'return'.
+tests/rules/no-else-return/cases.ts:14:8	no-else-return	unexpected	Unnecessary 'else' after 'return'.
+tests/rules/no-else-return/cases.ts:21:10	no-else-return	unexpected	Unnecessary 'else' after 'return'.
+tests/rules/no-else-return/cases.ts:29:12	no-else-return	unexpected	Unnecessary 'else' after 'return'.
+tests/rules/no-else-return/cases.ts:32:10	no-else-return	unexpected	Unnecessary 'else' after 'return'.
+tests/rules/no-else-return/cases.ts:40:10	no-else-return	unexpected	Unnecessary 'else' after 'return'.
+tests/rules/no-else-return/cases.ts:48:10	no-else-return	unexpected	Unnecessary 'else' after 'return'.
+tests/rules/no-else-return/cases.ts:57:10	no-else-return	unexpected	Unnecessary 'else' after 'return'.
+tests/rules/no-else-return/cases.ts:66:12	no-else-return	unexpected	Unnecessary 'else' after 'return'.
+tests/rules/no-else-return/cases.ts:78:8	no-else-return	unexpected	Unnecessary 'else' after 'return'.
+tests/rules/no-else-return/cases.ts:83:10	no-else-return	unexpected	Unnecessary 'else' after 'return'.
+tests/rules/no-else-return/cases.ts:121:10	no-else-return	unexpected	Unnecessary 'else' after 'return'.
+tests/rules/no-else-return/no-else-if/cases.ts:9:10	no-else-return	unexpected	Unnecessary 'else' after 'return'.
+tests/rules/no-else-return/no-else-if/cases.ts:16:10	no-else-return	unexpected	Unnecessary 'else' after 'return'.

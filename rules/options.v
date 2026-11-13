@@ -75,6 +75,10 @@ pub fn check_options(rule string, options []json2.Any) !bool {
 		no_cond_assign { nca_always(options)! }
 		no_constant_condition { ncc_check_loops(options)! }
 		no_constant_binary_expression { ncbe_options(options)! }
+		curly { cu_options(options)! }
+		no_else_return { ner_allow_else_if(options)! }
+		no_empty { ne_allow_empty_catch(options)! }
+		no_labels { nl_options(options)! }
 		else { return false }
 	}
 	return true
@@ -107,11 +111,26 @@ pub fn effective_options(name string, options []json2.Any) ![]json2.Any {
 		nc_options(written) or { return error('`${name}`: ${err.msg()}') }
 		return written
 	}
-	merged := apply_default(defaults, options)
+	mut merged := apply_default(defaults, options)
+	// ESLint merges the options of its core rules with deepMergeArrays, which keeps the options
+	// past the defaults (`curly`'s "consistent").
+	if !name.contains('/') && options.len > merged.len {
+		// One by one: `<<` of an array would add it as one value (json2.Any has arrays).
+		for option in options[merged.len..] {
+			merged << option
+		}
+	}
 	reads := check_options(name, merged) or { return error('`${name}`: ${err.msg()}') }
 	if reads {
-		// A rule takes as many options as it has defaults for, and at least one.
-		limit := if defaults.len > 1 { defaults.len } else { 1 }
+		// A rule takes as many options as it has defaults for, and at least one; `curly` has a
+		// second one ("consistent") without a default.
+		limit := if name == curly {
+			2
+		} else if defaults.len > 1 {
+			defaults.len
+		} else {
+			1
+		}
 		if options.len > limit {
 			return error('`${name}` takes ${if limit == 1 {
 				'a single option'

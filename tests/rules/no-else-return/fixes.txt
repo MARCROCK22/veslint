@@ -1,0 +1,14 @@
+tests/rules/no-else-return/cases.ts:8:10	no-else-return	unexpected	Unnecessary 'else' after 'return'.	fix	66	137	function f1() {\n  if (a) {\n    return 1;\n  } \n    return 2;\n  \n}
+tests/rules/no-else-return/cases.ts:14:8	no-else-return	unexpected	Unnecessary 'else' after 'return'.	fix	138	191	function f2() {\n  if (a) return 1;\n  return 2;\n}
+tests/rules/no-else-return/cases.ts:21:10	no-else-return	unexpected	Unnecessary 'else' after 'return'.	fix	192	295	function f3() {\n  if (a) {\n    return 1;\n  } else if (b) {\n    return 2;\n  } \n    return 3;\n  \n}
+tests/rules/no-else-return/cases.ts:29:12	no-else-return	unexpected	Unnecessary 'else' after 'return'.	fix	296	434	function f4() {\n  if (a) {\n    if (b) {\n      return 1;\n    } \n      return 2;\n    \n  } else {\n    const x = 3;\n    return x;\n  }\n}
+tests/rules/no-else-return/cases.ts:32:10	no-else-return	unexpected	Unnecessary 'else' after 'return'.	fix	296	434	function f4() {\n  if (a) {\n    if (b) {\n      return 1;\n    } else {\n      return 2;\n    }\n  } \n    const x = 3;\n    return x;\n  \n}
+tests/rules/no-else-return/cases.ts:40:10	no-else-return	unexpected	Unnecessary 'else' after 'return'.	fix	435	521	function f5() {\n  if (a) {\n    return 1;\n  } \n    let x = 1;\n    return x;\n  \n}
+tests/rules/no-else-return/cases.ts:48:10	no-else-return	unexpected	Unnecessary 'else' after 'return'.
+tests/rules/no-else-return/cases.ts:57:10	no-else-return	unexpected	Unnecessary 'else' after 'return'.
+tests/rules/no-else-return/cases.ts:66:12	no-else-return	unexpected	Unnecessary 'else' after 'return'.	fix	737	809	() {\n    if (a) {\n      return 1;\n    } \n      return 2;\n    \n  }
+tests/rules/no-else-return/cases.ts:78:8	no-else-return	unexpected	Unnecessary 'else' after 'return'.
+tests/rules/no-else-return/cases.ts:83:10	no-else-return	unexpected	Unnecessary 'else' after 'return'.	fix	899	971	function f9() {\n  if (a) {\n    return 1;\n  } \n    f1()\n   f2();\n}
+tests/rules/no-else-return/cases.ts:121:10	no-else-return	unexpected	Unnecessary 'else' after 'return'.	fix	1296	1380	function f10() {\n  if (a) {\n    return 1;\n  } \n    return 2;\n   /* after */\n}
+tests/rules/no-else-return/no-else-if/cases.ts:9:10	no-else-return	unexpected	Unnecessary 'else' after 'return'.	fix	117	190	function f1() {\n  if (a) {\n    return 1;\n  } if (b) {\n    f();\n  }\n}
+tests/rules/no-else-return/no-else-if/cases.ts:16:10	no-else-return	unexpected	Unnecessary 'else' after 'return'.	fix	191	294	function f2() {\n  if (a) {\n    return 1;\n  } if (b) {\n    return 2;\n  } else {\n    return 3;\n  }\n}

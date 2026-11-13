@@ -227,3 +227,21 @@ fn es_array_elements(n C.TSNode) []EsElement {
 	}
 	return out
 }
+
+// es_has_line_break: the text has one of ESLint's line breaks (`\n`, `\r`, U+2028, U+2029), so what
+// is before it and after it are on different lines.
+fn es_has_line_break(text string) bool {
+	return text.contains('\n') || text.contains('\r') || text.contains(' ')
+		|| text.contains(' ')
+}
+
+// es_end is where the ESTree node ends: at its last token (tree-sitter may put a comment that
+// follows a node inside it, as in `{} /* c */`).
+fn (c &Checker) es_end(n C.TSNode) int {
+	return c.tokens.last_end(node_end(n))
+}
+
+// es_text ports sourceCode.getText(node): the text of the node without a trailing comment.
+fn (c &Checker) es_text(n C.TSNode) string {
+	return c.src[node_start(n)..c.es_end(n)]
+}

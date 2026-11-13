@@ -1,0 +1,8 @@
+tests/rules/no-unused-labels/cases.ts:5:1	no-unused-labels	unused	'A:' is defined but never used.	fix	68	71	
+tests/rules/no-unused-labels/cases.ts:6:1	no-unused-labels	unused	'B:' is defined but never used.	fix	76	79	
+tests/rules/no-unused-labels/cases.ts:9:1	no-unused-labels	unused	'C:' is defined but never used.	fix	102	105	
+tests/rules/no-unused-labels/cases.ts:12:1	no-unused-labels	unused	'E:' is defined but never used.
+tests/rules/no-unused-labels/cases.ts:16:3	no-unused-labels	unused	'G:' is defined but never used.	fix	167	170	
+tests/rules/no-unused-labels/cases.ts:21:3	no-unused-labels	unused	'H:' is defined but never used.
+tests/rules/no-unused-labels/cases.ts:22:3	no-unused-labels	unused	'I:' is defined but never used.
+tests/rules/no-unused-labels/cases.ts:24:1	no-unused-labels	unused	'J:' is defined but never used.

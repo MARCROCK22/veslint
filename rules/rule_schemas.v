@@ -138,6 +138,19 @@ const rule_option_schemas = {
 	'for-direction':                                                   '{"type":"array","minItems":0,"maxItems":0}'
 	'no-constant-condition':                                           '{"type":"array","items":[{"type":"object","properties":{"checkLoops":{"enum":["all","allExceptWhileTrue","none",true,false]}},"additionalProperties":false}],"minItems":0,"maxItems":1}'
 	'no-constant-binary-expression':                                   '{"type":"array","items":[{"type":"object","properties":{"checkRelationalComparisons":{"type":"boolean"}},"additionalProperties":false}],"minItems":0,"maxItems":1}'
+	'curly':                                                           '{"anyOf":[{"type":"array","items":[{"enum":["all"]}],"minItems":0,"maxItems":1},{"type":"array","items":[{"enum":["multi","multi-line","multi-or-nest"]},{"enum":["consistent"]}],"minItems":0,"maxItems":2}]}'
+	'no-else-return':                                                  '{"type":"array","items":[{"type":"object","properties":{"allowElseIf":{"type":"boolean"}},"additionalProperties":false}],"minItems":0,"maxItems":1}'
+	'no-empty':                                                        '{"type":"array","items":[{"type":"object","properties":{"allowEmptyCatch":{"type":"boolean"}},"additionalProperties":false}],"minItems":0,"maxItems":1}'
+	'no-empty-static-block':                                           '{"type":"array","minItems":0,"maxItems":0}'
+	'default-case-last':                                               '{"type":"array","minItems":0,"maxItems":0}'
+	'no-case-declarations':                                            '{"type":"array","minItems":0,"maxItems":0}'
+	'no-labels':                                                       '{"type":"array","items":[{"type":"object","properties":{"allowLoop":{"type":"boolean"},"allowSwitch":{"type":"boolean"}},"additionalProperties":false}],"minItems":0,"maxItems":1}'
+	'no-extra-label':                                                  '{"type":"array","minItems":0,"maxItems":0}'
+	'no-unused-labels':                                                '{"type":"array","minItems":0,"maxItems":0}'
+	'no-with':                                                         '{"type":"array","minItems":0,"maxItems":0}'
+	'no-debugger':                                                     '{"type":"array","minItems":0,"maxItems":0}'
+	'no-unsafe-finally':                                               '{"type":"array","minItems":0,"maxItems":0}'
+	'no-useless-catch':                                                '{"type":"array","minItems":0,"maxItems":0}'
 }
 
 // eslint_rule_default_options are the meta.defaultOptions of the rules of ESLint and of

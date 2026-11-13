@@ -1,0 +1,3 @@
+tests/rules/no-useless-catch/cases.ts:5:1	no-useless-catch	unnecessaryCatch	Unnecessary try/catch wrapper.
+tests/rules/no-useless-catch/cases.ts:12:3	no-useless-catch	unnecessaryCatchClause	Unnecessary catch clause.
+tests/rules/no-useless-catch/cases.ts:17:1	no-useless-catch	unnecessaryCatch	Unnecessary try/catch wrapper.

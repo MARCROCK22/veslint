@@ -1,0 +1,16 @@
+tests/rules/no-empty/allow-catch/cases.ts:12:5	no-empty	unexpected	Empty block statement.	suggestion	suggestComment	Add comment inside empty block statement.	145	146	 /* empty */ 
+tests/rules/no-empty/allow-catch/cases.ts:14:11	no-empty	unexpected	Empty block statement.	suggestion	suggestComment	Add comment inside empty block statement.	171	172	 /* empty */ 
+tests/rules/no-empty/cases.ts:5:8	no-empty	unexpected	Empty block statement.	suggestion	suggestComment	Add comment inside empty block statement.	76	76	 /* empty */ 
+tests/rules/no-empty/cases.ts:6:8	no-empty	unexpected	Empty block statement.	suggestion	suggestComment	Add comment inside empty block statement.	86	87	 /* empty */ 
+tests/rules/no-empty/cases.ts:7:8	no-empty	unexpected	Empty block statement.	suggestion	suggestComment	Add comment inside empty block statement.	95	96	 /* empty */ 
+tests/rules/no-empty/cases.ts:9:11	no-empty	unexpected	Empty block statement.	suggestion	suggestComment	Add comment inside empty block statement.	109	109	 /* empty */ 
+tests/rules/no-empty/cases.ts:10:10	no-empty	unexpected	Empty block statement.	suggestion	suggestComment	Add comment inside empty block statement.	121	121	 /* empty */ 
+tests/rules/no-empty/cases.ts:11:5	no-empty	unexpected	Empty block statement.	suggestion	suggestComment	Add comment inside empty block statement.	128	129	 /* empty */ 
+tests/rules/no-empty/cases.ts:12:13	no-empty	unexpected	Empty block statement.	suggestion	suggestComment	Add comment inside empty block statement.	142	143	 /* empty */ 
+tests/rules/no-empty/cases.ts:13:11	no-empty	unexpected	Empty block statement.	suggestion	suggestComment	Add comment inside empty block statement.	154	155	 /* empty */ 
+tests/rules/no-empty/cases.ts:15:1	no-empty	unexpected	Empty block statement.	suggestion	suggestComment	Add comment inside empty block statement.	158	158	 /* empty */ 
+tests/rules/no-empty/cases.ts:16:12	no-empty	unexpected	Empty switch statement.	suggestion	suggestComment	Add comment inside empty switch statement.	172	172	 /* empty */ 
+tests/rules/no-empty/cases.ts:17:12	no-empty	unexpected	Empty switch statement.	suggestion	suggestComment	Add comment inside empty switch statement.	186	187	 /* empty */ 
+tests/rules/no-empty/cases.ts:19:8	no-empty	unexpected	Empty block statement.	suggestion	suggestComment	Add comment inside empty block statement.	197	197	 /* empty */ 
+tests/rules/no-empty/cases.ts:51:8	no-empty	unexpected	Empty block statement.	suggestion	suggestComment	Add comment inside empty block statement.	627	627	 /* empty */ 
+tests/rules/no-empty/cases.ts:52:12	no-empty	unexpected	Empty switch statement.	suggestion	suggestComment	Add comment inside empty switch statement.	653	653	 /* empty */ 

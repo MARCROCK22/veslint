@@ -1,0 +1,19 @@
+tests/rules/no-labels/allow/cases.ts:19:1	no-labels	unexpectedLabel	Unexpected labeled statement.
+tests/rules/no-labels/allow/cases.ts:20:3	no-labels	unexpectedLabelInBreak	Unexpected label in break statement.
+tests/rules/no-labels/allow/cases.ts:22:1	no-labels	unexpectedLabel	Unexpected labeled statement.
+tests/rules/no-labels/cases.ts:4:1	no-labels	unexpectedLabel	Unexpected labeled statement.
+tests/rules/no-labels/cases.ts:5:3	no-labels	unexpectedLabelInBreak	Unexpected label in break statement.
+tests/rules/no-labels/cases.ts:7:1	no-labels	unexpectedLabel	Unexpected labeled statement.
+tests/rules/no-labels/cases.ts:8:3	no-labels	unexpectedLabelInContinue	Unexpected label in continue statement.
+tests/rules/no-labels/cases.ts:10:1	no-labels	unexpectedLabel	Unexpected labeled statement.
+tests/rules/no-labels/cases.ts:12:5	no-labels	unexpectedLabelInBreak	Unexpected label in break statement.
+tests/rules/no-labels/cases.ts:14:1	no-labels	unexpectedLabel	Unexpected labeled statement.
+tests/rules/no-labels/cases.ts:15:3	no-labels	unexpectedLabelInBreak	Unexpected label in break statement.
+tests/rules/no-labels/cases.ts:17:1	no-labels	unexpectedLabel	Unexpected labeled statement.
+tests/rules/no-labels/cases.ts:18:3	no-labels	unexpectedLabelInBreak	Unexpected label in break statement.
+tests/rules/no-labels/cases.ts:20:1	no-labels	unexpectedLabel	Unexpected labeled statement.
+tests/rules/no-labels/cases.ts:21:3	no-labels	unexpectedLabel	Unexpected labeled statement.
+tests/rules/no-labels/cases.ts:22:5	no-labels	unexpectedLabelInBreak	Unexpected label in break statement.
+tests/rules/no-labels/cases.ts:25:1	no-labels	unexpectedLabel	Unexpected labeled statement.
+tests/rules/no-labels/cases.ts:27:5	no-labels	unexpectedLabel	Unexpected labeled statement.
+tests/rules/no-labels/cases.ts:28:7	no-labels	unexpectedLabelInBreak	Unexpected label in break statement.

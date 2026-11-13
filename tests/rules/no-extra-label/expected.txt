@@ -1,0 +1,6 @@
+tests/rules/no-extra-label/cases.ts:5:9	no-extra-label	unexpected	This label 'A' is unnecessary.
+tests/rules/no-extra-label/cases.ts:8:12	no-extra-label	unexpected	This label 'B' is unnecessary.
+tests/rules/no-extra-label/cases.ts:12:11	no-extra-label	unexpected	This label 'C' is unnecessary.
+tests/rules/no-extra-label/cases.ts:15:16	no-extra-label	unexpected	This label 'D' is unnecessary.
+tests/rules/no-extra-label/cases.ts:18:23	no-extra-label	unexpected	This label 'E' is unnecessary.
+tests/rules/no-extra-label/cases.ts:22:11	no-extra-label	unexpected	This label 'F' is unnecessary.

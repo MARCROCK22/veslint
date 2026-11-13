@@ -229,8 +229,9 @@ def check_project(veslint, fixtures, configs, project):
     return problems
 
 
-def fix_passes(lint, code, findings):
-    """The outputs of RuleTester's passes of fixes: at most 10, each on the text the last left."""
+def fix_passes(lint, code, findings, max_passes=10):
+    """The outputs of RuleTester's passes of fixes: at most 10 (typescript-eslint's RuleTester; ESLint's,
+    for its core rules, makes one), each on the text the last left."""
     outputs = []
     pass_number = 1
     while findings:
@@ -240,7 +241,7 @@ def fix_passes(lint, code, findings):
             break
         code = new
         outputs.append(code)
-        if not fixes or pass_number >= 10:
+        if not fixes or pass_number >= max_passes:
             break
         pass_number += 1
         findings = lint(code)
@@ -357,7 +358,7 @@ def main():
 
                 # After the passes, the file keeps the text the last one left, as in RuleTester
                 # and in tests/rules/upstream_eslint.mjs.
-                outputs = fix_passes(relint, case['code'], findings) if case['kind'] == 'invalid' and 'output' in case else []
+                outputs = fix_passes(relint, case['code'], findings, 10 if '/' in rule else 1) if case['kind'] == 'invalid' and 'output' in case else []
                 problems = check(case, messages, findings, outputs)
             if problems:
                 failing.add(case['id'])

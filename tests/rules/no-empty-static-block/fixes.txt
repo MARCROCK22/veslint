@@ -1,0 +1,5 @@
+tests/rules/no-empty-static-block/cases.ts:3:10	no-empty-static-block	unexpected	Unexpected empty static block.	suggestion	suggestComment	Add comment inside empty static block.	33	33	 /* empty */ 
+tests/rules/no-empty-static-block/cases.ts:6:10	no-empty-static-block	unexpected	Unexpected empty static block.	suggestion	suggestComment	Add comment inside empty static block.	57	61	 /* empty */ 
+tests/rules/no-empty-static-block/cases.ts:11:10	no-empty-static-block	unexpected	Unexpected empty static block.	suggestion	suggestComment	Add comment inside empty static block.	93	93	 /* empty */ 
+tests/rules/no-empty-static-block/cases.ts:12:10	no-empty-static-block	unexpected	Unexpected empty static block.	suggestion	suggestComment	Add comment inside empty static block.	105	108	 /* empty */ 
+tests/rules/no-empty-static-block/cases.ts:33:23	no-empty-static-block	unexpected	Unexpected empty static block.	suggestion	suggestComment	Add comment inside empty static block.	369	369	 /* empty */ 

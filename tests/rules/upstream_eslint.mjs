@@ -82,10 +82,11 @@ function configOf(rule, c, root) {
   ];
 }
 
-// The passes of fixes RuleTester makes: at most 10, each on the text the last one left.
-function fixPasses(linter, code, config, file, messages) {
+// The passes of fixes RuleTester makes: at most 10, each on the text the last one left
+// (typescript-eslint's); ESLint's RuleTester, for the core rules, makes one.
+function fixPasses(linter, code, config, file, messages, maxPasses = 10) {
   const outputs = [];
-  for (let pass = 0; pass < 10 && messages.length; pass++) {
+  for (let pass = 0; pass < maxPasses && messages.length; pass++) {
     if (messages.some(m => m.fatal)) break;
     const fixed = SourceCodeFixer.applyFixes(code, messages);
     if (fixed.output === code) break;
@@ -243,7 +244,7 @@ for (const rule of ruleNames) {
       continue;
     }
     results.push({ filePath: c.id, messages });
-    const outputs = c.kind === 'invalid' && 'output' in c ? fixPasses(linter, c.code, config, file, messages) : [];
+    const outputs = c.kind === 'invalid' && 'output' in c ? fixPasses(linter, c.code, config, file, messages, rule.includes('/') ? 10 : 1) : [];
     const caseProblems = check(rule, c, messages, outputs);
     if (caseProblems.length && !known.has(c.id)) problems.push(...caseProblems);
     if (!caseProblems.length && known.has(c.id)) problems.push(`${c.id}: listed in tests/upstream/known.txt, but passes`);

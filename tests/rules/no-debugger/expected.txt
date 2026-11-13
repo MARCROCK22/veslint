@@ -1,0 +1,3 @@
+tests/rules/no-debugger/cases.ts:4:1	no-debugger	unexpected	Unexpected 'debugger' statement.
+tests/rules/no-debugger/cases.ts:5:8	no-debugger	unexpected	Unexpected 'debugger' statement.
+tests/rules/no-debugger/cases.ts:7:3	no-debugger	unexpected	Unexpected 'debugger' statement.

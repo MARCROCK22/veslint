@@ -145,6 +145,19 @@ pub const no_cond_assign = 'no-cond-assign'
 pub const for_direction = 'for-direction'
 pub const no_constant_condition = 'no-constant-condition'
 pub const no_constant_binary_expression = 'no-constant-binary-expression'
+pub const curly = 'curly'
+pub const no_else_return = 'no-else-return'
+pub const no_empty = 'no-empty'
+pub const no_empty_static_block = 'no-empty-static-block'
+pub const default_case_last = 'default-case-last'
+pub const no_case_declarations = 'no-case-declarations'
+pub const no_labels = 'no-labels'
+pub const no_extra_label = 'no-extra-label'
+pub const no_unused_labels = 'no-unused-labels'
+pub const no_with = 'no-with'
+pub const no_debugger = 'no-debugger'
+pub const no_unsafe_finally = 'no-unsafe-finally'
+pub const no_useless_catch = 'no-useless-catch'
 pub const names = [no_floating_promises, await_thenable, require_await, return_await,
 	no_misused_promises, no_unsafe_call, no_unsafe_member_access, no_unsafe_return,
 	no_unsafe_assignment, no_unsafe_argument, restrict_template_expressions,
@@ -182,7 +195,9 @@ pub const names = [no_floating_promises, await_thenable, require_await, return_a
 	seyfert_group_exists, no_compare_neg_zero, use_isnan, valid_typeof, no_dupe_else_if,
 	no_duplicate_case, no_self_compare, no_self_assign, no_unsafe_negation,
 	no_unsafe_optional_chaining, no_cond_assign, for_direction, no_constant_condition,
-	no_constant_binary_expression]
+	no_constant_binary_expression, curly, no_else_return, no_empty, no_empty_static_block,
+	default_case_last, no_case_declarations, no_labels, no_extra_label, no_unused_labels, no_with,
+	no_debugger, no_unsafe_finally, no_useless_catch]
 
 // untyped_rules are the ported rules that need no types (`meta.docs.requiresTypeChecking` is false
 // in typescript-eslint): with only these, the command line makes no snapshot (Checker.make_snapshot).
@@ -201,7 +216,9 @@ pub const untyped_rules = [adjacent_overload_signatures, array_type, class_liter
 	triple_slash_reference, unified_signatures, no_compare_neg_zero, use_isnan, valid_typeof,
 	no_dupe_else_if, no_duplicate_case, no_self_compare, no_self_assign, no_unsafe_negation,
 	no_unsafe_optional_chaining, no_cond_assign, for_direction, no_constant_condition,
-	no_constant_binary_expression]
+	no_constant_binary_expression, curly, no_else_return, no_empty, no_empty_static_block,
+	default_case_last, no_case_declarations, no_labels, no_extra_label, no_unused_labels, no_with,
+	no_debugger, no_unsafe_finally, no_useless_catch]
 
 // needs_types tells whether a rule asks tsgo for the types of the program.
 pub fn needs_types(rule string) bool {
@@ -345,6 +362,19 @@ pub const default_options = {
 	for_direction:                                '[]'
 	no_constant_condition:                        '[{"checkLoops":"allExceptWhileTrue"}]'
 	no_constant_binary_expression:                '[{"checkRelationalComparisons":false}]'
+	curly:                                        '["all"]'
+	no_else_return:                               '[{"allowElseIf":true}]'
+	no_empty:                                     '[{"allowEmptyCatch":false}]'
+	no_empty_static_block:                        '[]'
+	default_case_last:                            '[]'
+	no_case_declarations:                         '[]'
+	no_labels:                                    '[{"allowLoop":false,"allowSwitch":false}]'
+	no_extra_label:                               '[]'
+	no_unused_labels:                             '[]'
+	no_with:                                      '[]'
+	no_debugger:                                  '[]'
+	no_unsafe_finally:                            '[]'
+	no_useless_catch:                             '[]'
 }
 
 // Finding is a problem a rule found at a node.
@@ -611,6 +641,19 @@ pub fn message(rule string, finding Finding) string {
 		for_direction { fd_messages }
 		no_constant_condition { ncc_messages }
 		no_constant_binary_expression { ncbe_messages }
+		curly { cu_messages }
+		no_else_return { ner_messages }
+		no_empty { ne_messages }
+		no_empty_static_block { nesb_messages }
+		default_case_last { dcl_messages }
+		no_case_declarations { ncd_messages }
+		no_labels { nl_messages }
+		no_extra_label { nel_messages }
+		no_unused_labels { nul_messages }
+		no_with { nw_messages }
+		no_debugger { nd_messages }
+		no_unsafe_finally { nuf_messages }
+		no_useless_catch { nuca_messages }
 		else { map[string]string{} }
 	}
 	return interpolate(messages[finding.message_id] or { finding.message_id }, finding.data)
@@ -1148,6 +1191,45 @@ fn (mut c Checker) lint_rule(rule string, root C.TSNode, abs_path string, mut st
 		}
 		no_constant_binary_expression {
 			return c.lint_no_constant_binary_expression(root, abs_path, mut stats)!
+		}
+		curly {
+			return c.lint_curly(root, abs_path, mut stats)!
+		}
+		no_else_return {
+			return c.lint_no_else_return(root, abs_path, mut stats)!
+		}
+		no_empty {
+			return c.lint_no_empty(root, abs_path, mut stats)!
+		}
+		no_empty_static_block {
+			return c.lint_no_empty_static_block(root, abs_path, mut stats)!
+		}
+		default_case_last {
+			return c.lint_default_case_last(root, abs_path, mut stats)!
+		}
+		no_case_declarations {
+			return c.lint_no_case_declarations(root, abs_path, mut stats)!
+		}
+		no_labels {
+			return c.lint_no_labels(root, abs_path, mut stats)!
+		}
+		no_extra_label {
+			return c.lint_no_extra_label(root, abs_path, mut stats)!
+		}
+		no_unused_labels {
+			return c.lint_no_unused_labels(root, abs_path, mut stats)!
+		}
+		no_with {
+			return c.lint_no_with(root, abs_path, mut stats)!
+		}
+		no_debugger {
+			return c.lint_no_debugger(root, abs_path, mut stats)!
+		}
+		no_unsafe_finally {
+			return c.lint_no_unsafe_finally(root, abs_path, mut stats)!
+		}
+		no_useless_catch {
+			return c.lint_no_useless_catch(root, abs_path, mut stats)!
 		}
 		else { return error('unknown rule: ${rule}') }
 	}
