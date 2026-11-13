@@ -107,6 +107,11 @@ fn test_rule_setup_names() {
 		assert name.starts_with(rules.typescript_eslint_prefix) || name.starts_with('seyfert/'), name
 		short := name.all_after_last('/')
 		u := setup_of('{"${short}": "error"}') or { panic(err) }
+		// `dot-notation` and `no-implied-eval` are also ported rules of ESLint core.
+		if short in rules.names {
+			assert u.rules.map(it.name) == [short], name
+			continue
+		}
 		assert u.rules.len == 0, name
 		assert u.ignored == [short]
 	}
