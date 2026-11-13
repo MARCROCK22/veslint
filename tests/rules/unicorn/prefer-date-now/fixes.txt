@@ -1,0 +1,14 @@
+tests/rules/unicorn/prefer-date-now/cases.ts:4:23	unicorn/prefer-date-now	prefer-date-now-over-methods	Prefer `Date.now()` over `Date#getTime()`.	fix	111	131	Date.now()	end	4	30
+tests/rules/unicorn/prefer-date-now/cases.ts:5:23	unicorn/prefer-date-now	prefer-date-now-over-methods	Prefer `Date.now()` over `Date#valueOf()`.	fix	144	164	Date.now()	end	5	30
+tests/rules/unicorn/prefer-date-now/cases.ts:7:12	unicorn/prefer-date-now	prefer-date-now-over-number-data-object	Prefer `Date.now()` over `Number(new Date())`.	fix	208	226	Date.now()	end	7	30
+tests/rules/unicorn/prefer-date-now/cases.ts:8:19	unicorn/prefer-date-now	prefer-date	Prefer `Date.now()` over `new Date()`.	fix	246	256	Date.now()	end	8	29
+tests/rules/unicorn/prefer-date-now/cases.ts:9:12	unicorn/prefer-date-now	prefer-date	Prefer `Date.now()` over `new Date()`.	fix	270	281	Date.now()	end	9	23
+tests/rules/unicorn/prefer-date-now/cases.ts:10:13	unicorn/prefer-date-now	prefer-date	Prefer `Date.now()` over `new Date()`.	fix	295	305	Date.now()	end	10	23
+tests/rules/unicorn/prefer-date-now/cases.ts:11:12	unicorn/prefer-date-now	prefer-date	Prefer `Date.now()` over `new Date()`.	fix	318	328	Date.now()	end	11	22
+tests/rules/unicorn/prefer-date-now/cases.ts:12:16	unicorn/prefer-date-now	prefer-date	Prefer `Date.now()` over `new Date()`.	fix	349	359	Date.now()	end	12	26
+tests/rules/unicorn/prefer-date-now/cases.ts:12:29	unicorn/prefer-date-now	prefer-date	Prefer `Date.now()` over `new Date()`.	fix	362	372	Date.now()	end	12	39
+tests/rules/unicorn/prefer-date-now/cases.ts:13:6	unicorn/prefer-date-now	prefer-date	Prefer `Date.now()` over `new Date()`.	fix	379	389	Date.now()	end	13	16
+tests/rules/unicorn/prefer-date-now/cases.ts:14:7	unicorn/prefer-date-now	prefer-date	Prefer `Date.now()` over `new Date()`.	fix	397	407	Date.now()	end	14	17
+tests/rules/unicorn/prefer-date-now/cases.ts:16:9	unicorn/prefer-date-now	prefer-date	Prefer `Date.now()` over `new Date()`.	fix	433	444	 Date.now()	end	16	20
+tests/rules/unicorn/prefer-date-now/cases.ts:19:8	unicorn/prefer-date-now	prefer-date	Prefer `Date.now()` over `new Date()`.	fix	472	481	 Date.now()	end	19	17
+tests/rules/unicorn/prefer-date-now/cases.ts:23:26	unicorn/prefer-date-now	prefer-date-now-over-methods	Prefer `Date.now()` over `Date#getTime()`.	fix	601	623	Date.now()	end	23	33

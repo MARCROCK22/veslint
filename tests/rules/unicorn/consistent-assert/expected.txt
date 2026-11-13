@@ -1,0 +1,4 @@
+tests/rules/unicorn/consistent-assert/cases.ts:10:1	unicorn/consistent-assert	consistent-assert/error	Prefer `assert.ok(…)` over `assert(…)`.
+tests/rules/unicorn/consistent-assert/cases.ts:11:1	unicorn/consistent-assert	consistent-assert/error	Prefer `strictAssert.ok(…)` over `strictAssert(…)`.
+tests/rules/unicorn/consistent-assert/cases.ts:12:1	unicorn/consistent-assert	consistent-assert/error	Prefer `a2.ok(…)` over `a2(…)`.
+tests/rules/unicorn/consistent-assert/cases.ts:13:1	unicorn/consistent-assert	consistent-assert/error	Prefer `a3.ok(…)` over `a3(…)`.

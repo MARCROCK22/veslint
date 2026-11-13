@@ -129,6 +129,8 @@ pub fn check_options(rule string, options []json2.Any) !bool {
 		unicorn_prefer_ternary { upt_options(options)! }
 		unicorn_prefer_switch { ups_options(options)! }
 		unicorn_switch_case_braces { uscb_options(options)! }
+		unicorn_prefer_structured_clone { upsc_options(options)! }
+		unicorn_no_instanceof_builtins { unib_options(options)! }
 		else { return false }
 	}
 	return true

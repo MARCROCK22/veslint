@@ -1,0 +1,8 @@
+tests/rules/unicorn/throw-new-error/cases.ts:6:9	unicorn/throw-new-error	throw-new-error	Use `new` when creating an error.	fix	265	265	new 	end	6	16
+tests/rules/unicorn/throw-new-error/cases.ts:9:9	unicorn/throw-new-error	throw-new-error	Use `new` when creating an error.	fix	300	300	new 	end	9	29
+tests/rules/unicorn/throw-new-error/cases.ts:12:9	unicorn/throw-new-error	throw-new-error	Use `new` when creating an error.	fix	348	348	new 	end	12	29
+tests/rules/unicorn/throw-new-error/cases.ts:15:9	unicorn/throw-new-error	throw-new-error	Use `new` when creating an error.	fix	396	421	new (lib.getErrors().TypeError)	end	15	39
+tests/rules/unicorn/throw-new-error/cases.ts:18:9	unicorn/throw-new-error	throw-new-error	Use `new` when creating an error.	fix	454	454	new 	end	18	41
+tests/rules/unicorn/throw-new-error/cases.ts:21:8	unicorn/throw-new-error	throw-new-error	Use `new` when creating an error.	fix	513	513	 new 	end	21	17
+tests/rules/unicorn/throw-new-error/cases.ts:23:12	unicorn/throw-new-error	throw-new-error	Use `new` when creating an error.	fix	537	537	new 	end	23	21
+tests/rules/unicorn/throw-new-error/cases.ts:24:12	unicorn/throw-new-error	throw-new-error	Use `new` when creating an error.	fix	559	559	new 	end	24	24

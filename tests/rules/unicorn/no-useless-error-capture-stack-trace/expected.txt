@@ -1,0 +1,4 @@
+tests/rules/unicorn/no-useless-error-capture-stack-trace/cases.ts:6:5	unicorn/no-useless-error-capture-stack-trace	no-useless-error-capture-stack-trace/error	Unnecessary `Error.captureStackTrace(…)` call.
+tests/rules/unicorn/no-useless-error-capture-stack-trace/cases.ts:12:5	unicorn/no-useless-error-capture-stack-trace	no-useless-error-capture-stack-trace/error	Unnecessary `Error.captureStackTrace(…)` call.
+tests/rules/unicorn/no-useless-error-capture-stack-trace/cases.ts:18:5	unicorn/no-useless-error-capture-stack-trace	no-useless-error-capture-stack-trace/error	Unnecessary `Error.captureStackTrace(…)` call.
+tests/rules/unicorn/no-useless-error-capture-stack-trace/cases.ts:24:15	unicorn/no-useless-error-capture-stack-trace	no-useless-error-capture-stack-trace/error	Unnecessary `Error.captureStackTrace(…)` call.

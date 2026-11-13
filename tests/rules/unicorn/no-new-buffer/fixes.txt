@@ -1,0 +1,15 @@
+tests/rules/unicorn/no-new-buffer/cases.ts:7:12	unicorn/no-new-buffer	error	`new Buffer()` is deprecated, use `Buffer.from()` instead.	fix	226	236	Buffer.from	end	7	30
+tests/rules/unicorn/no-new-buffer/cases.ts:8:12	unicorn/no-new-buffer	error	`new Buffer()` is deprecated, use `Buffer.from()` instead.	fix	257	267	Buffer.from	end	8	30
+tests/rules/unicorn/no-new-buffer/cases.ts:9:12	unicorn/no-new-buffer	error	`new Buffer()` is deprecated, use `Buffer.from()` instead.	fix	288	298	Buffer.from	end	9	30
+tests/rules/unicorn/no-new-buffer/cases.ts:10:12	unicorn/no-new-buffer	error	`new Buffer()` is deprecated, use `Buffer.alloc()` instead.	fix	319	329	Buffer.alloc	end	10	26
+tests/rules/unicorn/no-new-buffer/cases.ts:11:12	unicorn/no-new-buffer	error	`new Buffer()` is deprecated, use `Buffer.alloc()` instead.	fix	346	356	Buffer.alloc	end	11	35
+tests/rules/unicorn/no-new-buffer/cases.ts:12:12	unicorn/no-new-buffer	error	`new Buffer()` is deprecated, use `Buffer.alloc()` instead.	fix	382	392	Buffer.alloc	end	12	38
+tests/rules/unicorn/no-new-buffer/cases.ts:13:12	unicorn/no-new-buffer	error	`new Buffer()` is deprecated, use `Buffer.alloc()` instead.	fix	421	431	Buffer.alloc	end	13	29
+tests/rules/unicorn/no-new-buffer/cases.ts:14:12	unicorn/no-new-buffer	error	`new Buffer()` is deprecated, use `Buffer.alloc()` instead.	fix	451	461	Buffer.alloc	end	14	26
+tests/rules/unicorn/no-new-buffer/cases.ts:15:12	unicorn/no-new-buffer	error	`new Buffer()` is deprecated, use `Buffer.from()` instead.	fix	478	488	Buffer.from	end	15	36
+tests/rules/unicorn/no-new-buffer/cases.ts:17:13	unicorn/no-new-buffer	error	`new Buffer()` is deprecated, use `Buffer.alloc()` instead.	fix	532	542	Buffer.alloc	end	17	29
+tests/rules/unicorn/no-new-buffer/cases.ts:18:13	unicorn/no-new-buffer	error-unknown	`new Buffer()` is deprecated, use `Buffer.alloc()` or `Buffer.from()` instead.	suggestion	suggestion	Switch to `Buffer.from()`.	562	572	Buffer.from	suggestion	suggestion	Switch to `Buffer.alloc()`.	562	572	Buffer.alloc	end	18	29
+tests/rules/unicorn/no-new-buffer/cases.ts:19:13	unicorn/no-new-buffer	error-unknown	`new Buffer()` is deprecated, use `Buffer.alloc()` or `Buffer.from()` instead.	suggestion	suggestion	Switch to `Buffer.from()`.	592	602	Buffer.from	suggestion	suggestion	Switch to `Buffer.alloc()`.	592	602	Buffer.alloc	end	19	32
+tests/rules/unicorn/no-new-buffer/cases.ts:20:13	unicorn/no-new-buffer	error	`new Buffer()` is deprecated, use `Buffer.from()` instead.	fix	625	635	Buffer.from()	end	20	23
+tests/rules/unicorn/no-new-buffer/cases.ts:21:13	unicorn/no-new-buffer	error-unknown	`new Buffer()` is deprecated, use `Buffer.alloc()` or `Buffer.from()` instead.	suggestion	suggestion	Switch to `Buffer.from()`.	649	659	Buffer.from	suggestion	suggestion	Switch to `Buffer.alloc()`.	649	659	Buffer.alloc	end	21	39
+tests/rules/unicorn/no-new-buffer/cases.ts:23:10	unicorn/no-new-buffer	error	`new Buffer()` is deprecated, use `Buffer.alloc()` instead.	fix	700	718	 ( Buffer.alloc(1))	end	24	14

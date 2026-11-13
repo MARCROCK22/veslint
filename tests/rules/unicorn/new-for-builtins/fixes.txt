@@ -1,0 +1,18 @@
+tests/rules/unicorn/new-for-builtins/cases.ts:5:12	unicorn/new-for-builtins	enforce	Use `new Map()` instead of `Map()`.	fix	209	209	new 	end	5	17
+tests/rules/unicorn/new-for-builtins/cases.ts:6:12	unicorn/new-for-builtins	enforce	Use `new Array()` instead of `Array()`.	fix	227	227	new 	end	6	20
+tests/rules/unicorn/new-for-builtins/cases.ts:7:12	unicorn/new-for-builtins	enforce	Use `new Set()` instead of `Set()`.	fix	248	248	new 	end	7	31
+tests/rules/unicorn/new-for-builtins/cases.ts:8:51	unicorn/new-for-builtins	enforce	Use `new WeakMap()` instead of `WeakMap()`.	fix	319	319	new 	end	8	60
+tests/rules/unicorn/new-for-builtins/cases.ts:9:12	unicorn/new-for-builtins	enforce	Use `new Uint8Array()` instead of `Uint8Array()`.	fix	348	348	new 	end	9	27
+tests/rules/unicorn/new-for-builtins/cases.ts:10:12	unicorn/new-for-builtins	enforce	Use `new Object()` instead of `Object()`.	fix	376	376	new 	end	10	25
+tests/rules/unicorn/new-for-builtins/cases.ts:11:12	unicorn/new-for-builtins	error-date	Use `String(new Date())` instead of `Date()`.	fix	402	408	String(new Date())	end	11	18
+tests/rules/unicorn/new-for-builtins/cases.ts:12:12	unicorn/new-for-builtins	error-date	Use `String(new Date())` instead of `Date()`.	suggestion	suggestion-date	Switch to `String(new Date())`.	421	428	String(new Date())	end	12	19
+tests/rules/unicorn/new-for-builtins/cases.ts:13:12	unicorn/new-for-builtins	error-date	Use `String(new Date())` instead of `Date()`.	suggestion	suggestion-date	Switch to `String(new Date())`.	441	456	String(new Date())	end	13	27
+tests/rules/unicorn/new-for-builtins/cases.ts:15:13	unicorn/new-for-builtins	enforce	Use `new Map()` instead of `Map()`.	fix	489	489	new 	end	15	20
+tests/rules/unicorn/new-for-builtins/cases.ts:17:9	unicorn/new-for-builtins	enforce	Use `new Error()` instead of `Error()`.	fix	521	521	 new 	end	17	21
+tests/rules/unicorn/new-for-builtins/cases.ts:19:12	unicorn/new-for-builtins	disallow	Use `String()` instead of `new String()`.	end	19	27
+tests/rules/unicorn/new-for-builtins/cases.ts:20:12	unicorn/new-for-builtins	disallow	Use `Boolean()` instead of `new Boolean()`.	end	20	30
+tests/rules/unicorn/new-for-builtins/cases.ts:21:12	unicorn/new-for-builtins	disallow	Use `Number()` instead of `new Number()`.	end	21	25
+tests/rules/unicorn/new-for-builtins/cases.ts:22:12	unicorn/new-for-builtins	disallow	Use `BigInt()` instead of `new BigInt()`.	fix	633	637		end	22	25
+tests/rules/unicorn/new-for-builtins/cases.ts:23:12	unicorn/new-for-builtins	disallow	Use `Symbol()` instead of `new Symbol()`.	fix	659	663		end	23	27
+tests/rules/unicorn/new-for-builtins/cases.ts:24:12	unicorn/new-for-builtins	disallow	Use `Symbol()` instead of `new Symbol()`.	fix	687	697	Symbol()	end	24	22
+tests/rules/unicorn/new-for-builtins/cases.ts:25:12	unicorn/new-for-builtins	disallow	Use `BigInt()` instead of `new BigInt()`.	fix	710	714		end	25	36

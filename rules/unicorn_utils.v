@@ -523,6 +523,24 @@ fn un_has_side_effect(t &estree.EsTree, node int) bool {
 // no parentheses): the token and the white space before it become the replacement, after the
 // first line break of that white space when it starts with one.
 fn (c &Checker) un_replace_token_and_spaces_before(token SourceToken, replacement string) Fix {
+	return c.un_replace_range_and_spaces_before(token.start, token.end, replacement)
+}
+
+// un_replace_node_and_spaces_before ports replaceNodeOrTokenAndSpacesBefore for a node: its
+// parentheses go too, each with the white space before it.
+fn (c &Checker) un_replace_node_and_spaces_before(t &estree.EsTree, tokens &SourceTokens, node int, replacement string) []Fix {
+	mut fixes := c.un_parentheses(t, tokens, node).map(c.un_replace_range_and_spaces_before(it.start,
+		it.end, ''))
+	fixes << c.un_replace_range_and_spaces_before(t.nodes[node].start, t.nodes[node].end,
+		replacement)
+	return fixes
+}
+
+fn (c &Checker) un_replace_range_and_spaces_before(start int, end int, replacement string) Fix {
+	token := SourceToken{
+		start: start
+		end:   end
+	}
 	before := c.src[..token.start].runes()
 	mut i := before.len
 	for i > 0 && is_js_space(before[i - 1]) {
@@ -558,4 +576,399 @@ fn (c &Checker) un_switch_case_head(t &estree.EsTree, tokens &SourceTokens, node
 	}
 	colon := c.un_token_after_punctuator(tokens, start, ':')?
 	return c.position_range(t.nodes[node].start, colon.end)
+}
+
+// UnCall are the options of isCallExpression, isNewExpression and isCallOrNewExpression
+// (ast/call-or-new-expression.js); -1 is no limit.
+@[params]
+struct UnCall {
+	names             []string
+	arguments_length  int = -1
+	minimum_arguments int
+	maximum_arguments int = -1
+	allow_spread      bool
+	optional          ?bool
+}
+
+fn un_is_call_or_new_of(t &estree.EsTree, node int, o UnCall, types []estree.NodeType) bool {
+	if node < 0 || t.typ(node) !in types {
+		return false
+	}
+	if want := o.optional {
+		if (t.flag(node, .optional) or { false }) != want {
+			return false
+		}
+	}
+	args := t.list(node, .arguments) or { []int{} }
+	if o.arguments_length >= 0 && args.len != o.arguments_length {
+		return false
+	}
+	if o.minimum_arguments != 0 && args.len < o.minimum_arguments {
+		return false
+	}
+	if o.maximum_arguments >= 0 && args.len > o.maximum_arguments {
+		return false
+	}
+	if !o.allow_spread {
+		limit := if o.maximum_arguments >= 0 { o.maximum_arguments } else { o.arguments_length }
+		if limit >= 0 {
+			for i, arg in args {
+				if i < limit && t.typ(arg) == .spread_element {
+					return false
+				}
+			}
+		}
+	}
+	if o.names.len > 0 {
+		callee := t.node(node, .callee) or { return false }
+		if t.typ(callee) != .identifier || (t.string_of(callee, .name) or { '' }) !in o.names {
+			return false
+		}
+	}
+	return true
+}
+
+// un_is_call ports isCallExpression.
+fn un_is_call(t &estree.EsTree, node int, o UnCall) bool {
+	return un_is_call_or_new_of(t, node, o, [.call_expression])
+}
+
+// un_is_new ports isNewExpression.
+fn un_is_new(t &estree.EsTree, node int, o UnCall) bool {
+	return un_is_call_or_new_of(t, node, o, [.new_expression])
+}
+
+// un_is_call_or_new ports isCallOrNewExpression.
+fn un_is_call_or_new(t &estree.EsTree, node int, o UnCall) bool {
+	return un_is_call_or_new_of(t, node, o, [.call_expression, .new_expression])
+}
+
+// UnMember are the options of isMemberExpression (ast/is-member-expression.js).
+@[params]
+struct UnMember {
+	properties []string
+	objects    []string
+	optional   ?bool
+	computed   ?bool
+}
+
+// un_is_member ports isMemberExpression.
+fn un_is_member(t &estree.EsTree, node int, o UnMember) bool {
+	if node < 0 || t.typ(node) != .member_expression {
+		return false
+	}
+	if want := o.optional {
+		if (t.flag(node, .optional) or { false }) != want {
+			return false
+		}
+	}
+	mut computed := o.computed
+	if o.properties.len > 0 {
+		property := t.node(node, .property) or { return false }
+		if t.typ(property) != .identifier
+			|| (t.string_of(property, .name) or { '' }) !in o.properties {
+			return false
+		}
+		if computed == none {
+			computed = false
+		}
+	}
+	if want := computed {
+		if (t.flag(node, .computed) or { false }) != want {
+			return false
+		}
+	}
+	if o.objects.len > 0 {
+		object := t.node(node, .object) or { return false }
+		if t.typ(object) != .identifier || (t.string_of(object, .name) or { '' }) !in o.objects {
+			return false
+		}
+	}
+	return true
+}
+
+// UnMethodCall are the options of isMethodCall (ast/is-method-call.js).
+@[params]
+struct UnMethodCall {
+	methods           []string
+	objects           []string
+	arguments_length  int = -1
+	minimum_arguments int
+	maximum_arguments int = -1
+	allow_spread      bool
+	optional_call     ?bool
+	optional_member   ?bool
+	computed          ?bool
+}
+
+// un_is_method_call ports isMethodCall: a call of a member expression.
+fn un_is_method_call(t &estree.EsTree, node int, o UnMethodCall) bool {
+	return un_is_call(t, node, UnCall{
+		arguments_length:  o.arguments_length
+		minimum_arguments: o.minimum_arguments
+		maximum_arguments: o.maximum_arguments
+		allow_spread:      o.allow_spread
+		optional:          o.optional_call
+	}) && un_is_member(t, t.node(node, .callee) or { -1 }, UnMember{
+		objects:    o.objects
+		computed:   o.computed
+		properties: o.methods
+		optional:   o.optional_member
+	})
+}
+
+// un_new_callee_needs_parens ports shouldAddParenthesesToNewExpressionCallee: a member expression
+// whose innermost object is a call (`new (a().b)()`).
+fn un_new_callee_needs_parens(t &estree.EsTree, node int) bool {
+	if t.typ(node) != .member_expression {
+		return false
+	}
+	mut current := t.node(node, .object) or { return false }
+	for t.typ(current) == .member_expression {
+		current = t.node(current, .object) or { return false }
+	}
+	return t.typ(current) == .call_expression
+}
+
+// un_switch_call_to_new ports switchCallExpressionToNewExpression: `Error()` becomes `new Error()`.
+fn (c &Checker) un_switch_call_to_new(t &estree.EsTree, tokens &SourceTokens, node int) []Fix {
+	mut fixes := c.un_fix_space_around_keyword(t, tokens, node)
+	fixes << fix_insert_at(t.nodes[node].start, 'new ')
+	callee := t.node(node, .callee) or { return fixes }
+	if !c.un_is_parenthesized(t, tokens, callee) && un_new_callee_needs_parens(t, callee) {
+		fixes << fix_insert_at(t.nodes[callee].start, '(')
+		fixes << fix_insert_at(t.nodes[callee].end, ')')
+	}
+	return fixes
+}
+
+// un_remove_method_call ports removeMethodCall: `a.b()` becomes `a`.
+fn (c &Checker) un_remove_method_call(t &estree.EsTree, tokens &SourceTokens, call int) []Fix {
+	member := t.node(call, .callee) or { return [] }
+	object := t.node(member, .object) or { return [] }
+	_, object_end := c.un_parenthesized_range(t, tokens, object)
+	_, member_end := c.un_parenthesized_range(t, tokens, member)
+	return [fix_remove_range(object_end, t.nodes[member].end),
+		fix_remove_range(member_end, t.nodes[call].end)]
+}
+
+// un_static_value is getStaticValue(node, scope) of the ESTree node; not found when it has no
+// tree-sitter node.
+fn (mut c Checker) un_static_value(t &estree.EsTree, node int) StaticValue {
+	ts := t.ts_node(node) or { return StaticValue{} }
+	return c.get_static_value(ts)
+}
+
+// un_is_static_properties ports isStaticProperties of utils/is-number.js: `object.property`.
+fn un_is_static_properties(t &estree.EsTree, node int, object string, properties []string) bool {
+	if t.typ(node) != .member_expression || (t.flag(node, .computed) or { false })
+		|| (t.flag(node, .optional) or { false }) {
+		return false
+	}
+	o := t.node(node, .object) or { return false }
+	p := t.node(node, .property) or { return false }
+	return t.typ(o) == .identifier && (t.string_of(o, .name) or { '' }) == object
+		&& t.typ(p) == .identifier && (t.string_of(p, .name) or { '' }) in properties
+}
+
+fn un_is_function_call(t &estree.EsTree, node int, name string) bool {
+	if t.typ(node) != .call_expression || (t.flag(node, .optional) or { false }) {
+		return false
+	}
+	callee := t.node(node, .callee) or { return false }
+	return t.typ(callee) == .identifier && (t.string_of(callee, .name) or { '' }) == name
+}
+
+const un_math_properties = ['E', 'LN2', 'LN10', 'LOG2E', 'LOG10E', 'PI', 'SQRT1_2', 'SQRT2']
+const un_math_methods = ['abs', 'acos', 'acosh', 'asin', 'asinh', 'atan', 'atanh', 'atan2', 'cbrt',
+	'ceil', 'clz32', 'cos', 'cosh', 'exp', 'expm1', 'floor', 'fround', 'hypot', 'imul', 'log', 'log1p',
+	'log10', 'log2', 'max', 'min', 'pow', 'random', 'round', 'sign', 'sin', 'sinh', 'sqrt', 'tan',
+	'tanh', 'trunc']
+const un_number_properties = ['EPSILON', 'MAX_SAFE_INTEGER', 'MAX_VALUE', 'MIN_SAFE_INTEGER',
+	'MIN_VALUE', 'NaN', 'NEGATIVE_INFINITY', 'POSITIVE_INFINITY']
+
+// un_is_number ports isNumber of utils/is-number.js: the expression is surely a number (not a
+// BigInt).
+fn (mut c Checker) un_is_number(t &estree.EsTree, node int) bool {
+	if node < 0 {
+		return false
+	}
+	typ := t.typ(node)
+	if typ == .literal && t.get(node, .value) is f64 {
+		return true
+	}
+	if un_is_static_properties(t, node, 'Math', un_math_properties)
+		|| un_is_static_properties(t, node, 'Number', un_number_properties) {
+		return true
+	}
+	if typ == .call_expression && !(t.flag(node, .optional) or { false }) {
+		callee := t.node(node, .callee) or { -1 }
+		if un_is_static_properties(t, callee, 'Math', un_math_methods)
+			|| un_is_static_properties(t, callee, 'Number', ['parseFloat', 'parseInt']) {
+			return true
+		}
+	}
+	if un_is_function_call(t, node, 'Number') || un_is_function_call(t, node, 'parseInt')
+		|| un_is_function_call(t, node, 'parseFloat') {
+		return true
+	}
+	// `.length`
+	if typ == .member_expression && !(t.flag(node, .computed) or { false })
+		&& !(t.flag(node, .optional) or { false }) {
+		property := t.node(node, .property) or { -1 }
+		if property >= 0 && t.typ(property) == .identifier
+			&& (t.string_of(property, .name) or { '' }) == 'length' {
+			return true
+		}
+	}
+	mut operator := t.string_of(node, .operator) or { '' }
+	match typ {
+		.assignment_expression, .binary_expression {
+			left := t.node(node, .left) or { -1 }
+			right := t.node(node, .right) or { -1 }
+			if typ == .assignment_expression {
+				if operator == '=' && c.un_is_number(t, right) {
+					return true
+				}
+				operator = operator[..operator.len - 1]
+			}
+			if operator == '+' && c.un_is_number(t, left) && c.un_is_number(t, right) {
+				return true
+			}
+			// `>>>` cannot be used on a BigInt.
+			if operator == '>>>' {
+				return true
+			}
+			// `a * b` may be a BigInt: one side must be a number.
+			if operator in ['-', '*', '/', '%', '**', '<<', '>>', '|', '^', '&']
+				&& (c.un_is_number(t, left) || c.un_is_number(t, right)) {
+				return true
+			}
+		}
+		.unary_expression {
+			// `+` cannot be used on a BigInt.
+			if operator == '+' {
+				return true
+			}
+			if operator in ['-', '~'] && c.un_is_number(t, t.node(node, .argument) or { -1 }) {
+				return true
+			}
+		}
+		.update_expression {
+			if c.un_is_number(t, t.node(node, .argument) or { -1 }) {
+				return true
+			}
+		}
+		.conditional_expression {
+			consequent := c.un_is_number(t, t.node(node, .consequent) or { -1 })
+			alternate := c.un_is_number(t, t.node(node, .alternate) or { -1 })
+			if consequent && alternate {
+				return true
+			}
+			test := c.un_static_value(t, t.node(node, .test) or { -1 })
+			if test.found && ((consequent && stv_to_boolean(test.value))
+				|| (alternate && !stv_to_boolean(test.value))) {
+				return true
+			}
+		}
+		.sequence_expression {
+			expressions := t.list(node, .expressions) or { []int{} }
+			if expressions.len > 0 && c.un_is_number(t, expressions.last()) {
+				return true
+			}
+		}
+		else {}
+	}
+	result := c.un_static_value(t, node)
+	return result.found && result.value.kind == .number_
+}
+
+// un_new_with_parentheses ports isNewExpressionWithParentheses: `new Foo()` rather than `new Foo`.
+fn (c &Checker) un_new_with_parentheses(t &estree.EsTree, tokens &SourceTokens, node int) bool {
+	if (t.list(node, .arguments) or { []int{} }).len > 0 {
+		return true
+	}
+	inside := tokens.inside(t.nodes[node].start, t.nodes[node].end, false)
+	if inside.len < 2 {
+		return false
+	}
+	callee := t.node(node, .callee) or { return false }
+	return c.token_is(inside[inside.len - 2], '(') && c.token_is(inside.last(), ')')
+		&& t.nodes[callee].end < t.nodes[node].end
+}
+
+// un_switch_new_to_call ports switchNewExpressionToCallExpression: `new Foo()` becomes `Foo()`.
+fn (c &Checker) un_switch_new_to_call(t &estree.EsTree, tokens &SourceTokens, node int) []Fix {
+	new_token := un_first_token(t, tokens, node, 0) or { return [] }
+	mut fixes := [fix_remove_range(new_token.start, new_token.end),
+		c.un_remove_spaces_after(new_token.end)]
+	if !c.un_new_with_parentheses(t, tokens, node) {
+		fixes << fix_insert_at(t.nodes[node].end, '()')
+	}
+	callee := t.node(node, .callee) or { return fixes }
+	// Without `new`, a callee on the next line after `return` would not be returned.
+	if !un_same_line(t, new_token.start, t.nodes[callee].start)
+		&& !c.un_is_parenthesized(t, tokens, node) {
+		fixes << c.un_add_parens_to_return_or_throw(t, tokens, t.nodes[node].parent)
+	}
+	return fixes
+}
+
+// UnCallTokens are the tokens of getCallExpressionTokens: the `(` and `)` of the arguments, and a
+// trailing comma before the `)`.
+struct UnCallTokens {
+	opening  SourceToken
+	closing  SourceToken
+	trailing ?SourceToken
+}
+
+// un_call_tokens ports getCallOrNewExpressionTokens.
+fn (c &Checker) un_call_tokens(t &estree.EsTree, tokens &SourceTokens, node int) ?UnCallTokens {
+	start := t.node(node, .type_arguments) or { t.node(node, .callee)? }
+	opening := c.un_token_after_punctuator(tokens, t.nodes[start].end, '(')?
+	inside := tokens.inside(t.nodes[node].start, t.nodes[node].end, false)
+	if inside.len < 2 {
+		return none
+	}
+	penultimate := inside[inside.len - 2]
+	return UnCallTokens{
+		opening:  opening
+		closing:  inside.last()
+		trailing: if c.token_is(penultimate, ',') { penultimate } else { none }
+	}
+}
+
+// un_node_matches_name_or_path ports isNodeMatchesNameOrPath: `a.b.c` matches that member chain
+// (and `this`, `super` and `new.target` as its first name).
+fn un_node_matches_name_or_path(t &estree.EsTree, from int, name_or_path string) bool {
+	parts := name_or_path.trim_space().split('.')
+	mut node := from
+	for index := parts.len - 1; index >= 0; index-- {
+		name := parts[index]
+		if name == '' {
+			return false
+		}
+		if index == 0 {
+			return (t.typ(node) == .identifier && (t.string_of(node, .name) or { '' }) == name)
+				|| (name == 'this' && t.typ(node) == .this_expression)
+				|| (name == 'super' && t.typ(node) == .super)
+		}
+		if index == 1 && t.typ(node) == .meta_property {
+			property := t.node(node, .property) or { return false }
+			if t.typ(property) == .identifier && (t.string_of(property, .name) or { '' }) == name {
+				node = t.node(node, .meta) or { return false }
+				continue
+			}
+		}
+		if t.typ(node) == .member_expression && !(t.flag(node, .optional) or { false })
+			&& !(t.flag(node, .computed) or { false }) {
+			property := t.node(node, .property) or { return false }
+			if t.typ(property) == .identifier && (t.string_of(property, .name) or { '' }) == name {
+				node = t.node(node, .object) or { return false }
+				continue
+			}
+		}
+		return false
+	}
+	return false
 }

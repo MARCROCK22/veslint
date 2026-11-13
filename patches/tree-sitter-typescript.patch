@@ -829,6 +829,16 @@
          'declare',
          'namespace',
          'type',
+@@ -1090,7 +1531,8 @@
+         'symbol',
+         'export',
+         'object',
+-        'new',
++        // veslint: not `new`, which is never a name in TypeScript: as one, `return new⏎Foo()`
++        // was `return new;` and the statement `Foo()`.
+         'readonly',
+         previous,
+       ),
 --- a/common/scanner.h
 +++ b/common/scanner.h
 @@ -13,12 +13,32 @@

@@ -1,0 +1,12 @@
+tests/rules/unicorn/error-message/cases.ts:5:12	unicorn/error-message	missing-message	Pass a message to the `Error` constructor.
+tests/rules/unicorn/error-message/cases.ts:6:12	unicorn/error-message	missing-message	Pass a message to the `Error` constructor.
+tests/rules/unicorn/error-message/cases.ts:7:26	unicorn/error-message	message-is-empty-string	Error message should not be an empty string.
+tests/rules/unicorn/error-message/cases.ts:8:27	unicorn/error-message	message-is-empty-string	Error message should not be an empty string.
+tests/rules/unicorn/error-message/cases.ts:9:22	unicorn/error-message	message-is-not-a-string	Error message should be a string.
+tests/rules/unicorn/error-message/cases.ts:10:22	unicorn/error-message	message-is-not-a-string	Error message should be a string.
+tests/rules/unicorn/error-message/cases.ts:11:22	unicorn/error-message	message-is-not-a-string	Error message should be a string.
+tests/rules/unicorn/error-message/cases.ts:12:12	unicorn/error-message	missing-message	Pass a message to the `AggregateError` constructor.
+tests/rules/unicorn/error-message/cases.ts:13:35	unicorn/error-message	message-is-empty-string	Error message should not be an empty string.
+tests/rules/unicorn/error-message/cases.ts:15:29	unicorn/error-message	message-is-empty-string	Error message should not be an empty string.
+tests/rules/unicorn/error-message/cases.ts:17:23	unicorn/error-message	message-is-not-a-string	Error message should be a string.
+tests/rules/unicorn/error-message/cases.ts:19:23	unicorn/error-message	message-is-empty-string	Error message should not be an empty string.

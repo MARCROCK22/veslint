@@ -17,8 +17,6 @@ veslint	switch-exhaustiveness-check/i23	TypeScript 7 orders the days by name, Ty
 veslint	unbound-method/i50	TypeScript 7 puts `Foo` before `Math` in the union
 # tree-sitter reads a `new` followed by a line break as the identifier `new` and an automatic `;`
 # (`const a = new` and then the statement `Foo()`), with no syntax error: a grammar bug.
-veslint	consistent-generic-constructors/i8	tree-sitter reads `new \n Foo<string> \n ()` as `new;` and `Foo<string>()`
-veslint	consistent-generic-constructors/i23	tree-sitter reads `new \n Foo \n ()` as `new;` and `Foo()`
 # tree-sitter's grammar requires the type of a mapped type: `{ [k in string]; }`, which TypeScript
 # reads as a mapped type without one, is an ERROR node.
 veslint	consistent-indexed-object-style/i54	tree-sitter reads `{ [k in string]; }` as an ERROR node

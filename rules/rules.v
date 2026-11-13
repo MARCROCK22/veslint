@@ -281,6 +281,18 @@ pub const unicorn_switch_case_braces = 'unicorn/switch-case-braces'
 pub const unicorn_switch_case_break_position = 'unicorn/switch-case-break-position'
 pub const unicorn_no_useless_switch_case = 'unicorn/no-useless-switch-case'
 pub const unicorn_prefer_simple_condition_first = 'unicorn/prefer-simple-condition-first'
+pub const unicorn_prefer_date_now = 'unicorn/prefer-date-now'
+pub const unicorn_throw_new_error = 'unicorn/throw-new-error'
+pub const unicorn_error_message = 'unicorn/error-message'
+pub const unicorn_consistent_date_clone = 'unicorn/consistent-date-clone'
+pub const unicorn_consistent_assert = 'unicorn/consistent-assert'
+pub const unicorn_no_new_buffer = 'unicorn/no-new-buffer'
+pub const unicorn_prefer_type_error = 'unicorn/prefer-type-error'
+pub const unicorn_no_useless_error_capture_stack_trace = 'unicorn/no-useless-error-capture-stack-trace'
+pub const unicorn_prefer_structured_clone = 'unicorn/prefer-structured-clone'
+pub const unicorn_custom_error_definition = 'unicorn/custom-error-definition'
+pub const unicorn_no_instanceof_builtins = 'unicorn/no-instanceof-builtins'
+pub const unicorn_new_for_builtins = 'unicorn/new-for-builtins'
 pub const names = [no_floating_promises, await_thenable, require_await, return_await,
 	no_misused_promises, no_unsafe_call, no_unsafe_member_access, no_unsafe_return,
 	no_unsafe_assignment, no_unsafe_argument, restrict_template_expressions,
@@ -346,7 +358,11 @@ pub const names = [no_floating_promises, await_thenable, require_await, return_a
 	unicorn_no_negated_condition, unicorn_no_negation_in_equality_check, unicorn_no_nested_ternary,
 	unicorn_no_typeof_undefined, unicorn_prefer_logical_operator_over_ternary, unicorn_prefer_ternary,
 	unicorn_prefer_switch, unicorn_switch_case_braces, unicorn_switch_case_break_position,
-	unicorn_no_useless_switch_case, unicorn_prefer_simple_condition_first]
+	unicorn_no_useless_switch_case, unicorn_prefer_simple_condition_first, unicorn_prefer_date_now,
+	unicorn_throw_new_error, unicorn_error_message, unicorn_consistent_date_clone,
+	unicorn_consistent_assert, unicorn_no_new_buffer, unicorn_prefer_type_error,
+	unicorn_no_useless_error_capture_stack_trace, unicorn_prefer_structured_clone,
+	unicorn_custom_error_definition, unicorn_no_instanceof_builtins, unicorn_new_for_builtins]
 
 // untyped_rules are the ported rules that need no types (`meta.docs.requiresTypeChecking` is false
 // in typescript-eslint): with only these, the command line makes no snapshot (Checker.make_snapshot).
@@ -393,7 +409,11 @@ pub const untyped_rules = [adjacent_overload_signatures, array_type, class_liter
 	unicorn_no_negated_condition, unicorn_no_negation_in_equality_check, unicorn_no_nested_ternary,
 	unicorn_no_typeof_undefined, unicorn_prefer_logical_operator_over_ternary, unicorn_prefer_ternary,
 	unicorn_prefer_switch, unicorn_switch_case_braces, unicorn_switch_case_break_position,
-	unicorn_no_useless_switch_case, unicorn_prefer_simple_condition_first]
+	unicorn_no_useless_switch_case, unicorn_prefer_simple_condition_first, unicorn_prefer_date_now,
+	unicorn_throw_new_error, unicorn_error_message, unicorn_consistent_date_clone,
+	unicorn_consistent_assert, unicorn_no_new_buffer, unicorn_prefer_type_error,
+	unicorn_no_useless_error_capture_stack_trace, unicorn_prefer_structured_clone,
+	unicorn_custom_error_definition, unicorn_no_instanceof_builtins, unicorn_new_for_builtins]
 
 // needs_types tells whether a rule asks tsgo for the types of the program.
 pub fn needs_types(rule string) bool {
@@ -670,6 +690,18 @@ pub const default_options = {
 	unicorn_switch_case_break_position:           '[]'
 	unicorn_no_useless_switch_case:               '[]'
 	unicorn_prefer_simple_condition_first:        '[]'
+	unicorn_prefer_date_now:                      '[]'
+	unicorn_throw_new_error:                      '[]'
+	unicorn_error_message:                        '[]'
+	unicorn_consistent_date_clone:                '[]'
+	unicorn_consistent_assert:                    '[]'
+	unicorn_no_new_buffer:                        '[]'
+	unicorn_prefer_type_error:                    '[]'
+	unicorn_no_useless_error_capture_stack_trace: '[]'
+	unicorn_prefer_structured_clone:              '[{"functions":[]}]'
+	unicorn_custom_error_definition:              '[]'
+	unicorn_no_instanceof_builtins:               '[{"useErrorIsError":false,"strategy":"loose","include":[],"exclude":[]}]'
+	unicorn_new_for_builtins:                     '[]'
 }
 
 // Finding is a problem a rule found at a node.
@@ -1069,6 +1101,18 @@ pub fn message(rule string, finding Finding) string {
 		unicorn_switch_case_break_position { uscbp_messages }
 		unicorn_no_useless_switch_case { unusc_messages }
 		unicorn_prefer_simple_condition_first { upscf_messages }
+		unicorn_prefer_date_now { updn_messages }
+		unicorn_throw_new_error { utne_messages }
+		unicorn_error_message { uem_messages }
+		unicorn_consistent_date_clone { ucdc_messages }
+		unicorn_consistent_assert { uca_messages }
+		unicorn_no_new_buffer { unnb_messages }
+		unicorn_prefer_type_error { upte_messages }
+		unicorn_no_useless_error_capture_stack_trace { unuecst_messages }
+		unicorn_prefer_structured_clone { upsc_messages }
+		unicorn_custom_error_definition { ucedf_messages }
+		unicorn_no_instanceof_builtins { unib_messages }
+		unicorn_new_for_builtins { unfb_messages }
 		else { map[string]string{} }
 	}
 	return interpolate(messages[finding.message_id] or { finding.message_id }, finding.data)
@@ -1201,9 +1245,16 @@ pub fn (mut c Checker) lint_file(parser Parser, config LintConfig, src string, a
 		for f in c.lint_rule(setting.name, root, abs_path, mut stats)! {
 			findings << Finding{
 				...f
-				stmt:     c.trimmed_end(f.stmt)
-				rule:     setting.name
-				severity: setting.severity
+				stmt:       c.trimmed_end(f.stmt)
+				rule:       setting.name
+				severity:   setting.severity
+				// A report with a message of its own and no messageId: ESLint's line has the
+				// severity in its place.
+				message_id: if f.message_id == '' && f.text != '' {
+					if setting.severity == 1 { 'warning' } else { 'error' }
+				} else {
+					f.message_id
+				}
 			}
 		}
 		stats.unmatched += c.too_deep
@@ -2016,6 +2067,42 @@ fn (mut c Checker) lint_rule(rule string, root C.TSNode, abs_path string, mut st
 		unicorn_prefer_simple_condition_first {
 			return c.lint_unicorn_prefer_simple_condition_first(root, abs_path, mut stats)!
 		}
+		unicorn_prefer_date_now {
+			return c.lint_unicorn_prefer_date_now(root, abs_path, mut stats)!
+		}
+		unicorn_throw_new_error {
+			return c.lint_unicorn_throw_new_error(root, abs_path, mut stats)!
+		}
+		unicorn_error_message {
+			return c.lint_unicorn_error_message(root, abs_path, mut stats)!
+		}
+		unicorn_consistent_date_clone {
+			return c.lint_unicorn_consistent_date_clone(root, abs_path, mut stats)!
+		}
+		unicorn_consistent_assert {
+			return c.lint_unicorn_consistent_assert(root, abs_path, mut stats)!
+		}
+		unicorn_no_new_buffer {
+			return c.lint_unicorn_no_new_buffer(root, abs_path, mut stats)!
+		}
+		unicorn_prefer_type_error {
+			return c.lint_unicorn_prefer_type_error(root, abs_path, mut stats)!
+		}
+		unicorn_no_useless_error_capture_stack_trace {
+			return c.lint_unicorn_no_useless_error_capture_stack_trace(root, abs_path, mut stats)!
+		}
+		unicorn_prefer_structured_clone {
+			return c.lint_unicorn_prefer_structured_clone(root, abs_path, mut stats)!
+		}
+		unicorn_custom_error_definition {
+			return c.lint_unicorn_custom_error_definition(root, abs_path, mut stats)!
+		}
+		unicorn_no_instanceof_builtins {
+			return c.lint_unicorn_no_instanceof_builtins(root, abs_path, mut stats)!
+		}
+		unicorn_new_for_builtins {
+			return c.lint_unicorn_new_for_builtins(root, abs_path, mut stats)!
+		}
 		else { return error('unknown rule: ${rule}') }
 	}
 }
@@ -2122,8 +2209,10 @@ mut:
 	file_tokens &SourceTokens = unsafe { nil }
 	// the ESTree of the file and its code path analysis (estree_bridge.v), built on first use (per
 	// file)
-	file_es_state         EsFileState
-	file_es               estree.EsTree
+	file_es_state EsFileState
+	file_es       estree.EsTree
+	// file_es_by_ts is the ESTree node of each tree-sitter node of the file (see es_index_of).
+	file_es_by_ts         map[u64]int
 	file_code_paths       codepath.Analysis
 	file_code_paths_built bool
 	// no-deprecated: the reason of the first @deprecated tag of each symbol, or ndep_not_deprecated;

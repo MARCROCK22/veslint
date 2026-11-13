@@ -2,6 +2,11 @@
 
 Each version is a release on GitHub with the veslint binaries (Linux x64, Windows x64) and the VS Code extension. The section of a version is the text of its release.
 
+## 0.15.0
+
+- **12 rules of eslint-plugin-unicorn for errors and built-ins:** `unicorn/consistent-assert`, `unicorn/consistent-date-clone`, `unicorn/custom-error-definition`, `unicorn/error-message`, `unicorn/new-for-builtins`, `unicorn/no-instanceof-builtins`, `unicorn/no-new-buffer`, `unicorn/no-useless-error-capture-stack-trace`, `unicorn/prefer-date-now`, `unicorn/prefer-structured-clone`, `unicorn/prefer-type-error` and `unicorn/throw-new-error`. They come with their options, fixes and suggestions, and pass the cases of unicorn's own tests.
+- **Fix (grammar):** `new` at the end of a line (`return new⏎Foo()`, or with a comment after `new`) was read as a name, which ended the statement there. Two cases of typescript-eslint's own tests that were listed as known differences now pass.
+
 ## 0.14.0
 
 - **12 rules of eslint-plugin-unicorn for conditions and switches:** `unicorn/no-lonely-if`, `unicorn/no-negated-condition`, `unicorn/no-negation-in-equality-check`, `unicorn/no-nested-ternary`, `unicorn/no-typeof-undefined`, `unicorn/no-useless-switch-case`, `unicorn/prefer-logical-operator-over-ternary`, `unicorn/prefer-simple-condition-first`, `unicorn/prefer-switch`, `unicorn/prefer-ternary`, `unicorn/switch-case-braces` and `unicorn/switch-case-break-position`. They come with their options, fixes and suggestions, and pass the cases of unicorn's own tests.

@@ -1,0 +1,11 @@
+tests/rules/unicorn/custom-error-definition/cases.ts:6:14	unicorn/custom-error-definition	error	Invalid class name, use `FooError`.
+tests/rules/unicorn/custom-error-definition/cases.ts:9:14	unicorn/custom-error-definition	error	Invalid class name, use `FooError`.
+tests/rules/unicorn/custom-error-definition/cases.ts:12:8	unicorn/custom-error-definition	error	The `name` property should be set to `NoNameError`.
+tests/rules/unicorn/custom-error-definition/cases.ts:13:8	unicorn/custom-error-definition	error	The `name` property should be set to `EmptyNameError`.
+tests/rules/unicorn/custom-error-definition/cases.ts:17:10	unicorn/custom-error-definition	error	The `name` property should be set to `WrongNameError`.
+tests/rules/unicorn/custom-error-definition/cases.ts:20:17	unicorn/custom-error-definition	error	Missing call to `super()` in constructor.
+tests/rules/unicorn/custom-error-definition/cases.ts:26:5	unicorn/custom-error-definition	error	Pass the error message to `super()` instead of setting `this.message`.
+tests/rules/unicorn/custom-error-definition/cases.ts:34:17	unicorn/custom-error-definition	error	The `name` property should be set to `NameInConstructorError`.
+tests/rules/unicorn/custom-error-definition/cases.ts:38:17	unicorn/custom-error-definition	error	The `name` property should be set to `NoNameInConstructorError`.
+tests/rules/unicorn/custom-error-definition/cases.ts:42:9	unicorn/custom-error-definition	invalidExport	Exported error name should match error class
+tests/rules/unicorn/custom-error-definition/cases.ts:45:9	unicorn/custom-error-definition	invalidExport	Exported error name should match error class

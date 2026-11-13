@@ -86,7 +86,7 @@ Directive comments work as in ESLint 10: `eslint-disable`, `eslint-enable`, `esl
 
 ## Rules
 
-veslint has **266 rules**, each with all its options, fixes and suggestions:
+veslint has **278 rules**, each with all its options, fixes and suggestions:
 
 <details>
 <summary><b>ESLint 10.6.0</b>: 134 rules</summary>
@@ -103,9 +103,9 @@ veslint has **266 rules**, each with all its options, fixes and suggestions:
 </details>
 
 <details>
-<summary><b>eslint-plugin-unicorn 64.0.0</b>: 12 rules</summary>
+<summary><b>eslint-plugin-unicorn 64.0.0</b>: 24 rules</summary>
 
-`unicorn/no-lonely-if`, `unicorn/no-negated-condition`, `unicorn/no-negation-in-equality-check`, `unicorn/no-nested-ternary`, `unicorn/no-typeof-undefined`, `unicorn/no-useless-switch-case`, `unicorn/prefer-logical-operator-over-ternary`, `unicorn/prefer-simple-condition-first`, `unicorn/prefer-switch`, `unicorn/prefer-ternary`, `unicorn/switch-case-braces`, `unicorn/switch-case-break-position`
+`unicorn/consistent-assert`, `unicorn/consistent-date-clone`, `unicorn/custom-error-definition`, `unicorn/error-message`, `unicorn/new-for-builtins`, `unicorn/no-instanceof-builtins`, `unicorn/no-lonely-if`, `unicorn/no-negated-condition`, `unicorn/no-negation-in-equality-check`, `unicorn/no-nested-ternary`, `unicorn/no-new-buffer`, `unicorn/no-typeof-undefined`, `unicorn/no-useless-error-capture-stack-trace`, `unicorn/no-useless-switch-case`, `unicorn/prefer-date-now`, `unicorn/prefer-logical-operator-over-ternary`, `unicorn/prefer-simple-condition-first`, `unicorn/prefer-structured-clone`, `unicorn/prefer-switch`, `unicorn/prefer-ternary`, `unicorn/prefer-type-error`, `unicorn/switch-case-braces`, `unicorn/switch-case-break-position`, `unicorn/throw-new-error`
 
 </details>
 

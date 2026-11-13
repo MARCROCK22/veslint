@@ -1,4 +1,2 @@
 # Files of the corpus of tests/estree/run.sh whose ESTree differs from typescript-estree's, with the
 # reason (paths relative to the corpus directory; up/ holds the code of the upstream cases).
-up/1c2abd520cb29f92.ts	tree-sitter reads `new` before a line break as an identifier (`new \n Foo<string> \n ()`)
-up/1fb4d0f5d103cd90.ts	tree-sitter reads `new` before a line break as an identifier (`new \n Foo \n ()`)

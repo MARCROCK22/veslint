@@ -1,0 +1,15 @@
+tests/rules/unicorn/prefer-structured-clone/cases.ts:9:12	unicorn/prefer-structured-clone	prefer-structured-clone/error	Prefer `structuredClone(…)` over `JSON.parse(JSON.stringify(…))` to create a deep clone.
+tests/rules/unicorn/prefer-structured-clone/cases.ts:10:12	unicorn/prefer-structured-clone	prefer-structured-clone/error	Prefer `structuredClone(…)` over `JSON.parse(JSON.stringify(…))` to create a deep clone.
+tests/rules/unicorn/prefer-structured-clone/cases.ts:11:12	unicorn/prefer-structured-clone	prefer-structured-clone/error	Prefer `structuredClone(…)` over `JSON.parse(JSON.stringify(…))` to create a deep clone.
+tests/rules/unicorn/prefer-structured-clone/cases.ts:12:12	unicorn/prefer-structured-clone	prefer-structured-clone/error	Prefer `structuredClone(…)` over `JSON.parse(JSON.stringify(…))` to create a deep clone.
+tests/rules/unicorn/prefer-structured-clone/cases.ts:13:12	unicorn/prefer-structured-clone	prefer-structured-clone/error	Prefer `structuredClone(…)` over `_.cloneDeep(…)` to create a deep clone.
+tests/rules/unicorn/prefer-structured-clone/cases.ts:14:12	unicorn/prefer-structured-clone	prefer-structured-clone/error	Prefer `structuredClone(…)` over `lodash.cloneDeep(…)` to create a deep clone.
+tests/rules/unicorn/prefer-structured-clone/functions/cases.ts:9:12	unicorn/prefer-structured-clone	prefer-structured-clone/error	Prefer `structuredClone(…)` over `JSON.parse(JSON.stringify(…))` to create a deep clone.
+tests/rules/unicorn/prefer-structured-clone/functions/cases.ts:10:12	unicorn/prefer-structured-clone	prefer-structured-clone/error	Prefer `structuredClone(…)` over `JSON.parse(JSON.stringify(…))` to create a deep clone.
+tests/rules/unicorn/prefer-structured-clone/functions/cases.ts:11:12	unicorn/prefer-structured-clone	prefer-structured-clone/error	Prefer `structuredClone(…)` over `JSON.parse(JSON.stringify(…))` to create a deep clone.
+tests/rules/unicorn/prefer-structured-clone/functions/cases.ts:12:12	unicorn/prefer-structured-clone	prefer-structured-clone/error	Prefer `structuredClone(…)` over `JSON.parse(JSON.stringify(…))` to create a deep clone.
+tests/rules/unicorn/prefer-structured-clone/functions/cases.ts:13:12	unicorn/prefer-structured-clone	prefer-structured-clone/error	Prefer `structuredClone(…)` over `_.cloneDeep(…)` to create a deep clone.
+tests/rules/unicorn/prefer-structured-clone/functions/cases.ts:14:12	unicorn/prefer-structured-clone	prefer-structured-clone/error	Prefer `structuredClone(…)` over `lodash.cloneDeep(…)` to create a deep clone.
+tests/rules/unicorn/prefer-structured-clone/functions/cases.ts:15:12	unicorn/prefer-structured-clone	prefer-structured-clone/error	Prefer `structuredClone(…)` over `clone(…)` to create a deep clone.
+tests/rules/unicorn/prefer-structured-clone/functions/cases.ts:16:12	unicorn/prefer-structured-clone	prefer-structured-clone/error	Prefer `structuredClone(…)` over `utils.deep.clone(…)` to create a deep clone.
+tests/rules/unicorn/prefer-structured-clone/functions/cases.ts:22:12	unicorn/prefer-structured-clone	prefer-structured-clone/error	Prefer `structuredClone(…)` over `this.copy(…)` to create a deep clone.

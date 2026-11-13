@@ -59,6 +59,30 @@ fn (mut c Checker) code_path_analysis(root C.TSNode, abs_path string) ?&codepath
 fn (mut c Checker) reset_es_file() {
 	c.file_es_state = .unknown
 	c.file_es = estree.EsTree{}
+	c.file_es_by_ts = map[u64]int{}
 	c.file_code_paths_built = false
 	c.file_code_paths = codepath.Analysis{}
+}
+
+// es_index_of is the ESTree node a tree-sitter node of the file was converted to (the innermost
+// one when several share it, as a ChainExpression and its member expression), for the helpers
+// ported on tree-sitter's tree (the ReferenceTracker, the scope tree) that the rules on the ESTree
+// use; none if it has none.
+fn (mut c Checker) es_index_of(t &estree.EsTree, n C.TSNode) ?int {
+	if c.file_es_by_ts.len == 0 {
+		for i, node in t.nodes {
+			if !node.has_ts {
+				continue
+			}
+			key := node_key(node.ts)
+			if previous := c.file_es_by_ts[key] {
+				// The child made from the same node replaces its parent.
+				if t.nodes[i].parent != previous {
+					continue
+				}
+			}
+			c.file_es_by_ts[key] = i
+		}
+	}
+	return c.file_es_by_ts[node_key(n)] or { return none }
 }

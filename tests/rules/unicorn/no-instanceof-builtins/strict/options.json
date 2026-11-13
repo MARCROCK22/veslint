@@ -1,0 +1,1 @@
+[{"strategy": "strict", "useErrorIsError": true, "include": ["Element"], "exclude": ["Map"]}]

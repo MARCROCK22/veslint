@@ -271,6 +271,18 @@ const rule_option_schemas = {
 	'unicorn/switch-case-break-position':                              '{"type":"array","minItems":0,"maxItems":0}'
 	'unicorn/no-useless-switch-case':                                  '{"type":"array","minItems":0,"maxItems":0}'
 	'unicorn/prefer-simple-condition-first':                           '{"type":"array","minItems":0,"maxItems":0}'
+	'unicorn/prefer-date-now':                                         '{"type":"array","minItems":0,"maxItems":0}'
+	'unicorn/throw-new-error':                                         '{"type":"array","minItems":0,"maxItems":0}'
+	'unicorn/error-message':                                           '{"type":"array","minItems":0,"maxItems":0}'
+	'unicorn/consistent-date-clone':                                   '{"type":"array","minItems":0,"maxItems":0}'
+	'unicorn/consistent-assert':                                       '{"type":"array","minItems":0,"maxItems":0}'
+	'unicorn/no-new-buffer':                                           '{"type":"array","minItems":0,"maxItems":0}'
+	'unicorn/prefer-type-error':                                       '{"type":"array","minItems":0,"maxItems":0}'
+	'unicorn/no-useless-error-capture-stack-trace':                    '{"type":"array","minItems":0,"maxItems":0}'
+	'unicorn/prefer-structured-clone':                                 '{"type":"array","items":[{"type":"object","additionalProperties":false,"properties":{"functions":{"type":"array","uniqueItems":true,"description":"Additional functions to check."}}}],"minItems":0,"maxItems":1}'
+	'unicorn/custom-error-definition':                                 '{"type":"array","minItems":0,"maxItems":0}'
+	'unicorn/no-instanceof-builtins':                                  '{"type":"array","items":[{"type":"object","properties":{"useErrorIsError":{"type":"boolean"},"strategy":{"enum":["loose","strict"]},"include":{"type":"array","items":{"type":"string"}},"exclude":{"type":"array","items":{"type":"string"}}},"additionalProperties":false}],"minItems":0,"maxItems":1}'
+	'unicorn/new-for-builtins':                                        '{"type":"array","minItems":0,"maxItems":0}'
 }
 
 // eslint_rule_default_options are the meta.defaultOptions of the rules of ESLint and of
