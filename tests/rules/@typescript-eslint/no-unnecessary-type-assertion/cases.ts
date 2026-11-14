@@ -122,3 +122,41 @@ function inArrow(): void {
 export { a, b, c, d, e, f, g, h, genericNonNull, constrainedNonNull, unknownNonNull, i, j, k, varUse };
 export { l, m, n, o, p, q, r, s, t, u, v, w, x, y, z, aa, ab, ac, ad, ae, af, ag, ah, ai, aj, ak, al, am };
 export { an, ao, ap, length, aq, ar, as1, Holder, inArrow };
+
+// typescript-eslint 8.72: between `number` and a numeric enum an assertion is needed both ways, also
+// in a union; an index signature on either side only; a generic call whose type arguments the
+// assertion may infer gets no fix.
+enum Color {
+  Red,
+  Green,
+}
+declare const key: string;
+declare const colorValue: Color;
+declare const numberValue: number;
+declare const values: Record<Color, string>;
+void values[+key as Color];
+void (numberValue as Color);
+void (colorValue as number);
+void (colorValue as Color | number);
+void ((numberValue as number | undefined) as Color | undefined);
+void (Color.Red as Color);
+declare const record: Record<string, number>;
+declare const plain: { a: number };
+void (plain as { a: number } & Record<string, number>);
+void (record as Record<string, number>);
+declare function generic<T>(): T;
+declare function genericArgument<T>(value: T): T;
+declare function notGeneric(): number;
+declare const promised: () => Promise<number>;
+declare const maybe: { method<T>(): T } | undefined;
+const fromGeneric = generic<number>() as number;
+const inferred = genericArgument(1) as number;
+const notInferred = notGeneric() as number;
+async function awaited() {
+  const a = (await genericArgument(promised())) as number;
+  const b = genericArgument(numberValue)! as number;
+  const c = (0, genericArgument(numberValue)) as number;
+  const d = maybe?.method<number>() as number | undefined;
+  void [a, b, c, d];
+}
+void [fromGeneric, inferred, notInferred, awaited];
