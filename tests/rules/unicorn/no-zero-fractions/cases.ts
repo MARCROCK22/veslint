@@ -24,3 +24,12 @@ const z2 = 1.5;
 const z3 = 1e10;
 const z4 = 0x10;
 const z5 = 1_0.5_1;
+
+// 79.0.0: a leading zero before the decimal point.
+export const leadingZero1 = .5;
+export const leadingZero2 = -.5;
+export const leadingZero3 = .5e2;
+export const leadingZero4 = .5.toString();
+export const leadingZero5 = .0;
+export const leadingZero6 = .10;
+export function leadingZero7() {return.5}

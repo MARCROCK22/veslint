@@ -2,10 +2,12 @@ module rules
 
 import time
 
-// Port of the `unicorn/no-zero-fractions` rule of eslint-plugin-unicorn 64.0.0 (it has no
-// options), with its fix.
+// Port of the `unicorn/no-zero-fractions` rule of eslint-plugin-unicorn 79.0.0 (it has no
+// options), with its fix. Only the JavaScript part: the CSS, YAML, TOML and JSON languages are not
+// linted by veslint.
 
 const unzf_messages = {
+	'leading-zero':  'Use a leading zero before the decimal point.'
 	'zero-fraction': "Don't use a zero fraction in the number."
 	'dangling-dot':  "Don't use a dangling dot in the number."
 }
@@ -78,16 +80,19 @@ fn (mut c Checker) lint_unicorn_no_zero_fractions(root C.TSNode, abs_path string
 		for k > 0 && dot_and_fractions[k - 1] in [`.`, `0`, `_`] {
 			k--
 		}
-		mut formatted := before + dot_and_fractions[..k]
-		if formatted == '' {
-			formatted = '0'
-		}
-		formatted += after
+		// A JavaScript numeric literal has no sign: `sign` is always ''.
+		fixed_dot_and_fractions := dot_and_fractions[..k]
+		formatted := (if before == '' { '0' } else { before }) + fixed_dot_and_fractions + after
 		if formatted == raw {
 			continue
 		}
 		end := t.nodes[node].start + before.len + dot_and_fractions.len
-		start := end - (raw.len - formatted.len)
+		needs_leading_zero := before == '' && fixed_dot_and_fractions != ''
+		start := if needs_leading_zero {
+			t.nodes[node].start
+		} else {
+			end - (if raw.len > formatted.len { raw.len - formatted.len } else { 0 })
+		}
 		mut fixed := formatted
 		parent := t.nodes[node].parent
 		if t.typ(parent) == .member_expression && t.node(parent, .object) or { -1 } == node
@@ -102,7 +107,13 @@ fn (mut c Checker) lint_unicorn_no_zero_fractions(root C.TSNode, abs_path string
 		has_fix, fix := c.merge_fixes(fixes)!
 		findings << Finding{
 			stmt:       c.position_range(start, end)
-			message_id: if dot_and_fractions == '.' { 'dangling-dot' } else { 'zero-fraction' }
+			message_id: if needs_leading_zero {
+				'leading-zero'
+			} else if dot_and_fractions == '.' {
+				'dangling-dot'
+			} else {
+				'zero-fraction'
+			}
 			has_fix:    has_fix
 			fix:        fix
 		}
