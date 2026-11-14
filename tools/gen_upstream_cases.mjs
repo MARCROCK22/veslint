@@ -479,6 +479,11 @@ function unicornSnapshotExpectation(run, test, source) {
   if (parserName === 'vue' || parserName === 'html' || parserName === 'svelte' || test.language) return { errors: [] };
   const languageOptions = deepMerge(deepMerge({ globals: UNICORN_GLOBALS }, runLanguageOptions), caseLanguageOptions);
   if (parserName === 'typescript') languageOptions.parser = requireDependency('@typescript-eslint/parser');
+  // `parserOptions: {sourceType: 'script'}` of a case: its snapshot was taken with the code parsed as
+  // a script (ESLint 10.15.0 passes languageOptions.sourceType, `module` by default, over it).
+  if (!caseLanguageOptions.sourceType && caseLanguageOptions.parserOptions?.sourceType) {
+    languageOptions.sourceType = caseLanguageOptions.parserOptions.sourceType;
+  }
   const config = [
     {
       files: JS_FILES,
@@ -486,6 +491,8 @@ function unicornSnapshotExpectation(run, test, source) {
       plugins: { unicorn: unicornPluginCache },
       rules: { [`unicorn/${name}`]: ['error', ...(test.options ?? [])] },
       settings: { ...run.config.settings, ...test.settings },
+      // As snapshot-rule-tester.js: no problem for an unused disable directive.
+      linterOptions: { reportUnusedDisableDirectives: 'off' },
     },
   ];
   const filename = test.filename ?? (parserName === 'typescript' ? 'file.ts' : 'file.js');

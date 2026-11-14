@@ -1,0 +1,61 @@
+tests/rules/unicorn/prefer-spread/cases.ts:28:19	unicorn/prefer-spread	array-from	Prefer the spread operator over `Array.from(…)`.
+tests/rules/unicorn/prefer-spread/cases.ts:29:17	unicorn/prefer-spread	array-from	Prefer the spread operator over `Array.from(…)`.
+tests/rules/unicorn/prefer-spread/cases.ts:30:18	unicorn/prefer-spread	array-from	Prefer the spread operator over `Array.from(…)`.
+tests/rules/unicorn/prefer-spread/cases.ts:31:6	unicorn/prefer-spread	array-from	Prefer the spread operator over `Array.from(…)`.
+tests/rules/unicorn/prefer-spread/cases.ts:32:1	unicorn/prefer-spread	array-from	Prefer the spread operator over `Array.from(…)`.
+tests/rules/unicorn/prefer-spread/cases.ts:33:19	unicorn/prefer-spread	array-from	Prefer the spread operator over `Array.from(…)`.
+tests/rules/unicorn/prefer-spread/cases.ts:34:21	unicorn/prefer-spread	array-from	Prefer the spread operator over `Array.from(…)`.
+tests/rules/unicorn/prefer-spread/cases.ts:35:21	unicorn/prefer-spread	array-from	Prefer the spread operator over `Array.from(…)`.
+tests/rules/unicorn/prefer-spread/cases.ts:36:28	unicorn/prefer-spread	array-from	Prefer the spread operator over `Array.from(…)`.
+tests/rules/unicorn/prefer-spread/cases.ts:37:27	unicorn/prefer-spread	array-from	Prefer the spread operator over `Array.from(…)`.
+tests/rules/unicorn/prefer-spread/cases.ts:49:24	unicorn/prefer-spread	array-concat	Prefer the spread operator over `Array#concat(…)`.
+tests/rules/unicorn/prefer-spread/cases.ts:50:24	unicorn/prefer-spread	array-concat	Prefer the spread operator over `Array#concat(…)`.
+tests/rules/unicorn/prefer-spread/cases.ts:51:24	unicorn/prefer-spread	array-concat	Prefer the spread operator over `Array#concat(…)`.
+tests/rules/unicorn/prefer-spread/cases.ts:52:25	unicorn/prefer-spread	array-concat	Prefer the spread operator over `Array#concat(…)`.
+tests/rules/unicorn/prefer-spread/cases.ts:53:20	unicorn/prefer-spread	array-concat	Prefer the spread operator over `Array#concat(…)`.
+tests/rules/unicorn/prefer-spread/cases.ts:54:24	unicorn/prefer-spread	array-concat	Prefer the spread operator over `Array#concat(…)`.
+tests/rules/unicorn/prefer-spread/cases.ts:55:23	unicorn/prefer-spread	array-concat	Prefer the spread operator over `Array#concat(…)`.
+tests/rules/unicorn/prefer-spread/cases.ts:56:25	unicorn/prefer-spread	array-concat	Prefer the spread operator over `Array#concat(…)`.
+tests/rules/unicorn/prefer-spread/cases.ts:57:38	unicorn/prefer-spread	array-concat	Prefer the spread operator over `Array#concat(…)`.
+tests/rules/unicorn/prefer-spread/cases.ts:58:27	unicorn/prefer-spread	array-concat	Prefer the spread operator over `Array#concat(…)`.
+tests/rules/unicorn/prefer-spread/cases.ts:59:25	unicorn/prefer-spread	array-concat	Prefer the spread operator over `Array#concat(…)`.
+tests/rules/unicorn/prefer-spread/cases.ts:60:25	unicorn/prefer-spread	array-concat	Prefer the spread operator over `Array#concat(…)`.
+tests/rules/unicorn/prefer-spread/cases.ts:61:25	unicorn/prefer-spread	array-concat	Prefer the spread operator over `Array#concat(…)`.
+tests/rules/unicorn/prefer-spread/cases.ts:62:33	unicorn/prefer-spread	array-concat	Prefer the spread operator over `Array#concat(…)`.
+tests/rules/unicorn/prefer-spread/cases.ts:64:10	unicorn/prefer-spread	array-concat	Prefer the spread operator over `Array#concat(…)`.
+tests/rules/unicorn/prefer-spread/cases.ts:65:25	unicorn/prefer-spread	array-concat	Prefer the spread operator over `Array#concat(…)`.
+tests/rules/unicorn/prefer-spread/cases.ts:66:25	unicorn/prefer-spread	array-concat	Prefer the spread operator over `Array#concat(…)`.
+tests/rules/unicorn/prefer-spread/cases.ts:67:25	unicorn/prefer-spread	array-concat	Prefer the spread operator over `Array#concat(…)`.
+tests/rules/unicorn/prefer-spread/cases.ts:68:25	unicorn/prefer-spread	array-concat	Prefer the spread operator over `Array#concat(…)`.
+tests/rules/unicorn/prefer-spread/cases.ts:69:25	unicorn/prefer-spread	array-concat	Prefer the spread operator over `Array#concat(…)`.
+tests/rules/unicorn/prefer-spread/cases.ts:70:25	unicorn/prefer-spread	array-concat	Prefer the spread operator over `Array#concat(…)`.
+tests/rules/unicorn/prefer-spread/cases.ts:74:8	unicorn/prefer-spread	array-concat	Prefer the spread operator over `Array#concat(…)`.
+tests/rules/unicorn/prefer-spread/cases.ts:76:8	unicorn/prefer-spread	array-concat	Prefer the spread operator over `Array#concat(…)`.
+tests/rules/unicorn/prefer-spread/cases.ts:77:8	unicorn/prefer-spread	array-concat	Prefer the spread operator over `Array#concat(…)`.
+tests/rules/unicorn/prefer-spread/cases.ts:78:11	unicorn/prefer-spread	array-concat	Prefer the spread operator over `Array#concat(…)`.
+tests/rules/unicorn/prefer-spread/cases.ts:79:8	unicorn/prefer-spread	array-concat	Prefer the spread operator over `Array#concat(…)`.
+tests/rules/unicorn/prefer-spread/cases.ts:80:8	unicorn/prefer-spread	array-concat	Prefer the spread operator over `Array#concat(…)`.
+tests/rules/unicorn/prefer-spread/cases.ts:83:8	unicorn/prefer-spread	array-concat	Prefer the spread operator over `Array#concat(…)`.
+tests/rules/unicorn/prefer-spread/cases.ts:84:11	unicorn/prefer-spread	array-concat	Prefer the spread operator over `Array#concat(…)`.
+tests/rules/unicorn/prefer-spread/cases.ts:85:7	unicorn/prefer-spread	array-concat	Prefer the spread operator over `Array#concat(…)`.
+tests/rules/unicorn/prefer-spread/cases.ts:89:9	unicorn/prefer-spread	array-concat	Prefer the spread operator over `Array#concat(…)`.
+tests/rules/unicorn/prefer-spread/cases.ts:116:23	unicorn/prefer-spread	array-slice	Prefer the spread operator over `Array#slice()`.
+tests/rules/unicorn/prefer-spread/cases.ts:117:23	unicorn/prefer-spread	array-slice	Prefer the spread operator over `Array#slice()`.
+tests/rules/unicorn/prefer-spread/cases.ts:118:13	unicorn/prefer-spread	array-slice	Prefer the spread operator over `Array#slice()`.
+tests/rules/unicorn/prefer-spread/cases.ts:119:27	unicorn/prefer-spread	array-slice	Prefer the spread operator over `Array#slice()`.
+tests/rules/unicorn/prefer-spread/cases.ts:120:29	unicorn/prefer-spread	array-slice	Prefer the spread operator over `Array#slice()`.
+tests/rules/unicorn/prefer-spread/cases.ts:121:25	unicorn/prefer-spread	array-slice	Prefer the spread operator over `Array#slice()`.
+tests/rules/unicorn/prefer-spread/cases.ts:122:23	unicorn/prefer-spread	array-slice	Prefer the spread operator over `Array#slice()`.
+tests/rules/unicorn/prefer-spread/cases.ts:124:22	unicorn/prefer-spread	array-slice	Prefer the spread operator over `Array#slice()`.
+tests/rules/unicorn/prefer-spread/cases.ts:129:6	unicorn/prefer-spread	array-slice	Prefer the spread operator over `Array#slice()`.
+tests/rules/unicorn/prefer-spread/cases.ts:138:25	unicorn/prefer-spread	array-to-spliced	Prefer the spread operator over `Array#toSpliced()`.
+tests/rules/unicorn/prefer-spread/cases.ts:139:13	unicorn/prefer-spread	array-to-spliced	Prefer the spread operator over `Array#toSpliced()`.
+tests/rules/unicorn/prefer-spread/cases.ts:140:33	unicorn/prefer-spread	array-to-spliced	Prefer the spread operator over `Array#toSpliced()`.
+tests/rules/unicorn/prefer-spread/cases.ts:144:6	unicorn/prefer-spread	array-to-spliced	Prefer the spread operator over `Array#toSpliced()`.
+tests/rules/unicorn/prefer-spread/cases.ts:150:1	unicorn/prefer-spread	array-from	Prefer the spread operator over `Array.from(…)`.
+tests/rules/unicorn/prefer-spread/cases.ts:152:8	unicorn/prefer-spread	array-slice	Prefer the spread operator over `Array#slice()`.
+tests/rules/unicorn/prefer-spread/cases.ts:157:2	unicorn/prefer-spread	for-of	Prefer the spread operator over this `for…of` loop.
+tests/rules/unicorn/prefer-spread/cases.ts:164:2	unicorn/prefer-spread	for-of	Prefer the spread operator over this `for…of` loop.
+tests/rules/unicorn/prefer-spread/cases.ts:169:2	unicorn/prefer-spread	for-of	Prefer the spread operator over this `for…of` loop.
+tests/rules/unicorn/prefer-spread/cases.ts:184:2	unicorn/prefer-spread	for-of	Prefer the spread operator over this `for…of` loop.
+tests/rules/unicorn/prefer-spread/cases.ts:192:2	unicorn/prefer-spread	for-of	Prefer the spread operator over this `for…of` loop.
