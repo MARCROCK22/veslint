@@ -2,3 +2,9 @@ tests/rules/unicorn/prefer-set-size/cases.ts:4:33	unicorn/prefer-set-size	prefer
 tests/rules/unicorn/prefer-set-size/cases.ts:5:40	unicorn/prefer-set-size	prefer-set-size	Prefer using `Set#size` instead of `Array#length`.	fix	164	198	new Set(values).size	end	5	46
 tests/rules/unicorn/prefer-set-size/cases.ts:6:44	unicorn/prefer-set-size	prefer-set-size	Prefer using `Set#size` instead of `Array#length`.	fix	211	249	new Set(/* keep */ values).size	end	6	50
 tests/rules/unicorn/prefer-set-size/cases.ts:8:30	unicorn/prefer-set-size	prefer-set-size	Prefer using `Set#size` instead of `Array#length`.	fix	274	301	 new Set(values).size	end	8	36
+tests/rules/unicorn/prefer-set-size/cases.ts:13:21	unicorn/prefer-set-size	prefer-set-size	Prefer using `Set#size` instead of `Array#length`.	fix	414	429	set.size	end	13	27
+tests/rules/unicorn/prefer-set-size/cases.ts:15:36	unicorn/prefer-set-size	prefer-set-size	Prefer using `Set#size` instead of `Array#length`.	fix	490	520	readonlySet.size	end	15	42
+tests/rules/unicorn/prefer-set-size/cases.ts:16:45	unicorn/prefer-set-size	prefer-set-size	Prefer using `Set#size` instead of `Array#length`.	fix	559	572	s.size	end	16	51
+tests/rules/unicorn/prefer-set-size/cases.ts:17:38	unicorn/prefer-set-size	prefer-set-size	Prefer using `Set#size` instead of `Array#length`.	fix	587	619	(set as Set<number>).size	end	17	44
+tests/rules/unicorn/prefer-set-size/cases.ts:18:26	unicorn/prefer-set-size	prefer-set-size	Prefer using `Set#size` instead of `Array#length`.	fix	637	652	set.size	end	18	32
+tests/rules/unicorn/prefer-set-size/cases.ts:22:19	unicorn/prefer-set-size	prefer-set-size	Prefer using `Set#size` instead of `Array#length`.	fix	719	734	set.size	end	22	25

@@ -8,9 +8,21 @@ function f() {
   return[...new Set(values)].length;
 }
 
-// Not reported: a variable is not a set for typescript-eslint's definitions.
+// 79.0.0: a `const` of a Set, an annotated Set, a Set by its type.
 const set = new Set(values);
-const z1 = [...set].length;
+const y1 = [...set].length;
+declare const readonlySet: ReadonlySet<number>;
+const y2 = Array.from(readonlySet).length;
+function y3(s: Set<string>) { return [...s].length; }
+const y4 = [...(set as Set<number>)].length;
+const y5 = new ([...set].length as any)();
+[...set].length = 1;
+function y6() {
+  values
+  return [...set].length
+}
+
+// Not reported.
 const z2 = [...new Map()].length;
 const z3 = [...new Set(values)]?.length;
 const z4 = [...new Set(values), 1].length;

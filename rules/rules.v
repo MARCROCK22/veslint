@@ -482,8 +482,7 @@ pub const untyped_rules = [adjacent_overload_signatures, array_type, class_liter
 	unicorn_prefer_negative_index,
 	unicorn_consistent_existence_index_check, unicorn_explicit_length_check,
 	unicorn_no_unnecessary_array_splice_count,
-	unicorn_no_unnecessary_slice_end, unicorn_no_useless_length_check,
-	unicorn_prefer_set_size]
+	unicorn_no_unnecessary_slice_end, unicorn_no_useless_length_check]
 
 // needs_types tells whether a rule asks tsgo for the types of the program.
 pub fn needs_types(rule string) bool {

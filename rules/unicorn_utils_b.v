@@ -3544,3 +3544,80 @@ fn unb_parent_pattern(t &estree.EsTree, node int) int {
 	}
 	return -1
 }
+
+// unb_is_left_hand_side ports isLeftHandSide of 79.0.0: the node (through optional chains and
+// TypeScript wrappers) is written: assigned, updated, destructured into, iterated into or deleted.
+fn unb_is_left_hand_side(t &estree.EsTree, n int) bool {
+	node := unb_outermost_chain_and_ts(t, n)
+	parent := t.nodes[node].parent
+	if parent < 0 {
+		return false
+	}
+	return match t.typ(parent) {
+		.assignment_expression, .assignment_pattern, .for_of_statement, .for_in_statement {
+			t.node(parent, .left) or { -1 } == node
+		}
+		.update_expression, .rest_element {
+			t.node(parent, .argument) or { -1 } == node
+		}
+		.array_pattern {
+			node in (t.list(parent, .elements) or { []int{} })
+		}
+		.property {
+			t.node(parent, .value) or { -1 } == node && t.nodes[parent].parent >= 0
+				&& t.typ(t.nodes[parent].parent) == .object_pattern
+				&& parent in (t.list(t.nodes[parent].parent, .properties) or { []int{} })
+		}
+		.unary_expression {
+			(t.string_of(parent, .operator) or { '' }) == 'delete'
+				&& t.node(parent, .argument) or { -1 } == node
+		}
+		else {
+			false
+		}
+	}
+}
+
+// unb_is_in_unparenthesized_new_callee ports isInUnparenthesizedNewExpressionCallee: a call put
+// there would become the argument list of the constructor.
+fn (c &Checker) unb_is_in_unparenthesized_new_callee(t &estree.EsTree, tokens &SourceTokens, n int) bool {
+	mut node := n
+	for !c.un_is_parenthesized(t, tokens, node) {
+		parent := t.nodes[node].parent
+		if parent < 0 {
+			return false
+		}
+		if t.typ(parent) == .new_expression && t.node(parent, .callee) or { -1 } == node {
+			return true
+		}
+		if (t.typ(parent) == .member_expression && t.node(parent, .object) or { -1 } == node)
+			|| (t.typ(parent) == .tagged_template_expression && t.node(parent, .tag) or { -1 } == node)
+			|| (unb_is_ts_wrapper(t, parent) && t.node(parent, .expression) or { -1 } == node) {
+			node = parent
+			continue
+		}
+		break
+	}
+	return false
+}
+
+// unb_new_callee_member_of_needs_parens is shouldAddParenthesesToNewExpressionCallee of a member
+// expression whose object is the node (doesMemberExpressionContainCallExpression from it).
+fn (c &Checker) unb_new_callee_member_of_needs_parens(t &estree.EsTree, tokens &SourceTokens, object int) bool {
+	mut current := object
+	for !c.un_is_parenthesized(t, tokens, current) {
+		if unb_is_ts_wrapper(t, current) {
+			current = t.node(current, .expression) or { return false }
+			continue
+		}
+		if t.typ(current) !in [.member_expression, .tagged_template_expression] {
+			return t.typ(current) == .call_expression
+		}
+		current = if t.typ(current) == .member_expression {
+			t.node(current, .object) or { return false }
+		} else {
+			t.node(current, .tag) or { return false }
+		}
+	}
+	return false
+}
