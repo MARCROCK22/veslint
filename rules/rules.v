@@ -462,7 +462,7 @@ pub const untyped_rules = [adjacent_overload_signatures, array_type, class_liter
 	no_unreachable_loop, no_useless_return, no_unreachable, no_fallthrough, constructor_super,
 	no_this_before_super, no_useless_assignment, no_restricted_syntax, unicorn_no_lonely_if,
 	unicorn_no_negated_condition, unicorn_no_negation_in_equality_check, unicorn_no_nested_ternary,
-	unicorn_no_typeof_undefined, unicorn_prefer_logical_operator_over_ternary, unicorn_prefer_ternary,
+	unicorn_no_typeof_undefined, unicorn_prefer_ternary,
 	unicorn_prefer_switch, unicorn_switch_case_braces, unicorn_switch_case_break_position,
 	unicorn_no_useless_switch_case, unicorn_prefer_simple_condition_first, unicorn_prefer_date_now,
 	unicorn_error_message, unicorn_consistent_date_clone,

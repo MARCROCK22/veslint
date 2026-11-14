@@ -679,7 +679,9 @@ fn (mut c Checker) unb_has_side_effectful_const_initializer(root C.TSNode, t &es
 		return t.typ(node) != .identifier
 			&& c.unb_has_side_effectful_const_reference(root, t, node, mut visited)
 	}
-	if visited[v] {
+	// Upstream the stack overflows (a RangeError) through constants thousands deep; veslint stops
+	// at stv_max_depth of them, where getStaticValue would stop too: not static.
+	if visited[v] || visited.len >= stv_max_depth {
 		return true
 	}
 	visited[v] = true
@@ -1238,7 +1240,8 @@ enum UnbKind {
 
 // UnbFamily selects the hooks of a type checker (isTargetNode, isNonTargetNode, getStaticType,
 // isTargetTypeAnnotation, isTargetType): those of utils/is-array.js, utils/is-number.js,
-// utils/is-string.js or utils/is-reg-exp.js, or none for a builtin.
+// utils/is-string.js, utils/is-reg-exp.js or isKnownNonBoolean of utils/is-boolean.js, or none for
+// a builtin.
 enum UnbFamily {
 	array
 	indexed_collection
@@ -1247,6 +1250,7 @@ enum UnbFamily {
 	number_
 	string_
 	reg_exp
+	boolean_
 }
 
 const unb_typed_arrays = ['Int8Array', 'Uint8Array', 'Uint8ClampedArray', 'Int16Array', 'Uint16Array',
@@ -1602,7 +1606,8 @@ fn (mut c Checker) unb_annotation_type(root C.TSNode, t &estree.EsTree, node int
 				return .target
 			}
 			if (o.family == .number_ && unb_is_number_type_annotation(t, node))
-				|| (o.family == .string_ && unb_is_string_type_annotation(t, node)) {
+				|| (o.family == .string_ && unb_is_string_type_annotation(t, node))
+				|| (o.family == .boolean_ && unb_is_boolean_target_type_annotation(t, node)) {
 				return .target
 			}
 			if t.typ(node) in [.ts_null_keyword, .ts_undefined_keyword] {
@@ -1665,6 +1670,10 @@ fn (mut c Checker) unb_ts_type(t TypeResponse, o UnbTypeOptions, depth int) !Unb
 	if (o.family == .number_ && (t.flags & type_flag_number_literal != 0
 		|| t.intrinsic_name == 'number')) || (o.family == .string_
 		&& (t.flags & type_flag_string_literal != 0 || t.intrinsic_name == 'string')) {
+		return .target
+	}
+	// isTargetType of isKnownNonBoolean (utils/is-boolean.js).
+	if o.family == .boolean_ && c.unb_is_boolean_ts_type(t)! {
 		return .target
 	}
 	constraint := c.base_constraint(t)!
@@ -1790,7 +1799,7 @@ fn (mut c Checker) unb_is_target_node(t &estree.EsTree, node int, o UnbTypeOptio
 				return false
 			}, .object) or { return false }, .name) or { '' }) in ['BigInt64Array', 'BigUint64Array']
 		}
-		.builtin, .number_ {
+		.builtin, .number_, .boolean_ {
 			false
 		}
 		.string_ {
@@ -4568,4 +4577,1055 @@ fn (c &Checker) unb_should_add_parens_to_unary_replacement(t &estree.EsTree, tok
 		|| (parent_type == .tagged_template_expression && t.node(parent, .tag) or { -1 } == expression)
 		|| (parent_type in [.class_declaration, .class_expression]
 		&& t.node(parent, .super_class) or { -1 } == expression)
+}
+
+// unb_is_same_reference ports isSameReference (utils/is-same-reference.js) of 79.0.0: two
+// expressions that reference the same value, through optional chains and TypeScript wrappers;
+// static strings (template literals without expressions too) compare by their value.
+fn (mut c Checker) unb_is_same_reference(t &estree.EsTree, left_node int, right_node int) bool {
+	left := unb_unwrap_chain_and_ts(t, left_node)
+	right := unb_unwrap_chain_and_ts(t, right_node)
+	if left_value := unb_static_string_value(t, left) {
+		right_value := unb_static_string_value(t, right) or { return false }
+		return left_value == right_value
+	}
+	if t.typ(left) != t.typ(right) {
+		return false
+	}
+	match t.typ(left) {
+		.super, .this_expression {
+			return true
+		}
+		.identifier, .private_identifier {
+			return t.string_of(left, .name) or { '' } == t.string_of(right, .name) or { '' }
+		}
+		.literal {
+			return un_equal_literal_value(t, left, right)
+		}
+		.member_expression {
+			left_object := t.node(left, .object) or { return false }
+			right_object := t.node(right, .object) or { return false }
+			if name := c.un_static_property_name(t, left) {
+				// `x.y = x["y"]`
+				return c.unb_is_same_reference(t, left_object, right_object)
+					&& name == c.un_static_property_name(t, right) or { return false }
+			}
+			return (t.flag(left, .computed) or { false }) == (t.flag(right, .computed) or { false })
+				&& c.unb_is_same_reference(t, left_object, right_object)
+				&& c.unb_is_same_reference(t, t.node(left, .property) or { return false }, t.node(right,
+					.property) or { return false })
+		}
+		else {
+			return false
+		}
+	}
+}
+
+// unb_is_same_node ports isSameNode (shared/nullish-check.js): the same reference, or the same
+// text; an update expression is never the same.
+fn (mut c Checker) unb_is_same_node(t &estree.EsTree, left int, right int) bool {
+	if c.unb_is_same_reference(t, left, right) {
+		return true
+	}
+	if t.typ(left) != t.typ(right) {
+		return false
+	}
+	match t.typ(left) {
+		.await_expression {
+			return c.unb_is_same_node(t, t.node(left, .argument) or { return false }, t.node(right,
+				.argument) or { return false })
+		}
+		.logical_expression {
+			return t.string_of(left, .operator) or { '' } == t.string_of(right, .operator) or { '' }
+				&& c.unb_is_same_node(t, t.node(left, .left) or { return false }, t.node(right, .left) or {
+					return false
+				}) && c.unb_is_same_node(t, t.node(left, .right) or { return false }, t.node(right,
+				.right) or { return false })
+		}
+		.unary_expression {
+			return t.string_of(left, .operator) or { '' } == t.string_of(right, .operator) or { '' }
+				&& t.flag(left, .prefix) or { false } == t.flag(right, .prefix) or { false }
+				&& c.unb_is_same_node(t, t.node(left, .argument) or { return false }, t.node(right,
+					.argument) or { return false })
+		}
+		.update_expression {
+			return false
+		}
+		else {}
+	}
+	return c.un_text(t, left) == c.un_text(t, right)
+}
+
+// UnbNullishTest is what getNullishTest (shared/nullish-check.js) gives: the checked reference,
+// the kind of the check ('nullish' for `==`/`!=`, else 'null' or 'undefined'; '' for a test of
+// both) and whether the test is true when the reference is nullish.
+struct UnbNullishTest {
+	reference            int
+	kind                 string
+	is_true_when_nullish bool
+}
+
+// unb_nullish_kind ports getNullishKind: 'null', 'undefined' or ''.
+fn (c &Checker) unb_nullish_kind(t &estree.EsTree, node int) string {
+	if c.unb_is_null_literal(t, node) {
+		return 'null'
+	}
+	return if un_is_undefined(t, node) { 'undefined' } else { '' }
+}
+
+// unb_nullish_binary_check ports getNullishBinaryCheck: `x == null`, `undefined !== x`…
+fn (c &Checker) unb_nullish_binary_check(t &estree.EsTree, node int) ?UnbNullishTest {
+	if node < 0 || t.typ(node) != .binary_expression {
+		return none
+	}
+	operator := t.string_of(node, .operator) or { return none }
+	if operator !in ['==', '===', '!=', '!=='] {
+		return none
+	}
+	left := t.node(node, .left) or { return none }
+	right := t.node(node, .right) or { return none }
+	left_kind := c.unb_nullish_kind(t, left)
+	right_kind := c.unb_nullish_kind(t, right)
+	if (left_kind != '') == (right_kind != '') {
+		return none
+	}
+	return UnbNullishTest{
+		reference:            if left_kind != '' { right } else { left }
+		kind:                 if operator.len == 2 {
+			'nullish'
+		} else if left_kind != '' {
+			left_kind
+		} else {
+			right_kind
+		}
+		is_true_when_nullish: operator in ['==', '===']
+	}
+}
+
+fn unb_checks_null_and_undefined(left UnbNullishTest, right UnbNullishTest) bool {
+	return (left.kind == 'null' && right.kind == 'undefined')
+		|| (left.kind == 'undefined' && right.kind == 'null')
+}
+
+// unb_nullish_test ports getNullishTest: the checked reference of `foo == null`,
+// `foo != undefined` or `foo === null || foo === undefined`.
+fn (mut c Checker) unb_nullish_test(t &estree.EsTree, node int) ?UnbNullishTest {
+	if binary_check := c.unb_nullish_binary_check(t, node) {
+		if binary_check.kind == 'nullish' {
+			return binary_check
+		}
+	}
+	if t.typ(node) != .logical_expression {
+		return none
+	}
+	left := c.unb_nullish_binary_check(t, t.node(node, .left) or { return none })?
+	right := c.unb_nullish_binary_check(t, t.node(node, .right) or { return none })?
+	if !c.unb_is_same_node(t, left.reference, right.reference) {
+		return none
+	}
+	operator := t.string_of(node, .operator) or { '' }
+	if operator == '||' && left.is_true_when_nullish && right.is_true_when_nullish
+		&& unb_checks_null_and_undefined(left, right) {
+		return UnbNullishTest{
+			reference:            left.reference
+			is_true_when_nullish: true
+		}
+	}
+	if operator == '&&' && !left.is_true_when_nullish && !right.is_true_when_nullish
+		&& unb_checks_null_and_undefined(left, right) {
+		return UnbNullishTest{
+			reference:            left.reference
+			is_true_when_nullish: false
+		}
+	}
+	return none
+}
+
+// unb_member_access_operator_range ports getMemberAccessOperatorRange (utils/member-expression.js):
+// from the end of the object (with its parentheses) to the property, or to the end of the `[`.
+fn (c &Checker) unb_member_access_operator_range(t &estree.EsTree, tokens &SourceTokens, member int) (int, int) {
+	object := t.node(member, .object) or { return t.nodes[member].start, t.nodes[member].start }
+	_, start := c.un_parenthesized_range(t, tokens, object)
+	property := t.node(member, .property) or { return start, start }
+	if !(t.flag(member, .computed) or { false }) {
+		return start, t.nodes[property].start
+	}
+	mut offset := t.nodes[property].start
+	for {
+		token := tokens.before(offset, false) or { return start, offset }
+		if c.token_text(token) == '[' {
+			return start, token.end
+		}
+		offset = token.start
+	}
+	return start, offset
+}
+
+// unb_negated_expression_text ports getNegatedExpressionText (utils/get-negated-expression-text.js):
+// `!` and the node, in parentheses when it binds more loosely than `!`.
+fn (c &Checker) unb_negated_expression_text(t &estree.EsTree, tokens &SourceTokens, node int) string {
+	return '!' + c.unb_expression_text(t, tokens, node, unb_should_add_parens_to_unary_argument(t, node))
+}
+
+// unb_function_return_expression ports getFunctionReturnExpression (utils/function-body.js): the
+// concise body of an arrow function, or the argument of a body that is only a `return`; -1 for
+// none.
+fn unb_function_return_expression(t &estree.EsTree, function int) int {
+	body := t.node(function, .body) or { return -1 }
+	if t.typ(body) != .block_statement {
+		return body
+	}
+	statements := t.list(body, .body) or { return -1 }
+	if statements.len == 1 && t.typ(statements[0]) == .return_statement {
+		return t.node(statements[0], .argument) or { -1 }
+	}
+	return -1
+}
+
+// unb_combine_boolean_states ports combineBooleanStates (utils/get-type-boolean-state.js):
+// 'boolean', 'non-boolean' or 'unknown'.
+fn unb_combine_boolean_states(states []string) string {
+	if states.len == 0 || 'unknown' in states {
+		return 'unknown'
+	}
+	return if states.all(it == 'boolean') { 'boolean' } else { 'non-boolean' }
+}
+
+// unb_jsdoc_type_boolean_state ports getTypeBooleanState of utils/get-jsdoc-boolean-state.js.
+fn unb_jsdoc_type_boolean_state(typ UnbJsdocType, allow_nullish bool, function_types_are_boolean bool) string {
+	match typ.kind {
+		'union' {
+			members := unb_jsdoc_members(typ)
+			types := if allow_nullish { members.filter(it.kind != 'nullish') } else { members }
+			return unb_combine_boolean_states(types.map(unb_jsdoc_type_boolean_state(it,
+				allow_nullish, function_types_are_boolean)))
+		}
+		'intersection' {
+			members := unb_jsdoc_members(typ).filter(it.kind != 'non-primitive')
+			return if members.len > 0 {
+				unb_combine_boolean_states(members.map(unb_jsdoc_type_boolean_state(it,
+					allow_nullish, function_types_are_boolean)))
+			} else {
+				'non-boolean'
+			}
+		}
+		'nullable', 'optional' {
+			return if allow_nullish {
+				unb_jsdoc_type_boolean_state(typ.children[0], allow_nullish, function_types_are_boolean)
+			} else {
+				'unknown'
+			}
+		}
+		'function' {
+			return if function_types_are_boolean {
+				unb_jsdoc_type_boolean_state(typ.children[0], allow_nullish, false)
+			} else {
+				'non-boolean'
+			}
+		}
+		else {
+			state := unb_jsdoc_node_kind(typ, UnbTypeOptions{
+				family:                .builtin
+				target_type_names:     ['boolean']
+				non_target_type_names: ['Array', 'ReadonlyArray', 'Promise', 'PromiseLike']
+			})
+			return match state {
+				.target { 'boolean' }
+				.non_target { 'non-boolean' }
+				else { 'unknown' }
+			}
+		}
+	}
+}
+
+// unb_jsdoc_boolean_state ports getJSDocumentBooleanState (utils/get-jsdoc-boolean-state.js).
+fn unb_jsdoc_boolean_state(annotation UnbJsdocAnnotation, allow_nullish bool, function_types_are_boolean bool) string {
+	if annotation.optional && !allow_nullish {
+		return 'unknown'
+	}
+	typ := annotation.typ or { return 'unknown' }
+	return unb_jsdoc_type_boolean_state(typ, allow_nullish, function_types_are_boolean)
+}
+
+// isBoolean (utils/is-boolean.js of 79.0.0): an expression known to evaluate to a boolean, from
+// its annotations (TypeScript and JSDoc), its static value, its syntax, the functions it calls,
+// the constants it reads and, when the parser has a program, its type. Where JavaScript's call
+// stack would overflow (alias chains thousands of constants long), the check fails with an error,
+// as the RangeError does upstream; veslint stops at unb_boolean_max_depth nested expressions (or
+// constants of getKnownExpressionKind), where its stack is safe (as stv_max_depth).
+
+const unb_boolean_max_depth = 100
+
+const unb_boolean_binary_operators = ['>', '>=', '<', '<=', '==', '===', '!=', '!==', 'in', 'instanceof']
+
+const unb_boolean_global_functions = ['isFinite', 'isNaN']
+
+const unb_boolean_static_methods = {
+	'Array':       ['isArray']
+	'ArrayBuffer': ['isView']
+	'Atomics':     ['isLockFree']
+	'Error':       ['isError']
+	'Number':      ['isFinite', 'isInteger', 'isNaN', 'isSafeInteger']
+	'Object':      ['hasOwn', 'is', 'isExtensible', 'isFrozen', 'isSealed']
+	'Reflect':     ['defineProperty', 'deleteProperty', 'has', 'isExtensible', 'preventExtensions',
+		'set', 'setPrototypeOf']
+	'URL':         ['canParse']
+}
+
+const unb_boolean_methods_by_expression_kind = {
+	'array':           ['every', 'includes', 'some']
+	'keyedCollection': ['has']
+	'regexp':          ['test']
+	'set':             ['has', 'isDisjointFrom', 'isSubsetOf', 'isSupersetOf']
+	'string':          ['endsWith', 'includes', 'isWellFormed', 'startsWith']
+	'weakSet':         ['has']
+}
+
+const unb_boolean_properties_by_expression_kind = {
+	'regexp': ['dotAll', 'global', 'hasIndices', 'ignoreCase', 'multiline', 'sticky', 'unicode',
+		'unicodeSets']
+}
+
+// The static value of these is never a primitive boolean (nonBooleanStaticValueTypes).
+const unb_non_boolean_static_value_types = [estree.NodeType.array_expression,
+	.arrow_function_expression, .class_expression, .function_expression, .new_expression,
+	.object_expression, .tagged_template_expression, .template_literal]
+
+// unb_boolean_options are those of isKnownNonBoolean.
+fn unb_boolean_options() UnbTypeOptions {
+	return UnbTypeOptions{
+		family:                .boolean_
+		target_type_names:     ['boolean']
+		non_target_type_names: ['Array', 'ReadonlyArray', 'Promise', 'PromiseLike']
+	}
+}
+
+// unb_named_type_options are those of createNamedTypeChecker.
+fn unb_named_type_options(names []string) UnbTypeOptions {
+	return UnbTypeOptions{
+		family:               .builtin
+		check_class_heritage: false
+		target_type_names:    names
+	}
+}
+
+// unb_mutable_keyed_collection_options are those of isMutableKeyedCollection.
+fn unb_mutable_keyed_collection_options() UnbTypeOptions {
+	return UnbTypeOptions{
+		family:                   .builtin
+		check_class_heritage:     false
+		target_type_names:        ['Map', 'Set', 'WeakMap', 'WeakSet']
+		non_target_type_names:    ['ReadonlyMap', 'ReadonlySet']
+		target_constructor_names: ['Map', 'Set', 'WeakMap', 'WeakSet']
+	}
+}
+
+// unb_is_boolean_target_type_annotation is the isTargetTypeAnnotation hook of isKnownNonBoolean:
+// `boolean`, `true` or `false`.
+fn unb_is_boolean_target_type_annotation(t &estree.EsTree, node int) bool {
+	if t.typ(node) == .ts_boolean_keyword {
+		return true
+	}
+	return t.typ(node) == .ts_literal_type && t.get(t.node(node, .literal) or { return false }, .value) is bool
+}
+
+// unb_is_boolean_ts_type ports isBooleanTypeScriptType: a union of booleans, the base constraint
+// of one, or a type TypeScript writes `boolean`, `true` or `false`.
+fn (mut c Checker) unb_is_boolean_ts_type(t TypeResponse) !bool {
+	if t.flags & type_flag_union != 0 {
+		for part in c.members_of(t)! {
+			if !c.unb_is_boolean_ts_type(part)! {
+				return false
+			}
+		}
+		return true
+	}
+	constraint := c.base_constraint(t)!
+	if !constraint.is_null() && constraint.id != t.id {
+		return c.unb_is_boolean_ts_type(constraint)
+	}
+	return c.type_string(t)! in ['boolean', 'true', 'false']
+}
+
+// unb_is_boolean_type_information ports isBooleanTypeInformation.
+fn (mut c Checker) unb_is_boolean_type_information(t &estree.EsTree, node int, mut ctx UnbTypeContext) bool {
+	typ := c.unb_type_of(t, node, ctx.abs_path, mut ctx.stats) or { return false }
+	if !(c.unb_is_boolean_ts_type(typ) or { false }) {
+		return false
+	}
+	return !c.unb_is_known_non_target(t, node, unb_boolean_options(), mut ctx)
+}
+
+// unb_is_boolean_static_value ports isBooleanStaticValue.
+fn (mut c Checker) unb_is_boolean_static_value(t &estree.EsTree, node int, mut ctx UnbTypeContext) bool {
+	if t.typ(node) == .literal {
+		return t.get(node, .value) is bool
+	}
+	if t.typ(node) in unb_non_boolean_static_value_types {
+		return false
+	}
+	value := c.unb_static_value_if_no_side_effects(ctx.root, t, node) or { return false }
+	return value.value.kind == .boolean_ && !c.unb_has_jsdoc_type_reference(ctx.root, t, node)
+}
+
+fn unb_call_signatures(t &estree.EsTree, members []int) []int {
+	return members.filter(t.typ(it) == .ts_call_signature_declaration)
+}
+
+// unb_is_boolean_call_signature_members ports isBooleanCallSignatureMembers.
+fn (mut c Checker) unb_is_boolean_call_signature_members(t &estree.EsTree, members []int, mut ctx UnbTypeContext, mut visited map[int]bool) bool {
+	signatures := unb_call_signatures(t, members)
+	if signatures.len == 0 {
+		return false
+	}
+	for signature in signatures {
+		if !c.unb_is_boolean_type_annotation(t, t.node(signature, .return_type) or { -1 }, mut
+			ctx, mut visited) {
+			return false
+		}
+	}
+	return true
+}
+
+enum UnbTypeReferencePredicate {
+	boolean_
+	boolean_function
+	function
+}
+
+// unb_is_type_reference ports isTypeReference and its predicates (isBooleanTypeReference,
+// isBooleanFunctionTypeReference, isFunctionTypeReference): the type alias or interface the
+// parser binds the name of the reference to. The scope it is given upstream is only that of
+// definitions that are not types, which no predicate reads.
+fn (mut c Checker) unb_is_type_reference(t &estree.EsTree, node int, predicate UnbTypeReferencePredicate, mut ctx UnbTypeContext, mut visited map[int]bool) bool {
+	type_name := t.node(node, .type_name) or { return false }
+	if t.typ(type_name) != .identifier {
+		return false
+	}
+	name_ts := t.ts_node(type_name) or { return false }
+	tree := c.scope_tree(ctx.root)
+	scope := c.unb_scope_of(ctx.root, t, node)
+	mut v := -1
+	for r in tree.scopes[scope].references {
+		if node_key(tree.references[r].identifier) == node_key(name_ts) {
+			v = tree.references[r].resolved
+			break
+		}
+	}
+	if v < 0 || visited[v] {
+		return false
+	}
+	visited[v] = true
+	mut result := false
+	defs := tree.variables[v].defs
+	if defs.len > 0 && defs[0].kind == .type_definition {
+		if definition := c.es_index_of(t, defs[0].node) {
+			typ := t.typ(definition)
+			members := if typ == .ts_interface_declaration {
+				t.list(t.node(definition, .body) or { -1 }, .body) or { []int{} }
+			} else {
+				[]int{}
+			}
+			annotation := t.node(definition, .type_annotation) or { -1 }
+			result = match predicate {
+				.boolean_ {
+					typ == .ts_type_alias_declaration
+						&& c.unb_is_boolean_type_annotation(t, annotation, mut ctx, mut visited)
+				}
+				.boolean_function {
+					(typ == .ts_type_alias_declaration
+						&& c.unb_is_boolean_function_type_annotation(t, annotation, mut ctx, mut visited))
+						|| (typ == .ts_interface_declaration
+							&& c.unb_is_boolean_call_signature_members(t, members, mut ctx, mut visited))
+				}
+				.function {
+					(typ == .ts_type_alias_declaration
+						&& c.unb_is_function_type_annotation(t, annotation, mut ctx, mut visited))
+						|| (typ == .ts_interface_declaration && unb_call_signatures(t, members).len > 0)
+				}
+			}
+		}
+	}
+	visited.delete(v)
+	return result
+}
+
+// unb_is_boolean_type_annotation ports isBooleanTypeAnnotation.
+fn (mut c Checker) unb_is_boolean_type_annotation(t &estree.EsTree, node int, mut ctx UnbTypeContext, mut visited map[int]bool) bool {
+	if node < 0 {
+		return false
+	}
+	match t.typ(node) {
+		.ts_type_annotation {
+			return c.unb_is_boolean_type_annotation(t, t.node(node, .type_annotation) or { -1 }, mut
+				ctx, mut visited)
+		}
+		.ts_boolean_keyword {
+			return true
+		}
+		.ts_literal_type {
+			return t.get(t.node(node, .literal) or { return false }, .value) is bool
+		}
+		.ts_type_reference {
+			return c.unb_is_type_reference(t, node, .boolean_, mut ctx, mut visited)
+		}
+		.ts_type_predicate {
+			return !(t.flag(node, .asserts) or { false })
+		}
+		.ts_union_type {
+			for typ in t.list(node, .types) or { []int{} } {
+				if !c.unb_is_boolean_type_annotation(t, typ, mut ctx, mut visited) {
+					return false
+				}
+			}
+			return true
+		}
+		else {
+			return false
+		}
+	}
+}
+
+// unb_is_function_type_annotation ports isFunctionTypeAnnotation.
+fn (mut c Checker) unb_is_function_type_annotation(t &estree.EsTree, node int, mut ctx UnbTypeContext, mut visited map[int]bool) bool {
+	if node < 0 {
+		return false
+	}
+	match t.typ(node) {
+		.ts_type_annotation {
+			return c.unb_is_function_type_annotation(t, t.node(node, .type_annotation) or { -1 }, mut
+				ctx, mut visited)
+		}
+		.ts_function_type {
+			return true
+		}
+		.ts_type_literal {
+			return unb_call_signatures(t, t.list(node, .members) or { []int{} }).len > 0
+		}
+		.ts_type_reference {
+			return c.unb_is_type_reference(t, node, .function, mut ctx, mut visited)
+		}
+		.ts_union_type {
+			types := (t.list(node, .types) or { []int{} }).filter(t.typ(it) !in [
+				.ts_null_keyword,
+				.ts_undefined_keyword,
+			])
+			if types.len == 0 {
+				return false
+			}
+			for typ in types {
+				if !c.unb_is_function_type_annotation(t, typ, mut ctx, mut visited) {
+					return false
+				}
+			}
+			return true
+		}
+		else {
+			return false
+		}
+	}
+}
+
+// unb_is_boolean_function_type_annotation ports isBooleanFunctionTypeAnnotation.
+fn (mut c Checker) unb_is_boolean_function_type_annotation(t &estree.EsTree, node int, mut ctx UnbTypeContext, mut visited map[int]bool) bool {
+	if node < 0 {
+		return false
+	}
+	match t.typ(node) {
+		.ts_type_annotation {
+			return c.unb_is_boolean_function_type_annotation(t, t.node(node, .type_annotation) or {
+				-1
+			}, mut ctx, mut visited)
+		}
+		.ts_function_type {
+			return c.unb_is_boolean_type_annotation(t, t.node(node, .return_type) or { -1 }, mut
+				ctx, mut visited)
+		}
+		.ts_type_literal {
+			return c.unb_is_boolean_call_signature_members(t, t.list(node, .members) or { []int{} }, mut
+				ctx, mut visited)
+		}
+		.ts_type_reference {
+			return c.unb_is_type_reference(t, node, .boolean_function, mut ctx, mut visited)
+		}
+		.ts_union_type {
+			for typ in t.list(node, .types) or { []int{} } {
+				if !c.unb_is_boolean_function_type_annotation(t, typ, mut ctx, mut visited) {
+					return false
+				}
+			}
+			return true
+		}
+		else {
+			return false
+		}
+	}
+}
+
+// unb_has_boolean_return_annotation is isBooleanTypeAnnotation(node.returnType) with a new set of
+// visited type references.
+fn (mut c Checker) unb_has_boolean_return_annotation(t &estree.EsTree, node int, mut ctx UnbTypeContext) bool {
+	mut type_visited := map[int]bool{}
+	return c.unb_is_boolean_type_annotation(t, t.node(node, .return_type) or { -1 }, mut ctx, mut
+		type_visited)
+}
+
+// unb_is_boolean_function ports isBooleanFunction.
+fn (mut c Checker) unb_is_boolean_function(t &estree.EsTree, node int, depth int, mut ctx UnbTypeContext, mut visited map[int]bool) !bool {
+	if (t.flag(node, .async) or { false }) || (t.flag(node, .generator) or { false }) {
+		return false
+	}
+	if annotation := c.unb_jsdoc_return_type(ctx.root, t, node) {
+		return unb_jsdoc_boolean_state(annotation, false, false) == 'boolean'
+	}
+	if c.unb_has_boolean_return_annotation(t, node, mut ctx) {
+		return true
+	}
+	if t.node(node, .body) == none {
+		return false
+	}
+	return c.unb_isb_expression(t, unb_function_return_expression(t, node), depth, mut ctx, mut
+		visited)!
+}
+
+// unb_is_simple_const_variable_definition ports isSimpleConstVariableDefinition.
+fn unb_is_simple_const_variable_definition(def ScopeDefinition) bool {
+	return def.kind == .variable && def.parent_kind == 'const' && unb_is_simple_declarator(def)
+}
+
+// unb_has_stable_function_name_definitions ports hasStableFunctionNameDefinitions: function
+// declarations of a function expression name or of a strict scope that is not the global one.
+fn (mut c Checker) unb_has_stable_function_name_definitions(root C.TSNode, v int) bool {
+	tree := c.scope_tree(root)
+	variable := tree.variables[v]
+	kind := tree.scopes[variable.scope].kind
+	return (kind == .function_expression_name || (kind != .global && tree.is_strict(variable.scope)))
+		&& variable.defs.all(it.kind == .function_name)
+}
+
+// unb_is_boolean_function_reference ports isBooleanFunctionReference: an identifier bound to
+// functions that return booleans.
+fn (mut c Checker) unb_is_boolean_function_reference(t &estree.EsTree, node int, depth int, mut ctx UnbTypeContext, mut visited map[int]bool) !bool {
+	if node < 0 || t.typ(node) != .identifier {
+		return false
+	}
+	v := c.unb_find_variable(ctx.root, t, node)
+	if v < 0 || visited[v] {
+		return false
+	}
+	visited[v] = true
+	tree := c.scope_tree(ctx.root)
+	defs := tree.variables[v].defs
+	references := tree.variables[v].references.map(tree.references[it])
+	mut is_boolean := false
+	if defs.len > 1 && c.unb_has_stable_function_name_definitions(ctx.root, v) {
+		overloads := defs.filter(t.typ(c.es_index_of(t, it.node) or { -1 }) == .ts_declare_function)
+		function_defs := if overloads.len > 0 { overloads } else { defs }
+		if references.all(!it.write) {
+			is_boolean = true
+			for def in function_defs {
+				function := c.es_index_of(t, def.node) or { -1 }
+				if function < 0 || !c.unb_is_boolean_function(t, function, depth, mut ctx, mut visited)! {
+					is_boolean = false
+					break
+				}
+			}
+		}
+	} else if defs.len == 1 {
+		def := defs[0]
+		name := c.es_index_of(t, def.name) or { -1 }
+		annotation_type := if name >= 0 { t.node(name, .type_annotation) or { -1 } } else { -1 }
+		if annotation := c.unb_jsdoc_type_annotation(ctx.root, t, name) {
+			initializer := c.unb_definition_initializer(t, def)
+			value := if initializer >= 0 { unb_unwrap_ts(t, initializer) } else { -1 }
+			return_type := unb_jsdoc_callable_return_type(annotation.typ)
+			value_return_type := if value >= 0 { t.node(value, .return_type) or { -1 } } else { -1 }
+			if !(value >= 0 && ((t.flag(value, .async) or { false })
+				|| (t.flag(value, .generator) or { false })))
+				&& !(def.kind == .parameter && (value_return_type >= 0
+					|| unb_has_native_type_assertion(t, initializer)))
+				&& references.all(!it.write || it.init) {
+				is_boolean = if value_return_type >= 0 {
+					c.unb_has_boolean_return_annotation(t, value, mut ctx)
+				} else if rt := return_type {
+					!annotation.optional && unb_jsdoc_boolean_state(UnbJsdocAnnotation{
+						typ: rt
+					}, false, false) == 'boolean'
+				} else {
+					false
+				}
+			}
+		} else if annotation_type >= 0 {
+			mut type_visited := map[int]bool{}
+			is_boolean = c.unb_is_boolean_function_type_annotation(t, annotation_type, mut ctx, mut
+				type_visited)
+		} else {
+			mut function := -1
+			if c.unb_has_stable_function_name_definitions(ctx.root, v) {
+				if references.all(!it.write) {
+					function = c.es_index_of(t, def.node) or { -1 }
+				}
+			} else if def.kind == .variable && unb_is_simple_declarator(def)
+				&& references.all(!it.write || it.init) {
+				mut initializer := if init := def.init {
+					c.es_index_of(t, init) or { -1 }
+				} else {
+					-1
+				}
+				for initializer >= 0
+					&& t.typ(initializer) in [.ts_satisfies_expression, .ts_non_null_expression] {
+					initializer = t.node(initializer, .expression) or { -1 }
+				}
+				if initializer >= 0
+					&& t.typ(initializer) in [.arrow_function_expression, .function_expression] {
+					function = initializer
+				}
+			}
+			is_boolean = function >= 0 && (t.node(function, .return_type) == none
+				|| c.unb_has_boolean_return_annotation(t, function, mut ctx))
+				&& c.unb_is_boolean_function(t, function, depth, mut ctx, mut visited)!
+		}
+	}
+	visited.delete(v)
+	return is_boolean
+}
+
+// unb_is_boolean_variable_value ports isBooleanVariableValue.
+fn (mut c Checker) unb_is_boolean_variable_value(t &estree.EsTree, v int, depth int, mut ctx UnbTypeContext, mut visited map[int]bool) !bool {
+	if v < 0 || visited[v] {
+		return false
+	}
+	tree := c.scope_tree(ctx.root)
+	if tree.variables[v].defs.len != 1 {
+		return false
+	}
+	visited[v] = true
+	def := tree.variables[v].defs[0]
+	name := c.es_index_of(t, def.name) or { -1 }
+	if name >= 0 {
+		if annotation := t.node(name, .type_annotation) {
+			visited.delete(v)
+			mut type_visited := map[int]bool{}
+			return !(t.flag(name, .optional) or { false })
+				&& c.unb_is_boolean_type_annotation(t, annotation, mut ctx, mut type_visited)
+		}
+	}
+	mut is_boolean := false
+	if unb_is_simple_const_variable_definition(def) {
+		init := if i := def.init { c.es_index_of(t, i) or { -1 } } else { -1 }
+		is_boolean = c.unb_isb_expression(t, init, depth, mut ctx, mut visited)!
+	}
+	visited.delete(v)
+	return is_boolean
+}
+
+// unb_is_boolean_identifier ports isBooleanIdentifier.
+fn (mut c Checker) unb_is_boolean_identifier(t &estree.EsTree, node int, depth int, mut ctx UnbTypeContext, mut visited map[int]bool) !bool {
+	v := c.unb_find_variable(ctx.root, t, node)
+	return c.unb_is_boolean_variable_value(t, v, depth, mut ctx, mut visited)!
+		|| c.unb_is_boolean_type_information(t, node, mut ctx)
+}
+
+// unb_is_boolean_ts_expression ports isBooleanTypeScriptExpression: `as`, `<T>` and `satisfies`.
+fn (mut c Checker) unb_is_boolean_ts_expression(t &estree.EsTree, node int, depth int, mut ctx UnbTypeContext, mut visited map[int]bool) !bool {
+	annotation := t.node(node, .type_annotation) or { -1 }
+	mut type_visited := map[int]bool{}
+	if c.unb_is_boolean_type_annotation(t, annotation, mut ctx, mut type_visited) {
+		return true
+	}
+	if (t.typ(node) == .ts_satisfies_expression
+		|| (annotation >= 0 && t.typ(annotation) in [.ts_any_keyword, .ts_unknown_keyword]))
+		&& c.unb_isb_expression(t, t.node(node, .expression) or { -1 }, depth, mut ctx, mut
+			visited)! {
+		return true
+	}
+	return c.unb_is_boolean_type_information(t, node, mut ctx)
+}
+
+// unb_known_literal_expression_kind ports getKnownLiteralExpressionKind.
+fn unb_known_literal_expression_kind(t &estree.EsTree, node int) string {
+	if t.get(node, .value) is string {
+		return 'string'
+	}
+	return if t.get(node, .regex) is estree.RegexInfo { 'regexp' } else { '' }
+}
+
+// unb_known_constructor_expression_kind ports getKnownConstructorExpressionKind.
+fn (mut c Checker) unb_known_constructor_expression_kind(t &estree.EsTree, node int, mut ctx UnbTypeContext) string {
+	callee := t.node(node, .callee) or { return '' }
+	if t.typ(callee) != .identifier || !c.es_is_global_reference(ctx.root, t.ts_node(callee) or {
+		return ''
+	}) {
+		return ''
+	}
+	name := t.string_of(callee, .name) or { '' }
+	return match name {
+		'RegExp' { 'regexp' }
+		'Map', 'WeakMap', 'URLSearchParams', 'Headers', 'FormData' { 'keyedCollection' }
+		'Set' { 'set' }
+		'WeakSet' { 'weakSet' }
+		else { '' }
+	}
+}
+
+// unb_type_checked_expression_kind ports getTypeCheckedExpressionKind: the first of the
+// expressionKindCheckers whose isTarget the node is.
+fn (mut c Checker) unb_type_checked_expression_kind(t &estree.EsTree, node int, mut ctx UnbTypeContext) string {
+	if c.unb_is_target(t, node, unb_indexed_collection_options(), mut ctx) {
+		return 'array'
+	}
+	if c.unb_is_target(t, node, unb_named_type_options(['Map', 'ReadonlyMap', 'WeakMap',
+		'URLSearchParams', 'Headers', 'FormData']), mut ctx) {
+		return 'keyedCollection'
+	}
+	if c.unb_is_target(t, node, unb_named_type_options(['RegExp']), mut ctx) {
+		return 'regexp'
+	}
+	if c.unb_is_target(t, node, unb_named_type_options(['Set', 'ReadonlySet']), mut ctx) {
+		return 'set'
+	}
+	if c.unb_is_string(t, node, mut ctx) {
+		return 'string'
+	}
+	if c.unb_is_target(t, node, unb_named_type_options(['WeakSet']), mut ctx) {
+		return 'weakSet'
+	}
+	return ''
+}
+
+// unb_known_identifier_expression_kind ports getKnownIdentifierExpressionKind.
+fn (mut c Checker) unb_known_identifier_expression_kind(t &estree.EsTree, node int, mut ctx UnbTypeContext, mut visited map[int]bool) !string {
+	kind := c.unb_type_checked_expression_kind(t, node, mut ctx)
+	if kind != '' || c.unb_jsdoc_type_annotation(ctx.root, t, node) != none {
+		return kind
+	}
+	v := c.unb_find_variable(ctx.root, t, node)
+	def := c.unb_single_definition(ctx.root, v) or { return '' }
+	if visited[v] || !unb_is_simple_const_variable_definition(def) {
+		return ''
+	}
+	if visited.len >= unb_boolean_max_depth {
+		return error('Maximum call stack size exceeded')
+	}
+	visited[v] = true
+	init := if i := def.init { c.es_index_of(t, i) or { -1 } } else { -1 }
+	result := c.unb_known_expression_kind(t, init, mut ctx, mut visited)!
+	visited.delete(v)
+	return result
+}
+
+// unb_known_expression_kind ports getKnownExpressionKind: 'array', 'keyedCollection', 'regexp',
+// 'set', 'string', 'weakSet' or ''.
+fn (mut c Checker) unb_known_expression_kind(t &estree.EsTree, node int, mut ctx UnbTypeContext, mut visited map[int]bool) !string {
+	if node < 0 {
+		return ''
+	}
+	match t.typ(node) {
+		.array_expression {
+			return 'array'
+		}
+		.literal {
+			return unb_known_literal_expression_kind(t, node)
+		}
+		.template_literal {
+			return 'string'
+		}
+		.new_expression {
+			kind := c.unb_known_constructor_expression_kind(t, node, mut ctx)
+			return if kind != '' {
+				kind
+			} else {
+				c.unb_type_checked_expression_kind(t, node, mut ctx)
+			}
+		}
+		.identifier {
+			return c.unb_known_identifier_expression_kind(t, node, mut ctx, mut visited)!
+		}
+		.ts_non_null_expression, .ts_satisfies_expression {
+			return c.unb_known_expression_kind(t, t.node(node, .expression) or { -1 }, mut ctx, mut
+				visited)!
+		}
+		else {
+			return c.unb_type_checked_expression_kind(t, node, mut ctx)
+		}
+	}
+}
+
+// unb_is_boolean_wrapped_expression ports isBooleanWrappedExpression: (whether it decides, the
+// answer).
+fn (mut c Checker) unb_is_boolean_wrapped_expression(t &estree.EsTree, node int, depth int, mut ctx UnbTypeContext, mut visited map[int]bool) !(bool, bool) {
+	match t.typ(node) {
+		// A `yield` expression evaluates to the value sent back into the generator, so its type is
+		// unknown.
+		.await_expression {
+			return true, c.unb_isb_expression(t, t.node(node, .argument) or { -1 }, depth, mut ctx, mut
+				visited)!
+		}
+		.ts_non_null_expression {
+			return true, c.unb_isb_expression(t, t.node(node, .expression) or { -1 }, depth, mut
+				ctx, mut visited)!
+		}
+		.sequence_expression {
+			expressions := t.list(node, .expressions) or { []int{} }
+			return true, c.unb_isb_expression(t, if expressions.len > 0 {
+				expressions.last()
+			} else {
+				-1
+			}, depth, mut ctx, mut visited)!
+		}
+		.assignment_expression {
+			return true, (t.string_of(node, .operator) or { '' }) == '='
+				&& c.unb_isb_expression(t, t.node(node, .right) or { -1 }, depth, mut ctx, mut visited)!
+		}
+		else {
+			return false, false
+		}
+	}
+}
+
+// unb_member_property_name is getPropertyName(member, sourceCode.getScope(member)) of eslint-utils.
+fn (mut c Checker) unb_member_property_name(t &estree.EsTree, member int) ?string {
+	return c.property_name(t.ts_node(member)?)
+}
+
+// unb_is_known_boolean_static_method_call ports isKnownBooleanStaticMethodCall: `Array.isArray()`…
+fn (mut c Checker) unb_is_known_boolean_static_method_call(t &estree.EsTree, node int, mut ctx UnbTypeContext) bool {
+	callee := t.node(node, .callee) or { return false }
+	if t.typ(callee) != .member_expression {
+		return false
+	}
+	object := t.node(callee, .object) or { return false }
+	if t.typ(object) != .identifier || !c.es_is_global_reference(ctx.root, t.ts_node(object) or {
+		return false
+	}) {
+		return false
+	}
+	methods := unb_boolean_static_methods[t.string_of(object, .name) or { '' }] or { return false }
+	method := c.unb_member_property_name(t, callee) or { return false }
+	return method in methods
+}
+
+// unb_is_known_boolean_instance_method_call ports isKnownBooleanInstanceMethodCall: `set.has()`,
+// `string.startsWith()`, `map.delete()`…
+fn (mut c Checker) unb_is_known_boolean_instance_method_call(t &estree.EsTree, node int, mut ctx UnbTypeContext) !bool {
+	callee := t.node(node, .callee) or { return false }
+	if t.typ(callee) != .member_expression {
+		return false
+	}
+	method := c.unb_member_property_name(t, callee)
+	object := t.node(callee, .object) or { return false }
+	if (method or { '' }) == 'delete' {
+		return c.unb_is_target(t, object, unb_mutable_keyed_collection_options(), mut ctx)
+	}
+	mut visited := map[int]bool{}
+	methods := unb_boolean_methods_by_expression_kind[c.unb_known_expression_kind(t, object, mut
+		ctx, mut visited)!] or { return false }
+	return (method or { return false }) in methods
+}
+
+// unb_is_known_boolean_property_read ports isKnownBooleanPropertyRead: `regexp.global`…
+fn (mut c Checker) unb_is_known_boolean_property_read(t &estree.EsTree, node int, mut ctx UnbTypeContext) !bool {
+	if t.typ(node) != .member_expression || (t.flag(node, .optional) or { false }) {
+		return false
+	}
+	mut visited := map[int]bool{}
+	properties := unb_boolean_properties_by_expression_kind[c.unb_known_expression_kind(t,
+		t.node(node, .object) or { -1 }, mut ctx, mut visited)!] or { return false }
+	return (c.unb_member_property_name(t, node) or { return false }) in properties
+}
+
+// unb_is_boolean_call_expression ports isBooleanCallExpression.
+fn (mut c Checker) unb_is_boolean_call_expression(t &estree.EsTree, node int, depth int, mut ctx UnbTypeContext, mut visited map[int]bool) !bool {
+	if c.unb_is_known_boolean_static_method_call(t, node, mut ctx)
+		|| c.unb_is_known_boolean_instance_method_call(t, node, mut ctx)! {
+		return true
+	}
+	callee := t.node(node, .callee) or { return false }
+	if t.typ(callee) != .identifier {
+		return c.unb_is_boolean_type_information(t, node, mut ctx)
+	}
+	name := t.string_of(callee, .name) or { '' }
+	if (name == 'Boolean' || name in unb_boolean_global_functions)
+		&& c.es_is_global_reference(ctx.root, t.ts_node(callee) or { return false }) {
+		return true
+	}
+	return c.unb_is_boolean_function_reference(t, callee, depth, mut ctx, mut visited)!
+		|| c.unb_is_boolean_type_information(t, node, mut ctx)
+}
+
+// unb_is_boolean_expression_by_syntax ports isBooleanExpressionBySyntax: (whether it decides,
+// the answer).
+fn (mut c Checker) unb_is_boolean_expression_by_syntax(t &estree.EsTree, node int, depth int, mut ctx UnbTypeContext, mut visited map[int]bool) !(bool, bool) {
+	match t.typ(node) {
+		.identifier {
+			return true, c.unb_is_boolean_identifier(t, node, depth, mut ctx, mut visited)!
+		}
+		.unary_expression {
+			return true, (t.string_of(node, .operator) or { '' }) in ['!', 'delete']
+		}
+		.logical_expression {
+			return true, c.unb_isb_expression(t, t.node(node, .left) or { -1 }, depth, mut ctx, mut
+				visited)! && c.unb_isb_expression(t, t.node(node, .right) or { -1 }, depth, mut ctx, mut
+				visited)!
+		}
+		.binary_expression {
+			return true, (t.string_of(node, .operator) or { '' }) in unb_boolean_binary_operators
+		}
+		.conditional_expression {
+			return true, c.unb_isb_expression(t, t.node(node, .consequent) or { -1 }, depth, mut ctx, mut
+				visited)! && c.unb_isb_expression(t, t.node(node, .alternate) or { -1 }, depth, mut
+				ctx, mut visited)!
+		}
+		.ts_as_expression, .ts_type_assertion, .ts_satisfies_expression {
+			return true, c.unb_is_boolean_ts_expression(t, node, depth, mut ctx, mut visited)!
+		}
+		.call_expression {
+			return true, c.unb_is_boolean_call_expression(t, node, depth, mut ctx, mut visited)!
+		}
+		.member_expression {
+			// `isKnownBooleanPropertyRead(node, context) || undefined`
+			return if c.unb_is_known_boolean_property_read(t, node, mut ctx)! {
+				true, true
+			} else {
+				false, false
+			}
+		}
+		else {
+			return c.unb_is_boolean_wrapped_expression(t, node, depth, mut ctx, mut visited)!
+		}
+	}
+}
+
+// unb_isb_expression ports isBooleanExpression of utils/is-boolean.js; `depth` is how many of
+// them are running.
+fn (mut c Checker) unb_isb_expression(t &estree.EsTree, node int, depth int, mut ctx UnbTypeContext, mut visited map[int]bool) !bool {
+	if node < 0 {
+		return false
+	}
+	if depth >= unb_boolean_max_depth {
+		return error('Maximum call stack size exceeded')
+	}
+	if annotation := c.unb_jsdoc_type_annotation(ctx.root, t, node) {
+		return unb_jsdoc_boolean_state(annotation, false, false) == 'boolean'
+			|| c.unb_is_boolean_type_information(t, node, mut ctx)
+	}
+	if annotation := t.node(node, .type_annotation) {
+		mut type_visited := map[int]bool{}
+		if c.unb_is_boolean_type_annotation(t, annotation, mut ctx, mut type_visited) {
+			return true
+		}
+	}
+	if c.unb_is_boolean_static_value(t, node, mut ctx) {
+		return true
+	}
+	decided, is_boolean := c.unb_is_boolean_expression_by_syntax(t, node, depth + 1, mut ctx, mut
+		visited)!
+	return if decided { is_boolean } else { c.unb_is_boolean_type_information(t, node, mut ctx) }
+}
+
+// unb_is_boolean ports isBoolean (isBooleanExpression, the default export of utils/is-boolean.js);
+// an error where the stack would overflow upstream.
+fn (mut c Checker) unb_is_boolean(t &estree.EsTree, node int, mut ctx UnbTypeContext) !bool {
+	mut visited := map[int]bool{}
+	return c.unb_isb_expression(t, node, 0, mut ctx, mut visited)!
 }
