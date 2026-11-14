@@ -2,6 +2,10 @@
 
 Each version is a release on GitHub with the veslint binaries (Linux x64, Windows x64) and the VS Code extension. The section of a version is the text of its release.
 
+## 0.19.1
+
+- **VS Code extension: the open files are linted again when another file changes.** A problem that came from the types of another file (`@typescript-eslint/no-unsafe-return` on a type made `any` there, say) stayed in the editor after that file was fixed, until the file was edited, though the command line no longer gave it. Now, when a file changes (as you type, when it is saved, or on disk), the other open files of its folder are linted again after it: those on screen at once, the others when they are shown.
+
 ## 0.19.0
 
 - **8 rules of eslint-plugin-unicorn for array lengths and indexes:** `unicorn/consistent-existence-index-check`, `unicorn/explicit-length-check`, `unicorn/no-unnecessary-array-flat-depth`, `unicorn/no-unnecessary-array-splice-count`, `unicorn/no-unnecessary-slice-end`, `unicorn/no-unreadable-array-destructuring`, `unicorn/no-useless-length-check` and `unicorn/prefer-set-size`. They come with their options, fixes and suggestions, and pass the cases of unicorn's own tests.
