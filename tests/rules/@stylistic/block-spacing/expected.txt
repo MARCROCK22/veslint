@@ -1,0 +1,72 @@
+tests/rules/@stylistic/block-spacing/always/cases.ts:1:1	@stylistic/block-spacing	missing	Requires a space after '{'.
+tests/rules/@stylistic/block-spacing/always/cases.ts:1:8	@stylistic/block-spacing	missing	Requires a space before '}'.
+tests/rules/@stylistic/block-spacing/always/cases.ts:2:8	@stylistic/block-spacing	missing	Requires a space after '{'.
+tests/rules/@stylistic/block-spacing/always/cases.ts:2:15	@stylistic/block-spacing	missing	Requires a space before '}'.
+tests/rules/@stylistic/block-spacing/cases.ts:5:1	@stylistic/block-spacing	missing	Requires a space after '{'.
+tests/rules/@stylistic/block-spacing/cases.ts:5:8	@stylistic/block-spacing	missing	Requires a space before '}'.
+tests/rules/@stylistic/block-spacing/cases.ts:6:9	@stylistic/block-spacing	missing	Requires a space before '}'.
+tests/rules/@stylistic/block-spacing/cases.ts:7:1	@stylistic/block-spacing	missing	Requires a space after '{'.
+tests/rules/@stylistic/block-spacing/cases.ts:10:7	@stylistic/block-spacing	missing	Requires a space before '}'.
+tests/rules/@stylistic/block-spacing/cases.ts:11:1	@stylistic/block-spacing	missing	Requires a space after '{'.
+tests/rules/@stylistic/block-spacing/cases.ts:13:8	@stylistic/block-spacing	missing	Requires a space after '{'.
+tests/rules/@stylistic/block-spacing/cases.ts:13:15	@stylistic/block-spacing	missing	Requires a space before '}'.
+tests/rules/@stylistic/block-spacing/cases.ts:13:22	@stylistic/block-spacing	missing	Requires a space after '{'.
+tests/rules/@stylistic/block-spacing/cases.ts:13:29	@stylistic/block-spacing	missing	Requires a space before '}'.
+tests/rules/@stylistic/block-spacing/cases.ts:14:8	@stylistic/block-spacing	missing	Requires a space after '{'.
+tests/rules/@stylistic/block-spacing/cases.ts:14:43	@stylistic/block-spacing	missing	Requires a space before '}'.
+tests/rules/@stylistic/block-spacing/cases.ts:15:8	@stylistic/block-spacing	missing	Requires a space after '{'.
+tests/rules/@stylistic/block-spacing/cases.ts:15:41	@stylistic/block-spacing	missing	Requires a space before '}'.
+tests/rules/@stylistic/block-spacing/cases.ts:17:9	@stylistic/block-spacing	missing	Requires a space before '}'.
+tests/rules/@stylistic/block-spacing/cases.ts:18:11	@stylistic/block-spacing	missing	Requires a space after '{'.
+tests/rules/@stylistic/block-spacing/cases.ts:18:18	@stylistic/block-spacing	missing	Requires a space before '}'.
+tests/rules/@stylistic/block-spacing/cases.ts:19:4	@stylistic/block-spacing	missing	Requires a space after '{'.
+tests/rules/@stylistic/block-spacing/cases.ts:19:11	@stylistic/block-spacing	missing	Requires a space before '}'.
+tests/rules/@stylistic/block-spacing/cases.ts:20:10	@stylistic/block-spacing	missing	Requires a space after '{'.
+tests/rules/@stylistic/block-spacing/cases.ts:20:17	@stylistic/block-spacing	missing	Requires a space before '}'.
+tests/rules/@stylistic/block-spacing/cases.ts:21:20	@stylistic/block-spacing	missing	Requires a space after '{'.
+tests/rules/@stylistic/block-spacing/cases.ts:21:35	@stylistic/block-spacing	missing	Requires a space before '}'.
+tests/rules/@stylistic/block-spacing/cases.ts:22:20	@stylistic/block-spacing	missing	Requires a space after '{'.
+tests/rules/@stylistic/block-spacing/cases.ts:22:35	@stylistic/block-spacing	missing	Requires a space before '}'.
+tests/rules/@stylistic/block-spacing/cases.ts:23:5	@stylistic/block-spacing	missing	Requires a space after '{'.
+tests/rules/@stylistic/block-spacing/cases.ts:23:12	@stylistic/block-spacing	missing	Requires a space before '}'.
+tests/rules/@stylistic/block-spacing/cases.ts:23:24	@stylistic/block-spacing	missing	Requires a space after '{'.
+tests/rules/@stylistic/block-spacing/cases.ts:23:32	@stylistic/block-spacing	missing	Requires a space before '}'.
+tests/rules/@stylistic/block-spacing/cases.ts:23:42	@stylistic/block-spacing	missing	Requires a space after '{'.
+tests/rules/@stylistic/block-spacing/cases.ts:23:49	@stylistic/block-spacing	missing	Requires a space before '}'.
+tests/rules/@stylistic/block-spacing/cases.ts:24:8	@stylistic/block-spacing	missing	Requires a space after '{'.
+tests/rules/@stylistic/block-spacing/cases.ts:24:28	@stylistic/block-spacing	missing	Requires a space before '}'.
+tests/rules/@stylistic/block-spacing/cases.ts:25:12	@stylistic/block-spacing	missing	Requires a space after '{'.
+tests/rules/@stylistic/block-spacing/cases.ts:25:27	@stylistic/block-spacing	missing	Requires a space before '}'.
+tests/rules/@stylistic/block-spacing/cases.ts:28:33	@stylistic/block-spacing	missing	Requires a space before '}'.
+tests/rules/@stylistic/block-spacing/cases.ts:29:17	@stylistic/block-spacing	missing	Requires a space after '{'.
+tests/rules/@stylistic/block-spacing/cases.ts:29:33	@stylistic/block-spacing	missing	Requires a space before '}'.
+tests/rules/@stylistic/block-spacing/cases.ts:30:23	@stylistic/block-spacing	missing	Requires a space after '{'.
+tests/rules/@stylistic/block-spacing/cases.ts:30:33	@stylistic/block-spacing	missing	Requires a space before '}'.
+tests/rules/@stylistic/block-spacing/cases.ts:31:35	@stylistic/block-spacing	missing	Requires a space after '{'.
+tests/rules/@stylistic/block-spacing/cases.ts:31:45	@stylistic/block-spacing	missing	Requires a space before '}'.
+tests/rules/@stylistic/block-spacing/cases.ts:32:30	@stylistic/block-spacing	missing	Requires a space after '{'.
+tests/rules/@stylistic/block-spacing/cases.ts:32:37	@stylistic/block-spacing	missing	Requires a space before '}'.
+tests/rules/@stylistic/block-spacing/cases.ts:34:10	@stylistic/block-spacing	missing	Requires a space after '{'.
+tests/rules/@stylistic/block-spacing/cases.ts:34:17	@stylistic/block-spacing	missing	Requires a space before '}'.
+tests/rules/@stylistic/block-spacing/cases.ts:38:18	@stylistic/block-spacing	missing	Requires a space after '{'.
+tests/rules/@stylistic/block-spacing/cases.ts:38:25	@stylistic/block-spacing	missing	Requires a space before '}'.
+tests/rules/@stylistic/block-spacing/cases.ts:39:23	@stylistic/block-spacing	missing	Requires a space after '{'.
+tests/rules/@stylistic/block-spacing/cases.ts:39:33	@stylistic/block-spacing	missing	Requires a space before '}'.
+tests/rules/@stylistic/block-spacing/cases.ts:40:24	@stylistic/block-spacing	missing	Requires a space after '{'.
+tests/rules/@stylistic/block-spacing/cases.ts:40:32	@stylistic/block-spacing	missing	Requires a space before '}'.
+tests/rules/@stylistic/block-spacing/cases.ts:54:1	@stylistic/block-spacing	missing	Requires a space after '{'.
+tests/rules/@stylistic/block-spacing/cases.ts:54:9	@stylistic/block-spacing	missing	Requires a space before '}'.
+tests/rules/@stylistic/block-spacing/never/cases.ts:6:2	@stylistic/block-spacing	extra	Unexpected space(s) after '{'.
+tests/rules/@stylistic/block-spacing/never/cases.ts:7:8	@stylistic/block-spacing	extra	Unexpected space(s) before '}'.
+tests/rules/@stylistic/block-spacing/never/cases.ts:8:2	@stylistic/block-spacing	extra	Unexpected space(s) after '{'.
+tests/rules/@stylistic/block-spacing/never/cases.ts:8:9	@stylistic/block-spacing	extra	Unexpected space(s) before '}'.
+tests/rules/@stylistic/block-spacing/never/cases.ts:28:10	@stylistic/block-spacing	extra	Unexpected space(s) after '{'.
+tests/rules/@stylistic/block-spacing/never/cases.ts:35:11	@stylistic/block-spacing	extra	Unexpected space(s) after '{'.
+tests/rules/@stylistic/block-spacing/never/cases.ts:35:18	@stylistic/block-spacing	extra	Unexpected space(s) before '}'.
+tests/rules/@stylistic/block-spacing/never/cases.ts:52:2	@stylistic/block-spacing	extra	Unexpected space(s) after '{'.
+tests/rules/@stylistic/block-spacing/never/cases.ts:52:10	@stylistic/block-spacing	extra	Unexpected space(s) before '}'.
+tests/rules/@stylistic/block-spacing/never/cases.ts:53:2	@stylistic/block-spacing	extra	Unexpected space(s) after '{'.
+tests/rules/@stylistic/block-spacing/never/cases.ts:53:10	@stylistic/block-spacing	extra	Unexpected space(s) before '}'.
+tests/rules/@stylistic/block-spacing/never/cases.ts:57:2	@stylistic/block-spacing	extra	Unexpected space(s) after '{'.
+tests/rules/@stylistic/block-spacing/never/cases.ts:57:10	@stylistic/block-spacing	extra	Unexpected space(s) before '}'.
+tests/rules/@stylistic/block-spacing/never/cases.ts:64:11	@stylistic/block-spacing	extra	Unexpected space(s) before '}'.

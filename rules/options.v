@@ -163,6 +163,7 @@ pub fn check_options(rule string, options []json2.Any) !bool {
 		stylistic_switch_colon_spacing { sscs_options(options)! }
 		stylistic_template_curly_spacing { stcs_options(options)! }
 		stylistic_template_tag_spacing { stts_options(options)! }
+		stylistic_block_spacing { sbls_options(options)! }
 		else { return false }
 	}
 	return true
