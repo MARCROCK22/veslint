@@ -1,0 +1,14 @@
+tests/rules/unicorn/prefer-string-replace-all/cases.ts:6:17	unicorn/prefer-string-replace-all	method	Prefer `String#replaceAll()` over `String#replace()`.	fix	251	256	All('a'	end	6	24
+tests/rules/unicorn/prefer-string-replace-all/cases.ts:7:17	unicorn/prefer-string-replace-all	method	Prefer `String#replaceAll()` over `String#replace()`.	fix	287	295	All('abc'	end	7	24
+tests/rules/unicorn/prefer-string-replace-all/cases.ts:8:17	unicorn/prefer-string-replace-all	method	Prefer `String#replaceAll()` over `String#replace()`.	fix	326	334	All('a.b'	end	8	24
+tests/rules/unicorn/prefer-string-replace-all/cases.ts:9:17	unicorn/prefer-string-replace-all	method	Prefer `String#replaceAll()` over `String#replace()`.	fix	364	369	All('\\''	end	9	24
+tests/rules/unicorn/prefer-string-replace-all/cases.ts:10:17	unicorn/prefer-string-replace-all	method	Prefer `String#replaceAll()` over `String#replace()`.	fix	400	406	All('\\\\'	end	10	24
+tests/rules/unicorn/prefer-string-replace-all/cases.ts:11:17	unicorn/prefer-string-replace-all	method	Prefer `String#replaceAll()` over `String#replace()`.	fix	437	451	All('\\n\\t\\n\\u{1}'	end	11	24
+tests/rules/unicorn/prefer-string-replace-all/cases.ts:12:17	unicorn/prefer-string-replace-all	method	Prefer `String#replaceAll()` over `String#replace()`.	fix	482	482	All	end	12	24
+tests/rules/unicorn/prefer-string-replace-all/cases.ts:13:17	unicorn/prefer-string-replace-all	method	Prefer `String#replaceAll()` over `String#replace()`.	fix	518	518	All	end	13	24
+tests/rules/unicorn/prefer-string-replace-all/cases.ts:14:28	unicorn/prefer-string-replace-all	pattern	This pattern can be replaced with 'a'.	fix	573	577	'a'	end	14	32
+tests/rules/unicorn/prefer-string-replace-all/cases.ts:15:29	unicorn/prefer-string-replace-all	pattern	This pattern can be replaced with a string literal.	fix	612	639	'a very long pattern here'	end	15	56
+tests/rules/unicorn/prefer-string-replace-all/cases.ts:17:18	unicorn/prefer-string-replace-all	method	Prefer `String#replaceAll()` over `String#replace()`.	fix	691	691	All	end	17	25
+tests/rules/unicorn/prefer-string-replace-all/cases.ts:18:19	unicorn/prefer-string-replace-all	method	Prefer `String#replaceAll()` over `String#replace()`.	fix	730	735	All('a'	end	18	26
+tests/rules/unicorn/prefer-string-replace-all/cases.ts:19:18	unicorn/prefer-string-replace-all	method	Prefer `String#replaceAll()` over `String#replace()`.	fix	766	775	All('\\x41B'	end	19	25
+tests/rules/unicorn/prefer-string-replace-all/cases.ts:23:17	unicorn/prefer-string-replace-all	method	Prefer `String#replaceAll()` over `String#replace()`.	fix	858	858	All	end	23	24

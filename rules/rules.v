@@ -293,6 +293,19 @@ pub const unicorn_prefer_structured_clone = 'unicorn/prefer-structured-clone'
 pub const unicorn_custom_error_definition = 'unicorn/custom-error-definition'
 pub const unicorn_no_instanceof_builtins = 'unicorn/no-instanceof-builtins'
 pub const unicorn_new_for_builtins = 'unicorn/new-for-builtins'
+pub const unicorn_no_hex_escape = 'unicorn/no-hex-escape'
+pub const unicorn_escape_case = 'unicorn/escape-case'
+pub const unicorn_consistent_template_literal_escape = 'unicorn/consistent-template-literal-escape'
+pub const unicorn_prefer_string_trim_start_end = 'unicorn/prefer-string-trim-start-end'
+pub const unicorn_no_console_spaces = 'unicorn/no-console-spaces'
+pub const unicorn_prefer_code_point = 'unicorn/prefer-code-point'
+pub const unicorn_prefer_string_slice = 'unicorn/prefer-string-slice'
+pub const unicorn_text_encoding_identifier_case = 'unicorn/text-encoding-identifier-case'
+pub const unicorn_no_zero_fractions = 'unicorn/no-zero-fractions'
+pub const unicorn_prefer_bigint_literals = 'unicorn/prefer-bigint-literals'
+pub const unicorn_prefer_number_properties = 'unicorn/prefer-number-properties'
+pub const unicorn_prefer_string_raw = 'unicorn/prefer-string-raw'
+pub const unicorn_prefer_string_replace_all = 'unicorn/prefer-string-replace-all'
 pub const names = [no_floating_promises, await_thenable, require_await, return_await,
 	no_misused_promises, no_unsafe_call, no_unsafe_member_access, no_unsafe_return,
 	no_unsafe_assignment, no_unsafe_argument, restrict_template_expressions,
@@ -362,7 +375,12 @@ pub const names = [no_floating_promises, await_thenable, require_await, return_a
 	unicorn_throw_new_error, unicorn_error_message, unicorn_consistent_date_clone,
 	unicorn_consistent_assert, unicorn_no_new_buffer, unicorn_prefer_type_error,
 	unicorn_no_useless_error_capture_stack_trace, unicorn_prefer_structured_clone,
-	unicorn_custom_error_definition, unicorn_no_instanceof_builtins, unicorn_new_for_builtins]
+	unicorn_custom_error_definition, unicorn_no_instanceof_builtins, unicorn_new_for_builtins,
+	unicorn_no_hex_escape, unicorn_escape_case, unicorn_consistent_template_literal_escape,
+	unicorn_prefer_string_trim_start_end, unicorn_no_console_spaces, unicorn_prefer_code_point,
+	unicorn_prefer_string_slice, unicorn_text_encoding_identifier_case, unicorn_no_zero_fractions,
+	unicorn_prefer_bigint_literals, unicorn_prefer_number_properties, unicorn_prefer_string_raw,
+	unicorn_prefer_string_replace_all]
 
 // untyped_rules are the ported rules that need no types (`meta.docs.requiresTypeChecking` is false
 // in typescript-eslint): with only these, the command line makes no snapshot (Checker.make_snapshot).
@@ -413,7 +431,12 @@ pub const untyped_rules = [adjacent_overload_signatures, array_type, class_liter
 	unicorn_throw_new_error, unicorn_error_message, unicorn_consistent_date_clone,
 	unicorn_consistent_assert, unicorn_no_new_buffer, unicorn_prefer_type_error,
 	unicorn_no_useless_error_capture_stack_trace, unicorn_prefer_structured_clone,
-	unicorn_custom_error_definition, unicorn_no_instanceof_builtins, unicorn_new_for_builtins]
+	unicorn_custom_error_definition, unicorn_no_instanceof_builtins, unicorn_new_for_builtins,
+	unicorn_no_hex_escape, unicorn_escape_case, unicorn_consistent_template_literal_escape,
+	unicorn_prefer_string_trim_start_end, unicorn_no_console_spaces, unicorn_prefer_code_point,
+	unicorn_prefer_string_slice, unicorn_text_encoding_identifier_case, unicorn_no_zero_fractions,
+	unicorn_prefer_bigint_literals, unicorn_prefer_number_properties, unicorn_prefer_string_raw,
+	unicorn_prefer_string_replace_all]
 
 // needs_types tells whether a rule asks tsgo for the types of the program.
 pub fn needs_types(rule string) bool {
@@ -702,6 +725,19 @@ pub const default_options = {
 	unicorn_custom_error_definition:              '[]'
 	unicorn_no_instanceof_builtins:               '[{"useErrorIsError":false,"strategy":"loose","include":[],"exclude":[]}]'
 	unicorn_new_for_builtins:                     '[]'
+	unicorn_no_hex_escape:                        '[]'
+	unicorn_escape_case:                          '["uppercase"]'
+	unicorn_consistent_template_literal_escape:   '[]'
+	unicorn_prefer_string_trim_start_end:         '[]'
+	unicorn_no_console_spaces:                    '[]'
+	unicorn_prefer_code_point:                    '[]'
+	unicorn_prefer_string_slice:                  '[]'
+	unicorn_text_encoding_identifier_case:        '[{"withDash":false}]'
+	unicorn_no_zero_fractions:                    '[]'
+	unicorn_prefer_bigint_literals:               '[]'
+	unicorn_prefer_number_properties:             '[{"checkInfinity":false,"checkNaN":true}]'
+	unicorn_prefer_string_raw:                    '[]'
+	unicorn_prefer_string_replace_all:            '[]'
 }
 
 // Finding is a problem a rule found at a node.
@@ -1113,6 +1149,19 @@ pub fn message(rule string, finding Finding) string {
 		unicorn_custom_error_definition { ucedf_messages }
 		unicorn_no_instanceof_builtins { unib_messages }
 		unicorn_new_for_builtins { unfb_messages }
+		unicorn_no_hex_escape { unhe_messages }
+		unicorn_escape_case { uec_messages }
+		unicorn_consistent_template_literal_escape { uctle_messages }
+		unicorn_prefer_string_trim_start_end { upstse_messages }
+		unicorn_no_console_spaces { uncs_messages }
+		unicorn_prefer_code_point { upcp_messages }
+		unicorn_prefer_string_slice { upssl_messages }
+		unicorn_text_encoding_identifier_case { uteic_messages }
+		unicorn_no_zero_fractions { unzf_messages }
+		unicorn_prefer_bigint_literals { upbl_messages }
+		unicorn_prefer_number_properties { upnp_messages }
+		unicorn_prefer_string_raw { upsr_messages }
+		unicorn_prefer_string_replace_all { upsra_messages }
 		else { map[string]string{} }
 	}
 	return interpolate(messages[finding.message_id] or { finding.message_id }, finding.data)
@@ -2102,6 +2151,45 @@ fn (mut c Checker) lint_rule(rule string, root C.TSNode, abs_path string, mut st
 		}
 		unicorn_new_for_builtins {
 			return c.lint_unicorn_new_for_builtins(root, abs_path, mut stats)!
+		}
+		unicorn_no_hex_escape {
+			return c.lint_unicorn_no_hex_escape(root, abs_path, mut stats)!
+		}
+		unicorn_escape_case {
+			return c.lint_unicorn_escape_case(root, abs_path, mut stats)!
+		}
+		unicorn_consistent_template_literal_escape {
+			return c.lint_unicorn_consistent_template_literal_escape(root, abs_path, mut stats)!
+		}
+		unicorn_prefer_string_trim_start_end {
+			return c.lint_unicorn_prefer_string_trim_start_end(root, abs_path, mut stats)!
+		}
+		unicorn_no_console_spaces {
+			return c.lint_unicorn_no_console_spaces(root, abs_path, mut stats)!
+		}
+		unicorn_prefer_code_point {
+			return c.lint_unicorn_prefer_code_point(root, abs_path, mut stats)!
+		}
+		unicorn_prefer_string_slice {
+			return c.lint_unicorn_prefer_string_slice(root, abs_path, mut stats)!
+		}
+		unicorn_text_encoding_identifier_case {
+			return c.lint_unicorn_text_encoding_identifier_case(root, abs_path, mut stats)!
+		}
+		unicorn_no_zero_fractions {
+			return c.lint_unicorn_no_zero_fractions(root, abs_path, mut stats)!
+		}
+		unicorn_prefer_bigint_literals {
+			return c.lint_unicorn_prefer_bigint_literals(root, abs_path, mut stats)!
+		}
+		unicorn_prefer_number_properties {
+			return c.lint_unicorn_prefer_number_properties(root, abs_path, mut stats)!
+		}
+		unicorn_prefer_string_raw {
+			return c.lint_unicorn_prefer_string_raw(root, abs_path, mut stats)!
+		}
+		unicorn_prefer_string_replace_all {
+			return c.lint_unicorn_prefer_string_replace_all(root, abs_path, mut stats)!
 		}
 		else { return error('unknown rule: ${rule}') }
 	}

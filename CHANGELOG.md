@@ -2,6 +2,11 @@
 
 Each version is a release on GitHub with the veslint binaries (Linux x64, Windows x64) and the VS Code extension. The section of a version is the text of its release.
 
+## 0.16.0
+
+- **13 rules of eslint-plugin-unicorn for strings and numbers:** `unicorn/consistent-template-literal-escape`, `unicorn/escape-case`, `unicorn/no-console-spaces`, `unicorn/no-hex-escape`, `unicorn/no-zero-fractions`, `unicorn/prefer-bigint-literals`, `unicorn/prefer-code-point`, `unicorn/prefer-number-properties`, `unicorn/prefer-string-raw`, `unicorn/prefer-string-replace-all`, `unicorn/prefer-string-slice`, `unicorn/prefer-string-trim-start-end` and `unicorn/text-encoding-identifier-case`. They come with their options, fixes and suggestions, and pass the cases of unicorn's own tests.
+- **Fix (grammar):** a number that starts with a dot at the start of a line (`a⏎.5`) continued the statement before it, where JavaScript ends that statement.
+
 ## 0.15.0
 
 - **12 rules of eslint-plugin-unicorn for errors and built-ins:** `unicorn/consistent-assert`, `unicorn/consistent-date-clone`, `unicorn/custom-error-definition`, `unicorn/error-message`, `unicorn/new-for-builtins`, `unicorn/no-instanceof-builtins`, `unicorn/no-new-buffer`, `unicorn/no-useless-error-capture-stack-trace`, `unicorn/prefer-date-now`, `unicorn/prefer-structured-clone`, `unicorn/prefer-type-error` and `unicorn/throw-new-error`. They come with their options, fixes and suggestions, and pass the cases of unicorn's own tests.

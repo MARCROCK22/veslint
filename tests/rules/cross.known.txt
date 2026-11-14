@@ -1,3 +1,4 @@
 not compared	tests/rules/@typescript-eslint/consistent-return/program/cases.ts	crash	@typescript-eslint/no-misused-promises: Non-null Assertion Failed: Expected node to have a parent.
+not compared	tests/rules/unicorn/prefer-number-properties/export/cases.ts	crash	@typescript-eslint/no-use-before-define: Cannot read properties of undefined (reading 'range')
 only eslint	tests/rules/@typescript-eslint/non-nullable-type-assertion-style/cases.ts:62:11	@typescript-eslint/no-unsafe-type-assertion	unsafeTypeAssertion	Unsafe type assertion: type '"up" | "down"' is more narrow than the original type.
 only veslint	tests/rules/@typescript-eslint/non-nullable-type-assertion-style/cases.ts:62:11	@typescript-eslint/no-unsafe-type-assertion	unsafeTypeAssertion	Unsafe type assertion: type '"down" | "up"' is more narrow than the original type.

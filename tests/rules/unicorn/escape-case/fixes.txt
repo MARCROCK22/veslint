@@ -1,0 +1,12 @@
+tests/rules/unicorn/escape-case/cases.ts:6:12	unicorn/escape-case	escape-uppercase	Use uppercase characters for the value of the escape sequence.	fix	308	314	'\\xA9'	end	6	18
+tests/rules/unicorn/escape-case/cases.ts:8:12	unicorn/escape-case	escape-uppercase	Use uppercase characters for the value of the escape sequence.	fix	346	354	'\\uD834'	end	8	20
+tests/rules/unicorn/escape-case/cases.ts:10:12	unicorn/escape-case	escape-uppercase	Use uppercase characters for the value of the escape sequence.	fix	388	399	'\\u{1D306}'	end	10	23
+tests/rules/unicorn/escape-case/cases.ts:12:12	unicorn/escape-case	escape-uppercase	Use uppercase characters for the value of the escape sequence.	fix	436	450	'\\\\xa9 \\\\\\xA9'	end	12	26
+tests/rules/unicorn/escape-case/cases.ts:13:12	unicorn/escape-case	escape-uppercase	Use uppercase characters for the value of the escape sequence.	fix	464	468	\\xA9	end	13	19
+tests/rules/unicorn/escape-case/cases.ts:14:15	unicorn/escape-case	escape-uppercase	Use uppercase characters for the value of the escape sequence.	fix	497	503	\\uD834	end	14	23
+tests/rules/unicorn/escape-case/cases.ts:15:12	unicorn/escape-case	escape-uppercase	Use uppercase characters for the value of the escape sequence.	fix	517	526	/\\xA9\\cA/	end	15	21
+tests/rules/unicorn/escape-case/lowercase/cases.ts:7:12	unicorn/escape-case	escape-lowercase	Use lowercase characters for the value of the escape sequence.	fix	327	333	'\\xa9'	end	7	18
+tests/rules/unicorn/escape-case/lowercase/cases.ts:9:12	unicorn/escape-case	escape-lowercase	Use lowercase characters for the value of the escape sequence.	fix	367	375	'\\ud834'	end	9	20
+tests/rules/unicorn/escape-case/lowercase/cases.ts:11:12	unicorn/escape-case	escape-lowercase	Use lowercase characters for the value of the escape sequence.	fix	412	423	'\\u{1d306}'	end	11	23
+tests/rules/unicorn/escape-case/lowercase/cases.ts:13:23	unicorn/escape-case	escape-lowercase	Use lowercase characters for the value of the escape sequence.	fix	475	479	\\xa9	end	13	29
+tests/rules/unicorn/escape-case/lowercase/cases.ts:16:12	unicorn/escape-case	escape-lowercase	Use lowercase characters for the value of the escape sequence.	fix	539	549	/\\xa9\\ca/u	end	16	22

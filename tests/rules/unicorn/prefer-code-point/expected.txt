@@ -1,0 +1,4 @@
+tests/rules/unicorn/prefer-code-point/cases.ts:4:17	unicorn/prefer-code-point	error/charCodeAt	Prefer `String#codePointAt()` over `String#charCodeAt()`.
+tests/rules/unicorn/prefer-code-point/cases.ts:5:18	unicorn/prefer-code-point	error/charCodeAt	Prefer `String#codePointAt()` over `String#charCodeAt()`.
+tests/rules/unicorn/prefer-code-point/cases.ts:6:19	unicorn/prefer-code-point	error/fromCharCode	Prefer `String.fromCodePoint()` over `String.fromCharCode()`.
+tests/rules/unicorn/prefer-code-point/cases.ts:7:19	unicorn/prefer-code-point	error/fromCharCode	Prefer `String.fromCodePoint()` over `String.fromCharCode()`.

@@ -938,7 +938,7 @@
  
      for (;;) {
          if (lexer->lookahead == 0) {
-@@ -94,22 +143,77 @@
+@@ -94,36 +143,95 @@
              // Therefore, disable automatic semicolons when followed by typing
              do {
                  skip(lexer);
@@ -1021,7 +1021,19 @@
  
      if (!scan_whitespace_and_comments(lexer, scanned_comment)) {
          return false;
-@@ -123,7 +227,6 @@
+     }
+ 
+     switch (lexer->lookahead) {
++        // veslint: a `.` followed by a digit starts a number (`.5`), which never continues the
++        // statement before it: `a⏎.5` is `a;` and `.5`.
++        case '.':
++            skip(lexer);
++            return iswdigit(lexer->lookahead);
++
+         case '`':
+         case ',':
+-        case '.':
+         case ';':
          case '*':
          case '%':
          case '>':
@@ -1029,7 +1041,7 @@
          case '=':
          case '?':
          case '^':
-@@ -142,9 +245,14 @@
+@@ -142,9 +250,14 @@
              // Don't insert a semicolon before a '[' or '(', unless we're parsing
              // a type. Detect whether we're parsing a type or an expression using
              // the validity of a binary operator token.
@@ -1045,7 +1057,7 @@
                  return false;
              }
              break;
-@@ -172,8 +280,10 @@
+@@ -172,8 +285,10 @@
              }
              skip(lexer);
  
@@ -1058,7 +1070,7 @@
              }
  
              for (unsigned i = 0; i < 8; i++) {
-@@ -183,8 +293,8 @@
+@@ -183,8 +298,8 @@
                  skip(lexer);
              }
  
@@ -1069,7 +1081,7 @@
              }
              break;
      }
-@@ -194,7 +304,7 @@
+@@ -194,7 +309,7 @@
  
  static bool scan_ternary_qmark(TSLexer *lexer) {
      for (;;) {
@@ -1078,7 +1090,7 @@
              break;
          }
          skip(lexer);
-@@ -214,7 +324,7 @@
+@@ -214,7 +329,7 @@
          /* TypeScript optional arguments contain the ?: sequence, possibly
             with whitespace. */
          for (;;) {
@@ -1087,7 +1099,7 @@
                  break;
              }
              advance(lexer);
-@@ -237,7 +347,7 @@
+@@ -237,7 +352,7 @@
  }
  
  static bool scan_closing_comment(TSLexer *lexer) {
@@ -1096,7 +1108,7 @@
          skip(lexer);
      }
  
-@@ -262,8 +372,7 @@
+@@ -262,8 +377,7 @@
          return false;
      }
  
@@ -1106,7 +1118,7 @@
          advance(lexer);
      }
  
-@@ -281,40 +390,205 @@
+@@ -281,40 +395,205 @@
      // immediately follows a newline.
      bool at_newline = false;
  

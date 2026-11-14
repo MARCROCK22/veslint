@@ -1,0 +1,18 @@
+tests/rules/unicorn/prefer-number-properties/cases.ts:4:12	unicorn/prefer-number-properties	error	Prefer `Number.parseInt` over `parseInt`.	fix	279	287	Number.parseInt	end	4	20
+tests/rules/unicorn/prefer-number-properties/cases.ts:5:12	unicorn/prefer-number-properties	error	Prefer `Number.parseFloat` over `parseFloat`.	fix	310	320	Number.parseFloat	end	5	22
+tests/rules/unicorn/prefer-number-properties/cases.ts:6:12	unicorn/prefer-number-properties	error	Prefer `Number.isNaN` over `isNaN`.	suggestion	suggestion	Replace `isNaN` with `Number.isNaN`.	340	345	Number.isNaN	end	6	17
+tests/rules/unicorn/prefer-number-properties/cases.ts:7:12	unicorn/prefer-number-properties	error	Prefer `Number.isFinite` over `isFinite`.	suggestion	suggestion	Replace `isFinite` with `Number.isFinite`.	361	369	Number.isFinite	end	7	20
+tests/rules/unicorn/prefer-number-properties/cases.ts:8:12	unicorn/prefer-number-properties	error	Prefer `Number.NaN` over `NaN`.	fix	385	388	Number.NaN	end	8	15
+tests/rules/unicorn/prefer-number-properties/cases.ts:11:12	unicorn/prefer-number-properties	error	Prefer `Number.parseInt` over `parseInt`.	fix	444	463	Number.parseInt	end	11	31
+tests/rules/unicorn/prefer-number-properties/cases.ts:12:14	unicorn/prefer-number-properties	error	Prefer `Number.NaN` over `NaN`.	fix	483	486	NaN: Number.NaN	end	12	17
+tests/rules/unicorn/prefer-number-properties/cases.ts:16:15	unicorn/prefer-number-properties	error	Prefer `Number.parseInt` over `parseInt`.	fix	540	548	Number.parseInt	end	16	23
+tests/rules/unicorn/prefer-number-properties/export/cases.ts:3:10	unicorn/prefer-number-properties	error	Prefer `Number.parseFloat` over `parseFloat`.	fix	211	221	Number.parseFloat as parseFloat	end	3	20
+tests/rules/unicorn/prefer-number-properties/infinity/cases.ts:4:12	unicorn/prefer-number-properties	error	Prefer `Number.parseInt` over `parseInt`.	fix	279	287	Number.parseInt	end	4	20
+tests/rules/unicorn/prefer-number-properties/infinity/cases.ts:5:12	unicorn/prefer-number-properties	error	Prefer `Number.parseFloat` over `parseFloat`.	fix	310	320	Number.parseFloat	end	5	22
+tests/rules/unicorn/prefer-number-properties/infinity/cases.ts:6:12	unicorn/prefer-number-properties	error	Prefer `Number.isNaN` over `isNaN`.	suggestion	suggestion	Replace `isNaN` with `Number.isNaN`.	340	345	Number.isNaN	end	6	17
+tests/rules/unicorn/prefer-number-properties/infinity/cases.ts:7:12	unicorn/prefer-number-properties	error	Prefer `Number.isFinite` over `isFinite`.	suggestion	suggestion	Replace `isFinite` with `Number.isFinite`.	361	369	Number.isFinite	end	7	20
+tests/rules/unicorn/prefer-number-properties/infinity/cases.ts:9:12	unicorn/prefer-number-properties	error	Prefer `Number.POSITIVE_INFINITY` over `Infinity`.	fix	401	409	Number.POSITIVE_INFINITY	end	9	20
+tests/rules/unicorn/prefer-number-properties/infinity/cases.ts:10:12	unicorn/prefer-number-properties	error	Prefer `Number.NEGATIVE_INFINITY` over `-Infinity`.	fix	422	431	Number.NEGATIVE_INFINITY	end	10	21
+tests/rules/unicorn/prefer-number-properties/infinity/cases.ts:11:12	unicorn/prefer-number-properties	error	Prefer `Number.parseInt` over `parseInt`.	fix	444	463	Number.parseInt	end	11	31
+tests/rules/unicorn/prefer-number-properties/infinity/cases.ts:14:9	unicorn/prefer-number-properties	error	Prefer `Number.NEGATIVE_INFINITY` over `-Infinity`.	fix	513	522	 Number.NEGATIVE_INFINITY	end	14	18
+tests/rules/unicorn/prefer-number-properties/infinity/cases.ts:16:15	unicorn/prefer-number-properties	error	Prefer `Number.parseInt` over `parseInt`.	fix	540	548	Number.parseInt	end	16	23

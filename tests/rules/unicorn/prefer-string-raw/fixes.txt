@@ -1,0 +1,5 @@
+tests/rules/unicorn/prefer-string-raw/cases.ts:5:12	unicorn/prefer-string-raw	prefer-string-raw	`String.raw` should be used to avoid escaping `\\`.	fix	212	235	String.raw`C:\\Windows\\System32`	end	5	35
+tests/rules/unicorn/prefer-string-raw/cases.ts:6:12	unicorn/prefer-string-raw	prefer-string-raw	`String.raw` should be used to avoid escaping `\\`.	fix	248	254	String.raw`a\\b`	end	6	18
+tests/rules/unicorn/prefer-string-raw/cases.ts:7:12	unicorn/prefer-string-raw	prefer-string-raw	`String.raw` should be used to avoid escaping `\\`.	fix	267	279	String.raw`it's a\\b`	end	7	24
+tests/rules/unicorn/prefer-string-raw/cases.ts:10:9	unicorn/prefer-string-raw	prefer-string-raw	`String.raw` should be used to avoid escaping `\\`.	fix	343	349	 String.raw`a\\b`	end	10	15
+tests/rules/unicorn/prefer-string-raw/cases.ts:18:12	unicorn/prefer-string-raw	prefer-string-raw	`String.raw` should be used to avoid escaping `\\`.	fix	463	476	String.raw`C:\\Windows`	end	18	25

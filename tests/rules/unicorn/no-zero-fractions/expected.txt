@@ -1,0 +1,12 @@
+tests/rules/unicorn/no-zero-fractions/cases.ts:4:13	unicorn/no-zero-fractions	zero-fraction	Don't use a zero fraction in the number.
+tests/rules/unicorn/no-zero-fractions/cases.ts:5:15	unicorn/no-zero-fractions	zero-fraction	Don't use a zero fraction in the number.
+tests/rules/unicorn/no-zero-fractions/cases.ts:6:13	unicorn/no-zero-fractions	dangling-dot	Don't use a dangling dot in the number.
+tests/rules/unicorn/no-zero-fractions/cases.ts:7:13	unicorn/no-zero-fractions	zero-fraction	Don't use a zero fraction in the number.
+tests/rules/unicorn/no-zero-fractions/cases.ts:8:13	unicorn/no-zero-fractions	zero-fraction	Don't use a zero fraction in the number.
+tests/rules/unicorn/no-zero-fractions/cases.ts:9:13	unicorn/no-zero-fractions	zero-fraction	Don't use a zero fraction in the number.
+tests/rules/unicorn/no-zero-fractions/cases.ts:10:17	unicorn/no-zero-fractions	zero-fraction	Don't use a zero fraction in the number.
+tests/rules/unicorn/no-zero-fractions/cases.ts:11:13	unicorn/no-zero-fractions	zero-fraction	Don't use a zero fraction in the number.
+tests/rules/unicorn/no-zero-fractions/cases.ts:12:13	unicorn/no-zero-fractions	zero-fraction	Don't use a zero fraction in the number.
+tests/rules/unicorn/no-zero-fractions/cases.ts:13:15	unicorn/no-zero-fractions	zero-fraction	Don't use a zero fraction in the number.
+tests/rules/unicorn/no-zero-fractions/cases.ts:16:10	unicorn/no-zero-fractions	zero-fraction	Don't use a zero fraction in the number.
+tests/rules/unicorn/no-zero-fractions/cases.ts:19:2	unicorn/no-zero-fractions	zero-fraction	Don't use a zero fraction in the number.

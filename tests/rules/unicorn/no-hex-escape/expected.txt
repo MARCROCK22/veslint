@@ -1,0 +1,8 @@
+tests/rules/unicorn/no-hex-escape/cases.ts:5:12	unicorn/no-hex-escape	no-hex-escape	Use Unicode escapes instead of hexadecimal escapes.
+tests/rules/unicorn/no-hex-escape/cases.ts:6:12	unicorn/no-hex-escape	no-hex-escape	Use Unicode escapes instead of hexadecimal escapes.
+tests/rules/unicorn/no-hex-escape/cases.ts:8:12	unicorn/no-hex-escape	no-hex-escape	Use Unicode escapes instead of hexadecimal escapes.
+tests/rules/unicorn/no-hex-escape/cases.ts:9:12	unicorn/no-hex-escape	no-hex-escape	Use Unicode escapes instead of hexadecimal escapes.
+tests/rules/unicorn/no-hex-escape/cases.ts:9:23	unicorn/no-hex-escape	no-hex-escape	Use Unicode escapes instead of hexadecimal escapes.
+tests/rules/unicorn/no-hex-escape/cases.ts:10:15	unicorn/no-hex-escape	no-hex-escape	Use Unicode escapes instead of hexadecimal escapes.
+tests/rules/unicorn/no-hex-escape/cases.ts:11:12	unicorn/no-hex-escape	no-hex-escape	Use Unicode escapes instead of hexadecimal escapes.
+tests/rules/unicorn/no-hex-escape/cases.ts:12:12	unicorn/no-hex-escape	no-hex-escape	Use Unicode escapes instead of hexadecimal escapes.

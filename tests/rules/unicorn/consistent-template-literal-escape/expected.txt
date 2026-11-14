@@ -1,0 +1,5 @@
+tests/rules/unicorn/consistent-template-literal-escape/cases.ts:5:12	unicorn/consistent-template-literal-escape	consistent-template-literal-escape	Use `\\${` instead of `$\\{` to escape in template literals.
+tests/rules/unicorn/consistent-template-literal-escape/cases.ts:6:12	unicorn/consistent-template-literal-escape	consistent-template-literal-escape	Use `\\${` instead of `$\\{` to escape in template literals.
+tests/rules/unicorn/consistent-template-literal-escape/cases.ts:7:19	unicorn/consistent-template-literal-escape	consistent-template-literal-escape	Use `\\${` instead of `$\\{` to escape in template literals.
+tests/rules/unicorn/consistent-template-literal-escape/cases.ts:8:12	unicorn/consistent-template-literal-escape	consistent-template-literal-escape	Use `\\${` instead of `$\\{` to escape in template literals.
+tests/rules/unicorn/consistent-template-literal-escape/cases.ts:12:12	unicorn/consistent-template-literal-escape	consistent-template-literal-escape	Use `\\${` instead of `$\\{` to escape in template literals.

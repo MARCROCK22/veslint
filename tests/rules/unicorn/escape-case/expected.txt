@@ -1,0 +1,12 @@
+tests/rules/unicorn/escape-case/cases.ts:6:12	unicorn/escape-case	escape-uppercase	Use uppercase characters for the value of the escape sequence.
+tests/rules/unicorn/escape-case/cases.ts:8:12	unicorn/escape-case	escape-uppercase	Use uppercase characters for the value of the escape sequence.
+tests/rules/unicorn/escape-case/cases.ts:10:12	unicorn/escape-case	escape-uppercase	Use uppercase characters for the value of the escape sequence.
+tests/rules/unicorn/escape-case/cases.ts:12:12	unicorn/escape-case	escape-uppercase	Use uppercase characters for the value of the escape sequence.
+tests/rules/unicorn/escape-case/cases.ts:13:12	unicorn/escape-case	escape-uppercase	Use uppercase characters for the value of the escape sequence.
+tests/rules/unicorn/escape-case/cases.ts:14:15	unicorn/escape-case	escape-uppercase	Use uppercase characters for the value of the escape sequence.
+tests/rules/unicorn/escape-case/cases.ts:15:12	unicorn/escape-case	escape-uppercase	Use uppercase characters for the value of the escape sequence.
+tests/rules/unicorn/escape-case/lowercase/cases.ts:7:12	unicorn/escape-case	escape-lowercase	Use lowercase characters for the value of the escape sequence.
+tests/rules/unicorn/escape-case/lowercase/cases.ts:9:12	unicorn/escape-case	escape-lowercase	Use lowercase characters for the value of the escape sequence.
+tests/rules/unicorn/escape-case/lowercase/cases.ts:11:12	unicorn/escape-case	escape-lowercase	Use lowercase characters for the value of the escape sequence.
+tests/rules/unicorn/escape-case/lowercase/cases.ts:13:23	unicorn/escape-case	escape-lowercase	Use lowercase characters for the value of the escape sequence.
+tests/rules/unicorn/escape-case/lowercase/cases.ts:16:12	unicorn/escape-case	escape-lowercase	Use lowercase characters for the value of the escape sequence.

@@ -1,0 +1,12 @@
+tests/rules/unicorn/no-zero-fractions/cases.ts:4:13	unicorn/no-zero-fractions	zero-fraction	Don't use a zero fraction in the number.	fix	130	133	1	end	4	15
+tests/rules/unicorn/no-zero-fractions/cases.ts:5:15	unicorn/no-zero-fractions	zero-fraction	Don't use a zero fraction in the number.	fix	146	150	1.5	end	5	16
+tests/rules/unicorn/no-zero-fractions/cases.ts:6:13	unicorn/no-zero-fractions	dangling-dot	Don't use a dangling dot in the number.	fix	163	165	1	end	6	14
+tests/rules/unicorn/no-zero-fractions/cases.ts:7:13	unicorn/no-zero-fractions	zero-fraction	Don't use a zero fraction in the number.	fix	178	181	0	end	7	15
+tests/rules/unicorn/no-zero-fractions/cases.ts:8:13	unicorn/no-zero-fractions	zero-fraction	Don't use a zero fraction in the number.	fix	194	196	0	end	8	14
+tests/rules/unicorn/no-zero-fractions/cases.ts:9:13	unicorn/no-zero-fractions	zero-fraction	Don't use a zero fraction in the number.	fix	209	215	1e10	end	9	15
+tests/rules/unicorn/no-zero-fractions/cases.ts:10:17	unicorn/no-zero-fractions	zero-fraction	Don't use a zero fraction in the number.	fix	228	239	1_000	end	10	23
+tests/rules/unicorn/no-zero-fractions/cases.ts:11:13	unicorn/no-zero-fractions	zero-fraction	Don't use a zero fraction in the number.	fix	252	256	2	end	11	16
+tests/rules/unicorn/no-zero-fractions/cases.ts:12:13	unicorn/no-zero-fractions	zero-fraction	Don't use a zero fraction in the number.	fix	273	276	(1)	end	12	15
+tests/rules/unicorn/no-zero-fractions/cases.ts:13:15	unicorn/no-zero-fractions	zero-fraction	Don't use a zero fraction in the number.	fix	302	305	1	end	13	17
+tests/rules/unicorn/no-zero-fractions/cases.ts:16:10	unicorn/no-zero-fractions	zero-fraction	Don't use a zero fraction in the number.	fix	372	374	 0	end	16	11
+tests/rules/unicorn/no-zero-fractions/cases.ts:19:2	unicorn/no-zero-fractions	zero-fraction	Don't use a zero fraction in the number.	fix	388	391	;(1)	end	19	4

@@ -386,3 +386,11 @@ eslint	no-useless-assignment/v59	turns on test/unknown-ref, a rule of the test f
 veslint	no-useless-assignment/v59	turns on test/unknown-ref, a rule of the test file
 eslint	no-useless-assignment/v60	turns on test/unknown-ref, a rule of the test file
 veslint	no-useless-assignment/v60	turns on test/unknown-ref, a rule of the test file
+# eslint-plugin-unicorn: TypeScript rejects octal literals and decimals with leading zeros.
+eslint	prefer-bigint-literals/i11	typescript-eslint's parser: Octal literals are not allowed. Use the syntax '0o777'.
+eslint	prefer-bigint-literals/i12	typescript-eslint's parser: Decimals with leading zeros are not allowed.
+# eslint-plugin-unicorn: the code has a lone surrogate (a JavaScript string of the test), which a UTF-8 file cannot hold.
+veslint	escape-case/r0/v19	the code has a lone surrogate, which a UTF-8 file cannot hold
+veslint	escape-case/r0/i19	the code has a lone surrogate, which a UTF-8 file cannot hold
+veslint	escape-case/r1/v17	the code has a lone surrogate, which a UTF-8 file cannot hold
+veslint	escape-case/r1/i19	the code has a lone surrogate, which a UTF-8 file cannot hold

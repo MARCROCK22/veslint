@@ -131,6 +131,9 @@ pub fn check_options(rule string, options []json2.Any) !bool {
 		unicorn_switch_case_braces { uscb_options(options)! }
 		unicorn_prefer_structured_clone { upsc_options(options)! }
 		unicorn_no_instanceof_builtins { unib_options(options)! }
+		unicorn_escape_case { uec_options(options)! }
+		unicorn_text_encoding_identifier_case { uteic_options(options)! }
+		unicorn_prefer_number_properties { upnp_options(options)! }
 		else { return false }
 	}
 	return true

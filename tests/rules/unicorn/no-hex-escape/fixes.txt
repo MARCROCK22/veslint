@@ -1,0 +1,8 @@
+tests/rules/unicorn/no-hex-escape/cases.ts:5:12	unicorn/no-hex-escape	no-hex-escape	Use Unicode escapes instead of hexadecimal escapes.	fix	224	230	'\\u001B'	end	5	18
+tests/rules/unicorn/no-hex-escape/cases.ts:6:12	unicorn/no-hex-escape	no-hex-escape	Use Unicode escapes instead of hexadecimal escapes.	fix	243	251	"a\\u0041b"	end	6	20
+tests/rules/unicorn/no-hex-escape/cases.ts:8:12	unicorn/no-hex-escape	no-hex-escape	Use Unicode escapes instead of hexadecimal escapes.	fix	284	292	'\\\\\\u0041'	end	8	20
+tests/rules/unicorn/no-hex-escape/cases.ts:9:12	unicorn/no-hex-escape	no-hex-escape	Use Unicode escapes instead of hexadecimal escapes.	fix	306	310	\\u001B	end	9	19
+tests/rules/unicorn/no-hex-escape/cases.ts:9:23	unicorn/no-hex-escape	no-hex-escape	Use Unicode escapes instead of hexadecimal escapes.	fix	317	321	\\u001b	end	9	29
+tests/rules/unicorn/no-hex-escape/cases.ts:10:15	unicorn/no-hex-escape	no-hex-escape	Use Unicode escapes instead of hexadecimal escapes.	fix	339	343	\\u001B	end	10	21
+tests/rules/unicorn/no-hex-escape/cases.ts:11:12	unicorn/no-hex-escape	no-hex-escape	Use Unicode escapes instead of hexadecimal escapes.	fix	357	363	/\\u001B/	end	11	18
+tests/rules/unicorn/no-hex-escape/cases.ts:12:12	unicorn/no-hex-escape	no-hex-escape	Use Unicode escapes instead of hexadecimal escapes.	fix	376	390	/[\\u0000-\\u007F]/u	end	12	26

@@ -1,0 +1,5 @@
+tests/rules/unicorn/prefer-string-raw/cases.ts:5:12	unicorn/prefer-string-raw	prefer-string-raw	`String.raw` should be used to avoid escaping `\\`.
+tests/rules/unicorn/prefer-string-raw/cases.ts:6:12	unicorn/prefer-string-raw	prefer-string-raw	`String.raw` should be used to avoid escaping `\\`.
+tests/rules/unicorn/prefer-string-raw/cases.ts:7:12	unicorn/prefer-string-raw	prefer-string-raw	`String.raw` should be used to avoid escaping `\\`.
+tests/rules/unicorn/prefer-string-raw/cases.ts:10:9	unicorn/prefer-string-raw	prefer-string-raw	`String.raw` should be used to avoid escaping `\\`.
+tests/rules/unicorn/prefer-string-raw/cases.ts:18:12	unicorn/prefer-string-raw	prefer-string-raw	`String.raw` should be used to avoid escaping `\\`.

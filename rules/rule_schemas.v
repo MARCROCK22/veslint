@@ -283,6 +283,19 @@ const rule_option_schemas = {
 	'unicorn/custom-error-definition':                                 '{"type":"array","minItems":0,"maxItems":0}'
 	'unicorn/no-instanceof-builtins':                                  '{"type":"array","items":[{"type":"object","properties":{"useErrorIsError":{"type":"boolean"},"strategy":{"enum":["loose","strict"]},"include":{"type":"array","items":{"type":"string"}},"exclude":{"type":"array","items":{"type":"string"}}},"additionalProperties":false}],"minItems":0,"maxItems":1}'
 	'unicorn/new-for-builtins':                                        '{"type":"array","minItems":0,"maxItems":0}'
+	'unicorn/no-hex-escape':                                           '{"type":"array","minItems":0,"maxItems":0}'
+	'unicorn/escape-case':                                             '{"type":"array","items":[{"enum":["uppercase","lowercase"],"description":"The case style for escape sequences."}],"minItems":0,"maxItems":1}'
+	'unicorn/consistent-template-literal-escape':                      '{"type":"array","minItems":0,"maxItems":0}'
+	'unicorn/prefer-string-trim-start-end':                            '{"type":"array","minItems":0,"maxItems":0}'
+	'unicorn/no-console-spaces':                                       '{"type":"array","minItems":0,"maxItems":0}'
+	'unicorn/prefer-code-point':                                       '{"type":"array","minItems":0,"maxItems":0}'
+	'unicorn/prefer-string-slice':                                     '{"type":"array","minItems":0,"maxItems":0}'
+	'unicorn/text-encoding-identifier-case':                           '{"type":"array","items":[{"type":"object","additionalProperties":false,"properties":{"withDash":{"type":"boolean","description":"Whether to prefer identifiers with a dash, like `utf-8` instead of `utf8`."}}}],"minItems":0,"maxItems":1}'
+	'unicorn/no-zero-fractions':                                       '{"type":"array","minItems":0,"maxItems":0}'
+	'unicorn/prefer-bigint-literals':                                  '{"type":"array","minItems":0,"maxItems":0}'
+	'unicorn/prefer-number-properties':                                '{"type":"array","items":[{"type":"object","additionalProperties":false,"properties":{"checkInfinity":{"type":"boolean","description":"Whether to check usage of the global `Infinity`."},"checkNaN":{"type":"boolean","description":"Whether to check usage of the global `NaN`."}}}],"minItems":0,"maxItems":1}'
+	'unicorn/prefer-string-raw':                                       '{"type":"array","minItems":0,"maxItems":0}'
+	'unicorn/prefer-string-replace-all':                               '{"type":"array","minItems":0,"maxItems":0}'
 }
 
 // eslint_rule_default_options are the meta.defaultOptions of the rules of ESLint and of

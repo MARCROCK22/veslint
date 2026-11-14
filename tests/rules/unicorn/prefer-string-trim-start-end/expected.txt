@@ -1,0 +1,4 @@
+tests/rules/unicorn/prefer-string-trim-start-end/cases.ts:4:17	unicorn/prefer-string-trim-start-end	prefer-string-trim-start-end	Prefer `String#trimStart()` over `String#trimLeft()`.
+tests/rules/unicorn/prefer-string-trim-start-end/cases.ts:5:17	unicorn/prefer-string-trim-start-end	prefer-string-trim-start-end	Prefer `String#trimEnd()` over `String#trimRight()`.
+tests/rules/unicorn/prefer-string-trim-start-end/cases.ts:6:18	unicorn/prefer-string-trim-start-end	prefer-string-trim-start-end	Prefer `String#trimStart()` over `String#trimLeft()`.
+tests/rules/unicorn/prefer-string-trim-start-end/cases.ts:7:34	unicorn/prefer-string-trim-start-end	prefer-string-trim-start-end	Prefer `String#trimEnd()` over `String#trimRight()`.

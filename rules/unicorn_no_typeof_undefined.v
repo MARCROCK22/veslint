@@ -17,8 +17,8 @@ fn unty_options(options []json2.Any) !bool {
 	return o.bool_value('checkGlobalVariables')!
 }
 
-// un_is_literal ports isLiteral(node, value) of unicorn's ast/literal.js for a string.
-fn un_is_string_literal(t &estree.EsTree, node int, value string) bool {
+// un_is_string_literal_of ports isLiteral(node, value) of unicorn's ast/literal.js for a string.
+fn un_is_string_literal_of(t &estree.EsTree, node int, value string) bool {
 	if t.typ(node) != .literal {
 		return false
 	}
@@ -43,7 +43,7 @@ fn (mut c Checker) lint_unicorn_no_typeof_undefined(root C.TSNode, abs_path stri
 		if operator !in ['===', '!==', '==', '!='] || t.typ(typeof_node) != .unary_expression
 			|| (t.string_of(typeof_node, .operator) or { '' }) != 'typeof'
 			|| !(t.flag(typeof_node, .prefix) or { false })
-			|| !un_is_string_literal(t, undefined_string, 'undefined') {
+			|| !un_is_string_literal_of(t, undefined_string, 'undefined') {
 			continue
 		}
 		value := t.node(typeof_node, .argument) or { continue }

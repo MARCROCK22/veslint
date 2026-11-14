@@ -29,7 +29,7 @@ python3 tests/estree/compare.py "$OUT/oracle.tsv" "$OUT/v.tsv" "$OUT/corpus" "$O
 # The differences, as paths relative to the corpus directory, against known.txt.
 { sed -e "s|^$PWD/$OUT/corpus/||" -e "s|^$OUT/corpus/||" -e "s|^$PWD/||" "$OUT/mismatch.txt" | grep -v '^$' || true; } |
 	LC_ALL=C sort > "$OUT/mismatch.rel"
-grep -v '^#' tests/codepath/known.txt | cut -f1 | LC_ALL=C sort > "$OUT/known.rel"
+{ grep -v '^#' tests/codepath/known.txt || true; } | cut -f1 | LC_ALL=C sort > "$OUT/known.rel"
 if diff "$OUT/known.rel" "$OUT/mismatch.rel"; then
 	echo "codepath: as ESLint but the $(wc -l < "$OUT/known.rel") known differences"
 else

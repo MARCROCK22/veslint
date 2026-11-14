@@ -972,3 +972,140 @@ fn un_node_matches_name_or_path(t &estree.EsTree, from int, name_or_path string)
 	}
 	return false
 }
+
+// un_is_string_literal ports isStringLiteral.
+fn un_is_string_literal(t &estree.EsTree, node int) bool {
+	return node >= 0 && t.typ(node) == .literal && t.get(node, .value) is string
+}
+
+// un_is_regex_literal ports isRegexLiteral.
+fn un_is_regex_literal(t &estree.EsTree, node int) bool {
+	return node >= 0 && t.typ(node) == .literal && t.get(node, .regex) is estree.RegexInfo
+}
+
+// un_raw is the `raw` of a Literal.
+fn un_raw(t &estree.EsTree, node int) string {
+	return t.string_of(node, .raw) or { '' }
+}
+
+// un_template_raw is `value.raw` of a TemplateElement.
+fn un_template_raw(t &estree.EsTree, node int) string {
+	value := t.get(node, .value)
+	return if value is estree.TemplateValue { value.raw } else { '' }
+}
+
+// un_is_tagged_template ports isTaggedTemplateLiteral(node, tags): the quasi of a tagged template
+// whose tag matches one of `tags` (any tag when there are none).
+fn un_is_tagged_template(t &estree.EsTree, node int, tags []string) bool {
+	if node < 0 || t.typ(node) != .template_literal {
+		return false
+	}
+	parent := t.nodes[node].parent
+	if parent < 0 || t.typ(parent) != .tagged_template_expression
+		|| t.node(parent, .quasi) or { -1 } != node {
+		return false
+	}
+	if tags.len == 0 {
+		return true
+	}
+	tag := t.node(parent, .tag) or { return false }
+	return tags.any(un_node_matches_name_or_path(t, tag, it))
+}
+
+// un_replace_template_element ports replaceTemplateElement: the text of the element between its
+// delimiters (`` ` `` or `}` and `` ` `` or `${`) becomes `replacement`.
+fn un_replace_template_element(t &estree.EsTree, node int, replacement string) Fix {
+	tail := t.flag(node, .tail) or { false }
+	return fix_replace_range(t.nodes[node].start + 1, t.nodes[node].end - (if tail { 1 } else { 2 }),
+		replacement)
+}
+
+// un_is_escaped_at: the character at `i` follows an odd number of backslashes, the lookbehind
+// `(?<=(?:^|[^\\])(?:\\\\)*\\)` of unicorn's escape rules.
+fn un_is_escaped_at(text string, i int) bool {
+	mut count := 0
+	for j := i - 1; j >= 0 && text[j] == `\\`; j-- {
+		count++
+	}
+	return count % 2 == 1
+}
+
+// un_reference_node is the ESTree Identifier of a reference the scope tree or the ReferenceTracker
+// gives: in a shorthand property the value, not the key, which has the same range.
+fn (mut c Checker) un_reference_node(t &estree.EsTree, ts C.TSNode) ?int {
+	node := c.es_index_of(t, ts)?
+	parent := t.nodes[node].parent
+	if parent >= 0 && t.typ(parent) == .property && (t.flag(parent, .shorthand) or { false })
+		&& t.node(parent, .key) or { -1 } == node {
+		return t.node(parent, .value) or { node }
+	}
+	// `export { a }`: `local` and `exported` have the same range; the reference is `local`.
+	if parent >= 0 && t.typ(parent) == .export_specifier
+		&& t.node(parent, .exported) or { -1 } == node {
+		return t.node(parent, .local) or { node }
+	}
+	return node
+}
+
+// un_is_left_hand_side ports isLeftHandSide: the node is written (assigned, updated, destructured
+// into or deleted).
+fn un_is_left_hand_side(t &estree.EsTree, node int) bool {
+	parent := t.nodes[node].parent
+	if parent < 0 {
+		return false
+	}
+	return match t.typ(parent) {
+		.assignment_expression, .assignment_pattern { t.node(parent, .left) or { -1 } == node }
+		.update_expression { t.node(parent, .argument) or { -1 } == node }
+		.array_pattern { node in (t.list(parent, .elements) or { []int{} }) }
+		.property {
+			t.node(parent, .value) or { -1 } == node && t.nodes[parent].parent >= 0
+				&& t.typ(t.nodes[parent].parent) == .object_pattern
+				&& parent in (t.list(t.nodes[parent].parent, .properties) or { []int{} })
+		}
+		.unary_expression {
+			(t.string_of(parent, .operator) or { '' }) == 'delete'
+				&& t.node(parent, .argument) or { -1 } == node
+		}
+		else { false }
+	}
+}
+
+fn un_is_shorthand_property_value(t &estree.EsTree, node int) bool {
+	parent := t.nodes[node].parent
+	return parent >= 0 && t.typ(parent) == .property && (t.flag(parent, .shorthand) or { false })
+		&& t.node(parent, .value) or { -1 } == node
+}
+
+fn un_same_range(t &estree.EsTree, a int, b int) bool {
+	return a >= 0 && b >= 0 && t.nodes[a].start == t.nodes[b].start
+		&& t.nodes[a].end == t.nodes[b].end
+}
+
+// un_replace_reference_identifier ports replaceReferenceIdentifier: the identifier becomes
+// `replacement`, keeping a shorthand property, import or export working.
+fn (c &Checker) un_replace_reference_identifier(t &estree.EsTree, node int, replacement string) Fix {
+	name := t.string_of(node, .name) or { '' }
+	parent := t.nodes[node].parent
+	start := t.nodes[node].start
+	end := t.nodes[node].end
+	if un_is_shorthand_property_value(t, node) || (parent >= 0
+		&& t.typ(parent) == .assignment_pattern && t.node(parent, .left) or { -1 } == node
+		&& un_is_shorthand_property_value(t, parent)) {
+		return fix_replace_range(start, end, '${name}: ${replacement}')
+	}
+	if parent >= 0 && t.typ(parent) == .import_specifier && t.node(parent, .local) or { -1 } == node
+		&& un_same_range(t, node, t.node(parent, .imported) or { -1 }) {
+		return fix_replace_range(start, end, '${name} as ${replacement}')
+	}
+	if parent >= 0 && t.typ(parent) == .export_specifier && t.node(parent, .local) or { -1 } == node
+		&& un_same_range(t, node, t.node(parent, .exported) or { -1 }) {
+		return fix_replace_range(start, end, '${replacement} as ${name}')
+	}
+	if annotation := t.node(node, .type_annotation) {
+		optional := t.flag(node, .optional) or { false }
+		return fix_replace_range(start, t.nodes[annotation].start, replacement +
+			if optional { '?' } else { '' })
+	}
+	return fix_replace_range(start, end, replacement)
+}
