@@ -1,0 +1,68 @@
+tests/rules/unicorn/no-useless-undefined/cases.ts:8:9	unicorn/no-useless-undefined	no-useless-undefined	Do not use useless `undefined`.	fix	226	236		end	8	18
+tests/rules/unicorn/no-useless-undefined/cases.ts:11:10	unicorn/no-useless-undefined	no-useless-undefined	Do not use useless `undefined`.	fix	280	292		end	11	19
+tests/rules/unicorn/no-useless-undefined/cases.ts:15:3	unicorn/no-useless-undefined	no-useless-undefined	Do not use useless `undefined`.	fix	333	350	\n\n	end	15	12
+tests/rules/unicorn/no-useless-undefined/cases.ts:19:9	unicorn/no-useless-undefined	no-useless-undefined	Do not use useless `undefined`.	fix	405	415		end	19	18
+tests/rules/unicorn/no-useless-undefined/cases.ts:22:9	unicorn/no-useless-undefined	no-useless-undefined	Do not use useless `undefined`.	fix	456	466		end	22	18
+tests/rules/unicorn/no-useless-undefined/cases.ts:25:9	unicorn/no-useless-undefined	no-useless-undefined	Do not use useless `undefined`.	fix	507	517		end	25	18
+tests/rules/unicorn/no-useless-undefined/cases.ts:29:10	unicorn/no-useless-undefined	no-useless-undefined	Do not use useless `undefined`.	fix	558	568		end	29	19
+tests/rules/unicorn/no-useless-undefined/cases.ts:32:10	unicorn/no-useless-undefined	no-useless-undefined	Do not use useless `undefined`.	fix	607	617		end	32	19
+tests/rules/unicorn/no-useless-undefined/cases.ts:48:10	unicorn/no-useless-undefined	no-useless-undefined	Do not use useless `undefined`.	fix	992	1002		end	48	19
+tests/rules/unicorn/no-useless-undefined/cases.ts:56:8	unicorn/no-useless-undefined	no-useless-undefined	Do not use useless `undefined`.	fix	1092	1102		end	56	17
+tests/rules/unicorn/no-useless-undefined/cases.ts:57:9	unicorn/no-useless-undefined	no-useless-undefined	Do not use useless `undefined`.	fix	1110	1122		end	57	18
+tests/rules/unicorn/no-useless-undefined/cases.ts:59:22	unicorn/no-useless-undefined	no-useless-undefined	Do not use useless `undefined`.	fix	1186	1196		end	59	31
+tests/rules/unicorn/no-useless-undefined/cases.ts:64:25	unicorn/no-useless-undefined	no-useless-undefined	Do not use useless `undefined`.	fix	1258	1268	 {}	end	64	34
+tests/rules/unicorn/no-useless-undefined/cases.ts:65:39	unicorn/no-useless-undefined	no-useless-undefined	Do not use useless `undefined`.	fix	1306	1318	 {}	end	65	48
+tests/rules/unicorn/no-useless-undefined/cases.ts:66:54	unicorn/no-useless-undefined	no-useless-undefined	Do not use useless `undefined`.	fix	1372	1382	 {}	end	66	63
+tests/rules/unicorn/no-useless-undefined/cases.ts:68:10	unicorn/no-useless-undefined	no-useless-undefined	Do not use useless `undefined`.	fix	1448	1458	 {}	end	68	19
+tests/rules/unicorn/no-useless-undefined/cases.ts:70:11	unicorn/no-useless-undefined	no-useless-undefined	Do not use useless `undefined`.	fix	1507	1517	 {}	end	70	20
+tests/rules/unicorn/no-useless-undefined/cases.ts:75:20	unicorn/no-useless-undefined	no-useless-undefined	Do not use useless `undefined`.	fix	1576	1588		end	75	29
+tests/rules/unicorn/no-useless-undefined/cases.ts:76:36	unicorn/no-useless-undefined	no-useless-undefined	Do not use useless `undefined`.	fix	1622	1634		end	76	45
+tests/rules/unicorn/no-useless-undefined/cases.ts:77:25	unicorn/no-useless-undefined	no-useless-undefined	Do not use useless `undefined`.	fix	1656	1670		end	77	34
+tests/rules/unicorn/no-useless-undefined/cases.ts:78:29	unicorn/no-useless-undefined	no-useless-undefined	Do not use useless `undefined`.	end	78	38
+tests/rules/unicorn/no-useless-undefined/cases.ts:79:23	unicorn/no-useless-undefined	no-useless-undefined	Do not use useless `undefined`.	fix	1730	1742		end	79	32
+tests/rules/unicorn/no-useless-undefined/cases.ts:80:12	unicorn/no-useless-undefined	no-useless-undefined	Do not use useless `undefined`.	fix	1764	1776		end	80	21
+tests/rules/unicorn/no-useless-undefined/cases.ts:80:40	unicorn/no-useless-undefined	no-useless-undefined	Do not use useless `undefined`.	fix	1792	1804		end	80	49
+tests/rules/unicorn/no-useless-undefined/cases.ts:84:17	unicorn/no-useless-undefined	no-useless-undefined	Do not use useless `undefined`.	fix	1948	1960		end	84	26
+tests/rules/unicorn/no-useless-undefined/cases.ts:87:14	unicorn/no-useless-undefined	no-useless-undefined	Do not use useless `undefined`.	fix	2003	2015		end	87	23
+tests/rules/unicorn/no-useless-undefined/cases.ts:88:14	unicorn/no-useless-undefined	no-useless-undefined	Do not use useless `undefined`.	fix	2039	2051		end	88	23
+tests/rules/unicorn/no-useless-undefined/cases.ts:89:24	unicorn/no-useless-undefined	no-useless-undefined	Do not use useless `undefined`.	fix	2080	2092	?	end	89	33
+tests/rules/unicorn/no-useless-undefined/cases.ts:90:49	unicorn/no-useless-undefined	no-useless-undefined	Do not use useless `undefined`.	fix	2122	2154	?: number | undefined	end	90	58
+tests/rules/unicorn/no-useless-undefined/cases.ts:91:41	unicorn/no-useless-undefined	no-useless-undefined	Do not use useless `undefined`.	fix	2196	2208		end	91	50
+tests/rules/unicorn/no-useless-undefined/cases.ts:92:42	unicorn/no-useless-undefined	no-useless-undefined	Do not use useless `undefined`.	end	92	51
+tests/rules/unicorn/no-useless-undefined/cases.ts:93:39	unicorn/no-useless-undefined	no-useless-undefined	Do not use useless `undefined`.	fix	2301	2317	?	end	93	48
+tests/rules/unicorn/no-useless-undefined/cases.ts:94:29	unicorn/no-useless-undefined	no-useless-undefined	Do not use useless `undefined`.	fix	2347	2359	?	end	94	38
+tests/rules/unicorn/no-useless-undefined/cases.ts:95:59	unicorn/no-useless-undefined	no-useless-undefined	Do not use useless `undefined`.	fix	2414	2434	?: string	end	95	68
+tests/rules/unicorn/no-useless-undefined/cases.ts:96:37	unicorn/no-useless-undefined	no-useless-undefined	Do not use useless `undefined`.	fix	2473	2485		end	96	46
+tests/rules/unicorn/no-useless-undefined/cases.ts:97:46	unicorn/no-useless-undefined	no-useless-undefined	Do not use useless `undefined`.	fix	2534	2559	?: {a: number}	end	97	55
+tests/rules/unicorn/no-useless-undefined/cases.ts:99:39	unicorn/no-useless-undefined	no-useless-undefined	Do not use useless `undefined`.	fix	2618	2630		end	99	48
+tests/rules/unicorn/no-useless-undefined/cases.ts:100:13	unicorn/no-useless-undefined	no-useless-undefined	Do not use useless `undefined`.	fix	2644	2656	?	end	100	22
+tests/rules/unicorn/no-useless-undefined/cases.ts:101:21	unicorn/no-useless-undefined	no-useless-undefined	Do not use useless `undefined`.	fix	2670	2690	?: number	end	101	30
+tests/rules/unicorn/no-useless-undefined/cases.ts:105:44	unicorn/no-useless-undefined	no-useless-undefined	Do not use useless `undefined`.	suggestion	no-useless-undefined/suggestion	Use the indexed access directly.	2779	2816	array[index]	end	105	53
+tests/rules/unicorn/no-useless-undefined/cases.ts:106:28	unicorn/no-useless-undefined	no-useless-undefined	Do not use useless `undefined`.	suggestion	no-useless-undefined/suggestion	Use the indexed access directly.	2833	2869	array[index]	end	106	37
+tests/rules/unicorn/no-useless-undefined/cases.ts:107:44	unicorn/no-useless-undefined	no-useless-undefined	Do not use useless `undefined`.	suggestion	no-useless-undefined/suggestion	Use the indexed access directly.	2886	2923	array[index]	end	107	53
+tests/rules/unicorn/no-useless-undefined/cases.ts:108:28	unicorn/no-useless-undefined	no-useless-undefined	Do not use useless `undefined`.	suggestion	no-useless-undefined/suggestion	Use the indexed access directly.	2940	2976	array[index]	end	108	37
+tests/rules/unicorn/no-useless-undefined/cases.ts:109:44	unicorn/no-useless-undefined	no-useless-undefined	Do not use useless `undefined`.	suggestion	no-useless-undefined/suggestion	Use the indexed access directly.	2993	3030	array[index]	end	109	53
+tests/rules/unicorn/no-useless-undefined/cases.ts:110:44	unicorn/no-useless-undefined	no-useless-undefined	Do not use useless `undefined`.	suggestion	no-useless-undefined/suggestion	Use the indexed access directly.	3047	3084	array[index]	end	110	53
+tests/rules/unicorn/no-useless-undefined/cases.ts:111:30	unicorn/no-useless-undefined	no-useless-undefined	Do not use useless `undefined`.	suggestion	no-useless-undefined/suggestion	Use the indexed access directly.	3101	3139	array[index]	end	111	39
+tests/rules/unicorn/no-useless-undefined/cases.ts:112:49	unicorn/no-useless-undefined	no-useless-undefined	Do not use useless `undefined`.	suggestion	no-useless-undefined/suggestion	Use the indexed access directly.	3157	3198	array[index - 1]	end	112	58
+tests/rules/unicorn/no-useless-undefined/cases.ts:113:48	unicorn/no-useless-undefined	no-useless-undefined	Do not use useless `undefined`.	suggestion	no-useless-undefined/suggestion	Use the indexed access directly.	3216	3256	array[index - 2]	end	113	57
+tests/rules/unicorn/no-useless-undefined/cases.ts:115:54	unicorn/no-useless-undefined	no-useless-undefined	Do not use useless `undefined`.	suggestion	no-useless-undefined/suggestion	Use the indexed access directly.	3336	3383	array[index]	end	115	63
+tests/rules/unicorn/no-useless-undefined/cases.ts:116:59	unicorn/no-useless-undefined	no-useless-undefined	Do not use useless `undefined`.	suggestion	no-useless-undefined/suggestion	Use the indexed access directly.	3400	3452	array[index]	end	116	68
+tests/rules/unicorn/no-useless-undefined/cases.ts:117:54	unicorn/no-useless-undefined	no-useless-undefined	Do not use useless `undefined`.	suggestion	no-useless-undefined/suggestion	Use the indexed access directly.	3469	3516	array[index]	end	117	63
+tests/rules/unicorn/no-useless-undefined/cases.ts:118:40	unicorn/no-useless-undefined	no-useless-undefined	Do not use useless `undefined`.	suggestion	no-useless-undefined/suggestion	Use the indexed access directly.	3533	3581	array[index]	end	118	49
+tests/rules/unicorn/no-useless-undefined/cases.ts:119:43	unicorn/no-useless-undefined	no-useless-undefined	Do not use useless `undefined`.	suggestion	no-useless-undefined/suggestion	Use the indexed access directly.	3598	3649	array[index]	end	119	52
+tests/rules/unicorn/no-useless-undefined/cases.ts:120:68	unicorn/no-useless-undefined	no-useless-undefined	Do not use useless `undefined`.	suggestion	no-useless-undefined/suggestion	Use the indexed access directly.	3666	3727	array[index] as number	end	120	77
+tests/rules/unicorn/no-useless-undefined/cases.ts:121:45	unicorn/no-useless-undefined	no-useless-undefined	Do not use useless `undefined`.	suggestion	no-useless-undefined/suggestion	Use the indexed access directly.	3744	3782	array[index]!	end	121	54
+tests/rules/unicorn/no-useless-undefined/cases.ts:122:71	unicorn/no-useless-undefined	no-useless-undefined	Do not use useless `undefined`.	suggestion	no-useless-undefined/suggestion	Use the indexed access directly.	3799	3863	array[index as number] satisfies number	end	122	80
+tests/rules/unicorn/no-useless-undefined/cases.ts:124:52	unicorn/no-useless-undefined	no-useless-undefined	Do not use useless `undefined`.	suggestion	no-useless-undefined/suggestion	Use the indexed access directly.	3945	3982	array[index]	end	124	61
+tests/rules/unicorn/no-useless-undefined/cases.ts:126:38	unicorn/no-useless-undefined	no-useless-undefined	Do not use useless `undefined`.	suggestion	no-useless-undefined/suggestion	Use the indexed access directly.	4023	4062	 array[index]	end	126	47
+tests/rules/unicorn/no-useless-undefined/cases.ts:128:49	unicorn/no-useless-undefined	no-useless-undefined	Do not use useless `undefined`.	suggestion	no-useless-undefined/suggestion	Use the indexed access directly.	4085	4123	 (items[index]	end	128	58
+tests/rules/unicorn/no-useless-undefined/cases.ts:129:32	unicorn/no-useless-undefined	no-useless-undefined	Do not use useless `undefined`.	suggestion	no-useless-undefined/suggestion	Use the indexed access directly.	4133	4170	array[index]	end	129	41
+tests/rules/unicorn/no-useless-undefined/cases.ts:131:31	unicorn/no-useless-undefined	no-useless-undefined	Do not use useless `undefined`.	suggestion	no-useless-undefined/suggestion	Use the indexed access directly.	4199	4236	array[index]	end	131	40
+tests/rules/unicorn/no-useless-undefined/cases.ts:138:37	unicorn/no-useless-undefined	no-useless-undefined	Do not use useless `undefined`.	end	138	46
+tests/rules/unicorn/no-useless-undefined/cases.ts:139:60	unicorn/no-useless-undefined	no-useless-undefined	Do not use useless `undefined`.	end	139	69
+tests/rules/unicorn/no-useless-undefined/cases.ts:151:52	unicorn/no-useless-undefined	no-useless-undefined	Do not use useless `undefined`.	suggestion	no-useless-undefined/suggestion	Use the indexed access directly.	5160	5197	array[index]	end	151	61
+tests/rules/unicorn/no-useless-undefined/no-arguments/cases.ts:8:25	unicorn/no-useless-undefined	no-useless-undefined	Do not use useless `undefined`.	fix	195	205	 {}	end	8	34
+tests/rules/unicorn/no-useless-undefined/no-arguments/cases.ts:9:13	unicorn/no-useless-undefined	no-useless-undefined	Do not use useless `undefined`.	fix	216	228		end	9	22
+tests/rules/unicorn/no-useless-undefined/no-arrow-body/cases.ts:9:9	unicorn/no-useless-undefined	no-useless-undefined	Do not use useless `undefined`.	fix	216	226		end	9	18
+tests/rules/unicorn/no-useless-undefined/no-arrow-body/cases.ts:11:13	unicorn/no-useless-undefined	no-useless-undefined	Do not use useless `undefined`.	fix	240	252		end	11	22

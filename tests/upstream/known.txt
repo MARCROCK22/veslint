@@ -1270,3 +1270,92 @@ veslint	prefer-module/r9/i4	a JavaScript case: as TypeScript, `import.meta` in a
 # variable all the same, so the read of a readonly global is allowed (with espree `Array` is unresolved).
 eslint	isolated-functions/r1/i34	the lib of TypeScript declares Array, which /* global Array:off */ does not remove
 veslint	isolated-functions/r1/i34	the lib of TypeScript declares Array, which /* global Array:off */ does not remove
+# no-useless-undefined: the rule ends before its check of call arguments (`checkArguments`) on a TypeScript file, and
+# its fix of a parameter default (`a = undefined`) makes the parameter optional (`a?`) in one; the JavaScript cases
+# expect neither. r6/i13 lints `foo.MTs`, the fixtures `file.ts`.
+eslint	no-useless-undefined/r2/i9	a JavaScript case: the call arguments are not checked in a TypeScript file
+veslint	no-useless-undefined/r2/i9	a JavaScript case: the call arguments are not checked in a TypeScript file
+eslint	no-useless-undefined/r2/i10	a JavaScript case: the call arguments are not checked in a TypeScript file
+veslint	no-useless-undefined/r2/i10	a JavaScript case: the call arguments are not checked in a TypeScript file
+eslint	no-useless-undefined/r2/i11	a JavaScript case: the call arguments are not checked in a TypeScript file
+veslint	no-useless-undefined/r2/i11	a JavaScript case: the call arguments are not checked in a TypeScript file
+eslint	no-useless-undefined/r2/i12	a JavaScript case: the call arguments are not checked in a TypeScript file
+veslint	no-useless-undefined/r2/i12	a JavaScript case: the call arguments are not checked in a TypeScript file
+eslint	no-useless-undefined/r2/i13	a JavaScript case: the call arguments are not checked in a TypeScript file
+veslint	no-useless-undefined/r2/i13	a JavaScript case: the call arguments are not checked in a TypeScript file
+eslint	no-useless-undefined/r2/i14	a JavaScript case: the call arguments are not checked in a TypeScript file
+veslint	no-useless-undefined/r2/i14	a JavaScript case: the call arguments are not checked in a TypeScript file
+eslint	no-useless-undefined/r2/i15	a JavaScript case: the call arguments are not checked in a TypeScript file
+veslint	no-useless-undefined/r2/i15	a JavaScript case: the call arguments are not checked in a TypeScript file
+eslint	no-useless-undefined/r2/i16	a JavaScript case: the call arguments are not checked in a TypeScript file
+veslint	no-useless-undefined/r2/i16	a JavaScript case: the call arguments are not checked in a TypeScript file
+eslint	no-useless-undefined/r2/i17	a JavaScript case: the call arguments are not checked in a TypeScript file
+veslint	no-useless-undefined/r2/i17	a JavaScript case: the call arguments are not checked in a TypeScript file
+eslint	no-useless-undefined/r2/i18	a JavaScript case: the call arguments are not checked in a TypeScript file
+veslint	no-useless-undefined/r2/i18	a JavaScript case: the call arguments are not checked in a TypeScript file
+eslint	no-useless-undefined/r2/i19	a JavaScript case: the call arguments are not checked in a TypeScript file
+veslint	no-useless-undefined/r2/i19	a JavaScript case: the call arguments are not checked in a TypeScript file
+eslint	no-useless-undefined/r2/i20	a JavaScript case: the call arguments are not checked in a TypeScript file
+veslint	no-useless-undefined/r2/i20	a JavaScript case: the call arguments are not checked in a TypeScript file
+eslint	no-useless-undefined/r4/i0	a JavaScript case: the call arguments are not checked in a TypeScript file
+veslint	no-useless-undefined/r4/i0	a JavaScript case: the call arguments are not checked in a TypeScript file
+eslint	no-useless-undefined/r4/i2	a JavaScript case: the call arguments are not checked in a TypeScript file
+veslint	no-useless-undefined/r4/i2	a JavaScript case: the call arguments are not checked in a TypeScript file
+eslint	no-useless-undefined/r4/i7	a JavaScript case: the call arguments are not checked in a TypeScript file
+veslint	no-useless-undefined/r4/i7	a JavaScript case: the call arguments are not checked in a TypeScript file
+eslint	no-useless-undefined/r4/i8	a JavaScript case: the call arguments are not checked in a TypeScript file
+veslint	no-useless-undefined/r4/i8	a JavaScript case: the call arguments are not checked in a TypeScript file
+eslint	no-useless-undefined/r4/i9	a JavaScript case: the call arguments are not checked in a TypeScript file
+veslint	no-useless-undefined/r4/i9	a JavaScript case: the call arguments are not checked in a TypeScript file
+eslint	no-useless-undefined/r4/i10	a JavaScript case: the call arguments are not checked in a TypeScript file
+veslint	no-useless-undefined/r4/i10	a JavaScript case: the call arguments are not checked in a TypeScript file
+eslint	no-useless-undefined/r4/i11	a JavaScript case: the call arguments are not checked in a TypeScript file
+veslint	no-useless-undefined/r4/i11	a JavaScript case: the call arguments are not checked in a TypeScript file
+eslint	no-useless-undefined/r4/i12	a JavaScript case: the call arguments are not checked in a TypeScript file
+veslint	no-useless-undefined/r4/i12	a JavaScript case: the call arguments are not checked in a TypeScript file
+eslint	no-useless-undefined/r4/i13	a JavaScript case: the call arguments are not checked in a TypeScript file
+veslint	no-useless-undefined/r4/i13	a JavaScript case: the call arguments are not checked in a TypeScript file
+eslint	no-useless-undefined/r4/i14	a JavaScript case: the call arguments are not checked in a TypeScript file
+veslint	no-useless-undefined/r4/i14	a JavaScript case: the call arguments are not checked in a TypeScript file
+eslint	no-useless-undefined/r10/i0	a JavaScript case: the call arguments are not checked in a TypeScript file
+veslint	no-useless-undefined/r10/i0	a JavaScript case: the call arguments are not checked in a TypeScript file
+eslint	no-useless-undefined/r10/i1	a JavaScript case: the call arguments are not checked in a TypeScript file
+veslint	no-useless-undefined/r10/i1	a JavaScript case: the call arguments are not checked in a TypeScript file
+eslint	no-useless-undefined/r10/i2	a JavaScript case: the call arguments are not checked in a TypeScript file
+veslint	no-useless-undefined/r10/i2	a JavaScript case: the call arguments are not checked in a TypeScript file
+eslint	no-useless-undefined/r10/i3	a JavaScript case: the call arguments are not checked in a TypeScript file
+veslint	no-useless-undefined/r10/i3	a JavaScript case: the call arguments are not checked in a TypeScript file
+eslint	no-useless-undefined/r10/i4	a JavaScript case: the call arguments are not checked in a TypeScript file
+veslint	no-useless-undefined/r10/i4	a JavaScript case: the call arguments are not checked in a TypeScript file
+eslint	no-useless-undefined/r10/i5	a JavaScript case: the call arguments are not checked in a TypeScript file
+veslint	no-useless-undefined/r10/i5	a JavaScript case: the call arguments are not checked in a TypeScript file
+eslint	no-useless-undefined/r10/i6	a JavaScript case: the call arguments are not checked in a TypeScript file
+veslint	no-useless-undefined/r10/i6	a JavaScript case: the call arguments are not checked in a TypeScript file
+eslint	no-useless-undefined/r10/i7	a JavaScript case: the call arguments are not checked in a TypeScript file
+veslint	no-useless-undefined/r10/i7	a JavaScript case: the call arguments are not checked in a TypeScript file
+eslint	no-useless-undefined/r10/i8	a JavaScript case: the call arguments are not checked in a TypeScript file
+veslint	no-useless-undefined/r10/i8	a JavaScript case: the call arguments are not checked in a TypeScript file
+eslint	no-useless-undefined/r10/i9	a JavaScript case: the call arguments are not checked in a TypeScript file
+veslint	no-useless-undefined/r10/i9	a JavaScript case: the call arguments are not checked in a TypeScript file
+eslint	no-useless-undefined/r10/i10	a JavaScript case: the call arguments are not checked in a TypeScript file
+veslint	no-useless-undefined/r10/i10	a JavaScript case: the call arguments are not checked in a TypeScript file
+eslint	no-useless-undefined/r10/i11	a JavaScript case: the call arguments are not checked in a TypeScript file
+veslint	no-useless-undefined/r10/i11	a JavaScript case: the call arguments are not checked in a TypeScript file
+eslint	no-useless-undefined/r10/i12	a JavaScript case: the call arguments are not checked in a TypeScript file
+veslint	no-useless-undefined/r10/i12	a JavaScript case: the call arguments are not checked in a TypeScript file
+eslint	no-useless-undefined/r10/i13	a JavaScript case: the call arguments are not checked in a TypeScript file
+veslint	no-useless-undefined/r10/i13	a JavaScript case: the call arguments are not checked in a TypeScript file
+eslint	no-useless-undefined/r10/i14	a JavaScript case: the call arguments are not checked in a TypeScript file
+veslint	no-useless-undefined/r10/i14	a JavaScript case: the call arguments are not checked in a TypeScript file
+eslint	no-useless-undefined/r10/i15	a JavaScript case: the call arguments are not checked in a TypeScript file
+veslint	no-useless-undefined/r10/i15	a JavaScript case: the call arguments are not checked in a TypeScript file
+eslint	no-useless-undefined/r2/i23	a JavaScript case: in a TypeScript file the fix makes the parameter optional
+veslint	no-useless-undefined/r2/i23	a JavaScript case: in a TypeScript file the fix makes the parameter optional
+eslint	no-useless-undefined/r6/i11	a JavaScript case: in a TypeScript file the fix makes the parameter optional
+veslint	no-useless-undefined/r6/i11	a JavaScript case: in a TypeScript file the fix makes the parameter optional
+eslint	no-useless-undefined/r7/i4	a JavaScript case: in a TypeScript file the fix makes the parameter optional
+veslint	no-useless-undefined/r7/i4	a JavaScript case: in a TypeScript file the fix makes the parameter optional
+eslint	no-useless-undefined/r9/i1	a JavaScript case: in a TypeScript file the fix makes the parameter optional
+veslint	no-useless-undefined/r9/i1	a JavaScript case: in a TypeScript file the fix makes the parameter optional
+eslint	no-useless-undefined/r6/i13	the test lints a file of another name, the fixtures `file.ts`
+veslint	no-useless-undefined/r6/i13	the test lints a file of another name, the fixtures `file.ts`
