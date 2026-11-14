@@ -472,7 +472,7 @@ pub const untyped_rules = [adjacent_overload_signatures, array_type, class_liter
 	unicorn_no_hex_escape, unicorn_escape_case, unicorn_consistent_template_literal_escape,
 	unicorn_prefer_string_trim_start_end, unicorn_no_console_spaces, unicorn_prefer_code_point,
 	unicorn_prefer_string_slice, unicorn_text_encoding_identifier_case, unicorn_no_zero_fractions,
-	unicorn_prefer_bigint_literals, unicorn_prefer_number_properties, unicorn_prefer_string_raw,
+	unicorn_prefer_bigint_literals, unicorn_prefer_number_properties,
 	unicorn_prefer_string_replace_all, unicorn_require_number_to_fixed_digits_argument,
 	unicorn_prefer_math_trunc, unicorn_prefer_math_min_max, unicorn_prefer_modern_math_apis,
 	unicorn_prefer_native_coercion_functions, unicorn_no_array_callback_reference,

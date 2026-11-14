@@ -206,7 +206,11 @@ class Runner:
         answer = self.server.request({'config': self.config_path(rule, case, self.defaults),
                                       'project': self.project_of(case, file) if tsconfig else '',
                                       'files': [file], 'texts': {file: code}, 'fixes': True})
-        return answer['code'], file, answer['stdout'].splitlines(), answer['stderr']
+        # Lines end with \n alone: str.splitlines would also split at a U+2028 of a fix.
+        lines = answer['stdout'].split('\n')
+        if lines and lines[-1] == '':
+            lines.pop()
+        return answer['code'], file, lines, answer['stderr']
 
 
 def check_project(veslint, fixtures, configs, project):
