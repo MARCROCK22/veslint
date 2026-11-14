@@ -3430,3 +3430,59 @@ fn (c &Checker) unb_jsdoc_kind(annotation UnbJsdocAnnotation, o UnbTypeOptions) 
 	kind := unb_jsdoc_node_kind(annotation.typ, o)
 	return if annotation.optional { unb_combine_union([kind, .nullish], o) } else { kind }
 }
+
+// unb_argument_removal_range ports getArgumentRemovalRange (fix/remove-argument.js of 79.0.0):
+// the argument with its parentheses, and the comma that goes with it.
+fn (c &Checker) unb_argument_removal_range(t &estree.EsTree, tokens &SourceTokens, node int) ?UnbRange {
+	call := t.nodes[node].parent
+	arguments := t.list(call, .arguments)?
+	index := arguments.index(node)
+	parentheses := c.un_parentheses(t, tokens, node)
+	mut start := if parentheses.len > 0 { parentheses[0].start } else { t.nodes[node].start }
+	mut end := if parentheses.len > 0 { parentheses.last().end } else { t.nodes[node].end }
+	if arguments.len == 1 {
+		// The only argument: a dangling trailing comma goes too (`fn(a,)`).
+		if after := tokens.after(end, false) {
+			if c.token_is(after, ',') {
+				end = after.end
+			}
+		}
+	} else if index == 0 {
+		// The first of several: through the comma after it and the gap after the comma.
+		comma := tokens.after(end, false)?
+		after_comma := tokens.after(comma.end, true)?
+		end = after_comma.start
+	} else {
+		comma := tokens.before(start, false)?
+		start = comma.start
+	}
+	return UnbRange{start, end}
+}
+
+// unb_remove_argument ports removeArgument of 79.0.0: the comments of the removed range stay.
+fn (c &Checker) unb_remove_argument(t &estree.EsTree, tokens &SourceTokens, node int) ?Fix {
+	removal := c.unb_argument_removal_range(t, tokens, node)?
+	call := t.nodes[node].parent
+	arguments := t.list(call, .arguments)?
+	index := arguments.index(node)
+	comments := tokens.comments_inside(removal.start, removal.end).filter(it.end <= removal.end)
+	if comments.len == 0 {
+		return fix_remove_range(removal.start, removal.end)
+	}
+	// A line comment runs to the end of the line: it needs a line break after it.
+	comment_text := fn [c] (comment SourceToken) string {
+		text := c.src[comment.start..comment.end]
+		return if comment.kind == .line_comment { text + c.unb_linebreak() } else { text }
+	}
+	if index == 0 && arguments.len > 1 {
+		parentheses := c.un_parentheses(t, tokens, node)
+		argument_end := if parentheses.len > 0 { parentheses.last().end } else { t.nodes[node].end }
+		comma := tokens.after(argument_end, false)?
+		range_text := c.src[removal.start..removal.end]
+		argument_comments := comments.filter(it.end <= argument_end).map(comment_text(it)).join(' ')
+		replacement := argument_comments + range_text[argument_end - removal.start..comma.start - removal.start] +
+			range_text[comma.end - removal.start..]
+		return fix_replace_range(removal.start, removal.end, replacement)
+	}
+	return fix_replace_range(removal.start, removal.end, comments.map(' ${comment_text(it)}').join(''))
+}
