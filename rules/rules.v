@@ -330,6 +330,11 @@ pub const unicorn_no_unnecessary_slice_end = 'unicorn/no-unnecessary-slice-end'
 pub const unicorn_no_useless_length_check = 'unicorn/no-useless-length-check'
 pub const unicorn_no_unreadable_array_destructuring = 'unicorn/no-unreadable-array-destructuring'
 pub const unicorn_prefer_set_size = 'unicorn/prefer-set-size'
+pub const array_callback_return = 'array-callback-return'
+pub const no_lonely_if = 'no-lonely-if'
+pub const no_negated_condition = 'no-negated-condition'
+pub const no_throw_literal = 'no-throw-literal'
+pub const require_atomic_updates = 'require-atomic-updates'
 pub const names = [no_floating_promises, await_thenable, require_await, return_await,
 	no_misused_promises, no_unsafe_call, no_unsafe_member_access, no_unsafe_return,
 	no_unsafe_assignment, no_unsafe_argument, restrict_template_expressions,
@@ -406,15 +411,16 @@ pub const names = [no_floating_promises, await_thenable, require_await, return_a
 	unicorn_prefer_bigint_literals, unicorn_prefer_number_properties, unicorn_prefer_string_raw,
 	unicorn_prefer_string_replace_all, unicorn_require_number_to_fixed_digits_argument,
 	unicorn_prefer_math_trunc, unicorn_prefer_math_min_max, unicorn_prefer_modern_math_apis,
-	unicorn_prefer_native_coercion_functions, unicorn_no_array_callback_reference,
-	unicorn_no_for_each, unicorn_no_array_method_this_argument, unicorn_no_array_reverse,
-	unicorn_no_array_sort, unicorn_no_new_array, unicorn_prefer_array_flat,
-	unicorn_prefer_array_flat_map, unicorn_prefer_array_index_of, unicorn_prefer_array_some,
-	unicorn_require_array_join_separator, unicorn_prefer_negative_index,
-	unicorn_consistent_existence_index_check, unicorn_explicit_length_check,
-	unicorn_no_unnecessary_array_flat_depth, unicorn_no_unnecessary_array_splice_count,
-	unicorn_no_unnecessary_slice_end, unicorn_no_useless_length_check,
-	unicorn_no_unreadable_array_destructuring, unicorn_prefer_set_size]
+	unicorn_prefer_native_coercion_functions, unicorn_no_array_callback_reference, unicorn_no_for_each,
+	unicorn_no_array_method_this_argument, unicorn_no_array_reverse, unicorn_no_array_sort,
+	unicorn_no_new_array, unicorn_prefer_array_flat, unicorn_prefer_array_flat_map,
+	unicorn_prefer_array_index_of, unicorn_prefer_array_some, unicorn_require_array_join_separator,
+	unicorn_prefer_negative_index, unicorn_consistent_existence_index_check,
+	unicorn_explicit_length_check, unicorn_no_unnecessary_array_flat_depth,
+	unicorn_no_unnecessary_array_splice_count, unicorn_no_unnecessary_slice_end,
+	unicorn_no_useless_length_check, unicorn_no_unreadable_array_destructuring,
+	unicorn_prefer_set_size, array_callback_return, no_lonely_if, no_negated_condition,
+	no_throw_literal, require_atomic_updates]
 
 // untyped_rules are the ported rules that need no types (`meta.docs.requiresTypeChecking` is false
 // in typescript-eslint; the eslint-plugin-unicorn rules that read the types when the parser has a
@@ -461,19 +467,20 @@ pub const untyped_rules = [adjacent_overload_signatures, array_type, class_liter
 	no_unreachable_loop, no_useless_return, no_unreachable, no_fallthrough, constructor_super,
 	no_this_before_super, no_useless_assignment, no_restricted_syntax, unicorn_no_lonely_if,
 	unicorn_no_negated_condition, unicorn_no_negation_in_equality_check, unicorn_no_nested_ternary,
-	unicorn_no_typeof_undefined,
-	unicorn_prefer_switch, unicorn_switch_case_braces, unicorn_switch_case_break_position,
-	unicorn_no_useless_switch_case, unicorn_prefer_simple_condition_first, unicorn_prefer_date_now,
-	unicorn_error_message, unicorn_consistent_date_clone, unicorn_consistent_assert,
-	unicorn_prefer_type_error, unicorn_no_useless_error_capture_stack_trace,
-	unicorn_prefer_structured_clone, unicorn_custom_error_definition, unicorn_no_instanceof_builtins,
-	unicorn_new_for_builtins, unicorn_no_hex_escape, unicorn_escape_case,
-	unicorn_consistent_template_literal_escape, unicorn_no_console_spaces, unicorn_prefer_code_point,
-	unicorn_text_encoding_identifier_case, unicorn_no_zero_fractions, unicorn_prefer_bigint_literals,
+	unicorn_no_typeof_undefined, unicorn_prefer_switch, unicorn_switch_case_braces,
+	unicorn_switch_case_break_position, unicorn_no_useless_switch_case,
+	unicorn_prefer_simple_condition_first, unicorn_prefer_date_now, unicorn_error_message,
+	unicorn_consistent_date_clone, unicorn_consistent_assert, unicorn_prefer_type_error,
+	unicorn_no_useless_error_capture_stack_trace, unicorn_prefer_structured_clone,
+	unicorn_custom_error_definition, unicorn_no_instanceof_builtins, unicorn_new_for_builtins,
+	unicorn_no_hex_escape, unicorn_escape_case, unicorn_consistent_template_literal_escape,
+	unicorn_no_console_spaces, unicorn_prefer_code_point, unicorn_text_encoding_identifier_case,
+	unicorn_no_zero_fractions, unicorn_prefer_bigint_literals,
 	unicorn_require_number_to_fixed_digits_argument, unicorn_prefer_math_trunc,
 	unicorn_prefer_modern_math_apis, unicorn_prefer_native_coercion_functions, unicorn_no_new_array,
 	unicorn_prefer_negative_index, unicorn_consistent_existence_index_check,
-	unicorn_explicit_length_check, unicorn_no_unnecessary_slice_end]
+	unicorn_explicit_length_check, unicorn_no_unnecessary_slice_end, array_callback_return,
+	no_lonely_if, no_negated_condition, no_throw_literal, require_atomic_updates]
 
 // needs_types tells whether a rule asks tsgo for the types of the program.
 pub fn needs_types(rule string) bool {
@@ -781,7 +788,7 @@ pub const default_options = {
 	unicorn_prefer_modern_math_apis:                 '[]'
 	unicorn_prefer_native_coercion_functions:        '[]'
 	unicorn_no_array_callback_reference:             '[{"ignore":[]}]'
-	unicorn_no_for_each:                       '[]'
+	unicorn_no_for_each:                             '[]'
 	unicorn_no_array_method_this_argument:           '[]'
 	unicorn_no_array_reverse:                        '[{"allowExpressionStatement":true}]'
 	unicorn_no_array_sort:                           '[{"allowExpressionStatement":true}]'
@@ -800,6 +807,11 @@ pub const default_options = {
 	unicorn_no_useless_length_check:                 '[]'
 	unicorn_no_unreadable_array_destructuring:       '[{"maximumIgnoredElements":1}]'
 	unicorn_prefer_set_size:                         '[]'
+	array_callback_return:                           '[{"allowImplicit":false,"checkForEach":false,"allowVoid":false}]'
+	no_lonely_if:                                    '[]'
+	no_negated_condition:                            '[]'
+	no_throw_literal:                                '[]'
+	require_atomic_updates:                          '[{"allowProperties":false}]'
 }
 
 // Finding is a problem a rule found at a node.
@@ -1250,6 +1262,11 @@ pub fn message(rule string, finding Finding) string {
 		unicorn_no_useless_length_check { unulc_messages }
 		unicorn_no_unreadable_array_destructuring { unuad_messages }
 		unicorn_prefer_set_size { upss_messages }
+		array_callback_return { acr_messages }
+		no_lonely_if { nli_messages }
+		no_negated_condition { nnc_messages }
+		no_throw_literal { ntl_messages }
+		require_atomic_updates { rau_messages }
 		else { map[string]string{} }
 	}
 	return interpolate(messages[finding.message_id] or { finding.message_id }, finding.data)
@@ -2354,6 +2371,21 @@ fn (mut c Checker) lint_rule(rule string, root C.TSNode, abs_path string, mut st
 		unicorn_prefer_set_size {
 			return c.lint_unicorn_prefer_set_size(root, abs_path, mut stats)!
 		}
+		array_callback_return {
+			return c.lint_array_callback_return(root, abs_path, mut stats)!
+		}
+		no_lonely_if {
+			return c.lint_no_lonely_if(root, abs_path, mut stats)!
+		}
+		no_negated_condition {
+			return c.lint_no_negated_condition(root, abs_path, mut stats)!
+		}
+		no_throw_literal {
+			return c.lint_no_throw_literal(root, abs_path, mut stats)!
+		}
+		require_atomic_updates {
+			return c.lint_require_atomic_updates(root, abs_path, mut stats)!
+		}
 		else { return error('unknown rule: ${rule}') }
 	}
 }
@@ -2425,7 +2457,7 @@ mut:
 	targets_unsigned    map[u64]bool                       // generic types an instance of which has no signatures, by kind of signature
 	file_metadata_cache map[string]tsgo.SourceFileMetadata // by tsgo path (file_metadata)
 	package_name_cache  map[string]string                  // package.json name of each package directory; '' if it gives no package id
-	package_root_cache  map[string]string // package.json name of each directory (resolvePackageIdName); '' if it has none
+	package_root_cache  map[string]string                  // package.json name of each directory (resolvePackageIdName); '' if it has none
 	project_directory   string          // directory of the tsconfig (set_project_directory): what `from: "file"` specifiers are relative to
 	program_directory   string          // or this one, when the configuration of the file gives it (LintConfig.program_directory)
 	ecma_version        int             // the normalized languageOptions.ecmaVersion of the file being linted

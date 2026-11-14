@@ -1,0 +1,10 @@
+tests/rules/no-negated-condition/cases.ts:5:1	no-negated-condition	unexpectedNegated	Unexpected negated condition.
+tests/rules/no-negated-condition/cases.ts:6:1	no-negated-condition	unexpectedNegated	Unexpected negated condition.
+tests/rules/no-negated-condition/cases.ts:7:1	no-negated-condition	unexpectedNegated	Unexpected negated condition.
+tests/rules/no-negated-condition/cases.ts:8:12	no-negated-condition	unexpectedNegated	Unexpected negated condition.
+tests/rules/no-negated-condition/cases.ts:9:12	no-negated-condition	unexpectedNegated	Unexpected negated condition.
+tests/rules/no-negated-condition/cases.ts:10:12	no-negated-condition	unexpectedNegated	Unexpected negated condition.
+tests/rules/no-negated-condition/cases.ts:11:12	no-negated-condition	unexpectedNegated	Unexpected negated condition.
+tests/rules/no-negated-condition/cases.ts:19:16	no-negated-condition	unexpectedNegated	Unexpected negated condition.
+tests/rules/no-negated-condition/cases.ts:28:12	no-negated-condition	unexpectedNegated	Unexpected negated condition.
+tests/rules/no-negated-condition/cases.ts:30:12	no-negated-condition	unexpectedNegated	Unexpected negated condition.

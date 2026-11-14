@@ -1,0 +1,82 @@
+tests/rules/array-callback-return/allow-implicit/cases.ts:8:9	array-callback-return	expectedInside	Array.prototype.map() expects a return value from function.
+tests/rules/array-callback-return/allow-implicit/cases.ts:9:9	array-callback-return	expectedInside	Array.prototype.map() expects a return value from function 'foo'.
+tests/rules/array-callback-return/allow-implicit/cases.ts:10:16	array-callback-return	expectedInside	Array.prototype.filter() expects a return value from arrow function.
+tests/rules/array-callback-return/allow-implicit/cases.ts:11:13	array-callback-return	expectedAtEnd	Array.prototype.every() expects a value to be returned at the end of arrow function.
+tests/rules/array-callback-return/allow-implicit/cases.ts:14:16	array-callback-return	expectedInside	Array.prototype.findLast() expects a return value from arrow function.
+tests/rules/array-callback-return/allow-implicit/cases.ts:15:17	array-callback-return	expectedInside	Array.prototype.findIndex() expects a return value from arrow function.
+tests/rules/array-callback-return/allow-implicit/cases.ts:16:21	array-callback-return	expectedInside	Array.prototype.findLastIndex() expects a return value from arrow function.
+tests/rules/array-callback-return/allow-implicit/cases.ts:17:15	array-callback-return	expectedInside	Array.prototype.flatMap() expects a return value from arrow function.
+tests/rules/array-callback-return/allow-implicit/cases.ts:18:21	array-callback-return	expectedInside	Array.prototype.reduce() expects a return value from arrow function.
+tests/rules/array-callback-return/allow-implicit/cases.ts:19:26	array-callback-return	expectedInside	Array.prototype.reduceRight() expects a return value from arrow function.
+tests/rules/array-callback-return/allow-implicit/cases.ts:20:17	array-callback-return	expectedInside	Array.prototype.sort() expects a return value from arrow function.
+tests/rules/array-callback-return/allow-implicit/cases.ts:21:21	array-callback-return	expectedInside	Array.prototype.toSorted() expects a return value from arrow function.
+tests/rules/array-callback-return/allow-implicit/cases.ts:22:14	array-callback-return	expectedInside	Array.prototype.map() expects a return value from arrow function.
+tests/rules/array-callback-return/allow-implicit/cases.ts:23:17	array-callback-return	expectedInside	Array.prototype.filter() expects a return value from arrow function.
+tests/rules/array-callback-return/allow-implicit/cases.ts:24:14	array-callback-return	expectedInside	Array.prototype.map() expects a return value from arrow function.
+tests/rules/array-callback-return/allow-implicit/cases.ts:26:19	array-callback-return	expectedInside	Array.from() expects a return value from arrow function.
+tests/rules/array-callback-return/allow-implicit/cases.ts:27:22	array-callback-return	expectedInside	Array.from() expects a return value from function.
+tests/rules/array-callback-return/allow-implicit/cases.ts:28:30	array-callback-return	expectedInside	Array.fromAsync() expects a return value from async arrow function.
+tests/rules/array-callback-return/allow-implicit/cases.ts:29:18	array-callback-return	expectedInside	Array.prototype.map() expects a return value from arrow function.
+tests/rules/array-callback-return/allow-implicit/cases.ts:30:17	array-callback-return	expectedInside	Array.prototype.map() expects a return value from function.
+tests/rules/array-callback-return/allow-implicit/cases.ts:31:31	array-callback-return	expectedInside	Array.prototype.map() expects a return value from function.
+tests/rules/array-callback-return/allow-implicit/cases.ts:33:11	array-callback-return	expectedAtEnd	Array.prototype.map() expects a value to be returned at the end of arrow function.
+tests/rules/array-callback-return/allow-implicit/cases.ts:36:24	array-callback-return	expectedInside	Array.prototype.map() expects a return value from function 'named'.
+tests/rules/array-callback-return/allow-implicit/cases.ts:51:20	array-callback-return	expectedInside	Array.prototype.map() expects a return value from arrow function.
+tests/rules/array-callback-return/allow-implicit/cases.ts:53:11	array-callback-return	expectedInside	Array.prototype.map() expects a return value from arrow function.
+tests/rules/array-callback-return/allow-implicit/cases.ts:57:19	array-callback-return	expectedInside	Array.prototype.map() expects a return value from arrow function.
+tests/rules/array-callback-return/allow-void/cases.ts:4:15	array-callback-return	expectedNoReturnValue	Array.prototype.forEach() expects no useless return value from arrow function.
+tests/rules/array-callback-return/allow-void/cases.ts:5:15	array-callback-return	expectedNoReturnValue	Array.prototype.forEach() expects no useless return value from arrow function.
+tests/rules/array-callback-return/allow-void/cases.ts:6:15	array-callback-return	expectedNoReturnValue	Array.prototype.forEach() expects no useless return value from arrow function.
+tests/rules/array-callback-return/allow-void/cases.ts:8:15	array-callback-return	expectedNoReturnValue	Array.prototype.forEach() expects no useless return value from arrow function.
+tests/rules/array-callback-return/allow-void/cases.ts:9:15	array-callback-return	expectedNoReturnValue	Array.prototype.forEach() expects no useless return value from arrow function.
+tests/rules/array-callback-return/allow-void/cases.ts:10:20	array-callback-return	expectedNoReturnValue	Array.prototype.forEach() expects no useless return value from arrow function.
+tests/rules/array-callback-return/allow-void/cases.ts:13:27	array-callback-return	expectedNoReturnValue	Array.prototype.forEach() expects no useless return value from arrow function.
+tests/rules/array-callback-return/allow-void/cases.ts:14:28	array-callback-return	expectedNoReturnValue	Array.prototype.forEach() expects no useless return value from function.
+tests/rules/array-callback-return/allow-void/cases.ts:15:27	array-callback-return	expectedNoReturnValue	Array.prototype.forEach() expects no useless return value from function.
+tests/rules/array-callback-return/allow-void/cases.ts:16:20	array-callback-return	expectedNoReturnValue	Array.prototype.forEach() expects no useless return value from arrow function.
+tests/rules/array-callback-return/allow-void/cases.ts:19:20	array-callback-return	expectedNoReturnValue	Array.prototype.forEach() expects no useless return value from arrow function.
+tests/rules/array-callback-return/allow-void/cases.ts:20:16	array-callback-return	expectedReturnValue	Array.prototype.map() expects a return value from arrow function.
+tests/rules/array-callback-return/allow-void/cases.ts:21:11	array-callback-return	expectedInside	Array.prototype.map() expects a return value from arrow function.
+tests/rules/array-callback-return/cases.ts:8:9	array-callback-return	expectedInside	Array.prototype.map() expects a return value from function.
+tests/rules/array-callback-return/cases.ts:9:9	array-callback-return	expectedInside	Array.prototype.map() expects a return value from function 'foo'.
+tests/rules/array-callback-return/cases.ts:10:16	array-callback-return	expectedInside	Array.prototype.filter() expects a return value from arrow function.
+tests/rules/array-callback-return/cases.ts:11:13	array-callback-return	expectedAtEnd	Array.prototype.every() expects a value to be returned at the end of arrow function.
+tests/rules/array-callback-return/cases.ts:12:32	array-callback-return	expectedReturnValue	Array.prototype.some() expects a return value from function.
+tests/rules/array-callback-return/cases.ts:13:17	array-callback-return	expectedReturnValue	Array.prototype.find() expects a return value from arrow function.
+tests/rules/array-callback-return/cases.ts:14:16	array-callback-return	expectedInside	Array.prototype.findLast() expects a return value from arrow function.
+tests/rules/array-callback-return/cases.ts:15:17	array-callback-return	expectedInside	Array.prototype.findIndex() expects a return value from arrow function.
+tests/rules/array-callback-return/cases.ts:16:21	array-callback-return	expectedInside	Array.prototype.findLastIndex() expects a return value from arrow function.
+tests/rules/array-callback-return/cases.ts:17:15	array-callback-return	expectedInside	Array.prototype.flatMap() expects a return value from arrow function.
+tests/rules/array-callback-return/cases.ts:18:21	array-callback-return	expectedInside	Array.prototype.reduce() expects a return value from arrow function.
+tests/rules/array-callback-return/cases.ts:19:26	array-callback-return	expectedInside	Array.prototype.reduceRight() expects a return value from arrow function.
+tests/rules/array-callback-return/cases.ts:20:17	array-callback-return	expectedInside	Array.prototype.sort() expects a return value from arrow function.
+tests/rules/array-callback-return/cases.ts:21:21	array-callback-return	expectedInside	Array.prototype.toSorted() expects a return value from arrow function.
+tests/rules/array-callback-return/cases.ts:22:14	array-callback-return	expectedInside	Array.prototype.map() expects a return value from arrow function.
+tests/rules/array-callback-return/cases.ts:23:17	array-callback-return	expectedInside	Array.prototype.filter() expects a return value from arrow function.
+tests/rules/array-callback-return/cases.ts:24:14	array-callback-return	expectedInside	Array.prototype.map() expects a return value from arrow function.
+tests/rules/array-callback-return/cases.ts:26:19	array-callback-return	expectedInside	Array.from() expects a return value from arrow function.
+tests/rules/array-callback-return/cases.ts:27:22	array-callback-return	expectedInside	Array.from() expects a return value from function.
+tests/rules/array-callback-return/cases.ts:28:30	array-callback-return	expectedInside	Array.fromAsync() expects a return value from async arrow function.
+tests/rules/array-callback-return/cases.ts:29:18	array-callback-return	expectedInside	Array.prototype.map() expects a return value from arrow function.
+tests/rules/array-callback-return/cases.ts:30:17	array-callback-return	expectedInside	Array.prototype.map() expects a return value from function.
+tests/rules/array-callback-return/cases.ts:31:31	array-callback-return	expectedInside	Array.prototype.map() expects a return value from function.
+tests/rules/array-callback-return/cases.ts:33:11	array-callback-return	expectedAtEnd	Array.prototype.map() expects a value to be returned at the end of arrow function.
+tests/rules/array-callback-return/cases.ts:36:24	array-callback-return	expectedInside	Array.prototype.map() expects a return value from function 'named'.
+tests/rules/array-callback-return/cases.ts:51:20	array-callback-return	expectedInside	Array.prototype.map() expects a return value from arrow function.
+tests/rules/array-callback-return/cases.ts:53:11	array-callback-return	expectedInside	Array.prototype.map() expects a return value from arrow function.
+tests/rules/array-callback-return/cases.ts:57:19	array-callback-return	expectedInside	Array.prototype.map() expects a return value from arrow function.
+tests/rules/array-callback-return/check-for-each/cases.ts:4:15	array-callback-return	expectedNoReturnValue	Array.prototype.forEach() expects no useless return value from arrow function.
+tests/rules/array-callback-return/check-for-each/cases.ts:5:15	array-callback-return	expectedNoReturnValue	Array.prototype.forEach() expects no useless return value from arrow function.
+tests/rules/array-callback-return/check-for-each/cases.ts:6:15	array-callback-return	expectedNoReturnValue	Array.prototype.forEach() expects no useless return value from arrow function.
+tests/rules/array-callback-return/check-for-each/cases.ts:7:15	array-callback-return	expectedNoReturnValue	Array.prototype.forEach() expects no useless return value from arrow function.
+tests/rules/array-callback-return/check-for-each/cases.ts:8:15	array-callback-return	expectedNoReturnValue	Array.prototype.forEach() expects no useless return value from arrow function.
+tests/rules/array-callback-return/check-for-each/cases.ts:9:15	array-callback-return	expectedNoReturnValue	Array.prototype.forEach() expects no useless return value from arrow function.
+tests/rules/array-callback-return/check-for-each/cases.ts:10:20	array-callback-return	expectedNoReturnValue	Array.prototype.forEach() expects no useless return value from arrow function.
+tests/rules/array-callback-return/check-for-each/cases.ts:12:20	array-callback-return	expectedNoReturnValue	Array.prototype.forEach() expects no useless return value from arrow function.
+tests/rules/array-callback-return/check-for-each/cases.ts:13:27	array-callback-return	expectedNoReturnValue	Array.prototype.forEach() expects no useless return value from arrow function.
+tests/rules/array-callback-return/check-for-each/cases.ts:14:28	array-callback-return	expectedNoReturnValue	Array.prototype.forEach() expects no useless return value from function.
+tests/rules/array-callback-return/check-for-each/cases.ts:15:27	array-callback-return	expectedNoReturnValue	Array.prototype.forEach() expects no useless return value from function.
+tests/rules/array-callback-return/check-for-each/cases.ts:16:20	array-callback-return	expectedNoReturnValue	Array.prototype.forEach() expects no useless return value from arrow function.
+tests/rules/array-callback-return/check-for-each/cases.ts:19:20	array-callback-return	expectedNoReturnValue	Array.prototype.forEach() expects no useless return value from arrow function.
+tests/rules/array-callback-return/check-for-each/cases.ts:20:16	array-callback-return	expectedReturnValue	Array.prototype.map() expects a return value from arrow function.
+tests/rules/array-callback-return/check-for-each/cases.ts:21:11	array-callback-return	expectedInside	Array.prototype.map() expects a return value from arrow function.

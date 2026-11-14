@@ -1,0 +1,23 @@
+declare const arr: number[];
+declare function f(x: unknown): unknown;
+
+arr.forEach(x => x);
+arr.forEach(x => f(x));
+arr.forEach(x => (f(x)));
+arr.forEach(x => void f(x));
+arr.forEach(x => a = x);
+arr.forEach(x => x ? 1 : 2);
+arr.forEach(x => { return x; });
+arr.forEach(x => { return; });
+arr.forEach(x => { return void x; });
+arr.forEach(x => { if (x) return x + 1; });
+arr.forEach(function (x) { return x; });
+arr.forEach(function (x) {return(x);});
+arr.forEach(x => { return a = x; });
+arr.forEach(x => {});
+arr.forEach(async x => x);
+arr.forEach(x => { return (x, x); });
+arr.map(x => { return; });
+arr.map(x => { f(x); });
+let a: unknown;
+export {};

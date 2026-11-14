@@ -1,0 +1,16 @@
+tests/rules/no-throw-literal/cases.ts:5:17	no-throw-literal	object	Expected an error object to be thrown.
+tests/rules/no-throw-literal/cases.ts:6:17	no-throw-literal	object	Expected an error object to be thrown.
+tests/rules/no-throw-literal/cases.ts:7:17	no-throw-literal	undef	Do not throw undefined.
+tests/rules/no-throw-literal/cases.ts:8:17	no-throw-literal	object	Expected an error object to be thrown.
+tests/rules/no-throw-literal/cases.ts:9:17	no-throw-literal	object	Expected an error object to be thrown.
+tests/rules/no-throw-literal/cases.ts:10:17	no-throw-literal	object	Expected an error object to be thrown.
+tests/rules/no-throw-literal/cases.ts:11:17	no-throw-literal	object	Expected an error object to be thrown.
+tests/rules/no-throw-literal/cases.ts:12:17	no-throw-literal	object	Expected an error object to be thrown.
+tests/rules/no-throw-literal/cases.ts:13:29	no-throw-literal	object	Expected an error object to be thrown.
+tests/rules/no-throw-literal/cases.ts:14:18	no-throw-literal	object	Expected an error object to be thrown.
+tests/rules/no-throw-literal/cases.ts:15:18	no-throw-literal	object	Expected an error object to be thrown.
+tests/rules/no-throw-literal/cases.ts:16:18	no-throw-literal	object	Expected an error object to be thrown.
+tests/rules/no-throw-literal/cases.ts:17:18	no-throw-literal	object	Expected an error object to be thrown.
+tests/rules/no-throw-literal/cases.ts:18:18	no-throw-literal	object	Expected an error object to be thrown.
+tests/rules/no-throw-literal/cases.ts:19:18	no-throw-literal	object	Expected an error object to be thrown.
+tests/rules/no-throw-literal/cases.ts:20:18	no-throw-literal	object	Expected an error object to be thrown.

@@ -1,0 +1,21 @@
+{"rule": "no-lonely-if", "upstream": "eslint v10.15.0", "files": ["tests/lib/rules/no-lonely-if.js"],
+"messages": {"unexpectedLonelyIf":"Unexpected if as the only statement in an else block."},
+"cases": [
+{"id":"no-lonely-if/v0","kind":"valid","code":"if (a) {;} else if (b) {;}","file":"file.ts","tsconfig":null},
+{"id":"no-lonely-if/v1","kind":"valid","code":"if (a) {;} else { if (b) {;} ; }","file":"file.ts","tsconfig":null},
+{"id":"no-lonely-if/v2","kind":"valid","code":"if (a) if (a) {} else { if (b) {} } else {}","file":"file.ts","tsconfig":null},
+{"id":"no-lonely-if/i0","kind":"invalid","code":"if (a) {;} else { if (b) {;} }","file":"file.ts","tsconfig":null,"errors":[{"messageId":"unexpectedLonelyIf"}],"output":"if (a) {;} else if (b) {;}"},
+{"id":"no-lonely-if/i1","kind":"invalid","code":"if (a) {\n  foo();\n} else {\n  if (b) {\n    bar();\n  }\n}","file":"file.ts","tsconfig":null,"errors":[{"messageId":"unexpectedLonelyIf"}],"output":"if (a) {\n  foo();\n} else if (b) {\n    bar();\n  }"},
+{"id":"no-lonely-if/i2","kind":"invalid","code":"if (a) {\n  foo();\n} else /* comment */ {\n  if (b) {\n    bar();\n  }\n}","file":"file.ts","tsconfig":null,"errors":[{"messageId":"unexpectedLonelyIf"}],"output":"if (a) {\n  foo();\n} else /* comment */ if (b) {\n    bar();\n  }"},
+{"id":"no-lonely-if/i3","kind":"invalid","code":"if (a) {\n  foo();\n} else {\n  /* otherwise, do the other thing */ if (b) {\n    bar();\n  }\n}","file":"file.ts","tsconfig":null,"errors":[{"messageId":"unexpectedLonelyIf"}],"output":null},
+{"id":"no-lonely-if/i4","kind":"invalid","code":"if (a) {\n  foo();\n} else {\n  if /* this comment is ok */ (b) {\n    bar();\n  }\n}","file":"file.ts","tsconfig":null,"errors":[{"messageId":"unexpectedLonelyIf"}],"output":"if (a) {\n  foo();\n} else if /* this comment is ok */ (b) {\n    bar();\n  }"},
+{"id":"no-lonely-if/i5","kind":"invalid","code":"if (a) {\n  foo();\n} else {\n  if (b) {\n    bar();\n  } /* this comment will prevent this test case from being autofixed. */\n}","file":"file.ts","tsconfig":null,"errors":[{"messageId":"unexpectedLonelyIf"}],"output":null},
+{"id":"no-lonely-if/i6","kind":"invalid","code":"if (foo) {} else { if (bar) baz(); }","file":"file.ts","tsconfig":null,"errors":[{"messageId":"unexpectedLonelyIf"}],"output":"if (foo) {} else if (bar) baz();"},
+{"id":"no-lonely-if/i7","kind":"invalid","code":"if (foo) {} else { if (bar) baz() } qux();","file":"file.ts","tsconfig":null,"errors":[{"messageId":"unexpectedLonelyIf"}],"output":null},
+{"id":"no-lonely-if/i8","kind":"invalid","code":"if (foo) {} else { if (bar) baz(); } qux();","file":"file.ts","tsconfig":null,"errors":[{"messageId":"unexpectedLonelyIf"}],"output":"if (foo) {} else if (bar) baz(); qux();"},
+{"id":"no-lonely-if/i9","kind":"invalid","code":"if (foo) {\n} else {\n  if (bar) baz()\n}\n[1, 2, 3].forEach(foo);","file":"file.ts","tsconfig":null,"errors":[{"messageId":"unexpectedLonelyIf"}],"output":null},
+{"id":"no-lonely-if/i10","kind":"invalid","code":"if (foo) {\n} else {\n  if (bar) baz++\n}\nfoo;","file":"file.ts","tsconfig":null,"errors":[{"messageId":"unexpectedLonelyIf"}],"output":null},
+{"id":"no-lonely-if/i11","kind":"invalid","code":"if (foo) {\n} else {\n  if (bar) baz++;\n}\nfoo;","file":"file.ts","tsconfig":null,"errors":[{"messageId":"unexpectedLonelyIf"}],"output":"if (foo) {\n} else if (bar) baz++;\nfoo;"},
+{"id":"no-lonely-if/i12","kind":"invalid","code":"if (a) {\n  foo();\n} else {\n  if (b) bar()\n}\n`template literal`;","file":"file.ts","tsconfig":null,"languageOptions":{"ecmaVersion":6},"errors":[{"messageId":"unexpectedLonelyIf"}],"output":null},
+{"id":"no-lonely-if/i13","kind":"invalid","code":"if (a) {\n  foo();\n} else {\n  if (b) {\n    bar();\n  } else if (c) {\n    baz();\n  } else {\n    qux();\n  }\n}","file":"file.ts","tsconfig":null,"errors":[{"messageId":"unexpectedLonelyIf"}],"output":"if (a) {\n  foo();\n} else if (b) {\n    bar();\n  } else if (c) {\n    baz();\n  } else {\n    qux();\n  }"}
+]}

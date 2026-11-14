@@ -1,0 +1,11 @@
+tests/rules/no-lonely-if/cases.ts:6:24	no-lonely-if	unexpectedLonelyIf	Unexpected if as the only statement in an else block.
+tests/rules/no-lonely-if/cases.ts:7:24	no-lonely-if	unexpectedLonelyIf	Unexpected if as the only statement in an else block.
+tests/rules/no-lonely-if/cases.ts:11:3	no-lonely-if	unexpectedLonelyIf	Unexpected if as the only statement in an else block.
+tests/rules/no-lonely-if/cases.ts:17:19	no-lonely-if	unexpectedLonelyIf	Unexpected if as the only statement in an else block.
+tests/rules/no-lonely-if/cases.ts:19:3	no-lonely-if	unexpectedLonelyIf	Unexpected if as the only statement in an else block.
+tests/rules/no-lonely-if/cases.ts:22:24	no-lonely-if	unexpectedLonelyIf	Unexpected if as the only statement in an else block.
+tests/rules/no-lonely-if/cases.ts:25:24	no-lonely-if	unexpectedLonelyIf	Unexpected if as the only statement in an else block.
+tests/rules/no-lonely-if/cases.ts:29:32	no-lonely-if	unexpectedLonelyIf	Unexpected if as the only statement in an else block.
+tests/rules/no-lonely-if/cases.ts:30:24	no-lonely-if	unexpectedLonelyIf	Unexpected if as the only statement in an else block.
+tests/rules/no-lonely-if/cases.ts:32:24	no-lonely-if	unexpectedLonelyIf	Unexpected if as the only statement in an else block.
+tests/rules/no-lonely-if/cases.ts:34:24	no-lonely-if	unexpectedLonelyIf	Unexpected if as the only statement in an else block.
