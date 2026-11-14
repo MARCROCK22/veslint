@@ -1,9 +1,10 @@
 module rules
 
+import json2
 import time
 import treesitter { named_children, node_end, node_field, node_kind, node_parent, node_start, position_of }
 
-// Port of the `no-unmodified-loop-condition` rule of ESLint 10.6.0 (it has no options).
+// Port of the `no-unmodified-loop-condition` rule of ESLint 10.15.0, with its option.
 
 const nulc_messages = {
 	'loopConditionNotModified': "'{{name}}' is not modified in this loop."
@@ -19,8 +20,15 @@ mut:
 	modified bool
 }
 
+// nulc_options reads checkConditionalExpressions: a conditional expression is then not a group.
+fn nulc_options(options []json2.Any) !bool {
+	o := option_object(no_unmodified_loop_condition, options, ['checkConditionalExpressions'])!
+	return o.bool_value('checkConditionalExpressions')!
+}
+
 fn (mut c Checker) lint_no_unmodified_loop_condition(root C.TSNode, abs_path string, mut stats Stats) ![]Finding {
 	sw := time.new_stopwatch()
+	check_conditional := nulc_options(c.rule_options(no_unmodified_loop_condition))!
 	tree := c.scope_tree(root)
 	mut findings := []Finding{}
 	mut groups := map[u64][]NulcCondition{}
@@ -29,7 +37,7 @@ fn (mut c Checker) lint_no_unmodified_loop_condition(root C.TSNode, abs_path str
 		stats.checked++
 		mut conditions := []NulcCondition{}
 		for r in variable.references {
-			if condition := nulc_loop_condition(tree, r) {
+			if condition := nulc_loop_condition(tree, r, check_conditional) {
 				conditions << condition
 			}
 		}
@@ -121,11 +129,12 @@ fn nulc_is_sentinel(n C.TSNode) bool {
 	}
 }
 
-// nulc_is_group: GROUP_PATTERN, a binary (not logical) or conditional expression.
-fn nulc_is_group(n C.TSNode) bool {
+// nulc_is_group: a binary (not logical) expression, or a conditional one unless
+// checkConditionalExpressions.
+fn nulc_is_group(n C.TSNode, check_conditional bool) bool {
 	match node_kind(n) {
 		'binary_expression' { return operator_of(n) !in ['&&', '||', '??'] }
-		'ternary_expression' { return true }
+		'ternary_expression' { return !check_conditional }
 		else { return false }
 	}
 }
@@ -158,7 +167,7 @@ fn nulc_has_dynamic_expressions(n C.TSNode) bool {
 }
 
 // nulc_loop_condition ports toLoopCondition.
-fn nulc_loop_condition(tree &ScopeTree, r int) ?NulcCondition {
+fn nulc_loop_condition(tree &ScopeTree, r int, check_conditional bool) ?NulcCondition {
 	reference := tree.references[r]
 	if reference.init {
 		return none
@@ -183,7 +192,7 @@ fn nulc_loop_condition(tree &ScopeTree, r int) ?NulcCondition {
 				}
 				return none
 			}
-			if nulc_is_group(node) {
+			if nulc_is_group(node, check_conditional) {
 				if nulc_has_dynamic_expressions(node) {
 					return none
 				}

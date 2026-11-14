@@ -751,9 +751,13 @@ fn (mut c Checker) nuta_type_arguments(t TypeResponse, mut cache NutaCache) ![]T
 	return []TypeResponse{}
 }
 
+// nuta_max_type_contains_depth is MAX_TYPE_CONTAINS_DEPTH: recursive generic types instantiate
+// new types forever, so typeContains gives up past a fixed depth (typescript-eslint #12705).
+const nuta_max_type_contains_depth = 50
+
 // nuta_contains ports typeContains with the predicate `flags` (the union-aware isTypeFlagSet).
-fn (mut c Checker) nuta_contains(t TypeResponse, flags u32, mut seen map[int]bool, mut cache NutaCache) !bool {
-	if t.id in seen {
+fn (mut c Checker) nuta_contains(t TypeResponse, flags u32, mut seen map[int]bool, mut cache NutaCache, depth int) !bool {
+	if t.id in seen || depth > nuta_max_type_contains_depth {
 		return false
 	}
 	seen[t.id] = true
@@ -762,7 +766,7 @@ fn (mut c Checker) nuta_contains(t TypeResponse, flags u32, mut seen map[int]boo
 	}
 	if t.flags & (type_flag_union | type_flag_intersection) != 0 {
 		for part in c.members_of(t)! {
-			if c.nuta_contains(part, flags, mut seen, mut cache)! {
+			if c.nuta_contains(part, flags, mut seen, mut cache, depth + 1)! {
 				return true
 			}
 		}
@@ -776,7 +780,7 @@ fn (mut c Checker) nuta_contains(t TypeResponse, flags u32, mut seen map[int]boo
 		}
 	}
 	for n in nested {
-		if !n.is_null() && c.nuta_contains(n, flags, mut seen, mut cache)! {
+		if !n.is_null() && c.nuta_contains(n, flags, mut seen, mut cache, depth + 1)! {
 			return true
 		}
 	}
@@ -787,7 +791,7 @@ fn (mut c Checker) nuta_contains_any(t TypeResponse, mut cache NutaCache) !bool 
 	key := '${t.id}:any'
 	if key !in cache.contains {
 		mut seen := map[int]bool{}
-		cache.contains[key] = c.nuta_contains(t, type_flag_any, mut seen, mut cache)!
+		cache.contains[key] = c.nuta_contains(t, type_flag_any, mut seen, mut cache, 0)!
 	}
 	return cache.contains[key]
 }
@@ -797,7 +801,7 @@ fn (mut c Checker) nuta_contains_type_variable(t TypeResponse, mut cache NutaCac
 	if key !in cache.contains {
 		mut seen := map[int]bool{}
 		cache.contains[key] = c.nuta_contains(t, nuta_type_variable_or_index, mut seen, mut
-			cache)!
+			cache, 0)!
 	}
 	return cache.contains[key]
 }

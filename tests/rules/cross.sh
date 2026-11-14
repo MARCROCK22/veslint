@@ -28,14 +28,21 @@ PY
 # (the fixtures of a rule, with their tsconfig.json, stay together).
 JOBS=${JOBS:-$(nproc 2> /dev/null || echo 2)}
 [[ $JOBS -ge 1 ]] || JOBS=1
+# A group has at most CROSS_GROUP_SIZE files: with the project service, typescript-eslint 8.72 keeps
+# a program for each fixture directory (about 45 MB each), and ESLint's heap is 2 GB.
+CROSS_GROUP_SIZE=${CROSS_GROUP_SIZE:-15}
 size=$(((${#cases[@]} + JOBS - 1) / JOBS))
+[[ $size -le $CROSS_GROUP_SIZE ]] || size=$CROSS_GROUP_SIZE
 pids=()
 for ((k = 0; k * size < ${#cases[@]}; k++)); do
+	while [[ $(jobs -rp | wc -l) -ge $JOBS ]]; do
+		wait -n
+	done
 	node tests/rules/cross_eslint.mjs tests/rules/eslint.cross.config.mjs "${cases[@]:k*size:size}" \
 		> "$TMP/eslint.$k.json" 2> "$TMP/eslint.$k.err" &
 	pids+=($!)
 done
-wait "${pids[@]}"
+wait
 for k in "${!pids[@]}"; do
 	if [[ ! -s "$TMP/eslint.$k.json" ]]; then
 		echo "FAIL   ESLint produced no results"

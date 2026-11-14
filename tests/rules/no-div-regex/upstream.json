@@ -3,5 +3,5 @@
 "cases": [
 {"id":"no-div-regex/v0","kind":"valid","code":"var f = function() { return /foo/ig.test('bar'); };","file":"file.ts","tsconfig":null},
 {"id":"no-div-regex/v1","kind":"valid","code":"var f = function() { return /\\=foo/; };","file":"file.ts","tsconfig":null},
-{"id":"no-div-regex/i0","kind":"invalid","code":"var f = function() { return /=foo/; };","file":"file.ts","tsconfig":null,"errors":[{"messageId":"unexpected"}],"output":"var f = function() { return /[=]foo/; };"}
+{"id":"no-div-regex/i0","kind":"invalid","code":"var f = function() { return /=foo/; };","file":"file.ts","tsconfig":null,"errors":[{"messageId":"unexpected","line":1,"column":29,"endLine":1,"endColumn":35}],"output":"var f = function() { return /[=]foo/; };"}
 ]}

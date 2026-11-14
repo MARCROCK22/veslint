@@ -258,6 +258,8 @@ function normalize(run, raw, kind, index, prefix, source) {
   if (test.only) out.only = true;
   if (test.skip) out.skip = 'skipped upstream';
   else if (out.parser === 'vue') out.skip = 'vue-eslint-parser: a Vue file, not TypeScript';
+  else if (out.parser === 'html' || out.parser === 'svelte') out.skip = `the ${out.parser} parser: not TypeScript`;
+  else if (test.language) out.skip = `the ${test.language.name ?? test.language} language of ESLint, not TypeScript`;
   else if (!satisfies(test.dependencyConstraints)) out.skip = `dependencyConstraints ${JSON.stringify(test.dependencyConstraints)}`;
   assertPlain(out, id);
   return out;
@@ -416,6 +418,21 @@ Bun.plugin({
       contents: `export * from ${JSON.stringify(path.join(ROOT, 'tools/upstream/unicorn-test.mjs'))};`,
       loader: 'js',
     }));
+    // A test file of unicorn imports `node:test` for tests of its own outside RuleTester, which are
+    // not cases of the rule: tools/upstream/node-test-stub.mjs takes its place (Bun cannot replace a
+    // builtin module).
+    build.onLoad({ filter: /[\\/]unicorn[\\/]test[\\/][^\\/]+\.js$/ }, ({ path: file }) => ({
+      contents: fs.readFileSync(file, 'utf8').replaceAll(
+        /from 'node:test'/g,
+        `from ${JSON.stringify(path.join(ROOT, 'tools/upstream/node-test-stub.mjs'))}`,
+      ),
+      loader: 'js',
+    }));
+    // scripts/parsers.js, from which the test files of v79 import the parsers: the stub's.
+    build.onLoad({ filter: /[\\/]unicorn[\\/]scripts[\\/]parsers\.js$/ }, () => ({
+      contents: `export { typescriptEslintParser, vueEslintParser, htmlEslintParser, svelteEslintParser } from ${JSON.stringify(path.join(ROOT, 'tools/upstream/unicorn-test.mjs'))};`,
+      loader: 'js',
+    }));
     // test/utils/parsers.js: the parsers by name only (the stub's), as test.js gives them.
     build.onLoad({ filter: /[\\/]unicorn[\\/]test[\\/]utils[\\/]parsers\.js$/ }, () => ({
       contents: `import { parsers } from ${JSON.stringify(path.join(ROOT, 'tools/upstream/unicorn-test.mjs'))}; export default parsers;`,
@@ -447,7 +464,8 @@ function unicornSnapshotExpectation(run, test, source) {
   const { parser: runParser, ...runLanguageOptions } = run.config.languageOptions ?? {};
   const { parser: caseParser, ...caseLanguageOptions } = test.languageOptions ?? {};
   const parserName = (caseParser ?? runParser)?.name;
-  if (parserName === 'vue') return { errors: [] };
+  // A Vue file, or a case in another language of ESLint (CSS, JSON…): skipped, with no expectation.
+  if (parserName === 'vue' || parserName === 'html' || parserName === 'svelte' || test.language) return { errors: [] };
   const languageOptions = deepMerge(deepMerge({ globals: UNICORN_GLOBALS }, runLanguageOptions), caseLanguageOptions);
   if (parserName === 'typescript') languageOptions.parser = requireDependency('@typescript-eslint/parser');
   const config = [
@@ -572,8 +590,12 @@ for (const rule of rules.sort()) {
     if (runs.length) messages = source.unicorn ? (ruleObject.meta.messages ?? {}) : runs[0].messages;
     // Every snapshot of unicorn's test file is one of the recorded invalid cases.
     if (source.unicorn) {
-      const snapshotFile = path.join(source.tests, 'snapshots', `${name}.js.md`);
-      const snapshots = fs.existsSync(snapshotFile) ? (fs.readFileSync(snapshotFile, 'utf8').match(/^## invalid\(/gmu) ?? []).length : 0;
+      // node's snapshots (test/snapshots/<rule>.js.snapshot, since v79): the first entry of each
+      // invalid case, ` 1` (its code), is one case.
+      const snapshotFile = path.join(source.tests, 'snapshots', `${name}.js.snapshot`);
+      const snapshots = fs.existsSync(snapshotFile)
+        ? (fs.readFileSync(snapshotFile, 'utf8').match(/^exports\[`[^\n]* > invalid\(\d+\): [^\n]* 1`\] = `$/gmu) ?? []).length
+        : 0;
       const invalid = runs.filter(r => r.mode === 'snapshot').reduce((n, r) => n + (r.tests.invalid?.length ?? 0), 0);
       if (snapshots !== invalid) {
         console.error(`${rule}: ${invalid} invalid snapshot cases, ${snapshots} in ${path.relative(ROOT, snapshotFile)}`);

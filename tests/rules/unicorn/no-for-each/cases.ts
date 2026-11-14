@@ -1,4 +1,4 @@
-// unicorn/no-array-for-each: `for…of` instead of `.forEach()`.
+// unicorn/no-for-each: `for…of` instead of `.forEach()`.
 declare const list: number[];
 declare const maybe: number[] | undefined;
 declare function use(x: unknown): void;

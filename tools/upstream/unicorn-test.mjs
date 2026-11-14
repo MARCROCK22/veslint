@@ -12,7 +12,21 @@ export const recorded = (globalThis.__veslintRecorded ??= []);
 export const parsers = {
   typescript: { name: 'typescript', meta: { name: 'typescript' } },
   vue: { name: 'vue', meta: { name: 'vue' } },
+  html: { name: 'html', meta: { name: 'html' } },
+  svelte: { name: 'svelte', meta: { name: 'svelte' } },
 };
+
+// scripts/parsers.js (v79: the test files import the parsers from it), by name only too.
+export const typescriptEslintParser = parsers.typescript;
+export const vueEslintParser = parsers.vue;
+export const htmlEslintParser = parsers.html;
+export const svelteEslintParser = parsers.svelte;
+
+// The languages of test/utils/languages.js (JSON, CSS, HTML…), by name only: a case that names one
+// is not TypeScript and is skipped.
+export const languages = Object.fromEntries(
+  ['css', 'html', 'json', 'jsonc', 'json5', 'markdown', 'soml', 'toml', 'yaml'].map(name => [name, { name }]),
+);
 
 export function normalizeTestCase(testCase) {
   return typeof testCase === 'string' ? { code: testCase } : testCase;

@@ -14,10 +14,11 @@
 {"id":"no-misused-new/v10","kind":"valid","code":"\nexport default class {\n  constructor();\n}\n    ","file":"file.ts","tsconfig":null},
 {"id":"no-misused-new/v11","kind":"valid","code":"\ninterface foo {\n  new <T>(): bar<T>;\n}\n    ","file":"file.ts","tsconfig":null},
 {"id":"no-misused-new/v12","kind":"valid","code":"\ninterface foo {\n  new <T>(): 'x';\n}\n    ","file":"file.ts","tsconfig":null},
-{"id":"no-misused-new/i0","kind":"invalid","code":"\ninterface I {\n  new (): I;\n  constructor(): void;\n}\n      ","file":"file.ts","tsconfig":null,"errors":[{"column":3,"line":3,"messageId":"errorMessageInterface"},{"column":3,"line":4,"messageId":"errorMessageInterface"}]},
-{"id":"no-misused-new/i1","kind":"invalid","code":"\ninterface G {\n  new <T>(): G<T>;\n}\n      ","file":"file.ts","tsconfig":null,"errors":[{"column":3,"line":3,"messageId":"errorMessageInterface"}]},
-{"id":"no-misused-new/i2","kind":"invalid","code":"\ntype T = {\n  constructor(): void;\n};\n      ","file":"file.ts","tsconfig":null,"errors":[{"column":3,"line":3,"messageId":"errorMessageInterface"}]},
-{"id":"no-misused-new/i3","kind":"invalid","code":"\nclass C {\n  new(): C;\n}\n      ","file":"file.ts","tsconfig":null,"errors":[{"column":3,"line":3,"messageId":"errorMessageClass"}]},
-{"id":"no-misused-new/i4","kind":"invalid","code":"\ndeclare abstract class C {\n  new(): C;\n}\n      ","file":"file.ts","tsconfig":null,"errors":[{"column":3,"line":3,"messageId":"errorMessageClass"}]},
-{"id":"no-misused-new/i5","kind":"invalid","code":"\ninterface I {\n  constructor(): '';\n}\n      ","file":"file.ts","tsconfig":null,"errors":[{"column":3,"line":3,"messageId":"errorMessageInterface"}]}
+{"id":"no-misused-new/i0","kind":"invalid","code":"\ninterface I {\n  new (): I;\n}\n      ","file":"file.ts","tsconfig":null,"errors":[{"column":3,"endColumn":13,"endLine":3,"line":3,"messageId":"errorMessageInterface"}]},
+{"id":"no-misused-new/i1","kind":"invalid","code":"\ninterface I {\n  constructor(): void;\n}\n      ","file":"file.ts","tsconfig":null,"errors":[{"column":3,"endColumn":23,"endLine":3,"line":3,"messageId":"errorMessageInterface"}]},
+{"id":"no-misused-new/i2","kind":"invalid","code":"\ninterface G {\n  new <T>(): G<T>;\n}\n      ","file":"file.ts","tsconfig":null,"errors":[{"column":3,"endColumn":19,"endLine":3,"line":3,"messageId":"errorMessageInterface"}]},
+{"id":"no-misused-new/i3","kind":"invalid","code":"\ntype T = {\n  constructor(): void;\n};\n      ","file":"file.ts","tsconfig":null,"errors":[{"column":3,"endColumn":23,"endLine":3,"line":3,"messageId":"errorMessageInterface"}]},
+{"id":"no-misused-new/i4","kind":"invalid","code":"\nclass C {\n  new(): C;\n}\n      ","file":"file.ts","tsconfig":null,"errors":[{"column":3,"endColumn":12,"endLine":3,"line":3,"messageId":"errorMessageClass"}]},
+{"id":"no-misused-new/i5","kind":"invalid","code":"\ndeclare abstract class C {\n  new(): C;\n}\n      ","file":"file.ts","tsconfig":null,"errors":[{"column":3,"endColumn":12,"endLine":3,"line":3,"messageId":"errorMessageClass"}]},
+{"id":"no-misused-new/i6","kind":"invalid","code":"\ninterface I {\n  constructor(): '';\n}\n      ","file":"file.ts","tsconfig":null,"errors":[{"column":3,"endColumn":21,"endLine":3,"line":3,"messageId":"errorMessageInterface"}]}
 ]}

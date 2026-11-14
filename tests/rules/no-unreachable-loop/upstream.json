@@ -801,6 +801,7 @@
 {"id":"no-unreachable-loop/v797","kind":"valid","code":"for (a in b) break;","options":[{"ignore":["ForInStatement"]}],"file":"file.ts","tsconfig":null,"languageOptions":{"ecmaVersion":2018}},
 {"id":"no-unreachable-loop/v798","kind":"valid","code":"for (a of b) break;","options":[{"ignore":["ForOfStatement"]}],"file":"file.ts","tsconfig":null,"languageOptions":{"ecmaVersion":2018}},
 {"id":"no-unreachable-loop/v799","kind":"valid","code":"for (var key in obj) { hasEnumerableProperties = true; break; } for (const a of b) break;","options":[{"ignore":["ForInStatement","ForOfStatement"]}],"file":"file.ts","tsconfig":null,"languageOptions":{"ecmaVersion":2018}},
+{"id":"no-unreachable-loop/v800","kind":"valid","code":"while (a) break;","options":[{"ignore":["WhileStatement","DoWhileStatement","ForStatement","ForInStatement","ForOfStatement"]}],"file":"file.ts","tsconfig":null,"languageOptions":{"ecmaVersion":2018}},
 {"id":"no-unreachable-loop/i0","kind":"invalid","code":"while (a) break;","file":"file.ts","tsconfig":null,"languageOptions":{"ecmaVersion":2018},"errors":[{"messageId":"invalid"}]},
 {"id":"no-unreachable-loop/i1","kind":"invalid","code":"while (a) { break; }","file":"file.ts","tsconfig":null,"languageOptions":{"ecmaVersion":2018},"errors":[{"messageId":"invalid"}]},
 {"id":"no-unreachable-loop/i2","kind":"invalid","code":"function someFunc() { while (a) return; }","file":"file.ts","tsconfig":null,"languageOptions":{"ecmaVersion":2018},"errors":[{"messageId":"invalid"}]},

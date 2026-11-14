@@ -26,5 +26,14 @@
 {"id":"no-unused-labels/i15","kind":"invalid","code":"A: B: C: 'foo'","file":"file.ts","tsconfig":null,"errors":[{"messageId":"unused","data":{"name":"A"}},{"messageId":"unused","data":{"name":"B"}},{"messageId":"unused","data":{"name":"C"}}],"output":"B: C: 'foo'"},
 {"id":"no-unused-labels/i16","kind":"invalid","code":"A: B: C: D: 'foo'","file":"file.ts","tsconfig":null,"errors":[{"messageId":"unused","data":{"name":"A"}},{"messageId":"unused","data":{"name":"B"}},{"messageId":"unused","data":{"name":"C"}},{"messageId":"unused","data":{"name":"D"}}],"output":"B: D: 'foo'"},
 {"id":"no-unused-labels/i17","kind":"invalid","code":"A: B: C: D: E: 'foo'","file":"file.ts","tsconfig":null,"errors":[{"messageId":"unused","data":{"name":"A"}},{"messageId":"unused","data":{"name":"B"}},{"messageId":"unused","data":{"name":"C"}},{"messageId":"unused","data":{"name":"D"}},{"messageId":"unused","data":{"name":"E"}}],"output":"B: D: E: 'foo'"},
-{"id":"no-unused-labels/i18","kind":"invalid","code":"A: 42","file":"file.ts","tsconfig":null,"errors":[{"messageId":"unused","data":{"name":"A"}}],"output":"42"}
+{"id":"no-unused-labels/i18","kind":"invalid","code":"A: 42","file":"file.ts","tsconfig":null,"errors":[{"messageId":"unused","data":{"name":"A"}}],"output":"42"},
+{"id":"no-unused-labels/i19","kind":"invalid","code":"foo()\nA: [1, 2, 3].forEach(x => x)","file":"file.ts","tsconfig":null,"errors":[{"messageId":"unused","data":{"name":"A"}}],"output":null},
+{"id":"no-unused-labels/i20","kind":"invalid","code":"foo()\nA: (function() {})()","file":"file.ts","tsconfig":null,"errors":[{"messageId":"unused","data":{"name":"A"}}],"output":null},
+{"id":"no-unused-labels/i21","kind":"invalid","code":"foo()\nA: /regex/.test(x)","file":"file.ts","tsconfig":null,"errors":[{"messageId":"unused","data":{"name":"A"}}],"output":null},
+{"id":"no-unused-labels/i22","kind":"invalid","code":"foo()\nA: +x","file":"file.ts","tsconfig":null,"errors":[{"messageId":"unused","data":{"name":"A"}}],"output":null},
+{"id":"no-unused-labels/i23","kind":"invalid","code":"foo()\nA: -x","file":"file.ts","tsconfig":null,"errors":[{"messageId":"unused","data":{"name":"A"}}],"output":null},
+{"id":"no-unused-labels/i24","kind":"invalid","code":"foo()\nA: `template` + bar","file":"file.ts","tsconfig":null,"languageOptions":{"ecmaVersion":6},"errors":[{"messageId":"unused","data":{"name":"A"}}],"output":null},
+{"id":"no-unused-labels/i25","kind":"invalid","code":"const foo = function() {}\nA: [1, 2, 3].forEach(x => x)","file":"file.ts","tsconfig":null,"errors":[{"messageId":"unused","data":{"name":"A"}}],"output":null},
+{"id":"no-unused-labels/i26","kind":"invalid","code":"foo();\nA: [1, 2, 3].forEach(x => x)","file":"file.ts","tsconfig":null,"errors":[{"messageId":"unused","data":{"name":"A"}}],"output":"foo();\n[1, 2, 3].forEach(x => x)"},
+{"id":"no-unused-labels/i27","kind":"invalid","code":"OUTER: while (true) { A: [1, 2, 3].forEach(x => x); break OUTER; }","file":"file.ts","tsconfig":null,"errors":[{"messageId":"unused","data":{"name":"A"}}],"output":"OUTER: while (true) { [1, 2, 3].forEach(x => x); break OUTER; }"}
 ]}

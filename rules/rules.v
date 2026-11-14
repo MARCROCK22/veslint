@@ -312,7 +312,7 @@ pub const unicorn_prefer_math_min_max = 'unicorn/prefer-math-min-max'
 pub const unicorn_prefer_modern_math_apis = 'unicorn/prefer-modern-math-apis'
 pub const unicorn_prefer_native_coercion_functions = 'unicorn/prefer-native-coercion-functions'
 pub const unicorn_no_array_callback_reference = 'unicorn/no-array-callback-reference'
-pub const unicorn_no_array_for_each = 'unicorn/no-array-for-each'
+pub const unicorn_no_for_each = 'unicorn/no-for-each'
 pub const unicorn_no_array_method_this_argument = 'unicorn/no-array-method-this-argument'
 pub const unicorn_no_array_reverse = 'unicorn/no-array-reverse'
 pub const unicorn_no_array_sort = 'unicorn/no-array-sort'
@@ -408,7 +408,7 @@ pub const names = [no_floating_promises, await_thenable, require_await, return_a
 	unicorn_prefer_string_replace_all, unicorn_require_number_to_fixed_digits_argument,
 	unicorn_prefer_math_trunc, unicorn_prefer_math_min_max, unicorn_prefer_modern_math_apis,
 	unicorn_prefer_native_coercion_functions, unicorn_no_array_callback_reference,
-	unicorn_no_array_for_each, unicorn_no_array_method_this_argument, unicorn_no_array_reverse,
+	unicorn_no_for_each, unicorn_no_array_method_this_argument, unicorn_no_array_reverse,
 	unicorn_no_array_sort, unicorn_no_new_array, unicorn_prefer_array_flat,
 	unicorn_prefer_array_flat_map, unicorn_prefer_array_index_of, unicorn_prefer_array_some,
 	unicorn_require_array_join_separator, unicorn_prefer_negative_index,
@@ -474,7 +474,7 @@ pub const untyped_rules = [adjacent_overload_signatures, array_type, class_liter
 	unicorn_prefer_string_replace_all, unicorn_require_number_to_fixed_digits_argument,
 	unicorn_prefer_math_trunc, unicorn_prefer_math_min_max, unicorn_prefer_modern_math_apis,
 	unicorn_prefer_native_coercion_functions, unicorn_no_array_callback_reference,
-	unicorn_no_array_for_each, unicorn_no_array_method_this_argument, unicorn_no_array_reverse,
+	unicorn_no_for_each, unicorn_no_array_method_this_argument, unicorn_no_array_reverse,
 	unicorn_no_array_sort, unicorn_no_new_array, unicorn_prefer_array_flat,
 	unicorn_prefer_array_flat_map, unicorn_prefer_array_index_of, unicorn_prefer_array_some,
 	unicorn_require_array_join_separator, unicorn_prefer_negative_index,
@@ -697,7 +697,7 @@ pub const default_options = {
 	prefer_object_has_own:                           '[]'
 	prefer_object_spread:                            '[]'
 	core_dot_notation:                               '[{"allowKeywords":true,"allowPattern":""}]'
-	preserve_caught_error:                           '[{"requireCatchParameter":false}]'
+	preserve_caught_error:                           '[{"requireCatchParameter":false,"errorClassNames":[]}]'
 	no_class_assign:                                 '[]'
 	no_const_assign:                                 '[]'
 	no_ex_assign:                                    '[]'
@@ -719,7 +719,7 @@ pub const default_options = {
 	no_lone_blocks:                                  '[]'
 	no_loop_func:                                    '[]'
 	no_implicit_globals:                             '[{"lexicalBindings":false}]'
-	no_unmodified_loop_condition:                    '[]'
+	no_unmodified_loop_condition:                    '[{"checkConditionalExpressions":false}]'
 	no_control_regex:                                '[]'
 	no_div_regex:                                    '[]'
 	no_empty_character_class:                        '[]'
@@ -789,7 +789,7 @@ pub const default_options = {
 	unicorn_prefer_modern_math_apis:                 '[]'
 	unicorn_prefer_native_coercion_functions:        '[]'
 	unicorn_no_array_callback_reference:             '[]'
-	unicorn_no_array_for_each:                       '[]'
+	unicorn_no_for_each:                       '[]'
 	unicorn_no_array_method_this_argument:           '[]'
 	unicorn_no_array_reverse:                        '[{"allowExpressionStatement":true}]'
 	unicorn_no_array_sort:                           '[{"allowExpressionStatement":true}]'
@@ -1238,7 +1238,7 @@ pub fn message(rule string, finding Finding) string {
 		unicorn_prefer_modern_math_apis { upmma_messages }
 		unicorn_prefer_native_coercion_functions { upncf_messages }
 		unicorn_no_array_callback_reference { unacr_messages }
-		unicorn_no_array_for_each { unafe_messages }
+		unicorn_no_for_each { unafe_messages }
 		unicorn_no_array_method_this_argument { unamta_messages }
 		unicorn_no_array_reverse { unar_messages }
 		unicorn_no_array_sort { unas_messages }
@@ -2304,8 +2304,8 @@ fn (mut c Checker) lint_rule(rule string, root C.TSNode, abs_path string, mut st
 		unicorn_no_array_callback_reference {
 			return c.lint_unicorn_no_array_callback_reference(root, abs_path, mut stats)!
 		}
-		unicorn_no_array_for_each {
-			return c.lint_unicorn_no_array_for_each(root, abs_path, mut stats)!
+		unicorn_no_for_each {
+			return c.lint_unicorn_no_for_each(root, abs_path, mut stats)!
 		}
 		unicorn_no_array_method_this_argument {
 			return c.lint_unicorn_no_array_method_this_argument(root, abs_path, mut stats)!

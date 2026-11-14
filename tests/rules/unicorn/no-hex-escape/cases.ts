@@ -1,4 +1,4 @@
-// unicorn/no-hex-escape: `\u00XX` instead of `\xXX`, in strings, templates and regular expressions.
+// unicorn/no-hex-escape, deprecated in eslint-plugin-unicorn 79.0.0: it reports nothing, not even `\xXX`.
 declare const name: string;
 declare function tag(strings: TemplateStringsArray, ...values: unknown[]): string;
 

@@ -138,6 +138,7 @@ pub fn check_options(rule string, options []json2.Any) !bool {
 		unicorn_no_array_sort { unas_options(options)! }
 		unicorn_prefer_array_flat { upaf_options(options)! }
 		unicorn_explicit_length_check { uelc_options(options)! }
+		no_unmodified_loop_condition { nulc_options(options)! }
 		else { return false }
 	}
 	return true

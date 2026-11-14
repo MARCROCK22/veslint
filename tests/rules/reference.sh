@@ -36,12 +36,17 @@ reference_of() { # tag files...: ESLint's lines on the files, in reference.<tag>
 	python3 tests/eslint_lines.py < "$TMP/eslint.$tag.json" > "$TMP/reference.$tag.txt"
 	python3 tests/eslint_lines.py fixes < "$TMP/eslint.$tag.json" > "$TMP/reference.$tag.fixes.txt"
 }
-reference_in_groups() { # tag files...: reference_of on JOBS groups of consecutive files, in the background
+# A group has at most REFERENCE_GROUP_SIZE files: with the project service, typescript-eslint 8.72
+# keeps a program for each fixture directory it opens (about 45 MB each), and 50 of them already
+# exhaust ESLint's 2 GB heap; 15 take about 1 GB.
+REFERENCE_GROUP_SIZE=${REFERENCE_GROUP_SIZE:-15}
+reference_in_groups() { # tag files...: reference_of on groups of consecutive files, JOBS at a time, in the background
 	local tag=$1
 	shift
 	local files=("$@") size k
 	[[ ${#files[@]} -gt 0 ]] || return 0
 	size=$(((${#files[@]} + JOBS - 1) / JOBS))
+	[[ $size -le $REFERENCE_GROUP_SIZE ]] || size=$REFERENCE_GROUP_SIZE
 	for ((k = 0; k * size < ${#files[@]}; k++)); do
 		throttle
 		reference_of "$tag.$k" "${files[@]:k*size:size}" &

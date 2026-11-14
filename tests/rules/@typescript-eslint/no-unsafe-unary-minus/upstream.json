@@ -15,13 +15,13 @@
 {"id":"no-unsafe-unary-minus/v11","kind":"valid","code":"(a: { x: number }) => -a.x;","file":"file.ts","tsconfig":"tsconfig.json","via":"service"},
 {"id":"no-unsafe-unary-minus/v12","kind":"valid","code":"(a: never) => -a;","file":"file.ts","tsconfig":"tsconfig.json","via":"service"},
 {"id":"no-unsafe-unary-minus/v13","kind":"valid","code":"<T extends number>(t: T) => -t;","file":"file.ts","tsconfig":"tsconfig.json","via":"service"},
-{"id":"no-unsafe-unary-minus/i0","kind":"invalid","code":"(a: string) => -a;","file":"file.ts","tsconfig":"tsconfig.json","via":"service","errors":[{"messageId":"unaryMinus"}]},
-{"id":"no-unsafe-unary-minus/i1","kind":"invalid","code":"(a: {}) => -a;","file":"file.ts","tsconfig":"tsconfig.json","via":"service","errors":[{"messageId":"unaryMinus"}]},
-{"id":"no-unsafe-unary-minus/i2","kind":"invalid","code":"(a: number[]) => -a;","file":"file.ts","tsconfig":"tsconfig.json","via":"service","errors":[{"messageId":"unaryMinus"}]},
-{"id":"no-unsafe-unary-minus/i3","kind":"invalid","code":"-'hello';","file":"file.ts","tsconfig":"tsconfig.json","via":"service","errors":[{"messageId":"unaryMinus"}]},
-{"id":"no-unsafe-unary-minus/i4","kind":"invalid","code":"-`hello`;","file":"file.ts","tsconfig":"tsconfig.json","via":"service","errors":[{"messageId":"unaryMinus"}]},
-{"id":"no-unsafe-unary-minus/i5","kind":"invalid","code":"(a: { x: number }) => -a;","file":"file.ts","tsconfig":"tsconfig.json","via":"service","errors":[{"messageId":"unaryMinus"}]},
-{"id":"no-unsafe-unary-minus/i6","kind":"invalid","code":"(a: unknown) => -a;","file":"file.ts","tsconfig":"tsconfig.json","via":"service","errors":[{"messageId":"unaryMinus"}]},
-{"id":"no-unsafe-unary-minus/i7","kind":"invalid","code":"(a: void) => -a;","file":"file.ts","tsconfig":"tsconfig.json","via":"service","errors":[{"messageId":"unaryMinus"}]},
-{"id":"no-unsafe-unary-minus/i8","kind":"invalid","code":"<T,>(t: T) => -t;","file":"file.ts","tsconfig":"tsconfig.json","via":"service","errors":[{"messageId":"unaryMinus"}]}
+{"id":"no-unsafe-unary-minus/i0","kind":"invalid","code":"(a: string) => -a;","file":"file.ts","tsconfig":"tsconfig.json","via":"service","errors":[{"column":16,"data":{"type":"string"},"endColumn":18,"endLine":1,"line":1,"messageId":"unaryMinus"}]},
+{"id":"no-unsafe-unary-minus/i1","kind":"invalid","code":"(a: {}) => -a;","file":"file.ts","tsconfig":"tsconfig.json","via":"service","errors":[{"column":12,"data":{"type":"{}"},"endColumn":14,"endLine":1,"line":1,"messageId":"unaryMinus"}]},
+{"id":"no-unsafe-unary-minus/i2","kind":"invalid","code":"(a: number[]) => -a;","file":"file.ts","tsconfig":"tsconfig.json","via":"service","errors":[{"column":18,"data":{"type":"number[]"},"endColumn":20,"endLine":1,"line":1,"messageId":"unaryMinus"}]},
+{"id":"no-unsafe-unary-minus/i3","kind":"invalid","code":"-'hello';","file":"file.ts","tsconfig":"tsconfig.json","via":"service","errors":[{"column":1,"data":{"type":"\"hello\""},"endColumn":9,"endLine":1,"line":1,"messageId":"unaryMinus"}]},
+{"id":"no-unsafe-unary-minus/i4","kind":"invalid","code":"-`hello`;","file":"file.ts","tsconfig":"tsconfig.json","via":"service","errors":[{"column":1,"data":{"type":"\"hello\""},"endColumn":9,"endLine":1,"line":1,"messageId":"unaryMinus"}]},
+{"id":"no-unsafe-unary-minus/i5","kind":"invalid","code":"(a: { x: number }) => -a;","file":"file.ts","tsconfig":"tsconfig.json","via":"service","errors":[{"column":23,"data":{"type":"{ x: number; }"},"endColumn":25,"endLine":1,"line":1,"messageId":"unaryMinus"}]},
+{"id":"no-unsafe-unary-minus/i6","kind":"invalid","code":"(a: unknown) => -a;","file":"file.ts","tsconfig":"tsconfig.json","via":"service","errors":[{"column":17,"data":{"type":"unknown"},"endColumn":19,"endLine":1,"line":1,"messageId":"unaryMinus"}]},
+{"id":"no-unsafe-unary-minus/i7","kind":"invalid","code":"(a: void) => -a;","file":"file.ts","tsconfig":"tsconfig.json","via":"service","errors":[{"column":14,"data":{"type":"void"},"endColumn":16,"endLine":1,"line":1,"messageId":"unaryMinus"}]},
+{"id":"no-unsafe-unary-minus/i8","kind":"invalid","code":"<T,>(t: T) => -t;","file":"file.ts","tsconfig":"tsconfig.json","via":"service","errors":[{"column":15,"data":{"type":"T"},"endColumn":17,"endLine":1,"line":1,"messageId":"unaryMinus"}]}
 ]}

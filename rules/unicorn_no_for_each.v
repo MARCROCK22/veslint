@@ -3,12 +3,12 @@ module rules
 import estree
 import time
 
-// Port of the `unicorn/no-array-for-each` rule of eslint-plugin-unicorn 64.0.0 (it has no
+// Port of the `unicorn/no-for-each` rule of eslint-plugin-unicorn 64.0.0 (it has no
 // options), with its fix and suggestion.
 
 const unafe_messages = {
-	'no-array-for-each/error':      'Use `for…of` instead of `.forEach(…)`.'
-	'no-array-for-each/suggestion': 'Switch to `for…of`.'
+	'no-for-each/error':      'Use `for…of` instead of `.forEach(…)`.'
+	'no-for-each/suggestion': 'Switch to `for…of`.'
 }
 
 const unafe_ignored_objects = ['React.Children', 'Children', 'R', 'pIteration', 'Effect']
@@ -131,7 +131,7 @@ fn (mut c Checker) unafe_is_fixable(root C.TSNode, t &estree.EsTree, call int) b
 	return !c.un_is_function_self_used_inside(root, t, callback)
 }
 
-fn (mut c Checker) lint_unicorn_no_array_for_each(root C.TSNode, abs_path string, mut stats Stats) ![]Finding {
+fn (mut c Checker) lint_unicorn_no_for_each(root C.TSNode, abs_path string, mut stats Stats) ![]Finding {
 	sw := time.new_stopwatch()
 	mut findings := []Finding{}
 	t := c.es_tree(root, abs_path) or { return findings }
@@ -151,7 +151,7 @@ fn (mut c Checker) lint_unicorn_no_array_for_each(root C.TSNode, abs_path string
 		property := t.node(iterable, .property) or { continue }
 		finding := Finding{
 			stmt:       c.es_tree_position(t, property)
-			message_id: 'no-array-for-each/error'
+			message_id: 'no-for-each/error'
 		}
 		if !c.unafe_is_fixable(root, t, node) {
 			findings << finding
@@ -165,7 +165,7 @@ fn (mut c Checker) lint_unicorn_no_array_for_each(root C.TSNode, abs_path string
 			findings << Finding{
 				...finding
 				suggestions: [Suggestion{
-					message_id: 'no-array-for-each/suggestion'
+					message_id: 'no-for-each/suggestion'
 					fix:        fix
 				}]
 			}

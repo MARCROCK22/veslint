@@ -4,7 +4,7 @@ import json2
 import time
 import treesitter { named_children, node_field, node_kind, node_parent, node_start, position_of }
 
-// Port of the `preserve-caught-error` rule of ESLint 10.6.0, with its option and its suggestions.
+// Port of the `preserve-caught-error` rule of ESLint 10.15.0, with its options and its suggestions.
 
 const pce_messages = {
 	'missingCause':           'There is no `cause` attached to the symptom error being thrown.'
@@ -18,10 +18,41 @@ const pce_messages = {
 const pce_error_types = ['Error', 'EvalError', 'RangeError', 'ReferenceError', 'SyntaxError',
 	'TypeError', 'URIError', 'AggregateError']
 
-// pce_require_parameter reads requireCatchParameter.
+// PceOptions are requireCatchParameter and errorClassNames (each class name with the 1-based
+// position of its options argument: 2 for a name alone).
+struct PceOptions {
+	require_parameter bool
+	error_classes     map[string]int
+}
+
+fn pce_options(options []json2.Any) !PceOptions {
+	o := option_object(preserve_caught_error, options, ['requireCatchParameter', 'errorClassNames'])!
+	mut classes := map[string]int{}
+	if list := o.values['errorClassNames'] {
+		if list !is []json2.Any {
+			return error('option `errorClassNames` of `${preserve_caught_error}` must be a list')
+		}
+		for item in list.as_array() {
+			if item is string {
+				classes[item] = 2
+			} else if item is map[string]json2.Any {
+				name := item['name'] or { json2.Any('') }
+				position := item['argumentPosition'] or { json2.Any(0) }
+				classes[name.str()] = position.int()
+			} else {
+				return error('option `errorClassNames` of `${preserve_caught_error}` holds names or {name, argumentPosition}')
+			}
+		}
+	}
+	return PceOptions{
+		require_parameter: o.bool_value('requireCatchParameter')!
+		error_classes:     classes
+	}
+}
+
+// pce_require_parameter reads requireCatchParameter (check_options).
 fn pce_require_parameter(options []json2.Any) !bool {
-	o := option_object(preserve_caught_error, options, ['requireCatchParameter'])!
-	return o.bool_value('requireCatchParameter')!
+	return pce_options(options)!.require_parameter
 }
 
 // PceCause is what getErrorCause finds: no options, options it cannot read, or the last `cause`.
@@ -35,7 +66,7 @@ struct PceCause {
 
 fn (mut c Checker) lint_preserve_caught_error(root C.TSNode, abs_path string, mut stats Stats) ![]Finding {
 	sw := time.new_stopwatch()
-	require_parameter := pce_require_parameter(c.rule_options(preserve_caught_error))!
+	o := pce_options(c.rule_options(preserve_caught_error))!
 	mut findings := []Finding{}
 	for node in c.nodes_of_kinds(root, ['throw_statement'], []) {
 		catch := pce_parent_catch(node) or { continue }
@@ -55,13 +86,23 @@ fn (mut c Checker) lint_preserve_caught_error(root C.TSNode, abs_path string, mu
 		} else {
 			'function'
 		}) or { continue })
-		if node_kind(callee) != 'identifier' || c.text(callee) !in pce_error_types
-			|| !c.es_is_global_reference(root, callee) {
+		// isThrowingNewError: a built-in global error, or a class of errorClassNames (an identifier,
+		// or the property of a non-computed member expression).
+		built_in := node_kind(callee) == 'identifier' && c.text(callee) in pce_error_types
+			&& c.es_is_global_reference(root, callee)
+		target := if node_kind(callee) == 'member_expression' {
+			node_field(callee, 'property') or { callee }
+		} else {
+			callee
+		}
+		class_name := c.text(target)
+		if !built_in && !(node_kind(target) in ['identifier', 'property_identifier']
+			&& class_name in o.error_classes) {
 			continue
 		}
 		stats.checked++
 		parameter := node_field(catch, 'parameter') or {
-			if require_parameter {
+			if o.require_parameter {
 				findings << Finding{
 					stmt:       position_of(node)
 					message_id: 'missingCatchErrorParam'
@@ -78,13 +119,20 @@ fn (mut c Checker) lint_preserve_caught_error(root C.TSNode, abs_path string, mu
 		}
 		caught := c.text(parameter)
 		args := (call_arguments(expression) or { []C.TSNode{} }).filter(node_kind(it) != 'comment')
-		cause := c.pce_cause(callee, args)
+		options_index := if built_in {
+			if class_name == 'AggregateError' { 2 } else { 1 }
+		} else {
+			o.error_classes[class_name] - 1
+		}
+		cause := c.pce_cause(options_index, args)
 		if cause.unknown {
 			continue
 		}
 		if !cause.found {
 			mut suggestions := []Suggestion{}
-			if fix := c.pce_missing_fix(root, expression, callee, args, caught) {
+			if fix := c.pce_missing_fix(root, expression, callee, args, caught, built_in, class_name,
+				options_index)
+			{
 				_, suggestion := c.suggestion('includeCause', map[string]string{}, [fix])!
 				suggestions << suggestion
 			}
@@ -162,9 +210,8 @@ fn pce_parent_catch(n C.TSNode) ?C.TSNode {
 	return none
 }
 
-// pce_cause ports getErrorCause: the `cause` of the options argument.
-fn (c &Checker) pce_cause(callee C.TSNode, args []C.TSNode) PceCause {
-	index := if c.text(callee) == 'AggregateError' { 2 } else { 1 }
+// pce_cause ports getErrorCause: the `cause` of the options argument, at `index`.
+fn (c &Checker) pce_cause(index int, args []C.TSNode) PceCause {
 	for i, arg in args {
 		if node_kind(arg) == 'spread_element' && i <= index {
 			return PceCause{
@@ -201,36 +248,48 @@ fn (c &Checker) pce_cause(callee C.TSNode, args []C.TSNode) PceCause {
 	}
 }
 
-// pce_missing_fix is the fix of the suggestion for a missing `cause`.
-fn (mut c Checker) pce_missing_fix(root C.TSNode, expression C.TSNode, callee C.TSNode, args []C.TSNode, caught string) ?Fix {
-	tokens := c.source_tokens(root)
-	paren := fn [mut c, tokens, expression, callee] () ?SourceToken {
-		mut token := tokens.after(c.es_end(callee), false)?
-		end := c.es_end(expression)
-		for token.start < end {
-			if c.src[token.start..token.end] == '(' {
-				return token
-			}
-			token = tokens.after(token.end, false)?
+// pce_insertion_after_parens ports findInsertionTokenAfterParens: from `first`, past the `)` that
+// follow it and end at `last_end` or before; the end of the last one.
+fn (c &Checker) pce_insertion_after_parens(tokens &SourceTokens, first SourceToken, last_end int) int {
+	mut token := first
+	for {
+		next := tokens.after(token.end, false) or { break }
+		if next.end > last_end || c.src[next.start..next.end] != ')' {
+			break
 		}
-		return none
+		token = next
 	}
-	aggregate := c.text(callee) == 'AggregateError'
-	first := if aggregate { '[], "", ' } else { '"", ' }
-	if args.len == 0 {
-		if token := paren() {
-			return fix_insert_at(token.end, '${first}{ cause: ${caught} }')
+	return token.end
+}
+
+// pce_add_to_empty_call ports addArgumentsToEmptyCall: inside the `()` after the callee, or a new
+// `(…)` after the callee and the parentheses around it.
+fn (c &Checker) pce_add_to_empty_call(tokens &SourceTokens, expression C.TSNode, callee C.TSNode, text string) ?Fix {
+	end := c.es_end(expression)
+	callee_last := tokens.before(c.es_end(callee), false)?
+	mut token := tokens.after(callee_last.end, false)?
+	for token.end < end {
+		if c.src[token.start..token.end] == '(' {
+			return fix_insert_at(token.end, text)
 		}
-		return fix_insert_at(c.es_end(callee), '(${first}{ cause: ${caught} })')
+		token = tokens.after(token.end, false)?
 	}
-	message_index := if aggregate { 1 } else { 0 }
-	if aggregate && args.len == 1 {
-		return fix_insert_at(c.es_end(unwrap_parens(args[0])), ', "", { cause: ${caught} }')
-	}
-	if args.len == message_index + 1 {
-		return fix_insert_at(c.es_end(unwrap_parens(args[message_index])), ', { cause: ${caught} }')
-	}
-	options := unwrap_parens(args[message_index + 1])
+	return fix_insert_at(c.pce_insertion_after_parens(tokens, callee_last, end), '(${text})')
+}
+
+// pce_append_arguments ports appendArguments: after the last argument and the parentheses around
+// it, before the token ahead of the closing `)`.
+fn (c &Checker) pce_append_arguments(tokens &SourceTokens, expression C.TSNode, args []C.TSNode, text string) ?Fix {
+	last_argument := tokens.before(c.es_end(unwrap_parens(args.last())), false)?
+	closing := tokens.before(c.es_end(expression), false)?
+	before_closing := tokens.before(closing.start, false)?
+	return fix_insert_at(c.pce_insertion_after_parens(tokens, last_argument, before_closing.end),
+		text)
+}
+
+// pce_existing_options ports fixExistingOptions (insertCauseIntoOptions for an object).
+fn (c &Checker) pce_existing_options(tokens &SourceTokens, argument C.TSNode, caught string) ?Fix {
+	options := unwrap_parens(argument)
 	if node_kind(options) != 'object' {
 		return none
 	}
@@ -240,4 +299,40 @@ fn (mut c Checker) pce_missing_fix(root C.TSNode, expression C.TSNode, callee C.
 		return fix_insert_at(open.end, 'cause: ${caught}')
 	}
 	return fix_insert_at(c.es_end(properties.last()), ', cause: ${caught}')
+}
+
+// pce_missing_fix is the fix of the suggestion for a missing `cause`.
+fn (mut c Checker) pce_missing_fix(root C.TSNode, expression C.TSNode, callee C.TSNode, args []C.TSNode, caught string, built_in bool, class_name string, options_index int) ?Fix {
+	tokens := c.source_tokens(root)
+	cause := '{ cause: ${caught} }'
+	if built_in {
+		// AggregateError: errors, message, options
+		aggregate := class_name == 'AggregateError'
+		if args.len == 0 {
+			return c.pce_add_to_empty_call(tokens, expression, callee, if aggregate {
+				'[], "", ${cause}'
+			} else {
+				'"", ${cause}'
+			})
+		}
+		if aggregate && args.len == 1 {
+			return c.pce_append_arguments(tokens, expression, args, ', "", ${cause}')
+		}
+		message_index := if aggregate { 1 } else { 0 }
+		if args.len == message_index + 1 {
+			return c.pce_append_arguments(tokens, expression, args, ', ${cause}')
+		}
+		return c.pce_existing_options(tokens, args[message_index + 1], caught)
+	}
+	// Custom error types: their signature is unknown, so no placeholders for missing arguments.
+	if args.len < options_index {
+		return none
+	}
+	if options_index >= args.len {
+		if args.len > 0 {
+			return c.pce_append_arguments(tokens, expression, args, ', ${cause}')
+		}
+		return c.pce_add_to_empty_call(tokens, expression, callee, cause)
+	}
+	return c.pce_existing_options(tokens, args[options_index], caught)
 }
