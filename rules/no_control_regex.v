@@ -4,7 +4,7 @@ import regexpp
 import time
 import treesitter { named_children, node_field, node_kind, position_of }
 
-// Port of the `no-control-regex` rule of ESLint 10.6.0 (it has no options).
+// Port of the `no-control-regex` rule of ESLint 10.15.0 (it has no options).
 
 const ncrx_messages = {
 	'unexpected': 'Unexpected control character(s) in regular expression: {{controlChars}}.'
@@ -15,7 +15,7 @@ fn (mut c Checker) lint_no_control_regex(root C.TSNode, abs_path string, mut sta
 	mut findings := []Finding{}
 	for node in c.nodes_of_kinds(root, ['regex', 'string'], []) {
 		stats.checked++
-		pattern, flags := c.ncrx_regexp(node) or { continue }
+		pattern, flags := c.ncrx_regexp(root, node) or { continue }
 		chars := ncrx_control_chars(pattern, flags)
 		if chars.len > 0 {
 			findings << Finding{
@@ -32,9 +32,9 @@ fn (mut c Checker) lint_no_control_regex(root C.TSNode, abs_path string, mut sta
 }
 
 // ncrx_regexp ports getRegExp: the pattern and flags of a regular expression literal, or of a
-// string that is the first argument of `RegExp(…)` or `new RegExp(…)` (the flags of a second
+// string that is the first argument of `RegExp(…)` or `new RegExp(…)` with the global RegExp (the flags of a second
 // string argument, '' standing for none).
-fn (c &Checker) ncrx_regexp(node C.TSNode) ?([]u16, ?string) {
+fn (mut c Checker) ncrx_regexp(root C.TSNode, node C.TSNode) ?([]u16, ?string) {
 	if pattern, flags := c.es_regex_literal(node) {
 		return pattern, ?string(flags)
 	}
@@ -52,7 +52,8 @@ fn (c &Checker) ncrx_regexp(node C.TSNode) ?([]u16, ?string) {
 	} else {
 		'constructor'
 	})?
-	if node_kind(callee) != 'identifier' || c.text(callee) != 'RegExp' {
+	if node_kind(callee) != 'identifier' || c.text(callee) != 'RegExp'
+		|| !c.es_is_global_reference(root, callee) {
 		return none
 	}
 	args := named_children(arguments).filter(node_kind(it) != 'comment')
