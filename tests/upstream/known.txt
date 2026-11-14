@@ -703,3 +703,124 @@ eslint	escape-case/r7/v0	code of another language (SOML, TOML…), linted as Typ
 eslint	escape-case/r7/i0	code of another language (SOML, TOML…), linted as TypeScript
 eslint	escape-case/r8/v0	code of another language (SOML, TOML…), linted as TypeScript
 eslint	escape-case/r8/i0	code of another language (SOML, TOML…), linted as TypeScript
+# eslint-plugin-unicorn 79.0.0 does not fix a conditional mutation in a TypeScript file (isTypeScriptFile), and only
+# suggests combining the initialization of a declaration without a type annotation there (the type would narrow): the
+# cases of its test, JavaScript, expect those fixes, which ESLint does not give linting them as TypeScript either.
+eslint	no-immediate-mutation/r0/i0	in TypeScript a conditional mutation is not fixed
+veslint	no-immediate-mutation/r0/i0	in TypeScript a conditional mutation is not fixed
+eslint	no-immediate-mutation/r0/i1	in TypeScript a conditional mutation is not fixed
+veslint	no-immediate-mutation/r0/i1	in TypeScript a conditional mutation is not fixed
+eslint	no-immediate-mutation/r0/i10	in TypeScript a conditional mutation is not fixed
+veslint	no-immediate-mutation/r0/i10	in TypeScript a conditional mutation is not fixed
+eslint	no-immediate-mutation/r0/i11	in TypeScript a conditional mutation is not fixed
+veslint	no-immediate-mutation/r0/i11	in TypeScript a conditional mutation is not fixed
+eslint	no-immediate-mutation/r0/i12	in TypeScript an initialization of a declaration without a type annotation is only a suggestion
+veslint	no-immediate-mutation/r0/i12	in TypeScript an initialization of a declaration without a type annotation is only a suggestion
+eslint	no-immediate-mutation/r0/i13	in TypeScript a conditional mutation is not fixed
+veslint	no-immediate-mutation/r0/i13	in TypeScript a conditional mutation is not fixed
+eslint	no-immediate-mutation/r0/i14	in TypeScript a conditional mutation is not fixed
+veslint	no-immediate-mutation/r0/i14	in TypeScript a conditional mutation is not fixed
+eslint	no-immediate-mutation/r0/i15	in TypeScript a conditional mutation is not fixed
+veslint	no-immediate-mutation/r0/i15	in TypeScript a conditional mutation is not fixed
+eslint	no-immediate-mutation/r0/i16	in TypeScript a conditional mutation is not fixed
+veslint	no-immediate-mutation/r0/i16	in TypeScript a conditional mutation is not fixed
+eslint	no-immediate-mutation/r0/i17	in TypeScript a conditional mutation is not fixed
+veslint	no-immediate-mutation/r0/i17	in TypeScript a conditional mutation is not fixed
+eslint	no-immediate-mutation/r0/i18	in TypeScript a conditional mutation is not fixed
+veslint	no-immediate-mutation/r0/i18	in TypeScript a conditional mutation is not fixed
+eslint	no-immediate-mutation/r0/i19	in TypeScript a conditional mutation is not fixed
+veslint	no-immediate-mutation/r0/i19	in TypeScript a conditional mutation is not fixed
+eslint	no-immediate-mutation/r0/i2	in TypeScript a conditional mutation is not fixed
+veslint	no-immediate-mutation/r0/i2	in TypeScript a conditional mutation is not fixed
+eslint	no-immediate-mutation/r0/i20	in TypeScript a conditional mutation is not fixed
+veslint	no-immediate-mutation/r0/i20	in TypeScript a conditional mutation is not fixed
+eslint	no-immediate-mutation/r0/i21	in TypeScript a conditional mutation is not fixed
+veslint	no-immediate-mutation/r0/i21	in TypeScript a conditional mutation is not fixed
+eslint	no-immediate-mutation/r0/i22	in TypeScript a conditional mutation is not fixed
+veslint	no-immediate-mutation/r0/i22	in TypeScript a conditional mutation is not fixed
+eslint	no-immediate-mutation/r0/i23	in TypeScript a conditional mutation is not fixed
+veslint	no-immediate-mutation/r0/i23	in TypeScript a conditional mutation is not fixed
+eslint	no-immediate-mutation/r0/i24	in TypeScript a conditional mutation is not fixed
+veslint	no-immediate-mutation/r0/i24	in TypeScript a conditional mutation is not fixed
+eslint	no-immediate-mutation/r0/i25	in TypeScript a conditional mutation is not fixed
+veslint	no-immediate-mutation/r0/i25	in TypeScript a conditional mutation is not fixed
+eslint	no-immediate-mutation/r0/i26	in TypeScript a conditional mutation is not fixed
+veslint	no-immediate-mutation/r0/i26	in TypeScript a conditional mutation is not fixed
+eslint	no-immediate-mutation/r0/i27	in TypeScript a conditional mutation is not fixed
+veslint	no-immediate-mutation/r0/i27	in TypeScript a conditional mutation is not fixed
+eslint	no-immediate-mutation/r0/i3	in TypeScript a conditional mutation is not fixed
+veslint	no-immediate-mutation/r0/i3	in TypeScript a conditional mutation is not fixed
+eslint	no-immediate-mutation/r0/i30	in TypeScript a conditional mutation is not fixed
+veslint	no-immediate-mutation/r0/i30	in TypeScript a conditional mutation is not fixed
+eslint	no-immediate-mutation/r0/i33	in TypeScript a conditional mutation is not fixed
+veslint	no-immediate-mutation/r0/i33	in TypeScript a conditional mutation is not fixed
+eslint	no-immediate-mutation/r0/i34	in TypeScript a conditional mutation is not fixed
+veslint	no-immediate-mutation/r0/i34	in TypeScript a conditional mutation is not fixed
+eslint	no-immediate-mutation/r0/i35	in TypeScript a conditional mutation is not fixed
+veslint	no-immediate-mutation/r0/i35	in TypeScript a conditional mutation is not fixed
+eslint	no-immediate-mutation/r0/i36	in TypeScript a conditional mutation is not fixed
+veslint	no-immediate-mutation/r0/i36	in TypeScript a conditional mutation is not fixed
+eslint	no-immediate-mutation/r0/i37	in TypeScript a conditional mutation is not fixed
+veslint	no-immediate-mutation/r0/i37	in TypeScript a conditional mutation is not fixed
+eslint	no-immediate-mutation/r0/i38	in TypeScript a conditional mutation is not fixed
+veslint	no-immediate-mutation/r0/i38	in TypeScript a conditional mutation is not fixed
+eslint	no-immediate-mutation/r0/i39	in TypeScript a conditional mutation is not fixed
+veslint	no-immediate-mutation/r0/i39	in TypeScript a conditional mutation is not fixed
+eslint	no-immediate-mutation/r0/i4	in TypeScript a conditional mutation is not fixed
+veslint	no-immediate-mutation/r0/i4	in TypeScript a conditional mutation is not fixed
+eslint	no-immediate-mutation/r0/i40	in TypeScript a conditional mutation is not fixed
+veslint	no-immediate-mutation/r0/i40	in TypeScript a conditional mutation is not fixed
+eslint	no-immediate-mutation/r0/i41	in TypeScript a conditional mutation is not fixed
+veslint	no-immediate-mutation/r0/i41	in TypeScript a conditional mutation is not fixed
+eslint	no-immediate-mutation/r0/i48	in TypeScript a conditional mutation is not fixed
+veslint	no-immediate-mutation/r0/i48	in TypeScript a conditional mutation is not fixed
+eslint	no-immediate-mutation/r0/i49	in TypeScript a conditional mutation is not fixed
+veslint	no-immediate-mutation/r0/i49	in TypeScript a conditional mutation is not fixed
+eslint	no-immediate-mutation/r0/i5	in TypeScript a conditional mutation is not fixed
+veslint	no-immediate-mutation/r0/i5	in TypeScript a conditional mutation is not fixed
+eslint	no-immediate-mutation/r0/i50	in TypeScript an initialization of a declaration without a type annotation is only a suggestion
+veslint	no-immediate-mutation/r0/i50	in TypeScript an initialization of a declaration without a type annotation is only a suggestion
+eslint	no-immediate-mutation/r0/i51	in TypeScript a conditional mutation is not fixed
+veslint	no-immediate-mutation/r0/i51	in TypeScript a conditional mutation is not fixed
+eslint	no-immediate-mutation/r0/i52	in TypeScript a conditional mutation is not fixed
+veslint	no-immediate-mutation/r0/i52	in TypeScript a conditional mutation is not fixed
+eslint	no-immediate-mutation/r0/i53	in TypeScript a conditional mutation is not fixed
+veslint	no-immediate-mutation/r0/i53	in TypeScript a conditional mutation is not fixed
+eslint	no-immediate-mutation/r0/i54	in TypeScript a conditional mutation is not fixed
+veslint	no-immediate-mutation/r0/i54	in TypeScript a conditional mutation is not fixed
+eslint	no-immediate-mutation/r0/i55	in TypeScript a conditional mutation is not fixed
+veslint	no-immediate-mutation/r0/i55	in TypeScript a conditional mutation is not fixed
+eslint	no-immediate-mutation/r0/i56	in TypeScript a conditional mutation is not fixed
+veslint	no-immediate-mutation/r0/i56	in TypeScript a conditional mutation is not fixed
+eslint	no-immediate-mutation/r0/i57	in TypeScript a conditional mutation is not fixed
+veslint	no-immediate-mutation/r0/i57	in TypeScript a conditional mutation is not fixed
+eslint	no-immediate-mutation/r0/i6	in TypeScript a conditional mutation is not fixed
+veslint	no-immediate-mutation/r0/i6	in TypeScript a conditional mutation is not fixed
+eslint	no-immediate-mutation/r0/i68	in TypeScript a conditional mutation is not fixed
+veslint	no-immediate-mutation/r0/i68	in TypeScript a conditional mutation is not fixed
+eslint	no-immediate-mutation/r0/i7	in TypeScript a conditional mutation is not fixed
+veslint	no-immediate-mutation/r0/i7	in TypeScript a conditional mutation is not fixed
+eslint	no-immediate-mutation/r0/i8	in TypeScript a conditional mutation is not fixed
+veslint	no-immediate-mutation/r0/i8	in TypeScript a conditional mutation is not fixed
+eslint	no-immediate-mutation/r0/i9	in TypeScript a conditional mutation is not fixed
+veslint	no-immediate-mutation/r0/i9	in TypeScript a conditional mutation is not fixed
+eslint	no-immediate-mutation/r1/i1	in TypeScript an initialization of a declaration without a type annotation is only a suggestion
+veslint	no-immediate-mutation/r1/i1	in TypeScript an initialization of a declaration without a type annotation is only a suggestion
+eslint	no-immediate-mutation/r1/i28	in TypeScript an initialization of a declaration without a type annotation is only a suggestion
+veslint	no-immediate-mutation/r1/i28	in TypeScript an initialization of a declaration without a type annotation is only a suggestion
+eslint	no-immediate-mutation/r1/i29	in TypeScript an initialization of a declaration without a type annotation is only a suggestion
+veslint	no-immediate-mutation/r1/i29	in TypeScript an initialization of a declaration without a type annotation is only a suggestion
+eslint	no-immediate-mutation/r2/i1	in TypeScript an initialization of a declaration without a type annotation is only a suggestion
+veslint	no-immediate-mutation/r2/i1	in TypeScript an initialization of a declaration without a type annotation is only a suggestion
+eslint	no-immediate-mutation/r2/i17	in TypeScript an initialization of a declaration without a type annotation is only a suggestion
+veslint	no-immediate-mutation/r2/i17	in TypeScript an initialization of a declaration without a type annotation is only a suggestion
+eslint	no-immediate-mutation/r2/i18	in TypeScript an initialization of a declaration without a type annotation is only a suggestion
+veslint	no-immediate-mutation/r2/i18	in TypeScript an initialization of a declaration without a type annotation is only a suggestion
+eslint	no-immediate-mutation/r3/i1	in TypeScript an initialization of a declaration without a type annotation is only a suggestion
+veslint	no-immediate-mutation/r3/i1	in TypeScript an initialization of a declaration without a type annotation is only a suggestion
+eslint	no-immediate-mutation/r3/i23	in TypeScript an initialization of a declaration without a type annotation is only a suggestion
+veslint	no-immediate-mutation/r3/i23	in TypeScript an initialization of a declaration without a type annotation is only a suggestion
+eslint	no-immediate-mutation/r3/i25	in TypeScript an initialization of a declaration without a type annotation is only a suggestion
+veslint	no-immediate-mutation/r3/i25	in TypeScript an initialization of a declaration without a type annotation is only a suggestion
+eslint	no-immediate-mutation/r7/i1	in TypeScript an initialization of a declaration without a type annotation is only a suggestion
+veslint	no-immediate-mutation/r7/i1	in TypeScript an initialization of a declaration without a type annotation is only a suggestion

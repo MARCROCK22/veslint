@@ -1,0 +1,37 @@
+tests/rules/unicorn/no-immediate-mutation/cases.ts:6:36	unicorn/no-immediate-mutation	error	Immediate mutation on array is not allowed.	fix	139	159	, 2, 3]; 	end	6	46
+tests/rules/unicorn/no-immediate-mutation/cases.ts:7:36	unicorn/no-immediate-mutation	error	Immediate mutation on array is not allowed.	fix	207	228	0, 1]; 	end	7	49
+tests/rules/unicorn/no-immediate-mutation/cases.ts:8:45	unicorn/no-immediate-mutation	error	Immediate mutation on array is not allowed.	suggestion	suggestion/array	Append the elements to the declaration.	286	309	 value()]; 	end	8	55
+tests/rules/unicorn/no-immediate-mutation/cases.ts:9:42	unicorn/no-immediate-mutation	error	Immediate mutation on array is not allowed.	end	9	55
+tests/rules/unicorn/no-immediate-mutation/cases.ts:10:36	unicorn/no-immediate-mutation	error	Immediate mutation on array is not allowed.	end	10	46
+tests/rules/unicorn/no-immediate-mutation/cases.ts:11:28	unicorn/no-immediate-mutation	initialization	Combine this initialization with the preceding declaration.	suggestion	suggestion/initialization	Combine the initialization and declaration.	491	514	 let array = [1];	end	11	39
+tests/rules/unicorn/no-immediate-mutation/cases.ts:11:41	unicorn/no-immediate-mutation	error	Immediate mutation on array is not allowed.	fix	512	529	, 2]; 	end	11	51
+tests/rules/unicorn/no-immediate-mutation/cases.ts:12:37	unicorn/no-immediate-mutation	error	Immediate mutation on array is not allowed.	fix	579	597	 2]; 	end	12	47
+tests/rules/unicorn/no-immediate-mutation/cases.ts:15:42	unicorn/no-immediate-mutation	error	Immediate mutation on object is not allowed.	fix	665	681	, b: 2,}; 	end	15	52
+tests/rules/unicorn/no-immediate-mutation/cases.ts:16:60	unicorn/no-immediate-mutation	error	Immediate mutation on object is not allowed.	fix	755	780	 ['c' + 'd']: 2,}; 	end	16	79
+tests/rules/unicorn/no-immediate-mutation/cases.ts:17:42	unicorn/no-immediate-mutation	error	Immediate mutation on object is not allowed.	suggestion	suggestion/object	Move this property to the declaration.	836	858	, b: value(),}; 	end	17	52
+tests/rules/unicorn/no-immediate-mutation/cases.ts:18:59	unicorn/no-immediate-mutation	error	Immediate mutation on object is not allowed.	end	18	69
+tests/rules/unicorn/no-immediate-mutation/cases.ts:19:61	unicorn/no-immediate-mutation	error	Immediate mutation on object is not allowed.	end	19	74
+tests/rules/unicorn/no-immediate-mutation/cases.ts:20:42	unicorn/no-immediate-mutation	error	Immediate mutation on object is not allowed.	fix	1097	1132	,  b: 2 }; 	end	20	55
+tests/rules/unicorn/no-immediate-mutation/cases.ts:21:42	unicorn/no-immediate-mutation	error	Immediate mutation on object is not allowed.	fix	1188	1220	, ...extra}; 	end	21	55
+tests/rules/unicorn/no-immediate-mutation/cases.ts:22:42	unicorn/no-immediate-mutation	error	Immediate mutation on object is not allowed.	suggestion	suggestion/object-assign	Move properties to the declaration.	1276	1317	,  b: value() }; 	end	22	55
+tests/rules/unicorn/no-immediate-mutation/cases.ts:23:42	unicorn/no-immediate-mutation	error	Immediate mutation on object is not allowed.	fix	1373	1406	,  b: 2 }; Object.assign(object	end	23	55
+tests/rules/unicorn/no-immediate-mutation/cases.ts:26:43	unicorn/no-immediate-mutation	error	Immediate mutation on `Set` is not allowed.	fix	1488	1503	, 2]); 	end	26	50
+tests/rules/unicorn/no-immediate-mutation/cases.ts:27:40	unicorn/no-immediate-mutation	error	Immediate mutation on `Set` is not allowed.	fix	1554	1568	[2]); 	end	27	47
+tests/rules/unicorn/no-immediate-mutation/cases.ts:28:50	unicorn/no-immediate-mutation	error	Immediate mutation on `WeakSet` is not allowed.	fix	1630	1647	([extra]); 	end	28	57
+tests/rules/unicorn/no-immediate-mutation/cases.ts:29:50	unicorn/no-immediate-mutation	error	Immediate mutation on `Map` is not allowed.	fix	1707	1727	, ['b', 2]]); 	end	29	57
+tests/rules/unicorn/no-immediate-mutation/cases.ts:30:56	unicorn/no-immediate-mutation	error	Immediate mutation on `Map` is not allowed.	suggestion	suggestion/map	Move the entry to the declaration.	1794	1819	[['b', value()]]); 	end	30	63
+tests/rules/unicorn/no-immediate-mutation/cases.ts:36:32	unicorn/no-immediate-mutation	initialization	Combine this initialization with the preceding declaration.	fix	2001	2022	 let a: number = 1;	end	36	37
+tests/rules/unicorn/no-immediate-mutation/cases.ts:37:24	unicorn/no-immediate-mutation	initialization	Combine this initialization with the preceding declaration.	suggestion	suggestion/initialization	Combine the initialization and declaration.	2051	2064	 let a = 1;	end	37	29
+tests/rules/unicorn/no-immediate-mutation/cases.ts:38:43	unicorn/no-immediate-mutation	initialization	Combine this initialization with the preceding declaration.	fix	2093	2125	let b: number; let a: number = 1;	end	38	48
+tests/rules/unicorn/no-immediate-mutation/cases.ts:39:38	unicorn/no-immediate-mutation	initialization	Combine this initialization with the preceding declaration.	fix	2158	2191	 let a: () => number = () => 1;	end	39	49
+tests/rules/unicorn/no-immediate-mutation/cases.ts:40:32	unicorn/no-immediate-mutation	initialization	Combine this initialization with the preceding declaration.	suggestion	suggestion/initialization	Combine the initialization and declaration.	2220	2247	 let a: number = value();	end	40	43
+tests/rules/unicorn/no-immediate-mutation/cases.ts:41:27	unicorn/no-immediate-mutation	initialization	Combine this initialization with the preceding declaration.	suggestion	suggestion/initialization	Combine the initialization and declaration.	2276	2302	 let [a, b] = [1, 2];	end	41	42
+tests/rules/unicorn/no-immediate-mutation/cases.ts:42:32	unicorn/no-immediate-mutation	initialization	Combine this initialization with the preceding declaration.	fix	2335	2358	 var a: string = `x`;	end	42	39
+tests/rules/unicorn/no-immediate-mutation/conditionals/cases.ts:4:36	unicorn/no-immediate-mutation	error	Immediate mutation on array is not allowed.	end	4	63
+tests/rules/unicorn/no-immediate-mutation/conditionals/cases.ts:5:36	unicorn/no-immediate-mutation	error	Immediate mutation on array is not allowed.	end	5	91
+tests/rules/unicorn/no-immediate-mutation/conditionals/cases.ts:6:36	unicorn/no-immediate-mutation	error	Immediate mutation on array is not allowed.	end	6	61
+tests/rules/unicorn/no-immediate-mutation/conditionals/cases.ts:7:36	unicorn/no-immediate-mutation	error	Immediate mutation on array is not allowed.	end	7	76
+tests/rules/unicorn/no-immediate-mutation/conditionals/cases.ts:9:60	unicorn/no-immediate-mutation	error	Immediate mutation on object is not allowed.	end	9	86
+tests/rules/unicorn/no-immediate-mutation/conditionals/cases.ts:10:48	unicorn/no-immediate-mutation	error	Immediate mutation on `Set` is not allowed.	end	10	76
+tests/rules/unicorn/no-immediate-mutation/conditionals/cases.ts:11:56	unicorn/no-immediate-mutation	error	Immediate mutation on `Map` is not allowed.	end	11	89
+tests/rules/unicorn/no-immediate-mutation/conditionals/cases.ts:13:37	unicorn/no-immediate-mutation	error	Immediate mutation on object is not allowed.	end	13	82
