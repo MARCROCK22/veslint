@@ -1,0 +1,12 @@
+tests/rules/unicorn/no-unnecessary-await/cases.ts:5:30	unicorn/no-unnecessary-await	no-unnecessary-await	Do not `await` non-promise value.
+tests/rules/unicorn/no-unnecessary-await/cases.ts:6:23	unicorn/no-unnecessary-await	no-unnecessary-await	Do not `await` non-promise value.
+tests/rules/unicorn/no-unnecessary-await/cases.ts:7:24	unicorn/no-unnecessary-await	no-unnecessary-await	Do not `await` non-promise value.
+tests/rules/unicorn/no-unnecessary-await/cases.ts:8:37	unicorn/no-unnecessary-await	no-unnecessary-await	Do not `await` non-promise value.
+tests/rules/unicorn/no-unnecessary-await/cases.ts:9:48	unicorn/no-unnecessary-await	no-unnecessary-await	Do not `await` non-promise value.
+tests/rules/unicorn/no-unnecessary-await/cases.ts:11:10	unicorn/no-unnecessary-await	no-unnecessary-await	Do not `await` non-promise value.
+tests/rules/unicorn/no-unnecessary-await/cases.ts:14:30	unicorn/no-unnecessary-await	no-unnecessary-await	Do not `await` non-promise value.
+tests/rules/unicorn/no-unnecessary-await/cases.ts:17:23	unicorn/no-unnecessary-await	no-unnecessary-await	Do not `await` non-promise value.
+tests/rules/unicorn/no-unnecessary-await/cases.ts:18:23	unicorn/no-unnecessary-await	no-unnecessary-await	Do not `await` non-promise value.
+tests/rules/unicorn/no-unnecessary-await/cases.ts:19:23	unicorn/no-unnecessary-await	no-unnecessary-await	Do not `await` non-promise value.
+tests/rules/unicorn/no-unnecessary-await/cases.ts:20:34	unicorn/no-unnecessary-await	no-unnecessary-await	Do not `await` non-promise value.
+tests/rules/unicorn/no-unnecessary-await/cases.ts:21:23	unicorn/no-unnecessary-await	no-unnecessary-await	Do not `await` non-promise value.

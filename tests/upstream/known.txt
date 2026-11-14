@@ -1096,3 +1096,24 @@ veslint	no-await-in-promise-methods/r4/i7	without a program typescript-estree re
 veslint	no-await-in-promise-methods/r4/i8	without a program typescript-estree reads this top-level `await` of a script as an await expression
 veslint	no-await-in-promise-methods/r4/i23	without a program typescript-estree reads this top-level `await` of a script as an await expression
 veslint	no-await-in-promise-methods/r4/i60	without a program typescript-estree reads this top-level `await` of a script as an await expression
+# The same for no-unnecessary-await: a top-level `await` of a script followed by a token that is not an identifier,
+# keyword or literal, or by a line break, is an identifier for TypeScript (veslint has a program) and an await
+# expression for typescript-estree without one.
+veslint	no-unnecessary-await/r0/i0	without a program typescript-estree reads this top-level `await` of a script as an await expression
+veslint	no-unnecessary-await/r0/i1	without a program typescript-estree reads this top-level `await` of a script as an await expression
+veslint	no-unnecessary-await/r0/i12	without a program typescript-estree reads this top-level `await` of a script as an await expression
+veslint	no-unnecessary-await/r0/i13	without a program typescript-estree reads this top-level `await` of a script as an await expression
+veslint	no-unnecessary-await/r0/i2	without a program typescript-estree reads this top-level `await` of a script as an await expression
+veslint	no-unnecessary-await/r0/i23	without a program typescript-estree reads this top-level `await` of a script as an await expression
+veslint	no-unnecessary-await/r0/i24	without a program typescript-estree reads this top-level `await` of a script as an await expression
+veslint	no-unnecessary-await/r0/i26	without a program typescript-estree reads this top-level `await` of a script as an await expression
+veslint	no-unnecessary-await/r0/i27	without a program typescript-estree reads this top-level `await` of a script as an await expression
+veslint	no-unnecessary-await/r0/i28	without a program typescript-estree reads this top-level `await` of a script as an await expression
+veslint	no-unnecessary-await/r0/i3	without a program typescript-estree reads this top-level `await` of a script as an await expression
+veslint	no-unnecessary-await/r0/i30	without a program typescript-estree reads this top-level `await` of a script as an await expression
+veslint	no-unnecessary-await/r0/i34	without a program typescript-estree reads this top-level `await` of a script as an await expression
+veslint	no-unnecessary-await/r0/i35	without a program typescript-estree reads this top-level `await` of a script as an await expression
+veslint	no-unnecessary-await/r0/i38	without a program typescript-estree reads this top-level `await` of a script as an await expression
+veslint	no-unnecessary-await/r0/i4	without a program typescript-estree reads this top-level `await` of a script as an await expression
+veslint	no-unnecessary-await/r0/i5	without a program typescript-estree reads this top-level `await` of a script as an await expression
+veslint	no-unnecessary-await/r0/i6	without a program typescript-estree reads this top-level `await` of a script as an await expression
