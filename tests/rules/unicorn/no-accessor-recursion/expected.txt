@@ -1,0 +1,14 @@
+tests/rules/unicorn/no-accessor-recursion/cases.ts:5:10	unicorn/no-accessor-recursion	no-accessor-recursion/error	Disallow recursive access to `this` within getters.
+tests/rules/unicorn/no-accessor-recursion/cases.ts:8:3	unicorn/no-accessor-recursion	no-accessor-recursion/error	Disallow recursive access to `this` within setters.
+tests/rules/unicorn/no-accessor-recursion/cases.ts:11:10	unicorn/no-accessor-recursion	no-accessor-recursion/error	Disallow recursive access to `this` within getters.
+tests/rules/unicorn/no-accessor-recursion/cases.ts:14:3	unicorn/no-accessor-recursion	no-accessor-recursion/error	Disallow recursive access to `this` within setters.
+tests/rules/unicorn/no-accessor-recursion/cases.ts:17:9	unicorn/no-accessor-recursion	no-accessor-recursion/error	Disallow recursive access to `this` within getters.
+tests/rules/unicorn/no-accessor-recursion/cases.ts:21:3	unicorn/no-accessor-recursion	no-accessor-recursion/error	Disallow recursive access to `this` within getters.
+tests/rules/unicorn/no-accessor-recursion/cases.ts:25:4	unicorn/no-accessor-recursion	no-accessor-recursion/error	Disallow recursive access to `this` within setters.
+tests/rules/unicorn/no-accessor-recursion/cases.ts:28:9	unicorn/no-accessor-recursion	no-accessor-recursion/error	Disallow recursive access to `this` within setters.
+tests/rules/unicorn/no-accessor-recursion/cases.ts:31:8	unicorn/no-accessor-recursion	no-accessor-recursion/error	Disallow recursive access to `this` within setters.
+tests/rules/unicorn/no-accessor-recursion/cases.ts:36:17	unicorn/no-accessor-recursion	no-accessor-recursion/error	Disallow recursive access to `this` within getters.
+tests/rules/unicorn/no-accessor-recursion/cases.ts:39:10	unicorn/no-accessor-recursion	no-accessor-recursion/error	Disallow recursive access to `this` within getters.
+tests/rules/unicorn/no-accessor-recursion/cases.ts:42:3	unicorn/no-accessor-recursion	no-accessor-recursion/error	Disallow recursive access to `this` within setters.
+tests/rules/unicorn/no-accessor-recursion/cases.ts:49:10	unicorn/no-accessor-recursion	no-accessor-recursion/error	Disallow recursive access to `this` within getters.
+tests/rules/unicorn/no-accessor-recursion/cases.ts:52:3	unicorn/no-accessor-recursion	no-accessor-recursion/error	Disallow recursive access to `this` within setters.

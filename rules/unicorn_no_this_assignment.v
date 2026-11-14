@@ -15,8 +15,12 @@ fn (mut c Checker) lint_unicorn_no_this_assignment(root C.TSNode, abs_path strin
 	t := c.es_tree(root, abs_path) or { return findings }
 	for node in 0 .. t.nodes.len {
 		variable, value := match t.typ(node) {
-			.variable_declarator { t.node(node, .id) or { continue }, t.node(node, .init) or { continue } }
-			.assignment_expression { t.node(node, .left) or { continue }, t.node(node, .right) or { continue } }
+			.variable_declarator {
+				t.node(node, .id) or { continue }, t.node(node, .init) or { continue }
+			}
+			.assignment_expression {
+				t.node(node, .left) or { continue }, t.node(node, .right) or { continue }
+			}
 			else { continue }
 		}
 		stats.checked++
