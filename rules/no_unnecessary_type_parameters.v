@@ -4,7 +4,7 @@ import time
 import tsgo { SignatureResponse, TypeResponse }
 import treesitter { named_children, node_end, node_field, node_kind, node_parent, node_start, nodes_of_kinds, position_of }
 
-// Port of the `no-unnecessary-type-parameters` rule of typescript-eslint 8.62.0 (it has no
+// Port of the `no-unnecessary-type-parameters` rule of typescript-eslint 8.72.2 (it has no
 // options), with its suggestion.
 //
 // The original walks the types with TypeScript's own objects. veslint takes some of their parts
@@ -498,23 +498,54 @@ fn (mut c Checker) nutp_visit_mapped(t TypeResponse, without_properties bool, mu
 	// tsgo gives no type for the type parameter of a mapped type: its declaration is visited
 	// directly. That of an instance is a copy with the same declaration.
 	c.nutp_visit_type_parameter(ast.node_handle(type_parameter), false, mut walk, mut counts)!
-	if !without_properties {
-		return
+	instantiated := t.object_flags & nutp_object_flag_instantiated != 0
+	if without_properties {
+		if instantiated {
+			// typescript-eslint 8.72 makes TypeScript compute the templateType of an instance
+			// (typeToTypeNode) and visits it, and then its keys (constraintType) when they are not
+			// the declared constraint of the type parameter; tsgo gives both.
+			template := c.client.part_of_type('getTemplateTypeOfMappedType', c.snapshot,
+				c.project, t.id)!
+			if !template.is_null() {
+				c.nutp_visit_type(template, false, false, mut walk, mut counts)!
+			}
+			keys := c.client.part_of_type('getConstraintTypeOfMappedType', c.snapshot, c.project,
+				t.id)!
+			constraint := ast.node_child(type_parameter, 'constraint')
+			declared := if constraint == 0 {
+				TypeResponse{}
+			} else {
+				c.nutp_type_at(ast.node_handle(constraint))!
+			}
+			if !keys.is_null() && (template.is_null() || declared.is_null() || keys.id != declared.id) {
+				c.nutp_visit_type(keys, false, false, mut walk, mut counts)!
+			}
+		} else {
+			mut template := ast.node_child(index, 'type')
+			if template == 0 {
+				template = ast.node_child(type_parameter, 'constraint')
+			}
+			if template != 0 {
+				c.nutp_visit_type(c.nutp_type_at(ast.node_handle(template))!, false, false, mut
+					walk, mut counts)!
+			}
+		}
 	}
-	if t.object_flags & nutp_object_flag_instantiated != 0 {
-		// The keys of the instance (its constraintType), which tsgo gives since TypeScript 7.1.
-		keys := c.client.part_of_type('getConstraintTypeOfMappedType', c.snapshot, c.project,
+	// The key remapping (`{ [K in 'a' as T]: K }`, nameType), which TypeScript does not count as
+	// a use: of the declaration, or of the instance (typescript-eslint 8.72 makes TypeScript
+	// compute it with getAwaitedType).
+	if instantiated {
+		name_type := c.client.part_of_type('getNameTypeOfMappedType', c.snapshot, c.project,
 			t.id)!
-		c.nutp_visit_type(keys, false, false, mut walk, mut counts)!
-		return
-	}
-	mut template := ast.node_child(index, 'type')
-	if template == 0 {
-		template = ast.node_child(type_parameter, 'constraint')
-	}
-	if template != 0 {
-		c.nutp_visit_type(c.nutp_type_at(ast.node_handle(template))!, false, false, mut
-			walk, mut counts)!
+		if !name_type.is_null() {
+			c.nutp_visit_type(name_type, false, false, mut walk, mut counts)!
+		}
+	} else {
+		name_node := ast.node_child(index, 'nameType')
+		if name_node != 0 {
+			c.nutp_visit_type(c.nutp_type_at(ast.node_handle(name_node))!, false, false, mut
+				walk, mut counts)!
+		}
 	}
 }
 
@@ -530,7 +561,11 @@ fn (mut c Checker) nutp_fixes(check NutpCheck, parameter NutpParameter, tree &Sc
 			if !(node_kind(constraint) == 'predefined_type' && c.text(constraint) == 'any') {
 				constraint_text = c.text(constraint)
 			}
-			is_complex = node_kind(constraint) in ['union_type', 'intersection_type', 'conditional_type']
+			// isWeakPrecedenceConstraint (TSTypeOperator: `keyof`, `readonly`, `unique symbol`).
+			is_complex = node_kind(constraint) in ['union_type', 'intersection_type',
+				'conditional_type', 'index_type_query', 'readonly_type', 'function_type',
+				'constructor_type'] || (node_kind(constraint) == 'predefined_type'
+				&& c.text(constraint).starts_with('unique'))
 		}
 	}
 	for index in tree.variables[parameter.variable].references {
@@ -540,8 +575,9 @@ fn (mut c Checker) nutp_fixes(check NutpCheck, parameter NutpParameter, tree &Sc
 		}
 		mut in_matching_type := false
 		if parent := type_parent(reference.identifier) {
+			// isWeakPrecedenceTypeParent
 			in_matching_type = node_kind(parent) in ['array_type', 'lookup_type', 'intersection_type',
-				'union_type']
+				'union_type', 'conditional_type', 'index_type_query', 'readonly_type', 'optional_type']
 		}
 		// A union, an intersection or a conditional type needs parentheses there.
 		fixes << if is_complex && in_matching_type {

@@ -242,3 +242,16 @@ function multiline<
   return [a, a];
 }
 export { second, parseJSON, printProperty, third, unused, identity, getProperty, both, arrowOnce, arrowTwice, expressionOnce, Members, Joiner, Box, Expression };
+// typescript-eslint 8.72: the key remapping of a mapped type counts, and the suggestion puts
+// parentheses around a function, constructor or `keyof` constraint where it needs them.
+declare function remapKeys<T extends string, V>(t: T, v: V): { [K in 'a' as T]: V };
+function callsRemap<P extends string, N>(p: P) {
+  return remapKeys<P, N>(p, null!);
+}
+declare function fnInArray<T extends () => number>(arg: T[]): void;
+declare function keyofInArray<T extends keyof Date>(arg: T[]): void;
+declare function ctorInUnion<T extends new () => object>(arg: T | string): void;
+declare function inOptional<T extends string | number>(arg: [T?]): void;
+declare function inReadonly<T extends string[]>(arg: readonly T[]): void;
+declare function inConditional<T extends () => string>(arg: T extends () => infer R ? R : never): void;
+void callsRemap;
