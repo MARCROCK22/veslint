@@ -5,7 +5,7 @@ import time
 import tsgo { TypeResponse }
 import treesitter { Ident, children, named_children, node_end, node_field, node_kind, node_parent, node_start, nodes_of_kinds, position_of }
 
-// Port of the `prefer-nullish-coalescing` rule of typescript-eslint 8.62.0, with all its options
+// Port of the `prefer-nullish-coalescing` rule of typescript-eslint 8.72.2, with all its options
 // and its suggestions.
 
 const pnc_messages = {
@@ -171,7 +171,19 @@ fn (mut c Checker) pnc_passes(cand PncCandidate, o PncOptions) !bool {
 	if cand.check == .eligible {
 		return c.pnc_type_eligible(t, o)!
 	}
-	flags := c.type_flags(t)!
+	mut flags := c.type_flags(t)!
+	// A generic type (`T`, `NoInfer<T>`, `T[K]`…) may be `null` or `undefined` unless its constraint
+	// rules that out.
+	for part in c.constituents(t)! {
+		if part.flags & type_flag_instantiable == 0 {
+			continue
+		}
+		constraint := c.base_constraint(part)!
+		if constraint.is_null() {
+			return false
+		}
+		flags |= c.type_flags(constraint)!
+	}
 	if flags & (type_flag_any | type_flag_unknown) != 0 {
 		return false
 	}
@@ -546,8 +558,9 @@ fn (c &Checker) is_boolean_constructor_context(n C.TSNode) bool {
 				if node_kind(callee) != 'identifier' || c.text(callee) != 'Boolean' {
 					return false
 				}
+				// findVariable: the scope of the call or one around it.
 				scopes := c.file_scopes
-				variable := scopes.own_variable(scopes.get_scope(call), 'Boolean')
+				variable := scopes.find_variable(scopes.get_scope(call), 'Boolean', -1)
 				return variable < 0 || scopes.variables[variable].defs.len == 0
 			}
 			else {
