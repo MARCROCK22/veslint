@@ -5,7 +5,7 @@ import time
 import tsgo { ParameterResponse, SymbolResponse, TypeResponse }
 import treesitter { Ident, first_named_child, has_child_kind, named_children, next_sibling, node_end, node_field, node_kind, node_parent, node_start, nodes_of_kind, position_of, prev_sibling }
 
-// Port of the `no-misused-promises` rule of typescript-eslint 8.62.0 with its default options:
+// Port of the `no-misused-promises` rule of typescript-eslint 8.72.2 with its default options:
 // checksConditionals, checksSpreads and checksVoidReturn (arguments, properties, return values,
 // variables and inherited methods; not JSX attributes, since veslint does not read .tsx). Limits
 // of the port: internals.md, "Rules" section.
@@ -44,6 +44,7 @@ struct ClassLike {
 
 struct MisusedTargets {
 mut:
+	flag_unions string     // checksConditionals.flagUnions
 	conditions  []C.TSNode // values used as a condition
 	predicates  []C.TSNode // calls to a predicate method (`x.filter(cb)`)
 	calls       []C.TSNode // calls and `new` with arguments
@@ -60,6 +61,7 @@ mut:
 // of checksVoidReturn (parseChecksVoidReturn).
 struct NmpOptions {
 	conditionals      bool
+	flag_unions       string // checksConditionals.flagUnions: 'none' (true), 'all' or 'strict'
 	spreads           bool
 	arguments         bool
 	attributes        bool
@@ -98,8 +100,26 @@ fn nmp_options(options []json2.Any) !NmpOptions {
 	} else {
 		return error('option `checksVoidReturn` of `${no_misused_promises}` must be true, false or an object')
 	}
+	// checksConditionals: true, false, or an object with flagUnions (normalizeFlagUnionsOption).
+	conditionals_value := o.values['checksConditionals'] or { json2.Any(true) }
+	mut conditionals := true
+	mut flag_unions := 'none'
+	if conditionals_value is bool {
+		conditionals = conditionals_value
+	} else if conditionals_value is map[string]json2.Any {
+		for key, value in conditionals_value {
+			if key != 'flagUnions' || value !is string
+				|| (value as string) !in ['all', 'none', 'strict'] {
+				return error('option `checksConditionals` of `${no_misused_promises}` takes only flagUnions: "all", "none" or "strict"')
+			}
+			flag_unions = value as string
+		}
+	} else {
+		return error('option `checksConditionals` of `${no_misused_promises}` must be true, false or an object')
+	}
 	return NmpOptions{
-		conditionals:      o.bool_value('checksConditionals')!
+		conditionals:      conditionals
+		flag_unions:       flag_unions
 		spreads:           o.bool_value('checksSpreads')!
 		arguments:         parts['arguments']
 		attributes:        parts['attributes']
@@ -113,7 +133,9 @@ fn nmp_options(options []json2.Any) !NmpOptions {
 fn (mut c Checker) lint_no_misused_promises(root C.TSNode, abs_path string, mut stats Stats) ![]Finding {
 	mut sw := time.new_stopwatch()
 	o := nmp_options(c.rule_options(no_misused_promises))!
-	mut t := MisusedTargets{}
+	mut t := MisusedTargets{
+		flag_unions: o.flag_unions
+	}
 	if o.conditionals {
 		t.conditions = c.conditional_operands(root)
 	}
@@ -144,12 +166,10 @@ fn (mut c Checker) lint_no_misused_promises(root C.TSNode, abs_path string, mut 
 		}
 	}
 	if o.variables {
+		// Every declarator with an initializer: a `using` one is checked for its dispose method.
 		for decl in c.nodes_of_kind(root, c'variable_declarator') {
 			if _ := node_field(decl, 'value') {
-				annotation := node_field(decl, 'type') or { continue }
-				if is_possibly_function_type(annotation) {
-					t.variables << decl
-				}
+				t.variables << decl
 			}
 		}
 		t.assignments << c.nodes_of_kind(root, c'assignment_expression')
@@ -330,6 +350,12 @@ fn (mut c Checker) check_no_misused_promises(t MisusedTargets) ![]Finding {
 	for node in t.conditions {
 		if c.is_always_thenable(node)! {
 			findings << finding_at(node, 'conditional')
+			continue
+		}
+		// flagUnions: `all` reports a union with a thenable, `strict` a `Promise<T> | T`.
+		if (t.flag_unions == 'all' && c.is_sometimes_thenable(node)!)
+			|| (t.flag_unions == 'strict' && c.nmp_matching_promise_type_argument(node)!) {
+			findings << finding_at(node, 'conditional')
 		}
 	}
 	for call in t.predicates {
@@ -367,10 +393,26 @@ fn (mut c Checker) check_no_misused_promises(t MisusedTargets) ![]Finding {
 	for decl in t.variables {
 		name := node_field(decl, 'name') or { continue }
 		value := node_field(decl, 'value') or { continue }
+		init := unwrap_parens(value)
+		// `using x = value` whose `[Symbol.dispose]` returns a thenable.
+		if declaration := node_parent(decl) {
+			if using_kind(declaration) == 'using' && c.nmp_dispose_returns(value, value, true)! {
+				findings << finding_at(init, 'voidReturnVariable')
+			}
+		}
+		annotation := node_field(decl, 'type') or { continue }
+		// A variable whose type's `[Symbol.dispose]` returns void, given one that returns a
+		// thenable.
+		if c.nmp_dispose_returns(name, name, false)! && c.nmp_dispose_returns(value, value, true)! {
+			findings << finding_at(init, 'voidReturnVariable')
+		}
+		if !is_possibly_function_type(annotation) {
+			continue
+		}
 		var_type := c.node_type(name) or { continue }
 		if c.is_void_returning_function_type(var_type, c.symbol_location(value))!
 			&& c.returns_thenable(value)! {
-			findings << finding_at(unwrap_parens(value), 'voidReturnVariable')
+			findings << finding_at(init, 'voidReturnVariable')
 		}
 	}
 	for a in t.assignments {
@@ -1018,6 +1060,84 @@ fn (mut c Checker) is_function_param(param ParameterResponse, at SymbolLocation)
 		}
 	}
 	return false
+}
+
+// nmp_dispose_returns ports hasWellKnownSymbolWithThenableReturn (`thenable`) and
+// hasWellKnownSymbolWithVoidReturn: some part of the apparent type of `typed` has a
+// `[Symbol.dispose]` whose type, at `at`, is a function returning a thenable (or void).
+fn (mut c Checker) nmp_dispose_returns(typed C.TSNode, at C.TSNode, thenable bool) !bool {
+	t := c.node_type(typed) or { return false }
+	location := c.symbol_location(at)
+	expected := c.well_known_property_name('dispose')!
+	for part in c.constituents(c.apparent_of(t)!)! {
+		for prop in c.properties(part)! {
+			if prop.name != expected {
+				continue
+			}
+			dispose_type := c.symbol_type_at(prop, location)!
+			if thenable {
+				if c.is_thenable_returning_function_type(dispose_type, location)! {
+					return true
+				}
+			} else if c.is_void_returning_function_type(dispose_type, location)! {
+				return true
+			}
+			break
+		}
+	}
+	return false
+}
+
+// nmp_matching_promise_type_argument ports hasMatchingPromiseTypeArgument: a union with thenable
+// parts whose other parts are, both ways, the parts of what the thenable ones await (mutually
+// assignable): `Promise<T> | T`, not `Promise<T> | U`.
+fn (mut c Checker) nmp_matching_promise_type_argument(n C.TSNode) !bool {
+	t := c.node_type(n) or { return false }
+	at := c.symbol_location(n)
+	parts := c.constituents(c.apparent_of(t)!)!
+	mut promises := []TypeResponse{}
+	for part in parts {
+		if c.is_thenable(part, at)! {
+			promises << part
+		}
+	}
+	if promises.len == 0 {
+		return false
+	}
+	others := parts.filter(it.id !in promises.map(it.id))
+	mut awaited_parts := []TypeResponse{}
+	for promise in promises {
+		awaited := c.awaited_type(promise)!
+		if !awaited.found {
+			return false
+		}
+		awaited_parts << c.constituents(awaited.typ)!
+	}
+	for other in others {
+		mut found := false
+		for awaited in awaited_parts {
+			if c.assignable(other.id, awaited.id)! && c.assignable(awaited.id, other.id)! {
+				found = true
+				break
+			}
+		}
+		if !found {
+			return false
+		}
+	}
+	for awaited in awaited_parts {
+		mut found := false
+		for other in others {
+			if c.assignable(other.id, awaited.id)! && c.assignable(awaited.id, other.id)! {
+				found = true
+				break
+			}
+		}
+		if !found {
+			return false
+		}
+	}
+	return true
 }
 
 // is_sometimes_thenable ports isSometimesThenable: some part of the apparent type is thenable.
