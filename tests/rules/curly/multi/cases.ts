@@ -36,3 +36,11 @@ if (a) {
 if (a) {}
 declare let x: number;
 if (a) { f(); } /* after */
+
+// A space after `else` when the braces go (10.15.0).
+declare function g(): void;
+declare const t: boolean;
+if (t) g(); else{g();}
+if (t) g(); else{if (t) g();}
+if (t) g(); else{[1].map(g);}
+do{g();} while (t);
