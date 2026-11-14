@@ -1,6 +1,7 @@
-// unicorn/prefer-ternary: an `if`/`else` whose branches return, yield, await, throw or assign to
-// the same reference becomes a ternary. With "only-single-line" (only-single-line/), only when the
-// test and both branches are on one line each.
+// unicorn/prefer-ternary: an `if`/`else` whose branches return or assign (`=`) to the same
+// identifier or pattern becomes a ternary; `yield`, `await` and `throw` only as minimal ternaries
+// (minimal/, checks/). With "only-single-line" (only-single-line/), only when the test and both
+// branches are on one line each.
 declare let a: boolean, b: number, c: number;
 declare let o: { p: number };
 declare function f(): number;

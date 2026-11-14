@@ -1,6 +1,7 @@
 module rules
 
 import estree
+import json2
 import jsregexp
 import regexpp
 import treesitter
@@ -5628,4 +5629,794 @@ fn (mut c Checker) unb_isb_expression(t &estree.EsTree, node int, depth int, mut
 fn (mut c Checker) unb_is_boolean(t &estree.EsTree, node int, mut ctx UnbTypeContext) !bool {
 	mut visited := map[int]bool{}
 	return c.unb_isb_expression(t, node, 0, mut ctx, mut visited)!
+}
+
+// unb_node_tokens ports sourceCode.getTokens(node): the tokens of the node, without comments.
+fn unb_node_tokens(t &estree.EsTree, tokens &SourceTokens, node int) []SourceToken {
+	return tokens.inside(t.nodes[node].start, t.nodes[node].end, false)
+}
+
+// unb_is_same_tokens ports isSameTokens (utils/is-same-tokens.js): the same types and values.
+fn (c &Checker) unb_is_same_tokens(left []SourceToken, right []SourceToken) bool {
+	if left.len != right.len {
+		return false
+	}
+	for i, token in left {
+		if token.kind != right[i].kind || c.token_text(token) != c.token_text(right[i]) {
+			return false
+		}
+	}
+	return true
+}
+
+// unb_has_same_type_arguments ports hasSameTypeArguments (utils/type-arguments.js): the same
+// explicit type arguments, token by token; none on both sides matches too.
+fn (c &Checker) unb_has_same_type_arguments(t &estree.EsTree, tokens &SourceTokens, left int, right int) bool {
+	left_arguments := t.node(left, .type_arguments) or { -1 }
+	right_arguments := t.node(right, .type_arguments) or { -1 }
+	if left_arguments < 0 || right_arguments < 0 {
+		return left_arguments < 0 && right_arguments < 0
+	}
+	return c.unb_is_same_tokens(unb_node_tokens(t, tokens, left_arguments), unb_node_tokens(t,
+		tokens, right_arguments))
+}
+
+// unb_conditional_child_text ports getConditionalExpressionChildText (utils/
+// should-add-parentheses-to-conditional-expression-child.js): the text of the node with its
+// parentheses, and the ones it needs as a branch or the test of a ternary.
+fn (c &Checker) unb_conditional_child_text(t &estree.EsTree, tokens &SourceTokens, node int) string {
+	text := c.un_parenthesized_text(t, tokens, node)
+	if !c.un_is_parenthesized(t, tokens, node) && t.typ(node) in [.await_expression,
+		.assignment_expression, .yield_expression, .sequence_expression, .ts_as_expression,
+		.ts_type_assertion] {
+		return '(${text})'
+	}
+	return text
+}
+
+// unb_should_add_parens_to_await_argument ports shouldAddParenthesesToAwaitExpressionArgument of
+// 79.0.0: what binds looser than `await`.
+fn unb_should_add_parens_to_await_argument(t &estree.EsTree, node int) bool {
+	return unb_precedence(t, node) < unb_precedence_unary
+}
+
+// unb_sibling ports getSiblingNode (utils/get-sibling-node.js): the node `offset` places away in
+// the first list of its parent that holds it, -1 for none.
+fn unb_sibling(t &estree.EsTree, node int, offset int) int {
+	parent := t.nodes[node].parent
+	if parent < 0 {
+		return -1
+	}
+	for key in estree.keys_of(t.typ(parent)) {
+		list := t.list(parent, key) or { continue }
+		index := list.index(node)
+		if index >= 0 {
+			next := index + offset
+			return if next >= 0 && next < list.len { list[next] } else { -1 }
+		}
+	}
+	return -1
+}
+
+// unb_last_trailing_comment_on_same_line ports getLastTrailingCommentOnSameLine (utils/
+// comments.js) without ignoreDirectives: the last comment right after the node that starts on the
+// line where the node ends.
+fn (c &Checker) unb_last_trailing_comment_on_same_line(t &estree.EsTree, tokens &SourceTokens, node int) ?SourceToken {
+	end_line, _ := t.line_column(t.nodes[node].end)
+	comments := tokens.comments_after(t.nodes[node].end)
+	for i := comments.len - 1; i >= 0; i-- {
+		line, _ := t.line_column(comments[i].start)
+		if line == end_line {
+			return comments[i]
+		}
+	}
+	return none
+}
+
+// unb_is_const_enum_reference ports isConstEnumReference (utils/is-const-enum-reference.js): with
+// type information, the node references a `const enum` (through an alias).
+fn (mut c Checker) unb_is_const_enum_reference(t &estree.EsTree, node int, mut ctx UnbTypeContext) bool {
+	if !c.scope_setup.type_information {
+		return false
+	}
+	ts := t.ts_node(node) or { return false }
+	c.resolve_node_types([ts], ctx.abs_path, mut ctx.stats) or { return false }
+	handle := c.node_handles[node_key(ts)] or { return false }
+	symbols := c.client.symbols_at_locations(c.snapshot, c.project, [handle]) or { return false }
+	if symbols.len != 1 || symbols[0].is_null() {
+		return false
+	}
+	mut symbol := symbols[0]
+	if symbol.flags & u32(2097152) != 0 {
+		symbol = c.aliased_symbol(symbol.id) or { return false }
+		if symbol.is_null() {
+			return false
+		}
+	}
+	return symbol.flags & u32(128) != 0
+}
+
+// The helpers of shared/minimal-ternary.js (new in 79.0.0): isMinimalTernary,
+// isTypeSafeToMinimize and getMinimalExpressionText, for branches that share a shape with one
+// varying part (`call(a)` and `call(b)` are `call(test ? a : b)`).
+
+// UnbMinimalOptions are the options of minimalTernaryOptionsSchema.
+struct UnbMinimalOptions {
+	check_varying_base           bool
+	check_computed_member_access bool
+}
+
+// unb_minimal_options reads the options object of minimalTernaryOptionsSchema (its defaults are
+// false).
+fn unb_minimal_options(rule string, options []json2.Any) !UnbMinimalOptions {
+	o := option_object(rule, options, ['checkVaryingBase', 'checkComputedMemberAccess'])!
+	return UnbMinimalOptions{
+		check_varying_base:           o.bool_value('checkVaryingBase')!
+		check_computed_member_access: o.bool_value('checkComputedMemberAccess')!
+	}
+}
+
+// unb_minimal_expression_tokens ports getExpressionTokens: the tokens, without the trailing comma
+// of an object.
+fn unb_minimal_expression_tokens(c &Checker, t &estree.EsTree, tokens &SourceTokens, node int) []SourceToken {
+	list := unb_node_tokens(t, tokens, node)
+	if t.typ(node) == .object_expression && list.len >= 2 && c.token_text(list[list.len - 2]) == ',' {
+		mut out := list[..list.len - 2].clone()
+		out << list.last()
+		return out
+	}
+	return list
+}
+
+// unb_is_function_or_class: isFunction or a ClassExpression.
+const unb_function_or_class_types = [estree.NodeType.function_declaration, .function_expression,
+	.arrow_function_expression, .class_expression]
+
+// unb_is_same_expression ports isSameExpression (shared/minimal-ternary.js).
+fn (c &Checker) unb_is_same_expression(t &estree.EsTree, tokens &SourceTokens, left int, right int) bool {
+	if left < 0 || right < 0 {
+		return false
+	}
+	if left_value := unb_static_string_value(t, left) {
+		right_value := unb_static_string_value(t, right) or { return false }
+		return left_value == right_value
+	}
+	if c.src[t.nodes[left].start..t.nodes[left].end] == c.src[t.nodes[right].start..t.nodes[right].end] {
+		return true
+	}
+	if t.typ(left) == .member_expression && t.typ(right) == .member_expression
+		&& (t.flag(left, .computed) or { false }) && (t.flag(right, .computed) or { false })
+		&& (t.flag(left, .optional) or { false }) == (t.flag(right, .optional) or { false }) {
+		left_property := t.node(left, .property) or { -1 }
+		right_property := t.node(right, .property) or { -1 }
+		if left_name := unb_static_string_value(t, left_property) {
+			if right_name := unb_static_string_value(t, right_property) {
+				if left_name == right_name {
+					return c.unb_is_same_expression(t, tokens, t.node(left, .object) or { -1 },
+						t.node(right, .object) or { -1 })
+				}
+			}
+		}
+	}
+	// Line breaks can change behavior inside statement bodies through automatic semicolon insertion.
+	return c.unb_is_same_tokens(unb_minimal_expression_tokens(c, t, tokens, left), unb_minimal_expression_tokens(c,
+		t, tokens, right)) && !unb_contains_type(t, left, unb_function_or_class_types)
+		&& !unb_contains_type(t, right, unb_function_or_class_types)
+}
+
+// unb_is_safe_shared_expression ports isSafeSharedExpression.
+fn unb_is_safe_shared_expression(t &estree.EsTree, node int) bool {
+	return t.typ(node) in [.identifier, .literal, .super, .this_expression]
+		|| unb_static_string_value(t, node) != none
+}
+
+// unb_is_safe_shared_callee ports isSafeSharedCallee.
+fn unb_is_safe_shared_callee(t &estree.EsTree, node int) bool {
+	if unb_is_safe_shared_expression(t, node) {
+		return true
+	}
+	if t.typ(node) != .member_expression {
+		return false
+	}
+	object := t.node(node, .object) or { return false }
+	property := t.node(node, .property) or { return false }
+	return unb_is_safe_shared_expression(t, object) && (!(t.flag(node, .computed) or { false })
+		|| t.typ(property) == .literal || unb_static_string_value(t, property) != none)
+}
+
+// unb_minimal_property_name ports getStaticPropertyName (shared/minimal-ternary.js):
+// getPropertyName of eslint-utils in the scope of the node.
+fn (mut c Checker) unb_minimal_property_name(t &estree.EsTree, node int) ?string {
+	return c.property_name(t.ts_node(node)?)
+}
+
+fn unb_is_different_identifier(t &estree.EsTree, left int, right int) bool {
+	return t.typ(left) == .identifier && t.typ(right) == .identifier
+		&& t.string_of(left, .name) or { '' } != t.string_of(right, .name) or { '' }
+}
+
+// unb_has_same_object_with_different_static_property ports
+// hasSameObjectWithDifferentStaticProperty (`object.a` and `object.b`).
+fn (mut c Checker) unb_has_same_object_with_different_static_property(t &estree.EsTree, tokens &SourceTokens, left int, right int, mut ctx UnbTypeContext) bool {
+	if t.typ(left) != .member_expression || t.typ(right) != .member_expression
+		|| unb_has_optional_chain_element(t, left) || unb_has_optional_chain_element(t, right) {
+		return false
+	}
+	left_object := t.node(left, .object) or { return false }
+	right_object := t.node(right, .object) or { return false }
+	if !unb_is_safe_shared_expression(t, left_object)
+		|| !c.unb_is_same_expression(t, tokens, left_object, right_object)
+		|| c.unb_is_const_enum_reference(t, left_object, mut ctx) {
+		return false
+	}
+	left_name := c.unb_minimal_property_name(t, left) or { return false }
+	right_name := c.unb_minimal_property_name(t, right) or { return false }
+	return left_name != right_name
+}
+
+// unb_has_same_static_property_with_different_object ports
+// hasSameStaticPropertyWithDifferentObject (`a.value` and `b.value`).
+fn (mut c Checker) unb_has_same_static_property_with_different_object(t &estree.EsTree, tokens &SourceTokens, left int, right int, mut ctx UnbTypeContext) bool {
+	if t.typ(left) != .member_expression || t.typ(right) != .member_expression
+		|| unb_has_optional_chain_element(t, left) || unb_has_optional_chain_element(t, right) {
+		return false
+	}
+	left_object := t.node(left, .object) or { return false }
+	right_object := t.node(right, .object) or { return false }
+	if t.typ(left_object) == .super || t.typ(right_object) == .super
+		|| c.unb_is_const_enum_reference(t, left_object, mut ctx)
+		|| c.unb_is_const_enum_reference(t, right_object, mut ctx) {
+		return false
+	}
+	left_name := c.unb_minimal_property_name(t, left) or { return false }
+	right_name := c.unb_minimal_property_name(t, right) or { return false }
+	return left_name == right_name && !c.unb_is_same_expression(t, tokens, left_object, right_object)
+}
+
+// unb_has_minimal_callee_difference ports hasMinimalCalleeDifference: the opt-in callee changes.
+fn (mut c Checker) unb_has_minimal_callee_difference(t &estree.EsTree, tokens &SourceTokens, left int, right int, o UnbMinimalOptions, mut ctx UnbTypeContext) bool {
+	return (o.check_varying_base && unb_is_different_identifier(t, left, right))
+		|| (o.check_computed_member_access
+		&& c.unb_has_same_object_with_different_static_property(t, tokens, left, right, mut ctx))
+		|| (o.check_varying_base
+		&& c.unb_has_same_static_property_with_different_object(t, tokens, left, right, mut ctx))
+}
+
+// unb_minimal_different_item_index ports getMinimalDifferentItemIndex: the index of the only
+// item that differs, none when several (or a ternary) differ or all are the same.
+fn (c &Checker) unb_minimal_different_item_index(t &estree.EsTree, tokens &SourceTokens, left_items []int, right_items []int) ?int {
+	if left_items.len != right_items.len {
+		return none
+	}
+	mut different := -1
+	for index, left_item in left_items {
+		right_item := right_items[index]
+		if c.unb_is_same_expression(t, tokens, left_item, right_item) {
+			continue
+		}
+		if different >= 0 || (left_item >= 0 && t.typ(left_item) == .conditional_expression)
+			|| (right_item >= 0 && t.typ(right_item) == .conditional_expression) {
+			return none
+		}
+		different = index
+	}
+	return if different >= 0 { different } else { none }
+}
+
+fn (c &Checker) unb_has_same_items(t &estree.EsTree, tokens &SourceTokens, left_items []int, right_items []int) bool {
+	if left_items.len != right_items.len {
+		return false
+	}
+	for index, item in left_items {
+		if !c.unb_is_same_expression(t, tokens, item, right_items[index]) {
+			return false
+		}
+	}
+	return true
+}
+
+// unb_has_one_minimal_value_difference ports hasOneMinimalValueDifference: one item differs and
+// the shared ones before it are safe to evaluate before the condition.
+fn (c &Checker) unb_has_one_minimal_value_difference(t &estree.EsTree, tokens &SourceTokens, left_items []int, right_items []int) bool {
+	different := c.unb_minimal_different_item_index(t, tokens, left_items, right_items) or {
+		return false
+	}
+	return left_items[..different].all(unb_is_safe_shared_expression(t, it))
+}
+
+// unb_minimal_items ports getExpressionItems: the values of the properties of an object, the
+// elements of an array, the arguments of a call.
+fn unb_minimal_items(t &estree.EsTree, node int) []int {
+	if t.typ(node) == .object_expression {
+		return (t.list(node, .properties) or { []int{} }).map(t.node(it, .value) or { -1 })
+	}
+	if elements := t.list(node, .elements) {
+		return elements
+	}
+	return t.list(node, .arguments) or { []int{} }
+}
+
+fn (mut c Checker) unb_is_minimal_object_expression(t &estree.EsTree, tokens &SourceTokens, left int, right int) bool {
+	if t.typ(left) != .object_expression || t.typ(right) != .object_expression {
+		return false
+	}
+	left_properties := t.list(left, .properties) or { return false }
+	right_properties := t.list(right, .properties) or { return false }
+	if left_properties.len != right_properties.len {
+		return false
+	}
+	mut all_properties := left_properties.clone()
+	all_properties << right_properties
+	for property in all_properties {
+		if t.typ(property) != .property || (t.flag(property, .computed) or { false })
+			|| (t.flag(property, .method) or { false })
+			|| (t.string_of(property, .kind) or { '' }) != 'init' {
+			return false
+		}
+		if !(t.flag(property, .shorthand) or { false })
+			&& c.unb_minimal_property_name(t, property) or { '' } == '__proto__' {
+			return false
+		}
+	}
+	for index, property in left_properties {
+		left_name := c.unb_minimal_property_name(t, property)
+		right_name := c.unb_minimal_property_name(t, right_properties[index])
+		if left_name == none || right_name == none {
+			if left_name != none || right_name != none {
+				return false
+			}
+			continue
+		}
+		if (left_name or { '' }) != (right_name or { '' }) {
+			return false
+		}
+	}
+	return c.unb_has_one_minimal_value_difference(t, tokens, unb_minimal_items(t, left),
+		unb_minimal_items(t, right))
+}
+
+fn (c &Checker) unb_is_minimal_array_expression(t &estree.EsTree, tokens &SourceTokens, left int, right int) bool {
+	if t.typ(left) != .array_expression || t.typ(right) != .array_expression {
+		return false
+	}
+	left_elements := t.list(left, .elements) or { return false }
+	right_elements := t.list(right, .elements) or { return false }
+	return left_elements.all(it >= 0 && t.typ(it) != .spread_element)
+		&& right_elements.all(it >= 0 && t.typ(it) != .spread_element)
+		&& c.unb_has_one_minimal_value_difference(t, tokens, left_elements, right_elements)
+}
+
+fn unb_has_spread_argument(t &estree.EsTree, node int) bool {
+	return (t.list(node, .arguments) or { []int{} }).any(t.typ(it) == .spread_element)
+}
+
+fn (c &Checker) unb_is_minimal_new_expression(t &estree.EsTree, tokens &SourceTokens, left int, right int) bool {
+	if t.typ(left) != .new_expression || t.typ(right) != .new_expression {
+		return false
+	}
+	left_callee := t.node(left, .callee) or { return false }
+	right_callee := t.node(right, .callee) or { return false }
+	if t.typ(left_callee) != .identifier || t.typ(right_callee) != .identifier
+		|| t.string_of(left_callee, .name) or { '' } != t.string_of(right_callee, .name) or { '' }
+		|| unb_has_spread_argument(t, left) || unb_has_spread_argument(t, right) {
+		return false
+	}
+	return c.unb_has_same_type_arguments(t, tokens, left, right)
+		&& c.unb_has_one_minimal_value_difference(t, tokens, t.list(left, .arguments) or { []int{} },
+		t.list(right, .arguments) or { []int{} })
+}
+
+fn (mut c Checker) unb_is_minimal_call_expression(t &estree.EsTree, tokens &SourceTokens, left int, right int, o UnbMinimalOptions, mut ctx UnbTypeContext) bool {
+	if t.typ(left) != .call_expression || t.typ(right) != .call_expression
+		|| unb_has_optional_chain_element(t, left) || unb_has_optional_chain_element(t, right)
+		|| unb_has_spread_argument(t, left) || unb_has_spread_argument(t, right) {
+		return false
+	}
+	left_callee := t.node(left, .callee) or { return false }
+	right_callee := t.node(right, .callee) or { return false }
+	left_arguments := t.list(left, .arguments) or { []int{} }
+	right_arguments := t.list(right, .arguments) or { []int{} }
+	if c.unb_is_same_expression(t, tokens, left_callee, right_callee)
+		&& unb_is_safe_shared_callee(t, left_callee)
+		&& c.unb_minimal_different_item_index(t, tokens, left_arguments, right_arguments) != none {
+		return true
+	}
+	return c.unb_has_same_items(t, tokens, left_arguments, right_arguments)
+		&& c.unb_has_minimal_callee_difference(t, tokens, left_callee, right_callee, o, mut ctx)
+}
+
+fn unb_is_private_brand_check(t &estree.EsTree, node int) bool {
+	return t.string_of(node, .operator) or { '' } == 'in'
+		&& t.typ(t.node(node, .left) or { return false }) == .private_identifier
+}
+
+fn (c &Checker) unb_is_minimal_binary_expression(t &estree.EsTree, tokens &SourceTokens, left int, right int) bool {
+	if t.typ(left) != .binary_expression || t.typ(right) != .binary_expression
+		|| t.string_of(left, .operator) or { '' } != t.string_of(right, .operator) or { '' }
+		|| unb_is_private_brand_check(t, left) || unb_is_private_brand_check(t, right) {
+		return false
+	}
+	left_left := t.node(left, .left) or { return false }
+	is_left_same := c.unb_is_same_expression(t, tokens, left_left, t.node(right, .left) or { -1 })
+	is_right_same := c.unb_is_same_expression(t, tokens, t.node(left, .right) or { -1 },
+		t.node(right, .right) or { -1 })
+	if is_left_same == is_right_same {
+		return false
+	}
+	return is_right_same || unb_is_safe_shared_expression(t, left_left)
+}
+
+// unb_has_same_object_with_different_dynamic_key ports hasSameObjectWithDifferentDynamicKey
+// (`object[a]` and `object[b]`).
+fn (mut c Checker) unb_has_same_object_with_different_dynamic_key(t &estree.EsTree, tokens &SourceTokens, left int, right int) bool {
+	if t.typ(left) != .member_expression || t.typ(right) != .member_expression
+		|| !(t.flag(left, .computed) or { false }) || !(t.flag(right, .computed) or { false })
+		|| unb_has_optional_chain_element(t, left) || unb_has_optional_chain_element(t, right) {
+		return false
+	}
+	left_object := t.node(left, .object) or { return false }
+	if !unb_is_safe_shared_expression(t, left_object)
+		|| !c.unb_is_same_expression(t, tokens, left_object, t.node(right, .object) or { -1 }) {
+		return false
+	}
+	return c.unb_minimal_property_name(t, left) == none
+		&& c.unb_minimal_property_name(t, right) == none
+		&& !c.unb_is_same_expression(t, tokens, t.node(left, .property) or { -1 }, t.node(right,
+		.property) or { -1 })
+}
+
+fn (mut c Checker) unb_is_minimal_member_expression(t &estree.EsTree, tokens &SourceTokens, left int, right int, o UnbMinimalOptions, mut ctx UnbTypeContext) bool {
+	return c.unb_has_same_object_with_different_dynamic_key(t, tokens, left, right)
+		|| (o.check_computed_member_access
+		&& c.unb_has_same_object_with_different_static_property(t, tokens, left, right, mut ctx))
+		|| (o.check_varying_base
+		&& c.unb_has_same_static_property_with_different_object(t, tokens, left, right, mut ctx))
+}
+
+// unb_is_minimal_ternary ports isMinimalTernary: the expressions share a supported shape with one
+// varying part.
+fn (mut c Checker) unb_is_minimal_ternary(t &estree.EsTree, tokens &SourceTokens, consequent int, alternate int, o UnbMinimalOptions, mut ctx UnbTypeContext) bool {
+	if t.typ(consequent) != t.typ(alternate) {
+		return false
+	}
+	return c.unb_is_minimal_call_expression(t, tokens, consequent, alternate, o, mut ctx)
+		|| c.unb_is_minimal_binary_expression(t, tokens, consequent, alternate)
+		|| c.unb_is_minimal_member_expression(t, tokens, consequent, alternate, o, mut ctx)
+		|| c.unb_is_minimal_object_expression(t, tokens, consequent, alternate)
+		|| c.unb_is_minimal_array_expression(t, tokens, consequent, alternate)
+		|| c.unb_is_minimal_new_expression(t, tokens, consequent, alternate)
+}
+
+// unb_is_safe_to_reorder_expression ports isSafeToReorderExpression: known forms that may move
+// before the condition.
+fn unb_is_safe_to_reorder_expression(t &estree.EsTree, n int) bool {
+	node := unb_unwrap_ts(t, n)
+	if node < 0 {
+		return false
+	}
+	if unb_is_safe_shared_expression(t, node) {
+		return true
+	}
+	match t.typ(node) {
+		.member_expression {
+			property := t.node(node, .property) or { return false }
+			return unb_is_safe_to_reorder_expression(t, t.node(node, .object) or { return false })
+				&& (!(t.flag(node, .computed) or { false }) || t.typ(property) == .literal
+				|| unb_static_string_value(t, property) != none)
+		}
+		.chain_expression {
+			return unb_is_safe_to_reorder_expression(t, t.node(node, .expression) or { return false })
+		}
+		.unary_expression {
+			return t.string_of(node, .operator) or { '' } in ['!', 'typeof', 'void']
+				&& unb_is_safe_to_reorder_expression(t, t.node(node, .argument) or { return false })
+		}
+		.binary_expression {
+			return t.string_of(node, .operator) or { '' } in ['===', '!==']
+				&& unb_is_safe_to_reorder_expression(t, t.node(node, .left) or { return false })
+				&& unb_is_safe_to_reorder_expression(t, t.node(node, .right) or { return false })
+		}
+		.logical_expression {
+			return unb_is_safe_to_reorder_expression(t, t.node(node, .left) or { return false })
+				&& unb_is_safe_to_reorder_expression(t, t.node(node, .right) or { return false })
+		}
+		.conditional_expression {
+			return unb_is_safe_to_reorder_expression(t, t.node(node, .test) or { return false })
+				&& unb_is_safe_to_reorder_expression(t, t.node(node, .consequent) or { return false })
+				&& unb_is_safe_to_reorder_expression(t, t.node(node, .alternate) or { return false })
+		}
+		else {
+			return false
+		}
+	}
+}
+
+fn unb_can_move_before_condition(t &estree.EsTree, node int) bool {
+	return unb_is_safe_to_reorder_expression(t, node) && !unb_has_side_effect(t, node, false)
+}
+
+// unb_are_types_compatible ports areTypesCompatible: each type is assignable to the other.
+fn (mut c Checker) unb_are_types_compatible(left TypeResponse, right TypeResponse) !bool {
+	return c.assignable(left.id, right.id)! && c.assignable(right.id, left.id)!
+}
+
+// unb_has_compatible_expression_types ports hasCompatibleExpressionTypes; none where
+// getTypeAtLocation has no type (where upstream the callback would throw).
+fn (mut c Checker) unb_has_compatible_expression_types(t &estree.EsTree, left int, right int, mut ctx UnbTypeContext) ?bool {
+	if left < 0 || right < 0 {
+		return none
+	}
+	left_type := c.unb_type_of(t, left, ctx.abs_path, mut ctx.stats)?
+	right_type := c.unb_type_of(t, right, ctx.abs_path, mut ctx.stats)?
+	if !(c.unb_are_types_compatible(left_type, right_type) or { return none }) {
+		return false
+	}
+	if unb_static_string_value(t, left) != none && unb_static_string_value(t, right) != none {
+		return true
+	}
+	right_children := t.children(right)
+	for index, child in t.children(left) {
+		if !c.unb_has_compatible_expression_types(t, child, if index < right_children.len {
+			right_children[index]
+		} else {
+			-1
+		}, mut ctx)? {
+			return false
+		}
+	}
+	return true
+}
+
+// unb_minimal_expression_parts are the parts getTypeSafetyToMinimize compares.
+fn unb_minimal_expression_parts(t &estree.EsTree, node int) []int {
+	if t.typ(node) == .binary_expression {
+		return [t.node(node, .left) or { -1 }, t.node(node, .right) or { -1 }]
+	}
+	if t.typ(node) == .member_expression {
+		return [t.node(node, .object) or { -1 }]
+	}
+	return unb_minimal_items(t, node)
+}
+
+// unb_type_safety_to_minimize ports getTypeSafetyToMinimize: whether factoring the branches
+// preserves their types; none without type information (or where upstream it would throw).
+fn (mut c Checker) unb_type_safety_to_minimize(t &estree.EsTree, tokens &SourceTokens, consequent int, alternate int, mut ctx UnbTypeContext) ?bool {
+	typ := c.unb_type_of(t, consequent, ctx.abs_path, mut ctx.stats)?
+	alternate_parts := unb_minimal_expression_parts(t, alternate)
+	for index, part in unb_minimal_expression_parts(t, consequent) {
+		other := if index < alternate_parts.len { alternate_parts[index] } else { -1 }
+		if c.unb_is_same_expression(t, tokens, part, other)
+			&& !c.unb_has_compatible_expression_types(t, part, other, mut ctx)? {
+			return false
+		}
+	}
+	if t.typ(consequent) == .binary_expression {
+		for key in [estree.Key.left, .right] {
+			consequent_operand := c.unb_type_of(t, t.node(consequent, key)?, ctx.abs_path, mut
+				ctx.stats)?
+			alternate_operand := c.unb_type_of(t, t.node(alternate, key)?, ctx.abs_path, mut
+				ctx.stats)?
+			consequent_base := c.client.base_type_of_literal(c.snapshot, c.project, consequent_operand.id) or {
+				return none
+			}
+			alternate_base := c.client.base_type_of_literal(c.snapshot, c.project, alternate_operand.id) or {
+				return none
+			}
+			if !(c.unb_are_types_compatible(consequent_base, alternate_base) or { return none }) {
+				return false
+			}
+		}
+		return true
+	}
+	if t.typ(consequent) == .member_expression {
+		return true
+	}
+	if t.typ(consequent) == .call_expression {
+		left := t.node(consequent, .callee)?
+		right := t.node(alternate, .callee)?
+		if t.typ(left) == .member_expression && t.typ(right) == .member_expression {
+			left_object := t.node(left, .object)?
+			right_object := t.node(right, .object)?
+			if c.unb_is_same_expression(t, tokens, left_object, right_object) {
+				left_type := c.unb_type_of(t, left_object, ctx.abs_path, mut ctx.stats)?
+				right_type := c.unb_type_of(t, right_object, ctx.abs_path, mut ctx.stats)?
+				if !(c.unb_are_types_compatible(left_type, right_type) or { return none }) {
+					return false
+				}
+			}
+		}
+	}
+	alternate_type := c.unb_type_of(t, alternate, ctx.abs_path, mut ctx.stats)?
+	// Combining distinct branch types can lose discriminant correlations and generic or tuple inference.
+	if !(c.unb_are_types_compatible(typ, alternate_type) or { return none }) {
+		return false
+	}
+	if t.typ(consequent) in [.call_expression, .new_expression] {
+		consequent_callee := t.node(consequent, .callee)?
+		alternate_callee := t.node(alternate, .callee)?
+		if !c.unb_is_same_expression(t, tokens, consequent_callee, alternate_callee) {
+			consequent_callee_type := c.unb_type_of(t, consequent_callee, ctx.abs_path, mut
+				ctx.stats)?
+			alternate_callee_type := c.unb_type_of(t, alternate_callee, ctx.abs_path, mut ctx.stats)?
+			return c.unb_are_types_compatible(consequent_callee_type, alternate_callee_type) or {
+				return none
+			}
+		}
+		// Separate overloads or generic instantiations can accept each branch while rejecting their combined arguments.
+		consequent_node := t.ts_node(consequent)?
+		alternate_node := t.ts_node(alternate)?
+		consequent_signature := c.resolved_signature(consequent_node) or { return none }
+		alternate_signature := c.resolved_signature(alternate_node) or { return none }
+		if consequent_signature.id == 0 || consequent_signature.declaration == ''
+			|| alternate_signature.id == 0
+			|| consequent_signature.declaration != alternate_signature.declaration
+			|| consequent_signature.parameters.len != alternate_signature.parameters.len
+			|| consequent_signature.flags & signature_flag_has_rest_parameter != 0 {
+			return false
+		}
+		consequent_handle := c.node_handles[node_key(consequent_node)] or { return none }
+		alternate_handle := c.node_handles[node_key(alternate_node)] or { return none }
+		consequent_parameters := c.signature_parameters(consequent_signature) or { return none }
+		alternate_parameters := c.signature_parameters(alternate_signature) or { return none }
+		if consequent_parameters.len != alternate_parameters.len {
+			return none
+		}
+		for index, parameter in consequent_parameters {
+			consequent_parameter_type := c.client.type_of_symbol_at_location(c.snapshot,
+				c.project, parameter.id, consequent_handle) or { return none }
+			alternate_parameter_type := c.client.type_of_symbol_at_location(c.snapshot,
+				c.project, alternate_parameters[index].id, alternate_handle) or { return none }
+			if !(c.unb_are_types_compatible(consequent_parameter_type, alternate_parameter_type) or {
+				return none
+			}) {
+				return false
+			}
+		}
+		return true
+	}
+	return true
+}
+
+// unb_is_syntax_safe_to_minimize ports isSyntaxSafeToMinimize: without type information, the
+// shared values of an object must be literals (every file veslint lints is TypeScript).
+fn (c &Checker) unb_is_syntax_safe_to_minimize(t &estree.EsTree, tokens &SourceTokens, consequent int, alternate int) bool {
+	if t.typ(consequent) != .object_expression {
+		return true
+	}
+	consequent_items := unb_minimal_items(t, consequent)
+	different := c.unb_minimal_different_item_index(t, tokens, consequent_items, unb_minimal_items(t,
+		alternate)) or { -1 }
+	for index, item in consequent_items {
+		if index != different && t.typ(item) != .literal && unb_static_string_value(t, item) == none {
+			return false
+		}
+	}
+	return true
+}
+
+// unb_is_type_safe_to_minimize ports isTypeSafeToMinimize.
+fn (mut c Checker) unb_is_type_safe_to_minimize(t &estree.EsTree, tokens &SourceTokens, consequent int, alternate int, mut ctx UnbTypeContext) bool {
+	if safe := c.unb_type_safety_to_minimize(t, tokens, consequent, alternate, mut ctx) {
+		return safe
+	}
+	return c.unb_is_syntax_safe_to_minimize(t, tokens, consequent, alternate)
+}
+
+// unb_minimal_text is getText of getMinimalExpressionText: the parenthesized text, and parentheses
+// for a sequence.
+fn (c &Checker) unb_minimal_text(t &estree.EsTree, tokens &SourceTokens, node int) string {
+	text := c.un_parenthesized_text(t, tokens, node)
+	if t.typ(node) == .sequence_expression && !c.un_is_parenthesized(t, tokens, node) {
+		return '(${text})'
+	}
+	return text
+}
+
+fn unb_is_literal_or_static_string(t &estree.EsTree, node int) bool {
+	return t.typ(node) == .literal || unb_static_string_value(t, node) != none
+}
+
+// unb_minimal_expression_text ports getMinimalExpressionText: the minimal expression, none when
+// its evaluation order or syntax would be unsafe.
+fn (c &Checker) unb_minimal_expression_text(t &estree.EsTree, tokens &SourceTokens, left int, right int, condition int) ?string {
+	condition_text := c.unb_conditional_child_text(t, tokens, condition)
+	conditional_text := fn [c, t, tokens, condition_text] (consequent int, alternate int) string {
+		return '${condition_text} ? ${c.unb_minimal_text(t, tokens, consequent)} : ${c.unb_minimal_text(t,
+			tokens, alternate)}'
+	}
+	if t.typ(left) == .identifier {
+		if t.string_of(left, .name) or { '' } == 'eval' || t.string_of(right, .name) or { '' } == 'eval' {
+			return none
+		}
+		return '(${conditional_text(left, right)})'
+	}
+	replace := fn [c, t, left] (node int, text string) string {
+		return c.src[t.nodes[left].start..t.nodes[node].start] + text +
+			c.src[t.nodes[node].end..t.nodes[left].end]
+	}
+	// Literal values cannot be changed by the condition.
+	can_move_before_test := fn [t, condition] (expressions []int) bool {
+		return expressions.all(unb_is_literal_or_static_string(t, it))
+			|| (unb_can_move_before_condition(t, condition)
+			&& expressions.all(unb_can_move_before_condition(t, it)))
+	}
+	if t.typ(left) == .member_expression {
+		left_object := t.node(left, .object)?
+		right_object := t.node(right, .object)?
+		if !c.unb_is_same_expression(t, tokens, left_object, right_object) {
+			for member in [left, right] {
+				property := t.node(member, .property)?
+				if (t.flag(member, .computed) or { false }) && t.typ(property) != .literal
+					&& unb_static_string_value(t, property) == none {
+					return none
+				}
+			}
+			return replace(left_object, '(${conditional_text(left_object, right_object)})')
+		}
+		if !can_move_before_test([left_object]) {
+			return none
+		}
+		key_text := fn [c, t, tokens] (member int) string {
+			property := t.node(member, .property) or { return '' }
+			if t.flag(member, .computed) or { false } {
+				return c.unb_minimal_text(t, tokens, property)
+			}
+			return '"${t.string_of(property, .name) or { '' }}"'
+		}
+		return '${c.unb_minimal_text(t, tokens, left_object)}[${condition_text} ? ${key_text(left)} : ${key_text(right)}]'
+	}
+	if t.typ(left) == .binary_expression {
+		left_left := t.node(left, .left)?
+		is_left_same := c.unb_is_same_expression(t, tokens, left_left, t.node(right, .left)?)
+		if is_left_same && !can_move_before_test([left_left]) {
+			return none
+		}
+		key := if is_left_same { estree.Key.right } else { estree.Key.left }
+		left_part := t.node(left, key)?
+		return replace(left_part, '(${conditional_text(left_part, t.node(right, key)?)})')
+	}
+	if t.typ(left) in [.call_expression, .new_expression] {
+		if !c.unb_has_same_type_arguments(t, tokens, left, right) {
+			return none
+		}
+		left_callee := t.node(left, .callee)?
+		right_callee := t.node(right, .callee)?
+		if !c.unb_is_same_expression(t, tokens, left_callee, right_callee) {
+			callee_text := c.unb_minimal_expression_text(t, tokens, left_callee, right_callee,
+				condition)?
+			return replace(left_callee, callee_text)
+		}
+		if !can_move_before_test([left_callee]) {
+			return none
+		}
+	}
+	left_items := unb_minimal_items(t, left)
+	right_items := unb_minimal_items(t, right)
+	different := c.unb_minimal_different_item_index(t, tokens, left_items, right_items) or {
+		left_items.len
+	}
+	if !can_move_before_test(left_items[..different]) {
+		return none
+	}
+	if different >= left_items.len {
+		return none
+	}
+	if t.typ(left) == .object_expression {
+		for item in [left_items[different], right_items[different]] {
+			typ := t.typ(unb_unwrap_ts(t, item))
+			if int(typ) >= int(estree.NodeType.ts_abstract_accessor_property)
+				|| typ in [.arrow_function_expression, .function_expression, .class_expression] {
+				return none
+			}
+		}
+	}
+	text := conditional_text(left_items[different], right_items[different])
+	if t.typ(left) == .object_expression {
+		property := (t.list(left, .properties)?)[different]
+		if t.flag(property, .shorthand) or { false } {
+			key := t.node(property, .key)?
+			return replace(property, '${c.src[t.nodes[key].start..t.nodes[key].end]}: ${text}')
+		}
+	}
+	return replace(left_items[different], text)
 }
