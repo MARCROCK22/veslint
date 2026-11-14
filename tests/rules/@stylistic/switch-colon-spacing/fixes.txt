@@ -1,0 +1,76 @@
+tests/rules/@stylistic/switch-colon-spacing/after-false/cases.ts:6:8	@stylistic/switch-colon-spacing	unexpectedAfter	Unexpected space(s) after this colon.	fix	142	143		end	6	9
+tests/rules/@stylistic/switch-colon-spacing/after-false/cases.ts:7:9	@stylistic/switch-colon-spacing	unexpectedBefore	Unexpected space(s) before this colon.	fix	165	166		end	7	10
+tests/rules/@stylistic/switch-colon-spacing/after-false/cases.ts:7:9	@stylistic/switch-colon-spacing	unexpectedAfter	Unexpected space(s) after this colon.	fix	167	168		end	7	10
+tests/rules/@stylistic/switch-colon-spacing/after-false/cases.ts:8:9	@stylistic/switch-colon-spacing	unexpectedBefore	Unexpected space(s) before this colon.	fix	190	191		end	8	10
+tests/rules/@stylistic/switch-colon-spacing/after-false/cases.ts:10:8	@stylistic/switch-colon-spacing	unexpectedAfter	Unexpected space(s) after this colon.	fix	238	239		end	10	9
+tests/rules/@stylistic/switch-colon-spacing/after-false/cases.ts:11:21	@stylistic/switch-colon-spacing	unexpectedBefore	Unexpected space(s) before this colon.	end	11	22
+tests/rules/@stylistic/switch-colon-spacing/after-false/cases.ts:11:21	@stylistic/switch-colon-spacing	unexpectedAfter	Unexpected space(s) after this colon.	fix	275	276		end	11	22
+tests/rules/@stylistic/switch-colon-spacing/after-false/cases.ts:12:22	@stylistic/switch-colon-spacing	unexpectedBefore	Unexpected space(s) before this colon.	end	12	23
+tests/rules/@stylistic/switch-colon-spacing/after-false/cases.ts:13:8	@stylistic/switch-colon-spacing	unexpectedAfter	Unexpected space(s) after this colon.	end	13	9
+tests/rules/@stylistic/switch-colon-spacing/after-false/cases.ts:14:8	@stylistic/switch-colon-spacing	unexpectedAfter	Unexpected space(s) after this colon.	end	14	9
+tests/rules/@stylistic/switch-colon-spacing/after-false/cases.ts:19:2	@stylistic/switch-colon-spacing	unexpectedAfter	Unexpected space(s) after this colon.	fix	438	439		end	19	3
+tests/rules/@stylistic/switch-colon-spacing/after-false/cases.ts:20:12	@stylistic/switch-colon-spacing	unexpectedBefore	Unexpected space(s) before this colon.	fix	464	465		end	20	13
+tests/rules/@stylistic/switch-colon-spacing/after-false/cases.ts:20:12	@stylistic/switch-colon-spacing	unexpectedAfter	Unexpected space(s) after this colon.	fix	466	467		end	20	13
+tests/rules/@stylistic/switch-colon-spacing/after-false/cases.ts:21:22	@stylistic/switch-colon-spacing	unexpectedBefore	Unexpected space(s) before this colon.	fix	502	503		end	21	23
+tests/rules/@stylistic/switch-colon-spacing/after-false/cases.ts:22:10	@stylistic/switch-colon-spacing	unexpectedAfter	Unexpected space(s) after this colon.	fix	529	530		end	22	11
+tests/rules/@stylistic/switch-colon-spacing/after-false/cases.ts:26:11	@stylistic/switch-colon-spacing	unexpectedBefore	Unexpected space(s) before this colon.	fix	563	564		end	26	12
+tests/rules/@stylistic/switch-colon-spacing/after-false/cases.ts:31:11	@stylistic/switch-colon-spacing	unexpectedBefore	Unexpected space(s) before this colon.	fix	609	610		end	31	12
+tests/rules/@stylistic/switch-colon-spacing/after-false/cases.ts:32:10	@stylistic/switch-colon-spacing	unexpectedBefore	Unexpected space(s) before this colon.	fix	620	621		end	32	11
+tests/rules/@stylistic/switch-colon-spacing/after-false/cases.ts:35:9	@stylistic/switch-colon-spacing	unexpectedBefore	Unexpected space(s) before this colon.	fix	656	657		end	35	10
+tests/rules/@stylistic/switch-colon-spacing/after-false/cases.ts:39:10	@stylistic/switch-colon-spacing	unexpectedBefore	Unexpected space(s) before this colon.	fix	713	714		end	39	11
+tests/rules/@stylistic/switch-colon-spacing/before-no-after/cases.ts:6:8	@stylistic/switch-colon-spacing	expectedBefore	Expected space(s) before this colon.	fix	141	141	 	end	6	9
+tests/rules/@stylistic/switch-colon-spacing/before-no-after/cases.ts:6:8	@stylistic/switch-colon-spacing	unexpectedAfter	Unexpected space(s) after this colon.	fix	142	143		end	6	9
+tests/rules/@stylistic/switch-colon-spacing/before-no-after/cases.ts:7:9	@stylistic/switch-colon-spacing	unexpectedAfter	Unexpected space(s) after this colon.	fix	167	168		end	7	10
+tests/rules/@stylistic/switch-colon-spacing/before-no-after/cases.ts:9:8	@stylistic/switch-colon-spacing	expectedBefore	Expected space(s) before this colon.	fix	214	214	 	end	9	9
+tests/rules/@stylistic/switch-colon-spacing/before-no-after/cases.ts:10:8	@stylistic/switch-colon-spacing	expectedBefore	Expected space(s) before this colon.	fix	237	237	 	end	10	9
+tests/rules/@stylistic/switch-colon-spacing/before-no-after/cases.ts:10:8	@stylistic/switch-colon-spacing	unexpectedAfter	Unexpected space(s) after this colon.	fix	238	239		end	10	9
+tests/rules/@stylistic/switch-colon-spacing/before-no-after/cases.ts:11:21	@stylistic/switch-colon-spacing	unexpectedAfter	Unexpected space(s) after this colon.	fix	275	276		end	11	22
+tests/rules/@stylistic/switch-colon-spacing/before-no-after/cases.ts:13:8	@stylistic/switch-colon-spacing	expectedBefore	Expected space(s) before this colon.	fix	335	335	 	end	13	9
+tests/rules/@stylistic/switch-colon-spacing/before-no-after/cases.ts:13:8	@stylistic/switch-colon-spacing	unexpectedAfter	Unexpected space(s) after this colon.	end	13	9
+tests/rules/@stylistic/switch-colon-spacing/before-no-after/cases.ts:14:8	@stylistic/switch-colon-spacing	expectedBefore	Expected space(s) before this colon.	fix	370	370	 	end	14	9
+tests/rules/@stylistic/switch-colon-spacing/before-no-after/cases.ts:14:8	@stylistic/switch-colon-spacing	unexpectedAfter	Unexpected space(s) after this colon.	end	14	9
+tests/rules/@stylistic/switch-colon-spacing/before-no-after/cases.ts:15:9	@stylistic/switch-colon-spacing	expectedBefore	Expected space(s) before this colon.	fix	406	406	 	end	15	10
+tests/rules/@stylistic/switch-colon-spacing/before-no-after/cases.ts:19:2	@stylistic/switch-colon-spacing	unexpectedAfter	Unexpected space(s) after this colon.	fix	438	439		end	19	3
+tests/rules/@stylistic/switch-colon-spacing/before-no-after/cases.ts:20:12	@stylistic/switch-colon-spacing	unexpectedAfter	Unexpected space(s) after this colon.	fix	466	467		end	20	13
+tests/rules/@stylistic/switch-colon-spacing/before-no-after/cases.ts:22:10	@stylistic/switch-colon-spacing	expectedBefore	Expected space(s) before this colon.	fix	528	528	 	end	22	11
+tests/rules/@stylistic/switch-colon-spacing/before-no-after/cases.ts:22:10	@stylistic/switch-colon-spacing	unexpectedAfter	Unexpected space(s) after this colon.	fix	529	530		end	22	11
+tests/rules/@stylistic/switch-colon-spacing/before-no-after/cases.ts:30:10	@stylistic/switch-colon-spacing	expectedBefore	Expected space(s) before this colon.	fix	598	598	 	end	30	11
+tests/rules/@stylistic/switch-colon-spacing/before-no-after/cases.ts:37:9	@stylistic/switch-colon-spacing	expectedBefore	Expected space(s) before this colon.	fix	685	685	 	end	37	10
+tests/rules/@stylistic/switch-colon-spacing/before-no-after/cases.ts:40:9	@stylistic/switch-colon-spacing	expectedBefore	Expected space(s) before this colon.	fix	731	731	 	end	40	10
+tests/rules/@stylistic/switch-colon-spacing/before/cases.ts:6:8	@stylistic/switch-colon-spacing	expectedBefore	Expected space(s) before this colon.	fix	141	141	 	end	6	9
+tests/rules/@stylistic/switch-colon-spacing/before/cases.ts:8:9	@stylistic/switch-colon-spacing	expectedAfter	Expected space(s) after this colon.	fix	192	192	 	end	8	10
+tests/rules/@stylistic/switch-colon-spacing/before/cases.ts:9:8	@stylistic/switch-colon-spacing	expectedBefore	Expected space(s) before this colon.	fix	214	214	 	end	9	9
+tests/rules/@stylistic/switch-colon-spacing/before/cases.ts:9:8	@stylistic/switch-colon-spacing	expectedAfter	Expected space(s) after this colon.	fix	215	215	 	end	9	9
+tests/rules/@stylistic/switch-colon-spacing/before/cases.ts:10:8	@stylistic/switch-colon-spacing	expectedBefore	Expected space(s) before this colon.	fix	237	237	 	end	10	9
+tests/rules/@stylistic/switch-colon-spacing/before/cases.ts:12:22	@stylistic/switch-colon-spacing	expectedAfter	Expected space(s) after this colon.	fix	313	313	 	end	12	23
+tests/rules/@stylistic/switch-colon-spacing/before/cases.ts:13:8	@stylistic/switch-colon-spacing	expectedBefore	Expected space(s) before this colon.	fix	335	335	 	end	13	9
+tests/rules/@stylistic/switch-colon-spacing/before/cases.ts:14:8	@stylistic/switch-colon-spacing	expectedBefore	Expected space(s) before this colon.	fix	370	370	 	end	14	9
+tests/rules/@stylistic/switch-colon-spacing/before/cases.ts:15:9	@stylistic/switch-colon-spacing	expectedBefore	Expected space(s) before this colon.	fix	406	406	 	end	15	10
+tests/rules/@stylistic/switch-colon-spacing/before/cases.ts:21:22	@stylistic/switch-colon-spacing	expectedAfter	Expected space(s) after this colon.	fix	504	504	 	end	21	23
+tests/rules/@stylistic/switch-colon-spacing/before/cases.ts:22:10	@stylistic/switch-colon-spacing	expectedBefore	Expected space(s) before this colon.	fix	528	528	 	end	22	11
+tests/rules/@stylistic/switch-colon-spacing/before/cases.ts:26:11	@stylistic/switch-colon-spacing	expectedAfter	Expected space(s) after this colon.	fix	565	565	 	end	26	12
+tests/rules/@stylistic/switch-colon-spacing/before/cases.ts:30:10	@stylistic/switch-colon-spacing	expectedBefore	Expected space(s) before this colon.	fix	598	598	 	end	30	11
+tests/rules/@stylistic/switch-colon-spacing/before/cases.ts:32:10	@stylistic/switch-colon-spacing	expectedAfter	Expected space(s) after this colon.	fix	622	622	 	end	32	11
+tests/rules/@stylistic/switch-colon-spacing/before/cases.ts:37:9	@stylistic/switch-colon-spacing	expectedBefore	Expected space(s) before this colon.	fix	685	685	 	end	37	10
+tests/rules/@stylistic/switch-colon-spacing/before/cases.ts:39:10	@stylistic/switch-colon-spacing	expectedAfter	Expected space(s) after this colon.	fix	715	715	 	end	39	11
+tests/rules/@stylistic/switch-colon-spacing/before/cases.ts:40:9	@stylistic/switch-colon-spacing	expectedBefore	Expected space(s) before this colon.	fix	731	731	 	end	40	10
+tests/rules/@stylistic/switch-colon-spacing/before/cases.ts:40:9	@stylistic/switch-colon-spacing	expectedAfter	Expected space(s) after this colon.	fix	732	732	 	end	40	10
+tests/rules/@stylistic/switch-colon-spacing/cases.ts:7:9	@stylistic/switch-colon-spacing	unexpectedBefore	Unexpected space(s) before this colon.	fix	165	166		end	7	10
+tests/rules/@stylistic/switch-colon-spacing/cases.ts:8:9	@stylistic/switch-colon-spacing	unexpectedBefore	Unexpected space(s) before this colon.	fix	190	191		end	8	10
+tests/rules/@stylistic/switch-colon-spacing/cases.ts:8:9	@stylistic/switch-colon-spacing	expectedAfter	Expected space(s) after this colon.	fix	192	192	 	end	8	10
+tests/rules/@stylistic/switch-colon-spacing/cases.ts:9:8	@stylistic/switch-colon-spacing	expectedAfter	Expected space(s) after this colon.	fix	215	215	 	end	9	9
+tests/rules/@stylistic/switch-colon-spacing/cases.ts:11:21	@stylistic/switch-colon-spacing	unexpectedBefore	Unexpected space(s) before this colon.	end	11	22
+tests/rules/@stylistic/switch-colon-spacing/cases.ts:12:22	@stylistic/switch-colon-spacing	unexpectedBefore	Unexpected space(s) before this colon.	end	12	23
+tests/rules/@stylistic/switch-colon-spacing/cases.ts:12:22	@stylistic/switch-colon-spacing	expectedAfter	Expected space(s) after this colon.	fix	313	313	 	end	12	23
+tests/rules/@stylistic/switch-colon-spacing/cases.ts:20:12	@stylistic/switch-colon-spacing	unexpectedBefore	Unexpected space(s) before this colon.	fix	464	465		end	20	13
+tests/rules/@stylistic/switch-colon-spacing/cases.ts:21:22	@stylistic/switch-colon-spacing	unexpectedBefore	Unexpected space(s) before this colon.	fix	502	503		end	21	23
+tests/rules/@stylistic/switch-colon-spacing/cases.ts:21:22	@stylistic/switch-colon-spacing	expectedAfter	Expected space(s) after this colon.	fix	504	504	 	end	21	23
+tests/rules/@stylistic/switch-colon-spacing/cases.ts:26:11	@stylistic/switch-colon-spacing	unexpectedBefore	Unexpected space(s) before this colon.	fix	563	564		end	26	12
+tests/rules/@stylistic/switch-colon-spacing/cases.ts:26:11	@stylistic/switch-colon-spacing	expectedAfter	Expected space(s) after this colon.	fix	565	565	 	end	26	12
+tests/rules/@stylistic/switch-colon-spacing/cases.ts:31:11	@stylistic/switch-colon-spacing	unexpectedBefore	Unexpected space(s) before this colon.	fix	609	610		end	31	12
+tests/rules/@stylistic/switch-colon-spacing/cases.ts:32:10	@stylistic/switch-colon-spacing	unexpectedBefore	Unexpected space(s) before this colon.	fix	620	621		end	32	11
+tests/rules/@stylistic/switch-colon-spacing/cases.ts:32:10	@stylistic/switch-colon-spacing	expectedAfter	Expected space(s) after this colon.	fix	622	622	 	end	32	11
+tests/rules/@stylistic/switch-colon-spacing/cases.ts:35:9	@stylistic/switch-colon-spacing	unexpectedBefore	Unexpected space(s) before this colon.	fix	656	657		end	35	10
+tests/rules/@stylistic/switch-colon-spacing/cases.ts:39:10	@stylistic/switch-colon-spacing	unexpectedBefore	Unexpected space(s) before this colon.	fix	713	714		end	39	11
+tests/rules/@stylistic/switch-colon-spacing/cases.ts:39:10	@stylistic/switch-colon-spacing	expectedAfter	Expected space(s) after this colon.	fix	715	715	 	end	39	11
+tests/rules/@stylistic/switch-colon-spacing/cases.ts:40:9	@stylistic/switch-colon-spacing	expectedAfter	Expected space(s) after this colon.	fix	732	732	 	end	40	10

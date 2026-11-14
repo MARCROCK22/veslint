@@ -160,6 +160,7 @@ pub fn check_options(rule string, options []json2.Any) !bool {
 		stylistic_rest_spread_spacing { srsp_options(options)! }
 		stylistic_semi_spacing { ssmi_options(options)! }
 		stylistic_space_in_parens { sinp_options(options)! }
+		stylistic_switch_colon_spacing { sscs_options(options)! }
 		else { return false }
 	}
 	return true
