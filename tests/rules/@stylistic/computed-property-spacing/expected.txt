@@ -1,0 +1,154 @@
+tests/rules/@stylistic/computed-property-spacing/always-empty/cases.ts:5:4	@stylistic/computed-property-spacing	missingSpaceAfter	A space is required after '['.
+tests/rules/@stylistic/computed-property-spacing/always-empty/cases.ts:5:6	@stylistic/computed-property-spacing	missingSpaceBefore	A space is required before ']'.
+tests/rules/@stylistic/computed-property-spacing/always-empty/cases.ts:6:7	@stylistic/computed-property-spacing	missingSpaceBefore	A space is required before ']'.
+tests/rules/@stylistic/computed-property-spacing/always-empty/cases.ts:7:4	@stylistic/computed-property-spacing	missingSpaceAfter	A space is required after '['.
+tests/rules/@stylistic/computed-property-spacing/always-empty/cases.ts:12:4	@stylistic/computed-property-spacing	missingSpaceAfter	A space is required after '['.
+tests/rules/@stylistic/computed-property-spacing/always-empty/cases.ts:12:8	@stylistic/computed-property-spacing	missingSpaceBefore	A space is required before ']'.
+tests/rules/@stylistic/computed-property-spacing/always-empty/cases.ts:13:4	@stylistic/computed-property-spacing	missingSpaceAfter	A space is required after '['.
+tests/rules/@stylistic/computed-property-spacing/always-empty/cases.ts:13:22	@stylistic/computed-property-spacing	missingSpaceBefore	A space is required before ']'.
+tests/rules/@stylistic/computed-property-spacing/always-empty/cases.ts:23:4	@stylistic/computed-property-spacing	missingSpaceAfter	A space is required after '['.
+tests/rules/@stylistic/computed-property-spacing/always-empty/cases.ts:23:8	@stylistic/computed-property-spacing	missingSpaceAfter	A space is required after '['.
+tests/rules/@stylistic/computed-property-spacing/always-empty/cases.ts:23:10	@stylistic/computed-property-spacing	missingSpaceBefore	A space is required before ']'.
+tests/rules/@stylistic/computed-property-spacing/always-empty/cases.ts:23:11	@stylistic/computed-property-spacing	missingSpaceBefore	A space is required before ']'.
+tests/rules/@stylistic/computed-property-spacing/always-empty/cases.ts:28:24	@stylistic/computed-property-spacing	missingSpaceAfter	A space is required after '['.
+tests/rules/@stylistic/computed-property-spacing/always-empty/cases.ts:28:26	@stylistic/computed-property-spacing	missingSpaceBefore	A space is required before ']'.
+tests/rules/@stylistic/computed-property-spacing/always-empty/cases.ts:29:20	@stylistic/computed-property-spacing	missingSpaceAfter	A space is required after '['.
+tests/rules/@stylistic/computed-property-spacing/always-empty/cases.ts:29:22	@stylistic/computed-property-spacing	missingSpaceBefore	A space is required before ']'.
+tests/rules/@stylistic/computed-property-spacing/always-empty/cases.ts:32:3	@stylistic/computed-property-spacing	missingSpaceAfter	A space is required after '['.
+tests/rules/@stylistic/computed-property-spacing/always-empty/cases.ts:32:5	@stylistic/computed-property-spacing	missingSpaceBefore	A space is required before ']'.
+tests/rules/@stylistic/computed-property-spacing/always-empty/cases.ts:38:19	@stylistic/computed-property-spacing	missingSpaceAfter	A space is required after '['.
+tests/rules/@stylistic/computed-property-spacing/always-empty/cases.ts:38:26	@stylistic/computed-property-spacing	missingSpaceBefore	A space is required before ']'.
+tests/rules/@stylistic/computed-property-spacing/always-empty/cases.ts:49:13	@stylistic/computed-property-spacing	missingSpaceAfter	A space is required after '['.
+tests/rules/@stylistic/computed-property-spacing/always-empty/cases.ts:49:17	@stylistic/computed-property-spacing	missingSpaceBefore	A space is required before ']'.
+tests/rules/@stylistic/computed-property-spacing/always-no-class/cases.ts:5:4	@stylistic/computed-property-spacing	missingSpaceAfter	A space is required after '['.
+tests/rules/@stylistic/computed-property-spacing/always-no-class/cases.ts:5:6	@stylistic/computed-property-spacing	missingSpaceBefore	A space is required before ']'.
+tests/rules/@stylistic/computed-property-spacing/always-no-class/cases.ts:6:7	@stylistic/computed-property-spacing	missingSpaceBefore	A space is required before ']'.
+tests/rules/@stylistic/computed-property-spacing/always-no-class/cases.ts:7:4	@stylistic/computed-property-spacing	missingSpaceAfter	A space is required after '['.
+tests/rules/@stylistic/computed-property-spacing/always-no-class/cases.ts:12:4	@stylistic/computed-property-spacing	missingSpaceAfter	A space is required after '['.
+tests/rules/@stylistic/computed-property-spacing/always-no-class/cases.ts:12:8	@stylistic/computed-property-spacing	missingSpaceBefore	A space is required before ']'.
+tests/rules/@stylistic/computed-property-spacing/always-no-class/cases.ts:13:4	@stylistic/computed-property-spacing	missingSpaceAfter	A space is required after '['.
+tests/rules/@stylistic/computed-property-spacing/always-no-class/cases.ts:13:22	@stylistic/computed-property-spacing	missingSpaceBefore	A space is required before ']'.
+tests/rules/@stylistic/computed-property-spacing/always-no-class/cases.ts:23:4	@stylistic/computed-property-spacing	missingSpaceAfter	A space is required after '['.
+tests/rules/@stylistic/computed-property-spacing/always-no-class/cases.ts:23:8	@stylistic/computed-property-spacing	missingSpaceAfter	A space is required after '['.
+tests/rules/@stylistic/computed-property-spacing/always-no-class/cases.ts:23:10	@stylistic/computed-property-spacing	missingSpaceBefore	A space is required before ']'.
+tests/rules/@stylistic/computed-property-spacing/always-no-class/cases.ts:23:11	@stylistic/computed-property-spacing	missingSpaceBefore	A space is required before ']'.
+tests/rules/@stylistic/computed-property-spacing/always-no-class/cases.ts:28:24	@stylistic/computed-property-spacing	missingSpaceAfter	A space is required after '['.
+tests/rules/@stylistic/computed-property-spacing/always-no-class/cases.ts:28:26	@stylistic/computed-property-spacing	missingSpaceBefore	A space is required before ']'.
+tests/rules/@stylistic/computed-property-spacing/always-no-class/cases.ts:29:20	@stylistic/computed-property-spacing	missingSpaceAfter	A space is required after '['.
+tests/rules/@stylistic/computed-property-spacing/always-no-class/cases.ts:29:22	@stylistic/computed-property-spacing	missingSpaceBefore	A space is required before ']'.
+tests/rules/@stylistic/computed-property-spacing/always-no-class/cases.ts:49:13	@stylistic/computed-property-spacing	missingSpaceAfter	A space is required after '['.
+tests/rules/@stylistic/computed-property-spacing/always-no-class/cases.ts:49:17	@stylistic/computed-property-spacing	missingSpaceBefore	A space is required before ']'.
+tests/rules/@stylistic/computed-property-spacing/always/cases.ts:5:4	@stylistic/computed-property-spacing	missingSpaceAfter	A space is required after '['.
+tests/rules/@stylistic/computed-property-spacing/always/cases.ts:5:6	@stylistic/computed-property-spacing	missingSpaceBefore	A space is required before ']'.
+tests/rules/@stylistic/computed-property-spacing/always/cases.ts:6:7	@stylistic/computed-property-spacing	missingSpaceBefore	A space is required before ']'.
+tests/rules/@stylistic/computed-property-spacing/always/cases.ts:7:4	@stylistic/computed-property-spacing	missingSpaceAfter	A space is required after '['.
+tests/rules/@stylistic/computed-property-spacing/always/cases.ts:12:4	@stylistic/computed-property-spacing	missingSpaceAfter	A space is required after '['.
+tests/rules/@stylistic/computed-property-spacing/always/cases.ts:12:8	@stylistic/computed-property-spacing	missingSpaceBefore	A space is required before ']'.
+tests/rules/@stylistic/computed-property-spacing/always/cases.ts:13:4	@stylistic/computed-property-spacing	missingSpaceAfter	A space is required after '['.
+tests/rules/@stylistic/computed-property-spacing/always/cases.ts:13:22	@stylistic/computed-property-spacing	missingSpaceBefore	A space is required before ']'.
+tests/rules/@stylistic/computed-property-spacing/always/cases.ts:23:4	@stylistic/computed-property-spacing	missingSpaceAfter	A space is required after '['.
+tests/rules/@stylistic/computed-property-spacing/always/cases.ts:23:8	@stylistic/computed-property-spacing	missingSpaceAfter	A space is required after '['.
+tests/rules/@stylistic/computed-property-spacing/always/cases.ts:23:10	@stylistic/computed-property-spacing	missingSpaceBefore	A space is required before ']'.
+tests/rules/@stylistic/computed-property-spacing/always/cases.ts:23:11	@stylistic/computed-property-spacing	missingSpaceBefore	A space is required before ']'.
+tests/rules/@stylistic/computed-property-spacing/always/cases.ts:28:24	@stylistic/computed-property-spacing	missingSpaceAfter	A space is required after '['.
+tests/rules/@stylistic/computed-property-spacing/always/cases.ts:28:26	@stylistic/computed-property-spacing	missingSpaceBefore	A space is required before ']'.
+tests/rules/@stylistic/computed-property-spacing/always/cases.ts:29:20	@stylistic/computed-property-spacing	missingSpaceAfter	A space is required after '['.
+tests/rules/@stylistic/computed-property-spacing/always/cases.ts:29:22	@stylistic/computed-property-spacing	missingSpaceBefore	A space is required before ']'.
+tests/rules/@stylistic/computed-property-spacing/always/cases.ts:32:3	@stylistic/computed-property-spacing	missingSpaceAfter	A space is required after '['.
+tests/rules/@stylistic/computed-property-spacing/always/cases.ts:32:5	@stylistic/computed-property-spacing	missingSpaceBefore	A space is required before ']'.
+tests/rules/@stylistic/computed-property-spacing/always/cases.ts:38:19	@stylistic/computed-property-spacing	missingSpaceAfter	A space is required after '['.
+tests/rules/@stylistic/computed-property-spacing/always/cases.ts:38:26	@stylistic/computed-property-spacing	missingSpaceBefore	A space is required before ']'.
+tests/rules/@stylistic/computed-property-spacing/always/cases.ts:49:13	@stylistic/computed-property-spacing	missingSpaceAfter	A space is required after '['.
+tests/rules/@stylistic/computed-property-spacing/always/cases.ts:49:17	@stylistic/computed-property-spacing	missingSpaceBefore	A space is required before ']'.
+tests/rules/@stylistic/computed-property-spacing/cases.ts:6:5	@stylistic/computed-property-spacing	unexpectedSpaceAfter	There should be no space after '['.
+tests/rules/@stylistic/computed-property-spacing/cases.ts:7:6	@stylistic/computed-property-spacing	unexpectedSpaceBefore	There should be no space before ']'.
+tests/rules/@stylistic/computed-property-spacing/cases.ts:8:5	@stylistic/computed-property-spacing	unexpectedSpaceAfter	There should be no space after '['.
+tests/rules/@stylistic/computed-property-spacing/cases.ts:8:7	@stylistic/computed-property-spacing	unexpectedSpaceBefore	There should be no space before ']'.
+tests/rules/@stylistic/computed-property-spacing/cases.ts:9:5	@stylistic/computed-property-spacing	unexpectedSpaceAfter	There should be no space after '['.
+tests/rules/@stylistic/computed-property-spacing/cases.ts:9:8	@stylistic/computed-property-spacing	unexpectedSpaceBefore	There should be no space before ']'.
+tests/rules/@stylistic/computed-property-spacing/cases.ts:10:7	@stylistic/computed-property-spacing	unexpectedSpaceAfter	There should be no space after '['.
+tests/rules/@stylistic/computed-property-spacing/cases.ts:10:9	@stylistic/computed-property-spacing	unexpectedSpaceBefore	There should be no space before ']'.
+tests/rules/@stylistic/computed-property-spacing/cases.ts:11:5	@stylistic/computed-property-spacing	unexpectedSpaceAfter	There should be no space after '['.
+tests/rules/@stylistic/computed-property-spacing/cases.ts:11:9	@stylistic/computed-property-spacing	unexpectedSpaceBefore	There should be no space before ']'.
+tests/rules/@stylistic/computed-property-spacing/cases.ts:14:5	@stylistic/computed-property-spacing	unexpectedSpaceAfter	There should be no space after '['.
+tests/rules/@stylistic/computed-property-spacing/cases.ts:14:21	@stylistic/computed-property-spacing	unexpectedSpaceBefore	There should be no space before ']'.
+tests/rules/@stylistic/computed-property-spacing/cases.ts:18:5	@stylistic/computed-property-spacing	unexpectedSpaceAfter	There should be no space after '['.
+tests/rules/@stylistic/computed-property-spacing/cases.ts:21:4	@stylistic/computed-property-spacing	unexpectedSpaceBefore	There should be no space before ']'.
+tests/rules/@stylistic/computed-property-spacing/cases.ts:22:5	@stylistic/computed-property-spacing	unexpectedSpaceAfter	There should be no space after '['.
+tests/rules/@stylistic/computed-property-spacing/cases.ts:22:10	@stylistic/computed-property-spacing	unexpectedSpaceAfter	There should be no space after '['.
+tests/rules/@stylistic/computed-property-spacing/cases.ts:22:12	@stylistic/computed-property-spacing	unexpectedSpaceBefore	There should be no space before ']'.
+tests/rules/@stylistic/computed-property-spacing/cases.ts:22:14	@stylistic/computed-property-spacing	unexpectedSpaceBefore	There should be no space before ']'.
+tests/rules/@stylistic/computed-property-spacing/cases.ts:24:5	@stylistic/computed-property-spacing	unexpectedSpaceAfter	There should be no space after '['.
+tests/rules/@stylistic/computed-property-spacing/cases.ts:24:12	@stylistic/computed-property-spacing	unexpectedSpaceBefore	There should be no space before ']'.
+tests/rules/@stylistic/computed-property-spacing/cases.ts:25:5	@stylistic/computed-property-spacing	unexpectedSpaceAfter	There should be no space after '['.
+tests/rules/@stylistic/computed-property-spacing/cases.ts:25:11	@stylistic/computed-property-spacing	unexpectedSpaceBefore	There should be no space before ']'.
+tests/rules/@stylistic/computed-property-spacing/cases.ts:25:14	@stylistic/computed-property-spacing	unexpectedSpaceAfter	There should be no space after '['.
+tests/rules/@stylistic/computed-property-spacing/cases.ts:25:16	@stylistic/computed-property-spacing	unexpectedSpaceBefore	There should be no space before ']'.
+tests/rules/@stylistic/computed-property-spacing/cases.ts:27:5	@stylistic/computed-property-spacing	unexpectedSpaceAfter	There should be no space after '['.
+tests/rules/@stylistic/computed-property-spacing/cases.ts:27:7	@stylistic/computed-property-spacing	unexpectedSpaceBefore	There should be no space before ']'.
+tests/rules/@stylistic/computed-property-spacing/cases.ts:28:15	@stylistic/computed-property-spacing	unexpectedSpaceAfter	There should be no space after '['.
+tests/rules/@stylistic/computed-property-spacing/cases.ts:28:17	@stylistic/computed-property-spacing	unexpectedSpaceBefore	There should be no space before ']'.
+tests/rules/@stylistic/computed-property-spacing/cases.ts:28:33	@stylistic/computed-property-spacing	unexpectedSpaceAfter	There should be no space after '['.
+tests/rules/@stylistic/computed-property-spacing/cases.ts:28:35	@stylistic/computed-property-spacing	unexpectedSpaceBefore	There should be no space before ']'.
+tests/rules/@stylistic/computed-property-spacing/cases.ts:28:55	@stylistic/computed-property-spacing	unexpectedSpaceAfter	There should be no space after '['.
+tests/rules/@stylistic/computed-property-spacing/cases.ts:28:59	@stylistic/computed-property-spacing	unexpectedSpaceBefore	There should be no space before ']'.
+tests/rules/@stylistic/computed-property-spacing/cases.ts:29:10	@stylistic/computed-property-spacing	unexpectedSpaceAfter	There should be no space after '['.
+tests/rules/@stylistic/computed-property-spacing/cases.ts:29:12	@stylistic/computed-property-spacing	unexpectedSpaceBefore	There should be no space before ']'.
+tests/rules/@stylistic/computed-property-spacing/cases.ts:31:4	@stylistic/computed-property-spacing	unexpectedSpaceAfter	There should be no space after '['.
+tests/rules/@stylistic/computed-property-spacing/cases.ts:31:6	@stylistic/computed-property-spacing	unexpectedSpaceBefore	There should be no space before ']'.
+tests/rules/@stylistic/computed-property-spacing/cases.ts:33:11	@stylistic/computed-property-spacing	unexpectedSpaceAfter	There should be no space after '['.
+tests/rules/@stylistic/computed-property-spacing/cases.ts:33:15	@stylistic/computed-property-spacing	unexpectedSpaceBefore	There should be no space before ']'.
+tests/rules/@stylistic/computed-property-spacing/cases.ts:34:4	@stylistic/computed-property-spacing	unexpectedSpaceAfter	There should be no space after '['.
+tests/rules/@stylistic/computed-property-spacing/cases.ts:34:8	@stylistic/computed-property-spacing	unexpectedSpaceBefore	There should be no space before ']'.
+tests/rules/@stylistic/computed-property-spacing/cases.ts:35:8	@stylistic/computed-property-spacing	unexpectedSpaceAfter	There should be no space after '['.
+tests/rules/@stylistic/computed-property-spacing/cases.ts:35:12	@stylistic/computed-property-spacing	unexpectedSpaceBefore	There should be no space before ']'.
+tests/rules/@stylistic/computed-property-spacing/cases.ts:36:8	@stylistic/computed-property-spacing	unexpectedSpaceAfter	There should be no space after '['.
+tests/rules/@stylistic/computed-property-spacing/cases.ts:36:12	@stylistic/computed-property-spacing	unexpectedSpaceBefore	There should be no space before ']'.
+tests/rules/@stylistic/computed-property-spacing/cases.ts:37:13	@stylistic/computed-property-spacing	unexpectedSpaceAfter	There should be no space after '['.
+tests/rules/@stylistic/computed-property-spacing/cases.ts:37:19	@stylistic/computed-property-spacing	unexpectedSpaceBefore	There should be no space before ']'.
+tests/rules/@stylistic/computed-property-spacing/cases.ts:48:14	@stylistic/computed-property-spacing	unexpectedSpaceAfter	There should be no space after '['.
+tests/rules/@stylistic/computed-property-spacing/cases.ts:48:18	@stylistic/computed-property-spacing	unexpectedSpaceBefore	There should be no space before ']'.
+tests/rules/@stylistic/computed-property-spacing/cases.ts:50:20	@stylistic/computed-property-spacing	unexpectedSpaceAfter	There should be no space after '['.
+tests/rules/@stylistic/computed-property-spacing/cases.ts:50:27	@stylistic/computed-property-spacing	unexpectedSpaceBefore	There should be no space before ']'.
+tests/rules/@stylistic/computed-property-spacing/cases.ts:51:20	@stylistic/computed-property-spacing	unexpectedSpaceAfter	There should be no space after '['.
+tests/rules/@stylistic/computed-property-spacing/cases.ts:51:22	@stylistic/computed-property-spacing	unexpectedSpaceBefore	There should be no space before ']'.
+tests/rules/@stylistic/computed-property-spacing/never-no-class/cases.ts:6:5	@stylistic/computed-property-spacing	unexpectedSpaceAfter	There should be no space after '['.
+tests/rules/@stylistic/computed-property-spacing/never-no-class/cases.ts:7:6	@stylistic/computed-property-spacing	unexpectedSpaceBefore	There should be no space before ']'.
+tests/rules/@stylistic/computed-property-spacing/never-no-class/cases.ts:8:5	@stylistic/computed-property-spacing	unexpectedSpaceAfter	There should be no space after '['.
+tests/rules/@stylistic/computed-property-spacing/never-no-class/cases.ts:8:7	@stylistic/computed-property-spacing	unexpectedSpaceBefore	There should be no space before ']'.
+tests/rules/@stylistic/computed-property-spacing/never-no-class/cases.ts:9:5	@stylistic/computed-property-spacing	unexpectedSpaceAfter	There should be no space after '['.
+tests/rules/@stylistic/computed-property-spacing/never-no-class/cases.ts:9:8	@stylistic/computed-property-spacing	unexpectedSpaceBefore	There should be no space before ']'.
+tests/rules/@stylistic/computed-property-spacing/never-no-class/cases.ts:10:7	@stylistic/computed-property-spacing	unexpectedSpaceAfter	There should be no space after '['.
+tests/rules/@stylistic/computed-property-spacing/never-no-class/cases.ts:10:9	@stylistic/computed-property-spacing	unexpectedSpaceBefore	There should be no space before ']'.
+tests/rules/@stylistic/computed-property-spacing/never-no-class/cases.ts:11:5	@stylistic/computed-property-spacing	unexpectedSpaceAfter	There should be no space after '['.
+tests/rules/@stylistic/computed-property-spacing/never-no-class/cases.ts:11:9	@stylistic/computed-property-spacing	unexpectedSpaceBefore	There should be no space before ']'.
+tests/rules/@stylistic/computed-property-spacing/never-no-class/cases.ts:14:5	@stylistic/computed-property-spacing	unexpectedSpaceAfter	There should be no space after '['.
+tests/rules/@stylistic/computed-property-spacing/never-no-class/cases.ts:14:21	@stylistic/computed-property-spacing	unexpectedSpaceBefore	There should be no space before ']'.
+tests/rules/@stylistic/computed-property-spacing/never-no-class/cases.ts:18:5	@stylistic/computed-property-spacing	unexpectedSpaceAfter	There should be no space after '['.
+tests/rules/@stylistic/computed-property-spacing/never-no-class/cases.ts:21:4	@stylistic/computed-property-spacing	unexpectedSpaceBefore	There should be no space before ']'.
+tests/rules/@stylistic/computed-property-spacing/never-no-class/cases.ts:22:5	@stylistic/computed-property-spacing	unexpectedSpaceAfter	There should be no space after '['.
+tests/rules/@stylistic/computed-property-spacing/never-no-class/cases.ts:22:10	@stylistic/computed-property-spacing	unexpectedSpaceAfter	There should be no space after '['.
+tests/rules/@stylistic/computed-property-spacing/never-no-class/cases.ts:22:12	@stylistic/computed-property-spacing	unexpectedSpaceBefore	There should be no space before ']'.
+tests/rules/@stylistic/computed-property-spacing/never-no-class/cases.ts:22:14	@stylistic/computed-property-spacing	unexpectedSpaceBefore	There should be no space before ']'.
+tests/rules/@stylistic/computed-property-spacing/never-no-class/cases.ts:24:5	@stylistic/computed-property-spacing	unexpectedSpaceAfter	There should be no space after '['.
+tests/rules/@stylistic/computed-property-spacing/never-no-class/cases.ts:24:12	@stylistic/computed-property-spacing	unexpectedSpaceBefore	There should be no space before ']'.
+tests/rules/@stylistic/computed-property-spacing/never-no-class/cases.ts:25:5	@stylistic/computed-property-spacing	unexpectedSpaceAfter	There should be no space after '['.
+tests/rules/@stylistic/computed-property-spacing/never-no-class/cases.ts:25:11	@stylistic/computed-property-spacing	unexpectedSpaceBefore	There should be no space before ']'.
+tests/rules/@stylistic/computed-property-spacing/never-no-class/cases.ts:25:14	@stylistic/computed-property-spacing	unexpectedSpaceAfter	There should be no space after '['.
+tests/rules/@stylistic/computed-property-spacing/never-no-class/cases.ts:25:16	@stylistic/computed-property-spacing	unexpectedSpaceBefore	There should be no space before ']'.
+tests/rules/@stylistic/computed-property-spacing/never-no-class/cases.ts:27:5	@stylistic/computed-property-spacing	unexpectedSpaceAfter	There should be no space after '['.
+tests/rules/@stylistic/computed-property-spacing/never-no-class/cases.ts:27:7	@stylistic/computed-property-spacing	unexpectedSpaceBefore	There should be no space before ']'.
+tests/rules/@stylistic/computed-property-spacing/never-no-class/cases.ts:28:15	@stylistic/computed-property-spacing	unexpectedSpaceAfter	There should be no space after '['.
+tests/rules/@stylistic/computed-property-spacing/never-no-class/cases.ts:28:17	@stylistic/computed-property-spacing	unexpectedSpaceBefore	There should be no space before ']'.
+tests/rules/@stylistic/computed-property-spacing/never-no-class/cases.ts:28:33	@stylistic/computed-property-spacing	unexpectedSpaceAfter	There should be no space after '['.
+tests/rules/@stylistic/computed-property-spacing/never-no-class/cases.ts:28:35	@stylistic/computed-property-spacing	unexpectedSpaceBefore	There should be no space before ']'.
+tests/rules/@stylistic/computed-property-spacing/never-no-class/cases.ts:28:55	@stylistic/computed-property-spacing	unexpectedSpaceAfter	There should be no space after '['.
+tests/rules/@stylistic/computed-property-spacing/never-no-class/cases.ts:28:59	@stylistic/computed-property-spacing	unexpectedSpaceBefore	There should be no space before ']'.
+tests/rules/@stylistic/computed-property-spacing/never-no-class/cases.ts:29:10	@stylistic/computed-property-spacing	unexpectedSpaceAfter	There should be no space after '['.
+tests/rules/@stylistic/computed-property-spacing/never-no-class/cases.ts:29:12	@stylistic/computed-property-spacing	unexpectedSpaceBefore	There should be no space before ']'.
+tests/rules/@stylistic/computed-property-spacing/never-no-class/cases.ts:48:14	@stylistic/computed-property-spacing	unexpectedSpaceAfter	There should be no space after '['.
+tests/rules/@stylistic/computed-property-spacing/never-no-class/cases.ts:48:18	@stylistic/computed-property-spacing	unexpectedSpaceBefore	There should be no space before ']'.
+tests/rules/@stylistic/computed-property-spacing/never-no-class/cases.ts:50:20	@stylistic/computed-property-spacing	unexpectedSpaceAfter	There should be no space after '['.
+tests/rules/@stylistic/computed-property-spacing/never-no-class/cases.ts:50:27	@stylistic/computed-property-spacing	unexpectedSpaceBefore	There should be no space before ']'.
+tests/rules/@stylistic/computed-property-spacing/never-no-class/cases.ts:51:20	@stylistic/computed-property-spacing	unexpectedSpaceAfter	There should be no space after '['.
+tests/rules/@stylistic/computed-property-spacing/never-no-class/cases.ts:51:22	@stylistic/computed-property-spacing	unexpectedSpaceBefore	There should be no space before ']'.
