@@ -1,0 +1,17 @@
+tests/rules/unicorn/no-useless-promise-resolve-reject/cases.ts:6:30	unicorn/no-useless-promise-resolve-reject	resolve	Prefer `return value` over `return Promise.resolve(value)`.	fix	130	160	return value;	end	6	45
+tests/rules/unicorn/no-useless-promise-resolve-reject/cases.ts:7:30	unicorn/no-useless-promise-resolve-reject	reject	Prefer `throw error` over `return Promise.reject(error)`.	fix	185	214	throw error;	end	7	44
+tests/rules/unicorn/no-useless-promise-resolve-reject/cases.ts:8:24	unicorn/no-useless-promise-resolve-reject	resolve	Prefer `return value` over `return Promise.resolve(value)`.	fix	240	262	value	end	8	39
+tests/rules/unicorn/no-useless-promise-resolve-reject/cases.ts:9:24	unicorn/no-useless-promise-resolve-reject	reject	Prefer `throw error` over `return Promise.reject(error)`.	fix	287	308	{ throw error; }	end	9	38
+tests/rules/unicorn/no-useless-promise-resolve-reject/cases.ts:10:30	unicorn/no-useless-promise-resolve-reject	resolve	Prefer `yield value` over `yield Promise.resolve(value)`.	fix	333	361	yield value	end	10	45
+tests/rules/unicorn/no-useless-promise-resolve-reject/cases.ts:11:30	unicorn/no-useless-promise-resolve-reject	reject	Prefer `throw error` over `yield Promise.reject(error)`.	fix	388	415	throw error	end	11	44
+tests/rules/unicorn/no-useless-promise-resolve-reject/cases.ts:12:30	unicorn/no-useless-promise-resolve-reject	resolve	Prefer `return value` over `return Promise.resolve(value)`.	fix	441	466	return;	end	12	45
+tests/rules/unicorn/no-useless-promise-resolve-reject/cases.ts:13:30	unicorn/no-useless-promise-resolve-reject	reject	Prefer `throw error` over `return Promise.reject(error)`.	fix	491	515	throw undefined;	end	13	44
+tests/rules/unicorn/no-useless-promise-resolve-reject/cases.ts:14:24	unicorn/no-useless-promise-resolve-reject	resolve	Prefer `return value` over `return Promise.resolve(value)`.	fix	541	566	({ a: 1 })	end	14	39
+tests/rules/unicorn/no-useless-promise-resolve-reject/cases.ts:15:37	unicorn/no-useless-promise-resolve-reject	resolve	Prefer `return value` over `return Promise.resolve(value)`.	fix	604	626	value	end	15	52
+tests/rules/unicorn/no-useless-promise-resolve-reject/cases.ts:16:32	unicorn/no-useless-promise-resolve-reject	resolve	Prefer `return value` over `return Promise.resolve(value)`.	fix	661	683	value	end	16	47
+tests/rules/unicorn/no-useless-promise-resolve-reject/cases.ts:17:33	unicorn/no-useless-promise-resolve-reject	reject	Prefer `throw error` over `return Promise.reject(error)`.	fix	718	739	{ throw error; }	end	17	47
+tests/rules/unicorn/no-useless-promise-resolve-reject/cases.ts:18:25	unicorn/no-useless-promise-resolve-reject	resolve	Prefer `return value` over `return Promise.resolve(value)`.	fix	766	793	(value, 1)	end	18	40
+tests/rules/unicorn/no-useless-promise-resolve-reject/cases.ts:21:36	unicorn/no-useless-promise-resolve-reject	reject	Prefer `throw error` over `return Promise.reject(error)`.	end	21	50
+tests/rules/unicorn/no-useless-promise-resolve-reject/cases.ts:22:30	unicorn/no-useless-promise-resolve-reject	resolve	Prefer `return value` over `return Promise.resolve(value)`.	end	22	45
+tests/rules/unicorn/no-useless-promise-resolve-reject/cases.ts:23:30	unicorn/no-useless-promise-resolve-reject	resolve	Prefer `return value` over `return Promise.resolve(value)`.	end	23	45
+tests/rules/unicorn/no-useless-promise-resolve-reject/cases.ts:24:40	unicorn/no-useless-promise-resolve-reject	reject	Prefer `throw error` over `yield Promise.reject(error)`.	end	24	54

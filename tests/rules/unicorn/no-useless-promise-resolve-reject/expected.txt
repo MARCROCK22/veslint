@@ -1,0 +1,17 @@
+tests/rules/unicorn/no-useless-promise-resolve-reject/cases.ts:6:30	unicorn/no-useless-promise-resolve-reject	resolve	Prefer `return value` over `return Promise.resolve(value)`.
+tests/rules/unicorn/no-useless-promise-resolve-reject/cases.ts:7:30	unicorn/no-useless-promise-resolve-reject	reject	Prefer `throw error` over `return Promise.reject(error)`.
+tests/rules/unicorn/no-useless-promise-resolve-reject/cases.ts:8:24	unicorn/no-useless-promise-resolve-reject	resolve	Prefer `return value` over `return Promise.resolve(value)`.
+tests/rules/unicorn/no-useless-promise-resolve-reject/cases.ts:9:24	unicorn/no-useless-promise-resolve-reject	reject	Prefer `throw error` over `return Promise.reject(error)`.
+tests/rules/unicorn/no-useless-promise-resolve-reject/cases.ts:10:30	unicorn/no-useless-promise-resolve-reject	resolve	Prefer `yield value` over `yield Promise.resolve(value)`.
+tests/rules/unicorn/no-useless-promise-resolve-reject/cases.ts:11:30	unicorn/no-useless-promise-resolve-reject	reject	Prefer `throw error` over `yield Promise.reject(error)`.
+tests/rules/unicorn/no-useless-promise-resolve-reject/cases.ts:12:30	unicorn/no-useless-promise-resolve-reject	resolve	Prefer `return value` over `return Promise.resolve(value)`.
+tests/rules/unicorn/no-useless-promise-resolve-reject/cases.ts:13:30	unicorn/no-useless-promise-resolve-reject	reject	Prefer `throw error` over `return Promise.reject(error)`.
+tests/rules/unicorn/no-useless-promise-resolve-reject/cases.ts:14:24	unicorn/no-useless-promise-resolve-reject	resolve	Prefer `return value` over `return Promise.resolve(value)`.
+tests/rules/unicorn/no-useless-promise-resolve-reject/cases.ts:15:37	unicorn/no-useless-promise-resolve-reject	resolve	Prefer `return value` over `return Promise.resolve(value)`.
+tests/rules/unicorn/no-useless-promise-resolve-reject/cases.ts:16:32	unicorn/no-useless-promise-resolve-reject	resolve	Prefer `return value` over `return Promise.resolve(value)`.
+tests/rules/unicorn/no-useless-promise-resolve-reject/cases.ts:17:33	unicorn/no-useless-promise-resolve-reject	reject	Prefer `throw error` over `return Promise.reject(error)`.
+tests/rules/unicorn/no-useless-promise-resolve-reject/cases.ts:18:25	unicorn/no-useless-promise-resolve-reject	resolve	Prefer `return value` over `return Promise.resolve(value)`.
+tests/rules/unicorn/no-useless-promise-resolve-reject/cases.ts:21:36	unicorn/no-useless-promise-resolve-reject	reject	Prefer `throw error` over `return Promise.reject(error)`.
+tests/rules/unicorn/no-useless-promise-resolve-reject/cases.ts:22:30	unicorn/no-useless-promise-resolve-reject	resolve	Prefer `return value` over `return Promise.resolve(value)`.
+tests/rules/unicorn/no-useless-promise-resolve-reject/cases.ts:23:30	unicorn/no-useless-promise-resolve-reject	resolve	Prefer `return value` over `return Promise.resolve(value)`.
+tests/rules/unicorn/no-useless-promise-resolve-reject/cases.ts:24:40	unicorn/no-useless-promise-resolve-reject	reject	Prefer `throw error` over `yield Promise.reject(error)`.
