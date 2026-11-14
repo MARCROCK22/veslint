@@ -369,6 +369,7 @@ pub const unicorn_relative_url_style = 'unicorn/relative-url-style'
 pub const unicorn_prefer_prototype_methods = 'unicorn/prefer-prototype-methods'
 pub const unicorn_better_regex = 'unicorn/better-regex'
 pub const unicorn_no_this_assignment = 'unicorn/no-this-assignment'
+pub const unicorn_no_unreadable_iife = 'unicorn/no-unreadable-iife'
 pub const names = [no_floating_promises, await_thenable, require_await, return_await,
 	no_misused_promises, no_unsafe_call, no_unsafe_member_access, no_unsafe_return,
 	no_unsafe_assignment, no_unsafe_argument, restrict_template_expressions,
@@ -467,7 +468,7 @@ pub const names = [no_floating_promises, await_thenable, require_await, return_a
 	unicorn_prefer_json_parse_buffer, unicorn_no_anonymous_default_export,
 	unicorn_prefer_import_meta_properties, unicorn_prefer_module, unicorn_prefer_reflect_apply,
 	unicorn_prefer_export_from, unicorn_relative_url_style, unicorn_prefer_prototype_methods,
-	unicorn_better_regex, unicorn_no_this_assignment]
+	unicorn_better_regex, unicorn_no_this_assignment, unicorn_no_unreadable_iife]
 
 // untyped_rules are the ported rules that need no types (`meta.docs.requiresTypeChecking` is false
 // in typescript-eslint; the eslint-plugin-unicorn rules that read the types when the parser has a
@@ -540,7 +541,7 @@ pub const untyped_rules = [adjacent_overload_signatures, array_type, class_liter
 	unicorn_prefer_json_parse_buffer, unicorn_no_anonymous_default_export,
 	unicorn_prefer_import_meta_properties, unicorn_prefer_module, unicorn_prefer_reflect_apply,
 	unicorn_prefer_export_from, unicorn_relative_url_style, unicorn_prefer_prototype_methods,
-	unicorn_better_regex, unicorn_no_this_assignment]
+	unicorn_better_regex, unicorn_no_this_assignment, unicorn_no_unreadable_iife]
 
 // needs_types tells whether a rule asks tsgo for the types of the program.
 pub fn needs_types(rule string) bool {
@@ -906,6 +907,7 @@ pub const default_options = {
 	unicorn_prefer_prototype_methods:                '[]'
 	unicorn_better_regex:                            '[]'
 	unicorn_no_this_assignment:                      '[]'
+	unicorn_no_unreadable_iife:                      '[]'
 }
 
 // Finding is a problem a rule found at a node.
@@ -1395,6 +1397,7 @@ pub fn message(rule string, finding Finding) string {
 		unicorn_prefer_prototype_methods { uppm_messages }
 		unicorn_better_regex { ubr_messages }
 		unicorn_no_this_assignment { unta_messages }
+		unicorn_no_unreadable_iife { unui_messages }
 		else { map[string]string{} }
 	}
 	return interpolate(messages[finding.message_id] or { finding.message_id }, finding.data)
@@ -2615,6 +2618,9 @@ fn (mut c Checker) lint_rule(rule string, root C.TSNode, abs_path string, mut st
 		}
 		unicorn_no_this_assignment {
 			return c.lint_unicorn_no_this_assignment(root, abs_path, mut stats)!
+		}
+		unicorn_no_unreadable_iife {
+			return c.lint_unicorn_no_unreadable_iife(root, abs_path, mut stats)!
 		}
 		else { return error('unknown rule: ${rule}') }
 	}

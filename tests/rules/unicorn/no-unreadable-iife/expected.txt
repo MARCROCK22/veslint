@@ -1,0 +1,9 @@
+tests/rules/unicorn/no-unreadable-iife/cases.ts:4:19	unicorn/no-unreadable-iife	no-unreadable-iife	IIFE with parenthesized arrow function body is considered unreadable.
+tests/rules/unicorn/no-unreadable-iife/cases.ts:5:19	unicorn/no-unreadable-iife	no-unreadable-iife	IIFE with parenthesized arrow function body is considered unreadable.
+tests/rules/unicorn/no-unreadable-iife/cases.ts:8:28	unicorn/no-unreadable-iife	no-unreadable-iife	IIFE with parenthesized arrow function body is considered unreadable.
+tests/rules/unicorn/no-unreadable-iife/cases.ts:9:25	unicorn/no-unreadable-iife	no-unreadable-iife	IIFE with parenthesized arrow function body is considered unreadable.
+tests/rules/unicorn/no-unreadable-iife/cases.ts:10:19	unicorn/no-unreadable-iife	no-unreadable-iife	IIFE with parenthesized arrow function body is considered unreadable.
+tests/rules/unicorn/no-unreadable-iife/cases.ts:11:31	unicorn/no-unreadable-iife	no-unreadable-iife	IIFE with parenthesized arrow function body is considered unreadable.
+tests/rules/unicorn/no-unreadable-iife/cases.ts:12:19	unicorn/no-unreadable-iife	no-unreadable-iife	IIFE with parenthesized arrow function body is considered unreadable.
+tests/rules/unicorn/no-unreadable-iife/cases.ts:15:19	unicorn/no-unreadable-iife	no-unreadable-iife	IIFE with parenthesized arrow function body is considered unreadable.
+tests/rules/unicorn/no-unreadable-iife/cases.ts:16:19	unicorn/no-unreadable-iife	no-unreadable-iife	IIFE with parenthesized arrow function body is considered unreadable.
