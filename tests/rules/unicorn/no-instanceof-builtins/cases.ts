@@ -24,3 +24,19 @@ function g() {
 const z1 = x instanceof Foo;
 const z2 = x instanceof globalThis.Array;
 class Foo {}
+
+// 79.0.0: `globalThis.Array` and the like; parentheses where `===` binds more loosely and around a
+// left operand that binds more loosely than `typeof`; no fix that would lose comments.
+declare const v: unknown, w: number;
+const g1 = v instanceof globalThis.Array;
+const g2 = v instanceof window.Function;
+const g3 = !(v instanceof Function);
+const g4 = (v as any) + w instanceof Function;
+const g5 = true === v instanceof Function;
+const g6 = v instanceof /* lost */ Array;
+const g7 = (v /* kept */) instanceof Array;
+const g8 = v instanceof String /* lost */;
+const g9 = (v instanceof Function).toString();
+declare function call(): void;
+call()
+v instanceof Function ? 1 : 2;

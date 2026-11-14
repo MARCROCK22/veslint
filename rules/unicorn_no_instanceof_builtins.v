@@ -4,7 +4,7 @@ import estree
 import json2
 import time
 
-// Port of the `unicorn/no-instanceof-builtins` rule of eslint-plugin-unicorn 64.0.0, with its
+// Port of the `unicorn/no-instanceof-builtins` rule of eslint-plugin-unicorn 79.0.0, with its
 // fixes and suggestions.
 
 const unib_messages = {
@@ -60,10 +60,10 @@ fn (mut c Checker) lint_unicorn_no_instanceof_builtins(root C.TSNode, abs_path s
 		}
 		stats.checked++
 		right := t.node(node, .right) or { continue }
-		if (t.string_of(node, .operator) or { '' }) != 'instanceof' || t.typ(right) != .identifier {
+		if (t.string_of(node, .operator) or { '' }) != 'instanceof' {
 			continue
 		}
-		name := t.string_of(right, .name) or { continue }
+		name, reference_text := c.unib_constructor(root, t, right) or { continue }
 		if name in opts.exclude {
 			continue
 		}
@@ -71,39 +71,57 @@ fn (mut c Checker) lint_unicorn_no_instanceof_builtins(root C.TSNode, abs_path s
 			stmt:       c.es_tree_position(t, node)
 			message_id: 'no-instanceof-builtins'
 		}
+		left := t.node(node, .left) or { continue }
+		// Comments outside the kept left operand could be lost or moved.
+		commented := c.unb_would_remove_comments(tokens, unb_node_range(t, node), [
+			c.unb_parenthesized_range(t, tokens, left),
+		], false)
 		if name == 'Array' || (name == 'Error' && opts.use_error_is_error) {
-			function := if name == 'Array' { 'Array.isArray' } else { 'Error.isError' }
-			has_fix, fix := c.merge_fixes(c.unib_function_call(t, tokens, node, function))!
-			findings << Finding{
-				...finding
-				has_fix: has_fix
-				fix:     fix
+			function := reference_text + if name == 'Array' { '.isArray' } else { '.isError' }
+			if !commented {
+				has_fix, fix := c.merge_fixes(c.unib_function_call(t, tokens, node, function))!
+				finding = Finding{
+					...finding
+					has_fix: has_fix
+					fix:     fix
+				}
 			}
+			findings << finding
 			continue
 		}
 		if name == 'Function' {
-			has_fix, fix := c.merge_fixes(c.unib_type_of(t, tokens, node))!
-			findings << Finding{
-				...finding
-				has_fix: has_fix
-				fix:     fix
+			if !commented {
+				if fixes := c.unib_type_of(t, tokens, node, name) {
+					has_fix, fix := c.merge_fixes(fixes)!
+					finding = Finding{
+						...finding
+						has_fix: has_fix
+						fix:     fix
+					}
+				}
 			}
+			findings << finding
 			continue
 		}
 		if name in unib_primitive_wrappers {
-			_, fix := c.merge_fixes(c.unib_type_of(t, tokens, node))!
-			findings << Finding{
-				...finding
-				suggestions: [
-					Suggestion{
-						message_id: 'switch-to-type-of'
-						data:       {
-							'type': name.to_lower()
-						}
-						fix:        fix
-					},
-				]
+			if !commented {
+				if fixes := c.unib_type_of(t, tokens, node, name) {
+					_, fix := c.merge_fixes(fixes)!
+					finding = Finding{
+						...finding
+						suggestions: [
+							Suggestion{
+								message_id: 'switch-to-type-of'
+								data:       {
+									'type': name.to_lower()
+								}
+								fix:        fix
+							},
+						]
+					}
+				}
 			}
+			findings << finding
 			continue
 		}
 		if name in opts.forbidden {
@@ -125,13 +143,33 @@ fn (c &Checker) unib_instanceof_token(t &estree.EsTree, tokens &SourceTokens, le
 	return none
 }
 
+// unib_constructor ports getConstructor: the name of the constructor and how it is written, for
+// `Name` or `global.Name` (`globalThis`, `self` and `window` too) of the global object.
+fn (mut c Checker) unib_constructor(root C.TSNode, t &estree.EsTree, node int) ?(string, string) {
+	if t.typ(node) == .identifier {
+		name := t.string_of(node, .name)?
+		return name, name
+	}
+	if t.typ(node) != .member_expression || (t.flag(node, .computed) or { false }) {
+		return none
+	}
+	property := t.node(node, .property)?
+	object := t.node(node, .object)?
+	if t.typ(property) != .identifier || t.typ(object) != .identifier
+		|| (t.string_of(object, .name) or { '' }) !in ['global', 'globalThis', 'self', 'window']
+		|| !c.unb_is_global_identifier(root, t, object) {
+		return none
+	}
+	return t.string_of(property, .name)?, c.un_text(t, node)
+}
+
 // unib_function_call ports replaceWithFunctionCall: `a instanceof Array` becomes
 // `Array.isArray(a)`.
 fn (c &Checker) unib_function_call(t &estree.EsTree, tokens &SourceTokens, node int, function string) []Fix {
 	left := t.node(node, .left) or { return [] }
 	right := t.node(node, .right) or { return [] }
 	keyword := c.unib_instanceof_token(t, tokens, left) or { return [] }
-	mut fixes := c.un_fix_space_around_keyword(t, tokens, node)
+	mut fixes := c.unb_fix_space_around_keyword(t, tokens, node)
 	start, end := c.un_parenthesized_range(t, tokens, left)
 	fixes << fix_insert_at(start, function + '(')
 	fixes << fix_insert_at(end, ')')
@@ -141,16 +179,31 @@ fn (c &Checker) unib_function_call(t &estree.EsTree, tokens &SourceTokens, node 
 }
 
 // unib_type_of ports replaceWithTypeOfExpression: `a instanceof String` becomes
-// `typeof a === 'string'`.
-fn (c &Checker) unib_type_of(t &estree.EsTree, tokens &SourceTokens, node int) []Fix {
-	left := t.node(node, .left) or { return [] }
-	right := t.node(node, .right) or { return [] }
-	keyword := c.unib_instanceof_token(t, tokens, left) or { return [] }
-	mut fixes := c.un_fix_space_around_keyword(t, tokens, node)
-	left_start, _ := c.un_parenthesized_range(t, tokens, left)
-	fixes << fix_insert_at(left_start, 'typeof ')
+// `typeof a === 'string'`, in parentheses where the comparison binds more loosely.
+fn (c &Checker) unib_type_of(t &estree.EsTree, tokens &SourceTokens, node int, constructor_name string) ?[]Fix {
+	left := t.node(node, .left)?
+	right := t.node(node, .right)?
+	keyword := c.unib_instanceof_token(t, tokens, left)?
+	needs_parens := c.unb_should_add_parens_to_comparison(t, tokens, node, '===')
+	mut fixes := c.unb_fix_space_around_keyword(t, tokens, node)
+	left_start, left_end := c.un_parenthesized_range(t, tokens, left)
+	mut prefix := if needs_parens { '(' } else { '' }
+	if c.unb_needs_semicolon(t, tokens, tokens.before(t.nodes[node].start, false), prefix) {
+		prefix = ';' + prefix
+	}
+	// A left operand that binds more loosely gets parentheses: `typeof (a + b) === 'function'`.
+	if !c.un_is_parenthesized(t, tokens, left) && unb_should_add_parens_to_unary_argument(t, left) {
+		fixes << fix_insert_at(left_start, prefix + 'typeof (')
+		fixes << fix_insert_at(left_end, ')')
+	} else {
+		fixes << fix_insert_at(left_start, prefix + 'typeof ')
+	}
 	fixes << fix_replace_range(keyword.start, keyword.end, '===')
 	right_start, right_end := c.un_parenthesized_range(t, tokens, right)
-	fixes << fix_replace_range(right_start, right_end, "'" + c.un_text(t, right).to_lower() + "'")
+	fixes << fix_replace_range(right_start, right_end, "'" + constructor_name.to_lower() + "'" + if needs_parens {
+		')'
+	} else {
+		''
+	})
 	return fixes
 }

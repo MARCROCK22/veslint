@@ -1214,3 +1214,11 @@ fn unb_has_static_string(t &estree.EsTree, node int) bool {
 	unb_static_string_value(t, node) or { return false }
 	return true
 }
+
+// unb_should_add_parens_to_unary_argument ports shouldAddParenthesesToUnaryExpressionArgument of
+// 79.0.0 (any prefix operator): the node binds more loosely than a unary operator, or is an
+// update, a `!` or a `<T>` assertion.
+fn unb_should_add_parens_to_unary_argument(t &estree.EsTree, node int) bool {
+	return unb_precedence(t, node) < unb_precedence_unary
+		|| t.typ(node) in [.update_expression, .ts_non_null_expression, .ts_type_assertion]
+}
