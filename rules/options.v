@@ -148,6 +148,7 @@ pub fn check_options(rule string, options []json2.Any) !bool {
 		no_explicit_any { nea_options(options)! }
 		unicorn_prefer_single_call { upsg_options(options)! }
 		unicorn_no_immediate_mutation { unim_options(options)! }
+		unicorn_prefer_export_from { upef_options(options)! }
 		else { return false }
 	}
 	return true

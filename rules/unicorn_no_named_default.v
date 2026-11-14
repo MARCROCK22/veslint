@@ -131,7 +131,7 @@ fn (c &Checker) un_remove_specifier(t &estree.EsTree, tokens &SourceTokens, spec
 	declaration := t.nodes[specifier].parent
 	specifiers := t.list(declaration, .specifiers) or { return [] }
 	if specifiers.len == 1 && !keep_declaration {
-		needs := c.un_needs_semicolon(t, tokens, tokens.before(t.nodes[declaration].start, false), none)
+		needs := c.unb_needs_semicolon(t, tokens, tokens.before(t.nodes[declaration].start, false), none)
 		return [fix_replace_range(t.nodes[declaration].start, t.nodes[declaration].end, if needs {
 			';'
 		} else {
