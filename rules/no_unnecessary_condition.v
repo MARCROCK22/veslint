@@ -6,7 +6,7 @@ import time
 import tsgo { TypeResponse }
 import treesitter { Ident, named_children, node_field, node_kind, nodes_of_kinds, position_of }
 
-// Port of the `no-unnecessary-condition` rule of typescript-eslint 8.62.0, with all its options and
+// Port of the `no-unnecessary-condition` rule of typescript-eslint 8.72.2, with all its options and
 // its `suggestRemoveOptionalChain` suggestion.
 
 const nuco_messages = {
@@ -308,7 +308,12 @@ fn (mut c Checker) nuco_check_node(expression C.TSNode, unary_not bool, report C
 	if !c.no_unchecked_indexed_access && c.is_array_index_expression(e)! {
 		return
 	}
+	// Only the right side, and only when the logical expression is used for truthiness: the left
+	// side has been checked by checkLogicalExpressionForUnnecessaryConditionals.
 	if estree_binary_kind(e) == 'LogicalExpression' && operator_of(e) != '??' {
+		if !nuco_only_used_for_truthiness(e, 0) {
+			return
+		}
 		right := node_field(e, 'right') or { return }
 		return c.nuco_check_node(right, false, unwrap_parens(right), mut findings, depth + 1)
 	}
@@ -336,13 +341,81 @@ fn (mut c Checker) nuco_check_node(expression C.TSNode, unary_not bool, report C
 	}
 }
 
+// nuco_only_used_for_truthiness ports isOnlyUsedForTruthiness: the expression (without
+// parentheses) is the test of a condition or a loop, the left side of `&&` or an expression
+// whose value is only used for truthiness, or the argument of `!`.
+fn nuco_only_used_for_truthiness(e C.TSNode, depth int) bool {
+	if depth > max_expression_depth {
+		return false
+	}
+	parent := estree_parent(e) or { return false }
+	match node_kind(parent) {
+		'ternary_expression', 'do_statement', 'for_statement', 'if_statement', 'while_statement' {
+			test := node_field(parent, 'condition') or { return false }
+			return node_key(unwrap_parens(test)) == node_key(e)
+		}
+		'binary_expression' {
+			if estree_binary_kind(parent) != 'LogicalExpression' {
+				return false
+			}
+			left := node_field(parent, 'left') or { return false }
+			return (operator_of(parent) == '&&' && node_key(unwrap_parens(left)) == node_key(e))
+				|| nuco_only_used_for_truthiness(parent, depth + 1)
+		}
+		'unary_expression' {
+			return operator_of(parent) == '!'
+		}
+		else {
+			return false
+		}
+	}
+}
+
+// nuco_possibly_non_nullish_computed_member ports hasPossiblyNonNullishComputedMemberProperty and
+// getComputedMemberPropertyTypes: a computed member access whose key is a union of string and
+// number literals, each the name of a property of the object, one of whose types may be neither
+// nullish nor void.
+fn (mut c Checker) nuco_possibly_non_nullish_computed_member(n C.TSNode) !bool {
+	if node_kind(n) != 'subscript_expression' || estree_type(n) != 'MemberExpression' {
+		return false
+	}
+	object := unwrap_parens(node_field(n, 'object') or { return false })
+	property := member_property(n) or { return false }
+	object_type := c.nuco_constrained(object)!
+	property_type := c.nuco_constrained(property)!
+	if object_type.is_null() || property_type.is_null() {
+		return false
+	}
+	mut property_types := []TypeResponse{}
+	for key in c.constituents(property_type)! {
+		if key.flags & (type_flag_string_literal | type_flag_number_literal) == 0 {
+			return false
+		}
+		// getTypeOfPropertyOfName
+		prop := c.property(object_type, literal_type_name(key))!
+		if prop.is_null() {
+			return false
+		}
+		property_types << c.symbol_type(prop.id)!
+	}
+	// isPossiblyNonNullish
+	for t in property_types {
+		for part in c.constituents(t)! {
+			if part.flags & (type_flag_null | type_flag_undefined | type_flag_void) == 0 {
+				return true
+			}
+		}
+	}
+	return false
+}
+
 // nuco_check_nullish ports checkNodeForNullish: the left side of `??` (or `??=`).
 fn (mut c Checker) nuco_check_nullish(n C.TSNode, mut findings []Finding) ! {
 	t := c.nuco_constrained(n)!
 	if t.is_null() {
 		return
 	}
-	if c.type_flags(t)! & (type_flag_any | type_flag_unknown | type_flag_type_parameter | type_flag_type_variable) != 0 {
+	if c.type_flags(t)! & (type_flag_any | type_flag_unknown | type_flag_type_parameter | type_flag_type_variable | type_flag_conditional) != 0 {
 		return
 	}
 	mut message_id := ''
@@ -355,7 +428,7 @@ fn (mut c Checker) nuco_check_nullish(n C.TSNode, mut findings []Finding) ! {
 				&& c.option_chain_contains_option_array_index(n)!)) {
 			message_id = 'neverNullish'
 		}
-	} else if c.is_always_nullish(t)! {
+	} else if c.is_always_nullish(t)! && !c.nuco_possibly_non_nullish_computed_member(n)! {
 		message_id = 'alwaysNullish'
 	}
 	if message_id != '' {
@@ -413,7 +486,7 @@ fn (mut c Checker) nuco_check_comparison(node C.TSNode, left C.TSNode, right C.T
 
 // nuco_comparable is the isComparable of checkIfBoolExpressionIsNecessaryConditional.
 fn (mut c Checker) nuco_comparable(t TypeResponse, flag u32, loose bool) !bool {
-	mut flags := flag | type_flag_any | type_flag_unknown | type_flag_type_parameter | type_flag_type_variable
+	mut flags := flag | type_flag_any | type_flag_unknown | type_flag_type_parameter | type_flag_type_variable | type_flag_conditional
 	if loose {
 		flags |= type_flag_null | type_flag_undefined | type_flag_void
 	}
@@ -643,11 +716,11 @@ fn (mut c Checker) is_array_index_expression(n C.TSNode) !bool {
 	return false
 }
 
-// is_conditional_always_necessary ports isConditionalAlwaysNecessary: `any`, `unknown` or a type
-// variable in some part of the type.
+// is_conditional_always_necessary ports isConditionalAlwaysNecessary: `any`, `unknown`, a type
+// variable or a conditional type in some part of the type.
 fn (mut c Checker) is_conditional_always_necessary(t TypeResponse) !bool {
 	for part in c.constituents(t)! {
-		if part.flags & (type_flag_any | type_flag_unknown | type_flag_type_variable) != 0 {
+		if part.flags & (type_flag_any | type_flag_unknown | type_flag_type_variable | type_flag_conditional) != 0 {
 			return true
 		}
 	}
