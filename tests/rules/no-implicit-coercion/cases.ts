@@ -27,3 +27,13 @@ const k7 = String(a) + '';
 const k8 = a * 1 / 2;
 const k9 = ~a;
 const k10 = `${a}`;
+
+// A SequenceExpression operand keeps its parentheses (10.15.0).
+declare let s1: any, s2: any;
+const q1 = !!(s1, s2);
+const q2 = +(s1, s2);
+const q3 = (s1, s2) - 0;
+const q4 = -(-(s1, s2));
+const q5 = (s1, s2) * 1;
+const q6 = '' + (s1, s2);
+const q7 = `${(s1, s2)}`;

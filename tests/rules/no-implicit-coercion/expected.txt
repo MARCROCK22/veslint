@@ -11,5 +11,11 @@ tests/rules/no-implicit-coercion/cases.ts:14:1	no-implicit-coercion	implicitCoer
 tests/rules/no-implicit-coercion/cases.ts:15:12	no-implicit-coercion	implicitCoercion	Unexpected implicit coercion encountered. Use `s.indexOf('x') !== -1` instead.
 tests/rules/no-implicit-coercion/cases.ts:16:12	no-implicit-coercion	implicitCoercion	Unexpected implicit coercion encountered. Use `s?.lastIndexOf('x') >= 0` instead.
 tests/rules/no-implicit-coercion/cases.ts:17:18	no-implicit-coercion	implicitCoercion	Unexpected implicit coercion encountered. Use `Number(a)` instead.
+tests/rules/no-implicit-coercion/cases.ts:33:12	no-implicit-coercion	implicitCoercion	Unexpected implicit coercion encountered. Use `Boolean((s1, s2))` instead.
+tests/rules/no-implicit-coercion/cases.ts:34:12	no-implicit-coercion	implicitCoercion	Unexpected implicit coercion encountered. Use `Number((s1, s2))` instead.
+tests/rules/no-implicit-coercion/cases.ts:35:12	no-implicit-coercion	implicitCoercion	Unexpected implicit coercion encountered. Use `Number((s1, s2))` instead.
+tests/rules/no-implicit-coercion/cases.ts:36:12	no-implicit-coercion	implicitCoercion	Unexpected implicit coercion encountered. Use `Number((s1, s2))` instead.
+tests/rules/no-implicit-coercion/cases.ts:37:12	no-implicit-coercion	implicitCoercion	Unexpected implicit coercion encountered. Use `Number((s1, s2))` instead.
+tests/rules/no-implicit-coercion/cases.ts:38:12	no-implicit-coercion	implicitCoercion	Unexpected implicit coercion encountered. Use `String((s1, s2))` instead.
 tests/rules/no-implicit-coercion/options/cases.ts:4:12	no-implicit-coercion	implicitCoercion	Unexpected implicit coercion encountered. Use `String(a)` instead.
 tests/rules/no-implicit-coercion/options/cases.ts:5:12	no-implicit-coercion	implicitCoercion	Unexpected implicit coercion encountered. Use `Number(a)` instead.
