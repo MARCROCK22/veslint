@@ -1114,3 +1114,42 @@ fn unb_logical_root(t &estree.EsTree, node int, operator string) int {
 	}
 	return n
 }
+
+// unb_expression_text ports getExpressionText (utils/get-expression-text.js): the text of the
+// node, in parentheses when `needs_parens`; redundant parentheses go away unless they hold
+// comments, and then the parenthesized text is kept as it is.
+fn (c &Checker) unb_expression_text(t &estree.EsTree, tokens &SourceTokens, node int, needs_parens bool) string {
+	if c.un_is_parenthesized(t, tokens, node) && c.unb_would_remove_comments(tokens,
+		c.unb_parenthesized_range(t, tokens, node), [unb_node_range(t, node)], false) {
+		return c.un_parenthesized_text(t, tokens, node)
+	}
+	text := c.un_text(t, node)
+	return if needs_parens { '(${text})' } else { text }
+}
+
+// unb_call_argument_text ports getCallArgumentText: the text of the node as the only argument of a
+// call (a sequence expression in parentheses).
+fn (c &Checker) unb_call_argument_text(t &estree.EsTree, tokens &SourceTokens, node int) string {
+	return c.unb_expression_text(t, tokens, node, t.typ(node) == .sequence_expression)
+}
+
+// unb_call_arguments_text ports getCallExpressionArgumentsText: the text between the parentheses
+// of the arguments of a call (without the trailing comma unless `include_trailing_comma`).
+fn (c &Checker) unb_call_arguments_text(t &estree.EsTree, tokens &SourceTokens, call int, include_trailing_comma bool) ?string {
+	call_tokens := c.un_call_tokens(t, tokens, call)?
+	end := if include_trailing_comma {
+		call_tokens.closing.start
+	} else {
+		(call_tokens.trailing or { call_tokens.closing }).start
+	}
+	return c.src[call_tokens.opening.end..end]
+}
+
+// unb_is_number_literal_of ports isLiteral(node, value) for a number.
+fn unb_is_number_literal_of(t &estree.EsTree, node int, value f64) bool {
+	if node < 0 || t.typ(node) != .literal {
+		return false
+	}
+	v := t.get(node, .value)
+	return v is f64 && v == value
+}
