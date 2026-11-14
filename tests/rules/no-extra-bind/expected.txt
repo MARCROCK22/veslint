@@ -4,3 +4,6 @@ tests/rules/no-extra-bind/cases.ts:10:3	no-extra-bind	unexpected	The function bi
 tests/rules/no-extra-bind/cases.ts:11:28	no-extra-bind	unexpected	The function binding is unnecessary.
 tests/rules/no-extra-bind/cases.ts:12:26	no-extra-bind	unexpected	The function binding is unnecessary.
 tests/rules/no-extra-bind/cases.ts:17:3	no-extra-bind	unexpected	The function binding is unnecessary.
+tests/rules/no-extra-bind/cases.ts:31:65	no-extra-bind	unexpected	The function binding is unnecessary.
+tests/rules/no-extra-bind/cases.ts:32:72	no-extra-bind	unexpected	The function binding is unnecessary.
+tests/rules/no-extra-bind/cases.ts:33:79	no-extra-bind	unexpected	The function binding is unnecessary.
