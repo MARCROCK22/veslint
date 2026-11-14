@@ -7,3 +7,7 @@ tests/rules/no-loss-of-precision/cases.ts:7:12	no-loss-of-precision	noLossOfPrec
 tests/rules/no-loss-of-precision/cases.ts:8:12	no-loss-of-precision	noLossOfPrecision	This number literal will lose precision at runtime.
 tests/rules/no-loss-of-precision/cases.ts:9:12	no-loss-of-precision	noLossOfPrecision	This number literal will lose precision at runtime.
 tests/rules/no-loss-of-precision/cases.ts:10:12	no-loss-of-precision	noLossOfPrecision	This number literal will lose precision at runtime.
+tests/rules/no-loss-of-precision/cases.ts:25:12	no-loss-of-precision	noLossOfPrecision	This number literal will lose precision at runtime.
+tests/rules/no-loss-of-precision/cases.ts:26:12	no-loss-of-precision	noLossOfPrecision	This number literal will lose precision at runtime.
+tests/rules/no-loss-of-precision/cases.ts:27:13	no-loss-of-precision	noLossOfPrecision	This number literal will lose precision at runtime.
+tests/rules/no-loss-of-precision/cases.ts:35:13	no-loss-of-precision	noLossOfPrecision	This number literal will lose precision at runtime.

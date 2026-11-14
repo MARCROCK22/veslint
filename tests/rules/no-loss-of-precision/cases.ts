@@ -20,3 +20,16 @@ const k7 = 1_000;
 const k8 = 0.0001;
 const k9 = 12300000000000000000000000;
 const k10 = 9007199254740993n;
+
+// A literal that is 0, and a `.` before the exponent (10.15.0).
+const z1 = 1e-350;
+const z2 = 1e-324;
+const z3 = -1e-350;
+const z4 = 0;
+const z5 = 0.0;
+const z6 = 0.e5;
+const z7 = 0e-400;
+const z8 = 1230000000000000000000000.e0;
+const z9 = 1_230000000_00000000_00000_000.e0;
+const z10 = 1230000000000000000000000.;
+const z11 = 9007199254740993.e0;

@@ -3,7 +3,7 @@ module rules
 import time
 import treesitter { position_of }
 
-// Port of the `no-loss-of-precision` rule of ESLint 10.6.0 (it has no options).
+// Port of the `no-loss-of-precision` rule of ESLint 10.15.0 (it has no options).
 
 const nlop_messages = {
 	'noLossOfPrecision': 'This number literal will lose precision at runtime.'
@@ -19,7 +19,7 @@ fn (mut c Checker) lint_no_loss_of_precision(root C.TSNode, abs_path string, mut
 		}
 		stats.checked++
 		value := number_literal_value(raw) or { continue }
-		if value == 0 || !nlop_loses_precision(raw, value) {
+		if !nlop_loses_precision(raw, value) {
 			continue
 		}
 		findings << Finding{
@@ -57,7 +57,19 @@ fn nlop_loses_precision(raw string, value f64) bool {
 		return !upper.ends_with(digits.to_upper())
 	}
 	// baseTenLosesPrecision.
-	written := nlop_notation(raw.replace('_', '').to_lower(), false)
+	// A `.` before the exponent or at the end goes first (`/\.(?=e|$)/u`, the first one).
+	mut number := raw.replace('_', '').to_lower()
+	for i, ch in number {
+		if ch == `.` && (i + 1 == number.len || number[i + 1] == `e`) {
+			number = number[..i] + number[i + 1..]
+			break
+		}
+	}
+	written := nlop_notation(number, false)
+	if value == 0 {
+		// A literal that is 0 loses precision unless its digits are zeros (`1e-350`).
+		return !(written.coefficient.len > 0 && written.coefficient.bytes().all(it == `0`))
+	}
 	precision := written.coefficient.len
 	if precision > 100 {
 		return true
