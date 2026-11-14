@@ -1,0 +1,2 @@
+tests/rules/unicorn/prefer-blob-reading-methods/cases.ts:5:8	unicorn/prefer-blob-reading-methods	error	Prefer `Blob#text()` over `FileReader#readAsText(blob)`.
+tests/rules/unicorn/prefer-blob-reading-methods/cases.ts:6:8	unicorn/prefer-blob-reading-methods	error	Prefer `Blob#arrayBuffer()` over `FileReader#readAsArrayBuffer(blob)`.

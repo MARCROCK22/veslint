@@ -1,0 +1,10 @@
+tests/rules/unicorn/prefer-response-static-json/cases.ts:5:25	unicorn/prefer-response-static-json	prefer-response-static-json	Prefer using `Response.json(…)` over `JSON.stringify()`.
+tests/rules/unicorn/prefer-response-static-json/cases.ts:6:25	unicorn/prefer-response-static-json	prefer-response-static-json	Prefer using `Response.json(…)` over `JSON.stringify()`.
+tests/rules/unicorn/prefer-response-static-json/cases.ts:7:26	unicorn/prefer-response-static-json	prefer-response-static-json	Prefer using `Response.json(…)` over `JSON.stringify()`.
+tests/rules/unicorn/prefer-response-static-json/cases.ts:8:25	unicorn/prefer-response-static-json	prefer-response-static-json	Prefer using `Response.json(…)` over `JSON.stringify()`.
+tests/rules/unicorn/prefer-response-static-json/cases.ts:11:14	unicorn/prefer-response-static-json	prefer-response-static-json	Prefer using `Response.json(…)` over `JSON.stringify()`.
+tests/rules/unicorn/prefer-response-static-json/cases.ts:15:25	unicorn/prefer-response-static-json	prefer-response-static-json	Prefer using `Response.json(…)` over `JSON.stringify()`.
+tests/rules/unicorn/prefer-response-static-json/cases.ts:16:25	unicorn/prefer-response-static-json	prefer-response-static-json	Prefer using `Response.json(…)` over `JSON.stringify()`.
+tests/rules/unicorn/prefer-response-static-json/cases.ts:17:25	unicorn/prefer-response-static-json	prefer-response-static-json	Prefer using `Response.json(…)` over `JSON.stringify()`.
+tests/rules/unicorn/prefer-response-static-json/cases.ts:18:25	unicorn/prefer-response-static-json	prefer-response-static-json	Prefer using `Response.json(…)` over `JSON.stringify()`.
+tests/rules/unicorn/prefer-response-static-json/cases.ts:19:25	unicorn/prefer-response-static-json	prefer-response-static-json	Prefer using `Response.json(…)` over `JSON.stringify()`.
