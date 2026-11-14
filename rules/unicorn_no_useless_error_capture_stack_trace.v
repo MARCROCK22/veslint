@@ -3,7 +3,7 @@ module rules
 import estree
 import time
 
-// Port of the `unicorn/no-useless-error-capture-stack-trace` rule of eslint-plugin-unicorn 64.0.0
+// Port of the `unicorn/no-useless-error-capture-stack-trace` rule of eslint-plugin-unicorn 79.0.0
 // (it has no options), with its fix.
 
 const unuecst_messages = {
@@ -14,6 +14,7 @@ fn (mut c Checker) lint_unicorn_no_useless_error_capture_stack_trace(root C.TSNo
 	sw := time.new_stopwatch()
 	mut findings := []Finding{}
 	t := c.es_tree(root, abs_path) or { return findings }
+	tokens := c.un_tokens(t)
 	mut classes := []int{}
 	mut this_scopes := []int{}
 	for step in t.steps() {
@@ -29,7 +30,9 @@ fn (mut c Checker) lint_unicorn_no_useless_error_capture_stack_trace(root C.TSNo
 			}
 			continue
 		}
-		if typ in [.function_declaration, .function_expression] {
+		// An arrow function keeps the `this` of the constructor, but it can run long after it
+		// returned, and the call then captures the stack again.
+		if typ in [.function_declaration, .function_expression, .arrow_function_expression] {
 			if step.leave {
 				this_scopes.pop()
 			} else {
@@ -67,15 +70,26 @@ fn (mut c Checker) lint_unicorn_no_useless_error_capture_stack_trace(root C.TSNo
 			stmt:       c.es_tree_position(t, node)
 			message_id: 'no-useless-error-capture-stack-trace/error'
 		}
-		// As upstream, a call in an optional chain is not looked through (it compares the parent
-		// with the string 'ChainExpression').
-		statement := t.nodes[node].parent
+		mut statement := t.nodes[node].parent
+		if t.typ(statement) == .chain_expression {
+			statement = t.nodes[statement].parent
+		}
+		// The whole statement is removed, so a comment inside it would be lost.
 		if t.typ(statement) == .expression_statement
-			&& t.typ(t.nodes[statement].parent) == .block_statement {
+			&& t.typ(t.nodes[statement].parent) == .block_statement
+			&& tokens.comments_inside(t.nodes[statement].start, t.nodes[statement].end).len == 0 {
+			replacement := if c.un_needs_semicolon(t, tokens, tokens.before(t.nodes[statement].start,
+				false), none)
+			{
+				';'
+			} else {
+				''
+			}
 			finding = Finding{
 				...finding
 				has_fix: true
-				fix:     fix_remove_range(t.nodes[statement].start, t.nodes[statement].end)
+				fix:     fix_replace_range(t.nodes[statement].start, t.nodes[statement].end,
+					replacement)
 			}
 		}
 		findings << finding

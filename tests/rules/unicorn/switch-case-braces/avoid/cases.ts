@@ -44,3 +44,32 @@ switch (a) {
   case 1:
   case 2:
 }
+
+// 79.0.0: blocks with declarations that need them are kept; comments in the block.
+switch (a) {
+  case 30: {
+    class C {}
+    f(30);
+  }
+  case 31: {
+    type T = number;
+    f(31);
+  }
+  case 32: {
+    var v = 32;
+  }
+  case 33: {
+    f(33); // keep
+  }
+  case 34: {
+    f(34);
+  } // after
+  case 35: {
+    f(35);
+    // last
+  }
+  case 36: {
+    f(36);
+    // last
+  } f(37);
+}

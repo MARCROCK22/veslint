@@ -44,3 +44,20 @@ switch (a) {
   case 1:
   case 2:
 }
+
+// 79.0.0: a declaration used by another case clause is not fixed; trailing comments stay inside.
+switch (a) {
+  case 20:
+    const shared = 1;
+    break;
+  case 21:
+    f(shared);
+    break;
+  case 22:
+    f(22); // trailing
+  case 23:
+    function g() {}
+    break;
+  default:
+    g();
+}

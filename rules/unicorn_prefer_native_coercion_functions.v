@@ -3,11 +3,12 @@ module rules
 import estree
 import time
 
-// Port of the `unicorn/prefer-native-coercion-functions` rule of eslint-plugin-unicorn 64.0.0 (it
-// has no options), with its fix.
+// Port of the `unicorn/prefer-native-coercion-functions` rule of eslint-plugin-unicorn 79.0.0 (it
+// has no options), with its fix and its suggestion.
 
 const upncf_messages = {
-	'prefer-native-coercion-functions': '{{functionNameWithKind}} is equivalent to `{{replacementFunction}}`. Use `{{replacementFunction}}` directly.'
+	'prefer-native-coercion-functions':            '{{functionNameWithKind}} is equivalent to `{{replacementFunction}}`. Use `{{replacementFunction}}` directly.'
+	'prefer-native-coercion-functions/suggestion': 'Replace with `{{replacementFunction}}`.'
 }
 
 const upncf_coercions = ['String', 'Number', 'BigInt', 'Boolean', 'Symbol']
@@ -29,27 +30,27 @@ fn upncf_coercion_call(t &estree.EsTree, node int, parameter string) bool {
 		&& t.typ(args[0]) == .identifier && upncf_name(t, args[0]) == parameter
 }
 
-// upncf_single_return is the argument of `{ return …; }`, the only statement of the body.
-fn upncf_single_return(t &estree.EsTree, body int) ?int {
-	if t.typ(body) != .block_statement {
-		return none
-	}
-	statements := t.list(body, .body) or { return none }
-	if statements.len != 1 || t.typ(statements[0]) != .return_statement {
-		return none
-	}
-	return t.node(statements[0], .argument)
+// upncf_returned_expression ports getReturnedExpression: `v => value` or
+// `function (v) {return value;}`, without the TypeScript expression wrappers of the value.
+fn upncf_returned_expression(t &estree.EsTree, node int) int {
+	expression := un_function_return_expression(t, node)
+	return if expression < 0 { -1 } else { un_unwrap_ts_expression(t, expression) }
 }
 
-// upncf_identity ports isIdentityFunction: `v => v`, `(v) => { return v; }`.
+// upncf_identity ports isIdentityFunction: `v => v`.
 fn upncf_identity(t &estree.EsTree, node int, parameter string) bool {
-	body := t.node(node, .body) or { return false }
-	if t.typ(node) == .arrow_function_expression && t.typ(body) == .identifier
-		&& upncf_name(t, body) == parameter {
-		return true
-	}
-	argument := upncf_single_return(t, body) or { return false }
-	return t.typ(argument) == .identifier && upncf_name(t, argument) == parameter
+	returned := upncf_returned_expression(t, node)
+	return returned >= 0 && t.typ(returned) == .identifier && upncf_name(t, returned) == parameter
+}
+
+// upncf_needs_semicolon_after ports needsSemicolonAfter: the replacement ends with a bare
+// identifier, which a `(`, `[`, `+`, `-`, regular expression or template that ASI separated from
+// the function would continue.
+fn (c &Checker) upncf_needs_semicolon_after(t &estree.EsTree, tokens &SourceTokens, node int) bool {
+	next := tokens.after(t.nodes[node].end, false) or { return false }
+	return next.start >= t.nodes[t.nodes[node].parent].end
+		&& (c.token_text(next) in ['(', '[', '+', '-']
+		|| next.kind in [.regular_expression, .template])
 }
 
 // upncf_array_identity ports isArrayIdentityCallback: the identity as the first argument of
@@ -95,7 +96,7 @@ fn (mut c Checker) lint_unicorn_prefer_native_coercion_functions(root C.TSNode, 
 		stats.checked++
 		params := t.list(node, .params) or { continue }
 		if (t.flag(node, .async) or { false }) || (t.flag(node, .generator) or { false })
-			|| params.len == 0 || t.typ(params[0]) != .identifier {
+			|| upncf_type_predicate(t, node) || params.len == 0 || t.typ(params[0]) != .identifier {
 			continue
 		}
 		parent := t.nodes[node].parent
@@ -107,22 +108,14 @@ fn (mut c Checker) lint_unicorn_prefer_native_coercion_functions(root C.TSNode, 
 		}
 		parameter := upncf_name(t, params[0])
 		mut replacement := ''
-		mut fix_text := ?string(none)
-		if upncf_array_identity(t, node, parameter) && !upncf_type_predicate(t, node) {
+		mut fixes := ?[]Fix(none)
+		if upncf_array_identity(t, node, parameter) {
 			replacement = 'Boolean'
-			fix_text = 'Boolean'
+			fixes = [fix_replace_range(t.nodes[node].start, t.nodes[node].end, 'Boolean')]
 		} else {
-			// getCallExpression
-			body := t.node(node, .body) or { continue }
-			mut call := -1
-			if typ == .arrow_function_expression && upncf_coercion_call(t, body, parameter) {
-				call = body
-			} else if argument := upncf_single_return(t, body) {
-				if upncf_coercion_call(t, argument, parameter) {
-					call = argument
-				}
-			}
-			if call < 0 {
+			// getCallExpression: `v => String(v)`
+			call := upncf_returned_expression(t, node)
+			if call < 0 || !upncf_coercion_call(t, call, parameter) {
 				continue
 			}
 			replacement = upncf_name(t, t.node(call, .callee) or { continue })
@@ -133,25 +126,49 @@ fn (mut c Checker) lint_unicorn_prefer_native_coercion_functions(root C.TSNode, 
 					text = ': ${text}'
 				} else if t.typ(parent) == .method_definition {
 					text = ' = ${text};'
+				} else if c.upncf_needs_semicolon_after(t, tokens, node) {
+					text += ';'
 				}
-				fix_text = text
+				mut list := [fix_replace_range(t.nodes[node].start, t.nodes[node].end, text)]
+				list << c.un_fix_space_around_keyword(t, tokens, node)
+				fixes = list
 			}
+		}
+		data := {
+			'functionNameWithKind': c.un_function_name_with_kind(t, node)
+			'replacementFunction':  replacement
 		}
 		mut finding := Finding{
 			stmt:       c.es_tree_function_head(t, node)
 			message_id: 'prefer-native-coercion-functions'
-			data:       {
-				'functionNameWithKind': c.un_function_name_with_kind(t, node)
-				'replacementFunction':  replacement
-			}
+			data:       data
 		}
+		outer_parent := t.nodes[un_outermost_ts_expression(t, node)].parent
+		is_delete := t.typ(outer_parent) == .unary_expression
+			&& (t.string_of(outer_parent, .operator) or { '' }) == 'delete'
 		// No fix with comments, which would have no place, or with more parameters.
-		if text := fix_text {
-			if params.len == 1 && tokens.comments_inside(t.nodes[node].start, t.nodes[node].end).len == 0 {
-				finding = Finding{
-					...finding
-					has_fix: true
-					fix:     fix_replace_range(t.nodes[node].start, t.nodes[node].end, text)
+		if list := fixes {
+			if !is_delete && params.len == 1
+				&& tokens.comments_inside(t.nodes[node].start, t.nodes[node].end).len == 0 {
+				has_fix, fix := c.merge_fixes(list)!
+				if t.typ(parent) == .method_definition {
+					// A class field is not on the prototype: only a suggestion.
+					finding = Finding{
+						...finding
+						suggestions: [
+							Suggestion{
+								message_id: 'prefer-native-coercion-functions/suggestion'
+								data:       data
+								fix:        fix
+							},
+						]
+					}
+				} else {
+					finding = Finding{
+						...finding
+						has_fix: has_fix
+						fix:     fix
+					}
 				}
 			}
 		}

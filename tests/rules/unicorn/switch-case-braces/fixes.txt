@@ -1,11 +1,29 @@
-tests/rules/unicorn/switch-case-braces/avoid/cases.ts:11:11	unicorn/switch-case-braces	switch-case-braces/unnecessary	Unnecessary braces in case clause.	fix	325	352	\n    f(2);\n    break;\n  	end	11	12
+tests/rules/unicorn/switch-case-braces/avoid/cases.ts:11:11	unicorn/switch-case-braces	switch-case-braces/unnecessary	Unnecessary braces in case clause.	fix	325	352	\n    f(2);\n    break;	end	11	12
 tests/rules/unicorn/switch-case-braces/avoid/cases.ts:27:11	unicorn/switch-case-braces	switch-case-braces/empty	Unexpected braces in empty case clause.	fix	516	519		end	27	12
-tests/rules/unicorn/switch-case-braces/avoid/cases.ts:37:11	unicorn/switch-case-braces	switch-case-braces/empty	Unexpected braces in empty case clause.	fix	609	615	\n  	end	37	12
-tests/rules/unicorn/switch-case-braces/avoid/cases.ts:39:12	unicorn/switch-case-braces	switch-case-braces/empty	Unexpected braces in empty case clause.	fix	626	654	\n    // only a comment\n  	end	39	13
+tests/rules/unicorn/switch-case-braces/avoid/cases.ts:37:11	unicorn/switch-case-braces	switch-case-braces/empty	Unexpected braces in empty case clause.	fix	609	615		end	37	12
+tests/rules/unicorn/switch-case-braces/avoid/cases.ts:39:12	unicorn/switch-case-braces	switch-case-braces/empty	Unexpected braces in empty case clause.	fix	626	654	\n    // only a comment	end	39	13
+tests/rules/unicorn/switch-case-braces/avoid/cases.ts:61:12	unicorn/switch-case-braces	switch-case-braces/unnecessary	Unnecessary braces in case clause.	fix	925	950	\n    f(33); // keep	end	61	13
+tests/rules/unicorn/switch-case-braces/avoid/cases.ts:64:12	unicorn/switch-case-braces	switch-case-braces/unnecessary	Unnecessary braces in case clause.	end	64	13
+tests/rules/unicorn/switch-case-braces/avoid/cases.ts:67:12	unicorn/switch-case-braces	switch-case-braces/unnecessary	Unnecessary braces in case clause.	fix	998	1027	\n    f(35);\n    // last	end	67	13
 tests/rules/unicorn/switch-case-braces/cases.ts:8:3	unicorn/switch-case-braces	switch-case-braces/missing	Missing braces in case clause.	fix	294	315	 {\n    f(1);\n    break;\n  }	end	8	10
 tests/rules/unicorn/switch-case-braces/cases.ts:25:3	unicorn/switch-case-braces	switch-case-braces/missing	Missing braces in case clause.	fix	480	486	 { f(5);\n  }	end	25	12
 tests/rules/unicorn/switch-case-braces/cases.ts:27:11	unicorn/switch-case-braces	switch-case-braces/empty	Unexpected braces in empty case clause.	fix	516	519		end	27	12
 tests/rules/unicorn/switch-case-braces/cases.ts:28:3	unicorn/switch-case-braces	switch-case-braces/missing	Missing braces in case clause.	fix	529	563	 {\n    {\n      f(8);\n    }\n    f(8);\n  }	end	28	10
 tests/rules/unicorn/switch-case-braces/cases.ts:33:3	unicorn/switch-case-braces	switch-case-braces/missing	Missing braces in case clause.	fix	574	584	 {\n    f(0);\n  }	end	33	11
-tests/rules/unicorn/switch-case-braces/cases.ts:37:11	unicorn/switch-case-braces	switch-case-braces/empty	Unexpected braces in empty case clause.	fix	609	615	\n  	end	37	12
-tests/rules/unicorn/switch-case-braces/cases.ts:39:12	unicorn/switch-case-braces	switch-case-braces/empty	Unexpected braces in empty case clause.	fix	626	654	\n    // only a comment\n  	end	39	13
+tests/rules/unicorn/switch-case-braces/cases.ts:37:11	unicorn/switch-case-braces	switch-case-braces/empty	Unexpected braces in empty case clause.	fix	609	615		end	37	12
+tests/rules/unicorn/switch-case-braces/cases.ts:39:12	unicorn/switch-case-braces	switch-case-braces/empty	Unexpected braces in empty case clause.	fix	626	654	\n    // only a comment	end	39	13
+tests/rules/unicorn/switch-case-braces/cases.ts:50:3	unicorn/switch-case-braces	switch-case-braces/missing	Missing braces in case clause.	end	50	11
+tests/rules/unicorn/switch-case-braces/cases.ts:53:3	unicorn/switch-case-braces	switch-case-braces/missing	Missing braces in case clause.	fix	858	884	 {\n    f(shared);\n    break;\n  }	end	53	11
+tests/rules/unicorn/switch-case-braces/cases.ts:56:3	unicorn/switch-case-braces	switch-case-braces/missing	Missing braces in case clause.	fix	895	918	 {\n    f(22); // trailing\n  }	end	56	11
+tests/rules/unicorn/switch-case-braces/cases.ts:58:3	unicorn/switch-case-braces	switch-case-braces/missing	Missing braces in case clause.	end	58	11
+tests/rules/unicorn/switch-case-braces/cases.ts:61:3	unicorn/switch-case-braces	switch-case-braces/missing	Missing braces in case clause.	fix	971	980	 {\n    g();\n  }	end	61	11
+tests/rules/unicorn/switch-case-braces/single-statement/cases.ts:9:3	unicorn/switch-case-braces	switch-case-braces/missing	Missing braces in case clause.	fix	252	273	 {\n    f(2);\n    break;\n  }	end	9	10
+tests/rules/unicorn/switch-case-braces/single-statement/cases.ts:12:11	unicorn/switch-case-braces	switch-case-braces/unnecessary	Unnecessary braces in case clause.	fix	283	299	\n    f(3);	end	12	12
+tests/rules/unicorn/switch-case-braces/single-statement/cases.ts:19:3	unicorn/switch-case-braces	switch-case-braces/missing	Missing braces in case clause.	end	19	10
+tests/rules/unicorn/switch-case-braces/single-statement/cases.ts:24:3	unicorn/switch-case-braces	switch-case-braces/missing	Missing braces in case clause.	fix	406	431	 {\n    var z = 7;\n    f(z);\n  }	end	24	10
+tests/rules/unicorn/switch-case-braces/single-statement/cases.ts:27:3	unicorn/switch-case-braces	switch-case-braces/missing	Missing braces in case clause.	end	27	10
+tests/rules/unicorn/switch-case-braces/single-statement/cases.ts:30:11	unicorn/switch-case-braces	switch-case-braces/empty	Unexpected braces in empty case clause.	fix	476	479		end	30	12
+tests/rules/unicorn/switch-case-braces/single-statement/cases.ts:31:12	unicorn/switch-case-braces	switch-case-braces/unnecessary	Unnecessary braces in case clause.	fix	490	519	 // trailing\n    f(10);	end	31	13
+tests/rules/unicorn/switch-case-braces/single-statement/cases.ts:34:12	unicorn/switch-case-braces	switch-case-braces/unnecessary	Unnecessary braces in case clause.	fix	530	555	\n    f(11); // keep	end	34	13
+tests/rules/unicorn/switch-case-braces/single-statement/cases.ts:37:12	unicorn/switch-case-braces	switch-case-braces/unnecessary	Unnecessary braces in case clause.	end	37	13
+tests/rules/unicorn/switch-case-braces/single-statement/cases.ts:40:3	unicorn/switch-case-braces	switch-case-braces/missing	Missing braces in case clause.	fix	603	636	 {\n    f(13); // comment\n    break;\n  }	end	40	11

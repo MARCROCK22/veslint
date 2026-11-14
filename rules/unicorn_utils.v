@@ -1536,3 +1536,236 @@ fn un_is_reference_identifier(t &estree.EsTree, node int) bool {
 	}
 	return !not_reference
 }
+
+// UnRange is a range [start, end) of the source, in bytes.
+struct UnRange {
+	start int
+	end   int
+}
+
+// un_range is the range of a node.
+fn un_range(t &estree.EsTree, node int) UnRange {
+	return UnRange{t.nodes[node].start, t.nodes[node].end}
+}
+
+// un_would_remove_comments ports wouldRemoveComments of utils/comments.js (eslint-plugin-unicorn
+// 79.0.0): a comment entirely in [start, end) that is in none of the preserved ranges.
+fn un_would_remove_comments(tokens &SourceTokens, start int, end int, preserved []UnRange) bool {
+	for comment in tokens.comments_inside(start, end) {
+		if comment.end > end {
+			continue
+		}
+		if preserved.any(comment.start >= it.start && comment.end <= it.end) {
+			continue
+		}
+		return true
+	}
+	return false
+}
+
+// un_has_comment_in_range ports hasCommentInRange: a comment entirely in [start, end).
+fn un_has_comment_in_range(tokens &SourceTokens, start int, end int) bool {
+	return un_would_remove_comments(tokens, start, end, [])
+}
+
+// un_last_trailing_comment_on_same_line ports getLastTrailingCommentOnSameLine (without
+// ignoreDirectives) for the node or token that ends at `end`: the last of the comments right after
+// it that starts on the line where it ends.
+fn un_last_trailing_comment_on_same_line(t &estree.EsTree, tokens &SourceTokens, end int) ?SourceToken {
+	line, _ := t.line_column(end)
+	comments := tokens.comments_after(end)
+	for i := comments.len - 1; i >= 0; i-- {
+		comment_line, _ := t.line_column(comments[i].start)
+		if comment_line == line {
+			return comments[i]
+		}
+	}
+	return none
+}
+
+// un_linebreak ports getLinebreak: the first line ending of the file, or `\n`.
+fn un_linebreak(src string) string {
+	for i := 0; i < src.len; i++ {
+		match src[i] {
+			`\r` {
+				return if i + 1 < src.len && src[i + 1] == `\n` { '\r\n' } else { '\r' }
+			}
+			`\n` {
+				return '\n'
+			}
+			0xe2 {
+				// U+2028 and U+2029.
+				if i + 2 < src.len && src[i + 1] == 0x80 && src[i + 2] in [u8(0xa8), 0xa9] {
+					return src[i..i + 3]
+				}
+			}
+			else {}
+		}
+	}
+	return '\n'
+}
+
+// un_starts_with_declaration_like_token ports startsWithDeclarationLikeToken of
+// should-add-parentheses-to-expression-statement-expression.js: the node starts with `{`, `class`,
+// `function`, `async function` or `let [`.
+fn (c &Checker) un_starts_with_declaration_like_token(t &estree.EsTree, tokens &SourceTokens, node int) bool {
+	first := un_first_token(t, tokens, node, 0) or { return false }
+	text := c.token_text(first)
+	if (first.kind == .punctuator && text == '{')
+		|| (first.kind == .keyword && text in ['class', 'function']) {
+		return true
+	}
+	if text in ['async', 'let'] {
+		after := tokens.after(first.end, false) or { return false }
+		return c.token_text(after) == if text == 'async' { 'function' } else { '[' }
+	}
+	return false
+}
+
+// un_expression_statement_needs_parens ports shouldAddParenthesesToExpressionStatementExpression
+// (eslint-plugin-unicorn 79.0.0): an expression statement cannot start with `{`, `class`,
+// `function`, `async function` or `let [`.
+fn (c &Checker) un_expression_statement_needs_parens(t &estree.EsTree, tokens &SourceTokens, node int) bool {
+	return !c.un_is_parenthesized(t, tokens, node)
+		&& c.un_starts_with_declaration_like_token(t, tokens, node)
+}
+
+// un_expression_start_needs_parens ports shouldAddParenthesesToExpressionStart (without the Svelte
+// case): moving `expression` to where `replacement` is would expose a block or declaration prefix
+// (`let [` in a `for` initializer included).
+fn (c &Checker) un_expression_start_needs_parens(t &estree.EsTree, tokens &SourceTokens, expression int, replacement int) bool {
+	first := un_first_token(t, tokens, expression, 0) or { return false }
+	starts_with_regexp := first.kind == .regular_expression
+	if !starts_with_regexp && !c.un_starts_with_declaration_like_token(t, tokens, expression) {
+		return false
+	}
+	text := c.token_text(first)
+	mut node := replacement
+	for t.nodes[node].parent >= 0 {
+		if c.un_is_parenthesized(t, tokens, node) {
+			return false
+		}
+		parent := t.nodes[node].parent
+		if t.typ(parent) == .arrow_function_expression && (t.node(parent, .body) or { -1 }) == node {
+			return text == '{'
+		}
+		if t.typ(parent) == .export_default_declaration
+			&& (t.node(parent, .declaration) or { -1 }) == node {
+			return !starts_with_regexp && text != '{' && text != 'let'
+		}
+		if t.typ(parent) == .for_statement && (t.node(parent, .init) or { -1 }) == node {
+			return text == 'let'
+		}
+		if t.typ(node).type_name().ends_with('Statement') {
+			return !starts_with_regexp
+		}
+		if t.nodes[parent].start != t.nodes[node].start {
+			return false
+		}
+		node = parent
+	}
+	return false
+}
+
+// un_unparenthesized_keyword_argument_parent ports getUnparenthesizedKeywordArgumentParent: the
+// `return`, `throw` or non-delegated `yield` whose unparenthesized argument starts with the node.
+fn (c &Checker) un_unparenthesized_keyword_argument_parent(t &estree.EsTree, tokens &SourceTokens, from int) ?int {
+	mut node := from
+	for !c.un_is_parenthesized(t, tokens, node) {
+		parent := t.nodes[node].parent
+		if parent >= 0 && (t.node(parent, .argument) or { -1 }) == node
+			&& (t.typ(parent) in [.return_statement, .throw_statement]
+			|| (t.typ(parent) == .yield_expression && !(t.flag(parent, .delegate) or { false }))) {
+			return parent
+		}
+		if parent < 0 || t.nodes[parent].start != t.nodes[node].start {
+			return none
+		}
+		node = parent
+	}
+	return none
+}
+
+// un_is_ts_expression_wrapper ports isTypeScriptExpressionWrapper of
+// unwrap-typescript-expression.js: `as`, `satisfies`, `!`, `<Type>` or `foo<Type>`.
+fn un_is_ts_expression_wrapper(t &estree.EsTree, node int) bool {
+	return node >= 0 && t.typ(node) in [.ts_as_expression, .ts_satisfies_expression,
+		.ts_non_null_expression, .ts_type_assertion, .ts_instantiation_expression]
+}
+
+// un_unwrap_ts_expression ports unwrapTypeScriptExpression: the node without its TypeScript
+// expression wrappers.
+fn un_unwrap_ts_expression(t &estree.EsTree, from int) int {
+	mut node := from
+	for un_is_ts_expression_wrapper(t, node) {
+		node = t.node(node, .expression) or { break }
+	}
+	return node
+}
+
+// un_unwrap_chain_and_ts_expression ports unwrapChainAndTypeScriptExpression.
+fn un_unwrap_chain_and_ts_expression(t &estree.EsTree, from int) int {
+	mut node := from
+	for node >= 0 && (t.typ(node) == .chain_expression || un_is_ts_expression_wrapper(t, node)) {
+		node = t.node(node, .expression) or { break }
+	}
+	return node
+}
+
+// un_outermost_ts_expression ports getOutermostTypeScriptExpression: the outermost TypeScript
+// expression wrapper around the node, or the node.
+fn un_outermost_ts_expression(t &estree.EsTree, from int) int {
+	mut node := from
+	for {
+		parent := t.nodes[node].parent
+		if !un_is_ts_expression_wrapper(t, parent) || (t.node(parent, .expression) or { -1 }) != node {
+			break
+		}
+		node = parent
+	}
+	return node
+}
+
+// un_outermost_chain_and_ts_expression ports getOutermostChainAndTypeScriptExpression.
+fn un_outermost_chain_and_ts_expression(t &estree.EsTree, from int) int {
+	mut node := from
+	for {
+		parent := t.nodes[node].parent
+		if parent < 0 || !(t.typ(parent) == .chain_expression || un_is_ts_expression_wrapper(t, parent))
+			|| (t.node(parent, .expression) or { -1 }) != node {
+			break
+		}
+		node = parent
+	}
+	return node
+}
+
+// un_function_return_expression ports getFunctionReturnExpression of function-body.js: the concise
+// body of an arrow function, or the argument of the only statement of the body when it is a
+// `return`; -1 when there is none.
+fn un_function_return_expression(t &estree.EsTree, function int) int {
+	body := t.node(function, .body) or { return -1 }
+	if t.typ(body) != .block_statement {
+		return body
+	}
+	statements := t.list(body, .body) or { return -1 }
+	if statements.len == 1 && t.typ(statements[0]) == .return_statement {
+		return t.node(statements[0], .argument) or { -1 }
+	}
+	return -1
+}
+
+// un_function_only_expression ports getFunctionOnlyExpression: the concise body of an arrow
+// function, or the expression of the only statement of the body when it is an expression
+// statement; -1 when there is none.
+fn un_function_only_expression(t &estree.EsTree, function int) int {
+	body := t.node(function, .body) or { return -1 }
+	if t.typ(body) != .block_statement {
+		return body
+	}
+	statements := t.list(body, .body) or { return -1 }
+	if statements.len == 1 && t.typ(statements[0]) == .expression_statement {
+		return t.node(statements[0], .expression) or { -1 }
+	}
+	return -1
+}

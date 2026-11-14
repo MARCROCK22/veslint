@@ -48,3 +48,31 @@ export class NotAnError extends Base {
     Error.captureStackTrace(this, NotAnError);
   }
 }
+
+// 79.0.0: arrow functions run later, comments keep the statement, semicolons, optional chains.
+export class ArrowError extends Error {
+  constructor() {
+    super();
+    const capture = () => Error.captureStackTrace(this, ArrowError);
+    capture();
+  }
+}
+export class CommentError extends Error {
+  constructor() {
+    super();
+    Error.captureStackTrace(this, /* keep */ CommentError);
+  }
+}
+export class SemicolonError extends Error {
+  constructor() {
+    super()
+    Error.captureStackTrace(this, SemicolonError)
+    ;[1].forEach(String)
+  }
+}
+export class ChainError extends Error {
+  constructor() {
+    super();
+    Error.captureStackTrace?.(this, ChainError);
+  }
+}

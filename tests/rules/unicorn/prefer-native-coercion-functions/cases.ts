@@ -43,3 +43,22 @@ class L {
   }
 }
 const z7 = ((v: unknown) => v)(1);
+
+// 79.0.0: TypeScript wrappers of the returned value, `delete`, methods only suggested, semicolons.
+const w1 = (v: unknown) => String(v) as string;
+const w2 = (v: unknown) => String(v)!;
+const w3 = (v: unknown) => v as unknown;
+const w4 = list.filter((v: unknown) => v as unknown);
+const w5 = list.filter((v: unknown): v is string => Boolean(v));
+const w6 = (v: unknown): v is string => Boolean(v);
+// @ts-expect-error -- not a reference
+delete ((v: unknown) => String(v));
+export class Methods {
+  m(v: unknown) {
+    return String(v);
+  }
+}
+export let w7: unknown;
+w7 = (v: unknown) => String(v)
+;(w7 as () => void)();
+const w8 = typeof function (v: unknown) { return String(v); };
