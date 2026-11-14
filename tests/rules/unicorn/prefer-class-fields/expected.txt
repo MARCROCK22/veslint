@@ -1,0 +1,16 @@
+tests/rules/unicorn/prefer-class-fields/cases.ts:4:3	unicorn/prefer-class-fields	prefer-class-fields/error	Prefer class field declaration over `this` assignment in constructor for static values.
+tests/rules/unicorn/prefer-class-fields/cases.ts:11:3	unicorn/prefer-class-fields	prefer-class-fields/error	Prefer class field declaration over `this` assignment in constructor for static values.
+tests/rules/unicorn/prefer-class-fields/cases.ts:18:3	unicorn/prefer-class-fields	prefer-class-fields/error	Prefer class field declaration over `this` assignment in constructor for static values.
+tests/rules/unicorn/prefer-class-fields/cases.ts:23:18	unicorn/prefer-class-fields	prefer-class-fields/error	Prefer class field declaration over `this` assignment in constructor for static values.
+tests/rules/unicorn/prefer-class-fields/cases.ts:29:3	unicorn/prefer-class-fields	prefer-class-fields/error	Prefer class field declaration over `this` assignment in constructor for static values.
+tests/rules/unicorn/prefer-class-fields/cases.ts:36:3	unicorn/prefer-class-fields	prefer-class-fields/error	Prefer class field declaration over `this` assignment in constructor for static values.
+tests/rules/unicorn/prefer-class-fields/cases.ts:44:3	unicorn/prefer-class-fields	prefer-class-fields/error	Prefer class field declaration over `this` assignment in constructor for static values.
+tests/rules/unicorn/prefer-class-fields/cases.ts:52:3	unicorn/prefer-class-fields	prefer-class-fields/error	Prefer class field declaration over `this` assignment in constructor for static values.
+tests/rules/unicorn/prefer-class-fields/cases.ts:58:3	unicorn/prefer-class-fields	prefer-class-fields/error	Prefer class field declaration over `this` assignment in constructor for static values.
+tests/rules/unicorn/prefer-class-fields/cases.ts:64:3	unicorn/prefer-class-fields	prefer-class-fields/error	Prefer class field declaration over `this` assignment in constructor for static values.
+tests/rules/unicorn/prefer-class-fields/cases.ts:75:3	unicorn/prefer-class-fields	prefer-class-fields/error	Prefer class field declaration over `this` assignment in constructor for static values.
+tests/rules/unicorn/prefer-class-fields/cases.ts:80:3	unicorn/prefer-class-fields	prefer-class-fields/error	Prefer class field declaration over `this` assignment in constructor for static values.
+tests/rules/unicorn/prefer-class-fields/cases.ts:88:3	unicorn/prefer-class-fields	prefer-class-fields/error	Prefer class field declaration over `this` assignment in constructor for static values.
+tests/rules/unicorn/prefer-class-fields/cases.ts:128:3	unicorn/prefer-class-fields	prefer-class-fields/error	Prefer class field declaration over `this` assignment in constructor for static values.
+tests/rules/unicorn/prefer-class-fields/cases.ts:133:3	unicorn/prefer-class-fields	prefer-class-fields/error	Prefer class field declaration over `this` assignment in constructor for static values.
+tests/rules/unicorn/prefer-class-fields/cases.ts:136:42	unicorn/prefer-class-fields	prefer-class-fields/error	Prefer class field declaration over `this` assignment in constructor for static values.
