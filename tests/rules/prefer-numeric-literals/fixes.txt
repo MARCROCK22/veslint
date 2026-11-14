@@ -6,3 +6,4 @@ tests/rules/prefer-numeric-literals/cases.ts:6:12	prefer-numeric-literals	useLit
 tests/rules/prefer-numeric-literals/cases.ts:7:12	prefer-numeric-literals	useLiteral	Use binary literals instead of parseInt().	end	7	29
 tests/rules/prefer-numeric-literals/cases.ts:8:14	prefer-numeric-literals	useLiteral	Use binary literals instead of parseInt().	fix	229	246	0b11	end	8	31
 tests/rules/prefer-numeric-literals/cases.ts:9:12	prefer-numeric-literals	useLiteral	Use binary literals instead of parseInt().	end	9	37
+tests/rules/prefer-numeric-literals/cases.ts:25:22	prefer-numeric-literals	useLiteral	Use octal literals instead of Number?.parseInt().	fix	770	795	0o11	end	25	47
