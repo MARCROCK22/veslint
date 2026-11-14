@@ -418,7 +418,9 @@ pub const names = [no_floating_promises, await_thenable, require_await, return_a
 	unicorn_no_unreadable_array_destructuring, unicorn_prefer_set_size]
 
 // untyped_rules are the ported rules that need no types (`meta.docs.requiresTypeChecking` is false
-// in typescript-eslint): with only these, the command line makes no snapshot (Checker.make_snapshot).
+// in typescript-eslint; the eslint-plugin-unicorn rules that read the types when the parser has a
+// program, through withTypeInformation, are not here): with only these, the command line makes no
+// snapshot (Checker.make_snapshot).
 pub const untyped_rules = [adjacent_overload_signatures, array_type, class_literal_property_style,
 	consistent_generic_constructors, consistent_indexed_object_style, consistent_type_assertions,
 	consistent_type_definitions, consistent_type_imports, no_array_constructor,
