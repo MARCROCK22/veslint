@@ -1,6 +1,7 @@
 module rules
 
 import estree
+import treesitter
 import tsgo { TypeResponse }
 
 // Helpers of eslint-plugin-unicorn 79.0.0 (rules/utils, rules/fix, rules/ast and rules/shared)
@@ -463,4 +464,512 @@ fn (mut c Checker) unb_type_of(t &estree.EsTree, node int, abs_path string, mut 
 	ts := t.ts_node(node) or { return none }
 	c.resolve_node_types([ts], abs_path, mut stats) or { return none }
 	return c.node_type(ts)
+}
+
+// unb_find_variable ports findVariable(sourceCode.getScope(node), node) of eslint-utils for an
+// ESTree Identifier: the index of its variable in the scope tree, -1 for none.
+fn (mut c Checker) unb_find_variable(root C.TSNode, t &estree.EsTree, node int) int {
+	if node < 0 || t.typ(node) != .identifier {
+		return -1
+	}
+	ts := t.ts_node(node) or { return -1 }
+	tree := c.scope_tree(root)
+	return tree.find_variable(tree.get_scope(ts), t.string_of(node, .name) or { return -1 },
+		t.nodes[node].start)
+}
+
+// unb_single_definition is the only definition of a variable (`variable?.defs.length === 1`).
+fn (mut c Checker) unb_single_definition(root C.TSNode, v int) ?ScopeDefinition {
+	if v < 0 {
+		return none
+	}
+	tree := c.scope_tree(root)
+	if tree.variables[v].defs.len != 1 {
+		return none
+	}
+	return tree.variables[v].defs[0]
+}
+
+// unb_is_simple_declarator: a definition of a variable whose declarator binds its name directly
+// (`definition.node.id === definition.name`).
+fn unb_is_simple_declarator(def ScopeDefinition) bool {
+	if def.kind != .variable || treesitter.node_kind(def.node) != 'variable_declarator' {
+		return false
+	}
+	id := def.decl_id or { return false }
+	return node_key(id) == node_key(def.name)
+}
+
+// unb_const_definition ports getConstVariableDefinition (utils/get-static-value.js): the variable
+// of an identifier and the initializer of its only definition, a `const` declarator of the name.
+fn (mut c Checker) unb_const_definition(root C.TSNode, t &estree.EsTree, node int) ?(int, int) {
+	v := c.unb_find_variable(root, t, node)
+	def := c.unb_single_definition(root, v)?
+	if !unb_is_simple_declarator(def) || def.parent_kind != 'const' {
+		return none
+	}
+	init := c.es_index_of(t, def.init?)?
+	return v, init
+}
+
+// unb_is_global_identifier ports isGlobalIdentifier (utils/is-global-identifier.js): an
+// identifier that references a configured global or no variable at all.
+fn (mut c Checker) unb_is_global_identifier(root C.TSNode, t &estree.EsTree, node int) bool {
+	if node < 0 || t.typ(node) != .identifier {
+		return false
+	}
+	ts := t.ts_node(node) or { return false }
+	return c.es_is_global_reference(root, ts) || c.unb_find_variable(root, t, node) < 0
+}
+
+// unb_static_string_value ports getStaticStringValue (ast/literal.js): the value of a string
+// literal or of a template literal without expressions.
+fn unb_static_string_value(t &estree.EsTree, node int) ?string {
+	if node < 0 {
+		return none
+	}
+	if un_is_string_literal(t, node) {
+		value := t.get(node, .value)
+		if value is string {
+			return value
+		}
+	}
+	if t.typ(node) == .template_literal && (t.list(node, .expressions) or { []int{} }).len == 0 {
+		quasi := (t.list(node, .quasis) or { return none })[0]
+		value := t.get(quasi, .value)
+		if value is estree.TemplateValue {
+			if value.has_cooked {
+				return value.cooked
+			}
+		}
+	}
+	return none
+}
+
+// unb_evaluated_children ports getEvaluatedChildNodes (utils/get-visitor-child-nodes.js): the
+// children in visitor-key order but the names that are not evaluated (a non-computed member
+// property, a non-computed key of a Property, PropertyDefinition or MethodDefinition).
+fn unb_evaluated_children(t &estree.EsTree, node int) []int {
+	computed := t.flag(node, .computed) or { false }
+	mut skip := -1
+	if !computed {
+		if t.typ(node) == .member_expression {
+			skip = t.node(node, .property) or { -1 }
+		} else if t.typ(node) in [.property, .property_definition, .method_definition] {
+			skip = t.node(node, .key) or { -1 }
+		}
+	}
+	return t.children(node).filter(it != skip)
+}
+
+// unb_has_side_effect ports hasSideEffect of eslint-utils: with `consider_getters`, member
+// accesses count too.
+fn unb_has_side_effect(t &estree.EsTree, node int, consider_getters bool) bool {
+	match t.typ(node) {
+		.arrow_function_expression, .function_expression {
+			return false
+		}
+		.assignment_expression, .await_expression, .call_expression, .import_expression,
+		.new_expression, .update_expression, .yield_expression {
+			return true
+		}
+		.unary_expression {
+			if (t.string_of(node, .operator) or { '' }) == 'delete' {
+				return true
+			}
+		}
+		.member_expression {
+			if consider_getters {
+				return true
+			}
+		}
+		else {}
+	}
+	return t.children(node).any(unb_has_side_effect(t, it, consider_getters))
+}
+
+const unb_static_global_properties = {
+	'Math':   ['E', 'LN2', 'LN10', 'LOG2E', 'LOG10E', 'PI', 'SQRT1_2', 'SQRT2']
+	'Number': ['EPSILON', 'MAX_SAFE_INTEGER', 'MAX_VALUE', 'MIN_SAFE_INTEGER', 'MIN_VALUE', 'NaN',
+		'NEGATIVE_INFINITY', 'POSITIVE_INFINITY']
+	'String': ['raw']
+	'Symbol': ['asyncIterator', 'hasInstance', 'isConcatSpreadable', 'iterator', 'match', 'matchAll',
+		'replace', 'search', 'species', 'split', 'toPrimitive', 'toStringTag', 'unscopables']
+}
+
+// unb_is_safe_static_global_member ports isSafeStaticGlobalMember: a constant property of a
+// builtin global (`Math.PI`).
+fn (mut c Checker) unb_is_safe_static_global_member(root C.TSNode, t &estree.EsTree, node int) bool {
+	if t.typ(node) != .member_expression || (t.flag(node, .optional) or { false }) {
+		return false
+	}
+	object := t.node(node, .object) or { return false }
+	if t.typ(object) != .identifier || !c.unb_is_global_identifier(root, t, object) {
+		return false
+	}
+	properties := unb_static_global_properties[t.string_of(object, .name) or { '' }] or {
+		return false
+	}
+	property := t.node(node, .property) or { return false }
+	name := if t.flag(node, .computed) or { false } {
+		unb_static_string_value(t, property) or { return false }
+	} else if t.typ(property) == .identifier {
+		t.string_of(property, .name) or { return false }
+	} else {
+		return false
+	}
+	return name in properties
+}
+
+// unb_is_safe_static_pass_through_call ports isSafeStaticPassThroughCall: `Object.freeze(x)`,
+// `Object.preventExtensions(x)` or `Object.seal(x)` of a static value without side effects.
+fn (mut c Checker) unb_is_safe_static_pass_through_call(root C.TSNode, t &estree.EsTree, n int, mut visited map[int]bool) bool {
+	node := unb_unwrap_ts(t, n)
+	if t.typ(node) != .call_expression {
+		return false
+	}
+	callee := unb_unwrap_ts(t, t.node(node, .callee) or { return false })
+	args := t.list(node, .arguments) or { return false }
+	if (t.flag(node, .optional) or { false }) || args.len != 1 || t.typ(args[0]) == .spread_element
+		|| t.typ(callee) != .member_expression || (t.flag(callee, .computed) or { false })
+		|| (t.flag(callee, .optional) or { false }) {
+		return false
+	}
+	object := unb_unwrap_ts(t, t.node(callee, .object) or { return false })
+	property := t.node(callee, .property) or { return false }
+	if t.typ(object) != .identifier || (t.string_of(object, .name) or { '' }) != 'Object'
+		|| !c.unb_is_global_identifier(root, t, object) || t.typ(property) != .identifier
+		|| (t.string_of(property, .name) or { '' }) !in ['freeze', 'preventExtensions', 'seal'] {
+		return false
+	}
+	c.unb_static_value_internal(root, t, args[0], mut visited) or { return false }
+	return true
+}
+
+// unb_is_branch_expression ports isBranchExpression: a conditional or logical expression, maybe
+// under unary operators.
+fn unb_is_branch_expression(t &estree.EsTree, n int) bool {
+	mut node := unb_unwrap_ts(t, n)
+	for t.typ(node) == .unary_expression {
+		node = unb_unwrap_ts(t, t.node(node, .argument) or { return false })
+	}
+	return t.typ(node) in [.conditional_expression, .logical_expression]
+}
+
+fn (mut c Checker) unb_has_side_effectful_const_reference(root C.TSNode, t &estree.EsTree, node int, mut visited map[int]bool) bool {
+	if t.typ(node) == .identifier {
+		return c.unb_has_side_effectful_const_initializer(root, t, node, mut visited)
+	}
+	if t.typ(node) in [.function_expression, .arrow_function_expression, .class_expression] {
+		return false
+	}
+	for child in unb_evaluated_children(t, node) {
+		if c.unb_has_side_effectful_const_reference(root, t, child, mut visited) {
+			return true
+		}
+	}
+	return false
+}
+
+// unb_has_side_effectful_const_initializer ports hasSideEffectfulConstInitializer.
+fn (mut c Checker) unb_has_side_effectful_const_initializer(root C.TSNode, t &estree.EsTree, node int, mut visited map[int]bool) bool {
+	v, init := c.unb_const_definition(root, t, node) or {
+		return t.typ(node) != .identifier
+			&& c.unb_has_side_effectful_const_reference(root, t, node, mut visited)
+	}
+	if visited[v] {
+		return true
+	}
+	visited[v] = true
+	result := (!c.unb_is_safe_static_pass_through_call(root, t, init, mut visited)
+		&& unb_has_side_effect(t, init, true))
+		|| c.unb_has_side_effectful_const_reference(root, t, init, mut visited)
+	visited.delete(v)
+	return result
+}
+
+// unb_static_value_text is String(value) of a string or a number of a static value.
+fn unb_static_value_text(v StaticValue) ?string {
+	if !v.found || v.value.kind !in [.string_, .number_] {
+		return none
+	}
+	return js_any_string_value(v.value)
+}
+
+// unb_literal_property_text is String(property.value) of a literal string or number.
+fn unb_literal_property_text(t &estree.EsTree, property int) ?string {
+	if t.typ(property) != .literal {
+		return none
+	}
+	value := t.get(property, .value)
+	return match value {
+		string { value }
+		f64 { js_number_to_string(value) }
+		else { none }
+	}
+}
+
+// unb_static_property_name ports getStaticPropertyName of utils/get-static-value.js; without
+// `with_context` a computed key is never resolved.
+fn (mut c Checker) unb_static_property_name(root C.TSNode, t &estree.EsTree, node int, property int, with_context bool) ?string {
+	computed := t.flag(node, .computed) or { false }
+	if t.typ(property) == .identifier && !computed {
+		return t.string_of(property, .name)
+	}
+	if text := unb_literal_property_text(t, property) {
+		return text
+	}
+	if !computed || !with_context {
+		return none
+	}
+	if t.typ(property) == .identifier {
+		c.unb_const_definition(root, t, property) or { return none }
+	}
+	return unb_static_value_text(c.un_static_value(t, property))
+}
+
+fn (mut c Checker) unb_is_safe_static_object_member(root C.TSNode, t &estree.EsTree, node int, name ?string, mut visited map[int]bool) bool {
+	property_name := name or { return false }
+	properties := t.list(node, .properties) or { return false }
+	for p in properties {
+		if t.typ(p) != .property || (t.flag(p, .computed) or { false }) {
+			return false
+		}
+		key := t.node(p, .key) or { return false }
+		if (t.string_of(key, .name) or { '' }) == '__proto__'
+			|| (t.typ(key) == .literal && t.get(key, .value) is string
+			&& (t.get(key, .value) as string) == '__proto__') {
+			return false
+		}
+		if c.unb_has_potentially_mutable_member_access(root, t, t.node(p, .value) or { return false }, mut
+			visited)
+		{
+			return false
+		}
+	}
+	mut found := -1
+	for candidate in properties {
+		key := t.node(candidate, .key) or { continue }
+		if candidate_name := c.unb_static_property_name(root, t, candidate, key, false) {
+			if candidate_name == property_name {
+				found = candidate
+			}
+		}
+	}
+	return found >= 0 && (t.string_of(found, .kind) or { '' }) == 'init'
+		&& !(t.flag(found, .method) or { false })
+}
+
+// unb_canonical_index: the property name is the canonical string of a safe integer in [0, len).
+fn unb_canonical_index(name string, len int) bool {
+	if name == '' || (name.len > 1 && name[0] == `0`) || !name.bytes().all(it.is_digit()) || name.len > 15 {
+		return false
+	}
+	return name.i64() < len
+}
+
+fn (mut c Checker) unb_is_safe_static_array_member(root C.TSNode, t &estree.EsTree, node int, name ?string, mut visited map[int]bool) bool {
+	elements := t.list(node, .elements) or { return false }
+	for element in elements {
+		if element >= 0 && (t.typ(element) == .spread_element
+			|| c.unb_has_potentially_mutable_member_access(root, t, element, mut visited)) {
+			return false
+		}
+	}
+	property_name := name or { return false }
+	if property_name == 'length' {
+		return true
+	}
+	if !unb_canonical_index(property_name, elements.len) {
+		return false
+	}
+	return elements[property_name.int()] >= 0
+}
+
+fn (mut c Checker) unb_is_safe_static_member_object(root C.TSNode, t &estree.EsTree, node int, name ?string, mut visited map[int]bool) bool {
+	mut primitive := ?string(none)
+	if value := unb_static_string_value(t, node) {
+		primitive = value
+	} else if _, init := c.unb_const_definition(root, t, node) {
+		primitive = unb_static_string_value(t, init)
+	}
+	if value := primitive {
+		property_name := name or { return false }
+		if property_name == 'length' {
+			return true
+		}
+		return unb_canonical_index(property_name, estree.utf16_units(value).len)
+	}
+	if t.typ(node) == .array_expression {
+		return c.unb_is_safe_static_array_member(root, t, node, name, mut visited)
+	}
+	if t.typ(node) == .object_expression {
+		return c.unb_is_safe_static_object_member(root, t, node, name, mut visited)
+	}
+	return false
+}
+
+fn (mut c Checker) unb_is_safe_static_member(root C.TSNode, t &estree.EsTree, node int, mut visited map[int]bool) bool {
+	property := t.node(node, .property) or { return false }
+	name := c.unb_static_property_name(root, t, node, property, true)
+	if (t.flag(node, .computed) or { false })
+		&& c.unb_has_potentially_mutable_member_access(root, t, property, mut visited) {
+		return false
+	}
+	return c.unb_is_safe_static_member_object(root, t, t.node(node, .object) or { return false },
+		name, mut visited)
+}
+
+// unb_has_potentially_mutable_member_access ports hasPotentiallyMutableMemberAccess: the
+// expression reads a member whose value may change.
+fn (mut c Checker) unb_has_potentially_mutable_member_access(root C.TSNode, t &estree.EsTree, n int, mut visited map[int]bool) bool {
+	mut node := unb_unwrap_ts(t, n)
+	if t.typ(node) == .chain_expression {
+		node = t.node(node, .expression) or { return false }
+	}
+	if c.unb_is_safe_static_pass_through_call(root, t, node, mut visited) {
+		return false
+	}
+	if v, init := c.unb_const_definition(root, t, node) {
+		if visited[v] {
+			return true
+		}
+		visited[v] = true
+		result := c.unb_has_potentially_mutable_member_access(root, t, init, mut visited)
+		visited.delete(v)
+		return result
+	}
+	if t.typ(node) == .member_expression {
+		return !c.unb_is_safe_static_global_member(root, t, node)
+			&& !c.unb_is_safe_static_member(root, t, node, mut visited)
+	}
+	for child in unb_evaluated_children(t, node) {
+		if c.unb_has_potentially_mutable_member_access(root, t, child, mut visited) {
+			return true
+		}
+	}
+	return false
+}
+
+// unb_has_unsafe_binding_in_evaluated_path ports hasUnsafeBindingInEvaluatedPath.
+fn (mut c Checker) unb_has_unsafe_binding_in_evaluated_path(root C.TSNode, t &estree.EsTree, n int, mut visited map[int]bool) bool {
+	node := unb_unwrap_ts(t, n)
+	match t.typ(node) {
+		.identifier {
+			v := c.unb_find_variable(root, t, node)
+			def := c.unb_single_definition(root, v) or { return false }
+			if def.kind != .variable {
+				return false
+			}
+			if def.parent_kind != 'const' {
+				return true
+			}
+			if treesitter.node_end(def.node) > t.nodes[node].start {
+				return true
+			}
+			init := c.es_index_of(t, def.init or { return false }) or { return false }
+			if visited[v] {
+				return false
+			}
+			visited[v] = true
+			result := c.unb_has_unsafe_binding_in_evaluated_path(root, t, init, mut visited)
+			visited.delete(v)
+			return result
+		}
+		.conditional_expression {
+			test := t.node(node, .test) or { return false }
+			if c.unb_has_unsafe_binding_in_evaluated_path(root, t, test, mut visited) {
+				return true
+			}
+			consequent := t.node(node, .consequent) or { return false }
+			alternate := t.node(node, .alternate) or { return false }
+			if value := c.unb_static_value_internal(root, t, test, mut visited) {
+				return c.unb_has_unsafe_binding_in_evaluated_path(root, t, if stv_to_boolean(value.value) {
+					consequent
+				} else {
+					alternate
+				}, mut visited)
+			}
+			return c.unb_has_unsafe_binding_in_evaluated_path(root, t, consequent, mut visited)
+				|| c.unb_has_unsafe_binding_in_evaluated_path(root, t, alternate, mut visited)
+		}
+		.logical_expression {
+			left := t.node(node, .left) or { return false }
+			right := t.node(node, .right) or { return false }
+			if c.unb_has_unsafe_binding_in_evaluated_path(root, t, left, mut visited) {
+				return true
+			}
+			if value := c.unb_static_value_internal(root, t, left, mut visited) {
+				operator := t.string_of(node, .operator) or { '' }
+				evaluates_right := match operator {
+					'&&' { stv_to_boolean(value.value) }
+					'||' { !stv_to_boolean(value.value) }
+					else { value.value.kind in [.null_, .undefined_] }
+				}
+				return evaluates_right
+					&& c.unb_has_unsafe_binding_in_evaluated_path(root, t, right, mut visited)
+			}
+			return c.unb_has_unsafe_binding_in_evaluated_path(root, t, right, mut visited)
+		}
+		.sequence_expression {
+			for expression in t.list(node, .expressions) or { []int{} } {
+				if c.unb_has_unsafe_binding_in_evaluated_path(root, t, expression, mut visited) {
+					return true
+				}
+			}
+			return false
+		}
+		.function_expression, .arrow_function_expression, .class_expression {
+			return false
+		}
+		else {}
+	}
+	for child in unb_evaluated_children(t, node) {
+		if c.unb_has_unsafe_binding_in_evaluated_path(root, t, child, mut visited) {
+			return true
+		}
+	}
+	return false
+}
+
+// unb_static_value_internal ports getStaticValueIfNoSideEffectsInternal.
+fn (mut c Checker) unb_static_value_internal(root C.TSNode, t &estree.EsTree, n int, mut visited map[int]bool) ?StaticValue {
+	node := unb_unwrap_ts(t, n)
+	if (unb_has_side_effect(t, node, false)
+		&& !c.unb_is_safe_static_pass_through_call(root, t, node, mut visited))
+		|| c.unb_has_side_effectful_const_initializer(root, t, node, mut visited) {
+		return none
+	}
+	value := c.un_static_value(t, node)
+	if !value.found {
+		return none
+	}
+	if c.unb_has_potentially_mutable_member_access(root, t, node, mut visited) {
+		return none
+	}
+	return value
+}
+
+// unb_static_value_if_no_side_effects ports getStaticValueIfNoSideEffects.
+fn (mut c Checker) unb_static_value_if_no_side_effects(root C.TSNode, t &estree.EsTree, node int) ?StaticValue {
+	mut visited := map[int]bool{}
+	return c.unb_static_value_internal(root, t, node, mut visited)
+}
+
+// unb_static_value_for_control_flow ports getStaticValueForControlFlow: getStaticValue is not
+// flow-sensitive, so mutable bindings and constants read before their declarations end on an
+// evaluated path give none.
+fn (mut c Checker) unb_static_value_for_control_flow(root C.TSNode, t &estree.EsTree, node int) ?StaticValue {
+	mut visited := map[int]bool{}
+	value := c.unb_static_value_internal(root, t, node, mut visited)?
+	mut visited_bindings := map[int]bool{}
+	if c.unb_has_unsafe_binding_in_evaluated_path(root, t, node, mut visited_bindings) {
+		return none
+	}
+	return value
+}
+
+// unb_found is a static value, none when it was not found.
+fn unb_found(v StaticValue) ?StaticValue {
+	return if v.found { v } else { none }
 }

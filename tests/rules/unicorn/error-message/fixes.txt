@@ -10,3 +10,12 @@ tests/rules/unicorn/error-message/cases.ts:13:35	unicorn/error-message	message-i
 tests/rules/unicorn/error-message/cases.ts:15:29	unicorn/error-message	message-is-empty-string	Error message should not be an empty string.	end	15	34
 tests/rules/unicorn/error-message/cases.ts:17:23	unicorn/error-message	message-is-not-a-string	Error message should be a string.	end	17	27
 tests/rules/unicorn/error-message/cases.ts:19:23	unicorn/error-message	message-is-empty-string	Error message should not be an empty string.	end	19	35
+tests/rules/unicorn/error-message/cases.ts:57:13	unicorn/error-message	message-is-not-a-string	Error message should be a string.	end	57	40
+tests/rules/unicorn/error-message/cases.ts:58:13	unicorn/error-message	message-is-not-a-string	Error message should be a string.	end	58	46
+tests/rules/unicorn/error-message/cases.ts:59:13	unicorn/error-message	message-is-empty-string	Error message should not be an empty string.	end	59	47
+tests/rules/unicorn/error-message/cases.ts:61:13	unicorn/error-message	message-is-not-a-string	Error message should be a string.	end	61	19
+tests/rules/unicorn/error-message/cases.ts:63:13	unicorn/error-message	message-is-not-a-string	Error message should be a string.	end	63	33
+tests/rules/unicorn/error-message/cases.ts:64:13	unicorn/error-message	message-is-not-a-string	Error message should be a string.	end	64	18
+tests/rules/unicorn/error-message/cases.ts:65:13	unicorn/error-message	message-is-not-a-string	Error message should be a string.	end	65	20
+tests/rules/unicorn/error-message/cases.ts:66:13	unicorn/error-message	message-is-not-a-string	Error message should be a string.	end	66	25
+tests/rules/unicorn/error-message/cases.ts:67:13	unicorn/error-message	message-is-not-a-string	Error message should be a string.	end	67	22
