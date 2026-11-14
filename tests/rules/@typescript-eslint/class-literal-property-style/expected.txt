@@ -24,6 +24,12 @@ tests/rules/@typescript-eslint/class-literal-property-style/cases.ts:119:8	@type
 tests/rules/@typescript-eslint/class-literal-property-style/cases.ts:122:7	@typescript-eslint/class-literal-property-style	preferFieldStyle	Literals should be exposed using readonly fields.
 tests/rules/@typescript-eslint/class-literal-property-style/cases.ts:126:7	@typescript-eslint/class-literal-property-style	preferFieldStyle	Literals should be exposed using readonly fields.
 tests/rules/@typescript-eslint/class-literal-property-style/cases.ts:143:7	@typescript-eslint/class-literal-property-style	preferFieldStyle	Literals should be exposed using readonly fields.
+tests/rules/@typescript-eslint/class-literal-property-style/cases.ts:156:7	@typescript-eslint/class-literal-property-style	preferFieldStyle	Literals should be exposed using readonly fields.
+tests/rules/@typescript-eslint/class-literal-property-style/cases.ts:159:14	@typescript-eslint/class-literal-property-style	preferFieldStyle	Literals should be exposed using readonly fields.
+tests/rules/@typescript-eslint/class-literal-property-style/cases.ts:162:7	@typescript-eslint/class-literal-property-style	preferFieldStyle	Literals should be exposed using readonly fields.
+tests/rules/@typescript-eslint/class-literal-property-style/cases.ts:165:7	@typescript-eslint/class-literal-property-style	preferFieldStyle	Literals should be exposed using readonly fields.
+tests/rules/@typescript-eslint/class-literal-property-style/cases.ts:169:12	@typescript-eslint/class-literal-property-style	preferFieldStyle	Literals should be exposed using readonly fields.
+tests/rules/@typescript-eslint/class-literal-property-style/cases.ts:174:7	@typescript-eslint/class-literal-property-style	preferFieldStyle	Literals should be exposed using readonly fields.
 tests/rules/@typescript-eslint/class-literal-property-style/getters/cases.ts:11:12	@typescript-eslint/class-literal-property-style	preferGetterStyle	Literals should be exposed using getters.
 tests/rules/@typescript-eslint/class-literal-property-style/getters/cases.ts:12:12	@typescript-eslint/class-literal-property-style	preferGetterStyle	Literals should be exposed using getters.
 tests/rules/@typescript-eslint/class-literal-property-style/getters/cases.ts:13:12	@typescript-eslint/class-literal-property-style	preferGetterStyle	Literals should be exposed using getters.
@@ -35,24 +41,23 @@ tests/rules/@typescript-eslint/class-literal-property-style/getters/cases.ts:18:
 tests/rules/@typescript-eslint/class-literal-property-style/getters/cases.ts:19:12	@typescript-eslint/class-literal-property-style	preferGetterStyle	Literals should be exposed using getters.
 tests/rules/@typescript-eslint/class-literal-property-style/getters/cases.ts:24:12	@typescript-eslint/class-literal-property-style	preferGetterStyle	Literals should be exposed using getters.
 tests/rules/@typescript-eslint/class-literal-property-style/getters/cases.ts:25:12	@typescript-eslint/class-literal-property-style	preferGetterStyle	Literals should be exposed using getters.
-tests/rules/@typescript-eslint/class-literal-property-style/getters/cases.ts:26:12	@typescript-eslint/class-literal-property-style	preferGetterStyle	Literals should be exposed using getters.
-tests/rules/@typescript-eslint/class-literal-property-style/getters/cases.ts:28:19	@typescript-eslint/class-literal-property-style	preferGetterStyle	Literals should be exposed using getters.
-tests/rules/@typescript-eslint/class-literal-property-style/getters/cases.ts:29:26	@typescript-eslint/class-literal-property-style	preferGetterStyle	Literals should be exposed using getters.
-tests/rules/@typescript-eslint/class-literal-property-style/getters/cases.ts:30:22	@typescript-eslint/class-literal-property-style	preferGetterStyle	Literals should be exposed using getters.
-tests/rules/@typescript-eslint/class-literal-property-style/getters/cases.ts:31:20	@typescript-eslint/class-literal-property-style	preferGetterStyle	Literals should be exposed using getters.
-tests/rules/@typescript-eslint/class-literal-property-style/getters/cases.ts:32:12	@typescript-eslint/class-literal-property-style	preferGetterStyle	Literals should be exposed using getters.
-tests/rules/@typescript-eslint/class-literal-property-style/getters/cases.ts:33:19	@typescript-eslint/class-literal-property-style	preferGetterStyle	Literals should be exposed using getters.
-tests/rules/@typescript-eslint/class-literal-property-style/getters/cases.ts:34:13	@typescript-eslint/class-literal-property-style	preferGetterStyle	Literals should be exposed using getters.
-tests/rules/@typescript-eslint/class-literal-property-style/getters/cases.ts:35:26	@typescript-eslint/class-literal-property-style	preferGetterStyle	Literals should be exposed using getters.
-tests/rules/@typescript-eslint/class-literal-property-style/getters/cases.ts:36:13	@typescript-eslint/class-literal-property-style	preferGetterStyle	Literals should be exposed using getters.
+tests/rules/@typescript-eslint/class-literal-property-style/getters/cases.ts:27:19	@typescript-eslint/class-literal-property-style	preferGetterStyle	Literals should be exposed using getters.
+tests/rules/@typescript-eslint/class-literal-property-style/getters/cases.ts:28:26	@typescript-eslint/class-literal-property-style	preferGetterStyle	Literals should be exposed using getters.
+tests/rules/@typescript-eslint/class-literal-property-style/getters/cases.ts:29:22	@typescript-eslint/class-literal-property-style	preferGetterStyle	Literals should be exposed using getters.
+tests/rules/@typescript-eslint/class-literal-property-style/getters/cases.ts:30:20	@typescript-eslint/class-literal-property-style	preferGetterStyle	Literals should be exposed using getters.
+tests/rules/@typescript-eslint/class-literal-property-style/getters/cases.ts:31:12	@typescript-eslint/class-literal-property-style	preferGetterStyle	Literals should be exposed using getters.
+tests/rules/@typescript-eslint/class-literal-property-style/getters/cases.ts:32:19	@typescript-eslint/class-literal-property-style	preferGetterStyle	Literals should be exposed using getters.
+tests/rules/@typescript-eslint/class-literal-property-style/getters/cases.ts:33:13	@typescript-eslint/class-literal-property-style	preferGetterStyle	Literals should be exposed using getters.
+tests/rules/@typescript-eslint/class-literal-property-style/getters/cases.ts:34:26	@typescript-eslint/class-literal-property-style	preferGetterStyle	Literals should be exposed using getters.
+tests/rules/@typescript-eslint/class-literal-property-style/getters/cases.ts:35:13	@typescript-eslint/class-literal-property-style	preferGetterStyle	Literals should be exposed using getters.
+tests/rules/@typescript-eslint/class-literal-property-style/getters/cases.ts:36:12	@typescript-eslint/class-literal-property-style	preferGetterStyle	Literals should be exposed using getters.
 tests/rules/@typescript-eslint/class-literal-property-style/getters/cases.ts:37:12	@typescript-eslint/class-literal-property-style	preferGetterStyle	Literals should be exposed using getters.
-tests/rules/@typescript-eslint/class-literal-property-style/getters/cases.ts:38:12	@typescript-eslint/class-literal-property-style	preferGetterStyle	Literals should be exposed using getters.
-tests/rules/@typescript-eslint/class-literal-property-style/getters/cases.ts:39:17	@typescript-eslint/class-literal-property-style	preferGetterStyle	Literals should be exposed using getters.
+tests/rules/@typescript-eslint/class-literal-property-style/getters/cases.ts:38:17	@typescript-eslint/class-literal-property-style	preferGetterStyle	Literals should be exposed using getters.
+tests/rules/@typescript-eslint/class-literal-property-style/getters/cases.ts:41:12	@typescript-eslint/class-literal-property-style	preferGetterStyle	Literals should be exposed using getters.
 tests/rules/@typescript-eslint/class-literal-property-style/getters/cases.ts:42:12	@typescript-eslint/class-literal-property-style	preferGetterStyle	Literals should be exposed using getters.
-tests/rules/@typescript-eslint/class-literal-property-style/getters/cases.ts:43:12	@typescript-eslint/class-literal-property-style	preferGetterStyle	Literals should be exposed using getters.
-tests/rules/@typescript-eslint/class-literal-property-style/getters/cases.ts:55:12	@typescript-eslint/class-literal-property-style	preferGetterStyle	Literals should be exposed using getters.
-tests/rules/@typescript-eslint/class-literal-property-style/getters/cases.ts:57:12	@typescript-eslint/class-literal-property-style	preferGetterStyle	Literals should be exposed using getters.
+tests/rules/@typescript-eslint/class-literal-property-style/getters/cases.ts:54:12	@typescript-eslint/class-literal-property-style	preferGetterStyle	Literals should be exposed using getters.
+tests/rules/@typescript-eslint/class-literal-property-style/getters/cases.ts:56:12	@typescript-eslint/class-literal-property-style	preferGetterStyle	Literals should be exposed using getters.
+tests/rules/@typescript-eslint/class-literal-property-style/getters/cases.ts:59:12	@typescript-eslint/class-literal-property-style	preferGetterStyle	Literals should be exposed using getters.
 tests/rules/@typescript-eslint/class-literal-property-style/getters/cases.ts:60:12	@typescript-eslint/class-literal-property-style	preferGetterStyle	Literals should be exposed using getters.
 tests/rules/@typescript-eslint/class-literal-property-style/getters/cases.ts:61:12	@typescript-eslint/class-literal-property-style	preferGetterStyle	Literals should be exposed using getters.
-tests/rules/@typescript-eslint/class-literal-property-style/getters/cases.ts:62:12	@typescript-eslint/class-literal-property-style	preferGetterStyle	Literals should be exposed using getters.
-tests/rules/@typescript-eslint/class-literal-property-style/getters/cases.ts:105:12	@typescript-eslint/class-literal-property-style	preferGetterStyle	Literals should be exposed using getters.
+tests/rules/@typescript-eslint/class-literal-property-style/getters/cases.ts:104:12	@typescript-eslint/class-literal-property-style	preferGetterStyle	Literals should be exposed using getters.

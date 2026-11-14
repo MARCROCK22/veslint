@@ -25,7 +25,6 @@ class C1 {
   accessor p3: Foo<string> = new Foo();
   @dec p4: Foo<string> = new Foo();
   private p5?: Foo<string> = new Foo();
-  p6!: Foo<string> = new Foo();
   ['computed']: Foo<string> = new Foo();
   #private: Foo<string> = new Foo();
   declare p7: Foo<string>;

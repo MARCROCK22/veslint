@@ -150,3 +150,28 @@ abstract class Abstract {
 declare class Declared {
   get a(): string;
 }
+// typescript-eslint 8.72: the return type stays in the field, with what is around it; a getter
+// with decorators gets no suggestion.
+class ReturnTypes {
+  get a(): 'a' {
+    return 'a';
+  }
+  static get b() /* before */ : 1 | 2 /* after */ {
+    return 1;
+  }
+  get c()  {
+    return 'c';
+  }
+  get d():
+    string {
+    return `d`;
+  }
+  @dec get e(): number {
+    return 1;
+  }
+  @dec
+  @dec
+  get f() {
+    return 'f';
+  }
+}

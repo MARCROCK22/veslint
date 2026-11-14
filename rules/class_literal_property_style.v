@@ -2,9 +2,9 @@ module rules
 
 import json2
 import time
-import treesitter { has_child_kind, named_children, node_field, node_kind, node_parent, position_of }
+import treesitter { has_child_kind, named_children, node_end, node_field, node_kind, node_parent, node_start, position_of }
 
-// Port of the `class-literal-property-style` rule of typescript-eslint 8.62.0, with its option
+// Port of the `class-literal-property-style` rule of typescript-eslint 8.72.2, with its option
 // ('fields', the default, or 'getters') and its suggestions.
 
 const clps_messages = {
@@ -74,11 +74,22 @@ fn (mut c Checker) clps_check_getter(node C.TSNode, mut findings []Finding) ! {
 		}
 	}
 	key, computed := clps_key(node) or { return }
+	// getFixOrSuggest: no suggestion for a getter with decorators.
+	if cm_decorators(node).len > 0 {
+		findings << Finding{
+			stmt:       position_of(key)
+			message_id: 'preferFieldStyle'
+		}
+		return
+	}
+	// What is between the `)` of the getter and its body (its return type) stays.
+	parameters := node_field(node, 'parameters') or { return }
+	between := c.src[node_end(parameters)..node_start(body)]
 	text := '${c.clps_modifiers(node, 'readonly')}${if computed {
 		'[${c.cm_node_text(key)}]'
 	} else {
 		c.cm_node_text(key)
-	}} = ${c.cm_node_text(argument)};'
+	}}${between}= ${c.cm_node_text(argument)};'
 	_, suggestion := c.suggestion('preferFieldStyleSuggestion', map[string]string{}, [
 		fix_replace_range(cm_start(node), c.cm_node_end(node), text),
 	])!
