@@ -1,0 +1,21 @@
+tests/rules/@stylistic/template-tag-spacing/always/cases.ts:6:11	@stylistic/template-tag-spacing	missing	Missing space between template tag and template literal.	fix	249	249	 	end	6	14
+tests/rules/@stylistic/template-tag-spacing/always/cases.ts:7:11	@stylistic/template-tag-spacing	missing	Missing space between template tag and template literal.	fix	270	270	 	end	7	14
+tests/rules/@stylistic/template-tag-spacing/always/cases.ts:9:11	@stylistic/template-tag-spacing	missing	Missing space between template tag and template literal.	fix	328	328	 	end	9	18
+tests/rules/@stylistic/template-tag-spacing/always/cases.ts:10:11	@stylistic/template-tag-spacing	missing	Missing space between template tag and template literal.	fix	348	348	 	end	10	16
+tests/rules/@stylistic/template-tag-spacing/always/cases.ts:11:11	@stylistic/template-tag-spacing	missing	Missing space between template tag and template literal.	fix	378	378	 	end	11	26
+tests/rules/@stylistic/template-tag-spacing/always/cases.ts:12:11	@stylistic/template-tag-spacing	missing	Missing space between template tag and template literal.	fix	416	416	 	end	12	26
+tests/rules/@stylistic/template-tag-spacing/always/cases.ts:19:20	@stylistic/template-tag-spacing	missing	Missing space between template tag and template literal.	fix	557	557	 	end	19	23
+tests/rules/@stylistic/template-tag-spacing/always/cases.ts:20:11	@stylistic/template-tag-spacing	missing	Missing space between template tag and template literal.	fix	581	581	 	end	20	14
+tests/rules/@stylistic/template-tag-spacing/always/cases.ts:20:20	@stylistic/template-tag-spacing	missing	Missing space between template tag and template literal.	fix	590	590	 	end	20	23
+tests/rules/@stylistic/template-tag-spacing/cases.ts:6:14	@stylistic/template-tag-spacing	unexpected	Unexpected space between template tag and template literal.	fix	249	250		end	6	15
+tests/rules/@stylistic/template-tag-spacing/cases.ts:8:14	@stylistic/template-tag-spacing	unexpected	Unexpected space between template tag and template literal.	fix	292	295		end	8	17
+tests/rules/@stylistic/template-tag-spacing/cases.ts:9:18	@stylistic/template-tag-spacing	unexpected	Unexpected space between template tag and template literal.	fix	329	330		end	9	19
+tests/rules/@stylistic/template-tag-spacing/cases.ts:10:16	@stylistic/template-tag-spacing	unexpected	Unexpected space between template tag and template literal.	fix	350	351		end	10	17
+tests/rules/@stylistic/template-tag-spacing/cases.ts:11:26	@stylistic/template-tag-spacing	unexpected	Unexpected space between template tag and template literal.	fix	381	382		end	11	27
+tests/rules/@stylistic/template-tag-spacing/cases.ts:13:14	@stylistic/template-tag-spacing	unexpected	Unexpected space between template tag and template literal.	fix	438	451	/* block */	end	13	27
+tests/rules/@stylistic/template-tag-spacing/cases.ts:14:14	@stylistic/template-tag-spacing	unexpected	Unexpected space between template tag and template literal.	fix	469	488	/* one *//* two */	end	14	33
+tests/rules/@stylistic/template-tag-spacing/cases.ts:15:14	@stylistic/template-tag-spacing	unexpected	Unexpected space between template tag and template literal.	end	16	1
+tests/rules/@stylistic/template-tag-spacing/cases.ts:17:14	@stylistic/template-tag-spacing	unexpected	Unexpected space between template tag and template literal.	fix	533	534		end	18	1
+tests/rules/@stylistic/template-tag-spacing/cases.ts:19:23	@stylistic/template-tag-spacing	unexpected	Unexpected space between template tag and template literal.	fix	561	562		end	19	24
+tests/rules/@stylistic/template-tag-spacing/cases.ts:20:14	@stylistic/template-tag-spacing	unexpected	Unexpected space between template tag and template literal.	fix	586	587		end	20	15
+tests/rules/@stylistic/template-tag-spacing/cases.ts:20:24	@stylistic/template-tag-spacing	unexpected	Unexpected space between template tag and template literal.	fix	596	597		end	20	25
