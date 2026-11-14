@@ -30,3 +30,12 @@ const z3 = JSON.parse?.(JSON.stringify(value));
 const z4 = _.cloneDeep(value, 1);
 const z5 = _?.cloneDeep(value);
 const z6 = _['cloneDeep'](value);
+
+// 79.0.0: no suggestion when a comment in a replaced or removed callee would be lost.
+const k1 = JSON /* keep */ .parse(JSON.stringify(value));
+JSON.parse(JSON./* keep */stringify(value));
+JSON.parse(/* keep */ JSON.stringify(value /* keep */));
+JSON.parse(JSON.stringify /* keep */ (value));
+const k2 = _./* keep */cloneDeep(value);
+const k3 = _. /* keep */ cloneDeep(value);
+_.cloneDeep(/* keep */ value);
