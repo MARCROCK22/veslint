@@ -1365,3 +1365,8 @@ eslint	prefer-default-parameters/r8/i0	a JavaScript case: as TypeScript, the JSD
 veslint	prefer-default-parameters/r8/i0	a JavaScript case: as TypeScript, the JSDoc types do not type the parameters
 eslint	prefer-default-parameters/r16/i0	a JavaScript case: with the TypeScript parser, setters are not checked
 veslint	prefer-default-parameters/r16/i0	a JavaScript case: with the TypeScript parser, setters are not checked
+# no-whitespace-before-property: JavaScript cases with a decimal with leading zeros or a legacy octal literal, which
+# typescript-eslint's parser rejects; tree-sitter parses them.
+eslint	no-whitespace-before-property._js_/i82	typescript-eslint's parser: Decimals with leading zeros are not allowed.
+eslint	no-whitespace-before-property._js_/i83	typescript-eslint's parser: Decimals with leading zeros are not allowed.
+eslint	no-whitespace-before-property._js_/i94	typescript-eslint's parser: Octal literals are not allowed.

@@ -1,0 +1,28 @@
+tests/rules/@stylistic/no-whitespace-before-property/cases.ts:11:11	@stylistic/no-whitespace-before-property	unexpectedWhitespace	Unexpected whitespace before property baz.	fix	248	250	.	end	11	26
+tests/rules/@stylistic/no-whitespace-before-property/cases.ts:11:11	@stylistic/no-whitespace-before-property	unexpectedWhitespace	Unexpected whitespace before property bar.	fix	242	245	.	end	11	21
+tests/rules/@stylistic/no-whitespace-before-property/cases.ts:12:11	@stylistic/no-whitespace-before-property	unexpectedWhitespace	Unexpected whitespace before property bar.	fix	268	271	?.	end	12	20
+tests/rules/@stylistic/no-whitespace-before-property/cases.ts:13:11	@stylistic/no-whitespace-before-property	unexpectedWhitespace	Unexpected whitespace before property 'q-r'.	fix	289	293	?.	end	13	27
+tests/rules/@stylistic/no-whitespace-before-property/cases.ts:14:11	@stylistic/no-whitespace-before-property	unexpectedWhitespace	Unexpected whitespace before property 0.	fix	317	318		end	14	18
+tests/rules/@stylistic/no-whitespace-before-property/cases.ts:15:11	@stylistic/no-whitespace-before-property	unexpectedWhitespace	Unexpected whitespace before property 1.	fix	338	339		end	15	20
+tests/rules/@stylistic/no-whitespace-before-property/cases.ts:18:11	@stylistic/no-whitespace-before-property	unexpectedWhitespace	Unexpected whitespace before property bar.	end	18	27
+tests/rules/@stylistic/no-whitespace-before-property/cases.ts:19:11	@stylistic/no-whitespace-before-property	unexpectedWhitespace	Unexpected whitespace before property bar.	end	19	27
+tests/rules/@stylistic/no-whitespace-before-property/cases.ts:22:11	@stylistic/no-whitespace-before-property	unexpectedWhitespace	Unexpected whitespace before property toString.	end	22	22
+tests/rules/@stylistic/no-whitespace-before-property/cases.ts:23:11	@stylistic/no-whitespace-before-property	unexpectedWhitespace	Unexpected whitespace before property toFixed.	fix	492	494	.	end	23	23
+tests/rules/@stylistic/no-whitespace-before-property/cases.ts:24:11	@stylistic/no-whitespace-before-property	unexpectedWhitespace	Unexpected whitespace before property toString.	fix	519	521	.	end	24	25
+tests/rules/@stylistic/no-whitespace-before-property/cases.ts:25:11	@stylistic/no-whitespace-before-property	unexpectedWhitespace	Unexpected whitespace before property 'q-r'.	fix	547	548		end	25	25
+tests/rules/@stylistic/no-whitespace-before-property/cases.ts:26:11	@stylistic/no-whitespace-before-property	unexpectedWhitespace	Unexpected whitespace before property arr [0]!.	fix	572	573		end	26	25
+tests/rules/@stylistic/no-whitespace-before-property/cases.ts:26:16	@stylistic/no-whitespace-before-property	unexpectedWhitespace	Unexpected whitespace before property 0.	fix	577	578		end	26	23
+tests/rules/@stylistic/no-whitespace-before-property/cases.ts:27:11	@stylistic/no-whitespace-before-property	unexpectedWhitespace	Unexpected whitespace before property baz.	fix	603	605	.	end	27	24
+tests/rules/@stylistic/no-whitespace-before-property/cases.ts:28:11	@stylistic/no-whitespace-before-property	unexpectedWhitespace	Unexpected whitespace before property fn.	fix	625	628	?.	end	28	21
+tests/rules/@stylistic/no-whitespace-before-property/cases.ts:33:10	@stylistic/no-whitespace-before-property	unexpectedWhitespace	Unexpected whitespace before property #secret.	fix	695	697	.	end	33	24
+tests/rules/@stylistic/no-whitespace-before-property/cases.ts:33:27	@stylistic/no-whitespace-before-property	unexpectedWhitespace	Unexpected whitespace before property #secret.	fix	711	713	.	end	33	40
+tests/rules/@stylistic/no-whitespace-before-property/cases.ts:37:10	@stylistic/no-whitespace-before-property	unexpectedWhitespace	Unexpected whitespace before property T.	fix	749	751	.	end	37	25
+tests/rules/@stylistic/no-whitespace-before-property/cases.ts:37:10	@stylistic/no-whitespace-before-property	unexpectedWhitespace	Unexpected whitespace before property Inner.	fix	742	744	.	end	37	22
+tests/rules/@stylistic/no-whitespace-before-property/cases.ts:38:10	@stylistic/no-whitespace-before-property	unexpectedWhitespace	Unexpected whitespace before property number.	fix	775	776		end	38	31
+tests/rules/@stylistic/no-whitespace-before-property/cases.ts:39:17	@stylistic/no-whitespace-before-property	unexpectedWhitespace	Unexpected whitespace before property value.	fix	807	809	.	end	39	29
+tests/rules/@stylistic/no-whitespace-before-property/cases.ts:40:10	@stylistic/no-whitespace-before-property	unexpectedWhitespace	Unexpected whitespace before property 'length'.	fix	838	839		end	40	34
+tests/rules/@stylistic/no-whitespace-before-property/cases.ts:41:10	@stylistic/no-whitespace-before-property	unexpectedWhitespace	Unexpected whitespace before property Thing.	fix	877	879	.	end	41	34
+tests/rules/@stylistic/no-whitespace-before-property/cases.ts:42:17	@stylistic/no-whitespace-before-property	unexpectedWhitespace	Unexpected whitespace before property thing.	fix	919	921	.	end	42	41
+tests/rules/@stylistic/no-whitespace-before-property/cases.ts:43:10	@stylistic/no-whitespace-before-property	unexpectedWhitespace	Unexpected whitespace before property Inner.	end	43	29
+tests/rules/@stylistic/no-whitespace-before-property/cases.ts:44:16	@stylistic/no-whitespace-before-property	unexpectedWhitespace	Unexpected whitespace before property Inner.	fix	980	982	.	end	44	28
+tests/rules/@stylistic/no-whitespace-before-property/cases.ts:45:11	@stylistic/no-whitespace-before-property	unexpectedWhitespace	Unexpected whitespace before property Nested.	fix	1004	1006	.	end	45	24
