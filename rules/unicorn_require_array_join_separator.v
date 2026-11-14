@@ -2,7 +2,7 @@ module rules
 
 import time
 
-// Port of the `unicorn/require-array-join-separator` rule of eslint-plugin-unicorn 64.0.0 (it has
+// Port of the `unicorn/require-array-join-separator` rule of eslint-plugin-unicorn 79.0.0 (it has
 // no options), with its fix.
 
 const urajs_messages = {
@@ -14,6 +14,11 @@ fn (mut c Checker) lint_unicorn_require_array_join_separator(root C.TSNode, abs_
 	mut findings := []Finding{}
 	t := c.es_tree(root, abs_path) or { return findings }
 	tokens := c.un_tokens(t)
+	mut ctx := &UnbTypeContext{
+		root:     root
+		abs_path: abs_path
+		stats:    unsafe { &stats }
+	}
 	for node in 0 .. t.nodes.len {
 		if t.typ(node) != .call_expression {
 			continue
@@ -30,6 +35,13 @@ fn (mut c Checker) lint_unicorn_require_array_join_separator(root C.TSNode, abs_
 			&& un_is_prototype_property(t, t.node(t.node(node, .callee) or { continue }, .object) or {
 			continue
 		}, 'Array', ['join']))) {
+			continue
+		}
+		// `foo.join()` of a receiver known not to be an array; not `[].join.call(foo)`.
+		if (t.list(node, .arguments) or { []int{} }).len == 0
+			&& c.unb_should_skip_known_non_array_receiver(t, t.node(t.node(node, .callee) or { continue }, .object) or {
+			continue
+		}, mut ctx) {
 			continue
 		}
 		inside := tokens.inside(t.nodes[node].start, t.nodes[node].end, false)

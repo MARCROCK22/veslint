@@ -1,6 +1,7 @@
 module rules
 
 import estree
+import jsregexp
 import treesitter
 import tsgo { TypeResponse }
 
@@ -1221,4 +1222,2211 @@ fn unb_has_static_string(t &estree.EsTree, node int) bool {
 fn unb_should_add_parens_to_unary_argument(t &estree.EsTree, node int) bool {
 	return unb_precedence(t, node) < unb_precedence_unary
 		|| t.typ(node) in [.update_expression, .ts_non_null_expression, .ts_type_assertion]
+}
+
+// The type checkers of utils/type-helpers.js (createTypeCheckers): what a node is known to be,
+// from its annotations (TypeScript and JSDoc), its definition, its static value, its syntax and,
+// when the parser has a program, its type.
+
+enum UnbKind {
+	target
+	non_target
+	nullish
+	unknown
+}
+
+// UnbFamily selects the hooks of a type checker (isTargetNode, isNonTargetNode, getStaticType,
+// isTargetTypeAnnotation, isTargetType): those of utils/is-array.js, or none for a builtin.
+enum UnbFamily {
+	array
+	indexed_collection
+	bigint_typed_array
+	builtin
+}
+
+const unb_typed_arrays = ['Int8Array', 'Uint8Array', 'Uint8ClampedArray', 'Int16Array', 'Uint16Array',
+	'Int32Array', 'Uint32Array', 'Float16Array', 'Float32Array', 'Float64Array', 'BigInt64Array',
+	'BigUint64Array']
+
+const unb_known_non_indexed_collections = ['Map', 'ReadonlyMap', 'WeakMap', 'Set', 'ReadonlySet',
+	'WeakSet', 'URLSearchParams', 'Headers', 'FormData', 'CanvasRenderingContext2D',
+	'OffscreenCanvasRenderingContext2D']
+
+struct UnbTypeOptions {
+	family                            UnbFamily
+	check_class_heritage              bool = true
+	check_class_syntax                bool
+	prefer_type_reference_definitions bool
+	treat_mixed_union_as_target       bool
+	treat_mixed_union_as_non_target   bool
+	allow_nullish_in_mixed_union      bool
+	target_type_names                 []string
+	non_target_type_names             []string
+	aliases                           map[string]string // typeReferenceAliases
+	target_call_names                 []string
+	target_constructor_names          []string
+}
+
+// unb_array_options are arrayTypeCheckerOptions (isArray, isKnownNonArray).
+fn unb_array_options() UnbTypeOptions {
+	mut non_targets := unb_typed_arrays.clone()
+	non_targets << unb_known_non_indexed_collections
+	return UnbTypeOptions{
+		family:                            .array
+		check_class_heritage:              false
+		prefer_type_reference_definitions: true
+		target_type_names:                 ['Array', 'ReadonlyArray']
+		non_target_type_names:             non_targets
+		target_call_names:                 ['Array']
+		target_constructor_names:          ['Array']
+	}
+}
+
+// unb_indexed_collection_options are those of isIndexedCollection and
+// isKnownNonIndexedCollection: Array and the typed arrays.
+fn unb_indexed_collection_options() UnbTypeOptions {
+	mut targets := ['Array', 'ReadonlyArray']
+	targets << unb_typed_arrays
+	mut constructors := ['Array']
+	constructors << unb_typed_arrays
+	return UnbTypeOptions{
+		...unb_array_options()
+		family:                   .indexed_collection
+		target_type_names:        targets
+		non_target_type_names:    unb_known_non_indexed_collections
+		target_constructor_names: constructors
+	}
+}
+
+// unb_builtin_options ports createBuiltinTypeCheckers: the builtin `name` and its aliases.
+fn unb_builtin_options(name string, aliases []string) UnbTypeOptions {
+	mut alias_map := map[string]string{}
+	for alias in aliases {
+		alias_map[alias] = name
+	}
+	return UnbTypeOptions{
+		family:                   .builtin
+		target_type_names:        [name]
+		aliases:                  alias_map
+		target_constructor_names: [name]
+	}
+}
+
+fn unb_normalize_kind(kind UnbKind) UnbKind {
+	return if kind == .nullish { UnbKind.non_target } else { kind }
+}
+
+// unb_combine_union ports combineUnionTypes.
+fn unb_combine_union(kinds []UnbKind, o UnbTypeOptions) UnbKind {
+	types := if o.allow_nullish_in_mixed_union {
+		kinds.filter(it != .nullish)
+	} else {
+		kinds.map(unb_normalize_kind(it))
+	}
+	if types.len == 0 {
+		return .non_target
+	}
+	all_target := if o.treat_mixed_union_as_target {
+		UnbKind.target in types
+	} else {
+		types.all(it == .target)
+	}
+	if all_target {
+		return .target
+	}
+	all_non_target := if o.treat_mixed_union_as_non_target {
+		UnbKind.non_target in types
+	} else {
+		types.all(it == .non_target)
+	}
+	if all_non_target {
+		return .non_target
+	}
+	return .unknown
+}
+
+// unb_combine_intersection ports combineIntersectionTypes: an unknown member may be `any`.
+fn unb_combine_intersection(kinds []UnbKind) UnbKind {
+	types := kinds.map(unb_normalize_kind(it))
+	if UnbKind.unknown in types {
+		return .unknown
+	}
+	return if UnbKind.target in types { UnbKind.target } else { UnbKind.non_target }
+}
+
+// unb_known_type_reference ports getKnownTypeReferenceType.
+fn unb_known_type_reference(name string, o UnbTypeOptions) UnbKind {
+	alias := o.aliases[name] or { '' }
+	if name in o.target_type_names || (alias != '' && alias in o.target_type_names) {
+		return .target
+	}
+	return if name in o.non_target_type_names { UnbKind.non_target } else { UnbKind.unknown }
+}
+
+// unb_type_name ports getTypeName: `Foo` or `Foo.Bar` of a type name.
+fn unb_type_name(t &estree.EsTree, node int) ?string {
+	if node < 0 {
+		return none
+	}
+	if t.typ(node) == .identifier {
+		return t.string_of(node, .name)
+	}
+	if t.typ(node) == .ts_qualified_name {
+		left := unb_type_name(t, t.node(node, .left)?)?
+		return '${left}.${t.string_of(t.node(node, .right)?, .name)?}'
+	}
+	return none
+}
+
+// UnbDefinition is a definition with its ESTree nodes: `node` is def.node and `name` def.name
+// (-1 when the tree has none), and `scope` the scope that declares it.
+struct UnbDefinition {
+	def   ScopeDefinition
+	node  int
+	name  int
+	scope int
+}
+
+fn (mut c Checker) unb_definition(t &estree.EsTree, def ScopeDefinition, scope int) UnbDefinition {
+	return UnbDefinition{
+		def:   def
+		node:  c.es_index_of(t, def.node) or { -1 }
+		name:  c.es_index_of(t, def.name) or { -1 }
+		scope: scope
+	}
+}
+
+// unb_type_reference_definition ports getTypeReferenceDefinition: the nearest class, import, enum
+// or type definition of the name, from the scope upward.
+fn (mut c Checker) unb_type_reference_definition(root C.TSNode, t &estree.EsTree, name string, from int) ?UnbDefinition {
+	tree := c.scope_tree(root)
+	mut scope := from
+	for scope >= 0 {
+		if v := tree.scopes[scope].set[name] {
+			for def in tree.variables[v].defs {
+				if def.kind in [.class_name, .import_binding, .ts_enum_name, .type_definition] {
+					return c.unb_definition(t, def, scope)
+				}
+			}
+		}
+		scope = tree.scopes[scope].upper
+	}
+	return none
+}
+
+// unb_scope_of is sourceCode.getScope(node) of an ESTree node.
+fn (mut c Checker) unb_scope_of(root C.TSNode, t &estree.EsTree, node int) int {
+	ts := t.ts_node(node) or { return 0 }
+	return c.scope_tree(root).get_scope(ts)
+}
+
+// unb_import_binding_type ports getImportBindingType (without targetTypeImports, which none of
+// the ported checkers has).
+fn (mut c Checker) unb_import_binding_type(t &estree.EsTree, d UnbDefinition, o UnbTypeOptions) UnbKind {
+	if d.def.kind != .import_binding || d.node < 0 {
+		return .unknown
+	}
+	local := t.string_of(t.node(d.node, .local) or { return .unknown }, .name) or { '' }
+	if t.typ(d.node) == .import_default_specifier {
+		return if unb_known_type_reference(local, o) == .unknown {
+			UnbKind.unknown
+		} else {
+			UnbKind.non_target
+		}
+	}
+	imported_node := t.node(d.node, .imported) or { return .unknown }
+	imported := t.string_of(imported_node, .name) or {
+		value := t.get(imported_node, .value)
+		if value is string { value } else { '' }
+	}
+	if imported == '' {
+		return .unknown
+	}
+	// getKnownImportedType without targetTypeImports.
+	if unb_known_type_reference(imported, o) != .unknown || unb_known_type_reference(local, o) != .unknown {
+		return .non_target
+	}
+	return .unknown
+}
+
+// unb_type_reference_type ports getTypeReferenceType.
+fn (mut c Checker) unb_type_reference_type(root C.TSNode, t &estree.EsTree, type_name int, scope int, o UnbTypeOptions, mut visited map[string]bool) UnbKind {
+	name := unb_type_name(t, type_name) or { return .unknown }
+	// getNamespaceImportBindingType needs targetTypeNamespaceImports, which none of the ported
+	// checkers has.
+	if !o.prefer_type_reference_definitions {
+		known := unb_known_type_reference(name, o)
+		if known != .unknown {
+			return known
+		}
+	}
+	d := c.unb_type_reference_definition(root, t, name, scope) or {
+		return unb_known_type_reference(name, o)
+	}
+	key := '${node_key(d.def.node)}:${d.def.kind}'
+	if visited[key] {
+		return .unknown
+	}
+	visited[key] = true
+	mut kind := UnbKind.unknown
+	import_kind := c.unb_import_binding_type(t, d, o)
+	if import_kind != .unknown {
+		kind = import_kind
+	} else if d.def.kind == .type_definition && d.node >= 0 {
+		match t.typ(d.node) {
+			.ts_type_alias_declaration {
+				kind = c.unb_annotation_type(root, t, t.node(d.node, .type_annotation) or { -1 },
+					d.scope, o, mut visited)
+			}
+			.ts_type_parameter {
+				kind = c.unb_annotation_type(root, t, t.node(d.node, .constraint) or { -1 },
+					d.scope, o, mut visited)
+			}
+			.ts_interface_declaration {
+				extends := t.list(d.node, .extends_) or { []int{} }
+				kind = if extends.len == 0 {
+					UnbKind.non_target
+				} else {
+					unb_combine_intersection(extends.map(c.unb_type_reference_type(root, t,
+						t.node(it, .expression) or { -1 }, d.scope, o, mut visited)))
+				}
+			}
+			else {}
+		}
+	} else if d.def.kind == .class_name && d.node >= 0 {
+		kind = c.unb_class_heritage_type(root, t, d.node, d.scope, o, mut visited)
+	}
+	visited.delete(key)
+	return kind
+}
+
+// unb_class_heritage_type ports getClassHeritageType.
+fn (mut c Checker) unb_class_heritage_type(root C.TSNode, t &estree.EsTree, node int, scope int, o UnbTypeOptions, mut visited map[string]bool) UnbKind {
+	super_class := t.node(node, .super_class) or { return .non_target }
+	if !o.check_class_heritage {
+		return .non_target
+	}
+	if t.typ(super_class) != .identifier {
+		return .unknown
+	}
+	return c.unb_class_reference_type(root, t, super_class, scope, o, mut visited)
+}
+
+// unb_class_type ports getClassType.
+fn (mut c Checker) unb_class_type(root C.TSNode, t &estree.EsTree, node int, scope int, o UnbTypeOptions, mut visited map[string]bool) UnbKind {
+	super_class := t.node(node, .super_class) or { return .non_target }
+	if !o.check_class_heritage {
+		return .non_target
+	}
+	return c.unb_class_reference_type(root, t, super_class, scope, o, mut visited)
+}
+
+// unb_class_reference_type ports getClassReferenceTypeFromScope.
+fn (mut c Checker) unb_class_reference_type(root C.TSNode, t &estree.EsTree, node int, scope int, o UnbTypeOptions, mut visited map[string]bool) UnbKind {
+	if t.typ(node) == .identifier {
+		name := t.string_of(node, .name) or { return .unknown }
+		if !o.check_class_heritage {
+			return unb_known_type_reference(name, o)
+		}
+		tree := c.scope_tree(root)
+		v := tree.find_variable(scope, name, -1)
+		if v < 0 || tree.variables[v].defs.len == 0 {
+			return unb_known_type_reference(name, o)
+		}
+		def := tree.variables[v].defs[0]
+		key := '${node_key(def.node)}:${def.kind}'
+		if visited[key] {
+			return .unknown
+		}
+		visited[key] = true
+		mut kind := UnbKind.unknown
+		d := c.unb_definition(t, def, tree.variables[v].scope)
+		if def.kind == .variable && def.parent_kind == 'const' && unb_is_simple_declarator(def) {
+			if init := def.init {
+				if init_node := c.es_index_of(t, init) {
+					kind = c.unb_class_reference_type(root, t, init_node, tree.variables[v].scope,
+						o, mut visited)
+				}
+			}
+		} else if def.kind == .class_name && d.node >= 0 {
+			kind = c.unb_class_type(root, t, d.node, tree.variables[v].scope, o, mut visited)
+		}
+		visited.delete(key)
+		return kind
+	}
+	if t.typ(node) in [.class_declaration, .class_expression] {
+		return c.unb_class_type(root, t, node, scope, o, mut visited)
+	}
+	return .unknown
+}
+
+// unb_annotation_type ports getTypeAnnotationType.
+fn (mut c Checker) unb_annotation_type(root C.TSNode, t &estree.EsTree, node int, scope int, o UnbTypeOptions, mut visited map[string]bool) UnbKind {
+	if node < 0 {
+		return .unknown
+	}
+	match t.typ(node) {
+		.ts_type_annotation {
+			return c.unb_annotation_type(root, t, t.node(node, .type_annotation) or { -1 }, scope,
+				o, mut visited)
+		}
+		.ts_type_operator {
+			return if (t.string_of(node, .operator) or { '' }) == 'readonly' {
+				c.unb_annotation_type(root, t, t.node(node, .type_annotation) or { -1 }, scope, o, mut
+					visited)
+			} else {
+				UnbKind.unknown
+			}
+		}
+		.ts_type_reference {
+			return c.unb_type_reference_type(root, t, t.node(node, .type_name) or { -1 }, scope, o, mut
+				visited)
+		}
+		.ts_union_type {
+			types := t.list(node, .types) or { []int{} }
+			return unb_combine_union(types.map(c.unb_annotation_type(root, t, it, scope, o, mut
+				visited)), o)
+		}
+		.ts_intersection_type {
+			types := t.list(node, .types) or { []int{} }
+			return unb_combine_intersection(types.map(c.unb_annotation_type(root, t, it, scope, o, mut
+				visited)))
+		}
+		else {
+			if o.family in [.array, .indexed_collection] && t.typ(node) in [.ts_array_type, .ts_tuple_type] {
+				return .target
+			}
+			if t.typ(node) in [.ts_null_keyword, .ts_undefined_keyword] {
+				return .nullish
+			}
+			return if t.typ(node) in [.ts_big_int_keyword, .ts_boolean_keyword, .ts_never_keyword,
+				.ts_number_keyword, .ts_string_keyword, .ts_symbol_keyword, .ts_void_keyword,
+				.ts_array_type, .ts_literal_type, .ts_tuple_type, .ts_type_literal, .ts_function_type,
+				.ts_constructor_type] {
+				UnbKind.non_target
+			} else {
+				UnbKind.unknown
+			}
+		}
+	}
+}
+
+// unb_intrinsic_flags are the flags of the types that have an intrinsicName (any, unknown,
+// undefined, null, void, string, number, bigint, true and false, symbol, object, never).
+const unb_intrinsic_flags = u32(1 | 2 | 4 | 8 | 16 | 32 | 64 | 128 | 512 | 8192 | 131072 | 262144)
+
+// unb_ts_type ports getTypeScriptType: what the type of TypeScript is.
+fn (mut c Checker) unb_ts_type(t TypeResponse, o UnbTypeOptions, depth int) !UnbKind {
+	if depth > 50 {
+		return .unknown
+	}
+	// isUnknownType: any, error and unknown.
+	if t.intrinsic_name in ['any', 'error', 'unknown'] {
+		return .unknown
+	}
+	if t.intrinsic_name in ['null', 'undefined'] {
+		return .nullish
+	}
+	if t.flags & type_flag_type_parameter != 0 {
+		constraint := c.constraint_of(t)!
+		return if constraint.is_null() {
+			UnbKind.unknown
+		} else {
+			c.unb_ts_type(constraint, o, depth + 1)!
+		}
+	}
+	if t.flags & type_flag_union != 0 {
+		mut kinds := []UnbKind{}
+		for part in c.members_of(t)! {
+			kinds << c.unb_ts_type(part, o, depth + 1)!
+		}
+		return unb_combine_union(kinds, o)
+	}
+	if t.flags & type_flag_intersection != 0 {
+		mut kinds := []UnbKind{}
+		for part in c.members_of(t)! {
+			kinds << c.unb_ts_type(part, o, depth + 1)!
+		}
+		return unb_combine_intersection(kinds)
+	}
+	if o.family in [.array, .indexed_collection] && (c.is_array(t)! || c.is_tuple(t)!) {
+		return .target
+	}
+	constraint := c.base_constraint(t)!
+	if !constraint.is_null() && constraint.id != t.id {
+		return c.unb_ts_type(constraint, o, depth + 1)
+	}
+	if o.check_class_heritage && t.symbol != 0 {
+		symbol := c.symbol_of(t)!
+		for base in c.bases_of(symbol.id) or { []TypeResponse{} } {
+			if c.unb_ts_type(base, o, depth + 1)! == .target {
+				return .target
+			}
+		}
+	}
+	if t.intrinsic_name != '' || t.flags & unb_intrinsic_flags != 0 {
+		return .non_target
+	}
+	// getTypeSymbol: the symbol, or the alias symbol.
+	name := if t.symbol != 0 {
+		c.symbol_of(t)!.name
+	} else if t.alias_symbol != 0 {
+		c.alias_symbol_of(t)!.name
+	} else {
+		return .unknown
+	}
+	alias := o.aliases[name] or { '' }
+	return if name in o.target_type_names || (alias != '' && alias in o.target_type_names) {
+		UnbKind.target
+	} else {
+		UnbKind.non_target
+	}
+}
+
+// unb_type_from_type_information ports getTypeFromTypeInformation.
+fn (mut c Checker) unb_type_from_type_information(t &estree.EsTree, node int, o UnbTypeOptions, mut ctx UnbTypeContext) UnbKind {
+	type_ := c.unb_type_of(t, node, ctx.abs_path, mut ctx.stats) or { return .unknown }
+	return c.unb_ts_type(type_, o, 0) or { UnbKind.unknown }
+}
+
+// UnbTypeContext is what a type check needs from the rule: the file and its counters.
+@[heap]
+struct UnbTypeContext {
+	root     C.TSNode
+	abs_path string
+mut:
+	stats &Stats = unsafe { nil }
+}
+
+// unb_is_rest_parameter ports isRestParameter: a simple rest parameter never written.
+fn (mut c Checker) unb_is_rest_parameter(root C.TSNode, t &estree.EsTree, node int) bool {
+	if t.typ(node) != .identifier {
+		return false
+	}
+	v := c.unb_find_variable(root, t, node)
+	def := c.unb_single_definition(root, v) or { return false }
+	if def.kind != .parameter {
+		return false
+	}
+	name := c.es_index_of(t, def.name) or { return false }
+	rest := t.nodes[name].parent
+	function := c.es_index_of(t, def.node) or { return false }
+	if rest < 0 || t.typ(rest) != .rest_element || t.typ(function) !in [.function_declaration,
+		.function_expression, .arrow_function_expression] || rest !in (t.list(function, .params) or {
+		[]int{}
+	}) {
+		return false
+	}
+	tree := c.scope_tree(root)
+	return tree.variables[v].references.all(!tree.references[it].write)
+}
+
+fn unb_is_typed_array_factory(t &estree.EsTree, node int) bool {
+	return un_is_method_call(t, node,
+		objects:         unb_typed_arrays
+		methods:         ['from', 'of']
+		optional_call:   false
+		optional_member: false
+	)
+}
+
+// unb_is_array_node ports isArrayNode of utils/is-array.js; the receiver of the copying methods
+// is an array of the array checker.
+fn (mut c Checker) unb_is_array_node(t &estree.EsTree, node int, mut ctx UnbTypeContext) bool {
+	if t.typ(node) == .array_expression || c.unb_is_rest_parameter(ctx.root, t, node)
+		|| un_is_method_call(t, node,
+		objects:         ['Array']
+		methods:         ['from', 'of']
+		optional_call:   false
+		optional_member: false
+	) || un_is_method_call(t, node,
+		objects:         ['Object']
+		methods:         ['keys', 'values', 'entries', 'getOwnPropertyNames', 'getOwnPropertySymbols']
+		optional_call:   false
+		optional_member: false
+	) {
+		return true
+	}
+	if un_is_method_call(t, node,
+		methods:         ['copyWithin', 'fill', 'reverse', 'sort', 'toReversed', 'toSorted', 'toSpliced',
+			'with']
+		optional_call:   false
+		optional_member: false
+	) {
+		object := t.node(t.node(node, .callee) or { return false }, .object) or { return false }
+		mut visited := map[int]bool{}
+		return c.unb_get_type(t, object, unb_array_options(), mut ctx, mut visited) == .target
+	}
+	return false
+}
+
+// unb_is_target_node is the isTargetNode hook of the family.
+fn (mut c Checker) unb_is_target_node(t &estree.EsTree, node int, o UnbTypeOptions, mut ctx UnbTypeContext) bool {
+	return match o.family {
+		.array {
+			c.unb_is_array_node(t, node, mut ctx)
+		}
+		.indexed_collection {
+			c.unb_is_array_node(t, node, mut ctx) || unb_is_typed_array_factory(t, node)
+		}
+		.bigint_typed_array {
+			unb_is_typed_array_factory(t, node) && (t.string_of(t.node(t.node(node, .callee) or {
+				return false
+			}, .object) or { return false }, .name) or { '' }) in ['BigInt64Array', 'BigUint64Array']
+		}
+		.builtin {
+			false
+		}
+	}
+}
+
+// unb_is_non_target_node is the isNonTargetNode hook of the family.
+fn unb_is_non_target_node(t &estree.EsTree, node int, o UnbTypeOptions) bool {
+	return match o.family {
+		.array, .indexed_collection {
+			t.typ(node) in [.new_expression, .object_expression, .function_expression,
+				.arrow_function_expression, .class_expression, .template_literal]
+				|| unb_is_typed_array_factory(t, node)
+		}
+		else {
+			false
+		}
+	}
+}
+
+// unb_type_from_static_value ports getTypeFromStaticValue.
+fn (mut c Checker) unb_type_from_static_value(t &estree.EsTree, node int, o UnbTypeOptions, mut ctx UnbTypeContext) UnbKind {
+	if o.family !in [.array, .indexed_collection] {
+		return .unknown
+	}
+	value := c.unb_static_value_for_control_flow(ctx.root, t, node) or { return .unknown }
+	kind := if value.value.kind == .array_ {
+		UnbKind.target
+	} else if t.typ(node) in [.identifier, .member_expression] {
+		UnbKind.unknown
+	} else {
+		UnbKind.non_target
+	}
+	if kind != .unknown && c.unb_has_jsdoc_type_reference(ctx.root, t, node) {
+		return .unknown
+	}
+	return kind
+}
+
+// unb_type_from_variable ports getTypeFromVariable.
+fn (mut c Checker) unb_type_from_variable(t &estree.EsTree, node int, o UnbTypeOptions, mut ctx UnbTypeContext, mut visited map[int]bool) UnbKind {
+	v := c.unb_find_variable(ctx.root, t, node)
+	if v < 0 || visited[v] {
+		return .unknown
+	}
+	def := c.unb_single_definition(ctx.root, v) or { return .unknown }
+	visited[v] = true
+	name := c.es_index_of(t, def.name) or { -1 }
+	mut annotation_kind := UnbKind.unknown
+	if name >= 0 {
+		mut type_visited := map[string]bool{}
+		annotation_kind = c.unb_annotation_type(ctx.root, t, t.node(name, .type_annotation) or { -1 },
+			c.unb_scope_of(ctx.root, t, name), o, mut type_visited)
+		if t.flag(name, .optional) or { false } {
+			annotation_kind = unb_combine_union([annotation_kind, .nullish], o)
+		}
+	}
+	mut kind := UnbKind.unknown
+	if annotation_kind != .unknown {
+		kind = annotation_kind
+	} else if def.kind == .variable && def.parent_kind == 'const' && unb_is_simple_declarator(def) {
+		if init := def.init {
+			if init_node := c.es_index_of(t, init) {
+				kind = c.unb_get_type(t, init_node, o, mut ctx, mut visited)
+			}
+		}
+	}
+	visited.delete(v)
+	return kind
+}
+
+// unb_definition_initializer ports getDefinitionInitializer: the initializer of a variable or the
+// default value of a simple parameter.
+fn (mut c Checker) unb_definition_initializer(t &estree.EsTree, def ScopeDefinition) int {
+	if def.kind == .variable {
+		return c.es_index_of(t, def.init or { return -1 }) or { -1 }
+	}
+	if def.kind != .parameter {
+		return -1
+	}
+	name := c.es_index_of(t, def.name) or { return -1 }
+	parent := t.nodes[name].parent
+	if parent >= 0 && t.typ(parent) == .assignment_pattern && t.node(parent, .left) or { -1 } == name {
+		return t.node(parent, .right) or { -1 }
+	}
+	return -1
+}
+
+fn unb_is_function(t &estree.EsTree, node int) bool {
+	return node >= 0 && t.typ(node) in [.function_declaration, .function_expression,
+		.arrow_function_expression]
+}
+
+// unb_has_native_type_assertion ports hasNativeTypeAssertion: an `as` or `<T>` among the
+// TypeScript wrappers of the node.
+fn unb_has_native_type_assertion(t &estree.EsTree, n int) bool {
+	mut node := n
+	for unb_is_ts_wrapper(t, node) {
+		if t.typ(node) in [.ts_as_expression, .ts_type_assertion] {
+			return true
+		}
+		node = t.node(node, .expression) or { return false }
+	}
+	return false
+}
+
+// unb_type_from_function_call ports getTypeFromFunctionCall: the return type of a local function.
+fn (mut c Checker) unb_type_from_function_call(t &estree.EsTree, node int, o UnbTypeOptions, mut ctx UnbTypeContext) UnbKind {
+	callee := t.node(node, .callee) or { return .unknown }
+	if t.typ(callee) != .identifier {
+		return .unknown
+	}
+	v := c.unb_find_variable(ctx.root, t, callee)
+	def := c.unb_single_definition(ctx.root, v) or { return .unknown }
+	tree := c.scope_tree(ctx.root)
+	if tree.variables[v].references.any(tree.references[it].write && !tree.references[it].init) {
+		return .unknown
+	}
+	name := c.es_index_of(t, def.name) or { -1 }
+	if name >= 0 && t.node(name, .type_annotation) != none {
+		return .unknown
+	}
+	initializer := c.unb_definition_initializer(t, def)
+	value := if def.kind == .function_name {
+		c.es_index_of(t, def.node) or { -1 }
+	} else if initializer >= 0 {
+		unb_unwrap_ts(t, initializer)
+	} else {
+		-1
+	}
+	if value >= 0 && ((t.flag(value, .async) or { false }) || (t.flag(value, .generator) or { false })
+		|| (def.kind == .parameter && (t.node(value, .return_type) != none
+		|| unb_has_native_type_assertion(t, initializer)))) {
+		return .unknown
+	}
+	mut function := -1
+	if def.kind == .function_name {
+		function = c.es_index_of(t, def.node) or { -1 }
+	} else if def.kind == .variable && unb_is_simple_declarator(def) {
+		mut init := c.es_index_of(t, def.init or { return .unknown }) or { -1 }
+		for init >= 0 && t.typ(init) in [.ts_satisfies_expression, .ts_non_null_expression] {
+			init = t.node(init, .expression) or { -1 }
+		}
+		if unb_is_function(t, init) {
+			function = init
+		}
+	}
+	if function >= 0 && t.node(function, .type_parameters) != none {
+		return .unknown
+	}
+	if function >= 0 {
+		if return_type := t.node(function, .return_type) {
+			scope := c.unb_scope_of(ctx.root, t, function)
+			mut type_visited := map[string]bool{}
+			return c.unb_annotation_type(ctx.root, t, return_type, c.scope_tree(ctx.root).scopes[scope].upper,
+				o, mut type_visited)
+		}
+	}
+	if name >= 0 {
+		if annotation := c.unb_jsdoc_type_annotation(ctx.root, t, name) {
+			if annotation.optional {
+				return .unknown
+			}
+			return c.unb_jsdoc_kind(UnbJsdocAnnotation{
+				typ: unb_jsdoc_callable_return_type(annotation.typ)
+			}, o)
+		}
+	}
+	if function >= 0 {
+		if annotation := c.unb_jsdoc_return_type(ctx.root, t, function) {
+			return c.unb_jsdoc_kind(annotation, o)
+		}
+	}
+	return .unknown
+}
+
+// unb_this_type ports getThisExpressionType.
+fn (mut c Checker) unb_this_type(t &estree.EsTree, node int, o UnbTypeOptions, mut ctx UnbTypeContext) UnbKind {
+	mut parent := t.nodes[node].parent
+	for parent >= 0 {
+		typ := t.typ(parent)
+		if typ in [.class_declaration, .class_expression] {
+			mut visited := map[string]bool{}
+			return c.unb_class_type(ctx.root, t, parent, c.unb_scope_of(ctx.root, t, parent), o, mut
+				visited)
+		}
+		if typ == .static_block || (typ in [.accessor_property, .property_definition]
+			&& (t.flag(parent, .static_) or { false })) {
+			return .non_target
+		}
+		if typ in [.function_declaration, .function_expression] {
+			params := t.list(parent, .params) or { []int{} }
+			mut this_kind := UnbKind.unknown
+			for param in params {
+				if t.typ(param) == .identifier && (t.string_of(param, .name) or { '' }) == 'this' {
+					mut visited := map[string]bool{}
+					this_kind = c.unb_annotation_type(ctx.root, t, t.node(param, .type_annotation) or {
+						-1
+					}, c.unb_scope_of(ctx.root, t, parent), o, mut visited)
+					break
+				}
+			}
+			if this_kind != .unknown {
+				return this_kind
+			}
+			grand := t.nodes[parent].parent
+			if grand >= 0 && t.typ(grand) == .property && t.nodes[grand].parent >= 0
+				&& t.typ(t.nodes[grand].parent) == .object_expression {
+				return .non_target
+			}
+			if grand >= 0 && t.typ(grand) == .method_definition {
+				if t.flag(grand, .static_) or { false } {
+					return .non_target
+				}
+				parent = t.nodes[parent].parent
+				continue
+			}
+			return .unknown
+		}
+		parent = t.nodes[parent].parent
+	}
+	return .unknown
+}
+
+// unb_super_type ports getSuperExpressionType.
+fn (mut c Checker) unb_super_type(t &estree.EsTree, node int, o UnbTypeOptions, mut ctx UnbTypeContext) UnbKind {
+	mut parent := t.nodes[node].parent
+	for parent >= 0 {
+		typ := t.typ(parent)
+		if typ == .static_block || (typ in [.accessor_property, .property_definition, .method_definition]
+			&& (t.flag(parent, .static_) or { false })) {
+			return .non_target
+		}
+		if typ in [.class_declaration, .class_expression] {
+			super_class := t.node(parent, .super_class) or { return .non_target }
+			mut visited := map[string]bool{}
+			return c.unb_class_reference_type(ctx.root, t, super_class, c.unb_scope_of(ctx.root,
+				t, parent), o, mut visited)
+		}
+		parent = t.nodes[parent].parent
+	}
+	return .unknown
+}
+
+// unb_type_from_expression ports getTypeFromExpression.
+fn (mut c Checker) unb_type_from_expression(t &estree.EsTree, node int, o UnbTypeOptions, mut ctx UnbTypeContext, mut visited map[int]bool) UnbKind {
+	match t.typ(node) {
+		.identifier {
+			return c.unb_type_from_variable(t, node, o, mut ctx, mut visited)
+		}
+		.call_expression {
+			return c.unb_type_from_function_call(t, node, o, mut ctx)
+		}
+		.assignment_expression {
+			return if (t.string_of(node, .operator) or { '' }) == '=' {
+				c.unb_get_type(t, t.node(node, .right) or { -1 }, o, mut ctx, mut visited)
+			} else {
+				UnbKind.unknown
+			}
+		}
+		.this_expression {
+			return if o.check_class_syntax { c.unb_this_type(t, node, o, mut ctx) } else { UnbKind.unknown }
+		}
+		.super {
+			return if o.check_class_syntax { c.unb_super_type(t, node, o, mut ctx) } else { UnbKind.unknown }
+		}
+		.new_expression {
+			if !o.check_class_syntax {
+				return .unknown
+			}
+			callee := t.node(node, .callee) or { return .unknown }
+			mut type_visited := map[string]bool{}
+			return c.unb_class_reference_type(ctx.root, t, callee, c.unb_scope_of(ctx.root, t, callee),
+				o, mut type_visited)
+		}
+		.ts_as_expression, .ts_type_assertion {
+			annotation := t.node(node, .type_annotation) or { return .unknown }
+			mut type_visited := map[string]bool{}
+			kind := c.unb_annotation_type(ctx.root, t, annotation, c.unb_scope_of(ctx.root, t, node),
+				o, mut type_visited)
+			return if kind == .unknown && t.typ(annotation) in [.ts_any_keyword, .ts_unknown_keyword] {
+				c.unb_get_type(t, t.node(node, .expression) or { -1 }, o, mut ctx, mut visited)
+			} else {
+				kind
+			}
+		}
+		.ts_non_null_expression {
+			return c.unb_get_type(t, t.node(node, .expression) or { -1 }, o, mut ctx, mut visited)
+		}
+		.sequence_expression {
+			expressions := t.list(node, .expressions) or { return .unknown }
+			return c.unb_get_type(t, if expressions.len > 0 { expressions.last() } else { -1 }, o, mut
+				ctx, mut visited)
+		}
+		.logical_expression {
+			left := c.unb_get_type(t, t.node(node, .left) or { -1 }, o, mut ctx, mut visited)
+			right := c.unb_get_type(t, t.node(node, .right) or { -1 }, o, mut ctx, mut visited)
+			return unb_combine_union([left, right], o)
+		}
+		.conditional_expression {
+			consequent := c.unb_get_type(t, t.node(node, .consequent) or { -1 }, o, mut ctx, mut
+				visited)
+			alternate := c.unb_get_type(t, t.node(node, .alternate) or { -1 }, o, mut ctx, mut
+				visited)
+			return unb_combine_union([consequent, alternate], o)
+		}
+		else {
+			return .unknown
+		}
+	}
+}
+
+// unb_get_type ports getType.
+fn (mut c Checker) unb_get_type(t &estree.EsTree, node int, o UnbTypeOptions, mut ctx UnbTypeContext, mut visited map[int]bool) UnbKind {
+	if node < 0 {
+		return .unknown
+	}
+	if t.typ(node) == .ts_satisfies_expression {
+		return c.unb_get_type(t, t.node(node, .expression) or { -1 }, o, mut ctx, mut visited)
+	}
+	if annotation := t.node(node, .type_annotation) {
+		// TSAsExpression and TSTypeAssertion have a typeAnnotation of their own too.
+		mut type_visited := map[string]bool{}
+		own := c.unb_annotation_type(ctx.root, t, annotation, c.unb_scope_of(ctx.root, t, node),
+			o, mut type_visited)
+		if own != .unknown {
+			return own
+		}
+	} else if annotation := c.unb_jsdoc_type_annotation(ctx.root, t, node) {
+		kind := c.unb_jsdoc_kind(annotation, o)
+		return if kind == .unknown {
+			c.unb_type_from_type_information(t, node, o, mut ctx)
+		} else {
+			kind
+		}
+	}
+	from_expression := c.unb_type_from_expression(t, node, o, mut ctx, mut visited)
+	if from_expression != .unknown {
+		return from_expression
+	}
+	if t.typ(node) != .identifier {
+		from_static := c.unb_type_from_static_value(t, node, o, mut ctx)
+		if from_static != .unknown {
+			return from_static
+		}
+	}
+	if c.unb_is_target_node(t, node, o, mut ctx) {
+		return .target
+	}
+	if o.target_constructor_names.any(un_is_new(t, node, names: [it]))
+		|| o.target_call_names.any(un_is_call(t, node, names: [it])) {
+		return .target
+	}
+	from_types := c.unb_type_from_type_information(t, node, o, mut ctx)
+	if from_types != .unknown {
+		return from_types
+	}
+	return if unb_is_non_target_node(t, node, o) { UnbKind.non_target } else { UnbKind.unknown }
+}
+
+// unb_kind_of is the normalized kind of the node (getType of createTypeCheckers).
+fn (mut c Checker) unb_kind_of(t &estree.EsTree, node int, o UnbTypeOptions, mut ctx UnbTypeContext) UnbKind {
+	mut visited := map[int]bool{}
+	return unb_normalize_kind(c.unb_get_type(t, node, o, mut ctx, mut visited))
+}
+
+// unb_is_target ports isTarget of createTypeCheckers.
+fn (mut c Checker) unb_is_target(t &estree.EsTree, node int, o UnbTypeOptions, mut ctx UnbTypeContext) bool {
+	mut visited := map[int]bool{}
+	return c.unb_get_type(t, node, o, mut ctx, mut visited) == .target
+}
+
+// unb_is_known_non_target ports isKnownNonTarget of createTypeCheckers.
+fn (mut c Checker) unb_is_known_non_target(t &estree.EsTree, node int, o UnbTypeOptions, mut ctx UnbTypeContext) bool {
+	return c.unb_kind_of(t, node, o, mut ctx) == .non_target
+}
+
+// unb_should_skip_known_non_array_receiver ports shouldSkipKnownNonArrayReceiver
+// (utils/should-skip-known-non-array-receiver.js): the receiver is known not to be an array or a
+// typed array, and is not written as a literal, array, object, function or template.
+fn (mut c Checker) unb_should_skip_known_non_array_receiver(t &estree.EsTree, node int, mut ctx UnbTypeContext) bool {
+	return t.typ(node) !in [.array_expression, .function_expression, .literal, .object_expression,
+		.template_literal] && c.unb_is_known_non_target(t, node, unb_indexed_collection_options(), mut
+		ctx)
+}
+
+// JSDoc types (utils/parse-jsdoc-type.js, utils/jsdoc.js and utils/jsdoc-type.js): the type facts
+// the type checkers read from `@type`, `@param` and `@returns` tags. Texts are taken as code points,
+// where JavaScript takes UTF-16 units: only the positions inside the comment differ.
+
+// UnbJsdocType is a parsed JSDoc type: `kind` is unknown, name (`name`), nullish (`name`),
+// non-primitive, nullable or optional (`children[0]` the element), union or intersection
+// (`children`), or function (`children[0]` the return type).
+struct UnbJsdocType {
+	kind     string
+	name     string
+	children []UnbJsdocType
+}
+
+const unb_jsdoc_unknown = UnbJsdocType{
+	kind: 'unknown'
+}
+const unb_jsdoc_array = UnbJsdocType{
+	kind: 'name'
+	name: 'Array'
+}
+const unb_jsdoc_non_primitive = UnbJsdocType{
+	kind: 'non-primitive'
+}
+const unb_jsdoc_aliases = {
+	'Boolean':   'boolean'
+	'String':    'string'
+	'Number':    'number'
+	'Void':      'void'
+	'Null':      'null'
+	'Undefined': 'undefined'
+}
+const unb_jsdoc_reserved = ['import', 'typeof', 'extends', 'new']
+const unb_jsdoc_unsupported = ['import', 'typeof', 'extends', 'new', 'keyof', 'infer', 'asserts', 'is',
+	'readonly']
+const unb_jsdoc_primitive_names = ['boolean', 'string', 'number', 'bigint', 'symbol', 'void', 'null',
+	'undefined', 'true', 'false', 'Boolean', 'String', 'Number', 'Void', 'Null', 'Undefined', 'any',
+	'unknown', 'never']
+
+// unb_jsdoc_primitive is primitiveTypes.get(name).
+fn unb_jsdoc_primitive(name string) ?UnbJsdocType {
+	if name !in unb_jsdoc_primitive_names {
+		return none
+	}
+	normalized := unb_jsdoc_aliases[name] or { name }
+	if normalized in ['any', 'unknown', 'never'] {
+		return unb_jsdoc_unknown
+	}
+	if normalized in ['null', 'undefined'] {
+		return UnbJsdocType{
+			kind: 'nullish'
+			name: normalized
+		}
+	}
+	return UnbJsdocType{
+		kind: 'name'
+		name: if normalized in ['true', 'false'] { 'boolean' } else { normalized }
+	}
+}
+
+fn unb_is_id_start(r rune) bool {
+	if r < 128 {
+		return (r >= `a` && r <= `z`) || (r >= `A` && r <= `Z`) || r == `$` || r == `_`
+	}
+	program := jsregexp.regexp_compile('^\\p{ID_Start}$') or { return false }
+	return jsregexp.regexp_test(program, r.str()) or { false }
+}
+
+fn unb_is_id_continue(r rune) bool {
+	if r < 128 {
+		return (r >= `a` && r <= `z`) || (r >= `A` && r <= `Z`) || (r >= `0` && r <= `9`) || r == `$`
+			|| r == `_`
+	}
+	if r in [`‌`, `‍`] {
+		return true
+	}
+	program := jsregexp.regexp_compile('^\\p{ID_Continue}$') or { return false }
+	return jsregexp.regexp_test(program, r.str()) or { false }
+}
+
+// unb_is_identifier tests identifierPattern.
+fn unb_is_identifier(text string) bool {
+	runes := text.runes()
+	return runes.len > 0 && unb_is_id_start(runes[0]) && runes[1..].all(unb_is_id_continue(it))
+}
+
+fn unb_is_digit(r rune) bool {
+	return r >= `0` && r <= `9`
+}
+
+fn unb_is_hex_digit(r rune) bool {
+	return unb_is_digit(r) || (r >= `a` && r <= `f`) || (r >= `A` && r <= `F`)
+}
+
+// unb_digits matches `d(?:_?d)*` at `i` for the digits of `is_digit`; the end, or `i` when none.
+fn unb_digits(runes []rune, i int, is_digit fn (rune) bool) int {
+	if i >= runes.len || !is_digit(runes[i]) {
+		return i
+	}
+	mut j := i + 1
+	for j < runes.len {
+		if is_digit(runes[j]) {
+			j++
+		} else if runes[j] == `_` && j + 1 < runes.len && is_digit(runes[j + 1]) {
+			j += 2
+		} else {
+			break
+		}
+	}
+	return j
+}
+
+// unb_exponent matches `(?:[Ee][+\-]?\d(?:_?\d)*)?` at `i`.
+fn unb_exponent(runes []rune, i int) int {
+	if i < runes.len && runes[i] in [`e`, `E`] {
+		mut j := i + 1
+		if j < runes.len && runes[j] in [`+`, `-`] {
+			j++
+		}
+		k := unb_digits(runes, j, unb_is_digit)
+		if k > j {
+			return k
+		}
+	}
+	return i
+}
+
+// unb_number_token matches the numeric alternative of tokenPattern at `i` (with its `n`); -1 for
+// none.
+fn unb_number_token(runes []rune, i int) int {
+	mut end := -1
+	if i + 1 < runes.len && runes[i] == `0` && runes[i + 1] in [`x`, `X`, `b`, `B`, `o`, `O`] {
+		digit := match runes[i + 1] {
+			`x`, `X` { unb_is_hex_digit }
+			`b`, `B` { fn (r rune) bool {
+					return r in [`0`, `1`]
+				} }
+			else { fn (r rune) bool {
+					return r >= `0` && r <= `7`
+				} }
+		}
+		k := unb_digits(runes, i + 2, digit)
+		if k > i + 2 {
+			end = k
+		}
+	}
+	if end < 0 && i < runes.len && unb_is_digit(runes[i]) {
+		mut j := if runes[i] == `0` { i + 1 } else { unb_digits(runes, i, unb_is_digit) }
+		if j < runes.len && runes[j] == `.` {
+			j = unb_digits(runes, j + 1, unb_is_digit)
+		}
+		end = unb_exponent(runes, j)
+	}
+	if end < 0 && i + 1 < runes.len && runes[i] == `.` && unb_is_digit(runes[i + 1]) {
+		end = unb_exponent(runes, unb_digits(runes, i + 1, unb_is_digit))
+	}
+	if end < 0 {
+		return -1
+	}
+	if end < runes.len && runes[end] == `n` {
+		end++
+	}
+	return end
+}
+
+// unb_jsdoc_tokens splits a JSDoc type like tokenPattern; none for a bad string literal. The
+// second result holds the indexes of the tokens that follow a line break.
+fn unb_jsdoc_tokens(text string) ?([]string, map[int]bool) {
+	runes := text.runes()
+	mut tokens := []string{}
+	mut line_breaks := map[int]bool{}
+	mut i := 0
+	for i < runes.len {
+		r := runes[i]
+		if is_js_space(r) {
+			mut j := i
+			mut has_break := false
+			for j < runes.len && is_js_space(runes[j]) {
+				if runes[j] in [`\n`, `\r`, ` `, ` `] {
+					has_break = true
+				}
+				j++
+			}
+			if has_break {
+				line_breaks[tokens.len] = true
+			}
+			i = j
+			continue
+		}
+		mut end := i + 1
+		if r == `=` && i + 1 < runes.len && runes[i + 1] == `>` {
+			end = i + 2
+		} else if r == `.` && i + 2 < runes.len && runes[i + 1] == `.` && runes[i + 2] == `.` {
+			end = i + 3
+		} else if unb_is_id_start(r) {
+			end = i + 1
+			for end < runes.len && unb_is_id_continue(runes[end]) {
+				end++
+			}
+		} else if number := unb_number_token_or_none(runes, i) {
+			end = number
+		} else if r in [`"`, `'`] {
+			mut j := i + 1
+			mut closed := false
+			for j < runes.len {
+				if runes[j] in [`\n`, `\r`] {
+					break
+				}
+				if runes[j] == `\\` {
+					if j + 1 < runes.len && runes[j + 1] !in [`\n`, `\r`] {
+						j += 2
+						continue
+					}
+					break
+				}
+				if runes[j] == r {
+					closed = true
+					break
+				}
+				j++
+			}
+			if closed {
+				end = j + 1
+			}
+		}
+		token := runes[i..end].string()
+		if token[0] in [`"`, `'`] && (token.len == 1 || !unb_jsdoc_valid_string_escapes(token)) {
+			return none
+		}
+		tokens << token
+		i = end
+	}
+	return tokens, line_breaks
+}
+
+fn unb_number_token_or_none(runes []rune, i int) ?int {
+	end := unb_number_token(runes, i)
+	return if end < 0 { none } else { end }
+}
+
+// unb_jsdoc_valid_string_escapes ports hasValidStringEscapes.
+fn unb_jsdoc_valid_string_escapes(token string) bool {
+	runes := token.runes()
+	mut i := 0
+	for i + 1 < runes.len {
+		if runes[i] != `\\` {
+			i++
+			continue
+		}
+		escape := runes[i + 1]
+		following := if i + 2 <= runes.len - 1 { runes[i + 2..runes.len - 1] } else { []rune{} }
+		if escape == `x` && !(following.len >= 2 && following[..2].all(unb_is_hex_digit(it))) {
+			return false
+		}
+		if escape == `u` {
+			four := following.len >= 4 && following[..4].all(unb_is_hex_digit(it))
+			mut code_point_ok := false
+			if following.len > 0 && following[0] == `{` {
+				mut j := 1
+				for j < following.len && j <= 6 && unb_is_hex_digit(following[j]) {
+					j++
+				}
+				if j > 1 && j < following.len && following[j] == `}` {
+					code_point_ok = following[1..j].string().parse_int(16, 64) or { 0x110000 } <= 0x10ffff
+				}
+			}
+			if !four && !code_point_ok {
+				return false
+			}
+		}
+		i += 2
+	}
+	return true
+}
+
+// unb_is_numeric_literal_token ports isNumericLiteralToken.
+fn unb_is_numeric_literal_token(token string) bool {
+	if token == '' || !(unb_is_digit(token[0]) || (token[0] == `.` && token.len > 1
+		&& unb_is_digit(token[1]))) {
+		return false
+	}
+	if !token.ends_with('n') {
+		return true
+	}
+	lower := token.to_lower()
+	return lower.starts_with('0b') || lower.starts_with('0o') || lower.starts_with('0x')
+		|| !lower.contains_any('.e')
+}
+
+// UnbJsdocParser is the state of parseJSDocumentType.
+struct UnbJsdocParser {
+	tokens      []string
+	line_breaks map[int]bool
+	closes      map[int]int // the closing `)` of each `(`
+mut:
+	index int
+}
+
+fn (p &UnbJsdocParser) at(i int) string {
+	return if i >= 0 && i < p.tokens.len { p.tokens[i] } else { '' }
+}
+
+fn (mut p UnbJsdocParser) consume(token string) bool {
+	if p.at(p.index) == token && p.index < p.tokens.len {
+		p.index++
+		return true
+	}
+	return false
+}
+
+fn (mut p UnbJsdocParser) expect(token string) ! {
+	if !p.consume(token) {
+		return error('Unsupported JSDoc type')
+	}
+}
+
+fn (mut p UnbJsdocParser) parse_optional() !UnbJsdocType {
+	typ := p.parse_union()!
+	return if p.consume('=') {
+		UnbJsdocType{
+			kind:     'optional'
+			children: [typ]
+		}
+	} else {
+		typ
+	}
+}
+
+fn (mut p UnbJsdocParser) parse_union() !UnbJsdocType {
+	p.consume('|')
+	mut elements := [p.parse_intersection()!]
+	for p.consume('|') {
+		elements << p.parse_intersection()!
+	}
+	return if elements.len == 1 {
+		elements[0]
+	} else {
+		UnbJsdocType{
+			kind:     'union'
+			children: elements
+		}
+	}
+}
+
+fn (mut p UnbJsdocParser) parse_intersection() !UnbJsdocType {
+	p.consume('&')
+	mut elements := [p.parse_postfix()!]
+	for p.consume('&') {
+		elements << p.parse_postfix()!
+	}
+	return if elements.len == 1 {
+		elements[0]
+	} else {
+		UnbJsdocType{
+			kind:     'intersection'
+			children: elements
+		}
+	}
+}
+
+fn (mut p UnbJsdocParser) parse_postfix() !UnbJsdocType {
+	mut typ := UnbJsdocType{}
+	if p.consume('?') {
+		if p.at(p.index) in ['?', '!'] && p.index < p.tokens.len {
+			return error('Unsupported JSDoc type')
+		}
+		typ = if p.index >= p.tokens.len || p.at(p.index) in [')', '>', ']', '}', ',', ';', '|', '&'] {
+			unb_jsdoc_unknown
+		} else {
+			UnbJsdocType{
+				kind:     'nullable'
+				children: [p.parse_postfix()!]
+			}
+		}
+	} else if p.consume('!') {
+		if p.at(p.index) == '!' && p.index < p.tokens.len {
+			return error('Unsupported JSDoc type')
+		}
+		typ = p.parse_postfix()!
+	} else if p.consume('...') {
+		p.parse_postfix()!
+		typ = unb_jsdoc_non_primitive
+	} else if p.consume('readonly') {
+		typ = p.parse_postfix()!
+		if typ.kind != 'name' || typ.name !in ['Array', 'ReadonlyArray'] {
+			return error('Unsupported JSDoc type')
+		}
+	} else {
+		typ = p.parse_primary()!
+	}
+	for p.index + 1 < p.tokens.len && p.tokens[p.index] == '[' && p.tokens[p.index + 1] == ']' {
+		p.index += 2
+		typ = unb_jsdoc_array
+	}
+	if p.consume('?') {
+		return UnbJsdocType{
+			kind:     'nullable'
+			children: [typ]
+		}
+	}
+	p.consume('!')
+	return typ
+}
+
+// parse_list parses `opening member, member… closing` with a member parser chosen by `member`.
+fn (mut p UnbJsdocParser) parse_list(opening string, closing string, member string) ! {
+	p.expect(opening)!
+	if p.consume(closing) {
+		return
+	}
+	for {
+		match member {
+			'arrow' { p.parse_arrow_parameter()! }
+			'function' { p.parse_function_parameter()! }
+			'tuple' { p.parse_tuple_member()! }
+			else { p.parse_union()! }
+		}
+		if p.consume(closing) {
+			return
+		}
+		p.expect(',')!
+		if p.consume(closing) {
+			return
+		}
+	}
+}
+
+fn (mut p UnbJsdocParser) parse_arrow_parameter() ! {
+	p.consume('...')
+	token := p.at(p.index)
+	if p.index >= p.tokens.len || !unb_is_identifier(token) || token in unb_jsdoc_reserved {
+		return error('Unsupported JSDoc parameter')
+	}
+	p.index++
+	p.consume('?')
+	if p.consume(':') {
+		p.parse_union()!
+	}
+}
+
+fn (mut p UnbJsdocParser) parse_function_parameter() ! {
+	if p.consume('this') {
+		p.expect(':')!
+	}
+	p.parse_optional()!
+}
+
+fn (mut p UnbJsdocParser) parse_tuple_member() ! {
+	name_index := p.index + if p.at(p.index) == '...' { 1 } else { 0 }
+	colon_index := name_index + if p.at(name_index + 1) == '?' { 2 } else { 1 }
+	if name_index < p.tokens.len && unb_is_identifier(p.at(name_index)) && p.at(colon_index) == ':' {
+		p.index = colon_index + 1
+	}
+	p.parse_optional()!
+}
+
+fn (mut p UnbJsdocParser) parse_record() !UnbJsdocType {
+	p.expect('{')!
+	if p.consume('}') {
+		return unb_jsdoc_unknown
+	}
+	mut signatures := []UnbJsdocType{}
+	for !p.consume('}') {
+		if p.index >= p.tokens.len {
+			return error('Unsupported JSDoc property')
+		}
+		if p.at(p.index) == 'readonly' && p.at(p.index + 1) !in [':', '?', '(', ',', ';', '}'] {
+			p.index++
+		}
+		if p.at(p.index) == '(' {
+			p.parse_list('(', ')', 'arrow')!
+			p.expect(':')!
+			signatures << UnbJsdocType{
+				kind:     'function'
+				children: [p.parse_union()!]
+			}
+		} else if p.consume('[') {
+			key := p.at(p.index)
+			p.index++
+			if !unb_is_identifier(key) {
+				return error('Unsupported JSDoc index signature')
+			}
+			p.expect(':')!
+			p.parse_union()!
+			p.expect(']')!
+			p.expect(':')!
+			p.parse_union()!
+		} else {
+			key := p.at(p.index)
+			p.index++
+			if !unb_is_identifier(key) && !(key != '' && key[0] in [`"`, `'`])
+				&& !unb_is_numeric_literal_token(key) {
+				return error('Unsupported JSDoc property')
+			}
+			p.consume('?')
+			if p.at(p.index) == '(' {
+				p.parse_list('(', ')', 'arrow')!
+			}
+			if p.consume(':') {
+				p.parse_union()!
+			}
+		}
+		if !p.consume(',') && !p.consume(';') && p.at(p.index) != '}' && !p.line_breaks[p.index] {
+			return error('Unsupported JSDoc property')
+		}
+	}
+	if signatures.len == 0 {
+		return unb_jsdoc_non_primitive
+	}
+	return if signatures.len == 1 {
+		signatures[0]
+	} else {
+		UnbJsdocType{
+			kind:     'intersection'
+			children: signatures
+		}
+	}
+}
+
+fn (mut p UnbJsdocParser) parse_primary() !UnbJsdocType {
+	token := p.at(p.index)
+	if token == '(' {
+		if close := p.closes[p.index] {
+			if p.at(close + 1) == '=>' {
+				p.parse_list('(', ')', 'arrow')!
+				p.expect('=>')!
+				return UnbJsdocType{
+					kind:     'function'
+					children: [p.parse_union()!]
+				}
+			}
+		}
+		p.index++
+		typ := p.parse_optional()!
+		p.expect(')')!
+		return typ
+	}
+	if token == '[' {
+		p.parse_list('[', ']', 'tuple')!
+		return unb_jsdoc_array
+	}
+	if token == '{' {
+		return p.parse_record()!
+	}
+	if token == 'function' && p.at(p.index + 1) == '(' {
+		p.index++
+		p.parse_list('(', ')', 'function')!
+		return UnbJsdocType{
+			kind:     'function'
+			children: [if p.consume(':') { p.parse_union()! } else { unb_jsdoc_unknown }]
+		}
+	}
+	if token == '*' {
+		p.index++
+		return unb_jsdoc_unknown
+	}
+	if token != '' && token[0] in [`"`, `'`] {
+		p.index++
+		return UnbJsdocType{
+			kind: 'name'
+			name: 'string'
+		}
+	}
+	if token == '-' || (token != '' && (unb_is_digit(token[0]) || (token[0] == `.` && token.len > 1
+		&& unb_is_digit(token[1])))) {
+		p.consume('-')
+		literal := p.at(p.index)
+		p.index++
+		if !unb_is_numeric_literal_token(literal) {
+			return error('Unsupported JSDoc literal')
+		}
+		return UnbJsdocType{
+			kind: 'name'
+			name: if literal.ends_with('n') { 'bigint' } else { 'number' }
+		}
+	}
+	return p.parse_named_type()!
+}
+
+fn (mut p UnbJsdocParser) parse_named_type() !UnbJsdocType {
+	token := p.at(p.index)
+	if p.index >= p.tokens.len || !unb_is_identifier(token) || token in unb_jsdoc_unsupported {
+		return error('Unsupported JSDoc type')
+	}
+	mut name := token
+	p.index++
+	for p.consume('.') {
+		if p.at(p.index) == '<' {
+			break
+		}
+		if !unb_is_identifier(p.at(p.index)) {
+			return error('Unsupported JSDoc type name')
+		}
+		name += '.${p.at(p.index)}'
+		p.index++
+	}
+	if p.at(p.index) == '<' {
+		if p.at(p.index + 1) == '>' || name in unb_jsdoc_primitive_names {
+			return error('Unsupported JSDoc generic')
+		}
+		p.parse_list('<', '>', 'union')!
+		if name == 'Object' {
+			return unb_jsdoc_non_primitive
+		}
+	}
+	return unb_jsdoc_primitive(name) or {
+		UnbJsdocType{
+			kind: 'name'
+			name: name
+		}
+	}
+}
+
+// unb_parse_jsdoc_type ports parseJSDocumentType: unsupported or malformed syntax is unknown.
+fn unb_parse_jsdoc_type(text string) UnbJsdocType {
+	trimmed := js_trim(text)
+	if primitive := unb_jsdoc_primitive(trimmed) {
+		return primitive
+	}
+	if unb_is_identifier(trimmed) {
+		return if trimmed in unb_jsdoc_unsupported {
+			unb_jsdoc_unknown
+		} else {
+			UnbJsdocType{
+				kind: 'name'
+				name: trimmed
+			}
+		}
+	}
+	tokens, line_breaks := unb_jsdoc_tokens(text) or { return unb_jsdoc_unknown }
+	pairs := {
+		'(': ')'
+		'[': ']'
+		'{': '}'
+		'<': '>'
+	}
+	mut closes := map[int]int{}
+	mut openings := []int{}
+	for index, token in tokens {
+		if token in pairs {
+			openings << index
+		} else if token in [')', ']', '}', '>'] {
+			if openings.len == 0 {
+				return unb_jsdoc_unknown
+			}
+			opening := openings.pop()
+			if pairs[tokens[opening]] != token {
+				return unb_jsdoc_unknown
+			}
+			if tokens[opening] == '(' {
+				closes[opening] = index
+			}
+		}
+	}
+	if openings.len > 0 {
+		return unb_jsdoc_unknown
+	}
+	mut p := UnbJsdocParser{
+		tokens:      tokens
+		line_breaks: line_breaks
+		closes:      closes
+	}
+	typ := p.parse_optional() or { return unb_jsdoc_unknown }
+	return if p.index == tokens.len { typ } else { unb_jsdoc_unknown }
+}
+
+// unb_horizontal_space is `[^\S\n]`.
+fn unb_horizontal_space(r rune) bool {
+	return r != `\n` && is_js_space(r)
+}
+
+fn unb_skip_horizontal_whitespace(text []rune, from int, end int) int {
+	mut start := from
+	for start < end && unb_horizontal_space(text[start]) {
+		start++
+	}
+	return start
+}
+
+// unb_skip_template_whitespace ports skipJSDocumentTemplateWhitespace: white space, and the `*`
+// that starts a line of the comment.
+fn unb_skip_template_whitespace(text []rune, from int, end int) int {
+	mut start := from
+	for start < end {
+		start = unb_skip_horizontal_whitespace(text, start, end)
+		if start >= text.len || text[start] != `\n` {
+			return start
+		}
+		start++
+		start = unb_skip_horizontal_whitespace(text, start, end)
+		if start < text.len && text[start] == `*` {
+			start++
+		}
+	}
+	return start
+}
+
+// unb_delimited_end ports getJSDocumentDelimitedEnd: after the closing bracket that matches the
+// one at `start`, skipping quoted text; -1 for none.
+fn unb_delimited_end(text []rune, start int, end int, opening rune) int {
+	closing := match opening {
+		`{` { `}` }
+		`[` { `]` }
+		else { `)` }
+	}
+	mut depth := 0
+	mut quote := rune(0)
+	mut index := start
+	for index < end {
+		character := text[index]
+		if quote != 0 {
+			if character == `\\` {
+				index += 2
+				continue
+			}
+			if character == quote {
+				quote = 0
+			}
+			index++
+			continue
+		}
+		if character in [`"`, `'`, `\``] {
+			quote = character
+		} else if character == opening {
+			depth++
+		} else if character == closing {
+			depth--
+			if depth == 0 {
+				return index + 1
+			}
+		}
+		index++
+	}
+	return -1
+}
+
+// UnbJsdocTagStart is a tag of getJSDocumentTag: its lowercase name and where its content starts.
+struct UnbJsdocTagStart {
+	name          string
+	content_start int
+	line_start    int
+}
+
+// unb_jsdoc_tag ports getJSDocumentTag on the line [start, end):
+// /^\s*(?:\*\s*)?(?<tag>@[\d\p{Letter}][\d\p{Letter}\-]*!?)(?=\s|\{|$)/v.
+fn unb_jsdoc_tag(text []rune, start int, end int) ?UnbJsdocTagStart {
+	is_letter_or_digit := fn (r rune) bool {
+		if r < 128 {
+			return (r >= `a` && r <= `z`) || (r >= `A` && r <= `Z`) || (r >= `0` && r <= `9`)
+		}
+		program := jsregexp.regexp_compile('^[\\d\\p{Letter}]$') or { return false }
+		return jsregexp.regexp_test(program, r.str()) or { false }
+	}
+	mut i := start
+	for i < end && is_js_space(text[i]) {
+		i++
+	}
+	if i < end && text[i] == `*` {
+		i++
+		for i < end && is_js_space(text[i]) {
+			i++
+		}
+	}
+	if i >= end || text[i] != `@` || i + 1 >= end || !is_letter_or_digit(text[i + 1]) {
+		return none
+	}
+	tag_start := i
+	mut j := i + 2
+	for j < end && (is_letter_or_digit(text[j]) || text[j] == `-`) {
+		j++
+	}
+	if j < end && text[j] == `!` {
+		j++
+	}
+	if j < end && !is_js_space(text[j]) && text[j] != `{` {
+		// Backtracking cannot help: the name stops before `-` or `!` only to be followed by them.
+		return none
+	}
+	mut name := text[tag_start + 1..j].string().to_lower()
+	if name.ends_with('!') {
+		name = name[..name.len - 1]
+	}
+	return UnbJsdocTagStart{
+		name:          name
+		content_start: j
+		line_start:    start
+	}
+}
+
+// unb_jsdoc_tags ports getJSDocumentTags: the tag that starts each line.
+fn unb_jsdoc_tags(text []rune) []UnbJsdocTagStart {
+	mut tags := []UnbJsdocTagStart{}
+	mut line_start := 0
+	for line_start < text.len {
+		mut line_end := line_start
+		for line_end < text.len && text[line_end] != `\n` {
+			line_end++
+		}
+		if tag := unb_jsdoc_tag(text, line_start, line_end) {
+			tags << tag
+		}
+		line_start = line_end + 1
+	}
+	return tags
+}
+
+// UnbJsdocTag is a parsed `@param`, `@type` or `@returns` tag (parseTag).
+struct UnbJsdocTag {
+	tag      string
+	name     string
+	typ      ?UnbJsdocType
+	optional bool
+}
+
+// unb_parse_tag_type ports parseTagType: the braced type at `start` and where it ends.
+fn unb_parse_tag_type(text []rune, start int, end int) ?(UnbJsdocType, int) {
+	if start >= text.len || text[start] != `{` {
+		return none
+	}
+	type_end := unb_delimited_end(text, start, end, `{`)
+	if type_end < 0 {
+		return none
+	}
+	// `\r?\n[^\S\n]*\*?` becomes a line break.
+	inner := text[start + 1..type_end - 1]
+	mut cleaned := []rune{cap: inner.len}
+	mut i := 0
+	for i < inner.len {
+		if inner[i] == `\n` || (inner[i] == `\r` && i + 1 < inner.len && inner[i + 1] == `\n`) {
+			i += if inner[i] == `\r` { 2 } else { 1 }
+			for i < inner.len && unb_horizontal_space(inner[i]) {
+				i++
+			}
+			if i < inner.len && inner[i] == `*` {
+				i++
+			}
+			cleaned << `\n`
+			continue
+		}
+		cleaned << inner[i]
+		i++
+	}
+	return unb_parse_jsdoc_type(cleaned.string()), type_end
+}
+
+// unb_parse_tag ports parseTag; none for a tag that is dropped.
+fn unb_parse_tag(text []rune, tag UnbJsdocTagStart, end int) ?UnbJsdocTag {
+	is_parameter := tag.name in ['param', 'arg', 'argument']
+	if !is_parameter && tag.name !in ['type', 'return', 'returns'] {
+		return none
+	}
+	mut start := unb_skip_template_whitespace(text, tag.content_start, end)
+	mut typ := ?UnbJsdocType(none)
+	if start < text.len && text[start] == `{` {
+		parsed, type_end := unb_parse_tag_type(text, start, end) or {
+			return UnbJsdocTag{
+				tag: tag.name
+			}
+		}
+		typ = parsed
+		start = unb_skip_template_whitespace(text, type_end, end)
+	} else if !is_parameter {
+		return UnbJsdocTag{
+			tag: tag.name
+		}
+	}
+	mut optional := false
+	mut name := ''
+	if is_parameter {
+		optional = start < text.len && text[start] == `[`
+		name_end := if optional { unb_delimited_end(text, start, end, `[`) } else { end }
+		if name_end < 0 || (name_end < end && !is_js_space(text[name_end])) {
+			return none
+		}
+		if optional {
+			start++
+		}
+		// parameterNamePattern
+		if start >= name_end || !unb_is_id_start(text[start]) {
+			return none
+		}
+		mut after_name := start + 1
+		for after_name < name_end && unb_is_id_continue(text[after_name]) {
+			after_name++
+		}
+		name = text[start..after_name].string()
+		next := unb_skip_template_whitespace(text, after_name, name_end)
+		if optional {
+			if next >= text.len || text[next] !in [`]`, `=`] {
+				return none
+			}
+		} else if after_name < end && !is_js_space(text[after_name]) {
+			return none
+		}
+		if typ == none {
+			type_start := unb_skip_template_whitespace(text, if optional {
+				name_end
+			} else {
+				after_name
+			}, end)
+			if parsed, _ := unb_parse_tag_type(text, type_start, end) {
+				typ = parsed
+			}
+		}
+	}
+	return UnbJsdocTag{
+		tag:      tag.name
+		name:     name
+		typ:      typ
+		optional: optional
+	}
+}
+
+// unb_comment_tags ports getCommentTags: the parsed tags of a documentation comment (none when it
+// has a `@typedef`, `@callback` or `@overload`).
+fn (c &Checker) unb_comment_tags(comment SourceToken) []UnbJsdocTag {
+	value := c.unb_comment_value(comment).runes()
+	tags := unb_jsdoc_tags(value)
+	if tags.any(it.name in ['typedef', 'callback', 'overload']) {
+		return []
+	}
+	mut out := []UnbJsdocTag{}
+	for i, tag in tags {
+		end := if i + 1 < tags.len { tags[i + 1].line_start } else { value.len }
+		if parsed := unb_parse_tag(value, tag, end) {
+			out << parsed
+		}
+	}
+	return out
+}
+
+// unb_has_jsdoc_comments ports hasJSDocumentComments: the file has a block comment that starts
+// with `*`.
+fn (c &Checker) unb_has_jsdoc_comments(tokens &SourceTokens) bool {
+	return tokens.comments.any(it.kind == .block_comment && c.src[it.start..it.end].starts_with('/**'))
+}
+
+// unb_documentation_tags ports getDocumentationTags: the tags of the comment right before the
+// first of the nodes that has one.
+fn (c &Checker) unb_documentation_tags(t &estree.EsTree, tokens &SourceTokens, nodes []int) []UnbJsdocTag {
+	for node in nodes {
+		if node < 0 {
+			continue
+		}
+		comments := tokens.comments_before(t.nodes[node].start)
+		if comments.len > 0 {
+			comment := comments.last()
+			return if comment.kind == .block_comment && c.src[comment.start..comment.end].starts_with('/**') {
+				c.unb_comment_tags(comment)
+			} else {
+				[]UnbJsdocTag{}
+			}
+		}
+	}
+	return []
+}
+
+fn unb_with_export(t &estree.EsTree, node int) []int {
+	parent := t.nodes[node].parent
+	return if parent >= 0 && t.typ(parent) in [.export_named_declaration, .export_default_declaration] {
+		[node, parent]
+	} else {
+		[node]
+	}
+}
+
+// unb_function_owners ports getFunctionOwners: the nodes whose comment documents the function.
+fn unb_function_owners(t &estree.EsTree, function int) []int {
+	mut node := function
+	mut owners := [node]
+	for {
+		parent := t.nodes[node].parent
+		if !unb_is_ts_wrapper(t, parent) || t.node(parent, .expression) or { -1 } != node {
+			break
+		}
+		node = parent
+		owners << node
+	}
+	parent := t.nodes[node].parent
+	if parent < 0 {
+		return owners
+	}
+	if t.typ(parent) == .variable_declarator && t.node(parent, .init) or { -1 } == node {
+		declaration := t.nodes[parent].parent
+		owners << parent
+		if (t.list(declaration, .declarations) or { []int{} }).len == 1 {
+			owners << unb_with_export(t, declaration)
+		}
+		return owners
+	}
+	if t.typ(parent) == .assignment_expression && (t.string_of(parent, .operator) or { '' }) == '='
+		&& t.node(parent, .right) or { -1 } == node && t.nodes[parent].parent >= 0
+		&& t.typ(t.nodes[parent].parent) == .expression_statement {
+		owners << parent
+		owners << t.nodes[parent].parent
+		return owners
+	}
+	if t.typ(parent) in [.property, .property_definition, .accessor_property, .method_definition]
+		&& t.node(parent, .value) or { -1 } == node {
+		owners << parent
+		return owners
+	}
+	if t.typ(parent) in [.export_named_declaration, .export_default_declaration] {
+		owners << parent
+	}
+	return owners
+}
+
+// UnbJsdocAnnotation is an annotation of getAnnotation: its type (none when the tag has none) and
+// whether it is optional.
+struct UnbJsdocAnnotation {
+	typ      ?UnbJsdocType
+	optional bool
+}
+
+// unb_jsdoc_annotation ports getAnnotation: the only tag that matches.
+fn unb_jsdoc_annotation(tags []UnbJsdocTag, predicate fn (UnbJsdocTag) bool) ?UnbJsdocAnnotation {
+	matches := tags.filter(predicate(it))
+	if matches.len != 1 {
+		return none
+	}
+	return UnbJsdocAnnotation{
+		typ:      matches[0].typ
+		optional: matches[0].optional
+	}
+}
+
+fn unb_jsdoc_has_type(a ?UnbJsdocAnnotation) bool {
+	annotation := a or { return false }
+	annotation.typ or { return false }
+	return true
+}
+
+fn unb_jsdoc_is_optional_type(a ?UnbJsdocAnnotation) bool {
+	annotation := a or { return false }
+	typ := annotation.typ or { return false }
+	return typ.kind == 'optional'
+}
+
+// unb_jsdoc_parameter_annotation ports getParameterAnnotation: the inline `@type` or the `@param`
+// of a simple parameter.
+fn (mut c Checker) unb_jsdoc_parameter_annotation(t &estree.EsTree, tokens &SourceTokens, node int) ?UnbJsdocAnnotation {
+	parent := t.nodes[node].parent
+	mut parameter := if parent >= 0 && t.typ(parent) == .assignment_pattern
+		&& t.node(parent, .left) or { -1 } == node {
+		parent
+	} else {
+		node
+	}
+	if t.nodes[parameter].parent >= 0 && t.typ(t.nodes[parameter].parent) == .ts_parameter_property {
+		parameter = t.nodes[parameter].parent
+	}
+	function := t.nodes[parameter].parent
+	if !unb_is_function(t, function) || parameter !in (t.list(function, .params) or { []int{} }) {
+		return none
+	}
+	name := t.string_of(node, .name) or { '' }
+	inline := unb_jsdoc_annotation(c.unb_documentation_tags(t, tokens, [node, parameter]), fn (tag UnbJsdocTag) bool {
+		return tag.tag == 'type'
+	})
+	named := unb_jsdoc_annotation(c.unb_documentation_tags(t, tokens, unb_function_owners(t,
+		function)), fn [name] (tag UnbJsdocTag) bool {
+		return tag.tag in ['param', 'arg', 'argument'] && tag.name == name
+	})
+	annotation := if unb_jsdoc_has_type(inline) { inline? } else { named? }
+	optional := (t.flag(node, .optional) or { false })
+		|| [inline, named].any(fn (a ?UnbJsdocAnnotation) bool {
+		x := a or { return false }
+		return x.optional || unb_jsdoc_is_optional_type(x)
+	}(it))
+	mut typ := annotation.typ
+	if inner := annotation.typ {
+		if inner.kind == 'optional' {
+			typ = inner.children[0]
+		}
+	}
+	return UnbJsdocAnnotation{
+		typ:      typ
+		optional: optional
+	}
+}
+
+// unb_jsdoc_type_annotation ports getJSDocumentTypeAnnotation: the documented type of a binding or
+// property, through the declaration of a simple identifier.
+fn (mut c Checker) unb_jsdoc_type_annotation(root C.TSNode, t &estree.EsTree, node int) ?UnbJsdocAnnotation {
+	tokens := c.un_tokens(t)
+	if node < 0 || !c.unb_has_jsdoc_comments(tokens) || t.node(node, .type_annotation) != none {
+		return none
+	}
+	parent := t.nodes[node].parent
+	mut owners := []int{}
+	if t.typ(node) in [.property, .property_definition, .accessor_property] {
+		if unb_has_native_type_assertion(t, t.node(node, .value) or { -1 }) {
+			return none
+		}
+		owners = [node]
+	} else if t.typ(node) == .identifier {
+		if parent >= 0 && t.typ(parent) == .variable_declarator && t.node(parent, .id) or { -1 } == node {
+			if unb_has_native_type_assertion(t, t.node(parent, .init) or { -1 }) {
+				return none
+			}
+			declaration := t.nodes[parent].parent
+			owners = [node, parent]
+			if (t.list(declaration, .declarations) or { []int{} }).len == 1 {
+				owners << unb_with_export(t, declaration)
+			}
+		} else {
+			if annotation := c.unb_jsdoc_parameter_annotation(t, tokens, node) {
+				if unb_jsdoc_has_type(annotation) {
+					return annotation
+				}
+			}
+			v := c.unb_find_variable(root, t, node)
+			def := c.unb_single_definition(root, v) or { return none }
+			name := c.es_index_of(t, def.name) or { return none }
+			return if name != node { c.unb_jsdoc_type_annotation(root, t, name) } else { none }
+		}
+	} else {
+		return none
+	}
+	annotation := unb_jsdoc_annotation(c.unb_documentation_tags(t, tokens, owners), fn (tag UnbJsdocTag) bool {
+		return tag.tag == 'type'
+	})?
+	return if unb_jsdoc_has_type(annotation) { annotation } else { none }
+}
+
+// unb_jsdoc_return_type ports getJSDocumentReturnType: the documented return type of a function
+// (or the `@type` of a getter).
+fn (mut c Checker) unb_jsdoc_return_type(root C.TSNode, t &estree.EsTree, node int) ?UnbJsdocAnnotation {
+	tokens := c.un_tokens(t)
+	if !c.unb_has_jsdoc_comments(tokens) || t.node(node, .return_type) != none {
+		return none
+	}
+	owners := unb_function_owners(t, node)
+	for owner in owners {
+		if t.typ(owner) == .variable_declarator {
+			id := t.node(owner, .id) or { continue }
+			if t.node(id, .type_annotation) != none {
+				return none
+			}
+		} else if t.typ(owner) in [.property, .property_definition, .accessor_property]
+			&& t.node(owner, .type_annotation) != none {
+			return none
+		}
+	}
+	parent := t.nodes[node].parent
+	getter := parent >= 0 && (t.string_of(parent, .kind) or { '' }) == 'get'
+		&& t.node(parent, .value) or { -1 } == node
+	annotation := unb_jsdoc_annotation(c.unb_documentation_tags(t, tokens, owners), fn [getter] (tag UnbJsdocTag) bool {
+		return tag.tag in ['return', 'returns'] || (tag.tag == 'type' && getter)
+	})?
+	return if unb_jsdoc_has_type(annotation) { annotation } else { none }
+}
+
+// unb_has_jsdoc_type_reference ports hasJSDocumentTypeReference: a documented type, through
+// aliases or inside the expression, that static inference must not bypass.
+fn (mut c Checker) unb_has_jsdoc_type_reference(root C.TSNode, t &estree.EsTree, node int) bool {
+	mut visited := map[int]bool{}
+	return c.unb_has_jsdoc_type_reference_in(root, t, node, mut visited)
+}
+
+fn (mut c Checker) unb_has_jsdoc_type_reference_in(root C.TSNode, t &estree.EsTree, n int, mut visited map[int]bool) bool {
+	if !c.unb_has_jsdoc_comments(c.un_tokens(t)) {
+		return false
+	}
+	node := unb_unwrap_ts(t, n)
+	if t.typ(node) == .identifier {
+		if _ := c.unb_jsdoc_type_annotation(root, t, node) {
+			return true
+		}
+		v := c.unb_find_variable(root, t, node)
+		def := c.unb_single_definition(root, v) or { return false }
+		if !unb_is_simple_declarator(def) || visited[v] {
+			return false
+		}
+		init := c.es_index_of(t, def.init or { return false }) or { return false }
+		visited[v] = true
+		return c.unb_has_jsdoc_type_reference_in(root, t, init, mut visited)
+	}
+	if unb_is_function(t, node) || t.typ(node) in [.class_declaration, .class_expression] {
+		return false
+	}
+	for child in unb_evaluated_children(t, node) {
+		if c.unb_has_jsdoc_type_reference_in(root, t, child, mut visited) {
+			return true
+		}
+	}
+	return false
+}
+
+// unb_jsdoc_members ports getJSDocumentTypeMembers: the members of a union or intersection, with
+// the nested ones of the same kind.
+fn unb_jsdoc_members(typ UnbJsdocType) []UnbJsdocType {
+	mut out := []UnbJsdocType{}
+	for element in typ.children {
+		if element.kind == typ.kind {
+			out << unb_jsdoc_members(element)
+		} else {
+			out << element
+		}
+	}
+	return out
+}
+
+// unb_jsdoc_callable_return_type ports getJSDocumentCallableReturnType.
+fn unb_jsdoc_callable_return_type(t ?UnbJsdocType) ?UnbJsdocType {
+	typ := t?
+	if typ.kind == 'function' {
+		return typ.children[0]
+	}
+	if typ.kind !in ['union', 'intersection'] {
+		return none
+	}
+	members := if typ.kind == 'intersection' {
+		unb_jsdoc_members(typ).filter(it.kind != 'non-primitive')
+	} else {
+		typ.children
+	}
+	mut return_types := []UnbJsdocType{}
+	for member in members {
+		return_types << unb_jsdoc_callable_return_type(member)?
+	}
+	if return_types.len == 0 {
+		return none
+	}
+	return UnbJsdocType{
+		kind:     'union'
+		children: return_types
+	}
+}
+
+// unb_jsdoc_node_kind ports getJSDocumentTypeNodeType.
+fn unb_jsdoc_node_kind(t ?UnbJsdocType, o UnbTypeOptions) UnbKind {
+	typ := t or { return .unknown }
+	match typ.kind {
+		'nullable', 'optional' {
+			return unb_combine_union([unb_jsdoc_node_kind(typ.children[0], o), .nullish], o)
+		}
+		'union' {
+			return unb_combine_union(unb_jsdoc_members(typ).map(unb_jsdoc_node_kind(it, o)), o)
+		}
+		'intersection' {
+			return unb_combine_intersection(typ.children.map(unb_jsdoc_node_kind(it, o)))
+		}
+		'nullish' {
+			return .nullish
+		}
+		else {
+			if typ.kind == 'name' {
+				known := unb_known_type_reference(typ.name, o)
+				if known != .unknown {
+					return known
+				}
+				if typ.name in ['boolean', 'string', 'number', 'bigint', 'symbol', 'void'] {
+					return .non_target
+				}
+			}
+			return if typ.kind in ['non-primitive', 'function'] {
+				UnbKind.non_target
+			} else {
+				UnbKind.unknown
+			}
+		}
+	}
+}
+
+// unb_jsdoc_kind ports getJSDocumentType: what an annotation says, nullish too when optional.
+fn (c &Checker) unb_jsdoc_kind(annotation UnbJsdocAnnotation, o UnbTypeOptions) UnbKind {
+	kind := unb_jsdoc_node_kind(annotation.typ, o)
+	return if annotation.optional { unb_combine_union([kind, .nullish], o) } else { kind }
 }
