@@ -282,10 +282,15 @@ fn single_run_program_root(config map[string]json2.Any, base string) string {
 	return os.getwd()
 }
 
-// is_single_run ports the rest of inferSingleRun: `TSESTREE_SINGLE_RUN` "true", or the eslint
-// command (which veslint stands for) without --fix.
+// is_single_run ports the rest of inferSingleRun: not with `TSESTREE_SINGLE_RUN` "false" (as
+// RuleTester lints, which tests/upstream_check.py emulates), and then `TSESTREE_SINGLE_RUN` "true",
+// or the eslint command (which veslint stands for) without --fix.
 fn is_single_run(fix bool) bool {
-	return os.getenv('TSESTREE_SINGLE_RUN') == 'true' || !fix
+	setting := os.getenv('TSESTREE_SINGLE_RUN')
+	if setting == 'false' {
+		return false
+	}
+	return setting == 'true' || !fix
 }
 
 // single_run_tsconfig ports the rest of useSingleRunProgramForProjectService: the tsconfig.json or

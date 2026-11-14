@@ -125,8 +125,10 @@ def apply_fixes(code, fixes):
 
 class Server:
     def __init__(self, veslint):
+        # RuleTester's linting is not a single run of typescript-estree.
         self.process = subprocess.Popen([veslint, '--server'], cwd=ROOT, stdin=subprocess.PIPE,
-                                        stdout=subprocess.PIPE, text=True, encoding='utf-8', bufsize=1)
+                                        stdout=subprocess.PIPE, text=True, encoding='utf-8', bufsize=1,
+                                        env={**os.environ, 'TSESTREE_SINGLE_RUN': 'false'})
         self.next_id = 0
 
     def request(self, request):
