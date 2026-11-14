@@ -493,7 +493,7 @@ pub fn needs_types(rule string) bool {
 // applies these.
 pub const default_options = {
 	no_floating_promises:                            '[{"allowForKnownSafeCalls":[],"allowForKnownSafePromises":[],"checkThenables":false,"ignoreIIFE":false,"ignoreVoid":true}]'
-	await_thenable:                                  '[]'
+	await_thenable:                                  '[{"allowMixedPromiseArrays":false}]'
 	require_await:                                   '[]'
 	return_await:                                    '["in-try-catch"]'
 	no_misused_promises:                             '[{"checksConditionals":true,"checksSpreads":true,"checksVoidReturn":true}]'

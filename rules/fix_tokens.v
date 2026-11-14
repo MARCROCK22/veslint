@@ -567,6 +567,48 @@ fn is_start_of_expression_statement(n C.TSNode) bool {
 	}
 }
 
+// is_start_of_expression_statement_needing_parentheses ports
+// isStartOfExpressionStatementNeedingParentheses of typescript-eslint 8.72.2: the node starts an
+// expression statement and its first token (`first`) is `{`, `class` or `function`.
+fn (mut c Checker) is_start_of_expression_statement_needing_parentheses(n C.TSNode, first SourceToken) bool {
+	return c.token_text(first) in ['{', 'class', 'function'] && is_start_of_expression_statement(n)
+}
+
+// is_start_of_arrow_function_body_needing_parentheses ports
+// isStartOfArrowFunctionBodyNeedingParentheses of typescript-eslint 8.72.2: the first token
+// (`first`) is `{`, and the node starts the body of an arrow function, with no parentheses around
+// it or around the ancestors in between, which start where it does.
+fn (mut c Checker) is_start_of_arrow_function_body_needing_parentheses(e EsNode, first SourceToken) bool {
+	if !c.token_is(first, '{') {
+		return false
+	}
+	mut current := e
+	for {
+		if c.is_parenthesized(current) {
+			return false
+		}
+		parent := current.parent() or { return false }
+		if !parent.chain && node_kind(parent.node) == 'arrow_function'
+			&& parent.has_child('body', current) {
+			return true
+		}
+		if node_start(parent.node) != node_start(current.node) {
+			return false
+		}
+		current = parent
+	}
+	return false
+}
+
+// await_token_removal ports getAwaitTokenRemovalRange of typescript-eslint 8.72.2: the fix that
+// removes an `await` token and what follows it up to the next token or comment.
+fn (mut c Checker) await_token_removal(n C.TSNode, await_start int, await_end int) Fix {
+	next := c.source_tokens(n).after(await_end, true) or {
+		return fix_replace_range(await_start, await_end, '')
+	}
+	return fix_replace_range(await_start, next.start, '')
+}
+
 // Keywords a statement or expression starts with, and the tree-sitter node whose first token each
 // one is (NODE_TYPES_BY_KEYWORD; `else` belongs to the IfStatement).
 const semicolon_keyword_nodes = {

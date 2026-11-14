@@ -1,4 +1,4 @@
-// Cases of await-thenable (typescript-eslint 8.62.0, no options). The expected findings are in
+// Cases of await-thenable (typescript-eslint 8.72.2, default options). The expected findings are in
 // expected.txt, validated against typescript-eslint by tests/rules/reference.sh.
 declare function task(): Promise<number>;
 declare function syncFn(): number;

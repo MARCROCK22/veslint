@@ -1,11 +1,12 @@
 module rules
 
+import json2
 import time
 import tsgo { SignatureResponse, TypeResponse }
-import treesitter { children, first_named_child, named_children, node_field, node_kind, nodes_of_kind, position_of }
+import treesitter { children, first_named_child, named_children, node_end, node_field, node_kind, node_start, nodes_of_kind, position_of }
 
-// Port of the `await-thenable` rule of typescript-eslint 8.62.0 (it has no options), with its
-// suggestions. It uses the exact type of each expression (getTypeAtLocations). Limits of the port:
+// Port of the `await-thenable` rule of typescript-eslint 8.72.2, with its option
+// (allowMixedPromiseArrays) and its suggestions. It uses the exact type of each expression (getTypeAtLocations). Limits of the port:
 // internals.md, "Rules" section.
 
 // typescript-eslint messages.
@@ -28,6 +29,12 @@ enum Awaitable {
 	always
 }
 
+// at_options reads the options of the rule: allowMixedPromiseArrays.
+fn at_options(options []json2.Any) !bool {
+	o := option_object(await_thenable, options, ['allowMixedPromiseArrays'])!
+	return o.bool_value('allowMixedPromiseArrays')!
+}
+
 struct AwaitThenableTargets {
 mut:
 	awaits      []C.TSNode // await_expression
@@ -41,6 +48,7 @@ mut:
 
 fn (mut c Checker) lint_await_thenable(root C.TSNode, abs_path string, mut stats Stats) ![]Finding {
 	mut sw := time.new_stopwatch()
+	allow_mixed := at_options(c.rule_options(await_thenable))!
 	mut targets := AwaitThenableTargets{}
 	mut wanted := []C.TSNode{}
 	for node in c.nodes_of_kind(root, c'await_expression') {
@@ -57,6 +65,9 @@ fn (mut c Checker) lint_await_thenable(root C.TSNode, abs_path string, mut stats
 		targets.aggregators << call
 		wanted << object
 		wanted << aggregator_inputs(arg)
+		if allow_mixed && node_kind(arg) == 'array' {
+			wanted << arg
+		}
 	}
 	for loop in c.nodes_of_kind(root, c'for_in_statement') {
 		if !is_for_await_of(loop) {
@@ -83,14 +94,14 @@ fn (mut c Checker) lint_await_thenable(root C.TSNode, abs_path string, mut stats
 	c.resolve_node_types(wanted, abs_path, mut stats)!
 	stats.types_ms += ms(sw.elapsed())
 	sw.restart()
-	findings := c.check_await_thenable(targets)!
+	findings := c.check_await_thenable(targets, allow_mixed)!
 	stats.eval_ms += ms(sw.elapsed())
 	stats.checked += targets.awaits.len + targets.aggregators.len + targets.loops.len +
 		targets.resources.len
 	return findings
 }
 
-fn (mut c Checker) check_await_thenable(targets AwaitThenableTargets) ![]Finding {
+fn (mut c Checker) check_await_thenable(targets AwaitThenableTargets, allow_mixed bool) ![]Finding {
 	mut findings := []Finding{}
 	// AwaitExpression. Outside an async function, TypeScript reads `await` followed by a template with
 	// substitutions as a tagged template; it only counts if tsgo sees an await too.
@@ -104,7 +115,7 @@ fn (mut c Checker) check_await_thenable(targets AwaitThenableTargets) ![]Finding
 			findings << Finding{
 				stmt:        position_of(node)
 				message_id:  'await'
-				suggestions: c.at_remove_await(node, 'removeAwait')!
+				suggestions: c.at_remove_await_expression(node, arg)!
 			}
 		}
 	}
@@ -117,6 +128,10 @@ fn (mut c Checker) check_await_thenable(targets AwaitThenableTargets) ![]Finding
 			continue
 		}
 		arg := first_argument(call) or { continue }
+		// allowMixedPromiseArrays: a value of the iterable may be awaitable.
+		if allow_mixed && c.at_has_maybe_awaitable_value(arg)! {
+			continue
+		}
 		if node_kind(arg) == 'array' {
 			for element in aggregator_inputs(arg) {
 				t := c.node_type(element) or { continue }
@@ -191,16 +206,55 @@ fn (mut c Checker) check_await_thenable(targets AwaitThenableTargets) ![]Finding
 	return findings
 }
 
-// at_remove_await is the suggestion that removes the first `await` token of a node (an await
-// expression, a `for await` loop or an `await using` declaration): fixer.remove(awaitToken).
-fn (c &Checker) at_remove_await(node C.TSNode, message_id string) ![]Suggestion {
+// at_remove_await is the suggestion that removes the first `await` token of a node (a `for
+// await` loop or an `await using` declaration), with what follows it up to the next token or
+// comment (getAwaitTokenRemovalRange).
+fn (mut c Checker) at_remove_await(node C.TSNode, message_id string) ![]Suggestion {
 	for child in children(node) {
 		if node_kind(child) == 'await' {
-			_, suggestion := c.suggestion(message_id, map[string]string{}, [fix_remove(child)])!
+			_, suggestion := c.suggestion(message_id, map[string]string{}, [
+				c.await_token_removal(child, node_start(child), node_end(child)),
+			])!
 			return [suggestion]
 		}
 	}
 	return []Suggestion{}
+}
+
+// at_remove_await_expression is the removeAwait suggestion of an await expression: its `await`
+// goes, and the argument gets parentheses where it would start an arrow function body or an
+// expression statement with `{`, `class` or `function`.
+fn (mut c Checker) at_remove_await_expression(node C.TSNode, arg C.TSNode) ![]Suggestion {
+	for child in children(node) {
+		if node_kind(child) != 'await' {
+			continue
+		}
+		mut fixes := [c.await_token_removal(child, node_start(child), node_end(child))]
+		first := c.source_tokens(node).after(node_end(child), false) or { return []Suggestion{} }
+		if c.is_start_of_arrow_function_body_needing_parentheses(es_inner(node), first)
+			|| c.is_start_of_expression_statement_needing_parentheses(node, first) {
+			fixes << fix_insert_at(node_start(arg), '(')
+			fixes << fix_insert_at(c.es_end(arg), ')')
+		}
+		_, suggestion := c.suggestion('removeAwait', map[string]string{}, fixes)!
+		return [suggestion]
+	}
+	return []Suggestion{}
+}
+
+// at_has_maybe_awaitable_value ports hasMaybeAwaitableValue: some part of the constrained type of
+// the argument has values (getValueTypesOfArrayLike) of which some may be awaitable.
+fn (mut c Checker) at_has_maybe_awaitable_value(arg C.TSNode) !bool {
+	t := c.node_type(arg) or { return false }
+	at := c.symbol_location(arg)
+	for part in c.constituents(c.constrained(t)!)! {
+		for value in c.array_like_values(part)! {
+			if !c.always_non_awaitable(value, at)! {
+				return true
+			}
+		}
+	}
+	return false
 }
 
 // aggregator_callee returns the `X.all` of `X.all(…)` (or `X['all']`, or parenthesized), like
