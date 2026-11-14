@@ -257,6 +257,48 @@ test('the unsaved text of a file is seen by the files that import it, until it i
   assert.deepEqual(rulesOf(b), ['@typescript-eslint/no-floating-promises']);
 });
 
+test('the open files are linted again when a file they import changes, those on screen at once', { skip: !built }, async t => {
+  const project = fs.mkdtempSync(path.join(os.tmpdir(), 'veslint-project-'));
+  fs.cpSync(path.join(root, 'tests/server/project'), project, { recursive: true });
+  const { vscode, state, TextDocument, activate } = loadExtension(t);
+  state.folder = project;
+  state.settings = { path: binary, config: 'rules.json' };
+  const a = new TextDocument(path.join(project, 'a.ts'));
+  const b = new TextDocument(path.join(project, 'b.ts'));
+  const uses = new TextDocument(path.join(project, 'uses.ts'));
+  state.documents.push(a, b, uses);
+  vscode.window.visibleTextEditors = [{ document: a }, { document: b }];
+  activate();
+  await state.commands['veslint.lintOpenFiles']();
+  const rulesOf = document => (state.diagnostics.get(document.uri.toString()) ?? []).map(diagnostic => diagnostic.code.value);
+  const lintsOf = document => state.output.filter(line => line.startsWith(`${path.basename(document.uri.fsPath)}: `)).length;
+  assert.deepEqual(rulesOf(b), []);
+  const usesLints = lintsOf(uses);
+  // work() made async while typing in a.ts: b.ts, on screen, is linted again without being touched.
+  const synchronous = a.text;
+  const asynchronous = 'export async function work(): Promise<number> {\n  return 1;\n}\n';
+  Object.assign(a, { text: asynchronous, isDirty: true, version: a.version + 1 });
+  state.handlers.change({ document: a, contentChanges: [{}] });
+  await until(() => rulesOf(b).length === 1);
+  assert.deepEqual(rulesOf(b), ['@typescript-eslint/no-floating-promises']);
+  // uses.ts is not on screen: it waits until it is shown.
+  await new Promise(resolve => setTimeout(resolve, 300));
+  assert.equal(lintsOf(uses), usesLints);
+  vscode.window.visibleTextEditors = [{ document: uses }];
+  state.handlers.visible(vscode.window.visibleTextEditors);
+  await until(() => lintsOf(uses) === usesLints + 1);
+  // Saved back as it was (written on disk, as by another program): b.ts is linted again.
+  vscode.window.visibleTextEditors = [{ document: b }];
+  fs.writeFileSync(a.uri.fsPath, synchronous);
+  Object.assign(a, { text: synchronous, isDirty: false, version: a.version + 1 });
+  state.handlers.save(a);
+  await until(() => rulesOf(b).length === 0);
+  // A change on disk of a file that is not open at all.
+  fs.writeFileSync(a.uri.fsPath, asynchronous);
+  state.handlers['**/*.{ts,mts,cts,tsx}.onDidChange'](vscode.Uri.file(a.uri.fsPath));
+  await until(() => rulesOf(b).length === 1);
+});
+
 test('files are linted while typing even when the editor has the defaults of an older version', { skip: !built }, async t => {
   // VS Code keeps the settings of the version it loaded first after an update without a reload:
   // before 0.3.0, veslint.run was onSave by default.
