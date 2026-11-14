@@ -5,7 +5,7 @@ import time
 import tsgo { TypeResponse }
 import treesitter { Ident, node_field, node_kind, nodes_of_kind, position_of }
 
-// Port of the `no-unnecessary-boolean-literal-compare` rule of typescript-eslint 8.62.0, with all
+// Port of the `no-unnecessary-boolean-literal-compare` rule of typescript-eslint 8.72.2, with all
 // its options and its fix.
 
 const nublc_messages = {
@@ -113,8 +113,9 @@ fn (mut c Checker) lint_no_unnecessary_boolean_literal_compare(root C.TSNode, ab
 }
 
 // nublc_fix ports the fixer: the comparison, with the `!` around it if it has one, becomes the
-// compared expression, negated if the whole is a negation and with `?? true` if it is a nullable
-// boolean compared to false, in the parentheses each step needs.
+// compared expression, negated if the whole is a negation, with `?? true` if it is a nullable
+// boolean compared to false and with `?? false` if it is a nullable boolean the fix returns as it
+// is outside a condition, in the parentheses each step needs.
 fn (c &Checker) nublc_fix(comparison NublcComparison, nullable bool) Fix {
 	node := es_child(comparison.node)
 	mut mutated := node
@@ -131,20 +132,30 @@ fn (c &Checker) nublc_fix(comparison NublcComparison, nullable bool) Fix {
 	expression := es_child(comparison.expression)
 	mut text := c.text(expression.node)
 	mut may_need_parentheses := !is_strong_precedence_node(expression)
-	// In `maybeNullish === false`, nullish values have the same truth table as `true`.
-	if nullable && !comparison.literal {
+	// Since typescript-eslint 8.72, an expression returned as it is (not negated, nullable) gets
+	// `?? false` outside the test of a condition (isConditionalTest).
+	if !overall_negated && nullable && !c.is_conditional_test(mutated.node) {
 		if may_need_parentheses {
 			text = '(${text})'
 		}
-		text = '${text} ?? true'
+		text = '${text} ?? false'
 		may_need_parentheses = true
-	}
-	if overall_negated {
-		if may_need_parentheses {
-			text = '(${text})'
+	} else {
+		// In `maybeNullish === false`, nullish values have the same truth table as `true`.
+		if nullable && !comparison.literal {
+			if may_need_parentheses {
+				text = '(${text})'
+			}
+			text = '${text} ?? true'
+			may_need_parentheses = true
 		}
-		text = '!${text}'
-		may_need_parentheses = false
+		if overall_negated {
+			if may_need_parentheses {
+				text = '(${text})'
+			}
+			text = '!${text}'
+			may_need_parentheses = false
+		}
 	}
 	if may_need_parentheses && is_weak_precedence_parent(mutated) {
 		text = '(${text})'

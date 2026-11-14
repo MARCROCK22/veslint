@@ -559,7 +559,9 @@ fn (c &Checker) is_boolean_constructor_context(n C.TSNode) bool {
 	return false
 }
 
-// is_conditional_test ports isConditionalTest: `n` is (part of) the test of a condition.
+// is_conditional_test ports isConditionalTest (util/isConditionalTest.ts of typescript-eslint
+// 8.72.2, also used by no-unnecessary-boolean-literal-compare): `n` is (part of) the test of a
+// condition.
 fn (c &Checker) is_conditional_test(n C.TSNode) bool {
 	mut node := n
 	for depth := 0; depth < max_expression_depth; depth++ {
