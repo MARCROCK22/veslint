@@ -1123,3 +1123,6 @@ eslint	no-thenable/i61	typescript-estree has two nodes for `then` in `export {th
 veslint	no-thenable/i61	typescript-estree has two nodes for `then` in `export {then}`: reported once
 eslint	no-thenable/i63	typescript-estree has two nodes for `then` in `export {then}`: reported once
 veslint	no-thenable/i63	typescript-estree has two nodes for `then` in `export {then}`: reported once
+# The same for no-single-promise-in-promise-methods: `await(Promise).all(…)` at the top of a script is a call of an
+# `await` function for TypeScript.
+veslint	no-single-promise-in-promise-methods/r0/i2	without a program typescript-estree reads this top-level `await` of a script as an await expression
