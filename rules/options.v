@@ -150,6 +150,7 @@ pub fn check_options(rule string, options []json2.Any) !bool {
 		unicorn_no_immediate_mutation { unim_options(options)! }
 		unicorn_prefer_export_from { upef_options(options)! }
 		unicorn_relative_url_style { rus_options(options)! }
+		unicorn_consistent_function_scoping { ucfs_options(options)! }
 		else { return false }
 	}
 	return true

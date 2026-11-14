@@ -1,0 +1,8 @@
+tests/rules/unicorn/consistent-function-scoping/cases.ts:7:2	unicorn/consistent-function-scoping	consistent-function-scoping	Move function 'inner' to the outer scope.
+tests/rules/unicorn/consistent-function-scoping/cases.ts:10:36	unicorn/consistent-function-scoping	consistent-function-scoping	Move arrow function 'arrow' to the outer scope.
+tests/rules/unicorn/consistent-function-scoping/cases.ts:11:21	unicorn/consistent-function-scoping	consistent-function-scoping	Move function 'named' to the outer scope.
+tests/rules/unicorn/consistent-function-scoping/cases.ts:19:33	unicorn/consistent-function-scoping	consistent-function-scoping	Move arrow function 'log' to the outer scope.
+tests/rules/unicorn/consistent-function-scoping/cases.ts:26:29	unicorn/consistent-function-scoping	consistent-function-scoping	Move arrow function 'helper' to the outer scope.
+tests/rules/unicorn/consistent-function-scoping/cases.ts:32:2	unicorn/consistent-function-scoping	consistent-function-scoping	Move function 'identity' to the outer scope.
+tests/rules/unicorn/consistent-function-scoping/cases.ts:70:2	unicorn/consistent-function-scoping	consistent-function-scoping	Move function 'b' to the outer scope.
+tests/rules/unicorn/consistent-function-scoping/no-arrows/cases.ts:3:2	unicorn/consistent-function-scoping	consistent-function-scoping	Move function 'inner' to the outer scope.
