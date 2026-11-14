@@ -5,7 +5,7 @@ import jsregexp
 import time
 import treesitter { Ident, children, named_children, node_end, node_field, node_kind, node_start, nodes_of_kinds, position_of }
 
-// Port of the `prefer-string-starts-ends-with` rule of typescript-eslint 8.62.0, with its option
+// Port of the `prefer-string-starts-ends-with` rule of typescript-eslint 8.72.2, with its option
 // and its fixes.
 
 const pssew_messages = {
@@ -471,16 +471,12 @@ fn (mut c Checker) pssew_parse_regexp(n C.TSNode) ?PssewRegexp {
 	re := value.value.regexp
 	source := re.source
 	starts := source.len > 0 && source[0] == `^`
-	ends := source.len > 0 && source.last() == `$`
+	ends := pssew_ends_with_assertion(source)
 	if starts == ends || re.flags.contains('i') || re.flags.contains('m') {
 		return none
 	}
-	mode := if re.flags.contains('u') {
-		jsregexp.RegexpMode.unicode
-	} else {
-		jsregexp.RegexpMode.annex_b
-	}
-	pattern := jsregexp.regexp_parse(source, mode)
+	// The `u` and (since typescript-eslint 8.72) `v` flags change how the pattern parses.
+	pattern := jsregexp.regexp_parse(source, jsregexp.regexp_mode(re.flags))
 	if !pattern.valid || pattern.alternatives.len != 1 {
 		return none
 	}
@@ -508,6 +504,22 @@ fn (mut c Checker) pssew_parse_regexp(n C.TSNode) ?PssewRegexp {
 		starts: starts
 		text:   pssew_json_string(units)
 	}
+}
+
+// pssew_ends_with_assertion ports `/[^\\](\\\\)*\$$/.test(source)` (the UTF-16 units of the
+// source): it ends with a `$` after an even number of backslashes (or none), themselves after
+// another character.
+fn pssew_ends_with_assertion(source []u16) bool {
+	if source.len == 0 || source[source.len - 1] != `$` {
+		return false
+	}
+	mut i := source.len - 2
+	mut backslashes := 0
+	for i >= 0 && source[i] == `\\` {
+		backslashes++
+		i--
+	}
+	return i >= 0 && backslashes % 2 == 0
 }
 
 // pssew_json_string ports JSON.stringify of a string, given as its UTF-16 units: quotes,

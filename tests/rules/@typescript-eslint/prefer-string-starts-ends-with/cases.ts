@@ -104,3 +104,14 @@ s[s.length - 1] === Object.values('a')[0];
 s.match(/^bar/) === new Map().get('missing');
 s.match(/bar$/) != Object(null).missing;
 s[0] === new Map([[1, 'ab']]).get(1);
+// typescript-eslint 8.72: the `v` flag parses the pattern in its mode, and an escaped `$` does not
+// end the pattern.
+/^\p{N}/v.test(s);
+/^\u{61}r/v.test(s);
+/^a[b]/v.test(s);
+/foo\$/.test(s);
+/foo\\\$/.test(s);
+/foo\\$/.test(s);
+/$/.test(s);
+/\$/.test(s);
+/a\\\\$/.test(s);
