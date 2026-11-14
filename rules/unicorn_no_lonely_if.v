@@ -3,7 +3,7 @@ module rules
 import estree
 import time
 
-// Port of the `unicorn/no-lonely-if` rule of eslint-plugin-unicorn 64.0.0 (it has no options),
+// Port of the `unicorn/no-lonely-if` rule of eslint-plugin-unicorn 79.0.0 (it has no options),
 // with its fix.
 
 const unli_messages = {
@@ -82,61 +82,119 @@ fn unli_if_tokens(t &estree.EsTree, tokens &SourceTokens, node int) ?UnliIfToken
 	}
 }
 
-// unli_need_parenthesis: the test has a lower precedence than `&&`.
+// unli_need_parenthesis: the test has a lower precedence than `&&` (an arrow function is an
+// AssignmentExpression in the grammar).
 fn unli_need_parenthesis(t &estree.EsTree, node int) bool {
 	return match t.typ(node) {
 		.logical_expression { (t.string_of(node, .operator) or { '' }) in ['||', '??'] }
-		.conditional_expression, .assignment_expression, .yield_expression, .sequence_expression { true }
+		.conditional_expression, .arrow_function_expression, .assignment_expression,
+		.yield_expression, .sequence_expression { true }
 		else { false }
 	}
 }
 
-// unli_fix ports the fixer: `if (a) { if (b) x }` becomes `if (a && b) x`.
+// unli_between is getTextBetween: the source from the end of one token or node to the start of
+// another.
+fn (c &Checker) unli_between(left_end int, right_start int) string {
+	return c.src[left_end..right_start]
+}
+
+// unli_preserve_gap is preserveGap: the text, or nothing when it is only white space.
+fn unli_preserve_gap(text string) string {
+	return if js_trim(text) != '' { text } else { '' }
+}
+
+// unli_join is joinSourceText: one of the white spaces between the two goes away.
+fn unli_join(left string, right string) string {
+	left_runes := left.runes()
+	right_runes := right.runes()
+	if left_runes.len > 0 && is_js_space(left_runes.last()) && right_runes.len > 0
+		&& is_js_space(right_runes[0]) {
+		return left + unb_trim_start(right)
+	}
+	return left + right
+}
+
+// unli_test_text is getTestText: the text between the parentheses of the `if`, in parentheses when
+// its test binds more loosely than `&&`.
+fn (c &Checker) unli_test_text(t &estree.EsTree, tokens &SourceTokens, part UnliIfTokens) string {
+	text := c.unli_between(part.opening_paren.end, part.closing_paren.start)
+	if c.un_is_parenthesized(t, tokens, part.test) {
+		return text
+	}
+	return if unli_need_parenthesis(t, part.test) { '(${text})' } else { text }
+}
+
+// unli_fix ports the fixer, one replacement of the outer `if`: `if (a) { if (b) x }` becomes
+// `if (a && b) x`, with the comments of the outer `if` kept.
 fn (c &Checker) unli_fix(t &estree.EsTree, tokens &SourceTokens, inner_node int) []Fix {
 	parent := t.nodes[inner_node].parent
 	outer_node := if t.typ(parent) == .block_statement { t.nodes[parent].parent } else { parent }
 	outer := unli_if_tokens(t, tokens, outer_node) or { return [] }
 	inner := unli_if_tokens(t, tokens, inner_node) or { return [] }
-	mut fixes := []Fix{}
-	// Remove the inner `if`.
-	fixes << fix_remove_range(inner.if_token.start, inner.if_token.end)
-	fixes << c.un_remove_spaces_after(inner.if_token.end)
-	// Remove the outer `{}`.
-	if opening := outer.opening_brace {
-		closing := outer.closing_brace or { return [] }
-		fixes << fix_remove_range(opening.start, opening.end)
-		fixes << c.un_remove_spaces_after(opening.end)
-		fixes << fix_remove_range(closing.start, closing.end)
-		before := tokens.before(closing.start, true) or { return [] }
-		fixes << c.un_remove_spaces_after(before.end)
-	}
-	// Add the new `()`.
-	fixes << fix_insert_at(outer.opening_paren.start, '(')
-	fixes << fix_insert_at(inner.closing_paren.end, if t.typ(inner.consequent) == .empty_statement {
-		')'
-	} else {
-		') '
-	})
-	// Add ` && `.
-	fixes << fix_insert_at(outer.closing_paren.end, ' && ')
-	// Remove the `()` of a test that does not need them.
-	for part in [outer, inner] {
-		if c.un_is_parenthesized(t, tokens, part.test) || !unli_need_parenthesis(t, part.test) {
-			fixes << fix_remove_range(part.opening_paren.start, part.opening_paren.end)
-			fixes << fix_remove_range(part.closing_paren.start, part.closing_paren.end)
-		}
-		fixes << c.un_remove_spaces_after(part.closing_paren.end)
-	}
-	// Without a block, a `;` keeps the statement after the outer `if` from joining the inner one.
+	outer_prefix := c.unli_between(outer.if_token.end, outer.opening_paren.start)
+	outer_test := c.unli_test_text(t, tokens, outer)
+	inner_condition := unli_join(unli_preserve_gap(c.unli_between(inner.if_token.end,
+		inner.opening_paren.start)), c.unli_test_text(t, tokens, inner))
+	// getReplacementRange: without a block, a `;` keeps the statement after the outer `if` from
+	// joining the inner one.
+	range_start := t.nodes[outer_node].start
+	mut range_end := t.nodes[outer_node].end
 	if t.typ(inner.consequent) != .block_statement {
-		last := un_last_token(t, tokens, inner.consequent) or { return fixes }
-		if !c.token_is(last, ';') {
-			if next := tokens.after(t.nodes[outer_node].end, false) {
-				if c.un_needs_semicolon(t, tokens, last, c.token_text(next)) {
-					fixes << fix_insert_at(next.start, ';')
+		if last := un_last_token(t, tokens, inner.consequent) {
+			if !c.token_is(last, ';') {
+				if next := tokens.after(t.nodes[outer_node].end, false) {
+					if c.unb_needs_semicolon(t, tokens, last, c.token_text(next)) {
+						range_end = next.start
+					}
 				}
 			}
 		}
 	}
-	return fixes
+	// getConsequentTextPieces
+	mut outer_condition_gap := ''
+	mut outer_leading := ''
+	mut outer_trailing := ''
+	if opening := outer.opening_brace {
+		closing := outer.closing_brace or { return [] }
+		outer_condition_gap = unli_preserve_gap(c.unli_between(outer.closing_paren.end, opening.start))
+		outer_leading = unli_preserve_gap(c.unli_between(opening.end, inner.if_token.start))
+		outer_trailing = unli_preserve_gap(c.unli_between(t.nodes[inner_node].end, closing.start))
+	} else {
+		outer_leading = unli_preserve_gap(c.unli_between(outer.closing_paren.end, inner.if_token.start))
+	}
+	// getOuterConditionGapTextPieces: a `// …` after the outer condition stays after the merged one,
+	// for line directives; everything else goes before the merged statement.
+	mut leading := ''
+	mut condition_suffix := ''
+	if unb_trim_start(outer_condition_gap).starts_with('//') {
+		leading = unb_trim_start(unli_preserve_gap(outer_leading))
+		condition_suffix = outer_condition_gap
+	} else {
+		leading = unb_trim_start(unli_preserve_gap(unli_join(outer_condition_gap, outer_leading)))
+	}
+	// getConsequentText
+	mut consequent := ''
+	if opening := inner.opening_brace {
+		closing := inner.closing_brace or { return [] }
+		before_block := c.unli_between(inner.closing_paren.end, opening.start)
+		body := c.unli_between(opening.end, closing.start)
+		consequent = '${condition_suffix}${before_block}{${body}${outer_trailing}}'
+	} else {
+		before := c.unli_between(inner.closing_paren.end, t.nodes[inner.consequent].start)
+		consequent = '${condition_suffix}${before}${c.un_text(t, inner.consequent)}${outer_trailing}'
+		// getAsiSuffix
+		outer_end := t.nodes[outer_node].end
+		if range_end != outer_end {
+			gap := c.src[outer_end..range_end]
+			consequent += if js_trim(gap) == '' {
+				if gap.contains('\n') { ';${gap}' } else { ';' }
+			} else {
+				';${gap}'
+			}
+		}
+	}
+	return [
+		fix_replace_range(range_start, range_end, '${leading}if${outer_prefix}(${outer_test} && ${inner_condition})${consequent}'),
+	]
 }

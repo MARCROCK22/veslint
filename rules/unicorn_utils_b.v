@@ -1069,3 +1069,14 @@ fn (c &Checker) unb_unparenthesized_keyword_argument_parent(t &estree.EsTree, to
 	}
 	return -1
 }
+
+// unb_trim_start is String#trimStart: without JavaScript's white space and line terminators at the
+// start.
+fn unb_trim_start(s string) string {
+	runes := s.runes()
+	mut start := 0
+	for start < runes.len && is_js_space(runes[start]) {
+		start++
+	}
+	return runes[start..].string()
+}
