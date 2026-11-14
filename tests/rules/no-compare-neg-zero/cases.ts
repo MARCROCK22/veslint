@@ -40,3 +40,13 @@ if (x === (-0 satisfies number)) {}
 if (x === <number>-0) {}
 if (x === -x) {}
 if (x === - -0) {}
+
+// The suggestions (10.15.0).
+declare const y: number;
+if ((x, y) === -0) {}
+if (x + y !== (-0)) {}
+if (-0 == -0) {}
+if (x === /* c */ -0) {}
+function shadowObject(Object: unknown) {
+  return x === -0;
+}
