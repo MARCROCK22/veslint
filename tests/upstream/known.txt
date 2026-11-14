@@ -394,6 +394,22 @@ veslint	escape-case/r2/v19	the code has a lone surrogate, which a UTF-8 file can
 veslint	escape-case/r2/i21	the code has a lone surrogate, which a UTF-8 file cannot hold
 veslint	escape-case/r3/v17	the code has a lone surrogate, which a UTF-8 file cannot hold
 veslint	escape-case/r3/i19	the code has a lone surrogate, which a UTF-8 file cannot hold
+# eslint-plugin-unicorn: no-useless-switch-case keeps `case undefined` and `case null` in a TypeScript
+# file (isTypeScriptFile), where they may narrow the type; the test lints these cases as JavaScript.
+eslint	no-useless-switch-case/r0/i0	a TypeScript file: `case undefined` and `case null` are kept
+veslint	no-useless-switch-case/r0/i0	a TypeScript file: `case undefined` and `case null` are kept
+eslint	no-useless-switch-case/r0/i1	a TypeScript file: `case undefined` and `case null` are kept
+veslint	no-useless-switch-case/r0/i1	a TypeScript file: `case undefined` and `case null` are kept
+eslint	no-useless-switch-case/r0/i3	a TypeScript file: `case undefined` and `case null` are kept
+veslint	no-useless-switch-case/r0/i3	a TypeScript file: `case undefined` and `case null` are kept
+eslint	no-useless-switch-case/r1/i0	a TypeScript file: `case undefined` and `case null` are kept
+veslint	no-useless-switch-case/r1/i0	a TypeScript file: `case undefined` and `case null` are kept
+eslint	no-useless-switch-case/r1/i1	a TypeScript file: `case undefined` and `case null` are kept
+veslint	no-useless-switch-case/r1/i1	a TypeScript file: `case undefined` and `case null` are kept
+eslint	no-useless-switch-case/r1/i2	a TypeScript file: `case undefined` and `case null` are kept
+veslint	no-useless-switch-case/r1/i2	a TypeScript file: `case undefined` and `case null` are kept
+eslint	no-useless-switch-case/r1/i3	a TypeScript file: `case undefined` and `case null` are kept
+veslint	no-useless-switch-case/r1/i3	a TypeScript file: `case undefined` and `case null` are kept
 # eslint-plugin-unicorn: escape-case's cases of other languages (SOML, TOML and the others of its
 # test), which the test lints with their own parsers: as TypeScript, the code is not what they test.
 eslint	escape-case/r0/v0	code of another language (SOML, TOML…), linted as TypeScript

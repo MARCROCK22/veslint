@@ -981,3 +981,15 @@ fn (c &Checker) unb_template_element_raw(t &estree.EsTree, node int) string {
 	tail := t.flag(node, .tail) or { false }
 	return c.src[t.nodes[node].start + 1..t.nodes[node].end - (if tail { 1 } else { 2 })]
 }
+
+// unb_is_undefined_value ports isUndefinedValue (ast/is-undefined.js): `undefined` or a `void`
+// expression.
+fn unb_is_undefined_value(t &estree.EsTree, node int) bool {
+	return un_is_undefined(t, node) || (node >= 0 && t.typ(node) == .unary_expression
+		&& (t.string_of(node, .operator) or { '' }) == 'void')
+}
+
+// unb_is_null_literal ports isNullLiteral (ast/literal.js): the literal `null`.
+fn (c &Checker) unb_is_null_literal(t &estree.EsTree, node int) bool {
+	return node >= 0 && t.typ(node) == .literal && c.un_text(t, node) == 'null'
+}

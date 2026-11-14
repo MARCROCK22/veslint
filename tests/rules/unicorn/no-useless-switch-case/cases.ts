@@ -38,3 +38,25 @@ switch (a) {
   case 1:
   case 2:
 }
+
+// 79.0.0: `case undefined`, `case void 0` and `case null` are kept in TypeScript; no suggestion
+// for a test with a side effect or a case with a comment.
+declare function g(): number;
+switch (a) {
+  case undefined:
+  case void 0:
+  case null:
+  default:
+}
+switch (a) {
+  case g():
+  default:
+}
+switch (a) {
+  case /* keep */ 1:
+  default:
+}
+switch (a) {
+  case 1: // keep
+  default:
+}
