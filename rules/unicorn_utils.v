@@ -4,9 +4,10 @@ import estree
 import math
 import treesitter { Ident }
 
-// Helpers of eslint-plugin-unicorn 64.0.0 (rules/utils, rules/fix and rules/ast) that its ported
-// rules share, on the ESTree of the estree module and the tokens of fix_tokens.v. Offsets are
-// bytes of the source.
+// Helpers of eslint-plugin-unicorn (rules/utils, rules/fix and rules/ast) that its ported rules
+// share, on the ESTree of the estree module and the tokens of fix_tokens.v. Offsets are bytes of
+// the source. They were ported from 64.0.0; those that 79.0.0 changed, and the new ones, say so
+// (the ones that read static values, JSDoc and types are in unicorn_utils_types.v).
 
 // un_tokens are the tokens of the file of the tree.
 fn (mut c Checker) un_tokens(t &estree.EsTree) &SourceTokens {
@@ -1401,7 +1402,8 @@ fn un_is_boolean_call(t &estree.EsTree, node int) bool {
 		&& (t.list(node, .arguments) or { []int{} }).len == 1
 }
 
-// un_is_boolean_expression ports isBooleanExpression of utils/boolean.js.
+// un_is_boolean_expression ports isBooleanExpression of utils/boolean.js of 64.0.0 (any `Boolean`
+// call; un_is_boolean_expression_in is the one of 79.0.0, with the global `Boolean` only).
 fn un_is_boolean_expression(t &estree.EsTree, node int) bool {
 	parent := t.nodes[node].parent
 	if un_is_logic_not(t, node) || (un_is_logic_not(t, parent) && t.node(parent, .argument) or { -1 } == node)
