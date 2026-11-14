@@ -2,6 +2,7 @@ module rules
 
 import estree
 import encoding.utf8
+import math
 import tsgo { TypeResponse }
 import treesitter { node_end }
 
@@ -3306,4 +3307,634 @@ fn (mut c Checker) un_is_number(mut ctx UnCtx, node int) bool {
 	}
 	result := c.un_static_value_for_control_flow(mut ctx, node) or { return false }
 	return result.value.kind == .number_
+}
+
+// ---- boolean.js (with the context of eslint-plugin-unicorn 79.0.0)
+
+// un_is_global_boolean_call ports isGlobalBooleanCall: `Boolean(x)` of the global `Boolean`.
+fn (mut c Checker) un_is_global_boolean_call(ctx &UnCtx, node int) bool {
+	t := ctx.t
+	if node < 0 || t.typ(node) != .call_expression || (t.flag(node, .optional) or { false }) {
+		return false
+	}
+	callee := t.node(node, .callee) or { return false }
+	args := t.list(node, .arguments) or { return false }
+	if t.typ(callee) != .identifier || (t.string_of(callee, .name) or { '' }) != 'Boolean'
+		|| args.len != 1 || t.typ(args[0]) == .spread_element {
+		return false
+	}
+	// isGlobalReference
+	ts := t.ts_node(callee) or { return false }
+	if c.es_is_global_reference(ctx.root, ts) {
+		return true
+	}
+	v := c.un_find_variable(ctx, callee)
+	return v < 0 || c.scope_tree(ctx.root).variables[v].defs.len == 0
+}
+
+// un_is_boolean_call_argument ports isBooleanCallArgument.
+fn (mut c Checker) un_is_boolean_call_argument(ctx &UnCtx, node int) bool {
+	parent := ctx.t.nodes[node].parent
+	return c.un_is_global_boolean_call(ctx, parent)
+		&& (ctx.t.list(parent, .arguments) or { []int{} })[0] == node
+}
+
+// un_is_boolean_expression_in ports isBooleanExpression (79.0.0).
+fn (mut c Checker) un_is_boolean_expression_in(ctx &UnCtx, node int) bool {
+	t := ctx.t
+	parent := t.nodes[node].parent
+	if un_is_logic_not(t, node)
+		|| (un_is_logic_not(t, parent) && (t.node(parent, .argument) or { -1 }) == node)
+		|| c.un_is_global_boolean_call(ctx, node) || c.un_is_boolean_call_argument(ctx, node) {
+		return true
+	}
+	return un_is_logical(t, parent) && c.un_is_boolean_expression_in(ctx, parent)
+}
+
+// un_is_boolean_context ports isBooleanContext: the value of the node is only used for its
+// truthiness.
+fn (mut c Checker) un_is_boolean_context(ctx &UnCtx, node int) bool {
+	return c.un_is_boolean_expression_in(ctx, node) || un_is_control_flow_test(ctx.t, node)
+}
+
+// un_boolean_ancestor_in ports getBooleanAncestor (79.0.0): through `!` and the global
+// `Boolean()`, and whether the count of `!` is odd.
+fn (mut c Checker) un_boolean_ancestor_in(ctx &UnCtx, start int) (int, bool) {
+	t := ctx.t
+	mut node := start
+	mut negative := false
+	for {
+		parent := t.nodes[node].parent
+		if un_is_logic_not(t, parent) && (t.node(parent, .argument) or { -1 }) == node {
+			negative = !negative
+			node = parent
+		} else if c.un_is_boolean_call_argument(ctx, node) {
+			node = parent
+		} else {
+			break
+		}
+	}
+	return node, negative
+}
+
+// un_logical_operands ports getLogicalExpressionOperands: the operands of a chain of the operator,
+// from left to right.
+fn un_logical_operands(t &estree.EsTree, node int, operator string) []int {
+	if node < 0 || t.typ(node) != .logical_expression
+		|| (t.string_of(node, .operator) or { '' }) != operator {
+		return [node]
+	}
+	mut out := un_logical_operands(t, t.node(node, .left) or { -1 }, operator)
+	out << un_logical_operands(t, t.node(node, .right) or { -1 }, operator)
+	return out
+}
+
+// un_logical_root ports getLogicalExpressionRoot: the outermost logical expression of the
+// operator that has the node as an operand, or the node.
+fn un_logical_root(t &estree.EsTree, from int, operator string) int {
+	mut node := from
+	for {
+		parent := t.nodes[node].parent
+		if parent < 0 || t.typ(parent) != .logical_expression
+			|| (t.string_of(parent, .operator) or { '' }) != operator {
+			break
+		}
+		node = parent
+	}
+	return node
+}
+
+// ---- length-or-size.js
+
+// un_is_length_or_size_member ports isLengthOrSizeMemberExpression: `x.length` or `x.size`.
+fn un_is_length_or_size_member(t &estree.EsTree, node int) bool {
+	return un_is_member(t, node, properties: ['length', 'size'], optional: false)
+}
+
+// un_string_if_constant_in ports getStringIfConstant(node, scope) of eslint-utils.
+fn (mut c Checker) un_string_if_constant_in(t &estree.EsTree, node int) ?string {
+	if t.typ(node) == .literal {
+		regex := t.get(node, .regex)
+		if regex is estree.RegexInfo {
+			return '/${regex.pattern}/${regex.flags}'
+		}
+		if bigint := t.string_of(node, .bigint) {
+			return bigint
+		}
+	}
+	result := c.un_static_value(t, node)
+	if !result.found {
+		return none
+	}
+	return js_any_string_value(result.value)
+}
+
+// un_property_name_in ports getPropertyName(node, scope) of eslint-utils: the name of a member
+// expression, property, method or field; none when it is not static.
+fn (mut c Checker) un_property_name_in(t &estree.EsTree, node int) ?string {
+	computed := t.flag(node, .computed) or { false }
+	match t.typ(node) {
+		.member_expression {
+			property := t.node(node, .property)?
+			if computed {
+				return c.un_string_if_constant_in(t, property)
+			}
+			if t.typ(property) == .private_identifier {
+				return none
+			}
+			return t.string_of(property, .name)
+		}
+		.property, .method_definition, .property_definition {
+			key := t.node(node, .key)?
+			if computed {
+				return c.un_string_if_constant_in(t, key)
+			}
+			if t.typ(key) == .literal {
+				value := t.get(key, .value)
+				return match value {
+					string { value }
+					f64 { js_number_to_string(value) }
+					bool { value.str() }
+					estree.Null { 'null' }
+					else { c.un_string_if_constant_in(t, key) }
+				}
+			}
+			if t.typ(key) == .private_identifier {
+				return none
+			}
+			return t.string_of(key, .name)
+		}
+		else {
+			return none
+		}
+	}
+}
+
+// un_is_accessor_descriptor ports isAccessorDescriptor: `{get() {}}` or `{set() {}}`.
+fn (mut c Checker) un_is_accessor_descriptor(t &estree.EsTree, node int) bool {
+	if node < 0 || t.typ(node) != .object_expression {
+		return false
+	}
+	properties := t.list(node, .properties) or { []int{} }
+	return properties.all(t.typ(it) != .spread_element) && properties.any(t.typ(it) == .property
+		&& (c.un_property_name_in(t, it) or { '' }) in ['get', 'set'])
+}
+
+// un_object_method_call ports getObjectMethodCallExpression: `Object.<method>(reference, …)` of
+// a global.
+fn (mut c Checker) un_object_method_call(ctx &UnCtx, identifier int) ?int {
+	t := ctx.t
+	call := t.nodes[identifier].parent
+	if call < 0 || t.typ(call) != .call_expression || (t.flag(call, .optional) or { false }) {
+		return none
+	}
+	callee := t.node(call, .callee)?
+	if t.typ(callee) != .member_expression || (t.flag(callee, .optional) or { false }) {
+		return none
+	}
+	object := t.node(callee, .object)?
+	args := t.list(call, .arguments) or { return none }
+	if t.typ(object) != .identifier || !c.un_is_global_identifier(ctx, object) || args.len == 0
+		|| args[0] != identifier {
+		return none
+	}
+	return call
+}
+
+// un_last_object_property ports getLastObjectProperty: the last property with the name, none
+// when a spread or an unknown computed key comes after it.
+fn (mut c Checker) un_last_object_property(t &estree.EsTree, object int, name string) ?int {
+	properties := t.list(object, .properties) or { return none }
+	for i := properties.len - 1; i >= 0; i-- {
+		property := properties[i]
+		if t.typ(property) == .spread_element {
+			return none
+		}
+		property_name := c.un_property_name_in(t, property) or { return none }
+		if property_name == name {
+			return property
+		}
+	}
+	return none
+}
+
+fn un_argument_at(t &estree.EsTree, call int, i int) int {
+	args := t.list(call, .arguments) or { return -1 }
+	return if i < args.len { args[i] } else { -1 }
+}
+
+// un_has_unknown_object_property ports hasUnknownObjectProperty.
+fn (mut c Checker) un_has_unknown_object_property(t &estree.EsTree, object int) bool {
+	if object < 0 || t.typ(object) != .object_expression {
+		return true
+	}
+	for property in t.list(object, .properties) or { []int{} } {
+		if t.typ(property) == .spread_element {
+			return true
+		}
+		if t.typ(property) == .property && (t.flag(property, .computed) or { false })
+			&& c.un_property_name_in(t, property) == none {
+			return true
+		}
+	}
+	return false
+}
+
+// un_is_unconditional_switch_case ports isUnconditionallyExecutedSwitchCase.
+fn un_is_unconditional_switch_case(t &estree.EsTree, node int) bool {
+	parent := t.nodes[node].parent
+	if parent < 0 || t.typ(parent) != .switch_case || t.node(parent, .test) != none {
+		return false
+	}
+	return (t.list(t.nodes[parent].parent, .cases) or { []int{} }).len == 1
+}
+
+// un_object_property_definition ports getObjectPropertyDefinition: the descriptor of
+// `Object.defineProperty(x, name, …)` or `Object.defineProperties(x, {name: …})`.
+fn (mut c Checker) un_object_property_definition(mut ctx UnCtx, identifier int, name string) ?int {
+	t := ctx.t
+	call := c.un_object_method_call(ctx, identifier)?
+	method := c.un_property_name_in(t, t.node(call, .callee)?) or { '' }
+	if method == 'defineProperty' {
+		key := un_argument_at(t, call, 1)
+		if key < 0 {
+			return none
+		}
+		value := c.un_static_value_for_control_flow(mut ctx, key)?
+		if value.value.kind == .string_ && (js_any_string_value(value.value) or { '' }) == name {
+			descriptor := un_argument_at(t, call, 2)
+			return if descriptor >= 0 { descriptor } else { none }
+		}
+		return none
+	}
+	definitions := un_argument_at(t, call, 1)
+	if method != 'defineProperties' || definitions < 0 || t.typ(definitions) != .object_expression {
+		return none
+	}
+	property := c.un_last_object_property(t, definitions, name)?
+	return t.node(property, .value)
+}
+
+// un_object_assign_property_value ports getObjectAssignPropertyValue: the value `Object.assign(x,
+// {name: …})` gives.
+fn (mut c Checker) un_object_assign_property_value(ctx &UnCtx, identifier int, name string) ?int {
+	t := ctx.t
+	call := c.un_object_method_call(ctx, identifier)?
+	args := t.list(call, .arguments) or { return none }
+	if (c.un_property_name_in(t, t.node(call, .callee)?) or { '' }) != 'assign' || args.len != 2
+		|| t.typ(args[1]) != .object_expression
+		|| (t.list(args[1], .properties) or { []int{} }).any(t.typ(it) == .spread_element) {
+		return none
+	}
+	property := c.un_last_object_property(t, args[1], name)?
+	return t.node(property, .value)
+}
+
+// un_assignment_value ports getAssignmentValue: the value a destructuring or assignment writes to
+// the node.
+fn (mut c Checker) un_assignment_value(t &estree.EsTree, node int) ?int {
+	mut path := []string{} // `[<index>` or `.<name>`
+	mut current := node
+	for {
+		parent := t.nodes[current].parent
+		if parent < 0 {
+			return none
+		}
+		match t.typ(parent) {
+			.assignment_expression {
+				if (t.node(parent, .left) or { -1 }) != current
+					|| (t.string_of(parent, .operator) or { '' }) != '=' {
+					return none
+				}
+				mut value := t.node(parent, .right) or { return none }
+				for i := path.len - 1; i >= 0; i-- {
+					if value < 0 {
+						return none
+					}
+					part := path[i]
+					if part.starts_with('[') {
+						elements := t.list(value, .elements) or { []int{} }
+						index := part[1..].int()
+						value = if t.typ(value) == .array_expression && index >= 0 && index < elements.len {
+							elements[index]
+						} else {
+							-1
+						}
+					} else {
+						value = if t.typ(value) == .object_expression {
+							property := c.un_last_object_property(t, value, part[1..]) or { -1 }
+							if property >= 0 { t.node(property, .value) or { -1 } } else { -1 }
+						} else {
+							-1
+						}
+					}
+				}
+				return if value >= 0 { value } else { none }
+			}
+			.array_pattern {
+				path << '[${(t.list(parent, .elements) or { []int{} }).index(current)}'
+			}
+			.rest_element, .assignment_pattern {
+				return none
+			}
+			else {
+				if t.typ(parent) == .property && t.typ(t.nodes[parent].parent) == .object_pattern {
+					path << '.${c.un_property_name_in(t, parent) or { '' }}'
+				}
+			}
+		}
+		current = parent
+	}
+	return none
+}
+
+// un_is_known_non_negative_integer ports isKnownNonNegativeInteger.
+fn (mut c Checker) un_is_known_non_negative_integer(mut ctx UnCtx, node int) bool {
+	if node < 0 {
+		return false
+	}
+	value := c.un_static_value_for_control_flow(mut ctx, node) or { return false }
+	return un_is_safe_non_negative_integer(value.value)
+}
+
+fn un_is_safe_non_negative_integer(value JsAny) bool {
+	return value.kind == .number_ && value.number >= 0 && value.number == math.trunc(value.number)
+		&& value.number <= 9007199254740991.0
+}
+
+// un_referenced_member ports getReferencedMemberExpression: the outermost member expression whose
+// object chain starts with the identifier.
+fn un_referenced_member(t &estree.EsTree, identifier int) ?int {
+	mut node := identifier
+	for {
+		parent := t.nodes[node].parent
+		if parent < 0 || t.typ(parent) != .member_expression
+			|| (t.node(parent, .object) or { -1 }) != node {
+			break
+		}
+		node = parent
+	}
+	return if t.typ(node) == .member_expression { node } else { none }
+}
+
+// un_is_known_numeric_property_mutation ports isKnownNumericPropertyMutation.
+fn (mut c Checker) un_is_known_numeric_property_mutation(mut ctx UnCtx, identifier int, name string) bool {
+	t := ctx.t
+	if descriptor := c.un_object_property_definition(mut ctx, identifier, name) {
+		if t.typ(descriptor) == .object_expression {
+			property := c.un_last_object_property(t, descriptor, 'value') or { -1 }
+			value := if property >= 0 { t.node(property, .value) or { -1 } } else { -1 }
+			return c.un_is_known_non_negative_integer(mut ctx, value)
+		}
+	}
+	node := un_referenced_member(t, identifier) or {
+		value := c.un_object_assign_property_value(ctx, identifier, name) or { -1 }
+		return c.un_is_known_non_negative_integer(mut ctx, value)
+	}
+	parent := t.nodes[node].parent
+	if t.typ(parent) == .for_of_statement {
+		right := t.node(parent, .right) or { return false }
+		value := c.un_static_value_for_control_flow(mut ctx, right) or { return false }
+		return value.value.kind == .array_ && value.value.elements.len > 0
+			&& value.value.elements.all(un_is_safe_non_negative_integer(it))
+	}
+	value := c.un_assignment_value(t, node) or { -1 }
+	return c.un_is_known_non_negative_integer(mut ctx, value)
+}
+
+// un_enclosing_execution_context ports getEnclosingExecutionContext: the function, method, field
+// or static block around the node, -1 at the top.
+fn un_enclosing_execution_context(t &estree.EsTree, node int) int {
+	mut current := t.nodes[node].parent
+	for current >= 0 {
+		if t.typ(current) in [.function_declaration, .function_expression, .arrow_function_expression,
+			.accessor_property, .method_definition, .property_definition, .static_block,
+			.ts_abstract_accessor_property, .ts_abstract_method_definition,
+			.ts_abstract_property_definition] {
+			return current
+		}
+		current = t.nodes[current].parent
+	}
+	return -1
+}
+
+// un_is_conditionally_executed ports isConditionallyExecuted.
+fn (mut c Checker) un_is_conditionally_executed(mut ctx UnCtx, node int) bool {
+	t := ctx.t
+	mut current := node
+	for t.nodes[current].parent >= 0 {
+		parent := t.nodes[current].parent
+		typ := t.typ(parent)
+		is_key := fn [t, parent, current] (key estree.Key) bool {
+			return (t.node(parent, key) or { -1 }) == current
+		}
+		if typ in [.if_statement, .conditional_expression] && (is_key(.consequent) || is_key(.alternate)) {
+			if value := c.un_static_value_for_control_flow(mut ctx, t.node(parent, .test) or { -1 }) {
+				if stv_to_boolean(value.value) == is_key(.consequent) {
+					current = parent
+					continue
+				}
+			}
+			return true
+		}
+		if (typ == .logical_expression && is_key(.right))
+			|| (typ == .for_statement && (is_key(.body) || is_key(.update)))
+			|| (typ in [.while_statement, .for_in_statement, .for_of_statement] && is_key(.body))
+			|| (typ == .switch_case && current in (t.list(parent, .consequent) or { []int{} })
+			&& !un_is_unconditional_switch_case(t, current))
+			|| (typ == .catch_clause && is_key(.body)) || (typ == .try_statement && is_key(.block))
+			|| (typ == .assignment_pattern && is_key(.right))
+			|| (typ == .member_expression && (t.flag(parent, .computed) or { false })
+			&& is_key(.property) && un_has_optional_chain_element(t, parent))
+			|| (typ == .call_expression && ((t.flag(parent, .optional) or { false })
+			|| un_has_optional_chain_element(t, t.node(parent, .callee) or { -1 }))
+			&& current in (t.list(parent, .arguments) or { []int{} })) {
+			return true
+		}
+		current = parent
+	}
+	return false
+}
+
+// un_is_property_mutation ports isPropertyMutation.
+fn (mut c Checker) un_is_property_mutation(mut ctx UnCtx, identifier int, name string) bool {
+	t := ctx.t
+	if descriptor := c.un_object_property_definition(mut ctx, identifier, name) {
+		return !c.un_is_accessor_descriptor(t, descriptor)
+	}
+	if call := c.un_object_method_call(ctx, identifier) {
+		method := c.un_property_name_in(t, t.node(call, .callee) or { -1 }) or { '' }
+		args := t.list(call, .arguments) or { []int{} }
+		if method == 'assign' {
+			if args.len < 2 {
+				return false
+			}
+			if _ := c.un_object_assign_property_value(ctx, identifier, name) {
+				return true
+			}
+			return args.len != 2 || c.un_has_unknown_object_property(t, args[1])
+		}
+		if method == 'defineProperty' {
+			key := un_argument_at(t, call, 1)
+			if key < 0 {
+				return true
+			}
+			value := c.un_static_value_for_control_flow(mut ctx, key) or { return true }
+			return value.value.kind == .string_ && (js_any_string_value(value.value) or { '' }) == name
+		}
+		if method == 'defineProperties' {
+			return c.un_has_unknown_object_property(t, un_argument_at(t, call, 1))
+		}
+	}
+	node := un_referenced_member(t, identifier) or { return false }
+	if (c.un_property_name_in(t, node) or { return false }) != name {
+		return false
+	}
+	return un_is_left_hand_side(t, node)
+}
+
+// un_is_for_in_property_mutation ports isForInPropertyMutation: `for (x.length in …)`.
+fn (mut c Checker) un_is_for_in_property_mutation(t &estree.EsTree, identifier int, name string) bool {
+	node := un_referenced_member(t, identifier) or { return false }
+	parent := t.nodes[node].parent
+	return (c.un_property_name_in(t, node) or { return false }) == name
+		&& t.typ(parent) == .for_in_statement && (t.node(parent, .left) or { -1 }) == node
+}
+
+// un_is_property_read ports isPropertyRead.
+fn (mut c Checker) un_is_property_read(ctx &UnCtx, identifier int, name string) bool {
+	t := ctx.t
+	member := un_referenced_member(t, identifier) or { -1 }
+	member_name := if member >= 0 { c.un_property_name_in(t, member) or { '\x00' } } else { '\x00' }
+	if member < 0 || member_name != name {
+		call := c.un_object_method_call(ctx, identifier) or { return false }
+		method := c.un_property_name_in(t, t.node(call, .callee) or { -1 }) or { '' }
+		return method in ['assign', 'defineProperty', 'defineProperties']
+	}
+	parent := t.nodes[member].parent
+	return !((t.typ(parent) in [.call_expression, .new_expression]
+		&& (t.node(parent, .callee) or { -1 }) == member)
+		|| (t.typ(parent) == .tagged_template_expression && (t.node(parent, .tag) or { -1 }) == member))
+}
+
+// un_has_same_object_shape_property_check ports hasSameObjectShapePropertyCheck: `x.width &&
+// x.length` looks at a shape, not a collection.
+fn (mut c Checker) un_has_same_object_shape_property_check(t &estree.EsTree, node int, length int) bool {
+	root := un_logical_root(t, node, '&&')
+	if t.typ(root) != .logical_expression || (t.string_of(root, .operator) or { '' }) != '&&' {
+		return false
+	}
+	object := t.node(length, .object) or { return false }
+	for operand in un_logical_operands(t, root, '&&') {
+		if operand == node || !un_is_member(t, operand, computed: false, optional: false) {
+			continue
+		}
+		property := t.node(operand, .property) or { continue }
+		if t.typ(property) == .identifier
+			&& (t.string_of(property, .name) or { '' }) in ['depth', 'height', 'width']
+			&& c.un_is_same_reference(t, t.node(operand, .object) or { continue }, object) {
+			return true
+		}
+	}
+	return false
+}
+
+// un_is_known_non_collection_length_or_size ports isKnownNonCollectionLengthOrSize: the `length`
+// or `size` is known not to be a count (a static value that is not a non-negative integer, an
+// accessor, a property of an object literal…).
+fn (mut c Checker) un_is_known_non_collection_length_or_size(mut ctx UnCtx, member int) bool {
+	t := ctx.t
+	if value := c.un_static_value_if_no_side_effects(mut ctx, member) {
+		return !un_is_safe_integer(value.value) || value.value.number < 0
+	}
+	object := t.node(member, .object) or { return false }
+	if t.typ(object) != .identifier {
+		return false
+	}
+	v := c.un_find_variable(ctx, object)
+	def := c.un_only_definition(ctx, v) or { return false }
+	init := c.un_es_of(ctx, def.init)
+	if def.kind != .variable || init < 0 || t.typ(init) != .object_expression {
+		return false
+	}
+	name := c.un_property_name_in(t, member) or { '\x00none' }
+	// A getter or setter of the object literal itself.
+	for property in t.list(init, .properties) or { []int{} } {
+		if t.typ(property) == .property && (t.string_of(property, .kind) or { '' }) in ['get', 'set']
+			&& (c.un_property_name_in(t, property) or { '\x00other' }) == name {
+			return true
+		}
+	}
+	tree := c.scope_tree(ctx.root)
+	context := un_enclosing_execution_context(t, member)
+	mut unknown_effect := false
+	mut known_numeric_mutation := false
+	mut accessor_definition := false
+	for r in tree.variables[v].references {
+		reference := tree.references[r]
+		if reference.init {
+			continue
+		}
+		identifier := c.es_index_of(t, reference.identifier) or { continue }
+		in_unknown_context := un_enclosing_execution_context(t, identifier) != context
+			|| c.un_is_conditionally_executed(mut ctx, identifier)
+		if !in_unknown_context && t.nodes[identifier].start > t.nodes[member].start {
+			continue
+		}
+		if c.un_is_for_in_property_mutation(t, identifier, name) {
+			unknown_effect = true
+			continue
+		}
+		if c.un_is_property_mutation(mut ctx, identifier, name) {
+			if !in_unknown_context && c.un_is_known_numeric_property_mutation(mut ctx, identifier, name) {
+				known_numeric_mutation = true
+			} else {
+				unknown_effect = true
+			}
+			continue
+		}
+		// isAccessorDefinition
+		if descriptor := c.un_object_property_definition(mut ctx, identifier, name) {
+			if c.un_is_accessor_descriptor(t, descriptor) {
+				if in_unknown_context {
+					unknown_effect = true
+				} else {
+					accessor_definition = true
+				}
+				continue
+			}
+		}
+		if !c.un_is_property_read(ctx, identifier, name) {
+			if in_unknown_context {
+				unknown_effect = true
+				continue
+			}
+			return false
+		}
+	}
+	if unknown_effect {
+		return true
+	}
+	if known_numeric_mutation {
+		return false
+	}
+	if accessor_definition {
+		return true
+	}
+	static_object := c.un_static_value_if_no_side_effects(mut ctx, init) or { return false }
+	if static_object.value.kind != .object_ {
+		return false
+	}
+	index := static_object.value.keys.index(name)
+	if index < 0 {
+		// `undefined` is not a safe integer.
+		return true
+	}
+	property_value := static_object.value.values[index]
+	return !un_is_safe_integer(property_value) || property_value.number < 0
+}
+
+fn un_is_safe_integer(value JsAny) bool {
+	return value.kind == .number_ && value.number == math.trunc(value.number)
+		&& math.abs(value.number) <= 9007199254740991.0
 }

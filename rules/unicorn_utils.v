@@ -1140,15 +1140,18 @@ fn (mut c Checker) un_reference_node(t &estree.EsTree, ts C.TSNode) ?int {
 
 // un_is_left_hand_side ports isLeftHandSide: the node is written (assigned, updated, destructured
 // into or deleted).
-fn un_is_left_hand_side(t &estree.EsTree, node int) bool {
+fn un_is_left_hand_side(t &estree.EsTree, from int) bool {
+	// eslint-plugin-unicorn 79.0.0: through optional chains and TypeScript wrappers.
+	node := un_outermost_chain_and_ts_expression(t, from)
 	parent := t.nodes[node].parent
 	if parent < 0 {
 		return false
 	}
 	return match t.typ(parent) {
 		.assignment_expression, .assignment_pattern { t.node(parent, .left) or { -1 } == node }
-		.update_expression { t.node(parent, .argument) or { -1 } == node }
+		.update_expression, .rest_element { t.node(parent, .argument) or { -1 } == node }
 		.array_pattern { node in (t.list(parent, .elements) or { []int{} }) }
+		.for_of_statement, .for_in_statement { t.node(parent, .left) or { -1 } == node }
 		.property {
 			t.node(parent, .value) or { -1 } == node && t.nodes[parent].parent >= 0
 				&& t.typ(t.nodes[parent].parent) == .object_pattern
