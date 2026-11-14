@@ -993,3 +993,79 @@ fn unb_is_undefined_value(t &estree.EsTree, node int) bool {
 fn (c &Checker) unb_is_null_literal(t &estree.EsTree, node int) bool {
 	return node >= 0 && t.typ(node) == .literal && c.un_text(t, node) == 'null'
 }
+
+// unb_starts_with_declaration_like_token ports startsWithDeclarationLikeToken (utils/
+// should-add-parentheses-to-expression-statement-expression.js): the node starts with `{`,
+// `class`, `function`, `async function` or `let [`.
+fn (c &Checker) unb_starts_with_declaration_like_token(t &estree.EsTree, tokens &SourceTokens, node int) bool {
+	first := un_first_token(t, tokens, node, 0) or { return false }
+	value := c.token_text(first)
+	next := if after := tokens.after(first.end, false) { c.token_text(after) } else { '' }
+	return (first.kind == .punctuator && value == '{')
+		|| (first.kind == .keyword && value in ['class', 'function'])
+		|| (value == 'async' && next == 'function') || (value == 'let' && next == '[')
+}
+
+// unb_should_add_parens_to_expression_statement_expression ports
+// shouldAddParenthesesToExpressionStatementExpression of 79.0.0.
+fn (c &Checker) unb_should_add_parens_to_expression_statement_expression(t &estree.EsTree, tokens &SourceTokens, node int) bool {
+	return !c.un_is_parenthesized(t, tokens, node)
+		&& c.unb_starts_with_declaration_like_token(t, tokens, node)
+}
+
+// unb_should_add_parens_to_expression_start ports shouldAddParenthesesToExpressionStart: moving
+// `expression` to where `replacement` is would expose a block or declaration prefix (`let [` in a
+// `for` initializer too). A `-1` replacement is the expression itself.
+fn (c &Checker) unb_should_add_parens_to_expression_start(t &estree.EsTree, tokens &SourceTokens, expression int, replacement int) bool {
+	first := un_first_token(t, tokens, expression, 0) or { return false }
+	starts_with_regexp := first.kind == .regular_expression
+	if !starts_with_regexp && !c.unb_starts_with_declaration_like_token(t, tokens, expression) {
+		return false
+	}
+	value := c.token_text(first)
+	mut node := if replacement < 0 { expression } else { replacement }
+	for t.nodes[node].parent >= 0 {
+		if c.un_is_parenthesized(t, tokens, node) {
+			return false
+		}
+		parent := t.nodes[node].parent
+		if t.typ(parent) == .arrow_function_expression && t.node(parent, .body) or { -1 } == node {
+			return value == '{'
+		}
+		if t.typ(parent) == .export_default_declaration
+			&& t.node(parent, .declaration) or { -1 } == node {
+			return !starts_with_regexp && value != '{' && value != 'let'
+		}
+		if t.typ(parent) == .for_statement && t.node(parent, .init) or { -1 } == node {
+			return value == 'let'
+		}
+		if t.typ(node).type_name().ends_with('Statement') {
+			return !starts_with_regexp
+		}
+		if t.nodes[parent].start != t.nodes[node].start {
+			return false
+		}
+		node = parent
+	}
+	return false
+}
+
+// unb_unparenthesized_keyword_argument_parent ports getUnparenthesizedKeywordArgumentParent: the
+// `return`, `throw` or non-delegated `yield` whose unparenthesized argument starts with the node;
+// -1 for none.
+fn (c &Checker) unb_unparenthesized_keyword_argument_parent(t &estree.EsTree, tokens &SourceTokens, n int) int {
+	mut node := n
+	for !c.un_is_parenthesized(t, tokens, node) {
+		parent := t.nodes[node].parent
+		if parent >= 0 && t.node(parent, .argument) or { -1 } == node
+			&& (t.typ(parent) in [.return_statement, .throw_statement]
+			|| (t.typ(parent) == .yield_expression && !(t.flag(parent, .delegate) or { false }))) {
+			return parent
+		}
+		if parent < 0 || t.nodes[parent].start != t.nodes[node].start {
+			return -1
+		}
+		node = parent
+	}
+	return -1
+}

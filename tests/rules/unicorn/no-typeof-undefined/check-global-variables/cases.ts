@@ -1,8 +1,8 @@
 // unicorn/no-typeof-undefined: `typeof x === 'undefined'` becomes `x === undefined`. A global
 // variable (declared by the lib or not declared at all) is left alone, unless checkGlobalVariables
 // (check-global-variables/), and then it gets a suggestion instead of the fix.
-declare let a: unknown;
 declare function f(): unknown;
+let a: unknown = f();
 
 // A variable of the file: reported, with the fix.
 const x1 = typeof a === 'undefined';
@@ -31,8 +31,28 @@ const z1 = typeof window === 'undefined';
 const z2 = typeof notDeclared !== 'undefined';
 const z3 = typeof globalThis == 'undefined';
 
+// 79.0.0: a template without expressions is a string too.
+const x8 = typeof a === `undefined`;
+
 // Not reported.
 const w1 = typeof a === 'string';
 const w2 = 'undefined' === typeof a;
-const w3 = typeof a === `undefined`;
 const w4 = typeof a > 'undefined';
+
+// 79.0.0: an ambient variable is left alone; parentheses where the argument would start a
+// statement; a `yield` whose argument starts on the next line keeps `typeof`.
+declare const ambient: unknown;
+const v1 = typeof ambient === 'undefined';
+typeof {value: undefined}.value === 'undefined';
+typeof function () {} === 'undefined';
+f()
+typeof {value: undefined}.value === 'undefined';
+const v2 = () => typeof {value: undefined}.value === 'undefined';
+function* v3() {
+  yield typeof
+    a === 'undefined';
+}
+function v4() {
+  return typeof /* keep
+  */ a === 'undefined' && true;
+}
