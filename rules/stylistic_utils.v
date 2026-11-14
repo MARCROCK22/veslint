@@ -94,3 +94,22 @@ fn sty_option_bool(object map[string]json2.Any, key string) ?bool {
 	}
 	return none
 }
+
+// sty_node_by_range_index ports SourceCode#getNodeByRangeIndex(index): the deepest node whose range
+// contains the offset (the first one in traversal order), -1 if none.
+fn sty_node_by_range_index(t &estree.EsTree, index int) int {
+	if t.root < 0 || !(t.nodes[t.root].start <= index && index < t.nodes[t.root].end) {
+		return -1
+	}
+	mut result := t.root
+	outer: for {
+		for child in t.children(result) {
+			if t.nodes[child].start <= index && index < t.nodes[child].end {
+				result = child
+				continue outer
+			}
+		}
+		break
+	}
+	return result
+}

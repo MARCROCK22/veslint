@@ -1,0 +1,1 @@
+["always",{"overrides":{"ObjectExpression":"never","TSTypeLiteral":"never","ExportAllDeclaration":"never"},"arraysInObjects":false}]

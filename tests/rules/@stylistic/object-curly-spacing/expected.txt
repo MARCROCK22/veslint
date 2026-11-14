@@ -1,0 +1,737 @@
+tests/rules/@stylistic/object-curly-spacing/always-exceptions/cases.ts:1:14	@stylistic/object-curly-spacing	requireSpaceAfter	A space is required after '{'.
+tests/rules/@stylistic/object-curly-spacing/always-exceptions/cases.ts:1:27	@stylistic/object-curly-spacing	requireSpaceBefore	A space is required before '}'.
+tests/rules/@stylistic/object-curly-spacing/always-exceptions/cases.ts:3:8	@stylistic/object-curly-spacing	requireSpaceAfter	A space is required after '{'.
+tests/rules/@stylistic/object-curly-spacing/always-exceptions/cases.ts:8:13	@stylistic/object-curly-spacing	requireSpaceAfter	A space is required after '{'.
+tests/rules/@stylistic/object-curly-spacing/always-exceptions/cases.ts:8:19	@stylistic/object-curly-spacing	requireSpaceBefore	A space is required before '}'.
+tests/rules/@stylistic/object-curly-spacing/always-exceptions/cases.ts:9:38	@stylistic/object-curly-spacing	requireSpaceAfter	A space is required after '{'.
+tests/rules/@stylistic/object-curly-spacing/always-exceptions/cases.ts:9:51	@stylistic/object-curly-spacing	requireSpaceBefore	A space is required before '}'.
+tests/rules/@stylistic/object-curly-spacing/always-exceptions/cases.ts:11:8	@stylistic/object-curly-spacing	requireSpaceAfter	A space is required after '{'.
+tests/rules/@stylistic/object-curly-spacing/always-exceptions/cases.ts:11:11	@stylistic/object-curly-spacing	requireSpaceBefore	A space is required before '}'.
+tests/rules/@stylistic/object-curly-spacing/always-exceptions/cases.ts:11:38	@stylistic/object-curly-spacing	requireSpaceAfter	A space is required after '{'.
+tests/rules/@stylistic/object-curly-spacing/always-exceptions/cases.ts:11:51	@stylistic/object-curly-spacing	requireSpaceBefore	A space is required before '}'.
+tests/rules/@stylistic/object-curly-spacing/always-exceptions/cases.ts:14:35	@stylistic/object-curly-spacing	requireSpaceAfter	A space is required after '{'.
+tests/rules/@stylistic/object-curly-spacing/always-exceptions/cases.ts:14:48	@stylistic/object-curly-spacing	requireSpaceBefore	A space is required before '}'.
+tests/rules/@stylistic/object-curly-spacing/always-exceptions/cases.ts:16:8	@stylistic/object-curly-spacing	requireSpaceAfter	A space is required after '{'.
+tests/rules/@stylistic/object-curly-spacing/always-exceptions/cases.ts:16:11	@stylistic/object-curly-spacing	requireSpaceBefore	A space is required before '}'.
+tests/rules/@stylistic/object-curly-spacing/always-exceptions/cases.ts:16:38	@stylistic/object-curly-spacing	requireSpaceAfter	A space is required after '{'.
+tests/rules/@stylistic/object-curly-spacing/always-exceptions/cases.ts:16:51	@stylistic/object-curly-spacing	requireSpaceBefore	A space is required before '}'.
+tests/rules/@stylistic/object-curly-spacing/always-exceptions/cases.ts:17:8	@stylistic/object-curly-spacing	requireSpaceAfter	A space is required after '{'.
+tests/rules/@stylistic/object-curly-spacing/always-exceptions/cases.ts:18:21	@stylistic/object-curly-spacing	requireSpaceBefore	A space is required before '}'.
+tests/rules/@stylistic/object-curly-spacing/always-exceptions/cases.ts:25:12	@stylistic/object-curly-spacing	requireSpaceAfter	A space is required after '{'.
+tests/rules/@stylistic/object-curly-spacing/always-exceptions/cases.ts:25:17	@stylistic/object-curly-spacing	requireSpaceBefore	A space is required before '}'.
+tests/rules/@stylistic/object-curly-spacing/always-exceptions/cases.ts:27:12	@stylistic/object-curly-spacing	requireSpaceAfter	A space is required after '{'.
+tests/rules/@stylistic/object-curly-spacing/always-exceptions/cases.ts:28:18	@stylistic/object-curly-spacing	requireSpaceBefore	A space is required before '}'.
+tests/rules/@stylistic/object-curly-spacing/always-exceptions/cases.ts:34:13	@stylistic/object-curly-spacing	requireSpaceAfter	A space is required after '{'.
+tests/rules/@stylistic/object-curly-spacing/always-exceptions/cases.ts:34:34	@stylistic/object-curly-spacing	requireSpaceBefore	A space is required before '}'.
+tests/rules/@stylistic/object-curly-spacing/always-exceptions/cases.ts:38:7	@stylistic/object-curly-spacing	requireSpaceBefore	A space is required before '}'.
+tests/rules/@stylistic/object-curly-spacing/always-exceptions/cases.ts:39:13	@stylistic/object-curly-spacing	requireSpaceAfter	A space is required after '{'.
+tests/rules/@stylistic/object-curly-spacing/always-exceptions/cases.ts:39:17	@stylistic/object-curly-spacing	requireSpaceAfter	A space is required after '{'.
+tests/rules/@stylistic/object-curly-spacing/always-exceptions/cases.ts:39:22	@stylistic/object-curly-spacing	requireSpaceBefore	A space is required before '}'.
+tests/rules/@stylistic/object-curly-spacing/always-exceptions/cases.ts:40:26	@stylistic/object-curly-spacing	unexpectedSpaceBefore	There should be no space before '}'.
+tests/rules/@stylistic/object-curly-spacing/always-exceptions/cases.ts:41:13	@stylistic/object-curly-spacing	requireSpaceAfter	A space is required after '{'.
+tests/rules/@stylistic/object-curly-spacing/always-exceptions/cases.ts:42:26	@stylistic/object-curly-spacing	unexpectedSpaceBefore	There should be no space before '}'.
+tests/rules/@stylistic/object-curly-spacing/always-exceptions/cases.ts:43:13	@stylistic/object-curly-spacing	requireSpaceAfter	A space is required after '{'.
+tests/rules/@stylistic/object-curly-spacing/always-exceptions/cases.ts:43:22	@stylistic/object-curly-spacing	requireSpaceBefore	A space is required before '}'.
+tests/rules/@stylistic/object-curly-spacing/always-exceptions/cases.ts:44:13	@stylistic/object-curly-spacing	requireSpaceAfter	A space is required after '{'.
+tests/rules/@stylistic/object-curly-spacing/always-exceptions/cases.ts:45:7	@stylistic/object-curly-spacing	requireSpaceAfter	A space is required after '{'.
+tests/rules/@stylistic/object-curly-spacing/always-exceptions/cases.ts:45:20	@stylistic/object-curly-spacing	requireSpaceBefore	A space is required before '}'.
+tests/rules/@stylistic/object-curly-spacing/always-exceptions/cases.ts:46:18	@stylistic/object-curly-spacing	requireSpaceAfter	A space is required after '{'.
+tests/rules/@stylistic/object-curly-spacing/always-exceptions/cases.ts:46:28	@stylistic/object-curly-spacing	requireSpaceBefore	A space is required before '}'.
+tests/rules/@stylistic/object-curly-spacing/always-exceptions/cases.ts:47:7	@stylistic/object-curly-spacing	requireSpaceAfter	A space is required after '{'.
+tests/rules/@stylistic/object-curly-spacing/always-exceptions/cases.ts:47:11	@stylistic/object-curly-spacing	requireSpaceAfter	A space is required after '{'.
+tests/rules/@stylistic/object-curly-spacing/always-exceptions/cases.ts:47:17	@stylistic/object-curly-spacing	requireSpaceBefore	A space is required before '}'.
+tests/rules/@stylistic/object-curly-spacing/always-exceptions/cases.ts:47:35	@stylistic/object-curly-spacing	unexpectedSpaceBefore	There should be no space before '}'.
+tests/rules/@stylistic/object-curly-spacing/always-exceptions/cases.ts:48:13	@stylistic/object-curly-spacing	requireSpaceAfter	A space is required after '{'.
+tests/rules/@stylistic/object-curly-spacing/always-exceptions/cases.ts:48:18	@stylistic/object-curly-spacing	requireSpaceBefore	A space is required before '}'.
+tests/rules/@stylistic/object-curly-spacing/always-exceptions/cases.ts:48:21	@stylistic/object-curly-spacing	requireSpaceAfter	A space is required after '{'.
+tests/rules/@stylistic/object-curly-spacing/always-exceptions/cases.ts:48:42	@stylistic/object-curly-spacing	requireSpaceBefore	A space is required before '}'.
+tests/rules/@stylistic/object-curly-spacing/always-exceptions/cases.ts:56:11	@stylistic/object-curly-spacing	requireSpaceAfter	A space is required after '{'.
+tests/rules/@stylistic/object-curly-spacing/always-exceptions/cases.ts:56:21	@stylistic/object-curly-spacing	requireSpaceBefore	A space is required before '}'.
+tests/rules/@stylistic/object-curly-spacing/always-exceptions/cases.ts:60:33	@stylistic/object-curly-spacing	requireSpaceBefore	A space is required before '}'.
+tests/rules/@stylistic/object-curly-spacing/always-exceptions/cases.ts:61:12	@stylistic/object-curly-spacing	unexpectedSpaceAfter	There should be no space after '{'.
+tests/rules/@stylistic/object-curly-spacing/always-exceptions/cases.ts:62:42	@stylistic/object-curly-spacing	requireSpaceBefore	A space is required before '}'.
+tests/rules/@stylistic/object-curly-spacing/always-exceptions/cases.ts:63:31	@stylistic/object-curly-spacing	requireSpaceBefore	A space is required before '}'.
+tests/rules/@stylistic/object-curly-spacing/always-exceptions/cases.ts:64:12	@stylistic/object-curly-spacing	unexpectedSpaceAfter	There should be no space after '{'.
+tests/rules/@stylistic/object-curly-spacing/always-exceptions/cases.ts:65:12	@stylistic/object-curly-spacing	requireSpaceAfter	A space is required after '{'.
+tests/rules/@stylistic/object-curly-spacing/always-exceptions/cases.ts:65:16	@stylistic/object-curly-spacing	requireSpaceAfter	A space is required after '{'.
+tests/rules/@stylistic/object-curly-spacing/always-exceptions/cases.ts:65:26	@stylistic/object-curly-spacing	requireSpaceBefore	A space is required before '}'.
+tests/rules/@stylistic/object-curly-spacing/always-exceptions/cases.ts:66:12	@stylistic/object-curly-spacing	requireSpaceAfter	A space is required after '{'.
+tests/rules/@stylistic/object-curly-spacing/always-exceptions/cases.ts:67:12	@stylistic/object-curly-spacing	requireSpaceAfter	A space is required after '{'.
+tests/rules/@stylistic/object-curly-spacing/always-exceptions/cases.ts:67:30	@stylistic/object-curly-spacing	requireSpaceBefore	A space is required before '}'.
+tests/rules/@stylistic/object-curly-spacing/always-exceptions/cases.ts:68:12	@stylistic/object-curly-spacing	requireSpaceAfter	A space is required after '{'.
+tests/rules/@stylistic/object-curly-spacing/always-exceptions/cases.ts:68:24	@stylistic/object-curly-spacing	requireSpaceBefore	A space is required before '}'.
+tests/rules/@stylistic/object-curly-spacing/always-exceptions/cases.ts:70:14	@stylistic/object-curly-spacing	requireSpaceAfter	A space is required after '{'.
+tests/rules/@stylistic/object-curly-spacing/always-exceptions/cases.ts:70:24	@stylistic/object-curly-spacing	requireSpaceBefore	A space is required before '}'.
+tests/rules/@stylistic/object-curly-spacing/always-exceptions/cases.ts:74:36	@stylistic/object-curly-spacing	requireSpaceBefore	A space is required before '}'.
+tests/rules/@stylistic/object-curly-spacing/always-exceptions/cases.ts:75:14	@stylistic/object-curly-spacing	requireSpaceAfter	A space is required after '{'.
+tests/rules/@stylistic/object-curly-spacing/always-exceptions/cases.ts:75:18	@stylistic/object-curly-spacing	requireSpaceAfter	A space is required after '{'.
+tests/rules/@stylistic/object-curly-spacing/always-exceptions/cases.ts:75:28	@stylistic/object-curly-spacing	requireSpaceBefore	A space is required before '}'.
+tests/rules/@stylistic/object-curly-spacing/always-exceptions/cases.ts:76:9	@stylistic/object-curly-spacing	requireSpaceAfter	A space is required after '{'.
+tests/rules/@stylistic/object-curly-spacing/always-exceptions/cases.ts:76:14	@stylistic/object-curly-spacing	requireSpaceBefore	A space is required before '}'.
+tests/rules/@stylistic/object-curly-spacing/always-exceptions/cases.ts:81:16	@stylistic/object-curly-spacing	requireSpaceAfter	A space is required after '{'.
+tests/rules/@stylistic/object-curly-spacing/always-exceptions/cases.ts:81:20	@stylistic/object-curly-spacing	requireSpaceAfter	A space is required after '{'.
+tests/rules/@stylistic/object-curly-spacing/always-exceptions/cases.ts:81:24	@stylistic/object-curly-spacing	requireSpaceAfter	A space is required after '{'.
+tests/rules/@stylistic/object-curly-spacing/always-exceptions/cases.ts:81:29	@stylistic/object-curly-spacing	requireSpaceBefore	A space is required before '}'.
+tests/rules/@stylistic/object-curly-spacing/always-no-exceptions/cases.ts:1:14	@stylistic/object-curly-spacing	requireSpaceAfter	A space is required after '{'.
+tests/rules/@stylistic/object-curly-spacing/always-no-exceptions/cases.ts:1:27	@stylistic/object-curly-spacing	requireSpaceBefore	A space is required before '}'.
+tests/rules/@stylistic/object-curly-spacing/always-no-exceptions/cases.ts:3:8	@stylistic/object-curly-spacing	requireSpaceAfter	A space is required after '{'.
+tests/rules/@stylistic/object-curly-spacing/always-no-exceptions/cases.ts:8:13	@stylistic/object-curly-spacing	requireSpaceAfter	A space is required after '{'.
+tests/rules/@stylistic/object-curly-spacing/always-no-exceptions/cases.ts:8:19	@stylistic/object-curly-spacing	requireSpaceBefore	A space is required before '}'.
+tests/rules/@stylistic/object-curly-spacing/always-no-exceptions/cases.ts:9:38	@stylistic/object-curly-spacing	requireSpaceAfter	A space is required after '{'.
+tests/rules/@stylistic/object-curly-spacing/always-no-exceptions/cases.ts:9:51	@stylistic/object-curly-spacing	requireSpaceBefore	A space is required before '}'.
+tests/rules/@stylistic/object-curly-spacing/always-no-exceptions/cases.ts:11:8	@stylistic/object-curly-spacing	requireSpaceAfter	A space is required after '{'.
+tests/rules/@stylistic/object-curly-spacing/always-no-exceptions/cases.ts:11:11	@stylistic/object-curly-spacing	requireSpaceBefore	A space is required before '}'.
+tests/rules/@stylistic/object-curly-spacing/always-no-exceptions/cases.ts:11:38	@stylistic/object-curly-spacing	requireSpaceAfter	A space is required after '{'.
+tests/rules/@stylistic/object-curly-spacing/always-no-exceptions/cases.ts:11:51	@stylistic/object-curly-spacing	requireSpaceBefore	A space is required before '}'.
+tests/rules/@stylistic/object-curly-spacing/always-no-exceptions/cases.ts:14:35	@stylistic/object-curly-spacing	requireSpaceAfter	A space is required after '{'.
+tests/rules/@stylistic/object-curly-spacing/always-no-exceptions/cases.ts:14:48	@stylistic/object-curly-spacing	requireSpaceBefore	A space is required before '}'.
+tests/rules/@stylistic/object-curly-spacing/always-no-exceptions/cases.ts:16:8	@stylistic/object-curly-spacing	requireSpaceAfter	A space is required after '{'.
+tests/rules/@stylistic/object-curly-spacing/always-no-exceptions/cases.ts:16:11	@stylistic/object-curly-spacing	requireSpaceBefore	A space is required before '}'.
+tests/rules/@stylistic/object-curly-spacing/always-no-exceptions/cases.ts:16:38	@stylistic/object-curly-spacing	requireSpaceAfter	A space is required after '{'.
+tests/rules/@stylistic/object-curly-spacing/always-no-exceptions/cases.ts:16:51	@stylistic/object-curly-spacing	requireSpaceBefore	A space is required before '}'.
+tests/rules/@stylistic/object-curly-spacing/always-no-exceptions/cases.ts:17:8	@stylistic/object-curly-spacing	requireSpaceAfter	A space is required after '{'.
+tests/rules/@stylistic/object-curly-spacing/always-no-exceptions/cases.ts:18:21	@stylistic/object-curly-spacing	requireSpaceBefore	A space is required before '}'.
+tests/rules/@stylistic/object-curly-spacing/always-no-exceptions/cases.ts:25:12	@stylistic/object-curly-spacing	requireSpaceAfter	A space is required after '{'.
+tests/rules/@stylistic/object-curly-spacing/always-no-exceptions/cases.ts:25:17	@stylistic/object-curly-spacing	requireSpaceBefore	A space is required before '}'.
+tests/rules/@stylistic/object-curly-spacing/always-no-exceptions/cases.ts:27:12	@stylistic/object-curly-spacing	requireSpaceAfter	A space is required after '{'.
+tests/rules/@stylistic/object-curly-spacing/always-no-exceptions/cases.ts:28:18	@stylistic/object-curly-spacing	requireSpaceBefore	A space is required before '}'.
+tests/rules/@stylistic/object-curly-spacing/always-no-exceptions/cases.ts:34:13	@stylistic/object-curly-spacing	requireSpaceAfter	A space is required after '{'.
+tests/rules/@stylistic/object-curly-spacing/always-no-exceptions/cases.ts:34:34	@stylistic/object-curly-spacing	requireSpaceBefore	A space is required before '}'.
+tests/rules/@stylistic/object-curly-spacing/always-no-exceptions/cases.ts:38:7	@stylistic/object-curly-spacing	requireSpaceBefore	A space is required before '}'.
+tests/rules/@stylistic/object-curly-spacing/always-no-exceptions/cases.ts:39:13	@stylistic/object-curly-spacing	requireSpaceAfter	A space is required after '{'.
+tests/rules/@stylistic/object-curly-spacing/always-no-exceptions/cases.ts:39:17	@stylistic/object-curly-spacing	requireSpaceAfter	A space is required after '{'.
+tests/rules/@stylistic/object-curly-spacing/always-no-exceptions/cases.ts:39:22	@stylistic/object-curly-spacing	requireSpaceBefore	A space is required before '}'.
+tests/rules/@stylistic/object-curly-spacing/always-no-exceptions/cases.ts:39:23	@stylistic/object-curly-spacing	requireSpaceBefore	A space is required before '}'.
+tests/rules/@stylistic/object-curly-spacing/always-no-exceptions/cases.ts:41:13	@stylistic/object-curly-spacing	requireSpaceAfter	A space is required after '{'.
+tests/rules/@stylistic/object-curly-spacing/always-no-exceptions/cases.ts:41:23	@stylistic/object-curly-spacing	requireSpaceBefore	A space is required before '}'.
+tests/rules/@stylistic/object-curly-spacing/always-no-exceptions/cases.ts:43:13	@stylistic/object-curly-spacing	requireSpaceAfter	A space is required after '{'.
+tests/rules/@stylistic/object-curly-spacing/always-no-exceptions/cases.ts:43:22	@stylistic/object-curly-spacing	requireSpaceBefore	A space is required before '}'.
+tests/rules/@stylistic/object-curly-spacing/always-no-exceptions/cases.ts:44:13	@stylistic/object-curly-spacing	requireSpaceAfter	A space is required after '{'.
+tests/rules/@stylistic/object-curly-spacing/always-no-exceptions/cases.ts:44:20	@stylistic/object-curly-spacing	requireSpaceBefore	A space is required before '}'.
+tests/rules/@stylistic/object-curly-spacing/always-no-exceptions/cases.ts:45:7	@stylistic/object-curly-spacing	requireSpaceAfter	A space is required after '{'.
+tests/rules/@stylistic/object-curly-spacing/always-no-exceptions/cases.ts:45:20	@stylistic/object-curly-spacing	requireSpaceBefore	A space is required before '}'.
+tests/rules/@stylistic/object-curly-spacing/always-no-exceptions/cases.ts:46:18	@stylistic/object-curly-spacing	requireSpaceAfter	A space is required after '{'.
+tests/rules/@stylistic/object-curly-spacing/always-no-exceptions/cases.ts:46:28	@stylistic/object-curly-spacing	requireSpaceBefore	A space is required before '}'.
+tests/rules/@stylistic/object-curly-spacing/always-no-exceptions/cases.ts:47:7	@stylistic/object-curly-spacing	requireSpaceAfter	A space is required after '{'.
+tests/rules/@stylistic/object-curly-spacing/always-no-exceptions/cases.ts:47:11	@stylistic/object-curly-spacing	requireSpaceAfter	A space is required after '{'.
+tests/rules/@stylistic/object-curly-spacing/always-no-exceptions/cases.ts:47:17	@stylistic/object-curly-spacing	requireSpaceBefore	A space is required before '}'.
+tests/rules/@stylistic/object-curly-spacing/always-no-exceptions/cases.ts:47:18	@stylistic/object-curly-spacing	requireSpaceBefore	A space is required before '}'.
+tests/rules/@stylistic/object-curly-spacing/always-no-exceptions/cases.ts:48:13	@stylistic/object-curly-spacing	requireSpaceAfter	A space is required after '{'.
+tests/rules/@stylistic/object-curly-spacing/always-no-exceptions/cases.ts:48:18	@stylistic/object-curly-spacing	requireSpaceBefore	A space is required before '}'.
+tests/rules/@stylistic/object-curly-spacing/always-no-exceptions/cases.ts:48:21	@stylistic/object-curly-spacing	requireSpaceAfter	A space is required after '{'.
+tests/rules/@stylistic/object-curly-spacing/always-no-exceptions/cases.ts:48:42	@stylistic/object-curly-spacing	requireSpaceBefore	A space is required before '}'.
+tests/rules/@stylistic/object-curly-spacing/always-no-exceptions/cases.ts:56:11	@stylistic/object-curly-spacing	requireSpaceAfter	A space is required after '{'.
+tests/rules/@stylistic/object-curly-spacing/always-no-exceptions/cases.ts:56:21	@stylistic/object-curly-spacing	requireSpaceBefore	A space is required before '}'.
+tests/rules/@stylistic/object-curly-spacing/always-no-exceptions/cases.ts:60:11	@stylistic/object-curly-spacing	requireSpaceAfter	A space is required after '{'.
+tests/rules/@stylistic/object-curly-spacing/always-no-exceptions/cases.ts:60:33	@stylistic/object-curly-spacing	requireSpaceBefore	A space is required before '}'.
+tests/rules/@stylistic/object-curly-spacing/always-no-exceptions/cases.ts:62:11	@stylistic/object-curly-spacing	requireSpaceAfter	A space is required after '{'.
+tests/rules/@stylistic/object-curly-spacing/always-no-exceptions/cases.ts:62:42	@stylistic/object-curly-spacing	requireSpaceBefore	A space is required before '}'.
+tests/rules/@stylistic/object-curly-spacing/always-no-exceptions/cases.ts:63:11	@stylistic/object-curly-spacing	requireSpaceAfter	A space is required after '{'.
+tests/rules/@stylistic/object-curly-spacing/always-no-exceptions/cases.ts:63:31	@stylistic/object-curly-spacing	requireSpaceBefore	A space is required before '}'.
+tests/rules/@stylistic/object-curly-spacing/always-no-exceptions/cases.ts:65:12	@stylistic/object-curly-spacing	requireSpaceAfter	A space is required after '{'.
+tests/rules/@stylistic/object-curly-spacing/always-no-exceptions/cases.ts:65:16	@stylistic/object-curly-spacing	requireSpaceAfter	A space is required after '{'.
+tests/rules/@stylistic/object-curly-spacing/always-no-exceptions/cases.ts:65:26	@stylistic/object-curly-spacing	requireSpaceBefore	A space is required before '}'.
+tests/rules/@stylistic/object-curly-spacing/always-no-exceptions/cases.ts:65:27	@stylistic/object-curly-spacing	requireSpaceBefore	A space is required before '}'.
+tests/rules/@stylistic/object-curly-spacing/always-no-exceptions/cases.ts:66:12	@stylistic/object-curly-spacing	requireSpaceAfter	A space is required after '{'.
+tests/rules/@stylistic/object-curly-spacing/always-no-exceptions/cases.ts:66:32	@stylistic/object-curly-spacing	requireSpaceBefore	A space is required before '}'.
+tests/rules/@stylistic/object-curly-spacing/always-no-exceptions/cases.ts:67:12	@stylistic/object-curly-spacing	requireSpaceAfter	A space is required after '{'.
+tests/rules/@stylistic/object-curly-spacing/always-no-exceptions/cases.ts:67:16	@stylistic/object-curly-spacing	requireSpaceAfter	A space is required after '{'.
+tests/rules/@stylistic/object-curly-spacing/always-no-exceptions/cases.ts:67:30	@stylistic/object-curly-spacing	requireSpaceBefore	A space is required before '}'.
+tests/rules/@stylistic/object-curly-spacing/always-no-exceptions/cases.ts:67:31	@stylistic/object-curly-spacing	requireSpaceBefore	A space is required before '}'.
+tests/rules/@stylistic/object-curly-spacing/always-no-exceptions/cases.ts:68:12	@stylistic/object-curly-spacing	requireSpaceAfter	A space is required after '{'.
+tests/rules/@stylistic/object-curly-spacing/always-no-exceptions/cases.ts:68:24	@stylistic/object-curly-spacing	requireSpaceBefore	A space is required before '}'.
+tests/rules/@stylistic/object-curly-spacing/always-no-exceptions/cases.ts:70:14	@stylistic/object-curly-spacing	requireSpaceAfter	A space is required after '{'.
+tests/rules/@stylistic/object-curly-spacing/always-no-exceptions/cases.ts:70:24	@stylistic/object-curly-spacing	requireSpaceBefore	A space is required before '}'.
+tests/rules/@stylistic/object-curly-spacing/always-no-exceptions/cases.ts:74:14	@stylistic/object-curly-spacing	requireSpaceAfter	A space is required after '{'.
+tests/rules/@stylistic/object-curly-spacing/always-no-exceptions/cases.ts:74:36	@stylistic/object-curly-spacing	requireSpaceBefore	A space is required before '}'.
+tests/rules/@stylistic/object-curly-spacing/always-no-exceptions/cases.ts:75:14	@stylistic/object-curly-spacing	requireSpaceAfter	A space is required after '{'.
+tests/rules/@stylistic/object-curly-spacing/always-no-exceptions/cases.ts:75:18	@stylistic/object-curly-spacing	requireSpaceAfter	A space is required after '{'.
+tests/rules/@stylistic/object-curly-spacing/always-no-exceptions/cases.ts:75:28	@stylistic/object-curly-spacing	requireSpaceBefore	A space is required before '}'.
+tests/rules/@stylistic/object-curly-spacing/always-no-exceptions/cases.ts:75:29	@stylistic/object-curly-spacing	requireSpaceBefore	A space is required before '}'.
+tests/rules/@stylistic/object-curly-spacing/always-no-exceptions/cases.ts:76:9	@stylistic/object-curly-spacing	requireSpaceAfter	A space is required after '{'.
+tests/rules/@stylistic/object-curly-spacing/always-no-exceptions/cases.ts:76:14	@stylistic/object-curly-spacing	requireSpaceBefore	A space is required before '}'.
+tests/rules/@stylistic/object-curly-spacing/always-no-exceptions/cases.ts:81:16	@stylistic/object-curly-spacing	requireSpaceAfter	A space is required after '{'.
+tests/rules/@stylistic/object-curly-spacing/always-no-exceptions/cases.ts:81:20	@stylistic/object-curly-spacing	requireSpaceAfter	A space is required after '{'.
+tests/rules/@stylistic/object-curly-spacing/always-no-exceptions/cases.ts:81:24	@stylistic/object-curly-spacing	requireSpaceAfter	A space is required after '{'.
+tests/rules/@stylistic/object-curly-spacing/always-no-exceptions/cases.ts:81:29	@stylistic/object-curly-spacing	requireSpaceBefore	A space is required before '}'.
+tests/rules/@stylistic/object-curly-spacing/always-no-exceptions/cases.ts:81:30	@stylistic/object-curly-spacing	requireSpaceBefore	A space is required before '}'.
+tests/rules/@stylistic/object-curly-spacing/always-no-exceptions/cases.ts:81:31	@stylistic/object-curly-spacing	requireSpaceBefore	A space is required before '}'.
+tests/rules/@stylistic/object-curly-spacing/always/cases.ts:1:14	@stylistic/object-curly-spacing	requireSpaceAfter	A space is required after '{'.
+tests/rules/@stylistic/object-curly-spacing/always/cases.ts:1:27	@stylistic/object-curly-spacing	requireSpaceBefore	A space is required before '}'.
+tests/rules/@stylistic/object-curly-spacing/always/cases.ts:3:8	@stylistic/object-curly-spacing	requireSpaceAfter	A space is required after '{'.
+tests/rules/@stylistic/object-curly-spacing/always/cases.ts:8:13	@stylistic/object-curly-spacing	requireSpaceAfter	A space is required after '{'.
+tests/rules/@stylistic/object-curly-spacing/always/cases.ts:8:19	@stylistic/object-curly-spacing	requireSpaceBefore	A space is required before '}'.
+tests/rules/@stylistic/object-curly-spacing/always/cases.ts:9:38	@stylistic/object-curly-spacing	requireSpaceAfter	A space is required after '{'.
+tests/rules/@stylistic/object-curly-spacing/always/cases.ts:9:51	@stylistic/object-curly-spacing	requireSpaceBefore	A space is required before '}'.
+tests/rules/@stylistic/object-curly-spacing/always/cases.ts:11:8	@stylistic/object-curly-spacing	requireSpaceAfter	A space is required after '{'.
+tests/rules/@stylistic/object-curly-spacing/always/cases.ts:11:11	@stylistic/object-curly-spacing	requireSpaceBefore	A space is required before '}'.
+tests/rules/@stylistic/object-curly-spacing/always/cases.ts:11:38	@stylistic/object-curly-spacing	requireSpaceAfter	A space is required after '{'.
+tests/rules/@stylistic/object-curly-spacing/always/cases.ts:11:51	@stylistic/object-curly-spacing	requireSpaceBefore	A space is required before '}'.
+tests/rules/@stylistic/object-curly-spacing/always/cases.ts:14:35	@stylistic/object-curly-spacing	requireSpaceAfter	A space is required after '{'.
+tests/rules/@stylistic/object-curly-spacing/always/cases.ts:14:48	@stylistic/object-curly-spacing	requireSpaceBefore	A space is required before '}'.
+tests/rules/@stylistic/object-curly-spacing/always/cases.ts:16:8	@stylistic/object-curly-spacing	requireSpaceAfter	A space is required after '{'.
+tests/rules/@stylistic/object-curly-spacing/always/cases.ts:16:11	@stylistic/object-curly-spacing	requireSpaceBefore	A space is required before '}'.
+tests/rules/@stylistic/object-curly-spacing/always/cases.ts:16:38	@stylistic/object-curly-spacing	requireSpaceAfter	A space is required after '{'.
+tests/rules/@stylistic/object-curly-spacing/always/cases.ts:16:51	@stylistic/object-curly-spacing	requireSpaceBefore	A space is required before '}'.
+tests/rules/@stylistic/object-curly-spacing/always/cases.ts:17:8	@stylistic/object-curly-spacing	requireSpaceAfter	A space is required after '{'.
+tests/rules/@stylistic/object-curly-spacing/always/cases.ts:18:21	@stylistic/object-curly-spacing	requireSpaceBefore	A space is required before '}'.
+tests/rules/@stylistic/object-curly-spacing/always/cases.ts:25:12	@stylistic/object-curly-spacing	requireSpaceAfter	A space is required after '{'.
+tests/rules/@stylistic/object-curly-spacing/always/cases.ts:25:17	@stylistic/object-curly-spacing	requireSpaceBefore	A space is required before '}'.
+tests/rules/@stylistic/object-curly-spacing/always/cases.ts:27:12	@stylistic/object-curly-spacing	requireSpaceAfter	A space is required after '{'.
+tests/rules/@stylistic/object-curly-spacing/always/cases.ts:28:18	@stylistic/object-curly-spacing	requireSpaceBefore	A space is required before '}'.
+tests/rules/@stylistic/object-curly-spacing/always/cases.ts:34:13	@stylistic/object-curly-spacing	requireSpaceAfter	A space is required after '{'.
+tests/rules/@stylistic/object-curly-spacing/always/cases.ts:34:34	@stylistic/object-curly-spacing	requireSpaceBefore	A space is required before '}'.
+tests/rules/@stylistic/object-curly-spacing/always/cases.ts:38:7	@stylistic/object-curly-spacing	requireSpaceBefore	A space is required before '}'.
+tests/rules/@stylistic/object-curly-spacing/always/cases.ts:39:13	@stylistic/object-curly-spacing	requireSpaceAfter	A space is required after '{'.
+tests/rules/@stylistic/object-curly-spacing/always/cases.ts:39:17	@stylistic/object-curly-spacing	requireSpaceAfter	A space is required after '{'.
+tests/rules/@stylistic/object-curly-spacing/always/cases.ts:39:22	@stylistic/object-curly-spacing	requireSpaceBefore	A space is required before '}'.
+tests/rules/@stylistic/object-curly-spacing/always/cases.ts:39:23	@stylistic/object-curly-spacing	requireSpaceBefore	A space is required before '}'.
+tests/rules/@stylistic/object-curly-spacing/always/cases.ts:41:13	@stylistic/object-curly-spacing	requireSpaceAfter	A space is required after '{'.
+tests/rules/@stylistic/object-curly-spacing/always/cases.ts:41:23	@stylistic/object-curly-spacing	requireSpaceBefore	A space is required before '}'.
+tests/rules/@stylistic/object-curly-spacing/always/cases.ts:43:13	@stylistic/object-curly-spacing	requireSpaceAfter	A space is required after '{'.
+tests/rules/@stylistic/object-curly-spacing/always/cases.ts:43:22	@stylistic/object-curly-spacing	requireSpaceBefore	A space is required before '}'.
+tests/rules/@stylistic/object-curly-spacing/always/cases.ts:44:13	@stylistic/object-curly-spacing	requireSpaceAfter	A space is required after '{'.
+tests/rules/@stylistic/object-curly-spacing/always/cases.ts:44:20	@stylistic/object-curly-spacing	requireSpaceBefore	A space is required before '}'.
+tests/rules/@stylistic/object-curly-spacing/always/cases.ts:45:7	@stylistic/object-curly-spacing	requireSpaceAfter	A space is required after '{'.
+tests/rules/@stylistic/object-curly-spacing/always/cases.ts:45:20	@stylistic/object-curly-spacing	requireSpaceBefore	A space is required before '}'.
+tests/rules/@stylistic/object-curly-spacing/always/cases.ts:46:18	@stylistic/object-curly-spacing	requireSpaceAfter	A space is required after '{'.
+tests/rules/@stylistic/object-curly-spacing/always/cases.ts:46:28	@stylistic/object-curly-spacing	requireSpaceBefore	A space is required before '}'.
+tests/rules/@stylistic/object-curly-spacing/always/cases.ts:47:7	@stylistic/object-curly-spacing	requireSpaceAfter	A space is required after '{'.
+tests/rules/@stylistic/object-curly-spacing/always/cases.ts:47:11	@stylistic/object-curly-spacing	requireSpaceAfter	A space is required after '{'.
+tests/rules/@stylistic/object-curly-spacing/always/cases.ts:47:17	@stylistic/object-curly-spacing	requireSpaceBefore	A space is required before '}'.
+tests/rules/@stylistic/object-curly-spacing/always/cases.ts:47:18	@stylistic/object-curly-spacing	requireSpaceBefore	A space is required before '}'.
+tests/rules/@stylistic/object-curly-spacing/always/cases.ts:48:13	@stylistic/object-curly-spacing	requireSpaceAfter	A space is required after '{'.
+tests/rules/@stylistic/object-curly-spacing/always/cases.ts:48:18	@stylistic/object-curly-spacing	requireSpaceBefore	A space is required before '}'.
+tests/rules/@stylistic/object-curly-spacing/always/cases.ts:48:21	@stylistic/object-curly-spacing	requireSpaceAfter	A space is required after '{'.
+tests/rules/@stylistic/object-curly-spacing/always/cases.ts:48:42	@stylistic/object-curly-spacing	requireSpaceBefore	A space is required before '}'.
+tests/rules/@stylistic/object-curly-spacing/always/cases.ts:56:11	@stylistic/object-curly-spacing	requireSpaceAfter	A space is required after '{'.
+tests/rules/@stylistic/object-curly-spacing/always/cases.ts:56:21	@stylistic/object-curly-spacing	requireSpaceBefore	A space is required before '}'.
+tests/rules/@stylistic/object-curly-spacing/always/cases.ts:60:11	@stylistic/object-curly-spacing	requireSpaceAfter	A space is required after '{'.
+tests/rules/@stylistic/object-curly-spacing/always/cases.ts:60:33	@stylistic/object-curly-spacing	requireSpaceBefore	A space is required before '}'.
+tests/rules/@stylistic/object-curly-spacing/always/cases.ts:62:11	@stylistic/object-curly-spacing	requireSpaceAfter	A space is required after '{'.
+tests/rules/@stylistic/object-curly-spacing/always/cases.ts:62:42	@stylistic/object-curly-spacing	requireSpaceBefore	A space is required before '}'.
+tests/rules/@stylistic/object-curly-spacing/always/cases.ts:63:11	@stylistic/object-curly-spacing	requireSpaceAfter	A space is required after '{'.
+tests/rules/@stylistic/object-curly-spacing/always/cases.ts:63:31	@stylistic/object-curly-spacing	requireSpaceBefore	A space is required before '}'.
+tests/rules/@stylistic/object-curly-spacing/always/cases.ts:65:12	@stylistic/object-curly-spacing	requireSpaceAfter	A space is required after '{'.
+tests/rules/@stylistic/object-curly-spacing/always/cases.ts:65:16	@stylistic/object-curly-spacing	requireSpaceAfter	A space is required after '{'.
+tests/rules/@stylistic/object-curly-spacing/always/cases.ts:65:26	@stylistic/object-curly-spacing	requireSpaceBefore	A space is required before '}'.
+tests/rules/@stylistic/object-curly-spacing/always/cases.ts:65:27	@stylistic/object-curly-spacing	requireSpaceBefore	A space is required before '}'.
+tests/rules/@stylistic/object-curly-spacing/always/cases.ts:66:12	@stylistic/object-curly-spacing	requireSpaceAfter	A space is required after '{'.
+tests/rules/@stylistic/object-curly-spacing/always/cases.ts:66:32	@stylistic/object-curly-spacing	requireSpaceBefore	A space is required before '}'.
+tests/rules/@stylistic/object-curly-spacing/always/cases.ts:67:12	@stylistic/object-curly-spacing	requireSpaceAfter	A space is required after '{'.
+tests/rules/@stylistic/object-curly-spacing/always/cases.ts:67:16	@stylistic/object-curly-spacing	requireSpaceAfter	A space is required after '{'.
+tests/rules/@stylistic/object-curly-spacing/always/cases.ts:67:30	@stylistic/object-curly-spacing	requireSpaceBefore	A space is required before '}'.
+tests/rules/@stylistic/object-curly-spacing/always/cases.ts:67:31	@stylistic/object-curly-spacing	requireSpaceBefore	A space is required before '}'.
+tests/rules/@stylistic/object-curly-spacing/always/cases.ts:68:12	@stylistic/object-curly-spacing	requireSpaceAfter	A space is required after '{'.
+tests/rules/@stylistic/object-curly-spacing/always/cases.ts:68:24	@stylistic/object-curly-spacing	requireSpaceBefore	A space is required before '}'.
+tests/rules/@stylistic/object-curly-spacing/always/cases.ts:70:14	@stylistic/object-curly-spacing	requireSpaceAfter	A space is required after '{'.
+tests/rules/@stylistic/object-curly-spacing/always/cases.ts:70:24	@stylistic/object-curly-spacing	requireSpaceBefore	A space is required before '}'.
+tests/rules/@stylistic/object-curly-spacing/always/cases.ts:74:14	@stylistic/object-curly-spacing	requireSpaceAfter	A space is required after '{'.
+tests/rules/@stylistic/object-curly-spacing/always/cases.ts:74:36	@stylistic/object-curly-spacing	requireSpaceBefore	A space is required before '}'.
+tests/rules/@stylistic/object-curly-spacing/always/cases.ts:75:14	@stylistic/object-curly-spacing	requireSpaceAfter	A space is required after '{'.
+tests/rules/@stylistic/object-curly-spacing/always/cases.ts:75:18	@stylistic/object-curly-spacing	requireSpaceAfter	A space is required after '{'.
+tests/rules/@stylistic/object-curly-spacing/always/cases.ts:75:28	@stylistic/object-curly-spacing	requireSpaceBefore	A space is required before '}'.
+tests/rules/@stylistic/object-curly-spacing/always/cases.ts:75:29	@stylistic/object-curly-spacing	requireSpaceBefore	A space is required before '}'.
+tests/rules/@stylistic/object-curly-spacing/always/cases.ts:76:9	@stylistic/object-curly-spacing	requireSpaceAfter	A space is required after '{'.
+tests/rules/@stylistic/object-curly-spacing/always/cases.ts:76:14	@stylistic/object-curly-spacing	requireSpaceBefore	A space is required before '}'.
+tests/rules/@stylistic/object-curly-spacing/always/cases.ts:81:16	@stylistic/object-curly-spacing	requireSpaceAfter	A space is required after '{'.
+tests/rules/@stylistic/object-curly-spacing/always/cases.ts:81:20	@stylistic/object-curly-spacing	requireSpaceAfter	A space is required after '{'.
+tests/rules/@stylistic/object-curly-spacing/always/cases.ts:81:24	@stylistic/object-curly-spacing	requireSpaceAfter	A space is required after '{'.
+tests/rules/@stylistic/object-curly-spacing/always/cases.ts:81:29	@stylistic/object-curly-spacing	requireSpaceBefore	A space is required before '}'.
+tests/rules/@stylistic/object-curly-spacing/always/cases.ts:81:30	@stylistic/object-curly-spacing	requireSpaceBefore	A space is required before '}'.
+tests/rules/@stylistic/object-curly-spacing/always/cases.ts:81:31	@stylistic/object-curly-spacing	requireSpaceBefore	A space is required before '}'.
+tests/rules/@stylistic/object-curly-spacing/cases.ts:2:9	@stylistic/object-curly-spacing	unexpectedSpaceAfter	There should be no space after '{'.
+tests/rules/@stylistic/object-curly-spacing/cases.ts:2:23	@stylistic/object-curly-spacing	unexpectedSpaceBefore	There should be no space before '}'.
+tests/rules/@stylistic/object-curly-spacing/cases.ts:3:19	@stylistic/object-curly-spacing	unexpectedSpaceBefore	There should be no space before '}'.
+tests/rules/@stylistic/object-curly-spacing/cases.ts:10:40	@stylistic/object-curly-spacing	unexpectedSpaceAfter	There should be no space after '{'.
+tests/rules/@stylistic/object-curly-spacing/cases.ts:10:53	@stylistic/object-curly-spacing	unexpectedSpaceBefore	There should be no space before '}'.
+tests/rules/@stylistic/object-curly-spacing/cases.ts:17:19	@stylistic/object-curly-spacing	unexpectedSpaceBefore	There should be no space before '}'.
+tests/rules/@stylistic/object-curly-spacing/cases.ts:18:9	@stylistic/object-curly-spacing	unexpectedSpaceAfter	There should be no space after '{'.
+tests/rules/@stylistic/object-curly-spacing/cases.ts:26:13	@stylistic/object-curly-spacing	unexpectedSpaceAfter	There should be no space after '{'.
+tests/rules/@stylistic/object-curly-spacing/cases.ts:26:18	@stylistic/object-curly-spacing	unexpectedSpaceBefore	There should be no space before '}'.
+tests/rules/@stylistic/object-curly-spacing/cases.ts:27:17	@stylistic/object-curly-spacing	unexpectedSpaceBefore	There should be no space before '}'.
+tests/rules/@stylistic/object-curly-spacing/cases.ts:28:13	@stylistic/object-curly-spacing	unexpectedSpaceAfter	There should be no space after '{'.
+tests/rules/@stylistic/object-curly-spacing/cases.ts:36:7	@stylistic/object-curly-spacing	unexpectedSpaceBefore	There should be no space before '}'.
+tests/rules/@stylistic/object-curly-spacing/cases.ts:40:14	@stylistic/object-curly-spacing	unexpectedSpaceAfter	There should be no space after '{'.
+tests/rules/@stylistic/object-curly-spacing/cases.ts:40:19	@stylistic/object-curly-spacing	unexpectedSpaceAfter	There should be no space after '{'.
+tests/rules/@stylistic/object-curly-spacing/cases.ts:40:24	@stylistic/object-curly-spacing	unexpectedSpaceBefore	There should be no space before '}'.
+tests/rules/@stylistic/object-curly-spacing/cases.ts:40:26	@stylistic/object-curly-spacing	unexpectedSpaceBefore	There should be no space before '}'.
+tests/rules/@stylistic/object-curly-spacing/cases.ts:42:14	@stylistic/object-curly-spacing	unexpectedSpaceAfter	There should be no space after '{'.
+tests/rules/@stylistic/object-curly-spacing/cases.ts:42:26	@stylistic/object-curly-spacing	unexpectedSpaceBefore	There should be no space before '}'.
+tests/rules/@stylistic/object-curly-spacing/cases.ts:45:25	@stylistic/object-curly-spacing	unexpectedSpaceAfter	There should be no space after '{'.
+tests/rules/@stylistic/object-curly-spacing/cases.ts:45:36	@stylistic/object-curly-spacing	unexpectedSpaceBefore	There should be no space before '}'.
+tests/rules/@stylistic/object-curly-spacing/cases.ts:46:8	@stylistic/object-curly-spacing	unexpectedSpaceAfter	There should be no space after '{'.
+tests/rules/@stylistic/object-curly-spacing/cases.ts:46:14	@stylistic/object-curly-spacing	unexpectedSpaceBefore	There should be no space before '}'.
+tests/rules/@stylistic/object-curly-spacing/cases.ts:46:33	@stylistic/object-curly-spacing	unexpectedSpaceAfter	There should be no space after '{'.
+tests/rules/@stylistic/object-curly-spacing/cases.ts:46:38	@stylistic/object-curly-spacing	unexpectedSpaceBefore	There should be no space before '}'.
+tests/rules/@stylistic/object-curly-spacing/cases.ts:47:23	@stylistic/object-curly-spacing	unexpectedSpaceAfter	There should be no space after '{'.
+tests/rules/@stylistic/object-curly-spacing/cases.ts:47:28	@stylistic/object-curly-spacing	unexpectedSpaceAfter	There should be no space after '{'.
+tests/rules/@stylistic/object-curly-spacing/cases.ts:47:33	@stylistic/object-curly-spacing	unexpectedSpaceBefore	There should be no space before '}'.
+tests/rules/@stylistic/object-curly-spacing/cases.ts:47:35	@stylistic/object-curly-spacing	unexpectedSpaceBefore	There should be no space before '}'.
+tests/rules/@stylistic/object-curly-spacing/cases.ts:49:14	@stylistic/object-curly-spacing	unexpectedSpaceAfter	There should be no space after '{'.
+tests/rules/@stylistic/object-curly-spacing/cases.ts:49:16	@stylistic/object-curly-spacing	unexpectedSpaceBefore	There should be no space before '}'.
+tests/rules/@stylistic/object-curly-spacing/cases.ts:49:21	@stylistic/object-curly-spacing	unexpectedSpaceAfter	There should be no space after '{'.
+tests/rules/@stylistic/object-curly-spacing/cases.ts:49:31	@stylistic/object-curly-spacing	unexpectedSpaceBefore	There should be no space before '}'.
+tests/rules/@stylistic/object-curly-spacing/cases.ts:49:37	@stylistic/object-curly-spacing	unexpectedSpaceAfter	There should be no space after '{'.
+tests/rules/@stylistic/object-curly-spacing/cases.ts:49:42	@stylistic/object-curly-spacing	unexpectedSpaceBefore	There should be no space before '}'.
+tests/rules/@stylistic/object-curly-spacing/cases.ts:57:12	@stylistic/object-curly-spacing	unexpectedSpaceAfter	There should be no space after '{'.
+tests/rules/@stylistic/object-curly-spacing/cases.ts:57:22	@stylistic/object-curly-spacing	unexpectedSpaceBefore	There should be no space before '}'.
+tests/rules/@stylistic/object-curly-spacing/cases.ts:61:12	@stylistic/object-curly-spacing	unexpectedSpaceAfter	There should be no space after '{'.
+tests/rules/@stylistic/object-curly-spacing/cases.ts:61:34	@stylistic/object-curly-spacing	unexpectedSpaceBefore	There should be no space before '}'.
+tests/rules/@stylistic/object-curly-spacing/cases.ts:64:12	@stylistic/object-curly-spacing	unexpectedSpaceAfter	There should be no space after '{'.
+tests/rules/@stylistic/object-curly-spacing/cases.ts:64:32	@stylistic/object-curly-spacing	unexpectedSpaceBefore	There should be no space before '}'.
+tests/rules/@stylistic/object-curly-spacing/cases.ts:69:13	@stylistic/object-curly-spacing	unexpectedSpaceAfter	There should be no space after '{'.
+tests/rules/@stylistic/object-curly-spacing/cases.ts:69:46	@stylistic/object-curly-spacing	unexpectedSpaceBefore	There should be no space before '}'.
+tests/rules/@stylistic/object-curly-spacing/cases.ts:71:15	@stylistic/object-curly-spacing	unexpectedSpaceAfter	There should be no space after '{'.
+tests/rules/@stylistic/object-curly-spacing/cases.ts:71:25	@stylistic/object-curly-spacing	unexpectedSpaceBefore	There should be no space before '}'.
+tests/rules/@stylistic/object-curly-spacing/cases.ts:77:10	@stylistic/object-curly-spacing	unexpectedSpaceAfter	There should be no space after '{'.
+tests/rules/@stylistic/object-curly-spacing/cases.ts:77:15	@stylistic/object-curly-spacing	unexpectedSpaceBefore	There should be no space before '}'.
+tests/rules/@stylistic/object-curly-spacing/cases.ts:87:14	@stylistic/object-curly-spacing	unexpectedSpaceAfter	There should be no space after '{'.
+tests/rules/@stylistic/object-curly-spacing/cases.ts:87:105	@stylistic/object-curly-spacing	unexpectedSpaceBefore	There should be no space before '}'.
+tests/rules/@stylistic/object-curly-spacing/empty-always/cases.ts:2:9	@stylistic/object-curly-spacing	unexpectedSpaceAfter	There should be no space after '{'.
+tests/rules/@stylistic/object-curly-spacing/empty-always/cases.ts:2:23	@stylistic/object-curly-spacing	unexpectedSpaceBefore	There should be no space before '}'.
+tests/rules/@stylistic/object-curly-spacing/empty-always/cases.ts:3:19	@stylistic/object-curly-spacing	unexpectedSpaceBefore	There should be no space before '}'.
+tests/rules/@stylistic/object-curly-spacing/empty-always/cases.ts:4:15	@stylistic/object-curly-spacing	requiredSpaceInEmptyObject	A space is required in empty 'ImportDeclaration'.
+tests/rules/@stylistic/object-curly-spacing/empty-always/cases.ts:5:9	@stylistic/object-curly-spacing	requiredSpaceInEmptyObject	A space is required in empty 'ImportDeclaration'.
+tests/rules/@stylistic/object-curly-spacing/empty-always/cases.ts:10:40	@stylistic/object-curly-spacing	unexpectedSpaceAfter	There should be no space after '{'.
+tests/rules/@stylistic/object-curly-spacing/empty-always/cases.ts:10:53	@stylistic/object-curly-spacing	unexpectedSpaceBefore	There should be no space before '}'.
+tests/rules/@stylistic/object-curly-spacing/empty-always/cases.ts:12:40	@stylistic/object-curly-spacing	requiredSpaceInEmptyObject	A space is required in empty 'ImportAttributes'.
+tests/rules/@stylistic/object-curly-spacing/empty-always/cases.ts:12:40	@stylistic/object-curly-spacing	requiredSpaceInEmptyObject	A space is required in empty 'ImportDeclaration'.
+tests/rules/@stylistic/object-curly-spacing/empty-always/cases.ts:17:19	@stylistic/object-curly-spacing	unexpectedSpaceBefore	There should be no space before '}'.
+tests/rules/@stylistic/object-curly-spacing/empty-always/cases.ts:18:9	@stylistic/object-curly-spacing	unexpectedSpaceAfter	There should be no space after '{'.
+tests/rules/@stylistic/object-curly-spacing/empty-always/cases.ts:19:9	@stylistic/object-curly-spacing	requiredSpaceInEmptyObject	A space is required in empty 'ExportNamedDeclaration'.
+tests/rules/@stylistic/object-curly-spacing/empty-always/cases.ts:26:13	@stylistic/object-curly-spacing	unexpectedSpaceAfter	There should be no space after '{'.
+tests/rules/@stylistic/object-curly-spacing/empty-always/cases.ts:26:18	@stylistic/object-curly-spacing	unexpectedSpaceBefore	There should be no space before '}'.
+tests/rules/@stylistic/object-curly-spacing/empty-always/cases.ts:27:17	@stylistic/object-curly-spacing	unexpectedSpaceBefore	There should be no space before '}'.
+tests/rules/@stylistic/object-curly-spacing/empty-always/cases.ts:28:13	@stylistic/object-curly-spacing	unexpectedSpaceAfter	There should be no space after '{'.
+tests/rules/@stylistic/object-curly-spacing/empty-always/cases.ts:29:13	@stylistic/object-curly-spacing	requiredSpaceInEmptyObject	A space is required in empty 'ObjectExpression'.
+tests/rules/@stylistic/object-curly-spacing/empty-always/cases.ts:31:13	@stylistic/object-curly-spacing	requiredSpaceInEmptyObject	A space is required in empty 'ObjectExpression'.
+tests/rules/@stylistic/object-curly-spacing/empty-always/cases.ts:32:13	@stylistic/object-curly-spacing	requiredSpaceInEmptyObject	A space is required in empty 'ObjectExpression'.
+tests/rules/@stylistic/object-curly-spacing/empty-always/cases.ts:36:7	@stylistic/object-curly-spacing	unexpectedSpaceBefore	There should be no space before '}'.
+tests/rules/@stylistic/object-curly-spacing/empty-always/cases.ts:40:14	@stylistic/object-curly-spacing	unexpectedSpaceAfter	There should be no space after '{'.
+tests/rules/@stylistic/object-curly-spacing/empty-always/cases.ts:40:19	@stylistic/object-curly-spacing	unexpectedSpaceAfter	There should be no space after '{'.
+tests/rules/@stylistic/object-curly-spacing/empty-always/cases.ts:40:24	@stylistic/object-curly-spacing	unexpectedSpaceBefore	There should be no space before '}'.
+tests/rules/@stylistic/object-curly-spacing/empty-always/cases.ts:40:26	@stylistic/object-curly-spacing	unexpectedSpaceBefore	There should be no space before '}'.
+tests/rules/@stylistic/object-curly-spacing/empty-always/cases.ts:42:14	@stylistic/object-curly-spacing	unexpectedSpaceAfter	There should be no space after '{'.
+tests/rules/@stylistic/object-curly-spacing/empty-always/cases.ts:42:26	@stylistic/object-curly-spacing	unexpectedSpaceBefore	There should be no space before '}'.
+tests/rules/@stylistic/object-curly-spacing/empty-always/cases.ts:45:25	@stylistic/object-curly-spacing	unexpectedSpaceAfter	There should be no space after '{'.
+tests/rules/@stylistic/object-curly-spacing/empty-always/cases.ts:45:36	@stylistic/object-curly-spacing	unexpectedSpaceBefore	There should be no space before '}'.
+tests/rules/@stylistic/object-curly-spacing/empty-always/cases.ts:46:8	@stylistic/object-curly-spacing	unexpectedSpaceAfter	There should be no space after '{'.
+tests/rules/@stylistic/object-curly-spacing/empty-always/cases.ts:46:14	@stylistic/object-curly-spacing	unexpectedSpaceBefore	There should be no space before '}'.
+tests/rules/@stylistic/object-curly-spacing/empty-always/cases.ts:46:33	@stylistic/object-curly-spacing	unexpectedSpaceAfter	There should be no space after '{'.
+tests/rules/@stylistic/object-curly-spacing/empty-always/cases.ts:46:38	@stylistic/object-curly-spacing	unexpectedSpaceBefore	There should be no space before '}'.
+tests/rules/@stylistic/object-curly-spacing/empty-always/cases.ts:47:23	@stylistic/object-curly-spacing	unexpectedSpaceAfter	There should be no space after '{'.
+tests/rules/@stylistic/object-curly-spacing/empty-always/cases.ts:47:28	@stylistic/object-curly-spacing	unexpectedSpaceAfter	There should be no space after '{'.
+tests/rules/@stylistic/object-curly-spacing/empty-always/cases.ts:47:33	@stylistic/object-curly-spacing	unexpectedSpaceBefore	There should be no space before '}'.
+tests/rules/@stylistic/object-curly-spacing/empty-always/cases.ts:47:35	@stylistic/object-curly-spacing	unexpectedSpaceBefore	There should be no space before '}'.
+tests/rules/@stylistic/object-curly-spacing/empty-always/cases.ts:49:14	@stylistic/object-curly-spacing	unexpectedSpaceAfter	There should be no space after '{'.
+tests/rules/@stylistic/object-curly-spacing/empty-always/cases.ts:49:16	@stylistic/object-curly-spacing	unexpectedSpaceBefore	There should be no space before '}'.
+tests/rules/@stylistic/object-curly-spacing/empty-always/cases.ts:49:21	@stylistic/object-curly-spacing	unexpectedSpaceAfter	There should be no space after '{'.
+tests/rules/@stylistic/object-curly-spacing/empty-always/cases.ts:49:31	@stylistic/object-curly-spacing	unexpectedSpaceBefore	There should be no space before '}'.
+tests/rules/@stylistic/object-curly-spacing/empty-always/cases.ts:49:37	@stylistic/object-curly-spacing	unexpectedSpaceAfter	There should be no space after '{'.
+tests/rules/@stylistic/object-curly-spacing/empty-always/cases.ts:49:42	@stylistic/object-curly-spacing	unexpectedSpaceBefore	There should be no space before '}'.
+tests/rules/@stylistic/object-curly-spacing/empty-always/cases.ts:51:21	@stylistic/object-curly-spacing	requiredSpaceInEmptyObject	A space is required in empty 'ObjectExpression'.
+tests/rules/@stylistic/object-curly-spacing/empty-always/cases.ts:51:21	@stylistic/object-curly-spacing	requiredSpaceInEmptyObject	A space is required in empty 'ExportNamedDeclaration'.
+tests/rules/@stylistic/object-curly-spacing/empty-always/cases.ts:57:12	@stylistic/object-curly-spacing	unexpectedSpaceAfter	There should be no space after '{'.
+tests/rules/@stylistic/object-curly-spacing/empty-always/cases.ts:57:22	@stylistic/object-curly-spacing	unexpectedSpaceBefore	There should be no space before '}'.
+tests/rules/@stylistic/object-curly-spacing/empty-always/cases.ts:58:12	@stylistic/object-curly-spacing	requiredSpaceInEmptyObject	A space is required in empty 'TSTypeLiteral'.
+tests/rules/@stylistic/object-curly-spacing/empty-always/cases.ts:61:12	@stylistic/object-curly-spacing	unexpectedSpaceAfter	There should be no space after '{'.
+tests/rules/@stylistic/object-curly-spacing/empty-always/cases.ts:61:34	@stylistic/object-curly-spacing	unexpectedSpaceBefore	There should be no space before '}'.
+tests/rules/@stylistic/object-curly-spacing/empty-always/cases.ts:64:12	@stylistic/object-curly-spacing	unexpectedSpaceAfter	There should be no space after '{'.
+tests/rules/@stylistic/object-curly-spacing/empty-always/cases.ts:64:32	@stylistic/object-curly-spacing	unexpectedSpaceBefore	There should be no space before '}'.
+tests/rules/@stylistic/object-curly-spacing/empty-always/cases.ts:69:13	@stylistic/object-curly-spacing	unexpectedSpaceAfter	There should be no space after '{'.
+tests/rules/@stylistic/object-curly-spacing/empty-always/cases.ts:69:46	@stylistic/object-curly-spacing	unexpectedSpaceBefore	There should be no space before '}'.
+tests/rules/@stylistic/object-curly-spacing/empty-always/cases.ts:71:15	@stylistic/object-curly-spacing	unexpectedSpaceAfter	There should be no space after '{'.
+tests/rules/@stylistic/object-curly-spacing/empty-always/cases.ts:71:25	@stylistic/object-curly-spacing	unexpectedSpaceBefore	There should be no space before '}'.
+tests/rules/@stylistic/object-curly-spacing/empty-always/cases.ts:72:15	@stylistic/object-curly-spacing	requiredSpaceInEmptyObject	A space is required in empty 'TSInterfaceBody'.
+tests/rules/@stylistic/object-curly-spacing/empty-always/cases.ts:77:10	@stylistic/object-curly-spacing	unexpectedSpaceAfter	There should be no space after '{'.
+tests/rules/@stylistic/object-curly-spacing/empty-always/cases.ts:77:15	@stylistic/object-curly-spacing	unexpectedSpaceBefore	There should be no space before '}'.
+tests/rules/@stylistic/object-curly-spacing/empty-always/cases.ts:78:10	@stylistic/object-curly-spacing	requiredSpaceInEmptyObject	A space is required in empty 'TSEnumBody'.
+tests/rules/@stylistic/object-curly-spacing/empty-always/cases.ts:87:14	@stylistic/object-curly-spacing	unexpectedSpaceAfter	There should be no space after '{'.
+tests/rules/@stylistic/object-curly-spacing/empty-always/cases.ts:87:105	@stylistic/object-curly-spacing	unexpectedSpaceBefore	There should be no space before '}'.
+tests/rules/@stylistic/object-curly-spacing/empty-always/cases.ts:88:22	@stylistic/object-curly-spacing	requiredSpaceInEmptyObject	A space is required in empty 'ObjectExpression'.
+tests/rules/@stylistic/object-curly-spacing/empty-always/cases.ts:88:22	@stylistic/object-curly-spacing	requiredSpaceInEmptyObject	A space is required in empty 'ExportNamedDeclaration'.
+tests/rules/@stylistic/object-curly-spacing/empty-always/cases.ts:89:23	@stylistic/object-curly-spacing	requiredSpaceInEmptyObject	A space is required in empty 'ObjectExpression'.
+tests/rules/@stylistic/object-curly-spacing/empty-always/cases.ts:89:23	@stylistic/object-curly-spacing	requiredSpaceInEmptyObject	A space is required in empty 'ExportNamedDeclaration'.
+tests/rules/@stylistic/object-curly-spacing/empty-always/cases.ts:90:22	@stylistic/object-curly-spacing	requiredSpaceInEmptyObject	A space is required in empty 'ObjectExpression'.
+tests/rules/@stylistic/object-curly-spacing/empty-always/cases.ts:90:22	@stylistic/object-curly-spacing	requiredSpaceInEmptyObject	A space is required in empty 'ExportNamedDeclaration'.
+tests/rules/@stylistic/object-curly-spacing/empty-always/cases.ts:91:18	@stylistic/object-curly-spacing	requiredSpaceInEmptyObject	A space is required in empty 'TSTypeLiteral'.
+tests/rules/@stylistic/object-curly-spacing/empty-always/cases.ts:91:18	@stylistic/object-curly-spacing	requiredSpaceInEmptyObject	A space is required in empty 'ExportNamedDeclaration'.
+tests/rules/@stylistic/object-curly-spacing/empty-ignore/cases.ts:1:14	@stylistic/object-curly-spacing	requireSpaceAfter	A space is required after '{'.
+tests/rules/@stylistic/object-curly-spacing/empty-ignore/cases.ts:1:27	@stylistic/object-curly-spacing	requireSpaceBefore	A space is required before '}'.
+tests/rules/@stylistic/object-curly-spacing/empty-ignore/cases.ts:3:8	@stylistic/object-curly-spacing	requireSpaceAfter	A space is required after '{'.
+tests/rules/@stylistic/object-curly-spacing/empty-ignore/cases.ts:8:13	@stylistic/object-curly-spacing	requireSpaceAfter	A space is required after '{'.
+tests/rules/@stylistic/object-curly-spacing/empty-ignore/cases.ts:8:19	@stylistic/object-curly-spacing	requireSpaceBefore	A space is required before '}'.
+tests/rules/@stylistic/object-curly-spacing/empty-ignore/cases.ts:9:38	@stylistic/object-curly-spacing	requireSpaceAfter	A space is required after '{'.
+tests/rules/@stylistic/object-curly-spacing/empty-ignore/cases.ts:9:51	@stylistic/object-curly-spacing	requireSpaceBefore	A space is required before '}'.
+tests/rules/@stylistic/object-curly-spacing/empty-ignore/cases.ts:11:8	@stylistic/object-curly-spacing	requireSpaceAfter	A space is required after '{'.
+tests/rules/@stylistic/object-curly-spacing/empty-ignore/cases.ts:11:11	@stylistic/object-curly-spacing	requireSpaceBefore	A space is required before '}'.
+tests/rules/@stylistic/object-curly-spacing/empty-ignore/cases.ts:11:38	@stylistic/object-curly-spacing	requireSpaceAfter	A space is required after '{'.
+tests/rules/@stylistic/object-curly-spacing/empty-ignore/cases.ts:11:51	@stylistic/object-curly-spacing	requireSpaceBefore	A space is required before '}'.
+tests/rules/@stylistic/object-curly-spacing/empty-ignore/cases.ts:14:35	@stylistic/object-curly-spacing	requireSpaceAfter	A space is required after '{'.
+tests/rules/@stylistic/object-curly-spacing/empty-ignore/cases.ts:14:48	@stylistic/object-curly-spacing	requireSpaceBefore	A space is required before '}'.
+tests/rules/@stylistic/object-curly-spacing/empty-ignore/cases.ts:16:8	@stylistic/object-curly-spacing	requireSpaceAfter	A space is required after '{'.
+tests/rules/@stylistic/object-curly-spacing/empty-ignore/cases.ts:16:11	@stylistic/object-curly-spacing	requireSpaceBefore	A space is required before '}'.
+tests/rules/@stylistic/object-curly-spacing/empty-ignore/cases.ts:16:38	@stylistic/object-curly-spacing	requireSpaceAfter	A space is required after '{'.
+tests/rules/@stylistic/object-curly-spacing/empty-ignore/cases.ts:16:51	@stylistic/object-curly-spacing	requireSpaceBefore	A space is required before '}'.
+tests/rules/@stylistic/object-curly-spacing/empty-ignore/cases.ts:17:8	@stylistic/object-curly-spacing	requireSpaceAfter	A space is required after '{'.
+tests/rules/@stylistic/object-curly-spacing/empty-ignore/cases.ts:18:21	@stylistic/object-curly-spacing	requireSpaceBefore	A space is required before '}'.
+tests/rules/@stylistic/object-curly-spacing/empty-ignore/cases.ts:25:12	@stylistic/object-curly-spacing	requireSpaceAfter	A space is required after '{'.
+tests/rules/@stylistic/object-curly-spacing/empty-ignore/cases.ts:25:17	@stylistic/object-curly-spacing	requireSpaceBefore	A space is required before '}'.
+tests/rules/@stylistic/object-curly-spacing/empty-ignore/cases.ts:27:12	@stylistic/object-curly-spacing	requireSpaceAfter	A space is required after '{'.
+tests/rules/@stylistic/object-curly-spacing/empty-ignore/cases.ts:28:18	@stylistic/object-curly-spacing	requireSpaceBefore	A space is required before '}'.
+tests/rules/@stylistic/object-curly-spacing/empty-ignore/cases.ts:34:13	@stylistic/object-curly-spacing	requireSpaceAfter	A space is required after '{'.
+tests/rules/@stylistic/object-curly-spacing/empty-ignore/cases.ts:34:34	@stylistic/object-curly-spacing	requireSpaceBefore	A space is required before '}'.
+tests/rules/@stylistic/object-curly-spacing/empty-ignore/cases.ts:38:7	@stylistic/object-curly-spacing	requireSpaceBefore	A space is required before '}'.
+tests/rules/@stylistic/object-curly-spacing/empty-ignore/cases.ts:39:13	@stylistic/object-curly-spacing	requireSpaceAfter	A space is required after '{'.
+tests/rules/@stylistic/object-curly-spacing/empty-ignore/cases.ts:39:17	@stylistic/object-curly-spacing	requireSpaceAfter	A space is required after '{'.
+tests/rules/@stylistic/object-curly-spacing/empty-ignore/cases.ts:39:22	@stylistic/object-curly-spacing	requireSpaceBefore	A space is required before '}'.
+tests/rules/@stylistic/object-curly-spacing/empty-ignore/cases.ts:39:23	@stylistic/object-curly-spacing	requireSpaceBefore	A space is required before '}'.
+tests/rules/@stylistic/object-curly-spacing/empty-ignore/cases.ts:41:13	@stylistic/object-curly-spacing	requireSpaceAfter	A space is required after '{'.
+tests/rules/@stylistic/object-curly-spacing/empty-ignore/cases.ts:41:23	@stylistic/object-curly-spacing	requireSpaceBefore	A space is required before '}'.
+tests/rules/@stylistic/object-curly-spacing/empty-ignore/cases.ts:43:13	@stylistic/object-curly-spacing	requireSpaceAfter	A space is required after '{'.
+tests/rules/@stylistic/object-curly-spacing/empty-ignore/cases.ts:43:22	@stylistic/object-curly-spacing	requireSpaceBefore	A space is required before '}'.
+tests/rules/@stylistic/object-curly-spacing/empty-ignore/cases.ts:44:13	@stylistic/object-curly-spacing	requireSpaceAfter	A space is required after '{'.
+tests/rules/@stylistic/object-curly-spacing/empty-ignore/cases.ts:44:20	@stylistic/object-curly-spacing	requireSpaceBefore	A space is required before '}'.
+tests/rules/@stylistic/object-curly-spacing/empty-ignore/cases.ts:45:7	@stylistic/object-curly-spacing	requireSpaceAfter	A space is required after '{'.
+tests/rules/@stylistic/object-curly-spacing/empty-ignore/cases.ts:45:20	@stylistic/object-curly-spacing	requireSpaceBefore	A space is required before '}'.
+tests/rules/@stylistic/object-curly-spacing/empty-ignore/cases.ts:46:18	@stylistic/object-curly-spacing	requireSpaceAfter	A space is required after '{'.
+tests/rules/@stylistic/object-curly-spacing/empty-ignore/cases.ts:46:28	@stylistic/object-curly-spacing	requireSpaceBefore	A space is required before '}'.
+tests/rules/@stylistic/object-curly-spacing/empty-ignore/cases.ts:47:7	@stylistic/object-curly-spacing	requireSpaceAfter	A space is required after '{'.
+tests/rules/@stylistic/object-curly-spacing/empty-ignore/cases.ts:47:11	@stylistic/object-curly-spacing	requireSpaceAfter	A space is required after '{'.
+tests/rules/@stylistic/object-curly-spacing/empty-ignore/cases.ts:47:17	@stylistic/object-curly-spacing	requireSpaceBefore	A space is required before '}'.
+tests/rules/@stylistic/object-curly-spacing/empty-ignore/cases.ts:47:18	@stylistic/object-curly-spacing	requireSpaceBefore	A space is required before '}'.
+tests/rules/@stylistic/object-curly-spacing/empty-ignore/cases.ts:48:13	@stylistic/object-curly-spacing	requireSpaceAfter	A space is required after '{'.
+tests/rules/@stylistic/object-curly-spacing/empty-ignore/cases.ts:48:18	@stylistic/object-curly-spacing	requireSpaceBefore	A space is required before '}'.
+tests/rules/@stylistic/object-curly-spacing/empty-ignore/cases.ts:48:21	@stylistic/object-curly-spacing	requireSpaceAfter	A space is required after '{'.
+tests/rules/@stylistic/object-curly-spacing/empty-ignore/cases.ts:48:42	@stylistic/object-curly-spacing	requireSpaceBefore	A space is required before '}'.
+tests/rules/@stylistic/object-curly-spacing/empty-ignore/cases.ts:56:11	@stylistic/object-curly-spacing	requireSpaceAfter	A space is required after '{'.
+tests/rules/@stylistic/object-curly-spacing/empty-ignore/cases.ts:56:21	@stylistic/object-curly-spacing	requireSpaceBefore	A space is required before '}'.
+tests/rules/@stylistic/object-curly-spacing/empty-ignore/cases.ts:60:11	@stylistic/object-curly-spacing	requireSpaceAfter	A space is required after '{'.
+tests/rules/@stylistic/object-curly-spacing/empty-ignore/cases.ts:60:33	@stylistic/object-curly-spacing	requireSpaceBefore	A space is required before '}'.
+tests/rules/@stylistic/object-curly-spacing/empty-ignore/cases.ts:62:11	@stylistic/object-curly-spacing	requireSpaceAfter	A space is required after '{'.
+tests/rules/@stylistic/object-curly-spacing/empty-ignore/cases.ts:62:42	@stylistic/object-curly-spacing	requireSpaceBefore	A space is required before '}'.
+tests/rules/@stylistic/object-curly-spacing/empty-ignore/cases.ts:63:11	@stylistic/object-curly-spacing	requireSpaceAfter	A space is required after '{'.
+tests/rules/@stylistic/object-curly-spacing/empty-ignore/cases.ts:63:31	@stylistic/object-curly-spacing	requireSpaceBefore	A space is required before '}'.
+tests/rules/@stylistic/object-curly-spacing/empty-ignore/cases.ts:65:12	@stylistic/object-curly-spacing	requireSpaceAfter	A space is required after '{'.
+tests/rules/@stylistic/object-curly-spacing/empty-ignore/cases.ts:65:16	@stylistic/object-curly-spacing	requireSpaceAfter	A space is required after '{'.
+tests/rules/@stylistic/object-curly-spacing/empty-ignore/cases.ts:65:26	@stylistic/object-curly-spacing	requireSpaceBefore	A space is required before '}'.
+tests/rules/@stylistic/object-curly-spacing/empty-ignore/cases.ts:65:27	@stylistic/object-curly-spacing	requireSpaceBefore	A space is required before '}'.
+tests/rules/@stylistic/object-curly-spacing/empty-ignore/cases.ts:66:12	@stylistic/object-curly-spacing	requireSpaceAfter	A space is required after '{'.
+tests/rules/@stylistic/object-curly-spacing/empty-ignore/cases.ts:66:32	@stylistic/object-curly-spacing	requireSpaceBefore	A space is required before '}'.
+tests/rules/@stylistic/object-curly-spacing/empty-ignore/cases.ts:67:12	@stylistic/object-curly-spacing	requireSpaceAfter	A space is required after '{'.
+tests/rules/@stylistic/object-curly-spacing/empty-ignore/cases.ts:67:16	@stylistic/object-curly-spacing	requireSpaceAfter	A space is required after '{'.
+tests/rules/@stylistic/object-curly-spacing/empty-ignore/cases.ts:67:30	@stylistic/object-curly-spacing	requireSpaceBefore	A space is required before '}'.
+tests/rules/@stylistic/object-curly-spacing/empty-ignore/cases.ts:67:31	@stylistic/object-curly-spacing	requireSpaceBefore	A space is required before '}'.
+tests/rules/@stylistic/object-curly-spacing/empty-ignore/cases.ts:68:12	@stylistic/object-curly-spacing	requireSpaceAfter	A space is required after '{'.
+tests/rules/@stylistic/object-curly-spacing/empty-ignore/cases.ts:68:24	@stylistic/object-curly-spacing	requireSpaceBefore	A space is required before '}'.
+tests/rules/@stylistic/object-curly-spacing/empty-ignore/cases.ts:70:14	@stylistic/object-curly-spacing	requireSpaceAfter	A space is required after '{'.
+tests/rules/@stylistic/object-curly-spacing/empty-ignore/cases.ts:70:24	@stylistic/object-curly-spacing	requireSpaceBefore	A space is required before '}'.
+tests/rules/@stylistic/object-curly-spacing/empty-ignore/cases.ts:74:14	@stylistic/object-curly-spacing	requireSpaceAfter	A space is required after '{'.
+tests/rules/@stylistic/object-curly-spacing/empty-ignore/cases.ts:74:36	@stylistic/object-curly-spacing	requireSpaceBefore	A space is required before '}'.
+tests/rules/@stylistic/object-curly-spacing/empty-ignore/cases.ts:75:14	@stylistic/object-curly-spacing	requireSpaceAfter	A space is required after '{'.
+tests/rules/@stylistic/object-curly-spacing/empty-ignore/cases.ts:75:18	@stylistic/object-curly-spacing	requireSpaceAfter	A space is required after '{'.
+tests/rules/@stylistic/object-curly-spacing/empty-ignore/cases.ts:75:28	@stylistic/object-curly-spacing	requireSpaceBefore	A space is required before '}'.
+tests/rules/@stylistic/object-curly-spacing/empty-ignore/cases.ts:75:29	@stylistic/object-curly-spacing	requireSpaceBefore	A space is required before '}'.
+tests/rules/@stylistic/object-curly-spacing/empty-ignore/cases.ts:76:9	@stylistic/object-curly-spacing	requireSpaceAfter	A space is required after '{'.
+tests/rules/@stylistic/object-curly-spacing/empty-ignore/cases.ts:76:14	@stylistic/object-curly-spacing	requireSpaceBefore	A space is required before '}'.
+tests/rules/@stylistic/object-curly-spacing/empty-ignore/cases.ts:81:16	@stylistic/object-curly-spacing	requireSpaceAfter	A space is required after '{'.
+tests/rules/@stylistic/object-curly-spacing/empty-ignore/cases.ts:81:20	@stylistic/object-curly-spacing	requireSpaceAfter	A space is required after '{'.
+tests/rules/@stylistic/object-curly-spacing/empty-ignore/cases.ts:81:24	@stylistic/object-curly-spacing	requireSpaceAfter	A space is required after '{'.
+tests/rules/@stylistic/object-curly-spacing/empty-ignore/cases.ts:81:29	@stylistic/object-curly-spacing	requireSpaceBefore	A space is required before '}'.
+tests/rules/@stylistic/object-curly-spacing/empty-ignore/cases.ts:81:30	@stylistic/object-curly-spacing	requireSpaceBefore	A space is required before '}'.
+tests/rules/@stylistic/object-curly-spacing/empty-ignore/cases.ts:81:31	@stylistic/object-curly-spacing	requireSpaceBefore	A space is required before '}'.
+tests/rules/@stylistic/object-curly-spacing/empty-never/cases.ts:1:14	@stylistic/object-curly-spacing	requireSpaceAfter	A space is required after '{'.
+tests/rules/@stylistic/object-curly-spacing/empty-never/cases.ts:1:27	@stylistic/object-curly-spacing	requireSpaceBefore	A space is required before '}'.
+tests/rules/@stylistic/object-curly-spacing/empty-never/cases.ts:3:8	@stylistic/object-curly-spacing	requireSpaceAfter	A space is required after '{'.
+tests/rules/@stylistic/object-curly-spacing/empty-never/cases.ts:6:9	@stylistic/object-curly-spacing	unexpectedSpaceInEmptyObject	There should be no space in empty 'ImportDeclaration'.
+tests/rules/@stylistic/object-curly-spacing/empty-never/cases.ts:8:13	@stylistic/object-curly-spacing	requireSpaceAfter	A space is required after '{'.
+tests/rules/@stylistic/object-curly-spacing/empty-never/cases.ts:8:19	@stylistic/object-curly-spacing	requireSpaceBefore	A space is required before '}'.
+tests/rules/@stylistic/object-curly-spacing/empty-never/cases.ts:9:38	@stylistic/object-curly-spacing	requireSpaceAfter	A space is required after '{'.
+tests/rules/@stylistic/object-curly-spacing/empty-never/cases.ts:9:51	@stylistic/object-curly-spacing	requireSpaceBefore	A space is required before '}'.
+tests/rules/@stylistic/object-curly-spacing/empty-never/cases.ts:11:8	@stylistic/object-curly-spacing	requireSpaceAfter	A space is required after '{'.
+tests/rules/@stylistic/object-curly-spacing/empty-never/cases.ts:11:11	@stylistic/object-curly-spacing	requireSpaceBefore	A space is required before '}'.
+tests/rules/@stylistic/object-curly-spacing/empty-never/cases.ts:11:38	@stylistic/object-curly-spacing	requireSpaceAfter	A space is required after '{'.
+tests/rules/@stylistic/object-curly-spacing/empty-never/cases.ts:11:51	@stylistic/object-curly-spacing	requireSpaceBefore	A space is required before '}'.
+tests/rules/@stylistic/object-curly-spacing/empty-never/cases.ts:13:40	@stylistic/object-curly-spacing	unexpectedSpaceInEmptyObject	There should be no space in empty 'ImportAttributes'.
+tests/rules/@stylistic/object-curly-spacing/empty-never/cases.ts:13:40	@stylistic/object-curly-spacing	unexpectedSpaceInEmptyObject	There should be no space in empty 'ImportDeclaration'.
+tests/rules/@stylistic/object-curly-spacing/empty-never/cases.ts:14:35	@stylistic/object-curly-spacing	requireSpaceAfter	A space is required after '{'.
+tests/rules/@stylistic/object-curly-spacing/empty-never/cases.ts:14:48	@stylistic/object-curly-spacing	requireSpaceBefore	A space is required before '}'.
+tests/rules/@stylistic/object-curly-spacing/empty-never/cases.ts:15:36	@stylistic/object-curly-spacing	unexpectedSpaceInEmptyObject	There should be no space in empty 'ImportAttributes'.
+tests/rules/@stylistic/object-curly-spacing/empty-never/cases.ts:16:8	@stylistic/object-curly-spacing	requireSpaceAfter	A space is required after '{'.
+tests/rules/@stylistic/object-curly-spacing/empty-never/cases.ts:16:11	@stylistic/object-curly-spacing	requireSpaceBefore	A space is required before '}'.
+tests/rules/@stylistic/object-curly-spacing/empty-never/cases.ts:16:38	@stylistic/object-curly-spacing	requireSpaceAfter	A space is required after '{'.
+tests/rules/@stylistic/object-curly-spacing/empty-never/cases.ts:16:51	@stylistic/object-curly-spacing	requireSpaceBefore	A space is required before '}'.
+tests/rules/@stylistic/object-curly-spacing/empty-never/cases.ts:17:8	@stylistic/object-curly-spacing	requireSpaceAfter	A space is required after '{'.
+tests/rules/@stylistic/object-curly-spacing/empty-never/cases.ts:18:21	@stylistic/object-curly-spacing	requireSpaceBefore	A space is required before '}'.
+tests/rules/@stylistic/object-curly-spacing/empty-never/cases.ts:20:9	@stylistic/object-curly-spacing	unexpectedSpaceInEmptyObject	There should be no space in empty 'ExportNamedDeclaration'.
+tests/rules/@stylistic/object-curly-spacing/empty-never/cases.ts:25:12	@stylistic/object-curly-spacing	requireSpaceAfter	A space is required after '{'.
+tests/rules/@stylistic/object-curly-spacing/empty-never/cases.ts:25:17	@stylistic/object-curly-spacing	requireSpaceBefore	A space is required before '}'.
+tests/rules/@stylistic/object-curly-spacing/empty-never/cases.ts:27:12	@stylistic/object-curly-spacing	requireSpaceAfter	A space is required after '{'.
+tests/rules/@stylistic/object-curly-spacing/empty-never/cases.ts:28:18	@stylistic/object-curly-spacing	requireSpaceBefore	A space is required before '}'.
+tests/rules/@stylistic/object-curly-spacing/empty-never/cases.ts:30:13	@stylistic/object-curly-spacing	unexpectedSpaceInEmptyObject	There should be no space in empty 'ObjectExpression'.
+tests/rules/@stylistic/object-curly-spacing/empty-never/cases.ts:31:13	@stylistic/object-curly-spacing	unexpectedSpaceInEmptyObject	There should be no space in empty 'ObjectExpression'.
+tests/rules/@stylistic/object-curly-spacing/empty-never/cases.ts:32:13	@stylistic/object-curly-spacing	unexpectedSpaceInEmptyObject	There should be no space in empty 'ObjectExpression'.
+tests/rules/@stylistic/object-curly-spacing/empty-never/cases.ts:34:13	@stylistic/object-curly-spacing	requireSpaceAfter	A space is required after '{'.
+tests/rules/@stylistic/object-curly-spacing/empty-never/cases.ts:34:34	@stylistic/object-curly-spacing	requireSpaceBefore	A space is required before '}'.
+tests/rules/@stylistic/object-curly-spacing/empty-never/cases.ts:38:7	@stylistic/object-curly-spacing	requireSpaceBefore	A space is required before '}'.
+tests/rules/@stylistic/object-curly-spacing/empty-never/cases.ts:39:13	@stylistic/object-curly-spacing	requireSpaceAfter	A space is required after '{'.
+tests/rules/@stylistic/object-curly-spacing/empty-never/cases.ts:39:17	@stylistic/object-curly-spacing	requireSpaceAfter	A space is required after '{'.
+tests/rules/@stylistic/object-curly-spacing/empty-never/cases.ts:39:22	@stylistic/object-curly-spacing	requireSpaceBefore	A space is required before '}'.
+tests/rules/@stylistic/object-curly-spacing/empty-never/cases.ts:39:23	@stylistic/object-curly-spacing	requireSpaceBefore	A space is required before '}'.
+tests/rules/@stylistic/object-curly-spacing/empty-never/cases.ts:41:13	@stylistic/object-curly-spacing	requireSpaceAfter	A space is required after '{'.
+tests/rules/@stylistic/object-curly-spacing/empty-never/cases.ts:41:23	@stylistic/object-curly-spacing	requireSpaceBefore	A space is required before '}'.
+tests/rules/@stylistic/object-curly-spacing/empty-never/cases.ts:43:13	@stylistic/object-curly-spacing	requireSpaceAfter	A space is required after '{'.
+tests/rules/@stylistic/object-curly-spacing/empty-never/cases.ts:43:22	@stylistic/object-curly-spacing	requireSpaceBefore	A space is required before '}'.
+tests/rules/@stylistic/object-curly-spacing/empty-never/cases.ts:44:13	@stylistic/object-curly-spacing	requireSpaceAfter	A space is required after '{'.
+tests/rules/@stylistic/object-curly-spacing/empty-never/cases.ts:44:18	@stylistic/object-curly-spacing	unexpectedSpaceInEmptyObject	There should be no space in empty 'ObjectExpression'.
+tests/rules/@stylistic/object-curly-spacing/empty-never/cases.ts:44:20	@stylistic/object-curly-spacing	requireSpaceBefore	A space is required before '}'.
+tests/rules/@stylistic/object-curly-spacing/empty-never/cases.ts:45:7	@stylistic/object-curly-spacing	requireSpaceAfter	A space is required after '{'.
+tests/rules/@stylistic/object-curly-spacing/empty-never/cases.ts:45:20	@stylistic/object-curly-spacing	requireSpaceBefore	A space is required before '}'.
+tests/rules/@stylistic/object-curly-spacing/empty-never/cases.ts:46:18	@stylistic/object-curly-spacing	requireSpaceAfter	A space is required after '{'.
+tests/rules/@stylistic/object-curly-spacing/empty-never/cases.ts:46:28	@stylistic/object-curly-spacing	requireSpaceBefore	A space is required before '}'.
+tests/rules/@stylistic/object-curly-spacing/empty-never/cases.ts:47:7	@stylistic/object-curly-spacing	requireSpaceAfter	A space is required after '{'.
+tests/rules/@stylistic/object-curly-spacing/empty-never/cases.ts:47:11	@stylistic/object-curly-spacing	requireSpaceAfter	A space is required after '{'.
+tests/rules/@stylistic/object-curly-spacing/empty-never/cases.ts:47:17	@stylistic/object-curly-spacing	requireSpaceBefore	A space is required before '}'.
+tests/rules/@stylistic/object-curly-spacing/empty-never/cases.ts:47:18	@stylistic/object-curly-spacing	requireSpaceBefore	A space is required before '}'.
+tests/rules/@stylistic/object-curly-spacing/empty-never/cases.ts:48:13	@stylistic/object-curly-spacing	requireSpaceAfter	A space is required after '{'.
+tests/rules/@stylistic/object-curly-spacing/empty-never/cases.ts:48:18	@stylistic/object-curly-spacing	requireSpaceBefore	A space is required before '}'.
+tests/rules/@stylistic/object-curly-spacing/empty-never/cases.ts:48:21	@stylistic/object-curly-spacing	requireSpaceAfter	A space is required after '{'.
+tests/rules/@stylistic/object-curly-spacing/empty-never/cases.ts:48:42	@stylistic/object-curly-spacing	requireSpaceBefore	A space is required before '}'.
+tests/rules/@stylistic/object-curly-spacing/empty-never/cases.ts:52:21	@stylistic/object-curly-spacing	unexpectedSpaceInEmptyObject	There should be no space in empty 'ObjectExpression'.
+tests/rules/@stylistic/object-curly-spacing/empty-never/cases.ts:52:21	@stylistic/object-curly-spacing	unexpectedSpaceInEmptyObject	There should be no space in empty 'ExportNamedDeclaration'.
+tests/rules/@stylistic/object-curly-spacing/empty-never/cases.ts:53:30	@stylistic/object-curly-spacing	unexpectedSpaceInEmptyObject	There should be no space in empty 'ExportNamedDeclaration'.
+tests/rules/@stylistic/object-curly-spacing/empty-never/cases.ts:54:19	@stylistic/object-curly-spacing	unexpectedSpaceInEmptyObject	There should be no space in empty 'ExportNamedDeclaration'.
+tests/rules/@stylistic/object-curly-spacing/empty-never/cases.ts:56:11	@stylistic/object-curly-spacing	requireSpaceAfter	A space is required after '{'.
+tests/rules/@stylistic/object-curly-spacing/empty-never/cases.ts:56:21	@stylistic/object-curly-spacing	requireSpaceBefore	A space is required before '}'.
+tests/rules/@stylistic/object-curly-spacing/empty-never/cases.ts:59:12	@stylistic/object-curly-spacing	unexpectedSpaceInEmptyObject	There should be no space in empty 'TSTypeLiteral'.
+tests/rules/@stylistic/object-curly-spacing/empty-never/cases.ts:60:11	@stylistic/object-curly-spacing	requireSpaceAfter	A space is required after '{'.
+tests/rules/@stylistic/object-curly-spacing/empty-never/cases.ts:60:33	@stylistic/object-curly-spacing	requireSpaceBefore	A space is required before '}'.
+tests/rules/@stylistic/object-curly-spacing/empty-never/cases.ts:62:11	@stylistic/object-curly-spacing	requireSpaceAfter	A space is required after '{'.
+tests/rules/@stylistic/object-curly-spacing/empty-never/cases.ts:62:42	@stylistic/object-curly-spacing	requireSpaceBefore	A space is required before '}'.
+tests/rules/@stylistic/object-curly-spacing/empty-never/cases.ts:63:11	@stylistic/object-curly-spacing	requireSpaceAfter	A space is required after '{'.
+tests/rules/@stylistic/object-curly-spacing/empty-never/cases.ts:63:31	@stylistic/object-curly-spacing	requireSpaceBefore	A space is required before '}'.
+tests/rules/@stylistic/object-curly-spacing/empty-never/cases.ts:65:12	@stylistic/object-curly-spacing	requireSpaceAfter	A space is required after '{'.
+tests/rules/@stylistic/object-curly-spacing/empty-never/cases.ts:65:16	@stylistic/object-curly-spacing	requireSpaceAfter	A space is required after '{'.
+tests/rules/@stylistic/object-curly-spacing/empty-never/cases.ts:65:26	@stylistic/object-curly-spacing	requireSpaceBefore	A space is required before '}'.
+tests/rules/@stylistic/object-curly-spacing/empty-never/cases.ts:65:27	@stylistic/object-curly-spacing	requireSpaceBefore	A space is required before '}'.
+tests/rules/@stylistic/object-curly-spacing/empty-never/cases.ts:66:12	@stylistic/object-curly-spacing	requireSpaceAfter	A space is required after '{'.
+tests/rules/@stylistic/object-curly-spacing/empty-never/cases.ts:66:32	@stylistic/object-curly-spacing	requireSpaceBefore	A space is required before '}'.
+tests/rules/@stylistic/object-curly-spacing/empty-never/cases.ts:67:12	@stylistic/object-curly-spacing	requireSpaceAfter	A space is required after '{'.
+tests/rules/@stylistic/object-curly-spacing/empty-never/cases.ts:67:16	@stylistic/object-curly-spacing	requireSpaceAfter	A space is required after '{'.
+tests/rules/@stylistic/object-curly-spacing/empty-never/cases.ts:67:30	@stylistic/object-curly-spacing	requireSpaceBefore	A space is required before '}'.
+tests/rules/@stylistic/object-curly-spacing/empty-never/cases.ts:67:31	@stylistic/object-curly-spacing	requireSpaceBefore	A space is required before '}'.
+tests/rules/@stylistic/object-curly-spacing/empty-never/cases.ts:68:12	@stylistic/object-curly-spacing	requireSpaceAfter	A space is required after '{'.
+tests/rules/@stylistic/object-curly-spacing/empty-never/cases.ts:68:24	@stylistic/object-curly-spacing	requireSpaceBefore	A space is required before '}'.
+tests/rules/@stylistic/object-curly-spacing/empty-never/cases.ts:70:14	@stylistic/object-curly-spacing	requireSpaceAfter	A space is required after '{'.
+tests/rules/@stylistic/object-curly-spacing/empty-never/cases.ts:70:24	@stylistic/object-curly-spacing	requireSpaceBefore	A space is required before '}'.
+tests/rules/@stylistic/object-curly-spacing/empty-never/cases.ts:73:15	@stylistic/object-curly-spacing	unexpectedSpaceInEmptyObject	There should be no space in empty 'TSInterfaceBody'.
+tests/rules/@stylistic/object-curly-spacing/empty-never/cases.ts:74:14	@stylistic/object-curly-spacing	requireSpaceAfter	A space is required after '{'.
+tests/rules/@stylistic/object-curly-spacing/empty-never/cases.ts:74:36	@stylistic/object-curly-spacing	requireSpaceBefore	A space is required before '}'.
+tests/rules/@stylistic/object-curly-spacing/empty-never/cases.ts:75:14	@stylistic/object-curly-spacing	requireSpaceAfter	A space is required after '{'.
+tests/rules/@stylistic/object-curly-spacing/empty-never/cases.ts:75:18	@stylistic/object-curly-spacing	requireSpaceAfter	A space is required after '{'.
+tests/rules/@stylistic/object-curly-spacing/empty-never/cases.ts:75:28	@stylistic/object-curly-spacing	requireSpaceBefore	A space is required before '}'.
+tests/rules/@stylistic/object-curly-spacing/empty-never/cases.ts:75:29	@stylistic/object-curly-spacing	requireSpaceBefore	A space is required before '}'.
+tests/rules/@stylistic/object-curly-spacing/empty-never/cases.ts:76:9	@stylistic/object-curly-spacing	requireSpaceAfter	A space is required after '{'.
+tests/rules/@stylistic/object-curly-spacing/empty-never/cases.ts:76:14	@stylistic/object-curly-spacing	requireSpaceBefore	A space is required before '}'.
+tests/rules/@stylistic/object-curly-spacing/empty-never/cases.ts:79:10	@stylistic/object-curly-spacing	unexpectedSpaceInEmptyObject	There should be no space in empty 'TSEnumBody'.
+tests/rules/@stylistic/object-curly-spacing/empty-never/cases.ts:81:16	@stylistic/object-curly-spacing	requireSpaceAfter	A space is required after '{'.
+tests/rules/@stylistic/object-curly-spacing/empty-never/cases.ts:81:20	@stylistic/object-curly-spacing	requireSpaceAfter	A space is required after '{'.
+tests/rules/@stylistic/object-curly-spacing/empty-never/cases.ts:81:24	@stylistic/object-curly-spacing	requireSpaceAfter	A space is required after '{'.
+tests/rules/@stylistic/object-curly-spacing/empty-never/cases.ts:81:29	@stylistic/object-curly-spacing	requireSpaceBefore	A space is required before '}'.
+tests/rules/@stylistic/object-curly-spacing/empty-never/cases.ts:81:30	@stylistic/object-curly-spacing	requireSpaceBefore	A space is required before '}'.
+tests/rules/@stylistic/object-curly-spacing/empty-never/cases.ts:81:31	@stylistic/object-curly-spacing	requireSpaceBefore	A space is required before '}'.
+tests/rules/@stylistic/object-curly-spacing/never-exceptions/cases.ts:2:9	@stylistic/object-curly-spacing	unexpectedSpaceAfter	There should be no space after '{'.
+tests/rules/@stylistic/object-curly-spacing/never-exceptions/cases.ts:2:23	@stylistic/object-curly-spacing	unexpectedSpaceBefore	There should be no space before '}'.
+tests/rules/@stylistic/object-curly-spacing/never-exceptions/cases.ts:3:19	@stylistic/object-curly-spacing	unexpectedSpaceBefore	There should be no space before '}'.
+tests/rules/@stylistic/object-curly-spacing/never-exceptions/cases.ts:10:40	@stylistic/object-curly-spacing	unexpectedSpaceAfter	There should be no space after '{'.
+tests/rules/@stylistic/object-curly-spacing/never-exceptions/cases.ts:10:53	@stylistic/object-curly-spacing	unexpectedSpaceBefore	There should be no space before '}'.
+tests/rules/@stylistic/object-curly-spacing/never-exceptions/cases.ts:17:19	@stylistic/object-curly-spacing	unexpectedSpaceBefore	There should be no space before '}'.
+tests/rules/@stylistic/object-curly-spacing/never-exceptions/cases.ts:18:9	@stylistic/object-curly-spacing	unexpectedSpaceAfter	There should be no space after '{'.
+tests/rules/@stylistic/object-curly-spacing/never-exceptions/cases.ts:26:13	@stylistic/object-curly-spacing	unexpectedSpaceAfter	There should be no space after '{'.
+tests/rules/@stylistic/object-curly-spacing/never-exceptions/cases.ts:26:18	@stylistic/object-curly-spacing	unexpectedSpaceBefore	There should be no space before '}'.
+tests/rules/@stylistic/object-curly-spacing/never-exceptions/cases.ts:27:17	@stylistic/object-curly-spacing	unexpectedSpaceBefore	There should be no space before '}'.
+tests/rules/@stylistic/object-curly-spacing/never-exceptions/cases.ts:28:13	@stylistic/object-curly-spacing	unexpectedSpaceAfter	There should be no space after '{'.
+tests/rules/@stylistic/object-curly-spacing/never-exceptions/cases.ts:36:7	@stylistic/object-curly-spacing	unexpectedSpaceBefore	There should be no space before '}'.
+tests/rules/@stylistic/object-curly-spacing/never-exceptions/cases.ts:39:23	@stylistic/object-curly-spacing	requireSpaceBefore	A space is required before '}'.
+tests/rules/@stylistic/object-curly-spacing/never-exceptions/cases.ts:40:14	@stylistic/object-curly-spacing	unexpectedSpaceAfter	There should be no space after '{'.
+tests/rules/@stylistic/object-curly-spacing/never-exceptions/cases.ts:40:19	@stylistic/object-curly-spacing	unexpectedSpaceAfter	There should be no space after '{'.
+tests/rules/@stylistic/object-curly-spacing/never-exceptions/cases.ts:40:24	@stylistic/object-curly-spacing	unexpectedSpaceBefore	There should be no space before '}'.
+tests/rules/@stylistic/object-curly-spacing/never-exceptions/cases.ts:41:23	@stylistic/object-curly-spacing	requireSpaceBefore	A space is required before '}'.
+tests/rules/@stylistic/object-curly-spacing/never-exceptions/cases.ts:42:14	@stylistic/object-curly-spacing	unexpectedSpaceAfter	There should be no space after '{'.
+tests/rules/@stylistic/object-curly-spacing/never-exceptions/cases.ts:44:20	@stylistic/object-curly-spacing	requireSpaceBefore	A space is required before '}'.
+tests/rules/@stylistic/object-curly-spacing/never-exceptions/cases.ts:45:25	@stylistic/object-curly-spacing	unexpectedSpaceAfter	There should be no space after '{'.
+tests/rules/@stylistic/object-curly-spacing/never-exceptions/cases.ts:45:36	@stylistic/object-curly-spacing	unexpectedSpaceBefore	There should be no space before '}'.
+tests/rules/@stylistic/object-curly-spacing/never-exceptions/cases.ts:46:8	@stylistic/object-curly-spacing	unexpectedSpaceAfter	There should be no space after '{'.
+tests/rules/@stylistic/object-curly-spacing/never-exceptions/cases.ts:46:14	@stylistic/object-curly-spacing	unexpectedSpaceBefore	There should be no space before '}'.
+tests/rules/@stylistic/object-curly-spacing/never-exceptions/cases.ts:46:33	@stylistic/object-curly-spacing	unexpectedSpaceAfter	There should be no space after '{'.
+tests/rules/@stylistic/object-curly-spacing/never-exceptions/cases.ts:46:38	@stylistic/object-curly-spacing	unexpectedSpaceBefore	There should be no space before '}'.
+tests/rules/@stylistic/object-curly-spacing/never-exceptions/cases.ts:47:18	@stylistic/object-curly-spacing	requireSpaceBefore	A space is required before '}'.
+tests/rules/@stylistic/object-curly-spacing/never-exceptions/cases.ts:47:23	@stylistic/object-curly-spacing	unexpectedSpaceAfter	There should be no space after '{'.
+tests/rules/@stylistic/object-curly-spacing/never-exceptions/cases.ts:47:28	@stylistic/object-curly-spacing	unexpectedSpaceAfter	There should be no space after '{'.
+tests/rules/@stylistic/object-curly-spacing/never-exceptions/cases.ts:47:33	@stylistic/object-curly-spacing	unexpectedSpaceBefore	There should be no space before '}'.
+tests/rules/@stylistic/object-curly-spacing/never-exceptions/cases.ts:49:14	@stylistic/object-curly-spacing	unexpectedSpaceAfter	There should be no space after '{'.
+tests/rules/@stylistic/object-curly-spacing/never-exceptions/cases.ts:49:16	@stylistic/object-curly-spacing	unexpectedSpaceBefore	There should be no space before '}'.
+tests/rules/@stylistic/object-curly-spacing/never-exceptions/cases.ts:49:21	@stylistic/object-curly-spacing	unexpectedSpaceAfter	There should be no space after '{'.
+tests/rules/@stylistic/object-curly-spacing/never-exceptions/cases.ts:49:31	@stylistic/object-curly-spacing	unexpectedSpaceBefore	There should be no space before '}'.
+tests/rules/@stylistic/object-curly-spacing/never-exceptions/cases.ts:49:37	@stylistic/object-curly-spacing	unexpectedSpaceAfter	There should be no space after '{'.
+tests/rules/@stylistic/object-curly-spacing/never-exceptions/cases.ts:49:42	@stylistic/object-curly-spacing	unexpectedSpaceBefore	There should be no space before '}'.
+tests/rules/@stylistic/object-curly-spacing/never-exceptions/cases.ts:57:12	@stylistic/object-curly-spacing	unexpectedSpaceAfter	There should be no space after '{'.
+tests/rules/@stylistic/object-curly-spacing/never-exceptions/cases.ts:57:22	@stylistic/object-curly-spacing	unexpectedSpaceBefore	There should be no space before '}'.
+tests/rules/@stylistic/object-curly-spacing/never-exceptions/cases.ts:60:11	@stylistic/object-curly-spacing	requireSpaceAfter	A space is required after '{'.
+tests/rules/@stylistic/object-curly-spacing/never-exceptions/cases.ts:61:34	@stylistic/object-curly-spacing	unexpectedSpaceBefore	There should be no space before '}'.
+tests/rules/@stylistic/object-curly-spacing/never-exceptions/cases.ts:62:11	@stylistic/object-curly-spacing	requireSpaceAfter	A space is required after '{'.
+tests/rules/@stylistic/object-curly-spacing/never-exceptions/cases.ts:63:11	@stylistic/object-curly-spacing	requireSpaceAfter	A space is required after '{'.
+tests/rules/@stylistic/object-curly-spacing/never-exceptions/cases.ts:64:32	@stylistic/object-curly-spacing	unexpectedSpaceBefore	There should be no space before '}'.
+tests/rules/@stylistic/object-curly-spacing/never-exceptions/cases.ts:65:27	@stylistic/object-curly-spacing	requireSpaceBefore	A space is required before '}'.
+tests/rules/@stylistic/object-curly-spacing/never-exceptions/cases.ts:66:32	@stylistic/object-curly-spacing	requireSpaceBefore	A space is required before '}'.
+tests/rules/@stylistic/object-curly-spacing/never-exceptions/cases.ts:67:16	@stylistic/object-curly-spacing	requireSpaceAfter	A space is required after '{'.
+tests/rules/@stylistic/object-curly-spacing/never-exceptions/cases.ts:67:31	@stylistic/object-curly-spacing	requireSpaceBefore	A space is required before '}'.
+tests/rules/@stylistic/object-curly-spacing/never-exceptions/cases.ts:69:13	@stylistic/object-curly-spacing	unexpectedSpaceAfter	There should be no space after '{'.
+tests/rules/@stylistic/object-curly-spacing/never-exceptions/cases.ts:69:46	@stylistic/object-curly-spacing	unexpectedSpaceBefore	There should be no space before '}'.
+tests/rules/@stylistic/object-curly-spacing/never-exceptions/cases.ts:71:15	@stylistic/object-curly-spacing	unexpectedSpaceAfter	There should be no space after '{'.
+tests/rules/@stylistic/object-curly-spacing/never-exceptions/cases.ts:71:25	@stylistic/object-curly-spacing	unexpectedSpaceBefore	There should be no space before '}'.
+tests/rules/@stylistic/object-curly-spacing/never-exceptions/cases.ts:74:14	@stylistic/object-curly-spacing	requireSpaceAfter	A space is required after '{'.
+tests/rules/@stylistic/object-curly-spacing/never-exceptions/cases.ts:75:29	@stylistic/object-curly-spacing	requireSpaceBefore	A space is required before '}'.
+tests/rules/@stylistic/object-curly-spacing/never-exceptions/cases.ts:77:10	@stylistic/object-curly-spacing	unexpectedSpaceAfter	There should be no space after '{'.
+tests/rules/@stylistic/object-curly-spacing/never-exceptions/cases.ts:77:15	@stylistic/object-curly-spacing	unexpectedSpaceBefore	There should be no space before '}'.
+tests/rules/@stylistic/object-curly-spacing/never-exceptions/cases.ts:81:30	@stylistic/object-curly-spacing	requireSpaceBefore	A space is required before '}'.
+tests/rules/@stylistic/object-curly-spacing/never-exceptions/cases.ts:81:31	@stylistic/object-curly-spacing	requireSpaceBefore	A space is required before '}'.
+tests/rules/@stylistic/object-curly-spacing/never-exceptions/cases.ts:87:14	@stylistic/object-curly-spacing	unexpectedSpaceAfter	There should be no space after '{'.
+tests/rules/@stylistic/object-curly-spacing/never-exceptions/cases.ts:87:105	@stylistic/object-curly-spacing	unexpectedSpaceBefore	There should be no space before '}'.
+tests/rules/@stylistic/object-curly-spacing/overrides-always/cases.ts:1:14	@stylistic/object-curly-spacing	requireSpaceAfter	A space is required after '{'.
+tests/rules/@stylistic/object-curly-spacing/overrides-always/cases.ts:1:27	@stylistic/object-curly-spacing	requireSpaceBefore	A space is required before '}'.
+tests/rules/@stylistic/object-curly-spacing/overrides-always/cases.ts:3:8	@stylistic/object-curly-spacing	requireSpaceAfter	A space is required after '{'.
+tests/rules/@stylistic/object-curly-spacing/overrides-always/cases.ts:8:13	@stylistic/object-curly-spacing	requireSpaceAfter	A space is required after '{'.
+tests/rules/@stylistic/object-curly-spacing/overrides-always/cases.ts:8:19	@stylistic/object-curly-spacing	requireSpaceBefore	A space is required before '}'.
+tests/rules/@stylistic/object-curly-spacing/overrides-always/cases.ts:9:38	@stylistic/object-curly-spacing	requireSpaceAfter	A space is required after '{'.
+tests/rules/@stylistic/object-curly-spacing/overrides-always/cases.ts:9:51	@stylistic/object-curly-spacing	requireSpaceBefore	A space is required before '}'.
+tests/rules/@stylistic/object-curly-spacing/overrides-always/cases.ts:11:8	@stylistic/object-curly-spacing	requireSpaceAfter	A space is required after '{'.
+tests/rules/@stylistic/object-curly-spacing/overrides-always/cases.ts:11:11	@stylistic/object-curly-spacing	requireSpaceBefore	A space is required before '}'.
+tests/rules/@stylistic/object-curly-spacing/overrides-always/cases.ts:11:38	@stylistic/object-curly-spacing	requireSpaceAfter	A space is required after '{'.
+tests/rules/@stylistic/object-curly-spacing/overrides-always/cases.ts:11:51	@stylistic/object-curly-spacing	requireSpaceBefore	A space is required before '}'.
+tests/rules/@stylistic/object-curly-spacing/overrides-always/cases.ts:14:35	@stylistic/object-curly-spacing	requireSpaceAfter	A space is required after '{'.
+tests/rules/@stylistic/object-curly-spacing/overrides-always/cases.ts:14:48	@stylistic/object-curly-spacing	requireSpaceBefore	A space is required before '}'.
+tests/rules/@stylistic/object-curly-spacing/overrides-always/cases.ts:16:8	@stylistic/object-curly-spacing	requireSpaceAfter	A space is required after '{'.
+tests/rules/@stylistic/object-curly-spacing/overrides-always/cases.ts:16:11	@stylistic/object-curly-spacing	requireSpaceBefore	A space is required before '}'.
+tests/rules/@stylistic/object-curly-spacing/overrides-always/cases.ts:16:38	@stylistic/object-curly-spacing	requireSpaceAfter	A space is required after '{'.
+tests/rules/@stylistic/object-curly-spacing/overrides-always/cases.ts:16:51	@stylistic/object-curly-spacing	requireSpaceBefore	A space is required before '}'.
+tests/rules/@stylistic/object-curly-spacing/overrides-always/cases.ts:17:8	@stylistic/object-curly-spacing	requireSpaceAfter	A space is required after '{'.
+tests/rules/@stylistic/object-curly-spacing/overrides-always/cases.ts:18:21	@stylistic/object-curly-spacing	requireSpaceBefore	A space is required before '}'.
+tests/rules/@stylistic/object-curly-spacing/overrides-always/cases.ts:26:13	@stylistic/object-curly-spacing	unexpectedSpaceAfter	There should be no space after '{'.
+tests/rules/@stylistic/object-curly-spacing/overrides-always/cases.ts:26:18	@stylistic/object-curly-spacing	unexpectedSpaceBefore	There should be no space before '}'.
+tests/rules/@stylistic/object-curly-spacing/overrides-always/cases.ts:27:17	@stylistic/object-curly-spacing	unexpectedSpaceBefore	There should be no space before '}'.
+tests/rules/@stylistic/object-curly-spacing/overrides-always/cases.ts:28:13	@stylistic/object-curly-spacing	unexpectedSpaceAfter	There should be no space after '{'.
+tests/rules/@stylistic/object-curly-spacing/overrides-always/cases.ts:36:7	@stylistic/object-curly-spacing	unexpectedSpaceBefore	There should be no space before '}'.
+tests/rules/@stylistic/object-curly-spacing/overrides-always/cases.ts:40:14	@stylistic/object-curly-spacing	unexpectedSpaceAfter	There should be no space after '{'.
+tests/rules/@stylistic/object-curly-spacing/overrides-always/cases.ts:40:19	@stylistic/object-curly-spacing	unexpectedSpaceAfter	There should be no space after '{'.
+tests/rules/@stylistic/object-curly-spacing/overrides-always/cases.ts:40:24	@stylistic/object-curly-spacing	unexpectedSpaceBefore	There should be no space before '}'.
+tests/rules/@stylistic/object-curly-spacing/overrides-always/cases.ts:40:26	@stylistic/object-curly-spacing	unexpectedSpaceBefore	There should be no space before '}'.
+tests/rules/@stylistic/object-curly-spacing/overrides-always/cases.ts:41:23	@stylistic/object-curly-spacing	requireSpaceBefore	A space is required before '}'.
+tests/rules/@stylistic/object-curly-spacing/overrides-always/cases.ts:42:14	@stylistic/object-curly-spacing	unexpectedSpaceAfter	There should be no space after '{'.
+tests/rules/@stylistic/object-curly-spacing/overrides-always/cases.ts:45:7	@stylistic/object-curly-spacing	requireSpaceAfter	A space is required after '{'.
+tests/rules/@stylistic/object-curly-spacing/overrides-always/cases.ts:45:20	@stylistic/object-curly-spacing	requireSpaceBefore	A space is required before '}'.
+tests/rules/@stylistic/object-curly-spacing/overrides-always/cases.ts:45:25	@stylistic/object-curly-spacing	unexpectedSpaceAfter	There should be no space after '{'.
+tests/rules/@stylistic/object-curly-spacing/overrides-always/cases.ts:45:36	@stylistic/object-curly-spacing	unexpectedSpaceBefore	There should be no space before '}'.
+tests/rules/@stylistic/object-curly-spacing/overrides-always/cases.ts:46:33	@stylistic/object-curly-spacing	unexpectedSpaceAfter	There should be no space after '{'.
+tests/rules/@stylistic/object-curly-spacing/overrides-always/cases.ts:46:38	@stylistic/object-curly-spacing	unexpectedSpaceBefore	There should be no space before '}'.
+tests/rules/@stylistic/object-curly-spacing/overrides-always/cases.ts:47:7	@stylistic/object-curly-spacing	requireSpaceAfter	A space is required after '{'.
+tests/rules/@stylistic/object-curly-spacing/overrides-always/cases.ts:47:11	@stylistic/object-curly-spacing	requireSpaceAfter	A space is required after '{'.
+tests/rules/@stylistic/object-curly-spacing/overrides-always/cases.ts:47:17	@stylistic/object-curly-spacing	requireSpaceBefore	A space is required before '}'.
+tests/rules/@stylistic/object-curly-spacing/overrides-always/cases.ts:47:18	@stylistic/object-curly-spacing	requireSpaceBefore	A space is required before '}'.
+tests/rules/@stylistic/object-curly-spacing/overrides-always/cases.ts:47:23	@stylistic/object-curly-spacing	unexpectedSpaceAfter	There should be no space after '{'.
+tests/rules/@stylistic/object-curly-spacing/overrides-always/cases.ts:47:28	@stylistic/object-curly-spacing	unexpectedSpaceAfter	There should be no space after '{'.
+tests/rules/@stylistic/object-curly-spacing/overrides-always/cases.ts:47:33	@stylistic/object-curly-spacing	unexpectedSpaceBefore	There should be no space before '}'.
+tests/rules/@stylistic/object-curly-spacing/overrides-always/cases.ts:47:35	@stylistic/object-curly-spacing	unexpectedSpaceBefore	There should be no space before '}'.
+tests/rules/@stylistic/object-curly-spacing/overrides-always/cases.ts:48:13	@stylistic/object-curly-spacing	requireSpaceAfter	A space is required after '{'.
+tests/rules/@stylistic/object-curly-spacing/overrides-always/cases.ts:48:18	@stylistic/object-curly-spacing	requireSpaceBefore	A space is required before '}'.
+tests/rules/@stylistic/object-curly-spacing/overrides-always/cases.ts:49:21	@stylistic/object-curly-spacing	unexpectedSpaceAfter	There should be no space after '{'.
+tests/rules/@stylistic/object-curly-spacing/overrides-always/cases.ts:49:31	@stylistic/object-curly-spacing	unexpectedSpaceBefore	There should be no space before '}'.
+tests/rules/@stylistic/object-curly-spacing/overrides-always/cases.ts:49:37	@stylistic/object-curly-spacing	unexpectedSpaceAfter	There should be no space after '{'.
+tests/rules/@stylistic/object-curly-spacing/overrides-always/cases.ts:49:42	@stylistic/object-curly-spacing	unexpectedSpaceBefore	There should be no space before '}'.
+tests/rules/@stylistic/object-curly-spacing/overrides-always/cases.ts:57:12	@stylistic/object-curly-spacing	unexpectedSpaceAfter	There should be no space after '{'.
+tests/rules/@stylistic/object-curly-spacing/overrides-always/cases.ts:57:22	@stylistic/object-curly-spacing	unexpectedSpaceBefore	There should be no space before '}'.
+tests/rules/@stylistic/object-curly-spacing/overrides-always/cases.ts:60:11	@stylistic/object-curly-spacing	requireSpaceAfter	A space is required after '{'.
+tests/rules/@stylistic/object-curly-spacing/overrides-always/cases.ts:61:34	@stylistic/object-curly-spacing	unexpectedSpaceBefore	There should be no space before '}'.
+tests/rules/@stylistic/object-curly-spacing/overrides-always/cases.ts:62:11	@stylistic/object-curly-spacing	requireSpaceAfter	A space is required after '{'.
+tests/rules/@stylistic/object-curly-spacing/overrides-always/cases.ts:63:31	@stylistic/object-curly-spacing	requireSpaceBefore	A space is required before '}'.
+tests/rules/@stylistic/object-curly-spacing/overrides-always/cases.ts:64:12	@stylistic/object-curly-spacing	unexpectedSpaceAfter	There should be no space after '{'.
+tests/rules/@stylistic/object-curly-spacing/overrides-always/cases.ts:66:32	@stylistic/object-curly-spacing	requireSpaceBefore	A space is required before '}'.
+tests/rules/@stylistic/object-curly-spacing/overrides-always/cases.ts:67:30	@stylistic/object-curly-spacing	requireSpaceBefore	A space is required before '}'.
+tests/rules/@stylistic/object-curly-spacing/overrides-always/cases.ts:69:13	@stylistic/object-curly-spacing	unexpectedSpaceAfter	There should be no space after '{'.
+tests/rules/@stylistic/object-curly-spacing/overrides-always/cases.ts:69:46	@stylistic/object-curly-spacing	unexpectedSpaceBefore	There should be no space before '}'.
+tests/rules/@stylistic/object-curly-spacing/overrides-always/cases.ts:70:14	@stylistic/object-curly-spacing	requireSpaceAfter	A space is required after '{'.
+tests/rules/@stylistic/object-curly-spacing/overrides-always/cases.ts:70:24	@stylistic/object-curly-spacing	requireSpaceBefore	A space is required before '}'.
+tests/rules/@stylistic/object-curly-spacing/overrides-always/cases.ts:74:36	@stylistic/object-curly-spacing	requireSpaceBefore	A space is required before '}'.
+tests/rules/@stylistic/object-curly-spacing/overrides-always/cases.ts:75:14	@stylistic/object-curly-spacing	requireSpaceAfter	A space is required after '{'.
+tests/rules/@stylistic/object-curly-spacing/overrides-always/cases.ts:75:29	@stylistic/object-curly-spacing	requireSpaceBefore	A space is required before '}'.
+tests/rules/@stylistic/object-curly-spacing/overrides-always/cases.ts:76:9	@stylistic/object-curly-spacing	requireSpaceAfter	A space is required after '{'.
+tests/rules/@stylistic/object-curly-spacing/overrides-always/cases.ts:76:14	@stylistic/object-curly-spacing	requireSpaceBefore	A space is required before '}'.
+tests/rules/@stylistic/object-curly-spacing/overrides-never/cases.ts:1:14	@stylistic/object-curly-spacing	requireSpaceAfter	A space is required after '{'.
+tests/rules/@stylistic/object-curly-spacing/overrides-never/cases.ts:1:27	@stylistic/object-curly-spacing	requireSpaceBefore	A space is required before '}'.
+tests/rules/@stylistic/object-curly-spacing/overrides-never/cases.ts:3:8	@stylistic/object-curly-spacing	requireSpaceAfter	A space is required after '{'.
+tests/rules/@stylistic/object-curly-spacing/overrides-never/cases.ts:8:13	@stylistic/object-curly-spacing	requireSpaceAfter	A space is required after '{'.
+tests/rules/@stylistic/object-curly-spacing/overrides-never/cases.ts:8:19	@stylistic/object-curly-spacing	requireSpaceBefore	A space is required before '}'.
+tests/rules/@stylistic/object-curly-spacing/overrides-never/cases.ts:9:38	@stylistic/object-curly-spacing	requireSpaceAfter	A space is required after '{'.
+tests/rules/@stylistic/object-curly-spacing/overrides-never/cases.ts:9:51	@stylistic/object-curly-spacing	requireSpaceBefore	A space is required before '}'.
+tests/rules/@stylistic/object-curly-spacing/overrides-never/cases.ts:11:8	@stylistic/object-curly-spacing	requireSpaceAfter	A space is required after '{'.
+tests/rules/@stylistic/object-curly-spacing/overrides-never/cases.ts:11:11	@stylistic/object-curly-spacing	requireSpaceBefore	A space is required before '}'.
+tests/rules/@stylistic/object-curly-spacing/overrides-never/cases.ts:11:38	@stylistic/object-curly-spacing	requireSpaceAfter	A space is required after '{'.
+tests/rules/@stylistic/object-curly-spacing/overrides-never/cases.ts:11:51	@stylistic/object-curly-spacing	requireSpaceBefore	A space is required before '}'.
+tests/rules/@stylistic/object-curly-spacing/overrides-never/cases.ts:14:35	@stylistic/object-curly-spacing	requireSpaceAfter	A space is required after '{'.
+tests/rules/@stylistic/object-curly-spacing/overrides-never/cases.ts:14:48	@stylistic/object-curly-spacing	requireSpaceBefore	A space is required before '}'.
+tests/rules/@stylistic/object-curly-spacing/overrides-never/cases.ts:16:8	@stylistic/object-curly-spacing	requireSpaceAfter	A space is required after '{'.
+tests/rules/@stylistic/object-curly-spacing/overrides-never/cases.ts:16:11	@stylistic/object-curly-spacing	requireSpaceBefore	A space is required before '}'.
+tests/rules/@stylistic/object-curly-spacing/overrides-never/cases.ts:16:38	@stylistic/object-curly-spacing	requireSpaceAfter	A space is required after '{'.
+tests/rules/@stylistic/object-curly-spacing/overrides-never/cases.ts:16:51	@stylistic/object-curly-spacing	requireSpaceBefore	A space is required before '}'.
+tests/rules/@stylistic/object-curly-spacing/overrides-never/cases.ts:17:8	@stylistic/object-curly-spacing	requireSpaceAfter	A space is required after '{'.
+tests/rules/@stylistic/object-curly-spacing/overrides-never/cases.ts:18:21	@stylistic/object-curly-spacing	requireSpaceBefore	A space is required before '}'.
+tests/rules/@stylistic/object-curly-spacing/overrides-never/cases.ts:26:13	@stylistic/object-curly-spacing	unexpectedSpaceAfter	There should be no space after '{'.
+tests/rules/@stylistic/object-curly-spacing/overrides-never/cases.ts:26:18	@stylistic/object-curly-spacing	unexpectedSpaceBefore	There should be no space before '}'.
+tests/rules/@stylistic/object-curly-spacing/overrides-never/cases.ts:27:17	@stylistic/object-curly-spacing	unexpectedSpaceBefore	There should be no space before '}'.
+tests/rules/@stylistic/object-curly-spacing/overrides-never/cases.ts:28:13	@stylistic/object-curly-spacing	unexpectedSpaceAfter	There should be no space after '{'.
+tests/rules/@stylistic/object-curly-spacing/overrides-never/cases.ts:36:7	@stylistic/object-curly-spacing	unexpectedSpaceBefore	There should be no space before '}'.
+tests/rules/@stylistic/object-curly-spacing/overrides-never/cases.ts:40:14	@stylistic/object-curly-spacing	unexpectedSpaceAfter	There should be no space after '{'.
+tests/rules/@stylistic/object-curly-spacing/overrides-never/cases.ts:40:19	@stylistic/object-curly-spacing	unexpectedSpaceAfter	There should be no space after '{'.
+tests/rules/@stylistic/object-curly-spacing/overrides-never/cases.ts:40:24	@stylistic/object-curly-spacing	unexpectedSpaceBefore	There should be no space before '}'.
+tests/rules/@stylistic/object-curly-spacing/overrides-never/cases.ts:40:26	@stylistic/object-curly-spacing	unexpectedSpaceBefore	There should be no space before '}'.
+tests/rules/@stylistic/object-curly-spacing/overrides-never/cases.ts:42:14	@stylistic/object-curly-spacing	unexpectedSpaceAfter	There should be no space after '{'.
+tests/rules/@stylistic/object-curly-spacing/overrides-never/cases.ts:42:26	@stylistic/object-curly-spacing	unexpectedSpaceBefore	There should be no space before '}'.
+tests/rules/@stylistic/object-curly-spacing/overrides-never/cases.ts:45:7	@stylistic/object-curly-spacing	requireSpaceAfter	A space is required after '{'.
+tests/rules/@stylistic/object-curly-spacing/overrides-never/cases.ts:45:20	@stylistic/object-curly-spacing	requireSpaceBefore	A space is required before '}'.
+tests/rules/@stylistic/object-curly-spacing/overrides-never/cases.ts:45:25	@stylistic/object-curly-spacing	unexpectedSpaceAfter	There should be no space after '{'.
+tests/rules/@stylistic/object-curly-spacing/overrides-never/cases.ts:45:36	@stylistic/object-curly-spacing	unexpectedSpaceBefore	There should be no space before '}'.
+tests/rules/@stylistic/object-curly-spacing/overrides-never/cases.ts:46:33	@stylistic/object-curly-spacing	unexpectedSpaceAfter	There should be no space after '{'.
+tests/rules/@stylistic/object-curly-spacing/overrides-never/cases.ts:46:38	@stylistic/object-curly-spacing	unexpectedSpaceBefore	There should be no space before '}'.
+tests/rules/@stylistic/object-curly-spacing/overrides-never/cases.ts:47:7	@stylistic/object-curly-spacing	requireSpaceAfter	A space is required after '{'.
+tests/rules/@stylistic/object-curly-spacing/overrides-never/cases.ts:47:11	@stylistic/object-curly-spacing	requireSpaceAfter	A space is required after '{'.
+tests/rules/@stylistic/object-curly-spacing/overrides-never/cases.ts:47:17	@stylistic/object-curly-spacing	requireSpaceBefore	A space is required before '}'.
+tests/rules/@stylistic/object-curly-spacing/overrides-never/cases.ts:47:18	@stylistic/object-curly-spacing	requireSpaceBefore	A space is required before '}'.
+tests/rules/@stylistic/object-curly-spacing/overrides-never/cases.ts:47:23	@stylistic/object-curly-spacing	unexpectedSpaceAfter	There should be no space after '{'.
+tests/rules/@stylistic/object-curly-spacing/overrides-never/cases.ts:47:28	@stylistic/object-curly-spacing	unexpectedSpaceAfter	There should be no space after '{'.
+tests/rules/@stylistic/object-curly-spacing/overrides-never/cases.ts:47:33	@stylistic/object-curly-spacing	unexpectedSpaceBefore	There should be no space before '}'.
+tests/rules/@stylistic/object-curly-spacing/overrides-never/cases.ts:47:35	@stylistic/object-curly-spacing	unexpectedSpaceBefore	There should be no space before '}'.
+tests/rules/@stylistic/object-curly-spacing/overrides-never/cases.ts:48:13	@stylistic/object-curly-spacing	requireSpaceAfter	A space is required after '{'.
+tests/rules/@stylistic/object-curly-spacing/overrides-never/cases.ts:48:18	@stylistic/object-curly-spacing	requireSpaceBefore	A space is required before '}'.
+tests/rules/@stylistic/object-curly-spacing/overrides-never/cases.ts:49:21	@stylistic/object-curly-spacing	unexpectedSpaceAfter	There should be no space after '{'.
+tests/rules/@stylistic/object-curly-spacing/overrides-never/cases.ts:49:31	@stylistic/object-curly-spacing	unexpectedSpaceBefore	There should be no space before '}'.
+tests/rules/@stylistic/object-curly-spacing/overrides-never/cases.ts:49:37	@stylistic/object-curly-spacing	unexpectedSpaceAfter	There should be no space after '{'.
+tests/rules/@stylistic/object-curly-spacing/overrides-never/cases.ts:49:42	@stylistic/object-curly-spacing	unexpectedSpaceBefore	There should be no space before '}'.
+tests/rules/@stylistic/object-curly-spacing/overrides-never/cases.ts:57:12	@stylistic/object-curly-spacing	unexpectedSpaceAfter	There should be no space after '{'.
+tests/rules/@stylistic/object-curly-spacing/overrides-never/cases.ts:57:22	@stylistic/object-curly-spacing	unexpectedSpaceBefore	There should be no space before '}'.
+tests/rules/@stylistic/object-curly-spacing/overrides-never/cases.ts:61:12	@stylistic/object-curly-spacing	unexpectedSpaceAfter	There should be no space after '{'.
+tests/rules/@stylistic/object-curly-spacing/overrides-never/cases.ts:61:34	@stylistic/object-curly-spacing	unexpectedSpaceBefore	There should be no space before '}'.
+tests/rules/@stylistic/object-curly-spacing/overrides-never/cases.ts:63:11	@stylistic/object-curly-spacing	requireSpaceAfter	A space is required after '{'.
+tests/rules/@stylistic/object-curly-spacing/overrides-never/cases.ts:63:31	@stylistic/object-curly-spacing	requireSpaceBefore	A space is required before '}'.
+tests/rules/@stylistic/object-curly-spacing/overrides-never/cases.ts:67:16	@stylistic/object-curly-spacing	requireSpaceAfter	A space is required after '{'.
+tests/rules/@stylistic/object-curly-spacing/overrides-never/cases.ts:67:30	@stylistic/object-curly-spacing	requireSpaceBefore	A space is required before '}'.
+tests/rules/@stylistic/object-curly-spacing/overrides-never/cases.ts:69:13	@stylistic/object-curly-spacing	unexpectedSpaceAfter	There should be no space after '{'.
+tests/rules/@stylistic/object-curly-spacing/overrides-never/cases.ts:69:46	@stylistic/object-curly-spacing	unexpectedSpaceBefore	There should be no space before '}'.
+tests/rules/@stylistic/object-curly-spacing/overrides-never/cases.ts:70:14	@stylistic/object-curly-spacing	requireSpaceAfter	A space is required after '{'.
+tests/rules/@stylistic/object-curly-spacing/overrides-never/cases.ts:70:24	@stylistic/object-curly-spacing	requireSpaceBefore	A space is required before '}'.
+tests/rules/@stylistic/object-curly-spacing/overrides-never/cases.ts:74:14	@stylistic/object-curly-spacing	requireSpaceAfter	A space is required after '{'.
+tests/rules/@stylistic/object-curly-spacing/overrides-never/cases.ts:74:36	@stylistic/object-curly-spacing	requireSpaceBefore	A space is required before '}'.
+tests/rules/@stylistic/object-curly-spacing/overrides-never/cases.ts:75:14	@stylistic/object-curly-spacing	requireSpaceAfter	A space is required after '{'.
+tests/rules/@stylistic/object-curly-spacing/overrides-never/cases.ts:75:29	@stylistic/object-curly-spacing	requireSpaceBefore	A space is required before '}'.
+tests/rules/@stylistic/object-curly-spacing/overrides-never/cases.ts:76:9	@stylistic/object-curly-spacing	requireSpaceAfter	A space is required after '{'.
+tests/rules/@stylistic/object-curly-spacing/overrides-never/cases.ts:76:14	@stylistic/object-curly-spacing	requireSpaceBefore	A space is required before '}'.

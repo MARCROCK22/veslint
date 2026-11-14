@@ -391,6 +391,7 @@ pub const stylistic_no_whitespace_before_property = '@stylistic/no-whitespace-be
 pub const stylistic_block_spacing = '@stylistic/block-spacing'
 pub const stylistic_comma_spacing = '@stylistic/comma-spacing'
 pub const stylistic_computed_property_spacing = '@stylistic/computed-property-spacing'
+pub const stylistic_object_curly_spacing = '@stylistic/object-curly-spacing'
 pub const names = [no_floating_promises, await_thenable, require_await, return_await,
 	no_misused_promises, no_unsafe_call, no_unsafe_member_access, no_unsafe_return,
 	no_unsafe_assignment, no_unsafe_argument, restrict_template_expressions,
@@ -497,7 +498,7 @@ pub const names = [no_floating_promises, await_thenable, require_await, return_a
 	stylistic_semi_spacing, stylistic_space_in_parens, stylistic_switch_colon_spacing,
 	stylistic_template_curly_spacing, stylistic_template_tag_spacing,
 	stylistic_no_whitespace_before_property, stylistic_block_spacing, stylistic_comma_spacing,
-	stylistic_computed_property_spacing]
+	stylistic_computed_property_spacing, stylistic_object_curly_spacing]
 
 // untyped_rules are the ported rules that need no types (`meta.docs.requiresTypeChecking` is false
 // in typescript-eslint; the eslint-plugin-unicorn rules that read the types when the parser has a
@@ -577,7 +578,7 @@ pub const untyped_rules = [adjacent_overload_signatures, array_type, class_liter
 	stylistic_rest_spread_spacing, stylistic_semi_spacing, stylistic_space_in_parens,
 	stylistic_switch_colon_spacing, stylistic_template_curly_spacing, stylistic_template_tag_spacing,
 	stylistic_no_whitespace_before_property, stylistic_block_spacing, stylistic_comma_spacing,
-	stylistic_computed_property_spacing]
+	stylistic_computed_property_spacing, stylistic_object_curly_spacing]
 
 // needs_types tells whether a rule asks tsgo for the types of the program.
 pub fn needs_types(rule string) bool {
@@ -965,6 +966,7 @@ pub const default_options = {
 	stylistic_block_spacing:                         '["always"]'
 	stylistic_comma_spacing:                         '[{"before":false,"after":true}]'
 	stylistic_computed_property_spacing:             '["never",{"enforceForClassMembers":true}]'
+	stylistic_object_curly_spacing:                  '["never"]'
 }
 
 // Finding is a problem a rule found at a node.
@@ -1476,6 +1478,7 @@ pub fn message(rule string, finding Finding) string {
 		stylistic_block_spacing { sbls_messages }
 		stylistic_comma_spacing { scmsp_messages }
 		stylistic_computed_property_spacing { scpsp_messages }
+		stylistic_object_curly_spacing { socsp_messages }
 		else { map[string]string{} }
 	}
 	return interpolate(messages[finding.message_id] or { finding.message_id }, finding.data)
@@ -2762,6 +2765,9 @@ fn (mut c Checker) lint_rule(rule string, root C.TSNode, abs_path string, mut st
 		}
 		stylistic_computed_property_spacing {
 			return c.lint_stylistic_computed_property_spacing(root, abs_path, mut stats)!
+		}
+		stylistic_object_curly_spacing {
+			return c.lint_stylistic_object_curly_spacing(root, abs_path, mut stats)!
 		}
 		else { return error('unknown rule: ${rule}') }
 	}

@@ -1,0 +1,1 @@
+["never",{"overrides":{"ObjectPattern":"always","ImportDeclaration":"always","TSInterfaceBody":"always","TSEnumBody":"always","TSMappedType":"always","ImportAttributes":"always","ExportNamedDeclaration":"always"}}]

@@ -166,6 +166,7 @@ pub fn check_options(rule string, options []json2.Any) !bool {
 		stylistic_block_spacing { sbls_options(options)! }
 		stylistic_comma_spacing { scmsp_options(options)! }
 		stylistic_computed_property_spacing { scpsp_options(options)! }
+		stylistic_object_curly_spacing { socsp_options(options)! }
 		else { return false }
 	}
 	return true
