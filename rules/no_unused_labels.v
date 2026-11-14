@@ -3,7 +3,7 @@ module rules
 import time
 import treesitter { node_end, node_field, node_kind, node_parent, node_start, position_of }
 
-// Port of the `no-unused-labels` rule of ESLint 10.6.0, with its fix (it has no options).
+// Port of the `no-unused-labels` rule of ESLint 10.15.0, with its fix (it has no options).
 
 const nul_messages = {
 	'unused': "'{{name}}:' is defined but never used."
@@ -43,7 +43,7 @@ fn (mut c Checker) lint_no_unused_labels(root C.TSNode, abs_path string, mut sta
 			data:       {
 				'name': c.text(label)
 			}
-			has_fix:    c.nul_is_fixable(node, label, body)
+			has_fix:    c.nul_is_fixable(root, node, label, body)
 			fix:        fix_remove_range(node_start(node), node_start(body))
 		}
 	}
@@ -52,8 +52,9 @@ fn (mut c Checker) lint_no_unused_labels(root C.TSNode, abs_path string, mut sta
 }
 
 // nul_is_fixable ports isFixable: only the `:` between the label and the body (no comment), and
-// the body is not a string expression statement where it could become a directive.
-fn (c &Checker) nul_is_fixable(node C.TSNode, label C.TSNode, body C.TSNode) bool {
+// the body is not a string expression statement where it could become a directive, nor would it
+// continue the statement before (an ASI hazard).
+fn (mut c Checker) nul_is_fixable(root C.TSNode, node C.TSNode, label C.TSNode, body C.TSNode) bool {
 	if c.src[node_end(label)..node_start(body)].trim_space() != ':' {
 		return false
 	}
@@ -74,7 +75,19 @@ fn (c &Checker) nul_is_fixable(node C.TSNode, label C.TSNode, body C.TSNode) boo
 		}
 		if node_kind(expression) == 'template_string' {
 			expressions, _ := c.es_template_parts(expression)
-			return expressions.len > 0
+			if expressions.len == 0 {
+				return false
+			}
+		}
+	}
+	// `foo()\nLABEL: [1].forEach(f)` would become `foo()[1].forEach(f)`.
+	tokens := c.source_tokens(root)
+	if before := tokens.before(node_start(node), false) {
+		first := tokens.after(node_start(body), false) or { return true }
+		first_text := c.src[first.start..first.end]
+		if c.src[before.start..before.end] !in [':', ';', '{'] && first_text.len > 0
+			&& first_text[0] in [`(`, `[`, `-`, `+`, `/`, `\``] {
+			return false
 		}
 	}
 	return true

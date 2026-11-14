@@ -4,7 +4,7 @@ import json2
 import time
 import treesitter { named_children, node_field, node_kind, node_start, position_of }
 
-// Port of the `no-useless-rename` rule of ESLint 10.6.0, with its options and its fix.
+// Port of the `no-useless-rename` rule of ESLint 10.15.0, with its options and its fix.
 
 const nurn_messages = {
 	'unnecessarilyRenamed': '{{type}} {{name}} unnecessarily renamed.'
@@ -67,7 +67,7 @@ fn (mut c Checker) lint_no_useless_rename(root C.TSNode, abs_path string, mut st
 					} else {
 						unwrap_parens(value)
 					}
-					c.nur_report(root, property, replacement, key_name, 'Destructuring assignment', mut
+					c.nur_report(root, property, key, replacement, key_name, 'Destructuring assignment', mut
 						findings)
 				}
 			}
@@ -79,7 +79,7 @@ fn (mut c Checker) lint_no_useless_rename(root C.TSNode, abs_path string, mut st
 				local := node_field(node, 'alias') or { continue }
 				name := c.nur_export_name(imported)
 				if name == c.identifier_name(local) {
-					c.nur_report(root, node, local, name, 'Import', mut findings)
+					c.nur_report(root, node, imported, local, name, 'Import', mut findings)
 				}
 			}
 			else {
@@ -90,7 +90,7 @@ fn (mut c Checker) lint_no_useless_rename(root C.TSNode, abs_path string, mut st
 				exported := node_field(node, 'alias') or { continue }
 				name := c.nur_export_name(local)
 				if name == c.nur_export_name(exported) {
-					c.nur_report(root, node, local, name, 'Export', mut findings)
+					c.nur_report(root, node, local, local, name, 'Export', mut findings)
 				}
 			}
 		}
@@ -108,8 +108,9 @@ fn (c &Checker) nur_export_name(n C.TSNode) string {
 }
 
 // nur_report reports the node, with the fix that leaves the replacement alone: none when that
-// would lose a comment or the parentheses of the target of a default value.
-fn (mut c Checker) nur_report(root C.TSNode, node C.TSNode, replacement C.TSNode, name string, kind string, mut findings []Finding) {
+// would lose a comment or the parentheses of the target of a default value. The fix replaces from
+// the initial name (after the `type` of a specifier) to the end of the node.
+fn (mut c Checker) nur_report(root C.TSNode, node C.TSNode, initial C.TSNode, replacement C.TSNode, name string, kind string, mut findings []Finding) {
 	tokens := c.source_tokens(root)
 	end := c.es_end(node)
 	mut has_fix := tokens.comments_inside(node_start(node), end).len <= tokens.comments_inside(node_start(replacement),
@@ -129,6 +130,6 @@ fn (mut c Checker) nur_report(root C.TSNode, node C.TSNode, replacement C.TSNode
 			'type': kind
 		}
 		has_fix:    has_fix
-		fix:        fix_replace_range(node_start(node), end, c.es_text(replacement))
+		fix:        fix_replace_range(node_start(initial), end, c.es_text(replacement))
 	}
 }

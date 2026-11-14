@@ -23,3 +23,7 @@ const { ['m']: m } = obj;
 const { n: { n } } = obj;
 const { 1: o } = obj;
 export { writeFile, readFile as rf };
+
+// The fix keeps the `type` of a specifier (10.15.0).
+import { type Dirent as Dirent } from 'node:fs';
+export { type Dirent as Dirent };

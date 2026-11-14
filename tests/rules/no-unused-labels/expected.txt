@@ -6,3 +6,10 @@ tests/rules/no-unused-labels/cases.ts:16:3	no-unused-labels	unused	'G:' is defin
 tests/rules/no-unused-labels/cases.ts:21:3	no-unused-labels	unused	'H:' is defined but never used.
 tests/rules/no-unused-labels/cases.ts:22:3	no-unused-labels	unused	'I:' is defined but never used.
 tests/rules/no-unused-labels/cases.ts:24:1	no-unused-labels	unused	'J:' is defined but never used.
+tests/rules/no-unused-labels/cases.ts:39:3	no-unused-labels	unused	'L1:' is defined but never used.
+tests/rules/no-unused-labels/cases.ts:41:3	no-unused-labels	unused	'L2:' is defined but never used.
+tests/rules/no-unused-labels/cases.ts:43:3	no-unused-labels	unused	'L3:' is defined but never used.
+tests/rules/no-unused-labels/cases.ts:45:3	no-unused-labels	unused	'L4:' is defined but never used.
+tests/rules/no-unused-labels/cases.ts:47:3	no-unused-labels	unused	'L5:' is defined but never used.
+tests/rules/no-unused-labels/cases.ts:49:5	no-unused-labels	unused	'L6:' is defined but never used.
+tests/rules/no-unused-labels/cases.ts:52:3	no-unused-labels	unused	'L7:' is defined but never used.
