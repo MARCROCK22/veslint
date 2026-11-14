@@ -17,3 +17,14 @@ tests/rules/no-var/cases.ts:38:3	no-var	unexpectedVar	Unexpected var, use let or
 tests/rules/no-var/cases.ts:40:1	no-var	unexpectedVar	Unexpected var, use let or const instead.
 tests/rules/no-var/cases.ts:41:8	no-var	unexpectedVar	Unexpected var, use let or const instead.
 tests/rules/no-var/cases.ts:43:3	no-var	unexpectedVar	Unexpected var, use let or const instead.
+tests/rules/no-var/cases.ts:58:22	no-var	unexpectedVar	Unexpected var, use let or const instead.
+tests/rules/no-var/cases.ts:59:25	no-var	unexpectedVar	Unexpected var, use let or const instead.
+tests/rules/no-var/cases.ts:60:28	no-var	unexpectedVar	Unexpected var, use let or const instead.
+tests/rules/no-var/cases.ts:61:27	no-var	unexpectedVar	Unexpected var, use let or const instead.
+tests/rules/no-var/cases.ts:65:3	no-var	unexpectedVar	Unexpected var, use let or const instead.
+tests/rules/no-var/cases.ts:66:3	no-var	unexpectedVar	Unexpected var, use let or const instead.
+tests/rules/no-var/cases.ts:70:3	no-var	unexpectedVar	Unexpected var, use let or const instead.
+tests/rules/no-var/cases.ts:75:3	no-var	unexpectedVar	Unexpected var, use let or const instead.
+tests/rules/no-var/cases.ts:76:8	no-var	unexpectedVar	Unexpected var, use let or const instead.
+tests/rules/no-var/cases.ts:77:8	no-var	unexpectedVar	Unexpected var, use let or const instead.
+tests/rules/no-var/cases.ts:80:1	no-var	unexpectedVar	Unexpected var, use let or const instead.

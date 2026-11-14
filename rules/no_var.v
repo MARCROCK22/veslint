@@ -3,7 +3,7 @@ module rules
 import time
 import treesitter { children, named_children, node_end, node_field, node_kind, node_parent, node_start, position_of }
 
-// Port of the `no-var` rule of ESLint 10.6.0 (it has no options).
+// Port of the `no-var` rule of ESLint 10.15.0 (it has no options).
 
 const nvar_messages = {
 	'unexpectedVar': 'Unexpected var, use let or const instead.'
@@ -55,7 +55,11 @@ fn (mut c Checker) lint_no_var(root C.TSNode, abs_path string, mut stats Stats) 
 			message_id: 'unexpectedVar'
 			has_fix:    has_fix
 			fix:        if has_fix {
-				Fix{node_start(var_token), node_end(var_token), 'let'}
+				// FixTracker's retainRange: the fix takes the whole declaration, so that other
+				// fixes in it wait for the next pass.
+				start, end := c.nvar_declaration_range(node, estree, var_token)
+				Fix{start, end, c.src[start..node_start(var_token)] + 'let' +
+					c.src[node_end(var_token)..end]}
 			} else {
 				Fix{}
 			}
@@ -63,6 +67,23 @@ fn (mut c Checker) lint_no_var(root C.TSNode, abs_path string, mut stats Stats) 
 	}
 	stats.eval_ms += ms(sw.elapsed())
 	return findings
+}
+
+// nvar_declaration_range is the range of the ESTree VariableDeclaration: from `var` to its left
+// side in a for-in or for-of, without the `;` in the head of a for.
+fn (c &Checker) nvar_declaration_range(node C.TSNode, estree C.TSNode, var_token C.TSNode) (int, int) {
+	if node_kind(node) == 'for_in_statement' {
+		return node_start(var_token), c.es_end(node_field(node, 'left') or { var_token })
+	}
+	if parent := node_parent(node) {
+		if node_kind(parent) == 'for_statement' {
+			declarators := named_children(node).filter(node_kind(it) == 'variable_declarator')
+			if declarators.len > 0 {
+				return node_start(node), c.es_end(declarators.last())
+			}
+		}
+	}
+	return node_start(estree), c.es_end(estree)
 }
 
 // nvar_is_block_statement: an ESTree BlockStatement (not the body of a static block or a
@@ -129,6 +150,18 @@ fn (mut c Checker) nvar_can_fix(root C.TSNode, node C.TSNode, estree C.TSNode) b
 			}
 		}
 	}
+	for v in variables {
+		if c.nvar_has_unsafe_hoisted_function_reference(root, v) {
+			return false
+		}
+	}
+	// isShadowedByCatchParameter: the name resolves to another variable from the declaration.
+	declaration_scope := tree.get_scope(node)
+	for v in variables {
+		if tree.find_variable(declaration_scope, tree.variables[v].name, -1) != v {
+			return false
+		}
+	}
 	if nvar_is_in_loop(estree) {
 		for v in variables {
 			if nvar_is_referenced_in_closure(tree, v) {
@@ -153,6 +186,47 @@ fn (mut c Checker) nvar_can_fix(root C.TSNode, node C.TSNode, estree C.TSNode) b
 		return node_key(body) != node_key(node)
 	}
 	return node_kind(parent) in ['program', 'statement_block']
+}
+
+// nvar_has_unsafe_hoisted_function_reference ports hasUnsafeHoistedFunctionReference: a reference
+// (not the initializer) after the declaration from inside a function declaration that is called
+// before the declaration.
+fn (mut c Checker) nvar_has_unsafe_hoisted_function_reference(root C.TSNode, v int) bool {
+	tree := c.scope_tree(root)
+	variable := tree.variables[v]
+	if variable.defs.len == 0 {
+		return false
+	}
+	declaration_start := node_start(variable.defs[0].node)
+	for r in variable.references {
+		reference := tree.references[r]
+		if reference.init || node_start(reference.identifier) < declaration_start {
+			continue
+		}
+		mut current := tree.scopes[reference.from].variable_scope
+		for current != variable.scope && current >= 0 {
+			block := tree.scopes[current].block
+			if node_kind(block) in ['function_declaration', 'generator_function_declaration'] {
+				if id := node_field(block, 'name') {
+					upper := tree.scopes[current].upper
+					if function_variable := tree.scopes[upper].set[c.identifier_name(id)] {
+						for fr in tree.variables[function_variable].references {
+							ref_id := tree.references[fr].identifier
+							if nith_is_callee(ref_id) && node_start(ref_id) < declaration_start {
+								return true
+							}
+						}
+					}
+				}
+			}
+			upper := tree.scopes[current].upper
+			if upper < 0 {
+				break
+			}
+			current = tree.scopes[upper].variable_scope
+		}
+	}
+	return false
 }
 
 // nvar_self_reference_in_tdz ports hasSelfReferenceInTDZ.
