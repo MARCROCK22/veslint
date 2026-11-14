@@ -1,0 +1,10 @@
+tests/rules/unicorn/consistent-empty-array-spread/cases.ts:8:24	unicorn/consistent-empty-array-spread	consistent-empty-array-spread	Prefer using empty array since the alternate is an array.
+tests/rules/unicorn/consistent-empty-array-spread/cases.ts:9:33	unicorn/consistent-empty-array-spread	consistent-empty-array-spread	Prefer using empty array since the consequent is an array.
+tests/rules/unicorn/consistent-empty-array-spread/cases.ts:10:24	unicorn/consistent-empty-array-spread	consistent-empty-array-spread	Prefer using empty string since the alternate is a string.
+tests/rules/unicorn/consistent-empty-array-spread/cases.ts:11:32	unicorn/consistent-empty-array-spread	consistent-empty-array-spread	Prefer using empty string since the consequent is a string.
+tests/rules/unicorn/consistent-empty-array-spread/cases.ts:12:24	unicorn/consistent-empty-array-spread	consistent-empty-array-spread	Prefer using empty array since the alternate is an array.
+tests/rules/unicorn/consistent-empty-array-spread/cases.ts:13:24	unicorn/consistent-empty-array-spread	consistent-empty-array-spread	Prefer using empty string since the alternate is a string.
+tests/rules/unicorn/consistent-empty-array-spread/cases.ts:14:27	unicorn/consistent-empty-array-spread	consistent-empty-array-spread	Prefer using empty array since the alternate is an array.
+tests/rules/unicorn/consistent-empty-array-spread/cases.ts:15:24	unicorn/consistent-empty-array-spread	consistent-empty-array-spread	Prefer using empty array since the alternate is an array.
+tests/rules/unicorn/consistent-empty-array-spread/cases.ts:18:24	unicorn/consistent-empty-array-spread	consistent-empty-array-spread	Prefer using empty string since the alternate is a string.
+tests/rules/unicorn/consistent-empty-array-spread/cases.ts:27:23	unicorn/consistent-empty-array-spread	consistent-empty-array-spread	Prefer using empty array since the alternate is an array.

@@ -1,0 +1,10 @@
+tests/rules/unicorn/consistent-empty-array-spread/cases.ts:8:24	unicorn/consistent-empty-array-spread	consistent-empty-array-spread	Prefer using empty array since the alternate is an array.	fix	170	172	[]	end	8	26
+tests/rules/unicorn/consistent-empty-array-spread/cases.ts:9:33	unicorn/consistent-empty-array-spread	consistent-empty-array-spread	Prefer using empty array since the consequent is an array.	fix	217	219	[]	end	9	35
+tests/rules/unicorn/consistent-empty-array-spread/cases.ts:10:24	unicorn/consistent-empty-array-spread	consistent-empty-array-spread	Prefer using empty string since the alternate is a string.	fix	246	248	''	end	10	26
+tests/rules/unicorn/consistent-empty-array-spread/cases.ts:11:32	unicorn/consistent-empty-array-spread	consistent-empty-array-spread	Prefer using empty string since the consequent is a string.	fix	291	293	''	end	11	34
+tests/rules/unicorn/consistent-empty-array-spread/cases.ts:12:24	unicorn/consistent-empty-array-spread	consistent-empty-array-spread	Prefer using empty array since the alternate is an array.	fix	320	322	[]	end	12	26
+tests/rules/unicorn/consistent-empty-array-spread/cases.ts:13:24	unicorn/consistent-empty-array-spread	consistent-empty-array-spread	Prefer using empty string since the alternate is a string.	fix	355	357	''	end	13	26
+tests/rules/unicorn/consistent-empty-array-spread/cases.ts:14:27	unicorn/consistent-empty-array-spread	consistent-empty-array-spread	Prefer using empty array since the alternate is an array.	fix	393	395	[]	end	14	29
+tests/rules/unicorn/consistent-empty-array-spread/cases.ts:15:24	unicorn/consistent-empty-array-spread	consistent-empty-array-spread	Prefer using empty array since the alternate is an array.	fix	428	430	[]	end	15	26
+tests/rules/unicorn/consistent-empty-array-spread/cases.ts:18:24	unicorn/consistent-empty-array-spread	consistent-empty-array-spread	Prefer using empty string since the alternate is a string.	end	18	37
+tests/rules/unicorn/consistent-empty-array-spread/cases.ts:27:23	unicorn/consistent-empty-array-spread	consistent-empty-array-spread	Prefer using empty array since the alternate is an array.	fix	802	804	[]	end	27	25
