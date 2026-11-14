@@ -3,7 +3,7 @@ module rules
 import time
 import treesitter { node_field, node_kind, node_parent, position_of }
 
-// Port of the `no-unsafe-finally` rule of ESLint 10.6.0 (it has no options).
+// Port of the `no-unsafe-finally` rule of ESLint 10.15.0 (it has no options).
 
 const nuf_messages = {
 	'unsafeUsage': 'Unsafe usage of {{nodeType}}.'
@@ -28,7 +28,7 @@ fn (mut c Checker) lint_no_unsafe_finally(root C.TSNode, abs_path string, mut st
 		if kind == 'break_statement' && label == '' {
 			sentinels << nuf_loops
 			sentinels << 'switch_statement'
-		} else if kind == 'continue_statement' {
+		} else if kind == 'continue_statement' && label == '' {
 			sentinels << nuf_loops
 		}
 		if c.nuf_in_finally(node, label, sentinels) {

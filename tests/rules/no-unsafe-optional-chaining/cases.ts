@@ -51,3 +51,10 @@ obj?.foo + 1;
 -obj?.foo;
 let e = 1;
 e += obj?.foo;
+
+// `yield*` of an optional chain (10.15.0).
+declare const maybe: { items?: Iterable<number> } | undefined;
+function* delegating() {
+  yield* maybe?.items;
+  yield maybe?.items;
+}

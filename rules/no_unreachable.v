@@ -4,7 +4,7 @@ import codepath
 import estree
 import time
 
-// Port of the `no-unreachable` rule of ESLint 10.6.0 (it has no options), on the code path events
+// Port of the `no-unreachable` rule of ESLint 10.15.0 (it has no options), on the code path events
 // of the codepath module.
 
 const nunr_messages = {
@@ -14,7 +14,7 @@ const nunr_messages = {
 // The statements reported when they cannot be reached (VariableDeclaration aside).
 const nunr_statements = [estree.NodeType.block_statement, .break_statement, .class_declaration,
 	.continue_statement, .debugger_statement, .do_while_statement, .expression_statement,
-	.for_in_statement, .for_of_statement, .for_statement, .if_statement, .import_declaration,
+	.for_in_statement, .for_of_statement, .for_statement, .if_statement,
 	.labeled_statement, .return_statement, .switch_statement, .throw_statement, .try_statement,
 	.while_statement, .with_statement, .export_named_declaration, .export_default_declaration,
 	.export_all_declaration]

@@ -47,3 +47,4 @@ tests/rules/no-unsafe-optional-chaining/cases.ts:35:2	no-unsafe-optional-chainin
 tests/rules/no-unsafe-optional-chaining/cases.ts:36:2	no-unsafe-optional-chaining	unsafeOptionalChain	Unsafe usage of optional chaining. If it short-circuits with 'undefined' the evaluation will throw TypeError.
 tests/rules/no-unsafe-optional-chaining/cases.ts:37:2	no-unsafe-optional-chaining	unsafeOptionalChain	Unsafe usage of optional chaining. If it short-circuits with 'undefined' the evaluation will throw TypeError.
 tests/rules/no-unsafe-optional-chaining/cases.ts:38:2	no-unsafe-optional-chaining	unsafeOptionalChain	Unsafe usage of optional chaining. If it short-circuits with 'undefined' the evaluation will throw TypeError.
+tests/rules/no-unsafe-optional-chaining/cases.ts:58:10	no-unsafe-optional-chaining	unsafeOptionalChain	Unsafe usage of optional chaining. If it short-circuits with 'undefined' the evaluation will throw TypeError.

@@ -45,3 +45,7 @@ function doSomething(_: unknown) {}
 function check() {
   return 1;
 }
+
+// Without checkConditionalExpressions, a conditional is one group (10.15.0).
+let cg1 = 0, cg2 = 1, cg3 = 2;
+while (cg1 ? cg2 : cg3) { cg1 += 1; }
