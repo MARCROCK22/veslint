@@ -76,3 +76,26 @@ fn (c &Checker) unb_parenthesized_range(t &estree.EsTree, tokens &SourceTokens, 
 	start, end := c.un_parenthesized_range(t, tokens, node)
 	return UnbRange{start, end}
 }
+
+// unb_linebreak ports getLinebreak (utils/get-linebreak.js): the first line ending of the file, or
+// `\n` for a file of one line.
+fn (c &Checker) unb_linebreak() string {
+	for i := 0; i < c.src.len; i++ {
+		match c.src[i] {
+			`\r` {
+				return if i + 1 < c.src.len && c.src[i + 1] == `\n` { '\r\n' } else { '\r' }
+			}
+			`\n` {
+				return '\n'
+			}
+			0xe2 {
+				// U+2028 and U+2029: E2 80 A8 and E2 80 A9.
+				if i + 2 < c.src.len && c.src[i + 1] == 0x80 && c.src[i + 2] in [u8(0xa8), 0xa9] {
+					return c.src[i..i + 3]
+				}
+			}
+			else {}
+		}
+	}
+	return '\n'
+}

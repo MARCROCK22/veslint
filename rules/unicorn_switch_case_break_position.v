@@ -3,7 +3,7 @@ module rules
 import estree
 import time
 
-// Port of the `unicorn/switch-case-break-position` rule of eslint-plugin-unicorn 64.0.0 (it has no
+// Port of the `unicorn/switch-case-break-position` rule of eslint-plugin-unicorn 79.0.0 (it has no
 // options), with its fix.
 
 const uscbp_messages = {
@@ -82,6 +82,6 @@ fn (c &Checker) uscbp_fix(t &estree.EsTree, tokens &SourceTokens, block int, las
 	body := t.list(block, .body) or { return [] }
 	indent := c.un_indent_string(t, body.last())
 	before_brace := tokens.before(closing.start, true) or { return [] }
-	return [fix_insert_at(before_brace.end, '\n${indent}${c.un_text(t, last)}'),
+	return [fix_insert_at(before_brace.end, '${c.unb_linebreak()}${indent}${c.un_text(t, last)}'),
 		fix_remove_range(closing.end, t.nodes[last].end)]
 }

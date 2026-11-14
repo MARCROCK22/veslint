@@ -58,3 +58,11 @@ function g() {
     }
   }
 }
+
+// 79.0.0 (valid): a block followed by a statement that does not terminate.
+switch (foo) {
+	case 1: {
+		doStuff();
+	}
+	doOtherStuff();
+}
