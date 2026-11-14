@@ -158,6 +158,7 @@ pub fn check_options(rule string, options []json2.Any) !bool {
 		unicorn_prefer_object_from_entries { upofe_options(options)! }
 		unicorn_prefer_default_parameters { updp_options(options)! }
 		stylistic_rest_spread_spacing { srsp_options(options)! }
+		stylistic_semi_spacing { ssmi_options(options)! }
 		else { return false }
 	}
 	return true

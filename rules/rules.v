@@ -382,6 +382,7 @@ pub const unicorn_prefer_default_parameters = 'unicorn/prefer-default-parameters
 pub const unicorn_no_unused_properties = 'unicorn/no-unused-properties'
 pub const stylistic_array_bracket_spacing = '@stylistic/array-bracket-spacing'
 pub const stylistic_rest_spread_spacing = '@stylistic/rest-spread-spacing'
+pub const stylistic_semi_spacing = '@stylistic/semi-spacing'
 pub const names = [no_floating_promises, await_thenable, require_await, return_await,
 	no_misused_promises, no_unsafe_call, no_unsafe_member_access, no_unsafe_return,
 	no_unsafe_assignment, no_unsafe_argument, restrict_template_expressions,
@@ -484,7 +485,8 @@ pub const names = [no_floating_promises, await_thenable, require_await, return_a
 	unicorn_no_accessor_recursion, unicorn_no_static_only_class, unicorn_prefer_class_fields,
 	unicorn_consistent_function_scoping, unicorn_isolated_functions, unicorn_no_useless_undefined,
 	unicorn_no_keyword_prefix, unicorn_prefer_object_from_entries, unicorn_prefer_default_parameters,
-	unicorn_no_unused_properties, stylistic_array_bracket_spacing, stylistic_rest_spread_spacing]
+	unicorn_no_unused_properties, stylistic_array_bracket_spacing, stylistic_rest_spread_spacing,
+	stylistic_semi_spacing]
 
 // untyped_rules are the ported rules that need no types (`meta.docs.requiresTypeChecking` is false
 // in typescript-eslint; the eslint-plugin-unicorn rules that read the types when the parser has a
@@ -561,7 +563,7 @@ pub const untyped_rules = [adjacent_overload_signatures, array_type, class_liter
 	unicorn_no_accessor_recursion, unicorn_no_static_only_class, unicorn_prefer_class_fields,
 	unicorn_consistent_function_scoping, unicorn_isolated_functions, unicorn_no_useless_undefined,
 	unicorn_no_keyword_prefix, unicorn_no_unused_properties, stylistic_array_bracket_spacing,
-	stylistic_rest_spread_spacing]
+	stylistic_rest_spread_spacing, stylistic_semi_spacing]
 
 // needs_types tells whether a rule asks tsgo for the types of the program.
 pub fn needs_types(rule string) bool {
@@ -940,6 +942,7 @@ pub const default_options = {
 	unicorn_no_unused_properties:                    '[]'
 	stylistic_array_bracket_spacing:                 '["never"]'
 	stylistic_rest_spread_spacing:                   '["never"]'
+	stylistic_semi_spacing:                          '[{"before":false,"after":true}]'
 }
 
 // Finding is a problem a rule found at a node.
@@ -1442,6 +1445,7 @@ pub fn message(rule string, finding Finding) string {
 		unicorn_no_unused_properties { unup_messages }
 		stylistic_array_bracket_spacing { sabs_messages }
 		stylistic_rest_spread_spacing { srsp_messages }
+		stylistic_semi_spacing { ssmi_messages }
 		else { map[string]string{} }
 	}
 	return interpolate(messages[finding.message_id] or { finding.message_id }, finding.data)
@@ -2701,6 +2705,9 @@ fn (mut c Checker) lint_rule(rule string, root C.TSNode, abs_path string, mut st
 		}
 		stylistic_rest_spread_spacing {
 			return c.lint_stylistic_rest_spread_spacing(root, abs_path, mut stats)!
+		}
+		stylistic_semi_spacing {
+			return c.lint_stylistic_semi_spacing(root, abs_path, mut stats)!
 		}
 		else { return error('unknown rule: ${rule}') }
 	}
