@@ -195,6 +195,13 @@ function normalize(run, raw, kind, index, prefix, source) {
       ? 'react.tsx'
       : 'file.ts'
     : (test.filename ?? (parserOptions.ecmaFeatures?.jsx ? 'react.tsx' : 'file.ts'));
+  // A case of unicorn's tests with `allowDefaultProject` lints a file of no tsconfig.json, linted by
+  // the default project of the project service: the fixtures' tsconfig.json has file.ts, so it is
+  // default-project.ts here (a file of the fixtures that no tsconfig.json includes).
+  if (source?.unicorn && isObject(parserOptions.projectService) && parserOptions.projectService.allowDefaultProject
+    && filename === 'file.ts') {
+    filename = 'default-project.ts';
+  }
   if (parserOptions.project) filename = path.join(root, filename);
   const file = path.isAbsolute(filename) ? filename : path.resolve(root, filename);
   // How the parser gets the types: the project service (the closest tsconfig.json), or the
