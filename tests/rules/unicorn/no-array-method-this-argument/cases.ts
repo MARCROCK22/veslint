@@ -20,3 +20,18 @@ const z3 = list.map([] as any, context);
 declare const _: { map(a: unknown, b: unknown, c: unknown): unknown };
 const z4 = _.map(list, callback, context);
 const z5 = Array.from(list, undefined, context);
+
+// 79.0.0: only simple `this` arguments are fixed; comments; receivers known not to be arrays.
+declare const set: Set<number> & { map(cb: unknown, thisArg: unknown): void };
+declare function getContext(): object;
+const k1 = list.map(x => x, context);
+const k2 = list.map(x => x, getContext());
+const k3 = list.map(x => x, 'text');
+const k4 = list.map(x => x, `text`);
+const k5 = list.map(x => x, this);
+const k6 = list.map(x => x, /* keep */ context);
+const k7 = list.map(callback, getContext());
+const k8 = list.map(callback, context /* keep */);
+set.map(x => x, context);
+const k9 = Array.from(list, x => x, context);
+const k10 = Array.from(list, callback, context.toString);

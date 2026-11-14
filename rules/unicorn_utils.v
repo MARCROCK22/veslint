@@ -1554,11 +1554,23 @@ fn (mut c Checker) un_is_function_self_used_inside(root C.TSNode, t &estree.EsTr
 	return false
 }
 
-// un_member_object_needs_parens ports shouldAddParenthesesToMemberExpressionObject.
+// un_member_object_needs_parens ports shouldAddParenthesesToMemberExpressionObject(node, context)
+// (eslint-plugin-unicorn 79.0.0), where the node stays where it is.
 fn (c &Checker) un_member_object_needs_parens(t &estree.EsTree, tokens &SourceTokens, node int) bool {
+	return c.un_member_object_needs_parens_at(t, tokens, node, node)
+}
+
+// un_member_object_needs_parens_at ports shouldAddParenthesesToMemberExpressionObject: the node
+// needs parentheses as the object of a member expression that takes the place of `replacement`
+// (also so that a statement does not start with a declaration-like token).
+fn (c &Checker) un_member_object_needs_parens_at(t &estree.EsTree, tokens &SourceTokens, node int, replacement int) bool {
+	if c.un_expression_start_needs_parens(t, tokens, node, replacement) {
+		return true
+	}
 	return match t.typ(node) {
 		.identifier, .member_expression, .call_expression, .chain_expression, .template_literal,
-		.this_expression, .array_expression, .function_expression {
+		.this_expression, .super, .array_expression, .meta_property, .import_expression,
+		.tagged_template_expression, .ts_non_null_expression {
 			false
 		}
 		.new_expression {
@@ -1571,6 +1583,18 @@ fn (c &Checker) un_member_object_needs_parens(t &estree.EsTree, tokens &SourceTo
 			true
 		}
 	}
+}
+
+// un_member_object_text ports getMemberExpressionObjectText: the text of the node (with its
+// parentheses) as the object of a member expression where `replacement` is, in parentheses when
+// it needs them.
+fn (c &Checker) un_member_object_text(t &estree.EsTree, tokens &SourceTokens, node int, replacement int) string {
+	text := c.un_parenthesized_text(t, tokens, node)
+	if !c.un_is_parenthesized(t, tokens, node)
+		&& c.un_member_object_needs_parens_at(t, tokens, node, replacement) {
+		return '(${text})'
+	}
+	return text
 }
 
 // un_is_node_matches ports isNodeMatches: the node matches one of the names or paths.
@@ -1603,27 +1627,60 @@ fn (mut c Checker) un_const_initializer(root C.TSNode, t &estree.EsTree, node in
 	return c.es_index_of(t, def.init?)
 }
 
-// un_remove_argument ports removeArgument (fix/remove-argument.js).
-fn (c &Checker) un_remove_argument(t &estree.EsTree, tokens &SourceTokens, node int) ?Fix {
+// un_argument_removal_range ports getArgumentRemovalRange (fix/remove-argument.js of
+// eslint-plugin-unicorn 79.0.0): the range removing an argument removes, with its parentheses and
+// the comma (the following one and the gap after it for the first of several).
+fn (c &Checker) un_argument_removal_range(t &estree.EsTree, tokens &SourceTokens, node int) ?UnRange {
 	call := t.nodes[node].parent
 	arguments := t.list(call, .arguments) or { return none }
 	index := arguments.index(node)
 	parentheses := c.un_parentheses(t, tokens, node)
 	mut start := if parentheses.len > 0 { parentheses[0].start } else { t.nodes[node].start }
 	mut end := if parentheses.len > 0 { parentheses.last().end } else { t.nodes[node].end }
-	if index != 0 {
-		comma := tokens.before(start, false)?
-		start = comma.start
-	}
-	// If the removed argument is the only argument, the trailing comma must be removed too
 	if arguments.len == 1 {
+		// The only argument: also a dangling trailing comma (`fn(a,)`).
 		if after := tokens.after(end, false) {
 			if c.token_is(after, ',') {
 				end = after.end
 			}
 		}
+	} else if index == 0 {
+		// The first of several: through the following comma and the gap after it.
+		comma := tokens.after(end, false)?
+		after_comma := tokens.after(comma.end, true)?
+		end = after_comma.start
+	} else {
+		comma := tokens.before(start, false)?
+		start = comma.start
 	}
-	return fix_remove_range(start, end)
+	return UnRange{start, end}
+}
+
+// un_remove_argument ports removeArgument: the comments in the removed range are kept.
+fn (c &Checker) un_remove_argument(t &estree.EsTree, tokens &SourceTokens, node int) ?Fix {
+	removal := c.un_argument_removal_range(t, tokens, node)?
+	if !un_has_comment_in_range(tokens, removal.start, removal.end) {
+		return fix_remove_range(removal.start, removal.end)
+	}
+	call := t.nodes[node].parent
+	arguments := t.list(call, .arguments) or { return none }
+	index := arguments.index(node)
+	comments := tokens.comments_inside(removal.start, removal.end).filter(it.end <= removal.end)
+	linebreak := un_linebreak(c.src)
+	comment_text := fn [c, linebreak] (comment SourceToken) string {
+		return c.token_text(comment) + if comment.kind == .line_comment { linebreak } else { '' }
+	}
+	// Removing the first of several arguments swallows the comma after it: the comments after the
+	// argument are spliced out of the middle, and the comments inside it go before them.
+	if index == 0 && arguments.len > 1 {
+		parentheses := c.un_parentheses(t, tokens, node)
+		argument_end := if parentheses.len > 0 { parentheses.last().end } else { t.nodes[node].end }
+		comma := tokens.after(argument_end, false)?
+		argument_comments := comments.filter(it.end <= argument_end).map(comment_text(it)).join(' ')
+		replacement := argument_comments + c.src[argument_end..comma.start] + c.src[comma.end..removal.end]
+		return fix_replace_range(removal.start, removal.end, replacement)
+	}
+	return fix_replace_range(removal.start, removal.end, comments.map(' ${comment_text(it)}').join(''))
 }
 
 // un_call_callee_needs_parens ports shouldAddParenthesesToCallExpressionCallee.

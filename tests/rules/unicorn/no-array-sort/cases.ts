@@ -13,3 +13,13 @@ list.sort();
 const z1 = list.sort(undefined);
 const z2 = list.sort(compare, 1);
 const z3 = list.sort(compare());
+
+// 79.0.0: receivers known not to be arrays are left.
+declare const set: Set<number>;
+declare const typed: Float64Array;
+const k1 = set.sort();
+const k2 = typed.sort();
+function rest(...items: number[]) { return items.sort(); }
+const k3 = Object.keys({}).sort();
+const k4 = [...new Set([1])].sort();
+const k5 = [...list, /* keep */].sort();
