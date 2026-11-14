@@ -13,7 +13,6 @@ const z3 = text.codePointAt(0);
 const z4 = text['charCodeAt'](0);
 
 // 79.0.0: no suggestion when the result is used as a number.
-declare const text: string;
 let hash = 0;
 hash = (hash << 5) - hash + text.charCodeAt(0);
 hash += text.charCodeAt(1);
