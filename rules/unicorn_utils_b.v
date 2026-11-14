@@ -1236,12 +1236,16 @@ enum UnbKind {
 }
 
 // UnbFamily selects the hooks of a type checker (isTargetNode, isNonTargetNode, getStaticType,
-// isTargetTypeAnnotation, isTargetType): those of utils/is-array.js, or none for a builtin.
+// isTargetTypeAnnotation, isTargetType): those of utils/is-array.js, utils/is-number.js,
+// utils/is-string.js or utils/is-reg-exp.js, or none for a builtin.
 enum UnbFamily {
 	array
 	indexed_collection
 	bigint_typed_array
 	builtin
+	number_
+	string_
+	reg_exp
 }
 
 const unb_typed_arrays = ['Int8Array', 'Uint8Array', 'Uint8ClampedArray', 'Int16Array', 'Uint16Array',
@@ -1596,6 +1600,10 @@ fn (mut c Checker) unb_annotation_type(root C.TSNode, t &estree.EsTree, node int
 			if o.family in [.array, .indexed_collection] && t.typ(node) in [.ts_array_type, .ts_tuple_type] {
 				return .target
 			}
+			if (o.family == .number_ && unb_is_number_type_annotation(t, node))
+				|| (o.family == .string_ && unb_is_string_type_annotation(t, node)) {
+				return .target
+			}
 			if t.typ(node) in [.ts_null_keyword, .ts_undefined_keyword] {
 				return .nullish
 			}
@@ -1650,6 +1658,12 @@ fn (mut c Checker) unb_ts_type(t TypeResponse, o UnbTypeOptions, depth int) !Unb
 		return unb_combine_intersection(kinds)
 	}
 	if o.family in [.array, .indexed_collection] && (c.is_array(t)! || c.is_tuple(t)!) {
+		return .target
+	}
+	// isTargetType of utils/is-number.js and utils/is-string.js.
+	if (o.family == .number_ && (t.flags & type_flag_number_literal != 0
+		|| t.intrinsic_name == 'number')) || (o.family == .string_
+		&& (t.flags & type_flag_string_literal != 0 || t.intrinsic_name == 'string')) {
 		return .target
 	}
 	constraint := c.base_constraint(t)!
@@ -1761,7 +1775,8 @@ fn (mut c Checker) unb_is_array_node(t &estree.EsTree, node int, mut ctx UnbType
 }
 
 // unb_is_target_node is the isTargetNode hook of the family.
-fn (mut c Checker) unb_is_target_node(t &estree.EsTree, node int, o UnbTypeOptions, mut ctx UnbTypeContext) bool {
+// `visited` is that of the getType calling it: isStringNode's `isTarget` shares it.
+fn (mut c Checker) unb_is_target_node(t &estree.EsTree, node int, o UnbTypeOptions, mut ctx UnbTypeContext, mut visited map[int]bool) bool {
 	return match o.family {
 		.array {
 			c.unb_is_array_node(t, node, mut ctx)
@@ -1774,8 +1789,14 @@ fn (mut c Checker) unb_is_target_node(t &estree.EsTree, node int, o UnbTypeOptio
 				return false
 			}, .object) or { return false }, .name) or { '' }) in ['BigInt64Array', 'BigUint64Array']
 		}
-		.builtin {
+		.builtin, .number_ {
 			false
+		}
+		.string_ {
+			c.unb_is_string_node(t, node, o, mut ctx, mut visited)
+		}
+		.reg_exp {
+			un_is_regex_literal(t, node)
 		}
 	}
 }
@@ -1796,16 +1817,27 @@ fn unb_is_non_target_node(t &estree.EsTree, node int, o UnbTypeOptions) bool {
 
 // unb_type_from_static_value ports getTypeFromStaticValue.
 fn (mut c Checker) unb_type_from_static_value(t &estree.EsTree, node int, o UnbTypeOptions, mut ctx UnbTypeContext) UnbKind {
-	if o.family !in [.array, .indexed_collection] {
+	if o.family !in [.array, .indexed_collection, .string_, .reg_exp] {
 		return .unknown
 	}
 	value := c.unb_static_value_for_control_flow(ctx.root, t, node) or { return .unknown }
-	kind := if value.value.kind == .array_ {
-		UnbKind.target
-	} else if t.typ(node) in [.identifier, .member_expression] {
-		UnbKind.unknown
-	} else {
-		UnbKind.non_target
+	kind := match o.family {
+		// getStaticType of utils/is-string.js and utils/is-reg-exp.js.
+		.string_ {
+			if value.value.kind == .string_ { UnbKind.target } else { UnbKind.unknown }
+		}
+		.reg_exp {
+			if value.value.kind == .regexp_ { UnbKind.target } else { UnbKind.unknown }
+		}
+		else {
+			if value.value.kind == .array_ {
+				UnbKind.target
+			} else if t.typ(node) in [.identifier, .member_expression] {
+				UnbKind.unknown
+			} else {
+				UnbKind.non_target
+			}
+		}
 	}
 	if kind != .unknown && c.unb_has_jsdoc_type_reference(ctx.root, t, node) {
 		return .unknown
@@ -2120,7 +2152,7 @@ fn (mut c Checker) unb_get_type(t &estree.EsTree, node int, o UnbTypeOptions, mu
 			return from_static
 		}
 	}
-	if c.unb_is_target_node(t, node, o, mut ctx) {
+	if c.unb_is_target_node(t, node, o, mut ctx, mut visited) {
 		return .target
 	}
 	if o.target_constructor_names.any(un_is_new(t, node, names: [it]))
@@ -3652,4 +3684,409 @@ fn unb_is_side_effect_free_function(t &estree.EsTree, node int) bool {
 // unb_has_type_arguments ports hasTypeArguments: `foo<string>()`.
 fn unb_has_type_arguments(t &estree.EsTree, node int) bool {
 	return t.node(node, .type_arguments) != none
+}
+
+// The checkers of utils/is-reg-exp.js, utils/is-string.js and utils/is-number.js, and the two
+// builtin checkers they use: `Date` and the sized collections.
+
+// unb_reg_exp_options are the options of isRegExp (createBuiltinTypeCheckers of `RegExp`, with
+// isRegexLiteral and a RegExp static value as targets).
+fn unb_reg_exp_options(check_class_heritage bool) UnbTypeOptions {
+	return UnbTypeOptions{
+		...unb_builtin_options('RegExp', [])
+		family:               .reg_exp
+		check_class_heritage: check_class_heritage
+		target_call_names:    ['RegExp']
+	}
+}
+
+// unb_date_options are those of isDate of utils/is-number.js and utils/is-string.js.
+fn unb_date_options() UnbTypeOptions {
+	return UnbTypeOptions{
+		...unb_builtin_options('Date', [])
+		check_class_heritage: false
+	}
+}
+
+// unb_sized_collection_options are those of isSizedCollection of utils/is-number.js.
+fn unb_sized_collection_options() UnbTypeOptions {
+	return UnbTypeOptions{
+		family:                   .builtin
+		check_class_heritage:     false
+		target_type_names:        ['Map', 'Set', 'ReadonlyMap', 'ReadonlySet']
+		target_constructor_names: ['Map', 'Set']
+	}
+}
+
+// unb_string_options are those of isStringTarget and isKnownNonString of utils/is-string.js.
+fn unb_string_options() UnbTypeOptions {
+	return UnbTypeOptions{
+		family:            .string_
+		target_type_names: ['string']
+		target_call_names: ['String', 'Date', 'encodeURI', 'encodeURIComponent', 'decodeURI',
+			'decodeURIComponent', 'atob', 'btoa']
+	}
+}
+
+// unb_number_options are those of isNumberTarget and isKnownNonNumber of utils/is-number.js.
+fn unb_number_options() UnbTypeOptions {
+	return UnbTypeOptions{
+		family:            .number_
+		target_type_names: ['number']
+		target_call_names: ['Number']
+	}
+}
+
+// unb_is_reg_exp ports isRegExp of utils/is-reg-exp.js (`checkClassHeritage` is an override).
+fn (mut c Checker) unb_is_reg_exp(t &estree.EsTree, node int, check_class_heritage bool, mut ctx UnbTypeContext) bool {
+	return c.unb_is_target(t, node, unb_reg_exp_options(check_class_heritage), mut ctx)
+}
+
+// unb_is_string_type_annotation ports isStringTypeAnnotation of utils/is-string.js: `string` or
+// a string literal type.
+fn unb_is_string_type_annotation(t &estree.EsTree, node int) bool {
+	if node < 0 {
+		return false
+	}
+	return match t.typ(node) {
+		.ts_string_keyword { true }
+		.ts_literal_type { unb_static_string_value(t, t.node(node, .literal) or { -1 }) != none }
+		else { false }
+	}
+}
+
+// unb_is_unmodified_mutable_variable ports isUnmodifiedMutableVariable of utils/is-string.js: a
+// `let` or `var` declarator of the name, with an initializer and no other write.
+fn (mut c Checker) unb_is_unmodified_mutable_variable(root C.TSNode, t &estree.EsTree, node int) bool {
+	if t.typ(node) != .identifier {
+		return false
+	}
+	v := c.unb_find_variable(root, t, node)
+	def := c.unb_single_definition(root, v) or { return false }
+	if def.kind != .variable || def.parent_kind !in ['let', 'var'] || !unb_is_simple_declarator(def)
+		|| def.init == none {
+		return false
+	}
+	tree := c.scope_tree(root)
+	return tree.variables[v].references.all(!tree.references[it].write || tree.references[it].init)
+}
+
+const unb_string_returning_methods = ['charAt', 'concat', 'normalize', 'padEnd', 'padStart', 'repeat',
+	'slice', 'substring', 'toLocaleLowerCase', 'toLocaleUpperCase', 'toLowerCase', 'toString',
+	'toUpperCase', 'toWellFormed', 'trim', 'trimEnd', 'trimStart', 'valueOf']
+
+const unb_date_string_returning_methods = ['toDateString', 'toISOString', 'toLocaleDateString',
+	'toLocaleString', 'toLocaleTimeString', 'toString', 'toTimeString', 'toUTCString']
+
+// unb_is_string_node ports isStringNode of utils/is-string.js, the isTargetNode hook of the string
+// checker: its `isTarget` is getType with the same options and `visited`.
+fn (mut c Checker) unb_is_string_node(t &estree.EsTree, node int, o UnbTypeOptions, mut ctx UnbTypeContext, mut visited map[int]bool) bool {
+	if un_is_string_literal(t, node) || un_is_function_call(t, node, 'String')
+		|| (t.typ(node) == .call_expression && !(t.flag(node, .optional) or { false })
+		&& un_is_static_properties(t, t.node(node, .callee) or { -1 }, 'String', ['fromCharCode',
+		'fromCodePoint', 'raw'])) {
+		return true
+	}
+	match t.typ(node) {
+		.member_expression {
+			return un_is_member(t, node, properties: ['source', 'flags'], optional: false)
+				&& c.unb_is_reg_exp(t, t.node(node, .object) or { -1 }, false, mut ctx)
+		}
+		.tagged_template_expression {
+			return un_is_member(t, t.node(node, .tag) or { -1 },
+				objects:    ['String']
+				properties: ['raw']
+				optional:   false
+			)
+		}
+		.call_expression {
+			object := t.node(t.node(node, .callee) or { -1 }, .object) or { -1 }
+			if un_is_method_call(t, node,
+				methods:         ['join']
+				optional_call:   false
+				optional_member: false
+			) {
+				return c.unb_is_target(t, object, unb_indexed_collection_options(), mut ctx)
+			}
+			if un_is_method_call(t, node,
+				methods:         unb_date_string_returning_methods
+				optional_call:   false
+				optional_member: false
+			) && c.unb_is_target(t, object, unb_date_options(), mut ctx) {
+				return true
+			}
+			return un_is_method_call(t, node,
+				methods:         unb_string_returning_methods
+				optional_call:   false
+				optional_member: false
+			) && c.unb_is_string_with(t, object, o, mut ctx, mut visited)
+		}
+		.template_literal {
+			return true
+		}
+		.unary_expression {
+			return (t.string_of(node, .operator) or { '' }) == 'typeof'
+		}
+		.binary_expression, .assignment_expression {
+			operator := t.string_of(node, .operator) or { '' }
+			left := t.node(node, .left) or { -1 }
+			right := t.node(node, .right) or { -1 }
+			if operator == '=' {
+				return c.unb_is_string_with(t, right, o, mut ctx, mut visited)
+			}
+			return operator in ['+', '+='] && (c.unb_is_string_with(t, left, o, mut ctx, mut visited)
+				|| c.unb_is_string_with(t, right, o, mut ctx, mut visited))
+		}
+		else {
+			return false
+		}
+	}
+}
+
+// unb_is_string_with ports isString(node, context, isTarget) of utils/is-string.js, `isTarget`
+// being getType of `o` with `visited`.
+fn (mut c Checker) unb_is_string_with(t &estree.EsTree, node int, o UnbTypeOptions, mut ctx UnbTypeContext, mut visited map[int]bool) bool {
+	if node < 0 {
+		return false
+	}
+	if t.typ(node) == .ts_satisfies_expression
+		&& unb_is_string_type_annotation(t, t.node(node, .type_annotation) or { -1 }) {
+		return true
+	}
+	if c.unb_get_type(t, node, o, mut ctx, mut visited) == .target {
+		return true
+	}
+	value := if c.unb_is_unmodified_mutable_variable(ctx.root, t, node) {
+		c.unb_static_value_if_no_side_effects(ctx.root, t, node)
+	} else {
+		c.unb_static_value_for_control_flow(ctx.root, t, node)
+	}
+	v := value or { return false }
+	return v.value.kind == .string_ && !c.unb_has_jsdoc_type_reference(ctx.root, t, node)
+}
+
+// unb_is_string ports isString of utils/is-string.js (with its default `isTarget`, isStringTarget).
+fn (mut c Checker) unb_is_string(t &estree.EsTree, node int, mut ctx UnbTypeContext) bool {
+	mut visited := map[int]bool{}
+	return c.unb_is_string_with(t, node, unb_string_options(), mut ctx, mut visited)
+}
+
+// unb_is_known_non_string ports isKnownNonString of utils/is-string.js.
+fn (mut c Checker) unb_is_known_non_string(t &estree.EsTree, node int, mut ctx UnbTypeContext) bool {
+	return c.unb_is_known_non_target(t, node, unb_string_options(), mut ctx)
+}
+
+// unb_is_number_type_annotation ports isNumberTypeAnnotation of utils/is-number.js: the bare
+// `number` keyword or a numeric literal type.
+fn unb_is_number_type_annotation(t &estree.EsTree, node int) bool {
+	if node < 0 {
+		return false
+	}
+	if t.typ(node) == .ts_number_keyword {
+		return true
+	}
+	if t.typ(node) != .ts_literal_type {
+		return false
+	}
+	literal := t.node(node, .literal) or { return false }
+	return t.typ(literal) == .literal && t.get(literal, .value) is f64
+}
+
+// unb_has_number_type_annotation ports hasNumberTypeAnnotation of utils/is-number.js
+// (hasTypeAnnotation of utils/type-check.js): a definition of the variable, not optional, is
+// annotated `number` or a numeric literal type.
+fn (mut c Checker) unb_has_number_type_annotation(root C.TSNode, t &estree.EsTree, node int) bool {
+	v := c.unb_find_variable(root, t, node)
+	if v < 0 {
+		return false
+	}
+	tree := c.scope_tree(root)
+	for def in tree.variables[v].defs {
+		name := c.es_index_of(t, def.name) or { continue }
+		if t.flag(name, .optional) or { false } {
+			continue
+		}
+		annotation := t.node(name, .type_annotation) or { continue }
+		if unb_is_number_type_annotation(t, t.node(annotation, .type_annotation) or { -1 }) {
+			return true
+		}
+	}
+	return false
+}
+
+const unb_math_methods = ['abs', 'acos', 'acosh', 'asin', 'asinh', 'atan', 'atanh', 'atan2', 'cbrt',
+	'ceil', 'clz32', 'cos', 'cosh', 'exp', 'expm1', 'f16round', 'floor', 'fround', 'hypot', 'imul',
+	'log', 'log1p', 'log10', 'log2', 'max', 'min', 'pow', 'random', 'round', 'sign', 'sin', 'sinh',
+	'sqrt', 'tan', 'tanh', 'trunc']
+
+const unb_date_number_returning_methods = ['getDate', 'getDay', 'getFullYear', 'getHours',
+	'getMilliseconds', 'getMinutes', 'getMonth', 'getSeconds', 'getTime', 'getTimezoneOffset',
+	'getUTCDate', 'getUTCDay', 'getUTCFullYear', 'getUTCHours', 'getUTCMilliseconds',
+	'getUTCMinutes', 'getUTCMonth', 'getUTCSeconds', 'setDate', 'setFullYear', 'setHours',
+	'setMilliseconds', 'setMinutes', 'setMonth', 'setSeconds', 'setTime', 'setUTCDate',
+	'setUTCFullYear', 'setUTCHours', 'setUTCMilliseconds', 'setUTCMinutes', 'setUTCMonth',
+	'setUTCSeconds', 'valueOf']
+
+// unb_is_number_returning_method_call ports isNumberReturningMethodCall of utils/is-number.js:
+// `string.indexOf()`, `array.push()`, `indexed.findIndex()`, `date.getTime()`…
+fn (mut c Checker) unb_is_number_returning_method_call(t &estree.EsTree, node int, mut ctx UnbTypeContext) bool {
+	if t.typ(node) != .call_expression || (t.flag(node, .optional) or { false }) {
+		return false
+	}
+	callee := t.node(node, .callee) or { return false }
+	if t.typ(callee) != .member_expression || (t.flag(callee, .computed) or { false })
+		|| (t.flag(callee, .optional) or { false }) {
+		return false
+	}
+	property := t.node(callee, .property) or { return false }
+	if t.typ(property) != .identifier {
+		return false
+	}
+	name := t.string_of(property, .name) or { '' }
+	object := t.node(callee, .object) or { return false }
+	return (name in ['charCodeAt', 'indexOf', 'lastIndexOf', 'localeCompare']
+		&& c.unb_is_string(t, object, mut ctx))
+		|| (name in ['push', 'unshift'] && c.unb_is_target(t, object, unb_array_options(), mut ctx))
+		|| (name in ['indexOf', 'lastIndexOf', 'findIndex', 'findLastIndex']
+		&& c.unb_is_target(t, object, unb_indexed_collection_options(), mut ctx))
+		|| (name in unb_date_number_returning_methods
+		&& c.unb_is_target(t, object, unb_date_options(), mut ctx))
+}
+
+// unb_is_numeric_property ports isNumericProperty of utils/is-number.js: the `length` of a
+// function, a string or an indexed collection, the `size` of a Map or a Set.
+fn (mut c Checker) unb_is_numeric_property(t &estree.EsTree, node int, mut ctx UnbTypeContext) bool {
+	if t.typ(node) != .member_expression || (t.flag(node, .computed) or { false })
+		|| (t.flag(node, .optional) or { false }) {
+		return false
+	}
+	property := t.node(node, .property) or { return false }
+	if t.typ(property) != .identifier {
+		return false
+	}
+	object := t.node(node, .object) or { return false }
+	name := t.string_of(property, .name) or { '' }
+	return match name {
+		'length' {
+			unb_is_function(t, object) || c.unb_is_string(t, object, mut ctx)
+				|| c.unb_is_target(t, object, unb_indexed_collection_options(), mut ctx)
+		}
+		'size' {
+			c.unb_is_target(t, object, unb_sized_collection_options(), mut ctx)
+		}
+		else {
+			false
+		}
+	}
+}
+
+// unb_is_number ports isNumber of utils/is-number.js (79.0.0): the expression is surely a number
+// (not a BigInt), from its syntax, its annotations, its static value or its type.
+fn (mut c Checker) unb_is_number(t &estree.EsTree, node int, mut ctx UnbTypeContext) bool {
+	if node < 0 {
+		return false
+	}
+	typ := t.typ(node)
+	is_call := typ == .call_expression && !(t.flag(node, .optional) or { false })
+	callee := if is_call { t.node(node, .callee) or { -1 } } else { -1 }
+	if (typ == .literal && t.get(node, .value) is f64)
+		|| un_is_static_properties(t, node, 'Math', un_math_properties)
+		|| (is_call && un_is_static_properties(t, callee, 'Math', unb_math_methods))
+		|| un_is_function_call(t, node, 'Number')
+		|| c.unb_is_number_returning_method_call(t, node, mut ctx)
+		|| un_is_static_properties(t, node, 'Number', un_number_properties)
+		|| (is_call && (un_is_static_properties(t, callee, 'Number', ['parseFloat', 'parseInt'])
+		|| un_is_static_properties(t, callee, 'Date', ['now', 'parse', 'UTC'])))
+		|| un_is_function_call(t, node, 'parseInt') || un_is_function_call(t, node, 'parseFloat')
+		|| c.unb_is_numeric_property(t, node, mut ctx) {
+		return true
+	}
+	mut operator := t.string_of(node, .operator) or { '' }
+	match typ {
+		.assignment_expression, .binary_expression {
+			left := t.node(node, .left) or { -1 }
+			right := t.node(node, .right) or { -1 }
+			if typ == .assignment_expression {
+				if operator == '=' && c.unb_is_number(t, right, mut ctx) {
+					return true
+				}
+				operator = operator[..operator.len - 1]
+			}
+			if operator == '+' && c.unb_is_number(t, left, mut ctx)
+				&& c.unb_is_number(t, right, mut ctx) {
+				return true
+			}
+			// `>>>` cannot be used on a BigInt.
+			if operator == '>>>' {
+				return true
+			}
+			// `a * b` may be a BigInt: one side must be a number.
+			if operator in ['-', '*', '/', '%', '**', '<<', '>>', '|', '^', '&']
+				&& (c.unb_is_number(t, left, mut ctx) || c.unb_is_number(t, right, mut ctx)) {
+				return true
+			}
+		}
+		.unary_expression {
+			// `+` cannot be used on a BigInt.
+			if operator == '+' {
+				return true
+			}
+			if operator in ['-', '~']
+				&& c.unb_is_number(t, t.node(node, .argument) or { -1 }, mut ctx) {
+				return true
+			}
+		}
+		.update_expression {
+			if c.unb_is_number(t, t.node(node, .argument) or { -1 }, mut ctx) {
+				return true
+			}
+		}
+		.conditional_expression {
+			consequent := c.unb_is_number(t, t.node(node, .consequent) or { -1 }, mut ctx)
+			alternate := c.unb_is_number(t, t.node(node, .alternate) or { -1 }, mut ctx)
+			if consequent && alternate {
+				return true
+			}
+			test := t.node(node, .test) or { -1 }
+			if value := c.unb_static_value_for_control_flow(ctx.root, t, test) {
+				if !c.unb_has_jsdoc_type_reference(ctx.root, t, test)
+					&& ((consequent && stv_to_boolean(value.value))
+					|| (alternate && !stv_to_boolean(value.value))) {
+					return true
+				}
+			}
+		}
+		.sequence_expression {
+			expressions := t.list(node, .expressions) or { []int{} }
+			if expressions.len > 0 && c.unb_is_number(t, expressions.last(), mut ctx) {
+				return true
+			}
+		}
+		.identifier {
+			if c.unb_has_number_type_annotation(ctx.root, t, node) {
+				return true
+			}
+		}
+		// `foo as number`, `foo satisfies number`, `<number>foo`
+		.ts_as_expression, .ts_satisfies_expression, .ts_type_assertion {
+			if unb_is_number_type_annotation(t, t.node(node, .type_annotation) or { -1 }) {
+				return true
+			}
+		}
+		// `foo!`
+		.ts_non_null_expression {
+			if c.unb_is_number(t, t.node(node, .expression) or { -1 }, mut ctx) {
+				return true
+			}
+		}
+		else {}
+	}
+	if c.unb_is_target(t, node, unb_number_options(), mut ctx) {
+		return true
+	}
+	if c.unb_has_jsdoc_type_reference(ctx.root, t, node) {
+		return false
+	}
+	value := c.unb_static_value_for_control_flow(ctx.root, t, node) or { return false }
+	return value.value.kind == .number_
 }
