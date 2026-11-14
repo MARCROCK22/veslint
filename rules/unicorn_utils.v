@@ -1,6 +1,7 @@
 module rules
 
 import estree
+import math
 import treesitter { Ident }
 
 // Helpers of eslint-plugin-unicorn 64.0.0 (rules/utils, rules/fix and rules/ast) that its ported
@@ -1577,7 +1578,8 @@ fn un_is_node_matches(t &estree.EsTree, node int, names_or_paths []string) bool 
 	return names_or_paths.any(un_node_matches_name_or_path(t, node, it))
 }
 
-// un_const_initializer ports getConstVariableInitializer of prefer-array-flat: the initializer of
+// un_const_initializer ports getConstVariableInitializer (utils/get-const-variable-initializer.js
+// of eslint-plugin-unicorn 79.0.0): the initializer of
 // the only definition of the variable of an identifier, a `const` declarator.
 fn (mut c Checker) un_const_initializer(root C.TSNode, t &estree.EsTree, node int) ?int {
 	if t.typ(node) != .identifier {
@@ -1591,6 +1593,11 @@ fn (mut c Checker) un_const_initializer(root C.TSNode, t &estree.EsTree, node in
 	}
 	def := tree.variables[v].defs[0]
 	if def.kind != .variable || treesitter.node_kind(def.node) != 'variable_declarator' || def.parent_kind != 'const' {
+		return none
+	}
+	// A destructured binding (`const {foo} = bar`) does not have the initializer as its value.
+	decl_id := def.decl_id or { return none }
+	if node_key(decl_id) != node_key(def.name) {
 		return none
 	}
 	return c.es_index_of(t, def.init?)
@@ -2083,4 +2090,96 @@ fn (c &Checker) un_indent_unit(t &estree.EsTree, tokens &SourceTokens) string {
 		return ' '.repeat(key[1..].int())
 	}
 	return '\t'
+}
+
+// un_primitive_literal_value ports getPrimitiveLiteralValue: the value of a literal (not a
+// regular expression), of a template without expressions, or of a signed numeric literal (and a
+// negated BigInt); none for other expressions. A BigInt is a JsValue of kind bigint_ with the
+// `bigint` text of its literal.
+fn un_primitive_literal_value(t &estree.EsTree, from int) ?JsValue {
+	node := un_unwrap_ts_expression(t, from)
+	if node < 0 {
+		return none
+	}
+	if t.typ(node) == .literal && t.prop(node, .regex) == none {
+		return un_literal_js_value(t, node)
+	}
+	if t.typ(node) == .template_literal {
+		text := un_static_string_value(t, node)?
+		return JsValue{
+			kind: .string_
+			text: text
+		}
+	}
+	if t.typ(node) != .unary_expression {
+		return none
+	}
+	argument := un_unwrap_ts_expression(t, t.node(node, .argument)?)
+	if argument < 0 || t.typ(argument) != .literal {
+		return none
+	}
+	operator := t.string_of(node, .operator)?
+	value := t.get(argument, .value)
+	if value is f64 && operator in ['-', '+'] {
+		return JsValue{
+			kind:   .number_
+			number: if operator == '-' { -value } else { value }
+		}
+	}
+	if bigint := t.string_of(argument, .bigint) {
+		if operator == '-' {
+			return JsValue{
+				kind: .bigint_
+				text: if bigint == '0' { '0' } else { '-${bigint}' }
+			}
+		}
+	}
+	return none
+}
+
+// un_literal_js_value is the value of a Literal node that is not a regular expression.
+fn un_literal_js_value(t &estree.EsTree, node int) ?JsValue {
+	if bigint := t.string_of(node, .bigint) {
+		return JsValue{
+			kind: .bigint_
+			text: bigint
+		}
+	}
+	value := t.get(node, .value)
+	return match value {
+		string {
+			JsValue{
+				kind: .string_
+				text: value
+			}
+		}
+		f64 {
+			JsValue{
+				kind:   .number_
+				number: value
+			}
+		}
+		bool {
+			JsValue{
+				kind:    .boolean_
+				boolean: value
+			}
+		}
+		estree.Null {
+			JsValue{
+				kind: .null_
+			}
+		}
+		else {
+			none
+		}
+	}
+}
+
+// un_js_object_is ports Object.is for numbers: NaN is NaN, and 0 is not -0.
+fn un_js_object_is(a f64, b f64) bool {
+	if math.is_nan(a) || math.is_nan(b) {
+		return math.is_nan(a) && math.is_nan(b)
+	}
+	return a == b && math.signbit(a) == math.signbit(b)
 }
