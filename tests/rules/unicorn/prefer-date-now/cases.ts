@@ -33,3 +33,9 @@ const z7 = new Date() + 1;
 n += new Date();
 const z8 = String(new Date());
 const z9 = Date.now();
+
+// 79.0.0: no fix when a comment would be lost.
+const withComment1 = new Date(/* 1 */).getTime();
+const withComment2 = +new Date(/* 2 */);
+const withComment3 = Number(new /* 3 */ Date());
+const withComment4 = (new Date(/* 4 */) /* 5 */) - /* 6 */ new Date();

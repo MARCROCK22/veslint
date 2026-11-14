@@ -21,3 +21,12 @@ const z3 = 'latin1';
 const z4 = String.raw`UTF-8`;
 const z5 = `UTF-8${e1}`;
 const z6 = '';
+
+// 79.0.0: module specifiers are not encodings.
+import utf8Module from 'utf8';
+export * from 'UTF-8';
+export { x as y } from 'ascii';
+const required = require('utf8');
+const imported = import('utf8');
+type Imported = typeof import('utf8');
+declare module 'Utf8' {}

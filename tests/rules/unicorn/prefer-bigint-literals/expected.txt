@@ -17,3 +17,12 @@ tests/rules/unicorn/prefer-bigint-literals/cases.ts:19:13	unicorn/prefer-bigint-
 tests/rules/unicorn/prefer-bigint-literals/cases.ts:20:13	unicorn/prefer-bigint-literals	prefer-bigint-literals/error	Prefer using bigint literal over `BigInt(…)`.
 tests/rules/unicorn/prefer-bigint-literals/cases.ts:21:14	unicorn/prefer-bigint-literals	prefer-bigint-literals/error	Prefer using bigint literal over `BigInt(…)`.
 tests/rules/unicorn/prefer-bigint-literals/cases.ts:23:1	unicorn/prefer-bigint-literals	prefer-bigint-literals/error	Prefer using bigint literal over `BigInt(…)`.
+tests/rules/unicorn/prefer-bigint-literals/cases.ts:36:1	unicorn/prefer-bigint-literals	prefer-bigint-literals/error	Prefer using bigint literal over `BigInt(…)`.
+tests/rules/unicorn/prefer-bigint-literals/cases.ts:37:1	unicorn/prefer-bigint-literals	prefer-bigint-literals/error	Prefer using bigint literal over `BigInt(…)`.
+tests/rules/unicorn/prefer-bigint-literals/cases.ts:38:1	unicorn/prefer-bigint-literals	prefer-bigint-literals/error	Prefer using bigint literal over `BigInt(…)`.
+tests/rules/unicorn/prefer-bigint-literals/cases.ts:39:1	unicorn/prefer-bigint-literals	prefer-bigint-literals/error	Prefer using bigint literal over `BigInt(…)`.
+tests/rules/unicorn/prefer-bigint-literals/cases.ts:40:1	unicorn/prefer-bigint-literals	prefer-bigint-literals/error	Prefer using bigint literal over `BigInt(…)`.
+tests/rules/unicorn/prefer-bigint-literals/cases.ts:42:1	unicorn/prefer-bigint-literals	prefer-bigint-literals/error	Prefer using bigint literal over `BigInt(…)`.
+tests/rules/unicorn/prefer-bigint-literals/cases.ts:43:1	unicorn/prefer-bigint-literals	prefer-bigint-literals/error	Prefer using bigint literal over `BigInt(…)`.
+tests/rules/unicorn/prefer-bigint-literals/cases.ts:44:1	unicorn/prefer-bigint-literals	prefer-bigint-literals/error	Prefer using bigint literal over `BigInt(…)`.
+tests/rules/unicorn/prefer-bigint-literals/cases.ts:45:1	unicorn/prefer-bigint-literals	prefer-bigint-literals/error	Prefer using bigint literal over `BigInt(…)`.

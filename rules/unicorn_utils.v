@@ -978,6 +978,29 @@ fn un_is_string_literal(t &estree.EsTree, node int) bool {
 	return node >= 0 && t.typ(node) == .literal && t.get(node, .value) is string
 }
 
+// un_static_string_value ports getStaticStringValue of ast/literal.js (eslint-plugin-unicorn
+// 79.0.0): the value of a string literal, or the cooked text of a template literal without
+// expressions (none when its cooked value is undefined).
+fn un_static_string_value(t &estree.EsTree, node int) ?string {
+	if node < 0 {
+		return none
+	}
+	if un_is_string_literal(t, node) {
+		return t.get(node, .value) as string
+	}
+	if t.typ(node) == .template_literal && (t.list(node, .expressions) or { []int{} }).len == 0 {
+		quasis := t.list(node, .quasis) or { return none }
+		if quasis.len == 0 {
+			return none
+		}
+		value := t.get(quasis[0], .value)
+		if value is estree.TemplateValue && value.has_cooked {
+			return value.cooked
+		}
+	}
+	return none
+}
+
 // un_is_regex_literal ports isRegexLiteral.
 fn un_is_regex_literal(t &estree.EsTree, node int) bool {
 	return node >= 0 && t.typ(node) == .literal && t.get(node, .regex) is estree.RegexInfo
