@@ -434,22 +434,6 @@ eslint	prefer-readonly-parameter-types/i12	a JavaScript file, which the program 
 veslint	prefer-readonly-parameter-types/i12	a JavaScript file; veslint lints only TypeScript
 eslint	prefer-readonly-parameter-types/i13	a JavaScript file, which the program of the fixtures does not have: no types, no problem
 veslint	prefer-readonly-parameter-types/i13	a JavaScript file; veslint lints only TypeScript
-# eslint-plugin-unicorn 79.0.0 reads TypeScript's types when the file has a program, as ESLint does
-# with typescript-eslint's projectService (the configuration of tests/rules/reference.sh) and
-# veslint always does; the upstream tests run without one (`project: []`). With the types,
-# `values.findIndex(value => value === input)` of a `readonly ['small', …]` and a `string` input is
-# not reported (the input is not assignable to the parameter of `indexOf()`): ESLint with types
-# gives the same (tests/rules/unicorn/prefer-array-index-of/cases.ts, `sizes`).
-veslint	prefer-array-index-of/r1/i0	with TypeScript's types the search value is not assignable to the parameter of indexOf(): not reported
-veslint	prefer-array-index-of/r3/i0	with TypeScript's types the search value is not assignable to the parameter of lastIndexOf(): not reported
-# The same for prefer-array-flat: `let effects = new Set(); effects.flatMap(x => x)` has a Set for
-# TypeScript, which is known not to be an array (tests/rules/unicorn/prefer-array-flat/cases.ts).
-veslint	prefer-array-flat/r6/i4	with TypeScript's types the receiver is a Set, known not to be an array: not reported
-# And for no-for-each: in the fixtures of the upstream cases, `React` is the global of @types/react,
-# whose `Children` is known not to be an array (tests/rules/unicorn/no-for-each/cases.ts declares
-# such a React: ESLint with types does not report it either).
-veslint	no-for-each/r5/i179	with TypeScript's types `React?.Children` (@types/react) is known not to be an array: not reported
-veslint	no-for-each/r5/i180	with TypeScript's types `React?.Children` (@types/react) is known not to be an array: not reported
 # veslint's grammar (tree-sitter-typescript's) does not take a `new` without arguments as the
 # constructor of another `new`: `new new Buffer;` is a syntax error there, which typescript-estree
 # parses as `new (new Buffer)`. Allowing it in new_expression made tree-sitter read

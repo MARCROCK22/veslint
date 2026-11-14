@@ -1,0 +1,19 @@
+tests/rules/unicorn/prefer-single-call/cases.ts:9:6	unicorn/prefer-single-call	error/array-push	Do not call `Array#push()` multiple times.	fix	231	247	, 2);	end	9	10
+tests/rules/unicorn/prefer-single-call/cases.ts:10:6	unicorn/prefer-single-call	error/array-push	Do not call `Array#push()` multiple times.	fix	245	263	, 3, 4);	end	10	10
+tests/rules/unicorn/prefer-single-call/cases.ts:11:6	unicorn/prefer-single-call	error/array-push	Do not call `Array#push()` multiple times.	fix	262	277	, 5);	end	11	10
+tests/rules/unicorn/prefer-single-call/cases.ts:13:6	unicorn/prefer-single-call	error/array-push	Do not call `Array#unshift()` multiple times.	fix	278	309	list.unshift(2, 1	end	13	13
+tests/rules/unicorn/prefer-single-call/cases.ts:15:19	unicorn/prefer-single-call	error/array-push	Do not call `Element#classList.add()` multiple times.	fix	337	367	, 'b');	end	15	22
+tests/rules/unicorn/prefer-single-call/cases.ts:17:19	unicorn/prefer-single-call	error/array-push	Do not call `Element#classList.remove()` multiple times.	fix	396	429	, 'b');	end	17	25
+tests/rules/unicorn/prefer-single-call/cases.ts:19:1	unicorn/prefer-single-call	error/array-push	Do not call `importScripts()` multiple times.	fix	450	475	, 'b.js');	end	19	14
+tests/rules/unicorn/prefer-single-call/cases.ts:21:6	unicorn/prefer-single-call	error/array-push	Do not call `Array#push()` multiple times.	fix	486	503	6,);	end	21	10
+tests/rules/unicorn/prefer-single-call/cases.ts:24:6	unicorn/prefer-single-call	error/array-push	Do not call `Array#push()` multiple times.	end	24	10
+tests/rules/unicorn/prefer-single-call/cases.ts:25:6	unicorn/prefer-single-call	error/array-push	Do not call `Array#push()` multiple times.	suggestion	suggestion	Merge with previous one.	538	560	, value());	end	25	10
+tests/rules/unicorn/prefer-single-call/cases.ts:29:6	unicorn/prefer-single-call	error/array-push	Do not call `Array#push()` multiple times.	suggestion	suggestion	Merge with previous one.	612	628	, 1);	end	29	10
+tests/rules/unicorn/prefer-single-call/cases.ts:32:6	unicorn/prefer-single-call	error/array-push	Do not call `Array#push()` multiple times.	end	32	10
+tests/rules/unicorn/prefer-single-call/cases.ts:34:6	unicorn/prefer-single-call	error/array-push	Do not call `Array#push()` multiple times.	end	34	10
+tests/rules/unicorn/prefer-single-call/cases.ts:37:6	unicorn/prefer-single-call	error/array-push	Do not call `Array#push()` multiple times.	end	37	10
+tests/rules/unicorn/prefer-single-call/cases.ts:45:7	unicorn/prefer-single-call	error/array-push	Do not call `Array#push()` multiple times.	fix	839	856	, 2);	end	45	11
+tests/rules/unicorn/prefer-single-call/ignore/cases.ts:13:6	unicorn/prefer-single-call	error/array-push	Do not call `Array#unshift()` multiple times.	fix	278	309	list.unshift(2, 1	end	13	13
+tests/rules/unicorn/prefer-single-call/ignore/cases.ts:17:19	unicorn/prefer-single-call	error/array-push	Do not call `Element#classList.remove()` multiple times.	fix	396	429	, 'b');	end	17	25
+tests/rules/unicorn/prefer-single-call/ignore/cases.ts:19:1	unicorn/prefer-single-call	error/array-push	Do not call `importScripts()` multiple times.	fix	450	475	, 'b.js');	end	19	14
+tests/rules/unicorn/prefer-single-call/ignore/cases.ts:45:7	unicorn/prefer-single-call	error/array-push	Do not call `Array#push()` multiple times.	fix	839	856	, 2);	end	45	11

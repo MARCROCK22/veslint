@@ -2372,8 +2372,12 @@ fn (mut c Checker) un_type_annotation_type(mut ctx UnCtx, node int, scope int, o
 	}
 }
 
-// un_ts_type is parserServices.getTypeAtLocation(node), none when tsgo has none.
+// un_ts_type is parserServices.getTypeAtLocation(node) through withTypeInformation: none when the
+// parser has no program (LanguageOptions.type_information) or tsgo has no type for it.
 fn (mut c Checker) un_ts_type(ctx &UnCtx, node int) ?TypeResponse {
+	if !c.scope_setup.type_information {
+		return none
+	}
 	ts := ctx.t.ts_node(node) or { return none }
 	mut stats := Stats{}
 	c.resolve_node_types([ts], ctx.abs_path, mut stats) or { return none }
