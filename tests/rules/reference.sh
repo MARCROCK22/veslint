@@ -270,4 +270,6 @@ upstream_tests "@slipher/eslint-plugin's tests" tests/upstream/seyfert/setup.sh 
 upstream_tests "ESLint's tests" tests/upstream/setup.sh core
 # eslint-plugin-unicorn's tests, the same way.
 upstream_tests "eslint-plugin-unicorn's tests" tests/upstream/setup.sh unicorn
+# @stylistic/eslint-plugin's tests, the same way.
+upstream_tests "@stylistic/eslint-plugin's tests" tests/upstream/setup.sh @stylistic
 exit $fail

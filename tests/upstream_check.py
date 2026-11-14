@@ -283,10 +283,17 @@ def check(case, messages, findings, outputs):
         if findings:
             problems.append(f"valid, but {len(findings)} problem(s): {', '.join(f['messageId'] for f in findings)}")
         return problems
-    errors = case['errors']
-    count = errors if isinstance(errors, int) else len(errors)
-    if len(findings) != count:
-        problems.append(f'{len(findings)} problem(s), expected {count}')
+    # An invalid case of @stylistic's tests (eslint-vitest-rule-tester) may give only its output:
+    # it expects at least one problem.
+    if 'errors' not in case:
+        if not findings:
+            problems.append('no problem, expected at least one')
+        errors = []
+    else:
+        errors = case['errors']
+        count = errors if isinstance(errors, int) else len(errors)
+        if len(findings) != count:
+            problems.append(f'{len(findings)} problem(s), expected {count}')
     if not isinstance(errors, int):
         for i, (expected, found) in enumerate(zip(errors, findings)):
             if isinstance(expected, str):

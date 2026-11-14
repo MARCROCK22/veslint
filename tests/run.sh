@@ -899,12 +899,17 @@ mapfile -t core_upstream < <(find tests/rules -mindepth 2 -maxdepth 2 -name upst
 # The rules of eslint-plugin-unicorn (tests/rules/unicorn/<rule>/upstream.json, from test/<rule>.js
 # of v79.0.0), the same way.
 mapfile -t unicorn_upstream < <(upstream_rules_of unicorn)
+# The rules of @stylistic/eslint-plugin (tests/rules/@stylistic/<rule>/upstream.json, from
+# rules/<rule>/*.test.ts of eslint-stylistic v5.10.0), the same way.
+mapfile -t stylistic_upstream < <([[ -d tests/rules/@stylistic ]] && upstream_rules_of @stylistic)
 if tests/upstream/setup.sh "$TMP/upstream" 2> "$TMP/upstream-setup.err"; then
 	upstream_check "typescript-eslint's own tests" "$TMP/upstream" "$TMP/upstream-configs" "${typescript_eslint_upstream[@]}"
 	[[ ${#core_upstream[@]} -eq 0 ]] ||
 		upstream_check "ESLint's own tests of its core rules" "$TMP/upstream" "$TMP/upstream-core-configs" "${core_upstream[@]}"
 	[[ ${#unicorn_upstream[@]} -eq 0 ]] ||
 		upstream_check "eslint-plugin-unicorn's own tests" "$TMP/upstream" "$TMP/upstream-unicorn-configs" "${unicorn_upstream[@]}"
+	[[ ${#stylistic_upstream[@]} -eq 0 ]] ||
+		upstream_check "@stylistic/eslint-plugin's own tests" "$TMP/upstream" "$TMP/upstream-stylistic-configs" "${stylistic_upstream[@]}"
 else
 	echo "skip   typescript-eslint's own tests: $(cat "$TMP/upstream-setup.err")"
 fi

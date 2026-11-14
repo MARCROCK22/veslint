@@ -31,6 +31,7 @@ const { clearCaches } = require('@typescript-eslint/parser');
 const SEYFERT_PLUGIN = path.join(ROOT, 'build/upstream/seyfert/node_modules/@slipher/eslint-plugin');
 const seyfert = fs.existsSync(SEYFERT_PLUGIN) ? require(SEYFERT_PLUGIN).plugin : null;
 const unicorn = (await import(require.resolve('eslint-plugin-unicorn'))).default;
+const stylistic = (await import(require.resolve('@stylistic/eslint-plugin'))).default;
 
 const { builtinRules } = require('eslint/use-at-your-own-risk');
 
@@ -42,6 +43,7 @@ function pluginOf(rule) {
     return ['seyfert', seyfert, rule.slice('seyfert/'.length)];
   }
   if (rule.startsWith('unicorn/')) return ['unicorn', unicorn, rule.slice('unicorn/'.length)];
+  if (rule.startsWith('@stylistic/')) return ['@stylistic', stylistic, rule.slice('@stylistic/'.length)];
   return ['@typescript-eslint', tseslint.plugin, rule.replace('@typescript-eslint/', '')];
 }
 
@@ -124,9 +126,15 @@ function check(rule, c, messages, outputs) {
   }
   const [, plugin, name] = pluginOf(rule);
   const meta = plugin ? plugin.rules[name].meta : builtinRules.get(name).meta;
-  const expected = typeof c.errors === 'number' ? null : c.errors;
-  const count = typeof c.errors === 'number' ? c.errors : c.errors.length;
-  if (messages.length !== count) say(`${messages.length} problem(s), expected ${count}`);
+  // An invalid case of @stylistic's tests (eslint-vitest-rule-tester) may give only its output: it
+  // expects at least one problem.
+  const expected = c.errors === undefined || typeof c.errors === 'number' ? null : c.errors;
+  if (c.errors === undefined) {
+    if (!messages.length) say('no problem, expected at least one');
+  } else {
+    const count = typeof c.errors === 'number' ? c.errors : c.errors.length;
+    if (messages.length !== count) say(`${messages.length} problem(s), expected ${count}`);
+  }
   if (expected) {
     expected.forEach((e, i) => {
       const m = messages[i];

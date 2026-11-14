@@ -33,6 +33,7 @@ const SEYFERT = path.join(ROOT, 'build/upstream/seyfert/node_modules/seyfert');
 const ESLINT = path.join(ROOT, 'build/upstream/eslint');
 const UNICORN = path.join(ROOT, 'build/upstream/unicorn');
 const UNICORN_DEPS = path.join(ROOT, 'build/upstream/unicorn-deps/node_modules');
+const STYLISTIC = path.join(ROOT, 'build/upstream/stylistic');
 
 // Where the tests of each plugin come from. `fixtures` is the directory the tests lint in, the one
 // the files of the cases are written relative to.
@@ -83,6 +84,20 @@ const SOURCES = {
     modules: path.join(UNICORN, 'node_modules'),
     needs: [path.join(UNICORN, 'test'), path.join(UNICORN_DEPS, 'outdent')],
     extra: { outdent: path.join(UNICORN_DEPS, 'outdent') },
+  },
+  // @stylistic/eslint-plugin v5.10.0 (the `@stylistic/*` rules): rules/<rule>/*.test.ts of
+  // packages/eslint-plugin in eslint-stylistic, run by eslint-vitest-rule-tester 3.1.0 with
+  // typescript-eslint's parser without types (`lang: 'ts'`, the default) or espree (`lang: 'js'`),
+  // linted as TypeScript in the file.ts (react.tsx with JSX) of typescript-eslint's fixtures, one pass
+  // of fixes, and an output checked only when the case gives one.
+  '@stylistic/': {
+    label: '@stylistic/eslint-plugin v5.10.0',
+    stylistic: true,
+    clone: STYLISTIC,
+    tests: path.join(STYLISTIC, 'packages/eslint-plugin/rules'),
+    fixtures: realDir(path.join(TYPESCRIPT_ESLINT, 'packages/eslint-plugin/tests/fixtures')),
+    modules: path.join(STYLISTIC, 'node_modules'),
+    needs: [path.join(STYLISTIC, 'packages/eslint-plugin/rules'), path.join(STYLISTIC, 'shared/test-utils')],
   },
 };
 
@@ -181,7 +196,7 @@ function normalize(run, raw, kind, index, prefix, source) {
   const { parser: caseParser, parserOptions: caseParserOptions, ...caseLanguageOptions } = test.languageOptions ?? {};
   // ESLint core: the RuleTester's own languageOptions (ecmaVersion, sourceType, globals) under the
   // case's, as flat config merges them.
-  const jsTests = source.core || source.unicorn;
+  const jsTests = source.core || source.unicorn || source.stylistic;
   const { parser: runParser, parserOptions: _runParserOptions, ...runLanguageOptions } = jsTests
     ? (run.config.languageOptions ?? {})
     : {};
@@ -264,19 +279,28 @@ function normalize(run, raw, kind, index, prefix, source) {
   // one of unicorn's with the parser of `test.typescript` or `test.vue`.
   if (source.core && caseParser) out.parser = caseParser.meta?.name ?? 'custom';
   if (source.unicorn && (caseParser ?? runParser)) out.parser = (caseParser ?? runParser).meta?.name ?? 'custom';
+  // A case of @stylistic's tests with espree (`lang: 'js'`) or a parser of its own (Flow).
+  if (source.stylistic) {
+    const parser = caseParser ?? runParser;
+    if (!parser) out.parser = 'espree';
+    else if (parser.meta?.name !== 'typescript-eslint/parser') out.parser = parser.meta?.name ?? 'custom';
+  }
   if (test.settings) out.settings = test.settings;
   if (kind === 'invalid' && run.mode === 'snapshot') {
     out.snapshot = true;
     Object.assign(out, unicornSnapshotExpectation(run, test, source));
   } else if (kind === 'invalid') {
-    out.errors = test.errors;
-    if ('output' in test) out.output = test.output;
+    // eslint-vitest-rule-tester: an invalid case without errors expects at least one problem.
+    if (test.errors !== undefined || !source.stylistic) out.errors = test.errors;
+    if ('output' in test && test.output !== undefined) out.output = test.output;
   }
   if (test.before || test.after) out.hooks = true;
   if (test.only) out.only = true;
   if (test.skip) out.skip = 'skipped upstream';
   else if (out.parser === 'vue') out.skip = 'vue-eslint-parser: a Vue file, not TypeScript';
   else if (out.parser === 'html' || out.parser === 'svelte') out.skip = `the ${out.parser} parser: not TypeScript`;
+  else if (out.parser === 'babel-flow') out.skip = 'Flow (@babel/eslint-parser): not TypeScript';
+  else if (source.stylistic && !['ts', 'js'].includes(run.lang)) out.skip = `the ${run.lang} language: not TypeScript`;
   else if (test.language) out.skip = `the ${test.language.name ?? test.language} language of ESLint, not TypeScript`;
   else if (!satisfies(test.dependencyConstraints)) out.skip = `dependencyConstraints ${JSON.stringify(test.dependencyConstraints)}`;
   assertPlain(out, id);
@@ -299,6 +323,12 @@ function testFiles(name, source) {
     const file = path.join(source.tests, `${camelCase(name)}.test.mts`);
     return fs.existsSync(file) ? [file] : [];
   }
+  if (source.stylistic) {
+    const dir = path.join(source.tests, name);
+    return fs.existsSync(dir)
+      ? fs.readdirSync(dir).filter(entry => entry.endsWith('.test.ts')).sort().map(entry => path.join(dir, entry))
+      : [];
+  }
   const file = path.join(source.tests, 'rules', `${name}.test.ts`);
   const dir = path.join(source.tests, 'rules', name);
   const files = [];
@@ -316,6 +346,7 @@ function testFiles(name, source) {
 async function ruleObjectOf(name, source) {
   if (source === SOURCES['seyfert/']) return null;
   if (source.unicorn) return (await unicornPlugin()).rules[name];
+  if (source.stylistic) return (await stylisticPlugin()).rules[name];
   // The module the test file requires, the same object.
   if (source.core) return createRequire(path.join(source.clone, 'package.json'))(path.join(source.clone, 'lib/rules', `${name}.js`));
   return (await import(pathToFileURL(path.join(source.clone, 'packages/eslint-plugin/src/rules', `${name}.ts`)).href)).default;
@@ -458,6 +489,33 @@ Bun.plugin({
     }));
   },
 });
+
+// The test files of @stylistic/eslint-plugin import their harness as `#test` (shared/test-utils,
+// an alias of its vitest configuration): the stub of tools/upstream/stylistic-test.mjs; and the
+// source of their rule, which is not run: the rule of build/eval (@stylistic/eslint-plugin 5.10.0)
+// gives its messages.
+Bun.plugin({
+  name: 'veslint-stylistic-tester',
+  setup(build) {
+    // Bun does not hand a `#` specifier to a plugin: the test file imports the stub by its path.
+    build.onLoad({ filter: /[\\/]stylistic[\\/]packages[\\/]eslint-plugin[\\/]rules[\\/][^\\/]+[\\/][^\\/]+\.test\.ts$/ }, ({ path: file }) => {
+      const text = fs.readFileSync(file, 'utf8').replaceAll(/from '#test(\/[^']*)?'/g, (_, sub) => {
+        if (sub && sub !== '/parsers-flow') throw new Error(`${file}: #test${sub} is not stubbed (tools/upstream/stylistic-test.mjs)`);
+        return `from ${JSON.stringify(path.join(ROOT, 'tools/upstream/stylistic-test.mjs'))}`;
+      });
+      return { contents: text, loader: 'ts' };
+    });
+    build.onLoad({ filter: /[\\/]stylistic[\\/]packages[\\/]eslint-plugin[\\/]rules[\\/]([^\\/]+)[\\/][^\\/.]+\.ts$/ }, () => ({
+      contents: 'export default {};',
+      loader: 'js',
+    }));
+  },
+});
+let stylisticPluginCache;
+async function stylisticPlugin() {
+  stylisticPluginCache ??= (await import(pathToFileURL(requireDependency.resolve('@stylistic/eslint-plugin')).href)).default;
+  return stylisticPluginCache;
+}
 
 // The plugin of build/eval (eslint-plugin-unicorn 79.0.0), the one Spider-Byte's configuration uses.
 let unicornPluginCache;
@@ -615,7 +673,7 @@ for (const rule of rules.sort()) {
     globalThis.__veslintTests = undefined;
     globalThis.__veslintProjects = undefined;
     const runs = recorded.slice(before);
-    if (runs.length) messages = source.unicorn ? (ruleObject.meta.messages ?? {}) : runs[0].messages;
+    if (runs.length) messages = source.unicorn || source.stylistic ? (ruleObject.meta.messages ?? {}) : runs[0].messages;
     // Every snapshot of unicorn's test file is one of the recorded invalid cases.
     if (source.unicorn) {
       // node's snapshots (test/snapshots/<rule>.js.snapshot, since v79): the first entry of each
@@ -633,7 +691,9 @@ for (const rule of rules.sort()) {
     const stem =
       source === SOURCES['seyfert/'] || source.core || source.unicorn
         ? name
-        : path.relative(path.join(source.tests, 'rules'), file).replace(/\.test\.ts$/, '').split(path.sep).join('/');
+        : source.stylistic
+          ? path.basename(file).replace(/\.test\.ts$/, '')
+          : path.relative(path.join(source.tests, 'rules'), file).replace(/\.test\.ts$/, '').split(path.sep).join('/');
     runs.forEach((run, r) => {
       // A test file may run its rule more than once under a longer label
       // ("non-nullable-type-assertion-style - noUncheckedIndexedAccess"), or under a label of its

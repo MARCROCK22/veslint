@@ -150,6 +150,7 @@ pub fn check_options(rule string, options []json2.Any) !bool {
 		unicorn_no_immediate_mutation { unim_options(options)! }
 		unicorn_prefer_export_from { upef_options(options)! }
 		unicorn_relative_url_style { rus_options(options)! }
+		stylistic_array_bracket_spacing { sabs_options(options)! }
 		unicorn_consistent_function_scoping { ucfs_options(options)! }
 		unicorn_isolated_functions { uisf_options(options)! }
 		unicorn_no_useless_undefined { unuu_options(options)! }
@@ -190,8 +191,9 @@ pub fn effective_options(name string, options []json2.Any) ![]json2.Any {
 	}
 	mut merged := apply_default(defaults, options)
 	// ESLint merges the options of its core rules with deepMergeArrays, which keeps the options
-	// past the defaults (`curly`'s "consistent").
-	if !name.contains('/') && options.len > merged.len {
+	// past the defaults (`curly`'s "consistent"); createRule of @stylistic keeps them too.
+	stylistic := name.starts_with('@stylistic/')
+	if (!name.contains('/') || stylistic) && options.len > merged.len {
 		// One by one: `<<` of an array would add it as one value (json2.Any has arrays). The
 		// slice is taken before the loop: V evaluates `options[merged.len..]` again on every
 		// iteration (tests/v-bugs/13-for-in-slice-start-reevaluated).
@@ -205,7 +207,8 @@ pub fn effective_options(name string, options []json2.Any) ![]json2.Any {
 		// A rule takes as many options as it has defaults for, and at least one; the schema of a
 		// rule of ESLint core limits its options (`curly` has a second one without a default).
 		limit := if defaults.len > 1 { defaults.len } else { 1 }
-		if name.contains('/') && options.len > limit {
+		// The schema of a rule of @stylistic limits its options.
+		if name.contains('/') && !stylistic && options.len > limit {
 			return error('`${name}` takes ${if limit == 1 {
 				'a single option'
 			} else {

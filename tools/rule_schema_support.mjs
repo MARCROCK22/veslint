@@ -9,7 +9,7 @@ import { createRequire } from 'node:module';
 export function portedRules(root) {
   const source = fs.readFileSync(path.join(root, 'rules/rules.v'), 'utf8');
   // A rule id with a plugin, or without one (ESLint core).
-  const byConst = new Map([...source.matchAll(/^pub const (\w+) = '((?:(?:@typescript-eslint|seyfert|unicorn)\/)?[a-z0-9-]+)'$/gm)].map(m => [m[1], m[2]]));
+  const byConst = new Map([...source.matchAll(/^pub const (\w+) = '((?:(?:@typescript-eslint|@stylistic|seyfert|unicorn)\/)?[a-z0-9-]+)'$/gm)].map(m => [m[1], m[2]]));
   const list = /^pub const names = \[([^\]]+)\]/m.exec(source);
   if (!list) {
     throw new Error('rules/rules.v: `names` not found');
@@ -131,10 +131,24 @@ export function unicornPlugin(root) {
   return module.default ?? module;
 }
 
+// stylisticPlugin is @stylistic/eslint-plugin 5.10.0, the plugin of the `@stylistic/*` rules, from
+// build/eval.
+export function stylisticPlugin(root) {
+  const require = createRequire(path.join(root, 'build/eval/spider-byte/package.json'));
+  const module = require('@stylistic/eslint-plugin');
+  return module.default ?? module;
+}
+
 // pluginOf is the namespace, the plugin and the name in it of a ported rule.
 export function pluginOf(id, plugins) {
   // ESLint core: a rule id without a plugin; plugins[''] holds its rules.
   if (!id.includes('/')) return ['', plugins[''], id];
-  const namespace = id.startsWith('seyfert/') ? 'seyfert' : id.startsWith('unicorn/') ? 'unicorn' : '@typescript-eslint';
+  const namespace = id.startsWith('seyfert/')
+    ? 'seyfert'
+    : id.startsWith('unicorn/')
+      ? 'unicorn'
+      : id.startsWith('@stylistic/')
+        ? '@stylistic'
+        : '@typescript-eslint';
   return [namespace, plugins[namespace], id.slice(namespace.length + 1)];
 }

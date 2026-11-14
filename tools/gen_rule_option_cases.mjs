@@ -15,7 +15,7 @@
 import fs from 'node:fs';
 import path from 'node:path';
 import { createRequire } from 'node:module';
-import { portedRules, checkSchema, ruleDefaults, seyfertPlugin, unicornPlugin, pluginOf } from './rule_schema_support.mjs';
+import { portedRules, checkSchema, ruleDefaults, seyfertPlugin, unicornPlugin, stylisticPlugin, pluginOf } from './rule_schema_support.mjs';
 
 const root = path.resolve(import.meta.dirname, '..');
 const modules = path.join(root, 'build/eval/spider-byte/node_modules');
@@ -302,7 +302,7 @@ const extra = {
 };
 
 const ids = portedRules(root);
-const plugins = { '': { rules: Object.fromEntries(builtinRules) }, '@typescript-eslint': plugin, seyfert: seyfertPlugin(root), unicorn: unicornPlugin(root) };
+const plugins = { '': { rules: Object.fromEntries(builtinRules) }, '@typescript-eslint': plugin, seyfert: seyfertPlugin(root), unicorn: unicornPlugin(root), '@stylistic': stylisticPlugin(root) };
 const standIns = {};
 for (const id of ids) {
   const [namespace, owner, name] = pluginOf(id, plugins);
