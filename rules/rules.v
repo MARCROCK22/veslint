@@ -463,9 +463,7 @@ pub const names = [no_floating_promises, await_thenable, require_await, return_a
 	unicorn_require_module_attributes, unicorn_require_module_specifiers,
 	unicorn_prefer_json_parse_buffer, unicorn_no_anonymous_default_export,
 	unicorn_prefer_import_meta_properties, unicorn_prefer_module, unicorn_prefer_reflect_apply,
-	unicorn_prefer_export_from]
-
-unicorn_prefer_json_parse_buffer, unicorn_no_anonymous_default_export, unicorn_relative_url_style
+	unicorn_prefer_export_from, unicorn_relative_url_style]
 
 // untyped_rules are the ported rules that need no types (`meta.docs.requiresTypeChecking` is false
 // in typescript-eslint; the eslint-plugin-unicorn rules that read the types when the parser has a
@@ -537,9 +535,7 @@ pub const untyped_rules = [adjacent_overload_signatures, array_type, class_liter
 	unicorn_require_module_attributes, unicorn_require_module_specifiers,
 	unicorn_prefer_json_parse_buffer, unicorn_no_anonymous_default_export,
 	unicorn_prefer_import_meta_properties, unicorn_prefer_module, unicorn_prefer_reflect_apply,
-	unicorn_prefer_export_from]
-
-unicorn_prefer_json_parse_buffer, unicorn_no_anonymous_default_export, unicorn_relative_url_style
+	unicorn_prefer_export_from, unicorn_relative_url_style]
 
 // needs_types tells whether a rule asks tsgo for the types of the program.
 pub fn needs_types(rule string) bool {
