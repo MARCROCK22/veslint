@@ -6,7 +6,7 @@ import time
 import tsgo { AstTree, SymbolResponse, TypeResponse, handle_index, handle_kind, handle_path }
 import treesitter { Ident, children, named_children, node_end, node_field, node_kind, node_parent, node_start, nodes_of_kind, nodes_of_kinds, position_of }
 
-// Port of the `no-deprecated` rule of typescript-eslint 8.62.0, with its `allow` option (bare names
+// Port of the `no-deprecated` rule of typescript-eslint 8.72.2, with its `allow` option (bare names
 // and `from: "lib"` specifiers, like the other rules). veslint reads no JSX, so the JSX parts of the
 // rule do not apply.
 //
@@ -185,6 +185,25 @@ fn (mut c Checker) lint_no_deprecated(root C.TSNode, abs_path string, mut stats 
 	import_ranges := c.nodes_of_kind(root, c'import_statement').map([node_start(it), node_end(it)])
 	mut checks := []NdepCheck{}
 	mut members := []NdepMember{}
+	// checkObjectLiteralProperty: the keys of the Properties of an object literal.
+	mut literal_properties := []NdepLiteralProperty{}
+	for object in c.nodes_of_kind(root, c'object') {
+		if ndep_in_ranges(node_start(object), import_ranges) {
+			continue
+		}
+		for property in named_children(object) {
+			if node_kind(property) !in ['pair', 'shorthand_property_identifier', 'method_definition'] {
+				continue
+			}
+			key, computed := es_property_key(property) or { continue }
+			literal_properties << NdepLiteralProperty{
+				object:   object
+				property: property
+				key:      key
+				computed: computed
+			}
+		}
+	}
 	for node in c.nodes_of_kinds(root, ndep_node_kinds, []string{}) {
 		if node_end(node) == node_start(node) || ndep_in_ranges(node_start(node), import_ranges) {
 			continue
@@ -266,6 +285,12 @@ fn (mut c Checker) lint_no_deprecated(root C.TSNode, abs_path string, mut stats 
 		spans << node_span(m.property)
 		spans << node_span(m.object)
 	}
+	for p in literal_properties {
+		spans << node_span(p.object)
+		if p.computed {
+			spans << node_span(p.key)
+		}
+	}
 	c.resolve_spans(spans, abs_path, mut stats)!
 	// The symbol of each checked node, in one request.
 	mut handles := []string{}
@@ -346,9 +371,48 @@ fn (mut c Checker) lint_no_deprecated(root C.TSNode, abs_path string, mut stats 
 		}
 		findings << ndep_finding(position_of(m.property), name, reason)
 	}
+	for p in literal_properties {
+		c.ndep_check_object_literal_property(p, o, mut st, mut findings)!
+	}
 	stats.eval_ms += ms(sw.elapsed())
-	stats.checked += checks.len + members.len
+	stats.checked += checks.len + members.len + literal_properties.len
 	return findings
+}
+
+// NdepLiteralProperty is a Property of an object literal: its key, which may be computed.
+struct NdepLiteralProperty {
+	object   C.TSNode
+	property C.TSNode
+	key      C.TSNode
+	computed bool
+}
+
+// ndep_check_object_literal_property ports checkObjectLiteralProperty (typescript-eslint 8.72): a
+// key of an object literal refers to a property of the literal's contextual type, so it is
+// checked against that type. The name is the key's (getObjectLiteralPropertyName), or for a
+// computed key the value of its string or number literal type; none otherwise.
+fn (mut c Checker) ndep_check_object_literal_property(p NdepLiteralProperty, o NdepOptions, mut st NdepState, mut findings []Finding) ! {
+	name := if p.computed {
+		key_type := c.node_type(p.key) or { return }
+		if key_type.flags & (type_flag_string_literal | type_flag_number_literal) == 0 {
+			return
+		}
+		literal_type_name(key_type)
+	} else {
+		c.es_static_key_name(p.property) or { return }
+	}
+	contextual := c.contextual_type(p.object)!
+	if contextual.is_null() {
+		return
+	}
+	reason := c.ndep_symbol_reason(c.property(contextual, name)!, mut st)!
+	if !reason.found {
+		return
+	}
+	if o.allow.len > 0 && c.type_matches_some_specifier(contextual, o.allow)! {
+		return
+	}
+	findings << ndep_finding(position_of(p.key), name, reason)
 }
 
 fn ndep_finding(at Ident, name string, reason NdepReason) Finding {
@@ -822,7 +886,7 @@ fn (mut c Checker) ndep_check_reason(chk NdepCheck, symbol SymbolResponse, mut s
 		}
 		value_symbol := c.client.shorthand_assignment_value_symbol(c.snapshot, c.project,
 			symbol.value_declaration)!
-		return c.ndep_symbol_reason(value_symbol, mut st)!
+		return c.ndep_alias_chain(value_symbol, true, mut st)!
 	}
 	return c.ndep_alias_chain(symbol, true, mut st)!
 }
@@ -909,10 +973,14 @@ fn (mut c Checker) ndep_alias_chain(symbol SymbolResponse, check_aliased bool, m
 	}
 	target := c.ndep_aliased(symbol, mut st)!
 	mut current := symbol
+	// A circular alias (`export { x } from './self'`) never reaches a symbol that is not an alias:
+	// the chain stops when it comes back to a symbol it has seen.
+	mut visited := map[int]bool{}
 	for _ in 0 .. max_expression_depth {
-		if current.flags & ndep_symbol_flag_alias == 0 {
+		if current.flags & ndep_symbol_flag_alias == 0 || current.id in visited {
 			break
 		}
+		visited[current.id] = true
 		r := c.ndep_symbol_reason(current, mut st)!
 		if r.found {
 			return r

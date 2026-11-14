@@ -101,6 +101,22 @@ tests/rules/@typescript-eslint/no-deprecated/cases.ts:200:12	@typescript-eslint/
 tests/rules/@typescript-eslint/no-deprecated/cases.ts:202:12	@typescript-eslint/no-deprecated	deprecatedWithReason	`substr` is deprecated. A legacy feature for browser compatibility
 tests/rules/@typescript-eslint/no-deprecated/cases.ts:214:16	@typescript-eslint/no-deprecated	deprecatedWithReason	`v` is deprecated. Getter.
 tests/rules/@typescript-eslint/no-deprecated/cases.ts:215:11	@typescript-eslint/no-deprecated	deprecatedWithReason	`v` is deprecated. Getter.
+tests/rules/@typescript-eslint/no-deprecated/cases.ts:232:31	@typescript-eslint/no-deprecated	deprecatedWithReason	`old` is deprecated. Use `fresh`.
+tests/rules/@typescript-eslint/no-deprecated/cases.ts:232:40	@typescript-eslint/no-deprecated	deprecated	`1` is deprecated.
+tests/rules/@typescript-eslint/no-deprecated/cases.ts:232:58	@typescript-eslint/no-deprecated	deprecatedWithReason	`run` is deprecated. A method.
+tests/rules/@typescript-eslint/no-deprecated/cases.ts:232:68	@typescript-eslint/no-deprecated	deprecated	`accessor` is deprecated.
+tests/rules/@typescript-eslint/no-deprecated/cases.ts:233:32	@typescript-eslint/no-deprecated	deprecatedWithReason	`old` is deprecated. Use `fresh`.
+tests/rules/@typescript-eslint/no-deprecated/cases.ts:233:46	@typescript-eslint/no-deprecated	deprecated	`1` is deprecated.
+tests/rules/@typescript-eslint/no-deprecated/cases.ts:233:92	@typescript-eslint/no-deprecated	deprecatedWithReason	`run` is deprecated. A method.
+tests/rules/@typescript-eslint/no-deprecated/cases.ts:233:107	@typescript-eslint/no-deprecated	deprecated	`accessor` is deprecated.
+tests/rules/@typescript-eslint/no-deprecated/cases.ts:234:40	@typescript-eslint/no-deprecated	deprecatedWithReason	`old` is deprecated. Use `fresh`.
+tests/rules/@typescript-eslint/no-deprecated/cases.ts:234:51	@typescript-eslint/no-deprecated	deprecated	`1` is deprecated.
+tests/rules/@typescript-eslint/no-deprecated/cases.ts:237:12	@typescript-eslint/no-deprecated	deprecatedWithReason	`old` is deprecated. Use `fresh`.
+tests/rules/@typescript-eslint/no-deprecated/cases.ts:240:16	@typescript-eslint/no-deprecated	deprecatedWithReason	`old` is deprecated. Use `fresh`.
+tests/rules/@typescript-eslint/no-deprecated/cases.ts:242:40	@typescript-eslint/no-deprecated	deprecatedWithReason	`old` is deprecated. Use `fresh`.
+tests/rules/@typescript-eslint/no-deprecated/cases.ts:245:8	@typescript-eslint/no-deprecated	deprecatedWithReason	`aliasedLocal` is deprecated. The alias is deprecated.
+tests/rules/@typescript-eslint/no-deprecated/cases.ts:245:22	@typescript-eslint/no-deprecated	deprecatedWithReason	`freshDeprecatedAlias` is deprecated. Deprecated re-export.
+tests/rules/@typescript-eslint/no-deprecated/cases.ts:245:44	@typescript-eslint/no-deprecated	deprecatedWithReason	`staleAgain` is deprecated. Use `fresh` instead.
 tests/rules/@typescript-eslint/no-deprecated/jsdoc/cases.ts:6:1	@typescript-eslint/no-deprecated	deprecatedWithReason	`twice` is deprecated. First reason.
 tests/rules/@typescript-eslint/no-deprecated/jsdoc/cases.ts:27:1	@typescript-eslint/no-deprecated	deprecatedWithReason	`typedefWithParam` is deprecated. Typedef with a parameter.
 tests/rules/@typescript-eslint/no-deprecated/jsdoc/cases.ts:40:11	@typescript-eslint/no-deprecated	deprecatedWithReason	`m` is deprecated. Base reason.
