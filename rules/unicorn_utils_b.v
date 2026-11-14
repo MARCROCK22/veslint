@@ -1080,3 +1080,37 @@ fn unb_trim_start(s string) string {
 	}
 	return runes[start..].string()
 }
+
+// unb_is_logical_expression ports isLogicalExpression (utils/is-logical-expression.js): a `&&` or
+// `||` (not `??`).
+fn unb_is_logical_expression(t &estree.EsTree, node int) bool {
+	return node >= 0 && t.typ(node) == .logical_expression
+		&& (t.string_of(node, .operator) or { '' }) in ['&&', '||']
+}
+
+// unb_logical_operands ports getLogicalExpressionOperands: the operands of a chain of logical
+// expressions of one operator, from left to right.
+fn unb_logical_operands(t &estree.EsTree, node int, operator string) []int {
+	if node < 0 || t.typ(node) != .logical_expression
+		|| (t.string_of(node, .operator) or { '' }) != operator {
+		return [node]
+	}
+	mut out := unb_logical_operands(t, t.node(node, .left) or { return [node] }, operator)
+	out << unb_logical_operands(t, t.node(node, .right) or { return [node] }, operator)
+	return out
+}
+
+// unb_logical_root ports getLogicalExpressionRoot: the outermost logical expression of the
+// operator that has the node as an operand, or the node.
+fn unb_logical_root(t &estree.EsTree, node int, operator string) int {
+	mut n := node
+	for {
+		parent := t.nodes[n].parent
+		if parent < 0 || t.typ(parent) != .logical_expression
+			|| (t.string_of(parent, .operator) or { '' }) != operator {
+			return n
+		}
+		n = parent
+	}
+	return n
+}

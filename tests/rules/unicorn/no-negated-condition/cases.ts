@@ -76,3 +76,19 @@ if (a) {
 if (b == c) foo(); else bar();
 const z1 = a ? b : c;
 const z2 = !a && b ? b : c;
+
+// 79.0.0: `&&` and `||` of negated operands; comments before a branch move with it, one after it
+// keeps the fix away; parentheses where an argument would start a statement.
+declare let d: boolean;
+if (!a && !d) { foo(); } else { bar(); }
+if (!a || b !== c) foo(); else bar();
+const n1 = !a && !d ? 1 : 2;
+const n2 = !a ? /* one */ 1 : /* two */ 2;
+const n3 = !a ? 1 /* after */ : 2;
+const n4 = !{ a }.a ? 1 : 2;
+const n5 = !function () {} ? 1 : 2;
+function* n6() {
+  yield !
+    a ? 1 : 2;
+}
+if (!a && d) { foo(); } else { bar(); }
