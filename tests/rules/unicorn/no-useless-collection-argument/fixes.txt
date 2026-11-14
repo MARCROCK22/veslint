@@ -1,0 +1,15 @@
+tests/rules/unicorn/no-useless-collection-argument/cases.ts:5:20	unicorn/no-useless-collection-argument	no-useless-collection-argument/error	The empty array is useless.	fix	140	142		end	5	22
+tests/rules/unicorn/no-useless-collection-argument/cases.ts:6:20	unicorn/no-useless-collection-argument	no-useless-collection-argument/error	The empty string is useless.	fix	164	166		end	6	22
+tests/rules/unicorn/no-useless-collection-argument/cases.ts:7:20	unicorn/no-useless-collection-argument	no-useless-collection-argument/error	The `null` is useless.	fix	188	192		end	7	24
+tests/rules/unicorn/no-useless-collection-argument/cases.ts:8:20	unicorn/no-useless-collection-argument	no-useless-collection-argument/error	The `undefined` is useless.	fix	214	223		end	8	29
+tests/rules/unicorn/no-useless-collection-argument/cases.ts:9:20	unicorn/no-useless-collection-argument	no-useless-collection-argument/error	The empty array is useless.	fix	245	247		end	9	22
+tests/rules/unicorn/no-useless-collection-argument/cases.ts:10:24	unicorn/no-useless-collection-argument	no-useless-collection-argument/error	The empty array is useless.	fix	273	275		end	10	26
+tests/rules/unicorn/no-useless-collection-argument/cases.ts:11:24	unicorn/no-useless-collection-argument	no-useless-collection-argument/error	The `null` is useless.	fix	301	305		end	11	28
+tests/rules/unicorn/no-useless-collection-argument/cases.ts:12:28	unicorn/no-useless-collection-argument	no-useless-collection-argument/error	The empty array is useless.	fix	331	337		end	12	30
+tests/rules/unicorn/no-useless-collection-argument/cases.ts:13:29	unicorn/no-useless-collection-argument	no-useless-collection-argument/error	The `null` is useless.	fix	364	372		end	13	33
+tests/rules/unicorn/no-useless-collection-argument/cases.ts:14:22	unicorn/no-useless-collection-argument	no-useless-collection-argument/error	The empty array is useless.	fix	395	399		end	14	24
+tests/rules/unicorn/no-useless-collection-argument/cases.ts:15:21	unicorn/no-useless-collection-argument	no-useless-collection-argument/error	The empty array is useless.	fix	422	425		end	15	23
+tests/rules/unicorn/no-useless-collection-argument/cases.ts:16:21	unicorn/no-useless-collection-argument	no-useless-collection-argument/error	The empty string is useless.	fix	448	450		end	16	23
+tests/rules/unicorn/no-useless-collection-argument/cases.ts:17:31	unicorn/no-useless-collection-argument	no-useless-collection-argument/error	The empty array is useless.	fix	480	486		end	17	33
+tests/rules/unicorn/no-useless-collection-argument/cases.ts:20:20	unicorn/no-useless-collection-argument	no-useless-collection-argument/error	The empty array is useless.	suggestion	no-useless-collection-argument/suggestion	Remove the empty array	553	568	 /* nothing */	end	20	35
+tests/rules/unicorn/no-useless-collection-argument/cases.ts:21:39	unicorn/no-useless-collection-argument	no-useless-collection-argument/error	The empty array is useless.	suggestion	no-useless-collection-argument/suggestion	Remove the empty array	594	611		end	21	41

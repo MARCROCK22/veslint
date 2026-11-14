@@ -1,0 +1,15 @@
+tests/rules/unicorn/no-useless-collection-argument/cases.ts:5:20	unicorn/no-useless-collection-argument	no-useless-collection-argument/error	The empty array is useless.
+tests/rules/unicorn/no-useless-collection-argument/cases.ts:6:20	unicorn/no-useless-collection-argument	no-useless-collection-argument/error	The empty string is useless.
+tests/rules/unicorn/no-useless-collection-argument/cases.ts:7:20	unicorn/no-useless-collection-argument	no-useless-collection-argument/error	The `null` is useless.
+tests/rules/unicorn/no-useless-collection-argument/cases.ts:8:20	unicorn/no-useless-collection-argument	no-useless-collection-argument/error	The `undefined` is useless.
+tests/rules/unicorn/no-useless-collection-argument/cases.ts:9:20	unicorn/no-useless-collection-argument	no-useless-collection-argument/error	The empty array is useless.
+tests/rules/unicorn/no-useless-collection-argument/cases.ts:10:24	unicorn/no-useless-collection-argument	no-useless-collection-argument/error	The empty array is useless.
+tests/rules/unicorn/no-useless-collection-argument/cases.ts:11:24	unicorn/no-useless-collection-argument	no-useless-collection-argument/error	The `null` is useless.
+tests/rules/unicorn/no-useless-collection-argument/cases.ts:12:28	unicorn/no-useless-collection-argument	no-useless-collection-argument/error	The empty array is useless.
+tests/rules/unicorn/no-useless-collection-argument/cases.ts:13:29	unicorn/no-useless-collection-argument	no-useless-collection-argument/error	The `null` is useless.
+tests/rules/unicorn/no-useless-collection-argument/cases.ts:14:22	unicorn/no-useless-collection-argument	no-useless-collection-argument/error	The empty array is useless.
+tests/rules/unicorn/no-useless-collection-argument/cases.ts:15:21	unicorn/no-useless-collection-argument	no-useless-collection-argument/error	The empty array is useless.
+tests/rules/unicorn/no-useless-collection-argument/cases.ts:16:21	unicorn/no-useless-collection-argument	no-useless-collection-argument/error	The empty string is useless.
+tests/rules/unicorn/no-useless-collection-argument/cases.ts:17:31	unicorn/no-useless-collection-argument	no-useless-collection-argument/error	The empty array is useless.
+tests/rules/unicorn/no-useless-collection-argument/cases.ts:20:20	unicorn/no-useless-collection-argument	no-useless-collection-argument/error	The empty array is useless.
+tests/rules/unicorn/no-useless-collection-argument/cases.ts:21:39	unicorn/no-useless-collection-argument	no-useless-collection-argument/error	The empty array is useless.
