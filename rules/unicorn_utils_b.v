@@ -2,6 +2,7 @@ module rules
 
 import estree
 import jsregexp
+import regexpp
 import treesitter
 import tsgo { TypeResponse }
 
@@ -4089,4 +4090,179 @@ fn (mut c Checker) unb_is_number(t &estree.EsTree, node int, mut ctx UnbTypeCont
 	}
 	value := c.unb_static_value_for_control_flow(ctx.root, t, node) or { return false }
 	return value.value.kind == .number_
+}
+
+// unb_is_regexp_constructor ports isRegExpConstructor (utils/get-static-value.js): `new RegExp(…)`.
+fn unb_is_regexp_constructor(t &estree.EsTree, node int) bool {
+	if node < 0 || t.typ(node) != .new_expression {
+		return false
+	}
+	callee := t.node(node, .callee) or { return false }
+	return t.typ(callee) == .identifier && (t.string_of(callee, .name) or { '' }) == 'RegExp'
+}
+
+// unb_regexp_variable_initializer ports getRegExpVariableDefinition (utils/get-static-value.js):
+// the initializer of the only definition of an identifier's variable, a declarator of the name
+// that nothing else writes.
+fn (mut c Checker) unb_regexp_variable_initializer(root C.TSNode, t &estree.EsTree, node int) ?int {
+	if node < 0 || t.typ(node) != .identifier {
+		return none
+	}
+	v := c.unb_find_variable(root, t, node)
+	def := c.unb_single_definition(root, v)?
+	init := def.init?
+	if !unb_is_simple_declarator(def) {
+		return none
+	}
+	tree := c.scope_tree(root)
+	for r in tree.variables[v].references {
+		reference := tree.references[r]
+		if reference.write && node_key(reference.identifier) != node_key(def.name) {
+			return none
+		}
+	}
+	return c.es_index_of(t, init)
+}
+
+// unb_is_safe_static_regexp_constructor_argument ports isSafeStaticRegExpConstructorArgument
+// (utils/get-static-value.js): an argument whose static value has no side effects and is a RegExp
+// or a primitive other than a symbol.
+fn (mut c Checker) unb_is_safe_static_regexp_constructor_argument(root C.TSNode, t &estree.EsTree, node int) bool {
+	if t.typ(node) == .spread_element {
+		return false
+	}
+	value := c.unb_static_value_if_no_side_effects(root, t, node) or { return false }
+	return value.value.kind in [.regexp_, .null_, .bigint_, .boolean_, .number_, .string_, .undefined_]
+}
+
+// unb_static_regexp ports getStaticRegExp (utils/get-static-value.js): the RegExp a node
+// evaluates to, through a variable initialized with a literal or a `new RegExp(…)` of static
+// arguments.
+fn (mut c Checker) unb_static_regexp(root C.TSNode, t &estree.EsTree, node int) ?jsregexp.RegexpValue {
+	if node < 0 {
+		return none
+	}
+	if value := c.unb_static_value_if_no_side_effects(root, t, node) {
+		if value.value.kind == .regexp_ {
+			return value.value.regexp
+		}
+	}
+	initializer := c.unb_regexp_variable_initializer(root, t, node) or { -1 }
+	constructor := if unb_is_regexp_constructor(t, node) {
+		node
+	} else if unb_is_regexp_constructor(t, initializer) {
+		initializer
+	} else {
+		-1
+	}
+	if !un_is_regex_literal(t, initializer) && (constructor < 0
+		|| (t.list(constructor, .arguments) or { []int{} }).any(!c.unb_is_safe_static_regexp_constructor_argument(root, t, it))) {
+		return none
+	}
+	result := c.un_static_value(t, node)
+	return if result.found && result.value.kind == .regexp_ { result.value.regexp } else { none }
+}
+
+// unb_escape_string ports escapeString (utils/escape-string.js) of 79.0.0, which is
+// quote-js-string: the string quoted with `quote`, with backslashes, the quote, control
+// characters, DEL, U+2028, U+2029 and lone surrogates escaped (code points of the WTF-8 text).
+fn unb_escape_string(s string, quote string) string {
+	units := estree.utf16_units(s)
+	mut out := quote
+	mut i := 0
+	for i < units.len {
+		mut code := u32(units[i])
+		mut length := 1
+		if code >= 0xD800 && code <= 0xDBFF && i + 1 < units.len && units[i + 1] >= 0xDC00
+			&& units[i + 1] <= 0xDFFF {
+			code = 0x10000 + ((code - 0xD800) << 10) + (u32(units[i + 1]) - 0xDC00)
+			length = 2
+		}
+		character := regexpp.utf16_to_wtf8(units[i..i + length])
+		i += length
+		if character == '\\' {
+			out += '\\\\'
+			continue
+		}
+		if character == quote {
+			out += '\\${quote}'
+			continue
+		}
+		if code <= 0x1F || code == 0x7F || code == 0x2028 || code == 0x2029
+			|| (code >= 0xD800 && code <= 0xDFFF) {
+			out += match code {
+				10 { '\\n' }
+				13 { '\\r' }
+				9 { '\\t' }
+				8 { '\\b' }
+				12 { '\\f' }
+				11 { '\\v' }
+				0 { '\\u{0}' }
+				else { '\\u{${code.hex()}}' }
+			}
+			continue
+		}
+		out += character
+	}
+	return out + quote
+}
+
+const unb_regexp_escape_characters = '\\^$.*+?()[]{}|/-'
+
+// unb_character_class_characters ports getCharacterClassCharacters (shared/regexp-escape.js): the
+// characters of a pattern that is one class of escapable characters (`[.*+?]`), none otherwise.
+fn unb_character_class_characters(pattern string) ?map[u8]bool {
+	if !pattern.starts_with('[') || !pattern.ends_with(']') || pattern.starts_with('[^') {
+		return none
+	}
+	mut characters := map[u8]bool{}
+	class := pattern[1..pattern.len - 1]
+	for index := 0; index < class.len; index++ {
+		mut character := class[index]
+		mut is_escaped := false
+		if character == `\\` {
+			index++
+			if index >= class.len {
+				return none
+			}
+			character = class[index]
+			is_escaped = true
+		}
+		if character == `-` && !is_escaped && index != 0 && index != class.len - 1 {
+			return none
+		}
+		if character == `]` && !is_escaped && index != 0 {
+			return none
+		}
+		if !unb_regexp_escape_characters.contains_u8(character) {
+			return none
+		}
+		characters[character] = true
+	}
+	return characters
+}
+
+// unb_is_regexp_escape_replace_call ports isRegExpEscapeReplaceCall (shared/regexp-escape.js):
+// `string.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')`, the hand-written RegExp.escape() of
+// prefer-regexp-escape.
+fn unb_is_regexp_escape_replace_call(t &estree.EsTree, node int) bool {
+	if !un_is_method_call(t, node,
+		methods:          ['replace']
+		arguments_length: 2
+		optional_call:    false
+		optional_member:  false
+	) {
+		return false
+	}
+	arguments := t.list(node, .arguments) or { return false }
+	pattern := arguments[0]
+	if !un_is_regex_literal(t, pattern) {
+		return false
+	}
+	info := t.get(pattern, .regex) as estree.RegexInfo
+	if !info.flags.contains('g') || info.flags.contains('y') {
+		return false
+	}
+	characters := unb_character_class_characters(info.pattern) or { return false }
+	return characters.len >= 8 && (unb_static_string_value(t, arguments[1]) or { return false }) == '\\$&'
 }

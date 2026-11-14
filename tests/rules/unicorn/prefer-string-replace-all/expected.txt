@@ -12,3 +12,194 @@ tests/rules/unicorn/prefer-string-replace-all/cases.ts:17:18	unicorn/prefer-stri
 tests/rules/unicorn/prefer-string-replace-all/cases.ts:18:19	unicorn/prefer-string-replace-all	method	Prefer `String#replaceAll()` over `String#replace()`.
 tests/rules/unicorn/prefer-string-replace-all/cases.ts:19:18	unicorn/prefer-string-replace-all	method	Prefer `String#replaceAll()` over `String#replace()`.
 tests/rules/unicorn/prefer-string-replace-all/cases.ts:23:17	unicorn/prefer-string-replace-all	method	Prefer `String#replaceAll()` over `String#replace()`.
+tests/rules/unicorn/prefer-string-replace-all/patterns/cases.ts:8:5	unicorn/prefer-string-replace-all	method	Prefer `String#replaceAll()` over `String#replace()`.
+tests/rules/unicorn/prefer-string-replace-all/patterns/cases.ts:9:5	unicorn/prefer-string-replace-all	method	Prefer `String#replaceAll()` over `String#replace()`.
+tests/rules/unicorn/prefer-string-replace-all/patterns/cases.ts:10:5	unicorn/prefer-string-replace-all	method	Prefer `String#replaceAll()` over `String#replace()`.
+tests/rules/unicorn/prefer-string-replace-all/patterns/cases.ts:11:5	unicorn/prefer-string-replace-all	method	Prefer `String#replaceAll()` over `String#replace()`.
+tests/rules/unicorn/prefer-string-replace-all/patterns/cases.ts:12:5	unicorn/prefer-string-replace-all	method	Prefer `String#replaceAll()` over `String#replace()`.
+tests/rules/unicorn/prefer-string-replace-all/patterns/cases.ts:13:5	unicorn/prefer-string-replace-all	method	Prefer `String#replaceAll()` over `String#replace()`.
+tests/rules/unicorn/prefer-string-replace-all/patterns/cases.ts:14:5	unicorn/prefer-string-replace-all	method	Prefer `String#replaceAll()` over `String#replace()`.
+tests/rules/unicorn/prefer-string-replace-all/patterns/cases.ts:15:5	unicorn/prefer-string-replace-all	method	Prefer `String#replaceAll()` over `String#replace()`.
+tests/rules/unicorn/prefer-string-replace-all/patterns/cases.ts:16:5	unicorn/prefer-string-replace-all	method	Prefer `String#replaceAll()` over `String#replace()`.
+tests/rules/unicorn/prefer-string-replace-all/patterns/cases.ts:17:5	unicorn/prefer-string-replace-all	method	Prefer `String#replaceAll()` over `String#replace()`.
+tests/rules/unicorn/prefer-string-replace-all/patterns/cases.ts:18:5	unicorn/prefer-string-replace-all	method	Prefer `String#replaceAll()` over `String#replace()`.
+tests/rules/unicorn/prefer-string-replace-all/patterns/cases.ts:19:5	unicorn/prefer-string-replace-all	method	Prefer `String#replaceAll()` over `String#replace()`.
+tests/rules/unicorn/prefer-string-replace-all/patterns/cases.ts:20:5	unicorn/prefer-string-replace-all	method	Prefer `String#replaceAll()` over `String#replace()`.
+tests/rules/unicorn/prefer-string-replace-all/patterns/cases.ts:21:5	unicorn/prefer-string-replace-all	method	Prefer `String#replaceAll()` over `String#replace()`.
+tests/rules/unicorn/prefer-string-replace-all/patterns/cases.ts:22:5	unicorn/prefer-string-replace-all	method	Prefer `String#replaceAll()` over `String#replace()`.
+tests/rules/unicorn/prefer-string-replace-all/patterns/cases.ts:23:5	unicorn/prefer-string-replace-all	method	Prefer `String#replaceAll()` over `String#replace()`.
+tests/rules/unicorn/prefer-string-replace-all/patterns/cases.ts:24:5	unicorn/prefer-string-replace-all	method	Prefer `String#replaceAll()` over `String#replace()`.
+tests/rules/unicorn/prefer-string-replace-all/patterns/cases.ts:25:5	unicorn/prefer-string-replace-all	method	Prefer `String#replaceAll()` over `String#replace()`.
+tests/rules/unicorn/prefer-string-replace-all/patterns/cases.ts:26:5	unicorn/prefer-string-replace-all	method	Prefer `String#replaceAll()` over `String#replace()`.
+tests/rules/unicorn/prefer-string-replace-all/patterns/cases.ts:27:5	unicorn/prefer-string-replace-all	method	Prefer `String#replaceAll()` over `String#replace()`.
+tests/rules/unicorn/prefer-string-replace-all/patterns/cases.ts:28:5	unicorn/prefer-string-replace-all	method	Prefer `String#replaceAll()` over `String#replace()`.
+tests/rules/unicorn/prefer-string-replace-all/patterns/cases.ts:29:5	unicorn/prefer-string-replace-all	method	Prefer `String#replaceAll()` over `String#replace()`.
+tests/rules/unicorn/prefer-string-replace-all/patterns/cases.ts:30:5	unicorn/prefer-string-replace-all	method	Prefer `String#replaceAll()` over `String#replace()`.
+tests/rules/unicorn/prefer-string-replace-all/patterns/cases.ts:31:5	unicorn/prefer-string-replace-all	method	Prefer `String#replaceAll()` over `String#replace()`.
+tests/rules/unicorn/prefer-string-replace-all/patterns/cases.ts:32:5	unicorn/prefer-string-replace-all	method	Prefer `String#replaceAll()` over `String#replace()`.
+tests/rules/unicorn/prefer-string-replace-all/patterns/cases.ts:33:5	unicorn/prefer-string-replace-all	method	Prefer `String#replaceAll()` over `String#replace()`.
+tests/rules/unicorn/prefer-string-replace-all/patterns/cases.ts:34:5	unicorn/prefer-string-replace-all	method	Prefer `String#replaceAll()` over `String#replace()`.
+tests/rules/unicorn/prefer-string-replace-all/patterns/cases.ts:35:5	unicorn/prefer-string-replace-all	method	Prefer `String#replaceAll()` over `String#replace()`.
+tests/rules/unicorn/prefer-string-replace-all/patterns/cases.ts:36:5	unicorn/prefer-string-replace-all	method	Prefer `String#replaceAll()` over `String#replace()`.
+tests/rules/unicorn/prefer-string-replace-all/patterns/cases.ts:37:5	unicorn/prefer-string-replace-all	method	Prefer `String#replaceAll()` over `String#replace()`.
+tests/rules/unicorn/prefer-string-replace-all/patterns/cases.ts:38:5	unicorn/prefer-string-replace-all	method	Prefer `String#replaceAll()` over `String#replace()`.
+tests/rules/unicorn/prefer-string-replace-all/patterns/cases.ts:39:5	unicorn/prefer-string-replace-all	method	Prefer `String#replaceAll()` over `String#replace()`.
+tests/rules/unicorn/prefer-string-replace-all/patterns/cases.ts:42:5	unicorn/prefer-string-replace-all	method	Prefer `String#replaceAll()` over `String#replace()`.
+tests/rules/unicorn/prefer-string-replace-all/patterns/cases.ts:43:5	unicorn/prefer-string-replace-all	method	Prefer `String#replaceAll()` over `String#replace()`.
+tests/rules/unicorn/prefer-string-replace-all/patterns/cases.ts:49:5	unicorn/prefer-string-replace-all	method	Prefer `String#replaceAll()` over `String#replace()`.
+tests/rules/unicorn/prefer-string-replace-all/patterns/cases.ts:50:5	unicorn/prefer-string-replace-all	method	Prefer `String#replaceAll()` over `String#replace()`.
+tests/rules/unicorn/prefer-string-replace-all/patterns/cases.ts:51:5	unicorn/prefer-string-replace-all	method	Prefer `String#replaceAll()` over `String#replace()`.
+tests/rules/unicorn/prefer-string-replace-all/patterns/cases.ts:52:5	unicorn/prefer-string-replace-all	method	Prefer `String#replaceAll()` over `String#replace()`.
+tests/rules/unicorn/prefer-string-replace-all/patterns/cases.ts:53:5	unicorn/prefer-string-replace-all	method	Prefer `String#replaceAll()` over `String#replace()`.
+tests/rules/unicorn/prefer-string-replace-all/patterns/cases.ts:54:5	unicorn/prefer-string-replace-all	method	Prefer `String#replaceAll()` over `String#replace()`.
+tests/rules/unicorn/prefer-string-replace-all/patterns/cases.ts:55:5	unicorn/prefer-string-replace-all	method	Prefer `String#replaceAll()` over `String#replace()`.
+tests/rules/unicorn/prefer-string-replace-all/patterns/cases.ts:58:5	unicorn/prefer-string-replace-all	method	Prefer `String#replaceAll()` over `String#replace()`.
+tests/rules/unicorn/prefer-string-replace-all/patterns/cases.ts:60:5	unicorn/prefer-string-replace-all	method	Prefer `String#replaceAll()` over `String#replace()`.
+tests/rules/unicorn/prefer-string-replace-all/patterns/cases.ts:61:5	unicorn/prefer-string-replace-all	method	Prefer `String#replaceAll()` over `String#replace()`.
+tests/rules/unicorn/prefer-string-replace-all/patterns/cases.ts:73:5	unicorn/prefer-string-replace-all	method	Prefer `String#replaceAll()` over `String#replace()`.
+tests/rules/unicorn/prefer-string-replace-all/patterns/cases.ts:74:5	unicorn/prefer-string-replace-all	method	Prefer `String#replaceAll()` over `String#replace()`.
+tests/rules/unicorn/prefer-string-replace-all/patterns/cases.ts:75:5	unicorn/prefer-string-replace-all	method	Prefer `String#replaceAll()` over `String#replace()`.
+tests/rules/unicorn/prefer-string-replace-all/patterns/cases.ts:77:5	unicorn/prefer-string-replace-all	method	Prefer `String#replaceAll()` over `String#replace()`.
+tests/rules/unicorn/prefer-string-replace-all/patterns/cases.ts:81:5	unicorn/prefer-string-replace-all	method	Prefer `String#replaceAll()` over `String#replace()`.
+tests/rules/unicorn/prefer-string-replace-all/patterns/cases.ts:82:5	unicorn/prefer-string-replace-all	method	Prefer `String#replaceAll()` over `String#replace()`.
+tests/rules/unicorn/prefer-string-replace-all/patterns/cases.ts:83:5	unicorn/prefer-string-replace-all	method	Prefer `String#replaceAll()` over `String#replace()`.
+tests/rules/unicorn/prefer-string-replace-all/patterns/cases.ts:84:5	unicorn/prefer-string-replace-all	method	Prefer `String#replaceAll()` over `String#replace()`.
+tests/rules/unicorn/prefer-string-replace-all/patterns/cases.ts:85:5	unicorn/prefer-string-replace-all	method	Prefer `String#replaceAll()` over `String#replace()`.
+tests/rules/unicorn/prefer-string-replace-all/patterns/cases.ts:86:5	unicorn/prefer-string-replace-all	method	Prefer `String#replaceAll()` over `String#replace()`.
+tests/rules/unicorn/prefer-string-replace-all/patterns/cases.ts:87:5	unicorn/prefer-string-replace-all	method	Prefer `String#replaceAll()` over `String#replace()`.
+tests/rules/unicorn/prefer-string-replace-all/patterns/cases.ts:90:5	unicorn/prefer-string-replace-all	method	Prefer `String#replaceAll()` over `String#replace()`.
+tests/rules/unicorn/prefer-string-replace-all/patterns/cases.ts:92:5	unicorn/prefer-string-replace-all	method	Prefer `String#replaceAll()` over `String#replace()`.
+tests/rules/unicorn/prefer-string-replace-all/patterns/cases.ts:93:5	unicorn/prefer-string-replace-all	method	Prefer `String#replaceAll()` over `String#replace()`.
+tests/rules/unicorn/prefer-string-replace-all/patterns/cases.ts:104:5	unicorn/prefer-string-replace-all	method	Prefer `String#replaceAll()` over `String#replace()`.
+tests/rules/unicorn/prefer-string-replace-all/patterns/cases.ts:105:16	unicorn/prefer-string-replace-all	pattern	This pattern can be replaced with '\\u{100}'.
+tests/rules/unicorn/prefer-string-replace-all/patterns/cases.ts:106:5	unicorn/prefer-string-replace-all	method	Prefer `String#replaceAll()` over `String#replace()`.
+tests/rules/unicorn/prefer-string-replace-all/patterns/cases.ts:107:16	unicorn/prefer-string-replace-all	pattern	This pattern can be replaced with '\\u{100}'.
+tests/rules/unicorn/prefer-string-replace-all/patterns/cases.ts:108:5	unicorn/prefer-string-replace-all	method	Prefer `String#replaceAll()` over `String#replace()`.
+tests/rules/unicorn/prefer-string-replace-all/patterns/cases.ts:109:16	unicorn/prefer-string-replace-all	pattern	This pattern can be replaced with '\\u{100}0'.
+tests/rules/unicorn/prefer-string-replace-all/patterns/cases.ts:110:5	unicorn/prefer-string-replace-all	method	Prefer `String#replaceAll()` over `String#replace()`.
+tests/rules/unicorn/prefer-string-replace-all/patterns/cases.ts:111:16	unicorn/prefer-string-replace-all	pattern	This pattern can be replaced with '\\u{1FF}'.
+tests/rules/unicorn/prefer-string-replace-all/patterns/cases.ts:112:5	unicorn/prefer-string-replace-all	method	Prefer `String#replaceAll()` over `String#replace()`.
+tests/rules/unicorn/prefer-string-replace-all/patterns/cases.ts:113:16	unicorn/prefer-string-replace-all	pattern	This pattern can be replaced with '\\u{20}'.
+tests/rules/unicorn/prefer-string-replace-all/patterns/cases.ts:114:5	unicorn/prefer-string-replace-all	method	Prefer `String#replaceAll()` over `String#replace()`.
+tests/rules/unicorn/prefer-string-replace-all/patterns/cases.ts:116:5	unicorn/prefer-string-replace-all	method	Prefer `String#replaceAll()` over `String#replace()`.
+tests/rules/unicorn/prefer-string-replace-all/patterns/cases.ts:118:5	unicorn/prefer-string-replace-all	method	Prefer `String#replaceAll()` over `String#replace()`.
+tests/rules/unicorn/prefer-string-replace-all/patterns/cases.ts:120:5	unicorn/prefer-string-replace-all	method	Prefer `String#replaceAll()` over `String#replace()`.
+tests/rules/unicorn/prefer-string-replace-all/patterns/cases.ts:122:5	unicorn/prefer-string-replace-all	method	Prefer `String#replaceAll()` over `String#replace()`.
+tests/rules/unicorn/prefer-string-replace-all/patterns/cases.ts:124:5	unicorn/prefer-string-replace-all	method	Prefer `String#replaceAll()` over `String#replace()`.
+tests/rules/unicorn/prefer-string-replace-all/patterns/cases.ts:126:5	unicorn/prefer-string-replace-all	method	Prefer `String#replaceAll()` over `String#replace()`.
+tests/rules/unicorn/prefer-string-replace-all/patterns/cases.ts:127:16	unicorn/prefer-string-replace-all	pattern	This pattern can be replaced with 'a'.
+tests/rules/unicorn/prefer-string-replace-all/patterns/cases.ts:128:5	unicorn/prefer-string-replace-all	method	Prefer `String#replaceAll()` over `String#replace()`.
+tests/rules/unicorn/prefer-string-replace-all/patterns/cases.ts:129:16	unicorn/prefer-string-replace-all	pattern	This pattern can be replaced with 'a'.
+tests/rules/unicorn/prefer-string-replace-all/patterns/cases.ts:130:5	unicorn/prefer-string-replace-all	method	Prefer `String#replaceAll()` over `String#replace()`.
+tests/rules/unicorn/prefer-string-replace-all/patterns/cases.ts:132:5	unicorn/prefer-string-replace-all	method	Prefer `String#replaceAll()` over `String#replace()`.
+tests/rules/unicorn/prefer-string-replace-all/patterns/cases.ts:134:5	unicorn/prefer-string-replace-all	method	Prefer `String#replaceAll()` over `String#replace()`.
+tests/rules/unicorn/prefer-string-replace-all/patterns/cases.ts:136:5	unicorn/prefer-string-replace-all	method	Prefer `String#replaceAll()` over `String#replace()`.
+tests/rules/unicorn/prefer-string-replace-all/patterns/cases.ts:138:5	unicorn/prefer-string-replace-all	method	Prefer `String#replaceAll()` over `String#replace()`.
+tests/rules/unicorn/prefer-string-replace-all/patterns/cases.ts:139:16	unicorn/prefer-string-replace-all	pattern	This pattern can be replaced with '\\n'.
+tests/rules/unicorn/prefer-string-replace-all/patterns/cases.ts:140:5	unicorn/prefer-string-replace-all	method	Prefer `String#replaceAll()` over `String#replace()`.
+tests/rules/unicorn/prefer-string-replace-all/patterns/cases.ts:141:16	unicorn/prefer-string-replace-all	pattern	This pattern can be replaced with '\\u{1F}'.
+tests/rules/unicorn/prefer-string-replace-all/patterns/cases.ts:142:5	unicorn/prefer-string-replace-all	method	Prefer `String#replaceAll()` over `String#replace()`.
+tests/rules/unicorn/prefer-string-replace-all/patterns/cases.ts:143:16	unicorn/prefer-string-replace-all	pattern	This pattern can be replaced with '\\u{11}'.
+tests/rules/unicorn/prefer-string-replace-all/patterns/cases.ts:144:5	unicorn/prefer-string-replace-all	method	Prefer `String#replaceAll()` over `String#replace()`.
+tests/rules/unicorn/prefer-string-replace-all/patterns/cases.ts:145:16	unicorn/prefer-string-replace-all	pattern	This pattern can be replaced with '\\\\c1'.
+tests/rules/unicorn/prefer-string-replace-all/patterns/cases.ts:146:5	unicorn/prefer-string-replace-all	method	Prefer `String#replaceAll()` over `String#replace()`.
+tests/rules/unicorn/prefer-string-replace-all/patterns/cases.ts:147:16	unicorn/prefer-string-replace-all	pattern	This pattern can be replaced with '\\\\c'.
+tests/rules/unicorn/prefer-string-replace-all/patterns/cases.ts:148:5	unicorn/prefer-string-replace-all	method	Prefer `String#replaceAll()` over `String#replace()`.
+tests/rules/unicorn/prefer-string-replace-all/patterns/cases.ts:150:5	unicorn/prefer-string-replace-all	method	Prefer `String#replaceAll()` over `String#replace()`.
+tests/rules/unicorn/prefer-string-replace-all/patterns/cases.ts:151:16	unicorn/prefer-string-replace-all	pattern	This pattern can be replaced with '😀'.
+tests/rules/unicorn/prefer-string-replace-all/patterns/cases.ts:152:5	unicorn/prefer-string-replace-all	method	Prefer `String#replaceAll()` over `String#replace()`.
+tests/rules/unicorn/prefer-string-replace-all/patterns/cases.ts:153:16	unicorn/prefer-string-replace-all	pattern	This pattern can be replaced with '😀'.
+tests/rules/unicorn/prefer-string-replace-all/patterns/cases.ts:154:5	unicorn/prefer-string-replace-all	method	Prefer `String#replaceAll()` over `String#replace()`.
+tests/rules/unicorn/prefer-string-replace-all/patterns/cases.ts:155:16	unicorn/prefer-string-replace-all	pattern	This pattern can be replaced with '😀'.
+tests/rules/unicorn/prefer-string-replace-all/patterns/cases.ts:156:5	unicorn/prefer-string-replace-all	method	Prefer `String#replaceAll()` over `String#replace()`.
+tests/rules/unicorn/prefer-string-replace-all/patterns/cases.ts:157:16	unicorn/prefer-string-replace-all	pattern	This pattern can be replaced with '\\uD83D\\uDE00'.
+tests/rules/unicorn/prefer-string-replace-all/patterns/cases.ts:158:5	unicorn/prefer-string-replace-all	method	Prefer `String#replaceAll()` over `String#replace()`.
+tests/rules/unicorn/prefer-string-replace-all/patterns/cases.ts:159:16	unicorn/prefer-string-replace-all	pattern	This pattern can be replaced with '\\u{1F600}'.
+tests/rules/unicorn/prefer-string-replace-all/patterns/cases.ts:160:5	unicorn/prefer-string-replace-all	method	Prefer `String#replaceAll()` over `String#replace()`.
+tests/rules/unicorn/prefer-string-replace-all/patterns/cases.ts:161:16	unicorn/prefer-string-replace-all	pattern	This pattern can be replaced with 'a'.
+tests/rules/unicorn/prefer-string-replace-all/patterns/cases.ts:162:5	unicorn/prefer-string-replace-all	method	Prefer `String#replaceAll()` over `String#replace()`.
+tests/rules/unicorn/prefer-string-replace-all/patterns/cases.ts:163:16	unicorn/prefer-string-replace-all	pattern	This pattern can be replaced with 'a'.
+tests/rules/unicorn/prefer-string-replace-all/patterns/cases.ts:164:5	unicorn/prefer-string-replace-all	method	Prefer `String#replaceAll()` over `String#replace()`.
+tests/rules/unicorn/prefer-string-replace-all/patterns/cases.ts:165:16	unicorn/prefer-string-replace-all	pattern	This pattern can be replaced with 'a'.
+tests/rules/unicorn/prefer-string-replace-all/patterns/cases.ts:166:5	unicorn/prefer-string-replace-all	method	Prefer `String#replaceAll()` over `String#replace()`.
+tests/rules/unicorn/prefer-string-replace-all/patterns/cases.ts:168:5	unicorn/prefer-string-replace-all	method	Prefer `String#replaceAll()` over `String#replace()`.
+tests/rules/unicorn/prefer-string-replace-all/patterns/cases.ts:169:16	unicorn/prefer-string-replace-all	pattern	This pattern can be replaced with '\\u{0}'.
+tests/rules/unicorn/prefer-string-replace-all/patterns/cases.ts:170:5	unicorn/prefer-string-replace-all	method	Prefer `String#replaceAll()` over `String#replace()`.
+tests/rules/unicorn/prefer-string-replace-all/patterns/cases.ts:171:16	unicorn/prefer-string-replace-all	pattern	This pattern can be replaced with '\\u{0}'.
+tests/rules/unicorn/prefer-string-replace-all/patterns/cases.ts:172:5	unicorn/prefer-string-replace-all	method	Prefer `String#replaceAll()` over `String#replace()`.
+tests/rules/unicorn/prefer-string-replace-all/patterns/cases.ts:173:16	unicorn/prefer-string-replace-all	pattern	This pattern can be replaced with '\\u{1}'.
+tests/rules/unicorn/prefer-string-replace-all/patterns/cases.ts:174:5	unicorn/prefer-string-replace-all	method	Prefer `String#replaceAll()` over `String#replace()`.
+tests/rules/unicorn/prefer-string-replace-all/patterns/cases.ts:175:16	unicorn/prefer-string-replace-all	pattern	This pattern can be replaced with '\\u{A}'.
+tests/rules/unicorn/prefer-string-replace-all/patterns/cases.ts:176:5	unicorn/prefer-string-replace-all	method	Prefer `String#replaceAll()` over `String#replace()`.
+tests/rules/unicorn/prefer-string-replace-all/patterns/cases.ts:177:16	unicorn/prefer-string-replace-all	pattern	This pattern can be replaced with '89'.
+tests/rules/unicorn/prefer-string-replace-all/patterns/cases.ts:178:5	unicorn/prefer-string-replace-all	method	Prefer `String#replaceAll()` over `String#replace()`.
+tests/rules/unicorn/prefer-string-replace-all/patterns/cases.ts:179:16	unicorn/prefer-string-replace-all	pattern	This pattern can be replaced with '8'.
+tests/rules/unicorn/prefer-string-replace-all/patterns/cases.ts:180:5	unicorn/prefer-string-replace-all	method	Prefer `String#replaceAll()` over `String#replace()`.
+tests/rules/unicorn/prefer-string-replace-all/patterns/cases.ts:181:16	unicorn/prefer-string-replace-all	pattern	This pattern can be replaced with '\\u2028'.
+tests/rules/unicorn/prefer-string-replace-all/patterns/cases.ts:182:5	unicorn/prefer-string-replace-all	method	Prefer `String#replaceAll()` over `String#replace()`.
+tests/rules/unicorn/prefer-string-replace-all/patterns/cases.ts:183:16	unicorn/prefer-string-replace-all	pattern	This pattern can be replaced with 'a\\'b'.
+tests/rules/unicorn/prefer-string-replace-all/patterns/cases.ts:184:16	unicorn/prefer-string-replace-all	pattern	This pattern can be replaced with '\\\\'.
+tests/rules/unicorn/prefer-string-replace-all/patterns/cases.ts:185:16	unicorn/prefer-string-replace-all	pattern	This pattern can be replaced with '\\\\'.
+tests/rules/unicorn/prefer-string-replace-all/patterns/cases.ts:186:5	unicorn/prefer-string-replace-all	method	Prefer `String#replaceAll()` over `String#replace()`.
+tests/rules/unicorn/prefer-string-replace-all/patterns/cases.ts:187:16	unicorn/prefer-string-replace-all	pattern	This pattern can be replaced with '\\''.
+tests/rules/unicorn/prefer-string-replace-all/patterns/cases.ts:188:5	unicorn/prefer-string-replace-all	method	Prefer `String#replaceAll()` over `String#replace()`.
+tests/rules/unicorn/prefer-string-replace-all/patterns/cases.ts:189:16	unicorn/prefer-string-replace-all	pattern	This pattern can be replaced with 'x4'.
+tests/rules/unicorn/prefer-string-replace-all/patterns/cases.ts:190:5	unicorn/prefer-string-replace-all	method	Prefer `String#replaceAll()` over `String#replace()`.
+tests/rules/unicorn/prefer-string-replace-all/patterns/cases.ts:191:16	unicorn/prefer-string-replace-all	pattern	This pattern can be replaced with 'u12'.
+tests/rules/unicorn/prefer-string-replace-all/patterns/cases.ts:192:5	unicorn/prefer-string-replace-all	method	Prefer `String#replaceAll()` over `String#replace()`.
+tests/rules/unicorn/prefer-string-replace-all/patterns/cases.ts:193:16	unicorn/prefer-string-replace-all	pattern	This pattern can be replaced with '\\-'.
+tests/rules/unicorn/prefer-string-replace-all/patterns/cases.ts:194:5	unicorn/prefer-string-replace-all	method	Prefer `String#replaceAll()` over `String#replace()`.
+tests/rules/unicorn/prefer-string-replace-all/patterns/cases.ts:195:16	unicorn/prefer-string-replace-all	pattern	This pattern can be replaced with '\\-'.
+tests/rules/unicorn/prefer-string-replace-all/patterns/cases.ts:196:5	unicorn/prefer-string-replace-all	method	Prefer `String#replaceAll()` over `String#replace()`.
+tests/rules/unicorn/prefer-string-replace-all/patterns/cases.ts:197:16	unicorn/prefer-string-replace-all	pattern	This pattern can be replaced with '-'.
+tests/rules/unicorn/prefer-string-replace-all/patterns/cases.ts:198:5	unicorn/prefer-string-replace-all	method	Prefer `String#replaceAll()` over `String#replace()`.
+tests/rules/unicorn/prefer-string-replace-all/patterns/cases.ts:200:5	unicorn/prefer-string-replace-all	method	Prefer `String#replaceAll()` over `String#replace()`.
+tests/rules/unicorn/prefer-string-replace-all/patterns/cases.ts:201:16	unicorn/prefer-string-replace-all	pattern	This pattern can be replaced with 'a'.
+tests/rules/unicorn/prefer-string-replace-all/patterns/cases.ts:202:5	unicorn/prefer-string-replace-all	method	Prefer `String#replaceAll()` over `String#replace()`.
+tests/rules/unicorn/prefer-string-replace-all/patterns/cases.ts:203:16	unicorn/prefer-string-replace-all	pattern	This pattern can be replaced with '\\b'.
+tests/rules/unicorn/prefer-string-replace-all/patterns/cases.ts:204:5	unicorn/prefer-string-replace-all	method	Prefer `String#replaceAll()` over `String#replace()`.
+tests/rules/unicorn/prefer-string-replace-all/patterns/cases.ts:205:16	unicorn/prefer-string-replace-all	pattern	This pattern can be replaced with '\\b'.
+tests/rules/unicorn/prefer-string-replace-all/patterns/cases.ts:207:21	unicorn/prefer-string-replace-all	split-join	Prefer `String#replaceAll()` over `String#split().join()`.
+tests/rules/unicorn/prefer-string-replace-all/patterns/cases.ts:212:21	unicorn/prefer-string-replace-all	split-join	Prefer `String#replaceAll()` over `String#split().join()`.
+tests/rules/unicorn/prefer-string-replace-all/patterns/cases.ts:213:22	unicorn/prefer-string-replace-all	split-join	Prefer `String#replaceAll()` over `String#split().join()`.
+tests/rules/unicorn/prefer-string-replace-all/patterns/cases.ts:215:20	unicorn/prefer-string-replace-all	split-join	Prefer `String#replaceAll()` over `String#split().join()`.
+tests/rules/unicorn/prefer-string-replace-all/patterns/cases.ts:216:19	unicorn/prefer-string-replace-all	split-join	Prefer `String#replaceAll()` over `String#split().join()`.
+tests/rules/unicorn/prefer-string-replace-all/patterns/cases.ts:217:16	unicorn/prefer-string-replace-all	split-join	Prefer `String#replaceAll()` over `String#split().join()`.
+tests/rules/unicorn/prefer-string-replace-all/patterns/cases.ts:218:17	unicorn/prefer-string-replace-all	split-join	Prefer `String#replaceAll()` over `String#split().join()`.
+tests/rules/unicorn/prefer-string-replace-all/patterns/cases.ts:219:21	unicorn/prefer-string-replace-all	split-join	Prefer `String#replaceAll()` over `String#split().join()`.
+tests/rules/unicorn/prefer-string-replace-all/patterns/cases.ts:222:21	unicorn/prefer-string-replace-all	split-join	Prefer `String#replaceAll()` over `String#split().join()`.
+tests/rules/unicorn/prefer-string-replace-all/patterns/cases.ts:223:22	unicorn/prefer-string-replace-all	split-join	Prefer `String#replaceAll()` over `String#split().join()`.
+tests/rules/unicorn/prefer-string-replace-all/patterns/cases.ts:224:17	unicorn/prefer-string-replace-all	split-join	Prefer `String#replaceAll()` over `String#split().join()`.
+tests/rules/unicorn/prefer-string-replace-all/patterns/cases.ts:225:17	unicorn/prefer-string-replace-all	split-join	Prefer `String#replaceAll()` over `String#split().join()`.
+tests/rules/unicorn/prefer-string-replace-all/patterns/cases.ts:226:19	unicorn/prefer-string-replace-all	split-join	Prefer `String#replaceAll()` over `String#split().join()`.
+tests/rules/unicorn/prefer-string-replace-all/patterns/cases.ts:229:18	unicorn/prefer-string-replace-all	split-join	Prefer `String#replaceAll()` over `String#split().join()`.
+tests/rules/unicorn/prefer-string-replace-all/patterns/cases.ts:233:17	unicorn/prefer-string-replace-all	split-join	Prefer `String#replaceAll()` over `String#split().join()`.
+tests/rules/unicorn/prefer-string-replace-all/patterns/cases.ts:234:16	unicorn/prefer-string-replace-all	split-join	Prefer `String#replaceAll()` over `String#split().join()`.
+tests/rules/unicorn/prefer-string-replace-all/patterns/cases.ts:235:17	unicorn/prefer-string-replace-all	split-join	Prefer `String#replaceAll()` over `String#split().join()`.
+tests/rules/unicorn/prefer-string-replace-all/patterns/cases.ts:236:17	unicorn/prefer-string-replace-all	split-join	Prefer `String#replaceAll()` over `String#split().join()`.
+tests/rules/unicorn/prefer-string-replace-all/patterns/cases.ts:237:21	unicorn/prefer-string-replace-all	split-join	Prefer `String#replaceAll()` over `String#split().join()`.
+tests/rules/unicorn/prefer-string-replace-all/patterns/cases.ts:238:17	unicorn/prefer-string-replace-all	split-join	Prefer `String#replaceAll()` over `String#split().join()`.
+tests/rules/unicorn/prefer-string-replace-all/patterns/cases.ts:239:23	unicorn/prefer-string-replace-all	split-join	Prefer `String#replaceAll()` over `String#split().join()`.
+tests/rules/unicorn/prefer-string-replace-all/patterns/cases.ts:240:16	unicorn/prefer-string-replace-all	split-join	Prefer `String#replaceAll()` over `String#split().join()`.
+tests/rules/unicorn/prefer-string-replace-all/patterns/cases.ts:242:22	unicorn/prefer-string-replace-all	method	Prefer `String#replaceAll()` over `String#replace()`.
+tests/rules/unicorn/prefer-string-replace-all/patterns/cases.ts:244:36	unicorn/prefer-string-replace-all	method	Prefer `String#replaceAll()` over `String#replace()`.
+tests/rules/unicorn/prefer-string-replace-all/patterns/cases.ts:245:20	unicorn/prefer-string-replace-all	method	Prefer `String#replaceAll()` over `String#replace()`.
+tests/rules/unicorn/prefer-string-replace-all/patterns/cases.ts:246:5	unicorn/prefer-string-replace-all	method	Prefer `String#replaceAll()` over `String#replace()`.
+tests/rules/unicorn/prefer-string-replace-all/patterns/cases.ts:247:24	unicorn/prefer-string-replace-all	method	Prefer `String#replaceAll()` over `String#replace()`.
+tests/rules/unicorn/prefer-string-replace-all/patterns/cases.ts:251:5	unicorn/prefer-string-replace-all	method	Prefer `String#replaceAll()` over `String#replace()`.
+tests/rules/unicorn/prefer-string-replace-all/patterns/cases.ts:253:5	unicorn/prefer-string-replace-all	method	Prefer `String#replaceAll()` over `String#replace()`.
+tests/rules/unicorn/prefer-string-replace-all/patterns/cases.ts:255:20	unicorn/prefer-string-replace-all	method	Prefer `String#replaceAll()` over `String#replace()`.
+tests/rules/unicorn/prefer-string-replace-all/patterns/cases.ts:256:5	unicorn/prefer-string-replace-all	method	Prefer `String#replaceAll()` over `String#replace()`.
+tests/rules/unicorn/prefer-string-replace-all/patterns/cases.ts:257:5	unicorn/prefer-string-replace-all	method	Prefer `String#replaceAll()` over `String#replace()`.
+tests/rules/unicorn/prefer-string-replace-all/patterns/cases.ts:261:5	unicorn/prefer-string-replace-all	method	Prefer `String#replaceAll()` over `String#replace()`.
+tests/rules/unicorn/prefer-string-replace-all/patterns/cases.ts:263:5	unicorn/prefer-string-replace-all	method	Prefer `String#replaceAll()` over `String#replace()`.
+tests/rules/unicorn/prefer-string-replace-all/patterns/cases.ts:265:5	unicorn/prefer-string-replace-all	method	Prefer `String#replaceAll()` over `String#replace()`.
+tests/rules/unicorn/prefer-string-replace-all/patterns/cases.ts:268:21	unicorn/prefer-string-replace-all	split-join	Prefer `String#replaceAll()` over `String#split().join()`.
+tests/rules/unicorn/prefer-string-replace-all/patterns/cases.ts:269:24	unicorn/prefer-string-replace-all	split-join	Prefer `String#replaceAll()` over `String#split().join()`.
+tests/rules/unicorn/prefer-string-replace-all/patterns/cases.ts:271:16	unicorn/prefer-string-replace-all	split-join	Prefer `String#replaceAll()` over `String#split().join()`.
+tests/rules/unicorn/prefer-string-replace-all/patterns/cases.ts:272:61	unicorn/prefer-string-replace-all	split-join	Prefer `String#replaceAll()` over `String#split().join()`.
+tests/rules/unicorn/prefer-string-replace-all/patterns/cases.ts:274:17	unicorn/prefer-string-replace-all	split-join	Prefer `String#replaceAll()` over `String#split().join()`.
+tests/rules/unicorn/prefer-string-replace-all/patterns/cases.ts:275:16	unicorn/prefer-string-replace-all	split-join	Prefer `String#replaceAll()` over `String#split().join()`.
+tests/rules/unicorn/prefer-string-replace-all/patterns/cases.ts:275:37	unicorn/prefer-string-replace-all	split-join	Prefer `String#replaceAll()` over `String#split().join()`.
+tests/rules/unicorn/prefer-string-replace-all/patterns/cases.ts:276:16	unicorn/prefer-string-replace-all	split-join	Prefer `String#replaceAll()` over `String#split().join()`.
+tests/rules/unicorn/prefer-string-replace-all/patterns/cases.ts:276:26	unicorn/prefer-string-replace-all	method	Prefer `String#replaceAll()` over `String#replace()`.
