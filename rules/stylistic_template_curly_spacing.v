@@ -25,7 +25,12 @@ fn (mut c Checker) lint_stylistic_template_curly_spacing(root C.TSNode, abs_path
 	always := stcs_options(c.rule_options(stylistic_template_curly_spacing))!
 	t := c.es_tree(root, abs_path) or { return findings }
 	tokens := c.un_tokens(t)
-	for node in 0 .. t.nodes.len {
+	// In the order of ESLint's traversal: reports that start at the same place keep it.
+	for step in t.steps() {
+		if step.leave {
+			continue
+		}
+		node := step.node
 		if t.typ(node) != .template_element {
 			continue
 		}

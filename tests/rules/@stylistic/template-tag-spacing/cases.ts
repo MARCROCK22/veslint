@@ -2,6 +2,7 @@ declare function tag(strings: TemplateStringsArray, ...values: unknown[]): strin
 declare function generic<T>(strings: TemplateStringsArray, ...values: T[]): string;
 declare const obj: { tag: typeof tag };
 declare const name: string;
+declare function curried(strings: TemplateStringsArray): typeof tag;
 
 const a = tag `name`;
 const b = tag`name`;
@@ -18,5 +19,6 @@ const k = tag
 `x`;
 const l = `outer ${tag `inner`}`;
 const m = tag `ñü ${tag `é`}`;
+const n = curried `a` `b`;
 
-export { a, b, c, d, e, f, g, h, i, j, k, l, m };
+export { a, b, c, d, e, f, g, h, i, j, k, l, m, n };
