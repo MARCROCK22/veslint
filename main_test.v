@@ -130,7 +130,7 @@ fn test_rule_setup_options() {
 	// A value the rule does not have, options for a rule without them, or a severity that does not
 	// exist.
 	for text in ['{"@typescript-eslint/return-await": [2, "sometimes"]}',
-		'{"@typescript-eslint/await-thenable": [2, {}]}',
+		'{"@typescript-eslint/no-for-in-array": [2, {}]}',
 		'{"@typescript-eslint/no-misused-promises": [2, {"checksVoidReturn": {"nothing": false}}]}',
 		'{"@typescript-eslint/no-floating-promises": "fatal"}',
 		'{"@typescript-eslint/no-floating-promises": []}'] {
@@ -186,7 +186,7 @@ fn test_rule_setup_order_of_errors() {
 	assert s.rules.len == 0
 	assert s.off_problems == {
 		'@typescript-eslint/no-floating-promises': 'Value {"nope":1} should NOT have additional properties.\n\t\tUnexpected property "nope". Expected properties: "allowForKnownSafeCalls", "allowForKnownSafePromises", "checkThenables", "ignoreIIFE", "ignoreVoid".'
-		'@typescript-eslint/await-thenable':       'Value [1,2] should NOT have more than 0 items.'
+		'@typescript-eslint/await-thenable':       'Value [1,2] should NOT have more than 1 items.'
 	}
 	assert '@typescript-eslint/return-await' in s.base_options
 }
