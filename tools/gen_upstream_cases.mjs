@@ -197,13 +197,13 @@ function normalize(run, raw, kind, index, prefix, source) {
     : (test.filename ?? (parserOptions.ecmaFeatures?.jsx ? 'react.tsx' : 'file.ts'));
   // A case of unicorn's tests with `allowDefaultProject` lints a file of no tsconfig.json, linted by
   // the default project of the project service: the fixtures' tsconfig.json has file.ts, so it is
-  // default-project.ts here (a file of the fixtures that no tsconfig.json includes).
-  if (source?.unicorn && isObject(parserOptions.projectService) && parserOptions.projectService.allowDefaultProject
-    && filename === 'file.ts') {
-    filename = 'default-project.ts';
-  }
+  // default-project.ts here (a file of the fixtures that no tsconfig.json includes), linted with the
+  // options of `defaultProject` (tsconfig.json of the fixtures) like a seyfert one (`via: default`).
+  const unicornDefault = Boolean(source?.unicorn && isObject(parserOptions.projectService)
+    && parserOptions.projectService.allowDefaultProject && filename === 'file.ts');
+  if (unicornDefault) filename = 'default-project.ts';
   if (parserOptions.project) filename = path.join(root, filename);
-  const file = path.isAbsolute(filename) ? filename : path.resolve(root, filename);
+  const file = unicornDefault ? path.join(fixtures, filename) : path.isAbsolute(filename) ? filename : path.resolve(root, filename);
   // How the parser gets the types: the project service (the closest tsconfig.json), or the
   // program of `project`; neither: the case is only parsed. A file of the tests of
   // @slipher/eslint-plugin that the closest tsconfig.json does not have is one of the
@@ -217,6 +217,10 @@ function normalize(run, raw, kind, index, prefix, source) {
     const service = parserOptions.projectService;
     if (source === SOURCES['seyfert/'] && isObject(service) && service.allowDefaultProject && !(tsconfig && filesOf(tsconfig).has(file))) {
       tsconfig = path.resolve(root, service.defaultProject ?? 'tsconfig.json');
+      via = 'default';
+    }
+    if (unicornDefault) {
+      tsconfig = path.join(fixtures, service.defaultProject ?? 'tsconfig.json');
       via = 'default';
     }
   } else if (typeof parserOptions.project === 'string') {
@@ -244,7 +248,7 @@ function normalize(run, raw, kind, index, prefix, source) {
   out.tsconfig = tsconfig && fixtureRelative(tsconfig);
   if (via) out.via = via;
   // tsconfigRootDir, when it is not the fixtures directory itself.
-  if (tsconfig && path.resolve(root) !== fixtures) out.root = fixtureRelative(path.resolve(root));
+  if (tsconfig && path.resolve(root) !== fixtures && !unicornDefault) out.root = fixtureRelative(path.resolve(root));
   if (isObject(projectService)) out.projectService = projectService;
   if (Object.keys(otherParserOptions).length) out.parserOptions = otherParserOptions;
   if (Object.keys(languageOptions).length) out.languageOptions = languageOptions;

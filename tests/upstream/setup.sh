@@ -34,3 +34,6 @@ ln -s "$EVAL/typescript" "$DIR/node_modules/typescript"
 for package in types utils; do
 	ln -s "$EVAL/@typescript-eslint/$package" "$DIR/node_modules/@typescript-eslint/$package"
 done
+# The file the cases of unicorn's tests with `allowDefaultProject` lint (no tsconfig.json has it: the
+# default project of the project service): it must exist for the program of veslint to have it.
+: > "$DIR/default-project.ts"
