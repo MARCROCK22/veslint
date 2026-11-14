@@ -1,0 +1,9 @@
+tests/rules/unicorn/prefer-import-meta-properties/cases.ts:6:18	unicorn/prefer-import-meta-properties	error/calculate-filename	Do not construct filename using `fileURLToPath()`.
+tests/rules/unicorn/prefer-import-meta-properties/cases.ts:7:13	unicorn/prefer-import-meta-properties	error/calculate-dirname	Do not construct dirname.
+tests/rules/unicorn/prefer-import-meta-properties/cases.ts:8:14	unicorn/prefer-import-meta-properties	error/calculate-dirname	Do not construct dirname.
+tests/rules/unicorn/prefer-import-meta-properties/cases.ts:9:15	unicorn/prefer-import-meta-properties	error/calculate-filename	Do not construct filename using `fileURLToPath()`.
+tests/rules/unicorn/prefer-import-meta-properties/cases.ts:10:14	unicorn/prefer-import-meta-properties	error/calculate-dirname	Do not construct dirname.
+tests/rules/unicorn/prefer-import-meta-properties/cases.ts:11:14	unicorn/prefer-import-meta-properties	error/calculate-dirname	Do not construct dirname.
+tests/rules/unicorn/prefer-import-meta-properties/cases.ts:12:14	unicorn/prefer-import-meta-properties	error/calculate-dirname	Do not construct dirname.
+tests/rules/unicorn/prefer-import-meta-properties/cases.ts:13:15	unicorn/prefer-import-meta-properties	error/calculate-filename	Do not construct filename using `fileURLToPath()`.
+tests/rules/unicorn/prefer-import-meta-properties/cases.ts:15:15	unicorn/prefer-import-meta-properties	error/calculate-filename	Do not construct filename using `fileURLToPath()`.
