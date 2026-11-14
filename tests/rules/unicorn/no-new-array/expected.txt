@@ -1,0 +1,9 @@
+tests/rules/unicorn/no-new-array/cases.ts:7:12	unicorn/no-new-array	error	`new Array()` is unclear in intent; use either `[x]` or `Array.from({length: x})`
+tests/rules/unicorn/no-new-array/cases.ts:8:12	unicorn/no-new-array	error	`new Array()` is unclear in intent; use either `[x]` or `Array.from({length: x})`
+tests/rules/unicorn/no-new-array/cases.ts:9:12	unicorn/no-new-array	error	`new Array()` is unclear in intent; use either `[x]` or `Array.from({length: x})`
+tests/rules/unicorn/no-new-array/cases.ts:10:12	unicorn/no-new-array	error	`new Array()` is unclear in intent; use either `[x]` or `Array.from({length: x})`
+tests/rules/unicorn/no-new-array/cases.ts:11:12	unicorn/no-new-array	error	`new Array()` is unclear in intent; use either `[x]` or `Array.from({length: x})`
+tests/rules/unicorn/no-new-array/cases.ts:12:12	unicorn/no-new-array	error	`new Array()` is unclear in intent; use either `[x]` or `Array.from({length: x})`
+tests/rules/unicorn/no-new-array/cases.ts:13:12	unicorn/no-new-array	error	`new Array()` is unclear in intent; use either `[x]` or `Array.from({length: x})`
+tests/rules/unicorn/no-new-array/cases.ts:16:1	unicorn/no-new-array	error	`new Array()` is unclear in intent; use either `[x]` or `Array.from({length: x})`
+tests/rules/unicorn/no-new-array/cases.ts:17:12	unicorn/no-new-array	error	`new Array()` is unclear in intent; use either `[x]` or `Array.from({length: x})`

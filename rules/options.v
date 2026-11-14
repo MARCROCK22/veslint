@@ -134,6 +134,9 @@ pub fn check_options(rule string, options []json2.Any) !bool {
 		unicorn_escape_case { uec_options(options)! }
 		unicorn_text_encoding_identifier_case { uteic_options(options)! }
 		unicorn_prefer_number_properties { upnp_options(options)! }
+		unicorn_no_array_reverse { unar_options(options)! }
+		unicorn_no_array_sort { unas_options(options)! }
+		unicorn_prefer_array_flat { upaf_options(options)! }
 		else { return false }
 	}
 	return true

@@ -1,0 +1,7 @@
+tests/rules/unicorn/no-array-sort/cases.ts:5:17	unicorn/no-array-sort	error	Use `Array#toSorted()` instead of `Array#sort()`.
+tests/rules/unicorn/no-array-sort/cases.ts:6:17	unicorn/no-array-sort	error	Use `Array#toSorted()` instead of `Array#sort()`.
+tests/rules/unicorn/no-array-sort/cases.ts:7:17	unicorn/no-array-sort	error	Use `Array#toSorted()` instead of `Array#sort()`.
+tests/rules/unicorn/no-array-sort/cases.ts:8:22	unicorn/no-array-sort	error	Use `Array#toSorted()` instead of `Array#sort()`.
+tests/rules/unicorn/no-array-sort/cases.ts:9:17	unicorn/no-array-sort	error	Use `Array#toSorted()` instead of `Array#sort()`.
+tests/rules/unicorn/no-array-sort/statement/cases.ts:4:6	unicorn/no-array-sort	error	Use `Array#toSorted()` instead of `Array#sort()`.
+tests/rules/unicorn/no-array-sort/statement/cases.ts:5:11	unicorn/no-array-sort	error	Use `Array#toSorted()` instead of `Array#sort()`.

@@ -1,0 +1,12 @@
+tests/rules/unicorn/prefer-negative-index/cases.ts:6:12	unicorn/prefer-negative-index	prefer-negative-index	Prefer negative index over length minus index for `slice`.
+tests/rules/unicorn/prefer-negative-index/cases.ts:7:12	unicorn/prefer-negative-index	prefer-negative-index	Prefer negative index over length minus index for `slice`.
+tests/rules/unicorn/prefer-negative-index/cases.ts:8:12	unicorn/prefer-negative-index	prefer-negative-index	Prefer negative index over length minus index for `subarray`.
+tests/rules/unicorn/prefer-negative-index/cases.ts:9:12	unicorn/prefer-negative-index	prefer-negative-index	Prefer negative index over length minus index for `at`.
+tests/rules/unicorn/prefer-negative-index/cases.ts:10:12	unicorn/prefer-negative-index	prefer-negative-index	Prefer negative index over length minus index for `with`.
+tests/rules/unicorn/prefer-negative-index/cases.ts:11:12	unicorn/prefer-negative-index	prefer-negative-index	Prefer negative index over length minus index for `toSpliced`.
+tests/rules/unicorn/prefer-negative-index/cases.ts:12:1	unicorn/prefer-negative-index	prefer-negative-index	Prefer negative index over length minus index for `splice`.
+tests/rules/unicorn/prefer-negative-index/cases.ts:13:12	unicorn/prefer-negative-index	prefer-negative-index	Prefer negative index over length minus index for `slice`.
+tests/rules/unicorn/prefer-negative-index/cases.ts:14:12	unicorn/prefer-negative-index	prefer-negative-index	Prefer negative index over length minus index for `slice`.
+tests/rules/unicorn/prefer-negative-index/cases.ts:15:12	unicorn/prefer-negative-index	prefer-negative-index	Prefer negative index over length minus index for `slice`.
+tests/rules/unicorn/prefer-negative-index/cases.ts:16:13	unicorn/prefer-negative-index	prefer-negative-index	Prefer negative index over length minus index for `slice`.
+tests/rules/unicorn/prefer-negative-index/cases.ts:17:13	unicorn/prefer-negative-index	prefer-negative-index	Prefer negative index over length minus index for `at`.

@@ -1,0 +1,9 @@
+tests/rules/unicorn/no-array-method-this-argument/cases.ts:7:29	unicorn/no-array-method-this-argument	error-prototype-method	Do not use the `this` argument in `Array#map()`.
+tests/rules/unicorn/no-array-method-this-argument/cases.ts:8:34	unicorn/no-array-method-this-argument	error-prototype-method	Do not use the `this` argument in `Array#filter()`.
+tests/rules/unicorn/no-array-method-this-argument/cases.ts:9:35	unicorn/no-array-method-this-argument	error-prototype-method	Do not use the `this` argument in `Array#every()`.
+tests/rules/unicorn/no-array-method-this-argument/cases.ts:10:34	unicorn/no-array-method-this-argument	error-prototype-method	Do not use the `this` argument in `Array#some()`.
+tests/rules/unicorn/no-array-method-this-argument/cases.ts:11:37	unicorn/no-array-method-this-argument	error-static-method	Do not use the `this` argument in `Array.from()`.
+tests/rules/unicorn/no-array-method-this-argument/cases.ts:12:39	unicorn/no-array-method-this-argument	error-static-method	Do not use the `this` argument in `Array.from()`.
+tests/rules/unicorn/no-array-method-this-argument/cases.ts:13:54	unicorn/no-array-method-this-argument	error-prototype-method	Do not use the `this` argument in `Array#find()`.
+tests/rules/unicorn/no-array-method-this-argument/cases.ts:14:48	unicorn/no-array-method-this-argument	error-prototype-method	Do not use the `this` argument in `Array#forEach()`.
+tests/rules/unicorn/no-array-method-this-argument/cases.ts:19:32	unicorn/no-array-method-this-argument	error-prototype-method	Do not use the `this` argument in `Array#map()`.

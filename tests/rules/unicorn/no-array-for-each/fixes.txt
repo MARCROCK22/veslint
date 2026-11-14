@@ -1,0 +1,19 @@
+tests/rules/unicorn/no-array-for-each/cases.ts:7:6	unicorn/no-array-for-each	no-array-for-each/error	Use `for…of` instead of `.forEach(…)`.	fix	212	238	for (const x of list) use(x);	end	7	13
+tests/rules/unicorn/no-array-for-each/cases.ts:8:6	unicorn/no-array-for-each	no-array-for-each/error	Use `for…of` instead of `.forEach(…)`.	fix	239	281	for (const [i, x] of list.entries()) {\n  use(x + i);\n}	end	8	13
+tests/rules/unicorn/no-array-for-each/cases.ts:11:6	unicorn/no-array-for-each	no-array-for-each/error	Use `for…of` instead of `.forEach(…)`.	fix	282	344	for (const x of list) {\n  if (x > 1) continue;\n  use(x);\n}	end	11	13
+tests/rules/unicorn/no-array-for-each/cases.ts:15:6	unicorn/no-array-for-each	no-array-for-each/error	Use `for…of` instead of `.forEach(…)`.	fix	345	402	for (const x of list) {\n  if (x)  { use(x); continue; }\n  use(x);\n}	end	15	13
+tests/rules/unicorn/no-array-for-each/cases.ts:19:8	unicorn/no-array-for-each	no-array-for-each/error	Use `for…of` instead of `.forEach(…)`.	fix	403	430	if (maybe) for (const x of maybe) use(x)	end	19	15
+tests/rules/unicorn/no-array-for-each/cases.ts:20:8	unicorn/no-array-for-each	no-array-for-each/error	Use `for…of` instead of `.forEach(…)`.	suggestion	no-array-for-each/suggestion	Switch to `for…of`.	432	459	if (get()) for (const x of get()) use(x)	end	20	15
+tests/rules/unicorn/no-array-for-each/cases.ts:21:6	unicorn/no-array-for-each	no-array-for-each/error	Use `for…of` instead of `.forEach(…)`.	fix	461	503	for (let x of list) { x = x + 1; use(x); }	end	21	13
+tests/rules/unicorn/no-array-for-each/cases.ts:22:6	unicorn/no-array-for-each	no-array-for-each/error	Use `for…of` instead of `.forEach(…)`.	fix	504	546	for (const { length } of list) use(length);	end	22	13
+tests/rules/unicorn/no-array-for-each/cases.ts:23:25	unicorn/no-array-for-each	no-array-for-each/error	Use `for…of` instead of `.forEach(…)`.	fix	560	591	() => { for (const x of list) use(x) }	end	23	32
+tests/rules/unicorn/no-array-for-each/cases.ts:24:6	unicorn/no-array-for-each	no-array-for-each/error	Use `for…of` instead of `.forEach(…)`.	fix	593	634	for (const x of list) {\n   ({ x }); continue;\n}	end	24	13
+tests/rules/unicorn/no-array-for-each/cases.ts:29:17	unicorn/no-array-for-each	no-array-for-each/error	Use `for…of` instead of `.forEach(…)`.	end	29	24
+tests/rules/unicorn/no-array-for-each/cases.ts:30:6	unicorn/no-array-for-each	no-array-for-each/error	Use `for…of` instead of `.forEach(…)`.	end	30	13
+tests/rules/unicorn/no-array-for-each/cases.ts:31:6	unicorn/no-array-for-each	no-array-for-each/error	Use `for…of` instead of `.forEach(…)`.	end	31	13
+tests/rules/unicorn/no-array-for-each/cases.ts:32:6	unicorn/no-array-for-each	no-array-for-each/error	Use `for…of` instead of `.forEach(…)`.	end	32	13
+tests/rules/unicorn/no-array-for-each/cases.ts:33:6	unicorn/no-array-for-each	no-array-for-each/error	Use `for…of` instead of `.forEach(…)`.	end	33	13
+tests/rules/unicorn/no-array-for-each/cases.ts:38:6	unicorn/no-array-for-each	no-array-for-each/error	Use `for…of` instead of `.forEach(…)`.	fix	853	895	for (const x of list) { use(this); }	end	38	13
+tests/rules/unicorn/no-array-for-each/cases.ts:39:6	unicorn/no-array-for-each	no-array-for-each/error	Use `for…of` instead of `.forEach(…)`.	end	39	13
+tests/rules/unicorn/no-array-for-each/cases.ts:41:6	unicorn/no-array-for-each	no-array-for-each/error	Use `for…of` instead of `.forEach(…)`.	fix	942	972	for (const y of list) use(x + y);	end	41	13
+tests/rules/unicorn/no-array-for-each/cases.ts:42:6	unicorn/no-array-for-each	no-array-for-each/error	Use `for…of` instead of `.forEach(…)`.	fix	973	999	for (const x of list) use(x);	end	42	13

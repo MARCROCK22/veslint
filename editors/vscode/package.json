@@ -2,7 +2,7 @@
   "name": "veslint",
   "displayName": "veslint",
   "description": "ESLint, typescript-eslint and plugin rules from veslint, a TypeScript linter written in V that talks to the TypeScript 7 compiler: problems, fixes and suggestions as you type.",
-  "version": "0.17.0",
+  "version": "0.18.0",
   "publisher": "MARCROCK22",
   "icon": "images/icon.png",
   "galleryBanner": {

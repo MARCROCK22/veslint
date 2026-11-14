@@ -1226,3 +1226,290 @@ fn (mut c Checker) un_function_name_with_kind(t &estree.EsTree, node int) string
 	}
 	return tokens.join(' ')
 }
+
+// un_is_empty_array ports isEmptyArrayExpression.
+fn un_is_empty_array(t &estree.EsTree, node int) bool {
+	return node >= 0 && t.typ(node) == .array_expression && (t.list(node, .elements) or { []int{} }).len == 0
+}
+
+// un_is_empty_object ports isEmptyObjectExpression.
+fn un_is_empty_object(t &estree.EsTree, node int) bool {
+	return node >= 0 && t.typ(node) == .object_expression
+		&& (t.list(node, .properties) or { []int{} }).len == 0
+}
+
+// un_is_prototype_property ports isPrototypeProperty of utils/array-or-object-prototype-property.js
+// (`object` is 'Array' or 'Object'): `Array.prototype.property`, `[].property` or `{}.property`.
+fn un_is_prototype_property(t &estree.EsTree, node int, object string, properties []string) bool {
+	if !un_is_member(t, node, properties: properties, optional: false) {
+		return false
+	}
+	object_node := t.node(node, .object) or { return false }
+	return un_is_member(t, object_node, objects: [object], properties: ['prototype'], optional: false)
+		|| (object == 'Array' && un_is_empty_array(t, object_node))
+		|| (object == 'Object' && un_is_empty_object(t, object_node))
+}
+
+// un_append_argument ports appendArgument (fix/append-argument.js) of a call expression.
+fn (c &Checker) un_append_argument(t &estree.EsTree, tokens &SourceTokens, node int, text string) ?Fix {
+	inside := tokens.inside(t.nodes[node].start, t.nodes[node].end, false)
+	if inside.len < 2 {
+		return none
+	}
+	penultimate := inside[inside.len - 2]
+	last := inside.last()
+	mut appended := text
+	if (t.list(node, .arguments) or { []int{} }).len > 0 {
+		appended = if c.token_is(penultimate, ',') { ' ${text},' } else { ', ${text}' }
+	}
+	return fix_insert_at(last.start, appended)
+}
+
+// un_is_literal_value ports isLiteral(node, value) for a string value.
+fn un_is_literal_string(t &estree.EsTree, node int, value string) bool {
+	if node < 0 || t.typ(node) != .literal {
+		return false
+	}
+	v := t.get(node, .value)
+	return v is string && v == value
+}
+
+// un_is_undefined ports isUndefined: the identifier `undefined`.
+fn un_is_undefined(t &estree.EsTree, node int) bool {
+	return node >= 0 && t.typ(node) == .identifier && (t.string_of(node, .name) or { '' }) == 'undefined'
+}
+
+// un_is_node_value_not_function ports isNodeValueNotFunction.
+fn un_is_node_value_not_function(t &estree.EsTree, node int) bool {
+	return t.typ(node) in [.array_expression, .binary_expression, .class_expression, .literal,
+		.object_expression, .template_literal, .unary_expression, .update_expression,
+		.assignment_expression, .await_expression, .new_expression, .tagged_template_expression,
+		.this_expression] || un_is_undefined(t, node) || (un_is_call(t, node)
+		&& !un_is_method_call(t, node, methods: ['bind'], optional_call: false, optional_member: false))
+}
+
+// un_is_logical ports isLogicalExpression: `&&` or `||` (not `??`).
+fn un_is_logical(t &estree.EsTree, node int) bool {
+	return node >= 0 && t.typ(node) == .logical_expression
+		&& (t.string_of(node, .operator) or { '' }) in ['&&', '||']
+}
+
+fn un_is_logic_not(t &estree.EsTree, node int) bool {
+	return node >= 0 && t.typ(node) == .unary_expression && (t.string_of(node, .operator) or { '' }) == '!'
+}
+
+fn un_is_boolean_call(t &estree.EsTree, node int) bool {
+	if node < 0 || t.typ(node) != .call_expression {
+		return false
+	}
+	callee := t.node(node, .callee) or { return false }
+	return t.typ(callee) == .identifier && (t.string_of(callee, .name) or { '' }) == 'Boolean'
+		&& (t.list(node, .arguments) or { []int{} }).len == 1
+}
+
+// un_is_boolean_expression ports isBooleanExpression of utils/boolean.js.
+fn un_is_boolean_expression(t &estree.EsTree, node int) bool {
+	parent := t.nodes[node].parent
+	if un_is_logic_not(t, node) || (un_is_logic_not(t, parent) && t.node(parent, .argument) or { -1 } == node)
+		|| un_is_boolean_call(t, node) || (un_is_boolean_call(t, parent)
+		&& (t.list(parent, .arguments) or { []int{} })[0] == node) {
+		return true
+	}
+	if un_is_logical(t, parent) {
+		return un_is_boolean_expression(t, parent)
+	}
+	return false
+}
+
+// un_is_control_flow_test ports isControlFlowTest of utils/boolean.js.
+fn un_is_control_flow_test(t &estree.EsTree, node int) bool {
+	parent := t.nodes[node].parent
+	if parent >= 0 && t.typ(parent) in [.if_statement, .conditional_expression, .while_statement,
+		.do_while_statement, .for_statement] && t.node(parent, .test) or { -1 } == node {
+		return true
+	}
+	if un_is_logical(t, parent) {
+		return un_is_control_flow_test(t, parent)
+	}
+	return false
+}
+
+// un_replace_member_property ports replaceMemberExpressionProperty.
+fn (c &Checker) un_replace_member_property(t &estree.EsTree, tokens &SourceTokens, member int, text string) Fix {
+	object := t.node(member, .object) or { return fix_insert_at(t.nodes[member].end, '') }
+	_, start := c.un_parenthesized_range(t, tokens, object)
+	return fix_replace_range(start, t.nodes[member].end, text)
+}
+
+// un_is_function_self_used_inside ports isFunctionSelfUsedInside: `this`, `arguments` or the name of
+// the function is used inside it.
+fn (mut c Checker) un_is_function_self_used_inside(root C.TSNode, t &estree.EsTree, function int) bool {
+	if t.typ(function) == .arrow_function_expression {
+		return false
+	}
+	// functionScope.thisFound: typescript-eslint's scope manager never sets it, so a `this` inside
+	// does not count.
+	tree := c.scope_tree(root)
+	scope := tree.function_scope_of(t.ts_node(function) or { return false })
+	if scope < 0 {
+		return false
+	}
+	arguments := tree.find_variable(scope, 'arguments', -1)
+	if arguments >= 0 && tree.variables[arguments].references.any(tree.references[it].from == scope) {
+		return true
+	}
+	if id := t.node(function, .id) {
+		v := tree.find_variable(scope, t.string_of(id, .name) or { '' }, -1)
+		if v >= 0 && tree.variables[v].references.len > 0 {
+			return true
+		}
+	}
+	return false
+}
+
+// un_member_object_needs_parens ports shouldAddParenthesesToMemberExpressionObject.
+fn (c &Checker) un_member_object_needs_parens(t &estree.EsTree, tokens &SourceTokens, node int) bool {
+	return match t.typ(node) {
+		.identifier, .member_expression, .call_expression, .chain_expression, .template_literal,
+		.this_expression, .array_expression, .function_expression {
+			false
+		}
+		.new_expression {
+			!c.un_new_with_parentheses(t, tokens, node)
+		}
+		.literal {
+			t.get(node, .value) is f64 && un_is_decimal_integer(un_raw(t, node))
+		}
+		else {
+			true
+		}
+	}
+}
+
+// un_is_node_matches ports isNodeMatches: the node matches one of the names or paths.
+fn un_is_node_matches(t &estree.EsTree, node int, names_or_paths []string) bool {
+	return names_or_paths.any(un_node_matches_name_or_path(t, node, it))
+}
+
+// un_const_initializer ports getConstVariableInitializer of prefer-array-flat: the initializer of
+// the only definition of the variable of an identifier, a `const` declarator.
+fn (mut c Checker) un_const_initializer(root C.TSNode, t &estree.EsTree, node int) ?int {
+	if t.typ(node) != .identifier {
+		return none
+	}
+	ts := t.ts_node(node)?
+	tree := c.scope_tree(root)
+	v := tree.find_variable(tree.get_scope(ts), t.string_of(node, .name)?, t.nodes[node].start)
+	if v < 0 || tree.variables[v].defs.len != 1 {
+		return none
+	}
+	def := tree.variables[v].defs[0]
+	if def.kind != .variable || treesitter.node_kind(def.node) != 'variable_declarator' || def.parent_kind != 'const' {
+		return none
+	}
+	return c.es_index_of(t, def.init?)
+}
+
+// un_remove_argument ports removeArgument (fix/remove-argument.js).
+fn (c &Checker) un_remove_argument(t &estree.EsTree, tokens &SourceTokens, node int) ?Fix {
+	call := t.nodes[node].parent
+	arguments := t.list(call, .arguments) or { return none }
+	index := arguments.index(node)
+	parentheses := c.un_parentheses(t, tokens, node)
+	mut start := if parentheses.len > 0 { parentheses[0].start } else { t.nodes[node].start }
+	mut end := if parentheses.len > 0 { parentheses.last().end } else { t.nodes[node].end }
+	if index != 0 {
+		comma := tokens.before(start, false)?
+		start = comma.start
+	}
+	// If the removed argument is the only argument, the trailing comma must be removed too
+	if arguments.len == 1 {
+		if after := tokens.after(end, false) {
+			if c.token_is(after, ',') {
+				end = after.end
+			}
+		}
+	}
+	return fix_remove_range(start, end)
+}
+
+// un_call_callee_needs_parens ports shouldAddParenthesesToCallExpressionCallee.
+fn un_call_callee_needs_parens(t &estree.EsTree, node int) bool {
+	return t.typ(node) in [.sequence_expression, .yield_expression, .arrow_function_expression,
+		.conditional_expression, .assignment_expression, .logical_expression, .binary_expression,
+		.unary_expression, .update_expression, .new_expression]
+}
+
+// un_is_reference_identifier ports isReferenceIdentifier (ast/is-reference-identifier.js) without
+// names.
+fn un_is_reference_identifier(t &estree.EsTree, node int) bool {
+	if t.typ(node) != .identifier {
+		return false
+	}
+	parent := t.nodes[node].parent
+	if parent < 0 {
+		return true
+	}
+	is_key := fn [t, parent, node] (key estree.Key) bool {
+		return t.node(parent, key) or { -1 } == node
+	}
+	in_list := fn [t, parent, node] (key estree.Key) bool {
+		return node in (t.list(parent, key) or { []int{} })
+	}
+	computed := t.flag(parent, .computed) or { false }
+	not_reference := match t.typ(parent) {
+		.member_expression {
+			!computed && is_key(.property)
+		}
+		.function_declaration, .function_expression {
+			in_list(.params) || is_key(.id)
+		}
+		.arrow_function_expression {
+			in_list(.params)
+		}
+		.class_declaration, .class_expression, .variable_declarator, .ts_declare_function,
+		.ts_enum_member, .ts_type_alias_declaration {
+			is_key(.id)
+		}
+		.property_definition, .method_definition {
+			!computed && is_key(.key)
+		}
+		.property {
+			grand := t.nodes[parent].parent
+			grand_typ := if grand >= 0 { t.typ(grand) } else { estree.NodeType.program }
+			(!computed && is_key(.key) && grand_typ in [.object_expression, .object_pattern])
+				|| (is_key(.value) && grand_typ == .object_pattern)
+		}
+		.array_pattern {
+			in_list(.elements)
+		}
+		.labeled_statement, .continue_statement, .break_statement {
+			is_key(.label)
+		}
+		.import_default_specifier, .import_namespace_specifier {
+			is_key(.local)
+		}
+		.export_all_declaration {
+			is_key(.exported)
+		}
+		.import_specifier {
+			is_key(.local) || is_key(.imported)
+		}
+		.export_specifier {
+			is_key(.local) || is_key(.exported)
+		}
+		.ts_index_signature {
+			in_list(.parameters)
+		}
+		.ts_type_parameter {
+			is_key(.name)
+		}
+		.ts_mapped_type, .ts_property_signature {
+			is_key(.key)
+		}
+		else {
+			false
+		}
+	}
+	return !not_reference
+}

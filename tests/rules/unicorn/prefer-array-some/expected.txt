@@ -1,0 +1,14 @@
+tests/rules/unicorn/prefer-array-some/cases.ts:4:10	unicorn/prefer-array-some	some	Prefer `.some(…)` over `.find(…)`.
+tests/rules/unicorn/prefer-array-some/cases.ts:5:18	unicorn/prefer-array-some	some	Prefer `.some(…)` over `.findLast(…)`.
+tests/rules/unicorn/prefer-array-some/cases.ts:6:25	unicorn/prefer-array-some	some	Prefer `.some(…)` over `.find(…)`.
+tests/rules/unicorn/prefer-array-some/cases.ts:7:17	unicorn/prefer-array-some	some	Prefer `.some(…)` over `.find(…)`.
+tests/rules/unicorn/prefer-array-some/cases.ts:8:17	unicorn/prefer-array-some	some	Prefer `.some(…)` over `.find(…)`.
+tests/rules/unicorn/prefer-array-some/cases.ts:9:17	unicorn/prefer-array-some	some	Prefer `.some(…)` over `.find(…)`.
+tests/rules/unicorn/prefer-array-some/cases.ts:10:18	unicorn/prefer-array-some	some	Prefer `.some(…)` over `.find(…)`.
+tests/rules/unicorn/prefer-array-some/cases.ts:11:17	unicorn/prefer-array-some	some	Prefer `.some(…)` over `.findIndex(…)`.
+tests/rules/unicorn/prefer-array-some/cases.ts:12:17	unicorn/prefer-array-some	some	Prefer `.some(…)` over `.findLastIndex(…)`.
+tests/rules/unicorn/prefer-array-some/cases.ts:13:17	unicorn/prefer-array-some	some	Prefer `.some(…)` over `.findIndex(…)`.
+tests/rules/unicorn/prefer-array-some/cases.ts:14:18	unicorn/prefer-array-some	some	Prefer `.some(…)` over `.findIndex(…)`.
+tests/rules/unicorn/prefer-array-some/cases.ts:15:18	unicorn/prefer-array-some	filter	Prefer `.some(…)` over non-zero length check from `.filter(…)`.
+tests/rules/unicorn/prefer-array-some/cases.ts:16:19	unicorn/prefer-array-some	filter	Prefer `.some(…)` over non-zero length check from `.filter(…)`.
+tests/rules/unicorn/prefer-array-some/cases.ts:17:13	unicorn/prefer-array-some	some	Prefer `.some(…)` over `.find(…)`.

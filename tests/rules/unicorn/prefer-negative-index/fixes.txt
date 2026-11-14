@@ -1,0 +1,12 @@
+tests/rules/unicorn/prefer-negative-index/cases.ts:6:12	unicorn/prefer-negative-index	prefer-negative-index	Prefer negative index over length minus index for `slice`.	fix	192	221	- 2, 	end	6	56
+tests/rules/unicorn/prefer-negative-index/cases.ts:7:12	unicorn/prefer-negative-index	prefer-negative-index	Prefer negative index over length minus index for `slice`.	fix	249	261		end	7	39
+tests/rules/unicorn/prefer-negative-index/cases.ts:8:12	unicorn/prefer-negative-index	prefer-negative-index	Prefer negative index over length minus index for `subarray`.	fix	293	306		end	8	44
+tests/rules/unicorn/prefer-negative-index/cases.ts:9:12	unicorn/prefer-negative-index	prefer-negative-index	Prefer negative index over length minus index for `at`.	fix	331	343		end	9	36
+tests/rules/unicorn/prefer-negative-index/cases.ts:10:12	unicorn/prefer-negative-index	prefer-negative-index	Prefer negative index over length minus index for `with`.	fix	370	382		end	10	41
+tests/rules/unicorn/prefer-negative-index/cases.ts:11:12	unicorn/prefer-negative-index	prefer-negative-index	Prefer negative index over length minus index for `toSpliced`.	fix	417	429		end	11	46
+tests/rules/unicorn/prefer-negative-index/cases.ts:12:1	unicorn/prefer-negative-index	prefer-negative-index	Prefer negative index over length minus index for `splice`.	fix	450	462		end	12	32
+tests/rules/unicorn/prefer-negative-index/cases.ts:13:12	unicorn/prefer-negative-index	prefer-negative-index	Prefer negative index over length minus index for `slice`.	fix	515	527		end	13	61
+tests/rules/unicorn/prefer-negative-index/cases.ts:14:12	unicorn/prefer-negative-index	prefer-negative-index	Prefer negative index over length minus index for `slice`.	fix	566	578		end	14	51
+tests/rules/unicorn/prefer-negative-index/cases.ts:15:12	unicorn/prefer-negative-index	prefer-negative-index	Prefer negative index over length minus index for `slice`.	fix	616	628		end	15	48
+tests/rules/unicorn/prefer-negative-index/cases.ts:16:13	unicorn/prefer-negative-index	prefer-negative-index	Prefer negative index over length minus index for `slice`.	fix	657	671		end	16	46
+tests/rules/unicorn/prefer-negative-index/cases.ts:17:13	unicorn/prefer-negative-index	prefer-negative-index	Prefer negative index over length minus index for `at`.	fix	701	717		end	17	41

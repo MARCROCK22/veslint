@@ -301,6 +301,18 @@ const rule_option_schemas = {
 	'unicorn/prefer-math-min-max':                                     '{"type":"array","minItems":0,"maxItems":0}'
 	'unicorn/prefer-modern-math-apis':                                 '{"type":"array","minItems":0,"maxItems":0}'
 	'unicorn/prefer-native-coercion-functions':                        '{"type":"array","minItems":0,"maxItems":0}'
+	'unicorn/no-array-callback-reference':                             '{"type":"array","minItems":0,"maxItems":0}'
+	'unicorn/no-array-for-each':                                       '{"type":"array","minItems":0,"maxItems":0}'
+	'unicorn/no-array-method-this-argument':                           '{"type":"array","minItems":0,"maxItems":0}'
+	'unicorn/no-array-reverse':                                        '{"type":"array","items":[{"type":"object","additionalProperties":false,"properties":{"allowExpressionStatement":{"type":"boolean"}}}],"minItems":0,"maxItems":1}'
+	'unicorn/no-array-sort':                                           '{"type":"array","items":[{"type":"object","additionalProperties":false,"properties":{"allowExpressionStatement":{"type":"boolean"}}}],"minItems":0,"maxItems":1}'
+	'unicorn/no-new-array':                                            '{"type":"array","minItems":0,"maxItems":0}'
+	'unicorn/prefer-array-flat':                                       '{"type":"array","items":[{"type":"object","additionalProperties":false,"properties":{"functions":{"type":"array","uniqueItems":true,"description":"Additional functions to check."}}}],"minItems":0,"maxItems":1}'
+	'unicorn/prefer-array-flat-map':                                   '{"type":"array","minItems":0,"maxItems":0}'
+	'unicorn/prefer-array-index-of':                                   '{"type":"array","minItems":0,"maxItems":0}'
+	'unicorn/prefer-array-some':                                       '{"type":"array","minItems":0,"maxItems":0}'
+	'unicorn/require-array-join-separator':                            '{"type":"array","minItems":0,"maxItems":0}'
+	'unicorn/prefer-negative-index':                                   '{"type":"array","minItems":0,"maxItems":0}'
 }
 
 // eslint_rule_default_options are the meta.defaultOptions of the rules of ESLint and of

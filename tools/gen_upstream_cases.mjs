@@ -416,6 +416,11 @@ Bun.plugin({
       contents: `export * from ${JSON.stringify(path.join(ROOT, 'tools/upstream/unicorn-test.mjs'))};`,
       loader: 'js',
     }));
+    // test/utils/parsers.js: the parsers by name only (the stub's), as test.js gives them.
+    build.onLoad({ filter: /[\\/]unicorn[\\/]test[\\/]utils[\\/]parsers\.js$/ }, () => ({
+      contents: `import { parsers } from ${JSON.stringify(path.join(ROOT, 'tools/upstream/unicorn-test.mjs'))}; export default parsers;`,
+      loader: 'js',
+    }));
   },
 });
 

@@ -1,0 +1,8 @@
+tests/rules/unicorn/prefer-array-index-of/cases.ts:6:17	unicorn/prefer-array-index-of	prefer-indexOf-over-findIndex/error	Use `.indexOf()` instead of `.findIndex()` when looking for the index of an item.
+tests/rules/unicorn/prefer-array-index-of/cases.ts:7:17	unicorn/prefer-array-index-of	prefer-indexOf-over-findIndex/error	Use `.indexOf()` instead of `.findIndex()` when looking for the index of an item.
+tests/rules/unicorn/prefer-array-index-of/cases.ts:8:17	unicorn/prefer-array-index-of	prefer-lastIndexOf-over-findLastIndex/error	Use `.lastIndexOf()` instead of `.findLastIndex() when looking for the index of an item.`
+tests/rules/unicorn/prefer-array-index-of/cases.ts:9:17	unicorn/prefer-array-index-of	prefer-indexOf-over-findIndex/error	Use `.indexOf()` instead of `.findIndex()` when looking for the index of an item.
+tests/rules/unicorn/prefer-array-index-of/cases.ts:10:17	unicorn/prefer-array-index-of	prefer-indexOf-over-findIndex/error	Use `.indexOf()` instead of `.findIndex()` when looking for the index of an item.
+tests/rules/unicorn/prefer-array-index-of/cases.ts:11:17	unicorn/prefer-array-index-of	prefer-indexOf-over-findIndex/error	Use `.indexOf()` instead of `.findIndex()` when looking for the index of an item.
+tests/rules/unicorn/prefer-array-index-of/cases.ts:12:17	unicorn/prefer-array-index-of	prefer-indexOf-over-findIndex/error	Use `.indexOf()` instead of `.findIndex()` when looking for the index of an item.
+tests/rules/unicorn/prefer-array-index-of/cases.ts:19:17	unicorn/prefer-array-index-of	prefer-indexOf-over-findIndex/error	Use `.indexOf()` instead of `.findIndex()` when looking for the index of an item.

@@ -1,0 +1,15 @@
+tests/rules/unicorn/prefer-array-flat/cases.ts:7:12	unicorn/prefer-array-flat	prefer-array-flat	Prefer `Array#flat()` over `Array#flatMap()` to flatten an array.	fix	274	296	nested.flat()	end	7	34
+tests/rules/unicorn/prefer-array-flat/cases.ts:8:12	unicorn/prefer-array-flat	prefer-array-flat	Prefer `Array#flat()` over `Array#flatMap()` to flatten an array.	fix	309	332	nested?.flat()	end	8	35
+tests/rules/unicorn/prefer-array-flat/cases.ts:9:12	unicorn/prefer-array-flat	prefer-array-flat	Prefer `Array#flat()` over `Array#reduce()` to flatten an array.	fix	345	385	nested.flat()	end	9	52
+tests/rules/unicorn/prefer-array-flat/cases.ts:10:12	unicorn/prefer-array-flat	prefer-array-flat	Prefer `Array#flat()` over `Array#reduce()` to flatten an array.	fix	398	439	nested.flat()	end	10	53
+tests/rules/unicorn/prefer-array-flat/cases.ts:11:12	unicorn/prefer-array-flat	prefer-array-flat	Prefer `Array#flat()` over `[].concat()` to flatten an array.	fix	452	468	[maybe].flat()	end	11	28
+tests/rules/unicorn/prefer-array-flat/cases.ts:12:12	unicorn/prefer-array-flat	prefer-array-flat	Prefer `Array#flat()` over `[].concat()` to flatten an array.	fix	481	501	nested.flat()	end	12	32
+tests/rules/unicorn/prefer-array-flat/cases.ts:13:12	unicorn/prefer-array-flat	prefer-array-flat	Prefer `Array#flat()` over `Array.prototype.concat()` to flatten an array.	fix	514	541	nested.flat()	end	13	39
+tests/rules/unicorn/prefer-array-flat/cases.ts:14:12	unicorn/prefer-array-flat	prefer-array-flat	Prefer `Array#flat()` over `Array.prototype.concat()` to flatten an array.	fix	554	592	[maybe].flat()	end	14	50
+tests/rules/unicorn/prefer-array-flat/cases.ts:15:12	unicorn/prefer-array-flat	prefer-array-flat	Prefer `Array#flat()` over `Array.prototype.concat()` to flatten an array.	fix	605	647	nested.flat()	end	15	54
+tests/rules/unicorn/prefer-array-flat/cases.ts:16:13	unicorn/prefer-array-flat	prefer-array-flat	Prefer `Array#flat()` over `_.flatten()` to flatten an array.	fix	661	678	nested.flat()	end	16	30
+tests/rules/unicorn/prefer-array-flat/cases.ts:17:13	unicorn/prefer-array-flat	prefer-array-flat	Prefer `Array#flat()` over `[].concat()` to flatten an array.	end	17	40
+tests/rules/unicorn/prefer-array-flat/cases.ts:18:13	unicorn/prefer-array-flat	prefer-array-flat	Prefer `Array#flat()` over `[].concat()` to flatten an array.	end	18	41
+tests/rules/unicorn/prefer-array-flat/cases.ts:20:9	unicorn/prefer-array-flat	prefer-array-flat	Prefer `Array#flat()` over `[].concat()` to flatten an array.	fix	786	802	 [maybe].flat()	end	20	25
+tests/rules/unicorn/prefer-array-flat/functions/cases.ts:6:12	unicorn/prefer-array-flat	prefer-array-flat	Prefer `Array#flat()` over `flattenDeep()` to flatten an array.	fix	227	246	nested.flat()	end	6	31
+tests/rules/unicorn/prefer-array-flat/functions/cases.ts:7:12	unicorn/prefer-array-flat	prefer-array-flat	Prefer `Array#flat()` over `utils.flat()` to flatten an array.	fix	259	277	nested.flat()	end	7	30

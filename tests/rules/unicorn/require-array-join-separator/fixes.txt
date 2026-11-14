@@ -1,0 +1,6 @@
+tests/rules/unicorn/require-array-join-separator/cases.ts:5:21	unicorn/require-array-join-separator	require-array-join-separator	Missing the separator argument.	fix	165	165	','	end	5	23
+tests/rules/unicorn/require-array-join-separator/cases.ts:6:29	unicorn/require-array-join-separator	require-array-join-separator	Missing the separator argument.	fix	196	196	, ','	end	6	30
+tests/rules/unicorn/require-array-join-separator/cases.ts:7:30	unicorn/require-array-join-separator	require-array-join-separator	Missing the separator argument.	fix	228	228	 ',',	end	7	31
+tests/rules/unicorn/require-array-join-separator/cases.ts:8:43	unicorn/require-array-join-separator	require-array-join-separator	Missing the separator argument.	fix	274	274	 ',',	end	8	45
+tests/rules/unicorn/require-array-join-separator/cases.ts:9:22	unicorn/require-array-join-separator	require-array-join-separator	Missing the separator argument.	fix	299	299	','	end	9	24
+tests/rules/unicorn/require-array-join-separator/cases.ts:10:21	unicorn/require-array-join-separator	require-array-join-separator	Missing the separator argument.	fix	337	337	','	end	12	2

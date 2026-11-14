@@ -86,7 +86,7 @@ Directive comments work as in ESLint 10: `eslint-disable`, `eslint-enable`, `esl
 
 ## Rules
 
-veslint has **296 rules**, each with all its options, fixes and suggestions:
+veslint has **308 rules**, each with all its options, fixes and suggestions:
 
 <details>
 <summary><b>ESLint 10.6.0</b>: 134 rules</summary>
@@ -103,9 +103,9 @@ veslint has **296 rules**, each with all its options, fixes and suggestions:
 </details>
 
 <details>
-<summary><b>eslint-plugin-unicorn 64.0.0</b>: 42 rules</summary>
+<summary><b>eslint-plugin-unicorn 64.0.0</b>: 54 rules</summary>
 
-`unicorn/consistent-assert`, `unicorn/consistent-date-clone`, `unicorn/consistent-template-literal-escape`, `unicorn/custom-error-definition`, `unicorn/error-message`, `unicorn/escape-case`, `unicorn/new-for-builtins`, `unicorn/no-console-spaces`, `unicorn/no-hex-escape`, `unicorn/no-instanceof-builtins`, `unicorn/no-lonely-if`, `unicorn/no-negated-condition`, `unicorn/no-negation-in-equality-check`, `unicorn/no-nested-ternary`, `unicorn/no-new-buffer`, `unicorn/no-typeof-undefined`, `unicorn/no-useless-error-capture-stack-trace`, `unicorn/no-useless-switch-case`, `unicorn/no-zero-fractions`, `unicorn/prefer-bigint-literals`, `unicorn/prefer-code-point`, `unicorn/prefer-date-now`, `unicorn/prefer-logical-operator-over-ternary`, `unicorn/prefer-math-min-max`, `unicorn/prefer-math-trunc`, `unicorn/prefer-modern-math-apis`, `unicorn/prefer-native-coercion-functions`, `unicorn/prefer-number-properties`, `unicorn/prefer-simple-condition-first`, `unicorn/prefer-string-raw`, `unicorn/prefer-string-replace-all`, `unicorn/prefer-string-slice`, `unicorn/prefer-string-trim-start-end`, `unicorn/prefer-structured-clone`, `unicorn/prefer-switch`, `unicorn/prefer-ternary`, `unicorn/prefer-type-error`, `unicorn/require-number-to-fixed-digits-argument`, `unicorn/switch-case-braces`, `unicorn/switch-case-break-position`, `unicorn/text-encoding-identifier-case`, `unicorn/throw-new-error`
+`unicorn/consistent-assert`, `unicorn/consistent-date-clone`, `unicorn/consistent-template-literal-escape`, `unicorn/custom-error-definition`, `unicorn/error-message`, `unicorn/escape-case`, `unicorn/new-for-builtins`, `unicorn/no-array-callback-reference`, `unicorn/no-array-for-each`, `unicorn/no-array-method-this-argument`, `unicorn/no-array-reverse`, `unicorn/no-array-sort`, `unicorn/no-console-spaces`, `unicorn/no-hex-escape`, `unicorn/no-instanceof-builtins`, `unicorn/no-lonely-if`, `unicorn/no-negated-condition`, `unicorn/no-negation-in-equality-check`, `unicorn/no-nested-ternary`, `unicorn/no-new-array`, `unicorn/no-new-buffer`, `unicorn/no-typeof-undefined`, `unicorn/no-useless-error-capture-stack-trace`, `unicorn/no-useless-switch-case`, `unicorn/no-zero-fractions`, `unicorn/prefer-array-flat`, `unicorn/prefer-array-flat-map`, `unicorn/prefer-array-index-of`, `unicorn/prefer-array-some`, `unicorn/prefer-bigint-literals`, `unicorn/prefer-code-point`, `unicorn/prefer-date-now`, `unicorn/prefer-logical-operator-over-ternary`, `unicorn/prefer-math-min-max`, `unicorn/prefer-math-trunc`, `unicorn/prefer-modern-math-apis`, `unicorn/prefer-native-coercion-functions`, `unicorn/prefer-negative-index`, `unicorn/prefer-number-properties`, `unicorn/prefer-simple-condition-first`, `unicorn/prefer-string-raw`, `unicorn/prefer-string-replace-all`, `unicorn/prefer-string-slice`, `unicorn/prefer-string-trim-start-end`, `unicorn/prefer-structured-clone`, `unicorn/prefer-switch`, `unicorn/prefer-ternary`, `unicorn/prefer-type-error`, `unicorn/require-array-join-separator`, `unicorn/require-number-to-fixed-digits-argument`, `unicorn/switch-case-braces`, `unicorn/switch-case-break-position`, `unicorn/text-encoding-identifier-case`, `unicorn/throw-new-error`
 
 </details>
 

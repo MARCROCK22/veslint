@@ -1,0 +1,8 @@
+tests/rules/unicorn/no-array-reverse/cases.ts:4:17	unicorn/no-array-reverse	error	Use `Array#toReversed()` instead of `Array#reverse()`.
+tests/rules/unicorn/no-array-reverse/cases.ts:5:22	unicorn/no-array-reverse	error	Use `Array#toReversed()` instead of `Array#reverse()`.
+tests/rules/unicorn/no-array-reverse/cases.ts:6:18	unicorn/no-array-reverse	error	Use `Array#toReversed()` instead of `Array#reverse()`.
+tests/rules/unicorn/no-array-reverse/cases.ts:7:24	unicorn/no-array-reverse	error	Use `Array#toReversed()` instead of `Array#reverse()`.
+tests/rules/unicorn/no-array-reverse/cases.ts:9:15	unicorn/no-array-reverse	error	Use `Array#toReversed()` instead of `Array#reverse()`.
+tests/rules/unicorn/no-array-reverse/statement/cases.ts:4:6	unicorn/no-array-reverse	error	Use `Array#toReversed()` instead of `Array#reverse()`.
+tests/rules/unicorn/no-array-reverse/statement/cases.ts:5:7	unicorn/no-array-reverse	error	Use `Array#toReversed()` instead of `Array#reverse()`.
+tests/rules/unicorn/no-array-reverse/statement/cases.ts:6:11	unicorn/no-array-reverse	error	Use `Array#toReversed()` instead of `Array#reverse()`.

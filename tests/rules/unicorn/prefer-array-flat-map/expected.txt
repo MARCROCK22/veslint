@@ -1,0 +1,5 @@
+tests/rules/unicorn/prefer-array-flat-map/cases.ts:5:17	unicorn/prefer-array-flat-map	prefer-array-flat-map	Prefer `.flatMap(…)` over `.map(…).flat()`.
+tests/rules/unicorn/prefer-array-flat-map/cases.ts:6:17	unicorn/prefer-array-flat-map	prefer-array-flat-map	Prefer `.flatMap(…)` over `.map(…).flat()`.
+tests/rules/unicorn/prefer-array-flat-map/cases.ts:7:18	unicorn/prefer-array-flat-map	prefer-array-flat-map	Prefer `.flatMap(…)` over `.map(…).flat()`.
+tests/rules/unicorn/prefer-array-flat-map/cases.ts:8:18	unicorn/prefer-array-flat-map	prefer-array-flat-map	Prefer `.flatMap(…)` over `.map(…).flat()`.
+tests/rules/unicorn/prefer-array-flat-map/cases.ts:10:4	unicorn/prefer-array-flat-map	prefer-array-flat-map	Prefer `.flatMap(…)` over `.map(…).flat()`.
