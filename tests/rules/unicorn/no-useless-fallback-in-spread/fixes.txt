@@ -1,0 +1,9 @@
+tests/rules/unicorn/no-useless-fallback-in-spread/cases.ts:5:25	unicorn/no-useless-fallback-in-spread	no-useless-fallback-in-spread	The empty object is useless.	fix	121	132	foo	end	5	27
+tests/rules/unicorn/no-useless-fallback-in-spread/cases.ts:6:25	unicorn/no-useless-fallback-in-spread	no-useless-fallback-in-spread	The empty object is useless.	fix	152	163	foo	end	6	27
+tests/rules/unicorn/no-useless-fallback-in-spread/cases.ts:7:33	unicorn/no-useless-fallback-in-spread	no-useless-fallback-in-spread	The empty object is useless.	fix	189	202	bar()	end	7	35
+tests/rules/unicorn/no-useless-fallback-in-spread/cases.ts:8:27	unicorn/no-useless-fallback-in-spread	no-useless-fallback-in-spread	The empty object is useless.	fix	228	241	(foo)	end	8	29
+tests/rules/unicorn/no-useless-fallback-in-spread/cases.ts:9:30	unicorn/no-useless-fallback-in-spread	no-useless-fallback-in-spread	The empty object is useless.	fix	261	277	(0, foo)	end	9	32
+tests/rules/unicorn/no-useless-fallback-in-spread/cases.ts:10:26	unicorn/no-useless-fallback-in-spread	no-useless-fallback-in-spread	The empty object is useless.	fix	297	310	foo	end	10	28
+tests/rules/unicorn/no-useless-fallback-in-spread/cases.ts:11:24	unicorn/no-useless-fallback-in-spread	no-useless-fallback-in-spread	The empty object is useless.	fix	333	339		end	11	26
+tests/rules/unicorn/no-useless-fallback-in-spread/cases.ts:14:33	unicorn/no-useless-fallback-in-spread	no-useless-fallback-in-spread	The empty object is useless.	end	14	35
+tests/rules/unicorn/no-useless-fallback-in-spread/cases.ts:15:25	unicorn/no-useless-fallback-in-spread	no-useless-fallback-in-spread	The empty object is useless.	end	15	34
