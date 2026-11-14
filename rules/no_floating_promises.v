@@ -5,7 +5,7 @@ import time
 import tsgo { TypeResponse }
 import treesitter { first_named_child, has_child_kind, named_children, node_end, node_field, node_kind, node_start, nodes_of_kind, position_of }
 
-// Port of the `no-floating-promises` rule of typescript-eslint 8.62.0, with all its options and its
+// Port of the `no-floating-promises` rule of typescript-eslint 8.72.2, with all its options and its
 // `floatingFixVoid` and `floatingFixAwait` suggestions.
 // Limits of the port: internals.md, "Rules" section.
 
@@ -143,14 +143,28 @@ fn (mut c Checker) lint_no_floating_promises(root C.TSNode, abs_path string, mut
 	mut sw := time.new_stopwatch()
 	o := nfp_options(c.rule_options(no_floating_promises))!
 	statements := c.nodes_of_kind(root, c'expression_statement')
-	mut wanted := []C.TSNode{}
+	// ArrowFunctionExpression: the body of an arrow function that is a unary expression (`() =>
+	// void p`) is checked as the expression of a statement, without the ignoreIIFE exception.
+	mut bodies := []C.TSNode{}
+	for arrow in c.nodes_of_kind(root, c'arrow_function') {
+		body := node_field(arrow, 'body') or { continue }
+		inner := unwrap_parens(body)
+		if node_kind(inner) == 'unary_expression' {
+			bodies << inner
+		}
+	}
+	mut checked := bodies.clone()
 	for stmt in statements {
 		if expr := first_named_child(stmt) {
-			c.unhandled_nodes(expr, 0, o.ignore_void, mut wanted)
-			if o.safe_calls.len > 0 {
-				if callee := nfp_statement_callee(expr) {
-					wanted << callee
-				}
+			checked << expr
+		}
+	}
+	mut wanted := []C.TSNode{}
+	for expr in checked {
+		c.unhandled_nodes(expr, 0, o.ignore_void, mut wanted)
+		if o.safe_calls.len > 0 {
+			if callee := nfp_statement_callee(expr) {
+				wanted << callee
 			}
 		}
 	}
@@ -163,40 +177,49 @@ fn (mut c Checker) lint_no_floating_promises(root C.TSNode, abs_path string, mut
 		if o.ignore_iife && nfp_is_async_iife(expr) {
 			continue
 		}
-		if o.safe_calls.len > 0 && c.nfp_known_safe_call(expr, o)! {
-			continue
-		}
-		result := c.is_unhandled(expr, false, 0, o)!
-		if !result.unhandled {
-			continue
-		}
-		message_id := if result.promise_array {
-			'floatingPromiseArray'
-		} else if result.non_function_handler {
-			'floatingUselessRejectionHandler'
-		} else {
-			'floating'
-		} + if o.ignore_void { 'Void' } else { '' }
-		mut suggestions := []Suggestion{}
-		if !result.promise_array {
-			if o.ignore_void {
-				void_fixes := c.nfp_prefix_operator(stmt, expr, 'void')
-				_, fix_void := c.suggestion('floatingFixVoid', map[string]string{}, void_fixes)!
-				suggestions << fix_void
-			}
-			await_fixes := c.nfp_add_await(stmt, expr)
-			_, fix_await := c.suggestion('floatingFixAwait', map[string]string{}, await_fixes)!
-			suggestions << fix_await
-		}
-		findings << Finding{
-			stmt:        position_of(stmt)
-			message_id:  message_id
-			suggestions: suggestions
-		}
+		c.nfp_check_node(stmt, expr, o, mut findings)!
+	}
+	for body in bodies {
+		c.nfp_check_node(body, body, o, mut findings)!
 	}
 	stats.eval_ms += ms(sw.elapsed())
-	stats.checked += statements.len
+	stats.checked += statements.len + bodies.len
 	return findings
+}
+
+// nfp_check_node ports checkNode: `stmt` is the node reported (the statement, or the body of an
+// arrow function) and `expr` the expression in it.
+fn (mut c Checker) nfp_check_node(stmt C.TSNode, expr C.TSNode, o NfpOptions, mut findings []Finding) ! {
+	if o.safe_calls.len > 0 && c.nfp_known_safe_call(expr, o)! {
+		return
+	}
+	result := c.is_unhandled(expr, false, 0, o)!
+	if !result.unhandled {
+		return
+	}
+	message_id := if result.promise_array {
+		'floatingPromiseArray'
+	} else if result.non_function_handler {
+		'floatingUselessRejectionHandler'
+	} else {
+		'floating'
+	} + if o.ignore_void { 'Void' } else { '' }
+	mut suggestions := []Suggestion{}
+	if !result.promise_array {
+		if o.ignore_void {
+			void_fixes := c.nfp_prefix_operator(stmt, expr, 'void')
+			_, fix_void := c.suggestion('floatingFixVoid', map[string]string{}, void_fixes)!
+			suggestions << fix_void
+		}
+		await_fixes := c.nfp_add_await(stmt, expr)
+		_, fix_await := c.suggestion('floatingFixAwait', map[string]string{}, await_fixes)!
+		suggestions << fix_await
+	}
+	findings << Finding{
+		stmt:        position_of(stmt)
+		message_id:  message_id
+		suggestions: suggestions
+	}
 }
 
 // nfp_prefix_operator ports the fixer of `floatingFixVoid` (and the general case of addAwait): the

@@ -114,3 +114,8 @@ void [WithPrivates, stringCases, tagFn];
 // The body of an arrow that starts with `{` is a block: `cb:` is a label.
 const arrowWithLabel = () => { cb: task() };
 void arrowWithLabel;
+
+// typescript-eslint 8.72: the body of an arrow function that is a unary expression counts as a
+// statement; with ignoreVoid `void` handles it, and not other operators.
+const unaryArrows = [() => void task(), () => -aPromise, () => typeof task(), () => !task(), () => void promises];
+void unaryArrows;

@@ -186,3 +186,25 @@ declare global {
 
 export { Generic, Overloads, WithMethod, arrow, conditional, deep, destructured, genericFunction, initialized, logical, method, named, notInCall, object, parameters, shadowsGlobals, shadowsInFunction, typed, usesShape, mergedInside, withThis, useAllowed, beforeFunction, enums, inTest, wrapped, value };
 export type { Callback, Constructor, Signatures, Shadow, External, ValueImport, laterType };
+// typescript-eslint 8.72: an enum member named like an enum of the upper scope gets noEnumShadow.
+enum Shadowed {
+  X,
+}
+enum Shadowing {
+  Shadowed = 1,
+  Y = Shadowed,
+}
+namespace Merged {
+  export const a = 1;
+}
+enum Merged {
+  B = 2,
+}
+enum Other {
+  Merged = 3,
+}
+function inFunction() {
+  const Shadowed = 1;
+  return Shadowed;
+}
+export { Shadowing, Other, inFunction };

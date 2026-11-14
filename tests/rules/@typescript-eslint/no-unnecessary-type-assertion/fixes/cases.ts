@@ -106,3 +106,18 @@ void [n1, n2, n3, n4, n5, n6, n7, n8, n9, n10, n11, n12, target];
 void [a1, a2, a3, a4, a5, a6, a7, a8, a9, a10, a11, a12, a13, a14];
 void [t1, t2, t3, t4, t5, t6, t7, t8, t9, t10, t11, t12, t13, t14, c1, c2];
 void [d1, d2, d3, d4, d5, d6, d7, d8, d9, d10, d11, d12, d13, résumé];
+// typescript-eslint 8.72: `<T>x` gets parentheses when its operand starts with `{`, `class` or
+// `function` at the start of a statement, or with `{` at the start of an arrow function body,
+// through the expressions that start there.
+declare const anObject: { a: number };
+<{ a: number }>{ a: 1 };
+<{ a: number }>{ a: 1 }.a;
+<typeof anObject>anObject;
+<() => void>function () {};
+<{ name: string }>function () {}.name;
+const f1 = () => <{ a: number }>{ a: 1 };
+const f2 = () => <{ a: number }>{ a: 1 }.a;
+const f3 = () => (<{ a: number }>{ a: 1 });
+const f4 = () => <() => void>function () {};
+const f5 = () => <{ a: number }>{ a: 1 }, f6 = 1;
+void [f1, f2, f3, f4, f5, f6];

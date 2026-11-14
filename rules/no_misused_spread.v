@@ -5,7 +5,7 @@ import time
 import tsgo { TypeResponse, handle_kind }
 import treesitter { named_children, node_kind, node_parent, nodes_of_kind, position_of }
 
-// Port of the `no-misused-spread` rule of typescript-eslint 8.62.0, with its `allow` option (bare
+// Port of the `no-misused-spread` rule of typescript-eslint 8.72.2, with its `allow` option (bare
 // names and `from: "lib"` specifiers) and its `addAwait` and `replaceMapSpreadInObject` suggestions.
 
 const nms_messages = {
@@ -24,8 +24,12 @@ const nms_messages = {
 // ObjectFlags.InstantiationExpressionType of TypeScript 7.1.0-beta.
 const nms_instantiation_expression_type = u32(16777216)
 
-// The global symbols of isBuiltinSymbolLike(…, ['Map', 'ReadonlyMap', 'WeakMap']).
+// The global symbols of isBuiltinSymbolLike(…, ['Map', 'ReadonlyMap', 'WeakMap']) (isMap).
 const nms_map_names = ['Map', 'ReadonlyMap', 'WeakMap']
+
+// Those of isIterableMap (since typescript-eslint 8.72, the suggestion of a map spread): a
+// WeakMap has no entries to spread.
+const nms_iterable_map_names = ['Map', 'ReadonlyMap']
 
 struct NmsOptions {
 	allow []TypeSpecifier
@@ -123,7 +127,7 @@ fn (mut c Checker) lint_no_misused_spread(root C.TSNode, abs_path string, mut st
 			_, suggestion := c.suggestion('addAwait', map[string]string{}, nms_add_await(spread.argument))!
 			suggestions << suggestion
 		} else if message_id == 'noMapSpreadInObject' {
-			suggestions << c.nms_map_suggestions(spread, constrained, nms_map_names)!
+			suggestions << c.nms_map_suggestions(spread, constrained, nms_iterable_map_names)!
 		}
 		findings << Finding{
 			stmt:        position_of(spread.node)

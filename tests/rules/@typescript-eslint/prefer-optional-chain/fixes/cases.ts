@@ -116,3 +116,17 @@ async function awaitedBase() {
 
 // Non-ASCII text on the same line.
 const ñ = '😀'; und && und.bar; const 日本 = (und || {}).bar; const 語 = (und && und.bar && cond) && ñ;
+// typescript-eslint 8.72: a chain with a last operand is only a suggestion; in an OR chain with a
+// `=== undefined` guard a lone `=== null` ends the chain; a generic or void last value may be
+// undefined.
+declare const g1: { a?: { b: number | null } } | undefined;
+const l1 = g1 && g1.a && g1.a.b !== undefined;
+const l2 = g1 === undefined || g1.a === null;
+const l3 = g1 == null || g1.a === undefined || g1.a.b === null;
+const l4 = g1 === null || g1 === undefined || g1.a === null;
+function genericLast<T>(x: { y?: { z: T } }) {
+  return x.y && x.y.z !== undefined;
+}
+declare const v1: { y?: { z: void } };
+const l5 = v1.y && v1.y.z !== undefined;
+void [l1, l2, l3, l4, l5, genericLast];

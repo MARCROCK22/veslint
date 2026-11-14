@@ -115,6 +115,24 @@ for (const file of files) {
   const given = config.languageOptions?.parserOptions ?? {};
   const service = given.projectService || (given.project && given.projectService !== false && process.env.TYPESCRIPT_ESLINT_PROJECT_SERVICE === 'true');
   const parserOptions = service ? { projectService: true } : given.project ? { project: projectList(given) } : given.programs ? { project: true } : {};
+  if (service) {
+    // What decides whether a single run takes a file from a Program made for its tsconfig
+    // instead of the project service (useSingleRunProgramForProjectService of typescript-estree).
+    let root = cwd;
+    if (typeof given.tsconfigRootDir === 'string') {
+      root = path.resolve(given.tsconfigRootDir);
+    } else {
+      try {
+        root = loadEstree()?.getInferredTSConfigRootDir?.() ?? cwd;
+      } catch {}
+    }
+    parserOptions.tsconfigRootDir = root;
+    const allowDefaultProject = typeof given.projectService === 'object' ? given.projectService?.allowDefaultProject : undefined;
+    if (allowDefaultProject?.length) parserOptions.projectService = { allowDefaultProject };
+    if (given.extraFileExtensions?.length) parserOptions.extraFileExtensions = given.extraFileExtensions;
+    if (given.programs != null) parserOptions.programs = true;
+    if (given.disallowAutomaticSingleRunInference) parserOptions.disallowAutomaticSingleRunInference = true;
+  }
   for (const name of ['sourceType', 'lib', 'jsxPragma', 'jsxFragmentName', 'isolatedDeclarations']) {
     if (given[name] !== undefined) parserOptions[name] = given[name];
   }
@@ -174,6 +192,10 @@ struct ConfigEntry {
 	// The parser gets the types from the programs of `parserOptions.project`, not from the project
 	// service: the current directory of such a program is the one ESLint runs in.
 	project_programs bool
+	// The parser gets the types from the project service, which in a single run leaves a file to a
+	// Program made for its tsconfig (service_program_root is then the tsconfigRootDir, where the
+	// search for that tsconfig stops); empty when it never does (see single_run_program_root).
+	service_program_root string
 	// The tsconfig files `parserOptions.project` names (absolute paths), of which a file takes the
 	// first one that has it; empty for the closest tsconfig of each file.
 	projects []string
@@ -204,6 +226,153 @@ fn uses_project_programs(config map[string]json2.Any) bool {
 		return false
 	}
 	return js_truthy(options['project'] or { json2.Any(false) }) || 'programs' in options
+}
+
+// single_run_program_root ports the options part of when typescript-estree takes a file of the
+// project service from a Program made for its tsconfig in a single run
+// (useSingleRunProgramForProjectService and inferSingleRun of typescript-estree 8.72.2): with
+// the project service, no `allowDefaultProject`, no `extraFileExtensions` and no `programs`,
+// unless `TSESTREE_SINGLE_RUN` is "false", or `disallowAutomaticSingleRunInference`
+// without `TSESTREE_SINGLE_RUN` "true" (is_single_run decides the rest). It gives the
+// tsconfigRootDir (the resolver adds it to the parser options, and a saved resolved JSON has it
+// relative to `base`, its directory; the current directory without it), or '' when the project
+// service is used.
+fn single_run_program_root(config map[string]json2.Any, base string) string {
+	mut options := map[string]json2.Any{}
+	if language := config['languageOptions'] {
+		if language is map[string]json2.Any {
+			if parser := language.as_map()['parserOptions'] {
+				if parser is map[string]json2.Any {
+					options = parser.as_map().clone()
+				}
+			}
+		}
+	}
+	// Without `projectService` veslint still gets the types as the project service does (only
+	// `project` makes it use the programs of the tsconfig files: project_programs).
+	if service := options['projectService'] {
+		if service is map[string]json2.Any {
+			if listed := service.as_map()['allowDefaultProject'] {
+				if listed is []json2.Any && listed.len > 0 {
+					return ''
+				}
+			}
+		}
+	}
+	if extensions := options['extraFileExtensions'] {
+		if extensions is []json2.Any && extensions.len > 0 {
+			return ''
+		}
+	}
+	if programs := options['programs'] {
+		if programs !is json2.Null {
+			return ''
+		}
+	}
+	env := os.getenv('TSESTREE_SINGLE_RUN')
+	if env == 'false' || (env != 'true'
+		&& js_truthy(options['disallowAutomaticSingleRunInference'] or { json2.Any(false) })) {
+		return ''
+	}
+	if root := options['tsconfigRootDir'] {
+		if root is string {
+			return if os.is_abs_path(root) { root } else { os.abs_path(os.join_path(base, root)) }
+		}
+	}
+	return os.getwd()
+}
+
+// is_single_run ports the rest of inferSingleRun: `TSESTREE_SINGLE_RUN` "true", or the eslint
+// command (which veslint stands for) without --fix.
+fn is_single_run(fix bool) bool {
+	return os.getenv('TSESTREE_SINGLE_RUN') == 'true' || !fix
+}
+
+// single_run_tsconfig ports the rest of useSingleRunProgramForProjectService: the tsconfig.json or
+// jsconfig.json closest to the file (getProjectConfigFiles, which looks up to `root`, the
+// tsconfigRootDir), when it has no project references (the raw file: they are not inherited
+// through `extends`); '' when the project service lints the file.
+fn single_run_tsconfig(file string, root string) string {
+	mut directory := os.dir(file)
+	for {
+		for name in ['tsconfig.json', 'jsconfig.json'] {
+			candidate := os.join_path(directory, name)
+			if os.exists(candidate) {
+				if tsconfig_has_references(candidate) {
+					return ''
+				}
+				return candidate
+			}
+		}
+		parent := os.dir(directory)
+		if parent.len <= 1 || parent == directory || parent.len < root.len {
+			return ''
+		}
+		directory = parent
+	}
+	return ''
+}
+
+// tsconfig_has_references: the `references` of a tsconfig (JSON with comments and trailing
+// commas, as ts.readConfigFile reads it) are not empty.
+fn tsconfig_has_references(path string) bool {
+	text := os.read_file(path) or { return false }
+	parsed := json2.decode[json2.Any](strip_jsonc(text)) or { return false }
+	if parsed is map[string]json2.Any {
+		if references := parsed.as_map()['references'] {
+			return references is []json2.Any && references.len > 0
+		}
+	}
+	return false
+}
+
+// strip_jsonc removes the comments and the trailing commas of JSON with comments.
+fn strip_jsonc(text string) string {
+	mut out := []u8{cap: text.len}
+	mut i := 0
+	for i < text.len {
+		c := text[i]
+		if c == `"` {
+			start := i
+			i++
+			for i < text.len && text[i] != `"` {
+				if text[i] == `\\` {
+					i++
+				}
+				i++
+			}
+			i++
+			out << text[start..if i > text.len { text.len } else { i }].bytes()
+			continue
+		}
+		if c == `/` && i + 1 < text.len && text[i + 1] == `/` {
+			for i < text.len && text[i] != `\n` {
+				i++
+			}
+			continue
+		}
+		if c == `/` && i + 1 < text.len && text[i + 1] == `*` {
+			i += 2
+			for i + 1 < text.len && !(text[i] == `*` && text[i + 1] == `/`) {
+				i++
+			}
+			i += 2
+			continue
+		}
+		if c == `,` {
+			mut j := i + 1
+			for j < text.len && text[j] in [` `, `\t`, `\n`, `\r`] {
+				j++
+			}
+			if j < text.len && text[j] in [`}`, `]`] {
+				i++
+				continue
+			}
+		}
+		out << c
+		i++
+	}
+	return out.bytestr()
 }
 
 // named_projects_of reads the tsconfig files `parserOptions.project` names in a configuration: a
@@ -375,6 +544,7 @@ fn load_config_with(path string, files []string, lookup bool) !LoadedConfig {
 				language:             language_options(root.as_map())
 				plugins:              plugins
 				project_programs:     uses_project_programs(root.as_map())
+				service_program_root: single_run_program_root(root.as_map(), os.getwd())
 				projects:             named_projects_of(root.as_map(), tsconfig_root_dir(root.as_map()))
 				report_unused:        linter_severity(linter['reportUnusedDisableDirectives'] or {
 					json2.Any(i64(1))
@@ -448,6 +618,7 @@ fn loaded_from_resolved(text string, path string, base_dir string, files []strin
 		configs << ConfigEntry{
 			language:             language_options(config)
 			project_programs:     uses_project_programs(config)
+			service_program_root: single_run_program_root(config, base_dir)
 			projects:             named_projects_of(config, base_dir)
 			setup:                rule_setup(section, path)!
 			// ESLint's default for a flat configuration is "warn".
@@ -548,9 +719,27 @@ fn portable_projects(config json2.Any, base_dir string) json2.Any {
 	if parser !is map[string]json2.Any {
 		return config
 	}
-	project := parser.as_map()['project'] or { return config }
+	mut new_parser := parser.as_map().clone()
+	// The tsconfigRootDir the resolver adds for the project service, relative too.
+	if root := new_parser['tsconfigRootDir'] {
+		if root is string {
+			if root == base_dir {
+				new_parser['tsconfigRootDir'] = json2.Any('.')
+			} else if root.starts_with(base_dir + os.path_separator) {
+				new_parser['tsconfigRootDir'] = json2.Any(portable_relative(root[base_dir.len + 1..]))
+			}
+		}
+	}
+	project := new_parser['project'] or { json2.Any(json2.null) }
 	if project !is []json2.Any {
-		return config
+		if 'tsconfigRootDir' !in new_parser {
+			return config
+		}
+		mut new_language := language.as_map().clone()
+		new_language['parserOptions'] = json2.Any(new_parser)
+		mut new_config := config.as_map().clone()
+		new_config['languageOptions'] = json2.Any(new_language)
+		return json2.Any(new_config)
 	}
 	mut paths := []json2.Any{}
 	for item in project.as_array() {
@@ -561,7 +750,6 @@ fn portable_projects(config json2.Any, base_dir string) json2.Any {
 			path
 		})
 	}
-	mut new_parser := parser.as_map().clone()
 	new_parser['project'] = json2.Any(paths)
 	mut new_language := language.as_map().clone()
 	new_language['parserOptions'] = json2.Any(new_parser)

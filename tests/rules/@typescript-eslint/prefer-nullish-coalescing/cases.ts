@@ -143,3 +143,28 @@ if (!target) {
   target = 'x';
 }
 if (!target) (target = 'x');
+
+// typescript-eslint 8.72: a generic type may be `null` or `undefined` unless its constraint rules
+// that out, so a check of one of them alone is not fixable for it.
+function generics<T, U extends string, V extends string | null, K extends keyof W, W extends { a: string | null }>(
+  t: T | undefined,
+  u: U | undefined,
+  v: V | undefined,
+  k: W[K] | undefined,
+  n: NoInfer<U> | null,
+) {
+  const r1 = t !== undefined ? t : 'x';
+  const r2 = u !== undefined ? u : 'x';
+  const r3 = v !== undefined ? v : 'x';
+  const r4 = k !== undefined ? k : 'x';
+  const r5 = n !== null ? n : 'x';
+  const r6 = t != undefined ? t : 'x';
+  if (u === undefined) {
+    u = 'x' as U;
+  }
+  if (t === undefined) {
+    t = 1 as T;
+  }
+  return [r1, r2, r3, r4, r5, r6, t, u];
+}
+void generics;

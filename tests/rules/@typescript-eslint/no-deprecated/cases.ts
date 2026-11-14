@@ -213,3 +213,37 @@ class Accessors {
 const accessors = new Accessors();
 void accessors.v;
 accessors.v = 1;
+
+// typescript-eslint 8.72: the keys of an object literal are checked against its contextual type.
+interface Settings {
+  /** @deprecated Use `fresh`. */
+  old: string;
+  /** @deprecated */
+  1: string;
+  fresh: string;
+  /** @deprecated A method. */
+  run(): void;
+  /** @deprecated */
+  get accessor(): number;
+}
+declare const oldKey: 'old';
+declare const numberKey: 1;
+declare const someKey: string;
+const settings1: Settings = { old: '', 1: '', fresh: '', run() {}, accessor: 1 };
+const settings2: Settings = { [oldKey]: '', [numberKey]: '', ['fresh']: '', [someKey]: '', run: () => {}, accessor: 1 };
+const settings3: Partial<Settings> = { 'old': '', '1': '' };
+const settings4: Settings | undefined = { old: '', 1: '', fresh: '', run() {}, accessor: 1 };
+function returned(): Partial<Settings> {
+  return { old: '' };
+}
+declare function takeSettings(s: Partial<Settings>): void;
+takeSettings({ old: '', fresh: '' });
+const old = '';
+const settings5: Partial<Settings> = { old };
+const untyped = { old: '' };
+// The value of a shorthand property follows the chain of aliases of what it names.
+void { aliasedLocal, freshDeprecatedAlias, staleAgain, fresh };
+void [settings1, settings2, settings3, settings4, settings5, returned, untyped];
+// A circular re-export does not loop.
+import { looped } from './circular';
+void looped;

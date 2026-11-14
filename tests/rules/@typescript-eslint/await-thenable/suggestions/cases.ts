@@ -33,3 +33,26 @@ async function main() {
   void [sum, résumé];
 }
 void main;
+
+// typescript-eslint 8.72: the removal takes what follows `await` up to the next token or comment,
+// and an operand that would start an arrow function body or a statement with `{`, `class` or
+// `function` gets parentheses.
+declare const record: { a: number };
+async function wrapped() {
+  await   value;
+  await	/* kept */ value;
+  await {};
+  await { a: 1 }.a;
+  await class {};
+  await function () {}.name;
+  (await {}).toString();
+  const arrow = async () => await { a: 1 };
+  const arrowMember = async () => await {}.constructor;
+  const arrowParen = async () => (await {});
+  const arrowSequence = async () => await {}, other = 1;
+  const arrowNested = async () => await await {};
+  await (async () => {})() satisfies Promise<void> | undefined, await {} ?? 0;
+  await record;
+  void [arrow, arrowMember, arrowParen, arrowSequence, other, arrowNested];
+}
+void wrapped;

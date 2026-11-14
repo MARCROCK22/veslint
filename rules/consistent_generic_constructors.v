@@ -4,7 +4,7 @@ import json2
 import time
 import treesitter { has_child_kind, node_end, node_field, node_kind, node_parent, node_start }
 
-// Port of the `consistent-generic-constructors` rule of typescript-eslint 8.62.0, with its option
+// Port of the `consistent-generic-constructors` rule of typescript-eslint 8.72.2, with its option
 // ('constructor' or 'type-annotation') and its fixes. Like the original, it reads the parser
 // option `isolatedDeclarations` of the configuration.
 

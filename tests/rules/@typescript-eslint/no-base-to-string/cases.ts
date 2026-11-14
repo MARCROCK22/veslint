@@ -94,3 +94,17 @@ function generics<T, U extends { a: number }, V extends string>(t: T, u: U, v: V
   `${t} ${u} ${v}`;
   [u].join();
 }
+// typescript-eslint 8.72: a `String` declared in a scope around the call is not the built-in one
+// (findVariable).
+function outerString() {
+  const String = (value: unknown) => `${value as number}`;
+  function inner() {
+    return String(plain);
+  }
+  return [inner, () => String(plain)];
+}
+function ownString() {
+  const String = (value: unknown) => `${value as number}`;
+  return String(plain);
+}
+void [outerString, ownString];

@@ -423,6 +423,15 @@ tests/rules/@typescript-eslint/no-unused-vars/local/cases.ts:138:9	@typescript-e
 tests/rules/@typescript-eslint/no-unused-vars/local/cases.ts:143:19	@typescript-eslint/no-unused-vars	unusedVar	'Ambient' is defined but never used.	end	143	26
 tests/rules/@typescript-eslint/no-unused-vars/local/cases.ts:155:13	@typescript-eslint/no-unused-vars	unusedVar	'Hidden' is defined but never used.	end	155	19
 tests/rules/@typescript-eslint/no-unused-vars/local/cases.ts:166:7	@typescript-eslint/no-unused-vars	usedOnlyAsType	'inReturn' is assigned a value but only used as a type.	end	166	15
+tests/rules/@typescript-eslint/no-unused-vars/merged-exports/cases.ts:4:7	@typescript-eslint/no-unused-vars	unusedVar	'Merged' is assigned a value but never used.	end	4	13
+tests/rules/@typescript-eslint/no-unused-vars/merged-exports/cases.ts:8:7	@typescript-eslint/no-unused-vars	unusedVar	'MergedInterface' is assigned a value but never used.	end	8	22
+tests/rules/@typescript-eslint/no-unused-vars/merged-exports/cases.ts:12:7	@typescript-eslint/no-unused-vars	usedOnlyAsType	'Local' is assigned a value but only used as a type.	end	12	12
+tests/rules/@typescript-eslint/no-unused-vars/merged-exports/cases.ts:14:7	@typescript-eslint/no-unused-vars	usedOnlyAsType	'onlyAsType' is assigned a value but only used as a type.	end	14	17
+tests/rules/@typescript-eslint/no-unused-vars/merged-exports/cases.ts:25:19	@typescript-eslint/no-unused-vars	unusedVar	'a' is defined but never used.	end	25	20
+tests/rules/@typescript-eslint/no-unused-vars/merged-exports/cases.ts:25:30	@typescript-eslint/no-unused-vars	usedOnlyAsType	'b' is defined but only used as a type.	end	25	31
+tests/rules/@typescript-eslint/no-unused-vars/merged-exports/cases.ts:28:19	@typescript-eslint/no-unused-vars	unusedVar	'a' is defined but never used.	end	28	20
+tests/rules/@typescript-eslint/no-unused-vars/merged-exports/cases.ts:28:30	@typescript-eslint/no-unused-vars	usedOnlyAsType	'b' is defined but only used as a type.	end	28	31
+tests/rules/@typescript-eslint/no-unused-vars/merged-exports/cases.ts:31:5	@typescript-eslint/no-unused-vars	usedOnlyAsType	'typeOnlyLet' is assigned a value but only used as a type.	end	31	16
 tests/rules/@typescript-eslint/no-unused-vars/pattern-text/cases.ts:1:11	@typescript-eslint/no-unused-vars	unusedVar	'declaredGlobal' is defined but never used.	end	1	25
 tests/rules/@typescript-eslint/no-unused-vars/pattern-text/cases.ts:1:27	@typescript-eslint/no-unused-vars	unusedVar	'usedGlobal' is defined but never used.	end	1	37
 tests/rules/@typescript-eslint/no-unused-vars/pattern-text/cases.ts:5:8	@typescript-eslint/no-unused-vars	unusedVar	'UnusedDefault' is defined but never used. Allowed unused vars must match /^unused\\/|[/]$|\\u2028|\\n/u.	suggestion	removeUnusedImportDeclaration	Remove unused import declaration.	170	202		end	5	21

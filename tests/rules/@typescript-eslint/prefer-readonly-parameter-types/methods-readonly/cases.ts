@@ -148,3 +148,25 @@ const objectLiteral = {
   arrow: (a: readonly string[]) => {},
   set value(a: string[]) {},
 };
+
+// type-utils 8.72 (isMethodDeclaration): a function assigned to a property of a function counts as
+// a method, also with `||` or `??` and the same name, not other values.
+function expandoMethods() {}
+expandoMethods.m = function () {};
+expandoMethods.n = () => {};
+expandoMethods['o'] = function () {};
+function expandoOr() {}
+expandoOr.p = expandoOr.p || function () {};
+function expandoNullish() {}
+expandoNullish.q = expandoNullish.q ?? (() => {});
+function expandoValue() {}
+expandoValue.r = 1;
+function expandoOther() {}
+expandoOther.s = expandoValue.r || function () {};
+export function takesExpandos(
+  a: typeof expandoMethods,
+  b: typeof expandoOr,
+  c: typeof expandoNullish,
+  d: typeof expandoValue,
+  e: typeof expandoOther,
+) {}

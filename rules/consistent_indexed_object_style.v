@@ -4,7 +4,7 @@ import json2
 import time
 import treesitter { named_children, node_end, node_field, node_kind, node_parent, node_start, position_of }
 
-// Port of the `consistent-indexed-object-style` rule of typescript-eslint 8.62.0, with its option
+// Port of the `consistent-indexed-object-style` rule of typescript-eslint 8.72.2, with its option
 // ('record' or 'index-signature'), its fixes and its suggestions.
 
 const cios_messages = {

@@ -5,7 +5,7 @@ import time
 import tsgo { AstTree, SymbolResponse, TypeResponse, handle_index, handle_kind, handle_path }
 import treesitter { children, has_child_kind, named_children, node_end, node_field, node_kind, node_parent, node_start, nodes_of_kinds, position_of }
 
-// Port of the `no-unnecessary-type-assertion` rule of typescript-eslint 8.62.0, with its options
+// Port of the `no-unnecessary-type-assertion` rule of typescript-eslint 8.72.2, with its options
 // and its fixes.
 //
 // In ts-api-utils' isPropertyReadonlyInType (hasSameProperties), isReadonlyPropertyFromMappedType
@@ -18,8 +18,9 @@ import treesitter { children, has_child_kind, named_children, node_end, node_fie
 // type are the symbol's checkFlags and getTypeOfSymbol.
 
 const nuta_messages = {
-	'contextuallyUnnecessary': 'This assertion is unnecessary since the receiver accepts the original type of the expression.'
-	'unnecessaryAssertion':    'This assertion is unnecessary since it does not change the type of the expression.'
+	'contextuallyInferredTypeArguments': 'The type arguments for this generic call may be inferred from the assertion. Specify them explicitly instead.'
+	'contextuallyUnnecessary':           'This assertion is unnecessary since the receiver accepts the original type of the expression.'
+	'unnecessaryAssertion':              'This assertion is unnecessary since it does not change the type of the expression.'
 }
 
 // SyntaxKind of TypeScript 7.1.0-beta.
@@ -215,6 +216,12 @@ fn (c &Checker) nuta_assertion_spans(a NutaAssertion, mut spans []Span) {
 	if node_kind(a.expression) == 'call_expression' {
 		if callee := node_field(a.expression, 'function') {
 			spans << node_span(unwrap_parens(callee))
+		}
+	}
+	// isGenericCallWithInferredTypeArguments
+	if call := nuta_innermost_call(a.expression, 0) {
+		if callee := nuta_callee(call) {
+			spans << node_span(callee)
 		}
 	}
 	// Callees of the calls around it (isInGenericContext, isArgumentToOverloadedFunction).
@@ -446,6 +453,14 @@ fn (mut c Checker) nuta_check_assertion(a NutaAssertion, o NutaOptions, mut cach
 		!a.is_const
 	}
 	if unchanged && same_inferred {
+		// The type arguments of a generic call may be inferred from the assertion: no fix.
+		if c.nuta_generic_call_with_inferred_type_arguments(a.expression)! {
+			findings << Finding{
+				stmt:       position_of(a.node)
+				message_id: 'contextuallyInferredTypeArguments'
+			}
+			return
+		}
 		findings << c.with_fixes(Finding{
 			stmt:       position_of(a.node)
 			message_id: 'unnecessaryAssertion'
@@ -505,24 +520,18 @@ fn nuta_is_arrow_body(node EsNode) bool {
 }
 
 // nuta_assertion_fixes ports createAssertionFixer. `<T>x` loses from its `<` to its `>`, and gets
-// parentheses if that leaves an object literal where `{` would open a block (the body of an arrow
-// function or the start of an expression statement). `x as T` loses from the end of the token or
-// comment before `as` to its own end.
+// parentheses if that leaves the operand where its first token (`{`, `class` or `function`) would
+// start a statement, or where `{` would start the body of an arrow function. `x as T` loses from
+// the end of the token or comment before `as` to its own end.
 fn (mut c Checker) nuta_assertion_fixes(a NutaAssertion) []Fix {
 	node := es_child(a.node)
 	end := c.nuta_node_end(a.node)
 	if node_kind(a.node) == 'type_assertion' {
 		// `<` … `>`: tree-sitter's type_arguments.
 		brackets := first_named(a.node) or { return []Fix{} }
-		mut needs_parens := false
-		if node_kind(a.expression) == 'object' {
-			mut in_statement := false
-			if parent := node.parent() {
-				in_statement = !parent.chain && node_kind(parent.node) == 'expression_statement'
-			}
-			needs_parens = (nuta_is_arrow_body(node) || in_statement) && !c.is_parenthesized(node)
-				&& !c.is_parenthesized(es_child(a.expression))
-		}
+		first := c.source_tokens(a.node).after(node_end(brackets), false) or { return []Fix{} }
+		needs_parens := c.is_start_of_expression_statement_needing_parentheses(a.node, first)
+			|| c.is_start_of_arrow_function_body_needing_parentheses(node, first)
 		mut fixes := []Fix{}
 		if needs_parens {
 			fixes << fix_insert_at(node_start(a.node), '(')
@@ -540,6 +549,52 @@ fn (mut c Checker) nuta_assertion_fixes(a NutaAssertion) []Fix {
 		}
 	}
 	return []Fix{}
+}
+
+// nuta_innermost_call ports getInnermostCall: the call an expression ends in, through `await`, an
+// optional chain, a non-null assertion and the last expression of a sequence (not a tagged
+// template, `import()` or `new`).
+fn nuta_innermost_call(n C.TSNode, depth int) ?C.TSNode {
+	if depth > max_expression_depth {
+		return none
+	}
+	node := unwrap_parens(n)
+	match node_kind(node) {
+		'await_expression', 'non_null_expression' {
+			return nuta_innermost_call(first_named(node)?, depth + 1)
+		}
+		'call_expression' {
+			callee := nuta_callee(node)?
+			return if node_kind(callee) == 'import' { none } else { node }
+		}
+		'sequence_expression' {
+			parts := named_children(node)
+			if parts.len == 0 {
+				return none
+			}
+			return nuta_innermost_call(parts.last(), depth + 1)
+		}
+		else {
+			return none
+		}
+	}
+}
+
+// nuta_generic_call_with_inferred_type_arguments ports isGenericCallWithInferredTypeArguments: the
+// innermost call has no type arguments, and its callee has a generic call signature.
+fn (mut c Checker) nuta_generic_call_with_inferred_type_arguments(expression C.TSNode) !bool {
+	call := nuta_innermost_call(expression, 0) or { return false }
+	if _ := node_field(call, 'type_arguments') {
+		return false
+	}
+	callee := nuta_callee(call) or { return false }
+	callee_type := c.node_type(callee) or { return false }
+	for sig in c.signatures_of(callee_type, signature_kind_call)! {
+		if sig.type_parameters.len > 0 {
+			return true
+		}
+	}
+	return false
 }
 
 // nuta_double_assertion_fixes ports the fixer of a double assertion: the original expression takes
@@ -666,7 +721,8 @@ fn (mut c Checker) nuta_type_unchanged(a NutaAssertion, expression C.TSNode, unc
 		return c.nuta_parts_equivalent_ignoring_undefined(uncast, cast)!
 	}
 	if (uncast_flags & nuta_flag_non_primitive != 0 && cast_flags & nuta_flag_non_primitive == 0)
-		|| (c.nuta_has_index_signature(uncast)! && !c.nuta_has_index_signature(cast)!)
+		|| c.nuta_has_index_signature(uncast)! != c.nuta_has_index_signature(cast)!
+		|| c.nuta_number_to_enum_assertion(uncast, cast)!
 		|| c.nuta_contains_any(uncast, mut cache)! || c.nuta_contains_any(cast, mut cache)!
 		|| (c.nuta_contains_type_variable(cast, mut cache)!
 			&& !c.nuta_contains_type_variable(uncast, mut cache)!) {
@@ -724,6 +780,36 @@ fn (mut c Checker) nuta_parts_equivalent_ignoring_undefined(uncast TypeResponse,
 	}
 	return uncast_parts.len == cast_parts.len && cast_parts.all(it in uncast_parts)
 }
+
+// nuta_number_to_enum_assertion ports isNumberToEnumAssertion: `number` and a numeric enum are
+// assignable to each other, so they count as mutually assignable even though the assertion
+// changes the type (`values[+key as Color]` compiles where `values[+key]` does not).
+fn (mut c Checker) nuta_number_to_enum_assertion(uncast TypeResponse, cast TypeResponse) !bool {
+	return (c.nuta_has_enum_constituent(cast)! && c.nuta_has_plain_number_constituent(uncast)!)
+		|| (c.nuta_has_enum_constituent(uncast)! && c.nuta_has_plain_number_constituent(cast)!)
+}
+
+fn (mut c Checker) nuta_has_enum_constituent(t TypeResponse) !bool {
+	for part in c.constituents(t)! {
+		if c.type_flags(part)! & nuta_flag_enum_like != 0 {
+			return true
+		}
+	}
+	return false
+}
+
+fn (mut c Checker) nuta_has_plain_number_constituent(t TypeResponse) !bool {
+	for part in c.constituents(t)! {
+		flags := c.type_flags(part)!
+		if flags & type_flag_number_like != 0 && flags & nuta_flag_enum_like == 0 {
+			return true
+		}
+	}
+	return false
+}
+
+// TypeFlags.EnumLike (Enum | EnumLiteral) of TypeScript 7.1.0-beta.
+const nuta_flag_enum_like = u32(98304)
 
 // nuta_has_index_signature: some union part has an index signature.
 fn (mut c Checker) nuta_has_index_signature(t TypeResponse) !bool {
@@ -1245,7 +1331,11 @@ fn (mut c Checker) nuta_argument_to_overloaded_function(a NutaAssertion, mut cac
 	args := estree_parent(a.node) or { return false }
 	call := node_parent(args) or { return false }
 	callee := nuta_callee(call) or { return false }
-	callee_type := c.node_type(callee) or { return false }
+	// An optional-chained callee (`foo?.bar(…)`) types as `<method> | undefined`, whose union has
+	// no call signatures: getNonNullableType first.
+	callee_type := c.client.non_nullable_type(c.snapshot, c.project, (c.node_type(callee) or {
+		return false
+	}).id)!
 	signatures := c.signatures_of(callee_type, signature_kind_call)!
 	if signatures.len <= 1 {
 		return false

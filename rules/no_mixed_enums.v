@@ -2,9 +2,9 @@ module rules
 
 import time
 import tsgo { TypeResponse, handle_index, handle_kind, handle_path }
-import treesitter { named_children, node_field, node_kind, node_parent, node_start, nodes_of_kind, position_of }
+import treesitter { has_child_kind, named_children, node_field, node_kind, node_parent, node_start, nodes_of_kind, position_of }
 
-// Port of the `no-mixed-enums` rule of typescript-eslint 8.62.0 (it has no options).
+// Port of the `no-mixed-enums` rule of typescript-eslint 8.72.2 (it has no options).
 
 const nme_messages = {
 	'mixed': 'Mixing number and string enums can be confusing.'
@@ -139,72 +139,79 @@ fn (mut c Checker) nme_desired_type(scopes &ScopeTree, e NmeEnum) !NmeAllowed {
 			return allowed
 		}
 	}
-	// Multiple enum declarations in the same scope (scope.upper.set of the enum's own scope).
+	// Multiple enum declarations in the same file, also merged across declarations of a
+	// namespace (getEnclosingScopes): the first earlier one with members.
 	name := c.identifier_name(e.name)
-	enum_scope := scopes.get_scope(e.node)
-	upper := scopes.scopes[enum_scope].upper
-	if upper >= 0 {
-		v := scopes.own_variable(upper, name)
-		if v >= 0 {
-			for definition in scopes.variables[v].defs {
-				if definition.kind != .ts_enum_name
-					|| node_start(definition.node) >= node_start(e.node) {
-					continue
-				}
-				previous := nme_enum(definition.node) or { continue }
-				if previous.members.len > 0 {
-					return c.nme_member_type(previous.members[0])!
-				}
+	for s in c.nme_enclosing_scopes(scopes, e.node, 0) {
+		v := scopes.own_variable(s, name)
+		if v < 0 {
+			continue
+		}
+		for definition in scopes.variables[v].defs {
+			if definition.kind != .ts_enum_name
+				|| node_start(definition.node) >= node_start(e.node) {
+				continue
+			}
+			previous := nme_enum(definition.node) or { continue }
+			if previous.members.len > 0 {
+				return c.nme_member_type(previous.members[0])!
 			}
 		}
-	}
-	// Namespace declaration merging: an exported enum of a namespace or module body.
-	if c.nme_in_module_block(e.node) {
-		return c.nme_namespace_type(e)!
 	}
 	// The type of the first member.
 	return c.nme_member_type(e.members[0])!
 }
 
-// nme_in_module_block: the enum's ESTree parent is an ExportNamedDeclaration of a TSModuleBlock.
-fn (c &Checker) nme_in_module_block(node C.TSNode) bool {
+// nme_enclosing_scopes ports getEnclosingScopes of an enum or a module declaration: the scope
+// around it and, when it is exported from a namespace, the scopes of every declaration of that
+// namespace in the scopes around it (getMergedScopes).
+fn (c &Checker) nme_enclosing_scopes(scopes &ScopeTree, node C.TSNode, depth int) []int {
+	enclosing := scopes.scopes[scopes.get_scope(node)].upper
+	if enclosing < 0 {
+		return []int{}
+	}
+	if !nme_is_exported(node) || depth > max_expression_depth {
+		return [enclosing]
+	}
+	// getMergedScopes
+	scope := scopes.scopes[enclosing]
+	if scope.kind != .ts_module {
+		return [enclosing]
+	}
+	name := c.nme_module_name(scope.block)
+	mut out := []int{}
+	for around in c.nme_enclosing_scopes(scopes, scope.block, depth + 1) {
+		for child in scopes.scopes[around].children {
+			if scopes.scopes[child].kind == .ts_module
+				&& c.nme_module_name(scopes.scopes[child].block) == name {
+				out << child
+			}
+		}
+	}
+	return out
+}
+
+// nme_is_exported: the ESTree parent of the declaration (a `declare` is part of it) is an
+// ExportNamedDeclaration.
+fn nme_is_exported(node C.TSNode) bool {
 	mut parent := node_parent(node) or { return false }
 	if node_kind(parent) == 'ambient_declaration' {
 		parent = node_parent(parent) or { return false }
 	}
-	if node_kind(parent) != 'export_statement' {
-		return false
-	}
-	block := node_parent(parent) or { return false }
-	container := node_parent(block) or { return false }
-	return node_kind(block) == 'statement_block'
-		&& node_kind(container) in ['internal_module', 'module']
+	return node_kind(parent) == 'export_statement' && !has_child_kind(parent, 'default')
 }
 
-// nme_namespace_type: the first member of the first declaration of the enum's symbol is a string
-// if its initializer has a string-like type. When that declaration has no members typescript-eslint
-// crashes; veslint takes it as a member without initializer (a number).
-fn (mut c Checker) nme_namespace_type(e NmeEnum) !NmeAllowed {
-	handle := c.node_handles[node_key(e.name)] or { return NmeAllowed.number }
-	symbols := c.client.symbols_at_locations(c.snapshot, c.project, [handle])!
-	if symbols.len == 0 || symbols[0].is_null() || symbols[0].declarations.len == 0 {
-		return NmeAllowed.number
+// nme_module_name ports getModuleName for the block of a module scope: the JSON of a string name,
+// `global`, or the name with its qualifiers (`A.B.C`), which are only compared with each other.
+fn (c &Checker) nme_module_name(block C.TSNode) string {
+	if node_kind(block) == 'ambient_declaration' {
+		return 'global'
 	}
-	declaration := symbols[0].declarations[0]
-	tree := c.declaration_ast(handle_path(declaration))!
-	members := tree.node_children(tree.node_child(handle_index(declaration), 'members'))
-	if members.len == 0 {
-		return NmeAllowed.number
+	id := node_field(block, 'name') or { return '' }
+	if node_kind(id) == 'string' {
+		return '"' + c.text(id)#[1..-1] + '"'
 	}
-	initializer := tree.node_child(members[0], 'initializer')
-	if initializer == 0 {
-		return NmeAllowed.number
-	}
-	return if c.nme_handle_string_like(tree.node_handle(initializer))! {
-		NmeAllowed.string
-	} else {
-		NmeAllowed.number
-	}
+	return c.text(id).split('.').map(it.trim_space()).join('.')
 }
 
 // nme_type_from_imported ports getTypeFromImported: the type of the first member of the enum an

@@ -88,14 +88,12 @@ declare function dec(...args: unknown[]): any;
 class C3 {
   a: number = 5;
   b?: number = 5;
-  c!: number = 5;
   readonly d: number = 5;
   static e: string = '';
   private f: boolean = true;
   @dec g: number = 1;
   declare h: number;
   accessor i: number = 1;
-  accessor j!: number = 1;
   static accessor k: string = '';
   #l: number = 1;
   ['m']: number = 1;

@@ -6,7 +6,7 @@ import time
 import tsgo { TypeResponse }
 import treesitter { Ident, children, named_children, node_end, node_field, node_kind, node_start, nodes_of_kind, position_of }
 
-// Port of the `switch-exhaustiveness-check` rule of typescript-eslint 8.62.0, with all its options
+// Port of the `switch-exhaustiveness-check` rule of typescript-eslint 8.72.2, with all its options
 // and its `addMissingCases` suggestion.
 
 const sec_messages = {
@@ -181,6 +181,22 @@ fn (mut c Checker) check_switch(s SwitchStatement, o SecOptions, mut findings []
 			}
 			missing << part
 		}
+	}
+	// Since typescript-eslint 8.72 the missing types are sorted by their names (typeToString,
+	// localeCompare), which also makes TypeScript 7's order of the union not matter.
+	if missing.len > 1 {
+		mut type_names := map[int]string{}
+		mut order := map[int]int{}
+		for i, t in missing {
+			type_names[t.id] = c.client.type_to_string_flags(c.snapshot, c.project, t.id,
+				sec_type_format_flags)!
+			order[t.id] = i
+		}
+		// Array.prototype.sort is stable.
+		missing.sort_with_compare(fn [type_names, order] (a &TypeResponse, b &TypeResponse) int {
+			by_name := js_locale_compare(type_names[a.id], type_names[b.id])
+			return if by_name != 0 { by_name } else { order[a.id] - order[b.id] }
+		})
 	}
 	has_default := s.default_case != none
 	if !(o.consider_default_exhaustive_for_unions && has_default) && missing.len > 0 {

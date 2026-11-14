@@ -77,3 +77,9 @@ class Generic<T> {
   value?: T;
 }
 const o24 = { ...(Generic<number>) };
+// typescript-eslint 8.72: a WeakMap has no entries, so its spread gets no suggestion, nor does a
+// union with one.
+declare const weakOrMap: WeakMap<object, number> | Map<string, number>;
+declare const readonlyMap: ReadonlyMap<string, number>;
+const weakSpreads = [{ ...weakMap }, { ...weakOrMap }, { ...readonlyMap }, { a: 1, ...weakMap }];
+void weakSpreads;

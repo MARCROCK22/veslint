@@ -86,3 +86,31 @@ export { other, fromEither, fromLiteral, fromPartial, fromLogical, fromParens, t
 export { listFirst, deep, anything, destructuredParameter, destructuredWithDefault, destructuredThis };
 export { destructuredArrow, objectMethods, annotatedCallback, annotatedOptional, typed, declaration };
 export type { FunctionType };
+
+// typescript-eslint 8.72: a default is useless only if every signature of the contextual type
+// has a parameter there that is neither rest nor optional and cannot be undefined; in a tuple,
+// only for the elements before the optional ones, and past a rest element all the variable ones
+// count.
+interface Overloaded {
+  (a: string): void;
+  (a: string, b?: number): void;
+}
+interface BothRequired {
+  (a: string, b: number): void;
+  (a: number, b: number): void;
+}
+const overloaded: Overloaded = (a = '', b = 1) => void [a, b];
+const bothRequired: BothRequired = (a = 'x', b = 1) => void [a, b];
+type Union = ((a: string) => void) | ((a: string | undefined) => void);
+const fromUnion: Union = (a = '') => void a;
+declare const optionalTuple: [string, number?];
+const [t1 = '', t2 = 1] = optionalTuple;
+declare const restTuple: [string, ...number[]];
+const [r1 = '', r2 = 1, r3 = 2] = restTuple;
+declare const middleRest: [string, ...number[], boolean];
+const [m1 = '', m2 = 1, m3 = true] = middleRest;
+declare const restWithUndefined: [string, ...(number | undefined)[], boolean];
+const [u1 = '', u2 = 1] = restWithUndefined;
+declare const leadingRest: [...string[], number];
+const [l1 = '', l2 = 1] = leadingRest;
+export { overloaded, bothRequired, fromUnion, t1, t2, r1, r2, r3, m1, m2, m3, u1, u2, l1, l2 };

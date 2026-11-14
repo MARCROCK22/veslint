@@ -5,7 +5,7 @@ import time
 import tsgo { SymbolResponse, TypeResponse, handle_index, handle_kind, handle_path }
 import treesitter { named_children, node_field, node_kind, node_parent, nodes_of_kinds, position_of }
 
-// Port of the `unbound-method` rule of typescript-eslint 8.62.0, with its option. The natively bound
+// Port of the `unbound-method` rule of typescript-eslint 8.72.2, with its option. The natively bound
 // members of the globals come from rules/unbound_method_natives.v.
 
 const ubm_messages = {
@@ -19,6 +19,10 @@ const ubm_supported_global_types = ['NumberConstructor', 'ObjectConstructor', 'S
 	'Atomics', 'Math', 'JSON']
 
 // SyntaxKind MethodDeclaration (175) is in type_queries.v; these are the other ones of checkIfMethod.
+// nativelyBoundInstanceMethods: the methods of instances of built-in classes that the
+// specification binds to their instance.
+const ubm_spec_bound_members = ['Collator.compare']
+
 const ubm_kinds_with_initializer = [syntax_kind_property_declaration, syntax_kind_property_assignment]
 
 struct UbmOptions {
@@ -121,12 +125,22 @@ fn (mut c Checker) lint_unbound_method(root C.TSNode, abs_path string, mut stats
 		if c.ubm_is_natively_bound(m.object, m.property, symbols)! {
 			continue
 		}
-		symbol := symbols[node_key(m.node)] or { continue }
-		message_id := c.ubm_check_if_method(symbol, o)!
-		if message_id != '' {
-			findings << Finding{
-				stmt:       position_of(m.node)
-				message_id: message_id
+		// getAccessedPropertyNames: the name of the property, or the values of the string and
+		// number literal types of a computed one; the properties of those names of each part of
+		// the type of the object (checkUnionConstituentsAndReport).
+		names := c.ubm_accessed_property_names(m)!
+		if names.len == 0 {
+			continue
+		}
+		object_type := c.node_type(m.object) or { continue }
+		for name in names {
+			message_id := c.ubm_check_union_constituents(object_type, name, o)!
+			if message_id != '' {
+				findings << Finding{
+					stmt:       position_of(m.node)
+					message_id: message_id
+				}
+				break
 			}
 		}
 	}
@@ -151,26 +165,11 @@ fn (mut c Checker) lint_unbound_method(root C.TSNode, abs_path string, mut stats
 				}
 			}
 			pattern_type := c.node_type(p.pattern) or { continue }
-			for union_part in c.constituents(pattern_type)! {
-				parts := if union_part.flags & type_flag_intersection != 0 {
-					c.members_of(union_part)!
-				} else {
-					[union_part]
-				}
-				mut reported := false
-				for part in parts {
-					message_id := c.ubm_check_if_method(c.property(part, name)!, o)!
-					if message_id != '' {
-						findings << Finding{
-							stmt:       position_of(key)
-							message_id: message_id
-						}
-						reported = true
-						break
-					}
-				}
-				if reported {
-					break
+			message_id := c.ubm_check_union_constituents(pattern_type, name, o)!
+			if message_id != '' {
+				findings << Finding{
+					stmt:       position_of(key)
+					message_id: message_id
 				}
 			}
 		}
@@ -178,6 +177,47 @@ fn (mut c Checker) lint_unbound_method(root C.TSNode, abs_path string, mut stats
 	stats.eval_ms += ms(sw.elapsed())
 	stats.checked += members.len + patterns.len
 	return findings
+}
+
+// ubm_check_union_constituents ports checkUnionConstituentsAndReport: the message for the first
+// part (of the union, then of the intersection) whose property of that name is a dangerous
+// method; '' if none.
+fn (mut c Checker) ubm_check_union_constituents(t TypeResponse, name string, o UbmOptions) !string {
+	for union_part in c.constituents(t)! {
+		parts := if union_part.flags & type_flag_intersection != 0 {
+			c.members_of(union_part)!
+		} else {
+			[union_part]
+		}
+		for part in parts {
+			message_id := c.ubm_check_if_method(c.property(part, name)!, o)!
+			if message_id != '' {
+				return message_id
+			}
+		}
+	}
+	return ''
+}
+
+// ubm_accessed_property_names ports getAccessedPropertyNames: of `a.b`, `b` (none for a private
+// name); of `a[b]`, the values of the string and number literal types of `b`.
+fn (mut c Checker) ubm_accessed_property_names(m UbmMember) ![]string {
+	if node_kind(m.node) != 'subscript_expression' {
+		return if estree_type(m.property) == 'Identifier'
+			|| node_kind(m.property) == 'property_identifier' {
+			[c.identifier_name(m.property)]
+		} else {
+			[]string{}
+		}
+	}
+	property_type := c.node_type(unwrap_parens(m.property)) or { return []string{} }
+	mut names := []string{}
+	for part in c.constituents(property_type)! {
+		if part.flags & (type_flag_string_literal | type_flag_number_literal) != 0 {
+			names << literal_type_name(part)
+		}
+	}
+	return names
 }
 
 // ubm_in_type_query: the member expression is part of a `typeof` type query (a TSQualifiedName in
@@ -377,6 +417,19 @@ fn (mut c Checker) ubm_is_natively_bound(object C.TSNode, property C.TSNode, sym
 		}
 	}
 	object_type := c.node_type(object) or { return false }
+	// isSpecBoundBuiltinMethod: a method the specification binds to its instance, which the
+	// standard library declares as a plain method (`Intl.Collator.prototype.compare`).
+	if node_kind(property) in ['property_identifier', 'identifier',
+		'shorthand_property_identifier_pattern'] && object_type.symbol != 0 {
+		object_symbol := c.symbol_of(object_type)!
+		if '${object_symbol.name}.${c.identifier_name(property)}' in ubm_spec_bound_members {
+			for declaration in object_symbol.declarations {
+				if c.is_default_library(handle_path(declaration))! {
+					return true
+				}
+			}
+		}
+	}
 	if !c.builtin_symbol_like_any(object_type, ubm_supported_global_types, 0)! {
 		return false
 	}
@@ -408,15 +461,9 @@ fn (mut c Checker) ubm_check_if_method(symbol SymbolResponse, o UbmOptions) !str
 	}
 	tree := c.declaration_ast(handle_path(declaration))!
 	index := handle_index(declaration)
-	if kind == syntax_kind_property_declaration {
-		initializer := tree.node_child(index, 'initializer')
-		return if tree.node_kind(initializer) == syntax_kind_function_expression {
-			'unbound'
-		} else {
-			''
-		}
-	}
-	if kind == syntax_kind_property_assignment {
+	// A property of a class or of an object literal whose initializer is a function expression is
+	// checked as that function (since typescript-eslint 8.72 for a class property too).
+	if kind in ubm_kinds_with_initializer {
 		initializer := tree.node_child(index, 'initializer')
 		if tree.node_kind(initializer) != syntax_kind_function_expression {
 			return ''

@@ -214,3 +214,44 @@ const negatedLeft1 = !1 < 2;
 const negatedLeft2 = (!0) === true;
 declare const nullishLeft: string;
 export const negatedNullish = !!nullishLeft ?? 'x';
+
+// typescript-eslint 8.72: the right side of a logical expression is checked only where its value
+// is only used for truthiness.
+declare const truthyObject: { a: number };
+declare const someFlag: boolean;
+if (someFlag || truthyObject) {}
+if (!(someFlag && truthyObject)) {}
+const usedValue = someFlag || truthyObject;
+const usedInTernary = (someFlag && truthyObject) ? 1 : 2;
+const nestedLogical = (someFlag || truthyObject) && someFlag;
+const rightOfAnd = someFlag && (someFlag || truthyObject);
+const filtered = [1].filter(() => someFlag && truthyObject);
+while (someFlag && truthyObject) {}
+for (; someFlag || truthyObject; ) {}
+do {} while (someFlag || truthyObject);
+export { usedValue, usedInTernary, nestedLogical, rightOfAnd, filtered };
+
+// A conditional type is like a type variable: the condition may be necessary.
+function conditional<T>(value: T extends string ? number : undefined, other: T extends string ? null : null) {
+  if (value) {}
+  const a = value ?? 1;
+  const b = other ?? 1;
+  const c = value === undefined;
+  return [a, b, c];
+}
+void conditional;
+
+// The left side of `??` that is always nullish, but a computed member whose literal keys name a
+// property that may be something else.
+declare const nullishHolder: { a: null; b: undefined; c: string | null; d: void };
+declare const nullishKey: 'a' | 'b';
+declare const mixedKey: 'a' | 'c';
+declare const voidKey: 'a' | 'd';
+const n1 = nullishHolder.a ?? 1;
+const n2 = nullishHolder['a'] ?? 1;
+const n3 = nullishHolder[nullishKey] ?? 1;
+const n4 = nullishHolder[mixedKey] ?? 1;
+const n5 = nullishHolder[voidKey] ?? 1;
+declare const nullishTuple: [null, string];
+const n6 = nullishTuple[0] ?? 1;
+export { n1, n2, n3, n4, n5, n6 };

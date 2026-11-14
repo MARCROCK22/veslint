@@ -5,11 +5,12 @@ import offsets
 import time
 import treesitter { has_child_kind, node_end, node_field, node_kind, node_parent, node_start, position_of }
 
-// Port of the `no-shadow` rule of typescript-eslint 8.62.0, with its options `allow`,
+// Port of the `no-shadow` rule of typescript-eslint 8.72.2, with its options `allow`,
 // `builtinGlobals`, `hoist`, `ignoreFunctionTypeParameterNameValueShadow`,
 // `ignoreOnInitialization` and `ignoreTypeValueShadow`.
 
 const nsh_messages = {
+	'noEnumShadow':   "Enum members are added to the enum scope, so references to '{{name}}' in enum member initializers resolve to this member instead of the declaration in the upper scope on line {{shadowedLine}} column {{shadowedColumn}}."
 	'noShadow':       "'{{name}}' is already declared in the upper scope on line {{shadowedLine}} column {{shadowedColumn}}."
 	'noShadowGlobal': "'{{name}}' is already a global variable."
 }
@@ -83,9 +84,14 @@ fn (mut c Checker) lint_no_shadow(root C.TSNode, abs_path string, mut stats Stat
 				has_lines = true
 			}
 			line, column := c.line_column(lines, node_start(shadowed_variable.identifiers[0]))
+			// noEnumShadow when the shadowed variable is (also) an enum.
 			findings << Finding{
 				stmt:       c.es_binding_position(variable.identifiers[0])
-				message_id: 'noShadow'
+				message_id: if shadowed_variable.defs.any(it.kind == .ts_enum_name) {
+					'noEnumShadow'
+				} else {
+					'noShadow'
+				}
 				data:       {
 					'name':           variable.name
 					'shadowedLine':   line.str()

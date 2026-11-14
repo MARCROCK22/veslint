@@ -106,3 +106,23 @@ const g2 = `${log()}`;
 const résumé = '🎉é'; const a15 = () => log();
 void [a1, a2, a3, a4, a5, a6, a7, a8, a9, a10, a11, a12, a13, a14, a15, g1, g2, résumé];
 void [r1, r2, r3, r4, r5, r6, r7, r8, r9, r10, r11, r12, r13, r14, r15, r16, K];
+// typescript-eslint 8.72: the arrow fix keeps what is around the body and drops its parentheses,
+// and there is no fix when the declared return type cannot be void.
+const r1 = () => (voidFn());
+const r2 = () => /* a */ (/* b */ voidFn() /* c */) /* d */;
+const r3 = (): unknown => voidFn();
+const r4 = (): void => voidFn();
+const r5 = (): any => voidFn();
+const r6 = (): undefined | number => voidFn();
+const r7 = async (): Promise<void> => voidFn();
+const r8 = async (): Promise<unknown> => voidFn();
+function r9(): unknown {
+  return voidFn();
+}
+function r10(): void | string {
+  return voidFn();
+}
+const r11 = async function (): Promise<number | void> {
+  return voidFn();
+};
+void [r1, r2, r3, r4, r5, r6, r7, r8, r9, r10, r11];

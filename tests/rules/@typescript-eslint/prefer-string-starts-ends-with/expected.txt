@@ -51,6 +51,9 @@ tests/rules/@typescript-eslint/prefer-string-starts-ends-with/cases.ts:103:1	@ty
 tests/rules/@typescript-eslint/prefer-string-starts-ends-with/cases.ts:104:1	@typescript-eslint/prefer-string-starts-ends-with	preferStartsWith	Use 'String#startsWith' method instead.
 tests/rules/@typescript-eslint/prefer-string-starts-ends-with/cases.ts:105:1	@typescript-eslint/prefer-string-starts-ends-with	preferEndsWith	Use the 'String#endsWith' method instead.
 tests/rules/@typescript-eslint/prefer-string-starts-ends-with/cases.ts:106:1	@typescript-eslint/prefer-string-starts-ends-with	preferStartsWith	Use 'String#startsWith' method instead.
+tests/rules/@typescript-eslint/prefer-string-starts-ends-with/cases.ts:110:1	@typescript-eslint/prefer-string-starts-ends-with	preferStartsWith	Use 'String#startsWith' method instead.
+tests/rules/@typescript-eslint/prefer-string-starts-ends-with/cases.ts:114:1	@typescript-eslint/prefer-string-starts-ends-with	preferEndsWith	Use the 'String#endsWith' method instead.
+tests/rules/@typescript-eslint/prefer-string-starts-ends-with/cases.ts:117:1	@typescript-eslint/prefer-string-starts-ends-with	preferEndsWith	Use the 'String#endsWith' method instead.
 tests/rules/@typescript-eslint/prefer-string-starts-ends-with/fixes/cases.ts:9:1	@typescript-eslint/prefer-string-starts-ends-with	preferStartsWith	Use 'String#startsWith' method instead.
 tests/rules/@typescript-eslint/prefer-string-starts-ends-with/fixes/cases.ts:10:1	@typescript-eslint/prefer-string-starts-ends-with	preferStartsWith	Use 'String#startsWith' method instead.
 tests/rules/@typescript-eslint/prefer-string-starts-ends-with/fixes/cases.ts:11:1	@typescript-eslint/prefer-string-starts-ends-with	preferStartsWith	Use 'String#startsWith' method instead.

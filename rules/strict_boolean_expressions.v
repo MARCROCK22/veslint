@@ -5,7 +5,7 @@ import time
 import tsgo { TypeResponse }
 import treesitter { Ident, has_child_kind, node_end, node_field, node_kind, node_start, nodes_of_kinds, position_of }
 
-// Port of the `strict-boolean-expressions` rule of typescript-eslint 8.62.0, with its options
+// Port of the `strict-boolean-expressions` rule of typescript-eslint 8.72.2, with its options
 // and its suggestions.
 
 const sbe_messages = {

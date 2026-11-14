@@ -3,7 +3,7 @@ module rules
 import time
 import treesitter { named_children, node_field, node_kind, node_parent, position_of }
 
-// Port of the `no-unnecessary-parameter-property-assignment` rule of typescript-eslint 8.62.0 (it
+// Port of the `no-unnecessary-parameter-property-assignment` rule of typescript-eslint 8.72.2 (it
 // has no options).
 
 const nuppa_messages = {
@@ -31,11 +31,13 @@ fn (mut c Checker) lint_no_unnecessary_parameter_property_assignment(root C.TSNo
 		[]) {
 		body := nuppa_class_body(node) or { continue }
 		frame := node_key(body)
-		name := c.nuppa_property_name(node_field(node, 'left') or { continue }) or { continue }
+		left := unwrap_parens(node_field(node, 'left') or { continue })
+		property_name := c.nuppa_property_name(left)
 		checked++
 		// 'PropertyDefinition AssignmentExpression': directly in the initializer of a field, or in
 		// an arrow function the initializer calls right away.
 		if property := nuppa_parent_property(node) {
+			name := property_name or { '' }
 			mut counts := true
 			if function := nuppa_parent_function(node) {
 				counts = false
@@ -45,7 +47,7 @@ fn (mut c Checker) lint_no_unnecessary_parameter_property_assignment(root C.TSNo
 					}
 				}
 			}
-			if counts {
+			if counts && property_name != none {
 				before_constructor['${frame}/${name}'] = true
 			}
 		}
@@ -58,6 +60,15 @@ fn (mut c Checker) lint_no_unnecessary_parameter_property_assignment(root C.TSNo
 		if !c.nuppa_is_constructor(function) {
 			continue
 		}
+		// A write to the parameter itself before `this.x = x` may make it copy another value
+		// than the one the parameter property got (typescript-eslint 8.72).
+		if estree_type(left) == 'Identifier' {
+			if c.nuppa_is_parameter_reference(root, left) {
+				before_unnecessary['${frame}/${c.identifier_name(left)}'] = true
+			}
+			continue
+		}
+		name := property_name or { continue }
 		operator := node_kind(node_field(node, 'operator') or { node })
 		if node_kind(node) == 'augmented_assignment_expression'
 			&& operator !in ['??=', '&&=', '||='] {
@@ -93,18 +104,18 @@ fn (mut c Checker) lint_no_unnecessary_parameter_property_assignment(root C.TSNo
 	return findings
 }
 
-// nuppa_property_name ports getPropertyName: the name of `this.x`, `this[x]` (the name of the
-// identifier, even computed) or `this['x']` (getStaticStringValue).
+// nuppa_property_name ports getPropertyName: the name of `this.x`, or of `this['x']`
+// (getStaticStringValue; since typescript-eslint 8.72 not of `this[x]`).
 fn (c &Checker) nuppa_property_name(left C.TSNode) ?string {
 	node := unwrap_parens(left)
 	if !is_member(node) || node_kind(unwrap_parens(node_field(node, 'object')?)) != 'this' {
 		return none
 	}
 	property := member_property(node)?
-	if estree_type(property) == 'Identifier' {
-		return c.identifier_name(property)
-	}
 	if node_kind(node) != 'subscript_expression' {
+		if estree_type(property) == 'Identifier' {
+			return c.identifier_name(property)
+		}
 		return none
 	}
 	return c.literal_name(property)

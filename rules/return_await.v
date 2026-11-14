@@ -4,7 +4,7 @@ import json2
 import time
 import treesitter { first_named_child, has_child_kind, named_children, node_end, node_field, node_kind, node_parent, node_start, nodes_of_kind, position_of }
 
-// Port of the `return-await` rule of typescript-eslint 8.62.0 with its option, its fix and its
+// Port of the `return-await` rule of typescript-eslint 8.72.2 with its option, its fix and its
 // suggestions: whether a returned Promise must be awaited, must not, or either, in an
 // error-handling context and outside of it (the default, 'in-try-catch': it must inside, and must
 // not outside). Limits of the port: internals.md, "Rules" section.
@@ -168,7 +168,8 @@ fn (c &Checker) rw_fix_or_suggest(finding Finding, as_fix bool, suggestion_id st
 }
 
 // rw_remove_await ports removeAwait: the `await` keyword of the AwaitExpression goes, with what
-// follows it up to the next token or comment.
+// follows it up to the next token or comment (getAwaitTokenRemovalRange), and an operand that
+// would start an arrow function body with `{` gets parentheses.
 fn (mut c Checker) rw_remove_await(node C.TSNode) []Fix {
 	if node_kind(node) != 'await_expression' {
 		return []Fix{}
@@ -177,11 +178,14 @@ fn (mut c Checker) rw_remove_await(node C.TSNode) []Fix {
 	if c.token_text(keyword) != 'await' {
 		return []Fix{}
 	}
-	mut end := keyword.end
-	if next := c.source_tokens(node).after(keyword.end, true) {
-		end = next.start
+	mut fixes := [c.await_token_removal(node, keyword.start, keyword.end)]
+	first := c.source_tokens(node).after(keyword.end, false) or { return fixes }
+	if c.is_start_of_arrow_function_body_needing_parentheses(es_inner(node), first) {
+		argument := unwrap_parens(first_named_child(node) or { return fixes })
+		fixes << fix_insert_at(node_start(argument), '(')
+		fixes << fix_insert_at(c.es_end(argument), ')')
 	}
-	return [fix_remove_range(keyword.start, end)]
+	return fixes
 }
 
 // rw_insert_await ports insertAwait: `await ` before the expression, around parentheses unless

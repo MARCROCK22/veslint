@@ -61,3 +61,11 @@ const af = ~~num;
 
 export { a, b, c, d, e, f, g, h, i, j, k, l, m, constrained, n, o, p, q, r, s, t };
 export { u, v, w, x, y, z, aa, ab, ac, ad, ae, af };
+// typescript-eslint 8.72: a `String`, `Number`, `Boolean` or `BigInt` declared in a scope around
+// the call is not the built-in one (findVariable).
+function shadowedConversions() {
+  const String = (value: unknown) => `${value as number}`;
+  const Number = (value: unknown) => value as number;
+  return () => [String('a'), Number(1), Boolean(true)];
+}
+void shadowedConversions;

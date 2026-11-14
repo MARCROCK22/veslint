@@ -5,13 +5,15 @@ import time
 import tsgo { TypeResponse }
 import treesitter { children, has_child_kind, named_children, node_field, node_kind, node_parent, nodes_of_kinds, position_of }
 
-// Port of the `strict-void-return` rule of typescript-eslint 8.62.0, with its `allowReturnAny`
-// option.
+// Port of the `strict-void-return` rule of typescript-eslint 8.72.2, with its `allowReturnAny`
+// option and its suggestions.
 
 const svr_messages = {
-	'asyncFunc':     'Async function used in a context where a void function is expected.'
-	'nonVoidFunc':   'Value-returning function used in a context where a void function is expected.'
-	'nonVoidReturn': 'Value returned in a context where a void return is expected.'
+	'asyncFunc':              'Async function used in a context where a void function is expected.'
+	'nonVoidFunc':            'Value-returning function used in a context where a void function is expected.'
+	'nonVoidReturn':          'Value returned in a context where a void return is expected.'
+	'suggestAddVoidOp':       'Add a void operator to discard the return value.'
+	'suggestWrapInAsyncIIFE': 'Wrap the function body in an async IIFE.'
 }
 
 const svr_class_kinds = ['class_declaration', 'class', 'abstract_class_declaration']
@@ -58,7 +60,9 @@ struct SvrMember {
 }
 
 struct SvrState {
-	options SvrOptions
+	options  SvrOptions
+	root     C.TSNode
+	abs_path string
 mut:
 	findings []Finding
 	// Function literals with a block body whose `return` statements are looked at once the
@@ -68,7 +72,9 @@ mut:
 
 fn (mut c Checker) lint_strict_void_return(root C.TSNode, abs_path string, mut stats Stats) ![]Finding {
 	mut state := SvrState{
-		options: svr_options(c.rule_options(strict_void_return))!
+		options:  svr_options(c.rule_options(strict_void_return))!
+		root:     root
+		abs_path: abs_path
 	}
 	mut sw := time.new_stopwatch()
 	mut expressions := []C.TSNode{} // checkExpressionNode
@@ -502,17 +508,35 @@ fn (mut c Checker) svr_report_if_non_void_function(node C.TSNode, mut state SvrS
 		}
 		return
 	}
+	body := node_field(node, 'body') or { return }
 	if has_child_kind(node, 'async') {
+		if node_kind(body) != 'statement_block' {
+			// An async arrow function without braces: with side effects (`async () =>
+			// doSomething()`), the suggestion removes `async` and adds a void operator.
+			state.findings << Finding{
+				stmt:        c.function_head(node)
+				message_id:  'asyncFunc'
+				suggestions: c.svr_add_void_suggestion(node, body, mut state)!
+			}
+			return
+		}
+		// A block body: the suggestion wraps it in an async IIFE.
+		_, suggestion := c.suggestion('suggestWrapInAsyncIIFE', map[string]string{},
+			c.svr_wrap_in_async_iife_fixes(node, body))!
 		state.findings << Finding{
-			stmt:       c.function_head(node)
-			message_id: 'asyncFunc'
+			stmt:        c.function_head(node)
+			message_id:  'asyncFunc'
+			suggestions: [suggestion]
 		}
 		return
 	}
-	body := node_field(node, 'body') or { return }
 	if node_kind(body) != 'statement_block' {
 		// An arrow function without braces.
-		state.findings << finding_at(unwrap_parens(body), 'nonVoidReturn')
+		state.findings << Finding{
+			stmt:        position_of(unwrap_parens(body))
+			message_id:  'nonVoidReturn'
+			suggestions: c.svr_add_void_suggestion(node, body, mut state)!
+		}
 		return
 	}
 	if annotation := node_field(node, 'return_type') {
@@ -525,6 +549,62 @@ fn (mut c Checker) svr_report_if_non_void_function(node C.TSNode, mut state SvrS
 		}
 	}
 	state.pending << node
+}
+
+// svr_add_void_suggestion is the suggestAddVoidOp suggestion of an arrow function without braces
+// whose body has side effects (hasSideEffect of eslint-utils, default options), none otherwise:
+// addVoidToArrowFix, which makes the function sync and puts `void` before the body
+// (getWrappingFixer).
+fn (mut c Checker) svr_add_void_suggestion(function C.TSNode, body C.TSNode, mut state SvrState) ![]Suggestion {
+	inner := unwrap_parens(body)
+	t := c.es_tree(state.root, state.abs_path) or { return []Suggestion{} }
+	index := c.es_index_of(t, inner) or { return []Suggestion{} }
+	if !un_has_side_effect(t, index) {
+		return []Suggestion{}
+	}
+	mut fixes := c.svr_make_sync_fixes(function)
+	node := es_child(body)
+	fixes << c.wrapping_fix(node, 'void ${c.wrapping_inner_code(node, node)}')
+	_, suggestion := c.suggestion('suggestAddVoidOp', map[string]string{}, fixes)!
+	return [suggestion]
+}
+
+// svr_make_sync_fixes ports makeSyncFuncFix: the `async` keyword goes (of the method, for a
+// method of an object literal or a class) and the return type becomes `void`.
+fn (mut c Checker) svr_make_sync_fixes(function C.TSNode) []Fix {
+	mut fixes := []Fix{}
+	for child in children(function) {
+		if node_kind(child) == 'async' {
+			fixes << fix_remove(child)
+			break
+		}
+	}
+	if annotation := node_field(function, 'return_type') {
+		if return_type := first_named(annotation) {
+			fixes << fix_replace(return_type, 'void')
+		}
+	}
+	return fixes
+}
+
+// svr_wrap_in_async_iife_fixes ports wrapInAsyncIIFEFix: the function becomes sync and its body
+// goes in an async arrow function called right away, so that `this` stays the same: after the
+// `=>` of an arrow function, or in a new block of a function expression.
+fn (mut c Checker) svr_wrap_in_async_iife_fixes(function C.TSNode, body C.TSNode) []Fix {
+	mut fixes := c.svr_make_sync_fixes(function)
+	if node_kind(function) == 'arrow_function' {
+		for child in children(function) {
+			if node_kind(child) == '=>' {
+				fixes << fix_insert_after(child, ' void (async () =>')
+				break
+			}
+		}
+		fixes << fix_insert_at(c.es_end(function), ')()')
+	} else {
+		fixes << fix_insert_before(body, '{ (async () => ')
+		fixes << fix_insert_after(body, ')(); }')
+	}
+	return fixes
 }
 
 // svr_walk_statements ports walkStatements: the statements of a function body, through blocks and

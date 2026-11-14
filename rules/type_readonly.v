@@ -2,7 +2,7 @@ module rules
 
 import tsgo { TypeResponse }
 
-// Port of isTypeReadonly and isTypeBrandedLiteralLike from typescript-eslint's type-utils 8.62.0.
+// Port of isTypeReadonly and isTypeBrandedLiteralLike from typescript-eslint's type-utils 8.72.2.
 //
 // For a conditional type the original looks at the types of the two branches as they are written
 // in its declaration (getTypeFromTypeNode of root.node.trueType and falseType). The tsgo API has
@@ -67,9 +67,12 @@ fn (mut c Checker) type_readonlyness(t TypeResponse, options ReadonlynessOptions
 		return .readonly
 	}
 	if t.alias_symbol != 0 {
+		// The name of the alias, and since type-utils 8.72 where it is declared (a specifier with
+		// a `from`).
 		alias := c.alias_symbol_of(t)!
 		for specifier in options.allow {
-			if alias.name in specifier.names {
+			if alias.name in specifier.names
+				&& (specifier.from == '' || c.specifier_source_matches(specifier, alias)!) {
 				return .readonly
 			}
 		}
@@ -242,12 +245,87 @@ fn (mut c Checker) array_or_tuple_readonlyness(t TypeResponse, options Readonlyn
 	return .readonly
 }
 
-// readonlyness_is_method: the declaration (a tsgo node handle) declares a method, so its symbol
-// has SymbolFlags.Method.
-fn readonlyness_is_method(declaration string) bool {
-	return declaration != ''
-		&& tsgo.handle_kind(declaration) in [syntax_kind_method_declaration,
-			syntax_kind_method_signature]
+// readonlyness_is_method ports isMethodDeclaration of type-utils 8.72.2: the declaration (a tsgo
+// node handle) is a method of a class, an object literal or an interface, or the assignment of a
+// function to a property (`obj.m = function () {}`, `obj['m'] = () => {}`, `obj.m = obj.m ||
+// function () {}`) that is not on `this`, `exports` or `module.exports`: the declarations
+// TypeScript's binder flags as methods.
+fn (mut c Checker) readonlyness_is_method(declaration string) !bool {
+	if declaration == '' {
+		return false
+	}
+	kind := tsgo.handle_kind(declaration)
+	if kind in [syntax_kind_method_declaration, syntax_kind_method_signature] {
+		return true
+	}
+	// Only these can be the assignment or one of its two sides (the others are not read, so that
+	// the files of the library are not fetched for them).
+	if kind !in [readonly_kind_binary_expression, syntax_kind_property_access_expression,
+		syntax_kind_element_access_expression, syntax_kind_function_expression,
+		readonly_kind_arrow_function] {
+		return false
+	}
+	tree := c.declaration_ast(tsgo.handle_path(declaration))!
+	node := tsgo.handle_index(declaration)
+	assignment := if kind == readonly_kind_binary_expression { node } else { tree.node_parent(node) }
+	if tree.node_kind(assignment) != readonly_kind_binary_expression
+		|| tree.node_kind(tree.node_child(assignment, 'operatorToken')) != readonly_kind_equals_token {
+		return false
+	}
+	left := tree.node_child(assignment, 'left')
+	right := tree.node_child(assignment, 'right')
+	if tree.node_kind(left) !in [syntax_kind_property_access_expression,
+		syntax_kind_element_access_expression] {
+		return false
+	}
+	object := tree.node_child(left, 'expression')
+	if tree.node_kind(object) == readonly_kind_this_keyword || readonly_is_commonjs_exports(tree, object) {
+		return false
+	}
+	if readonly_is_function_initializer(tree, right) {
+		return true
+	}
+	return tree.node_kind(right) == readonly_kind_binary_expression
+		&& tree.node_kind(tree.node_child(right, 'operatorToken')) in [readonly_kind_bar_bar_token, readonly_kind_question_question_token]
+		&& readonly_same_entity_name(tree, left, tree.node_child(right, 'left'))
+		&& readonly_is_function_initializer(tree, tree.node_child(right, 'right'))
+}
+
+// TypeScript 7.1.0-beta SyntaxKind values (dist/enums/syntaxKind.enum.js).
+const readonly_kind_bar_bar_token = u32(56)
+const readonly_kind_question_question_token = u32(60)
+const readonly_kind_equals_token = u32(63)
+const readonly_kind_this_keyword = u32(109)
+const readonly_kind_arrow_function = u32(221)
+const readonly_kind_binary_expression = u32(228)
+
+// readonly_is_commonjs_exports ports isCommonJSExports: `exports` or `module.exports`.
+fn readonly_is_commonjs_exports(tree tsgo.AstTree, node int) bool {
+	if tree.node_kind(node) == syntax_kind_identifier {
+		return tree.node_text(node) == 'exports'
+	}
+	if tree.node_kind(node) != syntax_kind_property_access_expression {
+		return false
+	}
+	object := tree.node_child(node, 'expression')
+	return tree.node_kind(object) == syntax_kind_identifier && tree.node_text(object) == 'module'
+		&& tree.node_text(tree.node_child(node, 'name')) == 'exports'
+}
+
+// readonly_same_entity_name ports isSameEntityName: `a` and `a`, or `a.b.c` and `a.b.c`.
+fn readonly_same_entity_name(tree tsgo.AstTree, a int, b int) bool {
+	if tree.node_kind(a) == syntax_kind_identifier {
+		return tree.node_kind(b) == syntax_kind_identifier && tree.node_text(a) == tree.node_text(b)
+	}
+	return tree.node_kind(a) == syntax_kind_property_access_expression
+		&& tree.node_kind(b) == syntax_kind_property_access_expression
+		&& tree.node_text(tree.node_child(a, 'name')) == tree.node_text(tree.node_child(b, 'name'))
+		&& readonly_same_entity_name(tree, tree.node_child(a, 'expression'), tree.node_child(b, 'expression'))
+}
+
+// readonly_is_function_initializer ports isFunctionInitializer.
+fn readonly_is_function_initializer(tree tsgo.AstTree, node int) bool {
+	return tree.node_kind(node) in [syntax_kind_function_expression, readonly_kind_arrow_function]
 }
 
 // object_readonlyness ports isTypeReadonlyObject.
@@ -262,10 +340,10 @@ fn (mut c Checker) object_readonlyness(t TypeResponse, options ReadonlynessOptio
 	properties := c.properties(t)!
 	for property in properties {
 		if options.treat_methods_as_readonly {
-			if readonlyness_is_method(property.value_declaration) {
+			if c.readonlyness_is_method(property.value_declaration)! {
 				continue
 			}
-			if property.declarations.len > 0 && readonlyness_is_method(property.declarations.last()) {
+			if property.declarations.len > 0 && c.readonlyness_is_method(property.declarations.last())! {
 				continue
 			}
 		}

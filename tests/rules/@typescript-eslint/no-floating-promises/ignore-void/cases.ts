@@ -24,3 +24,17 @@ async function f() {
   void (p || 1);
 }
 export { f };
+// typescript-eslint 8.72: the body of an arrow function that is a unary expression is checked as a
+// statement (the parentheses do not count), not other bodies.
+const arrows = [
+  () => void p,
+  () => (void p),
+  () => void (p),
+  () => !p,
+  () => typeof p,
+  () => void list,
+  () => p,
+  async () => void (await p),
+  () => void void p,
+];
+export { arrows };

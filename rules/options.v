@@ -14,6 +14,7 @@ import json2
 pub fn check_options(rule string, options []json2.Any) !bool {
 	match rule {
 		no_floating_promises { nfp_options(options)! }
+		await_thenable { at_options(options)! }
 		return_await { rw_options(options)! }
 		no_unsafe_member_access { numa_options(options)! }
 		no_misused_promises { nmp_options(options)! }

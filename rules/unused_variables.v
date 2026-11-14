@@ -196,9 +196,11 @@ fn (c &Checker) unused_parameter_identifiers(n C.TSNode, mut out []C.TSNode) {
 	}
 }
 
-// unused_is_exported ports isExported and isMergeableExported.
+// unused_is_exported ports isExported and isMergeableExported of typescript-eslint 8.72.2: a
+// definition that is not a parameter, in an `export`, but a type alias or an interface of a
+// variable that is a value too (isMergedTypeDeclaration). isMergeableExported only looks at the
+// first exported mergeable declaration, which isExported has looked at already.
 fn unused_is_exported(variable ScopeVariable) bool {
-	// isExported and isMergeableExported: a definition that is not a parameter, in an `export`.
 	for definition in variable.defs {
 		if definition.kind == .parameter {
 			continue
@@ -207,6 +209,9 @@ fn unused_is_exported(variable ScopeVariable) bool {
 		if node_kind(node) == 'variable_declarator' {
 			node = node_parent(node) or { continue }
 		}
+		if unused_is_merged_type_declaration(variable, node) {
+			continue
+		}
 		if parent := nc_estree_parent(node) {
 			if node_kind(parent) == 'export_statement' {
 				return true
@@ -214,6 +219,22 @@ fn unused_is_exported(variable ScopeVariable) bool {
 		}
 	}
 	return false
+}
+
+// unused_is_merged_type_declaration ports isMergedTypeDeclaration: a type alias or an interface
+// whose variable is a value too (isMergedTypeValueVariable).
+fn unused_is_merged_type_declaration(variable ScopeVariable, node C.TSNode) bool {
+	return node_kind(node) in ['type_alias_declaration', 'interface_declaration']
+		&& variable.is_type_variable() && variable.is_value_variable()
+}
+
+// unused_is_type_only_reference ports isTypeOnlyReference (util/isTypeOnlyReference.ts of
+// typescript-eslint 8.72.2): the reference is in a type query or a type predicate, or it is not a
+// value reference of a variable declared by a VariableDeclarator.
+fn unused_is_type_only_reference(variable ScopeVariable, reference ScopeReference) bool {
+	id := reference.identifier
+	return inside_type_query(id) || unused_in_type_predicate(id)
+		|| (variable.defs.any(it.kind == .variable) && !reference.value_ref)
 }
 
 fn unused_is_inside(inner C.TSNode, outer C.TSNode) bool {
@@ -475,7 +496,7 @@ fn (c &Checker) unused_is_used(tree &ScopeTree, v int) bool {
 		if !reference.read || for_itself {
 			continue
 		}
-		if !imported_as_type && (inside_type_query(id) || unused_in_type_predicate(id)) {
+		if !imported_as_type && unused_is_type_only_reference(variable, reference) {
 			continue
 		}
 		if function_nodes.len > 0 && unused_self_reference(tree, reference.from, function_nodes) {

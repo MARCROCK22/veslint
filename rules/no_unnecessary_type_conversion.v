@@ -5,7 +5,7 @@ import time
 import tsgo { TypeResponse }
 import treesitter { Ident, node_end, node_field, node_kind, node_start, nodes_of_kinds, position_of }
 
-// Port of the `no-unnecessary-type-conversion` rule of typescript-eslint 8.62.0 (it has no
+// Port of the `no-unnecessary-type-conversion` rule of typescript-eslint 8.72.2 (it has no
 // options), with its `suggestRemove` and `suggestSatisfies` suggestions.
 
 const nutc_messages = {
@@ -53,9 +53,9 @@ fn (mut c Checker) lint_no_unnecessary_type_conversion(root C.TSNode, abs_path s
 	mut findings := []Finding{}
 	for candidate in candidates {
 		if candidate.kind == .builtin_call {
-			// A variable of that name in the innermost scope of the call (scope.set.get).
+			// A variable of that name in the scope of the call or one around it (findVariable).
 			scopes := c.scope_tree(root)
-			v := scopes.own_variable(scopes.get_scope(candidate.node), candidate.name)
+			v := scopes.find_variable(scopes.get_scope(candidate.node), candidate.name, -1)
 			if v >= 0 && scopes.variables[v].defs.len > 0 {
 				continue
 			}

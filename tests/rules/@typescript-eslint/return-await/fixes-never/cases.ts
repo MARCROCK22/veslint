@@ -21,3 +21,17 @@ async function a2() {
 async function a3() {
   return await p();
 }
+// typescript-eslint 8.72: an operand that starts an arrow function body with `{` gets parentheses.
+declare const thenableObject: { then(cb: () => void): void };
+const arrowObject = async () => await { then(cb: () => void) {} };
+const arrowMember = async () => await { a: thenableObject }.a;
+const arrowComment = async () => await /* comment */ { then(cb: () => void) {} };
+const arrowParens = async () => (await { then(cb: () => void) {} });
+const arrowTry = async () => {
+  try {
+    return await { then(cb: () => void) {} };
+  } catch {
+    return 0;
+  }
+};
+void [arrowObject, arrowMember, arrowComment, arrowParens, arrowTry];

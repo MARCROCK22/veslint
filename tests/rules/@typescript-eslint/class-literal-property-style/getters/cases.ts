@@ -23,7 +23,6 @@ class Fields extends Base {
   readonly m;
   readonly n: string = 'typed';
   readonly o?: string = 'optional';
-  readonly p! = 'definite';
   notReadonly = 'x';
   static readonly q = 'q';
   public static readonly r = 'r';

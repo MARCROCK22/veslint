@@ -203,3 +203,31 @@ class B13 {
 }
 
 export { A1, A2, A3, A4, A5, A6, A7, A8, A9, A10, A11, a12, B1, B2, B3, B4, B5, B6, B7, B8, B9, B10, b11, B12, B13 };
+// typescript-eslint 8.72: a write to the parameter before `this.x = x` keeps it, and `this[x]` has
+// no name.
+class WrittenParameter {
+  constructor(public a: number, public b: number, public c: number) {
+    a = 2;
+    this.a = a;
+    this.b = b;
+    b += 1;
+    (c) = 3;
+    this.c = c;
+  }
+}
+class ComputedName {
+  constructor(public a: string) {
+    const key = 'a';
+    this[key] = a;
+    this['a'] = a;
+  }
+}
+class LocalWrite {
+  constructor(public a: number) {
+    let other = 1;
+    other = 2;
+    this.a = a;
+    void other;
+  }
+}
+export { WrittenParameter, ComputedName, LocalWrite };

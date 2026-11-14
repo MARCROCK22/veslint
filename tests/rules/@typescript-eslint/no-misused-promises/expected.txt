@@ -99,6 +99,20 @@ tests/rules/@typescript-eslint/no-misused-promises/checker-calls/cases.ts:160:3	
 tests/rules/@typescript-eslint/no-misused-promises/checker-calls/cases.ts:191:23	@typescript-eslint/no-misused-promises	voidReturnArgument	Promise returned in function argument where a void return was expected.
 tests/rules/@typescript-eslint/no-misused-promises/checker-calls/cases.ts:191:39	@typescript-eslint/no-misused-promises	voidReturnArgument	Promise returned in function argument where a void return was expected.
 tests/rules/@typescript-eslint/no-misused-promises/checker-calls/cases.ts:192:32	@typescript-eslint/no-misused-promises	voidReturnArgument	Promise returned in function argument where a void return was expected.
+tests/rules/@typescript-eslint/no-misused-promises/flag-unions-all/cases.ts:9:5	@typescript-eslint/no-misused-promises	conditional	Expected non-Promise value in a boolean conditional.
+tests/rules/@typescript-eslint/no-misused-promises/flag-unions-all/cases.ts:10:5	@typescript-eslint/no-misused-promises	conditional	Expected non-Promise value in a boolean conditional.
+tests/rules/@typescript-eslint/no-misused-promises/flag-unions-all/cases.ts:11:5	@typescript-eslint/no-misused-promises	conditional	Expected non-Promise value in a boolean conditional.
+tests/rules/@typescript-eslint/no-misused-promises/flag-unions-all/cases.ts:12:5	@typescript-eslint/no-misused-promises	conditional	Expected non-Promise value in a boolean conditional.
+tests/rules/@typescript-eslint/no-misused-promises/flag-unions-all/cases.ts:13:5	@typescript-eslint/no-misused-promises	conditional	Expected non-Promise value in a boolean conditional.
+tests/rules/@typescript-eslint/no-misused-promises/flag-unions-all/cases.ts:14:5	@typescript-eslint/no-misused-promises	conditional	Expected non-Promise value in a boolean conditional.
+tests/rules/@typescript-eslint/no-misused-promises/flag-unions-all/cases.ts:15:15	@typescript-eslint/no-misused-promises	conditional	Expected non-Promise value in a boolean conditional.
+tests/rules/@typescript-eslint/no-misused-promises/flag-unions-all/cases.ts:16:8	@typescript-eslint/no-misused-promises	conditional	Expected non-Promise value in a boolean conditional.
+tests/rules/@typescript-eslint/no-misused-promises/flag-unions-strict/cases.ts:9:5	@typescript-eslint/no-misused-promises	conditional	Expected non-Promise value in a boolean conditional.
+tests/rules/@typescript-eslint/no-misused-promises/flag-unions-strict/cases.ts:10:5	@typescript-eslint/no-misused-promises	conditional	Expected non-Promise value in a boolean conditional.
+tests/rules/@typescript-eslint/no-misused-promises/flag-unions-strict/cases.ts:13:5	@typescript-eslint/no-misused-promises	conditional	Expected non-Promise value in a boolean conditional.
+tests/rules/@typescript-eslint/no-misused-promises/flag-unions-strict/cases.ts:14:5	@typescript-eslint/no-misused-promises	conditional	Expected non-Promise value in a boolean conditional.
+tests/rules/@typescript-eslint/no-misused-promises/flag-unions-strict/cases.ts:15:15	@typescript-eslint/no-misused-promises	conditional	Expected non-Promise value in a boolean conditional.
+tests/rules/@typescript-eslint/no-misused-promises/flag-unions-strict/cases.ts:16:8	@typescript-eslint/no-misused-promises	conditional	Expected non-Promise value in a boolean conditional.
 tests/rules/@typescript-eslint/no-misused-promises/jsx-spread/cases.tsx:26:25	@typescript-eslint/no-misused-promises	spread	Expected a non-Promise value to be spread in an object.
 tests/rules/@typescript-eslint/no-misused-promises/jsx-spread/cases.tsx:27:35	@typescript-eslint/no-misused-promises	spread	Expected a non-Promise value to be spread in an object.
 tests/rules/@typescript-eslint/no-misused-promises/jsx-spread/cases.tsx:28:41	@typescript-eslint/no-misused-promises	spread	Expected a non-Promise value to be spread in an object.
@@ -186,3 +200,5 @@ tests/rules/@typescript-eslint/no-misused-promises/static-names/cases.ts:6:17	@t
 tests/rules/@typescript-eslint/no-misused-promises/static-names/cases.ts:7:19	@typescript-eslint/no-misused-promises	predicate	Expected a non-Promise value to be returned.
 tests/rules/@typescript-eslint/no-misused-promises/static-names/cases.ts:8:15	@typescript-eslint/no-misused-promises	predicate	Expected a non-Promise value to be returned.
 tests/rules/@typescript-eslint/no-misused-promises/static-names/cases.ts:9:17	@typescript-eslint/no-misused-promises	predicate	Expected a non-Promise value to be returned.
+tests/rules/@typescript-eslint/no-misused-promises/using/cases.ts:6:13	@typescript-eslint/no-misused-promises	voidReturnVariable	Promise-returning function provided to variable where a void return was expected.
+tests/rules/@typescript-eslint/no-misused-promises/using/cases.ts:8:25	@typescript-eslint/no-misused-promises	voidReturnVariable	Promise-returning function provided to variable where a void return was expected.

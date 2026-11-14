@@ -57,6 +57,8 @@ tests/rules/@typescript-eslint/prefer-readonly-parameter-types/allow/cases.ts:14
 tests/rules/@typescript-eslint/prefer-readonly-parameter-types/allow/cases.ts:144:28	@typescript-eslint/prefer-readonly-parameter-types	shouldBeReadonly	Parameter should be a read only type.	end	144	39
 tests/rules/@typescript-eslint/prefer-readonly-parameter-types/allow/cases.ts:146:10	@typescript-eslint/prefer-readonly-parameter-types	shouldBeReadonly	Parameter should be a read only type.	end	146	21
 tests/rules/@typescript-eslint/prefer-readonly-parameter-types/allow/cases.ts:149:13	@typescript-eslint/prefer-readonly-parameter-types	shouldBeReadonly	Parameter should be a read only type.	end	149	24
+tests/rules/@typescript-eslint/prefer-readonly-parameter-types/allow/cases.ts:156:33	@typescript-eslint/prefer-readonly-parameter-types	shouldBeReadonly	Parameter should be a read only type.	end	156	42
+tests/rules/@typescript-eslint/prefer-readonly-parameter-types/allow/cases.ts:156:44	@typescript-eslint/prefer-readonly-parameter-types	shouldBeReadonly	Parameter should be a read only type.	end	156	50
 tests/rules/@typescript-eslint/prefer-readonly-parameter-types/cases.ts:73:17	@typescript-eslint/prefer-readonly-parameter-types	shouldBeReadonly	Parameter should be a read only type.	end	73	28
 tests/rules/@typescript-eslint/prefer-readonly-parameter-types/cases.ts:73:52	@typescript-eslint/prefer-readonly-parameter-types	shouldBeReadonly	Parameter should be a read only type.	end	73	68
 tests/rules/@typescript-eslint/prefer-readonly-parameter-types/cases.ts:73:96	@typescript-eslint/prefer-readonly-parameter-types	shouldBeReadonly	Parameter should be a read only type.	end	73	118
@@ -313,6 +315,9 @@ tests/rules/@typescript-eslint/prefer-readonly-parameter-types/methods-readonly/
 tests/rules/@typescript-eslint/prefer-readonly-parameter-types/methods-readonly/cases.ts:146:10	@typescript-eslint/prefer-readonly-parameter-types	shouldBeReadonly	Parameter should be a read only type.	end	146	21
 tests/rules/@typescript-eslint/prefer-readonly-parameter-types/methods-readonly/cases.ts:147:23	@typescript-eslint/prefer-readonly-parameter-types	shouldBeReadonly	Parameter should be a read only type.	end	147	31
 tests/rules/@typescript-eslint/prefer-readonly-parameter-types/methods-readonly/cases.ts:149:13	@typescript-eslint/prefer-readonly-parameter-types	shouldBeReadonly	Parameter should be a read only type.	end	149	24
+tests/rules/@typescript-eslint/prefer-readonly-parameter-types/methods-readonly/cases.ts:169:3	@typescript-eslint/prefer-readonly-parameter-types	shouldBeReadonly	Parameter should be a read only type.	end	169	27
+tests/rules/@typescript-eslint/prefer-readonly-parameter-types/methods-readonly/cases.ts:170:3	@typescript-eslint/prefer-readonly-parameter-types	shouldBeReadonly	Parameter should be a read only type.	end	170	25
+tests/rules/@typescript-eslint/prefer-readonly-parameter-types/methods-readonly/cases.ts:171:3	@typescript-eslint/prefer-readonly-parameter-types	shouldBeReadonly	Parameter should be a read only type.	end	171	25
 tests/rules/@typescript-eslint/prefer-readonly-parameter-types/no-properties-no-inferred/cases.ts:73:17	@typescript-eslint/prefer-readonly-parameter-types	shouldBeReadonly	Parameter should be a read only type.	end	73	28
 tests/rules/@typescript-eslint/prefer-readonly-parameter-types/no-properties-no-inferred/cases.ts:73:52	@typescript-eslint/prefer-readonly-parameter-types	shouldBeReadonly	Parameter should be a read only type.	end	73	68
 tests/rules/@typescript-eslint/prefer-readonly-parameter-types/no-properties-no-inferred/cases.ts:73:96	@typescript-eslint/prefer-readonly-parameter-types	shouldBeReadonly	Parameter should be a read only type.	end	73	118

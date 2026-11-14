@@ -1,30 +1,34 @@
 module rules
 
 import json2
-import jsregexp
 import os
 import tsgo { TypeResponse, handle_index, handle_path }
 
 // Type specifiers of the options (`allow`, `ignoredTypeNames`…): ports of
-// typeMatchesSomeSpecifier, valueMatchesSomeSpecifier and matchesTypeOrBaseType from
-// typescript-eslint 8.62.0, with the three kinds of TypeOrValueSpecifier. Two of them read
-// ESLint's program:
+// typeMatchesSomeSpecifier, valueMatchesSomeSpecifier, specifierSourceMatches and
+// matchesTypeOrBaseType from @typescript-eslint/type-utils 8.72.2, with the three kinds of
+// TypeOrValueSpecifier. Two of them read ESLint's program:
 // - `from: "file"` compares with program.getCurrentDirectory(). With typescript-eslint's project
 //   service (`parserOptions.projectService`) that is the directory of the tsconfig, the
 //   Checker's project_directory. With `parserOptions.project`, typescript-estree makes the
 //   programs with TypeScript's own compiler hosts (createProgramFromConfigFile, or
 //   createWatchCompilerHost outside a single run), whose current directory is the one of the
 //   process: the directory ESLint runs in, which the configuration of the file then gives
-//   (program_directory);
+//   (program_directory). Since typescript-estree 8.72, a single run (the eslint command without
+//   --fix) takes the files of the project service from such a program too, made for the closest
+//   tsconfig (useSingleRunProgramForProjectService; single_run_program_root in eslint_config.v);
 // - `from: "package"` reads program.sourceFileToPackageName, the name TypeScript 6 gives a file
 //   it resolved inside a package of node_modules; package_id_name rebuilds it from the path and
-//   the package.json of the package. The original looks in that name for the package with a
-//   regular expression made of the `package` as it is, which regexp_annex_b.v runs.
+//   the package.json of the package, and resolve_package_id_name is typescript-eslint's own
+//   fallback without one. The name is compared with the `package` by whole path components.
 
 // TypeScript 7.1.0-beta SyntaxKind values (dist/enums/syntaxKind.enum.js).
 const specifier_kind_string_literal = u32(10)
 const specifier_kind_module_declaration = u32(269)
 const specifier_kind_source_file = u32(308)
+// TypeScript 7.1.0-beta SymbolFlags values (dist/enums/symbolFlags.enum.js).
+const specifier_symbol_flag_value_module = 512
+const specifier_symbol_flag_alias = u32(2097152)
 
 // TypeSpecifier ports TypeOrValueSpecifier: a bare name (from == '') or names from a file (in
 // `path` if has_path), from the standard library or from a package (`pkg`).
@@ -152,12 +156,18 @@ fn (mut c Checker) whole_type_matches(t TypeResponse, s TypeSpecifier) !bool {
 	if s.from == '' {
 		return true
 	}
-	declarations := c.specifier_declarations(t)!
+	return c.specifier_source_matches(s, c.specifier_symbol(t)!)!
+}
+
+// specifier_source_matches ports specifierSourceMatches: where the symbol (the null one for none)
+// is declared is where the specifier (with a `from`) says.
+fn (mut c Checker) specifier_source_matches(s TypeSpecifier, symbol tsgo.SymbolResponse) !bool {
+	declarations := symbol.declarations
 	if s.from == 'file' {
 		return c.declared_in_file(s, declarations)!
 	}
 	if s.from == 'package' {
-		return c.declared_in_package(s.pkg, declarations)!
+		return c.declared_in_package(s.pkg, symbol, declarations)!
 	}
 	// typeDeclaredInLib: without declarations (an intrinsic type) it counts as from the library.
 	if declarations.len == 0 {
@@ -171,16 +181,17 @@ fn (mut c Checker) whole_type_matches(t TypeResponse, s TypeSpecifier) !bool {
 	return false
 }
 
-// specifier_declarations are the declarations (tsgo handles) of the symbol of the type or, without
-// one, of its alias symbol: `type.getSymbol() ?? type.aliasSymbol`.
-fn (mut c Checker) specifier_declarations(t TypeResponse) ![]string {
+// specifier_symbol is the symbol of the type or, without one, its alias symbol (the null one
+// without either): `type.getSymbol() ?? type.aliasSymbol`, whose declarations (tsgo handles) are
+// the ones the specifiers look at.
+fn (mut c Checker) specifier_symbol(t TypeResponse) !tsgo.SymbolResponse {
 	if t.symbol != 0 {
-		return c.symbol_of(t)!.declarations
+		return c.symbol_of(t)!
 	}
 	if t.alias_symbol != 0 {
-		return c.alias_symbol_of(t)!.declarations
+		return c.alias_symbol_of(t)!
 	}
-	return []string{}
+	return tsgo.SymbolResponse{}
 }
 
 // value_matches_some_specifier ports valueMatchesSomeSpecifier: `static_name` (the name of an
@@ -195,7 +206,11 @@ fn (mut c Checker) value_matches_some_specifier(static_name string, specifiers [
 		if static_name !in s.names {
 			continue
 		}
-		if s.from != 'package' || c.declared_in_package(s.pkg, c.specifier_declarations(t)!)! {
+		if s.from != 'package' {
+			return true
+		}
+		symbol := c.specifier_symbol(t)!
+		if c.declared_in_package(s.pkg, symbol, symbol.declarations)! {
 			return true
 		}
 	}
@@ -227,30 +242,105 @@ fn (c &Checker) declared_in_file(s TypeSpecifier, declarations []string) !bool {
 
 // declared_in_package ports typeDeclaredInPackageDeclarationFile: some declaration is inside a
 // `declare module "<package>"`, or in a file of that package that TypeScript resolved in
-// node_modules. For the second, the original tests the name of the package of each file with a
-// regular expression made of the name, `new RegExp(`${packageName}|${typesPackageName}`)`, so
-// the name is a pattern without anchors (`fake.pkg` or `ake-pk` match `fake-pkg`).
-fn (mut c Checker) declared_in_package(pkg string, declarations []string) !bool {
+// node_modules, or the symbol (`type.getSymbol() ?? type.aliasSymbol`, 0 without one) is an
+// export of the ambient module of the package (typeExportedFromDeclareModule).
+fn (mut c Checker) declared_in_package(pkg string, symbol tsgo.SymbolResponse, declarations []string) !bool {
 	for declaration in declarations {
 		if c.declared_in_declare_module(pkg, declaration)! {
 			return true
 		}
 	}
+	// typeDeclaredInDeclarationFile: the package id name of the file (a path inside its package,
+	// `typescript/lib/typescript.d.ts` or `@types/semver/classes/semver.d.ts`) is in the package,
+	// or in its @types package, by whole path components.
+	types_name := types_package_name(pkg)
 	for declaration in declarations {
 		file := handle_path(declaration)
-		name := c.package_id_name(file)
+		if !c.file_metadata(file)!.is_from_external_library {
+			continue
+		}
+		mut name := c.package_id_name(file)
+		if name == '' {
+			name = c.resolve_package_id_name(file)
+		}
 		if name == '' {
 			continue
 		}
-		if c.package_pattern_matches(pkg, name)! && c.file_metadata(file)!.is_from_external_library {
+		without_types := if name.starts_with('@types/') { name['@types/'.len..] } else { name }
+		if path_is_in_package(name, pkg) || path_is_in_package(without_types, types_name) {
+			return true
+		}
+	}
+	return c.exported_from_declare_module(pkg, symbol)!
+}
+
+// path_is_in_package ports pathIsInPackage: the path is the package itself or something inside it,
+// by whole path components (`semver` covers `semver/classes/semver.d.ts`, not `semver-compare`).
+fn path_is_in_package(path string, pkg string) bool {
+	return path == pkg || path.starts_with(pkg + '/')
+}
+
+// exported_from_declare_module ports typeExportedFromDeclareModule: the module `"<package>"` that
+// checker.resolveName finds from the globals (ValueModule) exports the symbol, itself or through
+// an alias.
+fn (mut c Checker) exported_from_declare_module(pkg string, symbol tsgo.SymbolResponse) !bool {
+	if symbol.is_null() {
+		return false
+	}
+	module := c.client.resolve_name(c.snapshot, c.project, '"${pkg}"', specifier_symbol_flag_value_module)!
+	if module.is_null() {
+		return false
+	}
+	for exported in c.client.exports_of_symbol(c.snapshot, c.project, module.id)! {
+		resolved := if exported.flags & specifier_symbol_flag_alias != 0 {
+			c.client.aliased_symbol(c.snapshot, c.project, exported.id)!
+		} else {
+			exported
+		}
+		if !resolved.is_null() && resolved.id == symbol.id {
 			return true
 		}
 	}
 	return false
 }
 
+// resolve_package_id_name ports resolvePackageIdName, for a file TypeScript gives no package id
+// name (one of a linked package reached by a relative import, or of a package.json without
+// `version`): the `name` of the closest package.json that has one, from the directory of the file
+// up, and the path of the file from there.
+fn (mut c Checker) resolve_package_id_name(file string) string {
+	mut directory := os.dir(file)
+	for {
+		if directory !in c.package_root_cache {
+			c.package_root_cache[directory] = package_json_name_only(directory)
+		}
+		name := c.package_root_cache[directory]
+		if name != '' {
+			return name + file[directory.len..]
+		}
+		parent := os.dir(directory)
+		if parent == directory {
+			return ''
+		}
+		directory = parent
+	}
+	return ''
+}
+
+// package_json_name_only is the `name` of the package.json of a directory, when it is a string
+// (ts.readConfigFile, which reads it as JSON with comments); '' otherwise.
+fn package_json_name_only(directory string) string {
+	text := os.read_file(os.join_path_single(directory, 'package.json')) or { return '' }
+	content := json2.decode[json2.Any](text) or { return '' }
+	if content !is map[string]json2.Any {
+		return ''
+	}
+	name := content.as_map()['name'] or { return '' }
+	return if name is string { name } else { '' }
+}
+
 // declared_in_declare_module ports findParentModuleDeclaration: the closest ModuleDeclaration
-// around the declaration that is not a `namespace` is `declare module "<package>"`.
+// around the declaration that is not a `namespace` or `global {}` is `declare module "<package>"`.
 fn (mut c Checker) declared_in_declare_module(pkg string, declaration string) !bool {
 	tree := c.declaration_ast(handle_path(declaration))!
 	mut node := handle_index(declaration)
@@ -266,10 +356,11 @@ fn (mut c Checker) declared_in_declare_module(pkg string, declaration string) !b
 				return text.len >= 2 && text[1..text.len - 1] == pkg
 			}
 			// TypeScript 7 has no NodeFlags.Namespace: a `namespace` is told by its keyword, and the
-			// inner declarations of `namespace A.B {}` have none.
+			// inner declarations of `namespace A.B {}` have none. `global {}` (NodeFlags.
+			// GlobalAugmentation, no keyword here) is passed over too.
 			parent := tree.node_parent(node)
 			nested := tree.node_kind(parent) == specifier_kind_module_declaration
-			if !nested && module_keyword(tree.node_source_text(node)) != 'namespace' {
+			if !nested && module_keyword(tree.node_source_text(node)) !in ['namespace', ''] {
 				return false
 			}
 		}
@@ -307,25 +398,6 @@ fn types_package_name(pkg string) string {
 		}
 	}
 	return pkg
-}
-
-// package_pattern_matches ports `new RegExp(`${packageName}|${typesPackageName}`).test(text)`
-// of typeDeclaredInDeclarationFile, which makes the regular expression every time (so one V8
-// rejects makes the rule throw only when a type gets this far): an error then, here too.
-fn (mut c Checker) package_pattern_matches(pkg string, text string) !bool {
-	if pkg !in c.package_patterns {
-		pattern := package_pattern(pkg)
-		c.package_patterns[pkg] = jsregexp.regexp_compile_annex_b(utf16_units(pattern)) or {
-			return error("the `package` of a type specifier, ${json2.encode(pkg)}, is not a name typescript-eslint can look for: ${err.msg()} (it makes a regular expression of the name, and ESLint stops with V8's error for it)")
-		}
-	}
-	return jsregexp.regexp_test_annex_b(c.package_patterns[pkg], utf16_units(text))
-}
-
-// package_pattern is the pattern typescript-eslint makes of a package name: the name, or the one
-// of its @types package.
-fn package_pattern(pkg string) string {
-	return '${pkg}|${types_package_name(pkg)}'
 }
 
 // package_id_name rebuilds program.sourceFileToPackageName for a file: '' outside node_modules or

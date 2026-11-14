@@ -25,7 +25,7 @@ def lines(results, fixes):
                     line += f"\tfix\t{m['fix']['range'][0]}\t{m['fix']['range'][1]}\t{field(m['fix']['text'])}"
                 for s in m.get("suggestions", []):
                     line += f"\tsuggestion\t{s['messageId']}\t{field(s['desc'])}\t{s['fix']['range'][0]}\t{s['fix']['range'][1]}\t{field(s['fix']['text'])}"
-                if "endLine" in m and m.get("line", 0) > 0:
+                if "endLine" in m:
                     line += f"\tend\t{m['endLine']}\t{m['endColumn']}"
             yield line
 
