@@ -1,0 +1,12 @@
+tests/rules/unicorn/no-await-expression-member/cases.ts:6:36	unicorn/no-await-expression-member	no-await-expression-member	Do not access a member directly from an await expression.
+tests/rules/unicorn/no-await-expression-member/cases.ts:7:37	unicorn/no-await-expression-member	no-await-expression-member	Do not access a member directly from an await expression.
+tests/rules/unicorn/no-await-expression-member/cases.ts:8:35	unicorn/no-await-expression-member	no-await-expression-member	Do not access a member directly from an await expression.
+tests/rules/unicorn/no-await-expression-member/cases.ts:9:36	unicorn/no-await-expression-member	no-await-expression-member	Do not access a member directly from an await expression.
+tests/rules/unicorn/no-await-expression-member/cases.ts:11:36	unicorn/no-await-expression-member	no-await-expression-member	Do not access a member directly from an await expression.
+tests/rules/unicorn/no-await-expression-member/cases.ts:12:37	unicorn/no-await-expression-member	no-await-expression-member	Do not access a member directly from an await expression.
+tests/rules/unicorn/no-await-expression-member/cases.ts:13:44	unicorn/no-await-expression-member	no-await-expression-member	Do not access a member directly from an await expression.
+tests/rules/unicorn/no-await-expression-member/cases.ts:14:46	unicorn/no-await-expression-member	no-await-expression-member	Do not access a member directly from an await expression.
+tests/rules/unicorn/no-await-expression-member/cases.ts:15:41	unicorn/no-await-expression-member	no-await-expression-member	Do not access a member directly from an await expression.
+tests/rules/unicorn/no-await-expression-member/cases.ts:16:23	unicorn/no-await-expression-member	no-await-expression-member	Do not access a member directly from an await expression.
+tests/rules/unicorn/no-await-expression-member/cases.ts:17:43	unicorn/no-await-expression-member	no-await-expression-member	Do not access a member directly from an await expression.
+tests/rules/unicorn/no-await-expression-member/cases.ts:18:69	unicorn/no-await-expression-member	no-await-expression-member	Do not access a member directly from an await expression.

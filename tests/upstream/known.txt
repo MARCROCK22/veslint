@@ -824,3 +824,19 @@ eslint	no-immediate-mutation/r3/i25	in TypeScript an initialization of a declara
 veslint	no-immediate-mutation/r3/i25	in TypeScript an initialization of a declaration without a type annotation is only a suggestion
 eslint	no-immediate-mutation/r7/i1	in TypeScript an initialization of a declaration without a type annotation is only a suggestion
 veslint	no-immediate-mutation/r7/i1	in TypeScript an initialization of a declaration without a type annotation is only a suggestion
+
+# no-await-expression-member: these cases run without a program, where typescript-estree reads a top-level `await` of a
+# script followed by a token that is not an identifier, keyword or literal (`{`, `(`, `[`, `-`, a template, a regular
+# expression) as an await expression. veslint always has a
+# program, and TypeScript reads such an `await` as an identifier there (rules/await_identifier.v), as typescript-eslint
+# does with the project service.
+veslint	no-await-expression-member/r0/i3	without a program typescript-estree reads this top-level `await` of a script as an await expression
+veslint	no-await-expression-member/r1/i0	without a program typescript-estree reads this top-level `await` of a script as an await expression
+veslint	no-await-expression-member/r1/i3	without a program typescript-estree reads this top-level `await` of a script as an await expression
+veslint	no-await-expression-member/r1/i4	without a program typescript-estree reads this top-level `await` of a script as an await expression
+veslint	no-await-expression-member/r4/i10	without a program typescript-estree reads this top-level `await` of a script as an await expression
+veslint	no-await-expression-member/r4/i11	without a program typescript-estree reads this top-level `await` of a script as an await expression
+veslint	no-await-expression-member/r4/i13	without a program typescript-estree reads this top-level `await` of a script as an await expression
+veslint	no-await-expression-member/r4/i17	without a program typescript-estree reads this top-level `await` of a script as an await expression
+veslint	no-await-expression-member/r4/i7	without a program typescript-estree reads this top-level `await` of a script as an await expression
+veslint	no-await-expression-member/r4/i8	without a program typescript-estree reads this top-level `await` of a script as an await expression
