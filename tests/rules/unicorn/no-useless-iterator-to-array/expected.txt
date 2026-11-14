@@ -1,0 +1,20 @@
+tests/rules/unicorn/no-useless-iterator-to-array/cases.ts:5:23	unicorn/no-useless-iterator-to-array	iterable-accepting	`new Set(…)` accepts an iterable, `.toArray()` is unnecessary.
+tests/rules/unicorn/no-useless-iterator-to-array/cases.ts:6:26	unicorn/no-useless-iterator-to-array	iterable-accepting	`new Map(…)` accepts an iterable, `.toArray()` is unnecessary.
+tests/rules/unicorn/no-useless-iterator-to-array/cases.ts:7:30	unicorn/no-useless-iterator-to-array	iterable-accepting	`new Uint8Array(…)` accepts an iterable, `.toArray()` is unnecessary.
+tests/rules/unicorn/no-useless-iterator-to-array/cases.ts:8:26	unicorn/no-useless-iterator-to-array	iterable-accepting	`Array.from(…)` accepts an iterable, `.toArray()` is unnecessary.
+tests/rules/unicorn/no-useless-iterator-to-array/cases.ts:9:37	unicorn/no-useless-iterator-to-array	iterable-accepting	`Object.fromEntries(…)` accepts an iterable, `.toArray()` is unnecessary.
+tests/rules/unicorn/no-useless-iterator-to-array/cases.ts:10:19	unicorn/no-useless-iterator-to-array	spread	Spread works on iterables, `.toArray()` is unnecessary.
+tests/rules/unicorn/no-useless-iterator-to-array/cases.ts:11:27	unicorn/no-useless-iterator-to-array	spread	Spread works on iterables, `.toArray()` is unnecessary.
+tests/rules/unicorn/no-useless-iterator-to-array/cases.ts:12:25	unicorn/no-useless-iterator-to-array	iterable-accepting	`new Set(…)` accepts an iterable, `.toArray()` is unnecessary.
+tests/rules/unicorn/no-useless-iterator-to-array/cases.ts:15:26	unicorn/no-useless-iterator-to-array	iterable-accepting	`Array.from(…)` accepts an iterable, `.toArray()` is unnecessary.
+tests/rules/unicorn/no-useless-iterator-to-array/cases.ts:16:27	unicorn/no-useless-iterator-to-array	iterable-accepting	`Promise.all(…)` accepts an iterable, `.toArray()` is unnecessary.
+tests/rules/unicorn/no-useless-iterator-to-array/cases.ts:17:20	unicorn/no-useless-iterator-to-array	for-of	`for…of`/`for await…of` can iterate over an iterable, `.toArray()` is unnecessary.
+tests/rules/unicorn/no-useless-iterator-to-array/cases.ts:18:28	unicorn/no-useless-iterator-to-array	yield-star	`yield*` can delegate to an iterable, `.toArray()` is unnecessary.
+tests/rules/unicorn/no-useless-iterator-to-array/cases.ts:19:15	unicorn/no-useless-iterator-to-array	iterator-method	`Iterator` has a `.every()` method, `.toArray()` is unnecessary.
+tests/rules/unicorn/no-useless-iterator-to-array/cases.ts:20:15	unicorn/no-useless-iterator-to-array	iterator-method	`Iterator` has a `.some()` method, `.toArray()` is unnecessary.
+tests/rules/unicorn/no-useless-iterator-to-array/cases.ts:21:15	unicorn/no-useless-iterator-to-array	iterator-method	`Iterator` has a `.find()` method, `.toArray()` is unnecessary.
+tests/rules/unicorn/no-useless-iterator-to-array/cases.ts:22:4	unicorn/no-useless-iterator-to-array	iterator-method	`Iterator` has a `.forEach()` method, `.toArray()` is unnecessary.
+tests/rules/unicorn/no-useless-iterator-to-array/cases.ts:23:15	unicorn/no-useless-iterator-to-array	iterator-method	`Iterator` has a `.reduce()` method, `.toArray()` is unnecessary.
+tests/rules/unicorn/no-useless-iterator-to-array/cases.ts:24:30	unicorn/no-useless-iterator-to-array	iterable-accepting	`new Uint8Array(…)` accepts an iterable, `.toArray()` is unnecessary.
+tests/rules/unicorn/no-useless-iterator-to-array/cases.ts:27:30	unicorn/no-useless-iterator-to-array	iterable-accepting	`new Set(…)` accepts an iterable, `.toArray()` is unnecessary.
+tests/rules/unicorn/no-useless-iterator-to-array/cases.ts:42:25	unicorn/no-useless-iterator-to-array	spread	Spread works on iterables, `.toArray()` is unnecessary.
