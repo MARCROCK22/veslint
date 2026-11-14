@@ -249,7 +249,7 @@ fn test_parser_options() {
 // The names of an `/* exported */` comment (parseListConfig).
 fn test_exported_names() {
 	assert exported_names(' a, \'b\' ,"c", \'d, e\' , ,__proto__, a, \'f"') == ['a', 'b', 'c',
-		"'d", "e'", '\'f"']
+		"'d", "e'", '__proto__', '\'f"']
 	assert exported_names('').len == 0
 }
 

@@ -554,7 +554,8 @@ fn global_entries(value string) []GlobalEntry {
 	return out
 }
 
-// exported_names ports ConfigCommentParser.parseListConfig on the value of an `/* exported */`
+// exported_names ports ConfigCommentParser.parseListConfig (of @eslint/plugin-kit, with ESLint
+// 10.15.0) on the value of an `/* exported */`
 // comment: the names between commas, trimmed and without the quotes around them.
 fn exported_names(value string) []string {
 	mut out := []string{}
@@ -564,8 +565,8 @@ fn exported_names(value string) []string {
 		if name.len >= 2 && name[0] in [`'`, `"`] && name[name.len - 1] == name[0] {
 			name = name[1..name.len - 1]
 		}
-		// `items.__proto__ = true` adds no key.
-		if name != '' && name != '__proto__' && name !in out {
+		// The items are an Object.create(null): `__proto__` is a name like the others.
+		if name != '' && name !in out {
 			out << name
 		}
 	}
