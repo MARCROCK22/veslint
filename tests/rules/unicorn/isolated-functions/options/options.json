@@ -1,0 +1,1 @@
+[{"functions": ["run"], "selectors": ["FunctionDeclaration[id.name=/^handler/]", "ArrowFunctionExpression"], "comments": ["@Pure"], "overrideGlobals": {"Map": "off", "external": "writable", "Set": false}}]

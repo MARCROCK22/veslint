@@ -1266,3 +1266,7 @@ eslint	prefer-module/r9/i0	a JavaScript case: as TypeScript, `import.meta` in a 
 veslint	prefer-module/r9/i0	a JavaScript case: as TypeScript, `import.meta` in a constructor callee takes parentheses
 eslint	prefer-module/r9/i4	a JavaScript case: as TypeScript, `import.meta` in a constructor callee takes parentheses
 veslint	prefer-module/r9/i4	a JavaScript case: as TypeScript, `import.meta` in a constructor callee takes parentheses
+# isolated-functions: `/* global Array:off */` declares no global, but as TypeScript the lib's `Array` is a global
+# variable all the same, so the read of a readonly global is allowed (with espree `Array` is unresolved).
+eslint	isolated-functions/r1/i34	the lib of TypeScript declares Array, which /* global Array:off */ does not remove
+veslint	isolated-functions/r1/i34	the lib of TypeScript declares Array, which /* global Array:off */ does not remove
