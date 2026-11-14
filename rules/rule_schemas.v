@@ -328,6 +328,23 @@ const rule_option_schemas = {
 	'require-atomic-updates':                                          '{"type":"array","items":[{"type":"object","properties":{"allowProperties":{"type":"boolean"}},"additionalProperties":false}],"minItems":0,"maxItems":1}'
 	'@typescript-eslint/class-methods-use-this':                       '{"type":"array","items":[{"type":"object","additionalProperties":false,"properties":{"enforceForClassFields":{"type":"boolean","description":"Enforces that functions used as instance field initializers utilize `this`."},"exceptMethods":{"type":"array","description":"Allows specified method names to be ignored with this rule.","items":{"type":"string"}},"ignoreClassesThatImplementAnInterface":{"description":"Whether to ignore class members that are defined within a class that `implements` a type.","oneOf":[{"type":"boolean","description":"Ignore all classes that implement an interface"},{"type":"string","description":"Ignore only the public fields of classes that implement an interface","enum":["public-fields"]}]},"ignoreOverrideMethods":{"type":"boolean","description":"Whether to ignore members marked with the `override` modifier."}}}],"minItems":0,"maxItems":1}'
 	'@typescript-eslint/no-explicit-any':                              '{"type":"array","items":[{"type":"object","additionalProperties":false,"properties":{"fixToUnknown":{"type":"boolean","description":"Whether to enable auto-fixing in which the `any` type is converted to the `unknown` type."},"ignoreRestArgs":{"type":"boolean","description":"Whether to ignore rest parameter arrays."}}}],"minItems":0,"maxItems":1}'
+	'unicorn/consistent-empty-array-spread':                           '{"type":"array","minItems":0,"maxItems":0}'
+	'unicorn/no-useless-fallback-in-spread':                           '{"type":"array","minItems":0,"maxItems":0}'
+	'unicorn/no-useless-collection-argument':                          '{"type":"array","minItems":0,"maxItems":0}'
+	'unicorn/no-useless-iterator-to-array':                            '{"type":"array","minItems":0,"maxItems":0}'
+	'unicorn/no-useless-spread':                                       '{"type":"array","minItems":0,"maxItems":0}'
+	'unicorn/prefer-single-call':                                      '{"type":"array","items":[{"type":"object","additionalProperties":false,"properties":{"ignore":{"type":"array","items":{"type":"string"},"uniqueItems":true,"description":"Methods to ignore."}}}],"minItems":0,"maxItems":1}'
+	'unicorn/no-immediate-mutation':                                   '{"type":"array","items":[{"type":"object","properties":{"checkConditionals":{"type":"boolean","description":"Whether to check conditional mutations."}},"additionalProperties":false}],"minItems":0,"maxItems":1}'
+	'unicorn/prefer-blob-reading-methods':                             '{"type":"array","minItems":0,"maxItems":0}'
+	'unicorn/prefer-response-static-json':                             '{"type":"array","minItems":0,"maxItems":0}'
+	'unicorn/no-await-expression-member':                              '{"type":"array","minItems":0,"maxItems":0}'
+	'unicorn/prefer-spread':                                           '{"type":"array","minItems":0,"maxItems":0}'
+	'unicorn/no-await-in-promise-methods':                             '{"type":"array","minItems":0,"maxItems":0}'
+	'unicorn/no-invalid-fetch-options':                                '{"type":"array","minItems":0,"maxItems":0}'
+	'unicorn/no-unnecessary-await':                                    '{"type":"array","minItems":0,"maxItems":0}'
+	'unicorn/no-thenable':                                             '{"type":"array","minItems":0,"maxItems":0}'
+	'unicorn/no-single-promise-in-promise-methods':                    '{"type":"array","minItems":0,"maxItems":0}'
+	'unicorn/no-useless-promise-resolve-reject':                       '{"type":"array","minItems":0,"maxItems":0}'
 }
 
 // eslint_rule_default_options are the meta.defaultOptions of the rules of ESLint and of

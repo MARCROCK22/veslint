@@ -366,6 +366,7 @@ def main():
     all_lines = []
     unexpected = 0
     failing = set()
+    checked = set()
     total = 0
     for rule in rules:
         with open(os.path.join(ROOT, 'tests/rules', rule, 'upstream.json'), encoding='utf-8') as f:
@@ -375,6 +376,7 @@ def main():
         cases = [c for c in data['cases'] if not c.get('skip')]
         failed = 0
         for case in cases:
+            checked.add(case['id'])
             runner.start_case(case)
             code, file, out, stderr = runner.lint(rule, case, case['code'])
             if code > 1:
@@ -401,6 +403,7 @@ def main():
                     print(f"  {case['id']}: " + '\n    '.join(problems))
         projects = data.get('projects', [])
         for project in projects:
+            checked.add(project['id'])
             problems = check_project(veslint, fixtures, configs, project)
             if problems:
                 failing.add(project['id'])
@@ -412,9 +415,9 @@ def main():
         total += count
         status = 'ok    ' if failed == 0 else 'FAIL  '
         print(f'{status}{rule}: {count - failed} of {count} cases as the upstream test expects')
-    # The ids of the cases start with the name of the rule's test file upstream, the rule's name.
-    names = {rule.rsplit('/', 1)[-1] for rule in rules}
-    stale = [case_id for case_id in known if test_file_of(case_id).split('/')[0] in names and case_id not in failing]
+    # Only the ids of the cases checked here: a rule of ESLint core and one of a plugin may have the
+    # same name (`prefer-spread`, `unicorn/prefer-spread`), and so the same ids for other cases.
+    stale = [case_id for case_id in known if case_id in checked and case_id not in failing]
     for case_id in stale:
         print(f'  {case_id} is listed in tests/upstream/known.txt but passes')
     if lines_out:

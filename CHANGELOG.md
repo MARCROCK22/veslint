@@ -2,6 +2,15 @@
 
 Each version is a release on GitHub with the veslint binaries (Linux x64, Windows x64) and the VS Code extension. The section of a version is the text of its release.
 
+## 0.21.0
+
+- **8 rules of eslint-plugin-unicorn for spreads and redundant calls:** `unicorn/consistent-empty-array-spread`, `unicorn/no-immediate-mutation`, `unicorn/no-useless-collection-argument`, `unicorn/no-useless-fallback-in-spread`, `unicorn/no-useless-iterator-to-array`, `unicorn/no-useless-spread`, `unicorn/prefer-single-call` and `unicorn/prefer-spread`.
+- **9 rules of eslint-plugin-unicorn for promises, async code and web APIs:** `unicorn/no-await-expression-member`, `unicorn/no-await-in-promise-methods`, `unicorn/no-invalid-fetch-options`, `unicorn/no-single-promise-in-promise-methods`, `unicorn/no-thenable`, `unicorn/no-unnecessary-await`, `unicorn/no-useless-promise-resolve-reject`, `unicorn/prefer-blob-reading-methods` and `unicorn/prefer-response-static-json`.
+- They come with their options, fixes and suggestions, and pass the cases of unicorn's own tests.
+- **Fixes:**
+  - The unicorn rules use TypeScript's types only when the parser has a program, as unicorn does (`withTypeInformation`): with `projectService: false`, some of them looked at the types all the same.
+  - `getStaticValue` reads the value of a shorthand property (`{method}`) as the identifier it is.
+
 ## 0.20.0
 
 - **7 rules that `@marcrock22/eslintcf` turns on:** `array-callback-return`, `no-lonely-if`, `no-negated-condition`, `no-throw-literal` and `require-atomic-updates` of ESLint core, and `@typescript-eslint/class-methods-use-this` and `@typescript-eslint/no-explicit-any`. They come with their options, fixes and suggestions, and pass the cases of their own tests.
