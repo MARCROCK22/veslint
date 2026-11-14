@@ -9,3 +9,14 @@ tests/rules/unicorn/custom-error-definition/cases.ts:34:17	unicorn/custom-error-
 tests/rules/unicorn/custom-error-definition/cases.ts:38:17	unicorn/custom-error-definition	error	The `name` property should be set to `NoNameInConstructorError`.
 tests/rules/unicorn/custom-error-definition/cases.ts:42:9	unicorn/custom-error-definition	invalidExport	Exported error name should match error class
 tests/rules/unicorn/custom-error-definition/cases.ts:45:9	unicorn/custom-error-definition	invalidExport	Exported error name should match error class
+tests/rules/unicorn/custom-error-definition/cases.ts:54:15	unicorn/custom-error-definition	missingOptionsParameter	Error constructors should accept an `options` parameter.
+tests/rules/unicorn/custom-error-definition/cases.ts:66:15	unicorn/custom-error-definition	missingOptionsParameter	Error constructors should accept an `options` parameter.
+tests/rules/unicorn/custom-error-definition/cases.ts:73:5	unicorn/custom-error-definition	passOptionsToSuper	Pass `options` to `super()` as the second argument.
+tests/rules/unicorn/custom-error-definition/cases.ts:78:3	unicorn/custom-error-definition	invalidOptionsParameter	Error constructors should use a non-rest parameter named `options`.
+tests/rules/unicorn/custom-error-definition/cases.ts:85:5	unicorn/custom-error-definition	passMessageToSuper	Pass the error message to `super()` as the first argument.
+tests/rules/unicorn/custom-error-definition/cases.ts:91:5	unicorn/custom-error-definition	passOptionsToSuper	Pass `options` to `super()` as the second argument.
+tests/rules/unicorn/custom-error-definition/cases.ts:103:5	unicorn/custom-error-definition	doNotPassMessageToSuper	Do not pass the error message to `super()` when the class defines a `message` accessor.
+tests/rules/unicorn/custom-error-definition/cases.ts:113:5	unicorn/custom-error-definition	doNotAssignMessageWithoutSetter	Do not assign to `this.message` when the class defines a `message` getter without a setter.
+tests/rules/unicorn/custom-error-definition/cases.ts:123:5	unicorn/custom-error-definition	error	Pass the error message to `super()` instead of setting `this.message`.
+tests/rules/unicorn/custom-error-definition/cases.ts:135:10	unicorn/custom-error-definition	error	The `name` property should be set to `FieldNameError`.
+tests/rules/unicorn/custom-error-definition/cases.ts:137:8	unicorn/custom-error-definition	error	The `name` property should be set to `EmptyNameError`.

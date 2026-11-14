@@ -1657,7 +1657,7 @@ fn un_is_reference_identifier(t &estree.EsTree, node int) bool {
 		.ts_enum_member, .ts_type_alias_declaration {
 			is_key(.id)
 		}
-		.property_definition, .method_definition {
+		.property_definition, .method_definition, .ts_property_signature, .ts_method_signature {
 			!computed && is_key(.key)
 		}
 		.property {
@@ -1690,7 +1690,7 @@ fn un_is_reference_identifier(t &estree.EsTree, node int) bool {
 		.ts_type_parameter {
 			is_key(.name)
 		}
-		.ts_mapped_type, .ts_property_signature {
+		.ts_mapped_type {
 			is_key(.key)
 		}
 		else {
@@ -1931,4 +1931,156 @@ fn un_function_only_expression(t &estree.EsTree, function int) int {
 		return t.node(statements[0], .expression) or { -1 }
 	}
 	return -1
+}
+
+// un_line_start ports getLineStart: the offset where the line of `offset` starts.
+fn un_line_start(src string, offset int) int {
+	mut start := offset
+	for start > 0 {
+		b := src[start - 1]
+		if b == `\n` || b == `\r` {
+			break
+		}
+		// U+2028 and U+2029 end in 0xa8 and 0xa9.
+		if start >= 3 && src[start - 3] == 0xe2 && src[start - 2] == 0x80
+			&& b in [u8(0xa8), 0xa9] {
+			break
+		}
+		start--
+	}
+	return start
+}
+
+// un_line_indent ports getLineIndent: the leading tabs and spaces of the line where `offset` is.
+fn (c &Checker) un_line_indent(offset int) string {
+	start := un_line_start(c.src, offset)
+	mut end := start
+	for end < c.src.len && c.src[end] in [` `, `\t`] {
+		end++
+	}
+	return c.src[start..end]
+}
+
+// un_source_lines are sourceCode.lines: the lines of the source, split at every line break.
+fn un_source_lines(src string) []string {
+	mut lines := []string{}
+	mut start := 0
+	mut i := 0
+	for i < src.len {
+		b := src[i]
+		if b == `\r` || b == `\n` {
+			lines << src[start..i]
+			i += if b == `\r` && i + 1 < src.len && src[i + 1] == `\n` { 2 } else { 1 }
+			start = i
+			continue
+		}
+		if b == 0xe2 && i + 2 < src.len && src[i + 1] == 0x80 && src[i + 2] in [u8(0xa8), 0xa9] {
+			lines << src[start..i]
+			i += 3
+			start = i
+			continue
+		}
+		i++
+	}
+	lines << src[start..]
+	return lines
+}
+
+// un_detect_indent_key ports makeIndentsMap and getMostUsedKey of detect-indent 7.0.2: the most
+// used indent as `s<n>` or `t<n>`, or '' when there is none.
+fn un_detect_indent_key(lines []string, ignore_single_spaces bool) (string, int) {
+	mut used := map[string]int{}
+	mut weights := map[string]int{}
+	mut order := []string{}
+	mut previous_size := 0
+	mut previous_type := ''
+	mut key := ''
+	for line in lines {
+		if line == '' {
+			continue
+		}
+		// `^(?:( )+|\t+)`
+		mut indent := 0
+		mut typ := ''
+		if line[0] == ` ` {
+			for indent < line.len && line[indent] == ` ` {
+				indent++
+			}
+			typ = 'space'
+		} else if line[0] == `\t` {
+			for indent < line.len && line[indent] == `\t` {
+				indent++
+			}
+			typ = 'tab'
+		}
+		if typ == '' {
+			previous_size = 0
+			previous_type = ''
+			continue
+		}
+		if ignore_single_spaces && typ == 'space' && indent == 1 {
+			continue
+		}
+		if typ != previous_type {
+			previous_size = 0
+		}
+		previous_type = typ
+		mut use := 1
+		mut weight := 0
+		difference := indent - previous_size
+		previous_size = indent
+		if difference == 0 {
+			use = 0
+			weight = 1
+		} else {
+			absolute := if difference < 0 { -difference } else { difference }
+			if ignore_single_spaces && typ == 'space' && absolute == 1 {
+				continue
+			}
+			key = (if typ == 'space' { 's' } else { 't' }) + absolute.str()
+		}
+		if key !in used {
+			order << key
+			used[key] = 1
+			weights[key] = 0
+		} else {
+			used[key] += use
+			weights[key] += weight
+		}
+	}
+	mut result := ''
+	mut max_used := 0
+	mut max_weight := 0
+	for k in order {
+		if used[k] > max_used || (used[k] == max_used && weights[k] > max_weight) {
+			max_used = used[k]
+			max_weight = weights[k]
+			result = k
+		}
+	}
+	return result, order.len
+}
+
+// un_indent_unit ports getIndentUnit: one level of indentation of the file (detect-indent on its
+// lines, with the continuation lines of multi-line tokens and comments blanked), a tab when it is
+// not made of spaces.
+fn (c &Checker) un_indent_unit(t &estree.EsTree, tokens &SourceTokens) string {
+	mut lines := un_source_lines(c.src)
+	for token in tokens.all {
+		start_line, _ := t.line_column(token.start)
+		end_line, _ := t.line_column(token.end)
+		for line in start_line .. end_line {
+			if line < lines.len {
+				lines[line] = ''
+			}
+		}
+	}
+	mut key, count := un_detect_indent_key(lines, true)
+	if count == 0 {
+		key, _ = un_detect_indent_key(lines, false)
+	}
+	if key.starts_with('s') {
+		return ' '.repeat(key[1..].int())
+	}
+	return '\t'
 }
