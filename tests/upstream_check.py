@@ -306,6 +306,9 @@ def check(case, messages, findings, outputs):
                     problems.append(f'error {i}: {key} {found[key]}, expected {expected[key]}')
             if 'suggestions' in expected:
                 wanted_suggestions = expected['suggestions'] or []
+                # A number (RuleTester of ESLint 10) is how many suggestions the error has.
+                if isinstance(wanted_suggestions, int):
+                    wanted_suggestions = [{}] * wanted_suggestions
                 if len(found['suggestions']) != len(wanted_suggestions):
                     problems.append(f'error {i}: {len(found["suggestions"])} suggestion(s), expected {len(wanted_suggestions)}')
                 for j, (want, got) in enumerate(zip(wanted_suggestions, found['suggestions'])):

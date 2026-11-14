@@ -145,7 +145,8 @@ function check(rule, c, messages, outputs) {
       }
       if ('suggestions' in e) {
         const actual = m.suggestions ?? [];
-        const wanted = e.suggestions || []; // `suggestions: 0` (unicorn) expects none
+        // `suggestions: 0` (unicorn) expects none; a number (RuleTester of ESLint 10) is how many there are.
+        const wanted = typeof e.suggestions === 'number' ? Array.from({ length: e.suggestions }, () => ({})) : e.suggestions || [];
         if (actual.length !== wanted.length) say(`error ${i}: ${actual.length} suggestion(s), expected ${wanted.length}`);
         wanted.forEach((s, j) => {
           const a = actual[j];

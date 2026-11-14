@@ -1,0 +1,29 @@
+tests/rules/unicorn/no-useless-spread/cases.ts:8:13	unicorn/no-useless-spread	spread-in-list	Spread an array literal in array literal is unnecessary.	fix	213	222	1, 2	end	8	16
+tests/rules/unicorn/no-useless-spread/cases.ts:9:13	unicorn/no-useless-spread	spread-in-list	Spread an array literal in array literal is unnecessary.	fix	240	246		end	9	16
+tests/rules/unicorn/no-useless-spread/cases.ts:10:14	unicorn/no-useless-spread	spread-in-list	Spread an object literal in object literal is unnecessary.	fix	264	275	 a: 1 	end	10	17
+tests/rules/unicorn/no-useless-spread/cases.ts:11:6	unicorn/no-useless-spread	spread-in-list	Spread an array literal in arguments is unnecessary.	fix	290	299	1, 2	end	11	9
+tests/rules/unicorn/no-useless-spread/cases.ts:12:6	unicorn/no-useless-spread	spread-in-list	Spread an array literal in arguments is unnecessary.	fix	307	318	1, undefined, 3	end	12	9
+tests/rules/unicorn/no-useless-spread/cases.ts:13:9	unicorn/no-useless-spread	spread-in-collection-constructor	`new Map(…)` accepts a single iterable argument, spreading is misleading.	end	13	52
+tests/rules/unicorn/no-useless-spread/cases.ts:14:13	unicorn/no-useless-spread	spread-in-list	Spread an array literal in array literal is unnecessary.	fix	387	398	1, 2	end	14	16
+tests/rules/unicorn/no-useless-spread/cases.ts:15:14	unicorn/no-useless-spread	spread-in-list	Spread an object literal in object literal is unnecessary.	fix	414	420		end	15	17
+tests/rules/unicorn/no-useless-spread/cases.ts:18:20	unicorn/no-useless-spread	spread-in-list	Spread an array literal in arguments is unnecessary.	fix	482	490	[1]	end	18	23
+tests/rules/unicorn/no-useless-spread/cases.ts:25:20	unicorn/no-useless-spread	iterable-to-array	`new Set(…)` accepts an iterable as an argument, it's unnecessary to convert to an array.	fix	696	704	set	end	25	28
+tests/rules/unicorn/no-useless-spread/cases.ts:26:24	unicorn/no-useless-spread	iterable-to-array	`Promise.all(…)` accepts an iterable as an argument, it's unnecessary to convert to an array.	fix	730	738	set	end	26	32
+tests/rules/unicorn/no-useless-spread/cases.ts:27:23	unicorn/no-useless-spread	iterable-to-array	`Array.from(…)` accepts an iterable as an argument, it's unnecessary to convert to an array.	fix	763	771	set	end	27	31
+tests/rules/unicorn/no-useless-spread/cases.ts:28:31	unicorn/no-useless-spread	iterable-to-array	`Object.fromEntries(…)` accepts an iterable as an argument, it's unnecessary to convert to an array.	fix	804	834	new Map<string, number>()	end	28	61
+tests/rules/unicorn/no-useless-spread/cases.ts:29:17	unicorn/no-useless-spread	iterable-to-array-in-for-of	`for…of` can iterate over an iterable, it's unnecessary to convert to an array.	suggestion	suggestion/remove-iterable-array	Remove the array conversion.	853	861	set	end	29	25
+tests/rules/unicorn/no-useless-spread/cases.ts:30:25	unicorn/no-useless-spread	iterable-to-array-in-yield-star	`yield*` can delegate to an iterable, it's unnecessary to convert to an array.	suggestion	suggestion/remove-iterable-array	Remove the array conversion.	907	915	set	end	30	33
+tests/rules/unicorn/no-useless-spread/cases.ts:34:20	unicorn/no-useless-spread	spread-in-collection-constructor	`new Set(…)` accepts a single iterable argument, spreading is misleading.	end	34	61
+tests/rules/unicorn/no-useless-spread/cases.ts:37:32	unicorn/no-useless-spread	spread-in-object-assign	`Object.assign(…)` source object with only spread properties is unnecessary.	suggestion	suggestion/remove-object-assign-spread	Remove the object literal wrapper.	1095	1105	obj	end	37	35
+tests/rules/unicorn/no-useless-spread/cases.ts:38:32	unicorn/no-useless-spread	spread-in-object-assign	`Object.assign(…)` source object with only spread properties is unnecessary.	suggestion	suggestion/remove-object-assign-spread	Remove the object literal wrapper.	1137	1155	obj, foo	end	38	35
+tests/rules/unicorn/no-useless-spread/cases.ts:39:40	unicorn/no-useless-spread	spread-in-object-assign	`Object.assign(…)` source object with only spread properties is unnecessary.	end	39	43
+tests/rules/unicorn/no-useless-spread/cases.ts:43:12	unicorn/no-useless-spread	clone-array	Unnecessarily cloning an array.	fix	1268	1284	foo.slice()	end	43	28
+tests/rules/unicorn/no-useless-spread/cases.ts:44:12	unicorn/no-useless-spread	clone-array	Unnecessarily cloning an array.	fix	1297	1317	foo.map(x => x)	end	44	32
+tests/rules/unicorn/no-useless-spread/cases.ts:45:12	unicorn/no-useless-spread	clone-array	Unnecessarily cloning an array.	fix	1330	1349	str.split(',')	end	45	31
+tests/rules/unicorn/no-useless-spread/cases.ts:46:12	unicorn/no-useless-spread	clone-array	Unnecessarily cloning an array.	fix	1362	1383	Object.keys(obj)	end	46	33
+tests/rules/unicorn/no-useless-spread/cases.ts:47:12	unicorn/no-useless-spread	clone-array	Unnecessarily cloning an array.	fix	1396	1416	Array.from(set)	end	47	32
+tests/rules/unicorn/no-useless-spread/cases.ts:48:12	unicorn/no-useless-spread	clone-array	Unnecessarily cloning an array.	end	48	29
+tests/rules/unicorn/no-useless-spread/cases.ts:49:12	unicorn/no-useless-spread	clone-array	Unnecessarily cloning an array.	fix	1459	1477	foo.concat(1)	end	49	30
+tests/rules/unicorn/no-useless-spread/cases.ts:50:30	unicorn/no-useless-spread	clone-array	Unnecessarily cloning an array.	fix	1508	1535	(await Promise.all([1]))	end	50	57
+tests/rules/unicorn/no-useless-spread/cases.ts:53:10	unicorn/no-useless-spread	clone-array	Unnecessarily cloning an array.	fix	1594	1628	 ( \n    foo.filter(Boolean)\n  )	end	55	4
+tests/rules/unicorn/no-useless-spread/cases.ts:57:13	unicorn/no-useless-spread	clone-array	Unnecessarily cloning an array.	fix	1644	1668	(foo || []).slice()	end	57	37
