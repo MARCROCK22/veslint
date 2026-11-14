@@ -4,7 +4,7 @@ import time
 import offsets
 import treesitter { node_kind, node_parent, node_start, position_of }
 
-// Port of the `block-scoped-var` rule of ESLint 10.6.0 (it has no options).
+// Port of the `block-scoped-var` rule of ESLint 10.15.0 (it has no options).
 
 const bsv_messages = {
 	'outOfScope': "'{{name}}' declared on line {{definitionLine}} column {{definitionColumn}} is used outside of binding context."

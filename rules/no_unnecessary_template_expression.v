@@ -4,7 +4,7 @@ import time
 import tsgo { TypeResponse, handle_kind }
 import treesitter { Ident, children, node_end, node_field, node_kind, node_parent, node_start, nodes_of_kind, nodes_of_kinds, position_of }
 
-// Port of the `no-unnecessary-template-expression` rule of typescript-eslint 8.62.0 (it has no
+// Port of the `no-unnecessary-template-expression` rule of typescript-eslint 8.72.2 (it has no
 // options), with its fixes.
 
 const nute_messages = {

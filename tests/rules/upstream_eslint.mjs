@@ -1,6 +1,6 @@
 // node tests/rules/upstream_eslint.mjs FIXTURES OUT rule-id...
 //
-// Runs ESLint 10.6.0 with typescript-eslint 8.62.0 (build/eval) on the cases of
+// Runs ESLint 10.15.0 with typescript-eslint 8.72.2 (build/eval) on the cases of
 // tests/rules/<rule>/upstream.json the way typescript-eslint's RuleTester runs its tests: the
 // fixtures directory FIXTURES is one program, the case is the text of its file, parserOptions
 // default to ecmaVersion "latest" and sourceType "module", and unused disable directives are

@@ -3,7 +3,7 @@ module rules
 import time
 import treesitter { node_field, node_kind, position_of }
 
-// Port of the `prefer-rest-params` rule of ESLint 10.6.0 (it has no options).
+// Port of the `prefer-rest-params` rule of ESLint 10.15.0 (it has no options).
 
 const prp_messages = {
 	'preferRestParams': "Use the rest parameters instead of 'arguments'."

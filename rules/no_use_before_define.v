@@ -4,7 +4,7 @@ import json2
 import time
 import treesitter { node_end, node_field, node_kind, node_parent, node_start, position_of }
 
-// Port of the `no-use-before-define` rule of typescript-eslint 8.62.0, with its options: the
+// Port of the `no-use-before-define` rule of typescript-eslint 8.72.2, with its options: the
 // string 'nofunc', or an object with `allowNamedExports`, `classes`, `enums`, `functions`,
 // `ignoreTypeReferences`, `typedefs` and `variables`.
 

@@ -3,7 +3,7 @@ module rules
 import time
 import treesitter { node_end, node_field, node_kind, node_parent, node_start }
 
-// Port of the `no-loop-func` rule of ESLint 10.6.0 (it has no options).
+// Port of the `no-loop-func` rule of ESLint 10.15.0 (it has no options).
 
 const nlf_messages = {
 	'unsafeRefs': 'Function declared in a loop contains unsafe references to variable(s) {{ varNames }}.'

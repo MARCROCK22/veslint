@@ -1,5 +1,5 @@
-// Oracle of the differential test of the code path analysis: lints each file with ESLint 10.6.0
-// and typescript-eslint's parser 8.62.0, with a rule that records every event its listeners get
+// Oracle of the differential test of the code path analysis: lints each file with ESLint 10.15.0
+// and typescript-eslint's parser 8.72.2, with a rule that records every event its listeners get
 // (`*`, `*:exit` and the seven code path events), in the order ESLint calls them, and writes them
 // canonically (tests/codepath/main.v writes the same format).
 //

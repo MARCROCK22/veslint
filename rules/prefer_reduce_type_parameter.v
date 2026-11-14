@@ -4,7 +4,7 @@ import time
 import tsgo { TypeResponse }
 import treesitter { named_children, node_end, node_field, node_kind, node_start, nodes_of_kind, position_of }
 
-// Port of the `prefer-reduce-type-parameter` rule of typescript-eslint 8.62.0, with its fix.
+// Port of the `prefer-reduce-type-parameter` rule of typescript-eslint 8.72.2, with its fix.
 
 const prtp_messages = {
 	'preferTypeParameter': 'Unnecessary assertion: Array#reduce accepts a type parameter for the default value.'

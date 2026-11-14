@@ -4,7 +4,7 @@ import json2
 import time
 import treesitter { named_children, node_end, node_field, node_kind, node_parent, node_start, position_of }
 
-// Port of the `no-else-return` rule of ESLint 10.6.0, with its option and its fix.
+// Port of the `no-else-return` rule of ESLint 10.15.0, with its option and its fix.
 
 const ner_messages = {
 	'unexpected': "Unnecessary 'else' after 'return'."

@@ -4,7 +4,7 @@ import time
 import tsgo { TypeResponse }
 import treesitter { has_child_kind, named_children, node_end, node_field, node_kind, node_parent, nodes_of_kinds, position_of }
 
-// Port of the `prefer-return-this-type` rule of typescript-eslint 8.62.0, with its fix (the type
+// Port of the `prefer-return-this-type` rule of typescript-eslint 8.72.2, with its fix (the type
 // reference becomes `this`).
 
 const prtt_messages = {

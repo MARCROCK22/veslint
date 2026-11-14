@@ -3,7 +3,7 @@ module rules
 import json2
 import time
 
-// Port of the `unicode-bom` rule of ESLint 10.6.0, with its option and its fix.
+// Port of the `unicode-bom` rule of ESLint 10.15.0, with its option and its fix.
 
 const ubom_messages = {
 	'expected':   'Expected Unicode BOM (Byte Order Mark).'

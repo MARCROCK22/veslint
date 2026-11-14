@@ -3,7 +3,7 @@ module rules
 import time
 import treesitter { node_start }
 
-// Port of the `no-sparse-arrays` rule of ESLint 10.6.0 (it has no options).
+// Port of the `no-sparse-arrays` rule of ESLint 10.15.0 (it has no options).
 
 const nsa2_messages = {
 	'unexpectedSparseArray': 'Unexpected comma in middle of array.'

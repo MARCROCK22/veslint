@@ -7,7 +7,7 @@ import fs from 'node:fs';
 import path from 'node:path';
 import { execFileSync } from 'node:child_process';
 
-// SUPPORTED_GLOBALS of dist/rules/unbound-method.js (typescript-eslint 8.62.0).
+// SUPPORTED_GLOBALS of dist/rules/unbound-method.js (typescript-eslint 8.72.2).
 const SUPPORTED_GLOBALS = ['Number', 'Object', 'String', 'RegExp', 'Symbol', 'Array', 'Proxy', 'Date', 'Atomics',
   'Reflect', 'console', 'Math', 'JSON', 'Intl'];
 const names = SUPPORTED_GLOBALS.flatMap(namespace => {

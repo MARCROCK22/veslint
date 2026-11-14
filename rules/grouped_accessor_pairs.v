@@ -4,7 +4,7 @@ import json2
 import time
 import treesitter { named_children, node_kind, node_start }
 
-// Port of the `grouped-accessor-pairs` rule of ESLint 10.6.0, with its options.
+// Port of the `grouped-accessor-pairs` rule of ESLint 10.15.0, with its options.
 
 const gap_messages = {
 	'notGrouped':   'Accessor pair {{ formerName }} and {{ latterName }} should be grouped.'

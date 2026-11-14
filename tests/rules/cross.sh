@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 # Runs the ported rules together, with their default options, on every fixture of tests/rules, with
-# ESLint 10.6.0 + typescript-eslint 8.62.0 (and @slipher/eslint-plugin 1.1.0 for the `seyfert/*`
+# ESLint 10.15.0 + typescript-eslint 8.72.2 (and @slipher/eslint-plugin 1.1.0 for the `seyfert/*`
 # rules) and with veslint, and compares the findings (position, rule, messageId and message).
 # reference.sh only runs each rule on its own fixtures; this also tells what a rule reports on the
 # code written for the others. ESLint lints each file on its own (cross_eslint.mjs), since a rule of

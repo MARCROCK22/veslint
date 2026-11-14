@@ -4,7 +4,7 @@ import json2
 import time
 import treesitter { node_field, node_kind, position_of }
 
-// Port of the `no-return-assign` rule of ESLint 10.6.0, with its option.
+// Port of the `no-return-assign` rule of ESLint 10.15.0, with its option.
 
 const nra_messages = {
 	'returnAssignment': 'Return statement should not contain assignment.'

@@ -3,7 +3,7 @@ module rules
 import time
 import treesitter { position_of }
 
-// Port of the `no-iterator` rule of ESLint 10.6.0 (it has no options).
+// Port of the `no-iterator` rule of ESLint 10.15.0 (it has no options).
 
 const nitr_messages = {
 	'noIterator': "Reserved name '__iterator__'."

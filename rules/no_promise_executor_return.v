@@ -4,7 +4,7 @@ import json2
 import time
 import treesitter { named_children, node_field, node_kind, node_parent, node_start, position_of }
 
-// Port of the `no-promise-executor-return` rule of ESLint 10.6.0.
+// Port of the `no-promise-executor-return` rule of ESLint 10.15.0.
 
 const npe_messages = {
 	'returnsValue': 'Return values from promise executor functions cannot be read.'

@@ -3,8 +3,8 @@ module rules
 import time
 import treesitter { has_child_kind, named_children, node_end, node_field, node_kind, node_parent }
 
-// Port of the `no-useless-constructor` rule of typescript-eslint 8.62.0 (it has no options), which
-// extends the rule of ESLint 10.6.0 with the same name, with its suggestion. The wrapper's checks
+// Port of the `no-useless-constructor` rule of typescript-eslint 8.72.2 (it has no options), which
+// extends the rule of ESLint 10.15.0 with the same name, with its suggestion. The wrapper's checks
 // (an accessibility that makes the constructor useful, parameter properties and decorators) are
 // also the core rule's.
 

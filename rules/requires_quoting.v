@@ -1,6 +1,6 @@
 module rules
 
-// Port of requiresQuoting of @typescript-eslint/type-utils 8.62.0: whether a property name has to
+// Port of requiresQuoting of @typescript-eslint/type-utils 8.72.2: whether a property name has to
 // be written as a string, because it is not an identifier. Like the original it looks at UTF-16
 // code units (charCodeAt), so a character outside the Basic Multilingual Plane always requires
 // quotes, with TypeScript's isIdentifierStart and isIdentifierPart.

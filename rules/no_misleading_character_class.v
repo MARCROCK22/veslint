@@ -6,7 +6,7 @@ import regexpp
 import time
 import treesitter { children, named_children, node_field, node_kind, node_start, position_of }
 
-// Port of the `no-misleading-character-class` rule of ESLint 10.6.0.
+// Port of the `no-misleading-character-class` rule of ESLint 10.15.0.
 
 const nmcc_messages = {
 	'surrogatePairWithoutUFlag': "Unexpected surrogate pair in character class. Use 'u' flag."

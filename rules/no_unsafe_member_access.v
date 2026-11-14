@@ -4,7 +4,7 @@ import json2
 import time
 import treesitter { children, first_named_child, has_child_kind, named_children, node_end, node_field, node_kind, node_start, nodes_of_kind, nodes_of_kinds, position_of }
 
-// Port of the `no-unsafe-member-access` rule of typescript-eslint 8.62.0 with its option,
+// Port of the `no-unsafe-member-access` rule of typescript-eslint 8.72.2 with its option,
 // allowOptionalChaining. Limits of the port: internals.md, "Rules" section.
 
 const numa_messages = {

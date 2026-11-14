@@ -3,7 +3,7 @@ module rules
 import time
 import treesitter { node_kind, node_parent, position_of }
 
-// Port of the `no-multi-str` rule of ESLint 10.6.0 (it has no options).
+// Port of the `no-multi-str` rule of ESLint 10.15.0 (it has no options).
 
 const nmstr_messages = {
 	'multilineString': 'Multiline support is limited to browsers supporting ES5 only.'

@@ -3,7 +3,7 @@ module rules
 import time
 import treesitter { named_children, node_end, node_field, node_kind, node_parent, node_start, position_of }
 
-// Port of the `prefer-for-of` rule of typescript-eslint 8.62.0 (it has no options).
+// Port of the `prefer-for-of` rule of typescript-eslint 8.72.2 (it has no options).
 
 const pfo_messages = {
 	'preferForOf': 'Expected a `for-of` loop instead of a `for` loop with this simple iteration.'

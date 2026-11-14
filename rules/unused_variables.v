@@ -2,7 +2,7 @@ module rules
 
 import treesitter { has_child_kind, named_children, node_end, node_field, node_kind, node_parent, node_start, nodes_of_kinds }
 
-// Port of typescript-eslint 8.62.0's util/collectUnusedVariables.js (the analysis of the
+// Port of typescript-eslint 8.72.2's util/collectUnusedVariables.js (the analysis of the
 // `no-unused-vars` rule), which the `unused` modifier of `naming-convention` uses: the variables
 // of a file that nothing uses, on the scope tree (scope.v).
 

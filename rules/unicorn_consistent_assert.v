@@ -3,7 +3,7 @@ module rules
 import estree
 import time
 
-// Port of the `unicorn/consistent-assert` rule of eslint-plugin-unicorn 64.0.0 (it has no
+// Port of the `unicorn/consistent-assert` rule of eslint-plugin-unicorn 79.0.0 (it has no
 // options), with its fix.
 
 const uca_messages = {

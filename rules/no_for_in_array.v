@@ -4,7 +4,7 @@ import time
 import tsgo { TypeResponse }
 import treesitter { node_field, node_kind, nodes_of_kind, position_of }
 
-// Port of the `no-for-in-array` rule of typescript-eslint 8.62.0 (it has no options).
+// Port of the `no-for-in-array` rule of typescript-eslint 8.72.2 (it has no options).
 
 const nfia_messages = {
 	'forInViolation': 'For-in loops over arrays skips holes, returns indices as strings, and may visit the prototype chain or other enumerable properties. Use a more robust iteration method such as for-of or array.forEach instead.'

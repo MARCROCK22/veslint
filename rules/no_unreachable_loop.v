@@ -4,7 +4,7 @@ import estree
 import json2
 import time
 
-// Port of the `no-unreachable-loop` rule of ESLint 10.6.0, on the code path events of the
+// Port of the `no-unreachable-loop` rule of ESLint 10.15.0, on the code path events of the
 // codepath module.
 
 const nurl_messages = {

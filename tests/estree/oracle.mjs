@@ -1,4 +1,4 @@
-// Oracle of the differential test: parses with @typescript-eslint/typescript-estree 8.62.0 and
+// Oracle of the differential test: parses with @typescript-eslint/typescript-estree 8.72.2 and
 // serializes the ESTree canonically (see serialize below; tests/estree/main.v writes the same format).
 //
 //   node oracle.mjs hash <list> [<shard>/<shards>]   prints `path\tstatus\tsha1` per input

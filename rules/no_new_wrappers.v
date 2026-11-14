@@ -3,7 +3,7 @@ module rules
 import time
 import treesitter { node_field, node_kind, position_of }
 
-// Port of the `no-new-wrappers` rule of ESLint 10.6.0 (it has no options).
+// Port of the `no-new-wrappers` rule of ESLint 10.15.0 (it has no options).
 
 const nnwr_messages = {
 	'noConstructor': 'Do not use {{fn}} as a constructor.'

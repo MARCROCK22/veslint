@@ -4,7 +4,7 @@ import json2
 import time
 import treesitter { children, node_field, node_kind, position_of }
 
-// Port of the `valid-typeof` rule of ESLint 10.6.0, with its option and its suggestion.
+// Port of the `valid-typeof` rule of ESLint 10.15.0, with its option and its suggestion.
 
 const vt_messages = {
 	'invalidValue':  'Invalid typeof comparison value.'

@@ -3,7 +3,7 @@ module rules
 import time
 import treesitter { node_field, node_kind, node_start }
 
-// Port of the `no-useless-concat` rule of ESLint 10.6.0 (it has no options).
+// Port of the `no-useless-concat` rule of ESLint 10.15.0 (it has no options).
 
 const nuconcat_messages = {
 	'unexpectedConcat': 'Unexpected string concatenation of literals.'

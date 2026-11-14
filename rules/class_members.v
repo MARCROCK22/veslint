@@ -2,7 +2,7 @@ module rules
 
 import treesitter { children, has_child_kind, named_children, node_end, node_field, node_kind, node_parent, node_start, next_sibling, prev_sibling }
 
-// The members of a class body as typescript-estree 8.62.0 has them, for the rules that look at
+// The members of a class body as typescript-estree 8.72.2 has them, for the rules that look at
 // their ESTree type, kind, modifiers and range. In tree-sitter the decorators of a method are its
 // siblings, before it, and the `;` that ends a field, an overload or an index signature, which
 // TypeScript counts in the member, follows it.

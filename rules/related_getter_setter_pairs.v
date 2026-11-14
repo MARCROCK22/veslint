@@ -3,7 +3,7 @@ module rules
 import time
 import treesitter { has_child_kind, named_children, node_field, node_kind, nodes_of_kinds, position_of }
 
-// Port of the `related-getter-setter-pairs` rule of typescript-eslint 8.62.0 (it has no options).
+// Port of the `related-getter-setter-pairs` rule of typescript-eslint 8.72.2 (it has no options).
 
 const rgsp_messages = {
 	'mismatch': '`get()` type should be assignable to its equivalent `set()` type.'

@@ -3,7 +3,7 @@ module rules
 import time
 import treesitter { named_children, node_field, node_kind, node_parent, node_start, position_of }
 
-// Port of the `no-misused-new` rule of typescript-eslint 8.62.0 (it has no options).
+// Port of the `no-misused-new` rule of typescript-eslint 8.72.2 (it has no options).
 
 const nmn_messages = {
 	'errorMessageClass':     'Class cannot have method named `new`.'

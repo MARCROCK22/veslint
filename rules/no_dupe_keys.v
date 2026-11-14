@@ -3,7 +3,7 @@ module rules
 import time
 import treesitter { named_children, node_kind, position_of }
 
-// Port of the `no-dupe-keys` rule of ESLint 10.6.0 (it has no options).
+// Port of the `no-dupe-keys` rule of ESLint 10.15.0 (it has no options).
 
 const ndk_messages = {
 	'unexpected': "Duplicate key '{{name}}'."

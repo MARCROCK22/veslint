@@ -3,7 +3,7 @@ module rules
 import time
 import treesitter { node_start, position_of }
 
-// Port of the `no-div-regex` rule of ESLint 10.6.0 (it has no options).
+// Port of the `no-div-regex` rule of ESLint 10.15.0 (it has no options).
 
 const ndr_messages = {
 	'unexpected': "A regular expression literal can be confused with '/='."

@@ -3,7 +3,7 @@ module rules
 import time
 import treesitter { node_end, position_of }
 
-// Port of the `no-non-null-asserted-optional-chain` rule of typescript-eslint 8.62.0 (it has no
+// Port of the `no-non-null-asserted-optional-chain` rule of typescript-eslint 8.72.2 (it has no
 // options), with its suggestion.
 
 const nnnaoc_messages = {

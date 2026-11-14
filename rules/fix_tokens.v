@@ -2,7 +2,7 @@ module rules
 
 import treesitter { children, named_children, node_end, node_field, node_kind, node_parent, node_start }
 
-// The tokens and comments of a file as ESLint's SourceCode has them with typescript-estree 8.62.0
+// The tokens and comments of a file as ESLint's SourceCode has them with typescript-estree 8.72.2
 // (convertTokens, convertComments), built from the tree-sitter tree on first use, and what fixers
 // do with them: the token queries of SourceCode, eslint-utils' isParenthesized, and
 // typescript-eslint's getTextWithParentheses, isStartOfExpressionStatement and

@@ -3,7 +3,7 @@ module rules
 import time
 import treesitter { position_of }
 
-// Port of the `no-unsafe-function-type` rule of typescript-eslint 8.62.0 (it has no options).
+// Port of the `no-unsafe-function-type` rule of typescript-eslint 8.72.2 (it has no options).
 
 const nuft_messages = {
 	'bannedFunctionType': 'The `Function` type accepts any function-like value.\nPrefer explicitly defining any function parameters and return type.'

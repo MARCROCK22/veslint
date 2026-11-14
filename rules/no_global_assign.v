@@ -4,7 +4,7 @@ import json2
 import time
 import treesitter { position_of }
 
-// Port of the `no-global-assign` rule of ESLint 10.6.0, with its option.
+// Port of the `no-global-assign` rule of ESLint 10.15.0, with its option.
 
 const nga_messages = {
 	'globalShouldNotBeModified': "Read-only global '{{name}}' should not be modified."

@@ -11,7 +11,7 @@ import treesitter { named_children, node_field, node_kind, position_of }
 // `stop`, and reports when a returned segment is reachable from the first one without going
 // through a marked one. A segment is a stretch of code without forks, so that is the same as a
 // path to a return (or the end) that does not reach the start of such a call. SyPaths follows the
-// paths like ESLint 10.6.0's CodePathState does: forks at `&&`, `||`, `??`, `?:` and `?.`, loops
+// paths like ESLint 10.15.0's CodePathState does: forks at `&&`, `||`, `??`, `?:` and `?.`, loops
 // (a test that is a literal that is true never exits), `switch`, labels, and `try`, whose `catch`
 // is entered from the first node of the `try` block that may throw and from each `throw`, and
 // whose `finally` is followed twice, for the normal path and for the one that leaves (the normal

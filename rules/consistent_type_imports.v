@@ -4,7 +4,7 @@ import json2
 import time
 import treesitter { has_child_kind, named_children, node_end, node_field, node_kind, node_parent, node_start, position_of }
 
-// Port of the `consistent-type-imports` rule of typescript-eslint 8.62.0, with its options
+// Port of the `consistent-type-imports` rule of typescript-eslint 8.72.2, with its options
 // `prefer`, `fixStyle` and `disallowTypeAnnotations`, and its fixes. As in typescript-eslint with
 // a program, a file with a decorator is left alone when the project sets both
 // `experimentalDecorators` and `emitDecoratorMetadata`.

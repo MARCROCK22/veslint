@@ -4,7 +4,7 @@ import jsregexp
 import time
 import treesitter { named_children, node_field, node_kind, nodes_of_kind, position_of }
 
-// Port of the `prefer-regexp-exec` rule of typescript-eslint 8.62.0, with its fix.
+// Port of the `prefer-regexp-exec` rule of typescript-eslint 8.72.2, with its fix.
 //
 // For a string literal argument with a surrogate that has no pair (`text.match('\ud800')`), the
 // text of the fix has U+FFFD in its place: that is how Node writes such a string in UTF-8, so it

@@ -6,7 +6,7 @@ import tsgo { handle_index, handle_kind, handle_path }
 import treesitter { node_end, node_field, node_kind, node_start, nodes_of_kind, position_of }
 import offsets { utf16_offsets }
 
-// Port of the `prefer-includes` rule of typescript-eslint 8.62.0, with its fixes.
+// Port of the `prefer-includes` rule of typescript-eslint 8.72.2, with its fixes.
 //
 // For a regular expression with a surrogate that has no pair (`/\ud800/.test(text)`), the text
 // of the fix has U+FFFD in its place: that is how Node writes such a string in UTF-8, so it is

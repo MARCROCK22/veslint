@@ -2,7 +2,7 @@ module rules
 
 import treesitter { named_children, node_field, node_kind, node_start }
 
-// Port of typescript-eslint 8.62.0's util/getOperatorPrecedence.js (and
+// Port of typescript-eslint 8.72.2's util/getOperatorPrecedence.js (and
 // isHigherPrecedenceThanAwait.js), which the fixers use to decide where parentheses are needed.
 // The original has two functions that do not always agree, and both are ported: one by the
 // SyntaxKind of a TypeScript node, the other by the type of an ESTree node. Both take a

@@ -5,7 +5,7 @@ import time
 import tsgo { TypeResponse }
 import treesitter { has_child_kind, node_field, node_kind, node_parent, node_start, nodes_of_kinds }
 
-// Port of the `promise-function-async` rule of typescript-eslint 8.62.0, with its options and
+// Port of the `promise-function-async` rule of typescript-eslint 8.72.2, with its options and
 // its fixer.
 
 const pfa_messages = {

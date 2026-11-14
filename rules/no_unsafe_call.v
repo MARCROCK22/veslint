@@ -3,7 +3,7 @@ module rules
 import time
 import treesitter { first_named_child, node_field, node_kind, nodes_of_kind, position_of }
 
-// Port of the `no-unsafe-call` rule of typescript-eslint 8.62.0 (it has no options). Limits of the
+// Port of the `no-unsafe-call` rule of typescript-eslint 8.72.2 (it has no options). Limits of the
 // port: internals.md, "Rules" section.
 
 const nuc_messages = {

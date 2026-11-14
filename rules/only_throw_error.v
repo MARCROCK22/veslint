@@ -4,7 +4,7 @@ import json2
 import time
 import treesitter { first_named_child, named_children, node_field, node_kind, node_parent, node_start, nodes_of_kind, position_of }
 
-// Port of the `only-throw-error` rule of typescript-eslint 8.62.0, with its options (`allow` with
+// Port of the `only-throw-error` rule of typescript-eslint 8.72.2, with its options (`allow` with
 // bare names and `from: "lib"` specifiers, like the other rules).
 //
 // Deviation: for a thrown identifier without a variable in the scopes of the file (a global that

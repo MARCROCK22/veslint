@@ -4,7 +4,7 @@ import time
 import tsgo { TypeResponse, handle_index, handle_path }
 import treesitter { named_children, node_field, node_kind, nodes_of_kinds, position_of }
 
-// Port of the `no-unsafe-enum-comparison` rule of typescript-eslint 8.62.0 (it has no options), with
+// Port of the `no-unsafe-enum-comparison` rule of typescript-eslint 8.72.2 (it has no options), with
 // its `replaceValueWithEnum` suggestion.
 
 const nuec_messages = {

@@ -3,7 +3,7 @@ module rules
 import time
 import treesitter { node_end, node_field, node_kind, position_of }
 
-// Port of the `no-extra-non-null-assertion` rule of typescript-eslint 8.62.0 (it has no options),
+// Port of the `no-extra-non-null-assertion` rule of typescript-eslint 8.72.2 (it has no options),
 // with its fix.
 
 const nenna_messages = {

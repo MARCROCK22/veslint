@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Differential test of esquery/ (the V port of esquery 1.7.0 and of ESLint 10.6.0's dispatch of
+# Differential test of esquery/ (the V port of esquery 1.7.0 and of ESLint 10.15.0's dispatch of
 # selectors) against esquery and ESLint themselves, on the ESTree of a code corpus (a third of the
 # fixtures of tests/rules and some sources of build/eval):
 # - match: for every selector (the strings of ESLint's tests of no-restricted-syntax, esquery and

@@ -5,7 +5,7 @@ import time
 import tsgo { TypeResponse }
 import treesitter { children, has_child_kind, named_children, node_end, node_field, node_kind, node_parent, node_start, nodes_of_kinds }
 
-// Port of the `prefer-readonly` rule of typescript-eslint 8.62.0, with its `onlyInlineLambdas`
+// Port of the `prefer-readonly` rule of typescript-eslint 8.72.2, with its `onlyInlineLambdas`
 // option and its fixer.
 //
 // The original works on TypeScript's own tree: an access is a modification by the shape of its

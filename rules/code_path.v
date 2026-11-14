@@ -2,7 +2,7 @@ module rules
 
 import treesitter { children, named_children, node_field, node_kind, node_parent }
 
-// Whether the end of a function body can be reached, as ESLint 10.6.0's code path analysis
+// Whether the end of a function body can be reached, as ESLint 10.15.0's code path analysis
 // (linter/code-path-analysis) gives it to the rules that look at the segments at the end of a
 // code path. It follows the statements like CodePathState does:
 //

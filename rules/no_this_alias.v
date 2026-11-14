@@ -4,7 +4,7 @@ import json2
 import time
 import treesitter { node_field, node_kind, position_of }
 
-// Port of the `no-this-alias` rule of typescript-eslint 8.62.0, with its options
+// Port of the `no-this-alias` rule of typescript-eslint 8.72.2, with its options
 // `allowDestructuring` and `allowedNames`.
 
 const nta_messages = {

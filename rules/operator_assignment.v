@@ -4,7 +4,7 @@ import json2
 import time
 import treesitter { node_field, node_kind, node_start, position_of }
 
-// Port of the `operator-assignment` rule of ESLint 10.6.0, with its option and its fixes.
+// Port of the `operator-assignment` rule of ESLint 10.15.0, with its option and its fixes.
 
 const oa_messages = {
 	'replaced':   'Assignment (=) can be replaced with operator assignment ({{operator}}).'

@@ -3,7 +3,7 @@ module rules
 import time
 import treesitter { node_field, node_kind, position_of }
 
-// Port of the `no-import-assign` rule of ESLint 10.6.0 (it has no options).
+// Port of the `no-import-assign` rule of ESLint 10.15.0 (it has no options).
 
 const nia_messages = {
 	'readonly':       "'{{name}}' is read-only."

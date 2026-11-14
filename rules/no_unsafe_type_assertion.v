@@ -4,7 +4,7 @@ import time
 import tsgo { TypeResponse }
 import treesitter { nodes_of_kinds, position_of }
 
-// Port of the `no-unsafe-type-assertion` rule of typescript-eslint 8.62.0 (it has no options).
+// Port of the `no-unsafe-type-assertion` rule of typescript-eslint 8.72.2 (it has no options).
 
 const nusta_messages = {
 	'unsafeOfAnyTypeAssertion':                  'Unsafe assertion from {{type}} detected: consider using type guards or a safer assertion.'

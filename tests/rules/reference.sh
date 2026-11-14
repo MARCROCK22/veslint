@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 # Validates tests/rules/<rule>/expected.txt (the exact output of veslint) against the reference
-# implementation, typescript-eslint 8.62.0 (and @slipher/eslint-plugin 1.1.0 for the `seyfert/*`
+# implementation, typescript-eslint 8.72.2 (and @slipher/eslint-plugin 1.1.0 for the `seyfert/*`
 # rules): its findings on each cases.ts or cases.tsx (position, rule, messageId and full message
 # text) must be the expected ones plus those listed in limitations.txt (cases the reference reports
 # and veslint does not, documented in internals.md). Where a rule has a fixes.txt (the output of

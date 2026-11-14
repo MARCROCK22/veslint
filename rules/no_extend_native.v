@@ -4,7 +4,7 @@ import json2
 import time
 import treesitter { node_field, node_kind, position_of }
 
-// Port of the `no-extend-native` rule of ESLint 10.6.0, with its option.
+// Port of the `no-extend-native` rule of ESLint 10.15.0, with its option.
 
 const nen_messages = {
 	'unexpected': '{{builtin}} prototype is read only, properties should not be added.'

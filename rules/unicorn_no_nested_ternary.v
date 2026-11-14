@@ -2,7 +2,7 @@ module rules
 
 import time
 
-// Port of the `unicorn/no-nested-ternary` rule of eslint-plugin-unicorn 64.0.0 (it has no
+// Port of the `unicorn/no-nested-ternary` rule of eslint-plugin-unicorn 79.0.0 (it has no
 // options), with its fix.
 
 const unnt_messages = {

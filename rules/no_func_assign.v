@@ -3,7 +3,7 @@ module rules
 import time
 import treesitter { position_of }
 
-// Port of the `no-func-assign` rule of ESLint 10.6.0 (it has no options).
+// Port of the `no-func-assign` rule of ESLint 10.15.0 (it has no options).
 
 const nfa_messages = {
 	'isAFunction': "'{{name}}' is a function."

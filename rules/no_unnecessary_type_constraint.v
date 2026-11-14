@@ -4,7 +4,7 @@ import os
 import time
 import treesitter { next_sibling, node_end, node_field, node_kind, node_parent, position_of }
 
-// Port of the `no-unnecessary-type-constraint` rule of typescript-eslint 8.62.0 (it has no
+// Port of the `no-unnecessary-type-constraint` rule of typescript-eslint 8.72.2 (it has no
 // options), with its suggestion.
 
 const nutcon_messages = {

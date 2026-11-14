@@ -4,7 +4,7 @@ import codepath
 import estree
 import time
 
-// Port of the `no-useless-return` rule of ESLint 10.6.0 (it has no options), with its fix, on the
+// Port of the `no-useless-return` rule of ESLint 10.15.0 (it has no options), with its fix, on the
 // code path events of the codepath module.
 
 const nuret_messages = {

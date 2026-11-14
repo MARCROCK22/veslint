@@ -4,7 +4,7 @@ import json2
 import time
 import treesitter { node_field, node_kind, node_parent, node_start, position_of }
 
-// Port of the `no-extra-boolean-cast` rule of ESLint 10.6.0, with its options and its fixes.
+// Port of the `no-extra-boolean-cast` rule of ESLint 10.15.0, with its options and its fixes.
 
 const nebc_messages = {
 	'unexpectedCall':     'Redundant Boolean call.'

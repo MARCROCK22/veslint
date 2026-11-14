@@ -5,7 +5,7 @@ import strings
 import time
 import treesitter { Ident, children, has_child_kind, named_children, node_end, node_field, node_kind, node_parent, node_start, nodes_of_kinds, position_of }
 
-// Port of the `no-duplicate-type-constituents` rule of typescript-eslint 8.62.0, with all its
+// Port of the `no-duplicate-type-constituents` rule of typescript-eslint 8.72.2, with all its
 // options and its fix.
 
 const ndtc_messages = {

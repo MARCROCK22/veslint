@@ -4,7 +4,7 @@ import time
 import tsgo { SignatureResponse, TypeResponse }
 import treesitter { Ident, children, named_children, node_end, node_field, node_kind, nodes_of_kind, position_of }
 
-// Port of the `use-unknown-in-catch-callback-variable` rule of typescript-eslint 8.62.0 (it has no
+// Port of the `use-unknown-in-catch-callback-variable` rule of typescript-eslint 8.72.2 (it has no
 // options), with its suggestions.
 //
 // Deviation: for a handler whose only parameter is a rest of an empty tuple, `(...args: []) => …`,

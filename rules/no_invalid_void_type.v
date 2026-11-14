@@ -4,7 +4,7 @@ import json2
 import time
 import treesitter { children, named_children, node_field, node_kind, node_parent, position_of }
 
-// Port of the `no-invalid-void-type` rule of typescript-eslint 8.62.0, with its options
+// Port of the `no-invalid-void-type` rule of typescript-eslint 8.72.2, with its options
 // `allowAsThisParameter` and `allowInGenericTypeArguments` (true, false or a list of type names).
 
 const nivt_messages = {

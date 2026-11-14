@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Differential test of estree/ (the ESTree of typescript-estree 8.62.0, built from tree-sitter's
+# Differential test of estree/ (the ESTree of typescript-estree 8.72.2, built from tree-sitter's
 # tree) against typescript-estree itself: for every file of the corpus (the fixtures of
 # tests/rules and tests/scope, the code of every case of the upstream.json files and the sources
 # of the projects of build/eval), the canonical serialization of the tree and the order of its

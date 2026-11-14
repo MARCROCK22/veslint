@@ -3,7 +3,7 @@ module rules
 import time
 import treesitter { node_end, node_field, node_kind, node_parent, node_start, position_of }
 
-// Port of the `no-extra-label` rule of ESLint 10.6.0, with its fix (it has no options).
+// Port of the `no-extra-label` rule of ESLint 10.15.0, with its fix (it has no options).
 
 const nel_messages = {
 	'unexpected': "This label '{{name}}' is unnecessary."

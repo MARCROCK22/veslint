@@ -4,7 +4,7 @@ import esquery
 import json2
 import time
 
-// Port of the `no-restricted-syntax` rule of ESLint 10.6.0: each option is a selector, run on the
+// Port of the `no-restricted-syntax` rule of ESLint 10.15.0: each option is a selector, run on the
 // ESTree of the file by the esquery module the way ESLint's traverser runs listeners.
 
 const nrsx_messages = {

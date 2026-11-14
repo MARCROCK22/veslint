@@ -3,7 +3,7 @@ module rules
 import time
 import treesitter { named_children, node_field, node_kind, node_parent, node_start }
 
-// Port of the `adjacent-overload-signatures` rule of typescript-eslint 8.62.0 (it has no options).
+// Port of the `adjacent-overload-signatures` rule of typescript-eslint 8.72.2 (it has no options).
 
 const aos_messages = {
 	'adjacentSignature': 'All {{name}} signatures should be adjacent.'

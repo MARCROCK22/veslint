@@ -133,7 +133,7 @@ pub const seyfert_declare_description = 'seyfert/declare-description'
 pub const seyfert_no_deep_imports = 'seyfert/no-deep-imports'
 pub const seyfert_no_hanging_middleware = 'seyfert/no-hanging-middleware'
 pub const seyfert_group_exists = 'seyfert/group-exists'
-// ESLint core 10.6.0: a rule id without a plugin.
+// ESLint core 10.15.0: a rule id without a plugin.
 pub const no_compare_neg_zero = 'no-compare-neg-zero'
 pub const use_isnan = 'use-isnan'
 pub const valid_typeof = 'valid-typeof'
@@ -481,7 +481,7 @@ pub fn needs_types(rule string) bool {
 }
 
 // default_options are the default options of each rule (`defaultOptions` of typescript-eslint
-// 8.62.0, as JSON). For the rules that do not read options (see check_options), veslint only
+// 8.72.2, as JSON). For the rules that do not read options (see check_options), veslint only
 // applies these.
 pub const default_options = {
 	no_floating_promises:                            '[{"allowForKnownSafeCalls":[],"allowForKnownSafePromises":[],"checkThenables":false,"ignoreIIFE":false,"ignoreVoid":true}]'

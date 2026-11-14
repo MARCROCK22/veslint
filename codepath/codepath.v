@@ -2,7 +2,7 @@ module codepath
 
 import estree
 
-// A port of the code path analysis of ESLint 10.6.0 (lib/linter/code-path-analysis/) on the ESTree
+// A port of the code path analysis of ESLint 10.15.0 (lib/linter/code-path-analysis/) on the ESTree
 // of the estree module. `analyze` runs it over a tree the way ESLint's SourceCode#traverse does
 // and returns every event a rule listener would receive, in ESLint's order, with the code paths
 // and segments they refer to.

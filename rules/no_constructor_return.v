@@ -3,7 +3,7 @@ module rules
 import time
 import treesitter { named_children, node_kind, node_parent, position_of }
 
-// Port of the `no-constructor-return` rule of ESLint 10.6.0 (it has no options).
+// Port of the `no-constructor-return` rule of ESLint 10.15.0 (it has no options).
 
 const ncr_messages = {
 	'unexpected': 'Unexpected return statement in constructor.'

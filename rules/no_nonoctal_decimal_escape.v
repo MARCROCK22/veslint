@@ -3,7 +3,7 @@ module rules
 import time
 import treesitter { node_start }
 
-// Port of the `no-nonoctal-decimal-escape` rule of ESLint 10.6.0, with its suggestions (it has no
+// Port of the `no-nonoctal-decimal-escape` rule of ESLint 10.15.0, with its suggestions (it has no
 // options).
 
 const nnde_messages = {

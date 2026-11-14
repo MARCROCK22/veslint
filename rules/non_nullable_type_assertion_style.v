@@ -4,7 +4,7 @@ import time
 import tsgo { TypeResponse }
 import treesitter { first_named_child, has_child_kind, named_children, node_kind, nodes_of_kinds, position_of }
 
-// Port of the `non-nullable-type-assertion-style` rule of typescript-eslint 8.62.0 (it has no
+// Port of the `non-nullable-type-assertion-style` rule of typescript-eslint 8.72.2 (it has no
 // options), with its fix.
 
 const nntas_messages = {

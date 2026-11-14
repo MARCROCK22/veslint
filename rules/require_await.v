@@ -4,7 +4,7 @@ import time
 import tsgo { TypeResponse }
 import treesitter { Ident, children, first_named_child, has_child_kind, named_children, node_end, node_field, node_kind, node_parent, node_start, nodes_of_kind, position_of, prev_sibling }
 
-// Port of the `require-await` rule of typescript-eslint 8.62.0 (it has no options), with its
+// Port of the `require-await` rule of typescript-eslint 8.72.2 (it has no options), with its
 // `removeAsync` suggestion. Limits of the port: internals.md, "Rules" section.
 
 const ra_messages = {

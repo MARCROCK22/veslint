@@ -3,8 +3,8 @@ module rules
 import time
 import treesitter { node_field, node_kind, position_of }
 
-// Port of the `no-dupe-class-members` rule of typescript-eslint 8.62.0 (it has no options), which
-// extends the rule of ESLint 10.6.0 with the same name: computed keys are skipped.
+// Port of the `no-dupe-class-members` rule of typescript-eslint 8.72.2 (it has no options), which
+// extends the rule of ESLint 10.15.0 with the same name: computed keys are skipped.
 
 const ndcm_messages = {
 	'unexpected': "Duplicate name '{{name}}'."

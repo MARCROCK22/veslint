@@ -5,7 +5,7 @@ import treesitter { first_named_child, named_children, node_field, node_kind, no
 
 // Utilities of the no-unsafe-* family: the `any` and `unknown` predicates of type-utils, and the
 // ports of isUnsafeAssignment, discriminateAnyType, getThisExpression and getContextualType from
-// typescript-eslint 8.62.0. getAwaitedType is asked to tsgo (rules/awaited_type.v).
+// typescript-eslint 8.72.2. getAwaitedType is asked to tsgo (rules/awaited_type.v).
 
 // AnyType ports util.AnyType.
 enum AnyType {

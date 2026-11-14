@@ -5,7 +5,7 @@ import estree
 import time
 import treesitter { node_end, node_kind, node_parent, node_start }
 
-// Port of the `no-useless-assignment` rule of ESLint 10.6.0 (it has no options), on the code path
+// Port of the `no-useless-assignment` rule of ESLint 10.15.0 (it has no options), on the code path
 // events of the codepath module and on veslint's scope tree (rules/scope.v), which the
 // identifiers of the ESTree reach through their tree-sitter nodes.
 

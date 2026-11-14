@@ -1,4 +1,4 @@
-// Reference config for tests/rules/reference.sh: typescript-eslint 8.62.0 (installed in build/eval
+// Reference config for tests/rules/reference.sh: typescript-eslint 8.72.2 (installed in build/eval
 // by tests/eval_spider_byte.sh) and, for the `seyfert/*` rules, @slipher/eslint-plugin 1.1.0
 // (build/upstream/seyfert, see tests/upstream/README.md). Each rule ported to veslint has a directory
 // tests/rules/<rule id>/, and is enabled only on its cases.ts and cases.tsx files: with its default

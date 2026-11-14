@@ -4,7 +4,7 @@ import time
 import tsgo { SymbolResponse, handle_index, handle_kind, handle_path }
 import treesitter { children, has_child_kind, next_sibling, node_end, node_field, node_kind, node_parent, node_start, position_of }
 
-// Port of the `no-unnecessary-qualifier` rule of typescript-eslint 8.62.0 (it has no options),
+// Port of the `no-unnecessary-qualifier` rule of typescript-eslint 8.72.2 (it has no options),
 // with its fix.
 //
 // checker.getSymbolsInScope is not in the tsgo API, so getSymbolInScope

@@ -5,7 +5,7 @@ import jsregexp
 import time
 import treesitter { children, has_child_kind, named_children, node_field, node_kind, node_parent, nodes_of_kinds, position_of }
 
-// Port of the `naming-convention` rule of typescript-eslint 8.62.0 (naming-convention.js and
+// Port of the `naming-convention` rule of typescript-eslint 8.72.2 (naming-convention.js and
 // naming-convention-utils), with its options. The options given replace the default ones.
 
 const nc_messages = {

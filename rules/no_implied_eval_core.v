@@ -3,7 +3,7 @@ module rules
 import time
 import treesitter { node_field, node_kind, position_of }
 
-// Port of the `no-implied-eval` rule of ESLint 10.6.0 (it has no options); typescript-eslint's
+// Port of the `no-implied-eval` rule of ESLint 10.15.0 (it has no options); typescript-eslint's
 // rule of the same name is in no_implied_eval.v.
 
 const niec_messages = {

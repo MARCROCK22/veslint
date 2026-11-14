@@ -5,7 +5,7 @@ import jsregexp
 import time
 import treesitter { named_children, node_end, node_field, node_kind, node_start, position_of }
 
-// Port of the `sort-vars` rule of ESLint 10.6.0.
+// Port of the `sort-vars` rule of ESLint 10.15.0.
 
 const svars_messages = {
 	'sortVars': 'Variables within the same declaration block should be sorted alphabetically.'

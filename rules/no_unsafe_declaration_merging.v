@@ -3,7 +3,7 @@ module rules
 import time
 import treesitter { node_field, node_kind, position_of }
 
-// Port of the `no-unsafe-declaration-merging` rule of typescript-eslint 8.62.0 (it has no
+// Port of the `no-unsafe-declaration-merging` rule of typescript-eslint 8.72.2 (it has no
 // options).
 
 const nudm_messages = {

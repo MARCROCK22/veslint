@@ -3,7 +3,7 @@ module rules
 import time
 import treesitter { named_children, node_field, node_kind, position_of }
 
-// Port of the `no-duplicate-case` rule of ESLint 10.6.0 (it has no options).
+// Port of the `no-duplicate-case` rule of ESLint 10.15.0 (it has no options).
 
 const ndc_messages = {
 	'unexpected': 'Duplicate case label.'

@@ -6,7 +6,7 @@ import jsregexp
 import time
 import treesitter { named_children, node_field, node_kind }
 
-// Port of the `triple-slash-reference` rule of typescript-eslint 8.62.0, with its options `lib`
+// Port of the `triple-slash-reference` rule of typescript-eslint 8.72.2, with its options `lib`
 // ('always' or 'never'), `path` ('always' or 'never') and `types` ('always', 'never' or
 // 'prefer-import').
 

@@ -4,7 +4,7 @@ import codepath
 import estree
 import time
 
-// Port of the `constructor-super` rule of ESLint 10.6.0 (it has no options), on the code path
+// Port of the `constructor-super` rule of ESLint 10.15.0 (it has no options), on the code path
 // events of the codepath module.
 
 const csup_messages = {

@@ -4,8 +4,8 @@ import json2
 import time
 import treesitter { has_child_kind, named_children, node_end, node_field, node_kind, node_parent, node_start, position_of }
 
-// Port of the `no-empty-function` rule of typescript-eslint 8.62.0, which extends the rule of
-// ESLint 10.6.0 with the same name, with its option `allow` and its suggestion. The wrapper adds
+// Port of the `no-empty-function` rule of typescript-eslint 8.72.2, which extends the rule of
+// ESLint 10.15.0 with the same name, with its option `allow` and its suggestion. The wrapper adds
 // `private-constructors` and `protected-constructors`; the core rule already allows constructors
 // with parameter properties, and decorated or overriding methods with `decoratedFunctions` and
 // `overrideMethods`.

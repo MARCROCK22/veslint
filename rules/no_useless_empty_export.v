@@ -3,7 +3,7 @@ module rules
 import time
 import treesitter { children, has_child_kind, named_children, node_kind, node_start, position_of }
 
-// Port of the `no-useless-empty-export` rule of typescript-eslint 8.62.0 (it has no options),
+// Port of the `no-useless-empty-export` rule of typescript-eslint 8.72.2 (it has no options),
 // with its fix.
 
 const nuee_messages = {

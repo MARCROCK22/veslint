@@ -5,7 +5,7 @@ import jsregexp
 import time
 import treesitter { position_of }
 
-// Port of the `no-warning-comments` rule of ESLint 10.6.0.
+// Port of the `no-warning-comments` rule of ESLint 10.15.0.
 
 const nwc_messages = {
 	'unexpectedComment': "Unexpected '{{matchedTerm}}' comment: '{{comment}}'."

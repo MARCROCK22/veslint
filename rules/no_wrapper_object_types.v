@@ -3,7 +3,7 @@ module rules
 import time
 import treesitter { position_of }
 
-// Port of the `no-wrapper-object-types` rule of typescript-eslint 8.62.0 (it has no options), with
+// Port of the `no-wrapper-object-types` rule of typescript-eslint 8.72.2 (it has no options), with
 // its fix.
 
 const nwot_messages = {

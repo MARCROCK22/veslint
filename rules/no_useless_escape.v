@@ -5,7 +5,7 @@ import regexpp
 import time
 import treesitter { children, named_children, node_end, node_field, node_kind, node_parent, node_start }
 
-// Port of the `no-useless-escape` rule of ESLint 10.6.0.
+// Port of the `no-useless-escape` rule of ESLint 10.15.0.
 
 const nue_messages = {
 	'unnecessaryEscape':              'Unnecessary escape character: \\{{character}}.'

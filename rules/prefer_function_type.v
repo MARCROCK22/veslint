@@ -3,7 +3,7 @@ module rules
 import time
 import treesitter { children, has_child_kind, named_children, node_end, node_field, node_kind, node_parent, node_start, position_of }
 
-// Port of the `prefer-function-type` rule of typescript-eslint 8.62.0 (it has no options), with
+// Port of the `prefer-function-type` rule of typescript-eslint 8.72.2 (it has no options), with
 // its fix.
 
 const pft_messages = {

@@ -3,7 +3,7 @@ module rules
 import time
 import treesitter { node_field, node_kind, node_start, position_of }
 
-// Port of the `no-object-constructor` rule of ESLint 10.6.0, with its suggestion (it has no
+// Port of the `no-object-constructor` rule of ESLint 10.15.0, with its suggestion (it has no
 // options).
 
 const nobc_messages = {

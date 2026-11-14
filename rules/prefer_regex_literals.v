@@ -5,7 +5,7 @@ import regexpp
 import time
 import treesitter { children, named_children, node_field, node_kind, node_start, position_of }
 
-// Port of the `prefer-regex-literals` rule of ESLint 10.6.0.
+// Port of the `prefer-regex-literals` rule of ESLint 10.15.0.
 
 const prl_messages = {
 	'unexpectedRegExp':                   "Use a regular expression literal instead of the 'RegExp' constructor."

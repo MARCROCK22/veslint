@@ -3,7 +3,7 @@ module rules
 import time
 import treesitter { children, node_kind, position_of }
 
-// Port of the `no-case-declarations` rule of ESLint 10.6.0, with its suggestion (it has no
+// Port of the `no-case-declarations` rule of ESLint 10.15.0, with its suggestion (it has no
 // options).
 
 const ncd_messages = {

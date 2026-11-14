@@ -4,7 +4,7 @@ import json2
 import time
 import treesitter { node_field, node_kind, node_parent, position_of }
 
-// Port of the `no-labels` rule of ESLint 10.6.0, with its options.
+// Port of the `no-labels` rule of ESLint 10.15.0, with its options.
 
 const nl_messages = {
 	'unexpectedLabel':           'Unexpected labeled statement.'

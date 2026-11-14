@@ -4,7 +4,7 @@ import json2
 import time
 import treesitter { node_field, node_kind, node_parent }
 
-// Port of the `no-sequences` rule of ESLint 10.6.0, with its option.
+// Port of the `no-sequences` rule of ESLint 10.15.0, with its option.
 
 const nseq_messages = {
 	'unexpectedCommaExpression': 'Unexpected use of comma operator.'

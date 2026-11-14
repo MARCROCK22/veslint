@@ -4,7 +4,7 @@ import json2
 import time
 import treesitter { named_children, node_field, node_kind, node_parent, node_start, position_of }
 
-// Port of the `logical-assignment-operators` rule of ESLint 10.6.0, with its options, its fixes
+// Port of the `logical-assignment-operators` rule of ESLint 10.15.0, with its options, its fixes
 // and its suggestions.
 
 const lao_messages = {

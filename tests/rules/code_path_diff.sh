@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Compares veslint's code path analysis (rules/code_path.v) with ESLint 10.6.0's on generated
+# Compares veslint's code path analysis (rules/code_path.v) with ESLint 10.15.0's on generated
 # functions (tools/gen_code_path_cases.py): `consistent-return` reports a function whose end is
 # reachable, so both tools must report the same functions. The cases are every small nesting of
 # `try` statements, `try` statements inside loops and labeled blocks, and random functions.

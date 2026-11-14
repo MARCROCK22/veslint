@@ -4,7 +4,7 @@ import regexpp
 import time
 import treesitter { named_children, node_field, node_kind, position_of }
 
-// Port of the `no-useless-backreference` rule of ESLint 10.6.0 (it has no options).
+// Port of the `no-useless-backreference` rule of ESLint 10.15.0 (it has no options).
 
 const nub_messages = {
 	'nested':                 "Backreference '{{ bref }}' will be ignored. It references group '{{ group }}'{{ otherGroups }} from within that group."

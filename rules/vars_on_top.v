@@ -3,7 +3,7 @@ module rules
 import time
 import treesitter { children, named_children, node_field, node_kind, node_parent, position_of }
 
-// Port of the `vars-on-top` rule of ESLint 10.6.0 (it has no options).
+// Port of the `vars-on-top` rule of ESLint 10.15.0 (it has no options).
 
 const vot_messages = {
 	'top': "All 'var' declarations must be at the top of the function scope."

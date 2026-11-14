@@ -4,7 +4,7 @@ import json2
 import time
 import treesitter { named_children, node_end, node_field, node_kind, node_parent, node_start, position_of }
 
-// Port of the `arrow-body-style` rule of ESLint 10.6.0, with its options and its fixes.
+// Port of the `arrow-body-style` rule of ESLint 10.15.0, with its options and its fixes.
 
 const abs_messages = {
 	'unexpectedOtherBlock':  'Unexpected block statement surrounding arrow body.'

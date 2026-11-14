@@ -5,7 +5,7 @@ import time
 import tsgo { TypeResponse }
 import treesitter { node_field, node_kind, nodes_of_kinds, position_of }
 
-// Port of the `restrict-plus-operands` rule of typescript-eslint 8.62.0, with all its options.
+// Port of the `restrict-plus-operands` rule of typescript-eslint 8.72.2, with all its options.
 
 const rpo_messages = {
 	'bigintAndNumber': "Numeric '+' operations must either be both bigints or both numbers. Got `{{left}}` + `{{right}}`."

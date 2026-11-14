@@ -3,7 +3,7 @@ module rules
 import time
 import treesitter { position_of }
 
-// Port of the `no-octal` rule of ESLint 10.6.0 (it has no options).
+// Port of the `no-octal` rule of ESLint 10.15.0 (it has no options).
 
 const noc_messages = {
 	'noOctal': 'Octal literals should not be used.'

@@ -3,7 +3,7 @@ module rules
 import time
 import treesitter { position_of }
 
-// Port of the `no-template-curly-in-string` rule of ESLint 10.6.0 (it has no options).
+// Port of the `no-template-curly-in-string` rule of ESLint 10.15.0 (it has no options).
 
 const ntcis_messages = {
 	'unexpectedTemplateExpression': 'Unexpected template string expression.'

@@ -4,7 +4,7 @@ import json2
 import time
 import treesitter { named_children, node_end, node_field, node_kind, node_parent, node_start, position_of }
 
-// Port of the `prefer-const` rule of ESLint 10.6.0.
+// Port of the `prefer-const` rule of ESLint 10.15.0.
 
 const pconst_messages = {
 	'useConst': "'{{name}}' is never reassigned. Use 'const' instead."
@@ -40,6 +40,14 @@ struct PconstDeclarator {
 	init ?C.TSNode
 }
 
+// PconstEntry is a variable of a `let` declaration: where the declaration and the definition's name
+// start.
+struct PconstEntry {
+	variable    int
+	declaration int
+	name        int
+}
+
 struct PconstState {
 mut:
 	checked_name ?string = ''
@@ -52,47 +60,48 @@ fn (mut c Checker) lint_prefer_const(root C.TSNode, abs_path string, mut stats S
 	o := pconst_options(c.rule_options(prefer_const))!
 	tree := c.scope_tree(root)
 	// The variables of the `let` declarations (not in the init of a `for`), in the order of the
-	// declarations and, in each one, of the definitions.
-	mut variables := []int{}
-	mut starts := map[int]int{}
+	// declarations and, in each one, of the definitions: getDeclaredVariables of each `let`
+	// declaration, so a variable declared again by a `let` (after a `const`, or by two `let`s) is
+	// there once for each of them.
+	mut entries := []PconstEntry{}
 	for v, variable in tree.variables {
-		if variable.defs.len == 0 {
-			continue
-		}
-		def := variable.defs[0]
-		if def.kind != .variable || def.parent_kind != 'let' {
-			continue
-		}
-		declaration := es_def_parent(def) or { continue }
-		if node_kind(declaration) == 'lexical_declaration' {
-			if parent := node_parent(declaration) {
-				if node_kind(parent) == 'for_statement' {
-					if body := node_field(parent, 'body') {
-						if node_key(body) != node_key(declaration) {
-							continue
+		for def in variable.defs {
+			if def.kind != .variable || def.parent_kind != 'let' {
+				continue
+			}
+			declaration := es_def_parent(def) or { continue }
+			if node_kind(declaration) == 'lexical_declaration' {
+				if parent := node_parent(declaration) {
+					if node_kind(parent) == 'for_statement' {
+						if body := node_field(parent, 'body') {
+							if node_key(body) != node_key(declaration) {
+								continue
+							}
 						}
 					}
 				}
 			}
+			stats.checked++
+			entries << PconstEntry{
+				variable:    v
+				declaration: node_start(declaration)
+				name:        node_start(def.name)
+			}
 		}
-		stats.checked++
-		variables << v
-		starts[v] = node_start(declaration)
 	}
-	variables.sort_with_compare(fn [starts, tree] (a &int, b &int) int {
-		if starts[*a] != starts[*b] {
-			return if starts[*a] < starts[*b] { -1 } else { 1 }
+	entries.sort_with_compare(fn (a &PconstEntry, b &PconstEntry) int {
+		if a.declaration != b.declaration {
+			return if a.declaration < b.declaration { -1 } else { 1 }
 		}
-		x := node_start(tree.variables[*a].defs[0].name)
-		y := node_start(tree.variables[*b].defs[0].name)
-		return if x < y {
+		return if a.name < b.name {
 			-1
-		} else if x > y {
+		} else if a.name > b.name {
 			1
 		} else {
 			0
 		}
 	})
+	variables := entries.map(it.variable)
 	// groupByDestructuring
 	mut groups := map[string][]?C.TSNode{}
 	mut group_order := []string{}

@@ -1,5 +1,5 @@
 // Generates tests/gitignore_cases.json for rules/gitignore_test.v: what the `ignore` package
-// (5.3.2, the one ESLint 10.6.0 uses for no-restricted-imports' `group` patterns) answers for a set
+// (5.3.2, the one ESLint 10.15.0 uses for no-restricted-imports' `group` patterns) answers for a set
 // of gitignore patterns and paths. Each case is a list of patterns, the ignorecase flag and, per
 // path, whether `ignore({allowRelativePaths: true, ignorecase}).add(patterns).ignores(path)`.
 // The patterns are those of no-restricted-imports' tests in ESLint and a set of tricky ones.

@@ -4,7 +4,7 @@ import time
 import tsgo { TypeResponse }
 import treesitter { named_children, node_field, node_kind, nodes_of_kinds, position_of }
 
-// Port of the `no-implied-eval` rule of typescript-eslint 8.62.0 (it has no options).
+// Port of the `no-implied-eval` rule of typescript-eslint 8.72.2 (it has no options).
 
 const nie_messages = {
 	'noFunctionConstructor': 'Implied eval. Do not use the Function constructor to create functions.'

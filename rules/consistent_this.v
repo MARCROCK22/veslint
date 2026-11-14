@@ -4,7 +4,7 @@ import json2
 import time
 import treesitter { node_field, node_kind, position_of }
 
-// Port of the `consistent-this` rule of ESLint 10.6.0, with its options (the aliases).
+// Port of the `consistent-this` rule of ESLint 10.15.0, with its options (the aliases).
 
 const cth_messages = {
 	'aliasNotAssignedToThis': "Designated alias '{{name}}' is not assigned to 'this'."

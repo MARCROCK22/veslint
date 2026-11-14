@@ -4,7 +4,7 @@ import time
 import tsgo { SignatureResponse, TypeResponse }
 import treesitter { first_named_child, has_child_kind, node_end, node_field, node_kind, node_parent, nodes_of_kind, position_of }
 
-// Port of the `no-unsafe-return` rule of typescript-eslint 8.62.0 (it has no options). Limits of
+// Port of the `no-unsafe-return` rule of typescript-eslint 8.72.2 (it has no options). Limits of
 // the port: internals.md, "Rules" section.
 
 const nur_messages = {

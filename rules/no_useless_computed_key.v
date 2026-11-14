@@ -4,7 +4,7 @@ import json2
 import time
 import treesitter { node_kind, node_parent, node_start }
 
-// Port of the `no-useless-computed-key` rule of ESLint 10.6.0, with its option and its fix.
+// Port of the `no-useless-computed-key` rule of ESLint 10.15.0, with its option and its fix.
 
 const nuck_messages = {
 	'unnecessarilyComputedProperty': 'Unnecessarily computed property [{{property}}] found.'

@@ -27,3 +27,10 @@ tests/rules/prefer-const/destructuring-all/cases.ts:11:10	prefer-const	useConst	
 tests/rules/prefer-const/destructuring-all/cases.ts:14:5	prefer-const	useConst	'partial' is never reassigned. Use 'const' instead.	end	14	12
 tests/rules/prefer-const/destructuring-all/cases.ts:17:7	prefer-const	useConst	'inBlock' is never reassigned. Use 'const' instead.	fix	289	305	const inBlock = 1;	end	17	14
 tests/rules/prefer-const/destructuring-all/cases.ts:38:5	prefer-const	useConst	'objectTarget' is never reassigned. Use 'const' instead.	fix	643	681	const objectTarget: { p?: number } = {};	end	38	33
+tests/rules/prefer-const/redeclared/cases.ts:3:7	prefer-const	useConst	's1' is never reassigned. Use 'const' instead.	fix	179	192	const s1 = 1;	end	3	9
+tests/rules/prefer-const/redeclared/cases.ts:6:5	prefer-const	useConst	'z' is never reassigned. Use 'const' instead.	fix	221	231	const z = 1;	end	6	6
+tests/rules/prefer-const/redeclared/cases.ts:6:5	prefer-const	useConst	'z' is never reassigned. Use 'const' instead.	fix	221	231	const z = 1;	end	6	6
+tests/rules/prefer-const/redeclared/cases.ts:8:7	prefer-const	useConst	'w' is never reassigned. Use 'const' instead.	fix	252	264	const w = 1;	end	8	8
+tests/rules/prefer-const/redeclared/cases.ts:12:6	prefer-const	useConst	'm' is never reassigned. Use 'const' instead.	fix	292	312	const [m, n] = [1, 2];	end	12	7
+tests/rules/prefer-const/redeclared/cases.ts:12:6	prefer-const	useConst	'm' is never reassigned. Use 'const' instead.	fix	292	312	const [m, n] = [1, 2];	end	12	7
+tests/rules/prefer-const/redeclared/cases.ts:12:9	prefer-const	useConst	'n' is never reassigned. Use 'const' instead.	fix	292	312	const [m, n] = [1, 2];	end	12	10

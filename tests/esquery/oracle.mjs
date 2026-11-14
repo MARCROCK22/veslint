@@ -1,4 +1,4 @@
-// Oracle of the esquery differential test: esquery 1.7.0 with the options ESLint 10.6.0 gives it
+// Oracle of the esquery differential test: esquery 1.7.0 with the options ESLint 10.15.0 gives it
 // (typescript-eslint's visitor keys, eslint-visitor-keys' getKeys as fallback, the JavaScript
 // language's matchesSelectorClass, nodeTypeKey 'type') on typescript-estree's tree, with the
 // ancestry of ESLint's traversal and every node's `parent` set (as ESLint does before running

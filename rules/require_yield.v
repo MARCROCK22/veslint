@@ -3,7 +3,7 @@ module rules
 import time
 import treesitter { children, named_children, node_field, node_kind }
 
-// Port of the `require-yield` rule of ESLint 10.6.0 (it has no options).
+// Port of the `require-yield` rule of ESLint 10.15.0 (it has no options).
 
 const ry_messages = {
 	'missingYield': "This generator function does not have 'yield'."

@@ -4,7 +4,7 @@ import math
 import time
 import treesitter { children, named_children, node_field, node_kind, position_of }
 
-// Port of the `no-duplicate-enum-values` rule of typescript-eslint 8.62.0 (it has no options).
+// Port of the `no-duplicate-enum-values` rule of typescript-eslint 8.72.2 (it has no options).
 
 const ndev_messages = {
 	'duplicateValue': 'Duplicate enum member value {{value}}.'

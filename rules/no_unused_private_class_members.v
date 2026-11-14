@@ -3,7 +3,7 @@ module rules
 import time
 import treesitter { named_children, node_field, node_kind, node_parent, position_of }
 
-// Port of the `no-unused-private-class-members` rule of typescript-eslint 8.62.0 (it has no
+// Port of the `no-unused-private-class-members` rule of typescript-eslint 8.72.2 (it has no
 // options), with the class scope analyzer it is built on (util/class-scope-analyzer): a visitor of
 // the whole program that keeps a stack of `this` scopes (a class, or a function, a method or a
 // static block that rebinds `this`) and counts the reads and writes of the members of each class

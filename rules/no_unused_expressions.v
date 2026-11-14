@@ -4,8 +4,8 @@ import json2
 import time
 import treesitter { named_children, node_field, node_kind, node_parent, position_of }
 
-// Port of the `no-unused-expressions` rule of typescript-eslint 8.62.0, which extends the rule of
-// ESLint 10.6.0 with the same name, with its options `allowShortCircuit`, `allowTaggedTemplates`,
+// Port of the `no-unused-expressions` rule of typescript-eslint 8.72.2, which extends the rule of
+// ESLint 10.15.0 with the same name, with its options `allowShortCircuit`, `allowTaggedTemplates`,
 // `allowTernary`, `enforceForJSX` and `ignoreDirectives`. What the wrapper adds (optional calls
 // and `import()` are valid, a TypeScript expression is checked by its expression, directives are
 // skipped) the core rule of ESLint 10 already does.

@@ -5,7 +5,7 @@ import time
 import tsgo { TypeResponse }
 import treesitter { first_named_child, named_children, node_field, node_kind, node_parent, nodes_of_kind, position_of }
 
-// Port of the `restrict-template-expressions` rule of typescript-eslint 8.62.0, with its options
+// Port of the `restrict-template-expressions` rule of typescript-eslint 8.72.2, with its options
 // (of `allow`, bare names and `from: "lib"` ones).
 
 const rte_messages = {

@@ -4,7 +4,7 @@ import estree
 import jsregexp
 
 // The matcher of esquery 1.7.0 (generateMatcher, inPath, sibling, adjacent, nthChild) with the
-// options ESLint 10.6.0 gives it (lib/linter/source-code-traverser.js): typescript-eslint's
+// options ESLint 10.15.0 gives it (lib/linter/source-code-traverser.js): typescript-eslint's
 // visitor keys, the JavaScript language's matchesSelectorClass for the classes, and `type` as the
 // key of the node type.
 

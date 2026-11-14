@@ -2,7 +2,7 @@ module rules
 
 import time
 
-// Port of the `unicorn/consistent-template-literal-escape` rule of eslint-plugin-unicorn 64.0.0
+// Port of the `unicorn/consistent-template-literal-escape` rule of eslint-plugin-unicorn 79.0.0
 // (it has no options), with its fix.
 
 const uctle_messages = {

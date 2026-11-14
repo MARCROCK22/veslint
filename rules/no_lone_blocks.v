@@ -3,7 +3,7 @@ module rules
 import time
 import treesitter { named_children, node_field, node_kind, node_parent, position_of }
 
-// Port of the `no-lone-blocks` rule of ESLint 10.6.0 (it has no options).
+// Port of the `no-lone-blocks` rule of ESLint 10.15.0 (it has no options).
 
 const nlb_messages = {
 	'redundantBlock':       'Block is redundant.'

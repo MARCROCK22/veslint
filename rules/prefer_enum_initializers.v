@@ -3,7 +3,7 @@ module rules
 import time
 import treesitter { named_children, node_field, node_kind, position_of }
 
-// Port of the `prefer-enum-initializers` rule of typescript-eslint 8.62.0 (it has no options), with
+// Port of the `prefer-enum-initializers` rule of typescript-eslint 8.72.2 (it has no options), with
 // its three suggestions.
 
 const pei_messages = {

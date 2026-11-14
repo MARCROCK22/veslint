@@ -3,7 +3,7 @@ module rules
 import time
 import treesitter { node_field, position_of }
 
-// Port of the `no-self-compare` rule of ESLint 10.6.0 (it has no options).
+// Port of the `no-self-compare` rule of ESLint 10.15.0 (it has no options).
 
 const nsc_messages = {
 	'comparingToSelf': 'Comparing to itself is potentially pointless.'

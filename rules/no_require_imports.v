@@ -5,7 +5,7 @@ import jsregexp
 import time
 import treesitter { children, node_end, node_field, node_kind, node_parent, node_start, position_of }
 
-// Port of the `no-require-imports` rule of typescript-eslint 8.62.0, with its options `allow`
+// Port of the `no-require-imports` rule of typescript-eslint 8.72.2, with its options `allow`
 // (patterns of the import paths that may be required, `new RegExp(pattern, 'u')`) and
 // `allowAsImport`.
 

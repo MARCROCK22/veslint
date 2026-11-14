@@ -4,7 +4,7 @@ import time
 import tsgo { TypeResponse }
 import treesitter { node_field, node_kind, node_start, nodes_of_kind, position_of }
 
-// Port of the `no-array-delete` rule of typescript-eslint 8.62.0 (it has no options), with its
+// Port of the `no-array-delete` rule of typescript-eslint 8.72.2 (it has no options), with its
 // `useSplice` suggestion.
 
 const nad_messages = {

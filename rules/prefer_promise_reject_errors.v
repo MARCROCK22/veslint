@@ -5,7 +5,7 @@ import time
 import tsgo { TypeResponse }
 import treesitter { named_children, node_field, node_kind, nodes_of_kinds, position_of }
 
-// Port of the `prefer-promise-reject-errors` rule of typescript-eslint 8.62.0, with its options
+// Port of the `prefer-promise-reject-errors` rule of typescript-eslint 8.72.2, with its options
 // (`allow` with bare names and `from: "lib"` specifiers, like the other rules).
 
 const ppre_messages = {

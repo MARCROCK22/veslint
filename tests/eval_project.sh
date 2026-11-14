@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # Evaluation of veslint on the sources of a real project (pinned commit): the ported rules with their
-# default options, against typescript-eslint 8.62.0 (and @slipher/eslint-plugin 1.1.0 for the
-# `seyfert/*` rules) run by ESLint 10.6.0, both through the same eslint.config, message by message.
+# default options, against typescript-eslint 8.72.2 (and @slipher/eslint-plugin 1.1.0 for the
+# `seyfert/*` rules) run by ESLint 10.15.0, both through the same eslint.config, message by message.
 # Everything stays in build/eval/. It is not part of `make test`.
 #
 #   tests/eval_project.sh zod               # a library with heavy types (.ts)

@@ -4,7 +4,7 @@ import json2
 import time
 import treesitter { has_child_kind, named_children, node_end, node_field, node_kind, node_parent, node_start, position_of }
 
-// Port of the `consistent-type-definitions` rule of typescript-eslint 8.62.0, with its option
+// Port of the `consistent-type-definitions` rule of typescript-eslint 8.72.2, with its option
 // ('interface' or 'type') and its fixes.
 
 const ctd_messages = {

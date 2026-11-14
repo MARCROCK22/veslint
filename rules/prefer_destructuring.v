@@ -6,8 +6,8 @@ import time
 import tsgo { TypeResponse }
 import treesitter { node_end, node_field, node_kind, node_parent, node_start, nodes_of_kinds, position_of }
 
-// Port of the `prefer-destructuring` rule of typescript-eslint 8.62.0, which extends the rule of
-// ESLint 10.6.0 with the same name, with its options and its fixer.
+// Port of the `prefer-destructuring` rule of typescript-eslint 8.72.2, which extends the rule of
+// ESLint 10.15.0 with the same name, with its options and its fixer.
 //
 // The core rule reads the options as they were written, without typescript-eslint's defaults,
 // and the extension reads them merged with those defaults: effective_options keeps both (the

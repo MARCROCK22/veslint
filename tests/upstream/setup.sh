@@ -3,7 +3,7 @@
 # copy of tests/upstream/fixtures), with the node_modules its cases import: @types/node and
 # @types/react with their dependencies, from build/upstream/types/node_modules (see README.md), and
 # typescript and @typescript-eslint/{types,utils} of build/eval (TypeScript 6.0.3, typescript-eslint
-# 8.62.0). Exits with 2, naming what is missing, when one of them is not there.
+# 8.72.2). Exits with 2, naming what is missing, when one of them is not there.
 set -euo pipefail
 ROOT=$(cd "$(dirname "$0")/../.." && pwd)
 DIR=$1

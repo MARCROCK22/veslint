@@ -7,7 +7,7 @@ import treesitter { Ident, node_end, node_field, node_kind, node_parent, node_st
 import offsets { utf16_offsets }
 import tsgo { SymbolResponse, TypeResponse, handle_index, handle_path }
 
-// Port of the `dot-notation` rule of typescript-eslint 8.62.0, which extends the ESLint 10.6.0
+// Port of the `dot-notation` rule of typescript-eslint 8.72.2, which extends the ESLint 10.15.0
 // core rule of the same name, with its options and its fixes.
 
 const dotn_messages = {
@@ -85,7 +85,7 @@ fn (mut c Checker) lint_dot_notation(root C.TSNode, abs_path string, mut stats S
 	return c.dotn_lint(root, abs_path, o, true, mut stats)!
 }
 
-// lint_core_dot_notation is the `dot-notation` rule of ESLint 10.6.0: typescript-eslint's without
+// lint_core_dot_notation is the `dot-notation` rule of ESLint 10.15.0: typescript-eslint's without
 // the options and the checks that need types.
 fn (mut c Checker) lint_core_dot_notation(root C.TSNode, abs_path string, mut stats Stats) ![]Finding {
 	o := dotn_options(c.rule_options(core_dot_notation), true)!

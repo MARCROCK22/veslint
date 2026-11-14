@@ -1,6 +1,6 @@
 # codepath: ESLint's code path analysis on the estree module
 
-A port of `lib/linter/code-path-analysis/` of ESLint 10.6.0 (`code-path-analyzer.js`,
+A port of `lib/linter/code-path-analysis/` of ESLint 10.15.0 (`code-path-analyzer.js`,
 `code-path-state.js`, `code-path.js`, `code-path-segment.js`, `fork-context.js` and
 `id-generator.js`), driven the way `SourceCode#traverse` drives it.
 `codepath.analyze(&tree)` returns an `Analysis`:

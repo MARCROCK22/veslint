@@ -6,7 +6,7 @@ import math
 import tsgo { CompilerOptions }
 import treesitter { TokenEnds, children, has_child_kind, named_children, next_sibling, node_end, node_field, node_kind, node_parent, node_start }
 
-// Lexical scopes of a file, like the scope manager of typescript-eslint 8.62.0 (scope-manager:
+// Lexical scopes of a file, like the scope manager of typescript-eslint 8.72.2 (scope-manager:
 // Referencer, ClassVisitor, TypeVisitor, PatternVisitor, ExportVisitor and ImportVisitor) as ESLint
 // 10 leaves it for a rule (SourceCode#finalize), built on the tree-sitter tree: scopes, the
 // variables each one declares with their definitions, and the identifier references with the

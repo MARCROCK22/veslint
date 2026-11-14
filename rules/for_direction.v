@@ -4,7 +4,7 @@ import math
 import time
 import treesitter { named_children, node_end, node_field, node_kind, node_start, position_of }
 
-// Port of the `for-direction` rule of ESLint 10.6.0 (it has no options).
+// Port of the `for-direction` rule of ESLint 10.15.0 (it has no options).
 
 const fd_messages = {
 	'incorrectDirection': 'The update clause in this loop moves the variable in the wrong direction.'

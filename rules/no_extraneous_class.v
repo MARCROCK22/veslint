@@ -4,7 +4,7 @@ import json2
 import time
 import treesitter { node_field, node_kind, node_parent, position_of }
 
-// Port of the `no-extraneous-class` rule of typescript-eslint 8.62.0, with its options
+// Port of the `no-extraneous-class` rule of typescript-eslint 8.72.2, with its options
 // `allowConstructorOnly`, `allowEmpty`, `allowStaticOnly` and `allowWithDecorator`.
 
 const nec_messages = {

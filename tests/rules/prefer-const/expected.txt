@@ -27,3 +27,10 @@ tests/rules/prefer-const/destructuring-all/cases.ts:11:10	prefer-const	useConst	
 tests/rules/prefer-const/destructuring-all/cases.ts:14:5	prefer-const	useConst	'partial' is never reassigned. Use 'const' instead.
 tests/rules/prefer-const/destructuring-all/cases.ts:17:7	prefer-const	useConst	'inBlock' is never reassigned. Use 'const' instead.
 tests/rules/prefer-const/destructuring-all/cases.ts:38:5	prefer-const	useConst	'objectTarget' is never reassigned. Use 'const' instead.
+tests/rules/prefer-const/redeclared/cases.ts:3:7	prefer-const	useConst	's1' is never reassigned. Use 'const' instead.
+tests/rules/prefer-const/redeclared/cases.ts:6:5	prefer-const	useConst	'z' is never reassigned. Use 'const' instead.
+tests/rules/prefer-const/redeclared/cases.ts:6:5	prefer-const	useConst	'z' is never reassigned. Use 'const' instead.
+tests/rules/prefer-const/redeclared/cases.ts:8:7	prefer-const	useConst	'w' is never reassigned. Use 'const' instead.
+tests/rules/prefer-const/redeclared/cases.ts:12:6	prefer-const	useConst	'm' is never reassigned. Use 'const' instead.
+tests/rules/prefer-const/redeclared/cases.ts:12:6	prefer-const	useConst	'm' is never reassigned. Use 'const' instead.
+tests/rules/prefer-const/redeclared/cases.ts:12:9	prefer-const	useConst	'n' is never reassigned. Use 'const' instead.

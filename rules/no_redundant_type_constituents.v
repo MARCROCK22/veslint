@@ -5,7 +5,7 @@ import time
 import tsgo { TypeResponse }
 import treesitter { node_field, node_kind, node_parent, nodes_of_kinds, position_of }
 
-// Port of the `no-redundant-type-constituents` rule of typescript-eslint 8.62.0 (it has no
+// Port of the `no-redundant-type-constituents` rule of typescript-eslint 8.72.2 (it has no
 // options).
 
 const nrtc_messages = {

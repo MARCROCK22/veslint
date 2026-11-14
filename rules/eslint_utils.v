@@ -3,7 +3,7 @@ module rules
 import jsregexp
 import treesitter { Ident, children, named_children, next_sibling, node_end, node_field, node_kind, node_parent, node_start, position_of }
 
-// Ports of the helpers of ESLint 10.6.0's lib/rules/utils/ast-utils.js that the rules of ESLint
+// Ports of the helpers of ESLint 10.15.0's lib/rules/utils/ast-utils.js that the rules of ESLint
 // core use. A tree-sitter node stands for the ESTree node it is without its parentheses, which
 // are not ESTree nodes (unwrap_parens). There is no ChainExpression either: skipChainExpression is
 // that too.

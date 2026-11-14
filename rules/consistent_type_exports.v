@@ -5,7 +5,7 @@ import time
 import tsgo { SymbolResponse }
 import treesitter { children, has_child_kind, named_children, node_end, node_field, node_kind, node_start, nodes_of_kind, position_of }
 
-// Port of the `consistent-type-exports` rule of typescript-eslint 8.62.0, with its option and its
+// Port of the `consistent-type-exports` rule of typescript-eslint 8.72.2, with its option and its
 // fixers.
 
 const cte_messages = {

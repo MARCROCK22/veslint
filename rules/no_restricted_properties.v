@@ -4,7 +4,7 @@ import json2
 import time
 import treesitter { named_children, node_field, node_kind, node_parent, position_of }
 
-// Port of the `no-restricted-properties` rule of ESLint 10.6.0.
+// Port of the `no-restricted-properties` rule of ESLint 10.15.0.
 
 const nrp_messages = {
 	'restrictedObjectProperty': "'{{objectName}}.{{propertyName}}' is restricted from being used.{{allowedPropertiesMessage}}{{message}}"

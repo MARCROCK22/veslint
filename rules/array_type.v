@@ -4,7 +4,7 @@ import json2
 import time
 import treesitter { named_children, node_end, node_field, node_kind, node_parent, node_start, position_of }
 
-// Port of the `array-type` rule of typescript-eslint 8.62.0, with its options `default` and
+// Port of the `array-type` rule of typescript-eslint 8.72.2, with its options `default` and
 // `readonly` ('array', 'generic' or 'array-simple'), and its fix.
 
 const arty_messages = {

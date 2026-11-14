@@ -3,7 +3,7 @@ module rules
 import time
 import treesitter { node_field, nodes_of_kind, position_of }
 
-// Port of the `no-unsafe-unary-minus` rule of typescript-eslint 8.62.0 (it has no options).
+// Port of the `no-unsafe-unary-minus` rule of typescript-eslint 8.72.2 (it has no options).
 
 const nuum_messages = {
 	'unaryMinus': 'Argument of unary negation should be assignable to number | bigint but is {{type}} instead.'

@@ -4,7 +4,7 @@ import time
 import tsgo { AstTree, SymbolResponse, TypeResponse, handle_index, handle_kind, handle_path }
 import treesitter { named_children, node_end, node_field, node_kind, node_parent, nodes_of_kind, position_of }
 
-// Port of the `no-unnecessary-type-arguments` rule of typescript-eslint 8.62.0 (it has no
+// Port of the `no-unnecessary-type-arguments` rule of typescript-eslint 8.72.2 (it has no
 // options), with its fix.
 
 const nutarg_messages = {

@@ -5,7 +5,7 @@ import jsregexp
 import time
 import treesitter { Ident, children, named_children, node_field, node_kind, position_of }
 
-// Port of the `no-restricted-imports` rule of ESLint 10.6.0. The `group` patterns are gitignore
+// Port of the `no-restricted-imports` rule of ESLint 10.15.0. The `group` patterns are gitignore
 // rules (gitignore.v).
 
 const nrim_messages = {

@@ -5,7 +5,7 @@ import jsregexp
 import offsets
 import treesitter { Ident, node_end, node_start, nodes_of_kind, position_of }
 
-// The comments that configure ESLint, like ESLint 10.6.0 applies them (its JS language's
+// The comments that configure ESLint, like ESLint 10.15.0 applies them (its JS language's
 // getInlineConfigNodes, applyInlineConfig and getDisableDirectives, @eslint/plugin-kit's
 // ConfigCommentParser and lib/linter/apply-disable-directives.js):
 //   - `/* eslint rule: value */` changes the rules of the file;

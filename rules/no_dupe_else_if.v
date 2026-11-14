@@ -3,7 +3,7 @@ module rules
 import time
 import treesitter { node_field, node_kind, node_parent, position_of }
 
-// Port of the `no-dupe-else-if` rule of ESLint 10.6.0 (it has no options).
+// Port of the `no-dupe-else-if` rule of ESLint 10.15.0 (it has no options).
 
 const ndei_messages = {
 	'unexpected': 'This branch can never execute. Its condition is a duplicate or covered by previous conditions in the if-else-if chain.'

@@ -2,7 +2,7 @@ module esquery
 
 import estree
 
-// ESLint 10.6.0's handling of selectors (lib/linter/esquery.js and source-code-traverser.js): a
+// ESLint 10.15.0's handling of selectors (lib/linter/esquery.js and source-code-traverser.js): a
 // listener name may end with `:exit`, `*` and plain names skip esquery's parser, every selector
 // has a specificity, and on each node the selectors that may match its type are tried in order of
 // specificity.

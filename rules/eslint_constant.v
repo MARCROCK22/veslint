@@ -2,7 +2,7 @@ module rules
 
 import treesitter { children, node_field, node_kind }
 
-// Ports of isConstant and isLogicalIdentity of ESLint 10.6.0's ast-utils, with
+// Ports of isConstant and isLogicalIdentity of ESLint 10.15.0's ast-utils, with
 // isReferenceToGlobalVariable, for no-constant-condition and no-constant-binary-expression. Nodes
 // are taken without their parentheses (unwrap_parens).
 

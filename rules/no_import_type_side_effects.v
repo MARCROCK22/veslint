@@ -3,7 +3,7 @@ module rules
 import time
 import treesitter { has_child_kind, named_children, node_field, node_kind, node_start, position_of }
 
-// Port of the `no-import-type-side-effects` rule of typescript-eslint 8.62.0 (it has no options),
+// Port of the `no-import-type-side-effects` rule of typescript-eslint 8.72.2 (it has no options),
 // with its fix.
 
 const nitse_messages = {

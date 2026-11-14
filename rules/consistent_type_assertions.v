@@ -4,7 +4,7 @@ import json2
 import time
 import treesitter { has_child_kind, named_children, node_field, node_kind, node_parent, position_of }
 
-// Port of the `consistent-type-assertions` rule of typescript-eslint 8.62.0, with its options
+// Port of the `consistent-type-assertions` rule of typescript-eslint 8.72.2, with its options
 // `assertionStyle` ('as', 'angle-bracket' or 'never'), `objectLiteralTypeAssertions` and
 // `arrayLiteralTypeAssertions` ('allow', 'allow-as-parameter' or 'never'), its fix and its
 // suggestions.

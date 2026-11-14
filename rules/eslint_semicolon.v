@@ -2,7 +2,7 @@ module rules
 
 import treesitter { children, node_end, node_field, node_kind, node_parent, node_start }
 
-// needsPrecedingSemicolon and canContinueExpressionInClassBody of ESLint 10.6.0's ast-utils
+// needsPrecedingSemicolon and canContinueExpressionInClassBody of ESLint 10.15.0's ast-utils
 // (lib/rules/utils/ast-utils.js), which no-useless-constructor uses. They differ from
 // typescript-eslint's older needsPrecedingSemicolon (needs_preceding_semicolon in fix_tokens.v):
 // no semicolon is needed after the key or the computed key of an uninitialized class field, after
@@ -27,7 +27,7 @@ fn (c &Checker) can_continue_expression_in_class_body(token SourceToken) bool {
 		|| (token.kind in [.identifier, .keyword] && text in ['in', 'instanceof'])
 }
 
-// eslint_needs_preceding_semicolon ports needsPrecedingSemicolon(sourceCode, node) of ESLint 10.6.0
+// eslint_needs_preceding_semicolon ports needsPrecedingSemicolon(sourceCode, node) of ESLint 10.15.0
 // for the ESTree node that starts at `start` (`n` is a node of the file): whether code that starts
 // with `(`, `[`, `*` or a template and takes the place of the node would continue the token before
 // it. prevNode, the innermost ESTree node that contains that token (getNodeByRangeIndex), is the

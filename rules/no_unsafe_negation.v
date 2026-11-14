@@ -4,7 +4,7 @@ import json2
 import time
 import treesitter { node_end, node_field, node_kind, node_start, position_of }
 
-// Port of the `no-unsafe-negation` rule of ESLint 10.6.0, with its option and its suggestions.
+// Port of the `no-unsafe-negation` rule of ESLint 10.15.0, with its option and its suggestions.
 
 const nun_messages = {
 	'unexpected':                   "Unexpected negating the left operand of '{{operator}}' operator."

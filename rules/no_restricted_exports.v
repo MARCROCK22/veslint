@@ -5,7 +5,7 @@ import jsregexp
 import time
 import treesitter { children, named_children, node_field, node_kind, position_of }
 
-// Port of the `no-restricted-exports` rule of ESLint 10.6.0.
+// Port of the `no-restricted-exports` rule of ESLint 10.15.0.
 
 const nre_messages = {
 	'restrictedNamed':   "'{{name}}' is restricted from being used as an exported name."

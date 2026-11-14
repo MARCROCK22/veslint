@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Differential test of codepath/ (the V port of ESLint 10.6.0's code path analysis, on the ESTree
+# Differential test of codepath/ (the V port of ESLint 10.15.0's code path analysis, on the ESTree
 # of estree/) against ESLint itself: for every file of the corpus of tests/estree/run.sh, every
 # call ESLint makes to the listeners of a rule (`*`, `*:exit` and the seven code path events, with
 # the ids of the code paths and segments and the final state of each segment), in its order,

@@ -5,7 +5,7 @@ import time
 import tsgo { TypeResponse }
 import treesitter { named_children, node_end, node_field, node_kind, nodes_of_kinds, position_of }
 
-// Port of the `prefer-find` rule of typescript-eslint 8.62.0, with its suggestion.
+// Port of the `prefer-find` rule of typescript-eslint 8.72.2, with its suggestion.
 
 const pfind_messages = {
 	'preferFind':           'Prefer .find(...) instead of .filter(...)[0].'

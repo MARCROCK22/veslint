@@ -4,7 +4,7 @@ import json2
 import time
 import treesitter { children, node_end, node_kind, node_start }
 
-// Port of the `no-irregular-whitespace` rule of ESLint 10.6.0, with its options.
+// Port of the `no-irregular-whitespace` rule of ESLint 10.15.0, with its options.
 
 const niw_messages = {
 	'noIrregularWhitespace': 'Irregular whitespace not allowed.'

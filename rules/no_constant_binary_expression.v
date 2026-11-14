@@ -4,7 +4,7 @@ import json2
 import time
 import treesitter { node_field, node_kind, position_of }
 
-// Port of the `no-constant-binary-expression` rule of ESLint 10.6.0, with its option.
+// Port of the `no-constant-binary-expression` rule of ESLint 10.15.0, with its option.
 
 const ncbe_messages = {
 	'constantBinaryOperand':        'Unexpected constant binary expression. Compares constantly with the {{otherSide}}-hand side of the `{{operator}}`.'

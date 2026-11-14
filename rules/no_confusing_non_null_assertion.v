@@ -3,7 +3,7 @@ module rules
 import time
 import treesitter { node_end, node_field, node_kind, node_start, position_of }
 
-// Port of the `no-confusing-non-null-assertion` rule of typescript-eslint 8.62.0 (it has no
+// Port of the `no-confusing-non-null-assertion` rule of typescript-eslint 8.72.2 (it has no
 // options), with its suggestions.
 
 const ncnna_messages = {

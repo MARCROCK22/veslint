@@ -4,7 +4,7 @@ import json2
 import time
 import treesitter { node_field, node_kind, node_parent, position_of }
 
-// Port of the `no-inner-declarations` rule of ESLint 10.6.0.
+// Port of the `no-inner-declarations` rule of ESLint 10.15.0.
 
 const nid_messages = {
 	'moveDeclToRoot': 'Move {{type}} declaration to {{body}} root.'

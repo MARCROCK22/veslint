@@ -4,7 +4,7 @@ import json2
 import time
 import treesitter { node_field, node_kind, node_start, position_of }
 
-// Port of the `no-constant-condition` rule of ESLint 10.6.0, with its option.
+// Port of the `no-constant-condition` rule of ESLint 10.15.0, with its option.
 
 const ncc_messages = {
 	'unexpected': 'Unexpected constant condition.'
