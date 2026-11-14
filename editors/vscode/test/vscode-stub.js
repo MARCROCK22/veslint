@@ -145,6 +145,8 @@ function create() {
     },
     window: {
       activeTextEditor: undefined,
+      visibleTextEditors: [],
+      onDidChangeVisibleTextEditors: event('visible'),
       createOutputChannel: () => ({ appendLine: line => state.output.push(line), show() {}, dispose() {} }),
       createStatusBarItem: () => Object.assign(state.status, { show() {}, dispose() {} }),
       showWarningMessage: async message => void state.messages.push(message),

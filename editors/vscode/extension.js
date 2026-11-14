@@ -49,6 +49,15 @@ const linted = new Map();
 /** The run of each file that has not finished, to stop it when a newer one starts. */
 const running = new Map();
 /**
+ * The open files to lint again because another file of their folder changed since their last lint
+ * (its types may be theirs): those not on screen are linted when they are shown.
+ */
+const stale = new Set();
+/** Per folder, the pending lint of the other open files after a change (see lintDependents). */
+const dependents = new Map();
+/** Milliseconds a change waits before the other open files of its folder are linted again. */
+const dependentsDelay = 200;
+/**
  * Lints go one at a time until their request is sent, and their answers are awaited out of it: a
  * server answers in order, and gives up a request that a later one for the same file made useless.
  */
@@ -190,6 +199,36 @@ function noteChange(uri, kind) {
   else pending[kind].add(uri.fsPath);
 }
 
+/** Whether a document is in an editor on screen. */
+function visible(document) {
+  return (vscode.window.visibleTextEditors ?? []).some(editor => editor.document === document);
+}
+
+/**
+ * A file of a folder changed (typed, saved, or written on disk by another program): the other
+ * open files of the folder may use its types, so they are linted again after it, those on screen
+ * now and the others when they are shown. Several changes in a row are taken together. `except`
+ * is the path of the file that changed, which its own lint covers.
+ */
+function lintDependents(folder, except) {
+  let pending = dependents.get(folder);
+  if (!pending) {
+    pending = { except: new Set(), timer: undefined };
+    dependents.set(folder, pending);
+  }
+  if (except) pending.except.add(except);
+  clearTimeout(pending.timer);
+  pending.timer = setTimeout(() => {
+    dependents.delete(folder);
+    for (const document of vscode.workspace.textDocuments) {
+      if (document.isClosed || !lintable(document) || folderOf(document.uri) !== folder) continue;
+      if (pending.except.has(document.uri.fsPath) || settings(document.uri).run === 'manual') continue;
+      if (visible(document)) lint(document);
+      else stale.add(document.uri.toString());
+    }
+  }, dependentsDelay);
+}
+
 /** Takes the changes of a folder for a request. */
 function takeChanges(folder) {
   const pending = changesOf(folder);
@@ -254,6 +293,7 @@ function lint(document, manual = false) {
     return settled;
   }
   const key = document.uri.toString();
+  stale.delete(key);
   running.get(key)?.abort();
   const controller = new AbortController();
   running.set(key, controller);
@@ -605,6 +645,7 @@ function activate(context) {
       noteChange(document.uri, 'forget');
       noteChange(document.uri, 'changed');
       automatic(document);
+      if (lintable(document) && settings(document.uri).run !== 'manual') lintDependents(folderOf(document.uri), document.uri.fsPath);
     }),
     vscode.workspace.onDidChangeTextDocument(event => {
       const document = event.document;
@@ -621,7 +662,9 @@ function activate(context) {
         key,
         setTimeout(() => {
           typing.delete(key);
-          if (!document.isClosed) lint(document);
+          if (document.isClosed) return;
+          lint(document);
+          lintDependents(folderOf(document.uri), document.uri.fsPath);
         }, options.typingDelay),
       );
     }),
@@ -632,9 +675,17 @@ function activate(context) {
       running.get(key)?.abort();
       running.delete(key);
       linted.delete(key);
+      stale.delete(key);
       diagnostics.delete(document.uri);
       // Closed without saving: the server reads the file from disk again.
       if (lintable(document)) noteChange(document.uri, 'forget');
+    }),
+    // A file that another one changed under while it was not on screen is linted when shown.
+    vscode.window.onDidChangeVisibleTextEditors(editors => {
+      for (const editor of editors) {
+        const document = editor.document;
+        if (stale.has(document.uri.toString()) && !document.isClosed) lint(document);
+      }
     }),
     vscode.workspace.onDidChangeWorkspaceFolders(event => {
       for (const removed of event.removed) {
@@ -685,9 +736,9 @@ function activate(context) {
   // them again. A tsconfig.json or a package that changes: they read everything again.
   const sourceWatcher = vscode.workspace.createFileSystemWatcher('**/*.{ts,mts,cts,tsx}');
   context.subscriptions.push(
-    sourceWatcher.onDidChange(uri => noteChange(uri, 'changed')),
-    sourceWatcher.onDidCreate(uri => noteChange(uri, 'created')),
-    sourceWatcher.onDidDelete(uri => noteChange(uri, 'deleted')),
+    sourceWatcher.onDidChange(uri => sourceChanged(uri, 'changed')),
+    sourceWatcher.onDidCreate(uri => sourceChanged(uri, 'created')),
+    sourceWatcher.onDidDelete(uri => sourceChanged(uri, 'deleted')),
   );
   const projectWatcher = vscode.workspace.createFileSystemWatcher('**/{tsconfig*.json,package.json}');
   for (const on of [projectWatcher.onDidChange, projectWatcher.onDidCreate, projectWatcher.onDidDelete]) {
@@ -698,11 +749,20 @@ function activate(context) {
   scheduleUpdateCheck();
 }
 
+/** A TypeScript file that changed on disk: the server reads it again and its dependents are linted. */
+function sourceChanged(uri, kind) {
+  noteChange(uri, kind);
+  if (uri.scheme === 'file' && settings(uri).enable) lintDependents(folderOf(uri), uri.fsPath);
+}
+
 function deactivate() {
   for (const controller of running.values()) controller.abort();
   running.clear();
   for (const timer of typing.values()) clearTimeout(timer);
   typing.clear();
+  for (const pending of dependents.values()) clearTimeout(pending.timer);
+  dependents.clear();
+  stale.clear();
   stopServers();
 }
 
