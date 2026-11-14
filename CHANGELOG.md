@@ -2,6 +2,32 @@
 
 Each version is a release on GitHub with the veslint binaries (Linux x64, Windows x64) and the VS Code extension. The section of a version is the text of its release.
 
+## 0.20.0
+
+- **7 rules that `@marcrock22/eslintcf` turns on:** `array-callback-return`, `no-lonely-if`, `no-negated-condition`, `no-throw-literal` and `require-atomic-updates` of ESLint core, and `@typescript-eslint/class-methods-use-this` and `@typescript-eslint/no-explicit-any`. They come with their options, fixes and suggestions, and pass the cases of their own tests.
+- **The rules follow ESLint 10.15.0, typescript-eslint 8.72.2 and eslint-plugin-unicorn 79.0.0** (the versions of `@marcrock22/eslintcf` 0.0.1), instead of ESLint 10.6.0, typescript-eslint 8.62.0 and unicorn 64.0.0. 125 ported rules changed in those versions — new checks, messages, fixes and suggestions — and give what the new versions give; every rule passes the cases of its new upstream tests.
+- **Renamed and removed rules:** `unicorn/no-array-for-each` is now `unicorn/no-for-each`. `unicorn/no-hex-escape` is deprecated in unicorn 79 and reports nothing.
+- **New options:**
+  - `preserve-caught-error`: `errorClassNames`.
+  - `no-unmodified-loop-condition`: `checkConditionalExpressions`.
+  - `@typescript-eslint/await-thenable`: `allowMixedPromiseArrays`.
+  - `@typescript-eslint/no-misused-promises`: `checksConditionals: { flagUnions }`.
+  - `unicorn/switch-case-braces`: `"single-statement"`.
+  - `unicorn/prefer-ternary`: `checkVaryingBase` and `checkComputedMemberAccess`.
+  - `unicorn/no-array-callback-reference`: `ignore`.
+  - `unicorn/no-unreadable-array-destructuring`: `maximumIgnoredElements`.
+- **Changed defaults:** `unicorn/prefer-number-properties` no longer checks `NaN` unless `checkNaN` is set.
+- **Types in unicorn's rules:** as unicorn 79 does when the parser has a program, the unicorn rules use TypeScript's types (arrays, strings, numbers, BigInts, sets…).
+- **The project service** lints a file from a program whose current directory is the one veslint runs in, as typescript-estree 8.72 does in a single run: `from: "file"` type specifiers are relative to it (with `--fix`, to the directory of the tsconfig, as before); `veslint --server` (the VS Code extension) does the same, so it gives what the command line gives.
+- **Directive comments:** `__proto__` is a name like any other in `/* global */` and `/* exported */` comments (@eslint/plugin-kit 0.7.3). A comment that names `@typescript-eslint/no-generated-empty-object-type` or `@typescript-eslint/no-unsafe-enum-assignment` (new in typescript-eslint 8.72) no longer gets "Definition for rule … was not found.".
+- **Scope:** as typescript-eslint 8.72's scope manager, a global declared by several of TypeScript's libraries is a type and a value when any of them declares it so (the `lib` of the tsconfig), and the global scope starts at the start of the file.
+- **Fixes:**
+  - `@typescript-eslint/no-unnecessary-type-assertion` overflowed the stack on a recursive generic type.
+  - `prefer-const` takes every `let` declaration of a name declared more than once (TypeScript rejects it, ESLint lints it), as ESLint does: a name declared by a `const` and then by a `let` is reported, and a name declared by two `let`s is reported once for each.
+  - `@typescript-eslint/prefer-readonly` and `@typescript-eslint/prefer-return-this-type` warned that a node was not analyzed on a `declare class`.
+  - Grammar: after the block of an arrow function and a line break, an operator, template or regular expression starts a new statement, as in TypeScript.
+- **Development:** the ESLint processes of `tests/rules/reference.sh` and `cross.sh` lint at most 15 files each (typescript-eslint 8.72 keeps a program per project).
+
 ## 0.19.1
 
 - **VS Code extension: the open files are linted again when another file changes.** A problem that came from the types of another file (`@typescript-eslint/no-unsafe-return` on a type made `any` there, say) stayed in the editor after that file was fixed, until the file was edited, though the command line no longer gave it. Now, when a file changes (as you type, when it is saved, or on disk), the other open files of its folder are linted again after it: those on screen at once, the others when they are shown.
