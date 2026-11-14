@@ -343,6 +343,7 @@ pub const unicorn_no_useless_collection_argument = 'unicorn/no-useless-collectio
 pub const unicorn_no_useless_iterator_to_array = 'unicorn/no-useless-iterator-to-array'
 pub const unicorn_no_useless_spread = 'unicorn/no-useless-spread'
 pub const unicorn_prefer_single_call = 'unicorn/prefer-single-call'
+pub const unicorn_prefer_spread = 'unicorn/prefer-spread'
 pub const names = [no_floating_promises, await_thenable, require_await, return_await,
 	no_misused_promises, no_unsafe_call, no_unsafe_member_access, no_unsafe_return,
 	no_unsafe_assignment, no_unsafe_argument, restrict_template_expressions,
@@ -431,7 +432,7 @@ pub const names = [no_floating_promises, await_thenable, require_await, return_a
 	no_throw_literal, require_atomic_updates, class_methods_use_this, no_explicit_any,
 	unicorn_consistent_empty_array_spread, unicorn_no_useless_fallback_in_spread,
 	unicorn_no_useless_collection_argument, unicorn_no_useless_iterator_to_array,
-	unicorn_no_useless_spread, unicorn_prefer_single_call]
+	unicorn_no_useless_spread, unicorn_prefer_single_call, unicorn_prefer_spread]
 
 // untyped_rules are the ported rules that need no types (`meta.docs.requiresTypeChecking` is false
 // in typescript-eslint; the eslint-plugin-unicorn rules that read the types when the parser has a
@@ -834,6 +835,7 @@ pub const default_options = {
 	unicorn_no_useless_iterator_to_array:            '[]'
 	unicorn_no_useless_spread:                       '[]'
 	unicorn_prefer_single_call:                      '[{"ignore":[]}]'
+	unicorn_prefer_spread:                           '[]'
 }
 
 // Finding is a problem a rule found at a node.
@@ -1297,6 +1299,7 @@ pub fn message(rule string, finding Finding) string {
 		unicorn_no_useless_iterator_to_array { unuita_messages }
 		unicorn_no_useless_spread { unus_messages }
 		unicorn_prefer_single_call { upsg_messages }
+		unicorn_prefer_spread { upsp_messages }
 		else { map[string]string{} }
 	}
 	return interpolate(messages[finding.message_id] or { finding.message_id }, finding.data)
@@ -2439,6 +2442,9 @@ fn (mut c Checker) lint_rule(rule string, root C.TSNode, abs_path string, mut st
 		}
 		unicorn_prefer_single_call {
 			return c.lint_unicorn_prefer_single_call(root, abs_path, mut stats)!
+		}
+		unicorn_prefer_spread {
+			return c.lint_unicorn_prefer_spread(root, abs_path, mut stats)!
 		}
 		else { return error('unknown rule: ${rule}') }
 	}
