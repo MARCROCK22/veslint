@@ -4,7 +4,7 @@ import json2
 import time
 import treesitter { named_children, node_field, node_kind, node_parent, node_start, position_of }
 
-// Port of the `prefer-arrow-callback` rule of ESLint 10.6.0, with its options and its fix.
+// Port of the `prefer-arrow-callback` rule of ESLint 10.15.0, with its options and its fix.
 
 const parc_messages = {
 	'preferArrowCallback': 'Unexpected function expression.'
@@ -103,7 +103,13 @@ fn (c &Checker) pac_callback_info(f C.TSNode) PacCallback {
 	for {
 		parent := cti_estree_parent(current) or { return PacCallback{} }
 		match node_kind(parent) {
-			'ternary_expression' {}
+			'ternary_expression' {
+				// The test of a conditional is never its value.
+				condition := node_field(parent, 'condition') or { return PacCallback{} }
+				if node_key(unwrap_parens(condition)) == node_key(current) {
+					return PacCallback{}
+				}
+			}
 			'binary_expression' {
 				if estree_binary_kind(parent) != 'LogicalExpression' {
 					return PacCallback{}
@@ -194,9 +200,15 @@ fn (mut c Checker) pac_fixes(root C.TSNode, f C.TSNode, info PacCallback, uses_t
 	if is_async {
 		function_token = tokens.after(function_token.end, false)?
 	}
+	// The first token of the type parameters, or else the `(` of the parameters.
+	type_parameters := node_field(f, 'type_parameters')
 	mut left_paren := tokens.after(function_token.end, false)?
-	for c.src[left_paren.start..left_paren.end] != '(' {
-		left_paren = tokens.after(left_paren.end, false)?
+	if tp := type_parameters {
+		left_paren = tokens.after(node_start(tp), false)?
+	} else {
+		for c.src[left_paren.start..left_paren.end] != '(' {
+			left_paren = tokens.after(left_paren.end, false)?
+		}
 	}
 	if is_async && es_has_line_break(c.src[function_token.end..left_paren.start]) {
 		return none
@@ -231,6 +243,20 @@ fn (mut c Checker) pac_fixes(root C.TSNode, f C.TSNode, info PacCallback, uses_t
 		}
 	} else {
 		fixes << fix_remove_range(function_token.start, left_paren.start)
+	}
+	// Disambiguate between JSX and type parameters: `<T,>`.
+	if c.language.jsx {
+		if tp := type_parameters {
+			list := named_children(tp).filter(node_kind(it) == 'type_parameter')
+			if list.len == 1 && node_field(list[0], 'constraint') == none
+				&& node_field(list[0], 'value') == none {
+				closing := tokens.before(c.es_end(tp), false)?
+				before_closing := tokens.before(closing.start, false)?
+				if c.src[before_closing.start..before_closing.end] != ',' {
+					fixes << fix_insert_at(c.es_end(list[0]), ',')
+				}
+			}
+		}
 	}
 	fixes << fix_insert_at(before_body.end, ' =>')
 	replaced := if info.is_lexical_this { info.bind_call? } else { f }

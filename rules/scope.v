@@ -260,6 +260,7 @@ pub:
 	jsx_fragment_name       string
 	global_return           bool
 	implied_strict          bool // ecmaFeatures.impliedStrict, which the strict rule reads
+	jsx                     bool // ecmaFeatures.jsx, which prefer-arrow-callback reads
 	// parserOptions.isolatedDeclarations (truthy), which consistent-generic-constructors reads
 	isolated_declarations bool
 }
@@ -305,8 +306,11 @@ pub fn parse_language_options(value json2.Any) LanguageOptions {
 	fragment_state, fragment := scope_name_option(parser, 'jsxFragmentName')
 	mut global_return := false
 	mut implied_strict := false
+	mut jsx := false
 	if features := parser['ecmaFeatures'] {
 		if features is map[string]json2.Any {
+			jsx = (features.as_map()['jsx'] or { json2.Any(false) }).json_str() !in ['false', 'null',
+				'0', '""']
 			global_return = (features.as_map()['globalReturn'] or { json2.Any(false) }).json_str() == 'true'
 			implied_strict = (features.as_map()['impliedStrict'] or { json2.Any(false) }).json_str() == 'true'
 		}
@@ -323,6 +327,7 @@ pub fn parse_language_options(value json2.Any) LanguageOptions {
 		has_lib:                 has_lib
 		lib:                     lib
 		implied_strict:          implied_strict
+		jsx:                     jsx
 		jsx_pragma_state:        pragma_state
 		jsx_pragma:              pragma
 		jsx_fragment_name_state: fragment_state
