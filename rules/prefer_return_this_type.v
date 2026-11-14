@@ -105,8 +105,15 @@ fn prtt_class_span(class C.TSNode) Span {
 			kind:  prtt_syntax_kind_class_expression
 		}
 	}
+	// TypeScript's declaration starts at its modifiers: `declare` (an ambient_declaration in
+	// tree-sitter) and `export`.
 	mut first := class
-	if parent := node_parent(class) {
+	if parent := node_parent(first) {
+		if node_kind(parent) == 'ambient_declaration' {
+			first = parent
+		}
+	}
+	if parent := node_parent(first) {
 		if node_kind(parent) == 'export_statement' {
 			first = parent
 		}

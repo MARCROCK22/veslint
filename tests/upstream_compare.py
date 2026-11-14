@@ -25,7 +25,10 @@ def main():
                 known.add(line.split('\t')[1])
     ours = collections.defaultdict(list)
     with open(veslint_lines, encoding='utf-8') as f:
-        for line in f.read().splitlines():
+        # Lines end with \n alone: str.splitlines would also split at a U+2028 of a fix.
+        for line in f.read().split('\n'):
+            if not line:
+                continue
             ours[line.split('\t')[0].rsplit(':', 2)[0]].append(line)
     cases = lines = different = 0
     for rule in rules:
