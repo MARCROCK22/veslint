@@ -1153,3 +1153,64 @@ fn unb_is_number_literal_of(t &estree.EsTree, node int, value f64) bool {
 	v := t.get(node, .value)
 	return v is f64 && v == value
 }
+
+// unb_is_global_reference_or_undefined is isGlobalReference of utils/boolean.js: a configured
+// global, or a name of no variable or of one without definitions.
+fn (mut c Checker) unb_is_global_reference_or_undefined(root C.TSNode, t &estree.EsTree, node int) bool {
+	ts := t.ts_node(node) or { return false }
+	if c.es_is_global_reference(root, ts) {
+		return true
+	}
+	v := c.unb_find_variable(root, t, node)
+	return v < 0 || c.scope_tree(root).variables[v].defs.len == 0
+}
+
+// unb_is_global_boolean_call ports isGlobalBooleanCall (utils/boolean.js): `Boolean(x)` of the
+// global, not optional, with one argument that is not a spread.
+fn (mut c Checker) unb_is_global_boolean_call(root C.TSNode, t &estree.EsTree, node int) bool {
+	if node < 0 || t.typ(node) != .call_expression || (t.flag(node, .optional) or { false }) {
+		return false
+	}
+	callee := t.node(node, .callee) or { return false }
+	args := t.list(node, .arguments) or { return false }
+	return t.typ(callee) == .identifier && (t.string_of(callee, .name) or { '' }) == 'Boolean'
+		&& args.len == 1 && t.typ(args[0]) != .spread_element
+		&& c.unb_is_global_reference_or_undefined(root, t, callee)
+}
+
+// unb_is_boolean_expression ports isBooleanExpression of utils/boolean.js of 79.0.0.
+fn (mut c Checker) unb_is_boolean_expression(root C.TSNode, t &estree.EsTree, node int) bool {
+	parent := t.nodes[node].parent
+	if un_is_logic_not(t, node) || (un_is_logic_not(t, parent) && t.node(parent, .argument) or { -1 } == node)
+		|| c.unb_is_global_boolean_call(root, t, node) || (c.unb_is_global_boolean_call(root, t, parent)
+		&& (t.list(parent, .arguments) or { []int{} })[0] == node) {
+		return true
+	}
+	if un_is_logical(t, parent) {
+		return c.unb_is_boolean_expression(root, t, parent)
+	}
+	return false
+}
+
+// unb_is_boolean_context ports isBooleanContext: the value of the node is only used for its
+// truthiness (TypeScript wrappers around it are not looked through).
+fn (mut c Checker) unb_is_boolean_context(root C.TSNode, t &estree.EsTree, node int) bool {
+	return c.unb_is_boolean_expression(root, t, node) || un_is_control_flow_test(t, node)
+}
+
+// unb_logical_child_text ports getLogicalExpressionChildText: the text of the node (with its
+// parentheses) as an operand of `operator`, in parentheses when it needs them.
+fn (c &Checker) unb_logical_child_text(t &estree.EsTree, tokens &SourceTokens, node int, operator string) string {
+	text := c.un_parenthesized_text(t, tokens, node)
+	return if !c.un_is_parenthesized(t, tokens, node) && un_logical_child_needs_parens(t, node, operator) {
+		'(${text})'
+	} else {
+		text
+	}
+}
+
+// unb_has_static_string: getStaticStringValue(node) !== undefined.
+fn unb_has_static_string(t &estree.EsTree, node int) bool {
+	unb_static_string_value(t, node) or { return false }
+	return true
+}
