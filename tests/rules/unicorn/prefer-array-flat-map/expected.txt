@@ -3,3 +3,11 @@ tests/rules/unicorn/prefer-array-flat-map/cases.ts:6:17	unicorn/prefer-array-fla
 tests/rules/unicorn/prefer-array-flat-map/cases.ts:7:18	unicorn/prefer-array-flat-map	prefer-array-flat-map	Prefer `.flatMap(…)` over `.map(…).flat()`.
 tests/rules/unicorn/prefer-array-flat-map/cases.ts:8:18	unicorn/prefer-array-flat-map	prefer-array-flat-map	Prefer `.flatMap(…)` over `.map(…).flat()`.
 tests/rules/unicorn/prefer-array-flat-map/cases.ts:10:4	unicorn/prefer-array-flat-map	prefer-array-flat-map	Prefer `.flatMap(…)` over `.map(…).flat()`.
+tests/rules/unicorn/prefer-array-flat-map/cases.ts:24:18	unicorn/prefer-array-flat-map	prefer-array-flat-map	Prefer `.flatMap(…)` over `.map(…).flat()`.
+tests/rules/unicorn/prefer-array-flat-map/cases.ts:25:18	unicorn/prefer-array-flat-map	prefer-array-flat-map	Prefer `.flatMap(…)` over `.map(…).flat()`.
+tests/rules/unicorn/prefer-array-flat-map/cases.ts:26:18	unicorn/prefer-array-flat-map	prefer-array-flat-map	Prefer `.flatMap(…)` over `.map(…).flat()`.
+tests/rules/unicorn/prefer-array-flat-map/cases.ts:27:18	unicorn/prefer-array-flat-map	prefer-array-flat-map	Prefer `.flatMap(…)` over `.map(…).flat()`.
+tests/rules/unicorn/prefer-array-flat-map/cases.ts:28:18	unicorn/prefer-array-flat-map	prefer-array-flat-map	Prefer `.flatMap(…)` over `.map(…).flat()`.
+tests/rules/unicorn/prefer-array-flat-map/cases.ts:31:44	unicorn/prefer-array-flat-map	prefer-array-flat-map/filter-flat-map	Prefer a single `.flatMap(…)` over `.filter(…).flatMap(…)`.
+tests/rules/unicorn/prefer-array-flat-map/cases.ts:32:41	unicorn/prefer-array-flat-map	prefer-array-flat-map/filter-flat-map	Prefer a single `.flatMap(…)` over `.filter(…).flatMap(…)`.
+tests/rules/unicorn/prefer-array-flat-map/cases.ts:34:45	unicorn/prefer-array-flat-map	prefer-array-flat-map/filter-flat-map	Prefer a single `.flatMap(…)` over `.filter(…).flatMap(…)`.

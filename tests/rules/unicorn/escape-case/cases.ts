@@ -18,3 +18,10 @@ const r2 = /\xA9\cA/u;
 // Not reported.
 const z1 = 'xa9';
 const z2 = String.raw`\xa9`;
+
+// 79.0.0: no template of any tag is checked; the raw text of a template is its source text.
+declare function tagged(strings: TemplateStringsArray, ...values: unknown[]): string;
+const y1 = tagged`\xa9`;
+const y2 = tagged`\u{00b1} ${1} \xa9`;
+const y3 = `\xa9
+\xa9 ${1} \ud834`;

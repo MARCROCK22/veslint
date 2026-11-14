@@ -4,3 +4,11 @@ tests/rules/unicorn/consistent-date-clone/cases.ts:7:28	unicorn/consistent-date-
 tests/rules/unicorn/consistent-date-clone/cases.ts:8:29	unicorn/consistent-date-clone	consistent-date-clone/error	Unnecessary `.getTime()` call.	fix	294	305	)	end	8	39
 tests/rules/unicorn/consistent-date-clone/cases.ts:9:36	unicorn/consistent-date-clone	consistent-date-clone/error	Unnecessary `.getTime()` call.	fix	342	352		end	9	45
 tests/rules/unicorn/consistent-date-clone/cases.ts:10:27	unicorn/consistent-date-clone	consistent-date-clone/error	Unnecessary `.getTime()` call.	fix	380	390		end	10	36
+tests/rules/unicorn/consistent-date-clone/cases.ts:23:25	unicorn/consistent-date-clone	consistent-date-clone/error	Unnecessary `.getTime()` call.	fix	806	816		end	23	34
+tests/rules/unicorn/consistent-date-clone/cases.ts:23:36	unicorn/consistent-date-clone	consistent-date-clone/error	Unnecessary `.getTime()` call.	fix	817	827		end	23	45
+tests/rules/unicorn/consistent-date-clone/cases.ts:24:30	unicorn/consistent-date-clone	consistent-date-clone/error	Unnecessary `.getTime()` call.	end	24	39
+tests/rules/unicorn/consistent-date-clone/cases.ts:25:16	unicorn/consistent-date-clone	consistent-date-clone/error	Unnecessary `.getTime()` call.	end	25	39
+tests/rules/unicorn/consistent-date-clone/cases.ts:26:16	unicorn/consistent-date-clone	consistent-date-clone/error	Unnecessary `.getTime()` call.	fix	926	936		end	26	25
+tests/rules/unicorn/consistent-date-clone/cases.ts:28:3	unicorn/consistent-date-clone	consistent-date-clone/error	Unnecessary `.getTime()` call.	end	28	12
+tests/rules/unicorn/consistent-date-clone/cases.ts:29:26	unicorn/consistent-date-clone	consistent-date-clone/error	Unnecessary `.getTime()` call.	fix	1017	1027		end	29	35
+tests/rules/unicorn/consistent-date-clone/cases.ts:30:32	unicorn/consistent-date-clone	consistent-date-clone/error	Unnecessary `.getTime()` call.	fix	1060	1070		end	30	41

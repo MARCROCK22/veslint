@@ -5,7 +5,7 @@ tests/rules/unicorn/no-negated-condition/cases.ts:21:5	unicorn/no-negated-condit
 tests/rules/unicorn/no-negated-condition/cases.ts:22:12	unicorn/no-negated-condition	no-negated-condition	Unexpected negated condition.	fix	468	478	a ? c : b	end	22	14
 tests/rules/unicorn/no-negated-condition/cases.ts:23:12	unicorn/no-negated-condition	no-negated-condition	Unexpected negated condition.	fix	493	506	=== c ? c : b	end	23	19
 tests/rules/unicorn/no-negated-condition/cases.ts:24:13	unicorn/no-negated-condition	no-negated-condition	Unexpected negated condition.	fix	520	535	a) ? (c) : (b)	end	24	15
-tests/rules/unicorn/no-negated-condition/cases.ts:26:5	unicorn/no-negated-condition	no-negated-condition	Unexpected negated condition.	fix	586	587		end	26	7
+tests/rules/unicorn/no-negated-condition/cases.ts:26:5	unicorn/no-negated-condition	no-negated-condition	Unexpected negated condition.	end	26	7
 tests/rules/unicorn/no-negated-condition/cases.ts:33:5	unicorn/no-negated-condition	no-negated-condition	Unexpected negated condition.	fix	665	712	a as boolean) {\n  bar();\n} else {\n  foo();\n}	end	33	20
 tests/rules/unicorn/no-negated-condition/cases.ts:38:12	unicorn/no-negated-condition	no-negated-condition	Unexpected negated condition.	fix	734	746	== c ? 2 : 1	end	38	26
 tests/rules/unicorn/no-negated-condition/cases.ts:42:9	unicorn/no-negated-condition	no-negated-condition	Unexpected negated condition.	fix	830	840	 a ? c : b	end	42	11
@@ -13,4 +13,12 @@ tests/rules/unicorn/no-negated-condition/cases.ts:45:8	unicorn/no-negated-condit
 tests/rules/unicorn/no-negated-condition/cases.ts:49:10	unicorn/no-negated-condition	no-negated-condition	Unexpected negated condition.	fix	960	976	 ( \n    a ? c : b)	end	50	6
 tests/rules/unicorn/no-negated-condition/cases.ts:53:9	unicorn/no-negated-condition	no-negated-condition	Unexpected negated condition.	fix	1003	1019	 ( \n    a ? c : b)	end	54	6
 tests/rules/unicorn/no-negated-condition/cases.ts:58:1	unicorn/no-negated-condition	no-negated-condition	Unexpected negated condition.	fix	1102	1120	a ? bar() : foo()	end	58	3
-tests/rules/unicorn/no-negated-condition/cases.ts:60:1	unicorn/no-negated-condition	no-negated-condition	Unexpected negated condition.	fix	1126	1144	a ? bar() : foo()	end	60	3
+tests/rules/unicorn/no-negated-condition/cases.ts:60:1	unicorn/no-negated-condition	no-negated-condition	Unexpected negated condition.	end	60	3
+tests/rules/unicorn/no-negated-condition/cases.ts:83:5	unicorn/no-negated-condition	no-negated-condition	Unexpected negated condition.	fix	1554	1590	a || d) { bar(); } else { foo(); }	end	83	13
+tests/rules/unicorn/no-negated-condition/cases.ts:84:5	unicorn/no-negated-condition	no-negated-condition	Unexpected negated condition.	fix	1595	1628	a && b === c) {bar();} else {foo();}	end	84	18
+tests/rules/unicorn/no-negated-condition/cases.ts:85:12	unicorn/no-negated-condition	no-negated-condition	Unexpected negated condition.	fix	1640	1656	a || d ? 2 : 1	end	85	20
+tests/rules/unicorn/no-negated-condition/cases.ts:86:12	unicorn/no-negated-condition	no-negated-condition	Unexpected negated condition.	fix	1669	1699	a ? /* two */ 2 : /* one */ 1	end	86	14
+tests/rules/unicorn/no-negated-condition/cases.ts:87:12	unicorn/no-negated-condition	no-negated-condition	Unexpected negated condition.	end	87	14
+tests/rules/unicorn/no-negated-condition/cases.ts:88:12	unicorn/no-negated-condition	no-negated-condition	Unexpected negated condition.	end	88	20
+tests/rules/unicorn/no-negated-condition/cases.ts:89:12	unicorn/no-negated-condition	no-negated-condition	Unexpected negated condition.	end	89	27
+tests/rules/unicorn/no-negated-condition/cases.ts:91:9	unicorn/no-negated-condition	no-negated-condition	Unexpected negated condition.	end	92	6

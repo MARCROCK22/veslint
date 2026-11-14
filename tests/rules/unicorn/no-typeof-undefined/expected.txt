@@ -9,6 +9,13 @@ tests/rules/unicorn/no-typeof-undefined/cases.ts:16:10	unicorn/no-typeof-undefin
 tests/rules/unicorn/no-typeof-undefined/cases.ts:19:10	unicorn/no-typeof-undefined	no-typeof-undefined/error	Compare with `undefined` directly instead of using `typeof`.
 tests/rules/unicorn/no-typeof-undefined/cases.ts:23:9	unicorn/no-typeof-undefined	no-typeof-undefined/error	Compare with `undefined` directly instead of using `typeof`.
 tests/rules/unicorn/no-typeof-undefined/cases.ts:27:1	unicorn/no-typeof-undefined	no-typeof-undefined/error	Compare with `undefined` directly instead of using `typeof`.
+tests/rules/unicorn/no-typeof-undefined/cases.ts:35:12	unicorn/no-typeof-undefined	no-typeof-undefined/error	Compare with `undefined` directly instead of using `typeof`.
+tests/rules/unicorn/no-typeof-undefined/cases.ts:46:1	unicorn/no-typeof-undefined	no-typeof-undefined/error	Compare with `undefined` directly instead of using `typeof`.
+tests/rules/unicorn/no-typeof-undefined/cases.ts:47:1	unicorn/no-typeof-undefined	no-typeof-undefined/error	Compare with `undefined` directly instead of using `typeof`.
+tests/rules/unicorn/no-typeof-undefined/cases.ts:49:1	unicorn/no-typeof-undefined	no-typeof-undefined/error	Compare with `undefined` directly instead of using `typeof`.
+tests/rules/unicorn/no-typeof-undefined/cases.ts:50:18	unicorn/no-typeof-undefined	no-typeof-undefined/error	Compare with `undefined` directly instead of using `typeof`.
+tests/rules/unicorn/no-typeof-undefined/cases.ts:52:9	unicorn/no-typeof-undefined	no-typeof-undefined/error	Compare with `undefined` directly instead of using `typeof`.
+tests/rules/unicorn/no-typeof-undefined/cases.ts:56:10	unicorn/no-typeof-undefined	no-typeof-undefined/error	Compare with `undefined` directly instead of using `typeof`.
 tests/rules/unicorn/no-typeof-undefined/check-global-variables/cases.ts:8:12	unicorn/no-typeof-undefined	no-typeof-undefined/error	Compare with `undefined` directly instead of using `typeof`.
 tests/rules/unicorn/no-typeof-undefined/check-global-variables/cases.ts:9:12	unicorn/no-typeof-undefined	no-typeof-undefined/error	Compare with `undefined` directly instead of using `typeof`.
 tests/rules/unicorn/no-typeof-undefined/check-global-variables/cases.ts:10:12	unicorn/no-typeof-undefined	no-typeof-undefined/error	Compare with `undefined` directly instead of using `typeof`.
@@ -23,3 +30,10 @@ tests/rules/unicorn/no-typeof-undefined/check-global-variables/cases.ts:27:1	uni
 tests/rules/unicorn/no-typeof-undefined/check-global-variables/cases.ts:30:12	unicorn/no-typeof-undefined	no-typeof-undefined/error	Compare with `undefined` directly instead of using `typeof`.
 tests/rules/unicorn/no-typeof-undefined/check-global-variables/cases.ts:31:12	unicorn/no-typeof-undefined	no-typeof-undefined/error	Compare with `undefined` directly instead of using `typeof`.
 tests/rules/unicorn/no-typeof-undefined/check-global-variables/cases.ts:32:12	unicorn/no-typeof-undefined	no-typeof-undefined/error	Compare with `undefined` directly instead of using `typeof`.
+tests/rules/unicorn/no-typeof-undefined/check-global-variables/cases.ts:35:12	unicorn/no-typeof-undefined	no-typeof-undefined/error	Compare with `undefined` directly instead of using `typeof`.
+tests/rules/unicorn/no-typeof-undefined/check-global-variables/cases.ts:46:1	unicorn/no-typeof-undefined	no-typeof-undefined/error	Compare with `undefined` directly instead of using `typeof`.
+tests/rules/unicorn/no-typeof-undefined/check-global-variables/cases.ts:47:1	unicorn/no-typeof-undefined	no-typeof-undefined/error	Compare with `undefined` directly instead of using `typeof`.
+tests/rules/unicorn/no-typeof-undefined/check-global-variables/cases.ts:49:1	unicorn/no-typeof-undefined	no-typeof-undefined/error	Compare with `undefined` directly instead of using `typeof`.
+tests/rules/unicorn/no-typeof-undefined/check-global-variables/cases.ts:50:18	unicorn/no-typeof-undefined	no-typeof-undefined/error	Compare with `undefined` directly instead of using `typeof`.
+tests/rules/unicorn/no-typeof-undefined/check-global-variables/cases.ts:52:9	unicorn/no-typeof-undefined	no-typeof-undefined/error	Compare with `undefined` directly instead of using `typeof`.
+tests/rules/unicorn/no-typeof-undefined/check-global-variables/cases.ts:56:10	unicorn/no-typeof-undefined	no-typeof-undefined/error	Compare with `undefined` directly instead of using `typeof`.

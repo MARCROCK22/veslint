@@ -2,8 +2,8 @@ module rules
 
 import time
 
-// Port of the `unicorn/no-useless-switch-case` rule of eslint-plugin-unicorn 64.0.0 (it has no
-// options), with its suggestion.
+// Port of the `unicorn/no-useless-switch-case` rule of eslint-plugin-unicorn 79.0.0 (it has no
+// options), with its suggestion. veslint lints TypeScript files only (isTypeScriptFile).
 
 const unusc_messages = {
 	'no-useless-switch-case/error':      'Useless case in switch statement.'
@@ -30,15 +30,28 @@ fn (mut c Checker) lint_unicorn_no_useless_switch_case(root C.TSNode, abs_path s
 			if !(t.list(item, .consequent) or { []int{} }).all(un_is_empty_node(t, it)) {
 				break
 			}
-			findings << Finding{
-				stmt:        c.un_switch_case_head(t, tokens, item) or { continue }
-				message_id:  'no-useless-switch-case/error'
-				suggestions: [
+			test := t.node(item, .test) or { continue }
+			// In TypeScript, `case undefined` and `case null` may narrow the type.
+			if unb_is_undefined_value(t, test) || c.unb_is_null_literal(t, test) {
+				continue
+			}
+			// `switch` evaluates every case test it reaches, so removing a case whose test has a
+			// side effect would drop that side effect; a comment in the case would be dropped too.
+			suggestions := if !unb_has_side_effect(t, test, false)
+				&& tokens.comments_inside(t.nodes[item].start, t.nodes[item].end).len == 0 {
+				[
 					Suggestion{
 						message_id: 'no-useless-switch-case/suggestion'
 						fix:        fix_remove_range(t.nodes[item].start, t.nodes[item].end)
 					},
 				]
+			} else {
+				[]Suggestion{}
+			}
+			findings << Finding{
+				stmt:        c.un_switch_case_head(t, tokens, item) or { continue }
+				message_id:  'no-useless-switch-case/error'
+				suggestions: suggestions
 			}
 		}
 	}

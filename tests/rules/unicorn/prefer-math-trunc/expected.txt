@@ -10,3 +10,11 @@ tests/rules/unicorn/prefer-math-trunc/cases.ts:13:1	unicorn/prefer-math-trunc	er
 tests/rules/unicorn/prefer-math-trunc/cases.ts:14:1	unicorn/prefer-math-trunc	error-bitwise	Use `Math.trunc` instead of `^= 0`.
 tests/rules/unicorn/prefer-math-trunc/cases.ts:15:1	unicorn/prefer-math-trunc	error-bitwise	Use `Math.trunc` instead of `|= 0`.
 tests/rules/unicorn/prefer-math-trunc/cases.ts:17:9	unicorn/prefer-math-trunc	error-bitwise-not	Use `Math.trunc` instead of `~~`.
+tests/rules/unicorn/prefer-math-trunc/cases.ts:29:12	unicorn/prefer-math-trunc	error-parse-int	Use `Math.trunc` instead of `parseInt(String(...), 10)`.
+tests/rules/unicorn/prefer-math-trunc/cases.ts:30:12	unicorn/prefer-math-trunc	error-parse-int	Use `Math.trunc` instead of `Number.parseInt(String(...), 10)`.
+tests/rules/unicorn/prefer-math-trunc/cases.ts:31:12	unicorn/prefer-math-trunc	error-parse-int	Use `Math.trunc` instead of `parseInt(String(...), 10)`.
+tests/rules/unicorn/prefer-math-trunc/cases.ts:33:12	unicorn/prefer-math-trunc	error-bitwise	Use `Math.trunc` instead of `| 0`.
+tests/rules/unicorn/prefer-math-trunc/cases.ts:34:12	unicorn/prefer-math-trunc	error-bitwise	Use `Math.trunc` instead of `| 0`.
+tests/rules/unicorn/prefer-math-trunc/cases.ts:35:12	unicorn/prefer-math-trunc	error-bitwise-not	Use `Math.trunc` instead of `~~`.
+tests/rules/unicorn/prefer-math-trunc/cases.ts:36:12	unicorn/prefer-math-trunc	error-bitwise-not	Use `Math.trunc` instead of `~~`.
+tests/rules/unicorn/prefer-math-trunc/cases.ts:37:12	unicorn/prefer-math-trunc	error-bitwise	Use `Math.trunc` instead of `| 0`.

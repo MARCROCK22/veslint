@@ -1,12 +1,20 @@
 tests/rules/unicorn/prefer-math-trunc/cases.ts:5:12	unicorn/prefer-math-trunc	error-bitwise	Use `Math.trunc` instead of `| 0`.	suggestion	suggestion-bitwise	Replace `| 0` with `Math.trunc`.	191	196	Math.trunc(n)	end	5	17
-tests/rules/unicorn/prefer-math-trunc/cases.ts:6:12	unicorn/prefer-math-trunc	error-bitwise	Use `Math.trunc` instead of `>> 0`.	fix	209	215	Math.trunc(n)	end	6	18
-tests/rules/unicorn/prefer-math-trunc/cases.ts:7:12	unicorn/prefer-math-trunc	error-bitwise	Use `Math.trunc` instead of `<< 0`.	fix	228	234	Math.trunc(n)	end	7	18
-tests/rules/unicorn/prefer-math-trunc/cases.ts:8:12	unicorn/prefer-math-trunc	error-bitwise	Use `Math.trunc` instead of `^ 0`.	fix	247	252	Math.trunc(n)	end	8	17
-tests/rules/unicorn/prefer-math-trunc/cases.ts:9:12	unicorn/prefer-math-trunc	error-bitwise-not	Use `Math.trunc` instead of `~~`.	fix	265	268	Math.trunc(n)	end	9	15
-tests/rules/unicorn/prefer-math-trunc/cases.ts:10:13	unicorn/prefer-math-trunc	error-bitwise-not	Use `Math.trunc` instead of `~~`.	fix	282	285	Math.trunc(n)	end	10	16
+tests/rules/unicorn/prefer-math-trunc/cases.ts:6:12	unicorn/prefer-math-trunc	error-bitwise	Use `Math.trunc` instead of `>> 0`.	suggestion	suggestion-bitwise	Replace `>> 0` with `Math.trunc`.	209	215	Math.trunc(n)	end	6	18
+tests/rules/unicorn/prefer-math-trunc/cases.ts:7:12	unicorn/prefer-math-trunc	error-bitwise	Use `Math.trunc` instead of `<< 0`.	suggestion	suggestion-bitwise	Replace `<< 0` with `Math.trunc`.	228	234	Math.trunc(n)	end	7	18
+tests/rules/unicorn/prefer-math-trunc/cases.ts:8:12	unicorn/prefer-math-trunc	error-bitwise	Use `Math.trunc` instead of `^ 0`.	suggestion	suggestion-bitwise	Replace `^ 0` with `Math.trunc`.	247	252	Math.trunc(n)	end	8	17
+tests/rules/unicorn/prefer-math-trunc/cases.ts:9:12	unicorn/prefer-math-trunc	error-bitwise-not	Use `Math.trunc` instead of `~~`.	suggestion	suggestion-bitwise-not	Replace `~~` with `Math.trunc`.	265	268	Math.trunc(n)	end	9	15
+tests/rules/unicorn/prefer-math-trunc/cases.ts:10:13	unicorn/prefer-math-trunc	error-bitwise-not	Use `Math.trunc` instead of `~~`.	suggestion	suggestion-bitwise-not	Replace `~~` with `Math.trunc`.	282	285	Math.trunc(n)	end	10	16
 tests/rules/unicorn/prefer-math-trunc/cases.ts:11:12	unicorn/prefer-math-trunc	error-bitwise	Use `Math.trunc` instead of `| 0`.	suggestion	suggestion-bitwise	Replace `| 0` with `Math.trunc`.	298	308	Math.trunc((n, n))	end	11	22
-tests/rules/unicorn/prefer-math-trunc/cases.ts:12:1	unicorn/prefer-math-trunc	error-bitwise	Use `Math.trunc` instead of `|= 0`.	fix	312	316	= Math.trunc(n)	end	12	7
-tests/rules/unicorn/prefer-math-trunc/cases.ts:13:1	unicorn/prefer-math-trunc	error-bitwise	Use `Math.trunc` instead of `>>= 0`.	fix	320	325	= Math.trunc(n)	end	13	8
-tests/rules/unicorn/prefer-math-trunc/cases.ts:14:1	unicorn/prefer-math-trunc	error-bitwise	Use `Math.trunc` instead of `^= 0`.	fix	337	341	= Math.trunc(box.value)	end	14	15
+tests/rules/unicorn/prefer-math-trunc/cases.ts:12:1	unicorn/prefer-math-trunc	error-bitwise	Use `Math.trunc` instead of `|= 0`.	suggestion	suggestion-bitwise	Replace `|= 0` with `Math.trunc`.	312	316	= Math.trunc(n)	end	12	7
+tests/rules/unicorn/prefer-math-trunc/cases.ts:13:1	unicorn/prefer-math-trunc	error-bitwise	Use `Math.trunc` instead of `>>= 0`.	suggestion	suggestion-bitwise	Replace `>>= 0` with `Math.trunc`.	320	325	= Math.trunc(n)	end	13	8
+tests/rules/unicorn/prefer-math-trunc/cases.ts:14:1	unicorn/prefer-math-trunc	error-bitwise	Use `Math.trunc` instead of `^= 0`.	suggestion	suggestion-bitwise	Replace `^= 0` with `Math.trunc`.	337	341	= Math.trunc(box.value)	end	14	15
 tests/rules/unicorn/prefer-math-trunc/cases.ts:15:1	unicorn/prefer-math-trunc	error-bitwise	Use `Math.trunc` instead of `|= 0`.	end	15	22
-tests/rules/unicorn/prefer-math-trunc/cases.ts:17:9	unicorn/prefer-math-trunc	error-bitwise-not	Use `Math.trunc` instead of `~~`.	fix	389	392	 Math.trunc(n)	end	17	12
+tests/rules/unicorn/prefer-math-trunc/cases.ts:17:9	unicorn/prefer-math-trunc	error-bitwise-not	Use `Math.trunc` instead of `~~`.	suggestion	suggestion-bitwise-not	Replace `~~` with `Math.trunc`.	389	392	 Math.trunc(n)	end	17	12
+tests/rules/unicorn/prefer-math-trunc/cases.ts:29:12	unicorn/prefer-math-trunc	error-parse-int	Use `Math.trunc` instead of `parseInt(String(...), 10)`.	suggestion	suggestion-parse-int	Replace `parseInt(String(...), 10)` with `Math.trunc`.	648	673	Math.trunc(num)	end	29	37
+tests/rules/unicorn/prefer-math-trunc/cases.ts:30:12	unicorn/prefer-math-trunc	error-parse-int	Use `Math.trunc` instead of `Number.parseInt(String(...), 10)`.	suggestion	suggestion-parse-int	Replace `Number.parseInt(String(...), 10)` with `Math.trunc`.	686	729	Math.trunc(num /* keep */)	end	30	55
+tests/rules/unicorn/prefer-math-trunc/cases.ts:31:12	unicorn/prefer-math-trunc	error-parse-int	Use `Math.trunc` instead of `parseInt(String(...), 10)`.	end	31	48
+tests/rules/unicorn/prefer-math-trunc/cases.ts:33:12	unicorn/prefer-math-trunc	error-bitwise	Use `Math.trunc` instead of `| 0`.	suggestion	suggestion-bitwise	Replace `| 0` with `Math.trunc`.	829	849	Math.trunc((num /* keep */))	end	33	32
+tests/rules/unicorn/prefer-math-trunc/cases.ts:34:12	unicorn/prefer-math-trunc	error-bitwise	Use `Math.trunc` instead of `| 0`.	end	34	30
+tests/rules/unicorn/prefer-math-trunc/cases.ts:35:12	unicorn/prefer-math-trunc	error-bitwise-not	Use `Math.trunc` instead of `~~`.	suggestion	suggestion-bitwise-not	Replace `~~` with `Math.trunc`.	893	911	Math.trunc((/* keep */ num))	end	35	30
+tests/rules/unicorn/prefer-math-trunc/cases.ts:36:12	unicorn/prefer-math-trunc	error-bitwise-not	Use `Math.trunc` instead of `~~`.	end	36	27
+tests/rules/unicorn/prefer-math-trunc/cases.ts:37:12	unicorn/prefer-math-trunc	error-bitwise	Use `Math.trunc` instead of `| 0`.	suggestion	suggestion-bitwise	Replace `| 0` with `Math.trunc`.	952	963	Math.trunc(num)	end	37	23

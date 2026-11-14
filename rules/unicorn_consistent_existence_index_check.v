@@ -3,7 +3,7 @@ module rules
 import estree
 import time
 
-// Port of the `unicorn/consistent-existence-index-check` rule of eslint-plugin-unicorn 64.0.0 (it
+// Port of the `unicorn/consistent-existence-index-check` rule of eslint-plugin-unicorn 79.0.0 (it
 // has no options), with its fix.
 
 const uceic_messages = {
@@ -69,18 +69,28 @@ fn (mut c Checker) lint_unicorn_consistent_existence_index_check(root C.TSNode, 
 			if binary < 0 || t.typ(binary) != .binary_expression || t.node(binary, .left) or { -1 } != identifier {
 				continue
 			}
-			// The first comparison that has no replacement ends the checks of the variable.
 			replacement_operator, replacement_value, original_operator, original_value := uceic_replacement(t,
-				binary) or { break }
-			right := t.node(binary, .right) or { break }
+				binary) or { continue }
+			right := t.node(binary, .right) or { continue }
 			operator_token := c.un_token_after_punctuator(tokens, t.nodes[identifier].end, original_operator) or {
-				break
+				continue
 			}
 			mut fixes := [
 				fix_replace_range(operator_token.start, operator_token.end, replacement_operator),
 			]
 			if replacement_value != original_value {
 				fixes << fix_replace_range(t.nodes[right].start, t.nodes[right].end, replacement_value)
+			}
+			if c.unb_should_add_parens_to_comparison(t, tokens, binary, replacement_operator) {
+				prefix := if c.unb_needs_semicolon(t, tokens, tokens.before(t.nodes[binary].start,
+					false), '(')
+				{
+					';('
+				} else {
+					'('
+				}
+				fixes << fix_insert_at(t.nodes[binary].start, prefix)
+				fixes << fix_insert_at(t.nodes[binary].end, ')')
 			}
 			has_fix, fix := c.merge_fixes(fixes)!
 			findings << Finding{

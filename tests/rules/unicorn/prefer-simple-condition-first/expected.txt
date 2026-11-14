@@ -1,12 +1,33 @@
-tests/rules/unicorn/prefer-simple-condition-first/cases.ts:6:20	unicorn/prefer-simple-condition-first	prefer-simple-condition-first	Prefer simple condition first in `&&` expression.
-tests/rules/unicorn/prefer-simple-condition-first/cases.ts:7:20	unicorn/prefer-simple-condition-first	prefer-simple-condition-first	Prefer simple condition first in `||` expression.
-tests/rules/unicorn/prefer-simple-condition-first/cases.ts:8:23	unicorn/prefer-simple-condition-first	prefer-simple-condition-first	Prefer simple condition first in `&&` expression.
-tests/rules/unicorn/prefer-simple-condition-first/cases.ts:9:29	unicorn/prefer-simple-condition-first	prefer-simple-condition-first	Prefer simple condition first in `||` expression.
-tests/rules/unicorn/prefer-simple-condition-first/cases.ts:10:23	unicorn/prefer-simple-condition-first	prefer-simple-condition-first	Prefer simple condition first in `&&` expression.
-tests/rules/unicorn/prefer-simple-condition-first/cases.ts:11:29	unicorn/prefer-simple-condition-first	prefer-simple-condition-first	Prefer simple condition first in `&&` expression.
-tests/rules/unicorn/prefer-simple-condition-first/cases.ts:12:29	unicorn/prefer-simple-condition-first	prefer-simple-condition-first	Prefer simple condition first in `&&` expression.
-tests/rules/unicorn/prefer-simple-condition-first/cases.ts:13:23	unicorn/prefer-simple-condition-first	prefer-simple-condition-first	Prefer simple condition first in `&&` expression.
-tests/rules/unicorn/prefer-simple-condition-first/cases.ts:14:20	unicorn/prefer-simple-condition-first	prefer-simple-condition-first	Prefer simple condition first in `&&` expression.
-tests/rules/unicorn/prefer-simple-condition-first/cases.ts:15:20	unicorn/prefer-simple-condition-first	prefer-simple-condition-first	Prefer simple condition first in `&&` expression.
-tests/rules/unicorn/prefer-simple-condition-first/cases.ts:17:43	unicorn/prefer-simple-condition-first	prefer-simple-condition-first	Prefer simple condition first in `&&` expression.
-tests/rules/unicorn/prefer-simple-condition-first/cases.ts:19:30	unicorn/prefer-simple-condition-first	prefer-simple-condition-first	Prefer simple condition first in `&&` expression.
+tests/rules/unicorn/prefer-simple-condition-first/cases.ts:6:20	unicorn/prefer-simple-condition-first	prefer-simple-condition-first	Prefer this simple condition first in the `&&` expression.
+tests/rules/unicorn/prefer-simple-condition-first/cases.ts:7:20	unicorn/prefer-simple-condition-first	prefer-simple-condition-first	Prefer this simple condition first in the `||` expression.
+tests/rules/unicorn/prefer-simple-condition-first/cases.ts:8:23	unicorn/prefer-simple-condition-first	prefer-simple-condition-first	Prefer this simple condition first in the `&&` expression.
+tests/rules/unicorn/prefer-simple-condition-first/cases.ts:9:29	unicorn/prefer-simple-condition-first	prefer-simple-condition-first	Prefer this simple condition first in the `||` expression.
+tests/rules/unicorn/prefer-simple-condition-first/cases.ts:10:23	unicorn/prefer-simple-condition-first	prefer-simple-condition-first	Prefer this simple condition first in the `&&` expression.
+tests/rules/unicorn/prefer-simple-condition-first/cases.ts:12:29	unicorn/prefer-simple-condition-first	prefer-simple-condition-first	Prefer this simple condition first in the `&&` expression.
+tests/rules/unicorn/prefer-simple-condition-first/cases.ts:13:23	unicorn/prefer-simple-condition-first	prefer-simple-condition-first	Prefer this simple condition first in the `&&` expression.
+tests/rules/unicorn/prefer-simple-condition-first/cases.ts:14:20	unicorn/prefer-simple-condition-first	prefer-simple-condition-first	Prefer this simple condition first in the `&&` expression.
+tests/rules/unicorn/prefer-simple-condition-first/cases.ts:15:20	unicorn/prefer-simple-condition-first	prefer-simple-condition-first	Prefer this simple condition first in the `&&` expression.
+tests/rules/unicorn/prefer-simple-condition-first/cases.ts:17:43	unicorn/prefer-simple-condition-first	prefer-simple-condition-first	Prefer this simple condition first in the `&&` expression.
+tests/rules/unicorn/prefer-simple-condition-first/cases.ts:19:30	unicorn/prefer-simple-condition-first	prefer-simple-condition-first	Prefer this simple condition first in the `&&` expression.
+tests/rules/unicorn/prefer-simple-condition-first/cases.ts:23:22	unicorn/prefer-simple-condition-first	prefer-simple-condition-first/unsafe	Consider moving this simple condition first after verifying short-circuit behavior.
+tests/rules/unicorn/prefer-simple-condition-first/cases.ts:24:33	unicorn/prefer-simple-condition-first	prefer-simple-condition-first/unsafe	Consider moving this simple condition first after verifying short-circuit behavior.
+tests/rules/unicorn/prefer-simple-condition-first/cases.ts:25:31	unicorn/prefer-simple-condition-first	prefer-simple-condition-first/unsafe	Consider moving this simple condition first after verifying short-circuit behavior.
+tests/rules/unicorn/prefer-simple-condition-first/cases.ts:26:28	unicorn/prefer-simple-condition-first	prefer-simple-condition-first/unsafe	Consider moving this simple condition first after verifying short-circuit behavior.
+tests/rules/unicorn/prefer-simple-condition-first/cases.ts:27:26	unicorn/prefer-simple-condition-first	prefer-simple-condition-first/unsafe	Consider moving this simple condition first after verifying short-circuit behavior.
+tests/rules/unicorn/prefer-simple-condition-first/cases.ts:28:12	unicorn/prefer-simple-condition-first	prefer-simple-condition-first/unsafe	Consider moving this simple condition first after verifying short-circuit behavior.
+tests/rules/unicorn/prefer-simple-condition-first/cases.ts:38:12	unicorn/prefer-simple-condition-first	prefer-simple-condition-first/unsafe	Consider moving this simple condition first after verifying short-circuit behavior.
+tests/rules/unicorn/prefer-simple-condition-first/cases.ts:39:12	unicorn/prefer-simple-condition-first	prefer-simple-condition-first/unsafe	Consider moving this simple condition first after verifying short-circuit behavior.
+tests/rules/unicorn/prefer-simple-condition-first/cases.ts:40:12	unicorn/prefer-simple-condition-first	prefer-simple-condition-first/unsafe	Consider moving this simple condition first after verifying short-circuit behavior.
+tests/rules/unicorn/prefer-simple-condition-first/cases.ts:41:12	unicorn/prefer-simple-condition-first	prefer-simple-condition-first/unsafe	Consider moving this simple condition first after verifying short-circuit behavior.
+tests/rules/unicorn/prefer-simple-condition-first/cases.ts:42:12	unicorn/prefer-simple-condition-first	prefer-simple-condition-first/unsafe	Consider moving this simple condition first after verifying short-circuit behavior.
+tests/rules/unicorn/prefer-simple-condition-first/cases.ts:43:27	unicorn/prefer-simple-condition-first	prefer-simple-condition-first/unsafe	Consider moving this simple condition first after verifying short-circuit behavior.
+tests/rules/unicorn/prefer-simple-condition-first/cases.ts:44:22	unicorn/prefer-simple-condition-first	prefer-simple-condition-first/unsafe	Consider moving this simple condition first after verifying short-circuit behavior.
+tests/rules/unicorn/prefer-simple-condition-first/cases.ts:45:23	unicorn/prefer-simple-condition-first	prefer-simple-condition-first/unsafe	Consider moving this simple condition first after verifying short-circuit behavior.
+tests/rules/unicorn/prefer-simple-condition-first/cases.ts:46:25	unicorn/prefer-simple-condition-first	prefer-simple-condition-first/unsafe	Consider moving this simple condition first after verifying short-circuit behavior.
+tests/rules/unicorn/prefer-simple-condition-first/cases.ts:48:27	unicorn/prefer-simple-condition-first	prefer-simple-condition-first/unsafe	Consider moving this simple condition first after verifying short-circuit behavior.
+tests/rules/unicorn/prefer-simple-condition-first/cases.ts:49:21	unicorn/prefer-simple-condition-first	prefer-simple-condition-first/unsafe	Consider moving this simple condition first after verifying short-circuit behavior.
+tests/rules/unicorn/prefer-simple-condition-first/cases.ts:51:15	unicorn/prefer-simple-condition-first	prefer-simple-condition-first/unsafe	Consider moving this simple condition first after verifying short-circuit behavior.
+tests/rules/unicorn/prefer-simple-condition-first/cases.ts:53:20	unicorn/prefer-simple-condition-first	prefer-simple-condition-first	Prefer this simple condition first in the `&&` expression.
+tests/rules/unicorn/prefer-simple-condition-first/cases.ts:54:20	unicorn/prefer-simple-condition-first	prefer-simple-condition-first	Prefer this simple condition first in the `||` expression.
+tests/rules/unicorn/prefer-simple-condition-first/cases.ts:55:31	unicorn/prefer-simple-condition-first	prefer-simple-condition-first	Prefer this simple condition first in the `&&` expression.
+tests/rules/unicorn/prefer-simple-condition-first/cases.ts:56:35	unicorn/prefer-simple-condition-first	prefer-simple-condition-first	Prefer this simple condition first in the `&&` expression.

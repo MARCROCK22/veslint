@@ -30,3 +30,27 @@ const z1 = (a ? b : c) && a;
 if ((a ? b : c) && d === e.length) {}
 if ((a ? b : c) && 1 === 2) {}
 if ((a ? b : c) ?? a) {}
+
+// 79.0.0: chains are reordered at once; `typeof`, nullish and static string comparisons are simple;
+// an operand that is not safe to move before a simple one only gets the "unsafe" report; comments
+// and TypeScript wrappers keep the fix away.
+declare let u: unknown, s: string | null;
+if (f() && a && b) {}
+if (f() || typeof u === 'string') {}
+if (f() && s != null) {}
+if (f() && d === -1) {}
+if (f() && e === `x`) {}
+if (f() && (a ? b : c) && b) {}
+if ((a ? f() : c) && b) {}
+if (f() /* keep */ && a) {}
+if ((f() as boolean) && a) {}
+if (typeof u !== 'undefined' && f() && u) {}
+const r1 = Boolean(f() && a);
+const r2 = !(f() || a);
+const r3 = (f() && a) as boolean;
+while (f() && a) {}
+// Safe to move: a conditional of simple parts.
+if ((a ? b : c) && d === 1) {}
+if ((a ? b : c) || !a || (b ? 1 : 2)) {}
+if ((a ? b : c) /* keep */ && a) {}
+const r4 = Boolean((a ? b : c) && a);

@@ -1,5 +1,8 @@
-tests/rules/unicorn/prefer-string-raw/cases.ts:5:12	unicorn/prefer-string-raw	prefer-string-raw	`String.raw` should be used to avoid escaping `\\`.
-tests/rules/unicorn/prefer-string-raw/cases.ts:6:12	unicorn/prefer-string-raw	prefer-string-raw	`String.raw` should be used to avoid escaping `\\`.
-tests/rules/unicorn/prefer-string-raw/cases.ts:7:12	unicorn/prefer-string-raw	prefer-string-raw	`String.raw` should be used to avoid escaping `\\`.
-tests/rules/unicorn/prefer-string-raw/cases.ts:10:9	unicorn/prefer-string-raw	prefer-string-raw	`String.raw` should be used to avoid escaping `\\`.
-tests/rules/unicorn/prefer-string-raw/cases.ts:18:12	unicorn/prefer-string-raw	prefer-string-raw	`String.raw` should be used to avoid escaping `\\`.
+tests/rules/unicorn/prefer-string-raw/cases.ts:30:10	unicorn/prefer-string-raw	prefer-string-raw	`String.raw` should be used to avoid escaping `\\`.
+tests/rules/unicorn/prefer-string-raw/cases.ts:31:20	unicorn/prefer-string-raw	prefer-string-raw	`String.raw` should be used to avoid escaping `\\`.
+tests/rules/unicorn/prefer-string-raw/cases.ts:32:12	unicorn/prefer-string-raw	prefer-string-raw	`String.raw` should be used to avoid escaping `\\`.
+tests/rules/unicorn/prefer-string-raw/cases.ts:37:12	unicorn/prefer-string-raw	unnecessary-string-raw	Using `String.raw` is unnecessary as the string does not contain any `\\`.
+tests/rules/unicorn/prefer-string-raw/cases.ts:38:12	unicorn/prefer-string-raw	unnecessary-string-raw	Using `String.raw` is unnecessary as the string does not contain any `\\`.
+tests/rules/unicorn/prefer-string-raw/cases.ts:39:12	unicorn/prefer-string-raw	unnecessary-string-raw	Using `String.raw` is unnecessary as the string does not contain any `\\`.
+tests/rules/unicorn/prefer-string-raw/cases.ts:41:12	unicorn/prefer-string-raw	unnecessary-string-raw	Using `String.raw` is unnecessary as the string does not contain any `\\`.
+tests/rules/unicorn/prefer-string-raw/cases.ts:43:10	unicorn/prefer-string-raw	unnecessary-string-raw	Using `String.raw` is unnecessary as the string does not contain any `\\`.

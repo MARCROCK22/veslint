@@ -108,3 +108,21 @@ function f(): void {
     return;
   }
 }
+
+// 79.0.0: one replacement that keeps the comments of the outer `if`; an arrow function test gets
+// parentheses.
+if (a) { /* comment */ if (b) foo(); }
+if (a) // keep
+{
+  // leading
+  if (b) {
+    foo();
+  }
+  // trailing
+}
+if (a) /* gap */ { if (b) foo() }
+if (a) if (() => b) foo();
+function lonely() {
+  if (a) if (b) foo()
+  ;[].forEach(bar)
+}

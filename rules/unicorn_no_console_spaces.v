@@ -2,7 +2,7 @@ module rules
 
 import time
 
-// Port of the `unicorn/no-console-spaces` rule of eslint-plugin-unicorn 64.0.0 (it has no
+// Port of the `unicorn/no-console-spaces` rule of eslint-plugin-unicorn 79.0.0 (it has no
 // options), with its fix.
 
 const uncs_messages = {
@@ -37,12 +37,13 @@ fn (mut c Checker) lint_unicorn_no_console_spaces(root C.TSNode, abs_path string
 			}
 			raw := c.un_text(t, argument)
 			value := raw[1..raw.len - 1]
-			// Exactly one leading or trailing space.
+			// Exactly one leading or trailing space; a trailing space escaped by a backslash belongs to
+			// an escape sequence.
 			if index != 0 && value.len > 1 && value[0] == ` ` && value[1] != ` ` {
 				findings << c.uncs_problem(t.nodes[argument].start + 1, method, 'leading')
 			}
 			if index != args.len - 1 && value.len > 1 && value[value.len - 1] == ` `
-				&& value[value.len - 2] != ` ` {
+				&& value[value.len - 2] != ` ` && !un_is_escaped_at(value, value.len - 1) {
 				findings << c.uncs_problem(t.nodes[argument].end - 2, method, 'trailing')
 			}
 		}

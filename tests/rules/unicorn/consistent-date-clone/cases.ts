@@ -17,3 +17,14 @@ const z4 = new Date(date.getTime?.());
 const z5 = new Date(date['getTime']());
 const z6 = new Date(date.valueOf());
 const z7 = Date(date.getTime());
+
+// 79.0.0: no fix when a comment would be lost; comments inside the kept object are fine.
+declare const date2: Date;
+new Date(new Date(date2.getTime()).getTime());
+new Date(date2 /* comment */.getTime());
+new Date(date2.getTime /* comment */());
+new Date(date2.getTime() /* comment */);
+new Date(date2 // comment
+	.getTime());
+new Date((date2 as Date).getTime());
+new Date((date2 /* comment */).getTime());

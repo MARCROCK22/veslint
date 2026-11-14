@@ -11,3 +11,58 @@ tests/rules/unicorn/no-array-callback-reference/cases.ts:18:21	unicorn/no-array-
 tests/rules/unicorn/no-array-callback-reference/cases.ts:20:12	unicorn/no-array-callback-reference	error-without-name	Do not pass function directly to `.map(…)`.
 tests/rules/unicorn/no-array-callback-reference/cases.ts:30:33	unicorn/no-array-callback-reference	error-without-name	Do not pass function directly to `.map(…)`.
 tests/rules/unicorn/no-array-callback-reference/cases.ts:36:21	unicorn/no-array-callback-reference	error-with-name	Do not pass function `callback` directly to `.map(…)`.
+tests/rules/unicorn/no-array-callback-reference/cases.ts:67:22	unicorn/no-array-callback-reference	error-with-name	Do not pass function `fn` directly to `.map(…)`.
+tests/rules/unicorn/no-array-callback-reference/cases.ts:68:22	unicorn/no-array-callback-reference	error-with-name	Do not pass function `fn` directly to `.map(…)`.
+tests/rules/unicorn/no-array-callback-reference/cases.ts:69:25	unicorn/no-array-callback-reference	error-with-name	Do not pass function `fn` directly to `.filter(…)`.
+tests/rules/unicorn/no-array-callback-reference/cases.ts:70:22	unicorn/no-array-callback-reference	error-with-name	Do not pass function `fn` directly to `.map(…)`.
+tests/rules/unicorn/no-array-callback-reference/cases.ts:71:23	unicorn/no-array-callback-reference	error-with-name	Do not pass function `fn` directly to `.map(…)`.
+tests/rules/unicorn/no-array-callback-reference/cases.ts:72:23	unicorn/no-array-callback-reference	error-with-name	Do not pass function `fn` directly to `.map(…)`.
+tests/rules/unicorn/no-array-callback-reference/cases.ts:73:23	unicorn/no-array-callback-reference	error-with-name	Do not pass function `fn` directly to `.map(…)`.
+tests/rules/unicorn/no-array-callback-reference/cases.ts:74:23	unicorn/no-array-callback-reference	error-with-name	Do not pass function `fn` directly to `.map(…)`.
+tests/rules/unicorn/no-array-callback-reference/cases.ts:75:25	unicorn/no-array-callback-reference	error-with-name	Do not pass function `fn` directly to `.map(…)`.
+tests/rules/unicorn/no-array-callback-reference/cases.ts:76:24	unicorn/no-array-callback-reference	error-with-name	Do not pass function `fn` directly to `.map(…)`.
+tests/rules/unicorn/no-array-callback-reference/cases.ts:77:25	unicorn/no-array-callback-reference	error-with-name	Do not pass function `fn` directly to `.map(…)`.
+tests/rules/unicorn/no-array-callback-reference/cases.ts:78:22	unicorn/no-array-callback-reference	error-with-name	Do not pass function `fn` directly to `.map(…)`.
+tests/rules/unicorn/no-array-callback-reference/cases.ts:79:26	unicorn/no-array-callback-reference	error-with-name	Do not pass function `fn` directly to `.map(…)`.
+tests/rules/unicorn/no-array-callback-reference/cases.ts:80:22	unicorn/no-array-callback-reference	error-with-name	Do not pass function `fn` directly to `.map(…)`.
+tests/rules/unicorn/no-array-callback-reference/cases.ts:81:23	unicorn/no-array-callback-reference	error-with-name	Do not pass function `fn` directly to `.map(…)`.
+tests/rules/unicorn/no-array-callback-reference/cases.ts:82:22	unicorn/no-array-callback-reference	error-with-name	Do not pass function `fn` directly to `.map(…)`.
+tests/rules/unicorn/no-array-callback-reference/cases.ts:83:25	unicorn/no-array-callback-reference	error-with-name	Do not pass function `fn` directly to `.map(…)`.
+tests/rules/unicorn/no-array-callback-reference/cases.ts:84:22	unicorn/no-array-callback-reference	error-with-name	Do not pass function `fn` directly to `.map(…)`.
+tests/rules/unicorn/no-array-callback-reference/cases.ts:85:23	unicorn/no-array-callback-reference	error-with-name	Do not pass function `fn` directly to `.map(…)`.
+tests/rules/unicorn/no-array-callback-reference/cases.ts:86:24	unicorn/no-array-callback-reference	error-with-name	Do not pass function `fn` directly to `.map(…)`.
+tests/rules/unicorn/no-array-callback-reference/cases.ts:87:26	unicorn/no-array-callback-reference	error-with-name	Do not pass function `fn` directly to `.map(…)`.
+tests/rules/unicorn/no-array-callback-reference/cases.ts:88:24	unicorn/no-array-callback-reference	error-with-name	Do not pass function `fn` directly to `.map(…)`.
+tests/rules/unicorn/no-array-callback-reference/cases.ts:89:23	unicorn/no-array-callback-reference	error-with-name	Do not pass function `fn` directly to `.map(…)`.
+tests/rules/unicorn/no-array-callback-reference/cases.ts:90:23	unicorn/no-array-callback-reference	error-with-name	Do not pass function `fn` directly to `.map(…)`.
+tests/rules/unicorn/no-array-callback-reference/cases.ts:91:26	unicorn/no-array-callback-reference	error-with-name	Do not pass function `fn` directly to `.map(…)`.
+tests/rules/unicorn/no-array-callback-reference/cases.ts:92:19	unicorn/no-array-callback-reference	error-with-name	Do not pass function `fn` directly to `.map(…)`.
+tests/rules/unicorn/no-array-callback-reference/cases.ts:93:26	unicorn/no-array-callback-reference	error-with-name	Do not pass function `fn` directly to `.map(…)`.
+tests/rules/unicorn/no-array-callback-reference/cases.ts:94:15	unicorn/no-array-callback-reference	error-with-name	Do not pass function `fn` directly to `.forEach(…)`.
+tests/rules/unicorn/no-array-callback-reference/cases.ts:95:26	unicorn/no-array-callback-reference	error-with-name	Do not pass function `fn` directly to `.reduce(…)`.
+tests/rules/unicorn/no-array-callback-reference/cases.ts:96:23	unicorn/no-array-callback-reference	error-without-name	Do not pass function directly to `.map(…)`.
+tests/rules/unicorn/no-array-callback-reference/cases.ts:102:21	unicorn/no-array-callback-reference	error-without-name	Do not pass function directly to `.map(…)`.
+tests/rules/unicorn/no-array-callback-reference/cases.ts:103:21	unicorn/no-array-callback-reference	error-without-name	Do not pass function directly to `.map(…)`.
+tests/rules/unicorn/no-array-callback-reference/cases.ts:104:22	unicorn/no-array-callback-reference	error-without-name	Do not pass function directly to `.map(…)`.
+tests/rules/unicorn/no-array-callback-reference/cases.ts:105:24	unicorn/no-array-callback-reference	error-without-name	Do not pass function directly to `.reduce(…)`.
+tests/rules/unicorn/no-array-callback-reference/cases.ts:107:22	unicorn/no-array-callback-reference	error-with-name	Do not pass function `item` directly to `.map(…)`.
+tests/rules/unicorn/no-array-callback-reference/cases.ts:114:21	unicorn/no-array-callback-reference	error-with-name	Do not pass function `two` directly to `.map(…)`.
+tests/rules/unicorn/no-array-callback-reference/cases.ts:115:21	unicorn/no-array-callback-reference	error-with-name	Do not pass function `three` directly to `.map(…)`.
+tests/rules/unicorn/no-array-callback-reference/cases.ts:116:21	unicorn/no-array-callback-reference	error-with-name	Do not pass function `rest` directly to `.map(…)`.
+tests/rules/unicorn/no-array-callback-reference/cases.ts:117:21	unicorn/no-array-callback-reference	error-without-name	Do not pass function directly to `.map(…)`.
+tests/rules/unicorn/no-array-callback-reference/cases.ts:118:21	unicorn/no-array-callback-reference	error-without-name	Do not pass function directly to `.map(…)`.
+tests/rules/unicorn/no-array-callback-reference/cases.ts:119:24	unicorn/no-array-callback-reference	error-with-name	Do not pass function `three` directly to `.reduce(…)`.
+tests/rules/unicorn/no-array-callback-reference/cases.ts:120:14	unicorn/no-array-callback-reference	error-with-name	Do not pass function `two` directly to `.forEach(…)`.
+tests/rules/unicorn/no-array-callback-reference/cases.ts:141:16	unicorn/no-array-callback-reference	error-with-name	Do not pass function `callback` directly to `.forEach(…)`.
+tests/rules/unicorn/no-array-callback-reference/cases.ts:142:14	unicorn/no-array-callback-reference	error-with-name	Do not pass function `callback` directly to `.forEach(…)`.
+tests/rules/unicorn/no-array-callback-reference/cases.ts:143:15	unicorn/no-array-callback-reference	error-with-name	Do not pass function `callback` directly to `.forEach(…)`.
+tests/rules/unicorn/no-array-callback-reference/cases.ts:146:21	unicorn/no-array-callback-reference	error-without-name	Do not pass function directly to `.map(…)`.
+tests/rules/unicorn/no-array-callback-reference/cases.ts:147:28	unicorn/no-array-callback-reference	error-with-name	Do not pass function `callback` directly to `.map(…)`.
+tests/rules/unicorn/no-array-callback-reference/cases.ts:147:39	unicorn/no-array-callback-reference	error-with-name	Do not pass function `two` directly to `.map(…)`.
+tests/rules/unicorn/no-array-callback-reference/cases.ts:148:14	unicorn/no-array-callback-reference	error-without-name	Do not pass function directly to `.forEach(…)`.
+tests/rules/unicorn/no-array-callback-reference/cases.ts:149:14	unicorn/no-array-callback-reference	error-without-name	Do not pass function directly to `.forEach(…)`.
+tests/rules/unicorn/no-array-callback-reference/ignore/cases.ts:11:41	unicorn/no-array-callback-reference	error-with-name	Do not pass function `callback` directly to `.map(…)`.
+tests/rules/unicorn/no-array-callback-reference/ignore/cases.ts:20:24	unicorn/no-array-callback-reference	error-with-name	Do not pass function `callback` directly to `.map(…)`.
+tests/rules/unicorn/no-array-callback-reference/ignore/cases.ts:21:24	unicorn/no-array-callback-reference	error-with-name	Do not pass function `callback` directly to `.map(…)`.
+tests/rules/unicorn/no-array-callback-reference/ignore/cases.ts:22:21	unicorn/no-array-callback-reference	error-with-name	Do not pass function `callback` directly to `.map(…)`.
+tests/rules/unicorn/no-array-callback-reference/ignore/cases.ts:23:23	unicorn/no-array-callback-reference	error-with-name	Do not pass function `callback` directly to `.map(…)`.

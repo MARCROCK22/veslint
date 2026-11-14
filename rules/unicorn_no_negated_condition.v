@@ -3,7 +3,7 @@ module rules
 import estree
 import time
 
-// Port of the `unicorn/no-negated-condition` rule of eslint-plugin-unicorn 64.0.0 (it has no
+// Port of the `unicorn/no-negated-condition` rule of eslint-plugin-unicorn 79.0.0 (it has no
 // options), with its fix.
 
 const unnc_messages = {
@@ -28,12 +28,19 @@ fn (mut c Checker) lint_unicorn_no_negated_condition(root C.TSNode, abs_path str
 			}
 		}
 		test := t.node(node, .test) or { continue }
-		operator := t.string_of(test, .operator) or { '' }
-		if !((t.typ(test) == .unary_expression && operator == '!')
-			|| (t.typ(test) == .binary_expression && operator in ['!=', '!=='])) {
+		operands := if unb_is_logical_expression(t, test) {
+			unb_logical_operands(t, test, t.string_of(test, .operator) or { '' })
+		} else {
+			[test]
+		}
+		if !operands.all(unnc_is_negated(t, it)) {
 			continue
 		}
-		has_fix, fix := c.merge_fixes(c.unnc_fix(t, tokens, node, test))!
+		mut has_fix := false
+		mut fix := Fix{}
+		if fixes := c.unnc_fix(t, tokens, node, test, operands) {
+			has_fix, fix = c.merge_fixes(fixes)!
+		}
 		findings << Finding{
 			stmt:       c.es_tree_position(t, test)
 			message_id: 'no-negated-condition'
@@ -45,27 +52,71 @@ fn (mut c Checker) lint_unicorn_no_negated_condition(root C.TSNode, abs_path str
 	return findings
 }
 
-fn (c &Checker) unnc_fix(t &estree.EsTree, tokens &SourceTokens, node int, test int) []Fix {
+// unnc_is_negated: `!a`, `a != b` or `a !== b`.
+fn unnc_is_negated(t &estree.EsTree, node int) bool {
+	operator := t.string_of(node, .operator) or { '' }
+	return (t.typ(node) == .unary_expression && operator == '!')
+		|| (t.typ(node) == .binary_expression && operator in ['!=', '!=='])
+}
+
+// unnc_convert ports convertNegatedCondition: `!a` becomes `a`, `a != b` becomes `a == b`, and a
+// `&&` or `||` of them becomes the other operator of the converted operands.
+fn (c &Checker) unnc_convert(t &estree.EsTree, tokens &SourceTokens, test int) []Fix {
 	mut fixes := []Fix{}
-	is_if := t.typ(node) == .if_statement
-	// convertNegatedCondition
+	operator := t.string_of(test, .operator) or { return [] }
+	if unb_is_logical_expression(t, test) {
+		left := t.node(test, .left) or { return [] }
+		right := t.node(test, .right) or { return [] }
+		token := c.un_token_after_punctuator(tokens, t.nodes[left].end, operator) or { return [] }
+		fixes << fix_replace_range(token.start, token.end, if operator == '&&' { '||' } else { '&&' })
+		fixes << c.unnc_convert(t, tokens, left)
+		fixes << c.unnc_convert(t, tokens, right)
+		return fixes
+	}
 	if t.typ(test) == .unary_expression {
 		token := un_first_token(t, tokens, test, 0) or { return [] }
-		if is_if {
-			fixes << c.un_remove_parentheses(t, tokens, t.node(test, .argument) or { return [] })
+		argument := t.node(test, .argument) or { return [] }
+		needs_parens := !c.un_is_parenthesized(t, tokens, argument)
+			&& !tokens.comments_exist_between(token.end, t.nodes[argument].start)
+			&& c.unb_should_add_parens_to_expression_start(t, tokens, argument, test)
+		fixes << fix_replace_range(token.start, token.end, if needs_parens { '(' } else { '' })
+		if needs_parens {
+			fixes << fix_insert_at(t.nodes[argument].end, ')')
 		}
-		fixes << fix_remove_range(token.start, token.end)
-	} else {
-		left := t.node(test, .left) or { return [] }
-		operator := t.string_of(test, .operator) or { return [] }
-		token := c.un_token_after_punctuator(tokens, t.nodes[left].end, operator) or { return [] }
-		fixes << fix_replace_range(token.start, token.end, '=' + operator[1..])
+		return fixes
 	}
-	// swapConsequentAndAlternate
+	left := t.node(test, .left) or { return [] }
+	token := c.un_token_after_punctuator(tokens, t.nodes[left].end, operator) or { return [] }
+	fixes << fix_replace_range(token.start, token.end, '=' + operator[1..])
+	return fixes
+}
+
+// unnc_fix ports the fixer; none where it aborts.
+fn (c &Checker) unnc_fix(t &estree.EsTree, tokens &SourceTokens, node int, test int, operands []int) ?[]Fix {
+	mut fixes := []Fix{}
+	is_if := t.typ(node) == .if_statement
+	first_operand_unary := t.typ(operands[0]) == .unary_expression
+	if first_operand_unary && c.unb_should_add_parens_to_expression_statement_expression(t, tokens,
+		t.node(operands[0], .argument)?) {
+		return none
+	}
+	if is_if && t.typ(test) == .unary_expression {
+		fixes << c.un_remove_parentheses(t, tokens, t.node(test, .argument)?)
+	}
+	fixes << c.unnc_convert(t, tokens, test)
+	// swapConsequentAndAlternate: a comment right before a branch moves with it, one right after
+	// it aborts.
 	mut parts := []UnncPart{}
 	for key in [estree.Key.consequent, .alternate] {
-		branch := t.node(node, key) or { return fixes }
-		start, end := c.un_parenthesized_range(t, tokens, branch)
+		branch := t.node(node, key)?
+		mut start, end := c.un_parenthesized_range(t, tokens, branch)
+		if tokens.comments_after(end).len > 0 {
+			return none
+		}
+		before := tokens.comments_before(start)
+		if before.len > 0 {
+			start = before[0].start
+		}
 		mut text := c.src[start..end]
 		// `if (!a) b(); else c()` cannot become `if (!a) c() else b();`
 		if is_if && t.typ(branch) != .block_statement {
@@ -77,21 +128,25 @@ fn (c &Checker) unnc_fix(t &estree.EsTree, tokens &SourceTokens, node int, test 
 		fixes << fix_replace_range(parts[0].start, parts[0].end, parts[1].text)
 		fixes << fix_replace_range(parts[1].start, parts[1].end, parts[0].text)
 	}
-	if t.typ(node) != .conditional_expression || t.typ(test) != .unary_expression {
+	if t.typ(node) != .conditional_expression || !first_operand_unary {
 		return fixes
 	}
-	fixes << c.un_fix_space_around_keyword(t, tokens, node)
-	parent := t.nodes[node].parent
-	first := un_first_token(t, tokens, test, 0) or { return fixes }
-	second := un_first_token(t, tokens, test, 1) or { return fixes }
-	if t.typ(parent) in [.return_statement, .throw_statement]
-		&& t.node(parent, .argument) or { -1 } == node && !un_same_line(t, first.start, second.start)
-		&& !c.un_is_parenthesized(t, tokens, node) && !c.un_is_parenthesized(t, tokens, test) {
-		fixes << c.un_add_parens_to_return_or_throw(t, tokens, parent)
+	fixes << c.unb_fix_space_around_keyword(t, tokens, node)
+	keyword_parent := c.unb_unparenthesized_keyword_argument_parent(t, tokens, test)
+	first := un_first_token(t, tokens, test, 0)?
+	second := un_first_token(t, tokens, test, 1)?
+	if c.token_text(first) != '!' {
+		return fixes
+	}
+	if keyword_parent >= 0 && !un_same_line(t, first.start, second.start) {
+		if t.typ(keyword_parent) == .yield_expression {
+			return none
+		}
+		fixes << c.un_add_parens_to_return_or_throw(t, tokens, keyword_parent)
 		return fixes
 	}
 	before := tokens.before(t.nodes[node].start, false)
-	if c.un_needs_semicolon(t, tokens, before, c.token_text(second)) {
+	if c.unb_needs_semicolon(t, tokens, before, c.token_text(second)) {
 		fixes << fix_insert_at(t.nodes[node].start, ';')
 	}
 	return fixes

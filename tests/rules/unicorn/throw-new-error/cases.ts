@@ -30,3 +30,17 @@ const z3 = lib['CustomError']();
 const z4 = Data.TaggedError('x');
 const z5 = errorError();
 const z6 = HTTP_Error();
+
+// 79.0.0: decorators, template tags, callees and optional chains are not reported; nor a call
+// whose type (with type information) has call or construct signatures.
+declare function MyError(s: string): (strings: TemplateStringsArray) => Error;
+declare function FactoryError(): () => Error;
+declare function getErrors(): { Error: ErrorConstructor; nested: { Error: ErrorConstructor } } | undefined;
+const y1 = MyError('x')`y`;
+const y2 = FactoryError()();
+const y3 = FactoryError();
+const y4 = lib?.Error();
+const y5 = Error?.();
+const y6 = getErrors()!.Error('message');
+const y7 = getErrors()!.nested.Error('message');
+const y8 = (lib.getErrors() as any).Error('message');

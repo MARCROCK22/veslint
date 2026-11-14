@@ -418,7 +418,9 @@ pub const names = [no_floating_promises, await_thenable, require_await, return_a
 	unicorn_no_unreadable_array_destructuring, unicorn_prefer_set_size]
 
 // untyped_rules are the ported rules that need no types (`meta.docs.requiresTypeChecking` is false
-// in typescript-eslint): with only these, the command line makes no snapshot (Checker.make_snapshot).
+// in typescript-eslint; the eslint-plugin-unicorn rules that read the types when the parser has a
+// program, through withTypeInformation, are not here): with only these, the command line makes no
+// snapshot (Checker.make_snapshot).
 pub const untyped_rules = [adjacent_overload_signatures, array_type, class_literal_property_style,
 	consistent_generic_constructors, consistent_indexed_object_style, consistent_type_assertions,
 	consistent_type_definitions, consistent_type_imports, no_array_constructor,
@@ -460,25 +462,19 @@ pub const untyped_rules = [adjacent_overload_signatures, array_type, class_liter
 	no_unreachable_loop, no_useless_return, no_unreachable, no_fallthrough, constructor_super,
 	no_this_before_super, no_useless_assignment, no_restricted_syntax, unicorn_no_lonely_if,
 	unicorn_no_negated_condition, unicorn_no_negation_in_equality_check, unicorn_no_nested_ternary,
-	unicorn_no_typeof_undefined, unicorn_prefer_logical_operator_over_ternary, unicorn_prefer_ternary,
+	unicorn_no_typeof_undefined,
 	unicorn_prefer_switch, unicorn_switch_case_braces, unicorn_switch_case_break_position,
 	unicorn_no_useless_switch_case, unicorn_prefer_simple_condition_first, unicorn_prefer_date_now,
-	unicorn_throw_new_error, unicorn_error_message, unicorn_consistent_date_clone,
-	unicorn_consistent_assert, unicorn_prefer_type_error,
-	unicorn_no_useless_error_capture_stack_trace, unicorn_prefer_structured_clone,
-	unicorn_custom_error_definition, unicorn_no_instanceof_builtins, unicorn_new_for_builtins,
-	unicorn_no_hex_escape, unicorn_escape_case, unicorn_consistent_template_literal_escape,
-	unicorn_no_console_spaces, unicorn_prefer_code_point,
-	unicorn_text_encoding_identifier_case, unicorn_no_zero_fractions,
-	unicorn_prefer_bigint_literals, unicorn_prefer_number_properties, unicorn_prefer_string_raw,
-	unicorn_prefer_string_replace_all, unicorn_require_number_to_fixed_digits_argument,
-	unicorn_prefer_math_trunc, unicorn_prefer_modern_math_apis,
-	unicorn_prefer_native_coercion_functions, unicorn_no_array_callback_reference,
-	unicorn_no_new_array, unicorn_prefer_array_flat_map, unicorn_prefer_array_some,
-	unicorn_require_array_join_separator, unicorn_prefer_negative_index,
-	unicorn_consistent_existence_index_check, unicorn_explicit_length_check,
-	unicorn_no_unnecessary_array_flat_depth, unicorn_no_unnecessary_slice_end,
-	unicorn_no_unreadable_array_destructuring, unicorn_prefer_set_size]
+	unicorn_error_message, unicorn_consistent_date_clone, unicorn_consistent_assert,
+	unicorn_prefer_type_error, unicorn_no_useless_error_capture_stack_trace,
+	unicorn_prefer_structured_clone, unicorn_custom_error_definition, unicorn_no_instanceof_builtins,
+	unicorn_new_for_builtins, unicorn_no_hex_escape, unicorn_escape_case,
+	unicorn_consistent_template_literal_escape, unicorn_no_console_spaces, unicorn_prefer_code_point,
+	unicorn_text_encoding_identifier_case, unicorn_no_zero_fractions, unicorn_prefer_bigint_literals,
+	unicorn_require_number_to_fixed_digits_argument, unicorn_prefer_math_trunc,
+	unicorn_prefer_modern_math_apis, unicorn_prefer_native_coercion_functions, unicorn_no_new_array,
+	unicorn_prefer_negative_index, unicorn_consistent_existence_index_check,
+	unicorn_explicit_length_check, unicorn_no_unnecessary_slice_end]
 
 // needs_types tells whether a rule asks tsgo for the types of the program.
 pub fn needs_types(rule string) bool {
@@ -749,7 +745,7 @@ pub const default_options = {
 	unicorn_no_nested_ternary:                       '[]'
 	unicorn_no_typeof_undefined:                     '[{"checkGlobalVariables":false}]'
 	unicorn_prefer_logical_operator_over_ternary:    '[]'
-	unicorn_prefer_ternary:                          '["always"]'
+	unicorn_prefer_ternary:                          '["always",{"checkVaryingBase":false,"checkComputedMemberAccess":false}]'
 	unicorn_prefer_switch:                           '[{"minimumCases":3,"emptyDefaultCase":"no-default-comment"}]'
 	unicorn_switch_case_braces:                      '["always"]'
 	unicorn_switch_case_break_position:              '[]'
@@ -777,7 +773,7 @@ pub const default_options = {
 	unicorn_text_encoding_identifier_case:           '[{"withDash":false}]'
 	unicorn_no_zero_fractions:                       '[]'
 	unicorn_prefer_bigint_literals:                  '[]'
-	unicorn_prefer_number_properties:                '[{"checkInfinity":false,"checkNaN":true}]'
+	unicorn_prefer_number_properties:                '[{"checkInfinity":false,"checkNaN":false}]'
 	unicorn_prefer_string_raw:                       '[]'
 	unicorn_prefer_string_replace_all:               '[]'
 	unicorn_require_number_to_fixed_digits_argument: '[]'
@@ -785,7 +781,7 @@ pub const default_options = {
 	unicorn_prefer_math_min_max:                     '[]'
 	unicorn_prefer_modern_math_apis:                 '[]'
 	unicorn_prefer_native_coercion_functions:        '[]'
-	unicorn_no_array_callback_reference:             '[]'
+	unicorn_no_array_callback_reference:             '[{"ignore":[]}]'
 	unicorn_no_for_each:                       '[]'
 	unicorn_no_array_method_this_argument:           '[]'
 	unicorn_no_array_reverse:                        '[{"allowExpressionStatement":true}]'
@@ -803,7 +799,7 @@ pub const default_options = {
 	unicorn_no_unnecessary_array_splice_count:       '[]'
 	unicorn_no_unnecessary_slice_end:                '[]'
 	unicorn_no_useless_length_check:                 '[]'
-	unicorn_no_unreadable_array_destructuring:       '[]'
+	unicorn_no_unreadable_array_destructuring:       '[{"maximumIgnoredElements":1}]'
 	unicorn_prefer_set_size:                         '[]'
 }
 

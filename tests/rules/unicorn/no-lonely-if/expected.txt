@@ -13,3 +13,8 @@ tests/rules/unicorn/no-lonely-if/cases.ts:61:3	unicorn/no-lonely-if	no-lonely-if
 tests/rules/unicorn/no-lonely-if/cases.ts:65:3	unicorn/no-lonely-if	no-lonely-if	Unexpected `if` as the only statement in a `if` block without `else`.
 tests/rules/unicorn/no-lonely-if/cases.ts:71:3	unicorn/no-lonely-if	no-lonely-if	Unexpected `if` as the only statement in a `if` block without `else`.
 tests/rules/unicorn/no-lonely-if/cases.ts:72:5	unicorn/no-lonely-if	no-lonely-if	Unexpected `if` as the only statement in a `if` block without `else`.
+tests/rules/unicorn/no-lonely-if/cases.ts:114:24	unicorn/no-lonely-if	no-lonely-if	Unexpected `if` as the only statement in a `if` block without `else`.
+tests/rules/unicorn/no-lonely-if/cases.ts:118:3	unicorn/no-lonely-if	no-lonely-if	Unexpected `if` as the only statement in a `if` block without `else`.
+tests/rules/unicorn/no-lonely-if/cases.ts:123:20	unicorn/no-lonely-if	no-lonely-if	Unexpected `if` as the only statement in a `if` block without `else`.
+tests/rules/unicorn/no-lonely-if/cases.ts:124:8	unicorn/no-lonely-if	no-lonely-if	Unexpected `if` as the only statement in a `if` block without `else`.
+tests/rules/unicorn/no-lonely-if/cases.ts:126:10	unicorn/no-lonely-if	no-lonely-if	Unexpected `if` as the only statement in a `if` block without `else`.

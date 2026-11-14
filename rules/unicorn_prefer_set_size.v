@@ -3,18 +3,11 @@ module rules
 import estree
 import time
 
-// Port of the `unicorn/prefer-set-size` rule of eslint-plugin-unicorn 64.0.0 (it has no options),
+// Port of the `unicorn/prefer-set-size` rule of eslint-plugin-unicorn 79.0.0 (it has no options),
 // with its fix.
 
 const upss_messages = {
 	'prefer-set-size': 'Prefer using `Set#size` instead of `Array#length`.'
-}
-
-// upss_is_set ports isSet. A variable is a Set when its only definition is a `const` whose kind
-// is `const` (definition.kind), which typescript-eslint's definitions do not have: linted as
-// TypeScript, only `new Set(…)` itself is one.
-fn upss_is_set(t &estree.EsTree, node int) bool {
-	return un_is_new(t, node, names: ['Set'])
 }
 
 // upss_set_node ports getSetNode: `[...set].length` and `Array.from(set).length`.
@@ -41,17 +34,25 @@ fn (mut c Checker) lint_unicorn_prefer_set_size(root C.TSNode, abs_path string, 
 	mut findings := []Finding{}
 	t := c.es_tree(root, abs_path) or { return findings }
 	tokens := c.un_tokens(t)
+	mut ctx := &UnbTypeContext{
+		root:     root
+		abs_path: abs_path
+		stats:    unsafe { &stats }
+	}
+	set_options := unb_builtin_options('Set', ['ReadonlySet'])
 	for node in 0 .. t.nodes.len {
 		if t.typ(node) != .member_expression {
 			continue
 		}
 		stats.checked++
-		if !un_is_member(t, node, properties: ['length'], optional: false) {
+		// `[...set].length = 1` writes to a throwaway array, `set.size = 1` to the Set.
+		if !un_is_member(t, node, properties: ['length'], optional: false)
+			|| unb_is_left_hand_side(t, node) {
 			continue
 		}
 		array := t.node(node, .object) or { continue }
 		set := upss_set_node(t, array) or { continue }
-		if !upss_is_set(t, set) {
+		if !c.unb_is_target(t, set, set_options, mut ctx) {
 			continue
 		}
 		property := t.node(node, .property) or { continue }
@@ -61,12 +62,22 @@ fn (mut c Checker) lint_unicorn_prefer_set_size(root C.TSNode, abs_path string, 
 		}
 		if tokens.comments_inside(t.nodes[array].start, t.nodes[array].end).len <= tokens.comments_inside(t.nodes[set].start,
 			t.nodes[set].end).len {
+			// The Set becomes the object of `.size`.
+			mut set_text := c.unb_member_object_text(t, tokens, set, array)
+			if c.unb_is_in_unparenthesized_new_callee(t, tokens, array)
+				&& !c.unb_member_object_needs_parens(t, tokens, set, array)
+				&& c.unb_new_callee_member_of_needs_parens(t, tokens, set) {
+				set_text = '(${set_text})'
+			}
+			if c.unb_needs_semicolon(t, tokens, tokens.before(t.nodes[array].start, false), set_text) {
+				set_text = ';${set_text}'
+			}
 			mut fixes := [
 				fix_replace_range(t.nodes[property].start, t.nodes[property].end, 'size'),
-				fix_replace_range(t.nodes[array].start, t.nodes[array].end, c.un_text(t, set)),
+				fix_replace_range(t.nodes[array].start, t.nodes[array].end, set_text),
 			]
 			if t.typ(array) == .array_expression {
-				fixes << c.un_fix_space_around_keyword(t, tokens, node)
+				fixes << c.unb_fix_space_around_keyword(t, tokens, node)
 			}
 			has_fix, fix := c.merge_fixes(fixes)!
 			finding = Finding{

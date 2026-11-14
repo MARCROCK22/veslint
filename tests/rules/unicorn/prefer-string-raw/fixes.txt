@@ -1,5 +1,8 @@
-tests/rules/unicorn/prefer-string-raw/cases.ts:5:12	unicorn/prefer-string-raw	prefer-string-raw	`String.raw` should be used to avoid escaping `\\`.	fix	212	235	String.raw`C:\\Windows\\System32`	end	5	35
-tests/rules/unicorn/prefer-string-raw/cases.ts:6:12	unicorn/prefer-string-raw	prefer-string-raw	`String.raw` should be used to avoid escaping `\\`.	fix	248	254	String.raw`a\\b`	end	6	18
-tests/rules/unicorn/prefer-string-raw/cases.ts:7:12	unicorn/prefer-string-raw	prefer-string-raw	`String.raw` should be used to avoid escaping `\\`.	fix	267	279	String.raw`it's a\\b`	end	7	24
-tests/rules/unicorn/prefer-string-raw/cases.ts:10:9	unicorn/prefer-string-raw	prefer-string-raw	`String.raw` should be used to avoid escaping `\\`.	fix	343	349	 String.raw`a\\b`	end	10	15
-tests/rules/unicorn/prefer-string-raw/cases.ts:18:12	unicorn/prefer-string-raw	prefer-string-raw	`String.raw` should be used to avoid escaping `\\`.	fix	463	476	String.raw`C:\\Windows`	end	18	25
+tests/rules/unicorn/prefer-string-raw/cases.ts:30:10	unicorn/prefer-string-raw	prefer-string-raw	`String.raw` should be used to avoid escaping `\\`.	fix	931	944	String.raw`C:\\Windows`	end	30	23
+tests/rules/unicorn/prefer-string-raw/cases.ts:31:20	unicorn/prefer-string-raw	prefer-string-raw	`String.raw` should be used to avoid escaping `\\`.	fix	965	971	String.raw`a\\b`	end	31	26
+tests/rules/unicorn/prefer-string-raw/cases.ts:32:12	unicorn/prefer-string-raw	prefer-string-raw	`String.raw` should be used to avoid escaping `\\`.	fix	984	989	String.raw`a\\b	end	32	25
+tests/rules/unicorn/prefer-string-raw/cases.ts:37:12	unicorn/prefer-string-raw	unnecessary-string-raw	Using `String.raw` is unnecessary as the string does not contain any `\\`.	fix	1126	1141	'abc'	end	37	22
+tests/rules/unicorn/prefer-string-raw/cases.ts:38:12	unicorn/prefer-string-raw	unnecessary-string-raw	Using `String.raw` is unnecessary as the string does not contain any `\\`.	fix	1154	1178	`it's ${name}`	end	38	22
+tests/rules/unicorn/prefer-string-raw/cases.ts:39:12	unicorn/prefer-string-raw	unnecessary-string-raw	Using `String.raw` is unnecessary as the string does not contain any `\\`.	fix	1191	1206	`a\nb`	end	39	22
+tests/rules/unicorn/prefer-string-raw/cases.ts:41:12	unicorn/prefer-string-raw	unnecessary-string-raw	Using `String.raw` is unnecessary as the string does not contain any `\\`.	end	41	32
+tests/rules/unicorn/prefer-string-raw/cases.ts:43:10	unicorn/prefer-string-raw	unnecessary-string-raw	Using `String.raw` is unnecessary as the string does not contain any `\\`.	fix	1270	1295	 ( \n  'x' && name)	end	43	20

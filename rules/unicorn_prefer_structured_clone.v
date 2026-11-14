@@ -4,7 +4,7 @@ import estree
 import json2
 import time
 
-// Port of the `unicorn/prefer-structured-clone` rule of eslint-plugin-unicorn 64.0.0, with its
+// Port of the `unicorn/prefer-structured-clone` rule of eslint-plugin-unicorn 79.0.0, with its
 // suggestions.
 
 const upsc_messages = {
@@ -50,19 +50,28 @@ fn (mut c Checker) lint_unicorn_prefer_structured_clone(root C.TSNode, abs_path 
 				optional_member:  false
 			) {
 				_, fix := c.merge_fixes(c.upsc_json_fix(t, tokens, node, stringify))!
+				parse_callee := t.node(node, .callee) or { continue }
 				stringify_callee := t.node(stringify, .callee) or { continue }
+				// The suggestion replaces and removes the two callees, so a comment in either would
+				// be lost.
+				commented := [parse_callee, stringify_callee].any(tokens.comments_inside(t.nodes[it].start,
+					t.nodes[it].end).len > 0)
 				findings << Finding{
 					stmt:        c.position_range(t.nodes[node].start, t.nodes[stringify_callee].end)
 					message_id:  'prefer-structured-clone/error'
 					data:        {
 						'description': 'JSON.parse(JSON.stringify(…))'
 					}
-					suggestions: [
-						Suggestion{
-							message_id: 'prefer-structured-clone/suggestion'
-							fix:        fix
-						},
-					]
+					suggestions: if commented {
+						[]Suggestion{}
+					} else {
+						[
+							Suggestion{
+								message_id: 'prefer-structured-clone/suggestion'
+								fix:        fix
+							},
+						]
+					}
 				}
 			}
 		}
@@ -75,19 +84,25 @@ fn (mut c Checker) lint_unicorn_prefer_structured_clone(root C.TSNode, abs_path 
 			if !un_node_matches_name_or_path(t, callee, function) {
 				continue
 			}
+			// The callee is replaced by a bare `structuredClone`, so a comment in it would be lost.
+			commented := tokens.comments_inside(t.nodes[callee].start, t.nodes[callee].end).len > 0
 			findings << Finding{
 				stmt:        c.es_tree_position(t, callee)
 				message_id:  'prefer-structured-clone/error'
 				data:        {
 					'description': '${function.trim_space()}(…)'
 				}
-				suggestions: [
-					Suggestion{
-						message_id: 'prefer-structured-clone/suggestion'
-						fix:        fix_replace_range(t.nodes[callee].start, t.nodes[callee].end,
-							'structuredClone')
-					},
-				]
+				suggestions: if commented {
+					[]Suggestion{}
+				} else {
+					[
+						Suggestion{
+							message_id: 'prefer-structured-clone/suggestion'
+							fix:        fix_replace_range(t.nodes[callee].start, t.nodes[callee].end,
+								'structuredClone')
+						},
+					]
+				}
 			}
 			break
 		}

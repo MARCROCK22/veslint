@@ -59,6 +59,17 @@ pub fn (r &JsRegex) test(units []u16) !bool {
 	return regexp_test_annex_b(r.prog, units)
 }
 
+// exec ports `regexp.exec(text)` from `from` (a `lastIndex`) for a regular expression without the
+// `g` and `y` flags: whether there is a match, its start and end, and the capture slots (2 per
+// group, group 0 unused, -1 when the group did not take part). The indexes are of the UTF-16 units
+// of the text, and of its code points in the `u` mode. An error when the search takes too long.
+pub fn (r &JsRegex) exec(units []u16, from int) !(bool, int, int, []int) {
+	if r.unicode {
+		return regexp_exec(r.prog, utf16_code_points(units).map(rune(it)), from)
+	}
+	return regexp_exec(r.prog, units.map(rune(it)), from)
+}
+
 // rx_program compiles the tree of a parsed pattern with `groups` capturing groups.
 fn rx_program(root RxNode, groups int) !RegexpProgram {
 	mut c := RxCompiler{

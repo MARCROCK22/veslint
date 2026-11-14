@@ -158,6 +158,10 @@ class Runner:
             language['globals'] = {**defaults.get('globals', {}), **case.get('languageOptions', {}).get('globals', {})}
         if case.get('parserOptions'):
             language['parserOptions'] = case['parserOptions']
+        # eslint-plugin-unicorn reads the types only when the parser has a program
+        # (withTypeInformation), which a case has with `via` alone: the others say there is none.
+        if rule.startswith('unicorn/') and not case.get('via'):
+            language['parserOptions'] = {**language.get('parserOptions', {}), 'projectService': False}
         # eslint-plugin-unicorn's tests (ESLint's RuleTester through eslint-ava-rule-tester) do not
         # report unused disable directives.
         report = 0 if rule.startswith('unicorn/') else 1
@@ -202,7 +206,11 @@ class Runner:
         answer = self.server.request({'config': self.config_path(rule, case, self.defaults),
                                       'project': self.project_of(case, file) if tsconfig else '',
                                       'files': [file], 'texts': {file: code}, 'fixes': True})
-        return answer['code'], file, answer['stdout'].splitlines(), answer['stderr']
+        # Lines end with \n alone: str.splitlines would also split at a U+2028 of a fix.
+        lines = answer['stdout'].split('\n')
+        if lines and lines[-1] == '':
+            lines.pop()
+        return answer['code'], file, lines, answer['stderr']
 
 
 def check_project(veslint, fixtures, configs, project):

@@ -2,7 +2,7 @@ module rules
 
 import time
 
-// Port of the `unicorn/consistent-date-clone` rule of eslint-plugin-unicorn 64.0.0 (it has no
+// Port of the `unicorn/consistent-date-clone` rule of eslint-plugin-unicorn 79.0.0 (it has no
 // options), with its fix.
 
 const ucdc_messages = {
@@ -32,7 +32,15 @@ fn (mut c Checker) lint_unicorn_consistent_date_clone(root C.TSNode, abs_path st
 			continue
 		}
 		property := t.node(t.node(call, .callee) or { continue }, .property) or { continue }
-		has_fix, fix := c.merge_fixes(c.un_remove_method_call(t, tokens, call))!
+		// `removeMethodCall()` removes everything after the object, so a comment there would be lost.
+		object := t.node(t.node(call, .callee) or { continue }, .object) or { continue }
+		mut has_fix := false
+		mut fix := Fix{}
+		if !c.unb_would_remove_comments(tokens, unb_node_range(t, call), [
+			c.unb_parenthesized_range(t, tokens, object),
+		], false) {
+			has_fix, fix = c.merge_fixes(c.un_remove_method_call(t, tokens, call))!
+		}
 		findings << Finding{
 			stmt:       c.position_range(t.nodes[property].start, t.nodes[call].end)
 			message_id: 'consistent-date-clone/error'
