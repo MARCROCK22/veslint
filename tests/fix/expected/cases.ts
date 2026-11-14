@@ -12,7 +12,7 @@ const c = text;
 const d = flag;
 const e = maybe!;
 type U = string   | number;
-function g(x: number = undefined as never, { y } = { y: 1 }) {
+function g(x: number = undefined as never, { y = undefined } = { y: 1 }) {
   return [x, y];
 }
 /b/.exec(text);

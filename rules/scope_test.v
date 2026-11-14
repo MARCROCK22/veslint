@@ -249,7 +249,7 @@ fn test_parser_options() {
 // The names of an `/* exported */` comment (parseListConfig).
 fn test_exported_names() {
 	assert exported_names(' a, \'b\' ,"c", \'d, e\' , ,__proto__, a, \'f"') == ['a', 'b', 'c',
-		"'d", "e'", '\'f"']
+		"'d", "e'", '__proto__', '\'f"']
 	assert exported_names('').len == 0
 }
 
@@ -320,8 +320,8 @@ fn test_normalize_global_value() {
 
 fn test_global_entries() {
 	entries := global_entries(' b : off , a b:writable,2:x 1 __proto__:off c: ,, a:readonly:z ')
-	assert entries.map(it.name) == ['1', '2', 'b', 'a', 'c']
-	assert entries.map(it.value) == ['', 'x', 'writable', 'readonly', '']
-	assert entries.map(it.has_value) == [false, true, true, true, true]
+	assert entries.map(it.name) == ['1', '2', 'b', 'a', '__proto__', 'c']
+	assert entries.map(it.value) == ['', 'x', 'writable', 'readonly', 'off', '']
+	assert entries.map(it.has_value) == [false, true, true, true, true, true]
 	assert global_entries('').len == 0
 }

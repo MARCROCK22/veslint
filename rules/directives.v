@@ -488,10 +488,11 @@ struct GlobalEntry {
 	has_value bool
 }
 
-// global_entries ports Object.entries(parseStringConfig(value)) for a `/* global */` comment: its
-// names, each with the text between its first and its second `:`. A repeated name keeps its
-// place and takes the last value; as in any JavaScript object, the names that are array indexes
-// come first, in ascending order, and `__proto__` is not a property.
+// global_entries ports Object.entries(parseStringConfig(value)) of @eslint/plugin-kit 0.7.3 for a
+// `/* global */` comment: its names, each with the text between its first and its second `:`. A
+// repeated name keeps its place and takes the last value; as in any JavaScript object, the names
+// that are array indexes come first, in ascending order. The object has no prototype (0.7.3), so
+// `__proto__` is a name like any other.
 fn global_entries(value string) []GlobalEntry {
 	// The spaces around `:` and `,` do not count; then the names are split at spaces and commas.
 	mut compact := []rune{}
@@ -526,9 +527,6 @@ fn global_entries(value string) []GlobalEntry {
 			continue
 		}
 		parts := item.split(':')
-		if parts[0] == '__proto__' {
-			continue
-		}
 		if parts[0] !in by_name {
 			order << parts[0]
 		}
@@ -554,8 +552,9 @@ fn global_entries(value string) []GlobalEntry {
 	return out
 }
 
-// exported_names ports ConfigCommentParser.parseListConfig on the value of an `/* exported */`
-// comment: the names between commas, trimmed and without the quotes around them.
+// exported_names ports ConfigCommentParser.parseListConfig of @eslint/plugin-kit 0.7.3 on the value
+// of an `/* exported */` comment: the names between commas, trimmed and without the quotes around
+// them (an object without prototype: `__proto__` is a name too).
 fn exported_names(value string) []string {
 	mut out := []string{}
 	for item in value.split(',') {
@@ -564,8 +563,7 @@ fn exported_names(value string) []string {
 		if name.len >= 2 && name[0] in [`'`, `"`] && name[name.len - 1] == name[0] {
 			name = name[1..name.len - 1]
 		}
-		// `items.__proto__ = true` adds no key.
-		if name != '' && name != '__proto__' && name !in out {
+		if name != '' && name !in out {
 			out << name
 		}
 	}
