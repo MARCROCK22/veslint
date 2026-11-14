@@ -3486,3 +3486,61 @@ fn (c &Checker) unb_remove_argument(t &estree.EsTree, tokens &SourceTokens, node
 	}
 	return fix_replace_range(removal.start, removal.end, comments.map(' ${comment_text(it)}').join(''))
 }
+
+// unb_member_object_needs_parens ports shouldAddParenthesesToMemberExpressionObject of 79.0.0:
+// the node as the object of a member expression, where `replacement` is (-1: the node itself).
+fn (c &Checker) unb_member_object_needs_parens(t &estree.EsTree, tokens &SourceTokens, node int, replacement int) bool {
+	if c.unb_should_add_parens_to_expression_start(t, tokens, node, replacement) {
+		return true
+	}
+	return match t.typ(node) {
+		.identifier, .member_expression, .call_expression, .chain_expression, .template_literal,
+		.this_expression, .super, .array_expression, .meta_property, .import_expression,
+		.tagged_template_expression, .ts_non_null_expression {
+			false
+		}
+		.new_expression {
+			!c.un_new_with_parentheses(t, tokens, node)
+		}
+		.literal {
+			t.get(node, .value) is f64 && un_is_decimal_integer(un_raw(t, node))
+		}
+		else {
+			true
+		}
+	}
+}
+
+// unb_member_object_text ports getMemberExpressionObjectText: the text of the node (with its
+// parentheses) as the object of a member expression.
+fn (c &Checker) unb_member_object_text(t &estree.EsTree, tokens &SourceTokens, node int, replacement int) string {
+	text := c.un_parenthesized_text(t, tokens, node)
+	if !c.un_is_parenthesized(t, tokens, node)
+		&& c.unb_member_object_needs_parens(t, tokens, node, replacement) {
+		return '(${text})'
+	}
+	return text
+}
+
+// unb_parent_pattern ports getParentPattern: the destructuring pattern that directly holds the
+// node, through defaults, rest elements, object pattern properties and TypeScript wrappers; -1 for
+// none.
+fn unb_parent_pattern(t &estree.EsTree, node int) int {
+	parent := t.nodes[node].parent
+	if parent < 0 {
+		return -1
+	}
+	if (unb_is_ts_wrapper(t, parent) && t.node(parent, .expression) or { -1 } == node)
+		|| (t.typ(parent) == .assignment_pattern && t.node(parent, .left) or { -1 } == node)
+		|| (t.typ(parent) == .rest_element && t.node(parent, .argument) or { -1 } == node) {
+		return unb_parent_pattern(t, parent)
+	}
+	if t.typ(parent) == .property && t.node(parent, .value) or { -1 } == node
+		&& t.nodes[parent].parent >= 0 && t.typ(t.nodes[parent].parent) == .object_pattern {
+		return t.nodes[parent].parent
+	}
+	if t.typ(parent) in [.object_pattern, .array_pattern] {
+		return parent
+	}
+	return -1
+}
