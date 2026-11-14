@@ -420,3 +420,6 @@ veslint	prefer-set-size/i10	typescript-eslint's definitions have no kind: a cons
 # gives the same (tests/rules/unicorn/prefer-array-index-of/cases.ts, `sizes`).
 veslint	prefer-array-index-of/r1/i0	with TypeScript's types the search value is not assignable to the parameter of indexOf(): not reported
 veslint	prefer-array-index-of/r3/i0	with TypeScript's types the search value is not assignable to the parameter of lastIndexOf(): not reported
+# The same for prefer-array-flat: `let effects = new Set(); effects.flatMap(x => x)` has a Set for
+# TypeScript, which is known not to be an array (tests/rules/unicorn/prefer-array-flat/cases.ts).
+veslint	prefer-array-flat/r6/i4	with TypeScript's types the receiver is a Set, known not to be an array: not reported

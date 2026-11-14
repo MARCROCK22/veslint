@@ -30,3 +30,20 @@ const Pascal = nested;
 const z6 = Pascal.flatMap(x => x);
 const objectish: any = {};
 const z7 = objectish.flatMap((x: number) => x);
+
+// 79.0.0: receivers known not to be arrays (a `let` Set is known from TypeScript's types, the
+// upstream test without a program reports it), `arguments`, typed arrays; no `[...a, ...b]`
+// reduction and no `[].concat(maybeArray)`.
+let effects = new Set();
+effects.flatMap(x => x);
+declare const typedArrays: Uint8Array & { flatMap(cb: (x: number) => number): number[] };
+typedArrays.flatMap(x => x);
+export function withArguments() {
+  // @ts-expect-error -- not an array
+  return [].concat(...arguments);
+}
+const f1 = nested.reduce((a, b) => [...a, ...b], []);
+const f2 = [].concat(nested);
+const f3 = [].concat.call([], nested);
+const f4 = [].concat.apply([], nested);
+const f5 = (nested as number[][]).flatMap(x => x);
