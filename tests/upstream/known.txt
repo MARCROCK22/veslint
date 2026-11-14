@@ -5,9 +5,6 @@
 # listed case must fail and every other case must pass; tests/rules/reference.sh does not compare the
 # two tools on a listed case.
 #
-# The first member of the union of `cond ? new Foo() : Math` with a `floor` decides the messageId:
-# Math's method (unboundWithoutThisAnnotation) with TypeScript 6, Foo's property (unbound) with 7.
-veslint	unbound-method/i50	TypeScript 7 puts `Foo` before `Math` in the union
 # tree-sitter reads a `new` followed by a line break as the identifier `new` and an automatic `;`
 # (`const a = new` and then the statement `Foo()`), with no syntax error: a grammar bug.
 # tree-sitter's grammar requires the type of a mapped type: `{ [k in string]; }`, which TypeScript

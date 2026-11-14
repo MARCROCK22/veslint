@@ -128,3 +128,29 @@ for (counter.increment; condition; ) {
 do {
   break;
 } while (counter.increment);
+
+// typescript-eslint 8.72: a class property initialized with a function expression is checked as
+// that function; computed accesses by the literal types of the key; Intl.Collator's compare is
+// bound by the specification.
+class FieldFunctions {
+  plain = function () {};
+  withThis = function (this: FieldFunctions) {};
+  voidThis = function (this: void) {};
+  arrow = () => {};
+  #secret() {}
+  method() {}
+  readSecret() {
+    return this.#secret;
+  }
+}
+declare const fields: FieldFunctions;
+declare const methodKey: 'method' | 'arrow';
+declare const arrowKey: 'arrow';
+declare const anyKey: string;
+const fieldReads = [fields.plain, fields.withThis, fields.voidThis, fields.arrow, fields[methodKey], fields[arrowKey], fields[anyKey as 'method'], fields['method']];
+const collator = new Intl.Collator();
+['b', 'a'].sort(collator.compare);
+const { compare } = collator;
+declare const fakeCollator: { compare(a: string, b: string): number };
+const fakeCompare = fakeCollator.compare;
+export { fieldReads, compare, fakeCompare };
