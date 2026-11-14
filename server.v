@@ -492,7 +492,17 @@ fn (mut s Server) lint(id i64, config string, project string, files []string, te
 			warnings++
 			continue
 		}
-		lint_config := lint_configs[loaded.file_config[f.abs_path] or { 0 }]
+		config_index := loaded.file_config[f.abs_path] or { 0 }
+		mut lint_config := lint_configs[config_index]
+		// As the command line it answers for (a single run, without --fix): the project service
+		// leaves the file to a Program made for its tsconfig, whose current directory is the one
+		// veslint runs in, when the tsconfig is the one the file is linted with.
+		if config_index < loaded.configs.len && is_single_run(false) {
+			root := loaded.configs[config_index].service_program_root
+			if root != '' && f.tsconfig != '' && single_run_tsconfig(f.abs_path, root) == f.tsconfig {
+				lint_config.program_directory = os.getwd()
+			}
+		}
 		project_id := s.projects[f.tsconfig] or { '' }
 		if project_id !in s.checkers {
 			mut checker := rules.new_checker(s.client, s.snap.snapshot, project_id, project_options(s.snap,

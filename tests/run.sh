@@ -519,7 +519,7 @@ else
 	ko "--config: a rule set to warn (code $code)"
 	cat "$TMP/warn-config.err"
 fi
-printf '{"rules": {"@typescript-eslint/await-thenable": ["error", {"anything": true}]}}' > "$TMP/options.json"
+printf '{"rules": {"@typescript-eslint/no-for-in-array": ["error", {"anything": true}]}}' > "$TMP/options.json"
 # Options that do not fit the schema of the rule are rejected with ESLint's own words (see also
 # tests/config-errors below).
 expect_usage_error "--config rejects options for a rule that has none" \
