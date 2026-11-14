@@ -1,0 +1,7 @@
+tests/rules/unicorn/no-this-assignment/cases.ts:2:7	unicorn/no-this-assignment	no-this-assignment	Do not assign `this` to `self`.
+tests/rules/unicorn/no-this-assignment/cases.ts:4:1	unicorn/no-this-assignment	no-this-assignment	Do not assign `this` to `that`.
+tests/rules/unicorn/no-this-assignment/cases.ts:5:12	unicorn/no-this-assignment	no-this-assignment	Do not assign `this` to `b`.
+tests/rules/unicorn/no-this-assignment/cases.ts:7:1	unicorn/no-this-assignment	no-this-assignment	Do not assign `this` to `c`.
+tests/rules/unicorn/no-this-assignment/cases.ts:10:8	unicorn/no-this-assignment	no-this-assignment	Do not assign `this` to `me`.
+tests/rules/unicorn/no-this-assignment/cases.ts:16:9	unicorn/no-this-assignment	no-this-assignment	Do not assign `this` to `instance`.
+tests/rules/unicorn/no-this-assignment/cases.ts:18:3	unicorn/no-this-assignment	no-this-assignment	Do not assign `this` to `other`.
