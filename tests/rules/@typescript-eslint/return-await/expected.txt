@@ -39,6 +39,11 @@ tests/rules/@typescript-eslint/return-await/fixes-never/cases.ts:9:12	@typescrip
 tests/rules/@typescript-eslint/return-await/fixes-never/cases.ts:16:19	@typescript-eslint/return-await	disallowedPromiseAwait	Returning an awaited promise is not allowed in this context.
 tests/rules/@typescript-eslint/return-await/fixes-never/cases.ts:16:32	@typescript-eslint/return-await	disallowedPromiseAwait	Returning an awaited promise is not allowed in this context.
 tests/rules/@typescript-eslint/return-await/fixes-never/cases.ts:22:10	@typescript-eslint/return-await	disallowedPromiseAwait	Returning an awaited promise is not allowed in this context.
+tests/rules/@typescript-eslint/return-await/fixes-never/cases.ts:26:33	@typescript-eslint/return-await	disallowedPromiseAwait	Returning an awaited promise is not allowed in this context.
+tests/rules/@typescript-eslint/return-await/fixes-never/cases.ts:27:33	@typescript-eslint/return-await	disallowedPromiseAwait	Returning an awaited promise is not allowed in this context.
+tests/rules/@typescript-eslint/return-await/fixes-never/cases.ts:28:34	@typescript-eslint/return-await	disallowedPromiseAwait	Returning an awaited promise is not allowed in this context.
+tests/rules/@typescript-eslint/return-await/fixes-never/cases.ts:29:34	@typescript-eslint/return-await	disallowedPromiseAwait	Returning an awaited promise is not allowed in this context.
+tests/rules/@typescript-eslint/return-await/fixes-never/cases.ts:32:12	@typescript-eslint/return-await	disallowedPromiseAwait	Returning an awaited promise is not allowed in this context.
 tests/rules/@typescript-eslint/return-await/fixes-using/cases.ts:9:10	@typescript-eslint/return-await	requiredPromiseAwait	Returning an awaited promise is required in this context.
 tests/rules/@typescript-eslint/return-await/fixes-using/cases.ts:13:10	@typescript-eslint/return-await	requiredPromiseAwait	Returning an awaited promise is required in this context.
 tests/rules/@typescript-eslint/return-await/fixes-using/cases.ts:16:10	@typescript-eslint/return-await	disallowedPromiseAwait	Returning an awaited promise is not allowed in this context.
