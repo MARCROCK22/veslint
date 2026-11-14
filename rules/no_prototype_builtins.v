@@ -3,7 +3,7 @@ module rules
 import time
 import treesitter { node_field, node_kind, node_start, position_of }
 
-// Port of the `no-prototype-builtins` rule of ESLint 10.6.0, with its suggestion (it has no
+// Port of the `no-prototype-builtins` rule of ESLint 10.15.0, with its suggestion (it has no
 // options).
 
 const npb_messages = {
@@ -75,6 +75,10 @@ fn (mut c Checker) npb_fixes(root C.TSNode, call C.TSNode, callee C.TSNode, name
 	// A callee that is a ChainExpression of its own.
 	raw_callee := node_field(call, 'function')?
 	if estree_type(unwrap_parens(raw_callee)) == 'ChainExpression' {
+		return none
+	}
+	// `super` is not an expression, it cannot be passed to `.call()`.
+	if node_kind(unwrap_parens(node_field(callee, 'object')?)) == 'super' {
 		return none
 	}
 	tree := c.scope_tree(root)

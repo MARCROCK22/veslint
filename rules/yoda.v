@@ -4,7 +4,7 @@ import json2
 import time
 import treesitter { node_field, node_kind, node_start, position_of }
 
-// Port of the `yoda` rule of ESLint 10.6.0, with its options and its fix.
+// Port of the `yoda` rule of ESLint 10.15.0, with its options and its fix.
 
 const yoda_messages = {
 	'expected': 'Expected literal to be on the {{expectedSide}} side of {{operator}}.'
@@ -226,7 +226,8 @@ fn (mut c Checker) yoda_fix(root C.TSNode, node C.TSNode, left C.TSNode, right C
 	right_text := c.src[first_right.start..end]
 	mut prefix := ''
 	mut suffix := ''
-	if before := tokens.before(start, false) {
+	token_before := tokens.before(start, false)
+	if before := token_before {
 		if before.end == start && !c.es_can_tokens_be_adjacent(before, first_right) {
 			prefix = ' '
 		}
@@ -236,6 +237,57 @@ fn (mut c Checker) yoda_fix(root C.TSNode, node C.TSNode, left C.TSNode, right C
 			suffix = ' '
 		}
 	}
-	return true, fix_replace_range(start, end, prefix + right_text + before_operator +
-		yoda_flip[operator] + after_operator + left_text + suffix)
+	mut flipped := right_text + before_operator + yoda_flip[operator] + after_operator + left_text
+	at_statement_start := is_start_of_expression_statement(node)
+	// `{` cannot start an expression statement or the concise body of an arrow function, and
+	// `function` or `class` cannot start an expression statement or follow `export default`.
+	mut after_default := false
+	mut after_arrow := false
+	if before := token_before {
+		after_default = before.kind == .keyword && c.token_text(before) == 'default'
+		after_arrow = before.kind == .punctuator && c.token_text(before) == '=>'
+	}
+	needs_parens := ((at_statement_start || after_default)
+		&& c.yoda_starts_function_or_class(tokens, first_right, end))
+		|| ((at_statement_start || after_arrow) && first_right.kind == .punctuator
+		&& c.token_text(first_right) == '{')
+	if needs_parens {
+		flipped = '(${flipped})'
+	}
+	if prefix == '' && at_statement_start && (needs_parens || c.yoda_can_continue_expression(first_right))
+		&& (c.eslint_needs_preceding_semicolon(node, start)
+		|| c.yoda_continues_postfix_update(first_right, token_before)) {
+		prefix = ';'
+	}
+	return true, fix_replace_range(start, end, prefix + flipped + suffix)
+}
+
+// yoda_starts_function_or_class ports startsFunctionOrClass: the token is `function`, `class`, or
+// `async` before a `function` inside the node (that ends at `end`).
+fn (c &Checker) yoda_starts_function_or_class(tokens &SourceTokens, token SourceToken, end int) bool {
+	text := c.token_text(token)
+	if token.kind == .keyword && text in ['function', 'class'] {
+		return true
+	}
+	if token.kind !in [.identifier, .keyword] || text != 'async' {
+		return false
+	}
+	next := tokens.after(token.end, false) or { return false }
+	return next.end <= end && next.kind == .keyword && c.token_text(next) == 'function'
+}
+
+// yoda_can_continue_expression ports canContinueExpression: a template, a regular expression,
+// `(`, `[`, `+` or `-`.
+fn (c &Checker) yoda_can_continue_expression(token SourceToken) bool {
+	return token.kind in [.template, .regular_expression]
+		|| (token.kind == .punctuator && c.token_text(token) in ['(', '[', '+', '-'])
+}
+
+// yoda_continues_postfix_update ports continuesPostfixUpdate: after a postfix `++` or `--`, a
+// regular expression, `+` or `-` continues the expression.
+fn (c &Checker) yoda_continues_postfix_update(token SourceToken, token_before ?SourceToken) bool {
+	before := token_before or { return false }
+	return before.kind == .punctuator && c.token_text(before) in ['++', '--']
+		&& (token.kind == .regular_expression
+		|| (token.kind == .punctuator && c.token_text(token) in ['+', '-']))
 }

@@ -3,7 +3,7 @@ module rules
 import time
 import treesitter { node_field, node_kind, node_start }
 
-// Port of the `no-unexpected-multiline` rule of ESLint 10.6.0 (it has no options).
+// Port of the `no-unexpected-multiline` rule of ESLint 10.15.0 (it has no options).
 
 const num_messages = {
 	'function':       'Unexpected newline between function and ( of function call.'
@@ -62,7 +62,7 @@ fn (mut c Checker) lint_no_unexpected_multiline(root C.TSNode, abs_path string, 
 				after := tokens.after(slash.end, false) or { continue }
 				text := c.src[after.start..after.end]
 				if after.kind == .identifier && text.len > 0
-					&& text.bytes().all(it in [`g`, `i`, `m`, `s`, `u`, `y`]) && slash.end == after.start {
+					&& text.bytes().all(it in [`d`, `g`, `i`, `m`, `s`, `u`, `v`, `y`]) && slash.end == after.start {
 					c.num_check_break_after(root, node_field(inner, 'left') or { continue }, 'division', mut
 						findings)
 				}

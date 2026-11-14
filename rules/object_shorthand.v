@@ -5,7 +5,7 @@ import jsregexp
 import time
 import treesitter { named_children, node_field, node_kind, node_parent, node_start, position_of }
 
-// Port of the `object-shorthand` rule of ESLint 10.6.0, with its options and its fixes.
+// Port of the `object-shorthand` rule of ESLint 10.15.0, with its options and its fixes.
 
 const os_messages = {
 	'expectedAllPropertiesShorthanded': 'Expected shorthand for all properties.'
@@ -58,6 +58,13 @@ fn (mut c Checker) lint_object_shorthand(root C.TSNode, abs_path string, mut sta
 	sw := time.new_stopwatch()
 	o := os_options(c.rule_options(object_shorthand))!
 	mut findings := []Finding{}
+	// methodsWithSuper: the object methods that provide the `super` of a `super` in the file.
+	mut methods_with_super := map[u64]bool{}
+	for super_node in c.nodes_of_kinds(root, ['super'], []) {
+		if method := os_containing_object_method(super_node) {
+			methods_with_super[node_key(method)] = true
+		}
+	}
 	for object in c.nodes_of_kinds(root, ['object'], []) {
 		stats.checked++
 		properties := named_children(object).filter(node_kind(it) in ['pair', 'method_definition',
@@ -66,7 +73,7 @@ fn (mut c Checker) lint_object_shorthand(root C.TSNode, abs_path string, mut sta
 			c.os_consistency(object, properties, o.apply == 'consistent-as-needed', mut findings)
 		}
 		for property in properties {
-			c.os_property(root, o, property, mut findings)
+			c.os_property(root, o, property, methods_with_super, mut findings)
 		}
 	}
 	stats.eval_ms += ms(sw.elapsed())
@@ -96,8 +103,65 @@ fn (mut c Checker) os_consistency(object C.TSNode, all []C.TSNode, check_redunda
 	}
 }
 
-// os_is_redundant ports isRedundant: an anonymous function, or an identifier named as the key.
+// os_containing_object_method ports getContainingObjectMethod: the object method (not an accessor)
+// whose function is the first function (not an arrow) around the node, or none when that function
+// is another one, or a class field's initializer or a static block comes first. The computed key of
+// a method or of a field is in the scope around it.
+fn os_containing_object_method(n C.TSNode) ?C.TSNode {
+	mut child := n
+	for {
+		parent := node_parent(child) or { return none }
+		from_name := if name := node_field(parent, 'name') {
+			node_key(name) == node_key(child)
+		} else {
+			false
+		}
+		match node_kind(parent) {
+			'function_expression', 'function_declaration', 'generator_function',
+			'generator_function_declaration' {
+				return none
+			}
+			'method_definition' {
+				if !from_name {
+					holder := node_parent(parent) or { return none }
+					if node_kind(holder) == 'object' && es_accessor_kind(parent) == 'init' {
+						return parent
+					}
+					return none
+				}
+			}
+			'class_static_block' {
+				return none
+			}
+			'public_field_definition' {
+				if !from_name && !(node_kind(child) in ['decorator', 'accessibility_modifier',
+					'override_modifier', 'type_annotation']) {
+					return none
+				}
+			}
+			else {}
+		}
+		child = parent
+	}
+	return none
+}
+
+// os_is_proto_key ports isProtoKey: a key `__proto__` that is not computed.
+fn (c &Checker) os_is_proto_key(property C.TSNode) bool {
+	_, computed := es_property_key(property) or { return false }
+	if computed {
+		return false
+	}
+	name := c.es_static_key_name(property) or { return false }
+	return name == '__proto__'
+}
+
+// os_is_redundant ports isRedundant: an anonymous function, or an identifier named as the key
+// (never for a key `__proto__`).
 fn (c &Checker) os_is_redundant(property C.TSNode) bool {
+	if c.os_is_proto_key(property) {
+		return false
+	}
 	value := unwrap_parens(node_field(property, 'value') or { return false })
 	match node_kind(value) {
 		'function_expression', 'generator_function' {
@@ -114,9 +178,12 @@ fn (c &Checker) os_is_redundant(property C.TSNode) bool {
 }
 
 // os_property is the check of a Property at its exit.
-fn (mut c Checker) os_property(root C.TSNode, o OsOptions, property C.TSNode, mut findings []Finding) {
+fn (mut c Checker) os_property(root C.TSNode, o OsOptions, property C.TSNode, methods_with_super map[u64]bool, mut findings []Finding) {
 	kind := node_kind(property)
 	if kind == 'spread_element' || es_accessor_kind(property) != 'init' {
+		return
+	}
+	if c.os_is_proto_key(property) {
 		return
 	}
 	key, computed := es_property_key(property) or { return }
@@ -134,7 +201,8 @@ fn (mut c Checker) os_property(root C.TSNode, o OsOptions, property C.TSNode, mu
 	key_is_string := !computed && node_kind(key) == 'string'
 	never := o.apply == 'never'
 	if kind == 'method_definition' {
-		if never || (o.avoid_quotes && node_kind(key) == 'string') {
+		if node_key(property) !in methods_with_super
+			&& (never || (o.avoid_quotes && node_kind(key) == 'string')) {
 			has_fix, fix := c.os_longform_fix(root, property, key, computed)
 			findings << Finding{
 				stmt:       position_of(property)
@@ -163,12 +231,16 @@ fn (mut c Checker) os_property(root C.TSNode, o OsOptions, property C.TSNode, mu
 	to_methods := o.apply in ['methods', 'always']
 	to_props := o.apply in ['properties', 'always']
 	if to_methods && is_function && es_function_id(value) == none {
-		if o.ignore_constructors && node_kind(key) in ['property_identifier', 'identifier']
-			&& os_is_constructor(c.text(key)) {
-			return
+		property_name := c.es_static_key_name(property)
+		if o.ignore_constructors {
+			if name := property_name {
+				if os_is_constructor(name) {
+					return
+				}
+			}
 		}
 		if program := o.methods_ignore {
-			if name := c.es_static_key_name(property) {
+			if name := property_name {
 				if jsregexp.regexp_test(program, name) or { false } {
 					return
 				}
@@ -226,15 +298,21 @@ fn (mut c Checker) os_property(root C.TSNode, o OsOptions, property C.TSNode, mu
 	}
 }
 
-// os_is_constructor ports isConstructor: the first character that is not `_`, `$` or a digit is
-// the same in upper case.
+// os_is_constructor ports isConstructor: the first code point that is not `_`, `$` or a digit is
+// a letter (containsLetter, `\p{L}`) and the same in upper case.
 fn os_is_constructor(name string) bool {
 	units := utf16_units(name)
-	for i, unit in units {
-		if unit == `_` || unit == `$` || (unit >= `0` && unit <= `9`) {
+	for point in jsregexp.utf16_code_points(units) {
+		if point == `_` || point == `$` || (point >= `0` && point <= `9`) {
 			continue
 		}
-		return jsregexp.js_to_upper(units[i..i + 1]) == units[i..i + 1]
+		mut first := []u16{}
+		jsregexp.append_utf16(mut first, point)
+		letter := jsregexp.regexp_compile('\\p{L}') or { return false }
+		if !(jsregexp.regexp_test(letter, rune(point).str()) or { false }) {
+			return false
+		}
+		return jsregexp.js_to_upper(first) == first
 	}
 	return false
 }

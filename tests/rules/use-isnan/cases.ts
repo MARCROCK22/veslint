@@ -46,3 +46,17 @@ switch (x) {
 // indexOf is not checked by default.
 list.indexOf(NaN);
 list.lastIndexOf(Number.NaN);
+
+// A `NaN` or a `Number` that is not the global is not NaN (10.15.0).
+function shadowNaN(NaN: number, x: number) {
+  return x === NaN;
+}
+function shadowNumber(Number: { NaN: number }, x: number) {
+  return x === Number.NaN || x === Number?.NaN;
+}
+function shadowSwitch(NaN: number) {
+  switch (NaN) {
+    case NaN:
+      break;
+  }
+}

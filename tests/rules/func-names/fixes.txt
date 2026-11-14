@@ -1,6 +1,11 @@
 tests/rules/func-names/as-needed/cases.ts:5:5	func-names	unnamed	Unexpected unnamed function.	end	5	14
 tests/rules/func-names/as-needed/cases.ts:6:2	func-names	unnamed	Unexpected unnamed function.	end	6	11
 tests/rules/func-names/as-needed/cases.ts:7:14	func-names	unnamed	Unexpected unnamed function.	end	7	23
+tests/rules/func-names/as-needed/cases.ts:22:18	func-names	unnamed	Unexpected unnamed method '__proto__'.	end	22	38
+tests/rules/func-names/as-needed/cases.ts:23:18	func-names	unnamed	Unexpected unnamed method '__proto__'.	end	23	40
+tests/rules/func-names/as-needed/cases.ts:25:12	func-names	unnamed	Unexpected unnamed function.	end	25	21
+tests/rules/func-names/as-needed/cases.ts:26:11	func-names	unnamed	Unexpected unnamed function.	end	26	20
+tests/rules/func-names/as-needed/cases.ts:30:13	func-names	unnamed	Unexpected unnamed function.	end	30	22
 tests/rules/func-names/cases.ts:4:5	func-names	unnamed	Unexpected unnamed function.	end	4	14
 tests/rules/func-names/cases.ts:5:5	func-names	unnamed	Unexpected unnamed async function.	end	5	20
 tests/rules/func-names/cases.ts:6:5	func-names	unnamed	Unexpected unnamed generator function.	end	6	15

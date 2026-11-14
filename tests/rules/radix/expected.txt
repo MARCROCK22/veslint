@@ -6,3 +6,11 @@ tests/rules/radix/cases.ts:6:11	radix	invalidRadix	Invalid radix parameter, must
 tests/rules/radix/cases.ts:7:11	radix	missingRadix	Missing radix parameter.
 tests/rules/radix/cases.ts:8:11	radix	missingRadix	Missing radix parameter.
 tests/rules/radix/cases.ts:10:11	radix	invalidRadix	Invalid radix parameter, must be an integer between 2 and 36.
+tests/rules/radix/cases.ts:24:12	radix	invalidRadix	Invalid radix parameter, must be an integer between 2 and 36.
+tests/rules/radix/cases.ts:25:12	radix	invalidRadix	Invalid radix parameter, must be an integer between 2 and 36.
+tests/rules/radix/cases.ts:26:12	radix	invalidRadix	Invalid radix parameter, must be an integer between 2 and 36.
+tests/rules/radix/cases.ts:27:12	radix	invalidRadix	Invalid radix parameter, must be an integer between 2 and 36.
+tests/rules/radix/cases.ts:28:12	radix	missingRadix	Missing radix parameter.
+tests/rules/radix/cases.ts:29:12	radix	invalidRadix	Invalid radix parameter, must be an integer between 2 and 36.
+tests/rules/radix/cases.ts:30:12	radix	missingRadix	Missing radix parameter.
+tests/rules/radix/cases.ts:31:12	radix	invalidRadix	Invalid radix parameter, must be an integer between 2 and 36.

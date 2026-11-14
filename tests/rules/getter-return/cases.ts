@@ -63,3 +63,17 @@ const plain = { get: () => 1 };
 const arrowGetter = { get z() { return [1].map((n) => { n; }); } };
 export { Box, shape, Fine, Shape, plain, arrowGetter };
 export type { WithGetter };
+
+// Only a descriptor in its place, for the global Object and Reflect (10.15.0).
+declare const target: object;
+Object.defineProperty(target, 'a', { get() {} });
+Reflect.defineProperty(target, 'a', { get: function () {} });
+Object.defineProperties(target, { a: { get() {} } });
+Object.create(target, { a: { get: () => {} } });
+Object?.defineProperty(target, 'a', { get() {} });
+Object.defineProperty({ get() {} }, 'a', { value: 1 });
+Object.defineProperties({ a: { get() {} } }, { b: { value: 1 } });
+Object.create({ a: { get() {} } }, { b: { value: 1 } });
+function shadowObject(Object: any) {
+  Object.defineProperty(target, 'a', { get() {} });
+}

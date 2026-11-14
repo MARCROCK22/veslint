@@ -4,7 +4,7 @@ import json2
 import time
 import treesitter { node_field, node_kind, node_start, position_of }
 
-// Port of the `no-implicit-coercion` rule of ESLint 10.6.0, with its options, its fix and its
+// Port of the `no-implicit-coercion` rule of ESLint 10.15.0, with its options, its fix and its
 // suggestions.
 
 const nic_messages = {
@@ -158,7 +158,7 @@ fn (mut c Checker) nic_unary(root C.TSNode, o NicOptions, node C.TSNode, mut fin
 	if '!!' !in o.allow && o.boolean && operator == '!' && node_kind(argument) == 'unary_expression'
 		&& operator_of(argument) == '!' {
 		inner := unwrap_parens(node_field(argument, 'argument') or { return })
-		recommendation := 'Boolean(${c.es_text(inner)})'
+		recommendation := 'Boolean(${c.nic_operand_text(inner)})'
 		tree := c.scope_tree(root)
 		v := tree.find_variable(tree.get_scope(node), 'Boolean', -1)
 		boolean_exists := v >= 0 && tree.variables[v].identifiers.len == 0
@@ -186,7 +186,7 @@ fn (mut c Checker) nic_unary(root C.TSNode, o NicOptions, node C.TSNode, mut fin
 	}
 	// `+x`.
 	if '+' !in o.allow && o.number && operator == '+' && !c.nic_is_numeric(argument) {
-		c.nic_report(root, node, 'Number(${c.es_text(argument)})', .identifier, 'Number',
+		c.nic_report(root, node, 'Number(${c.nic_operand_text(argument)})', .identifier, 'Number',
 			true, false, mut findings)!
 	}
 	// `- -x`.
@@ -194,7 +194,7 @@ fn (mut c Checker) nic_unary(root C.TSNode, o NicOptions, node C.TSNode, mut fin
 		&& operator_of(argument) == '-' {
 		inner := unwrap_parens(node_field(argument, 'argument') or { return })
 		if !c.nic_is_numeric(inner) {
-			c.nic_report(root, node, 'Number(${c.es_text(inner)})', .identifier, 'Number',
+			c.nic_report(root, node, 'Number(${c.nic_operand_text(inner)})', .identifier, 'Number',
 				true, false, mut findings)!
 		}
 	}
@@ -218,14 +218,14 @@ fn (mut c Checker) nic_binary(root C.TSNode, o NicOptions, node C.TSNode, mut fi
 			operand = left
 		}
 		if x := operand {
-			c.nic_report(root, node, 'Number(${c.es_text(x)})', .identifier, 'Number', true,
+			c.nic_report(root, node, 'Number(${c.nic_operand_text(x)})', .identifier, 'Number', true,
 				false, mut findings)!
 		}
 	}
 	// `x - 0`.
 	if '-' !in o.allow && o.number && operator == '-' && c.nic_is_number_value(right, 0)
 		&& !c.nic_is_numeric(left) {
-		c.nic_report(root, node, 'Number(${c.es_text(left)})', .identifier, 'Number', true,
+		c.nic_report(root, node, 'Number(${c.nic_operand_text(left)})', .identifier, 'Number', true,
 			false, mut findings)!
 	}
 	// `'' + x`.
@@ -233,7 +233,7 @@ fn (mut c Checker) nic_binary(root C.TSNode, o NicOptions, node C.TSNode, mut fi
 		&& ((c.nic_is_empty_string(left) && !c.nic_is_string_type(right))
 			|| (c.nic_is_empty_string(right) && !c.nic_is_string_type(left))) {
 		operand := if c.nic_is_empty_string(left) { right } else { left }
-		c.nic_report(root, node, 'String(${c.es_text(operand)})', .identifier, 'String', true,
+		c.nic_report(root, node, 'String(${c.nic_operand_text(operand)})', .identifier, 'String', true,
 			false, mut findings)!
 	}
 }
@@ -277,10 +277,17 @@ fn (mut c Checker) nic_template(root C.TSNode, o NicOptions, node C.TSNode, mut 
 	if c.nic_is_string_type(expression) {
 		return
 	}
-	c.nic_report(root, node, 'String(${c.es_text(expression)})', .identifier, 'String', true,
+	c.nic_report(root, node, 'String(${c.nic_operand_text(expression)})', .identifier, 'String', true,
 		false, mut findings)!
 }
 
 fn node_parent_or(n C.TSNode) C.TSNode {
 	return treesitter.node_parent(n) or { n }
+}
+
+// nic_operand_text ports getOperandText: the text of the operand, in parentheses for a
+// SequenceExpression (whose commas would separate arguments).
+fn (c &Checker) nic_operand_text(n C.TSNode) string {
+	text := c.es_text(n)
+	return if node_kind(n) == 'sequence_expression' { '(${text})' } else { text }
 }

@@ -1,8 +1,8 @@
-tests/rules/no-var/cases.ts:2:1	no-var	unexpectedVar	Unexpected var, use let or const instead.	fix	32	35	let	end	2	11
-tests/rules/no-var/cases.ts:4:3	no-var	unexpectedVar	Unexpected var, use let or const instead.	fix	60	63	let	end	4	13
-tests/rules/no-var/cases.ts:5:8	no-var	unexpectedVar	Unexpected var, use let or const instead.	fix	78	81	let	end	5	17
-tests/rules/no-var/cases.ts:6:8	no-var	unexpectedVar	Unexpected var, use let or const instead.	fix	111	114	let	end	6	13
-tests/rules/no-var/cases.ts:9:8	no-var	unexpectedVar	Unexpected var, use let or const instead.	fix	157	160	let	end	9	13
+tests/rules/no-var/cases.ts:2:1	no-var	unexpectedVar	Unexpected var, use let or const instead.	fix	32	42	let a = 1;	end	2	11
+tests/rules/no-var/cases.ts:4:3	no-var	unexpectedVar	Unexpected var, use let or const instead.	fix	60	70	let b = 2;	end	4	13
+tests/rules/no-var/cases.ts:5:8	no-var	unexpectedVar	Unexpected var, use let or const instead.	fix	78	87	let i = 0	end	5	17
+tests/rules/no-var/cases.ts:6:8	no-var	unexpectedVar	Unexpected var, use let or const instead.	fix	111	116	let k	end	6	13
+tests/rules/no-var/cases.ts:9:8	no-var	unexpectedVar	Unexpected var, use let or const instead.	fix	157	162	let m	end	9	13
 tests/rules/no-var/cases.ts:17:13	no-var	unexpectedVar	Unexpected var, use let or const instead.	end	17	23
 tests/rules/no-var/cases.ts:20:7	no-var	unexpectedVar	Unexpected var, use let or const instead.	end	20	17
 tests/rules/no-var/cases.ts:22:3	no-var	unexpectedVar	Unexpected var, use let or const instead.	end	22	13
@@ -10,10 +10,21 @@ tests/rules/no-var/cases.ts:24:3	no-var	unexpectedVar	Unexpected var, use let or
 tests/rules/no-var/cases.ts:25:3	no-var	unexpectedVar	Unexpected var, use let or const instead.	end	25	13
 tests/rules/no-var/cases.ts:26:3	no-var	unexpectedVar	Unexpected var, use let or const instead.	end	26	13
 tests/rules/no-var/cases.ts:27:3	no-var	unexpectedVar	Unexpected var, use let or const instead.	end	27	28
-tests/rules/no-var/cases.ts:28:3	no-var	unexpectedVar	Unexpected var, use let or const instead.	fix	442	445	let	end	28	16
+tests/rules/no-var/cases.ts:28:3	no-var	unexpectedVar	Unexpected var, use let or const instead.	fix	442	455	let let2 = 1;	end	28	16
 tests/rules/no-var/cases.ts:30:5	no-var	unexpectedVar	Unexpected var, use let or const instead.	end	30	19
 tests/rules/no-var/cases.ts:34:6	no-var	unexpectedVar	Unexpected var, use let or const instead.	end	34	15
 tests/rules/no-var/cases.ts:38:3	no-var	unexpectedVar	Unexpected var, use let or const instead.	end	38	14
-tests/rules/no-var/cases.ts:40:1	no-var	unexpectedVar	Unexpected var, use let or const instead.	fix	609	612	let	end	40	23
+tests/rules/no-var/cases.ts:40:1	no-var	unexpectedVar	Unexpected var, use let or const instead.	fix	601	623	declare let w: number;	end	40	23
 tests/rules/no-var/cases.ts:41:8	no-var	unexpectedVar	Unexpected var, use let or const instead.	end	41	18
-tests/rules/no-var/cases.ts:43:3	no-var	unexpectedVar	Unexpected var, use let or const instead.	fix	658	661	let	end	43	13
+tests/rules/no-var/cases.ts:43:3	no-var	unexpectedVar	Unexpected var, use let or const instead.	fix	658	668	let n = 1;	end	43	13
+tests/rules/no-var/cases.ts:58:22	no-var	unexpectedVar	Unexpected var, use let or const instead.	end	58	32
+tests/rules/no-var/cases.ts:59:25	no-var	unexpectedVar	Unexpected var, use let or const instead.	end	59	36
+tests/rules/no-var/cases.ts:60:28	no-var	unexpectedVar	Unexpected var, use let or const instead.	end	60	34
+tests/rules/no-var/cases.ts:61:27	no-var	unexpectedVar	Unexpected var, use let or const instead.	fix	1119	1131	let e5 = e4;	end	61	39
+tests/rules/no-var/cases.ts:65:3	no-var	unexpectedVar	Unexpected var, use let or const instead.	end	65	13
+tests/rules/no-var/cases.ts:66:3	no-var	unexpectedVar	Unexpected var, use let or const instead.	fix	1183	1194	let h2 = 2;	end	66	14
+tests/rules/no-var/cases.ts:70:3	no-var	unexpectedVar	Unexpected var, use let or const instead.	fix	1258	1269	let h3 = 1;	end	70	14
+tests/rules/no-var/cases.ts:75:3	no-var	unexpectedVar	Unexpected var, use let or const instead.	fix	1338	1358	let m1 = 1, m2 = m1;	end	75	23
+tests/rules/no-var/cases.ts:76:8	no-var	unexpectedVar	Unexpected var, use let or const instead.	end	76	13
+tests/rules/no-var/cases.ts:77:8	no-var	unexpectedVar	Unexpected var, use let or const instead.	end	77	17
+tests/rules/no-var/cases.ts:80:1	no-var	unexpectedVar	Unexpected var, use let or const instead.	fix	1438	1462	declare let amb: number;	end	80	25

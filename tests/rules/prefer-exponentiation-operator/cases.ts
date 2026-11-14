@@ -29,3 +29,7 @@ const k2 = Math.max(a, b);
 function shadow(Math: { pow(a: number, b: number): number }) {
   return Math.pow(a, b);
 }
+
+// `async function` at the start of a statement goes in parentheses (10.15.0).
+Math.pow(async function () {}.length, 2);
+Math.pow(async function named(a: number, b: number) {}.length, 2) + 100;

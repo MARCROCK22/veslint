@@ -3,7 +3,7 @@ module rules
 import time
 import treesitter { node_field, node_kind, node_start, position_of }
 
-// Port of the `prefer-exponentiation-operator` rule of ESLint 10.6.0, with its fix (it has no
+// Port of the `prefer-exponentiation-operator` rule of ESLint 10.15.0, with its fix (it has no
 // options).
 
 const peo_messages = {
@@ -57,6 +57,14 @@ fn (mut c Checker) peo_fix(root C.TSNode, call C.TSNode) (bool, Fix) {
 		text := c.src[first.start..first.end]
 		if text == '{' || (first.kind == .keyword && text in ['function', 'class']) {
 			all_parens = true
+		}
+		// `async function`.
+		if first.kind in [.identifier, .keyword] && text == 'async' {
+			if second := tokens.after(first.end, false) {
+				if second.kind == .keyword && c.src[second.start..second.end] == 'function' {
+					all_parens = true
+				}
+			}
 		}
 	}
 	mut prefix := ''

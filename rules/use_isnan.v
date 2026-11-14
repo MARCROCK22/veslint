@@ -4,7 +4,7 @@ import json2
 import time
 import treesitter { named_children, node_field, node_kind, position_of }
 
-// Port of the `use-isnan` rule of ESLint 10.6.0, with its options and its suggestions.
+// Port of the `use-isnan` rule of ESLint 10.15.0, with its options and its suggestions.
 
 const uin_messages = {
 	'comparisonWithNaN':          'Use the isNaN function to compare with NaN.'
@@ -41,16 +41,16 @@ fn (mut c Checker) lint_use_isnan(root C.TSNode, abs_path string, mut stats Stat
 		stats.checked++
 		match node_kind(node) {
 			'binary_expression' {
-				c.uin_binary(node, mut findings)!
+				c.uin_binary(root, node, mut findings)!
 			}
 			'switch_statement' {
 				if o.enforce_for_switch_case {
-					c.uin_switch(node, mut findings)
+					c.uin_switch(root, node, mut findings)
 				}
 			}
 			else {
 				if o.enforce_for_index_of {
-					c.uin_call(node, mut findings)!
+					c.uin_call(root, node, mut findings)!
 				}
 			}
 		}
@@ -60,25 +60,32 @@ fn (mut c Checker) lint_use_isnan(root C.TSNode, abs_path string, mut stats Stat
 }
 
 // uin_is_nan ports isNaNIdentifier: `NaN` or `Number.NaN`, also as the last expression of a
-// SequenceExpression.
-fn (c &Checker) uin_is_nan(n C.TSNode) bool {
-	node := es_sequence_last(n)
-	return c.es_is_specific_id(node, 'NaN') || c.es_is_specific_member_access(node, 'Number', 'NaN')
+// SequenceExpression, where `NaN` or `Number` is a reference to the global variable.
+fn (mut c Checker) uin_is_nan(root C.TSNode, n C.TSNode) bool {
+	node := unwrap_parens(es_sequence_last(n))
+	if c.es_is_specific_id(node, 'NaN') {
+		return c.es_is_global_reference(root, node)
+	}
+	if c.es_is_specific_member_access(node, 'Number', 'NaN') {
+		object := node_field(node, 'object') or { return false }
+		return c.es_is_global_reference(root, object)
+	}
+	return false
 }
 
 // uin_binary ports checkBinaryExpression: a comparison with NaN. An equality whose NaN is not a
 // SequenceExpression gets the suggestion `Number.isNaN(value)`, and `==` and `!=` also
 // `Number.isNaN(Number(value))`, with `!` for an inequality; a value that is a SequenceExpression
 // is wrapped in parentheses.
-fn (mut c Checker) uin_binary(node C.TSNode, mut findings []Finding) ! {
+fn (mut c Checker) uin_binary(root C.TSNode, node C.TSNode, mut findings []Finding) ! {
 	operator := c.text(node_field(node, 'operator') or { return })
 	if operator !in uin_comparison_operators {
 		return
 	}
 	left := node_field(node, 'left') or { return }
 	right := node_field(node, 'right') or { return }
-	left_nan := c.uin_is_nan(left)
-	if !left_nan && !c.uin_is_nan(right) {
+	left_nan := c.uin_is_nan(root, left)
+	if !left_nan && !c.uin_is_nan(root, right) {
 		return
 	}
 	nan_node := unwrap_parens(if left_nan { left } else { right })
@@ -109,9 +116,9 @@ fn (mut c Checker) uin_binary(node C.TSNode, mut findings []Finding) ! {
 }
 
 // uin_switch ports checkSwitchStatement: `switch (NaN)`, then each `case NaN:`.
-fn (c &Checker) uin_switch(node C.TSNode, mut findings []Finding) {
+fn (mut c Checker) uin_switch(root C.TSNode, node C.TSNode, mut findings []Finding) {
 	if discriminant := node_field(node, 'value') {
-		if c.uin_is_nan(discriminant) {
+		if c.uin_is_nan(root, discriminant) {
 			findings << Finding{
 				stmt:       position_of(node)
 				message_id: 'switchNaN'
@@ -124,7 +131,7 @@ fn (c &Checker) uin_switch(node C.TSNode, mut findings []Finding) {
 			continue
 		}
 		test := node_field(switch_case, 'value') or { continue }
-		if c.uin_is_nan(test) {
+		if c.uin_is_nan(root, test) {
 			findings << Finding{
 				stmt:       position_of(switch_case)
 				message_id: 'caseNaN'
@@ -137,7 +144,7 @@ fn (c &Checker) uin_switch(node C.TSNode, mut findings []Finding) {
 // with at most two arguments. With NaN alone, and not as a SequenceExpression, the suggestion is
 // findIndex or findLastIndex with Number.isNaN (the name in double quotes for a computed
 // property).
-fn (mut c Checker) uin_call(node C.TSNode, mut findings []Finding) ! {
+fn (mut c Checker) uin_call(root C.TSNode, node C.TSNode, mut findings []Finding) ! {
 	callee := unwrap_parens(node_field(node, 'function') or { return })
 	if node_kind(callee) !in ['member_expression', 'subscript_expression'] {
 		return
@@ -147,7 +154,7 @@ fn (mut c Checker) uin_call(node C.TSNode, mut findings []Finding) ! {
 		return
 	}
 	arguments := (call_arguments(node) or { return }).filter(node_kind(it) != 'comment')
-	if arguments.len == 0 || arguments.len > 2 || !c.uin_is_nan(arguments[0]) {
+	if arguments.len == 0 || arguments.len > 2 || !c.uin_is_nan(root, arguments[0]) {
 		return
 	}
 	mut suggestions := []Suggestion{}

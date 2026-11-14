@@ -3,7 +3,7 @@ module rules
 import time
 import treesitter { node_field, node_kind, node_start, position_of }
 
-// Port of the `prefer-numeric-literals` rule of ESLint 10.6.0, with its fix (it has no options).
+// Port of the `prefer-numeric-literals` rule of ESLint 10.15.0, with its fix (it has no options).
 
 const pnl_messages = {
 	'useLiteral': 'Use {{system}} literals instead of {{functionName}}().'
@@ -34,8 +34,7 @@ fn (mut c Checker) lint_prefer_numeric_literals(root C.TSNode, abs_path string, 
 			else { continue }
 		}
 		callee := node_field(node, 'function') or { continue }
-		if !c.es_is_specific_id(callee, 'parseInt')
-			&& !c.es_is_specific_member_access(callee, 'Number', 'parseInt') {
+		if !c.pnl_is_parse_int(root, callee) {
 			continue
 		}
 		start := node_start(node)
@@ -77,4 +76,16 @@ fn (mut c Checker) lint_prefer_numeric_literals(root C.TSNode, abs_path string, 
 	}
 	stats.eval_ms += ms(sw.elapsed())
 	return findings
+}
+
+// pnl_is_parse_int ports isParseInt: the global `parseInt`, or `parseInt` of the global `Number`.
+fn (mut c Checker) pnl_is_parse_int(root C.TSNode, callee C.TSNode) bool {
+	if c.es_is_specific_id(callee, 'parseInt') {
+		return c.es_is_global_reference(root, callee)
+	}
+	if c.es_is_specific_member_access(callee, 'Number', 'parseInt') {
+		object := node_field(unwrap_parens(callee), 'object') or { return false }
+		return c.es_is_global_reference(root, object)
+	}
+	return false
 }

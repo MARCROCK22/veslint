@@ -9,3 +9,5 @@ tests/rules/no-useless-rename/cases.ts:13:4	no-useless-rename	unnecessarilyRenam
 tests/rules/no-useless-rename/cases.ts:14:14	no-useless-rename	unnecessarilyRenamed	Destructuring assignment h unnecessarily renamed.	fix	326	330	h	end	14	18
 tests/rules/no-useless-rename/cases.ts:16:10	no-useless-rename	unnecessarilyRenamed	Export i unnecessarily renamed.	fix	364	370	i	end	16	16
 tests/rules/no-useless-rename/cases.ts:17:21	no-useless-rename	unnecessarilyRenamed	Export g unnecessarily renamed.	fix	394	402	g	end	17	29
+tests/rules/no-useless-rename/cases.ts:28:10	no-useless-rename	unnecessarilyRenamed	Import Dirent unnecessarily renamed.	fix	646	662	Dirent	end	28	31
+tests/rules/no-useless-rename/cases.ts:29:10	no-useless-rename	unnecessarilyRenamed	Export Dirent unnecessarily renamed.	fix	695	711	Dirent	end	29	31

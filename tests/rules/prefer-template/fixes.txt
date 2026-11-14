@@ -7,3 +7,9 @@ tests/rules/prefer-template/cases.ts:10:12	prefer-template	unexpectedStringConca
 tests/rules/prefer-template/cases.ts:11:12	prefer-template	unexpectedStringConcatenation	Unexpected string concatenation.	fix	220	237	`a \\${b} \\`c\\` ${  a}`	end	11	29
 tests/rules/prefer-template/cases.ts:12:12	prefer-template	unexpectedStringConcatenation	Unexpected string concatenation.	fix	250	265	`x${ /* c */  a}`	end	12	27
 tests/rules/prefer-template/cases.ts:13:13	prefer-template	unexpectedStringConcatenation	Unexpected string concatenation.	fix	279	290	`${1  }x${  2}`	end	13	24
+tests/rules/prefer-template/cases.ts:23:1	prefer-template	unexpectedStringConcatenation	Unexpected string concatenation.	fix	493	502	;`bar${  a}`	end	23	10
+tests/rules/prefer-template/cases.ts:25:1	prefer-template	unexpectedStringConcatenation	Unexpected string concatenation.	fix	506	515	;`bar${  a}`	end	25	10
+tests/rules/prefer-template/cases.ts:27:1	prefer-template	unexpectedStringConcatenation	Unexpected string concatenation.	fix	528	537	;`bar${  a}`	end	27	10
+tests/rules/prefer-template/cases.ts:29:1	prefer-template	unexpectedStringConcatenation	Unexpected string concatenation.	fix	544	553	`bar${  a}`	end	29	10
+tests/rules/prefer-template/cases.ts:31:1	prefer-template	unexpectedStringConcatenation	Unexpected string concatenation.	fix	565	574	`bar${  a}`	end	31	10
+tests/rules/prefer-template/cases.ts:32:12	prefer-template	unexpectedStringConcatenation	Unexpected string concatenation.	fix	587	600	`x\\\\\\${y}${  a}`	end	32	25

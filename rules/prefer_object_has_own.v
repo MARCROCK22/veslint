@@ -3,7 +3,7 @@ module rules
 import time
 import treesitter { named_children, node_field, node_kind, node_start, position_of }
 
-// Port of the `prefer-object-has-own` rule of ESLint 10.6.0, with its fix (it has no options).
+// Port of the `prefer-object-has-own` rule of ESLint 10.15.0, with its fix (it has no options).
 
 const poho_messages = {
 	'useHasOwn': "Use 'Object.hasOwn()' instead of 'Object.prototype.hasOwnProperty.call()'."
@@ -33,7 +33,7 @@ fn (mut c Checker) lint_prefer_object_has_own(root C.TSNode, abs_path string, mu
 		}
 		tree := c.scope_tree(root)
 		v := tree.find_variable(tree.get_scope(node), 'Object', -1)
-		if v < 0 || tree.variables[v].scope != 0 {
+		if v < 0 || tree.variables[v].scope != 0 || tree.variables[v].defs.len > 0 {
 			continue
 		}
 		tokens := c.source_tokens(root)

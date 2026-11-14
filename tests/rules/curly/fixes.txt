@@ -32,3 +32,7 @@ tests/rules/curly/multi/cases.ts:19:8	curly	unexpectedCurlyAfterCondition	Unnece
 tests/rules/curly/multi/cases.ts:22:8	curly	unexpectedCurlyAfterCondition	Unnecessary { after 'if' condition.	fix	331	339	 f(); 	end	22	16
 tests/rules/curly/multi/cases.ts:22:22	curly	unexpectedCurlyAfter	Unnecessary { after 'else'.	fix	345	353	 f(); 	end	22	30
 tests/rules/curly/multi/cases.ts:38:8	curly	unexpectedCurlyAfterCondition	Unnecessary { after 'if' condition.	fix	508	516	 f(); 	end	38	16
+tests/rules/curly/multi/cases.ts:43:17	curly	unexpectedCurlyAfter	Unnecessary { after 'else'.	fix	654	660	 g();	end	43	23
+tests/rules/curly/multi/cases.ts:44:17	curly	unexpectedCurlyAfter	Unnecessary { after 'else'.	fix	677	690	 if (t) g();	end	44	30
+tests/rules/curly/multi/cases.ts:45:17	curly	unexpectedCurlyAfter	Unnecessary { after 'else'.	fix	707	720	[1].map(g);	end	45	30
+tests/rules/curly/multi/cases.ts:46:3	curly	unexpectedCurlyAfter	Unnecessary { after 'do'.	fix	723	729	 g();	end	46	9

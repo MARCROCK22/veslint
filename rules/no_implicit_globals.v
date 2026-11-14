@@ -4,7 +4,7 @@ import json2
 import time
 import treesitter { node_kind, node_parent, position_of }
 
-// Port of the `no-implicit-globals` rule of ESLint 10.6.0.
+// Port of the `no-implicit-globals` rule of ESLint 10.15.0.
 
 const nig_messages = {
 	'globalNonLexicalBinding':       'Unexpected {{kind}} declaration in the global scope, wrap in an IIFE for a local variable, assign as global property for a global variable.'

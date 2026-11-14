@@ -88,3 +88,25 @@ function g2() {
     }
   }
 }
+
+// A labeled `continue` to a loop outside the finally block (10.15.0).
+function labeledContinue() {
+  outer: for (;;) {
+    try {
+    } finally {
+      for (;;) {
+        continue outer;
+      }
+    }
+  }
+}
+function labeledContinueInside() {
+  for (;;) {
+    try {
+    } finally {
+      inner: for (;;) {
+        continue inner;
+      }
+    }
+  }
+}

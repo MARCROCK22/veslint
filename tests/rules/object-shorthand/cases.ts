@@ -21,3 +21,9 @@ const k6 = { a: b };
 const k7 = { [a]: a };
 const k8 = { a: /** @type {number} */ (a) };
 const { c: c } = { c: 1 };
+
+// A key `__proto__` that is not computed is left alone (10.15.0).
+declare const __proto__: object;
+const p1 = { __proto__: __proto__ };
+const p2 = { '__proto__': function () {} };
+const p3 = { ['__proto__']: function () {} };

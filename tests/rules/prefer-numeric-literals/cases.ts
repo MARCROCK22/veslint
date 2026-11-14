@@ -14,3 +14,12 @@ const k2 = parseInt(x, 2);
 const k3 = parseInt('111', 3);
 const k4 = Math.parseInt('111', 2);
 declare const x: string;
+
+// Only the global parseInt and Number (10.15.0).
+function shadowParseInt(parseInt: (s: string, r: number) => number) {
+  return parseInt('111', 2);
+}
+function shadowNumber(Number: { parseInt(s: string, r: number): number }) {
+  return Number.parseInt('111', 2) + Number?.parseInt('11', 8);
+}
+const globalNumber = Number?.parseInt('11', 8);

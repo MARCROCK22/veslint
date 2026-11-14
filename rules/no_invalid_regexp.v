@@ -5,7 +5,7 @@ import regexpp
 import time
 import treesitter { named_children, node_field, node_kind, position_of }
 
-// Port of the `no-invalid-regexp` rule of ESLint 10.6.0.
+// Port of the `no-invalid-regexp` rule of ESLint 10.15.0.
 
 const nir_messages = {
 	'regexMessage': '{{message}}.'
@@ -39,7 +39,8 @@ fn (mut c Checker) lint_no_invalid_regexp(root C.TSNode, abs_path string, mut st
 		} else {
 			'constructor'
 		}) or { continue }
-		if node_kind(callee) != 'identifier' || c.text(callee) != 'RegExp' {
+		if node_kind(callee) != 'identifier' || c.text(callee) != 'RegExp'
+			|| !c.es_is_global_reference(root, callee) {
 			continue
 		}
 		mut args := []C.TSNode{}

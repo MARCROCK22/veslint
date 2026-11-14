@@ -56,3 +56,9 @@ function typeAfter(): number {
   interface AlsoLater {}
 }
 export { afterReturn, afterThrow, afterLoop, afterBreak, bothBranches, Derived, hoisted, fine, typeAfter };
+
+// An import declaration is not reported (10.15.0), the statements after it are.
+throw new Error();
+import type {} from 'node:fs';
+declare const afterImport: number;
+afterImport;

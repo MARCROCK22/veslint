@@ -3,7 +3,7 @@ module rules
 import time
 import treesitter { node_field, node_kind, position_of }
 
-// Port of the `no-obj-calls` rule of ESLint 10.6.0 (it has no options).
+// Port of the `no-obj-calls` rule of ESLint 10.15.0 (it has no options).
 
 const noc2_messages = {
 	'unexpectedCall':    "'{{name}}' is not a function."
@@ -14,7 +14,7 @@ fn (mut c Checker) lint_no_obj_calls(root C.TSNode, abs_path string, mut stats S
 	sw := time.new_stopwatch()
 	mut findings := []Finding{}
 	mut trace := map[string]EsTrace{}
-	for name in ['Atomics', 'JSON', 'Math', 'Reflect', 'Intl', 'Temporal'] {
+	for name in ['Atomics', 'JSON', 'Math', 'Reflect', 'Intl', 'Temporal', 'globalThis'] {
 		trace[name] = EsTrace{
 			call:      true
 			construct: true

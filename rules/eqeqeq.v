@@ -2,9 +2,9 @@ module rules
 
 import json2
 import time
-import treesitter { node_field, node_kind }
+import treesitter { named_children, node_field, node_kind }
 
-// Port of the `eqeqeq` rule of ESLint 10.6.0, with its options, its fix and its suggestion.
+// Port of the `eqeqeq` rule of ESLint 10.15.0, with its options, its fix and its suggestion.
 
 const eqe_messages = {
 	'unexpected':      "Expected '{{expectedOperator}}' and instead saw '{{actualOperator}}'."
@@ -42,7 +42,7 @@ fn (mut c Checker) lint_eqeqeq(root C.TSNode, abs_path string, mut stats Stats) 
 		operator := operator_of(node)
 		is_null := node_kind(left) == 'null' || node_kind(right) == 'null'
 		if operator !in ['==', '!='] {
-			if o.null == 'never' && is_null {
+			if o.null == 'never' && is_null && operator in ['===', '!=='] {
 				c.eqe_report(root, node, left, right, operator, operator[..operator.len - 1], mut
 					findings)!
 			}
@@ -66,9 +66,13 @@ fn (c &Checker) eqe_typeof_binary(left C.TSNode, right C.TSNode) bool {
 		|| (node_kind(right) == 'unary_expression' && operator_of(right) == 'typeof')
 }
 
-// eqe_literal_type is `typeof value` of a Literal.
+// eqe_literal_type ports getLiteralType: `typeof value` of a Literal, 'string' for a template
+// without expressions (isStaticTemplateLiteral).
 fn (c &Checker) eqe_literal_type(n C.TSNode) string {
 	return match node_kind(n) {
+		'template_string' {
+			if named_children(n).any(node_kind(it) == 'template_substitution') { '' } else { 'string' }
+		}
 		'string' { 'string' }
 		'number' {
 			if c.text(n).ends_with('n') { 'bigint' } else { 'number' }

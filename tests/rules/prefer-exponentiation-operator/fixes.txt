@@ -16,3 +16,5 @@ tests/rules/prefer-exponentiation-operator/cases.ts:21:13	prefer-exponentiation-
 tests/rules/prefer-exponentiation-operator/cases.ts:22:1	prefer-exponentiation-operator	useExponentiation	Use the '**' operator instead of 'Math.pow'.	fix	553	567	a**b	end	22	15
 tests/rules/prefer-exponentiation-operator/cases.ts:23:15	prefer-exponentiation-operator	useExponentiation	Use the '**' operator instead of 'Math.pow'.	fix	583	598	(-b)**2	end	23	30
 tests/rules/prefer-exponentiation-operator/cases.ts:24:14	prefer-exponentiation-operator	useExponentiation	Use the '**' operator instead of 'Math.pow'.	fix	613	627	a**b	end	24	28
+tests/rules/prefer-exponentiation-operator/cases.ts:34:1	prefer-exponentiation-operator	useExponentiation	Use the '**' operator instead of 'Math.pow'.	fix	864	904	(async function () {}.length**2)	end	34	41
+tests/rules/prefer-exponentiation-operator/cases.ts:35:1	prefer-exponentiation-operator	useExponentiation	Use the '**' operator instead of 'Math.pow'.	fix	906	971	(async function named(a: number, b: number) {}.length**2)	end	35	66

@@ -11,3 +11,8 @@ const g = RegExp('.');
 const h = new RegExp('[', flags + 'u' === 'u' ? '' : 'x' + flags);
 const i = new RegExp('\\p{Letter}', 'u');
 export { a, b, c, d, e, f, g, h, i };
+
+// Only the global RegExp (10.15.0).
+function shadowRegExp(RegExp: any) {
+  return [RegExp('['), new RegExp('a', 'z')];
+}

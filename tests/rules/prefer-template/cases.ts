@@ -16,3 +16,17 @@ const a10 = 1 + 'x' + 2;
 const k1 = 'a' + 'b';
 const k2 = a + b;
 const k3 = `x${a}`;
+
+// A `;` before the template when the statement would continue the line before (10.15.0).
+declare function f(): void;
+f()
+'bar' + a;
+a
+'bar' + a;
+`template`
+'bar' + a;
+f();
+'bar' + a;
+if (a) {}
+'bar' + a;
+const k4 = 'x\\${y}' + a;

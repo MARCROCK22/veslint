@@ -45,3 +45,16 @@ class B extends Object {
 }
 (function () {})();
 const f = function () {};
+
+// The test of a conditional is not a callback; type parameters stay (10.15.0).
+use(function () {} ? a : a);
+use((function () {}) ? a : a);
+use(a ? function () {} : a);
+use(function <T>(x: T) { return x; });
+use(function named<T extends (n: number) => void>(x: T) { return x; });
+use(function /* c */ <T>(x: T) { return x; });
+use(async function <T>(x: T) { return x; });
+use(async function <T>
+(x: T) { return x; });
+use(async function
+<T>(x: T) { return x; });

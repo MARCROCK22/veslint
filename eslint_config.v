@@ -118,7 +118,9 @@ for (const file of files) {
   for (const name of ['sourceType', 'lib', 'jsxPragma', 'jsxFragmentName', 'isolatedDeclarations']) {
     if (given[name] !== undefined) parserOptions[name] = given[name];
   }
-  if (given.ecmaFeatures?.globalReturn !== undefined) parserOptions.ecmaFeatures = { globalReturn: given.ecmaFeatures.globalReturn };
+  for (const name of ['globalReturn', 'jsx']) {
+    if (given.ecmaFeatures?.[name] !== undefined) (parserOptions.ecmaFeatures ??= {})[name] = given.ecmaFeatures[name];
+  }
   const languageOptions = {
     ecmaVersion: config.languageOptions?.ecmaVersion,
     sourceType: config.languageOptions?.sourceType,

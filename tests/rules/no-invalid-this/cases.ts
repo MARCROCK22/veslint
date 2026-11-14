@@ -49,3 +49,30 @@ function documented() {
   return this;
 }
 export { plain, arrow, expression, outer, Constructor, withThis, Upper, obj, C, bound, documented };
+
+// TypeScript wrappers do not change the binding (10.15.0).
+type Foo = () => unknown;
+declare const holder: { foo: Foo };
+declare const pick: Foo | undefined;
+holder.foo = function () { return this; } as Foo;
+holder.foo = <Foo>function () { return this; };
+holder.foo = function () { return this; } satisfies Foo;
+holder.foo = function () { return this; }!;
+holder.foo = function <T>() { return this; }<string>;
+holder.foo = (pick || function () { return this; }) as Foo;
+holder.foo = (() => function () { return this; } as Foo)();
+holder.foo = (function () { return function () { return this; }; } as any)();
+holder.foo = ((() => function () { return this; }) satisfies () => Foo)();
+holder.foo = (function () { return function () { return this; }; })!();
+(holder.foo as Foo) = function () { return this; };
+holder.foo! = function () { return this; };
+(function () { return this; } as Foo).call(holder);
+[].forEach(function () { return this; } as Foo, holder);
+// Still the default binding: the `thisArg` is null or undefined behind a wrapper.
+(function () { return this; }).call(undefined!);
+Reflect.apply(function () { return this; }, <any>null, []);
+Array.from([], function () { return this; }, null satisfies any);
+[].forEach(function () { return this; }, null as any);
+// A name whose first code point (not UTF-16 unit) is upper case is a constructor.
+function 𐐀() { return this; }
+function 𐐨() { return this; }

@@ -21,3 +21,11 @@ list.findIndex(Number.isNaN);
 list.indexOf<number>(NaN);
 indexOf(NaN);
 declare function indexOf(value: number): number;
+
+// A `NaN` or a `Number` that is not the global is not NaN (10.15.0).
+function shadowNaN(NaN: number, arr: number[]) {
+  return arr.indexOf(NaN);
+}
+function shadowNumber(Number: { NaN: number }, arr: number[]) {
+  return arr.lastIndexOf(Number.NaN);
+}

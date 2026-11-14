@@ -66,8 +66,8 @@ eslint	no-dupe-keys/i5	typescript-eslint's parser rejects the octal literal `012
 veslint	grouped-accessor-pairs/r0/i56	tree-sitter reads `static get \n a(){}` as the field `get` and the method `a`
 veslint	no-extra-boolean-cast/v19	typescript-eslint's lib declares `Boolean`, which `globals: {Boolean: "off"}` does not remove
 eslint	no-extra-boolean-cast/v19	typescript-eslint's lib declares `Boolean`, which `globals: {Boolean: "off"}` does not remove
-veslint	no-implicit-coercion/i3	typescript-eslint's lib declares `Boolean`, which `globals: {Boolean: "off"}` does not remove: veslint fixes instead of suggesting
-eslint	no-implicit-coercion/i3	typescript-eslint's lib declares `Boolean`, which `globals: {Boolean: "off"}` does not remove: ESLint fixes instead of suggesting
+veslint	no-implicit-coercion/i10	typescript-eslint's lib declares `Boolean`, which `globals: {Boolean: "off"}` does not remove: veslint fixes instead of suggesting
+eslint	no-implicit-coercion/i10	typescript-eslint's lib declares `Boolean`, which `globals: {Boolean: "off"}` does not remove: ESLint fixes instead of suggesting
 veslint	prefer-exponentiation-operator/v14	in a module, ESLint with typescript-eslint's scope manager leaves `Math` unresolved after `/* globals Math:off */`; veslint resolves it to the lib's
 # TypeScript rejects octal literals and escapes, decimals with leading zeros and `\8`/`\9`
 # escapes: typescript-eslint's parser fails on these cases; tree-sitter parses them.
@@ -219,10 +219,18 @@ eslint	no-new-wrappers/v5	typescript-eslint's lib declares the global, which `of
 veslint	no-new-wrappers/v5	typescript-eslint's lib declares the global, which `off` or the ecmaVersion does not remove
 eslint	no-new-wrappers/v6	typescript-eslint's lib declares the global, which `off` or the ecmaVersion does not remove
 veslint	no-new-wrappers/v6	typescript-eslint's lib declares the global, which `off` or the ecmaVersion does not remove
+eslint	no-obj-calls/v35	typescript-eslint's lib declares the global, which `off` or the ecmaVersion does not remove
+veslint	no-obj-calls/v35	typescript-eslint's lib declares the global, which `off` or the ecmaVersion does not remove
 eslint	no-obj-calls/v36	typescript-eslint's lib declares the global, which `off` or the ecmaVersion does not remove
 veslint	no-obj-calls/v36	typescript-eslint's lib declares the global, which `off` or the ecmaVersion does not remove
+eslint	no-obj-calls/v37	typescript-eslint's lib declares the global, which `off` or the ecmaVersion does not remove
+veslint	no-obj-calls/v37	typescript-eslint's lib declares the global, which `off` or the ecmaVersion does not remove
 eslint	no-obj-calls/v38	typescript-eslint's lib declares the global, which `off` or the ecmaVersion does not remove
 veslint	no-obj-calls/v38	typescript-eslint's lib declares the global, which `off` or the ecmaVersion does not remove
+eslint	no-obj-calls/v39	typescript-eslint's lib declares the global, which `off` or the ecmaVersion does not remove
+veslint	no-obj-calls/v39	typescript-eslint's lib declares the global, which `off` or the ecmaVersion does not remove
+eslint	no-obj-calls/v40	typescript-eslint's lib declares the global, which `off` or the ecmaVersion does not remove
+veslint	no-obj-calls/v40	typescript-eslint's lib declares the global, which `off` or the ecmaVersion does not remove
 eslint	no-obj-calls/v41	typescript-eslint's lib declares the global, which `off` or the ecmaVersion does not remove
 veslint	no-obj-calls/v41	typescript-eslint's lib declares the global, which `off` or the ecmaVersion does not remove
 eslint	no-obj-calls/v42	typescript-eslint's lib declares the global, which `off` or the ecmaVersion does not remove
@@ -231,18 +239,30 @@ eslint	no-obj-calls/v43	typescript-eslint's lib declares the global, which `off`
 veslint	no-obj-calls/v43	typescript-eslint's lib declares the global, which `off` or the ecmaVersion does not remove
 eslint	no-obj-calls/v44	typescript-eslint's lib declares the global, which `off` or the ecmaVersion does not remove
 veslint	no-obj-calls/v44	typescript-eslint's lib declares the global, which `off` or the ecmaVersion does not remove
+eslint	no-obj-calls/v45	typescript-eslint's lib declares the global, which `off` or the ecmaVersion does not remove
+veslint	no-obj-calls/v45	typescript-eslint's lib declares the global, which `off` or the ecmaVersion does not remove
+eslint	no-obj-calls/v46	typescript-eslint's lib declares the global, which `off` or the ecmaVersion does not remove
+veslint	no-obj-calls/v46	typescript-eslint's lib declares the global, which `off` or the ecmaVersion does not remove
+eslint	no-obj-calls/v47	typescript-eslint's lib declares the global, which `off` or the ecmaVersion does not remove
+veslint	no-obj-calls/v47	typescript-eslint's lib declares the global, which `off` or the ecmaVersion does not remove
 eslint	no-object-constructor/v5	typescript-eslint's lib declares the global, which `off` or the ecmaVersion does not remove
 veslint	no-object-constructor/v5	typescript-eslint's lib declares the global, which `off` or the ecmaVersion does not remove
-# A global of the lib that `off` (in a comment or in `globals`) or the ecmaVersion leaves out: ESLint
-# does not resolve its references there, veslint resolves them to the lib's variable.
-veslint	no-obj-calls/v32	veslint resolves the global to TypeScript's lib, where ESLint leaves the reference unresolved
-veslint	no-obj-calls/v33	veslint resolves the global to TypeScript's lib, where ESLint leaves the reference unresolved
-veslint	no-obj-calls/v34	veslint resolves the global to TypeScript's lib, where ESLint leaves the reference unresolved
-veslint	no-obj-calls/v35	veslint resolves the global to TypeScript's lib, where ESLint leaves the reference unresolved
-veslint	no-obj-calls/v37	veslint resolves the global to TypeScript's lib, where ESLint leaves the reference unresolved
-veslint	no-obj-calls/v39	veslint resolves the global to TypeScript's lib, where ESLint leaves the reference unresolved
-veslint	no-obj-calls/v40	veslint resolves the global to TypeScript's lib, where ESLint leaves the reference unresolved
-veslint	radix/v18	veslint resolves the global to TypeScript's lib, where ESLint leaves the reference unresolved
+eslint	use-isnan/v115	typescript-eslint's lib declares the global, which `off` or the ecmaVersion does not remove
+veslint	use-isnan/v115	typescript-eslint's lib declares the global, which `off` or the ecmaVersion does not remove
+eslint	func-name-matching/i44	typescript-eslint's lib declares the global, which `off` or the ecmaVersion does not remove
+veslint	func-name-matching/i44	typescript-eslint's lib declares the global, which `off` or the ecmaVersion does not remove
+eslint	getter-return/v44	typescript-eslint's lib declares the global, which `off` or the ecmaVersion does not remove
+veslint	getter-return/v44	typescript-eslint's lib declares the global, which `off` or the ecmaVersion does not remove
+eslint	getter-return/v45	typescript-eslint's lib declares the global, which `off` or the ecmaVersion does not remove
+veslint	getter-return/v45	typescript-eslint's lib declares the global, which `off` or the ecmaVersion does not remove
+eslint	getter-return/v46	typescript-eslint's lib declares the global, which `off` or the ecmaVersion does not remove
+veslint	getter-return/v46	typescript-eslint's lib declares the global, which `off` or the ecmaVersion does not remove
+eslint	no-control-regex/v9	typescript-eslint's lib declares the global, which `off` or the ecmaVersion does not remove
+veslint	no-control-regex/v9	typescript-eslint's lib declares the global, which `off` or the ecmaVersion does not remove
+eslint	no-invalid-regexp/v10	typescript-eslint's lib declares the global, which `off` or the ecmaVersion does not remove
+veslint	no-invalid-regexp/v10	typescript-eslint's lib declares the global, which `off` or the ecmaVersion does not remove
+eslint	radix/v41	typescript-eslint's lib declares the global, which `off` or the ecmaVersion does not remove
+veslint	radix/v41	typescript-eslint's lib declares the global, which `off` or the ecmaVersion does not remove
 eslint	no-prototype-builtins/i9	typescript-eslint's lib declares `Object`, which `globals: {Object: "off"}` does not remove
 veslint	no-prototype-builtins/i9	typescript-eslint's lib declares `Object`, which `globals: {Object: "off"}` does not remove
 eslint	prefer-object-has-own/v58	typescript-eslint's lib declares `Object`, which `/* global Object: off */` does not remove
@@ -258,10 +278,12 @@ eslint	dot-notation/i29	typescript-eslint's parser: Decimals with leading zeros 
 # parses it.
 eslint	no-var/r0/i30	typescript-eslint's parser: Initializers are not permitted in ambient contexts.
 # These cases turn on a rule the test file defines (custom/use-x, rule-to-test/strict for a disable
-# comment) or a core rule veslint does not port (no-undef-init).
+# comment) or a core rule veslint does not port (no-undef-init, one-var).
 eslint	prefer-const/i32	turns on custom/use-x, a rule of the test file
 eslint	prefer-const/i33	turns on custom/use-x, a rule of the test file
 veslint	prefer-const/i49	turns on no-undef-init, which veslint does not port
+veslint	no-var/r0/i66	turns on one-var, which veslint does not port
+veslint	no-var/r0/i67	turns on one-var, which veslint does not port
 eslint	strict/v13	disables rule-to-test/strict, the name RuleTester gives the rule
 veslint	strict/v13	disables rule-to-test/strict, the name RuleTester gives the rule
 # typescript-eslint's scope manager does not read ecmaFeatures.impliedStrict, nor wraps a CommonJS
@@ -366,12 +388,12 @@ eslint	no-invalid-this/r0/i132	typescript-eslint's scope manager ignores ecmaFea
 veslint	no-invalid-this/r0/i132	typescript-eslint's scope manager ignores ecmaFeatures.impliedStrict
 eslint	no-invalid-this/r0/i135	typescript-eslint's scope manager ignores ecmaFeatures.impliedStrict
 veslint	no-invalid-this/r0/i135	typescript-eslint's scope manager ignores ecmaFeatures.impliedStrict
-eslint	no-invalid-this/r0/v319	typescript-eslint's scope manager reads 'use strict' in ECMAScript 3
-veslint	no-invalid-this/r0/v319	typescript-eslint's scope manager reads 'use strict' in ECMAScript 3
-eslint	no-invalid-this/r0/v320	typescript-eslint's scope manager reads 'use strict' in ECMAScript 3
-veslint	no-invalid-this/r0/v320	typescript-eslint's scope manager reads 'use strict' in ECMAScript 3
-eslint	no-invalid-this/r0/v321	typescript-eslint's scope manager ignores ecmaFeatures.impliedStrict
-veslint	no-invalid-this/r0/v321	typescript-eslint's scope manager ignores ecmaFeatures.impliedStrict
+eslint	no-invalid-this/r0/v351	typescript-eslint's scope manager reads 'use strict' in ECMAScript 3
+veslint	no-invalid-this/r0/v351	typescript-eslint's scope manager reads 'use strict' in ECMAScript 3
+eslint	no-invalid-this/r0/v352	typescript-eslint's scope manager reads 'use strict' in ECMAScript 3
+veslint	no-invalid-this/r0/v352	typescript-eslint's scope manager reads 'use strict' in ECMAScript 3
+eslint	no-invalid-this/r0/v353	typescript-eslint's scope manager ignores ecmaFeatures.impliedStrict
+veslint	no-invalid-this/r0/v353	typescript-eslint's scope manager ignores ecmaFeatures.impliedStrict
 # C11: cases that disable the rule by the name RuleTester gives it, or turn on rules their test file
 # defines.
 eslint	no-fallthrough/v38	disables rule-to-test/no-fallthrough, the name RuleTester gives the rule

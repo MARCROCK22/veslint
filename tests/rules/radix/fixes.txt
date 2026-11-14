@@ -6,3 +6,11 @@ tests/rules/radix/cases.ts:6:11	radix	invalidRadix	Invalid radix parameter, must
 tests/rules/radix/cases.ts:7:11	radix	missingRadix	Missing radix parameter.	suggestion	addRadixParameter10	Add radix parameter `10` for parsing decimal numbers.	187	187	, 10	end	7	32
 tests/rules/radix/cases.ts:8:11	radix	missingRadix	Missing radix parameter.	suggestion	addRadixParameter10	Add radix parameter `10` for parsing decimal numbers.	214	214	 10,	end	8	26
 tests/rules/radix/cases.ts:10:11	radix	invalidRadix	Invalid radix parameter, must be an integer between 2 and 36.	end	10	35
+tests/rules/radix/cases.ts:24:12	radix	invalidRadix	Invalid radix parameter, must be an integer between 2 and 36.	end	24	30
+tests/rules/radix/cases.ts:25:12	radix	invalidRadix	Invalid radix parameter, must be an integer between 2 and 36.	end	25	31
+tests/rules/radix/cases.ts:26:12	radix	invalidRadix	Invalid radix parameter, must be an integer between 2 and 36.	end	26	30
+tests/rules/radix/cases.ts:27:12	radix	invalidRadix	Invalid radix parameter, must be an integer between 2 and 36.	end	27	33
+tests/rules/radix/cases.ts:28:12	radix	missingRadix	Missing radix parameter.	suggestion	addRadixParameter10	Add radix parameter `10` for parsing decimal numbers.	794	794	, 10	end	28	36
+tests/rules/radix/cases.ts:29:12	radix	invalidRadix	Invalid radix parameter, must be an integer between 2 and 36.	end	29	39
+tests/rules/radix/cases.ts:30:12	radix	missingRadix	Missing radix parameter.	suggestion	addRadixParameter10	Add radix parameter `10` for parsing decimal numbers.	873	873	, 10	end	30	38
+tests/rules/radix/cases.ts:31:12	radix	invalidRadix	Invalid radix parameter, must be an integer between 2 and 36.	end	31	36

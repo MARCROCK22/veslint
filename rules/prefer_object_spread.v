@@ -3,7 +3,7 @@ module rules
 import time
 import treesitter { named_children, node_field, node_kind, node_parent, node_start, position_of }
 
-// Port of the `prefer-object-spread` rule of ESLint 10.6.0, with its fix (it has no options).
+// Port of the `prefer-object-spread` rule of ESLint 10.15.0, with its fix (it has no options).
 
 const pos_messages = {
 	'useSpreadMessage':  'Use an object spread instead of `Object.assign` eg: `{ ...foo }`.'
@@ -34,6 +34,11 @@ fn (mut c Checker) lint_prefer_object_spread(root C.TSNode, abs_path string, mut
 			&& named_children(unwrap_parens(it)).any(es_accessor_kind(it) in ['get', 'set'])) {
 			continue
 		}
+		// hasArgumentsWithProtoProperty: a `__proto__` property in an object of the sources.
+		if args.len > 1 && args[1..].any(node_kind(unwrap_parens(it)) == 'object'
+			&& c.pos_has_proto_property(unwrap_parens(it))) {
+			continue
+		}
 		has_fix, fix := c.pos_fix(root, call, args)
 		findings << Finding{
 			stmt:       position_of(call)
@@ -44,6 +49,22 @@ fn (mut c Checker) lint_prefer_object_spread(root C.TSNode, abs_path string, mut
 	}
 	stats.eval_ms += ms(sw.elapsed())
 	return findings
+}
+
+// pos_has_proto_property ports hasProtoProperty: a Property (not a spread) of the object whose
+// static name is `__proto__`.
+fn (c &Checker) pos_has_proto_property(object C.TSNode) bool {
+	for property in named_children(object) {
+		if node_kind(property) in ['spread_element', 'comment'] {
+			continue
+		}
+		if name := c.es_static_key_name(property) {
+			if name == '__proto__' {
+				return true
+			}
+		}
+	}
+	return false
 }
 
 fn pos_is_space(b u8) bool {
@@ -87,7 +108,15 @@ fn (mut c Checker) pos_fix(root C.TSNode, call C.TSNode, args []C.TSNode) (bool,
 	mut fixes := []Fix{}
 	fixes << fix_remove_range(node_start(call), left_paren.start)
 	parens := c.pos_needs_parens(call)
-	fixes << fix_replace_range(left_paren.start, left_paren.end, if parens { '({' } else { '{' })
+	opening := if !parens {
+		'{'
+	} else if is_start_of_expression_statement(call)
+		&& c.eslint_needs_preceding_semicolon(call, node_start(call)) {
+		';({'
+	} else {
+		'({'
+	}
+	fixes << fix_replace_range(left_paren.start, left_paren.end, opening)
 	fixes << fix_replace_range(right_paren.start, right_paren.end, if parens { '})' } else { '}' })
 	for arg_raw in args {
 		arg := unwrap_parens(arg_raw)

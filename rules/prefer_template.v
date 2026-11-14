@@ -3,7 +3,7 @@ module rules
 import time
 import treesitter { node_field, node_kind, node_start, position_of }
 
-// Port of the `prefer-template` rule of ESLint 10.6.0, with its fix (it has no options).
+// Port of the `prefer-template` rule of ESLint 10.15.0, with its fix (it has no options).
 
 const ptpl_messages = {
 	'unexpectedStringConcatenation': 'Unexpected string concatenation.'
@@ -38,7 +38,13 @@ fn (mut c Checker) lint_prefer_template(root C.TSNode, abs_path string, mut stat
 		mut fix := Fix{}
 		if !c.ptpl_has_octal_escape(top) {
 			has_fix = true
-			fix = fix_replace_range(node_start(top), c.es_end(top), c.ptpl_template(top, none,
+			prefix := if is_start_of_expression_statement(top)
+				&& c.eslint_needs_preceding_semicolon(top, node_start(top)) {
+				';'
+			} else {
+				''
+			}
+			fix = fix_replace_range(node_start(top), c.es_end(top), prefix + c.ptpl_template(top, none,
 				none))
 		}
 		findings << Finding{

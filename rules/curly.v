@@ -4,7 +4,7 @@ import json2
 import time
 import treesitter { node_end, node_field, node_kind, node_parent, node_start, position_of }
 
-// Port of the `curly` rule of ESLint 10.6.0, with its options and its fixes.
+// Port of the `curly` rule of ESLint 10.15.0, with its options and its fixes.
 
 const cu_messages = {
 	'missingCurlyAfter':             "Expected { after '{{name}}'."
@@ -249,13 +249,12 @@ fn (mut c Checker) cu_unexpected_fix(root C.TSNode, check CuCheck) (bool, Fix) {
 	body := check.body
 	open := tokens.after(node_start(body), false) or { return false, Fix{} }
 	close := tokens.before(node_end(body), false) or { return false, Fix{} }
+	// `do` and `else` (or any token before the body) may need a space after them.
 	mut needs_space := false
-	if node_kind(check.node) == 'do_statement' {
-		before := tokens.before(node_start(body), false) or { return false, Fix{} }
-		if before.end == node_start(body) {
-			first := tokens.after(open.end, false) or { return false, Fix{} }
-			needs_space = !cu_can_follow_keyword(first, c.src[first.start..first.end])
-		}
+	before := tokens.before(node_start(body), false) or { return false, Fix{} }
+	if before.end == node_start(body) {
+		first := tokens.after(open.end, false) or { return false, Fix{} }
+		needs_space = !c.es_can_tokens_be_adjacent(before, first)
 	}
 	if c.cu_needs_semicolon(root, close) {
 		return false, Fix{}
@@ -266,16 +265,6 @@ fn (mut c Checker) cu_unexpected_fix(root C.TSNode, check CuCheck) (bool, Fix) {
 	} else {
 		''
 	}) + text)
-}
-
-// cu_can_follow_keyword ports canTokensBeAdjacent("do", token): a punctuator, a string, a
-// template, a number starting with `.` or a private name can follow `do` without a space.
-fn cu_can_follow_keyword(token SourceToken, text string) bool {
-	return match token.kind {
-		.punctuator, .string_, .template, .private_identifier { true }
-		.numeric { text.starts_with('.') }
-		else { false }
-	}
 }
 
 // cu_needs_semicolon ports needsSemicolon: what follows the closing brace would continue the last

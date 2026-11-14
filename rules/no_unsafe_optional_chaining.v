@@ -2,9 +2,9 @@ module rules
 
 import json2
 import time
-import treesitter { node_field, node_kind, node_parent, position_of }
+import treesitter { has_child_kind, node_field, node_kind, node_parent, position_of }
 
-// Port of the `no-unsafe-optional-chaining` rule of ESLint 10.6.0, with its option.
+// Port of the `no-unsafe-optional-chaining` rule of ESLint 10.15.0, with its option.
 
 const nuoc_messages = {
 	'unsafeOptionalChain': "Unsafe usage of optional chaining. If it short-circuits with 'undefined' the evaluation will throw TypeError."
@@ -28,7 +28,7 @@ fn (mut c Checker) lint_no_unsafe_optional_chaining(root C.TSNode, abs_path stri
 		'required_parameter', 'optional_parameter', 'extends_clause', 'call_expression',
 		'new_expression', 'variable_declarator', 'member_expression', 'subscript_expression',
 		'for_in_statement', 'spread_element', 'binary_expression', 'with_statement', 'unary_expression',
-		'augmented_assignment_expression']
+		'augmented_assignment_expression', 'yield_expression']
 	for node in c.nodes_of_kinds(root, kinds, []) {
 		stats.checked++
 		match node_kind(node) {
@@ -80,6 +80,13 @@ fn (mut c Checker) lint_no_unsafe_optional_chaining(root C.TSNode, abs_path stri
 				operator := node_field(node, 'operator') or { continue }
 				if node_kind(operator) == 'of' {
 					nuoc_check(node_field(node, 'right') or { continue }, 'unsafeOptionalChain', mut
+						findings)
+				}
+			}
+			'yield_expression' {
+				// `yield*`.
+				if has_child_kind(node, '*') {
+					nuoc_check(first_named(node) or { continue }, 'unsafeOptionalChain', mut
 						findings)
 				}
 			}

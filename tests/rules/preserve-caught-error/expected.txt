@@ -4,4 +4,9 @@ tests/rules/preserve-caught-error/cases.ts:17:3	preserve-caught-error	missingCau
 tests/rules/preserve-caught-error/cases.ts:21:3	preserve-caught-error	partiallyLostError	Re-throws cannot preserve the caught error as a part of it is being lost due to destructuring.
 tests/rules/preserve-caught-error/cases.ts:27:3	preserve-caught-error	missingCause	There is no `cause` attached to the symptom error being thrown.
 tests/rules/preserve-caught-error/cases.ts:32:3	preserve-caught-error	missingCause	There is no `cause` attached to the symptom error being thrown.
+tests/rules/preserve-caught-error/error-classes/cases.ts:19:3	preserve-caught-error	missingCause	There is no `cause` attached to the symptom error being thrown.
+tests/rules/preserve-caught-error/error-classes/cases.ts:24:3	preserve-caught-error	missingCause	There is no `cause` attached to the symptom error being thrown.
+tests/rules/preserve-caught-error/error-classes/cases.ts:29:3	preserve-caught-error	missingCause	There is no `cause` attached to the symptom error being thrown.
+tests/rules/preserve-caught-error/error-classes/cases.ts:34:3	preserve-caught-error	missingCause	There is no `cause` attached to the symptom error being thrown.
+tests/rules/preserve-caught-error/error-classes/cases.ts:39:3	preserve-caught-error	missingCause	There is no `cause` attached to the symptom error being thrown.
 tests/rules/preserve-caught-error/require-param/cases.ts:7:3	preserve-caught-error	missingCatchErrorParam	The caught error is not accessible because the catch clause lacks the error parameter. Start referencing the caught error using the catch parameter.

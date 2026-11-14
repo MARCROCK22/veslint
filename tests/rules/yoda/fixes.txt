@@ -10,5 +10,22 @@ tests/rules/yoda/cases.ts:10:5	yoda	expected	Expected literal to be on the right
 tests/rules/yoda/cases.ts:11:5	yoda	expected	Expected literal to be on the right side of <.	fix	176	181	a > 1	end	11	10
 tests/rules/yoda/cases.ts:12:11	yoda	expected	Expected literal to be on the right side of <.	fix	203	206	a>1	end	12	14
 tests/rules/yoda/cases.ts:13:5	yoda	expected	Expected literal to be on the right side of ===.	fix	212	223	(a) === (1)	end	13	16
+tests/rules/yoda/cases.ts:27:1	yoda	expected	Expected literal to be on the right side of ===.	fix	547	572	;[a, b2].indexOf(x2) === 0	end	27	26
+tests/rules/yoda/cases.ts:29:1	yoda	expected	Expected literal to be on the right side of ===.	fix	586	601	;(a || b2) === 0	end	29	16
+tests/rules/yoda/cases.ts:31:1	yoda	expected	Expected literal to be on the right side of ===.	fix	615	624	;+x2 === 0	end	31	10
+tests/rules/yoda/cases.ts:33:1	yoda	expected	Expected literal to be on the right side of ===.	fix	638	657	;/a/.lastIndex === 0	end	33	20
+tests/rules/yoda/cases.ts:35:1	yoda	expected	Expected literal to be on the right side of ===.	fix	671	683	;`${a}` === 0	end	35	13
+tests/rules/yoda/cases.ts:38:1	yoda	expected	Expected literal to be on the right side of <.	fix	715	723	;({}.x > 1)	end	38	9
+tests/rules/yoda/cases.ts:39:1	yoda	expected	Expected literal to be on the right side of >.	fix	733	755	(function* () {} < null)	end	39	23
+tests/rules/yoda/cases.ts:40:1	yoda	expected	Expected literal to be on the right side of ===.	fix	757	790	(async function () {}.length === 0)	end	40	34
+tests/rules/yoda/cases.ts:41:1	yoda	expected	Expected literal to be on the right side of ===.	fix	792	811	(class {}.name === 0)	end	41	20
+tests/rules/yoda/cases.ts:42:18	yoda	expected	Expected literal to be on the right side of <.	fix	830	838	({}.x > 1)	end	42	26
+tests/rules/yoda/cases.ts:44:1	yoda	expected	Expected literal to be on the right side of <.	fix	844	852	;({}.x > 1)	end	44	9
+tests/rules/yoda/cases.ts:46:1	yoda	expected	Expected literal to be on the right side of ===.	fix	867	888	[a].indexOf(x2) === 0	end	46	22
+tests/rules/yoda/cases.ts:48:1	yoda	expected	Expected literal to be on the right side of ===.	fix	903	913	x2.y === 0	end	48	11
+tests/rules/yoda/cases.ts:49:5	yoda	expected	Expected literal to be on the right side of <.	fix	926	934	{}.x > 1	end	49	13
+tests/rules/yoda/cases.ts:50:2	yoda	expected	Expected literal to be on the right side of <.	fix	940	948	{}.x > 1	end	50	10
+tests/rules/yoda/cases.ts:51:19	yoda	expected	Expected literal to be on the right side of <.	fix	977	985	{}.x > 1	end	51	27
+tests/rules/yoda/cases.ts:52:16	yoda	expected	Expected literal to be on the right side of <.	fix	1002	1022	(function () {}.x > 1)	end	52	36
 tests/rules/yoda/except-range/cases.ts:9:5	yoda	expected	Expected literal to be on the right side of <=.	fix	159	165	a >= 0	end	9	11
 tests/rules/yoda/except-range/cases.ts:10:5	yoda	expected	Expected literal to be on the right side of <.	fix	174	180	a > 10	end	10	11

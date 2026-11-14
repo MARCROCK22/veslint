@@ -4,3 +4,5 @@ tests/rules/no-obj-calls/cases.ts:6:11	no-obj-calls	unexpectedRefCall	'undefined
 tests/rules/no-obj-calls/cases.ts:8:11	no-obj-calls	unexpectedRefCall	'm' is reference to 'Math', which is not a function.
 tests/rules/no-obj-calls/cases.ts:9:11	no-obj-calls	unexpectedRefCall	'undefined' is reference to 'Math', which is not a function.
 tests/rules/no-obj-calls/cases.ts:10:11	no-obj-calls	unexpectedRefCall	'undefined' is reference to 'Intl', which is not a function.
+tests/rules/no-obj-calls/cases.ts:20:19	no-obj-calls	unexpectedRefCall	'undefined' is reference to 'globalThis', which is not a function.
+tests/rules/no-obj-calls/cases.ts:21:19	no-obj-calls	unexpectedRefCall	'undefined' is reference to 'globalThis', which is not a function.

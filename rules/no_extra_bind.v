@@ -1,12 +1,34 @@
 module rules
 
 import time
-import treesitter { node_field, node_kind, node_start, position_of }
+import treesitter { node_field, node_kind, node_parent, node_start, position_of }
 
-// Port of the `no-extra-bind` rule of ESLint 10.6.0, with its fix (it has no options).
+// Port of the `no-extra-bind` rule of ESLint 10.15.0, with its fix (it has no options).
 
 const neb_messages = {
 	'unexpected': 'The function binding is unnecessary.'
+}
+
+// The nodes whose `this` is their own: the functions that are not arrows and the static blocks.
+const neb_this_scope_kinds = ['function_declaration', 'function_expression', 'generator_function',
+	'generator_function_declaration', 'method_definition', 'class_static_block']
+
+// neb_in_field_initializer: between the node and `top`, the node is in the value of a class field
+// (a PropertyDefinition, not an AccessorProperty).
+fn neb_in_field_initializer(n C.TSNode, top C.TSNode) bool {
+	mut child := n
+	for node_key(child) != node_key(top) {
+		parent := node_parent(child) or { return false }
+		if node_kind(parent) == 'public_field_definition' && !es_is_accessor_field(parent) {
+			if value := node_field(parent, 'value') {
+				if node_key(value) == node_key(child) {
+					return true
+				}
+			}
+		}
+		child = parent
+	}
+	return false
 }
 
 fn (mut c Checker) lint_no_extra_bind(root C.TSNode, abs_path string, mut stats Stats) ![]Finding {
@@ -19,7 +41,16 @@ fn (mut c Checker) lint_no_extra_bind(root C.TSNode, abs_path string, mut stats 
 		// A function that uses no `this` of its own (an arrow never has one).
 		if node_kind(node) != 'arrow_function' {
 			body := node_field(node, 'body') or { continue }
-			if c.nodes_of_kinds(body, ['this'], os_function_kinds).len > 0 {
+			// Class field initializers and static blocks have their own `this` (a field's key
+			// is in the function's).
+			mut uses_this := false
+			for this_node in c.nodes_of_kinds(body, ['this'], neb_this_scope_kinds) {
+				if !neb_in_field_initializer(this_node, body) {
+					uses_this = true
+					break
+				}
+			}
+			if uses_this {
 				continue
 			}
 		}

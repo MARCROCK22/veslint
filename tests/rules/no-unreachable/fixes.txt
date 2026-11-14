@@ -4,3 +4,4 @@ tests/rules/no-unreachable/cases.ts:16:3	no-unreachable	unreachableCode	Unreacha
 tests/rules/no-unreachable/cases.ts:21:5	no-unreachable	unreachableCode	Unreachable code.	end	21	23
 tests/rules/no-unreachable/cases.ts:30:3	no-unreachable	unreachableCode	Unreachable code.	end	30	16
 tests/rules/no-unreachable/cases.ts:34:3	no-unreachable	unreachableCode	Unreachable code.	end	34	13
+tests/rules/no-unreachable/cases.ts:63:1	no-unreachable	unreachableCode	Unreachable code.	end	64	13

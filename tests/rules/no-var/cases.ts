@@ -51,3 +51,30 @@ declare global {
 let ok = 1;
 const ok2 = ok;
 export { f, g, ok2, N, w };
+
+// Not fixed: a catch parameter of the name, or a hoisted function called before the declaration
+// (10.15.0). The fix takes the whole declaration.
+function catches() {
+  try {} catch (e) { var e = 1; }
+  try {} catch (e2) { { var e2 = 1; } }
+  try {} catch (e3) { for (var e3 of []) {} }
+  try {} catch ({ e4 }) { var e5 = e4; }
+}
+function hoisted() {
+  early();
+  var h = 1;
+  var h2 = 2;
+  function early() { return h; }
+}
+function hoistedLater() {
+  var h3 = 1;
+  later();
+  function later() { return h3; }
+}
+function multi() {
+  var m1 = 1, m2 = m1;
+  for (var k in {}) {}
+  for (var j = 0; j < 1; j++) {}
+  return [m2, k, j];
+}
+declare var amb: number;

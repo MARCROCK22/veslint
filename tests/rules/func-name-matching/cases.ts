@@ -20,3 +20,9 @@ module.exports = function e() {};
 module['exports'] = function e2() {};
 const o2 = { 'not-an-identifier': function f() {}, 'class': function g() {} };
 obj.default = function h() {};
+
+// Class fields and string keys (10.15.0).
+class K {
+  'foo' = function bar() {};
+  #priv = function bar() {};
+}
