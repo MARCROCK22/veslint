@@ -59,3 +59,4 @@ tests/rules/unicorn/prefer-spread/cases.ts:164:2	unicorn/prefer-spread	for-of	Pr
 tests/rules/unicorn/prefer-spread/cases.ts:169:2	unicorn/prefer-spread	for-of	Prefer the spread operator over this `for…of` loop.
 tests/rules/unicorn/prefer-spread/cases.ts:184:2	unicorn/prefer-spread	for-of	Prefer the spread operator over this `for…of` loop.
 tests/rules/unicorn/prefer-spread/cases.ts:192:2	unicorn/prefer-spread	for-of	Prefer the spread operator over this `for…of` loop.
+tests/rules/unicorn/prefer-spread/cases.ts:240:1	unicorn/prefer-spread	array-from	Prefer the spread operator over `Array.from(…)`.

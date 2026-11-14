@@ -233,3 +233,8 @@ async function forOfNot(source: number[], other: number[][]) {
 		f.push(value);
 	}
 }
+
+// needsSemicolon of 79: the statement before ends without a semicolon.
+let semicolonCounter = 0
+semicolonCounter++
+Array.from(new Set([semicolonCounter])).forEach(item => item)

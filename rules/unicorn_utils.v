@@ -181,67 +181,9 @@ fn un_node_by_range_index(t &estree.EsTree, offset int) ?int {
 }
 
 // un_needs_semicolon ports needsSemicolon: whether code that starts with `code` and goes right
-// after the token `before` needs a `;` first. An empty `code` never does; none is any code.
+// after the token `before` needs a `;` first; the needsSemicolon of 79.0.0 (unb_needs_semicolon).
 fn (c &Checker) un_needs_semicolon(t &estree.EsTree, tokens &SourceTokens, before ?SourceToken, code ?string) bool {
-	if text := code {
-		if text == '' || text[0] !in [`[`, `(`, `/`, `\``, `+`, `-`, `*`, `,`, `.`] {
-			return false
-		}
-	}
-	token := before or { return false }
-	value := c.token_text(token)
-	last_block := un_node_by_range_index(t, token.start) or { t.root }
-	if token.kind == .punctuator {
-		if value == ';' {
-			return false
-		}
-		if value == ']' {
-			return true
-		}
-		if value == ')' {
-			body_key := match t.typ(last_block) {
-				.if_statement {
-					?estree.Key(estree.Key.consequent)
-				}
-				.for_statement, .for_in_statement, .for_of_statement, .while_statement,
-				.do_while_statement, .with_statement {
-					?estree.Key(estree.Key.body)
-				}
-				else {
-					?estree.Key(none)
-				}
-			}
-			if key := body_key {
-				if body := t.node(last_block, key) {
-					if previous := tokens.before(t.nodes[body].start, false) {
-						if previous.start == token.start {
-							return false
-						}
-					}
-				}
-			}
-			return true
-		}
-	}
-	if token.kind in [.string_, .null_, .boolean, .numeric, .regular_expression] {
-		return true
-	}
-	if token.kind == .template {
-		return value.ends_with('`')
-	}
-	if t.typ(last_block) == .object_expression {
-		return true
-	}
-	if token.kind == .identifier {
-		if value == 'of' && t.typ(last_block) == .for_of_statement {
-			return false
-		}
-		if value == 'await' && t.typ(last_block) == .await_expression {
-			return false
-		}
-		return true
-	}
-	return false
+	return c.unb_needs_semicolon(t, tokens, before, code)
 }
 
 // un_same_line ports isOnSameLine: both offsets start on the same line.
