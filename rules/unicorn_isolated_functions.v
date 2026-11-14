@@ -35,9 +35,17 @@ fn uisf_options(options []json2.Any) !UisfOptions {
 	o := option_object(unicorn_isolated_functions, options, ['overrideGlobals', 'functions', 'selectors',
 		'comments'])!
 	mut override_globals := map[string]string{}
-	if value := o.values['overrideGlobals'] {
-		if value !is map[string]json2.Any {
-			return error('option `overrideGlobals` of `${unicorn_isolated_functions}` must be an object')
+	if raw := o.values['overrideGlobals'] {
+		// The schema checks the values of an object only: another value is accepted, and
+		// `Object.hasOwn` finds in it its own properties, of which only the `length` of a string or
+		// an array can be the name of a variable (a number: neither "off" nor writable). `null`
+		// makes unicorn throw on the first reference it checks.
+		mut value := raw
+		if raw !is map[string]json2.Any {
+			if raw is string || raw is []json2.Any {
+				override_globals['length'] = 'number'
+			}
+			value = json2.Any(map[string]json2.Any{})
 		}
 		for name, global in value.as_map() {
 			if global is bool {

@@ -27,7 +27,9 @@ fn unkp_options(options []json2.Any) !UnkpOptions {
 	if 'disallowedPrefixes' in o.values {
 		prefixes = o.string_list('disallowedPrefixes')!
 		for i, prefix in prefixes {
-			if prefix in prefixes[..i] {
+			// ajv's uniqueItems of strings keeps the places in a plain object, where `__proto__`
+			// is not a property: a repeated `__proto__` passes (as in rules/json_schema.v).
+			if prefix != '__proto__' && prefix in prefixes[..i] {
 				return error('option `disallowedPrefixes` of `${unicorn_no_keyword_prefix}` must have unique items')
 			}
 		}
