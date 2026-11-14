@@ -1,7 +1,6 @@
 module rules
 
 import json2
-import jsregexp
 import time
 import tsgo { TypeResponse }
 import treesitter { Ident, children, has_child_kind, named_children, node_field, node_kind, node_parent, nodes_of_kind, nodes_of_kinds, node_start, position_of }
@@ -215,12 +214,8 @@ fn (c &Checker) cr_is_es5_constructor(function C.TSNode) bool {
 		return false
 	}
 	name := node_field(function, 'name') or { return false }
-	// `name[0] !== name[0].toLocaleLowerCase()`, in a locale without mappings of its own.
-	units := utf16_units(c.identifier_name(name))
-	if units.len == 0 {
-		return false
-	}
-	return jsregexp.js_to_lower(units[..1]) != units[..1]
+	// startsWithUpperCase of ESLint 10.15: `const [firstChar] = s` is the first code point.
+	return nith_starts_with_upper(c.identifier_name(name))
 }
 
 // cr_is_class_constructor ports isClassConstructor.
