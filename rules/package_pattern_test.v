@@ -5,7 +5,8 @@ import jsregexp
 import os
 
 // The cases come from tools/gen_package_pattern_cases.mjs: for the `package` of a type specifier,
-// the pattern typescript-eslint makes of it, and what `new RegExp(pattern).test(text)` gives in V8
+// the pattern typescript-eslint 8.62.0 made of it (8.72 compares the names by path components
+// instead, path_is_in_package; the cases stay as a test of the Annex B regular expressions), and what `new RegExp(pattern).test(text)` gives in V8
 // for each text (`1` or `0`, or `?` where V8 answers two ways), or that V8 rejects the pattern.
 fn test_package_patterns_match_like_v8() {
 	raw := os.read_file(os.join_path(@VMODROOT, 'tests', 'package_pattern_cases.json')) or {
@@ -21,7 +22,7 @@ fn test_package_patterns_match_like_v8() {
 		entry := item.as_map()
 		package_name := entry['package'] or { panic('no package') }.str()
 		pattern := entry['pattern'] or { panic('no pattern') }.str()
-		assert package_pattern(package_name) == pattern
+		assert v8_package_pattern(package_name) == pattern
 		if 'error' in entry {
 			rejected++
 			if _ := jsregexp.regexp_compile_annex_b(utf16_units(pattern)) {
@@ -63,13 +64,19 @@ fn test_package_patterns_match_like_v8() {
 	assert unsupported == ['(?i:(a)\\1)|(?i:(a)\\1)']
 }
 
+// v8_package_pattern is the pattern typescript-eslint 8.62.0 made of a package name: the name, or
+// the one of its @types package.
+fn v8_package_pattern(pkg string) string {
+	return '${pkg}|${types_package_name(pkg)}'
+}
+
 // A name of a package is a pattern without anchors, as typescript-eslint has it; with a scope, the
 // name of its @types package counts too.
-fn test_package_pattern_of_a_name() {
-	assert package_pattern('fake-pkg') == 'fake-pkg|fake-pkg'
-	assert package_pattern('@scope/name') == '@scope/name|scope__name'
-	assert package_pattern('@/name') == '@/name|@/name'
-	prog := jsregexp.regexp_compile_annex_b(utf16_units(package_pattern('@scope/name'))) or { panic(err) }
+fn test_v8_package_pattern_of_a_name() {
+	assert v8_package_pattern('fake-pkg') == 'fake-pkg|fake-pkg'
+	assert v8_package_pattern('@scope/name') == '@scope/name|scope__name'
+	assert v8_package_pattern('@/name') == '@/name|@/name'
+	prog := jsregexp.regexp_compile_annex_b(utf16_units(v8_package_pattern('@scope/name'))) or { panic(err) }
 	assert jsregexp.regexp_test_annex_b(prog, utf16_units('@types/scope__name/index.d.ts')) or { panic(err) }
 	assert jsregexp.regexp_test_annex_b(prog, utf16_units('@scope/name/lib/a.d.ts')) or { panic(err) }
 	assert !(jsregexp.regexp_test_annex_b(prog, utf16_units('@scope/other/lib/a.d.ts')) or { panic(err) })

@@ -289,12 +289,13 @@ fn parse_args(args []string) !Options {
 		}
 		opts.loaded = LoadedConfig{
 			configs:     [ConfigEntry{
-				setup: RuleSetup{
+				setup:                RuleSetup{
 					rules:        opts.rules
 					base_options: {
 						rule: rules.decoded_default_options(rule)
 					}
 				}
+				service_program_root: single_run_program_root(map[string]json2.Any{}, '')
 			}]
 			file_config: file_config
 		}
@@ -621,7 +622,18 @@ fn run_rules(opts Options, timeout time.Duration) !int {
 			warnings++
 			continue
 		}
-		lint_config := lint_configs[opts.loaded.file_config[f.abs_path] or { 0 }]
+		config_index := opts.loaded.file_config[f.abs_path] or { 0 }
+		mut lint_config := lint_configs[config_index]
+		// In a single run, the project service leaves the file to a Program made for its tsconfig,
+		// whose current directory is the one ESLint runs in, when the tsconfig is the one veslint
+		// lints the file with; only for the text on disk (the first pass of --fix).
+		service_directory := lint_config.program_directory
+		if config_index < opts.loaded.configs.len && is_single_run(opts.fix) {
+			root := opts.loaded.configs[config_index].service_program_root
+			if root != '' && f.tsconfig != '' && single_run_tsconfig(f.abs_path, root) == f.tsconfig {
+				lint_config.program_directory = os.getwd()
+			}
+		}
 		mut src := f.src
 		mut has_bom := f.has_bom
 		mut result := rules.FileLint{}
@@ -633,6 +645,9 @@ fn run_rules(opts Options, timeout time.Duration) !int {
 		mut second_previous := ''
 		for {
 			pass++
+			if pass > 1 {
+				lint_config.program_directory = service_directory
+			}
 			project := projects[f.tsconfig]
 			if project !in checkers {
 				mut new_checker := rules.new_checker(client, snap.snapshot, project, project_options(snap,

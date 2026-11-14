@@ -876,6 +876,7 @@ pub:
 	no_inline_config     bool
 	// languageOptions: what decides the globals and the scopes of a file (see LanguageOptions).
 	language LanguageOptions
+pub mut:
 	// program_directory is the current directory of ESLint's program, which `from: "file"` type
 	// specifiers are relative to, when it is not the directory of the tsconfig (see specifiers.v).
 	program_directory string
@@ -2432,7 +2433,7 @@ mut:
 	targets_unsigned    map[u64]bool                       // generic types an instance of which has no signatures, by kind of signature
 	file_metadata_cache map[string]tsgo.SourceFileMetadata // by tsgo path (file_metadata)
 	package_name_cache  map[string]string                  // package.json name of each package directory; '' if it gives no package id
-	package_patterns    map[string]jsregexp.RegexpProgram  // the regular expression typescript-eslint makes of the `package` of a type specifier
+	package_root_cache  map[string]string // package.json name of each directory (resolvePackageIdName); '' if it has none
 	project_directory   string          // directory of the tsconfig (set_project_directory): what `from: "file"` specifiers are relative to
 	program_directory   string          // or this one, when the configuration of the file gives it (LintConfig.program_directory)
 	ecma_version        int             // the normalized languageOptions.ecmaVersion of the file being linted

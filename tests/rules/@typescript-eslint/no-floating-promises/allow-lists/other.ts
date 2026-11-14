@@ -9,3 +9,5 @@ export declare function pathTask(): PathPromise<number>;
 export declare function dotPathTask(): DotPathPromise<number>;
 export declare function wrongPathTask(): WrongPathPromise<number>;
 export declare const fileApi: { method(): Promise<void>; wrongPathMethod(): Promise<void>; other(): Promise<void> };
+export class RootPathPromise<T> extends Promise<T> {}
+export declare function rootPathTask(): RootPathPromise<number>;

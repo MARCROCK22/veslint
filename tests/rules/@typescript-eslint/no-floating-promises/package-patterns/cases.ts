@@ -1,5 +1,6 @@
-// The `package` of a type specifier is a regular expression for typescript-eslint, which makes one
-// of the name as it is and looks for it in the name TypeScript gives each file of a package.
+// The `package` of a type specifier was a regular expression for typescript-eslint 8.62; since 8.72
+// it is compared with the name TypeScript gives each file of a package by whole path components,
+// so only the package `x+y` is safe here (the comments tell what the regular expressions did).
 import {
   anchoredTask, anchoredWrongTask, eitherTask, emptyTask, literalBraceTask, lookTask, unitTask,
 } from 'fake-pkg';
