@@ -5,7 +5,7 @@ import time
 import tsgo { TypeResponse, handle_index, handle_kind, handle_path }
 import treesitter { named_children, node_end, node_field, node_kind, node_parent, node_start, nodes_of_kinds, position_of }
 
-// Port of the `no-base-to-string` rule of typescript-eslint 8.62.0, with its options.
+// Port of the `no-base-to-string` rule of typescript-eslint 8.72.2, with its options.
 
 const nbts_messages = {
 	'baseArrayJoin': "Using `join()` for {{name}} {{certainty}} use Object's default stringification format ('[object Object]') when stringified."
@@ -173,8 +173,9 @@ fn (mut c Checker) lint_no_base_to_string(root C.TSNode, abs_path string, mut st
 	if string_calls.len > 0 {
 		scopes := c.scope_tree(root)
 		for i, call in string_calls {
-			// isBuiltInStringCall: no declaration of `String` in the scope of the call itself.
-			v := scopes.own_variable(scopes.get_scope(call), 'String')
+			// isBuiltInStringCall: no declaration of `String` in the scope of the call or one around
+			// it (findVariable).
+			v := scopes.find_variable(scopes.get_scope(call), 'String', -1)
 			if v >= 0 && scopes.variables[v].defs.len > 0 {
 				continue
 			}
