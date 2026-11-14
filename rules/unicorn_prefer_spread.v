@@ -40,8 +40,8 @@ const upsp_type_annotation_expression_types = [estree.NodeType.ts_as_expression,
 	.ts_satisfies_expression]
 const upsp_non_array_type_annotation_types = [estree.NodeType.ts_never_keyword, .ts_void_keyword,
 	.ts_null_keyword, .ts_undefined_keyword, .ts_string_keyword, .ts_number_keyword,
-	.ts_boolean_keyword, .ts_big_int_keyword, .ts_symbol_keyword, .ts_object_keyword,
-	.ts_type_literal, .ts_function_type, .ts_constructor_type, .ts_literal_type]
+	.ts_boolean_keyword, .ts_big_int_keyword, .ts_symbol_keyword, .ts_object_keyword, .ts_type_literal,
+	.ts_function_type, .ts_constructor_type, .ts_literal_type]
 
 // upsp_typed_array_types is shared/typed-array.js.
 const upsp_typed_array_types = ['Int8Array', 'Uint8Array', 'Uint8ClampedArray', 'Int16Array',
@@ -629,8 +629,8 @@ fn (mut c Checker) upsp_is_known_non_array_call(mut ctx UnCtx, node int) bool {
 	t := ctx.t
 	if un_is_method_call(t, node, methods: ['concat'], optional_call: false, optional_member: false)
 		&& c.upsp_is_buffer_reference(mut ctx, t.node(t.node(node, .callee) or { return false }, .object) or {
-		return false
-	}) {
+			return false
+		}) {
 		return true
 	}
 	if t.typ(node) != .call_expression {
@@ -689,7 +689,7 @@ fn (mut c Checker) upsp_is_same_receiver_reference(mut ctx UnCtx, left_node int,
 		}
 		return !(t.flag(left, .computed) or { false }) || !(t.flag(right, .computed) or { false })
 			|| c.upsp_is_same_receiver_reference(mut ctx, t.node(left, .property) or { -1 },
-			t.node(right, .property) or { -1 })
+				t.node(right, .property) or { -1 })
 	}
 	return true
 }
@@ -720,7 +720,7 @@ fn upsp_has_write_in(t &estree.EsTree, node int, start int, end int, receiver in
 	}
 	if node_end <= end && (t.typ(node) in [.assignment_expression, .update_expression]
 		|| (t.typ(node) == .variable_declarator
-		&& upsp_is_declarator_write_to_receiver(t, node, receiver))) {
+			&& upsp_is_declarator_write_to_receiver(t, node, receiver))) {
 		return true
 	}
 	return t.children(node).any(upsp_has_write_in(t, it, start, end, receiver))
@@ -752,7 +752,7 @@ fn (mut c Checker) upsp_array_is_array_test_state(mut ctx UnCtx, node int, argum
 	}
 	if t.typ(node) == .unary_expression && (t.string_of(node, .operator) or { '' }) == '!'
 		&& c.upsp_is_array_is_array_call_with_argument(mut ctx, t.node(node, .argument) or { -1 },
-		argument) {
+			argument) {
 		return upsp_no
 	}
 	return upsp_unknown
@@ -809,7 +809,8 @@ fn (mut c Checker) upsp_syntactic_receiver_array_state(mut ctx UnCtx, node int) 
 		return upsp_yes
 	}
 	if c.upsp_is_not_array(mut ctx, node)
-		|| t.typ(node) in [.object_expression, .function_expression, .arrow_function_expression, .class_expression]
+		|| t.typ(node) in [.object_expression, .function_expression, .arrow_function_expression,
+			.class_expression]
 		|| c.upsp_is_known_non_array_call(mut ctx, node)
 		|| c.upsp_is_known_non_array_construction(mut ctx, node)
 		|| c.upsp_is_not_array_by_array_is_array_test(mut ctx, node) {
@@ -1215,7 +1216,8 @@ fn (mut c Checker) upsp_is_array_concat_in_loop_call(mut ctx UnCtx, call int) bo
 	}
 	left := t.node(assignment, .left) or { return false }
 	call_expression := un_unwrap_ts_expression(t, t.node(assignment, .right) or { return false })
-	if t.typ(left) != .identifier || call_expression != call || !un_is_method_call(t, call_expression,
+	if t.typ(left) != .identifier || call_expression != call || !un_is_method_call(t,
+		call_expression,
 		methods:           ['concat']
 		minimum_arguments: 1
 		optional_call:     false
@@ -1593,7 +1595,11 @@ fn (mut c Checker) upsp_concat_preserved_ranges(mut ctx UnCtx, node int, fixed_c
 fn (mut c Checker) upsp_concat(mut ctx UnCtx, node int) ?Finding {
 	t := ctx.t
 	tokens := ctx.tokens
-	if !un_is_method_call(t, node, methods: ['concat'], optional_call: false, optional_member: false)
+	if !un_is_method_call(t, node,
+		methods:         ['concat']
+		optional_call:   false
+		optional_member: false
+	)
 		|| c.upsp_is_array_concat_in_loop_call(mut ctx, node) {
 		return none
 	}
@@ -1651,8 +1657,7 @@ fn (mut c Checker) upsp_concat(mut ctx UnCtx, node int) ?Finding {
 		return finding
 	}
 	fixable_after_first := c.upsp_concat_fixable_arguments(mut ctx, rest)
-	has_unsafe_array_constructor_rest_argument := rest.any(c.upsp_is_array_constructor_with_one_argument(mut
-		ctx, it))
+	has_unsafe_array_constructor_rest_argument := rest.any(c.upsp_is_array_constructor_with_one_argument(mut ctx, it))
 	mut variants := [UpspConcatArgument{
 		node:          first
 		is_spreadable: true
