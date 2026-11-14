@@ -128,12 +128,12 @@ fn (mut c Checker) lint_unbound_method(root C.TSNode, abs_path string, mut stats
 		// getAccessedPropertyNames: the name of the property, or the values of the string and
 		// number literal types of a computed one; the properties of those names of each part of
 		// the type of the object (checkUnionConstituentsAndReport).
-		names := c.ubm_accessed_property_names(m)!
-		if names.len == 0 {
+		accessed := c.ubm_accessed_property_names(m)!
+		if accessed.len == 0 {
 			continue
 		}
 		object_type := c.node_type(m.object) or { continue }
-		for name in names {
+		for name in accessed {
 			message_id := c.ubm_check_union_constituents(object_type, name, o)!
 			if message_id != '' {
 				findings << Finding{
@@ -211,13 +211,13 @@ fn (mut c Checker) ubm_accessed_property_names(m UbmMember) ![]string {
 		}
 	}
 	property_type := c.node_type(unwrap_parens(m.property)) or { return []string{} }
-	mut names := []string{}
+	mut literal_names := []string{}
 	for part in c.constituents(property_type)! {
 		if part.flags & (type_flag_string_literal | type_flag_number_literal) != 0 {
-			names << literal_type_name(part)
+			literal_names << literal_type_name(part)
 		}
 	}
-	return names
+	return literal_names
 }
 
 // ubm_in_type_query: the member expression is part of a `typeof` type query (a TSQualifiedName in
