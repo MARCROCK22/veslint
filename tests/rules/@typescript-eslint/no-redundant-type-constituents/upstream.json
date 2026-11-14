@@ -1,4 +1,4 @@
-{"rule": "@typescript-eslint/no-redundant-type-constituents", "upstream": "typescript-eslint v8.62.0", "files": ["packages/eslint-plugin/tests/rules/no-redundant-type-constituents.test.ts"],
+{"rule": "@typescript-eslint/no-redundant-type-constituents", "upstream": "typescript-eslint v8.72.2", "files": ["packages/eslint-plugin/tests/rules/no-redundant-type-constituents.test.ts"],
 "messages": {"errorTypeOverrides":"'{{typeName}}' is an 'error' type that acts as 'any' and overrides all other types in this {{container}} type.","literalOverridden":"{{literal}} is overridden by {{primitive}} in this union type.","overridden":"'{{typeName}}' is overridden by other types in this {{container}} type.","overrides":"'{{typeName}}' overrides all other types in this {{container}} type.","primitiveOverridden":"{{primitive}} is overridden by the {{literal}} in this intersection type."},
 "cases": [
 {"id":"no-redundant-type-constituents/v0","kind":"valid","code":"\ntype T = any;\ntype U = T;\n    ","file":"file.ts","tsconfig":"tsconfig.json","via":"service"},

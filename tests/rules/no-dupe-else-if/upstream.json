@@ -1,4 +1,4 @@
-{"rule": "no-dupe-else-if", "upstream": "eslint v10.6.0", "files": ["tests/lib/rules/no-dupe-else-if.js"],
+{"rule": "no-dupe-else-if", "upstream": "eslint v10.15.0", "files": ["tests/lib/rules/no-dupe-else-if.js"],
 "messages": {"unexpected":"This branch can never execute. Its condition is a duplicate or covered by previous conditions in the if-else-if chain."},
 "cases": [
 {"id":"no-dupe-else-if/v0","kind":"valid","code":"if (a) {} else if (b) {}","file":"file.ts","tsconfig":null},

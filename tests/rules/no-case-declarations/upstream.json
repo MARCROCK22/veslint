@@ -1,4 +1,4 @@
-{"rule": "no-case-declarations", "upstream": "eslint v10.6.0", "files": ["tests/lib/rules/no-case-declarations.js"],
+{"rule": "no-case-declarations", "upstream": "eslint v10.15.0", "files": ["tests/lib/rules/no-case-declarations.js"],
 "messages": {"addBrackets":"Add {} brackets around the case block.","unexpected":"Unexpected lexical declaration in case block."},
 "cases": [
 {"id":"no-case-declarations/v0","kind":"valid","code":"switch (a) { case 1: { let x = 1; break; } default: { let x = 2; break; } }","file":"file.ts","tsconfig":null,"languageOptions":{"ecmaVersion":6}},

@@ -1,4 +1,4 @@
-{"rule": "no-proto", "upstream": "eslint v10.6.0", "files": ["tests/lib/rules/no-proto.js"],
+{"rule": "no-proto", "upstream": "eslint v10.15.0", "files": ["tests/lib/rules/no-proto.js"],
 "messages": {"unexpectedProto":"The '__proto__' property is deprecated."},
 "cases": [
 {"id":"no-proto/v0","kind":"valid","code":"var a = test[__proto__];","file":"file.ts","tsconfig":null},

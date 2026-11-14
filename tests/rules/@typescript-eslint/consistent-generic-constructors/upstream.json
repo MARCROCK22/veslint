@@ -1,4 +1,4 @@
-{"rule": "@typescript-eslint/consistent-generic-constructors", "upstream": "typescript-eslint v8.62.0", "files": ["packages/eslint-plugin/tests/rules/consistent-generic-constructors.test.ts"],
+{"rule": "@typescript-eslint/consistent-generic-constructors", "upstream": "typescript-eslint v8.72.2", "files": ["packages/eslint-plugin/tests/rules/consistent-generic-constructors.test.ts"],
 "messages": {"preferConstructor":"The generic type arguments should be specified as part of the constructor type arguments.","preferTypeAnnotation":"The generic type arguments should be specified as part of the type annotation."},
 "cases": [
 {"id":"consistent-generic-constructors/v0","kind":"valid","code":"const a = new Foo();","file":"file.ts","tsconfig":null},

@@ -1,4 +1,4 @@
-{"rule": "@typescript-eslint/no-import-type-side-effects", "upstream": "typescript-eslint v8.62.0", "files": ["packages/eslint-plugin/tests/rules/no-import-type-side-effects.test.ts"],
+{"rule": "@typescript-eslint/no-import-type-side-effects", "upstream": "typescript-eslint v8.72.2", "files": ["packages/eslint-plugin/tests/rules/no-import-type-side-effects.test.ts"],
 "messages": {"useTopLevelQualifier":"TypeScript will only remove the inline type specifiers which will leave behind a side effect import at runtime. Convert this to a top-level type qualifier to properly remove the entire import."},
 "cases": [
 {"id":"no-import-type-side-effects/v0","kind":"valid","code":"import T from 'mod';","file":"file.ts","tsconfig":null},

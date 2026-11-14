@@ -1,4 +1,4 @@
-{"rule": "operator-assignment", "upstream": "eslint v10.6.0", "files": ["tests/lib/rules/operator-assignment.js"],
+{"rule": "operator-assignment", "upstream": "eslint v10.15.0", "files": ["tests/lib/rules/operator-assignment.js"],
 "messages": {"replaced":"Assignment (=) can be replaced with operator assignment ({{operator}}).","unexpected":"Unexpected operator assignment ({{operator}}) shorthand."},
 "cases": [
 {"id":"operator-assignment/v0","kind":"valid","code":"x = y","file":"file.ts","tsconfig":null,"languageOptions":{"ecmaVersion":2022}},

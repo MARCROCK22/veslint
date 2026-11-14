@@ -1,4 +1,4 @@
-{"rule": "no-octal", "upstream": "eslint v10.6.0", "files": ["tests/lib/rules/no-octal.js"],
+{"rule": "no-octal", "upstream": "eslint v10.15.0", "files": ["tests/lib/rules/no-octal.js"],
 "messages": {"noOctal":"Octal literals should not be used."},
 "cases": [
 {"id":"no-octal/v0","kind":"valid","code":"var a = 'hello world';","file":"file.ts","tsconfig":null,"languageOptions":{"ecmaVersion":5,"sourceType":"script"}},

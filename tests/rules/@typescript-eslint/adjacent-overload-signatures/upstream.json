@@ -1,4 +1,4 @@
-{"rule": "@typescript-eslint/adjacent-overload-signatures", "upstream": "typescript-eslint v8.62.0", "files": ["packages/eslint-plugin/tests/rules/adjacent-overload-signatures.test.ts"],
+{"rule": "@typescript-eslint/adjacent-overload-signatures", "upstream": "typescript-eslint v8.72.2", "files": ["packages/eslint-plugin/tests/rules/adjacent-overload-signatures.test.ts"],
 "messages": {"adjacentSignature":"All {{name}} signatures should be adjacent."},
 "cases": [
 {"id":"adjacent-overload-signatures/v0","kind":"valid","code":"\nfunction error(a: string);\nfunction error(b: number);\nfunction error(ab: string | number) {}\nexport { error };\n      ","file":"file.ts","tsconfig":null,"parserOptions":{"sourceType":"module"}},

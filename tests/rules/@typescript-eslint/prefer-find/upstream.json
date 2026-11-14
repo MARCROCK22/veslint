@@ -1,4 +1,4 @@
-{"rule": "@typescript-eslint/prefer-find", "upstream": "typescript-eslint v8.62.0", "files": ["packages/eslint-plugin/tests/rules/prefer-find.test.ts"],
+{"rule": "@typescript-eslint/prefer-find", "upstream": "typescript-eslint v8.72.2", "files": ["packages/eslint-plugin/tests/rules/prefer-find.test.ts"],
 "messages": {"preferFind":"Prefer .find(...) instead of .filter(...)[0].","preferFindSuggestion":"Use .find(...) instead of .filter(...)[0]."},
 "cases": [
 {"id":"prefer-find/v0","kind":"valid","code":"\ninterface JerkCode<T> {\n  filter(predicate: (item: T) => boolean): JerkCode<T>;\n}\n\ndeclare const jerkCode: JerkCode<string>;\n\njerkCode.filter(item => item === 'aha')[0];\n    ","file":"file.ts","tsconfig":"tsconfig.json","via":"service"},

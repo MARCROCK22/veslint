@@ -1,4 +1,4 @@
-{"rule": "@typescript-eslint/consistent-type-imports", "upstream": "typescript-eslint v8.62.0", "files": ["packages/eslint-plugin/tests/rules/consistent-type-imports.test.ts"],
+{"rule": "@typescript-eslint/consistent-type-imports", "upstream": "typescript-eslint v8.72.2", "files": ["packages/eslint-plugin/tests/rules/consistent-type-imports.test.ts"],
 "messages": {"avoidImportType":"Use an `import` instead of an `import type`.","noImportTypeAnnotations":"`import()` type annotations are forbidden.","someImportsAreOnlyTypes":"Imports {{typeImports}} are only used as type.","typeOverValue":"All imports in the declaration are only used as types. Use `import type`."},
 "cases": [
 {"id":"consistent-type-imports/r0/v0","kind":"valid","code":"\nimport Foo from 'foo';\nconst foo: Foo = new Foo();\n        ","file":"file.ts","tsconfig":null,"parserOptions":{"emitDecoratorMetadata":false,"experimentalDecorators":false}},

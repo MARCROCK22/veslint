@@ -1,4 +1,4 @@
-{"rule": "no-unsafe-optional-chaining", "upstream": "eslint v10.6.0", "files": ["tests/lib/rules/no-unsafe-optional-chaining.js"],
+{"rule": "no-unsafe-optional-chaining", "upstream": "eslint v10.15.0", "files": ["tests/lib/rules/no-unsafe-optional-chaining.js"],
 "messages": {"unsafeOptionalChain":"Unsafe usage of optional chaining. If it short-circuits with 'undefined' the evaluation will throw TypeError.","unsafeArithmetic":"Unsafe arithmetic operation on optional chaining. It can result in NaN."},
 "cases": [
 {"id":"no-unsafe-optional-chaining/v0","kind":"valid","code":"var foo;","file":"file.ts","tsconfig":null,"languageOptions":{"ecmaVersion":2021,"sourceType":"module"}},

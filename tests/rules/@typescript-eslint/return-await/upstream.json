@@ -1,4 +1,4 @@
-{"rule": "@typescript-eslint/return-await", "upstream": "typescript-eslint v8.62.0", "files": ["packages/eslint-plugin/tests/rules/return-await.test.ts"],
+{"rule": "@typescript-eslint/return-await", "upstream": "typescript-eslint v8.72.2", "files": ["packages/eslint-plugin/tests/rules/return-await.test.ts"],
 "messages": {"disallowedPromiseAwait":"Returning an awaited promise is not allowed in this context.","disallowedPromiseAwaitSuggestion":"Remove `await` before the expression. Use caution as this may impact control flow.","nonPromiseAwait":"Returning an awaited value that is not a promise is not allowed.","requiredPromiseAwait":"Returning an awaited promise is required in this context.","requiredPromiseAwaitSuggestion":"Add `await` before the expression. Use caution as this may impact control flow."},
 "cases": [
 {"id":"return-await/v0","kind":"valid","code":"return;","file":"file.ts","tsconfig":"tsconfig.json","via":"service"},

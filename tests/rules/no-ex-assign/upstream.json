@@ -1,4 +1,4 @@
-{"rule": "no-ex-assign", "upstream": "eslint v10.6.0", "files": ["tests/lib/rules/no-ex-assign.js"],
+{"rule": "no-ex-assign", "upstream": "eslint v10.15.0", "files": ["tests/lib/rules/no-ex-assign.js"],
 "messages": {"unexpected":"Do not assign to the exception parameter."},
 "cases": [
 {"id":"no-ex-assign/v0","kind":"valid","code":"try { } catch (e) { three = 2 + 1; }","file":"file.ts","tsconfig":null},

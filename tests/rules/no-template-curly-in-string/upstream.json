@@ -1,4 +1,4 @@
-{"rule": "no-template-curly-in-string", "upstream": "eslint v10.6.0", "files": ["tests/lib/rules/no-template-curly-in-string.js"],
+{"rule": "no-template-curly-in-string", "upstream": "eslint v10.15.0", "files": ["tests/lib/rules/no-template-curly-in-string.js"],
 "messages": {"unexpectedTemplateExpression":"Unexpected template string expression."},
 "cases": [
 {"id":"no-template-curly-in-string/v0","kind":"valid","code":"`Hello, ${name}`;","file":"file.ts","tsconfig":null},

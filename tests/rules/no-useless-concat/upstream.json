@@ -1,4 +1,4 @@
-{"rule": "no-useless-concat", "upstream": "eslint v10.6.0", "files": ["tests/lib/rules/no-useless-concat.js"],
+{"rule": "no-useless-concat", "upstream": "eslint v10.15.0", "files": ["tests/lib/rules/no-useless-concat.js"],
 "messages": {"unexpectedConcat":"Unexpected string concatenation of literals."},
 "cases": [
 {"id":"no-useless-concat/v0","kind":"valid","code":"var a = 1 + 1;","file":"file.ts","tsconfig":null},

@@ -1,4 +1,4 @@
-{"rule": "no-iterator", "upstream": "eslint v10.6.0", "files": ["tests/lib/rules/no-iterator.js"],
+{"rule": "no-iterator", "upstream": "eslint v10.15.0", "files": ["tests/lib/rules/no-iterator.js"],
 "messages": {"noIterator":"Reserved name '__iterator__'."},
 "cases": [
 {"id":"no-iterator/v0","kind":"valid","code":"var a = test[__iterator__];","file":"file.ts","tsconfig":null},

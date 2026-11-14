@@ -1,4 +1,4 @@
-{"rule": "no-irregular-whitespace", "upstream": "eslint v10.6.0", "files": ["tests/lib/rules/no-irregular-whitespace.js"],
+{"rule": "no-irregular-whitespace", "upstream": "eslint v10.15.0", "files": ["tests/lib/rules/no-irregular-whitespace.js"],
 "messages": {"noIrregularWhitespace":"Irregular whitespace not allowed."},
 "cases": [
 {"id":"no-irregular-whitespace/v0","kind":"valid","code":"'\\u000B';","file":"file.ts","tsconfig":null},

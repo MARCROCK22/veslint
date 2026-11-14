@@ -1,11 +1,14 @@
 #!/usr/bin/env bash
 # Evaluation of veslint on Spider-Byte (pinned commit), comparing each ported rule with
-# typescript-eslint 8.62.0, finding by finding and message by message. Everything stays in
+# typescript-eslint 8.72.2, finding by finding and message by message. Everything stays in
 # build/eval/. It is not part of `make test`.
 #
 # Steps that use the network, each one only when its result is missing:
 #   1. download the tarball of the commit (no git repository);
-#   2. `bun install --frozen-lockfile --ignore-scripts` (local, without install scripts).
+#   2. `bun install --frozen-lockfile --ignore-scripts` (local, without install scripts), then the
+#      versions veslint ports on top of Spider-Byte's lockfile: ESLint 10.15.0, typescript-eslint
+#      8.72.2 and eslint-plugin-unicorn 79.0.0 (the versions of @marcrock22/eslintcf 0.0.1). These
+#      packages are the oracle of the other test scripts too (tests/rules/*.sh, tools/).
 set -uo pipefail
 cd "$(dirname "$0")/.."
 ROOT=$(pwd)
@@ -44,6 +47,11 @@ if [[ ! -d $SB/src ]]; then
 fi
 if [[ ! -d $SB/node_modules ]]; then
 	(cd "$SB" && bun install --frozen-lockfile --ignore-scripts)
+fi
+ORACLES=(eslint@10.15.0 typescript-eslint@8.72.2 eslint-plugin-unicorn@79.0.0 @typescript-eslint/utils@8.72.2
+	@typescript-eslint/parser@8.72.2)
+if [[ $(node -p "require('$SB/node_modules/eslint/package.json').version" 2> /dev/null) != 10.15.0 ]]; then
+	(cd "$SB" && bun add -d --ignore-scripts "${ORACLES[@]}")
 fi
 [[ -x ./veslint ]] || make build
 

@@ -1,4 +1,4 @@
-{"rule": "no-import-assign", "upstream": "eslint v10.6.0", "files": ["tests/lib/rules/no-import-assign.js"],
+{"rule": "no-import-assign", "upstream": "eslint v10.15.0", "files": ["tests/lib/rules/no-import-assign.js"],
 "messages": {"readonly":"'{{name}}' is read-only.","readonlyMember":"The members of '{{name}}' are read-only."},
 "cases": [
 {"id":"no-import-assign/v0","kind":"valid","code":"import mod from 'mod'; mod.prop = 0","file":"file.ts","tsconfig":null,"languageOptions":{"ecmaVersion":2018,"sourceType":"module","globals":{"Reflect":"readonly"}}},

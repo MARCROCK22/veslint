@@ -1,4 +1,4 @@
-{"rule": "valid-typeof", "upstream": "eslint v10.6.0", "files": ["tests/lib/rules/valid-typeof.js"],
+{"rule": "valid-typeof", "upstream": "eslint v10.15.0", "files": ["tests/lib/rules/valid-typeof.js"],
 "messages": {"invalidValue":"Invalid typeof comparison value.","notString":"Typeof comparisons should be to string literals.","suggestString":"Use `\"{{type}}\"` instead of `{{type}}`."},
 "cases": [
 {"id":"valid-typeof/v0","kind":"valid","code":"typeof foo === 'string'","file":"file.ts","tsconfig":null},

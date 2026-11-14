@@ -1,4 +1,4 @@
-{"rule": "no-useless-escape", "upstream": "eslint v10.6.0", "files": ["tests/lib/rules/no-useless-escape.js"],
+{"rule": "no-useless-escape", "upstream": "eslint v10.15.0", "files": ["tests/lib/rules/no-useless-escape.js"],
 "messages": {"unnecessaryEscape":"Unnecessary escape character: \\{{character}}.","removeEscape":"Remove the `\\`. This maintains the current functionality.","removeEscapeDoNotKeepSemantics":"Remove the `\\` if it was inserted by mistake.","escapeBackslash":"Replace the `\\` with `\\\\` to include the actual backslash character."},
 "cases": [
 {"id":"no-useless-escape/v0","kind":"valid","code":"var foo = /\\./","file":"file.ts","tsconfig":null,"languageOptions":{"ecmaVersion":5,"sourceType":"script"}},

@@ -1,4 +1,4 @@
-{"rule": "@typescript-eslint/prefer-for-of", "upstream": "typescript-eslint v8.62.0", "files": ["packages/eslint-plugin/tests/rules/prefer-for-of.test.ts"],
+{"rule": "@typescript-eslint/prefer-for-of", "upstream": "typescript-eslint v8.72.2", "files": ["packages/eslint-plugin/tests/rules/prefer-for-of.test.ts"],
 "messages": {"preferForOf":"Expected a `for-of` loop instead of a `for` loop with this simple iteration."},
 "cases": [
 {"id":"prefer-for-of/v0","kind":"valid","code":"\nfor (let i = 0; i < arr1.length; i++) {\n  const x = arr1[i] === arr2[i];\n}\n    ","file":"file.ts","tsconfig":null},

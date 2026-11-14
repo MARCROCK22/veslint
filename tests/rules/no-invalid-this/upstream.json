@@ -1,4 +1,4 @@
-{"rule": "no-invalid-this", "upstream": "eslint v10.6.0", "files": ["tests/lib/rules/no-invalid-this.js"],
+{"rule": "no-invalid-this", "upstream": "eslint v10.15.0", "files": ["tests/lib/rules/no-invalid-this.js"],
 "messages": {"unexpectedThis":"Unexpected 'this'."},
 "cases": [
 {"id":"no-invalid-this/r0/v0","kind":"valid","code":"console.log(this); z(x => console.log(x, this));","file":"file.ts","tsconfig":null,"languageOptions":{"ecmaVersion":6,"sourceType":"script"}},

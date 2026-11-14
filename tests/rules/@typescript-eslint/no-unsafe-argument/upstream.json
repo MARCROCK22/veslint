@@ -1,4 +1,4 @@
-{"rule": "@typescript-eslint/no-unsafe-argument", "upstream": "typescript-eslint v8.62.0", "files": ["packages/eslint-plugin/tests/rules/no-unsafe-argument.test.ts"],
+{"rule": "@typescript-eslint/no-unsafe-argument", "upstream": "typescript-eslint v8.72.2", "files": ["packages/eslint-plugin/tests/rules/no-unsafe-argument.test.ts"],
 "messages": {"unsafeArgument":"Unsafe argument of type {{sender}} assigned to a parameter of type {{receiver}}.","unsafeArraySpread":"Unsafe spread of an {{sender}} array type.","unsafeSpread":"Unsafe spread of an {{sender}} type.","unsafeTupleSpread":"Unsafe spread of a tuple type. The argument is {{sender}} and is assigned to a parameter of type {{receiver}}."},
 "cases": [
 {"id":"no-unsafe-argument/v0","kind":"valid","code":"\ndoesNotExist(1 as any);\n    ","file":"file.ts","tsconfig":"tsconfig.json","via":"service"},

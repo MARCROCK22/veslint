@@ -1,4 +1,4 @@
-{"rule": "@typescript-eslint/no-extra-non-null-assertion", "upstream": "typescript-eslint v8.62.0", "files": ["packages/eslint-plugin/tests/rules/no-extra-non-null-assertion.test.ts"],
+{"rule": "@typescript-eslint/no-extra-non-null-assertion", "upstream": "typescript-eslint v8.72.2", "files": ["packages/eslint-plugin/tests/rules/no-extra-non-null-assertion.test.ts"],
 "messages": {"noExtraNonNullAssertion":"Forbidden extra non-null assertion."},
 "cases": [
 {"id":"no-extra-non-null-assertion/v0","kind":"valid","code":"\nconst foo: { bar: number } | null = null;\nconst bar = foo!.bar;\n      ","file":"file.ts","tsconfig":null},

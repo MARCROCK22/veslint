@@ -1,4 +1,4 @@
-{"rule": "no-debugger", "upstream": "eslint v10.6.0", "files": ["tests/lib/rules/no-debugger.js"],
+{"rule": "no-debugger", "upstream": "eslint v10.15.0", "files": ["tests/lib/rules/no-debugger.js"],
 "messages": {"unexpected":"Unexpected 'debugger' statement."},
 "cases": [
 {"id":"no-debugger/v0","kind":"valid","code":"var test = { debugger: 1 }; test.debugger;","file":"file.ts","tsconfig":null},

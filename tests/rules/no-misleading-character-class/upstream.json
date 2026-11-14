@@ -1,4 +1,4 @@
-{"rule": "no-misleading-character-class", "upstream": "eslint v10.6.0", "files": ["tests/lib/rules/no-misleading-character-class.js"],
+{"rule": "no-misleading-character-class", "upstream": "eslint v10.15.0", "files": ["tests/lib/rules/no-misleading-character-class.js"],
 "messages": {"surrogatePairWithoutUFlag":"Unexpected surrogate pair in character class. Use 'u' flag.","surrogatePair":"Unexpected surrogate pair in character class.","combiningClass":"Unexpected combined character in character class.","emojiModifier":"Unexpected modified Emoji in character class.","regionalIndicatorSymbol":"Unexpected national flag in character class.","zwj":"Unexpected joined character sequence in character class.","suggestUnicodeFlag":"Add unicode 'u' flag to regex."},
 "cases": [
 {"id":"no-misleading-character-class/v0","kind":"valid","code":"var r = /[👍]/u","file":"file.ts","tsconfig":null,"languageOptions":{"ecmaVersion":2015}},

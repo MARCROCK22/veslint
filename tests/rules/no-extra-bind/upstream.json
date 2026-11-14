@@ -1,4 +1,4 @@
-{"rule": "no-extra-bind", "upstream": "eslint v10.6.0", "files": ["tests/lib/rules/no-extra-bind.js"],
+{"rule": "no-extra-bind", "upstream": "eslint v10.15.0", "files": ["tests/lib/rules/no-extra-bind.js"],
 "messages": {"unexpected":"The function binding is unnecessary."},
 "cases": [
 {"id":"no-extra-bind/v0","kind":"valid","code":"var a = function(b) { return b }.bind(c, d)","file":"file.ts","tsconfig":null},

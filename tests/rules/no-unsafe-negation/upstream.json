@@ -1,4 +1,4 @@
-{"rule": "no-unsafe-negation", "upstream": "eslint v10.6.0", "files": ["tests/lib/rules/no-unsafe-negation.js"],
+{"rule": "no-unsafe-negation", "upstream": "eslint v10.15.0", "files": ["tests/lib/rules/no-unsafe-negation.js"],
 "messages": {"unexpected":"Unexpected negating the left operand of '{{operator}}' operator.","suggestNegatedExpression":"Negate '{{operator}}' expression instead of its left operand. This changes the current behavior.","suggestParenthesisedNegation":"Wrap negation in '()' to make the intention explicit. This preserves the current behavior."},
 "cases": [
 {"id":"no-unsafe-negation/v0","kind":"valid","code":"a in b","file":"file.ts","tsconfig":null},

@@ -1,4 +1,4 @@
-{"rule": "no-prototype-builtins", "upstream": "eslint v10.6.0", "files": ["tests/lib/rules/no-prototype-builtins.js"],
+{"rule": "no-prototype-builtins", "upstream": "eslint v10.15.0", "files": ["tests/lib/rules/no-prototype-builtins.js"],
 "messages": {"prototypeBuildIn":"Do not access Object.prototype method '{{prop}}' from target object.","callObjectPrototype":"Call Object.prototype.{{prop}} explicitly."},
 "cases": [
 {"id":"no-prototype-builtins/v0","kind":"valid","code":"Object.prototype.hasOwnProperty.call(foo, 'bar')","file":"file.ts","tsconfig":null},

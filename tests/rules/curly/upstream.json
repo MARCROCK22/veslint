@@ -1,4 +1,4 @@
-{"rule": "curly", "upstream": "eslint v10.6.0", "files": ["tests/lib/rules/curly.js"],
+{"rule": "curly", "upstream": "eslint v10.15.0", "files": ["tests/lib/rules/curly.js"],
 "messages": {"missingCurlyAfter":"Expected { after '{{name}}'.","missingCurlyAfterCondition":"Expected { after '{{name}}' condition.","unexpectedCurlyAfter":"Unnecessary { after '{{name}}'.","unexpectedCurlyAfterCondition":"Unnecessary { after '{{name}}' condition."},
 "cases": [
 {"id":"curly/v0","kind":"valid","code":"if (foo) { bar() }","file":"file.ts","tsconfig":null,"languageOptions":{"ecmaVersion":5,"sourceType":"script"}},

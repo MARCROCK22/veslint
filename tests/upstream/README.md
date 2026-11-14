@@ -3,7 +3,7 @@
 Every rule veslint ports carries the test cases of its own upstream test, besides its fixtures in
 `tests/rules/<rule>/`. For the 105 rules of typescript-eslint they are the cases of
 `packages/eslint-plugin/tests/rules/<rule>.test.ts` (and of the test files under
-`packages/eslint-plugin/tests/rules/<rule>/`) at v8.62.0: 26,825 cases, 2 of which upstream skips
+`packages/eslint-plugin/tests/rules/<rule>/`) at v8.72.2: 26,825 cases, 2 of which upstream skips
 through `dependencyConstraints`.
 
 - `tests/rules/<rule>/upstream.json`: the cases of the rule, one per line, as RuleTester receives
@@ -25,8 +25,8 @@ through `dependencyConstraints`.
   the suggestions (messageId, description and the text each one leaves), and the output of the
   fixes, pass after pass, applied as ESLint's SourceCodeFixer applies them. It takes about 2
   minutes on one core.
-- **ESLint** (`tests/rules/reference.sh`): `tests/rules/upstream_eslint.mjs` runs ESLint 10.6.0 with
-  typescript-eslint 8.62.0 the way RuleTester does (ecmaVersion "latest", sourceType "module",
+- **ESLint** (`tests/rules/reference.sh`): `tests/rules/upstream_eslint.mjs` runs ESLint 10.15.0 with
+  typescript-eslint 8.72.2 the way RuleTester does (ecmaVersion "latest", sourceType "module",
   unused disable directives reported, the parser's caches cleared between test files) and checks
   the same expectations: it shows that the fixtures reproduce typescript-eslint's own run. Then
   veslint's output on each case must be ESLint's, line for line and in the same order, with the
@@ -43,7 +43,7 @@ texts within it.
 
 - `@types/node` 24.12.2 and `@types/react` 18.3.21, with `undici-types` 7.16.0,
   `@types/prop-types` 15.7.14 and `csstype` 3.1.3: the versions of typescript-eslint's
-  `pnpm-lock.yaml` at v8.62.0, installed in `build/upstream/types` with
+  `pnpm-lock.yaml` at v8.72.2, installed in `build/upstream/types` with
 
   ```sh
   mkdir -p build/upstream/types && cd build/upstream/types
@@ -51,7 +51,7 @@ texts within it.
   #   "overrides": {"@types/prop-types": "15.7.14", "csstype": "3.1.3", "undici-types": "7.16.0"}}
   npm install --ignore-scripts --no-audit --no-fund
   ```
-- `typescript` (6.0.3) and `@typescript-eslint/types` and `utils` (8.62.0) of `build/eval`, which
+- `typescript` (6.0.3) and `@typescript-eslint/types` and `utils` (8.72.2) of `build/eval`, which
   `tests/eval_spider_byte.sh` installs.
 
 Without them `tests/run.sh` skips these tests and says so.
@@ -61,7 +61,7 @@ Without them `tests/run.sh` skips these tests and says so.
 `upstream.json` changes only when the pinned typescript-eslint changes:
 
 ```sh
-git clone --depth 1 --branch v8.62.0 --filter=blob:none --sparse \
+git clone --depth 1 --branch v8.72.2 --filter=blob:none --sparse \
   https://github.com/typescript-eslint/typescript-eslint build/upstream/typescript-eslint
 cd build/upstream/typescript-eslint
 git sparse-checkout set packages/eslint-plugin/src packages/eslint-plugin/tests \
@@ -72,7 +72,7 @@ bun tools/gen_upstream_cases.mjs            # every rule of tests/rules, or name
 
 The test files are loaded as the test runner loads them, with the stubs of `tools/upstream/` in the
 place of `@typescript-eslint/rule-tester` (its `run` records the cases) and of `vitest`, and the
-other packages from `build/eval` (typescript-eslint 8.62.0, TypeScript 6.0.3).
+other packages from `build/eval` (typescript-eslint 8.72.2, TypeScript 6.0.3).
 
 ## @slipher/eslint-plugin (the `seyfert/*` rules)
 
@@ -87,7 +87,7 @@ They need:
 - `build/upstream/seyfert`: `npm install --ignore-scripts --legacy-peer-deps` of
   `@slipher/eslint-plugin@1.1.0`, `seyfert@5.2.0` and `@typescript-eslint/utils@8.62.0`, with
   `node_modules/eslint` and `node_modules/typescript` linked to those of `build/eval/spider-byte`
-  (ESLint 10.6.0, TypeScript 6.0.3), which the plugin uses;
+  (ESLint 10.15.0, TypeScript 6.0.3), which the plugin uses;
 - the `@types/node` and `undici-types` of `build/upstream/types`.
 
 `tests/upstream/seyfert/setup.sh DIR` makes the fixtures they lint in (their `tsconfig.json` and
@@ -99,17 +99,17 @@ of every rule with an `expected.txt`). The same seyfert and types are linked by
 ## ESLint core
 
 The 98 rules of ESLint core of batches C1 to C8 come with the cases of their tests in ESLint
-v10.6.0 (`tests/lib/rules/<rule>.js`), in the same `upstream.json` form: 7,391 cases. ESLint's
+v10.15.0 (`tests/lib/rules/<rule>.js`), in the same `upstream.json` form: 7,391 cases. ESLint's
 RuleTester makes one pass of fixes (an `output` is the text after it), typescript-eslint's up to 10:
 both scripts make the passes of the rule's own RuleTester. The cases are
 JavaScript and veslint lints only TypeScript, so they run in the fixtures of typescript-eslint
 above: each one is the text of `file.ts` (`react.tsx` when it has JSX), with the `languageOptions`
 of its test (its `ecmaVersion`, `sourceType` and `globals`). ESLint runs them with typescript-eslint's
 parser; one case does not give what its test expects there (`known.txt`). They need a sparse clone
-of ESLint at v10.6.0 in `build/upstream/eslint`:
+of ESLint at v10.15.0 in `build/upstream/eslint`:
 
 ```sh
-git clone --depth 1 --branch v10.6.0 --filter=blob:none --sparse \
+git clone --depth 1 --branch v10.15.0 --filter=blob:none --sparse \
   https://github.com/eslint/eslint build/upstream/eslint
 cd build/upstream/eslint
 git sparse-checkout set tests/lib/rules tests/_utils tests/fixtures lib conf /package.json /LICENSE
@@ -122,7 +122,7 @@ The test files are loaded with a stub of ESLint's RuleTester and of `tests/_util
 
 ## eslint-plugin-unicorn (the `unicorn/*` rules)
 
-The `unicorn/*` rules carry the cases of `test/<rule>.js` of eslint-plugin-unicorn v64.0.0, the
+The `unicorn/*` rules carry the cases of `test/<rule>.js` of eslint-plugin-unicorn v79.0.0, the
 version of `build/eval`. Its tests run with AVA through `test/utils/test.js`, which
 `tools/upstream/unicorn-test.mjs` stands in for while `tools/gen_upstream_cases.mjs` loads them:
 `test(…)` and `test.typescript(…)` record their cases with the errors they expect, and
@@ -138,7 +138,7 @@ makes one pass of fixes and does not report unused disable directives. A case of
 skipped. They need a sparse clone of the plugin and `outdent`, which the tests import:
 
 ```sh
-git clone --depth 1 --branch v64.0.0 --filter=blob:none --sparse \
+git clone --depth 1 --branch v79.0.0 --filter=blob:none --sparse \
   https://github.com/sindresorhus/eslint-plugin-unicorn build/upstream/unicorn
 git -C build/upstream/unicorn sparse-checkout set test rules /package.json /license
 mkdir -p build/upstream/unicorn-deps

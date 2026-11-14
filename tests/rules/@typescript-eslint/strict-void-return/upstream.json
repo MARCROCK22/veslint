@@ -1,4 +1,4 @@
-{"rule": "@typescript-eslint/strict-void-return", "upstream": "typescript-eslint v8.62.0", "files": ["packages/eslint-plugin/tests/rules/strict-void-return.test.ts"],
+{"rule": "@typescript-eslint/strict-void-return", "upstream": "typescript-eslint v8.72.2", "files": ["packages/eslint-plugin/tests/rules/strict-void-return.test.ts"],
 "messages": {"asyncFunc":"Async function used in a context where a void function is expected.","nonVoidFunc":"Value-returning function used in a context where a void function is expected.","nonVoidReturn":"Value returned in a context where a void return is expected.","suggestAddVoidOp":"Add a void operator to discard the return value.","suggestWrapInAsyncIIFE":"Wrap the function body in an async IIFE."},
 "cases": [
 {"id":"strict-void-return/v0","kind":"valid","code":"\ndeclare function foo(cb: {}): void;\nfoo(() => () => []);\n      ","file":"file.ts","tsconfig":"tsconfig.json","via":"service"},

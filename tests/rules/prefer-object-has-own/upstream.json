@@ -1,4 +1,4 @@
-{"rule": "prefer-object-has-own", "upstream": "eslint v10.6.0", "files": ["tests/lib/rules/prefer-object-has-own.js"],
+{"rule": "prefer-object-has-own", "upstream": "eslint v10.15.0", "files": ["tests/lib/rules/prefer-object-has-own.js"],
 "messages": {"useHasOwn":"Use 'Object.hasOwn()' instead of 'Object.prototype.hasOwnProperty.call()'."},
 "cases": [
 {"id":"prefer-object-has-own/v0","kind":"valid","code":"Object","file":"file.ts","tsconfig":null,"languageOptions":{"ecmaVersion":2022}},

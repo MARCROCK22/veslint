@@ -1,4 +1,4 @@
-{"rule": "@typescript-eslint/no-unsafe-declaration-merging", "upstream": "typescript-eslint v8.62.0", "files": ["packages/eslint-plugin/tests/rules/no-unsafe-declaration-merging.test.ts"],
+{"rule": "@typescript-eslint/no-unsafe-declaration-merging", "upstream": "typescript-eslint v8.72.2", "files": ["packages/eslint-plugin/tests/rules/no-unsafe-declaration-merging.test.ts"],
 "messages": {"unsafeMerging":"Unsafe declaration merging between classes and interfaces."},
 "cases": [
 {"id":"no-unsafe-declaration-merging/v0","kind":"valid","code":"\ninterface Foo {}\nclass Bar implements Foo {}\n    ","file":"file.ts","tsconfig":"tsconfig.json","via":"service"},

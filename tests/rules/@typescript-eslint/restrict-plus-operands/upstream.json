@@ -1,4 +1,4 @@
-{"rule": "@typescript-eslint/restrict-plus-operands", "upstream": "typescript-eslint v8.62.0", "files": ["packages/eslint-plugin/tests/rules/restrict-plus-operands.test.ts"],
+{"rule": "@typescript-eslint/restrict-plus-operands", "upstream": "typescript-eslint v8.72.2", "files": ["packages/eslint-plugin/tests/rules/restrict-plus-operands.test.ts"],
 "messages": {"bigintAndNumber":"Numeric '+' operations must either be both bigints or both numbers. Got `{{left}}` + `{{right}}`.","invalid":"Invalid operand for a '+' operation. Operands must each be a number or {{stringLike}}. Got `{{type}}`.","mismatched":"Operands of '+' operations must be a number or {{stringLike}}. Got `{{left}}` + `{{right}}`."},
 "cases": [
 {"id":"restrict-plus-operands/v0","kind":"valid","code":"let x = 5;","file":"file.ts","tsconfig":"tsconfig.json","via":"service"},

@@ -1,4 +1,4 @@
-{"rule": "@typescript-eslint/no-useless-empty-export", "upstream": "typescript-eslint v8.62.0", "files": ["packages/eslint-plugin/tests/rules/no-useless-empty-export.test.ts"],
+{"rule": "@typescript-eslint/no-useless-empty-export", "upstream": "typescript-eslint v8.72.2", "files": ["packages/eslint-plugin/tests/rules/no-useless-empty-export.test.ts"],
 "messages": {"uselessExport":"Empty export does nothing and can be removed."},
 "cases": [
 {"id":"no-useless-empty-export/v0","kind":"valid","code":"declare module '_'","file":"file.ts","tsconfig":null,"parserOptions":{"ecmaVersion":2020,"sourceType":"module"}},

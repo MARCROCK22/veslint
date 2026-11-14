@@ -1,4 +1,4 @@
-{"rule": "@typescript-eslint/no-for-in-array", "upstream": "typescript-eslint v8.62.0", "files": ["packages/eslint-plugin/tests/rules/no-for-in-array.test.ts"],
+{"rule": "@typescript-eslint/no-for-in-array", "upstream": "typescript-eslint v8.72.2", "files": ["packages/eslint-plugin/tests/rules/no-for-in-array.test.ts"],
 "messages": {"forInViolation":"For-in loops over arrays skips holes, returns indices as strings, and may visit the prototype chain or other enumerable properties. Use a more robust iteration method such as for-of or array.forEach instead."},
 "cases": [
 {"id":"no-for-in-array/v0","kind":"valid","code":"\nfor (const x of [3, 4, 5]) {\n  console.log(x);\n}\n    ","file":"file.ts","tsconfig":"tsconfig.json","via":"service"},

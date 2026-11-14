@@ -894,10 +894,10 @@ upstream_rules_of() { # plugin directory of tests/rules
 mapfile -t typescript_eslint_upstream < <(upstream_rules_of @typescript-eslint)
 mapfile -t seyfert_upstream < <(upstream_rules_of seyfert)
 # The rules of ESLint core (tests/rules/<rule>/upstream.json, from tests/lib/rules/<rule>.js of
-# ESLint 10.6.0): their JavaScript cases are linted as TypeScript in typescript-eslint's fixtures.
+# ESLint 10.15.0): their JavaScript cases are linted as TypeScript in typescript-eslint's fixtures.
 mapfile -t core_upstream < <(find tests/rules -mindepth 2 -maxdepth 2 -name upstream.json | sed -E 's|^tests/rules/(.*)/upstream\.json$|\1|' | sorted)
 # The rules of eslint-plugin-unicorn (tests/rules/unicorn/<rule>/upstream.json, from test/<rule>.js
-# of v64.0.0), the same way.
+# of v79.0.0), the same way.
 mapfile -t unicorn_upstream < <(upstream_rules_of unicorn)
 if tests/upstream/setup.sh "$TMP/upstream" 2> "$TMP/upstream-setup.err"; then
 	upstream_check "typescript-eslint's own tests" "$TMP/upstream" "$TMP/upstream-configs" "${typescript_eslint_upstream[@]}"

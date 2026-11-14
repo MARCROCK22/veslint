@@ -1,4 +1,4 @@
-{"rule": "prefer-arrow-callback", "upstream": "eslint v10.6.0", "files": ["tests/lib/rules/prefer-arrow-callback.js"],
+{"rule": "prefer-arrow-callback", "upstream": "eslint v10.15.0", "files": ["tests/lib/rules/prefer-arrow-callback.js"],
 "messages": {"preferArrowCallback":"Unexpected function expression."},
 "cases": [
 {"id":"prefer-arrow-callback/r0/v0","kind":"valid","code":"foo(a => a);","file":"file.ts","tsconfig":null,"languageOptions":{"ecmaVersion":2020,"sourceType":"script"}},

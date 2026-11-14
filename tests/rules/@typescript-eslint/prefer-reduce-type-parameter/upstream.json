@@ -1,4 +1,4 @@
-{"rule": "@typescript-eslint/prefer-reduce-type-parameter", "upstream": "typescript-eslint v8.62.0", "files": ["packages/eslint-plugin/tests/rules/prefer-reduce-type-parameter.test.ts"],
+{"rule": "@typescript-eslint/prefer-reduce-type-parameter", "upstream": "typescript-eslint v8.72.2", "files": ["packages/eslint-plugin/tests/rules/prefer-reduce-type-parameter.test.ts"],
 "messages": {"preferTypeParameter":"Unnecessary assertion: Array#reduce accepts a type parameter for the default value."},
 "cases": [
 {"id":"prefer-reduce-type-parameter/v0","kind":"valid","code":"\nnew (class Mine {\n  reduce() {}\n})().reduce(() => {}, 1 as any);\n    ","file":"file.ts","tsconfig":"tsconfig.json","via":"service"},

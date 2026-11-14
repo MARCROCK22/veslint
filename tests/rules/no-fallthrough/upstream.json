@@ -1,4 +1,4 @@
-{"rule": "no-fallthrough", "upstream": "eslint v10.6.0", "files": ["tests/lib/rules/no-fallthrough.js"],
+{"rule": "no-fallthrough", "upstream": "eslint v10.15.0", "files": ["tests/lib/rules/no-fallthrough.js"],
 "messages": {"unusedFallthroughComment":"Found a comment that would permit fallthrough, but case cannot fall through.","case":"Expected a 'break' statement before 'case'.","default":"Expected a 'break' statement before 'default'."},
 "cases": [
 {"id":"no-fallthrough/v0","kind":"valid","code":"switch(foo) { case 0: a(); /* falls through */ case 1: b(); }","file":"file.ts","tsconfig":null},

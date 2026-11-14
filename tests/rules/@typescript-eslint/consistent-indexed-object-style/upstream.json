@@ -1,4 +1,4 @@
-{"rule": "@typescript-eslint/consistent-indexed-object-style", "upstream": "typescript-eslint v8.62.0", "files": ["packages/eslint-plugin/tests/rules/consistent-indexed-object-style.test.ts"],
+{"rule": "@typescript-eslint/consistent-indexed-object-style", "upstream": "typescript-eslint v8.72.2", "files": ["packages/eslint-plugin/tests/rules/consistent-indexed-object-style.test.ts"],
 "messages": {"preferIndexSignature":"An index signature is preferred over a record.","preferIndexSignatureSuggestion":"Change into an index signature instead of a record.","preferRecord":"A record is preferred over an index signature.","preferRecordSuggestion":"Change into a record instead of an index signature."},
 "cases": [
 {"id":"consistent-indexed-object-style/v0","kind":"valid","code":"type Foo = Record<string, any>;","file":"file.ts","tsconfig":null},

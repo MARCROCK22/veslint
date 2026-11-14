@@ -1,4 +1,4 @@
-{"rule": "@typescript-eslint/no-unnecessary-type-parameters", "upstream": "typescript-eslint v8.62.0", "files": ["packages/eslint-plugin/tests/rules/no-unnecessary-type-parameters.test.ts"],
+{"rule": "@typescript-eslint/no-unnecessary-type-parameters", "upstream": "typescript-eslint v8.72.2", "files": ["packages/eslint-plugin/tests/rules/no-unnecessary-type-parameters.test.ts"],
 "messages": {"replaceUsagesWithConstraint":"Replace all usages of type parameter with its constraint.","sole":"Type parameter {{name}} is {{uses}} in the {{descriptor}} signature."},
 "cases": [
 {"id":"no-unnecessary-type-parameters/v0","kind":"valid","code":"\nclass ClassyArray<T> {\n  arr: T[];\n}\n    ","file":"file.ts","tsconfig":"tsconfig.json","via":"service"},

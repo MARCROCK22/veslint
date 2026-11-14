@@ -1,4 +1,4 @@
-{"rule": "@typescript-eslint/no-unused-expressions", "upstream": "typescript-eslint v8.62.0", "files": ["packages/eslint-plugin/tests/rules/no-unused-expressions.test.ts"],
+{"rule": "@typescript-eslint/no-unused-expressions", "upstream": "typescript-eslint v8.72.2", "files": ["packages/eslint-plugin/tests/rules/no-unused-expressions.test.ts"],
 "messages": {"unusedExpression":"Expected an assignment or function call and instead saw an expression."},
 "cases": [
 {"id":"no-unused-expressions/v0","kind":"valid","code":"\ntest.age?.toLocaleString();\n    ","file":"file.ts","tsconfig":null,"parserOptions":{"ecmaVersion":6}},

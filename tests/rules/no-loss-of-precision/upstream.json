@@ -1,4 +1,4 @@
-{"rule": "no-loss-of-precision", "upstream": "eslint v10.6.0", "files": ["tests/lib/rules/no-loss-of-precision.js"],
+{"rule": "no-loss-of-precision", "upstream": "eslint v10.15.0", "files": ["tests/lib/rules/no-loss-of-precision.js"],
 "messages": {"noLossOfPrecision":"This number literal will lose precision at runtime."},
 "cases": [
 {"id":"no-loss-of-precision/r0/v0","kind":"valid","code":"var x = 12345","file":"file.ts","tsconfig":null,"languageOptions":{"ecmaVersion":5,"sourceType":"script"}},

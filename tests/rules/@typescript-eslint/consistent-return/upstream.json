@@ -1,4 +1,4 @@
-{"rule": "@typescript-eslint/consistent-return", "upstream": "typescript-eslint v8.62.0", "files": ["packages/eslint-plugin/tests/rules/consistent-return.test.ts"],
+{"rule": "@typescript-eslint/consistent-return", "upstream": "typescript-eslint v8.72.2", "files": ["packages/eslint-plugin/tests/rules/consistent-return.test.ts"],
 "messages": {"missingReturn":"Expected to return a value at the end of {{name}}.","missingReturnValue":"{{name}} expected a return value.","unexpectedReturnValue":"{{name}} expected no return value."},
 "cases": [
 {"id":"consistent-return/v0","kind":"valid","code":"\nfunction foo() {\n  return;\n}\n    ","file":"file.ts","tsconfig":"tsconfig.json","via":"service"},

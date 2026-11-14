@@ -1,4 +1,4 @@
-{"rule": "no-global-assign", "upstream": "eslint v10.6.0", "files": ["tests/lib/rules/no-global-assign.js"],
+{"rule": "no-global-assign", "upstream": "eslint v10.15.0", "files": ["tests/lib/rules/no-global-assign.js"],
 "messages": {"globalShouldNotBeModified":"Read-only global '{{name}}' should not be modified."},
 "cases": [
 {"id":"no-global-assign/v0","kind":"valid","code":"string = 'hello world';","file":"file.ts","tsconfig":null,"languageOptions":{"ecmaVersion":5,"sourceType":"script"}},

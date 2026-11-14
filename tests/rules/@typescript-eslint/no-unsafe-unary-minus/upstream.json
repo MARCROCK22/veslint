@@ -1,4 +1,4 @@
-{"rule": "@typescript-eslint/no-unsafe-unary-minus", "upstream": "typescript-eslint v8.62.0", "files": ["packages/eslint-plugin/tests/rules/no-unsafe-unary-minus.test.ts"],
+{"rule": "@typescript-eslint/no-unsafe-unary-minus", "upstream": "typescript-eslint v8.72.2", "files": ["packages/eslint-plugin/tests/rules/no-unsafe-unary-minus.test.ts"],
 "messages": {"unaryMinus":"Argument of unary negation should be assignable to number | bigint but is {{type}} instead."},
 "cases": [
 {"id":"no-unsafe-unary-minus/v0","kind":"valid","code":"+42;","file":"file.ts","tsconfig":"tsconfig.json","via":"service"},

@@ -1,4 +1,4 @@
-{"rule": "prefer-rest-params", "upstream": "eslint v10.6.0", "files": ["tests/lib/rules/prefer-rest-params.js"],
+{"rule": "prefer-rest-params", "upstream": "eslint v10.15.0", "files": ["tests/lib/rules/prefer-rest-params.js"],
 "messages": {"preferRestParams":"Use the rest parameters instead of 'arguments'."},
 "cases": [
 {"id":"prefer-rest-params/v0","kind":"valid","code":"arguments;","file":"file.ts","tsconfig":null,"languageOptions":{"ecmaVersion":6,"sourceType":"script"}},

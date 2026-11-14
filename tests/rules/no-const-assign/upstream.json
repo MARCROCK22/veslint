@@ -1,4 +1,4 @@
-{"rule": "no-const-assign", "upstream": "eslint v10.6.0", "files": ["tests/lib/rules/no-const-assign.js"],
+{"rule": "no-const-assign", "upstream": "eslint v10.15.0", "files": ["tests/lib/rules/no-const-assign.js"],
 "messages": {"const":"'{{name}}' is constant."},
 "cases": [
 {"id":"no-const-assign/v0","kind":"valid","code":"const x = 0; { let x; x = 1; }","file":"file.ts","tsconfig":null},

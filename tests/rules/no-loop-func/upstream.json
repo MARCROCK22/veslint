@@ -1,4 +1,4 @@
-{"rule": "no-loop-func", "upstream": "eslint v10.6.0", "files": ["tests/lib/rules/no-loop-func.js"],
+{"rule": "no-loop-func", "upstream": "eslint v10.15.0", "files": ["tests/lib/rules/no-loop-func.js"],
 "messages": {"unsafeRefs":"Function declared in a loop contains unsafe references to variable(s) {{ varNames }}."},
 "cases": [
 {"id":"no-loop-func/r0/v0","kind":"valid","code":"string = 'function a() {}';","file":"file.ts","tsconfig":null},

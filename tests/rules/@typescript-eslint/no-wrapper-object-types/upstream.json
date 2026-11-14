@@ -1,4 +1,4 @@
-{"rule": "@typescript-eslint/no-wrapper-object-types", "upstream": "typescript-eslint v8.62.0", "files": ["packages/eslint-plugin/tests/rules/no-wrapper-object-types.test.ts"],
+{"rule": "@typescript-eslint/no-wrapper-object-types", "upstream": "typescript-eslint v8.72.2", "files": ["packages/eslint-plugin/tests/rules/no-wrapper-object-types.test.ts"],
 "messages": {"bannedClassType":"Prefer using the primitive `{{preferred}}` as a type name, rather than the upper-cased `{{typeName}}`."},
 "cases": [
 {"id":"no-wrapper-object-types/v0","kind":"valid","code":"let value: NumberLike;","file":"file.ts","tsconfig":null},

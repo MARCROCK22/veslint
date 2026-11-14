@@ -1,4 +1,4 @@
-{"rule": "no-multi-str", "upstream": "eslint v10.6.0", "files": ["tests/lib/rules/no-multi-str.js"],
+{"rule": "no-multi-str", "upstream": "eslint v10.15.0", "files": ["tests/lib/rules/no-multi-str.js"],
 "messages": {"multilineString":"Multiline support is limited to browsers supporting ES5 only."},
 "cases": [
 {"id":"no-multi-str/v0","kind":"valid","code":"var a = 'Line 1 Line 2';","file":"file.ts","tsconfig":null},

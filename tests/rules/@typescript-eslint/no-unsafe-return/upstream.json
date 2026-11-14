@@ -1,4 +1,4 @@
-{"rule": "@typescript-eslint/no-unsafe-return", "upstream": "typescript-eslint v8.62.0", "files": ["packages/eslint-plugin/tests/rules/no-unsafe-return.test.ts"],
+{"rule": "@typescript-eslint/no-unsafe-return", "upstream": "typescript-eslint v8.72.2", "files": ["packages/eslint-plugin/tests/rules/no-unsafe-return.test.ts"],
 "messages": {"unsafeReturn":"Unsafe return of a value of type {{type}}.","unsafeReturnAssignment":"Unsafe return of type `{{sender}}` from function with return type `{{receiver}}`.","unsafeReturnThis":"Unsafe return of a value of type `{{type}}`. `this` is typed as `any`.\nYou can try to fix this by turning on the `noImplicitThis` compiler option, or adding a `this` parameter to the function."},
 "cases": [
 {"id":"no-unsafe-return/v0","kind":"valid","code":"\nfunction foo() {\n  return;\n}\n    ","file":"file.ts","tsconfig":"tsconfig.noImplicitThis.json","via":"project"},

@@ -1,4 +1,4 @@
-{"rule": "no-label-var", "upstream": "eslint v10.6.0", "files": ["tests/lib/rules/no-label-var.js"],
+{"rule": "no-label-var", "upstream": "eslint v10.15.0", "files": ["tests/lib/rules/no-label-var.js"],
 "messages": {"identifierClashWithLabel":"Found identifier with same name as label."},
 "cases": [
 {"id":"no-label-var/v0","kind":"valid","code":"function bar() { q: for(;;) { break q; } } function foo () { var q = t; }","file":"file.ts","tsconfig":null},

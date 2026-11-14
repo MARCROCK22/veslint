@@ -1,4 +1,4 @@
-{"rule": "no-compare-neg-zero", "upstream": "eslint v10.6.0", "files": ["tests/lib/rules/no-compare-neg-zero.js"],
+{"rule": "no-compare-neg-zero", "upstream": "eslint v10.15.0", "files": ["tests/lib/rules/no-compare-neg-zero.js"],
 "messages": {"unexpected":"Do not use the '{{operator}}' operator to compare against -0.","suggestRemoveMinus":"Replace '-0' with '0' (keeps the current comparison behavior).","suggestObjectIs":"Replace with 'Object.is()' (changes the comparison to distinguish -0 from +0).","suggestNotObjectIs":"Replace with '!Object.is()' (changes the comparison to distinguish -0 from +0)."},
 "cases": [
 {"id":"no-compare-neg-zero/v0","kind":"valid","code":"x === 0","file":"file.ts","tsconfig":null},

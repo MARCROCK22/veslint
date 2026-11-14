@@ -1,4 +1,4 @@
-{"rule": "no-unreachable", "upstream": "eslint v10.6.0", "files": ["tests/lib/rules/no-unreachable.js"],
+{"rule": "no-unreachable", "upstream": "eslint v10.15.0", "files": ["tests/lib/rules/no-unreachable.js"],
 "messages": {"unreachableCode":"Unreachable code."},
 "cases": [
 {"id":"no-unreachable/v0","kind":"valid","code":"function foo() { function bar() { return 1; } return bar(); }","file":"file.ts","tsconfig":null,"languageOptions":{"ecmaVersion":5,"sourceType":"script"}},

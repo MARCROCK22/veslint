@@ -1,4 +1,4 @@
-{"rule": "grouped-accessor-pairs", "upstream": "eslint v10.6.0", "files": ["tests/lib/rules/grouped-accessor-pairs.js"],
+{"rule": "grouped-accessor-pairs", "upstream": "eslint v10.15.0", "files": ["tests/lib/rules/grouped-accessor-pairs.js"],
 "messages": {"notGrouped":"Accessor pair {{ formerName }} and {{ latterName }} should be grouped.","invalidOrder":"Expected {{ latterName }} to be before {{ formerName }}."},
 "cases": [
 {"id":"grouped-accessor-pairs/r0/v0","kind":"valid","code":"({})","file":"file.ts","tsconfig":null,"languageOptions":{"ecmaVersion":2022}},

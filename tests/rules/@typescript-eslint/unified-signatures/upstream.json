@@ -1,4 +1,4 @@
-{"rule": "@typescript-eslint/unified-signatures", "upstream": "typescript-eslint v8.62.0", "files": ["packages/eslint-plugin/tests/rules/unified-signatures.test.ts"],
+{"rule": "@typescript-eslint/unified-signatures", "upstream": "typescript-eslint v8.72.2", "files": ["packages/eslint-plugin/tests/rules/unified-signatures.test.ts"],
 "messages": {"allParametersAreSame":"{{failureStringStart}} with identical parameters.","omittingRestParameter":"{{failureStringStart}} with a rest parameter.","omittingSingleParameter":"{{failureStringStart}} with an optional parameter.","singleParameterDifference":"{{failureStringStart}} taking `{{types}}`."},
 "cases": [
 {"id":"unified-signatures/v0","kind":"valid","code":"\nfunction g(): void;\nfunction g(a: number, b: number): void;\nfunction g(a?: number, b?: number): void {}\n    ","file":"file.ts","tsconfig":null},

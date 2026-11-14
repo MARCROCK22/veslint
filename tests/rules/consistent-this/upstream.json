@@ -1,4 +1,4 @@
-{"rule": "consistent-this", "upstream": "eslint v10.6.0", "files": ["tests/lib/rules/consistent-this.js"],
+{"rule": "consistent-this", "upstream": "eslint v10.15.0", "files": ["tests/lib/rules/consistent-this.js"],
 "messages": {"aliasNotAssignedToThis":"Designated alias '{{name}}' is not assigned to 'this'.","unexpectedAlias":"Unexpected alias '{{name}}' for 'this'."},
 "cases": [
 {"id":"consistent-this/v0","kind":"valid","code":"var foo = 42, that = this","file":"file.ts","tsconfig":null,"languageOptions":{"ecmaVersion":5,"sourceType":"script"}},

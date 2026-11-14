@@ -1,4 +1,4 @@
-{"rule": "@typescript-eslint/await-thenable", "upstream": "typescript-eslint v8.62.0", "files": ["packages/eslint-plugin/tests/rules/await-thenable.test.ts"],
+{"rule": "@typescript-eslint/await-thenable", "upstream": "typescript-eslint v8.72.2", "files": ["packages/eslint-plugin/tests/rules/await-thenable.test.ts"],
 "messages": {"await":"Unexpected `await` of a non-Promise (non-\"Thenable\") value.","awaitUsingOfNonAsyncDisposable":"Unexpected `await using` of a value that is not async disposable.","convertToOrdinaryFor":"Convert to an ordinary `for...of` loop.","forAwaitOfNonAsyncIterable":"Unexpected `for await...of` of a value that is not async iterable.","invalidPromiseAggregatorInput":"Unexpected iterable of non-Promise (non-\"Thenable\") values passed to promise aggregator.","removeAwait":"Remove unnecessary `await`."},
 "cases": [
 {"id":"await-thenable/v0","kind":"valid","code":"\nasync function test() {\n  await Promise.resolve('value');\n  await Promise.reject(new Error('message'));\n}\n    ","file":"file.ts","tsconfig":"tsconfig.json","via":"service"},

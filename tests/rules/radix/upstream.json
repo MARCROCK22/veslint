@@ -1,4 +1,4 @@
-{"rule": "radix", "upstream": "eslint v10.6.0", "files": ["tests/lib/rules/radix.js"],
+{"rule": "radix", "upstream": "eslint v10.15.0", "files": ["tests/lib/rules/radix.js"],
 "messages": {"missingParameters":"Missing parameters.","missingRadix":"Missing radix parameter.","invalidRadix":"Invalid radix parameter, must be an integer between 2 and 36.","addRadixParameter10":"Add radix parameter `10` for parsing decimal numbers."},
 "cases": [
 {"id":"radix/v0","kind":"valid","code":"parseInt(\"10\", 10);","file":"file.ts","tsconfig":null},

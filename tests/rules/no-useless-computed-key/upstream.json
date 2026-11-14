@@ -1,4 +1,4 @@
-{"rule": "no-useless-computed-key", "upstream": "eslint v10.6.0", "files": ["tests/lib/rules/no-useless-computed-key.js"],
+{"rule": "no-useless-computed-key", "upstream": "eslint v10.15.0", "files": ["tests/lib/rules/no-useless-computed-key.js"],
 "messages": {"unnecessarilyComputedProperty":"Unnecessarily computed property [{{property}}] found."},
 "cases": [
 {"id":"no-useless-computed-key/v0","kind":"valid","code":"({ 'a': 0, b(){} })","file":"file.ts","tsconfig":null,"languageOptions":{"ecmaVersion":2022}},

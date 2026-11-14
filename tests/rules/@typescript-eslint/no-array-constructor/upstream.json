@@ -1,4 +1,4 @@
-{"rule": "@typescript-eslint/no-array-constructor", "upstream": "typescript-eslint v8.62.0", "files": ["packages/eslint-plugin/tests/rules/no-array-constructor.test.ts"],
+{"rule": "@typescript-eslint/no-array-constructor", "upstream": "typescript-eslint v8.72.2", "files": ["packages/eslint-plugin/tests/rules/no-array-constructor.test.ts"],
 "messages": {"useLiteral":"The array literal notation [] is preferable."},
 "cases": [
 {"id":"no-array-constructor/v0","kind":"valid","code":"new Array(x);","file":"file.ts","tsconfig":null},

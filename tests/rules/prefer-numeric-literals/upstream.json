@@ -1,4 +1,4 @@
-{"rule": "prefer-numeric-literals", "upstream": "eslint v10.6.0", "files": ["tests/lib/rules/prefer-numeric-literals.js"],
+{"rule": "prefer-numeric-literals", "upstream": "eslint v10.15.0", "files": ["tests/lib/rules/prefer-numeric-literals.js"],
 "messages": {"useLiteral":"Use {{system}} literals instead of {{functionName}}()."},
 "cases": [
 {"id":"prefer-numeric-literals/v0","kind":"valid","code":"parseInt(1);","file":"file.ts","tsconfig":null,"languageOptions":{"ecmaVersion":2021}},

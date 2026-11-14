@@ -1,4 +1,4 @@
-{"rule": "@typescript-eslint/no-duplicate-enum-values", "upstream": "typescript-eslint v8.62.0", "files": ["packages/eslint-plugin/tests/rules/no-duplicate-enum-values.test.ts"],
+{"rule": "@typescript-eslint/no-duplicate-enum-values", "upstream": "typescript-eslint v8.72.2", "files": ["packages/eslint-plugin/tests/rules/no-duplicate-enum-values.test.ts"],
 "messages": {"duplicateValue":"Duplicate enum member value {{value}}."},
 "cases": [
 {"id":"no-duplicate-enum-values/v0","kind":"valid","code":"\nenum E {\n  A,\n  B,\n}\n    ","file":"file.ts","tsconfig":null},

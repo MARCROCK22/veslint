@@ -1,4 +1,4 @@
-{"rule": "@typescript-eslint/no-unnecessary-parameter-property-assignment", "upstream": "typescript-eslint v8.62.0", "files": ["packages/eslint-plugin/tests/rules/no-unnecessary-parameter-property-assignment.test.ts"],
+{"rule": "@typescript-eslint/no-unnecessary-parameter-property-assignment", "upstream": "typescript-eslint v8.72.2", "files": ["packages/eslint-plugin/tests/rules/no-unnecessary-parameter-property-assignment.test.ts"],
 "messages": {"unnecessaryAssign":"This assignment is unnecessary since it is already assigned by a parameter property."},
 "cases": [
 {"id":"no-unnecessary-parameter-property-assignment/v0","kind":"valid","code":"\nclass Foo {\n  constructor(foo: string) {}\n}\n    ","file":"file.ts","tsconfig":null},

@@ -1,4 +1,4 @@
-{"rule": "no-self-compare", "upstream": "eslint v10.6.0", "files": ["tests/lib/rules/no-self-compare.js"],
+{"rule": "no-self-compare", "upstream": "eslint v10.15.0", "files": ["tests/lib/rules/no-self-compare.js"],
 "messages": {"comparingToSelf":"Comparing to itself is potentially pointless."},
 "cases": [
 {"id":"no-self-compare/v0","kind":"valid","code":"if (x === y) { }","file":"file.ts","tsconfig":null},

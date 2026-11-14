@@ -1,4 +1,4 @@
-{"rule": "@typescript-eslint/no-empty-function", "upstream": "typescript-eslint v8.62.0", "files": ["packages/eslint-plugin/tests/rules/no-empty-function.test.ts"],
+{"rule": "@typescript-eslint/no-empty-function", "upstream": "typescript-eslint v8.72.2", "files": ["packages/eslint-plugin/tests/rules/no-empty-function.test.ts"],
 "messages": {"unexpected":"Unexpected empty {{name}}.","suggestComment":"Add comment inside empty {{name}}."},
 "cases": [
 {"id":"no-empty-function/v0","kind":"valid","code":"\nclass Person {\n  private name: string;\n  constructor(name: string) {\n    this.name = name;\n  }\n}\n      ","file":"file.ts","tsconfig":null},

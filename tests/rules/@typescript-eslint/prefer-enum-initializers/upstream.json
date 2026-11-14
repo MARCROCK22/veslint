@@ -1,4 +1,4 @@
-{"rule": "@typescript-eslint/prefer-enum-initializers", "upstream": "typescript-eslint v8.62.0", "files": ["packages/eslint-plugin/tests/rules/prefer-enum-initializers.test.ts"],
+{"rule": "@typescript-eslint/prefer-enum-initializers", "upstream": "typescript-eslint v8.72.2", "files": ["packages/eslint-plugin/tests/rules/prefer-enum-initializers.test.ts"],
 "messages": {"defineInitializer":"The value of the member '{{ name }}' should be explicitly defined.","defineInitializerSuggestion":"Can be fixed to {{ name }} = {{ suggested }}"},
 "cases": [
 {"id":"prefer-enum-initializers/v0","kind":"valid","code":"\nenum Direction {}\n    ","file":"file.ts","tsconfig":null},

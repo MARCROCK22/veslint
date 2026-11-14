@@ -1,4 +1,4 @@
-{"rule": "no-unreachable-loop", "upstream": "eslint v10.6.0", "files": ["tests/lib/rules/no-unreachable-loop.js"],
+{"rule": "no-unreachable-loop", "upstream": "eslint v10.15.0", "files": ["tests/lib/rules/no-unreachable-loop.js"],
 "messages": {"invalid":"Invalid loop. Its body allows only one iteration."},
 "cases": [
 {"id":"no-unreachable-loop/v0","kind":"valid","code":"while (a) ;","file":"file.ts","tsconfig":null,"languageOptions":{"ecmaVersion":2018}},

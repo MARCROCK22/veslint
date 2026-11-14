@@ -1,4 +1,4 @@
-{"rule": "no-octal-escape", "upstream": "eslint v10.6.0", "files": ["tests/lib/rules/no-octal-escape.js"],
+{"rule": "no-octal-escape", "upstream": "eslint v10.15.0", "files": ["tests/lib/rules/no-octal-escape.js"],
 "messages": {"octalEscapeSequence":"Don't use octal: '\\{{sequence}}'. Use '\\u....' instead."},
 "cases": [
 {"id":"no-octal-escape/v0","kind":"valid","code":"var foo = \"\\x51\";","file":"file.ts","tsconfig":null,"languageOptions":{"ecmaVersion":5,"sourceType":"script"}},

@@ -1,4 +1,4 @@
-{"rule": "no-useless-return", "upstream": "eslint v10.6.0", "files": ["tests/lib/rules/no-useless-return.js"],
+{"rule": "no-useless-return", "upstream": "eslint v10.15.0", "files": ["tests/lib/rules/no-useless-return.js"],
 "messages": {"unnecessaryReturn":"Unnecessary return statement."},
 "cases": [
 {"id":"no-useless-return/v0","kind":"valid","code":"function foo() { return 5; }","file":"file.ts","tsconfig":null,"languageOptions":{"ecmaVersion":5,"sourceType":"script"}},

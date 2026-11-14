@@ -1,4 +1,4 @@
-{"rule": "@typescript-eslint/unbound-method", "upstream": "typescript-eslint v8.62.0", "files": ["packages/eslint-plugin/tests/rules/unbound-method.test.ts"],
+{"rule": "@typescript-eslint/unbound-method", "upstream": "typescript-eslint v8.72.2", "files": ["packages/eslint-plugin/tests/rules/unbound-method.test.ts"],
 "messages": {"unbound":"A method that is not declared with `this: void` may cause unintentional scoping of `this` when separated from its object.\nConsider using an arrow function or explicitly `.bind()`ing the method to avoid calling the method with an unintended `this` value. ","unboundWithoutThisAnnotation":"A method that is not declared with `this: void` may cause unintentional scoping of `this` when separated from its object.\nConsider using an arrow function or explicitly `.bind()`ing the method to avoid calling the method with an unintended `this` value. \nIf a function does not access `this`, it can be annotated with `this: void`."},
 "cases": [
 {"id":"unbound-method/v0","kind":"valid","code":"Promise.resolve().then(console.log);","file":"file.ts","tsconfig":"tsconfig.json","via":"service"},

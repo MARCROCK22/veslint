@@ -1,4 +1,4 @@
-{"rule": "@typescript-eslint/prefer-promise-reject-errors", "upstream": "typescript-eslint v8.62.0", "files": ["packages/eslint-plugin/tests/rules/prefer-promise-reject-errors.test.ts"],
+{"rule": "@typescript-eslint/prefer-promise-reject-errors", "upstream": "typescript-eslint v8.72.2", "files": ["packages/eslint-plugin/tests/rules/prefer-promise-reject-errors.test.ts"],
 "messages": {"rejectAnError":"Expected the Promise rejection reason to be an Error."},
 "cases": [
 {"id":"prefer-promise-reject-errors/v0","kind":"valid","code":"Promise.resolve(5);","file":"file.ts","tsconfig":"tsconfig.json","via":"service"},

@@ -1,4 +1,4 @@
-{"rule": "no-regex-spaces", "upstream": "eslint v10.6.0", "files": ["tests/lib/rules/no-regex-spaces.js"],
+{"rule": "no-regex-spaces", "upstream": "eslint v10.15.0", "files": ["tests/lib/rules/no-regex-spaces.js"],
 "messages": {"multipleSpaces":"Spaces are hard to count. Use {{{length}}}."},
 "cases": [
 {"id":"no-regex-spaces/v0","kind":"valid","code":"var foo = /foo/;","file":"file.ts","tsconfig":null},

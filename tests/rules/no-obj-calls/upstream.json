@@ -1,4 +1,4 @@
-{"rule": "no-obj-calls", "upstream": "eslint v10.6.0", "files": ["tests/lib/rules/no-obj-calls.js"],
+{"rule": "no-obj-calls", "upstream": "eslint v10.15.0", "files": ["tests/lib/rules/no-obj-calls.js"],
 "messages": {"unexpectedCall":"'{{name}}' is not a function.","unexpectedRefCall":"'{{name}}' is reference to '{{ref}}', which is not a function."},
 "cases": [
 {"id":"no-obj-calls/v0","kind":"valid","code":"var x = Math;","file":"file.ts","tsconfig":null,"languageOptions":{"ecmaVersion":5,"sourceType":"script"}},

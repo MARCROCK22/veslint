@@ -1,4 +1,4 @@
-{"rule": "prefer-template", "upstream": "eslint v10.6.0", "files": ["tests/lib/rules/prefer-template.js"],
+{"rule": "prefer-template", "upstream": "eslint v10.15.0", "files": ["tests/lib/rules/prefer-template.js"],
 "messages": {"unexpectedStringConcatenation":"Unexpected string concatenation."},
 "cases": [
 {"id":"prefer-template/v0","kind":"valid","code":"'use strict';","file":"file.ts","tsconfig":null,"languageOptions":{"ecmaVersion":6,"sourceType":"script"}},

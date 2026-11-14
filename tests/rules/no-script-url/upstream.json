@@ -1,4 +1,4 @@
-{"rule": "no-script-url", "upstream": "eslint v10.6.0", "files": ["tests/lib/rules/no-script-url.js"],
+{"rule": "no-script-url", "upstream": "eslint v10.15.0", "files": ["tests/lib/rules/no-script-url.js"],
 "messages": {"unexpectedScriptURL":"Script URL is a form of eval."},
 "cases": [
 {"id":"no-script-url/v0","kind":"valid","code":"var a = 'Hello World!';","file":"file.ts","tsconfig":null},

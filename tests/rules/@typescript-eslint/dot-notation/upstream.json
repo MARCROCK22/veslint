@@ -1,4 +1,4 @@
-{"rule": "@typescript-eslint/dot-notation", "upstream": "typescript-eslint v8.62.0", "files": ["packages/eslint-plugin/tests/rules/dot-notation.test.ts"],
+{"rule": "@typescript-eslint/dot-notation", "upstream": "typescript-eslint v8.72.2", "files": ["packages/eslint-plugin/tests/rules/dot-notation.test.ts"],
 "messages": {"useDot":"[{{key}}] is better written in dot notation.","useBrackets":".{{key}} is a syntax error."},
 "cases": [
 {"id":"dot-notation/v0","kind":"valid","code":"a.b;","file":"file.ts","tsconfig":"tsconfig.json","via":"service"},

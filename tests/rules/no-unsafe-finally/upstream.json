@@ -1,4 +1,4 @@
-{"rule": "no-unsafe-finally", "upstream": "eslint v10.6.0", "files": ["tests/lib/rules/no-unsafe-finally.js"],
+{"rule": "no-unsafe-finally", "upstream": "eslint v10.15.0", "files": ["tests/lib/rules/no-unsafe-finally.js"],
 "messages": {"unsafeUsage":"Unsafe usage of {{nodeType}}."},
 "cases": [
 {"id":"no-unsafe-finally/v0","kind":"valid","code":"var foo = function() {\n try { \n return 1; \n } catch(err) { \n return 2; \n } finally { \n console.log('hola!') \n } \n }","file":"file.ts","tsconfig":null},

@@ -1,4 +1,4 @@
-{"rule": "no-var", "upstream": "eslint v10.6.0", "files": ["tests/lib/rules/no-var.js"],
+{"rule": "no-var", "upstream": "eslint v10.15.0", "files": ["tests/lib/rules/no-var.js"],
 "messages": {"unexpectedVar":"Unexpected var, use let or const instead."},
 "cases": [
 {"id":"no-var/r0/v0","kind":"valid","code":"const JOE = 'schmoe';","file":"file.ts","tsconfig":null,"languageOptions":{"ecmaVersion":6,"sourceType":"script"}},

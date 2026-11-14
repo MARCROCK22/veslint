@@ -1,4 +1,4 @@
-{"rule": "no-unmodified-loop-condition", "upstream": "eslint v10.6.0", "files": ["tests/lib/rules/no-unmodified-loop-condition.js"],
+{"rule": "no-unmodified-loop-condition", "upstream": "eslint v10.15.0", "files": ["tests/lib/rules/no-unmodified-loop-condition.js"],
 "messages": {"loopConditionNotModified":"'{{name}}' is not modified in this loop."},
 "cases": [
 {"id":"no-unmodified-loop-condition/v0","kind":"valid","code":"var foo = 0; while (foo) { ++foo; }","file":"file.ts","tsconfig":null},

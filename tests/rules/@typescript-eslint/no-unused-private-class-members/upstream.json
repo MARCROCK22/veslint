@@ -1,4 +1,4 @@
-{"rule": "@typescript-eslint/no-unused-private-class-members", "upstream": "typescript-eslint v8.62.0", "files": ["packages/eslint-plugin/tests/rules/no-unused-private-class-members.test.ts"],
+{"rule": "@typescript-eslint/no-unused-private-class-members", "upstream": "typescript-eslint v8.72.2", "files": ["packages/eslint-plugin/tests/rules/no-unused-private-class-members.test.ts"],
 "messages": {"unusedPrivateClassMember":"Private class member '{{classMemberName}}' is defined but never used."},
 "cases": [
 {"id":"no-unused-private-class-members/v0","kind":"valid","code":"class Foo {}","file":"file.ts","tsconfig":null},

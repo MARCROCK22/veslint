@@ -1,4 +1,4 @@
-{"rule": "no-sparse-arrays", "upstream": "eslint v10.6.0", "files": ["tests/lib/rules/no-sparse-arrays.js"],
+{"rule": "no-sparse-arrays", "upstream": "eslint v10.15.0", "files": ["tests/lib/rules/no-sparse-arrays.js"],
 "messages": {"unexpectedSparseArray":"Unexpected comma in middle of array."},
 "cases": [
 {"id":"no-sparse-arrays/v0","kind":"valid","code":"var a = [ 1, 2, ]","file":"file.ts","tsconfig":null},

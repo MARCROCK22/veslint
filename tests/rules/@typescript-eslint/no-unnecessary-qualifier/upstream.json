@@ -1,4 +1,4 @@
-{"rule": "@typescript-eslint/no-unnecessary-qualifier", "upstream": "typescript-eslint v8.62.0", "files": ["packages/eslint-plugin/tests/rules/no-unnecessary-qualifier.test.ts"],
+{"rule": "@typescript-eslint/no-unnecessary-qualifier", "upstream": "typescript-eslint v8.72.2", "files": ["packages/eslint-plugin/tests/rules/no-unnecessary-qualifier.test.ts"],
 "messages": {"unnecessaryQualifier":"Qualifier is unnecessary since '{{ name }}' is in scope."},
 "cases": [
 {"id":"no-unnecessary-qualifier/v0","kind":"valid","code":"\nnamespace X {\n  export type T = number;\n}\n\nnamespace Y {\n  export const x: X.T = 3;\n}\n    ","file":"file.ts","tsconfig":"tsconfig.json","via":"service"},

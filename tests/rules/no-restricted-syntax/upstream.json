@@ -1,4 +1,4 @@
-{"rule": "no-restricted-syntax", "upstream": "eslint v10.6.0", "files": ["tests/lib/rules/no-restricted-syntax.js"],
+{"rule": "no-restricted-syntax", "upstream": "eslint v10.15.0", "files": ["tests/lib/rules/no-restricted-syntax.js"],
 "messages": {"restrictedSyntax":"{{message}}"},
 "cases": [
 {"id":"no-restricted-syntax/v0","kind":"valid","code":"doSomething();","file":"file.ts","tsconfig":null},

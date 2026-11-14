@@ -1,4 +1,4 @@
-{"rule": "@typescript-eslint/no-dupe-class-members", "upstream": "typescript-eslint v8.62.0", "files": ["packages/eslint-plugin/tests/rules/no-dupe-class-members.test.ts"],
+{"rule": "@typescript-eslint/no-dupe-class-members", "upstream": "typescript-eslint v8.72.2", "files": ["packages/eslint-plugin/tests/rules/no-dupe-class-members.test.ts"],
 "messages": {"unexpected":"Duplicate name '{{name}}'."},
 "cases": [
 {"id":"no-dupe-class-members/v0","kind":"valid","code":"\nclass A {\n  foo() {}\n  bar() {}\n}\n    ","file":"file.ts","tsconfig":null},

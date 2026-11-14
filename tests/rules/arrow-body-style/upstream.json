@@ -1,4 +1,4 @@
-{"rule": "arrow-body-style", "upstream": "eslint v10.6.0", "files": ["tests/lib/rules/arrow-body-style.js"],
+{"rule": "arrow-body-style", "upstream": "eslint v10.15.0", "files": ["tests/lib/rules/arrow-body-style.js"],
 "messages": {"unexpectedOtherBlock":"Unexpected block statement surrounding arrow body.","unexpectedEmptyBlock":"Unexpected block statement surrounding arrow body; put a value of `undefined` immediately after the `=>`.","unexpectedObjectBlock":"Unexpected block statement surrounding arrow body; parenthesize the returned value and move it immediately after the `=>`.","unexpectedSingleBlock":"Unexpected block statement surrounding arrow body; move the returned value immediately after the `=>`.","expectedBlock":"Expected block statement surrounding arrow body."},
 "cases": [
 {"id":"arrow-body-style/v0","kind":"valid","code":"var foo = () => {};","file":"file.ts","tsconfig":null,"languageOptions":{"ecmaVersion":6}},

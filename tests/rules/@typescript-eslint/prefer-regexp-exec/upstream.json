@@ -1,4 +1,4 @@
-{"rule": "@typescript-eslint/prefer-regexp-exec", "upstream": "typescript-eslint v8.62.0", "files": ["packages/eslint-plugin/tests/rules/prefer-regexp-exec.test.ts"],
+{"rule": "@typescript-eslint/prefer-regexp-exec", "upstream": "typescript-eslint v8.72.2", "files": ["packages/eslint-plugin/tests/rules/prefer-regexp-exec.test.ts"],
 "messages": {"regExpExecOverStringMatch":"Use the `RegExp#exec()` method instead."},
 "cases": [
 {"id":"prefer-regexp-exec/v0","kind":"valid","code":"'something'.match();","file":"file.ts","tsconfig":"tsconfig.json","via":"service"},

@@ -1,4 +1,4 @@
-{"rule": "@typescript-eslint/prefer-includes", "upstream": "typescript-eslint v8.62.0", "files": ["packages/eslint-plugin/tests/rules/prefer-includes.test.ts"],
+{"rule": "@typescript-eslint/prefer-includes", "upstream": "typescript-eslint v8.72.2", "files": ["packages/eslint-plugin/tests/rules/prefer-includes.test.ts"],
 "messages": {"preferIncludes":"Use 'includes()' method instead.","preferStringIncludes":"Use `String#includes()` method with a string instead."},
 "cases": [
 {"id":"prefer-includes/v0","kind":"valid","code":"\nfunction f(a: string): void {\n  a.indexOf(b);\n}\n    ","file":"file.ts","tsconfig":"tsconfig.json","via":"service"},

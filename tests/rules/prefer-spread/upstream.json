@@ -1,4 +1,4 @@
-{"rule": "prefer-spread", "upstream": "eslint v10.6.0", "files": ["tests/lib/rules/prefer-spread.js"],
+{"rule": "prefer-spread", "upstream": "eslint v10.15.0", "files": ["tests/lib/rules/prefer-spread.js"],
 "messages": {"preferSpread":"Use the spread operator instead of '.apply()'."},
 "cases": [
 {"id":"prefer-spread/v0","kind":"valid","code":"foo.apply(obj, args);","file":"file.ts","tsconfig":null,"languageOptions":{"ecmaVersion":2022}},

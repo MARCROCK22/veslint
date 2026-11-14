@@ -1,4 +1,4 @@
-{"rule": "@typescript-eslint/no-unnecessary-type-arguments", "upstream": "typescript-eslint v8.62.0", "files": ["packages/eslint-plugin/tests/rules/no-unnecessary-type-arguments.test.ts"],
+{"rule": "@typescript-eslint/no-unnecessary-type-arguments", "upstream": "typescript-eslint v8.72.2", "files": ["packages/eslint-plugin/tests/rules/no-unnecessary-type-arguments.test.ts"],
 "messages": {"unnecessaryTypeParameter":"This is the default value for this type parameter, so it can be omitted."},
 "cases": [
 {"id":"no-unnecessary-type-arguments/v0","kind":"valid","code":"f();","file":"file.ts","tsconfig":"tsconfig.json","via":"service"},

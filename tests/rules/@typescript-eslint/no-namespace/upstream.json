@@ -1,4 +1,4 @@
-{"rule": "@typescript-eslint/no-namespace", "upstream": "typescript-eslint v8.62.0", "files": ["packages/eslint-plugin/tests/rules/no-namespace.test.ts"],
+{"rule": "@typescript-eslint/no-namespace", "upstream": "typescript-eslint v8.72.2", "files": ["packages/eslint-plugin/tests/rules/no-namespace.test.ts"],
 "messages": {"moduleSyntaxIsPreferred":"ES2015 module syntax is preferred over namespaces."},
 "cases": [
 {"id":"no-namespace/v0","kind":"valid","code":"declare global {}","file":"file.ts","tsconfig":null},

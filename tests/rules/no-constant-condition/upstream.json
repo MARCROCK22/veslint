@@ -1,4 +1,4 @@
-{"rule": "no-constant-condition", "upstream": "eslint v10.6.0", "files": ["tests/lib/rules/no-constant-condition.js"],
+{"rule": "no-constant-condition", "upstream": "eslint v10.15.0", "files": ["tests/lib/rules/no-constant-condition.js"],
 "messages": {"unexpected":"Unexpected constant condition."},
 "cases": [
 {"id":"no-constant-condition/v0","kind":"valid","code":"if(a);","file":"file.ts","tsconfig":null,"languageOptions":{"ecmaVersion":2021}},

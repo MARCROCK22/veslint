@@ -1,4 +1,4 @@
-{"rule": "no-promise-executor-return", "upstream": "eslint v10.6.0", "files": ["tests/lib/rules/no-promise-executor-return.js"],
+{"rule": "no-promise-executor-return", "upstream": "eslint v10.15.0", "files": ["tests/lib/rules/no-promise-executor-return.js"],
 "messages": {"returnsValue":"Return values from promise executor functions cannot be read.","prependVoid":"Prepend `void` to the expression.","wrapBraces":"Wrap the expression in `{}`."},
 "cases": [
 {"id":"no-promise-executor-return/v0","kind":"valid","code":"function foo(resolve, reject) { return 1; }","file":"file.ts","tsconfig":null,"languageOptions":{"ecmaVersion":2015}},

@@ -1,4 +1,4 @@
-{"rule": "@typescript-eslint/no-meaningless-void-operator", "upstream": "typescript-eslint v8.62.0", "files": ["packages/eslint-plugin/tests/rules/no-meaningless-void-operator.test.ts"],
+{"rule": "@typescript-eslint/no-meaningless-void-operator", "upstream": "typescript-eslint v8.72.2", "files": ["packages/eslint-plugin/tests/rules/no-meaningless-void-operator.test.ts"],
 "messages": {"meaninglessVoidOnNonCall":"void operator is useless here; it should only discard a call's return value","meaninglessVoidOperator":"void operator shouldn't be used on {{type}}; it should convey that a return value is being ignored","removeVoid":"Remove 'void'"},
 "cases": [
 {"id":"no-meaningless-void-operator/v0","kind":"valid","code":"\n(() => {})();\n\nfunction foo() {}\nfoo(); // nothing to discard\n\nfunction bar(): number {\n  return 2;\n}\nvoid bar();\n    ","file":"file.ts","tsconfig":"tsconfig.json","via":"service"},

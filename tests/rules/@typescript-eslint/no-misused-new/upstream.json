@@ -1,4 +1,4 @@
-{"rule": "@typescript-eslint/no-misused-new", "upstream": "typescript-eslint v8.62.0", "files": ["packages/eslint-plugin/tests/rules/no-misused-new.test.ts"],
+{"rule": "@typescript-eslint/no-misused-new", "upstream": "typescript-eslint v8.72.2", "files": ["packages/eslint-plugin/tests/rules/no-misused-new.test.ts"],
 "messages": {"errorMessageClass":"Class cannot have method named `new`.","errorMessageInterface":"Interfaces cannot be constructed, only classes."},
 "cases": [
 {"id":"no-misused-new/v0","kind":"valid","code":"\ndeclare abstract class C {\n  foo() {}\n  get new();\n  bar();\n}\n    ","file":"file.ts","tsconfig":null},

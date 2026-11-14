@@ -2,7 +2,7 @@
 // its test files: `test(…)` (eslint-ava-rule-tester, cases with their errors), `test.snapshot(…)`
 // (cases whose errors are in an AVA snapshot) and `test.typescript(…)`/`test.vue(…)` (with that
 // parser) record their cases instead of running them. normalizeTestCase and avoidTestTitleConflict
-// are those of v64.0.0.
+// are those of v79.0.0.
 import path from 'node:path';
 import url from 'node:url';
 

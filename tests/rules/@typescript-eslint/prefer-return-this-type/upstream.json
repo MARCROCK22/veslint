@@ -1,4 +1,4 @@
-{"rule": "@typescript-eslint/prefer-return-this-type", "upstream": "typescript-eslint v8.62.0", "files": ["packages/eslint-plugin/tests/rules/prefer-return-this-type.test.ts"],
+{"rule": "@typescript-eslint/prefer-return-this-type", "upstream": "typescript-eslint v8.72.2", "files": ["packages/eslint-plugin/tests/rules/prefer-return-this-type.test.ts"],
 "messages": {"useThisType":"Use `this` type instead."},
 "cases": [
 {"id":"prefer-return-this-type/v0","kind":"valid","code":"\nclass Foo {\n  f1() {}\n  f2(): Foo {\n    return new Foo();\n  }\n  f3() {\n    return this;\n  }\n  f4(): this {\n    return this;\n  }\n  f5(): any {\n    return this;\n  }\n  f6(): unknown {\n    return this;\n  }\n  f7(foo: Foo): Foo {\n    return Math.random() > 0.5 ? foo : this;\n  }\n  f10(this: Foo, that: Foo): Foo;\n  f11(): Foo {\n    return;\n  }\n  f13(this: Foo): Foo {\n    return this;\n  }\n  f14(): { f14: Function } {\n    return this;\n  }\n  f15(): Foo | this {\n    return Math.random() > 0.5 ? new Foo() : this;\n  }\n}\n    ","file":"file.ts","tsconfig":"tsconfig.json","via":"service"},

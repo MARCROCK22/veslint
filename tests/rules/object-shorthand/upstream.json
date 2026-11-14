@@ -1,4 +1,4 @@
-{"rule": "object-shorthand", "upstream": "eslint v10.6.0", "files": ["tests/lib/rules/object-shorthand.js"],
+{"rule": "object-shorthand", "upstream": "eslint v10.15.0", "files": ["tests/lib/rules/object-shorthand.js"],
 "messages": {"expectedAllPropertiesShorthanded":"Expected shorthand for all properties.","expectedLiteralMethodLongform":"Expected longform method syntax for string literal keys.","expectedPropertyShorthand":"Expected property shorthand.","expectedPropertyLongform":"Expected longform property syntax.","expectedMethodShorthand":"Expected method shorthand.","expectedMethodLongform":"Expected longform method syntax.","unexpectedMix":"Unexpected mix of shorthand and non-shorthand properties."},
 "cases": [
 {"id":"object-shorthand/v0","kind":"valid","code":"var x = {y() {}}","file":"file.ts","tsconfig":null,"languageOptions":{"ecmaVersion":2018}},

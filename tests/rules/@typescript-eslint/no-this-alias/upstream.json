@@ -1,4 +1,4 @@
-{"rule": "@typescript-eslint/no-this-alias", "upstream": "typescript-eslint v8.62.0", "files": ["packages/eslint-plugin/tests/rules/no-this-alias.test.ts"],
+{"rule": "@typescript-eslint/no-this-alias", "upstream": "typescript-eslint v8.72.2", "files": ["packages/eslint-plugin/tests/rules/no-this-alias.test.ts"],
 "messages": {"thisAssignment":"Unexpected aliasing of 'this' to local variable.","thisDestructure":"Unexpected aliasing of members of 'this' to local variables."},
 "cases": [
 {"id":"no-this-alias/v0","kind":"valid","code":"const self = foo(this);","file":"file.ts","tsconfig":null},

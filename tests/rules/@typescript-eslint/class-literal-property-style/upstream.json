@@ -1,4 +1,4 @@
-{"rule": "@typescript-eslint/class-literal-property-style", "upstream": "typescript-eslint v8.62.0", "files": ["packages/eslint-plugin/tests/rules/class-literal-property-style.test.ts"],
+{"rule": "@typescript-eslint/class-literal-property-style", "upstream": "typescript-eslint v8.72.2", "files": ["packages/eslint-plugin/tests/rules/class-literal-property-style.test.ts"],
 "messages": {"preferFieldStyle":"Literals should be exposed using readonly fields.","preferFieldStyleSuggestion":"Replace the literals with readonly fields.","preferGetterStyle":"Literals should be exposed using getters.","preferGetterStyleSuggestion":"Replace the literals with getters."},
 "cases": [
 {"id":"class-literal-property-style/v0","kind":"valid","code":"\nclass Mx {\n  declare readonly p1 = 1;\n}\n    ","file":"file.ts","tsconfig":null},

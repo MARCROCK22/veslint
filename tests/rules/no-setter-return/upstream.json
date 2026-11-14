@@ -1,4 +1,4 @@
-{"rule": "no-setter-return", "upstream": "eslint v10.6.0", "files": ["tests/lib/rules/no-setter-return.js"],
+{"rule": "no-setter-return", "upstream": "eslint v10.15.0", "files": ["tests/lib/rules/no-setter-return.js"],
 "messages": {"returnsValue":"Setter cannot return a value."},
 "cases": [
 {"id":"no-setter-return/v0","kind":"valid","code":"function foo() { return 1; }","file":"file.ts","tsconfig":null,"languageOptions":{"ecmaVersion":2022,"sourceType":"script"}},

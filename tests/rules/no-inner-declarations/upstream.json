@@ -1,4 +1,4 @@
-{"rule": "no-inner-declarations", "upstream": "eslint v10.6.0", "files": ["tests/lib/rules/no-inner-declarations.js"],
+{"rule": "no-inner-declarations", "upstream": "eslint v10.15.0", "files": ["tests/lib/rules/no-inner-declarations.js"],
 "messages": {"moveDeclToRoot":"Move {{type}} declaration to {{body}} root."},
 "cases": [
 {"id":"no-inner-declarations/v0","kind":"valid","code":"function doSomething() { }","file":"file.ts","tsconfig":null,"languageOptions":{"ecmaVersion":5,"sourceType":"script"}},

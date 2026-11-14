@@ -1,4 +1,4 @@
-{"rule": "@typescript-eslint/promise-function-async", "upstream": "typescript-eslint v8.62.0", "files": ["packages/eslint-plugin/tests/rules/promise-function-async.test.ts"],
+{"rule": "@typescript-eslint/promise-function-async", "upstream": "typescript-eslint v8.72.2", "files": ["packages/eslint-plugin/tests/rules/promise-function-async.test.ts"],
 "messages": {"missingAsync":"Functions that return promises must be async.","missingAsyncHybridReturn":"Functions that return promises must be async. Consider adding an explicit return type annotation if the function is intended to return a union of promise and non-promise types."},
 "cases": [
 {"id":"promise-function-async/v0","kind":"valid","code":"\nconst nonAsyncNonPromiseArrowFunction = (n: number) => n;\n    ","file":"file.ts","tsconfig":"tsconfig.json","via":"service"},

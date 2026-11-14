@@ -1,4 +1,4 @@
-{"rule": "require-yield", "upstream": "eslint v10.6.0", "files": ["tests/lib/rules/require-yield.js"],
+{"rule": "require-yield", "upstream": "eslint v10.15.0", "files": ["tests/lib/rules/require-yield.js"],
 "messages": {"missingYield":"This generator function does not have 'yield'."},
 "cases": [
 {"id":"require-yield/v0","kind":"valid","code":"function foo() { return 0; }","file":"file.ts","tsconfig":null,"languageOptions":{"ecmaVersion":6}},

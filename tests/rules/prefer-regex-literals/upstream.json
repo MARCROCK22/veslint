@@ -1,4 +1,4 @@
-{"rule": "prefer-regex-literals", "upstream": "eslint v10.6.0", "files": ["tests/lib/rules/prefer-regex-literals.js"],
+{"rule": "prefer-regex-literals", "upstream": "eslint v10.15.0", "files": ["tests/lib/rules/prefer-regex-literals.js"],
 "messages": {"unexpectedRegExp":"Use a regular expression literal instead of the 'RegExp' constructor.","replaceWithLiteral":"Replace with an equivalent regular expression literal.","replaceWithLiteralAndFlags":"Replace with an equivalent regular expression literal with flags '{{ flags }}'.","replaceWithIntendedLiteralAndFlags":"Replace with a regular expression literal with flags '{{ flags }}'.","unexpectedRedundantRegExp":"Regular expression literal is unnecessarily wrapped within a 'RegExp' constructor.","unexpectedRedundantRegExpWithFlags":"Use regular expression literal with flags instead of the 'RegExp' constructor."},
 "cases": [
 {"id":"prefer-regex-literals/v0","kind":"valid","code":"/abc/","file":"file.ts","tsconfig":null,"languageOptions":{"ecmaVersion":2022,"sourceType":"script"}},

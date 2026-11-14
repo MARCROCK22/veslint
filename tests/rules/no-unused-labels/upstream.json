@@ -1,4 +1,4 @@
-{"rule": "no-unused-labels", "upstream": "eslint v10.6.0", "files": ["tests/lib/rules/no-unused-labels.js"],
+{"rule": "no-unused-labels", "upstream": "eslint v10.15.0", "files": ["tests/lib/rules/no-unused-labels.js"],
 "messages": {"unused":"'{{name}}:' is defined but never used."},
 "cases": [
 {"id":"no-unused-labels/v0","kind":"valid","code":"A: break A;","file":"file.ts","tsconfig":null},

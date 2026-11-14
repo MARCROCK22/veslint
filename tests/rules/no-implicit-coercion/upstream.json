@@ -1,4 +1,4 @@
-{"rule": "no-implicit-coercion", "upstream": "eslint v10.6.0", "files": ["tests/lib/rules/no-implicit-coercion.js"],
+{"rule": "no-implicit-coercion", "upstream": "eslint v10.15.0", "files": ["tests/lib/rules/no-implicit-coercion.js"],
 "messages": {"implicitCoercion":"Unexpected implicit coercion encountered. Use `{{recommendation}}` instead.","useRecommendation":"Use `{{recommendation}}` instead."},
 "cases": [
 {"id":"no-implicit-coercion/v0","kind":"valid","code":"Boolean(foo)","file":"file.ts","tsconfig":null},

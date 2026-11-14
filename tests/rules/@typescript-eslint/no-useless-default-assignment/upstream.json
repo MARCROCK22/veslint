@@ -1,4 +1,4 @@
-{"rule": "@typescript-eslint/no-useless-default-assignment", "upstream": "typescript-eslint v8.62.0", "files": ["packages/eslint-plugin/tests/rules/no-useless-default-assignment.test.ts"],
+{"rule": "@typescript-eslint/no-useless-default-assignment", "upstream": "typescript-eslint v8.72.2", "files": ["packages/eslint-plugin/tests/rules/no-useless-default-assignment.test.ts"],
 "messages": {"noStrictNullCheck":"This rule requires the `strictNullChecks` compiler option to be turned on to function correctly.","preferOptionalSyntax":"Using `= undefined` to make a parameter optional adds unnecessary runtime logic.","removeDefaultAssignment":"Remove the default value.","uselessDefaultAssignment":"Default value is useless because the {{ type }} is not optional.","uselessUndefined":"Default value is useless because it is undefined. Optional {{ type }}s are already undefined by default.","useOptionalSyntax":"Use the `?` optional syntax instead."},
 "cases": [
 {"id":"no-useless-default-assignment/v0","kind":"valid","code":"\nfunction Bar({ foo = '' }: { foo?: string }) {\n  return foo;\n}\n    ","file":"file.ts","tsconfig":"tsconfig.json","via":"service"},

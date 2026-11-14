@@ -1,4 +1,4 @@
-{"rule": "no-nonoctal-decimal-escape", "upstream": "eslint v10.6.0", "files": ["tests/lib/rules/no-nonoctal-decimal-escape.js"],
+{"rule": "no-nonoctal-decimal-escape", "upstream": "eslint v10.15.0", "files": ["tests/lib/rules/no-nonoctal-decimal-escape.js"],
 "messages": {"decimalEscape":"Don't use '{{decimalEscape}}' escape sequence.","refactor":"Replace '{{original}}' with '{{replacement}}'. This maintains the current functionality.","escapeBackslash":"Replace '{{original}}' with '{{replacement}}' to include the actual backslash character."},
 "cases": [
 {"id":"no-nonoctal-decimal-escape/v0","kind":"valid","code":"8","file":"file.ts","tsconfig":null,"languageOptions":{"ecmaVersion":5,"sourceType":"script"}},

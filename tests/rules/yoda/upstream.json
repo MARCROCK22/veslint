@@ -1,4 +1,4 @@
-{"rule": "yoda", "upstream": "eslint v10.6.0", "files": ["tests/lib/rules/yoda.js"],
+{"rule": "yoda", "upstream": "eslint v10.15.0", "files": ["tests/lib/rules/yoda.js"],
 "messages": {"expected":"Expected literal to be on the {{expectedSide}} side of {{operator}}."},
 "cases": [
 {"id":"yoda/v0","kind":"valid","code":"if (value === \"red\") {}","options":["never"],"file":"file.ts","tsconfig":null},

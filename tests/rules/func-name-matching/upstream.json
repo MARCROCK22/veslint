@@ -1,4 +1,4 @@
-{"rule": "func-name-matching", "upstream": "eslint v10.6.0", "files": ["tests/lib/rules/func-name-matching.js"],
+{"rule": "func-name-matching", "upstream": "eslint v10.15.0", "files": ["tests/lib/rules/func-name-matching.js"],
 "messages": {"matchProperty":"Function name `{{funcName}}` should match property name `{{name}}`.","matchVariable":"Function name `{{funcName}}` should match variable name `{{name}}`.","notMatchProperty":"Function name `{{funcName}}` should not match property name `{{name}}`.","notMatchVariable":"Function name `{{funcName}}` should not match variable name `{{name}}`."},
 "cases": [
 {"id":"func-name-matching/v0","kind":"valid","code":"var foo;","file":"file.ts","tsconfig":null},

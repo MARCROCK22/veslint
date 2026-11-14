@@ -1,4 +1,4 @@
-{"rule": "no-func-assign", "upstream": "eslint v10.6.0", "files": ["tests/lib/rules/no-func-assign.js"],
+{"rule": "no-func-assign", "upstream": "eslint v10.15.0", "files": ["tests/lib/rules/no-func-assign.js"],
 "messages": {"isAFunction":"'{{name}}' is a function."},
 "cases": [
 {"id":"no-func-assign/v0","kind":"valid","code":"function foo() { var foo = bar; }","file":"file.ts","tsconfig":null},

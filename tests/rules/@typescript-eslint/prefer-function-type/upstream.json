@@ -1,4 +1,4 @@
-{"rule": "@typescript-eslint/prefer-function-type", "upstream": "typescript-eslint v8.62.0", "files": ["packages/eslint-plugin/tests/rules/prefer-function-type.test.ts"],
+{"rule": "@typescript-eslint/prefer-function-type", "upstream": "typescript-eslint v8.72.2", "files": ["packages/eslint-plugin/tests/rules/prefer-function-type.test.ts"],
 "messages": {"functionTypeOverCallableType":"{{ literalOrInterface }} only has a call signature, you should use a function type instead.","unexpectedThisOnFunctionOnlyInterface":"`this` refers to the function type '{{ interfaceName }}', did you intend to use a generic `this` parameter like `<Self>(this: Self, ...) => Self` instead?"},
 "cases": [
 {"id":"prefer-function-type/v0","kind":"valid","code":"\ninterface Foo {\n  (): void;\n  bar: number;\n}\n    ","file":"file.ts","tsconfig":null},

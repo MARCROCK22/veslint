@@ -1,4 +1,4 @@
-{"rule": "sort-vars", "upstream": "eslint v10.6.0", "files": ["tests/lib/rules/sort-vars.js"],
+{"rule": "sort-vars", "upstream": "eslint v10.15.0", "files": ["tests/lib/rules/sort-vars.js"],
 "messages": {"sortVars":"Variables within the same declaration block should be sorted alphabetically."},
 "cases": [
 {"id":"sort-vars/v0","kind":"valid","code":"var a=10, b=4, c='abc'","file":"file.ts","tsconfig":null},

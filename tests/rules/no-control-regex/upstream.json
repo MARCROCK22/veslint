@@ -1,4 +1,4 @@
-{"rule": "no-control-regex", "upstream": "eslint v10.6.0", "files": ["tests/lib/rules/no-control-regex.js"],
+{"rule": "no-control-regex", "upstream": "eslint v10.15.0", "files": ["tests/lib/rules/no-control-regex.js"],
 "messages": {"unexpected":"Unexpected control character(s) in regular expression: {{controlChars}}."},
 "cases": [
 {"id":"no-control-regex/v0","kind":"valid","code":"var regex = /x1f/","file":"file.ts","tsconfig":null},

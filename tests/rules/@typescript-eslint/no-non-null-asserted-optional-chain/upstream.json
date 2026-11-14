@@ -1,4 +1,4 @@
-{"rule": "@typescript-eslint/no-non-null-asserted-optional-chain", "upstream": "typescript-eslint v8.62.0", "files": ["packages/eslint-plugin/tests/rules/no-non-null-asserted-optional-chain.test.ts"],
+{"rule": "@typescript-eslint/no-non-null-asserted-optional-chain", "upstream": "typescript-eslint v8.72.2", "files": ["packages/eslint-plugin/tests/rules/no-non-null-asserted-optional-chain.test.ts"],
 "messages": {"noNonNullOptionalChain":"Optional chain expressions can return undefined by design - using a non-null assertion is unsafe and wrong.","suggestRemovingNonNull":"You should remove the non-null assertion."},
 "cases": [
 {"id":"no-non-null-asserted-optional-chain/v0","kind":"valid","code":"foo.bar!;","file":"file.ts","tsconfig":null},

@@ -1,4 +1,4 @@
-{"rule": "@typescript-eslint/no-inferrable-types", "upstream": "typescript-eslint v8.62.0", "files": ["packages/eslint-plugin/tests/rules/no-inferrable-types.test.ts"],
+{"rule": "@typescript-eslint/no-inferrable-types", "upstream": "typescript-eslint v8.72.2", "files": ["packages/eslint-plugin/tests/rules/no-inferrable-types.test.ts"],
 "messages": {"noInferrableType":"Type {{type}} trivially inferred from a {{type}} literal, remove type annotation."},
 "cases": [
 {"id":"no-inferrable-types/v0","kind":"valid","code":"const a = 10n;","file":"file.ts","tsconfig":null},

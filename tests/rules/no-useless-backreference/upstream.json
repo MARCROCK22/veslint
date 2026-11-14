@@ -1,4 +1,4 @@
-{"rule": "no-useless-backreference", "upstream": "eslint v10.6.0", "files": ["tests/lib/rules/no-useless-backreference.js"],
+{"rule": "no-useless-backreference", "upstream": "eslint v10.15.0", "files": ["tests/lib/rules/no-useless-backreference.js"],
 "messages": {"nested":"Backreference '{{ bref }}' will be ignored. It references group '{{ group }}'{{ otherGroups }} from within that group.","forward":"Backreference '{{ bref }}' will be ignored. It references group '{{ group }}'{{ otherGroups }} which appears later in the pattern.","backward":"Backreference '{{ bref }}' will be ignored. It references group '{{ group }}'{{ otherGroups }} which appears before in the same lookbehind.","disjunctive":"Backreference '{{ bref }}' will be ignored. It references group '{{ group }}'{{ otherGroups }} which is in another alternative.","intoNegativeLookaround":"Backreference '{{ bref }}' will be ignored. It references group '{{ group }}'{{ otherGroups }} which is in a negative lookaround."},
 "cases": [
 {"id":"no-useless-backreference/v0","kind":"valid","code":"'\\1(a)'","file":"file.ts","tsconfig":null,"languageOptions":{"ecmaVersion":2025,"sourceType":"script"}},

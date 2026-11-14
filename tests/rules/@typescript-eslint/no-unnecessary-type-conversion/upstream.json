@@ -1,4 +1,4 @@
-{"rule": "@typescript-eslint/no-unnecessary-type-conversion", "upstream": "typescript-eslint v8.62.0", "files": ["packages/eslint-plugin/tests/rules/no-unnecessary-type-conversion.test.ts"],
+{"rule": "@typescript-eslint/no-unnecessary-type-conversion", "upstream": "typescript-eslint v8.72.2", "files": ["packages/eslint-plugin/tests/rules/no-unnecessary-type-conversion.test.ts"],
 "messages": {"suggestRemove":"Remove the type conversion.","suggestSatisfies":"Instead, assert that the value satisfies the {{type}} type.","unnecessaryTypeConversion":"{{violation}} does not change the type or value of the {{type}}."},
 "cases": [
 {"id":"no-unnecessary-type-conversion/v0","kind":"valid","code":"String(1);","file":"file.ts","tsconfig":"tsconfig.json","via":"service"},

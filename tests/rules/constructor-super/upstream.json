@@ -1,4 +1,4 @@
-{"rule": "constructor-super", "upstream": "eslint v10.6.0", "files": ["tests/lib/rules/constructor-super.js"],
+{"rule": "constructor-super", "upstream": "eslint v10.15.0", "files": ["tests/lib/rules/constructor-super.js"],
 "messages": {"missingSome":"Lacked a call of 'super()' in some code paths.","missingAll":"Expected to call 'super()'.","duplicate":"Unexpected duplicate 'super()'.","badSuper":"Unexpected 'super()' because 'super' is not a constructor."},
 "cases": [
 {"id":"constructor-super/v0","kind":"valid","code":"class A { }","file":"file.ts","tsconfig":null,"languageOptions":{"ecmaVersion":2021}},

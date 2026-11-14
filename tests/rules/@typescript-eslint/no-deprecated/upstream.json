@@ -1,4 +1,4 @@
-{"rule": "@typescript-eslint/no-deprecated", "upstream": "typescript-eslint v8.62.0", "files": ["packages/eslint-plugin/tests/rules/no-deprecated.test.ts"],
+{"rule": "@typescript-eslint/no-deprecated", "upstream": "typescript-eslint v8.72.2", "files": ["packages/eslint-plugin/tests/rules/no-deprecated.test.ts"],
 "messages": {"deprecated":"`{{name}}` is deprecated.","deprecatedWithReason":"`{{name}}` is deprecated. {{reason}}"},
 "cases": [
 {"id":"no-deprecated/v0","kind":"valid","code":"/** @deprecated */ var a;","file":"react.tsx","tsconfig":"tsconfig.json","via":"project","parserOptions":{"ecmaFeatures":{"jsx":true}}},

@@ -1,4 +1,4 @@
-{"rule": "@typescript-eslint/require-await", "upstream": "typescript-eslint v8.62.0", "files": ["packages/eslint-plugin/tests/rules/require-await.test.ts"],
+{"rule": "@typescript-eslint/require-await", "upstream": "typescript-eslint v8.72.2", "files": ["packages/eslint-plugin/tests/rules/require-await.test.ts"],
 "messages": {"missingAwait":"{{name}} has no 'await' expression.","removeAsync":"Remove 'async'."},
 "cases": [
 {"id":"require-await/r0/v0","kind":"valid","code":"\nfunction numberOne(): number {\n  return 1;\n}\n    ","file":"file.ts","tsconfig":"tsconfig.json","via":"service"},

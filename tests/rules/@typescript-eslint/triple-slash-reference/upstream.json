@@ -1,4 +1,4 @@
-{"rule": "@typescript-eslint/triple-slash-reference", "upstream": "typescript-eslint v8.62.0", "files": ["packages/eslint-plugin/tests/rules/triple-slash-reference.test.ts"],
+{"rule": "@typescript-eslint/triple-slash-reference", "upstream": "typescript-eslint v8.72.2", "files": ["packages/eslint-plugin/tests/rules/triple-slash-reference.test.ts"],
 "messages": {"tripleSlashReference":"Do not use a triple slash reference for {{module}}, use `import` style instead."},
 "cases": [
 {"id":"triple-slash-reference/v0","kind":"valid","code":"\n// <reference path=\"foo\" />\n// <reference types=\"bar\" />\n// <reference lib=\"baz\" />\nimport * as foo from 'foo';\nimport * as bar from 'bar';\nimport * as baz from 'baz';\n      ","options":[{"lib":"never","path":"never","types":"never"}],"file":"file.ts","tsconfig":null},

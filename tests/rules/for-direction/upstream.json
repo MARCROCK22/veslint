@@ -1,4 +1,4 @@
-{"rule": "for-direction", "upstream": "eslint v10.6.0", "files": ["tests/lib/rules/for-direction.js"],
+{"rule": "for-direction", "upstream": "eslint v10.15.0", "files": ["tests/lib/rules/for-direction.js"],
 "messages": {"incorrectDirection":"The update clause in this loop moves the variable in the wrong direction."},
 "cases": [
 {"id":"for-direction/v0","kind":"valid","code":"for(var i = 0; i < 10; i++){}","file":"file.ts","tsconfig":null,"languageOptions":{"ecmaVersion":2020}},

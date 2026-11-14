@@ -123,7 +123,7 @@ export function seyfertPlugin(root) {
   return require('@slipher/eslint-plugin').plugin;
 }
 
-// unicornPlugin is eslint-plugin-unicorn 64.0.0, the plugin of the `unicorn/*` rules, from
+// unicornPlugin is eslint-plugin-unicorn 79.0.0, the plugin of the `unicorn/*` rules, from
 // build/eval.
 export function unicornPlugin(root) {
   const require = createRequire(path.join(root, 'build/eval/spider-byte/package.json'));

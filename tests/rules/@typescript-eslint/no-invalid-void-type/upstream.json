@@ -1,4 +1,4 @@
-{"rule": "@typescript-eslint/no-invalid-void-type", "upstream": "typescript-eslint v8.62.0", "files": ["packages/eslint-plugin/tests/rules/no-invalid-void-type.test.ts"],
+{"rule": "@typescript-eslint/no-invalid-void-type", "upstream": "typescript-eslint v8.72.2", "files": ["packages/eslint-plugin/tests/rules/no-invalid-void-type.test.ts"],
 "messages": {"invalidVoidForGeneric":"{{ generic }} may not have void as a type argument.","invalidVoidNotReturn":"void is only valid as a return type.","invalidVoidNotReturnOrGeneric":"void is only valid as a return type or generic type argument.","invalidVoidNotReturnOrThisParam":"void is only valid as return type or type of `this` parameter.","invalidVoidNotReturnOrThisParamOrGeneric":"void is only valid as a return type or generic type argument or the type of a `this` parameter.","invalidVoidUnionConstituent":"void is not valid as a constituent in a union type"},
 "cases": [
 {"id":"no-invalid-void-type/r0/v0","kind":"valid","code":"type Generic<T> = [T];","options":[{"allowInGenericTypeArguments":false}],"file":"file.ts","tsconfig":null},

@@ -1,4 +1,4 @@
-{"rule": "strict", "upstream": "eslint v10.6.0", "files": ["tests/lib/rules/strict.js"],
+{"rule": "strict", "upstream": "eslint v10.15.0", "files": ["tests/lib/rules/strict.js"],
 "messages": {"function":"Use the function form of 'use strict'.","global":"Use the global form of 'use strict'.","multiple":"Multiple 'use strict' directives.","never":"Strict mode is not permitted.","unnecessary":"Unnecessary 'use strict' directive.","module":"'use strict' is unnecessary inside of modules.","implied":"'use strict' is unnecessary when implied strict mode is enabled.","unnecessaryInClasses":"'use strict' is unnecessary inside of classes.","nonSimpleParameterList":"'use strict' directive inside a function with non-simple parameter list throws a syntax error since ES2016.","wrap":"Wrap {{name}} in a function with 'use strict' directive."},
 "cases": [
 {"id":"strict/v0","kind":"valid","code":"foo();","options":["never"],"file":"file.ts","tsconfig":null,"languageOptions":{"ecmaVersion":5,"sourceType":"script"}},

@@ -1,4 +1,4 @@
-{"rule": "no-lone-blocks", "upstream": "eslint v10.6.0", "files": ["tests/lib/rules/no-lone-blocks.js"],
+{"rule": "no-lone-blocks", "upstream": "eslint v10.15.0", "files": ["tests/lib/rules/no-lone-blocks.js"],
 "messages": {"redundantBlock":"Block is redundant.","redundantNestedBlock":"Nested block is redundant."},
 "cases": [
 {"id":"no-lone-blocks/v0","kind":"valid","code":"if (foo) { if (bar) { baz(); } }","file":"file.ts","tsconfig":null,"languageOptions":{"ecmaVersion":5,"sourceType":"script"}},

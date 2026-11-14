@@ -1,4 +1,4 @@
-{"rule": "no-restricted-exports", "upstream": "eslint v10.6.0", "files": ["tests/lib/rules/no-restricted-exports.js"],
+{"rule": "no-restricted-exports", "upstream": "eslint v10.15.0", "files": ["tests/lib/rules/no-restricted-exports.js"],
 "messages": {"restrictedNamed":"'{{name}}' is restricted from being used as an exported name.","restrictedDefault":"Exporting 'default' is restricted."},
 "cases": [
 {"id":"no-restricted-exports/v0","kind":"valid","code":"export var a;","file":"file.ts","tsconfig":null,"languageOptions":{"ecmaVersion":2022,"sourceType":"module"}},

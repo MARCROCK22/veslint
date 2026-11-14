@@ -1,4 +1,4 @@
-{"rule": "prefer-object-spread", "upstream": "eslint v10.6.0", "files": ["tests/lib/rules/prefer-object-spread.js"],
+{"rule": "prefer-object-spread", "upstream": "eslint v10.15.0", "files": ["tests/lib/rules/prefer-object-spread.js"],
 "messages": {"useSpreadMessage":"Use an object spread instead of `Object.assign` eg: `{ ...foo }`.","useLiteralMessage":"Use an object literal instead of `Object.assign`. eg: `{ foo: bar }`."},
 "cases": [
 {"id":"prefer-object-spread/v0","kind":"valid","code":"Object.assign()","file":"file.ts","tsconfig":null,"languageOptions":{"ecmaVersion":2018,"sourceType":"module"}},

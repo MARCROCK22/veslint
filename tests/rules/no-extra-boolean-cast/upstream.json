@@ -1,4 +1,4 @@
-{"rule": "no-extra-boolean-cast", "upstream": "eslint v10.6.0", "files": ["tests/lib/rules/no-extra-boolean-cast.js"],
+{"rule": "no-extra-boolean-cast", "upstream": "eslint v10.15.0", "files": ["tests/lib/rules/no-extra-boolean-cast.js"],
 "messages": {"unexpectedCall":"Redundant Boolean call.","unexpectedNegation":"Redundant double negation."},
 "cases": [
 {"id":"no-extra-boolean-cast/v0","kind":"valid","code":"Boolean(bar, !!baz);","file":"file.ts","tsconfig":null},

@@ -1,4 +1,4 @@
-{"rule": "no-object-constructor", "upstream": "eslint v10.6.0", "files": ["tests/lib/rules/no-object-constructor.js"],
+{"rule": "no-object-constructor", "upstream": "eslint v10.15.0", "files": ["tests/lib/rules/no-object-constructor.js"],
 "messages": {"preferLiteral":"The object literal notation {} is preferable.","useLiteral":"Replace with '{{replacement}}'.","useLiteralAfterSemicolon":"Replace with '{{replacement}}', add preceding semicolon."},
 "cases": [
 {"id":"no-object-constructor/v0","kind":"valid","code":"new Object(x)","file":"file.ts","tsconfig":null,"languageOptions":{"ecmaVersion":"latest","sourceType":"script"}},

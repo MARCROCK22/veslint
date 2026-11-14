@@ -1,4 +1,4 @@
-{"rule": "vars-on-top", "upstream": "eslint v10.6.0", "files": ["tests/lib/rules/vars-on-top.js"],
+{"rule": "vars-on-top", "upstream": "eslint v10.15.0", "files": ["tests/lib/rules/vars-on-top.js"],
 "messages": {"top":"All 'var' declarations must be at the top of the function scope."},
 "cases": [
 {"id":"vars-on-top/v0","kind":"valid","code":"var first = 0;\nfunction foo() {\n    first = 2;\n}","file":"file.ts","tsconfig":null},

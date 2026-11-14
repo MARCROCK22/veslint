@@ -1,4 +1,4 @@
-{"rule": "no-labels", "upstream": "eslint v10.6.0", "files": ["tests/lib/rules/no-labels.js"],
+{"rule": "no-labels", "upstream": "eslint v10.15.0", "files": ["tests/lib/rules/no-labels.js"],
 "messages": {"unexpectedLabel":"Unexpected labeled statement.","unexpectedLabelInBreak":"Unexpected label in break statement.","unexpectedLabelInContinue":"Unexpected label in continue statement."},
 "cases": [
 {"id":"no-labels/v0","kind":"valid","code":"var f = { label: foo ()}","file":"file.ts","tsconfig":null},

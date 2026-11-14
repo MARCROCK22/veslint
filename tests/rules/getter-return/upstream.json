@@ -1,4 +1,4 @@
-{"rule": "getter-return", "upstream": "eslint v10.6.0", "files": ["tests/lib/rules/getter-return.js"],
+{"rule": "getter-return", "upstream": "eslint v10.15.0", "files": ["tests/lib/rules/getter-return.js"],
 "messages": {"expected":"Expected to return a value in {{name}}.","expectedAlways":"Expected {{name}} to always return a value."},
 "cases": [
 {"id":"getter-return/v0","kind":"valid","code":"var foo = { get bar(){return true;} };","file":"file.ts","tsconfig":null,"languageOptions":{"ecmaVersion":2022}},

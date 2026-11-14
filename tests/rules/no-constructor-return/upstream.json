@@ -1,4 +1,4 @@
-{"rule": "no-constructor-return", "upstream": "eslint v10.6.0", "files": ["tests/lib/rules/no-constructor-return.js"],
+{"rule": "no-constructor-return", "upstream": "eslint v10.15.0", "files": ["tests/lib/rules/no-constructor-return.js"],
 "messages": {"unexpected":"Unexpected return statement in constructor."},
 "cases": [
 {"id":"no-constructor-return/v0","kind":"valid","code":"function fn() { return }","file":"file.ts","tsconfig":null,"languageOptions":{"ecmaVersion":2015,"sourceType":"script"}},

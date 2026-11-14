@@ -1,4 +1,4 @@
-{"rule": "no-eq-null", "upstream": "eslint v10.6.0", "files": ["tests/lib/rules/no-eq-null.js"],
+{"rule": "no-eq-null", "upstream": "eslint v10.15.0", "files": ["tests/lib/rules/no-eq-null.js"],
 "messages": {"unexpected":"Use '===' to compare with null."},
 "cases": [
 {"id":"no-eq-null/v0","kind":"valid","code":"if (x === null) { }","file":"file.ts","tsconfig":null},

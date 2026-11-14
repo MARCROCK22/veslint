@@ -1,7 +1,7 @@
 // Extracts the test cases of the upstream tests of the rules veslint ports, so that the fixtures
 // carry every case the rule has upstream: typescript-eslint's own tests and those of
 // @slipher/eslint-plugin (the `seyfert/*` rules). Run with bun from the project root, after the
-// sparse clones of typescript-eslint v8.62.0 in build/upstream/typescript-eslint and of
+// sparse clones of typescript-eslint v8.72.2 in build/upstream/typescript-eslint and of
 // tiramisulabs/extra at 221401c7c2 in build/upstream/extra, with seyfert 5.2.0 in
 // build/upstream/seyfert (see tests/upstream/README.md):
 //
@@ -38,7 +38,7 @@ const UNICORN_DEPS = path.join(ROOT, 'build/upstream/unicorn-deps/node_modules')
 // the files of the cases are written relative to.
 const SOURCES = {
   '@typescript-eslint/': {
-    label: 'typescript-eslint v8.62.0',
+    label: 'typescript-eslint v8.72.2',
     clone: TYPESCRIPT_ESLINT,
     tests: path.join(TYPESCRIPT_ESLINT, 'packages/eslint-plugin/tests'),
     fixtures: realDir(path.join(TYPESCRIPT_ESLINT, 'packages/eslint-plugin/tests/fixtures')),
@@ -57,11 +57,11 @@ const SOURCES = {
     leave: ['seyfert', '@slipher'],
     extra: { seyfert: SEYFERT },
   },
-  // ESLint core (a rule id without a plugin): tests/lib/rules/<rule>.js of ESLint v10.6.0, written
+  // ESLint core (a rule id without a plugin): tests/lib/rules/<rule>.js of ESLint v10.15.0, written
   // for JavaScript. Each case is linted as TypeScript, in the file.ts (react.tsx with JSX) of
   // typescript-eslint's fixtures, without types.
   '': {
-    label: 'eslint v10.6.0',
+    label: 'eslint v10.15.0',
     core: true,
     clone: ESLINT,
     tests: path.join(ESLINT, 'tests/lib/rules'),
@@ -69,13 +69,13 @@ const SOURCES = {
     modules: path.join(ESLINT, 'node_modules'),
     needs: [path.join(ESLINT, 'tests/lib/rules'), path.join(ESLINT, 'lib/rules')],
   },
-  // eslint-plugin-unicorn v64.0.0 (the `unicorn/*` rules): test/<rule>.js, written for JavaScript
+  // eslint-plugin-unicorn v79.0.0 (the `unicorn/*` rules): test/<rule>.js, written for JavaScript
   // and linted, like ESLint core's, as TypeScript in the file.ts (react.tsx with JSX) of
   // typescript-eslint's fixtures. The cases of `test.snapshot` have no errors written: their
   // expectation is what ESLint gives with the configuration of the tests (espree and the globals of
   // test/utils/language-options.js), what made the snapshot.
   'unicorn/': {
-    label: 'eslint-plugin-unicorn v64.0.0',
+    label: 'eslint-plugin-unicorn v79.0.0',
     unicorn: true,
     clone: UNICORN,
     tests: path.join(UNICORN, 'test'),
@@ -91,7 +91,7 @@ const sourceOf = rule =>
   rule.includes('/') ? Object.entries(SOURCES).find(([prefix]) => prefix && rule.startsWith(prefix)) : ['', SOURCES['']];
 
 // <clone>/node_modules (for @slipher/eslint-plugin, its package's): the packages of build/eval
-// (typescript-eslint 8.62.0, TypeScript 6.0.3), with the two stubs in place of the test framework.
+// (typescript-eslint 8.72.2, TypeScript 6.0.3), with the two stubs in place of the test framework.
 function overlay(source) {
   const nm = source.modules;
   fs.rmSync(nm, { recursive: true, force: true });
@@ -441,7 +441,7 @@ Bun.plugin({
   },
 });
 
-// The plugin of build/eval (eslint-plugin-unicorn 64.0.0), the one Spider-Byte's configuration uses.
+// The plugin of build/eval (eslint-plugin-unicorn 79.0.0), the one Spider-Byte's configuration uses.
 let unicornPluginCache;
 async function unicornPlugin() {
   unicornPluginCache ??= (await import(pathToFileURL(requireDependency.resolve('eslint-plugin-unicorn')).href)).default;
@@ -449,7 +449,7 @@ async function unicornPlugin() {
 }
 
 // What the snapshot of an invalid case of `test.snapshot` holds, as RuleTester expectations: ESLint
-// 10.6.0 run as test/utils/snapshot-rule-tester.js runs it (espree, or typescript-eslint's parser
+// 10.15.0 run as test/utils/snapshot-rule-tester.js runs it (espree, or typescript-eslint's parser
 // for `test.typescript`, and the globals of test/utils/language-options.js): each problem with its
 // message, its range and its suggestions (with the text each one leaves), and the output of one
 // pass of fixes (null when nothing is fixed).

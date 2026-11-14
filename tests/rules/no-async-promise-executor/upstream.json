@@ -1,4 +1,4 @@
-{"rule": "no-async-promise-executor", "upstream": "eslint v10.6.0", "files": ["tests/lib/rules/no-async-promise-executor.js"],
+{"rule": "no-async-promise-executor", "upstream": "eslint v10.15.0", "files": ["tests/lib/rules/no-async-promise-executor.js"],
 "messages": {"async":"Promise executor functions should not be async."},
 "cases": [
 {"id":"no-async-promise-executor/v0","kind":"valid","code":"new Promise((resolve, reject) => {})","file":"file.ts","tsconfig":null,"languageOptions":{"ecmaVersion":8}},

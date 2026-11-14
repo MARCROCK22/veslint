@@ -1,4 +1,4 @@
-{"rule": "no-dupe-keys", "upstream": "eslint v10.6.0", "files": ["tests/lib/rules/no-dupe-keys.js"],
+{"rule": "no-dupe-keys", "upstream": "eslint v10.15.0", "files": ["tests/lib/rules/no-dupe-keys.js"],
 "messages": {"unexpected":"Duplicate key '{{name}}'."},
 "cases": [
 {"id":"no-dupe-keys/v0","kind":"valid","code":"var foo = { __proto__: 1, two: 2};","file":"file.ts","tsconfig":null,"languageOptions":{"ecmaVersion":5,"sourceType":"script"}},

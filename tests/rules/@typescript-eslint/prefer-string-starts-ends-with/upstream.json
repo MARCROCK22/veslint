@@ -1,4 +1,4 @@
-{"rule": "@typescript-eslint/prefer-string-starts-ends-with", "upstream": "typescript-eslint v8.62.0", "files": ["packages/eslint-plugin/tests/rules/prefer-string-starts-ends-with.test.ts"],
+{"rule": "@typescript-eslint/prefer-string-starts-ends-with", "upstream": "typescript-eslint v8.72.2", "files": ["packages/eslint-plugin/tests/rules/prefer-string-starts-ends-with.test.ts"],
 "messages": {"preferEndsWith":"Use the 'String#endsWith' method instead.","preferStartsWith":"Use 'String#startsWith' method instead."},
 "cases": [
 {"id":"prefer-string-starts-ends-with/v0","kind":"valid","code":"\nfunction f(s: string[]) {\n  s[0] === 'a';\n}\n    ","file":"file.ts","tsconfig":"tsconfig.json","via":"service"},

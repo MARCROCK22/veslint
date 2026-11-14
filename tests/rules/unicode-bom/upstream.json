@@ -1,4 +1,4 @@
-{"rule": "unicode-bom", "upstream": "eslint v10.6.0", "files": ["tests/lib/rules/unicode-bom.js"],
+{"rule": "unicode-bom", "upstream": "eslint v10.15.0", "files": ["tests/lib/rules/unicode-bom.js"],
 "messages": {"expected":"Expected Unicode BOM (Byte Order Mark).","unexpected":"Unexpected Unicode BOM (Byte Order Mark)."},
 "cases": [
 {"id":"unicode-bom/v0","kind":"valid","code":"﻿ var a = 123;","options":["always"],"file":"file.ts","tsconfig":null},

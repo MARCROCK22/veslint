@@ -1,4 +1,4 @@
-{"rule": "no-caller", "upstream": "eslint v10.6.0", "files": ["tests/lib/rules/no-caller.js"],
+{"rule": "no-caller", "upstream": "eslint v10.15.0", "files": ["tests/lib/rules/no-caller.js"],
 "messages": {"unexpected":"Avoid arguments.{{prop}}."},
 "cases": [
 {"id":"no-caller/v0","kind":"valid","code":"var x = arguments.length","file":"file.ts","tsconfig":null},

@@ -1,4 +1,4 @@
-{"rule": "no-restricted-globals", "upstream": "eslint v10.6.0", "files": ["tests/lib/rules/no-restricted-globals.js"],
+{"rule": "no-restricted-globals", "upstream": "eslint v10.15.0", "files": ["tests/lib/rules/no-restricted-globals.js"],
 "messages": {"defaultMessage":"Unexpected use of '{{name}}'.","customMessage":"Unexpected use of '{{name}}'. {{customMessage}}"},
 "cases": [
 {"id":"no-restricted-globals/r0/v0","kind":"valid","code":"foo","file":"file.ts","tsconfig":null},

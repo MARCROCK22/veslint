@@ -1,4 +1,4 @@
-{"rule": "@typescript-eslint/only-throw-error", "upstream": "typescript-eslint v8.62.0", "files": ["packages/eslint-plugin/tests/rules/only-throw-error.test.ts"],
+{"rule": "@typescript-eslint/only-throw-error", "upstream": "typescript-eslint v8.72.2", "files": ["packages/eslint-plugin/tests/rules/only-throw-error.test.ts"],
 "messages": {"object":"Expected an error object to be thrown.","undef":"Do not throw undefined."},
 "cases": [
 {"id":"only-throw-error/v0","kind":"valid","code":"throw new Error();","file":"file.ts","tsconfig":"tsconfig.json","via":"service"},

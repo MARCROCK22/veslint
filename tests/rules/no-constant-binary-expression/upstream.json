@@ -1,4 +1,4 @@
-{"rule": "no-constant-binary-expression", "upstream": "eslint v10.6.0", "files": ["tests/lib/rules/no-constant-binary-expression.js"],
+{"rule": "no-constant-binary-expression", "upstream": "eslint v10.15.0", "files": ["tests/lib/rules/no-constant-binary-expression.js"],
 "messages": {"constantBinaryOperand":"Unexpected constant binary expression. Compares constantly with the {{otherSide}}-hand side of the `{{operator}}`.","constantShortCircuit":"Unexpected constant {{property}} on the left-hand side of a `{{operator}}` expression.","alwaysNew":"Unexpected comparison to newly constructed object. These two values can never be equal.","bothAlwaysNew":"Unexpected comparison of two newly constructed objects. These two values can never be equal.","constantRelationalComparison":"Unexpected constant relational comparison. Both sides of the `{{operator}}` are literal values."},
 "cases": [
 {"id":"no-constant-binary-expression/v0","kind":"valid","code":"<p /> && foo","file":"react.tsx","tsconfig":null,"parserOptions":{"ecmaFeatures":{"jsx":true}},"languageOptions":{"ecmaVersion":2021,"sourceType":"script"}},

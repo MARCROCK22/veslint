@@ -1,4 +1,4 @@
-{"rule": "no-cond-assign", "upstream": "eslint v10.6.0", "files": ["tests/lib/rules/no-cond-assign.js"],
+{"rule": "no-cond-assign", "upstream": "eslint v10.15.0", "files": ["tests/lib/rules/no-cond-assign.js"],
 "messages": {"unexpected":"Unexpected assignment within {{type}}.","missing":"Expected a conditional expression and instead saw an assignment."},
 "cases": [
 {"id":"no-cond-assign/v0","kind":"valid","code":"var x = 0; if (x == 0) { var b = 1; }","file":"file.ts","tsconfig":null},

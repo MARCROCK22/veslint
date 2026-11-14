@@ -1,4 +1,4 @@
-{"rule": "no-useless-catch", "upstream": "eslint v10.6.0", "files": ["tests/lib/rules/no-useless-catch.js"],
+{"rule": "no-useless-catch", "upstream": "eslint v10.15.0", "files": ["tests/lib/rules/no-useless-catch.js"],
 "messages": {"unnecessaryCatchClause":"Unnecessary catch clause.","unnecessaryCatch":"Unnecessary try/catch wrapper."},
 "cases": [
 {"id":"no-useless-catch/v0","kind":"valid","code":"\n            try {\n                foo();\n            } catch (err) {\n                console.error(err);\n            }\n        ","file":"file.ts","tsconfig":null},

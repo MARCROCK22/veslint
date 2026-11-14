@@ -1,4 +1,4 @@
-{"rule": "@typescript-eslint/no-require-imports", "upstream": "typescript-eslint v8.62.0", "files": ["packages/eslint-plugin/tests/rules/no-require-imports.test.ts"],
+{"rule": "@typescript-eslint/no-require-imports", "upstream": "typescript-eslint v8.72.2", "files": ["packages/eslint-plugin/tests/rules/no-require-imports.test.ts"],
 "messages": {"noRequireImports":"A `require()` style import is forbidden."},
 "cases": [
 {"id":"no-require-imports/v0","kind":"valid","code":"import { l } from 'lib';","file":"file.ts","tsconfig":null},

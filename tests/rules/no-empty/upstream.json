@@ -1,4 +1,4 @@
-{"rule": "no-empty", "upstream": "eslint v10.6.0", "files": ["tests/lib/rules/no-empty.js"],
+{"rule": "no-empty", "upstream": "eslint v10.15.0", "files": ["tests/lib/rules/no-empty.js"],
 "messages": {"unexpected":"Empty {{type}} statement.","suggestComment":"Add comment inside empty {{type}} statement."},
 "cases": [
 {"id":"no-empty/v0","kind":"valid","code":"if (foo) { bar() }","file":"file.ts","tsconfig":null},

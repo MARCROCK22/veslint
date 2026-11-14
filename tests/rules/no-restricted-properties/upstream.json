@@ -1,4 +1,4 @@
-{"rule": "no-restricted-properties", "upstream": "eslint v10.6.0", "files": ["tests/lib/rules/no-restricted-properties.js"],
+{"rule": "no-restricted-properties", "upstream": "eslint v10.15.0", "files": ["tests/lib/rules/no-restricted-properties.js"],
 "messages": {"restrictedObjectProperty":"'{{objectName}}.{{propertyName}}' is restricted from being used.{{allowedPropertiesMessage}}{{message}}","restrictedProperty":"'{{propertyName}}' is restricted from being used.{{allowedObjectsMessage}}{{message}}"},
 "cases": [
 {"id":"no-restricted-properties/v0","kind":"valid","code":"someObject.someProperty","options":[{"object":"someObject","property":"disallowedProperty"}],"file":"file.ts","tsconfig":null},

@@ -1,4 +1,4 @@
-{"rule": "no-empty-character-class", "upstream": "eslint v10.6.0", "files": ["tests/lib/rules/no-empty-character-class.js"],
+{"rule": "no-empty-character-class", "upstream": "eslint v10.15.0", "files": ["tests/lib/rules/no-empty-character-class.js"],
 "messages": {"unexpected":"Empty class."},
 "cases": [
 {"id":"no-empty-character-class/v0","kind":"valid","code":"var foo = /^abc[a-zA-Z]/;","file":"file.ts","tsconfig":null},

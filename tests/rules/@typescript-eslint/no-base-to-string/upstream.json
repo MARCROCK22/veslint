@@ -1,4 +1,4 @@
-{"rule": "@typescript-eslint/no-base-to-string", "upstream": "typescript-eslint v8.62.0", "files": ["packages/eslint-plugin/tests/rules/no-base-to-string.test.ts"],
+{"rule": "@typescript-eslint/no-base-to-string", "upstream": "typescript-eslint v8.72.2", "files": ["packages/eslint-plugin/tests/rules/no-base-to-string.test.ts"],
 "messages": {"baseArrayJoin":"Using `join()` for {{name}} {{certainty}} use Object's default stringification format ('[object Object]') when stringified.","baseToString":"'{{name}}' {{certainty}} use Object's default stringification format ('[object Object]') when stringified."},
 "cases": [
 {"id":"no-base-to-string/v0","kind":"valid","code":"`${''}`;","file":"file.ts","tsconfig":"tsconfig.json","via":"service"},

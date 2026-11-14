@@ -1,4 +1,4 @@
-{"rule": "symbol-description", "upstream": "eslint v10.6.0", "files": ["tests/lib/rules/symbol-description.js"],
+{"rule": "symbol-description", "upstream": "eslint v10.15.0", "files": ["tests/lib/rules/symbol-description.js"],
 "messages": {"expected":"Expected Symbol to have a description."},
 "cases": [
 {"id":"symbol-description/v0","kind":"valid","code":"Symbol(\"Foo\");","file":"file.ts","tsconfig":null,"languageOptions":{"ecmaVersion":6,"sourceType":"script"}},

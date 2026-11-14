@@ -1,4 +1,4 @@
-{"rule": "no-shadow-restricted-names", "upstream": "eslint v10.6.0", "files": ["tests/lib/rules/no-shadow-restricted-names.js"],
+{"rule": "no-shadow-restricted-names", "upstream": "eslint v10.15.0", "files": ["tests/lib/rules/no-shadow-restricted-names.js"],
 "messages": {"shadowingRestrictedName":"Shadowing of global property '{{name}}'."},
 "cases": [
 {"id":"no-shadow-restricted-names/v0","kind":"valid","code":"function foo(bar){ var baz; }","file":"file.ts","tsconfig":null,"languageOptions":{"ecmaVersion":5,"sourceType":"script"}},

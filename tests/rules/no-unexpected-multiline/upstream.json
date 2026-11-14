@@ -1,4 +1,4 @@
-{"rule": "no-unexpected-multiline", "upstream": "eslint v10.6.0", "files": ["tests/lib/rules/no-unexpected-multiline.js"],
+{"rule": "no-unexpected-multiline", "upstream": "eslint v10.15.0", "files": ["tests/lib/rules/no-unexpected-multiline.js"],
 "messages": {"function":"Unexpected newline between function and ( of function call.","property":"Unexpected newline between object and [ of property access.","taggedTemplate":"Unexpected newline between template tag and template literal.","division":"Unexpected newline between numerator and division operator."},
 "cases": [
 {"id":"no-unexpected-multiline/v0","kind":"valid","code":"(x || y).aFunction()","file":"file.ts","tsconfig":null},
