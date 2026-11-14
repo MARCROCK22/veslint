@@ -2183,3 +2183,49 @@ fn un_js_object_is(a f64, b f64) bool {
 	}
 	return a == b && math.signbit(a) == math.signbit(b)
 }
+
+// un_static_number_value ports getStaticNumberValue of utils/numeric.js: a numeric literal, maybe
+// signed, without TypeScript wrappers.
+fn un_static_number_value(t &estree.EsTree, from int) ?f64 {
+	node := un_unwrap_ts_expression(t, from)
+	if node < 0 {
+		return none
+	}
+	if t.typ(node) == .literal {
+		value := t.get(node, .value)
+		if value is f64 {
+			return value
+		}
+		return none
+	}
+	if t.typ(node) == .unary_expression {
+		operator := t.string_of(node, .operator) or { '' }
+		if operator in ['+', '-'] {
+			value := un_static_number_value(t, t.node(node, .argument) or { return none })?
+			return if operator == '-' { -value } else { value }
+		}
+	}
+	return none
+}
+
+// un_is_length_of ports isLengthOf of utils/comparison.js: the node is `<object>.length` (not
+// optional, not computed), without TypeScript wrappers.
+fn (mut c Checker) un_is_length_of(t &estree.EsTree, from int, object int) bool {
+	if from < 0 || object < 0 {
+		return false
+	}
+	node := un_unwrap_ts_expression(t, from)
+	return un_is_member(t, node, properties: ['length'], optional: false, computed: false)
+		&& c.un_is_same_reference(t, t.node(node, .object) or { return false }, object)
+}
+
+// un_is_length_minus_one_of ports isLengthMinusOneOf: `<object>.length - 1`.
+fn (mut c Checker) un_is_length_minus_one_of(t &estree.EsTree, from int, object int) bool {
+	node := un_unwrap_ts_expression(t, from)
+	if node < 0 || t.typ(node) != .binary_expression || (t.string_of(node, .operator) or { '' }) != '-' {
+		return false
+	}
+	right := t.node(node, .right) or { return false }
+	return (un_static_number_value(t, right) or { return false }) == 1
+		&& c.un_is_length_of(t, t.node(node, .left) or { return false }, object)
+}
