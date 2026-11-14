@@ -145,8 +145,7 @@ fn acr_is_array_from_method(t &estree.EsTree, node int) bool {
 fn acr_upper_function(t &estree.EsTree, node int) int {
 	mut current := node
 	for current >= 0 {
-		if t.typ(current) in [.arrow_function_expression, .function_expression,
-			.function_declaration] {
+		if t.typ(current) in [.arrow_function_expression, .function_expression, .function_declaration] {
 			return current
 		}
 		current = t.nodes[current].parent

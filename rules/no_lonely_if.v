@@ -72,8 +72,8 @@ fn (c &Checker) nli_fix(t &estree.EsTree, tokens &SourceTokens, node int, parent
 		value := c.src[after.start..after.end]
 		if t.typ(consequent) != .block_statement && last_value != ';'
 			&& (!es_has_line_break(c.src[t.nodes[consequent].end..after.start])
-			|| (value.len > 0 && value[0] in [`(`, `[`, `/`, `+`, `\``, `-`])
-			|| last_value in ['++', '--']) {
+				|| (value.len > 0 && value[0] in [`(`, `[`, `/`, `+`, `\``, `-`])
+				|| last_value in ['++', '--']) {
 			return none
 		}
 	}

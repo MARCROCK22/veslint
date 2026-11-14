@@ -144,6 +144,8 @@ pub fn check_options(rule string, options []json2.Any) !bool {
 		no_unmodified_loop_condition { nulc_options(options)! }
 		array_callback_return { acr_options(options)! }
 		require_atomic_updates { rau_options(options)! }
+		class_methods_use_this { cmut_options(options)! }
+		no_explicit_any { nea_options(options)! }
 		else { return false }
 	}
 	return true

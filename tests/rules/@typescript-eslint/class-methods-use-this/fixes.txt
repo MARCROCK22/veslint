@@ -1,0 +1,105 @@
+tests/rules/@typescript-eslint/class-methods-use-this/cases.ts:6:3	@typescript-eslint/class-methods-use-this	missingThis	Expected 'this' to be used by class method 'm1'.	end	6	5
+tests/rules/@typescript-eslint/class-methods-use-this/cases.ts:7:3	@typescript-eslint/class-methods-use-this	missingThis	Expected 'this' to be used by class method 'm2'.	end	7	5
+tests/rules/@typescript-eslint/class-methods-use-this/cases.ts:8:3	@typescript-eslint/class-methods-use-this	missingThis	Expected 'this' to be used by class getter 'g'.	end	8	8
+tests/rules/@typescript-eslint/class-methods-use-this/cases.ts:9:3	@typescript-eslint/class-methods-use-this	missingThis	Expected 'this' to be used by class setter 's'.	end	9	8
+tests/rules/@typescript-eslint/class-methods-use-this/cases.ts:10:3	@typescript-eslint/class-methods-use-this	missingThis	Expected 'this' to be used by class private method #p.	end	10	5
+tests/rules/@typescript-eslint/class-methods-use-this/cases.ts:11:3	@typescript-eslint/class-methods-use-this	missingThis	Expected 'this' to be used by class method 'quoted'.	end	11	11
+tests/rules/@typescript-eslint/class-methods-use-this/cases.ts:12:3	@typescript-eslint/class-methods-use-this	missingThis	Expected 'this' to be used by class method '1'.	end	12	4
+tests/rules/@typescript-eslint/class-methods-use-this/cases.ts:13:3	@typescript-eslint/class-methods-use-this	missingThis	Expected 'this' to be used by class method.	end	13	20
+tests/rules/@typescript-eslint/class-methods-use-this/cases.ts:14:3	@typescript-eslint/class-methods-use-this	missingThis	Expected 'this' to be used by class method 'f1'.	end	14	8
+tests/rules/@typescript-eslint/class-methods-use-this/cases.ts:15:3	@typescript-eslint/class-methods-use-this	missingThis	Expected 'this' to be used by class method 'f2'.	end	15	17
+tests/rules/@typescript-eslint/class-methods-use-this/cases.ts:16:20	@typescript-eslint/class-methods-use-this	missingThis	Expected 'this' to be used by class arrow function.	end	16	22
+tests/rules/@typescript-eslint/class-methods-use-this/cases.ts:17:3	@typescript-eslint/class-methods-use-this	missingThis	Expected 'this' to be used by class method 'm3'.	end	17	5
+tests/rules/@typescript-eslint/class-methods-use-this/cases.ts:18:3	@typescript-eslint/class-methods-use-this	missingThis	Expected 'this' to be used by class method 'm4'.	end	18	5
+tests/rules/@typescript-eslint/class-methods-use-this/cases.ts:19:3	@typescript-eslint/class-methods-use-this	missingThis	Expected 'this' to be used by class method 'm5'.	end	19	5
+tests/rules/@typescript-eslint/class-methods-use-this/cases.ts:21:19	@typescript-eslint/class-methods-use-this	missingThis	Expected 'this' to be used by class method 'm'.	end	21	20
+tests/rules/@typescript-eslint/class-methods-use-this/cases.ts:22:24	@typescript-eslint/class-methods-use-this	missingThis	Expected 'this' to be used by class method 'm'.	end	22	34
+tests/rules/@typescript-eslint/class-methods-use-this/cases.ts:23:24	@typescript-eslint/class-methods-use-this	missingThis	Expected 'this' to be used by class method 'm'.	end	23	25
+tests/rules/@typescript-eslint/class-methods-use-this/cases.ts:23:31	@typescript-eslint/class-methods-use-this	missingThis	Expected 'this' to be used by class method 'n'.	end	23	40
+tests/rules/@typescript-eslint/class-methods-use-this/cases.ts:23:46	@typescript-eslint/class-methods-use-this	missingThis	Expected 'this' to be used by class method 'o'.	end	23	57
+tests/rules/@typescript-eslint/class-methods-use-this/cases.ts:23:63	@typescript-eslint/class-methods-use-this	missingThis	Expected 'this' to be used by class method 'p'.	end	23	71
+tests/rules/@typescript-eslint/class-methods-use-this/except-methods/cases.ts:7:3	@typescript-eslint/class-methods-use-this	missingThis	Expected 'this' to be used by class method 'm2'.	end	7	5
+tests/rules/@typescript-eslint/class-methods-use-this/except-methods/cases.ts:8:3	@typescript-eslint/class-methods-use-this	missingThis	Expected 'this' to be used by class getter 'g'.	end	8	8
+tests/rules/@typescript-eslint/class-methods-use-this/except-methods/cases.ts:9:3	@typescript-eslint/class-methods-use-this	missingThis	Expected 'this' to be used by class setter 's'.	end	9	8
+tests/rules/@typescript-eslint/class-methods-use-this/except-methods/cases.ts:13:3	@typescript-eslint/class-methods-use-this	missingThis	Expected 'this' to be used by class method.	end	13	20
+tests/rules/@typescript-eslint/class-methods-use-this/except-methods/cases.ts:15:3	@typescript-eslint/class-methods-use-this	missingThis	Expected 'this' to be used by class method 'f2'.	end	15	17
+tests/rules/@typescript-eslint/class-methods-use-this/except-methods/cases.ts:16:20	@typescript-eslint/class-methods-use-this	missingThis	Expected 'this' to be used by class arrow function.	end	16	22
+tests/rules/@typescript-eslint/class-methods-use-this/except-methods/cases.ts:17:3	@typescript-eslint/class-methods-use-this	missingThis	Expected 'this' to be used by class method 'm3'.	end	17	5
+tests/rules/@typescript-eslint/class-methods-use-this/except-methods/cases.ts:18:3	@typescript-eslint/class-methods-use-this	missingThis	Expected 'this' to be used by class method 'm4'.	end	18	5
+tests/rules/@typescript-eslint/class-methods-use-this/except-methods/cases.ts:19:3	@typescript-eslint/class-methods-use-this	missingThis	Expected 'this' to be used by class method 'm5'.	end	19	5
+tests/rules/@typescript-eslint/class-methods-use-this/except-methods/cases.ts:21:19	@typescript-eslint/class-methods-use-this	missingThis	Expected 'this' to be used by class method 'm'.	end	21	20
+tests/rules/@typescript-eslint/class-methods-use-this/except-methods/cases.ts:22:24	@typescript-eslint/class-methods-use-this	missingThis	Expected 'this' to be used by class method 'm'.	end	22	34
+tests/rules/@typescript-eslint/class-methods-use-this/except-methods/cases.ts:23:24	@typescript-eslint/class-methods-use-this	missingThis	Expected 'this' to be used by class method 'm'.	end	23	25
+tests/rules/@typescript-eslint/class-methods-use-this/except-methods/cases.ts:23:31	@typescript-eslint/class-methods-use-this	missingThis	Expected 'this' to be used by class method 'n'.	end	23	40
+tests/rules/@typescript-eslint/class-methods-use-this/except-methods/cases.ts:23:46	@typescript-eslint/class-methods-use-this	missingThis	Expected 'this' to be used by class method 'o'.	end	23	57
+tests/rules/@typescript-eslint/class-methods-use-this/except-methods/cases.ts:23:63	@typescript-eslint/class-methods-use-this	missingThis	Expected 'this' to be used by class method 'p'.	end	23	71
+tests/rules/@typescript-eslint/class-methods-use-this/ignore-override/cases.ts:6:3	@typescript-eslint/class-methods-use-this	missingThis	Expected 'this' to be used by class method 'm1'.	end	6	5
+tests/rules/@typescript-eslint/class-methods-use-this/ignore-override/cases.ts:7:3	@typescript-eslint/class-methods-use-this	missingThis	Expected 'this' to be used by class method 'm2'.	end	7	5
+tests/rules/@typescript-eslint/class-methods-use-this/ignore-override/cases.ts:8:3	@typescript-eslint/class-methods-use-this	missingThis	Expected 'this' to be used by class getter 'g'.	end	8	8
+tests/rules/@typescript-eslint/class-methods-use-this/ignore-override/cases.ts:9:3	@typescript-eslint/class-methods-use-this	missingThis	Expected 'this' to be used by class setter 's'.	end	9	8
+tests/rules/@typescript-eslint/class-methods-use-this/ignore-override/cases.ts:10:3	@typescript-eslint/class-methods-use-this	missingThis	Expected 'this' to be used by class private method #p.	end	10	5
+tests/rules/@typescript-eslint/class-methods-use-this/ignore-override/cases.ts:11:3	@typescript-eslint/class-methods-use-this	missingThis	Expected 'this' to be used by class method 'quoted'.	end	11	11
+tests/rules/@typescript-eslint/class-methods-use-this/ignore-override/cases.ts:12:3	@typescript-eslint/class-methods-use-this	missingThis	Expected 'this' to be used by class method '1'.	end	12	4
+tests/rules/@typescript-eslint/class-methods-use-this/ignore-override/cases.ts:13:3	@typescript-eslint/class-methods-use-this	missingThis	Expected 'this' to be used by class method.	end	13	20
+tests/rules/@typescript-eslint/class-methods-use-this/ignore-override/cases.ts:14:3	@typescript-eslint/class-methods-use-this	missingThis	Expected 'this' to be used by class method 'f1'.	end	14	8
+tests/rules/@typescript-eslint/class-methods-use-this/ignore-override/cases.ts:15:3	@typescript-eslint/class-methods-use-this	missingThis	Expected 'this' to be used by class method 'f2'.	end	15	17
+tests/rules/@typescript-eslint/class-methods-use-this/ignore-override/cases.ts:16:20	@typescript-eslint/class-methods-use-this	missingThis	Expected 'this' to be used by class arrow function.	end	16	22
+tests/rules/@typescript-eslint/class-methods-use-this/ignore-override/cases.ts:17:3	@typescript-eslint/class-methods-use-this	missingThis	Expected 'this' to be used by class method 'm3'.	end	17	5
+tests/rules/@typescript-eslint/class-methods-use-this/ignore-override/cases.ts:18:3	@typescript-eslint/class-methods-use-this	missingThis	Expected 'this' to be used by class method 'm4'.	end	18	5
+tests/rules/@typescript-eslint/class-methods-use-this/ignore-override/cases.ts:19:3	@typescript-eslint/class-methods-use-this	missingThis	Expected 'this' to be used by class method 'm5'.	end	19	5
+tests/rules/@typescript-eslint/class-methods-use-this/ignore-override/cases.ts:21:19	@typescript-eslint/class-methods-use-this	missingThis	Expected 'this' to be used by class method 'm'.	end	21	20
+tests/rules/@typescript-eslint/class-methods-use-this/ignore-override/cases.ts:23:24	@typescript-eslint/class-methods-use-this	missingThis	Expected 'this' to be used by class method 'm'.	end	23	25
+tests/rules/@typescript-eslint/class-methods-use-this/ignore-override/cases.ts:23:31	@typescript-eslint/class-methods-use-this	missingThis	Expected 'this' to be used by class method 'n'.	end	23	40
+tests/rules/@typescript-eslint/class-methods-use-this/ignore-override/cases.ts:23:46	@typescript-eslint/class-methods-use-this	missingThis	Expected 'this' to be used by class method 'o'.	end	23	57
+tests/rules/@typescript-eslint/class-methods-use-this/ignore-override/cases.ts:23:63	@typescript-eslint/class-methods-use-this	missingThis	Expected 'this' to be used by class method 'p'.	end	23	71
+tests/rules/@typescript-eslint/class-methods-use-this/implements/cases.ts:6:3	@typescript-eslint/class-methods-use-this	missingThis	Expected 'this' to be used by class method 'm1'.	end	6	5
+tests/rules/@typescript-eslint/class-methods-use-this/implements/cases.ts:7:3	@typescript-eslint/class-methods-use-this	missingThis	Expected 'this' to be used by class method 'm2'.	end	7	5
+tests/rules/@typescript-eslint/class-methods-use-this/implements/cases.ts:8:3	@typescript-eslint/class-methods-use-this	missingThis	Expected 'this' to be used by class getter 'g'.	end	8	8
+tests/rules/@typescript-eslint/class-methods-use-this/implements/cases.ts:9:3	@typescript-eslint/class-methods-use-this	missingThis	Expected 'this' to be used by class setter 's'.	end	9	8
+tests/rules/@typescript-eslint/class-methods-use-this/implements/cases.ts:10:3	@typescript-eslint/class-methods-use-this	missingThis	Expected 'this' to be used by class private method #p.	end	10	5
+tests/rules/@typescript-eslint/class-methods-use-this/implements/cases.ts:11:3	@typescript-eslint/class-methods-use-this	missingThis	Expected 'this' to be used by class method 'quoted'.	end	11	11
+tests/rules/@typescript-eslint/class-methods-use-this/implements/cases.ts:12:3	@typescript-eslint/class-methods-use-this	missingThis	Expected 'this' to be used by class method '1'.	end	12	4
+tests/rules/@typescript-eslint/class-methods-use-this/implements/cases.ts:13:3	@typescript-eslint/class-methods-use-this	missingThis	Expected 'this' to be used by class method.	end	13	20
+tests/rules/@typescript-eslint/class-methods-use-this/implements/cases.ts:14:3	@typescript-eslint/class-methods-use-this	missingThis	Expected 'this' to be used by class method 'f1'.	end	14	8
+tests/rules/@typescript-eslint/class-methods-use-this/implements/cases.ts:15:3	@typescript-eslint/class-methods-use-this	missingThis	Expected 'this' to be used by class method 'f2'.	end	15	17
+tests/rules/@typescript-eslint/class-methods-use-this/implements/cases.ts:16:20	@typescript-eslint/class-methods-use-this	missingThis	Expected 'this' to be used by class arrow function.	end	16	22
+tests/rules/@typescript-eslint/class-methods-use-this/implements/cases.ts:17:3	@typescript-eslint/class-methods-use-this	missingThis	Expected 'this' to be used by class method 'm3'.	end	17	5
+tests/rules/@typescript-eslint/class-methods-use-this/implements/cases.ts:18:3	@typescript-eslint/class-methods-use-this	missingThis	Expected 'this' to be used by class method 'm4'.	end	18	5
+tests/rules/@typescript-eslint/class-methods-use-this/implements/cases.ts:19:3	@typescript-eslint/class-methods-use-this	missingThis	Expected 'this' to be used by class method 'm5'.	end	19	5
+tests/rules/@typescript-eslint/class-methods-use-this/implements/cases.ts:21:19	@typescript-eslint/class-methods-use-this	missingThis	Expected 'this' to be used by class method 'm'.	end	21	20
+tests/rules/@typescript-eslint/class-methods-use-this/implements/cases.ts:22:24	@typescript-eslint/class-methods-use-this	missingThis	Expected 'this' to be used by class method 'm'.	end	22	34
+tests/rules/@typescript-eslint/class-methods-use-this/no-fields/cases.ts:6:3	@typescript-eslint/class-methods-use-this	missingThis	Expected 'this' to be used by class method 'm1'.	end	6	5
+tests/rules/@typescript-eslint/class-methods-use-this/no-fields/cases.ts:7:3	@typescript-eslint/class-methods-use-this	missingThis	Expected 'this' to be used by class method 'm2'.	end	7	5
+tests/rules/@typescript-eslint/class-methods-use-this/no-fields/cases.ts:8:3	@typescript-eslint/class-methods-use-this	missingThis	Expected 'this' to be used by class getter 'g'.	end	8	8
+tests/rules/@typescript-eslint/class-methods-use-this/no-fields/cases.ts:9:3	@typescript-eslint/class-methods-use-this	missingThis	Expected 'this' to be used by class setter 's'.	end	9	8
+tests/rules/@typescript-eslint/class-methods-use-this/no-fields/cases.ts:10:3	@typescript-eslint/class-methods-use-this	missingThis	Expected 'this' to be used by class private method #p.	end	10	5
+tests/rules/@typescript-eslint/class-methods-use-this/no-fields/cases.ts:11:3	@typescript-eslint/class-methods-use-this	missingThis	Expected 'this' to be used by class method 'quoted'.	end	11	11
+tests/rules/@typescript-eslint/class-methods-use-this/no-fields/cases.ts:12:3	@typescript-eslint/class-methods-use-this	missingThis	Expected 'this' to be used by class method '1'.	end	12	4
+tests/rules/@typescript-eslint/class-methods-use-this/no-fields/cases.ts:13:3	@typescript-eslint/class-methods-use-this	missingThis	Expected 'this' to be used by class method.	end	13	20
+tests/rules/@typescript-eslint/class-methods-use-this/no-fields/cases.ts:17:3	@typescript-eslint/class-methods-use-this	missingThis	Expected 'this' to be used by class method 'm3'.	end	17	5
+tests/rules/@typescript-eslint/class-methods-use-this/no-fields/cases.ts:18:3	@typescript-eslint/class-methods-use-this	missingThis	Expected 'this' to be used by class method 'm4'.	end	18	5
+tests/rules/@typescript-eslint/class-methods-use-this/no-fields/cases.ts:19:3	@typescript-eslint/class-methods-use-this	missingThis	Expected 'this' to be used by class method 'm5'.	end	19	5
+tests/rules/@typescript-eslint/class-methods-use-this/no-fields/cases.ts:21:19	@typescript-eslint/class-methods-use-this	missingThis	Expected 'this' to be used by class method 'm'.	end	21	20
+tests/rules/@typescript-eslint/class-methods-use-this/no-fields/cases.ts:22:24	@typescript-eslint/class-methods-use-this	missingThis	Expected 'this' to be used by class method 'm'.	end	22	34
+tests/rules/@typescript-eslint/class-methods-use-this/no-fields/cases.ts:23:24	@typescript-eslint/class-methods-use-this	missingThis	Expected 'this' to be used by class method 'm'.	end	23	25
+tests/rules/@typescript-eslint/class-methods-use-this/no-fields/cases.ts:23:31	@typescript-eslint/class-methods-use-this	missingThis	Expected 'this' to be used by class method 'n'.	end	23	40
+tests/rules/@typescript-eslint/class-methods-use-this/no-fields/cases.ts:23:46	@typescript-eslint/class-methods-use-this	missingThis	Expected 'this' to be used by class method 'o'.	end	23	57
+tests/rules/@typescript-eslint/class-methods-use-this/no-fields/cases.ts:23:63	@typescript-eslint/class-methods-use-this	missingThis	Expected 'this' to be used by class method 'p'.	end	23	71
+tests/rules/@typescript-eslint/class-methods-use-this/public-fields/cases.ts:6:3	@typescript-eslint/class-methods-use-this	missingThis	Expected 'this' to be used by class method 'm1'.	end	6	5
+tests/rules/@typescript-eslint/class-methods-use-this/public-fields/cases.ts:7:3	@typescript-eslint/class-methods-use-this	missingThis	Expected 'this' to be used by class method 'm2'.	end	7	5
+tests/rules/@typescript-eslint/class-methods-use-this/public-fields/cases.ts:8:3	@typescript-eslint/class-methods-use-this	missingThis	Expected 'this' to be used by class getter 'g'.	end	8	8
+tests/rules/@typescript-eslint/class-methods-use-this/public-fields/cases.ts:9:3	@typescript-eslint/class-methods-use-this	missingThis	Expected 'this' to be used by class setter 's'.	end	9	8
+tests/rules/@typescript-eslint/class-methods-use-this/public-fields/cases.ts:10:3	@typescript-eslint/class-methods-use-this	missingThis	Expected 'this' to be used by class private method #p.	end	10	5
+tests/rules/@typescript-eslint/class-methods-use-this/public-fields/cases.ts:11:3	@typescript-eslint/class-methods-use-this	missingThis	Expected 'this' to be used by class method 'quoted'.	end	11	11
+tests/rules/@typescript-eslint/class-methods-use-this/public-fields/cases.ts:12:3	@typescript-eslint/class-methods-use-this	missingThis	Expected 'this' to be used by class method '1'.	end	12	4
+tests/rules/@typescript-eslint/class-methods-use-this/public-fields/cases.ts:13:3	@typescript-eslint/class-methods-use-this	missingThis	Expected 'this' to be used by class method.	end	13	20
+tests/rules/@typescript-eslint/class-methods-use-this/public-fields/cases.ts:14:3	@typescript-eslint/class-methods-use-this	missingThis	Expected 'this' to be used by class method 'f1'.	end	14	8
+tests/rules/@typescript-eslint/class-methods-use-this/public-fields/cases.ts:15:3	@typescript-eslint/class-methods-use-this	missingThis	Expected 'this' to be used by class method 'f2'.	end	15	17
+tests/rules/@typescript-eslint/class-methods-use-this/public-fields/cases.ts:16:20	@typescript-eslint/class-methods-use-this	missingThis	Expected 'this' to be used by class arrow function.	end	16	22
+tests/rules/@typescript-eslint/class-methods-use-this/public-fields/cases.ts:17:3	@typescript-eslint/class-methods-use-this	missingThis	Expected 'this' to be used by class method 'm3'.	end	17	5
+tests/rules/@typescript-eslint/class-methods-use-this/public-fields/cases.ts:18:3	@typescript-eslint/class-methods-use-this	missingThis	Expected 'this' to be used by class method 'm4'.	end	18	5
+tests/rules/@typescript-eslint/class-methods-use-this/public-fields/cases.ts:19:3	@typescript-eslint/class-methods-use-this	missingThis	Expected 'this' to be used by class method 'm5'.	end	19	5
+tests/rules/@typescript-eslint/class-methods-use-this/public-fields/cases.ts:21:19	@typescript-eslint/class-methods-use-this	missingThis	Expected 'this' to be used by class method 'm'.	end	21	20
+tests/rules/@typescript-eslint/class-methods-use-this/public-fields/cases.ts:22:24	@typescript-eslint/class-methods-use-this	missingThis	Expected 'this' to be used by class method 'm'.	end	22	34
+tests/rules/@typescript-eslint/class-methods-use-this/public-fields/cases.ts:23:31	@typescript-eslint/class-methods-use-this	missingThis	Expected 'this' to be used by class method 'n'.	end	23	40
+tests/rules/@typescript-eslint/class-methods-use-this/public-fields/cases.ts:23:46	@typescript-eslint/class-methods-use-this	missingThis	Expected 'this' to be used by class method 'o'.	end	23	57

@@ -58,7 +58,7 @@ fn (mut c Checker) lint_require_atomic_updates(root C.TSNode, abs_path string, m
 				scope := rau_scope_of(tree, t, ev.node)
 				verify := scope >= 0 && tree.scopes[scope].kind == .function
 					&& ((t.flag(ev.node, .async) or { false })
-					|| (t.flag(ev.node, .generator) or { false }))
+						|| (t.flag(ev.node, .generator) or { false }))
 				mut reference_map := map[u64]int{}
 				if verify {
 					rau_reference_map(tree, scope, mut reference_map)

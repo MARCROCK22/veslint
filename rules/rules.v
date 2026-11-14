@@ -335,6 +335,8 @@ pub const no_lonely_if = 'no-lonely-if'
 pub const no_negated_condition = 'no-negated-condition'
 pub const no_throw_literal = 'no-throw-literal'
 pub const require_atomic_updates = 'require-atomic-updates'
+pub const class_methods_use_this = '@typescript-eslint/class-methods-use-this'
+pub const no_explicit_any = '@typescript-eslint/no-explicit-any'
 pub const names = [no_floating_promises, await_thenable, require_await, return_await,
 	no_misused_promises, no_unsafe_call, no_unsafe_member_access, no_unsafe_return,
 	no_unsafe_assignment, no_unsafe_argument, restrict_template_expressions,
@@ -420,7 +422,7 @@ pub const names = [no_floating_promises, await_thenable, require_await, return_a
 	unicorn_no_unnecessary_array_splice_count, unicorn_no_unnecessary_slice_end,
 	unicorn_no_useless_length_check, unicorn_no_unreadable_array_destructuring,
 	unicorn_prefer_set_size, array_callback_return, no_lonely_if, no_negated_condition,
-	no_throw_literal, require_atomic_updates]
+	no_throw_literal, require_atomic_updates, class_methods_use_this, no_explicit_any]
 
 // untyped_rules are the ported rules that need no types (`meta.docs.requiresTypeChecking` is false
 // in typescript-eslint; the eslint-plugin-unicorn rules that read the types when the parser has a
@@ -480,7 +482,8 @@ pub const untyped_rules = [adjacent_overload_signatures, array_type, class_liter
 	unicorn_prefer_modern_math_apis, unicorn_prefer_native_coercion_functions, unicorn_no_new_array,
 	unicorn_prefer_negative_index, unicorn_consistent_existence_index_check,
 	unicorn_explicit_length_check, unicorn_no_unnecessary_slice_end, array_callback_return,
-	no_lonely_if, no_negated_condition, no_throw_literal, require_atomic_updates]
+	no_lonely_if, no_negated_condition, no_throw_literal, require_atomic_updates,
+	class_methods_use_this, no_explicit_any]
 
 // needs_types tells whether a rule asks tsgo for the types of the program.
 pub fn needs_types(rule string) bool {
@@ -812,6 +815,8 @@ pub const default_options = {
 	no_negated_condition:                            '[]'
 	no_throw_literal:                                '[]'
 	require_atomic_updates:                          '[{"allowProperties":false}]'
+	class_methods_use_this:                          '[{"enforceForClassFields":true,"exceptMethods":[],"ignoreClassesThatImplementAnInterface":false,"ignoreOverrideMethods":false}]'
+	no_explicit_any:                                 '[{"fixToUnknown":false,"ignoreRestArgs":false}]'
 }
 
 // Finding is a problem a rule found at a node.
@@ -1267,6 +1272,8 @@ pub fn message(rule string, finding Finding) string {
 		no_negated_condition { nnc_messages }
 		no_throw_literal { ntl_messages }
 		require_atomic_updates { rau_messages }
+		class_methods_use_this { cmut_messages }
+		no_explicit_any { nea_messages }
 		else { map[string]string{} }
 	}
 	return interpolate(messages[finding.message_id] or { finding.message_id }, finding.data)
@@ -2385,6 +2392,12 @@ fn (mut c Checker) lint_rule(rule string, root C.TSNode, abs_path string, mut st
 		}
 		require_atomic_updates {
 			return c.lint_require_atomic_updates(root, abs_path, mut stats)!
+		}
+		class_methods_use_this {
+			return c.lint_class_methods_use_this(root, abs_path, mut stats)!
+		}
+		no_explicit_any {
+			return c.lint_no_explicit_any(root, abs_path, mut stats)!
 		}
 		else { return error('unknown rule: ${rule}') }
 	}
