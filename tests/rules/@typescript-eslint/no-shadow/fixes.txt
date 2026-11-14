@@ -19,7 +19,7 @@ tests/rules/@typescript-eslint/no-shadow/allow/cases.ts:137:21	@typescript-eslin
 tests/rules/@typescript-eslint/no-shadow/allow/cases.ts:142:9	@typescript-eslint/no-shadow	noShadowGlobal	'Promise' is already a global variable.	end	142	16
 tests/rules/@typescript-eslint/no-shadow/allow/cases.ts:147:7	@typescript-eslint/no-shadow	noShadowGlobal	'NaN' is already a global variable.	end	147	10
 tests/rules/@typescript-eslint/no-shadow/allow/cases.ts:152:11	@typescript-eslint/no-shadow	noShadow	'Duplicate' is already declared in the upper scope on line 150 column 7.	end	152	20
-tests/rules/@typescript-eslint/no-shadow/allow/cases.ts:160:9	@typescript-eslint/no-shadow	noShadow	'Color' is already declared in the upper scope on line 156 column 6.	end	160	14
+tests/rules/@typescript-eslint/no-shadow/allow/cases.ts:160:9	@typescript-eslint/no-shadow	noEnumShadow	Enum members are added to the enum scope, so references to 'Color' in enum member initializers resolve to this member instead of the declaration in the upper scope on line 156 column 6.	end	160	14
 tests/rules/@typescript-eslint/no-shadow/allow/cases.ts:166:13	@typescript-eslint/no-shadow	noShadow	'Space' is already declared in the upper scope on line 164 column 11.	end	166	18
 tests/rules/@typescript-eslint/no-shadow/builtin-globals/cases.ts:4:9	@typescript-eslint/no-shadow	noShadow	'outer' is already declared in the upper scope on line 2 column 7.	end	4	14
 tests/rules/@typescript-eslint/no-shadow/builtin-globals/cases.ts:8:9	@typescript-eslint/no-shadow	noShadow	'outer' is already declared in the upper scope on line 2 column 7.	end	8	14
@@ -50,7 +50,7 @@ tests/rules/@typescript-eslint/no-shadow/builtin-globals/cases.ts:141:9	@typescr
 tests/rules/@typescript-eslint/no-shadow/builtin-globals/cases.ts:142:9	@typescript-eslint/no-shadow	noShadowGlobal	'Promise' is already a global variable.	end	142	16
 tests/rules/@typescript-eslint/no-shadow/builtin-globals/cases.ts:147:7	@typescript-eslint/no-shadow	noShadowGlobal	'NaN' is already a global variable.	end	147	10
 tests/rules/@typescript-eslint/no-shadow/builtin-globals/cases.ts:152:11	@typescript-eslint/no-shadow	noShadow	'Duplicate' is already declared in the upper scope on line 150 column 7.	end	152	20
-tests/rules/@typescript-eslint/no-shadow/builtin-globals/cases.ts:160:9	@typescript-eslint/no-shadow	noShadow	'Color' is already declared in the upper scope on line 156 column 6.	end	160	14
+tests/rules/@typescript-eslint/no-shadow/builtin-globals/cases.ts:160:9	@typescript-eslint/no-shadow	noEnumShadow	Enum members are added to the enum scope, so references to 'Color' in enum member initializers resolve to this member instead of the declaration in the upper scope on line 156 column 6.	end	160	14
 tests/rules/@typescript-eslint/no-shadow/builtin-globals/cases.ts:165:16	@typescript-eslint/no-shadow	noShadow	'outer' is already declared in the upper scope on line 2 column 7.	end	165	21
 tests/rules/@typescript-eslint/no-shadow/builtin-globals/cases.ts:166:13	@typescript-eslint/no-shadow	noShadow	'Space' is already declared in the upper scope on line 164 column 11.	end	166	18
 tests/rules/@typescript-eslint/no-shadow/builtin-globals/cases.ts:175:9	@typescript-eslint/no-shadow	noShadow	'allowed' is already declared in the upper scope on line 173 column 7.	end	175	16
@@ -64,7 +64,6 @@ tests/rules/@typescript-eslint/no-shadow/cases.ts:25:11	@typescript-eslint/no-sh
 tests/rules/@typescript-eslint/no-shadow/cases.ts:30:25	@typescript-eslint/no-shadow	noShadow	'first' is already declared in the upper scope on line 29 column 21.	end	30	38
 tests/rules/@typescript-eslint/no-shadow/cases.ts:39:33	@typescript-eslint/no-shadow	noShadow	'wrapped' is already declared in the upper scope on line 39 column 7.	end	39	40
 tests/rules/@typescript-eslint/no-shadow/cases.ts:40:26	@typescript-eslint/no-shadow	noShadow	'inTest' is already declared in the upper scope on line 40 column 7.	end	40	32
-tests/rules/@typescript-eslint/no-shadow/cases.ts:58:13	@typescript-eslint/no-shadow	noShadow	'Merged' is already declared in the upper scope on line 54 column 11.	end	58	19
 tests/rules/@typescript-eslint/no-shadow/cases.ts:77:12	@typescript-eslint/no-shadow	noShadow	'param' is already declared in the upper scope on line 66 column 7.	end	77	25
 tests/rules/@typescript-eslint/no-shadow/cases.ts:86:20	@typescript-eslint/no-shadow	noShadow	'value' is already declared in the upper scope on line 48 column 7.	end	86	28
 tests/rules/@typescript-eslint/no-shadow/cases.ts:89:10	@typescript-eslint/no-shadow	noShadow	'T' is already declared in the upper scope on line 85 column 15.	end	89	11
@@ -79,10 +78,13 @@ tests/rules/@typescript-eslint/no-shadow/cases.ts:133:9	@typescript-eslint/no-sh
 tests/rules/@typescript-eslint/no-shadow/cases.ts:136:31	@typescript-eslint/no-shadow	noShadow	'destructured' is already declared in the upper scope on line 136 column 8.	end	136	43
 tests/rules/@typescript-eslint/no-shadow/cases.ts:137:21	@typescript-eslint/no-shadow	noShadow	'method' is already declared in the upper scope on line 137 column 7.	end	137	35
 tests/rules/@typescript-eslint/no-shadow/cases.ts:152:11	@typescript-eslint/no-shadow	noShadow	'Duplicate' is already declared in the upper scope on line 150 column 7.	end	152	20
-tests/rules/@typescript-eslint/no-shadow/cases.ts:160:9	@typescript-eslint/no-shadow	noShadow	'Color' is already declared in the upper scope on line 156 column 6.	end	160	14
+tests/rules/@typescript-eslint/no-shadow/cases.ts:160:9	@typescript-eslint/no-shadow	noEnumShadow	Enum members are added to the enum scope, so references to 'Color' in enum member initializers resolve to this member instead of the declaration in the upper scope on line 156 column 6.	end	160	14
 tests/rules/@typescript-eslint/no-shadow/cases.ts:165:16	@typescript-eslint/no-shadow	noShadow	'outer' is already declared in the upper scope on line 2 column 7.	end	165	21
 tests/rules/@typescript-eslint/no-shadow/cases.ts:166:13	@typescript-eslint/no-shadow	noShadow	'Space' is already declared in the upper scope on line 164 column 11.	end	166	18
 tests/rules/@typescript-eslint/no-shadow/cases.ts:175:9	@typescript-eslint/no-shadow	noShadow	'allowed' is already declared in the upper scope on line 173 column 7.	end	175	16
+tests/rules/@typescript-eslint/no-shadow/cases.ts:194:3	@typescript-eslint/no-shadow	noEnumShadow	Enum members are added to the enum scope, so references to 'Shadowed' in enum member initializers resolve to this member instead of the declaration in the upper scope on line 190 column 6.	end	194	11
+tests/rules/@typescript-eslint/no-shadow/cases.ts:204:3	@typescript-eslint/no-shadow	noEnumShadow	Enum members are added to the enum scope, so references to 'Merged' in enum member initializers resolve to this member instead of the declaration in the upper scope on line 54 column 11.	end	204	9
+tests/rules/@typescript-eslint/no-shadow/cases.ts:207:9	@typescript-eslint/no-shadow	noEnumShadow	Enum members are added to the enum scope, so references to 'Shadowed' in enum member initializers resolve to this member instead of the declaration in the upper scope on line 190 column 6.	end	207	17
 tests/rules/@typescript-eslint/no-shadow/hoist-all/cases.ts:4:9	@typescript-eslint/no-shadow	noShadow	'outer' is already declared in the upper scope on line 2 column 7.	end	4	14
 tests/rules/@typescript-eslint/no-shadow/hoist-all/cases.ts:8:9	@typescript-eslint/no-shadow	noShadow	'outer' is already declared in the upper scope on line 2 column 7.	end	8	14
 tests/rules/@typescript-eslint/no-shadow/hoist-all/cases.ts:13:10	@typescript-eslint/no-shadow	noShadow	'outer' is already declared in the upper scope on line 2 column 7.	end	13	15
@@ -110,7 +112,7 @@ tests/rules/@typescript-eslint/no-shadow/hoist-all/cases.ts:133:9	@typescript-es
 tests/rules/@typescript-eslint/no-shadow/hoist-all/cases.ts:136:31	@typescript-eslint/no-shadow	noShadow	'destructured' is already declared in the upper scope on line 136 column 8.	end	136	43
 tests/rules/@typescript-eslint/no-shadow/hoist-all/cases.ts:137:21	@typescript-eslint/no-shadow	noShadow	'method' is already declared in the upper scope on line 137 column 7.	end	137	35
 tests/rules/@typescript-eslint/no-shadow/hoist-all/cases.ts:152:11	@typescript-eslint/no-shadow	noShadow	'Duplicate' is already declared in the upper scope on line 150 column 7.	end	152	20
-tests/rules/@typescript-eslint/no-shadow/hoist-all/cases.ts:160:9	@typescript-eslint/no-shadow	noShadow	'Color' is already declared in the upper scope on line 156 column 6.	end	160	14
+tests/rules/@typescript-eslint/no-shadow/hoist-all/cases.ts:160:9	@typescript-eslint/no-shadow	noEnumShadow	Enum members are added to the enum scope, so references to 'Color' in enum member initializers resolve to this member instead of the declaration in the upper scope on line 156 column 6.	end	160	14
 tests/rules/@typescript-eslint/no-shadow/hoist-all/cases.ts:165:16	@typescript-eslint/no-shadow	noShadow	'outer' is already declared in the upper scope on line 2 column 7.	end	165	21
 tests/rules/@typescript-eslint/no-shadow/hoist-all/cases.ts:166:13	@typescript-eslint/no-shadow	noShadow	'Space' is already declared in the upper scope on line 164 column 11.	end	166	18
 tests/rules/@typescript-eslint/no-shadow/hoist-all/cases.ts:175:9	@typescript-eslint/no-shadow	noShadow	'allowed' is already declared in the upper scope on line 173 column 7.	end	175	16
@@ -139,7 +141,7 @@ tests/rules/@typescript-eslint/no-shadow/hoist-functions/cases.ts:133:9	@typescr
 tests/rules/@typescript-eslint/no-shadow/hoist-functions/cases.ts:136:31	@typescript-eslint/no-shadow	noShadow	'destructured' is already declared in the upper scope on line 136 column 8.	end	136	43
 tests/rules/@typescript-eslint/no-shadow/hoist-functions/cases.ts:137:21	@typescript-eslint/no-shadow	noShadow	'method' is already declared in the upper scope on line 137 column 7.	end	137	35
 tests/rules/@typescript-eslint/no-shadow/hoist-functions/cases.ts:152:11	@typescript-eslint/no-shadow	noShadow	'Duplicate' is already declared in the upper scope on line 150 column 7.	end	152	20
-tests/rules/@typescript-eslint/no-shadow/hoist-functions/cases.ts:160:9	@typescript-eslint/no-shadow	noShadow	'Color' is already declared in the upper scope on line 156 column 6.	end	160	14
+tests/rules/@typescript-eslint/no-shadow/hoist-functions/cases.ts:160:9	@typescript-eslint/no-shadow	noEnumShadow	Enum members are added to the enum scope, so references to 'Color' in enum member initializers resolve to this member instead of the declaration in the upper scope on line 156 column 6.	end	160	14
 tests/rules/@typescript-eslint/no-shadow/hoist-functions/cases.ts:165:16	@typescript-eslint/no-shadow	noShadow	'outer' is already declared in the upper scope on line 2 column 7.	end	165	21
 tests/rules/@typescript-eslint/no-shadow/hoist-functions/cases.ts:166:13	@typescript-eslint/no-shadow	noShadow	'Space' is already declared in the upper scope on line 164 column 11.	end	166	18
 tests/rules/@typescript-eslint/no-shadow/hoist-functions/cases.ts:175:9	@typescript-eslint/no-shadow	noShadow	'allowed' is already declared in the upper scope on line 173 column 7.	end	175	16
@@ -167,7 +169,7 @@ tests/rules/@typescript-eslint/no-shadow/hoist-never/cases.ts:133:9	@typescript-
 tests/rules/@typescript-eslint/no-shadow/hoist-never/cases.ts:136:31	@typescript-eslint/no-shadow	noShadow	'destructured' is already declared in the upper scope on line 136 column 8.	end	136	43
 tests/rules/@typescript-eslint/no-shadow/hoist-never/cases.ts:137:21	@typescript-eslint/no-shadow	noShadow	'method' is already declared in the upper scope on line 137 column 7.	end	137	35
 tests/rules/@typescript-eslint/no-shadow/hoist-never/cases.ts:152:11	@typescript-eslint/no-shadow	noShadow	'Duplicate' is already declared in the upper scope on line 150 column 7.	end	152	20
-tests/rules/@typescript-eslint/no-shadow/hoist-never/cases.ts:160:9	@typescript-eslint/no-shadow	noShadow	'Color' is already declared in the upper scope on line 156 column 6.	end	160	14
+tests/rules/@typescript-eslint/no-shadow/hoist-never/cases.ts:160:9	@typescript-eslint/no-shadow	noEnumShadow	Enum members are added to the enum scope, so references to 'Color' in enum member initializers resolve to this member instead of the declaration in the upper scope on line 156 column 6.	end	160	14
 tests/rules/@typescript-eslint/no-shadow/hoist-never/cases.ts:165:16	@typescript-eslint/no-shadow	noShadow	'outer' is already declared in the upper scope on line 2 column 7.	end	165	21
 tests/rules/@typescript-eslint/no-shadow/hoist-never/cases.ts:166:13	@typescript-eslint/no-shadow	noShadow	'Space' is already declared in the upper scope on line 164 column 11.	end	166	18
 tests/rules/@typescript-eslint/no-shadow/hoist-never/cases.ts:175:9	@typescript-eslint/no-shadow	noShadow	'allowed' is already declared in the upper scope on line 173 column 7.	end	175	16
@@ -195,7 +197,7 @@ tests/rules/@typescript-eslint/no-shadow/hoist-types/cases.ts:133:9	@typescript-
 tests/rules/@typescript-eslint/no-shadow/hoist-types/cases.ts:136:31	@typescript-eslint/no-shadow	noShadow	'destructured' is already declared in the upper scope on line 136 column 8.	end	136	43
 tests/rules/@typescript-eslint/no-shadow/hoist-types/cases.ts:137:21	@typescript-eslint/no-shadow	noShadow	'method' is already declared in the upper scope on line 137 column 7.	end	137	35
 tests/rules/@typescript-eslint/no-shadow/hoist-types/cases.ts:152:11	@typescript-eslint/no-shadow	noShadow	'Duplicate' is already declared in the upper scope on line 150 column 7.	end	152	20
-tests/rules/@typescript-eslint/no-shadow/hoist-types/cases.ts:160:9	@typescript-eslint/no-shadow	noShadow	'Color' is already declared in the upper scope on line 156 column 6.	end	160	14
+tests/rules/@typescript-eslint/no-shadow/hoist-types/cases.ts:160:9	@typescript-eslint/no-shadow	noEnumShadow	Enum members are added to the enum scope, so references to 'Color' in enum member initializers resolve to this member instead of the declaration in the upper scope on line 156 column 6.	end	160	14
 tests/rules/@typescript-eslint/no-shadow/hoist-types/cases.ts:165:16	@typescript-eslint/no-shadow	noShadow	'outer' is already declared in the upper scope on line 2 column 7.	end	165	21
 tests/rules/@typescript-eslint/no-shadow/hoist-types/cases.ts:166:13	@typescript-eslint/no-shadow	noShadow	'Space' is already declared in the upper scope on line 164 column 11.	end	166	18
 tests/rules/@typescript-eslint/no-shadow/hoist-types/cases.ts:175:9	@typescript-eslint/no-shadow	noShadow	'allowed' is already declared in the upper scope on line 173 column 7.	end	175	16
@@ -221,7 +223,7 @@ tests/rules/@typescript-eslint/no-shadow/ignore-on-initialization/cases.ts:127:4
 tests/rules/@typescript-eslint/no-shadow/ignore-on-initialization/cases.ts:133:9	@typescript-eslint/no-shadow	noShadow	'notInCall' is already declared in the upper scope on line 132 column 7.	end	133	18
 tests/rules/@typescript-eslint/no-shadow/ignore-on-initialization/cases.ts:137:21	@typescript-eslint/no-shadow	noShadow	'method' is already declared in the upper scope on line 137 column 7.	end	137	35
 tests/rules/@typescript-eslint/no-shadow/ignore-on-initialization/cases.ts:152:11	@typescript-eslint/no-shadow	noShadow	'Duplicate' is already declared in the upper scope on line 150 column 7.	end	152	20
-tests/rules/@typescript-eslint/no-shadow/ignore-on-initialization/cases.ts:160:9	@typescript-eslint/no-shadow	noShadow	'Color' is already declared in the upper scope on line 156 column 6.	end	160	14
+tests/rules/@typescript-eslint/no-shadow/ignore-on-initialization/cases.ts:160:9	@typescript-eslint/no-shadow	noEnumShadow	Enum members are added to the enum scope, so references to 'Color' in enum member initializers resolve to this member instead of the declaration in the upper scope on line 156 column 6.	end	160	14
 tests/rules/@typescript-eslint/no-shadow/ignore-on-initialization/cases.ts:165:16	@typescript-eslint/no-shadow	noShadow	'outer' is already declared in the upper scope on line 2 column 7.	end	165	21
 tests/rules/@typescript-eslint/no-shadow/ignore-on-initialization/cases.ts:166:13	@typescript-eslint/no-shadow	noShadow	'Space' is already declared in the upper scope on line 164 column 11.	end	166	18
 tests/rules/@typescript-eslint/no-shadow/ignore-on-initialization/cases.ts:175:9	@typescript-eslint/no-shadow	noShadow	'allowed' is already declared in the upper scope on line 173 column 7.	end	175	16
@@ -263,7 +265,7 @@ tests/rules/@typescript-eslint/no-shadow/no-ignores/cases.ts:133:9	@typescript-e
 tests/rules/@typescript-eslint/no-shadow/no-ignores/cases.ts:136:31	@typescript-eslint/no-shadow	noShadow	'destructured' is already declared in the upper scope on line 136 column 8.	end	136	43
 tests/rules/@typescript-eslint/no-shadow/no-ignores/cases.ts:137:21	@typescript-eslint/no-shadow	noShadow	'method' is already declared in the upper scope on line 137 column 7.	end	137	35
 tests/rules/@typescript-eslint/no-shadow/no-ignores/cases.ts:152:11	@typescript-eslint/no-shadow	noShadow	'Duplicate' is already declared in the upper scope on line 150 column 7.	end	152	20
-tests/rules/@typescript-eslint/no-shadow/no-ignores/cases.ts:160:9	@typescript-eslint/no-shadow	noShadow	'Color' is already declared in the upper scope on line 156 column 6.	end	160	14
+tests/rules/@typescript-eslint/no-shadow/no-ignores/cases.ts:160:9	@typescript-eslint/no-shadow	noEnumShadow	Enum members are added to the enum scope, so references to 'Color' in enum member initializers resolve to this member instead of the declaration in the upper scope on line 156 column 6.	end	160	14
 tests/rules/@typescript-eslint/no-shadow/no-ignores/cases.ts:165:16	@typescript-eslint/no-shadow	noShadow	'outer' is already declared in the upper scope on line 2 column 7.	end	165	21
 tests/rules/@typescript-eslint/no-shadow/no-ignores/cases.ts:166:13	@typescript-eslint/no-shadow	noShadow	'Space' is already declared in the upper scope on line 164 column 11.	end	166	18
 tests/rules/@typescript-eslint/no-shadow/no-ignores/cases.ts:175:9	@typescript-eslint/no-shadow	noShadow	'allowed' is already declared in the upper scope on line 173 column 7.	end	175	16
