@@ -1,0 +1,315 @@
+tests/rules/@stylistic/comma-spacing/after-only/cases.ts:7:7	@stylistic/comma-spacing	unexpected	There should be no space before ','.
+tests/rules/@stylistic/comma-spacing/after-only/cases.ts:7:7	@stylistic/comma-spacing	unexpected	There should be no space after ','.
+tests/rules/@stylistic/comma-spacing/after-only/cases.ts:8:7	@stylistic/comma-spacing	unexpected	There should be no space before ','.
+tests/rules/@stylistic/comma-spacing/after-only/cases.ts:9:6	@stylistic/comma-spacing	unexpected	There should be no space after ','.
+tests/rules/@stylistic/comma-spacing/after-only/cases.ts:10:6	@stylistic/comma-spacing	unexpected	There should be no space after ','.
+tests/rules/@stylistic/comma-spacing/after-only/cases.ts:10:10	@stylistic/comma-spacing	unexpected	There should be no space before ','.
+tests/rules/@stylistic/comma-spacing/after-only/cases.ts:13:15	@stylistic/comma-spacing	unexpected	There should be no space before ','.
+tests/rules/@stylistic/comma-spacing/after-only/cases.ts:13:15	@stylistic/comma-spacing	unexpected	There should be no space after ','.
+tests/rules/@stylistic/comma-spacing/after-only/cases.ts:20:19	@stylistic/comma-spacing	unexpected	There should be no space before ','.
+tests/rules/@stylistic/comma-spacing/after-only/cases.ts:20:19	@stylistic/comma-spacing	unexpected	There should be no space after ','.
+tests/rules/@stylistic/comma-spacing/after-only/cases.ts:25:20	@stylistic/comma-spacing	unexpected	There should be no space after ','.
+tests/rules/@stylistic/comma-spacing/after-only/cases.ts:26:17	@stylistic/comma-spacing	unexpected	There should be no space before ','.
+tests/rules/@stylistic/comma-spacing/after-only/cases.ts:27:22	@stylistic/comma-spacing	unexpected	There should be no space after ','.
+tests/rules/@stylistic/comma-spacing/after-only/cases.ts:27:25	@stylistic/comma-spacing	unexpected	There should be no space after ','.
+tests/rules/@stylistic/comma-spacing/after-only/cases.ts:28:20	@stylistic/comma-spacing	unexpected	There should be no space after ','.
+tests/rules/@stylistic/comma-spacing/after-only/cases.ts:28:23	@stylistic/comma-spacing	unexpected	There should be no space after ','.
+tests/rules/@stylistic/comma-spacing/after-only/cases.ts:30:20	@stylistic/comma-spacing	unexpected	There should be no space before ','.
+tests/rules/@stylistic/comma-spacing/after-only/cases.ts:31:31	@stylistic/comma-spacing	unexpected	There should be no space after ','.
+tests/rules/@stylistic/comma-spacing/after-only/cases.ts:33:22	@stylistic/comma-spacing	unexpected	There should be no space after ','.
+tests/rules/@stylistic/comma-spacing/after-only/cases.ts:33:48	@stylistic/comma-spacing	unexpected	There should be no space after ','.
+tests/rules/@stylistic/comma-spacing/after-only/cases.ts:37:26	@stylistic/comma-spacing	unexpected	There should be no space before ','.
+tests/rules/@stylistic/comma-spacing/after-only/cases.ts:37:26	@stylistic/comma-spacing	unexpected	There should be no space after ','.
+tests/rules/@stylistic/comma-spacing/after-only/cases.ts:38:22	@stylistic/comma-spacing	unexpected	There should be no space after ','.
+tests/rules/@stylistic/comma-spacing/after-only/cases.ts:38:34	@stylistic/comma-spacing	unexpected	There should be no space before ','.
+tests/rules/@stylistic/comma-spacing/after-only/cases.ts:39:16	@stylistic/comma-spacing	unexpected	There should be no space before ','.
+tests/rules/@stylistic/comma-spacing/after-only/cases.ts:39:16	@stylistic/comma-spacing	unexpected	There should be no space after ','.
+tests/rules/@stylistic/comma-spacing/after-only/cases.ts:39:27	@stylistic/comma-spacing	unexpected	There should be no space after ','.
+tests/rules/@stylistic/comma-spacing/after-only/cases.ts:40:15	@stylistic/comma-spacing	unexpected	There should be no space before ','.
+tests/rules/@stylistic/comma-spacing/after-only/cases.ts:40:15	@stylistic/comma-spacing	unexpected	There should be no space after ','.
+tests/rules/@stylistic/comma-spacing/after-only/cases.ts:41:19	@stylistic/comma-spacing	unexpected	There should be no space before ','.
+tests/rules/@stylistic/comma-spacing/after-only/cases.ts:41:19	@stylistic/comma-spacing	unexpected	There should be no space after ','.
+tests/rules/@stylistic/comma-spacing/after-only/cases.ts:45:17	@stylistic/comma-spacing	unexpected	There should be no space before ','.
+tests/rules/@stylistic/comma-spacing/after-only/cases.ts:47:16	@stylistic/comma-spacing	unexpected	There should be no space before ','.
+tests/rules/@stylistic/comma-spacing/after-only/cases.ts:47:16	@stylistic/comma-spacing	unexpected	There should be no space after ','.
+tests/rules/@stylistic/comma-spacing/after-only/cases.ts:52:17	@stylistic/comma-spacing	unexpected	There should be no space after ','.
+tests/rules/@stylistic/comma-spacing/after-only/cases.ts:52:21	@stylistic/comma-spacing	unexpected	There should be no space after ','.
+tests/rules/@stylistic/comma-spacing/after-only/cases.ts:52:25	@stylistic/comma-spacing	unexpected	There should be no space after ','.
+tests/rules/@stylistic/comma-spacing/after-only/cases.ts:53:27	@stylistic/comma-spacing	unexpected	There should be no space after ','.
+tests/rules/@stylistic/comma-spacing/after-only/cases.ts:54:24	@stylistic/comma-spacing	unexpected	There should be no space before ','.
+tests/rules/@stylistic/comma-spacing/before-after/cases.ts:6:6	@stylistic/comma-spacing	missing	A space is required before ','.
+tests/rules/@stylistic/comma-spacing/before-after/cases.ts:7:7	@stylistic/comma-spacing	unexpected	There should be no space after ','.
+tests/rules/@stylistic/comma-spacing/before-after/cases.ts:9:6	@stylistic/comma-spacing	missing	A space is required before ','.
+tests/rules/@stylistic/comma-spacing/before-after/cases.ts:9:6	@stylistic/comma-spacing	unexpected	There should be no space after ','.
+tests/rules/@stylistic/comma-spacing/before-after/cases.ts:9:9	@stylistic/comma-spacing	missing	A space is required before ','.
+tests/rules/@stylistic/comma-spacing/before-after/cases.ts:10:6	@stylistic/comma-spacing	missing	A space is required before ','.
+tests/rules/@stylistic/comma-spacing/before-after/cases.ts:10:6	@stylistic/comma-spacing	unexpected	There should be no space after ','.
+tests/rules/@stylistic/comma-spacing/before-after/cases.ts:11:6	@stylistic/comma-spacing	missing	A space is required before ','.
+tests/rules/@stylistic/comma-spacing/before-after/cases.ts:12:13	@stylistic/comma-spacing	missing	A space is required before ','.
+tests/rules/@stylistic/comma-spacing/before-after/cases.ts:13:15	@stylistic/comma-spacing	unexpected	There should be no space after ','.
+tests/rules/@stylistic/comma-spacing/before-after/cases.ts:14:6	@stylistic/comma-spacing	missing	A space is required before ','.
+tests/rules/@stylistic/comma-spacing/before-after/cases.ts:18:6	@stylistic/comma-spacing	missing	A space is required before ','.
+tests/rules/@stylistic/comma-spacing/before-after/cases.ts:20:16	@stylistic/comma-spacing	missing	A space is required before ','.
+tests/rules/@stylistic/comma-spacing/before-after/cases.ts:20:19	@stylistic/comma-spacing	unexpected	There should be no space after ','.
+tests/rules/@stylistic/comma-spacing/before-after/cases.ts:21:16	@stylistic/comma-spacing	missing	A space is required before ','.
+tests/rules/@stylistic/comma-spacing/before-after/cases.ts:22:16	@stylistic/comma-spacing	missing	A space is required before ','.
+tests/rules/@stylistic/comma-spacing/before-after/cases.ts:25:20	@stylistic/comma-spacing	unexpected	There should be no space after ','.
+tests/rules/@stylistic/comma-spacing/before-after/cases.ts:27:10	@stylistic/comma-spacing	missing	A space is required before ','.
+tests/rules/@stylistic/comma-spacing/before-after/cases.ts:27:22	@stylistic/comma-spacing	missing	A space is required before ','.
+tests/rules/@stylistic/comma-spacing/before-after/cases.ts:27:22	@stylistic/comma-spacing	unexpected	There should be no space after ','.
+tests/rules/@stylistic/comma-spacing/before-after/cases.ts:27:25	@stylistic/comma-spacing	missing	A space is required before ','.
+tests/rules/@stylistic/comma-spacing/before-after/cases.ts:27:25	@stylistic/comma-spacing	unexpected	There should be no space after ','.
+tests/rules/@stylistic/comma-spacing/before-after/cases.ts:28:10	@stylistic/comma-spacing	missing	A space is required before ','.
+tests/rules/@stylistic/comma-spacing/before-after/cases.ts:28:20	@stylistic/comma-spacing	missing	A space is required before ','.
+tests/rules/@stylistic/comma-spacing/before-after/cases.ts:28:20	@stylistic/comma-spacing	unexpected	There should be no space after ','.
+tests/rules/@stylistic/comma-spacing/before-after/cases.ts:28:23	@stylistic/comma-spacing	missing	A space is required before ','.
+tests/rules/@stylistic/comma-spacing/before-after/cases.ts:28:23	@stylistic/comma-spacing	unexpected	There should be no space after ','.
+tests/rules/@stylistic/comma-spacing/before-after/cases.ts:29:16	@stylistic/comma-spacing	missing	A space is required before ','.
+tests/rules/@stylistic/comma-spacing/before-after/cases.ts:30:25	@stylistic/comma-spacing	missing	A space is required before ','.
+tests/rules/@stylistic/comma-spacing/before-after/cases.ts:31:14	@stylistic/comma-spacing	missing	A space is required before ','.
+tests/rules/@stylistic/comma-spacing/before-after/cases.ts:31:31	@stylistic/comma-spacing	missing	A space is required before ','.
+tests/rules/@stylistic/comma-spacing/before-after/cases.ts:31:31	@stylistic/comma-spacing	unexpected	There should be no space after ','.
+tests/rules/@stylistic/comma-spacing/before-after/cases.ts:32:22	@stylistic/comma-spacing	missing	A space is required before ','.
+tests/rules/@stylistic/comma-spacing/before-after/cases.ts:33:14	@stylistic/comma-spacing	missing	A space is required before ','.
+tests/rules/@stylistic/comma-spacing/before-after/cases.ts:33:22	@stylistic/comma-spacing	missing	A space is required before ','.
+tests/rules/@stylistic/comma-spacing/before-after/cases.ts:33:22	@stylistic/comma-spacing	unexpected	There should be no space after ','.
+tests/rules/@stylistic/comma-spacing/before-after/cases.ts:33:33	@stylistic/comma-spacing	missing	A space is required before ','.
+tests/rules/@stylistic/comma-spacing/before-after/cases.ts:33:48	@stylistic/comma-spacing	missing	A space is required before ','.
+tests/rules/@stylistic/comma-spacing/before-after/cases.ts:33:48	@stylistic/comma-spacing	unexpected	There should be no space after ','.
+tests/rules/@stylistic/comma-spacing/before-after/cases.ts:36:10	@stylistic/comma-spacing	missing	A space is required before ','.
+tests/rules/@stylistic/comma-spacing/before-after/cases.ts:36:22	@stylistic/comma-spacing	missing	A space is required before ','.
+tests/rules/@stylistic/comma-spacing/before-after/cases.ts:37:18	@stylistic/comma-spacing	missing	A space is required before ','.
+tests/rules/@stylistic/comma-spacing/before-after/cases.ts:37:26	@stylistic/comma-spacing	unexpected	There should be no space after ','.
+tests/rules/@stylistic/comma-spacing/before-after/cases.ts:38:22	@stylistic/comma-spacing	missing	A space is required before ','.
+tests/rules/@stylistic/comma-spacing/before-after/cases.ts:38:22	@stylistic/comma-spacing	unexpected	There should be no space after ','.
+tests/rules/@stylistic/comma-spacing/before-after/cases.ts:39:16	@stylistic/comma-spacing	unexpected	There should be no space after ','.
+tests/rules/@stylistic/comma-spacing/before-after/cases.ts:39:27	@stylistic/comma-spacing	missing	A space is required before ','.
+tests/rules/@stylistic/comma-spacing/before-after/cases.ts:39:27	@stylistic/comma-spacing	unexpected	There should be no space after ','.
+tests/rules/@stylistic/comma-spacing/before-after/cases.ts:40:12	@stylistic/comma-spacing	missing	A space is required before ','.
+tests/rules/@stylistic/comma-spacing/before-after/cases.ts:40:15	@stylistic/comma-spacing	unexpected	There should be no space after ','.
+tests/rules/@stylistic/comma-spacing/before-after/cases.ts:41:11	@stylistic/comma-spacing	missing	A space is required before ','.
+tests/rules/@stylistic/comma-spacing/before-after/cases.ts:41:19	@stylistic/comma-spacing	unexpected	There should be no space after ','.
+tests/rules/@stylistic/comma-spacing/before-after/cases.ts:42:15	@stylistic/comma-spacing	missing	A space is required before ','.
+tests/rules/@stylistic/comma-spacing/before-after/cases.ts:42:33	@stylistic/comma-spacing	missing	A space is required before ','.
+tests/rules/@stylistic/comma-spacing/before-after/cases.ts:43:14	@stylistic/comma-spacing	missing	A space is required before ','.
+tests/rules/@stylistic/comma-spacing/before-after/cases.ts:46:22	@stylistic/comma-spacing	missing	A space is required before ','.
+tests/rules/@stylistic/comma-spacing/before-after/cases.ts:47:12	@stylistic/comma-spacing	missing	A space is required before ','.
+tests/rules/@stylistic/comma-spacing/before-after/cases.ts:47:16	@stylistic/comma-spacing	unexpected	There should be no space after ','.
+tests/rules/@stylistic/comma-spacing/before-after/cases.ts:52:17	@stylistic/comma-spacing	missing	A space is required before ','.
+tests/rules/@stylistic/comma-spacing/before-after/cases.ts:52:17	@stylistic/comma-spacing	unexpected	There should be no space after ','.
+tests/rules/@stylistic/comma-spacing/before-after/cases.ts:52:21	@stylistic/comma-spacing	missing	A space is required before ','.
+tests/rules/@stylistic/comma-spacing/before-after/cases.ts:52:21	@stylistic/comma-spacing	unexpected	There should be no space after ','.
+tests/rules/@stylistic/comma-spacing/before-after/cases.ts:52:25	@stylistic/comma-spacing	missing	A space is required before ','.
+tests/rules/@stylistic/comma-spacing/before-after/cases.ts:52:25	@stylistic/comma-spacing	unexpected	There should be no space after ','.
+tests/rules/@stylistic/comma-spacing/before-after/cases.ts:53:27	@stylistic/comma-spacing	unexpected	There should be no space after ','.
+tests/rules/@stylistic/comma-spacing/before-only/cases.ts:6:6	@stylistic/comma-spacing	missing	A space is required before ','.
+tests/rules/@stylistic/comma-spacing/before-only/cases.ts:6:6	@stylistic/comma-spacing	missing	A space is required after ','.
+tests/rules/@stylistic/comma-spacing/before-only/cases.ts:8:7	@stylistic/comma-spacing	missing	A space is required after ','.
+tests/rules/@stylistic/comma-spacing/before-only/cases.ts:9:6	@stylistic/comma-spacing	missing	A space is required before ','.
+tests/rules/@stylistic/comma-spacing/before-only/cases.ts:9:9	@stylistic/comma-spacing	missing	A space is required before ','.
+tests/rules/@stylistic/comma-spacing/before-only/cases.ts:10:6	@stylistic/comma-spacing	missing	A space is required before ','.
+tests/rules/@stylistic/comma-spacing/before-only/cases.ts:11:6	@stylistic/comma-spacing	missing	A space is required before ','.
+tests/rules/@stylistic/comma-spacing/before-only/cases.ts:11:6	@stylistic/comma-spacing	missing	A space is required after ','.
+tests/rules/@stylistic/comma-spacing/before-only/cases.ts:12:13	@stylistic/comma-spacing	missing	A space is required before ','.
+tests/rules/@stylistic/comma-spacing/before-only/cases.ts:12:13	@stylistic/comma-spacing	missing	A space is required after ','.
+tests/rules/@stylistic/comma-spacing/before-only/cases.ts:14:6	@stylistic/comma-spacing	missing	A space is required before ','.
+tests/rules/@stylistic/comma-spacing/before-only/cases.ts:17:3	@stylistic/comma-spacing	missing	A space is required after ','.
+tests/rules/@stylistic/comma-spacing/before-only/cases.ts:18:6	@stylistic/comma-spacing	missing	A space is required before ','.
+tests/rules/@stylistic/comma-spacing/before-only/cases.ts:20:16	@stylistic/comma-spacing	missing	A space is required before ','.
+tests/rules/@stylistic/comma-spacing/before-only/cases.ts:20:16	@stylistic/comma-spacing	missing	A space is required after ','.
+tests/rules/@stylistic/comma-spacing/before-only/cases.ts:21:16	@stylistic/comma-spacing	missing	A space is required before ','.
+tests/rules/@stylistic/comma-spacing/before-only/cases.ts:22:16	@stylistic/comma-spacing	missing	A space is required before ','.
+tests/rules/@stylistic/comma-spacing/before-only/cases.ts:27:10	@stylistic/comma-spacing	missing	A space is required before ','.
+tests/rules/@stylistic/comma-spacing/before-only/cases.ts:27:22	@stylistic/comma-spacing	missing	A space is required before ','.
+tests/rules/@stylistic/comma-spacing/before-only/cases.ts:27:25	@stylistic/comma-spacing	missing	A space is required before ','.
+tests/rules/@stylistic/comma-spacing/before-only/cases.ts:28:10	@stylistic/comma-spacing	missing	A space is required before ','.
+tests/rules/@stylistic/comma-spacing/before-only/cases.ts:28:20	@stylistic/comma-spacing	missing	A space is required before ','.
+tests/rules/@stylistic/comma-spacing/before-only/cases.ts:28:23	@stylistic/comma-spacing	missing	A space is required before ','.
+tests/rules/@stylistic/comma-spacing/before-only/cases.ts:29:16	@stylistic/comma-spacing	missing	A space is required before ','.
+tests/rules/@stylistic/comma-spacing/before-only/cases.ts:29:16	@stylistic/comma-spacing	missing	A space is required after ','.
+tests/rules/@stylistic/comma-spacing/before-only/cases.ts:30:20	@stylistic/comma-spacing	missing	A space is required after ','.
+tests/rules/@stylistic/comma-spacing/before-only/cases.ts:30:25	@stylistic/comma-spacing	missing	A space is required before ','.
+tests/rules/@stylistic/comma-spacing/before-only/cases.ts:31:14	@stylistic/comma-spacing	missing	A space is required before ','.
+tests/rules/@stylistic/comma-spacing/before-only/cases.ts:31:14	@stylistic/comma-spacing	missing	A space is required after ','.
+tests/rules/@stylistic/comma-spacing/before-only/cases.ts:31:31	@stylistic/comma-spacing	missing	A space is required before ','.
+tests/rules/@stylistic/comma-spacing/before-only/cases.ts:32:22	@stylistic/comma-spacing	missing	A space is required before ','.
+tests/rules/@stylistic/comma-spacing/before-only/cases.ts:32:22	@stylistic/comma-spacing	missing	A space is required after ','.
+tests/rules/@stylistic/comma-spacing/before-only/cases.ts:33:14	@stylistic/comma-spacing	missing	A space is required before ','.
+tests/rules/@stylistic/comma-spacing/before-only/cases.ts:33:14	@stylistic/comma-spacing	missing	A space is required after ','.
+tests/rules/@stylistic/comma-spacing/before-only/cases.ts:33:22	@stylistic/comma-spacing	missing	A space is required before ','.
+tests/rules/@stylistic/comma-spacing/before-only/cases.ts:33:33	@stylistic/comma-spacing	missing	A space is required before ','.
+tests/rules/@stylistic/comma-spacing/before-only/cases.ts:33:33	@stylistic/comma-spacing	missing	A space is required after ','.
+tests/rules/@stylistic/comma-spacing/before-only/cases.ts:33:48	@stylistic/comma-spacing	missing	A space is required before ','.
+tests/rules/@stylistic/comma-spacing/before-only/cases.ts:36:10	@stylistic/comma-spacing	missing	A space is required before ','.
+tests/rules/@stylistic/comma-spacing/before-only/cases.ts:36:10	@stylistic/comma-spacing	missing	A space is required after ','.
+tests/rules/@stylistic/comma-spacing/before-only/cases.ts:36:22	@stylistic/comma-spacing	missing	A space is required before ','.
+tests/rules/@stylistic/comma-spacing/before-only/cases.ts:36:22	@stylistic/comma-spacing	missing	A space is required after ','.
+tests/rules/@stylistic/comma-spacing/before-only/cases.ts:37:18	@stylistic/comma-spacing	missing	A space is required before ','.
+tests/rules/@stylistic/comma-spacing/before-only/cases.ts:37:18	@stylistic/comma-spacing	missing	A space is required after ','.
+tests/rules/@stylistic/comma-spacing/before-only/cases.ts:38:22	@stylistic/comma-spacing	missing	A space is required before ','.
+tests/rules/@stylistic/comma-spacing/before-only/cases.ts:38:34	@stylistic/comma-spacing	missing	A space is required after ','.
+tests/rules/@stylistic/comma-spacing/before-only/cases.ts:39:27	@stylistic/comma-spacing	missing	A space is required before ','.
+tests/rules/@stylistic/comma-spacing/before-only/cases.ts:40:12	@stylistic/comma-spacing	missing	A space is required before ','.
+tests/rules/@stylistic/comma-spacing/before-only/cases.ts:40:12	@stylistic/comma-spacing	missing	A space is required after ','.
+tests/rules/@stylistic/comma-spacing/before-only/cases.ts:41:11	@stylistic/comma-spacing	missing	A space is required before ','.
+tests/rules/@stylistic/comma-spacing/before-only/cases.ts:41:11	@stylistic/comma-spacing	missing	A space is required after ','.
+tests/rules/@stylistic/comma-spacing/before-only/cases.ts:42:15	@stylistic/comma-spacing	missing	A space is required before ','.
+tests/rules/@stylistic/comma-spacing/before-only/cases.ts:42:15	@stylistic/comma-spacing	missing	A space is required after ','.
+tests/rules/@stylistic/comma-spacing/before-only/cases.ts:42:33	@stylistic/comma-spacing	missing	A space is required before ','.
+tests/rules/@stylistic/comma-spacing/before-only/cases.ts:42:33	@stylistic/comma-spacing	missing	A space is required after ','.
+tests/rules/@stylistic/comma-spacing/before-only/cases.ts:43:14	@stylistic/comma-spacing	missing	A space is required before ','.
+tests/rules/@stylistic/comma-spacing/before-only/cases.ts:43:14	@stylistic/comma-spacing	missing	A space is required after ','.
+tests/rules/@stylistic/comma-spacing/before-only/cases.ts:45:17	@stylistic/comma-spacing	missing	A space is required after ','.
+tests/rules/@stylistic/comma-spacing/before-only/cases.ts:46:22	@stylistic/comma-spacing	missing	A space is required before ','.
+tests/rules/@stylistic/comma-spacing/before-only/cases.ts:46:22	@stylistic/comma-spacing	missing	A space is required after ','.
+tests/rules/@stylistic/comma-spacing/before-only/cases.ts:47:12	@stylistic/comma-spacing	missing	A space is required before ','.
+tests/rules/@stylistic/comma-spacing/before-only/cases.ts:47:12	@stylistic/comma-spacing	missing	A space is required after ','.
+tests/rules/@stylistic/comma-spacing/before-only/cases.ts:52:17	@stylistic/comma-spacing	missing	A space is required before ','.
+tests/rules/@stylistic/comma-spacing/before-only/cases.ts:52:21	@stylistic/comma-spacing	missing	A space is required before ','.
+tests/rules/@stylistic/comma-spacing/before-only/cases.ts:52:25	@stylistic/comma-spacing	missing	A space is required before ','.
+tests/rules/@stylistic/comma-spacing/both/cases.ts:6:6	@stylistic/comma-spacing	missing	A space is required before ','.
+tests/rules/@stylistic/comma-spacing/both/cases.ts:6:6	@stylistic/comma-spacing	missing	A space is required after ','.
+tests/rules/@stylistic/comma-spacing/both/cases.ts:8:7	@stylistic/comma-spacing	missing	A space is required after ','.
+tests/rules/@stylistic/comma-spacing/both/cases.ts:9:6	@stylistic/comma-spacing	missing	A space is required before ','.
+tests/rules/@stylistic/comma-spacing/both/cases.ts:9:9	@stylistic/comma-spacing	missing	A space is required before ','.
+tests/rules/@stylistic/comma-spacing/both/cases.ts:10:6	@stylistic/comma-spacing	missing	A space is required before ','.
+tests/rules/@stylistic/comma-spacing/both/cases.ts:11:6	@stylistic/comma-spacing	missing	A space is required before ','.
+tests/rules/@stylistic/comma-spacing/both/cases.ts:11:6	@stylistic/comma-spacing	missing	A space is required after ','.
+tests/rules/@stylistic/comma-spacing/both/cases.ts:12:13	@stylistic/comma-spacing	missing	A space is required before ','.
+tests/rules/@stylistic/comma-spacing/both/cases.ts:12:13	@stylistic/comma-spacing	missing	A space is required after ','.
+tests/rules/@stylistic/comma-spacing/both/cases.ts:14:6	@stylistic/comma-spacing	missing	A space is required before ','.
+tests/rules/@stylistic/comma-spacing/both/cases.ts:17:3	@stylistic/comma-spacing	missing	A space is required after ','.
+tests/rules/@stylistic/comma-spacing/both/cases.ts:18:6	@stylistic/comma-spacing	missing	A space is required before ','.
+tests/rules/@stylistic/comma-spacing/both/cases.ts:20:16	@stylistic/comma-spacing	missing	A space is required before ','.
+tests/rules/@stylistic/comma-spacing/both/cases.ts:20:16	@stylistic/comma-spacing	missing	A space is required after ','.
+tests/rules/@stylistic/comma-spacing/both/cases.ts:21:16	@stylistic/comma-spacing	missing	A space is required before ','.
+tests/rules/@stylistic/comma-spacing/both/cases.ts:22:16	@stylistic/comma-spacing	missing	A space is required before ','.
+tests/rules/@stylistic/comma-spacing/both/cases.ts:27:10	@stylistic/comma-spacing	missing	A space is required before ','.
+tests/rules/@stylistic/comma-spacing/both/cases.ts:27:22	@stylistic/comma-spacing	missing	A space is required before ','.
+tests/rules/@stylistic/comma-spacing/both/cases.ts:27:25	@stylistic/comma-spacing	missing	A space is required before ','.
+tests/rules/@stylistic/comma-spacing/both/cases.ts:28:10	@stylistic/comma-spacing	missing	A space is required before ','.
+tests/rules/@stylistic/comma-spacing/both/cases.ts:28:20	@stylistic/comma-spacing	missing	A space is required before ','.
+tests/rules/@stylistic/comma-spacing/both/cases.ts:28:23	@stylistic/comma-spacing	missing	A space is required before ','.
+tests/rules/@stylistic/comma-spacing/both/cases.ts:29:16	@stylistic/comma-spacing	missing	A space is required before ','.
+tests/rules/@stylistic/comma-spacing/both/cases.ts:29:16	@stylistic/comma-spacing	missing	A space is required after ','.
+tests/rules/@stylistic/comma-spacing/both/cases.ts:30:20	@stylistic/comma-spacing	missing	A space is required after ','.
+tests/rules/@stylistic/comma-spacing/both/cases.ts:30:25	@stylistic/comma-spacing	missing	A space is required before ','.
+tests/rules/@stylistic/comma-spacing/both/cases.ts:31:14	@stylistic/comma-spacing	missing	A space is required before ','.
+tests/rules/@stylistic/comma-spacing/both/cases.ts:31:14	@stylistic/comma-spacing	missing	A space is required after ','.
+tests/rules/@stylistic/comma-spacing/both/cases.ts:31:31	@stylistic/comma-spacing	missing	A space is required before ','.
+tests/rules/@stylistic/comma-spacing/both/cases.ts:32:22	@stylistic/comma-spacing	missing	A space is required before ','.
+tests/rules/@stylistic/comma-spacing/both/cases.ts:32:22	@stylistic/comma-spacing	missing	A space is required after ','.
+tests/rules/@stylistic/comma-spacing/both/cases.ts:33:14	@stylistic/comma-spacing	missing	A space is required before ','.
+tests/rules/@stylistic/comma-spacing/both/cases.ts:33:14	@stylistic/comma-spacing	missing	A space is required after ','.
+tests/rules/@stylistic/comma-spacing/both/cases.ts:33:22	@stylistic/comma-spacing	missing	A space is required before ','.
+tests/rules/@stylistic/comma-spacing/both/cases.ts:33:33	@stylistic/comma-spacing	missing	A space is required before ','.
+tests/rules/@stylistic/comma-spacing/both/cases.ts:33:33	@stylistic/comma-spacing	missing	A space is required after ','.
+tests/rules/@stylistic/comma-spacing/both/cases.ts:33:48	@stylistic/comma-spacing	missing	A space is required before ','.
+tests/rules/@stylistic/comma-spacing/both/cases.ts:36:10	@stylistic/comma-spacing	missing	A space is required before ','.
+tests/rules/@stylistic/comma-spacing/both/cases.ts:36:10	@stylistic/comma-spacing	missing	A space is required after ','.
+tests/rules/@stylistic/comma-spacing/both/cases.ts:36:22	@stylistic/comma-spacing	missing	A space is required before ','.
+tests/rules/@stylistic/comma-spacing/both/cases.ts:36:22	@stylistic/comma-spacing	missing	A space is required after ','.
+tests/rules/@stylistic/comma-spacing/both/cases.ts:37:18	@stylistic/comma-spacing	missing	A space is required before ','.
+tests/rules/@stylistic/comma-spacing/both/cases.ts:37:18	@stylistic/comma-spacing	missing	A space is required after ','.
+tests/rules/@stylistic/comma-spacing/both/cases.ts:38:22	@stylistic/comma-spacing	missing	A space is required before ','.
+tests/rules/@stylistic/comma-spacing/both/cases.ts:38:34	@stylistic/comma-spacing	missing	A space is required after ','.
+tests/rules/@stylistic/comma-spacing/both/cases.ts:39:27	@stylistic/comma-spacing	missing	A space is required before ','.
+tests/rules/@stylistic/comma-spacing/both/cases.ts:40:12	@stylistic/comma-spacing	missing	A space is required before ','.
+tests/rules/@stylistic/comma-spacing/both/cases.ts:40:12	@stylistic/comma-spacing	missing	A space is required after ','.
+tests/rules/@stylistic/comma-spacing/both/cases.ts:41:11	@stylistic/comma-spacing	missing	A space is required before ','.
+tests/rules/@stylistic/comma-spacing/both/cases.ts:41:11	@stylistic/comma-spacing	missing	A space is required after ','.
+tests/rules/@stylistic/comma-spacing/both/cases.ts:42:15	@stylistic/comma-spacing	missing	A space is required before ','.
+tests/rules/@stylistic/comma-spacing/both/cases.ts:42:15	@stylistic/comma-spacing	missing	A space is required after ','.
+tests/rules/@stylistic/comma-spacing/both/cases.ts:42:33	@stylistic/comma-spacing	missing	A space is required before ','.
+tests/rules/@stylistic/comma-spacing/both/cases.ts:42:33	@stylistic/comma-spacing	missing	A space is required after ','.
+tests/rules/@stylistic/comma-spacing/both/cases.ts:43:14	@stylistic/comma-spacing	missing	A space is required before ','.
+tests/rules/@stylistic/comma-spacing/both/cases.ts:43:14	@stylistic/comma-spacing	missing	A space is required after ','.
+tests/rules/@stylistic/comma-spacing/both/cases.ts:45:17	@stylistic/comma-spacing	missing	A space is required after ','.
+tests/rules/@stylistic/comma-spacing/both/cases.ts:46:22	@stylistic/comma-spacing	missing	A space is required before ','.
+tests/rules/@stylistic/comma-spacing/both/cases.ts:46:22	@stylistic/comma-spacing	missing	A space is required after ','.
+tests/rules/@stylistic/comma-spacing/both/cases.ts:47:12	@stylistic/comma-spacing	missing	A space is required before ','.
+tests/rules/@stylistic/comma-spacing/both/cases.ts:47:12	@stylistic/comma-spacing	missing	A space is required after ','.
+tests/rules/@stylistic/comma-spacing/both/cases.ts:52:17	@stylistic/comma-spacing	missing	A space is required before ','.
+tests/rules/@stylistic/comma-spacing/both/cases.ts:52:21	@stylistic/comma-spacing	missing	A space is required before ','.
+tests/rules/@stylistic/comma-spacing/both/cases.ts:52:25	@stylistic/comma-spacing	missing	A space is required before ','.
+tests/rules/@stylistic/comma-spacing/cases.ts:6:6	@stylistic/comma-spacing	missing	A space is required after ','.
+tests/rules/@stylistic/comma-spacing/cases.ts:7:7	@stylistic/comma-spacing	unexpected	There should be no space before ','.
+tests/rules/@stylistic/comma-spacing/cases.ts:8:7	@stylistic/comma-spacing	unexpected	There should be no space before ','.
+tests/rules/@stylistic/comma-spacing/cases.ts:8:7	@stylistic/comma-spacing	missing	A space is required after ','.
+tests/rules/@stylistic/comma-spacing/cases.ts:10:10	@stylistic/comma-spacing	unexpected	There should be no space before ','.
+tests/rules/@stylistic/comma-spacing/cases.ts:11:6	@stylistic/comma-spacing	missing	A space is required after ','.
+tests/rules/@stylistic/comma-spacing/cases.ts:12:13	@stylistic/comma-spacing	missing	A space is required after ','.
+tests/rules/@stylistic/comma-spacing/cases.ts:13:15	@stylistic/comma-spacing	unexpected	There should be no space before ','.
+tests/rules/@stylistic/comma-spacing/cases.ts:17:3	@stylistic/comma-spacing	missing	A space is required after ','.
+tests/rules/@stylistic/comma-spacing/cases.ts:20:16	@stylistic/comma-spacing	missing	A space is required after ','.
+tests/rules/@stylistic/comma-spacing/cases.ts:20:19	@stylistic/comma-spacing	unexpected	There should be no space before ','.
+tests/rules/@stylistic/comma-spacing/cases.ts:26:17	@stylistic/comma-spacing	unexpected	There should be no space before ','.
+tests/rules/@stylistic/comma-spacing/cases.ts:29:16	@stylistic/comma-spacing	missing	A space is required after ','.
+tests/rules/@stylistic/comma-spacing/cases.ts:30:20	@stylistic/comma-spacing	unexpected	There should be no space before ','.
+tests/rules/@stylistic/comma-spacing/cases.ts:30:20	@stylistic/comma-spacing	missing	A space is required after ','.
+tests/rules/@stylistic/comma-spacing/cases.ts:31:14	@stylistic/comma-spacing	missing	A space is required after ','.
+tests/rules/@stylistic/comma-spacing/cases.ts:32:22	@stylistic/comma-spacing	missing	A space is required after ','.
+tests/rules/@stylistic/comma-spacing/cases.ts:33:14	@stylistic/comma-spacing	missing	A space is required after ','.
+tests/rules/@stylistic/comma-spacing/cases.ts:33:33	@stylistic/comma-spacing	missing	A space is required after ','.
+tests/rules/@stylistic/comma-spacing/cases.ts:36:10	@stylistic/comma-spacing	missing	A space is required after ','.
+tests/rules/@stylistic/comma-spacing/cases.ts:36:22	@stylistic/comma-spacing	missing	A space is required after ','.
+tests/rules/@stylistic/comma-spacing/cases.ts:37:18	@stylistic/comma-spacing	missing	A space is required after ','.
+tests/rules/@stylistic/comma-spacing/cases.ts:37:26	@stylistic/comma-spacing	unexpected	There should be no space before ','.
+tests/rules/@stylistic/comma-spacing/cases.ts:38:34	@stylistic/comma-spacing	unexpected	There should be no space before ','.
+tests/rules/@stylistic/comma-spacing/cases.ts:38:34	@stylistic/comma-spacing	missing	A space is required after ','.
+tests/rules/@stylistic/comma-spacing/cases.ts:39:16	@stylistic/comma-spacing	unexpected	There should be no space before ','.
+tests/rules/@stylistic/comma-spacing/cases.ts:40:12	@stylistic/comma-spacing	missing	A space is required after ','.
+tests/rules/@stylistic/comma-spacing/cases.ts:40:15	@stylistic/comma-spacing	unexpected	There should be no space before ','.
+tests/rules/@stylistic/comma-spacing/cases.ts:41:11	@stylistic/comma-spacing	missing	A space is required after ','.
+tests/rules/@stylistic/comma-spacing/cases.ts:41:19	@stylistic/comma-spacing	unexpected	There should be no space before ','.
+tests/rules/@stylistic/comma-spacing/cases.ts:42:15	@stylistic/comma-spacing	missing	A space is required after ','.
+tests/rules/@stylistic/comma-spacing/cases.ts:42:33	@stylistic/comma-spacing	missing	A space is required after ','.
+tests/rules/@stylistic/comma-spacing/cases.ts:43:14	@stylistic/comma-spacing	missing	A space is required after ','.
+tests/rules/@stylistic/comma-spacing/cases.ts:45:17	@stylistic/comma-spacing	unexpected	There should be no space before ','.
+tests/rules/@stylistic/comma-spacing/cases.ts:45:17	@stylistic/comma-spacing	missing	A space is required after ','.
+tests/rules/@stylistic/comma-spacing/cases.ts:46:22	@stylistic/comma-spacing	missing	A space is required after ','.
+tests/rules/@stylistic/comma-spacing/cases.ts:47:12	@stylistic/comma-spacing	missing	A space is required after ','.
+tests/rules/@stylistic/comma-spacing/cases.ts:47:16	@stylistic/comma-spacing	unexpected	There should be no space before ','.
+tests/rules/@stylistic/comma-spacing/cases.ts:54:24	@stylistic/comma-spacing	unexpected	There should be no space before ','.
+tests/rules/@stylistic/comma-spacing/neither/cases.ts:7:7	@stylistic/comma-spacing	unexpected	There should be no space before ','.
+tests/rules/@stylistic/comma-spacing/neither/cases.ts:7:7	@stylistic/comma-spacing	unexpected	There should be no space after ','.
+tests/rules/@stylistic/comma-spacing/neither/cases.ts:8:7	@stylistic/comma-spacing	unexpected	There should be no space before ','.
+tests/rules/@stylistic/comma-spacing/neither/cases.ts:9:6	@stylistic/comma-spacing	unexpected	There should be no space after ','.
+tests/rules/@stylistic/comma-spacing/neither/cases.ts:10:6	@stylistic/comma-spacing	unexpected	There should be no space after ','.
+tests/rules/@stylistic/comma-spacing/neither/cases.ts:10:10	@stylistic/comma-spacing	unexpected	There should be no space before ','.
+tests/rules/@stylistic/comma-spacing/neither/cases.ts:13:15	@stylistic/comma-spacing	unexpected	There should be no space before ','.
+tests/rules/@stylistic/comma-spacing/neither/cases.ts:13:15	@stylistic/comma-spacing	unexpected	There should be no space after ','.
+tests/rules/@stylistic/comma-spacing/neither/cases.ts:20:19	@stylistic/comma-spacing	unexpected	There should be no space before ','.
+tests/rules/@stylistic/comma-spacing/neither/cases.ts:20:19	@stylistic/comma-spacing	unexpected	There should be no space after ','.
+tests/rules/@stylistic/comma-spacing/neither/cases.ts:25:20	@stylistic/comma-spacing	unexpected	There should be no space after ','.
+tests/rules/@stylistic/comma-spacing/neither/cases.ts:26:17	@stylistic/comma-spacing	unexpected	There should be no space before ','.
+tests/rules/@stylistic/comma-spacing/neither/cases.ts:27:22	@stylistic/comma-spacing	unexpected	There should be no space after ','.
+tests/rules/@stylistic/comma-spacing/neither/cases.ts:27:25	@stylistic/comma-spacing	unexpected	There should be no space after ','.
+tests/rules/@stylistic/comma-spacing/neither/cases.ts:28:20	@stylistic/comma-spacing	unexpected	There should be no space after ','.
+tests/rules/@stylistic/comma-spacing/neither/cases.ts:28:23	@stylistic/comma-spacing	unexpected	There should be no space after ','.
+tests/rules/@stylistic/comma-spacing/neither/cases.ts:30:20	@stylistic/comma-spacing	unexpected	There should be no space before ','.
+tests/rules/@stylistic/comma-spacing/neither/cases.ts:31:31	@stylistic/comma-spacing	unexpected	There should be no space after ','.
+tests/rules/@stylistic/comma-spacing/neither/cases.ts:33:22	@stylistic/comma-spacing	unexpected	There should be no space after ','.
+tests/rules/@stylistic/comma-spacing/neither/cases.ts:33:48	@stylistic/comma-spacing	unexpected	There should be no space after ','.
+tests/rules/@stylistic/comma-spacing/neither/cases.ts:37:26	@stylistic/comma-spacing	unexpected	There should be no space before ','.
+tests/rules/@stylistic/comma-spacing/neither/cases.ts:37:26	@stylistic/comma-spacing	unexpected	There should be no space after ','.
+tests/rules/@stylistic/comma-spacing/neither/cases.ts:38:22	@stylistic/comma-spacing	unexpected	There should be no space after ','.
+tests/rules/@stylistic/comma-spacing/neither/cases.ts:38:34	@stylistic/comma-spacing	unexpected	There should be no space before ','.
+tests/rules/@stylistic/comma-spacing/neither/cases.ts:39:16	@stylistic/comma-spacing	unexpected	There should be no space before ','.
+tests/rules/@stylistic/comma-spacing/neither/cases.ts:39:16	@stylistic/comma-spacing	unexpected	There should be no space after ','.
+tests/rules/@stylistic/comma-spacing/neither/cases.ts:39:27	@stylistic/comma-spacing	unexpected	There should be no space after ','.
+tests/rules/@stylistic/comma-spacing/neither/cases.ts:40:15	@stylistic/comma-spacing	unexpected	There should be no space before ','.
+tests/rules/@stylistic/comma-spacing/neither/cases.ts:40:15	@stylistic/comma-spacing	unexpected	There should be no space after ','.
+tests/rules/@stylistic/comma-spacing/neither/cases.ts:41:19	@stylistic/comma-spacing	unexpected	There should be no space before ','.
+tests/rules/@stylistic/comma-spacing/neither/cases.ts:41:19	@stylistic/comma-spacing	unexpected	There should be no space after ','.
+tests/rules/@stylistic/comma-spacing/neither/cases.ts:45:17	@stylistic/comma-spacing	unexpected	There should be no space before ','.
+tests/rules/@stylistic/comma-spacing/neither/cases.ts:47:16	@stylistic/comma-spacing	unexpected	There should be no space before ','.
+tests/rules/@stylistic/comma-spacing/neither/cases.ts:47:16	@stylistic/comma-spacing	unexpected	There should be no space after ','.
+tests/rules/@stylistic/comma-spacing/neither/cases.ts:52:17	@stylistic/comma-spacing	unexpected	There should be no space after ','.
+tests/rules/@stylistic/comma-spacing/neither/cases.ts:52:21	@stylistic/comma-spacing	unexpected	There should be no space after ','.
+tests/rules/@stylistic/comma-spacing/neither/cases.ts:52:25	@stylistic/comma-spacing	unexpected	There should be no space after ','.
+tests/rules/@stylistic/comma-spacing/neither/cases.ts:53:27	@stylistic/comma-spacing	unexpected	There should be no space after ','.
+tests/rules/@stylistic/comma-spacing/neither/cases.ts:54:24	@stylistic/comma-spacing	unexpected	There should be no space before ','.
+tests/rules/@stylistic/comma-spacing/tsx/cases.tsx:7:31	@stylistic/comma-spacing	unexpected	There should be no space before ','.
+tests/rules/@stylistic/comma-spacing/tsx/cases.tsx:7:31	@stylistic/comma-spacing	missing	A space is required after ','.
+tests/rules/@stylistic/comma-spacing/tsx/cases.tsx:8:33	@stylistic/comma-spacing	missing	A space is required after ','.

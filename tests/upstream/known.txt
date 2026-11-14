@@ -1370,3 +1370,6 @@ veslint	prefer-default-parameters/r16/i0	a JavaScript case: with the TypeScript 
 eslint	no-whitespace-before-property._js_/i82	typescript-eslint's parser: Decimals with leading zeros are not allowed.
 eslint	no-whitespace-before-property._js_/i83	typescript-eslint's parser: Decimals with leading zeros are not allowed.
 eslint	no-whitespace-before-property._js_/i94	typescript-eslint's parser: Octal literals are not allowed.
+# @stylistic/comma-spacing: `let foo ,` (a declaration list that ends with a comma) is a syntax error that
+# typescript-estree tolerates; tree-sitter reads it as an ERROR node.
+veslint	comma-spacing._ts_/i5	tree-sitter reads `let foo ,` as a syntax error
