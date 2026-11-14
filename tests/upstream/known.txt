@@ -424,3 +424,8 @@ veslint	prefer-array-flat/r6/i4	with TypeScript's types the receiver is a Set, k
 # such a React: ESLint with types does not report it either).
 veslint	no-for-each/r5/i179	with TypeScript's types `React?.Children` (@types/react) is known not to be an array: not reported
 veslint	no-for-each/r5/i180	with TypeScript's types `React?.Children` (@types/react) is known not to be an array: not reported
+# veslint's grammar (tree-sitter-typescript's) does not take a `new` without arguments as the
+# constructor of another `new`: `new new Buffer;` is a syntax error there, which typescript-estree
+# parses as `new (new Buffer)`. Allowing it in new_expression made tree-sitter read
+# `new new X().Y` as `(new (new X())).Y`: left for now.
+veslint	no-new-buffer/r5/i2	tree-sitter's grammar: `new new Buffer;` is a syntax error

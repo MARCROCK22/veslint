@@ -139,7 +139,7 @@ fn (mut c Checker) lint_unicorn_prefer_native_coercion_functions(root C.TSNode, 
 			'replacementFunction':  replacement
 		}
 		mut finding := Finding{
-			stmt:       c.es_tree_function_head(t, node)
+			stmt:       c.un_function_head_location(t, node)
 			message_id: 'prefer-native-coercion-functions'
 			data:       data
 		}

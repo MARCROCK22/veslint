@@ -2193,3 +2193,23 @@ fn (mut c Checker) un_is_length_minus_one_of(t &estree.EsTree, from int, object 
 	return (un_static_number_value(t, right) or { return false }) == 1
 		&& c.un_is_length_of(t, t.node(node, .left) or { return false }, object)
 }
+
+// un_function_head_location ports getFunctionHeadLocation of eslint-utils, which (unlike ESLint's
+// own, es_tree_function_head) takes the `=>` of an arrow function before the property it is the
+// value of.
+fn (mut c Checker) un_function_head_location(t &estree.EsTree, node int) Ident {
+	if t.typ(node) == .arrow_function_expression {
+		if body := t.node(node, .body) {
+			tokens := c.source_tokens(t.nodes[t.root].ts)
+			mut at := t.nodes[body].start
+			for {
+				token := tokens.before(at, false) or { break }
+				if c.src[token.start..token.end] == '=>' {
+					return c.position_range(token.start, token.end)
+				}
+				at = token.start
+			}
+		}
+	}
+	return c.es_tree_function_head(t, node)
+}

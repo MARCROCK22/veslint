@@ -62,3 +62,21 @@ export let w7: unknown;
 w7 = (v: unknown) => String(v)
 ;(w7 as () => void)();
 const w8 = typeof function (v: unknown) { return String(v); };
+// The `=>` of an arrow function is its head, also as the value of a field; nothing continues its
+// block on the next line.
+export class Fields {
+  toText = (v: unknown) => String(v);
+  toNumber = (v: unknown) => {
+    return Number(v);
+  }
+  [Symbol.iterator] = 1;
+}
+export let w9: unknown;
+w9 = (v: unknown) => {
+  return String(v);
+}
+-1;
+w9 = (v: unknown) => {
+  return Number(v);
+}
+`text`;
