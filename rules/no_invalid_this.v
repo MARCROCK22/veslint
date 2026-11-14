@@ -29,9 +29,16 @@ fn (mut c Checker) lint_no_invalid_this(root C.TSNode, abs_path string, mut stat
 	for node in c.nodes_of_kinds(root, ['this'], []) {
 		stats.checked++
 		if parent := node_parent(node) {
-			// `this` as a parameter or in a type predicate is not a ThisExpression.
-			if node_kind(parent) in ['required_parameter', 'optional_parameter', 'type_predicate',
-				'asserts', 'type_predicate_annotation', 'this_type'] {
+			// `this` as a parameter (`this: Foo`, not a default value) or in a type predicate is not
+			// a ThisExpression.
+			if node_kind(parent) in ['required_parameter', 'optional_parameter'] {
+				if pattern := node_field(parent, 'pattern') {
+					if node_key(pattern) == node_key(node) {
+						continue
+					}
+				}
+			} else if node_kind(parent) in ['type_predicate', 'asserts', 'type_predicate_annotation',
+				'this_type'] {
 				continue
 			}
 		}

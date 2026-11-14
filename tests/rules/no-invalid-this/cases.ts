@@ -76,3 +76,12 @@ Array.from([], function () { return this; }, null satisfies any);
 // A name whose first code point (not UTF-16 unit) is upper case is a constructor.
 function 𐐀() { return this; }
 function 𐐨() { return this; }
+
+// A `this` as the default value of a parameter is a ThisExpression (not the `this` parameter).
+export function defaultThis(value = this) {
+	return value;
+}
+export const arrowDefaultThis = (value = this) => value;
+export function typedDefaultThis(this: unknown, value = this) {
+	return value;
+}
