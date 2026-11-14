@@ -1,0 +1,18 @@
+tests/rules/unicorn/no-static-only-class/cases.ts:9:1	unicorn/no-static-only-class	no-static-only-class	Use an object instead of a class with only static members.	fix	178	381	const A = {\n\ta : 1,\n\tb() {\n\t\treturn 2;\n\t},\n\tc: undefined,\n\t[key] : 3,\n\tget d() {\n\t\treturn 4;\n\t},\n\tset d(value: number) {\n\t\tvoid value;\n\t},\n\tasync e() {},\n\t*f() {},\n};	end	9	8
+tests/rules/unicorn/no-static-only-class/cases.ts:25:8	unicorn/no-static-only-class	no-static-only-class	Use an object instead of a class with only static members.	fix	389	429	const B = {\n\ta : 1,\n\tb() {},\n};	end	25	15
+tests/rules/unicorn/no-static-only-class/cases.ts:29:11	unicorn/no-static-only-class	no-static-only-class	Use an object instead of a class with only static members.	fix	440	462	{\n\ta : 1,	end	29	16
+tests/rules/unicorn/no-static-only-class/cases.ts:32:17	unicorn/no-static-only-class	no-static-only-class	Use an object instead of a class with only static members.	fix	482	506	({\n\ta : 1,\n})	end	32	22
+tests/rules/unicorn/no-static-only-class/cases.ts:35:12	unicorn/no-static-only-class	no-static-only-class	Use an object instead of a class with only static members.	fix	519	540	{ a : 1,	end	35	17
+tests/rules/unicorn/no-static-only-class/cases.ts:37:9	unicorn/no-static-only-class	no-static-only-class	Use an object instead of a class with only static members.	fix	568	592	{\n\t\ta : 1,	end	37	14
+tests/rules/unicorn/no-static-only-class/cases.ts:42:12	unicorn/no-static-only-class	no-static-only-class	Use an object instead of a class with only static members.	fix	610	640	/* c */ {\n\ta : 1,	end	42	17
+tests/rules/unicorn/no-static-only-class/cases.ts:47:1	unicorn/no-static-only-class	no-static-only-class	Use an object instead of a class with only static members.	end	47	8
+tests/rules/unicorn/no-static-only-class/cases.ts:51:1	unicorn/no-static-only-class	no-static-only-class	Use an object instead of a class with only static members.	end	51	8
+tests/rules/unicorn/no-static-only-class/cases.ts:54:1	unicorn/no-static-only-class	no-static-only-class	Use an object instead of a class with only static members.	end	54	8
+tests/rules/unicorn/no-static-only-class/cases.ts:57:1	unicorn/no-static-only-class	no-static-only-class	Use an object instead of a class with only static members.	end	57	8
+tests/rules/unicorn/no-static-only-class/cases.ts:60:1	unicorn/no-static-only-class	no-static-only-class	Use an object instead of a class with only static members.	end	60	17
+tests/rules/unicorn/no-static-only-class/cases.ts:63:1	unicorn/no-static-only-class	no-static-only-class	Use an object instead of a class with only static members.	end	63	25
+tests/rules/unicorn/no-static-only-class/cases.ts:66:11	unicorn/no-static-only-class	no-static-only-class	Use an object instead of a class with only static members.	end	66	18
+tests/rules/unicorn/no-static-only-class/cases.ts:69:1	unicorn/no-static-only-class	no-static-only-class	Use an object instead of a class with only static members.	end	69	8
+tests/rules/unicorn/no-static-only-class/cases.ts:72:1	unicorn/no-static-only-class	no-static-only-class	Use an object instead of a class with only static members.	end	72	16
+tests/rules/unicorn/no-static-only-class/cases.ts:115:9	unicorn/no-static-only-class	no-static-only-class	Use an object instead of a class with only static members.	fix	1502	1538	{ // keep\n\t\n\t\tvalue : 1,	end	115	14
+tests/rules/unicorn/no-static-only-class/cases.ts:122:16	unicorn/no-static-only-class	no-static-only-class	Use an object instead of a class with only static members.	fix	1575	1597	{\n\ta : 1,	end	122	21
