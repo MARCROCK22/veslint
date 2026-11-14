@@ -492,7 +492,8 @@ fn (mut c Checker) stv_eval_node(n C.TSNode, mut ctx StvContext) StaticValue {
 			branch := if stv_to_boolean(test.value) { 'consequence' } else { 'alternative' }
 			return c.stv_eval(node_field(n, branch) or { return StaticValue{} }, mut ctx)
 		}
-		'identifier', 'undefined' {
+		// The value of a shorthand property (`{method}`) is an Identifier in ESTree.
+		'identifier', 'undefined', 'shorthand_property_identifier' {
 			return c.stv_identifier(n, mut ctx)
 		}
 		'string', 'number', 'true', 'false', 'null', 'regex' {

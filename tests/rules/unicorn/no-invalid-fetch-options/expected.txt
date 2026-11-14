@@ -1,0 +1,8 @@
+tests/rules/unicorn/no-invalid-fetch-options/cases.ts:6:14	unicorn/no-invalid-fetch-options	no-invalid-fetch-options	"body" is not allowed when method is "GET".
+tests/rules/unicorn/no-invalid-fetch-options/cases.ts:7:29	unicorn/no-invalid-fetch-options	no-invalid-fetch-options	"body" is not allowed when method is "GET".
+tests/rules/unicorn/no-invalid-fetch-options/cases.ts:8:29	unicorn/no-invalid-fetch-options	no-invalid-fetch-options	"body" is not allowed when method is "GET".
+tests/rules/unicorn/no-invalid-fetch-options/cases.ts:9:28	unicorn/no-invalid-fetch-options	no-invalid-fetch-options	"body" is not allowed when method is "HEAD".
+tests/rules/unicorn/no-invalid-fetch-options/cases.ts:10:36	unicorn/no-invalid-fetch-options	no-invalid-fetch-options	"body" is not allowed when method is "HEAD".
+tests/rules/unicorn/no-invalid-fetch-options/cases.ts:11:14	unicorn/no-invalid-fetch-options	no-invalid-fetch-options	"body" is not allowed when method is "GET".
+tests/rules/unicorn/no-invalid-fetch-options/cases.ts:12:41	unicorn/no-invalid-fetch-options	no-invalid-fetch-options	"body" is not allowed when method is "GET".
+tests/rules/unicorn/no-invalid-fetch-options/cases.ts:14:22	unicorn/no-invalid-fetch-options	no-invalid-fetch-options	"body" is not allowed when method is "HEAD".
