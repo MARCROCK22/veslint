@@ -377,6 +377,7 @@ pub const unicorn_consistent_function_scoping = 'unicorn/consistent-function-sco
 pub const unicorn_isolated_functions = 'unicorn/isolated-functions'
 pub const unicorn_no_useless_undefined = 'unicorn/no-useless-undefined'
 pub const unicorn_no_keyword_prefix = 'unicorn/no-keyword-prefix'
+pub const unicorn_prefer_object_from_entries = 'unicorn/prefer-object-from-entries'
 pub const names = [no_floating_promises, await_thenable, require_await, return_await,
 	no_misused_promises, no_unsafe_call, no_unsafe_member_access, no_unsafe_return,
 	no_unsafe_assignment, no_unsafe_argument, restrict_template_expressions,
@@ -478,7 +479,7 @@ pub const names = [no_floating_promises, await_thenable, require_await, return_a
 	unicorn_better_regex, unicorn_no_this_assignment, unicorn_no_unreadable_iife,
 	unicorn_no_accessor_recursion, unicorn_no_static_only_class, unicorn_prefer_class_fields,
 	unicorn_consistent_function_scoping, unicorn_isolated_functions, unicorn_no_useless_undefined,
-	unicorn_no_keyword_prefix]
+	unicorn_no_keyword_prefix, unicorn_prefer_object_from_entries]
 
 // untyped_rules are the ported rules that need no types (`meta.docs.requiresTypeChecking` is false
 // in typescript-eslint; the eslint-plugin-unicorn rules that read the types when the parser has a
@@ -928,6 +929,7 @@ pub const default_options = {
 	unicorn_isolated_functions:                      '[{"functions":["makeSynchronous","workerize"],"selectors":[],"comments":["@isolated"],"overrideGlobals":{}}]'
 	unicorn_no_useless_undefined:                    '[{"checkArguments":true,"checkArrowFunctionBody":true}]'
 	unicorn_no_keyword_prefix:                       '[{}]'
+	unicorn_prefer_object_from_entries:              '[{"functions":[]}]'
 }
 
 // Finding is a problem a rule found at a node.
@@ -1425,6 +1427,7 @@ pub fn message(rule string, finding Finding) string {
 		unicorn_isolated_functions { uisf_messages }
 		unicorn_no_useless_undefined { unuu_messages }
 		unicorn_no_keyword_prefix { unkp_messages }
+		unicorn_prefer_object_from_entries { upofe_messages }
 		else { map[string]string{} }
 	}
 	return interpolate(messages[finding.message_id] or { finding.message_id }, finding.data)
@@ -2669,6 +2672,9 @@ fn (mut c Checker) lint_rule(rule string, root C.TSNode, abs_path string, mut st
 		}
 		unicorn_no_keyword_prefix {
 			return c.lint_unicorn_no_keyword_prefix(root, abs_path, mut stats)!
+		}
+		unicorn_prefer_object_from_entries {
+			return c.lint_unicorn_prefer_object_from_entries(root, abs_path, mut stats)!
 		}
 		else { return error('unknown rule: ${rule}') }
 	}

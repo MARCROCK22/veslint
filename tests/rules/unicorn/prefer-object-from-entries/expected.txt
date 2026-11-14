@@ -1,0 +1,32 @@
+tests/rules/unicorn/prefer-object-from-entries/cases.ts:9:7	unicorn/prefer-object-from-entries	reduce	Prefer `Object.fromEntries()` over `Array#reduce()`.
+tests/rules/unicorn/prefer-object-from-entries/cases.ts:10:7	unicorn/prefer-object-from-entries	reduce	Prefer `Object.fromEntries()` over `Array#reduce()`.
+tests/rules/unicorn/prefer-object-from-entries/cases.ts:11:7	unicorn/prefer-object-from-entries	reduce	Prefer `Object.fromEntries()` over `Array#reduce()`.
+tests/rules/unicorn/prefer-object-from-entries/cases.ts:12:7	unicorn/prefer-object-from-entries	reduce	Prefer `Object.fromEntries()` over `Array#reduce()`.
+tests/rules/unicorn/prefer-object-from-entries/cases.ts:13:7	unicorn/prefer-object-from-entries	reduce	Prefer `Object.fromEntries()` over `Array#reduce()`.
+tests/rules/unicorn/prefer-object-from-entries/cases.ts:14:7	unicorn/prefer-object-from-entries	reduce	Prefer `Object.fromEntries()` over `Array#reduce()`.
+tests/rules/unicorn/prefer-object-from-entries/cases.ts:15:7	unicorn/prefer-object-from-entries	reduce	Prefer `Object.fromEntries()` over `Array#reduce()`.
+tests/rules/unicorn/prefer-object-from-entries/cases.ts:16:7	unicorn/prefer-object-from-entries	reduce	Prefer `Object.fromEntries()` over `Array#reduce()`.
+tests/rules/unicorn/prefer-object-from-entries/cases.ts:17:7	unicorn/prefer-object-from-entries	reduce	Prefer `Object.fromEntries()` over `Array#reduce()`.
+tests/rules/unicorn/prefer-object-from-entries/cases.ts:20:7	unicorn/prefer-object-from-entries	reduce	Prefer `Object.fromEntries()` over `Array#reduce()`.
+tests/rules/unicorn/prefer-object-from-entries/cases.ts:21:7	unicorn/prefer-object-from-entries	reduce	Prefer `Object.fromEntries()` over `Array#reduce()`.
+tests/rules/unicorn/prefer-object-from-entries/cases.ts:22:7	unicorn/prefer-object-from-entries	reduce	Prefer `Object.fromEntries()` over `Array#reduce()`.
+tests/rules/unicorn/prefer-object-from-entries/cases.ts:23:26	unicorn/prefer-object-from-entries	reduce	Prefer `Object.fromEntries()` over `Array#reduce()`.
+tests/rules/unicorn/prefer-object-from-entries/cases.ts:26:7	unicorn/prefer-object-from-entries	reduce	Prefer `Object.fromEntries()` over `Array#reduce()`.
+tests/rules/unicorn/prefer-object-from-entries/cases.ts:27:7	unicorn/prefer-object-from-entries	reduce	Prefer `Object.fromEntries()` over `Array#reduce()`.
+tests/rules/unicorn/prefer-object-from-entries/cases.ts:28:7	unicorn/prefer-object-from-entries	reduce	Prefer `Object.fromEntries()` over `Array#reduce()`.
+tests/rules/unicorn/prefer-object-from-entries/cases.ts:41:7	unicorn/prefer-object-from-entries	reduce	Prefer `Object.fromEntries()` over `Array#reduce()`.
+tests/rules/unicorn/prefer-object-from-entries/cases.ts:49:2	unicorn/prefer-object-from-entries	loop	Prefer `Object.fromEntries()` over a `for-of` loop.
+tests/rules/unicorn/prefer-object-from-entries/cases.ts:54:2	unicorn/prefer-object-from-entries	loop	Prefer `Object.fromEntries()` over a `for-of` loop.
+tests/rules/unicorn/prefer-object-from-entries/cases.ts:57:2	unicorn/prefer-object-from-entries	loop	Prefer `Object.fromEntries()` over a `for-of` loop.
+tests/rules/unicorn/prefer-object-from-entries/cases.ts:64:2	unicorn/prefer-object-from-entries	loop	Prefer `Object.fromEntries()` over a `for-of` loop.
+tests/rules/unicorn/prefer-object-from-entries/cases.ts:69:2	unicorn/prefer-object-from-entries	loop	Prefer `Object.fromEntries()` over a `for-of` loop.
+tests/rules/unicorn/prefer-object-from-entries/cases.ts:110:2	unicorn/prefer-object-from-entries	loop	Prefer `Object.fromEntries()` over a `for-of` loop.
+tests/rules/unicorn/prefer-object-from-entries/cases.ts:116:2	unicorn/prefer-object-from-entries	loop	Prefer `Object.fromEntries()` over a `for-of` loop.
+tests/rules/unicorn/prefer-object-from-entries/cases.ts:121:21	unicorn/prefer-object-from-entries	loop	Prefer `Object.fromEntries()` over a `for-of` loop.
+tests/rules/unicorn/prefer-object-from-entries/cases.ts:125:1	unicorn/prefer-object-from-entries	function	Prefer `Object.fromEntries()` over `_.fromPairs()`.
+tests/rules/unicorn/prefer-object-from-entries/cases.ts:126:1	unicorn/prefer-object-from-entries	function	Prefer `Object.fromEntries()` over `lodash.fromPairs()`.
+tests/rules/unicorn/prefer-object-from-entries/functions/cases.ts:6:1	unicorn/prefer-object-from-entries	function	Prefer `Object.fromEntries()` over `fromPairs()`.
+tests/rules/unicorn/prefer-object-from-entries/functions/cases.ts:7:1	unicorn/prefer-object-from-entries	function	Prefer `Object.fromEntries()` over `utils.object.fromPairs()`.
+tests/rules/unicorn/prefer-object-from-entries/functions/cases.ts:10:1	unicorn/prefer-object-from-entries	function	Prefer `Object.fromEntries()` over `_.fromPairs()`.
+tests/rules/unicorn/prefer-object-from-entries/functions/cases.ts:10:1	unicorn/prefer-object-from-entries	function	Prefer `Object.fromEntries()` over `_.fromPairs()`.
+tests/rules/unicorn/prefer-object-from-entries/functions/cases.ts:18:10	unicorn/prefer-object-from-entries	function	Prefer `Object.fromEntries()` over `this.toObject()`.
