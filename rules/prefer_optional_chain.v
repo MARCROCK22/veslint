@@ -7,7 +7,7 @@ import tsgo { TypeResponse }
 import treesitter { Ident, named_children, node_end, node_field, node_kind, node_start, nodes_of_kinds, position_of }
 import offsets { utf16_offsets }
 
-// Port of the `prefer-optional-chain` rule of typescript-eslint 8.62.0 (with
+// Port of the `prefer-optional-chain` rule of typescript-eslint 8.72.2 (with
 // prefer-optional-chain-utils: gatherLogicalOperands, analyzeChain, compareNodes and
 // checkNullishAndReport), with its options, its fix and its suggestions.
 
@@ -911,23 +911,27 @@ fn (mut c Checker) poc_includes_type(v PocNode, flag u32) !bool {
 	return false
 }
 
-// poc_valid_last ports isValidAndLastChainOperand and isValidOrLastChainOperand.
+// MAYBE_UNDEFINED_FLAGS of typescript-eslint 8.72: Any, Unknown, InstantiableNonPrimitive,
+// Undefined and Void (TypeScript 7.1.0-beta values).
+const poc_maybe_undefined_flags = type_flag_any | type_flag_unknown | u32(117964800) | type_flag_undefined | type_flag_void
+
+// poc_valid_last ports isValidAndLastChainOperand and isValidOrLastChainOperand, on the constrained
+// type of the compared value.
 fn (mut c Checker) poc_valid_last(v PocNode, comparison PocComparison, operator string) !bool {
 	t := c.node_type(v.node) or { return false }
-	parts := c.constituents(t)!
-	any_unknown := type_flag_any | type_flag_unknown
+	parts := c.constituents(c.constrained(t)!)!
 	nullish := type_flag_null | type_flag_undefined
 	if operator == '&&' {
 		return match comparison {
-			.equal { !parts.any(it.flags & (any_unknown | nullish) != 0) }
-			.strict_equal { !parts.any(it.flags & (any_unknown | type_flag_undefined) != 0) }
+			.equal { !parts.any(it.flags & (poc_maybe_undefined_flags | type_flag_null) != 0) }
+			.strict_equal { !parts.any(it.flags & poc_maybe_undefined_flags != 0) }
 			.not_strict_equal { parts.all(it.flags & type_flag_undefined != 0) }
 			.not_equal { parts.all(it.flags & nullish != 0) }
 		}
 	}
 	return match comparison {
-		.not_equal { !parts.any(it.flags & (any_unknown | nullish) != 0) }
-		.not_strict_equal { !parts.any(it.flags & (any_unknown | type_flag_undefined) != 0) }
+		.not_equal { !parts.any(it.flags & (poc_maybe_undefined_flags | type_flag_null) != 0) }
+		.not_strict_equal { !parts.any(it.flags & poc_maybe_undefined_flags != 0) }
 		.equal { parts.all(it.flags & nullish != 0) }
 		.strict_equal { parts.all(it.flags & type_flag_undefined != 0) }
 	}
@@ -1049,7 +1053,14 @@ fn (mut c Checker) poc_analyze_chain(logical PocLogical, chain []PocOperand, las
 			result := c.poc_compare(flat.last().compared_name, validated.last().compared_name,
 				0)
 			if result == .subset {
-				sub.steps << [validated[0]]
+				// In an OR chain with a `=== undefined` guard, a lone `=== null` would make the
+				// merged chain compare `undefined === null`: the chain ends there.
+				if logical.operator == '||' && validated[0].nullish == .strict_equal_null
+					&& validated.len == 1 && flat.any(it.nullish == .strict_equal_undefined) {
+					c.poc_report_then_reset(logical, mut sub, validated, o, mut findings)!
+				} else {
+					sub.steps << [validated[0]]
+				}
 			} else if result == .invalid {
 				c.poc_report_then_reset(logical, mut sub, validated, o, mut findings)!
 			}
@@ -1266,7 +1277,8 @@ fn (mut c Checker) poc_report(logical PocLogical, chain []PocOperand, has_last b
 	last := chain.last()
 	// An optional chain adds `undefined` to the type: without an operand that already includes it
 	// (or a last operand that is an equality check) the fix is only suggested.
-	mut use_suggestion := false
+	// Since typescript-eslint 8.72 a chain with a last operand only gets the suggestion.
+	mut use_suggestion := !o.allow_unsafe && has_last
 	if !o.allow_unsafe && !has_last
 		&& last.nullish !in [.equal_null_or_undefined, .not_equal_null_or_undefined,
 			.strict_equal_undefined, .not_strict_equal_undefined]
