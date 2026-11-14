@@ -5,13 +5,14 @@ import offsets
 import time
 import treesitter { has_child_kind, named_children, node_field, node_kind, node_parent, node_start }
 
-// Port of the `unified-signatures` rule of typescript-eslint 8.62.0, with its options
+// Port of the `unified-signatures` rule of typescript-eslint 8.72.2, with its options
 // `ignoreDifferentlyNamedParameters` and `ignoreOverloadsWithDifferentJSDoc`.
 
 const us_messages = {
+	'allParametersAreSame':      '{{failureStringStart}} with identical parameters.'
 	'omittingRestParameter':     '{{failureStringStart}} with a rest parameter.'
 	'omittingSingleParameter':   '{{failureStringStart}} with an optional parameter.'
-	'singleParameterDifference': '{{failureStringStart}} taking `{{type1}} | {{type2}}`.'
+	'singleParameterDifference': '{{failureStringStart}} taking `{{types}}`.'
 }
 
 struct UsOptions {
@@ -44,8 +45,8 @@ struct UsParam {
 	is_this   bool // an Identifier named `this`
 }
 
-// UsTypeParameter is a TSTypeParameter: its name and the ESTree type of its constraint ('' for
-// none).
+// UsTypeParameter is a TSTypeParameter: its name and the text of its constraint ('' for none),
+// which typeParametersAreEqual compares since typescript-eslint 8.72.
 struct UsTypeParameter {
 	name       string
 	constraint string
@@ -61,6 +62,7 @@ struct UsSignature {
 	has_type_parameters bool
 	type_parameters     []UsTypeParameter
 	start               int
+	end                 int // where the ESTree node of the signature ends (with its `;`)
 	comment_target      int
 }
 
@@ -128,7 +130,19 @@ fn (mut c Checker) lint_unified_signatures(root C.TSNode, abs_path string, mut s
 						has_lines = true
 					}
 					if a.params.len == b.params.len {
+						// signaturesHaveSameAmountOfParameters
 						index := c.us_single_difference(a.params, b.params) or { continue }
+						if index < 0 {
+							// The same parameters: allParametersAreSame, at the second signature.
+							findings << Finding{
+								stmt:       c.position_range(b.start, b.end)
+								message_id: 'allParametersAreSame'
+								data:       {
+									'failureStringStart': us_failure_start(only2, lines, a.start)
+								}
+							}
+							continue
+						}
 						p0 := a.params[index]
 						p1 := b.params[index]
 						findings << Finding{
@@ -136,8 +150,7 @@ fn (mut c Checker) lint_unified_signatures(root C.TSNode, abs_path string, mut s
 							message_id: 'singleParameterDifference'
 							data:       {
 								'failureStringStart': us_failure_start(only2, lines, p0.start)
-								'type1':              c.us_param_type_text(p0)
-								'type2':              c.us_param_type_text(p1)
+								'types':              c.us_unified_type_text(p0, p1)
 							}
 						}
 						continue
@@ -174,10 +187,50 @@ fn us_failure_start(only2 bool, lines offsets.LineStarts, other int) string {
 	return '${overloads} can be combined into one signature'
 }
 
-// us_param_type_text is getText(typeAnnotation?.typeAnnotation) of a parameter: without an
-// annotation, getText() gives the whole text of the file.
-fn (c &Checker) us_param_type_text(p UsParam) string {
-	return if p.has_type { c.text(p.type_node) } else { c.src }
+// us_unified_type_text ports getUnifiedTypeText: the members of the unions of the two types
+// (getUnionMembers), without repetitions (the same text), each in parentheses if it is a
+// conditional, constructor or function type (getUnionMemberText); only the type there is when a
+// parameter has no annotation.
+fn (c &Checker) us_unified_type_text(p0 UsParam, p1 UsParam) string {
+	if !p0.has_type || !p1.has_type {
+		return c.us_union_member_text(if p0.has_type { p0.type_node } else { p1.type_node })
+	}
+	mut members := []C.TSNode{}
+	us_union_members(p0.type_node, mut members, 0)
+	us_union_members(p1.type_node, mut members, 0)
+	mut unique := []C.TSNode{}
+	mut texts := []string{}
+	for member in members {
+		text := c.text(member)
+		if text !in texts {
+			texts << text
+			unique << member
+		}
+	}
+	return unique.map(c.us_union_member_text(it)).join(' | ')
+}
+
+// us_union_members ports getUnionMembers: the members of a union, through nested unions (and the
+// parentheses ESTree does not have).
+fn us_union_members(n C.TSNode, mut out []C.TSNode, depth int) {
+	node := unwrap_type_parens(n)
+	if node_kind(node) == 'union_type' && depth < max_expression_depth {
+		for member in named_children(node) {
+			us_union_members(member, mut out, depth + 1)
+		}
+		return
+	}
+	out << node
+}
+
+// us_union_member_text ports getUnionMemberText.
+fn (c &Checker) us_union_member_text(n C.TSNode) string {
+	text := c.text(n)
+	return if node_kind(n) in ['conditional_type', 'constructor_type', 'function_type'] {
+		'(${text})'
+	} else {
+		text
+	}
 }
 
 // us_scope_of is the scope an overload is added to, and the class or interface whose type
@@ -339,7 +392,7 @@ fn (c &Checker) us_signature(node C.TSNode) UsSignature {
 			mut constraint := ''
 			if clause := node_field(parameter, 'constraint') {
 				if t := first_named(clause) {
-					constraint = c.us_type_kind(unwrap_type_parens(t))
+					constraint = c.text(unwrap_type_parens(t))
 				}
 			}
 			type_parameters << UsTypeParameter{
@@ -385,8 +438,23 @@ fn (c &Checker) us_signature(node C.TSNode) UsSignature {
 		has_type_parameters: has_type_parameters
 		type_parameters:     type_parameters
 		start:               start
+		end:                 c.us_signature_end(node)
 		comment_target:      comment_target
 	}
+}
+
+// us_signature_end is where the ESTree node of a signature ends: after the `;` (or, in a type, the
+// `,`) that ends it, which TypeScript's node includes.
+fn (mut c Checker) us_signature_end(node C.TSNode) int {
+	end := c.es_end(node)
+	parent := node_parent(node) or { node }
+	if next := c.source_tokens(node).after(end, false) {
+		text := c.token_text(next)
+		if text == ';' || (text == ',' && node_kind(parent) in ['object_type', 'interface_body']) {
+			return next.end
+		}
+	}
+	return end
 }
 
 // us_param reads a parameter as typescript-estree converts it.
@@ -463,57 +531,6 @@ fn (c &Checker) us_param(p C.TSNode) UsParam {
 	}
 }
 
-// us_type_kind is the ESTree type of a type node, as constraintsAreEqual compares them.
-fn (c &Checker) us_type_kind(n C.TSNode) string {
-	kind := node_kind(n)
-	match kind {
-		'predefined_type' {
-			text := c.text(n)
-			return match text {
-				'any' { 'TSAnyKeyword' }
-				'boolean' { 'TSBooleanKeyword' }
-				'never' { 'TSNeverKeyword' }
-				'number' { 'TSNumberKeyword' }
-				'object' { 'TSObjectKeyword' }
-				'string' { 'TSStringKeyword' }
-				'symbol' { 'TSSymbolKeyword' }
-				'unknown' { 'TSUnknownKeyword' }
-				'void' { 'TSVoidKeyword' }
-				'intrinsic' { 'TSIntrinsicKeyword' }
-				else {
-					if text.starts_with('unique') { 'TSTypeOperator' } else { text }
-				}
-			}
-		}
-		'type_identifier' {
-			return if c.text(n) == 'bigint' { 'TSBigIntKeyword' } else { 'TSTypeReference' }
-		}
-		'generic_type', 'nested_type_identifier' {
-			return 'TSTypeReference'
-		}
-		'literal_type' {
-			inner := first_named(n) or { return 'TSLiteralType' }
-			return match node_kind(inner) {
-				'null' { 'TSNullKeyword' }
-				'undefined' { 'TSUndefinedKeyword' }
-				else { 'TSLiteralType' }
-			}
-		}
-		'object_type' {
-			if _ := scope_mapped_clause(n) {
-				return 'TSMappedType'
-			}
-			return 'TSTypeLiteral'
-		}
-		'index_type_query', 'readonly_type' {
-			return 'TSTypeOperator'
-		}
-		else {
-			return kind
-		}
-	}
-}
-
 // us_can_be_unified ports signaturesCanBeUnified.
 fn (mut c Checker) us_can_be_unified(root C.TSNode, a UsSignature, b UsSignature, o UsOptions, type_parameters []string) bool {
 	if o.ignore_differently_named_parameters {
@@ -560,7 +577,7 @@ fn (c &Checker) us_param_types_equal(a UsParam, b UsParam) bool {
 }
 
 // us_type_parameters_equal: both without type parameters, or the same names with constraints of
-// the same ESTree type (typeParametersAreEqual).
+// the same text (typeParametersAreEqual).
 fn us_type_parameters_equal(a UsSignature, b UsSignature) bool {
 	if !a.has_type_parameters || !b.has_type_parameters {
 		return a.has_type_parameters == b.has_type_parameters
@@ -647,8 +664,9 @@ fn (c &Checker) us_is_this_void(params []UsParam) bool {
 		&& node_kind(p.type_node) == 'predefined_type' && c.text(p.type_node) == 'void'
 }
 
-// us_single_difference ports signaturesDifferBySingleParameter (the lists have the same length):
-// the index of the only parameter whose type differs, with the same sigils and not a rest one.
+// us_single_difference ports signaturesHaveSameAmountOfParameters (the lists have the same
+// length): -1 when all the parameters are the same, or the index of the only parameter whose type
+// differs, with the same sigils and not a rest one.
 fn (c &Checker) us_single_difference(a []UsParam, b []UsParam) ?int {
 	if c.us_is_this_void(a) || c.us_is_this_void(b) {
 		return none
@@ -661,7 +679,7 @@ fn (c &Checker) us_single_difference(a []UsParam, b []UsParam) ?int {
 		}
 	}
 	if index < 0 {
-		return none
+		return -1
 	}
 	for i in index + 1 .. a.len {
 		if !c.us_params_equal(a[i], b[i]) {

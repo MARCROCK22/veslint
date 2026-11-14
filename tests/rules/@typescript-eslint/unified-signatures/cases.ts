@@ -251,3 +251,28 @@ declare function p26(a: string): void;
 declare function p26(a: string, b?: string): void;
 declare function p26(a: number): void;
 export {};
+
+// typescript-eslint 8.72: identical overloads (allParametersAreSame, at the second one, with its
+// `;` or `,`), the members of the unions without repetitions, and constraints compared by text.
+declare function same(a: number): void;
+declare function same(a: number): void;
+interface SameMembers {
+  m(a: string): void;
+  m(a: string): void;
+  n(a: string): void, n(a: string): void,
+}
+type SameLiteral = {
+  (a: number): string;
+  (a: number): string
+};
+declare function unionA(x: string | number): void;
+declare function unionA(x: number | boolean): void;
+declare function fnTypes(x: () => void): void;
+declare function fnTypes(x: new () => object): void;
+declare function cond<T>(x: T extends string ? 1 : 2): void;
+declare function cond<T>(x: string): void;
+declare function constrained<T extends 1 | 2>(x: T, y: number): void;
+declare function constrained<T extends 3 | 4>(x: T, y: string): void;
+declare function sameConstraint<T extends 1 | 2>(x: T, y: number): void;
+declare function sameConstraint<T extends 1 | 2>(x: T, y: string): void;
+export type { SameMembers, SameLiteral };
