@@ -1,0 +1,6 @@
+tests/rules/unicorn/no-await-in-promise-methods/cases.ts:6:22	unicorn/no-await-in-promise-methods	no-await-in-promise-methods/error	Avoid `await` inside `Promise.all()` arguments to prevent delaying the call.
+tests/rules/unicorn/no-await-in-promise-methods/cases.ts:7:29	unicorn/no-await-in-promise-methods	no-await-in-promise-methods/error	Avoid `await` inside `Promise.allSettled()` arguments to prevent delaying the call.
+tests/rules/unicorn/no-await-in-promise-methods/cases.ts:8:29	unicorn/no-await-in-promise-methods	no-await-in-promise-methods/error	Avoid `await` inside `Promise.any()` arguments to prevent delaying the call.
+tests/rules/unicorn/no-await-in-promise-methods/cases.ts:9:23	unicorn/no-await-in-promise-methods	no-await-in-promise-methods/error	Avoid `await` inside `Promise.race()` arguments to prevent delaying the call.
+tests/rules/unicorn/no-await-in-promise-methods/cases.ts:11:23	unicorn/no-await-in-promise-methods	no-await-in-promise-methods/error	Avoid `await` inside `Promise.all()` arguments to prevent delaying the call.
+tests/rules/unicorn/no-await-in-promise-methods/cases.ts:12:31	unicorn/no-await-in-promise-methods	no-await-in-promise-methods/error	Avoid `await` inside `Promise.all()` arguments to prevent delaying the call.

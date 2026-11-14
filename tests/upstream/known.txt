@@ -1090,3 +1090,9 @@ eslint	prefer-spread/r18/i2	a TypeScript file: the fix is a suggestion unless th
 veslint	prefer-spread/r18/i2	a TypeScript file: the fix is a suggestion unless the types prove the copy keeps its type
 eslint	prefer-spread/r18/i3	a TypeScript file: the fix is a suggestion unless the types prove the copy keeps its type
 veslint	prefer-spread/r18/i3	a TypeScript file: the fix is a suggestion unless the types prove the copy keeps its type
+# The same for no-await-in-promise-methods: without a program typescript-estree reads a top-level `await` of a script
+# followed by `(` or a line break as an await expression, where TypeScript reads an identifier.
+veslint	no-await-in-promise-methods/r4/i7	without a program typescript-estree reads this top-level `await` of a script as an await expression
+veslint	no-await-in-promise-methods/r4/i8	without a program typescript-estree reads this top-level `await` of a script as an await expression
+veslint	no-await-in-promise-methods/r4/i23	without a program typescript-estree reads this top-level `await` of a script as an await expression
+veslint	no-await-in-promise-methods/r4/i60	without a program typescript-estree reads this top-level `await` of a script as an await expression
