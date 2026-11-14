@@ -17,3 +17,10 @@ console.log(' ');
 console.dir('a ', value);
 console.log?.('a ', value);
 console['log']('a ', value);
+
+// 79.0.0: an escaped trailing space is part of an escape sequence.
+console.log('a\ ', "def");
+console.log('\ ', "def");
+console.log("a\\\ ", "def");
+console.log(`a\ `, "def");
+console.log("a\\ ", "def");

@@ -6,3 +6,4 @@ tests/rules/unicorn/no-console-spaces/cases.ts:6:27	unicorn/no-console-spaces	no
 tests/rules/unicorn/no-console-spaces/cases.ts:7:16	unicorn/no-console-spaces	no-console-spaces	Do not use trailing space between `console.warn` parameters.	fix	219	220		end	7	17
 tests/rules/unicorn/no-console-spaces/cases.ts:8:23	unicorn/no-console-spaces	no-console-spaces	Do not use leading space between `console.error` parameters.	fix	253	254		end	8	24
 tests/rules/unicorn/no-console-spaces/cases.ts:9:17	unicorn/no-console-spaces	no-console-spaces	Do not use trailing space between `console.debug` parameters.	fix	275	276		end	9	18
+tests/rules/unicorn/no-console-spaces/cases.ts:26:17	unicorn/no-console-spaces	no-console-spaces	Do not use trailing space between `console.log` parameters.	fix	706	707		end	26	18
