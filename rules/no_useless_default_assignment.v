@@ -5,12 +5,14 @@ import time
 import tsgo { TypeResponse, handle_index, handle_kind, handle_path }
 import treesitter { Ident, children, has_child_kind, named_children, node_end, node_field, node_kind, node_parent, node_start, nodes_of_kinds, position_of }
 
-// Port of the `no-useless-default-assignment` rule of typescript-eslint 8.62.0, with its option
-// and its fixes.
+// Port of the `no-useless-default-assignment` rule of typescript-eslint 8.72.2, with its option
+// and its suggestions.
 
 const nuda_messages = {
 	'noStrictNullCheck':        'This rule requires the `strictNullChecks` compiler option to be turned on to function correctly.'
-	'preferOptionalSyntax':     'Using `= undefined` to make a parameter optional adds unnecessary runtime logic. Use the `?` optional syntax instead.'
+	'preferOptionalSyntax':     'Using `= undefined` to make a parameter optional adds unnecessary runtime logic.'
+	'removeDefaultAssignment':  'Remove the default value.'
+	'useOptionalSyntax':        'Use the `?` optional syntax instead.'
 	'uselessDefaultAssignment': 'Default value is useless because the {{ type }} is not optional.'
 	'uselessUndefined':         'Default value is useless because it is undefined. Optional {{ type }}s are already undefined by default.'
 }
@@ -229,10 +231,13 @@ fn (mut c Checker) nuda_check(p NudaPattern, mut findings []Finding) ! {
 				if type_node := first_named(annotation) {
 					if t := c.node_type(type_node) {
 						if c.nuda_can_be_undefined(t)! {
-							findings << c.with_fixes(Finding{
-								stmt:       position_of(p.right)
-								message_id: 'preferOptionalSyntax'
-							}, c.nuda_optional_fixes(p))!
+							_, suggestion := c.suggestion('useOptionalSyntax', map[string]string{},
+								c.nuda_optional_fixes(p))!
+							findings << Finding{
+								stmt:        position_of(p.right)
+								message_id:  'preferOptionalSyntax'
+								suggestions: [suggestion]
+							}
 							return
 						}
 					}
@@ -240,17 +245,16 @@ fn (mut c Checker) nuda_check(p NudaPattern, mut findings []Finding) ! {
 			}
 		}
 		findings << Finding{
-			stmt:       position_of(p.right)
-			message_id: 'uselessUndefined'
-			data:       {
+			stmt:        position_of(p.right)
+			message_id:  'uselessUndefined'
+			data:        {
 				'type': if p.parent in [.property, .array_pattern] {
 					'property'
 				} else {
 					'parameter'
 				}
 			}
-			has_fix:    true
-			fix:        c.nuda_remove_default(p)
+			suggestions: c.nuda_remove_default_suggestion(p)!
 		}
 		return
 	}
@@ -273,21 +277,27 @@ fn (mut c Checker) nuda_check(p NudaPattern, mut findings []Finding) ! {
 			if signatures.len == 0 || signatures[0].declaration == handle {
 				return
 			}
-			params := c.signature_parameters(signatures[0])!
-			if index >= params.len {
-				return
-			}
-			param := params[index]
-			if c.nuda_is_rest_parameter(param.value_declaration)! {
-				return
-			}
-			if param.flags & nuda_symbol_flag_optional == 0 {
+			// The default may be used if some signature has no such parameter, a rest one, an
+			// optional one, or one whose type is a type parameter or may be undefined.
+			for signature in signatures {
+				params := c.signature_parameters(signature)!
+				if index >= params.len {
+					return
+				}
+				param := params[index]
+				if c.nuda_is_rest_parameter(param.value_declaration)! {
+					return
+				}
+				if param.flags & nuda_symbol_flag_optional != 0 {
+					return
+				}
 				param_type := c.symbol_type(param.id)!
-				if param_type.flags & type_flag_type_parameter == 0
-					&& !c.nuda_can_be_undefined(param_type)! {
-					findings << c.nuda_useless(p, 'parameter')
+				if param_type.flags & type_flag_type_parameter != 0
+					|| c.nuda_can_be_undefined(param_type)! {
+					return
 				}
 			}
+			findings << c.nuda_useless(p, 'parameter')!
 		}
 		.property {
 			property := if node_kind(p.node) == 'object_assignment_pattern' {
@@ -297,7 +307,7 @@ fn (mut c Checker) nuda_check(p NudaPattern, mut findings []Finding) ! {
 			}
 			property_type := c.nuda_property_type(property, 0)!
 			if !property_type.is_null() && !c.nuda_can_be_undefined(property_type)! {
-				findings << c.nuda_useless(p, 'property')
+				findings << c.nuda_useless(p, 'property')!
 			}
 		}
 		.array_pattern {
@@ -311,25 +321,55 @@ fn (mut c Checker) nuda_check(p NudaPattern, mut findings []Finding) ! {
 			if index < 0 || index >= args.len {
 				return
 			}
-			if !c.nuda_can_be_undefined(args[index])! {
-				findings << c.nuda_useless(p, 'property')
+			// The target's minLength (Required and Variadic elements) and fixedLength (the
+			// elements before the first rest or variadic one): an element past the minimum may be
+			// missing, and one at or past the fixed ones is any of the variable elements.
+			target := c.target_of(source)!
+			min_length := target.element_flags.filter(it & (element_flag_required | element_flag_variadic) != 0).len
+			mut fixed_length := 0
+			for flags in target.element_flags {
+				if flags & element_flags_variable != 0 {
+					break
+				}
+				fixed_length++
 			}
+			if index >= min_length {
+				return
+			}
+			element_types := if index < fixed_length { [args[index]] } else { args[fixed_length..] }
+			for element in element_types {
+				if c.nuda_can_be_undefined(element)! {
+					return
+				}
+			}
+			findings << c.nuda_useless(p, 'property')!
 		}
 		else {}
 	}
 }
 
-fn (c &Checker) nuda_useless(p NudaPattern, kind string) Finding {
+fn (c &Checker) nuda_useless(p NudaPattern, kind string) !Finding {
 	return Finding{
-		stmt:       position_of(p.right)
-		message_id: 'uselessDefaultAssignment'
-		data:       {
+		stmt:        position_of(p.right)
+		message_id:  'uselessDefaultAssignment'
+		data:        {
 			'type': kind
 		}
-		has_fix:    true
-		fix:        c.nuda_remove_default(p)
+		suggestions: c.nuda_remove_default_suggestion(p)!
 	}
 }
+
+// nuda_remove_default_suggestion ports removeDefaultSuggestion.
+fn (c &Checker) nuda_remove_default_suggestion(p NudaPattern) ![]Suggestion {
+	_, suggestion := c.suggestion('removeDefaultAssignment', map[string]string{}, [
+		c.nuda_remove_default(p),
+	])!
+	return [suggestion]
+}
+
+// ElementFlags.Required and ElementFlags.Variadic.
+const element_flag_required = 1
+const element_flag_variadic = 8
 
 // nuda_remove_default ports removeDefault: from the end of the left side (for a parameter, with
 // its `?` and its type annotation, which the ESTree Identifier or pattern includes) to the end of
