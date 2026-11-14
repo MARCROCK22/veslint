@@ -6,7 +6,7 @@ import offsets
 import time
 import treesitter { has_child_kind, named_children, node_end, node_field, node_kind, node_parent, node_start, position_of }
 
-// Port of the `no-unused-vars` rule of typescript-eslint 8.62.0, with its options (`'all'`,
+// Port of the `no-unused-vars` rule of typescript-eslint 8.72.2, with its options (`'all'`,
 // `'local'`, or an object with `args`, `argsIgnorePattern`, `caughtErrors`,
 // `caughtErrorsIgnorePattern`, `destructuredArrayIgnorePattern`, `enableAutofixRemoval`,
 // `ignoreClassWithStaticInitBlock`, `ignoreRestSiblings`, `ignoreUsingDeclarations`,
@@ -245,8 +245,8 @@ fn (mut c Checker) lint_no_unused_vars(root C.TSNode, abs_path string, mut stats
 	for v in reports {
 		variable := tree.variables[v]
 		if variable.defs.len > 0 {
-			only_as_type := variable.references.any(inside_type_query(tree.references[it].identifier)
-				|| unused_in_type_predicate(tree.references[it].identifier))
+			only_as_type := variable.references.any(unused_is_type_only_reference(variable,
+				tree.references[it]))
 			if only_as_type && variable.defs.any(it.kind == .import_binding) {
 				continue
 			}
@@ -531,7 +531,8 @@ fn (s &NuvState) nuv_is_after_last_used_arg(v int) bool {
 		variable := tree.variables[w]
 		declares := variable.defs.any(it.kind == .parameter && node_key(it.node) == node_key(function)
 			&& node_kind(it.node) == node_kind(function))
-		if declares && (variable.references.len > 0 || s.eslint_used[w]) {
+		if declares && (s.eslint_used[w]
+			|| variable.references.any(!unused_is_type_only_reference(variable, tree.references[it]))) {
 			return false
 		}
 	}
