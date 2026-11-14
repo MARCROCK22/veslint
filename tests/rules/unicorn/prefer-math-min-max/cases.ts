@@ -30,3 +30,27 @@ function i(text = 'a') {
   return text > other ? other : text;
 }
 const z5 = (height as unknown as string) > 'a' ? 'a' : height;
+
+// 79.0.0: only suggestions; BigInts known from types, JSDoc or values; effects and comments.
+declare let big: bigint;
+declare let mixed: bigint | number;
+const v1 = big > 10n ? 10n : big;
+const v2 = mixed > 10 ? 10 : mixed;
+const bigConst = 5n;
+const v3 = bigConst > 1n ? 1n : bigConst;
+/** @type {bigint} */
+const documented = BigInt(1);
+const v4 = documented > 0 ? 0 : documented;
+const v5 = box.value > 50 ? 50 : box.value;
+declare function next(): number;
+const v6 = next() > 50 ? 50 : next();
+const v7 = height /* keep */ > 50 ? 50 : height;
+const v8 = (height, height) > 50 ? 50 : (height, height);
+export function withDefault(value = 'x') {
+  return value > 'a' ? 'a' : value;
+}
+export function outer(limit: number) {
+  return function inner() {
+    return limit > 5 ? 5 : limit;
+  };
+}
