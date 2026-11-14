@@ -394,7 +394,7 @@
        // This rule is only referenced by expression when the dialect is 'tsx'
        jsx_opening_element: $ => prec.dynamic(-1, seq(
          $._jsx_start_opening_element,
-@@ -317,20 +546,83 @@
+@@ -317,20 +546,90 @@
          $._semicolon,
        ),
  
@@ -422,6 +422,13 @@
 +              'default',
 +              choice(
 +                field('declaration', $.declaration),
++                // veslint: an anonymous class or function after `export default` is a declaration
++                // for TypeScript, complete at its `}`: `export default class {}` then `(a)` on the
++                // next line is another statement, not a call of the class.
++                prec.right('declaration', seq(
++                  field('value', choice($.class, $.function_expression, $.generator_function)),
++                  optional(';'),
++                )),
 +                seq(
 +                  field('value', $.expression),
 +                  $._semicolon,
@@ -483,7 +490,7 @@
          $.expression, '!',
        )),
  
-@@ -363,6 +655,8 @@
+@@ -363,6 +662,8 @@
          optional($.accessibility_modifier),
          'abstract',
          optional($.override_modifier),
@@ -492,7 +499,7 @@
          optional(choice('get', 'set', '*')),
          field('name', $._property_name),
          optional('?'),
-@@ -453,8 +747,12 @@
+@@ -453,8 +754,12 @@
        ),
  
        method_definition: $ => prec.left(seq(
@@ -507,7 +514,7 @@
          optional($.override_modifier),
          optional('readonly'),
          optional('async'),
-@@ -465,6 +763,70 @@
+@@ -465,6 +770,70 @@
          field('body', $.statement_block),
        )),
  
@@ -578,7 +585,7 @@
        declaration: ($, previous) => choice(
          previous,
          $.function_signature,
-@@ -495,10 +857,32 @@
+@@ -495,10 +864,32 @@
          $.type,
        )),
  
@@ -614,7 +621,7 @@
  
        class_heritage: $ => choice(
          seq($.extends_clause, optional($.implements_clause)),
-@@ -584,14 +968,43 @@
+@@ -584,14 +975,43 @@
          field('body', optional($.statement_block)),
        )),
  
@@ -660,7 +667,7 @@
        nested_type_identifier: $ => prec('member', seq(
          field('module', choice($.identifier, $.nested_identifier)),
          '.',
-@@ -691,7 +1104,17 @@
+@@ -691,7 +1111,17 @@
        // required beforehand. This allows for parsing of annotations such as
        // foo: import('x').y.z;
        // but was a nightmare to get working.
@@ -679,7 +686,7 @@
          field('object', choice(
            $.import,
            alias($._type_query_member_expression_in_type_annotation, $.member_expression),
-@@ -702,14 +1125,14 @@
+@@ -702,14 +1132,14 @@
            $.private_property_identifier,
            alias($.identifier, $.property_identifier),
          )),
@@ -697,7 +704,7 @@
  
        asserts: $ => seq(
          'asserts',
-@@ -726,17 +1149,17 @@
+@@ -726,17 +1156,17 @@
          $.readonly_type,
          $.constructor_type,
          $.infer_type,
@@ -719,7 +726,7 @@
          '?',
          field('type', $.type_annotation),
        ),
-@@ -782,6 +1205,9 @@
+@@ -782,6 +1212,9 @@
          $.intersection_type,
          $.union_type,
          'const',
@@ -729,7 +736,7 @@
        ),
  
        template_type: $ => seq('${', choice($.primary_type, $.infer_type), '}'),
-@@ -790,6 +1216,8 @@
+@@ -790,6 +1223,8 @@
          '`',
          repeat(choice(
            alias($._template_chars, $.string_fragment),
@@ -738,7 +745,7 @@
            $.template_type,
          )),
          '`',
-@@ -818,6 +1246,8 @@
+@@ -818,6 +1253,8 @@
          field('name', choice(
            $._type_identifier,
            $.nested_type_identifier,
@@ -747,7 +754,7 @@
          )),
          field('type_arguments', $.type_arguments),
        )),
-@@ -867,9 +1297,10 @@
+@@ -867,9 +1304,10 @@
          optional('?.'),
          '[', field('index', choice($.predefined_type, $.string, $.number)), ']',
        ),
@@ -759,7 +766,7 @@
            $.identifier,
            alias($._type_query_member_expression, $.member_expression),
            alias($._type_query_subscript_expression, $.subscript_expression),
-@@ -878,13 +1309,16 @@
+@@ -878,13 +1316,16 @@
        ),
        _type_query_instantiation_expression: $ => seq(
          field('function', choice(
@@ -777,7 +784,7 @@
        type_query: $ => prec.right(seq(
          'typeof',
          choice(
-@@ -894,12 +1328,14 @@
+@@ -894,12 +1335,14 @@
            alias($._type_query_instantiation_expression, $.instantiation_expression),
            $.identifier,
            $.this,
@@ -793,7 +800,7 @@
        ),
  
        lookup_type: $ => seq(
-@@ -926,7 +1362,7 @@
+@@ -926,7 +1369,7 @@
          $.undefined,
        ),
  
@@ -802,7 +809,7 @@
          field('operator', choice('-', '+')),
          field('argument', $.number),
        )),
-@@ -1003,8 +1439,12 @@
+@@ -1003,8 +1446,12 @@
        ),
  
        type_parameter: $ => seq(
@@ -816,7 +823,7 @@
          field('constraint', optional($.constraint)),
          field('value', optional($.default_type)),
        ),
-@@ -1061,8 +1501,25 @@
+@@ -1061,8 +1508,25 @@
        ),
        readonly_type: $ => seq('readonly', $.type),
  
@@ -844,7 +851,7 @@
  
        function_type: $ => prec.left(seq(
          field('type_parameters', optional($.type_parameters)),
-@@ -1073,7 +1530,19 @@
+@@ -1073,7 +1537,19 @@
  
        _type_identifier: $ => alias($.identifier, $.type_identifier),
  
@@ -864,7 +871,7 @@
          'declare',
          'namespace',
          'type',
-@@ -1090,7 +1559,8 @@
+@@ -1090,7 +1566,8 @@
          'symbol',
          'export',
          'object',
