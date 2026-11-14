@@ -1,0 +1,37 @@
+tests/rules/@stylistic/array-bracket-spacing/always/cases.ts:5:11	@stylistic/array-bracket-spacing	missingSpaceAfter	A space is required after '['.
+tests/rules/@stylistic/array-bracket-spacing/always/cases.ts:6:17	@stylistic/array-bracket-spacing	missingSpaceBefore	A space is required before ']'.
+tests/rules/@stylistic/array-bracket-spacing/always/cases.ts:13:28	@stylistic/array-bracket-spacing	missingSpaceBefore	A space is required before ']'.
+tests/rules/@stylistic/array-bracket-spacing/always/cases.ts:14:11	@stylistic/array-bracket-spacing	missingSpaceAfter	A space is required after '['.
+tests/rules/@stylistic/array-bracket-spacing/always/cases.ts:16:7	@stylistic/array-bracket-spacing	missingSpaceAfter	A space is required after '['.
+tests/rules/@stylistic/array-bracket-spacing/always/cases.ts:16:13	@stylistic/array-bracket-spacing	missingSpaceBefore	A space is required before ']'.
+tests/rules/@stylistic/array-bracket-spacing/always/cases.ts:19:16	@stylistic/array-bracket-spacing	missingSpaceBefore	A space is required before ']'.
+tests/rules/@stylistic/array-bracket-spacing/always/cases.ts:20:11	@stylistic/array-bracket-spacing	missingSpaceAfter	A space is required after '['.
+tests/rules/@stylistic/array-bracket-spacing/cases.ts:4:12	@stylistic/array-bracket-spacing	unexpectedSpaceAfter	There should be no space after '['.
+tests/rules/@stylistic/array-bracket-spacing/cases.ts:4:17	@stylistic/array-bracket-spacing	unexpectedSpaceBefore	There should be no space before ']'.
+tests/rules/@stylistic/array-bracket-spacing/cases.ts:5:16	@stylistic/array-bracket-spacing	unexpectedSpaceBefore	There should be no space before ']'.
+tests/rules/@stylistic/array-bracket-spacing/cases.ts:6:12	@stylistic/array-bracket-spacing	unexpectedSpaceAfter	There should be no space after '['.
+tests/rules/@stylistic/array-bracket-spacing/cases.ts:8:12	@stylistic/array-bracket-spacing	unexpectedSpaceAfter	There should be no space after '['.
+tests/rules/@stylistic/array-bracket-spacing/cases.ts:13:12	@stylistic/array-bracket-spacing	unexpectedSpaceAfter	There should be no space after '['.
+tests/rules/@stylistic/array-bracket-spacing/cases.ts:14:13	@stylistic/array-bracket-spacing	unexpectedSpaceBefore	There should be no space before ']'.
+tests/rules/@stylistic/array-bracket-spacing/cases.ts:15:8	@stylistic/array-bracket-spacing	unexpectedSpaceAfter	There should be no space after '['.
+tests/rules/@stylistic/array-bracket-spacing/cases.ts:15:22	@stylistic/array-bracket-spacing	unexpectedSpaceBefore	There should be no space before ']'.
+tests/rules/@stylistic/array-bracket-spacing/cases.ts:17:8	@stylistic/array-bracket-spacing	unexpectedSpaceAfter	There should be no space after '['.
+tests/rules/@stylistic/array-bracket-spacing/cases.ts:17:15	@stylistic/array-bracket-spacing	unexpectedSpaceBefore	There should be no space before ']'.
+tests/rules/@stylistic/array-bracket-spacing/cases.ts:19:12	@stylistic/array-bracket-spacing	unexpectedSpaceAfter	There should be no space after '['.
+tests/rules/@stylistic/array-bracket-spacing/cases.ts:20:13	@stylistic/array-bracket-spacing	unexpectedSpaceAfter	There should be no space after '['.
+tests/rules/@stylistic/array-bracket-spacing/cases.ts:20:15	@stylistic/array-bracket-spacing	unexpectedSpaceBefore	There should be no space before ']'.
+tests/rules/@stylistic/array-bracket-spacing/cases.ts:20:27	@stylistic/array-bracket-spacing	unexpectedSpaceBefore	There should be no space before ']'.
+tests/rules/@stylistic/array-bracket-spacing/cases.ts:21:13	@stylistic/array-bracket-spacing	unexpectedSpaceAfter	There should be no space after '['.
+tests/rules/@stylistic/array-bracket-spacing/cases.ts:21:18	@stylistic/array-bracket-spacing	unexpectedSpaceBefore	There should be no space before ']'.
+tests/rules/@stylistic/array-bracket-spacing/cases.ts:22:10	@stylistic/array-bracket-spacing	unexpectedSpaceAfter	There should be no space after '['.
+tests/rules/@stylistic/array-bracket-spacing/cases.ts:22:16	@stylistic/array-bracket-spacing	unexpectedSpaceBefore	There should be no space before ']'.
+tests/rules/@stylistic/array-bracket-spacing/exceptions/cases.ts:3:12	@stylistic/array-bracket-spacing	unexpectedSpaceAfter	There should be no space after '['.
+tests/rules/@stylistic/array-bracket-spacing/exceptions/cases.ts:3:14	@stylistic/array-bracket-spacing	unexpectedSpaceBefore	There should be no space before ']'.
+tests/rules/@stylistic/array-bracket-spacing/exceptions/cases.ts:5:26	@stylistic/array-bracket-spacing	unexpectedSpaceAfter	There should be no space after '['.
+tests/rules/@stylistic/array-bracket-spacing/exceptions/cases.ts:5:28	@stylistic/array-bracket-spacing	unexpectedSpaceBefore	There should be no space before ']'.
+tests/rules/@stylistic/array-bracket-spacing/exceptions/cases.ts:5:30	@stylistic/array-bracket-spacing	unexpectedSpaceBefore	There should be no space before ']'.
+tests/rules/@stylistic/array-bracket-spacing/exceptions/cases.ts:6:12	@stylistic/array-bracket-spacing	unexpectedSpaceAfter	There should be no space after '['.
+tests/rules/@stylistic/array-bracket-spacing/exceptions/cases.ts:8:8	@stylistic/array-bracket-spacing	unexpectedSpaceAfter	There should be no space after '['.
+tests/rules/@stylistic/array-bracket-spacing/exceptions/cases.ts:8:15	@stylistic/array-bracket-spacing	unexpectedSpaceBefore	There should be no space before ']'.
+tests/rules/@stylistic/array-bracket-spacing/exceptions/cases.ts:9:7	@stylistic/array-bracket-spacing	missingSpaceAfter	A space is required after '['.
+tests/rules/@stylistic/array-bracket-spacing/exceptions/cases.ts:9:19	@stylistic/array-bracket-spacing	missingSpaceBefore	A space is required before ']'.
