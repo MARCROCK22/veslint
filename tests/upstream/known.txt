@@ -412,3 +412,15 @@ eslint	prefer-set-size/i1	typescript-eslint's definitions have no kind: a const 
 veslint	prefer-set-size/i1	typescript-eslint's definitions have no kind: a const Set variable is not a Set
 eslint	prefer-set-size/i10	typescript-eslint's definitions have no kind: a const Set variable is not a Set
 veslint	prefer-set-size/i10	typescript-eslint's definitions have no kind: a const Set variable is not a Set
+# typescript-eslint 8.72's tests of prefer-readonly-parameter-types lint JavaScript files
+# (javascript/file.js: JSDoc types, CommonJS exports, assignments to `this`); veslint lints only
+# TypeScript.
+veslint	prefer-readonly-parameter-types/v49	a JavaScript file; veslint lints only TypeScript
+veslint	prefer-readonly-parameter-types/v50	a JavaScript file; veslint lints only TypeScript
+veslint	prefer-readonly-parameter-types/v51	a JavaScript file; veslint lints only TypeScript
+veslint	prefer-readonly-parameter-types/v52	a JavaScript file; veslint lints only TypeScript
+veslint	prefer-readonly-parameter-types/v53	a JavaScript file; veslint lints only TypeScript
+veslint	prefer-readonly-parameter-types/i10	a JavaScript file; veslint lints only TypeScript
+veslint	prefer-readonly-parameter-types/i11	a JavaScript file; veslint lints only TypeScript
+veslint	prefer-readonly-parameter-types/i12	a JavaScript file; veslint lints only TypeScript
+veslint	prefer-readonly-parameter-types/i13	a JavaScript file; veslint lints only TypeScript

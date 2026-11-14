@@ -5,7 +5,7 @@ import time
 import tsgo
 import treesitter { Ident, has_child_kind, named_children, node_field, node_kind, node_parent, node_start, nodes_of_kinds, position_of }
 
-// Port of the `prefer-readonly-parameter-types` rule of typescript-eslint 8.62.0, with its
+// Port of the `prefer-readonly-parameter-types` rule of typescript-eslint 8.72.2, with its
 // options.
 
 const prpt_messages = {

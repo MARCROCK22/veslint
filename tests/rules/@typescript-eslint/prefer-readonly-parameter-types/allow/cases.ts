@@ -148,3 +148,10 @@ const objectLiteral = {
   arrow: (a: readonly string[]) => {},
   set value(a: string[]) {},
 };
+// type-utils 8.72: the name of an alias is allowed only where the specifier says it is declared.
+namespace AliasSource {
+  type RegExp = { items: string[] };
+  type Map = RegExp | string[];
+  type Mutable = { items: string[] };
+  export function aliasNotInLib(a: RegExp, b: Map, c: Mutable) {}
+}

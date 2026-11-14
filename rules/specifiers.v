@@ -156,8 +156,12 @@ fn (mut c Checker) whole_type_matches(t TypeResponse, s TypeSpecifier) !bool {
 	if s.from == '' {
 		return true
 	}
-	// specifierSourceMatches
-	symbol := c.specifier_symbol(t)!
+	return c.specifier_source_matches(s, c.specifier_symbol(t)!)!
+}
+
+// specifier_source_matches ports specifierSourceMatches: where the symbol (the null one for none)
+// is declared is where the specifier (with a `from`) says.
+fn (mut c Checker) specifier_source_matches(s TypeSpecifier, symbol tsgo.SymbolResponse) !bool {
 	declarations := symbol.declarations
 	if s.from == 'file' {
 		return c.declared_in_file(s, declarations)!
