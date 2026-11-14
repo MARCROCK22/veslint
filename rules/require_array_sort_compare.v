@@ -5,7 +5,7 @@ import time
 import tsgo { TypeResponse }
 import treesitter { node_field, nodes_of_kind, position_of }
 
-// Port of the `require-array-sort-compare` rule of typescript-eslint 8.62.0, with its
+// Port of the `require-array-sort-compare` rule of typescript-eslint 8.72.2, with its
 // `ignoreStringArrays` option.
 
 const rasc_messages = {
@@ -52,10 +52,11 @@ fn (mut c Checker) lint_require_array_sort_compare(root C.TSNode, abs_path strin
 	mut findings := []Finding{}
 	for i, call in calls {
 		t := c.node_type(objects[i]) or { continue }
-		if options.ignore_string_arrays && c.rasc_is_string_array(t)! {
+		constrained := c.constrained(t)!
+		if options.ignore_string_arrays && c.rasc_is_string_array(constrained)! {
 			continue
 		}
-		if c.rasc_is_array_or_union_of_arrays(c.constrained(t)!)! {
+		if c.rasc_is_always_array(constrained)! {
 			findings << Finding{
 				stmt:       position_of(call)
 				message_id: 'requireCompare'
@@ -67,21 +68,35 @@ fn (mut c Checker) lint_require_array_sort_compare(root C.TSNode, abs_path strin
 	return findings
 }
 
-// rasc_is_string_array ports isStringArrayNode: an array or a tuple all of whose type arguments
-// are text (getTypeName), on the type of the node itself, not on its constraint.
+// rasc_is_string_array ports isStringArrayNode: an array or a tuple (the constrained type of the
+// node) all of whose type arguments, or their base constraints, are text (getTypeName). The
+// original drops a `this` type argument TypeScript before 5.1 added for a constrained type
+// parameter; TypeScript 7 does not add it.
 fn (mut c Checker) rasc_is_string_array(t TypeResponse) !bool {
 	if !c.is_array(t)! && !c.is_tuple(t)! {
 		return false
 	}
 	for arg in c.type_args(t)! {
-		if c.type_name(arg, 0)! != 'string' {
+		constraint := c.base_constraint(arg)!
+		if c.type_name(if constraint.is_null() { arg } else { constraint }, 0)! != 'string' {
 			return false
 		}
 	}
 	return true
 }
 
-// rasc_is_array_or_union_of_arrays ports isTypeArrayTypeOrUnionOfArrayTypes: an array (not a
+// rasc_is_always_array ports isAlwaysArray: every part of the union is an array or a tuple.
+fn (mut c Checker) rasc_is_always_array(t TypeResponse) !bool {
+	for part in c.constituents(t)! {
+		if !c.is_array(part)! && !c.is_tuple(part)! {
+			return false
+		}
+	}
+	return true
+}
+
+// rasc_is_array_or_union_of_arrays ports isTypeArrayTypeOrUnionOfArrayTypes of typescript-eslint's
+// util (what the rule used up to 8.62, and strict-boolean-expressions still uses): an array (not a
 // tuple), or a union of arrays.
 fn (mut c Checker) rasc_is_array_or_union_of_arrays(t TypeResponse) !bool {
 	if t.flags & type_flag_union != 0 {

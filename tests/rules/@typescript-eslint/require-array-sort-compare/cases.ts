@@ -129,3 +129,24 @@ declare const colors: Color[];
 declare const sizes: Size[];
 colors.sort();
 sizes.sort();
+// typescript-eslint 8.72: tuples and unions with them count as arrays.
+declare const tuple: [number, number];
+declare const tupleOrArray: [string] | number[];
+declare const readonlyTuple: readonly [number];
+tuple.sort();
+tupleOrArray.sort();
+readonlyTuple.toSorted();
+function genericSorts<T extends number[], U extends [string, string]>(t: T, u: U) {
+  t.sort();
+  u.sort();
+}
+void genericSorts;
+// The string arrays of ignoreStringArrays: of the constrained type, and by the base constraint of
+// each type argument.
+function stringSorts<S extends string, A extends string[], N extends number>(s: S[], a: A, n: N[], t: [S, string]) {
+  s.sort();
+  a.sort();
+  n.sort();
+  t.sort();
+}
+void stringSorts;
