@@ -6,7 +6,7 @@ import offsets
 import time
 import treesitter { children, named_children, node_end, node_field, node_kind, node_parent, node_start, position_of }
 
-// Port of the `no-invalid-this` rule of ESLint 10.6.0, with astUtils.isDefaultThisBinding.
+// Port of the `no-invalid-this` rule of ESLint 10.15.0, with astUtils.isDefaultThisBinding.
 
 const nith_messages = {
 	'unexpectedThis': "Unexpected 'this'."
@@ -122,13 +122,63 @@ fn nith_in_method_function(method C.TSNode, from C.TSNode) bool {
 	return false
 }
 
-// nith_starts_with_upper ports startsWithUpperCase: the first UTF-16 unit changes when lowercased.
+// nith_starts_with_upper ports startsWithUpperCase: the first code point changes when lowercased.
 fn nith_starts_with_upper(name string) bool {
 	units := utf16_units(name)
 	if units.len == 0 {
 		return false
 	}
-	return jsregexp.js_to_lower(units[..1]) != units[..1]
+	points := jsregexp.utf16_code_points(units)
+	mut first := []u16{}
+	jsregexp.append_utf16(mut first, points[0])
+	return jsregexp.js_to_lower(first) != first
+}
+
+// The TypeScript expressions that wrap an expression without changing it at run time (with the
+// TSInstantiationExpression, which skipTSWrappersUp also skips).
+const nith_ts_assertion_kinds = ['as_expression', 'satisfies_expression', 'type_assertion',
+	'non_null_expression']
+
+// nith_ts_wrapped is the expression a TypeScript wrapper wraps.
+fn nith_ts_wrapped(n C.TSNode) ?C.TSNode {
+	if node_kind(n) == 'instantiation_expression' {
+		if function := node_field(n, 'function') {
+			return function
+		}
+	}
+	list := named_children(n).filter(node_kind(it) != 'comment')
+	if list.len == 0 {
+		return none
+	}
+	return if node_kind(n) == 'type_assertion' { list.last() } else { list[0] }
+}
+
+// nith_skip_ts_assertions ports skipTSAssertions: the expression inside `as`, `satisfies`, type
+// assertions and non-null assertions (and parentheses).
+fn nith_skip_ts_assertions(n C.TSNode) C.TSNode {
+	mut node := unwrap_parens(n)
+	for node_kind(node) in nith_ts_assertion_kinds {
+		node = unwrap_parens(nith_ts_wrapped(node) or { break })
+	}
+	return node
+}
+
+// nith_skip_ts_wrappers_up ports skipTSWrappersUp: the outermost TypeScript wrapper around the node
+// (as its expression), or the node.
+fn nith_skip_ts_wrappers_up(n C.TSNode) C.TSNode {
+	mut node := n
+	for {
+		parent, _ := es_estree_parent(node) or { break }
+		if node_kind(parent) !in nith_ts_assertion_kinds && node_kind(parent) != 'instantiation_expression' {
+			break
+		}
+		wrapped := nith_ts_wrapped(parent) or { break }
+		if node_key(unwrap_parens(wrapped)) != node_key(node) {
+			break
+		}
+		node = parent
+	}
+	return node
 }
 
 // nith_estree_parent is the ESTree parent of a node (parentheses are not nodes).
@@ -137,7 +187,7 @@ fn nith_estree_parent(n C.TSNode) ?(C.TSNode, C.TSNode) {
 }
 
 fn (c &Checker) nith_is_null_or_undefined(n C.TSNode) bool {
-	node := unwrap_parens(n)
+	node := nith_skip_ts_assertions(n)
 	kind := node_kind(node)
 	return kind == 'null' || (kind in ['identifier', 'undefined'] && c.text(node) == 'undefined')
 		|| (kind == 'unary_expression' && operator_of(node) == 'void')
@@ -221,7 +271,8 @@ fn (mut c Checker) nith_is_default_this_binding(root C.TSNode, f C.TSNode, cap_i
 		parent, child := es_estree_parent(current) or { return true }
 		_ = child
 		match node_kind(parent) {
-			'ternary_expression' {
+			'ternary_expression', 'as_expression', 'satisfies_expression', 'type_assertion',
+			'non_null_expression', 'instantiation_expression' {
 				current = parent
 			}
 			'binary_expression' {
@@ -237,18 +288,26 @@ fn (mut c Checker) nith_is_default_this_binding(root C.TSNode, f C.TSNode, cap_i
 					'function_expression', 'generator_function', 'arrow_function', 'method_definition'] {
 					func = node_parent(func) or { return true }
 				}
-				if node_kind(func) == 'method_definition' || !nith_is_callee(func) {
+				if node_kind(func) == 'method_definition' {
 					return true
 				}
-				call, _ := es_estree_parent(func) or { return true }
+				callee := nith_skip_ts_wrappers_up(func)
+				if !nith_is_callee(callee) {
+					return true
+				}
+				call, _ := es_estree_parent(callee) or { return true }
 				current = call
 			}
 			'arrow_function' {
 				body := node_field(parent, 'body') or { return true }
-				if node_key(unwrap_parens(body)) != node_key(current) || !nith_is_callee(parent) {
+				if node_key(unwrap_parens(body)) != node_key(current) {
 					return true
 				}
-				call, _ := es_estree_parent(parent) or { return true }
+				callee := nith_skip_ts_wrappers_up(parent)
+				if !nith_is_callee(callee) {
+					return true
+				}
+				call, _ := es_estree_parent(callee) or { return true }
 				current = call
 			}
 			'pair' {
@@ -262,7 +321,7 @@ fn (mut c Checker) nith_is_default_this_binding(root C.TSNode, f C.TSNode, cap_i
 			'assignment_expression', 'augmented_assignment_expression', 'assignment_pattern',
 			'required_parameter', 'optional_parameter' {
 				// A parameter with a default value is an AssignmentPattern.
-				left := unwrap_parens(node_field(parent, if node_kind(parent).ends_with('_parameter') {
+				left := nith_skip_ts_assertions(node_field(parent, if node_kind(parent).ends_with('_parameter') {
 					'pattern'
 				} else {
 					'left'

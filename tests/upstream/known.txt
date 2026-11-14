@@ -368,12 +368,12 @@ eslint	no-invalid-this/r0/i132	typescript-eslint's scope manager ignores ecmaFea
 veslint	no-invalid-this/r0/i132	typescript-eslint's scope manager ignores ecmaFeatures.impliedStrict
 eslint	no-invalid-this/r0/i135	typescript-eslint's scope manager ignores ecmaFeatures.impliedStrict
 veslint	no-invalid-this/r0/i135	typescript-eslint's scope manager ignores ecmaFeatures.impliedStrict
-eslint	no-invalid-this/r0/v319	typescript-eslint's scope manager reads 'use strict' in ECMAScript 3
-veslint	no-invalid-this/r0/v319	typescript-eslint's scope manager reads 'use strict' in ECMAScript 3
-eslint	no-invalid-this/r0/v320	typescript-eslint's scope manager reads 'use strict' in ECMAScript 3
-veslint	no-invalid-this/r0/v320	typescript-eslint's scope manager reads 'use strict' in ECMAScript 3
-eslint	no-invalid-this/r0/v321	typescript-eslint's scope manager ignores ecmaFeatures.impliedStrict
-veslint	no-invalid-this/r0/v321	typescript-eslint's scope manager ignores ecmaFeatures.impliedStrict
+eslint	no-invalid-this/r0/v351	typescript-eslint's scope manager reads 'use strict' in ECMAScript 3
+veslint	no-invalid-this/r0/v351	typescript-eslint's scope manager reads 'use strict' in ECMAScript 3
+eslint	no-invalid-this/r0/v352	typescript-eslint's scope manager reads 'use strict' in ECMAScript 3
+veslint	no-invalid-this/r0/v352	typescript-eslint's scope manager reads 'use strict' in ECMAScript 3
+eslint	no-invalid-this/r0/v353	typescript-eslint's scope manager ignores ecmaFeatures.impliedStrict
+veslint	no-invalid-this/r0/v353	typescript-eslint's scope manager ignores ecmaFeatures.impliedStrict
 # C11: cases that disable the rule by the name RuleTester gives it, or turn on rules their test file
 # defines.
 eslint	no-fallthrough/v38	disables rule-to-test/no-fallthrough, the name RuleTester gives the rule
