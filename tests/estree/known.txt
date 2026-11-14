@@ -1,2 +1,3 @@
 # Files of the corpus of tests/estree/run.sh whose ESTree differs from typescript-estree's, with the
 # reason (paths relative to the corpus directory; up/ holds the code of the upstream cases).
+up/71ca3002c555e07d.ts	tree-sitter reads `new [...Array.of(1)]!.constructor(2)` as a call of a member of `new [...]!`; TypeScript as `new` of the member `[...]!.constructor` (a test case of unicorn/prefer-spread)
