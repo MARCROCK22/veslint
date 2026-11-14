@@ -1,0 +1,8 @@
+tests/rules/unicorn/require-module-attributes/cases.ts:1:24	unicorn/require-module-attributes	require-module-attributes	import statement with empty attribute list is not allowed.
+tests/rules/unicorn/require-module-attributes/cases.ts:3:24	unicorn/require-module-attributes	require-module-attributes	import statement with empty attribute list is not allowed.
+tests/rules/unicorn/require-module-attributes/cases.ts:4:24	unicorn/require-module-attributes	require-module-attributes	export statement with empty attribute list is not allowed.
+tests/rules/unicorn/require-module-attributes/cases.ts:5:28	unicorn/require-module-attributes	require-module-attributes	export statement with empty attribute list is not allowed.
+tests/rules/unicorn/require-module-attributes/cases.ts:6:33	unicorn/require-module-attributes	require-module-attributes	export statement with empty attribute list is not allowed.
+tests/rules/unicorn/require-module-attributes/cases.ts:7:29	unicorn/require-module-attributes	require-module-attributes	import expression with empty attribute list is not allowed.
+tests/rules/unicorn/require-module-attributes/cases.ts:8:37	unicorn/require-module-attributes	require-module-attributes	import expression with empty attribute list is not allowed.
+tests/rules/unicorn/require-module-attributes/cases.ts:9:37	unicorn/require-module-attributes	require-module-attributes	import expression with empty attribute list is not allowed.

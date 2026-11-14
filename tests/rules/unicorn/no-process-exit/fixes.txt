@@ -1,0 +1,3 @@
+tests/rules/unicorn/no-process-exit/cases.ts:2:1	unicorn/no-process-exit	no-process-exit	Only use `process.exit()` in CLI apps. Throw an error instead.	end	2	15
+tests/rules/unicorn/no-process-exit/cases.ts:3:1	unicorn/no-process-exit	no-process-exit	Only use `process.exit()` in CLI apps. Throw an error instead.	end	3	16
+tests/rules/unicorn/no-process-exit/cases.ts:4:19	unicorn/no-process-exit	no-process-exit	Only use `process.exit()` in CLI apps. Throw an error instead.	end	4	34

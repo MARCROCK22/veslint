@@ -1,0 +1,12 @@
+import {} from 'a';
+import b, {} from 'b';
+import type {} from 'c';
+import d, {} from 'd';
+import {} /* c */ from 'e';
+import 'f';
+import g from 'g';
+export {} from 'h';
+export type {} from 'i';
+export {} from 'j' with { type: 'json' };
+export { g, b, d };
+export {};

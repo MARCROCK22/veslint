@@ -1,0 +1,10 @@
+tests/rules/unicorn/prefer-node-protocol/cases.ts:1:16	unicorn/prefer-node-protocol	prefer-node-protocol	Prefer `node:fs` over `fs`.	fix	16	16	node:	end	1	20
+tests/rules/unicorn/prefer-node-protocol/cases.ts:2:22	unicorn/prefer-node-protocol	prefer-node-protocol	Prefer `node:path` over `path`.	fix	43	43	node:	end	2	28
+tests/rules/unicorn/prefer-node-protocol/cases.ts:4:28	unicorn/prefer-node-protocol	prefer-node-protocol	Prefer `node:fs/promises` over `fs/promises`.	fix	111	111	node:	end	4	41
+tests/rules/unicorn/prefer-node-protocol/cases.ts:5:26	unicorn/prefer-node-protocol	prefer-node-protocol	Prefer `node:fs/promises` over `fs/promises`.	fix	151	151	node:	end	5	39
+tests/rules/unicorn/prefer-node-protocol/cases.ts:6:15	unicorn/prefer-node-protocol	prefer-node-protocol	Prefer `node:events` over `events`.	fix	180	180	node:	end	6	23
+tests/rules/unicorn/prefer-node-protocol/cases.ts:7:25	unicorn/prefer-node-protocol	prefer-node-protocol	Prefer `node:os` over `os`.	fix	214	214	node:	end	7	29
+tests/rules/unicorn/prefer-node-protocol/cases.ts:8:23	unicorn/prefer-node-protocol	prefer-node-protocol	Prefer `node:child_process` over `child_process`.	fix	243	243	node:	end	8	38
+tests/rules/unicorn/prefer-node-protocol/cases.ts:11:39	unicorn/prefer-node-protocol	prefer-node-protocol	Prefer `node:util` over `util`.	fix	363	363	node:	end	11	45
+tests/rules/unicorn/prefer-node-protocol/cases.ts:12:24	unicorn/prefer-node-protocol	prefer-node-protocol	Prefer `node:crypto` over `crypto`.	fix	395	395	node:	end	12	32
+tests/rules/unicorn/prefer-node-protocol/cases.ts:13:20	unicorn/prefer-node-protocol	prefer-node-protocol	Prefer `node:zlib` over `zlib`.	fix	425	425	node:	end	13	26

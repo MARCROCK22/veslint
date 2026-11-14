@@ -1,0 +1,12 @@
+import { default as a } from 'a';
+import b, { default as c } from 'b';
+import { default as d, e } from 'd';
+import type { default as F } from 'f';
+import { type default as G } from 'g';
+import { default as h /* c */ } from 'h';
+const local = 1;
+const other = 2;
+export { local as default };
+export { other as default } from 'x';
+export type { F, G };
+export { a, b, c, d, e, h };

@@ -1,0 +1,6 @@
+tests/rules/unicorn/no-named-default/cases.ts:1:10	unicorn/no-named-default	no-named-default	Prefer using the default import over named import.
+tests/rules/unicorn/no-named-default/cases.ts:2:13	unicorn/no-named-default	no-named-default	Prefer using the default import over named import.
+tests/rules/unicorn/no-named-default/cases.ts:3:10	unicorn/no-named-default	no-named-default	Prefer using the default import over named import.
+tests/rules/unicorn/no-named-default/cases.ts:6:10	unicorn/no-named-default	no-named-default	Prefer using the default import over named import.
+tests/rules/unicorn/no-named-default/cases.ts:9:10	unicorn/no-named-default	no-named-default	Prefer using the default export over named export.
+tests/rules/unicorn/no-named-default/single/cases.ts:3:10	unicorn/no-named-default	no-named-default	Prefer using the default export over named export.

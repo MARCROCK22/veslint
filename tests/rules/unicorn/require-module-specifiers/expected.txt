@@ -1,0 +1,9 @@
+tests/rules/unicorn/require-module-specifiers/cases.ts:1:8	unicorn/require-module-specifiers	error	import statement without specifiers is not allowed.
+tests/rules/unicorn/require-module-specifiers/cases.ts:2:11	unicorn/require-module-specifiers	error	import statement without specifiers is not allowed.
+tests/rules/unicorn/require-module-specifiers/cases.ts:3:13	unicorn/require-module-specifiers	error	import statement without specifiers is not allowed.
+tests/rules/unicorn/require-module-specifiers/cases.ts:4:11	unicorn/require-module-specifiers	error	import statement without specifiers is not allowed.
+tests/rules/unicorn/require-module-specifiers/cases.ts:5:8	unicorn/require-module-specifiers	error	import statement without specifiers is not allowed.
+tests/rules/unicorn/require-module-specifiers/cases.ts:8:8	unicorn/require-module-specifiers	error	export statement without specifiers is not allowed.
+tests/rules/unicorn/require-module-specifiers/cases.ts:9:13	unicorn/require-module-specifiers	error	export statement without specifiers is not allowed.
+tests/rules/unicorn/require-module-specifiers/cases.ts:10:8	unicorn/require-module-specifiers	error	export statement without specifiers is not allowed.
+tests/rules/unicorn/require-module-specifiers/cases.ts:12:8	unicorn/require-module-specifiers	error	export statement without specifiers is not allowed.

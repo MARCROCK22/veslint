@@ -1,0 +1,12 @@
+import a from 'a' with {};
+import b from 'b' with { type: 'json' };
+import c from 'c' with {/* c */};
+export * from 'd' with {};
+export { e } from 'e' with {};
+export type { F } from 'f' with {};
+const g = await import('g', {});
+const h = await import('h', { with: {} });
+const i = await import('i', { with: {}, other: 1 });
+const j = await import('j', { with: { type: 'json' } });
+const k = await import('k');
+export { a, b, c, g, h, i, j, k };

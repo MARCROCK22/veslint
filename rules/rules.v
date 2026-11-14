@@ -354,6 +354,13 @@ pub const unicorn_no_unnecessary_await = 'unicorn/no-unnecessary-await'
 pub const unicorn_no_thenable = 'unicorn/no-thenable'
 pub const unicorn_no_single_promise_in_promise_methods = 'unicorn/no-single-promise-in-promise-methods'
 pub const unicorn_no_useless_promise_resolve_reject = 'unicorn/no-useless-promise-resolve-reject'
+pub const unicorn_prefer_node_protocol = 'unicorn/prefer-node-protocol'
+pub const unicorn_no_process_exit = 'unicorn/no-process-exit'
+pub const unicorn_no_named_default = 'unicorn/no-named-default'
+pub const unicorn_require_module_attributes = 'unicorn/require-module-attributes'
+pub const unicorn_require_module_specifiers = 'unicorn/require-module-specifiers'
+pub const unicorn_prefer_json_parse_buffer = 'unicorn/prefer-json-parse-buffer'
+pub const unicorn_no_anonymous_default_export = 'unicorn/no-anonymous-default-export'
 pub const names = [no_floating_promises, await_thenable, require_await, return_await,
 	no_misused_promises, no_unsafe_call, no_unsafe_member_access, no_unsafe_return,
 	no_unsafe_assignment, no_unsafe_argument, restrict_template_expressions,
@@ -446,7 +453,10 @@ pub const names = [no_floating_promises, await_thenable, require_await, return_a
 	unicorn_prefer_blob_reading_methods, unicorn_prefer_response_static_json,
 	unicorn_no_await_expression_member, unicorn_prefer_spread, unicorn_no_await_in_promise_methods,
 	unicorn_no_invalid_fetch_options, unicorn_no_unnecessary_await, unicorn_no_thenable,
-	unicorn_no_single_promise_in_promise_methods, unicorn_no_useless_promise_resolve_reject]
+	unicorn_no_single_promise_in_promise_methods, unicorn_no_useless_promise_resolve_reject,
+	unicorn_prefer_node_protocol, unicorn_no_process_exit, unicorn_no_named_default,
+	unicorn_require_module_attributes, unicorn_require_module_specifiers,
+	unicorn_prefer_json_parse_buffer, unicorn_no_anonymous_default_export]
 
 // untyped_rules are the ported rules that need no types (`meta.docs.requiresTypeChecking` is false
 // in typescript-eslint; the eslint-plugin-unicorn rules that read the types when the parser has a
@@ -513,7 +523,10 @@ pub const untyped_rules = [adjacent_overload_signatures, array_type, class_liter
 	unicorn_prefer_blob_reading_methods, unicorn_prefer_response_static_json,
 	unicorn_no_await_expression_member, unicorn_no_await_in_promise_methods,
 	unicorn_no_invalid_fetch_options, unicorn_no_unnecessary_await, unicorn_no_thenable,
-	unicorn_no_single_promise_in_promise_methods, unicorn_no_useless_promise_resolve_reject]
+	unicorn_no_single_promise_in_promise_methods, unicorn_no_useless_promise_resolve_reject,
+	unicorn_prefer_node_protocol, unicorn_no_process_exit, unicorn_no_named_default,
+	unicorn_require_module_attributes, unicorn_require_module_specifiers,
+	unicorn_prefer_json_parse_buffer, unicorn_no_anonymous_default_export]
 
 // needs_types tells whether a rule asks tsgo for the types of the program.
 pub fn needs_types(rule string) bool {
@@ -864,6 +877,13 @@ pub const default_options = {
 	unicorn_no_thenable:                             '[]'
 	unicorn_no_single_promise_in_promise_methods:    '[]'
 	unicorn_no_useless_promise_resolve_reject:       '[]'
+	unicorn_prefer_node_protocol:                    '[]'
+	unicorn_no_process_exit:                         '[]'
+	unicorn_no_named_default:                        '[]'
+	unicorn_require_module_attributes:               '[]'
+	unicorn_require_module_specifiers:               '[]'
+	unicorn_prefer_json_parse_buffer:                '[]'
+	unicorn_no_anonymous_default_export:             '[]'
 }
 
 // Finding is a problem a rule found at a node.
@@ -1338,6 +1358,13 @@ pub fn message(rule string, finding Finding) string {
 		unicorn_no_thenable { unt_messages }
 		unicorn_no_single_promise_in_promise_methods { unspipm_messages }
 		unicorn_no_useless_promise_resolve_reject { unuprr_messages }
+		unicorn_prefer_node_protocol { upnpr_messages }
+		unicorn_no_process_exit { unpe_messages }
+		unicorn_no_named_default { unnd_messages }
+		unicorn_require_module_attributes { urma_messages }
+		unicorn_require_module_specifiers { urms_messages }
+		unicorn_prefer_json_parse_buffer { upjpb_messages }
+		unicorn_no_anonymous_default_export { unade_messages }
 		else { map[string]string{} }
 	}
 	return interpolate(messages[finding.message_id] or { finding.message_id }, finding.data)
@@ -2513,6 +2540,27 @@ fn (mut c Checker) lint_rule(rule string, root C.TSNode, abs_path string, mut st
 		}
 		unicorn_no_useless_promise_resolve_reject {
 			return c.lint_unicorn_no_useless_promise_resolve_reject(root, abs_path, mut stats)!
+		}
+		unicorn_prefer_node_protocol {
+			return c.lint_unicorn_prefer_node_protocol(root, abs_path, mut stats)!
+		}
+		unicorn_no_process_exit {
+			return c.lint_unicorn_no_process_exit(root, abs_path, mut stats)!
+		}
+		unicorn_no_named_default {
+			return c.lint_unicorn_no_named_default(root, abs_path, mut stats)!
+		}
+		unicorn_require_module_attributes {
+			return c.lint_unicorn_require_module_attributes(root, abs_path, mut stats)!
+		}
+		unicorn_require_module_specifiers {
+			return c.lint_unicorn_require_module_specifiers(root, abs_path, mut stats)!
+		}
+		unicorn_prefer_json_parse_buffer {
+			return c.lint_unicorn_prefer_json_parse_buffer(root, abs_path, mut stats)!
+		}
+		unicorn_no_anonymous_default_export {
+			return c.lint_unicorn_no_anonymous_default_export(root, abs_path, mut stats)!
 		}
 		else { return error('unknown rule: ${rule}') }
 	}

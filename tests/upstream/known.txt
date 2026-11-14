@@ -1126,3 +1126,131 @@ veslint	no-thenable/i63	typescript-estree has two nodes for `then` in `export {t
 # The same for no-single-promise-in-promise-methods: `await(Promise).all(…)` at the top of a script is a call of an
 # `await` function for TypeScript.
 veslint	no-single-promise-in-promise-methods/r0/i2	without a program typescript-estree reads this top-level `await` of a script as an await expression
+# no-anonymous-default-export names the function or class after the file (its name in camelCase): the cases of its test
+# lint files of other names (`foo.js`, `/path/to/foo-bar.js`…) or check the error a missing file gives, where the fixtures
+# lint `file.ts` in both tools. (no-anonymous-default-export/r0/i47 is also a syntax error for veslint: tree-sitter does
+# not read `export` and `default` on separate lines.)
+eslint	no-anonymous-default-export/r0/i10	the test lints a file of another name, the fixtures `file.ts`
+veslint	no-anonymous-default-export/r0/i10	the test lints a file of another name, the fixtures `file.ts`
+eslint	no-anonymous-default-export/r0/i11	the test lints a file of another name, the fixtures `file.ts`
+veslint	no-anonymous-default-export/r0/i11	the test lints a file of another name, the fixtures `file.ts`
+eslint	no-anonymous-default-export/r0/i12	the test lints a file of another name, the fixtures `file.ts`
+veslint	no-anonymous-default-export/r0/i12	the test lints a file of another name, the fixtures `file.ts`
+eslint	no-anonymous-default-export/r0/i13	the test lints a file of another name, the fixtures `file.ts`
+veslint	no-anonymous-default-export/r0/i13	the test lints a file of another name, the fixtures `file.ts`
+eslint	no-anonymous-default-export/r0/i14	the test lints a file of another name, the fixtures `file.ts`
+veslint	no-anonymous-default-export/r0/i14	the test lints a file of another name, the fixtures `file.ts`
+eslint	no-anonymous-default-export/r0/i15	the test lints a file of another name, the fixtures `file.ts`
+veslint	no-anonymous-default-export/r0/i15	the test lints a file of another name, the fixtures `file.ts`
+eslint	no-anonymous-default-export/r0/i16	the test lints a file of another name, the fixtures `file.ts`
+veslint	no-anonymous-default-export/r0/i16	the test lints a file of another name, the fixtures `file.ts`
+eslint	no-anonymous-default-export/r0/i17	the test lints a file of another name, the fixtures `file.ts`
+veslint	no-anonymous-default-export/r0/i17	the test lints a file of another name, the fixtures `file.ts`
+eslint	no-anonymous-default-export/r0/i18	the test lints a file of another name, the fixtures `file.ts`
+veslint	no-anonymous-default-export/r0/i18	the test lints a file of another name, the fixtures `file.ts`
+eslint	no-anonymous-default-export/r0/i19	the test lints a file of another name, the fixtures `file.ts`
+veslint	no-anonymous-default-export/r0/i19	the test lints a file of another name, the fixtures `file.ts`
+eslint	no-anonymous-default-export/r0/i20	the test lints a file of another name, the fixtures `file.ts`
+veslint	no-anonymous-default-export/r0/i20	the test lints a file of another name, the fixtures `file.ts`
+eslint	no-anonymous-default-export/r0/i21	the test lints a file of another name, the fixtures `file.ts`
+veslint	no-anonymous-default-export/r0/i21	the test lints a file of another name, the fixtures `file.ts`
+eslint	no-anonymous-default-export/r0/i22	the test lints a file of another name, the fixtures `file.ts`
+veslint	no-anonymous-default-export/r0/i22	the test lints a file of another name, the fixtures `file.ts`
+eslint	no-anonymous-default-export/r0/i23	the test lints a file of another name, the fixtures `file.ts`
+veslint	no-anonymous-default-export/r0/i23	the test lints a file of another name, the fixtures `file.ts`
+eslint	no-anonymous-default-export/r0/i24	the test lints a file of another name, the fixtures `file.ts`
+veslint	no-anonymous-default-export/r0/i24	the test lints a file of another name, the fixtures `file.ts`
+eslint	no-anonymous-default-export/r0/i25	the test lints a file of another name, the fixtures `file.ts`
+veslint	no-anonymous-default-export/r0/i25	the test lints a file of another name, the fixtures `file.ts`
+eslint	no-anonymous-default-export/r0/i26	the test lints a file of another name, the fixtures `file.ts`
+veslint	no-anonymous-default-export/r0/i26	the test lints a file of another name, the fixtures `file.ts`
+eslint	no-anonymous-default-export/r0/i27	the test lints a file of another name, the fixtures `file.ts`
+veslint	no-anonymous-default-export/r0/i27	the test lints a file of another name, the fixtures `file.ts`
+eslint	no-anonymous-default-export/r0/i28	the test lints a file of another name, the fixtures `file.ts`
+veslint	no-anonymous-default-export/r0/i28	the test lints a file of another name, the fixtures `file.ts`
+eslint	no-anonymous-default-export/r0/i29	the test lints a file of another name, the fixtures `file.ts`
+veslint	no-anonymous-default-export/r0/i29	the test lints a file of another name, the fixtures `file.ts`
+eslint	no-anonymous-default-export/r0/i30	the test lints a file of another name, the fixtures `file.ts`
+veslint	no-anonymous-default-export/r0/i30	the test lints a file of another name, the fixtures `file.ts`
+eslint	no-anonymous-default-export/r0/i31	the test lints a file of another name, the fixtures `file.ts`
+veslint	no-anonymous-default-export/r0/i31	the test lints a file of another name, the fixtures `file.ts`
+eslint	no-anonymous-default-export/r0/i32	the test lints a file of another name, the fixtures `file.ts`
+veslint	no-anonymous-default-export/r0/i32	the test lints a file of another name, the fixtures `file.ts`
+eslint	no-anonymous-default-export/r0/i33	the test lints a file of another name, the fixtures `file.ts`
+veslint	no-anonymous-default-export/r0/i33	the test lints a file of another name, the fixtures `file.ts`
+eslint	no-anonymous-default-export/r0/i34	the test lints a file of another name, the fixtures `file.ts`
+veslint	no-anonymous-default-export/r0/i34	the test lints a file of another name, the fixtures `file.ts`
+eslint	no-anonymous-default-export/r0/i35	the test lints a file of another name, the fixtures `file.ts`
+veslint	no-anonymous-default-export/r0/i35	the test lints a file of another name, the fixtures `file.ts`
+eslint	no-anonymous-default-export/r0/i36	the test lints a file of another name, the fixtures `file.ts`
+veslint	no-anonymous-default-export/r0/i36	the test lints a file of another name, the fixtures `file.ts`
+eslint	no-anonymous-default-export/r0/i37	the test lints a file of another name, the fixtures `file.ts`
+veslint	no-anonymous-default-export/r0/i37	the test lints a file of another name, the fixtures `file.ts`
+eslint	no-anonymous-default-export/r0/i38	the test lints a file of another name, the fixtures `file.ts`
+veslint	no-anonymous-default-export/r0/i38	the test lints a file of another name, the fixtures `file.ts`
+eslint	no-anonymous-default-export/r0/i39	the test lints a file of another name, the fixtures `file.ts`
+veslint	no-anonymous-default-export/r0/i39	the test lints a file of another name, the fixtures `file.ts`
+eslint	no-anonymous-default-export/r0/i40	the test lints a file of another name, the fixtures `file.ts`
+veslint	no-anonymous-default-export/r0/i40	the test lints a file of another name, the fixtures `file.ts`
+eslint	no-anonymous-default-export/r0/i41	the test lints a file of another name, the fixtures `file.ts`
+veslint	no-anonymous-default-export/r0/i41	the test lints a file of another name, the fixtures `file.ts`
+eslint	no-anonymous-default-export/r0/i42	the test lints a file of another name, the fixtures `file.ts`
+veslint	no-anonymous-default-export/r0/i42	the test lints a file of another name, the fixtures `file.ts`
+eslint	no-anonymous-default-export/r0/i43	the test lints a file of another name, the fixtures `file.ts`
+veslint	no-anonymous-default-export/r0/i43	the test lints a file of another name, the fixtures `file.ts`
+eslint	no-anonymous-default-export/r0/i44	the test lints a file of another name, the fixtures `file.ts`
+veslint	no-anonymous-default-export/r0/i44	the test lints a file of another name, the fixtures `file.ts`
+eslint	no-anonymous-default-export/r0/i45	the test lints a file of another name, the fixtures `file.ts`
+veslint	no-anonymous-default-export/r0/i45	the test lints a file of another name, the fixtures `file.ts`
+eslint	no-anonymous-default-export/r0/i46	the test lints a file of another name, the fixtures `file.ts`
+veslint	no-anonymous-default-export/r0/i46	the test lints a file of another name, the fixtures `file.ts`
+eslint	no-anonymous-default-export/r0/i47	the test lints a file of another name, the fixtures `file.ts`
+veslint	no-anonymous-default-export/r0/i47	the test lints a file of another name, the fixtures `file.ts`
+eslint	no-anonymous-default-export/r0/i48	the test lints a file of another name, the fixtures `file.ts`
+veslint	no-anonymous-default-export/r0/i48	the test lints a file of another name, the fixtures `file.ts`
+eslint	no-anonymous-default-export/r0/i49	the test lints a file of another name, the fixtures `file.ts`
+veslint	no-anonymous-default-export/r0/i49	the test lints a file of another name, the fixtures `file.ts`
+eslint	no-anonymous-default-export/r0/i50	the test lints a file of another name, the fixtures `file.ts`
+veslint	no-anonymous-default-export/r0/i50	the test lints a file of another name, the fixtures `file.ts`
+eslint	no-anonymous-default-export/r0/i51	the test lints a file of another name, the fixtures `file.ts`
+veslint	no-anonymous-default-export/r0/i51	the test lints a file of another name, the fixtures `file.ts`
+eslint	no-anonymous-default-export/r0/i52	the test lints a file of another name, the fixtures `file.ts`
+veslint	no-anonymous-default-export/r0/i52	the test lints a file of another name, the fixtures `file.ts`
+eslint	no-anonymous-default-export/r0/i53	the test lints a file of another name, the fixtures `file.ts`
+veslint	no-anonymous-default-export/r0/i53	the test lints a file of another name, the fixtures `file.ts`
+eslint	no-anonymous-default-export/r0/i54	the test lints a file of another name, the fixtures `file.ts`
+veslint	no-anonymous-default-export/r0/i54	the test lints a file of another name, the fixtures `file.ts`
+eslint	no-anonymous-default-export/r0/i55	the test lints a file of another name, the fixtures `file.ts`
+veslint	no-anonymous-default-export/r0/i55	the test lints a file of another name, the fixtures `file.ts`
+eslint	no-anonymous-default-export/r0/i56	the test lints a file of another name, the fixtures `file.ts`
+veslint	no-anonymous-default-export/r0/i56	the test lints a file of another name, the fixtures `file.ts`
+eslint	no-anonymous-default-export/r0/i57	the test lints a file of another name, the fixtures `file.ts`
+veslint	no-anonymous-default-export/r0/i57	the test lints a file of another name, the fixtures `file.ts`
+eslint	no-anonymous-default-export/r0/i58	the test lints a file of another name, the fixtures `file.ts`
+veslint	no-anonymous-default-export/r0/i58	the test lints a file of another name, the fixtures `file.ts`
+eslint	no-anonymous-default-export/r0/i7	the test lints a file of another name, the fixtures `file.ts`
+veslint	no-anonymous-default-export/r0/i7	the test lints a file of another name, the fixtures `file.ts`
+eslint	no-anonymous-default-export/r0/i8	the test lints a file of another name, the fixtures `file.ts`
+veslint	no-anonymous-default-export/r0/i8	the test lints a file of another name, the fixtures `file.ts`
+eslint	no-anonymous-default-export/r0/i9	the test lints a file of another name, the fixtures `file.ts`
+veslint	no-anonymous-default-export/r0/i9	the test lints a file of another name, the fixtures `file.ts`
+eslint	no-anonymous-default-export/r1/i0	the test lints a file of another name, the fixtures `file.ts`
+veslint	no-anonymous-default-export/r1/i0	the test lints a file of another name, the fixtures `file.ts`
+eslint	no-anonymous-default-export/r1/i1	the test lints a file of another name, the fixtures `file.ts`
+veslint	no-anonymous-default-export/r1/i1	the test lints a file of another name, the fixtures `file.ts`
+eslint	no-anonymous-default-export/r1/i2	the test lints a file of another name, the fixtures `file.ts`
+veslint	no-anonymous-default-export/r1/i2	the test lints a file of another name, the fixtures `file.ts`
+eslint	no-anonymous-default-export/r2/i0	the test lints a file of another name, the fixtures `file.ts`
+veslint	no-anonymous-default-export/r2/i0	the test lints a file of another name, the fixtures `file.ts`
+eslint	no-anonymous-default-export/r3/i0	the test lints a file of another name, the fixtures `file.ts`
+veslint	no-anonymous-default-export/r3/i0	the test lints a file of another name, the fixtures `file.ts`
+# require-module-specifiers leaves a bare `export {}` of a declaration file alone: these cases lint `index.d.ts`
+# (`.d.mts`, `.d.cts`), where the fixtures lint `file.ts` in both tools.
+eslint	require-module-specifiers/r1/v20	the test lints a declaration file, the fixtures `file.ts`
+veslint	require-module-specifiers/r1/v20	the test lints a declaration file, the fixtures `file.ts`
+eslint	require-module-specifiers/r1/v21	the test lints a declaration file, the fixtures `file.ts`
+veslint	require-module-specifiers/r1/v21	the test lints a declaration file, the fixtures `file.ts`
+eslint	require-module-specifiers/r1/v22	the test lints a declaration file, the fixtures `file.ts`
+veslint	require-module-specifiers/r1/v22	the test lints a declaration file, the fixtures `file.ts`
+# tree-sitter reads `declare export type {} from "foo";` (TypeScript rejects `declare` there) as a syntax error.
+veslint	require-module-specifiers/r1/i12	tree-sitter reads `declare export` as a syntax error

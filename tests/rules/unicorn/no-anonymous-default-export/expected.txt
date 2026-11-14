@@ -1,0 +1,6 @@
+tests/rules/unicorn/no-anonymous-default-export/async/cases.ts:1:16	unicorn/no-anonymous-default-export	no-anonymous-default-export/error	The async generator function should be named.
+tests/rules/unicorn/no-anonymous-default-export/cases.ts:1:19	unicorn/no-anonymous-default-export	no-anonymous-default-export/error	The arrow function should be named.
+tests/rules/unicorn/no-anonymous-default-export/class/cases.ts:1:16	unicorn/no-anonymous-default-export	no-anonymous-default-export/error	The class should be named.
+tests/rules/unicorn/no-anonymous-default-export/decorated/cases.ts:3:16	unicorn/no-anonymous-default-export	no-anonymous-default-export/error	The class should be named.
+tests/rules/unicorn/no-anonymous-default-export/function/cases.ts:1:16	unicorn/no-anonymous-default-export	no-anonymous-default-export/error	The function should be named.
+tests/rules/unicorn/no-anonymous-default-export/module/cases.ts:2:21	unicorn/no-anonymous-default-export	no-anonymous-default-export/error	The arrow function should be named.

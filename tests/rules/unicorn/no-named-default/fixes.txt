@@ -1,0 +1,6 @@
+tests/rules/unicorn/no-named-default/cases.ts:1:10	unicorn/no-named-default	no-named-default	Prefer using the default import over named import.	fix	6	24	 a 	end	1	22
+tests/rules/unicorn/no-named-default/cases.ts:2:13	unicorn/no-named-default	no-named-default	Prefer using the default import over named import.	fix	34	61	import c from 'b';\nimport b 	end	2	25
+tests/rules/unicorn/no-named-default/cases.ts:3:10	unicorn/no-named-default	no-named-default	Prefer using the default import over named import.	fix	77	93	 d, { 	end	3	22
+tests/rules/unicorn/no-named-default/cases.ts:6:10	unicorn/no-named-default	no-named-default	Prefer using the default import over named import.	end	6	22
+tests/rules/unicorn/no-named-default/cases.ts:9:10	unicorn/no-named-default	no-named-default	Prefer using the default export over named export.	fix	262	290	export default local;\n	end	9	26
+tests/rules/unicorn/no-named-default/single/cases.ts:3:10	unicorn/no-named-default	no-named-default	Prefer using the default export over named export.	fix	34	60	export default value;\nexport { 	end	3	26

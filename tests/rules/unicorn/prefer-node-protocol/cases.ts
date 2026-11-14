@@ -1,0 +1,16 @@
+import fs from 'fs';
+import { join } from 'path';
+import * as url from 'node:url';
+import type { Stats } from 'fs/promises';
+export { readFile } from 'fs/promises';
+export * from 'events';
+const os = await import('os');
+const child = require('child_process');
+const test = require('test');
+const lodash = require('lodash');
+const util = process.getBuiltinModule('util');
+type T = typeof import('crypto');
+const k1 = require(`zlib`);
+const k2 = require?.('dns');
+export { fs, join, url, os, child, test, lodash, util, k1, k2 };
+export type { Stats, T };
