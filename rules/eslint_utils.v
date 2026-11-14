@@ -1169,3 +1169,49 @@ fn es_function_position(f C.TSNode) Ident {
 	}
 	return position_of(f)
 }
+
+// es_is_argument_of_global_method_call ports isArgumentOfGlobalMethodCall of ESLint 10.15.0: the
+// node is the argument at `index` of a call of `object.method`, where `object` references the
+// global variable.
+fn (mut c Checker) es_is_argument_of_global_method_call(root C.TSNode, n C.TSNode, object string, method string, index int) bool {
+	arguments := cti_estree_parent(n) or { return false }
+	if node_kind(arguments) != 'arguments' {
+		return false
+	}
+	call := node_parent(arguments) or { return false }
+	if node_kind(call) != 'call_expression' {
+		return false
+	}
+	list := named_children(arguments).filter(node_kind(it) != 'comment')
+	if index >= list.len || node_key(unwrap_parens(list[index])) != node_key(n) {
+		return false
+	}
+	callee := node_field(call, 'function') or { return false }
+	if !c.es_is_specific_member_access(callee, object, method) {
+		return false
+	}
+	callee_object := node_field(unwrap_parens(callee), 'object') or { return false }
+	return c.es_is_global_reference(root, callee_object)
+}
+
+// es_is_property_descriptor ports isPropertyDescriptor of ESLint 10.15.0: the object (an
+// ObjectExpression) is the descriptor of `Object.defineProperty` or `Reflect.defineProperty`, or
+// the value of a property of the descriptors of `Object.create` or `Object.defineProperties`.
+fn (mut c Checker) es_is_property_descriptor(root C.TSNode, n C.TSNode) bool {
+	if c.es_is_argument_of_global_method_call(root, n, 'Object', 'defineProperty', 2)
+		|| c.es_is_argument_of_global_method_call(root, n, 'Reflect', 'defineProperty', 2) {
+		return true
+	}
+	parent := cti_estree_parent(n) or { return false }
+	if node_kind(parent) != 'pair' {
+		return false
+	}
+	value := node_field(parent, 'value') or { return false }
+	if node_key(unwrap_parens(value)) != node_key(n) {
+		return false
+	}
+	grandparent := node_parent(parent) or { return false }
+	return node_kind(grandparent) == 'object'
+		&& (c.es_is_argument_of_global_method_call(root, grandparent, 'Object', 'create', 1)
+		|| c.es_is_argument_of_global_method_call(root, grandparent, 'Object', 'defineProperties', 1))
+}

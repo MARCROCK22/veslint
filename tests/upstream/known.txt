@@ -235,6 +235,8 @@ eslint	no-object-constructor/v5	typescript-eslint's lib declares the global, whi
 veslint	no-object-constructor/v5	typescript-eslint's lib declares the global, which `off` or the ecmaVersion does not remove
 eslint	use-isnan/v115	typescript-eslint's lib declares the global, which `off` or the ecmaVersion does not remove
 veslint	use-isnan/v115	typescript-eslint's lib declares the global, which `off` or the ecmaVersion does not remove
+eslint	func-name-matching/i44	typescript-eslint's lib declares the global, which `off` or the ecmaVersion does not remove
+veslint	func-name-matching/i44	typescript-eslint's lib declares the global, which `off` or the ecmaVersion does not remove
 # A global of the lib that `off` (in a comment or in `globals`) or the ecmaVersion leaves out: ESLint
 # does not resolve its references there, veslint resolves them to the lib's variable.
 veslint	no-obj-calls/v32	veslint resolves the global to TypeScript's lib, where ESLint leaves the reference unresolved

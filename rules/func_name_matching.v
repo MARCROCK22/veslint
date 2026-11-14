@@ -3,9 +3,9 @@ module rules
 import json2
 import jsregexp
 import time
-import treesitter { node_field, node_kind, node_parent, position_of }
+import treesitter { named_children, node_field, node_kind, node_parent, position_of }
 
-// Port of the `func-name-matching` rule of ESLint 10.6.0, with its options.
+// Port of the `func-name-matching` rule of ESLint 10.15.0, with its options.
 
 const fnm_messages = {
 	'matchProperty':    'Function name `{{funcName}}` should match property name `{{name}}`.'
@@ -186,60 +186,49 @@ fn (c &Checker) fnm_is_module_exports(n C.TSNode) bool {
 fn (mut c Checker) fnm_property(root C.TSNode, o FnmOptions, node C.TSNode, mut findings []Finding) {
 	function := fnm_function(node_field(node, 'value') or { return }) or { return }
 	func_name := c.text(es_function_id(function) or { return })
-	key, computed := es_property_key(node) or { return }
-	if node_kind(key) == 'property_identifier' && !computed {
-		property_name := c.text(key)
-		object := node_parent(node) or { return }
-		if o.property_descriptor && property_name == 'value' && node_kind(object) == 'object' {
-			// The object as an argument of a call, and the call around the property whose value
-			// the object is.
-			call := fnm_call_of_argument(object) or { node }
-			if node_kind(call) == 'call_expression' && (c.fnm_is_property_call(call, 'Object', 'defineProperty')
-				|| c.fnm_is_property_call(call, 'Reflect', 'defineProperty')) {
-				args := call_arguments(call) or { return }
-				list := args.filter(node_kind(it) != 'comment')
-				if list.len > 1 {
-					property := unwrap_parens(list[1])
-					if node_kind(property) == 'string' {
-						value := c.literal_name(property) or { return }
-						if fnm_should_warn(o, value, func_name) {
-							c.fnm_report(o, node, value, func_name, true, mut findings)
-						}
+	mut property_name := c.fnm_key_name(node)
+	object := node_parent(node) or { return }
+	if o.property_descriptor && (property_name or { '' }) == 'value' && node_kind(object) == 'object'
+		&& c.es_is_property_descriptor(root, object) {
+		descriptor_parent := cti_estree_parent(object) or { return }
+		if node_kind(descriptor_parent) == 'arguments' {
+			// Object.defineProperty(obj, "name", descriptor) and Reflect.defineProperty(...).
+			list := named_children(descriptor_parent).filter(node_kind(it) != 'comment')
+			key := unwrap_parens(list[1])
+			property_name = none
+			if node_kind(key) == 'string' {
+				if value := c.literal_name(key) {
+					if fnm_is_identifier(value, c.ecma_version < 2015) {
+						property_name = value
 					}
 				}
-				return
 			}
-			pair := cti_estree_parent(object) or { node }
-			outer_call := if node_kind(pair) == 'pair' {
-				fnm_call_of_argument(node_parent(pair) or { node }) or { node }
-			} else {
-				node
-			}
-			if node_kind(outer_call) == 'call_expression' && (c.fnm_is_property_call(outer_call, 'Object', 'defineProperties')
-				|| c.fnm_is_property_call(outer_call, 'Object', 'create')) {
-				outer_key, outer_computed := es_property_key(pair) or { return }
-				name := if node_kind(outer_key) == 'property_identifier' {
-					c.text(outer_key)
-				} else {
-					'undefined'
-				}
-				if !outer_computed && fnm_should_warn(o, name, func_name) {
-					c.fnm_report(o, node, name, func_name, true, mut findings)
-				}
-				return
-			}
+		} else {
+			// Object.defineProperties(obj, { name: descriptor }) and Object.create(proto, {...}).
+			property_name = c.fnm_key_name(descriptor_parent)
 		}
-		if fnm_should_warn(o, property_name, func_name) {
-			c.fnm_report(o, node, property_name, func_name, true, mut findings)
+	}
+	if name := property_name {
+		if fnm_should_warn(o, name, func_name) {
+			c.fnm_report(o, node, name, func_name, true, mut findings)
 		}
-		return
+	}
+}
+
+// fnm_key_name ports getKeyName: the name of a key that is an identifier (not computed), or the
+// value of a string key that is an identifier.
+fn (c &Checker) fnm_key_name(node C.TSNode) ?string {
+	key, computed := es_property_key(node)?
+	if node_kind(key) == 'property_identifier' && !computed {
+		return c.text(key)
 	}
 	if node_kind(key) == 'string' {
-		value := c.literal_name(key) or { return }
-		if fnm_is_identifier(value, c.ecma_version < 2015) && fnm_should_warn(o, value, func_name) {
-			c.fnm_report(o, node, value, func_name, true, mut findings)
+		value := c.literal_name(key)?
+		if fnm_is_identifier(value, c.ecma_version < 2015) {
+			return value
 		}
 	}
+	return none
 }
 
 // fnm_call_of_argument is the CallExpression the node is an argument of.
