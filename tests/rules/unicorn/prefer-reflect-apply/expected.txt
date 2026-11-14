@@ -1,0 +1,16 @@
+tests/rules/unicorn/prefer-reflect-apply/cases.ts:5:1	unicorn/prefer-reflect-apply	prefer-reflect-apply	Prefer `Reflect.apply()` over `Function#apply()`.
+tests/rules/unicorn/prefer-reflect-apply/cases.ts:6:1	unicorn/prefer-reflect-apply	prefer-reflect-apply	Prefer `Reflect.apply()` over `Function#apply()`.
+tests/rules/unicorn/prefer-reflect-apply/cases.ts:7:1	unicorn/prefer-reflect-apply	prefer-reflect-apply	Prefer `Reflect.apply()` over `Function#apply()`.
+tests/rules/unicorn/prefer-reflect-apply/cases.ts:8:1	unicorn/prefer-reflect-apply	prefer-reflect-apply	Prefer `Reflect.apply()` over `Function#apply()`.
+tests/rules/unicorn/prefer-reflect-apply/cases.ts:9:1	unicorn/prefer-reflect-apply	prefer-reflect-apply	Prefer `Reflect.apply()` over `Function#apply()`.
+tests/rules/unicorn/prefer-reflect-apply/cases.ts:10:1	unicorn/prefer-reflect-apply	prefer-reflect-apply	Prefer `Reflect.apply()` over `Function#apply()`.
+tests/rules/unicorn/prefer-reflect-apply/cases.ts:11:1	unicorn/prefer-reflect-apply	prefer-reflect-apply	Prefer `Reflect.apply()` over `Function#apply()`.
+tests/rules/unicorn/prefer-reflect-apply/cases.ts:12:1	unicorn/prefer-reflect-apply	prefer-reflect-apply	Prefer `Reflect.apply()` over `Function#apply()`.
+tests/rules/unicorn/prefer-reflect-apply/cases.ts:13:1	unicorn/prefer-reflect-apply	prefer-reflect-apply	Prefer `Reflect.apply()` over `Function#apply()`.
+tests/rules/unicorn/prefer-reflect-apply/cases.ts:14:1	unicorn/prefer-reflect-apply	prefer-reflect-apply	Prefer `Reflect.apply()` over `Function#apply()`.
+tests/rules/unicorn/prefer-reflect-apply/cases.ts:15:1	unicorn/prefer-reflect-apply	prefer-reflect-apply	Prefer `Reflect.apply()` over `Function#apply()`.
+tests/rules/unicorn/prefer-reflect-apply/cases.ts:16:1	unicorn/prefer-reflect-apply	prefer-reflect-apply	Prefer `Reflect.apply()` over `Function#apply()`.
+tests/rules/unicorn/prefer-reflect-apply/cases.ts:17:1	unicorn/prefer-reflect-apply	prefer-reflect-apply	Prefer `Reflect.apply()` over `Function#apply()`.
+tests/rules/unicorn/prefer-reflect-apply/cases.ts:19:1	unicorn/prefer-reflect-apply	prefer-reflect-apply	Prefer `Reflect.apply()` over `Function#apply()`.
+tests/rules/unicorn/prefer-reflect-apply/cases.ts:21:9	unicorn/prefer-reflect-apply	prefer-reflect-apply	Prefer `Reflect.apply()` over `Function#apply()`.
+tests/rules/unicorn/prefer-reflect-apply/cases.ts:23:27	unicorn/prefer-reflect-apply	prefer-reflect-apply	Prefer `Reflect.apply()` over `Function#apply()`.

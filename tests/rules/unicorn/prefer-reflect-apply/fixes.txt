@@ -1,0 +1,16 @@
+tests/rules/unicorn/prefer-reflect-apply/cases.ts:5:1	unicorn/prefer-reflect-apply	prefer-reflect-apply	Prefer `Reflect.apply()` over `Function#apply()`.	fix	160	181	Reflect.apply(foo, null, [42])	end	5	22
+tests/rules/unicorn/prefer-reflect-apply/cases.ts:6:1	unicorn/prefer-reflect-apply	prefer-reflect-apply	Prefer `Reflect.apply()` over `Function#apply()`.	fix	183	204	Reflect.apply(foo, this, [42])	end	6	22
+tests/rules/unicorn/prefer-reflect-apply/cases.ts:7:1	unicorn/prefer-reflect-apply	prefer-reflect-apply	Prefer `Reflect.apply()` over `Function#apply()`.	fix	206	232	Reflect.apply(foo, null, arguments)	end	7	27
+tests/rules/unicorn/prefer-reflect-apply/cases.ts:8:1	unicorn/prefer-reflect-apply	prefer-reflect-apply	Prefer `Reflect.apply()` over `Function#apply()`.	fix	234	260	Reflect.apply(foo, null, [1, 2])	end	8	27
+tests/rules/unicorn/prefer-reflect-apply/cases.ts:9:1	unicorn/prefer-reflect-apply	prefer-reflect-apply	Prefer `Reflect.apply()` over `Function#apply()`.	fix	262	288	Reflect.apply(foo, null, [1, 2])	end	9	27
+tests/rules/unicorn/prefer-reflect-apply/cases.ts:10:1	unicorn/prefer-reflect-apply	prefer-reflect-apply	Prefer `Reflect.apply()` over `Function#apply()`.	fix	290	316	Reflect.apply(bar.method, null, [])	end	10	27
+tests/rules/unicorn/prefer-reflect-apply/cases.ts:11:1	unicorn/prefer-reflect-apply	prefer-reflect-apply	Prefer `Reflect.apply()` over `Function#apply()`.	fix	318	343	Reflect.apply((0, foo), null, [1])	end	11	26
+tests/rules/unicorn/prefer-reflect-apply/cases.ts:12:1	unicorn/prefer-reflect-apply	prefer-reflect-apply	Prefer `Reflect.apply()` over `Function#apply()`.	fix	345	391	Reflect.apply(foo, null, [42])	end	12	47
+tests/rules/unicorn/prefer-reflect-apply/cases.ts:13:1	unicorn/prefer-reflect-apply	prefer-reflect-apply	Prefer `Reflect.apply()` over `Function#apply()`.	fix	393	444	Reflect.apply(foo, this, arguments)	end	13	52
+tests/rules/unicorn/prefer-reflect-apply/cases.ts:14:1	unicorn/prefer-reflect-apply	prefer-reflect-apply	Prefer `Reflect.apply()` over `Function#apply()`.	fix	446	497	Reflect.apply((0, foo), null, [42])	end	14	52
+tests/rules/unicorn/prefer-reflect-apply/cases.ts:15:1	unicorn/prefer-reflect-apply	prefer-reflect-apply	Prefer `Reflect.apply()` over `Function#apply()`.	end	15	33
+tests/rules/unicorn/prefer-reflect-apply/cases.ts:16:1	unicorn/prefer-reflect-apply	prefer-reflect-apply	Prefer `Reflect.apply()` over `Function#apply()`.	end	16	33
+tests/rules/unicorn/prefer-reflect-apply/cases.ts:17:1	unicorn/prefer-reflect-apply	prefer-reflect-apply	Prefer `Reflect.apply()` over `Function#apply()`.	end	17	33
+tests/rules/unicorn/prefer-reflect-apply/cases.ts:19:1	unicorn/prefer-reflect-apply	prefer-reflect-apply	Prefer `Reflect.apply()` over `Function#apply()`.	fix	633	666	Reflect.apply((maybe?.method)!, null, [1])	end	19	34
+tests/rules/unicorn/prefer-reflect-apply/cases.ts:21:9	unicorn/prefer-reflect-apply	prefer-reflect-apply	Prefer `Reflect.apply()` over `Function#apply()`.	fix	708	734	Reflect.apply(foo, null, arguments)	end	21	35
+tests/rules/unicorn/prefer-reflect-apply/cases.ts:23:27	unicorn/prefer-reflect-apply	prefer-reflect-apply	Prefer `Reflect.apply()` over `Function#apply()`.	fix	764	784	Reflect.apply(foo, null, [1])	end	23	47
