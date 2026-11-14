@@ -250,6 +250,13 @@ function normalize(run, raw, kind, index, prefix, source) {
   // tsconfigRootDir, when it is not the fixtures directory itself.
   if (tsconfig && path.resolve(root) !== fixtures && !unicornDefault) out.root = fixtureRelative(path.resolve(root));
   if (isObject(projectService)) out.projectService = projectService;
+  // An `allowDefaultProject` that names file.ts itself names the renamed file.
+  if (unicornDefault && Array.isArray(projectService.allowDefaultProject)) {
+    out.projectService = {
+      ...projectService,
+      allowDefaultProject: projectService.allowDefaultProject.map(glob => glob === 'file.ts' ? 'default-project.ts' : glob),
+    };
+  }
   if (Object.keys(otherParserOptions).length) out.parserOptions = otherParserOptions;
   if (Object.keys(languageOptions).length) out.languageOptions = languageOptions;
   if (jsTests && test.filename) out.filename = test.filename;
@@ -495,7 +502,10 @@ function unicornSnapshotExpectation(run, test, source) {
       linterOptions: { reportUnusedDisableDirectives: 'off' },
     },
   ];
-  const filename = test.filename ?? (parserName === 'typescript' ? 'file.ts' : 'file.js');
+  // Without a file name the snapshot tester lints `<input>`, which typescript-estree parses as TSX
+  // when `ecmaFeatures.jsx` says so: react.tsx, as the case is linted.
+  const tsx = parserName === 'typescript' && languageOptions.parserOptions?.ecmaFeatures?.jsx;
+  const filename = test.filename ?? (tsx ? 'react.tsx' : parserName === 'typescript' ? 'file.ts' : 'file.js');
   const messages = snapshotLinter.verify(test.code, config, filename);
   const fatal = messages.find(m => m.fatal);
   if (fatal) throw new Error(`unicorn/${name}: a snapshot case does not parse: ${fatal.message}\n${test.code}`);

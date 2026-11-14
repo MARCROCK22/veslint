@@ -1359,3 +1359,9 @@ eslint	no-useless-undefined/r9/i1	a JavaScript case: in a TypeScript file the fi
 veslint	no-useless-undefined/r9/i1	a JavaScript case: in a TypeScript file the fix makes the parameter optional
 eslint	no-useless-undefined/r6/i13	the test lints a file of another name, the fixtures `file.ts`
 veslint	no-useless-undefined/r6/i13	the test lints a file of another name, the fixtures `file.ts`
+# prefer-default-parameters: a `file.js` case reads its parameter types from JSDoc, which TypeScript does not do in the
+# fixture `default-project.ts` (the parameters are `any`); a setter is checked only with a parser of JavaScript.
+eslint	prefer-default-parameters/r8/i0	a JavaScript case: as TypeScript, the JSDoc types do not type the parameters
+veslint	prefer-default-parameters/r8/i0	a JavaScript case: as TypeScript, the JSDoc types do not type the parameters
+eslint	prefer-default-parameters/r16/i0	a JavaScript case: with the TypeScript parser, setters are not checked
+veslint	prefer-default-parameters/r16/i0	a JavaScript case: with the TypeScript parser, setters are not checked

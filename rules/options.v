@@ -155,6 +155,7 @@ pub fn check_options(rule string, options []json2.Any) !bool {
 		unicorn_no_useless_undefined { unuu_options(options)! }
 		unicorn_no_keyword_prefix { unkp_options(options)! }
 		unicorn_prefer_object_from_entries { upofe_options(options)! }
+		unicorn_prefer_default_parameters { updp_options(options)! }
 		else { return false }
 	}
 	return true

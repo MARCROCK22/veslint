@@ -1,0 +1,25 @@
+tests/rules/unicorn/prefer-default-parameters/cases.ts:11:2	unicorn/prefer-default-parameters	preferDefaultParameters	Prefer default parameters over reassignment.
+tests/rules/unicorn/prefer-default-parameters/cases.ts:19:2	unicorn/prefer-default-parameters	preferDefaultParameters	Prefer default parameters over reassignment.
+tests/rules/unicorn/prefer-default-parameters/cases.ts:31:2	unicorn/prefer-default-parameters	preferDefaultParameters	Prefer default parameters over reassignment.
+tests/rules/unicorn/prefer-default-parameters/cases.ts:34:44	unicorn/prefer-default-parameters	preferDefaultParameters	Prefer default parameters over reassignment.
+tests/rules/unicorn/prefer-default-parameters/cases.ts:35:42	unicorn/prefer-default-parameters	preferDefaultParameters	Prefer default parameters over reassignment.
+tests/rules/unicorn/prefer-default-parameters/cases.ts:37:2	unicorn/prefer-default-parameters	preferDefaultParameters	Prefer default parameters over reassignment.
+tests/rules/unicorn/prefer-default-parameters/cases.ts:48:2	unicorn/prefer-default-parameters	preferDefaultParameters	Prefer default parameters over reassignment.
+tests/rules/unicorn/prefer-default-parameters/cases.ts:53:4	unicorn/prefer-default-parameters	preferDefaultParameters	Prefer default parameters over reassignment.
+tests/rules/unicorn/prefer-default-parameters/cases.ts:68:41	unicorn/prefer-default-parameters	preferDefaultParameterOverFallback	Prefer a default parameter over fallback expressions.
+tests/rules/unicorn/prefer-default-parameters/cases.ts:76:43	unicorn/prefer-default-parameters	preferDefaultParameterOverFallback	Prefer a default parameter over fallback expressions.
+tests/rules/unicorn/prefer-default-parameters/cases.ts:98:22	unicorn/prefer-default-parameters	preferDefaultParameterOverFallback	Prefer a default parameter over fallback expressions.
+tests/rules/unicorn/prefer-default-parameters/cases.ts:99:27	unicorn/prefer-default-parameters	preferDefaultParameterOverFallback	Prefer a default parameter over fallback expressions.
+tests/rules/unicorn/prefer-default-parameters/cases.ts:100:24	unicorn/prefer-default-parameters	preferDefaultParameterOverFallback	Prefer a default parameter over fallback expressions.
+tests/rules/unicorn/prefer-default-parameters/cases.ts:102:30	unicorn/prefer-default-parameters	preferDefaultParameterOverFallback	Prefer a default parameter over fallback expressions.
+tests/rules/unicorn/prefer-default-parameters/cases.ts:103:28	unicorn/prefer-default-parameters	preferDefaultParameterOverFallback	Prefer a default parameter over fallback expressions.
+tests/rules/unicorn/prefer-default-parameters/cases.ts:104:30	unicorn/prefer-default-parameters	preferDefaultParameterOverFallback	Prefer a default parameter over fallback expressions.
+tests/rules/unicorn/prefer-default-parameters/cases.ts:105:47	unicorn/prefer-default-parameters	preferDefaultParameterOverFallback	Prefer a default parameter over fallback expressions.
+tests/rules/unicorn/prefer-default-parameters/cases.ts:108:31	unicorn/prefer-default-parameters	preferDefaultParameterOverFallback	Prefer a default parameter over fallback expressions.
+tests/rules/unicorn/prefer-default-parameters/cases.ts:113:8	unicorn/prefer-default-parameters	preferDestructuringDefaultOverFallback	Prefer a destructuring default over fallback expressions.
+tests/rules/unicorn/prefer-default-parameters/cases.ts:115:8	unicorn/prefer-default-parameters	preferDestructuringDefaultOverFallback	Prefer a destructuring default over fallback expressions.
+tests/rules/unicorn/prefer-default-parameters/cases.ts:117:13	unicorn/prefer-default-parameters	preferDestructuringDefaultOverFallback	Prefer a destructuring default over fallback expressions.
+tests/rules/unicorn/prefer-default-parameters/cases.ts:117:18	unicorn/prefer-default-parameters	preferDestructuringDefaultOverFallback	Prefer a destructuring default over fallback expressions.
+tests/rules/unicorn/prefer-default-parameters/cases.ts:120:29	unicorn/prefer-default-parameters	preferDestructuringDefaultOverFallback	Prefer a destructuring default over fallback expressions.
+tests/rules/unicorn/prefer-default-parameters/cases.ts:138:60	unicorn/prefer-default-parameters	preferDefaultParameterOverFallback	Prefer a default parameter over fallback expressions.
+tests/rules/unicorn/prefer-default-parameters/cases.ts:139:30	unicorn/prefer-default-parameters	preferDefaultParameterOverFallback	Prefer a default parameter over fallback expressions.
