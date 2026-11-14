@@ -1,0 +1,11 @@
+tests/rules/unicorn/prefer-prototype-methods/cases.ts:6:11	unicorn/prefer-prototype-methods	known-method	Prefer using `Array.prototype.forEach`.
+tests/rules/unicorn/prefer-prototype-methods/cases.ts:7:11	unicorn/prefer-prototype-methods	known-method	Prefer using `Object.prototype.hasOwnProperty`.
+tests/rules/unicorn/prefer-prototype-methods/cases.ts:8:11	unicorn/prefer-prototype-methods	known-method	Prefer using `Object.prototype.toString`.
+tests/rules/unicorn/prefer-prototype-methods/cases.ts:9:25	unicorn/prefer-prototype-methods	known-method	Prefer using `Array.prototype.map`.
+tests/rules/unicorn/prefer-prototype-methods/cases.ts:10:11	unicorn/prefer-prototype-methods	unknown-method	Prefer using method from `Array.prototype`.
+tests/rules/unicorn/prefer-prototype-methods/cases.ts:11:11	unicorn/prefer-prototype-methods	known-method	Prefer using `Array.prototype.slice`.
+tests/rules/unicorn/prefer-prototype-methods/cases.ts:12:11	unicorn/prefer-prototype-methods	known-method	Prefer using `Array.prototype.join`.
+tests/rules/unicorn/prefer-prototype-methods/cases.ts:13:11	unicorn/prefer-prototype-methods	known-method	Prefer using `Object.prototype.hasOwnProperty`.
+tests/rules/unicorn/prefer-prototype-methods/cases.ts:14:11	unicorn/prefer-prototype-methods	known-method	Prefer using `Object.prototype.propertyIsEnumerable`.
+tests/rules/unicorn/prefer-prototype-methods/cases.ts:15:17	unicorn/prefer-prototype-methods	known-method	Prefer using `Array.prototype.slice`.
+tests/rules/unicorn/prefer-prototype-methods/cases.ts:17:8	unicorn/prefer-prototype-methods	known-method	Prefer using `Array.prototype.slice`.

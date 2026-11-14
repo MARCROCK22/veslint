@@ -1,0 +1,11 @@
+tests/rules/unicorn/prefer-prototype-methods/cases.ts:6:11	unicorn/prefer-prototype-methods	known-method	Prefer using `Array.prototype.forEach`.	fix	149	151	Array.prototype	end	6	21
+tests/rules/unicorn/prefer-prototype-methods/cases.ts:7:11	unicorn/prefer-prototype-methods	known-method	Prefer using `Object.prototype.hasOwnProperty`.	fix	195	197	Object.prototype	end	7	30
+tests/rules/unicorn/prefer-prototype-methods/cases.ts:8:11	unicorn/prefer-prototype-methods	known-method	Prefer using `Object.prototype.toString`.	fix	243	245	Object.prototype	end	8	22
+tests/rules/unicorn/prefer-prototype-methods/cases.ts:9:25	unicorn/prefer-prototype-methods	known-method	Prefer using `Array.prototype.map`.	fix	293	295	Array.prototype	end	9	31
+tests/rules/unicorn/prefer-prototype-methods/cases.ts:10:11	unicorn/prefer-prototype-methods	unknown-method	Prefer using method from `Array.prototype`.	fix	324	326	Array.prototype	end	10	22
+tests/rules/unicorn/prefer-prototype-methods/cases.ts:11:11	unicorn/prefer-prototype-methods	known-method	Prefer using `Array.prototype.slice`.	fix	360	362	Array.prototype	end	11	22
+tests/rules/unicorn/prefer-prototype-methods/cases.ts:12:11	unicorn/prefer-prototype-methods	known-method	Prefer using `Array.prototype.join`.	end	12	28
+tests/rules/unicorn/prefer-prototype-methods/cases.ts:13:11	unicorn/prefer-prototype-methods	known-method	Prefer using `Object.prototype.hasOwnProperty`.	fix	438	452	Object.prototype.hasOwnProperty	end	13	25
+tests/rules/unicorn/prefer-prototype-methods/cases.ts:14:11	unicorn/prefer-prototype-methods	known-method	Prefer using `Object.prototype.propertyIsEnumerable`.	fix	482	513	Object.prototype.propertyIsEnumerable	end	14	42
+tests/rules/unicorn/prefer-prototype-methods/cases.ts:15:17	unicorn/prefer-prototype-methods	known-method	Prefer using `Array.prototype.slice`.	fix	549	551	 Array.prototype	end	15	25
+tests/rules/unicorn/prefer-prototype-methods/cases.ts:17:8	unicorn/prefer-prototype-methods	known-method	Prefer using `Array.prototype.slice`.	fix	594	596	 Array.prototype	end	17	16
