@@ -153,6 +153,7 @@ pub fn check_options(rule string, options []json2.Any) !bool {
 		unicorn_consistent_function_scoping { ucfs_options(options)! }
 		unicorn_isolated_functions { uisf_options(options)! }
 		unicorn_no_useless_undefined { unuu_options(options)! }
+		unicorn_no_keyword_prefix { unkp_options(options)! }
 		else { return false }
 	}
 	return true
