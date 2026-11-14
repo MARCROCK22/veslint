@@ -8,3 +8,8 @@ tests/rules/getter-return/cases.ts:22:3	getter-return	expected	Expected to retur
 tests/rules/getter-return/cases.ts:27:3	getter-return	expectedAlways	Expected method 'get' to always return a value.	end	27	22
 tests/rules/getter-return/cases.ts:36:7	getter-return	expected	Expected to return a value in method 'get'.	end	36	14
 tests/rules/getter-return/cases.ts:41:12	getter-return	expected	Expected to return a value in method 'get'.	end	41	17
+tests/rules/getter-return/cases.ts:69:38	getter-return	expected	Expected to return a value in method 'get'.	end	69	41
+tests/rules/getter-return/cases.ts:70:39	getter-return	expected	Expected to return a value in method 'get'.	end	70	53
+tests/rules/getter-return/cases.ts:71:40	getter-return	expected	Expected to return a value in method 'get'.	end	71	43
+tests/rules/getter-return/cases.ts:72:30	getter-return	expected	Expected to return a value in method 'get'.	end	72	35
+tests/rules/getter-return/cases.ts:73:39	getter-return	expected	Expected to return a value in method 'get'.	end	73	42

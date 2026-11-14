@@ -4,7 +4,7 @@ import estree
 import json2
 import time
 
-// Port of the `getter-return` rule of ESLint 10.6.0, on the code path events of the codepath
+// Port of the `getter-return` rule of ESLint 10.15.0, on the code path events of the codepath
 // module.
 
 const gr_messages = {
@@ -40,7 +40,7 @@ fn (mut c Checker) lint_getter_return(root C.TSNode, abs_path string, mut stats 
 		match ev.kind {
 			.code_path_start {
 				stack << GrFuncInfo{
-					should_check: gr_is_getter(t, ev.node)
+					should_check: c.gr_is_getter(root, t, ev.node)
 					node:         ev.node
 				}
 			}
@@ -97,9 +97,9 @@ fn (mut c Checker) lint_getter_return(root C.TSNode, abs_path string, mut stats 
 }
 
 // gr_is_getter ports isGetter: a function with a block body that is a getter, or the `get` of a
-// property descriptor given to Object.defineProperty, Reflect.defineProperty,
-// Object.defineProperties or Object.create.
-fn gr_is_getter(t &estree.EsTree, node int) bool {
+// property descriptor (isPropertyDescriptor: given to the global Object.defineProperty,
+// Reflect.defineProperty, Object.defineProperties or Object.create).
+fn (mut c Checker) gr_is_getter(root C.TSNode, t &estree.EsTree, node int) bool {
 	if t.typ(node) !in [.function_expression, .arrow_function_expression] {
 		return false
 	}
@@ -118,24 +118,6 @@ fn gr_is_getter(t &estree.EsTree, node int) bool {
 	if t.typ(object) != .object_expression {
 		return false
 	}
-	call := t.nodes[object].parent
-	if t.typ(call) == .call_expression {
-		callee := t.node(call, .callee) or { -1 }
-		if es_tree_is_specific_member_access(t, callee, 'Object', 'defineProperty')
-			|| es_tree_is_specific_member_access(t, callee, 'Reflect', 'defineProperty') {
-			return true
-		}
-	}
-	if t.typ(call) == .property {
-		outer_object := t.nodes[call].parent
-		if outer_object >= 0 && t.typ(outer_object) == .object_expression {
-			outer := t.nodes[outer_object].parent
-			if outer >= 0 && t.typ(outer) == .call_expression {
-				callee := t.node(outer, .callee) or { -1 }
-				return es_tree_is_specific_member_access(t, callee, 'Object', 'defineProperties')
-					|| es_tree_is_specific_member_access(t, callee, 'Object', 'create')
-			}
-		}
-	}
-	return false
+	ts_object := t.ts_node(object) or { return false }
+	return c.es_is_property_descriptor(root, unwrap_parens(ts_object))
 }
