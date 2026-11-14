@@ -1,0 +1,6 @@
+tests/rules/unicorn/consistent-existence-index-check/cases.ts:5:11	unicorn/consistent-existence-index-check	consistent-existence-index-check	Prefer `=== -1` over `< 0` to check non-existence.
+tests/rules/unicorn/consistent-existence-index-check/cases.ts:6:11	unicorn/consistent-existence-index-check	consistent-existence-index-check	Prefer `!== -1` over `>= 0` to check existence.
+tests/rules/unicorn/consistent-existence-index-check/cases.ts:7:11	unicorn/consistent-existence-index-check	consistent-existence-index-check	Prefer `!== -1` over `> -1` to check existence.
+tests/rules/unicorn/consistent-existence-index-check/cases.ts:9:20	unicorn/consistent-existence-index-check	consistent-existence-index-check	Prefer `!== -1` over `>= 0` to check existence.
+tests/rules/unicorn/consistent-existence-index-check/cases.ts:11:14	unicorn/consistent-existence-index-check	consistent-existence-index-check	Prefer `=== -1` over `< 0` to check non-existence.
+tests/rules/unicorn/consistent-existence-index-check/cases.ts:11:30	unicorn/consistent-existence-index-check	consistent-existence-index-check	Prefer `!== -1` over `>= 0` to check existence.

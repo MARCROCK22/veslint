@@ -313,6 +313,14 @@ const rule_option_schemas = {
 	'unicorn/prefer-array-some':                                       '{"type":"array","minItems":0,"maxItems":0}'
 	'unicorn/require-array-join-separator':                            '{"type":"array","minItems":0,"maxItems":0}'
 	'unicorn/prefer-negative-index':                                   '{"type":"array","minItems":0,"maxItems":0}'
+	'unicorn/consistent-existence-index-check':                        '{"type":"array","minItems":0,"maxItems":0}'
+	'unicorn/explicit-length-check':                                   '{"type":"array","items":[{"type":"object","additionalProperties":false,"properties":{"non-zero":{"enum":["greater-than","not-equal"],"default":"greater-than"}}}],"minItems":0,"maxItems":1}'
+	'unicorn/no-unnecessary-array-flat-depth':                         '{"type":"array","minItems":0,"maxItems":0}'
+	'unicorn/no-unnecessary-array-splice-count':                       '{"type":"array","minItems":0,"maxItems":0}'
+	'unicorn/no-unnecessary-slice-end':                                '{"type":"array","minItems":0,"maxItems":0}'
+	'unicorn/no-useless-length-check':                                 '{"type":"array","minItems":0,"maxItems":0}'
+	'unicorn/no-unreadable-array-destructuring':                       '{"type":"array","minItems":0,"maxItems":0}'
+	'unicorn/prefer-set-size':                                         '{"type":"array","minItems":0,"maxItems":0}'
 }
 
 // eslint_rule_default_options are the meta.defaultOptions of the rules of ESLint and of

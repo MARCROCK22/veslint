@@ -2,6 +2,10 @@
 
 Each version is a release on GitHub with the veslint binaries (Linux x64, Windows x64) and the VS Code extension. The section of a version is the text of its release.
 
+## 0.19.0
+
+- **8 rules of eslint-plugin-unicorn for array lengths and indexes:** `unicorn/consistent-existence-index-check`, `unicorn/explicit-length-check`, `unicorn/no-unnecessary-array-flat-depth`, `unicorn/no-unnecessary-array-splice-count`, `unicorn/no-unnecessary-slice-end`, `unicorn/no-unreadable-array-destructuring`, `unicorn/no-useless-length-check` and `unicorn/prefer-set-size`. They come with their options, fixes and suggestions, and pass the cases of unicorn's own tests.
+
 ## 0.18.0
 
 - **12 rules of eslint-plugin-unicorn for array methods and callbacks:** `unicorn/no-array-callback-reference`, `unicorn/no-array-for-each`, `unicorn/no-array-method-this-argument`, `unicorn/no-array-reverse`, `unicorn/no-array-sort`, `unicorn/no-new-array`, `unicorn/prefer-array-flat`, `unicorn/prefer-array-flat-map`, `unicorn/prefer-array-index-of`, `unicorn/prefer-array-some`, `unicorn/prefer-negative-index` and `unicorn/require-array-join-separator`. They come with their options, fixes and suggestions, and pass the cases of unicorn's own tests.

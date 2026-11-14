@@ -1,0 +1,18 @@
+tests/rules/unicorn/explicit-length-check/cases.ts:6:5	unicorn/explicit-length-check	non-zero	Use `.length > 0` when checking length is not zero.
+tests/rules/unicorn/explicit-length-check/cases.ts:7:5	unicorn/explicit-length-check	zero	Use `.length === 0` when checking length is zero.
+tests/rules/unicorn/explicit-length-check/cases.ts:8:5	unicorn/explicit-length-check	non-zero	Use `.size > 0` when checking size is not zero.
+tests/rules/unicorn/explicit-length-check/cases.ts:9:12	unicorn/explicit-length-check	non-zero	Use `.length > 0` when checking length is not zero.
+tests/rules/unicorn/explicit-length-check/cases.ts:11:12	unicorn/explicit-length-check	zero	Use `.length === 0` when checking length is zero.
+tests/rules/unicorn/explicit-length-check/cases.ts:12:12	unicorn/explicit-length-check	zero	Use `.length === 0` when checking length is zero.
+tests/rules/unicorn/explicit-length-check/cases.ts:13:12	unicorn/explicit-length-check	non-zero	Use `.length > 0` when checking length is not zero.
+tests/rules/unicorn/explicit-length-check/cases.ts:14:12	unicorn/explicit-length-check	non-zero	Use `.length > 0` when checking length is not zero.
+tests/rules/unicorn/explicit-length-check/cases.ts:15:12	unicorn/explicit-length-check	zero	Use `.length === 0` when checking length is zero.
+tests/rules/unicorn/explicit-length-check/cases.ts:16:12	unicorn/explicit-length-check	zero	Use `.length === 0` when checking length is zero.
+tests/rules/unicorn/explicit-length-check/cases.ts:17:12	unicorn/explicit-length-check	non-zero	Use `.length > 0` when checking length is not zero.
+tests/rules/unicorn/explicit-length-check/cases.ts:18:13	unicorn/explicit-length-check	non-zero	Use `.length > 0` when checking length is not zero.
+tests/rules/unicorn/explicit-length-check/cases.ts:19:8	unicorn/explicit-length-check	non-zero	Use `.size > 0` when checking size is not zero.
+tests/rules/unicorn/explicit-length-check/cases.ts:20:13	unicorn/explicit-length-check	zero	Use `.length === 0` when checking length is zero.
+tests/rules/unicorn/explicit-length-check/cases.ts:24:13	unicorn/explicit-length-check	zero	Use `.length === 0` when checking length is zero.
+tests/rules/unicorn/explicit-length-check/cases.ts:30:12	unicorn/explicit-length-check	non-zero	Use `.length > 0` when checking length is not zero.
+tests/rules/unicorn/explicit-length-check/not-equal/cases.ts:4:5	unicorn/explicit-length-check	non-zero	Use `.length !== 0` when checking length is not zero.
+tests/rules/unicorn/explicit-length-check/not-equal/cases.ts:5:12	unicorn/explicit-length-check	non-zero	Use `.length !== 0` when checking length is not zero.

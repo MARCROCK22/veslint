@@ -1,0 +1,4 @@
+tests/rules/unicorn/prefer-set-size/cases.ts:4:33	unicorn/prefer-set-size	prefer-set-size	Prefer using `Set#size` instead of `Array#length`.
+tests/rules/unicorn/prefer-set-size/cases.ts:5:40	unicorn/prefer-set-size	prefer-set-size	Prefer using `Set#size` instead of `Array#length`.
+tests/rules/unicorn/prefer-set-size/cases.ts:6:44	unicorn/prefer-set-size	prefer-set-size	Prefer using `Set#size` instead of `Array#length`.
+tests/rules/unicorn/prefer-set-size/cases.ts:8:30	unicorn/prefer-set-size	prefer-set-size	Prefer using `Set#size` instead of `Array#length`.

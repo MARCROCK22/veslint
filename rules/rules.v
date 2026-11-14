@@ -323,6 +323,14 @@ pub const unicorn_prefer_array_index_of = 'unicorn/prefer-array-index-of'
 pub const unicorn_prefer_array_some = 'unicorn/prefer-array-some'
 pub const unicorn_require_array_join_separator = 'unicorn/require-array-join-separator'
 pub const unicorn_prefer_negative_index = 'unicorn/prefer-negative-index'
+pub const unicorn_consistent_existence_index_check = 'unicorn/consistent-existence-index-check'
+pub const unicorn_explicit_length_check = 'unicorn/explicit-length-check'
+pub const unicorn_no_unnecessary_array_flat_depth = 'unicorn/no-unnecessary-array-flat-depth'
+pub const unicorn_no_unnecessary_array_splice_count = 'unicorn/no-unnecessary-array-splice-count'
+pub const unicorn_no_unnecessary_slice_end = 'unicorn/no-unnecessary-slice-end'
+pub const unicorn_no_useless_length_check = 'unicorn/no-useless-length-check'
+pub const unicorn_no_unreadable_array_destructuring = 'unicorn/no-unreadable-array-destructuring'
+pub const unicorn_prefer_set_size = 'unicorn/prefer-set-size'
 pub const names = [no_floating_promises, await_thenable, require_await, return_await,
 	no_misused_promises, no_unsafe_call, no_unsafe_member_access, no_unsafe_return,
 	no_unsafe_assignment, no_unsafe_argument, restrict_template_expressions,
@@ -403,7 +411,11 @@ pub const names = [no_floating_promises, await_thenable, require_await, return_a
 	unicorn_no_array_for_each, unicorn_no_array_method_this_argument, unicorn_no_array_reverse,
 	unicorn_no_array_sort, unicorn_no_new_array, unicorn_prefer_array_flat,
 	unicorn_prefer_array_flat_map, unicorn_prefer_array_index_of, unicorn_prefer_array_some,
-	unicorn_require_array_join_separator, unicorn_prefer_negative_index]
+	unicorn_require_array_join_separator, unicorn_prefer_negative_index,
+	unicorn_consistent_existence_index_check, unicorn_explicit_length_check,
+	unicorn_no_unnecessary_array_flat_depth, unicorn_no_unnecessary_array_splice_count,
+	unicorn_no_unnecessary_slice_end, unicorn_no_useless_length_check,
+	unicorn_no_unreadable_array_destructuring, unicorn_prefer_set_size]
 
 // untyped_rules are the ported rules that need no types (`meta.docs.requiresTypeChecking` is false
 // in typescript-eslint): with only these, the command line makes no snapshot (Checker.make_snapshot).
@@ -465,7 +477,11 @@ pub const untyped_rules = [adjacent_overload_signatures, array_type, class_liter
 	unicorn_no_array_for_each, unicorn_no_array_method_this_argument, unicorn_no_array_reverse,
 	unicorn_no_array_sort, unicorn_no_new_array, unicorn_prefer_array_flat,
 	unicorn_prefer_array_flat_map, unicorn_prefer_array_index_of, unicorn_prefer_array_some,
-	unicorn_require_array_join_separator, unicorn_prefer_negative_index]
+	unicorn_require_array_join_separator, unicorn_prefer_negative_index,
+	unicorn_consistent_existence_index_check, unicorn_explicit_length_check,
+	unicorn_no_unnecessary_array_flat_depth, unicorn_no_unnecessary_array_splice_count,
+	unicorn_no_unnecessary_slice_end, unicorn_no_useless_length_check,
+	unicorn_no_unreadable_array_destructuring, unicorn_prefer_set_size]
 
 // needs_types tells whether a rule asks tsgo for the types of the program.
 pub fn needs_types(rule string) bool {
@@ -784,6 +800,14 @@ pub const default_options = {
 	unicorn_prefer_array_some:                       '[]'
 	unicorn_require_array_join_separator:            '[]'
 	unicorn_prefer_negative_index:                   '[]'
+	unicorn_consistent_existence_index_check:        '[]'
+	unicorn_explicit_length_check:                   '[{"non-zero":"greater-than"}]'
+	unicorn_no_unnecessary_array_flat_depth:         '[]'
+	unicorn_no_unnecessary_array_splice_count:       '[]'
+	unicorn_no_unnecessary_slice_end:                '[]'
+	unicorn_no_useless_length_check:                 '[]'
+	unicorn_no_unreadable_array_destructuring:       '[]'
+	unicorn_prefer_set_size:                         '[]'
 }
 
 // Finding is a problem a rule found at a node.
@@ -1225,6 +1249,14 @@ pub fn message(rule string, finding Finding) string {
 		unicorn_prefer_array_some { upas_messages }
 		unicorn_require_array_join_separator { urajs_messages }
 		unicorn_prefer_negative_index { upni_messages }
+		unicorn_consistent_existence_index_check { uceic_messages }
+		unicorn_explicit_length_check { uelc_messages }
+		unicorn_no_unnecessary_array_flat_depth { unuafd_messages }
+		unicorn_no_unnecessary_array_splice_count { unuasc_messages }
+		unicorn_no_unnecessary_slice_end { unuse_messages }
+		unicorn_no_useless_length_check { unulc_messages }
+		unicorn_no_unreadable_array_destructuring { unuad_messages }
+		unicorn_prefer_set_size { upss_messages }
 		else { map[string]string{} }
 	}
 	return interpolate(messages[finding.message_id] or { finding.message_id }, finding.data)
@@ -2304,6 +2336,30 @@ fn (mut c Checker) lint_rule(rule string, root C.TSNode, abs_path string, mut st
 		}
 		unicorn_prefer_negative_index {
 			return c.lint_unicorn_prefer_negative_index(root, abs_path, mut stats)!
+		}
+		unicorn_consistent_existence_index_check {
+			return c.lint_unicorn_consistent_existence_index_check(root, abs_path, mut stats)!
+		}
+		unicorn_explicit_length_check {
+			return c.lint_unicorn_explicit_length_check(root, abs_path, mut stats)!
+		}
+		unicorn_no_unnecessary_array_flat_depth {
+			return c.lint_unicorn_no_unnecessary_array_flat_depth(root, abs_path, mut stats)!
+		}
+		unicorn_no_unnecessary_array_splice_count {
+			return c.lint_unicorn_no_unnecessary_array_splice_count(root, abs_path, mut stats)!
+		}
+		unicorn_no_unnecessary_slice_end {
+			return c.lint_unicorn_no_unnecessary_slice_end(root, abs_path, mut stats)!
+		}
+		unicorn_no_useless_length_check {
+			return c.lint_unicorn_no_useless_length_check(root, abs_path, mut stats)!
+		}
+		unicorn_no_unreadable_array_destructuring {
+			return c.lint_unicorn_no_unreadable_array_destructuring(root, abs_path, mut stats)!
+		}
+		unicorn_prefer_set_size {
+			return c.lint_unicorn_prefer_set_size(root, abs_path, mut stats)!
 		}
 		else { return error('unknown rule: ${rule}') }
 	}

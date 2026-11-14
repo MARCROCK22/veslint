@@ -1,0 +1,8 @@
+tests/rules/unicorn/no-unreadable-array-destructuring/cases.ts:5:7	unicorn/no-unreadable-array-destructuring	no-unreadable-array-destructuring	Array destructuring may not contain consecutive ignored values.
+tests/rules/unicorn/no-unreadable-array-destructuring/cases.ts:6:7	unicorn/no-unreadable-array-destructuring	no-unreadable-array-destructuring	Array destructuring may not contain consecutive ignored values.
+tests/rules/unicorn/no-unreadable-array-destructuring/cases.ts:7:7	unicorn/no-unreadable-array-destructuring	no-unreadable-array-destructuring	Array destructuring may not contain consecutive ignored values.
+tests/rules/unicorn/no-unreadable-array-destructuring/cases.ts:8:7	unicorn/no-unreadable-array-destructuring	no-unreadable-array-destructuring	Array destructuring may not contain consecutive ignored values.
+tests/rules/unicorn/no-unreadable-array-destructuring/cases.ts:10:1	unicorn/no-unreadable-array-destructuring	no-unreadable-array-destructuring	Array destructuring may not contain consecutive ignored values.
+tests/rules/unicorn/no-unreadable-array-destructuring/cases.ts:11:7	unicorn/no-unreadable-array-destructuring	no-unreadable-array-destructuring	Array destructuring may not contain consecutive ignored values.
+tests/rules/unicorn/no-unreadable-array-destructuring/cases.ts:12:12	unicorn/no-unreadable-array-destructuring	no-unreadable-array-destructuring	Array destructuring may not contain consecutive ignored values.
+tests/rules/unicorn/no-unreadable-array-destructuring/cases.ts:15:7	unicorn/no-unreadable-array-destructuring	no-unreadable-array-destructuring	Array destructuring may not contain consecutive ignored values.

@@ -1,0 +1,6 @@
+tests/rules/unicorn/consistent-existence-index-check/cases.ts:5:11	unicorn/consistent-existence-index-check	consistent-existence-index-check	Prefer `=== -1` over `< 0` to check non-existence.	fix	168	171	=== -1	end	5	14
+tests/rules/unicorn/consistent-existence-index-check/cases.ts:6:11	unicorn/consistent-existence-index-check	consistent-existence-index-check	Prefer `!== -1` over `>= 0` to check existence.	fix	186	190	!== -1	end	6	15
+tests/rules/unicorn/consistent-existence-index-check/cases.ts:7:11	unicorn/consistent-existence-index-check	consistent-existence-index-check	Prefer `!== -1` over `> -1` to check existence.	fix	205	206	!==	end	7	15
+tests/rules/unicorn/consistent-existence-index-check/cases.ts:9:20	unicorn/consistent-existence-index-check	consistent-existence-index-check	Prefer `!== -1` over `>= 0` to check existence.	fix	267	271	!== -1	end	9	24
+tests/rules/unicorn/consistent-existence-index-check/cases.ts:11:14	unicorn/consistent-existence-index-check	consistent-existence-index-check	Prefer `=== -1` over `< 0` to check non-existence.	fix	346	349	=== -1	end	11	17
+tests/rules/unicorn/consistent-existence-index-check/cases.ts:11:30	unicorn/consistent-existence-index-check	consistent-existence-index-check	Prefer `!== -1` over `>= 0` to check existence.	fix	362	366	!== -1	end	11	34

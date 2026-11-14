@@ -37,7 +37,7 @@ for (const id of portedRules(root)) {
   if (schema === null) {
     throw new Error(`${name}: \`schema: false\` (no validation) is not supported`);
   }
-  checkSchema(schema, name);
+  checkSchema(schema, name, rule.meta?.defaultOptions);
   schemas.push(`\t'${id}': ${literal(JSON.stringify(schema))}`);
 }
 const defaults = ruleDefaults(builtinRules, plugins).map(([id, options]) => `\t'${id}': ${literal(JSON.stringify(options))}`);

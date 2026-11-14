@@ -1,0 +1,6 @@
+tests/rules/unicorn/no-unnecessary-array-splice-count/cases.ts:5:16	unicorn/no-unnecessary-array-splice-count	no-unnecessary-array-splice-count	Passing `list.length` as the `deleteCount` argument is unnecessary.
+tests/rules/unicorn/no-unnecessary-array-splice-count/cases.ts:6:16	unicorn/no-unnecessary-array-splice-count	no-unnecessary-array-splice-count	Passing `Infinity` as the `deleteCount` argument is unnecessary.
+tests/rules/unicorn/no-unnecessary-array-splice-count/cases.ts:7:16	unicorn/no-unnecessary-array-splice-count	no-unnecessary-array-splice-count	Passing `Number.POSITIVE_INFINITY` as the `deleteCount` argument is unnecessary.
+tests/rules/unicorn/no-unnecessary-array-splice-count/cases.ts:8:30	unicorn/no-unnecessary-array-splice-count	no-unnecessary-array-splice-count	Passing `list.length` as the `skipCount` argument is unnecessary.
+tests/rules/unicorn/no-unnecessary-array-splice-count/cases.ts:9:20	unicorn/no-unnecessary-array-splice-count	no-unnecessary-array-splice-count	Passing `….length` as the `deleteCount` argument is unnecessary.
+tests/rules/unicorn/no-unnecessary-array-splice-count/cases.ts:10:16	unicorn/no-unnecessary-array-splice-count	no-unnecessary-array-splice-count	Passing `list?.length` as the `deleteCount` argument is unnecessary.

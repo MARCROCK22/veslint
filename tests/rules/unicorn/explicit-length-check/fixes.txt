@@ -1,0 +1,18 @@
+tests/rules/unicorn/explicit-length-check/cases.ts:6:5	unicorn/explicit-length-check	non-zero	Use `.length > 0` when checking length is not zero.	fix	183	194	list.length > 0	end	6	16
+tests/rules/unicorn/explicit-length-check/cases.ts:7:5	unicorn/explicit-length-check	zero	Use `.length === 0` when checking length is zero.	fix	203	215	list.length === 0	end	7	17
+tests/rules/unicorn/explicit-length-check/cases.ts:8:5	unicorn/explicit-length-check	non-zero	Use `.size > 0` when checking size is not zero.	fix	224	234	set.size > 0	end	8	15
+tests/rules/unicorn/explicit-length-check/cases.ts:9:12	unicorn/explicit-length-check	non-zero	Use `.length > 0` when checking length is not zero.	fix	250	270	list.length > 0	end	9	32
+tests/rules/unicorn/explicit-length-check/cases.ts:11:12	unicorn/explicit-length-check	zero	Use `.length === 0` when checking length is zero.	fix	321	337	list.length === 0	end	11	28
+tests/rules/unicorn/explicit-length-check/cases.ts:12:12	unicorn/explicit-length-check	zero	Use `.length === 0` when checking length is zero.	fix	350	365	list.length === 0	end	12	27
+tests/rules/unicorn/explicit-length-check/cases.ts:13:12	unicorn/explicit-length-check	non-zero	Use `.length > 0` when checking length is not zero.	fix	378	394	list.length > 0	end	13	28
+tests/rules/unicorn/explicit-length-check/cases.ts:14:12	unicorn/explicit-length-check	non-zero	Use `.length > 0` when checking length is not zero.	fix	407	423	list.length > 0	end	14	28
+tests/rules/unicorn/explicit-length-check/cases.ts:15:12	unicorn/explicit-length-check	zero	Use `.length === 0` when checking length is zero.	fix	436	453	list.length === 0	end	15	29
+tests/rules/unicorn/explicit-length-check/cases.ts:16:12	unicorn/explicit-length-check	zero	Use `.length === 0` when checking length is zero.	fix	466	481	list.length === 0	end	16	27
+tests/rules/unicorn/explicit-length-check/cases.ts:17:12	unicorn/explicit-length-check	non-zero	Use `.length > 0` when checking length is not zero.	fix	494	509	list.length > 0	end	17	27
+tests/rules/unicorn/explicit-length-check/cases.ts:18:13	unicorn/explicit-length-check	non-zero	Use `.length > 0` when checking length is not zero.	suggestion	suggestion	Replace `.length` with `.length > 0`.	523	534	list.length > 0	end	18	24
+tests/rules/unicorn/explicit-length-check/cases.ts:19:8	unicorn/explicit-length-check	non-zero	Use `.size > 0` when checking size is not zero.	fix	556	564	set.size > 0	end	19	16
+tests/rules/unicorn/explicit-length-check/cases.ts:20:13	unicorn/explicit-length-check	zero	Use `.length === 0` when checking length is zero.	fix	581	599	list.length === 0	end	20	31
+tests/rules/unicorn/explicit-length-check/cases.ts:24:13	unicorn/explicit-length-check	zero	Use `.length === 0` when checking length is zero.	end	24	25
+tests/rules/unicorn/explicit-length-check/cases.ts:30:12	unicorn/explicit-length-check	non-zero	Use `.length > 0` when checking length is not zero.	fix	798	810	'abc'.length > 0	end	30	24
+tests/rules/unicorn/explicit-length-check/not-equal/cases.ts:4:5	unicorn/explicit-length-check	non-zero	Use `.length !== 0` when checking length is not zero.	fix	94	105	list.length !== 0	end	4	16
+tests/rules/unicorn/explicit-length-check/not-equal/cases.ts:5:12	unicorn/explicit-length-check	non-zero	Use `.length !== 0` when checking length is not zero.	fix	121	136	list.length !== 0	end	5	27

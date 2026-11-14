@@ -405,3 +405,10 @@ eslint	prefer-array-index-of/r0/v38	typescript-eslint's scope manager sets no th
 veslint	prefer-array-index-of/r0/v38	typescript-eslint's scope manager sets no thisFound: `this` does not stop the report
 eslint	prefer-array-index-of/r2/v38	typescript-eslint's scope manager sets no thisFound: `this` does not stop the report
 veslint	prefer-array-index-of/r2/v38	typescript-eslint's scope manager sets no thisFound: `this` does not stop the report
+# eslint-plugin-unicorn: prefer-set-size takes a variable for a Set when its definition's kind is
+# `const` (definition.kind of eslint-scope), which typescript-eslint's definitions do not have:
+# linted as TypeScript, neither ESLint nor veslint reports `const foo = new Set(); [...foo].length`.
+eslint	prefer-set-size/i1	typescript-eslint's definitions have no kind: a const Set variable is not a Set
+veslint	prefer-set-size/i1	typescript-eslint's definitions have no kind: a const Set variable is not a Set
+eslint	prefer-set-size/i10	typescript-eslint's definitions have no kind: a const Set variable is not a Set
+veslint	prefer-set-size/i10	typescript-eslint's definitions have no kind: a const Set variable is not a Set

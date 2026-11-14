@@ -47,9 +47,11 @@ const supported = new Set(['type', 'enum', 'const', 'maximum', 'minimum', 'prope
 const annotations = new Set(['description', 'title', '$defs', 'definitions']);
 
 // checkSchema throws for a schema rules/json_schema.v would not validate like ajv: an unknown
-// keyword (`default` among them: ESLint's ajv fills the options in with it), a `$ref` that is not a
-// pointer into the same schema, or an unknown type.
-export function checkSchema(schema, where) {
+// keyword, a `$ref` that is not a pointer into the same schema, or an unknown type. `default` (ESLint's
+// ajv fills the options in with it) is taken only where it is the value meta.defaultOptions (the
+// rule's `defaultOptions`) has at that place, which veslint applies anyway: the property of an
+// object of the list of options, at `valuePath` (null where no single place is known).
+export function checkSchema(schema, where, defaultOptions = undefined, valuePath = []) {
   if (typeof schema === 'boolean') {
     return;
   }
@@ -58,6 +60,15 @@ export function checkSchema(schema, where) {
   }
   for (const [key, value] of Object.entries(schema)) {
     const at = `${where}/${key}`;
+    if (key === 'default') {
+      const known = valuePath && defaultOptions !== undefined
+        ? valuePath.reduce((holder, step) => (holder === undefined || holder === null ? undefined : holder[step]), defaultOptions)
+        : undefined;
+      if (JSON.stringify(known) !== JSON.stringify(value)) {
+        throw new Error(`${at}: rules/json_schema.v does not implement the keyword \`default\` (it is not the value of meta.defaultOptions there)`);
+      }
+      continue;
+    }
     if (!supported.has(key) && !annotations.has(key)) {
       throw new Error(`${at}: rules/json_schema.v does not implement the keyword \`${key}\``);
     }
@@ -75,24 +86,30 @@ export function checkSchema(schema, where) {
         }
         break;
       case 'properties':
+        for (const [name, sub] of Object.entries(value)) {
+          checkSchema(sub, `${at}/${name}`, defaultOptions, valuePath && [...valuePath, name]);
+        }
+        break;
       case '$defs':
       case 'definitions':
         for (const [name, sub] of Object.entries(value)) {
-          checkSchema(sub, `${at}/${name}`);
+          checkSchema(sub, `${at}/${name}`, defaultOptions, null);
         }
         break;
       case 'oneOf':
       case 'anyOf':
       case 'allOf':
-        value.forEach((sub, i) => checkSchema(sub, `${at}/${i}`));
+        value.forEach((sub, i) => checkSchema(sub, `${at}/${i}`, defaultOptions, null));
         break;
       case 'items':
-        [value].flat().forEach((sub, i) => checkSchema(sub, `${at}/${i}`));
+        // A list of schemas gives the place of each item; a single schema, of none.
+        [value].flat().forEach((sub, i) => checkSchema(sub, `${at}/${i}`, defaultOptions,
+          Array.isArray(value) && valuePath ? [...valuePath, i] : null));
         break;
       case 'additionalProperties':
       case 'additionalItems':
       case 'not':
-        checkSchema(value, at);
+        checkSchema(value, at, defaultOptions, null);
         break;
       default:
     }

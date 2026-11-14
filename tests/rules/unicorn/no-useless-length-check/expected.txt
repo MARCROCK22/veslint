@@ -1,0 +1,6 @@
+tests/rules/unicorn/no-useless-length-check/cases.ts:5:17	unicorn/no-useless-length-check	zero	The empty check is useless as `Array#every()` returns `true` for an empty array.
+tests/rules/unicorn/no-useless-length-check/cases.ts:6:17	unicorn/no-useless-length-check	non-zero	The non-empty check is useless as `Array#some()` returns `false` for an empty array.
+tests/rules/unicorn/no-useless-length-check/cases.ts:7:39	unicorn/no-useless-length-check	non-zero	The non-empty check is useless as `Array#some()` returns `false` for an empty array.
+tests/rules/unicorn/no-useless-length-check/cases.ts:8:39	unicorn/no-useless-length-check	zero	The empty check is useless as `Array#every()` returns `true` for an empty array.
+tests/rules/unicorn/no-useless-length-check/cases.ts:9:18	unicorn/no-useless-length-check	non-zero	The non-empty check is useless as `Array#some()` returns `false` for an empty array.
+tests/rules/unicorn/no-useless-length-check/cases.ts:10:37	unicorn/no-useless-length-check	non-zero	The non-empty check is useless as `Array#some()` returns `false` for an empty array.

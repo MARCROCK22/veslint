@@ -1,0 +1,4 @@
+tests/rules/unicorn/no-unnecessary-array-flat-depth/cases.ts:4:24	unicorn/no-unnecessary-array-flat-depth	no-unnecessary-array-flat-depth	Passing `1` as the `depth` argument is unnecessary.	fix	114	115		end	4	25
+tests/rules/unicorn/no-unnecessary-array-flat-depth/cases.ts:5:25	unicorn/no-unnecessary-array-flat-depth	no-unnecessary-array-flat-depth	Passing `1` as the `depth` argument is unnecessary.	fix	142	143		end	5	26
+tests/rules/unicorn/no-unnecessary-array-flat-depth/cases.ts:6:24	unicorn/no-unnecessary-array-flat-depth	no-unnecessary-array-flat-depth	Passing `1` as the `depth` argument is unnecessary.	fix	169	171		end	6	25
+tests/rules/unicorn/no-unnecessary-array-flat-depth/cases.ts:7:25	unicorn/no-unnecessary-array-flat-depth	no-unnecessary-array-flat-depth	Passing `1` as the `depth` argument is unnecessary.	fix	197	200		end	7	26
