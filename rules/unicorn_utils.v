@@ -295,16 +295,6 @@ fn (c &Checker) un_add_parens_to_return_or_throw(t &estree.EsTree, tokens &Sourc
 	return [fix_insert_at(first.end, ' ('), fix_insert_at(last.start, ')')]
 }
 
-// un_unwrap ports unwrapNode of is-same-reference.js: without `?.` chains and TypeScript
-// assertions (`as`, `<T>`, `!`).
-fn un_unwrap(t &estree.EsTree, node int) int {
-	mut n := node
-	for t.typ(n) in [.chain_expression, .ts_as_expression, .ts_type_assertion, .ts_non_null_expression] {
-		n = t.node(n, .expression) or { return n }
-	}
-	return n
-}
-
 // un_static_property_name ports getStaticPropertyName of is-same-reference.js: the name of the
 // property of a member expression, the value of getStaticValue (without a scope) as a string when
 // it is computed; none when it is not static.
@@ -353,11 +343,16 @@ fn un_equal_literal_value(t &estree.EsTree, left int, right int) bool {
 	}
 }
 
-// un_is_same_reference ports isSameReference: two expressions that reference the same value
-// (`a`, `a.b`, `a['b']`, `a[0]`, `this`…).
+// un_is_same_reference ports isSameReference (eslint-plugin-unicorn 79.0.0): two expressions that
+// reference the same value (`a`, `a.b`, `a['b']`, `a[0]`, `this`…), without `?.` chains and
+// TypeScript wrappers; static strings are compared by their value.
 fn (mut c Checker) un_is_same_reference(t &estree.EsTree, left_node int, right_node int) bool {
-	left := un_unwrap(t, left_node)
-	right := un_unwrap(t, right_node)
+	left := un_unwrap_chain_and_ts_expression(t, left_node)
+	right := un_unwrap_chain_and_ts_expression(t, right_node)
+	if left_string := un_static_string_value(t, left) {
+		right_string := un_static_string_value(t, right) or { return false }
+		return left_string == right_string
+	}
 	if t.typ(left) != t.typ(right) {
 		return false
 	}
@@ -497,10 +492,24 @@ fn un_available_variable_name(tree &ScopeTree, base string, scopes []int, is_saf
 	return name
 }
 
-// un_has_side_effect ports hasSideEffect of eslint-utils with its default options: the node or a
-// node inside it (not inside a function) assigns, awaits, calls, imports, deletes, updates or
-// yields.
-fn un_has_side_effect(t &estree.EsTree, node int) bool {
+// un_is_type: the node exists (>= 0) and has the type.
+fn un_is_type(t &estree.EsTree, node int, typ estree.NodeType) bool {
+	return node >= 0 && t.typ(node) == typ
+}
+
+// UnSideEffect are the options of hasSideEffect.
+@[params]
+struct UnSideEffect {
+	consider_getters                  bool
+	consider_implicit_type_conversion bool
+}
+
+// un_has_side_effect ports hasSideEffect of eslint-utils: the node or a descendant (not inside a
+// function) assigns, awaits, calls, imports, constructs, updates, yields or deletes; with
+// considerGetters, reads a member; with considerImplicitTypeConversion, converts a value that is
+// not a literal.
+fn un_has_side_effect(t &estree.EsTree, node int, o UnSideEffect) bool {
+	conversion := o.consider_implicit_type_conversion
 	match t.typ(node) {
 		.arrow_function_expression, .function_expression {
 			return false
@@ -509,14 +518,42 @@ fn un_has_side_effect(t &estree.EsTree, node int) bool {
 		.new_expression, .update_expression, .yield_expression {
 			return true
 		}
+		.binary_expression {
+			if conversion && (t.string_of(node, .operator) or { '' }) in ['==', '!=', '<', '<=', '>',
+				'>=', '<<', '>>', '>>>', '+', '-', '*', '/', '%', '|', '^', '&', 'in']
+				&& (!un_is_type(t, t.node(node, .left) or { -1 }, .literal)
+				|| !un_is_type(t, t.node(node, .right) or { -1 }, .literal)) {
+				return true
+			}
+		}
+		.member_expression {
+			if o.consider_getters {
+				return true
+			}
+			if conversion && (t.flag(node, .computed) or { false })
+				&& !un_is_type(t, t.node(node, .property) or { -1 }, .literal) {
+				return true
+			}
+		}
+		.method_definition, .property, .property_definition {
+			if conversion && (t.flag(node, .computed) or { false })
+				&& !un_is_type(t, t.node(node, .key) or { -1 }, .literal) {
+				return true
+			}
+		}
 		.unary_expression {
-			if (t.string_of(node, .operator) or { '' }) == 'delete' {
+			operator := t.string_of(node, .operator) or { '' }
+			if operator == 'delete' {
+				return true
+			}
+			if conversion && operator in ['-', '+', '!', '~']
+				&& !un_is_type(t, t.node(node, .argument) or { -1 }, .literal) {
 				return true
 			}
 		}
 		else {}
 	}
-	return t.children(node).any(un_has_side_effect(t, it))
+	return t.children(node).any(un_has_side_effect(t, it, o))
 }
 
 // un_replace_token_and_spaces_before ports replaceNodeOrTokenAndSpacesBefore for a token (which has
@@ -717,17 +754,133 @@ fn un_is_method_call(t &estree.EsTree, node int, o UnMethodCall) bool {
 	})
 }
 
-// un_new_callee_needs_parens ports shouldAddParenthesesToNewExpressionCallee: a member expression
-// whose innermost object is a call (`new (a().b)()`).
-fn un_new_callee_needs_parens(t &estree.EsTree, node int) bool {
+// un_new_callee_needs_parens ports shouldAddParenthesesToNewExpressionCallee (eslint-plugin-unicorn
+// 79.0.0): a member expression whose object chain (through template tags and TypeScript
+// wrappers, up to a parenthesized one) ends with a call (`new (a().b)()`).
+fn (c &Checker) un_new_callee_needs_parens(t &estree.EsTree, tokens &SourceTokens, node int) bool {
 	if t.typ(node) != .member_expression {
 		return false
 	}
 	mut current := t.node(node, .object) or { return false }
-	for t.typ(current) == .member_expression {
-		current = t.node(current, .object) or { return false }
+	for !c.un_is_parenthesized(t, tokens, current) {
+		if un_is_ts_expression_wrapper(t, current) {
+			current = t.node(current, .expression) or { return false }
+			continue
+		}
+		if t.typ(current) !in [.member_expression, .tagged_template_expression] {
+			return t.typ(current) == .call_expression
+		}
+		current = if t.typ(current) == .member_expression {
+			t.node(current, .object) or { return false }
+		} else {
+			t.node(current, .tag) or { return false }
+		}
 	}
-	return t.typ(current) == .call_expression
+	return false
+}
+
+// un_is_in_unparenthesized_new_callee ports isInUnparenthesizedNewExpressionCallee: the node is
+// part of an unparenthesized constructor callee, where a call would become the arguments of
+// the constructor.
+fn (c &Checker) un_is_in_unparenthesized_new_callee(t &estree.EsTree, tokens &SourceTokens, from int) bool {
+	mut node := from
+	for !c.un_is_parenthesized(t, tokens, node) {
+		parent := t.nodes[node].parent
+		if parent < 0 {
+			break
+		}
+		if t.typ(parent) == .new_expression && (t.node(parent, .callee) or { -1 }) == node {
+			return true
+		}
+		if (t.typ(parent) == .member_expression && (t.node(parent, .object) or { -1 }) == node)
+			|| (t.typ(parent) == .tagged_template_expression
+			&& (t.node(parent, .tag) or { -1 }) == node)
+			|| (un_is_ts_expression_wrapper(t, parent) && (t.node(parent, .expression) or { -1 }) == node) {
+			node = parent
+			continue
+		}
+		break
+	}
+	return false
+}
+
+// un_is_chain_element is isChainElement of has-optional-chain-element.js.
+fn un_is_chain_element(t &estree.EsTree, node int) bool {
+	return node >= 0 && t.typ(node) in [.member_expression, .call_expression]
+}
+
+// un_has_optional_chain_element ports hasOptionalChainElement: an optional member or call in the
+// chain of the node (through TypeScript wrappers and chain expressions).
+fn un_has_optional_chain_element(t &estree.EsTree, from int) bool {
+	node := un_unwrap_ts_expression(t, from)
+	if node >= 0 && t.typ(node) == .chain_expression {
+		return un_has_optional_chain_element(t, t.node(node, .expression) or { return false })
+	}
+	if !un_is_chain_element(t, node) {
+		return false
+	}
+	if t.flag(node, .optional) or { false } {
+		return true
+	}
+	next := t.node(node, if t.typ(node) == .member_expression { estree.Key.object } else { .callee }) or {
+		return false
+	}
+	return un_has_optional_chain_element(t, next)
+}
+
+// un_has_unparenthesized_optional_chain_element ports hasUnparenthesizedOptionalChainElement.
+fn (c &Checker) un_has_unparenthesized_optional_chain_element(t &estree.EsTree, tokens &SourceTokens, node int) bool {
+	if node < 0 {
+		return false
+	}
+	if un_is_ts_expression_wrapper(t, node) || t.typ(node) == .chain_expression {
+		return c.un_parentheses(t, tokens, node).len == 0
+			&& c.un_has_unparenthesized_optional_chain_element(t, tokens, t.node(node, .expression) or {
+			return false
+		})
+	}
+	if !un_is_chain_element(t, node) {
+		return false
+	}
+	if t.flag(node, .optional) or { false } {
+		return true
+	}
+	next := t.node(node, if t.typ(node) == .member_expression { estree.Key.object } else { .callee }) or {
+		return false
+	}
+	return c.un_has_unparenthesized_optional_chain_element(t, tokens, next)
+}
+
+// un_trace_add adds `path` with the use `kind` ('read', 'call' or 'construct') to a trace map of
+// es_global_references, merging it with what is there (createTraceMap and mergeTraceMap of
+// global-reference-tracker.js).
+fn un_trace_add(mut trace map[string]EsTrace, path []string, kind string) {
+	entry := trace[path[0]] or { EsTrace{} }
+	if path.len == 1 {
+		trace[path[0]] = EsTrace{
+			...entry
+			read:      entry.read || kind == 'read'
+			call:      entry.call || kind == 'call'
+			construct: entry.construct || kind == 'construct'
+		}
+		return
+	}
+	mut children := entry.children.clone()
+	un_trace_add(mut children, path[1..], kind)
+	trace[path[0]] = EsTrace{
+		...entry
+		children: children
+	}
+}
+
+// un_trace_map is the trace map of GlobalReferenceTracker for the objects (names or paths like
+// `Intl.Collator`) and the use `kind`.
+fn un_trace_map(objects []string, kind string) map[string]EsTrace {
+	mut trace := map[string]EsTrace{}
+	for object in objects {
+		un_trace_add(mut trace, object.split('.'), kind)
+	}
+	return trace
 }
 
 // un_switch_call_to_new ports switchCallExpressionToNewExpression: `Error()` becomes `new Error()`.
@@ -735,7 +888,7 @@ fn (c &Checker) un_switch_call_to_new(t &estree.EsTree, tokens &SourceTokens, no
 	mut fixes := c.un_fix_space_around_keyword(t, tokens, node)
 	fixes << fix_insert_at(t.nodes[node].start, 'new ')
 	callee := t.node(node, .callee) or { return fixes }
-	if !c.un_is_parenthesized(t, tokens, callee) && un_new_callee_needs_parens(t, callee) {
+	if !c.un_is_parenthesized(t, tokens, callee) && c.un_new_callee_needs_parens(t, tokens, callee) {
 		fixes << fix_insert_at(t.nodes[callee].start, '(')
 		fixes << fix_insert_at(t.nodes[callee].end, ')')
 	}
@@ -897,19 +1050,29 @@ fn (c &Checker) un_new_with_parentheses(t &estree.EsTree, tokens &SourceTokens, 
 		&& t.nodes[callee].end < t.nodes[node].end
 }
 
-// un_switch_new_to_call ports switchNewExpressionToCallExpression: `new Foo()` becomes `Foo()`.
+// un_switch_new_to_call ports switchNewExpressionToCallExpression (eslint-plugin-unicorn 79.0.0):
+// `new Foo()` becomes `Foo()`, in parentheses when the call would become the arguments of an
+// outer `new`, or when the callee on another line would leave a `return`, `throw` or `yield`
+// alone.
 fn (c &Checker) un_switch_new_to_call(t &estree.EsTree, tokens &SourceTokens, node int) []Fix {
 	new_token := un_first_token(t, tokens, node, 0) or { return [] }
-	mut fixes := [fix_remove_range(new_token.start, new_token.end),
-		c.un_remove_spaces_after(new_token.end)]
+	callee := t.node(node, .callee) or { return [] }
+	should_parenthesize := c.un_is_in_unparenthesized_new_callee(t, tokens, node)
+		|| (!un_same_line(t, new_token.start, t.nodes[callee].start)
+		&& c.un_unparenthesized_keyword_argument_parent(t, tokens, node) != none)
+	mut fixes := [
+		fix_replace_range(new_token.start, new_token.end, if should_parenthesize { '(' } else { '' }),
+		c.un_remove_spaces_after(new_token.end),
+	]
 	if !c.un_new_with_parentheses(t, tokens, node) {
 		fixes << fix_insert_at(t.nodes[node].end, '()')
 	}
-	callee := t.node(node, .callee) or { return fixes }
-	// Without `new`, a callee on the next line after `return` would not be returned.
-	if !un_same_line(t, new_token.start, t.nodes[callee].start)
-		&& !c.un_is_parenthesized(t, tokens, node) {
-		fixes << c.un_add_parens_to_return_or_throw(t, tokens, t.nodes[node].parent)
+	if should_parenthesize {
+		fixes << fix_insert_at(t.nodes[node].end, ')')
+	}
+	next := tokens.after(new_token.end, false) or { return fixes }
+	if c.un_needs_semicolon(t, tokens, tokens.before(t.nodes[node].start, false), c.token_text(next)) {
+		fixes << fix_insert_at(t.nodes[node].start, ';')
 	}
 	return fixes
 }

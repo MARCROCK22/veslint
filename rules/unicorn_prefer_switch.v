@@ -4,7 +4,8 @@ import estree
 import json2
 import time
 
-// Port of the `unicorn/prefer-switch` rule of eslint-plugin-unicorn 64.0.0, with its fix.
+// Port of the `unicorn/prefer-switch` rule of eslint-plugin-unicorn 79.0.0, with its fix and its
+// suggestion.
 
 const ups_messages = {
 	'prefer-switch': 'Use `switch` instead of multiple `else-if`.'
@@ -34,6 +35,12 @@ struct UpsIf {
 // ups_is_same ports isSame: the same node, or isSameReference.
 fn (mut c Checker) ups_is_same(t &estree.EsTree, a int, b int) bool {
 	return a == b || c.un_is_same_reference(t, a, b)
+}
+
+// ups_is_constant ports isConstant: a literal, a static string or `undefined`.
+fn ups_is_constant(t &estree.EsTree, node int) bool {
+	return t.typ(node) == .literal || un_static_string_value(t, node) != none
+		|| un_is_undefined(t, node)
 }
 
 // ups_equality_comparisons ports getEqualityComparisons: the `===` comparisons joined by `||`, in
@@ -69,9 +76,10 @@ fn (mut c Checker) ups_statements(t &estree.EsTree, first int) ([]UpsIf, int) {
 			break
 		}
 		if candidates == none {
+			// getDiscriminantCandidates: the sides that are not constants.
 			candidates = [t.node(compares[0], .left) or { break }, t.node(compares[0], .right) or {
 				break
-			}]
+			}].filter(!ups_is_constant(t, it))
 		}
 		mut current := candidates or { []int{} }
 		// getCommonReferences
@@ -197,12 +205,31 @@ fn (mut c Checker) lint_unicorn_prefer_switch(root C.TSNode, abs_path string, mu
 			message_id: 'prefer-switch'
 		}
 		if !un_has_side_effect(t, discriminant)
-			&& !ifs.any(ups_has_break_inside(t, breaks, it.statement)) {
-			has_fix, fix := c.merge_fixes(c.ups_fix(t, tokens, ifs, discriminant, opts))!
-			finding = Finding{
-				...finding
-				has_fix: has_fix
-				fix:     fix
+			&& ifs.all(!ups_has_break_inside(t, breaks, it.statement)) {
+			fixes := c.ups_fix(t, tokens, ifs, discriminant, opts)
+			// The fix reads the discriminant once where the chain reads it once per branch, and a
+			// case value with side effects can change it before a later branch: then only a
+			// suggestion.
+			if fixes.len > 0 {
+				has_fix, fix := c.merge_fixes(fixes)!
+				if un_has_side_effect(t, discriminant, consider_getters: true)
+					|| ifs.any(un_has_side_effect(t, t.node(it.statement, .test) or { -1 })) {
+					finding = Finding{
+						...finding
+						suggestions: [
+							Suggestion{
+								message_id: 'prefer-switch'
+								fix:        fix
+							},
+						]
+					}
+				} else {
+					finding = Finding{
+						...finding
+						has_fix: has_fix
+						fix:     fix
+					}
+				}
 			}
 		}
 		findings << finding
@@ -211,25 +238,56 @@ fn (mut c Checker) lint_unicorn_prefer_switch(root C.TSNode, abs_path string, mu
 	return findings
 }
 
+// ups_fix ports fix: no fix ([]) when it aborts.
 fn (mut c Checker) ups_fix(t &estree.EsTree, tokens &SourceTokens, ifs []UpsIf, discriminant int, opts UpsOptions) []Fix {
 	first := ifs[0].statement
 	indent := c.un_indent_string(t, first)
+	linebreak := un_linebreak(c.src)
+	// The head of the `if` and the text before the `else` are removed: a comment there would be
+	// lost.
+	for item in ifs {
+		consequent := t.node(item.statement, .consequent) or { return [] }
+		if un_would_remove_comments(tokens, t.nodes[item.statement].start, t.nodes[consequent].start,
+			[]) {
+			return []
+		}
+		if alternate := t.node(item.statement, .alternate) {
+			if un_would_remove_comments(tokens, t.nodes[consequent].end, t.nodes[alternate].start,
+				[]) {
+				return []
+			}
+		}
+	}
+	// A repeated `case` label is unreachable: no fix that makes one. Labels are compared by
+	// their value.
+	mut labels := map[string]bool{}
+	for item in ifs {
+		for compare in item.compares {
+			left := t.node(compare, .left) or { continue }
+			right := t.node(compare, .right) or { continue }
+			value := if c.ups_is_same(t, left, discriminant) { right } else { left }
+			result := c.un_static_value(t, value)
+			text_label := 'text:${c.un_text(t, value)}'
+			label := if result.found {
+				if text := js_any_string_value(result.value) {
+					'value:${stv_typeof(result.value)}:${text}'
+				} else {
+					text_label
+				}
+			} else {
+				text_label
+			}
+			if label in labels {
+				return []
+			}
+			labels[label] = true
+		}
+	}
 	mut fixes := [fix_insert_at(t.nodes[first].start, 'switch (${c.un_text(t, discriminant)}) {')]
 	last := ifs.last().statement
 	if alternate := t.node(last, .alternate) {
-		fixes << fix_insert_at(t.nodes[alternate].start, '\n${indent}default: ')
-	} else {
-		match opts.empty_default_case {
-			'no-default-comment' {
-				fixes << fix_insert_at(t.nodes[first].end, '\n${indent}// No default')
-			}
-			'do-nothing-comment' {
-				fixes << fix_insert_at(t.nodes[first].end, '\n${indent}default:\n${indent}// Do nothing')
-			}
-			else {}
-		}
+		fixes << fix_insert_at(t.nodes[alternate].start, '${linebreak}${indent}default: ')
 	}
-	fixes << fix_insert_at(t.nodes[first].end, '\n${indent}}')
 	for item in ifs {
 		statement := item.statement
 		consequent := t.node(statement, .consequent) or { continue }
@@ -241,19 +299,33 @@ fn (mut c Checker) ups_fix(t &estree.EsTree, tokens &SourceTokens, ifs []UpsIf, 
 			left := t.node(compare, .left) or { continue }
 			right := t.node(compare, .right) or { continue }
 			value := if c.ups_is_same(t, left, discriminant) { right } else { left }
-			fixes << fix_insert_at(t.nodes[consequent].start, '\n${indent}case ${c.un_text(t,
+			fixes << fix_insert_at(t.nodes[consequent].start, '${linebreak}${indent}case ${c.un_text(t,
 				value)}: ')
 		}
 		if ups_should_insert_break(t, consequent) {
 			if t.typ(consequent) == .block_statement {
 				closing := un_last_token(t, tokens, consequent) or { continue }
-				fixes << fix_insert_at(closing.start, '\n${indent}break;\n${indent}')
+				fixes << fix_insert_at(closing.start, '${linebreak}${indent}break;${linebreak}${indent}')
 			} else {
-				fixes << fix_insert_at(t.nodes[consequent].end, '\n${indent}break;')
-				fixes << fix_insert_at(t.nodes[consequent].start, '{\n${indent}')
-				fixes << fix_insert_at(t.nodes[consequent].end, '\n${indent}}')
+				fixes << fix_insert_at(t.nodes[consequent].end, '${linebreak}${indent}break;')
+				fixes << fix_insert_at(t.nodes[consequent].start, '{${linebreak}${indent}')
+				fixes << fix_insert_at(t.nodes[consequent].end, '${linebreak}${indent}}')
 			}
 		}
 	}
+	// The empty `default:` goes between the braces of the last case and those of the `switch`:
+	// insertions at one place are applied in order.
+	if t.node(last, .alternate) == none {
+		match opts.empty_default_case {
+			'no-default-comment' {
+				fixes << fix_insert_at(t.nodes[first].end, '${linebreak}${indent}// No default')
+			}
+			'do-nothing-comment' {
+				fixes << fix_insert_at(t.nodes[first].end, '${linebreak}${indent}default:${linebreak}${indent}// Do nothing')
+			}
+			else {}
+		}
+	}
+	fixes << fix_insert_at(t.nodes[first].end, '${linebreak}${indent}}')
 	return fixes
 }
