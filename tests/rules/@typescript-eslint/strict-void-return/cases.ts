@@ -317,3 +317,41 @@ runTagged(() => 1);
 runTagged(taggedNumberFn);
 taggedRunner(() => 1);
 const taggedTarget: (() => void) & { tag?: string } = () => 1;
+
+// typescript-eslint 8.72: suggestions. An arrow function without braces whose body has side
+// effects gets `void` (and loses `async` and its return type); an async function with a block
+// body gets it wrapped in an async IIFE.
+declare function sideEffect(): number;
+declare const record: { a: number };
+let counter = 0;
+run(() => sideEffect());
+run(() => record.a);
+run(() => counter++);
+run(() => (counter = 1));
+run(() => ({ a: sideEffect() }));
+run(() => 1 + sideEffect());
+run(() => new Date());
+run(() => (() => sideEffect()));
+run((): number => sideEffect());
+run(async () => sideEffect());
+run(async (): Promise<number> => await sideEffect());
+run(async () => record.a);
+run(async () => {
+  await Promise.resolve();
+});
+run(async (): Promise<void> => {
+  await Promise.resolve();
+});
+run(async function () {
+  await Promise.resolve();
+});
+run(async function named(): Promise<number> {
+  return 1;
+});
+const asyncMethods: { m: () => void; n: () => void } = {
+  async m() {
+    await Promise.resolve();
+  },
+  n: async () => sideEffect(),
+};
+void asyncMethods;

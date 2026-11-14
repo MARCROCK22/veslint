@@ -2,7 +2,7 @@ module rules
 
 import treesitter { children, node_kind, node_parent, prev_sibling }
 
-// Port of typescript-eslint 8.62.0's util/getWrappingFixer.js: fixes that wrap a node in other
+// Port of typescript-eslint 8.72.2's util/getWrappingFixer.js: fixes that wrap a node in other
 // code, with the parentheses and the leading `;` the result needs where it goes.
 //
 // getWrappingFixer({ node, innerNode, wrap }) becomes two steps, with EsNode (fix_tokens.v) for
@@ -51,9 +51,10 @@ fn (c &Checker) moved_node_code(node_to_move EsNode, destination EsNode) string 
 }
 
 // is_strong_precedence_node ports isStrongPrecedenceNode: a Literal, Identifier, TSTypeReference,
-// TSTypeOperator, ArrayExpression, ObjectExpression, MemberExpression, CallExpression,
-// NewExpression, TaggedTemplateExpression or TSInstantiationExpression. A ChainExpression is not
-// one, nor are `this`, a template or `import()`.
+// ArrayExpression, ObjectExpression, MemberExpression, CallExpression, NewExpression,
+// TaggedTemplateExpression or TSInstantiationExpression (since 8.72 not a TSTypeOperator: `keyof
+// T`, `readonly T[]`, `unique symbol`). A ChainExpression is not one, nor are `this`, a template
+// or `import()`.
 fn is_strong_precedence_node(e EsNode) bool {
 	if e.chain {
 		return false
@@ -62,18 +63,12 @@ fn is_strong_precedence_node(e EsNode) bool {
 		'string', 'number', 'true', 'false', 'null', 'regex', 'identifier', 'undefined',
 		'property_identifier', 'shorthand_property_identifier',
 		'shorthand_property_identifier_pattern', 'statement_identifier', 'type_identifier',
-		'generic_type', 'nested_type_identifier', 'index_type_query', 'readonly_type', 'array',
-		'object', 'member_expression', 'subscript_expression', 'new_expression',
-		'instantiation_expression' {
+		'generic_type', 'nested_type_identifier', 'array', 'object', 'member_expression',
+		'subscript_expression', 'new_expression', 'instantiation_expression' {
 			true
 		}
 		'call_expression' {
 			!precedence_is_import_call(e.node)
-		}
-		'predefined_type' {
-			// `unique symbol` is a TSTypeOperator; the other ones are keywords.
-			parts := children(e.node)
-			parts.len > 0 && node_kind(parts[0]) == 'unique symbol'
 		}
 		else {
 			false
