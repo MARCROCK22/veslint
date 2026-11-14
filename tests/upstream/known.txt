@@ -1254,3 +1254,15 @@ eslint	require-module-specifiers/r1/v22	the test lints a declaration file, the f
 veslint	require-module-specifiers/r1/v22	the test lints a declaration file, the fixtures `file.ts`
 # tree-sitter reads `declare export type {} from "foo";` (TypeScript rejects `declare` there) as a syntax error.
 veslint	require-module-specifiers/r1/i12	tree-sitter reads `declare export` as a syntax error
+# prefer-module: the `.mjs` and `.cjs` cases lint a file of another name, the fixtures `file.ts` in both tools; the
+# `new __filename.constructor()` cases of the JavaScript parser get the parentheses TypeScript needs.
+eslint	prefer-module/r0/i3	the test lints a file of another name, the fixtures `file.ts`
+veslint	prefer-module/r0/i3	the test lints a file of another name, the fixtures `file.ts`
+eslint	prefer-module/r7/v0	the test lints a file of another name, the fixtures `file.ts`
+veslint	prefer-module/r7/v0	the test lints a file of another name, the fixtures `file.ts`
+eslint	prefer-module/r7/v1	the test lints a file of another name, the fixtures `file.ts`
+veslint	prefer-module/r7/v1	the test lints a file of another name, the fixtures `file.ts`
+eslint	prefer-module/r9/i0	a JavaScript case: as TypeScript, `import.meta` in a constructor callee takes parentheses
+veslint	prefer-module/r9/i0	a JavaScript case: as TypeScript, `import.meta` in a constructor callee takes parentheses
+eslint	prefer-module/r9/i4	a JavaScript case: as TypeScript, `import.meta` in a constructor callee takes parentheses
+veslint	prefer-module/r9/i4	a JavaScript case: as TypeScript, `import.meta` in a constructor callee takes parentheses
