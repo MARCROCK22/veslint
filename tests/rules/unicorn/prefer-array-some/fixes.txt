@@ -5,10 +5,33 @@ tests/rules/unicorn/prefer-array-some/cases.ts:7:17	unicorn/prefer-array-some	so
 tests/rules/unicorn/prefer-array-some/cases.ts:8:17	unicorn/prefer-array-some	some	Prefer `.some(…)` over `.find(…)`.	suggestion	some-suggestion	Replace `.find(…)` with `.some(…)`.	302	332	some(x => x > 1)	end	8	21
 tests/rules/unicorn/prefer-array-some/cases.ts:9:17	unicorn/prefer-array-some	some	Prefer `.some(…)` over `.find(…)`.	suggestion	some-suggestion	Replace `.find(…)` with `.some(…)`.	345	374	!list.some(x => x > 1)	end	9	21
 tests/rules/unicorn/prefer-array-some/cases.ts:10:18	unicorn/prefer-array-some	some	Prefer `.some(…)` over `.find(…)`.	suggestion	some-suggestion	Replace `.find(…)` with `.some(…)`.	387	424	!(list.some(x => x > 1))	end	10	22
-tests/rules/unicorn/prefer-array-some/cases.ts:11:17	unicorn/prefer-array-some	some	Prefer `.some(…)` over `.findIndex(…)`.	fix	442	470	some(x => x > 1) 	end	11	26
-tests/rules/unicorn/prefer-array-some/cases.ts:12:17	unicorn/prefer-array-some	some	Prefer `.some(…)` over `.findLastIndex(…)`.	fix	483	520	!list.some(x => x > 1) 	end	12	30
-tests/rules/unicorn/prefer-array-some/cases.ts:13:17	unicorn/prefer-array-some	some	Prefer `.some(…)` over `.findIndex(…)`.	fix	538	564	some(x => x > 1) 	end	13	26
-tests/rules/unicorn/prefer-array-some/cases.ts:14:18	unicorn/prefer-array-some	some	Prefer `.some(…)` over `.findIndex(…)`.	fix	578	608	!list.some(x => x > 1) 	end	14	27
+tests/rules/unicorn/prefer-array-some/cases.ts:11:17	unicorn/prefer-array-some	some	Prefer `.some(…)` over `.findIndex(…)`.	fix	442	470	some(x => x > 1)	end	11	26
+tests/rules/unicorn/prefer-array-some/cases.ts:12:17	unicorn/prefer-array-some	some	Prefer `.some(…)` over `.findLastIndex(…)`.	fix	483	520	!list.some(x => x > 1)	end	12	30
+tests/rules/unicorn/prefer-array-some/cases.ts:13:17	unicorn/prefer-array-some	some	Prefer `.some(…)` over `.findIndex(…)`.	fix	538	564	some(x => x > 1)	end	13	26
+tests/rules/unicorn/prefer-array-some/cases.ts:14:18	unicorn/prefer-array-some	some	Prefer `.some(…)` over `.findIndex(…)`.	fix	578	608	!list.some(x => x > 1)	end	14	27
 tests/rules/unicorn/prefer-array-some/cases.ts:15:18	unicorn/prefer-array-some	filter	Prefer `.some(…)` over non-zero length check from `.filter(…)`.	fix	627	656	some(x => x > 1)	end	15	24
 tests/rules/unicorn/prefer-array-some/cases.ts:16:19	unicorn/prefer-array-some	filter	Prefer `.some(…)` over non-zero length check from `.filter(…)`.	fix	676	708	some(x => x > 1))	end	16	25
 tests/rules/unicorn/prefer-array-some/cases.ts:17:13	unicorn/prefer-array-some	some	Prefer `.some(…)` over `.find(…)`.	suggestion	some-suggestion	Replace `.find(…)` with `.some(…)`.	722	726	some	end	17	17
+tests/rules/unicorn/prefer-array-some/cases.ts:34:22	unicorn/prefer-array-some	some	Prefer `.some(…)` over `.find(…)`.	suggestion	some-suggestion	Replace `.find(…)` with `.some(…)`.	1403	1407	some	end	34	26
+tests/rules/unicorn/prefer-array-some/cases.ts:39:23	unicorn/prefer-array-some	some	Prefer `.some(…)` over `.findLast(…)`.	suggestion	some-suggestion	Replace `.findLast(…)` with `.some(…)`.	1493	1501	some	end	39	31
+tests/rules/unicorn/prefer-array-some/cases.ts:47:27	unicorn/prefer-array-some	some	Prefer `.some(…)` over `.find(…)`.	suggestion	some-suggestion	Replace `.find(…)` with `.some(…)`.	1693	1697	some	end	47	31
+tests/rules/unicorn/prefer-array-some/cases.ts:74:17	unicorn/prefer-array-some	some	Prefer `.some(…)` over `.find(…)`.	end	74	21
+tests/rules/unicorn/prefer-array-some/cases.ts:75:17	unicorn/prefer-array-some	some	Prefer `.some(…)` over `.findIndex(…)`.	end	75	26
+tests/rules/unicorn/prefer-array-some/cases.ts:76:17	unicorn/prefer-array-some	some	Prefer `.some(…)` over `.findIndex(…)`.	end	76	26
+tests/rules/unicorn/prefer-array-some/cases.ts:78:17	unicorn/prefer-array-some	some	Prefer `.some(…)` over `.findIndex(…)`.	fix	2903	2941	some(predicate) /* kept */	end	78	26
+tests/rules/unicorn/prefer-array-some/cases.ts:79:17	unicorn/prefer-array-some	filter	Prefer `.some(…)` over non-zero length check from `.filter(…)`.	end	79	23
+tests/rules/unicorn/prefer-array-some/cases.ts:80:17	unicorn/prefer-array-some	filter	Prefer `.some(…)` over non-zero length check from `.filter(…)`.	end	80	23
+tests/rules/unicorn/prefer-array-some/cases.ts:85:17	unicorn/prefer-array-some	some	Prefer `.some(…)` over `.findLastIndex(…)`.	suggestion	some-suggestion	Replace `.findLastIndex(…)` with `.some(…)`.	3235	3266	some(predicate)	end	85	30
+tests/rules/unicorn/prefer-array-some/cases.ts:86:17	unicorn/prefer-array-some	some	Prefer `.some(…)` over `.findLastIndex(…)`.	suggestion	some-suggestion	Replace `.findLastIndex(…)` with `.some(…)`.	3279	3325	!list.some(value => log(value))	end	86	30
+tests/rules/unicorn/prefer-array-some/cases.ts:87:17	unicorn/prefer-array-some	some	Prefer `.some(…)` over `.findLastIndex(…)`.	fix	3338	3383	!list.some(value => value > 1)	end	87	30
+tests/rules/unicorn/prefer-array-some/cases.ts:88:17	unicorn/prefer-array-some	filter	Prefer `.some(…)` over non-zero length check from `.filter(…)`.	suggestion	some-suggestion	Replace `.filter(…)` with `.some(…)`.	3401	3429	some(predicate)	end	88	23
+tests/rules/unicorn/prefer-array-some/cases.ts:89:17	unicorn/prefer-array-some	filter	Prefer `.some(…)` over non-zero length check from `.filter(…)`.	suggestion	some-suggestion	Replace `.filter(…)` with `.some(…)`.	3447	3497	some(value => (count++, value > 0))	end	89	23
+tests/rules/unicorn/prefer-array-some/cases.ts:90:17	unicorn/prefer-array-some	filter	Prefer `.some(…)` over non-zero length check from `.filter(…)`.	fix	3515	3572	some(function (value) { return value > 1; })	end	90	23
+tests/rules/unicorn/prefer-array-some/cases.ts:91:17	unicorn/prefer-array-some	some	Prefer `.some(…)` over `.findIndex(…)`.	fix	3590	3627	some(predicate, receiver)	end	91	26
+tests/rules/unicorn/prefer-array-some/cases.ts:94:18	unicorn/prefer-array-some	some	Prefer `.some(…)` over `.findIndex(…)`.	fix	3698	3731	!list.some(x => x > 1)	end	94	27
+tests/rules/unicorn/prefer-array-some/cases.ts:96:18	unicorn/prefer-array-some	some	Prefer `.some(…)` over `.findIndex(…)`.	fix	3826	3856	!list.some(x => x > 1)	end	96	27
+tests/rules/unicorn/prefer-array-some/cases.ts:98:8	unicorn/prefer-array-some	some	Prefer `.some(…)` over `.findIndex(…)`.	fix	3877	3909	!list.some(x => x > 1)	end	98	17
+tests/rules/unicorn/prefer-array-some/cases.ts:99:20	unicorn/prefer-array-some	some	Prefer `.some(…)` over `.findIndex(…)`.	fix	3933	3966	!list.some(x => x > 1)	end	99	29
+tests/rules/unicorn/prefer-array-some/cases.ts:102:6	unicorn/prefer-array-some	some	Prefer `.some(…)` over `.findIndex(…)`.	fix	4010	4040	;(!list.some(x => x > 1))	end	102	15
+tests/rules/unicorn/prefer-array-some/cases.ts:103:7	unicorn/prefer-array-some	some	Prefer `.some(…)` over `.findIndex(…)`.	fix	4055	4085	(!list.some(x => x > 1))	end	103	16
+tests/rules/unicorn/prefer-array-some/cases.ts:104:6	unicorn/prefer-array-some	some	Prefer `.some(…)` over `.findLastIndex(…)`.	fix	4100	4147	(!list.some(x => x === /* keep */ 1))	end	104	19

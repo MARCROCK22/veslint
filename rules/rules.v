@@ -478,7 +478,7 @@ pub const untyped_rules = [adjacent_overload_signatures, array_type, class_liter
 	unicorn_prefer_native_coercion_functions,
 	unicorn_no_for_each, unicorn_no_array_method_this_argument, unicorn_no_array_reverse,
 	unicorn_no_array_sort, unicorn_no_new_array, unicorn_prefer_array_flat,
-	unicorn_prefer_array_index_of, unicorn_prefer_array_some,
+	unicorn_prefer_array_index_of,
 	unicorn_prefer_negative_index,
 	unicorn_consistent_existence_index_check, unicorn_explicit_length_check,
 	unicorn_no_unnecessary_array_splice_count,

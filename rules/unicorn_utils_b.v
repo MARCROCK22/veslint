@@ -4535,3 +4535,37 @@ fn unb_is_reference_identifier(t &estree.EsTree, node int) bool {
 fn unb_call_callee_needs_parens(t &estree.EsTree, node int) bool {
 	return unb_precedence(t, node) < unb_precedence_call || t.typ(node) == .new_expression
 }
+
+// unb_should_add_parens_to_unary_replacement ports shouldAddParenthesesToUnaryExpressionReplacement
+// (utils/should-add-parentheses-to-unary-expression-replacement.js): replacing the node with a
+// unary expression needs grouping in what is around it (the left operand of `**`, a member object,
+// a callee, a tag or a superclass), unless the node or a TypeScript wrapper around it is
+// parenthesized (before `**`, parentheses around `as`, `satisfies` and `<T>` do not count: TypeScript
+// drops them).
+fn (c &Checker) unb_should_add_parens_to_unary_replacement(t &estree.EsTree, tokens &SourceTokens, node int) bool {
+	expression := unb_outermost_ts(t, node)
+	parent := t.nodes[expression].parent
+	if parent < 0 {
+		return false
+	}
+	parent_type := t.typ(parent)
+	is_exponentiation_left_operand := parent_type == .binary_expression
+		&& (t.string_of(parent, .operator) or { '' }) == '**'
+		&& t.node(parent, .left) or { -1 } == expression
+	for current := node; current >= 0; current = t.nodes[current].parent {
+		if c.un_is_parenthesized(t, tokens, current) && (!is_exponentiation_left_operand
+			|| t.typ(current) !in [.ts_as_expression, .ts_satisfies_expression, .ts_type_assertion]) {
+			return false
+		}
+		if current == expression {
+			break
+		}
+	}
+	return is_exponentiation_left_operand
+		|| (parent_type == .member_expression && t.node(parent, .object) or { -1 } == expression)
+		|| (parent_type in [.call_expression, .new_expression]
+		&& t.node(parent, .callee) or { -1 } == expression)
+		|| (parent_type == .tagged_template_expression && t.node(parent, .tag) or { -1 } == expression)
+		|| (parent_type in [.class_declaration, .class_expression]
+		&& t.node(parent, .super_class) or { -1 } == expression)
+}
