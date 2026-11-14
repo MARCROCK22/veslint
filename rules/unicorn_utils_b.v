@@ -4266,3 +4266,272 @@ fn unb_is_regexp_escape_replace_call(t &estree.EsTree, node int) bool {
 	characters := unb_character_class_characters(info.pattern) or { return false }
 	return characters.len >= 8 && (unb_static_string_value(t, arguments[1]) or { return false }) == '\\$&'
 }
+
+// singular (utils/singular.js) is `pluralize.singular` of pluralize 8.0.0: its irregular rules
+// (single, plural; lowercased, in order, so the last plural of a single wins), its singular
+// rules (its regular expressions, then those of its uncountable rules with `$0`) and its
+// uncountable words. The regular expressions have the `i` flag; here every literal unit of their
+// sources is in its canonical form (Canonicalize of the `i` flag without `u`), and they run
+// without `i` on the canonical units of the word: the same matches, at the same positions (each
+// unit maps to one), without the case-insensitive sets that make compiling them slow.
+const unb_pluralize_irregulars = [
+	['i', 'we'],
+	['me', 'us'],
+	['he', 'they'],
+	['she', 'they'],
+	['them', 'them'],
+	['myself', 'ourselves'],
+	['yourself', 'yourselves'],
+	['itself', 'themselves'],
+	['herself', 'themselves'],
+	['himself', 'themselves'],
+	['themself', 'themselves'],
+	['is', 'are'],
+	['was', 'were'],
+	['has', 'have'],
+	['this', 'these'],
+	['that', 'those'],
+	['echo', 'echoes'],
+	['dingo', 'dingoes'],
+	['volcano', 'volcanoes'],
+	['tornado', 'tornadoes'],
+	['torpedo', 'torpedoes'],
+	['genus', 'genera'],
+	['viscus', 'viscera'],
+	['stigma', 'stigmata'],
+	['stoma', 'stomata'],
+	['dogma', 'dogmata'],
+	['lemma', 'lemmata'],
+	['schema', 'schemata'],
+	['anathema', 'anathemata'],
+	['ox', 'oxen'],
+	['axe', 'axes'],
+	['die', 'dice'],
+	['yes', 'yeses'],
+	['foot', 'feet'],
+	['eave', 'eaves'],
+	['goose', 'geese'],
+	['tooth', 'teeth'],
+	['quiz', 'quizzes'],
+	['human', 'humans'],
+	['proof', 'proofs'],
+	['carve', 'carves'],
+	['valve', 'valves'],
+	['looey', 'looies'],
+	['thief', 'thieves'],
+	['groove', 'grooves'],
+	['pickaxe', 'pickaxes'],
+	['passerby', 'passersby']
+]
+const unb_pluralize_singular_rules = [
+	[r'S$', r''],
+	[r'(SS)$', r'$1'],
+	[r'(WI|KNI|(?:AFTER|HALF|HIGH|LOW|MID|NON|NIGHT|[^\w]|^)LI)VES$', r'$1fe'],
+	[r'(AR|(?:WO|[AE])L|[EO][AO])VES$', r'$1f'],
+	[r'IES$', r'y'],
+	[r'\b([PL]|ZOMB|(?:NECK|CROSS)?T|COLL|FAER|FOOD|GEN|GOON|GROUP|LASS|TALK|GOAL|CUT)IES$', r'$1ie'],
+	[r'\b(MON|SMIL)IES$', r'$1ey'],
+	[r'\b((?:TIT)?M|L)ICE$', r'$1ouse'],
+	[r'(SERAPH|CHERUB)IM$', r'$1'],
+	[r'(X|CH|SS|SH|ZZ|TTO|GO|CHO|ALIAS|[^AOU]US|T[LM]AS|GAS|(?:HER|AT|GR)O|[AEIOU]RIS)(?:ES)?$', r'$1'],
+	[r'(ANALY|DIAGNO|PARENTHE|PROGNO|SYNOP|THE|EMPHA|CRI|NE)(?:SIS|SES)$', r'$1sis'],
+	[r'(MOVIE|TWELVE|ABUSE|E[MN]U)S$', r'$1'],
+	[r'(TEST)(?:IS|ES)$', r'$1is'],
+	[r'(ALUMN|SYLLAB|VIR|RADI|NUCLE|FUNG|CACT|STIMUL|TERMIN|BACILL|FOC|UTER|LOC|STRAT)(?:US|I)$', r'$1us'],
+	[r'(AGEND|ADDEND|MILLENNI|DAT|EXTREM|BACTERI|DESIDERAT|STRAT|CANDELABR|ERRAT|OV|SYMPOSI|CURRICUL|QUOR)A$', r'$1um'],
+	[r'(APHELI|HYPERBAT|PERIHELI|ASYNDET|NOUMEN|PHENOMEN|CRITERI|ORGAN|PROLEGOMEN|HEDR|AUTOMAT)A$', r'$1on'],
+	[r'(ALUMN|ALG|VERTEBR)AE$', r'$1a'],
+	[r'(COD|MUR|SIL|VERT|IND)ICES$', r'$1ex'],
+	[r'(MATR|APPEND)ICES$', r'$1ix'],
+	[r'(PE)(RSON|OPLE)$', r'$1rson'],
+	[r'(CHILD)REN$', r'$1'],
+	[r'(EAU)X?$', r'$1'],
+	[r'MEN$', r'man'],
+	[r'POK[EÉ]MON$', r'$0'],
+	[r'[^AEIOU]ESE$', r'$0'],
+	[r'DEER$', r'$0'],
+	[r'FISH$', r'$0'],
+	[r'MEASLES$', r'$0'],
+	[r'O[IU]S$', r'$0'],
+	[r'POX$', r'$0'],
+	[r'SHEEP$', r'$0']
+]
+const unb_pluralize_uncountables = ['adulthood', 'advice', 'agenda', 'aid', 'aircraft', 'alcohol', 'ammo',
+	'analytics', 'anime', 'athletics', 'audio', 'bison', 'blood', 'bream', 'buffalo', 'butter', 'carp', 'cash',
+	'chassis', 'chess', 'clothing', 'cod', 'commerce', 'cooperation', 'corps', 'debris',
+	'diabetes', 'digestion', 'elk', 'energy', 'equipment', 'excretion', 'expertise', 'firmware',
+	'flounder', 'fun', 'gallows', 'garbage', 'graffiti', 'hardware', 'headquarters', 'health',
+	'herpes', 'highjinks', 'homework', 'housework', 'information', 'jeans', 'justice', 'kudos',
+	'labour', 'literature', 'machinery', 'mackerel', 'mail', 'media', 'mews', 'moose', 'music',
+	'mud', 'manga', 'news', 'only', 'personnel', 'pike', 'plankton', 'pliers', 'police',
+	'pollution', 'premises', 'rain', 'research', 'rice', 'salmon', 'scissors', 'series', 'sewage',
+	'shambles', 'shrimp', 'software', 'species', 'staff', 'swine', 'tennis', 'traffic',
+	'transportation', 'trout', 'tuna', 'wealth', 'welfare', 'whiting', 'wildebeest', 'wildlife',
+	'you']
+
+// unb_restore_case ports restoreCase of pluralize: `token` in the case of `word` (UTF-16 units).
+fn unb_restore_case(word []u16, token []u16) []u16 {
+	if word == token {
+		return token
+	}
+	if word == jsregexp.js_to_lower(word) {
+		return jsregexp.js_to_lower(token)
+	}
+	if word == jsregexp.js_to_upper(word) {
+		return jsregexp.js_to_upper(token)
+	}
+	if word[..1] == jsregexp.js_to_upper(word[..1]) {
+		if token.len == 0 {
+			return token
+		}
+		mut out := jsregexp.js_to_upper(token[..1])
+		out << jsregexp.js_to_lower(token[1..])
+		return out
+	}
+	return jsregexp.js_to_lower(token)
+}
+
+// unb_legacy_canonicalize is Canonicalize of a regular expression with the `i` flag and without
+// `u`: the upper case of the unit when that is one unit, and not an ASCII one for a unit that is
+// not.
+fn unb_legacy_canonicalize(unit u16) u16 {
+	upper := jsregexp.js_to_upper([unit])
+	if upper.len != 1 || (unit >= 128 && upper[0] < 128) {
+		return unit
+	}
+	return upper[0]
+}
+
+// unb_pluralize_interpolate ports interpolate of pluralize: `$n` (one or two digits) of the
+// replacement becomes the argument n of the replacer of String.prototype.replace (the match, the
+// groups, the offset and the string), or '' when it is missing, undefined or empty (`|| ''`).
+fn unb_pluralize_interpolate(replacement string, word []u16, start int, end int, slots []int) []u16 {
+	groups := slots.len / 2 - 1
+	units := utf16_units(replacement)
+	mut out := []u16{}
+	mut i := 0
+	for i < units.len {
+		if units[i] == u16(`$`) && i + 1 < units.len && unb_is_digit(rune(units[i + 1])) {
+			mut j := i + 1
+			mut index := 0
+			for j < units.len && j < i + 3 && unb_is_digit(rune(units[j])) {
+				index = index * 10 + int(units[j]) - 0x30
+				j++
+			}
+			if index == 0 {
+				out << word[start..end]
+			} else if index <= groups {
+				if slots[2 * index] >= 0 {
+					out << word[slots[2 * index]..slots[2 * index + 1]]
+				}
+			} else if index == groups + 1 {
+				if start != 0 {
+					out << utf16_units(start.str())
+				}
+			} else if index == groups + 2 {
+				out << word
+			}
+			i = j
+			continue
+		}
+		out << units[i]
+		i++
+	}
+	return out
+}
+
+// unb_pluralize_singular ports `pluralize.singular` (replaceWord with the irregular plurals as the
+// replacements, the irregular singles as the words to keep, and the singular rules).
+fn unb_pluralize_singular(word string) string {
+	units := utf16_units(word)
+	token := jsregexp.js_to_lower(units)
+	token_text := stv_units_string(token)
+	mut singles := map[string]string{}
+	mut plurals := map[string]string{}
+	for rule in unb_pluralize_irregulars {
+		singles[rule[0]] = rule[1]
+		plurals[rule[1]] = rule[0]
+	}
+	if token_text in singles {
+		return stv_units_string(unb_restore_case(units, token))
+	}
+	if replacement := plurals[token_text] {
+		return stv_units_string(unb_restore_case(units, utf16_units(replacement)))
+	}
+	// sanitizeWord
+	if token.len == 0 || token_text in unb_pluralize_uncountables {
+		return word
+	}
+	canonical := units.map(unb_legacy_canonicalize(it))
+	for k := unb_pluralize_singular_rules.len - 1; k >= 0; k-- {
+		rule := unb_pluralize_singular_rules[k]
+		regex := jsregexp.js_regex_new(rule[0], '') or { continue }
+		found, start, end, slots := regex.exec(canonical, 0) or { continue }
+		if !found {
+			continue
+		}
+		result := unb_pluralize_interpolate(rule[1], units, start, end, slots)
+		restored := if start == end {
+			if start > 0 { unb_restore_case(units[start - 1..start], result) } else { result }
+		} else {
+			unb_restore_case(units[start..end], result)
+		}
+		mut out := units[..start].clone()
+		out << restored
+		out << units[end..]
+		return stv_units_string(out)
+	}
+	return word
+}
+
+// unb_singular ports singular (utils/singular.js): the singular of a name, or none when
+// pluralize leaves it as it is.
+fn unb_singular(original string) ?string {
+	singularized := unb_pluralize_singular(original)
+	if singularized != original {
+		return singularized
+	}
+	return none
+}
+
+// unb_reserved_identifiers are those of `reservedIdentifiers({includeGlobalProperties: true})` of
+// reserved-identifiers 1.2.0: the keywords and reserved words of ES2023, then the value
+// properties of the global object.
+const unb_reserved_identifiers = ['await', 'break', 'case', 'catch', 'class', 'const', 'continue',
+	'debugger', 'default', 'delete', 'do', 'else', 'enum', 'export', 'extends', 'false', 'finally',
+	'for', 'function', 'if', 'import', 'in', 'instanceof', 'new', 'null', 'return', 'super',
+	'switch', 'this', 'throw', 'true', 'try', 'typeof', 'var', 'void', 'while', 'with', 'yield',
+	'implements', 'interface', 'let', 'package', 'private', 'protected', 'public', 'static',
+	'arguments', 'eval', 'globalThis', 'Infinity', 'NaN', 'undefined']
+
+// unb_identifier_regex_test ports `identifierRegex().test(name)` of identifier-regex 1.1.0 (exact,
+// checking the reserved words): the regular expression it builds, with the `u` flag.
+fn unb_identifier_regex_test(name string) bool {
+	pattern := '^(?<![@#\$_\\p{ID_Continue}\\p{ID_Start}])(?!(?:${unb_reserved_identifiers.join('|')})(?![\$_\\p{ID_Continue}]))[\$_\\p{ID_Start}][\$_\\u200C\\u200D\\p{ID_Continue}]*\$'
+	regex := jsregexp.js_regex_new(pattern, 'u') or { return false }
+	return regex.test(utf16_units(name)) or { false }
+}
+
+// unb_is_reference_identifier ports isReferenceIdentifier (ast/is-reference-identifier.js) of
+// 79.0.0 without names: the non-computed key of a TSPropertySignature or a TSMethodSignature is
+// not a reference.
+fn unb_is_reference_identifier(t &estree.EsTree, node int) bool {
+	if t.typ(node) != .identifier {
+		return false
+	}
+	parent := t.nodes[node].parent
+	if parent < 0 {
+		return true
+	}
+	if t.typ(parent) in [.ts_property_signature, .ts_method_signature] {
+		return (t.flag(parent, .computed) or { false }) || t.node(parent, .key) or { -1 } != node
+	}
+	return un_is_reference_identifier(t, node)
+}
+
+// unb_call_callee_needs_parens ports shouldAddParenthesesToCallExpressionCallee of 79.0.0
+// (utils/should-add-parentheses-to-call-expression-callee.js): a precedence lower than a call's,
+// or a `new` expression.
+fn unb_call_callee_needs_parens(t &estree.EsTree, node int) bool {
+	return unb_precedence(t, node) < unb_precedence_call || t.typ(node) == .new_expression
+}

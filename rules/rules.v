@@ -475,7 +475,7 @@ pub const untyped_rules = [adjacent_overload_signatures, array_type, class_liter
 	unicorn_prefer_bigint_literals,
 	unicorn_require_number_to_fixed_digits_argument,
 	unicorn_prefer_math_trunc, unicorn_prefer_math_min_max, unicorn_prefer_modern_math_apis,
-	unicorn_prefer_native_coercion_functions, unicorn_no_array_callback_reference,
+	unicorn_prefer_native_coercion_functions,
 	unicorn_no_for_each, unicorn_no_array_method_this_argument, unicorn_no_array_reverse,
 	unicorn_no_array_sort, unicorn_no_new_array, unicorn_prefer_array_flat,
 	unicorn_prefer_array_index_of, unicorn_prefer_array_some,
@@ -789,7 +789,7 @@ pub const default_options = {
 	unicorn_prefer_math_min_max:                     '[]'
 	unicorn_prefer_modern_math_apis:                 '[]'
 	unicorn_prefer_native_coercion_functions:        '[]'
-	unicorn_no_array_callback_reference:             '[]'
+	unicorn_no_array_callback_reference:             '[{"ignore":[]}]'
 	unicorn_no_for_each:                       '[]'
 	unicorn_no_array_method_this_argument:           '[]'
 	unicorn_no_array_reverse:                        '[{"allowExpressionStatement":true}]'
