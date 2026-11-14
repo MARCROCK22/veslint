@@ -2,7 +2,7 @@ module rules
 
 import time
 
-// Port of the `unicorn/throw-new-error` rule of eslint-plugin-unicorn 64.0.0 (it has no options),
+// Port of the `unicorn/throw-new-error` rule of eslint-plugin-unicorn 79.0.0 (it has no options),
 // with its fix.
 
 const utne_messages = {
@@ -29,7 +29,19 @@ fn (mut c Checker) lint_unicorn_throw_new_error(root C.TSNode, abs_path string, 
 			continue
 		}
 		stats.checked++
+		// Decorators, template tags, and calls used as callees rely on the return value; `new`
+		// produces the constructed instance instead.
+		parent := t.nodes[node].parent
+		if parent >= 0 && (t.typ(parent) == .decorator
+			|| (t.typ(parent) == .tagged_template_expression && t.node(parent, .tag) or { -1 } == node)
+			|| (t.typ(parent) == .call_expression && t.node(parent, .callee) or { -1 } == node)) {
+			continue
+		}
 		callee := t.node(node, .callee) or { continue }
+		// `new` cannot be applied to an optional-chained call (`Error?.()`, `lib?.Error()`).
+		if (t.flag(node, .optional) or { false }) || unb_has_optional_chain_element(t, callee) {
+			continue
+		}
 		name := match t.typ(callee) {
 			.identifier {
 				t.string_of(callee, .name) or { '' }
@@ -52,7 +64,13 @@ fn (mut c Checker) lint_unicorn_throw_new_error(root C.TSNode, abs_path string, 
 		if un_is_member(t, callee, objects: ['Data'], properties: ['TaggedError'], computed: false) {
 			continue
 		}
-		has_fix, fix := c.merge_fixes(c.un_switch_call_to_new(t, tokens, node))!
+		if type_ := c.unb_type_of(t, node, abs_path, mut stats) {
+			if c.signatures_of(type_, signature_kind_call)!.len > 0
+				|| c.signatures_of(type_, signature_kind_construct)!.len > 0 {
+				continue
+			}
+		}
+		has_fix, fix := c.merge_fixes(c.unb_switch_call_to_new(t, tokens, node))!
 		findings << Finding{
 			stmt:       c.es_tree_position(t, node)
 			message_id: 'throw-new-error'

@@ -4,5 +4,7 @@ tests/rules/unicorn/throw-new-error/cases.ts:12:9	unicorn/throw-new-error	throw-
 tests/rules/unicorn/throw-new-error/cases.ts:15:9	unicorn/throw-new-error	throw-new-error	Use `new` when creating an error.	fix	396	421	new (lib.getErrors().TypeError)	end	15	39
 tests/rules/unicorn/throw-new-error/cases.ts:18:9	unicorn/throw-new-error	throw-new-error	Use `new` when creating an error.	fix	454	454	new 	end	18	41
 tests/rules/unicorn/throw-new-error/cases.ts:21:8	unicorn/throw-new-error	throw-new-error	Use `new` when creating an error.	fix	513	513	 new 	end	21	17
-tests/rules/unicorn/throw-new-error/cases.ts:23:12	unicorn/throw-new-error	throw-new-error	Use `new` when creating an error.	fix	537	537	new 	end	23	21
 tests/rules/unicorn/throw-new-error/cases.ts:24:12	unicorn/throw-new-error	throw-new-error	Use `new` when creating an error.	fix	559	559	new 	end	24	24
+tests/rules/unicorn/throw-new-error/cases.ts:44:12	unicorn/throw-new-error	throw-new-error	Use `new` when creating an error.	fix	1299	1317	new (getErrors()!.Error)	end	44	41
+tests/rules/unicorn/throw-new-error/cases.ts:45:12	unicorn/throw-new-error	throw-new-error	Use `new` when creating an error.	fix	1341	1366	new (getErrors()!.nested.Error)	end	45	48
+tests/rules/unicorn/throw-new-error/cases.ts:46:12	unicorn/throw-new-error	throw-new-error	Use `new` when creating an error.	fix	1390	1390	new 	end	46	53

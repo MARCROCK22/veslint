@@ -463,7 +463,7 @@ pub const untyped_rules = [adjacent_overload_signatures, array_type, class_liter
 	unicorn_no_typeof_undefined, unicorn_prefer_logical_operator_over_ternary, unicorn_prefer_ternary,
 	unicorn_prefer_switch, unicorn_switch_case_braces, unicorn_switch_case_break_position,
 	unicorn_no_useless_switch_case, unicorn_prefer_simple_condition_first, unicorn_prefer_date_now,
-	unicorn_throw_new_error, unicorn_error_message, unicorn_consistent_date_clone,
+	unicorn_error_message, unicorn_consistent_date_clone,
 	unicorn_consistent_assert, unicorn_no_new_buffer, unicorn_prefer_type_error,
 	unicorn_no_useless_error_capture_stack_trace, unicorn_prefer_structured_clone,
 	unicorn_custom_error_definition, unicorn_no_instanceof_builtins, unicorn_new_for_builtins,

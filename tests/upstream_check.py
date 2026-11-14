@@ -158,6 +158,10 @@ class Runner:
             language['globals'] = {**defaults.get('globals', {}), **case.get('languageOptions', {}).get('globals', {})}
         if case.get('parserOptions'):
             language['parserOptions'] = case['parserOptions']
+        # eslint-plugin-unicorn reads the types only when the parser has a program
+        # (withTypeInformation), which a case has with `via` alone: the others say there is none.
+        if rule.startswith('unicorn/') and not case.get('via'):
+            language['parserOptions'] = {**language.get('parserOptions', {}), 'projectService': False}
         # eslint-plugin-unicorn's tests (ESLint's RuleTester through eslint-ava-rule-tester) do not
         # report unused disable directives.
         report = 0 if rule.startswith('unicorn/') else 1

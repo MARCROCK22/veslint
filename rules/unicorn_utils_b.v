@@ -1,6 +1,7 @@
 module rules
 
 import estree
+import tsgo { TypeResponse }
 
 // Helpers of eslint-plugin-unicorn 79.0.0 (rules/utils, rules/fix, rules/ast and rules/shared)
 // that are new in it or changed since 64.0.0, for the rules that were brought to 79.0.0 (see
@@ -278,4 +279,188 @@ fn (c &Checker) unb_should_add_parens_to_comparison(t &estree.EsTree, tokens &So
 			false
 		}
 	}
+}
+
+// unb_is_ts_wrapper ports isTypeScriptExpressionWrapper (utils/unwrap-typescript-expression.js):
+// `as`, `satisfies`, `!`, `<Type>` or `foo<Type>`.
+fn unb_is_ts_wrapper(t &estree.EsTree, node int) bool {
+	return node >= 0 && t.typ(node) in [.ts_as_expression, .ts_satisfies_expression,
+		.ts_non_null_expression, .ts_type_assertion, .ts_instantiation_expression]
+}
+
+// unb_unwrap_ts ports unwrapTypeScriptExpression: the node without its TypeScript wrappers.
+fn unb_unwrap_ts(t &estree.EsTree, node int) int {
+	mut n := node
+	for unb_is_ts_wrapper(t, n) {
+		n = t.node(n, .expression) or { return n }
+	}
+	return n
+}
+
+// unb_unwrap_chain_and_ts ports unwrapChainAndTypeScriptExpression.
+fn unb_unwrap_chain_and_ts(t &estree.EsTree, node int) int {
+	mut n := node
+	for n >= 0 && (t.typ(n) == .chain_expression || unb_is_ts_wrapper(t, n)) {
+		n = t.node(n, .expression) or { return n }
+	}
+	return n
+}
+
+// unb_outermost_ts ports getOutermostTypeScriptExpression: the outermost TypeScript wrapper
+// around the node, or the node.
+fn unb_outermost_ts(t &estree.EsTree, node int) int {
+	mut n := node
+	for {
+		parent := t.nodes[n].parent
+		if !unb_is_ts_wrapper(t, parent) || t.node(parent, .expression) or { -1 } != n {
+			return n
+		}
+		n = parent
+	}
+	return n
+}
+
+// unb_outermost_chain_and_ts ports getOutermostChainAndTypeScriptExpression.
+fn unb_outermost_chain_and_ts(t &estree.EsTree, node int) int {
+	mut n := node
+	for {
+		parent := t.nodes[n].parent
+		if parent < 0 || !(t.typ(parent) == .chain_expression || unb_is_ts_wrapper(t, parent))
+			|| t.node(parent, .expression) or { -1 } != n {
+			return n
+		}
+		n = parent
+	}
+	return n
+}
+
+// unb_has_optional_chain_element ports hasOptionalChainElement (utils/
+// has-optional-chain-element.js): an optional member or call in the chain of the node.
+fn unb_has_optional_chain_element(t &estree.EsTree, node int) bool {
+	mut n := unb_unwrap_ts(t, node)
+	if n < 0 {
+		return false
+	}
+	if t.typ(n) == .chain_expression {
+		return unb_has_optional_chain_element(t, t.node(n, .expression) or { return false })
+	}
+	if t.typ(n) !in [.member_expression, .call_expression] {
+		return false
+	}
+	if t.flag(n, .optional) or { false } {
+		return true
+	}
+	next := if t.typ(n) == .member_expression {
+		t.node(n, .object) or { return false }
+	} else {
+		t.node(n, .callee) or { return false }
+	}
+	return unb_has_optional_chain_element(t, next)
+}
+
+// unb_has_unparenthesized_optional_chain_element ports hasUnparenthesizedOptionalChainElement.
+fn (c &Checker) unb_has_unparenthesized_optional_chain_element(t &estree.EsTree, tokens &SourceTokens, node int) bool {
+	if node < 0 {
+		return false
+	}
+	if unb_is_ts_wrapper(t, node) || t.typ(node) == .chain_expression {
+		return !c.un_is_parenthesized(t, tokens, node)
+			&& c.unb_has_unparenthesized_optional_chain_element(t, tokens, t.node(node, .expression) or {
+			return false
+		})
+	}
+	if t.typ(node) !in [.member_expression, .call_expression] {
+		return false
+	}
+	if t.flag(node, .optional) or { false } {
+		return true
+	}
+	next := if t.typ(node) == .member_expression {
+		t.node(node, .object) or { return false }
+	} else {
+		t.node(node, .callee) or { return false }
+	}
+	return c.unb_has_unparenthesized_optional_chain_element(t, tokens, next)
+}
+
+// unb_problematic_token is isProblematicToken of fix/fix-space-around-keywords.js: a keyword in
+// lower case, or `of`, `await`, `as` or `satisfies`.
+fn (c &Checker) unb_problematic_token(token SourceToken) bool {
+	text := c.token_text(token)
+	if token.kind == .keyword {
+		return text.bytes().all(it >= `a` && it <= `z`)
+	}
+	return token.kind == .identifier && text in ['of', 'await', 'as', 'satisfies']
+}
+
+// unb_fix_space_around_keyword ports fixSpaceAroundKeyword of 79.0.0: a space between the node
+// (with its parentheses) and a keyword right before or after it.
+fn (c &Checker) unb_fix_space_around_keyword(t &estree.EsTree, tokens &SourceTokens, node int) []Fix {
+	start, end := c.un_parenthesized_range(t, tokens, node)
+	return c.unb_fix_space_around_range(tokens, start, end)
+}
+
+// unb_fix_space_around_range is unb_fix_space_around_keyword for a range.
+fn (c &Checker) unb_fix_space_around_range(tokens &SourceTokens, start int, end int) []Fix {
+	mut fixes := []Fix{}
+	if before := tokens.before(start, true) {
+		if start == before.end && c.unb_problematic_token(before) {
+			fixes << fix_insert_at(before.end, ' ')
+		}
+	}
+	if after := tokens.after(end, true) {
+		if end == after.start && c.unb_problematic_token(after) {
+			fixes << fix_insert_at(after.start, ' ')
+		}
+	}
+	return fixes
+}
+
+// unb_new_callee_needs_parens ports shouldAddParenthesesToNewExpressionCallee of 79.0.0: a member
+// expression whose object chain (through template tags and TypeScript wrappers) has a call.
+fn (c &Checker) unb_new_callee_needs_parens(t &estree.EsTree, tokens &SourceTokens, node int) bool {
+	if t.typ(node) != .member_expression {
+		return false
+	}
+	mut current := t.node(node, .object) or { return false }
+	for !c.un_is_parenthesized(t, tokens, current) {
+		if unb_is_ts_wrapper(t, current) {
+			current = t.node(current, .expression) or { return false }
+			continue
+		}
+		if t.typ(current) !in [.member_expression, .tagged_template_expression] {
+			return t.typ(current) == .call_expression
+		}
+		current = if t.typ(current) == .member_expression {
+			t.node(current, .object) or { return false }
+		} else {
+			t.node(current, .tag) or { return false }
+		}
+	}
+	return false
+}
+
+// unb_switch_call_to_new ports switchCallExpressionToNewExpression of 79.0.0: `Error()` becomes
+// `new Error()`.
+fn (c &Checker) unb_switch_call_to_new(t &estree.EsTree, tokens &SourceTokens, node int) []Fix {
+	mut fixes := c.unb_fix_space_around_keyword(t, tokens, node)
+	fixes << fix_insert_at(t.nodes[node].start, 'new ')
+	callee := t.node(node, .callee) or { return fixes }
+	if !c.un_is_parenthesized(t, tokens, callee) && c.unb_new_callee_needs_parens(t, tokens, callee) {
+		fixes << fix_insert_at(t.nodes[callee].start, '(')
+		fixes << fix_insert_at(t.nodes[callee].end, ')')
+	}
+	return fixes
+}
+
+// unb_type_of ports withTypeInformation (utils/types.js) for the type of an ESTree node: none
+// when the parser has no program (LanguageOptions.type_information) or tsgo has no type for it.
+// The rule must not be in untyped_rules.
+fn (mut c Checker) unb_type_of(t &estree.EsTree, node int, abs_path string, mut stats Stats) ?TypeResponse {
+	if !c.scope_setup.type_information {
+		return none
+	}
+	ts := t.ts_node(node) or { return none }
+	c.resolve_node_types([ts], abs_path, mut stats) or { return none }
+	return c.node_type(ts)
 }

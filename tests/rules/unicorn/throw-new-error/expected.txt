@@ -4,5 +4,7 @@ tests/rules/unicorn/throw-new-error/cases.ts:12:9	unicorn/throw-new-error	throw-
 tests/rules/unicorn/throw-new-error/cases.ts:15:9	unicorn/throw-new-error	throw-new-error	Use `new` when creating an error.
 tests/rules/unicorn/throw-new-error/cases.ts:18:9	unicorn/throw-new-error	throw-new-error	Use `new` when creating an error.
 tests/rules/unicorn/throw-new-error/cases.ts:21:8	unicorn/throw-new-error	throw-new-error	Use `new` when creating an error.
-tests/rules/unicorn/throw-new-error/cases.ts:23:12	unicorn/throw-new-error	throw-new-error	Use `new` when creating an error.
 tests/rules/unicorn/throw-new-error/cases.ts:24:12	unicorn/throw-new-error	throw-new-error	Use `new` when creating an error.
+tests/rules/unicorn/throw-new-error/cases.ts:44:12	unicorn/throw-new-error	throw-new-error	Use `new` when creating an error.
+tests/rules/unicorn/throw-new-error/cases.ts:45:12	unicorn/throw-new-error	throw-new-error	Use `new` when creating an error.
+tests/rules/unicorn/throw-new-error/cases.ts:46:12	unicorn/throw-new-error	throw-new-error	Use `new` when creating an error.

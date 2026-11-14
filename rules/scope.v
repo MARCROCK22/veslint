@@ -262,6 +262,10 @@ pub:
 	implied_strict          bool // ecmaFeatures.impliedStrict, which the strict rule reads
 	// parserOptions.isolatedDeclarations (truthy), which consistent-generic-constructors reads
 	isolated_declarations bool
+	// Whether the parser has a program (`parserServices.program`), which eslint-plugin-unicorn's
+	// withTypeInformation reads: veslint always has one, unless the parser options say
+	// `projectService` and `project` are off (and give no `programs`).
+	type_information bool = true
 }
 
 // parse_language_options reads the `languageOptions` of a configuration (as ESLint resolved it,
@@ -313,6 +317,10 @@ pub fn parse_language_options(value json2.Any) LanguageOptions {
 	}
 	parser_source_type := parser['sourceType'] or { json2.Any('') }
 	isolated := parser['isolatedDeclarations'] or { json2.Any(false) }
+	program_keys := ['projectService', 'project', 'programs'].filter(it in parser)
+	type_information := program_keys.len == 0 || program_keys.any(parser[it] or {
+		json2.Any(false)
+	}.json_str() !in ['false', 'null', '0', '""'])
 	return LanguageOptions{
 		ecma_version:            normalize_ecma_version(options['ecmaVersion'] or {
 			json2.Any('latest')
@@ -329,6 +337,7 @@ pub fn parse_language_options(value json2.Any) LanguageOptions {
 		jsx_fragment_name:       fragment
 		global_return:           global_return
 		isolated_declarations:   isolated.json_str() !in ['false', 'null', '0', '""']
+		type_information:        type_information
 	}
 }
 
@@ -385,6 +394,9 @@ pub:
 	global_return     bool
 	// not about scopes: parserOptions.isolatedDeclarations, for consistent-generic-constructors
 	isolated_decls bool
+	// nor whether the parser has a program (LanguageOptions.type_information), for
+	// eslint-plugin-unicorn's withTypeInformation
+	type_information bool = true
 }
 
 // ScopeLibs are the implicit variables a list of libs gives the global scope
@@ -485,6 +497,7 @@ pub fn new_scope_setup(project ScopeProject, language LanguageOptions, inline ma
 		script:            source_type != 'module'
 		global_return:     language.global_return
 		isolated_decls:    language.isolated_declarations
+		type_information:  language.type_information
 	}
 }
 
