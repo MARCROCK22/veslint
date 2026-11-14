@@ -27,3 +27,10 @@ const k4 = a
 const k5 = tag`x`;
 const k6 = a / b / c;
 declare const c: number;
+
+// The flags `d` and `v` too (10.15.0).
+declare let dv: number, d: number, v: number;
+dv = dv
+/dv/d;
+dv = dv
+/dv/v;
