@@ -192,6 +192,13 @@ fn (mut c Checker) discriminate_any(t TypeResponse, at SymbolLocation) !AnyType 
 		return .any_array
 	}
 	for part in c.type_constituents(t)! {
+		// A generic `Awaited<T>` is already awaited (type-utils 8.72).
+		if part.alias_symbol != 0 {
+			alias := c.alias_symbol_of(part)!
+			if !alias.is_null() && alias.name == 'Awaited' && c.from_default_library(alias.declarations)! {
+				continue
+			}
+		}
 		if c.is_thenable(part, at)! {
 			awaited := c.awaited_type(part)!
 			if awaited.found && c.awaited_flags(awaited)! & type_flag_any != 0 {
