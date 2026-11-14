@@ -1,0 +1,88 @@
+tests/rules/unicorn/relative-url-style/always/cases.ts:5:9	unicorn/relative-url-style	always	Add a `./` prefix to the relative URL.	fix	91	91	./	end	5	14
+tests/rules/unicorn/relative-url-style/always/cases.ts:6:9	unicorn/relative-url-style	always	Add a `./` prefix to the relative URL.	fix	113	113	./	end	6	14
+tests/rules/unicorn/relative-url-style/always/cases.ts:7:9	unicorn/relative-url-style	always	Add a `./` prefix to the relative URL.	fix	135	135	./	end	7	15
+tests/rules/unicorn/relative-url-style/always/cases.ts:8:9	unicorn/relative-url-style	always	Add a `./` prefix to the relative URL.	fix	158	158	./	end	8	19
+tests/rules/unicorn/relative-url-style/always/cases.ts:9:9	unicorn/relative-url-style	always	Add a `./` prefix to the relative URL.	fix	185	185	./	end	9	15
+tests/rules/unicorn/relative-url-style/always/cases.ts:10:9	unicorn/relative-url-style	always	Add a `./` prefix to the relative URL.	fix	208	208	./	end	10	31
+tests/rules/unicorn/relative-url-style/always/cases.ts:11:9	unicorn/relative-url-style	always	Add a `./` prefix to the relative URL.	fix	247	247	./	end	11	24
+tests/rules/unicorn/relative-url-style/always/cases.ts:12:9	unicorn/relative-url-style	always	Add a `./` prefix to the relative URL.	fix	279	279	./	end	12	20
+tests/rules/unicorn/relative-url-style/always/cases.ts:13:9	unicorn/relative-url-style	always	Add a `./` prefix to the relative URL.	fix	307	307	./	end	13	11
+tests/rules/unicorn/relative-url-style/always/cases.ts:14:9	unicorn/relative-url-style	always	Add a `./` prefix to the relative URL.	fix	348	348	./	end	14	11
+tests/rules/unicorn/relative-url-style/always/cases.ts:15:9	unicorn/relative-url-style	always	Add a `./` prefix to the relative URL.	fix	389	389	./	end	15	17
+tests/rules/unicorn/relative-url-style/always/cases.ts:16:9	unicorn/relative-url-style	always	Add a `./` prefix to the relative URL.	fix	436	436	./	end	16	19
+tests/rules/unicorn/relative-url-style/always/cases.ts:17:9	unicorn/relative-url-style	always	Add a `./` prefix to the relative URL.	fix	489	489	./	end	17	20
+tests/rules/unicorn/relative-url-style/always/cases.ts:18:9	unicorn/relative-url-style	always	Add a `./` prefix to the relative URL.	fix	542	542	./	end	18	14
+tests/rules/unicorn/relative-url-style/always/cases.ts:19:17	unicorn/relative-url-style	always	Add a `./` prefix to the relative URL.	fix	582	582	./	end	19	22
+tests/rules/unicorn/relative-url-style/always/cases.ts:20:9	unicorn/relative-url-style	always	Add a `./` prefix to the relative URL.	fix	604	604	./	end	20	25
+tests/rules/unicorn/relative-url-style/always/cases.ts:21:14	unicorn/relative-url-style	always	Add a `./` prefix to the relative URL.	fix	642	642	./	end	21	25
+tests/rules/unicorn/relative-url-style/always/cases.ts:22:11	unicorn/relative-url-style	always	Add a `./` prefix to the relative URL.	fix	672	672	./	end	22	22
+tests/rules/unicorn/relative-url-style/cases.ts:6:9	unicorn/relative-url-style	never	Remove the `./` prefix from the relative URL.	fix	120	122		end	6	16
+tests/rules/unicorn/relative-url-style/cases.ts:7:9	unicorn/relative-url-style	never	Remove the `./` prefix from the relative URL.	fix	144	146		end	7	16
+tests/rules/unicorn/relative-url-style/cases.ts:8:9	unicorn/relative-url-style	never	Remove the `./` prefix from the relative URL.	fix	168	170		end	8	16
+tests/rules/unicorn/relative-url-style/cases.ts:9:9	unicorn/relative-url-style	never	Remove the `./` prefix from the relative URL.	fix	192	194		end	9	17
+tests/rules/unicorn/relative-url-style/cases.ts:10:9	unicorn/relative-url-style	never	Remove the `./` prefix from the relative URL.	fix	217	219		end	10	21
+tests/rules/unicorn/relative-url-style/cases.ts:11:9	unicorn/relative-url-style	never	Remove the `./` prefix from the relative URL.	fix	246	248		end	11	27
+tests/rules/unicorn/relative-url-style/cases.ts:12:31	unicorn/relative-url-style	never	Remove the `./` prefix from the relative URL.	fix	303	305		end	12	48
+tests/rules/unicorn/relative-url-style/cases.ts:13:9	unicorn/relative-url-style	never	Remove the `./` prefix from the relative URL.	fix	337	339		end	13	16
+tests/rules/unicorn/relative-url-style/cases.ts:14:17	unicorn/relative-url-style	never	Remove the `./` prefix from the relative URL.	fix	379	381		end	14	24
+tests/rules/unicorn/relative-url-style/cases.ts:15:10	unicorn/relative-url-style	never	Remove the `./` prefix from the relative URL.	fix	404	406		end	15	17
+tests/rules/unicorn/relative-url-style/cases.ts:16:9	unicorn/relative-url-style	never	Remove the `./` prefix from the relative URL.	fix	440	442		end	16	16
+tests/rules/unicorn/relative-url-style/cases.ts:17:9	unicorn/relative-url-style	never	Remove the `./` prefix from the relative URL.	fix	484	486		end	17	19
+tests/rules/unicorn/relative-url-style/cases.ts:18:9	unicorn/relative-url-style	never	Remove the `./` prefix from the relative URL.	fix	533	535		end	18	13
+tests/rules/unicorn/relative-url-style/cases.ts:19:9	unicorn/relative-url-style	never	Remove the `./` prefix from the relative URL.	fix	576	578		end	19	21
+tests/rules/unicorn/relative-url-style/cases.ts:20:9	unicorn/relative-url-style	never	Remove the `./` prefix from the relative URL.	fix	627	629		end	20	21
+tests/rules/unicorn/relative-url-style/cases.ts:21:9	unicorn/relative-url-style	never	Remove the `./` prefix from the relative URL.	fix	682	684		end	21	22
+tests/rules/unicorn/relative-url-style/cases.ts:23:9	unicorn/relative-url-style	never	Remove the `./` prefix from the relative URL.	fix	778	780		end	23	19
+tests/rules/unicorn/relative-url-style/cases.ts:24:14	unicorn/relative-url-style	never	Remove the `./` prefix from the relative URL.	fix	810	812		end	24	27
+tests/rules/unicorn/relative-url-style/cases.ts:25:11	unicorn/relative-url-style	never	Remove the `./` prefix from the relative URL.	fix	842	844		end	25	24
+tests/rules/unicorn/relative-url-style/cases.ts:26:14	unicorn/relative-url-style	never	Remove the `./` prefix from the relative URL.	fix	877	879		end	26	27
+tests/rules/unicorn/relative-url-style/cases.ts:27:11	unicorn/relative-url-style	never	Remove the `./` prefix from the relative URL.	fix	909	911		end	27	21
+tests/rules/unicorn/relative-url-style/cases.ts:28:9	unicorn/relative-url-style	never	Remove the `./` prefix from the relative URL.	fix	958	960		end	28	16
+tests/rules/unicorn/relative-url-style/cases.ts:29:9	unicorn/relative-url-style	never	Remove the `./` prefix from the relative URL.	fix	982	984		end	29	19
+tests/rules/unicorn/relative-url-style/cases.ts:30:9	unicorn/relative-url-style	never	Remove the `./` prefix from the relative URL.	fix	1009	1011		end	30	16
+tests/rules/unicorn/relative-url-style/cases.ts:31:9	unicorn/relative-url-style	never	Remove the `./` prefix from the relative URL.	fix	1047	1049		end	31	14
+tests/rules/unicorn/relative-url-style/cases.ts:32:9	unicorn/relative-url-style	never	Remove the `./` prefix from the relative URL.	fix	1090	1092		end	32	14
+tests/rules/unicorn/relative-url-style/cases.ts:33:9	unicorn/relative-url-style	never	Remove the `./` prefix from the relative URL.	fix	1124	1126		end	33	16
+tests/rules/unicorn/relative-url-style/cases.ts:34:9	unicorn/relative-url-style	never	Remove the `./` prefix from the relative URL.	fix	1177	1179		end	34	16
+tests/rules/unicorn/relative-url-style/cases.ts:37:9	unicorn/relative-url-style	never	Remove the `./` prefix from the relative URL.	suggestion	remove	Remove leading `./`.	1246	1248		end	37	20
+tests/rules/unicorn/relative-url-style/cases.ts:38:9	unicorn/relative-url-style	never	Remove the `./` prefix from the relative URL.	suggestion	remove	Remove leading `./`.	1274	1276		end	38	20
+tests/rules/unicorn/relative-url-style/cases.ts:39:14	unicorn/relative-url-style	never	Remove the `./` prefix from the relative URL.	suggestion	remove	Remove leading `./`.	1317	1319		end	39	26
+tests/rules/unicorn/relative-url-style/cases.ts:40:11	unicorn/relative-url-style	never	Remove the `./` prefix from the relative URL.	suggestion	remove	Remove leading `./`.	1348	1350		end	40	49
+tests/rules/unicorn/relative-url-style/jsx-always/cases.tsx:4:20	unicorn/relative-url-style	always	Add a `./` prefix to the relative URL.	fix	103	103	./	end	4	29
+tests/rules/unicorn/relative-url-style/jsx-always/cases.tsx:5:21	unicorn/relative-url-style	always	Add a `./` prefix to the relative URL.	fix	138	138	./	end	5	30
+tests/rules/unicorn/relative-url-style/jsx-always/cases.tsx:5:40	unicorn/relative-url-style	always	Add a `./` prefix to the relative URL.	fix	157	157	./	end	5	49
+tests/rules/unicorn/relative-url-style/jsx-always/cases.tsx:5:54	unicorn/relative-url-style	always	Add a `./` prefix to the relative URL.	fix	171	171	./	end	5	63
+tests/rules/unicorn/relative-url-style/jsx-always/cases.tsx:6:30	unicorn/relative-url-style	always	Add a `./` prefix to the relative URL.	fix	218	218	./	end	6	41
+tests/rules/unicorn/relative-url-style/jsx-always/cases.tsx:7:25	unicorn/relative-url-style	always	Add a `./` prefix to the relative URL.	fix	263	263	./	end	7	31
+tests/rules/unicorn/relative-url-style/jsx-always/cases.tsx:7:53	unicorn/relative-url-style	always	Add a `./` prefix to the relative URL.	fix	291	291	./	end	7	62
+tests/rules/unicorn/relative-url-style/jsx-always/cases.tsx:8:21	unicorn/relative-url-style	always	Add a `./` prefix to the relative URL.	fix	334	334	./	end	8	32
+tests/rules/unicorn/relative-url-style/jsx-always/cases.tsx:9:21	unicorn/relative-url-style	always	Add a `./` prefix to the relative URL.	fix	371	371	./	end	9	32
+tests/rules/unicorn/relative-url-style/jsx-always/cases.tsx:10:21	unicorn/relative-url-style	always	Add a `./` prefix to the relative URL.	fix	408	408	./	end	10	35
+tests/rules/unicorn/relative-url-style/jsx-always/cases.tsx:11:24	unicorn/relative-url-style	always	Add a `./` prefix to the relative URL.	fix	450	450	./	end	11	33
+tests/rules/unicorn/relative-url-style/jsx-always/cases.tsx:11:40	unicorn/relative-url-style	always	Add a `./` prefix to the relative URL.	fix	466	466	./	end	11	49
+tests/rules/unicorn/relative-url-style/jsx-always/cases.tsx:20:26	unicorn/relative-url-style	always	Add a `./` prefix to the relative URL.	fix	823	823	./	end	20	35
+tests/rules/unicorn/relative-url-style/jsx/cases.tsx:6:20	unicorn/relative-url-style	never	Remove the `./` prefix from the relative URL.	fix	202	204		end	6	31
+tests/rules/unicorn/relative-url-style/jsx/cases.tsx:7:21	unicorn/relative-url-style	never	Remove the `./` prefix from the relative URL.	fix	239	241		end	7	32
+tests/rules/unicorn/relative-url-style/jsx/cases.tsx:7:42	unicorn/relative-url-style	never	Remove the `./` prefix from the relative URL.	fix	260	262		end	7	53
+tests/rules/unicorn/relative-url-style/jsx/cases.tsx:7:58	unicorn/relative-url-style	never	Remove the `./` prefix from the relative URL.	fix	276	278		end	7	69
+tests/rules/unicorn/relative-url-style/jsx/cases.tsx:8:30	unicorn/relative-url-style	never	Remove the `./` prefix from the relative URL.	fix	325	327		end	8	43
+tests/rules/unicorn/relative-url-style/jsx/cases.tsx:9:26	unicorn/relative-url-style	never	Remove the `./` prefix from the relative URL.	fix	372	374		end	9	38
+tests/rules/unicorn/relative-url-style/jsx/cases.tsx:10:25	unicorn/relative-url-style	never	Remove the `./` prefix from the relative URL.	fix	414	416		end	10	33
+tests/rules/unicorn/relative-url-style/jsx/cases.tsx:10:55	unicorn/relative-url-style	never	Remove the `./` prefix from the relative URL.	fix	444	446		end	10	66
+tests/rules/unicorn/relative-url-style/jsx/cases.tsx:11:20	unicorn/relative-url-style	never	Remove the `./` prefix from the relative URL.	fix	487	489		end	11	28
+tests/rules/unicorn/relative-url-style/jsx/cases.tsx:12:23	unicorn/relative-url-style	never	Remove the `./` prefix from the relative URL.	fix	523	525		end	12	46
+tests/rules/unicorn/relative-url-style/jsx/cases.tsx:14:12	unicorn/relative-url-style	never	Remove the `./` prefix from the relative URL.	fix	580	582		end	14	23
+tests/rules/unicorn/relative-url-style/jsx/cases.tsx:14:28	unicorn/relative-url-style	never	Remove the `./` prefix from the relative URL.	fix	596	598		end	14	39
+tests/rules/unicorn/relative-url-style/jsx/cases.tsx:15:21	unicorn/relative-url-style	never	Remove the `./` prefix from the relative URL.	fix	637	639		end	15	36
+tests/rules/unicorn/relative-url-style/jsx/cases.tsx:16:21	unicorn/relative-url-style	never	Remove the `./` prefix from the relative URL.	fix	678	680		end	16	36
+tests/rules/unicorn/relative-url-style/jsx/cases.tsx:17:21	unicorn/relative-url-style	never	Remove the `./` prefix from the relative URL.	fix	720	722		end	17	34
+tests/rules/unicorn/relative-url-style/jsx/cases.tsx:18:21	unicorn/relative-url-style	never	Remove the `./` prefix from the relative URL.	fix	759	761		end	18	34
+tests/rules/unicorn/relative-url-style/jsx/cases.tsx:19:33	unicorn/relative-url-style	never	Remove the `./` prefix from the relative URL.	fix	810	812		end	19	46
+tests/rules/unicorn/relative-url-style/jsx/cases.tsx:20:21	unicorn/relative-url-style	never	Remove the `./` prefix from the relative URL.	fix	866	868		end	20	37
+tests/rules/unicorn/relative-url-style/jsx/cases.tsx:22:11	unicorn/relative-url-style	never	Remove the `./` prefix from the relative URL.	fix	913	915		end	22	24
+tests/rules/unicorn/relative-url-style/jsx/cases.tsx:22:38	unicorn/relative-url-style	never	Remove the `./` prefix from the relative URL.	fix	939	941		end	22	51
+tests/rules/unicorn/relative-url-style/jsx/cases.tsx:24:24	unicorn/relative-url-style	never	Remove the `./` prefix from the relative URL.	fix	985	987		end	24	33
+tests/rules/unicorn/relative-url-style/jsx/cases.tsx:24:39	unicorn/relative-url-style	never	Remove the `./` prefix from the relative URL.	fix	1000	1002		end	24	48
+tests/rules/unicorn/relative-url-style/jsx/cases.tsx:24:55	unicorn/relative-url-style	never	Remove the `./` prefix from the relative URL.	fix	1016	1018		end	24	66
+tests/rules/unicorn/relative-url-style/jsx/cases.tsx:25:24	unicorn/relative-url-style	never	Remove the `./` prefix from the relative URL.	fix	1056	1058		end	25	34
+tests/rules/unicorn/relative-url-style/jsx/cases.tsx:25:39	unicorn/relative-url-style	never	Remove the `./` prefix from the relative URL.	fix	1071	1073		end	25	46

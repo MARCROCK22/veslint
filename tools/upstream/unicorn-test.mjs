@@ -22,10 +22,13 @@ export const vueEslintParser = parsers.vue;
 export const htmlEslintParser = parsers.html;
 export const svelteEslintParser = parsers.svelte;
 
-// The languages of test/utils/languages.js (JSON, CSS, HTML…), by name only: a case that names one
-// is not TypeScript and is skipped.
+// The languages of test/utils/languages.js (JSON, CSS, HTML…), by name and language only (a case
+// can give either, as `language: languages.html.language`): a case that names one is not
+// TypeScript and is skipped.
 export const languages = Object.fromEntries(
-  ['css', 'html', 'json', 'jsonc', 'json5', 'markdown', 'soml', 'toml', 'yaml'].map(name => [name, { name }]),
+  [['css', 'css/css'], ['html', 'html/html'], ['json', 'json/json'], ['jsonc', 'json/jsonc'],
+    ['json5', 'json/json5'], ['markdown', 'markdown/commonmark'], ['soml', 'soml/soml'],
+    ['toml', 'toml/toml'], ['yaml', 'yml/yaml']].map(([name, language]) => [name, { name, language }]),
 );
 
 export function normalizeTestCase(testCase) {

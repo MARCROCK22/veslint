@@ -1,0 +1,81 @@
+declare const base: string;
+declare const name: string;
+declare const image: string;
+
+// Reported, with a fix.
+new URL('./foo', base);
+new URL("./foo", base);
+new URL('././a', base);
+new URL(`./file`, base);
+new URL('./f\u006Fo', base);
+new URL('./ünïcode/😀.png', base);
+const unicorn = '🦄'; new URL('./after-unicorn', base);
+new URL('./foo' as string, base);
+new URL(<string>'./foo', base);
+new URL(('./foo' as string)!, base);
+new URL('./foo' /* keep */ as const, base);
+new URL('./?query', 'https://example.com/a/b/');
+new URL('./', 'https://example.com/a/b/');
+new URL(`./#section`, 'https://example.com/a/b/');
+new URL('./C|/asset', 'https://example.com/a/b.html');
+new URL('./image.png', 'file:///D:/project/index.js');
+const BASE = 'https://example.com/a/b/';
+new URL('./?query', BASE);
+URL.canParse('./image.png', base);
+URL.parse('./image.png', base);
+URL.canParse(`./image.png`, base);
+URL.parse('./?query', 'https://example.com/a/b/');
+new URL('./a b', base);
+new URL('./%2e%2e', base);
+new URL('./[x]', 'https://[::1]/a/');
+new URL('./x', 'http://1.2.3.4:8080/a/b');
+new URL('./x', 'http://0x7f.1/');
+new URL('./foo', 'http://user:pass@example.com/a/');
+new URL('./foo', 'foo://host/a/b');
+
+// Reported, with a suggestion.
+new URL(`./${name}`, base);
+new URL(`./${name}` as string, base);
+URL.canParse(`./${image}`, base);
+URL.parse(`./${'https://example.com/image.png'}`, base);
+
+// Not reported.
+new URL('./', base);
+new URL('./?query', base);
+new URL('./#section', base);
+new URL('foo', base);
+new URL('./foo');
+new URL('./foo', base, 1);
+new URL(...['./foo'], base);
+new URL('./foo', ...[base]);
+new URL('./foo' satisfies string, base);
+new URL(('./foo' satisfies string) as string, base);
+new URL(`./${name}` satisfies string, base);
+new globalThis.URL('./foo', base);
+new URL('./C|/asset', base);
+new URL('./C|/asset', import.meta.url);
+new URL('./C|/asset', 'file:///D:/project/index.js');
+new URL('./https://example.com/image.png', base);
+new URL('./http:foo', base);
+new URL('.\u002Ffoo', base);
+new URL('\u002E/foo', base);
+new URL('./foo', 'mailto:someone');
+new URL('./foo', 'not a url');
+new URL('./foo', 'http://exa mple.com/');
+new URL('./foo', 'https://example.com:99999/');
+new URL('./x', 'http://[1::2::3]/');
+new URL('./x', 'http://256.256.256.256/');
+URL['canParse']('./image.png', base);
+URL?.canParse('./image.png', base);
+URL.canParse?.('./image.png', base);
+URL.canParse('./image.png');
+URL.canParse(image, base);
+URL.canParse(42, base);
+Other.parse('./image.png', base);
+const notStatic = { value: 'https://example.com/a/b' };
+new URL('./?query', notStatic.value);
+foo(`./${name}`);
+new URL('foo', `./${base}`);
+
+declare const Other: { parse(url: string, base: string): void };
+declare function foo(value: string): void;

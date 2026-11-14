@@ -365,6 +365,7 @@ pub const unicorn_prefer_import_meta_properties = 'unicorn/prefer-import-meta-pr
 pub const unicorn_prefer_module = 'unicorn/prefer-module'
 pub const unicorn_prefer_reflect_apply = 'unicorn/prefer-reflect-apply'
 pub const unicorn_prefer_export_from = 'unicorn/prefer-export-from'
+pub const unicorn_relative_url_style = 'unicorn/relative-url-style'
 pub const names = [no_floating_promises, await_thenable, require_await, return_await,
 	no_misused_promises, no_unsafe_call, no_unsafe_member_access, no_unsafe_return,
 	no_unsafe_assignment, no_unsafe_argument, restrict_template_expressions,
@@ -464,6 +465,8 @@ pub const names = [no_floating_promises, await_thenable, require_await, return_a
 	unicorn_prefer_import_meta_properties, unicorn_prefer_module, unicorn_prefer_reflect_apply,
 	unicorn_prefer_export_from]
 
+unicorn_prefer_json_parse_buffer, unicorn_no_anonymous_default_export, unicorn_relative_url_style
+
 // untyped_rules are the ported rules that need no types (`meta.docs.requiresTypeChecking` is false
 // in typescript-eslint; the eslint-plugin-unicorn rules that read the types when the parser has a
 // program, through withTypeInformation, are not here): with only these, the command line makes no
@@ -535,6 +538,8 @@ pub const untyped_rules = [adjacent_overload_signatures, array_type, class_liter
 	unicorn_prefer_json_parse_buffer, unicorn_no_anonymous_default_export,
 	unicorn_prefer_import_meta_properties, unicorn_prefer_module, unicorn_prefer_reflect_apply,
 	unicorn_prefer_export_from]
+
+unicorn_prefer_json_parse_buffer, unicorn_no_anonymous_default_export, unicorn_relative_url_style
 
 // needs_types tells whether a rule asks tsgo for the types of the program.
 pub fn needs_types(rule string) bool {
@@ -896,6 +901,7 @@ pub const default_options = {
 	unicorn_prefer_module:                           '[]'
 	unicorn_prefer_reflect_apply:                    '[]'
 	unicorn_prefer_export_from:                      '[{"checkUsedVariables":true}]'
+	unicorn_relative_url_style:                      '["never"]'
 }
 
 // Finding is a problem a rule found at a node.
@@ -1381,6 +1387,7 @@ pub fn message(rule string, finding Finding) string {
 		unicorn_prefer_module { upm_messages }
 		unicorn_prefer_reflect_apply { upra_messages }
 		unicorn_prefer_export_from { upef_messages }
+		unicorn_relative_url_style { rus_messages }
 		else { map[string]string{} }
 	}
 	return interpolate(messages[finding.message_id] or { finding.message_id }, finding.data)
@@ -2589,6 +2596,9 @@ fn (mut c Checker) lint_rule(rule string, root C.TSNode, abs_path string, mut st
 		}
 		unicorn_prefer_export_from {
 			return c.lint_unicorn_prefer_export_from(root, abs_path, mut stats)!
+		}
+		unicorn_relative_url_style {
+			return c.lint_unicorn_relative_url_style(root, abs_path, mut stats)!
 		}
 		else { return error('unknown rule: ${rule}') }
 	}
