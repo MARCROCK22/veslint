@@ -4,7 +4,7 @@ import json2
 import time
 import treesitter { node_field, node_kind, position_of }
 
-// Port of the `radix` rule of ESLint 10.6.0, with its suggestion (its option, "always" or
+// Port of the `radix` rule of ESLint 10.15.0, with its suggestion (its option, "always" or
 // "as-needed", changes nothing).
 
 const radix_messages = {
@@ -46,11 +46,7 @@ fn (mut c Checker) lint_radix(root C.TSNode, abs_path string, mut stats Stats) !
 			id := tree.references[r].identifier
 			stats.checked++
 			member := cti_estree_parent(id) or { continue }
-			if node_kind(member) != 'member_expression' {
-				continue
-			}
-			property := node_field(member, 'property') or { continue }
-			if node_kind(property) != 'property_identifier' || c.text(property) != 'parseInt' {
+			if !c.es_is_specific_member_access(member, 'Number', 'parseInt') {
 				continue
 			}
 			if call := es_callee_of(member) {
@@ -66,6 +62,12 @@ fn (mut c Checker) lint_radix(root C.TSNode, abs_path string, mut stats Stats) !
 
 fn (mut c Checker) radix_check(root C.TSNode, call C.TSNode, mut findings []Finding) ! {
 	args := (call_arguments(call) or { return }).filter(node_kind(it) != 'comment')
+	// A spread among the first two arguments: nothing is known.
+	for i, arg in args {
+		if i < 2 && node_kind(arg) == 'spread_element' {
+			return
+		}
+	}
 	match args.len {
 		0 {
 			findings << Finding{
@@ -90,7 +92,19 @@ fn (mut c Checker) radix_check(root C.TSNode, call C.TSNode, mut findings []Find
 		else {
 			radix_arg := unwrap_parens(args[1])
 			mut invalid := false
-			if es_is_literal(radix_arg) {
+			mut signed := radix_arg
+			if node_kind(radix_arg) == 'unary_expression' && operator_of(radix_arg) in ['-', '+'] {
+				signed = unwrap_parens(node_field(radix_arg, 'argument') or { radix_arg })
+			}
+			if node_key(signed) != node_key(radix_arg) && node_kind(signed) == 'number'
+				&& !c.text(signed).ends_with('n') {
+				// A number with a sign.
+				mut value := number_literal_value(c.text(signed)) or { 0 }
+				if operator_of(radix_arg) == '-' {
+					value = -value
+				}
+				invalid = !(value >= 2 && value <= 36 && value == f64(i64(value)))
+			} else if es_is_literal(radix_arg) {
 				invalid = true
 				if node_kind(radix_arg) == 'number' && !c.text(radix_arg).ends_with('n') {
 					value := number_literal_value(c.text(radix_arg)) or { 0 }
