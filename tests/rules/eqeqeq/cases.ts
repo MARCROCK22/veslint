@@ -15,3 +15,7 @@ if ((a) /* c */ == (b)) {}
 // Not reported.
 if (a === b) {}
 if (a !== null) {}
+
+// Templates without expressions are strings: a fix (10.15.0).
+if (`a` == `b`) {}
+if (`a` != 'b') {}
