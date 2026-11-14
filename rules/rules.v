@@ -385,6 +385,7 @@ pub const stylistic_rest_spread_spacing = '@stylistic/rest-spread-spacing'
 pub const stylistic_semi_spacing = '@stylistic/semi-spacing'
 pub const stylistic_space_in_parens = '@stylistic/space-in-parens'
 pub const stylistic_switch_colon_spacing = '@stylistic/switch-colon-spacing'
+pub const stylistic_template_curly_spacing = '@stylistic/template-curly-spacing'
 pub const names = [no_floating_promises, await_thenable, require_await, return_await,
 	no_misused_promises, no_unsafe_call, no_unsafe_member_access, no_unsafe_return,
 	no_unsafe_assignment, no_unsafe_argument, restrict_template_expressions,
@@ -488,7 +489,8 @@ pub const names = [no_floating_promises, await_thenable, require_await, return_a
 	unicorn_consistent_function_scoping, unicorn_isolated_functions, unicorn_no_useless_undefined,
 	unicorn_no_keyword_prefix, unicorn_prefer_object_from_entries, unicorn_prefer_default_parameters,
 	unicorn_no_unused_properties, stylistic_array_bracket_spacing, stylistic_rest_spread_spacing,
-	stylistic_semi_spacing, stylistic_space_in_parens, stylistic_switch_colon_spacing]
+	stylistic_semi_spacing, stylistic_space_in_parens, stylistic_switch_colon_spacing,
+	stylistic_template_curly_spacing]
 
 // untyped_rules are the ported rules that need no types (`meta.docs.requiresTypeChecking` is false
 // in typescript-eslint; the eslint-plugin-unicorn rules that read the types when the parser has a
@@ -566,7 +568,7 @@ pub const untyped_rules = [adjacent_overload_signatures, array_type, class_liter
 	unicorn_consistent_function_scoping, unicorn_isolated_functions, unicorn_no_useless_undefined,
 	unicorn_no_keyword_prefix, unicorn_no_unused_properties, stylistic_array_bracket_spacing,
 	stylistic_rest_spread_spacing, stylistic_semi_spacing, stylistic_space_in_parens,
-	stylistic_switch_colon_spacing]
+	stylistic_switch_colon_spacing, stylistic_template_curly_spacing]
 
 // needs_types tells whether a rule asks tsgo for the types of the program.
 pub fn needs_types(rule string) bool {
@@ -948,6 +950,7 @@ pub const default_options = {
 	stylistic_semi_spacing:                          '[{"before":false,"after":true}]'
 	stylistic_space_in_parens:                       '["never"]'
 	stylistic_switch_colon_spacing:                  '[{"before":false,"after":true}]'
+	stylistic_template_curly_spacing:                '["never"]'
 }
 
 // Finding is a problem a rule found at a node.
@@ -1453,6 +1456,7 @@ pub fn message(rule string, finding Finding) string {
 		stylistic_semi_spacing { ssmi_messages }
 		stylistic_space_in_parens { sinp_messages }
 		stylistic_switch_colon_spacing { sscs_messages }
+		stylistic_template_curly_spacing { stcs_messages }
 		else { map[string]string{} }
 	}
 	return interpolate(messages[finding.message_id] or { finding.message_id }, finding.data)
@@ -2721,6 +2725,9 @@ fn (mut c Checker) lint_rule(rule string, root C.TSNode, abs_path string, mut st
 		}
 		stylistic_switch_colon_spacing {
 			return c.lint_stylistic_switch_colon_spacing(root, abs_path, mut stats)!
+		}
+		stylistic_template_curly_spacing {
+			return c.lint_stylistic_template_curly_spacing(root, abs_path, mut stats)!
 		}
 		else { return error('unknown rule: ${rule}') }
 	}
