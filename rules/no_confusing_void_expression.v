@@ -3,9 +3,9 @@ module rules
 import json2
 import time
 import tsgo { TypeResponse }
-import treesitter { first_named_child, named_children, node_field, node_kind, node_parent, node_start, nodes_of_kinds, position_of }
+import treesitter { children, first_named_child, has_child_kind, named_children, node_end, node_field, node_kind, node_parent, node_start, nodes_of_kinds, position_of }
 
-// Port of the `no-confusing-void-expression` rule of typescript-eslint 8.62.0, with all its options,
+// Port of the `no-confusing-void-expression` rule of typescript-eslint 8.72.2, with all its options,
 // its fixes and its `voidExprWrapVoid` suggestion.
 
 const ncve_messages = {
@@ -72,19 +72,21 @@ fn (mut c Checker) lint_no_confusing_void_expression(root C.TSNode, abs_path str
 		if target := ncve_fix_target(ancestor) {
 			spans << node_span(target)
 		}
+		// The return type of the function, for ignoreVoidReturningFunctions and for canFix
+		// (functionDeclarationAllowsEmptyReturn).
+		function := if node_kind(ancestor) == 'arrow_function' {
+			ancestor
+		} else if node_kind(ancestor) == 'return_statement' {
+			ncve_parent_function(ancestor) or { continue }
+		} else {
+			continue
+		}
 		if o.ignore_void_returning_functions {
-			function := if node_kind(ancestor) == 'arrow_function' {
-				ancestor
-			} else if node_kind(ancestor) == 'return_statement' {
-				ncve_parent_function(ancestor) or { continue }
-			} else {
-				continue
-			}
 			spans << ncve_function_span(function)
-			if annotation := node_field(function, 'return_type') {
-				if type_node := first_named(annotation) {
-					spans << c.type_node_span(unwrap_type_parens(type_node))
-				}
+		}
+		if annotation := node_field(function, 'return_type') {
+			if type_node := first_named(annotation) {
+				spans << c.type_node_span(unwrap_type_parens(type_node))
 			}
 		}
 	}
@@ -154,27 +156,58 @@ fn ncve_fix_target(ancestor C.TSNode) ?C.TSNode {
 }
 
 // ncve_can_fix ports canFix: the body or the returned value is void (not, for instance, the
-// `false | void` of `cond && f()`).
+// `false | void` of `cond && f()`), and the function may return nothing.
 fn (mut c Checker) ncve_can_fix(ancestor C.TSNode) !bool {
 	target := ncve_fix_target(ancestor) or { return false }
 	t := c.node_type(target) or { return false }
-	return c.constrained(t)!.flags & ncve_void_like != 0
+	if c.constrained(t)!.flags & ncve_void_like == 0 {
+		return false
+	}
+	function := if node_kind(ancestor) == 'arrow_function' {
+		ancestor
+	} else {
+		ncve_parent_function(ancestor) or { return false }
+	}
+	return c.ncve_allows_empty_return(function)!
 }
 
-// ncve_arrow_fix ports the fixer of `invalidVoidExprArrow`: the body becomes `{ body; }`, replacing
-// its closest parentheses if it has them. No fix if the body is not void.
+// ncve_allows_empty_return ports functionDeclarationAllowsEmptyReturn: the function has no return
+// type annotation, or some part of its declared return type (awaited for an async function) is
+// `any` or void-like.
+fn (mut c Checker) ncve_allows_empty_return(function C.TSNode) !bool {
+	annotation := node_field(function, 'return_type') or { return true }
+	type_node := unwrap_type_parens(first_named(annotation) or { return true })
+	declared := c.node_type(type_node) or { return false }
+	mut resolved := declared
+	if has_child_kind(function, 'async') {
+		awaited := c.awaited_type(declared)!
+		if awaited.found {
+			resolved = awaited.typ
+		}
+	}
+	for part in c.constituents(resolved)! {
+		if part.flags & (type_flag_any | ncve_void_like) != 0 {
+			return true
+		}
+	}
+	return false
+}
+
+// ncve_arrow_fix ports the fixer of `invalidVoidExprArrow`: from the `=>` to the body becomes
+// ` { `, and from the end of the body to the end of the arrow function `; }` (its parentheses go).
+// No fix if the body is not void or the function may not return nothing.
 fn (mut c Checker) ncve_arrow_fix(arrow C.TSNode) ![]Fix {
 	if !c.ncve_can_fix(arrow)! {
 		return []Fix{}
 	}
 	body := ncve_fix_target(arrow) or { return []Fix{} }
-	text := '{ ${c.text(body)}; }'
-	if wrapper := node_parent(body) {
-		if node_kind(wrapper) == 'parenthesized_expression' {
-			return [fix_replace(wrapper, text)]
+	for child in children(arrow) {
+		if node_kind(child) == '=>' {
+			return [fix_replace_range(node_end(child), node_start(body), ' { '),
+				fix_replace_range(c.es_end(body), c.es_end(arrow), '; }')]
 		}
 	}
-	return [fix_replace(body, text)]
+	return []Fix{}
 }
 
 // ncve_return_last_fix ports the fixer of `invalidVoidExprReturnLast`: the statement becomes its
