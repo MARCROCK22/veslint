@@ -15,3 +15,9 @@ const i = JSON.parse('1');
 function shadow(Math: any) {
   return Math();
 }
+
+// globalThis is not a function (10.15.0).
+const gt1 = () => (globalThis as any)();
+const gt2 = () => new (globalThis as any)();
+const gt3 = globalThis.structuredClone({});
+const gt4 = globalThis.Math.max(1, 2);
