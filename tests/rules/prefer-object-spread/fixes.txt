@@ -7,3 +7,8 @@ tests/rules/prefer-object-spread/cases.ts:10:12	prefer-object-spread	useSpreadMe
 tests/rules/prefer-object-spread/cases.ts:11:12	prefer-object-spread	useSpreadMessage	Use an object spread instead of `Object.assign` eg: `{ ...foo }`.	fix	284	312	{ ...(a ? b : a)}	end	11	40
 tests/rules/prefer-object-spread/cases.ts:12:1	prefer-object-spread	useSpreadMessage	Use an object spread instead of `Object.assign` eg: `{ ...foo }`.	fix	314	334	({ ...a})	end	12	21
 tests/rules/prefer-object-spread/cases.ts:14:10	prefer-object-spread	useSpreadMessage	Use an object spread instead of `Object.assign` eg: `{ ...foo }`.	fix	360	380	{ ...a}	end	14	30
+tests/rules/prefer-object-spread/cases.ts:26:12	prefer-object-spread	useSpreadMessage	Use an object spread instead of `Object.assign` eg: `{ ...foo }`.	fix	768	802	{__proto__: a, ...b}	end	26	46
+tests/rules/prefer-object-spread/cases.ts:27:12	prefer-object-spread	useSpreadMessage	Use an object spread instead of `Object.assign` eg: `{ ...foo }`.	fix	815	848	{ ...a, x: 1}	end	27	45
+tests/rules/prefer-object-spread/cases.ts:31:1	prefer-object-spread	useSpreadMessage	Use an object spread instead of `Object.assign` eg: `{ ...foo }`.	fix	941	961	;({ ...b})	end	31	21
+tests/rules/prefer-object-spread/cases.ts:33:1	prefer-object-spread	useSpreadMessage	Use an object spread instead of `Object.assign` eg: `{ ...foo }`.	fix	966	986	;({ ...b})	end	33	21
+tests/rules/prefer-object-spread/cases.ts:35:1	prefer-object-spread	useSpreadMessage	Use an object spread instead of `Object.assign` eg: `{ ...foo }`.	fix	1001	1021	({ ...b})	end	35	21
