@@ -935,107 +935,11 @@ fn un_is_function_call(t &estree.EsTree, node int, name string) bool {
 
 const un_math_properties = ['E', 'LN2', 'LN10', 'LOG2E', 'LOG10E', 'PI', 'SQRT1_2', 'SQRT2']
 const un_math_methods = ['abs', 'acos', 'acosh', 'asin', 'asinh', 'atan', 'atanh', 'atan2', 'cbrt',
-	'ceil', 'clz32', 'cos', 'cosh', 'exp', 'expm1', 'floor', 'fround', 'hypot', 'imul', 'log', 'log1p',
+	'ceil', 'clz32', 'cos', 'cosh', 'exp', 'expm1', 'f16round', 'floor', 'fround', 'hypot', 'imul', 'log', 'log1p',
 	'log10', 'log2', 'max', 'min', 'pow', 'random', 'round', 'sign', 'sin', 'sinh', 'sqrt', 'tan',
 	'tanh', 'trunc']
 const un_number_properties = ['EPSILON', 'MAX_SAFE_INTEGER', 'MAX_VALUE', 'MIN_SAFE_INTEGER',
 	'MIN_VALUE', 'NaN', 'NEGATIVE_INFINITY', 'POSITIVE_INFINITY']
-
-// un_is_number ports isNumber of utils/is-number.js: the expression is surely a number (not a
-// BigInt).
-fn (mut c Checker) un_is_number(t &estree.EsTree, node int) bool {
-	if node < 0 {
-		return false
-	}
-	typ := t.typ(node)
-	if typ == .literal && t.get(node, .value) is f64 {
-		return true
-	}
-	if un_is_static_properties(t, node, 'Math', un_math_properties)
-		|| un_is_static_properties(t, node, 'Number', un_number_properties) {
-		return true
-	}
-	if typ == .call_expression && !(t.flag(node, .optional) or { false }) {
-		callee := t.node(node, .callee) or { -1 }
-		if un_is_static_properties(t, callee, 'Math', un_math_methods)
-			|| un_is_static_properties(t, callee, 'Number', ['parseFloat', 'parseInt']) {
-			return true
-		}
-	}
-	if un_is_function_call(t, node, 'Number') || un_is_function_call(t, node, 'parseInt')
-		|| un_is_function_call(t, node, 'parseFloat') {
-		return true
-	}
-	// `.length`
-	if typ == .member_expression && !(t.flag(node, .computed) or { false })
-		&& !(t.flag(node, .optional) or { false }) {
-		property := t.node(node, .property) or { -1 }
-		if property >= 0 && t.typ(property) == .identifier
-			&& (t.string_of(property, .name) or { '' }) == 'length' {
-			return true
-		}
-	}
-	mut operator := t.string_of(node, .operator) or { '' }
-	match typ {
-		.assignment_expression, .binary_expression {
-			left := t.node(node, .left) or { -1 }
-			right := t.node(node, .right) or { -1 }
-			if typ == .assignment_expression {
-				if operator == '=' && c.un_is_number(t, right) {
-					return true
-				}
-				operator = operator[..operator.len - 1]
-			}
-			if operator == '+' && c.un_is_number(t, left) && c.un_is_number(t, right) {
-				return true
-			}
-			// `>>>` cannot be used on a BigInt.
-			if operator == '>>>' {
-				return true
-			}
-			// `a * b` may be a BigInt: one side must be a number.
-			if operator in ['-', '*', '/', '%', '**', '<<', '>>', '|', '^', '&']
-				&& (c.un_is_number(t, left) || c.un_is_number(t, right)) {
-				return true
-			}
-		}
-		.unary_expression {
-			// `+` cannot be used on a BigInt.
-			if operator == '+' {
-				return true
-			}
-			if operator in ['-', '~'] && c.un_is_number(t, t.node(node, .argument) or { -1 }) {
-				return true
-			}
-		}
-		.update_expression {
-			if c.un_is_number(t, t.node(node, .argument) or { -1 }) {
-				return true
-			}
-		}
-		.conditional_expression {
-			consequent := c.un_is_number(t, t.node(node, .consequent) or { -1 })
-			alternate := c.un_is_number(t, t.node(node, .alternate) or { -1 })
-			if consequent && alternate {
-				return true
-			}
-			test := c.un_static_value(t, t.node(node, .test) or { -1 })
-			if test.found && ((consequent && stv_to_boolean(test.value))
-				|| (alternate && !stv_to_boolean(test.value))) {
-				return true
-			}
-		}
-		.sequence_expression {
-			expressions := t.list(node, .expressions) or { []int{} }
-			if expressions.len > 0 && c.un_is_number(t, expressions.last()) {
-				return true
-			}
-		}
-		else {}
-	}
-	result := c.un_static_value(t, node)
-	return result.found && result.value.kind == .number_
-}
 
 // un_new_with_parentheses ports isNewExpressionWithParentheses: `new Foo()` rather than `new Foo`.
 fn (c &Checker) un_new_with_parentheses(t &estree.EsTree, tokens &SourceTokens, node int) bool {

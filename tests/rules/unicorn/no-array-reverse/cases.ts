@@ -43,3 +43,10 @@ declare const union: number[] | Set<number>;
 const k13 = union.reverse();
 declare const strings: readonly string[] | string[];
 const k14 = (strings as string[]).reverse();
+// Known only from TypeScript's types.
+declare const holder: { set: Set<number>; list: number[]; tuple: [number, number]; maybe: number[] | undefined };
+const t1 = holder.set.reverse();
+const t2 = holder.list.reverse();
+const t3 = holder.tuple.reverse();
+const t4 = holder.maybe!.reverse();
+function generic<T extends Map<string, number>>(value: { inner: T }) { return value.inner.reverse(); }

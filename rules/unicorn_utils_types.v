@@ -1779,8 +1779,10 @@ enum UnTypeKind {
 	bigint_typed_array // isKnownBigIntTypedArray
 	bigint             // is-bigint.js
 	string_            // is-string.js
-	date               // createBuiltinTypeCheckers({name: 'Date'}) of is-string.js
+	date               // createBuiltinTypeCheckers({name: 'Date'}) of is-string.js and is-number.js
 	regexp             // is-reg-exp.js
+	number_            // isNumberTarget, isKnownNonNumber (is-number.js)
+	sized_collection   // isSizedCollection (is-number.js)
 }
 
 // UnTypeOptions are the options of createTypeCheckers (targetTypeImports and
@@ -1866,6 +1868,21 @@ fn un_type_options(kind UnTypeKind) UnTypeOptions {
 				target_type_names:        ['RegExp']
 				target_call_names:        ['RegExp']
 				target_constructor_names: ['RegExp']
+			}
+		}
+		.number_ {
+			UnTypeOptions{
+				kind:              kind
+				target_type_names: ['number']
+				target_call_names: ['Number']
+			}
+		}
+		.sized_collection {
+			UnTypeOptions{
+				kind:                     kind
+				check_class_heritage:     false
+				target_type_names:        ['Map', 'Set', 'ReadonlyMap', 'ReadonlySet']
+				target_constructor_names: ['Map', 'Set']
 			}
 		}
 	}
@@ -2248,10 +2265,29 @@ fn un_is_target_type_annotation(t &estree.EsTree, node int, o UnTypeOptions) boo
 		.string_ {
 			un_is_string_type_annotation(t, node)
 		}
+		.number_ {
+			un_is_number_type_annotation(t, node)
+		}
 		else {
 			false
 		}
 	}
+}
+
+// un_is_number_type_annotation ports isNumberTypeAnnotation of is-number.js: `number` or a numeric
+// literal type.
+fn un_is_number_type_annotation(t &estree.EsTree, node int) bool {
+	if node < 0 {
+		return false
+	}
+	if t.typ(node) == .ts_number_keyword {
+		return true
+	}
+	if t.typ(node) == .ts_literal_type {
+		literal := t.node(node, .literal) or { return false }
+		return t.typ(literal) == .literal && t.get(literal, .value) is f64
+	}
+	return false
 }
 
 // un_is_bigint_type_annotation ports isBigIntTypeAnnotation: `bigint` or a BigInt literal type.
@@ -2384,6 +2420,9 @@ fn (mut c Checker) un_is_target_ts_type(typ TypeResponse, o UnTypeOptions) bool 
 		}
 		.string_ {
 			typ.flags & type_flag_string_literal != 0 || typ.intrinsic_name == 'string'
+		}
+		.number_ {
+			typ.flags & type_flag_number_literal != 0 || typ.intrinsic_name == 'number'
 		}
 		else {
 			false
@@ -2683,7 +2722,7 @@ fn (mut c Checker) un_is_target_node(mut ctx UnCtx, node int, o UnTypeOptions, m
 		.regexp {
 			return un_is_regex_literal(t, node)
 		}
-		.date {
+		.date, .number_, .sized_collection {
 			return false
 		}
 	}
@@ -3071,4 +3110,200 @@ fn (mut c Checker) un_should_skip_known_non_array_receiver(mut ctx UnCtx, node i
 		return false
 	}
 	return c.un_is_known_non_indexed_collection(mut ctx, node)
+}
+
+// ---- is-number.js
+
+const un_string_number_methods = ['charCodeAt', 'indexOf', 'lastIndexOf', 'localeCompare']
+const un_indexed_collection_number_methods = ['indexOf', 'lastIndexOf', 'findIndex', 'findLastIndex']
+const un_date_number_returning_methods = ['getDate', 'getDay', 'getFullYear', 'getHours',
+	'getMilliseconds', 'getMinutes', 'getMonth', 'getSeconds', 'getTime', 'getTimezoneOffset',
+	'getUTCDate', 'getUTCDay', 'getUTCFullYear', 'getUTCHours', 'getUTCMilliseconds', 'getUTCMinutes',
+	'getUTCMonth', 'getUTCSeconds', 'setDate', 'setFullYear', 'setHours', 'setMilliseconds',
+	'setMinutes', 'setMonth', 'setSeconds', 'setTime', 'setUTCDate', 'setUTCFullYear', 'setUTCHours',
+	'setUTCMilliseconds', 'setUTCMinutes', 'setUTCMonth', 'setUTCSeconds', 'valueOf']
+
+// un_is_number_returning_method_call ports isNumberReturningMethodCall: `s.indexOf()` of a string,
+// `a.push()` of an array, `a.findIndex()` of an indexed collection, `d.getTime()` of a Date.
+fn (mut c Checker) un_is_number_returning_method_call(mut ctx UnCtx, node int) bool {
+	t := ctx.t
+	if t.typ(node) != .call_expression || (t.flag(node, .optional) or { false }) {
+		return false
+	}
+	callee := t.node(node, .callee) or { return false }
+	if t.typ(callee) != .member_expression || (t.flag(callee, .computed) or { false })
+		|| (t.flag(callee, .optional) or { false }) {
+		return false
+	}
+	property := t.node(callee, .property) or { return false }
+	if t.typ(property) != .identifier {
+		return false
+	}
+	name := t.string_of(property, .name) or { '' }
+	object := t.node(callee, .object) or { return false }
+	return (name in un_string_number_methods && c.un_is_string(mut ctx, object))
+		|| (name in ['push', 'unshift'] && c.un_is_array(mut ctx, object))
+		|| (name in un_indexed_collection_number_methods && c.un_is_indexed_collection(mut ctx, object))
+		|| (name in un_date_number_returning_methods
+		&& c.un_is_target(mut ctx, object, un_type_options(.date)))
+}
+
+// un_is_numeric_property ports isNumericProperty: the `length` of a function, a string or an
+// indexed collection, the `size` of a Map or a Set.
+fn (mut c Checker) un_is_numeric_property(mut ctx UnCtx, node int) bool {
+	t := ctx.t
+	if t.typ(node) != .member_expression || (t.flag(node, .computed) or { false })
+		|| (t.flag(node, .optional) or { false }) {
+		return false
+	}
+	property := t.node(node, .property) or { return false }
+	if t.typ(property) != .identifier {
+		return false
+	}
+	object := t.node(node, .object) or { return false }
+	name := t.string_of(property, .name) or { '' }
+	if name == 'length' {
+		return t.typ(object) in [.function_declaration, .function_expression, .arrow_function_expression]
+			|| c.un_is_string(mut ctx, object) || c.un_is_indexed_collection(mut ctx, object)
+	}
+	return name == 'size' && c.un_is_target(mut ctx, object, un_type_options(.sized_collection))
+}
+
+// un_has_number_type_annotation ports hasNumberTypeAnnotation (hasTypeAnnotation of type-check.js):
+// a definition of the variable annotated `number` (not optional).
+fn (mut c Checker) un_has_number_type_annotation(ctx &UnCtx, node int) bool {
+	t := ctx.t
+	v := c.un_find_variable(ctx, node)
+	if v < 0 {
+		return false
+	}
+	tree := c.scope_tree(ctx.root)
+	for def in tree.variables[v].defs {
+		name := c.un_es_of(ctx, def.name)
+		if name < 0 || (t.flag(name, .optional) or { false }) {
+			continue
+		}
+		annotation := t.node(name, .type_annotation) or { continue }
+		if un_is_number_type_annotation(t, t.node(annotation, .type_annotation) or { -1 }) {
+			return true
+		}
+	}
+	return false
+}
+
+// un_is_number ports isNumber of utils/is-number.js: the expression is surely a number (not a
+// BigInt), by its syntax, its static value or its type.
+fn (mut c Checker) un_is_number(mut ctx UnCtx, node int) bool {
+	t := ctx.t
+	if node < 0 {
+		return false
+	}
+	typ := t.typ(node)
+	if typ == .literal && t.get(node, .value) is f64 {
+		return true
+	}
+	if un_is_static_properties(t, node, 'Math', un_math_properties)
+		|| un_is_static_properties(t, node, 'Number', un_number_properties) {
+		return true
+	}
+	if typ == .call_expression && !(t.flag(node, .optional) or { false }) {
+		callee := t.node(node, .callee) or { -1 }
+		if un_is_static_properties(t, callee, 'Math', un_math_methods)
+			|| un_is_static_properties(t, callee, 'Number', ['parseFloat', 'parseInt'])
+			|| un_is_static_properties(t, callee, 'Date', ['now', 'parse', 'UTC']) {
+			return true
+		}
+	}
+	if un_is_function_call(t, node, 'Number') || un_is_function_call(t, node, 'parseInt')
+		|| un_is_function_call(t, node, 'parseFloat')
+		|| c.un_is_number_returning_method_call(mut ctx, node)
+		|| c.un_is_numeric_property(mut ctx, node) {
+		return true
+	}
+	mut operator := t.string_of(node, .operator) or { '' }
+	match typ {
+		.assignment_expression, .binary_expression {
+			left := t.node(node, .left) or { -1 }
+			right := t.node(node, .right) or { -1 }
+			if typ == .assignment_expression {
+				if operator == '=' && c.un_is_number(mut ctx, right) {
+					return true
+				}
+				operator = operator[..operator.len - 1]
+			}
+			if operator == '+' && c.un_is_number(mut ctx, left) && c.un_is_number(mut ctx, right) {
+				return true
+			}
+			// `>>>` cannot be used on a BigInt.
+			if operator == '>>>' {
+				return true
+			}
+			// `a * b` may be a BigInt: one side must be a number.
+			if operator in ['-', '*', '/', '%', '**', '<<', '>>', '|', '^', '&']
+				&& (c.un_is_number(mut ctx, left) || c.un_is_number(mut ctx, right)) {
+				return true
+			}
+		}
+		.unary_expression {
+			// `+` cannot be used on a BigInt.
+			if operator == '+' {
+				return true
+			}
+			if operator in ['-', '~'] && c.un_is_number(mut ctx, t.node(node, .argument) or { -1 }) {
+				return true
+			}
+		}
+		.update_expression {
+			if c.un_is_number(mut ctx, t.node(node, .argument) or { -1 }) {
+				return true
+			}
+		}
+		.conditional_expression {
+			consequent := c.un_is_number(mut ctx, t.node(node, .consequent) or { -1 })
+			alternate := c.un_is_number(mut ctx, t.node(node, .alternate) or { -1 })
+			if consequent && alternate {
+				return true
+			}
+			test_node := t.node(node, .test) or { -1 }
+			if test := c.un_static_value_for_control_flow(mut ctx, test_node) {
+				mut visited := map[int]bool{}
+				if !c.un_has_jsdoc_type_reference(mut ctx, test_node, mut visited)
+					&& ((consequent && stv_to_boolean(test.value))
+					|| (alternate && !stv_to_boolean(test.value))) {
+					return true
+				}
+			}
+		}
+		.sequence_expression {
+			expressions := t.list(node, .expressions) or { []int{} }
+			if expressions.len > 0 && c.un_is_number(mut ctx, expressions.last()) {
+				return true
+			}
+		}
+		.identifier {
+			if c.un_has_number_type_annotation(ctx, node) {
+				return true
+			}
+		}
+		.ts_as_expression, .ts_satisfies_expression, .ts_type_assertion {
+			if un_is_number_type_annotation(t, t.node(node, .type_annotation) or { -1 }) {
+				return true
+			}
+		}
+		.ts_non_null_expression {
+			if c.un_is_number(mut ctx, t.node(node, .expression) or { -1 }) {
+				return true
+			}
+		}
+		else {}
+	}
+	if c.un_is_target(mut ctx, node, un_type_options(.number_)) {
+		return true
+	}
+	mut visited := map[int]bool{}
+	if c.un_has_jsdoc_type_reference(mut ctx, node, mut visited) {
+		return false
+	}
+	result := c.un_static_value_for_control_flow(mut ctx, node) or { return false }
+	return result.value.kind == .number_
 }
