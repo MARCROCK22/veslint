@@ -1,0 +1,12 @@
+tests/rules/unicorn/prefer-math-trunc/cases.ts:5:12	unicorn/prefer-math-trunc	error-bitwise	Use `Math.trunc` instead of `| 0`.
+tests/rules/unicorn/prefer-math-trunc/cases.ts:6:12	unicorn/prefer-math-trunc	error-bitwise	Use `Math.trunc` instead of `>> 0`.
+tests/rules/unicorn/prefer-math-trunc/cases.ts:7:12	unicorn/prefer-math-trunc	error-bitwise	Use `Math.trunc` instead of `<< 0`.
+tests/rules/unicorn/prefer-math-trunc/cases.ts:8:12	unicorn/prefer-math-trunc	error-bitwise	Use `Math.trunc` instead of `^ 0`.
+tests/rules/unicorn/prefer-math-trunc/cases.ts:9:12	unicorn/prefer-math-trunc	error-bitwise-not	Use `Math.trunc` instead of `~~`.
+tests/rules/unicorn/prefer-math-trunc/cases.ts:10:13	unicorn/prefer-math-trunc	error-bitwise-not	Use `Math.trunc` instead of `~~`.
+tests/rules/unicorn/prefer-math-trunc/cases.ts:11:12	unicorn/prefer-math-trunc	error-bitwise	Use `Math.trunc` instead of `| 0`.
+tests/rules/unicorn/prefer-math-trunc/cases.ts:12:1	unicorn/prefer-math-trunc	error-bitwise	Use `Math.trunc` instead of `|= 0`.
+tests/rules/unicorn/prefer-math-trunc/cases.ts:13:1	unicorn/prefer-math-trunc	error-bitwise	Use `Math.trunc` instead of `>>= 0`.
+tests/rules/unicorn/prefer-math-trunc/cases.ts:14:1	unicorn/prefer-math-trunc	error-bitwise	Use `Math.trunc` instead of `^= 0`.
+tests/rules/unicorn/prefer-math-trunc/cases.ts:15:1	unicorn/prefer-math-trunc	error-bitwise	Use `Math.trunc` instead of `|= 0`.
+tests/rules/unicorn/prefer-math-trunc/cases.ts:17:9	unicorn/prefer-math-trunc	error-bitwise-not	Use `Math.trunc` instead of `~~`.

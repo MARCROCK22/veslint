@@ -1,0 +1,12 @@
+tests/rules/unicorn/prefer-math-trunc/cases.ts:5:12	unicorn/prefer-math-trunc	error-bitwise	Use `Math.trunc` instead of `| 0`.	suggestion	suggestion-bitwise	Replace `| 0` with `Math.trunc`.	191	196	Math.trunc(n)	end	5	17
+tests/rules/unicorn/prefer-math-trunc/cases.ts:6:12	unicorn/prefer-math-trunc	error-bitwise	Use `Math.trunc` instead of `>> 0`.	fix	209	215	Math.trunc(n)	end	6	18
+tests/rules/unicorn/prefer-math-trunc/cases.ts:7:12	unicorn/prefer-math-trunc	error-bitwise	Use `Math.trunc` instead of `<< 0`.	fix	228	234	Math.trunc(n)	end	7	18
+tests/rules/unicorn/prefer-math-trunc/cases.ts:8:12	unicorn/prefer-math-trunc	error-bitwise	Use `Math.trunc` instead of `^ 0`.	fix	247	252	Math.trunc(n)	end	8	17
+tests/rules/unicorn/prefer-math-trunc/cases.ts:9:12	unicorn/prefer-math-trunc	error-bitwise-not	Use `Math.trunc` instead of `~~`.	fix	265	268	Math.trunc(n)	end	9	15
+tests/rules/unicorn/prefer-math-trunc/cases.ts:10:13	unicorn/prefer-math-trunc	error-bitwise-not	Use `Math.trunc` instead of `~~`.	fix	282	285	Math.trunc(n)	end	10	16
+tests/rules/unicorn/prefer-math-trunc/cases.ts:11:12	unicorn/prefer-math-trunc	error-bitwise	Use `Math.trunc` instead of `| 0`.	suggestion	suggestion-bitwise	Replace `| 0` with `Math.trunc`.	298	308	Math.trunc((n, n))	end	11	22
+tests/rules/unicorn/prefer-math-trunc/cases.ts:12:1	unicorn/prefer-math-trunc	error-bitwise	Use `Math.trunc` instead of `|= 0`.	fix	312	316	= Math.trunc(n)	end	12	7
+tests/rules/unicorn/prefer-math-trunc/cases.ts:13:1	unicorn/prefer-math-trunc	error-bitwise	Use `Math.trunc` instead of `>>= 0`.	fix	320	325	= Math.trunc(n)	end	13	8
+tests/rules/unicorn/prefer-math-trunc/cases.ts:14:1	unicorn/prefer-math-trunc	error-bitwise	Use `Math.trunc` instead of `^= 0`.	fix	337	341	= Math.trunc(box.value)	end	14	15
+tests/rules/unicorn/prefer-math-trunc/cases.ts:15:1	unicorn/prefer-math-trunc	error-bitwise	Use `Math.trunc` instead of `|= 0`.	end	15	22
+tests/rules/unicorn/prefer-math-trunc/cases.ts:17:9	unicorn/prefer-math-trunc	error-bitwise-not	Use `Math.trunc` instead of `~~`.	fix	389	392	 Math.trunc(n)	end	17	12

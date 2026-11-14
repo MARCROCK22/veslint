@@ -2,6 +2,11 @@
 
 Each version is a release on GitHub with the veslint binaries (Linux x64, Windows x64) and the VS Code extension. The section of a version is the text of its release.
 
+## 0.17.0
+
+- **5 rules of eslint-plugin-unicorn for math and coercion:** `unicorn/prefer-math-min-max`, `unicorn/prefer-math-trunc`, `unicorn/prefer-modern-math-apis`, `unicorn/prefer-native-coercion-functions` and `unicorn/require-number-to-fixed-digits-argument`. They come with their fixes and suggestions, and pass the cases of unicorn's own tests.
+- **Development:** `tests/rules/reference.sh` and `tests/rules/cross.sh` run ESLint in parallel (`JOBS`, the CPUs by default).
+
 ## 0.16.0
 
 - **13 rules of eslint-plugin-unicorn for strings and numbers:** `unicorn/consistent-template-literal-escape`, `unicorn/escape-case`, `unicorn/no-console-spaces`, `unicorn/no-hex-escape`, `unicorn/no-zero-fractions`, `unicorn/prefer-bigint-literals`, `unicorn/prefer-code-point`, `unicorn/prefer-number-properties`, `unicorn/prefer-string-raw`, `unicorn/prefer-string-replace-all`, `unicorn/prefer-string-slice`, `unicorn/prefer-string-trim-start-end` and `unicorn/text-encoding-identifier-case`. They come with their options, fixes and suggestions, and pass the cases of unicorn's own tests.

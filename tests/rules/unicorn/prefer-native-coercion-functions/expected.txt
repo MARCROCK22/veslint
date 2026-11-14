@@ -1,0 +1,9 @@
+tests/rules/unicorn/prefer-native-coercion-functions/cases.ts:6:25	unicorn/prefer-native-coercion-functions	prefer-native-coercion-functions	arrow function 'f1' is equivalent to `String`. Use `String` directly.
+tests/rules/unicorn/prefer-native-coercion-functions/cases.ts:7:25	unicorn/prefer-native-coercion-functions	prefer-native-coercion-functions	arrow function 'f2' is equivalent to `Number`. Use `Number` directly.
+tests/rules/unicorn/prefer-native-coercion-functions/cases.ts:10:12	unicorn/prefer-native-coercion-functions	prefer-native-coercion-functions	function 'f3' is equivalent to `Boolean`. Use `Boolean` directly.
+tests/rules/unicorn/prefer-native-coercion-functions/cases.ts:16:28	unicorn/prefer-native-coercion-functions	prefer-native-coercion-functions	arrow function is equivalent to `Boolean`. Use `Boolean` directly.
+tests/rules/unicorn/prefer-native-coercion-functions/cases.ts:17:22	unicorn/prefer-native-coercion-functions	prefer-native-coercion-functions	function is equivalent to `Boolean`. Use `Boolean` directly.
+tests/rules/unicorn/prefer-native-coercion-functions/cases.ts:21:3	unicorn/prefer-native-coercion-functions	prefer-native-coercion-functions	method 'method' is equivalent to `String`. Use `String` directly.
+tests/rules/unicorn/prefer-native-coercion-functions/cases.ts:30:37	unicorn/prefer-native-coercion-functions	prefer-native-coercion-functions	arrow function 'f7' is equivalent to `String`. Use `String` directly.
+tests/rules/unicorn/prefer-native-coercion-functions/cases.ts:31:25	unicorn/prefer-native-coercion-functions	prefer-native-coercion-functions	arrow function 'f8' is equivalent to `String`. Use `String` directly.
+tests/rules/unicorn/prefer-native-coercion-functions/cases.ts:34:25	unicorn/prefer-native-coercion-functions	prefer-native-coercion-functions	arrow function 'z1' is equivalent to `String`. Use `String` directly.

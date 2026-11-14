@@ -1,0 +1,9 @@
+tests/rules/unicorn/prefer-math-min-max/cases.ts:6:12	unicorn/prefer-math-min-max	prefer-math-min-max	Prefer `Math.min()` to simplify ternary expressions.
+tests/rules/unicorn/prefer-math-min-max/cases.ts:7:12	unicorn/prefer-math-min-max	prefer-math-min-max	Prefer `Math.min()` to simplify ternary expressions.
+tests/rules/unicorn/prefer-math-min-max/cases.ts:8:12	unicorn/prefer-math-min-max	prefer-math-min-max	Prefer `Math.max()` to simplify ternary expressions.
+tests/rules/unicorn/prefer-math-min-max/cases.ts:9:12	unicorn/prefer-math-min-max	prefer-math-min-max	Prefer `Math.max()` to simplify ternary expressions.
+tests/rules/unicorn/prefer-math-min-max/cases.ts:10:12	unicorn/prefer-math-min-max	prefer-math-min-max	Prefer `Math.min()` to simplify ternary expressions.
+tests/rules/unicorn/prefer-math-min-max/cases.ts:11:12	unicorn/prefer-math-min-max	prefer-math-min-max	Prefer `Math.min()` to simplify ternary expressions.
+tests/rules/unicorn/prefer-math-min-max/cases.ts:12:12	unicorn/prefer-math-min-max	prefer-math-min-max	Prefer `Math.min()` to simplify ternary expressions.
+tests/rules/unicorn/prefer-math-min-max/cases.ts:14:10	unicorn/prefer-math-min-max	prefer-math-min-max	Prefer `Math.min()` to simplify ternary expressions.
+tests/rules/unicorn/prefer-math-min-max/cases.ts:17:10	unicorn/prefer-math-min-max	prefer-math-min-max	Prefer `Math.min()` to simplify ternary expressions.

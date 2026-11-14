@@ -8,6 +8,7 @@
 # suggestions of each one (range in UTF-16 units and text) and where it ends (endLine, endColumn).
 # Needs the build/eval dependencies, installed by tests/eval_spider_byte.sh, and build/upstream/seyfert
 # (tests/upstream/README.md), which tests/rules/seyfert/setup.sh links next to the seyfert fixtures.
+# ESLint and veslint run JOBS processes at a time (the CPUs by default), as in tests/run.sh.
 set -uo pipefail
 cd "$(dirname "$0")/../.."
 NM=build/eval/spider-byte/node_modules
@@ -15,19 +16,40 @@ NM=build/eval/spider-byte/node_modules
 tests/rules/seyfert/setup.sh || exit 2
 TMP=$(mktemp -d)
 trap 'rm -rf "$TMP"' EXIT
-reference_of() { # files...: adds ESLint's lines on the files to reference.txt and reference.fixes.txt
-	node "$NM/eslint/bin/eslint.js" --config tests/rules/eslint.reference.config.mjs --format json \
-		"$@" > "$TMP/eslint.json" 2> "$TMP/eslint.err"
-	if [[ ! -s "$TMP/eslint.json" ]]; then
-		echo "FAIL   ESLint produced no results"
-		cat "$TMP/eslint.err"
-		exit 1
-	fi
-	python3 tests/eslint_lines.py < "$TMP/eslint.json" >> "$TMP/reference.txt"
-	python3 tests/eslint_lines.py fixes < "$TMP/eslint.json" >> "$TMP/reference.fixes.txt"
+JOBS=${JOBS:-$(nproc 2> /dev/null || echo 2)}
+[[ $JOBS -ge 1 ]] || JOBS=1
+# throttle waits until fewer than JOBS background jobs run.
+throttle() {
+	while [[ $(jobs -rp | wc -l) -ge $JOBS ]]; do
+		wait -n
+	done
 }
-# One ESLint process for the fixtures of the typescript-eslint rules, one for those of ESLint core
-# and one for those of the seyfert/* rules. In a single process with more of them, V8 (Node
+reference_of() { # tag files...: ESLint's lines on the files, in reference.<tag>.txt and reference.<tag>.fixes.txt
+	local tag=$1
+	shift
+	node "$NM/eslint/bin/eslint.js" --config tests/rules/eslint.reference.config.mjs --format json \
+		"$@" > "$TMP/eslint.$tag.json" 2> "$TMP/eslint.$tag.err"
+	if [[ ! -s "$TMP/eslint.$tag.json" ]]; then
+		{ echo "FAIL   ESLint produced no results"; cat "$TMP/eslint.$tag.err"; } > "$TMP/eslint.$tag.failed"
+		return
+	fi
+	python3 tests/eslint_lines.py < "$TMP/eslint.$tag.json" > "$TMP/reference.$tag.txt"
+	python3 tests/eslint_lines.py fixes < "$TMP/eslint.$tag.json" > "$TMP/reference.$tag.fixes.txt"
+}
+reference_in_groups() { # tag files...: reference_of on JOBS groups of consecutive files, in the background
+	local tag=$1
+	shift
+	local files=("$@") size k
+	[[ ${#files[@]} -gt 0 ]] || return 0
+	size=$(((${#files[@]} + JOBS - 1) / JOBS))
+	for ((k = 0; k * size < ${#files[@]}; k++)); do
+		throttle
+		reference_of "$tag.$k" "${files[@]:k*size:size}" &
+	done
+}
+# ESLint processes for the fixtures of the typescript-eslint rules, others for those of ESLint core
+# and others for those of the seyfert/* rules, each with a group of consecutive files (the fixtures
+# of a rule, with their tsconfig.json, stay together). In a single process with more of them, V8 (Node
 # 26.13.0) stops matching an alternation in a regexp modifier group with the `u` flag at some point
 # of the run: `/^(?i:get|set)\p{Lu}/u` of naming-convention's regex fixture no longer matches
 # `SetÉtat`, which it matches in a new process (and in veslint).
@@ -35,11 +57,18 @@ mapfile -t cases < <(find tests/rules -name cases.ts -o -name cases.tsx | sort)
 mapfile -t seyfert_cases < <(printf '%s\n' "${cases[@]}" | grep '^tests/rules/seyfert/')
 mapfile -t ts_cases < <(printf '%s\n' "${cases[@]}" | grep '^tests/rules/@typescript-eslint/')
 mapfile -t core_cases < <(printf '%s\n' "${cases[@]}" | grep -v '^tests/rules/seyfert/\|^tests/rules/@typescript-eslint/')
-: > "$TMP/reference.txt"
-: > "$TMP/reference.fixes.txt"
-reference_of "${ts_cases[@]}"
-[[ ${#core_cases[@]} -eq 0 ]] || reference_of "${core_cases[@]}"
-[[ ${#seyfert_cases[@]} -eq 0 ]] || reference_of "${seyfert_cases[@]}"
+reference_in_groups ts "${ts_cases[@]}"
+reference_in_groups core "${core_cases[@]}"
+reference_in_groups seyfert "${seyfert_cases[@]}"
+wait
+if compgen -G "$TMP/eslint.*.failed" > /dev/null; then
+	cat "$TMP"/eslint.*.failed
+	exit 1
+fi
+find "$TMP" -maxdepth 1 -name 'reference.*.txt' ! -name '*.fixes.txt' -exec cat {} + > "$TMP/reference.all"
+find "$TMP" -maxdepth 1 -name 'reference.*.fixes.txt' -exec cat {} + > "$TMP/reference.fixes.all"
+mv "$TMP/reference.all" "$TMP/reference.txt"
+mv "$TMP/reference.fixes.all" "$TMP/reference.fixes.txt"
 fail=0
 # A rule's directory is tests/rules/<rule id>, the one with an expected.txt.
 mapfile -t rule_dirs < <(find tests/rules -name expected.txt | sed 's|/expected\.txt$||' | sort)
@@ -167,7 +196,7 @@ fi
 # Each plugin with its fixtures: typescript-eslint's (tests/upstream/setup.sh) and
 # @slipher/eslint-plugin's (tests/upstream/seyfert/setup.sh).
 upstream_tests() { # label setup plugin-directory
-	local label=$1 setup=$2 dir=$3 rules
+	local label=$1 setup=$2 dir=$3 rules group
 	local fixtures="$TMP/upstream-$dir"
 	if ! "$setup" "$fixtures" 2> "$TMP/upstream-setup.err"; then
 		echo "FAIL   $label: $(cat "$TMP/upstream-setup.err")"
@@ -181,16 +210,47 @@ upstream_tests() { # label setup plugin-directory
 		mapfile -t rules < <(find "tests/rules/$dir" -name upstream.json | sed -E 's|^tests/rules/(.*)/upstream\.json$|\1|' | sort)
 	fi
 	[[ ${#rules[@]} -gt 0 ]] || return 0
-	if node tests/rules/upstream_eslint.mjs "$fixtures" "$TMP/upstream-eslint-$dir" "${rules[@]}" > "$TMP/upstream-eslint.out" 2>&1; then
+	# JOBS groups of rules, the rules dealt in turn (the big ones fall in different groups).
+	local groups=$JOBS k index pids=() codes=0
+	[[ $groups -le ${#rules[@]} ]] || groups=${#rules[@]}
+	local -a group_of
+	for ((k = 0; k < groups; k++)); do
+		group_of[k]=''
+		for index in "${!rules[@]}"; do
+			[[ $((index % groups)) -eq $k ]] && group_of[k]+="${rules[index]}"$'\n'
+		done
+	done
+	for ((k = 0; k < groups; k++)); do
+		mapfile -t group <<< "${group_of[k]%$'\n'}"
+		node tests/rules/upstream_eslint.mjs "$fixtures" "$TMP/upstream-eslint-$dir" "${group[@]}" > "$TMP/upstream-eslint.$k.out" 2>&1 &
+		pids+=($!)
+	done
+	for k in "${!pids[@]}"; do
+		wait "${pids[k]}" || codes=1
+	done
+	if [[ $codes -eq 0 ]]; then
 		echo "ok     $label: ESLint gives what they expect in the ${#rules[@]} rules (known.txt aside)"
 	else
 		echo "FAIL   $label: ESLint does not give what they expect"
-		grep -v '^ok' "$TMP/upstream-eslint.out"
+		for ((k = 0; k < groups; k++)); do
+			grep -v '^ok' "$TMP/upstream-eslint.$k.out"
+		done
 		fail=1
 	fi
 	# Its own verdict is the one of tests/run.sh; here only its lines matter.
-	python3 tests/upstream_check.py ./veslint "$fixtures" "$TMP/upstream-configs-$dir" --lines "$TMP/upstream-veslint-$dir.txt" \
-		"${rules[@]}" > /dev/null 2>&1
+	pids=()
+	for ((k = 0; k < groups; k++)); do
+		mapfile -t group <<< "${group_of[k]%$'\n'}"
+		python3 tests/upstream_check.py ./veslint "$fixtures" "$TMP/upstream-configs-$dir.$k" \
+			--lines "$TMP/upstream-veslint-$dir.$k.txt" "${group[@]}" > /dev/null 2>&1 &
+		pids+=($!)
+	done
+	for k in "${!pids[@]}"; do
+		wait "${pids[k]}"
+	done
+	for ((k = 0; k < groups; k++)); do
+		cat "$TMP/upstream-veslint-$dir.$k.txt"
+	done > "$TMP/upstream-veslint-$dir.txt"
 	if python3 tests/upstream_compare.py "$TMP/upstream-eslint-$dir" "$TMP/upstream-veslint-$dir.txt" "${rules[@]}" > "$TMP/upstream-compare.out"; then
 		echo "ok     $label: $(tail -1 "$TMP/upstream-compare.out")"
 	else

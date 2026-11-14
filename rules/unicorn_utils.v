@@ -1109,3 +1109,120 @@ fn (c &Checker) un_replace_reference_identifier(t &estree.EsTree, node int, repl
 	}
 	return fix_replace_range(start, end, replacement)
 }
+
+// un_string_if_constant ports getStringIfConstant(node) of eslint-utils without a scope: the
+// string of a regular expression or BigInt literal, else String() of getStaticValue.
+fn (mut c Checker) un_string_if_constant(t &estree.EsTree, node int) ?string {
+	if t.typ(node) == .literal {
+		regex := t.get(node, .regex)
+		if regex is estree.RegexInfo {
+			return '/${regex.pattern}/${regex.flags}'
+		}
+		if bigint := t.string_of(node, .bigint) {
+			return bigint
+		}
+	}
+	result := c.get_static_value_unscoped(t.ts_node(node)?)
+	if !result.found {
+		return none
+	}
+	return js_any_string_value(result.value)
+}
+
+// un_property_name ports getPropertyName of eslint-utils for a Property, MethodDefinition or
+// PropertyDefinition.
+fn (mut c Checker) un_property_name(t &estree.EsTree, node int) ?string {
+	key := t.node(node, .key)?
+	if t.flag(node, .computed) or { false } {
+		return c.un_string_if_constant(t, key)
+	}
+	if t.typ(key) == .literal {
+		value := t.get(key, .value)
+		return match value {
+			string { value }
+			f64 { js_number_to_string(value) }
+			else { c.un_string_if_constant(t, key) }
+		}
+	}
+	if t.typ(key) == .private_identifier {
+		return none
+	}
+	return t.string_of(key, .name)
+}
+
+// un_function_name_with_kind ports getFunctionNameWithKind of eslint-utils (which, unlike
+// ESLint's, also names a function after the variable, assignment or default export it is).
+fn (mut c Checker) un_function_name_with_kind(t &estree.EsTree, node int) string {
+	parent := t.nodes[node].parent
+	if parent < 0 {
+		return ''
+	}
+	mut tokens := []string{}
+	ptyp := t.typ(parent)
+	is_value := t.node(parent, .value) or { -1 } == node
+	object_method := ptyp == .property && is_value
+	class_method := ptyp == .method_definition && is_value
+	field_method := ptyp == .property_definition && is_value
+	key := t.node(parent, .key) or { -1 }
+	if class_method || field_method {
+		if t.flag(parent, .static_) or { false } {
+			tokens << 'static'
+		}
+		if key >= 0 && t.typ(key) == .private_identifier {
+			tokens << 'private'
+		}
+	}
+	if t.flag(node, .async) or { false } {
+		tokens << 'async'
+	}
+	if t.flag(node, .generator) or { false } {
+		tokens << 'generator'
+	}
+	if object_method || class_method {
+		kind := t.string_of(parent, .kind) or { '' }
+		if kind == 'constructor' {
+			return 'constructor'
+		}
+		tokens << match kind {
+			'get' { 'getter' }
+			'set' { 'setter' }
+			else { 'method' }
+		}
+	} else if field_method {
+		tokens << 'method'
+	} else {
+		if t.typ(node) == .arrow_function_expression {
+			tokens << 'arrow'
+		}
+		tokens << 'function'
+	}
+	if object_method || class_method || field_method {
+		if key >= 0 && t.typ(key) == .private_identifier {
+			tokens << '#${t.string_of(key, .name) or { '' }}'
+		} else if name := c.un_property_name(t, parent) {
+			if name != '' {
+				tokens << "'${name}'"
+			}
+		} else if key >= 0 {
+			text := c.un_text(t, key)
+			if !text.contains('\n') {
+				tokens << '[${text}]'
+			}
+		}
+	} else if id := t.node(node, .id) {
+		tokens << "'${t.string_of(id, .name) or { '' }}'"
+	} else if ptyp == .variable_declarator {
+		id := t.node(parent, .id) or { -1 }
+		if id >= 0 && t.typ(id) == .identifier {
+			tokens << "'${t.string_of(id, .name) or { '' }}'"
+		}
+	} else if ptyp in [.assignment_expression, .assignment_pattern] {
+		left := t.node(parent, .left) or { -1 }
+		if left >= 0 && t.typ(left) == .identifier {
+			tokens << "'${t.string_of(left, .name) or { '' }}'"
+		}
+	} else if ptyp == .export_default_declaration && t.node(parent, .declaration) or { -1 } == node {
+		tokens << "'default'"
+	}
+	return tokens.join(' ')
+}

@@ -53,7 +53,12 @@ fn uteic_enforce_dash(t &estree.EsTree, node int) bool {
 	return uteic_jsx_attribute(t, node, 'meta', ['charset'])
 		|| uteic_jsx_attribute(t, node, 'form', ['acceptcharset', 'accept-charset'])
 		|| (un_is_new(t, parent, names: ['TextDecoder'])
-		&& (t.list(parent, .arguments) or { []int{} }).first() == node)
+		&& uteic_first_argument(t, parent) == node)
+}
+
+fn uteic_first_argument(t &estree.EsTree, node int) int {
+	arguments := t.list(node, .arguments) or { return -1 }
+	return if arguments.len > 0 { arguments[0] } else { -1 }
 }
 
 // uteic_value ports getStringLiteralValue.

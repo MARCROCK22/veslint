@@ -24,13 +24,28 @@ import json, os
 rules = sorted(os.path.relpath(d, 'tests/rules') for d, _, files in os.walk('tests/rules') if 'expected.txt' in files)
 print(json.dumps({'rules': {r: 'error' for r in rules}}))
 PY
-node tests/rules/cross_eslint.mjs tests/rules/eslint.cross.config.mjs "${cases[@]}" > "$TMP/eslint.json" 2> "$TMP/eslint.err"
-if [[ ! -s "$TMP/eslint.json" ]]; then
-	echo "FAIL   ESLint produced no results"
-	cat "$TMP/eslint.err"
-	exit 1
-fi
-python3 tests/eslint_lines.py < "$TMP/eslint.json" | sort > "$TMP/eslint.txt"
+# ESLint in JOBS processes at a time (the CPUs by default), each on a group of consecutive files
+# (the fixtures of a rule, with their tsconfig.json, stay together).
+JOBS=${JOBS:-$(nproc 2> /dev/null || echo 2)}
+[[ $JOBS -ge 1 ]] || JOBS=1
+size=$(((${#cases[@]} + JOBS - 1) / JOBS))
+pids=()
+for ((k = 0; k * size < ${#cases[@]}; k++)); do
+	node tests/rules/cross_eslint.mjs tests/rules/eslint.cross.config.mjs "${cases[@]:k*size:size}" \
+		> "$TMP/eslint.$k.json" 2> "$TMP/eslint.$k.err" &
+	pids+=($!)
+done
+wait "${pids[@]}"
+for k in "${!pids[@]}"; do
+	if [[ ! -s "$TMP/eslint.$k.json" ]]; then
+		echo "FAIL   ESLint produced no results"
+		cat "$TMP/eslint.$k.err"
+		exit 1
+	fi
+done
+for k in "${!pids[@]}"; do
+	python3 tests/eslint_lines.py < "$TMP/eslint.$k.json"
+done | sort > "$TMP/eslint.txt"
 ./veslint --config "$TMP/rules.json" "${cases[@]}" 2> "$TMP/veslint.err" | sort > "$TMP/veslint.txt"
 python3 - "$TMP" <<'PY'
 import collections, sys

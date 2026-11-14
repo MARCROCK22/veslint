@@ -1,0 +1,4 @@
+tests/rules/unicorn/require-number-to-fixed-digits-argument/cases.ts:5:21	unicorn/require-number-to-fixed-digits-argument	require-number-to-fixed-digits-argument	Missing the digits argument.	fix	170	170	0	end	5	23
+tests/rules/unicorn/require-number-to-fixed-digits-argument/cases.ts:6:29	unicorn/require-number-to-fixed-digits-argument	require-number-to-fixed-digits-argument	Missing the digits argument.	fix	203	203	0	end	6	32
+tests/rules/unicorn/require-number-to-fixed-digits-argument/cases.ts:7:33	unicorn/require-number-to-fixed-digits-argument	require-number-to-fixed-digits-argument	Missing the digits argument.	fix	239	239	0	end	7	35
+tests/rules/unicorn/require-number-to-fixed-digits-argument/cases.ts:8:22	unicorn/require-number-to-fixed-digits-argument	require-number-to-fixed-digits-argument	Missing the digits argument.	fix	264	264	0	end	8	24

@@ -1,0 +1,9 @@
+tests/rules/unicorn/prefer-math-min-max/cases.ts:6:12	unicorn/prefer-math-min-max	prefer-math-min-max	Prefer `Math.min()` to simplify ternary expressions.	fix	212	237	Math.min(height, 50)	end	6	37
+tests/rules/unicorn/prefer-math-min-max/cases.ts:7:12	unicorn/prefer-math-min-max	prefer-math-min-max	Prefer `Math.min()` to simplify ternary expressions.	fix	250	275	Math.min(height, 50)	end	7	37
+tests/rules/unicorn/prefer-math-min-max/cases.ts:8:12	unicorn/prefer-math-min-max	prefer-math-min-max	Prefer `Math.max()` to simplify ternary expressions.	fix	288	314	Math.max(height, 50)	end	8	38
+tests/rules/unicorn/prefer-math-min-max/cases.ts:9:12	unicorn/prefer-math-min-max	prefer-math-min-max	Prefer `Math.max()` to simplify ternary expressions.	fix	327	353	Math.max(height, 50)	end	9	38
+tests/rules/unicorn/prefer-math-min-max/cases.ts:10:12	unicorn/prefer-math-min-max	prefer-math-min-max	Prefer `Math.min()` to simplify ternary expressions.	fix	366	395	Math.min(box.value, 1)	end	10	41
+tests/rules/unicorn/prefer-math-min-max/cases.ts:11:12	unicorn/prefer-math-min-max	prefer-math-min-max	Prefer `Math.min()` to simplify ternary expressions.	fix	408	443	Math.min(height as number, 2)	end	11	47
+tests/rules/unicorn/prefer-math-min-max/cases.ts:12:12	unicorn/prefer-math-min-max	prefer-math-min-max	Prefer `Math.min()` to simplify ternary expressions.	fix	456	481	Math.min(height!, 2)	end	12	37
+tests/rules/unicorn/prefer-math-min-max/cases.ts:14:10	unicorn/prefer-math-min-max	prefer-math-min-max	Prefer `Math.min()` to simplify ternary expressions.	fix	523	536	Math.min(a, b)	end	14	23
+tests/rules/unicorn/prefer-math-min-max/cases.ts:17:10	unicorn/prefer-math-min-max	prefer-math-min-max	Prefer `Math.min()` to simplify ternary expressions.	fix	563	587	 (Math.min(height, 1)	end	17	33

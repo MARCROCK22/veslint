@@ -296,6 +296,11 @@ const rule_option_schemas = {
 	'unicorn/prefer-number-properties':                                '{"type":"array","items":[{"type":"object","additionalProperties":false,"properties":{"checkInfinity":{"type":"boolean","description":"Whether to check usage of the global `Infinity`."},"checkNaN":{"type":"boolean","description":"Whether to check usage of the global `NaN`."}}}],"minItems":0,"maxItems":1}'
 	'unicorn/prefer-string-raw':                                       '{"type":"array","minItems":0,"maxItems":0}'
 	'unicorn/prefer-string-replace-all':                               '{"type":"array","minItems":0,"maxItems":0}'
+	'unicorn/require-number-to-fixed-digits-argument':                 '{"type":"array","minItems":0,"maxItems":0}'
+	'unicorn/prefer-math-trunc':                                       '{"type":"array","minItems":0,"maxItems":0}'
+	'unicorn/prefer-math-min-max':                                     '{"type":"array","minItems":0,"maxItems":0}'
+	'unicorn/prefer-modern-math-apis':                                 '{"type":"array","minItems":0,"maxItems":0}'
+	'unicorn/prefer-native-coercion-functions':                        '{"type":"array","minItems":0,"maxItems":0}'
 }
 
 // eslint_rule_default_options are the meta.defaultOptions of the rules of ESLint and of

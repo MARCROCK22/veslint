@@ -1,0 +1,11 @@
+tests/rules/unicorn/prefer-modern-math-apis/cases.ts:6:12	unicorn/prefer-modern-math-apis	prefer-modern-math-apis	Prefer `Math.log10(…)` over `Math.log(…) * Math.LOG10E`.
+tests/rules/unicorn/prefer-modern-math-apis/cases.ts:7:12	unicorn/prefer-modern-math-apis	prefer-modern-math-apis	Prefer `Math.log10(…)` over `Math.LOG10E * Math.log(…)`.
+tests/rules/unicorn/prefer-modern-math-apis/cases.ts:8:12	unicorn/prefer-modern-math-apis	prefer-modern-math-apis	Prefer `Math.log2(…)` over `Math.log(…) * Math.LOG2E`.
+tests/rules/unicorn/prefer-modern-math-apis/cases.ts:9:12	unicorn/prefer-modern-math-apis	prefer-modern-math-apis	Prefer `Math.log10(…)` over `Math.log(…) / Math.LN10`.
+tests/rules/unicorn/prefer-modern-math-apis/cases.ts:10:12	unicorn/prefer-modern-math-apis	prefer-modern-math-apis	Prefer `Math.log2(…)` over `Math.log(…) / Math.LN2`.
+tests/rules/unicorn/prefer-modern-math-apis/cases.ts:11:17	unicorn/prefer-modern-math-apis	prefer-modern-math-apis	Prefer `Math.hypot(…)` over `Math.sqrt(…)`.
+tests/rules/unicorn/prefer-modern-math-apis/cases.ts:12:17	unicorn/prefer-modern-math-apis	prefer-modern-math-apis	Prefer `Math.hypot(…)` over `Math.sqrt(…)`.
+tests/rules/unicorn/prefer-modern-math-apis/cases.ts:13:17	unicorn/prefer-modern-math-apis	prefer-modern-math-apis	Prefer `Math.hypot(…)` over `Math.sqrt(…)`.
+tests/rules/unicorn/prefer-modern-math-apis/cases.ts:14:17	unicorn/prefer-modern-math-apis	prefer-modern-math-apis	Prefer `Math.abs(…)` over `Math.sqrt(…)`.
+tests/rules/unicorn/prefer-modern-math-apis/cases.ts:15:17	unicorn/prefer-modern-math-apis	prefer-modern-math-apis	Prefer `Math.abs(…)` over `Math.sqrt(…)`.
+tests/rules/unicorn/prefer-modern-math-apis/cases.ts:16:17	unicorn/prefer-modern-math-apis	prefer-modern-math-apis	Prefer `Math.hypot(…)` over `Math.sqrt(…)`.
