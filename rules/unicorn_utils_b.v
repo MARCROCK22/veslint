@@ -3621,3 +3621,35 @@ fn (c &Checker) unb_new_callee_member_of_needs_parens(t &estree.EsTree, tokens &
 	}
 	return false
 }
+
+// unb_contains_node ports containsNode without shouldSkip: the node or a node inside it is of
+// one of the types.
+fn unb_contains_type(t &estree.EsTree, node int, types []estree.NodeType) bool {
+	if t.typ(node) in types {
+		return true
+	}
+	return t.children(node).any(unb_contains_type(t, it, types))
+}
+
+// unb_has_possible_side_effect ports hasPossibleSideEffect: hasSideEffect, and tagged templates
+// and spread elements too.
+fn unb_has_possible_side_effect(t &estree.EsTree, node int) bool {
+	return unb_has_side_effect(t, node, false)
+		|| unb_contains_type(t, node, [.tagged_template_expression, .spread_element])
+}
+
+// unb_is_side_effect_free_function ports isSideEffectFreeFunction: an inline function whose
+// parameters and body have no side effects.
+fn unb_is_side_effect_free_function(t &estree.EsTree, node int) bool {
+	if node < 0 || t.typ(node) !in [.arrow_function_expression, .function_expression] {
+		return false
+	}
+	mut parts := t.list(node, .params) or { []int{} }
+	parts << t.node(node, .body) or { return false }
+	return parts.all(!unb_has_possible_side_effect(t, it))
+}
+
+// unb_has_type_arguments ports hasTypeArguments: `foo<string>()`.
+fn unb_has_type_arguments(t &estree.EsTree, node int) bool {
+	return t.node(node, .type_arguments) != none
+}
