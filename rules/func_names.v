@@ -4,7 +4,7 @@ import json2
 import time
 import treesitter { node_field, node_kind, node_parent }
 
-// Port of the `func-names` rule of ESLint 10.6.0, with its options.
+// Port of the `func-names` rule of ESLint 10.15.0, with its options.
 
 const fn_messages = {
 	'unnamed': 'Unexpected unnamed {{name}}.'
@@ -116,6 +116,11 @@ fn (c &Checker) fn_has_inferred_name(f C.TSNode) bool {
 			return node_kind(name) == 'identifier' && is_value('value', parent, f)
 		}
 		'pair' {
+			// Not a key `__proto__` that is not computed.
+			_, computed := es_property_key(parent) or { return false }
+			if !computed && (c.es_static_key_name(parent) or { '' }) == '__proto__' {
+				return false
+			}
 			return is_value('value', parent, f)
 		}
 		'public_field_definition' {
@@ -123,7 +128,12 @@ fn (c &Checker) fn_has_inferred_name(f C.TSNode) bool {
 		}
 		'assignment_expression', 'augmented_assignment_expression', 'assignment_pattern',
 		'object_assignment_pattern' {
-			left := unwrap_parens(node_field(parent, 'left') or { return false })
+			// An identifier without parentheses, and only `=`, `&&=`, `||=` and `??=`.
+			left := node_field(parent, 'left') or { return false }
+			if node_kind(parent) == 'augmented_assignment_expression'
+				&& operator_of(parent) !in ['&&=', '||=', '??='] {
+				return false
+			}
 			return node_kind(left) in ['identifier', 'undefined',
 				'shorthand_property_identifier_pattern']
 				&& is_value('right', parent, f)
