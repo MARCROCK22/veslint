@@ -973,3 +973,11 @@ fn (mut c Checker) unb_static_value_for_control_flow(root C.TSNode, t &estree.Es
 fn unb_found(v StaticValue) ?StaticValue {
 	return if v.found { v } else { none }
 }
+
+// unb_template_element_raw ports getTemplateElementRaw (utils/get-template-element-raw.js): the
+// source text of a TemplateElement between its delimiters (`value.raw` has its line breaks
+// normalized).
+fn (c &Checker) unb_template_element_raw(t &estree.EsTree, node int) string {
+	tail := t.flag(node, .tail) or { false }
+	return c.src[t.nodes[node].start + 1..t.nodes[node].end - (if tail { 1 } else { 2 })]
+}

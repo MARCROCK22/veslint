@@ -4,7 +4,9 @@ import estree
 import json2
 import time
 
-// Port of the `unicorn/escape-case` rule of eslint-plugin-unicorn 64.0.0, with its fix.
+// Port of the `unicorn/escape-case` rule of eslint-plugin-unicorn 79.0.0, with its fix, for
+// JavaScript strings, regular expressions and templates (its CSS, SOML, TOML and YAML handlers are
+// for other languages).
 
 const uec_messages = {
 	'escape-uppercase': 'Use uppercase characters for the value of the escape sequence.'
@@ -91,10 +93,11 @@ fn (mut c Checker) lint_unicorn_escape_case(root C.TSNode, abs_path string, mut 
 			}
 			.template_element {
 				stats.checked++
-				if un_is_tagged_template(t, t.nodes[node].parent, ['String.raw']) {
+				// Any tag may read the raw text.
+				if un_is_tagged_template(t, t.nodes[node].parent, []) {
 					continue
 				}
-				raw := un_template_raw(t, node)
+				raw := c.unb_template_element_raw(t, node)
 				fixed := uec_fixed(raw, false, lowercase)
 				if fixed != raw {
 					findings << c.uec_finding(t, node, lowercase, un_replace_template_element(t,

@@ -390,10 +390,58 @@ veslint	no-useless-assignment/v60	turns on test/unknown-ref, a rule of the test 
 eslint	prefer-bigint-literals/i11	typescript-eslint's parser: Octal literals are not allowed. Use the syntax '0o777'.
 eslint	prefer-bigint-literals/i12	typescript-eslint's parser: Decimals with leading zeros are not allowed.
 # eslint-plugin-unicorn: the code has a lone surrogate (a JavaScript string of the test), which a UTF-8 file cannot hold.
-veslint	escape-case/r0/v19	the code has a lone surrogate, which a UTF-8 file cannot hold
-veslint	escape-case/r0/i19	the code has a lone surrogate, which a UTF-8 file cannot hold
-veslint	escape-case/r1/v17	the code has a lone surrogate, which a UTF-8 file cannot hold
-veslint	escape-case/r1/i19	the code has a lone surrogate, which a UTF-8 file cannot hold
+veslint	escape-case/r2/v19	the code has a lone surrogate, which a UTF-8 file cannot hold
+veslint	escape-case/r2/i21	the code has a lone surrogate, which a UTF-8 file cannot hold
+veslint	escape-case/r3/v17	the code has a lone surrogate, which a UTF-8 file cannot hold
+veslint	escape-case/r3/i19	the code has a lone surrogate, which a UTF-8 file cannot hold
+# eslint-plugin-unicorn: escape-case's cases of other languages (SOML, TOML and the others of its
+# test), which the test lints with their own parsers: as TypeScript, the code is not what they test.
+eslint	escape-case/r0/v0	code of another language (SOML, TOML…), linted as TypeScript
+veslint	escape-case/r0/v0	code of another language (SOML, TOML…), linted as TypeScript
+eslint	escape-case/r0/v1	code of another language (SOML, TOML…), linted as TypeScript
+eslint	escape-case/r0/v4	code of another language (SOML, TOML…), linted as TypeScript
+eslint	escape-case/r0/v5	code of another language (SOML, TOML…), linted as TypeScript
+eslint	escape-case/r1/v1	code of another language (SOML, TOML…), linted as TypeScript
+eslint	escape-case/r1/v3	code of another language (SOML, TOML…), linted as TypeScript
+veslint	escape-case/r1/v3	code of another language (SOML, TOML…), linted as TypeScript
+eslint	escape-case/r1/v4	code of another language (SOML, TOML…), linted as TypeScript
+eslint	escape-case/r1/v5	code of another language (SOML, TOML…), linted as TypeScript
+eslint	escape-case/r4/v4	code of another language (SOML, TOML…), linted as TypeScript
+veslint	escape-case/r4/v4	code of another language (SOML, TOML…), linted as TypeScript
+eslint	escape-case/r4/v5	code of another language (SOML, TOML…), linted as TypeScript
+eslint	escape-case/r4/v6	code of another language (SOML, TOML…), linted as TypeScript
+eslint	escape-case/r4/v9	code of another language (SOML, TOML…), linted as TypeScript
+eslint	escape-case/r4/i0	code of another language (SOML, TOML…), linted as TypeScript
+veslint	escape-case/r4/i0	code of another language (SOML, TOML…), linted as TypeScript
+eslint	escape-case/r4/i1	code of another language (SOML, TOML…), linted as TypeScript
+veslint	escape-case/r4/i1	code of another language (SOML, TOML…), linted as TypeScript
+eslint	escape-case/r4/i2	code of another language (SOML, TOML…), linted as TypeScript
+veslint	escape-case/r4/i2	code of another language (SOML, TOML…), linted as TypeScript
+eslint	escape-case/r4/i3	code of another language (SOML, TOML…), linted as TypeScript
+veslint	escape-case/r4/i3	code of another language (SOML, TOML…), linted as TypeScript
+eslint	escape-case/r4/i5	code of another language (SOML, TOML…), linted as TypeScript
+veslint	escape-case/r4/i5	code of another language (SOML, TOML…), linted as TypeScript
+eslint	escape-case/r5/v4	code of another language (SOML, TOML…), linted as TypeScript
+veslint	escape-case/r5/v4	code of another language (SOML, TOML…), linted as TypeScript
+eslint	escape-case/r5/v5	code of another language (SOML, TOML…), linted as TypeScript
+eslint	escape-case/r5/v6	code of another language (SOML, TOML…), linted as TypeScript
+eslint	escape-case/r5/v9	code of another language (SOML, TOML…), linted as TypeScript
+eslint	escape-case/r5/i0	code of another language (SOML, TOML…), linted as TypeScript
+veslint	escape-case/r5/i0	code of another language (SOML, TOML…), linted as TypeScript
+eslint	escape-case/r5/i1	code of another language (SOML, TOML…), linted as TypeScript
+veslint	escape-case/r5/i1	code of another language (SOML, TOML…), linted as TypeScript
+eslint	escape-case/r5/i2	code of another language (SOML, TOML…), linted as TypeScript
+veslint	escape-case/r5/i2	code of another language (SOML, TOML…), linted as TypeScript
+eslint	escape-case/r5/i3	code of another language (SOML, TOML…), linted as TypeScript
+veslint	escape-case/r5/i3	code of another language (SOML, TOML…), linted as TypeScript
+eslint	escape-case/r5/i5	code of another language (SOML, TOML…), linted as TypeScript
+veslint	escape-case/r5/i5	code of another language (SOML, TOML…), linted as TypeScript
+eslint	escape-case/r6/v0	code of another language (SOML, TOML…), linted as TypeScript
+eslint	escape-case/r6/i0	code of another language (SOML, TOML…), linted as TypeScript
+eslint	escape-case/r7/v0	code of another language (SOML, TOML…), linted as TypeScript
+eslint	escape-case/r7/i0	code of another language (SOML, TOML…), linted as TypeScript
+eslint	escape-case/r8/v0	code of another language (SOML, TOML…), linted as TypeScript
+eslint	escape-case/r8/i0	code of another language (SOML, TOML…), linted as TypeScript
 # eslint-plugin-unicorn: a `this` in the callback keeps no-array-for-each from fixing and
 # prefer-array-index-of from reporting with espree's scope analysis (scope.thisFound), which
 # typescript-eslint's scope manager does not set: linted as TypeScript, ESLint fixes and reports.
