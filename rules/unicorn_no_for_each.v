@@ -3,7 +3,7 @@ module rules
 import estree
 import time
 
-// Port of the `unicorn/no-for-each` rule of eslint-plugin-unicorn 64.0.0 (it has no
+// Port of the `unicorn/no-for-each` rule of eslint-plugin-unicorn 79.0.0 (it has no
 // options), with its fix and suggestion.
 
 const unafe_messages = {
@@ -131,11 +131,37 @@ fn (mut c Checker) unafe_is_fixable(root C.TSNode, t &estree.EsTree, call int) b
 	return !c.un_is_function_self_used_inside(root, t, callback)
 }
 
+// unafe_is_strict_callbag_namespace ports isStrictCallbagBasicsNamespace: `import * as x from
+// 'strict-callbag-basics'`, whose `forEach` is not the array one.
+fn (mut c Checker) unafe_is_strict_callbag_namespace(ctx &UnCtx, node int) bool {
+	t := ctx.t
+	v := c.un_find_variable(ctx, node)
+	if v < 0 {
+		return false
+	}
+	for def in c.scope_tree(ctx.root).variables[v].defs {
+		if def.kind != .import_binding {
+			continue
+		}
+		specifier := c.un_es_of(ctx, def.node)
+		if specifier < 0 || t.typ(specifier) != .import_namespace_specifier {
+			continue
+		}
+		declaration := t.nodes[specifier].parent
+		source := t.node(declaration, .source) or { continue }
+		if (un_static_string_value(t, source) or { '' }) == 'strict-callbag-basics' {
+			return true
+		}
+	}
+	return false
+}
+
 fn (mut c Checker) lint_unicorn_no_for_each(root C.TSNode, abs_path string, mut stats Stats) ![]Finding {
 	sw := time.new_stopwatch()
 	mut findings := []Finding{}
 	t := c.es_tree(root, abs_path) or { return findings }
 	tokens := c.un_tokens(t)
+	mut ctx := c.un_ctx(root, t, tokens, abs_path)
 	for node in 0 .. t.nodes.len {
 		if t.typ(node) != .call_expression {
 			continue
@@ -145,7 +171,12 @@ fn (mut c Checker) lint_unicorn_no_for_each(root C.TSNode, abs_path string, mut 
 			continue
 		}
 		iterable := t.node(node, .callee) or { continue }
-		if un_is_node_matches(t, t.node(iterable, .object) or { continue }, unafe_ignored_objects) {
+		object := t.node(iterable, .object) or { continue }
+		if un_is_node_matches(t, object, unafe_ignored_objects) {
+			continue
+		}
+		if (t.typ(object) == .identifier && c.unafe_is_strict_callbag_namespace(ctx, object))
+			|| c.un_should_skip_known_non_array_receiver(mut ctx, object) {
 			continue
 		}
 		property := t.node(iterable, .property) or { continue }
@@ -153,7 +184,8 @@ fn (mut c Checker) lint_unicorn_no_for_each(root C.TSNode, abs_path string, mut 
 			stmt:       c.es_tree_position(t, property)
 			message_id: 'no-for-each/error'
 		}
-		if !c.unafe_is_fixable(root, t, node) {
+		// Only a receiver known to be an array is fixed.
+		if !c.un_is_array(mut ctx, object) || !c.unafe_is_fixable(root, t, node) {
 			findings << finding
 			continue
 		}
@@ -181,22 +213,6 @@ fn (mut c Checker) lint_unicorn_no_for_each(root C.TSNode, abs_path string, mut 
 	return findings
 }
 
-// unafe_expression_statement_needs_parens ports shouldAddParenthesesToExpressionStatementExpression.
-fn unafe_expression_statement_needs_parens(t &estree.EsTree, node int) bool {
-	return match t.typ(node) {
-		.object_expression {
-			true
-		}
-		.assignment_expression {
-			left := t.node(node, .left) or { -1 }
-			left >= 0 && t.typ(left) in [.object_pattern, .array_pattern]
-		}
-		else {
-			false
-		}
-	}
-}
-
 // unafe_fix ports getFixFunction.
 fn (mut c Checker) unafe_fix(root C.TSNode, t &estree.EsTree, tokens &SourceTokens, call int) ?[]Fix {
 	callback := (t.list(call, .arguments) or { return none })[0]
@@ -208,6 +224,15 @@ fn (mut c Checker) unafe_fix(root C.TSNode, t &estree.EsTree, tokens &SourceToke
 	object_text := c.un_text(t, iterable_object)
 	tree := c.scope_tree(root)
 	function_scope := tree.function_scope_of(t.ts_node(callback)?)
+	body := t.node(callback, .body)?
+	// A loop body that starts with `class`, `function` or `{` would be a declaration or a block.
+	parenthesize_body := t.typ(body) != .block_statement
+		&& c.un_expression_statement_needs_parens(t, tokens, body)
+	body_start, _ := c.un_parenthesized_range(t, tokens, body)
+	// The head of the loop is rebuilt: a comment in it would be lost.
+	if un_has_comment_in_range(tokens, t.nodes[call].start, body_start) {
+		return none
+	}
 	mut fixes := []Fix{}
 	// `(( foo.forEach(bar => bar) ))`
 	fixes << c.un_remove_parentheses(t, tokens, call)
@@ -230,8 +255,9 @@ fn (mut c Checker) unafe_fix(root C.TSNode, t &estree.EsTree, tokens &SourceToke
 		head += '.entries()'
 	}
 	head += ') '
-	body := t.node(callback, .body)?
-	body_start, _ := c.un_parenthesized_range(t, tokens, body)
+	if parenthesize_body {
+		head += '('
+	}
 	fixes << fix_replace_range(t.nodes[call].start, body_start, head)
 	// Parenthesized callback function: its `)`
 	for token in c.un_parentheses(t, tokens, callback) {
@@ -251,6 +277,10 @@ fn (mut c Checker) unafe_fix(root C.TSNode, t &estree.EsTree, tokens &SourceToke
 	}
 	// The closing parenthesis of `Array#forEach()`
 	fixes << fix_remove_range(last.start, last.end)
+	// Close the parentheses around a `class` or `function` loop body.
+	if parenthesize_body {
+		fixes << fix_insert_at(last.end, ')')
+	}
 	for return_statement in unafe_return_statements(t, callback) {
 		fixes << c.unafe_replace_return(t, tokens, return_statement)?
 	}
@@ -266,7 +296,12 @@ fn (mut c Checker) unafe_fix(root C.TSNode, t &estree.EsTree, tokens &SourceToke
 	}
 	fixes << c.un_fix_space_around_keyword(t, tokens, t.nodes[call].parent)
 	if is_optional_object {
-		fixes << fix_insert_at(t.nodes[call].start, 'if (${object_text}) ')
+		wrap := t.typ(ancestor) == .expression_statement
+			&& t.typ(t.nodes[ancestor].parent) !in [.program, .block_statement, .static_block, .switch_case]
+		fixes << fix_insert_at(t.nodes[call].start, '${if wrap { '{ ' } else { '' }}if (${object_text}) ')
+		if wrap {
+			fixes << fix_insert_at(t.nodes[ancestor].end, ' }')
+		}
 	}
 	// Prevent possible variable conflicts
 	parent := t.nodes[call].parent
@@ -286,17 +321,16 @@ fn (c &Checker) unafe_replace_return(t &estree.EsTree, tokens &SourceTokens, ret
 	next := tokens.after(return_token.end, false)?
 	mut text_before := ''
 	mut text_after := ''
-	should_add_parentheses := !c.un_is_parenthesized(t, tokens, argument)
-		&& unafe_expression_statement_needs_parens(t, argument)
+	should_add_parentheses := c.un_expression_statement_needs_parens(t, tokens, argument)
 	if should_add_parentheses {
 		text_before = '(${text_before}'
 		text_after = '${text_after})'
 	}
 	parent := t.nodes[return_statement].parent
 	insert_braces := match t.typ(parent) {
+		// A `return` directly in an `if` is its consequent or its alternate.
 		.if_statement {
-			t.node(parent, .consequent) or { -1 } == return_statement
-				|| t.node(parent, .alternate) or { -1 } == return_statement
+			true
 		}
 		.with_statement {
 			t.node(parent, .body) or { -1 } == return_statement

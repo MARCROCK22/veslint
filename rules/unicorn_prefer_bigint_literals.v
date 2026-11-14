@@ -5,7 +5,7 @@ import math
 import math.big
 import time
 
-// Port of the `unicorn/prefer-bigint-literals` rule of eslint-plugin-unicorn 64.0.0 (it has no
+// Port of the `unicorn/prefer-bigint-literals` rule of eslint-plugin-unicorn 79.0.0 (it has no
 // options), with its fix and its suggestion.
 
 const upbl_messages = {
@@ -22,14 +22,18 @@ struct UpblReplacement {
 	zero       bool
 }
 
-// upbl_string_bigint ports `BigInt(text)` of a string: whether it is valid, zero and negative.
-fn upbl_string_bigint(text string) ?(bool, bool) {
+// upbl_string_bigint ports `BigInt(text)` of a string (StringToBigInt): none when it throws.
+fn upbl_string_bigint(text string) ?big.Integer {
 	s := js_trim(text)
 	if s == '' {
-		return true, false
+		return big.integer_from_int(0)
 	}
 	lower := s.to_lower()
-	for prefix in ['0x', '0o', '0b'] {
+	for prefix, base in {
+		'0x': u32(16)
+		'0o': 8
+		'0b': 2
+	} {
 		if lower.starts_with(prefix) {
 			digits := lower[2..]
 			valid := match prefix {
@@ -40,7 +44,7 @@ fn upbl_string_bigint(text string) ?(bool, bool) {
 			if digits == '' || !valid {
 				return none
 			}
-			return digits.bytes().all(it == `0`), false
+			return big.integer_from_radix(digits, base) or { return none }
 		}
 	}
 	mut digits := s
@@ -52,8 +56,31 @@ fn upbl_string_bigint(text string) ?(bool, bool) {
 	if digits == '' || !digits.bytes().all(it.is_digit()) {
 		return none
 	}
-	zero := digits.bytes().all(it == `0`)
-	return zero, negative && !zero
+	value := big.integer_from_string(digits) or { return none }
+	return if negative { value.neg() } else { value }
+}
+
+// upbl_is_bigint_literal_text ports isBigIntLiteralText: /^(?:0|[1-9]\d*)$/u.
+fn upbl_is_bigint_literal_text(text string) bool {
+	if text == '0' {
+		return true
+	}
+	return text.len > 0 && text[0] >= `1` && text[0] <= `9` && text.bytes().all(it.is_digit())
+}
+
+// upbl_can_use_prefixed_raw ports canUsePrefixedRaw: `0b1`, `0o7`, `0xf` whose digits are the
+// canonical ones of the value.
+fn upbl_can_use_prefixed_raw(raw string, value big.Integer) bool {
+	for prefix, base in {
+		'0b': u32(2)
+		'0o': 8
+		'0x': 16
+	} {
+		if raw.starts_with(prefix) {
+			return raw[2..] == value.radix_str(base)
+		}
+	}
+	return false
 }
 
 // upbl_integer is the exact integer of a double that is an integer.
@@ -85,36 +112,28 @@ fn upbl_can_use_raw(raw_text string, value f64) bool {
 	if raw.contains('.') {
 		return false
 	}
-	for prefix, base in {
-		'0b': u32(2)
-		'0o': 8
-		'0x': 16
-	} {
-		if raw.starts_with(prefix) {
-			return raw[2..] == upbl_integer(value).radix_str(base)
-		}
-	}
-	if raw.contains('e') {
-		return false
-	}
-	return raw == js_number_to_string(value)
+	// `1e+21` is also how `String()` prints the value, but `1e+21n` is not a bigint literal.
+	return upbl_can_use_prefixed_raw(raw, upbl_integer(value))
+		|| (!raw.contains('e') && raw == js_number_to_string(value))
 }
 
 // upbl_replacement ports getReplacement.
 fn upbl_replacement(t &estree.EsTree, from int) ?UpblReplacement {
-	if un_is_string_literal(t, from) {
-		raw0 := un_raw(t, from)
-		raw := raw0[1..raw0.len - 1]
-		zero, negative := upbl_string_bigint(raw)?
-		mut text := if zero { '0' } else { js_trim(raw) }
+	if string_value := un_static_string_value(t, from) {
+		bigint := upbl_string_bigint(string_value)?
+		mut text := js_trim(string_value)
 		if text.starts_with('+') {
 			text = js_trim(text[1..])
 		}
+		// A bigint literal can not have leading zeros, `00001n` is a syntax error.
+		if !upbl_is_bigint_literal_text(text) && !upbl_can_use_prefixed_raw(text.to_lower(), bigint) {
+			text = bigint.str()
+		}
 		return UpblReplacement{
-			suggestion: raw.contains('+')
+			suggestion: string_value.contains('+')
 			text:       '${text}n'
-			negative:   negative
-			zero:       zero
+			negative:   bigint.signum < 0
+			zero:       bigint.signum == 0
 		}
 	}
 	mut node := from

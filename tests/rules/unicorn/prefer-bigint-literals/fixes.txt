@@ -17,3 +17,12 @@ tests/rules/unicorn/prefer-bigint-literals/cases.ts:19:13	unicorn/prefer-bigint-
 tests/rules/unicorn/prefer-bigint-literals/cases.ts:20:13	unicorn/prefer-bigint-literals	prefer-bigint-literals/error	Prefer using bigint literal over `BigInt(…)`.	fix	577	587	0n	end	20	23
 tests/rules/unicorn/prefer-bigint-literals/cases.ts:21:14	unicorn/prefer-bigint-literals	prefer-bigint-literals/error	Prefer using bigint literal over `BigInt(…)`.	fix	602	612	-2n	end	21	24
 tests/rules/unicorn/prefer-bigint-literals/cases.ts:23:1	unicorn/prefer-bigint-literals	prefer-bigint-literals/error	Prefer using bigint literal over `BigInt(…)`.	fix	625	635	;(-3n)	end	23	11
+tests/rules/unicorn/prefer-bigint-literals/cases.ts:36:1	unicorn/prefer-bigint-literals	prefer-bigint-literals/error	Prefer using bigint literal over `BigInt(…)`.	fix	907	918	1n	end	36	12
+tests/rules/unicorn/prefer-bigint-literals/cases.ts:37:1	unicorn/prefer-bigint-literals	prefer-bigint-literals/error	Prefer using bigint literal over `BigInt(…)`.	fix	920	931	0n	end	37	12
+tests/rules/unicorn/prefer-bigint-literals/cases.ts:38:1	unicorn/prefer-bigint-literals	prefer-bigint-literals/error	Prefer using bigint literal over `BigInt(…)`.	fix	933	947	0XFen	end	38	15
+tests/rules/unicorn/prefer-bigint-literals/cases.ts:39:1	unicorn/prefer-bigint-literals	prefer-bigint-literals/error	Prefer using bigint literal over `BigInt(…)`.	fix	949	964	1n	end	39	16
+tests/rules/unicorn/prefer-bigint-literals/cases.ts:40:1	unicorn/prefer-bigint-literals	prefer-bigint-literals/error	Prefer using bigint literal over `BigInt(…)`.	fix	966	979	7n	end	40	14
+tests/rules/unicorn/prefer-bigint-literals/cases.ts:42:1	unicorn/prefer-bigint-literals	prefer-bigint-literals/error	Prefer using bigint literal over `BigInt(…)`.	fix	999	1011	8n	end	42	13
+tests/rules/unicorn/prefer-bigint-literals/cases.ts:43:1	unicorn/prefer-bigint-literals	prefer-bigint-literals/error	Prefer using bigint literal over `BigInt(…)`.	fix	1013	1027	1n	end	43	15
+tests/rules/unicorn/prefer-bigint-literals/cases.ts:44:1	unicorn/prefer-bigint-literals	prefer-bigint-literals/error	Prefer using bigint literal over `BigInt(…)`.	suggestion	prefer-bigint-literals/suggestion	Replace with `12n`.	1029	1047	12n	end	44	19
+tests/rules/unicorn/prefer-bigint-literals/cases.ts:45:1	unicorn/prefer-bigint-literals	prefer-bigint-literals/error	Prefer using bigint literal over `BigInt(…)`.	fix	1049	1064	(-5n)	end	45	16

@@ -4,6 +4,13 @@ tests/rules/unicorn/prefer-switch/cases.ts:22:3	unicorn/prefer-switch	prefer-swi
 tests/rules/unicorn/prefer-switch/cases.ts:51:3	unicorn/prefer-switch	prefer-switch	Use `switch` instead of multiple `else-if`.
 tests/rules/unicorn/prefer-switch/cases.ts:60:1	unicorn/prefer-switch	prefer-switch	Use `switch` instead of multiple `else-if`.
 tests/rules/unicorn/prefer-switch/cases.ts:70:1	unicorn/prefer-switch	prefer-switch	Use `switch` instead of multiple `else-if`.
+tests/rules/unicorn/prefer-switch/cases.ts:102:1	unicorn/prefer-switch	prefer-switch	Use `switch` instead of multiple `else-if`.
+tests/rules/unicorn/prefer-switch/cases.ts:109:1	unicorn/prefer-switch	prefer-switch	Use `switch` instead of multiple `else-if`.
+tests/rules/unicorn/prefer-switch/cases.ts:116:1	unicorn/prefer-switch	prefer-switch	Use `switch` instead of multiple `else-if`.
+tests/rules/unicorn/prefer-switch/cases.ts:123:1	unicorn/prefer-switch	prefer-switch	Use `switch` instead of multiple `else-if`.
+tests/rules/unicorn/prefer-switch/cases.ts:130:1	unicorn/prefer-switch	prefer-switch	Use `switch` instead of multiple `else-if`.
+tests/rules/unicorn/prefer-switch/cases.ts:137:1	unicorn/prefer-switch	prefer-switch	Use `switch` instead of multiple `else-if`.
+tests/rules/unicorn/prefer-switch/cases.ts:144:1	unicorn/prefer-switch	prefer-switch	Use `switch` instead of multiple `else-if`.
 tests/rules/unicorn/prefer-switch/do-nothing/cases.ts:9:1	unicorn/prefer-switch	prefer-switch	Use `switch` instead of multiple `else-if`.
 tests/rules/unicorn/prefer-switch/do-nothing/cases.ts:18:1	unicorn/prefer-switch	prefer-switch	Use `switch` instead of multiple `else-if`.
 tests/rules/unicorn/prefer-switch/do-nothing/cases.ts:22:3	unicorn/prefer-switch	prefer-switch	Use `switch` instead of multiple `else-if`.

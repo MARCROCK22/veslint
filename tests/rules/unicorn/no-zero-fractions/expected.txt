@@ -10,3 +10,10 @@ tests/rules/unicorn/no-zero-fractions/cases.ts:12:13	unicorn/no-zero-fractions	z
 tests/rules/unicorn/no-zero-fractions/cases.ts:13:15	unicorn/no-zero-fractions	zero-fraction	Don't use a zero fraction in the number.
 tests/rules/unicorn/no-zero-fractions/cases.ts:16:10	unicorn/no-zero-fractions	zero-fraction	Don't use a zero fraction in the number.
 tests/rules/unicorn/no-zero-fractions/cases.ts:19:2	unicorn/no-zero-fractions	zero-fraction	Don't use a zero fraction in the number.
+tests/rules/unicorn/no-zero-fractions/cases.ts:29:29	unicorn/no-zero-fractions	leading-zero	Use a leading zero before the decimal point.
+tests/rules/unicorn/no-zero-fractions/cases.ts:30:30	unicorn/no-zero-fractions	leading-zero	Use a leading zero before the decimal point.
+tests/rules/unicorn/no-zero-fractions/cases.ts:31:29	unicorn/no-zero-fractions	leading-zero	Use a leading zero before the decimal point.
+tests/rules/unicorn/no-zero-fractions/cases.ts:32:29	unicorn/no-zero-fractions	leading-zero	Use a leading zero before the decimal point.
+tests/rules/unicorn/no-zero-fractions/cases.ts:33:30	unicorn/no-zero-fractions	zero-fraction	Don't use a zero fraction in the number.
+tests/rules/unicorn/no-zero-fractions/cases.ts:34:29	unicorn/no-zero-fractions	leading-zero	Use a leading zero before the decimal point.
+tests/rules/unicorn/no-zero-fractions/cases.ts:35:39	unicorn/no-zero-fractions	leading-zero	Use a leading zero before the decimal point.

@@ -97,3 +97,54 @@ if (a === 1 && b) {
 } else if (a === 3) {
   g(3);
 }
+
+// 79.0.0: constants on the left, comments, repeated labels, getters and side effects.
+if ('a' === o.p as unknown) {
+  f();
+} else if ('b' === o.p as unknown) {
+  f();
+} else if ('c' === o.p as unknown) {
+  f();
+}
+if (a === 1) {
+  f();
+} /* lost */ else if (a === 2) {
+  f();
+} else if (a === 3) {
+  f();
+}
+if (a === 1) {
+  f();
+} else if (a === 2) {
+  f();
+} else if (a === 1) {
+  f();
+}
+if (a === 1) {
+  f();
+} else if (a === 2) {
+  f();
+} else if (a === 0x1) {
+  f();
+}
+if (o.p === 1) {
+  f();
+} else if (o.p === 2) {
+  f();
+} else if (o.p === 3) {
+  f();
+}
+if (a === f()) {
+  f();
+} else if (a === 2) {
+  f();
+} else if (a === 3) {
+  f();
+}
+if (undefined === a) {
+  f();
+} else if (a === 2) {
+  f();
+} else if (a === 3) {
+  f();
+}

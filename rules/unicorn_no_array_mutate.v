@@ -5,7 +5,7 @@ import json2
 import time
 
 // Port of the `unicorn/no-array-reverse` and `unicorn/no-array-sort` rules of eslint-plugin-unicorn
-// 64.0.0 (rules/shared/no-array-mutate-rule.js), with their option and suggestions.
+// 79.0.0 (rules/shared/no-array-mutate-rule.js), with their option and suggestions.
 
 const unar_messages = {
 	'error':                          'Use `Array#toReversed()` instead of `Array#reverse()`.'
@@ -57,6 +57,7 @@ fn (mut c Checker) un_no_array_mutate(root C.TSNode, abs_path string, mut stats 
 	mut findings := []Finding{}
 	t := c.es_tree(root, abs_path) or { return findings }
 	tokens := c.un_tokens(t)
+	mut ctx := c.un_ctx(root, t, tokens, abs_path)
 	replacement := if method == 'reverse' { 'toReversed' } else { 'toSorted' }
 	for node in 0 .. t.nodes.len {
 		if t.typ(node) != .call_expression {
@@ -79,14 +80,21 @@ fn (mut c Checker) un_no_array_mutate(root C.TSNode, abs_path string, mut stats 
 				continue
 			}
 		}
+		// Receivers known to be neither an array nor a typed array (a typed `Set`) are left.
+		if c.un_should_skip_known_non_array_receiver(mut ctx, array) {
+			continue
+		}
 		property := t.node(callee, .property) or { continue }
 		fix_method := fix_replace_range(t.nodes[property].start, t.nodes[property].end, replacement)
 		mut suggestions := []Suggestion{}
-		if spread_and_mutate {
-			argument := t.node(elements[0], .argument) or { continue }
+		// Unwrapping `[...argument]` replaces the array literal: a comment outside the argument
+		// would be lost.
+		argument := if spread_and_mutate { t.node(elements[0], .argument) or { -1 } } else { -1 }
+		if argument >= 0 && !un_would_remove_comments(tokens, t.nodes[array].start, t.nodes[array].end,
+			[un_range(t, argument)]) {
 			_, fix := c.merge_fixes([
-				fix_replace_range(t.nodes[array].start, t.nodes[array].end, c.un_parenthesized_text(t,
-					tokens, argument)),
+				fix_replace_range(t.nodes[array].start, t.nodes[array].end, c.un_member_object_text(t,
+					tokens, argument, array)),
 				fix_method,
 			])!
 			suggestions << Suggestion{

@@ -3,7 +3,7 @@ module rules
 import estree
 import time
 
-// Port of the `unicorn/prefer-type-error` rule of eslint-plugin-unicorn 64.0.0 (it has no options),
+// Port of the `unicorn/prefer-type-error` rule of eslint-plugin-unicorn 79.0.0 (it has no options),
 // with its fix.
 
 const upte_messages = {
@@ -48,6 +48,24 @@ fn upte_error_constructor(t &estree.EsTree, node int) bool {
 	return false
 }
 
+// upte_is_existence_check ports isExistenceCheck: `typeof x` compared with `'undefined'` checks
+// that something exists, not the type of a value.
+fn upte_is_existence_check(t &estree.EsTree, node int) bool {
+	operator := t.string_of(node, .operator) or { '' }
+	if operator !in ['==', '!=', '===', '!=='] {
+		return false
+	}
+	left := t.node(node, .left) or { return false }
+	right := t.node(node, .right) or { return false }
+	is_typeof := fn [t] (n int) bool {
+		return t.typ(n) == .unary_expression && (t.string_of(n, .operator) or { '' }) == 'typeof'
+	}
+	is_undefined := fn [t] (n int) bool {
+		return (un_static_string_value(t, n) or { return false }) == 'undefined'
+	}
+	return (is_typeof(left) && is_undefined(right)) || (is_typeof(right) && is_undefined(left))
+}
+
 // upte_type_check_expression ports isTypecheckingExpression.
 fn upte_type_check_expression(t &estree.EsTree, node int, call int) bool {
 	operator := t.string_of(node, .operator) or { '' }
@@ -68,6 +86,8 @@ fn upte_type_check_expression(t &estree.EsTree, node int, call int) bool {
 		.binary_expression {
 			if operator == 'instanceof' {
 				!upte_error_constructor(t, t.node(node, .right) or { return false })
+			} else if upte_is_existence_check(t, node) {
+				false
 			} else {
 				upte_type_check_expression(t, t.node(node, .left) or { return false }, call)
 					|| upte_type_check_expression(t, t.node(node, .right) or { return false }, call)
@@ -96,14 +116,21 @@ fn (mut c Checker) lint_unicorn_prefer_type_error(root C.TSNode, abs_path string
 		if !un_is_new(t, argument, names: ['Error']) {
 			continue
 		}
-		// isLone: the only statement of its parent's `body`.
+		// The `throw` must be the only statement of the `if` body, with or without braces.
 		parent := t.nodes[node].parent
-		if parent < 0 || (t.list(parent, .body) or { continue }).len != 1 {
-			continue
+		consequent := if t.typ(parent) == .block_statement
+			&& (t.list(parent, .body) or { []int{} }).len == 1 {
+			parent
+		} else {
+			node
 		}
-		outer := t.nodes[parent].parent
+		outer := t.nodes[consequent].parent
 		if outer < 0 || t.typ(outer) != .if_statement
 			|| !upte_type_check_expression(t, t.node(outer, .test) or { continue }, -1) {
+			continue
+		}
+		// The `else` branch runs when the type check passed.
+		if (t.node(outer, .consequent) or { -1 }) != consequent {
 			continue
 		}
 		callee := t.node(argument, .callee) or { continue }

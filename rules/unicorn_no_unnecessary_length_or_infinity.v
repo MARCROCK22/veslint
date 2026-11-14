@@ -4,7 +4,7 @@ import estree
 import time
 
 // Port of the `unicorn/no-unnecessary-array-splice-count` and `unicorn/no-unnecessary-slice-end`
-// rules of eslint-plugin-unicorn 64.0.0 (rules/shared/no-unnecessary-length-or-infinity-rule.js;
+// rules of eslint-plugin-unicorn 79.0.0 (rules/shared/no-unnecessary-length-or-infinity-rule.js;
 // they have no options), with their fix.
 
 const unuasc_messages = {
@@ -16,11 +16,13 @@ const unuse_messages = {
 }
 
 fn (mut c Checker) lint_unicorn_no_unnecessary_array_splice_count(root C.TSNode, abs_path string, mut stats Stats) ![]Finding {
-	return c.un_length_or_infinity(root, abs_path, mut stats, ['splice', 'toSpliced'], 'no-unnecessary-array-splice-count')
+	return c.un_length_or_infinity(root, abs_path, mut stats, ['splice', 'toSpliced'], 'no-unnecessary-array-splice-count',
+		true)
 }
 
 fn (mut c Checker) lint_unicorn_no_unnecessary_slice_end(root C.TSNode, abs_path string, mut stats Stats) ![]Finding {
-	return c.un_length_or_infinity(root, abs_path, mut stats, ['slice'], 'no-unnecessary-slice-end')
+	return c.un_length_or_infinity(root, abs_path, mut stats, ['slice'], 'no-unnecessary-slice-end',
+		false)
 }
 
 // un_length_or_infinity_description ports getObjectLengthOrInfinityDescription.
@@ -45,11 +47,22 @@ fn (c &Checker) un_length_or_infinity_description(t &estree.EsTree, node int, ob
 	return '${name}${if optional { '?.' } else { '.' }}length'
 }
 
-fn (mut c Checker) un_length_or_infinity(root C.TSNode, abs_path string, mut stats Stats, methods []string, message_id string) ![]Finding {
+// un_contains_node ports containsNode (without shouldSkip): the node or a descendant matches.
+fn un_contains_node(t &estree.EsTree, node int, predicate fn (int) bool) bool {
+	if predicate(node) {
+		return true
+	}
+	return t.children(node).any(un_contains_node(t, it, predicate))
+}
+
+// un_length_or_infinity ports listen; `check_array_receiver` skips the receivers known not to be
+// arrays (for `splice` and `toSpliced`, whose same-named methods mean something else elsewhere).
+fn (mut c Checker) un_length_or_infinity(root C.TSNode, abs_path string, mut stats Stats, methods []string, message_id string, check_array_receiver bool) ![]Finding {
 	sw := time.new_stopwatch()
 	mut findings := []Finding{}
 	t := c.es_tree(root, abs_path) or { return findings }
 	tokens := c.un_tokens(t)
+	mut ctx := c.un_ctx(root, t, tokens, abs_path)
 	for node in 0 .. t.nodes.len {
 		if t.typ(node) != .call_expression {
 			continue
@@ -63,6 +76,10 @@ fn (mut c Checker) un_length_or_infinity(root C.TSNode, abs_path string, mut sta
 		description := c.un_length_or_infinity_description(t, second, t.node(callee, .object) or {
 			continue
 		}) or { continue }
+		if check_array_receiver
+			&& c.un_should_skip_known_non_array_receiver(mut ctx, t.node(callee, .object) or { -1 }) {
+			continue
+		}
 		mut data := {
 			'description': description
 		}
@@ -71,12 +88,23 @@ fn (mut c Checker) un_length_or_infinity(root C.TSNode, abs_path string, mut sta
 			'toSpliced' { data['argumentName'] = 'skipCount' }
 			else {}
 		}
-		fix := c.un_remove_argument(t, tokens, second) or { continue }
+		// The first argument can reassign the receiver before `.length` is read.
+		first := (t.list(node, .arguments) or { continue })[0]
+		mut has_fix := false
+		mut fix := Fix{}
+		if !(description.ends_with('length') && un_contains_node(t, first, fn [t] (n int) bool {
+			return t.typ(n) in [.assignment_expression, .update_expression]
+		})) {
+			if f := c.un_remove_argument(t, tokens, second) {
+				has_fix = true
+				fix = f
+			}
+		}
 		findings << Finding{
 			stmt:       c.es_tree_position(t, second)
 			message_id: message_id
 			data:       data
-			has_fix:    true
+			has_fix:    has_fix
 			fix:        fix
 		}
 	}

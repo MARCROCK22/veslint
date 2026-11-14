@@ -2,14 +2,12 @@ module rules
 
 import time
 
-// Port of the `unicorn/no-new-array` rule of eslint-plugin-unicorn 64.0.0 (it has no options),
-// with its fixes and suggestions.
+// Port of the `unicorn/no-new-array` rule of eslint-plugin-unicorn 79.0.0 (it has no options),
+// with its fix and suggestion.
 
 const unna_messages = {
-	'error':        '`new Array()` is unclear in intent; use either `[x]` or `Array.from({length: x})`'
-	'array-length': 'The argument is the length of array.'
-	'only-element': 'The argument is the only element of array.'
-	'spread':       'Spread the argument.'
+	'error':  '`new Array()` is unclear in intent; use an array literal or `Array.from()`.'
+	'spread': 'Spread the argument.'
 }
 
 fn (mut c Checker) lint_unicorn_no_new_array(root C.TSNode, abs_path string, mut stats Stats) ![]Finding {
@@ -17,6 +15,7 @@ fn (mut c Checker) lint_unicorn_no_new_array(root C.TSNode, abs_path string, mut
 	mut findings := []Finding{}
 	t := c.es_tree(root, abs_path) or { return findings }
 	tokens := c.un_tokens(t)
+	mut ctx := c.un_ctx(root, t, tokens, abs_path)
 	for node in 0 .. t.nodes.len {
 		if t.typ(node) != .new_expression {
 			continue
@@ -26,22 +25,26 @@ fn (mut c Checker) lint_unicorn_no_new_array(root C.TSNode, abs_path string, mut
 			continue
 		}
 		argument := (t.list(node, .arguments) or { continue })[0]
-		mut text := c.un_text(t, argument)
-		if c.un_is_parenthesized(t, tokens, argument) {
-			text = '(${text})'
-		}
-		semicolon := if c.un_needs_semicolon(t, tokens, tokens.before(t.nodes[node].start, false),
-			'[')
-		{
-			';'
-		} else {
-			''
-		}
-		mut finding := Finding{
+		finding := Finding{
 			stmt:       c.es_tree_position(t, node)
 			message_id: 'error'
 		}
 		start, end := t.nodes[node].start, t.nodes[node].end
+		// Every replacement is built from the argument alone: comments outside it would be lost.
+		if un_would_remove_comments(tokens, start, end, [un_range(t, argument)]) {
+			findings << finding
+			continue
+		}
+		mut text := c.un_text(t, argument)
+		if c.un_is_parenthesized(t, tokens, argument) {
+			text = '(${text})'
+		}
+		semicolon := if c.un_needs_semicolon(t, tokens, tokens.before(start, false), '[') {
+			';'
+		} else {
+			''
+		}
+		array_literal := '${semicolon}[${text}]'
 		// We are not sure how many `arguments` passed
 		if t.typ(argument) == .spread_element {
 			findings << Finding{
@@ -49,46 +52,27 @@ fn (mut c Checker) lint_unicorn_no_new_array(root C.TSNode, abs_path string, mut
 				suggestions: [
 					Suggestion{
 						message_id: 'spread'
-						fix:        fix_replace_range(start, end, '${semicolon}[${text}]')
+						fix:        fix_replace_range(start, end, array_literal)
 					},
 				]
 			}
 			continue
 		}
-		from_length := 'Array.from(${if text == 'length' { '{length}' } else { '{length: ${text}}' }})'
-		if c.un_is_number(t, argument) {
-			findings << Finding{
-				...finding
-				has_fix: true
-				fix:     fix_replace_range(start, end, from_length)
-			}
+		// `new Array(length)` makes holes, which no literal spells: a length, or a value that may be
+		// one, is only reported.
+		result := c.un_static_value_for_control_flow(mut ctx, argument) or {
+			findings << finding
 			continue
 		}
-		only_element := '${semicolon}[${text}]'
-		result := c.un_static_value(t, argument)
-		if result.found && result.value.kind != .number_ {
-			findings << Finding{
-				...finding
-				has_fix: true
-				fix:     fix_replace_range(start, end, only_element)
-			}
+		if result.value.kind == .number_ {
+			findings << finding
 			continue
 		}
-		// We don't know the argument is number or not
-		finding = Finding{
+		findings << Finding{
 			...finding
-			suggestions: [
-				Suggestion{
-					message_id: 'array-length'
-					fix:        fix_replace_range(start, end, from_length)
-				},
-				Suggestion{
-					message_id: 'only-element'
-					fix:        fix_replace_range(start, end, only_element)
-				},
-			]
+			has_fix: true
+			fix:     fix_replace_range(start, end, array_literal)
 		}
-		findings << finding
 	}
 	stats.eval_ms += ms(sw.elapsed())
 	return findings

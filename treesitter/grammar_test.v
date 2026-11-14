@@ -253,3 +253,16 @@ fn test_every_line_terminator_ends_a_statement() {
 	assert shapes('let a = b\n\u00a0+ c', 'binary_expression') == ['binary_expression(identifier,identifier)']
 	assert shapes('let a = b\nin\u00a0c', 'binary_expression') == ['binary_expression(identifier,identifier)']
 }
+
+// Nothing continues the block of an arrow function, as in TypeScript: after a line break, an
+// operator, a template or a regular expression starts another statement. A function expression
+// still goes on.
+fn test_nothing_continues_an_arrow_block() {
+	arrow := 'expression_statement(assignment_expression(identifier,arrow_function(identifier,statement_block)))'
+	assert statements_of('f = v => {\n}\n-bar') == 'program(${arrow},expression_statement(unary_expression(identifier)))'
+	assert statements_of('f = v => {\n}\n`bar`') == 'program(${arrow},expression_statement(template_string(string_fragment)))'
+	assert statements_of('f = v => {\n}\n/a/.test(s)') == 'program(${arrow},expression_statement(call_expression(member_expression(regex(regex_pattern),property_identifier),arguments(identifier))))'
+	assert statements_of('f = v => {\n}\n!bar') == 'program(${arrow},expression_statement(unary_expression(identifier)))'
+	assert statements_of('f = function () {}\n-bar') == 'program(expression_statement(assignment_expression(identifier,binary_expression(function_expression(formal_parameters,statement_block),identifier))))'
+	assert statements_of('a = 1\n/2/g') == 'program(expression_statement(assignment_expression(identifier,binary_expression(binary_expression(number,number),identifier))))'
+}

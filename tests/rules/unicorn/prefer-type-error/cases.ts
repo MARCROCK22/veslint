@@ -46,3 +46,18 @@ if (typeof x !== 'string') {
   throw new TypeError('already');
 }
 if (typeof x !== 'string') throw new Error('no block');
+
+// 79.0.0: the `throw` alone without braces, not in the `else` branch, not for existence checks.
+if (Array.isArray(x)) throw new Error('no braces');
+if (x) {} else if (isNaN(x)) throw new Error('else if');
+if (typeof x === 'string') {
+  foo();
+} else {
+  throw new Error('in else');
+}
+if (typeof window === 'undefined') {
+  throw new Error('existence');
+}
+if ('undefined' != typeof window) throw new Error('existence, reversed');
+if (typeof window === `undefined`) throw new Error('existence, template');
+if (typeof window === 'object') throw new Error('not an existence check');

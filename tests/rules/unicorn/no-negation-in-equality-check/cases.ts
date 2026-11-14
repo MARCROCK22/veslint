@@ -35,3 +35,24 @@ f()
 const z1 = !!a === b;
 const z2 = a === !b;
 const z3 = !a > (b as number);
+
+// 79.0.0: parentheses for an argument that would start a statement, `yield` across lines.
+!{}.a === b;
+!function () {}.name === b;
+!class {}.name === b;
+const x30 = () => !{}.a === b;
+export function* gen() {
+  yield !a === b;
+  yield !
+    a === b;
+}
+export function ret() {
+  return !
+    a === b;
+}
+export function thr() {
+  throw !
+    (a) === b;
+}
+let x31 = 1
+!/a/.test('') === b;

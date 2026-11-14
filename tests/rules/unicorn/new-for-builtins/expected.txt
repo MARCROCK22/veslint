@@ -16,3 +16,21 @@ tests/rules/unicorn/new-for-builtins/cases.ts:22:12	unicorn/new-for-builtins	dis
 tests/rules/unicorn/new-for-builtins/cases.ts:23:12	unicorn/new-for-builtins	disallow	Use `Symbol()` instead of `new Symbol()`.
 tests/rules/unicorn/new-for-builtins/cases.ts:24:12	unicorn/new-for-builtins	disallow	Use `Symbol()` instead of `new Symbol()`.
 tests/rules/unicorn/new-for-builtins/cases.ts:25:12	unicorn/new-for-builtins	disallow	Use `BigInt()` instead of `new BigInt()`.
+tests/rules/unicorn/new-for-builtins/cases.ts:38:12	unicorn/new-for-builtins	enforce	Use `new TypeError()` instead of `TypeError()`.
+tests/rules/unicorn/new-for-builtins/cases.ts:39:12	unicorn/new-for-builtins	enforce	Use `new AggregateError()` instead of `AggregateError()`.
+tests/rules/unicorn/new-for-builtins/cases.ts:40:12	unicorn/new-for-builtins	enforce	Use `new Intl.DateTimeFormat()` instead of `Intl.DateTimeFormat()`.
+tests/rules/unicorn/new-for-builtins/cases.ts:41:12	unicorn/new-for-builtins	enforce	Use `new Intl.NumberFormat()` instead of `Intl.NumberFormat()`.
+tests/rules/unicorn/new-for-builtins/cases.ts:44:12	unicorn/new-for-builtins	enforce	Use `new WebAssembly.Memory()` instead of `WebAssembly.Memory()`.
+tests/rules/unicorn/new-for-builtins/cases.ts:46:12	unicorn/new-for-builtins	disallowCallOrNew	`WebAssembly` is not a function or constructor.
+tests/rules/unicorn/new-for-builtins/cases.ts:48:12	unicorn/new-for-builtins	disallowCallOrNew	`WebAssembly` is not a function or constructor.
+tests/rules/unicorn/new-for-builtins/cases.ts:50:13	unicorn/new-for-builtins	disallowCallOrNew	`WebAssembly.JSTag` is not a function or constructor.
+tests/rules/unicorn/new-for-builtins/cases.ts:52:13	unicorn/new-for-builtins	enforce	Use `new Intl.Segmenter()` instead of `Intl.Segmenter()`.
+tests/rules/unicorn/new-for-builtins/cases.ts:54:10	unicorn/new-for-builtins	disallow	Use `String()` instead of `new String()`.
+tests/rules/unicorn/new-for-builtins/cases.ts:57:18	unicorn/new-for-builtins	disallow	Use `Boolean()` instead of `new Boolean()`.
+tests/rules/unicorn/new-for-builtins/cases.ts:59:1	unicorn/new-for-builtins	disallow	Use `String()` instead of `new String()`.
+tests/rules/unicorn/new-for-builtins/esnext/cases.ts:2:12	unicorn/new-for-builtins	enforce	Use `new Temporal.PlainDate()` instead of `Temporal.PlainDate()`.
+tests/rules/unicorn/new-for-builtins/esnext/cases.ts:4:12	unicorn/new-for-builtins	disallowCallOrNew	`Temporal.Now` is not a function or constructor.
+tests/rules/unicorn/new-for-builtins/esnext/cases.ts:6:12	unicorn/new-for-builtins	disallowCallOrNew	`Temporal.Now` is not a function or constructor.
+tests/rules/unicorn/new-for-builtins/esnext/cases.ts:7:12	unicorn/new-for-builtins	enforce	Use `new DisposableStack()` instead of `DisposableStack()`.
+tests/rules/unicorn/new-for-builtins/esnext/cases.ts:8:12	unicorn/new-for-builtins	enforce	Use `new AsyncDisposableStack()` instead of `AsyncDisposableStack()`.
+tests/rules/unicorn/new-for-builtins/esnext/cases.ts:9:12	unicorn/new-for-builtins	enforce	Use `new SuppressedError()` instead of `SuppressedError()`.

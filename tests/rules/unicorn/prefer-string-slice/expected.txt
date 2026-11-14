@@ -21,3 +21,12 @@ tests/rules/unicorn/prefer-string-slice/cases.ts:25:13	unicorn/prefer-string-sli
 tests/rules/unicorn/prefer-string-slice/cases.ts:26:13	unicorn/prefer-string-slice	substring	Prefer `String#slice()` over `String#substring()`.
 tests/rules/unicorn/prefer-string-slice/cases.ts:27:13	unicorn/prefer-string-slice	substring	Prefer `String#slice()` over `String#substring()`.
 tests/rules/unicorn/prefer-string-slice/cases.ts:28:13	unicorn/prefer-string-slice	substr	Prefer `String#slice()` over `String#substr()`.
+tests/rules/unicorn/prefer-string-slice/cases.ts:38:12	unicorn/prefer-string-slice	substr	Prefer `String#slice()` over `String#substr()`.
+tests/rules/unicorn/prefer-string-slice/cases.ts:39:12	unicorn/prefer-string-slice	substr	Prefer `String#slice()` over `String#substr()`.
+tests/rules/unicorn/prefer-string-slice/cases.ts:40:12	unicorn/prefer-string-slice	substr	Prefer `String#slice()` over `String#substr()`.
+tests/rules/unicorn/prefer-string-slice/cases.ts:41:12	unicorn/prefer-string-slice	substring	Prefer `String#slice()` over `String#substring()`.
+tests/rules/unicorn/prefer-string-slice/cases.ts:42:12	unicorn/prefer-string-slice	substring	Prefer `String#slice()` over `String#substring()`.
+tests/rules/unicorn/prefer-string-slice/cases.ts:45:12	unicorn/prefer-string-slice	substring	Prefer `String#slice()` over `String#substring()`.
+tests/rules/unicorn/prefer-string-slice/cases.ts:47:13	unicorn/prefer-string-slice	substr	Prefer `String#slice()` over `String#substr()`.
+tests/rules/unicorn/prefer-string-slice/cases.ts:48:13	unicorn/prefer-string-slice	substr	Prefer `String#slice()` over `String#substr()`.
+tests/rules/unicorn/prefer-string-slice/cases.ts:50:13	unicorn/prefer-string-slice	substr	Prefer `String#slice()` over `String#substr()`.

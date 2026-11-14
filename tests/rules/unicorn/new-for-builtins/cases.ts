@@ -32,3 +32,28 @@ const z4 = String(value);
 function shadowed(Map: MapConstructor) {
   return Map();
 }
+
+// 79.0.0: every built-in error, Intl and WebAssembly constructors, optional chains, and the
+// namespaces that are neither functions nor constructors.
+const n1 = TypeError('x');
+const n2 = AggregateError([]);
+const n3 = Intl.DateTimeFormat();
+const n4 = Intl.NumberFormat('en');
+const n5 = Intl?.DateTimeFormat();
+const n6 = Array?.(3);
+const n7 = WebAssembly.Memory({ initial: 1 });
+// @ts-expect-error -- not callable
+const n8 = WebAssembly();
+// @ts-expect-error -- not a constructor
+const n9 = new WebAssembly();
+// @ts-expect-error -- not a constructor
+const n10 = new WebAssembly.JSTag();
+const n11 = new (Intl.Collator)();
+const n12 = globalThis.Intl.Segmenter();
+export function newOnNextLine() {
+  return new
+    String('x');
+}
+const n13 = new (new Boolean(1).constructor)();
+let n14 = 1
+new String('x').length;

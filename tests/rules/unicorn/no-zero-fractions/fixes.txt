@@ -10,3 +10,10 @@ tests/rules/unicorn/no-zero-fractions/cases.ts:12:13	unicorn/no-zero-fractions	z
 tests/rules/unicorn/no-zero-fractions/cases.ts:13:15	unicorn/no-zero-fractions	zero-fraction	Don't use a zero fraction in the number.	fix	302	305	1	end	13	17
 tests/rules/unicorn/no-zero-fractions/cases.ts:16:10	unicorn/no-zero-fractions	zero-fraction	Don't use a zero fraction in the number.	fix	372	374	 0	end	16	11
 tests/rules/unicorn/no-zero-fractions/cases.ts:19:2	unicorn/no-zero-fractions	zero-fraction	Don't use a zero fraction in the number.	fix	388	391	;(1)	end	19	4
+tests/rules/unicorn/no-zero-fractions/cases.ts:29:29	unicorn/no-zero-fractions	leading-zero	Use a leading zero before the decimal point.	fix	586	588	0.5	end	29	31
+tests/rules/unicorn/no-zero-fractions/cases.ts:30:30	unicorn/no-zero-fractions	leading-zero	Use a leading zero before the decimal point.	fix	619	621	0.5	end	30	32
+tests/rules/unicorn/no-zero-fractions/cases.ts:31:29	unicorn/no-zero-fractions	leading-zero	Use a leading zero before the decimal point.	fix	651	655	0.5e2	end	31	31
+tests/rules/unicorn/no-zero-fractions/cases.ts:32:29	unicorn/no-zero-fractions	leading-zero	Use a leading zero before the decimal point.	fix	685	687	0.5	end	32	31
+tests/rules/unicorn/no-zero-fractions/cases.ts:33:30	unicorn/no-zero-fractions	zero-fraction	Don't use a zero fraction in the number.	fix	728	730	0	end	33	31
+tests/rules/unicorn/no-zero-fractions/cases.ts:34:29	unicorn/no-zero-fractions	leading-zero	Use a leading zero before the decimal point.	fix	760	763	0.1	end	34	32
+tests/rules/unicorn/no-zero-fractions/cases.ts:35:39	unicorn/no-zero-fractions	leading-zero	Use a leading zero before the decimal point.	fix	803	805	 0.5	end	35	41

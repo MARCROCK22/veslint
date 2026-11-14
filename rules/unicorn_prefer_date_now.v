@@ -3,7 +3,7 @@ module rules
 import estree
 import time
 
-// Port of the `unicorn/prefer-date-now` rule of eslint-plugin-unicorn 64.0.0 (it has no options),
+// Port of the `unicorn/prefer-date-now` rule of eslint-plugin-unicorn 79.0.0 (it has no options),
 // with its fix.
 
 const updn_messages = {
@@ -92,6 +92,14 @@ fn (mut c Checker) lint_unicorn_prefer_date_now(root C.TSNode, abs_path string, 
 
 // updn_problem ports getProblem: `node` becomes `Date.now()`; the problem is at `at`.
 fn (c &Checker) updn_problem(t &estree.EsTree, tokens &SourceTokens, node int, at int, message_id string, data map[string]string) !Finding {
+	// The replacement is a plain call, so a comment in the replaced range would be lost.
+	if tokens.comments_inside(t.nodes[node].start, t.nodes[node].end).len > 0 {
+		return Finding{
+			stmt:       c.es_tree_position(t, at)
+			message_id: message_id
+			data:       data
+		}
+	}
 	mut fixes := [fix_replace_range(t.nodes[node].start, t.nodes[node].end, 'Date.now()')]
 	if t.typ(node) == .unary_expression {
 		fixes << c.un_fix_space_around_keyword(t, tokens, node)

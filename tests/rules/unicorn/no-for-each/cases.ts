@@ -44,3 +44,24 @@ list.forEach(x => use(x));
 // Not reported.
 declare const React: { Children: { forEach(a: unknown, f: unknown): void } };
 React.Children.forEach(list, (x: number) => use(x));
+
+// 79.0.0: only known arrays are fixed; receivers known not to be arrays are left (with TypeScript's
+// types `React?.Children` of a declared React, which the upstream test without a program
+// reports); class bodies; optional chains in a statement position.
+declare function bar(x: unknown): void;
+React?.Children.forEach(bar);
+declare const unknownThing: any;
+unknownThing.forEach((x: unknown) => bar(x));
+declare const known: number[];
+known.forEach(x => bar(x));
+known.forEach(x => class {});
+known.forEach(x => function () {});
+known.forEach(x => ({}));
+known.forEach(/* keep */ x => bar(x));
+known.forEach(x => { if (x) return; bar(x); });
+known.forEach(x => { if (x) return bar(x); });
+declare const maybeKnown: number[] | undefined;
+if (maybeKnown) maybeKnown?.forEach(x => bar(x));
+maybeKnown?.forEach(x => bar(x));
+const knownSet = new Set([1]);
+knownSet.forEach(x => bar(x));

@@ -4,7 +4,7 @@ import estree
 import json2
 import time
 
-// Port of the `unicorn/text-encoding-identifier-case` rule of eslint-plugin-unicorn 64.0.0, with
+// Port of the `unicorn/text-encoding-identifier-case` rule of eslint-plugin-unicorn 79.0.0, with
 // its fix and its suggestion.
 
 const uteic_messages = {
@@ -94,6 +94,32 @@ fn uteic_fs_read_file(t &estree.EsTree, node int) bool {
 	return args.len > 1 && args[1] == node && t.typ(args[0]) != .spread_element
 }
 
+// uteic_is_module_specifier ports isModuleSpecifier: a module specifier is a package name, never a
+// character encoding.
+fn uteic_is_module_specifier(t &estree.EsTree, node int) bool {
+	parent := t.nodes[node].parent
+	if parent < 0 {
+		return false
+	}
+	key := match t.typ(parent) {
+		.import_declaration, .export_named_declaration, .export_all_declaration, .ts_import_type,
+		.import_expression {
+			estree.Key.source
+		}
+		.ts_external_module_reference {
+			estree.Key.expression
+		}
+		.ts_module_declaration {
+			estree.Key.id
+		}
+		else {
+			// `require('…')`
+			return un_is_call(t, parent, names: ['require'], arguments_length: 1, optional: false)
+		}
+	}
+	return (t.node(parent, key) or { -1 }) == node
+}
+
 fn (mut c Checker) lint_unicorn_text_encoding_identifier_case(root C.TSNode, abs_path string, mut stats Stats) ![]Finding {
 	sw := time.new_stopwatch()
 	with_dash_option := uteic_options(c.rule_options(unicorn_text_encoding_identifier_case))!
@@ -105,7 +131,7 @@ fn (mut c Checker) lint_unicorn_text_encoding_identifier_case(root C.TSNode, abs
 		}
 		stats.checked++
 		value := c.uteic_value(t, node) or { continue }
-		if value == '' {
+		if value == '' || uteic_is_module_specifier(t, node) {
 			continue
 		}
 		with_dash := with_dash_option || uteic_enforce_dash(t, node)

@@ -1,11 +1,13 @@
 module rules
 
 import estree
+import math
 import treesitter { Ident }
 
-// Helpers of eslint-plugin-unicorn 64.0.0 (rules/utils, rules/fix and rules/ast) that its ported
-// rules share, on the ESTree of the estree module and the tokens of fix_tokens.v. Offsets are
-// bytes of the source.
+// Helpers of eslint-plugin-unicorn (rules/utils, rules/fix and rules/ast) that its ported rules
+// share, on the ESTree of the estree module and the tokens of fix_tokens.v. Offsets are bytes of
+// the source. They were ported from 64.0.0; those that 79.0.0 changed, and the new ones, say so
+// (the ones that read static values, JSDoc and types are in unicorn_utils_types.v).
 
 // un_tokens are the tokens of the file of the tree.
 fn (mut c Checker) un_tokens(t &estree.EsTree) &SourceTokens {
@@ -295,16 +297,6 @@ fn (c &Checker) un_add_parens_to_return_or_throw(t &estree.EsTree, tokens &Sourc
 	return [fix_insert_at(first.end, ' ('), fix_insert_at(last.start, ')')]
 }
 
-// un_unwrap ports unwrapNode of is-same-reference.js: without `?.` chains and TypeScript
-// assertions (`as`, `<T>`, `!`).
-fn un_unwrap(t &estree.EsTree, node int) int {
-	mut n := node
-	for t.typ(n) in [.chain_expression, .ts_as_expression, .ts_type_assertion, .ts_non_null_expression] {
-		n = t.node(n, .expression) or { return n }
-	}
-	return n
-}
-
 // un_static_property_name ports getStaticPropertyName of is-same-reference.js: the name of the
 // property of a member expression, the value of getStaticValue (without a scope) as a string when
 // it is computed; none when it is not static.
@@ -353,11 +345,16 @@ fn un_equal_literal_value(t &estree.EsTree, left int, right int) bool {
 	}
 }
 
-// un_is_same_reference ports isSameReference: two expressions that reference the same value
-// (`a`, `a.b`, `a['b']`, `a[0]`, `this`…).
+// un_is_same_reference ports isSameReference (eslint-plugin-unicorn 79.0.0): two expressions that
+// reference the same value (`a`, `a.b`, `a['b']`, `a[0]`, `this`…), without `?.` chains and
+// TypeScript wrappers; static strings are compared by their value.
 fn (mut c Checker) un_is_same_reference(t &estree.EsTree, left_node int, right_node int) bool {
-	left := un_unwrap(t, left_node)
-	right := un_unwrap(t, right_node)
+	left := un_unwrap_chain_and_ts_expression(t, left_node)
+	right := un_unwrap_chain_and_ts_expression(t, right_node)
+	if left_string := un_static_string_value(t, left) {
+		right_string := un_static_string_value(t, right) or { return false }
+		return left_string == right_string
+	}
 	if t.typ(left) != t.typ(right) {
 		return false
 	}
@@ -497,10 +494,24 @@ fn un_available_variable_name(tree &ScopeTree, base string, scopes []int, is_saf
 	return name
 }
 
-// un_has_side_effect ports hasSideEffect of eslint-utils with its default options: the node or a
-// node inside it (not inside a function) assigns, awaits, calls, imports, deletes, updates or
-// yields.
-fn un_has_side_effect(t &estree.EsTree, node int) bool {
+// un_is_type: the node exists (>= 0) and has the type.
+fn un_is_type(t &estree.EsTree, node int, typ estree.NodeType) bool {
+	return node >= 0 && t.typ(node) == typ
+}
+
+// UnSideEffect are the options of hasSideEffect.
+@[params]
+struct UnSideEffect {
+	consider_getters                  bool
+	consider_implicit_type_conversion bool
+}
+
+// un_has_side_effect ports hasSideEffect of eslint-utils: the node or a descendant (not inside a
+// function) assigns, awaits, calls, imports, constructs, updates, yields or deletes; with
+// considerGetters, reads a member; with considerImplicitTypeConversion, converts a value that is
+// not a literal.
+fn un_has_side_effect(t &estree.EsTree, node int, o UnSideEffect) bool {
+	conversion := o.consider_implicit_type_conversion
 	match t.typ(node) {
 		.arrow_function_expression, .function_expression {
 			return false
@@ -509,14 +520,42 @@ fn un_has_side_effect(t &estree.EsTree, node int) bool {
 		.new_expression, .update_expression, .yield_expression {
 			return true
 		}
+		.binary_expression {
+			if conversion && (t.string_of(node, .operator) or { '' }) in ['==', '!=', '<', '<=', '>',
+				'>=', '<<', '>>', '>>>', '+', '-', '*', '/', '%', '|', '^', '&', 'in']
+				&& (!un_is_type(t, t.node(node, .left) or { -1 }, .literal)
+				|| !un_is_type(t, t.node(node, .right) or { -1 }, .literal)) {
+				return true
+			}
+		}
+		.member_expression {
+			if o.consider_getters {
+				return true
+			}
+			if conversion && (t.flag(node, .computed) or { false })
+				&& !un_is_type(t, t.node(node, .property) or { -1 }, .literal) {
+				return true
+			}
+		}
+		.method_definition, .property, .property_definition {
+			if conversion && (t.flag(node, .computed) or { false })
+				&& !un_is_type(t, t.node(node, .key) or { -1 }, .literal) {
+				return true
+			}
+		}
 		.unary_expression {
-			if (t.string_of(node, .operator) or { '' }) == 'delete' {
+			operator := t.string_of(node, .operator) or { '' }
+			if operator == 'delete' {
+				return true
+			}
+			if conversion && operator in ['-', '+', '!', '~']
+				&& !un_is_type(t, t.node(node, .argument) or { -1 }, .literal) {
 				return true
 			}
 		}
 		else {}
 	}
-	return t.children(node).any(un_has_side_effect(t, it))
+	return t.children(node).any(un_has_side_effect(t, it, o))
 }
 
 // un_replace_token_and_spaces_before ports replaceNodeOrTokenAndSpacesBefore for a token (which has
@@ -717,17 +756,133 @@ fn un_is_method_call(t &estree.EsTree, node int, o UnMethodCall) bool {
 	})
 }
 
-// un_new_callee_needs_parens ports shouldAddParenthesesToNewExpressionCallee: a member expression
-// whose innermost object is a call (`new (a().b)()`).
-fn un_new_callee_needs_parens(t &estree.EsTree, node int) bool {
+// un_new_callee_needs_parens ports shouldAddParenthesesToNewExpressionCallee (eslint-plugin-unicorn
+// 79.0.0): a member expression whose object chain (through template tags and TypeScript
+// wrappers, up to a parenthesized one) ends with a call (`new (a().b)()`).
+fn (c &Checker) un_new_callee_needs_parens(t &estree.EsTree, tokens &SourceTokens, node int) bool {
 	if t.typ(node) != .member_expression {
 		return false
 	}
 	mut current := t.node(node, .object) or { return false }
-	for t.typ(current) == .member_expression {
-		current = t.node(current, .object) or { return false }
+	for !c.un_is_parenthesized(t, tokens, current) {
+		if un_is_ts_expression_wrapper(t, current) {
+			current = t.node(current, .expression) or { return false }
+			continue
+		}
+		if t.typ(current) !in [.member_expression, .tagged_template_expression] {
+			return t.typ(current) == .call_expression
+		}
+		current = if t.typ(current) == .member_expression {
+			t.node(current, .object) or { return false }
+		} else {
+			t.node(current, .tag) or { return false }
+		}
 	}
-	return t.typ(current) == .call_expression
+	return false
+}
+
+// un_is_in_unparenthesized_new_callee ports isInUnparenthesizedNewExpressionCallee: the node is
+// part of an unparenthesized constructor callee, where a call would become the arguments of
+// the constructor.
+fn (c &Checker) un_is_in_unparenthesized_new_callee(t &estree.EsTree, tokens &SourceTokens, from int) bool {
+	mut node := from
+	for !c.un_is_parenthesized(t, tokens, node) {
+		parent := t.nodes[node].parent
+		if parent < 0 {
+			break
+		}
+		if t.typ(parent) == .new_expression && (t.node(parent, .callee) or { -1 }) == node {
+			return true
+		}
+		if (t.typ(parent) == .member_expression && (t.node(parent, .object) or { -1 }) == node)
+			|| (t.typ(parent) == .tagged_template_expression
+			&& (t.node(parent, .tag) or { -1 }) == node)
+			|| (un_is_ts_expression_wrapper(t, parent) && (t.node(parent, .expression) or { -1 }) == node) {
+			node = parent
+			continue
+		}
+		break
+	}
+	return false
+}
+
+// un_is_chain_element is isChainElement of has-optional-chain-element.js.
+fn un_is_chain_element(t &estree.EsTree, node int) bool {
+	return node >= 0 && t.typ(node) in [.member_expression, .call_expression]
+}
+
+// un_has_optional_chain_element ports hasOptionalChainElement: an optional member or call in the
+// chain of the node (through TypeScript wrappers and chain expressions).
+fn un_has_optional_chain_element(t &estree.EsTree, from int) bool {
+	node := un_unwrap_ts_expression(t, from)
+	if node >= 0 && t.typ(node) == .chain_expression {
+		return un_has_optional_chain_element(t, t.node(node, .expression) or { return false })
+	}
+	if !un_is_chain_element(t, node) {
+		return false
+	}
+	if t.flag(node, .optional) or { false } {
+		return true
+	}
+	next := t.node(node, if t.typ(node) == .member_expression { estree.Key.object } else { .callee }) or {
+		return false
+	}
+	return un_has_optional_chain_element(t, next)
+}
+
+// un_has_unparenthesized_optional_chain_element ports hasUnparenthesizedOptionalChainElement.
+fn (c &Checker) un_has_unparenthesized_optional_chain_element(t &estree.EsTree, tokens &SourceTokens, node int) bool {
+	if node < 0 {
+		return false
+	}
+	if un_is_ts_expression_wrapper(t, node) || t.typ(node) == .chain_expression {
+		return c.un_parentheses(t, tokens, node).len == 0
+			&& c.un_has_unparenthesized_optional_chain_element(t, tokens, t.node(node, .expression) or {
+			return false
+		})
+	}
+	if !un_is_chain_element(t, node) {
+		return false
+	}
+	if t.flag(node, .optional) or { false } {
+		return true
+	}
+	next := t.node(node, if t.typ(node) == .member_expression { estree.Key.object } else { .callee }) or {
+		return false
+	}
+	return c.un_has_unparenthesized_optional_chain_element(t, tokens, next)
+}
+
+// un_trace_add adds `path` with the use `kind` ('read', 'call' or 'construct') to a trace map of
+// es_global_references, merging it with what is there (createTraceMap and mergeTraceMap of
+// global-reference-tracker.js).
+fn un_trace_add(mut trace map[string]EsTrace, path []string, kind string) {
+	entry := trace[path[0]] or { EsTrace{} }
+	if path.len == 1 {
+		trace[path[0]] = EsTrace{
+			...entry
+			read:      entry.read || kind == 'read'
+			call:      entry.call || kind == 'call'
+			construct: entry.construct || kind == 'construct'
+		}
+		return
+	}
+	mut children := entry.children.clone()
+	un_trace_add(mut children, path[1..], kind)
+	trace[path[0]] = EsTrace{
+		...entry
+		children: children
+	}
+}
+
+// un_trace_map is the trace map of GlobalReferenceTracker for the objects (names or paths like
+// `Intl.Collator`) and the use `kind`.
+fn un_trace_map(objects []string, kind string) map[string]EsTrace {
+	mut trace := map[string]EsTrace{}
+	for object in objects {
+		un_trace_add(mut trace, object.split('.'), kind)
+	}
+	return trace
 }
 
 // un_switch_call_to_new ports switchCallExpressionToNewExpression: `Error()` becomes `new Error()`.
@@ -735,7 +890,7 @@ fn (c &Checker) un_switch_call_to_new(t &estree.EsTree, tokens &SourceTokens, no
 	mut fixes := c.un_fix_space_around_keyword(t, tokens, node)
 	fixes << fix_insert_at(t.nodes[node].start, 'new ')
 	callee := t.node(node, .callee) or { return fixes }
-	if !c.un_is_parenthesized(t, tokens, callee) && un_new_callee_needs_parens(t, callee) {
+	if !c.un_is_parenthesized(t, tokens, callee) && c.un_new_callee_needs_parens(t, tokens, callee) {
 		fixes << fix_insert_at(t.nodes[callee].start, '(')
 		fixes << fix_insert_at(t.nodes[callee].end, ')')
 	}
@@ -781,107 +936,11 @@ fn un_is_function_call(t &estree.EsTree, node int, name string) bool {
 
 const un_math_properties = ['E', 'LN2', 'LN10', 'LOG2E', 'LOG10E', 'PI', 'SQRT1_2', 'SQRT2']
 const un_math_methods = ['abs', 'acos', 'acosh', 'asin', 'asinh', 'atan', 'atanh', 'atan2', 'cbrt',
-	'ceil', 'clz32', 'cos', 'cosh', 'exp', 'expm1', 'floor', 'fround', 'hypot', 'imul', 'log', 'log1p',
+	'ceil', 'clz32', 'cos', 'cosh', 'exp', 'expm1', 'f16round', 'floor', 'fround', 'hypot', 'imul', 'log', 'log1p',
 	'log10', 'log2', 'max', 'min', 'pow', 'random', 'round', 'sign', 'sin', 'sinh', 'sqrt', 'tan',
 	'tanh', 'trunc']
 const un_number_properties = ['EPSILON', 'MAX_SAFE_INTEGER', 'MAX_VALUE', 'MIN_SAFE_INTEGER',
 	'MIN_VALUE', 'NaN', 'NEGATIVE_INFINITY', 'POSITIVE_INFINITY']
-
-// un_is_number ports isNumber of utils/is-number.js: the expression is surely a number (not a
-// BigInt).
-fn (mut c Checker) un_is_number(t &estree.EsTree, node int) bool {
-	if node < 0 {
-		return false
-	}
-	typ := t.typ(node)
-	if typ == .literal && t.get(node, .value) is f64 {
-		return true
-	}
-	if un_is_static_properties(t, node, 'Math', un_math_properties)
-		|| un_is_static_properties(t, node, 'Number', un_number_properties) {
-		return true
-	}
-	if typ == .call_expression && !(t.flag(node, .optional) or { false }) {
-		callee := t.node(node, .callee) or { -1 }
-		if un_is_static_properties(t, callee, 'Math', un_math_methods)
-			|| un_is_static_properties(t, callee, 'Number', ['parseFloat', 'parseInt']) {
-			return true
-		}
-	}
-	if un_is_function_call(t, node, 'Number') || un_is_function_call(t, node, 'parseInt')
-		|| un_is_function_call(t, node, 'parseFloat') {
-		return true
-	}
-	// `.length`
-	if typ == .member_expression && !(t.flag(node, .computed) or { false })
-		&& !(t.flag(node, .optional) or { false }) {
-		property := t.node(node, .property) or { -1 }
-		if property >= 0 && t.typ(property) == .identifier
-			&& (t.string_of(property, .name) or { '' }) == 'length' {
-			return true
-		}
-	}
-	mut operator := t.string_of(node, .operator) or { '' }
-	match typ {
-		.assignment_expression, .binary_expression {
-			left := t.node(node, .left) or { -1 }
-			right := t.node(node, .right) or { -1 }
-			if typ == .assignment_expression {
-				if operator == '=' && c.un_is_number(t, right) {
-					return true
-				}
-				operator = operator[..operator.len - 1]
-			}
-			if operator == '+' && c.un_is_number(t, left) && c.un_is_number(t, right) {
-				return true
-			}
-			// `>>>` cannot be used on a BigInt.
-			if operator == '>>>' {
-				return true
-			}
-			// `a * b` may be a BigInt: one side must be a number.
-			if operator in ['-', '*', '/', '%', '**', '<<', '>>', '|', '^', '&']
-				&& (c.un_is_number(t, left) || c.un_is_number(t, right)) {
-				return true
-			}
-		}
-		.unary_expression {
-			// `+` cannot be used on a BigInt.
-			if operator == '+' {
-				return true
-			}
-			if operator in ['-', '~'] && c.un_is_number(t, t.node(node, .argument) or { -1 }) {
-				return true
-			}
-		}
-		.update_expression {
-			if c.un_is_number(t, t.node(node, .argument) or { -1 }) {
-				return true
-			}
-		}
-		.conditional_expression {
-			consequent := c.un_is_number(t, t.node(node, .consequent) or { -1 })
-			alternate := c.un_is_number(t, t.node(node, .alternate) or { -1 })
-			if consequent && alternate {
-				return true
-			}
-			test := c.un_static_value(t, t.node(node, .test) or { -1 })
-			if test.found && ((consequent && stv_to_boolean(test.value))
-				|| (alternate && !stv_to_boolean(test.value))) {
-				return true
-			}
-		}
-		.sequence_expression {
-			expressions := t.list(node, .expressions) or { []int{} }
-			if expressions.len > 0 && c.un_is_number(t, expressions.last()) {
-				return true
-			}
-		}
-		else {}
-	}
-	result := c.un_static_value(t, node)
-	return result.found && result.value.kind == .number_
-}
 
 // un_new_with_parentheses ports isNewExpressionWithParentheses: `new Foo()` rather than `new Foo`.
 fn (c &Checker) un_new_with_parentheses(t &estree.EsTree, tokens &SourceTokens, node int) bool {
@@ -897,19 +956,29 @@ fn (c &Checker) un_new_with_parentheses(t &estree.EsTree, tokens &SourceTokens, 
 		&& t.nodes[callee].end < t.nodes[node].end
 }
 
-// un_switch_new_to_call ports switchNewExpressionToCallExpression: `new Foo()` becomes `Foo()`.
+// un_switch_new_to_call ports switchNewExpressionToCallExpression (eslint-plugin-unicorn 79.0.0):
+// `new Foo()` becomes `Foo()`, in parentheses when the call would become the arguments of an
+// outer `new`, or when the callee on another line would leave a `return`, `throw` or `yield`
+// alone.
 fn (c &Checker) un_switch_new_to_call(t &estree.EsTree, tokens &SourceTokens, node int) []Fix {
 	new_token := un_first_token(t, tokens, node, 0) or { return [] }
-	mut fixes := [fix_remove_range(new_token.start, new_token.end),
-		c.un_remove_spaces_after(new_token.end)]
+	callee := t.node(node, .callee) or { return [] }
+	should_parenthesize := c.un_is_in_unparenthesized_new_callee(t, tokens, node)
+		|| (!un_same_line(t, new_token.start, t.nodes[callee].start)
+		&& c.un_unparenthesized_keyword_argument_parent(t, tokens, node) != none)
+	mut fixes := [
+		fix_replace_range(new_token.start, new_token.end, if should_parenthesize { '(' } else { '' }),
+		c.un_remove_spaces_after(new_token.end),
+	]
 	if !c.un_new_with_parentheses(t, tokens, node) {
 		fixes << fix_insert_at(t.nodes[node].end, '()')
 	}
-	callee := t.node(node, .callee) or { return fixes }
-	// Without `new`, a callee on the next line after `return` would not be returned.
-	if !un_same_line(t, new_token.start, t.nodes[callee].start)
-		&& !c.un_is_parenthesized(t, tokens, node) {
-		fixes << c.un_add_parens_to_return_or_throw(t, tokens, t.nodes[node].parent)
+	if should_parenthesize {
+		fixes << fix_insert_at(t.nodes[node].end, ')')
+	}
+	next := tokens.after(new_token.end, false) or { return fixes }
+	if c.un_needs_semicolon(t, tokens, tokens.before(t.nodes[node].start, false), c.token_text(next)) {
+		fixes << fix_insert_at(t.nodes[node].start, ';')
 	}
 	return fixes
 }
@@ -976,6 +1045,29 @@ fn un_node_matches_name_or_path(t &estree.EsTree, from int, name_or_path string)
 // un_is_string_literal ports isStringLiteral.
 fn un_is_string_literal(t &estree.EsTree, node int) bool {
 	return node >= 0 && t.typ(node) == .literal && t.get(node, .value) is string
+}
+
+// un_static_string_value ports getStaticStringValue of ast/literal.js (eslint-plugin-unicorn
+// 79.0.0): the value of a string literal, or the cooked text of a template literal without
+// expressions (none when its cooked value is undefined).
+fn un_static_string_value(t &estree.EsTree, node int) ?string {
+	if node < 0 {
+		return none
+	}
+	if un_is_string_literal(t, node) {
+		return t.get(node, .value) as string
+	}
+	if t.typ(node) == .template_literal && (t.list(node, .expressions) or { []int{} }).len == 0 {
+		quasis := t.list(node, .quasis) or { return none }
+		if quasis.len == 0 {
+			return none
+		}
+		value := t.get(quasis[0], .value)
+		if value is estree.TemplateValue && value.has_cooked {
+			return value.cooked
+		}
+	}
+	return none
 }
 
 // un_is_regex_literal ports isRegexLiteral.
@@ -1049,15 +1141,18 @@ fn (mut c Checker) un_reference_node(t &estree.EsTree, ts C.TSNode) ?int {
 
 // un_is_left_hand_side ports isLeftHandSide: the node is written (assigned, updated, destructured
 // into or deleted).
-fn un_is_left_hand_side(t &estree.EsTree, node int) bool {
+fn un_is_left_hand_side(t &estree.EsTree, from int) bool {
+	// eslint-plugin-unicorn 79.0.0: through optional chains and TypeScript wrappers.
+	node := un_outermost_chain_and_ts_expression(t, from)
 	parent := t.nodes[node].parent
 	if parent < 0 {
 		return false
 	}
 	return match t.typ(parent) {
 		.assignment_expression, .assignment_pattern { t.node(parent, .left) or { -1 } == node }
-		.update_expression { t.node(parent, .argument) or { -1 } == node }
+		.update_expression, .rest_element { t.node(parent, .argument) or { -1 } == node }
 		.array_pattern { node in (t.list(parent, .elements) or { []int{} }) }
+		.for_of_statement, .for_in_statement { t.node(parent, .left) or { -1 } == node }
 		.property {
 			t.node(parent, .value) or { -1 } == node && t.nodes[parent].parent >= 0
 				&& t.typ(t.nodes[parent].parent) == .object_pattern
@@ -1307,7 +1402,8 @@ fn un_is_boolean_call(t &estree.EsTree, node int) bool {
 		&& (t.list(node, .arguments) or { []int{} }).len == 1
 }
 
-// un_is_boolean_expression ports isBooleanExpression of utils/boolean.js.
+// un_is_boolean_expression ports isBooleanExpression of utils/boolean.js of 64.0.0 (any `Boolean`
+// call; un_is_boolean_expression_in is the one of 79.0.0, with the global `Boolean` only).
 fn un_is_boolean_expression(t &estree.EsTree, node int) bool {
 	parent := t.nodes[node].parent
 	if un_is_logic_not(t, node) || (un_is_logic_not(t, parent) && t.node(parent, .argument) or { -1 } == node)
@@ -1367,11 +1463,23 @@ fn (mut c Checker) un_is_function_self_used_inside(root C.TSNode, t &estree.EsTr
 	return false
 }
 
-// un_member_object_needs_parens ports shouldAddParenthesesToMemberExpressionObject.
+// un_member_object_needs_parens ports shouldAddParenthesesToMemberExpressionObject(node, context)
+// (eslint-plugin-unicorn 79.0.0), where the node stays where it is.
 fn (c &Checker) un_member_object_needs_parens(t &estree.EsTree, tokens &SourceTokens, node int) bool {
+	return c.un_member_object_needs_parens_at(t, tokens, node, node)
+}
+
+// un_member_object_needs_parens_at ports shouldAddParenthesesToMemberExpressionObject: the node
+// needs parentheses as the object of a member expression that takes the place of `replacement`
+// (also so that a statement does not start with a declaration-like token).
+fn (c &Checker) un_member_object_needs_parens_at(t &estree.EsTree, tokens &SourceTokens, node int, replacement int) bool {
+	if c.un_expression_start_needs_parens(t, tokens, node, replacement) {
+		return true
+	}
 	return match t.typ(node) {
 		.identifier, .member_expression, .call_expression, .chain_expression, .template_literal,
-		.this_expression, .array_expression, .function_expression {
+		.this_expression, .super, .array_expression, .meta_property, .import_expression,
+		.tagged_template_expression, .ts_non_null_expression {
 			false
 		}
 		.new_expression {
@@ -1386,12 +1494,25 @@ fn (c &Checker) un_member_object_needs_parens(t &estree.EsTree, tokens &SourceTo
 	}
 }
 
+// un_member_object_text ports getMemberExpressionObjectText: the text of the node (with its
+// parentheses) as the object of a member expression where `replacement` is, in parentheses when
+// it needs them.
+fn (c &Checker) un_member_object_text(t &estree.EsTree, tokens &SourceTokens, node int, replacement int) string {
+	text := c.un_parenthesized_text(t, tokens, node)
+	if !c.un_is_parenthesized(t, tokens, node)
+		&& c.un_member_object_needs_parens_at(t, tokens, node, replacement) {
+		return '(${text})'
+	}
+	return text
+}
+
 // un_is_node_matches ports isNodeMatches: the node matches one of the names or paths.
 fn un_is_node_matches(t &estree.EsTree, node int, names_or_paths []string) bool {
 	return names_or_paths.any(un_node_matches_name_or_path(t, node, it))
 }
 
-// un_const_initializer ports getConstVariableInitializer of prefer-array-flat: the initializer of
+// un_const_initializer ports getConstVariableInitializer (utils/get-const-variable-initializer.js
+// of eslint-plugin-unicorn 79.0.0): the initializer of
 // the only definition of the variable of an identifier, a `const` declarator.
 fn (mut c Checker) un_const_initializer(root C.TSNode, t &estree.EsTree, node int) ?int {
 	if t.typ(node) != .identifier {
@@ -1407,30 +1528,68 @@ fn (mut c Checker) un_const_initializer(root C.TSNode, t &estree.EsTree, node in
 	if def.kind != .variable || treesitter.node_kind(def.node) != 'variable_declarator' || def.parent_kind != 'const' {
 		return none
 	}
+	// A destructured binding (`const {foo} = bar`) does not have the initializer as its value.
+	decl_id := def.decl_id or { return none }
+	if node_key(decl_id) != node_key(def.name) {
+		return none
+	}
 	return c.es_index_of(t, def.init?)
 }
 
-// un_remove_argument ports removeArgument (fix/remove-argument.js).
-fn (c &Checker) un_remove_argument(t &estree.EsTree, tokens &SourceTokens, node int) ?Fix {
+// un_argument_removal_range ports getArgumentRemovalRange (fix/remove-argument.js of
+// eslint-plugin-unicorn 79.0.0): the range removing an argument removes, with its parentheses and
+// the comma (the following one and the gap after it for the first of several).
+fn (c &Checker) un_argument_removal_range(t &estree.EsTree, tokens &SourceTokens, node int) ?UnRange {
 	call := t.nodes[node].parent
 	arguments := t.list(call, .arguments) or { return none }
 	index := arguments.index(node)
 	parentheses := c.un_parentheses(t, tokens, node)
 	mut start := if parentheses.len > 0 { parentheses[0].start } else { t.nodes[node].start }
 	mut end := if parentheses.len > 0 { parentheses.last().end } else { t.nodes[node].end }
-	if index != 0 {
-		comma := tokens.before(start, false)?
-		start = comma.start
-	}
-	// If the removed argument is the only argument, the trailing comma must be removed too
 	if arguments.len == 1 {
+		// The only argument: also a dangling trailing comma (`fn(a,)`).
 		if after := tokens.after(end, false) {
 			if c.token_is(after, ',') {
 				end = after.end
 			}
 		}
+	} else if index == 0 {
+		// The first of several: through the following comma and the gap after it.
+		comma := tokens.after(end, false)?
+		after_comma := tokens.after(comma.end, true)?
+		end = after_comma.start
+	} else {
+		comma := tokens.before(start, false)?
+		start = comma.start
 	}
-	return fix_remove_range(start, end)
+	return UnRange{start, end}
+}
+
+// un_remove_argument ports removeArgument: the comments in the removed range are kept.
+fn (c &Checker) un_remove_argument(t &estree.EsTree, tokens &SourceTokens, node int) ?Fix {
+	removal := c.un_argument_removal_range(t, tokens, node)?
+	if !un_has_comment_in_range(tokens, removal.start, removal.end) {
+		return fix_remove_range(removal.start, removal.end)
+	}
+	call := t.nodes[node].parent
+	arguments := t.list(call, .arguments) or { return none }
+	index := arguments.index(node)
+	comments := tokens.comments_inside(removal.start, removal.end).filter(it.end <= removal.end)
+	linebreak := un_linebreak(c.src)
+	comment_text := fn [c, linebreak] (comment SourceToken) string {
+		return c.token_text(comment) + if comment.kind == .line_comment { linebreak } else { '' }
+	}
+	// Removing the first of several arguments swallows the comma after it: the comments after the
+	// argument are spliced out of the middle, and the comments inside it go before them.
+	if index == 0 && arguments.len > 1 {
+		parentheses := c.un_parentheses(t, tokens, node)
+		argument_end := if parentheses.len > 0 { parentheses.last().end } else { t.nodes[node].end }
+		comma := tokens.after(argument_end, false)?
+		argument_comments := comments.filter(it.end <= argument_end).map(comment_text(it)).join(' ')
+		replacement := argument_comments + c.src[argument_end..comma.start] + c.src[comma.end..removal.end]
+		return fix_replace_range(removal.start, removal.end, replacement)
+	}
+	return fix_replace_range(removal.start, removal.end, comments.map(' ${comment_text(it)}').join(''))
 }
 
 // un_call_callee_needs_parens ports shouldAddParenthesesToCallExpressionCallee.
@@ -1471,7 +1630,7 @@ fn un_is_reference_identifier(t &estree.EsTree, node int) bool {
 		.ts_enum_member, .ts_type_alias_declaration {
 			is_key(.id)
 		}
-		.property_definition, .method_definition {
+		.property_definition, .method_definition, .ts_property_signature, .ts_method_signature {
 			!computed && is_key(.key)
 		}
 		.property {
@@ -1504,7 +1663,7 @@ fn un_is_reference_identifier(t &estree.EsTree, node int) bool {
 		.ts_type_parameter {
 			is_key(.name)
 		}
-		.ts_mapped_type, .ts_property_signature {
+		.ts_mapped_type {
 			is_key(.key)
 		}
 		else {
@@ -1512,4 +1671,547 @@ fn un_is_reference_identifier(t &estree.EsTree, node int) bool {
 		}
 	}
 	return !not_reference
+}
+
+// UnRange is a range [start, end) of the source, in bytes.
+struct UnRange {
+	start int
+	end   int
+}
+
+// un_range is the range of a node.
+fn un_range(t &estree.EsTree, node int) UnRange {
+	return UnRange{t.nodes[node].start, t.nodes[node].end}
+}
+
+// un_would_remove_comments ports wouldRemoveComments of utils/comments.js (eslint-plugin-unicorn
+// 79.0.0): a comment entirely in [start, end) that is in none of the preserved ranges.
+fn un_would_remove_comments(tokens &SourceTokens, start int, end int, preserved []UnRange) bool {
+	for comment in tokens.comments_inside(start, end) {
+		if comment.end > end {
+			continue
+		}
+		if preserved.any(comment.start >= it.start && comment.end <= it.end) {
+			continue
+		}
+		return true
+	}
+	return false
+}
+
+// un_has_comment_in_range ports hasCommentInRange: a comment entirely in [start, end).
+fn un_has_comment_in_range(tokens &SourceTokens, start int, end int) bool {
+	return un_would_remove_comments(tokens, start, end, [])
+}
+
+// un_last_trailing_comment_on_same_line ports getLastTrailingCommentOnSameLine (without
+// ignoreDirectives) for the node or token that ends at `end`: the last of the comments right after
+// it that starts on the line where it ends.
+fn un_last_trailing_comment_on_same_line(t &estree.EsTree, tokens &SourceTokens, end int) ?SourceToken {
+	line, _ := t.line_column(end)
+	comments := tokens.comments_after(end)
+	for i := comments.len - 1; i >= 0; i-- {
+		comment_line, _ := t.line_column(comments[i].start)
+		if comment_line == line {
+			return comments[i]
+		}
+	}
+	return none
+}
+
+// un_linebreak ports getLinebreak: the first line ending of the file, or `\n`.
+fn un_linebreak(src string) string {
+	for i := 0; i < src.len; i++ {
+		match src[i] {
+			`\r` {
+				return if i + 1 < src.len && src[i + 1] == `\n` { '\r\n' } else { '\r' }
+			}
+			`\n` {
+				return '\n'
+			}
+			0xe2 {
+				// U+2028 and U+2029.
+				if i + 2 < src.len && src[i + 1] == 0x80 && src[i + 2] in [u8(0xa8), 0xa9] {
+					return src[i..i + 3]
+				}
+			}
+			else {}
+		}
+	}
+	return '\n'
+}
+
+// un_starts_with_declaration_like_token ports startsWithDeclarationLikeToken of
+// should-add-parentheses-to-expression-statement-expression.js: the node starts with `{`, `class`,
+// `function`, `async function` or `let [`.
+fn (c &Checker) un_starts_with_declaration_like_token(t &estree.EsTree, tokens &SourceTokens, node int) bool {
+	first := un_first_token(t, tokens, node, 0) or { return false }
+	text := c.token_text(first)
+	if (first.kind == .punctuator && text == '{')
+		|| (first.kind == .keyword && text in ['class', 'function']) {
+		return true
+	}
+	if text in ['async', 'let'] {
+		after := tokens.after(first.end, false) or { return false }
+		return c.token_text(after) == if text == 'async' { 'function' } else { '[' }
+	}
+	return false
+}
+
+// un_expression_statement_needs_parens ports shouldAddParenthesesToExpressionStatementExpression
+// (eslint-plugin-unicorn 79.0.0): an expression statement cannot start with `{`, `class`,
+// `function`, `async function` or `let [`.
+fn (c &Checker) un_expression_statement_needs_parens(t &estree.EsTree, tokens &SourceTokens, node int) bool {
+	return !c.un_is_parenthesized(t, tokens, node)
+		&& c.un_starts_with_declaration_like_token(t, tokens, node)
+}
+
+// un_expression_start_needs_parens ports shouldAddParenthesesToExpressionStart (without the Svelte
+// case): moving `expression` to where `replacement` is would expose a block or declaration prefix
+// (`let [` in a `for` initializer included).
+fn (c &Checker) un_expression_start_needs_parens(t &estree.EsTree, tokens &SourceTokens, expression int, replacement int) bool {
+	first := un_first_token(t, tokens, expression, 0) or { return false }
+	starts_with_regexp := first.kind == .regular_expression
+	if !starts_with_regexp && !c.un_starts_with_declaration_like_token(t, tokens, expression) {
+		return false
+	}
+	text := c.token_text(first)
+	mut node := replacement
+	for t.nodes[node].parent >= 0 {
+		if c.un_is_parenthesized(t, tokens, node) {
+			return false
+		}
+		parent := t.nodes[node].parent
+		if t.typ(parent) == .arrow_function_expression && (t.node(parent, .body) or { -1 }) == node {
+			return text == '{'
+		}
+		if t.typ(parent) == .export_default_declaration
+			&& (t.node(parent, .declaration) or { -1 }) == node {
+			return !starts_with_regexp && text != '{' && text != 'let'
+		}
+		if t.typ(parent) == .for_statement && (t.node(parent, .init) or { -1 }) == node {
+			return text == 'let'
+		}
+		if t.typ(node).type_name().ends_with('Statement') {
+			return !starts_with_regexp
+		}
+		if t.nodes[parent].start != t.nodes[node].start {
+			return false
+		}
+		node = parent
+	}
+	return false
+}
+
+// un_unparenthesized_keyword_argument_parent ports getUnparenthesizedKeywordArgumentParent: the
+// `return`, `throw` or non-delegated `yield` whose unparenthesized argument starts with the node.
+fn (c &Checker) un_unparenthesized_keyword_argument_parent(t &estree.EsTree, tokens &SourceTokens, from int) ?int {
+	mut node := from
+	for !c.un_is_parenthesized(t, tokens, node) {
+		parent := t.nodes[node].parent
+		if parent >= 0 && (t.node(parent, .argument) or { -1 }) == node
+			&& (t.typ(parent) in [.return_statement, .throw_statement]
+			|| (t.typ(parent) == .yield_expression && !(t.flag(parent, .delegate) or { false }))) {
+			return parent
+		}
+		if parent < 0 || t.nodes[parent].start != t.nodes[node].start {
+			return none
+		}
+		node = parent
+	}
+	return none
+}
+
+// un_is_ts_expression_wrapper ports isTypeScriptExpressionWrapper of
+// unwrap-typescript-expression.js: `as`, `satisfies`, `!`, `<Type>` or `foo<Type>`.
+fn un_is_ts_expression_wrapper(t &estree.EsTree, node int) bool {
+	return node >= 0 && t.typ(node) in [.ts_as_expression, .ts_satisfies_expression,
+		.ts_non_null_expression, .ts_type_assertion, .ts_instantiation_expression]
+}
+
+// un_unwrap_ts_expression ports unwrapTypeScriptExpression: the node without its TypeScript
+// expression wrappers.
+fn un_unwrap_ts_expression(t &estree.EsTree, from int) int {
+	mut node := from
+	for un_is_ts_expression_wrapper(t, node) {
+		node = t.node(node, .expression) or { break }
+	}
+	return node
+}
+
+// un_unwrap_chain_and_ts_expression ports unwrapChainAndTypeScriptExpression.
+fn un_unwrap_chain_and_ts_expression(t &estree.EsTree, from int) int {
+	mut node := from
+	for node >= 0 && (t.typ(node) == .chain_expression || un_is_ts_expression_wrapper(t, node)) {
+		node = t.node(node, .expression) or { break }
+	}
+	return node
+}
+
+// un_outermost_ts_expression ports getOutermostTypeScriptExpression: the outermost TypeScript
+// expression wrapper around the node, or the node.
+fn un_outermost_ts_expression(t &estree.EsTree, from int) int {
+	mut node := from
+	for {
+		parent := t.nodes[node].parent
+		if !un_is_ts_expression_wrapper(t, parent) || (t.node(parent, .expression) or { -1 }) != node {
+			break
+		}
+		node = parent
+	}
+	return node
+}
+
+// un_outermost_chain_and_ts_expression ports getOutermostChainAndTypeScriptExpression.
+fn un_outermost_chain_and_ts_expression(t &estree.EsTree, from int) int {
+	mut node := from
+	for {
+		parent := t.nodes[node].parent
+		if parent < 0 || !(t.typ(parent) == .chain_expression || un_is_ts_expression_wrapper(t, parent))
+			|| (t.node(parent, .expression) or { -1 }) != node {
+			break
+		}
+		node = parent
+	}
+	return node
+}
+
+// un_function_return_expression ports getFunctionReturnExpression of function-body.js: the concise
+// body of an arrow function, or the argument of the only statement of the body when it is a
+// `return`; -1 when there is none.
+fn un_function_return_expression(t &estree.EsTree, function int) int {
+	body := t.node(function, .body) or { return -1 }
+	if t.typ(body) != .block_statement {
+		return body
+	}
+	statements := t.list(body, .body) or { return -1 }
+	if statements.len == 1 && t.typ(statements[0]) == .return_statement {
+		return t.node(statements[0], .argument) or { -1 }
+	}
+	return -1
+}
+
+// un_function_only_expression ports getFunctionOnlyExpression: the concise body of an arrow
+// function, or the expression of the only statement of the body when it is an expression
+// statement; -1 when there is none.
+fn un_function_only_expression(t &estree.EsTree, function int) int {
+	body := t.node(function, .body) or { return -1 }
+	if t.typ(body) != .block_statement {
+		return body
+	}
+	statements := t.list(body, .body) or { return -1 }
+	if statements.len == 1 && t.typ(statements[0]) == .expression_statement {
+		return t.node(statements[0], .expression) or { -1 }
+	}
+	return -1
+}
+
+// un_line_start ports getLineStart: the offset where the line of `offset` starts.
+fn un_line_start(src string, offset int) int {
+	mut start := offset
+	for start > 0 {
+		b := src[start - 1]
+		if b == `\n` || b == `\r` {
+			break
+		}
+		// U+2028 and U+2029 end in 0xa8 and 0xa9.
+		if start >= 3 && src[start - 3] == 0xe2 && src[start - 2] == 0x80
+			&& b in [u8(0xa8), 0xa9] {
+			break
+		}
+		start--
+	}
+	return start
+}
+
+// un_line_indent ports getLineIndent: the leading tabs and spaces of the line where `offset` is.
+fn (c &Checker) un_line_indent(offset int) string {
+	start := un_line_start(c.src, offset)
+	mut end := start
+	for end < c.src.len && c.src[end] in [` `, `\t`] {
+		end++
+	}
+	return c.src[start..end]
+}
+
+// un_source_lines are sourceCode.lines: the lines of the source, split at every line break.
+fn un_source_lines(src string) []string {
+	mut lines := []string{}
+	mut start := 0
+	mut i := 0
+	for i < src.len {
+		b := src[i]
+		if b == `\r` || b == `\n` {
+			lines << src[start..i]
+			i += if b == `\r` && i + 1 < src.len && src[i + 1] == `\n` { 2 } else { 1 }
+			start = i
+			continue
+		}
+		if b == 0xe2 && i + 2 < src.len && src[i + 1] == 0x80 && src[i + 2] in [u8(0xa8), 0xa9] {
+			lines << src[start..i]
+			i += 3
+			start = i
+			continue
+		}
+		i++
+	}
+	lines << src[start..]
+	return lines
+}
+
+// un_detect_indent_key ports makeIndentsMap and getMostUsedKey of detect-indent 7.0.2: the most
+// used indent as `s<n>` or `t<n>`, or '' when there is none.
+fn un_detect_indent_key(lines []string, ignore_single_spaces bool) (string, int) {
+	mut used := map[string]int{}
+	mut weights := map[string]int{}
+	mut order := []string{}
+	mut previous_size := 0
+	mut previous_type := ''
+	mut key := ''
+	for line in lines {
+		if line == '' {
+			continue
+		}
+		// `^(?:( )+|\t+)`
+		mut indent := 0
+		mut typ := ''
+		if line[0] == ` ` {
+			for indent < line.len && line[indent] == ` ` {
+				indent++
+			}
+			typ = 'space'
+		} else if line[0] == `\t` {
+			for indent < line.len && line[indent] == `\t` {
+				indent++
+			}
+			typ = 'tab'
+		}
+		if typ == '' {
+			previous_size = 0
+			previous_type = ''
+			continue
+		}
+		if ignore_single_spaces && typ == 'space' && indent == 1 {
+			continue
+		}
+		if typ != previous_type {
+			previous_size = 0
+		}
+		previous_type = typ
+		mut use := 1
+		mut weight := 0
+		difference := indent - previous_size
+		previous_size = indent
+		if difference == 0 {
+			use = 0
+			weight = 1
+		} else {
+			absolute := if difference < 0 { -difference } else { difference }
+			if ignore_single_spaces && typ == 'space' && absolute == 1 {
+				continue
+			}
+			key = (if typ == 'space' { 's' } else { 't' }) + absolute.str()
+		}
+		if key !in used {
+			order << key
+			used[key] = 1
+			weights[key] = 0
+		} else {
+			used[key] += use
+			weights[key] += weight
+		}
+	}
+	mut result := ''
+	mut max_used := 0
+	mut max_weight := 0
+	for k in order {
+		if used[k] > max_used || (used[k] == max_used && weights[k] > max_weight) {
+			max_used = used[k]
+			max_weight = weights[k]
+			result = k
+		}
+	}
+	return result, order.len
+}
+
+// un_indent_unit ports getIndentUnit: one level of indentation of the file (detect-indent on its
+// lines, with the continuation lines of multi-line tokens and comments blanked), a tab when it is
+// not made of spaces.
+fn (c &Checker) un_indent_unit(t &estree.EsTree, tokens &SourceTokens) string {
+	mut lines := un_source_lines(c.src)
+	for token in tokens.all {
+		start_line, _ := t.line_column(token.start)
+		end_line, _ := t.line_column(token.end)
+		for line in start_line .. end_line {
+			if line < lines.len {
+				lines[line] = ''
+			}
+		}
+	}
+	mut key, count := un_detect_indent_key(lines, true)
+	if count == 0 {
+		key, _ = un_detect_indent_key(lines, false)
+	}
+	if key.starts_with('s') {
+		return ' '.repeat(key[1..].int())
+	}
+	return '\t'
+}
+
+// un_primitive_literal_value ports getPrimitiveLiteralValue: the value of a literal (not a
+// regular expression), of a template without expressions, or of a signed numeric literal (and a
+// negated BigInt); none for other expressions. A BigInt is a JsValue of kind bigint_ with the
+// `bigint` text of its literal.
+fn un_primitive_literal_value(t &estree.EsTree, from int) ?JsValue {
+	node := un_unwrap_ts_expression(t, from)
+	if node < 0 {
+		return none
+	}
+	if t.typ(node) == .literal && t.prop(node, .regex) == none {
+		return un_literal_js_value(t, node)
+	}
+	if t.typ(node) == .template_literal {
+		text := un_static_string_value(t, node)?
+		return JsValue{
+			kind: .string_
+			text: text
+		}
+	}
+	if t.typ(node) != .unary_expression {
+		return none
+	}
+	argument := un_unwrap_ts_expression(t, t.node(node, .argument)?)
+	if argument < 0 || t.typ(argument) != .literal {
+		return none
+	}
+	operator := t.string_of(node, .operator)?
+	value := t.get(argument, .value)
+	if value is f64 && operator in ['-', '+'] {
+		return JsValue{
+			kind:   .number_
+			number: if operator == '-' { -value } else { value }
+		}
+	}
+	if bigint := t.string_of(argument, .bigint) {
+		if operator == '-' {
+			return JsValue{
+				kind: .bigint_
+				text: if bigint == '0' { '0' } else { '-${bigint}' }
+			}
+		}
+	}
+	return none
+}
+
+// un_literal_js_value is the value of a Literal node that is not a regular expression.
+fn un_literal_js_value(t &estree.EsTree, node int) ?JsValue {
+	if bigint := t.string_of(node, .bigint) {
+		return JsValue{
+			kind: .bigint_
+			text: bigint
+		}
+	}
+	value := t.get(node, .value)
+	return match value {
+		string {
+			JsValue{
+				kind: .string_
+				text: value
+			}
+		}
+		f64 {
+			JsValue{
+				kind:   .number_
+				number: value
+			}
+		}
+		bool {
+			JsValue{
+				kind:    .boolean_
+				boolean: value
+			}
+		}
+		estree.Null {
+			JsValue{
+				kind: .null_
+			}
+		}
+		else {
+			none
+		}
+	}
+}
+
+// un_js_object_is ports Object.is for numbers: NaN is NaN, and 0 is not -0.
+fn un_js_object_is(a f64, b f64) bool {
+	if math.is_nan(a) || math.is_nan(b) {
+		return math.is_nan(a) && math.is_nan(b)
+	}
+	return a == b && math.signbit(a) == math.signbit(b)
+}
+
+// un_static_number_value ports getStaticNumberValue of utils/numeric.js: a numeric literal, maybe
+// signed, without TypeScript wrappers.
+fn un_static_number_value(t &estree.EsTree, from int) ?f64 {
+	node := un_unwrap_ts_expression(t, from)
+	if node < 0 {
+		return none
+	}
+	if t.typ(node) == .literal {
+		value := t.get(node, .value)
+		if value is f64 {
+			return value
+		}
+		return none
+	}
+	if t.typ(node) == .unary_expression {
+		operator := t.string_of(node, .operator) or { '' }
+		if operator in ['+', '-'] {
+			value := un_static_number_value(t, t.node(node, .argument) or { return none })?
+			return if operator == '-' { -value } else { value }
+		}
+	}
+	return none
+}
+
+// un_is_length_of ports isLengthOf of utils/comparison.js: the node is `<object>.length` (not
+// optional, not computed), without TypeScript wrappers.
+fn (mut c Checker) un_is_length_of(t &estree.EsTree, from int, object int) bool {
+	if from < 0 || object < 0 {
+		return false
+	}
+	node := un_unwrap_ts_expression(t, from)
+	return un_is_member(t, node, properties: ['length'], optional: false, computed: false)
+		&& c.un_is_same_reference(t, t.node(node, .object) or { return false }, object)
+}
+
+// un_is_length_minus_one_of ports isLengthMinusOneOf: `<object>.length - 1`.
+fn (mut c Checker) un_is_length_minus_one_of(t &estree.EsTree, from int, object int) bool {
+	node := un_unwrap_ts_expression(t, from)
+	if node < 0 || t.typ(node) != .binary_expression || (t.string_of(node, .operator) or { '' }) != '-' {
+		return false
+	}
+	right := t.node(node, .right) or { return false }
+	return (un_static_number_value(t, right) or { return false }) == 1
+		&& c.un_is_length_of(t, t.node(node, .left) or { return false }, object)
+}
+
+// un_function_head_location ports getFunctionHeadLocation of eslint-utils, which (unlike ESLint's
+// own, es_tree_function_head) takes the `=>` of an arrow function before the property it is the
+// value of.
+fn (mut c Checker) un_function_head_location(t &estree.EsTree, node int) Ident {
+	if t.typ(node) == .arrow_function_expression {
+		if body := t.node(node, .body) {
+			tokens := c.source_tokens(t.nodes[t.root].ts)
+			mut at := t.nodes[body].start
+			for {
+				token := tokens.before(at, false) or { break }
+				if c.src[token.start..token.end] == '=>' {
+					return c.position_range(token.start, token.end)
+				}
+				at = token.start
+			}
+		}
+	}
+	return c.es_tree_function_head(t, node)
 }

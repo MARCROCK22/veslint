@@ -30,3 +30,22 @@ const s23 = text.substr(0, -n);
 // Not reported.
 const z1 = text.slice(1);
 const z2 = text['substring'](1);
+
+// 79.0.0: negative indexes, `undefined` ends, single characters, comments, non-strings.
+declare const end: number | undefined;
+declare const start: number;
+declare const custom: { substring(a: number, b?: number): string };
+const s1 = text.substr(0, text.length - 2);
+const s2 = text.substr(0, end);
+const s3 = text.substr(0, end ?? 1);
+const s4 = text.substring(0, end);
+const s5 = text.substring(end as number, 0);
+const s6 = text.substring(start, start + 1);
+const s7 = text.substring(2, 3);
+const s8 = text.substring(/* keep */ -1);
+const s9 = custom.substring(1);
+const s10 = text.substr(0, -(1));
+const s11 = text.substr(1.5, 2.5);
+const s12 = text.substring(start - 1, start);
+const s13 = text.substr(0, f());
+declare function f(): number;

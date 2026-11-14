@@ -20,3 +20,16 @@ const a9 = new Array(1n);
 const z1 = new Array();
 const z2 = new Array(1, 2);
 const z3 = Array(1);
+
+// 79.0.0: only a value known not to be a number is fixed; comments.
+const a1 = new Array('x');
+const a2 = new Array(size);
+const a3 = new Array(items);
+const a4 = new Array(/* keep */ 'x');
+const a5 = new Array('x' /* keep */);
+const a6 = new Array(/* lost */ ('x'));
+let mutable = 'x';
+const a7 = new Array(mutable);
+const fixed = 'x';
+const a8 = new Array(fixed);
+const a9 = new Array(...items);

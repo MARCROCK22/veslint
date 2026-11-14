@@ -3,7 +3,7 @@ module rules
 import estree
 import time
 
-// Port of the `unicorn/no-array-method-this-argument` rule of eslint-plugin-unicorn 64.0.0 (it has
+// Port of the `unicorn/no-array-method-this-argument` rule of eslint-plugin-unicorn 79.0.0 (it has
 // no options), with its fix and suggestions.
 
 const unamta_messages = {
@@ -27,6 +27,7 @@ fn (mut c Checker) lint_unicorn_no_array_method_this_argument(root C.TSNode, abs
 	mut findings := []Finding{}
 	t := c.es_tree(root, abs_path) or { return findings }
 	tokens := c.un_tokens(t)
+	mut ctx := c.un_ctx(root, t, tokens, abs_path)
 	for node in 0 .. t.nodes.len {
 		if t.typ(node) != .call_expression {
 			continue
@@ -40,7 +41,10 @@ fn (mut c Checker) lint_unicorn_no_array_method_this_argument(root C.TSNode, abs
 			arguments_length: 2
 			optional_call:    false
 		) && !un_is_node_matches(t, t.node(node, .callee) or { continue }, unamta_ignored)
-			&& !un_is_node_value_not_function(t, arguments[0]) {
+			&& !un_is_node_value_not_function(t, arguments[0])
+			&& !c.un_should_skip_known_non_array_receiver(mut ctx, t.node(t.node(node, .callee) or {
+			continue
+		}, .object) or { continue }) {
 			findings << c.unamta_problem(t, tokens, node, arguments[0], arguments[1], 'error-prototype-method')!
 		}
 		// `Array.from()` and `Array.fromAsync()`
@@ -67,9 +71,27 @@ fn (mut c Checker) unamta_problem(t &estree.EsTree, tokens &SourceTokens, call i
 			'method': t.string_of(property, .name) or { '' }
 		}
 	}
-	remove := c.un_remove_argument(t, tokens, this_argument) or { return finding }
+	// removeThisArgument: none when a comment in the removed range would be lost.
+	removal := c.un_argument_removal_range(t, tokens, this_argument) or { return finding }
+	remove_fix := if un_would_remove_comments(tokens, removal.start, removal.end, []) {
+		?Fix(none)
+	} else {
+		c.un_remove_argument(t, tokens, this_argument)
+	}
 	if t.typ(callback) == .arrow_function_expression {
-		if un_has_side_effect(t, this_argument) {
+		// Removing it also removes its evaluation: only fixed when it is simple.
+		if t.typ(this_argument) in [.identifier, .literal, .this_expression]
+			|| un_static_string_value(t, this_argument) != none {
+			if remove := remove_fix {
+				return Finding{
+					...finding
+					has_fix: true
+					fix:     remove
+				}
+			}
+			return finding
+		}
+		if remove := remove_fix {
 			return Finding{
 				...finding
 				suggestions: [Suggestion{
@@ -78,12 +100,9 @@ fn (mut c Checker) unamta_problem(t &estree.EsTree, tokens &SourceTokens, call i
 				}]
 			}
 		}
-		return Finding{
-			...finding
-			has_fix: true
-			fix:     remove
-		}
+		return finding
 	}
+	remove := remove_fix or { return finding }
 	mut fixes := [remove]
 	parentheses := c.un_parentheses(t, tokens, callback)
 	last_end := if parentheses.len > 0 { parentheses.last().end } else { t.nodes[callback].end }

@@ -31,3 +31,16 @@ const z5 = BigInt?.(1);
 const z6 = BigInt(1, 2);
 const z7 = BigInt(1n);
 const z8 = BigInt(~1);
+
+// 79.0.0: template literals and leading zeros.
+BigInt(`1`);
+BigInt(`0`);
+BigInt(`0XFe`);
+BigInt('00001');
+BigInt('007');
+BigInt(-'00001');
+BigInt('08');
+BigInt('0x01');
+BigInt(' +00012 ');
+BigInt('-0005');
+BigInt(`${a}1`);

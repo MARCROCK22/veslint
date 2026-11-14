@@ -3,5 +3,8 @@ tests/rules/unicorn/prefer-type-error/cases.ts:10:13	unicorn/prefer-type-error	p
 tests/rules/unicorn/prefer-type-error/cases.ts:13:13	unicorn/prefer-type-error	prefer-type-error	`new Error()` is too unspecific for a type check. Use `new TypeError()` instead.	fix	395	395	Type	end	13	18
 tests/rules/unicorn/prefer-type-error/cases.ts:16:13	unicorn/prefer-type-error	prefer-type-error	`new Error()` is too unspecific for a type check. Use `new TypeError()` instead.	fix	461	461	Type	end	16	18
 tests/rules/unicorn/prefer-type-error/cases.ts:19:13	unicorn/prefer-type-error	prefer-type-error	`new Error()` is too unspecific for a type check. Use `new TypeError()` instead.	fix	516	516	Type	end	19	18
-tests/rules/unicorn/prefer-type-error/cases.ts:23:13	unicorn/prefer-type-error	prefer-type-error	`new Error()` is too unspecific for a type check. Use `new TypeError()` instead.	fix	582	582	Type	end	23	18
 tests/rules/unicorn/prefer-type-error/cases.ts:27:15	unicorn/prefer-type-error	prefer-type-error	`new Error()` is too unspecific for a type check. Use `new TypeError()` instead.	fix	681	681	Type	end	27	20
+tests/rules/unicorn/prefer-type-error/cases.ts:48:38	unicorn/prefer-type-error	prefer-type-error	`new Error()` is too unspecific for a type check. Use `new TypeError()` instead.	fix	1079	1079	Type	end	48	43
+tests/rules/unicorn/prefer-type-error/cases.ts:51:33	unicorn/prefer-type-error	prefer-type-error	`new Error()` is too unspecific for a type check. Use `new TypeError()` instead.	fix	1228	1228	Type	end	51	38
+tests/rules/unicorn/prefer-type-error/cases.ts:52:40	unicorn/prefer-type-error	prefer-type-error	`new Error()` is too unspecific for a type check. Use `new TypeError()` instead.	fix	1287	1287	Type	end	52	45
+tests/rules/unicorn/prefer-type-error/cases.ts:63:43	unicorn/prefer-type-error	prefer-type-error	`new Error()` is too unspecific for a type check. Use `new TypeError()` instead.	fix	1646	1646	Type	end	63	48
