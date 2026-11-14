@@ -174,7 +174,7 @@ fn test_rule_setup_order_of_errors() {
 	// ESLint checks the value of every rule before the options of any, and the options in the order
 	// of the configuration, whatever the order veslint has the rules in.
 	assert setup_error('{"@typescript-eslint/await-thenable": [2, 1], "@typescript-eslint/no-floating-promises": "fatal"}').starts_with('test.json: Configuration for rule "@typescript-eslint/no-floating-promises" is invalid. Expected severity')
-	assert setup_error('{"@typescript-eslint/await-thenable": [2, 1], "@typescript-eslint/no-floating-promises": [2, 1]}') == 'test.json: Key "rules": Key "@typescript-eslint/await-thenable":\n\tValue [1] should NOT have more than 0 items.\n'
+	assert setup_error('{"@typescript-eslint/await-thenable": [2, 1], "@typescript-eslint/no-floating-promises": [2, 1]}') == 'test.json: Key "rules": Key "@typescript-eslint/await-thenable":\n\tValue 1 should be object.\n'
 	// The name of a ported rule without its prefix is a rule of ESLint core: veslint does not
 	// validate its options.
 	assert setup_error('{"no-floating-promises": ["error", {"nope": 1}]}') == ''

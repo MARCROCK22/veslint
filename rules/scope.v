@@ -438,14 +438,24 @@ pub fn scope_lib_order(libs []string) []string {
 	return queue
 }
 
-// new_scope_libs defines the variables of the libs in order: the first lib that has a name
-// decides whether it is a type, a value or both (ScopeBase.defineVariable keeps the first).
+// new_scope_libs defines the variables of the libs in the order their names first appear; a name
+// is a type if any lib has it as a type and a value if any lib has it as a value
+// (populateGlobalsFromLib of typescript-eslint 8.72 merges the definitions of every lib).
 pub fn new_scope_libs(libs []string) &ScopeLibs {
 	mut variables := []ScopeVariable{}
 	mut set := map[string]int{}
 	for lib in scope_lib_order(libs) {
 		for entry in scope_lib_variables[lib].split(' ') {
-			if entry.len < 2 || entry[1..] in set {
+			if entry.len < 2 {
+				continue
+			}
+			if index := set[entry[1..]] {
+				previous := variables[index]
+				variables[index] = ScopeVariable{
+					...previous
+					lib_type:  previous.lib_type || entry[0] != `v`
+					lib_value: previous.lib_value || entry[0] != `t`
+				}
 				continue
 			}
 			set[entry[1..]] = variables.len
@@ -805,14 +815,8 @@ fn build_scope_tree_with(root C.TSNode, src string, tokens TokenEnds, setup Scop
 		jsx_pragma:        setup.jsx_pragma
 		jsx_fragment_name: setup.jsx_fragment_name
 	}
-	// Program: its range starts at the first token.
-	mut start := src.len
-	for child in children(root) {
-		if node_kind(child) !in ['comment', 'hash_bang_line', 'html_comment'] {
-			start = node_start(child)
-			break
-		}
-	}
+	// Program: its range starts at 0 (typescript-estree 8.72), whatever comes before its first token.
+	start := 0
 	b.tree.scopes << Scope{
 		kind:           .global
 		block:          root
