@@ -1,0 +1,14 @@
+tests/rules/unicorn/no-thenable/cases.ts:5:14	unicorn/no-thenable	no-thenable-object	Do not add `then` to an object.	end	5	18
+tests/rules/unicorn/no-thenable/cases.ts:6:18	unicorn/no-thenable	no-thenable-object	Do not add `then` to an object.	end	6	22
+tests/rules/unicorn/no-thenable/cases.ts:7:15	unicorn/no-thenable	no-thenable-object	Do not add `then` to an object.	end	7	18
+tests/rules/unicorn/no-thenable/cases.ts:8:14	unicorn/no-thenable	no-thenable-object	Do not add `then` to an object.	end	8	20
+tests/rules/unicorn/no-thenable/cases.ts:9:12	unicorn/no-thenable	no-thenable-class	Do not add `then` to a class.	end	9	16
+tests/rules/unicorn/no-thenable/cases.ts:10:19	unicorn/no-thenable	no-thenable-class	Do not add `then` to a class.	end	10	23
+tests/rules/unicorn/no-thenable/cases.ts:11:17	unicorn/no-thenable	no-thenable-class	Do not add `then` to a class.	end	11	20
+tests/rules/unicorn/no-thenable/cases.ts:12:5	unicorn/no-thenable	no-thenable-object	Do not add `then` to an object.	end	12	9
+tests/rules/unicorn/no-thenable/cases.ts:13:5	unicorn/no-thenable	no-thenable-object	Do not add `then` to an object.	end	13	8
+tests/rules/unicorn/no-thenable/cases.ts:14:28	unicorn/no-thenable	no-thenable-object	Do not add `then` to an object.	end	14	34
+tests/rules/unicorn/no-thenable/cases.ts:15:29	unicorn/no-thenable	no-thenable-object	Do not add `then` to an object.	end	15	32
+tests/rules/unicorn/no-thenable/cases.ts:16:33	unicorn/no-thenable	no-thenable-object	Do not add `then` to an object.	end	16	39
+tests/rules/unicorn/no-thenable/cases.ts:17:17	unicorn/no-thenable	no-thenable-export	Do not export `then`.	end	17	21
+tests/rules/unicorn/no-thenable/exports/cases.ts:1:14	unicorn/no-thenable	no-thenable-export	Do not export `then`.	end	1	26

@@ -351,6 +351,7 @@ pub const unicorn_prefer_spread = 'unicorn/prefer-spread'
 pub const unicorn_no_await_in_promise_methods = 'unicorn/no-await-in-promise-methods'
 pub const unicorn_no_invalid_fetch_options = 'unicorn/no-invalid-fetch-options'
 pub const unicorn_no_unnecessary_await = 'unicorn/no-unnecessary-await'
+pub const unicorn_no_thenable = 'unicorn/no-thenable'
 pub const names = [no_floating_promises, await_thenable, require_await, return_await,
 	no_misused_promises, no_unsafe_call, no_unsafe_member_access, no_unsafe_return,
 	no_unsafe_assignment, no_unsafe_argument, restrict_template_expressions,
@@ -442,7 +443,7 @@ pub const names = [no_floating_promises, await_thenable, require_await, return_a
 	unicorn_no_useless_spread, unicorn_prefer_single_call, unicorn_no_immediate_mutation,
 	unicorn_prefer_blob_reading_methods, unicorn_prefer_response_static_json,
 	unicorn_no_await_expression_member, unicorn_prefer_spread, unicorn_no_await_in_promise_methods,
-	unicorn_no_invalid_fetch_options, unicorn_no_unnecessary_await]
+	unicorn_no_invalid_fetch_options, unicorn_no_unnecessary_await, unicorn_no_thenable]
 
 // untyped_rules are the ported rules that need no types (`meta.docs.requiresTypeChecking` is false
 // in typescript-eslint; the eslint-plugin-unicorn rules that read the types when the parser has a
@@ -508,7 +509,7 @@ pub const untyped_rules = [adjacent_overload_signatures, array_type, class_liter
 	unicorn_no_useless_iterator_to_array, unicorn_no_immediate_mutation,
 	unicorn_prefer_blob_reading_methods, unicorn_prefer_response_static_json,
 	unicorn_no_await_expression_member, unicorn_no_await_in_promise_methods,
-	unicorn_no_invalid_fetch_options, unicorn_no_unnecessary_await]
+	unicorn_no_invalid_fetch_options, unicorn_no_unnecessary_await, unicorn_no_thenable]
 
 // needs_types tells whether a rule asks tsgo for the types of the program.
 pub fn needs_types(rule string) bool {
@@ -856,6 +857,7 @@ pub const default_options = {
 	unicorn_no_await_in_promise_methods:             '[]'
 	unicorn_no_invalid_fetch_options:                '[]'
 	unicorn_no_unnecessary_await:                    '[]'
+	unicorn_no_thenable:                             '[]'
 }
 
 // Finding is a problem a rule found at a node.
@@ -1327,6 +1329,7 @@ pub fn message(rule string, finding Finding) string {
 		unicorn_no_await_in_promise_methods { unaipm_messages }
 		unicorn_no_invalid_fetch_options { unifo_messages }
 		unicorn_no_unnecessary_await { unua_messages }
+		unicorn_no_thenable { unt_messages }
 		else { map[string]string{} }
 	}
 	return interpolate(messages[finding.message_id] or { finding.message_id }, finding.data)
@@ -2493,6 +2496,9 @@ fn (mut c Checker) lint_rule(rule string, root C.TSNode, abs_path string, mut st
 		}
 		unicorn_no_unnecessary_await {
 			return c.lint_unicorn_no_unnecessary_await(root, abs_path, mut stats)!
+		}
+		unicorn_no_thenable {
+			return c.lint_unicorn_no_thenable(root, abs_path, mut stats)!
 		}
 		else { return error('unknown rule: ${rule}') }
 	}

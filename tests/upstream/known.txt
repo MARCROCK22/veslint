@@ -1117,3 +1117,9 @@ veslint	no-unnecessary-await/r0/i38	without a program typescript-estree reads th
 veslint	no-unnecessary-await/r0/i4	without a program typescript-estree reads this top-level `await` of a script as an await expression
 veslint	no-unnecessary-await/r0/i5	without a program typescript-estree reads this top-level `await` of a script as an await expression
 veslint	no-unnecessary-await/r0/i6	without a program typescript-estree reads this top-level `await` of a script as an await expression
+# no-thenable: espree gives `export {then}` one Identifier as both `local` and `exported`, so its test expects the
+# problem twice (the Identifier is visited twice); typescript-estree makes two nodes and ESLint reports it once.
+eslint	no-thenable/i61	typescript-estree has two nodes for `then` in `export {then}`: reported once
+veslint	no-thenable/i61	typescript-estree has two nodes for `then` in `export {then}`: reported once
+eslint	no-thenable/i63	typescript-estree has two nodes for `then` in `export {then}`: reported once
+veslint	no-thenable/i63	typescript-estree has two nodes for `then` in `export {then}`: reported once
