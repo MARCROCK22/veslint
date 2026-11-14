@@ -1,7 +1,7 @@
 module estree
 
 // An ESTree view of a TypeScript file, identical to what @typescript-eslint/typescript-estree
-// 8.62.0 (the parser of typescript-eslint) produces for it, converted from veslint's tree-sitter
+// 8.72.2 (the parser of typescript-eslint) produces for it, converted from veslint's tree-sitter
 // tree. The nodes live in an arena (EsTree.nodes) and refer to each other by index; -1 is no node.
 
 // type_name is the ESTree name of the type (`Identifier`, `TSAsExpression`…).

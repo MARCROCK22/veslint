@@ -105,6 +105,8 @@ fn (mut c Converter) expr(n C.TSNode) int {
 			}
 			if callee.kind == 'import' {
 				i := c.mkn(.import_expression, n)
+				// `import.defer(…)` ('defer') is not in the grammar: always null.
+				c.pnull(i, .phase)
 				list := c.named(args.n)
 				if list.len > 1 {
 					c.pnode(i, .options, c.expr(list[1].n))

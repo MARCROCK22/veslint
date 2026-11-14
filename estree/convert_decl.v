@@ -286,6 +286,8 @@ fn (mut c Converter) import_decl(s C.TSNode, ctx Ctx) int {
 	c.plist(i, .attributes, c.import_attributes(kids))
 	// `import type X`: a `type` token between `import` and the clause.
 	c.pstr(i, .import_kind, if has_tok(kids, 'type') { 'type' } else { 'value' })
+	// `import defer` ('defer') is not in the grammar: always null.
+	c.pnull(i, .phase)
 	if src := field_of(kids, 'source') {
 		c.pnode(i, .source, c.literal(src.n))
 	}

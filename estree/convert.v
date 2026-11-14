@@ -443,8 +443,8 @@ fn (mut c Converter) program(root C.TSNode) int {
 			stmts << k.n
 		}
 	}
-	start := if stmts.len > 0 { c.start(stmts[0]) } else { c.src.len }
-	i := c.mk(.program, root, start, c.src.len)
+	// typescript-estree 8.72: the Program starts at 0, whatever comes before its first statement.
+	i := c.mk(.program, root, 0, c.src.len)
 	is_module := c.opts.module || c.is_module(root, stmts)
 	c.await_ctx = is_module
 	body := c.body(stmts, true)
