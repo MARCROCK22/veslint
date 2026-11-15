@@ -1,0 +1,1 @@
+[{"enforce": [{"blankLine": "always", "prev": "method", "next": "method"}, {"blankLine": "never", "prev": "method", "next": "field"}, {"blankLine": "always", "prev": "field", "next": "method"}]}, {"exceptAfterSingleLine": true}]

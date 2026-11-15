@@ -192,6 +192,7 @@ pub fn check_options(rule string, options []json2.Any) !bool {
 		stylistic_no_mixed_spaces_and_tabs { snmst_options(options)! }
 		stylistic_eol_last { seol_options(options)! }
 		stylistic_spaced_comment { sspc_options(options)! }
+		stylistic_lines_between_class_members { slbcm_options(options)! }
 		else { return false }
 	}
 	return true

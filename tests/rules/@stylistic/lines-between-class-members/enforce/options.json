@@ -1,0 +1,1 @@
+[{"enforce": [{"blankLine": "always", "prev": "*", "next": "*"}, {"blankLine": "never", "prev": "field", "next": "field"}]}]
