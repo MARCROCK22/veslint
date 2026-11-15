@@ -463,6 +463,7 @@ struct LoadedConfig {
 	// resolved the configuration and some part of it has reportUnusedInlineConfigs.
 	rule_defaults map[string]json2.Any
 	resolved      string // the resolved JSON, for --print-config
+	only_rule     string // the rule of --rule, the only one that runs
 }
 
 // named_projects are the tsconfig files `parserOptions.project` names in the configuration of a
@@ -501,6 +502,7 @@ fn (l &LoadedConfig) lint_config(index int) rules.LintConfig {
 		base_options:         entry.setup.base_options
 		off_problems:         entry.setup.off_problems
 		other_active:         entry.setup.ignored
+		only_rule:            l.only_rule
 		plugin_rules:         l.plugin_rules
 		strict_plugins:       l.strict_plugins
 		plugins:              entry.plugins
@@ -819,5 +821,49 @@ fn linter_severity(value json2.Any) int {
 		'0', '"off"', 'false' { 0 }
 		'2', '"error"' { 2 }
 		else { 1 }
+	}
+}
+
+// only_rule_config is `loaded` for `--rule rule`: of the rules of each configuration, that one
+// alone, with its severity and options there; on, with the options the configuration gives it
+// when it turns it off (or with its default ones), when the configuration does not run it.
+fn only_rule_config(loaded LoadedConfig, rule string) LoadedConfig {
+	mut configs := []ConfigEntry{cap: loaded.configs.len}
+	for entry in loaded.configs {
+		mut chosen := entry.setup.rules.filter(it.name == rule)
+		if chosen.len == 0 {
+			chosen = [
+				RuleConfig{
+					name:    rule
+					error:   true
+					options: entry.setup.base_options[rule] or { rules.decoded_default_options(rule) }
+				},
+			]
+		}
+		configs << ConfigEntry{
+			...entry
+			setup: RuleSetup{
+				rules:        chosen
+				base_options: entry.setup.base_options
+				off_problems: entry.setup.off_problems
+			}
+		}
+	}
+	if configs.len == 0 {
+		// Every file is one the configuration does not lint: their notes say so.
+		configs << ConfigEntry{
+			setup: RuleSetup{
+				rules: [RuleConfig{
+					name:    rule
+					error:   true
+					options: rules.decoded_default_options(rule)
+				}]
+			}
+		}
+	}
+	return LoadedConfig{
+		...loaded
+		configs:   configs
+		only_rule: rule
 	}
 }

@@ -45,7 +45,7 @@ src/index.ts:12:3	@typescript-eslint/no-floating-promises	floatingVoid	Promises 
 ## Command line
 
 ```
-veslint <file.ts | directory>... [--config <file>] [--rule <rule>] [--project <tsconfig.json>] [--fix] [--fixes | --summary]
+veslint <file.ts | directory>... [--config <file>] [--rule <rule> [--no-config-lookup]] [--project <tsconfig.json>] [--fix] [--fixes | --summary]
 ```
 
 | Option | What it does |
@@ -53,7 +53,8 @@ veslint <file.ts | directory>... [--config <file>] [--rule <rule>] [--project <t
 | `<directory>` | Lints the `.ts`, `.mts`, `.cts` and `.tsx` files under it, as `eslint .` does: `node_modules`, `.git` and what the configuration ignores are left out. |
 | `<file.ts>` | Lints that file. JavaScript files are not linted: veslint only reads TypeScript. |
 | `--config <file>` | The configuration (see below). Without it and without `--rule`, a directory is linted with the closest `eslint.config.*`. |
-| `--rule <rule>` | Lints with one rule and its default options, named as in ESLint: `no-var`, `@typescript-eslint/await-thenable`. |
+| `--rule <rule>` | Lints with one rule, named as in ESLint: `no-var`, `@typescript-eslint/await-thenable`. Its options, and the files it lints, are the ones the closest `eslint.config.*` gives it (on with its default options when the configuration has it off); without a configuration, its default options. Directive comments for other rules are left alone: they are never reported as unused, and `--fix` keeps them. |
+| `--no-config-lookup` | With `--rule`: the rule's default options, without looking for an `eslint.config.*`. |
 | `--project <tsconfig.json>` | The tsconfig to use. Without it, the one the configuration names in `parserOptions.project`, or the closest `tsconfig.json`. |
 | `--fix` | Applies the fixes and rewrites the files, like `eslint --fix`, and prints the problems that remain. |
 | `--fixes` | Prints each problem with its fix, its suggestions and where it ends. |

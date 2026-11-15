@@ -2,6 +2,11 @@
 
 Each version is a release on GitHub with the veslint binaries (Linux x64, Windows x64) and the VS Code extension. The section of a version is the text of its release.
 
+## 0.25.0
+
+- **`--rule` and the configuration:** `--rule <rule>` takes the rule's options from the closest `eslint.config.*` (and its languageOptions, settings and ignores), as the configuration lints the files; `--no-config-lookup` keeps the default options.
+- **`--rule` and directive comments:** an `eslint-disable` comment for another rule (or for every rule) is no longer reported as unused when only one rule runs, so `--fix --rule` no longer removes it.
+
 ## 0.24.1
 
 - **Code read as TypeScript reads it** (it was a syntax error, or read otherwise):

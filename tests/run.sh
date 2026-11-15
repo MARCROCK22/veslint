@@ -395,6 +395,41 @@ if command -v bun > /dev/null && [[ -d build/eval/spider-byte/node_modules/eslin
 		ko "a directory without --config, through bun (code $code)"
 		cat "$TMP/dir-bun.err"
 	fi
+	# --rule takes the options of the rule from the closest eslint.config.mjs (eqeqeq "smart" lets
+	# `== null` be), and only its own directive comments can be unused: --fix leaves the others.
+	mkdir -p "$TMP/rule-config"
+	cat > "$TMP/rule-config/eslint.config.mjs" <<-EOF
+		import tseslint from '$PWD/build/eval/spider-byte/node_modules/typescript-eslint/dist/index.js';
+		export default [{
+		  files: ['**/*.ts'],
+		  languageOptions: { parser: tseslint.parser },
+		  plugins: { '@typescript-eslint': tseslint.plugin },
+		  rules: { 'prefer-const': 'error', 'no-var': 'error', eqeqeq: ['error', 'smart'], '@typescript-eslint/no-explicit-any': 'error' },
+		}];
+	EOF
+	cat > "$TMP/rule-config/a.ts" <<-'EOF'
+		// eslint-disable-next-line @typescript-eslint/no-explicit-any
+		export const x: any = 1;
+		let y = 2; // eslint-disable-line prefer-const
+		var z = 3; // eslint-disable-line no-var
+		let w = 4;
+		export const q = y == null ? w : z;
+		export const r = y == 2;
+		export const k = 1; // eslint-disable-line no-var
+	EOF
+	cp "$TMP/rule-config/a.ts" "$TMP/rule-config/a.orig"
+	rule_config() { (cd "$TMP/rule-config" && VESLINT_ESLINT_DIR="$OLDPWD/build/eval/spider-byte" "$OLDPWD/veslint" "$@" 2>&1); }
+	if [[ "$(rule_config --rule eqeqeq a.ts)" == $'a.ts:7:20\teqeqeq\tunexpected\tExpected \'===\' and instead saw \'==\'.\n1 problems in 1 files' ]] &&
+		[[ "$(rule_config --rule eqeqeq --no-config-lookup a.ts | grep -c eqeqeq)" == 2 ]] &&
+		[[ "$(rule_config --rule no-var a.ts)" == *"a.ts:8:21"*"Unused eslint-disable directive (no problems were reported from 'no-var')."* ]] &&
+		[[ "$(rule_config --rule prefer-const --fix a.ts)" == '0 problems in 1 files; 1 files fixed' ]] &&
+		diff -u <(sed 's/^let w/const w/' "$TMP/rule-config/a.orig") "$TMP/rule-config/a.ts"; then
+		ok "--rule: the options of the closest eslint.config.mjs, and --fix keeps the directives of other rules"
+	else
+		ko "--rule with the closest eslint.config.mjs"
+		rule_config --rule eqeqeq a.ts
+		rule_config --rule no-var a.ts
+	fi
 fi
 code=0
 (cd tests/config && ../../veslint --config resolved.json --summary .) > "$TMP/summary.out" 2> "$TMP/summary.err" || code=$?

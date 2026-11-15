@@ -12,7 +12,7 @@ import tsgo
 // veslint: parses TypeScript with tree-sitter and asks tsgo (`tsc --api`) for the types.
 // Flow from PROMPT.md §4.
 
-const usage = 'usage: veslint <file.ts | directory>... [--project <tsconfig.json>] [--all-identifiers] [--bench] [--per-identifier] [--rule <rule> | --config <eslint.config.mjs | rules.json> [--print-config]] [--fix] [--fixes | --summary] | veslint --server | veslint --version'
+const usage = 'usage: veslint <file.ts | directory>... [--project <tsconfig.json>] [--all-identifiers] [--bench] [--per-identifier] [--rule <rule> [--no-config-lookup] | --config <eslint.config.mjs | rules.json> [--print-config]] [--fix] [--fixes | --summary] | veslint --server | veslint --version'
 const default_timeout_ms = 30000
 // ESLint's MAX_AUTOFIX_PASSES.
 const max_fix_passes = 10
@@ -29,6 +29,9 @@ mut:
 	print_config    bool         // --print-config: print the resolved configuration and exit
 	summary         bool         // --summary: a table of the rules that report problems, not a line per problem
 	server          bool         // --server: lint the requests of an editor until stdin ends (server.v)
+	// --no-config-lookup: --rule runs with the default options of the rule, not the ones of the
+	// closest ESLint configuration.
+	no_config_lookup bool
 	rules           []RuleConfig // the rules of --rule or of every configuration of --config
 	ignored         []string     // active rules from --config that veslint does not have
 	loaded          LoadedConfig // the configuration of each file (--rule: a single one)
@@ -188,6 +191,9 @@ fn parse_args(args []string) !Options {
 			'--server' {
 				opts.server = true
 			}
+			'--no-config-lookup' {
+				opts.no_config_lookup = true
+			}
 			'--rule' {
 				if i + 1 >= args.len {
 					return error('missing rule name after --rule')
@@ -277,7 +283,28 @@ fn parse_args(args []string) !Options {
 	if (rule != '' || config != '') && (opts.all_identifiers || opts.per_identifier) {
 		return error('--all-identifiers and --per-identifier belong to type mode; they cannot be combined with --rule or --config')
 	}
-	if rule != '' {
+	if opts.no_config_lookup && rule == '' {
+		return error('--no-config-lookup is for --rule')
+	}
+	// --rule with the closest ESLint configuration: the rule alone, with what the configuration
+	// says of it (options, languageOptions, settings, the files it lints).
+	rule_config := if rule != '' && !opts.no_config_lookup {
+		find_flat_config(if dirs.len > 0 { dirs[0] } else { os.dir(os.abs_path(opts.files[0])) }) or {
+			''
+		}
+	} else {
+		''
+	}
+	if rule_config != '' {
+		loaded := load_config_with(rule_config, opts.files, true) or {
+			return error('${err.msg()}\n(--rule takes the options of the rule from ${rule_config}; --no-config-lookup runs it with its default options)')
+		}
+		opts.loaded = only_rule_config(loaded, rule)
+		if from_dir.len > 0 {
+			drop_unlinted(mut opts, from_dir, dirs)!
+		}
+		opts.rules = [opts.loaded.configs[0].setup.rules[0]]
+	} else if rule != '' {
 		opts.rules = [RuleConfig{
 			name:    rule
 			error:   true
@@ -298,6 +325,7 @@ fn parse_args(args []string) !Options {
 				service_program_root: single_run_program_root(map[string]json2.Any{}, '')
 			}]
 			file_config: file_config
+			only_rule:   rule
 		}
 	}
 	if opts.print_config && config == '' {

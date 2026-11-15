@@ -1227,6 +1227,9 @@ pub:
 	// other_active are the ESLint ids of the active rules veslint does not have: whether a
 	// directive comment that names one of them is unused cannot be known.
 	other_active []string
+	// only_rule is the rule of `--rule`, the only one that runs: a directive comment for any other
+	// rule (or for every rule) may be used by a rule that does not run, so it is never unused.
+	only_rule string
 	// plugin_rules are the rule ids of the plugins of the configuration other than
 	// typescript-eslint, when the configuration was resolved by ESLint itself (strict_plugins);
 	// without that, a rule of another plugin is assumed to exist.

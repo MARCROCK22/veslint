@@ -848,7 +848,13 @@ fn (mut c Checker) apply_disable_directives(findings []Finding, inline InlineCon
 		for i, entry in entries {
 			if entry.disable {
 				// Whether a rule veslint does not run would have used it cannot be known.
-				unknown := if entry.has_rule { entry.rule in other_active } else { other }
+				unknown := if config.only_rule != '' {
+					!entry.has_rule || entry.rule != config.only_rule
+				} else if entry.has_rule {
+					entry.rule in other_active
+				} else {
+					other
+				}
 				if !used[i] && !unknown {
 					unused_disable << entry
 				}
