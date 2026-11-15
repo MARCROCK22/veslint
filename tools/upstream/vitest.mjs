@@ -1,7 +1,8 @@
 // Stands in for vitest while tools/gen_upstream_cases.mjs loads the test files of
 // typescript-eslint: a `describe` block runs, so that the RuleTester.run calls inside it are
 // recorded; the bodies of `it`/`test` (unit tests of helpers) do not run. `describe.for(table)`
-// runs its block once per item of the table, with the item.
+// runs its block once per item of the table, with the item; `each(table)` too, with the items of
+// a row that is a list as the arguments.
 //
 // While `globalThis.__veslintTests` is an array (the tests of @slipher/eslint-plugin that lint a
 // project on disk), `it`/`test` add their test to it, named with the `describe` blocks around it,
@@ -12,7 +13,9 @@ const chain = run =>
   new Proxy(run, {
     get: (target, key) =>
       key === 'each'
-        ? () => chain(run)
+        ? // A row of the table that is a list gives the arguments of the block, another row the
+          // only one (vitest's `each`).
+          table => chain((name, fn) => table.forEach(item => run(name, () => (Array.isArray(item) ? fn?.(...item) : fn?.(item)))))
         : key === 'for'
           ? table => chain((name, fn) => table.forEach(item => run(name, () => fn?.(item))))
           : key === 'skip' || key === 'todo'

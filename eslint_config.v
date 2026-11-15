@@ -146,6 +146,20 @@ for (const file of files) {
     parserOptions,
   };
   const slim = { rules: config.rules ?? {}, linterOptions: config.linterOptions ?? {}, languageOptions };
+  // The shared settings, which rules read (context.settings: eslint-plugin-perfectionist's
+  // `perfectionist`), when there are any; what JSON cannot write (a function) is left out.
+  if (config.settings && Object.keys(config.settings).length > 0) {
+    try {
+      slim.settings = JSON.parse(JSON.stringify(config.settings));
+    } catch {
+      slim.settings = {};
+      for (const [name, value] of Object.entries(config.settings)) {
+        try {
+          slim.settings[name] = JSON.parse(JSON.stringify(value) ?? 'null');
+        } catch {}
+      }
+    }
+  }
   const key = JSON.stringify(slim);
   if (!indexes.has(key)) {
     indexes.set(key, configs.length);
@@ -200,6 +214,8 @@ struct ConfigEntry {
 	// The tsconfig files `parserOptions.project` names (absolute paths), of which a file takes the
 	// first one that has it; empty for the closest tsconfig of each file.
 	projects []string
+	// The shared settings of the configuration (`settings`), which rules read.
+	settings map[string]json2.Any
 }
 
 // language_options reads the `languageOptions` of a configuration.
@@ -417,6 +433,15 @@ fn named_projects_of(config map[string]json2.Any, base string) []string {
 	return out
 }
 
+// config_settings reads the `settings` of a configuration: an object, or none.
+fn config_settings(config map[string]json2.Any) map[string]json2.Any {
+	settings := config['settings'] or { return map[string]json2.Any{} }
+	if settings is map[string]json2.Any {
+		return settings.as_map()
+	}
+	return map[string]json2.Any{}
+}
+
 // js_truthy: the value counts as true in JavaScript.
 fn js_truthy(value json2.Any) bool {
 	if value is json2.Null {
@@ -485,6 +510,7 @@ fn (l &LoadedConfig) lint_config(index int) rules.LintConfig {
 		rule_defaults:        l.rule_defaults
 		no_inline_config:     entry.no_inline_config
 		language:             entry.language
+		settings:             entry.settings
 		program_directory:    if entry.project_programs { os.getwd() } else { '' }
 	}
 }
@@ -560,6 +586,7 @@ fn load_config_with(path string, files []string, lookup bool) !LoadedConfig {
 					json2.Any(i64(0))
 				})
 				all_rules:            all_rules
+				settings:             config_settings(root.as_map())
 			},
 		]
 		file_config: file_config
@@ -636,6 +663,7 @@ fn loaded_from_resolved(text string, path string, base_dir string, files []strin
 				json2.Any(i64(0))
 			})
 			all_rules:            section
+			settings:             config_settings(config)
 		}
 	}
 	mut by_path := map[string]json2.Any{}

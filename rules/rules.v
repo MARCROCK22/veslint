@@ -1159,6 +1159,9 @@ pub:
 	no_inline_config     bool
 	// languageOptions: what decides the globals and the scopes of a file (see LanguageOptions).
 	language LanguageOptions
+	// settings are the shared settings of the configuration (ESLint's `settings`, which rules read
+	// as context.settings).
+	settings map[string]json2.Any
 pub mut:
 	// program_directory is the current directory of ESLint's program, which `from: "file"` type
 	// specifiers are relative to, when it is not the directory of the tsconfig (see specifiers.v).
@@ -1749,6 +1752,7 @@ pub fn (mut c Checker) lint_file(parser Parser, config LintConfig, src string, a
 	c.program_directory = config.program_directory
 	c.ecma_version = config.language.ecma_version
 	c.language = config.language
+	c.settings = config.settings
 	c.reset_file_types()
 	// Where TypeScript read an `await` as an identifier, the file is parsed again that way
 	// (rules/await_identifier.v).
@@ -3149,11 +3153,12 @@ mut:
 	file_metadata_cache map[string]tsgo.SourceFileMetadata // by tsgo path (file_metadata)
 	package_name_cache  map[string]string                  // package.json name of each package directory; '' if it gives no package id
 	package_root_cache  map[string]string                  // package.json name of each directory (resolvePackageIdName); '' if it has none
-	project_directory   string          // directory of the tsconfig (set_project_directory): what `from: "file"` specifiers are relative to
-	program_directory   string          // or this one, when the configuration of the file gives it (LintConfig.program_directory)
-	ecma_version        int             // the normalized languageOptions.ecmaVersion of the file being linted
-	language            LanguageOptions // the languageOptions of the file being linted
-	has_bom             bool            // the file being linted had a BOM, which its text does not have (set_has_bom)
+	project_directory   string               // directory of the tsconfig (set_project_directory): what `from: "file"` specifiers are relative to
+	program_directory   string               // or this one, when the configuration of the file gives it (LintConfig.program_directory)
+	ecma_version        int                  // the normalized languageOptions.ecmaVersion of the file being linted
+	language            LanguageOptions      // the languageOptions of the file being linted
+	settings            map[string]json2.Any // the shared settings of the file's configuration (context.settings)
+	has_bom             bool                 // the file being linted had a BOM, which its text does not have (set_has_bom)
 	base_types_cache    map[int][]TypeResponse
 	target_cache        map[int]TypeResponse
 	// The `seyfert/*` rules (seyfert.v): getSymbolAtLocation and getTypeAtLocation of each queried

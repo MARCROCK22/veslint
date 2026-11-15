@@ -170,6 +170,9 @@ class Runner:
         report = 0 if rule.startswith('unicorn/') else 1
         config = {'languageOptions': language, 'linterOptions': {'reportUnusedDisableDirectives': report},
                   'rules': {rule: ['error', *case.get('options', [])]}}
+        # The shared settings of the case (eslint-plugin-perfectionist's tests set `settings`).
+        if case.get('settings'):
+            config['settings'] = case['settings']
         text = json.dumps(config, sort_keys=True)
         path = os.path.join(self.configs, hashlib.sha1(text.encode()).hexdigest()[:16] + '.json')
         if not os.path.exists(path):

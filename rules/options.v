@@ -238,6 +238,12 @@ pub fn effective_options(name string, options []json2.Any) ![]json2.Any {
 		nc_options(written) or { return error('`${name}`: ${err.msg()}') }
 		return written
 	}
+	// The rules of eslint-plugin-perfectionist read their options as written (context.options: a
+	// list of option objects, one of which useConfigurationIf picks), over their own defaults.
+	if name.starts_with('perfectionist/') {
+		check_options(name, options) or { return error('`${name}`: ${err.msg()}') }
+		return options
+	}
 	mut merged := apply_default(defaults, options)
 	// ESLint merges the options of its core rules with deepMergeArrays, which keeps the options
 	// past the defaults (`curly`'s "consistent"); createRule of @stylistic keeps them too.
