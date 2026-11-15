@@ -186,6 +186,7 @@ pub fn check_options(rule string, options []json2.Any) !bool {
 		stylistic_multiline_ternary { smtn_options(options)! }
 		stylistic_nonblock_statement_body_position { snsbp_options(options)! }
 		stylistic_one_var_declaration_per_line { sovdpl_options(options)! }
+		stylistic_quotes { squo_options(options)! }
 		else { return false }
 	}
 	return true

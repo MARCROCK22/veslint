@@ -1,0 +1,375 @@
+tests/rules/@stylistic/quotes/backtick-avoid-escape-tsx/cases.tsx:1:54	@stylistic/quotes	wrongQuotes	Strings must use backtick.	fix	53	65	`expression`	end	1	66
+tests/rules/@stylistic/quotes/backtick-avoid-escape-tsx/cases.tsx:2:14	@stylistic/quotes	wrongQuotes	Strings must use backtick.	fix	123	133	`fragment`	end	2	24
+tests/rules/@stylistic/quotes/backtick-avoid-escape/cases.ts:6:11	@stylistic/quotes	wrongQuotes	Strings must use backtick.	fix	151	159	`single`	end	6	19
+tests/rules/@stylistic/quotes/backtick-avoid-escape/cases.ts:7:11	@stylistic/quotes	wrongQuotes	Strings must use backtick.	fix	171	179	`double`	end	7	19
+tests/rules/@stylistic/quotes/backtick-avoid-escape/cases.ts:9:11	@stylistic/quotes	wrongQuotes	Strings must use backtick.	fix	213	220	`it's`	end	9	18
+tests/rules/@stylistic/quotes/backtick-avoid-escape/cases.ts:10:11	@stylistic/quotes	wrongQuotes	Strings must use backtick.	fix	232	238	`it's`	end	10	17
+tests/rules/@stylistic/quotes/backtick-avoid-escape/cases.ts:11:11	@stylistic/quotes	wrongQuotes	Strings must use backtick.	fix	250	260	`say "hi"`	end	11	21
+tests/rules/@stylistic/quotes/backtick-avoid-escape/cases.ts:12:11	@stylistic/quotes	wrongQuotes	Strings must use backtick.	fix	272	284	`say "hi"`	end	12	23
+tests/rules/@stylistic/quotes/backtick-avoid-escape/cases.ts:16:11	@stylistic/quotes	wrongQuotes	Strings must use backtick.	fix	362	377	`both ' and "`	end	16	26
+tests/rules/@stylistic/quotes/backtick-avoid-escape/cases.ts:23:11	@stylistic/quotes	wrongQuotes	Strings must use backtick.	fix	489	506	`dollar \\${brace}`	end	23	28
+tests/rules/@stylistic/quotes/backtick-avoid-escape/cases.ts:24:11	@stylistic/quotes	wrongQuotes	Strings must use backtick.	fix	518	535	`dollar \\${brace}`	end	24	28
+tests/rules/@stylistic/quotes/backtick-avoid-escape/cases.ts:25:11	@stylistic/quotes	wrongQuotes	Strings must use backtick.	fix	547	558	`back\\`tick`	end	25	22
+tests/rules/@stylistic/quotes/backtick-avoid-escape/cases.ts:26:11	@stylistic/quotes	wrongQuotes	Strings must use backtick.	fix	570	591	`escaped \\` backtick`	end	26	32
+tests/rules/@stylistic/quotes/backtick-avoid-escape/cases.ts:27:11	@stylistic/quotes	wrongQuotes	Strings must use backtick.	fix	603	607	`\\\\`	end	27	15
+tests/rules/@stylistic/quotes/backtick-avoid-escape/cases.ts:28:11	@stylistic/quotes	wrongQuotes	Strings must use backtick.	fix	619	638	`tab\\tand\\nnewline`	end	28	30
+tests/rules/@stylistic/quotes/backtick-avoid-escape/cases.ts:29:11	@stylistic/quotes	wrongQuotes	Strings must use backtick.	fix	650	663	`unicode é é`	end	29	24
+tests/rules/@stylistic/quotes/backtick-avoid-escape/cases.ts:30:11	@stylistic/quotes	wrongQuotes	Strings must use backtick.	fix	675	677	``	end	30	13
+tests/rules/@stylistic/quotes/backtick-avoid-escape/cases.ts:31:11	@stylistic/quotes	wrongQuotes	Strings must use backtick.	fix	689	691	``	end	31	13
+tests/rules/@stylistic/quotes/backtick-avoid-escape/cases.ts:33:12	@stylistic/quotes	wrongQuotes	Strings must use backtick.	fix	718	726	`parens`	end	33	20
+tests/rules/@stylistic/quotes/backtick-avoid-escape/cases.ts:40:9	@stylistic/quotes	wrongQuotes	Strings must use backtick.	fix	825	828	`x`	end	40	12
+tests/rules/@stylistic/quotes/backtick-avoid-escape/cases.ts:46:3	@stylistic/quotes	wrongQuotes	Strings must use backtick.	fix	876	886	`computed`	end	46	13
+tests/rules/@stylistic/quotes/backtick-avoid-escape/cases.ts:60:16	@stylistic/quotes	wrongQuotes	Strings must use backtick.	fix	1245	1254	`literal`	end	60	25
+tests/rules/@stylistic/quotes/backtick-avoid-escape/cases.ts:68:13	@stylistic/quotes	wrongQuotes	Strings must use backtick.	fix	1400	1407	`value`	end	68	20
+tests/rules/@stylistic/quotes/backtick-avoid-escape/cases.ts:71:12	@stylistic/quotes	wrongQuotes	Strings must use backtick.	fix	1436	1442	`init`	end	71	18
+tests/rules/@stylistic/quotes/backtick-avoid-escape/cases.ts:75:3	@stylistic/quotes	wrongQuotes	Strings must use backtick.	fix	1502	1512	`computed`	end	75	13
+tests/rules/@stylistic/quotes/backtick-avoid-escape/cases.ts:81:36	@stylistic/quotes	wrongQuotes	Strings must use backtick.	fix	1655	1660	`str`	end	81	41
+tests/rules/@stylistic/quotes/backtick-avoid-escape/cases.ts:83:7	@stylistic/quotes	wrongQuotes	Strings must use backtick.	fix	1687	1690	`x`	end	83	10
+tests/rules/@stylistic/quotes/backtick-tsx/cases.tsx:1:54	@stylistic/quotes	wrongQuotes	Strings must use backtick.	fix	53	65	`expression`	end	1	66
+tests/rules/@stylistic/quotes/backtick-tsx/cases.tsx:2:14	@stylistic/quotes	wrongQuotes	Strings must use backtick.	fix	123	133	`fragment`	end	2	24
+tests/rules/@stylistic/quotes/backtick/cases.ts:6:11	@stylistic/quotes	wrongQuotes	Strings must use backtick.	fix	151	159	`single`	end	6	19
+tests/rules/@stylistic/quotes/backtick/cases.ts:7:11	@stylistic/quotes	wrongQuotes	Strings must use backtick.	fix	171	179	`double`	end	7	19
+tests/rules/@stylistic/quotes/backtick/cases.ts:9:11	@stylistic/quotes	wrongQuotes	Strings must use backtick.	fix	213	220	`it's`	end	9	18
+tests/rules/@stylistic/quotes/backtick/cases.ts:10:11	@stylistic/quotes	wrongQuotes	Strings must use backtick.	fix	232	238	`it's`	end	10	17
+tests/rules/@stylistic/quotes/backtick/cases.ts:11:11	@stylistic/quotes	wrongQuotes	Strings must use backtick.	fix	250	260	`say "hi"`	end	11	21
+tests/rules/@stylistic/quotes/backtick/cases.ts:12:11	@stylistic/quotes	wrongQuotes	Strings must use backtick.	fix	272	284	`say "hi"`	end	12	23
+tests/rules/@stylistic/quotes/backtick/cases.ts:16:11	@stylistic/quotes	wrongQuotes	Strings must use backtick.	fix	362	377	`both ' and "`	end	16	26
+tests/rules/@stylistic/quotes/backtick/cases.ts:23:11	@stylistic/quotes	wrongQuotes	Strings must use backtick.	fix	489	506	`dollar \\${brace}`	end	23	28
+tests/rules/@stylistic/quotes/backtick/cases.ts:24:11	@stylistic/quotes	wrongQuotes	Strings must use backtick.	fix	518	535	`dollar \\${brace}`	end	24	28
+tests/rules/@stylistic/quotes/backtick/cases.ts:25:11	@stylistic/quotes	wrongQuotes	Strings must use backtick.	fix	547	558	`back\\`tick`	end	25	22
+tests/rules/@stylistic/quotes/backtick/cases.ts:26:11	@stylistic/quotes	wrongQuotes	Strings must use backtick.	fix	570	591	`escaped \\` backtick`	end	26	32
+tests/rules/@stylistic/quotes/backtick/cases.ts:27:11	@stylistic/quotes	wrongQuotes	Strings must use backtick.	fix	603	607	`\\\\`	end	27	15
+tests/rules/@stylistic/quotes/backtick/cases.ts:28:11	@stylistic/quotes	wrongQuotes	Strings must use backtick.	fix	619	638	`tab\\tand\\nnewline`	end	28	30
+tests/rules/@stylistic/quotes/backtick/cases.ts:29:11	@stylistic/quotes	wrongQuotes	Strings must use backtick.	fix	650	663	`unicode é é`	end	29	24
+tests/rules/@stylistic/quotes/backtick/cases.ts:30:11	@stylistic/quotes	wrongQuotes	Strings must use backtick.	fix	675	677	``	end	30	13
+tests/rules/@stylistic/quotes/backtick/cases.ts:31:11	@stylistic/quotes	wrongQuotes	Strings must use backtick.	fix	689	691	``	end	31	13
+tests/rules/@stylistic/quotes/backtick/cases.ts:33:12	@stylistic/quotes	wrongQuotes	Strings must use backtick.	fix	718	726	`parens`	end	33	20
+tests/rules/@stylistic/quotes/backtick/cases.ts:40:9	@stylistic/quotes	wrongQuotes	Strings must use backtick.	fix	825	828	`x`	end	40	12
+tests/rules/@stylistic/quotes/backtick/cases.ts:46:3	@stylistic/quotes	wrongQuotes	Strings must use backtick.	fix	876	886	`computed`	end	46	13
+tests/rules/@stylistic/quotes/backtick/cases.ts:60:16	@stylistic/quotes	wrongQuotes	Strings must use backtick.	fix	1245	1254	`literal`	end	60	25
+tests/rules/@stylistic/quotes/backtick/cases.ts:68:13	@stylistic/quotes	wrongQuotes	Strings must use backtick.	fix	1400	1407	`value`	end	68	20
+tests/rules/@stylistic/quotes/backtick/cases.ts:71:12	@stylistic/quotes	wrongQuotes	Strings must use backtick.	fix	1436	1442	`init`	end	71	18
+tests/rules/@stylistic/quotes/backtick/cases.ts:75:3	@stylistic/quotes	wrongQuotes	Strings must use backtick.	fix	1502	1512	`computed`	end	75	13
+tests/rules/@stylistic/quotes/backtick/cases.ts:81:36	@stylistic/quotes	wrongQuotes	Strings must use backtick.	fix	1655	1660	`str`	end	81	41
+tests/rules/@stylistic/quotes/backtick/cases.ts:83:7	@stylistic/quotes	wrongQuotes	Strings must use backtick.	fix	1687	1690	`x`	end	83	10
+tests/rules/@stylistic/quotes/cases.ts:1:1	@stylistic/quotes	wrongQuotes	Strings must use doublequote.	fix	0	12	"use strict"	end	1	13
+tests/rules/@stylistic/quotes/cases.ts:6:11	@stylistic/quotes	wrongQuotes	Strings must use doublequote.	fix	151	159	"single"	end	6	19
+tests/rules/@stylistic/quotes/cases.ts:8:11	@stylistic/quotes	wrongQuotes	Strings must use doublequote.	fix	191	201	"backtick"	end	8	21
+tests/rules/@stylistic/quotes/cases.ts:9:11	@stylistic/quotes	wrongQuotes	Strings must use doublequote.	fix	213	220	"it's"	end	9	18
+tests/rules/@stylistic/quotes/cases.ts:11:11	@stylistic/quotes	wrongQuotes	Strings must use doublequote.	fix	250	260	"say \\"hi\\""	end	11	21
+tests/rules/@stylistic/quotes/cases.ts:13:11	@stylistic/quotes	wrongQuotes	Strings must use doublequote.	fix	296	302	"it's"	end	13	17
+tests/rules/@stylistic/quotes/cases.ts:14:11	@stylistic/quotes	wrongQuotes	Strings must use doublequote.	fix	314	324	"say \\"hi\\""	end	14	21
+tests/rules/@stylistic/quotes/cases.ts:15:11	@stylistic/quotes	wrongQuotes	Strings must use doublequote.	fix	336	350	"both ' and \\""	end	15	25
+tests/rules/@stylistic/quotes/cases.ts:16:11	@stylistic/quotes	wrongQuotes	Strings must use doublequote.	fix	362	377	"both ' and \\""	end	16	26
+tests/rules/@stylistic/quotes/cases.ts:21:11	@stylistic/quotes	wrongQuotes	Strings must use doublequote.	fix	458	477	"escaped \\\nnewline"	end	22	9
+tests/rules/@stylistic/quotes/cases.ts:23:11	@stylistic/quotes	wrongQuotes	Strings must use doublequote.	fix	489	506	"dollar ${brace}"	end	23	28
+tests/rules/@stylistic/quotes/cases.ts:25:11	@stylistic/quotes	wrongQuotes	Strings must use doublequote.	fix	547	558	"back`tick"	end	25	22
+tests/rules/@stylistic/quotes/cases.ts:26:11	@stylistic/quotes	wrongQuotes	Strings must use doublequote.	fix	570	591	"escaped \\` backtick"	end	26	32
+tests/rules/@stylistic/quotes/cases.ts:27:11	@stylistic/quotes	wrongQuotes	Strings must use doublequote.	fix	603	607	"\\\\"	end	27	15
+tests/rules/@stylistic/quotes/cases.ts:28:11	@stylistic/quotes	wrongQuotes	Strings must use doublequote.	fix	619	638	"tab\\tand\\nnewline"	end	28	30
+tests/rules/@stylistic/quotes/cases.ts:29:11	@stylistic/quotes	wrongQuotes	Strings must use doublequote.	fix	650	663	"unicode é é"	end	29	24
+tests/rules/@stylistic/quotes/cases.ts:30:11	@stylistic/quotes	wrongQuotes	Strings must use doublequote.	fix	675	677	""	end	30	13
+tests/rules/@stylistic/quotes/cases.ts:32:11	@stylistic/quotes	wrongQuotes	Strings must use doublequote.	fix	703	705	""	end	32	13
+tests/rules/@stylistic/quotes/cases.ts:33:12	@stylistic/quotes	wrongQuotes	Strings must use doublequote.	fix	718	726	"parens"	end	33	20
+tests/rules/@stylistic/quotes/cases.ts:34:2	@stylistic/quotes	wrongQuotes	Strings must use doublequote.	fix	730	741	"statement"	end	34	13
+tests/rules/@stylistic/quotes/cases.ts:35:1	@stylistic/quotes	wrongQuotes	Strings must use doublequote.	end	35	12
+tests/rules/@stylistic/quotes/cases.ts:38:2	@stylistic/quotes	wrongQuotes	Strings must use doublequote.	fix	783	795	"use strict"	end	38	14
+tests/rules/@stylistic/quotes/cases.ts:39:2	@stylistic/quotes	wrongQuotes	Strings must use doublequote.	end	39	19
+tests/rules/@stylistic/quotes/cases.ts:40:9	@stylistic/quotes	wrongQuotes	Strings must use doublequote.	fix	825	828	"x"	end	40	12
+tests/rules/@stylistic/quotes/cases.ts:44:2	@stylistic/quotes	wrongQuotes	Strings must use doublequote.	fix	851	856	"key"	end	44	7
+tests/rules/@stylistic/quotes/cases.ts:46:3	@stylistic/quotes	wrongQuotes	Strings must use doublequote.	fix	876	886	"computed"	end	46	13
+tests/rules/@stylistic/quotes/cases.ts:47:2	@stylistic/quotes	wrongQuotes	Strings must use doublequote.	fix	893	901	"method"	end	47	10
+tests/rules/@stylistic/quotes/cases.ts:50:16	@stylistic/quotes	wrongQuotes	Strings must use doublequote.	fix	927	936	"node:fs"	end	50	25
+tests/rules/@stylistic/quotes/cases.ts:51:10	@stylistic/quotes	wrongQuotes	Strings must use doublequote.	fix	947	960	"string name"	end	51	23
+tests/rules/@stylistic/quotes/cases.ts:51:40	@stylistic/quotes	wrongQuotes	Strings must use doublequote.	fix	977	984	"./mod"	end	51	47
+tests/rules/@stylistic/quotes/cases.ts:52:19	@stylistic/quotes	wrongQuotes	Strings must use doublequote.	fix	1004	1019	"exported name"	end	52	34
+tests/rules/@stylistic/quotes/cases.ts:53:13	@stylistic/quotes	wrongQuotes	Strings must use doublequote.	fix	1035	1046	"star name"	end	53	24
+tests/rules/@stylistic/quotes/cases.ts:53:30	@stylistic/quotes	wrongQuotes	Strings must use doublequote.	fix	1052	1059	"./mod"	end	53	37
+tests/rules/@stylistic/quotes/cases.ts:55:18	@stylistic/quotes	wrongQuotes	Strings must use doublequote.	fix	1101	1114	"./data.json"	end	55	31
+tests/rules/@stylistic/quotes/cases.ts:55:45	@stylistic/quotes	wrongQuotes	Strings must use doublequote.	fix	1128	1134	"json"	end	55	51
+tests/rules/@stylistic/quotes/cases.ts:57:22	@stylistic/quotes	wrongQuotes	Strings must use doublequote.	fix	1180	1185	"foo"	end	57	27
+tests/rules/@stylistic/quotes/cases.ts:59:24	@stylistic/quotes	wrongQuotes	Strings must use doublequote.	fix	1212	1221	"node:fs"	end	59	33
+tests/rules/@stylistic/quotes/cases.ts:60:16	@stylistic/quotes	wrongQuotes	Strings must use doublequote.	fix	1245	1254	"literal"	end	60	25
+tests/rules/@stylistic/quotes/cases.ts:61:21	@stylistic/quotes	wrongQuotes	Strings must use doublequote.	fix	1276	1286	"template"	end	61	31
+tests/rules/@stylistic/quotes/cases.ts:63:2	@stylistic/quotes	wrongQuotes	Strings must use doublequote.	fix	1307	1313	"prop"	end	63	8
+tests/rules/@stylistic/quotes/cases.ts:64:2	@stylistic/quotes	wrongQuotes	Strings must use doublequote.	fix	1324	1332	"method"	end	64	10
+tests/rules/@stylistic/quotes/cases.ts:66:16	@stylistic/quotes	wrongQuotes	Strings must use doublequote.	fix	1359	1372	"module-name"	end	66	29
+tests/rules/@stylistic/quotes/cases.ts:68:2	@stylistic/quotes	wrongQuotes	Strings must use doublequote.	fix	1389	1397	"member"	end	68	10
+tests/rules/@stylistic/quotes/cases.ts:68:13	@stylistic/quotes	wrongQuotes	Strings must use doublequote.	fix	1400	1407	"value"	end	68	20
+tests/rules/@stylistic/quotes/cases.ts:71:2	@stylistic/quotes	wrongQuotes	Strings must use doublequote.	fix	1426	1433	"field"	end	71	9
+tests/rules/@stylistic/quotes/cases.ts:71:12	@stylistic/quotes	wrongQuotes	Strings must use doublequote.	fix	1436	1442	"init"	end	71	18
+tests/rules/@stylistic/quotes/cases.ts:72:2	@stylistic/quotes	wrongQuotes	Strings must use doublequote.	fix	1445	1453	"method"	end	72	10
+tests/rules/@stylistic/quotes/cases.ts:73:11	@stylistic/quotes	wrongQuotes	Strings must use doublequote.	fix	1469	1474	"acc"	end	73	16
+tests/rules/@stylistic/quotes/cases.ts:74:9	@stylistic/quotes	wrongQuotes	Strings must use doublequote.	fix	1488	1494	"stat"	end	74	15
+tests/rules/@stylistic/quotes/cases.ts:75:3	@stylistic/quotes	wrongQuotes	Strings must use doublequote.	fix	1502	1512	"computed"	end	75	13
+tests/rules/@stylistic/quotes/cases.ts:78:11	@stylistic/quotes	wrongQuotes	Strings must use doublequote.	fix	1557	1572	"abstractField"	end	78	26
+tests/rules/@stylistic/quotes/cases.ts:79:11	@stylistic/quotes	wrongQuotes	Strings must use doublequote.	fix	1592	1608	"abstractMethod"	end	79	27
+tests/rules/@stylistic/quotes/cases.ts:81:25	@stylistic/quotes	wrongQuotes	Strings must use doublequote.	fix	1644	1651	"inner"	end	81	32
+tests/rules/@stylistic/quotes/cases.ts:81:36	@stylistic/quotes	wrongQuotes	Strings must use doublequote.	fix	1655	1660	"str"	end	81	41
+tests/rules/@stylistic/quotes/cases.ts:83:7	@stylistic/quotes	wrongQuotes	Strings must use doublequote.	fix	1687	1690	"x"	end	83	10
+tests/rules/@stylistic/quotes/double-avoid-escape-legacy-tsx/cases.tsx:1:54	@stylistic/quotes	wrongQuotes	Strings must use doublequote.	fix	53	65	"expression"	end	1	66
+tests/rules/@stylistic/quotes/double-avoid-escape-legacy-tsx/cases.tsx:1:76	@stylistic/quotes	wrongQuotes	Strings must use doublequote.	fix	75	80	"tpl"	end	1	81
+tests/rules/@stylistic/quotes/double-avoid-escape-legacy-tsx/cases.tsx:2:14	@stylistic/quotes	wrongQuotes	Strings must use doublequote.	fix	123	133	"fragment"	end	2	24
+tests/rules/@stylistic/quotes/double-avoid-escape-legacy/cases.ts:1:1	@stylistic/quotes	wrongQuotes	Strings must use doublequote.	fix	0	12	"use strict"	end	1	13
+tests/rules/@stylistic/quotes/double-avoid-escape-legacy/cases.ts:6:11	@stylistic/quotes	wrongQuotes	Strings must use doublequote.	fix	151	159	"single"	end	6	19
+tests/rules/@stylistic/quotes/double-avoid-escape-legacy/cases.ts:8:11	@stylistic/quotes	wrongQuotes	Strings must use doublequote.	fix	191	201	"backtick"	end	8	21
+tests/rules/@stylistic/quotes/double-avoid-escape-legacy/cases.ts:9:11	@stylistic/quotes	wrongQuotes	Strings must use doublequote.	fix	213	220	"it's"	end	9	18
+tests/rules/@stylistic/quotes/double-avoid-escape-legacy/cases.ts:13:11	@stylistic/quotes	wrongQuotes	Strings must use doublequote.	fix	296	302	"it's"	end	13	17
+tests/rules/@stylistic/quotes/double-avoid-escape-legacy/cases.ts:14:11	@stylistic/quotes	wrongQuotes	Strings must use doublequote.	fix	314	324	"say \\"hi\\""	end	14	21
+tests/rules/@stylistic/quotes/double-avoid-escape-legacy/cases.ts:15:11	@stylistic/quotes	wrongQuotes	Strings must use doublequote.	fix	336	350	"both ' and \\""	end	15	25
+tests/rules/@stylistic/quotes/double-avoid-escape-legacy/cases.ts:21:11	@stylistic/quotes	wrongQuotes	Strings must use doublequote.	fix	458	477	"escaped \\\nnewline"	end	22	9
+tests/rules/@stylistic/quotes/double-avoid-escape-legacy/cases.ts:23:11	@stylistic/quotes	wrongQuotes	Strings must use doublequote.	fix	489	506	"dollar ${brace}"	end	23	28
+tests/rules/@stylistic/quotes/double-avoid-escape-legacy/cases.ts:25:11	@stylistic/quotes	wrongQuotes	Strings must use doublequote.	fix	547	558	"back`tick"	end	25	22
+tests/rules/@stylistic/quotes/double-avoid-escape-legacy/cases.ts:26:11	@stylistic/quotes	wrongQuotes	Strings must use doublequote.	fix	570	591	"escaped \\` backtick"	end	26	32
+tests/rules/@stylistic/quotes/double-avoid-escape-legacy/cases.ts:27:11	@stylistic/quotes	wrongQuotes	Strings must use doublequote.	fix	603	607	"\\\\"	end	27	15
+tests/rules/@stylistic/quotes/double-avoid-escape-legacy/cases.ts:28:11	@stylistic/quotes	wrongQuotes	Strings must use doublequote.	fix	619	638	"tab\\tand\\nnewline"	end	28	30
+tests/rules/@stylistic/quotes/double-avoid-escape-legacy/cases.ts:29:11	@stylistic/quotes	wrongQuotes	Strings must use doublequote.	fix	650	663	"unicode é é"	end	29	24
+tests/rules/@stylistic/quotes/double-avoid-escape-legacy/cases.ts:30:11	@stylistic/quotes	wrongQuotes	Strings must use doublequote.	fix	675	677	""	end	30	13
+tests/rules/@stylistic/quotes/double-avoid-escape-legacy/cases.ts:32:11	@stylistic/quotes	wrongQuotes	Strings must use doublequote.	fix	703	705	""	end	32	13
+tests/rules/@stylistic/quotes/double-avoid-escape-legacy/cases.ts:33:12	@stylistic/quotes	wrongQuotes	Strings must use doublequote.	fix	718	726	"parens"	end	33	20
+tests/rules/@stylistic/quotes/double-avoid-escape-legacy/cases.ts:34:2	@stylistic/quotes	wrongQuotes	Strings must use doublequote.	fix	730	741	"statement"	end	34	13
+tests/rules/@stylistic/quotes/double-avoid-escape-legacy/cases.ts:35:1	@stylistic/quotes	wrongQuotes	Strings must use doublequote.	end	35	12
+tests/rules/@stylistic/quotes/double-avoid-escape-legacy/cases.ts:38:2	@stylistic/quotes	wrongQuotes	Strings must use doublequote.	fix	783	795	"use strict"	end	38	14
+tests/rules/@stylistic/quotes/double-avoid-escape-legacy/cases.ts:39:2	@stylistic/quotes	wrongQuotes	Strings must use doublequote.	end	39	19
+tests/rules/@stylistic/quotes/double-avoid-escape-legacy/cases.ts:40:9	@stylistic/quotes	wrongQuotes	Strings must use doublequote.	fix	825	828	"x"	end	40	12
+tests/rules/@stylistic/quotes/double-avoid-escape-legacy/cases.ts:44:2	@stylistic/quotes	wrongQuotes	Strings must use doublequote.	fix	851	856	"key"	end	44	7
+tests/rules/@stylistic/quotes/double-avoid-escape-legacy/cases.ts:46:3	@stylistic/quotes	wrongQuotes	Strings must use doublequote.	fix	876	886	"computed"	end	46	13
+tests/rules/@stylistic/quotes/double-avoid-escape-legacy/cases.ts:47:2	@stylistic/quotes	wrongQuotes	Strings must use doublequote.	fix	893	901	"method"	end	47	10
+tests/rules/@stylistic/quotes/double-avoid-escape-legacy/cases.ts:50:16	@stylistic/quotes	wrongQuotes	Strings must use doublequote.	fix	927	936	"node:fs"	end	50	25
+tests/rules/@stylistic/quotes/double-avoid-escape-legacy/cases.ts:51:10	@stylistic/quotes	wrongQuotes	Strings must use doublequote.	fix	947	960	"string name"	end	51	23
+tests/rules/@stylistic/quotes/double-avoid-escape-legacy/cases.ts:51:40	@stylistic/quotes	wrongQuotes	Strings must use doublequote.	fix	977	984	"./mod"	end	51	47
+tests/rules/@stylistic/quotes/double-avoid-escape-legacy/cases.ts:52:19	@stylistic/quotes	wrongQuotes	Strings must use doublequote.	fix	1004	1019	"exported name"	end	52	34
+tests/rules/@stylistic/quotes/double-avoid-escape-legacy/cases.ts:53:13	@stylistic/quotes	wrongQuotes	Strings must use doublequote.	fix	1035	1046	"star name"	end	53	24
+tests/rules/@stylistic/quotes/double-avoid-escape-legacy/cases.ts:53:30	@stylistic/quotes	wrongQuotes	Strings must use doublequote.	fix	1052	1059	"./mod"	end	53	37
+tests/rules/@stylistic/quotes/double-avoid-escape-legacy/cases.ts:55:18	@stylistic/quotes	wrongQuotes	Strings must use doublequote.	fix	1101	1114	"./data.json"	end	55	31
+tests/rules/@stylistic/quotes/double-avoid-escape-legacy/cases.ts:55:45	@stylistic/quotes	wrongQuotes	Strings must use doublequote.	fix	1128	1134	"json"	end	55	51
+tests/rules/@stylistic/quotes/double-avoid-escape-legacy/cases.ts:57:22	@stylistic/quotes	wrongQuotes	Strings must use doublequote.	fix	1180	1185	"foo"	end	57	27
+tests/rules/@stylistic/quotes/double-avoid-escape-legacy/cases.ts:59:24	@stylistic/quotes	wrongQuotes	Strings must use doublequote.	fix	1212	1221	"node:fs"	end	59	33
+tests/rules/@stylistic/quotes/double-avoid-escape-legacy/cases.ts:60:16	@stylistic/quotes	wrongQuotes	Strings must use doublequote.	fix	1245	1254	"literal"	end	60	25
+tests/rules/@stylistic/quotes/double-avoid-escape-legacy/cases.ts:61:21	@stylistic/quotes	wrongQuotes	Strings must use doublequote.	fix	1276	1286	"template"	end	61	31
+tests/rules/@stylistic/quotes/double-avoid-escape-legacy/cases.ts:63:2	@stylistic/quotes	wrongQuotes	Strings must use doublequote.	fix	1307	1313	"prop"	end	63	8
+tests/rules/@stylistic/quotes/double-avoid-escape-legacy/cases.ts:64:2	@stylistic/quotes	wrongQuotes	Strings must use doublequote.	fix	1324	1332	"method"	end	64	10
+tests/rules/@stylistic/quotes/double-avoid-escape-legacy/cases.ts:66:16	@stylistic/quotes	wrongQuotes	Strings must use doublequote.	fix	1359	1372	"module-name"	end	66	29
+tests/rules/@stylistic/quotes/double-avoid-escape-legacy/cases.ts:68:2	@stylistic/quotes	wrongQuotes	Strings must use doublequote.	fix	1389	1397	"member"	end	68	10
+tests/rules/@stylistic/quotes/double-avoid-escape-legacy/cases.ts:68:13	@stylistic/quotes	wrongQuotes	Strings must use doublequote.	fix	1400	1407	"value"	end	68	20
+tests/rules/@stylistic/quotes/double-avoid-escape-legacy/cases.ts:71:2	@stylistic/quotes	wrongQuotes	Strings must use doublequote.	fix	1426	1433	"field"	end	71	9
+tests/rules/@stylistic/quotes/double-avoid-escape-legacy/cases.ts:71:12	@stylistic/quotes	wrongQuotes	Strings must use doublequote.	fix	1436	1442	"init"	end	71	18
+tests/rules/@stylistic/quotes/double-avoid-escape-legacy/cases.ts:72:2	@stylistic/quotes	wrongQuotes	Strings must use doublequote.	fix	1445	1453	"method"	end	72	10
+tests/rules/@stylistic/quotes/double-avoid-escape-legacy/cases.ts:73:11	@stylistic/quotes	wrongQuotes	Strings must use doublequote.	fix	1469	1474	"acc"	end	73	16
+tests/rules/@stylistic/quotes/double-avoid-escape-legacy/cases.ts:74:9	@stylistic/quotes	wrongQuotes	Strings must use doublequote.	fix	1488	1494	"stat"	end	74	15
+tests/rules/@stylistic/quotes/double-avoid-escape-legacy/cases.ts:75:3	@stylistic/quotes	wrongQuotes	Strings must use doublequote.	fix	1502	1512	"computed"	end	75	13
+tests/rules/@stylistic/quotes/double-avoid-escape-legacy/cases.ts:78:11	@stylistic/quotes	wrongQuotes	Strings must use doublequote.	fix	1557	1572	"abstractField"	end	78	26
+tests/rules/@stylistic/quotes/double-avoid-escape-legacy/cases.ts:79:11	@stylistic/quotes	wrongQuotes	Strings must use doublequote.	fix	1592	1608	"abstractMethod"	end	79	27
+tests/rules/@stylistic/quotes/double-avoid-escape-legacy/cases.ts:81:25	@stylistic/quotes	wrongQuotes	Strings must use doublequote.	fix	1644	1651	"inner"	end	81	32
+tests/rules/@stylistic/quotes/double-avoid-escape-legacy/cases.ts:81:36	@stylistic/quotes	wrongQuotes	Strings must use doublequote.	fix	1655	1660	"str"	end	81	41
+tests/rules/@stylistic/quotes/double-avoid-escape-legacy/cases.ts:83:7	@stylistic/quotes	wrongQuotes	Strings must use doublequote.	fix	1687	1690	"x"	end	83	10
+tests/rules/@stylistic/quotes/double-templates-always-tsx/cases.tsx:1:54	@stylistic/quotes	wrongQuotes	Strings must use doublequote.	fix	53	65	"expression"	end	1	66
+tests/rules/@stylistic/quotes/double-templates-always-tsx/cases.tsx:2:14	@stylistic/quotes	wrongQuotes	Strings must use doublequote.	fix	123	133	"fragment"	end	2	24
+tests/rules/@stylistic/quotes/double-templates-always/cases.ts:1:1	@stylistic/quotes	wrongQuotes	Strings must use doublequote.	fix	0	12	"use strict"	end	1	13
+tests/rules/@stylistic/quotes/double-templates-always/cases.ts:6:11	@stylistic/quotes	wrongQuotes	Strings must use doublequote.	fix	151	159	"single"	end	6	19
+tests/rules/@stylistic/quotes/double-templates-always/cases.ts:9:11	@stylistic/quotes	wrongQuotes	Strings must use doublequote.	fix	213	220	"it's"	end	9	18
+tests/rules/@stylistic/quotes/double-templates-always/cases.ts:11:11	@stylistic/quotes	wrongQuotes	Strings must use doublequote.	fix	250	260	"say \\"hi\\""	end	11	21
+tests/rules/@stylistic/quotes/double-templates-always/cases.ts:16:11	@stylistic/quotes	wrongQuotes	Strings must use doublequote.	fix	362	377	"both ' and \\""	end	16	26
+tests/rules/@stylistic/quotes/double-templates-always/cases.ts:23:11	@stylistic/quotes	wrongQuotes	Strings must use doublequote.	fix	489	506	"dollar ${brace}"	end	23	28
+tests/rules/@stylistic/quotes/double-templates-always/cases.ts:25:11	@stylistic/quotes	wrongQuotes	Strings must use doublequote.	fix	547	558	"back`tick"	end	25	22
+tests/rules/@stylistic/quotes/double-templates-always/cases.ts:26:11	@stylistic/quotes	wrongQuotes	Strings must use doublequote.	fix	570	591	"escaped \\` backtick"	end	26	32
+tests/rules/@stylistic/quotes/double-templates-always/cases.ts:27:11	@stylistic/quotes	wrongQuotes	Strings must use doublequote.	fix	603	607	"\\\\"	end	27	15
+tests/rules/@stylistic/quotes/double-templates-always/cases.ts:28:11	@stylistic/quotes	wrongQuotes	Strings must use doublequote.	fix	619	638	"tab\\tand\\nnewline"	end	28	30
+tests/rules/@stylistic/quotes/double-templates-always/cases.ts:29:11	@stylistic/quotes	wrongQuotes	Strings must use doublequote.	fix	650	663	"unicode é é"	end	29	24
+tests/rules/@stylistic/quotes/double-templates-always/cases.ts:30:11	@stylistic/quotes	wrongQuotes	Strings must use doublequote.	fix	675	677	""	end	30	13
+tests/rules/@stylistic/quotes/double-templates-always/cases.ts:33:12	@stylistic/quotes	wrongQuotes	Strings must use doublequote.	fix	718	726	"parens"	end	33	20
+tests/rules/@stylistic/quotes/double-templates-always/cases.ts:38:2	@stylistic/quotes	wrongQuotes	Strings must use doublequote.	fix	783	795	"use strict"	end	38	14
+tests/rules/@stylistic/quotes/double-templates-always/cases.ts:40:9	@stylistic/quotes	wrongQuotes	Strings must use doublequote.	fix	825	828	"x"	end	40	12
+tests/rules/@stylistic/quotes/double-templates-always/cases.ts:44:2	@stylistic/quotes	wrongQuotes	Strings must use doublequote.	fix	851	856	"key"	end	44	7
+tests/rules/@stylistic/quotes/double-templates-always/cases.ts:46:3	@stylistic/quotes	wrongQuotes	Strings must use doublequote.	fix	876	886	"computed"	end	46	13
+tests/rules/@stylistic/quotes/double-templates-always/cases.ts:47:2	@stylistic/quotes	wrongQuotes	Strings must use doublequote.	fix	893	901	"method"	end	47	10
+tests/rules/@stylistic/quotes/double-templates-always/cases.ts:50:16	@stylistic/quotes	wrongQuotes	Strings must use doublequote.	fix	927	936	"node:fs"	end	50	25
+tests/rules/@stylistic/quotes/double-templates-always/cases.ts:51:10	@stylistic/quotes	wrongQuotes	Strings must use doublequote.	fix	947	960	"string name"	end	51	23
+tests/rules/@stylistic/quotes/double-templates-always/cases.ts:51:40	@stylistic/quotes	wrongQuotes	Strings must use doublequote.	fix	977	984	"./mod"	end	51	47
+tests/rules/@stylistic/quotes/double-templates-always/cases.ts:52:19	@stylistic/quotes	wrongQuotes	Strings must use doublequote.	fix	1004	1019	"exported name"	end	52	34
+tests/rules/@stylistic/quotes/double-templates-always/cases.ts:53:13	@stylistic/quotes	wrongQuotes	Strings must use doublequote.	fix	1035	1046	"star name"	end	53	24
+tests/rules/@stylistic/quotes/double-templates-always/cases.ts:53:30	@stylistic/quotes	wrongQuotes	Strings must use doublequote.	fix	1052	1059	"./mod"	end	53	37
+tests/rules/@stylistic/quotes/double-templates-always/cases.ts:55:18	@stylistic/quotes	wrongQuotes	Strings must use doublequote.	fix	1101	1114	"./data.json"	end	55	31
+tests/rules/@stylistic/quotes/double-templates-always/cases.ts:55:45	@stylistic/quotes	wrongQuotes	Strings must use doublequote.	fix	1128	1134	"json"	end	55	51
+tests/rules/@stylistic/quotes/double-templates-always/cases.ts:57:22	@stylistic/quotes	wrongQuotes	Strings must use doublequote.	fix	1180	1185	"foo"	end	57	27
+tests/rules/@stylistic/quotes/double-templates-always/cases.ts:59:24	@stylistic/quotes	wrongQuotes	Strings must use doublequote.	fix	1212	1221	"node:fs"	end	59	33
+tests/rules/@stylistic/quotes/double-templates-always/cases.ts:60:16	@stylistic/quotes	wrongQuotes	Strings must use doublequote.	fix	1245	1254	"literal"	end	60	25
+tests/rules/@stylistic/quotes/double-templates-always/cases.ts:63:2	@stylistic/quotes	wrongQuotes	Strings must use doublequote.	fix	1307	1313	"prop"	end	63	8
+tests/rules/@stylistic/quotes/double-templates-always/cases.ts:64:2	@stylistic/quotes	wrongQuotes	Strings must use doublequote.	fix	1324	1332	"method"	end	64	10
+tests/rules/@stylistic/quotes/double-templates-always/cases.ts:66:16	@stylistic/quotes	wrongQuotes	Strings must use doublequote.	fix	1359	1372	"module-name"	end	66	29
+tests/rules/@stylistic/quotes/double-templates-always/cases.ts:68:2	@stylistic/quotes	wrongQuotes	Strings must use doublequote.	fix	1389	1397	"member"	end	68	10
+tests/rules/@stylistic/quotes/double-templates-always/cases.ts:68:13	@stylistic/quotes	wrongQuotes	Strings must use doublequote.	fix	1400	1407	"value"	end	68	20
+tests/rules/@stylistic/quotes/double-templates-always/cases.ts:71:2	@stylistic/quotes	wrongQuotes	Strings must use doublequote.	fix	1426	1433	"field"	end	71	9
+tests/rules/@stylistic/quotes/double-templates-always/cases.ts:71:12	@stylistic/quotes	wrongQuotes	Strings must use doublequote.	fix	1436	1442	"init"	end	71	18
+tests/rules/@stylistic/quotes/double-templates-always/cases.ts:72:2	@stylistic/quotes	wrongQuotes	Strings must use doublequote.	fix	1445	1453	"method"	end	72	10
+tests/rules/@stylistic/quotes/double-templates-always/cases.ts:73:11	@stylistic/quotes	wrongQuotes	Strings must use doublequote.	fix	1469	1474	"acc"	end	73	16
+tests/rules/@stylistic/quotes/double-templates-always/cases.ts:74:9	@stylistic/quotes	wrongQuotes	Strings must use doublequote.	fix	1488	1494	"stat"	end	74	15
+tests/rules/@stylistic/quotes/double-templates-always/cases.ts:75:3	@stylistic/quotes	wrongQuotes	Strings must use doublequote.	fix	1502	1512	"computed"	end	75	13
+tests/rules/@stylistic/quotes/double-templates-always/cases.ts:78:11	@stylistic/quotes	wrongQuotes	Strings must use doublequote.	fix	1557	1572	"abstractField"	end	78	26
+tests/rules/@stylistic/quotes/double-templates-always/cases.ts:79:11	@stylistic/quotes	wrongQuotes	Strings must use doublequote.	fix	1592	1608	"abstractMethod"	end	79	27
+tests/rules/@stylistic/quotes/double-templates-always/cases.ts:81:36	@stylistic/quotes	wrongQuotes	Strings must use doublequote.	fix	1655	1660	"str"	end	81	41
+tests/rules/@stylistic/quotes/double-templates-always/cases.ts:83:7	@stylistic/quotes	wrongQuotes	Strings must use doublequote.	fix	1687	1690	"x"	end	83	10
+tests/rules/@stylistic/quotes/double-templates-avoid-escape-only-tsx/cases.tsx:1:54	@stylistic/quotes	wrongQuotes	Strings must use doublequote.	fix	53	65	"expression"	end	1	66
+tests/rules/@stylistic/quotes/double-templates-avoid-escape-only-tsx/cases.tsx:1:76	@stylistic/quotes	wrongQuotes	Strings must use doublequote.	fix	75	80	"tpl"	end	1	81
+tests/rules/@stylistic/quotes/double-templates-avoid-escape-only-tsx/cases.tsx:2:14	@stylistic/quotes	wrongQuotes	Strings must use doublequote.	fix	123	133	"fragment"	end	2	24
+tests/rules/@stylistic/quotes/double-templates-avoid-escape-only/cases.ts:1:1	@stylistic/quotes	wrongQuotes	Strings must use doublequote.	fix	0	12	"use strict"	end	1	13
+tests/rules/@stylistic/quotes/double-templates-avoid-escape-only/cases.ts:6:11	@stylistic/quotes	wrongQuotes	Strings must use doublequote.	fix	151	159	"single"	end	6	19
+tests/rules/@stylistic/quotes/double-templates-avoid-escape-only/cases.ts:8:11	@stylistic/quotes	wrongQuotes	Strings must use doublequote.	fix	191	201	"backtick"	end	8	21
+tests/rules/@stylistic/quotes/double-templates-avoid-escape-only/cases.ts:9:11	@stylistic/quotes	wrongQuotes	Strings must use doublequote.	fix	213	220	"it's"	end	9	18
+tests/rules/@stylistic/quotes/double-templates-avoid-escape-only/cases.ts:11:11	@stylistic/quotes	wrongQuotes	Strings must use doublequote.	fix	250	260	"say \\"hi\\""	end	11	21
+tests/rules/@stylistic/quotes/double-templates-avoid-escape-only/cases.ts:13:11	@stylistic/quotes	wrongQuotes	Strings must use doublequote.	fix	296	302	"it's"	end	13	17
+tests/rules/@stylistic/quotes/double-templates-avoid-escape-only/cases.ts:14:11	@stylistic/quotes	wrongQuotes	Strings must use doublequote.	fix	314	324	"say \\"hi\\""	end	14	21
+tests/rules/@stylistic/quotes/double-templates-avoid-escape-only/cases.ts:15:11	@stylistic/quotes	wrongQuotes	Strings must use doublequote.	fix	336	350	"both ' and \\""	end	15	25
+tests/rules/@stylistic/quotes/double-templates-avoid-escape-only/cases.ts:16:11	@stylistic/quotes	wrongQuotes	Strings must use doublequote.	fix	362	377	"both ' and \\""	end	16	26
+tests/rules/@stylistic/quotes/double-templates-avoid-escape-only/cases.ts:21:11	@stylistic/quotes	wrongQuotes	Strings must use doublequote.	fix	458	477	"escaped \\\nnewline"	end	22	9
+tests/rules/@stylistic/quotes/double-templates-avoid-escape-only/cases.ts:23:11	@stylistic/quotes	wrongQuotes	Strings must use doublequote.	fix	489	506	"dollar ${brace}"	end	23	28
+tests/rules/@stylistic/quotes/double-templates-avoid-escape-only/cases.ts:25:11	@stylistic/quotes	wrongQuotes	Strings must use doublequote.	fix	547	558	"back`tick"	end	25	22
+tests/rules/@stylistic/quotes/double-templates-avoid-escape-only/cases.ts:26:11	@stylistic/quotes	wrongQuotes	Strings must use doublequote.	fix	570	591	"escaped \\` backtick"	end	26	32
+tests/rules/@stylistic/quotes/double-templates-avoid-escape-only/cases.ts:27:11	@stylistic/quotes	wrongQuotes	Strings must use doublequote.	fix	603	607	"\\\\"	end	27	15
+tests/rules/@stylistic/quotes/double-templates-avoid-escape-only/cases.ts:28:11	@stylistic/quotes	wrongQuotes	Strings must use doublequote.	fix	619	638	"tab\\tand\\nnewline"	end	28	30
+tests/rules/@stylistic/quotes/double-templates-avoid-escape-only/cases.ts:29:11	@stylistic/quotes	wrongQuotes	Strings must use doublequote.	fix	650	663	"unicode é é"	end	29	24
+tests/rules/@stylistic/quotes/double-templates-avoid-escape-only/cases.ts:30:11	@stylistic/quotes	wrongQuotes	Strings must use doublequote.	fix	675	677	""	end	30	13
+tests/rules/@stylistic/quotes/double-templates-avoid-escape-only/cases.ts:32:11	@stylistic/quotes	wrongQuotes	Strings must use doublequote.	fix	703	705	""	end	32	13
+tests/rules/@stylistic/quotes/double-templates-avoid-escape-only/cases.ts:33:12	@stylistic/quotes	wrongQuotes	Strings must use doublequote.	fix	718	726	"parens"	end	33	20
+tests/rules/@stylistic/quotes/double-templates-avoid-escape-only/cases.ts:34:2	@stylistic/quotes	wrongQuotes	Strings must use doublequote.	fix	730	741	"statement"	end	34	13
+tests/rules/@stylistic/quotes/double-templates-avoid-escape-only/cases.ts:35:1	@stylistic/quotes	wrongQuotes	Strings must use doublequote.	end	35	12
+tests/rules/@stylistic/quotes/double-templates-avoid-escape-only/cases.ts:38:2	@stylistic/quotes	wrongQuotes	Strings must use doublequote.	fix	783	795	"use strict"	end	38	14
+tests/rules/@stylistic/quotes/double-templates-avoid-escape-only/cases.ts:39:2	@stylistic/quotes	wrongQuotes	Strings must use doublequote.	end	39	19
+tests/rules/@stylistic/quotes/double-templates-avoid-escape-only/cases.ts:40:9	@stylistic/quotes	wrongQuotes	Strings must use doublequote.	fix	825	828	"x"	end	40	12
+tests/rules/@stylistic/quotes/double-templates-avoid-escape-only/cases.ts:44:2	@stylistic/quotes	wrongQuotes	Strings must use doublequote.	fix	851	856	"key"	end	44	7
+tests/rules/@stylistic/quotes/double-templates-avoid-escape-only/cases.ts:46:3	@stylistic/quotes	wrongQuotes	Strings must use doublequote.	fix	876	886	"computed"	end	46	13
+tests/rules/@stylistic/quotes/double-templates-avoid-escape-only/cases.ts:47:2	@stylistic/quotes	wrongQuotes	Strings must use doublequote.	fix	893	901	"method"	end	47	10
+tests/rules/@stylistic/quotes/double-templates-avoid-escape-only/cases.ts:50:16	@stylistic/quotes	wrongQuotes	Strings must use doublequote.	fix	927	936	"node:fs"	end	50	25
+tests/rules/@stylistic/quotes/double-templates-avoid-escape-only/cases.ts:51:10	@stylistic/quotes	wrongQuotes	Strings must use doublequote.	fix	947	960	"string name"	end	51	23
+tests/rules/@stylistic/quotes/double-templates-avoid-escape-only/cases.ts:51:40	@stylistic/quotes	wrongQuotes	Strings must use doublequote.	fix	977	984	"./mod"	end	51	47
+tests/rules/@stylistic/quotes/double-templates-avoid-escape-only/cases.ts:52:19	@stylistic/quotes	wrongQuotes	Strings must use doublequote.	fix	1004	1019	"exported name"	end	52	34
+tests/rules/@stylistic/quotes/double-templates-avoid-escape-only/cases.ts:53:13	@stylistic/quotes	wrongQuotes	Strings must use doublequote.	fix	1035	1046	"star name"	end	53	24
+tests/rules/@stylistic/quotes/double-templates-avoid-escape-only/cases.ts:53:30	@stylistic/quotes	wrongQuotes	Strings must use doublequote.	fix	1052	1059	"./mod"	end	53	37
+tests/rules/@stylistic/quotes/double-templates-avoid-escape-only/cases.ts:55:18	@stylistic/quotes	wrongQuotes	Strings must use doublequote.	fix	1101	1114	"./data.json"	end	55	31
+tests/rules/@stylistic/quotes/double-templates-avoid-escape-only/cases.ts:55:45	@stylistic/quotes	wrongQuotes	Strings must use doublequote.	fix	1128	1134	"json"	end	55	51
+tests/rules/@stylistic/quotes/double-templates-avoid-escape-only/cases.ts:57:22	@stylistic/quotes	wrongQuotes	Strings must use doublequote.	fix	1180	1185	"foo"	end	57	27
+tests/rules/@stylistic/quotes/double-templates-avoid-escape-only/cases.ts:59:24	@stylistic/quotes	wrongQuotes	Strings must use doublequote.	fix	1212	1221	"node:fs"	end	59	33
+tests/rules/@stylistic/quotes/double-templates-avoid-escape-only/cases.ts:60:16	@stylistic/quotes	wrongQuotes	Strings must use doublequote.	fix	1245	1254	"literal"	end	60	25
+tests/rules/@stylistic/quotes/double-templates-avoid-escape-only/cases.ts:61:21	@stylistic/quotes	wrongQuotes	Strings must use doublequote.	fix	1276	1286	"template"	end	61	31
+tests/rules/@stylistic/quotes/double-templates-avoid-escape-only/cases.ts:63:2	@stylistic/quotes	wrongQuotes	Strings must use doublequote.	fix	1307	1313	"prop"	end	63	8
+tests/rules/@stylistic/quotes/double-templates-avoid-escape-only/cases.ts:64:2	@stylistic/quotes	wrongQuotes	Strings must use doublequote.	fix	1324	1332	"method"	end	64	10
+tests/rules/@stylistic/quotes/double-templates-avoid-escape-only/cases.ts:66:16	@stylistic/quotes	wrongQuotes	Strings must use doublequote.	fix	1359	1372	"module-name"	end	66	29
+tests/rules/@stylistic/quotes/double-templates-avoid-escape-only/cases.ts:68:2	@stylistic/quotes	wrongQuotes	Strings must use doublequote.	fix	1389	1397	"member"	end	68	10
+tests/rules/@stylistic/quotes/double-templates-avoid-escape-only/cases.ts:68:13	@stylistic/quotes	wrongQuotes	Strings must use doublequote.	fix	1400	1407	"value"	end	68	20
+tests/rules/@stylistic/quotes/double-templates-avoid-escape-only/cases.ts:71:2	@stylistic/quotes	wrongQuotes	Strings must use doublequote.	fix	1426	1433	"field"	end	71	9
+tests/rules/@stylistic/quotes/double-templates-avoid-escape-only/cases.ts:71:12	@stylistic/quotes	wrongQuotes	Strings must use doublequote.	fix	1436	1442	"init"	end	71	18
+tests/rules/@stylistic/quotes/double-templates-avoid-escape-only/cases.ts:72:2	@stylistic/quotes	wrongQuotes	Strings must use doublequote.	fix	1445	1453	"method"	end	72	10
+tests/rules/@stylistic/quotes/double-templates-avoid-escape-only/cases.ts:73:11	@stylistic/quotes	wrongQuotes	Strings must use doublequote.	fix	1469	1474	"acc"	end	73	16
+tests/rules/@stylistic/quotes/double-templates-avoid-escape-only/cases.ts:74:9	@stylistic/quotes	wrongQuotes	Strings must use doublequote.	fix	1488	1494	"stat"	end	74	15
+tests/rules/@stylistic/quotes/double-templates-avoid-escape-only/cases.ts:75:3	@stylistic/quotes	wrongQuotes	Strings must use doublequote.	fix	1502	1512	"computed"	end	75	13
+tests/rules/@stylistic/quotes/double-templates-avoid-escape-only/cases.ts:78:11	@stylistic/quotes	wrongQuotes	Strings must use doublequote.	fix	1557	1572	"abstractField"	end	78	26
+tests/rules/@stylistic/quotes/double-templates-avoid-escape-only/cases.ts:79:11	@stylistic/quotes	wrongQuotes	Strings must use doublequote.	fix	1592	1608	"abstractMethod"	end	79	27
+tests/rules/@stylistic/quotes/double-templates-avoid-escape-only/cases.ts:81:25	@stylistic/quotes	wrongQuotes	Strings must use doublequote.	fix	1644	1651	"inner"	end	81	32
+tests/rules/@stylistic/quotes/double-templates-avoid-escape-only/cases.ts:81:36	@stylistic/quotes	wrongQuotes	Strings must use doublequote.	fix	1655	1660	"str"	end	81	41
+tests/rules/@stylistic/quotes/double-templates-avoid-escape-only/cases.ts:83:7	@stylistic/quotes	wrongQuotes	Strings must use doublequote.	fix	1687	1690	"x"	end	83	10
+tests/rules/@stylistic/quotes/ignore-string-literals-tsx/cases.tsx:1:76	@stylistic/quotes	wrongQuotes	Strings must use singlequote.	fix	75	80	'tpl'	end	1	81
+tests/rules/@stylistic/quotes/ignore-string-literals/cases.ts:8:11	@stylistic/quotes	wrongQuotes	Strings must use singlequote.	fix	191	201	'backtick'	end	8	21
+tests/rules/@stylistic/quotes/ignore-string-literals/cases.ts:13:11	@stylistic/quotes	wrongQuotes	Strings must use singlequote.	fix	296	302	'it\\'s'	end	13	17
+tests/rules/@stylistic/quotes/ignore-string-literals/cases.ts:14:11	@stylistic/quotes	wrongQuotes	Strings must use singlequote.	fix	314	324	'say "hi"'	end	14	21
+tests/rules/@stylistic/quotes/ignore-string-literals/cases.ts:15:11	@stylistic/quotes	wrongQuotes	Strings must use singlequote.	fix	336	350	'both \\' and "'	end	15	25
+tests/rules/@stylistic/quotes/ignore-string-literals/cases.ts:21:11	@stylistic/quotes	wrongQuotes	Strings must use singlequote.	fix	458	477	'escaped \\\nnewline'	end	22	9
+tests/rules/@stylistic/quotes/ignore-string-literals/cases.ts:32:11	@stylistic/quotes	wrongQuotes	Strings must use singlequote.	fix	703	705	''	end	32	13
+tests/rules/@stylistic/quotes/ignore-string-literals/cases.ts:34:2	@stylistic/quotes	wrongQuotes	Strings must use singlequote.	fix	730	741	'statement'	end	34	13
+tests/rules/@stylistic/quotes/ignore-string-literals/cases.ts:35:1	@stylistic/quotes	wrongQuotes	Strings must use singlequote.	end	35	12
+tests/rules/@stylistic/quotes/ignore-string-literals/cases.ts:39:2	@stylistic/quotes	wrongQuotes	Strings must use singlequote.	end	39	19
+tests/rules/@stylistic/quotes/ignore-string-literals/cases.ts:61:21	@stylistic/quotes	wrongQuotes	Strings must use singlequote.	fix	1276	1286	'template'	end	61	31
+tests/rules/@stylistic/quotes/ignore-string-literals/cases.ts:81:25	@stylistic/quotes	wrongQuotes	Strings must use singlequote.	fix	1644	1651	'inner'	end	81	32
+tests/rules/@stylistic/quotes/line-breaks-backtick/cases.ts:1:11	@stylistic/quotes	wrongQuotes	Strings must use backtick.	fix	10	28	`line\\\r\ncontinued`	end	2	11
+tests/rules/@stylistic/quotes/line-breaks-backtick/cases.ts:7:11	@stylistic/quotes	wrongQuotes	Strings must use backtick.	fix	95	100	`x y`	end	8	3
+tests/rules/@stylistic/quotes/line-breaks-backtick/cases.ts:11:11	@stylistic/quotes	wrongQuotes	Strings must use backtick.	fix	134	140	`a\\ b`	end	12	3
+tests/rules/@stylistic/quotes/line-breaks/cases.ts:1:11	@stylistic/quotes	wrongQuotes	Strings must use doublequote.	fix	10	28	"line\\\r\ncontinued"	end	2	11
+tests/rules/@stylistic/quotes/line-breaks/cases.ts:5:11	@stylistic/quotes	wrongQuotes	Strings must use doublequote.	fix	66	82	"escaped \\  sep"	end	6	6
+tests/rules/@stylistic/quotes/line-breaks/cases.ts:7:11	@stylistic/quotes	wrongQuotes	Strings must use doublequote.	fix	95	100	"x y"	end	8	3
+tests/rules/@stylistic/quotes/line-breaks/cases.ts:9:11	@stylistic/quotes	wrongQuotes	Strings must use doublequote.	fix	113	121	"cr\\\rlf"	end	10	4
+tests/rules/@stylistic/quotes/line-breaks/cases.ts:11:11	@stylistic/quotes	wrongQuotes	Strings must use doublequote.	fix	134	140	"a\\ b"	end	12	3
+tests/rules/@stylistic/quotes/single-avoid-escape-tsx/cases.tsx:1:76	@stylistic/quotes	wrongQuotes	Strings must use singlequote.	fix	75	80	'tpl'	end	1	81
+tests/rules/@stylistic/quotes/single-avoid-escape/cases.ts:2:1	@stylistic/quotes	wrongQuotes	Strings must use singlequote.	fix	14	26	'use strict'	end	2	13
+tests/rules/@stylistic/quotes/single-avoid-escape/cases.ts:7:11	@stylistic/quotes	wrongQuotes	Strings must use singlequote.	fix	171	179	'double'	end	7	19
+tests/rules/@stylistic/quotes/single-avoid-escape/cases.ts:8:11	@stylistic/quotes	wrongQuotes	Strings must use singlequote.	fix	191	201	'backtick'	end	8	21
+tests/rules/@stylistic/quotes/single-avoid-escape/cases.ts:12:11	@stylistic/quotes	wrongQuotes	Strings must use singlequote.	fix	272	284	'say "hi"'	end	12	23
+tests/rules/@stylistic/quotes/single-avoid-escape/cases.ts:13:11	@stylistic/quotes	wrongQuotes	Strings must use singlequote.	fix	296	302	'it\\'s'	end	13	17
+tests/rules/@stylistic/quotes/single-avoid-escape/cases.ts:14:11	@stylistic/quotes	wrongQuotes	Strings must use singlequote.	fix	314	324	'say "hi"'	end	14	21
+tests/rules/@stylistic/quotes/single-avoid-escape/cases.ts:15:11	@stylistic/quotes	wrongQuotes	Strings must use singlequote.	fix	336	350	'both \\' and "'	end	15	25
+tests/rules/@stylistic/quotes/single-avoid-escape/cases.ts:21:11	@stylistic/quotes	wrongQuotes	Strings must use singlequote.	fix	458	477	'escaped \\\nnewline'	end	22	9
+tests/rules/@stylistic/quotes/single-avoid-escape/cases.ts:24:11	@stylistic/quotes	wrongQuotes	Strings must use singlequote.	fix	518	535	'dollar ${brace}'	end	24	28
+tests/rules/@stylistic/quotes/single-avoid-escape/cases.ts:31:11	@stylistic/quotes	wrongQuotes	Strings must use singlequote.	fix	689	691	''	end	31	13
+tests/rules/@stylistic/quotes/single-avoid-escape/cases.ts:32:11	@stylistic/quotes	wrongQuotes	Strings must use singlequote.	fix	703	705	''	end	32	13
+tests/rules/@stylistic/quotes/single-avoid-escape/cases.ts:34:2	@stylistic/quotes	wrongQuotes	Strings must use singlequote.	fix	730	741	'statement'	end	34	13
+tests/rules/@stylistic/quotes/single-avoid-escape/cases.ts:35:1	@stylistic/quotes	wrongQuotes	Strings must use singlequote.	end	35	12
+tests/rules/@stylistic/quotes/single-avoid-escape/cases.ts:39:2	@stylistic/quotes	wrongQuotes	Strings must use singlequote.	end	39	19
+tests/rules/@stylistic/quotes/single-avoid-escape/cases.ts:45:2	@stylistic/quotes	wrongQuotes	Strings must use singlequote.	fix	862	869	'other'	end	45	9
+tests/rules/@stylistic/quotes/single-avoid-escape/cases.ts:54:15	@stylistic/quotes	wrongQuotes	Strings must use singlequote.	fix	1075	1082	'./mod'	end	54	22
+tests/rules/@stylistic/quotes/single-avoid-escape/cases.ts:61:21	@stylistic/quotes	wrongQuotes	Strings must use singlequote.	fix	1276	1286	'template'	end	61	31
+tests/rules/@stylistic/quotes/single-avoid-escape/cases.ts:81:25	@stylistic/quotes	wrongQuotes	Strings must use singlequote.	fix	1644	1651	'inner'	end	81	32
+tests/rules/@stylistic/quotes/single-templates-avoid-escape-tsx/cases.tsx:1:76	@stylistic/quotes	wrongQuotes	Strings must use singlequote.	fix	75	80	'tpl'	end	1	81
+tests/rules/@stylistic/quotes/single-templates-avoid-escape/cases.ts:2:1	@stylistic/quotes	wrongQuotes	Strings must use singlequote.	fix	14	26	'use strict'	end	2	13
+tests/rules/@stylistic/quotes/single-templates-avoid-escape/cases.ts:7:11	@stylistic/quotes	wrongQuotes	Strings must use singlequote.	fix	171	179	'double'	end	7	19
+tests/rules/@stylistic/quotes/single-templates-avoid-escape/cases.ts:8:11	@stylistic/quotes	wrongQuotes	Strings must use singlequote.	fix	191	201	'backtick'	end	8	21
+tests/rules/@stylistic/quotes/single-templates-avoid-escape/cases.ts:12:11	@stylistic/quotes	wrongQuotes	Strings must use singlequote.	fix	272	284	'say "hi"'	end	12	23
+tests/rules/@stylistic/quotes/single-templates-avoid-escape/cases.ts:14:11	@stylistic/quotes	wrongQuotes	Strings must use singlequote.	fix	314	324	'say "hi"'	end	14	21
+tests/rules/@stylistic/quotes/single-templates-avoid-escape/cases.ts:21:11	@stylistic/quotes	wrongQuotes	Strings must use singlequote.	fix	458	477	'escaped \\\nnewline'	end	22	9
+tests/rules/@stylistic/quotes/single-templates-avoid-escape/cases.ts:24:11	@stylistic/quotes	wrongQuotes	Strings must use singlequote.	fix	518	535	'dollar ${brace}'	end	24	28
+tests/rules/@stylistic/quotes/single-templates-avoid-escape/cases.ts:31:11	@stylistic/quotes	wrongQuotes	Strings must use singlequote.	fix	689	691	''	end	31	13
+tests/rules/@stylistic/quotes/single-templates-avoid-escape/cases.ts:32:11	@stylistic/quotes	wrongQuotes	Strings must use singlequote.	fix	703	705	''	end	32	13
+tests/rules/@stylistic/quotes/single-templates-avoid-escape/cases.ts:34:2	@stylistic/quotes	wrongQuotes	Strings must use singlequote.	fix	730	741	'statement'	end	34	13
+tests/rules/@stylistic/quotes/single-templates-avoid-escape/cases.ts:35:1	@stylistic/quotes	wrongQuotes	Strings must use singlequote.	end	35	12
+tests/rules/@stylistic/quotes/single-templates-avoid-escape/cases.ts:39:2	@stylistic/quotes	wrongQuotes	Strings must use singlequote.	end	39	19
+tests/rules/@stylistic/quotes/single-templates-avoid-escape/cases.ts:45:2	@stylistic/quotes	wrongQuotes	Strings must use singlequote.	fix	862	869	'other'	end	45	9
+tests/rules/@stylistic/quotes/single-templates-avoid-escape/cases.ts:54:15	@stylistic/quotes	wrongQuotes	Strings must use singlequote.	fix	1075	1082	'./mod'	end	54	22
+tests/rules/@stylistic/quotes/single-templates-avoid-escape/cases.ts:61:21	@stylistic/quotes	wrongQuotes	Strings must use singlequote.	fix	1276	1286	'template'	end	61	31
+tests/rules/@stylistic/quotes/single-templates-avoid-escape/cases.ts:81:25	@stylistic/quotes	wrongQuotes	Strings must use singlequote.	fix	1644	1651	'inner'	end	81	32
+tests/rules/@stylistic/quotes/single-templates-false-tsx/cases.tsx:1:76	@stylistic/quotes	wrongQuotes	Strings must use singlequote.	fix	75	80	'tpl'	end	1	81
+tests/rules/@stylistic/quotes/single-templates-false/cases.ts:2:1	@stylistic/quotes	wrongQuotes	Strings must use singlequote.	fix	14	26	'use strict'	end	2	13
+tests/rules/@stylistic/quotes/single-templates-false/cases.ts:7:11	@stylistic/quotes	wrongQuotes	Strings must use singlequote.	fix	171	179	'double'	end	7	19
+tests/rules/@stylistic/quotes/single-templates-false/cases.ts:8:11	@stylistic/quotes	wrongQuotes	Strings must use singlequote.	fix	191	201	'backtick'	end	8	21
+tests/rules/@stylistic/quotes/single-templates-false/cases.ts:12:11	@stylistic/quotes	wrongQuotes	Strings must use singlequote.	fix	272	284	'say "hi"'	end	12	23
+tests/rules/@stylistic/quotes/single-templates-false/cases.ts:13:11	@stylistic/quotes	wrongQuotes	Strings must use singlequote.	fix	296	302	'it\\'s'	end	13	17
+tests/rules/@stylistic/quotes/single-templates-false/cases.ts:14:11	@stylistic/quotes	wrongQuotes	Strings must use singlequote.	fix	314	324	'say "hi"'	end	14	21
+tests/rules/@stylistic/quotes/single-templates-false/cases.ts:15:11	@stylistic/quotes	wrongQuotes	Strings must use singlequote.	fix	336	350	'both \\' and "'	end	15	25
+tests/rules/@stylistic/quotes/single-templates-false/cases.ts:21:11	@stylistic/quotes	wrongQuotes	Strings must use singlequote.	fix	458	477	'escaped \\\nnewline'	end	22	9
+tests/rules/@stylistic/quotes/single-templates-false/cases.ts:24:11	@stylistic/quotes	wrongQuotes	Strings must use singlequote.	fix	518	535	'dollar ${brace}'	end	24	28
+tests/rules/@stylistic/quotes/single-templates-false/cases.ts:31:11	@stylistic/quotes	wrongQuotes	Strings must use singlequote.	fix	689	691	''	end	31	13
+tests/rules/@stylistic/quotes/single-templates-false/cases.ts:32:11	@stylistic/quotes	wrongQuotes	Strings must use singlequote.	fix	703	705	''	end	32	13
+tests/rules/@stylistic/quotes/single-templates-false/cases.ts:34:2	@stylistic/quotes	wrongQuotes	Strings must use singlequote.	fix	730	741	'statement'	end	34	13
+tests/rules/@stylistic/quotes/single-templates-false/cases.ts:35:1	@stylistic/quotes	wrongQuotes	Strings must use singlequote.	end	35	12
+tests/rules/@stylistic/quotes/single-templates-false/cases.ts:39:2	@stylistic/quotes	wrongQuotes	Strings must use singlequote.	end	39	19
+tests/rules/@stylistic/quotes/single-templates-false/cases.ts:45:2	@stylistic/quotes	wrongQuotes	Strings must use singlequote.	fix	862	869	'other'	end	45	9
+tests/rules/@stylistic/quotes/single-templates-false/cases.ts:54:15	@stylistic/quotes	wrongQuotes	Strings must use singlequote.	fix	1075	1082	'./mod'	end	54	22
+tests/rules/@stylistic/quotes/single-templates-false/cases.ts:61:21	@stylistic/quotes	wrongQuotes	Strings must use singlequote.	fix	1276	1286	'template'	end	61	31
+tests/rules/@stylistic/quotes/single-templates-false/cases.ts:81:25	@stylistic/quotes	wrongQuotes	Strings must use singlequote.	fix	1644	1651	'inner'	end	81	32
+tests/rules/@stylistic/quotes/single-templates-true/cases.ts:2:1	@stylistic/quotes	wrongQuotes	Strings must use singlequote.	fix	14	26	'use strict'	end	2	13
+tests/rules/@stylistic/quotes/single-templates-true/cases.ts:7:11	@stylistic/quotes	wrongQuotes	Strings must use singlequote.	fix	171	179	'double'	end	7	19
+tests/rules/@stylistic/quotes/single-templates-true/cases.ts:10:11	@stylistic/quotes	wrongQuotes	Strings must use singlequote.	fix	232	238	'it\\'s'	end	10	17
+tests/rules/@stylistic/quotes/single-templates-true/cases.ts:12:11	@stylistic/quotes	wrongQuotes	Strings must use singlequote.	fix	272	284	'say "hi"'	end	12	23
+tests/rules/@stylistic/quotes/single-templates-true/cases.ts:24:11	@stylistic/quotes	wrongQuotes	Strings must use singlequote.	fix	518	535	'dollar ${brace}'	end	24	28
+tests/rules/@stylistic/quotes/single-templates-true/cases.ts:31:11	@stylistic/quotes	wrongQuotes	Strings must use singlequote.	fix	689	691	''	end	31	13
+tests/rules/@stylistic/quotes/single-templates-true/cases.ts:45:2	@stylistic/quotes	wrongQuotes	Strings must use singlequote.	fix	862	869	'other'	end	45	9
+tests/rules/@stylistic/quotes/single-templates-true/cases.ts:54:15	@stylistic/quotes	wrongQuotes	Strings must use singlequote.	fix	1075	1082	'./mod'	end	54	22
+tests/rules/@stylistic/quotes/single-tsx/cases.tsx:1:76	@stylistic/quotes	wrongQuotes	Strings must use singlequote.	fix	75	80	'tpl'	end	1	81
+tests/rules/@stylistic/quotes/single/cases.ts:2:1	@stylistic/quotes	wrongQuotes	Strings must use singlequote.	fix	14	26	'use strict'	end	2	13
+tests/rules/@stylistic/quotes/single/cases.ts:7:11	@stylistic/quotes	wrongQuotes	Strings must use singlequote.	fix	171	179	'double'	end	7	19
+tests/rules/@stylistic/quotes/single/cases.ts:8:11	@stylistic/quotes	wrongQuotes	Strings must use singlequote.	fix	191	201	'backtick'	end	8	21
+tests/rules/@stylistic/quotes/single/cases.ts:10:11	@stylistic/quotes	wrongQuotes	Strings must use singlequote.	fix	232	238	'it\\'s'	end	10	17
+tests/rules/@stylistic/quotes/single/cases.ts:12:11	@stylistic/quotes	wrongQuotes	Strings must use singlequote.	fix	272	284	'say "hi"'	end	12	23
+tests/rules/@stylistic/quotes/single/cases.ts:13:11	@stylistic/quotes	wrongQuotes	Strings must use singlequote.	fix	296	302	'it\\'s'	end	13	17
+tests/rules/@stylistic/quotes/single/cases.ts:14:11	@stylistic/quotes	wrongQuotes	Strings must use singlequote.	fix	314	324	'say "hi"'	end	14	21
+tests/rules/@stylistic/quotes/single/cases.ts:15:11	@stylistic/quotes	wrongQuotes	Strings must use singlequote.	fix	336	350	'both \\' and "'	end	15	25
+tests/rules/@stylistic/quotes/single/cases.ts:21:11	@stylistic/quotes	wrongQuotes	Strings must use singlequote.	fix	458	477	'escaped \\\nnewline'	end	22	9
+tests/rules/@stylistic/quotes/single/cases.ts:24:11	@stylistic/quotes	wrongQuotes	Strings must use singlequote.	fix	518	535	'dollar ${brace}'	end	24	28
+tests/rules/@stylistic/quotes/single/cases.ts:31:11	@stylistic/quotes	wrongQuotes	Strings must use singlequote.	fix	689	691	''	end	31	13
+tests/rules/@stylistic/quotes/single/cases.ts:32:11	@stylistic/quotes	wrongQuotes	Strings must use singlequote.	fix	703	705	''	end	32	13
+tests/rules/@stylistic/quotes/single/cases.ts:34:2	@stylistic/quotes	wrongQuotes	Strings must use singlequote.	fix	730	741	'statement'	end	34	13
+tests/rules/@stylistic/quotes/single/cases.ts:35:1	@stylistic/quotes	wrongQuotes	Strings must use singlequote.	end	35	12
+tests/rules/@stylistic/quotes/single/cases.ts:39:2	@stylistic/quotes	wrongQuotes	Strings must use singlequote.	end	39	19
+tests/rules/@stylistic/quotes/single/cases.ts:45:2	@stylistic/quotes	wrongQuotes	Strings must use singlequote.	fix	862	869	'other'	end	45	9
+tests/rules/@stylistic/quotes/single/cases.ts:54:15	@stylistic/quotes	wrongQuotes	Strings must use singlequote.	fix	1075	1082	'./mod'	end	54	22
+tests/rules/@stylistic/quotes/single/cases.ts:61:21	@stylistic/quotes	wrongQuotes	Strings must use singlequote.	fix	1276	1286	'template'	end	61	31
+tests/rules/@stylistic/quotes/single/cases.ts:81:25	@stylistic/quotes	wrongQuotes	Strings must use singlequote.	fix	1644	1651	'inner'	end	81	32
+tests/rules/@stylistic/quotes/tsx/cases.tsx:1:54	@stylistic/quotes	wrongQuotes	Strings must use doublequote.	fix	53	65	"expression"	end	1	66
+tests/rules/@stylistic/quotes/tsx/cases.tsx:1:76	@stylistic/quotes	wrongQuotes	Strings must use doublequote.	fix	75	80	"tpl"	end	1	81
+tests/rules/@stylistic/quotes/tsx/cases.tsx:2:14	@stylistic/quotes	wrongQuotes	Strings must use doublequote.	fix	123	133	"fragment"	end	2	24

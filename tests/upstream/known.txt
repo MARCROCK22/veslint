@@ -1387,3 +1387,15 @@ veslint	comma-style/i55	tree-sitter reads an index signature with three paramete
 eslint	dot-location._js_/i5	typescript-eslint's parser: Octal literals are not allowed.
 eslint	dot-location._js_/i6	typescript-eslint's parser: Decimals with leading zeros are not allowed.
 eslint	dot-location._js_/i7	typescript-eslint's parser: Decimals with leading zeros are not allowed.
+# @stylistic/quotes: JavaScript cases with octal or non-octal decimal escape sequences (`'\1'`, `'\8'`), which
+# typescript-eslint's parser rejects; tree-sitter parses them.
+eslint	quotes._js_/i40	typescript-eslint's parser: Octal escape sequences are not allowed.
+eslint	quotes._js_/i41	typescript-eslint's parser: Octal escape sequences are not allowed.
+eslint	quotes._js_/i43	typescript-eslint's parser: Octal escape sequences are not allowed.
+eslint	quotes._js_/i44	typescript-eslint's parser: Octal escape sequences are not allowed.
+eslint	quotes._js_/i45	typescript-eslint's parser: Octal escape sequences are not allowed.
+eslint	quotes._js_/i46	typescript-eslint's parser: Octal escape sequences are not allowed.
+eslint	quotes._js_/i47	typescript-eslint's parser: Octal escape sequences are not allowed.
+eslint	quotes._js_/i48	typescript-eslint's parser: Octal escape sequences are not allowed.
+eslint	quotes._js_/i49	typescript-eslint's parser: Octal escape sequences are not allowed.
+eslint	quotes._js_/i50	typescript-eslint's parser: Escape sequence '\8' is not allowed.
