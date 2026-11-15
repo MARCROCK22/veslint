@@ -1,7 +1,7 @@
 'use strict';
 const test = require('node:test');
 const assert = require('node:assert/strict');
-const { parseLine, parseOutput, parseStderr, unescapeField, ruleDocumentation } = require('../lib/parse');
+const { parseLine, parseOutput, parseStderr, unescapeField, ruleDocumentation, disableNextLineRules } = require('../lib/parse');
 
 test('a problem with two suggestions', () => {
   const line =
@@ -79,4 +79,17 @@ test('the documentation of a rule', () => {
   assert.equal(ruleDocumentation('seyfert/group-exists'), 'https://github.com/tiramisulabs/extra/tree/main/packages/eslint-plugin/docs/group-exists.md');
   assert.equal(ruleDocumentation('unicorn/no-null'), null);
   assert.equal(ruleDocumentation('eslint'), null);
+});
+
+test('the rules of an eslint-disable-next-line comment, and where the list ends', () => {
+  assert.deepEqual(disableNextLineRules('  // eslint-disable-next-line no-var'), { rules: ['no-var'], end: 36 });
+  assert.deepEqual(disableNextLineRules('// eslint-disable-next-line no-var, eqeqeq -- why'), { rules: ['no-var', 'eqeqeq'], end: 42 });
+  assert.deepEqual(disableNextLineRules('/* eslint-disable-next-line no-var */'), { rules: ['no-var'], end: 34 });
+  assert.deepEqual(disableNextLineRules('/* eslint-disable-next-line no-var -- why */'), { rules: ['no-var'], end: 34 });
+  // A comment without rules disables them all; another line or comment is not one.
+  assert.equal(disableNextLineRules('// eslint-disable-next-line'), null);
+  assert.equal(disableNextLineRules('// eslint-disable-next-line -- why'), null);
+  assert.equal(disableNextLineRules('// eslint-disable-line no-var'), null);
+  assert.equal(disableNextLineRules('var a; // eslint-disable-next-line no-var'), null);
+  assert.equal(disableNextLineRules('/* eslint-disable-next-line no-var */ var a;'), null);
 });

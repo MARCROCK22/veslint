@@ -13,7 +13,7 @@ const path = require('node:path');
 const { runVeslint, findConfig, isTypeScriptPath } = require('./lib/runner');
 const { ConfigCache } = require('./lib/configCache');
 const { VeslintServer, ServerError } = require('./lib/server');
-const { parseOutput, parseStderr, ruleDocumentation } = require('./lib/parse');
+const { parseOutput, parseStderr, ruleDocumentation, disableNextLineRules } = require('./lib/parse');
 const updater = require('./lib/updater');
 
 const selector = [
@@ -492,11 +492,21 @@ const codeActions = {
         actions.push(action);
       }
       if (problem.rule !== 'eslint') {
-        const line = document.lineAt(diagnostic.range.start.line);
+        const lineNumber = diagnostic.range.start.line;
+        const line = document.lineAt(lineNumber);
         const indent = line.text.slice(0, line.firstNonWhitespaceCharacterIndex);
         const action = new vscode.CodeAction(`Disable ${problem.rule} for this line`, vscode.CodeActionKind.QuickFix);
         action.edit = new vscode.WorkspaceEdit();
-        action.edit.insert(document.uri, line.range.start, `${indent}// eslint-disable-next-line ${problem.rule}\n`);
+        // A second comment on top of an eslint-disable-next-line would be the line the first one
+        // disables: the rule joins the comment that is already there.
+        const previous = lineNumber > 0 ? disableNextLineRules(document.lineAt(lineNumber - 1).text) : null;
+        if (previous) {
+          if (!previous.rules.includes(problem.rule)) {
+            action.edit.insert(document.uri, new vscode.Position(lineNumber - 1, previous.end), `, ${problem.rule}`);
+          }
+        } else {
+          action.edit.insert(document.uri, line.range.start, `${indent}// eslint-disable-next-line ${problem.rule}\n`);
+        }
         action.diagnostics = [diagnostic];
         actions.push(action);
         // The rule off for the whole file: a comment on the first line (after a `#!` line).

@@ -104,4 +104,26 @@ function ruleDocumentation(rule) {
   return null;
 }
 
-module.exports = { parseLine, parseOutput, parseStderr, unescapeField, ruleDocumentation };
+/**
+ * The rules of a line that is only an `eslint-disable-next-line` comment (`//`, or `/* … *\/` on
+ * that line), and the column where its list of rules ends (before a `-- description`); null for
+ * another line, or for a comment without rules (which disables them all).
+ */
+function disableNextLineRules(text) {
+  const match = /^(\s*(?:\/\/|\/\*)\s*eslint-disable-next-line)(\s.*)?$/.exec(text);
+  if (!match) return null;
+  let body = match[2] ?? '';
+  if (text.trimStart().startsWith('/*')) {
+    const close = body.lastIndexOf('*/');
+    if (close < 0 || body.slice(close + 2).trim() !== '') return null;
+    body = body.slice(0, close);
+  }
+  // ESLint's description separator: two or more dashes with white space around them.
+  const description = /\s-{2,}\s/.exec(body);
+  const list = description ? body.slice(0, description.index) : body;
+  const rules = list.split(',').map(rule => rule.trim()).filter(Boolean);
+  if (rules.length === 0) return null;
+  return { rules, end: match[1].length + list.trimEnd().length };
+}
+
+module.exports = { parseLine, parseOutput, parseStderr, unescapeField, ruleDocumentation, disableNextLineRules };
