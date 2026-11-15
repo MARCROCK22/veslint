@@ -1,6 +1,6 @@
 --- a/common/define-grammar.js
 +++ b/common/define-grammar.js
-@@ -7,6 +7,12 @@
+@@ -7,6 +7,16 @@
      externals: ($, previous) => previous.concat([
        $._function_signature_automatic_semicolon,
        $.__error_recovery,
@@ -10,10 +10,14 @@
 +      // veslint: empty; the scanner gives it after the type arguments of an instantiation
 +      // expression when what follows lets them be type arguments.
 +      $._instantiation_end,
++      // veslint: empty; the scanner gives it after `return`, `break` and `continue` when a line
++      // break comes before the next token, whatever that token is (ECMAScript's restricted
++      // productions: `return⏎-a` is `return;` and `-a;`).
++      $._restricted_automatic_semicolon,
      ]),
  
      supertypes: ($, previous) => previous.concat([
-@@ -15,12 +21,45 @@
+@@ -15,12 +25,45 @@
      ]),
  
      precedences: ($, previous) => previous.concat([
@@ -60,7 +64,7 @@
          $.arrow_function,
        ],
        [
-@@ -28,13 +67,22 @@
+@@ -28,13 +71,22 @@
          'instantiation',
        ],
        [
@@ -84,7 +88,7 @@
        ],
        [$.mapped_type_clause, $.primary_expression],
        [$.accessibility_modifier, $.primary_expression],
-@@ -52,7 +100,6 @@
+@@ -52,7 +104,6 @@
        [$.nested_type_identifier, $.generic_type, $.primary_type, $.lookup_type, $.index_type_query, $.type],
        [$.as_expression, $.satisfies_expression, $.primary_type],
        [$._type_query_member_expression, $.member_expression],
@@ -92,7 +96,7 @@
        [$._type_query_member_expression, $.primary_expression],
        [$._type_query_subscript_expression, $.subscript_expression],
        [$._type_query_subscript_expression, $.primary_expression],
-@@ -64,17 +111,31 @@
+@@ -64,17 +115,31 @@
        [$.literal_type, $.pattern],
        [$.predefined_type, $.pattern],
        [$.call_expression, $._type_query_call_expression],
@@ -129,7 +133,7 @@
  
        // This appears to be necessary to parse a parenthesized class expression
        [$.class],
-@@ -98,6 +159,8 @@
+@@ -98,6 +163,8 @@
        [$.pattern, $.primary_type],
  
        [$.optional_tuple_parameter, $.primary_type],
@@ -138,7 +142,7 @@
        [$.rest_pattern, $.primary_type, $.primary_expression],
  
        [$.object, $.object_type],
-@@ -114,6 +177,9 @@
+@@ -114,6 +181,9 @@
      ]).concat(
        dialect === 'typescript' ? [
          [$.primary_type, $.type_parameter],
@@ -148,7 +152,7 @@
        ] : [
          [$.jsx_opening_element, $.type_parameter],
          [$.jsx_namespace_name, $.primary_type],
-@@ -131,6 +197,9 @@
+@@ -131,6 +201,9 @@
        ]),
  
      rules: {
@@ -158,7 +162,7 @@
        public_field_definition: $ => seq(
          repeat(field('decorator', $.decorator)),
          optional(choice(
-@@ -141,7 +210,8 @@
+@@ -141,7 +214,8 @@
            seq(optional('static'), optional($.override_modifier), optional('readonly')),
            seq(optional('abstract'), optional('readonly')),
            seq(optional('readonly'), optional('abstract')),
@@ -168,7 +172,35 @@
          ),
          field('name', $._property_name),
          optional(choice('?', '!')),
-@@ -173,13 +243,27 @@
+@@ -170,16 +244,55 @@
+         field('body', $.statement_block),
+       ),
+ 
++      // veslint: a line break after `return`, `break` or `continue` ends the statement.
++      return_statement: $ => seq(
++        'return',
++        choice(
++          $._restricted_automatic_semicolon,
++          seq(optional($._expressions), $._semicolon),
++        ),
++      ),
++
++      break_statement: $ => seq(
++        'break',
++        choice(
++          $._restricted_automatic_semicolon,
++          seq(field('label', optional(alias($.identifier, $.statement_identifier))), $._semicolon),
++        ),
++      ),
++
++      continue_statement: $ => seq(
++        'continue',
++        choice(
++          $._restricted_automatic_semicolon,
++          seq(field('label', optional(alias($.identifier, $.statement_identifier))), $._semicolon),
++        ),
++      ),
++
        call_expression: $ => choice(
          prec('call', seq(
            field('function', choice($.expression, $.import)),
@@ -197,7 +229,7 @@
          prec('member', seq(
            field('function', $.primary_expression),
            '?.',
-@@ -190,22 +274,136 @@
+@@ -190,22 +303,136 @@
  
        new_expression: $ => prec.right('new', seq(
          'new',
@@ -338,7 +370,22 @@
        primary_expression: ($, previous) => choice(
          previous,
          $.non_null_expression,
-@@ -235,6 +433,23 @@
+@@ -214,11 +441,13 @@
+       // If the dialect is regular typescript, we exclude JSX expressions and
+       // include type assertions. If the dialect is TSX, we do the opposite.
+       expression: ($, previous) => {
++        // veslint: without internal_module, which TypeScript never reads as an expression: a
++        // `namespace Foo` whose body is on the next line is one declaration, not an expression
++        // statement ended by an automatic semicolon and a block.
+         const choices = [
+           $.as_expression,
+           $.satisfies_expression,
+           $.instantiation_expression,
+-          $.internal_module,
+         ];
+ 
+         if (dialect === 'typescript') {
+@@ -235,6 +464,23 @@
          return choice(...choices);
        },
  
@@ -362,7 +409,7 @@
        _jsx_start_opening_element: $ => seq(
          '<',
          optional(
-@@ -246,8 +461,8 @@
+@@ -246,8 +492,8 @@
                )),
                seq(
                  field('name', choice(
@@ -373,7 +420,7 @@
                  )),
                  field('type_arguments', optional($.type_arguments)),
                ),
-@@ -257,6 +472,31 @@
+@@ -257,6 +503,31 @@
          ),
        ),
  
@@ -405,7 +452,7 @@
        // This rule is only referenced by expression when the dialect is 'tsx'
        jsx_opening_element: $ => prec.dynamic(-1, seq(
          $._jsx_start_opening_element,
-@@ -317,20 +557,90 @@
+@@ -317,20 +588,90 @@
          $._semicolon,
        ),
  
@@ -477,16 +524,16 @@
 +          'default',
 +          field('declaration', alias($._default_function_signature, $.function_signature)),
 +        ),
-       ),
- 
--      non_null_expression: $ => prec.left('unary', seq(
++      ),
++
 +      _default_function_signature: $ => seq(
 +        optional('async'),
 +        'function',
 +        $._call_signature,
 +        choice($._semicolon, $._function_signature_automatic_semicolon),
-+      ),
-+
+       ),
+ 
+-      non_null_expression: $ => prec.left('unary', seq(
 +      // veslint: a statement that starts with `{` is a block, and `{ a: f() }` a label, not an
 +      // object (tree-sitter-javascript gives labels dynamic precedence -1).
 +      labeled_statement: $ => prec.dynamic(1, seq(
@@ -501,7 +548,7 @@
          $.expression, '!',
        )),
  
-@@ -363,6 +673,8 @@
+@@ -363,6 +704,8 @@
          optional($.accessibility_modifier),
          'abstract',
          optional($.override_modifier),
@@ -510,7 +557,7 @@
          optional(choice('get', 'set', '*')),
          field('name', $._property_name),
          optional('?'),
-@@ -453,8 +765,12 @@
+@@ -453,8 +796,12 @@
        ),
  
        method_definition: $ => prec.left(seq(
@@ -525,7 +572,7 @@
          optional($.override_modifier),
          optional('readonly'),
          optional('async'),
-@@ -465,6 +781,70 @@
+@@ -465,6 +812,70 @@
          field('body', $.statement_block),
        )),
  
@@ -596,7 +643,7 @@
        declaration: ($, previous) => choice(
          previous,
          $.function_signature,
-@@ -495,10 +875,32 @@
+@@ -495,10 +906,32 @@
          $.type,
        )),
  
@@ -632,7 +679,7 @@
  
        class_heritage: $ => choice(
          seq($.extends_clause, optional($.implements_clause)),
-@@ -584,14 +986,43 @@
+@@ -584,14 +1017,43 @@
          field('body', optional($.statement_block)),
        )),
  
@@ -678,7 +725,21 @@
        nested_type_identifier: $ => prec('member', seq(
          field('module', choice($.identifier, $.nested_identifier)),
          '.',
-@@ -691,7 +1122,17 @@
+@@ -677,9 +1139,10 @@
+         field('pattern', choice($.pattern, $.this)),
+       ),
+ 
+-      omitting_type_annotation: $ => seq('-?:', $.type),
+-      adding_type_annotation: $ => seq('+?:', $.type),
+-      opting_type_annotation: $ => seq('?:', $.type),
++      // veslint: `-`, `?` and `:` are tokens of their own: TypeScript takes white space between them.
++      omitting_type_annotation: $ => seq('-', '?', ':', $.type),
++      adding_type_annotation: $ => seq('+', '?', ':', $.type),
++      opting_type_annotation: $ => seq('?', ':', $.type),
+       type_annotation: $ => seq(
+         ':',
+         $.type,
+@@ -691,7 +1154,17 @@
        // required beforehand. This allows for parsing of annotations such as
        // foo: import('x').y.z;
        // but was a nightmare to get working.
@@ -697,7 +758,7 @@
          field('object', choice(
            $.import,
            alias($._type_query_member_expression_in_type_annotation, $.member_expression),
-@@ -702,14 +1143,14 @@
+@@ -702,14 +1175,14 @@
            $.private_property_identifier,
            alias($.identifier, $.property_identifier),
          )),
@@ -715,7 +776,7 @@
  
        asserts: $ => seq(
          'asserts',
-@@ -726,17 +1167,17 @@
+@@ -726,17 +1199,17 @@
          $.readonly_type,
          $.constructor_type,
          $.infer_type,
@@ -737,7 +798,7 @@
          '?',
          field('type', $.type_annotation),
        ),
-@@ -782,6 +1223,9 @@
+@@ -782,6 +1255,9 @@
          $.intersection_type,
          $.union_type,
          'const',
@@ -747,7 +808,7 @@
        ),
  
        template_type: $ => seq('${', choice($.primary_type, $.infer_type), '}'),
-@@ -790,6 +1234,8 @@
+@@ -790,6 +1266,8 @@
          '`',
          repeat(choice(
            alias($._template_chars, $.string_fragment),
@@ -756,7 +817,7 @@
            $.template_type,
          )),
          '`',
-@@ -818,6 +1264,8 @@
+@@ -818,6 +1296,8 @@
          field('name', choice(
            $._type_identifier,
            $.nested_type_identifier,
@@ -765,7 +826,7 @@
          )),
          field('type_arguments', $.type_arguments),
        )),
-@@ -867,9 +1315,10 @@
+@@ -867,9 +1347,10 @@
          optional('?.'),
          '[', field('index', choice($.predefined_type, $.string, $.number)), ']',
        ),
@@ -777,7 +838,7 @@
            $.identifier,
            alias($._type_query_member_expression, $.member_expression),
            alias($._type_query_subscript_expression, $.subscript_expression),
-@@ -878,13 +1327,16 @@
+@@ -878,13 +1359,16 @@
        ),
        _type_query_instantiation_expression: $ => seq(
          field('function', choice(
@@ -795,7 +856,7 @@
        type_query: $ => prec.right(seq(
          'typeof',
          choice(
-@@ -894,12 +1346,14 @@
+@@ -894,12 +1378,14 @@
            alias($._type_query_instantiation_expression, $.instantiation_expression),
            $.identifier,
            $.this,
@@ -811,7 +872,7 @@
        ),
  
        lookup_type: $ => seq(
-@@ -926,7 +1380,7 @@
+@@ -926,7 +1412,7 @@
          $.undefined,
        ),
  
@@ -820,7 +881,7 @@
          field('operator', choice('-', '+')),
          field('argument', $.number),
        )),
-@@ -1003,8 +1457,12 @@
+@@ -1003,8 +1489,12 @@
        ),
  
        type_parameter: $ => seq(
@@ -834,7 +895,63 @@
          field('constraint', optional($.constraint)),
          field('value', optional($.default_type)),
        ),
-@@ -1061,8 +1519,25 @@
+@@ -1027,7 +1517,11 @@
+         field('type', optional($.type_annotation)),
+       ),
+ 
++      // veslint: `static` before it (TypeScript parses it on an index signature of a class), more
++      // parameters than one (TypeScript parses them; its checker rejects them), and a mapped type
++      // without a type (`{ [K in T] }`).
+       index_signature: $ => seq(
++        optional('static'),
+         optional(
+           seq(
+             field('sign', optional(choice('-', '+'))),
+@@ -1037,22 +1531,30 @@
+         '[',
+         choice(
+           seq(
+-            field('name', choice(
+-              $.identifier,
+-              alias($._reserved_identifier, $.identifier),
++            sepBy1(',', seq(
++              field('name', choice(
++                $.identifier,
++                alias($._reserved_identifier, $.identifier),
++              )),
++              ':',
++              field('index_type', $.type),
+             )),
+-            ':',
+-            field('index_type', $.type),
++            ']',
++            field('type', $._index_signature_type),
++          ),
++          seq(
++            $.mapped_type_clause,
++            ']',
++            optional(field('type', $._index_signature_type)),
+           ),
+-          $.mapped_type_clause,
+         ),
+-        ']',
+-        field('type', choice(
+-          $.type_annotation,
+-          $.omitting_type_annotation,
+-          $.adding_type_annotation,
+-          $.opting_type_annotation,
+-        )),
++      ),
++
++      _index_signature_type: $ => choice(
++        $.type_annotation,
++        $.omitting_type_annotation,
++        $.adding_type_annotation,
++        $.opting_type_annotation,
+       ),
+ 
+       array_type: $ => seq($.primary_type, '[', ']'),
+@@ -1061,8 +1563,25 @@
        ),
        readonly_type: $ => seq('readonly', $.type),
  
@@ -862,7 +979,7 @@
  
        function_type: $ => prec.left(seq(
          field('type_parameters', optional($.type_parameters)),
-@@ -1073,7 +1548,19 @@
+@@ -1073,7 +1592,19 @@
  
        _type_identifier: $ => alias($.identifier, $.type_identifier),
  
@@ -882,24 +999,31 @@
          'declare',
          'namespace',
          'type',
-@@ -1090,7 +1577,8 @@
+@@ -1088,11 +1619,12 @@
+         'boolean',
+         'string',
          'symbol',
-         'export',
+-        'export',
          'object',
 -        'new',
 +        // veslint: not `new`, which is never a name in TypeScript: as one, `return new⏎Foo()`
-+        // was `return new;` and the statement `Foo()`.
++        // was `return new;` and the statement `Foo()`. Nor `export`: as one, `export⏎default 1`
++        // was the statement `export;` and an error.
          'readonly',
-         previous,
+-        previous,
++        ...previous.members.filter(member => member.value !== 'export'),
        ),
+     },
+   });
 --- a/common/scanner.h
 +++ b/common/scanner.h
-@@ -13,12 +13,32 @@
+@@ -13,12 +13,33 @@
      JSX_TEXT,
      FUNCTION_SIGNATURE_AUTOMATIC_SEMICOLON,
      ERROR_RECOVERY,
 +    ARROW_BLOCK_END,
 +    INSTANTIATION_END,
++    RESTRICTED_AUTOMATIC_SEMICOLON,
  };
  
  static void advance(TSLexer *lexer) { lexer->advance(lexer, false); }
@@ -927,7 +1051,7 @@
  static bool scan_template_chars(TSLexer *lexer) {
      lexer->result_symbol = TEMPLATE_CHARS;
      for (bool has_content = false;; has_content = true) {
-@@ -44,7 +64,7 @@
+@@ -44,7 +65,7 @@
  
  static bool scan_whitespace_and_comments(TSLexer *lexer, bool *scanned_comment) {
      for (;;) {
@@ -936,7 +1060,7 @@
              skip(lexer);
          }
  
-@@ -53,7 +73,7 @@
+@@ -53,7 +74,7 @@
  
              if (lexer->lookahead == '/') {
                  skip(lexer);
@@ -945,7 +1069,7 @@
                      skip(lexer);
                  }
                  *scanned_comment = true;
-@@ -70,6 +90,9 @@
+@@ -70,6 +91,9 @@
                          skip(lexer);
                      }
                  }
@@ -955,7 +1079,7 @@
              } else {
                  return false;
              }
-@@ -79,9 +102,35 @@
+@@ -79,9 +103,35 @@
      }
  }
  
@@ -991,7 +1115,7 @@
  
      for (;;) {
          if (lexer->lookahead == 0) {
-@@ -94,44 +143,112 @@
+@@ -94,44 +144,112 @@
              // Therefore, disable automatic semicolons when followed by typing
              do {
                  skip(lexer);
@@ -1115,7 +1239,7 @@
  
          case '{':
              if (valid_symbols[FUNCTION_SIGNATURE_AUTOMATIC_SEMICOLON]) {
-@@ -142,9 +259,14 @@
+@@ -142,9 +260,14 @@
              // Don't insert a semicolon before a '[' or '(', unless we're parsing
              // a type. Detect whether we're parsing a type or an expression using
              // the validity of a binary operator token.
@@ -1131,7 +1255,7 @@
                  return false;
              }
              break;
-@@ -152,15 +274,15 @@
+@@ -152,15 +275,15 @@
              // Insert a semicolon before `--` and `++`, but not before binary `+` or `-`.
          case '+':
              skip(lexer);
@@ -1150,7 +1274,7 @@
  
              // Don't insert a semicolon before `in` or `instanceof`, but do insert one
              // before an identifier.
-@@ -172,8 +294,10 @@
+@@ -172,8 +295,10 @@
              }
              skip(lexer);
  
@@ -1163,7 +1287,7 @@
              }
  
              for (unsigned i = 0; i < 8; i++) {
-@@ -183,8 +307,8 @@
+@@ -183,8 +308,8 @@
                  skip(lexer);
              }
  
@@ -1174,7 +1298,7 @@
              }
              break;
      }
-@@ -194,7 +318,7 @@
+@@ -194,7 +319,7 @@
  
  static bool scan_ternary_qmark(TSLexer *lexer) {
      for (;;) {
@@ -1183,7 +1307,7 @@
              break;
          }
          skip(lexer);
-@@ -214,7 +338,7 @@
+@@ -214,7 +339,7 @@
          /* TypeScript optional arguments contain the ?: sequence, possibly
             with whitespace. */
          for (;;) {
@@ -1192,7 +1316,7 @@
                  break;
              }
              advance(lexer);
-@@ -237,7 +361,7 @@
+@@ -237,7 +362,7 @@
  }
  
  static bool scan_closing_comment(TSLexer *lexer) {
@@ -1201,7 +1325,7 @@
          skip(lexer);
      }
  
-@@ -262,8 +386,7 @@
+@@ -262,8 +387,7 @@
          return false;
      }
  
@@ -1211,7 +1335,7 @@
          advance(lexer);
      }
  
-@@ -281,40 +404,205 @@
+@@ -281,40 +405,311 @@
      // immediately follows a newline.
      bool at_newline = false;
  
@@ -1430,7 +1554,113 @@
 +    return false;
 +}
 +
++// veslint: after `return`, `break` or `continue` (a restricted production of ECMAScript), the
++// statement ends at a line break whatever comes after it, at a `}` and at the end of the file. A
++// comment with a line break in it counts as one; a `/` that opens no comment does not end it. A `;`
++// after the line break (and white space and comments) is the statement's own, as TypeScript reads
++// it: then the usual semicolon comes instead.
++static bool skip_space_and_comments(TSLexer *lexer) {
++    for (;;) {
++        if (is_space(lexer->lookahead)) {
++            skip(lexer);
++            continue;
++        }
++        if (lexer->lookahead != '/') {
++            return true;
++        }
++        skip(lexer);
++        if (lexer->lookahead == '/') {
++            while (lexer->lookahead != 0 && !is_line_break(lexer->lookahead)) {
++                skip(lexer);
++            }
++            continue;
++        }
++        if (lexer->lookahead != '*') {
++            return false;
++        }
++        skip(lexer);
++        for (;;) {
++            if (lexer->lookahead == 0) {
++                return true;
++            }
++            if (lexer->lookahead == '*') {
++                skip(lexer);
++                if (lexer->lookahead == '/') {
++                    skip(lexer);
++                    break;
++                }
++                continue;
++            }
++            skip(lexer);
++        }
++    }
++}
++
++static bool scan_restricted_automatic_semicolon(TSLexer *lexer) {
++    lexer->result_symbol = RESTRICTED_AUTOMATIC_SEMICOLON;
++    lexer->mark_end(lexer);
++    bool line_break = false;
++    for (;;) {
++        if (lexer->lookahead == 0 || lexer->lookahead == '}') {
++            return true;
++        }
++        if (is_line_break(lexer->lookahead)) {
++            line_break = true;
++            break;
++        }
++        if (is_inline_space(lexer->lookahead)) {
++            skip(lexer);
++            continue;
++        }
++        if (lexer->lookahead != '/') {
++            return false;
++        }
++        skip(lexer);
++        if (lexer->lookahead == '/') {
++            while (lexer->lookahead != 0 && !is_line_break(lexer->lookahead)) {
++                skip(lexer);
++            }
++            line_break = true;
++            break;
++        }
++        if (lexer->lookahead != '*') {
++            return false;
++        }
++        skip(lexer);
++        for (;;) {
++            if (lexer->lookahead == 0) {
++                return false;
++            }
++            if (is_line_break(lexer->lookahead)) {
++                line_break = true;
++            }
++            if (lexer->lookahead == '*') {
++                skip(lexer);
++                if (lexer->lookahead == '/') {
++                    skip(lexer);
++                    break;
++                }
++                continue;
++            }
++            skip(lexer);
++        }
++        if (line_break) {
++            break;
++        }
++    }
++    // After the line break: a `;` is the statement's.
++    if (!skip_space_and_comments(lexer)) {
++        return true;
++    }
++    return lexer->lookahead != ';';
++}
++
  static inline bool external_scanner_scan(void *payload, TSLexer *lexer, const bool *valid_symbols) {
++    if (valid_symbols[RESTRICTED_AUTOMATIC_SEMICOLON] && !valid_symbols[ERROR_RECOVERY] &&
++        scan_restricted_automatic_semicolon(lexer)) {
++        return true;
++    }
++
 +    // veslint: right after `f<T>`, where a binary operator cannot come yet. After `new X<T>`,
 +    // where it can, the type arguments are those of the `new`.
 +    if (valid_symbols[INSTANTIATION_END] && !valid_symbols[LOGICAL_OR]) {

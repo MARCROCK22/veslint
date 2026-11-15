@@ -1,2 +1,9 @@
 # Files of the corpus of tests/estree/run.sh whose ESTree differs from typescript-estree's, with the
 # reason (paths relative to the corpus directory; up/ holds the code of the upstream cases).
+up/0299539d8b8ec34b.ts	tree-sitter reads `import(A)` (an identifier, not a string) in a type as an import type with a source; typescript-estree's TSImportType has none (a test case of @stylistic/no-whitespace-before-property)
+up/924ef14296da1253.ts	tree-sitter reads `import(A)` (an identifier, not a string) in a type as an import type with a source; typescript-estree's TSImportType has none (a test case of @stylistic/no-whitespace-before-property)
+up/c398fd23295c403c.ts	tree-sitter reads `import(A)` (an identifier, not a string) in a type as an import type with a source; typescript-estree's TSImportType has none (a test case of @stylistic/no-whitespace-before-property)
+up/1462b54c25ca434b.ts	tree-sitter reads `yield` in a template outside a generator as a yield expression; TypeScript as the identifier `yield` (a test case of @stylistic/template-curly-spacing)
+up/4bcd50792f29d244.ts	tree-sitter reads `yield` in a template outside a generator as a yield expression; TypeScript as the identifier `yield` (a test case of @stylistic/template-curly-spacing)
+up/f107f1e7a3488c55.tsx	tree-sitter reads `yield⏎(b)` as one yield expression; TypeScript ends the yield at the line break (a restricted production) (a test case of @stylistic/no-extra-parens)
+up/12dd7cb668e0f1e9.ts	tree-sitter reads `new new C()(⏎)` as a call of `new new C()`; TypeScript as `new (new C())()` (a test case of @stylistic/new-parens)

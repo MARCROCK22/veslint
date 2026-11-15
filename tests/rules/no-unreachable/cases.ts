@@ -62,3 +62,20 @@ throw new Error();
 import type {} from 'node:fs';
 declare const afterImport: number;
 afterImport;
+
+// A line break ends `return`, `break` and `continue` (restricted productions): the next line is another statement.
+export function restrictedReturn(a: number) {
+  return
+  -a;
+}
+export function restrictedBreak(a: number) {
+  for (;;) {
+    break
+    +a;
+  }
+}
+// A `;` after the line break is the statement's own.
+export function returnThenSemicolon() {
+  return
+  ;
+}

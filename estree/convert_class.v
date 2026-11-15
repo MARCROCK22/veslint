@@ -479,12 +479,16 @@ fn (mut c Converter) index_signature(n C.TSNode, start int, end int) int {
 	m := c.modifiers(kids)
 	i := c.mk(.ts_index_signature, n, start, end)
 	c.set_accessibility(i, m)
+	// Each parameter (TypeScript parses more than one): its name, the `:` after it and its type.
 	mut params := []int{}
-	if name := field_of(kids, 'name') {
+	names := fields_of(kids, 'name')
+	types := fields_of(kids, 'index_type')
+	colons := kids.filter(it.is_tok(':'))
+	for k, name in names {
 		id := c.ident(name.n)
-		if t := field_of(kids, 'index_type') {
-			colon := tok_of(kids, ':') or { Kid{} }
-			ta := c.mk(.ts_type_annotation, t.n, c.start(colon.n), c.end(t.n))
+		if k < types.len && k < colons.len {
+			t := types[k]
+			ta := c.mk(.ts_type_annotation, t.n, c.start(colons[k].n), c.end(t.n))
 			c.pnode(ta, .type_annotation, c.typ(t.n))
 			c.pnode(id, .type_annotation, ta)
 			c.extend(id, c.t.nodes[ta].start, c.t.nodes[ta].end)
