@@ -1,0 +1,1 @@
+[{"useConfigurationIf": {"matchesAstSelector": "NewExpression[arguments.length=2]"}, "order": "desc"}]

@@ -1486,3 +1486,22 @@ veslint	sort-sets/v19	locales: zh-CN, which veslint does not collate
 veslint	sort-sets/v40	locales: zh-CN, which veslint does not collate
 veslint	sort-sets/v64	the alphabet has lone surrogates, which veslint's JSON reader refuses
 veslint	sort-sets/i122	the alphabet has lone surrogates, which veslint's JSON reader refuses
+# perfectionist/sort-maps: as for sort-array-includes.
+eslint	sort-maps/i115	disables rule-to-test/sort-maps, the name the tester gives the rule
+veslint	sort-maps/i115	disables rule-to-test/sort-maps, the name the tester gives the rule
+eslint	sort-maps/i116	disables rule-to-test/sort-maps, the name the tester gives the rule
+veslint	sort-maps/i116	disables rule-to-test/sort-maps, the name the tester gives the rule
+eslint	sort-maps/i117	disables rule-to-test/sort-maps, the name the tester gives the rule
+veslint	sort-maps/i117	disables rule-to-test/sort-maps, the name the tester gives the rule
+eslint	sort-maps/i118	disables rule-to-test/sort-maps, the name the tester gives the rule
+veslint	sort-maps/i118	disables rule-to-test/sort-maps, the name the tester gives the rule
+eslint	sort-maps/i119	disables rule-to-test/sort-maps, the name the tester gives the rule
+veslint	sort-maps/i119	disables rule-to-test/sort-maps, the name the tester gives the rule
+eslint	sort-maps/i121	disables rule-to-test/sort-maps, the name the tester gives the rule
+veslint	sort-maps/i121	disables rule-to-test/sort-maps, the name the tester gives the rule
+eslint	sort-maps/i123	disables rule-to-test/sort-maps, the name the tester gives the rule
+veslint	sort-maps/i123	disables rule-to-test/sort-maps, the name the tester gives the rule
+veslint	sort-maps/v17	locales: zh-CN, which veslint does not collate
+veslint	sort-maps/v42	locales: zh-CN, which veslint does not collate
+veslint	sort-maps/v71	the alphabet has lone surrogates, which veslint's JSON reader refuses
+veslint	sort-maps/i103	the alphabet has lone surrogates, which veslint's JSON reader refuses

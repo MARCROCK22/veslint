@@ -1,0 +1,32 @@
+tests/rules/perfectionist/sort-maps/ast-selector/cases.ts:4:20	perfectionist/sort-maps	unexpectedMapElementsOrder	Expected "'b'" to come before "'a'".	fix	128	146	['b', 1], ['a', 1]	end	4	28
+tests/rules/perfectionist/sort-maps/ast-selector/cases.ts:5:20	perfectionist/sort-maps	unexpectedMapElementsOrder	Expected "'a'" to come before "'b'".	fix	162	180	['a', 1], ['b', 1]	end	5	28
+tests/rules/perfectionist/sort-maps/cases.ts:5:20	perfectionist/sort-maps	unexpectedMapElementsOrder	Expected "'a'" to come before "'b'".	fix	151	169	['a', 2], ['b', 1]	end	5	28
+tests/rules/perfectionist/sort-maps/cases.ts:6:18	perfectionist/sort-maps	unexpectedMapElementsOrder	Expected "a" to come before "b".	fix	182	196	[a, 2], [b, 1]	end	6	24
+tests/rules/perfectionist/sort-maps/cases.ts:9:3	perfectionist/sort-maps	unexpectedMapElementsOrder	Expected "'a'" to come before "'b'".	fix	220	263	['a', 2], // about a\n  ['b', 1], // about b	end	9	11
+tests/rules/perfectionist/sort-maps/cases.ts:15:3	perfectionist/sort-maps	unexpectedMapElementsOrder	Expected "'a'" to come before "'b'".	fix	280	329	/* above a */\n  ['a', 2],\n  // above b\n  ['b', 1]	end	15	11
+tests/rules/perfectionist/sort-maps/cases.ts:17:20	perfectionist/sort-maps	unexpectedMapElementsOrder	Expected "'a'" to come before "'b'".	fix	344	362	['a', 2], ['b', 1]	end	17	28
+tests/rules/perfectionist/sort-maps/cases.ts:17:46	perfectionist/sort-maps	unexpectedMapElementsOrder	Expected "'c'" to come before "'d'".	fix	370	388	['c', 1], ['d', 1]	end	17	54
+tests/rules/perfectionist/sort-maps/cases.ts:19:20	perfectionist/sort-maps	unexpectedMapElementsOrder	Expected "o.a" to come before "o.b".	fix	444	462	[o.a, 2], [o.b, 1]	end	19	28
+tests/rules/perfectionist/sort-maps/cases.ts:20:14	perfectionist/sort-maps	unexpectedMapElementsOrder	Expected "'a'" to come before "undefined".	fix	475	487	['a', 1], []	end	20	22
+tests/rules/perfectionist/sort-maps/cases.ts:21:17	perfectionist/sort-maps	unexpectedMapElementsOrder	Expected "'a'" to come before "undefined".	fix	500	522	['a', 1], entry, [, 1]	end	21	25
+tests/rules/perfectionist/sort-maps/cases.ts:22:20	perfectionist/sort-maps	unexpectedMapElementsOrder	Expected "'a'" to come before "'B'".	fix	535	553	['a', 1], ['B', 1]	end	22	28
+tests/rules/perfectionist/sort-maps/cases.ts:23:22	perfectionist/sort-maps	unexpectedMapElementsOrder	Expected "10" to come before "2".	fix	566	601	[1, 'one'], [10, 'ten'], [2, 'two']	end	23	33
+tests/rules/perfectionist/sort-maps/cases.ts:23:35	perfectionist/sort-maps	unexpectedMapElementsOrder	Expected "1" to come before "10".	fix	566	601	[1, 'one'], [10, 'ten'], [2, 'two']	end	23	45
+tests/rules/perfectionist/sort-maps/cases.ts:24:20	perfectionist/sort-maps	unexpectedMapElementsOrder	Expected "'a'" to come before ""b"".	fix	614	632	['a', 2], ["b", 1]	end	24	28
+tests/rules/perfectionist/sort-maps/cases.ts:25:20	perfectionist/sort-maps	unexpectedMapElementsOrder	Expected "`a`" to come before "`b`".	fix	645	663	[`a`, 2], [`b`, 1]	end	25	28
+tests/rules/perfectionist/sort-maps/cases.ts:33:36	perfectionist/sort-maps	unexpectedMapElementsOrder	Expected "'a'" to come before "'b'".	fix	832	850	['a', 2], ['b', 1]	end	33	44
+tests/rules/perfectionist/sort-maps/cases.ts:38:3	perfectionist/sort-maps	unexpectedMapElementsOrder	Expected "'b'" to come before "'a'".	fix	866	952	['b', 1],\n  // eslint-disable-next-line perfectionist/sort-maps\n  ['a', 1],\n  ['c', 1]	end	38	11
+tests/rules/perfectionist/sort-maps/configuration-if/cases.ts:4:21	perfectionist/sort-maps	unexpectedMapElementsOrder	Expected "'xb'" to come before "'xa'".	fix	128	148	['xb', 1], ['xa', 1]	end	4	30
+tests/rules/perfectionist/sort-maps/configuration-if/cases.ts:5:20	perfectionist/sort-maps	unexpectedMapElementsOrder	Expected "'a'" to come before "'b'".	fix	161	179	['a', 1], ['b', 1]	end	5	28
+tests/rules/perfectionist/sort-maps/custom/cases.ts:4:20	perfectionist/sort-maps	unexpectedMapElementsOrder	Expected "'b'" to come before "'a'".	fix	128	146	['b', 1], ['a', 1]	end	4	28
+tests/rules/perfectionist/sort-maps/groups/cases.ts:6:3	perfectionist/sort-maps	unexpectedMapElementsGroupOrder	Expected "'topB'" (top) to come before "'b'" (unknown).	fix	131	181	['topA', 1],\n  ['topB', 1],\n\n  ['a', 1],\n  ['b', 1]	end	6	14
+tests/rules/perfectionist/sort-maps/groups/cases.ts:7:3	perfectionist/sort-maps	missedSpacingBetweenMapElementsMembers	Missed spacing between "'topB'" and "'a'".	fix	131	181	['topA', 1],\n  ['topB', 1],\n\n  ['a', 1],\n  ['b', 1]	end	7	11
+tests/rules/perfectionist/sort-maps/groups/cases.ts:8:3	perfectionist/sort-maps	unexpectedMapElementsGroupOrder	Expected "'topA'" (top) to come before "'a'" (unknown).	fix	131	181	['topA', 1],\n  ['topB', 1],\n\n  ['a', 1],\n  ['b', 1]	end	8	14
+tests/rules/perfectionist/sort-maps/groups/cases.ts:12:3	perfectionist/sort-maps	missedSpacingBetweenMapElementsMembers	Missed spacing between "'topA'" and "'a'".	fix	210	214	,\n\n  	end	12	11
+tests/rules/perfectionist/sort-maps/groups/cases.ts:17:3	perfectionist/sort-maps	extraSpacingBetweenMapElementsMembers	Extra spacing between "'topA'" and "'topB'".	fix	251	256	,\n  	end	17	14
+tests/rules/perfectionist/sort-maps/line-length/cases.ts:4:22	perfectionist/sort-maps	unexpectedMapElementsOrder	Expected "'a'" to come before "'ccc'".	fix	128	159	['a', 1], ['bb', 1], ['ccc', 1]	end	4	30
+tests/rules/perfectionist/sort-maps/natural/cases.ts:4:24	perfectionist/sort-maps	unexpectedMapElementsOrder	Expected "'item10'" to come before "'item1'".	fix	128	169	['item10', 1], ['item2', 1], ['item1', 1]	end	4	37
+tests/rules/perfectionist/sort-maps/partition-comment/cases.ts:6:3	perfectionist/sort-maps	unexpectedMapElementsOrder	Expected "'a'" to come before "'b'".	fix	131	151	['a', 1],\n  ['b', 1]	end	6	11
+tests/rules/perfectionist/sort-maps/partition-comment/cases.ts:9:3	perfectionist/sort-maps	unexpectedMapElementsOrder	Expected "'c'" to come before "'d'".	fix	165	185	['c', 1],\n  ['d', 1]	end	9	11
+tests/rules/perfectionist/sort-maps/partition-newline/cases.ts:6:3	perfectionist/sort-maps	unexpectedMapElementsOrder	Expected "'a'" to come before "'b'".	fix	131	151	['a', 1],\n  ['b', 1]	end	6	11
+tests/rules/perfectionist/sort-maps/partition-newline/cases.ts:9:3	perfectionist/sort-maps	unexpectedMapElementsOrder	Expected "'c'" to come before "'d'".	fix	156	176	['c', 1],\n  ['d', 1]	end	9	11

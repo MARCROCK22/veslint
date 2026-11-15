@@ -208,6 +208,7 @@ pub fn check_options(rule string, options []json2.Any) !bool {
 		marcrock_prefer_at { mpa_options(options)! }
 		perfectionist_sort_array_includes { pf_options(options)! }
 		perfectionist_sort_sets { pf_options(options)! }
+		perfectionist_sort_maps { pf_options(options)! }
 		else { return false }
 	}
 	return true
