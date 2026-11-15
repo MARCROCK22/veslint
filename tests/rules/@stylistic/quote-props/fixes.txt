@@ -82,6 +82,7 @@ tests/rules/@stylistic/quote-props/cases.ts:51:37	@stylistic/quote-props	unquote
 tests/rules/@stylistic/quote-props/cases.ts:52:10	@stylistic/quote-props	unquotedPropertyFound	Unquoted property 'A' found.	fix	1031	1032	"A"	end	52	11
 tests/rules/@stylistic/quote-props/cases.ts:52:18	@stylistic/quote-props	unquotedPropertyFound	Unquoted property 'C' found.	fix	1039	1040	"C"	end	52	23
 tests/rules/@stylistic/quote-props/cases.ts:54:17	@stylistic/quote-props	unquotedPropertyFound	Unquoted property 'c' found.	fix	1083	1084	"c"	end	54	18
+tests/rules/@stylistic/quote-props/cases.ts:61:3	@stylistic/quote-props	unquotedPropertyFound	Unquoted property 'secret' found.	fix	1286	1293	"undefined"	end	61	19
 tests/rules/@stylistic/quote-props/consistent-as-needed-keywords/cases.ts:1:26	@stylistic/quote-props	redundantQuoting	Properties shouldn't be quoted as all quotes are redundant.	fix	25	28	y	end	1	32
 tests/rules/@stylistic/quote-props/consistent-as-needed-keywords/cases.ts:1:34	@stylistic/quote-props	redundantQuoting	Properties shouldn't be quoted as all quotes are redundant.	fix	33	36	z	end	1	40
 tests/rules/@stylistic/quote-props/consistent-as-needed-keywords/cases.ts:42:20	@stylistic/quote-props	requireQuotesDueToReservedWord	Properties should be quoted as 'default' is a reserved word.	fix	793	798	"class"	end	42	28

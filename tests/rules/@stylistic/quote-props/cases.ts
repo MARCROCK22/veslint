@@ -55,3 +55,8 @@ enum G { 'a-b', c }
 export type { I, T, U };
 export { E, F, G };
 export const spread = { ...a, 'k': 1 };
+
+// A private name in a type literal: the message names it without its `#`.
+export declare const privateKeys: {
+  #secret?: never;
+};

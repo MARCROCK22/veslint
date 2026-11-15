@@ -147,7 +147,8 @@ fn sqp_is_numeric_key(t &estree.EsTree, key int) bool {
 // sqp_key_value is `key.name || key.value` as a string: the name of an identifier, the value of a
 // string literal, String(value) of a numeric literal.
 fn sqp_key_value(t &estree.EsTree, key int) string {
-	if t.typ(key) == .identifier {
+	// An Identifier or a PrivateIdentifier (`#secret`): its name, without the `#`.
+	if t.typ(key) in [.identifier, .private_identifier] {
 		return t.string_of(key, .name) or { '' }
 	}
 	value := t.get(key, .value)
@@ -171,6 +172,10 @@ fn sqp_key_value(t &estree.EsTree, key int) string {
 fn (c &Checker) sqp_quoted_key(t &estree.EsTree, key int) string {
 	if sqp_is_string_key(t, key) || t.typ(key) == .template_literal {
 		return c.src[t.nodes[key].start..t.nodes[key].end]
+	}
+	// `key.type === 'Identifier' ? key.name : key.value`: a PrivateIdentifier has no `value`.
+	if t.typ(key) == .private_identifier {
+		return '"undefined"'
 	}
 	return '"${sqp_key_value(t, key)}"'
 }
