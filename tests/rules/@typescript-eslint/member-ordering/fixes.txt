@@ -1,0 +1,63 @@
+tests/rules/@typescript-eslint/member-ordering/alpha-ci/cases.ts:3:3	@typescript-eslint/member-ordering	incorrectOrder	Member a should be declared before member B.	end	3	9
+tests/rules/@typescript-eslint/member-ordering/alpha-ci/cases.ts:8:3	@typescript-eslint/member-ordering	incorrectOrder	Member L should be declared before member m.	end	8	9
+tests/rules/@typescript-eslint/member-ordering/alpha-ci/cases.ts:9:3	@typescript-eslint/member-ordering	incorrectOrder	Member k should be declared before member L.	end	9	9
+tests/rules/@typescript-eslint/member-ordering/alpha-ci/cases.ts:13:3	@typescript-eslint/member-ordering	incorrectGroupOrder	Member b should be declared before all method definitions.	end	13	9
+tests/rules/@typescript-eslint/member-ordering/alpha-ci/cases.ts:14:3	@typescript-eslint/member-ordering	incorrectGroupOrder	Member a should be declared before all method definitions.	end	14	9
+tests/rules/@typescript-eslint/member-ordering/alpha-ci/cases.ts:14:3	@typescript-eslint/member-ordering	incorrectOrder	Member a should be declared before member b.	end	14	9
+tests/rules/@typescript-eslint/member-ordering/alpha-ci/cases.ts:15:3	@typescript-eslint/member-ordering	incorrectGroupOrder	Member d should be declared before all method definitions.	end	15	9
+tests/rules/@typescript-eslint/member-ordering/alpha-ci/cases.ts:16:3	@typescript-eslint/member-ordering	incorrectGroupOrder	Member c should be declared before all method definitions.	end	16	9
+tests/rules/@typescript-eslint/member-ordering/alpha/cases.ts:3:3	@typescript-eslint/member-ordering	incorrectOrder	Member a should be declared before member b.	end	3	9
+tests/rules/@typescript-eslint/member-ordering/alpha/cases.ts:4:3	@typescript-eslint/member-ordering	incorrectOrder	Member B should be declared before member a.	end	4	9
+tests/rules/@typescript-eslint/member-ordering/alpha/cases.ts:7:3	@typescript-eslint/member-ordering	incorrectOrder	Member e should be declared before member é.	end	7	9
+tests/rules/@typescript-eslint/member-ordering/alpha/cases.ts:9:3	@typescript-eslint/member-ordering	incorrectOrder	Member `y` should be declared before member z-z.	end	9	13
+tests/rules/@typescript-eslint/member-ordering/alpha/cases.ts:11:3	@typescript-eslint/member-ordering	incorrectOrder	Member c should be declared before member x.	end	11	9
+tests/rules/@typescript-eslint/member-ordering/alpha/cases.ts:14:3	@typescript-eslint/member-ordering	incorrectOrder	Member m should be declared before member v.	end	14	9
+tests/rules/@typescript-eslint/member-ordering/alpha/cases.ts:15:3	@typescript-eslint/member-ordering	incorrectOrder	Member l should be declared before member m.	end	15	9
+tests/rules/@typescript-eslint/member-ordering/alpha/cases.ts:19:3	@typescript-eslint/member-ordering	incorrectOrder	Member a should be declared before member b.	end	19	13
+tests/rules/@typescript-eslint/member-ordering/alpha/cases.ts:20:3	@typescript-eslint/member-ordering	incorrectOrder	Member 10 should be declared before member a.	end	20	14
+tests/rules/@typescript-eslint/member-ordering/alpha/cases.ts:24:3	@typescript-eslint/member-ordering	incorrectOrder	Member j should be declared before member k.	end	24	13
+tests/rules/@typescript-eslint/member-ordering/alpha/cases.ts:28:3	@typescript-eslint/member-ordering	incorrectGroupOrder	Member z should be declared before all public instance method definitions.	end	28	9
+tests/rules/@typescript-eslint/member-ordering/alpha/cases.ts:29:3	@typescript-eslint/member-ordering	incorrectGroupOrder	Member y should be declared before all public instance method definitions.	end	29	9
+tests/rules/@typescript-eslint/member-ordering/alpha/cases.ts:29:3	@typescript-eslint/member-ordering	incorrectOrder	Member y should be declared before member z.	end	29	9
+tests/rules/@typescript-eslint/member-ordering/alpha/cases.ts:30:3	@typescript-eslint/member-ordering	incorrectGroupOrder	Member constructor should be declared before all public instance method definitions.	end	30	19
+tests/rules/@typescript-eslint/member-ordering/cases.ts:5:3	@typescript-eslint/member-ordering	incorrectGroupOrder	Member field should be declared before all public instance method definitions.	end	5	13
+tests/rules/@typescript-eslint/member-ordering/cases.ts:6:3	@typescript-eslint/member-ordering	incorrectGroupOrder	Member s should be declared before all public instance method definitions.	end	6	16
+tests/rules/@typescript-eslint/member-ordering/cases.ts:7:3	@typescript-eslint/member-ordering	incorrectGroupOrder	Member constructor should be declared before all public instance method definitions.	end	7	19
+tests/rules/@typescript-eslint/member-ordering/cases.ts:8:3	@typescript-eslint/member-ordering	incorrectGroupOrder	Member p should be declared before all public instance method definitions.	end	8	17
+tests/rules/@typescript-eslint/member-ordering/cases.ts:9:3	@typescript-eslint/member-ordering	incorrectGroupOrder	Member h should be declared before all public instance method definitions.	end	9	10
+tests/rules/@typescript-eslint/member-ordering/cases.ts:10:3	@typescript-eslint/member-ordering	incorrectGroupOrder	Member g should be declared before all public instance method definitions.	end	12	4
+tests/rules/@typescript-eslint/member-ordering/cases.ts:13:3	@typescript-eslint/member-ordering	incorrectGroupOrder	Member key should be declared before all public instance method definitions.	end	13	26
+tests/rules/@typescript-eslint/member-ordering/cases.ts:14:3	@typescript-eslint/member-ordering	incorrectGroupOrder	Member static block should be declared before all public instance method definitions.	end	14	12
+tests/rules/@typescript-eslint/member-ordering/cases.ts:15:3	@typescript-eslint/member-ordering	incorrectGroupOrder	Member decorated should be declared before all public instance method definitions.	end	15	22
+tests/rules/@typescript-eslint/member-ordering/cases.ts:16:3	@typescript-eslint/member-ordering	incorrectGroupOrder	Member acc should be declared before all public instance method definitions.	end	16	20
+tests/rules/@typescript-eslint/member-ordering/cases.ts:21:3	@typescript-eslint/member-ordering	incorrectGroupOrder	Member f should be declared before all public abstract method definitions.	end	21	22
+tests/rules/@typescript-eslint/member-ordering/cases.ts:22:3	@typescript-eslint/member-ordering	incorrectGroupOrder	Member a should be declared before all public abstract method definitions.	end	22	41
+tests/rules/@typescript-eslint/member-ordering/cases.ts:23:3	@typescript-eslint/member-ordering	incorrectGroupOrder	Member r should be declared before all public abstract method definitions.	end	23	18
+tests/rules/@typescript-eslint/member-ordering/cases.ts:24:3	@typescript-eslint/member-ordering	incorrectGroupOrder	Member k should be declared before all public abstract method definitions.	end	24	32
+tests/rules/@typescript-eslint/member-ordering/cases.ts:28:3	@typescript-eslint/member-ordering	incorrectGroupOrder	Member f should be declared before all method definitions.	end	28	13
+tests/rules/@typescript-eslint/member-ordering/cases.ts:29:3	@typescript-eslint/member-ordering	incorrectGroupOrder	Member new should be declared before all method definitions.	end	29	13
+tests/rules/@typescript-eslint/member-ordering/cases.ts:30:3	@typescript-eslint/member-ordering	incorrectGroupOrder	Member call should be declared before all method definitions.	end	30	12
+tests/rules/@typescript-eslint/member-ordering/cases.ts:31:3	@typescript-eslint/member-ordering	incorrectGroupOrder	Member k should be declared before all method definitions.	end	31	24
+tests/rules/@typescript-eslint/member-ordering/cases.ts:35:3	@typescript-eslint/member-ordering	incorrectGroupOrder	Member f should be declared before all method definitions.	end	35	22
+tests/rules/@typescript-eslint/member-ordering/cases.ts:39:3	@typescript-eslint/member-ordering	incorrectGroupOrder	Member f should be declared before all public instance method definitions.	end	39	9
+tests/rules/@typescript-eslint/member-ordering/cases.ts:44:3	@typescript-eslint/member-ordering	incorrectGroupOrder	Member f should be declared before all public instance method definitions.	end	44	9
+tests/rules/@typescript-eslint/member-ordering/memberTypes-never/cases.ts:3:3	@typescript-eslint/member-ordering	incorrectGroupOrder	Member f should be declared before all static initialization definitions.	end	3	10
+tests/rules/@typescript-eslint/member-ordering/memberTypes-never/cases.ts:4:3	@typescript-eslint/member-ordering	incorrectGroupOrder	Member g should be declared before all static initialization definitions.	end	4	17
+tests/rules/@typescript-eslint/member-ordering/memberTypes-never/cases.ts:5:3	@typescript-eslint/member-ordering	incorrectGroupOrder	Member m should be declared before all static initialization definitions.	end	5	9
+tests/rules/@typescript-eslint/member-ordering/natural-ci/cases.ts:3:3	@typescript-eslint/member-ordering	incorrectOrder	Member A9 should be declared before member a10.	end	3	10
+tests/rules/@typescript-eslint/member-ordering/natural-ci/cases.ts:6:3	@typescript-eslint/member-ordering	incorrectOrder	Member b1 should be declared before member B2.	end	6	10
+tests/rules/@typescript-eslint/member-ordering/natural/cases.ts:4:3	@typescript-eslint/member-ordering	incorrectOrder	Member a2 should be declared before member a10.	end	4	14
+tests/rules/@typescript-eslint/member-ordering/natural/cases.ts:5:3	@typescript-eslint/member-ordering	incorrectOrder	Member a02 should be declared before member a2.	end	5	15
+tests/rules/@typescript-eslint/member-ordering/natural/cases.ts:7:3	@typescript-eslint/member-ordering	incorrectOrder	Member A3 should be declared before member a2b.	end	7	14
+tests/rules/@typescript-eslint/member-ordering/natural/cases.ts:9:3	@typescript-eslint/member-ordering	incorrectOrder	Member b_1 should be declared before member b-2.	end	9	15
+tests/rules/@typescript-eslint/member-ordering/natural/cases.ts:12:3	@typescript-eslint/member-ordering	incorrectOrder	Member c100000000000000000000 should be declared before member c99999999999999999999.	end	12	34
+tests/rules/@typescript-eslint/member-ordering/natural/cases.ts:14:3	@typescript-eslint/member-ordering	incorrectOrder	Member u should be declared before member ü.	end	14	13
+tests/rules/@typescript-eslint/member-ordering/never-classes/cases.ts:7:3	@typescript-eslint/member-ordering	incorrectGroupOrder	Member m should be declared before all field definitions.	end	7	9
+tests/rules/@typescript-eslint/member-ordering/never-classes/cases.ts:11:3	@typescript-eslint/member-ordering	incorrectGroupOrder	Member m should be declared before all field definitions.	end	11	13
+tests/rules/@typescript-eslint/member-ordering/never-classes/cases.ts:15:3	@typescript-eslint/member-ordering	incorrectGroupOrder	Member m should be declared before all constructor definitions.	end	15	13
+tests/rules/@typescript-eslint/member-ordering/never-classes/cases.ts:16:3	@typescript-eslint/member-ordering	incorrectGroupOrder	Member f should be declared before all constructor definitions.	end	16	13
+tests/rules/@typescript-eslint/member-ordering/optional/cases.ts:3:3	@typescript-eslint/member-ordering	incorrectOrder	Member a should be declared before member b.	end	3	9
+tests/rules/@typescript-eslint/member-ordering/optional/cases.ts:8:3	@typescript-eslint/member-ordering	incorrectRequiredMembersOrder	Member a should be declared after all required members.	end	8	10
+tests/rules/@typescript-eslint/member-ordering/optional/cases.ts:13:3	@typescript-eslint/member-ordering	incorrectRequiredMembersOrder	Member a should be declared after all required members.	end	13	10
+tests/rules/@typescript-eslint/member-ordering/optional/cases.ts:19:3	@typescript-eslint/member-ordering	incorrectGroupOrder	Member b should be declared before all method definitions.	end	19	13
+tests/rules/@typescript-eslint/member-ordering/optional/cases.ts:23:3	@typescript-eslint/member-ordering	incorrectGroupOrder	Member a should be declared before all method definitions.	end	23	14
