@@ -468,6 +468,7 @@ pub const prefer_literal_enum_member = '@typescript-eslint/prefer-literal-enum-m
 pub const no_magic_numbers = '@typescript-eslint/no-magic-numbers'
 pub const no_restricted_types = '@typescript-eslint/no-restricted-types'
 pub const no_generated_empty_object_type = '@typescript-eslint/no-generated-empty-object-type'
+pub const no_unsafe_enum_assignment = '@typescript-eslint/no-unsafe-enum-assignment'
 pub const names = [no_floating_promises, await_thenable, require_await, return_await,
 	no_misused_promises, no_unsafe_call, no_unsafe_member_access, no_unsafe_return,
 	no_unsafe_assignment, no_unsafe_argument, restrict_template_expressions,
@@ -600,7 +601,7 @@ pub const names = [no_floating_promises, await_thenable, require_await, return_a
 	perfectionist_sort_named_imports, perfectionist_sort_named_exports, perfectionist_sort_exports,
 	explicit_function_return_type, explicit_module_boundary_types, explicit_member_accessibility,
 	parameter_properties, prefer_literal_enum_member, no_magic_numbers, no_restricted_types,
-	no_generated_empty_object_type]
+	no_generated_empty_object_type, no_unsafe_enum_assignment]
 
 // untyped_rules are the ported rules that need no types (`meta.docs.requiresTypeChecking` is false
 // in typescript-eslint; the eslint-plugin-unicorn rules that read the types when the parser has a
@@ -1170,6 +1171,7 @@ pub const default_options = {
 	no_magic_numbers:                                '[{"detectObjects":false,"enforceConst":false,"ignore":[],"ignoreArrayIndexes":false,"ignoreEnums":false,"ignoreNumericLiteralTypes":false,"ignoreReadonlyClassProperties":false,"ignoreTypeIndexes":false}]'
 	no_restricted_types:                             '[{}]'
 	no_generated_empty_object_type:                  '[]'
+	no_unsafe_enum_assignment:                       '[]'
 }
 
 // Finding is a problem a rule found at a node.
@@ -1761,6 +1763,7 @@ pub fn message(rule string, finding Finding) string {
 		no_magic_numbers { nmag_messages }
 		no_restricted_types { nrty_messages }
 		no_generated_empty_object_type { ngeo_messages }
+		no_unsafe_enum_assignment { nuea_messages }
 		else { map[string]string{} }
 	}
 	return interpolate(messages[finding.message_id] or { finding.message_id }, finding.data)
@@ -3279,6 +3282,9 @@ fn (mut c Checker) lint_rule(rule string, root C.TSNode, abs_path string, mut st
 		}
 		no_generated_empty_object_type {
 			return c.lint_no_generated_empty_object_type(root, abs_path, mut stats)!
+		}
+		no_unsafe_enum_assignment {
+			return c.lint_no_unsafe_enum_assignment(root, abs_path, mut stats)!
 		}
 		else { return error('unknown rule: ${rule}') }
 	}
