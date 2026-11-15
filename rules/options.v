@@ -174,6 +174,7 @@ pub fn check_options(rule string, options []json2.Any) !bool {
 		stylistic_type_annotation_spacing { stas_options(options)! }
 		stylistic_space_before_function_paren { ssbfp_options(options)! }
 		stylistic_key_spacing { sks_options(options)! }
+		stylistic_space_infix_ops { ssio_options(options)! }
 		else { return false }
 	}
 	return true
