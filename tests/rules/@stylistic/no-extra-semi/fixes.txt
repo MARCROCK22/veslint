@@ -1,0 +1,26 @@
+tests/rules/@stylistic/no-extra-semi/cases.ts:1:11	@stylistic/no-extra-semi	unexpected	Unnecessary semicolon.	fix	9	13	;\n;	end	1	12
+tests/rules/@stylistic/no-extra-semi/cases.ts:2:1	@stylistic/no-extra-semi	unexpected	Unnecessary semicolon.	fix	10	22	;\n\nfunction	end	2	2
+tests/rules/@stylistic/no-extra-semi/cases.ts:4:3	@stylistic/no-extra-semi	unexpected	Unnecessary semicolon.	end	4	4
+tests/rules/@stylistic/no-extra-semi/cases.ts:5:12	@stylistic/no-extra-semi	unexpected	Unnecessary semicolon.	fix	56	60	;\n}	end	5	13
+tests/rules/@stylistic/no-extra-semi/cases.ts:6:2	@stylistic/no-extra-semi	unexpected	Unnecessary semicolon.	fix	59	65	}\nfor	end	6	3
+tests/rules/@stylistic/no-extra-semi/cases.ts:16:3	@stylistic/no-extra-semi	unexpected	Unnecessary semicolon.	fix	181	190	{\n  \n  a	end	16	4
+tests/rules/@stylistic/no-extra-semi/cases.ts:17:9	@stylistic/no-extra-semi	unexpected	Unnecessary semicolon.	fix	194	200	;\n  ;	end	17	10
+tests/rules/@stylistic/no-extra-semi/cases.ts:18:3	@stylistic/no-extra-semi	unexpected	Unnecessary semicolon.	fix	195	201	;\n  b	end	18	4
+tests/rules/@stylistic/no-extra-semi/cases.ts:19:9	@stylistic/no-extra-semi	unexpected	Unnecessary semicolon.	fix	213	219	}\n  ;	end	19	10
+tests/rules/@stylistic/no-extra-semi/cases.ts:20:3	@stylistic/no-extra-semi	unexpected	Unnecessary semicolon.	fix	214	220	;\n  ;	end	20	4
+tests/rules/@stylistic/no-extra-semi/cases.ts:20:4	@stylistic/no-extra-semi	unexpected	Unnecessary semicolon.	fix	218	229	;\n  static	end	20	5
+tests/rules/@stylistic/no-extra-semi/cases.ts:21:12	@stylistic/no-extra-semi	unexpected	Unnecessary semicolon.	fix	231	239	}\n  get	end	21	13
+tests/rules/@stylistic/no-extra-semi/cases.ts:22:24	@stylistic/no-extra-semi	unexpected	Unnecessary semicolon.	fix	256	269	}\n  accessor	end	22	25
+tests/rules/@stylistic/no-extra-semi/cases.ts:23:20	@stylistic/no-extra-semi	unexpected	Unnecessary semicolon.	fix	277	283	;\n  [	end	23	21
+tests/rules/@stylistic/no-extra-semi/cases.ts:26:9	@stylistic/no-extra-semi	unexpected	Unnecessary semicolon.	fix	326	330	} @	end	26	10
+tests/rules/@stylistic/no-extra-semi/cases.ts:29:22	@stylistic/no-extra-semi	unexpected	Unnecessary semicolon.	fix	389	402	;\n  abstract	end	29	23
+tests/rules/@stylistic/no-extra-semi/cases.ts:30:22	@stylistic/no-extra-semi	unexpected	Unnecessary semicolon.	fix	412	416	;\n}	end	30	23
+tests/rules/@stylistic/no-extra-semi/cases.ts:34:25	@stylistic/no-extra-semi	unexpected	Unnecessary semicolon.	fix	515	518	};	end	34	26
+tests/rules/@stylistic/no-extra-semi/cases.ts:34:26	@stylistic/no-extra-semi	unexpected	Unnecessary semicolon.	fix	516	520	; }	end	34	27
+tests/rules/@stylistic/no-extra-semi/cases.ts:35:3	@stylistic/no-extra-semi	unexpected	Unnecessary semicolon.	fix	522	527	{  }	end	35	4
+tests/rules/@stylistic/no-extra-semi/cases.ts:36:22	@stylistic/no-extra-semi	unexpected	Unnecessary semicolon.	fix	547	552	:  }	end	36	23
+tests/rules/@stylistic/no-extra-semi/cases.ts:37:1	@stylistic/no-extra-semi	unexpected	Unnecessary semicolon.	end	37	2
+tests/rules/@stylistic/no-extra-semi/cases.ts:38:25	@stylistic/no-extra-semi	unexpected	Unnecessary semicolon.	fix	595	605	{ 'block'	end	38	26
+tests/rules/@stylistic/no-extra-semi/cases.ts:39:19	@stylistic/no-extra-semi	unexpected	Unnecessary semicolon.	end	39	20
+tests/rules/@stylistic/no-extra-semi/cases.ts:40:9	@stylistic/no-extra-semi	unexpected	Unnecessary semicolon.	fix	640	661	;\n/* a */  /* b */\nx	end	40	10
+tests/rules/@stylistic/no-extra-semi/cases.ts:41:6	@stylistic/no-extra-semi	unexpected	Unnecessary semicolon.	fix	663	673	; \nexport	end	41	7
