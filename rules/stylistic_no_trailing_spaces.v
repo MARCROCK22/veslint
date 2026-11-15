@@ -120,7 +120,8 @@ fn sntr_line_end(src string, start int) (int, int) {
 		if b == `\r` {
 			return i, if i + 1 < src.len && src[i + 1] == `\n` { i + 2 } else { i + 1 }
 		}
-		if b == 0xe2 && i + 2 < src.len && src[i + 1] == 0x80 && src[i + 2] in [u8(0xa8), 0xa9] {
+		if b == 0xe2 && i + 2 < src.len && src[i + 1] == 0x80
+			&& (src[i + 2] == 0xa8 || src[i + 2] == 0xa9) {
 			return i, i + 3
 		}
 		i++

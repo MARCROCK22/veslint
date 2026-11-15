@@ -195,6 +195,7 @@ pub fn check_options(rule string, options []json2.Any) !bool {
 		stylistic_lines_between_class_members { slbcm_options(options)! }
 		stylistic_new_parens { snwp_options(options)! }
 		stylistic_semi_style { ssms_options(options)! }
+		stylistic_semi { ssemi_options(options)! }
 		else { return false }
 	}
 	return true

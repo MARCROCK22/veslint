@@ -1,0 +1,248 @@
+tests/rules/@stylistic/semi/always/cases.ts:1:18	@stylistic/semi	missingSemi	Missing semicolon.	fix	17	17	;	end	2	1
+tests/rules/@stylistic/semi/always/cases.ts:3:24	@stylistic/semi	missingSemi	Missing semicolon.	fix	64	64	;	end	4	1
+tests/rules/@stylistic/semi/always/cases.ts:5:18	@stylistic/semi	missingSemi	Missing semicolon.	fix	106	106	;	end	6	1
+tests/rules/@stylistic/semi/always/cases.ts:6:16	@stylistic/semi	missingSemi	Missing semicolon.	fix	122	122	;	end	7	1
+tests/rules/@stylistic/semi/always/cases.ts:7:23	@stylistic/semi	missingSemi	Missing semicolon.	fix	145	145	;	end	8	1
+tests/rules/@stylistic/semi/always/cases.ts:9:28	@stylistic/semi	missingSemi	Missing semicolon.	fix	190	190	;	end	10	1
+tests/rules/@stylistic/semi/always/cases.ts:11:10	@stylistic/semi	missingSemi	Missing semicolon.	fix	229	229	;	end	12	1
+tests/rules/@stylistic/semi/always/cases.ts:13:17	@stylistic/semi	missingSemi	Missing semicolon.	fix	257	257	;	end	14	1
+tests/rules/@stylistic/semi/always/cases.ts:18:16	@stylistic/semi	missingSemi	Missing semicolon.	fix	365	365	;	end	19	1
+tests/rules/@stylistic/semi/always/cases.ts:20:20	@stylistic/semi	missingSemi	Missing semicolon.	fix	404	404	;	end	21	1
+tests/rules/@stylistic/semi/always/cases.ts:22:22	@stylistic/semi	missingSemi	Missing semicolon.	fix	428	428	;	end	23	1
+tests/rules/@stylistic/semi/always/cases.ts:23:9	@stylistic/semi	missingSemi	Missing semicolon.	fix	437	437	;	end	23	10
+tests/rules/@stylistic/semi/always/cases.ts:24:18	@stylistic/semi	missingSemi	Missing semicolon.	fix	472	472	;	end	24	19
+tests/rules/@stylistic/semi/always/cases.ts:26:9	@stylistic/semi	missingSemi	Missing semicolon.	fix	507	507	;	end	27	1
+tests/rules/@stylistic/semi/always/cases.ts:27:30	@stylistic/semi	missingSemi	Missing semicolon.	fix	537	537	;	end	27	31
+tests/rules/@stylistic/semi/always/cases.ts:29:16	@stylistic/semi	missingSemi	Missing semicolon.	fix	559	559	;	end	30	1
+tests/rules/@stylistic/semi/always/cases.ts:30:19	@stylistic/semi	missingSemi	Missing semicolon.	fix	578	578	;	end	31	1
+tests/rules/@stylistic/semi/always/cases.ts:31:27	@stylistic/semi	missingSemi	Missing semicolon.	fix	605	605	;	end	31	28
+tests/rules/@stylistic/semi/always/cases.ts:31:29	@stylistic/semi	missingSemi	Missing semicolon.	fix	607	607	;	end	32	1
+tests/rules/@stylistic/semi/always/cases.ts:32:17	@stylistic/semi	missingSemi	Missing semicolon.	fix	624	624	;	end	33	1
+tests/rules/@stylistic/semi/always/cases.ts:34:8	@stylistic/semi	missingSemi	Missing semicolon.	fix	642	642	;	end	35	1
+tests/rules/@stylistic/semi/always/cases.ts:37:10	@stylistic/semi	missingSemi	Missing semicolon.	fix	668	668	;	end	38	1
+tests/rules/@stylistic/semi/always/cases.ts:38:16	@stylistic/semi	missingSemi	Missing semicolon.	fix	684	684	;	end	39	1
+tests/rules/@stylistic/semi/always/cases.ts:39:19	@stylistic/semi	missingSemi	Missing semicolon.	fix	703	703	;	end	40	1
+tests/rules/@stylistic/semi/always/cases.ts:40:12	@stylistic/semi	missingSemi	Missing semicolon.	fix	715	715	;	end	41	1
+tests/rules/@stylistic/semi/always/cases.ts:45:21	@stylistic/semi	missingSemi	Missing semicolon.	fix	814	814	;	end	46	1
+tests/rules/@stylistic/semi/always/cases.ts:47:21	@stylistic/semi	missingSemi	Missing semicolon.	fix	857	857	;	end	48	1
+tests/rules/@stylistic/semi/always/cases.ts:49:13	@stylistic/semi	missingSemi	Missing semicolon.	fix	872	872	;	end	49	14
+tests/rules/@stylistic/semi/always/cases.ts:50:11	@stylistic/semi	missingSemi	Missing semicolon.	fix	899	899	;	end	50	12
+tests/rules/@stylistic/semi/always/cases.ts:51:23	@stylistic/semi	missingSemi	Missing semicolon.	fix	924	924	;	end	51	24
+tests/rules/@stylistic/semi/always/cases.ts:52:23	@stylistic/semi	missingSemi	Missing semicolon.	fix	949	949	;	end	52	24
+tests/rules/@stylistic/semi/always/cases.ts:54:11	@stylistic/semi	missingSemi	Missing semicolon.	fix	992	992	;	end	55	1
+tests/rules/@stylistic/semi/always/cases.ts:55:4	@stylistic/semi	missingSemi	Missing semicolon.	fix	996	996	;	end	55	5
+tests/rules/@stylistic/semi/always/cases.ts:56:4	@stylistic/semi	missingSemi	Missing semicolon.	fix	1011	1011	;	end	56	5
+tests/rules/@stylistic/semi/always/cases.ts:57:12	@stylistic/semi	missingSemi	Missing semicolon.	fix	1037	1037	;	end	58	1
+tests/rules/@stylistic/semi/always/cases.ts:58:8	@stylistic/semi	missingSemi	Missing semicolon.	fix	1045	1045	;	end	59	1
+tests/rules/@stylistic/semi/always/cases.ts:59:13	@stylistic/semi	missingSemi	Missing semicolon.	fix	1058	1058	;	end	60	1
+tests/rules/@stylistic/semi/always/cases.ts:60:4	@stylistic/semi	missingSemi	Missing semicolon.	fix	1062	1062	;
+tests/rules/@stylistic/semi/cases.ts:1:18	@stylistic/semi	missingSemi	Missing semicolon.	fix	17	17	;	end	2	1
+tests/rules/@stylistic/semi/cases.ts:3:24	@stylistic/semi	missingSemi	Missing semicolon.	fix	64	64	;	end	4	1
+tests/rules/@stylistic/semi/cases.ts:5:18	@stylistic/semi	missingSemi	Missing semicolon.	fix	106	106	;	end	6	1
+tests/rules/@stylistic/semi/cases.ts:6:16	@stylistic/semi	missingSemi	Missing semicolon.	fix	122	122	;	end	7	1
+tests/rules/@stylistic/semi/cases.ts:7:23	@stylistic/semi	missingSemi	Missing semicolon.	fix	145	145	;	end	8	1
+tests/rules/@stylistic/semi/cases.ts:9:28	@stylistic/semi	missingSemi	Missing semicolon.	fix	190	190	;	end	10	1
+tests/rules/@stylistic/semi/cases.ts:11:10	@stylistic/semi	missingSemi	Missing semicolon.	fix	229	229	;	end	12	1
+tests/rules/@stylistic/semi/cases.ts:13:17	@stylistic/semi	missingSemi	Missing semicolon.	fix	257	257	;	end	14	1
+tests/rules/@stylistic/semi/cases.ts:18:16	@stylistic/semi	missingSemi	Missing semicolon.	fix	365	365	;	end	19	1
+tests/rules/@stylistic/semi/cases.ts:20:20	@stylistic/semi	missingSemi	Missing semicolon.	fix	404	404	;	end	21	1
+tests/rules/@stylistic/semi/cases.ts:22:22	@stylistic/semi	missingSemi	Missing semicolon.	fix	428	428	;	end	23	1
+tests/rules/@stylistic/semi/cases.ts:23:9	@stylistic/semi	missingSemi	Missing semicolon.	fix	437	437	;	end	23	10
+tests/rules/@stylistic/semi/cases.ts:24:18	@stylistic/semi	missingSemi	Missing semicolon.	fix	472	472	;	end	24	19
+tests/rules/@stylistic/semi/cases.ts:26:9	@stylistic/semi	missingSemi	Missing semicolon.	fix	507	507	;	end	27	1
+tests/rules/@stylistic/semi/cases.ts:27:30	@stylistic/semi	missingSemi	Missing semicolon.	fix	537	537	;	end	27	31
+tests/rules/@stylistic/semi/cases.ts:29:16	@stylistic/semi	missingSemi	Missing semicolon.	fix	559	559	;	end	30	1
+tests/rules/@stylistic/semi/cases.ts:30:19	@stylistic/semi	missingSemi	Missing semicolon.	fix	578	578	;	end	31	1
+tests/rules/@stylistic/semi/cases.ts:31:27	@stylistic/semi	missingSemi	Missing semicolon.	fix	605	605	;	end	31	28
+tests/rules/@stylistic/semi/cases.ts:31:29	@stylistic/semi	missingSemi	Missing semicolon.	fix	607	607	;	end	32	1
+tests/rules/@stylistic/semi/cases.ts:32:17	@stylistic/semi	missingSemi	Missing semicolon.	fix	624	624	;	end	33	1
+tests/rules/@stylistic/semi/cases.ts:34:8	@stylistic/semi	missingSemi	Missing semicolon.	fix	642	642	;	end	35	1
+tests/rules/@stylistic/semi/cases.ts:37:10	@stylistic/semi	missingSemi	Missing semicolon.	fix	668	668	;	end	38	1
+tests/rules/@stylistic/semi/cases.ts:38:16	@stylistic/semi	missingSemi	Missing semicolon.	fix	684	684	;	end	39	1
+tests/rules/@stylistic/semi/cases.ts:39:19	@stylistic/semi	missingSemi	Missing semicolon.	fix	703	703	;	end	40	1
+tests/rules/@stylistic/semi/cases.ts:40:12	@stylistic/semi	missingSemi	Missing semicolon.	fix	715	715	;	end	41	1
+tests/rules/@stylistic/semi/cases.ts:45:21	@stylistic/semi	missingSemi	Missing semicolon.	fix	814	814	;	end	46	1
+tests/rules/@stylistic/semi/cases.ts:47:21	@stylistic/semi	missingSemi	Missing semicolon.	fix	857	857	;	end	48	1
+tests/rules/@stylistic/semi/cases.ts:49:13	@stylistic/semi	missingSemi	Missing semicolon.	fix	872	872	;	end	49	14
+tests/rules/@stylistic/semi/cases.ts:50:11	@stylistic/semi	missingSemi	Missing semicolon.	fix	899	899	;	end	50	12
+tests/rules/@stylistic/semi/cases.ts:51:23	@stylistic/semi	missingSemi	Missing semicolon.	fix	924	924	;	end	51	24
+tests/rules/@stylistic/semi/cases.ts:52:23	@stylistic/semi	missingSemi	Missing semicolon.	fix	949	949	;	end	52	24
+tests/rules/@stylistic/semi/cases.ts:54:11	@stylistic/semi	missingSemi	Missing semicolon.	fix	992	992	;	end	55	1
+tests/rules/@stylistic/semi/cases.ts:55:4	@stylistic/semi	missingSemi	Missing semicolon.	fix	996	996	;	end	55	5
+tests/rules/@stylistic/semi/cases.ts:56:4	@stylistic/semi	missingSemi	Missing semicolon.	fix	1011	1011	;	end	56	5
+tests/rules/@stylistic/semi/cases.ts:57:12	@stylistic/semi	missingSemi	Missing semicolon.	fix	1037	1037	;	end	58	1
+tests/rules/@stylistic/semi/cases.ts:58:8	@stylistic/semi	missingSemi	Missing semicolon.	fix	1045	1045	;	end	59	1
+tests/rules/@stylistic/semi/cases.ts:59:13	@stylistic/semi	missingSemi	Missing semicolon.	fix	1058	1058	;	end	60	1
+tests/rules/@stylistic/semi/cases.ts:60:4	@stylistic/semi	missingSemi	Missing semicolon.	fix	1062	1062	;
+tests/rules/@stylistic/semi/crlf/cases.ts:1:10	@stylistic/semi	missingSemi	Missing semicolon.	fix	9	9	;	end	2	1
+tests/rules/@stylistic/semi/crlf/cases.ts:2:10	@stylistic/semi	missingSemi	Missing semicolon.	fix	20	20	;	end	3	1
+tests/rules/@stylistic/semi/crlf/cases.ts:3:10	@stylistic/semi	missingSemi	Missing semicolon.	fix	30	30	;	end	3	11
+tests/rules/@stylistic/semi/crlf/cases.ts:4:19	@stylistic/semi	missingSemi	Missing semicolon.	fix	55	55	;	end	5	1
+tests/rules/@stylistic/semi/eof-newline/cases.ts:1:19	@stylistic/semi	missingSemi	Missing semicolon.	fix	18	18	;	end	2	1
+tests/rules/@stylistic/semi/never-continuation-always/cases.ts:1:10	@stylistic/semi	extraSemi	Extra semicolon.	fix	8	14	1\nlet	end	1	11
+tests/rules/@stylistic/semi/never-continuation-always/cases.ts:14:10	@stylistic/semi	extraSemi	Extra semicolon.	fix	150	155	8\n++	end	14	11
+tests/rules/@stylistic/semi/never-continuation-always/cases.ts:16:10	@stylistic/semi	extraSemi	Extra semicolon.	fix	165	170	9\n--	end	16	11
+tests/rules/@stylistic/semi/never-continuation-always/cases.ts:18:33	@stylistic/semi	extraSemi	Extra semicolon.	fix	198	207	return }	end	18	34
+tests/rules/@stylistic/semi/never-continuation-always/cases.ts:23:18	@stylistic/semi	extraSemi	Extra semicolon.	fix	266	274	break }	end	23	19
+tests/rules/@stylistic/semi/never-continuation-always/cases.ts:43:8	@stylistic/semi	extraSemi	Extra semicolon.	fix	560	566	1\n  b	end	43	9
+tests/rules/@stylistic/semi/never-continuation-always/cases.ts:44:8	@stylistic/semi	extraSemi	Extra semicolon.	fix	569	577	2\n  get	end	44	9
+tests/rules/@stylistic/semi/never-continuation-always/cases.ts:51:8	@stylistic/semi	extraSemi	Extra semicolon.	fix	641	649	1\n  in2	end	51	9
+tests/rules/@stylistic/semi/never-continuation-always/cases.ts:52:10	@stylistic/semi	extraSemi	Extra semicolon.	fix	652	658	2\n  d	end	52	11
+tests/rules/@stylistic/semi/never-continuation-always/cases.ts:54:12	@stylistic/semi	extraSemi	Extra semicolon.	fix	670	676	3\n  f	end	54	13
+tests/rules/@stylistic/semi/never-continuation-always/cases.ts:55:8	@stylistic/semi	extraSemi	Extra semicolon.	fix	679	682	1;	end	55	9
+tests/rules/@stylistic/semi/never-continuation-always/cases.ts:59:21	@stylistic/semi	extraSemi	Extra semicolon.	fix	729	735	2\nlet	end	59	22
+tests/rules/@stylistic/semi/never-continuation-always/cases.ts:67:17	@stylistic/semi	extraSemi	Extra semicolon.	fix	827	833	#in }	end	67	18
+tests/rules/@stylistic/semi/never-continuation-always/cases.ts:68:10	@stylistic/semi	extraSemi	Extra semicolon.	fix	842	844	1	end	68	11
+tests/rules/@stylistic/semi/never-continuation-any/cases.ts:1:10	@stylistic/semi	extraSemi	Extra semicolon.	fix	8	14	1\nlet	end	1	11
+tests/rules/@stylistic/semi/never-continuation-any/cases.ts:14:10	@stylistic/semi	extraSemi	Extra semicolon.	fix	150	155	8\n++	end	14	11
+tests/rules/@stylistic/semi/never-continuation-any/cases.ts:16:10	@stylistic/semi	extraSemi	Extra semicolon.	fix	165	170	9\n--	end	16	11
+tests/rules/@stylistic/semi/never-continuation-any/cases.ts:18:33	@stylistic/semi	extraSemi	Extra semicolon.	fix	198	207	return }	end	18	34
+tests/rules/@stylistic/semi/never-continuation-any/cases.ts:23:18	@stylistic/semi	extraSemi	Extra semicolon.	fix	266	274	break }	end	23	19
+tests/rules/@stylistic/semi/never-continuation-any/cases.ts:43:8	@stylistic/semi	extraSemi	Extra semicolon.	fix	560	566	1\n  b	end	43	9
+tests/rules/@stylistic/semi/never-continuation-any/cases.ts:44:8	@stylistic/semi	extraSemi	Extra semicolon.	fix	569	577	2\n  get	end	44	9
+tests/rules/@stylistic/semi/never-continuation-any/cases.ts:51:8	@stylistic/semi	extraSemi	Extra semicolon.	fix	641	649	1\n  in2	end	51	9
+tests/rules/@stylistic/semi/never-continuation-any/cases.ts:52:10	@stylistic/semi	extraSemi	Extra semicolon.	fix	652	658	2\n  d	end	52	11
+tests/rules/@stylistic/semi/never-continuation-any/cases.ts:54:12	@stylistic/semi	extraSemi	Extra semicolon.	fix	670	676	3\n  f	end	54	13
+tests/rules/@stylistic/semi/never-continuation-any/cases.ts:55:8	@stylistic/semi	extraSemi	Extra semicolon.	fix	679	682	1;	end	55	9
+tests/rules/@stylistic/semi/never-continuation-any/cases.ts:59:21	@stylistic/semi	extraSemi	Extra semicolon.	fix	729	735	2\nlet	end	59	22
+tests/rules/@stylistic/semi/never-continuation-any/cases.ts:67:17	@stylistic/semi	extraSemi	Extra semicolon.	fix	827	833	#in }	end	67	18
+tests/rules/@stylistic/semi/never-continuation-any/cases.ts:68:10	@stylistic/semi	extraSemi	Extra semicolon.	fix	842	844	1	end	68	11
+tests/rules/@stylistic/semi/never-continuation-never/cases.ts:1:10	@stylistic/semi	extraSemi	Extra semicolon.	fix	8	14	1\nlet	end	1	11
+tests/rules/@stylistic/semi/never-continuation-never/cases.ts:14:10	@stylistic/semi	extraSemi	Extra semicolon.	fix	150	155	8\n++	end	14	11
+tests/rules/@stylistic/semi/never-continuation-never/cases.ts:16:10	@stylistic/semi	extraSemi	Extra semicolon.	fix	165	170	9\n--	end	16	11
+tests/rules/@stylistic/semi/never-continuation-never/cases.ts:18:33	@stylistic/semi	extraSemi	Extra semicolon.	fix	198	207	return }	end	18	34
+tests/rules/@stylistic/semi/never-continuation-never/cases.ts:23:18	@stylistic/semi	extraSemi	Extra semicolon.	fix	266	274	break }	end	23	19
+tests/rules/@stylistic/semi/never-continuation-never/cases.ts:25:8	@stylistic/semi	extraSemi	Extra semicolon.	fix	289	299	break\n  [	end	25	9
+tests/rules/@stylistic/semi/never-continuation-never/cases.ts:28:22	@stylistic/semi	extraSemi	Extra semicolon.	fix	335	339	)\n[	end	28	23
+tests/rules/@stylistic/semi/never-continuation-never/cases.ts:30:18	@stylistic/semi	extraSemi	Extra semicolon.	fix	367	373	"x"\n[	end	30	19
+tests/rules/@stylistic/semi/never-continuation-never/cases.ts:32:18	@stylistic/semi	extraSemi	Extra semicolon.	fix	401	407	"y"\n(	end	32	19
+tests/rules/@stylistic/semi/never-continuation-never/cases.ts:34:13	@stylistic/semi	extraSemi	Extra semicolon.	fix	421	425	}\n(	end	34	14
+tests/rules/@stylistic/semi/never-continuation-never/cases.ts:38:23	@stylistic/semi	extraSemi	Extra semicolon.	fix	484	488	}\n[	end	38	24
+tests/rules/@stylistic/semi/never-continuation-never/cases.ts:43:8	@stylistic/semi	extraSemi	Extra semicolon.	fix	560	566	1\n  b	end	43	9
+tests/rules/@stylistic/semi/never-continuation-never/cases.ts:44:8	@stylistic/semi	extraSemi	Extra semicolon.	fix	569	577	2\n  get	end	44	9
+tests/rules/@stylistic/semi/never-continuation-never/cases.ts:51:8	@stylistic/semi	extraSemi	Extra semicolon.	fix	641	649	1\n  in2	end	51	9
+tests/rules/@stylistic/semi/never-continuation-never/cases.ts:52:10	@stylistic/semi	extraSemi	Extra semicolon.	fix	652	658	2\n  d	end	52	11
+tests/rules/@stylistic/semi/never-continuation-never/cases.ts:54:12	@stylistic/semi	extraSemi	Extra semicolon.	fix	670	676	3\n  f	end	54	13
+tests/rules/@stylistic/semi/never-continuation-never/cases.ts:55:8	@stylistic/semi	extraSemi	Extra semicolon.	fix	679	682	1;	end	55	9
+tests/rules/@stylistic/semi/never-continuation-never/cases.ts:57:9	@stylistic/semi	extraSemi	Extra semicolon.	fix	685	696	debugger\n[	end	57	10
+tests/rules/@stylistic/semi/never-continuation-never/cases.ts:59:21	@stylistic/semi	extraSemi	Extra semicolon.	fix	729	735	2\nlet	end	59	22
+tests/rules/@stylistic/semi/never-continuation-never/cases.ts:67:17	@stylistic/semi	extraSemi	Extra semicolon.	fix	827	833	#in }	end	67	18
+tests/rules/@stylistic/semi/never-continuation-never/cases.ts:68:10	@stylistic/semi	extraSemi	Extra semicolon.	fix	842	844	1	end	68	11
+tests/rules/@stylistic/semi/never/cases.ts:1:10	@stylistic/semi	extraSemi	Extra semicolon.	fix	8	14	1\nlet	end	1	11
+tests/rules/@stylistic/semi/never/cases.ts:14:10	@stylistic/semi	extraSemi	Extra semicolon.	fix	150	155	8\n++	end	14	11
+tests/rules/@stylistic/semi/never/cases.ts:16:10	@stylistic/semi	extraSemi	Extra semicolon.	fix	165	170	9\n--	end	16	11
+tests/rules/@stylistic/semi/never/cases.ts:18:33	@stylistic/semi	extraSemi	Extra semicolon.	fix	198	207	return }	end	18	34
+tests/rules/@stylistic/semi/never/cases.ts:23:18	@stylistic/semi	extraSemi	Extra semicolon.	fix	266	274	break }	end	23	19
+tests/rules/@stylistic/semi/never/cases.ts:43:8	@stylistic/semi	extraSemi	Extra semicolon.	fix	560	566	1\n  b	end	43	9
+tests/rules/@stylistic/semi/never/cases.ts:44:8	@stylistic/semi	extraSemi	Extra semicolon.	fix	569	577	2\n  get	end	44	9
+tests/rules/@stylistic/semi/never/cases.ts:51:8	@stylistic/semi	extraSemi	Extra semicolon.	fix	641	649	1\n  in2	end	51	9
+tests/rules/@stylistic/semi/never/cases.ts:52:10	@stylistic/semi	extraSemi	Extra semicolon.	fix	652	658	2\n  d	end	52	11
+tests/rules/@stylistic/semi/never/cases.ts:54:12	@stylistic/semi	extraSemi	Extra semicolon.	fix	670	676	3\n  f	end	54	13
+tests/rules/@stylistic/semi/never/cases.ts:55:8	@stylistic/semi	extraSemi	Extra semicolon.	fix	679	682	1;	end	55	9
+tests/rules/@stylistic/semi/never/cases.ts:59:21	@stylistic/semi	extraSemi	Extra semicolon.	fix	729	735	2\nlet	end	59	22
+tests/rules/@stylistic/semi/never/cases.ts:67:17	@stylistic/semi	extraSemi	Extra semicolon.	fix	827	833	#in }	end	67	18
+tests/rules/@stylistic/semi/never/cases.ts:68:10	@stylistic/semi	extraSemi	Extra semicolon.	fix	842	844	1	end	68	11
+tests/rules/@stylistic/semi/omit-block/cases.ts:1:18	@stylistic/semi	missingSemi	Missing semicolon.	fix	17	17	;	end	2	1
+tests/rules/@stylistic/semi/omit-block/cases.ts:3:24	@stylistic/semi	missingSemi	Missing semicolon.	fix	64	64	;	end	4	1
+tests/rules/@stylistic/semi/omit-block/cases.ts:5:18	@stylistic/semi	missingSemi	Missing semicolon.	fix	106	106	;	end	6	1
+tests/rules/@stylistic/semi/omit-block/cases.ts:6:16	@stylistic/semi	missingSemi	Missing semicolon.	fix	122	122	;	end	7	1
+tests/rules/@stylistic/semi/omit-block/cases.ts:7:23	@stylistic/semi	missingSemi	Missing semicolon.	fix	145	145	;	end	8	1
+tests/rules/@stylistic/semi/omit-block/cases.ts:9:28	@stylistic/semi	missingSemi	Missing semicolon.	fix	190	190	;	end	10	1
+tests/rules/@stylistic/semi/omit-block/cases.ts:11:10	@stylistic/semi	missingSemi	Missing semicolon.	fix	229	229	;	end	12	1
+tests/rules/@stylistic/semi/omit-block/cases.ts:13:17	@stylistic/semi	missingSemi	Missing semicolon.	fix	257	257	;	end	14	1
+tests/rules/@stylistic/semi/omit-block/cases.ts:18:16	@stylistic/semi	missingSemi	Missing semicolon.	fix	365	365	;	end	19	1
+tests/rules/@stylistic/semi/omit-block/cases.ts:20:20	@stylistic/semi	missingSemi	Missing semicolon.	fix	404	404	;	end	21	1
+tests/rules/@stylistic/semi/omit-block/cases.ts:22:22	@stylistic/semi	missingSemi	Missing semicolon.	fix	428	428	;	end	23	1
+tests/rules/@stylistic/semi/omit-block/cases.ts:25:21	@stylistic/semi	extraSemi	Extra semicolon.	fix	487	498	continue }	end	25	22
+tests/rules/@stylistic/semi/omit-block/cases.ts:26:9	@stylistic/semi	missingSemi	Missing semicolon.	fix	507	507	;	end	27	1
+tests/rules/@stylistic/semi/omit-block/cases.ts:29:16	@stylistic/semi	missingSemi	Missing semicolon.	fix	559	559	;	end	30	1
+tests/rules/@stylistic/semi/omit-block/cases.ts:30:19	@stylistic/semi	missingSemi	Missing semicolon.	fix	578	578	;	end	31	1
+tests/rules/@stylistic/semi/omit-block/cases.ts:31:29	@stylistic/semi	missingSemi	Missing semicolon.	fix	607	607	;	end	32	1
+tests/rules/@stylistic/semi/omit-block/cases.ts:32:17	@stylistic/semi	missingSemi	Missing semicolon.	fix	624	624	;	end	33	1
+tests/rules/@stylistic/semi/omit-block/cases.ts:34:8	@stylistic/semi	missingSemi	Missing semicolon.	fix	642	642	;	end	35	1
+tests/rules/@stylistic/semi/omit-block/cases.ts:37:10	@stylistic/semi	missingSemi	Missing semicolon.	fix	668	668	;	end	38	1
+tests/rules/@stylistic/semi/omit-block/cases.ts:38:16	@stylistic/semi	missingSemi	Missing semicolon.	fix	684	684	;	end	39	1
+tests/rules/@stylistic/semi/omit-block/cases.ts:39:19	@stylistic/semi	missingSemi	Missing semicolon.	fix	703	703	;	end	40	1
+tests/rules/@stylistic/semi/omit-block/cases.ts:40:12	@stylistic/semi	missingSemi	Missing semicolon.	fix	715	715	;	end	41	1
+tests/rules/@stylistic/semi/omit-block/cases.ts:45:21	@stylistic/semi	missingSemi	Missing semicolon.	fix	814	814	;	end	46	1
+tests/rules/@stylistic/semi/omit-block/cases.ts:47:21	@stylistic/semi	missingSemi	Missing semicolon.	fix	857	857	;	end	48	1
+tests/rules/@stylistic/semi/omit-block/cases.ts:49:26	@stylistic/semi	extraSemi	Extra semicolon.	fix	883	888	++ }	end	49	27
+tests/rules/@stylistic/semi/omit-block/cases.ts:51:23	@stylistic/semi	missingSemi	Missing semicolon.	fix	924	924	;	end	51	24
+tests/rules/@stylistic/semi/omit-block/cases.ts:53:23	@stylistic/semi	extraSemi	Extra semicolon.	fix	974	979	++ }	end	53	24
+tests/rules/@stylistic/semi/omit-block/cases.ts:54:11	@stylistic/semi	missingSemi	Missing semicolon.	fix	992	992	;	end	55	1
+tests/rules/@stylistic/semi/omit-block/cases.ts:55:4	@stylistic/semi	missingSemi	Missing semicolon.	fix	996	996	;	end	55	5
+tests/rules/@stylistic/semi/omit-block/cases.ts:56:4	@stylistic/semi	missingSemi	Missing semicolon.	fix	1011	1011	;	end	56	5
+tests/rules/@stylistic/semi/omit-block/cases.ts:57:12	@stylistic/semi	missingSemi	Missing semicolon.	fix	1037	1037	;	end	58	1
+tests/rules/@stylistic/semi/omit-block/cases.ts:58:8	@stylistic/semi	missingSemi	Missing semicolon.	fix	1045	1045	;	end	59	1
+tests/rules/@stylistic/semi/omit-block/cases.ts:59:13	@stylistic/semi	missingSemi	Missing semicolon.	fix	1058	1058	;	end	60	1
+tests/rules/@stylistic/semi/omit-block/cases.ts:60:4	@stylistic/semi	missingSemi	Missing semicolon.	fix	1062	1062	;
+tests/rules/@stylistic/semi/omit-both/cases.ts:1:18	@stylistic/semi	missingSemi	Missing semicolon.	fix	17	17	;	end	2	1
+tests/rules/@stylistic/semi/omit-both/cases.ts:3:24	@stylistic/semi	missingSemi	Missing semicolon.	fix	64	64	;	end	4	1
+tests/rules/@stylistic/semi/omit-both/cases.ts:5:18	@stylistic/semi	missingSemi	Missing semicolon.	fix	106	106	;	end	6	1
+tests/rules/@stylistic/semi/omit-both/cases.ts:6:16	@stylistic/semi	missingSemi	Missing semicolon.	fix	122	122	;	end	7	1
+tests/rules/@stylistic/semi/omit-both/cases.ts:7:23	@stylistic/semi	missingSemi	Missing semicolon.	fix	145	145	;	end	8	1
+tests/rules/@stylistic/semi/omit-both/cases.ts:9:28	@stylistic/semi	missingSemi	Missing semicolon.	fix	190	190	;	end	10	1
+tests/rules/@stylistic/semi/omit-both/cases.ts:11:10	@stylistic/semi	missingSemi	Missing semicolon.	fix	229	229	;	end	12	1
+tests/rules/@stylistic/semi/omit-both/cases.ts:13:17	@stylistic/semi	missingSemi	Missing semicolon.	fix	257	257	;	end	14	1
+tests/rules/@stylistic/semi/omit-both/cases.ts:18:16	@stylistic/semi	missingSemi	Missing semicolon.	fix	365	365	;	end	19	1
+tests/rules/@stylistic/semi/omit-both/cases.ts:20:20	@stylistic/semi	missingSemi	Missing semicolon.	fix	404	404	;	end	21	1
+tests/rules/@stylistic/semi/omit-both/cases.ts:22:22	@stylistic/semi	missingSemi	Missing semicolon.	fix	428	428	;	end	23	1
+tests/rules/@stylistic/semi/omit-both/cases.ts:25:21	@stylistic/semi	extraSemi	Extra semicolon.	fix	487	498	continue }	end	25	22
+tests/rules/@stylistic/semi/omit-both/cases.ts:26:9	@stylistic/semi	missingSemi	Missing semicolon.	fix	507	507	;	end	27	1
+tests/rules/@stylistic/semi/omit-both/cases.ts:29:16	@stylistic/semi	missingSemi	Missing semicolon.	fix	559	559	;	end	30	1
+tests/rules/@stylistic/semi/omit-both/cases.ts:30:19	@stylistic/semi	missingSemi	Missing semicolon.	fix	578	578	;	end	31	1
+tests/rules/@stylistic/semi/omit-both/cases.ts:31:29	@stylistic/semi	missingSemi	Missing semicolon.	fix	607	607	;	end	32	1
+tests/rules/@stylistic/semi/omit-both/cases.ts:32:17	@stylistic/semi	missingSemi	Missing semicolon.	fix	624	624	;	end	33	1
+tests/rules/@stylistic/semi/omit-both/cases.ts:34:8	@stylistic/semi	missingSemi	Missing semicolon.	fix	642	642	;	end	35	1
+tests/rules/@stylistic/semi/omit-both/cases.ts:37:10	@stylistic/semi	missingSemi	Missing semicolon.	fix	668	668	;	end	38	1
+tests/rules/@stylistic/semi/omit-both/cases.ts:38:16	@stylistic/semi	missingSemi	Missing semicolon.	fix	684	684	;	end	39	1
+tests/rules/@stylistic/semi/omit-both/cases.ts:39:19	@stylistic/semi	missingSemi	Missing semicolon.	fix	703	703	;	end	40	1
+tests/rules/@stylistic/semi/omit-both/cases.ts:40:12	@stylistic/semi	missingSemi	Missing semicolon.	fix	715	715	;	end	41	1
+tests/rules/@stylistic/semi/omit-both/cases.ts:45:21	@stylistic/semi	missingSemi	Missing semicolon.	fix	814	814	;	end	46	1
+tests/rules/@stylistic/semi/omit-both/cases.ts:47:21	@stylistic/semi	missingSemi	Missing semicolon.	fix	857	857	;	end	48	1
+tests/rules/@stylistic/semi/omit-both/cases.ts:49:26	@stylistic/semi	extraSemi	Extra semicolon.	fix	883	888	++ }	end	49	27
+tests/rules/@stylistic/semi/omit-both/cases.ts:53:23	@stylistic/semi	extraSemi	Extra semicolon.	fix	974	979	++ }	end	53	24
+tests/rules/@stylistic/semi/omit-both/cases.ts:54:11	@stylistic/semi	missingSemi	Missing semicolon.	fix	992	992	;	end	55	1
+tests/rules/@stylistic/semi/omit-both/cases.ts:55:4	@stylistic/semi	missingSemi	Missing semicolon.	fix	996	996	;	end	55	5
+tests/rules/@stylistic/semi/omit-both/cases.ts:56:4	@stylistic/semi	missingSemi	Missing semicolon.	fix	1011	1011	;	end	56	5
+tests/rules/@stylistic/semi/omit-both/cases.ts:57:12	@stylistic/semi	missingSemi	Missing semicolon.	fix	1037	1037	;	end	58	1
+tests/rules/@stylistic/semi/omit-both/cases.ts:58:8	@stylistic/semi	missingSemi	Missing semicolon.	fix	1045	1045	;	end	59	1
+tests/rules/@stylistic/semi/omit-both/cases.ts:59:13	@stylistic/semi	missingSemi	Missing semicolon.	fix	1058	1058	;	end	60	1
+tests/rules/@stylistic/semi/omit-both/cases.ts:60:4	@stylistic/semi	missingSemi	Missing semicolon.	fix	1062	1062	;
+tests/rules/@stylistic/semi/omit-class-body/cases.ts:1:18	@stylistic/semi	missingSemi	Missing semicolon.	fix	17	17	;	end	2	1
+tests/rules/@stylistic/semi/omit-class-body/cases.ts:3:24	@stylistic/semi	missingSemi	Missing semicolon.	fix	64	64	;	end	4	1
+tests/rules/@stylistic/semi/omit-class-body/cases.ts:5:18	@stylistic/semi	missingSemi	Missing semicolon.	fix	106	106	;	end	6	1
+tests/rules/@stylistic/semi/omit-class-body/cases.ts:6:16	@stylistic/semi	missingSemi	Missing semicolon.	fix	122	122	;	end	7	1
+tests/rules/@stylistic/semi/omit-class-body/cases.ts:7:23	@stylistic/semi	missingSemi	Missing semicolon.	fix	145	145	;	end	8	1
+tests/rules/@stylistic/semi/omit-class-body/cases.ts:9:28	@stylistic/semi	missingSemi	Missing semicolon.	fix	190	190	;	end	10	1
+tests/rules/@stylistic/semi/omit-class-body/cases.ts:11:10	@stylistic/semi	missingSemi	Missing semicolon.	fix	229	229	;	end	12	1
+tests/rules/@stylistic/semi/omit-class-body/cases.ts:13:17	@stylistic/semi	missingSemi	Missing semicolon.	fix	257	257	;	end	14	1
+tests/rules/@stylistic/semi/omit-class-body/cases.ts:18:16	@stylistic/semi	missingSemi	Missing semicolon.	fix	365	365	;	end	19	1
+tests/rules/@stylistic/semi/omit-class-body/cases.ts:20:20	@stylistic/semi	missingSemi	Missing semicolon.	fix	404	404	;	end	21	1
+tests/rules/@stylistic/semi/omit-class-body/cases.ts:22:22	@stylistic/semi	missingSemi	Missing semicolon.	fix	428	428	;	end	23	1
+tests/rules/@stylistic/semi/omit-class-body/cases.ts:23:9	@stylistic/semi	missingSemi	Missing semicolon.	fix	437	437	;	end	23	10
+tests/rules/@stylistic/semi/omit-class-body/cases.ts:24:18	@stylistic/semi	missingSemi	Missing semicolon.	fix	472	472	;	end	24	19
+tests/rules/@stylistic/semi/omit-class-body/cases.ts:26:9	@stylistic/semi	missingSemi	Missing semicolon.	fix	507	507	;	end	27	1
+tests/rules/@stylistic/semi/omit-class-body/cases.ts:27:30	@stylistic/semi	missingSemi	Missing semicolon.	fix	537	537	;	end	27	31
+tests/rules/@stylistic/semi/omit-class-body/cases.ts:29:16	@stylistic/semi	missingSemi	Missing semicolon.	fix	559	559	;	end	30	1
+tests/rules/@stylistic/semi/omit-class-body/cases.ts:30:19	@stylistic/semi	missingSemi	Missing semicolon.	fix	578	578	;	end	31	1
+tests/rules/@stylistic/semi/omit-class-body/cases.ts:31:27	@stylistic/semi	missingSemi	Missing semicolon.	fix	605	605	;	end	31	28
+tests/rules/@stylistic/semi/omit-class-body/cases.ts:31:29	@stylistic/semi	missingSemi	Missing semicolon.	fix	607	607	;	end	32	1
+tests/rules/@stylistic/semi/omit-class-body/cases.ts:32:17	@stylistic/semi	missingSemi	Missing semicolon.	fix	624	624	;	end	33	1
+tests/rules/@stylistic/semi/omit-class-body/cases.ts:34:8	@stylistic/semi	missingSemi	Missing semicolon.	fix	642	642	;	end	35	1
+tests/rules/@stylistic/semi/omit-class-body/cases.ts:37:10	@stylistic/semi	missingSemi	Missing semicolon.	fix	668	668	;	end	38	1
+tests/rules/@stylistic/semi/omit-class-body/cases.ts:38:16	@stylistic/semi	missingSemi	Missing semicolon.	fix	684	684	;	end	39	1
+tests/rules/@stylistic/semi/omit-class-body/cases.ts:39:19	@stylistic/semi	missingSemi	Missing semicolon.	fix	703	703	;	end	40	1
+tests/rules/@stylistic/semi/omit-class-body/cases.ts:40:12	@stylistic/semi	missingSemi	Missing semicolon.	fix	715	715	;	end	41	1
+tests/rules/@stylistic/semi/omit-class-body/cases.ts:45:21	@stylistic/semi	missingSemi	Missing semicolon.	fix	814	814	;	end	46	1
+tests/rules/@stylistic/semi/omit-class-body/cases.ts:47:21	@stylistic/semi	missingSemi	Missing semicolon.	fix	857	857	;	end	48	1
+tests/rules/@stylistic/semi/omit-class-body/cases.ts:49:13	@stylistic/semi	missingSemi	Missing semicolon.	fix	872	872	;	end	49	14
+tests/rules/@stylistic/semi/omit-class-body/cases.ts:50:11	@stylistic/semi	missingSemi	Missing semicolon.	fix	899	899	;	end	50	12
+tests/rules/@stylistic/semi/omit-class-body/cases.ts:52:23	@stylistic/semi	missingSemi	Missing semicolon.	fix	949	949	;	end	52	24
+tests/rules/@stylistic/semi/omit-class-body/cases.ts:54:11	@stylistic/semi	missingSemi	Missing semicolon.	fix	992	992	;	end	55	1
+tests/rules/@stylistic/semi/omit-class-body/cases.ts:55:4	@stylistic/semi	missingSemi	Missing semicolon.	fix	996	996	;	end	55	5
+tests/rules/@stylistic/semi/omit-class-body/cases.ts:56:4	@stylistic/semi	missingSemi	Missing semicolon.	fix	1011	1011	;	end	56	5
+tests/rules/@stylistic/semi/omit-class-body/cases.ts:57:12	@stylistic/semi	missingSemi	Missing semicolon.	fix	1037	1037	;	end	58	1
+tests/rules/@stylistic/semi/omit-class-body/cases.ts:58:8	@stylistic/semi	missingSemi	Missing semicolon.	fix	1045	1045	;	end	59	1
+tests/rules/@stylistic/semi/omit-class-body/cases.ts:59:13	@stylistic/semi	missingSemi	Missing semicolon.	fix	1058	1058	;	end	60	1
+tests/rules/@stylistic/semi/omit-class-body/cases.ts:60:4	@stylistic/semi	missingSemi	Missing semicolon.	fix	1062	1062	;

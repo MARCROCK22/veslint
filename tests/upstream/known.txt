@@ -1407,3 +1407,8 @@ veslint	spaced-comment/v24	ESLint reports the unused eslint-disable directive of
 # which typescript-estree parses as `new (new Foo())`.
 veslint	new-parens/i11	tree-sitter's grammar: `new new Foo()` is a syntax error
 veslint	new-parens/i20	tree-sitter's grammar: `new new Foo()` is a syntax error
+# @stylistic/semi: a case that turns on ESLint's no-extra-semi in a comment, a rule veslint does not have; and
+# `break` followed by a line that starts with `+`, which tree-sitter's automatic semicolon does not end (a syntax
+# error there; ASI ends a `break` at a line break).
+veslint	semi._js_/i92	turns on ESLint's no-extra-semi in a comment, a rule veslint does not have
+veslint	semi._js_/i96	tree-sitter's grammar: `break` then a line that starts with `+` is a syntax error

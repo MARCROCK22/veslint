@@ -55,8 +55,8 @@ fn slbcm_options(given []json2.Any) !SlbcmOptions {
 	second := sty_option_object(options, 1)
 	except_after_overload := (sty_option_bool(second, 'exceptAfterOverload') or { false })
 		&& ((first_is_string && sty_option_string(options, 0, '') == 'always')
-		|| (!first_is_string && configure_list.any(it.blank_line == 'always' && it.prev != 'field'
-		&& it.next != 'field')))
+			|| (!first_is_string && configure_list.any(it.blank_line == 'always' && it.prev != 'field'
+				&& it.next != 'field')))
 	return SlbcmOptions{
 		configure_list:           configure_list
 		except_after_single_line: sty_option_bool(second, 'exceptAfterSingleLine') or { false }

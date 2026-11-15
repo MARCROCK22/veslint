@@ -65,26 +65,20 @@ fn (c &Checker) snes_check_part_of_class_body(t &estree.EsTree, tokens &SourceTo
 // snes_report reports the node or token at `start`..`end`, with the fix of FixTracker
 // (retainSurroundingTokens, then remove) when it is fixable.
 fn (c &Checker) snes_report(t &estree.EsTree, tokens &SourceTokens, start int, end int) Finding {
-	before := tokens.before(start, false)
-	after := tokens.after(end, false)
 	// isFixable: a string after it must not become a directive.
 	mut fixable := true
-	if next := after {
+	if next := tokens.after(end, false) {
 		if next.kind == .string_ {
 			string_node := sty_node_by_range_index(t, next.start)
 			parent := if string_node >= 0 { t.nodes[string_node].parent } else { -1 }
 			fixable = !(parent >= 0 && snes_is_top_level_expression_statement(t, parent))
 		}
 	}
-	retained_start := if b := before { b.start } else { start }
-	retained_end := if a := after { a.end } else { end }
-	fix_start := if retained_start < start { retained_start } else { start }
-	fix_end := if retained_end > end { retained_end } else { end }
 	return Finding{
 		stmt:       c.position_range(start, end)
 		message_id: 'unexpected'
 		has_fix:    fixable
-		fix:        fix_replace_range(fix_start, fix_end, c.src[fix_start..start] + c.src[end..fix_end])
+		fix:        c.sty_retain_surrounding_remove(tokens, start, end)
 	}
 }
 

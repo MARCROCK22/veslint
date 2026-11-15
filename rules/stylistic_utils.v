@@ -113,3 +113,24 @@ fn sty_node_by_range_index(t &estree.EsTree, index int) int {
 	}
 	return result
 }
+
+// sty_retain_surrounding_remove ports `new FixTracker(fixer, sourceCode)
+// .retainSurroundingTokens(nodeOrToken).remove(nodeOrToken)` (shared/utils/fix-tracker.ts) for
+// the node or token at `start`..`end`: the fix spans from the token before it to the token after
+// it, and keeps their text.
+fn (c &Checker) sty_retain_surrounding_remove(tokens &SourceTokens, start int, end int) Fix {
+	retained_start := if b := tokens.before(start, false) { b.start } else { start }
+	retained_end := if a := tokens.after(end, false) { a.end } else { end }
+	fix_start := if retained_start < start { retained_start } else { start }
+	fix_end := if retained_end > end { retained_end } else { end }
+	return fix_replace_range(fix_start, fix_end, c.src[fix_start..start] + c.src[end..fix_end])
+}
+
+// sty_token_value is the `value` of a token of typescript-estree: its text, without the `#` of a
+// PrivateIdentifier.
+fn (c &Checker) sty_token_value(token SourceToken) string {
+	if token.kind == .private_identifier {
+		return c.src[token.start + 1..token.end]
+	}
+	return c.src[token.start..token.end]
+}

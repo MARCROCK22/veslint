@@ -67,8 +67,7 @@ fn (mut c Checker) lint_stylistic_no_multi_spaces(root C.TSNode, abs_path string
 		display_value := match right.kind {
 			.block_comment { '/*${snms_comment_value(c.src[right.start + 2..right.end - 2])}*/' }
 			.line_comment { '//${snms_comment_value(c.src[right.start + 2..right.end])}' }
-			.private_identifier { c.src[right.start + 1..right.end] }
-			else { c.src[right.start..right.end] }
+			else { c.sty_token_value(right) }
 		}
 		findings << Finding{
 			stmt:       c.position_range(left.end, right.start)
