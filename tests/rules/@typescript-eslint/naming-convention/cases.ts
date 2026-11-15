@@ -275,3 +275,6 @@ label_name: for (;;) {
   break label_name;
 }
 void [DefaultImport, default_import, Namespace, name_space, RenamedDefault, named_import, renamed_default];
+// Import attributes are not object literal properties.
+import importedData from './module.ts' with { 'Type-Key': 'json', B: 'x' };
+void importedData;

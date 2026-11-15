@@ -947,6 +947,11 @@ fn (mut c Checker) nc_items(root C.TSNode) []NcItem {
 				}
 			}
 			'object' {
+				// `with { type: 'json' }` of an import or export: its keys are ImportAttribute
+				// nodes, not properties of an object literal.
+				if parent_kind == 'import_attribute' {
+					continue
+				}
 				for property in named_children(node) {
 					match node_kind(property) {
 						'pair' {
