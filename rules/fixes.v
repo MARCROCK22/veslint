@@ -103,7 +103,7 @@ fn (c &Checker) merge_fixes(fixes []Fix) !(bool, Fix) {
 		text << fix.text.bytes()
 		last = fix.end
 	}
-	text << c.src[last..end].bytes()
+	text << c.src[last..if end > c.src.len { c.src.len } else { end }].bytes()
 	return true, Fix{
 		start: start
 		end:   end
@@ -150,7 +150,8 @@ pub fn apply_fixes(src string, findings []Finding) (bool, string) {
 		out << fix.text.bytes()
 		last = fix.end
 	}
-	out << src[if last < 0 { 0 } else { last }..].bytes()
+	// A fix may end past the end of the text, like a range of ESLint (`text.slice` stops there).
+	out << src[if last < 0 { 0 } else if last > src.len { src.len } else { last }..].bytes()
 	return true, out.bytestr()
 }
 

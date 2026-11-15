@@ -1033,6 +1033,10 @@ fn fix_fields(src string, finding rules.Finding) string {
 	for i, offset in byte_offsets {
 		if offset < 0 {
 			units[i] = offset
+		} else if offset > src.len {
+			// A range past the end of the text (ban-tslint-comment removes one more unit after a
+			// comment at the end): ESLint prints it as it is.
+			units[i] += offset - src.len
 		}
 	}
 	mut out := strings.new_builder(200)
