@@ -1,0 +1,1 @@
+[{"overrides": {"()": "off", "FunctionDeclaration": {"singleLine": {"spacing": "always"}}, "{}": "off", "ImportDeclaration": {}, "ArrayPattern": "off"}}]

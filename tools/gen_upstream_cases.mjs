@@ -325,7 +325,8 @@ function testFiles(name, source) {
     return fs.existsSync(file) ? [file] : [];
   }
   if (source.stylistic) {
-    const dir = path.join(source.tests, name);
+    // The experimental rules (`exp-list-style`) are tested in the directory of their source (`list-style`).
+    const dir = path.join(source.tests, name.replace(/^exp-/, ''));
     return fs.existsSync(dir)
       ? fs.readdirSync(dir).filter(entry => entry.endsWith('.test.ts')).sort().map(entry => path.join(dir, entry))
       : [];
@@ -699,7 +700,9 @@ for (const rule of rules.sort()) {
       // A test file may run its rule more than once under a longer label
       // ("non-nullable-type-assertion-style - noUncheckedIndexedAccess"), or under a label of its
       // own; another rule is left out.
-      if (run.rule !== ruleObject && run.name !== name && !run.name.startsWith(`${name} `)) {
+      // An experimental rule of @stylistic runs under the name of its source (`list-style`).
+      const runName = source.stylistic ? name.replace(/^exp-/, '') : name;
+      if (run.rule !== ruleObject && run.name !== runName && !run.name.startsWith(`${runName} `)) {
         console.error(`${rule}: ${stem} runs ${run.name}; left out`);
         return;
       }
