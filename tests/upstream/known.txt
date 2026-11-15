@@ -1624,3 +1624,23 @@ veslint	sort-named-imports/r0/v16	locales: zh-CN, which veslint does not collate
 veslint	sort-named-imports/r0/v41	locales: zh-CN, which veslint does not collate
 veslint	sort-named-imports/r0/v71	the alphabet has lone surrogates, which veslint's JSON reader refuses
 veslint	sort-named-imports/r0/i124	the alphabet has lone surrogates, which veslint's JSON reader refuses
+# perfectionist/sort-named-exports: as for sort-array-includes.
+eslint	sort-named-exports/r0/i121	disables rule-to-test/sort-named-exports, the name the tester gives the rule
+veslint	sort-named-exports/r0/i121	disables rule-to-test/sort-named-exports, the name the tester gives the rule
+eslint	sort-named-exports/r0/i122	disables rule-to-test/sort-named-exports, the name the tester gives the rule
+veslint	sort-named-exports/r0/i122	disables rule-to-test/sort-named-exports, the name the tester gives the rule
+eslint	sort-named-exports/r0/i123	disables rule-to-test/sort-named-exports, the name the tester gives the rule
+veslint	sort-named-exports/r0/i123	disables rule-to-test/sort-named-exports, the name the tester gives the rule
+eslint	sort-named-exports/r0/i124	disables rule-to-test/sort-named-exports, the name the tester gives the rule
+veslint	sort-named-exports/r0/i124	disables rule-to-test/sort-named-exports, the name the tester gives the rule
+eslint	sort-named-exports/r0/i126	disables rule-to-test/sort-named-exports, the name the tester gives the rule
+veslint	sort-named-exports/r0/i126	disables rule-to-test/sort-named-exports, the name the tester gives the rule
+eslint	sort-named-exports/r0/i128	disables rule-to-test/sort-named-exports, the name the tester gives the rule
+veslint	sort-named-exports/r0/i128	disables rule-to-test/sort-named-exports, the name the tester gives the rule
+eslint	sort-named-exports/r0/i130	disables rule-to-test/sort-named-exports, the name the tester gives the rule
+veslint	sort-named-exports/r0/i130	disables rule-to-test/sort-named-exports, the name the tester gives the rule
+veslint	sort-named-exports/r0/v12	locales: zh-CN, which veslint does not collate
+veslint	sort-named-exports/r0/v33	locales: zh-CN, which veslint does not collate
+veslint	sort-named-exports/r0/v59	the alphabet has lone surrogates, which veslint's JSON reader refuses
+veslint	sort-named-exports/r0/v60	the alphabet has lone surrogates, which veslint's JSON reader refuses
+veslint	sort-named-exports/r0/i112	the alphabet has lone surrogates, which veslint's JSON reader refuses

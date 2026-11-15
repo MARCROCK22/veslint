@@ -1,0 +1,1 @@
+[{"useConfigurationIf": {"matchesAstSelector": "ExportNamedDeclaration[exportKind=\"type\"]"}, "order": "desc"}, {}]
