@@ -164,3 +164,22 @@ git clone --depth 1 --branch v5.10.0 --filter=blob:none --sparse \
 git -C build/upstream/stylistic sparse-checkout set packages/eslint-plugin shared /package.json \
   /pnpm-workspace.yaml /pnpm-lock.yaml /LICENSE /alias.mjs /vitest.config.unit.ts /tsconfig.base.json
 ```
+
+## @marcrock22/eslintcf (the `marcrock/*` rules)
+
+The rules of @marcrock22/eslintcf's own (`marcrock/*`) carry the cases of
+`src/rules/__test__/<rule>.test.ts` (the rule's name in camel case, `Rule` after it in some) of
+MARCROCK22/eslintcf at `0c25278` (0.0.1). They run with bun's test runner and typescript-eslint's
+RuleTester, which `tools/upstream/rule-tester.mjs` stands in for, as for typescript-eslint's tests
+(`bun:test` is the stub of vitest); the test makes the rule from its source, which gives the
+messages. A case without types is `file.ts` of the fixtures of typescript-eslint; one with the
+project service and `allowDefaultProject` (`prefer-at`) lints a file that no tsconfig.json has, in
+the default project: `default-project.ts` there (`via: default`), as for unicorn's. RuleTester makes
+up to 10 passes of fixes. ESLint runs the rules of the build of the package in `build/eval`
+(`@marcrock22/eslint/dist/rules/_.js`). A clone:
+
+```sh
+git clone https://github.com/MARCROCK22/eslintcf build/upstream/eslintcf
+git -C build/upstream/eslintcf checkout 0c25278
+bun tools/gen_upstream_cases.mjs marcrock/prefer-at
+```

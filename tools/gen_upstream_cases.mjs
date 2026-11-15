@@ -36,6 +36,7 @@ const UNICORN_DEPS = path.join(ROOT, 'build/upstream/unicorn-deps/node_modules')
 const STYLISTIC = path.join(ROOT, 'build/upstream/stylistic');
 const PERFECTIONIST = path.join(ROOT, 'build/upstream/perfectionist');
 const PERFECTIONIST_DEPS = path.join(ROOT, 'build/upstream/perfectionist-deps/node_modules');
+const ESLINTCF = path.join(ROOT, 'build/upstream/eslintcf');
 
 // Where the tests of each plugin come from. `fixtures` is the directory the tests lint in, the one
 // the files of the cases are written relative to.
@@ -116,6 +117,20 @@ const SOURCES = {
     modules: path.join(PERFECTIONIST, 'node_modules'),
     needs: [path.join(PERFECTIONIST, 'test/rules'), path.join(PERFECTIONIST_DEPS, 'dedent'), path.join(PERFECTIONIST_DEPS, 'natural-orderby')],
     extra: { dedent: path.join(PERFECTIONIST_DEPS, 'dedent'), 'natural-orderby': path.join(PERFECTIONIST_DEPS, 'natural-orderby') },
+  },
+  // @marcrock22/eslintcf 0.0.1 (the `marcrock/*` rules): src/rules/__test__/<rule>.test.ts (the
+  // rule's name in camel case, some with `Rule` after it) of MARCROCK22/eslintcf at 0c25278, run by
+  // bun's test runner with typescript-eslint's RuleTester (`bun:test` is the stub of vitest), linted
+  // in the fixtures of typescript-eslint: without types (file.ts), or, with the project service and
+  // `allowDefaultProject`, as default-project.ts in the default project, like unicorn's.
+  'marcrock/': {
+    label: '@marcrock22/eslintcf 0.0.1 (MARCROCK22/eslintcf 0c25278)',
+    marcrock: true,
+    clone: ESLINTCF,
+    tests: path.join(ESLINTCF, 'src/rules/__test__'),
+    fixtures: realDir(path.join(TYPESCRIPT_ESLINT, 'packages/eslint-plugin/tests/fixtures')),
+    modules: path.join(ESLINTCF, 'node_modules'),
+    needs: [path.join(ESLINTCF, 'src/rules/__test__')],
   },
 };
 
@@ -233,11 +248,12 @@ function normalize(run, raw, kind, index, prefix, source) {
       ? 'react.tsx'
       : 'file.ts'
     : (test.filename ?? (parserOptions.ecmaFeatures?.jsx ? 'react.tsx' : 'file.ts'));
-  // A case of unicorn's tests with `allowDefaultProject` lints a file of no tsconfig.json, linted by
-  // the default project of the project service: the fixtures' tsconfig.json has file.ts, so it is
+  // A case of unicorn's tests (or of @marcrock22/eslintcf's) with `allowDefaultProject` lints a file
+  // of no tsconfig.json, linted by the default project of the project service: the fixtures'
+  // tsconfig.json has file.ts, so it is
   // default-project.ts here (a file of the fixtures that no tsconfig.json includes), linted with the
   // options of `defaultProject` (tsconfig.json of the fixtures) like a seyfert one (`via: default`).
-  const unicornDefault = Boolean(source?.unicorn && isObject(parserOptions.projectService)
+  const unicornDefault = Boolean((source?.unicorn || source?.marcrock) && isObject(parserOptions.projectService)
     && parserOptions.projectService.allowDefaultProject && filename === 'file.ts');
   if (unicornDefault) filename = 'default-project.ts';
   if (parserOptions.project) filename = path.join(root, filename);
@@ -348,6 +364,10 @@ function testFiles(name, source) {
     const file = path.join(source.tests, `${camelCase(name)}.test.mts`);
     return fs.existsSync(file) ? [file] : [];
   }
+  if (source.marcrock) {
+    const file = [`${camelCase(name)}.test.ts`, `${camelCase(name)}Rule.test.ts`].map(entry => path.join(source.tests, entry)).find(entry => fs.existsSync(entry));
+    return file ? [file] : [];
+  }
   if (source.perfectionist) {
     const file = path.join(source.tests, `${name}.test.ts`);
     const dir = path.join(source.tests, name);
@@ -379,7 +399,7 @@ function testFiles(name, source) {
 // The rule itself, when its test file runs it under a label of its own; the tests of
 // @slipher/eslint-plugin make the rule from its factory themselves, and run it under its name.
 async function ruleObjectOf(name, source) {
-  if (source === SOURCES['seyfert/']) return null;
+  if (source === SOURCES['seyfert/'] || source.marcrock) return null;
   if (source.unicorn) return (await unicornPlugin()).rules[name];
   if (source.stylistic) return (await stylisticPlugin()).rules[name];
   if (source.perfectionist) return (await perfectionistPlugin()).rules[name];
@@ -563,6 +583,17 @@ Bun.plugin({
       return { contents: text, loader: 'ts' };
     });
     build.onLoad({ filter: /[\\/]perfectionist[\\/]rules[\\/][^\\/]+\.ts$/ }, () => ({ contents: 'export default {};', loader: 'js' }));
+  },
+});
+// The test files of @marcrock22/eslintcf import their hooks from `bun:test`: the stub of vitest.
+// The source of their rule (src/rules/<rule>.ts) is run: the test makes the rule from it.
+Bun.plugin({
+  name: 'veslint-marcrock-tester',
+  setup(build) {
+    build.onLoad({ filter: /[\\/]eslintcf[\\/]src[\\/]rules[\\/]__test__[\\/][^\\/]+\.test\.ts$/ }, ({ path: file }) => ({
+      contents: fs.readFileSync(file, 'utf8').replaceAll(/from 'bun:test'/g, `from ${JSON.stringify(path.join(ROOT, 'tools/upstream/vitest.mjs'))}`),
+      loader: 'ts',
+    }));
   },
 });
 let perfectionistPluginCache;
@@ -751,7 +782,7 @@ for (const rule of rules.sort()) {
       }
     }
     const stem =
-      source === SOURCES['seyfert/'] || source.core || source.unicorn
+      source === SOURCES['seyfert/'] || source.core || source.unicorn || source.marcrock
         ? name
         : source.stylistic
           ? path.basename(file).replace(/\.test\.ts$/, '')

@@ -942,6 +942,9 @@ mapfile -t stylistic_upstream < <([[ -d tests/rules/@stylistic ]] && upstream_ru
 # The rules of eslint-plugin-perfectionist (tests/rules/perfectionist/<rule>/upstream.json, from
 # test/rules/<rule>.test.ts of v5.13.0), the same way.
 mapfile -t perfectionist_upstream < <([[ -d tests/rules/perfectionist ]] && upstream_rules_of perfectionist)
+# The rules of @marcrock22/eslintcf (tests/rules/marcrock/<rule>/upstream.json, from
+# src/rules/__test__/<rule>.test.ts of MARCROCK22/eslintcf at 0c25278), the same way.
+mapfile -t marcrock_upstream < <([[ -d tests/rules/marcrock ]] && upstream_rules_of marcrock)
 if tests/upstream/setup.sh "$TMP/upstream" 2> "$TMP/upstream-setup.err"; then
 	upstream_check "typescript-eslint's own tests" "$TMP/upstream" "$TMP/upstream-configs" "${typescript_eslint_upstream[@]}"
 	[[ ${#core_upstream[@]} -eq 0 ]] ||
@@ -952,6 +955,8 @@ if tests/upstream/setup.sh "$TMP/upstream" 2> "$TMP/upstream-setup.err"; then
 		upstream_check "@stylistic/eslint-plugin's own tests" "$TMP/upstream" "$TMP/upstream-stylistic-configs" "${stylistic_upstream[@]}"
 	[[ ${#perfectionist_upstream[@]} -eq 0 ]] ||
 		upstream_check "eslint-plugin-perfectionist's own tests" "$TMP/upstream" "$TMP/upstream-perfectionist-configs" "${perfectionist_upstream[@]}"
+	[[ ${#marcrock_upstream[@]} -eq 0 ]] ||
+		upstream_check "@marcrock22/eslintcf's own tests" "$TMP/upstream" "$TMP/upstream-marcrock-configs" "${marcrock_upstream[@]}"
 else
 	echo "skip   typescript-eslint's own tests: $(cat "$TMP/upstream-setup.err")"
 fi

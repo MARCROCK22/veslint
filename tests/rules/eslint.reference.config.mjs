@@ -10,6 +10,7 @@ import tseslint from '../../build/eval/spider-byte/node_modules/typescript-eslin
 import unicorn from '../../build/eval/spider-byte/node_modules/eslint-plugin-unicorn/index.js';
 import stylistic from '../../build/eval/spider-byte/node_modules/@stylistic/eslint-plugin/dist/index.js';
 import perfectionist from '../../build/upstream/perfectionist-deps/node_modules/eslint-plugin-perfectionist/dist/index.js';
+import marcrock from '../../build/eval/spider-byte/node_modules/@marcrock22/eslint/dist/rules/_.js';
 
 const { plugin: seyfert } = createRequire(import.meta.url)(
   '../../build/upstream/seyfert/node_modules/@slipher/eslint-plugin',
@@ -29,7 +30,7 @@ const withDefaults = ported.map(rule => ({
     parser: tseslint.parser,
     parserOptions: { projectService: true, tsconfigRootDir: import.meta.dirname },
   },
-  plugins: { '@typescript-eslint': tseslint.plugin, '@stylistic': stylistic, perfectionist, seyfert, unicorn },
+  plugins: { '@typescript-eslint': tseslint.plugin, '@stylistic': stylistic, perfectionist, marcrock, seyfert, unicorn },
   rules: { [rule]: 'error' },
 }));
 

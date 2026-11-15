@@ -272,12 +272,12 @@ def fix_passes(lint, code, findings, max_passes=10):
 
 def max_passes_of(rule):
     """The passes of fixes of the RuleTester of the rule's tests: typescript-eslint's (also for
-    @slipher/eslint-plugin) makes up to 10; ESLint's, which ESLint core and eslint-plugin-unicorn
+    @slipher/eslint-plugin and @marcrock22/eslintcf) makes up to 10; ESLint's, which ESLint core and eslint-plugin-unicorn
     (through eslint-ava-rule-tester) use, one; eslint-vitest-rule-tester's createRuleTester, which
     eslint-plugin-perfectionist uses, the first and up to 11 more."""
     if rule.startswith('perfectionist/'):
         return 12
-    return 10 if rule.startswith(('@typescript-eslint/', 'seyfert/')) else 1
+    return 10 if rule.startswith(('@typescript-eslint/', 'seyfert/', 'marcrock/')) else 1
 
 
 def check(case, messages, findings, outputs, last_output=False):

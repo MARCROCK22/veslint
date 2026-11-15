@@ -34,6 +34,8 @@ const unicorn = (await import(require.resolve('eslint-plugin-unicorn'))).default
 const stylistic = (await import(require.resolve('@stylistic/eslint-plugin'))).default;
 // eslint-plugin-perfectionist 5.13.0, outside build/eval (tests/upstream/README.md).
 const perfectionist = (await import(path.join(ROOT, 'build/upstream/perfectionist-deps/node_modules/eslint-plugin-perfectionist/dist/index.js'))).default;
+// The rules of @marcrock22/eslintcf (`marcrock/*`), as build/eval has them.
+const marcrock = (await import(path.join(NM, '@marcrock22/eslint/dist/rules/_.js'))).default;
 
 const { builtinRules } = require('eslint/use-at-your-own-risk');
 
@@ -47,6 +49,7 @@ function pluginOf(rule) {
   if (rule.startsWith('unicorn/')) return ['unicorn', unicorn, rule.slice('unicorn/'.length)];
   if (rule.startsWith('@stylistic/')) return ['@stylistic', stylistic, rule.slice('@stylistic/'.length)];
   if (rule.startsWith('perfectionist/')) return ['perfectionist', perfectionist, rule.slice('perfectionist/'.length)];
+  if (rule.startsWith('marcrock/')) return ['marcrock', marcrock, rule.slice('marcrock/'.length)];
   return ['@typescript-eslint', tseslint.plugin, rule.replace('@typescript-eslint/', '')];
 }
 
@@ -66,12 +69,12 @@ function linterFor(cwd) {
 }
 
 // The passes of fixes of the RuleTester of the rule's tests: typescript-eslint's (also for
-// @slipher/eslint-plugin) makes up to 10; ESLint's, which ESLint core and eslint-plugin-unicorn
+// @slipher/eslint-plugin and @marcrock22/eslintcf) makes up to 10; ESLint's, which ESLint core and eslint-plugin-unicorn
 // (through eslint-ava-rule-tester) use, one.
 // eslint-vitest-rule-tester's createRuleTester (eslint-plugin-perfectionist) makes the first pass and
 // up to 11 more, and checks the text of the last one.
 const maxPassesOf = rule =>
-  rule.startsWith('perfectionist/') ? 12 : rule.startsWith('@typescript-eslint/') || rule.startsWith('seyfert/') ? 10 : 1;
+  rule.startsWith('perfectionist/') ? 12 : rule.startsWith('@typescript-eslint/') || rule.startsWith('seyfert/') || rule.startsWith('marcrock/') ? 10 : 1;
 
 function configOf(rule, c, root, defaults = {}) {
   const languageOptions = { ...defaults, ...c.languageOptions };

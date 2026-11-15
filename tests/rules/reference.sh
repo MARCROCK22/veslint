@@ -274,4 +274,6 @@ upstream_tests "eslint-plugin-unicorn's tests" tests/upstream/setup.sh unicorn
 upstream_tests "@stylistic/eslint-plugin's tests" tests/upstream/setup.sh @stylistic
 # eslint-plugin-perfectionist's tests, the same way.
 upstream_tests "eslint-plugin-perfectionist's tests" tests/upstream/setup.sh perfectionist
+# The tests of @marcrock22/eslintcf's own rules (`marcrock/*`), the same way.
+upstream_tests "@marcrock22/eslintcf's tests" tests/upstream/setup.sh marcrock
 exit $fail
