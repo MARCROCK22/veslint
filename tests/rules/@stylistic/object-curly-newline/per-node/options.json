@@ -1,0 +1,1 @@
+[{"ObjectExpression": "always", "ObjectPattern": {"multiline": true}, "ImportDeclaration": "never", "ExportDeclaration": {"minProperties": 3}, "TSTypeLiteral": "always", "TSInterfaceBody": "never", "TSEnumBody": {"consistent": true, "minProperties": 0}}]

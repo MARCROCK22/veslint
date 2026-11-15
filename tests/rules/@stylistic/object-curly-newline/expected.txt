@@ -1,0 +1,154 @@
+tests/rules/@stylistic/object-curly-newline/always/cases.ts:2:18	@stylistic/object-curly-newline	expectedLinebreakAfterOpeningBrace	Expected a line break after this opening brace.
+tests/rules/@stylistic/object-curly-newline/always/cases.ts:2:25	@stylistic/object-curly-newline	expectedLinebreakBeforeClosingBrace	Expected a line break before this closing brace.
+tests/rules/@stylistic/object-curly-newline/always/cases.ts:4:8	@stylistic/object-curly-newline	expectedLinebreakBeforeClosingBrace	Expected a line break before this closing brace.
+tests/rules/@stylistic/object-curly-newline/always/cases.ts:5:18	@stylistic/object-curly-newline	expectedLinebreakAfterOpeningBrace	Expected a line break after this opening brace.
+tests/rules/@stylistic/object-curly-newline/always/cases.ts:11:8	@stylistic/object-curly-newline	expectedLinebreakBeforeClosingBrace	Expected a line break before this closing brace.
+tests/rules/@stylistic/object-curly-newline/always/cases.ts:12:18	@stylistic/object-curly-newline	expectedLinebreakAfterOpeningBrace	Expected a line break after this opening brace.
+tests/rules/@stylistic/object-curly-newline/always/cases.ts:14:14	@stylistic/object-curly-newline	expectedLinebreakAfterOpeningBrace	Expected a line break after this opening brace.
+tests/rules/@stylistic/object-curly-newline/always/cases.ts:15:5	@stylistic/object-curly-newline	expectedLinebreakBeforeClosingBrace	Expected a line break before this closing brace.
+tests/rules/@stylistic/object-curly-newline/always/cases.ts:15:9	@stylistic/object-curly-newline	expectedLinebreakAfterOpeningBrace	Expected a line break after this opening brace.
+tests/rules/@stylistic/object-curly-newline/always/cases.ts:15:22	@stylistic/object-curly-newline	expectedLinebreakBeforeClosingBrace	Expected a line break before this closing brace.
+tests/rules/@stylistic/object-curly-newline/always/cases.ts:16:20	@stylistic/object-curly-newline	expectedLinebreakAfterOpeningBrace	Expected a line break after this opening brace.
+tests/rules/@stylistic/object-curly-newline/always/cases.ts:17:4	@stylistic/object-curly-newline	expectedLinebreakAfterOpeningBrace	Expected a line break after this opening brace.
+tests/rules/@stylistic/object-curly-newline/always/cases.ts:17:27	@stylistic/object-curly-newline	expectedLinebreakBeforeClosingBrace	Expected a line break before this closing brace.
+tests/rules/@stylistic/object-curly-newline/always/cases.ts:21:16	@stylistic/object-curly-newline	expectedLinebreakBeforeClosingBrace	Expected a line break before this closing brace.
+tests/rules/@stylistic/object-curly-newline/always/cases.ts:22:13	@stylistic/object-curly-newline	expectedLinebreakAfterOpeningBrace	Expected a line break after this opening brace.
+tests/rules/@stylistic/object-curly-newline/always/cases.ts:26:8	@stylistic/object-curly-newline	expectedLinebreakAfterOpeningBrace	Expected a line break after this opening brace.
+tests/rules/@stylistic/object-curly-newline/always/cases.ts:26:34	@stylistic/object-curly-newline	expectedLinebreakBeforeClosingBrace	Expected a line break before this closing brace.
+tests/rules/@stylistic/object-curly-newline/always/cases.ts:28:14	@stylistic/object-curly-newline	expectedLinebreakBeforeClosingBrace	Expected a line break before this closing brace.
+tests/rules/@stylistic/object-curly-newline/always/cases.ts:30:14	@stylistic/object-curly-newline	expectedLinebreakBeforeClosingBrace	Expected a line break before this closing brace.
+tests/rules/@stylistic/object-curly-newline/always/cases.ts:31:13	@stylistic/object-curly-newline	expectedLinebreakAfterOpeningBrace	Expected a line break after this opening brace.
+tests/rules/@stylistic/object-curly-newline/always/cases.ts:34:5	@stylistic/object-curly-newline	expectedLinebreakBeforeClosingBrace	Expected a line break before this closing brace.
+tests/rules/@stylistic/object-curly-newline/always/cases.ts:35:8	@stylistic/object-curly-newline	expectedLinebreakAfterOpeningBrace	Expected a line break after this opening brace.
+tests/rules/@stylistic/object-curly-newline/always/cases.ts:35:12	@stylistic/object-curly-newline	expectedLinebreakBeforeClosingBrace	Expected a line break before this closing brace.
+tests/rules/@stylistic/object-curly-newline/always/cases.ts:36:13	@stylistic/object-curly-newline	expectedLinebreakAfterOpeningBrace	Expected a line break after this opening brace.
+tests/rules/@stylistic/object-curly-newline/always/cases.ts:36:20	@stylistic/object-curly-newline	expectedLinebreakBeforeClosingBrace	Expected a line break before this closing brace.
+tests/rules/@stylistic/object-curly-newline/always/cases.ts:37:8	@stylistic/object-curly-newline	expectedLinebreakAfterOpeningBrace	Expected a line break after this opening brace.
+tests/rules/@stylistic/object-curly-newline/always/cases.ts:37:15	@stylistic/object-curly-newline	expectedLinebreakBeforeClosingBrace	Expected a line break before this closing brace.
+tests/rules/@stylistic/object-curly-newline/always/cases.ts:40:23	@stylistic/object-curly-newline	expectedLinebreakAfterOpeningBrace	Expected a line break after this opening brace.
+tests/rules/@stylistic/object-curly-newline/always/cases.ts:41:11	@stylistic/object-curly-newline	expectedLinebreakBeforeClosingBrace	Expected a line break before this closing brace.
+tests/rules/@stylistic/object-curly-newline/always/cases.ts:41:13	@stylistic/object-curly-newline	expectedLinebreakBeforeClosingBrace	Expected a line break before this closing brace.
+tests/rules/@stylistic/object-curly-newline/cases.ts:3:18	@stylistic/object-curly-newline	unexpectedLinebreakAfterOpeningBrace	Unexpected line break after this opening brace.
+tests/rules/@stylistic/object-curly-newline/cases.ts:6:1	@stylistic/object-curly-newline	unexpectedLinebreakBeforeClosingBrace	Unexpected line break before this closing brace.
+tests/rules/@stylistic/object-curly-newline/cases.ts:10:18	@stylistic/object-curly-newline	unexpectedLinebreakAfterOpeningBrace	Unexpected line break after this opening brace.
+tests/rules/@stylistic/object-curly-newline/cases.ts:13:1	@stylistic/object-curly-newline	unexpectedLinebreakBeforeClosingBrace	Unexpected line break before this closing brace.
+tests/rules/@stylistic/object-curly-newline/cases.ts:17:1	@stylistic/object-curly-newline	unexpectedLinebreakBeforeClosingBrace	Unexpected line break before this closing brace.
+tests/rules/@stylistic/object-curly-newline/cases.ts:20:8	@stylistic/object-curly-newline	unexpectedLinebreakAfterOpeningBrace	Unexpected line break after this opening brace.
+tests/rules/@stylistic/object-curly-newline/cases.ts:23:1	@stylistic/object-curly-newline	unexpectedLinebreakBeforeClosingBrace	Unexpected line break before this closing brace.
+tests/rules/@stylistic/object-curly-newline/cases.ts:27:8	@stylistic/object-curly-newline	unexpectedLinebreakAfterOpeningBrace	Unexpected line break after this opening brace.
+tests/rules/@stylistic/object-curly-newline/cases.ts:29:10	@stylistic/object-curly-newline	unexpectedLinebreakAfterOpeningBrace	Unexpected line break after this opening brace.
+tests/rules/@stylistic/object-curly-newline/cases.ts:32:1	@stylistic/object-curly-newline	unexpectedLinebreakBeforeClosingBrace	Unexpected line break before this closing brace.
+tests/rules/@stylistic/object-curly-newline/cases.ts:33:8	@stylistic/object-curly-newline	unexpectedLinebreakAfterOpeningBrace	Unexpected line break after this opening brace.
+tests/rules/@stylistic/object-curly-newline/cases.ts:40:32	@stylistic/object-curly-newline	unexpectedLinebreakAfterOpeningBrace	Unexpected line break after this opening brace.
+tests/rules/@stylistic/object-curly-newline/min-properties/cases.ts:3:18	@stylistic/object-curly-newline	unexpectedLinebreakAfterOpeningBrace	Unexpected line break after this opening brace.
+tests/rules/@stylistic/object-curly-newline/min-properties/cases.ts:6:1	@stylistic/object-curly-newline	unexpectedLinebreakBeforeClosingBrace	Unexpected line break before this closing brace.
+tests/rules/@stylistic/object-curly-newline/min-properties/cases.ts:10:18	@stylistic/object-curly-newline	unexpectedLinebreakAfterOpeningBrace	Unexpected line break after this opening brace.
+tests/rules/@stylistic/object-curly-newline/min-properties/cases.ts:13:1	@stylistic/object-curly-newline	unexpectedLinebreakBeforeClosingBrace	Unexpected line break before this closing brace.
+tests/rules/@stylistic/object-curly-newline/min-properties/cases.ts:14:14	@stylistic/object-curly-newline	expectedLinebreakAfterOpeningBrace	Expected a line break after this opening brace.
+tests/rules/@stylistic/object-curly-newline/min-properties/cases.ts:15:5	@stylistic/object-curly-newline	expectedLinebreakBeforeClosingBrace	Expected a line break before this closing brace.
+tests/rules/@stylistic/object-curly-newline/min-properties/cases.ts:15:9	@stylistic/object-curly-newline	expectedLinebreakAfterOpeningBrace	Expected a line break after this opening brace.
+tests/rules/@stylistic/object-curly-newline/min-properties/cases.ts:15:22	@stylistic/object-curly-newline	expectedLinebreakBeforeClosingBrace	Expected a line break before this closing brace.
+tests/rules/@stylistic/object-curly-newline/min-properties/cases.ts:16:20	@stylistic/object-curly-newline	expectedLinebreakAfterOpeningBrace	Expected a line break after this opening brace.
+tests/rules/@stylistic/object-curly-newline/min-properties/cases.ts:17:4	@stylistic/object-curly-newline	expectedLinebreakAfterOpeningBrace	Expected a line break after this opening brace.
+tests/rules/@stylistic/object-curly-newline/min-properties/cases.ts:17:27	@stylistic/object-curly-newline	expectedLinebreakBeforeClosingBrace	Expected a line break before this closing brace.
+tests/rules/@stylistic/object-curly-newline/min-properties/cases.ts:20:8	@stylistic/object-curly-newline	unexpectedLinebreakAfterOpeningBrace	Unexpected line break after this opening brace.
+tests/rules/@stylistic/object-curly-newline/min-properties/cases.ts:23:1	@stylistic/object-curly-newline	unexpectedLinebreakBeforeClosingBrace	Unexpected line break before this closing brace.
+tests/rules/@stylistic/object-curly-newline/min-properties/cases.ts:26:8	@stylistic/object-curly-newline	expectedLinebreakAfterOpeningBrace	Expected a line break after this opening brace.
+tests/rules/@stylistic/object-curly-newline/min-properties/cases.ts:26:34	@stylistic/object-curly-newline	expectedLinebreakBeforeClosingBrace	Expected a line break before this closing brace.
+tests/rules/@stylistic/object-curly-newline/min-properties/cases.ts:27:8	@stylistic/object-curly-newline	unexpectedLinebreakAfterOpeningBrace	Unexpected line break after this opening brace.
+tests/rules/@stylistic/object-curly-newline/min-properties/cases.ts:29:10	@stylistic/object-curly-newline	unexpectedLinebreakAfterOpeningBrace	Unexpected line break after this opening brace.
+tests/rules/@stylistic/object-curly-newline/min-properties/cases.ts:32:1	@stylistic/object-curly-newline	unexpectedLinebreakBeforeClosingBrace	Unexpected line break before this closing brace.
+tests/rules/@stylistic/object-curly-newline/min-properties/cases.ts:33:8	@stylistic/object-curly-newline	unexpectedLinebreakAfterOpeningBrace	Unexpected line break after this opening brace.
+tests/rules/@stylistic/object-curly-newline/min-properties/cases.ts:36:13	@stylistic/object-curly-newline	expectedLinebreakAfterOpeningBrace	Expected a line break after this opening brace.
+tests/rules/@stylistic/object-curly-newline/min-properties/cases.ts:36:20	@stylistic/object-curly-newline	expectedLinebreakBeforeClosingBrace	Expected a line break before this closing brace.
+tests/rules/@stylistic/object-curly-newline/min-properties/cases.ts:37:8	@stylistic/object-curly-newline	expectedLinebreakAfterOpeningBrace	Expected a line break after this opening brace.
+tests/rules/@stylistic/object-curly-newline/min-properties/cases.ts:37:15	@stylistic/object-curly-newline	expectedLinebreakBeforeClosingBrace	Expected a line break before this closing brace.
+tests/rules/@stylistic/object-curly-newline/min-properties/cases.ts:40:32	@stylistic/object-curly-newline	unexpectedLinebreakAfterOpeningBrace	Unexpected line break after this opening brace.
+tests/rules/@stylistic/object-curly-newline/min-properties/cases.ts:42:19	@stylistic/object-curly-newline	expectedLinebreakAfterOpeningBrace	Expected a line break after this opening brace.
+tests/rules/@stylistic/object-curly-newline/min-properties/cases.ts:42:32	@stylistic/object-curly-newline	expectedLinebreakBeforeClosingBrace	Expected a line break before this closing brace.
+tests/rules/@stylistic/object-curly-newline/min-properties/cases.ts:43:19	@stylistic/object-curly-newline	unexpectedLinebreakAfterOpeningBrace	Unexpected line break after this opening brace.
+tests/rules/@stylistic/object-curly-newline/multiline/cases.ts:3:18	@stylistic/object-curly-newline	unexpectedLinebreakAfterOpeningBrace	Unexpected line break after this opening brace.
+tests/rules/@stylistic/object-curly-newline/multiline/cases.ts:6:1	@stylistic/object-curly-newline	unexpectedLinebreakBeforeClosingBrace	Unexpected line break before this closing brace.
+tests/rules/@stylistic/object-curly-newline/multiline/cases.ts:7:18	@stylistic/object-curly-newline	unexpectedLinebreakAfterOpeningBrace	Unexpected line break after this opening brace.
+tests/rules/@stylistic/object-curly-newline/multiline/cases.ts:9:1	@stylistic/object-curly-newline	unexpectedLinebreakBeforeClosingBrace	Unexpected line break before this closing brace.
+tests/rules/@stylistic/object-curly-newline/multiline/cases.ts:11:8	@stylistic/object-curly-newline	expectedLinebreakBeforeClosingBrace	Expected a line break before this closing brace.
+tests/rules/@stylistic/object-curly-newline/multiline/cases.ts:13:1	@stylistic/object-curly-newline	unexpectedLinebreakBeforeClosingBrace	Unexpected line break before this closing brace.
+tests/rules/@stylistic/object-curly-newline/multiline/cases.ts:14:14	@stylistic/object-curly-newline	expectedLinebreakAfterOpeningBrace	Expected a line break after this opening brace.
+tests/rules/@stylistic/object-curly-newline/multiline/cases.ts:15:5	@stylistic/object-curly-newline	expectedLinebreakBeforeClosingBrace	Expected a line break before this closing brace.
+tests/rules/@stylistic/object-curly-newline/multiline/cases.ts:17:1	@stylistic/object-curly-newline	unexpectedLinebreakBeforeClosingBrace	Unexpected line break before this closing brace.
+tests/rules/@stylistic/object-curly-newline/multiline/cases.ts:20:8	@stylistic/object-curly-newline	unexpectedLinebreakAfterOpeningBrace	Unexpected line break after this opening brace.
+tests/rules/@stylistic/object-curly-newline/multiline/cases.ts:23:1	@stylistic/object-curly-newline	unexpectedLinebreakBeforeClosingBrace	Unexpected line break before this closing brace.
+tests/rules/@stylistic/object-curly-newline/multiline/cases.ts:27:8	@stylistic/object-curly-newline	unexpectedLinebreakAfterOpeningBrace	Unexpected line break after this opening brace.
+tests/rules/@stylistic/object-curly-newline/multiline/cases.ts:29:10	@stylistic/object-curly-newline	unexpectedLinebreakAfterOpeningBrace	Unexpected line break after this opening brace.
+tests/rules/@stylistic/object-curly-newline/multiline/cases.ts:32:1	@stylistic/object-curly-newline	unexpectedLinebreakBeforeClosingBrace	Unexpected line break before this closing brace.
+tests/rules/@stylistic/object-curly-newline/multiline/cases.ts:33:8	@stylistic/object-curly-newline	unexpectedLinebreakAfterOpeningBrace	Unexpected line break after this opening brace.
+tests/rules/@stylistic/object-curly-newline/multiline/cases.ts:38:22	@stylistic/object-curly-newline	unexpectedLinebreakAfterOpeningBrace	Unexpected line break after this opening brace.
+tests/rules/@stylistic/object-curly-newline/multiline/cases.ts:39:1	@stylistic/object-curly-newline	unexpectedLinebreakBeforeClosingBrace	Unexpected line break before this closing brace.
+tests/rules/@stylistic/object-curly-newline/multiline/cases.ts:40:23	@stylistic/object-curly-newline	expectedLinebreakAfterOpeningBrace	Expected a line break after this opening brace.
+tests/rules/@stylistic/object-curly-newline/multiline/cases.ts:40:32	@stylistic/object-curly-newline	unexpectedLinebreakAfterOpeningBrace	Unexpected line break after this opening brace.
+tests/rules/@stylistic/object-curly-newline/multiline/cases.ts:41:13	@stylistic/object-curly-newline	expectedLinebreakBeforeClosingBrace	Expected a line break before this closing brace.
+tests/rules/@stylistic/object-curly-newline/multiline/cases.ts:42:19	@stylistic/object-curly-newline	expectedLinebreakAfterOpeningBrace	Expected a line break after this opening brace.
+tests/rules/@stylistic/object-curly-newline/multiline/cases.ts:43:8	@stylistic/object-curly-newline	expectedLinebreakBeforeClosingBrace	Expected a line break before this closing brace.
+tests/rules/@stylistic/object-curly-newline/multiline/cases.ts:44:19	@stylistic/object-curly-newline	expectedLinebreakAfterOpeningBrace	Expected a line break after this opening brace.
+tests/rules/@stylistic/object-curly-newline/multiline/cases.ts:44:30	@stylistic/object-curly-newline	unexpectedLinebreakAfterOpeningBrace	Unexpected line break after this opening brace.
+tests/rules/@stylistic/object-curly-newline/multiline/cases.ts:45:10	@stylistic/object-curly-newline	expectedLinebreakBeforeClosingBrace	Expected a line break before this closing brace.
+tests/rules/@stylistic/object-curly-newline/never/cases.ts:3:18	@stylistic/object-curly-newline	unexpectedLinebreakAfterOpeningBrace	Unexpected line break after this opening brace.
+tests/rules/@stylistic/object-curly-newline/never/cases.ts:6:1	@stylistic/object-curly-newline	unexpectedLinebreakBeforeClosingBrace	Unexpected line break before this closing brace.
+tests/rules/@stylistic/object-curly-newline/never/cases.ts:7:18	@stylistic/object-curly-newline	unexpectedLinebreakAfterOpeningBrace	Unexpected line break after this opening brace.
+tests/rules/@stylistic/object-curly-newline/never/cases.ts:9:1	@stylistic/object-curly-newline	unexpectedLinebreakBeforeClosingBrace	Unexpected line break before this closing brace.
+tests/rules/@stylistic/object-curly-newline/never/cases.ts:10:18	@stylistic/object-curly-newline	unexpectedLinebreakAfterOpeningBrace	Unexpected line break after this opening brace.
+tests/rules/@stylistic/object-curly-newline/never/cases.ts:13:1	@stylistic/object-curly-newline	unexpectedLinebreakBeforeClosingBrace	Unexpected line break before this closing brace.
+tests/rules/@stylistic/object-curly-newline/never/cases.ts:17:1	@stylistic/object-curly-newline	unexpectedLinebreakBeforeClosingBrace	Unexpected line break before this closing brace.
+tests/rules/@stylistic/object-curly-newline/never/cases.ts:20:8	@stylistic/object-curly-newline	unexpectedLinebreakAfterOpeningBrace	Unexpected line break after this opening brace.
+tests/rules/@stylistic/object-curly-newline/never/cases.ts:23:1	@stylistic/object-curly-newline	unexpectedLinebreakBeforeClosingBrace	Unexpected line break before this closing brace.
+tests/rules/@stylistic/object-curly-newline/never/cases.ts:27:8	@stylistic/object-curly-newline	unexpectedLinebreakAfterOpeningBrace	Unexpected line break after this opening brace.
+tests/rules/@stylistic/object-curly-newline/never/cases.ts:29:10	@stylistic/object-curly-newline	unexpectedLinebreakAfterOpeningBrace	Unexpected line break after this opening brace.
+tests/rules/@stylistic/object-curly-newline/never/cases.ts:32:1	@stylistic/object-curly-newline	unexpectedLinebreakBeforeClosingBrace	Unexpected line break before this closing brace.
+tests/rules/@stylistic/object-curly-newline/never/cases.ts:33:8	@stylistic/object-curly-newline	unexpectedLinebreakAfterOpeningBrace	Unexpected line break after this opening brace.
+tests/rules/@stylistic/object-curly-newline/never/cases.ts:38:22	@stylistic/object-curly-newline	unexpectedLinebreakAfterOpeningBrace	Unexpected line break after this opening brace.
+tests/rules/@stylistic/object-curly-newline/never/cases.ts:39:1	@stylistic/object-curly-newline	unexpectedLinebreakBeforeClosingBrace	Unexpected line break before this closing brace.
+tests/rules/@stylistic/object-curly-newline/never/cases.ts:40:32	@stylistic/object-curly-newline	unexpectedLinebreakAfterOpeningBrace	Unexpected line break after this opening brace.
+tests/rules/@stylistic/object-curly-newline/not-consistent/cases.ts:3:18	@stylistic/object-curly-newline	unexpectedLinebreakAfterOpeningBrace	Unexpected line break after this opening brace.
+tests/rules/@stylistic/object-curly-newline/not-consistent/cases.ts:6:1	@stylistic/object-curly-newline	unexpectedLinebreakBeforeClosingBrace	Unexpected line break before this closing brace.
+tests/rules/@stylistic/object-curly-newline/not-consistent/cases.ts:7:18	@stylistic/object-curly-newline	unexpectedLinebreakAfterOpeningBrace	Unexpected line break after this opening brace.
+tests/rules/@stylistic/object-curly-newline/not-consistent/cases.ts:9:1	@stylistic/object-curly-newline	unexpectedLinebreakBeforeClosingBrace	Unexpected line break before this closing brace.
+tests/rules/@stylistic/object-curly-newline/not-consistent/cases.ts:11:8	@stylistic/object-curly-newline	expectedLinebreakBeforeClosingBrace	Expected a line break before this closing brace.
+tests/rules/@stylistic/object-curly-newline/not-consistent/cases.ts:13:1	@stylistic/object-curly-newline	unexpectedLinebreakBeforeClosingBrace	Unexpected line break before this closing brace.
+tests/rules/@stylistic/object-curly-newline/not-consistent/cases.ts:14:14	@stylistic/object-curly-newline	expectedLinebreakAfterOpeningBrace	Expected a line break after this opening brace.
+tests/rules/@stylistic/object-curly-newline/not-consistent/cases.ts:15:5	@stylistic/object-curly-newline	expectedLinebreakBeforeClosingBrace	Expected a line break before this closing brace.
+tests/rules/@stylistic/object-curly-newline/not-consistent/cases.ts:17:1	@stylistic/object-curly-newline	unexpectedLinebreakBeforeClosingBrace	Unexpected line break before this closing brace.
+tests/rules/@stylistic/object-curly-newline/not-consistent/cases.ts:20:8	@stylistic/object-curly-newline	unexpectedLinebreakAfterOpeningBrace	Unexpected line break after this opening brace.
+tests/rules/@stylistic/object-curly-newline/not-consistent/cases.ts:23:1	@stylistic/object-curly-newline	unexpectedLinebreakBeforeClosingBrace	Unexpected line break before this closing brace.
+tests/rules/@stylistic/object-curly-newline/not-consistent/cases.ts:27:8	@stylistic/object-curly-newline	unexpectedLinebreakAfterOpeningBrace	Unexpected line break after this opening brace.
+tests/rules/@stylistic/object-curly-newline/not-consistent/cases.ts:29:10	@stylistic/object-curly-newline	unexpectedLinebreakAfterOpeningBrace	Unexpected line break after this opening brace.
+tests/rules/@stylistic/object-curly-newline/not-consistent/cases.ts:32:1	@stylistic/object-curly-newline	unexpectedLinebreakBeforeClosingBrace	Unexpected line break before this closing brace.
+tests/rules/@stylistic/object-curly-newline/not-consistent/cases.ts:33:8	@stylistic/object-curly-newline	unexpectedLinebreakAfterOpeningBrace	Unexpected line break after this opening brace.
+tests/rules/@stylistic/object-curly-newline/not-consistent/cases.ts:38:22	@stylistic/object-curly-newline	unexpectedLinebreakAfterOpeningBrace	Unexpected line break after this opening brace.
+tests/rules/@stylistic/object-curly-newline/not-consistent/cases.ts:39:1	@stylistic/object-curly-newline	unexpectedLinebreakBeforeClosingBrace	Unexpected line break before this closing brace.
+tests/rules/@stylistic/object-curly-newline/not-consistent/cases.ts:40:23	@stylistic/object-curly-newline	expectedLinebreakAfterOpeningBrace	Expected a line break after this opening brace.
+tests/rules/@stylistic/object-curly-newline/not-consistent/cases.ts:40:32	@stylistic/object-curly-newline	unexpectedLinebreakAfterOpeningBrace	Unexpected line break after this opening brace.
+tests/rules/@stylistic/object-curly-newline/not-consistent/cases.ts:41:13	@stylistic/object-curly-newline	expectedLinebreakBeforeClosingBrace	Expected a line break before this closing brace.
+tests/rules/@stylistic/object-curly-newline/per-node/cases.ts:2:18	@stylistic/object-curly-newline	expectedLinebreakAfterOpeningBrace	Expected a line break after this opening brace.
+tests/rules/@stylistic/object-curly-newline/per-node/cases.ts:2:25	@stylistic/object-curly-newline	expectedLinebreakBeforeClosingBrace	Expected a line break before this closing brace.
+tests/rules/@stylistic/object-curly-newline/per-node/cases.ts:4:8	@stylistic/object-curly-newline	expectedLinebreakBeforeClosingBrace	Expected a line break before this closing brace.
+tests/rules/@stylistic/object-curly-newline/per-node/cases.ts:5:18	@stylistic/object-curly-newline	expectedLinebreakAfterOpeningBrace	Expected a line break after this opening brace.
+tests/rules/@stylistic/object-curly-newline/per-node/cases.ts:11:8	@stylistic/object-curly-newline	expectedLinebreakBeforeClosingBrace	Expected a line break before this closing brace.
+tests/rules/@stylistic/object-curly-newline/per-node/cases.ts:12:18	@stylistic/object-curly-newline	expectedLinebreakAfterOpeningBrace	Expected a line break after this opening brace.
+tests/rules/@stylistic/object-curly-newline/per-node/cases.ts:14:14	@stylistic/object-curly-newline	expectedLinebreakAfterOpeningBrace	Expected a line break after this opening brace.
+tests/rules/@stylistic/object-curly-newline/per-node/cases.ts:15:5	@stylistic/object-curly-newline	expectedLinebreakBeforeClosingBrace	Expected a line break before this closing brace.
+tests/rules/@stylistic/object-curly-newline/per-node/cases.ts:15:9	@stylistic/object-curly-newline	expectedLinebreakAfterOpeningBrace	Expected a line break after this opening brace.
+tests/rules/@stylistic/object-curly-newline/per-node/cases.ts:15:22	@stylistic/object-curly-newline	expectedLinebreakBeforeClosingBrace	Expected a line break before this closing brace.
+tests/rules/@stylistic/object-curly-newline/per-node/cases.ts:17:1	@stylistic/object-curly-newline	unexpectedLinebreakBeforeClosingBrace	Unexpected line break before this closing brace.
+tests/rules/@stylistic/object-curly-newline/per-node/cases.ts:17:4	@stylistic/object-curly-newline	expectedLinebreakAfterOpeningBrace	Expected a line break after this opening brace.
+tests/rules/@stylistic/object-curly-newline/per-node/cases.ts:17:27	@stylistic/object-curly-newline	expectedLinebreakBeforeClosingBrace	Expected a line break before this closing brace.
+tests/rules/@stylistic/object-curly-newline/per-node/cases.ts:20:8	@stylistic/object-curly-newline	unexpectedLinebreakAfterOpeningBrace	Unexpected line break after this opening brace.
+tests/rules/@stylistic/object-curly-newline/per-node/cases.ts:23:1	@stylistic/object-curly-newline	unexpectedLinebreakBeforeClosingBrace	Unexpected line break before this closing brace.
+tests/rules/@stylistic/object-curly-newline/per-node/cases.ts:26:8	@stylistic/object-curly-newline	expectedLinebreakAfterOpeningBrace	Expected a line break after this opening brace.
+tests/rules/@stylistic/object-curly-newline/per-node/cases.ts:26:34	@stylistic/object-curly-newline	expectedLinebreakBeforeClosingBrace	Expected a line break before this closing brace.
+tests/rules/@stylistic/object-curly-newline/per-node/cases.ts:27:8	@stylistic/object-curly-newline	unexpectedLinebreakAfterOpeningBrace	Unexpected line break after this opening brace.
+tests/rules/@stylistic/object-curly-newline/per-node/cases.ts:30:14	@stylistic/object-curly-newline	expectedLinebreakBeforeClosingBrace	Expected a line break before this closing brace.
+tests/rules/@stylistic/object-curly-newline/per-node/cases.ts:32:1	@stylistic/object-curly-newline	unexpectedLinebreakBeforeClosingBrace	Unexpected line break before this closing brace.
+tests/rules/@stylistic/object-curly-newline/per-node/cases.ts:33:8	@stylistic/object-curly-newline	unexpectedLinebreakAfterOpeningBrace	Unexpected line break after this opening brace.
+tests/rules/@stylistic/object-curly-newline/per-node/cases.ts:40:23	@stylistic/object-curly-newline	expectedLinebreakAfterOpeningBrace	Expected a line break after this opening brace.
+tests/rules/@stylistic/object-curly-newline/per-node/cases.ts:41:11	@stylistic/object-curly-newline	expectedLinebreakBeforeClosingBrace	Expected a line break before this closing brace.
+tests/rules/@stylistic/object-curly-newline/per-node/cases.ts:41:13	@stylistic/object-curly-newline	expectedLinebreakBeforeClosingBrace	Expected a line break before this closing brace.
