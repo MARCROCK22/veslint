@@ -11,6 +11,7 @@ Each version is a release on GitHub with the veslint binaries (Linux x64, Window
 - **Options:** the JSON schemas take `exclusiveMinimum` and `exclusiveMaximum`, and a `default` inside `anyOf`/`oneOf`/`not`, as ESLint's ajv does.
 - **Faster on files of many tsconfig files:** the state of each TypeScript project is let go after its last file, so the memory stays small and the garbage collector has less to walk (veslint's 1,529 test fixtures, each with its own tsconfig: 2 to 9 times faster per rule, 58 MB instead of 1.2 GB).
 - **`--rule` and the configuration:** `--rule <rule>` takes the rule's options from the closest `eslint.config.*` (and its languageOptions, settings and ignores), as the configuration lints the files; `--no-config-lookup` keeps the default options.
+- **Fixes:** `@typescript-eslint/naming-convention` no longer reports the keys of import attributes (`with { type: 'json' }`) as properties of an object literal, as ESLint does not.
 - **`--rule` and directive comments:** an `eslint-disable` comment for another rule (or for every rule) is no longer reported as unused when only one rule runs, so `--fix --rule` no longer removes it.
 
 ## 0.24.1
