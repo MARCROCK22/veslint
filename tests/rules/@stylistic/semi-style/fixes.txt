@@ -1,0 +1,70 @@
+tests/rules/@stylistic/semi-style/cases.ts:2:1	@stylistic/semi-style	expectedSemiColon	Expected this semicolon to be at the end of the previous line.	fix	9	11	;\n	end	2	2
+tests/rules/@stylistic/semi-style/cases.ts:5:1	@stylistic/semi-style	expectedSemiColon	Expected this semicolon to be at the end of the previous line.	fix	42	45	;\n	end	5	2
+tests/rules/@stylistic/semi-style/cases.ts:7:1	@stylistic/semi-style	expectedSemiColon	Expected this semicolon to be at the end of the previous line.	fix	63	66	;\n	end	7	2
+tests/rules/@stylistic/semi-style/cases.ts:7:1	@stylistic/semi-style	expectedSemiColon	Expected this semicolon to be at the end of the previous line.	fix	63	66	;\n	end	7	2
+tests/rules/@stylistic/semi-style/cases.ts:9:1	@stylistic/semi-style	expectedSemiColon	Expected this semicolon to be at the end of the previous line.	fix	82	85	;\n	end	9	2
+tests/rules/@stylistic/semi-style/cases.ts:13:1	@stylistic/semi-style	expectedSemiColon	Expected this semicolon to be at the end of the previous line.	fix	133	136	;\n	end	13	2
+tests/rules/@stylistic/semi-style/cases.ts:15:1	@stylistic/semi-style	expectedSemiColon	Expected this semicolon to be at the end of the previous line.	fix	153	156	;\n	end	15	2
+tests/rules/@stylistic/semi-style/cases.ts:18:3	@stylistic/semi-style	expectedSemiColon	Expected this semicolon to be at the end of the previous line.	fix	186	193	;\n	end	18	4
+tests/rules/@stylistic/semi-style/cases.ts:20:5	@stylistic/semi-style	expectedSemiColon	Expected this semicolon to be at the end of the previous line.	fix	207	214	;\n	end	20	6
+tests/rules/@stylistic/semi-style/cases.ts:21:5	@stylistic/semi-style	expectedSemiColon	Expected this semicolon to be at the end of the previous line.	fix	219	226	;\n	end	21	6
+tests/rules/@stylistic/semi-style/cases.ts:23:5	@stylistic/semi-style	expectedSemiColon	Expected this semicolon to be at the end of the previous line.	fix	252	263	;\n	end	23	6
+tests/rules/@stylistic/semi-style/cases.ts:25:5	@stylistic/semi-style	expectedSemiColon	Expected this semicolon to be at the end of the previous line.	fix	273	282	;\n	end	25	6
+tests/rules/@stylistic/semi-style/cases.ts:28:3	@stylistic/semi-style	expectedSemiColon	Expected this semicolon to be at the end of the previous line.	fix	294	301	;\n	end	28	4
+tests/rules/@stylistic/semi-style/cases.ts:30:3	@stylistic/semi-style	expectedSemiColon	Expected this semicolon to be at the end of the previous line.	fix	318	323	;\n	end	30	4
+tests/rules/@stylistic/semi-style/cases.ts:37:1	@stylistic/semi-style	expectedSemiColon	Expected this semicolon to be at the end of the previous line.	fix	357	360	;\n	end	37	2
+tests/rules/@stylistic/semi-style/cases.ts:39:1	@stylistic/semi-style	expectedSemiColon	Expected this semicolon to be at the end of the previous line.	fix	384	387	;\n	end	39	2
+tests/rules/@stylistic/semi-style/cases.ts:40:1	@stylistic/semi-style	expectedSemiColon	Expected this semicolon to be at the end of the previous line.	fix	395	398	;\n	end	40	2
+tests/rules/@stylistic/semi-style/cases.ts:43:3	@stylistic/semi-style	expectedSemiColon	Expected this semicolon to be at the end of the previous line.	fix	415	419	;\n	end	43	4
+tests/rules/@stylistic/semi-style/cases.ts:45:3	@stylistic/semi-style	expectedSemiColon	Expected this semicolon to be at the end of the previous line.	fix	441	448	;\n	end	45	4
+tests/rules/@stylistic/semi-style/cases.ts:48:5	@stylistic/semi-style	expectedSemiColon	Expected this semicolon to be at the end of the previous line.	fix	464	473	;\n	end	48	6
+tests/rules/@stylistic/semi-style/cases.ts:54:5	@stylistic/semi-style	expectedSemiColon	Expected this semicolon to be at the end of the previous line.	fix	507	516	;\n	end	54	6
+tests/rules/@stylistic/semi-style/cases.ts:57:5	@stylistic/semi-style	expectedSemiColon	Expected this semicolon to be at the end of the previous line.	fix	532	539	;\n	end	57	6
+tests/rules/@stylistic/semi-style/cases.ts:60:1	@stylistic/semi-style	expectedSemiColon	Expected this semicolon to be at the end of the previous line.	end	60	2
+tests/rules/@stylistic/semi-style/cases.ts:62:1	@stylistic/semi-style	expectedSemiColon	Expected this semicolon to be at the end of the previous line.	end	62	2
+tests/rules/@stylistic/semi-style/cases.ts:64:1	@stylistic/semi-style	expectedSemiColon	Expected this semicolon to be at the end of the previous line.	fix	620	622	;\n	end	64	2
+tests/rules/@stylistic/semi-style/cases.ts:71:1	@stylistic/semi-style	expectedSemiColon	Expected this semicolon to be at the end of the previous line.	fix	730	732	;\n	end	71	2
+tests/rules/@stylistic/semi-style/first/cases.ts:1:10	@stylistic/semi-style	expectedSemiColon	Expected this semicolon to be at the beginning of the next line.	fix	9	11	\n;	end	1	11
+tests/rules/@stylistic/semi-style/first/cases.ts:2:10	@stylistic/semi-style	expectedSemiColon	Expected this semicolon to be at the beginning of the next line.	fix	20	22	\n;	end	2	11
+tests/rules/@stylistic/semi-style/first/cases.ts:3:19	@stylistic/semi-style	expectedSemiColon	Expected this semicolon to be at the beginning of the next line.	fix	40	42	\n;	end	3	20
+tests/rules/@stylistic/semi-style/first/cases.ts:3:19	@stylistic/semi-style	expectedSemiColon	Expected this semicolon to be at the beginning of the next line.	fix	40	42	\n;	end	3	20
+tests/rules/@stylistic/semi-style/first/cases.ts:4:17	@stylistic/semi-style	expectedSemiColon	Expected this semicolon to be at the beginning of the next line.	fix	58	60	\n;	end	4	18
+tests/rules/@stylistic/semi-style/first/cases.ts:5:23	@stylistic/semi-style	expectedSemiColon	Expected this semicolon to be at the beginning of the next line.	fix	82	84	\n;	end	5	24
+tests/rules/@stylistic/semi-style/first/cases.ts:6:18	@stylistic/semi-style	expectedSemiColon	Expected this semicolon to be at the beginning of the next line.	fix	101	103	\n;	end	6	19
+tests/rules/@stylistic/semi-style/first/cases.ts:8:16	@stylistic/semi-style	expectedSemiColon	Expected this semicolon to be at the beginning of the next line.	fix	133	137	\n;	end	8	17
+tests/rules/@stylistic/semi-style/first/cases.ts:13:15	@stylistic/semi-style	expectedSemiColon	Expected this semicolon to be at the beginning of the next line.	fix	210	214	\n;	end	13	16
+tests/rules/@stylistic/semi-style/first/cases.ts:15:11	@stylistic/semi-style	expectedSemiColon	Expected this semicolon to be at the beginning of the next line.	fix	226	230	\n;	end	15	12
+tests/rules/@stylistic/semi-style/first/cases.ts:19:14	@stylistic/semi-style	expectedSemiColon	Expected this semicolon to be at the beginning of the next line.	fix	272	274	\n;	end	19	15
+tests/rules/@stylistic/semi-style/first/cases.ts:21:9	@stylistic/semi-style	expectedSemiColon	Expected this semicolon to be at the beginning of the next line.	fix	294	296	\n;	end	21	10
+tests/rules/@stylistic/semi-style/first/cases.ts:23:8	@stylistic/semi-style	expectedSemiColon	Expected this semicolon to be at the beginning of the next line.	fix	313	317	\n;	end	23	9
+tests/rules/@stylistic/semi-style/first/cases.ts:24:8	@stylistic/semi-style	expectedSemiColon	Expected this semicolon to be at the beginning of the next line.	fix	322	326	\n;	end	24	9
+tests/rules/@stylistic/semi-style/first/cases.ts:26:8	@stylistic/semi-style	expectedSemiColon	Expected this semicolon to be at the beginning of the next line.	fix	342	348	\n;	end	26	9
+tests/rules/@stylistic/semi-style/first/cases.ts:32:8	@stylistic/semi-style	expectedSemiColon	Expected this semicolon to be at the beginning of the next line.	fix	389	395	\n;	end	32	9
+tests/rules/@stylistic/semi-style/first/cases.ts:37:10	@stylistic/semi-style	expectedSemiColon	Expected this semicolon to be at the beginning of the next line.	end	37	11
+tests/rules/@stylistic/semi-style/first/cases.ts:38:10	@stylistic/semi-style	expectedSemiColon	Expected this semicolon to be at the beginning of the next line.	end	38	11
+tests/rules/@stylistic/semi-style/last/cases.ts:2:1	@stylistic/semi-style	expectedSemiColon	Expected this semicolon to be at the end of the previous line.	fix	9	11	;\n	end	2	2
+tests/rules/@stylistic/semi-style/last/cases.ts:5:1	@stylistic/semi-style	expectedSemiColon	Expected this semicolon to be at the end of the previous line.	fix	42	45	;\n	end	5	2
+tests/rules/@stylistic/semi-style/last/cases.ts:7:1	@stylistic/semi-style	expectedSemiColon	Expected this semicolon to be at the end of the previous line.	fix	63	66	;\n	end	7	2
+tests/rules/@stylistic/semi-style/last/cases.ts:7:1	@stylistic/semi-style	expectedSemiColon	Expected this semicolon to be at the end of the previous line.	fix	63	66	;\n	end	7	2
+tests/rules/@stylistic/semi-style/last/cases.ts:9:1	@stylistic/semi-style	expectedSemiColon	Expected this semicolon to be at the end of the previous line.	fix	82	85	;\n	end	9	2
+tests/rules/@stylistic/semi-style/last/cases.ts:13:1	@stylistic/semi-style	expectedSemiColon	Expected this semicolon to be at the end of the previous line.	fix	133	136	;\n	end	13	2
+tests/rules/@stylistic/semi-style/last/cases.ts:15:1	@stylistic/semi-style	expectedSemiColon	Expected this semicolon to be at the end of the previous line.	fix	153	156	;\n	end	15	2
+tests/rules/@stylistic/semi-style/last/cases.ts:18:3	@stylistic/semi-style	expectedSemiColon	Expected this semicolon to be at the end of the previous line.	fix	186	193	;\n	end	18	4
+tests/rules/@stylistic/semi-style/last/cases.ts:20:5	@stylistic/semi-style	expectedSemiColon	Expected this semicolon to be at the end of the previous line.	fix	207	214	;\n	end	20	6
+tests/rules/@stylistic/semi-style/last/cases.ts:21:5	@stylistic/semi-style	expectedSemiColon	Expected this semicolon to be at the end of the previous line.	fix	219	226	;\n	end	21	6
+tests/rules/@stylistic/semi-style/last/cases.ts:23:5	@stylistic/semi-style	expectedSemiColon	Expected this semicolon to be at the end of the previous line.	fix	252	263	;\n	end	23	6
+tests/rules/@stylistic/semi-style/last/cases.ts:25:5	@stylistic/semi-style	expectedSemiColon	Expected this semicolon to be at the end of the previous line.	fix	273	282	;\n	end	25	6
+tests/rules/@stylistic/semi-style/last/cases.ts:28:3	@stylistic/semi-style	expectedSemiColon	Expected this semicolon to be at the end of the previous line.	fix	294	301	;\n	end	28	4
+tests/rules/@stylistic/semi-style/last/cases.ts:30:3	@stylistic/semi-style	expectedSemiColon	Expected this semicolon to be at the end of the previous line.	fix	318	323	;\n	end	30	4
+tests/rules/@stylistic/semi-style/last/cases.ts:37:1	@stylistic/semi-style	expectedSemiColon	Expected this semicolon to be at the end of the previous line.	fix	357	360	;\n	end	37	2
+tests/rules/@stylistic/semi-style/last/cases.ts:39:1	@stylistic/semi-style	expectedSemiColon	Expected this semicolon to be at the end of the previous line.	fix	384	387	;\n	end	39	2
+tests/rules/@stylistic/semi-style/last/cases.ts:40:1	@stylistic/semi-style	expectedSemiColon	Expected this semicolon to be at the end of the previous line.	fix	395	398	;\n	end	40	2
+tests/rules/@stylistic/semi-style/last/cases.ts:43:3	@stylistic/semi-style	expectedSemiColon	Expected this semicolon to be at the end of the previous line.	fix	415	419	;\n	end	43	4
+tests/rules/@stylistic/semi-style/last/cases.ts:45:3	@stylistic/semi-style	expectedSemiColon	Expected this semicolon to be at the end of the previous line.	fix	441	448	;\n	end	45	4
+tests/rules/@stylistic/semi-style/last/cases.ts:48:5	@stylistic/semi-style	expectedSemiColon	Expected this semicolon to be at the end of the previous line.	fix	464	473	;\n	end	48	6
+tests/rules/@stylistic/semi-style/last/cases.ts:54:5	@stylistic/semi-style	expectedSemiColon	Expected this semicolon to be at the end of the previous line.	fix	507	516	;\n	end	54	6
+tests/rules/@stylistic/semi-style/last/cases.ts:57:5	@stylistic/semi-style	expectedSemiColon	Expected this semicolon to be at the end of the previous line.	fix	532	539	;\n	end	57	6
+tests/rules/@stylistic/semi-style/last/cases.ts:60:1	@stylistic/semi-style	expectedSemiColon	Expected this semicolon to be at the end of the previous line.	end	60	2
+tests/rules/@stylistic/semi-style/last/cases.ts:62:1	@stylistic/semi-style	expectedSemiColon	Expected this semicolon to be at the end of the previous line.	end	62	2
+tests/rules/@stylistic/semi-style/last/cases.ts:64:1	@stylistic/semi-style	expectedSemiColon	Expected this semicolon to be at the end of the previous line.	fix	620	622	;\n	end	64	2
+tests/rules/@stylistic/semi-style/last/cases.ts:71:1	@stylistic/semi-style	expectedSemiColon	Expected this semicolon to be at the end of the previous line.	fix	730	732	;\n	end	71	2
