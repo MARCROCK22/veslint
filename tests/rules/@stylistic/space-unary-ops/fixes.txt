@@ -1,0 +1,203 @@
+tests/rules/@stylistic/space-unary-ops/cases.ts:4:34	@stylistic/space-unary-ops	requireAfterWord	Unary word operator 'typeof' must be followed by whitespace.	fix	181	181	 	end	4	43
+tests/rules/@stylistic/space-unary-ops/cases.ts:4:88	@stylistic/space-unary-ops	requireAfterWord	Unary word operator 'typeof' must be followed by whitespace.	fix	235	235	 	end	4	97
+tests/rules/@stylistic/space-unary-ops/cases.ts:5:32	@stylistic/space-unary-ops	requireAfterWord	Unary word operator 'void' must be followed by whitespace.	fix	275	275	 	end	5	39
+tests/rules/@stylistic/space-unary-ops/cases.ts:5:46	@stylistic/space-unary-ops	requireAfterWord	Unary word operator 'typeof' must be followed by whitespace.	fix	291	291	 	end	5	54
+tests/rules/@stylistic/space-unary-ops/cases.ts:5:61	@stylistic/space-unary-ops	requireAfterWord	Unary word operator 'typeof' must be followed by whitespace.	fix	306	306	 	end	5	69
+tests/rules/@stylistic/space-unary-ops/cases.ts:5:77	@stylistic/space-unary-ops	requireAfterWord	Unary word operator 'typeof' must be followed by whitespace.	fix	322	322	 	end	5	85
+tests/rules/@stylistic/space-unary-ops/cases.ts:7:1	@stylistic/space-unary-ops	requireAfterWord	Unary word operator 'delete' must be followed by whitespace.	fix	344	344	 	end	7	12
+tests/rules/@stylistic/space-unary-ops/cases.ts:8:33	@stylistic/space-unary-ops	requireAfterWord	Unary word operator 'new' must be followed by whitespace.	fix	386	386	 	end	8	41
+tests/rules/@stylistic/space-unary-ops/cases.ts:9:28	@stylistic/space-unary-ops	unexpectedAfter	Unexpected space after unary operator '-'.	fix	477	478		end	9	31
+tests/rules/@stylistic/space-unary-ops/cases.ts:9:47	@stylistic/space-unary-ops	unexpectedAfter	Unexpected space after unary operator '+'.	fix	496	497		end	9	50
+tests/rules/@stylistic/space-unary-ops/cases.ts:9:66	@stylistic/space-unary-ops	unexpectedAfter	Unexpected space after unary operator '!'.	fix	515	516		end	9	69
+tests/rules/@stylistic/space-unary-ops/cases.ts:9:86	@stylistic/space-unary-ops	unexpectedAfter	Unexpected space after unary operator '!'.	fix	535	536		end	9	90
+tests/rules/@stylistic/space-unary-ops/cases.ts:9:107	@stylistic/space-unary-ops	unexpectedAfter	Unexpected space after unary operator '~'.	fix	556	557		end	9	110
+tests/rules/@stylistic/space-unary-ops/cases.ts:10:33	@stylistic/space-unary-ops	unexpectedAfter	Unexpected space after unary operator '-'.	end	10	37
+tests/rules/@stylistic/space-unary-ops/cases.ts:10:45	@stylistic/space-unary-ops	unexpectedAfter	Unexpected space after unary operator '+'.	end	10	49
+tests/rules/@stylistic/space-unary-ops/cases.ts:10:57	@stylistic/space-unary-ops	unexpectedAfter	Unexpected space after unary operator '-'.	fix	617	618		end	10	61
+tests/rules/@stylistic/space-unary-ops/cases.ts:10:103	@stylistic/space-unary-ops	unexpectedAfter	Unexpected space after unary operator '-'.	fix	663	672		end	10	114
+tests/rules/@stylistic/space-unary-ops/cases.ts:12:1	@stylistic/space-unary-ops	unexpectedAfter	Unexpected space after unary operator '++'.	fix	682	683		end	12	5
+tests/rules/@stylistic/space-unary-ops/cases.ts:14:1	@stylistic/space-unary-ops	unexpectedBefore	Unexpected space before unary operator '++'.	fix	692	693		end	14	5
+tests/rules/@stylistic/space-unary-ops/cases.ts:15:1	@stylistic/space-unary-ops	unexpectedBefore	Unexpected space before unary operator '--'.	fix	698	699		end	15	5
+tests/rules/@stylistic/space-unary-ops/cases.ts:16:1	@stylistic/space-unary-ops	unexpectedAfter	Unexpected space after unary operator '--'.	fix	705	706		end	16	5
+tests/rules/@stylistic/space-unary-ops/cases.ts:17:1	@stylistic/space-unary-ops	unexpectedBefore	Unexpected space before unary operator '++'.	fix	710	717		end	17	11
+tests/rules/@stylistic/space-unary-ops/cases.ts:19:1	@stylistic/space-unary-ops	unexpectedBefore	Unexpected space before unary operator '++'.	fix	737	738		end	19	10
+tests/rules/@stylistic/space-unary-ops/cases.ts:22:3	@stylistic/space-unary-ops	requireAfterWord	Unary word operator 'yield' must be followed by whitespace.	fix	818	818	 	end	22	11
+tests/rules/@stylistic/space-unary-ops/cases.ts:34:3	@stylistic/space-unary-ops	requireAfterWord	Unary word operator 'await' must be followed by whitespace.	fix	999	999	 	end	34	11
+tests/rules/@stylistic/space-unary-ops/cases.ts:38:22	@stylistic/space-unary-ops	requireAfterWord	Unary word operator 'await' must be followed by whitespace.	fix	1073	1073	 	end	38	30
+tests/rules/@stylistic/space-unary-ops/cases.ts:40:30	@stylistic/space-unary-ops	unexpectedBefore	Unexpected space before unary operator '!'.	fix	1110	1111		end	40	33
+tests/rules/@stylistic/space-unary-ops/cases.ts:40:101	@stylistic/space-unary-ops	unexpectedBefore	Unexpected space before unary operator '!'.	fix	1183	1184		end	40	106
+tests/rules/@stylistic/space-unary-ops/cases.ts:42:51	@stylistic/space-unary-ops	unexpectedAfter	Unexpected space after unary operator '-'.	end	42	58
+tests/rules/@stylistic/space-unary-ops/cases.ts:42:53	@stylistic/space-unary-ops	unexpectedAfter	Unexpected space after unary operator '-'.	end	42	58
+tests/rules/@stylistic/space-unary-ops/cases.ts:42:55	@stylistic/space-unary-ops	unexpectedAfter	Unexpected space after unary operator '-'.	fix	1301	1302		end	42	58
+tests/rules/@stylistic/space-unary-ops/inverted/cases.ts:5:52	@stylistic/space-unary-ops	requireAfter	Unary operator '-' must be followed by whitespace.	fix	292	292	 	end	5	54
+tests/rules/@stylistic/space-unary-ops/inverted/cases.ts:5:67	@stylistic/space-unary-ops	requireAfter	Unary operator '+' must be followed by whitespace.	fix	307	307	 	end	5	69
+tests/rules/@stylistic/space-unary-ops/inverted/cases.ts:5:83	@stylistic/space-unary-ops	requireAfter	Unary operator '!' must be followed by whitespace.	fix	323	323	 	end	5	85
+tests/rules/@stylistic/space-unary-ops/inverted/cases.ts:9:19	@stylistic/space-unary-ops	requireAfter	Unary operator '-' must be followed by whitespace.	fix	468	468	 	end	9	21
+tests/rules/@stylistic/space-unary-ops/inverted/cases.ts:9:38	@stylistic/space-unary-ops	requireAfter	Unary operator '+' must be followed by whitespace.	fix	487	487	 	end	9	40
+tests/rules/@stylistic/space-unary-ops/inverted/cases.ts:9:57	@stylistic/space-unary-ops	requireAfter	Unary operator '!' must be followed by whitespace.	fix	506	506	 	end	9	59
+tests/rules/@stylistic/space-unary-ops/inverted/cases.ts:9:77	@stylistic/space-unary-ops	requireAfter	Unary operator '!' must be followed by whitespace.	fix	526	526	 	end	9	79
+tests/rules/@stylistic/space-unary-ops/inverted/cases.ts:9:88	@stylistic/space-unary-ops	requireAfter	Unary operator '!' must be followed by whitespace.	fix	537	537	 	end	9	90
+tests/rules/@stylistic/space-unary-ops/inverted/cases.ts:9:97	@stylistic/space-unary-ops	requireAfter	Unary operator '~' must be followed by whitespace.	fix	546	546	 	end	9	99
+tests/rules/@stylistic/space-unary-ops/inverted/cases.ts:10:20	@stylistic/space-unary-ops	requireAfter	Unary operator '-' must be followed by whitespace.	fix	580	580	 	end	10	25
+tests/rules/@stylistic/space-unary-ops/inverted/cases.ts:10:22	@stylistic/space-unary-ops	requireAfter	Unary operator '-' must be followed by whitespace.	fix	582	582	 	end	10	24
+tests/rules/@stylistic/space-unary-ops/inverted/cases.ts:10:35	@stylistic/space-unary-ops	requireAfter	Unary operator '-' must be followed by whitespace.	fix	595	595	 	end	10	37
+tests/rules/@stylistic/space-unary-ops/inverted/cases.ts:10:47	@stylistic/space-unary-ops	requireAfter	Unary operator '+' must be followed by whitespace.	fix	607	607	 	end	10	49
+tests/rules/@stylistic/space-unary-ops/inverted/cases.ts:10:59	@stylistic/space-unary-ops	requireAfter	Unary operator '+' must be followed by whitespace.	fix	619	619	 	end	10	61
+tests/rules/@stylistic/space-unary-ops/inverted/cases.ts:10:70	@stylistic/space-unary-ops	requireAfter	Unary operator '!' must be followed by whitespace.	fix	630	630	 	end	10	72
+tests/rules/@stylistic/space-unary-ops/inverted/cases.ts:10:80	@stylistic/space-unary-ops	requireAfter	Unary operator '!' must be followed by whitespace.	fix	640	640	 	end	10	83
+tests/rules/@stylistic/space-unary-ops/inverted/cases.ts:10:81	@stylistic/space-unary-ops	requireAfter	Unary operator '-' must be followed by whitespace.	fix	641	641	 	end	10	83
+tests/rules/@stylistic/space-unary-ops/inverted/cases.ts:10:91	@stylistic/space-unary-ops	requireAfter	Unary operator '-' must be followed by whitespace.	fix	651	651	 	end	10	95
+tests/rules/@stylistic/space-unary-ops/inverted/cases.ts:11:1	@stylistic/space-unary-ops	requireAfter	Unary operator '++' must be followed by whitespace.	fix	677	677	 	end	11	4
+tests/rules/@stylistic/space-unary-ops/inverted/cases.ts:13:1	@stylistic/space-unary-ops	requireBefore	Space is required before unary operator '++'.	fix	687	687	 	end	13	4
+tests/rules/@stylistic/space-unary-ops/inverted/cases.ts:18:1	@stylistic/space-unary-ops	requireBefore	Space is required before unary operator '++'.	fix	727	727	 	end	18	9
+tests/rules/@stylistic/space-unary-ops/inverted/cases.ts:28:3	@stylistic/space-unary-ops	unexpectedAfterWord	Unexpected space after unary word operator 'yield'.	fix	898	899		end	28	11
+tests/rules/@stylistic/space-unary-ops/inverted/cases.ts:28:9	@stylistic/space-unary-ops	requireAfter	Unary operator '-' must be followed by whitespace.	fix	900	900	 	end	28	11
+tests/rules/@stylistic/space-unary-ops/inverted/cases.ts:37:3	@stylistic/space-unary-ops	unexpectedAfterWord	Unexpected space after unary word operator 'await'.	fix	1042	1043		end	37	11
+tests/rules/@stylistic/space-unary-ops/inverted/cases.ts:37:9	@stylistic/space-unary-ops	requireAfter	Unary operator '-' must be followed by whitespace.	fix	1044	1044	 	end	37	11
+tests/rules/@stylistic/space-unary-ops/inverted/cases.ts:40:20	@stylistic/space-unary-ops	requireBefore	Space is required before unary operator '!'.	fix	1100	1100	 	end	40	22
+tests/rules/@stylistic/space-unary-ops/inverted/cases.ts:40:41	@stylistic/space-unary-ops	requireBefore	Space is required before unary operator '!'.	fix	1123	1123	 	end	40	45
+tests/rules/@stylistic/space-unary-ops/inverted/cases.ts:40:53	@stylistic/space-unary-ops	requireBefore	Space is required before unary operator '!'.	fix	1134	1134	 	end	40	56
+tests/rules/@stylistic/space-unary-ops/inverted/cases.ts:40:53	@stylistic/space-unary-ops	requireBefore	Space is required before unary operator '!'.	fix	1133	1133	 	end	40	55
+tests/rules/@stylistic/space-unary-ops/inverted/cases.ts:40:64	@stylistic/space-unary-ops	requireBefore	Space is required before unary operator '!'.	fix	1149	1149	 	end	40	71
+tests/rules/@stylistic/space-unary-ops/inverted/cases.ts:40:79	@stylistic/space-unary-ops	requireBefore	Space is required before unary operator '!'.	fix	1161	1161	 	end	40	83
+tests/rules/@stylistic/space-unary-ops/inverted/cases.ts:41:20	@stylistic/space-unary-ops	requireBefore	Space is required before unary operator '!'.	fix	1229	1229	 	end	41	33
+tests/rules/@stylistic/space-unary-ops/inverted/cases.ts:41:41	@stylistic/space-unary-ops	requireBefore	Space is required before unary operator '!'.	fix	1239	1239	 	end	41	43
+tests/rules/@stylistic/space-unary-ops/inverted/cases.ts:42:69	@stylistic/space-unary-ops	requireAfter	Unary operator '!' must be followed by whitespace.	fix	1315	1315	 	end	42	71
+tests/rules/@stylistic/space-unary-ops/nonwords-true/cases.ts:4:34	@stylistic/space-unary-ops	requireAfterWord	Unary word operator 'typeof' must be followed by whitespace.	fix	181	181	 	end	4	43
+tests/rules/@stylistic/space-unary-ops/nonwords-true/cases.ts:4:88	@stylistic/space-unary-ops	requireAfterWord	Unary word operator 'typeof' must be followed by whitespace.	fix	235	235	 	end	4	97
+tests/rules/@stylistic/space-unary-ops/nonwords-true/cases.ts:5:32	@stylistic/space-unary-ops	requireAfterWord	Unary word operator 'void' must be followed by whitespace.	fix	275	275	 	end	5	39
+tests/rules/@stylistic/space-unary-ops/nonwords-true/cases.ts:5:46	@stylistic/space-unary-ops	requireAfterWord	Unary word operator 'typeof' must be followed by whitespace.	fix	291	291	 	end	5	54
+tests/rules/@stylistic/space-unary-ops/nonwords-true/cases.ts:5:52	@stylistic/space-unary-ops	requireAfter	Unary operator '-' must be followed by whitespace.	fix	292	292	 	end	5	54
+tests/rules/@stylistic/space-unary-ops/nonwords-true/cases.ts:5:61	@stylistic/space-unary-ops	requireAfterWord	Unary word operator 'typeof' must be followed by whitespace.	fix	306	306	 	end	5	69
+tests/rules/@stylistic/space-unary-ops/nonwords-true/cases.ts:5:67	@stylistic/space-unary-ops	requireAfter	Unary operator '+' must be followed by whitespace.	fix	307	307	 	end	5	69
+tests/rules/@stylistic/space-unary-ops/nonwords-true/cases.ts:5:77	@stylistic/space-unary-ops	requireAfterWord	Unary word operator 'typeof' must be followed by whitespace.	fix	322	322	 	end	5	85
+tests/rules/@stylistic/space-unary-ops/nonwords-true/cases.ts:5:83	@stylistic/space-unary-ops	requireAfter	Unary operator '!' must be followed by whitespace.	fix	323	323	 	end	5	85
+tests/rules/@stylistic/space-unary-ops/nonwords-true/cases.ts:7:1	@stylistic/space-unary-ops	requireAfterWord	Unary word operator 'delete' must be followed by whitespace.	fix	344	344	 	end	7	12
+tests/rules/@stylistic/space-unary-ops/nonwords-true/cases.ts:8:33	@stylistic/space-unary-ops	requireAfterWord	Unary word operator 'new' must be followed by whitespace.	fix	386	386	 	end	8	41
+tests/rules/@stylistic/space-unary-ops/nonwords-true/cases.ts:9:19	@stylistic/space-unary-ops	requireAfter	Unary operator '-' must be followed by whitespace.	fix	468	468	 	end	9	21
+tests/rules/@stylistic/space-unary-ops/nonwords-true/cases.ts:9:38	@stylistic/space-unary-ops	requireAfter	Unary operator '+' must be followed by whitespace.	fix	487	487	 	end	9	40
+tests/rules/@stylistic/space-unary-ops/nonwords-true/cases.ts:9:57	@stylistic/space-unary-ops	requireAfter	Unary operator '!' must be followed by whitespace.	fix	506	506	 	end	9	59
+tests/rules/@stylistic/space-unary-ops/nonwords-true/cases.ts:9:77	@stylistic/space-unary-ops	requireAfter	Unary operator '!' must be followed by whitespace.	fix	526	526	 	end	9	79
+tests/rules/@stylistic/space-unary-ops/nonwords-true/cases.ts:9:88	@stylistic/space-unary-ops	requireAfter	Unary operator '!' must be followed by whitespace.	fix	537	537	 	end	9	90
+tests/rules/@stylistic/space-unary-ops/nonwords-true/cases.ts:9:97	@stylistic/space-unary-ops	requireAfter	Unary operator '~' must be followed by whitespace.	fix	546	546	 	end	9	99
+tests/rules/@stylistic/space-unary-ops/nonwords-true/cases.ts:10:20	@stylistic/space-unary-ops	requireAfter	Unary operator '-' must be followed by whitespace.	fix	580	580	 	end	10	25
+tests/rules/@stylistic/space-unary-ops/nonwords-true/cases.ts:10:22	@stylistic/space-unary-ops	requireAfter	Unary operator '-' must be followed by whitespace.	fix	582	582	 	end	10	24
+tests/rules/@stylistic/space-unary-ops/nonwords-true/cases.ts:10:35	@stylistic/space-unary-ops	requireAfter	Unary operator '-' must be followed by whitespace.	fix	595	595	 	end	10	37
+tests/rules/@stylistic/space-unary-ops/nonwords-true/cases.ts:10:47	@stylistic/space-unary-ops	requireAfter	Unary operator '+' must be followed by whitespace.	fix	607	607	 	end	10	49
+tests/rules/@stylistic/space-unary-ops/nonwords-true/cases.ts:10:59	@stylistic/space-unary-ops	requireAfter	Unary operator '+' must be followed by whitespace.	fix	619	619	 	end	10	61
+tests/rules/@stylistic/space-unary-ops/nonwords-true/cases.ts:10:70	@stylistic/space-unary-ops	requireAfter	Unary operator '!' must be followed by whitespace.	fix	630	630	 	end	10	72
+tests/rules/@stylistic/space-unary-ops/nonwords-true/cases.ts:10:80	@stylistic/space-unary-ops	requireAfter	Unary operator '!' must be followed by whitespace.	fix	640	640	 	end	10	83
+tests/rules/@stylistic/space-unary-ops/nonwords-true/cases.ts:10:81	@stylistic/space-unary-ops	requireAfter	Unary operator '-' must be followed by whitespace.	fix	641	641	 	end	10	83
+tests/rules/@stylistic/space-unary-ops/nonwords-true/cases.ts:10:91	@stylistic/space-unary-ops	requireAfter	Unary operator '-' must be followed by whitespace.	fix	651	651	 	end	10	95
+tests/rules/@stylistic/space-unary-ops/nonwords-true/cases.ts:11:1	@stylistic/space-unary-ops	requireAfter	Unary operator '++' must be followed by whitespace.	fix	677	677	 	end	11	4
+tests/rules/@stylistic/space-unary-ops/nonwords-true/cases.ts:13:1	@stylistic/space-unary-ops	requireBefore	Space is required before unary operator '++'.	fix	687	687	 	end	13	4
+tests/rules/@stylistic/space-unary-ops/nonwords-true/cases.ts:18:1	@stylistic/space-unary-ops	requireBefore	Space is required before unary operator '++'.	fix	727	727	 	end	18	9
+tests/rules/@stylistic/space-unary-ops/nonwords-true/cases.ts:22:3	@stylistic/space-unary-ops	requireAfterWord	Unary word operator 'yield' must be followed by whitespace.	fix	818	818	 	end	22	11
+tests/rules/@stylistic/space-unary-ops/nonwords-true/cases.ts:28:9	@stylistic/space-unary-ops	requireAfter	Unary operator '-' must be followed by whitespace.	fix	900	900	 	end	28	11
+tests/rules/@stylistic/space-unary-ops/nonwords-true/cases.ts:34:3	@stylistic/space-unary-ops	requireAfterWord	Unary word operator 'await' must be followed by whitespace.	fix	999	999	 	end	34	11
+tests/rules/@stylistic/space-unary-ops/nonwords-true/cases.ts:37:9	@stylistic/space-unary-ops	requireAfter	Unary operator '-' must be followed by whitespace.	fix	1044	1044	 	end	37	11
+tests/rules/@stylistic/space-unary-ops/nonwords-true/cases.ts:38:22	@stylistic/space-unary-ops	requireAfterWord	Unary word operator 'await' must be followed by whitespace.	fix	1073	1073	 	end	38	30
+tests/rules/@stylistic/space-unary-ops/nonwords-true/cases.ts:40:20	@stylistic/space-unary-ops	requireBefore	Space is required before unary operator '!'.	fix	1100	1100	 	end	40	22
+tests/rules/@stylistic/space-unary-ops/nonwords-true/cases.ts:40:41	@stylistic/space-unary-ops	requireBefore	Space is required before unary operator '!'.	fix	1123	1123	 	end	40	45
+tests/rules/@stylistic/space-unary-ops/nonwords-true/cases.ts:40:53	@stylistic/space-unary-ops	requireBefore	Space is required before unary operator '!'.	fix	1134	1134	 	end	40	56
+tests/rules/@stylistic/space-unary-ops/nonwords-true/cases.ts:40:53	@stylistic/space-unary-ops	requireBefore	Space is required before unary operator '!'.	fix	1133	1133	 	end	40	55
+tests/rules/@stylistic/space-unary-ops/nonwords-true/cases.ts:40:64	@stylistic/space-unary-ops	requireBefore	Space is required before unary operator '!'.	fix	1149	1149	 	end	40	71
+tests/rules/@stylistic/space-unary-ops/nonwords-true/cases.ts:40:79	@stylistic/space-unary-ops	requireBefore	Space is required before unary operator '!'.	fix	1161	1161	 	end	40	83
+tests/rules/@stylistic/space-unary-ops/nonwords-true/cases.ts:41:20	@stylistic/space-unary-ops	requireBefore	Space is required before unary operator '!'.	fix	1229	1229	 	end	41	33
+tests/rules/@stylistic/space-unary-ops/nonwords-true/cases.ts:41:41	@stylistic/space-unary-ops	requireBefore	Space is required before unary operator '!'.	fix	1239	1239	 	end	41	43
+tests/rules/@stylistic/space-unary-ops/nonwords-true/cases.ts:42:69	@stylistic/space-unary-ops	requireAfter	Unary operator '!' must be followed by whitespace.	fix	1315	1315	 	end	42	71
+tests/rules/@stylistic/space-unary-ops/overrides-bang/cases.ts:4:34	@stylistic/space-unary-ops	requireAfterWord	Unary word operator 'typeof' must be followed by whitespace.	fix	181	181	 	end	4	43
+tests/rules/@stylistic/space-unary-ops/overrides-bang/cases.ts:4:88	@stylistic/space-unary-ops	requireAfterWord	Unary word operator 'typeof' must be followed by whitespace.	fix	235	235	 	end	4	97
+tests/rules/@stylistic/space-unary-ops/overrides-bang/cases.ts:5:32	@stylistic/space-unary-ops	requireAfterWord	Unary word operator 'void' must be followed by whitespace.	fix	275	275	 	end	5	39
+tests/rules/@stylistic/space-unary-ops/overrides-bang/cases.ts:5:46	@stylistic/space-unary-ops	requireAfterWord	Unary word operator 'typeof' must be followed by whitespace.	fix	291	291	 	end	5	54
+tests/rules/@stylistic/space-unary-ops/overrides-bang/cases.ts:5:52	@stylistic/space-unary-ops	requireAfter	Unary operator '-' must be followed by whitespace.	fix	292	292	 	end	5	54
+tests/rules/@stylistic/space-unary-ops/overrides-bang/cases.ts:5:61	@stylistic/space-unary-ops	requireAfterWord	Unary word operator 'typeof' must be followed by whitespace.	fix	306	306	 	end	5	69
+tests/rules/@stylistic/space-unary-ops/overrides-bang/cases.ts:5:77	@stylistic/space-unary-ops	requireAfterWord	Unary word operator 'typeof' must be followed by whitespace.	fix	322	322	 	end	5	85
+tests/rules/@stylistic/space-unary-ops/overrides-bang/cases.ts:5:83	@stylistic/space-unary-ops	requireAfter	Unary operator '!' must be followed by whitespace.	fix	323	323	 	end	5	85
+tests/rules/@stylistic/space-unary-ops/overrides-bang/cases.ts:7:1	@stylistic/space-unary-ops	requireAfterWord	Unary word operator 'delete' must be followed by whitespace.	fix	344	344	 	end	7	12
+tests/rules/@stylistic/space-unary-ops/overrides-bang/cases.ts:8:33	@stylistic/space-unary-ops	requireAfterWord	Unary word operator 'new' must be followed by whitespace.	fix	386	386	 	end	8	41
+tests/rules/@stylistic/space-unary-ops/overrides-bang/cases.ts:9:19	@stylistic/space-unary-ops	requireAfter	Unary operator '-' must be followed by whitespace.	fix	468	468	 	end	9	21
+tests/rules/@stylistic/space-unary-ops/overrides-bang/cases.ts:9:47	@stylistic/space-unary-ops	unexpectedAfter	Unexpected space after unary operator '+'.	fix	496	497		end	9	50
+tests/rules/@stylistic/space-unary-ops/overrides-bang/cases.ts:9:57	@stylistic/space-unary-ops	requireAfter	Unary operator '!' must be followed by whitespace.	fix	506	506	 	end	9	59
+tests/rules/@stylistic/space-unary-ops/overrides-bang/cases.ts:9:77	@stylistic/space-unary-ops	requireAfter	Unary operator '!' must be followed by whitespace.	fix	526	526	 	end	9	79
+tests/rules/@stylistic/space-unary-ops/overrides-bang/cases.ts:9:88	@stylistic/space-unary-ops	requireAfter	Unary operator '!' must be followed by whitespace.	fix	537	537	 	end	9	90
+tests/rules/@stylistic/space-unary-ops/overrides-bang/cases.ts:9:107	@stylistic/space-unary-ops	unexpectedAfter	Unexpected space after unary operator '~'.	fix	556	557		end	9	110
+tests/rules/@stylistic/space-unary-ops/overrides-bang/cases.ts:10:20	@stylistic/space-unary-ops	requireAfter	Unary operator '-' must be followed by whitespace.	fix	580	580	 	end	10	25
+tests/rules/@stylistic/space-unary-ops/overrides-bang/cases.ts:10:22	@stylistic/space-unary-ops	requireAfter	Unary operator '-' must be followed by whitespace.	fix	582	582	 	end	10	24
+tests/rules/@stylistic/space-unary-ops/overrides-bang/cases.ts:10:35	@stylistic/space-unary-ops	requireAfter	Unary operator '-' must be followed by whitespace.	fix	595	595	 	end	10	37
+tests/rules/@stylistic/space-unary-ops/overrides-bang/cases.ts:10:45	@stylistic/space-unary-ops	unexpectedAfter	Unexpected space after unary operator '+'.	end	10	49
+tests/rules/@stylistic/space-unary-ops/overrides-bang/cases.ts:10:70	@stylistic/space-unary-ops	requireAfter	Unary operator '!' must be followed by whitespace.	fix	630	630	 	end	10	72
+tests/rules/@stylistic/space-unary-ops/overrides-bang/cases.ts:10:80	@stylistic/space-unary-ops	requireAfter	Unary operator '!' must be followed by whitespace.	fix	640	640	 	end	10	83
+tests/rules/@stylistic/space-unary-ops/overrides-bang/cases.ts:10:81	@stylistic/space-unary-ops	requireAfter	Unary operator '-' must be followed by whitespace.	fix	641	641	 	end	10	83
+tests/rules/@stylistic/space-unary-ops/overrides-bang/cases.ts:10:91	@stylistic/space-unary-ops	requireAfter	Unary operator '-' must be followed by whitespace.	fix	651	651	 	end	10	95
+tests/rules/@stylistic/space-unary-ops/overrides-bang/cases.ts:12:1	@stylistic/space-unary-ops	unexpectedAfter	Unexpected space after unary operator '++'.	fix	682	683		end	12	5
+tests/rules/@stylistic/space-unary-ops/overrides-bang/cases.ts:14:1	@stylistic/space-unary-ops	unexpectedBefore	Unexpected space before unary operator '++'.	fix	692	693		end	14	5
+tests/rules/@stylistic/space-unary-ops/overrides-bang/cases.ts:15:1	@stylistic/space-unary-ops	unexpectedBefore	Unexpected space before unary operator '--'.	fix	698	699		end	15	5
+tests/rules/@stylistic/space-unary-ops/overrides-bang/cases.ts:16:1	@stylistic/space-unary-ops	unexpectedAfter	Unexpected space after unary operator '--'.	fix	705	706		end	16	5
+tests/rules/@stylistic/space-unary-ops/overrides-bang/cases.ts:17:1	@stylistic/space-unary-ops	unexpectedBefore	Unexpected space before unary operator '++'.	fix	710	717		end	17	11
+tests/rules/@stylistic/space-unary-ops/overrides-bang/cases.ts:19:1	@stylistic/space-unary-ops	unexpectedBefore	Unexpected space before unary operator '++'.	fix	737	738		end	19	10
+tests/rules/@stylistic/space-unary-ops/overrides-bang/cases.ts:22:3	@stylistic/space-unary-ops	requireAfterWord	Unary word operator 'yield' must be followed by whitespace.	fix	818	818	 	end	22	11
+tests/rules/@stylistic/space-unary-ops/overrides-bang/cases.ts:28:9	@stylistic/space-unary-ops	requireAfter	Unary operator '-' must be followed by whitespace.	fix	900	900	 	end	28	11
+tests/rules/@stylistic/space-unary-ops/overrides-bang/cases.ts:37:3	@stylistic/space-unary-ops	unexpectedAfterWord	Unexpected space after unary word operator 'await'.	fix	1042	1043		end	37	11
+tests/rules/@stylistic/space-unary-ops/overrides-bang/cases.ts:37:9	@stylistic/space-unary-ops	requireAfter	Unary operator '-' must be followed by whitespace.	fix	1044	1044	 	end	37	11
+tests/rules/@stylistic/space-unary-ops/overrides-bang/cases.ts:40:20	@stylistic/space-unary-ops	requireBefore	Space is required before unary operator '!'.	fix	1100	1100	 	end	40	22
+tests/rules/@stylistic/space-unary-ops/overrides-bang/cases.ts:40:41	@stylistic/space-unary-ops	requireBefore	Space is required before unary operator '!'.	fix	1123	1123	 	end	40	45
+tests/rules/@stylistic/space-unary-ops/overrides-bang/cases.ts:40:53	@stylistic/space-unary-ops	requireBefore	Space is required before unary operator '!'.	fix	1134	1134	 	end	40	56
+tests/rules/@stylistic/space-unary-ops/overrides-bang/cases.ts:40:53	@stylistic/space-unary-ops	requireBefore	Space is required before unary operator '!'.	fix	1133	1133	 	end	40	55
+tests/rules/@stylistic/space-unary-ops/overrides-bang/cases.ts:40:64	@stylistic/space-unary-ops	requireBefore	Space is required before unary operator '!'.	fix	1149	1149	 	end	40	71
+tests/rules/@stylistic/space-unary-ops/overrides-bang/cases.ts:40:79	@stylistic/space-unary-ops	requireBefore	Space is required before unary operator '!'.	fix	1161	1161	 	end	40	83
+tests/rules/@stylistic/space-unary-ops/overrides-bang/cases.ts:41:20	@stylistic/space-unary-ops	requireBefore	Space is required before unary operator '!'.	fix	1229	1229	 	end	41	33
+tests/rules/@stylistic/space-unary-ops/overrides-bang/cases.ts:41:41	@stylistic/space-unary-ops	requireBefore	Space is required before unary operator '!'.	fix	1239	1239	 	end	41	43
+tests/rules/@stylistic/space-unary-ops/overrides-bang/cases.ts:42:69	@stylistic/space-unary-ops	requireAfter	Unary operator '!' must be followed by whitespace.	fix	1315	1315	 	end	42	71
+tests/rules/@stylistic/space-unary-ops/overrides/cases.ts:5:32	@stylistic/space-unary-ops	requireAfterWord	Unary word operator 'void' must be followed by whitespace.	fix	275	275	 	end	5	39
+tests/rules/@stylistic/space-unary-ops/overrides/cases.ts:7:1	@stylistic/space-unary-ops	requireAfterWord	Unary word operator 'delete' must be followed by whitespace.	fix	344	344	 	end	7	12
+tests/rules/@stylistic/space-unary-ops/overrides/cases.ts:9:28	@stylistic/space-unary-ops	unexpectedAfter	Unexpected space after unary operator '-'.	fix	477	478		end	9	31
+tests/rules/@stylistic/space-unary-ops/overrides/cases.ts:9:47	@stylistic/space-unary-ops	unexpectedAfter	Unexpected space after unary operator '+'.	fix	496	497		end	9	50
+tests/rules/@stylistic/space-unary-ops/overrides/cases.ts:9:66	@stylistic/space-unary-ops	unexpectedAfter	Unexpected space after unary operator '!'.	fix	515	516		end	9	69
+tests/rules/@stylistic/space-unary-ops/overrides/cases.ts:9:86	@stylistic/space-unary-ops	unexpectedAfter	Unexpected space after unary operator '!'.	fix	535	536		end	9	90
+tests/rules/@stylistic/space-unary-ops/overrides/cases.ts:9:107	@stylistic/space-unary-ops	unexpectedAfter	Unexpected space after unary operator '~'.	fix	556	557		end	9	110
+tests/rules/@stylistic/space-unary-ops/overrides/cases.ts:10:33	@stylistic/space-unary-ops	unexpectedAfter	Unexpected space after unary operator '-'.	end	10	37
+tests/rules/@stylistic/space-unary-ops/overrides/cases.ts:10:45	@stylistic/space-unary-ops	unexpectedAfter	Unexpected space after unary operator '+'.	end	10	49
+tests/rules/@stylistic/space-unary-ops/overrides/cases.ts:10:57	@stylistic/space-unary-ops	unexpectedAfter	Unexpected space after unary operator '-'.	fix	617	618		end	10	61
+tests/rules/@stylistic/space-unary-ops/overrides/cases.ts:10:103	@stylistic/space-unary-ops	unexpectedAfter	Unexpected space after unary operator '-'.	fix	663	672		end	10	114
+tests/rules/@stylistic/space-unary-ops/overrides/cases.ts:11:1	@stylistic/space-unary-ops	requireAfter	Unary operator '++' must be followed by whitespace.	fix	677	677	 	end	11	4
+tests/rules/@stylistic/space-unary-ops/overrides/cases.ts:13:1	@stylistic/space-unary-ops	requireBefore	Space is required before unary operator '++'.	fix	687	687	 	end	13	4
+tests/rules/@stylistic/space-unary-ops/overrides/cases.ts:15:1	@stylistic/space-unary-ops	unexpectedBefore	Unexpected space before unary operator '--'.	fix	698	699		end	15	5
+tests/rules/@stylistic/space-unary-ops/overrides/cases.ts:16:1	@stylistic/space-unary-ops	unexpectedAfter	Unexpected space after unary operator '--'.	fix	705	706		end	16	5
+tests/rules/@stylistic/space-unary-ops/overrides/cases.ts:18:1	@stylistic/space-unary-ops	requireBefore	Space is required before unary operator '++'.	fix	727	727	 	end	18	9
+tests/rules/@stylistic/space-unary-ops/overrides/cases.ts:28:3	@stylistic/space-unary-ops	unexpectedAfterWord	Unexpected space after unary word operator 'yield'.	fix	898	899		end	28	11
+tests/rules/@stylistic/space-unary-ops/overrides/cases.ts:34:3	@stylistic/space-unary-ops	requireAfterWord	Unary word operator 'await' must be followed by whitespace.	fix	999	999	 	end	34	11
+tests/rules/@stylistic/space-unary-ops/overrides/cases.ts:38:22	@stylistic/space-unary-ops	requireAfterWord	Unary word operator 'await' must be followed by whitespace.	fix	1073	1073	 	end	38	30
+tests/rules/@stylistic/space-unary-ops/overrides/cases.ts:40:20	@stylistic/space-unary-ops	requireBefore	Space is required before unary operator '!'.	fix	1100	1100	 	end	40	22
+tests/rules/@stylistic/space-unary-ops/overrides/cases.ts:40:41	@stylistic/space-unary-ops	requireBefore	Space is required before unary operator '!'.	fix	1123	1123	 	end	40	45
+tests/rules/@stylistic/space-unary-ops/overrides/cases.ts:40:53	@stylistic/space-unary-ops	requireBefore	Space is required before unary operator '!'.	fix	1134	1134	 	end	40	56
+tests/rules/@stylistic/space-unary-ops/overrides/cases.ts:40:53	@stylistic/space-unary-ops	requireBefore	Space is required before unary operator '!'.	fix	1133	1133	 	end	40	55
+tests/rules/@stylistic/space-unary-ops/overrides/cases.ts:40:64	@stylistic/space-unary-ops	requireBefore	Space is required before unary operator '!'.	fix	1149	1149	 	end	40	71
+tests/rules/@stylistic/space-unary-ops/overrides/cases.ts:40:79	@stylistic/space-unary-ops	requireBefore	Space is required before unary operator '!'.	fix	1161	1161	 	end	40	83
+tests/rules/@stylistic/space-unary-ops/overrides/cases.ts:41:20	@stylistic/space-unary-ops	requireBefore	Space is required before unary operator '!'.	fix	1229	1229	 	end	41	33
+tests/rules/@stylistic/space-unary-ops/overrides/cases.ts:41:41	@stylistic/space-unary-ops	requireBefore	Space is required before unary operator '!'.	fix	1239	1239	 	end	41	43
+tests/rules/@stylistic/space-unary-ops/overrides/cases.ts:42:51	@stylistic/space-unary-ops	unexpectedAfter	Unexpected space after unary operator '-'.	end	42	58
+tests/rules/@stylistic/space-unary-ops/overrides/cases.ts:42:53	@stylistic/space-unary-ops	unexpectedAfter	Unexpected space after unary operator '-'.	end	42	58
+tests/rules/@stylistic/space-unary-ops/overrides/cases.ts:42:55	@stylistic/space-unary-ops	unexpectedAfter	Unexpected space after unary operator '-'.	fix	1301	1302		end	42	58
+tests/rules/@stylistic/space-unary-ops/words-false/cases.ts:9:28	@stylistic/space-unary-ops	unexpectedAfter	Unexpected space after unary operator '-'.	fix	477	478		end	9	31
+tests/rules/@stylistic/space-unary-ops/words-false/cases.ts:9:47	@stylistic/space-unary-ops	unexpectedAfter	Unexpected space after unary operator '+'.	fix	496	497		end	9	50
+tests/rules/@stylistic/space-unary-ops/words-false/cases.ts:9:66	@stylistic/space-unary-ops	unexpectedAfter	Unexpected space after unary operator '!'.	fix	515	516		end	9	69
+tests/rules/@stylistic/space-unary-ops/words-false/cases.ts:9:86	@stylistic/space-unary-ops	unexpectedAfter	Unexpected space after unary operator '!'.	fix	535	536		end	9	90
+tests/rules/@stylistic/space-unary-ops/words-false/cases.ts:9:107	@stylistic/space-unary-ops	unexpectedAfter	Unexpected space after unary operator '~'.	fix	556	557		end	9	110
+tests/rules/@stylistic/space-unary-ops/words-false/cases.ts:10:33	@stylistic/space-unary-ops	unexpectedAfter	Unexpected space after unary operator '-'.	end	10	37
+tests/rules/@stylistic/space-unary-ops/words-false/cases.ts:10:45	@stylistic/space-unary-ops	unexpectedAfter	Unexpected space after unary operator '+'.	end	10	49
+tests/rules/@stylistic/space-unary-ops/words-false/cases.ts:10:57	@stylistic/space-unary-ops	unexpectedAfter	Unexpected space after unary operator '-'.	fix	617	618		end	10	61
+tests/rules/@stylistic/space-unary-ops/words-false/cases.ts:10:103	@stylistic/space-unary-ops	unexpectedAfter	Unexpected space after unary operator '-'.	fix	663	672		end	10	114
+tests/rules/@stylistic/space-unary-ops/words-false/cases.ts:12:1	@stylistic/space-unary-ops	unexpectedAfter	Unexpected space after unary operator '++'.	fix	682	683		end	12	5
+tests/rules/@stylistic/space-unary-ops/words-false/cases.ts:14:1	@stylistic/space-unary-ops	unexpectedBefore	Unexpected space before unary operator '++'.	fix	692	693		end	14	5
+tests/rules/@stylistic/space-unary-ops/words-false/cases.ts:15:1	@stylistic/space-unary-ops	unexpectedBefore	Unexpected space before unary operator '--'.	fix	698	699		end	15	5
+tests/rules/@stylistic/space-unary-ops/words-false/cases.ts:16:1	@stylistic/space-unary-ops	unexpectedAfter	Unexpected space after unary operator '--'.	fix	705	706		end	16	5
+tests/rules/@stylistic/space-unary-ops/words-false/cases.ts:17:1	@stylistic/space-unary-ops	unexpectedBefore	Unexpected space before unary operator '++'.	fix	710	717		end	17	11
+tests/rules/@stylistic/space-unary-ops/words-false/cases.ts:19:1	@stylistic/space-unary-ops	unexpectedBefore	Unexpected space before unary operator '++'.	fix	737	738		end	19	10
+tests/rules/@stylistic/space-unary-ops/words-false/cases.ts:28:3	@stylistic/space-unary-ops	unexpectedAfterWord	Unexpected space after unary word operator 'yield'.	fix	898	899		end	28	11
+tests/rules/@stylistic/space-unary-ops/words-false/cases.ts:37:3	@stylistic/space-unary-ops	unexpectedAfterWord	Unexpected space after unary word operator 'await'.	fix	1042	1043		end	37	11
+tests/rules/@stylistic/space-unary-ops/words-false/cases.ts:40:30	@stylistic/space-unary-ops	unexpectedBefore	Unexpected space before unary operator '!'.	fix	1110	1111		end	40	33
+tests/rules/@stylistic/space-unary-ops/words-false/cases.ts:40:101	@stylistic/space-unary-ops	unexpectedBefore	Unexpected space before unary operator '!'.	fix	1183	1184		end	40	106
+tests/rules/@stylistic/space-unary-ops/words-false/cases.ts:42:51	@stylistic/space-unary-ops	unexpectedAfter	Unexpected space after unary operator '-'.	end	42	58
+tests/rules/@stylistic/space-unary-ops/words-false/cases.ts:42:53	@stylistic/space-unary-ops	unexpectedAfter	Unexpected space after unary operator '-'.	end	42	58
+tests/rules/@stylistic/space-unary-ops/words-false/cases.ts:42:55	@stylistic/space-unary-ops	unexpectedAfter	Unexpected space after unary operator '-'.	fix	1301	1302		end	42	58
