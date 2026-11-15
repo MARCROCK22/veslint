@@ -1,0 +1,218 @@
+tests/rules/@stylistic/function-call-spacing/always-empty-config/cases.ts:5:2	@stylistic/function-call-spacing	missing	Missing space between function name and paren.	fix	211	211	 	end	5	2
+tests/rules/@stylistic/function-call-spacing/always-empty-config/cases.ts:8:2	@stylistic/function-call-spacing	unexpectedNewline	Unexpected newline between function name and paren.	fix	229	230	 	end	9	1
+tests/rules/@stylistic/function-call-spacing/always-empty-config/cases.ts:10:2	@stylistic/function-call-spacing	missing	Missing space between function name and paren.	fix	242	242	 	end	10	9
+tests/rules/@stylistic/function-call-spacing/always-empty-config/cases.ts:12:2	@stylistic/function-call-spacing	unexpectedNewline	Unexpected newline between function name and paren.	end	13	1
+tests/rules/@stylistic/function-call-spacing/always-empty-config/cases.ts:14:2	@stylistic/function-call-spacing	missing	Missing space between function name and paren.	fix	272	272	 	end	14	2
+tests/rules/@stylistic/function-call-spacing/always-empty-config/cases.ts:14:4	@stylistic/function-call-spacing	missing	Missing space between function name and paren.	fix	274	274	 	end	14	4
+tests/rules/@stylistic/function-call-spacing/always-empty-config/cases.ts:15:2	@stylistic/function-call-spacing	missing	Missing space between function name and paren.	fix	279	279	 	end	15	2
+tests/rules/@stylistic/function-call-spacing/always-empty-config/cases.ts:16:4	@stylistic/function-call-spacing	missing	Missing space between function name and paren.	fix	289	289	 	end	16	4
+tests/rules/@stylistic/function-call-spacing/always-empty-config/cases.ts:18:12	@stylistic/function-call-spacing	missing	Missing space between function name and paren.	fix	312	312	 	end	18	12
+tests/rules/@stylistic/function-call-spacing/always-empty-config/cases.ts:20:13	@stylistic/function-call-spacing	missing	Missing space between function name and paren.	fix	344	344	 	end	20	13
+tests/rules/@stylistic/function-call-spacing/always-empty-config/cases.ts:21:2	@stylistic/function-call-spacing	missing	Missing space between function name and paren.	fix	349	351	 ?. 	end	21	4
+tests/rules/@stylistic/function-call-spacing/always-empty-config/cases.ts:22:2	@stylistic/function-call-spacing	missing	Missing space between function name and paren.	fix	356	359	 ?. 	end	22	5
+tests/rules/@stylistic/function-call-spacing/always-empty-config/cases.ts:23:2	@stylistic/function-call-spacing	missing	Missing space between function name and paren.	fix	364	367	 ?. 	end	23	5
+tests/rules/@stylistic/function-call-spacing/always-empty-config/cases.ts:25:2	@stylistic/function-call-spacing	unexpectedNewline	Unexpected newline between function name and paren.	fix	381	384	 ?. 	end	26	1
+tests/rules/@stylistic/function-call-spacing/always-empty-config/cases.ts:27:5	@stylistic/function-call-spacing	missing	Missing space between function name and paren.	fix	392	394	 ?. 	end	27	7
+tests/rules/@stylistic/function-call-spacing/always-empty-config/cases.ts:28:5	@stylistic/function-call-spacing	missing	Missing space between function name and paren.	fix	402	405	 ?. 	end	28	8
+tests/rules/@stylistic/function-call-spacing/always-empty-config/cases.ts:29:5	@stylistic/function-call-spacing	missing	Missing space between function name and paren.	fix	414	418	 ?.  	end	29	9
+tests/rules/@stylistic/function-call-spacing/always-empty-config/cases.ts:30:4	@stylistic/function-call-spacing	missing	Missing space between function name and paren.	fix	426	428	 ?. 	end	30	6
+tests/rules/@stylistic/function-call-spacing/always-empty-config/cases.ts:31:4	@stylistic/function-call-spacing	unexpectedNewline	Unexpected newline between function name and paren.	fix	435	441	 ?.   	end	32	3
+tests/rules/@stylistic/function-call-spacing/always-empty-config/cases.ts:33:2	@stylistic/function-call-spacing	missing	Missing space between function name and paren.	end	33	11
+tests/rules/@stylistic/function-call-spacing/always-empty-config/cases.ts:34:8	@stylistic/function-call-spacing	missing	Missing space between function name and paren.	fix	466	466	 	end	34	8
+tests/rules/@stylistic/function-call-spacing/always-empty-config/cases.ts:39:8	@stylistic/function-call-spacing	unexpectedNewline	Unexpected newline between function name and paren.	fix	523	524	 	end	40	1
+tests/rules/@stylistic/function-call-spacing/always-empty-config/cases.ts:41:26	@stylistic/function-call-spacing	missing	Missing space between function name and paren.	fix	554	554	 	end	41	26
+tests/rules/@stylistic/function-call-spacing/always-empty-config/cases.ts:41:67	@stylistic/function-call-spacing	unexpectedNewline	Unexpected newline between function name and paren.	fix	595	596	 	end	42	1
+tests/rules/@stylistic/function-call-spacing/always-empty-config/cases.ts:42:21	@stylistic/function-call-spacing	missing	Missing space between function name and paren.	fix	623	623	 	end	42	28
+tests/rules/@stylistic/function-call-spacing/always-empty-config/cases.ts:43:2	@stylistic/function-call-spacing	missing	Missing space between function name and paren.	fix	631	631	 	end	43	2
+tests/rules/@stylistic/function-call-spacing/always-empty-config/cases.ts:47:2	@stylistic/function-call-spacing	missing	Missing space between function name and paren.	fix	689	692	 ?. 	end	47	5
+tests/rules/@stylistic/function-call-spacing/always-empty-config/cases.ts:48:2	@stylistic/function-call-spacing	missing	Missing space between function name and paren.	fix	697	700	 ?. 	end	48	5
+tests/rules/@stylistic/function-call-spacing/always-empty-config/cases.ts:50:2	@stylistic/function-call-spacing	unexpectedNewline	Unexpected newline between function name and paren.	end	51	4
+tests/rules/@stylistic/function-call-spacing/always-empty-config/cases.ts:52:2	@stylistic/function-call-spacing	unexpectedNewline	Unexpected newline between function name and paren.	fix	731	736	 ?.\t  	end	53	2
+tests/rules/@stylistic/function-call-spacing/always-newlines/cases.ts:5:2	@stylistic/function-call-spacing	missing	Missing space between function name and paren.	fix	211	211	 	end	5	2
+tests/rules/@stylistic/function-call-spacing/always-newlines/cases.ts:10:2	@stylistic/function-call-spacing	missing	Missing space between function name and paren.	fix	242	242	 	end	10	9
+tests/rules/@stylistic/function-call-spacing/always-newlines/cases.ts:14:2	@stylistic/function-call-spacing	missing	Missing space between function name and paren.	fix	272	272	 	end	14	2
+tests/rules/@stylistic/function-call-spacing/always-newlines/cases.ts:14:4	@stylistic/function-call-spacing	missing	Missing space between function name and paren.	fix	274	274	 	end	14	4
+tests/rules/@stylistic/function-call-spacing/always-newlines/cases.ts:15:2	@stylistic/function-call-spacing	missing	Missing space between function name and paren.	fix	279	279	 	end	15	2
+tests/rules/@stylistic/function-call-spacing/always-newlines/cases.ts:16:4	@stylistic/function-call-spacing	missing	Missing space between function name and paren.	fix	289	289	 	end	16	4
+tests/rules/@stylistic/function-call-spacing/always-newlines/cases.ts:18:12	@stylistic/function-call-spacing	missing	Missing space between function name and paren.	fix	312	312	 	end	18	12
+tests/rules/@stylistic/function-call-spacing/always-newlines/cases.ts:20:13	@stylistic/function-call-spacing	missing	Missing space between function name and paren.	fix	344	344	 	end	20	13
+tests/rules/@stylistic/function-call-spacing/always-newlines/cases.ts:21:2	@stylistic/function-call-spacing	missing	Missing space between function name and paren.	fix	349	351	 ?. 	end	21	4
+tests/rules/@stylistic/function-call-spacing/always-newlines/cases.ts:22:2	@stylistic/function-call-spacing	missing	Missing space between function name and paren.	fix	356	359	 ?. 	end	22	5
+tests/rules/@stylistic/function-call-spacing/always-newlines/cases.ts:23:2	@stylistic/function-call-spacing	missing	Missing space between function name and paren.	fix	364	367	 ?. 	end	23	5
+tests/rules/@stylistic/function-call-spacing/always-newlines/cases.ts:25:2	@stylistic/function-call-spacing	missing	Missing space between function name and paren.	fix	381	384	 ?.\n	end	26	1
+tests/rules/@stylistic/function-call-spacing/always-newlines/cases.ts:27:5	@stylistic/function-call-spacing	missing	Missing space between function name and paren.	fix	392	394	 ?. 	end	27	7
+tests/rules/@stylistic/function-call-spacing/always-newlines/cases.ts:28:5	@stylistic/function-call-spacing	missing	Missing space between function name and paren.	fix	402	405	 ?. 	end	28	8
+tests/rules/@stylistic/function-call-spacing/always-newlines/cases.ts:29:5	@stylistic/function-call-spacing	missing	Missing space between function name and paren.	fix	414	418	 ?.  	end	29	9
+tests/rules/@stylistic/function-call-spacing/always-newlines/cases.ts:30:4	@stylistic/function-call-spacing	missing	Missing space between function name and paren.	fix	426	428	 ?. 	end	30	6
+tests/rules/@stylistic/function-call-spacing/always-newlines/cases.ts:33:2	@stylistic/function-call-spacing	missing	Missing space between function name and paren.	end	33	11
+tests/rules/@stylistic/function-call-spacing/always-newlines/cases.ts:34:8	@stylistic/function-call-spacing	missing	Missing space between function name and paren.	fix	466	466	 	end	34	8
+tests/rules/@stylistic/function-call-spacing/always-newlines/cases.ts:41:26	@stylistic/function-call-spacing	missing	Missing space between function name and paren.	fix	554	554	 	end	41	26
+tests/rules/@stylistic/function-call-spacing/always-newlines/cases.ts:42:21	@stylistic/function-call-spacing	missing	Missing space between function name and paren.	fix	623	623	 	end	42	28
+tests/rules/@stylistic/function-call-spacing/always-newlines/cases.ts:43:2	@stylistic/function-call-spacing	missing	Missing space between function name and paren.	fix	631	631	 	end	43	2
+tests/rules/@stylistic/function-call-spacing/always-newlines/cases.ts:47:2	@stylistic/function-call-spacing	missing	Missing space between function name and paren.	fix	689	692	 ?. 	end	47	5
+tests/rules/@stylistic/function-call-spacing/always-newlines/cases.ts:48:2	@stylistic/function-call-spacing	missing	Missing space between function name and paren.	fix	697	700	 ?. 	end	48	5
+tests/rules/@stylistic/function-call-spacing/always-newlines/cases.ts:52:2	@stylistic/function-call-spacing	missing	Missing space between function name and paren.	fix	731	736	 ?.\t\n 	end	53	2
+tests/rules/@stylistic/function-call-spacing/always-optional-after/cases.ts:5:2	@stylistic/function-call-spacing	missing	Missing space between function name and paren.	fix	211	211	 	end	5	2
+tests/rules/@stylistic/function-call-spacing/always-optional-after/cases.ts:8:2	@stylistic/function-call-spacing	unexpectedNewline	Unexpected newline between function name and paren.	fix	229	230	 	end	9	1
+tests/rules/@stylistic/function-call-spacing/always-optional-after/cases.ts:10:2	@stylistic/function-call-spacing	missing	Missing space between function name and paren.	fix	242	242	 	end	10	9
+tests/rules/@stylistic/function-call-spacing/always-optional-after/cases.ts:12:2	@stylistic/function-call-spacing	unexpectedNewline	Unexpected newline between function name and paren.	end	13	1
+tests/rules/@stylistic/function-call-spacing/always-optional-after/cases.ts:14:2	@stylistic/function-call-spacing	missing	Missing space between function name and paren.	fix	272	272	 	end	14	2
+tests/rules/@stylistic/function-call-spacing/always-optional-after/cases.ts:14:4	@stylistic/function-call-spacing	missing	Missing space between function name and paren.	fix	274	274	 	end	14	4
+tests/rules/@stylistic/function-call-spacing/always-optional-after/cases.ts:15:2	@stylistic/function-call-spacing	missing	Missing space between function name and paren.	fix	279	279	 	end	15	2
+tests/rules/@stylistic/function-call-spacing/always-optional-after/cases.ts:16:4	@stylistic/function-call-spacing	missing	Missing space between function name and paren.	fix	289	289	 	end	16	4
+tests/rules/@stylistic/function-call-spacing/always-optional-after/cases.ts:18:12	@stylistic/function-call-spacing	missing	Missing space between function name and paren.	fix	312	312	 	end	18	12
+tests/rules/@stylistic/function-call-spacing/always-optional-after/cases.ts:20:13	@stylistic/function-call-spacing	missing	Missing space between function name and paren.	fix	344	344	 	end	20	13
+tests/rules/@stylistic/function-call-spacing/always-optional-after/cases.ts:21:2	@stylistic/function-call-spacing	missing	Missing space between function name and paren.	fix	349	351	 ?.	end	21	4
+tests/rules/@stylistic/function-call-spacing/always-optional-after/cases.ts:23:2	@stylistic/function-call-spacing	unexpectedWhitespace	Unexpected whitespace between function name and paren.	fix	364	367	 ?.	end	23	5
+tests/rules/@stylistic/function-call-spacing/always-optional-after/cases.ts:24:2	@stylistic/function-call-spacing	unexpectedWhitespace	Unexpected whitespace between function name and paren.	fix	372	376	 ?.	end	24	6
+tests/rules/@stylistic/function-call-spacing/always-optional-after/cases.ts:25:2	@stylistic/function-call-spacing	unexpectedNewline	Unexpected newline between function name and paren.	fix	381	384	 ?.	end	26	1
+tests/rules/@stylistic/function-call-spacing/always-optional-after/cases.ts:27:5	@stylistic/function-call-spacing	missing	Missing space between function name and paren.	fix	392	394	 ?.	end	27	7
+tests/rules/@stylistic/function-call-spacing/always-optional-after/cases.ts:29:5	@stylistic/function-call-spacing	unexpectedWhitespace	Unexpected whitespace between function name and paren.	fix	414	418	 ?.	end	29	9
+tests/rules/@stylistic/function-call-spacing/always-optional-after/cases.ts:30:4	@stylistic/function-call-spacing	missing	Missing space between function name and paren.	fix	426	428	 ?.	end	30	6
+tests/rules/@stylistic/function-call-spacing/always-optional-after/cases.ts:31:4	@stylistic/function-call-spacing	unexpectedNewline	Unexpected newline between function name and paren.	fix	435	441	 ?.	end	32	3
+tests/rules/@stylistic/function-call-spacing/always-optional-after/cases.ts:33:2	@stylistic/function-call-spacing	missing	Missing space between function name and paren.	end	33	11
+tests/rules/@stylistic/function-call-spacing/always-optional-after/cases.ts:34:8	@stylistic/function-call-spacing	missing	Missing space between function name and paren.	fix	466	466	 	end	34	8
+tests/rules/@stylistic/function-call-spacing/always-optional-after/cases.ts:39:8	@stylistic/function-call-spacing	unexpectedNewline	Unexpected newline between function name and paren.	fix	523	524	 	end	40	1
+tests/rules/@stylistic/function-call-spacing/always-optional-after/cases.ts:41:26	@stylistic/function-call-spacing	missing	Missing space between function name and paren.	fix	554	554	 	end	41	26
+tests/rules/@stylistic/function-call-spacing/always-optional-after/cases.ts:41:67	@stylistic/function-call-spacing	unexpectedNewline	Unexpected newline between function name and paren.	fix	595	596	 	end	42	1
+tests/rules/@stylistic/function-call-spacing/always-optional-after/cases.ts:42:21	@stylistic/function-call-spacing	missing	Missing space between function name and paren.	fix	623	623	 	end	42	28
+tests/rules/@stylistic/function-call-spacing/always-optional-after/cases.ts:43:2	@stylistic/function-call-spacing	missing	Missing space between function name and paren.	fix	631	631	 	end	43	2
+tests/rules/@stylistic/function-call-spacing/always-optional-after/cases.ts:47:2	@stylistic/function-call-spacing	unexpectedWhitespace	Unexpected whitespace between function name and paren.	fix	689	692	 ?.	end	47	5
+tests/rules/@stylistic/function-call-spacing/always-optional-after/cases.ts:50:2	@stylistic/function-call-spacing	unexpectedNewline	Unexpected newline between function name and paren.	end	51	4
+tests/rules/@stylistic/function-call-spacing/always-optional-after/cases.ts:52:2	@stylistic/function-call-spacing	unexpectedNewline	Unexpected newline between function name and paren.	fix	731	736	 ?.	end	53	2
+tests/rules/@stylistic/function-call-spacing/always-optional-none/cases.ts:5:2	@stylistic/function-call-spacing	missing	Missing space between function name and paren.	fix	211	211	 	end	5	2
+tests/rules/@stylistic/function-call-spacing/always-optional-none/cases.ts:10:2	@stylistic/function-call-spacing	missing	Missing space between function name and paren.	fix	242	242	 	end	10	9
+tests/rules/@stylistic/function-call-spacing/always-optional-none/cases.ts:14:2	@stylistic/function-call-spacing	missing	Missing space between function name and paren.	fix	272	272	 	end	14	2
+tests/rules/@stylistic/function-call-spacing/always-optional-none/cases.ts:14:4	@stylistic/function-call-spacing	missing	Missing space between function name and paren.	fix	274	274	 	end	14	4
+tests/rules/@stylistic/function-call-spacing/always-optional-none/cases.ts:15:2	@stylistic/function-call-spacing	missing	Missing space between function name and paren.	fix	279	279	 	end	15	2
+tests/rules/@stylistic/function-call-spacing/always-optional-none/cases.ts:16:4	@stylistic/function-call-spacing	missing	Missing space between function name and paren.	fix	289	289	 	end	16	4
+tests/rules/@stylistic/function-call-spacing/always-optional-none/cases.ts:18:12	@stylistic/function-call-spacing	missing	Missing space between function name and paren.	fix	312	312	 	end	18	12
+tests/rules/@stylistic/function-call-spacing/always-optional-none/cases.ts:20:13	@stylistic/function-call-spacing	missing	Missing space between function name and paren.	fix	344	344	 	end	20	13
+tests/rules/@stylistic/function-call-spacing/always-optional-none/cases.ts:22:2	@stylistic/function-call-spacing	unexpectedWhitespace	Unexpected whitespace between function name and paren.	fix	356	359	?.	end	22	5
+tests/rules/@stylistic/function-call-spacing/always-optional-none/cases.ts:23:2	@stylistic/function-call-spacing	unexpectedWhitespace	Unexpected whitespace between function name and paren.	fix	364	367	?.	end	23	5
+tests/rules/@stylistic/function-call-spacing/always-optional-none/cases.ts:24:2	@stylistic/function-call-spacing	unexpectedWhitespace	Unexpected whitespace between function name and paren.	fix	372	376	?.	end	24	6
+tests/rules/@stylistic/function-call-spacing/always-optional-none/cases.ts:25:2	@stylistic/function-call-spacing	unexpectedWhitespace	Unexpected whitespace between function name and paren.	fix	381	384	?.	end	26	1
+tests/rules/@stylistic/function-call-spacing/always-optional-none/cases.ts:28:5	@stylistic/function-call-spacing	unexpectedWhitespace	Unexpected whitespace between function name and paren.	fix	402	405	?.	end	28	8
+tests/rules/@stylistic/function-call-spacing/always-optional-none/cases.ts:29:5	@stylistic/function-call-spacing	unexpectedWhitespace	Unexpected whitespace between function name and paren.	fix	414	418	?.	end	29	9
+tests/rules/@stylistic/function-call-spacing/always-optional-none/cases.ts:31:4	@stylistic/function-call-spacing	unexpectedWhitespace	Unexpected whitespace between function name and paren.	fix	435	441	?.	end	32	3
+tests/rules/@stylistic/function-call-spacing/always-optional-none/cases.ts:34:8	@stylistic/function-call-spacing	missing	Missing space between function name and paren.	fix	466	466	 	end	34	8
+tests/rules/@stylistic/function-call-spacing/always-optional-none/cases.ts:41:26	@stylistic/function-call-spacing	missing	Missing space between function name and paren.	fix	554	554	 	end	41	26
+tests/rules/@stylistic/function-call-spacing/always-optional-none/cases.ts:42:21	@stylistic/function-call-spacing	missing	Missing space between function name and paren.	fix	623	623	 	end	42	28
+tests/rules/@stylistic/function-call-spacing/always-optional-none/cases.ts:43:2	@stylistic/function-call-spacing	missing	Missing space between function name and paren.	fix	631	631	 	end	43	2
+tests/rules/@stylistic/function-call-spacing/always-optional-none/cases.ts:47:2	@stylistic/function-call-spacing	unexpectedWhitespace	Unexpected whitespace between function name and paren.	fix	689	692	?.	end	47	5
+tests/rules/@stylistic/function-call-spacing/always-optional-none/cases.ts:48:2	@stylistic/function-call-spacing	unexpectedWhitespace	Unexpected whitespace between function name and paren.	fix	697	700	?.	end	48	5
+tests/rules/@stylistic/function-call-spacing/always-optional-none/cases.ts:52:2	@stylistic/function-call-spacing	unexpectedWhitespace	Unexpected whitespace between function name and paren.	fix	731	736	?.	end	53	2
+tests/rules/@stylistic/function-call-spacing/always-optional/cases.ts:5:2	@stylistic/function-call-spacing	missing	Missing space between function name and paren.	fix	211	211	 	end	5	2
+tests/rules/@stylistic/function-call-spacing/always-optional/cases.ts:8:2	@stylistic/function-call-spacing	unexpectedNewline	Unexpected newline between function name and paren.	fix	229	230	 	end	9	1
+tests/rules/@stylistic/function-call-spacing/always-optional/cases.ts:10:2	@stylistic/function-call-spacing	missing	Missing space between function name and paren.	fix	242	242	 	end	10	9
+tests/rules/@stylistic/function-call-spacing/always-optional/cases.ts:12:2	@stylistic/function-call-spacing	unexpectedNewline	Unexpected newline between function name and paren.	end	13	1
+tests/rules/@stylistic/function-call-spacing/always-optional/cases.ts:14:2	@stylistic/function-call-spacing	missing	Missing space between function name and paren.	fix	272	272	 	end	14	2
+tests/rules/@stylistic/function-call-spacing/always-optional/cases.ts:14:4	@stylistic/function-call-spacing	missing	Missing space between function name and paren.	fix	274	274	 	end	14	4
+tests/rules/@stylistic/function-call-spacing/always-optional/cases.ts:15:2	@stylistic/function-call-spacing	missing	Missing space between function name and paren.	fix	279	279	 	end	15	2
+tests/rules/@stylistic/function-call-spacing/always-optional/cases.ts:16:4	@stylistic/function-call-spacing	missing	Missing space between function name and paren.	fix	289	289	 	end	16	4
+tests/rules/@stylistic/function-call-spacing/always-optional/cases.ts:18:12	@stylistic/function-call-spacing	missing	Missing space between function name and paren.	fix	312	312	 	end	18	12
+tests/rules/@stylistic/function-call-spacing/always-optional/cases.ts:20:13	@stylistic/function-call-spacing	missing	Missing space between function name and paren.	fix	344	344	 	end	20	13
+tests/rules/@stylistic/function-call-spacing/always-optional/cases.ts:21:2	@stylistic/function-call-spacing	missing	Missing space between function name and paren.	fix	349	351	?. 	end	21	4
+tests/rules/@stylistic/function-call-spacing/always-optional/cases.ts:22:2	@stylistic/function-call-spacing	unexpectedWhitespace	Unexpected whitespace between function name and paren.	fix	356	359	?. 	end	22	5
+tests/rules/@stylistic/function-call-spacing/always-optional/cases.ts:24:2	@stylistic/function-call-spacing	unexpectedWhitespace	Unexpected whitespace between function name and paren.	fix	372	376	?. 	end	24	6
+tests/rules/@stylistic/function-call-spacing/always-optional/cases.ts:25:2	@stylistic/function-call-spacing	unexpectedNewline	Unexpected newline between function name and paren.	fix	381	384	?. 	end	26	1
+tests/rules/@stylistic/function-call-spacing/always-optional/cases.ts:27:5	@stylistic/function-call-spacing	missing	Missing space between function name and paren.	fix	392	394	?. 	end	27	7
+tests/rules/@stylistic/function-call-spacing/always-optional/cases.ts:28:5	@stylistic/function-call-spacing	unexpectedWhitespace	Unexpected whitespace between function name and paren.	fix	402	405	?. 	end	28	8
+tests/rules/@stylistic/function-call-spacing/always-optional/cases.ts:30:4	@stylistic/function-call-spacing	missing	Missing space between function name and paren.	fix	426	428	?. 	end	30	6
+tests/rules/@stylistic/function-call-spacing/always-optional/cases.ts:31:4	@stylistic/function-call-spacing	unexpectedNewline	Unexpected newline between function name and paren.	fix	435	441	?.   	end	32	3
+tests/rules/@stylistic/function-call-spacing/always-optional/cases.ts:33:2	@stylistic/function-call-spacing	missing	Missing space between function name and paren.	end	33	11
+tests/rules/@stylistic/function-call-spacing/always-optional/cases.ts:34:8	@stylistic/function-call-spacing	missing	Missing space between function name and paren.	fix	466	466	 	end	34	8
+tests/rules/@stylistic/function-call-spacing/always-optional/cases.ts:39:8	@stylistic/function-call-spacing	unexpectedNewline	Unexpected newline between function name and paren.	fix	523	524	 	end	40	1
+tests/rules/@stylistic/function-call-spacing/always-optional/cases.ts:41:26	@stylistic/function-call-spacing	missing	Missing space between function name and paren.	fix	554	554	 	end	41	26
+tests/rules/@stylistic/function-call-spacing/always-optional/cases.ts:41:67	@stylistic/function-call-spacing	unexpectedNewline	Unexpected newline between function name and paren.	fix	595	596	 	end	42	1
+tests/rules/@stylistic/function-call-spacing/always-optional/cases.ts:42:21	@stylistic/function-call-spacing	missing	Missing space between function name and paren.	fix	623	623	 	end	42	28
+tests/rules/@stylistic/function-call-spacing/always-optional/cases.ts:43:2	@stylistic/function-call-spacing	missing	Missing space between function name and paren.	fix	631	631	 	end	43	2
+tests/rules/@stylistic/function-call-spacing/always-optional/cases.ts:48:2	@stylistic/function-call-spacing	unexpectedWhitespace	Unexpected whitespace between function name and paren.	fix	697	700	?. 	end	48	5
+tests/rules/@stylistic/function-call-spacing/always-optional/cases.ts:50:2	@stylistic/function-call-spacing	unexpectedNewline	Unexpected newline between function name and paren.	end	51	4
+tests/rules/@stylistic/function-call-spacing/always-optional/cases.ts:52:2	@stylistic/function-call-spacing	unexpectedNewline	Unexpected newline between function name and paren.	fix	731	736	?.\t  	end	53	2
+tests/rules/@stylistic/function-call-spacing/always/cases.ts:5:2	@stylistic/function-call-spacing	missing	Missing space between function name and paren.	fix	211	211	 	end	5	2
+tests/rules/@stylistic/function-call-spacing/always/cases.ts:8:2	@stylistic/function-call-spacing	unexpectedNewline	Unexpected newline between function name and paren.	fix	229	230	 	end	9	1
+tests/rules/@stylistic/function-call-spacing/always/cases.ts:10:2	@stylistic/function-call-spacing	missing	Missing space between function name and paren.	fix	242	242	 	end	10	9
+tests/rules/@stylistic/function-call-spacing/always/cases.ts:12:2	@stylistic/function-call-spacing	unexpectedNewline	Unexpected newline between function name and paren.	end	13	1
+tests/rules/@stylistic/function-call-spacing/always/cases.ts:14:2	@stylistic/function-call-spacing	missing	Missing space between function name and paren.	fix	272	272	 	end	14	2
+tests/rules/@stylistic/function-call-spacing/always/cases.ts:14:4	@stylistic/function-call-spacing	missing	Missing space between function name and paren.	fix	274	274	 	end	14	4
+tests/rules/@stylistic/function-call-spacing/always/cases.ts:15:2	@stylistic/function-call-spacing	missing	Missing space between function name and paren.	fix	279	279	 	end	15	2
+tests/rules/@stylistic/function-call-spacing/always/cases.ts:16:4	@stylistic/function-call-spacing	missing	Missing space between function name and paren.	fix	289	289	 	end	16	4
+tests/rules/@stylistic/function-call-spacing/always/cases.ts:18:12	@stylistic/function-call-spacing	missing	Missing space between function name and paren.	fix	312	312	 	end	18	12
+tests/rules/@stylistic/function-call-spacing/always/cases.ts:20:13	@stylistic/function-call-spacing	missing	Missing space between function name and paren.	fix	344	344	 	end	20	13
+tests/rules/@stylistic/function-call-spacing/always/cases.ts:21:2	@stylistic/function-call-spacing	missing	Missing space between function name and paren.	fix	349	351	 ?. 	end	21	4
+tests/rules/@stylistic/function-call-spacing/always/cases.ts:22:2	@stylistic/function-call-spacing	missing	Missing space between function name and paren.	fix	356	359	 ?. 	end	22	5
+tests/rules/@stylistic/function-call-spacing/always/cases.ts:23:2	@stylistic/function-call-spacing	missing	Missing space between function name and paren.	fix	364	367	 ?. 	end	23	5
+tests/rules/@stylistic/function-call-spacing/always/cases.ts:25:2	@stylistic/function-call-spacing	unexpectedNewline	Unexpected newline between function name and paren.	fix	381	384	 ?. 	end	26	1
+tests/rules/@stylistic/function-call-spacing/always/cases.ts:27:5	@stylistic/function-call-spacing	missing	Missing space between function name and paren.	fix	392	394	 ?. 	end	27	7
+tests/rules/@stylistic/function-call-spacing/always/cases.ts:28:5	@stylistic/function-call-spacing	missing	Missing space between function name and paren.	fix	402	405	 ?. 	end	28	8
+tests/rules/@stylistic/function-call-spacing/always/cases.ts:29:5	@stylistic/function-call-spacing	missing	Missing space between function name and paren.	fix	414	418	 ?.  	end	29	9
+tests/rules/@stylistic/function-call-spacing/always/cases.ts:30:4	@stylistic/function-call-spacing	missing	Missing space between function name and paren.	fix	426	428	 ?. 	end	30	6
+tests/rules/@stylistic/function-call-spacing/always/cases.ts:31:4	@stylistic/function-call-spacing	unexpectedNewline	Unexpected newline between function name and paren.	fix	435	441	 ?.   	end	32	3
+tests/rules/@stylistic/function-call-spacing/always/cases.ts:33:2	@stylistic/function-call-spacing	missing	Missing space between function name and paren.	end	33	11
+tests/rules/@stylistic/function-call-spacing/always/cases.ts:34:8	@stylistic/function-call-spacing	missing	Missing space between function name and paren.	fix	466	466	 	end	34	8
+tests/rules/@stylistic/function-call-spacing/always/cases.ts:39:8	@stylistic/function-call-spacing	unexpectedNewline	Unexpected newline between function name and paren.	fix	523	524	 	end	40	1
+tests/rules/@stylistic/function-call-spacing/always/cases.ts:41:26	@stylistic/function-call-spacing	missing	Missing space between function name and paren.	fix	554	554	 	end	41	26
+tests/rules/@stylistic/function-call-spacing/always/cases.ts:41:67	@stylistic/function-call-spacing	unexpectedNewline	Unexpected newline between function name and paren.	fix	595	596	 	end	42	1
+tests/rules/@stylistic/function-call-spacing/always/cases.ts:42:21	@stylistic/function-call-spacing	missing	Missing space between function name and paren.	fix	623	623	 	end	42	28
+tests/rules/@stylistic/function-call-spacing/always/cases.ts:43:2	@stylistic/function-call-spacing	missing	Missing space between function name and paren.	fix	631	631	 	end	43	2
+tests/rules/@stylistic/function-call-spacing/always/cases.ts:47:2	@stylistic/function-call-spacing	missing	Missing space between function name and paren.	fix	689	692	 ?. 	end	47	5
+tests/rules/@stylistic/function-call-spacing/always/cases.ts:48:2	@stylistic/function-call-spacing	missing	Missing space between function name and paren.	fix	697	700	 ?. 	end	48	5
+tests/rules/@stylistic/function-call-spacing/always/cases.ts:50:2	@stylistic/function-call-spacing	unexpectedNewline	Unexpected newline between function name and paren.	end	51	4
+tests/rules/@stylistic/function-call-spacing/always/cases.ts:52:2	@stylistic/function-call-spacing	unexpectedNewline	Unexpected newline between function name and paren.	fix	731	736	 ?.\t  	end	53	2
+tests/rules/@stylistic/function-call-spacing/cases.ts:6:2	@stylistic/function-call-spacing	unexpectedWhitespace	Unexpected whitespace between function name and paren.	fix	216	217		end	6	3
+tests/rules/@stylistic/function-call-spacing/cases.ts:7:2	@stylistic/function-call-spacing	unexpectedWhitespace	Unexpected whitespace between function name and paren.	fix	222	224		end	7	4
+tests/rules/@stylistic/function-call-spacing/cases.ts:8:2	@stylistic/function-call-spacing	unexpectedWhitespace	Unexpected whitespace between function name and paren.	fix	229	230		end	9	1
+tests/rules/@stylistic/function-call-spacing/cases.ts:11:2	@stylistic/function-call-spacing	unexpectedWhitespace	Unexpected whitespace between function name and paren.	end	11	11
+tests/rules/@stylistic/function-call-spacing/cases.ts:12:2	@stylistic/function-call-spacing	unexpectedWhitespace	Unexpected whitespace between function name and paren.	end	13	1
+tests/rules/@stylistic/function-call-spacing/cases.ts:15:4	@stylistic/function-call-spacing	unexpectedWhitespace	Unexpected whitespace between function name and paren.	fix	281	282		end	15	5
+tests/rules/@stylistic/function-call-spacing/cases.ts:17:4	@stylistic/function-call-spacing	unexpectedWhitespace	Unexpected whitespace between function name and paren.	fix	296	297		end	17	5
+tests/rules/@stylistic/function-call-spacing/cases.ts:19:12	@stylistic/function-call-spacing	unexpectedWhitespace	Unexpected whitespace between function name and paren.	fix	327	328		end	19	13
+tests/rules/@stylistic/function-call-spacing/cases.ts:22:2	@stylistic/function-call-spacing	unexpectedWhitespace	Unexpected whitespace between function name and paren.	fix	356	359	?.	end	22	5
+tests/rules/@stylistic/function-call-spacing/cases.ts:23:2	@stylistic/function-call-spacing	unexpectedWhitespace	Unexpected whitespace between function name and paren.	fix	364	367	?.	end	23	5
+tests/rules/@stylistic/function-call-spacing/cases.ts:24:2	@stylistic/function-call-spacing	unexpectedWhitespace	Unexpected whitespace between function name and paren.	fix	372	376	?.	end	24	6
+tests/rules/@stylistic/function-call-spacing/cases.ts:25:2	@stylistic/function-call-spacing	unexpectedWhitespace	Unexpected whitespace between function name and paren.	fix	381	384	?.	end	26	1
+tests/rules/@stylistic/function-call-spacing/cases.ts:28:5	@stylistic/function-call-spacing	unexpectedWhitespace	Unexpected whitespace between function name and paren.	fix	402	405	?.	end	28	8
+tests/rules/@stylistic/function-call-spacing/cases.ts:29:5	@stylistic/function-call-spacing	unexpectedWhitespace	Unexpected whitespace between function name and paren.	fix	414	418	?.	end	29	9
+tests/rules/@stylistic/function-call-spacing/cases.ts:31:4	@stylistic/function-call-spacing	unexpectedWhitespace	Unexpected whitespace between function name and paren.	fix	435	441	?.	end	32	3
+tests/rules/@stylistic/function-call-spacing/cases.ts:35:8	@stylistic/function-call-spacing	unexpectedWhitespace	Unexpected whitespace between function name and paren.	fix	477	478		end	35	9
+tests/rules/@stylistic/function-call-spacing/cases.ts:38:10	@stylistic/function-call-spacing	unexpectedWhitespace	Unexpected whitespace between function name and paren.	fix	511	512		end	38	11
+tests/rules/@stylistic/function-call-spacing/cases.ts:39:8	@stylistic/function-call-spacing	unexpectedWhitespace	Unexpected whitespace between function name and paren.	fix	523	524		end	40	1
+tests/rules/@stylistic/function-call-spacing/cases.ts:41:46	@stylistic/function-call-spacing	unexpectedWhitespace	Unexpected whitespace between function name and paren.	fix	574	575		end	41	47
+tests/rules/@stylistic/function-call-spacing/cases.ts:41:67	@stylistic/function-call-spacing	unexpectedWhitespace	Unexpected whitespace between function name and paren.	fix	595	596		end	42	1
+tests/rules/@stylistic/function-call-spacing/cases.ts:43:4	@stylistic/function-call-spacing	unexpectedWhitespace	Unexpected whitespace between function name and paren.	fix	633	634		end	43	5
+tests/rules/@stylistic/function-call-spacing/cases.ts:44:2	@stylistic/function-call-spacing	unexpectedWhitespace	Unexpected whitespace between function name and paren.	fix	640	641		end	44	3
+tests/rules/@stylistic/function-call-spacing/cases.ts:46:2	@stylistic/function-call-spacing	unexpectedWhitespace	Unexpected whitespace between function name and paren.	fix	683	684		end	46	3
+tests/rules/@stylistic/function-call-spacing/cases.ts:47:2	@stylistic/function-call-spacing	unexpectedWhitespace	Unexpected whitespace between function name and paren.	fix	689	692	?.	end	47	5
+tests/rules/@stylistic/function-call-spacing/cases.ts:48:2	@stylistic/function-call-spacing	unexpectedWhitespace	Unexpected whitespace between function name and paren.	fix	697	700	?.	end	48	5
+tests/rules/@stylistic/function-call-spacing/cases.ts:49:2	@stylistic/function-call-spacing	unexpectedWhitespace	Unexpected whitespace between function name and paren.	end	49	11
+tests/rules/@stylistic/function-call-spacing/cases.ts:50:2	@stylistic/function-call-spacing	unexpectedWhitespace	Unexpected whitespace between function name and paren.	end	51	4
+tests/rules/@stylistic/function-call-spacing/cases.ts:52:2	@stylistic/function-call-spacing	unexpectedWhitespace	Unexpected whitespace between function name and paren.	fix	731	736	?.	end	53	2
+tests/rules/@stylistic/function-call-spacing/never/cases.ts:6:2	@stylistic/function-call-spacing	unexpectedWhitespace	Unexpected whitespace between function name and paren.	fix	216	217		end	6	3
+tests/rules/@stylistic/function-call-spacing/never/cases.ts:7:2	@stylistic/function-call-spacing	unexpectedWhitespace	Unexpected whitespace between function name and paren.	fix	222	224		end	7	4
+tests/rules/@stylistic/function-call-spacing/never/cases.ts:8:2	@stylistic/function-call-spacing	unexpectedWhitespace	Unexpected whitespace between function name and paren.	fix	229	230		end	9	1
+tests/rules/@stylistic/function-call-spacing/never/cases.ts:11:2	@stylistic/function-call-spacing	unexpectedWhitespace	Unexpected whitespace between function name and paren.	end	11	11
+tests/rules/@stylistic/function-call-spacing/never/cases.ts:12:2	@stylistic/function-call-spacing	unexpectedWhitespace	Unexpected whitespace between function name and paren.	end	13	1
+tests/rules/@stylistic/function-call-spacing/never/cases.ts:15:4	@stylistic/function-call-spacing	unexpectedWhitespace	Unexpected whitespace between function name and paren.	fix	281	282		end	15	5
+tests/rules/@stylistic/function-call-spacing/never/cases.ts:17:4	@stylistic/function-call-spacing	unexpectedWhitespace	Unexpected whitespace between function name and paren.	fix	296	297		end	17	5
+tests/rules/@stylistic/function-call-spacing/never/cases.ts:19:12	@stylistic/function-call-spacing	unexpectedWhitespace	Unexpected whitespace between function name and paren.	fix	327	328		end	19	13
+tests/rules/@stylistic/function-call-spacing/never/cases.ts:22:2	@stylistic/function-call-spacing	unexpectedWhitespace	Unexpected whitespace between function name and paren.	fix	356	359	?.	end	22	5
+tests/rules/@stylistic/function-call-spacing/never/cases.ts:23:2	@stylistic/function-call-spacing	unexpectedWhitespace	Unexpected whitespace between function name and paren.	fix	364	367	?.	end	23	5
+tests/rules/@stylistic/function-call-spacing/never/cases.ts:24:2	@stylistic/function-call-spacing	unexpectedWhitespace	Unexpected whitespace between function name and paren.	fix	372	376	?.	end	24	6
+tests/rules/@stylistic/function-call-spacing/never/cases.ts:25:2	@stylistic/function-call-spacing	unexpectedWhitespace	Unexpected whitespace between function name and paren.	fix	381	384	?.	end	26	1
+tests/rules/@stylistic/function-call-spacing/never/cases.ts:28:5	@stylistic/function-call-spacing	unexpectedWhitespace	Unexpected whitespace between function name and paren.	fix	402	405	?.	end	28	8
+tests/rules/@stylistic/function-call-spacing/never/cases.ts:29:5	@stylistic/function-call-spacing	unexpectedWhitespace	Unexpected whitespace between function name and paren.	fix	414	418	?.	end	29	9
+tests/rules/@stylistic/function-call-spacing/never/cases.ts:31:4	@stylistic/function-call-spacing	unexpectedWhitespace	Unexpected whitespace between function name and paren.	fix	435	441	?.	end	32	3
+tests/rules/@stylistic/function-call-spacing/never/cases.ts:35:8	@stylistic/function-call-spacing	unexpectedWhitespace	Unexpected whitespace between function name and paren.	fix	477	478		end	35	9
+tests/rules/@stylistic/function-call-spacing/never/cases.ts:38:10	@stylistic/function-call-spacing	unexpectedWhitespace	Unexpected whitespace between function name and paren.	fix	511	512		end	38	11
+tests/rules/@stylistic/function-call-spacing/never/cases.ts:39:8	@stylistic/function-call-spacing	unexpectedWhitespace	Unexpected whitespace between function name and paren.	fix	523	524		end	40	1
+tests/rules/@stylistic/function-call-spacing/never/cases.ts:41:46	@stylistic/function-call-spacing	unexpectedWhitespace	Unexpected whitespace between function name and paren.	fix	574	575		end	41	47
+tests/rules/@stylistic/function-call-spacing/never/cases.ts:41:67	@stylistic/function-call-spacing	unexpectedWhitespace	Unexpected whitespace between function name and paren.	fix	595	596		end	42	1
+tests/rules/@stylistic/function-call-spacing/never/cases.ts:43:4	@stylistic/function-call-spacing	unexpectedWhitespace	Unexpected whitespace between function name and paren.	fix	633	634		end	43	5
+tests/rules/@stylistic/function-call-spacing/never/cases.ts:44:2	@stylistic/function-call-spacing	unexpectedWhitespace	Unexpected whitespace between function name and paren.	fix	640	641		end	44	3
+tests/rules/@stylistic/function-call-spacing/never/cases.ts:46:2	@stylistic/function-call-spacing	unexpectedWhitespace	Unexpected whitespace between function name and paren.	fix	683	684		end	46	3
+tests/rules/@stylistic/function-call-spacing/never/cases.ts:47:2	@stylistic/function-call-spacing	unexpectedWhitespace	Unexpected whitespace between function name and paren.	fix	689	692	?.	end	47	5
+tests/rules/@stylistic/function-call-spacing/never/cases.ts:48:2	@stylistic/function-call-spacing	unexpectedWhitespace	Unexpected whitespace between function name and paren.	fix	697	700	?.	end	48	5
+tests/rules/@stylistic/function-call-spacing/never/cases.ts:49:2	@stylistic/function-call-spacing	unexpectedWhitespace	Unexpected whitespace between function name and paren.	end	49	11
+tests/rules/@stylistic/function-call-spacing/never/cases.ts:50:2	@stylistic/function-call-spacing	unexpectedWhitespace	Unexpected whitespace between function name and paren.	end	51	4
+tests/rules/@stylistic/function-call-spacing/never/cases.ts:52:2	@stylistic/function-call-spacing	unexpectedWhitespace	Unexpected whitespace between function name and paren.	fix	731	736	?.	end	53	2

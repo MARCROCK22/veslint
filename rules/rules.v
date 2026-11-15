@@ -403,6 +403,7 @@ pub const stylistic_space_before_function_paren = '@stylistic/space-before-funct
 pub const stylistic_key_spacing = '@stylistic/key-spacing'
 pub const stylistic_space_infix_ops = '@stylistic/space-infix-ops'
 pub const stylistic_space_unary_ops = '@stylistic/space-unary-ops'
+pub const stylistic_function_call_spacing = '@stylistic/function-call-spacing'
 pub const names = [no_floating_promises, await_thenable, require_await, return_await,
 	no_misused_promises, no_unsafe_call, no_unsafe_member_access, no_unsafe_return,
 	no_unsafe_assignment, no_unsafe_argument, restrict_template_expressions,
@@ -513,7 +514,7 @@ pub const names = [no_floating_promises, await_thenable, require_await, return_a
 	stylistic_space_before_blocks, stylistic_arrow_spacing, stylistic_yield_star_spacing,
 	stylistic_type_annotation_spacing, stylistic_type_generic_spacing,
 	stylistic_type_named_tuple_spacing, stylistic_space_before_function_paren, stylistic_key_spacing,
-	stylistic_space_infix_ops, stylistic_space_unary_ops]
+	stylistic_space_infix_ops, stylistic_space_unary_ops, stylistic_function_call_spacing]
 
 // untyped_rules are the ported rules that need no types (`meta.docs.requiresTypeChecking` is false
 // in typescript-eslint; the eslint-plugin-unicorn rules that read the types when the parser has a
@@ -597,7 +598,7 @@ pub const untyped_rules = [adjacent_overload_signatures, array_type, class_liter
 	stylistic_space_before_blocks, stylistic_arrow_spacing, stylistic_yield_star_spacing,
 	stylistic_type_annotation_spacing, stylistic_type_generic_spacing,
 	stylistic_type_named_tuple_spacing, stylistic_space_before_function_paren, stylistic_key_spacing,
-	stylistic_space_infix_ops, stylistic_space_unary_ops]
+	stylistic_space_infix_ops, stylistic_space_unary_ops, stylistic_function_call_spacing]
 
 // needs_types tells whether a rule asks tsgo for the types of the program.
 pub fn needs_types(rule string) bool {
@@ -997,6 +998,7 @@ pub const default_options = {
 	stylistic_key_spacing:                           '[{}]'
 	stylistic_space_infix_ops:                       '[{"int32Hint":false,"ignoreTypes":false}]'
 	stylistic_space_unary_ops:                       '[{"words":true,"nonwords":false}]'
+	stylistic_function_call_spacing:                 '["never"]'
 }
 
 // Finding is a problem a rule found at a node.
@@ -1520,6 +1522,7 @@ pub fn message(rule string, finding Finding) string {
 		stylistic_key_spacing { sks_messages }
 		stylistic_space_infix_ops { ssio_messages }
 		stylistic_space_unary_ops { ssuo_messages }
+		stylistic_function_call_spacing { sfcs_messages }
 		else { map[string]string{} }
 	}
 	return interpolate(messages[finding.message_id] or { finding.message_id }, finding.data)
@@ -2842,6 +2845,9 @@ fn (mut c Checker) lint_rule(rule string, root C.TSNode, abs_path string, mut st
 		}
 		stylistic_space_unary_ops {
 			return c.lint_stylistic_space_unary_ops(root, abs_path, mut stats)!
+		}
+		stylistic_function_call_spacing {
+			return c.lint_stylistic_function_call_spacing(root, abs_path, mut stats)!
 		}
 		else { return error('unknown rule: ${rule}') }
 	}
