@@ -83,15 +83,15 @@ fn (mut c Checker) lint_stylistic_brace_style(root C.TSNode, abs_path string, mu
 				consequent := t.node(node, .consequent) or { continue }
 				if t.typ(consequent) == .block_statement && t.node(node, .alternate) != none {
 					stats.checked++
-					curly := un_last_token(t, tokens, consequent) or { continue }
-					c.sbs_validate_before_keyword(t, tokens, curly, options, mut findings)
+					close_brace := un_last_token(t, tokens, consequent) or { continue }
+					c.sbs_validate_before_keyword(t, tokens, close_brace, options, mut findings)
 				}
 			}
 			.try_statement {
 				stats.checked++
 				block := t.node(node, .block) or { continue }
-				curly := un_last_token(t, tokens, block) or { continue }
-				c.sbs_validate_before_keyword(t, tokens, curly, options, mut findings)
+				close_brace := un_last_token(t, tokens, block) or { continue }
+				c.sbs_validate_before_keyword(t, tokens, close_brace, options, mut findings)
 				handler := t.node(node, .handler) or { continue }
 				if t.node(node, .finalizer) != none {
 					body := t.node(handler, .body) or { continue }
@@ -141,13 +141,13 @@ fn (c &Checker) sbs_validate_pair(t &estree.EsTree, tokens &SourceTokens, open S
 }
 
 // sbs_validate_before_keyword ports validateCurlyBeforeKeyword.
-fn (c &Checker) sbs_validate_before_keyword(t &estree.EsTree, tokens &SourceTokens, curly SourceToken, options SbsOptions, mut findings []Finding) {
-	keyword := tokens.after(curly.end, false) or { return }
-	if options.style == '1tbs' && !sty_same_line(t, curly, keyword) {
-		c.sbs_report(curly, 'nextLineClose', sfcs_safe_replace(tokens, curly, keyword, ' '), mut
+fn (c &Checker) sbs_validate_before_keyword(t &estree.EsTree, tokens &SourceTokens, close_brace SourceToken, options SbsOptions, mut findings []Finding) {
+	keyword := tokens.after(close_brace.end, false) or { return }
+	if options.style == '1tbs' && !sty_same_line(t, close_brace, keyword) {
+		c.sbs_report(close_brace, 'nextLineClose', sfcs_safe_replace(tokens, close_brace, keyword, ' '), mut
 			findings)
 	}
-	if options.style != '1tbs' && sty_same_line(t, curly, keyword) {
-		c.sbs_report(curly, 'sameLineClose', fix_insert_at(curly.end, '\n'), mut findings)
+	if options.style != '1tbs' && sty_same_line(t, close_brace, keyword) {
+		c.sbs_report(close_brace, 'sameLineClose', fix_insert_at(close_brace.end, '\n'), mut findings)
 	}
 }
