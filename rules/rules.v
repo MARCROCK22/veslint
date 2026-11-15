@@ -410,6 +410,7 @@ pub const stylistic_dot_location = '@stylistic/dot-location'
 pub const stylistic_function_call_argument_newline = '@stylistic/function-call-argument-newline'
 pub const stylistic_function_paren_newline = '@stylistic/function-paren-newline'
 pub const stylistic_implicit_arrow_linebreak = '@stylistic/implicit-arrow-linebreak'
+pub const stylistic_multiline_ternary = '@stylistic/multiline-ternary'
 pub const names = [no_floating_promises, await_thenable, require_await, return_await,
 	no_misused_promises, no_unsafe_call, no_unsafe_member_access, no_unsafe_return,
 	no_unsafe_assignment, no_unsafe_argument, restrict_template_expressions,
@@ -523,7 +524,7 @@ pub const names = [no_floating_promises, await_thenable, require_await, return_a
 	stylistic_space_infix_ops, stylistic_space_unary_ops, stylistic_function_call_spacing,
 	stylistic_brace_style, stylistic_comma_style, stylistic_dot_location,
 	stylistic_function_call_argument_newline, stylistic_function_paren_newline,
-	stylistic_implicit_arrow_linebreak]
+	stylistic_implicit_arrow_linebreak, stylistic_multiline_ternary]
 
 // untyped_rules are the ported rules that need no types (`meta.docs.requiresTypeChecking` is false
 // in typescript-eslint; the eslint-plugin-unicorn rules that read the types when the parser has a
@@ -610,7 +611,7 @@ pub const untyped_rules = [adjacent_overload_signatures, array_type, class_liter
 	stylistic_space_infix_ops, stylistic_space_unary_ops, stylistic_function_call_spacing,
 	stylistic_brace_style, stylistic_comma_style, stylistic_dot_location,
 	stylistic_function_call_argument_newline, stylistic_function_paren_newline,
-	stylistic_implicit_arrow_linebreak]
+	stylistic_implicit_arrow_linebreak, stylistic_multiline_ternary]
 
 // needs_types tells whether a rule asks tsgo for the types of the program.
 pub fn needs_types(rule string) bool {
@@ -1017,6 +1018,7 @@ pub const default_options = {
 	stylistic_function_call_argument_newline:        '["always"]'
 	stylistic_function_paren_newline:                '["multiline"]'
 	stylistic_implicit_arrow_linebreak:              '["beside"]'
+	stylistic_multiline_ternary:                     '["always"]'
 }
 
 // Finding is a problem a rule found at a node.
@@ -1547,6 +1549,7 @@ pub fn message(rule string, finding Finding) string {
 		stylistic_function_call_argument_newline { sfcan_messages }
 		stylistic_function_paren_newline { sfpn_messages }
 		stylistic_implicit_arrow_linebreak { sial_messages }
+		stylistic_multiline_ternary { smtn_messages }
 		else { map[string]string{} }
 	}
 	return interpolate(messages[finding.message_id] or { finding.message_id }, finding.data)
@@ -2890,6 +2893,9 @@ fn (mut c Checker) lint_rule(rule string, root C.TSNode, abs_path string, mut st
 		}
 		stylistic_implicit_arrow_linebreak {
 			return c.lint_stylistic_implicit_arrow_linebreak(root, abs_path, mut stats)!
+		}
+		stylistic_multiline_ternary {
+			return c.lint_stylistic_multiline_ternary(root, abs_path, mut stats)!
 		}
 		else { return error('unknown rule: ${rule}') }
 	}
