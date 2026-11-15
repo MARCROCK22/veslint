@@ -436,6 +436,7 @@ pub const stylistic_quote_props = '@stylistic/quote-props'
 pub const stylistic_no_extra_parens = '@stylistic/no-extra-parens'
 pub const marcrock_no_newline_if_body_class_empty = 'marcrock/no-newline-if-body-class-empty'
 pub const marcrock_numeric_separators = 'marcrock/numeric-separators'
+pub const marcrock_uppercase_first_class_letter = 'marcrock/uppercase-first-class-letter'
 pub const names = [no_floating_promises, await_thenable, require_await, return_await,
 	no_misused_promises, no_unsafe_call, no_unsafe_member_access, no_unsafe_return,
 	no_unsafe_assignment, no_unsafe_argument, restrict_template_expressions,
@@ -558,7 +559,7 @@ pub const names = [no_floating_promises, await_thenable, require_await, return_a
 	stylistic_object_property_newline, stylistic_exp_list_style, stylistic_exp_jsx_props_style,
 	stylistic_arrow_parens, stylistic_comma_dangle, stylistic_member_delimiter_style,
 	stylistic_quote_props, stylistic_no_extra_parens, marcrock_no_newline_if_body_class_empty,
-	marcrock_numeric_separators]
+	marcrock_numeric_separators, marcrock_uppercase_first_class_letter]
 
 // untyped_rules are the ported rules that need no types (`meta.docs.requiresTypeChecking` is false
 // in typescript-eslint; the eslint-plugin-unicorn rules that read the types when the parser has a
@@ -654,7 +655,7 @@ pub const untyped_rules = [adjacent_overload_signatures, array_type, class_liter
 	stylistic_object_property_newline, stylistic_exp_list_style, stylistic_exp_jsx_props_style,
 	stylistic_arrow_parens, stylistic_comma_dangle, stylistic_member_delimiter_style,
 	stylistic_quote_props, stylistic_no_extra_parens, marcrock_no_newline_if_body_class_empty,
-	marcrock_numeric_separators]
+	marcrock_numeric_separators, marcrock_uppercase_first_class_letter]
 
 // needs_types tells whether a rule asks tsgo for the types of the program.
 pub fn needs_types(rule string) bool {
@@ -1087,6 +1088,7 @@ pub const default_options = {
 	stylistic_no_extra_parens:                       '["all"]'
 	marcrock_no_newline_if_body_class_empty:         '[]'
 	marcrock_numeric_separators:                     '[]'
+	marcrock_uppercase_first_class_letter:           '[]'
 }
 
 // Finding is a problem a rule found at a node.
@@ -1643,6 +1645,7 @@ pub fn message(rule string, finding Finding) string {
 		stylistic_no_extra_parens { snep_messages }
 		marcrock_no_newline_if_body_class_empty { mnl_messages }
 		marcrock_numeric_separators { mns_messages }
+		marcrock_uppercase_first_class_letter { mufc_messages }
 		else { map[string]string{} }
 	}
 	return interpolate(messages[finding.message_id] or { finding.message_id }, finding.data)
@@ -3064,6 +3067,9 @@ fn (mut c Checker) lint_rule(rule string, root C.TSNode, abs_path string, mut st
 		}
 		marcrock_numeric_separators {
 			return c.lint_marcrock_numeric_separators(root, abs_path, mut stats)!
+		}
+		marcrock_uppercase_first_class_letter {
+			return c.lint_marcrock_uppercase_first_class_letter(root, abs_path, mut stats)!
 		}
 		else { return error('unknown rule: ${rule}') }
 	}

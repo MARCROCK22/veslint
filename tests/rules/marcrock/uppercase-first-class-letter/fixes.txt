@@ -1,0 +1,13 @@
+tests/rules/marcrock/uppercase-first-class-letter/cases.ts:2:7	marcrock/uppercase-first-class-letter	uppercaseFirstClassLeter	Start this name with an upper-case letter.	end	2	10
+tests/rules/marcrock/uppercase-first-class-letter/cases.ts:3:7	marcrock/uppercase-first-class-letter	uppercaseFirstClassLeter	Start this name with an upper-case letter.	end	3	13
+tests/rules/marcrock/uppercase-first-class-letter/cases.ts:4:14	marcrock/uppercase-first-class-letter	uppercaseFirstClassLeter	Start this name with an upper-case letter.	end	4	17
+tests/rules/marcrock/uppercase-first-class-letter/cases.ts:5:22	marcrock/uppercase-first-class-letter	uppercaseFirstClassLeter	Start this name with an upper-case letter.	end	5	25
+tests/rules/marcrock/uppercase-first-class-letter/cases.ts:6:16	marcrock/uppercase-first-class-letter	uppercaseFirstClassLeter	Start this name with an upper-case letter.	end	6	19
+tests/rules/marcrock/uppercase-first-class-letter/cases.ts:7:15	marcrock/uppercase-first-class-letter	uppercaseFirstClassLeter	Start this name with an upper-case letter.	end	7	19
+tests/rules/marcrock/uppercase-first-class-letter/cases.ts:8:7	marcrock/uppercase-first-class-letter	uppercaseFirstClassLeter	Start this name with an upper-case letter.	end	8	12
+tests/rules/marcrock/uppercase-first-class-letter/cases.ts:11:7	marcrock/uppercase-first-class-letter	uppercaseFirstClassLeter	Start this name with an upper-case letter.	end	11	13
+tests/rules/marcrock/uppercase-first-class-letter/cases.ts:13:7	marcrock/uppercase-first-class-letter	uppercaseFirstClassLeter	Start this name with an upper-case letter.	end	13	13
+tests/rules/marcrock/uppercase-first-class-letter/cases.ts:15:15	marcrock/uppercase-first-class-letter	uppercaseFirstClassLeter	Start this name with an upper-case letter.	end	15	20
+tests/rules/marcrock/uppercase-first-class-letter/cases.ts:18:8	marcrock/uppercase-first-class-letter	uppercaseFirstClassLeter	Start this name with an upper-case letter.	end	18	12
+tests/rules/marcrock/uppercase-first-class-letter/cases.ts:21:7	marcrock/uppercase-first-class-letter	uppercaseFirstClassLeter	Start this name with an upper-case letter.	end	21	8
+tests/rules/marcrock/uppercase-first-class-letter/cases.ts:22:7	marcrock/uppercase-first-class-letter	uppercaseFirstClassLeter	Start this name with an upper-case letter.	end	22	9
