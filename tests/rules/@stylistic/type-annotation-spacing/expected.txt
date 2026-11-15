@@ -1,0 +1,1047 @@
+tests/rules/@stylistic/type-annotation-spacing/arrow-ignore/cases.ts:2:7	@stylistic/type-annotation-spacing	expectedSpaceAfter	Expected a space after the ':'.
+tests/rules/@stylistic/type-annotation-spacing/arrow-ignore/cases.ts:2:7	@stylistic/type-annotation-spacing	expectedSpaceBefore	Expected a space before the ':'.
+tests/rules/@stylistic/type-annotation-spacing/arrow-ignore/cases.ts:4:8	@stylistic/type-annotation-spacing	expectedSpaceAfter	Expected a space after the ':'.
+tests/rules/@stylistic/type-annotation-spacing/arrow-ignore/cases.ts:5:7	@stylistic/type-annotation-spacing	expectedSpaceBefore	Expected a space before the ':'.
+tests/rules/@stylistic/type-annotation-spacing/arrow-ignore/cases.ts:7:14	@stylistic/type-annotation-spacing	expectedSpaceAfter	Expected a space after the ':'.
+tests/rules/@stylistic/type-annotation-spacing/arrow-ignore/cases.ts:7:14	@stylistic/type-annotation-spacing	expectedSpaceBefore	Expected a space before the ':'.
+tests/rules/@stylistic/type-annotation-spacing/arrow-ignore/cases.ts:7:25	@stylistic/type-annotation-spacing	expectedSpaceAfter	Expected a space after the ':'.
+tests/rules/@stylistic/type-annotation-spacing/arrow-ignore/cases.ts:7:49	@stylistic/type-annotation-spacing	expectedSpaceBefore	Expected a space before the '?:'.
+tests/rules/@stylistic/type-annotation-spacing/arrow-ignore/cases.ts:7:51	@stylistic/type-annotation-spacing	unexpectedSpaceBetween	Unexpected space between the '?' and the ':'.
+tests/rules/@stylistic/type-annotation-spacing/arrow-ignore/cases.ts:7:51	@stylistic/type-annotation-spacing	expectedSpaceAfter	Expected a space after the '?:'.
+tests/rules/@stylistic/type-annotation-spacing/arrow-ignore/cases.ts:7:59	@stylistic/type-annotation-spacing	expectedSpaceAfter	Expected a space after the ':'.
+tests/rules/@stylistic/type-annotation-spacing/arrow-ignore/cases.ts:7:59	@stylistic/type-annotation-spacing	expectedSpaceBefore	Expected a space before the ':'.
+tests/rules/@stylistic/type-annotation-spacing/arrow-ignore/cases.ts:8:14	@stylistic/type-annotation-spacing	expectedSpaceBefore	Expected a space before the ':'.
+tests/rules/@stylistic/type-annotation-spacing/arrow-ignore/cases.ts:8:23	@stylistic/type-annotation-spacing	expectedSpaceBefore	Expected a space before the ':'.
+tests/rules/@stylistic/type-annotation-spacing/arrow-ignore/cases.ts:9:15	@stylistic/type-annotation-spacing	expectedSpaceAfter	Expected a space after the ':'.
+tests/rules/@stylistic/type-annotation-spacing/arrow-ignore/cases.ts:11:24	@stylistic/type-annotation-spacing	expectedSpaceAfter	Expected a space after the ':'.
+tests/rules/@stylistic/type-annotation-spacing/arrow-ignore/cases.ts:11:33	@stylistic/type-annotation-spacing	expectedSpaceAfter	Expected a space after the ':'.
+tests/rules/@stylistic/type-annotation-spacing/arrow-ignore/cases.ts:12:14	@stylistic/type-annotation-spacing	expectedSpaceAfter	Expected a space after the ':'.
+tests/rules/@stylistic/type-annotation-spacing/arrow-ignore/cases.ts:12:14	@stylistic/type-annotation-spacing	expectedSpaceBefore	Expected a space before the ':'.
+tests/rules/@stylistic/type-annotation-spacing/arrow-ignore/cases.ts:12:22	@stylistic/type-annotation-spacing	expectedSpaceAfter	Expected a space after the ':'.
+tests/rules/@stylistic/type-annotation-spacing/arrow-ignore/cases.ts:12:22	@stylistic/type-annotation-spacing	expectedSpaceBefore	Expected a space before the ':'.
+tests/rules/@stylistic/type-annotation-spacing/arrow-ignore/cases.ts:13:21	@stylistic/type-annotation-spacing	expectedSpaceAfter	Expected a space after the ':'.
+tests/rules/@stylistic/type-annotation-spacing/arrow-ignore/cases.ts:15:4	@stylistic/type-annotation-spacing	expectedSpaceAfter	Expected a space after the ':'.
+tests/rules/@stylistic/type-annotation-spacing/arrow-ignore/cases.ts:15:4	@stylistic/type-annotation-spacing	expectedSpaceBefore	Expected a space before the ':'.
+tests/rules/@stylistic/type-annotation-spacing/arrow-ignore/cases.ts:16:5	@stylistic/type-annotation-spacing	expectedSpaceAfter	Expected a space after the ':'.
+tests/rules/@stylistic/type-annotation-spacing/arrow-ignore/cases.ts:17:6	@stylistic/type-annotation-spacing	expectedSpaceAfter	Expected a space after the '?:'.
+tests/rules/@stylistic/type-annotation-spacing/arrow-ignore/cases.ts:18:4	@stylistic/type-annotation-spacing	expectedSpaceBefore	Expected a space before the '?:'.
+tests/rules/@stylistic/type-annotation-spacing/arrow-ignore/cases.ts:18:6	@stylistic/type-annotation-spacing	unexpectedSpaceBetween	Unexpected space between the '?' and the ':'.
+tests/rules/@stylistic/type-annotation-spacing/arrow-ignore/cases.ts:20:6	@stylistic/type-annotation-spacing	expectedSpaceAfter	Expected a space after the ':'.
+tests/rules/@stylistic/type-annotation-spacing/arrow-ignore/cases.ts:20:6	@stylistic/type-annotation-spacing	expectedSpaceBefore	Expected a space before the ':'.
+tests/rules/@stylistic/type-annotation-spacing/arrow-ignore/cases.ts:20:15	@stylistic/type-annotation-spacing	expectedSpaceAfter	Expected a space after the ':'.
+tests/rules/@stylistic/type-annotation-spacing/arrow-ignore/cases.ts:22:16	@stylistic/type-annotation-spacing	expectedSpaceAfter	Expected a space after the ':'.
+tests/rules/@stylistic/type-annotation-spacing/arrow-ignore/cases.ts:23:15	@stylistic/type-annotation-spacing	expectedSpaceBefore	Expected a space before the ':'.
+tests/rules/@stylistic/type-annotation-spacing/arrow-ignore/cases.ts:24:14	@stylistic/type-annotation-spacing	expectedSpaceAfter	Expected a space after the ':'.
+tests/rules/@stylistic/type-annotation-spacing/arrow-ignore/cases.ts:25:10	@stylistic/type-annotation-spacing	expectedSpaceAfter	Expected a space after the ':'.
+tests/rules/@stylistic/type-annotation-spacing/arrow-ignore/cases.ts:26:14	@stylistic/type-annotation-spacing	expectedSpaceAfter	Expected a space after the ':'.
+tests/rules/@stylistic/type-annotation-spacing/arrow-ignore/cases.ts:29:14	@stylistic/type-annotation-spacing	expectedSpaceAfter	Expected a space after the ':'.
+tests/rules/@stylistic/type-annotation-spacing/arrow-ignore/cases.ts:30:16	@stylistic/type-annotation-spacing	expectedSpaceAfter	Expected a space after the ':'.
+tests/rules/@stylistic/type-annotation-spacing/arrow-ignore/cases.ts:31:7	@stylistic/type-annotation-spacing	expectedSpaceAfter	Expected a space after the ':'.
+tests/rules/@stylistic/type-annotation-spacing/arrow-ignore/cases.ts:31:16	@stylistic/type-annotation-spacing	expectedSpaceAfter	Expected a space after the ':'.
+tests/rules/@stylistic/type-annotation-spacing/arrow-ignore/cases.ts:34:4	@stylistic/type-annotation-spacing	expectedSpaceAfter	Expected a space after the ':'.
+tests/rules/@stylistic/type-annotation-spacing/arrow-ignore/cases.ts:34:4	@stylistic/type-annotation-spacing	expectedSpaceBefore	Expected a space before the ':'.
+tests/rules/@stylistic/type-annotation-spacing/arrow-ignore/cases.ts:36:7	@stylistic/type-annotation-spacing	expectedSpaceAfter	Expected a space after the ':'.
+tests/rules/@stylistic/type-annotation-spacing/arrow-ignore/cases.ts:36:16	@stylistic/type-annotation-spacing	expectedSpaceAfter	Expected a space after the ':'.
+tests/rules/@stylistic/type-annotation-spacing/arrow-ignore/cases.ts:37:9	@stylistic/type-annotation-spacing	expectedSpaceAfter	Expected a space after the ':'.
+tests/rules/@stylistic/type-annotation-spacing/arrow-ignore/cases.ts:38:5	@stylistic/type-annotation-spacing	expectedSpaceAfter	Expected a space after the ':'.
+tests/rules/@stylistic/type-annotation-spacing/arrow-ignore/cases.ts:38:14	@stylistic/type-annotation-spacing	expectedSpaceAfter	Expected a space after the ':'.
+tests/rules/@stylistic/type-annotation-spacing/arrow-ignore/cases.ts:39:9	@stylistic/type-annotation-spacing	expectedSpaceAfter	Expected a space after the ':'.
+tests/rules/@stylistic/type-annotation-spacing/arrow-ignore/cases.ts:39:18	@stylistic/type-annotation-spacing	expectedSpaceAfter	Expected a space after the ':'.
+tests/rules/@stylistic/type-annotation-spacing/arrow-ignore/cases.ts:40:7	@stylistic/type-annotation-spacing	expectedSpaceAfter	Expected a space after the ':'.
+tests/rules/@stylistic/type-annotation-spacing/arrow-ignore/cases.ts:40:16	@stylistic/type-annotation-spacing	expectedSpaceAfter	Expected a space after the ':'.
+tests/rules/@stylistic/type-annotation-spacing/arrow-ignore/cases.ts:41:14	@stylistic/type-annotation-spacing	expectedSpaceAfter	Expected a space after the ':'.
+tests/rules/@stylistic/type-annotation-spacing/arrow-ignore/cases.ts:43:14	@stylistic/type-annotation-spacing	expectedSpaceAfter	Expected a space after the ':'.
+tests/rules/@stylistic/type-annotation-spacing/arrow-ignore/cases.ts:44:13	@stylistic/type-annotation-spacing	expectedSpaceBefore	Expected a space before the ':'.
+tests/rules/@stylistic/type-annotation-spacing/arrow-ignore/cases.ts:45:13	@stylistic/type-annotation-spacing	expectedSpaceBefore	Expected a space before the ':'.
+tests/rules/@stylistic/type-annotation-spacing/arrow-ignore/cases.ts:46:18	@stylistic/type-annotation-spacing	expectedSpaceAfter	Expected a space after the ':'.
+tests/rules/@stylistic/type-annotation-spacing/arrow-ignore/cases.ts:48:29	@stylistic/type-annotation-spacing	expectedSpaceAfter	Expected a space after the ':'.
+tests/rules/@stylistic/type-annotation-spacing/arrow-ignore/cases.ts:49:30	@stylistic/type-annotation-spacing	expectedSpaceAfter	Expected a space after the '?:'.
+tests/rules/@stylistic/type-annotation-spacing/arrow-ignore/cases.ts:51:28	@stylistic/type-annotation-spacing	expectedSpaceBefore	Expected a space before the '-?:'.
+tests/rules/@stylistic/type-annotation-spacing/arrow-ignore/cases.ts:51:30	@stylistic/type-annotation-spacing	expectedSpaceAfter	Expected a space after the '-?:'.
+tests/rules/@stylistic/type-annotation-spacing/arrow-ignore/cases.ts:52:32	@stylistic/type-annotation-spacing	expectedSpaceAfter	Expected a space after the '+?:'.
+tests/rules/@stylistic/type-annotation-spacing/arrow-ignore/cases.ts:54:8	@stylistic/type-annotation-spacing	expectedSpaceAfter	Expected a space after the ':'.
+tests/rules/@stylistic/type-annotation-spacing/arrow-ignore/cases.ts:55:7	@stylistic/type-annotation-spacing	expectedSpaceAfter	Expected a space after the ':'.
+tests/rules/@stylistic/type-annotation-spacing/arrow-ignore/cases.ts:55:7	@stylistic/type-annotation-spacing	expectedSpaceBefore	Expected a space before the ':'.
+tests/rules/@stylistic/type-annotation-spacing/arrow-ignore/cases.ts:57:14	@stylistic/type-annotation-spacing	expectedSpaceBefore	Expected a space before the ':'.
+tests/rules/@stylistic/type-annotation-spacing/arrow-ignore/cases.ts:57:25	@stylistic/type-annotation-spacing	expectedSpaceAfter	Expected a space after the ':'.
+tests/rules/@stylistic/type-annotation-spacing/arrow-ignore/cases.ts:58:14	@stylistic/type-annotation-spacing	expectedSpaceBefore	Expected a space before the ':'.
+tests/rules/@stylistic/type-annotation-spacing/arrow-ignore/cases.ts:58:25	@stylistic/type-annotation-spacing	expectedSpaceAfter	Expected a space after the ':'.
+tests/rules/@stylistic/type-annotation-spacing/arrow-ignore/cases.ts:59:18	@stylistic/type-annotation-spacing	expectedSpaceAfter	Expected a space after the ':'.
+tests/rules/@stylistic/type-annotation-spacing/arrow-ignore/cases.ts:59:29	@stylistic/type-annotation-spacing	expectedSpaceAfter	Expected a space after the ':'.
+tests/rules/@stylistic/type-annotation-spacing/arrow-ignore/cases.ts:60:19	@stylistic/type-annotation-spacing	expectedSpaceAfter	Expected a space after the ':'.
+tests/rules/@stylistic/type-annotation-spacing/arrow-ignore/cases.ts:60:23	@stylistic/type-annotation-spacing	expectedSpaceBefore	Expected a space before the ':'.
+tests/rules/@stylistic/type-annotation-spacing/arrow-ignore/cases.ts:60:39	@stylistic/type-annotation-spacing	expectedSpaceAfter	Expected a space after the ':'.
+tests/rules/@stylistic/type-annotation-spacing/arrow-ignore/cases.ts:60:58	@stylistic/type-annotation-spacing	expectedSpaceAfter	Expected a space after the ':'.
+tests/rules/@stylistic/type-annotation-spacing/arrow-ignore/cases.ts:61:23	@stylistic/type-annotation-spacing	expectedSpaceAfter	Expected a space after the ':'.
+tests/rules/@stylistic/type-annotation-spacing/arrow-ignore/cases.ts:61:32	@stylistic/type-annotation-spacing	expectedSpaceAfter	Expected a space after the ':'.
+tests/rules/@stylistic/type-annotation-spacing/arrow-ignore/cases.ts:62:17	@stylistic/type-annotation-spacing	expectedSpaceAfter	Expected a space after the ':'.
+tests/rules/@stylistic/type-annotation-spacing/arrow-ignore/cases.ts:64:7	@stylistic/type-annotation-spacing	expectedSpaceBefore	Expected a space before the ':'.
+tests/rules/@stylistic/type-annotation-spacing/arrow-ignore/cases.ts:68:7	@stylistic/type-annotation-spacing	expectedSpaceBefore	Expected a space before the ':'.
+tests/rules/@stylistic/type-annotation-spacing/arrow-ignore/cases.ts:71:2	@stylistic/type-annotation-spacing	expectedSpaceAfter	Expected a space after the ':'.
+tests/rules/@stylistic/type-annotation-spacing/arrow-ignore/cases.ts:72:18	@stylistic/type-annotation-spacing	expectedSpaceAfter	Expected a space after the ':'.
+tests/rules/@stylistic/type-annotation-spacing/arrow-ignore/cases.ts:72:27	@stylistic/type-annotation-spacing	expectedSpaceAfter	Expected a space after the ':'.
+tests/rules/@stylistic/type-annotation-spacing/arrow-ignore/cases.ts:74:21	@stylistic/type-annotation-spacing	expectedSpaceBefore	Expected a space before the '?:'.
+tests/rules/@stylistic/type-annotation-spacing/arrow-ignore/cases.ts:74:23	@stylistic/type-annotation-spacing	unexpectedSpaceBetween	Unexpected space between the '?' and the ':'.
+tests/rules/@stylistic/type-annotation-spacing/arrow-ignore/cases.ts:74:33	@stylistic/type-annotation-spacing	expectedSpaceAfter	Expected a space after the ':'.
+tests/rules/@stylistic/type-annotation-spacing/arrow-ignore/cases.ts:75:7	@stylistic/type-annotation-spacing	expectedSpaceBefore	Expected a space before the ':'.
+tests/rules/@stylistic/type-annotation-spacing/arrow-ignore/cases.ts:75:13	@stylistic/type-annotation-spacing	expectedSpaceAfter	Expected a space after the ':'.
+tests/rules/@stylistic/type-annotation-spacing/arrow-ignore/cases.ts:75:26	@stylistic/type-annotation-spacing	unexpectedSpaceBetween	Unexpected space between the '?' and the ':'.
+tests/rules/@stylistic/type-annotation-spacing/arrow/cases.ts:2:7	@stylistic/type-annotation-spacing	expectedSpaceAfter	Expected a space after the ':'.
+tests/rules/@stylistic/type-annotation-spacing/arrow/cases.ts:3:8	@stylistic/type-annotation-spacing	unexpectedSpaceBefore	Unexpected space before the ':'.
+tests/rules/@stylistic/type-annotation-spacing/arrow/cases.ts:4:8	@stylistic/type-annotation-spacing	expectedSpaceAfter	Expected a space after the ':'.
+tests/rules/@stylistic/type-annotation-spacing/arrow/cases.ts:4:8	@stylistic/type-annotation-spacing	unexpectedSpaceBefore	Unexpected space before the ':'.
+tests/rules/@stylistic/type-annotation-spacing/arrow/cases.ts:6:10	@stylistic/type-annotation-spacing	unexpectedSpaceBefore	Unexpected space before the ':'.
+tests/rules/@stylistic/type-annotation-spacing/arrow/cases.ts:7:14	@stylistic/type-annotation-spacing	expectedSpaceAfter	Expected a space after the ':'.
+tests/rules/@stylistic/type-annotation-spacing/arrow/cases.ts:7:25	@stylistic/type-annotation-spacing	expectedSpaceAfter	Expected a space after the ':'.
+tests/rules/@stylistic/type-annotation-spacing/arrow/cases.ts:7:25	@stylistic/type-annotation-spacing	unexpectedSpaceBefore	Unexpected space before the ':'.
+tests/rules/@stylistic/type-annotation-spacing/arrow/cases.ts:7:36	@stylistic/type-annotation-spacing	unexpectedSpaceBefore	Unexpected space before the '?:'.
+tests/rules/@stylistic/type-annotation-spacing/arrow/cases.ts:7:51	@stylistic/type-annotation-spacing	unexpectedSpaceBetween	Unexpected space between the '?' and the ':'.
+tests/rules/@stylistic/type-annotation-spacing/arrow/cases.ts:7:51	@stylistic/type-annotation-spacing	expectedSpaceAfter	Expected a space after the '?:'.
+tests/rules/@stylistic/type-annotation-spacing/arrow/cases.ts:7:59	@stylistic/type-annotation-spacing	expectedSpaceAfter	Expected a space after the ':'.
+tests/rules/@stylistic/type-annotation-spacing/arrow/cases.ts:9:15	@stylistic/type-annotation-spacing	expectedSpaceAfter	Expected a space after the ':'.
+tests/rules/@stylistic/type-annotation-spacing/arrow/cases.ts:9:15	@stylistic/type-annotation-spacing	unexpectedSpaceBefore	Unexpected space before the ':'.
+tests/rules/@stylistic/type-annotation-spacing/arrow/cases.ts:10:16	@stylistic/type-annotation-spacing	unexpectedSpaceBefore	Unexpected space before the ':'.
+tests/rules/@stylistic/type-annotation-spacing/arrow/cases.ts:11:24	@stylistic/type-annotation-spacing	expectedSpaceAfter	Expected a space after the ':'.
+tests/rules/@stylistic/type-annotation-spacing/arrow/cases.ts:11:24	@stylistic/type-annotation-spacing	unexpectedSpaceBefore	Unexpected space before the ':'.
+tests/rules/@stylistic/type-annotation-spacing/arrow/cases.ts:11:33	@stylistic/type-annotation-spacing	expectedSpaceAfter	Expected a space after the ':'.
+tests/rules/@stylistic/type-annotation-spacing/arrow/cases.ts:11:33	@stylistic/type-annotation-spacing	unexpectedSpaceBefore	Unexpected space before the ':'.
+tests/rules/@stylistic/type-annotation-spacing/arrow/cases.ts:12:14	@stylistic/type-annotation-spacing	expectedSpaceAfter	Expected a space after the ':'.
+tests/rules/@stylistic/type-annotation-spacing/arrow/cases.ts:12:22	@stylistic/type-annotation-spacing	expectedSpaceAfter	Expected a space after the ':'.
+tests/rules/@stylistic/type-annotation-spacing/arrow/cases.ts:13:21	@stylistic/type-annotation-spacing	expectedSpaceAfter	Expected a space after the ':'.
+tests/rules/@stylistic/type-annotation-spacing/arrow/cases.ts:13:21	@stylistic/type-annotation-spacing	unexpectedSpaceBefore	Unexpected space before the ':'.
+tests/rules/@stylistic/type-annotation-spacing/arrow/cases.ts:13:30	@stylistic/type-annotation-spacing	unexpectedSpaceBefore	Unexpected space before the ':'.
+tests/rules/@stylistic/type-annotation-spacing/arrow/cases.ts:15:4	@stylistic/type-annotation-spacing	expectedSpaceAfter	Expected a space after the ':'.
+tests/rules/@stylistic/type-annotation-spacing/arrow/cases.ts:16:5	@stylistic/type-annotation-spacing	expectedSpaceAfter	Expected a space after the ':'.
+tests/rules/@stylistic/type-annotation-spacing/arrow/cases.ts:16:5	@stylistic/type-annotation-spacing	unexpectedSpaceBefore	Unexpected space before the ':'.
+tests/rules/@stylistic/type-annotation-spacing/arrow/cases.ts:17:5	@stylistic/type-annotation-spacing	unexpectedSpaceBefore	Unexpected space before the '?:'.
+tests/rules/@stylistic/type-annotation-spacing/arrow/cases.ts:17:6	@stylistic/type-annotation-spacing	expectedSpaceAfter	Expected a space after the '?:'.
+tests/rules/@stylistic/type-annotation-spacing/arrow/cases.ts:18:6	@stylistic/type-annotation-spacing	unexpectedSpaceBetween	Unexpected space between the '?' and the ':'.
+tests/rules/@stylistic/type-annotation-spacing/arrow/cases.ts:19:12	@stylistic/type-annotation-spacing	unexpectedSpaceBefore	Unexpected space before the ':'.
+tests/rules/@stylistic/type-annotation-spacing/arrow/cases.ts:20:6	@stylistic/type-annotation-spacing	expectedSpaceAfter	Expected a space after the ':'.
+tests/rules/@stylistic/type-annotation-spacing/arrow/cases.ts:20:15	@stylistic/type-annotation-spacing	expectedSpaceAfter	Expected a space after the ':'.
+tests/rules/@stylistic/type-annotation-spacing/arrow/cases.ts:20:15	@stylistic/type-annotation-spacing	unexpectedSpaceBefore	Unexpected space before the ':'.
+tests/rules/@stylistic/type-annotation-spacing/arrow/cases.ts:21:7	@stylistic/type-annotation-spacing	unexpectedSpaceBefore	Unexpected space before the ':'.
+tests/rules/@stylistic/type-annotation-spacing/arrow/cases.ts:22:16	@stylistic/type-annotation-spacing	expectedSpaceAfter	Expected a space after the ':'.
+tests/rules/@stylistic/type-annotation-spacing/arrow/cases.ts:22:16	@stylistic/type-annotation-spacing	unexpectedSpaceBefore	Unexpected space before the ':'.
+tests/rules/@stylistic/type-annotation-spacing/arrow/cases.ts:24:14	@stylistic/type-annotation-spacing	expectedSpaceAfter	Expected a space after the ':'.
+tests/rules/@stylistic/type-annotation-spacing/arrow/cases.ts:24:14	@stylistic/type-annotation-spacing	unexpectedSpaceBefore	Unexpected space before the ':'.
+tests/rules/@stylistic/type-annotation-spacing/arrow/cases.ts:25:10	@stylistic/type-annotation-spacing	expectedSpaceAfter	Expected a space after the ':'.
+tests/rules/@stylistic/type-annotation-spacing/arrow/cases.ts:25:10	@stylistic/type-annotation-spacing	unexpectedSpaceBefore	Unexpected space before the ':'.
+tests/rules/@stylistic/type-annotation-spacing/arrow/cases.ts:26:14	@stylistic/type-annotation-spacing	expectedSpaceAfter	Expected a space after the ':'.
+tests/rules/@stylistic/type-annotation-spacing/arrow/cases.ts:26:14	@stylistic/type-annotation-spacing	unexpectedSpaceBefore	Unexpected space before the ':'.
+tests/rules/@stylistic/type-annotation-spacing/arrow/cases.ts:29:14	@stylistic/type-annotation-spacing	expectedSpaceAfter	Expected a space after the ':'.
+tests/rules/@stylistic/type-annotation-spacing/arrow/cases.ts:29:14	@stylistic/type-annotation-spacing	unexpectedSpaceBefore	Unexpected space before the ':'.
+tests/rules/@stylistic/type-annotation-spacing/arrow/cases.ts:30:16	@stylistic/type-annotation-spacing	expectedSpaceAfter	Expected a space after the ':'.
+tests/rules/@stylistic/type-annotation-spacing/arrow/cases.ts:30:16	@stylistic/type-annotation-spacing	unexpectedSpaceBefore	Unexpected space before the ':'.
+tests/rules/@stylistic/type-annotation-spacing/arrow/cases.ts:31:7	@stylistic/type-annotation-spacing	expectedSpaceAfter	Expected a space after the ':'.
+tests/rules/@stylistic/type-annotation-spacing/arrow/cases.ts:31:7	@stylistic/type-annotation-spacing	unexpectedSpaceBefore	Unexpected space before the ':'.
+tests/rules/@stylistic/type-annotation-spacing/arrow/cases.ts:31:16	@stylistic/type-annotation-spacing	expectedSpaceAfter	Expected a space after the ':'.
+tests/rules/@stylistic/type-annotation-spacing/arrow/cases.ts:31:16	@stylistic/type-annotation-spacing	unexpectedSpaceBefore	Unexpected space before the ':'.
+tests/rules/@stylistic/type-annotation-spacing/arrow/cases.ts:34:4	@stylistic/type-annotation-spacing	expectedSpaceAfter	Expected a space after the ':'.
+tests/rules/@stylistic/type-annotation-spacing/arrow/cases.ts:35:5	@stylistic/type-annotation-spacing	unexpectedSpaceBefore	Unexpected space before the '?:'.
+tests/rules/@stylistic/type-annotation-spacing/arrow/cases.ts:36:7	@stylistic/type-annotation-spacing	expectedSpaceAfter	Expected a space after the ':'.
+tests/rules/@stylistic/type-annotation-spacing/arrow/cases.ts:36:7	@stylistic/type-annotation-spacing	unexpectedSpaceBefore	Unexpected space before the ':'.
+tests/rules/@stylistic/type-annotation-spacing/arrow/cases.ts:36:16	@stylistic/type-annotation-spacing	expectedSpaceAfter	Expected a space after the ':'.
+tests/rules/@stylistic/type-annotation-spacing/arrow/cases.ts:36:16	@stylistic/type-annotation-spacing	unexpectedSpaceBefore	Unexpected space before the ':'.
+tests/rules/@stylistic/type-annotation-spacing/arrow/cases.ts:37:9	@stylistic/type-annotation-spacing	expectedSpaceAfter	Expected a space after the ':'.
+tests/rules/@stylistic/type-annotation-spacing/arrow/cases.ts:37:9	@stylistic/type-annotation-spacing	unexpectedSpaceBefore	Unexpected space before the ':'.
+tests/rules/@stylistic/type-annotation-spacing/arrow/cases.ts:38:5	@stylistic/type-annotation-spacing	expectedSpaceAfter	Expected a space after the ':'.
+tests/rules/@stylistic/type-annotation-spacing/arrow/cases.ts:38:5	@stylistic/type-annotation-spacing	unexpectedSpaceBefore	Unexpected space before the ':'.
+tests/rules/@stylistic/type-annotation-spacing/arrow/cases.ts:38:14	@stylistic/type-annotation-spacing	expectedSpaceAfter	Expected a space after the ':'.
+tests/rules/@stylistic/type-annotation-spacing/arrow/cases.ts:38:14	@stylistic/type-annotation-spacing	unexpectedSpaceBefore	Unexpected space before the ':'.
+tests/rules/@stylistic/type-annotation-spacing/arrow/cases.ts:39:9	@stylistic/type-annotation-spacing	expectedSpaceAfter	Expected a space after the ':'.
+tests/rules/@stylistic/type-annotation-spacing/arrow/cases.ts:39:9	@stylistic/type-annotation-spacing	unexpectedSpaceBefore	Unexpected space before the ':'.
+tests/rules/@stylistic/type-annotation-spacing/arrow/cases.ts:39:18	@stylistic/type-annotation-spacing	expectedSpaceAfter	Expected a space after the ':'.
+tests/rules/@stylistic/type-annotation-spacing/arrow/cases.ts:39:18	@stylistic/type-annotation-spacing	unexpectedSpaceBefore	Unexpected space before the ':'.
+tests/rules/@stylistic/type-annotation-spacing/arrow/cases.ts:40:7	@stylistic/type-annotation-spacing	expectedSpaceAfter	Expected a space after the ':'.
+tests/rules/@stylistic/type-annotation-spacing/arrow/cases.ts:40:7	@stylistic/type-annotation-spacing	unexpectedSpaceBefore	Unexpected space before the ':'.
+tests/rules/@stylistic/type-annotation-spacing/arrow/cases.ts:40:16	@stylistic/type-annotation-spacing	expectedSpaceAfter	Expected a space after the ':'.
+tests/rules/@stylistic/type-annotation-spacing/arrow/cases.ts:40:16	@stylistic/type-annotation-spacing	unexpectedSpaceBefore	Unexpected space before the ':'.
+tests/rules/@stylistic/type-annotation-spacing/arrow/cases.ts:41:14	@stylistic/type-annotation-spacing	expectedSpaceAfter	Expected a space after the ':'.
+tests/rules/@stylistic/type-annotation-spacing/arrow/cases.ts:41:14	@stylistic/type-annotation-spacing	unexpectedSpaceBefore	Unexpected space before the ':'.
+tests/rules/@stylistic/type-annotation-spacing/arrow/cases.ts:43:14	@stylistic/type-annotation-spacing	expectedSpaceAfter	Expected a space after the ':'.
+tests/rules/@stylistic/type-annotation-spacing/arrow/cases.ts:43:14	@stylistic/type-annotation-spacing	unexpectedSpaceBefore	Unexpected space before the ':'.
+tests/rules/@stylistic/type-annotation-spacing/arrow/cases.ts:44:23	@stylistic/type-annotation-spacing	unexpectedSpaceBefore	Unexpected space before the '=>'.
+tests/rules/@stylistic/type-annotation-spacing/arrow/cases.ts:45:22	@stylistic/type-annotation-spacing	unexpectedSpaceAfter	Unexpected space after the '=>'.
+tests/rules/@stylistic/type-annotation-spacing/arrow/cases.ts:46:18	@stylistic/type-annotation-spacing	expectedSpaceAfter	Expected a space after the ':'.
+tests/rules/@stylistic/type-annotation-spacing/arrow/cases.ts:46:18	@stylistic/type-annotation-spacing	unexpectedSpaceBefore	Unexpected space before the ':'.
+tests/rules/@stylistic/type-annotation-spacing/arrow/cases.ts:47:27	@stylistic/type-annotation-spacing	unexpectedSpaceAfter	Unexpected space after the '=>'.
+tests/rules/@stylistic/type-annotation-spacing/arrow/cases.ts:47:27	@stylistic/type-annotation-spacing	unexpectedSpaceBefore	Unexpected space before the '=>'.
+tests/rules/@stylistic/type-annotation-spacing/arrow/cases.ts:48:29	@stylistic/type-annotation-spacing	expectedSpaceAfter	Expected a space after the ':'.
+tests/rules/@stylistic/type-annotation-spacing/arrow/cases.ts:48:29	@stylistic/type-annotation-spacing	unexpectedSpaceBefore	Unexpected space before the ':'.
+tests/rules/@stylistic/type-annotation-spacing/arrow/cases.ts:49:29	@stylistic/type-annotation-spacing	unexpectedSpaceBefore	Unexpected space before the '?:'.
+tests/rules/@stylistic/type-annotation-spacing/arrow/cases.ts:49:30	@stylistic/type-annotation-spacing	expectedSpaceAfter	Expected a space after the '?:'.
+tests/rules/@stylistic/type-annotation-spacing/arrow/cases.ts:50:29	@stylistic/type-annotation-spacing	unexpectedSpaceBefore	Unexpected space before the '?:'.
+tests/rules/@stylistic/type-annotation-spacing/arrow/cases.ts:51:30	@stylistic/type-annotation-spacing	expectedSpaceAfter	Expected a space after the '-?:'.
+tests/rules/@stylistic/type-annotation-spacing/arrow/cases.ts:52:30	@stylistic/type-annotation-spacing	unexpectedSpaceBefore	Unexpected space before the '+?:'.
+tests/rules/@stylistic/type-annotation-spacing/arrow/cases.ts:52:32	@stylistic/type-annotation-spacing	expectedSpaceAfter	Expected a space after the '+?:'.
+tests/rules/@stylistic/type-annotation-spacing/arrow/cases.ts:53:40	@stylistic/type-annotation-spacing	unexpectedSpaceBefore	Unexpected space before the '-?:'.
+tests/rules/@stylistic/type-annotation-spacing/arrow/cases.ts:54:8	@stylistic/type-annotation-spacing	expectedSpaceAfter	Expected a space after the ':'.
+tests/rules/@stylistic/type-annotation-spacing/arrow/cases.ts:54:8	@stylistic/type-annotation-spacing	unexpectedSpaceBefore	Unexpected space before the ':'.
+tests/rules/@stylistic/type-annotation-spacing/arrow/cases.ts:55:7	@stylistic/type-annotation-spacing	expectedSpaceAfter	Expected a space after the ':'.
+tests/rules/@stylistic/type-annotation-spacing/arrow/cases.ts:56:8	@stylistic/type-annotation-spacing	unexpectedSpaceBefore	Unexpected space before the ':'.
+tests/rules/@stylistic/type-annotation-spacing/arrow/cases.ts:56:14	@stylistic/type-annotation-spacing	unexpectedSpaceAfter	Unexpected space after the '=>'.
+tests/rules/@stylistic/type-annotation-spacing/arrow/cases.ts:56:14	@stylistic/type-annotation-spacing	unexpectedSpaceBefore	Unexpected space before the '=>'.
+tests/rules/@stylistic/type-annotation-spacing/arrow/cases.ts:57:25	@stylistic/type-annotation-spacing	expectedSpaceAfter	Expected a space after the ':'.
+tests/rules/@stylistic/type-annotation-spacing/arrow/cases.ts:57:25	@stylistic/type-annotation-spacing	unexpectedSpaceBefore	Unexpected space before the ':'.
+tests/rules/@stylistic/type-annotation-spacing/arrow/cases.ts:58:25	@stylistic/type-annotation-spacing	expectedSpaceAfter	Expected a space after the ':'.
+tests/rules/@stylistic/type-annotation-spacing/arrow/cases.ts:58:25	@stylistic/type-annotation-spacing	unexpectedSpaceBefore	Unexpected space before the ':'.
+tests/rules/@stylistic/type-annotation-spacing/arrow/cases.ts:59:18	@stylistic/type-annotation-spacing	expectedSpaceAfter	Expected a space after the ':'.
+tests/rules/@stylistic/type-annotation-spacing/arrow/cases.ts:59:18	@stylistic/type-annotation-spacing	unexpectedSpaceBefore	Unexpected space before the ':'.
+tests/rules/@stylistic/type-annotation-spacing/arrow/cases.ts:59:29	@stylistic/type-annotation-spacing	expectedSpaceAfter	Expected a space after the ':'.
+tests/rules/@stylistic/type-annotation-spacing/arrow/cases.ts:59:29	@stylistic/type-annotation-spacing	unexpectedSpaceBefore	Unexpected space before the ':'.
+tests/rules/@stylistic/type-annotation-spacing/arrow/cases.ts:60:19	@stylistic/type-annotation-spacing	expectedSpaceAfter	Expected a space after the ':'.
+tests/rules/@stylistic/type-annotation-spacing/arrow/cases.ts:60:19	@stylistic/type-annotation-spacing	unexpectedSpaceBefore	Unexpected space before the ':'.
+tests/rules/@stylistic/type-annotation-spacing/arrow/cases.ts:60:39	@stylistic/type-annotation-spacing	expectedSpaceAfter	Expected a space after the ':'.
+tests/rules/@stylistic/type-annotation-spacing/arrow/cases.ts:60:39	@stylistic/type-annotation-spacing	unexpectedSpaceBefore	Unexpected space before the ':'.
+tests/rules/@stylistic/type-annotation-spacing/arrow/cases.ts:60:58	@stylistic/type-annotation-spacing	expectedSpaceAfter	Expected a space after the ':'.
+tests/rules/@stylistic/type-annotation-spacing/arrow/cases.ts:60:58	@stylistic/type-annotation-spacing	unexpectedSpaceBefore	Unexpected space before the ':'.
+tests/rules/@stylistic/type-annotation-spacing/arrow/cases.ts:61:23	@stylistic/type-annotation-spacing	expectedSpaceAfter	Expected a space after the ':'.
+tests/rules/@stylistic/type-annotation-spacing/arrow/cases.ts:61:23	@stylistic/type-annotation-spacing	unexpectedSpaceBefore	Unexpected space before the ':'.
+tests/rules/@stylistic/type-annotation-spacing/arrow/cases.ts:61:32	@stylistic/type-annotation-spacing	expectedSpaceAfter	Expected a space after the ':'.
+tests/rules/@stylistic/type-annotation-spacing/arrow/cases.ts:61:32	@stylistic/type-annotation-spacing	unexpectedSpaceBefore	Unexpected space before the ':'.
+tests/rules/@stylistic/type-annotation-spacing/arrow/cases.ts:62:17	@stylistic/type-annotation-spacing	expectedSpaceAfter	Expected a space after the ':'.
+tests/rules/@stylistic/type-annotation-spacing/arrow/cases.ts:62:17	@stylistic/type-annotation-spacing	unexpectedSpaceBefore	Unexpected space before the ':'.
+tests/rules/@stylistic/type-annotation-spacing/arrow/cases.ts:63:22	@stylistic/type-annotation-spacing	unexpectedSpaceBefore	Unexpected space before the ':'.
+tests/rules/@stylistic/type-annotation-spacing/arrow/cases.ts:65:8	@stylistic/type-annotation-spacing	unexpectedSpaceBefore	Unexpected space before the ':'.
+tests/rules/@stylistic/type-annotation-spacing/arrow/cases.ts:67:2	@stylistic/type-annotation-spacing	unexpectedSpaceBefore	Unexpected space before the ':'.
+tests/rules/@stylistic/type-annotation-spacing/arrow/cases.ts:71:2	@stylistic/type-annotation-spacing	expectedSpaceAfter	Expected a space after the ':'.
+tests/rules/@stylistic/type-annotation-spacing/arrow/cases.ts:71:2	@stylistic/type-annotation-spacing	unexpectedSpaceBefore	Unexpected space before the ':'.
+tests/rules/@stylistic/type-annotation-spacing/arrow/cases.ts:72:18	@stylistic/type-annotation-spacing	expectedSpaceAfter	Expected a space after the ':'.
+tests/rules/@stylistic/type-annotation-spacing/arrow/cases.ts:72:18	@stylistic/type-annotation-spacing	unexpectedSpaceBefore	Unexpected space before the ':'.
+tests/rules/@stylistic/type-annotation-spacing/arrow/cases.ts:72:27	@stylistic/type-annotation-spacing	expectedSpaceAfter	Expected a space after the ':'.
+tests/rules/@stylistic/type-annotation-spacing/arrow/cases.ts:72:27	@stylistic/type-annotation-spacing	unexpectedSpaceBefore	Unexpected space before the ':'.
+tests/rules/@stylistic/type-annotation-spacing/arrow/cases.ts:74:23	@stylistic/type-annotation-spacing	unexpectedSpaceBetween	Unexpected space between the '?' and the ':'.
+tests/rules/@stylistic/type-annotation-spacing/arrow/cases.ts:74:33	@stylistic/type-annotation-spacing	expectedSpaceAfter	Expected a space after the ':'.
+tests/rules/@stylistic/type-annotation-spacing/arrow/cases.ts:74:33	@stylistic/type-annotation-spacing	unexpectedSpaceBefore	Unexpected space before the ':'.
+tests/rules/@stylistic/type-annotation-spacing/arrow/cases.ts:75:13	@stylistic/type-annotation-spacing	expectedSpaceAfter	Expected a space after the ':'.
+tests/rules/@stylistic/type-annotation-spacing/arrow/cases.ts:75:13	@stylistic/type-annotation-spacing	unexpectedSpaceBefore	Unexpected space before the ':'.
+tests/rules/@stylistic/type-annotation-spacing/arrow/cases.ts:75:24	@stylistic/type-annotation-spacing	unexpectedSpaceBefore	Unexpected space before the '?:'.
+tests/rules/@stylistic/type-annotation-spacing/arrow/cases.ts:75:26	@stylistic/type-annotation-spacing	unexpectedSpaceBetween	Unexpected space between the '?' and the ':'.
+tests/rules/@stylistic/type-annotation-spacing/before-after/cases.ts:2:7	@stylistic/type-annotation-spacing	expectedSpaceBefore	Expected a space before the ':'.
+tests/rules/@stylistic/type-annotation-spacing/before-after/cases.ts:3:8	@stylistic/type-annotation-spacing	unexpectedSpaceAfter	Unexpected space after the ':'.
+tests/rules/@stylistic/type-annotation-spacing/before-after/cases.ts:5:7	@stylistic/type-annotation-spacing	unexpectedSpaceAfter	Unexpected space after the ':'.
+tests/rules/@stylistic/type-annotation-spacing/before-after/cases.ts:5:7	@stylistic/type-annotation-spacing	expectedSpaceBefore	Expected a space before the ':'.
+tests/rules/@stylistic/type-annotation-spacing/before-after/cases.ts:6:10	@stylistic/type-annotation-spacing	unexpectedSpaceAfter	Unexpected space after the ':'.
+tests/rules/@stylistic/type-annotation-spacing/before-after/cases.ts:7:14	@stylistic/type-annotation-spacing	expectedSpaceBefore	Expected a space before the ':'.
+tests/rules/@stylistic/type-annotation-spacing/before-after/cases.ts:7:37	@stylistic/type-annotation-spacing	unexpectedSpaceAfter	Unexpected space after the '?:'.
+tests/rules/@stylistic/type-annotation-spacing/before-after/cases.ts:7:49	@stylistic/type-annotation-spacing	expectedSpaceBefore	Expected a space before the '?:'.
+tests/rules/@stylistic/type-annotation-spacing/before-after/cases.ts:7:51	@stylistic/type-annotation-spacing	unexpectedSpaceBetween	Unexpected space between the '?' and the ':'.
+tests/rules/@stylistic/type-annotation-spacing/before-after/cases.ts:7:59	@stylistic/type-annotation-spacing	expectedSpaceBefore	Expected a space before the ':'.
+tests/rules/@stylistic/type-annotation-spacing/before-after/cases.ts:8:14	@stylistic/type-annotation-spacing	unexpectedSpaceAfter	Unexpected space after the ':'.
+tests/rules/@stylistic/type-annotation-spacing/before-after/cases.ts:8:14	@stylistic/type-annotation-spacing	expectedSpaceBefore	Expected a space before the ':'.
+tests/rules/@stylistic/type-annotation-spacing/before-after/cases.ts:8:23	@stylistic/type-annotation-spacing	unexpectedSpaceAfter	Unexpected space after the ':'.
+tests/rules/@stylistic/type-annotation-spacing/before-after/cases.ts:8:23	@stylistic/type-annotation-spacing	expectedSpaceBefore	Expected a space before the ':'.
+tests/rules/@stylistic/type-annotation-spacing/before-after/cases.ts:10:16	@stylistic/type-annotation-spacing	unexpectedSpaceAfter	Unexpected space after the ':'.
+tests/rules/@stylistic/type-annotation-spacing/before-after/cases.ts:12:14	@stylistic/type-annotation-spacing	expectedSpaceBefore	Expected a space before the ':'.
+tests/rules/@stylistic/type-annotation-spacing/before-after/cases.ts:12:22	@stylistic/type-annotation-spacing	expectedSpaceBefore	Expected a space before the ':'.
+tests/rules/@stylistic/type-annotation-spacing/before-after/cases.ts:13:30	@stylistic/type-annotation-spacing	unexpectedSpaceAfter	Unexpected space after the ':'.
+tests/rules/@stylistic/type-annotation-spacing/before-after/cases.ts:15:4	@stylistic/type-annotation-spacing	expectedSpaceBefore	Expected a space before the ':'.
+tests/rules/@stylistic/type-annotation-spacing/before-after/cases.ts:18:4	@stylistic/type-annotation-spacing	expectedSpaceBefore	Expected a space before the '?:'.
+tests/rules/@stylistic/type-annotation-spacing/before-after/cases.ts:18:6	@stylistic/type-annotation-spacing	unexpectedSpaceBetween	Unexpected space between the '?' and the ':'.
+tests/rules/@stylistic/type-annotation-spacing/before-after/cases.ts:18:6	@stylistic/type-annotation-spacing	unexpectedSpaceAfter	Unexpected space after the '?:'.
+tests/rules/@stylistic/type-annotation-spacing/before-after/cases.ts:19:12	@stylistic/type-annotation-spacing	unexpectedSpaceAfter	Unexpected space after the ':'.
+tests/rules/@stylistic/type-annotation-spacing/before-after/cases.ts:20:6	@stylistic/type-annotation-spacing	expectedSpaceBefore	Expected a space before the ':'.
+tests/rules/@stylistic/type-annotation-spacing/before-after/cases.ts:21:7	@stylistic/type-annotation-spacing	unexpectedSpaceAfter	Unexpected space after the ':'.
+tests/rules/@stylistic/type-annotation-spacing/before-after/cases.ts:23:15	@stylistic/type-annotation-spacing	unexpectedSpaceAfter	Unexpected space after the ':'.
+tests/rules/@stylistic/type-annotation-spacing/before-after/cases.ts:23:15	@stylistic/type-annotation-spacing	expectedSpaceBefore	Expected a space before the ':'.
+tests/rules/@stylistic/type-annotation-spacing/before-after/cases.ts:34:4	@stylistic/type-annotation-spacing	expectedSpaceBefore	Expected a space before the ':'.
+tests/rules/@stylistic/type-annotation-spacing/before-after/cases.ts:35:6	@stylistic/type-annotation-spacing	unexpectedSpaceAfter	Unexpected space after the '?:'.
+tests/rules/@stylistic/type-annotation-spacing/before-after/cases.ts:43:22	@stylistic/type-annotation-spacing	expectedSpaceBefore	Expected a space before the '=>'.
+tests/rules/@stylistic/type-annotation-spacing/before-after/cases.ts:44:13	@stylistic/type-annotation-spacing	unexpectedSpaceAfter	Unexpected space after the ':'.
+tests/rules/@stylistic/type-annotation-spacing/before-after/cases.ts:44:13	@stylistic/type-annotation-spacing	expectedSpaceBefore	Expected a space before the ':'.
+tests/rules/@stylistic/type-annotation-spacing/before-after/cases.ts:45:13	@stylistic/type-annotation-spacing	unexpectedSpaceAfter	Unexpected space after the ':'.
+tests/rules/@stylistic/type-annotation-spacing/before-after/cases.ts:45:13	@stylistic/type-annotation-spacing	expectedSpaceBefore	Expected a space before the ':'.
+tests/rules/@stylistic/type-annotation-spacing/before-after/cases.ts:45:22	@stylistic/type-annotation-spacing	unexpectedSpaceAfter	Unexpected space after the '=>'.
+tests/rules/@stylistic/type-annotation-spacing/before-after/cases.ts:45:22	@stylistic/type-annotation-spacing	expectedSpaceBefore	Expected a space before the '=>'.
+tests/rules/@stylistic/type-annotation-spacing/before-after/cases.ts:46:26	@stylistic/type-annotation-spacing	expectedSpaceBefore	Expected a space before the '=>'.
+tests/rules/@stylistic/type-annotation-spacing/before-after/cases.ts:47:27	@stylistic/type-annotation-spacing	unexpectedSpaceAfter	Unexpected space after the '=>'.
+tests/rules/@stylistic/type-annotation-spacing/before-after/cases.ts:50:30	@stylistic/type-annotation-spacing	unexpectedSpaceAfter	Unexpected space after the '?:'.
+tests/rules/@stylistic/type-annotation-spacing/before-after/cases.ts:51:28	@stylistic/type-annotation-spacing	expectedSpaceBefore	Expected a space before the '-?:'.
+tests/rules/@stylistic/type-annotation-spacing/before-after/cases.ts:53:42	@stylistic/type-annotation-spacing	unexpectedSpaceAfter	Unexpected space after the '-?:'.
+tests/rules/@stylistic/type-annotation-spacing/before-after/cases.ts:55:7	@stylistic/type-annotation-spacing	expectedSpaceBefore	Expected a space before the ':'.
+tests/rules/@stylistic/type-annotation-spacing/before-after/cases.ts:56:8	@stylistic/type-annotation-spacing	unexpectedSpaceAfter	Unexpected space after the ':'.
+tests/rules/@stylistic/type-annotation-spacing/before-after/cases.ts:56:14	@stylistic/type-annotation-spacing	unexpectedSpaceAfter	Unexpected space after the '=>'.
+tests/rules/@stylistic/type-annotation-spacing/before-after/cases.ts:57:14	@stylistic/type-annotation-spacing	unexpectedSpaceAfter	Unexpected space after the ':'.
+tests/rules/@stylistic/type-annotation-spacing/before-after/cases.ts:57:14	@stylistic/type-annotation-spacing	expectedSpaceBefore	Expected a space before the ':'.
+tests/rules/@stylistic/type-annotation-spacing/before-after/cases.ts:58:14	@stylistic/type-annotation-spacing	unexpectedSpaceAfter	Unexpected space after the ':'.
+tests/rules/@stylistic/type-annotation-spacing/before-after/cases.ts:58:14	@stylistic/type-annotation-spacing	expectedSpaceBefore	Expected a space before the ':'.
+tests/rules/@stylistic/type-annotation-spacing/before-after/cases.ts:60:23	@stylistic/type-annotation-spacing	unexpectedSpaceAfter	Unexpected space after the ':'.
+tests/rules/@stylistic/type-annotation-spacing/before-after/cases.ts:60:23	@stylistic/type-annotation-spacing	expectedSpaceBefore	Expected a space before the ':'.
+tests/rules/@stylistic/type-annotation-spacing/before-after/cases.ts:63:22	@stylistic/type-annotation-spacing	unexpectedSpaceAfter	Unexpected space after the ':'.
+tests/rules/@stylistic/type-annotation-spacing/before-after/cases.ts:64:7	@stylistic/type-annotation-spacing	unexpectedSpaceAfter	Unexpected space after the ':'.
+tests/rules/@stylistic/type-annotation-spacing/before-after/cases.ts:64:7	@stylistic/type-annotation-spacing	expectedSpaceBefore	Expected a space before the ':'.
+tests/rules/@stylistic/type-annotation-spacing/before-after/cases.ts:65:8	@stylistic/type-annotation-spacing	unexpectedSpaceAfter	Unexpected space after the ':'.
+tests/rules/@stylistic/type-annotation-spacing/before-after/cases.ts:67:2	@stylistic/type-annotation-spacing	unexpectedSpaceAfter	Unexpected space after the ':'.
+tests/rules/@stylistic/type-annotation-spacing/before-after/cases.ts:68:7	@stylistic/type-annotation-spacing	unexpectedSpaceAfter	Unexpected space after the ':'.
+tests/rules/@stylistic/type-annotation-spacing/before-after/cases.ts:68:7	@stylistic/type-annotation-spacing	expectedSpaceBefore	Expected a space before the ':'.
+tests/rules/@stylistic/type-annotation-spacing/before-after/cases.ts:74:21	@stylistic/type-annotation-spacing	expectedSpaceBefore	Expected a space before the '?:'.
+tests/rules/@stylistic/type-annotation-spacing/before-after/cases.ts:74:23	@stylistic/type-annotation-spacing	unexpectedSpaceBetween	Unexpected space between the '?' and the ':'.
+tests/rules/@stylistic/type-annotation-spacing/before-after/cases.ts:74:23	@stylistic/type-annotation-spacing	unexpectedSpaceAfter	Unexpected space after the '?:'.
+tests/rules/@stylistic/type-annotation-spacing/before-after/cases.ts:75:7	@stylistic/type-annotation-spacing	unexpectedSpaceAfter	Unexpected space after the ':'.
+tests/rules/@stylistic/type-annotation-spacing/before-after/cases.ts:75:7	@stylistic/type-annotation-spacing	expectedSpaceBefore	Expected a space before the ':'.
+tests/rules/@stylistic/type-annotation-spacing/before-after/cases.ts:75:26	@stylistic/type-annotation-spacing	unexpectedSpaceBetween	Unexpected space between the '?' and the ':'.
+tests/rules/@stylistic/type-annotation-spacing/before-after/cases.ts:75:26	@stylistic/type-annotation-spacing	unexpectedSpaceAfter	Unexpected space after the '?:'.
+tests/rules/@stylistic/type-annotation-spacing/before-only/cases.ts:2:7	@stylistic/type-annotation-spacing	expectedSpaceAfter	Expected a space after the ':'.
+tests/rules/@stylistic/type-annotation-spacing/before-only/cases.ts:2:7	@stylistic/type-annotation-spacing	expectedSpaceBefore	Expected a space before the ':'.
+tests/rules/@stylistic/type-annotation-spacing/before-only/cases.ts:4:8	@stylistic/type-annotation-spacing	expectedSpaceAfter	Expected a space after the ':'.
+tests/rules/@stylistic/type-annotation-spacing/before-only/cases.ts:5:7	@stylistic/type-annotation-spacing	expectedSpaceBefore	Expected a space before the ':'.
+tests/rules/@stylistic/type-annotation-spacing/before-only/cases.ts:7:14	@stylistic/type-annotation-spacing	expectedSpaceAfter	Expected a space after the ':'.
+tests/rules/@stylistic/type-annotation-spacing/before-only/cases.ts:7:14	@stylistic/type-annotation-spacing	expectedSpaceBefore	Expected a space before the ':'.
+tests/rules/@stylistic/type-annotation-spacing/before-only/cases.ts:7:25	@stylistic/type-annotation-spacing	expectedSpaceAfter	Expected a space after the ':'.
+tests/rules/@stylistic/type-annotation-spacing/before-only/cases.ts:7:49	@stylistic/type-annotation-spacing	expectedSpaceBefore	Expected a space before the '?:'.
+tests/rules/@stylistic/type-annotation-spacing/before-only/cases.ts:7:51	@stylistic/type-annotation-spacing	unexpectedSpaceBetween	Unexpected space between the '?' and the ':'.
+tests/rules/@stylistic/type-annotation-spacing/before-only/cases.ts:7:51	@stylistic/type-annotation-spacing	expectedSpaceAfter	Expected a space after the '?:'.
+tests/rules/@stylistic/type-annotation-spacing/before-only/cases.ts:7:59	@stylistic/type-annotation-spacing	expectedSpaceAfter	Expected a space after the ':'.
+tests/rules/@stylistic/type-annotation-spacing/before-only/cases.ts:7:59	@stylistic/type-annotation-spacing	expectedSpaceBefore	Expected a space before the ':'.
+tests/rules/@stylistic/type-annotation-spacing/before-only/cases.ts:8:14	@stylistic/type-annotation-spacing	expectedSpaceBefore	Expected a space before the ':'.
+tests/rules/@stylistic/type-annotation-spacing/before-only/cases.ts:8:23	@stylistic/type-annotation-spacing	expectedSpaceBefore	Expected a space before the ':'.
+tests/rules/@stylistic/type-annotation-spacing/before-only/cases.ts:9:15	@stylistic/type-annotation-spacing	expectedSpaceAfter	Expected a space after the ':'.
+tests/rules/@stylistic/type-annotation-spacing/before-only/cases.ts:11:24	@stylistic/type-annotation-spacing	expectedSpaceAfter	Expected a space after the ':'.
+tests/rules/@stylistic/type-annotation-spacing/before-only/cases.ts:11:33	@stylistic/type-annotation-spacing	expectedSpaceAfter	Expected a space after the ':'.
+tests/rules/@stylistic/type-annotation-spacing/before-only/cases.ts:12:14	@stylistic/type-annotation-spacing	expectedSpaceAfter	Expected a space after the ':'.
+tests/rules/@stylistic/type-annotation-spacing/before-only/cases.ts:12:14	@stylistic/type-annotation-spacing	expectedSpaceBefore	Expected a space before the ':'.
+tests/rules/@stylistic/type-annotation-spacing/before-only/cases.ts:12:22	@stylistic/type-annotation-spacing	expectedSpaceAfter	Expected a space after the ':'.
+tests/rules/@stylistic/type-annotation-spacing/before-only/cases.ts:12:22	@stylistic/type-annotation-spacing	expectedSpaceBefore	Expected a space before the ':'.
+tests/rules/@stylistic/type-annotation-spacing/before-only/cases.ts:13:21	@stylistic/type-annotation-spacing	expectedSpaceAfter	Expected a space after the ':'.
+tests/rules/@stylistic/type-annotation-spacing/before-only/cases.ts:15:4	@stylistic/type-annotation-spacing	expectedSpaceAfter	Expected a space after the ':'.
+tests/rules/@stylistic/type-annotation-spacing/before-only/cases.ts:15:4	@stylistic/type-annotation-spacing	expectedSpaceBefore	Expected a space before the ':'.
+tests/rules/@stylistic/type-annotation-spacing/before-only/cases.ts:16:5	@stylistic/type-annotation-spacing	expectedSpaceAfter	Expected a space after the ':'.
+tests/rules/@stylistic/type-annotation-spacing/before-only/cases.ts:17:6	@stylistic/type-annotation-spacing	expectedSpaceAfter	Expected a space after the '?:'.
+tests/rules/@stylistic/type-annotation-spacing/before-only/cases.ts:18:4	@stylistic/type-annotation-spacing	expectedSpaceBefore	Expected a space before the '?:'.
+tests/rules/@stylistic/type-annotation-spacing/before-only/cases.ts:18:6	@stylistic/type-annotation-spacing	unexpectedSpaceBetween	Unexpected space between the '?' and the ':'.
+tests/rules/@stylistic/type-annotation-spacing/before-only/cases.ts:20:6	@stylistic/type-annotation-spacing	expectedSpaceAfter	Expected a space after the ':'.
+tests/rules/@stylistic/type-annotation-spacing/before-only/cases.ts:20:6	@stylistic/type-annotation-spacing	expectedSpaceBefore	Expected a space before the ':'.
+tests/rules/@stylistic/type-annotation-spacing/before-only/cases.ts:20:15	@stylistic/type-annotation-spacing	expectedSpaceAfter	Expected a space after the ':'.
+tests/rules/@stylistic/type-annotation-spacing/before-only/cases.ts:22:16	@stylistic/type-annotation-spacing	expectedSpaceAfter	Expected a space after the ':'.
+tests/rules/@stylistic/type-annotation-spacing/before-only/cases.ts:23:15	@stylistic/type-annotation-spacing	expectedSpaceBefore	Expected a space before the ':'.
+tests/rules/@stylistic/type-annotation-spacing/before-only/cases.ts:24:14	@stylistic/type-annotation-spacing	expectedSpaceAfter	Expected a space after the ':'.
+tests/rules/@stylistic/type-annotation-spacing/before-only/cases.ts:25:10	@stylistic/type-annotation-spacing	expectedSpaceAfter	Expected a space after the ':'.
+tests/rules/@stylistic/type-annotation-spacing/before-only/cases.ts:26:14	@stylistic/type-annotation-spacing	expectedSpaceAfter	Expected a space after the ':'.
+tests/rules/@stylistic/type-annotation-spacing/before-only/cases.ts:29:14	@stylistic/type-annotation-spacing	expectedSpaceAfter	Expected a space after the ':'.
+tests/rules/@stylistic/type-annotation-spacing/before-only/cases.ts:30:16	@stylistic/type-annotation-spacing	expectedSpaceAfter	Expected a space after the ':'.
+tests/rules/@stylistic/type-annotation-spacing/before-only/cases.ts:31:7	@stylistic/type-annotation-spacing	expectedSpaceAfter	Expected a space after the ':'.
+tests/rules/@stylistic/type-annotation-spacing/before-only/cases.ts:31:16	@stylistic/type-annotation-spacing	expectedSpaceAfter	Expected a space after the ':'.
+tests/rules/@stylistic/type-annotation-spacing/before-only/cases.ts:34:4	@stylistic/type-annotation-spacing	expectedSpaceAfter	Expected a space after the ':'.
+tests/rules/@stylistic/type-annotation-spacing/before-only/cases.ts:34:4	@stylistic/type-annotation-spacing	expectedSpaceBefore	Expected a space before the ':'.
+tests/rules/@stylistic/type-annotation-spacing/before-only/cases.ts:36:7	@stylistic/type-annotation-spacing	expectedSpaceAfter	Expected a space after the ':'.
+tests/rules/@stylistic/type-annotation-spacing/before-only/cases.ts:36:16	@stylistic/type-annotation-spacing	expectedSpaceAfter	Expected a space after the ':'.
+tests/rules/@stylistic/type-annotation-spacing/before-only/cases.ts:37:9	@stylistic/type-annotation-spacing	expectedSpaceAfter	Expected a space after the ':'.
+tests/rules/@stylistic/type-annotation-spacing/before-only/cases.ts:38:5	@stylistic/type-annotation-spacing	expectedSpaceAfter	Expected a space after the ':'.
+tests/rules/@stylistic/type-annotation-spacing/before-only/cases.ts:38:14	@stylistic/type-annotation-spacing	expectedSpaceAfter	Expected a space after the ':'.
+tests/rules/@stylistic/type-annotation-spacing/before-only/cases.ts:39:9	@stylistic/type-annotation-spacing	expectedSpaceAfter	Expected a space after the ':'.
+tests/rules/@stylistic/type-annotation-spacing/before-only/cases.ts:39:18	@stylistic/type-annotation-spacing	expectedSpaceAfter	Expected a space after the ':'.
+tests/rules/@stylistic/type-annotation-spacing/before-only/cases.ts:40:7	@stylistic/type-annotation-spacing	expectedSpaceAfter	Expected a space after the ':'.
+tests/rules/@stylistic/type-annotation-spacing/before-only/cases.ts:40:16	@stylistic/type-annotation-spacing	expectedSpaceAfter	Expected a space after the ':'.
+tests/rules/@stylistic/type-annotation-spacing/before-only/cases.ts:41:14	@stylistic/type-annotation-spacing	expectedSpaceAfter	Expected a space after the ':'.
+tests/rules/@stylistic/type-annotation-spacing/before-only/cases.ts:43:14	@stylistic/type-annotation-spacing	expectedSpaceAfter	Expected a space after the ':'.
+tests/rules/@stylistic/type-annotation-spacing/before-only/cases.ts:43:22	@stylistic/type-annotation-spacing	expectedSpaceAfter	Expected a space after the '=>'.
+tests/rules/@stylistic/type-annotation-spacing/before-only/cases.ts:43:22	@stylistic/type-annotation-spacing	expectedSpaceBefore	Expected a space before the '=>'.
+tests/rules/@stylistic/type-annotation-spacing/before-only/cases.ts:44:13	@stylistic/type-annotation-spacing	expectedSpaceBefore	Expected a space before the ':'.
+tests/rules/@stylistic/type-annotation-spacing/before-only/cases.ts:44:23	@stylistic/type-annotation-spacing	expectedSpaceAfter	Expected a space after the '=>'.
+tests/rules/@stylistic/type-annotation-spacing/before-only/cases.ts:45:13	@stylistic/type-annotation-spacing	expectedSpaceBefore	Expected a space before the ':'.
+tests/rules/@stylistic/type-annotation-spacing/before-only/cases.ts:45:22	@stylistic/type-annotation-spacing	expectedSpaceBefore	Expected a space before the '=>'.
+tests/rules/@stylistic/type-annotation-spacing/before-only/cases.ts:46:18	@stylistic/type-annotation-spacing	expectedSpaceAfter	Expected a space after the ':'.
+tests/rules/@stylistic/type-annotation-spacing/before-only/cases.ts:46:26	@stylistic/type-annotation-spacing	expectedSpaceAfter	Expected a space after the '=>'.
+tests/rules/@stylistic/type-annotation-spacing/before-only/cases.ts:46:26	@stylistic/type-annotation-spacing	expectedSpaceBefore	Expected a space before the '=>'.
+tests/rules/@stylistic/type-annotation-spacing/before-only/cases.ts:48:29	@stylistic/type-annotation-spacing	expectedSpaceAfter	Expected a space after the ':'.
+tests/rules/@stylistic/type-annotation-spacing/before-only/cases.ts:49:30	@stylistic/type-annotation-spacing	expectedSpaceAfter	Expected a space after the '?:'.
+tests/rules/@stylistic/type-annotation-spacing/before-only/cases.ts:51:28	@stylistic/type-annotation-spacing	expectedSpaceBefore	Expected a space before the '-?:'.
+tests/rules/@stylistic/type-annotation-spacing/before-only/cases.ts:51:30	@stylistic/type-annotation-spacing	expectedSpaceAfter	Expected a space after the '-?:'.
+tests/rules/@stylistic/type-annotation-spacing/before-only/cases.ts:52:32	@stylistic/type-annotation-spacing	expectedSpaceAfter	Expected a space after the '+?:'.
+tests/rules/@stylistic/type-annotation-spacing/before-only/cases.ts:54:8	@stylistic/type-annotation-spacing	expectedSpaceAfter	Expected a space after the ':'.
+tests/rules/@stylistic/type-annotation-spacing/before-only/cases.ts:55:7	@stylistic/type-annotation-spacing	expectedSpaceAfter	Expected a space after the ':'.
+tests/rules/@stylistic/type-annotation-spacing/before-only/cases.ts:55:7	@stylistic/type-annotation-spacing	expectedSpaceBefore	Expected a space before the ':'.
+tests/rules/@stylistic/type-annotation-spacing/before-only/cases.ts:57:14	@stylistic/type-annotation-spacing	expectedSpaceBefore	Expected a space before the ':'.
+tests/rules/@stylistic/type-annotation-spacing/before-only/cases.ts:57:25	@stylistic/type-annotation-spacing	expectedSpaceAfter	Expected a space after the ':'.
+tests/rules/@stylistic/type-annotation-spacing/before-only/cases.ts:58:14	@stylistic/type-annotation-spacing	expectedSpaceBefore	Expected a space before the ':'.
+tests/rules/@stylistic/type-annotation-spacing/before-only/cases.ts:58:25	@stylistic/type-annotation-spacing	expectedSpaceAfter	Expected a space after the ':'.
+tests/rules/@stylistic/type-annotation-spacing/before-only/cases.ts:59:18	@stylistic/type-annotation-spacing	expectedSpaceAfter	Expected a space after the ':'.
+tests/rules/@stylistic/type-annotation-spacing/before-only/cases.ts:59:29	@stylistic/type-annotation-spacing	expectedSpaceAfter	Expected a space after the ':'.
+tests/rules/@stylistic/type-annotation-spacing/before-only/cases.ts:60:19	@stylistic/type-annotation-spacing	expectedSpaceAfter	Expected a space after the ':'.
+tests/rules/@stylistic/type-annotation-spacing/before-only/cases.ts:60:23	@stylistic/type-annotation-spacing	expectedSpaceBefore	Expected a space before the ':'.
+tests/rules/@stylistic/type-annotation-spacing/before-only/cases.ts:60:39	@stylistic/type-annotation-spacing	expectedSpaceAfter	Expected a space after the ':'.
+tests/rules/@stylistic/type-annotation-spacing/before-only/cases.ts:60:58	@stylistic/type-annotation-spacing	expectedSpaceAfter	Expected a space after the ':'.
+tests/rules/@stylistic/type-annotation-spacing/before-only/cases.ts:61:23	@stylistic/type-annotation-spacing	expectedSpaceAfter	Expected a space after the ':'.
+tests/rules/@stylistic/type-annotation-spacing/before-only/cases.ts:61:32	@stylistic/type-annotation-spacing	expectedSpaceAfter	Expected a space after the ':'.
+tests/rules/@stylistic/type-annotation-spacing/before-only/cases.ts:62:17	@stylistic/type-annotation-spacing	expectedSpaceAfter	Expected a space after the ':'.
+tests/rules/@stylistic/type-annotation-spacing/before-only/cases.ts:64:7	@stylistic/type-annotation-spacing	expectedSpaceBefore	Expected a space before the ':'.
+tests/rules/@stylistic/type-annotation-spacing/before-only/cases.ts:68:7	@stylistic/type-annotation-spacing	expectedSpaceBefore	Expected a space before the ':'.
+tests/rules/@stylistic/type-annotation-spacing/before-only/cases.ts:71:2	@stylistic/type-annotation-spacing	expectedSpaceAfter	Expected a space after the ':'.
+tests/rules/@stylistic/type-annotation-spacing/before-only/cases.ts:72:18	@stylistic/type-annotation-spacing	expectedSpaceAfter	Expected a space after the ':'.
+tests/rules/@stylistic/type-annotation-spacing/before-only/cases.ts:72:27	@stylistic/type-annotation-spacing	expectedSpaceAfter	Expected a space after the ':'.
+tests/rules/@stylistic/type-annotation-spacing/before-only/cases.ts:74:21	@stylistic/type-annotation-spacing	expectedSpaceBefore	Expected a space before the '?:'.
+tests/rules/@stylistic/type-annotation-spacing/before-only/cases.ts:74:23	@stylistic/type-annotation-spacing	unexpectedSpaceBetween	Unexpected space between the '?' and the ':'.
+tests/rules/@stylistic/type-annotation-spacing/before-only/cases.ts:74:33	@stylistic/type-annotation-spacing	expectedSpaceAfter	Expected a space after the ':'.
+tests/rules/@stylistic/type-annotation-spacing/before-only/cases.ts:75:7	@stylistic/type-annotation-spacing	expectedSpaceBefore	Expected a space before the ':'.
+tests/rules/@stylistic/type-annotation-spacing/before-only/cases.ts:75:13	@stylistic/type-annotation-spacing	expectedSpaceAfter	Expected a space after the ':'.
+tests/rules/@stylistic/type-annotation-spacing/before-only/cases.ts:75:26	@stylistic/type-annotation-spacing	unexpectedSpaceBetween	Unexpected space between the '?' and the ':'.
+tests/rules/@stylistic/type-annotation-spacing/cases.ts:2:7	@stylistic/type-annotation-spacing	expectedSpaceAfter	Expected a space after the ':'.
+tests/rules/@stylistic/type-annotation-spacing/cases.ts:3:8	@stylistic/type-annotation-spacing	unexpectedSpaceBefore	Unexpected space before the ':'.
+tests/rules/@stylistic/type-annotation-spacing/cases.ts:4:8	@stylistic/type-annotation-spacing	expectedSpaceAfter	Expected a space after the ':'.
+tests/rules/@stylistic/type-annotation-spacing/cases.ts:4:8	@stylistic/type-annotation-spacing	unexpectedSpaceBefore	Unexpected space before the ':'.
+tests/rules/@stylistic/type-annotation-spacing/cases.ts:6:10	@stylistic/type-annotation-spacing	unexpectedSpaceBefore	Unexpected space before the ':'.
+tests/rules/@stylistic/type-annotation-spacing/cases.ts:7:14	@stylistic/type-annotation-spacing	expectedSpaceAfter	Expected a space after the ':'.
+tests/rules/@stylistic/type-annotation-spacing/cases.ts:7:25	@stylistic/type-annotation-spacing	expectedSpaceAfter	Expected a space after the ':'.
+tests/rules/@stylistic/type-annotation-spacing/cases.ts:7:25	@stylistic/type-annotation-spacing	unexpectedSpaceBefore	Unexpected space before the ':'.
+tests/rules/@stylistic/type-annotation-spacing/cases.ts:7:36	@stylistic/type-annotation-spacing	unexpectedSpaceBefore	Unexpected space before the '?:'.
+tests/rules/@stylistic/type-annotation-spacing/cases.ts:7:51	@stylistic/type-annotation-spacing	unexpectedSpaceBetween	Unexpected space between the '?' and the ':'.
+tests/rules/@stylistic/type-annotation-spacing/cases.ts:7:51	@stylistic/type-annotation-spacing	expectedSpaceAfter	Expected a space after the '?:'.
+tests/rules/@stylistic/type-annotation-spacing/cases.ts:7:59	@stylistic/type-annotation-spacing	expectedSpaceAfter	Expected a space after the ':'.
+tests/rules/@stylistic/type-annotation-spacing/cases.ts:9:15	@stylistic/type-annotation-spacing	expectedSpaceAfter	Expected a space after the ':'.
+tests/rules/@stylistic/type-annotation-spacing/cases.ts:9:15	@stylistic/type-annotation-spacing	unexpectedSpaceBefore	Unexpected space before the ':'.
+tests/rules/@stylistic/type-annotation-spacing/cases.ts:10:16	@stylistic/type-annotation-spacing	unexpectedSpaceBefore	Unexpected space before the ':'.
+tests/rules/@stylistic/type-annotation-spacing/cases.ts:11:24	@stylistic/type-annotation-spacing	expectedSpaceAfter	Expected a space after the ':'.
+tests/rules/@stylistic/type-annotation-spacing/cases.ts:11:24	@stylistic/type-annotation-spacing	unexpectedSpaceBefore	Unexpected space before the ':'.
+tests/rules/@stylistic/type-annotation-spacing/cases.ts:11:33	@stylistic/type-annotation-spacing	expectedSpaceAfter	Expected a space after the ':'.
+tests/rules/@stylistic/type-annotation-spacing/cases.ts:11:33	@stylistic/type-annotation-spacing	unexpectedSpaceBefore	Unexpected space before the ':'.
+tests/rules/@stylistic/type-annotation-spacing/cases.ts:12:14	@stylistic/type-annotation-spacing	expectedSpaceAfter	Expected a space after the ':'.
+tests/rules/@stylistic/type-annotation-spacing/cases.ts:12:22	@stylistic/type-annotation-spacing	expectedSpaceAfter	Expected a space after the ':'.
+tests/rules/@stylistic/type-annotation-spacing/cases.ts:13:21	@stylistic/type-annotation-spacing	expectedSpaceAfter	Expected a space after the ':'.
+tests/rules/@stylistic/type-annotation-spacing/cases.ts:13:21	@stylistic/type-annotation-spacing	unexpectedSpaceBefore	Unexpected space before the ':'.
+tests/rules/@stylistic/type-annotation-spacing/cases.ts:13:30	@stylistic/type-annotation-spacing	unexpectedSpaceBefore	Unexpected space before the ':'.
+tests/rules/@stylistic/type-annotation-spacing/cases.ts:15:4	@stylistic/type-annotation-spacing	expectedSpaceAfter	Expected a space after the ':'.
+tests/rules/@stylistic/type-annotation-spacing/cases.ts:16:5	@stylistic/type-annotation-spacing	expectedSpaceAfter	Expected a space after the ':'.
+tests/rules/@stylistic/type-annotation-spacing/cases.ts:16:5	@stylistic/type-annotation-spacing	unexpectedSpaceBefore	Unexpected space before the ':'.
+tests/rules/@stylistic/type-annotation-spacing/cases.ts:17:5	@stylistic/type-annotation-spacing	unexpectedSpaceBefore	Unexpected space before the '?:'.
+tests/rules/@stylistic/type-annotation-spacing/cases.ts:17:6	@stylistic/type-annotation-spacing	expectedSpaceAfter	Expected a space after the '?:'.
+tests/rules/@stylistic/type-annotation-spacing/cases.ts:18:6	@stylistic/type-annotation-spacing	unexpectedSpaceBetween	Unexpected space between the '?' and the ':'.
+tests/rules/@stylistic/type-annotation-spacing/cases.ts:19:12	@stylistic/type-annotation-spacing	unexpectedSpaceBefore	Unexpected space before the ':'.
+tests/rules/@stylistic/type-annotation-spacing/cases.ts:20:6	@stylistic/type-annotation-spacing	expectedSpaceAfter	Expected a space after the ':'.
+tests/rules/@stylistic/type-annotation-spacing/cases.ts:20:15	@stylistic/type-annotation-spacing	expectedSpaceAfter	Expected a space after the ':'.
+tests/rules/@stylistic/type-annotation-spacing/cases.ts:20:15	@stylistic/type-annotation-spacing	unexpectedSpaceBefore	Unexpected space before the ':'.
+tests/rules/@stylistic/type-annotation-spacing/cases.ts:21:7	@stylistic/type-annotation-spacing	unexpectedSpaceBefore	Unexpected space before the ':'.
+tests/rules/@stylistic/type-annotation-spacing/cases.ts:22:16	@stylistic/type-annotation-spacing	expectedSpaceAfter	Expected a space after the ':'.
+tests/rules/@stylistic/type-annotation-spacing/cases.ts:22:16	@stylistic/type-annotation-spacing	unexpectedSpaceBefore	Unexpected space before the ':'.
+tests/rules/@stylistic/type-annotation-spacing/cases.ts:24:14	@stylistic/type-annotation-spacing	expectedSpaceAfter	Expected a space after the ':'.
+tests/rules/@stylistic/type-annotation-spacing/cases.ts:24:14	@stylistic/type-annotation-spacing	unexpectedSpaceBefore	Unexpected space before the ':'.
+tests/rules/@stylistic/type-annotation-spacing/cases.ts:25:10	@stylistic/type-annotation-spacing	expectedSpaceAfter	Expected a space after the ':'.
+tests/rules/@stylistic/type-annotation-spacing/cases.ts:25:10	@stylistic/type-annotation-spacing	unexpectedSpaceBefore	Unexpected space before the ':'.
+tests/rules/@stylistic/type-annotation-spacing/cases.ts:26:14	@stylistic/type-annotation-spacing	expectedSpaceAfter	Expected a space after the ':'.
+tests/rules/@stylistic/type-annotation-spacing/cases.ts:26:14	@stylistic/type-annotation-spacing	unexpectedSpaceBefore	Unexpected space before the ':'.
+tests/rules/@stylistic/type-annotation-spacing/cases.ts:29:14	@stylistic/type-annotation-spacing	expectedSpaceAfter	Expected a space after the ':'.
+tests/rules/@stylistic/type-annotation-spacing/cases.ts:29:14	@stylistic/type-annotation-spacing	unexpectedSpaceBefore	Unexpected space before the ':'.
+tests/rules/@stylistic/type-annotation-spacing/cases.ts:30:16	@stylistic/type-annotation-spacing	expectedSpaceAfter	Expected a space after the ':'.
+tests/rules/@stylistic/type-annotation-spacing/cases.ts:30:16	@stylistic/type-annotation-spacing	unexpectedSpaceBefore	Unexpected space before the ':'.
+tests/rules/@stylistic/type-annotation-spacing/cases.ts:31:7	@stylistic/type-annotation-spacing	expectedSpaceAfter	Expected a space after the ':'.
+tests/rules/@stylistic/type-annotation-spacing/cases.ts:31:7	@stylistic/type-annotation-spacing	unexpectedSpaceBefore	Unexpected space before the ':'.
+tests/rules/@stylistic/type-annotation-spacing/cases.ts:31:16	@stylistic/type-annotation-spacing	expectedSpaceAfter	Expected a space after the ':'.
+tests/rules/@stylistic/type-annotation-spacing/cases.ts:31:16	@stylistic/type-annotation-spacing	unexpectedSpaceBefore	Unexpected space before the ':'.
+tests/rules/@stylistic/type-annotation-spacing/cases.ts:34:4	@stylistic/type-annotation-spacing	expectedSpaceAfter	Expected a space after the ':'.
+tests/rules/@stylistic/type-annotation-spacing/cases.ts:35:5	@stylistic/type-annotation-spacing	unexpectedSpaceBefore	Unexpected space before the '?:'.
+tests/rules/@stylistic/type-annotation-spacing/cases.ts:36:7	@stylistic/type-annotation-spacing	expectedSpaceAfter	Expected a space after the ':'.
+tests/rules/@stylistic/type-annotation-spacing/cases.ts:36:7	@stylistic/type-annotation-spacing	unexpectedSpaceBefore	Unexpected space before the ':'.
+tests/rules/@stylistic/type-annotation-spacing/cases.ts:36:16	@stylistic/type-annotation-spacing	expectedSpaceAfter	Expected a space after the ':'.
+tests/rules/@stylistic/type-annotation-spacing/cases.ts:36:16	@stylistic/type-annotation-spacing	unexpectedSpaceBefore	Unexpected space before the ':'.
+tests/rules/@stylistic/type-annotation-spacing/cases.ts:37:9	@stylistic/type-annotation-spacing	expectedSpaceAfter	Expected a space after the ':'.
+tests/rules/@stylistic/type-annotation-spacing/cases.ts:37:9	@stylistic/type-annotation-spacing	unexpectedSpaceBefore	Unexpected space before the ':'.
+tests/rules/@stylistic/type-annotation-spacing/cases.ts:38:5	@stylistic/type-annotation-spacing	expectedSpaceAfter	Expected a space after the ':'.
+tests/rules/@stylistic/type-annotation-spacing/cases.ts:38:5	@stylistic/type-annotation-spacing	unexpectedSpaceBefore	Unexpected space before the ':'.
+tests/rules/@stylistic/type-annotation-spacing/cases.ts:38:14	@stylistic/type-annotation-spacing	expectedSpaceAfter	Expected a space after the ':'.
+tests/rules/@stylistic/type-annotation-spacing/cases.ts:38:14	@stylistic/type-annotation-spacing	unexpectedSpaceBefore	Unexpected space before the ':'.
+tests/rules/@stylistic/type-annotation-spacing/cases.ts:39:9	@stylistic/type-annotation-spacing	expectedSpaceAfter	Expected a space after the ':'.
+tests/rules/@stylistic/type-annotation-spacing/cases.ts:39:9	@stylistic/type-annotation-spacing	unexpectedSpaceBefore	Unexpected space before the ':'.
+tests/rules/@stylistic/type-annotation-spacing/cases.ts:39:18	@stylistic/type-annotation-spacing	expectedSpaceAfter	Expected a space after the ':'.
+tests/rules/@stylistic/type-annotation-spacing/cases.ts:39:18	@stylistic/type-annotation-spacing	unexpectedSpaceBefore	Unexpected space before the ':'.
+tests/rules/@stylistic/type-annotation-spacing/cases.ts:40:7	@stylistic/type-annotation-spacing	expectedSpaceAfter	Expected a space after the ':'.
+tests/rules/@stylistic/type-annotation-spacing/cases.ts:40:7	@stylistic/type-annotation-spacing	unexpectedSpaceBefore	Unexpected space before the ':'.
+tests/rules/@stylistic/type-annotation-spacing/cases.ts:40:16	@stylistic/type-annotation-spacing	expectedSpaceAfter	Expected a space after the ':'.
+tests/rules/@stylistic/type-annotation-spacing/cases.ts:40:16	@stylistic/type-annotation-spacing	unexpectedSpaceBefore	Unexpected space before the ':'.
+tests/rules/@stylistic/type-annotation-spacing/cases.ts:41:14	@stylistic/type-annotation-spacing	expectedSpaceAfter	Expected a space after the ':'.
+tests/rules/@stylistic/type-annotation-spacing/cases.ts:41:14	@stylistic/type-annotation-spacing	unexpectedSpaceBefore	Unexpected space before the ':'.
+tests/rules/@stylistic/type-annotation-spacing/cases.ts:43:14	@stylistic/type-annotation-spacing	expectedSpaceAfter	Expected a space after the ':'.
+tests/rules/@stylistic/type-annotation-spacing/cases.ts:43:14	@stylistic/type-annotation-spacing	unexpectedSpaceBefore	Unexpected space before the ':'.
+tests/rules/@stylistic/type-annotation-spacing/cases.ts:43:22	@stylistic/type-annotation-spacing	expectedSpaceAfter	Expected a space after the '=>'.
+tests/rules/@stylistic/type-annotation-spacing/cases.ts:43:22	@stylistic/type-annotation-spacing	expectedSpaceBefore	Expected a space before the '=>'.
+tests/rules/@stylistic/type-annotation-spacing/cases.ts:44:23	@stylistic/type-annotation-spacing	expectedSpaceAfter	Expected a space after the '=>'.
+tests/rules/@stylistic/type-annotation-spacing/cases.ts:45:22	@stylistic/type-annotation-spacing	expectedSpaceBefore	Expected a space before the '=>'.
+tests/rules/@stylistic/type-annotation-spacing/cases.ts:46:18	@stylistic/type-annotation-spacing	expectedSpaceAfter	Expected a space after the ':'.
+tests/rules/@stylistic/type-annotation-spacing/cases.ts:46:18	@stylistic/type-annotation-spacing	unexpectedSpaceBefore	Unexpected space before the ':'.
+tests/rules/@stylistic/type-annotation-spacing/cases.ts:46:26	@stylistic/type-annotation-spacing	expectedSpaceAfter	Expected a space after the '=>'.
+tests/rules/@stylistic/type-annotation-spacing/cases.ts:46:26	@stylistic/type-annotation-spacing	expectedSpaceBefore	Expected a space before the '=>'.
+tests/rules/@stylistic/type-annotation-spacing/cases.ts:48:29	@stylistic/type-annotation-spacing	expectedSpaceAfter	Expected a space after the ':'.
+tests/rules/@stylistic/type-annotation-spacing/cases.ts:48:29	@stylistic/type-annotation-spacing	unexpectedSpaceBefore	Unexpected space before the ':'.
+tests/rules/@stylistic/type-annotation-spacing/cases.ts:49:29	@stylistic/type-annotation-spacing	unexpectedSpaceBefore	Unexpected space before the '?:'.
+tests/rules/@stylistic/type-annotation-spacing/cases.ts:49:30	@stylistic/type-annotation-spacing	expectedSpaceAfter	Expected a space after the '?:'.
+tests/rules/@stylistic/type-annotation-spacing/cases.ts:50:29	@stylistic/type-annotation-spacing	unexpectedSpaceBefore	Unexpected space before the '?:'.
+tests/rules/@stylistic/type-annotation-spacing/cases.ts:51:30	@stylistic/type-annotation-spacing	expectedSpaceAfter	Expected a space after the '-?:'.
+tests/rules/@stylistic/type-annotation-spacing/cases.ts:52:30	@stylistic/type-annotation-spacing	unexpectedSpaceBefore	Unexpected space before the '+?:'.
+tests/rules/@stylistic/type-annotation-spacing/cases.ts:52:32	@stylistic/type-annotation-spacing	expectedSpaceAfter	Expected a space after the '+?:'.
+tests/rules/@stylistic/type-annotation-spacing/cases.ts:53:40	@stylistic/type-annotation-spacing	unexpectedSpaceBefore	Unexpected space before the '-?:'.
+tests/rules/@stylistic/type-annotation-spacing/cases.ts:54:8	@stylistic/type-annotation-spacing	expectedSpaceAfter	Expected a space after the ':'.
+tests/rules/@stylistic/type-annotation-spacing/cases.ts:54:8	@stylistic/type-annotation-spacing	unexpectedSpaceBefore	Unexpected space before the ':'.
+tests/rules/@stylistic/type-annotation-spacing/cases.ts:55:7	@stylistic/type-annotation-spacing	expectedSpaceAfter	Expected a space after the ':'.
+tests/rules/@stylistic/type-annotation-spacing/cases.ts:56:8	@stylistic/type-annotation-spacing	unexpectedSpaceBefore	Unexpected space before the ':'.
+tests/rules/@stylistic/type-annotation-spacing/cases.ts:57:25	@stylistic/type-annotation-spacing	expectedSpaceAfter	Expected a space after the ':'.
+tests/rules/@stylistic/type-annotation-spacing/cases.ts:57:25	@stylistic/type-annotation-spacing	unexpectedSpaceBefore	Unexpected space before the ':'.
+tests/rules/@stylistic/type-annotation-spacing/cases.ts:58:25	@stylistic/type-annotation-spacing	expectedSpaceAfter	Expected a space after the ':'.
+tests/rules/@stylistic/type-annotation-spacing/cases.ts:58:25	@stylistic/type-annotation-spacing	unexpectedSpaceBefore	Unexpected space before the ':'.
+tests/rules/@stylistic/type-annotation-spacing/cases.ts:59:18	@stylistic/type-annotation-spacing	expectedSpaceAfter	Expected a space after the ':'.
+tests/rules/@stylistic/type-annotation-spacing/cases.ts:59:18	@stylistic/type-annotation-spacing	unexpectedSpaceBefore	Unexpected space before the ':'.
+tests/rules/@stylistic/type-annotation-spacing/cases.ts:59:29	@stylistic/type-annotation-spacing	expectedSpaceAfter	Expected a space after the ':'.
+tests/rules/@stylistic/type-annotation-spacing/cases.ts:59:29	@stylistic/type-annotation-spacing	unexpectedSpaceBefore	Unexpected space before the ':'.
+tests/rules/@stylistic/type-annotation-spacing/cases.ts:60:19	@stylistic/type-annotation-spacing	expectedSpaceAfter	Expected a space after the ':'.
+tests/rules/@stylistic/type-annotation-spacing/cases.ts:60:19	@stylistic/type-annotation-spacing	unexpectedSpaceBefore	Unexpected space before the ':'.
+tests/rules/@stylistic/type-annotation-spacing/cases.ts:60:39	@stylistic/type-annotation-spacing	expectedSpaceAfter	Expected a space after the ':'.
+tests/rules/@stylistic/type-annotation-spacing/cases.ts:60:39	@stylistic/type-annotation-spacing	unexpectedSpaceBefore	Unexpected space before the ':'.
+tests/rules/@stylistic/type-annotation-spacing/cases.ts:60:58	@stylistic/type-annotation-spacing	expectedSpaceAfter	Expected a space after the ':'.
+tests/rules/@stylistic/type-annotation-spacing/cases.ts:60:58	@stylistic/type-annotation-spacing	unexpectedSpaceBefore	Unexpected space before the ':'.
+tests/rules/@stylistic/type-annotation-spacing/cases.ts:61:23	@stylistic/type-annotation-spacing	expectedSpaceAfter	Expected a space after the ':'.
+tests/rules/@stylistic/type-annotation-spacing/cases.ts:61:23	@stylistic/type-annotation-spacing	unexpectedSpaceBefore	Unexpected space before the ':'.
+tests/rules/@stylistic/type-annotation-spacing/cases.ts:61:32	@stylistic/type-annotation-spacing	expectedSpaceAfter	Expected a space after the ':'.
+tests/rules/@stylistic/type-annotation-spacing/cases.ts:61:32	@stylistic/type-annotation-spacing	unexpectedSpaceBefore	Unexpected space before the ':'.
+tests/rules/@stylistic/type-annotation-spacing/cases.ts:62:17	@stylistic/type-annotation-spacing	expectedSpaceAfter	Expected a space after the ':'.
+tests/rules/@stylistic/type-annotation-spacing/cases.ts:62:17	@stylistic/type-annotation-spacing	unexpectedSpaceBefore	Unexpected space before the ':'.
+tests/rules/@stylistic/type-annotation-spacing/cases.ts:63:22	@stylistic/type-annotation-spacing	unexpectedSpaceBefore	Unexpected space before the ':'.
+tests/rules/@stylistic/type-annotation-spacing/cases.ts:65:8	@stylistic/type-annotation-spacing	unexpectedSpaceBefore	Unexpected space before the ':'.
+tests/rules/@stylistic/type-annotation-spacing/cases.ts:67:2	@stylistic/type-annotation-spacing	unexpectedSpaceBefore	Unexpected space before the ':'.
+tests/rules/@stylistic/type-annotation-spacing/cases.ts:71:2	@stylistic/type-annotation-spacing	expectedSpaceAfter	Expected a space after the ':'.
+tests/rules/@stylistic/type-annotation-spacing/cases.ts:71:2	@stylistic/type-annotation-spacing	unexpectedSpaceBefore	Unexpected space before the ':'.
+tests/rules/@stylistic/type-annotation-spacing/cases.ts:72:18	@stylistic/type-annotation-spacing	expectedSpaceAfter	Expected a space after the ':'.
+tests/rules/@stylistic/type-annotation-spacing/cases.ts:72:18	@stylistic/type-annotation-spacing	unexpectedSpaceBefore	Unexpected space before the ':'.
+tests/rules/@stylistic/type-annotation-spacing/cases.ts:72:27	@stylistic/type-annotation-spacing	expectedSpaceAfter	Expected a space after the ':'.
+tests/rules/@stylistic/type-annotation-spacing/cases.ts:72:27	@stylistic/type-annotation-spacing	unexpectedSpaceBefore	Unexpected space before the ':'.
+tests/rules/@stylistic/type-annotation-spacing/cases.ts:74:23	@stylistic/type-annotation-spacing	unexpectedSpaceBetween	Unexpected space between the '?' and the ':'.
+tests/rules/@stylistic/type-annotation-spacing/cases.ts:74:33	@stylistic/type-annotation-spacing	expectedSpaceAfter	Expected a space after the ':'.
+tests/rules/@stylistic/type-annotation-spacing/cases.ts:74:33	@stylistic/type-annotation-spacing	unexpectedSpaceBefore	Unexpected space before the ':'.
+tests/rules/@stylistic/type-annotation-spacing/cases.ts:75:13	@stylistic/type-annotation-spacing	expectedSpaceAfter	Expected a space after the ':'.
+tests/rules/@stylistic/type-annotation-spacing/cases.ts:75:13	@stylistic/type-annotation-spacing	unexpectedSpaceBefore	Unexpected space before the ':'.
+tests/rules/@stylistic/type-annotation-spacing/cases.ts:75:24	@stylistic/type-annotation-spacing	unexpectedSpaceBefore	Unexpected space before the '?:'.
+tests/rules/@stylistic/type-annotation-spacing/cases.ts:75:26	@stylistic/type-annotation-spacing	unexpectedSpaceBetween	Unexpected space between the '?' and the ':'.
+tests/rules/@stylistic/type-annotation-spacing/colon/cases.ts:2:7	@stylistic/type-annotation-spacing	expectedSpaceAfter	Expected a space after the ':'.
+tests/rules/@stylistic/type-annotation-spacing/colon/cases.ts:2:7	@stylistic/type-annotation-spacing	expectedSpaceBefore	Expected a space before the ':'.
+tests/rules/@stylistic/type-annotation-spacing/colon/cases.ts:4:8	@stylistic/type-annotation-spacing	expectedSpaceAfter	Expected a space after the ':'.
+tests/rules/@stylistic/type-annotation-spacing/colon/cases.ts:5:7	@stylistic/type-annotation-spacing	expectedSpaceBefore	Expected a space before the ':'.
+tests/rules/@stylistic/type-annotation-spacing/colon/cases.ts:7:14	@stylistic/type-annotation-spacing	expectedSpaceAfter	Expected a space after the ':'.
+tests/rules/@stylistic/type-annotation-spacing/colon/cases.ts:7:14	@stylistic/type-annotation-spacing	expectedSpaceBefore	Expected a space before the ':'.
+tests/rules/@stylistic/type-annotation-spacing/colon/cases.ts:7:25	@stylistic/type-annotation-spacing	expectedSpaceAfter	Expected a space after the ':'.
+tests/rules/@stylistic/type-annotation-spacing/colon/cases.ts:7:49	@stylistic/type-annotation-spacing	expectedSpaceBefore	Expected a space before the '?:'.
+tests/rules/@stylistic/type-annotation-spacing/colon/cases.ts:7:51	@stylistic/type-annotation-spacing	unexpectedSpaceBetween	Unexpected space between the '?' and the ':'.
+tests/rules/@stylistic/type-annotation-spacing/colon/cases.ts:7:51	@stylistic/type-annotation-spacing	expectedSpaceAfter	Expected a space after the '?:'.
+tests/rules/@stylistic/type-annotation-spacing/colon/cases.ts:7:59	@stylistic/type-annotation-spacing	expectedSpaceAfter	Expected a space after the ':'.
+tests/rules/@stylistic/type-annotation-spacing/colon/cases.ts:7:59	@stylistic/type-annotation-spacing	expectedSpaceBefore	Expected a space before the ':'.
+tests/rules/@stylistic/type-annotation-spacing/colon/cases.ts:8:14	@stylistic/type-annotation-spacing	expectedSpaceBefore	Expected a space before the ':'.
+tests/rules/@stylistic/type-annotation-spacing/colon/cases.ts:8:23	@stylistic/type-annotation-spacing	expectedSpaceBefore	Expected a space before the ':'.
+tests/rules/@stylistic/type-annotation-spacing/colon/cases.ts:9:15	@stylistic/type-annotation-spacing	expectedSpaceAfter	Expected a space after the ':'.
+tests/rules/@stylistic/type-annotation-spacing/colon/cases.ts:11:24	@stylistic/type-annotation-spacing	expectedSpaceAfter	Expected a space after the ':'.
+tests/rules/@stylistic/type-annotation-spacing/colon/cases.ts:11:33	@stylistic/type-annotation-spacing	expectedSpaceAfter	Expected a space after the ':'.
+tests/rules/@stylistic/type-annotation-spacing/colon/cases.ts:12:14	@stylistic/type-annotation-spacing	expectedSpaceAfter	Expected a space after the ':'.
+tests/rules/@stylistic/type-annotation-spacing/colon/cases.ts:12:14	@stylistic/type-annotation-spacing	expectedSpaceBefore	Expected a space before the ':'.
+tests/rules/@stylistic/type-annotation-spacing/colon/cases.ts:12:22	@stylistic/type-annotation-spacing	expectedSpaceAfter	Expected a space after the ':'.
+tests/rules/@stylistic/type-annotation-spacing/colon/cases.ts:12:22	@stylistic/type-annotation-spacing	expectedSpaceBefore	Expected a space before the ':'.
+tests/rules/@stylistic/type-annotation-spacing/colon/cases.ts:13:21	@stylistic/type-annotation-spacing	expectedSpaceAfter	Expected a space after the ':'.
+tests/rules/@stylistic/type-annotation-spacing/colon/cases.ts:15:4	@stylistic/type-annotation-spacing	expectedSpaceAfter	Expected a space after the ':'.
+tests/rules/@stylistic/type-annotation-spacing/colon/cases.ts:15:4	@stylistic/type-annotation-spacing	expectedSpaceBefore	Expected a space before the ':'.
+tests/rules/@stylistic/type-annotation-spacing/colon/cases.ts:16:5	@stylistic/type-annotation-spacing	expectedSpaceAfter	Expected a space after the ':'.
+tests/rules/@stylistic/type-annotation-spacing/colon/cases.ts:17:6	@stylistic/type-annotation-spacing	expectedSpaceAfter	Expected a space after the '?:'.
+tests/rules/@stylistic/type-annotation-spacing/colon/cases.ts:18:4	@stylistic/type-annotation-spacing	expectedSpaceBefore	Expected a space before the '?:'.
+tests/rules/@stylistic/type-annotation-spacing/colon/cases.ts:18:6	@stylistic/type-annotation-spacing	unexpectedSpaceBetween	Unexpected space between the '?' and the ':'.
+tests/rules/@stylistic/type-annotation-spacing/colon/cases.ts:20:6	@stylistic/type-annotation-spacing	expectedSpaceAfter	Expected a space after the ':'.
+tests/rules/@stylistic/type-annotation-spacing/colon/cases.ts:20:6	@stylistic/type-annotation-spacing	expectedSpaceBefore	Expected a space before the ':'.
+tests/rules/@stylistic/type-annotation-spacing/colon/cases.ts:20:15	@stylistic/type-annotation-spacing	expectedSpaceAfter	Expected a space after the ':'.
+tests/rules/@stylistic/type-annotation-spacing/colon/cases.ts:22:16	@stylistic/type-annotation-spacing	expectedSpaceAfter	Expected a space after the ':'.
+tests/rules/@stylistic/type-annotation-spacing/colon/cases.ts:23:15	@stylistic/type-annotation-spacing	expectedSpaceBefore	Expected a space before the ':'.
+tests/rules/@stylistic/type-annotation-spacing/colon/cases.ts:24:14	@stylistic/type-annotation-spacing	expectedSpaceAfter	Expected a space after the ':'.
+tests/rules/@stylistic/type-annotation-spacing/colon/cases.ts:25:10	@stylistic/type-annotation-spacing	expectedSpaceAfter	Expected a space after the ':'.
+tests/rules/@stylistic/type-annotation-spacing/colon/cases.ts:26:14	@stylistic/type-annotation-spacing	expectedSpaceAfter	Expected a space after the ':'.
+tests/rules/@stylistic/type-annotation-spacing/colon/cases.ts:29:14	@stylistic/type-annotation-spacing	expectedSpaceAfter	Expected a space after the ':'.
+tests/rules/@stylistic/type-annotation-spacing/colon/cases.ts:30:16	@stylistic/type-annotation-spacing	expectedSpaceAfter	Expected a space after the ':'.
+tests/rules/@stylistic/type-annotation-spacing/colon/cases.ts:31:7	@stylistic/type-annotation-spacing	expectedSpaceAfter	Expected a space after the ':'.
+tests/rules/@stylistic/type-annotation-spacing/colon/cases.ts:31:16	@stylistic/type-annotation-spacing	expectedSpaceAfter	Expected a space after the ':'.
+tests/rules/@stylistic/type-annotation-spacing/colon/cases.ts:34:4	@stylistic/type-annotation-spacing	expectedSpaceAfter	Expected a space after the ':'.
+tests/rules/@stylistic/type-annotation-spacing/colon/cases.ts:34:4	@stylistic/type-annotation-spacing	expectedSpaceBefore	Expected a space before the ':'.
+tests/rules/@stylistic/type-annotation-spacing/colon/cases.ts:36:7	@stylistic/type-annotation-spacing	expectedSpaceAfter	Expected a space after the ':'.
+tests/rules/@stylistic/type-annotation-spacing/colon/cases.ts:36:16	@stylistic/type-annotation-spacing	expectedSpaceAfter	Expected a space after the ':'.
+tests/rules/@stylistic/type-annotation-spacing/colon/cases.ts:37:9	@stylistic/type-annotation-spacing	expectedSpaceAfter	Expected a space after the ':'.
+tests/rules/@stylistic/type-annotation-spacing/colon/cases.ts:38:5	@stylistic/type-annotation-spacing	expectedSpaceAfter	Expected a space after the ':'.
+tests/rules/@stylistic/type-annotation-spacing/colon/cases.ts:38:14	@stylistic/type-annotation-spacing	expectedSpaceAfter	Expected a space after the ':'.
+tests/rules/@stylistic/type-annotation-spacing/colon/cases.ts:39:9	@stylistic/type-annotation-spacing	expectedSpaceAfter	Expected a space after the ':'.
+tests/rules/@stylistic/type-annotation-spacing/colon/cases.ts:39:18	@stylistic/type-annotation-spacing	expectedSpaceAfter	Expected a space after the ':'.
+tests/rules/@stylistic/type-annotation-spacing/colon/cases.ts:40:7	@stylistic/type-annotation-spacing	expectedSpaceAfter	Expected a space after the ':'.
+tests/rules/@stylistic/type-annotation-spacing/colon/cases.ts:40:16	@stylistic/type-annotation-spacing	expectedSpaceAfter	Expected a space after the ':'.
+tests/rules/@stylistic/type-annotation-spacing/colon/cases.ts:41:14	@stylistic/type-annotation-spacing	expectedSpaceAfter	Expected a space after the ':'.
+tests/rules/@stylistic/type-annotation-spacing/colon/cases.ts:43:14	@stylistic/type-annotation-spacing	expectedSpaceAfter	Expected a space after the ':'.
+tests/rules/@stylistic/type-annotation-spacing/colon/cases.ts:43:22	@stylistic/type-annotation-spacing	expectedSpaceAfter	Expected a space after the '=>'.
+tests/rules/@stylistic/type-annotation-spacing/colon/cases.ts:43:22	@stylistic/type-annotation-spacing	expectedSpaceBefore	Expected a space before the '=>'.
+tests/rules/@stylistic/type-annotation-spacing/colon/cases.ts:44:13	@stylistic/type-annotation-spacing	expectedSpaceBefore	Expected a space before the ':'.
+tests/rules/@stylistic/type-annotation-spacing/colon/cases.ts:44:23	@stylistic/type-annotation-spacing	expectedSpaceAfter	Expected a space after the '=>'.
+tests/rules/@stylistic/type-annotation-spacing/colon/cases.ts:45:13	@stylistic/type-annotation-spacing	expectedSpaceBefore	Expected a space before the ':'.
+tests/rules/@stylistic/type-annotation-spacing/colon/cases.ts:45:22	@stylistic/type-annotation-spacing	expectedSpaceBefore	Expected a space before the '=>'.
+tests/rules/@stylistic/type-annotation-spacing/colon/cases.ts:46:18	@stylistic/type-annotation-spacing	expectedSpaceAfter	Expected a space after the ':'.
+tests/rules/@stylistic/type-annotation-spacing/colon/cases.ts:46:26	@stylistic/type-annotation-spacing	expectedSpaceAfter	Expected a space after the '=>'.
+tests/rules/@stylistic/type-annotation-spacing/colon/cases.ts:46:26	@stylistic/type-annotation-spacing	expectedSpaceBefore	Expected a space before the '=>'.
+tests/rules/@stylistic/type-annotation-spacing/colon/cases.ts:48:29	@stylistic/type-annotation-spacing	expectedSpaceAfter	Expected a space after the ':'.
+tests/rules/@stylistic/type-annotation-spacing/colon/cases.ts:49:30	@stylistic/type-annotation-spacing	expectedSpaceAfter	Expected a space after the '?:'.
+tests/rules/@stylistic/type-annotation-spacing/colon/cases.ts:51:28	@stylistic/type-annotation-spacing	expectedSpaceBefore	Expected a space before the '-?:'.
+tests/rules/@stylistic/type-annotation-spacing/colon/cases.ts:51:30	@stylistic/type-annotation-spacing	expectedSpaceAfter	Expected a space after the '-?:'.
+tests/rules/@stylistic/type-annotation-spacing/colon/cases.ts:52:32	@stylistic/type-annotation-spacing	expectedSpaceAfter	Expected a space after the '+?:'.
+tests/rules/@stylistic/type-annotation-spacing/colon/cases.ts:54:8	@stylistic/type-annotation-spacing	expectedSpaceAfter	Expected a space after the ':'.
+tests/rules/@stylistic/type-annotation-spacing/colon/cases.ts:55:7	@stylistic/type-annotation-spacing	expectedSpaceAfter	Expected a space after the ':'.
+tests/rules/@stylistic/type-annotation-spacing/colon/cases.ts:55:7	@stylistic/type-annotation-spacing	expectedSpaceBefore	Expected a space before the ':'.
+tests/rules/@stylistic/type-annotation-spacing/colon/cases.ts:57:14	@stylistic/type-annotation-spacing	expectedSpaceBefore	Expected a space before the ':'.
+tests/rules/@stylistic/type-annotation-spacing/colon/cases.ts:57:25	@stylistic/type-annotation-spacing	expectedSpaceAfter	Expected a space after the ':'.
+tests/rules/@stylistic/type-annotation-spacing/colon/cases.ts:58:14	@stylistic/type-annotation-spacing	expectedSpaceBefore	Expected a space before the ':'.
+tests/rules/@stylistic/type-annotation-spacing/colon/cases.ts:58:25	@stylistic/type-annotation-spacing	expectedSpaceAfter	Expected a space after the ':'.
+tests/rules/@stylistic/type-annotation-spacing/colon/cases.ts:59:18	@stylistic/type-annotation-spacing	expectedSpaceAfter	Expected a space after the ':'.
+tests/rules/@stylistic/type-annotation-spacing/colon/cases.ts:59:29	@stylistic/type-annotation-spacing	expectedSpaceAfter	Expected a space after the ':'.
+tests/rules/@stylistic/type-annotation-spacing/colon/cases.ts:60:19	@stylistic/type-annotation-spacing	expectedSpaceAfter	Expected a space after the ':'.
+tests/rules/@stylistic/type-annotation-spacing/colon/cases.ts:60:23	@stylistic/type-annotation-spacing	expectedSpaceBefore	Expected a space before the ':'.
+tests/rules/@stylistic/type-annotation-spacing/colon/cases.ts:60:39	@stylistic/type-annotation-spacing	expectedSpaceAfter	Expected a space after the ':'.
+tests/rules/@stylistic/type-annotation-spacing/colon/cases.ts:60:58	@stylistic/type-annotation-spacing	expectedSpaceAfter	Expected a space after the ':'.
+tests/rules/@stylistic/type-annotation-spacing/colon/cases.ts:61:23	@stylistic/type-annotation-spacing	expectedSpaceAfter	Expected a space after the ':'.
+tests/rules/@stylistic/type-annotation-spacing/colon/cases.ts:61:32	@stylistic/type-annotation-spacing	expectedSpaceAfter	Expected a space after the ':'.
+tests/rules/@stylistic/type-annotation-spacing/colon/cases.ts:62:17	@stylistic/type-annotation-spacing	expectedSpaceAfter	Expected a space after the ':'.
+tests/rules/@stylistic/type-annotation-spacing/colon/cases.ts:64:7	@stylistic/type-annotation-spacing	expectedSpaceBefore	Expected a space before the ':'.
+tests/rules/@stylistic/type-annotation-spacing/colon/cases.ts:68:7	@stylistic/type-annotation-spacing	expectedSpaceBefore	Expected a space before the ':'.
+tests/rules/@stylistic/type-annotation-spacing/colon/cases.ts:71:2	@stylistic/type-annotation-spacing	expectedSpaceAfter	Expected a space after the ':'.
+tests/rules/@stylistic/type-annotation-spacing/colon/cases.ts:72:18	@stylistic/type-annotation-spacing	expectedSpaceAfter	Expected a space after the ':'.
+tests/rules/@stylistic/type-annotation-spacing/colon/cases.ts:72:27	@stylistic/type-annotation-spacing	expectedSpaceAfter	Expected a space after the ':'.
+tests/rules/@stylistic/type-annotation-spacing/colon/cases.ts:74:21	@stylistic/type-annotation-spacing	expectedSpaceBefore	Expected a space before the '?:'.
+tests/rules/@stylistic/type-annotation-spacing/colon/cases.ts:74:23	@stylistic/type-annotation-spacing	unexpectedSpaceBetween	Unexpected space between the '?' and the ':'.
+tests/rules/@stylistic/type-annotation-spacing/colon/cases.ts:74:33	@stylistic/type-annotation-spacing	expectedSpaceAfter	Expected a space after the ':'.
+tests/rules/@stylistic/type-annotation-spacing/colon/cases.ts:75:7	@stylistic/type-annotation-spacing	expectedSpaceBefore	Expected a space before the ':'.
+tests/rules/@stylistic/type-annotation-spacing/colon/cases.ts:75:13	@stylistic/type-annotation-spacing	expectedSpaceAfter	Expected a space after the ':'.
+tests/rules/@stylistic/type-annotation-spacing/colon/cases.ts:75:26	@stylistic/type-annotation-spacing	unexpectedSpaceBetween	Unexpected space between the '?' and the ':'.
+tests/rules/@stylistic/type-annotation-spacing/parameter/cases.ts:2:7	@stylistic/type-annotation-spacing	expectedSpaceAfter	Expected a space after the ':'.
+tests/rules/@stylistic/type-annotation-spacing/parameter/cases.ts:3:8	@stylistic/type-annotation-spacing	unexpectedSpaceBefore	Unexpected space before the ':'.
+tests/rules/@stylistic/type-annotation-spacing/parameter/cases.ts:4:8	@stylistic/type-annotation-spacing	expectedSpaceAfter	Expected a space after the ':'.
+tests/rules/@stylistic/type-annotation-spacing/parameter/cases.ts:4:8	@stylistic/type-annotation-spacing	unexpectedSpaceBefore	Unexpected space before the ':'.
+tests/rules/@stylistic/type-annotation-spacing/parameter/cases.ts:6:10	@stylistic/type-annotation-spacing	unexpectedSpaceBefore	Unexpected space before the ':'.
+tests/rules/@stylistic/type-annotation-spacing/parameter/cases.ts:7:14	@stylistic/type-annotation-spacing	expectedSpaceBefore	Expected a space before the ':'.
+tests/rules/@stylistic/type-annotation-spacing/parameter/cases.ts:7:37	@stylistic/type-annotation-spacing	unexpectedSpaceAfter	Unexpected space after the '?:'.
+tests/rules/@stylistic/type-annotation-spacing/parameter/cases.ts:7:49	@stylistic/type-annotation-spacing	expectedSpaceBefore	Expected a space before the '?:'.
+tests/rules/@stylistic/type-annotation-spacing/parameter/cases.ts:7:51	@stylistic/type-annotation-spacing	unexpectedSpaceBetween	Unexpected space between the '?' and the ':'.
+tests/rules/@stylistic/type-annotation-spacing/parameter/cases.ts:7:59	@stylistic/type-annotation-spacing	expectedSpaceAfter	Expected a space after the ':'.
+tests/rules/@stylistic/type-annotation-spacing/parameter/cases.ts:8:14	@stylistic/type-annotation-spacing	unexpectedSpaceAfter	Unexpected space after the ':'.
+tests/rules/@stylistic/type-annotation-spacing/parameter/cases.ts:8:14	@stylistic/type-annotation-spacing	expectedSpaceBefore	Expected a space before the ':'.
+tests/rules/@stylistic/type-annotation-spacing/parameter/cases.ts:9:15	@stylistic/type-annotation-spacing	expectedSpaceAfter	Expected a space after the ':'.
+tests/rules/@stylistic/type-annotation-spacing/parameter/cases.ts:9:15	@stylistic/type-annotation-spacing	unexpectedSpaceBefore	Unexpected space before the ':'.
+tests/rules/@stylistic/type-annotation-spacing/parameter/cases.ts:10:16	@stylistic/type-annotation-spacing	unexpectedSpaceBefore	Unexpected space before the ':'.
+tests/rules/@stylistic/type-annotation-spacing/parameter/cases.ts:11:33	@stylistic/type-annotation-spacing	expectedSpaceAfter	Expected a space after the ':'.
+tests/rules/@stylistic/type-annotation-spacing/parameter/cases.ts:11:33	@stylistic/type-annotation-spacing	unexpectedSpaceBefore	Unexpected space before the ':'.
+tests/rules/@stylistic/type-annotation-spacing/parameter/cases.ts:12:14	@stylistic/type-annotation-spacing	expectedSpaceBefore	Expected a space before the ':'.
+tests/rules/@stylistic/type-annotation-spacing/parameter/cases.ts:12:22	@stylistic/type-annotation-spacing	expectedSpaceAfter	Expected a space after the ':'.
+tests/rules/@stylistic/type-annotation-spacing/parameter/cases.ts:13:30	@stylistic/type-annotation-spacing	unexpectedSpaceBefore	Unexpected space before the ':'.
+tests/rules/@stylistic/type-annotation-spacing/parameter/cases.ts:15:4	@stylistic/type-annotation-spacing	expectedSpaceAfter	Expected a space after the ':'.
+tests/rules/@stylistic/type-annotation-spacing/parameter/cases.ts:16:5	@stylistic/type-annotation-spacing	expectedSpaceAfter	Expected a space after the ':'.
+tests/rules/@stylistic/type-annotation-spacing/parameter/cases.ts:16:5	@stylistic/type-annotation-spacing	unexpectedSpaceBefore	Unexpected space before the ':'.
+tests/rules/@stylistic/type-annotation-spacing/parameter/cases.ts:17:5	@stylistic/type-annotation-spacing	unexpectedSpaceBefore	Unexpected space before the '?:'.
+tests/rules/@stylistic/type-annotation-spacing/parameter/cases.ts:17:6	@stylistic/type-annotation-spacing	expectedSpaceAfter	Expected a space after the '?:'.
+tests/rules/@stylistic/type-annotation-spacing/parameter/cases.ts:18:6	@stylistic/type-annotation-spacing	unexpectedSpaceBetween	Unexpected space between the '?' and the ':'.
+tests/rules/@stylistic/type-annotation-spacing/parameter/cases.ts:19:12	@stylistic/type-annotation-spacing	unexpectedSpaceBefore	Unexpected space before the ':'.
+tests/rules/@stylistic/type-annotation-spacing/parameter/cases.ts:20:6	@stylistic/type-annotation-spacing	expectedSpaceBefore	Expected a space before the ':'.
+tests/rules/@stylistic/type-annotation-spacing/parameter/cases.ts:20:15	@stylistic/type-annotation-spacing	expectedSpaceAfter	Expected a space after the ':'.
+tests/rules/@stylistic/type-annotation-spacing/parameter/cases.ts:20:15	@stylistic/type-annotation-spacing	unexpectedSpaceBefore	Unexpected space before the ':'.
+tests/rules/@stylistic/type-annotation-spacing/parameter/cases.ts:21:7	@stylistic/type-annotation-spacing	unexpectedSpaceBefore	Unexpected space before the ':'.
+tests/rules/@stylistic/type-annotation-spacing/parameter/cases.ts:23:15	@stylistic/type-annotation-spacing	unexpectedSpaceAfter	Unexpected space after the ':'.
+tests/rules/@stylistic/type-annotation-spacing/parameter/cases.ts:23:15	@stylistic/type-annotation-spacing	expectedSpaceBefore	Expected a space before the ':'.
+tests/rules/@stylistic/type-annotation-spacing/parameter/cases.ts:24:14	@stylistic/type-annotation-spacing	expectedSpaceAfter	Expected a space after the ':'.
+tests/rules/@stylistic/type-annotation-spacing/parameter/cases.ts:24:14	@stylistic/type-annotation-spacing	unexpectedSpaceBefore	Unexpected space before the ':'.
+tests/rules/@stylistic/type-annotation-spacing/parameter/cases.ts:25:10	@stylistic/type-annotation-spacing	expectedSpaceAfter	Expected a space after the ':'.
+tests/rules/@stylistic/type-annotation-spacing/parameter/cases.ts:25:10	@stylistic/type-annotation-spacing	unexpectedSpaceBefore	Unexpected space before the ':'.
+tests/rules/@stylistic/type-annotation-spacing/parameter/cases.ts:29:14	@stylistic/type-annotation-spacing	expectedSpaceAfter	Expected a space after the ':'.
+tests/rules/@stylistic/type-annotation-spacing/parameter/cases.ts:29:14	@stylistic/type-annotation-spacing	unexpectedSpaceBefore	Unexpected space before the ':'.
+tests/rules/@stylistic/type-annotation-spacing/parameter/cases.ts:30:16	@stylistic/type-annotation-spacing	expectedSpaceAfter	Expected a space after the ':'.
+tests/rules/@stylistic/type-annotation-spacing/parameter/cases.ts:30:16	@stylistic/type-annotation-spacing	unexpectedSpaceBefore	Unexpected space before the ':'.
+tests/rules/@stylistic/type-annotation-spacing/parameter/cases.ts:31:7	@stylistic/type-annotation-spacing	expectedSpaceAfter	Expected a space after the ':'.
+tests/rules/@stylistic/type-annotation-spacing/parameter/cases.ts:31:7	@stylistic/type-annotation-spacing	unexpectedSpaceBefore	Unexpected space before the ':'.
+tests/rules/@stylistic/type-annotation-spacing/parameter/cases.ts:31:16	@stylistic/type-annotation-spacing	expectedSpaceAfter	Expected a space after the ':'.
+tests/rules/@stylistic/type-annotation-spacing/parameter/cases.ts:31:16	@stylistic/type-annotation-spacing	unexpectedSpaceBefore	Unexpected space before the ':'.
+tests/rules/@stylistic/type-annotation-spacing/parameter/cases.ts:34:4	@stylistic/type-annotation-spacing	expectedSpaceAfter	Expected a space after the ':'.
+tests/rules/@stylistic/type-annotation-spacing/parameter/cases.ts:35:5	@stylistic/type-annotation-spacing	unexpectedSpaceBefore	Unexpected space before the '?:'.
+tests/rules/@stylistic/type-annotation-spacing/parameter/cases.ts:36:16	@stylistic/type-annotation-spacing	expectedSpaceAfter	Expected a space after the ':'.
+tests/rules/@stylistic/type-annotation-spacing/parameter/cases.ts:36:16	@stylistic/type-annotation-spacing	unexpectedSpaceBefore	Unexpected space before the ':'.
+tests/rules/@stylistic/type-annotation-spacing/parameter/cases.ts:37:9	@stylistic/type-annotation-spacing	expectedSpaceAfter	Expected a space after the ':'.
+tests/rules/@stylistic/type-annotation-spacing/parameter/cases.ts:37:9	@stylistic/type-annotation-spacing	unexpectedSpaceBefore	Unexpected space before the ':'.
+tests/rules/@stylistic/type-annotation-spacing/parameter/cases.ts:38:14	@stylistic/type-annotation-spacing	expectedSpaceAfter	Expected a space after the ':'.
+tests/rules/@stylistic/type-annotation-spacing/parameter/cases.ts:38:14	@stylistic/type-annotation-spacing	unexpectedSpaceBefore	Unexpected space before the ':'.
+tests/rules/@stylistic/type-annotation-spacing/parameter/cases.ts:39:18	@stylistic/type-annotation-spacing	expectedSpaceAfter	Expected a space after the ':'.
+tests/rules/@stylistic/type-annotation-spacing/parameter/cases.ts:39:18	@stylistic/type-annotation-spacing	unexpectedSpaceBefore	Unexpected space before the ':'.
+tests/rules/@stylistic/type-annotation-spacing/parameter/cases.ts:40:7	@stylistic/type-annotation-spacing	expectedSpaceAfter	Expected a space after the ':'.
+tests/rules/@stylistic/type-annotation-spacing/parameter/cases.ts:40:7	@stylistic/type-annotation-spacing	unexpectedSpaceBefore	Unexpected space before the ':'.
+tests/rules/@stylistic/type-annotation-spacing/parameter/cases.ts:40:16	@stylistic/type-annotation-spacing	expectedSpaceAfter	Expected a space after the ':'.
+tests/rules/@stylistic/type-annotation-spacing/parameter/cases.ts:40:16	@stylistic/type-annotation-spacing	unexpectedSpaceBefore	Unexpected space before the ':'.
+tests/rules/@stylistic/type-annotation-spacing/parameter/cases.ts:41:14	@stylistic/type-annotation-spacing	expectedSpaceAfter	Expected a space after the ':'.
+tests/rules/@stylistic/type-annotation-spacing/parameter/cases.ts:41:14	@stylistic/type-annotation-spacing	unexpectedSpaceBefore	Unexpected space before the ':'.
+tests/rules/@stylistic/type-annotation-spacing/parameter/cases.ts:43:22	@stylistic/type-annotation-spacing	expectedSpaceAfter	Expected a space after the '=>'.
+tests/rules/@stylistic/type-annotation-spacing/parameter/cases.ts:43:22	@stylistic/type-annotation-spacing	expectedSpaceBefore	Expected a space before the '=>'.
+tests/rules/@stylistic/type-annotation-spacing/parameter/cases.ts:44:13	@stylistic/type-annotation-spacing	unexpectedSpaceAfter	Unexpected space after the ':'.
+tests/rules/@stylistic/type-annotation-spacing/parameter/cases.ts:44:13	@stylistic/type-annotation-spacing	expectedSpaceBefore	Expected a space before the ':'.
+tests/rules/@stylistic/type-annotation-spacing/parameter/cases.ts:44:23	@stylistic/type-annotation-spacing	expectedSpaceAfter	Expected a space after the '=>'.
+tests/rules/@stylistic/type-annotation-spacing/parameter/cases.ts:45:13	@stylistic/type-annotation-spacing	unexpectedSpaceAfter	Unexpected space after the ':'.
+tests/rules/@stylistic/type-annotation-spacing/parameter/cases.ts:45:13	@stylistic/type-annotation-spacing	expectedSpaceBefore	Expected a space before the ':'.
+tests/rules/@stylistic/type-annotation-spacing/parameter/cases.ts:45:22	@stylistic/type-annotation-spacing	expectedSpaceBefore	Expected a space before the '=>'.
+tests/rules/@stylistic/type-annotation-spacing/parameter/cases.ts:46:26	@stylistic/type-annotation-spacing	expectedSpaceAfter	Expected a space after the '=>'.
+tests/rules/@stylistic/type-annotation-spacing/parameter/cases.ts:46:26	@stylistic/type-annotation-spacing	expectedSpaceBefore	Expected a space before the '=>'.
+tests/rules/@stylistic/type-annotation-spacing/parameter/cases.ts:48:29	@stylistic/type-annotation-spacing	expectedSpaceAfter	Expected a space after the ':'.
+tests/rules/@stylistic/type-annotation-spacing/parameter/cases.ts:48:29	@stylistic/type-annotation-spacing	unexpectedSpaceBefore	Unexpected space before the ':'.
+tests/rules/@stylistic/type-annotation-spacing/parameter/cases.ts:49:29	@stylistic/type-annotation-spacing	unexpectedSpaceBefore	Unexpected space before the '?:'.
+tests/rules/@stylistic/type-annotation-spacing/parameter/cases.ts:49:30	@stylistic/type-annotation-spacing	expectedSpaceAfter	Expected a space after the '?:'.
+tests/rules/@stylistic/type-annotation-spacing/parameter/cases.ts:50:29	@stylistic/type-annotation-spacing	unexpectedSpaceBefore	Unexpected space before the '?:'.
+tests/rules/@stylistic/type-annotation-spacing/parameter/cases.ts:51:30	@stylistic/type-annotation-spacing	expectedSpaceAfter	Expected a space after the '-?:'.
+tests/rules/@stylistic/type-annotation-spacing/parameter/cases.ts:52:30	@stylistic/type-annotation-spacing	unexpectedSpaceBefore	Unexpected space before the '+?:'.
+tests/rules/@stylistic/type-annotation-spacing/parameter/cases.ts:52:32	@stylistic/type-annotation-spacing	expectedSpaceAfter	Expected a space after the '+?:'.
+tests/rules/@stylistic/type-annotation-spacing/parameter/cases.ts:53:40	@stylistic/type-annotation-spacing	unexpectedSpaceBefore	Unexpected space before the '-?:'.
+tests/rules/@stylistic/type-annotation-spacing/parameter/cases.ts:54:8	@stylistic/type-annotation-spacing	expectedSpaceAfter	Expected a space after the ':'.
+tests/rules/@stylistic/type-annotation-spacing/parameter/cases.ts:54:8	@stylistic/type-annotation-spacing	unexpectedSpaceBefore	Unexpected space before the ':'.
+tests/rules/@stylistic/type-annotation-spacing/parameter/cases.ts:55:7	@stylistic/type-annotation-spacing	expectedSpaceAfter	Expected a space after the ':'.
+tests/rules/@stylistic/type-annotation-spacing/parameter/cases.ts:56:8	@stylistic/type-annotation-spacing	unexpectedSpaceBefore	Unexpected space before the ':'.
+tests/rules/@stylistic/type-annotation-spacing/parameter/cases.ts:57:14	@stylistic/type-annotation-spacing	unexpectedSpaceAfter	Unexpected space after the ':'.
+tests/rules/@stylistic/type-annotation-spacing/parameter/cases.ts:57:14	@stylistic/type-annotation-spacing	expectedSpaceBefore	Expected a space before the ':'.
+tests/rules/@stylistic/type-annotation-spacing/parameter/cases.ts:57:25	@stylistic/type-annotation-spacing	expectedSpaceAfter	Expected a space after the ':'.
+tests/rules/@stylistic/type-annotation-spacing/parameter/cases.ts:57:25	@stylistic/type-annotation-spacing	unexpectedSpaceBefore	Unexpected space before the ':'.
+tests/rules/@stylistic/type-annotation-spacing/parameter/cases.ts:58:14	@stylistic/type-annotation-spacing	unexpectedSpaceAfter	Unexpected space after the ':'.
+tests/rules/@stylistic/type-annotation-spacing/parameter/cases.ts:58:14	@stylistic/type-annotation-spacing	expectedSpaceBefore	Expected a space before the ':'.
+tests/rules/@stylistic/type-annotation-spacing/parameter/cases.ts:58:25	@stylistic/type-annotation-spacing	expectedSpaceAfter	Expected a space after the ':'.
+tests/rules/@stylistic/type-annotation-spacing/parameter/cases.ts:58:25	@stylistic/type-annotation-spacing	unexpectedSpaceBefore	Unexpected space before the ':'.
+tests/rules/@stylistic/type-annotation-spacing/parameter/cases.ts:60:19	@stylistic/type-annotation-spacing	expectedSpaceAfter	Expected a space after the ':'.
+tests/rules/@stylistic/type-annotation-spacing/parameter/cases.ts:60:19	@stylistic/type-annotation-spacing	unexpectedSpaceBefore	Unexpected space before the ':'.
+tests/rules/@stylistic/type-annotation-spacing/parameter/cases.ts:60:39	@stylistic/type-annotation-spacing	expectedSpaceAfter	Expected a space after the ':'.
+tests/rules/@stylistic/type-annotation-spacing/parameter/cases.ts:60:39	@stylistic/type-annotation-spacing	unexpectedSpaceBefore	Unexpected space before the ':'.
+tests/rules/@stylistic/type-annotation-spacing/parameter/cases.ts:60:58	@stylistic/type-annotation-spacing	expectedSpaceAfter	Expected a space after the ':'.
+tests/rules/@stylistic/type-annotation-spacing/parameter/cases.ts:60:58	@stylistic/type-annotation-spacing	unexpectedSpaceBefore	Unexpected space before the ':'.
+tests/rules/@stylistic/type-annotation-spacing/parameter/cases.ts:61:32	@stylistic/type-annotation-spacing	expectedSpaceAfter	Expected a space after the ':'.
+tests/rules/@stylistic/type-annotation-spacing/parameter/cases.ts:61:32	@stylistic/type-annotation-spacing	unexpectedSpaceBefore	Unexpected space before the ':'.
+tests/rules/@stylistic/type-annotation-spacing/parameter/cases.ts:62:17	@stylistic/type-annotation-spacing	expectedSpaceAfter	Expected a space after the ':'.
+tests/rules/@stylistic/type-annotation-spacing/parameter/cases.ts:62:17	@stylistic/type-annotation-spacing	unexpectedSpaceBefore	Unexpected space before the ':'.
+tests/rules/@stylistic/type-annotation-spacing/parameter/cases.ts:63:22	@stylistic/type-annotation-spacing	unexpectedSpaceBefore	Unexpected space before the ':'.
+tests/rules/@stylistic/type-annotation-spacing/parameter/cases.ts:65:8	@stylistic/type-annotation-spacing	unexpectedSpaceBefore	Unexpected space before the ':'.
+tests/rules/@stylistic/type-annotation-spacing/parameter/cases.ts:67:2	@stylistic/type-annotation-spacing	unexpectedSpaceBefore	Unexpected space before the ':'.
+tests/rules/@stylistic/type-annotation-spacing/parameter/cases.ts:72:27	@stylistic/type-annotation-spacing	expectedSpaceAfter	Expected a space after the ':'.
+tests/rules/@stylistic/type-annotation-spacing/parameter/cases.ts:72:27	@stylistic/type-annotation-spacing	unexpectedSpaceBefore	Unexpected space before the ':'.
+tests/rules/@stylistic/type-annotation-spacing/parameter/cases.ts:74:21	@stylistic/type-annotation-spacing	expectedSpaceBefore	Expected a space before the '?:'.
+tests/rules/@stylistic/type-annotation-spacing/parameter/cases.ts:74:23	@stylistic/type-annotation-spacing	unexpectedSpaceBetween	Unexpected space between the '?' and the ':'.
+tests/rules/@stylistic/type-annotation-spacing/parameter/cases.ts:74:23	@stylistic/type-annotation-spacing	unexpectedSpaceAfter	Unexpected space after the '?:'.
+tests/rules/@stylistic/type-annotation-spacing/parameter/cases.ts:74:33	@stylistic/type-annotation-spacing	expectedSpaceAfter	Expected a space after the ':'.
+tests/rules/@stylistic/type-annotation-spacing/parameter/cases.ts:74:33	@stylistic/type-annotation-spacing	unexpectedSpaceBefore	Unexpected space before the ':'.
+tests/rules/@stylistic/type-annotation-spacing/parameter/cases.ts:75:13	@stylistic/type-annotation-spacing	expectedSpaceAfter	Expected a space after the ':'.
+tests/rules/@stylistic/type-annotation-spacing/parameter/cases.ts:75:13	@stylistic/type-annotation-spacing	unexpectedSpaceBefore	Unexpected space before the ':'.
+tests/rules/@stylistic/type-annotation-spacing/parameter/cases.ts:75:24	@stylistic/type-annotation-spacing	unexpectedSpaceBefore	Unexpected space before the '?:'.
+tests/rules/@stylistic/type-annotation-spacing/parameter/cases.ts:75:26	@stylistic/type-annotation-spacing	unexpectedSpaceBetween	Unexpected space between the '?' and the ':'.
+tests/rules/@stylistic/type-annotation-spacing/property/cases.ts:3:8	@stylistic/type-annotation-spacing	unexpectedSpaceAfter	Unexpected space after the ':'.
+tests/rules/@stylistic/type-annotation-spacing/property/cases.ts:3:8	@stylistic/type-annotation-spacing	unexpectedSpaceBefore	Unexpected space before the ':'.
+tests/rules/@stylistic/type-annotation-spacing/property/cases.ts:4:8	@stylistic/type-annotation-spacing	unexpectedSpaceBefore	Unexpected space before the ':'.
+tests/rules/@stylistic/type-annotation-spacing/property/cases.ts:5:7	@stylistic/type-annotation-spacing	unexpectedSpaceAfter	Unexpected space after the ':'.
+tests/rules/@stylistic/type-annotation-spacing/property/cases.ts:6:10	@stylistic/type-annotation-spacing	unexpectedSpaceAfter	Unexpected space after the ':'.
+tests/rules/@stylistic/type-annotation-spacing/property/cases.ts:6:10	@stylistic/type-annotation-spacing	unexpectedSpaceBefore	Unexpected space before the ':'.
+tests/rules/@stylistic/type-annotation-spacing/property/cases.ts:7:25	@stylistic/type-annotation-spacing	unexpectedSpaceBefore	Unexpected space before the ':'.
+tests/rules/@stylistic/type-annotation-spacing/property/cases.ts:7:36	@stylistic/type-annotation-spacing	unexpectedSpaceBefore	Unexpected space before the '?:'.
+tests/rules/@stylistic/type-annotation-spacing/property/cases.ts:7:37	@stylistic/type-annotation-spacing	unexpectedSpaceAfter	Unexpected space after the '?:'.
+tests/rules/@stylistic/type-annotation-spacing/property/cases.ts:7:51	@stylistic/type-annotation-spacing	unexpectedSpaceBetween	Unexpected space between the '?' and the ':'.
+tests/rules/@stylistic/type-annotation-spacing/property/cases.ts:8:14	@stylistic/type-annotation-spacing	unexpectedSpaceAfter	Unexpected space after the ':'.
+tests/rules/@stylistic/type-annotation-spacing/property/cases.ts:8:23	@stylistic/type-annotation-spacing	unexpectedSpaceAfter	Unexpected space after the ':'.
+tests/rules/@stylistic/type-annotation-spacing/property/cases.ts:9:15	@stylistic/type-annotation-spacing	unexpectedSpaceBefore	Unexpected space before the ':'.
+tests/rules/@stylistic/type-annotation-spacing/property/cases.ts:10:16	@stylistic/type-annotation-spacing	unexpectedSpaceAfter	Unexpected space after the ':'.
+tests/rules/@stylistic/type-annotation-spacing/property/cases.ts:10:16	@stylistic/type-annotation-spacing	unexpectedSpaceBefore	Unexpected space before the ':'.
+tests/rules/@stylistic/type-annotation-spacing/property/cases.ts:11:24	@stylistic/type-annotation-spacing	unexpectedSpaceBefore	Unexpected space before the ':'.
+tests/rules/@stylistic/type-annotation-spacing/property/cases.ts:11:33	@stylistic/type-annotation-spacing	expectedSpaceAfter	Expected a space after the ':'.
+tests/rules/@stylistic/type-annotation-spacing/property/cases.ts:13:21	@stylistic/type-annotation-spacing	unexpectedSpaceBefore	Unexpected space before the ':'.
+tests/rules/@stylistic/type-annotation-spacing/property/cases.ts:13:30	@stylistic/type-annotation-spacing	unexpectedSpaceAfter	Unexpected space after the ':'.
+tests/rules/@stylistic/type-annotation-spacing/property/cases.ts:13:30	@stylistic/type-annotation-spacing	unexpectedSpaceBefore	Unexpected space before the ':'.
+tests/rules/@stylistic/type-annotation-spacing/property/cases.ts:15:4	@stylistic/type-annotation-spacing	expectedSpaceAfter	Expected a space after the ':'.
+tests/rules/@stylistic/type-annotation-spacing/property/cases.ts:15:4	@stylistic/type-annotation-spacing	expectedSpaceBefore	Expected a space before the ':'.
+tests/rules/@stylistic/type-annotation-spacing/property/cases.ts:16:5	@stylistic/type-annotation-spacing	expectedSpaceAfter	Expected a space after the ':'.
+tests/rules/@stylistic/type-annotation-spacing/property/cases.ts:17:6	@stylistic/type-annotation-spacing	expectedSpaceAfter	Expected a space after the '?:'.
+tests/rules/@stylistic/type-annotation-spacing/property/cases.ts:18:4	@stylistic/type-annotation-spacing	expectedSpaceBefore	Expected a space before the '?:'.
+tests/rules/@stylistic/type-annotation-spacing/property/cases.ts:18:6	@stylistic/type-annotation-spacing	unexpectedSpaceBetween	Unexpected space between the '?' and the ':'.
+tests/rules/@stylistic/type-annotation-spacing/property/cases.ts:20:15	@stylistic/type-annotation-spacing	expectedSpaceAfter	Expected a space after the ':'.
+tests/rules/@stylistic/type-annotation-spacing/property/cases.ts:22:16	@stylistic/type-annotation-spacing	unexpectedSpaceBefore	Unexpected space before the ':'.
+tests/rules/@stylistic/type-annotation-spacing/property/cases.ts:23:15	@stylistic/type-annotation-spacing	unexpectedSpaceAfter	Unexpected space after the ':'.
+tests/rules/@stylistic/type-annotation-spacing/property/cases.ts:24:14	@stylistic/type-annotation-spacing	unexpectedSpaceBefore	Unexpected space before the ':'.
+tests/rules/@stylistic/type-annotation-spacing/property/cases.ts:25:10	@stylistic/type-annotation-spacing	expectedSpaceAfter	Expected a space after the ':'.
+tests/rules/@stylistic/type-annotation-spacing/property/cases.ts:26:14	@stylistic/type-annotation-spacing	unexpectedSpaceBefore	Unexpected space before the ':'.
+tests/rules/@stylistic/type-annotation-spacing/property/cases.ts:29:14	@stylistic/type-annotation-spacing	expectedSpaceAfter	Expected a space after the ':'.
+tests/rules/@stylistic/type-annotation-spacing/property/cases.ts:30:16	@stylistic/type-annotation-spacing	expectedSpaceAfter	Expected a space after the ':'.
+tests/rules/@stylistic/type-annotation-spacing/property/cases.ts:31:7	@stylistic/type-annotation-spacing	unexpectedSpaceBefore	Unexpected space before the ':'.
+tests/rules/@stylistic/type-annotation-spacing/property/cases.ts:31:16	@stylistic/type-annotation-spacing	expectedSpaceAfter	Expected a space after the ':'.
+tests/rules/@stylistic/type-annotation-spacing/property/cases.ts:34:4	@stylistic/type-annotation-spacing	expectedSpaceAfter	Expected a space after the ':'.
+tests/rules/@stylistic/type-annotation-spacing/property/cases.ts:34:4	@stylistic/type-annotation-spacing	expectedSpaceBefore	Expected a space before the ':'.
+tests/rules/@stylistic/type-annotation-spacing/property/cases.ts:36:7	@stylistic/type-annotation-spacing	unexpectedSpaceBefore	Unexpected space before the ':'.
+tests/rules/@stylistic/type-annotation-spacing/property/cases.ts:36:16	@stylistic/type-annotation-spacing	expectedSpaceAfter	Expected a space after the ':'.
+tests/rules/@stylistic/type-annotation-spacing/property/cases.ts:37:9	@stylistic/type-annotation-spacing	expectedSpaceAfter	Expected a space after the ':'.
+tests/rules/@stylistic/type-annotation-spacing/property/cases.ts:38:5	@stylistic/type-annotation-spacing	unexpectedSpaceBefore	Unexpected space before the ':'.
+tests/rules/@stylistic/type-annotation-spacing/property/cases.ts:38:14	@stylistic/type-annotation-spacing	expectedSpaceAfter	Expected a space after the ':'.
+tests/rules/@stylistic/type-annotation-spacing/property/cases.ts:39:9	@stylistic/type-annotation-spacing	unexpectedSpaceBefore	Unexpected space before the ':'.
+tests/rules/@stylistic/type-annotation-spacing/property/cases.ts:39:18	@stylistic/type-annotation-spacing	expectedSpaceAfter	Expected a space after the ':'.
+tests/rules/@stylistic/type-annotation-spacing/property/cases.ts:40:7	@stylistic/type-annotation-spacing	unexpectedSpaceBefore	Unexpected space before the ':'.
+tests/rules/@stylistic/type-annotation-spacing/property/cases.ts:40:16	@stylistic/type-annotation-spacing	expectedSpaceAfter	Expected a space after the ':'.
+tests/rules/@stylistic/type-annotation-spacing/property/cases.ts:41:14	@stylistic/type-annotation-spacing	expectedSpaceAfter	Expected a space after the ':'.
+tests/rules/@stylistic/type-annotation-spacing/property/cases.ts:43:14	@stylistic/type-annotation-spacing	unexpectedSpaceBefore	Unexpected space before the ':'.
+tests/rules/@stylistic/type-annotation-spacing/property/cases.ts:43:22	@stylistic/type-annotation-spacing	expectedSpaceBefore	Expected a space before the '=>'.
+tests/rules/@stylistic/type-annotation-spacing/property/cases.ts:44:13	@stylistic/type-annotation-spacing	unexpectedSpaceAfter	Unexpected space after the ':'.
+tests/rules/@stylistic/type-annotation-spacing/property/cases.ts:45:13	@stylistic/type-annotation-spacing	unexpectedSpaceAfter	Unexpected space after the ':'.
+tests/rules/@stylistic/type-annotation-spacing/property/cases.ts:45:22	@stylistic/type-annotation-spacing	unexpectedSpaceAfter	Unexpected space after the '=>'.
+tests/rules/@stylistic/type-annotation-spacing/property/cases.ts:45:22	@stylistic/type-annotation-spacing	expectedSpaceBefore	Expected a space before the '=>'.
+tests/rules/@stylistic/type-annotation-spacing/property/cases.ts:46:18	@stylistic/type-annotation-spacing	unexpectedSpaceBefore	Unexpected space before the ':'.
+tests/rules/@stylistic/type-annotation-spacing/property/cases.ts:46:26	@stylistic/type-annotation-spacing	expectedSpaceBefore	Expected a space before the '=>'.
+tests/rules/@stylistic/type-annotation-spacing/property/cases.ts:47:27	@stylistic/type-annotation-spacing	unexpectedSpaceAfter	Unexpected space after the '=>'.
+tests/rules/@stylistic/type-annotation-spacing/property/cases.ts:48:29	@stylistic/type-annotation-spacing	unexpectedSpaceBefore	Unexpected space before the ':'.
+tests/rules/@stylistic/type-annotation-spacing/property/cases.ts:49:29	@stylistic/type-annotation-spacing	unexpectedSpaceBefore	Unexpected space before the '?:'.
+tests/rules/@stylistic/type-annotation-spacing/property/cases.ts:50:29	@stylistic/type-annotation-spacing	unexpectedSpaceBefore	Unexpected space before the '?:'.
+tests/rules/@stylistic/type-annotation-spacing/property/cases.ts:50:30	@stylistic/type-annotation-spacing	unexpectedSpaceAfter	Unexpected space after the '?:'.
+tests/rules/@stylistic/type-annotation-spacing/property/cases.ts:52:30	@stylistic/type-annotation-spacing	unexpectedSpaceBefore	Unexpected space before the '+?:'.
+tests/rules/@stylistic/type-annotation-spacing/property/cases.ts:53:40	@stylistic/type-annotation-spacing	unexpectedSpaceBefore	Unexpected space before the '-?:'.
+tests/rules/@stylistic/type-annotation-spacing/property/cases.ts:53:42	@stylistic/type-annotation-spacing	unexpectedSpaceAfter	Unexpected space after the '-?:'.
+tests/rules/@stylistic/type-annotation-spacing/property/cases.ts:54:8	@stylistic/type-annotation-spacing	unexpectedSpaceBefore	Unexpected space before the ':'.
+tests/rules/@stylistic/type-annotation-spacing/property/cases.ts:56:8	@stylistic/type-annotation-spacing	unexpectedSpaceAfter	Unexpected space after the ':'.
+tests/rules/@stylistic/type-annotation-spacing/property/cases.ts:56:8	@stylistic/type-annotation-spacing	unexpectedSpaceBefore	Unexpected space before the ':'.
+tests/rules/@stylistic/type-annotation-spacing/property/cases.ts:56:14	@stylistic/type-annotation-spacing	unexpectedSpaceAfter	Unexpected space after the '=>'.
+tests/rules/@stylistic/type-annotation-spacing/property/cases.ts:57:14	@stylistic/type-annotation-spacing	unexpectedSpaceAfter	Unexpected space after the ':'.
+tests/rules/@stylistic/type-annotation-spacing/property/cases.ts:57:25	@stylistic/type-annotation-spacing	unexpectedSpaceBefore	Unexpected space before the ':'.
+tests/rules/@stylistic/type-annotation-spacing/property/cases.ts:58:14	@stylistic/type-annotation-spacing	unexpectedSpaceAfter	Unexpected space after the ':'.
+tests/rules/@stylistic/type-annotation-spacing/property/cases.ts:58:25	@stylistic/type-annotation-spacing	unexpectedSpaceBefore	Unexpected space before the ':'.
+tests/rules/@stylistic/type-annotation-spacing/property/cases.ts:59:18	@stylistic/type-annotation-spacing	unexpectedSpaceBefore	Unexpected space before the ':'.
+tests/rules/@stylistic/type-annotation-spacing/property/cases.ts:59:29	@stylistic/type-annotation-spacing	unexpectedSpaceBefore	Unexpected space before the ':'.
+tests/rules/@stylistic/type-annotation-spacing/property/cases.ts:60:19	@stylistic/type-annotation-spacing	unexpectedSpaceBefore	Unexpected space before the ':'.
+tests/rules/@stylistic/type-annotation-spacing/property/cases.ts:60:23	@stylistic/type-annotation-spacing	expectedSpaceBefore	Expected a space before the ':'.
+tests/rules/@stylistic/type-annotation-spacing/property/cases.ts:60:39	@stylistic/type-annotation-spacing	unexpectedSpaceBefore	Unexpected space before the ':'.
+tests/rules/@stylistic/type-annotation-spacing/property/cases.ts:60:58	@stylistic/type-annotation-spacing	unexpectedSpaceBefore	Unexpected space before the ':'.
+tests/rules/@stylistic/type-annotation-spacing/property/cases.ts:61:23	@stylistic/type-annotation-spacing	unexpectedSpaceBefore	Unexpected space before the ':'.
+tests/rules/@stylistic/type-annotation-spacing/property/cases.ts:61:32	@stylistic/type-annotation-spacing	unexpectedSpaceBefore	Unexpected space before the ':'.
+tests/rules/@stylistic/type-annotation-spacing/property/cases.ts:62:17	@stylistic/type-annotation-spacing	unexpectedSpaceBefore	Unexpected space before the ':'.
+tests/rules/@stylistic/type-annotation-spacing/property/cases.ts:63:22	@stylistic/type-annotation-spacing	unexpectedSpaceAfter	Unexpected space after the ':'.
+tests/rules/@stylistic/type-annotation-spacing/property/cases.ts:63:22	@stylistic/type-annotation-spacing	unexpectedSpaceBefore	Unexpected space before the ':'.
+tests/rules/@stylistic/type-annotation-spacing/property/cases.ts:64:7	@stylistic/type-annotation-spacing	unexpectedSpaceAfter	Unexpected space after the ':'.
+tests/rules/@stylistic/type-annotation-spacing/property/cases.ts:65:8	@stylistic/type-annotation-spacing	unexpectedSpaceAfter	Unexpected space after the ':'.
+tests/rules/@stylistic/type-annotation-spacing/property/cases.ts:65:8	@stylistic/type-annotation-spacing	unexpectedSpaceBefore	Unexpected space before the ':'.
+tests/rules/@stylistic/type-annotation-spacing/property/cases.ts:67:2	@stylistic/type-annotation-spacing	unexpectedSpaceAfter	Unexpected space after the ':'.
+tests/rules/@stylistic/type-annotation-spacing/property/cases.ts:67:2	@stylistic/type-annotation-spacing	unexpectedSpaceBefore	Unexpected space before the ':'.
+tests/rules/@stylistic/type-annotation-spacing/property/cases.ts:68:7	@stylistic/type-annotation-spacing	unexpectedSpaceAfter	Unexpected space after the ':'.
+tests/rules/@stylistic/type-annotation-spacing/property/cases.ts:71:2	@stylistic/type-annotation-spacing	unexpectedSpaceBefore	Unexpected space before the ':'.
+tests/rules/@stylistic/type-annotation-spacing/property/cases.ts:72:18	@stylistic/type-annotation-spacing	unexpectedSpaceBefore	Unexpected space before the ':'.
+tests/rules/@stylistic/type-annotation-spacing/property/cases.ts:72:27	@stylistic/type-annotation-spacing	expectedSpaceAfter	Expected a space after the ':'.
+tests/rules/@stylistic/type-annotation-spacing/property/cases.ts:74:23	@stylistic/type-annotation-spacing	unexpectedSpaceBetween	Unexpected space between the '?' and the ':'.
+tests/rules/@stylistic/type-annotation-spacing/property/cases.ts:74:23	@stylistic/type-annotation-spacing	unexpectedSpaceAfter	Unexpected space after the '?:'.
+tests/rules/@stylistic/type-annotation-spacing/property/cases.ts:74:33	@stylistic/type-annotation-spacing	unexpectedSpaceBefore	Unexpected space before the ':'.
+tests/rules/@stylistic/type-annotation-spacing/property/cases.ts:75:7	@stylistic/type-annotation-spacing	unexpectedSpaceAfter	Unexpected space after the ':'.
+tests/rules/@stylistic/type-annotation-spacing/property/cases.ts:75:13	@stylistic/type-annotation-spacing	expectedSpaceAfter	Expected a space after the ':'.
+tests/rules/@stylistic/type-annotation-spacing/property/cases.ts:75:26	@stylistic/type-annotation-spacing	unexpectedSpaceBetween	Unexpected space between the '?' and the ':'.
+tests/rules/@stylistic/type-annotation-spacing/return-type/cases.ts:2:7	@stylistic/type-annotation-spacing	expectedSpaceAfter	Expected a space after the ':'.
+tests/rules/@stylistic/type-annotation-spacing/return-type/cases.ts:3:8	@stylistic/type-annotation-spacing	unexpectedSpaceBefore	Unexpected space before the ':'.
+tests/rules/@stylistic/type-annotation-spacing/return-type/cases.ts:4:8	@stylistic/type-annotation-spacing	expectedSpaceAfter	Expected a space after the ':'.
+tests/rules/@stylistic/type-annotation-spacing/return-type/cases.ts:4:8	@stylistic/type-annotation-spacing	unexpectedSpaceBefore	Unexpected space before the ':'.
+tests/rules/@stylistic/type-annotation-spacing/return-type/cases.ts:6:10	@stylistic/type-annotation-spacing	unexpectedSpaceBefore	Unexpected space before the ':'.
+tests/rules/@stylistic/type-annotation-spacing/return-type/cases.ts:7:14	@stylistic/type-annotation-spacing	expectedSpaceAfter	Expected a space after the ':'.
+tests/rules/@stylistic/type-annotation-spacing/return-type/cases.ts:7:25	@stylistic/type-annotation-spacing	expectedSpaceAfter	Expected a space after the ':'.
+tests/rules/@stylistic/type-annotation-spacing/return-type/cases.ts:7:25	@stylistic/type-annotation-spacing	unexpectedSpaceBefore	Unexpected space before the ':'.
+tests/rules/@stylistic/type-annotation-spacing/return-type/cases.ts:7:36	@stylistic/type-annotation-spacing	unexpectedSpaceBefore	Unexpected space before the '?:'.
+tests/rules/@stylistic/type-annotation-spacing/return-type/cases.ts:7:51	@stylistic/type-annotation-spacing	unexpectedSpaceBetween	Unexpected space between the '?' and the ':'.
+tests/rules/@stylistic/type-annotation-spacing/return-type/cases.ts:7:51	@stylistic/type-annotation-spacing	expectedSpaceAfter	Expected a space after the '?:'.
+tests/rules/@stylistic/type-annotation-spacing/return-type/cases.ts:7:59	@stylistic/type-annotation-spacing	expectedSpaceAfter	Expected a space after the ':'.
+tests/rules/@stylistic/type-annotation-spacing/return-type/cases.ts:7:59	@stylistic/type-annotation-spacing	expectedSpaceBefore	Expected a space before the ':'.
+tests/rules/@stylistic/type-annotation-spacing/return-type/cases.ts:8:23	@stylistic/type-annotation-spacing	expectedSpaceBefore	Expected a space before the ':'.
+tests/rules/@stylistic/type-annotation-spacing/return-type/cases.ts:9:15	@stylistic/type-annotation-spacing	expectedSpaceAfter	Expected a space after the ':'.
+tests/rules/@stylistic/type-annotation-spacing/return-type/cases.ts:11:24	@stylistic/type-annotation-spacing	expectedSpaceAfter	Expected a space after the ':'.
+tests/rules/@stylistic/type-annotation-spacing/return-type/cases.ts:11:24	@stylistic/type-annotation-spacing	unexpectedSpaceBefore	Unexpected space before the ':'.
+tests/rules/@stylistic/type-annotation-spacing/return-type/cases.ts:11:33	@stylistic/type-annotation-spacing	expectedSpaceAfter	Expected a space after the ':'.
+tests/rules/@stylistic/type-annotation-spacing/return-type/cases.ts:11:33	@stylistic/type-annotation-spacing	unexpectedSpaceBefore	Unexpected space before the ':'.
+tests/rules/@stylistic/type-annotation-spacing/return-type/cases.ts:12:14	@stylistic/type-annotation-spacing	expectedSpaceAfter	Expected a space after the ':'.
+tests/rules/@stylistic/type-annotation-spacing/return-type/cases.ts:12:22	@stylistic/type-annotation-spacing	expectedSpaceAfter	Expected a space after the ':'.
+tests/rules/@stylistic/type-annotation-spacing/return-type/cases.ts:12:22	@stylistic/type-annotation-spacing	expectedSpaceBefore	Expected a space before the ':'.
+tests/rules/@stylistic/type-annotation-spacing/return-type/cases.ts:13:21	@stylistic/type-annotation-spacing	expectedSpaceAfter	Expected a space after the ':'.
+tests/rules/@stylistic/type-annotation-spacing/return-type/cases.ts:13:21	@stylistic/type-annotation-spacing	unexpectedSpaceBefore	Unexpected space before the ':'.
+tests/rules/@stylistic/type-annotation-spacing/return-type/cases.ts:15:4	@stylistic/type-annotation-spacing	expectedSpaceAfter	Expected a space after the ':'.
+tests/rules/@stylistic/type-annotation-spacing/return-type/cases.ts:16:5	@stylistic/type-annotation-spacing	expectedSpaceAfter	Expected a space after the ':'.
+tests/rules/@stylistic/type-annotation-spacing/return-type/cases.ts:16:5	@stylistic/type-annotation-spacing	unexpectedSpaceBefore	Unexpected space before the ':'.
+tests/rules/@stylistic/type-annotation-spacing/return-type/cases.ts:17:5	@stylistic/type-annotation-spacing	unexpectedSpaceBefore	Unexpected space before the '?:'.
+tests/rules/@stylistic/type-annotation-spacing/return-type/cases.ts:17:6	@stylistic/type-annotation-spacing	expectedSpaceAfter	Expected a space after the '?:'.
+tests/rules/@stylistic/type-annotation-spacing/return-type/cases.ts:18:6	@stylistic/type-annotation-spacing	unexpectedSpaceBetween	Unexpected space between the '?' and the ':'.
+tests/rules/@stylistic/type-annotation-spacing/return-type/cases.ts:19:12	@stylistic/type-annotation-spacing	unexpectedSpaceBefore	Unexpected space before the ':'.
+tests/rules/@stylistic/type-annotation-spacing/return-type/cases.ts:20:6	@stylistic/type-annotation-spacing	expectedSpaceAfter	Expected a space after the ':'.
+tests/rules/@stylistic/type-annotation-spacing/return-type/cases.ts:20:15	@stylistic/type-annotation-spacing	expectedSpaceAfter	Expected a space after the ':'.
+tests/rules/@stylistic/type-annotation-spacing/return-type/cases.ts:20:15	@stylistic/type-annotation-spacing	unexpectedSpaceBefore	Unexpected space before the ':'.
+tests/rules/@stylistic/type-annotation-spacing/return-type/cases.ts:21:7	@stylistic/type-annotation-spacing	unexpectedSpaceBefore	Unexpected space before the ':'.
+tests/rules/@stylistic/type-annotation-spacing/return-type/cases.ts:22:16	@stylistic/type-annotation-spacing	expectedSpaceAfter	Expected a space after the ':'.
+tests/rules/@stylistic/type-annotation-spacing/return-type/cases.ts:22:16	@stylistic/type-annotation-spacing	unexpectedSpaceBefore	Unexpected space before the ':'.
+tests/rules/@stylistic/type-annotation-spacing/return-type/cases.ts:24:14	@stylistic/type-annotation-spacing	expectedSpaceAfter	Expected a space after the ':'.
+tests/rules/@stylistic/type-annotation-spacing/return-type/cases.ts:24:14	@stylistic/type-annotation-spacing	unexpectedSpaceBefore	Unexpected space before the ':'.
+tests/rules/@stylistic/type-annotation-spacing/return-type/cases.ts:25:10	@stylistic/type-annotation-spacing	expectedSpaceAfter	Expected a space after the ':'.
+tests/rules/@stylistic/type-annotation-spacing/return-type/cases.ts:25:10	@stylistic/type-annotation-spacing	unexpectedSpaceBefore	Unexpected space before the ':'.
+tests/rules/@stylistic/type-annotation-spacing/return-type/cases.ts:26:14	@stylistic/type-annotation-spacing	expectedSpaceAfter	Expected a space after the ':'.
+tests/rules/@stylistic/type-annotation-spacing/return-type/cases.ts:26:14	@stylistic/type-annotation-spacing	unexpectedSpaceBefore	Unexpected space before the ':'.
+tests/rules/@stylistic/type-annotation-spacing/return-type/cases.ts:29:14	@stylistic/type-annotation-spacing	expectedSpaceAfter	Expected a space after the ':'.
+tests/rules/@stylistic/type-annotation-spacing/return-type/cases.ts:29:14	@stylistic/type-annotation-spacing	unexpectedSpaceBefore	Unexpected space before the ':'.
+tests/rules/@stylistic/type-annotation-spacing/return-type/cases.ts:30:16	@stylistic/type-annotation-spacing	expectedSpaceAfter	Expected a space after the ':'.
+tests/rules/@stylistic/type-annotation-spacing/return-type/cases.ts:30:16	@stylistic/type-annotation-spacing	unexpectedSpaceBefore	Unexpected space before the ':'.
+tests/rules/@stylistic/type-annotation-spacing/return-type/cases.ts:31:7	@stylistic/type-annotation-spacing	expectedSpaceAfter	Expected a space after the ':'.
+tests/rules/@stylistic/type-annotation-spacing/return-type/cases.ts:31:7	@stylistic/type-annotation-spacing	unexpectedSpaceBefore	Unexpected space before the ':'.
+tests/rules/@stylistic/type-annotation-spacing/return-type/cases.ts:31:16	@stylistic/type-annotation-spacing	expectedSpaceAfter	Expected a space after the ':'.
+tests/rules/@stylistic/type-annotation-spacing/return-type/cases.ts:31:16	@stylistic/type-annotation-spacing	unexpectedSpaceBefore	Unexpected space before the ':'.
+tests/rules/@stylistic/type-annotation-spacing/return-type/cases.ts:34:4	@stylistic/type-annotation-spacing	expectedSpaceAfter	Expected a space after the ':'.
+tests/rules/@stylistic/type-annotation-spacing/return-type/cases.ts:35:5	@stylistic/type-annotation-spacing	unexpectedSpaceBefore	Unexpected space before the '?:'.
+tests/rules/@stylistic/type-annotation-spacing/return-type/cases.ts:36:7	@stylistic/type-annotation-spacing	expectedSpaceAfter	Expected a space after the ':'.
+tests/rules/@stylistic/type-annotation-spacing/return-type/cases.ts:36:7	@stylistic/type-annotation-spacing	unexpectedSpaceBefore	Unexpected space before the ':'.
+tests/rules/@stylistic/type-annotation-spacing/return-type/cases.ts:36:16	@stylistic/type-annotation-spacing	expectedSpaceAfter	Expected a space after the ':'.
+tests/rules/@stylistic/type-annotation-spacing/return-type/cases.ts:36:16	@stylistic/type-annotation-spacing	unexpectedSpaceBefore	Unexpected space before the ':'.
+tests/rules/@stylistic/type-annotation-spacing/return-type/cases.ts:37:9	@stylistic/type-annotation-spacing	expectedSpaceAfter	Expected a space after the ':'.
+tests/rules/@stylistic/type-annotation-spacing/return-type/cases.ts:37:9	@stylistic/type-annotation-spacing	unexpectedSpaceBefore	Unexpected space before the ':'.
+tests/rules/@stylistic/type-annotation-spacing/return-type/cases.ts:38:5	@stylistic/type-annotation-spacing	expectedSpaceAfter	Expected a space after the ':'.
+tests/rules/@stylistic/type-annotation-spacing/return-type/cases.ts:38:5	@stylistic/type-annotation-spacing	unexpectedSpaceBefore	Unexpected space before the ':'.
+tests/rules/@stylistic/type-annotation-spacing/return-type/cases.ts:38:14	@stylistic/type-annotation-spacing	expectedSpaceAfter	Expected a space after the ':'.
+tests/rules/@stylistic/type-annotation-spacing/return-type/cases.ts:38:14	@stylistic/type-annotation-spacing	unexpectedSpaceBefore	Unexpected space before the ':'.
+tests/rules/@stylistic/type-annotation-spacing/return-type/cases.ts:39:9	@stylistic/type-annotation-spacing	expectedSpaceAfter	Expected a space after the ':'.
+tests/rules/@stylistic/type-annotation-spacing/return-type/cases.ts:39:9	@stylistic/type-annotation-spacing	unexpectedSpaceBefore	Unexpected space before the ':'.
+tests/rules/@stylistic/type-annotation-spacing/return-type/cases.ts:39:18	@stylistic/type-annotation-spacing	expectedSpaceAfter	Expected a space after the ':'.
+tests/rules/@stylistic/type-annotation-spacing/return-type/cases.ts:39:18	@stylistic/type-annotation-spacing	unexpectedSpaceBefore	Unexpected space before the ':'.
+tests/rules/@stylistic/type-annotation-spacing/return-type/cases.ts:40:7	@stylistic/type-annotation-spacing	expectedSpaceAfter	Expected a space after the ':'.
+tests/rules/@stylistic/type-annotation-spacing/return-type/cases.ts:40:7	@stylistic/type-annotation-spacing	unexpectedSpaceBefore	Unexpected space before the ':'.
+tests/rules/@stylistic/type-annotation-spacing/return-type/cases.ts:40:16	@stylistic/type-annotation-spacing	expectedSpaceAfter	Expected a space after the ':'.
+tests/rules/@stylistic/type-annotation-spacing/return-type/cases.ts:40:16	@stylistic/type-annotation-spacing	unexpectedSpaceBefore	Unexpected space before the ':'.
+tests/rules/@stylistic/type-annotation-spacing/return-type/cases.ts:41:14	@stylistic/type-annotation-spacing	expectedSpaceAfter	Expected a space after the ':'.
+tests/rules/@stylistic/type-annotation-spacing/return-type/cases.ts:41:14	@stylistic/type-annotation-spacing	unexpectedSpaceBefore	Unexpected space before the ':'.
+tests/rules/@stylistic/type-annotation-spacing/return-type/cases.ts:43:14	@stylistic/type-annotation-spacing	expectedSpaceAfter	Expected a space after the ':'.
+tests/rules/@stylistic/type-annotation-spacing/return-type/cases.ts:43:14	@stylistic/type-annotation-spacing	unexpectedSpaceBefore	Unexpected space before the ':'.
+tests/rules/@stylistic/type-annotation-spacing/return-type/cases.ts:43:22	@stylistic/type-annotation-spacing	expectedSpaceAfter	Expected a space after the '=>'.
+tests/rules/@stylistic/type-annotation-spacing/return-type/cases.ts:43:22	@stylistic/type-annotation-spacing	expectedSpaceBefore	Expected a space before the '=>'.
+tests/rules/@stylistic/type-annotation-spacing/return-type/cases.ts:44:23	@stylistic/type-annotation-spacing	expectedSpaceAfter	Expected a space after the '=>'.
+tests/rules/@stylistic/type-annotation-spacing/return-type/cases.ts:45:22	@stylistic/type-annotation-spacing	expectedSpaceBefore	Expected a space before the '=>'.
+tests/rules/@stylistic/type-annotation-spacing/return-type/cases.ts:46:18	@stylistic/type-annotation-spacing	expectedSpaceAfter	Expected a space after the ':'.
+tests/rules/@stylistic/type-annotation-spacing/return-type/cases.ts:46:18	@stylistic/type-annotation-spacing	unexpectedSpaceBefore	Unexpected space before the ':'.
+tests/rules/@stylistic/type-annotation-spacing/return-type/cases.ts:46:26	@stylistic/type-annotation-spacing	expectedSpaceAfter	Expected a space after the '=>'.
+tests/rules/@stylistic/type-annotation-spacing/return-type/cases.ts:46:26	@stylistic/type-annotation-spacing	expectedSpaceBefore	Expected a space before the '=>'.
+tests/rules/@stylistic/type-annotation-spacing/return-type/cases.ts:48:29	@stylistic/type-annotation-spacing	expectedSpaceAfter	Expected a space after the ':'.
+tests/rules/@stylistic/type-annotation-spacing/return-type/cases.ts:48:29	@stylistic/type-annotation-spacing	unexpectedSpaceBefore	Unexpected space before the ':'.
+tests/rules/@stylistic/type-annotation-spacing/return-type/cases.ts:49:29	@stylistic/type-annotation-spacing	unexpectedSpaceBefore	Unexpected space before the '?:'.
+tests/rules/@stylistic/type-annotation-spacing/return-type/cases.ts:49:30	@stylistic/type-annotation-spacing	expectedSpaceAfter	Expected a space after the '?:'.
+tests/rules/@stylistic/type-annotation-spacing/return-type/cases.ts:50:29	@stylistic/type-annotation-spacing	unexpectedSpaceBefore	Unexpected space before the '?:'.
+tests/rules/@stylistic/type-annotation-spacing/return-type/cases.ts:51:30	@stylistic/type-annotation-spacing	expectedSpaceAfter	Expected a space after the '-?:'.
+tests/rules/@stylistic/type-annotation-spacing/return-type/cases.ts:52:30	@stylistic/type-annotation-spacing	unexpectedSpaceBefore	Unexpected space before the '+?:'.
+tests/rules/@stylistic/type-annotation-spacing/return-type/cases.ts:52:32	@stylistic/type-annotation-spacing	expectedSpaceAfter	Expected a space after the '+?:'.
+tests/rules/@stylistic/type-annotation-spacing/return-type/cases.ts:53:40	@stylistic/type-annotation-spacing	unexpectedSpaceBefore	Unexpected space before the '-?:'.
+tests/rules/@stylistic/type-annotation-spacing/return-type/cases.ts:54:8	@stylistic/type-annotation-spacing	expectedSpaceAfter	Expected a space after the ':'.
+tests/rules/@stylistic/type-annotation-spacing/return-type/cases.ts:54:8	@stylistic/type-annotation-spacing	unexpectedSpaceBefore	Unexpected space before the ':'.
+tests/rules/@stylistic/type-annotation-spacing/return-type/cases.ts:55:7	@stylistic/type-annotation-spacing	expectedSpaceAfter	Expected a space after the ':'.
+tests/rules/@stylistic/type-annotation-spacing/return-type/cases.ts:56:8	@stylistic/type-annotation-spacing	unexpectedSpaceBefore	Unexpected space before the ':'.
+tests/rules/@stylistic/type-annotation-spacing/return-type/cases.ts:57:25	@stylistic/type-annotation-spacing	expectedSpaceAfter	Expected a space after the ':'.
+tests/rules/@stylistic/type-annotation-spacing/return-type/cases.ts:58:25	@stylistic/type-annotation-spacing	expectedSpaceAfter	Expected a space after the ':'.
+tests/rules/@stylistic/type-annotation-spacing/return-type/cases.ts:59:18	@stylistic/type-annotation-spacing	expectedSpaceAfter	Expected a space after the ':'.
+tests/rules/@stylistic/type-annotation-spacing/return-type/cases.ts:59:18	@stylistic/type-annotation-spacing	unexpectedSpaceBefore	Unexpected space before the ':'.
+tests/rules/@stylistic/type-annotation-spacing/return-type/cases.ts:59:29	@stylistic/type-annotation-spacing	expectedSpaceAfter	Expected a space after the ':'.
+tests/rules/@stylistic/type-annotation-spacing/return-type/cases.ts:59:29	@stylistic/type-annotation-spacing	unexpectedSpaceBefore	Unexpected space before the ':'.
+tests/rules/@stylistic/type-annotation-spacing/return-type/cases.ts:60:19	@stylistic/type-annotation-spacing	expectedSpaceAfter	Expected a space after the ':'.
+tests/rules/@stylistic/type-annotation-spacing/return-type/cases.ts:60:19	@stylistic/type-annotation-spacing	unexpectedSpaceBefore	Unexpected space before the ':'.
+tests/rules/@stylistic/type-annotation-spacing/return-type/cases.ts:60:39	@stylistic/type-annotation-spacing	expectedSpaceAfter	Expected a space after the ':'.
+tests/rules/@stylistic/type-annotation-spacing/return-type/cases.ts:60:39	@stylistic/type-annotation-spacing	unexpectedSpaceBefore	Unexpected space before the ':'.
+tests/rules/@stylistic/type-annotation-spacing/return-type/cases.ts:60:58	@stylistic/type-annotation-spacing	expectedSpaceAfter	Expected a space after the ':'.
+tests/rules/@stylistic/type-annotation-spacing/return-type/cases.ts:60:58	@stylistic/type-annotation-spacing	unexpectedSpaceBefore	Unexpected space before the ':'.
+tests/rules/@stylistic/type-annotation-spacing/return-type/cases.ts:61:23	@stylistic/type-annotation-spacing	expectedSpaceAfter	Expected a space after the ':'.
+tests/rules/@stylistic/type-annotation-spacing/return-type/cases.ts:61:23	@stylistic/type-annotation-spacing	unexpectedSpaceBefore	Unexpected space before the ':'.
+tests/rules/@stylistic/type-annotation-spacing/return-type/cases.ts:61:32	@stylistic/type-annotation-spacing	expectedSpaceAfter	Expected a space after the ':'.
+tests/rules/@stylistic/type-annotation-spacing/return-type/cases.ts:61:32	@stylistic/type-annotation-spacing	unexpectedSpaceBefore	Unexpected space before the ':'.
+tests/rules/@stylistic/type-annotation-spacing/return-type/cases.ts:62:17	@stylistic/type-annotation-spacing	expectedSpaceAfter	Expected a space after the ':'.
+tests/rules/@stylistic/type-annotation-spacing/return-type/cases.ts:62:17	@stylistic/type-annotation-spacing	unexpectedSpaceBefore	Unexpected space before the ':'.
+tests/rules/@stylistic/type-annotation-spacing/return-type/cases.ts:63:22	@stylistic/type-annotation-spacing	unexpectedSpaceBefore	Unexpected space before the ':'.
+tests/rules/@stylistic/type-annotation-spacing/return-type/cases.ts:65:8	@stylistic/type-annotation-spacing	unexpectedSpaceBefore	Unexpected space before the ':'.
+tests/rules/@stylistic/type-annotation-spacing/return-type/cases.ts:67:2	@stylistic/type-annotation-spacing	unexpectedSpaceBefore	Unexpected space before the ':'.
+tests/rules/@stylistic/type-annotation-spacing/return-type/cases.ts:71:2	@stylistic/type-annotation-spacing	expectedSpaceAfter	Expected a space after the ':'.
+tests/rules/@stylistic/type-annotation-spacing/return-type/cases.ts:71:2	@stylistic/type-annotation-spacing	unexpectedSpaceBefore	Unexpected space before the ':'.
+tests/rules/@stylistic/type-annotation-spacing/return-type/cases.ts:72:18	@stylistic/type-annotation-spacing	expectedSpaceAfter	Expected a space after the ':'.
+tests/rules/@stylistic/type-annotation-spacing/return-type/cases.ts:72:18	@stylistic/type-annotation-spacing	unexpectedSpaceBefore	Unexpected space before the ':'.
+tests/rules/@stylistic/type-annotation-spacing/return-type/cases.ts:72:27	@stylistic/type-annotation-spacing	expectedSpaceAfter	Expected a space after the ':'.
+tests/rules/@stylistic/type-annotation-spacing/return-type/cases.ts:72:27	@stylistic/type-annotation-spacing	unexpectedSpaceBefore	Unexpected space before the ':'.
+tests/rules/@stylistic/type-annotation-spacing/return-type/cases.ts:74:23	@stylistic/type-annotation-spacing	unexpectedSpaceBetween	Unexpected space between the '?' and the ':'.
+tests/rules/@stylistic/type-annotation-spacing/return-type/cases.ts:74:33	@stylistic/type-annotation-spacing	expectedSpaceAfter	Expected a space after the ':'.
+tests/rules/@stylistic/type-annotation-spacing/return-type/cases.ts:75:13	@stylistic/type-annotation-spacing	expectedSpaceAfter	Expected a space after the ':'.
+tests/rules/@stylistic/type-annotation-spacing/return-type/cases.ts:75:13	@stylistic/type-annotation-spacing	unexpectedSpaceBefore	Unexpected space before the ':'.
+tests/rules/@stylistic/type-annotation-spacing/return-type/cases.ts:75:24	@stylistic/type-annotation-spacing	unexpectedSpaceBefore	Unexpected space before the '?:'.
+tests/rules/@stylistic/type-annotation-spacing/return-type/cases.ts:75:26	@stylistic/type-annotation-spacing	unexpectedSpaceBetween	Unexpected space between the '?' and the ':'.
+tests/rules/@stylistic/type-annotation-spacing/variable/cases.ts:2:7	@stylistic/type-annotation-spacing	expectedSpaceBefore	Expected a space before the ':'.
+tests/rules/@stylistic/type-annotation-spacing/variable/cases.ts:3:8	@stylistic/type-annotation-spacing	unexpectedSpaceAfter	Unexpected space after the ':'.
+tests/rules/@stylistic/type-annotation-spacing/variable/cases.ts:5:7	@stylistic/type-annotation-spacing	unexpectedSpaceAfter	Unexpected space after the ':'.
+tests/rules/@stylistic/type-annotation-spacing/variable/cases.ts:5:7	@stylistic/type-annotation-spacing	expectedSpaceBefore	Expected a space before the ':'.
+tests/rules/@stylistic/type-annotation-spacing/variable/cases.ts:6:10	@stylistic/type-annotation-spacing	unexpectedSpaceAfter	Unexpected space after the ':'.
+tests/rules/@stylistic/type-annotation-spacing/variable/cases.ts:7:25	@stylistic/type-annotation-spacing	unexpectedSpaceBefore	Unexpected space before the ':'.
+tests/rules/@stylistic/type-annotation-spacing/variable/cases.ts:7:36	@stylistic/type-annotation-spacing	unexpectedSpaceBefore	Unexpected space before the '?:'.
+tests/rules/@stylistic/type-annotation-spacing/variable/cases.ts:7:37	@stylistic/type-annotation-spacing	unexpectedSpaceAfter	Unexpected space after the '?:'.
+tests/rules/@stylistic/type-annotation-spacing/variable/cases.ts:7:51	@stylistic/type-annotation-spacing	unexpectedSpaceBetween	Unexpected space between the '?' and the ':'.
+tests/rules/@stylistic/type-annotation-spacing/variable/cases.ts:8:14	@stylistic/type-annotation-spacing	unexpectedSpaceAfter	Unexpected space after the ':'.
+tests/rules/@stylistic/type-annotation-spacing/variable/cases.ts:8:23	@stylistic/type-annotation-spacing	unexpectedSpaceAfter	Unexpected space after the ':'.
+tests/rules/@stylistic/type-annotation-spacing/variable/cases.ts:9:15	@stylistic/type-annotation-spacing	unexpectedSpaceBefore	Unexpected space before the ':'.
+tests/rules/@stylistic/type-annotation-spacing/variable/cases.ts:10:16	@stylistic/type-annotation-spacing	unexpectedSpaceAfter	Unexpected space after the ':'.
+tests/rules/@stylistic/type-annotation-spacing/variable/cases.ts:10:16	@stylistic/type-annotation-spacing	unexpectedSpaceBefore	Unexpected space before the ':'.
+tests/rules/@stylistic/type-annotation-spacing/variable/cases.ts:11:24	@stylistic/type-annotation-spacing	unexpectedSpaceBefore	Unexpected space before the ':'.
+tests/rules/@stylistic/type-annotation-spacing/variable/cases.ts:11:33	@stylistic/type-annotation-spacing	unexpectedSpaceBefore	Unexpected space before the ':'.
+tests/rules/@stylistic/type-annotation-spacing/variable/cases.ts:13:21	@stylistic/type-annotation-spacing	unexpectedSpaceBefore	Unexpected space before the ':'.
+tests/rules/@stylistic/type-annotation-spacing/variable/cases.ts:13:30	@stylistic/type-annotation-spacing	unexpectedSpaceAfter	Unexpected space after the ':'.
+tests/rules/@stylistic/type-annotation-spacing/variable/cases.ts:13:30	@stylistic/type-annotation-spacing	unexpectedSpaceBefore	Unexpected space before the ':'.
+tests/rules/@stylistic/type-annotation-spacing/variable/cases.ts:16:5	@stylistic/type-annotation-spacing	unexpectedSpaceBefore	Unexpected space before the ':'.
+tests/rules/@stylistic/type-annotation-spacing/variable/cases.ts:17:5	@stylistic/type-annotation-spacing	unexpectedSpaceBefore	Unexpected space before the '?:'.
+tests/rules/@stylistic/type-annotation-spacing/variable/cases.ts:18:6	@stylistic/type-annotation-spacing	unexpectedSpaceBetween	Unexpected space between the '?' and the ':'.
+tests/rules/@stylistic/type-annotation-spacing/variable/cases.ts:18:6	@stylistic/type-annotation-spacing	unexpectedSpaceAfter	Unexpected space after the '?:'.
+tests/rules/@stylistic/type-annotation-spacing/variable/cases.ts:19:12	@stylistic/type-annotation-spacing	unexpectedSpaceAfter	Unexpected space after the ':'.
+tests/rules/@stylistic/type-annotation-spacing/variable/cases.ts:19:12	@stylistic/type-annotation-spacing	unexpectedSpaceBefore	Unexpected space before the ':'.
+tests/rules/@stylistic/type-annotation-spacing/variable/cases.ts:20:15	@stylistic/type-annotation-spacing	unexpectedSpaceBefore	Unexpected space before the ':'.
+tests/rules/@stylistic/type-annotation-spacing/variable/cases.ts:21:7	@stylistic/type-annotation-spacing	unexpectedSpaceAfter	Unexpected space after the ':'.
+tests/rules/@stylistic/type-annotation-spacing/variable/cases.ts:21:7	@stylistic/type-annotation-spacing	unexpectedSpaceBefore	Unexpected space before the ':'.
+tests/rules/@stylistic/type-annotation-spacing/variable/cases.ts:22:16	@stylistic/type-annotation-spacing	unexpectedSpaceBefore	Unexpected space before the ':'.
+tests/rules/@stylistic/type-annotation-spacing/variable/cases.ts:23:15	@stylistic/type-annotation-spacing	unexpectedSpaceAfter	Unexpected space after the ':'.
+tests/rules/@stylistic/type-annotation-spacing/variable/cases.ts:24:14	@stylistic/type-annotation-spacing	unexpectedSpaceBefore	Unexpected space before the ':'.
+tests/rules/@stylistic/type-annotation-spacing/variable/cases.ts:25:10	@stylistic/type-annotation-spacing	unexpectedSpaceBefore	Unexpected space before the ':'.
+tests/rules/@stylistic/type-annotation-spacing/variable/cases.ts:26:14	@stylistic/type-annotation-spacing	unexpectedSpaceBefore	Unexpected space before the ':'.
+tests/rules/@stylistic/type-annotation-spacing/variable/cases.ts:29:14	@stylistic/type-annotation-spacing	unexpectedSpaceBefore	Unexpected space before the ':'.
+tests/rules/@stylistic/type-annotation-spacing/variable/cases.ts:30:16	@stylistic/type-annotation-spacing	unexpectedSpaceBefore	Unexpected space before the ':'.
+tests/rules/@stylistic/type-annotation-spacing/variable/cases.ts:31:7	@stylistic/type-annotation-spacing	unexpectedSpaceBefore	Unexpected space before the ':'.
+tests/rules/@stylistic/type-annotation-spacing/variable/cases.ts:31:16	@stylistic/type-annotation-spacing	unexpectedSpaceBefore	Unexpected space before the ':'.
+tests/rules/@stylistic/type-annotation-spacing/variable/cases.ts:35:5	@stylistic/type-annotation-spacing	unexpectedSpaceBefore	Unexpected space before the '?:'.
+tests/rules/@stylistic/type-annotation-spacing/variable/cases.ts:35:6	@stylistic/type-annotation-spacing	unexpectedSpaceAfter	Unexpected space after the '?:'.
+tests/rules/@stylistic/type-annotation-spacing/variable/cases.ts:36:7	@stylistic/type-annotation-spacing	unexpectedSpaceBefore	Unexpected space before the ':'.
+tests/rules/@stylistic/type-annotation-spacing/variable/cases.ts:36:16	@stylistic/type-annotation-spacing	unexpectedSpaceBefore	Unexpected space before the ':'.
+tests/rules/@stylistic/type-annotation-spacing/variable/cases.ts:37:9	@stylistic/type-annotation-spacing	unexpectedSpaceBefore	Unexpected space before the ':'.
+tests/rules/@stylistic/type-annotation-spacing/variable/cases.ts:38:5	@stylistic/type-annotation-spacing	unexpectedSpaceBefore	Unexpected space before the ':'.
+tests/rules/@stylistic/type-annotation-spacing/variable/cases.ts:38:14	@stylistic/type-annotation-spacing	unexpectedSpaceBefore	Unexpected space before the ':'.
+tests/rules/@stylistic/type-annotation-spacing/variable/cases.ts:39:9	@stylistic/type-annotation-spacing	unexpectedSpaceBefore	Unexpected space before the ':'.
+tests/rules/@stylistic/type-annotation-spacing/variable/cases.ts:39:18	@stylistic/type-annotation-spacing	unexpectedSpaceBefore	Unexpected space before the ':'.
+tests/rules/@stylistic/type-annotation-spacing/variable/cases.ts:40:7	@stylistic/type-annotation-spacing	unexpectedSpaceBefore	Unexpected space before the ':'.
+tests/rules/@stylistic/type-annotation-spacing/variable/cases.ts:40:16	@stylistic/type-annotation-spacing	unexpectedSpaceBefore	Unexpected space before the ':'.
+tests/rules/@stylistic/type-annotation-spacing/variable/cases.ts:41:14	@stylistic/type-annotation-spacing	unexpectedSpaceBefore	Unexpected space before the ':'.
+tests/rules/@stylistic/type-annotation-spacing/variable/cases.ts:43:14	@stylistic/type-annotation-spacing	unexpectedSpaceBefore	Unexpected space before the ':'.
+tests/rules/@stylistic/type-annotation-spacing/variable/cases.ts:43:22	@stylistic/type-annotation-spacing	expectedSpaceAfter	Expected a space after the '=>'.
+tests/rules/@stylistic/type-annotation-spacing/variable/cases.ts:43:22	@stylistic/type-annotation-spacing	expectedSpaceBefore	Expected a space before the '=>'.
+tests/rules/@stylistic/type-annotation-spacing/variable/cases.ts:44:13	@stylistic/type-annotation-spacing	unexpectedSpaceAfter	Unexpected space after the ':'.
+tests/rules/@stylistic/type-annotation-spacing/variable/cases.ts:44:23	@stylistic/type-annotation-spacing	expectedSpaceAfter	Expected a space after the '=>'.
+tests/rules/@stylistic/type-annotation-spacing/variable/cases.ts:45:13	@stylistic/type-annotation-spacing	unexpectedSpaceAfter	Unexpected space after the ':'.
+tests/rules/@stylistic/type-annotation-spacing/variable/cases.ts:45:22	@stylistic/type-annotation-spacing	expectedSpaceBefore	Expected a space before the '=>'.
+tests/rules/@stylistic/type-annotation-spacing/variable/cases.ts:46:18	@stylistic/type-annotation-spacing	unexpectedSpaceBefore	Unexpected space before the ':'.
+tests/rules/@stylistic/type-annotation-spacing/variable/cases.ts:46:26	@stylistic/type-annotation-spacing	expectedSpaceAfter	Expected a space after the '=>'.
+tests/rules/@stylistic/type-annotation-spacing/variable/cases.ts:46:26	@stylistic/type-annotation-spacing	expectedSpaceBefore	Expected a space before the '=>'.
+tests/rules/@stylistic/type-annotation-spacing/variable/cases.ts:48:29	@stylistic/type-annotation-spacing	unexpectedSpaceBefore	Unexpected space before the ':'.
+tests/rules/@stylistic/type-annotation-spacing/variable/cases.ts:49:29	@stylistic/type-annotation-spacing	unexpectedSpaceBefore	Unexpected space before the '?:'.
+tests/rules/@stylistic/type-annotation-spacing/variable/cases.ts:50:29	@stylistic/type-annotation-spacing	unexpectedSpaceBefore	Unexpected space before the '?:'.
+tests/rules/@stylistic/type-annotation-spacing/variable/cases.ts:50:30	@stylistic/type-annotation-spacing	unexpectedSpaceAfter	Unexpected space after the '?:'.
+tests/rules/@stylistic/type-annotation-spacing/variable/cases.ts:52:30	@stylistic/type-annotation-spacing	unexpectedSpaceBefore	Unexpected space before the '+?:'.
+tests/rules/@stylistic/type-annotation-spacing/variable/cases.ts:53:40	@stylistic/type-annotation-spacing	unexpectedSpaceBefore	Unexpected space before the '-?:'.
+tests/rules/@stylistic/type-annotation-spacing/variable/cases.ts:53:42	@stylistic/type-annotation-spacing	unexpectedSpaceAfter	Unexpected space after the '-?:'.
+tests/rules/@stylistic/type-annotation-spacing/variable/cases.ts:55:7	@stylistic/type-annotation-spacing	expectedSpaceBefore	Expected a space before the ':'.
+tests/rules/@stylistic/type-annotation-spacing/variable/cases.ts:56:8	@stylistic/type-annotation-spacing	unexpectedSpaceAfter	Unexpected space after the ':'.
+tests/rules/@stylistic/type-annotation-spacing/variable/cases.ts:57:14	@stylistic/type-annotation-spacing	unexpectedSpaceAfter	Unexpected space after the ':'.
+tests/rules/@stylistic/type-annotation-spacing/variable/cases.ts:57:25	@stylistic/type-annotation-spacing	unexpectedSpaceBefore	Unexpected space before the ':'.
+tests/rules/@stylistic/type-annotation-spacing/variable/cases.ts:58:14	@stylistic/type-annotation-spacing	unexpectedSpaceAfter	Unexpected space after the ':'.
+tests/rules/@stylistic/type-annotation-spacing/variable/cases.ts:58:25	@stylistic/type-annotation-spacing	unexpectedSpaceBefore	Unexpected space before the ':'.
+tests/rules/@stylistic/type-annotation-spacing/variable/cases.ts:59:18	@stylistic/type-annotation-spacing	unexpectedSpaceBefore	Unexpected space before the ':'.
+tests/rules/@stylistic/type-annotation-spacing/variable/cases.ts:59:29	@stylistic/type-annotation-spacing	unexpectedSpaceBefore	Unexpected space before the ':'.
+tests/rules/@stylistic/type-annotation-spacing/variable/cases.ts:60:19	@stylistic/type-annotation-spacing	unexpectedSpaceBefore	Unexpected space before the ':'.
+tests/rules/@stylistic/type-annotation-spacing/variable/cases.ts:60:23	@stylistic/type-annotation-spacing	unexpectedSpaceAfter	Unexpected space after the ':'.
+tests/rules/@stylistic/type-annotation-spacing/variable/cases.ts:60:39	@stylistic/type-annotation-spacing	unexpectedSpaceBefore	Unexpected space before the ':'.
+tests/rules/@stylistic/type-annotation-spacing/variable/cases.ts:60:58	@stylistic/type-annotation-spacing	unexpectedSpaceBefore	Unexpected space before the ':'.
+tests/rules/@stylistic/type-annotation-spacing/variable/cases.ts:61:23	@stylistic/type-annotation-spacing	unexpectedSpaceBefore	Unexpected space before the ':'.
+tests/rules/@stylistic/type-annotation-spacing/variable/cases.ts:61:32	@stylistic/type-annotation-spacing	unexpectedSpaceBefore	Unexpected space before the ':'.
+tests/rules/@stylistic/type-annotation-spacing/variable/cases.ts:62:17	@stylistic/type-annotation-spacing	unexpectedSpaceBefore	Unexpected space before the ':'.
+tests/rules/@stylistic/type-annotation-spacing/variable/cases.ts:63:22	@stylistic/type-annotation-spacing	unexpectedSpaceAfter	Unexpected space after the ':'.
+tests/rules/@stylistic/type-annotation-spacing/variable/cases.ts:64:7	@stylistic/type-annotation-spacing	unexpectedSpaceAfter	Unexpected space after the ':'.
+tests/rules/@stylistic/type-annotation-spacing/variable/cases.ts:64:7	@stylistic/type-annotation-spacing	expectedSpaceBefore	Expected a space before the ':'.
+tests/rules/@stylistic/type-annotation-spacing/variable/cases.ts:65:8	@stylistic/type-annotation-spacing	unexpectedSpaceAfter	Unexpected space after the ':'.
+tests/rules/@stylistic/type-annotation-spacing/variable/cases.ts:67:2	@stylistic/type-annotation-spacing	unexpectedSpaceAfter	Unexpected space after the ':'.
+tests/rules/@stylistic/type-annotation-spacing/variable/cases.ts:68:7	@stylistic/type-annotation-spacing	unexpectedSpaceAfter	Unexpected space after the ':'.
+tests/rules/@stylistic/type-annotation-spacing/variable/cases.ts:68:7	@stylistic/type-annotation-spacing	expectedSpaceBefore	Expected a space before the ':'.
+tests/rules/@stylistic/type-annotation-spacing/variable/cases.ts:71:2	@stylistic/type-annotation-spacing	unexpectedSpaceBefore	Unexpected space before the ':'.
+tests/rules/@stylistic/type-annotation-spacing/variable/cases.ts:72:18	@stylistic/type-annotation-spacing	unexpectedSpaceBefore	Unexpected space before the ':'.
+tests/rules/@stylistic/type-annotation-spacing/variable/cases.ts:72:27	@stylistic/type-annotation-spacing	unexpectedSpaceBefore	Unexpected space before the ':'.
+tests/rules/@stylistic/type-annotation-spacing/variable/cases.ts:74:23	@stylistic/type-annotation-spacing	unexpectedSpaceBetween	Unexpected space between the '?' and the ':'.
+tests/rules/@stylistic/type-annotation-spacing/variable/cases.ts:74:23	@stylistic/type-annotation-spacing	unexpectedSpaceAfter	Unexpected space after the '?:'.
+tests/rules/@stylistic/type-annotation-spacing/variable/cases.ts:74:33	@stylistic/type-annotation-spacing	unexpectedSpaceBefore	Unexpected space before the ':'.
+tests/rules/@stylistic/type-annotation-spacing/variable/cases.ts:75:7	@stylistic/type-annotation-spacing	unexpectedSpaceAfter	Unexpected space after the ':'.
+tests/rules/@stylistic/type-annotation-spacing/variable/cases.ts:75:7	@stylistic/type-annotation-spacing	expectedSpaceBefore	Expected a space before the ':'.
+tests/rules/@stylistic/type-annotation-spacing/variable/cases.ts:75:13	@stylistic/type-annotation-spacing	unexpectedSpaceBefore	Unexpected space before the ':'.
+tests/rules/@stylistic/type-annotation-spacing/variable/cases.ts:75:24	@stylistic/type-annotation-spacing	unexpectedSpaceBefore	Unexpected space before the '?:'.
+tests/rules/@stylistic/type-annotation-spacing/variable/cases.ts:75:26	@stylistic/type-annotation-spacing	unexpectedSpaceBetween	Unexpected space between the '?' and the ':'.
+tests/rules/@stylistic/type-annotation-spacing/variable/cases.ts:75:26	@stylistic/type-annotation-spacing	unexpectedSpaceAfter	Unexpected space after the '?:'.
