@@ -229,6 +229,7 @@ pub fn check_options(rule string, options []json2.Any) !bool {
 		explicit_module_boundary_types { embt_options(options)! }
 		explicit_member_accessibility { ema_options(options)! }
 		parameter_properties { ppr_options(options)! }
+		prefer_literal_enum_member { plem_options(options)! }
 		else { return false }
 	}
 	return true
