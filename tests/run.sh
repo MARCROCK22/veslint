@@ -504,11 +504,12 @@ for dir in "${rule_dirs[@]}"; do
 	jobs_started=$((jobs_started + 1))
 done
 wait
-# A run that failed (a timeout of tsgo under the load of the runs side by side: veslint reports it,
-# goes on with the other files and exits with 1 when it found problems) runs again alone, so that
-# its findings are not missing from the comparison; a second failure is reported.
+# A run that failed (a timeout of tsgo, or tsgo dying, under the load of the runs side by side:
+# veslint reports it, goes on with the other files and exits with 1 when it found problems) runs
+# again alone, so that its findings are not missing from the comparison; a second failure is
+# reported.
 run_failed() { # code err
-	[[ $1 -gt 1 ]] || grep -q ': timeout: ' "$2"
+	[[ $1 -gt 1 ]] || grep -qE ': timeout: |tsgo exited unexpectedly' "$2"
 }
 rerun_failed=0
 code=$(< "$TMP/all.code")
