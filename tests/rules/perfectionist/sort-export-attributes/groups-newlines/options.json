@@ -1,0 +1,1 @@
+[{"groups": ["type", "unknown", "late"], "customGroups": [{"groupName": "type", "elementNamePattern": "^type$"}, {"groupName": "late", "elementNamePattern": "^z"}], "newlinesBetween": 1}]
