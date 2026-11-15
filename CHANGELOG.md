@@ -2,6 +2,15 @@
 
 Each version is a release on GitHub with the veslint binaries (Linux x64, Windows x64) and the VS Code extension. The section of a version is the text of its release.
 
+## 0.24.1
+
+- **Code read as TypeScript reads it** (it was a syntax error, or read otherwise):
+  - A line break ends `return`, `break` and `continue`: `return⏎-a` is `return;` and `-a;` (rules such as `no-unreachable` see the second statement).
+  - `namespace Foo` with its `{` on the next line is one declaration.
+  - An index signature of a class may be `static`, and an index signature may have several parameters.
+  - A mapped type may have no type (`{ [K in T] }`) and white space in `? :`, `-? :` and `+? :`.
+  - `export` and `default` on separate lines.
+
 ## 0.24.0
 
 - **The other 30 rules of @stylistic/eslint-plugin 5.10.0**, all of the plugin that `@marcrock22/eslintcf` turns on (54 in all): `@stylistic/arrow-parens`, `@stylistic/brace-style`, `@stylistic/comma-dangle`, `@stylistic/comma-style`, `@stylistic/dot-location`, `@stylistic/eol-last`, `@stylistic/exp-jsx-props-style`, `@stylistic/exp-list-style`, `@stylistic/function-call-argument-newline`, `@stylistic/function-paren-newline`, `@stylistic/implicit-arrow-linebreak`, `@stylistic/lines-between-class-members`, `@stylistic/member-delimiter-style`, `@stylistic/multiline-ternary`, `@stylistic/new-parens`, `@stylistic/no-extra-parens`, `@stylistic/no-extra-semi`, `@stylistic/no-floating-decimal`, `@stylistic/no-mixed-spaces-and-tabs`, `@stylistic/no-multi-spaces`, `@stylistic/no-trailing-spaces`, `@stylistic/nonblock-statement-body-position`, `@stylistic/object-curly-newline`, `@stylistic/object-property-newline`, `@stylistic/one-var-declaration-per-line`, `@stylistic/quote-props`, `@stylistic/quotes`, `@stylistic/semi`, `@stylistic/semi-style`, `@stylistic/spaced-comment`. They come with their options and fixes, and pass the cases of @stylistic's own tests.
