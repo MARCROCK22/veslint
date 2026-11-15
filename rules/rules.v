@@ -454,6 +454,7 @@ pub const no_non_null_assertion = '@typescript-eslint/no-non-null-assertion'
 pub const ts_no_invalid_this = '@typescript-eslint/no-invalid-this'
 pub const no_redeclare = '@typescript-eslint/no-redeclare'
 pub const perfectionist_sort_heritage_clauses = 'perfectionist/sort-heritage-clauses'
+pub const perfectionist_sort_import_attributes = 'perfectionist/sort-import-attributes'
 pub const names = [no_floating_promises, await_thenable, require_await, return_await,
 	no_misused_promises, no_unsafe_call, no_unsafe_member_access, no_unsafe_return,
 	no_unsafe_assignment, no_unsafe_argument, restrict_template_expressions,
@@ -581,7 +582,7 @@ pub const names = [no_floating_promises, await_thenable, require_await, return_a
 	perfectionist_sort_union_types, perfectionist_sort_intersection_types, ban_ts_comment,
 	ban_tslint_comment, default_param_last, init_declarations, max_params, method_signature_style,
 	no_empty_object_type, no_non_null_assertion, ts_no_invalid_this, no_redeclare,
-	perfectionist_sort_heritage_clauses]
+	perfectionist_sort_heritage_clauses, perfectionist_sort_import_attributes]
 
 // untyped_rules are the ported rules that need no types (`meta.docs.requiresTypeChecking` is false
 // in typescript-eslint; the eslint-plugin-unicorn rules that read the types when the parser has a
@@ -682,7 +683,7 @@ pub const untyped_rules = [adjacent_overload_signatures, array_type, class_liter
 	perfectionist_sort_union_types, perfectionist_sort_intersection_types, ban_ts_comment,
 	ban_tslint_comment, default_param_last, init_declarations, max_params, method_signature_style,
 	no_empty_object_type, no_non_null_assertion, ts_no_invalid_this, no_redeclare,
-	perfectionist_sort_heritage_clauses]
+	perfectionist_sort_heritage_clauses, perfectionist_sort_import_attributes]
 
 // needs_types tells whether a rule asks tsgo for the types of the program.
 pub fn needs_types(rule string) bool {
@@ -1133,6 +1134,7 @@ pub const default_options = {
 	ts_no_invalid_this:                              '[{"capIsConstructor":true}]'
 	no_redeclare:                                    '[{"builtinGlobals":true,"ignoreDeclarationMerge":true}]'
 	perfectionist_sort_heritage_clauses:             '[]'
+	perfectionist_sort_import_attributes:            '[]'
 }
 
 // Finding is a problem a rule found at a node.
@@ -1710,6 +1712,7 @@ pub fn message(rule string, finding Finding) string {
 		ts_no_invalid_this { tsnit_messages }
 		no_redeclare { tsnr_messages }
 		perfectionist_sort_heritage_clauses { pfhc_messages }
+		perfectionist_sort_import_attributes { pfsia_messages }
 		else { map[string]string{} }
 	}
 	return interpolate(messages[finding.message_id] or { finding.message_id }, finding.data)
@@ -3186,6 +3189,9 @@ fn (mut c Checker) lint_rule(rule string, root C.TSNode, abs_path string, mut st
 		}
 		perfectionist_sort_heritage_clauses {
 			return c.lint_perfectionist_sort_heritage_clauses(root, abs_path, mut stats)!
+		}
+		perfectionist_sort_import_attributes {
+			return c.lint_perfectionist_sort_import_attributes(root, abs_path, mut stats)!
 		}
 		else { return error('unknown rule: ${rule}') }
 	}

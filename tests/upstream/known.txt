@@ -1574,3 +1574,16 @@ veslint	sort-heritage-clauses/v35	the alphabet has lone surrogates, which veslin
 veslint	sort-heritage-clauses/v36	the alphabet has lone surrogates, which veslint's JSON reader refuses
 veslint	sort-heritage-clauses/i64	the alphabet has lone surrogates, which veslint's JSON reader refuses
 veslint	sort-heritage-clauses/i65	the alphabet has lone surrogates, which veslint's JSON reader refuses
+# perfectionist/sort-import-attributes: as for sort-array-includes.
+eslint	sort-import-attributes/i44	disables rule-to-test/sort-import-attributes, the name the tester gives the rule
+veslint	sort-import-attributes/i44	disables rule-to-test/sort-import-attributes, the name the tester gives the rule
+eslint	sort-import-attributes/i45	disables rule-to-test/sort-import-attributes, the name the tester gives the rule
+veslint	sort-import-attributes/i45	disables rule-to-test/sort-import-attributes, the name the tester gives the rule
+eslint	sort-import-attributes/i46	disables rule-to-test/sort-import-attributes, the name the tester gives the rule
+veslint	sort-import-attributes/i46	disables rule-to-test/sort-import-attributes, the name the tester gives the rule
+eslint	sort-import-attributes/i47	disables rule-to-test/sort-import-attributes, the name the tester gives the rule
+veslint	sort-import-attributes/i47	disables rule-to-test/sort-import-attributes, the name the tester gives the rule
+eslint	sort-import-attributes/i49	disables rule-to-test/sort-import-attributes, the name the tester gives the rule
+veslint	sort-import-attributes/i49	disables rule-to-test/sort-import-attributes, the name the tester gives the rule
+veslint	sort-import-attributes/v17	the alphabet has lone surrogates, which veslint's JSON reader refuses
+veslint	sort-import-attributes/i36	the alphabet has lone surrogates, which veslint's JSON reader refuses

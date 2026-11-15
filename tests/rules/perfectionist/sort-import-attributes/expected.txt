@@ -1,0 +1,36 @@
+tests/rules/perfectionist/sort-import-attributes/ast-selector/cases.ts:1:43	perfectionist/sort-import-attributes	unexpectedImportAttributesOrder	Expected "b" to come before "a".
+tests/rules/perfectionist/sort-import-attributes/ast-selector/cases.ts:4:48	perfectionist/sort-import-attributes	unexpectedImportAttributesOrder	Expected "a" to come before "b".
+tests/rules/perfectionist/sort-import-attributes/cases.ts:4:49	perfectionist/sort-import-attributes	unexpectedImportAttributesOrder	Expected "mode" to come before "type".
+tests/rules/perfectionist/sort-import-attributes/cases.ts:4:60	perfectionist/sort-import-attributes	unexpectedImportAttributesOrder	Expected "extra" to come before "mode".
+tests/rules/perfectionist/sort-import-attributes/cases.ts:8:51	perfectionist/sort-import-attributes	unexpectedImportAttributesOrder	Expected "b-key" to come before "type".
+tests/rules/perfectionist/sort-import-attributes/cases.ts:8:65	perfectionist/sort-import-attributes	unexpectedImportAttributesOrder	Expected "a" to come before "b-key".
+tests/rules/perfectionist/sort-import-attributes/cases.ts:10:41	perfectionist/sort-import-attributes	unexpectedImportAttributesOrder	Expected "layer" to come before "type".
+tests/rules/perfectionist/sort-import-attributes/cases.ts:11:45	perfectionist/sort-import-attributes	unexpectedImportAttributesOrder	Expected "y" to come before "z".
+tests/rules/perfectionist/sort-import-attributes/cases.ts:17:3	perfectionist/sort-import-attributes	unexpectedImportAttributesOrder	Expected "mode" to come before "type".
+tests/rules/perfectionist/sort-import-attributes/cases.ts:18:3	perfectionist/sort-import-attributes	unexpectedImportAttributesOrder	Expected "integrity" to come before "mode".
+tests/rules/perfectionist/sort-import-attributes/cases.ts:25:3	perfectionist/sort-import-attributes	unexpectedImportAttributesOrder	Expected "b" to come before "a".
+tests/rules/perfectionist/sort-import-attributes/cases.ts:30:43	perfectionist/sort-import-attributes	unexpectedImportAttributesOrder	Expected "A" to come before "b".
+tests/rules/perfectionist/sort-import-attributes/configuration-if/cases.ts:1:43	perfectionist/sort-import-attributes	unexpectedImportAttributesOrder	Expected "b" to come before "a".
+tests/rules/perfectionist/sort-import-attributes/configuration-if/cases.ts:1:51	perfectionist/sort-import-attributes	unexpectedImportAttributesOrder	Expected "c" to come before "b".
+tests/rules/perfectionist/sort-import-attributes/custom/cases.ts:1:43	perfectionist/sort-import-attributes	unexpectedImportAttributesOrder	Expected "b" to come before "a".
+tests/rules/perfectionist/sort-import-attributes/custom/cases.ts:1:51	perfectionist/sort-import-attributes	unexpectedImportAttributesOrder	Expected "c" to come before "b".
+tests/rules/perfectionist/sort-import-attributes/desc/cases.ts:1:43	perfectionist/sort-import-attributes	unexpectedImportAttributesOrder	Expected "B" to come before "a".
+tests/rules/perfectionist/sort-import-attributes/desc/cases.ts:1:51	perfectionist/sort-import-attributes	unexpectedImportAttributesOrder	Expected "c" to come before "B".
+tests/rules/perfectionist/sort-import-attributes/desc/cases.ts:2:59	perfectionist/sort-import-attributes	unexpectedImportAttributesOrder	Expected "B" to come before "a".
+tests/rules/perfectionist/sort-import-attributes/groups-newlines/cases.ts:1:49	perfectionist/sort-import-attributes	missedSpacingBetweenImportAttributes	Missed spacing between "type" and "mode".
+tests/rules/perfectionist/sort-import-attributes/groups-newlines/cases.ts:1:60	perfectionist/sort-import-attributes	missedSpacingBetweenImportAttributes	Missed spacing between "mode" and "zone".
+tests/rules/perfectionist/sort-import-attributes/groups-newlines/cases.ts:13:3	perfectionist/sort-import-attributes	extraSpacingBetweenImportAttributes	Extra spacing between "type" and "mode".
+tests/rules/perfectionist/sort-import-attributes/groups-newlines/cases.ts:14:3	perfectionist/sort-import-attributes	missedSpacingBetweenImportAttributes	Missed spacing between "mode" and "zone".
+tests/rules/perfectionist/sort-import-attributes/groups-newlines/cases.ts:16:46	perfectionist/sort-import-attributes	unexpectedImportAttributesGroupOrder	Expected "mode" (unknown) to come before "zone" (late).
+tests/rules/perfectionist/sort-import-attributes/groups-newlines/cases.ts:17:3	perfectionist/sort-import-attributes	unexpectedImportAttributesGroupOrder	Expected "type" (type) to come before "mode" (unknown).
+tests/rules/perfectionist/sort-import-attributes/groups/cases.ts:1:46	perfectionist/sort-import-attributes	unexpectedImportAttributesGroupOrder	Expected "type" (type) to come before "mode" (unknown).
+tests/rules/perfectionist/sort-import-attributes/line-length/cases.ts:1:44	perfectionist/sort-import-attributes	unexpectedImportAttributesOrder	Expected "abcd" to come before "ab".
+tests/rules/perfectionist/sort-import-attributes/natural/cases.ts:1:45	perfectionist/sort-import-attributes	unexpectedImportAttributesOrder	Expected "k2" to come before "k10".
+tests/rules/perfectionist/sort-import-attributes/natural/cases.ts:1:54	perfectionist/sort-import-attributes	unexpectedImportAttributesOrder	Expected "k1" to come before "k2".
+tests/rules/perfectionist/sort-import-attributes/partition-comment/cases.ts:3:3	perfectionist/sort-import-attributes	unexpectedImportAttributesOrder	Expected "c" to come before "d".
+tests/rules/perfectionist/sort-import-attributes/partition-comment/cases.ts:6:3	perfectionist/sort-import-attributes	unexpectedImportAttributesOrder	Expected "a" to come before "b".
+tests/rules/perfectionist/sort-import-attributes/partition-comment/cases.ts:12:3	perfectionist/sort-import-attributes	unexpectedImportAttributesOrder	Expected "b" to come before "c".
+tests/rules/perfectionist/sort-import-attributes/partition-newline/cases.ts:3:3	perfectionist/sort-import-attributes	unexpectedImportAttributesOrder	Expected "c" to come before "d".
+tests/rules/perfectionist/sort-import-attributes/partition-newline/cases.ts:6:3	perfectionist/sort-import-attributes	unexpectedImportAttributesOrder	Expected "a" to come before "b".
+tests/rules/perfectionist/sort-import-attributes/partition-newline/cases.ts:8:43	perfectionist/sort-import-attributes	unexpectedImportAttributesOrder	Expected "c" to come before "d".
+tests/rules/perfectionist/sort-import-attributes/partition-newline/cases.ts:8:51	perfectionist/sort-import-attributes	unexpectedImportAttributesOrder	Expected "b" to come before "c".
