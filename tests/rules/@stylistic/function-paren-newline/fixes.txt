@@ -1,0 +1,273 @@
+tests/rules/@stylistic/function-paren-newline/always/cases.ts:5:17	@stylistic/function-paren-newline	expectedAfter	Expected newline after '('.	fix	173	173	\n	end	5	18
+tests/rules/@stylistic/function-paren-newline/always/cases.ts:5:38	@stylistic/function-paren-newline	expectedBefore	Expected newline before ')'.	fix	193	193	\n	end	5	39
+tests/rules/@stylistic/function-paren-newline/always/cases.ts:6:15	@stylistic/function-paren-newline	expectedAfter	Expected newline after '('.	fix	213	213	\n	end	6	16
+tests/rules/@stylistic/function-paren-newline/always/cases.ts:7:11	@stylistic/function-paren-newline	expectedBefore	Expected newline before ')'.	fix	234	234	\n	end	7	12
+tests/rules/@stylistic/function-paren-newline/always/cases.ts:13:22	@stylistic/function-paren-newline	expectedBefore	Expected newline before ')'.	fix	326	326	\n	end	13	23
+tests/rules/@stylistic/function-paren-newline/always/cases.ts:14:19	@stylistic/function-paren-newline	expectedAfter	Expected newline after '('.	fix	350	350	\n	end	14	20
+tests/rules/@stylistic/function-paren-newline/always/cases.ts:16:14	@stylistic/function-paren-newline	expectedAfter	Expected newline after '('.	fix	390	390	\n	end	16	15
+tests/rules/@stylistic/function-paren-newline/always/cases.ts:16:15	@stylistic/function-paren-newline	expectedBefore	Expected newline before ')'.	fix	390	390	\n	end	16	16
+tests/rules/@stylistic/function-paren-newline/always/cases.ts:22:40	@stylistic/function-paren-newline	expectedAfter	Expected newline after '('.	fix	496	496	\n	end	22	41
+tests/rules/@stylistic/function-paren-newline/always/cases.ts:23:6	@stylistic/function-paren-newline	expectedBefore	Expected newline before ')'.	fix	507	507	\n	end	23	7
+tests/rules/@stylistic/function-paren-newline/always/cases.ts:25:22	@stylistic/function-paren-newline	expectedBefore	Expected newline before ')'.	fix	560	560	\n	end	25	23
+tests/rules/@stylistic/function-paren-newline/always/cases.ts:27:22	@stylistic/function-paren-newline	expectedBefore	Expected newline before ')'.	fix	615	615	\n	end	27	23
+tests/rules/@stylistic/function-paren-newline/always/cases.ts:29:29	@stylistic/function-paren-newline	expectedAfter	Expected newline after '('.	fix	650	650	\n	end	29	30
+tests/rules/@stylistic/function-paren-newline/always/cases.ts:30:11	@stylistic/function-paren-newline	expectedBefore	Expected newline before ')'.	fix	671	671	\n	end	30	12
+tests/rules/@stylistic/function-paren-newline/always/cases.ts:31:15	@stylistic/function-paren-newline	expectedAfter	Expected newline after '('.	fix	692	692	\n	end	31	16
+tests/rules/@stylistic/function-paren-newline/always/cases.ts:32:11	@stylistic/function-paren-newline	expectedBefore	Expected newline before ')'.	fix	713	713	\n	end	32	12
+tests/rules/@stylistic/function-paren-newline/always/cases.ts:34:26	@stylistic/function-paren-newline	expectedAfter	Expected newline after '('.	fix	779	779	\n	end	34	27
+tests/rules/@stylistic/function-paren-newline/always/cases.ts:35:11	@stylistic/function-paren-newline	expectedBefore	Expected newline before ')'.	fix	800	800	\n	end	35	12
+tests/rules/@stylistic/function-paren-newline/always/cases.ts:41:5	@stylistic/function-paren-newline	expectedAfter	Expected newline after '('.	fix	892	892	\n	end	41	6
+tests/rules/@stylistic/function-paren-newline/always/cases.ts:41:10	@stylistic/function-paren-newline	expectedBefore	Expected newline before ')'.	fix	896	896	\n	end	41	11
+tests/rules/@stylistic/function-paren-newline/always/cases.ts:42:5	@stylistic/function-paren-newline	expectedAfter	Expected newline after '('.	fix	904	904	\n	end	42	6
+tests/rules/@stylistic/function-paren-newline/always/cases.ts:43:3	@stylistic/function-paren-newline	expectedBefore	Expected newline before ')'.	fix	909	909	\n	end	43	4
+tests/rules/@stylistic/function-paren-newline/always/cases.ts:45:6	@stylistic/function-paren-newline	expectedBefore	Expected newline before ')'.	fix	923	923	\n	end	45	7
+tests/rules/@stylistic/function-paren-newline/always/cases.ts:46:5	@stylistic/function-paren-newline	expectedAfter	Expected newline after '('.	fix	931	931	\n	end	46	6
+tests/rules/@stylistic/function-paren-newline/always/cases.ts:52:5	@stylistic/function-paren-newline	expectedAfter	Expected newline after '('.	fix	961	961	\n	end	52	6
+tests/rules/@stylistic/function-paren-newline/always/cases.ts:52:6	@stylistic/function-paren-newline	expectedBefore	Expected newline before ')'.	fix	961	961	\n	end	52	7
+tests/rules/@stylistic/function-paren-newline/always/cases.ts:55:5	@stylistic/function-paren-newline	expectedAfter	Expected newline after '('.	fix	978	978	\n	end	55	6
+tests/rules/@stylistic/function-paren-newline/always/cases.ts:55:6	@stylistic/function-paren-newline	expectedAfter	Expected newline after '('.	fix	979	979	\n	end	55	7
+tests/rules/@stylistic/function-paren-newline/always/cases.ts:55:7	@stylistic/function-paren-newline	expectedBefore	Expected newline before ')'.	fix	979	979	\n	end	55	8
+tests/rules/@stylistic/function-paren-newline/always/cases.ts:57:2	@stylistic/function-paren-newline	expectedBefore	Expected newline before ')'.	fix	998	998	\n	end	57	3
+tests/rules/@stylistic/function-paren-newline/always/cases.ts:58:5	@stylistic/function-paren-newline	expectedAfter	Expected newline after '('.	fix	1006	1006	\n	end	58	6
+tests/rules/@stylistic/function-paren-newline/always/cases.ts:59:3	@stylistic/function-paren-newline	expectedBefore	Expected newline before ')'.	fix	1013	1013	\n	end	59	4
+tests/rules/@stylistic/function-paren-newline/always/cases.ts:60:16	@stylistic/function-paren-newline	expectedAfter	Expected newline after '('.	fix	1032	1032	\n	end	60	17
+tests/rules/@stylistic/function-paren-newline/always/cases.ts:61:3	@stylistic/function-paren-newline	expectedBefore	Expected newline before ')'.	fix	1037	1037	\n	end	61	4
+tests/rules/@stylistic/function-paren-newline/always/cases.ts:62:23	@stylistic/function-paren-newline	expectedAfter	Expected newline after '('.	fix	1063	1063	\n	end	62	24
+tests/rules/@stylistic/function-paren-newline/always/cases.ts:63:3	@stylistic/function-paren-newline	expectedBefore	Expected newline before ')'.	fix	1068	1068	\n	end	63	4
+tests/rules/@stylistic/function-paren-newline/always/cases.ts:64:7	@stylistic/function-paren-newline	expectedAfter	Expected newline after '('.	fix	1078	1078	\n	end	64	8
+tests/rules/@stylistic/function-paren-newline/always/cases.ts:65:3	@stylistic/function-paren-newline	expectedBefore	Expected newline before ')'.	fix	1083	1083	\n	end	65	4
+tests/rules/@stylistic/function-paren-newline/always/cases.ts:66:7	@stylistic/function-paren-newline	expectedAfter	Expected newline after '('.	fix	1093	1093	\n	end	66	8
+tests/rules/@stylistic/function-paren-newline/always/cases.ts:67:3	@stylistic/function-paren-newline	expectedBefore	Expected newline before ')'.	fix	1098	1098	\n	end	67	4
+tests/rules/@stylistic/function-paren-newline/always/cases.ts:68:10	@stylistic/function-paren-newline	expectedAfter	Expected newline after '('.	fix	1111	1111	\n	end	68	11
+tests/rules/@stylistic/function-paren-newline/always/cases.ts:69:3	@stylistic/function-paren-newline	expectedBefore	Expected newline before ')'.	fix	1116	1116	\n	end	69	4
+tests/rules/@stylistic/function-paren-newline/always/cases.ts:71:10	@stylistic/function-paren-newline	expectedAfter	Expected newline after '('.	fix	1140	1140	\n	end	71	11
+tests/rules/@stylistic/function-paren-newline/always/cases.ts:71:11	@stylistic/function-paren-newline	expectedBefore	Expected newline before ')'.	fix	1140	1140	\n	end	71	12
+tests/rules/@stylistic/function-paren-newline/always/cases.ts:74:20	@stylistic/function-paren-newline	expectedAfter	Expected newline after '('.	fix	1177	1177	\n	end	74	21
+tests/rules/@stylistic/function-paren-newline/always/cases.ts:75:28	@stylistic/function-paren-newline	expectedBefore	Expected newline before ')'.	fix	1213	1213	\n	end	75	29
+tests/rules/@stylistic/function-paren-newline/always/cases.ts:77:9	@stylistic/function-paren-newline	expectedBefore	Expected newline before ')'.	fix	1246	1246	\n	end	77	10
+tests/rules/@stylistic/function-paren-newline/always/cases.ts:80:8	@stylistic/function-paren-newline	expectedAfter	Expected newline after '('.	fix	1274	1274	\n	end	80	9
+tests/rules/@stylistic/function-paren-newline/always/cases.ts:81:12	@stylistic/function-paren-newline	expectedBefore	Expected newline before ')'.	fix	1296	1296	\n	end	81	13
+tests/rules/@stylistic/function-paren-newline/always/cases.ts:83:23	@stylistic/function-paren-newline	expectedBefore	Expected newline before ')'.	fix	1337	1337	\n	end	83	24
+tests/rules/@stylistic/function-paren-newline/always/cases.ts:86:8	@stylistic/function-paren-newline	expectedAfter	Expected newline after '('.	fix	1366	1366	\n	end	86	9
+tests/rules/@stylistic/function-paren-newline/always/cases.ts:87:12	@stylistic/function-paren-newline	expectedBefore	Expected newline before ')'.	fix	1388	1388	\n	end	87	13
+tests/rules/@stylistic/function-paren-newline/always/cases.ts:89:5	@stylistic/function-paren-newline	expectedAfter	Expected newline after '('.	fix	1402	1402	\n	end	89	6
+tests/rules/@stylistic/function-paren-newline/always/cases.ts:90:6	@stylistic/function-paren-newline	expectedBefore	Expected newline before ')'.	fix	1413	1413	\n	end	90	7
+tests/rules/@stylistic/function-paren-newline/always/cases.ts:91:5	@stylistic/function-paren-newline	expectedAfter	Expected newline after '('.	fix	1421	1421	\n	end	91	6
+tests/rules/@stylistic/function-paren-newline/always/cases.ts:92:6	@stylistic/function-paren-newline	expectedBefore	Expected newline before ')'.	fix	1429	1429	\n	end	92	7
+tests/rules/@stylistic/function-paren-newline/cases.ts:6:15	@stylistic/function-paren-newline	expectedAfter	Expected newline after '('.	fix	213	213	\n	end	6	16
+tests/rules/@stylistic/function-paren-newline/cases.ts:7:11	@stylistic/function-paren-newline	expectedBefore	Expected newline before ')'.	fix	234	234	\n	end	7	12
+tests/rules/@stylistic/function-paren-newline/cases.ts:12:18	@stylistic/function-paren-newline	unexpectedAfter	Unexpected newline after '('.	fix	304	306		end	12	19
+tests/rules/@stylistic/function-paren-newline/cases.ts:15:1	@stylistic/function-paren-newline	unexpectedBefore	Unexpected newline before ')'.	fix	370	371		end	15	2
+tests/rules/@stylistic/function-paren-newline/cases.ts:17:21	@stylistic/function-paren-newline	unexpectedAfter	Unexpected newline after '('.	fix	416	417		end	17	22
+tests/rules/@stylistic/function-paren-newline/cases.ts:18:1	@stylistic/function-paren-newline	unexpectedBefore	Unexpected newline before ')'.	fix	416	417		end	18	2
+tests/rules/@stylistic/function-paren-newline/cases.ts:19:16	@stylistic/function-paren-newline	unexpectedAfter	Unexpected newline after '('.	fix	438	440		end	19	17
+tests/rules/@stylistic/function-paren-newline/cases.ts:21:1	@stylistic/function-paren-newline	unexpectedBefore	Unexpected newline before ')'.	fix	450	451		end	21	2
+tests/rules/@stylistic/function-paren-newline/cases.ts:22:40	@stylistic/function-paren-newline	expectedAfter	Expected newline after '('.	fix	496	496	\n	end	22	41
+tests/rules/@stylistic/function-paren-newline/cases.ts:23:6	@stylistic/function-paren-newline	expectedBefore	Expected newline before ')'.	fix	507	507	\n	end	23	7
+tests/rules/@stylistic/function-paren-newline/cases.ts:24:19	@stylistic/function-paren-newline	unexpectedAfter	Unexpected newline after '('.	end	24	20
+tests/rules/@stylistic/function-paren-newline/cases.ts:26:20	@stylistic/function-paren-newline	unexpectedAfter	Unexpected newline after '('.	end	26	21
+tests/rules/@stylistic/function-paren-newline/cases.ts:29:29	@stylistic/function-paren-newline	expectedAfter	Expected newline after '('.	fix	650	650	\n	end	29	30
+tests/rules/@stylistic/function-paren-newline/cases.ts:30:11	@stylistic/function-paren-newline	expectedBefore	Expected newline before ')'.	fix	671	671	\n	end	30	12
+tests/rules/@stylistic/function-paren-newline/cases.ts:31:15	@stylistic/function-paren-newline	expectedAfter	Expected newline after '('.	fix	692	692	\n	end	31	16
+tests/rules/@stylistic/function-paren-newline/cases.ts:32:11	@stylistic/function-paren-newline	expectedBefore	Expected newline before ')'.	fix	713	713	\n	end	32	12
+tests/rules/@stylistic/function-paren-newline/cases.ts:34:26	@stylistic/function-paren-newline	expectedAfter	Expected newline after '('.	fix	779	779	\n	end	34	27
+tests/rules/@stylistic/function-paren-newline/cases.ts:35:11	@stylistic/function-paren-newline	expectedBefore	Expected newline before ')'.	fix	800	800	\n	end	35	12
+tests/rules/@stylistic/function-paren-newline/cases.ts:38:20	@stylistic/function-paren-newline	unexpectedAfter	Unexpected newline after '('.	fix	877	878		end	38	21
+tests/rules/@stylistic/function-paren-newline/cases.ts:39:1	@stylistic/function-paren-newline	unexpectedBefore	Unexpected newline before ')'.	fix	877	878		end	39	2
+tests/rules/@stylistic/function-paren-newline/cases.ts:42:5	@stylistic/function-paren-newline	expectedAfter	Expected newline after '('.	fix	904	904	\n	end	42	6
+tests/rules/@stylistic/function-paren-newline/cases.ts:43:3	@stylistic/function-paren-newline	expectedBefore	Expected newline before ')'.	fix	909	909	\n	end	43	4
+tests/rules/@stylistic/function-paren-newline/cases.ts:44:5	@stylistic/function-paren-newline	unexpectedAfter	Unexpected newline after '('.	fix	917	919		end	44	6
+tests/rules/@stylistic/function-paren-newline/cases.ts:47:1	@stylistic/function-paren-newline	unexpectedBefore	Unexpected newline before ')'.	fix	935	936		end	47	2
+tests/rules/@stylistic/function-paren-newline/cases.ts:53:5	@stylistic/function-paren-newline	unexpectedAfter	Unexpected newline after '('.	fix	969	970		end	53	6
+tests/rules/@stylistic/function-paren-newline/cases.ts:54:1	@stylistic/function-paren-newline	unexpectedBefore	Unexpected newline before ')'.	fix	969	970		end	54	2
+tests/rules/@stylistic/function-paren-newline/cases.ts:58:5	@stylistic/function-paren-newline	expectedAfter	Expected newline after '('.	fix	1006	1006	\n	end	58	6
+tests/rules/@stylistic/function-paren-newline/cases.ts:59:3	@stylistic/function-paren-newline	expectedBefore	Expected newline before ')'.	fix	1013	1013	\n	end	59	4
+tests/rules/@stylistic/function-paren-newline/cases.ts:60:16	@stylistic/function-paren-newline	expectedAfter	Expected newline after '('.	fix	1032	1032	\n	end	60	17
+tests/rules/@stylistic/function-paren-newline/cases.ts:61:3	@stylistic/function-paren-newline	expectedBefore	Expected newline before ')'.	fix	1037	1037	\n	end	61	4
+tests/rules/@stylistic/function-paren-newline/cases.ts:62:23	@stylistic/function-paren-newline	expectedAfter	Expected newline after '('.	fix	1063	1063	\n	end	62	24
+tests/rules/@stylistic/function-paren-newline/cases.ts:63:3	@stylistic/function-paren-newline	expectedBefore	Expected newline before ')'.	fix	1068	1068	\n	end	63	4
+tests/rules/@stylistic/function-paren-newline/cases.ts:64:7	@stylistic/function-paren-newline	expectedAfter	Expected newline after '('.	fix	1078	1078	\n	end	64	8
+tests/rules/@stylistic/function-paren-newline/cases.ts:65:3	@stylistic/function-paren-newline	expectedBefore	Expected newline before ')'.	fix	1083	1083	\n	end	65	4
+tests/rules/@stylistic/function-paren-newline/cases.ts:66:7	@stylistic/function-paren-newline	expectedAfter	Expected newline after '('.	fix	1093	1093	\n	end	66	8
+tests/rules/@stylistic/function-paren-newline/cases.ts:67:3	@stylistic/function-paren-newline	expectedBefore	Expected newline before ')'.	fix	1098	1098	\n	end	67	4
+tests/rules/@stylistic/function-paren-newline/cases.ts:68:10	@stylistic/function-paren-newline	expectedAfter	Expected newline after '('.	fix	1111	1111	\n	end	68	11
+tests/rules/@stylistic/function-paren-newline/cases.ts:69:3	@stylistic/function-paren-newline	expectedBefore	Expected newline before ')'.	fix	1116	1116	\n	end	69	4
+tests/rules/@stylistic/function-paren-newline/cases.ts:72:10	@stylistic/function-paren-newline	unexpectedAfter	Unexpected newline after '('.	fix	1153	1154		end	72	11
+tests/rules/@stylistic/function-paren-newline/cases.ts:73:1	@stylistic/function-paren-newline	unexpectedBefore	Unexpected newline before ')'.	fix	1153	1154		end	73	2
+tests/rules/@stylistic/function-paren-newline/cases.ts:74:20	@stylistic/function-paren-newline	expectedAfter	Expected newline after '('.	fix	1177	1177	\n	end	74	21
+tests/rules/@stylistic/function-paren-newline/cases.ts:75:28	@stylistic/function-paren-newline	expectedBefore	Expected newline before ')'.	fix	1213	1213	\n	end	75	29
+tests/rules/@stylistic/function-paren-newline/cases.ts:76:21	@stylistic/function-paren-newline	unexpectedAfter	Unexpected newline after '('.	fix	1237	1239		end	76	22
+tests/rules/@stylistic/function-paren-newline/cases.ts:80:8	@stylistic/function-paren-newline	expectedAfter	Expected newline after '('.	fix	1274	1274	\n	end	80	9
+tests/rules/@stylistic/function-paren-newline/cases.ts:81:12	@stylistic/function-paren-newline	expectedBefore	Expected newline before ')'.	fix	1296	1296	\n	end	81	13
+tests/rules/@stylistic/function-paren-newline/cases.ts:82:13	@stylistic/function-paren-newline	unexpectedAfter	Unexpected newline after '('.	fix	1314	1317		end	82	14
+tests/rules/@stylistic/function-paren-newline/cases.ts:86:8	@stylistic/function-paren-newline	expectedAfter	Expected newline after '('.	fix	1366	1366	\n	end	86	9
+tests/rules/@stylistic/function-paren-newline/cases.ts:87:12	@stylistic/function-paren-newline	expectedBefore	Expected newline before ')'.	fix	1388	1388	\n	end	87	13
+tests/rules/@stylistic/function-paren-newline/cases.ts:89:5	@stylistic/function-paren-newline	expectedAfter	Expected newline after '('.	fix	1402	1402	\n	end	89	6
+tests/rules/@stylistic/function-paren-newline/cases.ts:90:6	@stylistic/function-paren-newline	expectedBefore	Expected newline before ')'.	fix	1413	1413	\n	end	90	7
+tests/rules/@stylistic/function-paren-newline/cases.ts:91:5	@stylistic/function-paren-newline	expectedAfter	Expected newline after '('.	fix	1421	1421	\n	end	91	6
+tests/rules/@stylistic/function-paren-newline/cases.ts:92:6	@stylistic/function-paren-newline	expectedBefore	Expected newline before ')'.	fix	1429	1429	\n	end	92	7
+tests/rules/@stylistic/function-paren-newline/consistent/cases.ts:13:22	@stylistic/function-paren-newline	expectedBefore	Expected newline before ')'.	fix	326	326	\n	end	13	23
+tests/rules/@stylistic/function-paren-newline/consistent/cases.ts:15:1	@stylistic/function-paren-newline	unexpectedBefore	Unexpected newline before ')'.	fix	370	371		end	15	2
+tests/rules/@stylistic/function-paren-newline/consistent/cases.ts:25:22	@stylistic/function-paren-newline	expectedBefore	Expected newline before ')'.	fix	560	560	\n	end	25	23
+tests/rules/@stylistic/function-paren-newline/consistent/cases.ts:27:22	@stylistic/function-paren-newline	expectedBefore	Expected newline before ')'.	fix	615	615	\n	end	27	23
+tests/rules/@stylistic/function-paren-newline/consistent/cases.ts:45:6	@stylistic/function-paren-newline	expectedBefore	Expected newline before ')'.	fix	923	923	\n	end	45	7
+tests/rules/@stylistic/function-paren-newline/consistent/cases.ts:47:1	@stylistic/function-paren-newline	unexpectedBefore	Unexpected newline before ')'.	fix	935	936		end	47	2
+tests/rules/@stylistic/function-paren-newline/consistent/cases.ts:77:9	@stylistic/function-paren-newline	expectedBefore	Expected newline before ')'.	fix	1246	1246	\n	end	77	10
+tests/rules/@stylistic/function-paren-newline/consistent/cases.ts:83:23	@stylistic/function-paren-newline	expectedBefore	Expected newline before ')'.	fix	1337	1337	\n	end	83	24
+tests/rules/@stylistic/function-paren-newline/min-items-empty/cases.ts:5:17	@stylistic/function-paren-newline	expectedAfter	Expected newline after '('.	fix	173	173	\n	end	5	18
+tests/rules/@stylistic/function-paren-newline/min-items-empty/cases.ts:5:38	@stylistic/function-paren-newline	expectedBefore	Expected newline before ')'.	fix	193	193	\n	end	5	39
+tests/rules/@stylistic/function-paren-newline/min-items-empty/cases.ts:6:15	@stylistic/function-paren-newline	expectedAfter	Expected newline after '('.	fix	213	213	\n	end	6	16
+tests/rules/@stylistic/function-paren-newline/min-items-empty/cases.ts:7:11	@stylistic/function-paren-newline	expectedBefore	Expected newline before ')'.	fix	234	234	\n	end	7	12
+tests/rules/@stylistic/function-paren-newline/min-items-empty/cases.ts:13:22	@stylistic/function-paren-newline	expectedBefore	Expected newline before ')'.	fix	326	326	\n	end	13	23
+tests/rules/@stylistic/function-paren-newline/min-items-empty/cases.ts:14:19	@stylistic/function-paren-newline	expectedAfter	Expected newline after '('.	fix	350	350	\n	end	14	20
+tests/rules/@stylistic/function-paren-newline/min-items-empty/cases.ts:16:14	@stylistic/function-paren-newline	expectedAfter	Expected newline after '('.	fix	390	390	\n	end	16	15
+tests/rules/@stylistic/function-paren-newline/min-items-empty/cases.ts:16:15	@stylistic/function-paren-newline	expectedBefore	Expected newline before ')'.	fix	390	390	\n	end	16	16
+tests/rules/@stylistic/function-paren-newline/min-items-empty/cases.ts:22:40	@stylistic/function-paren-newline	expectedAfter	Expected newline after '('.	fix	496	496	\n	end	22	41
+tests/rules/@stylistic/function-paren-newline/min-items-empty/cases.ts:23:6	@stylistic/function-paren-newline	expectedBefore	Expected newline before ')'.	fix	507	507	\n	end	23	7
+tests/rules/@stylistic/function-paren-newline/min-items-empty/cases.ts:25:22	@stylistic/function-paren-newline	expectedBefore	Expected newline before ')'.	fix	560	560	\n	end	25	23
+tests/rules/@stylistic/function-paren-newline/min-items-empty/cases.ts:27:22	@stylistic/function-paren-newline	expectedBefore	Expected newline before ')'.	fix	615	615	\n	end	27	23
+tests/rules/@stylistic/function-paren-newline/min-items-empty/cases.ts:29:29	@stylistic/function-paren-newline	expectedAfter	Expected newline after '('.	fix	650	650	\n	end	29	30
+tests/rules/@stylistic/function-paren-newline/min-items-empty/cases.ts:30:11	@stylistic/function-paren-newline	expectedBefore	Expected newline before ')'.	fix	671	671	\n	end	30	12
+tests/rules/@stylistic/function-paren-newline/min-items-empty/cases.ts:31:15	@stylistic/function-paren-newline	expectedAfter	Expected newline after '('.	fix	692	692	\n	end	31	16
+tests/rules/@stylistic/function-paren-newline/min-items-empty/cases.ts:32:11	@stylistic/function-paren-newline	expectedBefore	Expected newline before ')'.	fix	713	713	\n	end	32	12
+tests/rules/@stylistic/function-paren-newline/min-items-empty/cases.ts:34:26	@stylistic/function-paren-newline	expectedAfter	Expected newline after '('.	fix	779	779	\n	end	34	27
+tests/rules/@stylistic/function-paren-newline/min-items-empty/cases.ts:35:11	@stylistic/function-paren-newline	expectedBefore	Expected newline before ')'.	fix	800	800	\n	end	35	12
+tests/rules/@stylistic/function-paren-newline/min-items-empty/cases.ts:41:5	@stylistic/function-paren-newline	expectedAfter	Expected newline after '('.	fix	892	892	\n	end	41	6
+tests/rules/@stylistic/function-paren-newline/min-items-empty/cases.ts:41:10	@stylistic/function-paren-newline	expectedBefore	Expected newline before ')'.	fix	896	896	\n	end	41	11
+tests/rules/@stylistic/function-paren-newline/min-items-empty/cases.ts:42:5	@stylistic/function-paren-newline	expectedAfter	Expected newline after '('.	fix	904	904	\n	end	42	6
+tests/rules/@stylistic/function-paren-newline/min-items-empty/cases.ts:43:3	@stylistic/function-paren-newline	expectedBefore	Expected newline before ')'.	fix	909	909	\n	end	43	4
+tests/rules/@stylistic/function-paren-newline/min-items-empty/cases.ts:45:6	@stylistic/function-paren-newline	expectedBefore	Expected newline before ')'.	fix	923	923	\n	end	45	7
+tests/rules/@stylistic/function-paren-newline/min-items-empty/cases.ts:46:5	@stylistic/function-paren-newline	expectedAfter	Expected newline after '('.	fix	931	931	\n	end	46	6
+tests/rules/@stylistic/function-paren-newline/min-items-empty/cases.ts:52:5	@stylistic/function-paren-newline	expectedAfter	Expected newline after '('.	fix	961	961	\n	end	52	6
+tests/rules/@stylistic/function-paren-newline/min-items-empty/cases.ts:52:6	@stylistic/function-paren-newline	expectedBefore	Expected newline before ')'.	fix	961	961	\n	end	52	7
+tests/rules/@stylistic/function-paren-newline/min-items-empty/cases.ts:55:5	@stylistic/function-paren-newline	expectedAfter	Expected newline after '('.	fix	978	978	\n	end	55	6
+tests/rules/@stylistic/function-paren-newline/min-items-empty/cases.ts:55:6	@stylistic/function-paren-newline	expectedAfter	Expected newline after '('.	fix	979	979	\n	end	55	7
+tests/rules/@stylistic/function-paren-newline/min-items-empty/cases.ts:55:7	@stylistic/function-paren-newline	expectedBefore	Expected newline before ')'.	fix	979	979	\n	end	55	8
+tests/rules/@stylistic/function-paren-newline/min-items-empty/cases.ts:57:2	@stylistic/function-paren-newline	expectedBefore	Expected newline before ')'.	fix	998	998	\n	end	57	3
+tests/rules/@stylistic/function-paren-newline/min-items-empty/cases.ts:58:5	@stylistic/function-paren-newline	expectedAfter	Expected newline after '('.	fix	1006	1006	\n	end	58	6
+tests/rules/@stylistic/function-paren-newline/min-items-empty/cases.ts:59:3	@stylistic/function-paren-newline	expectedBefore	Expected newline before ')'.	fix	1013	1013	\n	end	59	4
+tests/rules/@stylistic/function-paren-newline/min-items-empty/cases.ts:60:16	@stylistic/function-paren-newline	expectedAfter	Expected newline after '('.	fix	1032	1032	\n	end	60	17
+tests/rules/@stylistic/function-paren-newline/min-items-empty/cases.ts:61:3	@stylistic/function-paren-newline	expectedBefore	Expected newline before ')'.	fix	1037	1037	\n	end	61	4
+tests/rules/@stylistic/function-paren-newline/min-items-empty/cases.ts:62:23	@stylistic/function-paren-newline	expectedAfter	Expected newline after '('.	fix	1063	1063	\n	end	62	24
+tests/rules/@stylistic/function-paren-newline/min-items-empty/cases.ts:63:3	@stylistic/function-paren-newline	expectedBefore	Expected newline before ')'.	fix	1068	1068	\n	end	63	4
+tests/rules/@stylistic/function-paren-newline/min-items-empty/cases.ts:64:7	@stylistic/function-paren-newline	expectedAfter	Expected newline after '('.	fix	1078	1078	\n	end	64	8
+tests/rules/@stylistic/function-paren-newline/min-items-empty/cases.ts:65:3	@stylistic/function-paren-newline	expectedBefore	Expected newline before ')'.	fix	1083	1083	\n	end	65	4
+tests/rules/@stylistic/function-paren-newline/min-items-empty/cases.ts:66:7	@stylistic/function-paren-newline	expectedAfter	Expected newline after '('.	fix	1093	1093	\n	end	66	8
+tests/rules/@stylistic/function-paren-newline/min-items-empty/cases.ts:67:3	@stylistic/function-paren-newline	expectedBefore	Expected newline before ')'.	fix	1098	1098	\n	end	67	4
+tests/rules/@stylistic/function-paren-newline/min-items-empty/cases.ts:68:10	@stylistic/function-paren-newline	expectedAfter	Expected newline after '('.	fix	1111	1111	\n	end	68	11
+tests/rules/@stylistic/function-paren-newline/min-items-empty/cases.ts:69:3	@stylistic/function-paren-newline	expectedBefore	Expected newline before ')'.	fix	1116	1116	\n	end	69	4
+tests/rules/@stylistic/function-paren-newline/min-items-empty/cases.ts:71:10	@stylistic/function-paren-newline	expectedAfter	Expected newline after '('.	fix	1140	1140	\n	end	71	11
+tests/rules/@stylistic/function-paren-newline/min-items-empty/cases.ts:71:11	@stylistic/function-paren-newline	expectedBefore	Expected newline before ')'.	fix	1140	1140	\n	end	71	12
+tests/rules/@stylistic/function-paren-newline/min-items-empty/cases.ts:74:20	@stylistic/function-paren-newline	expectedAfter	Expected newline after '('.	fix	1177	1177	\n	end	74	21
+tests/rules/@stylistic/function-paren-newline/min-items-empty/cases.ts:75:28	@stylistic/function-paren-newline	expectedBefore	Expected newline before ')'.	fix	1213	1213	\n	end	75	29
+tests/rules/@stylistic/function-paren-newline/min-items-empty/cases.ts:77:9	@stylistic/function-paren-newline	expectedBefore	Expected newline before ')'.	fix	1246	1246	\n	end	77	10
+tests/rules/@stylistic/function-paren-newline/min-items-empty/cases.ts:80:8	@stylistic/function-paren-newline	expectedAfter	Expected newline after '('.	fix	1274	1274	\n	end	80	9
+tests/rules/@stylistic/function-paren-newline/min-items-empty/cases.ts:81:12	@stylistic/function-paren-newline	expectedBefore	Expected newline before ')'.	fix	1296	1296	\n	end	81	13
+tests/rules/@stylistic/function-paren-newline/min-items-empty/cases.ts:83:23	@stylistic/function-paren-newline	expectedBefore	Expected newline before ')'.	fix	1337	1337	\n	end	83	24
+tests/rules/@stylistic/function-paren-newline/min-items-empty/cases.ts:86:8	@stylistic/function-paren-newline	expectedAfter	Expected newline after '('.	fix	1366	1366	\n	end	86	9
+tests/rules/@stylistic/function-paren-newline/min-items-empty/cases.ts:87:12	@stylistic/function-paren-newline	expectedBefore	Expected newline before ')'.	fix	1388	1388	\n	end	87	13
+tests/rules/@stylistic/function-paren-newline/min-items-empty/cases.ts:89:5	@stylistic/function-paren-newline	expectedAfter	Expected newline after '('.	fix	1402	1402	\n	end	89	6
+tests/rules/@stylistic/function-paren-newline/min-items-empty/cases.ts:90:6	@stylistic/function-paren-newline	expectedBefore	Expected newline before ')'.	fix	1413	1413	\n	end	90	7
+tests/rules/@stylistic/function-paren-newline/min-items-empty/cases.ts:91:5	@stylistic/function-paren-newline	expectedAfter	Expected newline after '('.	fix	1421	1421	\n	end	91	6
+tests/rules/@stylistic/function-paren-newline/min-items-empty/cases.ts:92:6	@stylistic/function-paren-newline	expectedBefore	Expected newline before ')'.	fix	1429	1429	\n	end	92	7
+tests/rules/@stylistic/function-paren-newline/min-items/cases.ts:8:17	@stylistic/function-paren-newline	unexpectedAfter	Unexpected newline after '('.	fix	256	258		end	8	18
+tests/rules/@stylistic/function-paren-newline/min-items/cases.ts:11:1	@stylistic/function-paren-newline	unexpectedBefore	Unexpected newline before ')'.	fix	280	281		end	11	2
+tests/rules/@stylistic/function-paren-newline/min-items/cases.ts:12:18	@stylistic/function-paren-newline	unexpectedAfter	Unexpected newline after '('.	fix	304	306		end	12	19
+tests/rules/@stylistic/function-paren-newline/min-items/cases.ts:15:1	@stylistic/function-paren-newline	unexpectedBefore	Unexpected newline before ')'.	fix	370	371		end	15	2
+tests/rules/@stylistic/function-paren-newline/min-items/cases.ts:17:21	@stylistic/function-paren-newline	unexpectedAfter	Unexpected newline after '('.	fix	416	417		end	17	22
+tests/rules/@stylistic/function-paren-newline/min-items/cases.ts:18:1	@stylistic/function-paren-newline	unexpectedBefore	Unexpected newline before ')'.	fix	416	417		end	18	2
+tests/rules/@stylistic/function-paren-newline/min-items/cases.ts:19:16	@stylistic/function-paren-newline	unexpectedAfter	Unexpected newline after '('.	fix	438	440		end	19	17
+tests/rules/@stylistic/function-paren-newline/min-items/cases.ts:21:1	@stylistic/function-paren-newline	unexpectedBefore	Unexpected newline before ')'.	fix	450	451		end	21	2
+tests/rules/@stylistic/function-paren-newline/min-items/cases.ts:24:19	@stylistic/function-paren-newline	unexpectedAfter	Unexpected newline after '('.	end	24	20
+tests/rules/@stylistic/function-paren-newline/min-items/cases.ts:26:20	@stylistic/function-paren-newline	unexpectedAfter	Unexpected newline after '('.	end	26	21
+tests/rules/@stylistic/function-paren-newline/min-items/cases.ts:38:20	@stylistic/function-paren-newline	unexpectedAfter	Unexpected newline after '('.	fix	877	878		end	38	21
+tests/rules/@stylistic/function-paren-newline/min-items/cases.ts:39:1	@stylistic/function-paren-newline	unexpectedBefore	Unexpected newline before ')'.	fix	877	878		end	39	2
+tests/rules/@stylistic/function-paren-newline/min-items/cases.ts:44:5	@stylistic/function-paren-newline	unexpectedAfter	Unexpected newline after '('.	fix	917	919		end	44	6
+tests/rules/@stylistic/function-paren-newline/min-items/cases.ts:47:1	@stylistic/function-paren-newline	unexpectedBefore	Unexpected newline before ')'.	fix	935	936		end	47	2
+tests/rules/@stylistic/function-paren-newline/min-items/cases.ts:48:5	@stylistic/function-paren-newline	unexpectedAfter	Unexpected newline after '('.	fix	944	946		end	48	6
+tests/rules/@stylistic/function-paren-newline/min-items/cases.ts:51:1	@stylistic/function-paren-newline	unexpectedBefore	Unexpected newline before ')'.	fix	952	953		end	51	2
+tests/rules/@stylistic/function-paren-newline/min-items/cases.ts:53:5	@stylistic/function-paren-newline	unexpectedAfter	Unexpected newline after '('.	fix	969	970		end	53	6
+tests/rules/@stylistic/function-paren-newline/min-items/cases.ts:54:1	@stylistic/function-paren-newline	unexpectedBefore	Unexpected newline before ')'.	fix	969	970		end	54	2
+tests/rules/@stylistic/function-paren-newline/min-items/cases.ts:72:10	@stylistic/function-paren-newline	unexpectedAfter	Unexpected newline after '('.	fix	1153	1154		end	72	11
+tests/rules/@stylistic/function-paren-newline/min-items/cases.ts:73:1	@stylistic/function-paren-newline	unexpectedBefore	Unexpected newline before ')'.	fix	1153	1154		end	73	2
+tests/rules/@stylistic/function-paren-newline/min-items/cases.ts:76:21	@stylistic/function-paren-newline	unexpectedAfter	Unexpected newline after '('.	fix	1237	1239		end	76	22
+tests/rules/@stylistic/function-paren-newline/min-items/cases.ts:82:13	@stylistic/function-paren-newline	unexpectedAfter	Unexpected newline after '('.	fix	1314	1317		end	82	14
+tests/rules/@stylistic/function-paren-newline/min-items/cases.ts:89:5	@stylistic/function-paren-newline	expectedAfter	Expected newline after '('.	fix	1402	1402	\n	end	89	6
+tests/rules/@stylistic/function-paren-newline/min-items/cases.ts:90:6	@stylistic/function-paren-newline	expectedBefore	Expected newline before ')'.	fix	1413	1413	\n	end	90	7
+tests/rules/@stylistic/function-paren-newline/min-items/cases.ts:91:5	@stylistic/function-paren-newline	expectedAfter	Expected newline after '('.	fix	1421	1421	\n	end	91	6
+tests/rules/@stylistic/function-paren-newline/min-items/cases.ts:92:6	@stylistic/function-paren-newline	expectedBefore	Expected newline before ')'.	fix	1429	1429	\n	end	92	7
+tests/rules/@stylistic/function-paren-newline/multiline-arguments/cases.ts:6:15	@stylistic/function-paren-newline	expectedAfter	Expected newline after '('.	fix	213	213	\n	end	6	16
+tests/rules/@stylistic/function-paren-newline/multiline-arguments/cases.ts:7:11	@stylistic/function-paren-newline	expectedBefore	Expected newline before ')'.	fix	234	234	\n	end	7	12
+tests/rules/@stylistic/function-paren-newline/multiline-arguments/cases.ts:12:18	@stylistic/function-paren-newline	unexpectedAfter	Unexpected newline after '('.	fix	304	306		end	12	19
+tests/rules/@stylistic/function-paren-newline/multiline-arguments/cases.ts:15:1	@stylistic/function-paren-newline	unexpectedBefore	Unexpected newline before ')'.	fix	370	371		end	15	2
+tests/rules/@stylistic/function-paren-newline/multiline-arguments/cases.ts:17:21	@stylistic/function-paren-newline	unexpectedAfter	Unexpected newline after '('.	fix	416	417		end	17	22
+tests/rules/@stylistic/function-paren-newline/multiline-arguments/cases.ts:18:1	@stylistic/function-paren-newline	unexpectedBefore	Unexpected newline before ')'.	fix	416	417		end	18	2
+tests/rules/@stylistic/function-paren-newline/multiline-arguments/cases.ts:22:40	@stylistic/function-paren-newline	expectedAfter	Expected newline after '('.	fix	496	496	\n	end	22	41
+tests/rules/@stylistic/function-paren-newline/multiline-arguments/cases.ts:23:6	@stylistic/function-paren-newline	expectedBefore	Expected newline before ')'.	fix	507	507	\n	end	23	7
+tests/rules/@stylistic/function-paren-newline/multiline-arguments/cases.ts:24:19	@stylistic/function-paren-newline	unexpectedAfter	Unexpected newline after '('.	end	24	20
+tests/rules/@stylistic/function-paren-newline/multiline-arguments/cases.ts:26:20	@stylistic/function-paren-newline	unexpectedAfter	Unexpected newline after '('.	end	26	21
+tests/rules/@stylistic/function-paren-newline/multiline-arguments/cases.ts:29:29	@stylistic/function-paren-newline	expectedAfter	Expected newline after '('.	fix	650	650	\n	end	29	30
+tests/rules/@stylistic/function-paren-newline/multiline-arguments/cases.ts:30:11	@stylistic/function-paren-newline	expectedBefore	Expected newline before ')'.	fix	671	671	\n	end	30	12
+tests/rules/@stylistic/function-paren-newline/multiline-arguments/cases.ts:31:15	@stylistic/function-paren-newline	expectedAfter	Expected newline after '('.	fix	692	692	\n	end	31	16
+tests/rules/@stylistic/function-paren-newline/multiline-arguments/cases.ts:32:11	@stylistic/function-paren-newline	expectedBefore	Expected newline before ')'.	fix	713	713	\n	end	32	12
+tests/rules/@stylistic/function-paren-newline/multiline-arguments/cases.ts:34:26	@stylistic/function-paren-newline	expectedAfter	Expected newline after '('.	fix	779	779	\n	end	34	27
+tests/rules/@stylistic/function-paren-newline/multiline-arguments/cases.ts:35:11	@stylistic/function-paren-newline	expectedBefore	Expected newline before ')'.	fix	800	800	\n	end	35	12
+tests/rules/@stylistic/function-paren-newline/multiline-arguments/cases.ts:38:20	@stylistic/function-paren-newline	unexpectedAfter	Unexpected newline after '('.	fix	877	878		end	38	21
+tests/rules/@stylistic/function-paren-newline/multiline-arguments/cases.ts:39:1	@stylistic/function-paren-newline	unexpectedBefore	Unexpected newline before ')'.	fix	877	878		end	39	2
+tests/rules/@stylistic/function-paren-newline/multiline-arguments/cases.ts:42:5	@stylistic/function-paren-newline	expectedAfter	Expected newline after '('.	fix	904	904	\n	end	42	6
+tests/rules/@stylistic/function-paren-newline/multiline-arguments/cases.ts:43:3	@stylistic/function-paren-newline	expectedBefore	Expected newline before ')'.	fix	909	909	\n	end	43	4
+tests/rules/@stylistic/function-paren-newline/multiline-arguments/cases.ts:44:5	@stylistic/function-paren-newline	unexpectedAfter	Unexpected newline after '('.	fix	917	919		end	44	6
+tests/rules/@stylistic/function-paren-newline/multiline-arguments/cases.ts:47:1	@stylistic/function-paren-newline	unexpectedBefore	Unexpected newline before ')'.	fix	935	936		end	47	2
+tests/rules/@stylistic/function-paren-newline/multiline-arguments/cases.ts:53:5	@stylistic/function-paren-newline	unexpectedAfter	Unexpected newline after '('.	fix	969	970		end	53	6
+tests/rules/@stylistic/function-paren-newline/multiline-arguments/cases.ts:54:1	@stylistic/function-paren-newline	unexpectedBefore	Unexpected newline before ')'.	fix	969	970		end	54	2
+tests/rules/@stylistic/function-paren-newline/multiline-arguments/cases.ts:58:5	@stylistic/function-paren-newline	expectedAfter	Expected newline after '('.	fix	1006	1006	\n	end	58	6
+tests/rules/@stylistic/function-paren-newline/multiline-arguments/cases.ts:59:3	@stylistic/function-paren-newline	expectedBefore	Expected newline before ')'.	fix	1013	1013	\n	end	59	4
+tests/rules/@stylistic/function-paren-newline/multiline-arguments/cases.ts:60:16	@stylistic/function-paren-newline	expectedAfter	Expected newline after '('.	fix	1032	1032	\n	end	60	17
+tests/rules/@stylistic/function-paren-newline/multiline-arguments/cases.ts:61:3	@stylistic/function-paren-newline	expectedBefore	Expected newline before ')'.	fix	1037	1037	\n	end	61	4
+tests/rules/@stylistic/function-paren-newline/multiline-arguments/cases.ts:62:23	@stylistic/function-paren-newline	expectedAfter	Expected newline after '('.	fix	1063	1063	\n	end	62	24
+tests/rules/@stylistic/function-paren-newline/multiline-arguments/cases.ts:63:3	@stylistic/function-paren-newline	expectedBefore	Expected newline before ')'.	fix	1068	1068	\n	end	63	4
+tests/rules/@stylistic/function-paren-newline/multiline-arguments/cases.ts:64:7	@stylistic/function-paren-newline	expectedAfter	Expected newline after '('.	fix	1078	1078	\n	end	64	8
+tests/rules/@stylistic/function-paren-newline/multiline-arguments/cases.ts:65:3	@stylistic/function-paren-newline	expectedBefore	Expected newline before ')'.	fix	1083	1083	\n	end	65	4
+tests/rules/@stylistic/function-paren-newline/multiline-arguments/cases.ts:66:7	@stylistic/function-paren-newline	expectedAfter	Expected newline after '('.	fix	1093	1093	\n	end	66	8
+tests/rules/@stylistic/function-paren-newline/multiline-arguments/cases.ts:67:3	@stylistic/function-paren-newline	expectedBefore	Expected newline before ')'.	fix	1098	1098	\n	end	67	4
+tests/rules/@stylistic/function-paren-newline/multiline-arguments/cases.ts:68:10	@stylistic/function-paren-newline	expectedAfter	Expected newline after '('.	fix	1111	1111	\n	end	68	11
+tests/rules/@stylistic/function-paren-newline/multiline-arguments/cases.ts:69:3	@stylistic/function-paren-newline	expectedBefore	Expected newline before ')'.	fix	1116	1116	\n	end	69	4
+tests/rules/@stylistic/function-paren-newline/multiline-arguments/cases.ts:72:10	@stylistic/function-paren-newline	unexpectedAfter	Unexpected newline after '('.	fix	1153	1154		end	72	11
+tests/rules/@stylistic/function-paren-newline/multiline-arguments/cases.ts:73:1	@stylistic/function-paren-newline	unexpectedBefore	Unexpected newline before ')'.	fix	1153	1154		end	73	2
+tests/rules/@stylistic/function-paren-newline/multiline-arguments/cases.ts:74:20	@stylistic/function-paren-newline	expectedAfter	Expected newline after '('.	fix	1177	1177	\n	end	74	21
+tests/rules/@stylistic/function-paren-newline/multiline-arguments/cases.ts:75:28	@stylistic/function-paren-newline	expectedBefore	Expected newline before ')'.	fix	1213	1213	\n	end	75	29
+tests/rules/@stylistic/function-paren-newline/multiline-arguments/cases.ts:77:9	@stylistic/function-paren-newline	expectedBefore	Expected newline before ')'.	fix	1246	1246	\n	end	77	10
+tests/rules/@stylistic/function-paren-newline/multiline-arguments/cases.ts:80:8	@stylistic/function-paren-newline	expectedAfter	Expected newline after '('.	fix	1274	1274	\n	end	80	9
+tests/rules/@stylistic/function-paren-newline/multiline-arguments/cases.ts:81:12	@stylistic/function-paren-newline	expectedBefore	Expected newline before ')'.	fix	1296	1296	\n	end	81	13
+tests/rules/@stylistic/function-paren-newline/multiline-arguments/cases.ts:82:13	@stylistic/function-paren-newline	unexpectedAfter	Unexpected newline after '('.	fix	1314	1317		end	82	14
+tests/rules/@stylistic/function-paren-newline/multiline-arguments/cases.ts:86:8	@stylistic/function-paren-newline	expectedAfter	Expected newline after '('.	fix	1366	1366	\n	end	86	9
+tests/rules/@stylistic/function-paren-newline/multiline-arguments/cases.ts:87:12	@stylistic/function-paren-newline	expectedBefore	Expected newline before ')'.	fix	1388	1388	\n	end	87	13
+tests/rules/@stylistic/function-paren-newline/multiline-arguments/cases.ts:89:5	@stylistic/function-paren-newline	expectedAfter	Expected newline after '('.	fix	1402	1402	\n	end	89	6
+tests/rules/@stylistic/function-paren-newline/multiline-arguments/cases.ts:89:6	@stylistic/function-paren-newline	expectedBetween	Expected newline between arguments/params.	fix	1405	1405	\n	end	89	7
+tests/rules/@stylistic/function-paren-newline/multiline-arguments/cases.ts:90:2	@stylistic/function-paren-newline	expectedBetween	Expected newline between arguments/params.	fix	1412	1412	\n	end	90	3
+tests/rules/@stylistic/function-paren-newline/multiline-arguments/cases.ts:90:6	@stylistic/function-paren-newline	expectedBefore	Expected newline before ')'.	fix	1413	1413	\n	end	90	7
+tests/rules/@stylistic/function-paren-newline/multiline-arguments/cases.ts:91:5	@stylistic/function-paren-newline	expectedAfter	Expected newline after '('.	fix	1421	1421	\n	end	91	6
+tests/rules/@stylistic/function-paren-newline/multiline-arguments/cases.ts:92:2	@stylistic/function-paren-newline	expectedBetween	Expected newline between arguments/params.	fix	1428	1428	\n	end	92	3
+tests/rules/@stylistic/function-paren-newline/multiline-arguments/cases.ts:92:6	@stylistic/function-paren-newline	expectedBefore	Expected newline before ')'.	fix	1429	1429	\n	end	92	7
+tests/rules/@stylistic/function-paren-newline/never/cases.ts:8:17	@stylistic/function-paren-newline	unexpectedAfter	Unexpected newline after '('.	fix	256	258		end	8	18
+tests/rules/@stylistic/function-paren-newline/never/cases.ts:11:1	@stylistic/function-paren-newline	unexpectedBefore	Unexpected newline before ')'.	fix	280	281		end	11	2
+tests/rules/@stylistic/function-paren-newline/never/cases.ts:12:18	@stylistic/function-paren-newline	unexpectedAfter	Unexpected newline after '('.	fix	304	306		end	12	19
+tests/rules/@stylistic/function-paren-newline/never/cases.ts:15:1	@stylistic/function-paren-newline	unexpectedBefore	Unexpected newline before ')'.	fix	370	371		end	15	2
+tests/rules/@stylistic/function-paren-newline/never/cases.ts:17:21	@stylistic/function-paren-newline	unexpectedAfter	Unexpected newline after '('.	fix	416	417		end	17	22
+tests/rules/@stylistic/function-paren-newline/never/cases.ts:18:1	@stylistic/function-paren-newline	unexpectedBefore	Unexpected newline before ')'.	fix	416	417		end	18	2
+tests/rules/@stylistic/function-paren-newline/never/cases.ts:19:16	@stylistic/function-paren-newline	unexpectedAfter	Unexpected newline after '('.	fix	438	440		end	19	17
+tests/rules/@stylistic/function-paren-newline/never/cases.ts:21:1	@stylistic/function-paren-newline	unexpectedBefore	Unexpected newline before ')'.	fix	450	451		end	21	2
+tests/rules/@stylistic/function-paren-newline/never/cases.ts:24:19	@stylistic/function-paren-newline	unexpectedAfter	Unexpected newline after '('.	end	24	20
+tests/rules/@stylistic/function-paren-newline/never/cases.ts:26:20	@stylistic/function-paren-newline	unexpectedAfter	Unexpected newline after '('.	end	26	21
+tests/rules/@stylistic/function-paren-newline/never/cases.ts:38:20	@stylistic/function-paren-newline	unexpectedAfter	Unexpected newline after '('.	fix	877	878		end	38	21
+tests/rules/@stylistic/function-paren-newline/never/cases.ts:39:1	@stylistic/function-paren-newline	unexpectedBefore	Unexpected newline before ')'.	fix	877	878		end	39	2
+tests/rules/@stylistic/function-paren-newline/never/cases.ts:44:5	@stylistic/function-paren-newline	unexpectedAfter	Unexpected newline after '('.	fix	917	919		end	44	6
+tests/rules/@stylistic/function-paren-newline/never/cases.ts:47:1	@stylistic/function-paren-newline	unexpectedBefore	Unexpected newline before ')'.	fix	935	936		end	47	2
+tests/rules/@stylistic/function-paren-newline/never/cases.ts:48:5	@stylistic/function-paren-newline	unexpectedAfter	Unexpected newline after '('.	fix	944	946		end	48	6
+tests/rules/@stylistic/function-paren-newline/never/cases.ts:51:1	@stylistic/function-paren-newline	unexpectedBefore	Unexpected newline before ')'.	fix	952	953		end	51	2
+tests/rules/@stylistic/function-paren-newline/never/cases.ts:53:5	@stylistic/function-paren-newline	unexpectedAfter	Unexpected newline after '('.	fix	969	970		end	53	6
+tests/rules/@stylistic/function-paren-newline/never/cases.ts:54:1	@stylistic/function-paren-newline	unexpectedBefore	Unexpected newline before ')'.	fix	969	970		end	54	2
+tests/rules/@stylistic/function-paren-newline/never/cases.ts:72:10	@stylistic/function-paren-newline	unexpectedAfter	Unexpected newline after '('.	fix	1153	1154		end	72	11
+tests/rules/@stylistic/function-paren-newline/never/cases.ts:73:1	@stylistic/function-paren-newline	unexpectedBefore	Unexpected newline before ')'.	fix	1153	1154		end	73	2
+tests/rules/@stylistic/function-paren-newline/never/cases.ts:76:21	@stylistic/function-paren-newline	unexpectedAfter	Unexpected newline after '('.	fix	1237	1239		end	76	22
+tests/rules/@stylistic/function-paren-newline/never/cases.ts:82:13	@stylistic/function-paren-newline	unexpectedAfter	Unexpected newline after '('.	fix	1314	1317		end	82	14
