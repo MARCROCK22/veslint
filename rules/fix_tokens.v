@@ -85,6 +85,8 @@ enum SourceTokenKind {
 	line_comment
 	block_comment
 	shebang_comment
+	jsx_text       // the text between the children of a JSX element, or a JSX attribute's string
+	jsx_identifier // a name in a JSX tag or attribute
 }
 
 // SourceToken is a token or a comment: a range of the source, in bytes.
@@ -138,11 +140,85 @@ fn (mut c Checker) source_tokens(n C.TSNode) &SourceTokens {
 fn build_source_tokens(root C.TSNode, src string) &SourceTokens {
 	mut all := []SourceToken{}
 	source_tokens_walk(root, src, mut all)
+	if src.contains('<') {
+		all = source_tokens_jsx(root, all)
+	}
 	return &SourceTokens{
 		tokens:   all.filter(!it.is_comment())
 		comments: all.filter(it.is_comment())
 		all:      all
 	}
+}
+
+// source_tokens_jsx gives the JSX tokens of typescript-estree: the text between the children of a
+// JSX element is one JSXText token from the `>` or `}` before it to the `<` or `{` after it (white
+// space and line breaks included, which tree-sitter's jsx_text leaves out, and what looks like a
+// comment or an entity in it), a JSX attribute's string is a JSXText token, and a name in a tag or
+// an attribute a JSXIdentifier.
+fn source_tokens_jsx(root C.TSNode, tokens []SourceToken) []SourceToken {
+	mut gaps := []JsxTextGap{}
+	mut cursor := C.ts_tree_cursor_new(root)
+	defer {
+		C.ts_tree_cursor_delete(&cursor)
+	}
+	for {
+		node := C.ts_tree_cursor_current_node(&cursor)
+		if node_kind(node) == 'jsx_element' {
+			mut previous_end := -1
+			for child in named_children(node) {
+				if node_kind(child) in ['jsx_text', 'html_character_reference', 'comment'] {
+					continue
+				}
+				if previous_end >= 0 && node_start(child) > previous_end {
+					gaps << JsxTextGap{previous_end, node_start(child), node}
+				}
+				previous_end = node_end(child)
+			}
+		}
+		if C.ts_tree_cursor_goto_first_child(&cursor) {
+			continue
+		}
+		mut done := false
+		for !C.ts_tree_cursor_goto_next_sibling(&cursor) {
+			if !C.ts_tree_cursor_goto_parent(&cursor) {
+				done = true
+				break
+			}
+		}
+		if done {
+			break
+		}
+	}
+	mut out := []SourceToken{cap: tokens.len}
+	for token in tokens {
+		if gaps.any(token.start >= it.start && token.end <= it.end) {
+			continue
+		}
+		parent_kind := node_kind(node_parent(token.node) or { token.node })
+		if token.kind == .string_ && parent_kind == 'jsx_attribute' {
+			out << SourceToken{token.start, token.end, .jsx_text, token.node}
+			continue
+		}
+		if token.kind in [.identifier, .keyword, .null_, .boolean]
+			&& parent_kind in ['jsx_opening_element', 'jsx_closing_element', 'jsx_self_closing_element', 'jsx_attribute', 'jsx_member_expression', 'jsx_namespace_name'] {
+			out << SourceToken{token.start, token.end, .jsx_identifier, token.node}
+			continue
+		}
+		out << token
+	}
+	for gap in gaps {
+		out << SourceToken{gap.start, gap.end, .jsx_text, gap.element}
+	}
+	out.sort_with_compare(fn (a &SourceToken, b &SourceToken) int {
+		return a.start - b.start
+	})
+	return out
+}
+
+struct JsxTextGap {
+	start   int
+	end     int
+	element C.TSNode
 }
 
 // source_tokens_walk appends the tokens and comments of a subtree, in order.
