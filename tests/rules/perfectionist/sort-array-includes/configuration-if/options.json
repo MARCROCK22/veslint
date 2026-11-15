@@ -1,0 +1,1 @@
+[{"useConfigurationIf": {"allNamesMatchPattern": "^[rgb]$"}, "type": "unsorted", "groups": ["r", "g", "b"], "customGroups": [{"groupName": "r", "elementNamePattern": "^r$"}, {"groupName": "g", "elementNamePattern": "^g$"}, {"groupName": "b", "elementNamePattern": "^b$"}]}, {"order": "desc"}]

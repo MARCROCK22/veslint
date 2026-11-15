@@ -1,0 +1,82 @@
+tests/rules/perfectionist/sort-array-includes/ast-selector/cases.ts:4:7	perfectionist/sort-array-includes	unexpectedArrayIncludesOrder	Expected "b" to come before "a".
+tests/rules/perfectionist/sort-array-includes/ast-selector/cases.ts:5:7	perfectionist/sort-array-includes	unexpectedArrayIncludesOrder	Expected "a" to come before "b".
+tests/rules/perfectionist/sort-array-includes/case-sensitive/cases.ts:4:12	perfectionist/sort-array-includes	unexpectedArrayIncludesOrder	Expected "a" to come before "B".
+tests/rules/perfectionist/sort-array-includes/cases.ts:5:7	perfectionist/sort-array-includes	unexpectedArrayIncludesOrder	Expected "a" to come before "b".
+tests/rules/perfectionist/sort-array-includes/cases.ts:6:7	perfectionist/sort-array-includes	unexpectedArrayIncludesOrder	Expected "b" to come before "c".
+tests/rules/perfectionist/sort-array-includes/cases.ts:6:12	perfectionist/sort-array-includes	unexpectedArrayIncludesOrder	Expected "a" to come before "b".
+tests/rules/perfectionist/sort-array-includes/cases.ts:7:5	perfectionist/sort-array-includes	unexpectedArrayIncludesOrder	Expected "a" to come before "b".
+tests/rules/perfectionist/sort-array-includes/cases.ts:7:17	perfectionist/sort-array-includes	unexpectedArrayIncludesOrder	Expected "c" to come before "d".
+tests/rules/perfectionist/sort-array-includes/cases.ts:8:7	perfectionist/sort-array-includes	unexpectedArrayIncludesOrder	Expected "a" to come before "B".
+tests/rules/perfectionist/sort-array-includes/cases.ts:9:9	perfectionist/sort-array-includes	unexpectedArrayIncludesOrder	Expected "1" to come before "9".
+tests/rules/perfectionist/sort-array-includes/cases.ts:12:3	perfectionist/sort-array-includes	unexpectedArrayIncludesOrder	Expected "a" to come before "b".
+tests/rules/perfectionist/sort-array-includes/cases.ts:18:3	perfectionist/sort-array-includes	unexpectedArrayIncludesOrder	Expected "a" to come before "b".
+tests/rules/perfectionist/sort-array-includes/cases.ts:22:3	perfectionist/sort-array-includes	unexpectedArrayIncludesOrder	Expected "a" to come before "b".
+tests/rules/perfectionist/sort-array-includes/cases.ts:24:9	perfectionist/sort-array-includes	unexpectedArrayIncludesOrder	Expected "a" to come before "b".
+tests/rules/perfectionist/sort-array-includes/cases.ts:25:10	perfectionist/sort-array-includes	unexpectedArrayIncludesOrder	Expected "a" to come before "b".
+tests/rules/perfectionist/sort-array-includes/cases.ts:26:8	perfectionist/sort-array-includes	unexpectedArrayIncludesOrder	Expected "false" to come before "true".
+tests/rules/perfectionist/sort-array-includes/cases.ts:26:21	perfectionist/sort-array-includes	unexpectedArrayIncludesOrder	Expected "1" to come before "null".
+tests/rules/perfectionist/sort-array-includes/cases.ts:26:25	perfectionist/sort-array-includes	unexpectedArrayIncludesOrder	Expected "/b/" to come before "1".
+tests/rules/perfectionist/sort-array-includes/cases.ts:26:30	perfectionist/sort-array-includes	unexpectedArrayIncludesOrder	Expected "/a/g" to come before "/b/".
+tests/rules/perfectionist/sort-array-includes/cases.ts:27:7	perfectionist/sort-array-includes	unexpectedArrayIncludesOrder	Expected "`a`" to come before "`b`".
+tests/rules/perfectionist/sort-array-includes/cases.ts:28:7	perfectionist/sort-array-includes	unexpectedArrayIncludesOrder	Expected "o.a" to come before "o.b".
+tests/rules/perfectionist/sort-array-includes/cases.ts:29:9	perfectionist/sort-array-includes	unexpectedArrayIncludesOrder	Expected "a a" to come before "a b".
+tests/rules/perfectionist/sort-array-includes/cases.ts:42:3	perfectionist/sort-array-includes	unexpectedArrayIncludesOrder	Expected "b" to come before "a".
+tests/rules/perfectionist/sort-array-includes/cases.ts:44:16	perfectionist/sort-array-includes	unexpectedArrayIncludesOrder	Expected "a" to come before "b".
+tests/rules/perfectionist/sort-array-includes/cases.ts:46:7	perfectionist/sort-array-includes	unexpectedArrayIncludesOrder	Expected "a" to come before "b".
+tests/rules/perfectionist/sort-array-includes/cases.ts:47:7	perfectionist/sort-array-includes	unexpectedArrayIncludesOrder	Expected "a" to come before "b".
+tests/rules/perfectionist/sort-array-includes/cases.ts:52:8	perfectionist/sort-array-includes	unexpectedArrayIncludesOrder	Expected "a" to come before "b".
+tests/rules/perfectionist/sort-array-includes/configuration-if/cases.ts:4:7	perfectionist/sort-array-includes	unexpectedArrayIncludesGroupOrder	Expected "g" (g) to come before "b" (b).
+tests/rules/perfectionist/sort-array-includes/configuration-if/cases.ts:4:12	perfectionist/sort-array-includes	unexpectedArrayIncludesGroupOrder	Expected "r" (r) to come before "g" (g).
+tests/rules/perfectionist/sort-array-includes/configuration-if/cases.ts:5:7	perfectionist/sort-array-includes	unexpectedArrayIncludesOrder	Expected "b" to come before "a".
+tests/rules/perfectionist/sort-array-includes/configuration-if/cases.ts:5:12	perfectionist/sort-array-includes	unexpectedArrayIncludesOrder	Expected "c" to come before "b".
+tests/rules/perfectionist/sort-array-includes/custom/cases.ts:4:7	perfectionist/sort-array-includes	unexpectedArrayIncludesOrder	Expected "b" to come before "a".
+tests/rules/perfectionist/sort-array-includes/custom/cases.ts:4:12	perfectionist/sort-array-includes	unexpectedArrayIncludesOrder	Expected "c" to come before "b".
+tests/rules/perfectionist/sort-array-includes/custom/cases.ts:5:14	perfectionist/sort-array-includes	unexpectedArrayIncludesOrder	Expected "a" to come before "aa".
+tests/rules/perfectionist/sort-array-includes/custom/cases.ts:6:7	perfectionist/sort-array-includes	unexpectedArrayIncludesOrder	Expected "c" to come before "x".
+tests/rules/perfectionist/sort-array-includes/fallback/cases.ts:4:8	perfectionist/sort-array-includes	unexpectedArrayIncludesOrder	Expected "b" to come before "aa".
+tests/rules/perfectionist/sort-array-includes/group-overrides/cases.ts:6:3	perfectionist/sort-array-includes	unexpectedArrayIncludesOrder	Expected "top10" to come before "top1".
+tests/rules/perfectionist/sort-array-includes/group-overrides/cases.ts:8:3	perfectionist/sort-array-includes	missedSpacingBetweenArrayIncludesMembers	Missed spacing between "top2" and "b".
+tests/rules/perfectionist/sort-array-includes/group-overrides/cases.ts:9:3	perfectionist/sort-array-includes	unexpectedArrayIncludesOrder	Expected "a" to come before "b".
+tests/rules/perfectionist/sort-array-includes/groups/cases.ts:6:3	perfectionist/sort-array-includes	unexpectedArrayIncludesGroupOrder	Expected "topB" (top) to come before "b" (literal).
+tests/rules/perfectionist/sort-array-includes/groups/cases.ts:7:3	perfectionist/sort-array-includes	missedSpacingBetweenArrayIncludesMembers	Missed spacing between "topB" and "a".
+tests/rules/perfectionist/sort-array-includes/groups/cases.ts:8:3	perfectionist/sort-array-includes	unexpectedArrayIncludesGroupOrder	Expected "topA" (top) to come before "a" (literal).
+tests/rules/perfectionist/sort-array-includes/groups/cases.ts:9:3	perfectionist/sort-array-includes	missedSpacingBetweenArrayIncludesMembers	Missed spacing between "topA" and "zEnd".
+tests/rules/perfectionist/sort-array-includes/groups/cases.ts:20:3	perfectionist/sort-array-includes	missedSpacingBetweenArrayIncludesMembers	Missed spacing between "topA" and "a".
+tests/rules/perfectionist/sort-array-includes/groups/cases.ts:23:3	perfectionist/sort-array-includes	extraSpacingBetweenArrayIncludesMembers	Extra spacing between "a" and "last".
+tests/rules/perfectionist/sort-array-includes/groups/cases.ts:25:10	perfectionist/sort-array-includes	missedSpacingBetweenArrayIncludesMembers	Missed spacing between "topA" and "a".
+tests/rules/perfectionist/sort-array-includes/groups/cases.ts:29:3	perfectionist/sort-array-includes	extraSpacingBetweenArrayIncludesMembers	Extra spacing between "topA" and "topB".
+tests/rules/perfectionist/sort-array-includes/line-length/cases.ts:4:7	perfectionist/sort-array-includes	unexpectedArrayIncludesOrder	Expected "bbb" to come before "a".
+tests/rules/perfectionist/sort-array-includes/line-length/cases.ts:5:5	perfectionist/sort-array-includes	unexpectedArrayIncludesOrder	Expected "bbb" to come before "a".
+tests/rules/perfectionist/sort-array-includes/natural-desc/cases.ts:4:11	perfectionist/sort-array-includes	unexpectedArrayIncludesOrder	Expected "item2" to come before "item1".
+tests/rules/perfectionist/sort-array-includes/natural-desc/cases.ts:4:20	perfectionist/sort-array-includes	unexpectedArrayIncludesOrder	Expected "item10" to come before "item2".
+tests/rules/perfectionist/sort-array-includes/natural-desc/cases.ts:5:7	perfectionist/sort-array-includes	unexpectedArrayIncludesOrder	Expected "B" to come before "a".
+tests/rules/perfectionist/sort-array-includes/natural/cases.ts:4:12	perfectionist/sort-array-includes	unexpectedArrayIncludesOrder	Expected "item2" to come before "item10".
+tests/rules/perfectionist/sort-array-includes/natural/cases.ts:4:21	perfectionist/sort-array-includes	unexpectedArrayIncludesOrder	Expected "item1" to come before "item2".
+tests/rules/perfectionist/sort-array-includes/natural/cases.ts:5:10	perfectionist/sort-array-includes	unexpectedArrayIncludesOrder	Expected "a2b" to come before "a10b".
+tests/rules/perfectionist/sort-array-includes/natural/cases.ts:5:17	perfectionist/sort-array-includes	unexpectedArrayIncludesOrder	Expected "a1c" to come before "a2b".
+tests/rules/perfectionist/sort-array-includes/natural/cases.ts:6:19	perfectionist/sort-array-includes	unexpectedArrayIncludesOrder	Expected "x01" to come before "x1.25".
+tests/rules/perfectionist/sort-array-includes/natural/cases.ts:7:8	perfectionist/sort-array-includes	unexpectedArrayIncludesOrder	Expected "a10" to come before "B2".
+tests/rules/perfectionist/sort-array-includes/natural/cases.ts:7:15	perfectionist/sort-array-includes	unexpectedArrayIncludesOrder	Expected "a9" to come before "a10".
+tests/rules/perfectionist/sort-array-includes/natural/cases.ts:8:10	perfectionist/sort-array-includes	unexpectedArrayIncludesOrder	Expected "0x9" to come before "0x10".
+tests/rules/perfectionist/sort-array-includes/natural/cases.ts:9:16	perfectionist/sort-array-includes	unexpectedArrayIncludesOrder	Expected "2020-01-01" to come before "2020-01-02".
+tests/rules/perfectionist/sort-array-includes/natural/cases.ts:11:8	perfectionist/sort-array-includes	unexpectedArrayIncludesOrder	Expected "e10" to come before "é2".
+tests/rules/perfectionist/sort-array-includes/newlines-inside/cases.ts:7:3	perfectionist/sort-array-includes	extraSpacingBetweenArrayIncludesMembers	Extra spacing between "topA" and "topB".
+tests/rules/perfectionist/sort-array-includes/newlines-inside/cases.ts:9:3	perfectionist/sort-array-includes	missedSpacingBetweenArrayIncludesMembers	Missed spacing between "a" and "b".
+tests/rules/perfectionist/sort-array-includes/partition-comment/cases.ts:6:3	perfectionist/sort-array-includes	unexpectedArrayIncludesOrder	Expected "a" to come before "b".
+tests/rules/perfectionist/sort-array-includes/partition-comment/cases.ts:9:3	perfectionist/sort-array-includes	unexpectedArrayIncludesOrder	Expected "c" to come before "d".
+tests/rules/perfectionist/sort-array-includes/partition-comment/cases.ts:17:3	perfectionist/sort-array-includes	unexpectedArrayIncludesOrder	Expected "b" to come before "c".
+tests/rules/perfectionist/sort-array-includes/partition-list/cases.ts:11:3	perfectionist/sort-array-includes	unexpectedArrayIncludesOrder	Expected "a" to come before "b".
+tests/rules/perfectionist/sort-array-includes/partition-newline/cases.ts:6:3	perfectionist/sort-array-includes	unexpectedArrayIncludesOrder	Expected "a" to come before "b".
+tests/rules/perfectionist/sort-array-includes/partition-newline/cases.ts:9:3	perfectionist/sort-array-includes	unexpectedArrayIncludesOrder	Expected "c" to come before "d".
+tests/rules/perfectionist/sort-array-includes/partition-newline/cases.ts:16:3	perfectionist/sort-array-includes	unexpectedArrayIncludesOrder	Expected "b" to come before "c".
+tests/rules/perfectionist/sort-array-includes/partition-pattern/cases.ts:12:3	perfectionist/sort-array-includes	unexpectedArrayIncludesOrder	Expected "a" to come before "b".
+tests/rules/perfectionist/sort-array-includes/partition-pattern/cases.ts:17:3	perfectionist/sort-array-includes	unexpectedArrayIncludesOrder	Expected "a" to come before "b".
+tests/rules/perfectionist/sort-array-includes/remove-special/cases.ts:4:8	perfectionist/sort-array-includes	unexpectedArrayIncludesOrder	Expected "b" to come before "_c".
+tests/rules/perfectionist/sort-array-includes/remove-special/cases.ts:4:13	perfectionist/sort-array-includes	unexpectedArrayIncludesOrder	Expected "$a" to come before "b".
+tests/rules/perfectionist/sort-array-includes/remove-special/cases.ts:5:9	perfectionist/sort-array-includes	unexpectedArrayIncludesOrder	Expected "ab" to come before "a-c".
+tests/rules/perfectionist/sort-array-includes/subgroup-order/cases.ts:4:8	perfectionist/sort-array-includes	unexpectedArrayIncludesOrder	Expected "x2" to come before "y1".
+tests/rules/perfectionist/sort-array-includes/subgroup-order/cases.ts:5:7	perfectionist/sort-array-includes	unexpectedArrayIncludesGroupOrder	Expected "x1" (x) to come before "b" (literal).
+tests/rules/perfectionist/sort-array-includes/trim-special/cases.ts:4:8	perfectionist/sort-array-includes	unexpectedArrayIncludesOrder	Expected "b" to come before "_a".
+tests/rules/perfectionist/sort-array-includes/trim-special/cases.ts:4:13	perfectionist/sort-array-includes	unexpectedArrayIncludesOrder	Expected "$c" to come before "b".
+tests/rules/perfectionist/sort-array-includes/trim-special/cases.ts:5:9	perfectionist/sort-array-includes	unexpectedArrayIncludesOrder	Expected "ab" to come before "a-c".
+tests/rules/perfectionist/sort-array-includes/unsorted-groups/cases.ts:4:12	perfectionist/sort-array-includes	unexpectedArrayIncludesGroupOrder	Expected "xa" (a) to come before "y" (literal).

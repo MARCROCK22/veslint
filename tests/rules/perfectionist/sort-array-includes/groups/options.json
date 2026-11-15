@@ -1,0 +1,1 @@
+[{"groups": ["top", "literal", "bottom"], "newlinesBetween": 1, "customGroups": [{"groupName": "top", "elementNamePattern": "^top"}, {"groupName": "bottom", "anyOf": [{"elementNamePattern": "end$"}, {"selector": "literal", "elementNamePattern": {"pattern": "LAST", "flags": "i"}}]}]}]

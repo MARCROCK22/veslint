@@ -1,0 +1,11 @@
+declare const value: string;
+declare const x: string[];
+declare const o: { a: string; b: string };
+['item10', 'item2', 'item1'].includes(value);
+['a10b', 'a2b', 'a1c'].includes(value);
+['x1.5', 'x1.25', 'x01'].includes(value);
+['B2', 'a10', 'a9'].includes(value);
+['0x10', '0x9', '9'].includes(value);
+['2020-01-02', '2020-01-01'].includes(value);
+['v1_000', 'v999'].includes(value);
+['é2', 'e10'].includes(value);

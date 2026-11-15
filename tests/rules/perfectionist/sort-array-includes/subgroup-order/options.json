@@ -1,0 +1,1 @@
+[{"type": "subgroup-order", "groups": [["x", "y"], "literal"], "customGroups": [{"groupName": "x", "elementNamePattern": "^x"}, {"groupName": "y", "elementNamePattern": "^y"}]}]

@@ -1451,3 +1451,19 @@ eslint	no-extra-parens._js_/i150	typescript-eslint's parser: Octal literals are 
 # @stylistic/no-extra-parens: tree-sitter does not end `yield` at a line break (no automatic semicolon there):
 # `yield` + line break + `(b)` is one yield expression for veslint, a `yield` and the statement `(b)` for TypeScript.
 veslint	no-extra-parens._js_/i252	tree-sitter reads `yield` and the expression on the next line as one yield expression
+# eslint-plugin-perfectionist (P1): the disable comments of these cases name the rule
+# `rule-to-test/<rule>`, the name eslint-vitest-rule-tester gives it.
+eslint	sort-array-includes/i142	disables rule-to-test/sort-array-includes, the name the tester gives the rule
+veslint	sort-array-includes/i142	disables rule-to-test/sort-array-includes, the name the tester gives the rule
+eslint	sort-array-includes/i143	disables rule-to-test/sort-array-includes, the name the tester gives the rule
+veslint	sort-array-includes/i143	disables rule-to-test/sort-array-includes, the name the tester gives the rule
+eslint	sort-array-includes/i145	disables rule-to-test/sort-array-includes, the name the tester gives the rule
+veslint	sort-array-includes/i145	disables rule-to-test/sort-array-includes, the name the tester gives the rule
+# perfectionist: `locales` other than en-US and the locales that collate like it (the root collation
+# of collation/) are not ported: zh-CN puts the Han characters before the Latin letters.
+veslint	sort-array-includes/v21	locales: zh-CN, which veslint does not collate
+veslint	sort-array-includes/v47	locales: zh-CN, which veslint does not collate
+# perfectionist: an alphabet with lone surrogates (Alphabet.generateRecommendedAlphabet), which
+# veslint's JSON reader (json2) refuses in the configuration.
+veslint	sort-array-includes/v76	the alphabet has lone surrogates, which veslint's JSON reader refuses
+veslint	sort-array-includes/i133	the alphabet has lone surrogates, which veslint's JSON reader refuses
