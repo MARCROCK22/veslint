@@ -1,0 +1,210 @@
+tests/rules/@stylistic/brace-style/allman-single-line/cases.ts:4:21	@stylistic/brace-style	sameLineOpen	Opening curly brace appears on the same line as controlling statement.
+tests/rules/@stylistic/brace-style/allman-single-line/cases.ts:20:11	@stylistic/brace-style	sameLineOpen	Opening curly brace appears on the same line as controlling statement.
+tests/rules/@stylistic/brace-style/allman-single-line/cases.ts:22:1	@stylistic/brace-style	sameLineClose	Closing curly brace appears on the same line as the subsequent block.
+tests/rules/@stylistic/brace-style/allman-single-line/cases.ts:22:8	@stylistic/brace-style	sameLineOpen	Opening curly brace appears on the same line as controlling statement.
+tests/rules/@stylistic/brace-style/allman-single-line/cases.ts:26:11	@stylistic/brace-style	sameLineOpen	Opening curly brace appears on the same line as controlling statement.
+tests/rules/@stylistic/brace-style/allman-single-line/cases.ts:29:6	@stylistic/brace-style	sameLineOpen	Opening curly brace appears on the same line as controlling statement.
+tests/rules/@stylistic/brace-style/allman-single-line/cases.ts:42:21	@stylistic/brace-style	sameLineClose	Closing curly brace appears on the same line as the subsequent block.
+tests/rules/@stylistic/brace-style/allman-single-line/cases.ts:44:11	@stylistic/brace-style	sameLineOpen	Opening curly brace appears on the same line as controlling statement.
+tests/rules/@stylistic/brace-style/allman-single-line/cases.ts:46:1	@stylistic/brace-style	sameLineClose	Closing curly brace appears on the same line as the subsequent block.
+tests/rules/@stylistic/brace-style/allman-single-line/cases.ts:46:18	@stylistic/brace-style	sameLineOpen	Opening curly brace appears on the same line as controlling statement.
+tests/rules/@stylistic/brace-style/allman-single-line/cases.ts:51:6	@stylistic/brace-style	sameLineOpen	Opening curly brace appears on the same line as controlling statement.
+tests/rules/@stylistic/brace-style/allman-single-line/cases.ts:55:5	@stylistic/brace-style	sameLineOpen	Opening curly brace appears on the same line as controlling statement.
+tests/rules/@stylistic/brace-style/allman-single-line/cases.ts:57:1	@stylistic/brace-style	sameLineClose	Closing curly brace appears on the same line as the subsequent block.
+tests/rules/@stylistic/brace-style/allman-single-line/cases.ts:57:13	@stylistic/brace-style	sameLineOpen	Opening curly brace appears on the same line as controlling statement.
+tests/rules/@stylistic/brace-style/allman-single-line/cases.ts:59:1	@stylistic/brace-style	sameLineClose	Closing curly brace appears on the same line as the subsequent block.
+tests/rules/@stylistic/brace-style/allman-single-line/cases.ts:59:11	@stylistic/brace-style	sameLineOpen	Opening curly brace appears on the same line as controlling statement.
+tests/rules/@stylistic/brace-style/allman-single-line/cases.ts:63:5	@stylistic/brace-style	sameLineOpen	Opening curly brace appears on the same line as controlling statement.
+tests/rules/@stylistic/brace-style/allman-single-line/cases.ts:66:11	@stylistic/brace-style	sameLineOpen	Opening curly brace appears on the same line as controlling statement.
+tests/rules/@stylistic/brace-style/allman-single-line/cases.ts:69:9	@stylistic/brace-style	sameLineOpen	Opening curly brace appears on the same line as controlling statement.
+tests/rules/@stylistic/brace-style/allman-single-line/cases.ts:73:15	@stylistic/brace-style	sameLineClose	Closing curly brace appears on the same line as the subsequent block.
+tests/rules/@stylistic/brace-style/allman-single-line/cases.ts:75:5	@stylistic/brace-style	sameLineOpen	Opening curly brace appears on the same line as controlling statement.
+tests/rules/@stylistic/brace-style/allman-single-line/cases.ts:78:9	@stylistic/brace-style	sameLineOpen	Opening curly brace appears on the same line as controlling statement.
+tests/rules/@stylistic/brace-style/allman-single-line/cases.ts:82:14	@stylistic/brace-style	sameLineOpen	Opening curly brace appears on the same line as controlling statement.
+tests/rules/@stylistic/brace-style/allman-single-line/cases.ts:82:14	@stylistic/brace-style	blockSameLine	Statement inside of curly braces should be on next line.
+tests/rules/@stylistic/brace-style/allman-single-line/cases.ts:85:10	@stylistic/brace-style	sameLineOpen	Opening curly brace appears on the same line as controlling statement.
+tests/rules/@stylistic/brace-style/allman-single-line/cases.ts:86:10	@stylistic/brace-style	singleLineClose	Closing curly brace should be on the same line as opening curly brace or on the line after the previous block.
+tests/rules/@stylistic/brace-style/allman-single-line/cases.ts:94:4	@stylistic/brace-style	sameLineOpen	Opening curly brace appears on the same line as controlling statement.
+tests/rules/@stylistic/brace-style/allman-single-line/cases.ts:98:15	@stylistic/brace-style	sameLineOpen	Opening curly brace appears on the same line as controlling statement.
+tests/rules/@stylistic/brace-style/allman-single-line/cases.ts:114:13	@stylistic/brace-style	sameLineOpen	Opening curly brace appears on the same line as controlling statement.
+tests/rules/@stylistic/brace-style/allman-single-line/cases.ts:115:11	@stylistic/brace-style	sameLineOpen	Opening curly brace appears on the same line as controlling statement.
+tests/rules/@stylistic/brace-style/allman-single-line/cases.ts:119:9	@stylistic/brace-style	sameLineOpen	Opening curly brace appears on the same line as controlling statement.
+tests/rules/@stylistic/brace-style/allman-single-line/cases.ts:138:17	@stylistic/brace-style	sameLineOpen	Opening curly brace appears on the same line as controlling statement.
+tests/rules/@stylistic/brace-style/allman-single-line/cases.ts:155:21	@stylistic/brace-style	sameLineOpen	Opening curly brace appears on the same line as controlling statement.
+tests/rules/@stylistic/brace-style/allman-single-line/cases.ts:163:8	@stylistic/brace-style	sameLineOpen	Opening curly brace appears on the same line as controlling statement.
+tests/rules/@stylistic/brace-style/allman/cases.ts:4:21	@stylistic/brace-style	sameLineOpen	Opening curly brace appears on the same line as controlling statement.
+tests/rules/@stylistic/brace-style/allman/cases.ts:13:20	@stylistic/brace-style	sameLineOpen	Opening curly brace appears on the same line as controlling statement.
+tests/rules/@stylistic/brace-style/allman/cases.ts:13:20	@stylistic/brace-style	blockSameLine	Statement inside of curly braces should be on next line.
+tests/rules/@stylistic/brace-style/allman/cases.ts:13:30	@stylistic/brace-style	singleLineClose	Closing curly brace should be on the same line as opening curly brace or on the line after the previous block.
+tests/rules/@stylistic/brace-style/allman/cases.ts:15:22	@stylistic/brace-style	sameLineOpen	Opening curly brace appears on the same line as controlling statement.
+tests/rules/@stylistic/brace-style/allman/cases.ts:20:11	@stylistic/brace-style	sameLineOpen	Opening curly brace appears on the same line as controlling statement.
+tests/rules/@stylistic/brace-style/allman/cases.ts:22:1	@stylistic/brace-style	sameLineClose	Closing curly brace appears on the same line as the subsequent block.
+tests/rules/@stylistic/brace-style/allman/cases.ts:22:8	@stylistic/brace-style	sameLineOpen	Opening curly brace appears on the same line as controlling statement.
+tests/rules/@stylistic/brace-style/allman/cases.ts:26:11	@stylistic/brace-style	sameLineOpen	Opening curly brace appears on the same line as controlling statement.
+tests/rules/@stylistic/brace-style/allman/cases.ts:29:6	@stylistic/brace-style	sameLineOpen	Opening curly brace appears on the same line as controlling statement.
+tests/rules/@stylistic/brace-style/allman/cases.ts:42:11	@stylistic/brace-style	sameLineOpen	Opening curly brace appears on the same line as controlling statement.
+tests/rules/@stylistic/brace-style/allman/cases.ts:42:11	@stylistic/brace-style	blockSameLine	Statement inside of curly braces should be on next line.
+tests/rules/@stylistic/brace-style/allman/cases.ts:42:21	@stylistic/brace-style	sameLineClose	Closing curly brace appears on the same line as the subsequent block.
+tests/rules/@stylistic/brace-style/allman/cases.ts:42:21	@stylistic/brace-style	singleLineClose	Closing curly brace should be on the same line as opening curly brace or on the line after the previous block.
+tests/rules/@stylistic/brace-style/allman/cases.ts:42:28	@stylistic/brace-style	sameLineOpen	Opening curly brace appears on the same line as controlling statement.
+tests/rules/@stylistic/brace-style/allman/cases.ts:42:28	@stylistic/brace-style	blockSameLine	Statement inside of curly braces should be on next line.
+tests/rules/@stylistic/brace-style/allman/cases.ts:42:38	@stylistic/brace-style	singleLineClose	Closing curly brace should be on the same line as opening curly brace or on the line after the previous block.
+tests/rules/@stylistic/brace-style/allman/cases.ts:44:11	@stylistic/brace-style	sameLineOpen	Opening curly brace appears on the same line as controlling statement.
+tests/rules/@stylistic/brace-style/allman/cases.ts:46:1	@stylistic/brace-style	sameLineClose	Closing curly brace appears on the same line as the subsequent block.
+tests/rules/@stylistic/brace-style/allman/cases.ts:46:18	@stylistic/brace-style	sameLineOpen	Opening curly brace appears on the same line as controlling statement.
+tests/rules/@stylistic/brace-style/allman/cases.ts:51:6	@stylistic/brace-style	sameLineOpen	Opening curly brace appears on the same line as controlling statement.
+tests/rules/@stylistic/brace-style/allman/cases.ts:55:5	@stylistic/brace-style	sameLineOpen	Opening curly brace appears on the same line as controlling statement.
+tests/rules/@stylistic/brace-style/allman/cases.ts:57:1	@stylistic/brace-style	sameLineClose	Closing curly brace appears on the same line as the subsequent block.
+tests/rules/@stylistic/brace-style/allman/cases.ts:57:13	@stylistic/brace-style	sameLineOpen	Opening curly brace appears on the same line as controlling statement.
+tests/rules/@stylistic/brace-style/allman/cases.ts:59:1	@stylistic/brace-style	sameLineClose	Closing curly brace appears on the same line as the subsequent block.
+tests/rules/@stylistic/brace-style/allman/cases.ts:59:11	@stylistic/brace-style	sameLineOpen	Opening curly brace appears on the same line as controlling statement.
+tests/rules/@stylistic/brace-style/allman/cases.ts:63:5	@stylistic/brace-style	sameLineOpen	Opening curly brace appears on the same line as controlling statement.
+tests/rules/@stylistic/brace-style/allman/cases.ts:66:11	@stylistic/brace-style	sameLineOpen	Opening curly brace appears on the same line as controlling statement.
+tests/rules/@stylistic/brace-style/allman/cases.ts:69:9	@stylistic/brace-style	sameLineOpen	Opening curly brace appears on the same line as controlling statement.
+tests/rules/@stylistic/brace-style/allman/cases.ts:73:5	@stylistic/brace-style	sameLineOpen	Opening curly brace appears on the same line as controlling statement.
+tests/rules/@stylistic/brace-style/allman/cases.ts:73:5	@stylistic/brace-style	blockSameLine	Statement inside of curly braces should be on next line.
+tests/rules/@stylistic/brace-style/allman/cases.ts:73:15	@stylistic/brace-style	sameLineClose	Closing curly brace appears on the same line as the subsequent block.
+tests/rules/@stylistic/brace-style/allman/cases.ts:73:15	@stylistic/brace-style	singleLineClose	Closing curly brace should be on the same line as opening curly brace or on the line after the previous block.
+tests/rules/@stylistic/brace-style/allman/cases.ts:73:23	@stylistic/brace-style	sameLineOpen	Opening curly brace appears on the same line as controlling statement.
+tests/rules/@stylistic/brace-style/allman/cases.ts:73:23	@stylistic/brace-style	blockSameLine	Statement inside of curly braces should be on next line.
+tests/rules/@stylistic/brace-style/allman/cases.ts:73:33	@stylistic/brace-style	singleLineClose	Closing curly brace should be on the same line as opening curly brace or on the line after the previous block.
+tests/rules/@stylistic/brace-style/allman/cases.ts:75:5	@stylistic/brace-style	sameLineOpen	Opening curly brace appears on the same line as controlling statement.
+tests/rules/@stylistic/brace-style/allman/cases.ts:78:9	@stylistic/brace-style	sameLineOpen	Opening curly brace appears on the same line as controlling statement.
+tests/rules/@stylistic/brace-style/allman/cases.ts:82:14	@stylistic/brace-style	sameLineOpen	Opening curly brace appears on the same line as controlling statement.
+tests/rules/@stylistic/brace-style/allman/cases.ts:82:14	@stylistic/brace-style	blockSameLine	Statement inside of curly braces should be on next line.
+tests/rules/@stylistic/brace-style/allman/cases.ts:85:10	@stylistic/brace-style	sameLineOpen	Opening curly brace appears on the same line as controlling statement.
+tests/rules/@stylistic/brace-style/allman/cases.ts:86:10	@stylistic/brace-style	singleLineClose	Closing curly brace should be on the same line as opening curly brace or on the line after the previous block.
+tests/rules/@stylistic/brace-style/allman/cases.ts:94:4	@stylistic/brace-style	sameLineOpen	Opening curly brace appears on the same line as controlling statement.
+tests/rules/@stylistic/brace-style/allman/cases.ts:98:15	@stylistic/brace-style	sameLineOpen	Opening curly brace appears on the same line as controlling statement.
+tests/rules/@stylistic/brace-style/allman/cases.ts:110:15	@stylistic/brace-style	sameLineOpen	Opening curly brace appears on the same line as controlling statement.
+tests/rules/@stylistic/brace-style/allman/cases.ts:110:15	@stylistic/brace-style	blockSameLine	Statement inside of curly braces should be on next line.
+tests/rules/@stylistic/brace-style/allman/cases.ts:110:36	@stylistic/brace-style	singleLineClose	Closing curly brace should be on the same line as opening curly brace or on the line after the previous block.
+tests/rules/@stylistic/brace-style/allman/cases.ts:112:15	@stylistic/brace-style	sameLineOpen	Opening curly brace appears on the same line as controlling statement.
+tests/rules/@stylistic/brace-style/allman/cases.ts:114:13	@stylistic/brace-style	sameLineOpen	Opening curly brace appears on the same line as controlling statement.
+tests/rules/@stylistic/brace-style/allman/cases.ts:115:11	@stylistic/brace-style	sameLineOpen	Opening curly brace appears on the same line as controlling statement.
+tests/rules/@stylistic/brace-style/allman/cases.ts:119:9	@stylistic/brace-style	sameLineOpen	Opening curly brace appears on the same line as controlling statement.
+tests/rules/@stylistic/brace-style/allman/cases.ts:128:9	@stylistic/brace-style	sameLineOpen	Opening curly brace appears on the same line as controlling statement.
+tests/rules/@stylistic/brace-style/allman/cases.ts:128:9	@stylistic/brace-style	blockSameLine	Statement inside of curly braces should be on next line.
+tests/rules/@stylistic/brace-style/allman/cases.ts:128:19	@stylistic/brace-style	singleLineClose	Closing curly brace should be on the same line as opening curly brace or on the line after the previous block.
+tests/rules/@stylistic/brace-style/allman/cases.ts:131:15	@stylistic/brace-style	sameLineOpen	Opening curly brace appears on the same line as controlling statement.
+tests/rules/@stylistic/brace-style/allman/cases.ts:131:15	@stylistic/brace-style	blockSameLine	Statement inside of curly braces should be on next line.
+tests/rules/@stylistic/brace-style/allman/cases.ts:131:24	@stylistic/brace-style	singleLineClose	Closing curly brace should be on the same line as opening curly brace or on the line after the previous block.
+tests/rules/@stylistic/brace-style/allman/cases.ts:138:17	@stylistic/brace-style	sameLineOpen	Opening curly brace appears on the same line as controlling statement.
+tests/rules/@stylistic/brace-style/allman/cases.ts:142:18	@stylistic/brace-style	sameLineOpen	Opening curly brace appears on the same line as controlling statement.
+tests/rules/@stylistic/brace-style/allman/cases.ts:142:18	@stylistic/brace-style	blockSameLine	Statement inside of curly braces should be on next line.
+tests/rules/@stylistic/brace-style/allman/cases.ts:142:40	@stylistic/brace-style	singleLineClose	Closing curly brace should be on the same line as opening curly brace or on the line after the previous block.
+tests/rules/@stylistic/brace-style/allman/cases.ts:155:21	@stylistic/brace-style	sameLineOpen	Opening curly brace appears on the same line as controlling statement.
+tests/rules/@stylistic/brace-style/allman/cases.ts:159:28	@stylistic/brace-style	sameLineOpen	Opening curly brace appears on the same line as controlling statement.
+tests/rules/@stylistic/brace-style/allman/cases.ts:159:28	@stylistic/brace-style	blockSameLine	Statement inside of curly braces should be on next line.
+tests/rules/@stylistic/brace-style/allman/cases.ts:159:38	@stylistic/brace-style	singleLineClose	Closing curly brace should be on the same line as opening curly brace or on the line after the previous block.
+tests/rules/@stylistic/brace-style/allman/cases.ts:163:8	@stylistic/brace-style	sameLineOpen	Opening curly brace appears on the same line as controlling statement.
+tests/rules/@stylistic/brace-style/cases.ts:9:1	@stylistic/brace-style	nextLineOpen	Opening curly brace does not appear on the same line as controlling statement.
+tests/rules/@stylistic/brace-style/cases.ts:13:20	@stylistic/brace-style	blockSameLine	Statement inside of curly braces should be on next line.
+tests/rules/@stylistic/brace-style/cases.ts:13:30	@stylistic/brace-style	singleLineClose	Closing curly brace should be on the same line as opening curly brace or on the line after the previous block.
+tests/rules/@stylistic/brace-style/cases.ts:18:1	@stylistic/brace-style	nextLineOpen	Opening curly brace does not appear on the same line as controlling statement.
+tests/rules/@stylistic/brace-style/cases.ts:28:1	@stylistic/brace-style	nextLineClose	Closing curly brace does not appear on the same line as the subsequent block.
+tests/rules/@stylistic/brace-style/cases.ts:34:1	@stylistic/brace-style	nextLineOpen	Opening curly brace does not appear on the same line as controlling statement.
+tests/rules/@stylistic/brace-style/cases.ts:36:1	@stylistic/brace-style	nextLineClose	Closing curly brace does not appear on the same line as the subsequent block.
+tests/rules/@stylistic/brace-style/cases.ts:38:1	@stylistic/brace-style	nextLineOpen	Opening curly brace does not appear on the same line as controlling statement.
+tests/rules/@stylistic/brace-style/cases.ts:42:11	@stylistic/brace-style	blockSameLine	Statement inside of curly braces should be on next line.
+tests/rules/@stylistic/brace-style/cases.ts:42:21	@stylistic/brace-style	singleLineClose	Closing curly brace should be on the same line as opening curly brace or on the line after the previous block.
+tests/rules/@stylistic/brace-style/cases.ts:42:28	@stylistic/brace-style	blockSameLine	Statement inside of curly braces should be on next line.
+tests/rules/@stylistic/brace-style/cases.ts:42:38	@stylistic/brace-style	singleLineClose	Closing curly brace should be on the same line as opening curly brace or on the line after the previous block.
+tests/rules/@stylistic/brace-style/cases.ts:65:1	@stylistic/brace-style	nextLineClose	Closing curly brace does not appear on the same line as the subsequent block.
+tests/rules/@stylistic/brace-style/cases.ts:68:1	@stylistic/brace-style	nextLineClose	Closing curly brace does not appear on the same line as the subsequent block.
+tests/rules/@stylistic/brace-style/cases.ts:73:5	@stylistic/brace-style	blockSameLine	Statement inside of curly braces should be on next line.
+tests/rules/@stylistic/brace-style/cases.ts:73:15	@stylistic/brace-style	singleLineClose	Closing curly brace should be on the same line as opening curly brace or on the line after the previous block.
+tests/rules/@stylistic/brace-style/cases.ts:73:23	@stylistic/brace-style	blockSameLine	Statement inside of curly braces should be on next line.
+tests/rules/@stylistic/brace-style/cases.ts:73:33	@stylistic/brace-style	singleLineClose	Closing curly brace should be on the same line as opening curly brace or on the line after the previous block.
+tests/rules/@stylistic/brace-style/cases.ts:77:1	@stylistic/brace-style	nextLineClose	Closing curly brace does not appear on the same line as the subsequent block.
+tests/rules/@stylistic/brace-style/cases.ts:82:14	@stylistic/brace-style	blockSameLine	Statement inside of curly braces should be on next line.
+tests/rules/@stylistic/brace-style/cases.ts:86:10	@stylistic/brace-style	singleLineClose	Closing curly brace should be on the same line as opening curly brace or on the line after the previous block.
+tests/rules/@stylistic/brace-style/cases.ts:90:1	@stylistic/brace-style	nextLineOpen	Opening curly brace does not appear on the same line as controlling statement.
+tests/rules/@stylistic/brace-style/cases.ts:104:1	@stylistic/brace-style	nextLineOpen	Opening curly brace does not appear on the same line as controlling statement.
+tests/rules/@stylistic/brace-style/cases.ts:110:15	@stylistic/brace-style	blockSameLine	Statement inside of curly braces should be on next line.
+tests/rules/@stylistic/brace-style/cases.ts:110:36	@stylistic/brace-style	singleLineClose	Closing curly brace should be on the same line as opening curly brace or on the line after the previous block.
+tests/rules/@stylistic/brace-style/cases.ts:124:2	@stylistic/brace-style	nextLineOpen	Opening curly brace does not appear on the same line as controlling statement.
+tests/rules/@stylistic/brace-style/cases.ts:128:9	@stylistic/brace-style	blockSameLine	Statement inside of curly braces should be on next line.
+tests/rules/@stylistic/brace-style/cases.ts:128:19	@stylistic/brace-style	singleLineClose	Closing curly brace should be on the same line as opening curly brace or on the line after the previous block.
+tests/rules/@stylistic/brace-style/cases.ts:131:15	@stylistic/brace-style	blockSameLine	Statement inside of curly braces should be on next line.
+tests/rules/@stylistic/brace-style/cases.ts:131:24	@stylistic/brace-style	singleLineClose	Closing curly brace should be on the same line as opening curly brace or on the line after the previous block.
+tests/rules/@stylistic/brace-style/cases.ts:134:1	@stylistic/brace-style	nextLineOpen	Opening curly brace does not appear on the same line as controlling statement.
+tests/rules/@stylistic/brace-style/cases.ts:142:18	@stylistic/brace-style	blockSameLine	Statement inside of curly braces should be on next line.
+tests/rules/@stylistic/brace-style/cases.ts:142:40	@stylistic/brace-style	singleLineClose	Closing curly brace should be on the same line as opening curly brace or on the line after the previous block.
+tests/rules/@stylistic/brace-style/cases.ts:145:1	@stylistic/brace-style	nextLineOpen	Opening curly brace does not appear on the same line as controlling statement.
+tests/rules/@stylistic/brace-style/cases.ts:159:28	@stylistic/brace-style	blockSameLine	Statement inside of curly braces should be on next line.
+tests/rules/@stylistic/brace-style/cases.ts:159:38	@stylistic/brace-style	singleLineClose	Closing curly brace should be on the same line as opening curly brace or on the line after the previous block.
+tests/rules/@stylistic/brace-style/cases.ts:168:1	@stylistic/brace-style	nextLineOpen	Opening curly brace does not appear on the same line as controlling statement.
+tests/rules/@stylistic/brace-style/single-line/cases.ts:9:1	@stylistic/brace-style	nextLineOpen	Opening curly brace does not appear on the same line as controlling statement.
+tests/rules/@stylistic/brace-style/single-line/cases.ts:18:1	@stylistic/brace-style	nextLineOpen	Opening curly brace does not appear on the same line as controlling statement.
+tests/rules/@stylistic/brace-style/single-line/cases.ts:28:1	@stylistic/brace-style	nextLineClose	Closing curly brace does not appear on the same line as the subsequent block.
+tests/rules/@stylistic/brace-style/single-line/cases.ts:34:1	@stylistic/brace-style	nextLineOpen	Opening curly brace does not appear on the same line as controlling statement.
+tests/rules/@stylistic/brace-style/single-line/cases.ts:36:1	@stylistic/brace-style	nextLineClose	Closing curly brace does not appear on the same line as the subsequent block.
+tests/rules/@stylistic/brace-style/single-line/cases.ts:38:1	@stylistic/brace-style	nextLineOpen	Opening curly brace does not appear on the same line as controlling statement.
+tests/rules/@stylistic/brace-style/single-line/cases.ts:65:1	@stylistic/brace-style	nextLineClose	Closing curly brace does not appear on the same line as the subsequent block.
+tests/rules/@stylistic/brace-style/single-line/cases.ts:68:1	@stylistic/brace-style	nextLineClose	Closing curly brace does not appear on the same line as the subsequent block.
+tests/rules/@stylistic/brace-style/single-line/cases.ts:77:1	@stylistic/brace-style	nextLineClose	Closing curly brace does not appear on the same line as the subsequent block.
+tests/rules/@stylistic/brace-style/single-line/cases.ts:82:14	@stylistic/brace-style	blockSameLine	Statement inside of curly braces should be on next line.
+tests/rules/@stylistic/brace-style/single-line/cases.ts:86:10	@stylistic/brace-style	singleLineClose	Closing curly brace should be on the same line as opening curly brace or on the line after the previous block.
+tests/rules/@stylistic/brace-style/single-line/cases.ts:90:1	@stylistic/brace-style	nextLineOpen	Opening curly brace does not appear on the same line as controlling statement.
+tests/rules/@stylistic/brace-style/single-line/cases.ts:104:1	@stylistic/brace-style	nextLineOpen	Opening curly brace does not appear on the same line as controlling statement.
+tests/rules/@stylistic/brace-style/single-line/cases.ts:124:2	@stylistic/brace-style	nextLineOpen	Opening curly brace does not appear on the same line as controlling statement.
+tests/rules/@stylistic/brace-style/single-line/cases.ts:134:1	@stylistic/brace-style	nextLineOpen	Opening curly brace does not appear on the same line as controlling statement.
+tests/rules/@stylistic/brace-style/single-line/cases.ts:145:1	@stylistic/brace-style	nextLineOpen	Opening curly brace does not appear on the same line as controlling statement.
+tests/rules/@stylistic/brace-style/single-line/cases.ts:168:1	@stylistic/brace-style	nextLineOpen	Opening curly brace does not appear on the same line as controlling statement.
+tests/rules/@stylistic/brace-style/stroustrup-single-line/cases.ts:9:1	@stylistic/brace-style	nextLineOpen	Opening curly brace does not appear on the same line as controlling statement.
+tests/rules/@stylistic/brace-style/stroustrup-single-line/cases.ts:18:1	@stylistic/brace-style	nextLineOpen	Opening curly brace does not appear on the same line as controlling statement.
+tests/rules/@stylistic/brace-style/stroustrup-single-line/cases.ts:22:1	@stylistic/brace-style	sameLineClose	Closing curly brace appears on the same line as the subsequent block.
+tests/rules/@stylistic/brace-style/stroustrup-single-line/cases.ts:34:1	@stylistic/brace-style	nextLineOpen	Opening curly brace does not appear on the same line as controlling statement.
+tests/rules/@stylistic/brace-style/stroustrup-single-line/cases.ts:38:1	@stylistic/brace-style	nextLineOpen	Opening curly brace does not appear on the same line as controlling statement.
+tests/rules/@stylistic/brace-style/stroustrup-single-line/cases.ts:42:21	@stylistic/brace-style	sameLineClose	Closing curly brace appears on the same line as the subsequent block.
+tests/rules/@stylistic/brace-style/stroustrup-single-line/cases.ts:46:1	@stylistic/brace-style	sameLineClose	Closing curly brace appears on the same line as the subsequent block.
+tests/rules/@stylistic/brace-style/stroustrup-single-line/cases.ts:57:1	@stylistic/brace-style	sameLineClose	Closing curly brace appears on the same line as the subsequent block.
+tests/rules/@stylistic/brace-style/stroustrup-single-line/cases.ts:59:1	@stylistic/brace-style	sameLineClose	Closing curly brace appears on the same line as the subsequent block.
+tests/rules/@stylistic/brace-style/stroustrup-single-line/cases.ts:73:15	@stylistic/brace-style	sameLineClose	Closing curly brace appears on the same line as the subsequent block.
+tests/rules/@stylistic/brace-style/stroustrup-single-line/cases.ts:82:14	@stylistic/brace-style	blockSameLine	Statement inside of curly braces should be on next line.
+tests/rules/@stylistic/brace-style/stroustrup-single-line/cases.ts:86:10	@stylistic/brace-style	singleLineClose	Closing curly brace should be on the same line as opening curly brace or on the line after the previous block.
+tests/rules/@stylistic/brace-style/stroustrup-single-line/cases.ts:90:1	@stylistic/brace-style	nextLineOpen	Opening curly brace does not appear on the same line as controlling statement.
+tests/rules/@stylistic/brace-style/stroustrup-single-line/cases.ts:104:1	@stylistic/brace-style	nextLineOpen	Opening curly brace does not appear on the same line as controlling statement.
+tests/rules/@stylistic/brace-style/stroustrup-single-line/cases.ts:124:2	@stylistic/brace-style	nextLineOpen	Opening curly brace does not appear on the same line as controlling statement.
+tests/rules/@stylistic/brace-style/stroustrup-single-line/cases.ts:134:1	@stylistic/brace-style	nextLineOpen	Opening curly brace does not appear on the same line as controlling statement.
+tests/rules/@stylistic/brace-style/stroustrup-single-line/cases.ts:145:1	@stylistic/brace-style	nextLineOpen	Opening curly brace does not appear on the same line as controlling statement.
+tests/rules/@stylistic/brace-style/stroustrup-single-line/cases.ts:168:1	@stylistic/brace-style	nextLineOpen	Opening curly brace does not appear on the same line as controlling statement.
+tests/rules/@stylistic/brace-style/stroustrup/cases.ts:9:1	@stylistic/brace-style	nextLineOpen	Opening curly brace does not appear on the same line as controlling statement.
+tests/rules/@stylistic/brace-style/stroustrup/cases.ts:13:20	@stylistic/brace-style	blockSameLine	Statement inside of curly braces should be on next line.
+tests/rules/@stylistic/brace-style/stroustrup/cases.ts:13:30	@stylistic/brace-style	singleLineClose	Closing curly brace should be on the same line as opening curly brace or on the line after the previous block.
+tests/rules/@stylistic/brace-style/stroustrup/cases.ts:18:1	@stylistic/brace-style	nextLineOpen	Opening curly brace does not appear on the same line as controlling statement.
+tests/rules/@stylistic/brace-style/stroustrup/cases.ts:22:1	@stylistic/brace-style	sameLineClose	Closing curly brace appears on the same line as the subsequent block.
+tests/rules/@stylistic/brace-style/stroustrup/cases.ts:34:1	@stylistic/brace-style	nextLineOpen	Opening curly brace does not appear on the same line as controlling statement.
+tests/rules/@stylistic/brace-style/stroustrup/cases.ts:38:1	@stylistic/brace-style	nextLineOpen	Opening curly brace does not appear on the same line as controlling statement.
+tests/rules/@stylistic/brace-style/stroustrup/cases.ts:42:11	@stylistic/brace-style	blockSameLine	Statement inside of curly braces should be on next line.
+tests/rules/@stylistic/brace-style/stroustrup/cases.ts:42:21	@stylistic/brace-style	sameLineClose	Closing curly brace appears on the same line as the subsequent block.
+tests/rules/@stylistic/brace-style/stroustrup/cases.ts:42:21	@stylistic/brace-style	singleLineClose	Closing curly brace should be on the same line as opening curly brace or on the line after the previous block.
+tests/rules/@stylistic/brace-style/stroustrup/cases.ts:42:28	@stylistic/brace-style	blockSameLine	Statement inside of curly braces should be on next line.
+tests/rules/@stylistic/brace-style/stroustrup/cases.ts:42:38	@stylistic/brace-style	singleLineClose	Closing curly brace should be on the same line as opening curly brace or on the line after the previous block.
+tests/rules/@stylistic/brace-style/stroustrup/cases.ts:46:1	@stylistic/brace-style	sameLineClose	Closing curly brace appears on the same line as the subsequent block.
+tests/rules/@stylistic/brace-style/stroustrup/cases.ts:57:1	@stylistic/brace-style	sameLineClose	Closing curly brace appears on the same line as the subsequent block.
+tests/rules/@stylistic/brace-style/stroustrup/cases.ts:59:1	@stylistic/brace-style	sameLineClose	Closing curly brace appears on the same line as the subsequent block.
+tests/rules/@stylistic/brace-style/stroustrup/cases.ts:73:5	@stylistic/brace-style	blockSameLine	Statement inside of curly braces should be on next line.
+tests/rules/@stylistic/brace-style/stroustrup/cases.ts:73:15	@stylistic/brace-style	sameLineClose	Closing curly brace appears on the same line as the subsequent block.
+tests/rules/@stylistic/brace-style/stroustrup/cases.ts:73:15	@stylistic/brace-style	singleLineClose	Closing curly brace should be on the same line as opening curly brace or on the line after the previous block.
+tests/rules/@stylistic/brace-style/stroustrup/cases.ts:73:23	@stylistic/brace-style	blockSameLine	Statement inside of curly braces should be on next line.
+tests/rules/@stylistic/brace-style/stroustrup/cases.ts:73:33	@stylistic/brace-style	singleLineClose	Closing curly brace should be on the same line as opening curly brace or on the line after the previous block.
+tests/rules/@stylistic/brace-style/stroustrup/cases.ts:82:14	@stylistic/brace-style	blockSameLine	Statement inside of curly braces should be on next line.
+tests/rules/@stylistic/brace-style/stroustrup/cases.ts:86:10	@stylistic/brace-style	singleLineClose	Closing curly brace should be on the same line as opening curly brace or on the line after the previous block.
+tests/rules/@stylistic/brace-style/stroustrup/cases.ts:90:1	@stylistic/brace-style	nextLineOpen	Opening curly brace does not appear on the same line as controlling statement.
+tests/rules/@stylistic/brace-style/stroustrup/cases.ts:104:1	@stylistic/brace-style	nextLineOpen	Opening curly brace does not appear on the same line as controlling statement.
+tests/rules/@stylistic/brace-style/stroustrup/cases.ts:110:15	@stylistic/brace-style	blockSameLine	Statement inside of curly braces should be on next line.
+tests/rules/@stylistic/brace-style/stroustrup/cases.ts:110:36	@stylistic/brace-style	singleLineClose	Closing curly brace should be on the same line as opening curly brace or on the line after the previous block.
+tests/rules/@stylistic/brace-style/stroustrup/cases.ts:124:2	@stylistic/brace-style	nextLineOpen	Opening curly brace does not appear on the same line as controlling statement.
+tests/rules/@stylistic/brace-style/stroustrup/cases.ts:128:9	@stylistic/brace-style	blockSameLine	Statement inside of curly braces should be on next line.
+tests/rules/@stylistic/brace-style/stroustrup/cases.ts:128:19	@stylistic/brace-style	singleLineClose	Closing curly brace should be on the same line as opening curly brace or on the line after the previous block.
+tests/rules/@stylistic/brace-style/stroustrup/cases.ts:131:15	@stylistic/brace-style	blockSameLine	Statement inside of curly braces should be on next line.
+tests/rules/@stylistic/brace-style/stroustrup/cases.ts:131:24	@stylistic/brace-style	singleLineClose	Closing curly brace should be on the same line as opening curly brace or on the line after the previous block.
+tests/rules/@stylistic/brace-style/stroustrup/cases.ts:134:1	@stylistic/brace-style	nextLineOpen	Opening curly brace does not appear on the same line as controlling statement.
+tests/rules/@stylistic/brace-style/stroustrup/cases.ts:142:18	@stylistic/brace-style	blockSameLine	Statement inside of curly braces should be on next line.
+tests/rules/@stylistic/brace-style/stroustrup/cases.ts:142:40	@stylistic/brace-style	singleLineClose	Closing curly brace should be on the same line as opening curly brace or on the line after the previous block.
+tests/rules/@stylistic/brace-style/stroustrup/cases.ts:145:1	@stylistic/brace-style	nextLineOpen	Opening curly brace does not appear on the same line as controlling statement.
+tests/rules/@stylistic/brace-style/stroustrup/cases.ts:159:28	@stylistic/brace-style	blockSameLine	Statement inside of curly braces should be on next line.
+tests/rules/@stylistic/brace-style/stroustrup/cases.ts:159:38	@stylistic/brace-style	singleLineClose	Closing curly brace should be on the same line as opening curly brace or on the line after the previous block.
+tests/rules/@stylistic/brace-style/stroustrup/cases.ts:168:1	@stylistic/brace-style	nextLineOpen	Opening curly brace does not appear on the same line as controlling statement.

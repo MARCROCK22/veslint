@@ -1373,3 +1373,8 @@ eslint	no-whitespace-before-property._js_/i94	typescript-eslint's parser: Octal 
 # @stylistic/comma-spacing: `let foo ,` (a declaration list that ends with a comma) is a syntax error that
 # typescript-estree tolerates; tree-sitter reads it as an ERROR node.
 veslint	comma-spacing._ts_/i5	tree-sitter reads `let foo ,` as a syntax error
+# @stylistic/brace-style: tree-sitter reads `namespace Foo` before a line break as a namespace without a body and an
+# automatic `;`, then the block `{}` on the next line (the namespace is also an expression in its grammar); TypeScript
+# reads `namespace Foo⏎{}` as one declaration. A grammar bug.
+veslint	brace-style._ts_/i5	tree-sitter reads `namespace Foo⏎{}` as a namespace without body and a block
+veslint	brace-style._ts_/i6	tree-sitter reads `namespace Foo⏎{}` as a namespace without body and a block
