@@ -1399,3 +1399,7 @@ eslint	quotes._js_/i47	typescript-eslint's parser: Octal escape sequences are no
 eslint	quotes._js_/i48	typescript-eslint's parser: Octal escape sequences are not allowed.
 eslint	quotes._js_/i49	typescript-eslint's parser: Octal escape sequences are not allowed.
 eslint	quotes._js_/i50	typescript-eslint's parser: Escape sequence '\8' is not allowed.
+# @stylistic/spaced-comment: a valid case with an /*eslint-disable no-alert, no-console */ comment, which ESLint 10.15.0
+# reports as an unused disable directive (reportUnusedDisableDirectives).
+eslint	spaced-comment/v24	ESLint reports the unused eslint-disable directive of the case
+veslint	spaced-comment/v24	ESLint reports the unused eslint-disable directive of the case

@@ -418,6 +418,7 @@ pub const stylistic_no_multi_spaces = '@stylistic/no-multi-spaces'
 pub const stylistic_no_trailing_spaces = '@stylistic/no-trailing-spaces'
 pub const stylistic_no_mixed_spaces_and_tabs = '@stylistic/no-mixed-spaces-and-tabs'
 pub const stylistic_eol_last = '@stylistic/eol-last'
+pub const stylistic_spaced_comment = '@stylistic/spaced-comment'
 pub const names = [no_floating_promises, await_thenable, require_await, return_await,
 	no_misused_promises, no_unsafe_call, no_unsafe_member_access, no_unsafe_return,
 	no_unsafe_assignment, no_unsafe_argument, restrict_template_expressions,
@@ -534,7 +535,7 @@ pub const names = [no_floating_promises, await_thenable, require_await, return_a
 	stylistic_implicit_arrow_linebreak, stylistic_multiline_ternary,
 	stylistic_nonblock_statement_body_position, stylistic_one_var_declaration_per_line,
 	stylistic_quotes, stylistic_no_multi_spaces, stylistic_no_trailing_spaces,
-	stylistic_no_mixed_spaces_and_tabs, stylistic_eol_last]
+	stylistic_no_mixed_spaces_and_tabs, stylistic_eol_last, stylistic_spaced_comment]
 
 // untyped_rules are the ported rules that need no types (`meta.docs.requiresTypeChecking` is false
 // in typescript-eslint; the eslint-plugin-unicorn rules that read the types when the parser has a
@@ -624,7 +625,7 @@ pub const untyped_rules = [adjacent_overload_signatures, array_type, class_liter
 	stylistic_implicit_arrow_linebreak, stylistic_multiline_ternary,
 	stylistic_nonblock_statement_body_position, stylistic_one_var_declaration_per_line,
 	stylistic_quotes, stylistic_no_multi_spaces, stylistic_no_trailing_spaces,
-	stylistic_no_mixed_spaces_and_tabs, stylistic_eol_last]
+	stylistic_no_mixed_spaces_and_tabs, stylistic_eol_last, stylistic_spaced_comment]
 
 // needs_types tells whether a rule asks tsgo for the types of the program.
 pub fn needs_types(rule string) bool {
@@ -1039,6 +1040,7 @@ pub const default_options = {
 	stylistic_no_trailing_spaces:                    '[{"skipBlankLines":false,"ignoreComments":false}]'
 	stylistic_no_mixed_spaces_and_tabs:              '[false]'
 	stylistic_eol_last:                              '["always"]'
+	stylistic_spaced_comment:                        '["always"]'
 }
 
 // Finding is a problem a rule found at a node.
@@ -1577,6 +1579,7 @@ pub fn message(rule string, finding Finding) string {
 		stylistic_no_trailing_spaces { sntr_messages }
 		stylistic_no_mixed_spaces_and_tabs { snmst_messages }
 		stylistic_eol_last { seol_messages }
+		stylistic_spaced_comment { sspc_messages }
 		else { map[string]string{} }
 	}
 	return interpolate(messages[finding.message_id] or { finding.message_id }, finding.data)
@@ -2944,6 +2947,9 @@ fn (mut c Checker) lint_rule(rule string, root C.TSNode, abs_path string, mut st
 		}
 		stylistic_eol_last {
 			return c.lint_stylistic_eol_last(root, abs_path, mut stats)!
+		}
+		stylistic_spaced_comment {
+			return c.lint_stylistic_spaced_comment(root, abs_path, mut stats)!
 		}
 		else { return error('unknown rule: ${rule}') }
 	}
