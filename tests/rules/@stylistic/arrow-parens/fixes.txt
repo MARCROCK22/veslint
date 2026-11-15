@@ -1,0 +1,24 @@
+tests/rules/@stylistic/arrow-parens/always-block/cases.ts:2:6	@stylistic/arrow-parens	expectedParens	Expected parentheses around arrow function argument.	fix	66	67	(a)	end	2	7
+tests/rules/@stylistic/arrow-parens/always-block/cases.ts:4:12	@stylistic/arrow-parens	expectedParens	Expected parentheses around arrow function argument.	fix	102	103	(a)	end	4	13
+tests/rules/@stylistic/arrow-parens/always-block/cases.ts:10:6	@stylistic/arrow-parens	expectedParens	Expected parentheses around arrow function argument.	fix	224	225	(a)	end	10	7
+tests/rules/@stylistic/arrow-parens/as-needed/cases.ts:3:7	@stylistic/arrow-parens	unexpectedParens	Unexpected parentheses around single function argument.	fix	80	83	a	end	3	8
+tests/rules/@stylistic/arrow-parens/as-needed/cases.ts:5:13	@stylistic/arrow-parens	unexpectedParens	Unexpected parentheses around single function argument.	fix	122	125	a	end	5	14
+tests/rules/@stylistic/arrow-parens/as-needed/cases.ts:6:12	@stylistic/arrow-parens	unexpectedParens	Unexpected parentheses around single function argument.	fix	143	146	 a	end	6	13
+tests/rules/@stylistic/arrow-parens/as-needed/cases.ts:11:7	@stylistic/arrow-parens	unexpectedParens	Unexpected parentheses around single function argument.	fix	250	253	a	end	11	8
+tests/rules/@stylistic/arrow-parens/as-needed/cases.ts:22:24	@stylistic/arrow-parens	unexpectedParens	Unexpected parentheses around single function argument.	fix	545	548	a	end	22	25
+tests/rules/@stylistic/arrow-parens/as-needed/cases.ts:22:31	@stylistic/arrow-parens	unexpectedParens	Unexpected parentheses around single function argument.	fix	552	555	b	end	22	32
+tests/rules/@stylistic/arrow-parens/as-needed/cases.ts:23:8	@stylistic/arrow-parens	unexpectedParens	Unexpected parentheses around single function argument.	fix	571	576	a	end	23	9
+tests/rules/@stylistic/arrow-parens/as-needed/cases.ts:25:3	@stylistic/arrow-parens	unexpectedParens	Unexpected parentheses around single function argument.	fix	589	596	a	end	25	4
+tests/rules/@stylistic/arrow-parens/as-needed/cases.ts:27:7	@stylistic/arrow-parens	unexpectedParens	Unexpected parentheses around single function argument.	fix	609	612	a	end	27	8
+tests/rules/@stylistic/arrow-parens/block-body/cases.ts:3:7	@stylistic/arrow-parens	unexpectedParensInline	Unexpected parentheses around single function argument having a body with no curly braces.	fix	80	83	a	end	3	8
+tests/rules/@stylistic/arrow-parens/block-body/cases.ts:5:13	@stylistic/arrow-parens	unexpectedParensInline	Unexpected parentheses around single function argument having a body with no curly braces.	fix	122	125	a	end	5	14
+tests/rules/@stylistic/arrow-parens/block-body/cases.ts:6:12	@stylistic/arrow-parens	unexpectedParensInline	Unexpected parentheses around single function argument having a body with no curly braces.	fix	143	146	 a	end	6	13
+tests/rules/@stylistic/arrow-parens/block-body/cases.ts:10:6	@stylistic/arrow-parens	expectedParensBlock	Expected parentheses around arrow function argument having a body with curly braces.	fix	224	225	(a)	end	10	7
+tests/rules/@stylistic/arrow-parens/block-body/cases.ts:22:24	@stylistic/arrow-parens	unexpectedParensInline	Unexpected parentheses around single function argument having a body with no curly braces.	fix	545	548	a	end	22	25
+tests/rules/@stylistic/arrow-parens/block-body/cases.ts:22:31	@stylistic/arrow-parens	unexpectedParensInline	Unexpected parentheses around single function argument having a body with no curly braces.	fix	552	555	b	end	22	32
+tests/rules/@stylistic/arrow-parens/block-body/cases.ts:23:8	@stylistic/arrow-parens	unexpectedParensInline	Unexpected parentheses around single function argument having a body with no curly braces.	fix	571	576	a	end	23	9
+tests/rules/@stylistic/arrow-parens/block-body/cases.ts:25:3	@stylistic/arrow-parens	unexpectedParensInline	Unexpected parentheses around single function argument having a body with no curly braces.	fix	589	596	a	end	25	4
+tests/rules/@stylistic/arrow-parens/block-body/cases.ts:27:7	@stylistic/arrow-parens	unexpectedParensInline	Unexpected parentheses around single function argument having a body with no curly braces.	fix	609	612	a	end	27	8
+tests/rules/@stylistic/arrow-parens/cases.ts:2:6	@stylistic/arrow-parens	expectedParens	Expected parentheses around arrow function argument.	fix	66	67	(a)	end	2	7
+tests/rules/@stylistic/arrow-parens/cases.ts:4:12	@stylistic/arrow-parens	expectedParens	Expected parentheses around arrow function argument.	fix	102	103	(a)	end	4	13
+tests/rules/@stylistic/arrow-parens/cases.ts:10:6	@stylistic/arrow-parens	expectedParens	Expected parentheses around arrow function argument.	fix	224	225	(a)	end	10	7

@@ -1,0 +1,24 @@
+tests/rules/@stylistic/arrow-parens/always-block/cases.ts:2:6	@stylistic/arrow-parens	expectedParens	Expected parentheses around arrow function argument.
+tests/rules/@stylistic/arrow-parens/always-block/cases.ts:4:12	@stylistic/arrow-parens	expectedParens	Expected parentheses around arrow function argument.
+tests/rules/@stylistic/arrow-parens/always-block/cases.ts:10:6	@stylistic/arrow-parens	expectedParens	Expected parentheses around arrow function argument.
+tests/rules/@stylistic/arrow-parens/as-needed/cases.ts:3:7	@stylistic/arrow-parens	unexpectedParens	Unexpected parentheses around single function argument.
+tests/rules/@stylistic/arrow-parens/as-needed/cases.ts:5:13	@stylistic/arrow-parens	unexpectedParens	Unexpected parentheses around single function argument.
+tests/rules/@stylistic/arrow-parens/as-needed/cases.ts:6:12	@stylistic/arrow-parens	unexpectedParens	Unexpected parentheses around single function argument.
+tests/rules/@stylistic/arrow-parens/as-needed/cases.ts:11:7	@stylistic/arrow-parens	unexpectedParens	Unexpected parentheses around single function argument.
+tests/rules/@stylistic/arrow-parens/as-needed/cases.ts:22:24	@stylistic/arrow-parens	unexpectedParens	Unexpected parentheses around single function argument.
+tests/rules/@stylistic/arrow-parens/as-needed/cases.ts:22:31	@stylistic/arrow-parens	unexpectedParens	Unexpected parentheses around single function argument.
+tests/rules/@stylistic/arrow-parens/as-needed/cases.ts:23:8	@stylistic/arrow-parens	unexpectedParens	Unexpected parentheses around single function argument.
+tests/rules/@stylistic/arrow-parens/as-needed/cases.ts:25:3	@stylistic/arrow-parens	unexpectedParens	Unexpected parentheses around single function argument.
+tests/rules/@stylistic/arrow-parens/as-needed/cases.ts:27:7	@stylistic/arrow-parens	unexpectedParens	Unexpected parentheses around single function argument.
+tests/rules/@stylistic/arrow-parens/block-body/cases.ts:3:7	@stylistic/arrow-parens	unexpectedParensInline	Unexpected parentheses around single function argument having a body with no curly braces.
+tests/rules/@stylistic/arrow-parens/block-body/cases.ts:5:13	@stylistic/arrow-parens	unexpectedParensInline	Unexpected parentheses around single function argument having a body with no curly braces.
+tests/rules/@stylistic/arrow-parens/block-body/cases.ts:6:12	@stylistic/arrow-parens	unexpectedParensInline	Unexpected parentheses around single function argument having a body with no curly braces.
+tests/rules/@stylistic/arrow-parens/block-body/cases.ts:10:6	@stylistic/arrow-parens	expectedParensBlock	Expected parentheses around arrow function argument having a body with curly braces.
+tests/rules/@stylistic/arrow-parens/block-body/cases.ts:22:24	@stylistic/arrow-parens	unexpectedParensInline	Unexpected parentheses around single function argument having a body with no curly braces.
+tests/rules/@stylistic/arrow-parens/block-body/cases.ts:22:31	@stylistic/arrow-parens	unexpectedParensInline	Unexpected parentheses around single function argument having a body with no curly braces.
+tests/rules/@stylistic/arrow-parens/block-body/cases.ts:23:8	@stylistic/arrow-parens	unexpectedParensInline	Unexpected parentheses around single function argument having a body with no curly braces.
+tests/rules/@stylistic/arrow-parens/block-body/cases.ts:25:3	@stylistic/arrow-parens	unexpectedParensInline	Unexpected parentheses around single function argument having a body with no curly braces.
+tests/rules/@stylistic/arrow-parens/block-body/cases.ts:27:7	@stylistic/arrow-parens	unexpectedParensInline	Unexpected parentheses around single function argument having a body with no curly braces.
+tests/rules/@stylistic/arrow-parens/cases.ts:2:6	@stylistic/arrow-parens	expectedParens	Expected parentheses around arrow function argument.
+tests/rules/@stylistic/arrow-parens/cases.ts:4:12	@stylistic/arrow-parens	expectedParens	Expected parentheses around arrow function argument.
+tests/rules/@stylistic/arrow-parens/cases.ts:10:6	@stylistic/arrow-parens	expectedParens	Expected parentheses around arrow function argument.

@@ -429,6 +429,7 @@ pub const stylistic_object_curly_newline = '@stylistic/object-curly-newline'
 pub const stylistic_object_property_newline = '@stylistic/object-property-newline'
 pub const stylistic_exp_list_style = '@stylistic/exp-list-style'
 pub const stylistic_exp_jsx_props_style = '@stylistic/exp-jsx-props-style'
+pub const stylistic_arrow_parens = '@stylistic/arrow-parens'
 pub const names = [no_floating_promises, await_thenable, require_await, return_await,
 	no_misused_promises, no_unsafe_call, no_unsafe_member_access, no_unsafe_return,
 	no_unsafe_assignment, no_unsafe_argument, restrict_template_expressions,
@@ -548,7 +549,8 @@ pub const names = [no_floating_promises, await_thenable, require_await, return_a
 	stylistic_no_mixed_spaces_and_tabs, stylistic_eol_last, stylistic_spaced_comment,
 	stylistic_lines_between_class_members, stylistic_new_parens, stylistic_no_floating_decimal,
 	stylistic_no_extra_semi, stylistic_semi_style, stylistic_semi, stylistic_object_curly_newline,
-	stylistic_object_property_newline, stylistic_exp_list_style, stylistic_exp_jsx_props_style]
+	stylistic_object_property_newline, stylistic_exp_list_style, stylistic_exp_jsx_props_style,
+	stylistic_arrow_parens]
 
 // untyped_rules are the ported rules that need no types (`meta.docs.requiresTypeChecking` is false
 // in typescript-eslint; the eslint-plugin-unicorn rules that read the types when the parser has a
@@ -641,7 +643,8 @@ pub const untyped_rules = [adjacent_overload_signatures, array_type, class_liter
 	stylistic_no_mixed_spaces_and_tabs, stylistic_eol_last, stylistic_spaced_comment,
 	stylistic_lines_between_class_members, stylistic_new_parens, stylistic_no_floating_decimal,
 	stylistic_no_extra_semi, stylistic_semi_style, stylistic_semi, stylistic_object_curly_newline,
-	stylistic_object_property_newline, stylistic_exp_list_style, stylistic_exp_jsx_props_style]
+	stylistic_object_property_newline, stylistic_exp_list_style, stylistic_exp_jsx_props_style,
+	stylistic_arrow_parens]
 
 // needs_types tells whether a rule asks tsgo for the types of the program.
 pub fn needs_types(rule string) bool {
@@ -1067,6 +1070,7 @@ pub const default_options = {
 	stylistic_object_property_newline:               '[{"allowAllPropertiesOnSameLine":false}]'
 	stylistic_exp_list_style:                        '[{"singleLine":{"spacing":"never","maxItems":null},"multiLine":{"minItems":0},"overrides":{"{}":{"singleLine":{"spacing":"always"}}}}]'
 	stylistic_exp_jsx_props_style:                   '[{"singleLine":{"maxItems":null},"multiLine":{"minItems":0,"maxItemsPerLine":1}}]'
+	stylistic_arrow_parens:                          '["always"]'
 }
 
 // Finding is a problem a rule found at a node.
@@ -1616,6 +1620,7 @@ pub fn message(rule string, finding Finding) string {
 		stylistic_object_property_newline { sopn_messages }
 		stylistic_exp_list_style { sls_messages }
 		stylistic_exp_jsx_props_style { sjps_messages }
+		stylistic_arrow_parens { sap_messages }
 		else { map[string]string{} }
 	}
 	return interpolate(messages[finding.message_id] or { finding.message_id }, finding.data)
@@ -3016,6 +3021,9 @@ fn (mut c Checker) lint_rule(rule string, root C.TSNode, abs_path string, mut st
 		}
 		stylistic_exp_jsx_props_style {
 			return c.lint_stylistic_exp_jsx_props_style(root, abs_path, mut stats)!
+		}
+		stylistic_arrow_parens {
+			return c.lint_stylistic_arrow_parens(root, abs_path, mut stats)!
 		}
 		else { return error('unknown rule: ${rule}') }
 	}
