@@ -1,0 +1,69 @@
+tests/rules/perfectionist/sort-intersection-types/ast-selector/cases.ts:5:16	perfectionist/sort-intersection-types	unexpectedIntersectionTypesOrder	Expected "B" to come before "A".
+tests/rules/perfectionist/sort-intersection-types/ast-selector/cases.ts:6:12	perfectionist/sort-intersection-types	unexpectedIntersectionTypesOrder	Expected "A" to come before "B".
+tests/rules/perfectionist/sort-intersection-types/callable/cases.ts:5:33	perfectionist/sort-intersection-types	unexpectedIntersectionTypesOrder	Expected "() => void" to come before "{ b: () => void }".
+tests/rules/perfectionist/sort-intersection-types/cases.ts:6:15	perfectionist/sort-intersection-types	unexpectedIntersectionTypesOrder	Expected "B" to come before "C".
+tests/rules/perfectionist/sort-intersection-types/cases.ts:6:19	perfectionist/sort-intersection-types	unexpectedIntersectionTypesOrder	Expected "A" to come before "B".
+tests/rules/perfectionist/sort-intersection-types/cases.ts:7:17	perfectionist/sort-intersection-types	unexpectedIntersectionTypesOrder	Expected "'a'" to come before "'b'".
+tests/rules/perfectionist/sort-intersection-types/cases.ts:10:5	perfectionist/sort-intersection-types	unexpectedIntersectionTypesOrder	Expected "B" to come before "C".
+tests/rules/perfectionist/sort-intersection-types/cases.ts:11:5	perfectionist/sort-intersection-types	unexpectedIntersectionTypesOrder	Expected "A" to come before "B".
+tests/rules/perfectionist/sort-intersection-types/cases.ts:14:5	perfectionist/sort-intersection-types	unexpectedIntersectionTypesOrder	Expected "B" to come before "C".
+tests/rules/perfectionist/sort-intersection-types/cases.ts:15:5	perfectionist/sort-intersection-types	unexpectedIntersectionTypesOrder	Expected "A" to come before "B".
+tests/rules/perfectionist/sort-intersection-types/cases.ts:18:5	perfectionist/sort-intersection-types	unexpectedIntersectionTypesOrder	Expected "A" to come before "B".
+tests/rules/perfectionist/sort-intersection-types/cases.ts:22:19	perfectionist/sort-intersection-types	unexpectedIntersectionTypesOrder	Expected "A" to come before "B".
+tests/rules/perfectionist/sort-intersection-types/cases.ts:23:18	perfectionist/sort-intersection-types	unexpectedIntersectionTypesOrder	Expected "A" to come before "C".
+tests/rules/perfectionist/sort-intersection-types/cases.ts:24:22	perfectionist/sort-intersection-types	unexpectedIntersectionTypesOrder	Expected "{ a: 1 }" to come before "{ b: 1 }".
+tests/rules/perfectionist/sort-intersection-types/cases.ts:25:20	perfectionist/sort-intersection-types	unexpectedIntersectionTypesOrder	Expected "boolean" to come before "number".
+tests/rules/perfectionist/sort-intersection-types/cases.ts:25:30	perfectionist/sort-intersection-types	unexpectedIntersectionTypesOrder	Expected "any" to come before "boolean".
+tests/rules/perfectionist/sort-intersection-types/cases.ts:26:18	perfectionist/sort-intersection-types	unexpectedIntersectionTypesOrder	Expected "A" to come before "A[]".
+tests/rules/perfectionist/sort-intersection-types/cases.ts:27:23	perfectionist/sort-intersection-types	unexpectedIntersectionTypesOrder	Expected "Array<A>" to come before "Array<B>".
+tests/rules/perfectionist/sort-intersection-types/cases.ts:28:22	perfectionist/sort-intersection-types	unexpectedIntersectionTypesOrder	Expected "A" to come before "B & C".
+tests/rules/perfectionist/sort-intersection-types/cases.ts:29:19	perfectionist/sort-intersection-types	unexpectedIntersectionTypesOrder	Expected "A" to come before "B".
+tests/rules/perfectionist/sort-intersection-types/cases.ts:30:12	perfectionist/sort-intersection-types	unexpectedIntersectionTypesOrder	Expected "B" to come before "C".
+tests/rules/perfectionist/sort-intersection-types/cases.ts:30:16	perfectionist/sort-intersection-types	unexpectedIntersectionTypesOrder	Expected "A" to come before "B".
+tests/rules/perfectionist/sort-intersection-types/cases.ts:31:18	perfectionist/sort-intersection-types	unexpectedIntersectionTypesOrder	Expected "`a`" to come before "`b`".
+tests/rules/perfectionist/sort-intersection-types/cases.ts:32:16	perfectionist/sort-intersection-types	unexpectedIntersectionTypesOrder	Expected "1" to come before "2".
+tests/rules/perfectionist/sort-intersection-types/cases.ts:32:20	perfectionist/sort-intersection-types	unexpectedIntersectionTypesOrder	Expected "-1" to come before "1".
+tests/rules/perfectionist/sort-intersection-types/cases.ts:33:16	perfectionist/sort-intersection-types	unexpectedIntersectionTypesOrder	Expected "A" to come before "B".
+tests/rules/perfectionist/sort-intersection-types/cases.ts:44:5	perfectionist/sort-intersection-types	unexpectedIntersectionTypesOrder	Expected "B" to come before "A".
+tests/rules/perfectionist/sort-intersection-types/cases.ts:51:16	perfectionist/sort-intersection-types	unexpectedIntersectionTypesOrder	Expected "{ new (): A }" to come before "B".
+tests/rules/perfectionist/sort-intersection-types/cases.ts:52:16	perfectionist/sort-intersection-types	unexpectedIntersectionTypesOrder	Expected "{ [k: string]: () => void }" to come before "B".
+tests/rules/perfectionist/sort-intersection-types/configuration-if/cases.ts:5:16	perfectionist/sort-intersection-types	unexpectedIntersectionTypesOrder	Expected "B" to come before "A".
+tests/rules/perfectionist/sort-intersection-types/custom-groups/cases.ts:5:16	perfectionist/sort-intersection-types	unexpectedIntersectionTypesGroupOrder	Expected "null" (primitive) to come before "A" (unknown).
+tests/rules/perfectionist/sort-intersection-types/custom-groups/cases.ts:5:23	perfectionist/sort-intersection-types	unexpectedIntersectionTypesOrder	Expected "number" to come before "null".
+tests/rules/perfectionist/sort-intersection-types/groups-newlines/cases.ts:7:5	perfectionist/sort-intersection-types	unexpectedIntersectionTypesGroupOrder	Expected "A" (unknown) to come before "null" (nullish).
+tests/rules/perfectionist/sort-intersection-types/groups-newlines/cases.ts:8:5	perfectionist/sort-intersection-types	unexpectedIntersectionTypesGroupOrder	Expected "string" (keyword) to come before "A" (unknown).
+tests/rules/perfectionist/sort-intersection-types/groups-newlines/cases.ts:11:5	perfectionist/sort-intersection-types	missedSpacingBetweenIntersectionTypes	Missed spacing between "string" and "A".
+tests/rules/perfectionist/sort-intersection-types/groups-newlines/cases.ts:12:5	perfectionist/sort-intersection-types	missedSpacingBetweenIntersectionTypes	Missed spacing between "A" and "null".
+tests/rules/perfectionist/sort-intersection-types/groups-newlines/cases.ts:16:3	perfectionist/sort-intersection-types	missedSpacingBetweenIntersectionTypes	Missed spacing between "string" and "A".
+tests/rules/perfectionist/sort-intersection-types/groups-newlines/cases.ts:18:3	perfectionist/sort-intersection-types	missedSpacingBetweenIntersectionTypes	Missed spacing between "A" and "null".
+tests/rules/perfectionist/sort-intersection-types/groups/cases.ts:5:33	perfectionist/sort-intersection-types	unexpectedIntersectionTypesGroupOrder	Expected "B & C" (intersection) to come before "unique symbol" (operator).
+tests/rules/perfectionist/sort-intersection-types/groups/cases.ts:5:52	perfectionist/sort-intersection-types	unexpectedIntersectionTypesGroupOrder	Expected "[1, 2]" (tuple) to come before "B | C" (union).
+tests/rules/perfectionist/sort-intersection-types/groups/cases.ts:5:61	perfectionist/sort-intersection-types	unexpectedIntersectionTypesGroupOrder	Expected "import('fs')" (import) to come before "[1, 2]" (tuple).
+tests/rules/perfectionist/sort-intersection-types/groups/cases.ts:5:76	perfectionist/sort-intersection-types	unexpectedIntersectionTypesGroupOrder	Expected "{ [K in keyof A]: 1 }" (object) to come before "import('fs')" (import).
+tests/rules/perfectionist/sort-intersection-types/groups/cases.ts:5:111	perfectionist/sort-intersection-types	unexpectedIntersectionTypesGroupOrder	Expected "typeof value" (operator) to come before "{ a: 1 }" (object).
+tests/rules/perfectionist/sort-intersection-types/groups/cases.ts:5:126	perfectionist/sort-intersection-types	unexpectedIntersectionTypesOrder	Expected "keyof A" to come before "typeof value".
+tests/rules/perfectionist/sort-intersection-types/groups/cases.ts:5:136	perfectionist/sort-intersection-types	unexpectedIntersectionTypesGroupOrder	Expected "this" (keyword) to come before "keyof A" (operator).
+tests/rules/perfectionist/sort-intersection-types/groups/cases.ts:5:143	perfectionist/sort-intersection-types	unexpectedIntersectionTypesOrder	Expected "number" to come before "this".
+tests/rules/perfectionist/sort-intersection-types/groups/cases.ts:5:162	perfectionist/sort-intersection-types	unexpectedIntersectionTypesGroupOrder	Expected "new () => A" (function) to come before "string" (keyword).
+tests/rules/perfectionist/sort-intersection-types/groups/cases.ts:5:178	perfectionist/sort-intersection-types	unexpectedIntersectionTypesOrder	Expected "() => void" to come before "new () => A".
+tests/rules/perfectionist/sort-intersection-types/groups/cases.ts:5:193	perfectionist/sort-intersection-types	unexpectedIntersectionTypesGroupOrder	Expected "A extends B ? 1 : 2" (conditional) to come before "() => void" (function).
+tests/rules/perfectionist/sort-intersection-types/groups/cases.ts:5:216	perfectionist/sort-intersection-types	unexpectedIntersectionTypesGroupOrder	Expected "void" (nullish) to come before "A extends B ? 1 : 2" (conditional).
+tests/rules/perfectionist/sort-intersection-types/groups/cases.ts:5:223	perfectionist/sort-intersection-types	unexpectedIntersectionTypesOrder	Expected "undefined" to come before "void".
+tests/rules/perfectionist/sort-intersection-types/groups/cases.ts:5:235	perfectionist/sort-intersection-types	unexpectedIntersectionTypesOrder	Expected "null" to come before "undefined".
+tests/rules/perfectionist/sort-intersection-types/groups/cases.ts:5:242	perfectionist/sort-intersection-types	unexpectedIntersectionTypesGroupOrder	Expected "A[]" (named) to come before "null" (nullish).
+tests/rules/perfectionist/sort-intersection-types/groups/cases.ts:5:248	perfectionist/sort-intersection-types	unexpectedIntersectionTypesOrder	Expected "A" to come before "A[]".
+tests/rules/perfectionist/sort-intersection-types/groups/cases.ts:5:264	perfectionist/sort-intersection-types	unexpectedIntersectionTypesGroupOrder	Expected "'lit'" (literal) to come before "B[number]" (named).
+tests/rules/perfectionist/sort-intersection-types/groups/cases.ts:6:27	perfectionist/sort-intersection-types	unexpectedIntersectionTypesOrder	Expected "'lit'" to come before "`t${string}`".
+tests/rules/perfectionist/sort-intersection-types/groups/cases.ts:6:47	perfectionist/sort-intersection-types	unexpectedIntersectionTypesOrder	Expected "A" to come before "B[number]".
+tests/rules/perfectionist/sort-intersection-types/groups/cases.ts:6:147	perfectionist/sort-intersection-types	unexpectedIntersectionTypesOrder	Expected "number" to come before "string".
+tests/rules/perfectionist/sort-intersection-types/groups/cases.ts:6:199	perfectionist/sort-intersection-types	unexpectedIntersectionTypesOrder	Expected "{ [K in keyof A]: 1 }" to come before "{ a: 1 }".
+tests/rules/perfectionist/sort-intersection-types/groups/cases.ts:6:258	perfectionist/sort-intersection-types	unexpectedIntersectionTypesGroupOrder	Expected "B & C" (intersection) to come before "B | C" (union).
+tests/rules/perfectionist/sort-intersection-types/groups/cases.ts:6:283	perfectionist/sort-intersection-types	unexpectedIntersectionTypesGroupOrder	Expected "Z" (named) to come before "unique symbol" (operator).
+tests/rules/perfectionist/sort-intersection-types/natural/cases.ts:5:20	perfectionist/sort-intersection-types	unexpectedIntersectionTypesOrder	Expected "'a9'" to come before "'a10'".
+tests/rules/perfectionist/sort-intersection-types/natural/cases.ts:5:27	perfectionist/sort-intersection-types	unexpectedIntersectionTypesOrder	Expected "'a1'" to come before "'a9'".
+tests/rules/perfectionist/sort-intersection-types/partition-comment/cases.ts:7:5	perfectionist/sort-intersection-types	unexpectedIntersectionTypesOrder	Expected "B" to come before "C".
+tests/rules/perfectionist/sort-intersection-types/partition-comment/cases.ts:10:5	perfectionist/sort-intersection-types	unexpectedIntersectionTypesOrder	Expected "D" to come before "E".
+tests/rules/perfectionist/sort-intersection-types/partition-comment/cases.ts:14:3	perfectionist/sort-intersection-types	unexpectedIntersectionTypesOrder	Expected "B" to come before "C".
+tests/rules/perfectionist/sort-intersection-types/partition-comment/cases.ts:15:5	perfectionist/sort-intersection-types	unexpectedIntersectionTypesOrder	Expected "A" to come before "B".
+tests/rules/perfectionist/sort-intersection-types/partition-newline/cases.ts:7:5	perfectionist/sort-intersection-types	unexpectedIntersectionTypesOrder	Expected "B" to come before "C".
+tests/rules/perfectionist/sort-intersection-types/partition-newline/cases.ts:10:5	perfectionist/sort-intersection-types	unexpectedIntersectionTypesOrder	Expected "D" to come before "E".

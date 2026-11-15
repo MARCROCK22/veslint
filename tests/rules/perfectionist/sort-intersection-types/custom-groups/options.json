@@ -1,0 +1,1 @@
+[{"groups": ["primitive", "unknown"], "customGroups": [{"groupName": "primitive", "anyOf": [{"selector": "keyword"}, {"selector": "nullish"}]}], "type": "line-length", "order": "desc"}]

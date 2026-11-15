@@ -1524,3 +1524,22 @@ veslint	sort-union-types/v12	locales: zh-CN, which veslint does not collate
 veslint	sort-union-types/v33	locales: zh-CN, which veslint does not collate
 veslint	sort-union-types/v58	the alphabet has lone surrogates, which veslint's JSON reader refuses
 veslint	sort-union-types/i137	the alphabet has lone surrogates, which veslint's JSON reader refuses
+# perfectionist/sort-intersection-types: as for sort-array-includes.
+eslint	sort-intersection-types/i145	disables rule-to-test/sort-intersection-types, the name the tester gives the rule
+veslint	sort-intersection-types/i145	disables rule-to-test/sort-intersection-types, the name the tester gives the rule
+eslint	sort-intersection-types/i146	disables rule-to-test/sort-intersection-types, the name the tester gives the rule
+veslint	sort-intersection-types/i146	disables rule-to-test/sort-intersection-types, the name the tester gives the rule
+eslint	sort-intersection-types/i147	disables rule-to-test/sort-intersection-types, the name the tester gives the rule
+veslint	sort-intersection-types/i147	disables rule-to-test/sort-intersection-types, the name the tester gives the rule
+eslint	sort-intersection-types/i148	disables rule-to-test/sort-intersection-types, the name the tester gives the rule
+veslint	sort-intersection-types/i148	disables rule-to-test/sort-intersection-types, the name the tester gives the rule
+eslint	sort-intersection-types/i149	disables rule-to-test/sort-intersection-types, the name the tester gives the rule
+veslint	sort-intersection-types/i149	disables rule-to-test/sort-intersection-types, the name the tester gives the rule
+eslint	sort-intersection-types/i150	disables rule-to-test/sort-intersection-types, the name the tester gives the rule
+veslint	sort-intersection-types/i150	disables rule-to-test/sort-intersection-types, the name the tester gives the rule
+eslint	sort-intersection-types/i152	disables rule-to-test/sort-intersection-types, the name the tester gives the rule
+veslint	sort-intersection-types/i152	disables rule-to-test/sort-intersection-types, the name the tester gives the rule
+veslint	sort-intersection-types/v12	locales: zh-CN, which veslint does not collate
+veslint	sort-intersection-types/v40	locales: zh-CN, which veslint does not collate
+veslint	sort-intersection-types/v65	the alphabet has lone surrogates, which veslint's JSON reader refuses
+veslint	sort-intersection-types/i133	the alphabet has lone surrogates, which veslint's JSON reader refuses

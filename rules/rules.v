@@ -442,6 +442,7 @@ pub const perfectionist_sort_array_includes = 'perfectionist/sort-array-includes
 pub const perfectionist_sort_sets = 'perfectionist/sort-sets'
 pub const perfectionist_sort_maps = 'perfectionist/sort-maps'
 pub const perfectionist_sort_union_types = 'perfectionist/sort-union-types'
+pub const perfectionist_sort_intersection_types = 'perfectionist/sort-intersection-types'
 pub const names = [no_floating_promises, await_thenable, require_await, return_await,
 	no_misused_promises, no_unsafe_call, no_unsafe_member_access, no_unsafe_return,
 	no_unsafe_assignment, no_unsafe_argument, restrict_template_expressions,
@@ -566,7 +567,7 @@ pub const names = [no_floating_promises, await_thenable, require_await, return_a
 	stylistic_quote_props, stylistic_no_extra_parens, marcrock_no_newline_if_body_class_empty,
 	marcrock_numeric_separators, marcrock_uppercase_first_class_letter, marcrock_prefer_at,
 	perfectionist_sort_array_includes, perfectionist_sort_sets, perfectionist_sort_maps,
-	perfectionist_sort_union_types]
+	perfectionist_sort_union_types, perfectionist_sort_intersection_types]
 
 // untyped_rules are the ported rules that need no types (`meta.docs.requiresTypeChecking` is false
 // in typescript-eslint; the eslint-plugin-unicorn rules that read the types when the parser has a
@@ -664,7 +665,7 @@ pub const untyped_rules = [adjacent_overload_signatures, array_type, class_liter
 	stylistic_quote_props, stylistic_no_extra_parens, marcrock_no_newline_if_body_class_empty,
 	marcrock_numeric_separators, marcrock_uppercase_first_class_letter,
 	perfectionist_sort_array_includes, perfectionist_sort_sets, perfectionist_sort_maps,
-	perfectionist_sort_union_types]
+	perfectionist_sort_union_types, perfectionist_sort_intersection_types]
 
 // needs_types tells whether a rule asks tsgo for the types of the program.
 pub fn needs_types(rule string) bool {
@@ -1103,6 +1104,7 @@ pub const default_options = {
 	perfectionist_sort_sets:                         '[]'
 	perfectionist_sort_maps:                         '[]'
 	perfectionist_sort_union_types:                  '[]'
+	perfectionist_sort_intersection_types:           '[]'
 }
 
 // Finding is a problem a rule found at a node.
@@ -1668,6 +1670,7 @@ pub fn message(rule string, finding Finding) string {
 		perfectionist_sort_sets { pfss_messages }
 		perfectionist_sort_maps { pfsm_messages }
 		perfectionist_sort_union_types { pfsut_messages }
+		perfectionist_sort_intersection_types { pfsit_messages }
 		else { map[string]string{} }
 	}
 	return interpolate(messages[finding.message_id] or { finding.message_id }, finding.data)
@@ -3108,6 +3111,9 @@ fn (mut c Checker) lint_rule(rule string, root C.TSNode, abs_path string, mut st
 		}
 		perfectionist_sort_union_types {
 			return c.lint_perfectionist_sort_union_types(root, abs_path, mut stats)!
+		}
+		perfectionist_sort_intersection_types {
+			return c.lint_perfectionist_sort_intersection_types(root, abs_path, mut stats)!
 		}
 		else { return error('unknown rule: ${rule}') }
 	}
