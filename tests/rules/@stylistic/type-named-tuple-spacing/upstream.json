@@ -1,0 +1,20 @@
+{"rule": "@stylistic/type-named-tuple-spacing", "upstream": "@stylistic/eslint-plugin v5.10.0", "files": ["packages/eslint-plugin/rules/type-named-tuple-spacing/type-named-tuple-spacing.test.ts"],
+"messages": {"expectedSpaceAfter":"Expected a space after the ':'.","unexpectedSpaceBetween":"Unexpected space between '?' and the ':'.","unexpectedSpaceBefore":"Unexpected space before the ':'."},
+"cases": [
+{"id":"type-named-tuple-spacing/v0","kind":"valid","code":"type T = [i: number]","file":"file.ts","tsconfig":null},
+{"id":"type-named-tuple-spacing/v1","kind":"valid","code":"type T = [i?: number]","file":"file.ts","tsconfig":null},
+{"id":"type-named-tuple-spacing/v2","kind":"valid","code":"type T = [i: number, j: number]","file":"file.ts","tsconfig":null},
+{"id":"type-named-tuple-spacing/v3","kind":"valid","code":"type T = [i: number, j: () => string]","file":"file.ts","tsconfig":null},
+{"id":"type-named-tuple-spacing/v4","kind":"valid","code":"const emit = defineEmits<{\n      change: [id: number]\n      update: [value: string]\n    }>()","file":"file.ts","tsconfig":null},
+{"id":"type-named-tuple-spacing/i0","kind":"invalid","code":"type T = [i:number]","file":"file.ts","tsconfig":null,"errors":[{"messageId":"expectedSpaceAfter"}],"output":"type T = [i: number]"},
+{"id":"type-named-tuple-spacing/i1","kind":"invalid","code":"type T = [i:  number]","file":"file.ts","tsconfig":null,"errors":[{"messageId":"expectedSpaceAfter"}],"output":"type T = [i: number]"},
+{"id":"type-named-tuple-spacing/i2","kind":"invalid","code":"type T = [i?:number]","file":"file.ts","tsconfig":null,"errors":[{"messageId":"expectedSpaceAfter"}],"output":"type T = [i?: number]"},
+{"id":"type-named-tuple-spacing/i3","kind":"invalid","code":"type T = [i?   :number]","file":"file.ts","tsconfig":null,"errors":[{"messageId":"unexpectedSpaceBetween"},{"messageId":"expectedSpaceAfter"}],"output":"type T = [i?: number]"},
+{"id":"type-named-tuple-spacing/i4","kind":"invalid","code":"type T = [i : number]","file":"file.ts","tsconfig":null,"errors":[{"messageId":"unexpectedSpaceBefore"}],"output":"type T = [i: number]"},
+{"id":"type-named-tuple-spacing/i5","kind":"invalid","code":"type T = [i  : number]","file":"file.ts","tsconfig":null,"errors":[{"messageId":"unexpectedSpaceBefore"}],"output":"type T = [i: number]"},
+{"id":"type-named-tuple-spacing/i6","kind":"invalid","code":"type T = [i  ?  : number]","file":"file.ts","tsconfig":null,"errors":[{"messageId":"unexpectedSpaceBetween"},{"messageId":"unexpectedSpaceBefore"}],"output":"type T = [i?: number]"},
+{"id":"type-named-tuple-spacing/i7","kind":"invalid","code":"type T = [i:number, j:number]","file":"file.ts","tsconfig":null,"errors":[{"messageId":"expectedSpaceAfter"},{"messageId":"expectedSpaceAfter"}],"output":"type T = [i: number, j: number]"},
+{"id":"type-named-tuple-spacing/i8","kind":"invalid","code":"type T = [i:()=>void, j:number]","file":"file.ts","tsconfig":null,"errors":[{"messageId":"expectedSpaceAfter"},{"messageId":"expectedSpaceAfter"}],"output":"type T = [i: ()=>void, j: number]"},
+{"id":"type-named-tuple-spacing/i9","kind":"invalid","code":"const emit = defineEmits<{\n  change: [id:number]\n  update: [value:string]\n}>()","file":"file.ts","tsconfig":null,"errors":[{"messageId":"expectedSpaceAfter"},{"messageId":"expectedSpaceAfter"}],"output":"const emit = defineEmits<{\n  change: [id: number]\n  update: [value: string]\n}>()"},
+{"id":"type-named-tuple-spacing/i10","kind":"invalid","code":"const emit = defineEmits<{\n  change: [id? :number]\n  update: [value:string]\n}>()","file":"file.ts","tsconfig":null,"errors":[{"messageId":"unexpectedSpaceBetween"},{"messageId":"expectedSpaceAfter"},{"messageId":"expectedSpaceAfter"}],"output":"const emit = defineEmits<{\n  change: [id?: number]\n  update: [value: string]\n}>()"}
+]}

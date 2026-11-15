@@ -1,0 +1,40 @@
+tests/rules/@stylistic/type-named-tuple-spacing/cases.ts:3:12	@stylistic/type-named-tuple-spacing	expectedSpaceAfter	Expected a space after the ':'.
+tests/rules/@stylistic/type-named-tuple-spacing/cases.ts:4:12	@stylistic/type-named-tuple-spacing	expectedSpaceAfter	Expected a space after the ':'.
+tests/rules/@stylistic/type-named-tuple-spacing/cases.ts:5:12	@stylistic/type-named-tuple-spacing	unexpectedSpaceBefore	Unexpected space before the ':'.
+tests/rules/@stylistic/type-named-tuple-spacing/cases.ts:6:12	@stylistic/type-named-tuple-spacing	unexpectedSpaceBefore	Unexpected space before the ':'.
+tests/rules/@stylistic/type-named-tuple-spacing/cases.ts:7:12	@stylistic/type-named-tuple-spacing	unexpectedSpaceBetween	Unexpected space between '?' and the ':'.
+tests/rules/@stylistic/type-named-tuple-spacing/cases.ts:7:12	@stylistic/type-named-tuple-spacing	expectedSpaceAfter	Expected a space after the ':'.
+tests/rules/@stylistic/type-named-tuple-spacing/cases.ts:8:12	@stylistic/type-named-tuple-spacing	unexpectedSpaceBetween	Unexpected space between '?' and the ':'.
+tests/rules/@stylistic/type-named-tuple-spacing/cases.ts:8:12	@stylistic/type-named-tuple-spacing	unexpectedSpaceBefore	Unexpected space before the ':'.
+tests/rules/@stylistic/type-named-tuple-spacing/cases.ts:8:12	@stylistic/type-named-tuple-spacing	expectedSpaceAfter	Expected a space after the ':'.
+tests/rules/@stylistic/type-named-tuple-spacing/cases.ts:9:24	@stylistic/type-named-tuple-spacing	expectedSpaceAfter	Expected a space after the ':'.
+tests/rules/@stylistic/type-named-tuple-spacing/cases.ts:9:37	@stylistic/type-named-tuple-spacing	expectedSpaceAfter	Expected a space after the ':'.
+tests/rules/@stylistic/type-named-tuple-spacing/cases.ts:10:15	@stylistic/type-named-tuple-spacing	unexpectedSpaceBefore	Unexpected space before the ':'.
+tests/rules/@stylistic/type-named-tuple-spacing/cases.ts:10:15	@stylistic/type-named-tuple-spacing	expectedSpaceAfter	Expected a space after the ':'.
+tests/rules/@stylistic/type-named-tuple-spacing/cases.ts:11:21	@stylistic/type-named-tuple-spacing	expectedSpaceAfter	Expected a space after the ':'.
+tests/rules/@stylistic/type-named-tuple-spacing/cases.ts:11:35	@stylistic/type-named-tuple-spacing	unexpectedSpaceBefore	Unexpected space before the ':'.
+tests/rules/@stylistic/type-named-tuple-spacing/cases.ts:12:13	@stylistic/type-named-tuple-spacing	expectedSpaceAfter	Expected a space after the ':'.
+tests/rules/@stylistic/type-named-tuple-spacing/cases.ts:22:13	@stylistic/type-named-tuple-spacing	expectedSpaceAfter	Expected a space after the ':'.
+tests/rules/@stylistic/type-named-tuple-spacing/cases.ts:23:13	@stylistic/type-named-tuple-spacing	expectedSpaceAfter	Expected a space after the ':'.
+tests/rules/@stylistic/type-named-tuple-spacing/cases.ts:24:13	@stylistic/type-named-tuple-spacing	expectedSpaceAfter	Expected a space after the ':'.
+tests/rules/@stylistic/type-named-tuple-spacing/cases.ts:25:13	@stylistic/type-named-tuple-spacing	expectedSpaceAfter	Expected a space after the ':'.
+tests/rules/@stylistic/type-named-tuple-spacing/cases.ts:26:13	@stylistic/type-named-tuple-spacing	expectedSpaceAfter	Expected a space after the ':'.
+tests/rules/@stylistic/type-named-tuple-spacing/cases.ts:27:13	@stylistic/type-named-tuple-spacing	expectedSpaceAfter	Expected a space after the ':'.
+tests/rules/@stylistic/type-named-tuple-spacing/cases.ts:28:13	@stylistic/type-named-tuple-spacing	expectedSpaceAfter	Expected a space after the ':'.
+tests/rules/@stylistic/type-named-tuple-spacing/cases.ts:29:13	@stylistic/type-named-tuple-spacing	expectedSpaceAfter	Expected a space after the ':'.
+tests/rules/@stylistic/type-named-tuple-spacing/cases.ts:30:13	@stylistic/type-named-tuple-spacing	expectedSpaceAfter	Expected a space after the ':'.
+tests/rules/@stylistic/type-named-tuple-spacing/cases.ts:31:13	@stylistic/type-named-tuple-spacing	expectedSpaceAfter	Expected a space after the ':'.
+tests/rules/@stylistic/type-named-tuple-spacing/cases.ts:32:13	@stylistic/type-named-tuple-spacing	expectedSpaceAfter	Expected a space after the ':'.
+tests/rules/@stylistic/type-named-tuple-spacing/cases.ts:33:13	@stylistic/type-named-tuple-spacing	expectedSpaceAfter	Expected a space after the ':'.
+tests/rules/@stylistic/type-named-tuple-spacing/cases.ts:34:13	@stylistic/type-named-tuple-spacing	expectedSpaceAfter	Expected a space after the ':'.
+tests/rules/@stylistic/type-named-tuple-spacing/cases.ts:35:13	@stylistic/type-named-tuple-spacing	unexpectedSpaceBefore	Unexpected space before the ':'.
+tests/rules/@stylistic/type-named-tuple-spacing/cases.ts:35:13	@stylistic/type-named-tuple-spacing	expectedSpaceAfter	Expected a space after the ':'.
+tests/rules/@stylistic/type-named-tuple-spacing/cases.ts:37:13	@stylistic/type-named-tuple-spacing	unexpectedSpaceBefore	Unexpected space before the ':'.
+tests/rules/@stylistic/type-named-tuple-spacing/cases.ts:38:23	@stylistic/type-named-tuple-spacing	expectedSpaceAfter	Expected a space after the ':'.
+tests/rules/@stylistic/type-named-tuple-spacing/cases.ts:38:44	@stylistic/type-named-tuple-spacing	unexpectedSpaceBetween	Unexpected space between '?' and the ':'.
+tests/rules/@stylistic/type-named-tuple-spacing/cases.ts:38:44	@stylistic/type-named-tuple-spacing	expectedSpaceAfter	Expected a space after the ':'.
+tests/rules/@stylistic/type-named-tuple-spacing/cases.ts:40:13	@stylistic/type-named-tuple-spacing	expectedSpaceAfter	Expected a space after the ':'.
+tests/rules/@stylistic/type-named-tuple-spacing/cases.ts:41:13	@stylistic/type-named-tuple-spacing	unexpectedSpaceBefore	Unexpected space before the ':'.
+tests/rules/@stylistic/type-named-tuple-spacing/cases.ts:41:13	@stylistic/type-named-tuple-spacing	expectedSpaceAfter	Expected a space after the ':'.
+tests/rules/@stylistic/type-named-tuple-spacing/cases.ts:42:13	@stylistic/type-named-tuple-spacing	unexpectedSpaceBetween	Unexpected space between '?' and the ':'.
+tests/rules/@stylistic/type-named-tuple-spacing/cases.ts:42:13	@stylistic/type-named-tuple-spacing	expectedSpaceAfter	Expected a space after the ':'.
