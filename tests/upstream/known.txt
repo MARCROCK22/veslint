@@ -1704,3 +1704,28 @@ veslint	sort-classes/r1/i253	tree-sitter's grammar: an index signature without a
 veslint	sort-classes/r1/i37	tree-sitter reads the computed field `[key in O]` as an index signature
 veslint	sort-classes/r1/i162	tree-sitter reads the computed field `[key in O]` as an index signature
 veslint	sort-classes/r1/i251	tree-sitter reads the computed field `[key in O]` as an index signature
+# perfectionist/sort-imports (P2): as for sort-array-includes; v138 and v142 mock the tsconfig the rule reads
+# (vi.spyOn of readClosestTsConfigByPath) and i257 has `settings` the test does not give the rule.
+eslint	sort-imports/r0/i264	disables rule-to-test/sort-imports, the name the tester gives the rule
+veslint	sort-imports/r0/i264	disables rule-to-test/sort-imports, the name the tester gives the rule
+eslint	sort-imports/r0/i265	disables rule-to-test/sort-imports, the name the tester gives the rule
+veslint	sort-imports/r0/i265	disables rule-to-test/sort-imports, the name the tester gives the rule
+eslint	sort-imports/r0/i266	disables rule-to-test/sort-imports, the name the tester gives the rule
+veslint	sort-imports/r0/i266	disables rule-to-test/sort-imports, the name the tester gives the rule
+eslint	sort-imports/r0/i267	disables rule-to-test/sort-imports, the name the tester gives the rule
+veslint	sort-imports/r0/i267	disables rule-to-test/sort-imports, the name the tester gives the rule
+eslint	sort-imports/r0/i268	disables rule-to-test/sort-imports, the name the tester gives the rule
+veslint	sort-imports/r0/i268	disables rule-to-test/sort-imports, the name the tester gives the rule
+eslint	sort-imports/r0/i269	disables rule-to-test/sort-imports, the name the tester gives the rule
+veslint	sort-imports/r0/i269	disables rule-to-test/sort-imports, the name the tester gives the rule
+eslint	sort-imports/r0/i271	disables rule-to-test/sort-imports, the name the tester gives the rule
+veslint	sort-imports/r0/i271	disables rule-to-test/sort-imports, the name the tester gives the rule
+eslint	sort-imports/r0/v138	the test mocks the tsconfig the rule reads
+veslint	sort-imports/r0/v138	the test mocks the tsconfig the rule reads
+eslint	sort-imports/r0/v142	the test mocks the tsconfig the rule reads
+veslint	sort-imports/r0/v142	the test mocks the tsconfig the rule reads
+eslint	sort-imports/r0/i257	the test expects the rule without the settings partitionByNewLine it has
+veslint	sort-imports/r0/i257	the test expects the rule without the settings partitionByNewLine it has
+veslint	sort-imports/r0/v127	the alphabet has lone surrogates, which veslint's JSON reader refuses
+veslint	sort-imports/r0/i246	the alphabet has lone surrogates, which veslint's JSON reader refuses
+veslint	sort-imports/r0/i247	the alphabet has lone surrogates, which veslint's JSON reader refuses

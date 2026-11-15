@@ -1,0 +1,1 @@
+[{"tsconfig": {"rootDir": "."}, "groups": ["tsconfig-path", "external", "internal", "unknown"]}]

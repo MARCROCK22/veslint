@@ -471,6 +471,7 @@ pub const no_generated_empty_object_type = '@typescript-eslint/no-generated-empt
 pub const no_unsafe_enum_assignment = '@typescript-eslint/no-unsafe-enum-assignment'
 pub const member_ordering = '@typescript-eslint/member-ordering'
 pub const perfectionist_sort_classes = 'perfectionist/sort-classes'
+pub const perfectionist_sort_imports = 'perfectionist/sort-imports'
 pub const names = [no_floating_promises, await_thenable, require_await, return_await,
 	no_misused_promises, no_unsafe_call, no_unsafe_member_access, no_unsafe_return,
 	no_unsafe_assignment, no_unsafe_argument, restrict_template_expressions,
@@ -604,7 +605,7 @@ pub const names = [no_floating_promises, await_thenable, require_await, return_a
 	explicit_function_return_type, explicit_module_boundary_types, explicit_member_accessibility,
 	parameter_properties, prefer_literal_enum_member, no_magic_numbers, no_restricted_types,
 	no_generated_empty_object_type, no_unsafe_enum_assignment, member_ordering,
-	perfectionist_sort_classes]
+	perfectionist_sort_classes, perfectionist_sort_imports]
 
 // untyped_rules are the ported rules that need no types (`meta.docs.requiresTypeChecking` is false
 // in typescript-eslint; the eslint-plugin-unicorn rules that read the types when the parser has a
@@ -710,7 +711,7 @@ pub const untyped_rules = [adjacent_overload_signatures, array_type, class_liter
 	perfectionist_sort_named_imports, perfectionist_sort_named_exports, perfectionist_sort_exports,
 	explicit_function_return_type, explicit_module_boundary_types, explicit_member_accessibility,
 	parameter_properties, prefer_literal_enum_member, no_magic_numbers, no_restricted_types,
-	member_ordering, perfectionist_sort_classes]
+	member_ordering, perfectionist_sort_classes, perfectionist_sort_imports]
 
 // needs_types tells whether a rule asks tsgo for the types of the program.
 pub fn needs_types(rule string) bool {
@@ -1178,6 +1179,7 @@ pub const default_options = {
 	no_unsafe_enum_assignment:                       '[]'
 	member_ordering:                                 '[{"default":{"memberTypes":["signature","call-signature","public-static-field","protected-static-field","private-static-field","#private-static-field","public-decorated-field","protected-decorated-field","private-decorated-field","public-instance-field","protected-instance-field","private-instance-field","#private-instance-field","public-abstract-field","protected-abstract-field","public-field","protected-field","private-field","#private-field","static-field","instance-field","abstract-field","decorated-field","field","static-initialization","public-constructor","protected-constructor","private-constructor","constructor","public-static-accessor","protected-static-accessor","private-static-accessor","#private-static-accessor","public-decorated-accessor","protected-decorated-accessor","private-decorated-accessor","public-instance-accessor","protected-instance-accessor","private-instance-accessor","#private-instance-accessor","public-abstract-accessor","protected-abstract-accessor","public-accessor","protected-accessor","private-accessor","#private-accessor","static-accessor","instance-accessor","abstract-accessor","decorated-accessor","accessor","public-static-get","protected-static-get","private-static-get","#private-static-get","public-decorated-get","protected-decorated-get","private-decorated-get","public-instance-get","protected-instance-get","private-instance-get","#private-instance-get","public-abstract-get","protected-abstract-get","public-get","protected-get","private-get","#private-get","static-get","instance-get","abstract-get","decorated-get","get","public-static-set","protected-static-set","private-static-set","#private-static-set","public-decorated-set","protected-decorated-set","private-decorated-set","public-instance-set","protected-instance-set","private-instance-set","#private-instance-set","public-abstract-set","protected-abstract-set","public-set","protected-set","private-set","#private-set","static-set","instance-set","abstract-set","decorated-set","set","public-static-method","protected-static-method","private-static-method","#private-static-method","public-decorated-method","protected-decorated-method","private-decorated-method","public-instance-method","protected-instance-method","private-instance-method","#private-instance-method","public-abstract-method","protected-abstract-method","public-method","protected-method","private-method","#private-method","static-method","instance-method","abstract-method","decorated-method","method"]}}]'
 	perfectionist_sort_classes:                      '[]'
+	perfectionist_sort_imports:                      '[]'
 }
 
 // Finding is a problem a rule found at a node.
@@ -1772,6 +1774,7 @@ pub fn message(rule string, finding Finding) string {
 		no_unsafe_enum_assignment { nuea_messages }
 		member_ordering { mord_messages }
 		perfectionist_sort_classes { pfsc_messages }
+		perfectionist_sort_imports { pfsi_messages }
 		else { map[string]string{} }
 	}
 	return interpolate(messages[finding.message_id] or { finding.message_id }, finding.data)
@@ -3299,6 +3302,9 @@ fn (mut c Checker) lint_rule(rule string, root C.TSNode, abs_path string, mut st
 		}
 		perfectionist_sort_classes {
 			return c.lint_perfectionist_sort_classes(root, abs_path, mut stats)!
+		}
+		perfectionist_sort_imports {
+			return c.lint_perfectionist_sort_imports(root, abs_path, mut stats)!
 		}
 		else { return error('unknown rule: ${rule}') }
 	}

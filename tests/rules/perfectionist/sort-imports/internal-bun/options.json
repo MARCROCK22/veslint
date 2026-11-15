@@ -1,0 +1,1 @@
+[{"internalPattern": ["^@company/"], "environment": "bun", "groups": ["builtin", "external", "internal", "unknown"]}]

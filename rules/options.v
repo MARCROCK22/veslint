@@ -234,6 +234,7 @@ pub fn check_options(rule string, options []json2.Any) !bool {
 		no_restricted_types { nrty_options(options)! }
 		member_ordering { mord_options(options)! }
 		perfectionist_sort_classes { pf_options(options)! }
+		perfectionist_sort_imports { pf_options(options)! }
 		else { return false }
 	}
 	return true

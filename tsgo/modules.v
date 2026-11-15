@@ -101,3 +101,58 @@ pub fn (mut c Client) source_file_names(snapshot int, project string) ![]string 
 	}
 	return c.program_files[key]
 }
+
+// ResolvedModule is what resolveModuleName tells of a module name with the options of a tsconfig:
+// whether it resolves (`resolvedModule`), the file it resolves to and its isExternalLibraryImport
+// (`has_external_library_import` is false when the answer has none).
+pub struct ResolvedModule {
+pub:
+	resolved                    bool
+	file                        string
+	has_external_library_import bool
+	is_external_library_import  bool
+}
+
+// resolve_module is resolveModuleName of `name` from a file of `directory`, with the options of
+// the tsconfig `tsconfig` (perfectionist/sort-imports).
+pub fn (mut c Client) resolve_module(tsconfig string, name string, directory string) !ResolvedModule {
+	if tsconfig !in c.module_resolvers {
+		options := c.project_options_json(tsconfig)!
+		c.module_resolvers[tsconfig] = c.request('createModuleResolver',
+			'{"compilerOptions":${options}}')!.trim_space().int()
+	}
+	params := '{"resolver":${c.module_resolvers[tsconfig]},"moduleName":${json2.encode(name)},"containingDirectory":${json2.encode(directory)}}'
+	response := json2.decode[json2.Any](c.request('resolveModuleName', params)!)!
+	resolved := response.as_map()['resolvedModule'] or { return ResolvedModule{} }
+	if resolved !is map[string]json2.Any {
+		return ResolvedModule{}
+	}
+	fields := resolved.as_map()
+	file := fields['resolvedFileName'] or { json2.Any('') }
+	external := fields['isExternalLibraryImport'] or {
+		return ResolvedModule{
+			resolved: true
+			file:     file.str()
+		}
+	}
+	return ResolvedModule{
+		resolved:                    true
+		file:                        file.str()
+		has_external_library_import: external is bool
+		is_external_library_import:  external is bool && external.bool()
+	}
+}
+
+// config_path_keys are the keys of the `paths` compiler option of a tsconfig (parseConfigFile), in
+// their order.
+pub fn (mut c Client) config_path_keys(tsconfig string) ![]string {
+	options := json2.decode[json2.Any](c.project_options_json(tsconfig)!)!
+	if options !is map[string]json2.Any {
+		return []string{}
+	}
+	paths := options.as_map()['paths'] or { return []string{} }
+	if paths !is map[string]json2.Any {
+		return []string{}
+	}
+	return paths.as_map().keys()
+}
