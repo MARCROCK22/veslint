@@ -224,6 +224,7 @@ pub fn check_options(rule string, options []json2.Any) !bool {
 		perfectionist_sort_switch_case { pf_options(options)! }
 		perfectionist_sort_named_imports { pf_options(options)! }
 		perfectionist_sort_named_exports { pf_options(options)! }
+		perfectionist_sort_exports { pf_options(options)! }
 		else { return false }
 	}
 	return true

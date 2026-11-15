@@ -1644,3 +1644,22 @@ veslint	sort-named-exports/r0/v33	locales: zh-CN, which veslint does not collate
 veslint	sort-named-exports/r0/v59	the alphabet has lone surrogates, which veslint's JSON reader refuses
 veslint	sort-named-exports/r0/v60	the alphabet has lone surrogates, which veslint's JSON reader refuses
 veslint	sort-named-exports/r0/i112	the alphabet has lone surrogates, which veslint's JSON reader refuses
+# perfectionist/sort-exports: as for sort-array-includes.
+eslint	sort-exports/r0/i130	disables rule-to-test/sort-exports, the name the tester gives the rule
+veslint	sort-exports/r0/i130	disables rule-to-test/sort-exports, the name the tester gives the rule
+eslint	sort-exports/r0/i131	disables rule-to-test/sort-exports, the name the tester gives the rule
+veslint	sort-exports/r0/i131	disables rule-to-test/sort-exports, the name the tester gives the rule
+eslint	sort-exports/r0/i132	disables rule-to-test/sort-exports, the name the tester gives the rule
+veslint	sort-exports/r0/i132	disables rule-to-test/sort-exports, the name the tester gives the rule
+eslint	sort-exports/r0/i133	disables rule-to-test/sort-exports, the name the tester gives the rule
+veslint	sort-exports/r0/i133	disables rule-to-test/sort-exports, the name the tester gives the rule
+eslint	sort-exports/r0/i134	disables rule-to-test/sort-exports, the name the tester gives the rule
+veslint	sort-exports/r0/i134	disables rule-to-test/sort-exports, the name the tester gives the rule
+eslint	sort-exports/r0/i135	disables rule-to-test/sort-exports, the name the tester gives the rule
+veslint	sort-exports/r0/i135	disables rule-to-test/sort-exports, the name the tester gives the rule
+eslint	sort-exports/r0/i137	disables rule-to-test/sort-exports, the name the tester gives the rule
+veslint	sort-exports/r0/i137	disables rule-to-test/sort-exports, the name the tester gives the rule
+veslint	sort-exports/r0/v10	locales: zh-CN, which veslint does not collate
+veslint	sort-exports/r0/v30	locales: zh-CN, which veslint does not collate
+veslint	sort-exports/r0/v60	the alphabet has lone surrogates, which veslint's JSON reader refuses
+veslint	sort-exports/r0/i119	the alphabet has lone surrogates, which veslint's JSON reader refuses

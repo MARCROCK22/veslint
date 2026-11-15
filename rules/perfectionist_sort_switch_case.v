@@ -176,7 +176,7 @@ fn (mut ctx PfContext) pfsw_sort_switch(switch_node int) ! {
 				continue
 			}
 			if !fix_done {
-				has_fix, fix = ctx.pf_merge_fixes(ctx.pf_make_fixes(group, sorted, no_options,
+				has_fix, fix = ctx.pf_merge_fixes(ctx.pf_make_fixes(group, sorted, no_options, false,
 					false))!
 				fix_done = true
 			}
@@ -299,7 +299,7 @@ fn (mut ctx PfContext) pfsw_sort_switch(switch_node int) ! {
 		// Raise errors but only sort on second iteration.
 		if !has_unsorted_nodes && !fix_done {
 			has_fix, fix = ctx.pf_merge_fixes(ctx.pf_make_fixes(sorting_nodes, sorted_cases,
-				no_options, false))!
+				no_options, false, false))!
 			fix_done = true
 		}
 		ctx.pfsw_report(right.node, left.name, right.name, has_fix, fix)

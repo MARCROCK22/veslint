@@ -459,6 +459,7 @@ pub const perfectionist_sort_export_attributes = 'perfectionist/sort-export-attr
 pub const perfectionist_sort_switch_case = 'perfectionist/sort-switch-case'
 pub const perfectionist_sort_named_imports = 'perfectionist/sort-named-imports'
 pub const perfectionist_sort_named_exports = 'perfectionist/sort-named-exports'
+pub const perfectionist_sort_exports = 'perfectionist/sort-exports'
 pub const names = [no_floating_promises, await_thenable, require_await, return_await,
 	no_misused_promises, no_unsafe_call, no_unsafe_member_access, no_unsafe_return,
 	no_unsafe_assignment, no_unsafe_argument, restrict_template_expressions,
@@ -588,7 +589,7 @@ pub const names = [no_floating_promises, await_thenable, require_await, return_a
 	no_empty_object_type, no_non_null_assertion, ts_no_invalid_this, no_redeclare,
 	perfectionist_sort_heritage_clauses, perfectionist_sort_import_attributes,
 	perfectionist_sort_export_attributes, perfectionist_sort_switch_case,
-	perfectionist_sort_named_imports, perfectionist_sort_named_exports]
+	perfectionist_sort_named_imports, perfectionist_sort_named_exports, perfectionist_sort_exports]
 
 // untyped_rules are the ported rules that need no types (`meta.docs.requiresTypeChecking` is false
 // in typescript-eslint; the eslint-plugin-unicorn rules that read the types when the parser has a
@@ -691,7 +692,7 @@ pub const untyped_rules = [adjacent_overload_signatures, array_type, class_liter
 	no_empty_object_type, no_non_null_assertion, ts_no_invalid_this, no_redeclare,
 	perfectionist_sort_heritage_clauses, perfectionist_sort_import_attributes,
 	perfectionist_sort_export_attributes, perfectionist_sort_switch_case,
-	perfectionist_sort_named_imports, perfectionist_sort_named_exports]
+	perfectionist_sort_named_imports, perfectionist_sort_named_exports, perfectionist_sort_exports]
 
 // needs_types tells whether a rule asks tsgo for the types of the program.
 pub fn needs_types(rule string) bool {
@@ -1147,6 +1148,7 @@ pub const default_options = {
 	perfectionist_sort_switch_case:                  '[]'
 	perfectionist_sort_named_imports:                '[]'
 	perfectionist_sort_named_exports:                '[]'
+	perfectionist_sort_exports:                      '[]'
 }
 
 // Finding is a problem a rule found at a node.
@@ -1729,6 +1731,7 @@ pub fn message(rule string, finding Finding) string {
 		perfectionist_sort_switch_case { pfsw_messages }
 		perfectionist_sort_named_imports { pfsni_messages }
 		perfectionist_sort_named_exports { pfsne_messages }
+		perfectionist_sort_exports { pfsx_messages }
 		else { map[string]string{} }
 	}
 	return interpolate(messages[finding.message_id] or { finding.message_id }, finding.data)
@@ -3220,6 +3223,9 @@ fn (mut c Checker) lint_rule(rule string, root C.TSNode, abs_path string, mut st
 		}
 		perfectionist_sort_named_exports {
 			return c.lint_perfectionist_sort_named_exports(root, abs_path, mut stats)!
+		}
+		perfectionist_sort_exports {
+			return c.lint_perfectionist_sort_exports(root, abs_path, mut stats)!
 		}
 		else { return error('unknown rule: ${rule}') }
 	}

@@ -1,0 +1,1 @@
+[{"groups": ["local", "unknown"], "customGroups": [{"groupName": "local", "selector": "export", "elementNamePattern": "^\\./"}], "newlinesBetween": 1}]
