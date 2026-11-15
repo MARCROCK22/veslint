@@ -2,6 +2,14 @@
 
 Each version is a release on GitHub with the veslint binaries (Linux x64, Windows x64) and the VS Code extension. The section of a version is the text of its release.
 
+## 0.23.0
+
+- **24 rules of @stylistic/eslint-plugin 5.10.0**, the first of the plugin, for spacing: `@stylistic/array-bracket-spacing`, `@stylistic/arrow-spacing`, `@stylistic/block-spacing`, `@stylistic/comma-spacing`, `@stylistic/computed-property-spacing`, `@stylistic/function-call-spacing`, `@stylistic/key-spacing`, `@stylistic/keyword-spacing`, `@stylistic/no-whitespace-before-property`, `@stylistic/object-curly-spacing`, `@stylistic/rest-spread-spacing`, `@stylistic/semi-spacing`, `@stylistic/space-before-blocks`, `@stylistic/space-before-function-paren`, `@stylistic/space-in-parens`, `@stylistic/space-infix-ops`, `@stylistic/space-unary-ops`, `@stylistic/switch-colon-spacing`, `@stylistic/template-curly-spacing`, `@stylistic/template-tag-spacing`, `@stylistic/type-annotation-spacing`, `@stylistic/type-generic-spacing`, `@stylistic/type-named-tuple-spacing`, `@stylistic/yield-star-spacing`. They come with their options and fixes, and pass the cases of @stylistic's own tests.
+- **VS Code extension:** a quick fix that disables a rule for the entire file (`/* eslint-disable <rule> */` on the first line, after a `#!` line), besides the one for a line. The one for a line adds the rule to the `eslint-disable-next-line` comment already above the line (`// eslint-disable-next-line no-var, eqeqeq`) instead of a second comment on top of it, which would have disabled the rule for that comment and not for the line.
+- **Fixes:**
+  - The text inside a JSX element is one token, as typescript-estree gives it (JSXText, with its white space), a JSX attribute's string is JSXText and a name in a tag a JSXIdentifier: rules that look at tokens no longer take a `,` or a `(` in JSX text for punctuation.
+  - `no-useless-computed-key` leaves abstract fields alone, and `no-unexpected-multiline` a dynamic `import(…)`, as ESLint does.
+
 ## 0.22.0
 
 - **11 rules of eslint-plugin-unicorn for modules:** `unicorn/no-anonymous-default-export`, `unicorn/no-named-default`, `unicorn/no-process-exit`, `unicorn/prefer-export-from`, `unicorn/prefer-import-meta-properties`, `unicorn/prefer-json-parse-buffer`, `unicorn/prefer-module`, `unicorn/prefer-node-protocol`, `unicorn/relative-url-style`, `unicorn/require-module-attributes` and `unicorn/require-module-specifiers`. `unicorn/relative-url-style` comes with a port of the WHATWG URL parser (checked against Node's `URL` on 15,931 inputs); hosts with non-ASCII letters are not resolved yet, so they are never reported.
