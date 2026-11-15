@@ -144,3 +144,23 @@ git -C build/upstream/unicorn sparse-checkout set test rules /package.json /lice
 mkdir -p build/upstream/unicorn-deps
 (cd build/upstream/unicorn-deps && echo '{"private":true}' > package.json && npm install outdent@0.8.0)
 ```
+
+## @stylistic/eslint-plugin (the `@stylistic/*` rules)
+
+The cases of `packages/eslint-plugin/rules/<rule>/*.test.ts` of eslint-stylistic v5.10.0 (one rule
+may have a `._js_.test.ts` and a `._ts_.test.ts`). They run with eslint-vitest-rule-tester 3.1.0,
+which `tools/upstream/stylistic-test.mjs` stands in for (the test files import it as `#test`, which
+the generator rewrites to the stub's path): `run(…)` records the cases, normalized as that tester
+normalizes them (a string error is a messageId, the case's `parserOptions` go to its
+languageOptions). `lang: 'ts'` (the default) is typescript-eslint's parser without types, `lang:
+'js'` espree; both are linted as TypeScript in the fixtures of typescript-eslint, like ESLint
+core's. The tester makes one pass of fixes, checks the output only when the case gives one, and an
+invalid case without errors expects at least one problem. The rule of the tests is not loaded: the
+plugin of `build/eval` (the same version) gives the messages. A sparse clone:
+
+```sh
+git clone --depth 1 --branch v5.10.0 --filter=blob:none --sparse \
+  https://github.com/eslint-stylistic/eslint-stylistic build/upstream/stylistic
+git -C build/upstream/stylistic sparse-checkout set packages/eslint-plugin shared /package.json \
+  /pnpm-workspace.yaml /pnpm-lock.yaml /LICENSE /alias.mjs /vitest.config.unit.ts /tsconfig.base.json
+```
