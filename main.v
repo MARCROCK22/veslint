@@ -634,12 +634,23 @@ fn run_rules(opts Options, timeout time.Duration) !int {
 	bench.update_snapshot_ms = ms(sw.elapsed())
 	mut projects := map_projects(tsconfigs, snap)!
 	mut checkers := map[string]&rules.Checker{}
+	// The index of the last file of each project: without --fix (whose passes make new snapshots
+	// and checkers), the checker of a project is dropped after it, so that a run over files of many
+	// tsconfigs does not keep every checker alive (the garbage collector walks what is alive).
+	mut last_of_project := map[string]int{}
+	if !opts.fix {
+		for index, f in files {
+			if f.note == '' {
+				last_of_project[projects[f.tsconfig]] = index
+			}
+		}
+	}
 	mut problems := 0
 	mut warnings := 0
 	mut fixed_files := 0
 	mut stats := rules.Stats{}
 	mut summary := RuleSummary{}
-	for f in files {
+	for file_index, f in files {
 		if f.note != '' {
 			if opts.summary {
 				summary.add(rules.problem_rule, f.path, true)
@@ -734,6 +745,12 @@ fn run_rules(opts Options, timeout time.Duration) !int {
 			if pass > 1 && src == second_previous {
 				eprintln('warning: ${f.path}: circular fixes; stopped after ${pass} passes')
 				pass = max_fix_passes
+			}
+		}
+		if !opts.fix {
+			project := projects[f.tsconfig]
+			if last_of_project[project] == file_index {
+				checkers.delete(project)
 			}
 		}
 		report := file_report(f.path, src, result, opts.fixes)
