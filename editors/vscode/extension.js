@@ -499,6 +499,17 @@ const codeActions = {
         action.edit.insert(document.uri, line.range.start, `${indent}// eslint-disable-next-line ${problem.rule}\n`);
         action.diagnostics = [diagnostic];
         actions.push(action);
+        // The rule off for the whole file: a comment on the first line (after a `#!` line).
+        const fileAction = new vscode.CodeAction(`Disable ${problem.rule} for the entire file`, vscode.CodeActionKind.QuickFix);
+        fileAction.edit = new vscode.WorkspaceEdit();
+        const first = document.lineAt(0);
+        if (first.text.startsWith('#!')) {
+          fileAction.edit.insert(document.uri, first.range.end, `\n/* eslint-disable ${problem.rule} */`);
+        } else {
+          fileAction.edit.insert(document.uri, first.range.start, `/* eslint-disable ${problem.rule} */\n`);
+        }
+        fileAction.diagnostics = [diagnostic];
+        actions.push(fileAction);
       }
     }
     return actions;

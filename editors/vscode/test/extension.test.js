@@ -137,8 +137,14 @@ test('the extension shows the problems and offers the fixes', { skip: !built }, 
   );
   assert.equal(floatingActions[0].edit.edits[0].text, 'void ');
   assert.equal(document.offsetAt(floatingActions[0].edit.edits[0].range.start), document.offsetAt(floating.range.start));
-  assert.equal(floatingActions.at(-1).title, 'Disable @typescript-eslint/no-floating-promises for this line');
-  assert.match(floatingActions.at(-1).edit.edits[0].text, /^\s*\/\/ eslint-disable-next-line @typescript-eslint\/no-floating-promises\n$/);
+  assert.equal(floatingActions.at(-2).title, 'Disable @typescript-eslint/no-floating-promises for this line');
+  assert.match(floatingActions.at(-2).edit.edits[0].text, /^\s*\/\/ eslint-disable-next-line @typescript-eslint\/no-floating-promises\n$/);
+  assert.equal(floatingActions.at(-1).title, 'Disable @typescript-eslint/no-floating-promises for the entire file');
+  assert.equal(floatingActions.at(-1).edit.edits[0].text, '/* eslint-disable @typescript-eslint/no-floating-promises */\n');
+  assert.deepEqual(
+    [floatingActions.at(-1).edit.edits[0].range.start.line, floatingActions.at(-1).edit.edits[0].range.start.character],
+    [0, 0],
+  );
   const directive = shown.find(diagnostic => diagnostic.code === 'eslint');
   const directiveActions = actionsOf(directive);
   assert.equal(directiveActions.length, 1);
