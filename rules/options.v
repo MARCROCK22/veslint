@@ -227,6 +227,7 @@ pub fn check_options(rule string, options []json2.Any) !bool {
 		perfectionist_sort_exports { pf_options(options)! }
 		explicit_function_return_type { efrt_options(options)! }
 		explicit_module_boundary_types { embt_options(options)! }
+		explicit_member_accessibility { ema_options(options)! }
 		else { return false }
 	}
 	return true
