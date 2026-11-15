@@ -1,0 +1,33 @@
+tests/rules/@stylistic/new-parens/always/cases.ts:3:18	@stylistic/new-parens	missing	Missing '()' invoking a constructor.
+tests/rules/@stylistic/new-parens/always/cases.ts:6:18	@stylistic/new-parens	missing	Missing '()' invoking a constructor.
+tests/rules/@stylistic/new-parens/always/cases.ts:8:18	@stylistic/new-parens	missing	Missing '()' invoking a constructor.
+tests/rules/@stylistic/new-parens/always/cases.ts:10:19	@stylistic/new-parens	missing	Missing '()' invoking a constructor.
+tests/rules/@stylistic/new-parens/always/cases.ts:11:19	@stylistic/new-parens	missing	Missing '()' invoking a constructor.
+tests/rules/@stylistic/new-parens/always/cases.ts:12:18	@stylistic/new-parens	missing	Missing '()' invoking a constructor.
+tests/rules/@stylistic/new-parens/always/cases.ts:16:18	@stylistic/new-parens	missing	Missing '()' invoking a constructor.
+tests/rules/@stylistic/new-parens/always/cases.ts:20:19	@stylistic/new-parens	missing	Missing '()' invoking a constructor.
+tests/rules/@stylistic/new-parens/always/cases.ts:21:18	@stylistic/new-parens	missing	Missing '()' invoking a constructor.
+tests/rules/@stylistic/new-parens/always/cases.ts:24:18	@stylistic/new-parens	missing	Missing '()' invoking a constructor.
+tests/rules/@stylistic/new-parens/cases.ts:3:18	@stylistic/new-parens	missing	Missing '()' invoking a constructor.
+tests/rules/@stylistic/new-parens/cases.ts:6:18	@stylistic/new-parens	missing	Missing '()' invoking a constructor.
+tests/rules/@stylistic/new-parens/cases.ts:8:18	@stylistic/new-parens	missing	Missing '()' invoking a constructor.
+tests/rules/@stylistic/new-parens/cases.ts:10:19	@stylistic/new-parens	missing	Missing '()' invoking a constructor.
+tests/rules/@stylistic/new-parens/cases.ts:11:19	@stylistic/new-parens	missing	Missing '()' invoking a constructor.
+tests/rules/@stylistic/new-parens/cases.ts:12:18	@stylistic/new-parens	missing	Missing '()' invoking a constructor.
+tests/rules/@stylistic/new-parens/cases.ts:16:18	@stylistic/new-parens	missing	Missing '()' invoking a constructor.
+tests/rules/@stylistic/new-parens/cases.ts:20:19	@stylistic/new-parens	missing	Missing '()' invoking a constructor.
+tests/rules/@stylistic/new-parens/cases.ts:21:18	@stylistic/new-parens	missing	Missing '()' invoking a constructor.
+tests/rules/@stylistic/new-parens/cases.ts:24:18	@stylistic/new-parens	missing	Missing '()' invoking a constructor.
+tests/rules/@stylistic/new-parens/never/cases.ts:4:18	@stylistic/new-parens	unnecessary	Unnecessary '()' invoking a constructor with no arguments.
+tests/rules/@stylistic/new-parens/never/cases.ts:7:18	@stylistic/new-parens	unnecessary	Unnecessary '()' invoking a constructor with no arguments.
+tests/rules/@stylistic/new-parens/never/cases.ts:9:18	@stylistic/new-parens	unnecessary	Unnecessary '()' invoking a constructor with no arguments.
+tests/rules/@stylistic/new-parens/never/cases.ts:13:18	@stylistic/new-parens	unnecessary	Unnecessary '()' invoking a constructor with no arguments.
+tests/rules/@stylistic/new-parens/never/cases.ts:14:18	@stylistic/new-parens	unnecessary	Unnecessary '()' invoking a constructor with no arguments.
+tests/rules/@stylistic/new-parens/never/cases.ts:15:18	@stylistic/new-parens	unnecessary	Unnecessary '()' invoking a constructor with no arguments.
+tests/rules/@stylistic/new-parens/never/cases.ts:16:23	@stylistic/new-parens	unnecessary	Unnecessary '()' invoking a constructor with no arguments.
+tests/rules/@stylistic/new-parens/never/cases.ts:17:18	@stylistic/new-parens	unnecessary	Unnecessary '()' invoking a constructor with no arguments.
+tests/rules/@stylistic/new-parens/never/cases.ts:17:23	@stylistic/new-parens	unnecessary	Unnecessary '()' invoking a constructor with no arguments.
+tests/rules/@stylistic/new-parens/never/cases.ts:18:18	@stylistic/new-parens	unnecessary	Unnecessary '()' invoking a constructor with no arguments.
+tests/rules/@stylistic/new-parens/never/cases.ts:20:28	@stylistic/new-parens	unnecessary	Unnecessary '()' invoking a constructor with no arguments.
+tests/rules/@stylistic/new-parens/never/cases.ts:22:18	@stylistic/new-parens	unnecessary	Unnecessary '()' invoking a constructor with no arguments.
+tests/rules/@stylistic/new-parens/never/cases.ts:23:18	@stylistic/new-parens	unnecessary	Unnecessary '()' invoking a constructor with no arguments.
