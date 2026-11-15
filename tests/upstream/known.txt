@@ -1378,3 +1378,7 @@ veslint	comma-spacing._ts_/i5	tree-sitter reads `let foo ,` as a syntax error
 # reads `namespace Foo⏎{}` as one declaration. A grammar bug.
 veslint	brace-style._ts_/i5	tree-sitter reads `namespace Foo⏎{}` as a namespace without body and a block
 veslint	brace-style._ts_/i6	tree-sitter reads `namespace Foo⏎{}` as a namespace without body and a block
+# @stylistic/comma-style: an index signature with several parameters (`[a: string, b: string]: string`, an error of
+# TypeScript's checker that typescript-estree parses) is a syntax error for tree-sitter's grammar.
+veslint	comma-style/i54	tree-sitter reads an index signature with three parameters as a syntax error
+veslint	comma-style/i55	tree-sitter reads an index signature with three parameters as a syntax error

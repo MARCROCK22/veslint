@@ -1,0 +1,59 @@
+tests/rules/@stylistic/comma-style/cases.ts:6:2	@stylistic/comma-style	expectedCommaLast	',' should be placed last.	fix	112	116	,\n\t 	end	6	3
+tests/rules/@stylistic/comma-style/cases.ts:8:2	@stylistic/comma-style	unexpectedLineBeforeAndAfterComma	Bad line breaking before and after ','.	fix	134	139	,\t\n\t	end	8	3
+tests/rules/@stylistic/comma-style/cases.ts:11:2	@stylistic/comma-style	unexpectedLineBeforeAndAfterComma	Bad line breaking before and after ','.	fix	157	174	, /* block */\t\n\t	end	11	3
+tests/rules/@stylistic/comma-style/cases.ts:14:2	@stylistic/comma-style	unexpectedLineBeforeAndAfterComma	Bad line breaking before and after ','.	fix	192	209	,\n\t /* block */\n\t	end	14	3
+tests/rules/@stylistic/comma-style/cases.ts:17:2	@stylistic/comma-style	unexpectedLineBeforeAndAfterComma	Bad line breaking before and after ','.	fix	227	240	,\t // line\n\t	end	17	3
+tests/rules/@stylistic/comma-style/cases.ts:23:2	@stylistic/comma-style	expectedCommaLast	',' should be placed last.	fix	270	274	,\n\t 	end	23	3
+tests/rules/@stylistic/comma-style/cases.ts:32:2	@stylistic/comma-style	unexpectedLineBeforeAndAfterComma	Bad line breaking before and after ','.	fix	356	361	,\t\n\t	end	32	3
+tests/rules/@stylistic/comma-style/cases.ts:42:2	@stylistic/comma-style	expectedCommaLast	',' should be placed last.	fix	418	422	,\n\t 	end	42	3
+tests/rules/@stylistic/comma-style/cases.ts:46:2	@stylistic/comma-style	expectedCommaLast	',' should be placed last.	fix	441	445	,\n\t 	end	46	3
+tests/rules/@stylistic/comma-style/cases.ts:48:2	@stylistic/comma-style	expectedCommaLast	',' should be placed last.	fix	475	479	,\n\t 	end	48	3
+tests/rules/@stylistic/comma-style/cases.ts:51:2	@stylistic/comma-style	expectedCommaLast	',' should be placed last.	fix	517	521	,\n\t 	end	51	3
+tests/rules/@stylistic/comma-style/cases.ts:56:2	@stylistic/comma-style	expectedCommaLast	',' should be placed last.	fix	576	580	,\n\t 	end	56	3
+tests/rules/@stylistic/comma-style/cases.ts:59:2	@stylistic/comma-style	expectedCommaLast	',' should be placed last.	fix	642	646	,\n\t 	end	59	3
+tests/rules/@stylistic/comma-style/cases.ts:64:2	@stylistic/comma-style	expectedCommaLast	',' should be placed last.	fix	680	684	,\n\t 	end	64	3
+tests/rules/@stylistic/comma-style/cases.ts:66:2	@stylistic/comma-style	expectedCommaLast	',' should be placed last.	fix	696	700	,\n\t 	end	66	3
+tests/rules/@stylistic/comma-style/cases.ts:68:2	@stylistic/comma-style	expectedCommaLast	',' should be placed last.	fix	722	726	,\n\t 	end	68	3
+tests/rules/@stylistic/comma-style/cases.ts:71:2	@stylistic/comma-style	expectedCommaLast	',' should be placed last.	fix	747	751	,\n\t 	end	71	3
+tests/rules/@stylistic/comma-style/cases.ts:73:2	@stylistic/comma-style	expectedCommaLast	',' should be placed last.	fix	796	800	,\n\t 	end	73	3
+tests/rules/@stylistic/comma-style/cases.ts:75:2	@stylistic/comma-style	expectedCommaLast	',' should be placed last.	fix	863	867	,\n\t 	end	75	3
+tests/rules/@stylistic/comma-style/cases.ts:77:2	@stylistic/comma-style	expectedCommaLast	',' should be placed last.	fix	928	932	,\n\t 	end	77	3
+tests/rules/@stylistic/comma-style/cases.ts:80:2	@stylistic/comma-style	expectedCommaLast	',' should be placed last.	fix	980	984	,\n\t 	end	80	3
+tests/rules/@stylistic/comma-style/cases.ts:84:2	@stylistic/comma-style	expectedCommaLast	',' should be placed last.	fix	1035	1039	,\n\t 	end	84	3
+tests/rules/@stylistic/comma-style/cases.ts:89:2	@stylistic/comma-style	expectedCommaLast	',' should be placed last.	fix	1110	1114	,\n\t 	end	89	3
+tests/rules/@stylistic/comma-style/cases.ts:91:2	@stylistic/comma-style	expectedCommaLast	',' should be placed last.	fix	1169	1173	,\n\t 	end	91	3
+tests/rules/@stylistic/comma-style/cases.ts:94:2	@stylistic/comma-style	expectedCommaLast	',' should be placed last.	fix	1220	1224	,\n\t 	end	94	3
+tests/rules/@stylistic/comma-style/cases.ts:96:2	@stylistic/comma-style	expectedCommaLast	',' should be placed last.	fix	1262	1266	,\n\t 	end	96	3
+tests/rules/@stylistic/comma-style/cases.ts:98:2	@stylistic/comma-style	expectedCommaLast	',' should be placed last.	fix	1312	1316	,\n\t 	end	98	3
+tests/rules/@stylistic/comma-style/cases.ts:101:3	@stylistic/comma-style	expectedCommaLast	',' should be placed last.	fix	1386	1391	,\n\t\t 	end	101	4
+tests/rules/@stylistic/comma-style/cases.ts:104:2	@stylistic/comma-style	expectedCommaLast	',' should be placed last.	fix	1425	1429	,\n\t 	end	104	3
+tests/rules/@stylistic/comma-style/cases.ts:106:2	@stylistic/comma-style	expectedCommaLast	',' should be placed last.	fix	1463	1467	,\n\t 	end	106	3
+tests/rules/@stylistic/comma-style/cases.ts:110:2	@stylistic/comma-style	expectedCommaLast	',' should be placed last.	fix	1486	1490	,\n\t 	end	110	3
+tests/rules/@stylistic/comma-style/cases.ts:115:2	@stylistic/comma-style	expectedCommaLast	',' should be placed last.	fix	1523	1527	,\n\t 	end	115	3
+tests/rules/@stylistic/comma-style/cases.ts:117:3	@stylistic/comma-style	expectedCommaLast	',' should be placed last.	fix	1553	1558	,\n\t\t 	end	117	4
+tests/rules/@stylistic/comma-style/cases.ts:119:3	@stylistic/comma-style	expectedCommaLast	',' should be placed last.	fix	1589	1594	,\n\t\t 	end	119	4
+tests/rules/@stylistic/comma-style/cases.ts:121:3	@stylistic/comma-style	expectedCommaLast	',' should be placed last.	fix	1629	1634	,\n\t\t 	end	121	4
+tests/rules/@stylistic/comma-style/cases.ts:130:2	@stylistic/comma-style	expectedCommaLast	',' should be placed last.	fix	1733	1737	,\n\t 	end	130	3
+tests/rules/@stylistic/comma-style/cases.ts:132:2	@stylistic/comma-style	expectedCommaLast	',' should be placed last.	fix	1756	1760	,\n\t 	end	132	3
+tests/rules/@stylistic/comma-style/cases.ts:136:2	@stylistic/comma-style	expectedCommaLast	',' should be placed last.	fix	1794	1798	,\n\t 	end	136	3
+tests/rules/@stylistic/comma-style/cases.ts:141:2	@stylistic/comma-style	expectedCommaLast	',' should be placed last.	fix	1852	1855	,\n\t	end	141	3
+tests/rules/@stylistic/comma-style/first-exceptions/cases.ts:21:3	@stylistic/comma-style	expectedCommaFirst	',' should be placed first.	fix	266	269	\n\t,	end	21	4
+tests/rules/@stylistic/comma-style/first-exceptions/cases.ts:23:5	@stylistic/comma-style	expectedCommaFirst	',' should be placed first.	fix	275	277	\n,	end	23	6
+tests/rules/@stylistic/comma-style/first-exceptions/cases.ts:28:3	@stylistic/comma-style	expectedCommaFirst	',' should be placed first.	fix	326	328	\n,	end	28	4
+tests/rules/@stylistic/comma-style/first-exceptions/cases.ts:32:2	@stylistic/comma-style	unexpectedLineBeforeAndAfterComma	Bad line breaking before and after ','.	fix	356	361	,\t\n\t	end	32	3
+tests/rules/@stylistic/comma-style/first-exceptions/cases.ts:33:3	@stylistic/comma-style	expectedCommaFirst	',' should be placed first.	fix	362	364	\n,	end	33	4
+tests/rules/@stylistic/comma-style/first-exceptions/cases.ts:42:8	@stylistic/comma-style	expectedCommaFirst	',' should be placed first.	fix	426	428	\n,	end	42	9
+tests/rules/@stylistic/comma-style/first-exceptions/cases.ts:110:5	@stylistic/comma-style	expectedCommaFirst	',' should be placed first.	fix	1491	1493	\n,	end	110	6
+tests/rules/@stylistic/comma-style/first/cases.ts:8:2	@stylistic/comma-style	unexpectedLineBeforeAndAfterComma	Bad line breaking before and after ','.	fix	134	139	,\t\n\t	end	8	3
+tests/rules/@stylistic/comma-style/first/cases.ts:11:2	@stylistic/comma-style	unexpectedLineBeforeAndAfterComma	Bad line breaking before and after ','.	fix	157	174	, /* block */\t\n\t	end	11	3
+tests/rules/@stylistic/comma-style/first/cases.ts:14:2	@stylistic/comma-style	unexpectedLineBeforeAndAfterComma	Bad line breaking before and after ','.	fix	192	209	\n\t /* block */\n\t,	end	14	3
+tests/rules/@stylistic/comma-style/first/cases.ts:17:2	@stylistic/comma-style	unexpectedLineBeforeAndAfterComma	Bad line breaking before and after ','.	fix	227	240	,\t // line\n\t	end	17	3
+tests/rules/@stylistic/comma-style/first/cases.ts:21:3	@stylistic/comma-style	expectedCommaFirst	',' should be placed first.	fix	266	269	\n\t,	end	21	4
+tests/rules/@stylistic/comma-style/first/cases.ts:23:5	@stylistic/comma-style	expectedCommaFirst	',' should be placed first.	fix	275	277	\n,	end	23	6
+tests/rules/@stylistic/comma-style/first/cases.ts:28:3	@stylistic/comma-style	expectedCommaFirst	',' should be placed first.	fix	326	328	\n,	end	28	4
+tests/rules/@stylistic/comma-style/first/cases.ts:32:2	@stylistic/comma-style	unexpectedLineBeforeAndAfterComma	Bad line breaking before and after ','.	fix	356	361	,\t\n\t	end	32	3
+tests/rules/@stylistic/comma-style/first/cases.ts:33:3	@stylistic/comma-style	expectedCommaFirst	',' should be placed first.	fix	362	364	\n,	end	33	4
+tests/rules/@stylistic/comma-style/first/cases.ts:42:8	@stylistic/comma-style	expectedCommaFirst	',' should be placed first.	fix	426	428	\n,	end	42	9
+tests/rules/@stylistic/comma-style/first/cases.ts:110:5	@stylistic/comma-style	expectedCommaFirst	',' should be placed first.	fix	1491	1493	\n,	end	110	6
+tests/rules/@stylistic/comma-style/first/cases.ts:115:13	@stylistic/comma-style	expectedCommaFirst	',' should be placed first.	fix	1536	1539	\n\t,	end	115	14
+tests/rules/@stylistic/comma-style/first/cases.ts:138:23	@stylistic/comma-style	expectedCommaFirst	',' should be placed first.	fix	1830	1833	\n\t,	end	138	24

@@ -1,0 +1,59 @@
+tests/rules/@stylistic/comma-style/cases.ts:6:2	@stylistic/comma-style	expectedCommaLast	',' should be placed last.
+tests/rules/@stylistic/comma-style/cases.ts:8:2	@stylistic/comma-style	unexpectedLineBeforeAndAfterComma	Bad line breaking before and after ','.
+tests/rules/@stylistic/comma-style/cases.ts:11:2	@stylistic/comma-style	unexpectedLineBeforeAndAfterComma	Bad line breaking before and after ','.
+tests/rules/@stylistic/comma-style/cases.ts:14:2	@stylistic/comma-style	unexpectedLineBeforeAndAfterComma	Bad line breaking before and after ','.
+tests/rules/@stylistic/comma-style/cases.ts:17:2	@stylistic/comma-style	unexpectedLineBeforeAndAfterComma	Bad line breaking before and after ','.
+tests/rules/@stylistic/comma-style/cases.ts:23:2	@stylistic/comma-style	expectedCommaLast	',' should be placed last.
+tests/rules/@stylistic/comma-style/cases.ts:32:2	@stylistic/comma-style	unexpectedLineBeforeAndAfterComma	Bad line breaking before and after ','.
+tests/rules/@stylistic/comma-style/cases.ts:42:2	@stylistic/comma-style	expectedCommaLast	',' should be placed last.
+tests/rules/@stylistic/comma-style/cases.ts:46:2	@stylistic/comma-style	expectedCommaLast	',' should be placed last.
+tests/rules/@stylistic/comma-style/cases.ts:48:2	@stylistic/comma-style	expectedCommaLast	',' should be placed last.
+tests/rules/@stylistic/comma-style/cases.ts:51:2	@stylistic/comma-style	expectedCommaLast	',' should be placed last.
+tests/rules/@stylistic/comma-style/cases.ts:56:2	@stylistic/comma-style	expectedCommaLast	',' should be placed last.
+tests/rules/@stylistic/comma-style/cases.ts:59:2	@stylistic/comma-style	expectedCommaLast	',' should be placed last.
+tests/rules/@stylistic/comma-style/cases.ts:64:2	@stylistic/comma-style	expectedCommaLast	',' should be placed last.
+tests/rules/@stylistic/comma-style/cases.ts:66:2	@stylistic/comma-style	expectedCommaLast	',' should be placed last.
+tests/rules/@stylistic/comma-style/cases.ts:68:2	@stylistic/comma-style	expectedCommaLast	',' should be placed last.
+tests/rules/@stylistic/comma-style/cases.ts:71:2	@stylistic/comma-style	expectedCommaLast	',' should be placed last.
+tests/rules/@stylistic/comma-style/cases.ts:73:2	@stylistic/comma-style	expectedCommaLast	',' should be placed last.
+tests/rules/@stylistic/comma-style/cases.ts:75:2	@stylistic/comma-style	expectedCommaLast	',' should be placed last.
+tests/rules/@stylistic/comma-style/cases.ts:77:2	@stylistic/comma-style	expectedCommaLast	',' should be placed last.
+tests/rules/@stylistic/comma-style/cases.ts:80:2	@stylistic/comma-style	expectedCommaLast	',' should be placed last.
+tests/rules/@stylistic/comma-style/cases.ts:84:2	@stylistic/comma-style	expectedCommaLast	',' should be placed last.
+tests/rules/@stylistic/comma-style/cases.ts:89:2	@stylistic/comma-style	expectedCommaLast	',' should be placed last.
+tests/rules/@stylistic/comma-style/cases.ts:91:2	@stylistic/comma-style	expectedCommaLast	',' should be placed last.
+tests/rules/@stylistic/comma-style/cases.ts:94:2	@stylistic/comma-style	expectedCommaLast	',' should be placed last.
+tests/rules/@stylistic/comma-style/cases.ts:96:2	@stylistic/comma-style	expectedCommaLast	',' should be placed last.
+tests/rules/@stylistic/comma-style/cases.ts:98:2	@stylistic/comma-style	expectedCommaLast	',' should be placed last.
+tests/rules/@stylistic/comma-style/cases.ts:101:3	@stylistic/comma-style	expectedCommaLast	',' should be placed last.
+tests/rules/@stylistic/comma-style/cases.ts:104:2	@stylistic/comma-style	expectedCommaLast	',' should be placed last.
+tests/rules/@stylistic/comma-style/cases.ts:106:2	@stylistic/comma-style	expectedCommaLast	',' should be placed last.
+tests/rules/@stylistic/comma-style/cases.ts:110:2	@stylistic/comma-style	expectedCommaLast	',' should be placed last.
+tests/rules/@stylistic/comma-style/cases.ts:115:2	@stylistic/comma-style	expectedCommaLast	',' should be placed last.
+tests/rules/@stylistic/comma-style/cases.ts:117:3	@stylistic/comma-style	expectedCommaLast	',' should be placed last.
+tests/rules/@stylistic/comma-style/cases.ts:119:3	@stylistic/comma-style	expectedCommaLast	',' should be placed last.
+tests/rules/@stylistic/comma-style/cases.ts:121:3	@stylistic/comma-style	expectedCommaLast	',' should be placed last.
+tests/rules/@stylistic/comma-style/cases.ts:130:2	@stylistic/comma-style	expectedCommaLast	',' should be placed last.
+tests/rules/@stylistic/comma-style/cases.ts:132:2	@stylistic/comma-style	expectedCommaLast	',' should be placed last.
+tests/rules/@stylistic/comma-style/cases.ts:136:2	@stylistic/comma-style	expectedCommaLast	',' should be placed last.
+tests/rules/@stylistic/comma-style/cases.ts:141:2	@stylistic/comma-style	expectedCommaLast	',' should be placed last.
+tests/rules/@stylistic/comma-style/first-exceptions/cases.ts:21:3	@stylistic/comma-style	expectedCommaFirst	',' should be placed first.
+tests/rules/@stylistic/comma-style/first-exceptions/cases.ts:23:5	@stylistic/comma-style	expectedCommaFirst	',' should be placed first.
+tests/rules/@stylistic/comma-style/first-exceptions/cases.ts:28:3	@stylistic/comma-style	expectedCommaFirst	',' should be placed first.
+tests/rules/@stylistic/comma-style/first-exceptions/cases.ts:32:2	@stylistic/comma-style	unexpectedLineBeforeAndAfterComma	Bad line breaking before and after ','.
+tests/rules/@stylistic/comma-style/first-exceptions/cases.ts:33:3	@stylistic/comma-style	expectedCommaFirst	',' should be placed first.
+tests/rules/@stylistic/comma-style/first-exceptions/cases.ts:42:8	@stylistic/comma-style	expectedCommaFirst	',' should be placed first.
+tests/rules/@stylistic/comma-style/first-exceptions/cases.ts:110:5	@stylistic/comma-style	expectedCommaFirst	',' should be placed first.
+tests/rules/@stylistic/comma-style/first/cases.ts:8:2	@stylistic/comma-style	unexpectedLineBeforeAndAfterComma	Bad line breaking before and after ','.
+tests/rules/@stylistic/comma-style/first/cases.ts:11:2	@stylistic/comma-style	unexpectedLineBeforeAndAfterComma	Bad line breaking before and after ','.
+tests/rules/@stylistic/comma-style/first/cases.ts:14:2	@stylistic/comma-style	unexpectedLineBeforeAndAfterComma	Bad line breaking before and after ','.
+tests/rules/@stylistic/comma-style/first/cases.ts:17:2	@stylistic/comma-style	unexpectedLineBeforeAndAfterComma	Bad line breaking before and after ','.
+tests/rules/@stylistic/comma-style/first/cases.ts:21:3	@stylistic/comma-style	expectedCommaFirst	',' should be placed first.
+tests/rules/@stylistic/comma-style/first/cases.ts:23:5	@stylistic/comma-style	expectedCommaFirst	',' should be placed first.
+tests/rules/@stylistic/comma-style/first/cases.ts:28:3	@stylistic/comma-style	expectedCommaFirst	',' should be placed first.
+tests/rules/@stylistic/comma-style/first/cases.ts:32:2	@stylistic/comma-style	unexpectedLineBeforeAndAfterComma	Bad line breaking before and after ','.
+tests/rules/@stylistic/comma-style/first/cases.ts:33:3	@stylistic/comma-style	expectedCommaFirst	',' should be placed first.
+tests/rules/@stylistic/comma-style/first/cases.ts:42:8	@stylistic/comma-style	expectedCommaFirst	',' should be placed first.
+tests/rules/@stylistic/comma-style/first/cases.ts:110:5	@stylistic/comma-style	expectedCommaFirst	',' should be placed first.
+tests/rules/@stylistic/comma-style/first/cases.ts:115:13	@stylistic/comma-style	expectedCommaFirst	',' should be placed first.
+tests/rules/@stylistic/comma-style/first/cases.ts:138:23	@stylistic/comma-style	expectedCommaFirst	',' should be placed first.
