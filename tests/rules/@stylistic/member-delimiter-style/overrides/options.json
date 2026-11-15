@@ -1,0 +1,1 @@
+[{"overrides": {"interface": {"multiline": {"delimiter": "comma"}}, "typeLiteral": {"singleline": {"delimiter": "comma", "requireLast": true}, "multiline": {"delimiter": "none"}}}}]
