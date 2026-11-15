@@ -172,6 +172,7 @@ pub fn check_options(rule string, options []json2.Any) !bool {
 		stylistic_arrow_spacing { sarws_options(options)! }
 		stylistic_yield_star_spacing { sysp_options(options)! }
 		stylistic_type_annotation_spacing { stas_options(options)! }
+		stylistic_space_before_function_paren { ssbfp_options(options)! }
 		else { return false }
 	}
 	return true
