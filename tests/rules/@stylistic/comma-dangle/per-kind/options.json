@@ -1,0 +1,1 @@
+[{"arrays": "always", "objects": "always-multiline", "imports": "only-multiline", "exports": "ignore", "functions": "always", "importAttributes": "always", "dynamicImports": "always-multiline", "enums": "always", "generics": "always-multiline", "tuples": "only-multiline"}]

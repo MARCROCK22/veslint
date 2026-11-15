@@ -133,4 +133,26 @@ fn (c &Checker) sty_token_value(token SourceToken) string {
 		return c.src[token.start + 1..token.end]
 	}
 	return c.src[token.start..token.end]
+// sty_next_location ports getNextLocation for the position at the byte offset: the offset of the
+// next column, the start of the next line at the end of a line, and -1 (null) at the end of the
+// file. (After the end of a token, the next character is never half of a surrogate pair.)
+fn sty_next_location(t &estree.EsTree, offset int) int {
+	src := t.src
+	if offset >= src.len {
+		return -1
+	}
+	c := src[offset]
+	if c == `\r` {
+		return if offset + 1 < src.len && src[offset + 1] == `\n` { offset + 2 } else { offset + 1 }
+	}
+	if c == `\n` {
+		return offset + 1
+	}
+	if c >= 0xf0 {
+		return offset + 4
+	}
+	if c >= 0xe0 {
+		return offset + 3
+	}
+	return offset + if c >= 0xc0 { 2 } else { 1 }
 }

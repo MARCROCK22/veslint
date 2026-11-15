@@ -201,6 +201,7 @@ pub fn check_options(rule string, options []json2.Any) !bool {
 		stylistic_exp_list_style { sls_options(options)! }
 		stylistic_exp_jsx_props_style { sjps_options(options)! }
 		stylistic_arrow_parens { sap_options(options)! }
+		stylistic_comma_dangle { scd_options(options)! }
 		else { return false }
 	}
 	return true

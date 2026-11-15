@@ -1,0 +1,144 @@
+tests/rules/@stylistic/comma-dangle/always-multiline/cases.ts:2:23	@stylistic/comma-dangle	unexpected	Unexpected trailing comma.	fix	70	73	2]	end	2	24
+tests/rules/@stylistic/comma-dangle/always-multiline/cases.ts:10:4	@stylistic/comma-dangle	missing	Missing trailing comma.	fix	158	161	2,\n]	end	11	1
+tests/rules/@stylistic/comma-dangle/always-multiline/cases.ts:12:24	@stylistic/comma-dangle	unexpected	Unexpected trailing comma.	fix	185	189	1 }	end	12	25
+tests/rules/@stylistic/comma-dangle/always-multiline/cases.ts:14:7	@stylistic/comma-dangle	missing	Missing trailing comma.	fix	215	218	1,\n}	end	15	1
+tests/rules/@stylistic/comma-dangle/always-multiline/cases.ts:16:19	@stylistic/comma-dangle	unexpected	Unexpected trailing comma.	fix	237	240	h]	end	16	20
+tests/rules/@stylistic/comma-dangle/always-multiline/cases.ts:17:22	@stylistic/comma-dangle	unexpected	Unexpected trailing comma.	fix	266	275	length }	end	17	23
+tests/rules/@stylistic/comma-dangle/always-multiline/cases.ts:20:40	@stylistic/comma-dangle	unexpected	Unexpected trailing comma.	fix	385	393	number)	end	20	41
+tests/rules/@stylistic/comma-dangle/always-multiline/cases.ts:25:32	@stylistic/comma-dangle	unexpected	Unexpected trailing comma.	fix	541	549	number)	end	25	33
+tests/rules/@stylistic/comma-dangle/always-multiline/cases.ts:27:12	@stylistic/comma-dangle	missing	Missing trailing comma.	fix	598	606	number,\n)	end	28	1
+tests/rules/@stylistic/comma-dangle/always-multiline/cases.ts:29:10	@stylistic/comma-dangle	unexpected	Unexpected trailing comma.	fix	630	633	2)	end	29	11
+tests/rules/@stylistic/comma-dangle/always-multiline/cases.ts:32:4	@stylistic/comma-dangle	missing	Missing trailing comma.	fix	648	651	2,\n)	end	33	1
+tests/rules/@stylistic/comma-dangle/always-multiline/cases.ts:35:11	@stylistic/comma-dangle	missing	Missing trailing comma.	fix	672	675	],\n]	end	36	1
+tests/rules/@stylistic/comma-dangle/always-multiline/cases.ts:36:2	@stylistic/comma-dangle	unexpected	Unexpected trailing comma.	fix	674	677	])	end	36	3
+tests/rules/@stylistic/comma-dangle/always-multiline/cases.ts:37:22	@stylistic/comma-dangle	unexpected	Unexpected trailing comma.	fix	688	703	readFileSync }	end	37	23
+tests/rules/@stylistic/comma-dangle/always-multiline/cases.ts:39:13	@stylistic/comma-dangle	missing	Missing trailing comma.	fix	731	743	existsSync,\n}	end	40	1
+tests/rules/@stylistic/comma-dangle/always-multiline/cases.ts:43:43	@stylistic/comma-dangle	unexpected	Unexpected trailing comma.	fix	860	865	os }	end	43	44
+tests/rules/@stylistic/comma-dangle/always-multiline/cases.ts:45:12	@stylistic/comma-dangle	missing	Missing trailing comma.	fix	884	889	fn3,\n}	end	46	1
+tests/rules/@stylistic/comma-dangle/always-multiline/cases.ts:47:37	@stylistic/comma-dangle	unexpected	Unexpected trailing comma.	fix	918	929	'node:fs')	end	47	38
+tests/rules/@stylistic/comma-dangle/always-multiline/cases.ts:49:12	@stylistic/comma-dangle	missing	Missing trailing comma.	fix	962	973	'node:fs',\n)	end	50	1
+tests/rules/@stylistic/comma-dangle/always-multiline/cases.ts:51:14	@stylistic/comma-dangle	unexpected	Unexpected trailing comma.	fix	987	991	B }	end	51	15
+tests/rules/@stylistic/comma-dangle/always-multiline/cases.ts:54:4	@stylistic/comma-dangle	missing	Missing trailing comma.	fix	1008	1011	B,\n}	end	55	1
+tests/rules/@stylistic/comma-dangle/always-multiline/cases.ts:57:18	@stylistic/comma-dangle	unexpected	Unexpected trailing comma.	fix	1045	1048	U>	end	57	19
+tests/rules/@stylistic/comma-dangle/always-multiline/cases.ts:59:4	@stylistic/comma-dangle	missing	Missing trailing comma.	fix	1076	1079	T,\n>	end	60	1
+tests/rules/@stylistic/comma-dangle/always-multiline/cases.ts:61:29	@stylistic/comma-dangle	unexpected	Unexpected trailing comma.	fix	1107	1115	number]	end	61	30
+tests/rules/@stylistic/comma-dangle/always-multiline/cases.ts:64:9	@stylistic/comma-dangle	missing	Missing trailing comma.	fix	1145	1153	number,\n]	end	65	1
+tests/rules/@stylistic/comma-dangle/always-multiline/cases.ts:66:32	@stylistic/comma-dangle	unexpected	Unexpected trailing comma.	fix	1180	1188	number)	end	66	33
+tests/rules/@stylistic/comma-dangle/always-multiline/cases.ts:67:36	@stylistic/comma-dangle	unexpected	Unexpected trailing comma.	fix	1227	1235	number)	end	67	37
+tests/rules/@stylistic/comma-dangle/always-multiline/cases.ts:69:43	@stylistic/comma-dangle	unexpected	Unexpected trailing comma.	fix	1333	1341	number>	end	69	44
+tests/rules/@stylistic/comma-dangle/always-multiline/cases.ts:72:34	@stylistic/comma-dangle	unexpected	Unexpected trailing comma.	fix	1449	1463	2 /* last */]	end	72	35
+tests/rules/@stylistic/comma-dangle/always-multiline/cases.ts:75:4	@stylistic/comma-dangle	missing	Missing trailing comma.	fix	1502	1516	2, // comment\n]	end	75	5
+tests/rules/@stylistic/comma-dangle/always/cases.ts:3:23	@stylistic/comma-dangle	missing	Missing trailing comma.	fix	96	98	2,]	end	3	24
+tests/rules/@stylistic/comma-dangle/always/cases.ts:10:4	@stylistic/comma-dangle	missing	Missing trailing comma.	fix	158	161	2,\n]	end	11	1
+tests/rules/@stylistic/comma-dangle/always/cases.ts:14:7	@stylistic/comma-dangle	missing	Missing trailing comma.	fix	215	218	1,\n}	end	15	1
+tests/rules/@stylistic/comma-dangle/always/cases.ts:16:29	@stylistic/comma-dangle	missing	Missing trailing comma.	fix	247	249	2,]	end	16	30
+tests/rules/@stylistic/comma-dangle/always/cases.ts:17:30	@stylistic/comma-dangle	missing	Missing trailing comma.	fix	279	281	1,]	end	17	31
+tests/rules/@stylistic/comma-dangle/always/cases.ts:18:34	@stylistic/comma-dangle	missing	Missing trailing comma.	fix	315	318	1, }	end	18	35
+tests/rules/@stylistic/comma-dangle/always/cases.ts:19:30	@stylistic/comma-dangle	missing	Missing trailing comma.	fix	348	350	1,]	end	19	31
+tests/rules/@stylistic/comma-dangle/always/cases.ts:27:12	@stylistic/comma-dangle	missing	Missing trailing comma.	fix	598	606	number,\n)	end	28	1
+tests/rules/@stylistic/comma-dangle/always/cases.ts:32:4	@stylistic/comma-dangle	missing	Missing trailing comma.	fix	648	651	2,\n)	end	33	1
+tests/rules/@stylistic/comma-dangle/always/cases.ts:35:10	@stylistic/comma-dangle	missing	Missing trailing comma.	fix	671	673	1,]	end	35	11
+tests/rules/@stylistic/comma-dangle/always/cases.ts:35:11	@stylistic/comma-dangle	missing	Missing trailing comma.	fix	672	675	],\n]	end	36	1
+tests/rules/@stylistic/comma-dangle/always/cases.ts:39:13	@stylistic/comma-dangle	missing	Missing trailing comma.	fix	731	743	existsSync,\n}	end	40	1
+tests/rules/@stylistic/comma-dangle/always/cases.ts:45:12	@stylistic/comma-dangle	missing	Missing trailing comma.	fix	884	889	fn3,\n}	end	46	1
+tests/rules/@stylistic/comma-dangle/always/cases.ts:49:12	@stylistic/comma-dangle	missing	Missing trailing comma.	fix	962	973	'node:fs',\n)	end	50	1
+tests/rules/@stylistic/comma-dangle/always/cases.ts:54:4	@stylistic/comma-dangle	missing	Missing trailing comma.	fix	1008	1011	B,\n}	end	55	1
+tests/rules/@stylistic/comma-dangle/always/cases.ts:56:14	@stylistic/comma-dangle	missing	Missing trailing comma.	fix	1024	1027	F, }	end	56	15
+tests/rules/@stylistic/comma-dangle/always/cases.ts:57:28	@stylistic/comma-dangle	missing	Missing trailing comma.	fix	1055	1057	U,]	end	57	29
+tests/rules/@stylistic/comma-dangle/always/cases.ts:59:4	@stylistic/comma-dangle	missing	Missing trailing comma.	fix	1076	1079	T,\n>	end	60	1
+tests/rules/@stylistic/comma-dangle/always/cases.ts:64:9	@stylistic/comma-dangle	missing	Missing trailing comma.	fix	1145	1153	number,\n]	end	65	1
+tests/rules/@stylistic/comma-dangle/always/cases.ts:68:51	@stylistic/comma-dangle	missing	Missing trailing comma.	fix	1291	1295	Fn, }	end	68	52
+tests/rules/@stylistic/comma-dangle/always/cases.ts:69:43	@stylistic/comma-dangle	unexpected	Unexpected trailing comma.	fix	1333	1341	number>	end	69	44
+tests/rules/@stylistic/comma-dangle/always/cases.ts:71:29	@stylistic/comma-dangle	missing	Missing trailing comma.	fix	1402	1415	2, /* last */]	end	71	30
+tests/rules/@stylistic/comma-dangle/always/cases.ts:75:4	@stylistic/comma-dangle	missing	Missing trailing comma.	fix	1502	1516	2, // comment\n]	end	75	5
+tests/rules/@stylistic/comma-dangle/always/cases.ts:77:18	@stylistic/comma-dangle	missing	Missing trailing comma.	fix	1527	1537	declared, }	end	77	19
+tests/rules/@stylistic/comma-dangle/attributes/cases.ts:1:51	@stylistic/comma-dangle	unexpected	Unexpected trailing comma.	fix	44	53	'json' }	end	1	52
+tests/rules/@stylistic/comma-dangle/attributes/cases.ts:3:15	@stylistic/comma-dangle	missing	Missing trailing comma.	fix	102	110	'json',\n}	end	4	1
+tests/rules/@stylistic/comma-dangle/attributes/cases.ts:5:48	@stylistic/comma-dangle	unexpected	Unexpected trailing comma.	fix	153	162	'json' }	end	5	49
+tests/rules/@stylistic/comma-dangle/attributes/cases.ts:7:15	@stylistic/comma-dangle	missing	Missing trailing comma.	fix	222	230	'json',\n}	end	8	1
+tests/rules/@stylistic/comma-dangle/cases.ts:2:23	@stylistic/comma-dangle	unexpected	Unexpected trailing comma.	fix	70	73	2]	end	2	24
+tests/rules/@stylistic/comma-dangle/cases.ts:6:4	@stylistic/comma-dangle	unexpected	Unexpected trailing comma.	fix	126	130	2\n]	end	6	5
+tests/rules/@stylistic/comma-dangle/cases.ts:12:24	@stylistic/comma-dangle	unexpected	Unexpected trailing comma.	fix	185	189	1 }	end	12	25
+tests/rules/@stylistic/comma-dangle/cases.ts:16:19	@stylistic/comma-dangle	unexpected	Unexpected trailing comma.	fix	237	240	h]	end	16	20
+tests/rules/@stylistic/comma-dangle/cases.ts:17:22	@stylistic/comma-dangle	unexpected	Unexpected trailing comma.	fix	266	275	length }	end	17	23
+tests/rules/@stylistic/comma-dangle/cases.ts:20:40	@stylistic/comma-dangle	unexpected	Unexpected trailing comma.	fix	385	393	number)	end	20	41
+tests/rules/@stylistic/comma-dangle/cases.ts:25:32	@stylistic/comma-dangle	unexpected	Unexpected trailing comma.	fix	541	549	number)	end	25	33
+tests/rules/@stylistic/comma-dangle/cases.ts:29:10	@stylistic/comma-dangle	unexpected	Unexpected trailing comma.	fix	630	633	2)	end	29	11
+tests/rules/@stylistic/comma-dangle/cases.ts:36:2	@stylistic/comma-dangle	unexpected	Unexpected trailing comma.	fix	674	677	])	end	36	3
+tests/rules/@stylistic/comma-dangle/cases.ts:37:22	@stylistic/comma-dangle	unexpected	Unexpected trailing comma.	fix	688	703	readFileSync }	end	37	23
+tests/rules/@stylistic/comma-dangle/cases.ts:43:43	@stylistic/comma-dangle	unexpected	Unexpected trailing comma.	fix	860	865	os }	end	43	44
+tests/rules/@stylistic/comma-dangle/cases.ts:47:37	@stylistic/comma-dangle	unexpected	Unexpected trailing comma.	fix	918	929	'node:fs')	end	47	38
+tests/rules/@stylistic/comma-dangle/cases.ts:51:14	@stylistic/comma-dangle	unexpected	Unexpected trailing comma.	fix	987	991	B }	end	51	15
+tests/rules/@stylistic/comma-dangle/cases.ts:57:18	@stylistic/comma-dangle	unexpected	Unexpected trailing comma.	fix	1045	1048	U>	end	57	19
+tests/rules/@stylistic/comma-dangle/cases.ts:61:29	@stylistic/comma-dangle	unexpected	Unexpected trailing comma.	fix	1107	1115	number]	end	61	30
+tests/rules/@stylistic/comma-dangle/cases.ts:66:32	@stylistic/comma-dangle	unexpected	Unexpected trailing comma.	fix	1180	1188	number)	end	66	33
+tests/rules/@stylistic/comma-dangle/cases.ts:67:36	@stylistic/comma-dangle	unexpected	Unexpected trailing comma.	fix	1227	1235	number)	end	67	37
+tests/rules/@stylistic/comma-dangle/cases.ts:69:43	@stylistic/comma-dangle	unexpected	Unexpected trailing comma.	fix	1333	1341	number>	end	69	44
+tests/rules/@stylistic/comma-dangle/cases.ts:72:34	@stylistic/comma-dangle	unexpected	Unexpected trailing comma.	fix	1449	1463	2 /* last */]	end	72	35
+tests/rules/@stylistic/comma-dangle/only-multiline/cases.ts:2:23	@stylistic/comma-dangle	unexpected	Unexpected trailing comma.	fix	70	73	2]	end	2	24
+tests/rules/@stylistic/comma-dangle/only-multiline/cases.ts:12:24	@stylistic/comma-dangle	unexpected	Unexpected trailing comma.	fix	185	189	1 }	end	12	25
+tests/rules/@stylistic/comma-dangle/only-multiline/cases.ts:16:19	@stylistic/comma-dangle	unexpected	Unexpected trailing comma.	fix	237	240	h]	end	16	20
+tests/rules/@stylistic/comma-dangle/only-multiline/cases.ts:17:22	@stylistic/comma-dangle	unexpected	Unexpected trailing comma.	fix	266	275	length }	end	17	23
+tests/rules/@stylistic/comma-dangle/only-multiline/cases.ts:20:40	@stylistic/comma-dangle	unexpected	Unexpected trailing comma.	fix	385	393	number)	end	20	41
+tests/rules/@stylistic/comma-dangle/only-multiline/cases.ts:25:32	@stylistic/comma-dangle	unexpected	Unexpected trailing comma.	fix	541	549	number)	end	25	33
+tests/rules/@stylistic/comma-dangle/only-multiline/cases.ts:29:10	@stylistic/comma-dangle	unexpected	Unexpected trailing comma.	fix	630	633	2)	end	29	11
+tests/rules/@stylistic/comma-dangle/only-multiline/cases.ts:36:2	@stylistic/comma-dangle	unexpected	Unexpected trailing comma.	fix	674	677	])	end	36	3
+tests/rules/@stylistic/comma-dangle/only-multiline/cases.ts:37:22	@stylistic/comma-dangle	unexpected	Unexpected trailing comma.	fix	688	703	readFileSync }	end	37	23
+tests/rules/@stylistic/comma-dangle/only-multiline/cases.ts:43:43	@stylistic/comma-dangle	unexpected	Unexpected trailing comma.	fix	860	865	os }	end	43	44
+tests/rules/@stylistic/comma-dangle/only-multiline/cases.ts:47:37	@stylistic/comma-dangle	unexpected	Unexpected trailing comma.	fix	918	929	'node:fs')	end	47	38
+tests/rules/@stylistic/comma-dangle/only-multiline/cases.ts:51:14	@stylistic/comma-dangle	unexpected	Unexpected trailing comma.	fix	987	991	B }	end	51	15
+tests/rules/@stylistic/comma-dangle/only-multiline/cases.ts:57:18	@stylistic/comma-dangle	unexpected	Unexpected trailing comma.	fix	1045	1048	U>	end	57	19
+tests/rules/@stylistic/comma-dangle/only-multiline/cases.ts:61:29	@stylistic/comma-dangle	unexpected	Unexpected trailing comma.	fix	1107	1115	number]	end	61	30
+tests/rules/@stylistic/comma-dangle/only-multiline/cases.ts:66:32	@stylistic/comma-dangle	unexpected	Unexpected trailing comma.	fix	1180	1188	number)	end	66	33
+tests/rules/@stylistic/comma-dangle/only-multiline/cases.ts:67:36	@stylistic/comma-dangle	unexpected	Unexpected trailing comma.	fix	1227	1235	number)	end	67	37
+tests/rules/@stylistic/comma-dangle/only-multiline/cases.ts:69:43	@stylistic/comma-dangle	unexpected	Unexpected trailing comma.	fix	1333	1341	number>	end	69	44
+tests/rules/@stylistic/comma-dangle/only-multiline/cases.ts:72:34	@stylistic/comma-dangle	unexpected	Unexpected trailing comma.	fix	1449	1463	2 /* last */]	end	72	35
+tests/rules/@stylistic/comma-dangle/per-kind-defaults/cases.ts:3:23	@stylistic/comma-dangle	missing	Missing trailing comma.	fix	96	98	2,]	end	3	24
+tests/rules/@stylistic/comma-dangle/per-kind-defaults/cases.ts:10:4	@stylistic/comma-dangle	missing	Missing trailing comma.	fix	158	161	2,\n]	end	11	1
+tests/rules/@stylistic/comma-dangle/per-kind-defaults/cases.ts:12:24	@stylistic/comma-dangle	unexpected	Unexpected trailing comma.	fix	185	189	1 }	end	12	25
+tests/rules/@stylistic/comma-dangle/per-kind-defaults/cases.ts:16:29	@stylistic/comma-dangle	missing	Missing trailing comma.	fix	247	249	2,]	end	16	30
+tests/rules/@stylistic/comma-dangle/per-kind-defaults/cases.ts:17:22	@stylistic/comma-dangle	unexpected	Unexpected trailing comma.	fix	266	275	length }	end	17	23
+tests/rules/@stylistic/comma-dangle/per-kind-defaults/cases.ts:17:30	@stylistic/comma-dangle	missing	Missing trailing comma.	fix	279	281	1,]	end	17	31
+tests/rules/@stylistic/comma-dangle/per-kind-defaults/cases.ts:19:30	@stylistic/comma-dangle	missing	Missing trailing comma.	fix	348	350	1,]	end	19	31
+tests/rules/@stylistic/comma-dangle/per-kind-defaults/cases.ts:20:40	@stylistic/comma-dangle	unexpected	Unexpected trailing comma.	fix	385	393	number)	end	20	41
+tests/rules/@stylistic/comma-dangle/per-kind-defaults/cases.ts:25:32	@stylistic/comma-dangle	unexpected	Unexpected trailing comma.	fix	541	549	number)	end	25	33
+tests/rules/@stylistic/comma-dangle/per-kind-defaults/cases.ts:29:10	@stylistic/comma-dangle	unexpected	Unexpected trailing comma.	fix	630	633	2)	end	29	11
+tests/rules/@stylistic/comma-dangle/per-kind-defaults/cases.ts:35:10	@stylistic/comma-dangle	missing	Missing trailing comma.	fix	671	673	1,]	end	35	11
+tests/rules/@stylistic/comma-dangle/per-kind-defaults/cases.ts:35:11	@stylistic/comma-dangle	missing	Missing trailing comma.	fix	672	675	],\n]	end	36	1
+tests/rules/@stylistic/comma-dangle/per-kind-defaults/cases.ts:36:2	@stylistic/comma-dangle	unexpected	Unexpected trailing comma.	fix	674	677	])	end	36	3
+tests/rules/@stylistic/comma-dangle/per-kind-defaults/cases.ts:37:22	@stylistic/comma-dangle	unexpected	Unexpected trailing comma.	fix	688	703	readFileSync }	end	37	23
+tests/rules/@stylistic/comma-dangle/per-kind-defaults/cases.ts:43:43	@stylistic/comma-dangle	unexpected	Unexpected trailing comma.	fix	860	865	os }	end	43	44
+tests/rules/@stylistic/comma-dangle/per-kind-defaults/cases.ts:47:37	@stylistic/comma-dangle	unexpected	Unexpected trailing comma.	fix	918	929	'node:fs')	end	47	38
+tests/rules/@stylistic/comma-dangle/per-kind-defaults/cases.ts:51:14	@stylistic/comma-dangle	unexpected	Unexpected trailing comma.	fix	987	991	B }	end	51	15
+tests/rules/@stylistic/comma-dangle/per-kind-defaults/cases.ts:57:18	@stylistic/comma-dangle	unexpected	Unexpected trailing comma.	fix	1045	1048	U>	end	57	19
+tests/rules/@stylistic/comma-dangle/per-kind-defaults/cases.ts:61:29	@stylistic/comma-dangle	unexpected	Unexpected trailing comma.	fix	1107	1115	number]	end	61	30
+tests/rules/@stylistic/comma-dangle/per-kind-defaults/cases.ts:66:32	@stylistic/comma-dangle	unexpected	Unexpected trailing comma.	fix	1180	1188	number)	end	66	33
+tests/rules/@stylistic/comma-dangle/per-kind-defaults/cases.ts:67:36	@stylistic/comma-dangle	unexpected	Unexpected trailing comma.	fix	1227	1235	number)	end	67	37
+tests/rules/@stylistic/comma-dangle/per-kind-defaults/cases.ts:69:43	@stylistic/comma-dangle	unexpected	Unexpected trailing comma.	fix	1333	1341	number>	end	69	44
+tests/rules/@stylistic/comma-dangle/per-kind-defaults/cases.ts:71:29	@stylistic/comma-dangle	missing	Missing trailing comma.	fix	1402	1415	2, /* last */]	end	71	30
+tests/rules/@stylistic/comma-dangle/per-kind-defaults/cases.ts:75:4	@stylistic/comma-dangle	missing	Missing trailing comma.	fix	1502	1516	2, // comment\n]	end	75	5
+tests/rules/@stylistic/comma-dangle/per-kind/cases.ts:3:23	@stylistic/comma-dangle	missing	Missing trailing comma.	fix	96	98	2,]	end	3	24
+tests/rules/@stylistic/comma-dangle/per-kind/cases.ts:10:4	@stylistic/comma-dangle	missing	Missing trailing comma.	fix	158	161	2,\n]	end	11	1
+tests/rules/@stylistic/comma-dangle/per-kind/cases.ts:12:24	@stylistic/comma-dangle	unexpected	Unexpected trailing comma.	fix	185	189	1 }	end	12	25
+tests/rules/@stylistic/comma-dangle/per-kind/cases.ts:14:7	@stylistic/comma-dangle	missing	Missing trailing comma.	fix	215	218	1,\n}	end	15	1
+tests/rules/@stylistic/comma-dangle/per-kind/cases.ts:16:29	@stylistic/comma-dangle	missing	Missing trailing comma.	fix	247	249	2,]	end	16	30
+tests/rules/@stylistic/comma-dangle/per-kind/cases.ts:17:22	@stylistic/comma-dangle	unexpected	Unexpected trailing comma.	fix	266	275	length }	end	17	23
+tests/rules/@stylistic/comma-dangle/per-kind/cases.ts:17:30	@stylistic/comma-dangle	missing	Missing trailing comma.	fix	279	281	1,]	end	17	31
+tests/rules/@stylistic/comma-dangle/per-kind/cases.ts:19:30	@stylistic/comma-dangle	missing	Missing trailing comma.	fix	348	350	1,]	end	19	31
+tests/rules/@stylistic/comma-dangle/per-kind/cases.ts:27:12	@stylistic/comma-dangle	missing	Missing trailing comma.	fix	598	606	number,\n)	end	28	1
+tests/rules/@stylistic/comma-dangle/per-kind/cases.ts:32:4	@stylistic/comma-dangle	missing	Missing trailing comma.	fix	648	651	2,\n)	end	33	1
+tests/rules/@stylistic/comma-dangle/per-kind/cases.ts:35:10	@stylistic/comma-dangle	missing	Missing trailing comma.	fix	671	673	1,]	end	35	11
+tests/rules/@stylistic/comma-dangle/per-kind/cases.ts:35:11	@stylistic/comma-dangle	missing	Missing trailing comma.	fix	672	675	],\n]	end	36	1
+tests/rules/@stylistic/comma-dangle/per-kind/cases.ts:37:22	@stylistic/comma-dangle	unexpected	Unexpected trailing comma.	fix	688	703	readFileSync }	end	37	23
+tests/rules/@stylistic/comma-dangle/per-kind/cases.ts:47:37	@stylistic/comma-dangle	unexpected	Unexpected trailing comma.	fix	918	929	'node:fs')	end	47	38
+tests/rules/@stylistic/comma-dangle/per-kind/cases.ts:49:12	@stylistic/comma-dangle	missing	Missing trailing comma.	fix	962	973	'node:fs',\n)	end	50	1
+tests/rules/@stylistic/comma-dangle/per-kind/cases.ts:54:4	@stylistic/comma-dangle	missing	Missing trailing comma.	fix	1008	1011	B,\n}	end	55	1
+tests/rules/@stylistic/comma-dangle/per-kind/cases.ts:57:18	@stylistic/comma-dangle	unexpected	Unexpected trailing comma.	fix	1045	1048	U>	end	57	19
+tests/rules/@stylistic/comma-dangle/per-kind/cases.ts:59:4	@stylistic/comma-dangle	missing	Missing trailing comma.	fix	1076	1079	T,\n>	end	60	1
+tests/rules/@stylistic/comma-dangle/per-kind/cases.ts:61:29	@stylistic/comma-dangle	unexpected	Unexpected trailing comma.	fix	1107	1115	number]	end	61	30
+tests/rules/@stylistic/comma-dangle/per-kind/cases.ts:69:43	@stylistic/comma-dangle	unexpected	Unexpected trailing comma.	fix	1333	1341	number>	end	69	44
+tests/rules/@stylistic/comma-dangle/per-kind/cases.ts:71:29	@stylistic/comma-dangle	missing	Missing trailing comma.	fix	1402	1415	2, /* last */]	end	71	30
+tests/rules/@stylistic/comma-dangle/per-kind/cases.ts:75:4	@stylistic/comma-dangle	missing	Missing trailing comma.	fix	1502	1516	2, // comment\n]	end	75	5
+tests/rules/@stylistic/comma-dangle/tsx/cases.tsx:1:26	@stylistic/comma-dangle	unexpected	Unexpected trailing comma.	fix	24	27	T>	end	1	27
+tests/rules/@stylistic/comma-dangle/tsx/cases.tsx:2:30	@stylistic/comma-dangle	unexpected	Unexpected trailing comma.	fix	76	79	U>	end	2	31
+tests/rules/@stylistic/comma-dangle/tsx/cases.tsx:3:45	@stylistic/comma-dangle	unexpected	Unexpected trailing comma.	fix	162	165	2]	end	3	46

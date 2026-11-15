@@ -1412,3 +1412,27 @@ veslint	new-parens/i20	tree-sitter's grammar: `new new Foo()` is a syntax error
 # error there; ASI ends a `break` at a line break).
 veslint	semi._js_/i92	turns on ESLint's no-extra-semi in a comment, a rule veslint does not have
 veslint	semi._js_/i96	tree-sitter's grammar: `break` then a line that starts with `+` is a syntax error
+# @stylistic/comma-dangle: JavaScript cases with an espree `ecmaVersion` below 2017 (functions) or 2025 (dynamic imports),
+# which ignores those trailing commas; as TypeScript, languageOptions.ecmaVersion is the latest one.
+eslint	comma-dangle._js_/v78	a JavaScript case with an old ecmaVersion: as TypeScript, the latest ecmaVersion checks every trailing comma
+veslint	comma-dangle._js_/v78	a JavaScript case with an old ecmaVersion: as TypeScript, the latest ecmaVersion checks every trailing comma
+eslint	comma-dangle._js_/v79	a JavaScript case with an old ecmaVersion: as TypeScript, the latest ecmaVersion checks every trailing comma
+veslint	comma-dangle._js_/v79	a JavaScript case with an old ecmaVersion: as TypeScript, the latest ecmaVersion checks every trailing comma
+eslint	comma-dangle._js_/v83	a JavaScript case with an old ecmaVersion: as TypeScript, the latest ecmaVersion checks every trailing comma
+veslint	comma-dangle._js_/v83	a JavaScript case with an old ecmaVersion: as TypeScript, the latest ecmaVersion checks every trailing comma
+eslint	comma-dangle._js_/v84	a JavaScript case with an old ecmaVersion: as TypeScript, the latest ecmaVersion checks every trailing comma
+veslint	comma-dangle._js_/v84	a JavaScript case with an old ecmaVersion: as TypeScript, the latest ecmaVersion checks every trailing comma
+eslint	comma-dangle._js_/v88	a JavaScript case with an old ecmaVersion: as TypeScript, the latest ecmaVersion checks every trailing comma
+veslint	comma-dangle._js_/v88	a JavaScript case with an old ecmaVersion: as TypeScript, the latest ecmaVersion checks every trailing comma
+eslint	comma-dangle._js_/v89	a JavaScript case with an old ecmaVersion: as TypeScript, the latest ecmaVersion checks every trailing comma
+veslint	comma-dangle._js_/v89	a JavaScript case with an old ecmaVersion: as TypeScript, the latest ecmaVersion checks every trailing comma
+eslint	comma-dangle._js_/v94	a JavaScript case with an old ecmaVersion: as TypeScript, the latest ecmaVersion checks every trailing comma
+veslint	comma-dangle._js_/v94	a JavaScript case with an old ecmaVersion: as TypeScript, the latest ecmaVersion checks every trailing comma
+eslint	comma-dangle._js_/v95	a JavaScript case with an old ecmaVersion: as TypeScript, the latest ecmaVersion checks every trailing comma
+veslint	comma-dangle._js_/v95	a JavaScript case with an old ecmaVersion: as TypeScript, the latest ecmaVersion checks every trailing comma
+eslint	comma-dangle._js_/v133	a JavaScript case with an old ecmaVersion: as TypeScript, the latest ecmaVersion checks every trailing comma
+veslint	comma-dangle._js_/v133	a JavaScript case with an old ecmaVersion: as TypeScript, the latest ecmaVersion checks every trailing comma
+eslint	comma-dangle._js_/i15	a JavaScript case with an old ecmaVersion: as TypeScript, the latest ecmaVersion checks every trailing comma
+veslint	comma-dangle._js_/i15	a JavaScript case with an old ecmaVersion: as TypeScript, the latest ecmaVersion checks every trailing comma
+eslint	comma-dangle._js_/i16	a JavaScript case with an old ecmaVersion: as TypeScript, the latest ecmaVersion checks every trailing comma
+veslint	comma-dangle._js_/i16	a JavaScript case with an old ecmaVersion: as TypeScript, the latest ecmaVersion checks every trailing comma
