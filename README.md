@@ -86,7 +86,7 @@ Directive comments work as in ESLint 10: `eslint-disable`, `eslint-enable`, `esl
 
 ## Rules
 
-veslint has **390 rules**, each with all its options, fixes and suggestions:
+veslint has **420 rules**, each with all its options, fixes and suggestions:
 
 <details>
 <summary><b>ESLint 10.15.0</b>: 139 rules</summary>
@@ -110,9 +110,9 @@ veslint has **390 rules**, each with all its options, fixes and suggestions:
 </details>
 
 <details>
-<summary><b>@stylistic/eslint-plugin 5.10.0</b>: 24 rules</summary>
+<summary><b>@stylistic/eslint-plugin 5.10.0</b>: 54 rules</summary>
 
-`@stylistic/array-bracket-spacing`, `@stylistic/arrow-spacing`, `@stylistic/block-spacing`, `@stylistic/comma-spacing`, `@stylistic/computed-property-spacing`, `@stylistic/function-call-spacing`, `@stylistic/key-spacing`, `@stylistic/keyword-spacing`, `@stylistic/no-whitespace-before-property`, `@stylistic/object-curly-spacing`, `@stylistic/rest-spread-spacing`, `@stylistic/semi-spacing`, `@stylistic/space-before-blocks`, `@stylistic/space-before-function-paren`, `@stylistic/space-in-parens`, `@stylistic/space-infix-ops`, `@stylistic/space-unary-ops`, `@stylistic/switch-colon-spacing`, `@stylistic/template-curly-spacing`, `@stylistic/template-tag-spacing`, `@stylistic/type-annotation-spacing`, `@stylistic/type-generic-spacing`, `@stylistic/type-named-tuple-spacing`, `@stylistic/yield-star-spacing`
+`@stylistic/array-bracket-spacing`, `@stylistic/arrow-parens`, `@stylistic/arrow-spacing`, `@stylistic/block-spacing`, `@stylistic/brace-style`, `@stylistic/comma-dangle`, `@stylistic/comma-spacing`, `@stylistic/comma-style`, `@stylistic/computed-property-spacing`, `@stylistic/dot-location`, `@stylistic/eol-last`, `@stylistic/exp-jsx-props-style`, `@stylistic/exp-list-style`, `@stylistic/function-call-argument-newline`, `@stylistic/function-call-spacing`, `@stylistic/function-paren-newline`, `@stylistic/implicit-arrow-linebreak`, `@stylistic/key-spacing`, `@stylistic/keyword-spacing`, `@stylistic/lines-between-class-members`, `@stylistic/member-delimiter-style`, `@stylistic/multiline-ternary`, `@stylistic/new-parens`, `@stylistic/no-extra-parens`, `@stylistic/no-extra-semi`, `@stylistic/no-floating-decimal`, `@stylistic/no-mixed-spaces-and-tabs`, `@stylistic/no-multi-spaces`, `@stylistic/no-trailing-spaces`, `@stylistic/no-whitespace-before-property`, `@stylistic/nonblock-statement-body-position`, `@stylistic/object-curly-newline`, `@stylistic/object-curly-spacing`, `@stylistic/object-property-newline`, `@stylistic/one-var-declaration-per-line`, `@stylistic/quote-props`, `@stylistic/quotes`, `@stylistic/rest-spread-spacing`, `@stylistic/semi`, `@stylistic/semi-spacing`, `@stylistic/semi-style`, `@stylistic/space-before-blocks`, `@stylistic/space-before-function-paren`, `@stylistic/space-in-parens`, `@stylistic/space-infix-ops`, `@stylistic/space-unary-ops`, `@stylistic/spaced-comment`, `@stylistic/switch-colon-spacing`, `@stylistic/template-curly-spacing`, `@stylistic/template-tag-spacing`, `@stylistic/type-annotation-spacing`, `@stylistic/type-generic-spacing`, `@stylistic/type-named-tuple-spacing`, `@stylistic/yield-star-spacing`
 
 </details>
 
@@ -127,7 +127,7 @@ What each version added is in the [changelog](CHANGELOG.md).
 
 ### How it is checked
 
-Every rule passes all the cases of its own upstream tests, linted as TypeScript: 27,879 cases of typescript-eslint, 14,092 of ESLint, 14,312 of eslint-plugin-unicorn, 4,528 of @stylistic/eslint-plugin and 470 of @slipher/eslint-plugin. On fixtures of its own, every rule gives exactly what ESLint gives: problems, messages, positions, fixes and suggestions. The rules are also compared with ESLint on real projects (a Discord bot, zod, recharts and the TypeScript compiler).
+Every rule passes all the cases of its own upstream tests, linted as TypeScript: 27,879 cases of typescript-eslint, 14,092 of ESLint, 14,312 of eslint-plugin-unicorn, 9,522 of @stylistic/eslint-plugin and 470 of @slipher/eslint-plugin. On fixtures of its own, every rule gives exactly what ESLint gives: problems, messages, positions, fixes and suggestions. The rules are also compared with ESLint on real projects (a Discord bot, zod, recharts and the TypeScript compiler).
 
 ## VS Code extension
 
