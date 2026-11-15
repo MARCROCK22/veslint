@@ -178,18 +178,18 @@ fn pf_subgroup_containing(node &PfSortingNode, groups []json2.Any) ?(int, []stri
 			continue
 		}
 		if group is []json2.Any {
-			names := pf_string_list(group)
-			if node.group in names {
-				return i, names
+			group_names := pf_string_list(group)
+			if node.group in group_names {
+				return i, group_names
 			}
 			continue
 		}
 		if pf_is_group_with_overrides_option(group) {
 			inner := group.as_map()['group'] or { json2.Any('') }
 			if inner is []json2.Any {
-				names := pf_string_list(inner)
-				if node.group in names {
-					return i, names
+				group_names := pf_string_list(inner)
+				if node.group in group_names {
+					return i, group_names
 				}
 			}
 			continue

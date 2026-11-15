@@ -349,8 +349,8 @@ fn pf_validate_groups_config(options map[string]json2.Any, selectors []string, m
 	}
 	mut previous_non_group := false
 	for group in groups {
-		names := pf_compute_groups_names([group])
-		if names.len > 0 && names[0] != '' {
+		group_names := pf_compute_groups_names([group])
+		if group_names.len > 0 && group_names[0] != '' {
 			previous_non_group = false
 			continue
 		}
@@ -983,10 +983,10 @@ fn pf_get_eslint_disabled_rules(comment string) ?PfDisabledRules {
 		// `^${directive} ((?:.|\s)*)$`: the directive, a space and something.
 		prefix := directive + ' '
 		if directive_part.starts_with(prefix) && directive_part.len > prefix.len {
-			names := directive_part[prefix.len..].split(',').map(js_trim(it)).filter(it != '')
+			rule_names := directive_part[prefix.len..].split(',').map(js_trim(it)).filter(it != '')
 			return PfDisabledRules{
 				directive: directive
-				rules:     names
+				rules:     rule_names
 			}
 		}
 	}
