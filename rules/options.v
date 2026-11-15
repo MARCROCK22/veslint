@@ -169,6 +169,7 @@ pub fn check_options(rule string, options []json2.Any) !bool {
 		stylistic_object_curly_spacing { socsp_options(options)! }
 		stylistic_keyword_spacing { skwsp_options(options)! }
 		stylistic_space_before_blocks { ssbb_options(options)! }
+		stylistic_arrow_spacing { sarws_options(options)! }
 		else { return false }
 	}
 	return true
