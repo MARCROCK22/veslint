@@ -1,0 +1,12 @@
+{"rule": "@stylistic/no-floating-decimal", "upstream": "@stylistic/eslint-plugin v5.10.0", "files": ["packages/eslint-plugin/rules/no-floating-decimal/no-floating-decimal.test.ts"],
+"messages": {"leading":"A leading decimal point can be confused with a dot.","trailing":"A trailing decimal point can be confused with a dot."},
+"cases": [
+{"id":"no-floating-decimal/v0","kind":"valid","code":"var x = 2.5;","file":"file.ts","tsconfig":null},
+{"id":"no-floating-decimal/v1","kind":"valid","code":"var x = \"2.5\";","file":"file.ts","tsconfig":null},
+{"id":"no-floating-decimal/i0","kind":"invalid","code":"var x = .5;","file":"file.ts","tsconfig":null,"errors":[{"messageId":"leading"}],"output":"var x = 0.5;"},
+{"id":"no-floating-decimal/i1","kind":"invalid","code":"var x = -.5;","file":"file.ts","tsconfig":null,"errors":[{"messageId":"leading"}],"output":"var x = -0.5;"},
+{"id":"no-floating-decimal/i2","kind":"invalid","code":"var x = 2.;","file":"file.ts","tsconfig":null,"errors":[{"messageId":"trailing"}],"output":"var x = 2.0;"},
+{"id":"no-floating-decimal/i3","kind":"invalid","code":"var x = -2.;","file":"file.ts","tsconfig":null,"errors":[{"messageId":"trailing"}],"output":"var x = -2.0;"},
+{"id":"no-floating-decimal/i4","kind":"invalid","code":"typeof.2","file":"file.ts","tsconfig":null,"errors":[{"messageId":"leading"}],"output":"typeof 0.2"},
+{"id":"no-floating-decimal/i5","kind":"invalid","code":"for(foo of.2);","file":"file.ts","tsconfig":null,"parserOptions":{"ecmaVersion":2015},"errors":[{"messageId":"leading"}],"output":"for(foo of 0.2);"}
+]}
