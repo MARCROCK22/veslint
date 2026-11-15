@@ -1,0 +1,158 @@
+tests/rules/marcrock/prefer-at/cases.ts:11:7	marcrock/prefer-at	negativeIndex	Prefer `.at(…)` over `[….length - index]`.	fix	357	375	.at(-1)	end	11	23
+tests/rules/marcrock/prefer-at/cases.ts:12:7	marcrock/prefer-at	negativeIndex	Prefer `.at(…)` over `[….length - index]`.	fix	382	400	.at(-2)	end	12	23
+tests/rules/marcrock/prefer-at/cases.ts:13:7	marcrock/prefer-at	negativeIndex	Prefer `.at(…)` over `[….length - index]`.	fix	407	426	.at(-1)	end	13	24
+tests/rules/marcrock/prefer-at/cases.ts:14:7	marcrock/prefer-at	negativeIndex	Prefer `.at(…)` over `[….length - index]`.	fix	433	453	.at(- 1.5)	end	14	25
+tests/rules/marcrock/prefer-at/cases.ts:15:7	marcrock/prefer-at	negativeIndex	Prefer `.at(…)` over `[….length - index]`.	fix	460	480	.at(- 0x1)	end	15	25
+tests/rules/marcrock/prefer-at/cases.ts:16:7	marcrock/prefer-at	negativeIndex	Prefer `.at(…)` over `[….length - index]`.	fix	487	507	.at(-1)	end	16	25
+tests/rules/marcrock/prefer-at/cases.ts:17:7	marcrock/prefer-at	negativeIndex	Prefer `.at(…)` over `[….length - index]`.	fix	514	536	.at(- 1 - 1)	end	17	27
+tests/rules/marcrock/prefer-at/cases.ts:18:9	marcrock/prefer-at	negativeIndex	Prefer `.at(…)` over `[….length - index]`.	fix	545	563	at(-1)	end	18	25
+tests/rules/marcrock/prefer-at/cases.ts:19:12	marcrock/prefer-at	negativeIndex	Prefer `.at(…)` over `[….length - index]`.	fix	575	598	.at(-1)	end	19	33
+tests/rules/marcrock/prefer-at/cases.ts:20:15	marcrock/prefer-at	negativeIndex	Prefer `.at(…)` over `[….length - index]`.	fix	613	636	.at(-1)	end	20	36
+tests/rules/marcrock/prefer-at/cases.ts:21:12	marcrock/prefer-at	negativeIndex	Prefer `.at(…)` over `[….length - index]`.	fix	648	674	.at(-1)	end	21	36
+tests/rules/marcrock/prefer-at/cases.ts:22:21	marcrock/prefer-at	negativeIndex	Prefer `.at(…)` over `[….length - index]`.	fix	695	713	.at(-1)	end	22	37
+tests/rules/marcrock/prefer-at/cases.ts:23:7	marcrock/prefer-at	negativeIndex	Prefer `.at(…)` over `[….length - index]`.	fix	720	752	.at(-1)	end	23	37
+tests/rules/marcrock/prefer-at/cases.ts:24:8	marcrock/prefer-at	negativeIndex	Prefer `.at(…)` over `[….length - index]`.	fix	760	778	.at(-1)	end	24	24
+tests/rules/marcrock/prefer-at/cases.ts:25:7	marcrock/prefer-at	negativeIndex	Prefer `.at(…)` over `[….length - index]`.	fix	785	811	.at(/* c */ -1)	end	25	31
+tests/rules/marcrock/prefer-at/cases.ts:26:8	marcrock/prefer-at	negativeIndex	Prefer `.at(…)` over `[….length - index]`.	fix	818	838	.at( -1 )	end	26	24
+tests/rules/marcrock/prefer-at/cases.ts:27:18	marcrock/prefer-at	negativeIndex	Prefer `.at(…)` over `[….length - index]`.	fix	856	874	.at(-1)	end	27	34
+tests/rules/marcrock/prefer-at/cases.ts:27:44	marcrock/prefer-at	negativeIndex	Prefer `.at(…)` over `[….length - index]`.	fix	882	900	.at(-3)	end	27	60
+tests/rules/marcrock/prefer-at/cases.ts:29:19	marcrock/prefer-at	negativeIndex	Prefer `.at(…)` over `[….length - index]`.	end	29	39
+tests/rules/marcrock/prefer-at/cases.ts:32:4	marcrock/prefer-at	negativeIndex	Prefer `.at(…)` over `[….length - index]`.	fix	991	1006	.at(-1)	end	32	17
+tests/rules/marcrock/prefer-at/cases.ts:83:4	marcrock/prefer-at	negativeIndex	Prefer `.at(…)` over `[….length - index]`.	fix	2170	2185	.at(-1)	end	83	17
+tests/rules/marcrock/prefer-at/cases.ts:85:4	marcrock/prefer-at	negativeIndex	Prefer `.at(…)` over `[….length - index]`.	fix	2234	2249	.at(-3)	end	85	17
+tests/rules/marcrock/prefer-at/cases.ts:88:11	marcrock/prefer-at	negativeIndex	Prefer `.at(…)` over `[….length - index]`.	fix	2314	2328	.at(-3)	end	88	23
+tests/rules/marcrock/prefer-at/cases.ts:93:11	marcrock/prefer-at	negativeIndex	Prefer `.at(…)` over `[….length - index]`.	fix	2406	2420	.at(-1)	end	93	23
+tests/rules/marcrock/prefer-at/cases.ts:97:4	marcrock/prefer-at	negativeIndex	Prefer `.at(…)` over `[….length - index]`.	fix	2454	2469	.at(-1)	end	97	17
+tests/rules/marcrock/prefer-at/cases.ts:100:4	marcrock/prefer-at	negativeIndex	Prefer `.at(…)` over `[….length - index]`.	fix	2549	2564	.at(-2)	end	100	17
+tests/rules/marcrock/prefer-at/cases.ts:105:15	marcrock/prefer-at	stringCharAtNegative	Prefer `String#at(…)` over `String#charAt(….length - index)`.	suggestion	useAt	Use `.at(…)`.	2665	2686	at(	end	105	32
+tests/rules/marcrock/prefer-at/cases.ts:106:16	marcrock/prefer-at	stringCharAtNegative	Prefer `String#at(…)` over `String#charAt(….length - index)`.	suggestion	useAt	Use `.at(…)`.	2700	2721	at(	end	106	33
+tests/rules/marcrock/prefer-at/cases.ts:107:20	marcrock/prefer-at	stringCharAtNegative	Prefer `String#at(…)` over `String#charAt(….length - index)`.	suggestion	useAt	Use `.at(…)`.	2739	2765	at(	end	107	42
+tests/rules/marcrock/prefer-at/cases.ts:108:18	marcrock/prefer-at	stringCharAtNegative	Prefer `String#at(…)` over `String#charAt(….length - index)`.	suggestion	useAt	Use `.at(…)`.	2778	2802	at((( 	end	108	35
+tests/rules/marcrock/prefer-at/cases.ts:109:15	marcrock/prefer-at	stringCharAtNegative	Prefer `String#at(…)` over `String#charAt(….length - index)`.	suggestion	useAt	Use `.at(…)`.	2818	2839	at(	end	109	32
+tests/rules/marcrock/prefer-at/cases.ts:110:15	marcrock/prefer-at	stringCharAtNegative	Prefer `String#at(…)` over `String#charAt(….length - index)`.	suggestion	useAt	Use `.at(…)`.	2852	2873	at(	end	110	36
+tests/rules/marcrock/prefer-at/cases.ts:111:15	marcrock/prefer-at	stringCharAtNegative	Prefer `String#at(…)` over `String#charAt(….length - index)`.	suggestion	useAt	Use `.at(…)`.	2890	2911	at(	end	111	34
+tests/rules/marcrock/prefer-at/cases.ts:123:7	marcrock/prefer-at	slice	Prefer `.at(…)` over the first element from `.slice(…)`.	fix	3204	3216	at(-1)	end	123	12
+tests/rules/marcrock/prefer-at/cases.ts:124:8	marcrock/prefer-at	slice	Prefer `.at(…)` over the first element from `.slice(…)`.	fix	3225	3237	at(-1)	end	124	13
+tests/rules/marcrock/prefer-at/cases.ts:125:7	marcrock/prefer-at	slice	Prefer `.at(…)` over the first element from `.slice(…)`.	fix	3245	3260	at(-1)	end	125	12
+tests/rules/marcrock/prefer-at/cases.ts:126:7	marcrock/prefer-at	slice	Prefer `.at(…)` over the first element from `.slice(…)`.	fix	3268	3285	at(-1)	end	126	12
+tests/rules/marcrock/prefer-at/cases.ts:127:7	marcrock/prefer-at	slice	Prefer `.at(…)` over the first element from `.slice(…)`.	fix	3293	3312	at(-1.0)	end	127	12
+tests/rules/marcrock/prefer-at/cases.ts:128:7	marcrock/prefer-at	slice	Prefer `.at(…)` over the first element from `.slice(…)`.	fix	3320	3336	at(-9)	end	128	12
+tests/rules/marcrock/prefer-at/cases.ts:129:7	marcrock/prefer-at	slice	Prefer `.at(…)` over the first element from `.slice(…)`.	fix	3344	3363	at(-9)	end	129	12
+tests/rules/marcrock/prefer-at/cases.ts:130:7	marcrock/prefer-at	slice	Prefer `.at(…)` over the first element from `.slice(…)`.	fix	3371	3392	at(-9)	end	130	12
+tests/rules/marcrock/prefer-at/cases.ts:131:7	marcrock/prefer-at	slice	Prefer `.at(…)` over the first element from `.slice(…)`.	fix	3400	3417	at(-9)	end	131	12
+tests/rules/marcrock/prefer-at/cases.ts:132:8	marcrock/prefer-at	slice	Prefer `.at(…)` over the first element from `.slice(…)`.	fix	3426	3439	at(-1))	end	132	13
+tests/rules/marcrock/prefer-at/cases.ts:133:10	marcrock/prefer-at	slice	Prefer `.at(…)` over the first element from `.slice(…)`.	fix	3450	3466	at(-1))	end	133	15
+tests/rules/marcrock/prefer-at/cases.ts:134:7	marcrock/prefer-at	slice	Prefer `.at(…)` over the first element from `.slice(…)`.	fix	3474	3492	at((-9))	end	134	12
+tests/rules/marcrock/prefer-at/cases.ts:136:7	marcrock/prefer-at	slice	Prefer `.at(…)` over the first element from `.slice(…)`.	suggestion	useAt	Use `.at(…)`.	3527	3553	at(-9)	end	136	12
+tests/rules/marcrock/prefer-at/cases.ts:137:7	marcrock/prefer-at	slice	Prefer `.at(…)` over the first element from `.slice(…)`.	suggestion	useAt	Use `.at(…)`.	3561	3592	at(-9)	end	137	12
+tests/rules/marcrock/prefer-at/cases.ts:138:7	marcrock/prefer-at	slice	Prefer `.at(…)` over the first element from `.slice(…)`.	suggestion	useAt	Use `.at(…)`.	3600	3616	at(-9)	end	138	12
+tests/rules/marcrock/prefer-at/cases.ts:156:1	marcrock/prefer-at	getLastFunction	Prefer `.at(-1)` over `_.last(…)` to get the last element.	fix	4019	4032	array.at(-1)	end	156	7
+tests/rules/marcrock/prefer-at/cases.ts:157:1	marcrock/prefer-at	getLastFunction	Prefer `.at(-1)` over `lodash.last(…)` to get the last element.	fix	4034	4052	array.at(-1)	end	157	12
+tests/rules/marcrock/prefer-at/cases.ts:158:1	marcrock/prefer-at	getLastFunction	Prefer `.at(-1)` over `underscore.last(…)` to get the last element.	fix	4054	4076	array.at(-1)	end	158	16
+tests/rules/marcrock/prefer-at/cases.ts:159:1	marcrock/prefer-at	getLastFunction	Prefer `.at(-1)` over `_.last(…)` to get the last element.	fix	4078	4105	new Array<number>().at(-1)	end	159	7
+tests/rules/marcrock/prefer-at/cases.ts:160:1	marcrock/prefer-at	getLastFunction	Prefer `.at(-1)` over `_.last(…)` to get the last element.	fix	4107	4132	(new Array<number>).at(-1)	end	160	7
+tests/rules/marcrock/prefer-at/cases.ts:161:1	marcrock/prefer-at	getLastFunction	Prefer `.at(-1)` over `_.last(…)` to get the last element.	fix	4134	4148	[1, 2].at(-1)	end	161	7
+tests/rules/marcrock/prefer-at/cases.ts:162:1	marcrock/prefer-at	getLastFunction	Prefer `.at(-1)` over `_.last(…)` to get the last element.	fix	4150	4165	(array).at(-1)	end	162	7
+tests/rules/marcrock/prefer-at/cases.ts:163:1	marcrock/prefer-at	getLastFunction	Prefer `.at(-1)` over `_.last(…)` to get the last element.	fix	4167	4192	(array as number[]).at(-1)	end	163	7
+tests/rules/marcrock/prefer-at/cases.ts:164:1	marcrock/prefer-at	getLastFunction	Prefer `.at(-1)` over `_.last(…)` to get the last element.	fix	4194	4212	some.array.at(-1)	end	164	7
+tests/rules/marcrock/prefer-at/cases.ts:165:1	marcrock/prefer-at	getLastFunction	Prefer `.at(-1)` over `_.last(…)` to get the last element.	fix	4214	4243	(unknownValue || array).at(-1)	end	165	7
+tests/rules/marcrock/prefer-at/cases.ts:167:1	marcrock/prefer-at	getLastFunction	Prefer `.at(-1)` over `_.last(…)` to get the last element.	fix	4258	4273	;[array].at(-1)	end	167	7
+tests/rules/marcrock/prefer-at/cases.ts:169:9	marcrock/prefer-at	getLastFunction	Prefer `.at(-1)` over `_.last(…)` to get the last element.	fix	4294	4305	[1].at(-1)	end	169	15
+tests/rules/marcrock/prefer-at/cases.ts:170:27	marcrock/prefer-at	getLastFunction	Prefer `.at(-1)` over `_.last(…)` to get the last element.	fix	4333	4347	[item].at(-1)	end	170	33
+tests/rules/marcrock/prefer-at/cases.ts:173:9	marcrock/prefer-at	getLastFunction	Prefer `.at(-1)` over `_.last(…)` to get the last element.	fix	4425	4449	(arguments as any).at(-1)	end	173	15
+tests/rules/marcrock/prefer-at/cases.ts:176:9	marcrock/prefer-at	getLastFunction	Prefer `.at(-1)` over `_.last(…)` to get the last element.	end	176	15
+tests/rules/marcrock/prefer-at/cases.ts:187:18	marcrock/prefer-at	splitIndexAccess	Prefer `[0]` over `.at(0)`: `String#split(…)` with a non-empty separator always has a first element, so `[0]` is `string`, not `string | undefined`.	fix	4707	4713	[0]	end	187	20
+tests/rules/marcrock/prefer-at/cases.ts:189:18	marcrock/prefer-at	splitIndexAccess	Prefer `[0]` over `.at(0)`: `String#split(…)` with a non-empty separator always has a first element, so `[0]` is `string`, not `string | undefined`.	fix	4748	4754	[0]	end	189	20
+tests/rules/marcrock/prefer-at/cases.ts:190:18	marcrock/prefer-at	splitIndexAccess	Prefer `[0]` over `.at(0)`: `String#split(…)` with a non-empty separator always has a first element, so `[0]` is `string`, not `string | undefined`.	fix	4772	4778	[0]	end	190	20
+tests/rules/marcrock/prefer-at/cases.ts:191:20	marcrock/prefer-at	splitIndexAccess	Prefer `[0]` over `.at(0)`: `String#split(…)` with a non-empty separator always has a first element, so `[0]` is `string`, not `string | undefined`.	fix	4799	4805	[0]	end	191	22
+tests/rules/marcrock/prefer-at/cases.ts:192:19	marcrock/prefer-at	splitIndexAccess	Prefer `[0]` over `.at(0)`: `String#split(…)` with a non-empty separator always has a first element, so `[0]` is `string`, not `string | undefined`.	fix	4824	4830	[0]	end	192	21
+tests/rules/marcrock/prefer-at/cases.ts:193:19	marcrock/prefer-at	splitIndexAccess	Prefer `[0]` over `.at(0)`: `String#split(…)` with a non-empty separator always has a first element, so `[0]` is `string`, not `string | undefined`.	fix	4849	4855	[0]	end	193	21
+tests/rules/marcrock/prefer-at/cases.ts:194:25	marcrock/prefer-at	splitIndexAccess	Prefer `[0]` over `.at(0)`: `String#split(…)` with a non-empty separator always has a first element, so `[0]` is `string`, not `string | undefined`.	fix	4880	4886	[0]	end	194	27
+tests/rules/marcrock/prefer-at/cases.ts:210:18	marcrock/prefer-at	splitIndexAccess	Prefer `[0]` over `.at(0)`: `String#split(…)` with a non-empty separator always has a first element, so `[0]` is `string`, not `string | undefined`.	fix	5309	5317	[0.0]	end	210	20
+tests/rules/marcrock/prefer-at/check-all/cases.ts:7:7	marcrock/prefer-at	index	Prefer `.at(…)` over index access.	fix	166	169	.at(0)	end	7	8
+tests/rules/marcrock/prefer-at/check-all/cases.ts:8:7	marcrock/prefer-at	index	Prefer `.at(…)` over index access.	fix	176	179	.at(1)	end	8	8
+tests/rules/marcrock/prefer-at/check-all/cases.ts:9:7	marcrock/prefer-at	index	Prefer `.at(…)` over index access.	fix	186	193	.at(5 + 9)	end	9	12
+tests/rules/marcrock/prefer-at/check-all/cases.ts:11:7	marcrock/prefer-at	index	Prefer `.at(…)` over index access.	fix	218	230	.at(offset + 9)	end	11	17
+tests/rules/marcrock/prefer-at/check-all/cases.ts:12:9	marcrock/prefer-at	index	Prefer `.at(…)` over index access.	fix	239	242	at(0)	end	12	10
+tests/rules/marcrock/prefer-at/check-all/cases.ts:13:8	marcrock/prefer-at	index	Prefer `.at(…)` over index access.	fix	249	254	.at((0))	end	13	9
+tests/rules/marcrock/prefer-at/check-all/cases.ts:14:8	marcrock/prefer-at	index	Prefer `.at(…)` over index access.	fix	261	266	.at( 0 )	end	14	9
+tests/rules/marcrock/prefer-at/check-all/cases.ts:15:7	marcrock/prefer-at	index	Prefer `.at(…)` over index access.	fix	273	278	.at(0x1)	end	15	10
+tests/rules/marcrock/prefer-at/check-all/cases.ts:16:7	marcrock/prefer-at	index	Prefer `.at(…)` over index access.	fix	285	290	.at(1e1)	end	16	10
+tests/rules/marcrock/prefer-at/check-all/cases.ts:17:7	marcrock/prefer-at	index	Prefer `.at(…)` over index access.	fix	297	301	.at(-0)	end	17	9
+tests/rules/marcrock/prefer-at/check-all/cases.ts:19:7	marcrock/prefer-at	index	Prefer `.at(…)` over index access.	fix	325	332	.at(FIRST)	end	19	12
+tests/rules/marcrock/prefer-at/check-all/cases.ts:21:7	marcrock/prefer-at	index	Prefer `.at(…)` over index access.	fix	370	377	.at(OBJ.i)	end	21	12
+tests/rules/marcrock/prefer-at/check-all/cases.ts:22:8	marcrock/prefer-at	index	Prefer `.at(…)` over index access.	fix	385	388	.at(0)	end	22	9
+tests/rules/marcrock/prefer-at/check-all/cases.ts:23:21	marcrock/prefer-at	index	Prefer `.at(…)` over index access.	fix	409	412	.at(0)	end	23	22
+tests/rules/marcrock/prefer-at/check-all/cases.ts:24:8	marcrock/prefer-at	index	Prefer `.at(…)` over index access.	fix	420	423	.at(0)	end	24	9
+tests/rules/marcrock/prefer-at/check-all/cases.ts:25:7	marcrock/prefer-at	negativeIndex	Prefer `.at(…)` over `[….length - index]`.	fix	430	448	.at(-1)	end	25	23
+tests/rules/marcrock/prefer-at/check-all/cases.ts:27:19	marcrock/prefer-at	index	Prefer `.at(…)` over index access.	end	27	20
+tests/rules/marcrock/prefer-at/check-all/cases.ts:38:7	marcrock/prefer-at	index	Prefer `.at(…)` over index access.	fix	623	636	.at(1e21 * 1e21)	end	38	18
+tests/rules/marcrock/prefer-at/check-all/cases.ts:48:15	marcrock/prefer-at	stringCharAt	Prefer `String#at(…)` over `String#charAt(…)`.	suggestion	useAt	Use `.at(…)`.	809	815	at	end	48	16
+tests/rules/marcrock/prefer-at/check-all/cases.ts:49:15	marcrock/prefer-at	stringCharAt	Prefer `String#at(…)` over `String#charAt(…)`.	suggestion	useAt	Use `.at(…)`.	827	833	at	end	49	27
+tests/rules/marcrock/prefer-at/check-all/cases.ts:50:15	marcrock/prefer-at	stringCharAtNegative	Prefer `String#at(…)` over `String#charAt(….length - index)`.	suggestion	useAt	Use `.at(…)`.	856	877	at(	end	50	32
+tests/rules/marcrock/prefer-at/check-all/cases.ts:61:14	marcrock/prefer-at	index	Prefer `.at(…)` over index access.	fix	1114	1117	.at(0)	end	61	15
+tests/rules/marcrock/prefer-at/check-all/cases.ts:63:18	marcrock/prefer-at	index	Prefer `.at(…)` over index access.	fix	1162	1165	.at(0)	end	63	19
+tests/rules/marcrock/prefer-at/check-all/cases.ts:64:18	marcrock/prefer-at	index	Prefer `.at(…)` over index access.	fix	1183	1186	.at(1)	end	64	19
+tests/rules/marcrock/prefer-at/check-all/cases.ts:65:21	marcrock/prefer-at	index	Prefer `.at(…)` over index access.	fix	1207	1210	.at(0)	end	65	22
+tests/rules/marcrock/prefer-at/check-all/cases.ts:66:20	marcrock/prefer-at	index	Prefer `.at(…)` over index access.	fix	1230	1233	.at(0)	end	66	21
+tests/rules/marcrock/prefer-at/check-all/cases.ts:73:22	marcrock/prefer-at	index	Prefer `.at(…)` over index access.	fix	1336	1339	.at(0)	end	73	23
+tests/rules/marcrock/prefer-at/check-all/cases.ts:76:22	marcrock/prefer-at	index	Prefer `.at(…)` over index access.	fix	1385	1388	.at(0)	end	76	23
+tests/rules/marcrock/prefer-at/check-all/cases.ts:83:4	marcrock/prefer-at	index	Prefer `.at(…)` over index access.	fix	1465	1468	.at(2)	end	83	5
+tests/rules/marcrock/prefer-at/check-all/cases.ts:89:4	marcrock/prefer-at	index	Prefer `.at(…)` over index access.	fix	1593	1596	.at(1)	end	89	5
+tests/rules/marcrock/prefer-at/check-all/cases.ts:92:4	marcrock/prefer-at	index	Prefer `.at(…)` over index access.	fix	1648	1651	.at(1)	end	92	5
+tests/rules/marcrock/prefer-at/check-all/cases.ts:100:12	marcrock/prefer-at	index	Prefer `.at(…)` over index access.	fix	1855	1858	.at(0)	end	100	13
+tests/rules/marcrock/prefer-at/check-all/cases.ts:104:4	marcrock/prefer-at	index	Prefer `.at(…)` over index access.	fix	1938	1941	.at(1)	end	104	5
+tests/rules/marcrock/prefer-at/check-all/cases.ts:106:4	marcrock/prefer-at	index	Prefer `.at(…)` over index access.	fix	1984	1987	.at(0)	end	106	5
+tests/rules/marcrock/prefer-at/check-all/cases.ts:110:11	marcrock/prefer-at	index	Prefer `.at(…)` over index access.	fix	2063	2066	.at(1)	end	110	12
+tests/rules/marcrock/prefer-at/check-all/cases.ts:115:11	marcrock/prefer-at	index	Prefer `.at(…)` over index access.	fix	2164	2167	.at(1)	end	115	12
+tests/rules/marcrock/prefer-at/check-all/cases.ts:120:11	marcrock/prefer-at	index	Prefer `.at(…)` over index access.	fix	2248	2251	.at(1)	end	120	12
+tests/rules/marcrock/prefer-at/check-all/cases.ts:127:4	marcrock/prefer-at	index	Prefer `.at(…)` over index access.	fix	2310	2313	.at(2)	end	127	5
+tests/rules/marcrock/prefer-at/check-all/cases.ts:130:4	marcrock/prefer-at	index	Prefer `.at(…)` over index access.	fix	2345	2348	.at(1)	end	130	5
+tests/rules/marcrock/prefer-at/check-all/cases.ts:133:4	marcrock/prefer-at	index	Prefer `.at(…)` over index access.	fix	2388	2391	.at(1)	end	133	5
+tests/rules/marcrock/prefer-at/check-all/cases.ts:136:4	marcrock/prefer-at	index	Prefer `.at(…)` over index access.	fix	2419	2422	.at(2)	end	136	5
+tests/rules/marcrock/prefer-at/check-all/cases.ts:142:4	marcrock/prefer-at	index	Prefer `.at(…)` over index access.	fix	2499	2502	.at(0)	end	142	5
+tests/rules/marcrock/prefer-at/check-all/cases.ts:148:14	marcrock/prefer-at	index	Prefer `.at(…)` over index access.	fix	2592	2595	.at(3)	end	148	15
+tests/rules/marcrock/prefer-at/check-all/cases.ts:161:13	marcrock/prefer-at	index	Prefer `.at(…)` over index access.	fix	2868	2871	.at(0)	end	161	14
+tests/rules/marcrock/prefer-at/check-all/cases.ts:165:22	marcrock/prefer-at	index	Prefer `.at(…)` over index access.	fix	2965	2968	.at(5)	end	165	23
+tests/rules/marcrock/prefer-at/check-all/cases.ts:170:11	marcrock/prefer-at	index	Prefer `.at(…)` over index access.	fix	3026	3029	.at(0)	end	170	12
+tests/rules/marcrock/prefer-at/check-all/cases.ts:175:11	marcrock/prefer-at	index	Prefer `.at(…)` over index access.	fix	3083	3086	.at(0)	end	175	12
+tests/rules/marcrock/prefer-at/check-all/cases.ts:184:11	marcrock/prefer-at	index	Prefer `.at(…)` over index access.	fix	3194	3197	.at(0)	end	184	12
+tests/rules/marcrock/prefer-at/check-all/cases.ts:217:18	marcrock/prefer-at	index	Prefer `.at(…)` over index access.	fix	3742	3745	.at(3)	end	217	19
+tests/rules/marcrock/prefer-at/check-all/cases.ts:221:22	marcrock/prefer-at	index	Prefer `.at(…)` over index access.	fix	3818	3821	.at(1)	end	221	23
+tests/rules/marcrock/prefer-at/check-all/cases.ts:236:13	marcrock/prefer-at	index	Prefer `.at(…)` over index access.	fix	4087	4090	.at(0)	end	236	14
+tests/rules/marcrock/prefer-at/check-all/cases.ts:260:12	marcrock/prefer-at	index	Prefer `.at(…)` over index access.	fix	4472	4475	.at(0)	end	260	13
+tests/rules/marcrock/prefer-at/check-all/cases.ts:277:30	marcrock/prefer-at	index	Prefer `.at(…)` over index access.	fix	4717	4720	.at(1)	end	277	31
+tests/rules/marcrock/prefer-at/check-all/cases.ts:277:50	marcrock/prefer-at	index	Prefer `.at(…)` over index access.	fix	4737	4740	.at(1)	end	277	51
+tests/rules/marcrock/prefer-at/check-all/cases.ts:280:46	marcrock/prefer-at	index	Prefer `.at(…)` over index access.	fix	4817	4820	.at(0)	end	280	47
+tests/rules/marcrock/prefer-at/check-all/cases.ts:288:11	marcrock/prefer-at	index	Prefer `.at(…)` over index access.	fix	5039	5042	.at(0)	end	288	12
+tests/rules/marcrock/prefer-at/check-all/cases.ts:306:11	marcrock/prefer-at	index	Prefer `.at(…)` over index access.	fix	5350	5353	.at(0)	end	306	12
+tests/rules/marcrock/prefer-at/check-all/cases.ts:330:20	marcrock/prefer-at	index	Prefer `.at(…)` over index access.	fix	5680	5683	.at(2)	end	330	21
+tests/rules/marcrock/prefer-at/check-all/cases.ts:335:13	marcrock/prefer-at	index	Prefer `.at(…)` over index access.	fix	5746	5749	.at(0)	end	335	14
+tests/rules/marcrock/prefer-at/check-all/cases.ts:344:13	marcrock/prefer-at	index	Prefer `.at(…)` over index access.	fix	5861	5864	.at(1)	end	344	14
+tests/rules/marcrock/prefer-at/check-all/cases.ts:353:14	marcrock/prefer-at	index	Prefer `.at(…)` over index access.	fix	6004	6007	.at(0)	end	353	15
+tests/rules/marcrock/prefer-at/check-all/cases.ts:359:11	marcrock/prefer-at	index	Prefer `.at(…)` over index access.	fix	6103	6106	.at(0)	end	359	12
+tests/rules/marcrock/prefer-at/check-all/cases.ts:363:11	marcrock/prefer-at	index	Prefer `.at(…)` over index access.	fix	6184	6187	.at(0)	end	363	12
+tests/rules/marcrock/prefer-at/check-all/cases.ts:369:11	marcrock/prefer-at	index	Prefer `.at(…)` over index access.	fix	6266	6269	.at(0)	end	369	12
+tests/rules/marcrock/prefer-at/check-all/cases.ts:373:11	marcrock/prefer-at	index	Prefer `.at(…)` over index access.	fix	6365	6368	.at(0)	end	373	12
+tests/rules/marcrock/prefer-at/check-all/cases.ts:377:13	marcrock/prefer-at	index	Prefer `.at(…)` over index access.	fix	6432	6435	.at(0)	end	377	14
+tests/rules/marcrock/prefer-at/check-all/cases.ts:385:11	marcrock/prefer-at	index	Prefer `.at(…)` over index access.	fix	6612	6615	.at(0)	end	385	12
+tests/rules/marcrock/prefer-at/check-all/cases.ts:395:12	marcrock/prefer-at	index	Prefer `.at(…)` over index access.	fix	6785	6788	.at(0)	end	395	13
+tests/rules/marcrock/prefer-at/check-all/cases.ts:400:34	marcrock/prefer-at	index	Prefer `.at(…)` over index access.	fix	6867	6870	.at(0)	end	400	35
+tests/rules/marcrock/prefer-at/check-all/cases.ts:406:11	marcrock/prefer-at	index	Prefer `.at(…)` over index access.	fix	6964	6967	.at(0)	end	406	12
+tests/rules/marcrock/prefer-at/check-all/cases.ts:412:12	marcrock/prefer-at	index	Prefer `.at(…)` over index access.	fix	7065	7068	.at(0)	end	412	13
+tests/rules/marcrock/prefer-at/check-all/cases.ts:417:17	marcrock/prefer-at	index	Prefer `.at(…)` over index access.	fix	7145	7148	.at(0)	end	417	18
+tests/rules/marcrock/prefer-at/check-all/cases.ts:426:12	marcrock/prefer-at	index	Prefer `.at(…)` over index access.	fix	7298	7301	.at(0)	end	426	13
+tests/rules/marcrock/prefer-at/check-all/cases.ts:428:11	marcrock/prefer-at	index	Prefer `.at(…)` over index access.	fix	7315	7318	.at(0)	end	428	12
+tests/rules/marcrock/prefer-at/check-all/cases.ts:450:11	marcrock/prefer-at	index	Prefer `.at(…)` over index access.	fix	7785	7788	.at(0)	end	450	12
+tests/rules/marcrock/prefer-at/check-all/cases.ts:457:12	marcrock/prefer-at	index	Prefer `.at(…)` over index access.	fix	7879	7882	.at(0)	end	457	13
+tests/rules/marcrock/prefer-at/check-all/cases.ts:459:11	marcrock/prefer-at	index	Prefer `.at(…)` over index access.	fix	7896	7899	.at(0)	end	459	12
+tests/rules/marcrock/prefer-at/check-all/cases.ts:462:31	marcrock/prefer-at	index	Prefer `.at(…)` over index access.	fix	7960	7963	.at(1)	end	462	32
+tests/rules/marcrock/prefer-at/check-all/cases.ts:463:30	marcrock/prefer-at	index	Prefer `.at(…)` over index access.	fix	7993	7996	.at(0)	end	463	31
+tests/rules/marcrock/prefer-at/check-all/cases.ts:464:40	marcrock/prefer-at	index	Prefer `.at(…)` over index access.	fix	8036	8039	.at(0)	end	464	41
+tests/rules/marcrock/prefer-at/get-last/cases.ts:6:1	marcrock/prefer-at	getLastFunction	Prefer `.at(-1)` over `_.last(…)` to get the last element.	fix	200	253	getLast(utils.lastOne(array as number[][][])).at(-1)	end	6	7
+tests/rules/marcrock/prefer-at/get-last/cases.ts:6:8	marcrock/prefer-at	getLastFunction	Prefer `.at(-1)` over `getLast(…)` to get the last element.	fix	207	252	utils.lastOne(array as number[][][]).at(-1)	end	6	15
+tests/rules/marcrock/prefer-at/get-last/cases.ts:6:16	marcrock/prefer-at	getLastFunction	Prefer `.at(-1)` over `utils.lastOne(…)` to get the last element.	fix	215	251	(array as number[][][]).at(-1)	end	6	29
+tests/rules/marcrock/prefer-at/get-last/cases.ts:7:1	marcrock/prefer-at	getLastFunction	Prefer `.at(-1)` over `getLast(…)` to get the last element.	fix	255	269	array.at(-1)	end	7	8
+tests/rules/marcrock/prefer-at/get-last/cases.ts:8:1	marcrock/prefer-at	getLastFunction	Prefer `.at(-1)` over `utils.lastOne(…)` to get the last element.	fix	271	291	array.at(-1)	end	8	14
+tests/rules/marcrock/prefer-at/get-last/cases.ts:16:10	marcrock/prefer-at	getLastFunction	Prefer `.at(-1)` over `this.last(…)` to get the last element.	fix	403	419	array.at(-1)	end	16	19
+tests/rules/marcrock/prefer-at/get-last/cases.ts:23:7	marcrock/prefer-at	negativeIndex	Prefer `.at(…)` over `[….length - index]`.	fix	492	510	.at(-1)	end	23	23
