@@ -104,15 +104,11 @@ fn sls_resolve(options SlsOptions, paren_type string, node_type string) SlsConfi
 	}), sls_object(by_node['multiline'] or { json2.Any(json2.Null{}) }))
 	mut max_items := max_i32
 	if value := single_line['maxItems'] {
-		if value !is json2.Null {
-			max_items = value.int()
-		}
+		max_items = sty_option_count(value)
 	}
 	mut min_items := max_i32
 	if value := multiline['minItems'] {
-		if value !is json2.Null {
-			min_items = value.int()
-		}
+		min_items = sty_option_count(value)
 	}
 	spacing := single_line['spacing'] or { json2.Any(json2.Null{}) }
 	return SlsConfig{

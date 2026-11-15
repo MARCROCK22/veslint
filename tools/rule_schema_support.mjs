@@ -23,6 +23,11 @@ export function portedRules(root) {
   });
 }
 
+// jsonInfinity is the replacer of JSON.stringify for what goes to veslint: Infinity (which JSON
+// writes as null) is the largest finite number, which ajv also takes as an integer and which compares
+// like Infinity with the numbers of the options.
+export const jsonInfinity = (key, value) => (value === Infinity ? Number.MAX_VALUE : value === -Infinity ? -Number.MAX_VALUE : value);
+
 // ruleDefaults are the meta.defaultOptions of the rules of ESLint (`builtinRules`) and of the
 // plugins (`plugins`, by namespace) that have any, as [rule id, options], sorted by id.
 export function ruleDefaults(builtinRules, plugins) {
@@ -43,7 +48,7 @@ export function ruleDefaults(builtinRules, plugins) {
 const jsonTypes = ['array', 'boolean', 'integer', 'null', 'number', 'object', 'string'];
 const supported = new Set(['type', 'enum', 'const', 'maximum', 'minimum', 'properties', 'additionalProperties', 'required', 'items',
   'additionalItems', 'minItems', 'maxItems', 'uniqueItems', 'minLength', 'maxLength', 'pattern', 'minProperties',
-  'maxProperties', 'oneOf', 'anyOf', 'allOf', 'not', '$ref']);
+  'maxProperties', 'oneOf', 'anyOf', 'allOf', 'not', '$ref', 'patternProperties']);
 const annotations = new Set(['description', 'title', '$defs', 'definitions']);
 
 // checkSchema throws for a schema rules/json_schema.v would not validate like ajv: an unknown
@@ -88,6 +93,11 @@ export function checkSchema(schema, where, defaultOptions = undefined, valuePath
       case 'properties':
         for (const [name, sub] of Object.entries(value)) {
           checkSchema(sub, `${at}/${name}`, defaultOptions, valuePath && [...valuePath, name]);
+        }
+        break;
+      case 'patternProperties':
+        for (const [pattern, sub] of Object.entries(value)) {
+          checkSchema(sub, `${at}/${pattern}`, defaultOptions, null);
         }
         break;
       case '$defs':

@@ -159,3 +159,13 @@ fn sty_next_location(t &estree.EsTree, offset int) int {
 	}
 	return offset + if c >= 0xc0 { 2 } else { 1 }
 }
+
+// sty_option_count reads a count of an option: null and Infinity (the largest finite number, as
+// veslint gets it from JavaScript) are max_i32.
+fn sty_option_count(value json2.Any) int {
+	if value is json2.Null {
+		return max_i32
+	}
+	number := value.f64()
+	return if number >= f64(max_i32) { max_i32 } else { int(number) }
+}

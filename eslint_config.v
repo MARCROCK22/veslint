@@ -157,7 +157,8 @@ const result = { eslint: ESLint.version, pluginRules: [...pluginRules].sort(), c
 if (Object.keys(ruleDefaults).length > 0) {
   result.ruleDefaults = Object.fromEntries(Object.entries(ruleDefaults).sort(([a], [b]) => (a < b ? -1 : 1)));
 }
-process.stdout.write(JSON.stringify(result));
+// Infinity (an option of @stylistic's experimental rules) as the largest finite number, not null.
+process.stdout.write(JSON.stringify(result, (key, value) => (value === Infinity ? Number.MAX_VALUE : value === -Infinity ? -Number.MAX_VALUE : value)));
 } catch (error) {
   // An error of ESLint about the configuration has a message template, or names the key that is
   // wrong; any other error is not for veslint to word.

@@ -48,7 +48,7 @@ const schema_number_rules = ['maximum', 'minimum']
 const schema_string_rules = ['maxLength', 'minLength', 'pattern']
 const schema_array_rules = ['maxItems', 'minItems', 'items', 'uniqueItems']
 const schema_object_rules = ['maxProperties', 'minProperties', 'required', 'properties',
-	'additionalProperties']
+	'additionalProperties', 'patternProperties']
 const schema_any_rules = ['const', 'enum', 'not', 'anyOf', 'oneOf', 'allOf']
 
 // rule_options_problems validates the options of a ported rule like ESLint does, under the
@@ -519,18 +519,28 @@ fn (mut v SchemaValidator) object_rules(s map[string]json2.Any, data json2.Any, 
 			return false
 		}
 	}
-	if 'properties' !in s && 'additionalProperties' !in s {
+	if 'properties' !in s && 'additionalProperties' !in s && 'patternProperties' !in s {
 		return true
 	}
-	// lib/dot/properties.jst: first the properties the schema does not have, in the order of the
-	// data; then each property of the schema, in its order.
+	// lib/dot/properties.jst: first the properties the schema does not have (nor match a pattern of
+	// patternProperties), in the order of the data; then each property of the schema, in its order;
+	// then, for each pattern, the properties that match it. A pattern is `new RegExp(pattern)`.
 	property_names := js_object_keys(properties).filter(it != '__proto__')
+	pattern_properties := schema_map(s, 'patternProperties')
+	mut patterns := []SchemaPattern{}
+	for source in js_object_keys(pattern_properties) {
+		prog := jsregexp.regexp_compile_annex_b(utf16_units(source)) or { continue }
+		patterns << SchemaPattern{
+			schema: pattern_properties[source] or { continue }
+			prog:   prog
+		}
+	}
 	additional := s['additionalProperties'] or { json2.Any(true) }
 	forbidden := additional is bool && !(additional as bool)
 	checked := additional is map[string]json2.Any && additional.as_map().len > 0
 	if forbidden || checked {
 		for key in js_object_keys(object) {
-			if key in property_names {
+			if key in property_names || patterns.any(schema_pattern_matches(it, key)) {
 				continue
 			}
 			if forbidden {
@@ -565,7 +575,30 @@ fn (mut v SchemaValidator) object_rules(s map[string]json2.Any, data json2.Any, 
 			return false
 		}
 	}
+	for pattern in patterns {
+		if !schema_has_rules(pattern.schema) {
+			continue
+		}
+		for key in js_object_keys(object) {
+			if !schema_pattern_matches(pattern, key) {
+				continue
+			}
+			if !v.validate(pattern.schema, object[key] or { json2.Any(json2.null) }, composite) {
+				return false
+			}
+		}
+	}
 	return true
+}
+
+// SchemaPattern is a pattern of patternProperties, compiled, with its schema.
+struct SchemaPattern {
+	schema json2.Any
+	prog   jsregexp.RegexpProgram
+}
+
+fn schema_pattern_matches(pattern SchemaPattern, key string) bool {
+	return jsregexp.regexp_test_annex_b(pattern.prog, utf16_units(key)) or { false }
 }
 
 // any_rules are the rules for data of any type: const, enum, not, anyOf, oneOf and allOf.
@@ -889,8 +922,9 @@ fn js_json_stringify(value json2.Any) string {
 		}
 		.number {
 			number := json_number(value)
-			// NaN and the infinities, which JSON does not have.
-			if number != number || number - number != 0 {
+			// NaN and the infinities, which JSON does not have; the largest finite number is how
+			// veslint gets an Infinity from JavaScript (tools/rule_schema_support.mjs, jsonInfinity).
+			if number != number || number - number != 0 || number == math.max_f64 || number == -math.max_f64 {
 				return 'null'
 			}
 			return js_number_to_string(number)

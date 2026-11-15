@@ -38,7 +38,7 @@ fn sjps_options(given []json2.Any) !SjpsOptions {
 	multi_line := sls_object(object['multiLine'] or { json2.Any(json2.Null{}) })
 	number := fn (object map[string]json2.Any, key string) int {
 		value := object[key] or { return max_i32 }
-		return if value is json2.Null { max_i32 } else { value.int() }
+		return sty_option_count(value)
 	}
 	return SjpsOptions{
 		max_items:          number(single_line, 'maxItems')
