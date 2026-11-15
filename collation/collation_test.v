@@ -150,7 +150,9 @@ fn test_ascii_fast_path_agrees_with_elements() {
 	}
 	for a in strings {
 		for b in strings {
-			slow := compare_elements(t.elements(t.fcd(code_points(a))), t.elements(t.fcd(code_points(b))))
+			mut ca := t.fcd(code_points(a))
+			mut cb := t.fcd(code_points(b))
+			slow := compare_elements(t.elements(mut ca), t.elements(mut cb))
 			assert compare_ascii(a, b) == slow, '${a.bytes()} vs ${b.bytes()}'
 		}
 	}

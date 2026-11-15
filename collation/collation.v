@@ -170,7 +170,9 @@ pub fn compare(a string, b string) int {
 		return compare_ascii(a, b)
 	}
 	t := tables()
-	return compare_elements(t.elements(t.fcd(code_points(a))), t.elements(t.fcd(code_points(b))))
+	mut ca := t.fcd(code_points(a))
+	mut cb := t.fcd(code_points(b))
+	return compare_elements(t.elements(mut ca), t.elements(mut cb))
 }
 
 fn is_ascii(s string) bool {
@@ -407,7 +409,11 @@ mut:
 	pre_cps   []u32
 	pre_ce    []int
 	pre_count []int
+	// The element of each code point below latin_limit that has one alone (max_u64 for the others).
+	latin []u64
 }
+
+const latin_limit = u32(0x180)
 
 const tables_data = &Tables{}
 const tables_once = sync.new_once()
@@ -528,7 +534,11 @@ fn (mut t Tables) load() {
 	}
 	end = -1
 	mut group := i64(0)
-	for _ in 0 .. r.int() {
+	han_runs := r.int()
+	t.han_start = []u32{cap: han_runs}
+	t.han_end = []u32{cap: han_runs}
+	t.han_group = []u64{cap: han_runs}
+	for _ in 0 .. han_runs {
 		start := u32(end + 1 + i64(r.num()))
 		last := start + u32(r.num())
 		group += r.signed()
@@ -542,7 +552,14 @@ fn (mut t Tables) load() {
 	}
 	end = -1
 	mut p := u64(0)
-	for _ in 0 .. r.int() {
+	runs := r.int()
+	t.run_start = []u32{cap: runs}
+	t.run_end = []u32{cap: runs}
+	t.run_kind = []u8{cap: runs}
+	t.run_ce = []int{cap: runs}
+	t.run_count = []int{cap: runs}
+	t.ces = []u64{cap: runs * 5 / 4}
+	for _ in 0 .. runs {
 		start := u32(end + 1 + i64(r.num()))
 		h := r.num()
 		last := start + u32(h >> 1)
@@ -605,6 +622,20 @@ fn (mut t Tables) load() {
 		}
 	}
 	t.pre_at << t.pre_cps.len
+	for cp in u32(0) .. latin_limit {
+		mut e := max_u64
+		if cp !in t.pre_cp && t.contraction_start(cp) < 0 {
+			k := find_run(t.run_start, t.run_end, cp)
+			if k >= 0 && t.run_kind[k] == 1 {
+				e = t.ces[t.run_ce[k]] + (u64(cp - t.run_start[k]) << st_bits)
+			} else if k >= 0 && t.run_count[k] == 1 {
+				e = t.ces[t.run_ce[k]]
+			} else if k >= 0 && t.run_count[k] == 0 {
+				e = 0
+			}
+		}
+		t.latin << e
+	}
 }
 
 // find_run is the index of the run of starts/ends that holds cp, or -1.
@@ -707,7 +738,8 @@ fn (t &Tables) nfd(cps []u32) []u32 {
 // lccc and tccc are the canonical combining classes (ranks) of the first and of the last code
 // point of the canonical decomposition of a code point (its FCD16 value).
 fn (t &Tables) lccc(cp u32) u8 {
-	if cp < 0xc0 || (cp >= hangul_s_base && cp < hangul_s_base + hangul_s_count) {
+	// Below U+0300, the decompositions start with a letter.
+	if cp < 0x300 || (cp >= hangul_s_base && cp < hangul_s_base + hangul_s_count) {
 		return 0
 	}
 	k := t.decomposition(cp)
@@ -739,8 +771,8 @@ fn (t &Tables) fcd(cps []u32) []u32 {
 	mut i := 0
 	for i < cps.len {
 		c := cps[i]
-		if t.tccc(c) == 0 || (!is_tibetan_composite_vowel(c)
-			&& (i + 1 >= cps.len || t.lccc(cps[i + 1]) == 0)) {
+		if (!is_tibetan_composite_vowel(c) && (i + 1 >= cps.len || t.lccc(cps[i + 1]) == 0))
+			|| t.tccc(c) == 0 {
 			out << c
 			i++
 			continue
@@ -863,11 +895,15 @@ fn (t &Tables) contraction_start(cp u32) int {
 // at each position the longest contraction (UCA S2.1), extended by each non-starter after it
 // that is not blocked and makes a longer contraction (S2.1.1–S2.1.3: such a mark is removed, the
 // marks skipped stay, in order, after the contraction).
-fn (t &Tables) elements(input []u32) []u64 {
-	mut cps := input.clone()
+fn (t &Tables) elements(mut cps []u32) []u64 {
 	mut out := []u64{cap: cps.len + 4}
 	mut i := 0
 	for i < cps.len {
+		if cps[i] < latin_limit && t.latin[cps[i]] != max_u64 {
+			out << t.latin[cps[i]]
+			i++
+			continue
+		}
 		k := t.contraction_start(cps[i])
 		if k < 0 {
 			t.append_single(cps, i, mut out)
