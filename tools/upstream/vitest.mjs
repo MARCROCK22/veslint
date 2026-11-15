@@ -42,7 +42,8 @@ function matchers(actual, negated) {
   const check = (passes, text) => {
     if (passes === negated) throw new Error(`expected ${shown(actual)} ${negated ? 'not ' : ''}${text}`);
   };
-  return {
+  // Another matcher (`resolves`, `toThrow`…) is ignored.
+  const known = {
     toBe: expected => check(Object.is(actual, expected), `to be ${shown(expected)}`),
     toContain: item =>
       check(
@@ -51,12 +52,21 @@ function matchers(actual, negated) {
       ),
     toHaveLength: length => check(actual != null && actual.length === length, `to have length ${length}`),
   };
+  if (!negated) known.not = matchers(actual, true);
+  return new Proxy(known, {
+    get: (target, key) => {
+      // `expect(valid(…)).rejects`: the case is one the tester must refuse, not one to record.
+      if (key === 'rejects' && typeof actual?.__veslintTakeBack === 'function') actual.__veslintTakeBack();
+      return key in target ? target[key] : ignored;
+    },
+  });
 }
-const ignored = new Proxy(noop, { get: () => ignored, apply: () => ignored });
+// Not a thenable (no `then`): `await expect(…).rejects.toThrow()` goes on.
+const ignored = new Proxy(noop, { get: (target, key) => (key === 'then' ? undefined : ignored), apply: () => ignored });
 export const expect = new Proxy(noop, {
   get: () => ignored,
   apply: (target, self, [actual]) =>
-    globalThis.__veslintTests ? { ...matchers(actual, false), not: matchers(actual, true) } : ignored,
+    globalThis.__veslintTests ? matchers(actual, false) : ignored,
 });
 export const vi = new Proxy({}, { get: () => noop });
 export default { describe, it, test, expect, vi };

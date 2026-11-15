@@ -32,6 +32,8 @@ const SEYFERT_PLUGIN = path.join(ROOT, 'build/upstream/seyfert/node_modules/@sli
 const seyfert = fs.existsSync(SEYFERT_PLUGIN) ? require(SEYFERT_PLUGIN).plugin : null;
 const unicorn = (await import(require.resolve('eslint-plugin-unicorn'))).default;
 const stylistic = (await import(require.resolve('@stylistic/eslint-plugin'))).default;
+// eslint-plugin-perfectionist 5.13.0, outside build/eval (tests/upstream/README.md).
+const perfectionist = (await import(path.join(ROOT, 'build/upstream/perfectionist-deps/node_modules/eslint-plugin-perfectionist/dist/index.js'))).default;
 
 const { builtinRules } = require('eslint/use-at-your-own-risk');
 
@@ -44,6 +46,7 @@ function pluginOf(rule) {
   }
   if (rule.startsWith('unicorn/')) return ['unicorn', unicorn, rule.slice('unicorn/'.length)];
   if (rule.startsWith('@stylistic/')) return ['@stylistic', stylistic, rule.slice('@stylistic/'.length)];
+  if (rule.startsWith('perfectionist/')) return ['perfectionist', perfectionist, rule.slice('perfectionist/'.length)];
   return ['@typescript-eslint', tseslint.plugin, rule.replace('@typescript-eslint/', '')];
 }
 
@@ -65,7 +68,10 @@ function linterFor(cwd) {
 // The passes of fixes of the RuleTester of the rule's tests: typescript-eslint's (also for
 // @slipher/eslint-plugin) makes up to 10; ESLint's, which ESLint core and eslint-plugin-unicorn
 // (through eslint-ava-rule-tester) use, one.
-const maxPassesOf = rule => (rule.startsWith('@typescript-eslint/') || rule.startsWith('seyfert/') ? 10 : 1);
+// eslint-vitest-rule-tester's createRuleTester (eslint-plugin-perfectionist) makes the first pass and
+// up to 11 more, and checks the text of the last one.
+const maxPassesOf = rule =>
+  rule.startsWith('perfectionist/') ? 12 : rule.startsWith('@typescript-eslint/') || rule.startsWith('seyfert/') ? 10 : 1;
 
 function configOf(rule, c, root, defaults = {}) {
   const languageOptions = { ...defaults, ...c.languageOptions };
@@ -172,6 +178,9 @@ function check(rule, c, messages, outputs) {
   if ('output' in c) {
     if (c.output == null) {
       if (outputs.length && outputs[0] !== c.code) say('fixed, but the test expects no fix');
+    } else if (typeof c.output === 'string' && rule.startsWith('perfectionist/')) {
+      const final = outputs.length ? outputs.at(-1) : c.code;
+      if (final !== c.output) say(`output differs: ${JSON.stringify(final)}\n--- expected\n${JSON.stringify(c.output)}`);
     } else if (typeof c.output === 'string') {
       if (!same(outputs, [c.output])) say(`output differs: ${JSON.stringify(outputs)}\n--- expected\n${JSON.stringify([c.output])}`);
     } else if (!same(outputs, c.output)) {

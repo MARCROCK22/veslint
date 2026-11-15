@@ -273,11 +273,14 @@ def fix_passes(lint, code, findings, max_passes=10):
 def max_passes_of(rule):
     """The passes of fixes of the RuleTester of the rule's tests: typescript-eslint's (also for
     @slipher/eslint-plugin) makes up to 10; ESLint's, which ESLint core and eslint-plugin-unicorn
-    (through eslint-ava-rule-tester) use, one."""
+    (through eslint-ava-rule-tester) use, one; eslint-vitest-rule-tester's createRuleTester, which
+    eslint-plugin-perfectionist uses, the first and up to 11 more."""
+    if rule.startswith('perfectionist/'):
+        return 12
     return 10 if rule.startswith(('@typescript-eslint/', 'seyfert/')) else 1
 
 
-def check(case, messages, findings, outputs):
+def check(case, messages, findings, outputs, last_output=False):
     problems = []
     if case['kind'] == 'valid':
         if findings:
@@ -336,6 +339,11 @@ def check(case, messages, findings, outputs):
         if output is None:
             if outputs and outputs[0] != case['code']:
                 problems.append('fixed, but the test expects no fix')
+        elif isinstance(output, str) and last_output:
+            # eslint-vitest-rule-tester's createRuleTester checks the text the last pass leaves.
+            final = outputs[-1] if outputs else case['code']
+            if final != output:
+                problems.append(f'output {final!r}, expected {output!r}')
         elif isinstance(output, str):
             if outputs != [output]:
                 problems.append(f'output {outputs!r}, expected {[output]!r}')
@@ -401,7 +409,7 @@ def main():
                 # After the passes, the file keeps the text the last one left, as in RuleTester
                 # and in tests/rules/upstream_eslint.mjs.
                 outputs = fix_passes(relint, case['code'], findings, max_passes_of(rule)) if case['kind'] == 'invalid' and 'output' in case else []
-                problems = check(case, messages, findings, outputs)
+                problems = check(case, messages, findings, outputs, rule.startswith('perfectionist/'))
             if problems:
                 failing.add(case['id'])
                 if case['id'] not in known:

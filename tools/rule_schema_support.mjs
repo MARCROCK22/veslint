@@ -9,7 +9,7 @@ import { createRequire } from 'node:module';
 export function portedRules(root) {
   const source = fs.readFileSync(path.join(root, 'rules/rules.v'), 'utf8');
   // A rule id with a plugin, or without one (ESLint core).
-  const byConst = new Map([...source.matchAll(/^pub const (\w+) = '((?:(?:@typescript-eslint|@stylistic|seyfert|unicorn)\/)?[a-z0-9-]+)'$/gm)].map(m => [m[1], m[2]]));
+  const byConst = new Map([...source.matchAll(/^pub const (\w+) = '((?:(?:@typescript-eslint|@stylistic|perfectionist|seyfert|unicorn)\/)?[a-z0-9-]+)'$/gm)].map(m => [m[1], m[2]]));
   const list = /^pub const names = \[([^\]]+)\]/m.exec(source);
   if (!list) {
     throw new Error('rules/rules.v: `names` not found');
@@ -149,6 +149,12 @@ export function stylisticPlugin(root) {
   return module.default ?? module;
 }
 
+// perfectionistPlugin is eslint-plugin-perfectionist 5.13.0, the plugin of the `perfectionist/*`
+// rules, from build/upstream/perfectionist-deps (an ES module: imported).
+export async function perfectionistPlugin(root) {
+  return (await import(path.join(root, 'build/upstream/perfectionist-deps/node_modules/eslint-plugin-perfectionist/dist/index.js'))).default;
+}
+
 // pluginOf is the namespace, the plugin and the name in it of a ported rule.
 export function pluginOf(id, plugins) {
   // ESLint core: a rule id without a plugin; plugins[''] holds its rules.
@@ -159,6 +165,8 @@ export function pluginOf(id, plugins) {
       ? 'unicorn'
       : id.startsWith('@stylistic/')
         ? '@stylistic'
-        : '@typescript-eslint';
+        : id.startsWith('perfectionist/')
+          ? 'perfectionist'
+          : '@typescript-eslint';
   return [namespace, plugins[namespace], id.slice(namespace.length + 1)];
 }

@@ -34,6 +34,8 @@ const ESLINT = path.join(ROOT, 'build/upstream/eslint');
 const UNICORN = path.join(ROOT, 'build/upstream/unicorn');
 const UNICORN_DEPS = path.join(ROOT, 'build/upstream/unicorn-deps/node_modules');
 const STYLISTIC = path.join(ROOT, 'build/upstream/stylistic');
+const PERFECTIONIST = path.join(ROOT, 'build/upstream/perfectionist');
+const PERFECTIONIST_DEPS = path.join(ROOT, 'build/upstream/perfectionist-deps/node_modules');
 
 // Where the tests of each plugin come from. `fixtures` is the directory the tests lint in, the one
 // the files of the cases are written relative to.
@@ -99,6 +101,22 @@ const SOURCES = {
     modules: path.join(STYLISTIC, 'node_modules'),
     needs: [path.join(STYLISTIC, 'packages/eslint-plugin/rules'), path.join(STYLISTIC, 'shared/test-utils')],
   },
+  // eslint-plugin-perfectionist v5.13.0 (the `perfectionist/*` rules): test/rules/<rule>.test.ts
+  // (and test/rules/<rule>/*.test.ts), whose `it` blocks call `valid` and `invalid` of
+  // eslint-vitest-rule-tester 3.1.0's createRuleTester (tools/upstream/perfectionist-test.mjs):
+  // espree without a parser, typescript-eslint's parser without types when the case names it, linted
+  // as TypeScript in the file.ts (react.tsx with JSX) of typescript-eslint's fixtures; the fixes make
+  // up to 11 passes and the output checked is the last one.
+  'perfectionist/': {
+    label: 'eslint-plugin-perfectionist v5.13.0',
+    perfectionist: true,
+    clone: PERFECTIONIST,
+    tests: path.join(PERFECTIONIST, 'test/rules'),
+    fixtures: realDir(path.join(TYPESCRIPT_ESLINT, 'packages/eslint-plugin/tests/fixtures')),
+    modules: path.join(PERFECTIONIST, 'node_modules'),
+    needs: [path.join(PERFECTIONIST, 'test/rules'), path.join(PERFECTIONIST_DEPS, 'dedent'), path.join(PERFECTIONIST_DEPS, 'natural-orderby')],
+    extra: { dedent: path.join(PERFECTIONIST_DEPS, 'dedent'), 'natural-orderby': path.join(PERFECTIONIST_DEPS, 'natural-orderby') },
+  },
 };
 
 // A rule id with a plugin (`@typescript-eslint/…`, `seyfert/…`) or without one (ESLint core).
@@ -130,7 +148,12 @@ function overlay(source) {
       fs.symlinkSync(from, path.join(nm, entry));
     }
   }
-  for (const [name, target] of Object.entries(source.extra ?? {})) fs.symlinkSync(realDir(target), path.join(nm, name));
+  // An extra package takes the place of the one of build/eval with its name (a link: removing it
+  // leaves its target alone).
+  for (const [name, target] of Object.entries(source.extra ?? {})) {
+    fs.rmSync(path.join(nm, name), { force: true });
+    fs.symlinkSync(realDir(target), path.join(nm, name));
+  }
   stub('@typescript-eslint/rule-tester', 'rule-tester.mjs');
   stub('vitest', 'vitest.mjs');
 }
@@ -196,7 +219,7 @@ function normalize(run, raw, kind, index, prefix, source) {
   const { parser: caseParser, parserOptions: caseParserOptions, ...caseLanguageOptions } = test.languageOptions ?? {};
   // ESLint core: the RuleTester's own languageOptions (ecmaVersion, sourceType, globals) under the
   // case's, as flat config merges them.
-  const jsTests = source.core || source.unicorn || source.stylistic;
+  const jsTests = source.core || source.unicorn || source.stylistic || source.perfectionist;
   const { parser: runParser, parserOptions: _runParserOptions, ...runLanguageOptions } = jsTests
     ? (run.config.languageOptions ?? {})
     : {};
@@ -279,8 +302,9 @@ function normalize(run, raw, kind, index, prefix, source) {
   // one of unicorn's with the parser of `test.typescript` or `test.vue`.
   if (source.core && caseParser) out.parser = caseParser.meta?.name ?? 'custom';
   if (source.unicorn && (caseParser ?? runParser)) out.parser = (caseParser ?? runParser).meta?.name ?? 'custom';
-  // A case of @stylistic's tests with espree (`lang: 'js'`) or a parser of its own (Flow).
-  if (source.stylistic) {
+  // A case of @stylistic's tests with espree (`lang: 'js'`) or a parser of its own (Flow); of
+  // perfectionist's without a parser (espree).
+  if (source.stylistic || source.perfectionist) {
     const parser = caseParser ?? runParser;
     if (!parser) out.parser = 'espree';
     else if (parser.meta?.name !== 'typescript-eslint/parser') out.parser = parser.meta?.name ?? 'custom';
@@ -291,7 +315,7 @@ function normalize(run, raw, kind, index, prefix, source) {
     Object.assign(out, unicornSnapshotExpectation(run, test, source));
   } else if (kind === 'invalid') {
     // eslint-vitest-rule-tester: an invalid case without errors expects at least one problem.
-    if (test.errors !== undefined || !source.stylistic) out.errors = test.errors;
+    if (test.errors !== undefined || !(source.stylistic || source.perfectionist)) out.errors = test.errors;
     if ('output' in test && test.output !== undefined) out.output = test.output;
   }
   if (test.before || test.after) out.hooks = true;
@@ -324,6 +348,15 @@ function testFiles(name, source) {
     const file = path.join(source.tests, `${camelCase(name)}.test.mts`);
     return fs.existsSync(file) ? [file] : [];
   }
+  if (source.perfectionist) {
+    const file = path.join(source.tests, `${name}.test.ts`);
+    const dir = path.join(source.tests, name);
+    const files = fs.existsSync(file) ? [file] : [];
+    if (fs.existsSync(dir)) {
+      files.push(...fs.readdirSync(dir).filter(entry => entry.endsWith('.test.ts')).sort().map(entry => path.join(dir, entry)));
+    }
+    return files;
+  }
   if (source.stylistic) {
     // The experimental rules (`exp-list-style`) are tested in the directory of their source (`list-style`).
     const dir = path.join(source.tests, name.replace(/^exp-/, ''));
@@ -349,6 +382,7 @@ async function ruleObjectOf(name, source) {
   if (source === SOURCES['seyfert/']) return null;
   if (source.unicorn) return (await unicornPlugin()).rules[name];
   if (source.stylistic) return (await stylisticPlugin()).rules[name];
+  if (source.perfectionist) return (await perfectionistPlugin()).rules[name];
   // The module the test file requires, the same object.
   if (source.core) return createRequire(path.join(source.clone, 'package.json'))(path.join(source.clone, 'lib/rules', `${name}.js`));
   return (await import(pathToFileURL(path.join(source.clone, 'packages/eslint-plugin/src/rules', `${name}.ts`)).href)).default;
@@ -513,6 +547,30 @@ Bun.plugin({
     }));
   },
 });
+// The test files of eslint-plugin-perfectionist import their tester (eslint-vitest-rule-tester), the
+// tester of oxlint and a check of the schema from the stub of tools/upstream/perfectionist-test.mjs;
+// the source of their rule is not run: the rule of build/upstream/perfectionist-deps (the same
+// version) gives its messages. The helpers of the plugin (utils/alphabet.ts) are the real ones.
+Bun.plugin({
+  name: 'veslint-perfectionist-tester',
+  setup(build) {
+    const stub = JSON.stringify(path.join(ROOT, 'tools/upstream/perfectionist-test.mjs'));
+    build.onLoad({ filter: /[\\/]perfectionist[\\/]test[\\/]rules[\\/].+\.test\.ts$/ }, ({ path: file }) => {
+      const text = fs.readFileSync(file, 'utf8')
+        .replaceAll(/from 'eslint-vitest-rule-tester'/g, `from ${stub}`)
+        .replaceAll(/from '(?:\.\.?\/)+(?:rules\/)?build-oxlint-rule-tester'/g, `from ${stub}`)
+        .replaceAll(/from '(?:\.\.?\/)+utils\/validate-rule-json-schema'/g, `from ${stub}`);
+      return { contents: text, loader: 'ts' };
+    });
+    build.onLoad({ filter: /[\\/]perfectionist[\\/]rules[\\/][^\\/]+\.ts$/ }, () => ({ contents: 'export default {};', loader: 'js' }));
+  },
+});
+let perfectionistPluginCache;
+async function perfectionistPlugin() {
+  perfectionistPluginCache ??= (await import(pathToFileURL(path.join(PERFECTIONIST_DEPS, 'eslint-plugin-perfectionist/dist/index.js')).href)).default;
+  return perfectionistPluginCache;
+}
+
 let stylisticPluginCache;
 async function stylisticPlugin() {
   stylisticPluginCache ??= (await import(pathToFileURL(requireDependency.resolve('@stylistic/eslint-plugin')).href)).default;
@@ -645,7 +703,7 @@ for (const rule of rules.sort()) {
   const ruleObject = await ruleObjectOf(name, source);
   for (const file of files) {
     const before = recorded.length;
-    const tests = source === SOURCES['seyfert/'] ? [] : undefined;
+    const tests = source === SOURCES['seyfert/'] || source.perfectionist ? [] : undefined;
     globalThis.__veslintTests = tests;
     if (source.core) {
       const copy = file.replace(/\.js$/u, '.veslint-raw.js');
@@ -665,7 +723,9 @@ for (const rule of rules.sort()) {
       try {
         await test.fn();
       } catch (error) {
-        console.error(`${rule}: the upstream test "${test.name}" fails with ESLint: ${error.message}`);
+        // perfectionist's tests of the schema read the rule, which is not loaded: they make no case.
+        if (source.perfectionist && /rule\.meta/.test(error.message)) continue;
+        console.error(`${rule}: the upstream test "${test.name}" fails${source.perfectionist ? '' : ' with ESLint'}: ${error.message}`);
         failed = true;
       }
       for (const project of globalThis.__veslintProjects.slice(start)) {
@@ -675,7 +735,7 @@ for (const rule of rules.sort()) {
     globalThis.__veslintTests = undefined;
     globalThis.__veslintProjects = undefined;
     const runs = recorded.slice(before);
-    if (runs.length) messages = source.unicorn || source.stylistic ? (ruleObject.meta.messages ?? {}) : runs[0].messages;
+    if (runs.length) messages = source.unicorn || source.stylistic || source.perfectionist ? (ruleObject.meta.messages ?? {}) : runs[0].messages;
     // Every snapshot of unicorn's test file is one of the recorded invalid cases.
     if (source.unicorn) {
       // node's snapshots (test/snapshots/<rule>.js.snapshot, since v79): the first entry of each
@@ -695,6 +755,8 @@ for (const rule of rules.sort()) {
         ? name
         : source.stylistic
           ? path.basename(file).replace(/\.test\.ts$/, '')
+          : source.perfectionist
+            ? path.relative(source.tests, file).replace(/\.test\.ts$/, '').split(path.sep).join('/')
           : path.relative(path.join(source.tests, 'rules'), file).replace(/\.test\.ts$/, '').split(path.sep).join('/');
     runs.forEach((run, r) => {
       // A test file may run its rule more than once under a longer label
