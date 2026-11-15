@@ -1312,6 +1312,7 @@ pub mut:
 	checked   int // statements or nodes evaluated by the rule
 	unmatched int // nodes without a tsgo node with the same range (left without a type)
 	findings  int
+	rule_ms   map[string]f64 // the time of each rule, for --bench
 }
 
 // message returns the text of a finding of a rule.
@@ -1908,7 +1909,10 @@ pub fn (mut c Checker) lint_file(parser Parser, config LintConfig, src string, a
 		}
 		c.too_deep = 0
 		c.options[setting.name] = setting.options
-		for f in c.lint_rule(setting.name, root, abs_path, mut stats)! {
+		rule_sw := time.new_stopwatch()
+		rule_findings := c.lint_rule(setting.name, root, abs_path, mut stats)!
+		stats.rule_ms[setting.name] += ms(rule_sw.elapsed())
+		for f in rule_findings {
 			findings << Finding{
 				...f
 				stmt:       c.trimmed_end(f.stmt)

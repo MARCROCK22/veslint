@@ -2,6 +2,10 @@
 
 Each version is a release on GitHub with the veslint binaries (Linux x64, Windows x64) and the VS Code extension. The section of a version is the text of its release.
 
+## 0.25.1
+
+- **`--bench`** lists the rules that took the longest (`slowest_rules`, at most 20, with their milliseconds).
+
 ## 0.25.0
 
 - **20 more rules of typescript-eslint 8.72.2** (127 in all), the last of the ones `@marcrock22/eslintcf` turns on: `@typescript-eslint/ban-ts-comment`, `@typescript-eslint/ban-tslint-comment`, `@typescript-eslint/default-param-last`, `@typescript-eslint/explicit-function-return-type`, `@typescript-eslint/explicit-member-accessibility`, `@typescript-eslint/explicit-module-boundary-types`, `@typescript-eslint/init-declarations`, `@typescript-eslint/max-params`, `@typescript-eslint/member-ordering`, `@typescript-eslint/method-signature-style`, `@typescript-eslint/no-empty-object-type`, `@typescript-eslint/no-generated-empty-object-type`, `@typescript-eslint/no-invalid-this`, `@typescript-eslint/no-magic-numbers`, `@typescript-eslint/no-non-null-assertion`, `@typescript-eslint/no-redeclare`, `@typescript-eslint/no-restricted-types`, `@typescript-eslint/no-unsafe-enum-assignment`, `@typescript-eslint/parameter-properties`, `@typescript-eslint/prefer-literal-enum-member`. They come with their options, fixes and suggestions, and pass the cases of typescript-eslint's own tests.

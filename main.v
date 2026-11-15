@@ -82,6 +82,8 @@ mut:
 	rule_types_ms  f64
 	rule_eval_ms   f64
 	tsgo_requests  int
+	// The rules that took the longest, `<rule> <ms>`, slowest first (at most 20).
+	slowest_rules []string
 }
 
 fn (mut b BenchReport) add_symbols(elapsed f64) {
@@ -773,6 +775,19 @@ fn run_rules(opts Options, timeout time.Duration) !int {
 	bench.rule_types_ms = stats.types_ms
 	bench.rule_eval_ms = stats.eval_ms
 	bench.tsgo_requests = client.request_count()
+	mut by_time := stats.rule_ms.keys()
+	by_time.sort_with_compare(fn [stats] (a &string, b &string) int {
+		ta := stats.rule_ms[*a]
+		tb := stats.rule_ms[*b]
+		return if ta > tb {
+			-1
+		} else if ta < tb {
+			1
+		} else {
+			compare_strings(a, b)
+		}
+	})
+	bench.slowest_rules = by_time#[..20].map('${it} ${stats.rule_ms[it]:.1f}')
 	print(summary.table())
 	fixed_note := if opts.fix { '; ${fixed_files} files fixed' } else { '' }
 	eprintln(summary_line(problems, files.len, warnings) + fixed_note)
