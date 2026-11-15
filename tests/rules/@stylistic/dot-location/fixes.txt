@@ -1,0 +1,26 @@
+tests/rules/@stylistic/dot-location/cases.ts:9:2	@stylistic/dot-location	expectedDotAfterObject	Expected dot to be on same line as object.	fix	244	247	.\n\t	end	9	3
+tests/rules/@stylistic/dot-location/cases.ts:11:2	@stylistic/dot-location	expectedDotAfterObject	Expected dot to be on same line as object.	fix	268	271	.\n\t	end	11	3
+tests/rules/@stylistic/dot-location/cases.ts:13:2	@stylistic/dot-location	expectedDotAfterObject	Expected dot to be on same line as object.	fix	295	298	.\n\t	end	13	3
+tests/rules/@stylistic/dot-location/cases.ts:15:16	@stylistic/dot-location	expectedDotAfterObject	Expected dot to be on same line as object.	fix	317	334	.\n\t/* comment */ 	end	15	17
+tests/rules/@stylistic/dot-location/cases.ts:19:2	@stylistic/dot-location	expectedDotAfterObject	Expected dot to be on same line as object.	fix	388	392	?.\n\t	end	19	4
+tests/rules/@stylistic/dot-location/cases.ts:25:2	@stylistic/dot-location	expectedDotAfterObject	Expected dot to be on same line as object.	fix	459	462	 .\n\t	end	25	3
+tests/rules/@stylistic/dot-location/cases.ts:29:2	@stylistic/dot-location	expectedDotAfterObject	Expected dot to be on same line as object.	fix	511	514	.\n\t	end	29	3
+tests/rules/@stylistic/dot-location/cases.ts:31:2	@stylistic/dot-location	expectedDotAfterObject	Expected dot to be on same line as object.	fix	538	541	.\n\t	end	31	3
+tests/rules/@stylistic/dot-location/cases.ts:33:2	@stylistic/dot-location	expectedDotAfterObject	Expected dot to be on same line as object.	fix	567	570	 .\n\t	end	33	3
+tests/rules/@stylistic/dot-location/cases.ts:43:3	@stylistic/dot-location	expectedDotAfterObject	Expected dot to be on same line as object.	fix	681	685	.\n\t\t	end	43	4
+tests/rules/@stylistic/dot-location/cases.ts:48:2	@stylistic/dot-location	expectedDotAfterObject	Expected dot to be on same line as object.	fix	745	748	.\n\t	end	48	3
+tests/rules/@stylistic/dot-location/cases.ts:53:2	@stylistic/dot-location	expectedDotAfterObject	Expected dot to be on same line as object.	fix	795	798	.\n\t	end	53	3
+tests/rules/@stylistic/dot-location/cases.ts:54:2	@stylistic/dot-location	expectedDotAfterObject	Expected dot to be on same line as object.	fix	803	806	.\n\t	end	54	3
+tests/rules/@stylistic/dot-location/cases.ts:58:2	@stylistic/dot-location	expectedDotAfterObject	Expected dot to be on same line as object.	fix	886	889	.\n\t	end	58	3
+tests/rules/@stylistic/dot-location/property/cases.ts:6:14	@stylistic/dot-location	expectedDotBeforeProperty	Expected dot to be on same line as property.	fix	222	225	\n\t.	end	6	15
+tests/rules/@stylistic/dot-location/property/cases.ts:16:14	@stylistic/dot-location	expectedDotBeforeProperty	Expected dot to be on same line as property.	fix	353	367	 // comment\n\t.	end	16	15
+tests/rules/@stylistic/dot-location/property/cases.ts:20:16	@stylistic/dot-location	expectedDotBeforeProperty	Expected dot to be on same line as property.	fix	413	417	\n\t?.	end	20	18
+tests/rules/@stylistic/dot-location/property/cases.ts:38:12	@stylistic/dot-location	expectedDotBeforeProperty	Expected dot to be on same line as property.	fix	637	641	\n\t\t.	end	38	13
+tests/rules/@stylistic/dot-location/property/cases.ts:45:19	@stylistic/dot-location	expectedDotBeforeProperty	Expected dot to be on same line as property.	fix	713	716	\n\t.	end	45	20
+tests/rules/@stylistic/dot-location/property/cases.ts:50:13	@stylistic/dot-location	expectedDotBeforeProperty	Expected dot to be on same line as property.	fix	771	774	\n\t.	end	50	14
+tests/rules/@stylistic/dot-location/property/cases.ts:55:34	@stylistic/dot-location	expectedDotBeforeProperty	Expected dot to be on same line as property.	fix	842	845	\n\t.	end	55	35
+tests/rules/@stylistic/dot-location/tsx-property/cases.tsx:4:14	@stylistic/dot-location	expectedDotBeforeProperty	Expected dot to be on same line as property.	fix	109	112	\n\t.	end	4	15
+tests/rules/@stylistic/dot-location/tsx/cases.tsx:7:2	@stylistic/dot-location	expectedDotAfterObject	Expected dot to be on same line as object.	fix	136	139	.\n\t	end	7	3
+tests/rules/@stylistic/dot-location/tsx/cases.tsx:9:2	@stylistic/dot-location	expectedDotAfterObject	Expected dot to be on same line as object.	fix	168	171	.\n\t	end	9	3
+tests/rules/@stylistic/dot-location/tsx/cases.tsx:10:2	@stylistic/dot-location	expectedDotAfterObject	Expected dot to be on same line as object.	fix	185	188	.\n\t	end	10	3
+tests/rules/@stylistic/dot-location/tsx/cases.tsx:12:2	@stylistic/dot-location	expectedDotAfterObject	Expected dot to be on same line as object.	fix	207	210	.\n\t	end	12	3

@@ -1382,3 +1382,8 @@ veslint	brace-style._ts_/i6	tree-sitter reads `namespace Foo⏎{}` as a namespac
 # TypeScript's checker that typescript-estree parses) is a syntax error for tree-sitter's grammar.
 veslint	comma-style/i54	tree-sitter reads an index signature with three parameters as a syntax error
 veslint	comma-style/i55	tree-sitter reads an index signature with three parameters as a syntax error
+# @stylistic/dot-location: JavaScript cases with a legacy octal literal or a decimal with leading zeros, which
+# typescript-eslint's parser rejects; tree-sitter parses them.
+eslint	dot-location._js_/i5	typescript-eslint's parser: Octal literals are not allowed.
+eslint	dot-location._js_/i6	typescript-eslint's parser: Decimals with leading zeros are not allowed.
+eslint	dot-location._js_/i7	typescript-eslint's parser: Decimals with leading zeros are not allowed.
