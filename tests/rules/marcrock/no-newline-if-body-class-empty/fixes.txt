@@ -1,0 +1,14 @@
+tests/rules/marcrock/no-newline-if-body-class-empty/cases.ts:2:9	marcrock/no-newline-if-body-class-empty	noNewLine	Empty body class should not have a newline.	fix	65	66		end	3	2
+tests/rules/marcrock/no-newline-if-body-class-empty/cases.ts:5:9	marcrock/no-newline-if-body-class-empty	noNewLine	Empty body class should not have a newline.	fix	78	80		end	7	2
+tests/rules/marcrock/no-newline-if-body-class-empty/cases.ts:9:9	marcrock/no-newline-if-body-class-empty	noNewLine	Empty body class should not have a newline.	fix	92	99		end	11	2
+tests/rules/marcrock/no-newline-if-body-class-empty/cases.ts:13:22	marcrock/no-newline-if-body-class-empty	noNewLine	Empty body class should not have a newline.	fix	124	125		end	14	2
+tests/rules/marcrock/no-newline-if-body-class-empty/cases.ts:16:17	marcrock/no-newline-if-body-class-empty	noNewLine	Empty body class should not have a newline.	fix	145	146		end	17	2
+tests/rules/marcrock/no-newline-if-body-class-empty/cases.ts:19:18	marcrock/no-newline-if-body-class-empty	noNewLine	Empty body class should not have a newline.	fix	168	169		end	20	2
+tests/rules/marcrock/no-newline-if-body-class-empty/cases.ts:22:17	marcrock/no-newline-if-body-class-empty	noNewLine	Empty body class should not have a newline.	fix	189	190		end	23	2
+tests/rules/marcrock/no-newline-if-body-class-empty/cases.ts:25:19	marcrock/no-newline-if-body-class-empty	noNewLine	Empty body class should not have a newline.	fix	212	213		end	26	2
+tests/rules/marcrock/no-newline-if-body-class-empty/cases.ts:28:22	marcrock/no-newline-if-body-class-empty	noNewLine	Empty body class should not have a newline.	fix	238	239		end	29	2
+tests/rules/marcrock/no-newline-if-body-class-empty/cases.ts:31:12	marcrock/no-newline-if-body-class-empty	noNewLine	Empty body class should not have a newline.	fix	254	255		end	32	2
+tests/rules/marcrock/no-newline-if-body-class-empty/cases.ts:35:17	marcrock/no-newline-if-body-class-empty	noNewLine	Empty body class should not have a newline.	fix	289	291		end	36	3
+tests/rules/marcrock/no-newline-if-body-class-empty/cases.ts:40:15	marcrock/no-newline-if-body-class-empty	noNewLine	Empty body class should not have a newline.	fix	326	328		end	41	3
+tests/rules/marcrock/no-newline-if-body-class-empty/cases.ts:45:9	marcrock/no-newline-if-body-class-empty	noNewLine	Empty body class should not have a newline.	fix	353	354		end	46	2
+tests/rules/marcrock/no-newline-if-body-class-empty/cases.ts:61:9	marcrock/no-newline-if-body-class-empty	noNewLine	Empty body class should not have a newline.	fix	560	564		end	63	2

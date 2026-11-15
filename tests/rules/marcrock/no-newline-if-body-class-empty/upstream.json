@@ -1,0 +1,10 @@
+{"rule": "marcrock/no-newline-if-body-class-empty", "upstream": "@marcrock22/eslintcf 0.0.1 (MARCROCK22/eslintcf 0c25278)", "files": ["src/rules/__test__/noNewlineIfBodyClassEmptyRule.test.ts"],
+"messages": {"noNewLine":"Empty body class should not have a newline."},
+"cases": [
+{"id":"no-newline-if-body-class-empty/v0","kind":"valid","code":"class Foo {}","file":"file.ts","tsconfig":null},
+{"id":"no-newline-if-body-class-empty/v1","kind":"valid","code":"class Foo { foo() {} }","file":"file.ts","tsconfig":null},
+{"id":"no-newline-if-body-class-empty/v2","kind":"valid","code":"class Foo {\n    foo() {}\n}","file":"file.ts","tsconfig":null},
+{"id":"no-newline-if-body-class-empty/v3","kind":"valid","code":"class Foo {\n    // keep this\n}","file":"file.ts","tsconfig":null},
+{"id":"no-newline-if-body-class-empty/v4","kind":"valid","code":"const C = class {};","file":"file.ts","tsconfig":null},
+{"id":"no-newline-if-body-class-empty/i0","kind":"invalid","code":"class Foo {\n}","file":"file.ts","tsconfig":null,"errors":[{"messageId":"noNewLine"}],"output":"class Foo {}"}
+]}
