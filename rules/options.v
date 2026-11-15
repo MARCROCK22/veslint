@@ -180,6 +180,7 @@ pub fn check_options(rule string, options []json2.Any) !bool {
 		stylistic_brace_style { sbs_options(options)! }
 		stylistic_comma_style { scst_options(options)! }
 		stylistic_dot_location { sdl_options(options)! }
+		stylistic_function_call_argument_newline { sfcan_options(options)! }
 		else { return false }
 	}
 	return true

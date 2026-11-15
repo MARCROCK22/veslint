@@ -1,0 +1,23 @@
+tests/rules/@stylistic/function-call-argument-newline/cases.ts:6:8	@stylistic/function-call-argument-newline	missingLineBreak	There should be a line break after this argument.
+tests/rules/@stylistic/function-call-argument-newline/cases.ts:13:8	@stylistic/function-call-argument-newline	missingLineBreak	There should be a line break after this argument.
+tests/rules/@stylistic/function-call-argument-newline/cases.ts:16:4	@stylistic/function-call-argument-newline	missingLineBreak	There should be a line break after this argument.
+tests/rules/@stylistic/function-call-argument-newline/cases.ts:17:12	@stylistic/function-call-argument-newline	missingLineBreak	There should be a line break after this argument.
+tests/rules/@stylistic/function-call-argument-newline/cases.ts:22:20	@stylistic/function-call-argument-newline	missingLineBreak	There should be a line break after this argument.
+tests/rules/@stylistic/function-call-argument-newline/cases.ts:27:3	@stylistic/function-call-argument-newline	missingLineBreak	There should be a line break after this argument.
+tests/rules/@stylistic/function-call-argument-newline/cases.ts:32:13	@stylistic/function-call-argument-newline	missingLineBreak	There should be a line break after this argument.
+tests/rules/@stylistic/function-call-argument-newline/cases.ts:36:29	@stylistic/function-call-argument-newline	missingLineBreak	There should be a line break after this argument.
+tests/rules/@stylistic/function-call-argument-newline/cases.ts:40:16	@stylistic/function-call-argument-newline	missingLineBreak	There should be a line break after this argument.
+tests/rules/@stylistic/function-call-argument-newline/cases.ts:41:10	@stylistic/function-call-argument-newline	missingLineBreak	There should be a line break after this argument.
+tests/rules/@stylistic/function-call-argument-newline/cases.ts:42:16	@stylistic/function-call-argument-newline	missingLineBreak	There should be a line break after this argument.
+tests/rules/@stylistic/function-call-argument-newline/consistent/cases.ts:13:11	@stylistic/function-call-argument-newline	unexpectedLineBreak	There should be no line break here.
+tests/rules/@stylistic/function-call-argument-newline/consistent/cases.ts:16:4	@stylistic/function-call-argument-newline	missingLineBreak	There should be a line break after this argument.
+tests/rules/@stylistic/function-call-argument-newline/never/cases.ts:7:8	@stylistic/function-call-argument-newline	unexpectedLineBreak	There should be no line break here.
+tests/rules/@stylistic/function-call-argument-newline/never/cases.ts:10:4	@stylistic/function-call-argument-newline	unexpectedLineBreak	There should be no line break here.
+tests/rules/@stylistic/function-call-argument-newline/never/cases.ts:13:11	@stylistic/function-call-argument-newline	unexpectedLineBreak	There should be no line break here.
+tests/rules/@stylistic/function-call-argument-newline/never/cases.ts:15:8	@stylistic/function-call-argument-newline	unexpectedLineBreak	There should be no line break here.
+tests/rules/@stylistic/function-call-argument-newline/never/cases.ts:19:5	@stylistic/function-call-argument-newline	unexpectedLineBreak	There should be no line break here.
+tests/rules/@stylistic/function-call-argument-newline/never/cases.ts:20:24	@stylistic/function-call-argument-newline	unexpectedLineBreak	There should be no line break here.
+tests/rules/@stylistic/function-call-argument-newline/never/cases.ts:23:20	@stylistic/function-call-argument-newline	unexpectedLineBreak	There should be no line break here.
+tests/rules/@stylistic/function-call-argument-newline/never/cases.ts:30:3	@stylistic/function-call-argument-newline	unexpectedLineBreak	There should be no line break here.
+tests/rules/@stylistic/function-call-argument-newline/never/cases.ts:33:13	@stylistic/function-call-argument-newline	unexpectedLineBreak	There should be no line break here.
+tests/rules/@stylistic/function-call-argument-newline/never/cases.ts:37:30	@stylistic/function-call-argument-newline	unexpectedLineBreak	There should be no line break here.
