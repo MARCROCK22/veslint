@@ -1505,3 +1505,22 @@ veslint	sort-maps/v17	locales: zh-CN, which veslint does not collate
 veslint	sort-maps/v42	locales: zh-CN, which veslint does not collate
 veslint	sort-maps/v71	the alphabet has lone surrogates, which veslint's JSON reader refuses
 veslint	sort-maps/i103	the alphabet has lone surrogates, which veslint's JSON reader refuses
+# perfectionist/sort-union-types: as for sort-array-includes.
+eslint	sort-union-types/i149	disables rule-to-test/sort-union-types, the name the tester gives the rule
+veslint	sort-union-types/i149	disables rule-to-test/sort-union-types, the name the tester gives the rule
+eslint	sort-union-types/i150	disables rule-to-test/sort-union-types, the name the tester gives the rule
+veslint	sort-union-types/i150	disables rule-to-test/sort-union-types, the name the tester gives the rule
+eslint	sort-union-types/i151	disables rule-to-test/sort-union-types, the name the tester gives the rule
+veslint	sort-union-types/i151	disables rule-to-test/sort-union-types, the name the tester gives the rule
+eslint	sort-union-types/i152	disables rule-to-test/sort-union-types, the name the tester gives the rule
+veslint	sort-union-types/i152	disables rule-to-test/sort-union-types, the name the tester gives the rule
+eslint	sort-union-types/i153	disables rule-to-test/sort-union-types, the name the tester gives the rule
+veslint	sort-union-types/i153	disables rule-to-test/sort-union-types, the name the tester gives the rule
+eslint	sort-union-types/i154	disables rule-to-test/sort-union-types, the name the tester gives the rule
+veslint	sort-union-types/i154	disables rule-to-test/sort-union-types, the name the tester gives the rule
+eslint	sort-union-types/i156	disables rule-to-test/sort-union-types, the name the tester gives the rule
+veslint	sort-union-types/i156	disables rule-to-test/sort-union-types, the name the tester gives the rule
+veslint	sort-union-types/v12	locales: zh-CN, which veslint does not collate
+veslint	sort-union-types/v33	locales: zh-CN, which veslint does not collate
+veslint	sort-union-types/v58	the alphabet has lone surrogates, which veslint's JSON reader refuses
+veslint	sort-union-types/i137	the alphabet has lone surrogates, which veslint's JSON reader refuses

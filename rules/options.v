@@ -209,6 +209,7 @@ pub fn check_options(rule string, options []json2.Any) !bool {
 		perfectionist_sort_array_includes { pf_options(options)! }
 		perfectionist_sort_sets { pf_options(options)! }
 		perfectionist_sort_maps { pf_options(options)! }
+		perfectionist_sort_union_types { pf_options(options)! }
 		else { return false }
 	}
 	return true
