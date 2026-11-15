@@ -1,0 +1,23 @@
+tests/rules/@typescript-eslint/no-restricted-types/types/cases.ts:2:10	@typescript-eslint/no-restricted-types	bannedTypeMessage	Don't use `string` as a type.
+tests/rules/@typescript-eslint/no-restricted-types/types/cases.ts:3:8	@typescript-eslint/no-restricted-types	bannedTypeMessage	Don't use `Object` as a type. Use object instead.
+tests/rules/@typescript-eslint/no-restricted-types/types/cases.ts:4:10	@typescript-eslint/no-restricted-types	bannedTypeMessage	Don't use `{}` as a type. Use unknown.
+tests/rules/@typescript-eslint/no-restricted-types/types/cases.ts:5:10	@typescript-eslint/no-restricted-types	bannedTypeMessage	Don't use `[]` as a type.
+tests/rules/@typescript-eslint/no-restricted-types/types/cases.ts:9:10	@typescript-eslint/no-restricted-types	bannedTypeMessage	Don't use `Foo<string>` as a type. No Foo of string.
+tests/rules/@typescript-eslint/no-restricted-types/types/cases.ts:9:14	@typescript-eslint/no-restricted-types	bannedTypeMessage	Don't use `string` as a type.
+tests/rules/@typescript-eslint/no-restricted-types/types/cases.ts:10:10	@typescript-eslint/no-restricted-types	bannedTypeMessage	Don't use `Foo<string>` as a type. No Foo of string.
+tests/rules/@typescript-eslint/no-restricted-types/types/cases.ts:10:15	@typescript-eslint/no-restricted-types	bannedTypeMessage	Don't use `string` as a type.
+tests/rules/@typescript-eslint/no-restricted-types/types/cases.ts:13:10	@typescript-eslint/no-restricted-types	bannedTypeMessage	Don't use `Bar` as a type.
+tests/rules/@typescript-eslint/no-restricted-types/types/cases.ts:17:10	@typescript-eslint/no-restricted-types	bannedTypeMessage	Don't use `NS.Baz` as a type.
+tests/rules/@typescript-eslint/no-restricted-types/types/cases.ts:18:10	@typescript-eslint/no-restricted-types	bannedTypeMessage	Don't use `NS.Baz` as a type.
+tests/rules/@typescript-eslint/no-restricted-types/types/cases.ts:20:10	@typescript-eslint/no-restricted-types	bannedTypeMessage	Don't use `Qux<A,B>` as a type. spaces
+tests/rules/@typescript-eslint/no-restricted-types/types/cases.ts:22:10	@typescript-eslint/no-restricted-types	bannedTypeMessage	Don't use `undefined` as a type.
+tests/rules/@typescript-eslint/no-restricted-types/types/cases.ts:24:10	@typescript-eslint/no-restricted-types	bannedTypeMessage	Don't use `Ünï` as a type.
+tests/rules/@typescript-eslint/no-restricted-types/types/cases.ts:25:10	@typescript-eslint/no-restricted-types	bannedTypeMessage	Don't use `bigint` as a type.
+tests/rules/@typescript-eslint/no-restricted-types/types/cases.ts:27:10	@typescript-eslint/no-restricted-types	bannedTypeMessage	Don't use `Callable` as a type. m
+tests/rules/@typescript-eslint/no-restricted-types/types/cases.ts:28:23	@typescript-eslint/no-restricted-types	bannedTypeMessage	Don't use `Foo<string>` as a type. No Foo of string.
+tests/rules/@typescript-eslint/no-restricted-types/types/cases.ts:28:27	@typescript-eslint/no-restricted-types	bannedTypeMessage	Don't use `string` as a type.
+tests/rules/@typescript-eslint/no-restricted-types/types/cases.ts:32:23	@typescript-eslint/no-restricted-types	bannedTypeMessage	Don't use `Foo<string>` as a type. No Foo of string.
+tests/rules/@typescript-eslint/no-restricted-types/types/cases.ts:32:27	@typescript-eslint/no-restricted-types	bannedTypeMessage	Don't use `string` as a type.
+tests/rules/@typescript-eslint/no-restricted-types/types/cases.ts:32:36	@typescript-eslint/no-restricted-types	bannedTypeMessage	Don't use `Object` as a type. Use object instead.
+tests/rules/@typescript-eslint/no-restricted-types/types/cases.ts:34:16	@typescript-eslint/no-restricted-types	bannedTypeMessage	Don't use `string` as a type.
+tests/rules/@typescript-eslint/no-restricted-types/types/cases.ts:34:30	@typescript-eslint/no-restricted-types	bannedTypeMessage	Don't use `Object` as a type. Use object instead.

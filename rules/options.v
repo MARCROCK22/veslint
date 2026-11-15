@@ -231,6 +231,7 @@ pub fn check_options(rule string, options []json2.Any) !bool {
 		parameter_properties { ppr_options(options)! }
 		prefer_literal_enum_member { plem_options(options)! }
 		no_magic_numbers { nmag_options(options)! }
+		no_restricted_types { nrty_options(options)! }
 		else { return false }
 	}
 	return true

@@ -466,6 +466,7 @@ pub const explicit_member_accessibility = '@typescript-eslint/explicit-member-ac
 pub const parameter_properties = '@typescript-eslint/parameter-properties'
 pub const prefer_literal_enum_member = '@typescript-eslint/prefer-literal-enum-member'
 pub const no_magic_numbers = '@typescript-eslint/no-magic-numbers'
+pub const no_restricted_types = '@typescript-eslint/no-restricted-types'
 pub const names = [no_floating_promises, await_thenable, require_await, return_await,
 	no_misused_promises, no_unsafe_call, no_unsafe_member_access, no_unsafe_return,
 	no_unsafe_assignment, no_unsafe_argument, restrict_template_expressions,
@@ -597,7 +598,7 @@ pub const names = [no_floating_promises, await_thenable, require_await, return_a
 	perfectionist_sort_export_attributes, perfectionist_sort_switch_case,
 	perfectionist_sort_named_imports, perfectionist_sort_named_exports, perfectionist_sort_exports,
 	explicit_function_return_type, explicit_module_boundary_types, explicit_member_accessibility,
-	parameter_properties, prefer_literal_enum_member, no_magic_numbers]
+	parameter_properties, prefer_literal_enum_member, no_magic_numbers, no_restricted_types]
 
 // untyped_rules are the ported rules that need no types (`meta.docs.requiresTypeChecking` is false
 // in typescript-eslint; the eslint-plugin-unicorn rules that read the types when the parser has a
@@ -702,7 +703,7 @@ pub const untyped_rules = [adjacent_overload_signatures, array_type, class_liter
 	perfectionist_sort_export_attributes, perfectionist_sort_switch_case,
 	perfectionist_sort_named_imports, perfectionist_sort_named_exports, perfectionist_sort_exports,
 	explicit_function_return_type, explicit_module_boundary_types, explicit_member_accessibility,
-	parameter_properties, prefer_literal_enum_member, no_magic_numbers]
+	parameter_properties, prefer_literal_enum_member, no_magic_numbers, no_restricted_types]
 
 // needs_types tells whether a rule asks tsgo for the types of the program.
 pub fn needs_types(rule string) bool {
@@ -1165,6 +1166,7 @@ pub const default_options = {
 	parameter_properties:                            '[{"allow":[],"prefer":"class-property"}]'
 	prefer_literal_enum_member:                      '[{"allowBitwiseExpressions":false}]'
 	no_magic_numbers:                                '[{"detectObjects":false,"enforceConst":false,"ignore":[],"ignoreArrayIndexes":false,"ignoreEnums":false,"ignoreNumericLiteralTypes":false,"ignoreReadonlyClassProperties":false,"ignoreTypeIndexes":false}]'
+	no_restricted_types:                             '[{}]'
 }
 
 // Finding is a problem a rule found at a node.
@@ -1754,6 +1756,7 @@ pub fn message(rule string, finding Finding) string {
 		parameter_properties { ppr_messages }
 		prefer_literal_enum_member { plem_messages }
 		no_magic_numbers { nmag_messages }
+		no_restricted_types { nrty_messages }
 		else { map[string]string{} }
 	}
 	return interpolate(messages[finding.message_id] or { finding.message_id }, finding.data)
@@ -3266,6 +3269,9 @@ fn (mut c Checker) lint_rule(rule string, root C.TSNode, abs_path string, mut st
 		}
 		no_magic_numbers {
 			return c.lint_no_magic_numbers(root, abs_path, mut stats)!
+		}
+		no_restricted_types {
+			return c.lint_no_restricted_types(root, abs_path, mut stats)!
 		}
 		else { return error('unknown rule: ${rule}') }
 	}
