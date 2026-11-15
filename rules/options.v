@@ -197,6 +197,7 @@ pub fn check_options(rule string, options []json2.Any) !bool {
 		stylistic_semi_style { ssms_options(options)! }
 		stylistic_semi { ssemi_options(options)! }
 		stylistic_object_curly_newline { socn_options(options)! }
+		stylistic_object_property_newline { sopn_options(options)! }
 		else { return false }
 	}
 	return true

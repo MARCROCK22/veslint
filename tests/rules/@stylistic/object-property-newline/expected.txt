@@ -1,0 +1,17 @@
+tests/rules/@stylistic/object-property-newline/allow-same-line/cases.ts:4:9	@stylistic/object-property-newline	propertiesOnNewlineAll	Object properties must go on a new line if they aren't all on the same line.
+tests/rules/@stylistic/object-property-newline/allow-same-line/cases.ts:25:9	@stylistic/object-property-newline	propertiesOnNewlineAll	Object properties must go on a new line if they aren't all on the same line.
+tests/rules/@stylistic/object-property-newline/allow-same-line/cases.ts:28:15	@stylistic/object-property-newline	propertiesOnNewlineAll	Object properties must go on a new line if they aren't all on the same line.
+tests/rules/@stylistic/object-property-newline/cases.ts:2:26	@stylistic/object-property-newline	propertiesOnNewline	Object properties must go on a new line.
+tests/rules/@stylistic/object-property-newline/cases.ts:4:9	@stylistic/object-property-newline	propertiesOnNewline	Object properties must go on a new line.
+tests/rules/@stylistic/object-property-newline/cases.ts:11:40	@stylistic/object-property-newline	propertiesOnNewline	Object properties must go on a new line.
+tests/rules/@stylistic/object-property-newline/cases.ts:12:26	@stylistic/object-property-newline	propertiesOnNewline	Object properties must go on a new line.
+tests/rules/@stylistic/object-property-newline/cases.ts:12:33	@stylistic/object-property-newline	propertiesOnNewline	Object properties must go on a new line.
+tests/rules/@stylistic/object-property-newline/cases.ts:13:26	@stylistic/object-property-newline	propertiesOnNewline	Object properties must go on a new line.
+tests/rules/@stylistic/object-property-newline/cases.ts:14:34	@stylistic/object-property-newline	propertiesOnNewline	Object properties must go on a new line.
+tests/rules/@stylistic/object-property-newline/cases.ts:14:53	@stylistic/object-property-newline	propertiesOnNewline	Object properties must go on a new line.
+tests/rules/@stylistic/object-property-newline/cases.ts:15:23	@stylistic/object-property-newline	propertiesOnNewline	Object properties must go on a new line.
+tests/rules/@stylistic/object-property-newline/cases.ts:17:14	@stylistic/object-property-newline	propertiesOnNewline	Object properties must go on a new line.
+tests/rules/@stylistic/object-property-newline/cases.ts:19:26	@stylistic/object-property-newline	propertiesOnNewline	Object properties must go on a new line.
+tests/rules/@stylistic/object-property-newline/cases.ts:21:14	@stylistic/object-property-newline	propertiesOnNewline	Object properties must go on a new line.
+tests/rules/@stylistic/object-property-newline/cases.ts:25:9	@stylistic/object-property-newline	propertiesOnNewline	Object properties must go on a new line.
+tests/rules/@stylistic/object-property-newline/cases.ts:28:15	@stylistic/object-property-newline	propertiesOnNewline	Object properties must go on a new line.
