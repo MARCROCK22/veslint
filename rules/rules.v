@@ -395,6 +395,7 @@ pub const stylistic_object_curly_spacing = '@stylistic/object-curly-spacing'
 pub const stylistic_keyword_spacing = '@stylistic/keyword-spacing'
 pub const stylistic_space_before_blocks = '@stylistic/space-before-blocks'
 pub const stylistic_arrow_spacing = '@stylistic/arrow-spacing'
+pub const stylistic_yield_star_spacing = '@stylistic/yield-star-spacing'
 pub const names = [no_floating_promises, await_thenable, require_await, return_await,
 	no_misused_promises, no_unsafe_call, no_unsafe_member_access, no_unsafe_return,
 	no_unsafe_assignment, no_unsafe_argument, restrict_template_expressions,
@@ -502,7 +503,7 @@ pub const names = [no_floating_promises, await_thenable, require_await, return_a
 	stylistic_template_curly_spacing, stylistic_template_tag_spacing,
 	stylistic_no_whitespace_before_property, stylistic_block_spacing, stylistic_comma_spacing,
 	stylistic_computed_property_spacing, stylistic_object_curly_spacing, stylistic_keyword_spacing,
-	stylistic_space_before_blocks, stylistic_arrow_spacing]
+	stylistic_space_before_blocks, stylistic_arrow_spacing, stylistic_yield_star_spacing]
 
 // untyped_rules are the ported rules that need no types (`meta.docs.requiresTypeChecking` is false
 // in typescript-eslint; the eslint-plugin-unicorn rules that read the types when the parser has a
@@ -583,7 +584,7 @@ pub const untyped_rules = [adjacent_overload_signatures, array_type, class_liter
 	stylistic_switch_colon_spacing, stylistic_template_curly_spacing, stylistic_template_tag_spacing,
 	stylistic_no_whitespace_before_property, stylistic_block_spacing, stylistic_comma_spacing,
 	stylistic_computed_property_spacing, stylistic_object_curly_spacing, stylistic_keyword_spacing,
-	stylistic_space_before_blocks, stylistic_arrow_spacing]
+	stylistic_space_before_blocks, stylistic_arrow_spacing, stylistic_yield_star_spacing]
 
 // needs_types tells whether a rule asks tsgo for the types of the program.
 pub fn needs_types(rule string) bool {
@@ -975,6 +976,7 @@ pub const default_options = {
 	stylistic_keyword_spacing:                       '[{"before":true,"after":true,"overrides":{}}]'
 	stylistic_space_before_blocks:                   '["always"]'
 	stylistic_arrow_spacing:                         '[{"before":true,"after":true}]'
+	stylistic_yield_star_spacing:                    '["after"]'
 }
 
 // Finding is a problem a rule found at a node.
@@ -1490,6 +1492,7 @@ pub fn message(rule string, finding Finding) string {
 		stylistic_keyword_spacing { skwsp_messages }
 		stylistic_space_before_blocks { ssbb_messages }
 		stylistic_arrow_spacing { sarws_messages }
+		stylistic_yield_star_spacing { sysp_messages }
 		else { map[string]string{} }
 	}
 	return interpolate(messages[finding.message_id] or { finding.message_id }, finding.data)
@@ -2788,6 +2791,9 @@ fn (mut c Checker) lint_rule(rule string, root C.TSNode, abs_path string, mut st
 		}
 		stylistic_arrow_spacing {
 			return c.lint_stylistic_arrow_spacing(root, abs_path, mut stats)!
+		}
+		stylistic_yield_star_spacing {
+			return c.lint_stylistic_yield_star_spacing(root, abs_path, mut stats)!
 		}
 		else { return error('unknown rule: ${rule}') }
 	}
