@@ -207,6 +207,7 @@ pub fn check_options(rule string, options []json2.Any) !bool {
 		stylistic_no_extra_parens { snep_options(options)! }
 		marcrock_prefer_at { mpa_options(options)! }
 		perfectionist_sort_array_includes { pf_options(options)! }
+		perfectionist_sort_sets { pf_options(options)! }
 		else { return false }
 	}
 	return true

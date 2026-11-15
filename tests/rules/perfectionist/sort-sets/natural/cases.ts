@@ -1,0 +1,11 @@
+declare const value: string;
+declare const x: string[];
+declare const o: { a: string; b: string };
+new Set(['item10', 'item2', 'item1']);
+new Set(['a10b', 'a2b', 'a1c']);
+new Set(['x1.5', 'x1.25', 'x01']);
+new Set(['B2', 'a10', 'a9']);
+new Set(['0x10', '0x9', '9']);
+new Set(['2020-01-02', '2020-01-01']);
+new Set(['v1_000', 'v999']);
+new Set(['é2', 'e10']);

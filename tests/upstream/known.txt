@@ -1467,3 +1467,22 @@ veslint	sort-array-includes/v47	locales: zh-CN, which veslint does not collate
 # veslint's JSON reader (json2) refuses in the configuration.
 veslint	sort-array-includes/v76	the alphabet has lone surrogates, which veslint's JSON reader refuses
 veslint	sort-array-includes/i133	the alphabet has lone surrogates, which veslint's JSON reader refuses
+# perfectionist/sort-sets: as for sort-array-includes.
+eslint	sort-sets/i134	disables rule-to-test/sort-sets, the name the tester gives the rule
+veslint	sort-sets/i134	disables rule-to-test/sort-sets, the name the tester gives the rule
+eslint	sort-sets/i135	disables rule-to-test/sort-sets, the name the tester gives the rule
+veslint	sort-sets/i135	disables rule-to-test/sort-sets, the name the tester gives the rule
+eslint	sort-sets/i136	disables rule-to-test/sort-sets, the name the tester gives the rule
+veslint	sort-sets/i136	disables rule-to-test/sort-sets, the name the tester gives the rule
+eslint	sort-sets/i137	disables rule-to-test/sort-sets, the name the tester gives the rule
+veslint	sort-sets/i137	disables rule-to-test/sort-sets, the name the tester gives the rule
+eslint	sort-sets/i138	disables rule-to-test/sort-sets, the name the tester gives the rule
+veslint	sort-sets/i138	disables rule-to-test/sort-sets, the name the tester gives the rule
+eslint	sort-sets/i139	disables rule-to-test/sort-sets, the name the tester gives the rule
+veslint	sort-sets/i139	disables rule-to-test/sort-sets, the name the tester gives the rule
+eslint	sort-sets/i141	disables rule-to-test/sort-sets, the name the tester gives the rule
+veslint	sort-sets/i141	disables rule-to-test/sort-sets, the name the tester gives the rule
+veslint	sort-sets/v19	locales: zh-CN, which veslint does not collate
+veslint	sort-sets/v40	locales: zh-CN, which veslint does not collate
+veslint	sort-sets/v64	the alphabet has lone surrogates, which veslint's JSON reader refuses
+veslint	sort-sets/i122	the alphabet has lone surrogates, which veslint's JSON reader refuses

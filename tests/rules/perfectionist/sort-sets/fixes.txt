@@ -1,0 +1,81 @@
+tests/rules/perfectionist/sort-sets/ast-selector/cases.ts:4:15	perfectionist/sort-sets	unexpectedSetsOrder	Expected "b" to come before "a".	fix	108	116	'b', 'a'	end	4	18
+tests/rules/perfectionist/sort-sets/ast-selector/cases.ts:5:15	perfectionist/sort-sets	unexpectedSetsOrder	Expected "a" to come before "b".	fix	129	137	'a', 'b'	end	5	18
+tests/rules/perfectionist/sort-sets/case-sensitive/cases.ts:4:20	perfectionist/sort-sets	unexpectedSetsOrder	Expected "a" to come before "B".	fix	108	126	'a', 'A', 'b', 'B'	end	4	23
+tests/rules/perfectionist/sort-sets/cases.ts:5:15	perfectionist/sort-sets	unexpectedSetsOrder	Expected "a" to come before "b".	fix	131	139	'a', 'b'	end	5	18
+tests/rules/perfectionist/sort-sets/cases.ts:6:15	perfectionist/sort-sets	unexpectedSetsOrder	Expected "b" to come before "c".	fix	152	165	'a', 'b', 'c'	end	6	18
+tests/rules/perfectionist/sort-sets/cases.ts:6:20	perfectionist/sort-sets	unexpectedSetsOrder	Expected "a" to come before "b".	fix	152	165	'a', 'b', 'c'	end	6	23
+tests/rules/perfectionist/sort-sets/cases.ts:7:13	perfectionist/sort-sets	unexpectedSetsOrder	Expected "a" to come before "b".	fix	178	194	a, b, ...x, c, d	end	7	14
+tests/rules/perfectionist/sort-sets/cases.ts:7:25	perfectionist/sort-sets	unexpectedSetsOrder	Expected "c" to come before "d".	fix	178	194	a, b, ...x, c, d	end	7	26
+tests/rules/perfectionist/sort-sets/cases.ts:8:15	perfectionist/sort-sets	unexpectedSetsOrder	Expected "a" to come before "B".	fix	207	215	'a', 'B'	end	8	18
+tests/rules/perfectionist/sort-sets/cases.ts:9:17	perfectionist/sort-sets	unexpectedSetsOrder	Expected "1" to come before "9".	fix	233	246	1, 10, 100, 9	end	9	18
+tests/rules/perfectionist/sort-sets/cases.ts:12:3	perfectionist/sort-sets	unexpectedSetsOrder	Expected "a" to come before "b".	fix	262	295	'a', // about a\n  'b', // about b	end	12	6
+tests/rules/perfectionist/sort-sets/cases.ts:18:3	perfectionist/sort-sets	unexpectedSetsOrder	Expected "a" to come before "b".	fix	312	351	/* above a */\n  'a',\n  // above b\n  'b'	end	18	6
+tests/rules/perfectionist/sort-sets/cases.ts:22:3	perfectionist/sort-sets	unexpectedSetsOrder	Expected "a" to come before "b".	fix	369	394	'a',\n  'b', /* after b */	end	22	6
+tests/rules/perfectionist/sort-sets/cases.ts:24:17	perfectionist/sort-sets	unexpectedSetsOrder	Expected "a" to come before "b".	fix	408	418	'a', , 'b'	end	24	20
+tests/rules/perfectionist/sort-sets/cases.ts:25:18	perfectionist/sort-sets	unexpectedSetsOrder	Expected "a" to come before "b".	fix	431	443	('a'), ('b')	end	25	21
+tests/rules/perfectionist/sort-sets/cases.ts:26:16	perfectionist/sort-sets	unexpectedSetsOrder	Expected "false" to come before "true".	fix	456	488	/a/g, /b/, 1n, false, null, true	end	26	21
+tests/rules/perfectionist/sort-sets/cases.ts:26:29	perfectionist/sort-sets	unexpectedSetsOrder	Expected "1" to come before "null".	fix	456	488	/a/g, /b/, 1n, false, null, true	end	26	31
+tests/rules/perfectionist/sort-sets/cases.ts:26:33	perfectionist/sort-sets	unexpectedSetsOrder	Expected "/b/" to come before "1".	fix	456	488	/a/g, /b/, 1n, false, null, true	end	26	36
+tests/rules/perfectionist/sort-sets/cases.ts:26:38	perfectionist/sort-sets	unexpectedSetsOrder	Expected "/a/g" to come before "/b/".	fix	456	488	/a/g, /b/, 1n, false, null, true	end	26	42
+tests/rules/perfectionist/sort-sets/cases.ts:27:15	perfectionist/sort-sets	unexpectedSetsOrder	Expected "`a`" to come before "`b`".	fix	501	509	`a`, `b`	end	27	18
+tests/rules/perfectionist/sort-sets/cases.ts:28:15	perfectionist/sort-sets	unexpectedSetsOrder	Expected "o.a" to come before "o.b".	fix	522	530	o.a, o.b	end	28	18
+tests/rules/perfectionist/sort-sets/cases.ts:29:17	perfectionist/sort-sets	unexpectedSetsOrder	Expected "a a" to come before "a b".	fix	543	556	'a  a', 'a b'	end	29	23
+tests/rules/perfectionist/sort-sets/cases.ts:42:3	perfectionist/sort-sets	unexpectedSetsOrder	Expected "b" to come before "a".	fix	728	799	'b',\n  // eslint-disable-next-line perfectionist/sort-sets\n  'a',\n  'c'	end	42	6
+tests/rules/perfectionist/sort-sets/cases.ts:44:15	perfectionist/sort-sets	unexpectedSetsOrder	Expected "a" to come before "b".	fix	814	822	'a', 'b'	end	44	18
+tests/rules/perfectionist/sort-sets/cases.ts:49:24	perfectionist/sort-sets	unexpectedSetsOrder	Expected "a" to come before "b".	fix	960	968	'a', 'b'	end	49	27
+tests/rules/perfectionist/sort-sets/cases.ts:50:23	perfectionist/sort-sets	unexpectedSetsOrder	Expected "a" to come before "b".	fix	989	997	'a', 'b'	end	50	26
+tests/rules/perfectionist/sort-sets/configuration-if/cases.ts:4:15	perfectionist/sort-sets	unexpectedSetsGroupOrder	Expected "g" (g) to come before "b" (b).	fix	108	121	'r', 'g', 'b'	end	4	18
+tests/rules/perfectionist/sort-sets/configuration-if/cases.ts:4:20	perfectionist/sort-sets	unexpectedSetsGroupOrder	Expected "r" (r) to come before "g" (g).	fix	108	121	'r', 'g', 'b'	end	4	23
+tests/rules/perfectionist/sort-sets/configuration-if/cases.ts:5:15	perfectionist/sort-sets	unexpectedSetsOrder	Expected "b" to come before "a".	fix	134	147	'c', 'b', 'a'	end	5	18
+tests/rules/perfectionist/sort-sets/configuration-if/cases.ts:5:20	perfectionist/sort-sets	unexpectedSetsOrder	Expected "c" to come before "b".	fix	134	147	'c', 'b', 'a'	end	5	23
+tests/rules/perfectionist/sort-sets/custom/cases.ts:4:15	perfectionist/sort-sets	unexpectedSetsOrder	Expected "b" to come before "a".	fix	108	121	'c', 'b', 'a'	end	4	18
+tests/rules/perfectionist/sort-sets/custom/cases.ts:4:20	perfectionist/sort-sets	unexpectedSetsOrder	Expected "c" to come before "b".	fix	108	121	'c', 'b', 'a'	end	4	23
+tests/rules/perfectionist/sort-sets/custom/cases.ts:5:22	perfectionist/sort-sets	unexpectedSetsOrder	Expected "a" to come before "aa".	fix	134	149	'a', 'ab', 'aa'	end	5	25
+tests/rules/perfectionist/sort-sets/custom/cases.ts:6:15	perfectionist/sort-sets	unexpectedSetsOrder	Expected "c" to come before "x".	fix	162	170	'c', 'x'	end	6	18
+tests/rules/perfectionist/sort-sets/fallback/cases.ts:4:16	perfectionist/sort-sets	unexpectedSetsOrder	Expected "b" to come before "aa".	fix	108	128	'b', 'a', 'bb', 'aa'	end	4	19
+tests/rules/perfectionist/sort-sets/group-overrides/cases.ts:6:3	perfectionist/sort-sets	unexpectedSetsOrder	Expected "top10" to come before "top1".	fix	111	152	'top10',\n  'top2',\n  'top1',\n\n  'a',\n  'b'	end	6	10
+tests/rules/perfectionist/sort-sets/group-overrides/cases.ts:8:3	perfectionist/sort-sets	missedSpacingBetweenSetsMembers	Missed spacing between "top2" and "b".	fix	111	152	'top10',\n  'top2',\n  'top1',\n\n  'a',\n  'b'	end	8	6
+tests/rules/perfectionist/sort-sets/group-overrides/cases.ts:9:3	perfectionist/sort-sets	unexpectedSetsOrder	Expected "a" to come before "b".	fix	111	152	'top10',\n  'top2',\n  'top1',\n\n  'a',\n  'b'	end	9	6
+tests/rules/perfectionist/sort-sets/groups/cases.ts:6:3	perfectionist/sort-sets	unexpectedSetsGroupOrder	Expected "topB" (top) to come before "b" (literal).	fix	111	141	'topA',\n  'topB',\n\n  'a',\n  'b'	end	6	9
+tests/rules/perfectionist/sort-sets/groups/cases.ts:7:3	perfectionist/sort-sets	missedSpacingBetweenSetsMembers	Missed spacing between "topB" and "a".	fix	111	141	'topA',\n  'topB',\n\n  'a',\n  'b'	end	7	6
+tests/rules/perfectionist/sort-sets/groups/cases.ts:8:3	perfectionist/sort-sets	unexpectedSetsGroupOrder	Expected "topA" (top) to come before "a" (literal).	fix	111	141	'topA',\n  'topB',\n\n  'a',\n  'b'	end	8	9
+tests/rules/perfectionist/sort-sets/groups/cases.ts:9:3	perfectionist/sort-sets	missedSpacingBetweenSetsMembers	Missed spacing between "topA" and "zEnd".	fix	111	141	'topA',\n  'topB',\n\n  'a',\n  'b'	end	9	9
+tests/rules/perfectionist/sort-sets/groups/cases.ts:20:3	perfectionist/sort-sets	missedSpacingBetweenSetsMembers	Missed spacing between "topA" and "a".	fix	218	231	,\n\n  'a',\n\n  	end	20	6
+tests/rules/perfectionist/sort-sets/groups/cases.ts:23:3	perfectionist/sort-sets	extraSpacingBetweenSetsMembers	Extra spacing between "a" and "last".	fix	218	231	,\n\n  'a',\n\n  	end	23	9
+tests/rules/perfectionist/sort-sets/groups/cases.ts:25:18	perfectionist/sort-sets	missedSpacingBetweenSetsMembers	Missed spacing between "topA" and "a".	fix	258	260	, \n\n	end	25	21
+tests/rules/perfectionist/sort-sets/groups/cases.ts:29:3	perfectionist/sort-sets	extraSpacingBetweenSetsMembers	Extra spacing between "topA" and "topB".	fix	285	290	,\n  	end	29	9
+tests/rules/perfectionist/sort-sets/line-length/cases.ts:4:15	perfectionist/sort-sets	unexpectedSetsOrder	Expected "bbb" to come before "a".	fix	108	124	'bbb', 'cc', 'a'	end	4	20
+tests/rules/perfectionist/sort-sets/line-length/cases.ts:5:13	perfectionist/sort-sets	unexpectedSetsOrder	Expected "bbb" to come before "a".	fix	137	147	bbb, cc, a	end	5	16
+tests/rules/perfectionist/sort-sets/natural-desc/cases.ts:4:19	perfectionist/sort-sets	unexpectedSetsOrder	Expected "item2" to come before "item1".	fix	108	134	'item10', 'item2', 'item1'	end	4	26
+tests/rules/perfectionist/sort-sets/natural-desc/cases.ts:4:28	perfectionist/sort-sets	unexpectedSetsOrder	Expected "item10" to come before "item2".	fix	108	134	'item10', 'item2', 'item1'	end	4	36
+tests/rules/perfectionist/sort-sets/natural-desc/cases.ts:5:15	perfectionist/sort-sets	unexpectedSetsOrder	Expected "B" to come before "a".	fix	147	160	'B', 'b', 'a'	end	5	18
+tests/rules/perfectionist/sort-sets/natural/cases.ts:4:20	perfectionist/sort-sets	unexpectedSetsOrder	Expected "item2" to come before "item10".	fix	108	134	'item1', 'item2', 'item10'	end	4	27
+tests/rules/perfectionist/sort-sets/natural/cases.ts:4:29	perfectionist/sort-sets	unexpectedSetsOrder	Expected "item1" to come before "item2".	fix	108	134	'item1', 'item2', 'item10'	end	4	36
+tests/rules/perfectionist/sort-sets/natural/cases.ts:5:18	perfectionist/sort-sets	unexpectedSetsOrder	Expected "a2b" to come before "a10b".	fix	147	167	'a1c', 'a2b', 'a10b'	end	5	23
+tests/rules/perfectionist/sort-sets/natural/cases.ts:5:25	perfectionist/sort-sets	unexpectedSetsOrder	Expected "a1c" to come before "a2b".	fix	147	167	'a1c', 'a2b', 'a10b'	end	5	30
+tests/rules/perfectionist/sort-sets/natural/cases.ts:6:27	perfectionist/sort-sets	unexpectedSetsOrder	Expected "x01" to come before "x1.25".	fix	180	202	'x01', 'x1.5', 'x1.25'	end	6	32
+tests/rules/perfectionist/sort-sets/natural/cases.ts:7:16	perfectionist/sort-sets	unexpectedSetsOrder	Expected "a10" to come before "B2".	fix	215	232	'a9', 'a10', 'B2'	end	7	21
+tests/rules/perfectionist/sort-sets/natural/cases.ts:7:23	perfectionist/sort-sets	unexpectedSetsOrder	Expected "a9" to come before "a10".	fix	215	232	'a9', 'a10', 'B2'	end	7	27
+tests/rules/perfectionist/sort-sets/natural/cases.ts:8:18	perfectionist/sort-sets	unexpectedSetsOrder	Expected "0x9" to come before "0x10".	fix	245	263	'0x9', '9', '0x10'	end	8	23
+tests/rules/perfectionist/sort-sets/natural/cases.ts:9:24	perfectionist/sort-sets	unexpectedSetsOrder	Expected "2020-01-01" to come before "2020-01-02".	fix	276	302	'2020-01-01', '2020-01-02'	end	9	36
+tests/rules/perfectionist/sort-sets/natural/cases.ts:11:16	perfectionist/sort-sets	unexpectedSetsOrder	Expected "e10" to come before "é2".	fix	344	355	'e10', 'é2'	end	11	21
+tests/rules/perfectionist/sort-sets/newlines-inside/cases.ts:7:3	perfectionist/sort-sets	extraSpacingBetweenSetsMembers	Extra spacing between "topA" and "topB".	fix	117	139	,\n  'topB',\n  'a',\n\n  	end	7	9
+tests/rules/perfectionist/sort-sets/newlines-inside/cases.ts:9:3	perfectionist/sort-sets	missedSpacingBetweenSetsMembers	Missed spacing between "a" and "b".	fix	117	139	,\n  'topB',\n  'a',\n\n  	end	9	6
+tests/rules/perfectionist/sort-sets/partition-comment/cases.ts:6:3	perfectionist/sort-sets	unexpectedSetsOrder	Expected "a" to come before "b".	fix	111	145	'a',\n  'b',\n  // part\n  'c',\n  'd'	end	6	6
+tests/rules/perfectionist/sort-sets/partition-comment/cases.ts:9:3	perfectionist/sort-sets	unexpectedSetsOrder	Expected "c" to come before "d".	fix	111	145	'a',\n  'b',\n  // part\n  'c',\n  'd'	end	9	6
+tests/rules/perfectionist/sort-sets/partition-comment/cases.ts:17:3	perfectionist/sort-sets	unexpectedSetsOrder	Expected "b" to come before "c".	fix	202	212	'b',\n  'c'	end	17	6
+tests/rules/perfectionist/sort-sets/partition-list/cases.ts:11:3	perfectionist/sort-sets	unexpectedSetsOrder	Expected "a" to come before "b".	fix	140	158	// zz\n  'a',\n  'b'	end	11	6
+tests/rules/perfectionist/sort-sets/partition-newline/cases.ts:6:3	perfectionist/sort-sets	unexpectedSetsOrder	Expected "a" to come before "b".	fix	111	136	'a',\n  'b',\n\n  'c',\n  'd'	end	6	6
+tests/rules/perfectionist/sort-sets/partition-newline/cases.ts:9:3	perfectionist/sort-sets	unexpectedSetsOrder	Expected "c" to come before "d".	fix	111	136	'a',\n  'b',\n\n  'c',\n  'd'	end	9	6
+tests/rules/perfectionist/sort-sets/partition-newline/cases.ts:16:3	perfectionist/sort-sets	unexpectedSetsOrder	Expected "b" to come before "c".	fix	162	185	'b',\n  // comment\n  'c'	end	16	6
+tests/rules/perfectionist/sort-sets/partition-pattern/cases.ts:12:3	perfectionist/sort-sets	unexpectedSetsOrder	Expected "a" to come before "b".	fix	153	174	// other\n  'a',\n  'b'	end	12	6
+tests/rules/perfectionist/sort-sets/partition-pattern/cases.ts:17:3	perfectionist/sort-sets	unexpectedSetsOrder	Expected "a" to come before "b".	fix	192	215	/* part */\n  'a',\n  'b'	end	17	6
+tests/rules/perfectionist/sort-sets/remove-special/cases.ts:4:16	perfectionist/sort-sets	unexpectedSetsOrder	Expected "b" to come before "_c".	fix	108	123	'$a', 'b', '_c'	end	4	19
+tests/rules/perfectionist/sort-sets/remove-special/cases.ts:4:21	perfectionist/sort-sets	unexpectedSetsOrder	Expected "$a" to come before "b".	fix	108	123	'$a', 'b', '_c'	end	4	25
+tests/rules/perfectionist/sort-sets/remove-special/cases.ts:5:17	perfectionist/sort-sets	unexpectedSetsOrder	Expected "ab" to come before "a-c".	fix	136	147	'ab', 'a-c'	end	5	21
+tests/rules/perfectionist/sort-sets/subgroup-order/cases.ts:4:16	perfectionist/sort-sets	unexpectedSetsOrder	Expected "x2" to come before "y1".	fix	108	124	'x2', 'x1', 'y1'	end	4	20
+tests/rules/perfectionist/sort-sets/subgroup-order/cases.ts:5:15	perfectionist/sort-sets	unexpectedSetsGroupOrder	Expected "x1" (x) to come before "b" (literal).	fix	142	151	'x1', 'b'	end	5	19
+tests/rules/perfectionist/sort-sets/trim-special/cases.ts:4:16	perfectionist/sort-sets	unexpectedSetsOrder	Expected "b" to come before "_a".	fix	108	123	'$c', 'b', '_a'	end	4	19
+tests/rules/perfectionist/sort-sets/trim-special/cases.ts:4:21	perfectionist/sort-sets	unexpectedSetsOrder	Expected "$c" to come before "b".	fix	108	123	'$c', 'b', '_a'	end	4	25
+tests/rules/perfectionist/sort-sets/trim-special/cases.ts:5:17	perfectionist/sort-sets	unexpectedSetsOrder	Expected "ab" to come before "a-c".	fix	136	147	'ab', 'a-c'	end	5	21
+tests/rules/perfectionist/sort-sets/unsorted-groups/cases.ts:4:20	perfectionist/sort-sets	unexpectedSetsGroupOrder	Expected "xa" (a) to come before "y" (literal).	fix	108	128	'xa', 'ya', 'z', 'y'	end	4	24
