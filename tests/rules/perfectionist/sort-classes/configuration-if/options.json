@@ -1,0 +1,1 @@
+[{"useConfigurationIf": {"allNamesMatchPattern": "^x"}, "order": "desc"}, {"useConfigurationIf": {"matchesAstSelector": "ClassDeclaration[id.name=\"Selected\"] > ClassBody"}, "type": "line-length"}, {}]

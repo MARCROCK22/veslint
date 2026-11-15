@@ -1663,3 +1663,44 @@ veslint	sort-exports/r0/v10	locales: zh-CN, which veslint does not collate
 veslint	sort-exports/r0/v30	locales: zh-CN, which veslint does not collate
 veslint	sort-exports/r0/v60	the alphabet has lone surrogates, which veslint's JSON reader refuses
 veslint	sort-exports/r0/i119	the alphabet has lone surrogates, which veslint's JSON reader refuses
+# perfectionist/sort-classes (P2): as for sort-array-includes; r2 marks a class element as unknown with a
+# parser of the test (parserOptions.elementToMarkAsUnknown), which neither tool has.
+eslint	sort-classes/r1/i346	disables rule-to-test/sort-classes, the name the tester gives the rule
+veslint	sort-classes/r1/i346	disables rule-to-test/sort-classes, the name the tester gives the rule
+eslint	sort-classes/r1/i347	disables rule-to-test/sort-classes, the name the tester gives the rule
+veslint	sort-classes/r1/i347	disables rule-to-test/sort-classes, the name the tester gives the rule
+eslint	sort-classes/r1/i348	disables rule-to-test/sort-classes, the name the tester gives the rule
+veslint	sort-classes/r1/i348	disables rule-to-test/sort-classes, the name the tester gives the rule
+eslint	sort-classes/r1/i349	disables rule-to-test/sort-classes, the name the tester gives the rule
+veslint	sort-classes/r1/i349	disables rule-to-test/sort-classes, the name the tester gives the rule
+eslint	sort-classes/r1/i350	disables rule-to-test/sort-classes, the name the tester gives the rule
+veslint	sort-classes/r1/i350	disables rule-to-test/sort-classes, the name the tester gives the rule
+eslint	sort-classes/r1/i351	disables rule-to-test/sort-classes, the name the tester gives the rule
+veslint	sort-classes/r1/i351	disables rule-to-test/sort-classes, the name the tester gives the rule
+eslint	sort-classes/r1/i353	disables rule-to-test/sort-classes, the name the tester gives the rule
+veslint	sort-classes/r1/i353	disables rule-to-test/sort-classes, the name the tester gives the rule
+eslint	sort-classes/r2/v0	a parser of the test marks a class element as unknown
+veslint	sort-classes/r2/v0	a parser of the test marks a class element as unknown
+eslint	sort-classes/r2/i0	a parser of the test marks a class element as unknown
+veslint	sort-classes/r2/i0	a parser of the test marks a class element as unknown
+veslint	sort-classes/r1/v148	locales: zh-CN, which veslint does not collate
+veslint	sort-classes/r1/v226	locales: zh-CN, which veslint does not collate
+veslint	sort-classes/r1/i302	the alphabet has lone surrogates, which veslint's JSON reader refuses
+veslint	sort-classes/r1/i303	the alphabet has lone surrogates, which veslint's JSON reader refuses
+veslint	sort-classes/r1/v306	the alphabet has lone surrogates, which veslint's JSON reader refuses
+veslint	sort-classes/r1/v307	the alphabet has lone surrogates, which veslint's JSON reader refuses
+# perfectionist/sort-classes: tree-sitter's grammar does not parse `abstract override` before a field (a syntax
+# error), nor an index signature without a type (`[k: string];`, which TypeScript parses with an error), and reads
+# the computed field `[key in O]` as an index signature.
+veslint	sort-classes/r1/i1	tree-sitter's grammar: `abstract override` before a field is a syntax error
+veslint	sort-classes/r1/i27	tree-sitter's grammar: `abstract override` before a field is a syntax error
+veslint	sort-classes/r1/i126	tree-sitter's grammar: `abstract override` before a field is a syntax error
+veslint	sort-classes/r1/i152	tree-sitter's grammar: `abstract override` before a field is a syntax error
+veslint	sort-classes/r1/i215	tree-sitter's grammar: `abstract override` before a field is a syntax error
+veslint	sort-classes/r1/i241	tree-sitter's grammar: `abstract override` before a field is a syntax error
+veslint	sort-classes/r1/i39	tree-sitter's grammar: an index signature without a type (`[k: string];`) is a syntax error
+veslint	sort-classes/r1/i164	tree-sitter's grammar: an index signature without a type (`[k: string];`) is a syntax error
+veslint	sort-classes/r1/i253	tree-sitter's grammar: an index signature without a type (`[k: string];`) is a syntax error
+veslint	sort-classes/r1/i37	tree-sitter reads the computed field `[key in O]` as an index signature
+veslint	sort-classes/r1/i162	tree-sitter reads the computed field `[key in O]` as an index signature
+veslint	sort-classes/r1/i251	tree-sitter reads the computed field `[key in O]` as an index signature

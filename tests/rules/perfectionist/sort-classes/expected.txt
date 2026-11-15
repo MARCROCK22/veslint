@@ -1,0 +1,81 @@
+tests/rules/perfectionist/sort-classes/cases.ts:7:3	perfectionist/sort-classes	unexpectedClassesGroupOrder	Expected "b" (property) to come before "method" (method).
+tests/rules/perfectionist/sort-classes/cases.ts:8:3	perfectionist/sort-classes	unexpectedClassesOrder	Expected "a" to come before "b".
+tests/rules/perfectionist/sort-classes/cases.ts:11:3	perfectionist/sort-classes	unexpectedClassesGroupOrder	Expected "protectedProperty" (protected-property) to come before "staticMethod" (static-method).
+tests/rules/perfectionist/sort-classes/cases.ts:13:3	perfectionist/sort-classes	unexpectedClassesGroupOrder	Expected "staticProperty" (static-property) to come before "privateProperty" (private-property).
+tests/rules/perfectionist/sort-classes/cases.ts:14:3	perfectionist/sort-classes	unexpectedClassesGroupOrder	Expected "[key: string]" (index-signature) to come before "staticProperty" (static-property).
+tests/rules/perfectionist/sort-classes/cases.ts:23:3	perfectionist/sort-classes	unexpectedClassesGroupOrder	Expected "auto" (accessor-property) to come before "#secret" (private-property).
+tests/rules/perfectionist/sort-classes/cases.ts:26:3	perfectionist/sort-classes	unexpectedClassesGroupOrder	Expected "protectedMethod" (protected-method) to come before "privateMethod" (private-method).
+tests/rules/perfectionist/sort-classes/cases.ts:33:3	perfectionist/sort-classes	unexpectedClassesOrder	Expected "a" to come before "b".
+tests/rules/perfectionist/sort-classes/cases.ts:39:3	perfectionist/sort-classes	unexpectedClassesDependencyOrder	Expected dependency "c" to come before "a".
+tests/rules/perfectionist/sort-classes/cases.ts:41:3	perfectionist/sort-classes	unexpectedClassesDependencyOrder	Expected dependency "e" to come before "d".
+tests/rules/perfectionist/sort-classes/cases.ts:45:3	perfectionist/sort-classes	unexpectedClassesOrder	Expected "a" to come before "b".
+tests/rules/perfectionist/sort-classes/cases.ts:46:3	perfectionist/sort-classes	unexpectedClassesDependencyOrder	Expected dependency "c" to come before "b".
+tests/rules/perfectionist/sort-classes/cases.ts:52:3	perfectionist/sort-classes	unexpectedClassesGroupOrder	Expected "a" (property) to come before "b" (function-property).
+tests/rules/perfectionist/sort-classes/cases.ts:53:3	perfectionist/sort-classes	unexpectedClassesDependencyOrder	Expected dependency "c" to come before "a".
+tests/rules/perfectionist/sort-classes/cases.ts:57:3	perfectionist/sort-classes	unexpectedClassesOrder	Expected "a" to come before "b".
+tests/rules/perfectionist/sort-classes/cases.ts:61:3	perfectionist/sort-classes	unexpectedClassesDependencyOrder	Expected dependency "a" to come before "c".
+tests/rules/perfectionist/sort-classes/cases.ts:69:3	perfectionist/sort-classes	unexpectedClassesOrder	Expected "a" to come before "b".
+tests/rules/perfectionist/sort-classes/cases.ts:73:3	perfectionist/sort-classes	unexpectedClassesGroupOrder	Expected "a" (property) to come before "b" (method).
+tests/rules/perfectionist/sort-classes/cases.ts:75:3	perfectionist/sort-classes	unexpectedClassesGroupOrder	Expected "d" (private-property) to come before "c" (protected-method).
+tests/rules/perfectionist/sort-classes/cases.ts:79:3	perfectionist/sort-classes	unexpectedClassesOrder	Expected "a" to come before "b".
+tests/rules/perfectionist/sort-classes/cases.ts:86:3	perfectionist/sort-classes	unexpectedClassesGroupOrder	Expected "c" (property) to come before "#a" (private-property).
+tests/rules/perfectionist/sort-classes/cases.ts:90:3	perfectionist/sort-classes	unexpectedClassesOrder	Expected "a" to come before "b".
+tests/rules/perfectionist/sort-classes/cases.ts:94:3	perfectionist/sort-classes	unexpectedClassesOrder	Expected "a" to come before "b".
+tests/rules/perfectionist/sort-classes/cases.ts:99:3	perfectionist/sort-classes	unexpectedClassesOrder	Expected "a" to come before "b".
+tests/rules/perfectionist/sort-classes/cases.ts:100:3	perfectionist/sort-classes	unexpectedClassesOrder	Expected "`c`" to come before "a".
+tests/rules/perfectionist/sort-classes/cases.ts:105:3	perfectionist/sort-classes	unexpectedClassesOrder	Expected "a" to come before "b".
+tests/rules/perfectionist/sort-classes/cases.ts:106:3	perfectionist/sort-classes	unexpectedClassesDependencyOrder	Expected dependency "c" to come before "a".
+tests/rules/perfectionist/sort-classes/cases.ts:111:3	perfectionist/sort-classes	unexpectedClassesOrder	Expected "b" to come before "c".
+tests/rules/perfectionist/sort-classes/cases.ts:117:3	perfectionist/sort-classes	unexpectedClassesGroupOrder	Expected "d" (property) to come before "a" (method).
+tests/rules/perfectionist/sort-classes/cases.ts:118:3	perfectionist/sort-classes	unexpectedClassesOrder	Expected "c" to come before "d".
+tests/rules/perfectionist/sort-classes/cases.ts:122:3	perfectionist/sort-classes	unexpectedClassesOrder	Expected "e" to come before "toString".
+tests/rules/perfectionist/sort-classes/configuration-if/cases.ts:3:3	perfectionist/sort-classes	unexpectedClassesOrder	Expected "xb" to come before "xa".
+tests/rules/perfectionist/sort-classes/configuration-if/cases.ts:7:3	perfectionist/sort-classes	unexpectedClassesOrder	Expected "b" to come before "aaaa".
+tests/rules/perfectionist/sort-classes/configuration-if/cases.ts:11:3	perfectionist/sort-classes	unexpectedClassesOrder	Expected "a" to come before "b".
+tests/rules/perfectionist/sort-classes/custom-groups/cases.ts:4:3	perfectionist/sort-classes	unexpectedClassesOrder	Expected "value" to come before "zeta".
+tests/rules/perfectionist/sort-classes/custom-groups/cases.ts:7:3	perfectionist/sort-classes	unexpectedClassesGroupOrder	Expected "method" (method) to come before "value" (matchers).
+tests/rules/perfectionist/sort-classes/custom-groups/cases.ts:8:3	perfectionist/sort-classes	unexpectedClassesGroupOrder	Expected "onClick" (callbacks) to come before "method" (method).
+tests/rules/perfectionist/sort-classes/custom-groups/cases.ts:9:3	perfectionist/sort-classes	missedSpacingBetweenClassMembers	Missed spacing between "onClick" and "MAX".
+tests/rules/perfectionist/sort-classes/custom-groups/cases.ts:10:3	perfectionist/sort-classes	unexpectedClassesGroupOrder	Expected "map" (value) to come before "MAX" (readonlyStatic).
+tests/rules/perfectionist/sort-classes/custom-groups/cases.ts:11:3	perfectionist/sort-classes	unexpectedClassesGroupOrder	Expected "name" (decorated) to come before "map" (value).
+tests/rules/perfectionist/sort-classes/custom-groups/cases.ts:12:3	perfectionist/sort-classes	missedSpacingBetweenClassMembers	Missed spacing between "name" and "other".
+tests/rules/perfectionist/sort-classes/custom/cases.ts:3:3	perfectionist/sort-classes	unexpectedClassesOrder	Expected "b" to come before "a".
+tests/rules/perfectionist/sort-classes/custom/cases.ts:4:3	perfectionist/sort-classes	unexpectedClassesOrder	Expected "c" to come before "b".
+tests/rules/perfectionist/sort-classes/desc-case/cases.ts:3:3	perfectionist/sort-classes	unexpectedClassesOrder	Expected "B" to come before "a".
+tests/rules/perfectionist/sort-classes/desc-case/cases.ts:5:3	perfectionist/sort-classes	unexpectedClassesOrder	Expected "_c" to come before "b".
+tests/rules/perfectionist/sort-classes/fallback-sort/cases.ts:3:3	perfectionist/sort-classes	unexpectedClassesOrder	Expected "c" to come before "a".
+tests/rules/perfectionist/sort-classes/ignore-callbacks/cases.ts:8:3	perfectionist/sort-classes	unexpectedClassesDependencyOrder	Expected dependency "d" to come before "b".
+tests/rules/perfectionist/sort-classes/ignore-callbacks/cases.ts:11:3	perfectionist/sort-classes	unexpectedClassesDependencyOrder	Expected dependency "g" to come before "f".
+tests/rules/perfectionist/sort-classes/line-length/cases.ts:3:3	perfectionist/sort-classes	unexpectedClassesOrder	Expected "bbbbbb" to come before "a".
+tests/rules/perfectionist/sort-classes/line-length/cases.ts:6:3	perfectionist/sort-classes	unexpectedClassesOrder	Expected "longerMethod" to come before "method".
+tests/rules/perfectionist/sort-classes/locales-trim/cases.ts:3:3	perfectionist/sort-classes	unexpectedClassesOrder	Expected "a" to come before "_b".
+tests/rules/perfectionist/sort-classes/locales-trim/cases.ts:5:3	perfectionist/sort-classes	unexpectedClassesOrder	Expected "B" to come before "$c".
+tests/rules/perfectionist/sort-classes/natural/cases.ts:3:3	perfectionist/sort-classes	unexpectedClassesOrder	Expected "item2" to come before "item10".
+tests/rules/perfectionist/sort-classes/natural/cases.ts:4:3	perfectionist/sort-classes	unexpectedClassesOrder	Expected "item1" to come before "item2".
+tests/rules/perfectionist/sort-classes/newlines/cases.ts:4:3	perfectionist/sort-classes	unexpectedClassesOrder	Expected "a" to come before "b".
+tests/rules/perfectionist/sort-classes/newlines/cases.ts:4:3	perfectionist/sort-classes	extraSpacingBetweenClassMembers	Extra spacing between "b" and "a".
+tests/rules/perfectionist/sort-classes/newlines/cases.ts:9:3	perfectionist/sort-classes	missedSpacingBetweenClassMembers	Missed spacing between "d" and "c".
+tests/rules/perfectionist/sort-classes/no-unknown/cases.ts:3:3	perfectionist/sort-classes	unexpectedClassesGroupOrder	Expected "method" (unknown) to come before "c" (property).
+tests/rules/perfectionist/sort-classes/no-unknown/cases.ts:5:3	perfectionist/sort-classes	unexpectedClassesOrder	Expected "a" to come before "b".
+tests/rules/perfectionist/sort-classes/old-dependencies/cases.ts:5:3	perfectionist/sort-classes	unexpectedClassesDependencyOrder	Expected dependency "b" to come before "a".
+tests/rules/perfectionist/sort-classes/old-dependencies/cases.ts:6:3	perfectionist/sort-classes	unexpectedClassesDependencyOrder	Expected dependency "c" to come before "a".
+tests/rules/perfectionist/sort-classes/old-dependencies/cases.ts:10:3	perfectionist/sort-classes	unexpectedClassesDependencyOrder	Expected dependency "g" to come before "f".
+tests/rules/perfectionist/sort-classes/old-dependencies/cases.ts:12:3	perfectionist/sort-classes	unexpectedClassesGroupOrder	Expected "i" (property) to come before "h" (function-property).
+tests/rules/perfectionist/sort-classes/old-dependencies/cases.ts:14:3	perfectionist/sort-classes	unexpectedClassesDependencyOrder	Expected dependency "k" to come before "j".
+tests/rules/perfectionist/sort-classes/old-dependencies/cases.ts:15:3	perfectionist/sort-classes	unexpectedClassesDependencyOrder	Expected dependency "l" to come before "j".
+tests/rules/perfectionist/sort-classes/old-dependencies/cases.ts:16:3	perfectionist/sort-classes	unexpectedClassesGroupOrder	Expected "m" (static-property) to come before "l" (property).
+tests/rules/perfectionist/sort-classes/old-dependencies/cases.ts:17:3	perfectionist/sort-classes	unexpectedClassesDependencyOrder	Expected dependency "n" to come before "m".
+tests/rules/perfectionist/sort-classes/old-dependencies/cases.ts:21:3	perfectionist/sort-classes	unexpectedClassesDependencyOrder	Expected dependency "o" to come before "static".
+tests/rules/perfectionist/sort-classes/overload-signatures-ignore/cases.ts:11:3	perfectionist/sort-classes	unexpectedClassesOrder	Expected "a" to come before "b".
+tests/rules/perfectionist/sort-classes/overload-signatures/cases.ts:4:3	perfectionist/sort-classes	extraSpacingBetweenClassMembers	Extra spacing between "b" and "b".
+tests/rules/perfectionist/sort-classes/overload-signatures/cases.ts:6:3	perfectionist/sort-classes	unexpectedClassesOrder	Expected "a" to come before "b".
+tests/rules/perfectionist/sort-classes/overload-signatures/cases.ts:13:3	perfectionist/sort-classes	extraSpacingBetweenClassMembers	Extra spacing between "a" and "b".
+tests/rules/perfectionist/sort-classes/partition-comment-object/cases.ts:7:3	perfectionist/sort-classes	unexpectedClassesOrder	Expected "c" to come before "d".
+tests/rules/perfectionist/sort-classes/partition-comment/cases.ts:3:3	perfectionist/sort-classes	unexpectedClassesOrder	Expected "a" to come before "b".
+tests/rules/perfectionist/sort-classes/partition-comment/cases.ts:6:3	perfectionist/sort-classes	unexpectedClassesOrder	Expected "c" to come before "d".
+tests/rules/perfectionist/sort-classes/partition-comment/cases.ts:9:3	perfectionist/sort-classes	unexpectedClassesOrder	Expected "e" to come before "f".
+tests/rules/perfectionist/sort-classes/partition-newline/cases.ts:3:3	perfectionist/sort-classes	unexpectedClassesOrder	Expected "a" to come before "b".
+tests/rules/perfectionist/sort-classes/partition-newline/cases.ts:6:3	perfectionist/sort-classes	unexpectedClassesOrder	Expected "c" to come before "d".
+tests/rules/perfectionist/sort-classes/subgroup-order/cases.ts:3:3	perfectionist/sort-classes	unexpectedClassesOrder	Expected "a" to come before "b".
+tests/rules/perfectionist/sort-classes/subgroup-order/cases.ts:5:3	perfectionist/sort-classes	unexpectedClassesGroupOrder	Expected "c" (property) to come before "constructor" (constructor).
+tests/rules/perfectionist/sort-classes/unsorted/cases.ts:4:3	perfectionist/sort-classes	unexpectedClassesGroupOrder	Expected "d" (method) to come before "a" (property).
