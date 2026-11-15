@@ -873,12 +873,12 @@ fn (mut c Checker) nuea_enum_types(mut s NueaState, typ TypeResponse) ![]TypeRes
 // nuea_describe_enum_types ports describeEnumTypes: the sorted names of the enums of the types,
 // their type arguments, element types and properties.
 fn (mut c Checker) nuea_describe_enum_types(mut s NueaState, types []TypeResponse) !string {
-	mut names := []string{}
+	mut this_names := []string{}
 	mut visited := map[int]bool{}
 	for typ in types {
-		c.nuea_describe_visit(mut s, typ, mut visited, mut names)!
+		c.nuea_describe_visit(mut s, typ, mut visited, mut this_names)!
 	}
-	names.sort_with_compare(fn (a &string, b &string) int {
+	this_names.sort_with_compare(fn (a &string, b &string) int {
 		return if utf16_less(*a, *b) {
 			-1
 		} else if utf16_less(*b, *a) {
@@ -887,10 +887,10 @@ fn (mut c Checker) nuea_describe_enum_types(mut s NueaState, types []TypeRespons
 			0
 		}
 	})
-	return names.map("'${it}'").join(', ')
+	return this_names.map("'${it}'").join(', ')
 }
 
-fn (mut c Checker) nuea_describe_visit(mut s NueaState, typ TypeResponse, mut visited map[int]bool, mut names []string) ! {
+fn (mut c Checker) nuea_describe_visit(mut s NueaState, typ TypeResponse, mut visited map[int]bool, mut this_names []string) ! {
 	if typ.is_null() {
 		return
 	}
@@ -901,19 +901,19 @@ fn (mut c Checker) nuea_describe_visit(mut s NueaState, typ TypeResponse, mut vi
 	visited[constrained.id] = true
 	for enum_type in c.nuea_enum_types(mut s, constrained)! {
 		name := c.type_string(enum_type)!
-		if name !in names {
-			names << name
+		if name !in this_names {
+			this_names << name
 		}
 	}
 	for argument in c.nuea_type_arguments(constrained)! {
-		c.nuea_describe_visit(mut s, argument, mut visited, mut names)!
+		c.nuea_describe_visit(mut s, argument, mut visited, mut this_names)!
 	}
 	element := c.number_index_type(constrained)!
 	if !element.is_null() {
-		c.nuea_describe_visit(mut s, element, mut visited, mut names)!
+		c.nuea_describe_visit(mut s, element, mut visited, mut this_names)!
 	}
 	for property in c.properties(constrained)! {
-		c.nuea_describe_visit(mut s, c.symbol_type(property.id)!, mut visited, mut names)!
+		c.nuea_describe_visit(mut s, c.symbol_type(property.id)!, mut visited, mut this_names)!
 	}
 }
 

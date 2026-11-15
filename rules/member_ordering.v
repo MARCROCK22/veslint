@@ -377,7 +377,7 @@ fn mord_is_evaluated_later(t &estree.EsTree, node int, initializer int) bool {
 
 // mord_immediate_this_property_names ports collectImmediateThisPropertyNames.
 fn mord_immediate_this_property_names(t &estree.EsTree, initializer int) []string {
-	mut names := []string{}
+	mut this_names := []string{}
 	mut stack := [initializer]
 	for stack.len > 0 {
 		node := stack.pop()
@@ -391,12 +391,12 @@ fn mord_immediate_this_property_names(t &estree.EsTree, initializer int) []strin
 				t.string_of(property, .name)
 			}
 			if n := name {
-				names << n
+				this_names << n
 			}
 		}
 		stack << t.children(node)
 	}
-	return names
+	return this_names
 }
 
 // mord_is_blocked_by_earlier_member_references ports isBlockedByEarlierMemberReferences.
