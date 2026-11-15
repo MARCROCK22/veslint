@@ -417,6 +417,7 @@ if command -v bun > /dev/null && [[ -d build/eval/spider-byte/node_modules/eslin
 		export const r = y == 2;
 		export const k = 1; // eslint-disable-line no-var
 	EOF
+	echo '{ "compilerOptions": { "strict": true, "target": "es2022", "module": "esnext" } }' > "$TMP/rule-config/tsconfig.json"
 	cp "$TMP/rule-config/a.ts" "$TMP/rule-config/a.orig"
 	rule_config() { (cd "$TMP/rule-config" && VESLINT_ESLINT_DIR="$OLDPWD/build/eval/spider-byte" "$OLDPWD/veslint" "$@" 2>&1); }
 	if [[ "$(rule_config --rule eqeqeq a.ts)" == $'a.ts:7:20\teqeqeq\tunexpected\tExpected \'===\' and instead saw \'==\'.\n1 problems in 1 files' ]] &&
@@ -533,7 +534,7 @@ for dir in "${rule_dirs[@]}"; do
 	: > "$TMP/per-rule.$jobs_started.err"
 	(
 		code=0
-		veslint_batched "$TMP/per-rule.$jobs_started.out" "$TMP/per-rule.$jobs_started.err" --rule "${dir#tests/rules/}" -- "${all_cases[@]}" || code=$?
+		veslint_batched "$TMP/per-rule.$jobs_started.out" "$TMP/per-rule.$jobs_started.err" --rule "${dir#tests/rules/}" --no-config-lookup -- "${all_cases[@]}" || code=$?
 		echo "$code" > "$TMP/per-rule.$jobs_started.code"
 	) &
 	jobs_started=$((jobs_started + 1))
@@ -564,7 +565,7 @@ for ((n = 0; n < jobs_started; n++)); do
 	: > "$TMP/per-rule.$n.out"
 	: > "$TMP/per-rule.$n.err"
 	c=0
-	veslint_batched "$TMP/per-rule.$n.out" "$TMP/per-rule.$n.err" --rule "${dir#tests/rules/}" -- "${all_cases[@]}" || c=$?
+	veslint_batched "$TMP/per-rule.$n.out" "$TMP/per-rule.$n.err" --rule "${dir#tests/rules/}" --no-config-lookup -- "${all_cases[@]}" || c=$?
 	if run_failed "$c" "$TMP/per-rule.$n.err"; then
 		rerun_failed=1
 		echo "--rule ${dir#tests/rules/} failed twice (code $c):"

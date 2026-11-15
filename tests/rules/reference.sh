@@ -58,10 +58,35 @@ reference_in_groups() { # tag files...: reference_of on groups of consecutive fi
 # 26.13.0) stops matching an alternation in a regexp modifier group with the `u` flag at some point
 # of the run: `/^(?i:get|set)\p{Lu}/u` of naming-convention's regex fixture no longer matches
 # `SetÉtat`, which it matches in a new process (and in veslint).
-mapfile -t cases < <(find tests/rules -name cases.ts -o -name cases.tsx | sort)
+mapfile -t all_cases < <(find tests/rules -name cases.ts -o -name cases.tsx | sort)
+# ESLint's lines of a rule directory are kept in build/eslint-cache/reference under the key of its
+# files, this configuration and the versions of ESLint and its plugins (tests/rules/eslint_cache.mjs):
+# ESLint lints only the cases of the directories without them.
+REFERENCE_CACHE=build/eslint-cache/reference
+node tests/rules/eslint_cache.mjs plan tests/rules/eslint.reference.config.mjs tests/eslint_lines.py \
+	tests/rules/eslint_cache.mjs -- "${all_cases[@]}" > "$TMP/plan.tsv" || exit 2
+cases=()
+: > "$TMP/reference.cached"
+: > "$TMP/reference.fixes.cached"
+: > "$TMP/plan.linted"
+declare -A cached_dir=()
+while IFS=$'\t' read -r file dir key; do
+	if [[ -n $key && -n ${cached_dir[$dir]:-} ]]; then
+		continue
+	elif [[ -n $key && -f $REFERENCE_CACHE/$key.txt && -f $REFERENCE_CACHE/$key.fixes.txt ]]; then
+		cached_dir[$dir]=1
+		cat "$REFERENCE_CACHE/$key.txt" >> "$TMP/reference.cached"
+		cat "$REFERENCE_CACHE/$key.fixes.txt" >> "$TMP/reference.fixes.cached"
+	else
+		cases+=("$file")
+		printf '%s\t%s\t%s\n' "$file" "$dir" "$key" >> "$TMP/plan.linted"
+	fi
+done < "$TMP/plan.tsv"
+echo "ESLint lints ${#cases[@]} of the ${#all_cases[@]} fixtures (the others: $REFERENCE_CACHE)"
 mapfile -t seyfert_cases < <(printf '%s\n' "${cases[@]}" | grep '^tests/rules/seyfert/')
 mapfile -t ts_cases < <(printf '%s\n' "${cases[@]}" | grep '^tests/rules/@typescript-eslint/')
 mapfile -t core_cases < <(printf '%s\n' "${cases[@]}" | grep -v '^tests/rules/seyfert/\|^tests/rules/@typescript-eslint/')
+[[ ${#cases[@]} -gt 0 ]] || { seyfert_cases=(); ts_cases=(); core_cases=(); }
 reference_in_groups ts "${ts_cases[@]}"
 reference_in_groups core "${core_cases[@]}"
 reference_in_groups seyfert "${seyfert_cases[@]}"
@@ -70,10 +95,12 @@ if compgen -G "$TMP/eslint.*.failed" > /dev/null; then
 	cat "$TMP"/eslint.*.failed
 	exit 1
 fi
-find "$TMP" -maxdepth 1 -name 'reference.*.txt' ! -name '*.fixes.txt' -exec cat {} + > "$TMP/reference.all"
-find "$TMP" -maxdepth 1 -name 'reference.*.fixes.txt' -exec cat {} + > "$TMP/reference.fixes.all"
-mv "$TMP/reference.all" "$TMP/reference.txt"
-mv "$TMP/reference.fixes.all" "$TMP/reference.fixes.txt"
+find "$TMP" -maxdepth 1 -name 'reference.*.txt' ! -name '*.fixes.txt' -exec cat {} + > "$TMP/reference.linted"
+find "$TMP" -maxdepth 1 -name 'reference.*.fixes.txt' -exec cat {} + > "$TMP/reference.fixes.linted"
+node tests/rules/eslint_cache.mjs store "$REFERENCE_CACHE" .txt "$TMP/reference.linted" "$TMP/plan.linted" &&
+	node tests/rules/eslint_cache.mjs store "$REFERENCE_CACHE" .fixes.txt "$TMP/reference.fixes.linted" "$TMP/plan.linted" || exit 2
+cat "$TMP/reference.cached" "$TMP/reference.linted" > "$TMP/reference.txt"
+cat "$TMP/reference.fixes.cached" "$TMP/reference.fixes.linted" > "$TMP/reference.fixes.txt"
 fail=0
 # A rule's directory is tests/rules/<rule id>, the one with an expected.txt.
 mapfile -t rule_dirs < <(find tests/rules -name expected.txt | sed 's|/expected\.txt$||' | sort)
@@ -189,7 +216,7 @@ for json in tests/config-errors/*.json; do
 	fi
 done
 # Any other message (parse errors, a rule in another rule's file) is a failure.
-if grep -vP "^tests/rules/((?:@[^/]+/|seyfert/|unicorn/)?[^/]+)/(?:.+/)?cases\.tsx?:[0-9]+:[0-9]+\t\1\t" "$TMP/reference.txt" > "$TMP/others.txt"; then
+if grep -vP "^tests/rules/((?:@[^/]+/|seyfert/|unicorn/|perfectionist/|marcrock/)?[^/]+)/(?:.+/)?cases\.tsx?:[0-9]+:[0-9]+\t\1\t" "$TMP/reference.txt" > "$TMP/others.txt"; then
 	echo "FAIL   unexpected ESLint messages:"
 	cat "$TMP/others.txt"
 	fail=1

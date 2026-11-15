@@ -19,6 +19,8 @@ import fs from 'node:fs';
 import os from 'node:os';
 import path from 'node:path';
 import { createRequire } from 'node:module';
+import crypto from 'node:crypto';
+import { CACHE, enabled as cacheEnabled, hashTree, keyOf } from './eslint_cache.mjs';
 
 const ROOT = path.resolve(import.meta.dirname, '../..');
 const NM = path.join(ROOT, 'build/eval/spider-byte/node_modules');
@@ -246,11 +248,39 @@ const known = new Map(
     .map(([, id, reason]) => [id, reason]),
 );
 
+// A rule whose cases all give what its test expects is kept in build/eslint-cache/upstream under the
+// key of its upstream.json, the cases known.txt lists of it, the fixtures (without their
+// node_modules, which the lockfiles of the oracles stand for), this script and the versions of ESLint
+// and its plugins (tests/rules/eslint_cache.mjs): its results and its line come from there.
+const UPSTREAM_CACHE = path.join(CACHE, 'upstream');
+let fixturesHash = null;
+function upstreamKey(rule, text, data) {
+  if (!fixturesHash) {
+    const hash = crypto.createHash('sha256');
+    hashTree(hash, FIXTURES, rel => rel.split(path.sep).includes('node_modules'));
+    for (const script of ['tests/rules/upstream_eslint.mjs', 'tests/rules/eslint_cache.mjs']) hash.update(fs.readFileSync(path.join(ROOT, script)));
+    fixturesHash = hash.digest('hex');
+  }
+  const ids = new Set([...data.cases.map(c => c.id), ...(data.projects ?? []).map(p => p.id)]);
+  const listed = [...known].filter(([id]) => ids.has(id)).map(([id, reason]) => `${id}\t${reason}`).sort().join('\n');
+  return keyOf(fixturesHash, rule, text, listed);
+}
+
 let failed = false;
 let lastTestFile = null;
 for (const rule of ruleNames) {
-  const data = JSON.parse(fs.readFileSync(path.join(ROOT, 'tests/rules', rule, 'upstream.json'), 'utf8'));
+  const text = fs.readFileSync(path.join(ROOT, 'tests/rules', rule, 'upstream.json'), 'utf8');
+  const data = JSON.parse(text);
   const { cases } = data;
+  const key = cacheEnabled ? upstreamKey(rule, text, data) : '';
+  const cached = key ? path.join(UPSTREAM_CACHE, `${key}.json`) : '';
+  if (cached && fs.existsSync(cached)) {
+    const entry = JSON.parse(fs.readFileSync(cached, 'utf8'));
+    fs.mkdirSync(path.dirname(path.join(OUT, `${rule}.json`)), { recursive: true });
+    fs.writeFileSync(path.join(OUT, `${rule}.json`), JSON.stringify(entry.results));
+    console.log(entry.line);
+    continue;
+  }
   const results = [];
   const problems = [];
   let run = 0;
@@ -294,7 +324,13 @@ for (const rule of ruleNames) {
     console.log(`FAIL   ${rule}: ${problems.length} unexpected difference(s) from the upstream test in ${run} cases`);
     for (const p of problems) console.log(`  ${p.replaceAll('\n', '\n    ')}`);
   } else {
-    console.log(`ok     ${rule}: ${run} cases as the upstream test expects (known differences aside)`);
+    const line = `ok     ${rule}: ${run} cases as the upstream test expects (known differences aside)`;
+    console.log(line);
+    if (cached) {
+      fs.mkdirSync(UPSTREAM_CACHE, { recursive: true });
+      fs.writeFileSync(`${cached}.tmp`, JSON.stringify({ results, line }));
+      fs.renameSync(`${cached}.tmp`, cached);
+    }
   }
 }
 process.exit(failed ? 1 : 0);

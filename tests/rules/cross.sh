@@ -24,6 +24,29 @@ import json, os
 rules = sorted(os.path.relpath(d, 'tests/rules') for d, _, files in os.walk('tests/rules') if 'expected.txt' in files)
 print(json.dumps({'rules': {r: 'error' for r in rules}}))
 PY
+# ESLint's lines of a rule directory are kept in build/eslint-cache/cross under the key of its files,
+# the rules that run (rules.json), this configuration and the versions of ESLint and its plugins
+# (tests/rules/eslint_cache.mjs): ESLint lints only the cases of the directories without them.
+CROSS_CACHE=build/eslint-cache/cross
+all_cases=("${cases[@]}")
+node tests/rules/eslint_cache.mjs plan "$TMP/rules.json" tests/rules/eslint.cross.config.mjs tests/rules/cross_eslint.mjs \
+	tests/eslint_lines.py tests/rules/eslint_cache.mjs -- "${all_cases[@]}" > "$TMP/plan.tsv" || exit 2
+cases=()
+: > "$TMP/eslint.cached"
+: > "$TMP/plan.linted"
+declare -A cached_dir=()
+while IFS=$'\t' read -r file dir key; do
+	if [[ -n $key && -n ${cached_dir[$dir]:-} ]]; then
+		continue
+	elif [[ -n $key && -f $CROSS_CACHE/$key.txt ]]; then
+		cached_dir[$dir]=1
+		cat "$CROSS_CACHE/$key.txt" >> "$TMP/eslint.cached"
+	else
+		cases+=("$file")
+		printf '%s\t%s\t%s\n' "$file" "$dir" "$key" >> "$TMP/plan.linted"
+	fi
+done < "$TMP/plan.tsv"
+echo "ESLint lints ${#cases[@]} of the ${#all_cases[@]} fixtures (the others: $CROSS_CACHE)"
 # ESLint in JOBS processes at a time (the CPUs by default), each on a group of consecutive files
 # (the fixtures of a rule, with their tsconfig.json, stay together).
 JOBS=${JOBS:-$(nproc 2> /dev/null || echo 2)}
@@ -52,8 +75,10 @@ for k in "${!pids[@]}"; do
 done
 for k in "${!pids[@]}"; do
 	python3 tests/eslint_lines.py < "$TMP/eslint.$k.json"
-done | sort > "$TMP/eslint.txt"
-./veslint --config "$TMP/rules.json" "${cases[@]}" 2> "$TMP/veslint.err" | sort > "$TMP/veslint.txt"
+done > "$TMP/eslint.linted"
+node tests/rules/eslint_cache.mjs store "$CROSS_CACHE" .txt "$TMP/eslint.linted" "$TMP/plan.linted" || exit 2
+sort "$TMP/eslint.cached" "$TMP/eslint.linted" > "$TMP/eslint.txt"
+./veslint --config "$TMP/rules.json" "${all_cases[@]}" 2> "$TMP/veslint.err" | sort > "$TMP/veslint.txt"
 python3 - "$TMP" <<'PY'
 import collections, sys
 tmp = sys.argv[1]
