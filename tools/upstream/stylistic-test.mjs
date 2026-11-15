@@ -71,6 +71,8 @@ export function run(options) {
     rule: options.rule,
     mode: 'stylistic',
     lang,
+    // A language of a plugin of the run's configs (`test/x` of eol-last._unknown_.test.ts).
+    language: options.configs?.language,
     config: { languageOptions, settings: options.settings },
     tests: { valid: (options.valid ?? []).map(normalizeCase), invalid: (options.invalid ?? []).map(normalizeCase) },
     messages: {},

@@ -301,6 +301,7 @@ function normalize(run, raw, kind, index, prefix, source) {
   else if (out.parser === 'html' || out.parser === 'svelte') out.skip = `the ${out.parser} parser: not TypeScript`;
   else if (out.parser === 'babel-flow') out.skip = 'Flow (@babel/eslint-parser): not TypeScript';
   else if (source.stylistic && !['ts', 'js'].includes(run.lang)) out.skip = `the ${run.lang} language: not TypeScript`;
+  else if (source.stylistic && run.language) out.skip = `the ${run.language} language of the test's configs, not TypeScript`;
   else if (test.language) out.skip = `the ${test.language.name ?? test.language} language of ESLint, not TypeScript`;
   else if (!satisfies(test.dependencyConstraints)) out.skip = `dependencyConstraints ${JSON.stringify(test.dependencyConstraints)}`;
   assertPlain(out, id);

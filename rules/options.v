@@ -190,6 +190,7 @@ pub fn check_options(rule string, options []json2.Any) !bool {
 		stylistic_no_multi_spaces { snms_options(options)! }
 		stylistic_no_trailing_spaces { sntr_options(options)! }
 		stylistic_no_mixed_spaces_and_tabs { snmst_options(options)! }
+		stylistic_eol_last { seol_options(options)! }
 		else { return false }
 	}
 	return true

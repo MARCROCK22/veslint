@@ -1,0 +1,7 @@
+tests/rules/@stylistic/eol-last/always/cases.ts:3:20	@stylistic/eol-last	missing	Newline required at end of file but not found.
+tests/rules/@stylistic/eol-last/cases.ts:2:22	@stylistic/eol-last	missing	Newline required at end of file but not found.
+tests/rules/@stylistic/eol-last/ends-with-cr/cases.ts:2:1	@stylistic/eol-last	missing	Newline required at end of file but not found.
+tests/rules/@stylistic/eol-last/never-crlf/cases.ts:2:1	@stylistic/eol-last	unexpected	Newline not allowed at end of file.
+tests/rules/@stylistic/eol-last/never/cases.ts:3:1	@stylistic/eol-last	unexpected	Newline not allowed at end of file.
+tests/rules/@stylistic/eol-last/unix/cases.ts:1:20	@stylistic/eol-last	missing	Newline required at end of file but not found.
+tests/rules/@stylistic/eol-last/windows/cases.ts:1:25	@stylistic/eol-last	missing	Newline required at end of file but not found.
