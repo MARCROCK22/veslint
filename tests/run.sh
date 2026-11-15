@@ -504,24 +504,32 @@ for dir in "${rule_dirs[@]}"; do
 	jobs_started=$((jobs_started + 1))
 done
 wait
-# A run that failed (a timeout of tsgo under the load of the runs side by side) runs again alone,
-# so that its findings are not missing from the comparison; a second failure is reported.
+# A run that failed (a timeout of tsgo under the load of the runs side by side: veslint reports it,
+# goes on with the other files and exits with 1 when it found problems) runs again alone, so that
+# its findings are not missing from the comparison; a second failure is reported.
+run_failed() { # code err
+	[[ $1 -gt 1 ]] || grep -q ': timeout: ' "$2"
+}
 rerun_failed=0
 code=$(< "$TMP/all.code")
-if [[ $code -gt 1 ]]; then
+if run_failed "$code" "$TMP/all.err"; then
 	: > "$TMP/all.out"
 	: > "$TMP/all.err"
 	code=0
 	veslint_batched "$TMP/all.out" "$TMP/all.err" --config "$TMP/all.json" -- "${all_cases[@]}" || code=$?
+	if run_failed "$code" "$TMP/all.err"; then
+		rerun_failed=1
+		echo "--config with every rule failed twice (code $code)"
+	fi
 fi
 for ((n = 0; n < jobs_started; n++)); do
-	[[ $(< "$TMP/per-rule.$n.code") -le 1 ]] && continue
+	run_failed "$(< "$TMP/per-rule.$n.code")" "$TMP/per-rule.$n.err" || continue
 	dir=${rule_dirs[$n]}
 	: > "$TMP/per-rule.$n.out"
 	: > "$TMP/per-rule.$n.err"
 	c=0
 	veslint_batched "$TMP/per-rule.$n.out" "$TMP/per-rule.$n.err" --rule "${dir#tests/rules/}" -- "${all_cases[@]}" || c=$?
-	if [[ $c -gt 1 ]]; then
+	if run_failed "$c" "$TMP/per-rule.$n.err"; then
 		rerun_failed=1
 		echo "--rule ${dir#tests/rules/} failed twice (code $c):"
 		cat "$TMP/per-rule.$n.err"
@@ -535,7 +543,8 @@ if [[ $code -eq 1 && $rerun_failed -eq 0 ]] && diff <(sort "$TMP/all.out") <(gre
 	ok "--config with every rule: the same findings as each --rule ($(wc -l < "$TMP/all.out"))"
 else
 	ko "--config with every rule (code $code)"
-	cat "$TMP/all.err"
+	grep -v 'nodes not analyzed' "$TMP/all.err"
+	diff <(sort "$TMP/all.out") <(grep -vxF -f <(grep -v '^#' tests/rules/every.known.txt) "$TMP/per-rule.out" | sort) | head -40
 fi
 printf '{"rules": {"@typescript-eslint/no-floating-promises": "warn"}}' > "$TMP/warn.json"
 code=0
