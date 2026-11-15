@@ -122,8 +122,9 @@ const source_token_keywords = ['break', 'case', 'catch', 'class', 'const', 'cont
 const source_token_name_kinds = ['identifier', 'property_identifier', 'shorthand_property_identifier',
 	'shorthand_property_identifier_pattern', 'type_identifier', 'statement_identifier']
 
-// Leaves of the grammar that are several tokens for TypeScript, one per character.
-const source_token_split_leaves = ['?:', '-?:', '+?:', '{|', '|}']
+// Leaves of the grammar that are several tokens for TypeScript, one per character (`/>`, which
+// closes a self-closing JSX element, is a `/` and a `>`).
+const source_token_split_leaves = ['?:', '-?:', '+?:', '{|', '|}', '/>']
 
 // source_tokens gives the tokens of the file `n` belongs to, built on first use.
 fn (mut c Checker) source_tokens(n C.TSNode) &SourceTokens {

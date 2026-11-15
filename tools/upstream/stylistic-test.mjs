@@ -76,3 +76,73 @@ export function run(options) {
     messages: {},
   });
 }
+
+// shared/test-utils/parsers-jsx.ts: `valids` and `invalids` give each case once per parser
+// (applyAllParsers): the default one (the run's) and typescript-eslint's, with a comment that names
+// the features and the parser appended to the code and the outputs; @babel/eslint-parser is
+// skipped (skipBabel).
+export const TYPESCRIPT_ESLINT = parsers.typescript;
+
+function minEcmaVersion(features, parserOptions) {
+  const minEcmaVersionForFeatures = { 'class fields': 2022, 'optional chaining': 2020, 'nullish coalescing': 2020 };
+  const result = Math.max(
+    ...[
+      (parserOptions && parserOptions.ecmaVersion) || '',
+      ...Object.entries(minEcmaVersionForFeatures).flatMap(([f, y]) => (features.has(f) ? y : [])),
+    ].filter(Boolean).map(y => (y > 5 && y < 2015 ? y + 2009 : y)),
+  );
+  return Number.isFinite(result) ? result : undefined;
+}
+
+function applyAllParsers(tests) {
+  return tests.flatMap((test) => {
+    if (typeof test === 'string') test = { code: test };
+    if ('parser' in test) {
+      delete test.features;
+      return test;
+    }
+    const features = new Set(test.features || []);
+    delete test.features;
+    const es = minEcmaVersion(features, test.parserOptions);
+    function addComment(testObject, parser) {
+      const extras = [
+        `features: [${Array.from(features).join(',')}]`,
+        `parser: ${parser}`,
+        testObject.parserOptions ? `parserOptions: ${JSON.stringify(testObject.parserOptions)}` : '',
+        testObject.options ? `options: ${JSON.stringify(testObject.options)}` : '',
+        testObject.settings ? `settings: ${JSON.stringify(testObject.settings)}` : '',
+      ];
+      const extraComment = `\n// ${extras.join(', ')}`;
+      const nextCode = { code: testObject.code + extraComment };
+      const nextOutput = testObject.output && { output: testObject.output + extraComment };
+      const nextErrors = testObject.errors && typeof testObject.errors !== 'number' && {
+        errors: testObject.errors.map((errorObject) => {
+          const nextSuggestions = errorObject.suggestions && {
+            suggestions: errorObject.suggestions.map(s => Object.assign({}, s, { output: s.output + extraComment })),
+          };
+          return Object.assign({}, errorObject, nextSuggestions);
+        }),
+      };
+      return Object.assign({}, testObject, nextCode, nextOutput, nextErrors);
+    }
+    const skipBase = ['class fields', 'no-default', 'bind operator', 'do expressions', 'decorators', 'flow', 'ts', 'types', 'fragment']
+      .some(f => features.has(f));
+    const skipTS = ['no-ts', 'flow', 'jsx namespace', 'bind operator', 'do expressions'].some(f => features.has(f));
+    const tsNew = !skipTS && !features.has('no-ts-new');
+    const tsParserOptions = {
+      ...test.parserOptions,
+      ecmaFeatures: { jsx: true, modules: true, legacyDecorators: features.has('decorators') },
+    };
+    return [].concat(
+      skipBase ? [] : addComment(Object.assign({}, test, typeof es === 'number' && {
+        languageOptions: { parserOptions: Object.assign({}, test.parserOptions, { ecmaVersion: es }) },
+      }), 'default'),
+      tsNew ? addComment(Object.assign({}, test, {
+        languageOptions: { parser: TYPESCRIPT_ESLINT, parserOptions: tsParserOptions },
+      }), '@typescript-eslint/parser') : [],
+    );
+  });
+}
+
+export const valids = (...tests) => applyAllParsers(tests.flat().filter(Boolean));
+export const invalids = (...tests) => applyAllParsers(tests.flat().filter(Boolean));

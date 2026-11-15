@@ -500,7 +500,7 @@ Bun.plugin({
     // Bun does not hand a `#` specifier to a plugin: the test file imports the stub by its path.
     build.onLoad({ filter: /[\\/]stylistic[\\/]packages[\\/]eslint-plugin[\\/]rules[\\/][^\\/]+[\\/][^\\/]+\.test\.ts$/ }, ({ path: file }) => {
       const text = fs.readFileSync(file, 'utf8').replaceAll(/from '#test(\/[^']*)?'/g, (_, sub) => {
-        if (sub && sub !== '/parsers-flow') throw new Error(`${file}: #test${sub} is not stubbed (tools/upstream/stylistic-test.mjs)`);
+        if (sub && sub !== '/parsers-flow' && sub !== '/parsers-jsx') throw new Error(`${file}: #test${sub} is not stubbed (tools/upstream/stylistic-test.mjs)`);
         return `from ${JSON.stringify(path.join(ROOT, 'tools/upstream/stylistic-test.mjs'))}`;
       });
       return { contents: text, loader: 'ts' };
