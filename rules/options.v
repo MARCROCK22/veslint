@@ -213,6 +213,7 @@ pub fn check_options(rule string, options []json2.Any) !bool {
 		perfectionist_sort_intersection_types { pf_options(options)! }
 		ban_ts_comment { btsc_options(options)! }
 		init_declarations { tsid_options(options)! }
+		max_params { tsmp_options(options)! }
 		else { return false }
 	}
 	return true
@@ -293,7 +294,7 @@ pub fn effective_options(name string, options []json2.Any) ![]json2.Any {
 		}
 		// So do the ones init-declarations and max-params extend (their wrappers have no
 		// meta.defaultOptions): the written options follow the merged ones, as a list.
-		if name in [init_declarations] {
+		if name in [init_declarations, max_params] {
 			mut with_written := merged.clone()
 			with_written << json2.Any(options.clone())
 			check_options(name, with_written) or { return error('`${name}`: ${err.msg()}') }

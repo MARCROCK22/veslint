@@ -188,15 +188,28 @@ fn (c &Checker) es_tree_position(t &estree.EsTree, node int) Ident {
 
 // es_tree_function_head ports getFunctionHeadLoc: from the Property, MethodDefinition,
 // PropertyDefinition, TSPropertySignature or TSMethodSignature the function is the value of (or
-// the function) to the opening paren of its parameters, or the `=>` of an arrow function.
+// the function) to the opening paren of its parameters, or the `=>` of an arrow function or of a
+// TSFunctionType.
 fn (mut c Checker) es_tree_function_head(t &estree.EsTree, node int) Ident {
 	parent := t.nodes[node].parent
 	if parent >= 0 && t.typ(parent) in [.property, .method_definition, .property_definition,
 		.ts_property_signature, .ts_method_signature] {
 		return c.position_range(t.nodes[parent].start, c.es_tree_params_paren(t, node))
 	}
-	if t.typ(node) == .arrow_function_expression {
-		if body := t.node(node, .body) {
+	// An arrow function, or a TSFunctionType: the `=>` before its body or its return type.
+	arrow_before := if t.typ(node) == .arrow_function_expression {
+		t.node(node, .body)
+	} else if t.typ(node) == .ts_function_type {
+		if return_type := t.node(node, .return_type) {
+			t.node(return_type, .type_annotation)
+		} else {
+			none
+		}
+	} else {
+		none
+	}
+	if t.typ(node) in [.arrow_function_expression, .ts_function_type] {
+		if body := arrow_before {
 			tokens := c.source_tokens(t.nodes[t.root].ts)
 			mut at := t.nodes[body].start
 			for {

@@ -1,0 +1,91 @@
+tests/rules/@typescript-eslint/max-params/cases.ts:2:1	@typescript-eslint/max-params	exceed	Function 'f2' has too many parameters (4). Maximum allowed is 3.	end	2	12
+tests/rules/@typescript-eslint/max-params/cases.ts:4:1	@typescript-eslint/max-params	exceed	Function 'f4' has too many parameters (4). Maximum allowed is 3.	end	4	12
+tests/rules/@typescript-eslint/max-params/cases.ts:5:57	@typescript-eslint/max-params	exceed	Arrow function has too many parameters (4). Maximum allowed is 3.	end	5	59
+tests/rules/@typescript-eslint/max-params/cases.ts:6:80	@typescript-eslint/max-params	exceed	Async arrow function has too many parameters (4). Maximum allowed is 3.	end	6	82
+tests/rules/@typescript-eslint/max-params/cases.ts:7:12	@typescript-eslint/max-params	exceed	Generator function has too many parameters (4). Maximum allowed is 3.	end	7	22
+tests/rules/@typescript-eslint/max-params/cases.ts:8:1	@typescript-eslint/max-params	exceed	Function 'f8' has too many parameters (4). Maximum allowed is 3.	end	8	20
+tests/rules/@typescript-eslint/max-params/cases.ts:9:56	@typescript-eslint/max-params	exceed	Function has too many parameters (4). Maximum allowed is 3.	end	9	58
+tests/rules/@typescript-eslint/max-params/cases.ts:10:39	@typescript-eslint/max-params	exceed	Function has too many parameters (4). Maximum allowed is 3.	end	10	41
+tests/rules/@typescript-eslint/max-params/cases.ts:10:67	@typescript-eslint/max-params	exceed	Function has too many parameters (4). Maximum allowed is 3.	end	10	69
+tests/rules/@typescript-eslint/max-params/cases.ts:12:116	@typescript-eslint/max-params	exceed	Function has too many parameters (4). Maximum allowed is 3.	end	12	118
+tests/rules/@typescript-eslint/max-params/cases.ts:14:3	@typescript-eslint/max-params	exceed	Constructor has too many parameters (4). Maximum allowed is 3.	end	14	14
+tests/rules/@typescript-eslint/max-params/cases.ts:15:3	@typescript-eslint/max-params	exceed	Method 'm' has too many parameters (4). Maximum allowed is 3.	end	15	4
+tests/rules/@typescript-eslint/max-params/cases.ts:16:3	@typescript-eslint/max-params	exceed	Static private async method #p has too many parameters (4). Maximum allowed is 3.	end	16	18
+tests/rules/@typescript-eslint/max-params/cases.ts:17:3	@typescript-eslint/max-params	exceed	Method 'q' has too many parameters (4). Maximum allowed is 3.	end	17	7
+tests/rules/@typescript-eslint/max-params/cases.ts:20:3	@typescript-eslint/max-params	exceed	Method 's' has too many parameters (4). Maximum allowed is 3.	end	20	8
+tests/rules/@typescript-eslint/max-params/cases.ts:23:13	@typescript-eslint/max-params	exceed	Method 'm' has too many parameters (4). Maximum allowed is 3.	end	23	14
+tests/rules/@typescript-eslint/max-params/count-void-this/cases.ts:2:1	@typescript-eslint/max-params	exceed	Function 'f2' has too many parameters (4). Maximum allowed is 3.	end	2	12
+tests/rules/@typescript-eslint/max-params/count-void-this/cases.ts:3:1	@typescript-eslint/max-params	exceed	Function 'f3' has too many parameters (4). Maximum allowed is 3.	end	3	12
+tests/rules/@typescript-eslint/max-params/count-void-this/cases.ts:4:1	@typescript-eslint/max-params	exceed	Function 'f4' has too many parameters (4). Maximum allowed is 3.	end	4	12
+tests/rules/@typescript-eslint/max-params/count-void-this/cases.ts:5:57	@typescript-eslint/max-params	exceed	Arrow function has too many parameters (4). Maximum allowed is 3.	end	5	59
+tests/rules/@typescript-eslint/max-params/count-void-this/cases.ts:6:80	@typescript-eslint/max-params	exceed	Async arrow function has too many parameters (4). Maximum allowed is 3.	end	6	82
+tests/rules/@typescript-eslint/max-params/count-void-this/cases.ts:7:12	@typescript-eslint/max-params	exceed	Generator function has too many parameters (4). Maximum allowed is 3.	end	7	22
+tests/rules/@typescript-eslint/max-params/count-void-this/cases.ts:8:1	@typescript-eslint/max-params	exceed	Function 'f8' has too many parameters (4). Maximum allowed is 3.	end	8	20
+tests/rules/@typescript-eslint/max-params/count-void-this/cases.ts:9:56	@typescript-eslint/max-params	exceed	Function has too many parameters (4). Maximum allowed is 3.	end	9	58
+tests/rules/@typescript-eslint/max-params/count-void-this/cases.ts:10:39	@typescript-eslint/max-params	exceed	Function has too many parameters (4). Maximum allowed is 3.	end	10	41
+tests/rules/@typescript-eslint/max-params/count-void-this/cases.ts:10:67	@typescript-eslint/max-params	exceed	Function has too many parameters (4). Maximum allowed is 3.	end	10	69
+tests/rules/@typescript-eslint/max-params/count-void-this/cases.ts:12:116	@typescript-eslint/max-params	exceed	Function has too many parameters (4). Maximum allowed is 3.	end	12	118
+tests/rules/@typescript-eslint/max-params/count-void-this/cases.ts:14:3	@typescript-eslint/max-params	exceed	Constructor has too many parameters (4). Maximum allowed is 3.	end	14	14
+tests/rules/@typescript-eslint/max-params/count-void-this/cases.ts:15:3	@typescript-eslint/max-params	exceed	Method 'm' has too many parameters (4). Maximum allowed is 3.	end	15	4
+tests/rules/@typescript-eslint/max-params/count-void-this/cases.ts:16:3	@typescript-eslint/max-params	exceed	Static private async method #p has too many parameters (4). Maximum allowed is 3.	end	16	18
+tests/rules/@typescript-eslint/max-params/count-void-this/cases.ts:17:3	@typescript-eslint/max-params	exceed	Method 'q' has too many parameters (4). Maximum allowed is 3.	end	17	7
+tests/rules/@typescript-eslint/max-params/count-void-this/cases.ts:20:3	@typescript-eslint/max-params	exceed	Method 's' has too many parameters (4). Maximum allowed is 3.	end	20	8
+tests/rules/@typescript-eslint/max-params/count-void-this/cases.ts:21:3	@typescript-eslint/max-params	exceed	Static method 't' has too many parameters (4). Maximum allowed is 3.	end	21	11
+tests/rules/@typescript-eslint/max-params/count-void-this/cases.ts:23:13	@typescript-eslint/max-params	exceed	Method 'm' has too many parameters (4). Maximum allowed is 3.	end	23	14
+tests/rules/@typescript-eslint/max-params/max-1/cases.ts:1:1	@typescript-eslint/max-params	exceed	Function 'f1' has too many parameters (3). Maximum allowed is 1.	end	1	12
+tests/rules/@typescript-eslint/max-params/max-1/cases.ts:2:1	@typescript-eslint/max-params	exceed	Function 'f2' has too many parameters (4). Maximum allowed is 1.	end	2	12
+tests/rules/@typescript-eslint/max-params/max-1/cases.ts:3:1	@typescript-eslint/max-params	exceed	Function 'f3' has too many parameters (3). Maximum allowed is 1.	end	3	12
+tests/rules/@typescript-eslint/max-params/max-1/cases.ts:4:1	@typescript-eslint/max-params	exceed	Function 'f4' has too many parameters (4). Maximum allowed is 1.	end	4	12
+tests/rules/@typescript-eslint/max-params/max-1/cases.ts:5:57	@typescript-eslint/max-params	exceed	Arrow function has too many parameters (4). Maximum allowed is 1.	end	5	59
+tests/rules/@typescript-eslint/max-params/max-1/cases.ts:6:80	@typescript-eslint/max-params	exceed	Async arrow function has too many parameters (4). Maximum allowed is 1.	end	6	82
+tests/rules/@typescript-eslint/max-params/max-1/cases.ts:7:12	@typescript-eslint/max-params	exceed	Generator function has too many parameters (4). Maximum allowed is 1.	end	7	22
+tests/rules/@typescript-eslint/max-params/max-1/cases.ts:8:1	@typescript-eslint/max-params	exceed	Function 'f8' has too many parameters (4). Maximum allowed is 1.	end	8	20
+tests/rules/@typescript-eslint/max-params/max-1/cases.ts:9:56	@typescript-eslint/max-params	exceed	Function has too many parameters (4). Maximum allowed is 1.	end	9	58
+tests/rules/@typescript-eslint/max-params/max-1/cases.ts:10:39	@typescript-eslint/max-params	exceed	Function has too many parameters (4). Maximum allowed is 1.	end	10	41
+tests/rules/@typescript-eslint/max-params/max-1/cases.ts:10:67	@typescript-eslint/max-params	exceed	Function has too many parameters (4). Maximum allowed is 1.	end	10	69
+tests/rules/@typescript-eslint/max-params/max-1/cases.ts:12:116	@typescript-eslint/max-params	exceed	Function has too many parameters (4). Maximum allowed is 1.	end	12	118
+tests/rules/@typescript-eslint/max-params/max-1/cases.ts:14:3	@typescript-eslint/max-params	exceed	Constructor has too many parameters (4). Maximum allowed is 1.	end	14	14
+tests/rules/@typescript-eslint/max-params/max-1/cases.ts:15:3	@typescript-eslint/max-params	exceed	Method 'm' has too many parameters (4). Maximum allowed is 1.	end	15	4
+tests/rules/@typescript-eslint/max-params/max-1/cases.ts:16:3	@typescript-eslint/max-params	exceed	Static private async method #p has too many parameters (4). Maximum allowed is 1.	end	16	18
+tests/rules/@typescript-eslint/max-params/max-1/cases.ts:17:3	@typescript-eslint/max-params	exceed	Method 'q' has too many parameters (4). Maximum allowed is 1.	end	17	7
+tests/rules/@typescript-eslint/max-params/max-1/cases.ts:20:3	@typescript-eslint/max-params	exceed	Method 's' has too many parameters (4). Maximum allowed is 1.	end	20	8
+tests/rules/@typescript-eslint/max-params/max-1/cases.ts:21:3	@typescript-eslint/max-params	exceed	Static method 't' has too many parameters (3). Maximum allowed is 1.	end	21	11
+tests/rules/@typescript-eslint/max-params/max-1/cases.ts:23:13	@typescript-eslint/max-params	exceed	Method 'm' has too many parameters (4). Maximum allowed is 1.	end	23	14
+tests/rules/@typescript-eslint/max-params/max-zero/cases.ts:1:1	@typescript-eslint/max-params	exceed	Function 'f1' has too many parameters (3). Maximum allowed is 0.	end	1	12
+tests/rules/@typescript-eslint/max-params/max-zero/cases.ts:2:1	@typescript-eslint/max-params	exceed	Function 'f2' has too many parameters (4). Maximum allowed is 0.	end	2	12
+tests/rules/@typescript-eslint/max-params/max-zero/cases.ts:3:1	@typescript-eslint/max-params	exceed	Function 'f3' has too many parameters (3). Maximum allowed is 0.	end	3	12
+tests/rules/@typescript-eslint/max-params/max-zero/cases.ts:4:1	@typescript-eslint/max-params	exceed	Function 'f4' has too many parameters (4). Maximum allowed is 0.	end	4	12
+tests/rules/@typescript-eslint/max-params/max-zero/cases.ts:5:57	@typescript-eslint/max-params	exceed	Arrow function has too many parameters (4). Maximum allowed is 0.	end	5	59
+tests/rules/@typescript-eslint/max-params/max-zero/cases.ts:6:80	@typescript-eslint/max-params	exceed	Async arrow function has too many parameters (4). Maximum allowed is 0.	end	6	82
+tests/rules/@typescript-eslint/max-params/max-zero/cases.ts:7:12	@typescript-eslint/max-params	exceed	Generator function has too many parameters (4). Maximum allowed is 0.	end	7	22
+tests/rules/@typescript-eslint/max-params/max-zero/cases.ts:8:1	@typescript-eslint/max-params	exceed	Function 'f8' has too many parameters (4). Maximum allowed is 0.	end	8	20
+tests/rules/@typescript-eslint/max-params/max-zero/cases.ts:9:56	@typescript-eslint/max-params	exceed	Function has too many parameters (4). Maximum allowed is 0.	end	9	58
+tests/rules/@typescript-eslint/max-params/max-zero/cases.ts:10:39	@typescript-eslint/max-params	exceed	Function has too many parameters (4). Maximum allowed is 0.	end	10	41
+tests/rules/@typescript-eslint/max-params/max-zero/cases.ts:10:67	@typescript-eslint/max-params	exceed	Function has too many parameters (4). Maximum allowed is 0.	end	10	69
+tests/rules/@typescript-eslint/max-params/max-zero/cases.ts:12:116	@typescript-eslint/max-params	exceed	Function has too many parameters (4). Maximum allowed is 0.	end	12	118
+tests/rules/@typescript-eslint/max-params/max-zero/cases.ts:14:3	@typescript-eslint/max-params	exceed	Constructor has too many parameters (4). Maximum allowed is 0.	end	14	14
+tests/rules/@typescript-eslint/max-params/max-zero/cases.ts:15:3	@typescript-eslint/max-params	exceed	Method 'm' has too many parameters (4). Maximum allowed is 0.	end	15	4
+tests/rules/@typescript-eslint/max-params/max-zero/cases.ts:16:3	@typescript-eslint/max-params	exceed	Static private async method #p has too many parameters (4). Maximum allowed is 0.	end	16	18
+tests/rules/@typescript-eslint/max-params/max-zero/cases.ts:17:3	@typescript-eslint/max-params	exceed	Method 'q' has too many parameters (4). Maximum allowed is 0.	end	17	7
+tests/rules/@typescript-eslint/max-params/max-zero/cases.ts:20:3	@typescript-eslint/max-params	exceed	Method 's' has too many parameters (4). Maximum allowed is 0.	end	20	8
+tests/rules/@typescript-eslint/max-params/max-zero/cases.ts:21:3	@typescript-eslint/max-params	exceed	Static method 't' has too many parameters (3). Maximum allowed is 0.	end	21	11
+tests/rules/@typescript-eslint/max-params/max-zero/cases.ts:23:13	@typescript-eslint/max-params	exceed	Method 'm' has too many parameters (4). Maximum allowed is 0.	end	23	14
+tests/rules/@typescript-eslint/max-params/maximum/cases.ts:1:1	@typescript-eslint/max-params	exceed	Function 'f1' has too many parameters (3). Maximum allowed is 2.	end	1	12
+tests/rules/@typescript-eslint/max-params/maximum/cases.ts:2:1	@typescript-eslint/max-params	exceed	Function 'f2' has too many parameters (4). Maximum allowed is 2.	end	2	12
+tests/rules/@typescript-eslint/max-params/maximum/cases.ts:3:1	@typescript-eslint/max-params	exceed	Function 'f3' has too many parameters (3). Maximum allowed is 2.	end	3	12
+tests/rules/@typescript-eslint/max-params/maximum/cases.ts:4:1	@typescript-eslint/max-params	exceed	Function 'f4' has too many parameters (4). Maximum allowed is 2.	end	4	12
+tests/rules/@typescript-eslint/max-params/maximum/cases.ts:5:57	@typescript-eslint/max-params	exceed	Arrow function has too many parameters (4). Maximum allowed is 2.	end	5	59
+tests/rules/@typescript-eslint/max-params/maximum/cases.ts:6:80	@typescript-eslint/max-params	exceed	Async arrow function has too many parameters (4). Maximum allowed is 2.	end	6	82
+tests/rules/@typescript-eslint/max-params/maximum/cases.ts:7:12	@typescript-eslint/max-params	exceed	Generator function has too many parameters (4). Maximum allowed is 2.	end	7	22
+tests/rules/@typescript-eslint/max-params/maximum/cases.ts:8:1	@typescript-eslint/max-params	exceed	Function 'f8' has too many parameters (4). Maximum allowed is 2.	end	8	20
+tests/rules/@typescript-eslint/max-params/maximum/cases.ts:9:56	@typescript-eslint/max-params	exceed	Function has too many parameters (4). Maximum allowed is 2.	end	9	58
+tests/rules/@typescript-eslint/max-params/maximum/cases.ts:10:39	@typescript-eslint/max-params	exceed	Function has too many parameters (4). Maximum allowed is 2.	end	10	41
+tests/rules/@typescript-eslint/max-params/maximum/cases.ts:10:67	@typescript-eslint/max-params	exceed	Function has too many parameters (4). Maximum allowed is 2.	end	10	69
+tests/rules/@typescript-eslint/max-params/maximum/cases.ts:12:116	@typescript-eslint/max-params	exceed	Function has too many parameters (4). Maximum allowed is 2.	end	12	118
+tests/rules/@typescript-eslint/max-params/maximum/cases.ts:14:3	@typescript-eslint/max-params	exceed	Constructor has too many parameters (4). Maximum allowed is 2.	end	14	14
+tests/rules/@typescript-eslint/max-params/maximum/cases.ts:15:3	@typescript-eslint/max-params	exceed	Method 'm' has too many parameters (4). Maximum allowed is 2.	end	15	4
+tests/rules/@typescript-eslint/max-params/maximum/cases.ts:16:3	@typescript-eslint/max-params	exceed	Static private async method #p has too many parameters (4). Maximum allowed is 2.	end	16	18
+tests/rules/@typescript-eslint/max-params/maximum/cases.ts:17:3	@typescript-eslint/max-params	exceed	Method 'q' has too many parameters (4). Maximum allowed is 2.	end	17	7
+tests/rules/@typescript-eslint/max-params/maximum/cases.ts:20:3	@typescript-eslint/max-params	exceed	Method 's' has too many parameters (4). Maximum allowed is 2.	end	20	8
+tests/rules/@typescript-eslint/max-params/maximum/cases.ts:21:3	@typescript-eslint/max-params	exceed	Static method 't' has too many parameters (3). Maximum allowed is 2.	end	21	11
+tests/rules/@typescript-eslint/max-params/maximum/cases.ts:23:13	@typescript-eslint/max-params	exceed	Method 'm' has too many parameters (4). Maximum allowed is 2.	end	23	14
