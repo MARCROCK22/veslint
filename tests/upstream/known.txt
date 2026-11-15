@@ -1600,3 +1600,8 @@ eslint	sort-export-attributes/i49	disables rule-to-test/sort-export-attributes, 
 veslint	sort-export-attributes/i49	disables rule-to-test/sort-export-attributes, the name the tester gives the rule
 veslint	sort-export-attributes/v17	the alphabet has lone surrogates, which veslint's JSON reader refuses
 veslint	sort-export-attributes/i36	the alphabet has lone surrogates, which veslint's JSON reader refuses
+# perfectionist/sort-switch-case: as for sort-array-includes.
+veslint	sort-switch-case/v15	locales: zh-CN, which veslint does not collate
+veslint	sort-switch-case/v34	locales: zh-CN, which veslint does not collate
+veslint	sort-switch-case/v59	the alphabet has lone surrogates, which veslint's JSON reader refuses
+veslint	sort-switch-case/i63	the alphabet has lone surrogates, which veslint's JSON reader refuses
