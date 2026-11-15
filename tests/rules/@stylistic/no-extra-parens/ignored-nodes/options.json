@@ -1,0 +1,1 @@
+["all", {"ignoredNodes": ["ArrowFunctionExpression[body.type=ConditionalExpression]", "ForStatement > *.init", "CallExpression", "TSUnionType > *"]}]

@@ -1,0 +1,1 @@
+["all", {"conditionalAssign": true, "ternaryOperandBinaryExpressions": true, "nestedBinaryExpressions": true, "returnAssign": true, "enforceForArrowConditionals": true, "enforceForSequenceExpressions": true, "enforceForNewInMemberExpressions": true, "enforceForFunctionPrototypeMethods": true, "nestedConditionalExpressions": true}]

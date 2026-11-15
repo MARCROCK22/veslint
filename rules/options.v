@@ -204,6 +204,7 @@ pub fn check_options(rule string, options []json2.Any) !bool {
 		stylistic_comma_dangle { scd_options(options)! }
 		stylistic_member_delimiter_style { smds_options(options)! }
 		stylistic_quote_props { sqp_options(options)! }
+		stylistic_no_extra_parens { snep_options(options)! }
 		else { return false }
 	}
 	return true

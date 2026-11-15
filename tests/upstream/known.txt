@@ -1436,3 +1436,30 @@ eslint	comma-dangle._js_/i15	a JavaScript case with an old ecmaVersion: as TypeS
 veslint	comma-dangle._js_/i15	a JavaScript case with an old ecmaVersion: as TypeScript, the latest ecmaVersion checks every trailing comma
 eslint	comma-dangle._js_/i16	a JavaScript case with an old ecmaVersion: as TypeScript, the latest ecmaVersion checks every trailing comma
 veslint	comma-dangle._js_/i16	a JavaScript case with an old ecmaVersion: as TypeScript, the latest ecmaVersion checks every trailing comma
+# @stylistic/no-extra-parens: JavaScript cases with `let` as an identifier (a script), which TypeScript does not read
+# as one; cases whose expected output is that of several passes of fixes (one pass removes one pair of
+# parentheses); and legacy octal and leading-zero decimals, which typescript-eslint's parser rejects.
+eslint	no-extra-parens._js_/v144	a JavaScript case: `let` as an identifier is not one in TypeScript
+veslint	no-extra-parens._js_/v144	a JavaScript case: `let` as an identifier is not one in TypeScript
+eslint	no-extra-parens._js_/v380	a JavaScript case: `let` as an identifier is not one in TypeScript
+veslint	no-extra-parens._js_/v380	a JavaScript case: `let` as an identifier is not one in TypeScript
+eslint	no-extra-parens._js_/v381	a JavaScript case: `let` as an identifier is not one in TypeScript
+veslint	no-extra-parens._js_/v381	a JavaScript case: `let` as an identifier is not one in TypeScript
+eslint	no-extra-parens._js_/v384	a JavaScript case: `let` as an identifier is not one in TypeScript
+veslint	no-extra-parens._js_/v384	a JavaScript case: `let` as an identifier is not one in TypeScript
+eslint	no-extra-parens._js_/i599	the expected output takes several passes of fixes, one removes one pair of parentheses
+veslint	no-extra-parens._js_/i599	the expected output takes several passes of fixes, one removes one pair of parentheses
+eslint	no-extra-parens._ts_/i20	the expected output takes several passes of fixes, one removes one pair of parentheses
+veslint	no-extra-parens._ts_/i20	the expected output takes several passes of fixes, one removes one pair of parentheses
+eslint	no-extra-parens._ts_/i22	the expected output takes several passes of fixes, one removes one pair of parentheses
+veslint	no-extra-parens._ts_/i22	the expected output takes several passes of fixes, one removes one pair of parentheses
+eslint	no-extra-parens._js_/v149	typescript-eslint's parser: Decimals with leading zeros are not allowed.
+eslint	no-extra-parens._js_/v150	typescript-eslint's parser: Decimals with leading zeros are not allowed.
+eslint	no-extra-parens._js_/v151	typescript-eslint's parser: Decimals with leading zeros are not allowed.
+eslint	no-extra-parens._js_/v152	typescript-eslint's parser: Decimals with leading zeros are not allowed.
+eslint	no-extra-parens._js_/i151	typescript-eslint's parser: Decimals with leading zeros are not allowed.
+eslint	no-extra-parens._js_/i152	typescript-eslint's parser: Decimals with leading zeros are not allowed.
+eslint	no-extra-parens._js_/i150	typescript-eslint's parser: Octal literals are not allowed.
+# @stylistic/no-extra-parens: tree-sitter does not end `yield` at a line break (no automatic semicolon there):
+# `yield` + line break + `(b)` is one yield expression for veslint, a `yield` and the statement `(b)` for TypeScript.
+veslint	no-extra-parens._js_/i252	tree-sitter reads `yield` and the expression on the next line as one yield expression
