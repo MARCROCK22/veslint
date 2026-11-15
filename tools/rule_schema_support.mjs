@@ -48,7 +48,7 @@ export function ruleDefaults(builtinRules, plugins) {
 const jsonTypes = ['array', 'boolean', 'integer', 'null', 'number', 'object', 'string'];
 const supported = new Set(['type', 'enum', 'const', 'maximum', 'minimum', 'properties', 'additionalProperties', 'required', 'items',
   'additionalItems', 'minItems', 'maxItems', 'uniqueItems', 'minLength', 'maxLength', 'pattern', 'minProperties',
-  'maxProperties', 'oneOf', 'anyOf', 'allOf', 'not', '$ref', 'patternProperties']);
+  'maxProperties', 'oneOf', 'anyOf', 'allOf', 'not', '$ref', 'patternProperties', 'exclusiveMinimum', 'exclusiveMaximum']);
 const annotations = new Set(['description', 'title', '$defs', 'definitions']);
 
 // checkSchema throws for a schema rules/json_schema.v would not validate like ajv: an unknown
@@ -56,7 +56,8 @@ const annotations = new Set(['description', 'title', '$defs', 'definitions']);
 // ajv fills the options in with it) is taken only where it is the value meta.defaultOptions (the
 // rule's `defaultOptions`) has at that place, which veslint applies anyway: the property of an
 // object of the list of options, at `valuePath` (null where no single place is known).
-export function checkSchema(schema, where, defaultOptions = undefined, valuePath = []) {
+// `defaultsIgnored`: inside anyOf, oneOf or not, where ajv's useDefaults does not apply a `default`.
+export function checkSchema(schema, where, defaultOptions = undefined, valuePath = [], defaultsIgnored = false) {
   if (typeof schema === 'boolean') {
     return;
   }
@@ -66,6 +67,7 @@ export function checkSchema(schema, where, defaultOptions = undefined, valuePath
   for (const [key, value] of Object.entries(schema)) {
     const at = `${where}/${key}`;
     if (key === 'default') {
+      if (defaultsIgnored) continue;
       const known = valuePath && defaultOptions !== undefined
         ? valuePath.reduce((holder, step) => (holder === undefined || holder === null ? undefined : holder[step]), defaultOptions)
         : undefined;
@@ -92,12 +94,12 @@ export function checkSchema(schema, where, defaultOptions = undefined, valuePath
         break;
       case 'properties':
         for (const [name, sub] of Object.entries(value)) {
-          checkSchema(sub, `${at}/${name}`, defaultOptions, valuePath && [...valuePath, name]);
+          checkSchema(sub, `${at}/${name}`, defaultOptions, valuePath && [...valuePath, name], defaultsIgnored);
         }
         break;
       case 'patternProperties':
         for (const [pattern, sub] of Object.entries(value)) {
-          checkSchema(sub, `${at}/${pattern}`, defaultOptions, null);
+          checkSchema(sub, `${at}/${pattern}`, defaultOptions, null, defaultsIgnored);
         }
         break;
       case '$defs':
@@ -108,18 +110,22 @@ export function checkSchema(schema, where, defaultOptions = undefined, valuePath
         break;
       case 'oneOf':
       case 'anyOf':
+        value.forEach((sub, i) => checkSchema(sub, `${at}/${i}`, defaultOptions, null, true));
+        break;
       case 'allOf':
-        value.forEach((sub, i) => checkSchema(sub, `${at}/${i}`, defaultOptions, null));
+        value.forEach((sub, i) => checkSchema(sub, `${at}/${i}`, defaultOptions, null, defaultsIgnored));
         break;
       case 'items':
         // A list of schemas gives the place of each item; a single schema, of none.
         [value].flat().forEach((sub, i) => checkSchema(sub, `${at}/${i}`, defaultOptions,
-          Array.isArray(value) && valuePath ? [...valuePath, i] : null));
+          Array.isArray(value) && valuePath ? [...valuePath, i] : null, defaultsIgnored));
         break;
       case 'additionalProperties':
       case 'additionalItems':
+        checkSchema(value, at, defaultOptions, null, defaultsIgnored);
+        break;
       case 'not':
-        checkSchema(value, at, defaultOptions, null);
+        checkSchema(value, at, defaultOptions, null, true);
         break;
       default:
     }

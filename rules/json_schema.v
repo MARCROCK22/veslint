@@ -3,6 +3,7 @@ module rules
 import json2
 import jsregexp
 import math
+import sync
 
 // ESLint validates the options of a rule against the JSON schema of its meta with ajv 6.15.0
 // (lib/shared/ajv.js: verbose, without allErrors) and words the errors itself
@@ -44,7 +45,7 @@ const schema_rule_keywords = ['type', '\$comment', 'maximum', 'exclusiveMaximum'
 
 // The rules of each group of ajv's RULES that this validator implements, in ajv's order. A group
 // with a type only runs on data of that type.
-const schema_number_rules = ['maximum', 'minimum']
+const schema_number_rules = ['maximum', 'minimum', 'exclusiveMaximum', 'exclusiveMinimum']
 const schema_string_rules = ['maxLength', 'minLength', 'pattern']
 const schema_array_rules = ['maxItems', 'minItems', 'items', 'uniqueItems']
 const schema_object_rules = ['maxProperties', 'minProperties', 'required', 'properties',
@@ -56,8 +57,40 @@ const schema_any_rules = ['const', 'enum', 'not', 'anyOf', 'oneOf', 'allOf']
 // (each one `\tValue <JSON> <message>.\n`), or '' when the options fit the schema.
 pub fn rule_options_problems(name string, options []json2.Any) string {
 	text := rule_option_schemas[name] or { return '' }
-	schema := json2.decode[json2.Any](text) or { return '' }
+	schema := json2.decode[json2.Any](compiled_schema_text(text)) or { return '' }
 	return schema_problem_lines(schema, json2.Any(options_over_meta_defaults(name, options)))
+}
+
+// SchemaCompileCache is ajv's cache of compiled schemas (Ajv#_cache): its key is the schema
+// serialized with sorted keys (fast-json-stable-stringify), so two rules whose schemas differ only
+// in the order of their keys share the validator of the one compiled first, and its errors name
+// the properties in that rule's order (`Expected properties: …`). ESLint has one ajv for the
+// options of every rule of a run.
+struct SchemaCompileCache {
+mut:
+	mutex &sync.Mutex = sync.new_mutex()
+	first map[string]string // the stable serialization -> the text of the first schema with it
+}
+
+const schema_compile_cache = &SchemaCompileCache{}
+
+// compiled_schema_text is the schema whose validator ajv uses for `text`: the first schema with
+// the same stable serialization that was validated in this run.
+fn compiled_schema_text(text string) string {
+	value := json2.decode[json2.Any](text) or { return text }
+	key := canonical_json(value)
+	unsafe {
+		mut cache := schema_compile_cache
+		cache.mutex.lock()
+		defer {
+			cache.mutex.unlock()
+		}
+		if first := cache.first[key] {
+			return first
+		}
+		cache.first[key] = text
+	}
+	return text
 }
 
 // rule_options_inline_reason is what ESLint says of those options in a configuration comment:
@@ -298,7 +331,25 @@ fn schema_has_no_ref(schema json2.Any) bool {
 // exclusiveMinimum of draft-04 next to them).
 fn (mut v SchemaValidator) number_rules(s map[string]json2.Any, data json2.Any) bool {
 	value := json_number(data)
-	if limit := schema_number(s, 'maximum') {
+	// lib/dot/_limit.jst: `exclusiveMaximum` is draft-04's boolean (with `maximum`) or draft-06's
+	// number; with both a number and `maximum`, the stricter limit is the one checked.
+	maximum := schema_number(s, 'maximum')
+	exclusive_maximum := schema_number(s, 'exclusiveMaximum')
+	if limit := exclusive_maximum {
+		if max := maximum {
+			if limit <= max && value >= limit {
+				v.add('exclusiveMaximum', 'should be < ${js_number_to_string(limit)}', data)
+				return false
+			}
+			if limit > max && value > max {
+				v.add('maximum', 'should be <= ${js_number_to_string(max)}', data)
+				return false
+			}
+		} else if value >= limit {
+			v.add('exclusiveMaximum', 'should be < ${js_number_to_string(limit)}', data)
+			return false
+		}
+	} else if limit := maximum {
 		exclusive := schema_true(s, 'exclusiveMaximum')
 		if (exclusive && value >= limit) || (!exclusive && value > limit) {
 			v.add('maximum', 'should be ${if exclusive { '<' } else { '<=' }} ${js_number_to_string(limit)}',
@@ -306,7 +357,23 @@ fn (mut v SchemaValidator) number_rules(s map[string]json2.Any, data json2.Any) 
 			return false
 		}
 	}
-	if limit := schema_number(s, 'minimum') {
+	minimum := schema_number(s, 'minimum')
+	exclusive_minimum := schema_number(s, 'exclusiveMinimum')
+	if limit := exclusive_minimum {
+		if min := minimum {
+			if limit >= min && value <= limit {
+				v.add('exclusiveMinimum', 'should be > ${js_number_to_string(limit)}', data)
+				return false
+			}
+			if limit < min && value < min {
+				v.add('minimum', 'should be >= ${js_number_to_string(min)}', data)
+				return false
+			}
+		} else if value <= limit {
+			v.add('exclusiveMinimum', 'should be > ${js_number_to_string(limit)}', data)
+			return false
+		}
+	} else if limit := minimum {
 		exclusive := schema_true(s, 'exclusiveMinimum')
 		if (exclusive && value <= limit) || (!exclusive && value < limit) {
 			v.add('minimum', 'should be ${if exclusive { '>' } else { '>=' }} ${js_number_to_string(limit)}',
