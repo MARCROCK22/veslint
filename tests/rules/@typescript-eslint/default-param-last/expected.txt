@@ -1,0 +1,16 @@
+tests/rules/@typescript-eslint/default-param-last/cases.ts:2:13	@typescript-eslint/default-param-last	shouldBeLast	Default parameters should be last.
+tests/rules/@typescript-eslint/default-param-last/cases.ts:3:13	@typescript-eslint/default-param-last	shouldBeLast	Default parameters should be last.
+tests/rules/@typescript-eslint/default-param-last/cases.ts:3:25	@typescript-eslint/default-param-last	shouldBeLast	Default parameters should be last.
+tests/rules/@typescript-eslint/default-param-last/cases.ts:3:37	@typescript-eslint/default-param-last	shouldBeLast	Default parameters should be last.
+tests/rules/@typescript-eslint/default-param-last/cases.ts:4:27	@typescript-eslint/default-param-last	shouldBeLast	Default parameters should be last.
+tests/rules/@typescript-eslint/default-param-last/cases.ts:6:13	@typescript-eslint/default-param-last	shouldBeLast	Default parameters should be last.
+tests/rules/@typescript-eslint/default-param-last/cases.ts:6:33	@typescript-eslint/default-param-last	shouldBeLast	Default parameters should be last.
+tests/rules/@typescript-eslint/default-param-last/cases.ts:7:13	@typescript-eslint/default-param-last	shouldBeLast	Default parameters should be last.
+tests/rules/@typescript-eslint/default-param-last/cases.ts:8:13	@typescript-eslint/default-param-last	shouldBeLast	Default parameters should be last.
+tests/rules/@typescript-eslint/default-param-last/cases.ts:9:22	@typescript-eslint/default-param-last	shouldBeLast	Default parameters should be last.
+tests/rules/@typescript-eslint/default-param-last/cases.ts:11:15	@typescript-eslint/default-param-last	shouldBeLast	Default parameters should be last.
+tests/rules/@typescript-eslint/default-param-last/cases.ts:11:29	@typescript-eslint/default-param-last	shouldBeLast	Default parameters should be last.
+tests/rules/@typescript-eslint/default-param-last/cases.ts:11:58	@typescript-eslint/default-param-last	shouldBeLast	Default parameters should be last.
+tests/rules/@typescript-eslint/default-param-last/cases.ts:12:5	@typescript-eslint/default-param-last	shouldBeLast	Default parameters should be last.
+tests/rules/@typescript-eslint/default-param-last/cases.ts:16:15	@typescript-eslint/default-param-last	shouldBeLast	Default parameters should be last.
+tests/rules/@typescript-eslint/default-param-last/cases.ts:23:3	@typescript-eslint/default-param-last	shouldBeLast	Default parameters should be last.
