@@ -1,0 +1,39 @@
+tests/rules/@stylistic/exp-jsx-props-style/cases.tsx:5:10	@stylistic/exp-jsx-props-style	shouldWrap	Prop `className` must be placed on a new line
+tests/rules/@stylistic/exp-jsx-props-style/cases.tsx:7:3	@stylistic/exp-jsx-props-style	shouldNotWrap	Prop `className` should not be placed on a new line
+tests/rules/@stylistic/exp-jsx-props-style/cases.tsx:8:3	@stylistic/exp-jsx-props-style	shouldNotWrap	Prop `title` should not be placed on a new line
+tests/rules/@stylistic/exp-jsx-props-style/cases.tsx:14:3	@stylistic/exp-jsx-props-style	shouldNotWrap	Prop `title` should not be placed on a new line
+tests/rules/@stylistic/exp-jsx-props-style/cases.tsx:16:3	@stylistic/exp-jsx-props-style	shouldNotWrap	Prop `b` should not be placed on a new line
+tests/rules/@stylistic/exp-jsx-props-style/cases.tsx:18:9	@stylistic/exp-jsx-props-style	shouldWrap	Prop `b` must be placed on a new line
+tests/rules/@stylistic/exp-jsx-props-style/cases.tsx:20:3	@stylistic/exp-jsx-props-style	shouldNotWrap	Prop `xml:lang` should not be placed on a new line
+tests/rules/@stylistic/exp-jsx-props-style/cases.tsx:22:3	@stylistic/exp-jsx-props-style	shouldNotWrap	Prop `title` should not be placed on a new line
+tests/rules/@stylistic/exp-jsx-props-style/cases.tsx:24:24	@stylistic/exp-jsx-props-style	shouldWrap	Prop `title` must be placed on a new line
+tests/rules/@stylistic/exp-jsx-props-style/max-items/cases.tsx:3:23	@stylistic/exp-jsx-props-style	shouldWrap	Prop `id` must be placed on a new line
+tests/rules/@stylistic/exp-jsx-props-style/max-items/cases.tsx:3:30	@stylistic/exp-jsx-props-style	shouldWrap	Prop `className` must be placed on a new line
+tests/rules/@stylistic/exp-jsx-props-style/max-items/cases.tsx:5:10	@stylistic/exp-jsx-props-style	shouldWrap	Prop `className` must be placed on a new line
+tests/rules/@stylistic/exp-jsx-props-style/max-items/cases.tsx:7:3	@stylistic/exp-jsx-props-style	shouldNotWrap	Prop `className` should not be placed on a new line
+tests/rules/@stylistic/exp-jsx-props-style/max-items/cases.tsx:8:3	@stylistic/exp-jsx-props-style	shouldNotWrap	Prop `title` should not be placed on a new line
+tests/rules/@stylistic/exp-jsx-props-style/max-items/cases.tsx:14:3	@stylistic/exp-jsx-props-style	shouldNotWrap	Prop `title` should not be placed on a new line
+tests/rules/@stylistic/exp-jsx-props-style/max-items/cases.tsx:16:3	@stylistic/exp-jsx-props-style	shouldNotWrap	Prop `b` should not be placed on a new line
+tests/rules/@stylistic/exp-jsx-props-style/max-items/cases.tsx:18:9	@stylistic/exp-jsx-props-style	shouldWrap	Prop `b` must be placed on a new line
+tests/rules/@stylistic/exp-jsx-props-style/max-items/cases.tsx:20:3	@stylistic/exp-jsx-props-style	shouldNotWrap	Prop `xml:lang` should not be placed on a new line
+tests/rules/@stylistic/exp-jsx-props-style/max-items/cases.tsx:22:3	@stylistic/exp-jsx-props-style	shouldNotWrap	Prop `title` should not be placed on a new line
+tests/rules/@stylistic/exp-jsx-props-style/max-items/cases.tsx:24:24	@stylistic/exp-jsx-props-style	shouldWrap	Prop `title` must be placed on a new line
+tests/rules/@stylistic/exp-jsx-props-style/max-items/cases.tsx:26:9	@stylistic/exp-jsx-props-style	shouldWrap	Prop `id` must be placed on a new line
+tests/rules/@stylistic/exp-jsx-props-style/max-items/cases.tsx:26:16	@stylistic/exp-jsx-props-style	shouldWrap	Prop `title` must be placed on a new line
+tests/rules/@stylistic/exp-jsx-props-style/min-items/cases.tsx:5:3	@stylistic/exp-jsx-props-style	shouldNotWrap	Prop `id` should not be placed on a new line
+tests/rules/@stylistic/exp-jsx-props-style/min-items/cases.tsx:7:3	@stylistic/exp-jsx-props-style	shouldNotWrap	Prop `className` should not be placed on a new line
+tests/rules/@stylistic/exp-jsx-props-style/min-items/cases.tsx:8:3	@stylistic/exp-jsx-props-style	shouldNotWrap	Prop `title` should not be placed on a new line
+tests/rules/@stylistic/exp-jsx-props-style/min-items/cases.tsx:10:3	@stylistic/exp-jsx-props-style	shouldNotWrap	Prop `id` should not be placed on a new line
+tests/rules/@stylistic/exp-jsx-props-style/min-items/cases.tsx:11:3	@stylistic/exp-jsx-props-style	shouldNotWrap	Prop `className` should not be placed on a new line
+tests/rules/@stylistic/exp-jsx-props-style/min-items/cases.tsx:14:3	@stylistic/exp-jsx-props-style	shouldNotWrap	Prop `title` should not be placed on a new line
+tests/rules/@stylistic/exp-jsx-props-style/min-items/cases.tsx:16:3	@stylistic/exp-jsx-props-style	shouldNotWrap	Prop `b` should not be placed on a new line
+tests/rules/@stylistic/exp-jsx-props-style/min-items/cases.tsx:18:3	@stylistic/exp-jsx-props-style	shouldNotWrap	Prop `a` should not be placed on a new line
+tests/rules/@stylistic/exp-jsx-props-style/min-items/cases.tsx:20:3	@stylistic/exp-jsx-props-style	shouldNotWrap	Prop `xml:lang` should not be placed on a new line
+tests/rules/@stylistic/exp-jsx-props-style/min-items/cases.tsx:22:3	@stylistic/exp-jsx-props-style	shouldNotWrap	Prop `title` should not be placed on a new line
+tests/rules/@stylistic/exp-jsx-props-style/min-items/cases.tsx:24:3	@stylistic/exp-jsx-props-style	shouldNotWrap	Prop `id` should not be placed on a new line
+tests/rules/@stylistic/exp-jsx-props-style/per-line/cases.tsx:7:3	@stylistic/exp-jsx-props-style	shouldNotWrap	Prop `className` should not be placed on a new line
+tests/rules/@stylistic/exp-jsx-props-style/per-line/cases.tsx:8:3	@stylistic/exp-jsx-props-style	shouldNotWrap	Prop `title` should not be placed on a new line
+tests/rules/@stylistic/exp-jsx-props-style/per-line/cases.tsx:14:3	@stylistic/exp-jsx-props-style	shouldNotWrap	Prop `title` should not be placed on a new line
+tests/rules/@stylistic/exp-jsx-props-style/per-line/cases.tsx:16:3	@stylistic/exp-jsx-props-style	shouldNotWrap	Prop `b` should not be placed on a new line
+tests/rules/@stylistic/exp-jsx-props-style/per-line/cases.tsx:20:3	@stylistic/exp-jsx-props-style	shouldNotWrap	Prop `xml:lang` should not be placed on a new line
+tests/rules/@stylistic/exp-jsx-props-style/per-line/cases.tsx:22:3	@stylistic/exp-jsx-props-style	shouldNotWrap	Prop `title` should not be placed on a new line
