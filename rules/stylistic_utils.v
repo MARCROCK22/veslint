@@ -133,9 +133,12 @@ fn (c &Checker) sty_token_value(token SourceToken) string {
 		return c.src[token.start + 1..token.end]
 	}
 	return c.src[token.start..token.end]
+}
+
 // sty_next_location ports getNextLocation for the position at the byte offset: the offset of the
-// next column, the start of the next line at the end of a line, and -1 (null) at the end of the
-// file. (After the end of a token, the next character is never half of a surrogate pair.)
+// next column (one UTF-16 unit: after a character outside the BMP, a byte offset inside it, which
+// is its low surrogate, where ESLint's column + 1 is), the start of the next line at the end of a
+// line, and -1 (null) at the end of the file.
 fn sty_next_location(t &estree.EsTree, offset int) int {
 	src := t.src
 	if offset >= src.len {
@@ -149,7 +152,7 @@ fn sty_next_location(t &estree.EsTree, offset int) int {
 		return offset + 1
 	}
 	if c >= 0xf0 {
-		return offset + 4
+		return offset + 1
 	}
 	if c >= 0xe0 {
 		return offset + 3
