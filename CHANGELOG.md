@@ -4,6 +4,7 @@ Each version is a release on GitHub with the veslint binaries (Linux x64, Window
 
 ## 0.25.1
 
+- **`perfectionist/sort-switch-case`: the cases of a block move together.** When the fix moves a block of cases that fall through (`case a:` `case b: {…}`), its cases stay together and the blank lines between blocks stay where they were. eslint-plugin-perfectionist puts each case in the place of another and can leave a blank line inside the block, which `no-fallthrough` then reports; here veslint fixes otherwise than ESLint on purpose.
 - **`--bench`** lists the rules that took the longest (`slowest_rules`, at most 20, with their milliseconds).
 
 ## 0.25.0
