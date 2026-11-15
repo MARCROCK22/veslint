@@ -203,6 +203,7 @@ pub fn check_options(rule string, options []json2.Any) !bool {
 		stylistic_arrow_parens { sap_options(options)! }
 		stylistic_comma_dangle { scd_options(options)! }
 		stylistic_member_delimiter_style { smds_options(options)! }
+		stylistic_quote_props { sqp_options(options)! }
 		else { return false }
 	}
 	return true

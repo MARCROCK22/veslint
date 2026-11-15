@@ -1,0 +1,118 @@
+tests/rules/@stylistic/quote-props/as-needed-keywords/cases.ts:1:26	@stylistic/quote-props	unnecessarilyQuotedProperty	Unnecessarily quoted property 'y' found.
+tests/rules/@stylistic/quote-props/as-needed-keywords/cases.ts:1:34	@stylistic/quote-props	unnecessarilyQuotedProperty	Unnecessarily quoted property 'z' found.
+tests/rules/@stylistic/quote-props/as-needed-keywords/cases.ts:3:3	@stylistic/quote-props	unnecessarilyQuotedProperty	Unnecessarily quoted property 'plain' found.
+tests/rules/@stylistic/quote-props/as-needed-keywords/cases.ts:16:3	@stylistic/quote-props	unnecessarilyQuotedProperty	Unnecessarily quoted property 'Infinity' found.
+tests/rules/@stylistic/quote-props/as-needed-keywords/cases.ts:17:3	@stylistic/quote-props	unnecessarilyQuotedProperty	Unnecessarily quoted property 'NaN' found.
+tests/rules/@stylistic/quote-props/as-needed-keywords/cases.ts:18:3	@stylistic/quote-props	unnecessarilyQuotedProperty	Unnecessarily quoted property 'abc' found.
+tests/rules/@stylistic/quote-props/as-needed-keywords/cases.ts:19:3	@stylistic/quote-props	unnecessarilyQuotedProperty	Unnecessarily quoted property '\\u0061bc' found.
+tests/rules/@stylistic/quote-props/as-needed-keywords/cases.ts:22:3	@stylistic/quote-props	unnecessarilyQuotedProperty	Unnecessarily quoted property 'ü' found.
+tests/rules/@stylistic/quote-props/as-needed-keywords/cases.ts:24:3	@stylistic/quote-props	unnecessarilyQuotedProperty	Unnecessarily quoted property 'a‍' found.
+tests/rules/@stylistic/quote-props/as-needed-keywords/cases.ts:37:3	@stylistic/quote-props	unnecessarilyQuotedProperty	Unnecessarily quoted property 'let' found.
+tests/rules/@stylistic/quote-props/as-needed-keywords/cases.ts:39:20	@stylistic/quote-props	unquotedNumericProperty	Unquoted number literal '16' used as key.
+tests/rules/@stylistic/quote-props/as-needed-keywords/cases.ts:39:29	@stylistic/quote-props	unquotedNumericProperty	Unquoted number literal '1000' used as key.
+tests/rules/@stylistic/quote-props/as-needed-keywords/cases.ts:39:37	@stylistic/quote-props	unquotedNumericProperty	Unquoted number literal '1' used as key.
+tests/rules/@stylistic/quote-props/as-needed-keywords/cases.ts:39:44	@stylistic/quote-props	unquotedNumericProperty	Unquoted number literal '1.5' used as key.
+tests/rules/@stylistic/quote-props/as-needed-keywords/cases.ts:39:53	@stylistic/quote-props	unquotedNumericProperty	Unquoted number literal '0' used as key.
+tests/rules/@stylistic/quote-props/as-needed-keywords/cases.ts:41:28	@stylistic/quote-props	unnecessarilyQuotedProperty	Unnecessarily quoted property 'y' found.
+tests/rules/@stylistic/quote-props/as-needed-keywords/cases.ts:42:20	@stylistic/quote-props	unquotedReservedProperty	Unquoted reserved word 'class' used as key.
+tests/rules/@stylistic/quote-props/as-needed-keywords/cases.ts:42:30	@stylistic/quote-props	unquotedReservedProperty	Unquoted reserved word 'if' used as key.
+tests/rules/@stylistic/quote-props/as-needed-keywords/cases.ts:42:37	@stylistic/quote-props	unquotedReservedProperty	Unquoted reserved word 'default' used as key.
+tests/rules/@stylistic/quote-props/as-needed-keywords/cases.ts:45:3	@stylistic/quote-props	unnecessarilyQuotedProperty	Unnecessarily quoted property 'b' found.
+tests/rules/@stylistic/quote-props/as-needed-keywords/cases.ts:50:12	@stylistic/quote-props	unnecessarilyQuotedProperty	Unnecessarily quoted property 'only' found.
+tests/rules/@stylistic/quote-props/as-needed-keywords/cases.ts:50:28	@stylistic/quote-props	unnecessarilyQuotedProperty	Unnecessarily quoted property 'quoted' found.
+tests/rules/@stylistic/quote-props/as-needed-keywords/cases.ts:52:13	@stylistic/quote-props	unnecessarilyQuotedProperty	Unnecessarily quoted property 'B' found.
+tests/rules/@stylistic/quote-props/as-needed-keywords/cases.ts:53:10	@stylistic/quote-props	unnecessarilyQuotedProperty	Unnecessarily quoted property 'A' found.
+tests/rules/@stylistic/quote-props/as-needed-keywords/cases.ts:53:15	@stylistic/quote-props	unnecessarilyQuotedProperty	Unnecessarily quoted property 'B' found.
+tests/rules/@stylistic/quote-props/as-needed-keywords/cases.ts:57:31	@stylistic/quote-props	unnecessarilyQuotedProperty	Unnecessarily quoted property 'k' found.
+tests/rules/@stylistic/quote-props/as-needed-unnecessary/cases.ts:42:20	@stylistic/quote-props	unquotedReservedProperty	Unquoted reserved word 'class' used as key.
+tests/rules/@stylistic/quote-props/as-needed-unnecessary/cases.ts:42:30	@stylistic/quote-props	unquotedReservedProperty	Unquoted reserved word 'if' used as key.
+tests/rules/@stylistic/quote-props/as-needed-unnecessary/cases.ts:42:37	@stylistic/quote-props	unquotedReservedProperty	Unquoted reserved word 'default' used as key.
+tests/rules/@stylistic/quote-props/as-needed/cases.ts:1:26	@stylistic/quote-props	unnecessarilyQuotedProperty	Unnecessarily quoted property 'y' found.
+tests/rules/@stylistic/quote-props/as-needed/cases.ts:1:34	@stylistic/quote-props	unnecessarilyQuotedProperty	Unnecessarily quoted property 'z' found.
+tests/rules/@stylistic/quote-props/as-needed/cases.ts:3:3	@stylistic/quote-props	unnecessarilyQuotedProperty	Unnecessarily quoted property 'plain' found.
+tests/rules/@stylistic/quote-props/as-needed/cases.ts:6:3	@stylistic/quote-props	unnecessarilyQuotedProperty	Unnecessarily quoted property 'class' found.
+tests/rules/@stylistic/quote-props/as-needed/cases.ts:7:3	@stylistic/quote-props	unnecessarilyQuotedProperty	Unnecessarily quoted property 'if' found.
+tests/rules/@stylistic/quote-props/as-needed/cases.ts:8:3	@stylistic/quote-props	unnecessarilyQuotedProperty	Unnecessarily quoted property 'true' found.
+tests/rules/@stylistic/quote-props/as-needed/cases.ts:9:3	@stylistic/quote-props	unnecessarilyQuotedProperty	Unnecessarily quoted property 'null' found.
+tests/rules/@stylistic/quote-props/as-needed/cases.ts:11:3	@stylistic/quote-props	unnecessarilyQuotedProperty	Unnecessarily quoted property '1' found.
+tests/rules/@stylistic/quote-props/as-needed/cases.ts:13:3	@stylistic/quote-props	unnecessarilyQuotedProperty	Unnecessarily quoted property '1e+21' found.
+tests/rules/@stylistic/quote-props/as-needed/cases.ts:15:3	@stylistic/quote-props	unnecessarilyQuotedProperty	Unnecessarily quoted property '1e-7' found.
+tests/rules/@stylistic/quote-props/as-needed/cases.ts:16:3	@stylistic/quote-props	unnecessarilyQuotedProperty	Unnecessarily quoted property 'Infinity' found.
+tests/rules/@stylistic/quote-props/as-needed/cases.ts:17:3	@stylistic/quote-props	unnecessarilyQuotedProperty	Unnecessarily quoted property 'NaN' found.
+tests/rules/@stylistic/quote-props/as-needed/cases.ts:18:3	@stylistic/quote-props	unnecessarilyQuotedProperty	Unnecessarily quoted property 'abc' found.
+tests/rules/@stylistic/quote-props/as-needed/cases.ts:19:3	@stylistic/quote-props	unnecessarilyQuotedProperty	Unnecessarily quoted property '\\u0061bc' found.
+tests/rules/@stylistic/quote-props/as-needed/cases.ts:22:3	@stylistic/quote-props	unnecessarilyQuotedProperty	Unnecessarily quoted property 'ü' found.
+tests/rules/@stylistic/quote-props/as-needed/cases.ts:24:3	@stylistic/quote-props	unnecessarilyQuotedProperty	Unnecessarily quoted property 'a‍' found.
+tests/rules/@stylistic/quote-props/as-needed/cases.ts:29:3	@stylistic/quote-props	unnecessarilyQuotedProperty	Unnecessarily quoted property '0' found.
+tests/rules/@stylistic/quote-props/as-needed/cases.ts:32:3	@stylistic/quote-props	unnecessarilyQuotedProperty	Unnecessarily quoted property '100000000000000000000' found.
+tests/rules/@stylistic/quote-props/as-needed/cases.ts:34:3	@stylistic/quote-props	unnecessarilyQuotedProperty	Unnecessarily quoted property '0.000001' found.
+tests/rules/@stylistic/quote-props/as-needed/cases.ts:36:3	@stylistic/quote-props	unnecessarilyQuotedProperty	Unnecessarily quoted property 'static' found.
+tests/rules/@stylistic/quote-props/as-needed/cases.ts:37:3	@stylistic/quote-props	unnecessarilyQuotedProperty	Unnecessarily quoted property 'let' found.
+tests/rules/@stylistic/quote-props/as-needed/cases.ts:41:28	@stylistic/quote-props	unnecessarilyQuotedProperty	Unnecessarily quoted property 'y' found.
+tests/rules/@stylistic/quote-props/as-needed/cases.ts:45:3	@stylistic/quote-props	unnecessarilyQuotedProperty	Unnecessarily quoted property 'b' found.
+tests/rules/@stylistic/quote-props/as-needed/cases.ts:50:12	@stylistic/quote-props	unnecessarilyQuotedProperty	Unnecessarily quoted property 'only' found.
+tests/rules/@stylistic/quote-props/as-needed/cases.ts:50:28	@stylistic/quote-props	unnecessarilyQuotedProperty	Unnecessarily quoted property 'quoted' found.
+tests/rules/@stylistic/quote-props/as-needed/cases.ts:52:13	@stylistic/quote-props	unnecessarilyQuotedProperty	Unnecessarily quoted property 'B' found.
+tests/rules/@stylistic/quote-props/as-needed/cases.ts:53:10	@stylistic/quote-props	unnecessarilyQuotedProperty	Unnecessarily quoted property 'A' found.
+tests/rules/@stylistic/quote-props/as-needed/cases.ts:53:15	@stylistic/quote-props	unnecessarilyQuotedProperty	Unnecessarily quoted property 'B' found.
+tests/rules/@stylistic/quote-props/as-needed/cases.ts:57:31	@stylistic/quote-props	unnecessarilyQuotedProperty	Unnecessarily quoted property 'k' found.
+tests/rules/@stylistic/quote-props/attributes-as-needed/cases.ts:2:40	@stylistic/quote-props	unnecessarilyQuotedProperty	Unnecessarily quoted property 'type' found.
+tests/rules/@stylistic/quote-props/attributes-as-needed/cases.ts:4:51	@stylistic/quote-props	unnecessarilyQuotedProperty	Unnecessarily quoted property 'type' found.
+tests/rules/@stylistic/quote-props/attributes-as-needed/cases.ts:6:54	@stylistic/quote-props	unnecessarilyQuotedProperty	Unnecessarily quoted property 'mode' found.
+tests/rules/@stylistic/quote-props/attributes-consistent-as-needed/cases.ts:2:40	@stylistic/quote-props	redundantQuoting	Properties shouldn't be quoted as all quotes are redundant.
+tests/rules/@stylistic/quote-props/attributes-consistent-as-needed/cases.ts:4:51	@stylistic/quote-props	redundantQuoting	Properties shouldn't be quoted as all quotes are redundant.
+tests/rules/@stylistic/quote-props/attributes-consistent-as-needed/cases.ts:6:54	@stylistic/quote-props	redundantQuoting	Properties shouldn't be quoted as all quotes are redundant.
+tests/rules/@stylistic/quote-props/attributes-consistent/cases.ts:6:40	@stylistic/quote-props	inconsistentlyQuotedProperty	Inconsistently quoted property 'type' found.
+tests/rules/@stylistic/quote-props/attributes/cases.ts:1:39	@stylistic/quote-props	unquotedPropertyFound	Unquoted property 'type' found.
+tests/rules/@stylistic/quote-props/attributes/cases.ts:3:36	@stylistic/quote-props	unquotedPropertyFound	Unquoted property 'type' found.
+tests/rules/@stylistic/quote-props/attributes/cases.ts:6:40	@stylistic/quote-props	unquotedPropertyFound	Unquoted property 'type' found.
+tests/rules/@stylistic/quote-props/cases.ts:1:20	@stylistic/quote-props	unquotedPropertyFound	Unquoted property 'x' found.
+tests/rules/@stylistic/quote-props/cases.ts:39:20	@stylistic/quote-props	unquotedPropertyFound	Unquoted property '16' found.
+tests/rules/@stylistic/quote-props/cases.ts:39:29	@stylistic/quote-props	unquotedPropertyFound	Unquoted property '1000' found.
+tests/rules/@stylistic/quote-props/cases.ts:39:37	@stylistic/quote-props	unquotedPropertyFound	Unquoted property '1' found.
+tests/rules/@stylistic/quote-props/cases.ts:39:44	@stylistic/quote-props	unquotedPropertyFound	Unquoted property '1.5' found.
+tests/rules/@stylistic/quote-props/cases.ts:39:53	@stylistic/quote-props	unquotedPropertyFound	Unquoted property '0' found.
+tests/rules/@stylistic/quote-props/cases.ts:40:44	@stylistic/quote-props	unquotedPropertyFound	Unquoted property 'g' found.
+tests/rules/@stylistic/quote-props/cases.ts:41:16	@stylistic/quote-props	unquotedPropertyFound	Unquoted property 'x' found.
+tests/rules/@stylistic/quote-props/cases.ts:42:20	@stylistic/quote-props	unquotedPropertyFound	Unquoted property 'class' found.
+tests/rules/@stylistic/quote-props/cases.ts:42:30	@stylistic/quote-props	unquotedPropertyFound	Unquoted property 'if' found.
+tests/rules/@stylistic/quote-props/cases.ts:42:37	@stylistic/quote-props	unquotedPropertyFound	Unquoted property 'default' found.
+tests/rules/@stylistic/quote-props/cases.ts:44:3	@stylistic/quote-props	unquotedPropertyFound	Unquoted property 'a' found.
+tests/rules/@stylistic/quote-props/cases.ts:51:37	@stylistic/quote-props	unquotedPropertyFound	Unquoted property 'plain' found.
+tests/rules/@stylistic/quote-props/cases.ts:52:10	@stylistic/quote-props	unquotedPropertyFound	Unquoted property 'A' found.
+tests/rules/@stylistic/quote-props/cases.ts:52:18	@stylistic/quote-props	unquotedPropertyFound	Unquoted property 'C' found.
+tests/rules/@stylistic/quote-props/cases.ts:54:17	@stylistic/quote-props	unquotedPropertyFound	Unquoted property 'c' found.
+tests/rules/@stylistic/quote-props/consistent-as-needed-keywords/cases.ts:1:26	@stylistic/quote-props	redundantQuoting	Properties shouldn't be quoted as all quotes are redundant.
+tests/rules/@stylistic/quote-props/consistent-as-needed-keywords/cases.ts:1:34	@stylistic/quote-props	redundantQuoting	Properties shouldn't be quoted as all quotes are redundant.
+tests/rules/@stylistic/quote-props/consistent-as-needed-keywords/cases.ts:42:20	@stylistic/quote-props	requireQuotesDueToReservedWord	Properties should be quoted as 'default' is a reserved word.
+tests/rules/@stylistic/quote-props/consistent-as-needed-keywords/cases.ts:42:30	@stylistic/quote-props	requireQuotesDueToReservedWord	Properties should be quoted as 'default' is a reserved word.
+tests/rules/@stylistic/quote-props/consistent-as-needed-keywords/cases.ts:42:37	@stylistic/quote-props	requireQuotesDueToReservedWord	Properties should be quoted as 'default' is a reserved word.
+tests/rules/@stylistic/quote-props/consistent-as-needed-keywords/cases.ts:45:3	@stylistic/quote-props	redundantQuoting	Properties shouldn't be quoted as all quotes are redundant.
+tests/rules/@stylistic/quote-props/consistent-as-needed-keywords/cases.ts:47:3	@stylistic/quote-props	redundantQuoting	Properties shouldn't be quoted as all quotes are redundant.
+tests/rules/@stylistic/quote-props/consistent-as-needed-keywords/cases.ts:50:12	@stylistic/quote-props	redundantQuoting	Properties shouldn't be quoted as all quotes are redundant.
+tests/rules/@stylistic/quote-props/consistent-as-needed-keywords/cases.ts:50:28	@stylistic/quote-props	redundantQuoting	Properties shouldn't be quoted as all quotes are redundant.
+tests/rules/@stylistic/quote-props/consistent-as-needed-keywords/cases.ts:51:37	@stylistic/quote-props	inconsistentlyQuotedProperty	Inconsistently quoted property 'plain' found.
+tests/rules/@stylistic/quote-props/consistent-as-needed-keywords/cases.ts:52:13	@stylistic/quote-props	redundantQuoting	Properties shouldn't be quoted as all quotes are redundant.
+tests/rules/@stylistic/quote-props/consistent-as-needed-keywords/cases.ts:53:10	@stylistic/quote-props	redundantQuoting	Properties shouldn't be quoted as all quotes are redundant.
+tests/rules/@stylistic/quote-props/consistent-as-needed-keywords/cases.ts:53:15	@stylistic/quote-props	redundantQuoting	Properties shouldn't be quoted as all quotes are redundant.
+tests/rules/@stylistic/quote-props/consistent-as-needed-keywords/cases.ts:54:17	@stylistic/quote-props	inconsistentlyQuotedProperty	Inconsistently quoted property 'c' found.
+tests/rules/@stylistic/quote-props/consistent-as-needed-keywords/cases.ts:57:31	@stylistic/quote-props	redundantQuoting	Properties shouldn't be quoted as all quotes are redundant.
+tests/rules/@stylistic/quote-props/consistent-as-needed/cases.ts:1:26	@stylistic/quote-props	redundantQuoting	Properties shouldn't be quoted as all quotes are redundant.
+tests/rules/@stylistic/quote-props/consistent-as-needed/cases.ts:1:34	@stylistic/quote-props	redundantQuoting	Properties shouldn't be quoted as all quotes are redundant.
+tests/rules/@stylistic/quote-props/consistent-as-needed/cases.ts:45:3	@stylistic/quote-props	redundantQuoting	Properties shouldn't be quoted as all quotes are redundant.
+tests/rules/@stylistic/quote-props/consistent-as-needed/cases.ts:47:3	@stylistic/quote-props	redundantQuoting	Properties shouldn't be quoted as all quotes are redundant.
+tests/rules/@stylistic/quote-props/consistent-as-needed/cases.ts:50:12	@stylistic/quote-props	redundantQuoting	Properties shouldn't be quoted as all quotes are redundant.
+tests/rules/@stylistic/quote-props/consistent-as-needed/cases.ts:50:28	@stylistic/quote-props	redundantQuoting	Properties shouldn't be quoted as all quotes are redundant.
+tests/rules/@stylistic/quote-props/consistent-as-needed/cases.ts:51:37	@stylistic/quote-props	inconsistentlyQuotedProperty	Inconsistently quoted property 'plain' found.
+tests/rules/@stylistic/quote-props/consistent-as-needed/cases.ts:52:13	@stylistic/quote-props	redundantQuoting	Properties shouldn't be quoted as all quotes are redundant.
+tests/rules/@stylistic/quote-props/consistent-as-needed/cases.ts:53:10	@stylistic/quote-props	redundantQuoting	Properties shouldn't be quoted as all quotes are redundant.
+tests/rules/@stylistic/quote-props/consistent-as-needed/cases.ts:53:15	@stylistic/quote-props	redundantQuoting	Properties shouldn't be quoted as all quotes are redundant.
+tests/rules/@stylistic/quote-props/consistent-as-needed/cases.ts:54:17	@stylistic/quote-props	inconsistentlyQuotedProperty	Inconsistently quoted property 'c' found.
+tests/rules/@stylistic/quote-props/consistent-as-needed/cases.ts:57:31	@stylistic/quote-props	redundantQuoting	Properties shouldn't be quoted as all quotes are redundant.
+tests/rules/@stylistic/quote-props/consistent/cases.ts:1:20	@stylistic/quote-props	inconsistentlyQuotedProperty	Inconsistently quoted property 'x' found.
+tests/rules/@stylistic/quote-props/consistent/cases.ts:44:3	@stylistic/quote-props	inconsistentlyQuotedProperty	Inconsistently quoted property 'a' found.
+tests/rules/@stylistic/quote-props/consistent/cases.ts:46:3	@stylistic/quote-props	inconsistentlyQuotedProperty	Inconsistently quoted property 'c' found.
+tests/rules/@stylistic/quote-props/consistent/cases.ts:51:37	@stylistic/quote-props	inconsistentlyQuotedProperty	Inconsistently quoted property 'plain' found.
+tests/rules/@stylistic/quote-props/consistent/cases.ts:52:10	@stylistic/quote-props	inconsistentlyQuotedProperty	Inconsistently quoted property 'A' found.
+tests/rules/@stylistic/quote-props/consistent/cases.ts:52:18	@stylistic/quote-props	inconsistentlyQuotedProperty	Inconsistently quoted property 'C' found.
+tests/rules/@stylistic/quote-props/consistent/cases.ts:54:17	@stylistic/quote-props	inconsistentlyQuotedProperty	Inconsistently quoted property 'c' found.
