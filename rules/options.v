@@ -182,6 +182,7 @@ pub fn check_options(rule string, options []json2.Any) !bool {
 		stylistic_dot_location { sdl_options(options)! }
 		stylistic_function_call_argument_newline { sfcan_options(options)! }
 		stylistic_function_paren_newline { sfpn_options(options)! }
+		stylistic_implicit_arrow_linebreak { sial_options(options)! }
 		else { return false }
 	}
 	return true

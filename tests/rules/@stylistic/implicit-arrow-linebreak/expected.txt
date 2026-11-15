@@ -1,0 +1,17 @@
+tests/rules/@stylistic/implicit-arrow-linebreak/below/cases.ts:3:17	@stylistic/implicit-arrow-linebreak	expected	Expected a linebreak before this expression.
+tests/rules/@stylistic/implicit-arrow-linebreak/below/cases.ts:6:17	@stylistic/implicit-arrow-linebreak	expected	Expected a linebreak before this expression.
+tests/rules/@stylistic/implicit-arrow-linebreak/below/cases.ts:35:17	@stylistic/implicit-arrow-linebreak	expected	Expected a linebreak before this expression.
+tests/rules/@stylistic/implicit-arrow-linebreak/below/cases.ts:42:17	@stylistic/implicit-arrow-linebreak	expected	Expected a linebreak before this expression.
+tests/rules/@stylistic/implicit-arrow-linebreak/cases.ts:5:2	@stylistic/implicit-arrow-linebreak	unexpected	Expected no linebreak before this expression.
+tests/rules/@stylistic/implicit-arrow-linebreak/cases.ts:10:2	@stylistic/implicit-arrow-linebreak	unexpected	Expected no linebreak before this expression.
+tests/rules/@stylistic/implicit-arrow-linebreak/cases.ts:12:2	@stylistic/implicit-arrow-linebreak	unexpected	Expected no linebreak before this expression.
+tests/rules/@stylistic/implicit-arrow-linebreak/cases.ts:21:2	@stylistic/implicit-arrow-linebreak	unexpected	Expected no linebreak before this expression.
+tests/rules/@stylistic/implicit-arrow-linebreak/cases.ts:23:2	@stylistic/implicit-arrow-linebreak	unexpected	Expected no linebreak before this expression.
+tests/rules/@stylistic/implicit-arrow-linebreak/cases.ts:25:16	@stylistic/implicit-arrow-linebreak	unexpected	Expected no linebreak before this expression.
+tests/rules/@stylistic/implicit-arrow-linebreak/cases.ts:27:2	@stylistic/implicit-arrow-linebreak	unexpected	Expected no linebreak before this expression.
+tests/rules/@stylistic/implicit-arrow-linebreak/cases.ts:29:2	@stylistic/implicit-arrow-linebreak	unexpected	Expected no linebreak before this expression.
+tests/rules/@stylistic/implicit-arrow-linebreak/cases.ts:31:2	@stylistic/implicit-arrow-linebreak	unexpected	Expected no linebreak before this expression.
+tests/rules/@stylistic/implicit-arrow-linebreak/cases.ts:32:3	@stylistic/implicit-arrow-linebreak	unexpected	Expected no linebreak before this expression.
+tests/rules/@stylistic/implicit-arrow-linebreak/cases.ts:34:2	@stylistic/implicit-arrow-linebreak	unexpected	Expected no linebreak before this expression.
+tests/rules/@stylistic/implicit-arrow-linebreak/cases.ts:39:2	@stylistic/implicit-arrow-linebreak	unexpected	Expected no linebreak before this expression.
+tests/rules/@stylistic/implicit-arrow-linebreak/cases.ts:41:2	@stylistic/implicit-arrow-linebreak	unexpected	Expected no linebreak before this expression.
