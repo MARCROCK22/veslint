@@ -16,4 +16,6 @@ tests/rules/no-useless-computed-key/cases.ts:31:3	no-useless-computed-key	unnece
 tests/rules/no-useless-computed-key/cases.ts:33:3	no-useless-computed-key	unnecessarilyComputedProperty	Unnecessarily computed property ['p'] found.
 tests/rules/no-useless-computed-key/cases.ts:35:3	no-useless-computed-key	unnecessarilyComputedProperty	Unnecessarily computed property ['u'] found.
 tests/rules/no-useless-computed-key/cases.ts:36:3	no-useless-computed-key	unnecessarilyComputedProperty	Unnecessarily computed property ['u'] found.
+tests/rules/no-useless-computed-key/cases.ts:44:3	no-useless-computed-key	unnecessarilyComputedProperty	Unnecessarily computed property ["q"] found.
+tests/rules/no-useless-computed-key/cases.ts:45:3	no-useless-computed-key	unnecessarilyComputedProperty	Unnecessarily computed property ["r"] found.
 tests/rules/no-useless-computed-key/no-class-members/cases.ts:8:13	no-useless-computed-key	unnecessarilyComputedProperty	Unnecessarily computed property ['x'] found.

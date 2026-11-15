@@ -38,3 +38,10 @@ class Decorated {
 abstract class Abstract {
   abstract ['v'](): void;
 }
+abstract class C2 {
+  abstract [ "m" ](): void;
+  abstract [ "p" ]: number;
+  declare [ "q" ]: number;
+  [ "r" ] = 1;
+}
+export { C2 };

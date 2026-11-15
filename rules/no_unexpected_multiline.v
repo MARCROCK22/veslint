@@ -39,8 +39,10 @@ fn (mut c Checker) lint_no_unexpected_multiline(root C.TSNode, abs_path string, 
 					}
 					continue
 				}
+				// `import(…)` is an ImportExpression, not a CallExpression.
 				if is_optional_element(node)
-					|| !(call_arguments(node) or { []C.TSNode{} }).any(node_kind(it) != 'comment') {
+					|| !(call_arguments(node) or { []C.TSNode{} }).any(node_kind(it) != 'comment')
+					|| node_kind(node_field(node, 'function') or { continue }) == 'import' {
 					continue
 				}
 				c.num_check_break_after(root, node_field(node, 'function') or { continue }, 'function', mut

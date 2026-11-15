@@ -34,3 +34,6 @@ dv = dv
 /dv/d;
 dv = dv
 /dv/v;
+
+export const dynamicImport = import
+('x');
