@@ -450,6 +450,7 @@ pub const init_declarations = '@typescript-eslint/init-declarations'
 pub const max_params = '@typescript-eslint/max-params'
 pub const method_signature_style = '@typescript-eslint/method-signature-style'
 pub const no_empty_object_type = '@typescript-eslint/no-empty-object-type'
+pub const no_non_null_assertion = '@typescript-eslint/no-non-null-assertion'
 pub const names = [no_floating_promises, await_thenable, require_await, return_await,
 	no_misused_promises, no_unsafe_call, no_unsafe_member_access, no_unsafe_return,
 	no_unsafe_assignment, no_unsafe_argument, restrict_template_expressions,
@@ -576,7 +577,7 @@ pub const names = [no_floating_promises, await_thenable, require_await, return_a
 	perfectionist_sort_array_includes, perfectionist_sort_sets, perfectionist_sort_maps,
 	perfectionist_sort_union_types, perfectionist_sort_intersection_types, ban_ts_comment,
 	ban_tslint_comment, default_param_last, init_declarations, max_params, method_signature_style,
-	no_empty_object_type]
+	no_empty_object_type, no_non_null_assertion]
 
 // untyped_rules are the ported rules that need no types (`meta.docs.requiresTypeChecking` is false
 // in typescript-eslint; the eslint-plugin-unicorn rules that read the types when the parser has a
@@ -676,7 +677,7 @@ pub const untyped_rules = [adjacent_overload_signatures, array_type, class_liter
 	perfectionist_sort_array_includes, perfectionist_sort_sets, perfectionist_sort_maps,
 	perfectionist_sort_union_types, perfectionist_sort_intersection_types, ban_ts_comment,
 	ban_tslint_comment, default_param_last, init_declarations, max_params, method_signature_style,
-	no_empty_object_type]
+	no_empty_object_type, no_non_null_assertion]
 
 // needs_types tells whether a rule asks tsgo for the types of the program.
 pub fn needs_types(rule string) bool {
@@ -1123,6 +1124,7 @@ pub const default_options = {
 	max_params:                                      '[{"countVoidThis":false,"max":3}]'
 	method_signature_style:                          '["property"]'
 	no_empty_object_type:                            '[{"allowInterfaces":"never","allowObjectTypes":"never"}]'
+	no_non_null_assertion:                           '[]'
 }
 
 // Finding is a problem a rule found at a node.
@@ -1696,6 +1698,7 @@ pub fn message(rule string, finding Finding) string {
 		max_params { tsmp_messages }
 		method_signature_style { mss_messages }
 		no_empty_object_type { neot_messages }
+		no_non_null_assertion { nnna_messages }
 		else { map[string]string{} }
 	}
 	return interpolate(messages[finding.message_id] or { finding.message_id }, finding.data)
@@ -3160,6 +3163,9 @@ fn (mut c Checker) lint_rule(rule string, root C.TSNode, abs_path string, mut st
 		}
 		no_empty_object_type {
 			return c.lint_no_empty_object_type(root, abs_path, mut stats)!
+		}
+		no_non_null_assertion {
+			return c.lint_no_non_null_assertion(root, abs_path, mut stats)!
 		}
 		else { return error('unknown rule: ${rule}') }
 	}

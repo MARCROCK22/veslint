@@ -1,0 +1,32 @@
+declare const x: { y?: { z?: () => number; w?: number[] }; f?: () => void } | undefined;
+declare let a: number[] | undefined;
+declare let o: { p?: number } | undefined;
+const v1 = x!;
+const v2 = x!.y;
+const v3 = x!.y!.z;
+const v4 = x![`y`];
+const v5 = x!?.y;
+const v6 = x!?.['y'];
+const v7 = x!.f!();
+const v8 = x?.f!();
+const v9 = x?.y?.z!?.();
+const v10 = (x)!.y;
+const v11 = (x!).y;
+const v12 = x! .
+  y;
+const v13 = x!/* c */.y;
+a![0] = 1;
+a![0]++;
+--a![0];
+delete o!.p;
+[a![0]] = [1];
+[...a!] = [1];
+({ p: o!.p } = { p: 1 });
+(a![0] as number) = 2;
+o!.p! += 1;
+const v14 = x!!.y;
+const v15 = x!!!;
+const v16 = new (x!.f as unknown as new () => object)();
+const v17 = `${x!.y}`;
+function g<T>(t: T | null) { return t!; }
+export { v1, v2, v3, v4, v5, v6, v7, v8, v9, v10, v11, v12, v13, v14, v15, v16, v17, g };
