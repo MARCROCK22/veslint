@@ -448,6 +448,7 @@ pub const ban_tslint_comment = '@typescript-eslint/ban-tslint-comment'
 pub const default_param_last = '@typescript-eslint/default-param-last'
 pub const init_declarations = '@typescript-eslint/init-declarations'
 pub const max_params = '@typescript-eslint/max-params'
+pub const method_signature_style = '@typescript-eslint/method-signature-style'
 pub const names = [no_floating_promises, await_thenable, require_await, return_await,
 	no_misused_promises, no_unsafe_call, no_unsafe_member_access, no_unsafe_return,
 	no_unsafe_assignment, no_unsafe_argument, restrict_template_expressions,
@@ -573,7 +574,7 @@ pub const names = [no_floating_promises, await_thenable, require_await, return_a
 	marcrock_numeric_separators, marcrock_uppercase_first_class_letter, marcrock_prefer_at,
 	perfectionist_sort_array_includes, perfectionist_sort_sets, perfectionist_sort_maps,
 	perfectionist_sort_union_types, perfectionist_sort_intersection_types, ban_ts_comment,
-	ban_tslint_comment, default_param_last, init_declarations, max_params]
+	ban_tslint_comment, default_param_last, init_declarations, max_params, method_signature_style]
 
 // untyped_rules are the ported rules that need no types (`meta.docs.requiresTypeChecking` is false
 // in typescript-eslint; the eslint-plugin-unicorn rules that read the types when the parser has a
@@ -672,7 +673,7 @@ pub const untyped_rules = [adjacent_overload_signatures, array_type, class_liter
 	marcrock_numeric_separators, marcrock_uppercase_first_class_letter,
 	perfectionist_sort_array_includes, perfectionist_sort_sets, perfectionist_sort_maps,
 	perfectionist_sort_union_types, perfectionist_sort_intersection_types, ban_ts_comment,
-	ban_tslint_comment, default_param_last, init_declarations, max_params]
+	ban_tslint_comment, default_param_last, init_declarations, max_params, method_signature_style]
 
 // needs_types tells whether a rule asks tsgo for the types of the program.
 pub fn needs_types(rule string) bool {
@@ -1117,6 +1118,7 @@ pub const default_options = {
 	default_param_last:                              '[]'
 	init_declarations:                               '["always"]'
 	max_params:                                      '[{"countVoidThis":false,"max":3}]'
+	method_signature_style:                          '["property"]'
 }
 
 // Finding is a problem a rule found at a node.
@@ -1688,6 +1690,7 @@ pub fn message(rule string, finding Finding) string {
 		default_param_last { dpl_messages }
 		init_declarations { tsid_messages }
 		max_params { tsmp_messages }
+		method_signature_style { mss_messages }
 		else { map[string]string{} }
 	}
 	return interpolate(messages[finding.message_id] or { finding.message_id }, finding.data)
@@ -3146,6 +3149,9 @@ fn (mut c Checker) lint_rule(rule string, root C.TSNode, abs_path string, mut st
 		}
 		max_params {
 			return c.lint_max_params(root, abs_path, mut stats)!
+		}
+		method_signature_style {
+			return c.lint_method_signature_style(root, abs_path, mut stats)!
 		}
 		else { return error('unknown rule: ${rule}') }
 	}

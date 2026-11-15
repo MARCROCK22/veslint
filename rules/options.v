@@ -214,6 +214,7 @@ pub fn check_options(rule string, options []json2.Any) !bool {
 		ban_ts_comment { btsc_options(options)! }
 		init_declarations { tsid_options(options)! }
 		max_params { tsmp_options(options)! }
+		method_signature_style { mss_options(options)! }
 		else { return false }
 	}
 	return true
