@@ -495,15 +495,42 @@ jobs_started=0
 for dir in "${rule_dirs[@]}"; do
 	throttle
 	: > "$TMP/per-rule.$jobs_started.out"
-	veslint_batched "$TMP/per-rule.$jobs_started.out" /dev/null --rule "${dir#tests/rules/}" -- "${all_cases[@]}" &
+	: > "$TMP/per-rule.$jobs_started.err"
+	(
+		code=0
+		veslint_batched "$TMP/per-rule.$jobs_started.out" "$TMP/per-rule.$jobs_started.err" --rule "${dir#tests/rules/}" -- "${all_cases[@]}" || code=$?
+		echo "$code" > "$TMP/per-rule.$jobs_started.code"
+	) &
 	jobs_started=$((jobs_started + 1))
 done
 wait
-cat "$TMP"/per-rule.*.out > "$TMP/per-rule.out"
+# A run that failed (a timeout of tsgo under the load of the runs side by side) runs again alone,
+# so that its findings are not missing from the comparison; a second failure is reported.
+rerun_failed=0
 code=$(< "$TMP/all.code")
+if [[ $code -gt 1 ]]; then
+	: > "$TMP/all.out"
+	: > "$TMP/all.err"
+	code=0
+	veslint_batched "$TMP/all.out" "$TMP/all.err" --config "$TMP/all.json" -- "${all_cases[@]}" || code=$?
+fi
+for ((n = 0; n < jobs_started; n++)); do
+	[[ $(< "$TMP/per-rule.$n.code") -le 1 ]] && continue
+	dir=${rule_dirs[$n]}
+	: > "$TMP/per-rule.$n.out"
+	: > "$TMP/per-rule.$n.err"
+	c=0
+	veslint_batched "$TMP/per-rule.$n.out" "$TMP/per-rule.$n.err" --rule "${dir#tests/rules/}" -- "${all_cases[@]}" || c=$?
+	if [[ $c -gt 1 ]]; then
+		rerun_failed=1
+		echo "--rule ${dir#tests/rules/} failed twice (code $c):"
+		cat "$TMP/per-rule.$n.err"
+	fi
+done
+cat "$TMP"/per-rule.*.out > "$TMP/per-rule.out"
 # tests/rules/every.known.txt: findings of a rule alone that the run with every rule does not give
 # (one rule sees what another did to the scope manager, as in ESLint).
-if [[ $code -eq 1 ]] && diff <(sort "$TMP/all.out") <(grep -vxF -f <(grep -v '^#' tests/rules/every.known.txt) "$TMP/per-rule.out" | sort) > /dev/null &&
+if [[ $code -eq 1 && $rerun_failed -eq 0 ]] && diff <(sort "$TMP/all.out") <(grep -vxF -f <(grep -v '^#' tests/rules/every.known.txt) "$TMP/per-rule.out" | sort) > /dev/null &&
 	grep -q 'ignores them: semi, @stylistic/indent$' "$TMP/all.err"; then
 	ok "--config with every rule: the same findings as each --rule ($(wc -l < "$TMP/all.out"))"
 else
