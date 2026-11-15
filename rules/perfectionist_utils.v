@@ -168,6 +168,9 @@ fn pf_is_group_with_overrides_option(group json2.Any) bool {
 // their descriptions.
 const pf_settings_json_schemas = '{"fallbackSort":{"properties":{"type":{"enum":["alphabetical","natural","line-length","custom","unsorted","subgroup-order"],"type":"string"},"order":{"enum":["asc","desc"],"type":"string"}},"additionalProperties":false,"required":["type"],"type":"object"},"type":{"enum":["alphabetical","natural","line-length","custom","unsorted","subgroup-order"],"type":"string"},"specialCharacters":{"enum":["remove","trim","keep"],"type":"string"},"ignoreCase":{"type":"boolean"},"alphabet":{"type":"string"},"locales":{"oneOf":[{"type":"string"},{"items":{"type":"string"},"type":"array"}]},"order":{"enum":["asc","desc"],"type":"string"},"newlinesBetween":{"oneOf":[{"enum":["ignore"],"type":"string"},{"type":"number","minimum":0}]},"newlinesInside":{"oneOf":[{"oneOf":[{"enum":["ignore"],"type":"string"},{"type":"number","minimum":0}]},{"enum":["newlinesBetween"],"type":"string"}]},"partitionByComment":{"oneOf":[{"type":"boolean"},{"oneOf":[{"items":{"oneOf":[{"properties":{"pattern":{"type":"string"},"flags":{"type":"string"}},"additionalProperties":false,"required":["pattern"],"type":"object"},{"type":"string"}]},"type":"array"},{"oneOf":[{"properties":{"pattern":{"type":"string"},"flags":{"type":"string"}},"additionalProperties":false,"required":["pattern"],"type":"object"},{"type":"string"}]}]},{"properties":{"block":{"oneOf":[{"type":"boolean"},{"oneOf":[{"items":{"oneOf":[{"properties":{"pattern":{"type":"string"},"flags":{"type":"string"}},"additionalProperties":false,"required":["pattern"],"type":"object"},{"type":"string"}]},"type":"array"},{"oneOf":[{"properties":{"pattern":{"type":"string"},"flags":{"type":"string"}},"additionalProperties":false,"required":["pattern"],"type":"object"},{"type":"string"}]}]}]},"line":{"oneOf":[{"type":"boolean"},{"oneOf":[{"items":{"oneOf":[{"properties":{"pattern":{"type":"string"},"flags":{"type":"string"}},"additionalProperties":false,"required":["pattern"],"type":"object"},{"type":"string"}]},"type":"array"},{"oneOf":[{"properties":{"pattern":{"type":"string"},"flags":{"type":"string"}},"additionalProperties":false,"required":["pattern"],"type":"object"},{"type":"string"}]}]}]}},"additionalProperties":false,"minProperties":1,"type":"object"}]},"partitionByNewLine":{"type":"boolean"},"tsconfig":{"properties":{"rootDir":{"type":"string"},"filename":{"type":"string"}},"additionalProperties":false,"required":["rootDir"],"type":"object"}}'
 
+// pf_settings_schema_map are those schemas, decoded once.
+const pf_settings_schema_map = pf_settings_schemas()
+
 fn pf_settings_schemas() map[string]json2.Any {
 	decoded := json2.decode[json2.Any](pf_settings_json_schemas) or { return map[string]json2.Any{} }
 	return decoded.as_map()
@@ -180,14 +183,13 @@ fn pf_get_settings(settings map[string]json2.Any) !map[string]json2.Any {
 	if !pf_truthy(perfectionist) {
 		return map[string]json2.Any{}
 	}
-	schemas := pf_settings_schemas()
 	mut keys := []string{}
 	if perfectionist is map[string]json2.Any {
 		keys = perfectionist.keys()
 	} else if perfectionist is string {
 		keys = []string{len: utf16_units(perfectionist).len, init: index.str()}
 	}
-	invalid := keys.filter(it !in schemas)
+	invalid := keys.filter(it !in pf_settings_schema_map)
 	if invalid.len > 0 {
 		return error('Invalid Perfectionist setting(s): ${invalid.join(', ')}')
 	}
@@ -203,10 +205,9 @@ fn pf_get_settings(settings map[string]json2.Any) !map[string]json2.Any {
 // their schema).
 fn pf_complete(options map[string]json2.Any, defaults map[string]json2.Any, settings map[string]json2.Any) !map[string]json2.Any {
 	given := options.clone()
-	schemas := pf_settings_schemas()
 	mut invalid := []string{}
 	for key, value in settings {
-		schema := schemas[key] or { continue }
+		schema := pf_settings_schema_map[key] or { continue }
 		if key in defaults && key !in given && !pf_matches_json_schema(value, schema) {
 			invalid << key
 		}

@@ -9,8 +9,8 @@ import jsregexp
 // computeMatchedContextOptions, typeContainsCallableType).
 
 // pfuo_all_selectors are the selectors of the types (allSelectors of sort-union-types/types.ts).
-const pfuo_all_selectors = ['intersection', 'conditional', 'function', 'operator', 'keyword',
-	'literal', 'nullish', 'import', 'object', 'named', 'tuple', 'union']
+const pfuo_all_selectors = ['intersection', 'conditional', 'function', 'operator', 'keyword', 'literal',
+	'nullish', 'import', 'object', 'named', 'tuple', 'union']
 
 const pfuo_re_leading_operator = jsregexp.js_regex_new('^\\s*[&|]\\s*', 'u') or { panic(err) }
 
@@ -131,9 +131,9 @@ fn (mut ctx PfContext) pfuo_sort(node int, matched_ast_selectors []string, defau
 		name := ctx.pfuo_node_name(typ)
 		group := pf_compute_group(options, pf_generate_predefined_groups(selectors, []),
 			PfElement{
-			name:      name
-			selectors: selectors
-		})!
+				name:      name
+				selectors: selectors
+			})!
 		mut last_node := ?int(none)
 		last_group := formatted_members.last()
 		if last_group.len > 0 {
