@@ -591,7 +591,7 @@ fn (mut t Tables) load() {
 		for _ in 1 .. n {
 			t.con_cps << u32(r.num())
 		}
-		if t.ccc(t.con_cps[t.con_cps.len - 1]) != 0 {
+		if t.lccc(t.con_cps[t.con_cps.len - 1]) != 0 {
 			t.con_trailing[t.con_trailing.len - 1] = true
 		}
 		count := r.int()
@@ -891,7 +891,8 @@ fn (t &Tables) contraction_start(cp u32) int {
 	return -1
 }
 
-// elements are the collation elements of a string in NFD, as ICU's CollationIterator gives them:
+// elements are the collation elements of the code points of a string (fcd), as ICU's
+// CollationIterator gives them:
 // at each position the longest contraction (UCA S2.1), extended by each non-starter after it
 // that is not blocked and makes a longer contraction (S2.1.1–S2.1.3: such a mark is removed, the
 // marks skipped stay, in order, after the contraction).
@@ -927,14 +928,15 @@ fn (t &Tables) elements(mut cps []u32) []u64 {
 		}
 		end := i + 1 + best_len
 		// Discontiguous: the non-starters after S, from the one after the first that follows S
-		// (which did not match), while they are not starters.
+		// (which did not match), while they are not starters; a code point is a non-starter by
+		// its leading class, and blocks those after it by its trailing class (FCD16, as ICU).
 		mut matched := []int{}
-		if t.con_trailing[k] && end + 1 < cps.len && t.ccc(cps[end]) != 0
-			&& t.ccc(cps[end + 1]) != 0 {
+		if t.con_trailing[k] && end + 1 < cps.len && t.lccc(cps[end]) != 0
+			&& t.lccc(cps[end + 1]) != 0 {
 			mut s := cps[i + 1..end].clone()
-			mut prev_cc := t.ccc(cps[end])
+			mut prev_cc := t.tccc(cps[end])
 			for m in end + 1 .. cps.len {
-				cc := t.ccc(cps[m])
+				cc := t.lccc(cps[m])
 				if cc == 0 {
 					break
 				}
@@ -951,7 +953,7 @@ fn (t &Tables) elements(mut cps []u32) []u64 {
 					}
 					s.delete_last()
 				}
-				prev_cc = cc
+				prev_cc = t.tccc(cps[m])
 			}
 		}
 		if best >= 0 {

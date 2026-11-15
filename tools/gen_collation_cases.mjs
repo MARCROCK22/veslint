@@ -176,6 +176,9 @@ for (const cps of contractions) {
     add([...cps.slice(0, k), pick(marks), pick(marks), ...cps.slice(k)]);
   }
   add([...cps.slice(0, 1), ...cps.slice(1).reverse()]);
+  // Non-starters that are not their own NFD (FCD text keeps them): U+0344 (U+0308 U+0301), U+0340,
+  // U+0341, U+0343, and the Tibetan composite vowels.
+  for (let k = 1; k < cps.length; k++) add([...cps.slice(0, k), pick([0x344, 0x340, 0x341, 0x343, 0xf73, 0xf75, 0xf81]), ...cps.slice(k)]);
   for (const v of variants(cps)) strings.add(v);
 }
 for (const [prefix, cps] of prefixed) {
