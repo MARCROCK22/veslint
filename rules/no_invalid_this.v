@@ -21,8 +21,13 @@ fn nith_options(options []json2.Any) !bool {
 }
 
 fn (mut c Checker) lint_no_invalid_this(root C.TSNode, abs_path string, mut stats Stats) ![]Finding {
+	return c.nith_lint(root, nith_options(c.rule_options(no_invalid_this))!, false, mut stats)
+}
+
+// nith_lint is the rule; with `ts_wrapper`, as @typescript-eslint/no-invalid-this extends it
+// (rules/ts_no_invalid_this.v).
+fn (mut c Checker) nith_lint(root C.TSNode, cap_is_constructor bool, ts_wrapper bool, mut stats Stats) ![]Finding {
 	sw := time.new_stopwatch()
-	cap_is_constructor := nith_options(c.rule_options(no_invalid_this))!
 	tree := c.scope_tree(root)
 	mut findings := []Finding{}
 	mut valid_cache := map[u64]bool{}
@@ -41,6 +46,9 @@ fn (mut c Checker) lint_no_invalid_this(root C.TSNode, abs_path string, mut stat
 				'this_type'] {
 				continue
 			}
+		}
+		if ts_wrapper && tsnit_this_is_valid_here(node) {
+			continue
 		}
 		// The code path the `this` is in: the closest function that is not an arrow, static
 		// block, class field initializer or accessor property value; the program otherwise.

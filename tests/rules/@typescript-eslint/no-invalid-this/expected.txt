@@ -1,0 +1,12 @@
+tests/rules/@typescript-eslint/no-invalid-this/cases.ts:2:13	@typescript-eslint/no-invalid-this	unexpectedThis	Unexpected 'this'.
+tests/rules/@typescript-eslint/no-invalid-this/cases.ts:3:24	@typescript-eslint/no-invalid-this	unexpectedThis	Unexpected 'this'.
+tests/rules/@typescript-eslint/no-invalid-this/cases.ts:6:55	@typescript-eslint/no-invalid-this	unexpectedThis	Unexpected 'this'.
+tests/rules/@typescript-eslint/no-invalid-this/cases.ts:9:33	@typescript-eslint/no-invalid-this	unexpectedThis	Unexpected 'this'.
+tests/rules/@typescript-eslint/no-invalid-this/cases.ts:10:18	@typescript-eslint/no-invalid-this	unexpectedThis	Unexpected 'this'.
+tests/rules/@typescript-eslint/no-invalid-this/cases.ts:23:45	@typescript-eslint/no-invalid-this	unexpectedThis	Unexpected 'this'.
+tests/rules/@typescript-eslint/no-invalid-this/cases.ts:25:8	@typescript-eslint/no-invalid-this	unexpectedThis	Unexpected 'this'.
+tests/rules/@typescript-eslint/no-invalid-this/cases.ts:34:12	@typescript-eslint/no-invalid-this	unexpectedThis	Unexpected 'this'.
+tests/rules/@typescript-eslint/no-invalid-this/cases.ts:35:49	@typescript-eslint/no-invalid-this	unexpectedThis	Unexpected 'this'.
+tests/rules/@typescript-eslint/no-invalid-this/cases.ts:38:73	@typescript-eslint/no-invalid-this	unexpectedThis	Unexpected 'this'.
+tests/rules/@typescript-eslint/no-invalid-this/no-cap/cases.ts:1:19	@typescript-eslint/no-invalid-this	unexpectedThis	Unexpected 'this'.
+tests/rules/@typescript-eslint/no-invalid-this/no-cap/cases.ts:3:34	@typescript-eslint/no-invalid-this	unexpectedThis	Unexpected 'this'.
