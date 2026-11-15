@@ -2,7 +2,7 @@
 // it throws), and whether unicorn/relative-url-style's isSafeToAddDotSlashToUrl holds for an input
 // and a base. Dev-time only: run `node tools/gen_whatwg_url_cases.mjs [urltestdata.json]` when the
 // pinned Node changes; with the urltestdata.json of the web-platform-tests (url/resources/), its
-// inputs and bases are added. rules/whatwg_url_test.v checks rules/whatwg_url.v against it.
+// inputs and bases are added. the whatwg_url_test.v part of rules/rules_test.v checks rules/whatwg_url.v against it.
 import fs from 'node:fs';
 import path from 'node:path';
 

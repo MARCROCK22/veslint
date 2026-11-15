@@ -167,6 +167,7 @@ Requirements:
 make deps            # TypeScript 7, tree-sitter and the patched TypeScript grammar
 make build V=<v>     # ./veslint
 make test V=<v>      # the tests (JOBS=<n> checks at once; the CPUs by default)
+VESLINT_MATRIX=1 make test V=<v>   # also each rule alone on every fixture (before a release)
 ```
 
 **Windows:** run `pwsh ./build-windows.ps1` with PowerShell 7, Git for Windows, MSYS2's UCRT64 gcc in `PATH` (`pacman -S mingw-w64-ucrt-x86_64-gcc`) and Node.js. It builds V and the dependencies itself; the generated grammar is copied from a Linux checkout of the same commit (`build/tree-sitter-typescript`, which `make` writes).

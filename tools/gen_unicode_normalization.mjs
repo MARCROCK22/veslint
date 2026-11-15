@@ -156,7 +156,7 @@ function normalize(points, form) {
 }
 
 // The strings the test checks besides the chosen ones, built the same way in
-// rules/unicode_normalization_test.v: every code point alone; each composition with nothing, a
+// the unicode_normalization_test.v part of rules/rules_test.v: every code point alone; each composition with nothing, a
 // mark of the lowest class, one of the highest and U+0301 between its two code points, and its
 // composite followed by its second code point and by a mark of the lowest class; and random
 // strings from a pool of code points that interact, in an order that depends only on the seed.

@@ -2,7 +2,7 @@
 // @eslint-community/eslint-utils, as the Node that runs this script has them (the engine ESLint
 // runs on): the globals of its builtinNames and everything their data properties and prototypes
 // lead to, each with a canonical name (`String.prototype.slice`), for
-// tools/gen_static_value_cases.mjs (the expected values of rules/static_value_test.v), which
+// tools/gen_static_value_cases.mjs (the expected values of the static_value_test.v part of rules/rules_test.v), which
 // writes a builtin object as its name.
 import fs from 'node:fs';
 import path from 'node:path';

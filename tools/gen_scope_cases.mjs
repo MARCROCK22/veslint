@@ -1,4 +1,4 @@
-// Generates tests/scope_cases.json for rules/scope_oracle_test.v: for each program of
+// Generates tests/scope_cases.json for the scope_oracle_test.v part of rules/rules_test.v: for each program of
 // tests/scope/ (see below), what ESLint's scope manager holds for it once
 // ESLint has finished it (SourceCode#finalize): the real @typescript-eslint/parser and
 // @typescript-eslint/scope-manager analyze the program inside the real ESLint Linter, with the

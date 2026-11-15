@@ -1,4 +1,4 @@
-// Generates tests/static_value_cases.json for rules/static_value_test.v: what getStaticValue of
+// Generates tests/static_value_cases.json for the static_value_test.v part of rules/rules_test.v: what getStaticValue of
 // @eslint-community/eslint-utils (the one typescript-eslint's rules call) gives for each
 // expression statement of a TypeScript source, asked from a rule that ESLint runs with
 // typescript-eslint's parser, like the ported rules do (`getStaticValue(node, globalScope)`).
@@ -32,7 +32,7 @@ const reference = createRequire(path.join(root, 'build/eval/spider-byte/package.
 
 // The limits of rules/static_value.v: what eslint-utils evaluates and veslint answers "not static"
 // to. A statement written under one of them may have no value in veslint; under none, veslint's
-// value must be eslint-utils'. rules/static_value_test.v checks both, and that each limit still
+// value must be eslint-utils'. the static_value_test.v part of rules/rules_test.v checks both, and that each limit still
 // holds.
 const limits = {
   date: 'Date: `Date()`, `new Date(…)` and `Date.parse`',
@@ -436,7 +436,7 @@ add(`isPrototypeOf`, `record.isPrototypeOf`, `isPrototypeOf === record.isPrototy
 add(`''.trimLeft === ''.trimStart`, `Number.parseInt === parseInt`, `new Set().keys === new Set().values`, `'a'.slice === 'b'.slice`, `[].concat === ''.concat`, `map.get === new Map().get`, `map.keys === set.keys`);
 
 // Calls of every function eslint-utils calls, Math aside: its functions have statements of their
-// own, and rules/js_math_test.v checks the transcendental ones against V8 on millions of arguments.
+// own, and the js_math_test.v part of rules/rules_test.v checks the transcendental ones against V8 on millions of arguments.
 const limitOf = name => {
   if (name === 'Date' || name === 'Date.parse') return 'date';
   return '';
@@ -1174,7 +1174,7 @@ const wrappers = [
 ];
 const serializeNumber = n => (Object.is(n, -0) ? '-0' : String(n));
 const serializeKey = key => (typeof key === 'symbol' ? serialize(key, 0) : hex(key));
-// serialize writes a value like stv_test_serialize of rules/static_value_test.v: u(ndefined),
+// serialize writes a value like stv_test_serialize of the static_value_test.v part of rules/rules_test.v: u(ndefined),
 // null, b(oolean), n(umber), s(tring, as UTF-16 units), i (BigInt), y (a well-known symbol) or
 // yr (a registered one), f (a builtin function) or ns (another builtin object) with its name,
 // a[…] (array, h: a hole), o{…} (object; o^proto{…} when its prototype is not Object.prototype),

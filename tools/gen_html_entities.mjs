@@ -1,7 +1,7 @@
 // Generates rules/html_entities.v, the named character references of HTML as the installed
 // `entities` package (what eslint-plugin-unicorn imports) decodes them, and
 // tests/html_attribute_cases.json, inputs with what its decodeHTMLAttribute gives for them
-// (rules/html_attribute_test.v checks html_decode_attribute against it). The names are those of the
+// (the html_attribute_test.v part of rules/rules_test.v checks html_decode_attribute against it). The names are those of the
 // installed `character-entities` (the 2125 of the HTML standard, as in `entities`). Dev-time only:
 // run `node tools/gen_html_entities.mjs && v fmt -w rules/html_entities.v` when the pinned packages
 // change.

@@ -1,4 +1,4 @@
-// Generates tests/inline_config_cases.json for rules/directives_test.v: what ESLint's own parser of
+// Generates tests/inline_config_cases.json for the directives_test.v part of rules/rules_test.v: what ESLint's own parser of
 // configuration comments (ConfigCommentParser.parseJSONLikeConfig of @eslint/plugin-kit, which reads
 // the text with levn and, when that fails, as JSON) makes of the text of a `/* eslint … */` comment:
 // the rules and their values, or the message of its error. A value JSON does not have (undefined,

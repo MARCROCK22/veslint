@@ -1,4 +1,4 @@
-// Generates tests/rule_option_cases.json for rules/json_schema_test.v: what ESLint itself says of
+// Generates tests/rule_option_cases.json for the json_schema_test.v part of rules/rules_test.v: what ESLint itself says of
 // many option values of each ported rule, fitting its schema or not. Each case is given to
 // ESLint's Linter twice: as the options of the rule in a configuration (`config`: the message of
 // the error it throws, or null) and in the comment `/* eslint rule: [severity, ...options] */`

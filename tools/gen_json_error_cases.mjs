@@ -1,4 +1,4 @@
-// Generates tests/json_error_cases.json for rules/json_errors_test.v: the message of the error
+// Generates tests/json_error_cases.json for the json_errors_test.v part of rules/rules_test.v: the message of the error
 // `JSON.parse(text)` throws in the Node that runs this script (V8), or '' when the text is valid.
 // Dev-time only: run `node tools/gen_json_error_cases.mjs` after adding cases.
 import fs from 'node:fs';

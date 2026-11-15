@@ -1,9 +1,9 @@
-// Generates tests/math_cases.json for rules/js_math_test.v: what the transcendental functions of
+// Generates tests/math_cases.json for the js_math_test.v part of rules/rules_test.v: what the transcendental functions of
 // Math give in the Node that runs this script (V8's ieee754.cc and Math.hypot), as the bits of the
 // doubles: for chosen arguments one by one, and for arguments built from a seed, as digests per
 // function and kind of argument. rules/js_math.v must give the same bits.
 //
-// The arguments from the seed are built the same way in rules/js_math_test.v: a linear congruential
+// The arguments from the seed are built the same way in the js_math_test.v part of rules/rules_test.v: a linear congruential
 // generator of 32-bit numbers, and doubles made from its numbers with exact operations only (bits,
 // or a product by a power of two and one addition).
 //
@@ -51,7 +51,7 @@ class Generator {
   }
 }
 
-// The kinds of arguments, by name: rules/js_math_test.v has the same.
+// The kinds of arguments, by name: the js_math_test.v part of rules/rules_test.v has the same.
 const specials = [0, -0, NaN, Infinity, -Infinity, 1, -1, 0.5, -0.5, 2, -2, 1e-300, 5e-324, -5e-324, 2.2250738585072014e-308, Number.MAX_VALUE, -Number.MAX_VALUE];
 const modes = {
   // Any double, NaNs and infinities among them.

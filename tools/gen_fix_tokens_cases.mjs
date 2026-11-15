@@ -1,4 +1,4 @@
-// Generates tests/fix_tokens_cases.json for rules/fix_tokens_test.v: for each ESTree node of each
+// Generates tests/fix_tokens_cases.json for the fix_tokens_test.v part of rules/rules_test.v: for each ESTree node of each
 // program below (its byte range and type), what the original functions return for it inside
 // ESLint: eslint-utils' isParenthesized, and typescript-eslint's getTextWithParentheses,
 // isStartOfExpressionStatement, needsPrecedingSemicolon, isStrongPrecedenceNode,

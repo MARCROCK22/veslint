@@ -90,7 +90,7 @@ run: veslint
 	./veslint app.ts
 
 test: veslint
-	$(V) test .
+	@start=$$(date +%s); $(V) test . && echo "time   v test: $$(( $$(date +%s) - start )) s"
 	V=$(V) tests/run.sh
 
 bench: veslint

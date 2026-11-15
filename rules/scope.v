@@ -18,7 +18,7 @@ import treesitter { TokenEnds, children, has_child_kind, named_children, next_si
 // ecmaVersion, the `globals` of the configuration and the `/* global */` comments. References
 // resolve when their scope closes, as in ScopeBase.close, so a variable holds its references in
 // ESLint's order. tests/scope_cases.json (tools/gen_scope_cases.mjs) has what the real scope
-// manager gives for the programs of tests/scope/, and scope_oracle_test.v requires the same.
+// manager gives for the programs of tests/scope/, and the scope_oracle_test.v part of rules/rules_test.v requires the same.
 //
 // Known differences with ESLint: where typescript-eslint fails (an unknown lib, the JSX pragma
 // naming a variable without identifiers, an import in a script), veslint goes on without that lib

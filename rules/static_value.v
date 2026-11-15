@@ -2195,7 +2195,7 @@ const stv_iterator_helpers = ['reduce', 'toArray', 'forEach', 'some', 'every', '
 	'take', 'drop', 'flatMap']
 
 // stv_call_allowed are the functions of eslint-utils' callAllowed, by the names veslint gives them
-// (rules/static_value_test.v checks the list against eslint-utils' own): the only ones a
+// (the static_value_test.v part of rules/rules_test.v checks the list against eslint-utils' own): the only ones a
 // CallExpression or a NewExpression calls. Calling any other value is not static, without an
 // exception. Not all of them are evaluated here (see the head of this file).
 const stv_call_allowed = ['Array.isArray', 'Array.of', 'Array.prototype.at', 'Array.prototype.concat',

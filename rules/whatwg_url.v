@@ -6,7 +6,7 @@ module rules
 // segments, Windows drive letters of file URLs, opaque paths, and IPv4, IPv6, opaque and ASCII
 // domain hosts. A domain that needs UTS #46 (a non-ASCII one, or a label that starts with `xn--`)
 // is not ported: parsing it fails with `wu_unsupported`. tools/gen_whatwg_url_cases.mjs checks
-// this file against Node's URL (tests/whatwg_url_cases.json, rules/whatwg_url_test.v).
+// this file against Node's URL (tests/whatwg_url_cases.json, the whatwg_url_test.v part of rules/rules_test.v).
 
 // wu_unsupported is the error of a parse that needs a part of the standard that is not ported.
 const wu_unsupported = 'unsupported URL'

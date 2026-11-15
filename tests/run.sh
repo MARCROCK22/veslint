@@ -30,7 +30,8 @@ ko() {
 	fail=$((fail + 1))
 }
 
-# The slow checks (each rule on its fixtures, each rule on every fixture, the upstream tests) run
+# The slow checks (each rule on its fixtures, each rule on every fixture with VESLINT_MATRIX=1, the
+# upstream tests) run
 # JOBS at a time (the CPUs by default), each with its veslint and its tsgo; their lines are printed
 # in the order of a serial run.
 JOBS=${JOBS:-$(nproc 2> /dev/null || echo 2)}
@@ -40,6 +41,13 @@ throttle() {
 	while [[ $(jobs -rp | wc -l) -ge $JOBS ]]; do
 		wait -n
 	done
+}
+# phase prints how long the checks since the last phase took (`time   <phase>: <seconds> s`), to see
+# where the time of `make test` goes.
+phase_start=$SECONDS
+phase() { # label
+	echo "time   $1: $((SECONDS - phase_start)) s"
+	phase_start=$SECONDS
 }
 # report prints the lines a job wrote to its log and counts its `ok` and `FAIL` lines.
 report() { # log
@@ -116,6 +124,7 @@ else
 	cat "$TMP/symlink.err"
 fi
 
+phase "exact outputs of the identifier modes"
 # Rules: for each tests/rules/<rule id>/ (the directory with an expected.txt, such as
 # tests/rules/@typescript-eslint/await-thenable), veslint gives on its cases.ts (there may be more in
 # subdirectories, each with its own tsconfig and, if its cases use other options, with an
@@ -206,6 +215,7 @@ wait
 for ((i = 0; i < jobs_started; i++)); do
 	report "$TMP/check-rule.$i.log"
 done
+phase "each rule on its own fixtures"
 # The comments that configure ESLint (tests/directives): disable directives, the ones without use
 # and inline configuration, with the fixes; validated against ESLint by tests/rules/reference.sh.
 mapfile -t directive_files < <(find tests/directives -name '*.ts' | sorted)
@@ -340,7 +350,7 @@ else
 	diff "$TMP/eager.out" "$TMP/lazy.out"
 fi
 ./veslint --bench --config "$TMP/untyped.json" tests/lazy-snapshot/plain.ts > /dev/null 2> "$TMP/lazy.bench"
-if grep -q '"tsgo_requests":2}' "$TMP/lazy.bench"; then
+if grep -q '"tsgo_requests":2[,}]' "$TMP/lazy.bench"; then
 	ok "rules without types: no snapshot when nothing needs one"
 else
 	ko "rules without types: no snapshot when nothing needs one"
@@ -500,6 +510,7 @@ veslint_batched() {
 	return $code
 }
 
+phase "directives, --fix, configurations and the command line"
 # `eslint --print-config`: numeric severities, the core require-await rule turned off and rules of
 # other plugins), with every rule of tests/rules and its default options.
 mapfile -t all_cases < <(find tests/rules -name cases.ts -o -name cases.tsx | sorted)
@@ -527,8 +538,12 @@ echo '}}' >> "$TMP/all.json"
 	veslint_batched "$TMP/all.out" "$TMP/all.err" --config "$TMP/all.json" -- "${all_cases[@]}" || code=$?
 	echo "$code" > "$TMP/all.code"
 ) &
+# Each rule alone on every fixture (458 runs over 1,529 fixtures, most of the time of `make test`) only
+# with VESLINT_MATRIX=1, which the battery of a release sets; without it, every rule at once.
+matrix_dirs=()
+[[ ${VESLINT_MATRIX:-0} != 1 ]] || matrix_dirs=("${rule_dirs[@]}")
 jobs_started=0
-for dir in "${rule_dirs[@]}"; do
+for dir in "${matrix_dirs[@]}"; do
 	throttle
 	: > "$TMP/per-rule.$jobs_started.out"
 	: > "$TMP/per-rule.$jobs_started.err"
@@ -572,10 +587,20 @@ for ((n = 0; n < jobs_started; n++)); do
 		cat "$TMP/per-rule.$n.err"
 	fi
 done
-cat "$TMP"/per-rule.*.out > "$TMP/per-rule.out"
+if [[ $jobs_started -eq 0 ]]; then
+	if [[ $code -eq 1 && $rerun_failed -eq 0 && -s "$TMP/all.out" ]] && grep -q 'ignores them: semi, @stylistic/indent$' "$TMP/all.err"; then
+		ok "--config with every rule on every fixture ($(wc -l < "$TMP/all.out") findings; each rule alone on them with VESLINT_MATRIX=1)"
+	else
+		ko "--config with every rule on every fixture (code $code)"
+		grep -v 'nodes not analyzed' "$TMP/all.err"
+	fi
+fi
+[[ $jobs_started -eq 0 ]] || cat "$TMP"/per-rule.*.out > "$TMP/per-rule.out"
 # tests/rules/every.known.txt: findings of a rule alone that the run with every rule does not give
 # (one rule sees what another did to the scope manager, as in ESLint).
-if [[ $code -eq 1 && $rerun_failed -eq 0 ]] && diff <(sort "$TMP/all.out") <(grep -vxF -f <(grep -v '^#' tests/rules/every.known.txt) "$TMP/per-rule.out" | sort) > /dev/null &&
+if [[ $jobs_started -eq 0 ]]; then
+	:
+elif [[ $code -eq 1 && $rerun_failed -eq 0 ]] && diff <(sort "$TMP/all.out") <(grep -vxF -f <(grep -v '^#' tests/rules/every.known.txt) "$TMP/per-rule.out" | sort) > /dev/null &&
 	grep -q 'ignores them: semi, @stylistic/indent$' "$TMP/all.err"; then
 	ok "--config with every rule: the same findings as each --rule ($(wc -l < "$TMP/all.out"))"
 else
@@ -583,6 +608,7 @@ else
 	grep -v 'nodes not analyzed' "$TMP/all.err"
 	diff <(sort "$TMP/all.out") <(grep -vxF -f <(grep -v '^#' tests/rules/every.known.txt) "$TMP/per-rule.out" | sort) | head -40
 fi
+phase "each rule alone on every fixture, and every rule at once"
 printf '{"rules": {"@typescript-eslint/no-floating-promises": "warn"}}' > "$TMP/warn.json"
 code=0
 ./veslint --config "$TMP/warn.json" tests/rules/@typescript-eslint/no-floating-promises/cases.ts > "$TMP/warn.out" 2> "$TMP/warn-config.err" || code=$?
@@ -918,6 +944,7 @@ else
 	cat "$TMP/server-cpus.err"
 fi
 
+phase "options, --bench, tsgo and --server"
 # typescript-eslint's own tests of the ported rules (tests/upstream/README.md): every case of each
 # tests/rules/<rule>/upstream.json gives what its upstream test expects, but the ones
 # tests/upstream/known.txt lists. They need the packages tests/upstream/setup.sh links into the
@@ -1001,6 +1028,7 @@ if tests/upstream/seyfert/setup.sh "$TMP/upstream-seyfert" 2> "$TMP/upstream-sey
 else
 	echo "skip   @slipher/eslint-plugin's own tests: $(cat "$TMP/upstream-seyfert-setup.err")"
 fi
+phase "the upstream tests of each plugin"
 
 echo
 echo "$pass passed, $fail failed"
