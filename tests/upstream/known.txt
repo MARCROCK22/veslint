@@ -1543,3 +1543,34 @@ veslint	sort-intersection-types/v12	locales: zh-CN, which veslint does not colla
 veslint	sort-intersection-types/v40	locales: zh-CN, which veslint does not collate
 veslint	sort-intersection-types/v65	the alphabet has lone surrogates, which veslint's JSON reader refuses
 veslint	sort-intersection-types/i133	the alphabet has lone surrogates, which veslint's JSON reader refuses
+# perfectionist/sort-heritage-clauses: as for sort-array-includes.
+eslint	sort-heritage-clauses/i76	disables rule-to-test/sort-heritage-clauses, the name the tester gives the rule
+veslint	sort-heritage-clauses/i76	disables rule-to-test/sort-heritage-clauses, the name the tester gives the rule
+eslint	sort-heritage-clauses/i77	disables rule-to-test/sort-heritage-clauses, the name the tester gives the rule
+veslint	sort-heritage-clauses/i77	disables rule-to-test/sort-heritage-clauses, the name the tester gives the rule
+eslint	sort-heritage-clauses/i78	disables rule-to-test/sort-heritage-clauses, the name the tester gives the rule
+veslint	sort-heritage-clauses/i78	disables rule-to-test/sort-heritage-clauses, the name the tester gives the rule
+eslint	sort-heritage-clauses/i79	disables rule-to-test/sort-heritage-clauses, the name the tester gives the rule
+veslint	sort-heritage-clauses/i79	disables rule-to-test/sort-heritage-clauses, the name the tester gives the rule
+eslint	sort-heritage-clauses/i80	disables rule-to-test/sort-heritage-clauses, the name the tester gives the rule
+veslint	sort-heritage-clauses/i80	disables rule-to-test/sort-heritage-clauses, the name the tester gives the rule
+eslint	sort-heritage-clauses/i81	disables rule-to-test/sort-heritage-clauses, the name the tester gives the rule
+veslint	sort-heritage-clauses/i81	disables rule-to-test/sort-heritage-clauses, the name the tester gives the rule
+eslint	sort-heritage-clauses/i82	disables rule-to-test/sort-heritage-clauses, the name the tester gives the rule
+veslint	sort-heritage-clauses/i82	disables rule-to-test/sort-heritage-clauses, the name the tester gives the rule
+eslint	sort-heritage-clauses/i83	disables rule-to-test/sort-heritage-clauses, the name the tester gives the rule
+veslint	sort-heritage-clauses/i83	disables rule-to-test/sort-heritage-clauses, the name the tester gives the rule
+eslint	sort-heritage-clauses/i84	disables rule-to-test/sort-heritage-clauses, the name the tester gives the rule
+veslint	sort-heritage-clauses/i84	disables rule-to-test/sort-heritage-clauses, the name the tester gives the rule
+eslint	sort-heritage-clauses/i85	disables rule-to-test/sort-heritage-clauses, the name the tester gives the rule
+veslint	sort-heritage-clauses/i85	disables rule-to-test/sort-heritage-clauses, the name the tester gives the rule
+eslint	sort-heritage-clauses/i86	disables rule-to-test/sort-heritage-clauses, the name the tester gives the rule
+veslint	sort-heritage-clauses/i86	disables rule-to-test/sort-heritage-clauses, the name the tester gives the rule
+eslint	sort-heritage-clauses/i88	disables rule-to-test/sort-heritage-clauses, the name the tester gives the rule
+veslint	sort-heritage-clauses/i88	disables rule-to-test/sort-heritage-clauses, the name the tester gives the rule
+veslint	sort-heritage-clauses/v5	locales: zh-CN, which veslint does not collate
+veslint	sort-heritage-clauses/v28	locales: zh-CN, which veslint does not collate
+veslint	sort-heritage-clauses/v35	the alphabet has lone surrogates, which veslint's JSON reader refuses
+veslint	sort-heritage-clauses/v36	the alphabet has lone surrogates, which veslint's JSON reader refuses
+veslint	sort-heritage-clauses/i64	the alphabet has lone surrogates, which veslint's JSON reader refuses
+veslint	sort-heritage-clauses/i65	the alphabet has lone surrogates, which veslint's JSON reader refuses

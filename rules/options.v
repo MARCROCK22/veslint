@@ -218,6 +218,7 @@ pub fn check_options(rule string, options []json2.Any) !bool {
 		no_empty_object_type { neot_options(options)! }
 		ts_no_invalid_this { tsnit_options(options)! }
 		no_redeclare { tsnr_options(options)! }
+		perfectionist_sort_heritage_clauses { pf_options(options)! }
 		else { return false }
 	}
 	return true
