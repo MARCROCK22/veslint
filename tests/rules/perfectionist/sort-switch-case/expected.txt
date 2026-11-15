@@ -17,6 +17,7 @@ tests/rules/perfectionist/sort-switch-case/cases.ts:132:3	perfectionist/sort-swi
 tests/rules/perfectionist/sort-switch-case/cases.ts:140:8	perfectionist/sort-switch-case	unexpectedSwitchCaseOrder	Expected "1" to come before "2".
 tests/rules/perfectionist/sort-switch-case/cases.ts:145:8	perfectionist/sort-switch-case	unexpectedSwitchCaseOrder	Expected "`a`" to come before "`b`".
 tests/rules/perfectionist/sort-switch-case/cases.ts:150:45	perfectionist/sort-switch-case	unexpectedSwitchCaseOrder	Expected "a" to come before "b".
+tests/rules/perfectionist/sort-switch-case/cases.ts:162:3	perfectionist/sort-switch-case	unexpectedSwitchCaseOrder	Expected "b" to come before "z".
 tests/rules/perfectionist/sort-switch-case/custom/cases.ts:5:8	perfectionist/sort-switch-case	unexpectedSwitchCaseOrder	Expected "k2" to come before "k10".
 tests/rules/perfectionist/sort-switch-case/custom/cases.ts:9:3	perfectionist/sort-switch-case	unexpectedSwitchCaseOrder	Expected "bb" to come before "k1".
 tests/rules/perfectionist/sort-switch-case/custom/cases.ts:16:3	perfectionist/sort-switch-case	unexpectedSwitchCaseOrder	Expected "B" to come before "default".

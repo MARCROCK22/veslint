@@ -298,10 +298,82 @@ fn (mut ctx PfContext) pfsw_sort_switch(switch_node int) ! {
 		right := right_block[0]
 		// Raise errors but only sort on second iteration.
 		if !has_unsorted_nodes && !fix_done {
-			has_fix, fix = ctx.pf_merge_fixes(ctx.pf_make_fixes(sorting_nodes, sorted_cases,
-				no_options, false, false))!
+			mut fixes := ctx.pf_make_fixes(sorting_nodes, sorted_cases, no_options, false,
+				false)
+			fixes << ctx.pfsw_block_separator_fixes(sorting_nodes, sorted_cases, case_blocks,
+				no_options)
+			has_fix, fix = ctx.pf_merge_fixes(fixes)!
 			fix_done = true
 		}
 		ctx.pfsw_report(right.node, left.name, right.name, has_fix, fix)
 	}
+}
+
+// pfsw_block_separator_fixes is where veslint fixes otherwise than eslint-plugin-perfectionist on
+// purpose (tests/rules/perfectionist/sort-switch-case/fixes.known.txt): perfectionist puts each case
+// in the place of another and leaves the white space between the places as it was, so the cases of
+// a block that moves get the separators of the cases that were there. A blank line can then end up
+// between `case a:` and `case b: {…}` of one block, which no-fallthrough reports (an empty case
+// followed by a blank line falls through). Here a case keeps the separator it had after it inside
+// its block, and the separators between blocks stay in their order. Only when every separator is
+// white space (with comments between the cases, perfectionist's fix as it is).
+fn (ctx &PfContext) pfsw_block_separator_fixes(cases []PfSortingNode, sorted []PfSortingNode, blocks [][]PfSortingNode, options map[string]json2.Any) []Fix {
+	if cases.len < 2 || sorted.len != cases.len {
+		return []Fix{}
+	}
+	mut block_of := map[int]int{}
+	for index, block in blocks {
+		for case_node in block {
+			block_of[case_node.node] = index
+		}
+	}
+	mut starts := []int{cap: cases.len}
+	mut ends := []int{cap: cases.len}
+	for case_node in cases {
+		start, end := ctx.pf_get_node_range(case_node.node, options, false, case_node)
+		starts << start
+		ends << end
+	}
+	mut separators := []string{cap: cases.len - 1}
+	for i in 0 .. cases.len - 1 {
+		if ends[i] > starts[i + 1] {
+			return []Fix{}
+		}
+		separator := ctx.src[ends[i]..starts[i + 1]]
+		if separator.trim_space() != '' {
+			return []Fix{}
+		}
+		separators << separator
+	}
+	// The separator after each case inside its block, and the ones between blocks in order.
+	mut inner := map[int]string{}
+	mut between := []string{}
+	for i in 0 .. cases.len - 1 {
+		if block_of[cases[i].node] == block_of[cases[i + 1].node] {
+			inner[cases[i].node] = separators[i]
+		} else {
+			between << separators[i]
+		}
+	}
+	mut fixes := []Fix{}
+	mut next_between := 0
+	for i in 0 .. sorted.len - 1 {
+		wanted := if block_of[sorted[i].node] == block_of[sorted[i + 1].node] {
+			inner[sorted[i].node] or { return []Fix{} }
+		} else {
+			if next_between >= between.len {
+				return []Fix{}
+			}
+			next_between++
+			between[next_between - 1]
+		}
+		if wanted != separators[i] {
+			fixes << Fix{
+				start: ends[i]
+				end:   starts[i + 1]
+				text:  wanted
+			}
+		}
+	}
+	return fixes
 }

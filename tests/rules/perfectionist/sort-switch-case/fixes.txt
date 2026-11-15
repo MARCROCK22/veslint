@@ -17,6 +17,7 @@ tests/rules/perfectionist/sort-switch-case/cases.ts:132:3	perfectionist/sort-swi
 tests/rules/perfectionist/sort-switch-case/cases.ts:140:8	perfectionist/sort-switch-case	unexpectedSwitchCaseOrder	Expected "1" to come before "2".	fix	1894	1916	1:\n  case 10:\n  case 2	end	140	9
 tests/rules/perfectionist/sort-switch-case/cases.ts:145:8	perfectionist/sort-switch-case	unexpectedSwitchCaseOrder	Expected "`a`" to come before "`b`".	fix	1955	1970	`a`:\n  case `b`	end	145	11
 tests/rules/perfectionist/sort-switch-case/cases.ts:150:45	perfectionist/sort-switch-case	unexpectedSwitchCaseOrder	Expected "a" to come before "b".	fix	2020	2072	case 'a': log('a'); break; case 'b': log('b'); break;	end	150	70
+tests/rules/perfectionist/sort-switch-case/cases.ts:162:3	perfectionist/sort-switch-case	unexpectedSwitchCaseOrder	Expected "b" to come before "z".	fix	2334	2431	case 'b': {\n    log('b');\n    break;\n  }\n\n  case 'y':\n  case 'z': {\n    log('yz');\n    break;\n  }	end	165	4
 tests/rules/perfectionist/sort-switch-case/custom/cases.ts:5:8	perfectionist/sort-switch-case	unexpectedSwitchCaseOrder	Expected "k2" to come before "k10".	fix	95	126	'k2':\n  case 'k1':\n  case 'k10'	end	5	12
 tests/rules/perfectionist/sort-switch-case/custom/cases.ts:9:3	perfectionist/sort-switch-case	unexpectedSwitchCaseOrder	Expected "bb" to come before "k1".	end	11	11
 tests/rules/perfectionist/sort-switch-case/custom/cases.ts:16:3	perfectionist/sort-switch-case	unexpectedSwitchCaseOrder	Expected "B" to come before "default".	fix	245	265	case 'B':\n  default:	end	16	11

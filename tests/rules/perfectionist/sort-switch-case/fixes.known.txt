@@ -1,0 +1,6 @@
+# perfectionist puts each case in the place of another and leaves the white space between the places
+# as it was, so a block that moves can get a blank line between its cases (which no-fallthrough
+# reports); veslint moves the cases of a block together and keeps the blank lines between blocks
+# (pfsw_block_separator_fixes).
+eslint	tests/rules/perfectionist/sort-switch-case/cases.ts:162:3	perfectionist/sort-switch-case	unexpectedSwitchCaseOrder	Expected "b" to come before "z".	fix	2334	2431	case 'b': {\n    log('b');\n    break;\n  }\n  case 'y':\n\n  case 'z': {\n    log('yz');\n    break;\n  }	end	165	4
+veslint	tests/rules/perfectionist/sort-switch-case/cases.ts:162:3	perfectionist/sort-switch-case	unexpectedSwitchCaseOrder	Expected "b" to come before "z".	fix	2334	2431	case 'b': {\n    log('b');\n    break;\n  }\n\n  case 'y':\n  case 'z': {\n    log('yz');\n    break;\n  }	end	165	4

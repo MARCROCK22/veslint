@@ -148,3 +148,22 @@ switch (value) {
 
 // Inline cases.
 switch (value) { case 'b': log('b'); break; case 'a': log('a'); break }
+
+// A block of cases that fall through moves whole: its cases stay together, and the blank lines
+// between blocks stay where they were (veslint's fix; perfectionist's leaves a blank line inside
+// the block, which no-fallthrough reports).
+switch (value) {
+  case 'y':
+  case 'z': {
+    log('yz');
+    break;
+  }
+
+  case 'b': {
+    log('b');
+    break;
+  }
+
+  default:
+    log('other');
+}
