@@ -1,0 +1,1 @@
+[{"minimumDescriptionLength":2,"ts-expect-error":{"descriptionFormat":"^: TS\\d+ because .+$"},"ts-ignore":{"descriptionFormat":"a/b"},"ts-check":{"descriptionFormat":""}}]
