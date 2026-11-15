@@ -2,6 +2,20 @@
 
 Each version is a release on GitHub with the veslint binaries (Linux x64, Windows x64) and the VS Code extension. The section of a version is the text of its release.
 
+## 0.22.0
+
+- **11 rules of eslint-plugin-unicorn for modules:** `unicorn/no-anonymous-default-export`, `unicorn/no-named-default`, `unicorn/no-process-exit`, `unicorn/prefer-export-from`, `unicorn/prefer-import-meta-properties`, `unicorn/prefer-json-parse-buffer`, `unicorn/prefer-module`, `unicorn/prefer-node-protocol`, `unicorn/relative-url-style`, `unicorn/require-module-attributes` and `unicorn/require-module-specifiers`. `unicorn/relative-url-style` comes with a port of the WHATWG URL parser (checked against Node's `URL` on 15,931 inputs); hosts with non-ASCII letters are not resolved yet, so they are never reported.
+- **14 rules of eslint-plugin-unicorn for functions, classes and objects:** `unicorn/consistent-function-scoping`, `unicorn/isolated-functions`, `unicorn/no-accessor-recursion`, `unicorn/no-keyword-prefix`, `unicorn/no-static-only-class`, `unicorn/no-this-assignment`, `unicorn/no-unreadable-iife`, `unicorn/no-unused-properties`, `unicorn/no-useless-undefined`, `unicorn/prefer-class-fields`, `unicorn/prefer-default-parameters`, `unicorn/prefer-object-from-entries`, `unicorn/prefer-prototype-methods` and `unicorn/prefer-reflect-apply`.
+- **`unicorn/better-regex`**, which unicorn 79 removed: it reports nothing, as `unicorn/prefer-json-parse-buffer` (deprecated in unicorn 79).
+- They come with their options, fixes and suggestions, and pass the cases of unicorn's own tests.
+- **Fixes:**
+  - 16 unicorn rules put a `;` before a fix that starts with `[`, `(` or a template after a statement that ends without one (`counter++`), as unicorn 79 does.
+  - `export default class {}` and `export default function () {}` end at their `}`, as TypeScript reads them: a line that starts with `(` or `[` after them is another statement.
+  - `export * from 'm' with {type: 'json'}` (import attributes after the `from` of an export) is read as TypeScript reads it.
+  - `new X!.y()` is `new (X!.y)()`, as TypeScript reads it: the code is analyzed instead of being skipped.
+  - `no-invalid-this` reports a `this` that is the default value of a parameter (`function f(a = this)`).
+  - `unicorn/isolated-functions` and `unicorn/no-keyword-prefix` accept every option ESLint accepts.
+
 ## 0.21.0
 
 - **8 rules of eslint-plugin-unicorn for spreads and redundant calls:** `unicorn/consistent-empty-array-spread`, `unicorn/no-immediate-mutation`, `unicorn/no-useless-collection-argument`, `unicorn/no-useless-fallback-in-spread`, `unicorn/no-useless-iterator-to-array`, `unicorn/no-useless-spread`, `unicorn/prefer-single-call` and `unicorn/prefer-spread`.
