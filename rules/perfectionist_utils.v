@@ -1316,11 +1316,11 @@ fn (mut ctx PfContext) pf_report_all_errors(nodes []PfSortingNode, sorted []PfSo
 		}
 		mut comment_above_missing := ''
 		if ids.missed_comment_above != '' {
-			if comment, exists := ctx.pf_comment_above_that_should_exist(options, left_group_index,
+			if comment_above := ctx.pf_comment_above_that_should_exist(options, left_group_index,
 				right_group_index, right.node)
 			{
-				if !exists {
-					comment_above_missing = comment
+				if !comment_above.exists {
+					comment_above_missing = comment_above.comment
 					message_ids << ids.missed_comment_above
 				}
 			}
@@ -1362,39 +1362,6 @@ fn (mut ctx PfContext) pf_report_all_errors(nodes []PfSortingNode, sorted []PfSo
 	}
 }
 
-// pf_comment_above_that_should_exist ports getCommentAboveThatShouldExist: the `commentAbove` of
-// the group of the node, when the node is the first of its group (`left_group_index` is none for
-// the first node), and whether a comment above the node has it (ignoring case).
-fn (ctx &PfContext) pf_comment_above_that_should_exist(options map[string]json2.Any, left_group_index ?int, right_group_index int, node int) ?(string, bool) {
-	if left := left_group_index {
-		if left >= right_group_index {
-			return none
-		}
-	}
-	groups := pf_opt_list(options, 'groups')
-	if right_group_index < 0 || right_group_index >= groups.len {
-		return none
-	}
-	right_group := groups[right_group_index]
-	if !pf_is_group_with_overrides_option(right_group) {
-		return none
-	}
-	comment_above := right_group.as_map()['commentAbove'] or { return none }
-	if !pf_truthy(comment_above) {
-		return none
-	}
-	expected := if comment_above is string { comment_above } else { comment_above.str() }
-	// `comment.toLowerCase().includes(expected.toLowerCase().trim())`
-	wanted := js_trim(stv_units_string(jsregexp.js_to_lower(utf16_units(expected))))
-	for comment in ctx.pf_get_comments_before(node, '') {
-		value := stv_units_string(jsregexp.js_to_lower(utf16_units(ctx.pf_comment_value(comment))))
-		if value.contains(wanted) {
-			return expected, true
-		}
-	}
-	return expected, false
-}
-
 const pf_re_spaces = jsregexp.js_regex_new('\\s{2,}', 'u') or { panic(err) }
 
 // pf_to_single_line ports toSingleLine: runs of white space as one space, trimmed.
@@ -1433,80 +1400,6 @@ fn (ctx &PfContext) pf_make_fixes(nodes []PfSortingNode, sorted []PfSortingNode,
 		return []Fix{}
 	}
 	return ctx.pf_make_comment_above_fixes(sorted, options)
-}
-
-// pf_make_comment_above_fixes ports makeCommentAboveFixes: before each sorted node, the comments
-// added for groups (line comments with the `commentAbove` of a group) that do not belong there
-// removed, and the `commentAbove` of its group added if it is the first of its group and does not
-// have it.
-fn (ctx &PfContext) pf_make_comment_above_fixes(sorted []PfSortingNode, options map[string]json2.Any) []Fix {
-	mut all_auto_added_comments := []string{}
-	for group in pf_opt_list(options, 'groups') {
-		if pf_is_group_with_overrides_option(group) {
-			if comment := group.as_map()['commentAbove'] {
-				// `.filter(comment => comment !== undefined)`
-				all_auto_added_comments << if comment is string { comment } else { comment.str() }
-			}
-		}
-	}
-	mut fixes := []Fix{}
-	if sorted.len == 0 {
-		return fixes
-	}
-	fixes << ctx.pf_make_comment_above_fix(none, sorted[0], all_auto_added_comments, options)
-	for i := 0; i < sorted.len - 1; i++ {
-		fixes << ctx.pf_make_comment_above_fix(sorted[i], sorted[i + 1], all_auto_added_comments,
-			options)
-	}
-	return fixes
-}
-
-// pf_make_comment_above_fix ports makeCommentAboveFix.
-fn (ctx &PfContext) pf_make_comment_above_fix(sorted_sorting_node ?PfSortingNode, next_sorted_sorting_node PfSortingNode, all_auto_added_comments []string, options map[string]json2.Any) []Fix {
-	groups := pf_opt_list(options, 'groups')
-	left_group_index := if node := sorted_sorting_node {
-		pf_get_group_index(groups, node.group)
-	} else {
-		-1
-	}
-	right_group_index := pf_get_group_index(groups, next_sorted_sorting_node.group)
-	mut should_exist := false
-	mut comment := ''
-	mut exists := false
-	if c, e := ctx.pf_comment_above_that_should_exist(options, left_group_index, right_group_index,
-		next_sorted_sorting_node.node)
-	{
-		should_exist = true
-		comment = c
-		exists = e
-	}
-	comments_before := ctx.pf_get_comments_before(next_sorted_sorting_node.node, '')
-	mut fixes := []Fix{}
-	for before in comments_before {
-		value := ctx.pf_comment_value(before)
-		// `comment.value.slice(1)`: without its first UTF-16 unit.
-		units := utf16_units(value)
-		rest := if units.len > 0 { stv_units_string(units[1..]) } else { '' }
-		if should_exist && comment != '' && rest == comment {
-			continue
-		}
-		if before.kind != .line_comment || rest !in all_auto_added_comments {
-			continue
-		}
-		next_token := ctx.tokens.after(before.end, false) or { continue }
-		fixes << fix_replace_range(before.start, next_token.start, '')
-	}
-	if should_exist && !exists {
-		node_start := ctx.t.nodes[next_sorted_sorting_node.node].start
-		is_first_token := if _ := ctx.tokens.before(node_start, false) { false } else { true }
-		at := if is_first_token || comments_before.len == 0 {
-			node_start
-		} else {
-			comments_before[0].start
-		}
-		fixes << fix_replace_range(at, at, '// ${comment}\n')
-	}
-	return fixes
 }
 
 // pf_merge_fixes ports mergeFixes and ESLint's merge of the fixes of a report: one fix from the
