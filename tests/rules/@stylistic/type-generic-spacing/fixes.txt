@@ -1,0 +1,62 @@
+tests/rules/@stylistic/type-generic-spacing/cases.ts:4:15	@stylistic/type-generic-spacing	genericSpacingMismatch	Generic spaces mismatch	fix	199	200		end	4	16
+tests/rules/@stylistic/type-generic-spacing/cases.ts:5:29	@stylistic/type-generic-spacing	genericSpacingMismatch	Generic spaces mismatch	fix	249	250		end	5	30
+tests/rules/@stylistic/type-generic-spacing/cases.ts:5:42	@stylistic/type-generic-spacing	genericSpacingMismatch	Generic spaces mismatch	fix	262	263		end	5	43
+tests/rules/@stylistic/type-generic-spacing/cases.ts:5:57	@stylistic/type-generic-spacing	genericSpacingMismatch	Generic spaces mismatch	fix	277	278		end	5	58
+tests/rules/@stylistic/type-generic-spacing/cases.ts:6:17	@stylistic/type-generic-spacing	genericSpacingMismatch	Generic spaces mismatch	fix	299	300		end	6	18
+tests/rules/@stylistic/type-generic-spacing/cases.ts:6:24	@stylistic/type-generic-spacing	genericSpacingMismatch	Generic spaces mismatch	fix	306	308		end	6	26
+tests/rules/@stylistic/type-generic-spacing/cases.ts:7:16	@stylistic/type-generic-spacing	genericSpacingMismatch	Generic spaces mismatch	fix	328	329		end	7	17
+tests/rules/@stylistic/type-generic-spacing/cases.ts:7:23	@stylistic/type-generic-spacing	genericSpacingMismatch	Generic spaces mismatch	fix	335	336		end	7	24
+tests/rules/@stylistic/type-generic-spacing/cases.ts:8:17	@stylistic/type-generic-spacing	genericSpacingMismatch	Generic spaces mismatch	fix	357	371		end	8	31
+tests/rules/@stylistic/type-generic-spacing/cases.ts:11:17	@stylistic/type-generic-spacing	genericSpacingMismatch	Generic spaces mismatch	fix	433	436		end	12	2
+tests/rules/@stylistic/type-generic-spacing/cases.ts:13:23	@stylistic/type-generic-spacing	genericSpacingMismatch	Generic spaces mismatch	fix	472	486		end	13	37
+tests/rules/@stylistic/type-generic-spacing/cases.ts:18:24	@stylistic/type-generic-spacing	genericSpacingMismatch	Generic spaces mismatch	fix	616	617		end	18	25
+tests/rules/@stylistic/type-generic-spacing/cases.ts:19:9	@stylistic/type-generic-spacing	genericSpacingMismatch	Generic spaces mismatch	fix	633	634		end	19	10
+tests/rules/@stylistic/type-generic-spacing/cases.ts:20:10	@stylistic/type-generic-spacing	genericSpacingMismatch	Generic spaces mismatch	fix	651	652		end	20	11
+tests/rules/@stylistic/type-generic-spacing/cases.ts:21:9	@stylistic/type-generic-spacing	genericSpacingMismatch	Generic spaces mismatch	fix	666	667		end	21	12
+tests/rules/@stylistic/type-generic-spacing/cases.ts:22:10	@stylistic/type-generic-spacing	genericSpacingMismatch	Generic spaces mismatch	fix	683	685		end	22	19
+tests/rules/@stylistic/type-generic-spacing/cases.ts:22:11	@stylistic/type-generic-spacing	genericSpacingMismatch	Generic spaces mismatch	fix	686	687		end	22	12
+tests/rules/@stylistic/type-generic-spacing/cases.ts:22:17	@stylistic/type-generic-spacing	genericSpacingMismatch	Generic spaces mismatch	fix	692	693		end	22	18
+tests/rules/@stylistic/type-generic-spacing/cases.ts:23:10	@stylistic/type-generic-spacing	genericSpacingMismatch	Generic spaces mismatch	fix	714	715	 = 	end	23	11
+tests/rules/@stylistic/type-generic-spacing/cases.ts:24:10	@stylistic/type-generic-spacing	genericSpacingMismatch	Generic spaces mismatch	fix	735	737	 = 	end	24	12
+tests/rules/@stylistic/type-generic-spacing/cases.ts:25:10	@stylistic/type-generic-spacing	genericSpacingMismatch	Generic spaces mismatch	fix	757	760	 = 	end	25	13
+tests/rules/@stylistic/type-generic-spacing/cases.ts:26:10	@stylistic/type-generic-spacing	genericSpacingMismatch	Generic spaces mismatch	fix	780	785	 = 	end	26	15
+tests/rules/@stylistic/type-generic-spacing/cases.ts:28:27	@stylistic/type-generic-spacing	genericSpacingMismatch	Generic spaces mismatch	fix	845	846	 = 	end	28	28
+tests/rules/@stylistic/type-generic-spacing/cases.ts:29:28	@stylistic/type-generic-spacing	genericSpacingMismatch	Generic spaces mismatch	fix	884	887	) = (	end	29	31
+tests/rules/@stylistic/type-generic-spacing/cases.ts:32:11	@stylistic/type-generic-spacing	genericSpacingMismatch	Generic spaces mismatch	fix	979	983	 = 	end	33	4
+tests/rules/@stylistic/type-generic-spacing/cases.ts:34:11	@stylistic/type-generic-spacing	genericSpacingMismatch	Generic spaces mismatch	fix	1004	1008	 = 	end	35	2
+tests/rules/@stylistic/type-generic-spacing/cases.ts:36:11	@stylistic/type-generic-spacing	genericSpacingMismatch	Generic spaces mismatch	fix	1029	1031	 = (	end	36	13
+tests/rules/@stylistic/type-generic-spacing/cases.ts:39:3	@stylistic/type-generic-spacing	genericSpacingMismatch	Generic spaces mismatch	fix	1066	1067	 = 	end	39	4
+tests/rules/@stylistic/type-generic-spacing/cases.ts:41:13	@stylistic/type-generic-spacing	genericSpacingMismatch	Generic spaces mismatch	fix	1097	1098		end	41	16
+tests/rules/@stylistic/type-generic-spacing/cases.ts:42:13	@stylistic/type-generic-spacing	genericSpacingMismatch	Generic spaces mismatch	fix	1137	1138		end	42	14
+tests/rules/@stylistic/type-generic-spacing/cases.ts:42:15	@stylistic/type-generic-spacing	genericSpacingMismatch	Generic spaces mismatch	fix	1139	1140		end	42	16
+tests/rules/@stylistic/type-generic-spacing/cases.ts:43:27	@stylistic/type-generic-spacing	genericSpacingMismatch	Generic spaces mismatch	fix	1190	1191		end	43	30
+tests/rules/@stylistic/type-generic-spacing/cases.ts:46:21	@stylistic/type-generic-spacing	genericSpacingMismatch	Generic spaces mismatch	fix	1337	1338		end	46	22
+tests/rules/@stylistic/type-generic-spacing/cases.ts:46:23	@stylistic/type-generic-spacing	genericSpacingMismatch	Generic spaces mismatch	fix	1339	1340		end	46	24
+tests/rules/@stylistic/type-generic-spacing/cases.ts:48:13	@stylistic/type-generic-spacing	genericSpacingMismatch	Generic spaces mismatch	fix	1409	1410		end	48	14
+tests/rules/@stylistic/type-generic-spacing/cases.ts:48:15	@stylistic/type-generic-spacing	genericSpacingMismatch	Generic spaces mismatch	fix	1411	1412		end	48	16
+tests/rules/@stylistic/type-generic-spacing/cases.ts:49:10	@stylistic/type-generic-spacing	genericSpacingMismatch	Generic spaces mismatch	fix	1437	1438		end	49	13
+tests/rules/@stylistic/type-generic-spacing/cases.ts:51:5	@stylistic/type-generic-spacing	genericSpacingMismatch	Generic spaces mismatch	fix	1479	1480		end	51	6
+tests/rules/@stylistic/type-generic-spacing/cases.ts:51:7	@stylistic/type-generic-spacing	genericSpacingMismatch	Generic spaces mismatch	fix	1481	1482		end	51	8
+tests/rules/@stylistic/type-generic-spacing/cases.ts:53:24	@stylistic/type-generic-spacing	genericSpacingMismatch	Generic spaces mismatch	fix	1532	1533		end	53	25
+tests/rules/@stylistic/type-generic-spacing/cases.ts:53:26	@stylistic/type-generic-spacing	genericSpacingMismatch	Generic spaces mismatch	fix	1534	1535		end	53	27
+tests/rules/@stylistic/type-generic-spacing/cases.ts:55:18	@stylistic/type-generic-spacing	genericSpacingMismatch	Generic spaces mismatch	fix	1582	1583		end	55	19
+tests/rules/@stylistic/type-generic-spacing/cases.ts:55:20	@stylistic/type-generic-spacing	genericSpacingMismatch	Generic spaces mismatch	fix	1584	1585		end	55	21
+tests/rules/@stylistic/type-generic-spacing/cases.ts:56:14	@stylistic/type-generic-spacing	genericSpacingMismatch	Generic spaces mismatch	fix	1603	1604		end	56	17
+tests/rules/@stylistic/type-generic-spacing/cases.ts:57:5	@stylistic/type-generic-spacing	genericSpacingMismatch	Generic spaces mismatch	fix	1613	1614		end	57	8
+tests/rules/@stylistic/type-generic-spacing/cases.ts:59:3	@stylistic/type-generic-spacing	genericSpacingMismatch	Generic spaces mismatch	fix	1645	1646		end	59	4
+tests/rules/@stylistic/type-generic-spacing/cases.ts:59:5	@stylistic/type-generic-spacing	genericSpacingMismatch	Generic spaces mismatch	fix	1647	1648		end	59	6
+tests/rules/@stylistic/type-generic-spacing/cases.ts:60:6	@stylistic/type-generic-spacing	genericSpacingMismatch	Generic spaces mismatch	fix	1664	1665		end	60	9
+tests/rules/@stylistic/type-generic-spacing/cases.ts:61:6	@stylistic/type-generic-spacing	genericSpacingMismatch	Generic spaces mismatch	fix	1684	1685		end	61	7
+tests/rules/@stylistic/type-generic-spacing/cases.ts:61:8	@stylistic/type-generic-spacing	genericSpacingMismatch	Generic spaces mismatch	fix	1686	1687		end	61	9
+tests/rules/@stylistic/type-generic-spacing/cases.ts:63:7	@stylistic/type-generic-spacing	genericSpacingMismatch	Generic spaces mismatch	fix	1726	1727		end	63	8
+tests/rules/@stylistic/type-generic-spacing/cases.ts:63:9	@stylistic/type-generic-spacing	genericSpacingMismatch	Generic spaces mismatch	fix	1728	1729		end	63	10
+tests/rules/@stylistic/type-generic-spacing/cases.ts:64:11	@stylistic/type-generic-spacing	genericSpacingMismatch	Generic spaces mismatch	fix	1753	1754		end	64	12
+tests/rules/@stylistic/type-generic-spacing/cases.ts:64:13	@stylistic/type-generic-spacing	genericSpacingMismatch	Generic spaces mismatch	fix	1755	1756		end	64	14
+tests/rules/@stylistic/type-generic-spacing/cases.ts:66:15	@stylistic/type-generic-spacing	genericSpacingMismatch	Generic spaces mismatch	fix	1786	1787		end	66	16
+tests/rules/@stylistic/type-generic-spacing/cases.ts:66:22	@stylistic/type-generic-spacing	genericSpacingMismatch	Generic spaces mismatch	fix	1793	1794		end	66	23
+tests/rules/@stylistic/type-generic-spacing/cases.ts:67:24	@stylistic/type-generic-spacing	genericSpacingMismatch	Generic spaces mismatch	fix	1820	1821		end	67	25
+tests/rules/@stylistic/type-generic-spacing/cases.ts:67:31	@stylistic/type-generic-spacing	genericSpacingMismatch	Generic spaces mismatch	fix	1827	1828		end	67	32
+tests/rules/@stylistic/type-generic-spacing/cases.ts:70:10	@stylistic/type-generic-spacing	genericSpacingMismatch	Generic spaces mismatch	fix	1880	1881		end	70	13
+tests/rules/@stylistic/type-generic-spacing/cases.ts:71:18	@stylistic/type-generic-spacing	genericSpacingMismatch	Generic spaces mismatch	fix	1907	1908		end	71	19
+tests/rules/@stylistic/type-generic-spacing/cases.ts:72:11	@stylistic/type-generic-spacing	genericSpacingMismatch	Generic spaces mismatch	fix	1932	1935	 = 	end	72	14
+tests/rules/@stylistic/type-generic-spacing/cases.ts:73:11	@stylistic/type-generic-spacing	genericSpacingMismatch	Generic spaces mismatch	fix	1956	1959	 = 	end	74	1
