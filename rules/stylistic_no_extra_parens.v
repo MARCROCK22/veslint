@@ -241,6 +241,13 @@ fn (x &SnepCtx) precedence(node int) int {
 		.ts_type_operator {
 			return if x.operator(node) == 'keyof' { 10 } else { 16 }
 		}
+		// veslint gives `infer` the precedence of the other type operators on purpose (@stylistic
+		// 6.0.1 gives it none, the highest): TypeScript reads `infer M[]` as `infer (M[])`, so the
+		// parentheses of `(infer M)[]` and `(infer M)['k']` are needed, and removing them breaks the
+		// code ("'?' expected").
+		.ts_infer_type {
+			return 16
+		}
 		.unary_expression, .await_expression {
 			return 16
 		}

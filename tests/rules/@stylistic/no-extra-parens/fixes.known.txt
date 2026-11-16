@@ -12,3 +12,9 @@ eslint	tests/rules/@stylistic/no-extra-parens/cases.ts:186:1	@stylistic/no-extra
 veslint	
 eslint	tests/rules/@stylistic/no-extra-parens/cases.ts:187:1	@stylistic/no-extra-parens	unexpected	Unnecessary parentheses around expression.	fix	4233	4251	using as unknown	end	187	2
 veslint	
+# veslint keeps on purpose the parentheses of `(infer M)[]` and `(infer M)['k']`: TypeScript reads `infer M[]` as
+# `infer (M[])` ("'?' expected"); @stylistic 6.0.1 gives `infer` no precedence and removes them.
+eslint	tests/rules/@stylistic/no-extra-parens/cases.ts:194:31	@stylistic/no-extra-parens	unexpected	Unnecessary parentheses around expression.	fix	4523	4532	infer M	end	194	32
+veslint	
+eslint	tests/rules/@stylistic/no-extra-parens/cases.ts:195:29	@stylistic/no-extra-parens	unexpected	Unnecessary parentheses around expression.	fix	4576	4585	infer M	end	195	30
+veslint	

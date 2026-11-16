@@ -189,3 +189,10 @@ declare const type: unknown, namespace: unknown, module: unknown, global: unknow
 (type);
 (namespace).valueOf();
 (module)['exports'];
+// TypeScript reads `infer M[]` as `infer (M[])`: veslint keeps these parentheses (@stylistic removes
+// them, and the code no longer parses).
+type ElementOf<T> = T extends (infer M)[] ? M : never;
+type FirstOf<T> = T extends (infer M)['first'] ? M : never;
+// These may go.
+type Inner<T> = T extends Array<(infer M)> ? M : never;
+type KeysOf<T> = (keyof T)[];
