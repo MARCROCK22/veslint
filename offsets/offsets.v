@@ -59,6 +59,25 @@ pub fn utf16_offsets(src string, byte_offsets []int) []int {
 	return result
 }
 
+// byte_offset converts a UTF-16 unit offset (tsgo's) into the UTF-8 byte offset of `src` where its
+// character starts (the length of `src` past its end). Valid UTF-8 is assumed.
+pub fn byte_offset(src string, utf16 int) int {
+	mut units := 0
+	mut pos := 0
+	for pos < src.len {
+		b := src[pos]
+		if (b & 0xC0) != 0x80 {
+			width := if b >= 0xF0 { 2 } else { 1 }
+			if units + width > utf16 {
+				return pos
+			}
+			units += width
+		}
+		pos++
+	}
+	return pos
+}
+
 // LineStarts are the byte offsets where the lines of a text start. A line ends at `\r\n`, `\n`, a
 // lone `\r`, U+2028 or U+2029: the line breaks TypeScript (computeLineStarts) and ESLint
 // (`/\r\n|[\r\n\u2028\u2029]/`) count, wherever they are (code, a string, a comment or a

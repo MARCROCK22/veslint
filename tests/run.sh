@@ -299,12 +299,26 @@ fi
 
 # --rule warnings: syntax errors, and nodes the rule could not analyze (a chain of 1,002 member
 # accesses goes beyond the limit of 1,000 nesting levels).
-./veslint --rule @typescript-eslint/no-floating-promises tests/fixtures/syntax_error.ts > /dev/null 2> "$TMP/warning.err"
+./veslint --rule no-debugger tests/fixtures/syntax_error.ts > /dev/null 2> "$TMP/warning.err"
 if grep -q 'syntax errors' "$TMP/warning.err"; then
 	ok "--rule warns about syntax errors"
 else
 	ko "--rule warns about syntax errors"
 	cat "$TMP/warning.err"
+fi
+# A fix that gives code TypeScript cannot parse (without `jsx`, @stylistic/comma-dangle removes the
+# comma of `<T,>` in a .tsx file, which makes it a JSX element): like ESLint, --fix writes it, stops
+# and reports the parsing error.
+mkdir -p "$TMP/broken-fix"
+printf '{"compilerOptions":{"strict":true,"noEmit":true,"jsx":"preserve"}}\n' > "$TMP/broken-fix/tsconfig.json"
+printf 'export const f = <T,>(x: T) => x;\n' > "$TMP/broken-fix/generic.tsx"
+./veslint --fix --rule @stylistic/comma-dangle --no-config-lookup "$TMP/broken-fix/generic.tsx" > "$TMP/broken-fix.out" 2> /dev/null
+if [[ $(< "$TMP/broken-fix/generic.tsx") == 'export const f = <T>(x: T) => x;' ]] &&
+	grep -qP ':1:28\teslint\tfatal\tParsing error: Unexpected token' "$TMP/broken-fix.out"; then
+	ok "--fix stops at a fix TypeScript cannot parse"
+else
+	ko "--fix stops at a fix TypeScript cannot parse"
+	cat "$TMP/broken-fix/generic.tsx" "$TMP/broken-fix.out"
 fi
 mkdir -p "$TMP/deep"
 cp tests/fixtures/tsconfig.json "$TMP/deep/"

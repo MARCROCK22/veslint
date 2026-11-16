@@ -682,6 +682,7 @@ fn run_rules(opts Options, timeout time.Duration) !int {
 		// result again, up to 10 passes or until two passes give the same text. tsgo only reads
 		// files, so each pass is written to disk and a new snapshot is taken.
 		mut pass := 0
+		mut syntax_baseline := -1
 		mut previous := ''
 		mut second_previous := ''
 		for {
@@ -701,6 +702,17 @@ fn run_rules(opts Options, timeout time.Duration) !int {
 			}
 			mut checker := checkers[project] or { return error('no checker for ${project}') }
 			checker.set_has_bom(has_bom)
+			// A fix may give code TypeScript cannot parse: from the second pass on, a parsing error
+			// that was not in the file is reported alone and stops the fixes, as ESLint does.
+			if opts.fix {
+				if pass == 1 {
+					// The checker may come from the passes of another file.
+					checker.check_syntax(-1)
+					syntax_baseline = checker.syntax_error_count(f.abs_path)
+				} else {
+					checker.check_syntax(syntax_baseline)
+				}
+			}
 			result = checker.lint_file(if treesitter.uses_jsx_dialect(f.path) {
 				tsx_parser
 			} else {
@@ -710,6 +722,10 @@ fn run_rules(opts Options, timeout time.Duration) !int {
 				return error('${f.path}: ${err.msg()}')
 			}
 			if !opts.fix || pass > max_fix_passes {
+				break
+			}
+			// ESLint does not fix a file it cannot parse (a fix of the previous pass may have broken it).
+			if result.parsing_error {
 				break
 			}
 			if result.syntax_errors {
@@ -849,7 +865,8 @@ fn file_report(path string, src string, result rules.FileLint, fixes bool) FileR
 		d := display[i]
 		msg := tsv_field(rules.message(finding.rule, finding))
 		// The rule as ESLint's ruleId names it: `@typescript-eslint/await-thenable`.
-		out.write_string('${path}:${d.line}:${d.col}\t${finding.rule}\t${finding.message_id}\t${msg}')
+		col := if finding.column_from_zero { d.col - 1 } else { d.col }
+		out.write_string('${path}:${d.line}:${col}\t${finding.rule}\t${finding.message_id}\t${msg}')
 		if fixes {
 			out.write_string(fix_fields(src, finding))
 			if finding.stmt.row < 0 {

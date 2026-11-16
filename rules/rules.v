@@ -6,6 +6,7 @@ import json2
 import time
 import tsgo { Client, CompilerOptions, ParameterResponse, SignatureResponse, SourceFileAst, SymbolResponse, TypeResponse }
 import treesitter { Ident, Parser, TokenEnds, children, first_named_child, named_children, node_end, node_field, node_kind, node_start, root_node, token_ends, tree_delete, tree_has_error }
+import offsets
 import os
 
 // Lint rules ported to V. Each rule lives in its own file of this module and shares what is
@@ -1197,6 +1198,9 @@ pub:
 	// configuration…) carries its message in `text`; its `rule` is `problem_rule`, or the id of a
 	// rule that does not exist, and its message_id is `fatal`, `error` or `warning`.
 	text string
+	// ESLint's column of a parsing error is TypeScript's character, which counts from 0, where any
+	// other column counts from 1.
+	column_from_zero bool
 }
 
 // problem_rule is the `rule` of the problems ESLint reports without a rule (`ruleId: null`).
@@ -1829,6 +1833,9 @@ pub struct FileLint {
 pub:
 	findings      []Finding // in order
 	syntax_errors bool      // tree-sitter found syntax errors (ERROR or MISSING nodes)
+	// TypeScript's parser found an error: `findings` is it alone, as ESLint reports a file it cannot
+	// parse (a fix may have given code tree-sitter reads and TypeScript does not).
+	parsing_error bool
 	unmatched     int       // nodes the rules could not analyze (summed per rule): no tsgo counterpart, or nested too deeply
 }
 
@@ -1881,6 +1888,15 @@ pub fn (mut c Checker) lint_file(parser Parser, config LintConfig, src string, a
 	c.language = config.language
 	c.settings = config.settings
 	c.reset_file_types()
+	fatal := c.parsing_error(abs_path)
+	if fatal.len > 0 {
+		stats.parse_ms += ms(sw.elapsed())
+		stats.findings++
+		return FileLint{
+			findings:      fatal
+			parsing_error: true
+		}
+	}
 	// Where TypeScript read an `await` as an identifier, the file is parsed again that way
 	// (rules/await_identifier.v).
 	reread := c.await_identifiers_source(root, abs_path)!
@@ -3325,6 +3341,9 @@ mut:
 	client                                  &Client = unsafe { nil }
 	snapshot                                int
 	snapshot_tsconfig                       string // made without a snapshot (defer_snapshot): the tsconfig make_snapshot opens
+	// syntax_baseline is how many errors TypeScript's parser found in the file before --fix changed
+	// it: lint_file reports a parsing error when the fixes added one (-1: it does not check).
+	syntax_baseline int = -1
 	no_implicit_this                        bool   // isStrictCompilerOptionEnabled(…, 'noImplicitThis') of the project
 	strict_null_checks                      bool   // isStrictCompilerOptionEnabled(…, 'strictNullChecks') of the project
 	no_unchecked_indexed_access             bool   // isCompilerOptionEnabled(…, 'noUncheckedIndexedAccess') of the project
@@ -3482,6 +3501,53 @@ pub fn new_checker(client &Client, snapshot int, project string, options Compile
 // makes one the first time something needs the program (make_snapshot).
 pub fn (mut c Checker) defer_snapshot(tsconfig string) {
 	c.snapshot_tsconfig = tsconfig
+}
+
+// syntax_error_count is how many errors TypeScript's parser finds in the file as tsgo has it now,
+// or -1 if tsgo does not have it.
+pub fn (mut c Checker) syntax_error_count(abs_path string) int {
+	diagnostics := c.client.syntactic_diagnostics(c.snapshot, c.project, abs_path) or { return -1 }
+	return diagnostics.len
+}
+
+// check_syntax makes lint_file report a parsing error when TypeScript's parser finds more errors in
+// the file than `baseline`, the ones it found before --fix changed it (syntax_error_count).
+pub fn (mut c Checker) check_syntax(baseline int) {
+	c.syntax_baseline = baseline
+}
+
+// parsing_error is the first error TypeScript's parser found in the file, as ESLint reports it
+// (typescript-estree throws the first of the parse diagnostics), when a fix gave code TypeScript
+// does not parse: tree-sitter reads some of it (`type satisfies never;`, `<T>(x: T) => x` in a
+// .tsx file). Only then: the parser of tsgo 7.1 rejects some code that the one of TypeScript 6.0.3,
+// which typescript-estree uses, takes (`x < 0 as any ** 2`), so an error that was already there
+// is not reported.
+fn (mut c Checker) parsing_error(abs_path string) []Finding {
+	if c.syntax_baseline < 0 {
+		return []
+	}
+	// A file tsgo does not have is reported by the first rule that asks for its types.
+	diagnostics := c.client.syntactic_diagnostics(c.snapshot, c.project, abs_path) or { return [] }
+	if diagnostics.len <= c.syntax_baseline {
+		return []
+	}
+	// tsgo orders them by position, and typescript-estree takes the first one the parser reported:
+	// that a JSX element (17008) or fragment (17014) has no closing tag, or that JSX expressions
+	// must have one parent element (2657), is reported once what follows is parsed.
+	mut first := diagnostics[0]
+	for diagnostic in diagnostics {
+		if diagnostic.code !in [17008, 17014, 2657] {
+			first = diagnostic
+			break
+		}
+	}
+	return [Finding{
+		stmt:             c.position_at(offsets.byte_offset(c.src, first.pos))
+		rule:             problem_rule
+		message_id:       'fatal'
+		text:             'Parsing error: ${first.text}'
+		column_from_zero: true
+	}]
 }
 
 // make_snapshot gives a checker made without a snapshot one with its tsconfig open: a comment

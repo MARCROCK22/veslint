@@ -974,6 +974,45 @@ pub:
 	is_from_external_library bool @[json: 'isFromExternalLibrary']
 }
 
+struct DiagnosticsParams {
+	snapshot int
+	project  string
+	files    []string
+}
+
+// DiagnosticPosition is a zero-based line and UTF-16 character.
+pub struct DiagnosticPosition {
+pub:
+	line      int
+	character int
+}
+
+// Diagnostic is a diagnostic of TypeScript (DiagnosticResponse); `pos` and `end` are in UTF-16
+// units, without the leading trivia.
+pub struct Diagnostic {
+pub:
+	pos            int
+	end            int
+	start_position DiagnosticPosition @[json: 'startPosition']
+	code           int
+	category       int
+	text           string
+}
+
+// syntactic_diagnostics gives the errors TypeScript's parser found in a file of the program, in
+// their order (none if the program does not have the file).
+pub fn (mut c Client) syntactic_diagnostics(snapshot int, project string, file string) ![]Diagnostic {
+	payload := c.request('getSyntacticDiagnostics', json2.encode(DiagnosticsParams{
+		snapshot: snapshot
+		project:  project
+		files:    [file]
+	}))!
+	if is_null_payload(payload) {
+		return []Diagnostic{}
+	}
+	return decode_response[[]Diagnostic]('getSyntacticDiagnostics', payload)!
+}
+
 // source_file_metadata gives the metadata of a program file (the null ones if it is not there).
 pub fn (mut c Client) source_file_metadata(snapshot int, project string, file string) !SourceFileMetadata {
 	payload := c.request('getSourceFileMetadata', json2.encode(SourceFileParams{
