@@ -4,8 +4,8 @@ import estree
 import time
 import x.json2
 
-// Port of the `@stylistic/dot-location` rule of @stylistic/eslint-plugin 5.10.0, with its option
-// (`"object"`, the default, or `"property"`) and its fixes.
+// Port of the `@stylistic/dot-location` rule of @stylistic/eslint-plugin 6.0.1, with its option
+// (`"property"`, the default since 6.0.0, or `"object"`) and its fixes.
 
 const sdl_messages = {
 	'expectedDotAfterObject':    'Expected dot to be on same line as object.'
@@ -13,8 +13,8 @@ const sdl_messages = {
 }
 
 fn sdl_options(given []json2.Any) !bool {
-	options := sty_options(given, [json2.Any('object')])
-	return sty_option_string(options, 0, 'object') == 'object'
+	options := sty_options(given, [json2.Any('property')])
+	return sty_option_string(options, 0, 'property') == 'object'
 }
 
 fn (mut c Checker) lint_stylistic_dot_location(root C.TSNode, abs_path string, mut stats Stats) ![]Finding {

@@ -18,10 +18,13 @@ tests/rules/@stylistic/space-before-function-paren/asyncarrow-never/cases.ts:40:
 tests/rules/@stylistic/space-before-function-paren/asyncarrow-never/cases.ts:42:7	@stylistic/space-before-function-paren	missingSpace	Missing space before function parentheses.	fix	1168	1168	 	end	42	8
 tests/rules/@stylistic/space-before-function-paren/asyncarrow-never/cases.ts:44:11	@stylistic/space-before-function-paren	missingSpace	Missing space before function parentheses.	fix	1221	1221	 	end	44	12
 tests/rules/@stylistic/space-before-function-paren/asyncarrow-never/cases.ts:46:5	@stylistic/space-before-function-paren	missingSpace	Missing space before function parentheses.	fix	1287	1287	 	end	46	6
+tests/rules/@stylistic/space-before-function-paren/asyncarrow-never/cases.ts:47:7	@stylistic/space-before-function-paren	missingSpace	Missing space before function parentheses.	fix	1299	1299	 	end	47	8
+tests/rules/@stylistic/space-before-function-paren/asyncarrow-never/cases.ts:49:8	@stylistic/space-before-function-paren	missingSpace	Missing space before function parentheses.	fix	1355	1355	 	end	49	9
 tests/rules/@stylistic/space-before-function-paren/asyncarrow-never/cases.ts:51:12	@stylistic/space-before-function-paren	unexpectedSpace	Unexpected space before function parentheses.	fix	1409	1410		end	51	13
 tests/rules/@stylistic/space-before-function-paren/asyncarrow-never/cases.ts:52:4	@stylistic/space-before-function-paren	missingSpace	Missing space before function parentheses.	fix	1422	1422	 	end	52	5
 tests/rules/@stylistic/space-before-function-paren/asyncarrow-never/cases.ts:54:4	@stylistic/space-before-function-paren	missingSpace	Missing space before function parentheses.	fix	1467	1467	 	end	54	5
 tests/rules/@stylistic/space-before-function-paren/asyncarrow-never/cases.ts:57:13	@stylistic/space-before-function-paren	missingSpace	Missing space before function parentheses.	fix	1517	1517	 	end	57	14
+tests/rules/@stylistic/space-before-function-paren/asyncarrow-never/cases.ts:59:16	@stylistic/space-before-function-paren	missingSpace	Missing space before function parentheses.	fix	1565	1565	 	end	59	17
 tests/rules/@stylistic/space-before-function-paren/asyncarrow-never/cases.ts:62:4	@stylistic/space-before-function-paren	missingSpace	Missing space before function parentheses.	fix	1590	1590	 	end	62	5
 tests/rules/@stylistic/space-before-function-paren/asyncarrow-never/cases.ts:64:7	@stylistic/space-before-function-paren	missingSpace	Missing space before function parentheses.	fix	1614	1614	 	end	64	8
 tests/rules/@stylistic/space-before-function-paren/asyncarrow-never/cases.ts:65:7	@stylistic/space-before-function-paren	missingSpace	Missing space before function parentheses.	fix	1638	1638	 	end	65	8
@@ -51,9 +54,12 @@ tests/rules/@stylistic/space-before-function-paren/cases.ts:40:5	@stylistic/spac
 tests/rules/@stylistic/space-before-function-paren/cases.ts:42:7	@stylistic/space-before-function-paren	missingSpace	Missing space before function parentheses.	fix	1168	1168	 	end	42	8
 tests/rules/@stylistic/space-before-function-paren/cases.ts:44:11	@stylistic/space-before-function-paren	missingSpace	Missing space before function parentheses.	fix	1221	1221	 	end	44	12
 tests/rules/@stylistic/space-before-function-paren/cases.ts:46:5	@stylistic/space-before-function-paren	missingSpace	Missing space before function parentheses.	fix	1287	1287	 	end	46	6
+tests/rules/@stylistic/space-before-function-paren/cases.ts:47:7	@stylistic/space-before-function-paren	missingSpace	Missing space before function parentheses.	fix	1299	1299	 	end	47	8
+tests/rules/@stylistic/space-before-function-paren/cases.ts:49:8	@stylistic/space-before-function-paren	missingSpace	Missing space before function parentheses.	fix	1355	1355	 	end	49	9
 tests/rules/@stylistic/space-before-function-paren/cases.ts:52:4	@stylistic/space-before-function-paren	missingSpace	Missing space before function parentheses.	fix	1422	1422	 	end	52	5
 tests/rules/@stylistic/space-before-function-paren/cases.ts:54:4	@stylistic/space-before-function-paren	missingSpace	Missing space before function parentheses.	fix	1467	1467	 	end	54	5
 tests/rules/@stylistic/space-before-function-paren/cases.ts:57:13	@stylistic/space-before-function-paren	missingSpace	Missing space before function parentheses.	fix	1517	1517	 	end	57	14
+tests/rules/@stylistic/space-before-function-paren/cases.ts:59:16	@stylistic/space-before-function-paren	missingSpace	Missing space before function parentheses.	fix	1565	1565	 	end	59	17
 tests/rules/@stylistic/space-before-function-paren/cases.ts:62:4	@stylistic/space-before-function-paren	missingSpace	Missing space before function parentheses.	fix	1590	1590	 	end	62	5
 tests/rules/@stylistic/space-before-function-paren/cases.ts:64:7	@stylistic/space-before-function-paren	missingSpace	Missing space before function parentheses.	fix	1614	1614	 	end	64	8
 tests/rules/@stylistic/space-before-function-paren/cases.ts:65:7	@stylistic/space-before-function-paren	missingSpace	Missing space before function parentheses.	fix	1638	1638	 	end	65	8
@@ -65,6 +71,14 @@ tests/rules/@stylistic/space-before-function-paren/cases.ts:74:12	@stylistic/spa
 tests/rules/@stylistic/space-before-function-paren/cases.ts:76:12	@stylistic/space-before-function-paren	missingSpace	Missing space before function parentheses.	fix	1887	1887	 	end	76	13
 tests/rules/@stylistic/space-before-function-paren/cases.ts:77:12	@stylistic/space-before-function-paren	missingSpace	Missing space before function parentheses.	fix	1914	1914	 	end	77	13
 tests/rules/@stylistic/space-before-function-paren/cases.ts:78:13	@stylistic/space-before-function-paren	missingSpace	Missing space before function parentheses.	fix	1942	1942	 	end	78	14
+tests/rules/@stylistic/space-before-function-paren/cases.ts:87:25	@stylistic/space-before-function-paren	missingSpace	Missing space before function parentheses.	fix	2195	2195	 	end	87	26
+tests/rules/@stylistic/space-before-function-paren/cases.ts:87:45	@stylistic/space-before-function-paren	missingSpace	Missing space before function parentheses.	fix	2215	2215	 	end	87	46
+tests/rules/@stylistic/space-before-function-paren/cases.ts:87:108	@stylistic/space-before-function-paren	missingSpace	Missing space before function parentheses.	fix	2278	2278	 	end	87	109
+tests/rules/@stylistic/space-before-function-paren/cases.ts:88:43	@stylistic/space-before-function-paren	missingSpace	Missing space before function parentheses.	fix	2339	2339	 	end	88	44
+tests/rules/@stylistic/space-before-function-paren/cases.ts:89:27	@stylistic/space-before-function-paren	missingSpace	Missing space before function parentheses.	fix	2405	2405	 	end	89	28
+tests/rules/@stylistic/space-before-function-paren/cases.ts:89:61	@stylistic/space-before-function-paren	missingSpace	Missing space before function parentheses.	fix	2439	2439	 	end	89	62
+tests/rules/@stylistic/space-before-function-paren/cases.ts:89:75	@stylistic/space-before-function-paren	missingSpace	Missing space before function parentheses.	fix	2453	2453	 	end	89	76
+tests/rules/@stylistic/space-before-function-paren/cases.ts:92:19	@stylistic/space-before-function-paren	missingSpace	Missing space before function parentheses.	fix	2542	2542	 	end	92	20
 tests/rules/@stylistic/space-before-function-paren/catch-never/cases.ts:2:12	@stylistic/space-before-function-paren	missingSpace	Missing space before function parentheses.	fix	77	77	 	end	2	13
 tests/rules/@stylistic/space-before-function-paren/catch-never/cases.ts:7:25	@stylistic/space-before-function-paren	missingSpace	Missing space before function parentheses.	fix	174	174	 	end	7	26
 tests/rules/@stylistic/space-before-function-paren/catch-never/cases.ts:8:15	@stylistic/space-before-function-paren	missingSpace	Missing space before function parentheses.	fix	207	207	 	end	8	16
@@ -81,9 +95,12 @@ tests/rules/@stylistic/space-before-function-paren/catch-never/cases.ts:40:5	@st
 tests/rules/@stylistic/space-before-function-paren/catch-never/cases.ts:42:7	@stylistic/space-before-function-paren	missingSpace	Missing space before function parentheses.	fix	1168	1168	 	end	42	8
 tests/rules/@stylistic/space-before-function-paren/catch-never/cases.ts:44:11	@stylistic/space-before-function-paren	missingSpace	Missing space before function parentheses.	fix	1221	1221	 	end	44	12
 tests/rules/@stylistic/space-before-function-paren/catch-never/cases.ts:46:5	@stylistic/space-before-function-paren	missingSpace	Missing space before function parentheses.	fix	1287	1287	 	end	46	6
+tests/rules/@stylistic/space-before-function-paren/catch-never/cases.ts:47:7	@stylistic/space-before-function-paren	missingSpace	Missing space before function parentheses.	fix	1299	1299	 	end	47	8
+tests/rules/@stylistic/space-before-function-paren/catch-never/cases.ts:49:8	@stylistic/space-before-function-paren	missingSpace	Missing space before function parentheses.	fix	1355	1355	 	end	49	9
 tests/rules/@stylistic/space-before-function-paren/catch-never/cases.ts:52:4	@stylistic/space-before-function-paren	missingSpace	Missing space before function parentheses.	fix	1422	1422	 	end	52	5
 tests/rules/@stylistic/space-before-function-paren/catch-never/cases.ts:54:4	@stylistic/space-before-function-paren	missingSpace	Missing space before function parentheses.	fix	1467	1467	 	end	54	5
 tests/rules/@stylistic/space-before-function-paren/catch-never/cases.ts:57:13	@stylistic/space-before-function-paren	missingSpace	Missing space before function parentheses.	fix	1517	1517	 	end	57	14
+tests/rules/@stylistic/space-before-function-paren/catch-never/cases.ts:59:16	@stylistic/space-before-function-paren	missingSpace	Missing space before function parentheses.	fix	1565	1565	 	end	59	17
 tests/rules/@stylistic/space-before-function-paren/catch-never/cases.ts:62:4	@stylistic/space-before-function-paren	missingSpace	Missing space before function parentheses.	fix	1590	1590	 	end	62	5
 tests/rules/@stylistic/space-before-function-paren/catch-never/cases.ts:64:7	@stylistic/space-before-function-paren	missingSpace	Missing space before function parentheses.	fix	1614	1614	 	end	64	8
 tests/rules/@stylistic/space-before-function-paren/catch-never/cases.ts:65:7	@stylistic/space-before-function-paren	missingSpace	Missing space before function parentheses.	fix	1638	1638	 	end	65	8
@@ -117,11 +134,14 @@ tests/rules/@stylistic/space-before-function-paren/mixed/cases.ts:40:5	@stylisti
 tests/rules/@stylistic/space-before-function-paren/mixed/cases.ts:42:7	@stylistic/space-before-function-paren	missingSpace	Missing space before function parentheses.	fix	1168	1168	 	end	42	8
 tests/rules/@stylistic/space-before-function-paren/mixed/cases.ts:44:11	@stylistic/space-before-function-paren	missingSpace	Missing space before function parentheses.	fix	1221	1221	 	end	44	12
 tests/rules/@stylistic/space-before-function-paren/mixed/cases.ts:46:5	@stylistic/space-before-function-paren	missingSpace	Missing space before function parentheses.	fix	1287	1287	 	end	46	6
+tests/rules/@stylistic/space-before-function-paren/mixed/cases.ts:47:7	@stylistic/space-before-function-paren	missingSpace	Missing space before function parentheses.	fix	1299	1299	 	end	47	8
+tests/rules/@stylistic/space-before-function-paren/mixed/cases.ts:49:8	@stylistic/space-before-function-paren	missingSpace	Missing space before function parentheses.	fix	1355	1355	 	end	49	9
 tests/rules/@stylistic/space-before-function-paren/mixed/cases.ts:50:15	@stylistic/space-before-function-paren	unexpectedSpace	Unexpected space before function parentheses.	fix	1390	1391		end	50	16
 tests/rules/@stylistic/space-before-function-paren/mixed/cases.ts:51:12	@stylistic/space-before-function-paren	unexpectedSpace	Unexpected space before function parentheses.	fix	1409	1410		end	51	13
 tests/rules/@stylistic/space-before-function-paren/mixed/cases.ts:52:4	@stylistic/space-before-function-paren	missingSpace	Missing space before function parentheses.	fix	1422	1422	 	end	52	5
 tests/rules/@stylistic/space-before-function-paren/mixed/cases.ts:54:4	@stylistic/space-before-function-paren	missingSpace	Missing space before function parentheses.	fix	1467	1467	 	end	54	5
 tests/rules/@stylistic/space-before-function-paren/mixed/cases.ts:57:13	@stylistic/space-before-function-paren	missingSpace	Missing space before function parentheses.	fix	1517	1517	 	end	57	14
+tests/rules/@stylistic/space-before-function-paren/mixed/cases.ts:59:16	@stylistic/space-before-function-paren	missingSpace	Missing space before function parentheses.	fix	1565	1565	 	end	59	17
 tests/rules/@stylistic/space-before-function-paren/mixed/cases.ts:62:4	@stylistic/space-before-function-paren	missingSpace	Missing space before function parentheses.	fix	1590	1590	 	end	62	5
 tests/rules/@stylistic/space-before-function-paren/mixed/cases.ts:64:7	@stylistic/space-before-function-paren	missingSpace	Missing space before function parentheses.	fix	1614	1614	 	end	64	8
 tests/rules/@stylistic/space-before-function-paren/mixed/cases.ts:65:7	@stylistic/space-before-function-paren	missingSpace	Missing space before function parentheses.	fix	1638	1638	 	end	65	8
@@ -135,6 +155,14 @@ tests/rules/@stylistic/space-before-function-paren/mixed/cases.ts:77:12	@stylist
 tests/rules/@stylistic/space-before-function-paren/mixed/cases.ts:78:13	@stylistic/space-before-function-paren	missingSpace	Missing space before function parentheses.	fix	1942	1942	 	end	78	14
 tests/rules/@stylistic/space-before-function-paren/mixed/cases.ts:84:25	@stylistic/space-before-function-paren	unexpectedSpace	Unexpected space before function parentheses.	fix	2064	2065		end	84	26
 tests/rules/@stylistic/space-before-function-paren/mixed/cases.ts:85:24	@stylistic/space-before-function-paren	unexpectedSpace	Unexpected space before function parentheses.	fix	2105	2106		end	85	25
+tests/rules/@stylistic/space-before-function-paren/mixed/cases.ts:87:25	@stylistic/space-before-function-paren	missingSpace	Missing space before function parentheses.	fix	2195	2195	 	end	87	26
+tests/rules/@stylistic/space-before-function-paren/mixed/cases.ts:87:45	@stylistic/space-before-function-paren	missingSpace	Missing space before function parentheses.	fix	2215	2215	 	end	87	46
+tests/rules/@stylistic/space-before-function-paren/mixed/cases.ts:87:108	@stylistic/space-before-function-paren	missingSpace	Missing space before function parentheses.	fix	2278	2278	 	end	87	109
+tests/rules/@stylistic/space-before-function-paren/mixed/cases.ts:88:43	@stylistic/space-before-function-paren	missingSpace	Missing space before function parentheses.	fix	2339	2339	 	end	88	44
+tests/rules/@stylistic/space-before-function-paren/mixed/cases.ts:89:27	@stylistic/space-before-function-paren	missingSpace	Missing space before function parentheses.	fix	2405	2405	 	end	89	28
+tests/rules/@stylistic/space-before-function-paren/mixed/cases.ts:89:61	@stylistic/space-before-function-paren	missingSpace	Missing space before function parentheses.	fix	2439	2439	 	end	89	62
+tests/rules/@stylistic/space-before-function-paren/mixed/cases.ts:89:75	@stylistic/space-before-function-paren	missingSpace	Missing space before function parentheses.	fix	2453	2453	 	end	89	76
+tests/rules/@stylistic/space-before-function-paren/mixed/cases.ts:92:19	@stylistic/space-before-function-paren	missingSpace	Missing space before function parentheses.	fix	2542	2542	 	end	92	20
 tests/rules/@stylistic/space-before-function-paren/named-only/cases.ts:3:12	@stylistic/space-before-function-paren	unexpectedSpace	Unexpected space before function parentheses.	fix	94	95		end	3	13
 tests/rules/@stylistic/space-before-function-paren/named-only/cases.ts:4:12	@stylistic/space-before-function-paren	unexpectedSpace	Unexpected space before function parentheses.	fix	112	128	/* comment */	end	4	28
 tests/rules/@stylistic/space-before-function-paren/named-only/cases.ts:5:12	@stylistic/space-before-function-paren	unexpectedSpace	Unexpected space before function parentheses.	end	6	1
@@ -159,6 +187,9 @@ tests/rules/@stylistic/space-before-function-paren/named-only/cases.ts:69:5	@sty
 tests/rules/@stylistic/space-before-function-paren/named-only/cases.ts:73:20	@stylistic/space-before-function-paren	unexpectedSpace	Unexpected space before function parentheses.	fix	1804	1805		end	73	21
 tests/rules/@stylistic/space-before-function-paren/named-only/cases.ts:75:12	@stylistic/space-before-function-paren	unexpectedSpace	Unexpected space before function parentheses.	fix	1856	1857		end	75	13
 tests/rules/@stylistic/space-before-function-paren/named-only/cases.ts:78:13	@stylistic/space-before-function-paren	missingSpace	Missing space before function parentheses.	fix	1942	1942	 	end	78	14
+tests/rules/@stylistic/space-before-function-paren/named-only/cases.ts:87:96	@stylistic/space-before-function-paren	unexpectedSpace	Unexpected space before function parentheses.	fix	2266	2267		end	87	97
+tests/rules/@stylistic/space-before-function-paren/named-only/cases.ts:88:70	@stylistic/space-before-function-paren	unexpectedSpace	Unexpected space before function parentheses.	fix	2366	2367		end	88	71
+tests/rules/@stylistic/space-before-function-paren/named-only/cases.ts:89:42	@stylistic/space-before-function-paren	unexpectedSpace	Unexpected space before function parentheses.	fix	2420	2421		end	89	43
 tests/rules/@stylistic/space-before-function-paren/never/cases.ts:3:12	@stylistic/space-before-function-paren	unexpectedSpace	Unexpected space before function parentheses.	fix	94	95		end	3	13
 tests/rules/@stylistic/space-before-function-paren/never/cases.ts:4:12	@stylistic/space-before-function-paren	unexpectedSpace	Unexpected space before function parentheses.	fix	112	128	/* comment */	end	4	28
 tests/rules/@stylistic/space-before-function-paren/never/cases.ts:5:12	@stylistic/space-before-function-paren	unexpectedSpace	Unexpected space before function parentheses.	end	6	1
@@ -192,3 +223,6 @@ tests/rules/@stylistic/space-before-function-paren/never/cases.ts:81:13	@stylist
 tests/rules/@stylistic/space-before-function-paren/never/cases.ts:82:13	@stylistic/space-before-function-paren	unexpectedSpace	Unexpected space before function parentheses.	fix	2031	2033		end	83	2
 tests/rules/@stylistic/space-before-function-paren/never/cases.ts:84:25	@stylistic/space-before-function-paren	unexpectedSpace	Unexpected space before function parentheses.	fix	2064	2065		end	84	26
 tests/rules/@stylistic/space-before-function-paren/never/cases.ts:85:24	@stylistic/space-before-function-paren	unexpectedSpace	Unexpected space before function parentheses.	fix	2105	2106		end	85	25
+tests/rules/@stylistic/space-before-function-paren/never/cases.ts:87:96	@stylistic/space-before-function-paren	unexpectedSpace	Unexpected space before function parentheses.	fix	2266	2267		end	87	97
+tests/rules/@stylistic/space-before-function-paren/never/cases.ts:88:70	@stylistic/space-before-function-paren	unexpectedSpace	Unexpected space before function parentheses.	fix	2366	2367		end	88	71
+tests/rules/@stylistic/space-before-function-paren/never/cases.ts:89:42	@stylistic/space-before-function-paren	unexpectedSpace	Unexpected space before function parentheses.	fix	2420	2421		end	89	43

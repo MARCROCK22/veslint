@@ -4,7 +4,7 @@ import jsregexp
 import time
 import x.json2
 
-// Port of the `@stylistic/spaced-comment` rule of @stylistic/eslint-plugin 5.10.0, with its
+// Port of the `@stylistic/spaced-comment` rule of @stylistic/eslint-plugin 6.0.1, with its
 // options (`"always"`, the default, or `"never"`, and `exceptions`, `markers`, and per comment type
 // `line` and `block`, with `balanced`) and its fixes. The regular expressions are built as the rule
 // builds them and run by jsregexp.
@@ -217,8 +217,7 @@ fn (c &Checker) sspc_check(comment SourceToken, options SspcOptions, mut finding
 	if value.len == 0 || value in rule.markers {
 		return
 	}
-	// Ignores typescript triple-slash directive.
-	if !block && (value.starts_with('/ <reference') || value.starts_with('/ <amd')) {
+	if !block && sspc_is_triple_slash_reference(value) {
 		return
 	}
 	begin_match := sspc_exec(rule.begin_regex, value)!.opt()
@@ -306,4 +305,19 @@ fn (c &Checker) sspc_report_end(comment SourceToken, message_id string, found ?S
 		has_fix:    true
 		fix:        fix
 	}
+}
+
+// sspc_is_triple_slash_reference ports isTripleSlashReference (shared/utils/ast/comment.ts) on the
+// value of a line comment: TRIPLE_SLASH_REFERENCE_PATTERN, /^\/\s*<(?:reference|amd-)/u.
+fn sspc_is_triple_slash_reference(value string) bool {
+	if !value.starts_with('/') {
+		return false
+	}
+	runes := value[1..].runes()
+	mut i := 0
+	for i < runes.len && is_js_space(runes[i]) {
+		i++
+	}
+	rest := runes[i..].string()
+	return rest.starts_with('<reference') || rest.starts_with('<amd-')
 }

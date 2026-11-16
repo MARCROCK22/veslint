@@ -4,7 +4,7 @@ import estree
 import time
 import x.json2
 
-// Port of the `@stylistic/object-curly-spacing` rule of @stylistic/eslint-plugin 5.10.0, with its
+// Port of the `@stylistic/object-curly-spacing` rule of @stylistic/eslint-plugin 6.0.1, with its
 // options (`"always"` or `"never"`, the default, and `arraysInObjects`, `objectsInObjects`,
 // `overrides` and `emptyObjects`) and its fixes: the spaces inside the braces of objects, object
 // patterns, imports, exports, import attributes, mapped types, type literals, interface bodies and
@@ -182,7 +182,13 @@ fn (c &Checker) socsp_brace_tokens(ctx SocspCtx, node int, node_type string) ?(S
 			opening := socsp_find(c, node_tokens, '{', false)?
 			if t.typ(node) == .object_pattern {
 				if annotation := t.node(node, .type_annotation) {
-					return opening, ctx.tokens.before(t.nodes[annotation].start, false)?
+					// getTokenBefore(node.typeAnnotation, isClosingBraceToken): the `}` before an
+					// optional pattern's `?` too, as `({ a }?: T) => void`.
+					mut before := ctx.tokens.before(t.nodes[annotation].start, false)?
+					for !c.token_is(before, '}') {
+						before = ctx.tokens.before(before.start, false)?
+					}
+					return opening, before
 				}
 			}
 			return opening, socsp_find(c, node_tokens, '}', true)?

@@ -4,7 +4,7 @@ import estree
 import time
 import x.json2
 
-// Port of the `@stylistic/object-property-newline` rule of @stylistic/eslint-plugin 5.10.0, with its
+// Port of the `@stylistic/object-property-newline` rule of @stylistic/eslint-plugin 6.0.1, with its
 // option `allowAllPropertiesOnSameLine` and its fixes: each property of an object, a type literal
 // or an interface body on a line of its own.
 

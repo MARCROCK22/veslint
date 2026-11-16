@@ -4,7 +4,7 @@ import estree
 import time
 import x.json2
 
-// Port of the `@stylistic/function-paren-newline` rule of @stylistic/eslint-plugin 5.10.0, with its
+// Port of the `@stylistic/function-paren-newline` rule of @stylistic/eslint-plugin 6.0.1, with its
 // option (`"multiline"`, the default, `"always"`, `"never"`, `"consistent"`,
 // `"multiline-arguments"` or `{ minItems }`) and its fixes.
 

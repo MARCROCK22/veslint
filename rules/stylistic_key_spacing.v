@@ -5,7 +5,7 @@ import math
 import time
 import x.json2
 
-// Port of the `@stylistic/key-spacing` rule of @stylistic/eslint-plugin 5.10.0, with its options
+// Port of the `@stylistic/key-spacing` rule of @stylistic/eslint-plugin 6.0.1, with its options
 // (`beforeColon`, `afterColon`, `mode`, `align` as a string or an object, `singleLine`,
 // `multiLine` and `ignoredNodes`) and its fixes: the spaces around the colon of the properties of
 // objects and object patterns and of import attributes, and before and after the type annotation
@@ -841,12 +841,14 @@ fn (c &Checker) sks_check_align_group(ctx SksCtx, group []int, mut findings []Fi
 			continue
 		}
 		annotation := t.node(node, .type_annotation) or { continue }
-		to_check := if align == 'colon' {
-			annotation
+		// For value alignment, the token right after the colon: the `(` of a parenthesized type.
+		at := if align == 'colon' {
+			t.nodes[annotation].start
 		} else {
-			t.node(annotation, .type_annotation) or { continue }
+			colon := un_first_token(t, ctx.tokens, annotation, 0) or { continue }
+			value := ctx.tokens.after(colon.end, false) or { continue }
+			value.start
 		}
-		at := t.nodes[to_check].start
 		difference := c.sks_adjusted_column(at) - align_column
 		if difference != 0 {
 			message_id := if difference > 0 {

@@ -1,6 +1,11 @@
 #!/usr/bin/env node
 /// <reference types="node" />
 ///<reference path="x" />
+///   <reference lib="es2020" />
+///	<amd-module name="m" />
+/// <amd-dependency path="d" />
+/// <amdx name="n" />
+/// <referencex />
 //no space
 // with space
 //	tab

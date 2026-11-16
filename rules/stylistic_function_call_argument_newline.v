@@ -4,7 +4,7 @@ import estree
 import time
 import x.json2
 
-// Port of the `@stylistic/function-call-argument-newline` rule of @stylistic/eslint-plugin 5.10.0,
+// Port of the `@stylistic/function-call-argument-newline` rule of @stylistic/eslint-plugin 6.0.1,
 // with its option (`"always"`, the default, `"never"` or `"consistent"`) and its fixes.
 
 const sfcan_messages = {

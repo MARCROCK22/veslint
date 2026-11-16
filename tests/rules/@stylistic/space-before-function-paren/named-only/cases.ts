@@ -83,3 +83,11 @@ try {} catch
 	(e) {}
 const n1 = new (function () {} as any)();
 export default function () {}
+// 6.0.0: methods with type parameters are named functions
+class Sbfp6A { method<T>() {} static cast<T>(_candidate: T | undefined) { return []; } other<T> () {} get g() { return 1; } }
+abstract class Sbfp6B { abstract method<T>(): void; abstract other<T> (): void; }
+const sbfp6C = { method<T>() {}, other<T> () {}, async am<T>() {}, *gen<T>() {} };
+const sbfp6D = function<T>() {};
+const sbfp6E = <T,>() => {};
+function sbfp6F<T>() {}
+export { Sbfp6A, Sbfp6B, sbfp6C, sbfp6D, sbfp6E, sbfp6F };

@@ -27,6 +27,11 @@ switch (a) {}
 switch (a) {  }
 switch ({ a }.a) {case 1: break;}
 switch (`${a}`) {default: foo();}
+switch (a || {}) {case 0: foo();}
+switch (a || { }) { case 0: foo(); }
+switch (((a) || {})) {case 0: foo();}
+switch (((a) || {b: 1})) {   }
+switch (/* {c} */ x) {case 0: foo();}
 function f1(): number {return 1;}
 const f2 = (x: number): number => {return x;};
 const f3 = function (): void {foo();};

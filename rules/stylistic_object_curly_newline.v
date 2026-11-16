@@ -4,7 +4,7 @@ import estree
 import time
 import x.json2
 
-// Port of the `@stylistic/object-curly-newline` rule of @stylistic/eslint-plugin 5.10.0, with its
+// Port of the `@stylistic/object-curly-newline` rule of @stylistic/eslint-plugin 6.0.1, with its
 // options (`"always"`, `"never"`, an object with `multiline`, `minProperties` and `consistent`, or
 // one of those per node type: `ObjectExpression`, `ObjectPattern`, `ImportDeclaration`,
 // `ExportDeclaration`, `TSTypeLiteral`, `TSInterfaceBody`, `TSEnumBody`) and its fixes: the line

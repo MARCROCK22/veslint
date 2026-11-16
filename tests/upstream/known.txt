@@ -1375,9 +1375,9 @@ eslint	no-whitespace-before-property._js_/i94	typescript-eslint's parser: Octal 
 veslint	comma-spacing._ts_/i5	tree-sitter reads `let foo ,` as a syntax error
 # @stylistic/dot-location: JavaScript cases with a legacy octal literal or a decimal with leading zeros, which
 # typescript-eslint's parser rejects; tree-sitter parses them.
-eslint	dot-location._js_/i5	typescript-eslint's parser: Octal literals are not allowed.
-eslint	dot-location._js_/i6	typescript-eslint's parser: Decimals with leading zeros are not allowed.
+eslint	dot-location._js_/i6	typescript-eslint's parser: Octal literals are not allowed.
 eslint	dot-location._js_/i7	typescript-eslint's parser: Decimals with leading zeros are not allowed.
+eslint	dot-location._js_/i8	typescript-eslint's parser: Decimals with leading zeros are not allowed.
 # @stylistic/quotes: JavaScript cases with octal or non-octal decimal escape sequences (`'\1'`, `'\8'`), which
 # typescript-eslint's parser rejects; tree-sitter parses them.
 eslint	quotes._js_/i38	typescript-eslint's parser: Octal escape sequences are not allowed.

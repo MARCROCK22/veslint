@@ -1,4 +1,3 @@
-tests/rules/@stylistic/spaced-comment/always-exceptions-one/cases.ts:3:1	@stylistic/spaced-comment	expectedExceptionAfter	Expected exception block, space or tab after '//' in comment.	fix	53	53	 	end	3	26
 tests/rules/@stylistic/spaced-comment/always-exceptions-one/cases.ts:4:1	@stylistic/spaced-comment	expectedExceptionAfter	Expected exception block, space or tab after '//' in comment.	fix	79	79	 	end	4	11
 tests/rules/@stylistic/spaced-comment/always-exceptions-one/cases.ts:9:1	@stylistic/spaced-comment	expectedExceptionAfter	Expected exception block, space or tab after '/*' in comment.	fix	119	119	 	end	9	13
 tests/rules/@stylistic/spaced-comment/always-exceptions-one/cases.ts:15:1	@stylistic/spaced-comment	expectedExceptionAfter	Expected exception block, space or tab after '/**' in comment.	fix	186	186	 	end	15	20
@@ -28,7 +27,6 @@ tests/rules/@stylistic/spaced-comment/always-exceptions-one/cases.ts:48:1	@styli
 tests/rules/@stylistic/spaced-comment/always-exceptions-one/cases.ts:49:1	@stylistic/spaced-comment	expectedExceptionAfter	Expected exception block, space or tab after '/*' in comment.	fix	616	616	 	end	49	15
 tests/rules/@stylistic/spaced-comment/always-exceptions-one/cases.ts:50:1	@stylistic/spaced-comment	expectedExceptionAfter	Expected exception block, space or tab after '/*' in comment.	fix	631	631	 	end	50	10
 tests/rules/@stylistic/spaced-comment/always-exceptions-one/cases.ts:51:1	@stylistic/spaced-comment	expectedExceptionAfter	Expected exception block, space or tab after '/*' in comment.	fix	641	641	 	end	51	12
-tests/rules/@stylistic/spaced-comment/always-exceptions/cases.ts:3:1	@stylistic/spaced-comment	expectedExceptionAfter	Expected exception block, space or tab after '//' in comment.	fix	53	53	 	end	3	26
 tests/rules/@stylistic/spaced-comment/always-exceptions/cases.ts:4:1	@stylistic/spaced-comment	expectedExceptionAfter	Expected exception block, space or tab after '//' in comment.	fix	79	79	 	end	4	11
 tests/rules/@stylistic/spaced-comment/always-exceptions/cases.ts:9:1	@stylistic/spaced-comment	expectedExceptionAfter	Expected exception block, space or tab after '/*' in comment.	fix	119	119	 	end	9	13
 tests/rules/@stylistic/spaced-comment/always-exceptions/cases.ts:15:1	@stylistic/spaced-comment	expectedExceptionAfter	Expected exception block, space or tab after '/**' in comment.	fix	186	186	 	end	15	20
@@ -57,7 +55,6 @@ tests/rules/@stylistic/spaced-comment/always-exceptions/cases.ts:48:1	@stylistic
 tests/rules/@stylistic/spaced-comment/always-exceptions/cases.ts:49:1	@stylistic/spaced-comment	expectedExceptionAfter	Expected exception block, space or tab after '/*' in comment.	fix	616	616	 	end	49	15
 tests/rules/@stylistic/spaced-comment/always-exceptions/cases.ts:50:1	@stylistic/spaced-comment	expectedExceptionAfter	Expected exception block, space or tab after '/*' in comment.	fix	631	631	 	end	50	10
 tests/rules/@stylistic/spaced-comment/always-exceptions/cases.ts:51:1	@stylistic/spaced-comment	expectedExceptionAfter	Expected exception block, space or tab after '/*' in comment.	fix	641	641	 	end	51	12
-tests/rules/@stylistic/spaced-comment/always-markers/cases.ts:3:1	@stylistic/spaced-comment	expectedSpaceAfter	Expected space or tab after '//' in comment.	fix	53	53	 	end	3	26
 tests/rules/@stylistic/spaced-comment/always-markers/cases.ts:4:1	@stylistic/spaced-comment	expectedSpaceAfter	Expected space or tab after '//' in comment.	fix	79	79	 	end	4	11
 tests/rules/@stylistic/spaced-comment/always-markers/cases.ts:9:1	@stylistic/spaced-comment	expectedSpaceAfter	Expected space or tab after '/*' in comment.	fix	119	119	 	end	9	13
 tests/rules/@stylistic/spaced-comment/always-markers/cases.ts:15:1	@stylistic/spaced-comment	expectedSpaceAfter	Expected space or tab after '/**' in comment.	fix	186	186	 	end	15	20
@@ -87,7 +84,6 @@ tests/rules/@stylistic/spaced-comment/always-markers/cases.ts:47:1	@stylistic/sp
 tests/rules/@stylistic/spaced-comment/always-markers/cases.ts:48:1	@stylistic/spaced-comment	expectedSpaceAfter	Expected space or tab after '//' in comment.	fix	609	609	 	end	48	7
 tests/rules/@stylistic/spaced-comment/always-markers/cases.ts:49:1	@stylistic/spaced-comment	expectedSpaceAfter	Expected space or tab after '/*' in comment.	fix	616	616	 	end	49	15
 tests/rules/@stylistic/spaced-comment/always-markers/cases.ts:50:1	@stylistic/spaced-comment	expectedSpaceAfter	Expected space or tab after '/*!' in comment.	fix	632	632	 	end	50	10
-tests/rules/@stylistic/spaced-comment/balanced-exceptions/cases.ts:3:1	@stylistic/spaced-comment	expectedSpaceAfter	Expected space or tab after '//' in comment.	fix	53	53	 	end	3	26
 tests/rules/@stylistic/spaced-comment/balanced-exceptions/cases.ts:4:1	@stylistic/spaced-comment	expectedSpaceAfter	Expected space or tab after '//' in comment.	fix	79	79	 	end	4	11
 tests/rules/@stylistic/spaced-comment/balanced-exceptions/cases.ts:9:1	@stylistic/spaced-comment	expectedExceptionAfter	Expected exception block, space or tab after '/*' in comment.	fix	119	119	 	end	9	13
 tests/rules/@stylistic/spaced-comment/balanced-exceptions/cases.ts:9:1	@stylistic/spaced-comment	expectedSpaceBefore	Expected space or tab before '*/' in comment.	fix	127	127	 	end	9	13
@@ -125,7 +121,6 @@ tests/rules/@stylistic/spaced-comment/balanced-exceptions/cases.ts:49:1	@stylist
 tests/rules/@stylistic/spaced-comment/balanced-exceptions/cases.ts:50:1	@stylistic/spaced-comment	expectedExceptionAfter	Expected exception block, space or tab after '/*' in comment.	fix	631	631	 	end	50	10
 tests/rules/@stylistic/spaced-comment/balanced-exceptions/cases.ts:50:1	@stylistic/spaced-comment	expectedSpaceBefore	Expected space or tab before '*/' in comment.	fix	636	636	 	end	50	10
 tests/rules/@stylistic/spaced-comment/balanced-exceptions/cases.ts:51:1	@stylistic/spaced-comment	expectedExceptionAfter	Expected exception block, space or tab after '/*' in comment.	fix	641	641	 	end	51	12
-tests/rules/@stylistic/spaced-comment/balanced/cases.ts:3:1	@stylistic/spaced-comment	expectedSpaceAfter	Expected space or tab after '//' in comment.	fix	53	53	 	end	3	26
 tests/rules/@stylistic/spaced-comment/balanced/cases.ts:4:1	@stylistic/spaced-comment	expectedSpaceAfter	Expected space or tab after '//' in comment.	fix	79	79	 	end	4	11
 tests/rules/@stylistic/spaced-comment/balanced/cases.ts:9:1	@stylistic/spaced-comment	expectedSpaceAfter	Expected space or tab after '/*' in comment.	fix	119	119	 	end	9	13
 tests/rules/@stylistic/spaced-comment/balanced/cases.ts:9:1	@stylistic/spaced-comment	expectedSpaceBefore	Expected space or tab before '*/' in comment.	fix	127	127	 	end	9	13
@@ -165,27 +160,26 @@ tests/rules/@stylistic/spaced-comment/balanced/cases.ts:49:1	@stylistic/spaced-c
 tests/rules/@stylistic/spaced-comment/balanced/cases.ts:50:1	@stylistic/spaced-comment	expectedSpaceAfter	Expected space or tab after '/*' in comment.	fix	631	631	 	end	50	10
 tests/rules/@stylistic/spaced-comment/balanced/cases.ts:50:1	@stylistic/spaced-comment	expectedSpaceBefore	Expected space or tab before '*/' in comment.	fix	636	636	 	end	50	10
 tests/rules/@stylistic/spaced-comment/balanced/cases.ts:51:1	@stylistic/spaced-comment	expectedSpaceAfter	Expected space or tab after '/*' in comment.	fix	641	641	 	end	51	12
-tests/rules/@stylistic/spaced-comment/cases.ts:3:1	@stylistic/spaced-comment	expectedSpaceAfter	Expected space or tab after '//' in comment.	fix	53	53	 	end	3	26
-tests/rules/@stylistic/spaced-comment/cases.ts:4:1	@stylistic/spaced-comment	expectedSpaceAfter	Expected space or tab after '//' in comment.	fix	79	79	 	end	4	11
-tests/rules/@stylistic/spaced-comment/cases.ts:9:1	@stylistic/spaced-comment	expectedSpaceAfter	Expected space or tab after '/*' in comment.	fix	119	119	 	end	9	13
-tests/rules/@stylistic/spaced-comment/cases.ts:15:1	@stylistic/spaced-comment	expectedSpaceAfter	Expected space or tab after '/**' in comment.	fix	186	186	 	end	15	20
-tests/rules/@stylistic/spaced-comment/cases.ts:16:1	@stylistic/spaced-comment	expectedSpaceAfter	Expected space or tab after '//*' in comment.	fix	206	206	 	end	16	10
-tests/rules/@stylistic/spaced-comment/cases.ts:17:1	@stylistic/spaced-comment	expectedSpaceAfter	Expected space or tab after '//' in comment.	fix	215	215	 	end	17	13
-tests/rules/@stylistic/spaced-comment/cases.ts:18:1	@stylistic/spaced-comment	expectedSpaceAfter	Expected space or tab after '//' in comment.	fix	228	228	 	end	18	16
-tests/rules/@stylistic/spaced-comment/cases.ts:19:1	@stylistic/spaced-comment	expectedSpaceAfter	Expected space or tab after '//' in comment.	fix	244	244	 	end	19	16
-tests/rules/@stylistic/spaced-comment/cases.ts:20:1	@stylistic/spaced-comment	expectedSpaceAfter	Expected space or tab after '//' in comment.	fix	260	260	 	end	20	11
-tests/rules/@stylistic/spaced-comment/cases.ts:21:1	@stylistic/spaced-comment	expectedSpaceAfter	Expected space or tab after '//' in comment.	fix	271	271	 	end	21	11
-tests/rules/@stylistic/spaced-comment/cases.ts:22:1	@stylistic/spaced-comment	expectedSpaceAfter	Expected space or tab after '/*' in comment.	fix	282	282	 	end	22	18
-tests/rules/@stylistic/spaced-comment/cases.ts:23:1	@stylistic/spaced-comment	expectedSpaceAfter	Expected space or tab after '/*' in comment.	fix	300	300	 	end	23	12
-tests/rules/@stylistic/spaced-comment/cases.ts:24:1	@stylistic/spaced-comment	expectedSpaceAfter	Expected space or tab after '/*' in comment.	fix	312	312	 	end	24	12
-tests/rules/@stylistic/spaced-comment/cases.ts:26:1	@stylistic/spaced-comment	expectedSpaceAfter	Expected space or tab after '//' in comment.	fix	335	335	 	end	26	12
-tests/rules/@stylistic/spaced-comment/cases.ts:30:1	@stylistic/spaced-comment	expectedSpaceAfter	Expected space or tab after '/*' in comment.	fix	363	363	 	end	31	9
-tests/rules/@stylistic/spaced-comment/cases.ts:34:1	@stylistic/spaced-comment	expectedSpaceAfter	Expected space or tab after '//' in comment.	fix	407	407	 	end	34	10
-tests/rules/@stylistic/spaced-comment/cases.ts:35:1	@stylistic/spaced-comment	expectedSpaceAfter	Expected space or tab after '//' in comment.	fix	417	417	 	end	35	30
-tests/rules/@stylistic/spaced-comment/cases.ts:36:1	@stylistic/spaced-comment	expectedSpaceAfter	Expected space or tab after '//' in comment.	fix	447	447	 	end	36	13
-tests/rules/@stylistic/spaced-comment/cases.ts:37:14	@stylistic/spaced-comment	expectedSpaceAfter	Expected space or tab after '//' in comment.	fix	473	473	 	end	37	24
-tests/rules/@stylistic/spaced-comment/cases.ts:38:14	@stylistic/spaced-comment	expectedSpaceAfter	Expected space or tab after '/*' in comment.	fix	497	497	 	end	38	24
-tests/rules/@stylistic/spaced-comment/empty-lists/cases.ts:3:1	@stylistic/spaced-comment	expectedSpaceAfter	Expected space or tab after '//' in comment.	fix	53	53	 	end	3	26
+tests/rules/@stylistic/spaced-comment/cases.ts:7:1	@stylistic/spaced-comment	expectedSpaceAfter	Expected space or tab after '//' in comment.	fix	172	172	 	end	7	22
+tests/rules/@stylistic/spaced-comment/cases.ts:9:1	@stylistic/spaced-comment	expectedSpaceAfter	Expected space or tab after '//' in comment.	fix	213	213	 	end	9	11
+tests/rules/@stylistic/spaced-comment/cases.ts:14:1	@stylistic/spaced-comment	expectedSpaceAfter	Expected space or tab after '/*' in comment.	fix	253	253	 	end	14	13
+tests/rules/@stylistic/spaced-comment/cases.ts:20:1	@stylistic/spaced-comment	expectedSpaceAfter	Expected space or tab after '/**' in comment.	fix	320	320	 	end	20	20
+tests/rules/@stylistic/spaced-comment/cases.ts:21:1	@stylistic/spaced-comment	expectedSpaceAfter	Expected space or tab after '//*' in comment.	fix	340	340	 	end	21	10
+tests/rules/@stylistic/spaced-comment/cases.ts:22:1	@stylistic/spaced-comment	expectedSpaceAfter	Expected space or tab after '//' in comment.	fix	349	349	 	end	22	13
+tests/rules/@stylistic/spaced-comment/cases.ts:23:1	@stylistic/spaced-comment	expectedSpaceAfter	Expected space or tab after '//' in comment.	fix	362	362	 	end	23	16
+tests/rules/@stylistic/spaced-comment/cases.ts:24:1	@stylistic/spaced-comment	expectedSpaceAfter	Expected space or tab after '//' in comment.	fix	378	378	 	end	24	16
+tests/rules/@stylistic/spaced-comment/cases.ts:25:1	@stylistic/spaced-comment	expectedSpaceAfter	Expected space or tab after '//' in comment.	fix	394	394	 	end	25	11
+tests/rules/@stylistic/spaced-comment/cases.ts:26:1	@stylistic/spaced-comment	expectedSpaceAfter	Expected space or tab after '//' in comment.	fix	405	405	 	end	26	11
+tests/rules/@stylistic/spaced-comment/cases.ts:27:1	@stylistic/spaced-comment	expectedSpaceAfter	Expected space or tab after '/*' in comment.	fix	416	416	 	end	27	18
+tests/rules/@stylistic/spaced-comment/cases.ts:28:1	@stylistic/spaced-comment	expectedSpaceAfter	Expected space or tab after '/*' in comment.	fix	434	434	 	end	28	12
+tests/rules/@stylistic/spaced-comment/cases.ts:29:1	@stylistic/spaced-comment	expectedSpaceAfter	Expected space or tab after '/*' in comment.	fix	446	446	 	end	29	12
+tests/rules/@stylistic/spaced-comment/cases.ts:31:1	@stylistic/spaced-comment	expectedSpaceAfter	Expected space or tab after '//' in comment.	fix	469	469	 	end	31	12
+tests/rules/@stylistic/spaced-comment/cases.ts:35:1	@stylistic/spaced-comment	expectedSpaceAfter	Expected space or tab after '/*' in comment.	fix	497	497	 	end	36	9
+tests/rules/@stylistic/spaced-comment/cases.ts:39:1	@stylistic/spaced-comment	expectedSpaceAfter	Expected space or tab after '//' in comment.	fix	541	541	 	end	39	10
+tests/rules/@stylistic/spaced-comment/cases.ts:40:1	@stylistic/spaced-comment	expectedSpaceAfter	Expected space or tab after '//' in comment.	fix	551	551	 	end	40	30
+tests/rules/@stylistic/spaced-comment/cases.ts:41:1	@stylistic/spaced-comment	expectedSpaceAfter	Expected space or tab after '//' in comment.	fix	581	581	 	end	41	13
+tests/rules/@stylistic/spaced-comment/cases.ts:42:14	@stylistic/spaced-comment	expectedSpaceAfter	Expected space or tab after '//' in comment.	fix	607	607	 	end	42	24
+tests/rules/@stylistic/spaced-comment/cases.ts:43:14	@stylistic/spaced-comment	expectedSpaceAfter	Expected space or tab after '/*' in comment.	fix	631	631	 	end	43	24
 tests/rules/@stylistic/spaced-comment/empty-lists/cases.ts:4:1	@stylistic/spaced-comment	expectedSpaceAfter	Expected space or tab after '//' in comment.	fix	79	79	 	end	4	11
 tests/rules/@stylistic/spaced-comment/empty-lists/cases.ts:9:1	@stylistic/spaced-comment	expectedSpaceAfter	Expected space or tab after '/*' in comment.	fix	119	119	 	end	9	13
 tests/rules/@stylistic/spaced-comment/empty-lists/cases.ts:15:1	@stylistic/spaced-comment	expectedSpaceAfter	Expected space or tab after '/**' in comment.	fix	186	186	 	end	15	20
@@ -271,15 +265,14 @@ tests/rules/@stylistic/spaced-comment/never-markers/cases.ts:33:1	@stylistic/spa
 tests/rules/@stylistic/spaced-comment/never-markers/cases.ts:35:1	@stylistic/spaced-comment	unexpectedSpaceAfterMarker	Unexpected space or tab after marker (#) in comment.	fix	415	419	//#	end	35	30
 tests/rules/@stylistic/spaced-comment/never-markers/cases.ts:51:1	@stylistic/spaced-comment	unexpectedSpaceAfterMarker	Unexpected space or tab after marker (!) in comment.	fix	639	643	/*!	end	51	12
 tests/rules/@stylistic/spaced-comment/never-markers/cases.ts:52:1	@stylistic/spaced-comment	unexpectedSpaceAfter	Unexpected space or tab after '/*' in comment.	fix	651	655	/*	end	52	9
-tests/rules/@stylistic/spaced-comment/never/cases.ts:5:1	@stylistic/spaced-comment	unexpectedSpaceAfter	Unexpected space or tab after '//' in comment.	fix	88	91	//	end	5	14
-tests/rules/@stylistic/spaced-comment/never/cases.ts:6:1	@stylistic/spaced-comment	unexpectedSpaceAfter	Unexpected space or tab after '//' in comment.	fix	102	105	//	end	6	7
-tests/rules/@stylistic/spaced-comment/never/cases.ts:10:1	@stylistic/spaced-comment	unexpectedSpaceAfter	Unexpected space or tab after '/*' in comment.	fix	130	133	/*	end	10	17
-tests/rules/@stylistic/spaced-comment/never/cases.ts:11:1	@stylistic/spaced-comment	unexpectedSpaceAfter	Unexpected space or tab after '/*' in comment.	fix	147	151	/*	end	11	19
-tests/rules/@stylistic/spaced-comment/never/cases.ts:25:1	@stylistic/spaced-comment	unexpectedSpaceAfter	Unexpected space or tab after '//' in comment.	fix	322	325	//	end	25	11
-tests/rules/@stylistic/spaced-comment/never/cases.ts:32:1	@stylistic/spaced-comment	unexpectedSpaceAfter	Unexpected space or tab after '/*' in comment.	fix	378	381	/*	end	32	17
-tests/rules/@stylistic/spaced-comment/never/cases.ts:33:1	@stylistic/spaced-comment	unexpectedSpaceAfter	Unexpected space or tab after '/*' in comment.	fix	395	398	/*	end	33	10
-tests/rules/@stylistic/spaced-comment/never/cases.ts:52:1	@stylistic/spaced-comment	unexpectedSpaceAfter	Unexpected space or tab after '/*' in comment.	fix	651	655	/*	end	52	9
-tests/rules/@stylistic/spaced-comment/per-type/cases.ts:3:1	@stylistic/spaced-comment	expectedExceptionAfter	Expected exception block, space or tab after '///' in comment.	fix	54	54	 	end	3	26
+tests/rules/@stylistic/spaced-comment/never/cases.ts:10:1	@stylistic/spaced-comment	unexpectedSpaceAfter	Unexpected space or tab after '//' in comment.	fix	222	225	//	end	10	14
+tests/rules/@stylistic/spaced-comment/never/cases.ts:11:1	@stylistic/spaced-comment	unexpectedSpaceAfter	Unexpected space or tab after '//' in comment.	fix	236	239	//	end	11	7
+tests/rules/@stylistic/spaced-comment/never/cases.ts:15:1	@stylistic/spaced-comment	unexpectedSpaceAfter	Unexpected space or tab after '/*' in comment.	fix	264	267	/*	end	15	17
+tests/rules/@stylistic/spaced-comment/never/cases.ts:16:1	@stylistic/spaced-comment	unexpectedSpaceAfter	Unexpected space or tab after '/*' in comment.	fix	281	285	/*	end	16	19
+tests/rules/@stylistic/spaced-comment/never/cases.ts:30:1	@stylistic/spaced-comment	unexpectedSpaceAfter	Unexpected space or tab after '//' in comment.	fix	456	459	//	end	30	11
+tests/rules/@stylistic/spaced-comment/never/cases.ts:37:1	@stylistic/spaced-comment	unexpectedSpaceAfter	Unexpected space or tab after '/*' in comment.	fix	512	515	/*	end	37	17
+tests/rules/@stylistic/spaced-comment/never/cases.ts:38:1	@stylistic/spaced-comment	unexpectedSpaceAfter	Unexpected space or tab after '/*' in comment.	fix	529	532	/*	end	38	10
+tests/rules/@stylistic/spaced-comment/never/cases.ts:57:1	@stylistic/spaced-comment	unexpectedSpaceAfter	Unexpected space or tab after '/*' in comment.	fix	785	789	/*	end	57	9
 tests/rules/@stylistic/spaced-comment/per-type/cases.ts:4:1	@stylistic/spaced-comment	expectedExceptionAfter	Expected exception block, space or tab after '//' in comment.	fix	79	79	 	end	4	11
 tests/rules/@stylistic/spaced-comment/per-type/cases.ts:9:1	@stylistic/spaced-comment	expectedExceptionAfter	Expected exception block, space or tab after '/*' in comment.	fix	119	119	 	end	9	13
 tests/rules/@stylistic/spaced-comment/per-type/cases.ts:15:1	@stylistic/spaced-comment	expectedExceptionAfter	Expected exception block, space or tab after '/**' in comment.	fix	186	186	 	end	15	20
@@ -308,7 +301,6 @@ tests/rules/@stylistic/spaced-comment/per-type/cases.ts:47:1	@stylistic/spaced-c
 tests/rules/@stylistic/spaced-comment/per-type/cases.ts:48:1	@stylistic/spaced-comment	expectedExceptionAfter	Expected exception block, space or tab after '//' in comment.	fix	609	609	 	end	48	7
 tests/rules/@stylistic/spaced-comment/per-type/cases.ts:49:1	@stylistic/spaced-comment	expectedExceptionAfter	Expected exception block, space or tab after '/*' in comment.	fix	616	616	 	end	49	15
 tests/rules/@stylistic/spaced-comment/per-type/cases.ts:50:1	@stylistic/spaced-comment	expectedExceptionAfter	Expected exception block, space or tab after '/*!' in comment.	fix	632	632	 	end	50	10
-tests/rules/@stylistic/spaced-comment/special-markers/cases.ts:3:1	@stylistic/spaced-comment	expectedExceptionAfter	Expected exception block, space or tab after '//' in comment.	fix	53	53	 	end	3	26
 tests/rules/@stylistic/spaced-comment/special-markers/cases.ts:4:1	@stylistic/spaced-comment	expectedExceptionAfter	Expected exception block, space or tab after '//' in comment.	fix	79	79	 	end	4	11
 tests/rules/@stylistic/spaced-comment/special-markers/cases.ts:9:1	@stylistic/spaced-comment	expectedExceptionAfter	Expected exception block, space or tab after '/*' in comment.	fix	119	119	 	end	9	13
 tests/rules/@stylistic/spaced-comment/special-markers/cases.ts:15:1	@stylistic/spaced-comment	expectedExceptionAfter	Expected exception block, space or tab after '/**' in comment.	fix	186	186	 	end	15	20
