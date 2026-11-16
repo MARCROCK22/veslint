@@ -5,7 +5,7 @@ import treesitter { node_kind }
 import time
 import x.json2
 
-// Port of the `@stylistic/comma-spacing` rule of @stylistic/eslint-plugin 5.10.0, with its options
+// Port of the `@stylistic/comma-spacing` rule of @stylistic/eslint-plugin 6.0.1, with its options
 // (`before`, false by default, and `after`, true by default) and its fixes.
 
 const scmsp_messages = {
@@ -38,12 +38,14 @@ fn (mut c Checker) lint_stylistic_comma_spacing(root C.TSNode, abs_path string, 
 	options := scmsp_options(c.rule_options(stylistic_comma_spacing))!
 	t := c.es_tree(root, abs_path) or { return findings }
 	tokens := c.un_tokens(t)
-	// The starts of the ignored commas.
-	mut ignored := map[int]bool{}
+	// The starts of the commas whose space before (ignoredBeforeTokens) or after
+	// (ignoredAfterTokens) is not checked.
+	mut ignored_before := map[int]bool{}
+	mut ignored_after := map[int]bool{}
 	for node in 0 .. t.nodes.len {
 		match t.typ(node) {
 			.array_expression, .array_pattern {
-				c.scmsp_ignore_null_elements(t, tokens, node, mut ignored)
+				c.scmsp_ignore_null_elements(t, tokens, node, mut ignored_before, mut ignored_after)
 			}
 			.ts_type_parameter_declaration {
 				// addTypeParametersTrailingCommaToIgnoreList
@@ -51,7 +53,8 @@ fn (mut c Checker) lint_stylistic_comma_spacing(root C.TSNode, abs_path string, 
 				if params.len > 0 {
 					if after := tokens.after(t.nodes[params.last()].end, false) {
 						if c.token_is(after, ',') {
-							ignored[after.start] = true
+							ignored_before[after.start] = true
+							ignored_after[after.start] = true
 						}
 					}
 				}
@@ -66,13 +69,12 @@ fn (mut c Checker) lint_stylistic_comma_spacing(root C.TSNode, abs_path string, 
 			continue
 		}
 		stats.checked++
-		is_ignored := token.start in ignored
-		prev := if i > 0 && !c.scmsp_is_comma(all[i - 1]) && !is_ignored {
+		prev := if i > 0 && !c.scmsp_is_comma(all[i - 1]) && token.start !in ignored_before {
 			?SourceToken(all[i - 1])
 		} else {
 			none
 		}
-		next := if i + 1 < all.len && !c.scmsp_is_comma(all[i + 1]) && !is_ignored {
+		next := if i + 1 < all.len && !c.scmsp_is_comma(all[i + 1]) && token.start !in ignored_after {
 			?SourceToken(all[i + 1])
 		} else {
 			none
@@ -88,11 +90,13 @@ fn (c &Checker) scmsp_is_comma(token SourceToken) bool {
 	return c.token_is(token, ',') && node_kind(token.node) != 'jsx_text'
 }
 
-// scmsp_ignore_null_elements ports addNullElementsToIgnoreList.
-fn (c &Checker) scmsp_ignore_null_elements(t &estree.EsTree, tokens &SourceTokens, node int, mut ignored map[int]bool) {
+// scmsp_ignore_null_elements ports addNullElementsToIgnoreList: the comma after a hole is not
+// checked before, nor after when the next element is a hole too (or there is none).
+fn (c &Checker) scmsp_ignore_null_elements(t &estree.EsTree, tokens &SourceTokens, node int, mut ignored_before map[int]bool, mut ignored_after map[int]bool) {
 	mut previous := un_first_token(t, tokens, node, 0) or { return }
 	mut has_previous := true
-	for element in t.list(node, .elements) or { []int{} } {
+	elements := t.list(node, .elements) or { []int{} }
+	for i, element in elements {
 		mut token := SourceToken{}
 		mut found := false
 		if element < 0 {
@@ -101,7 +105,10 @@ fn (c &Checker) scmsp_ignore_null_elements(t &estree.EsTree, tokens &SourceToken
 					token = after
 					found = true
 					if c.token_is(after, ',') {
-						ignored[after.start] = true
+						ignored_before[after.start] = true
+						if i + 1 >= elements.len || elements[i + 1] < 0 {
+							ignored_after[after.start] = true
+						}
 					}
 				}
 			}

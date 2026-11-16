@@ -52,3 +52,8 @@ void readFileSync; void writeFileSync;
 export type { T1, T2, T3, I1 };
 export const arr8 = [(a) ,, b];
 export const arr9 = [a ,, b];
+// 6.0.0: the comma after a hole is checked after when an element follows
+export const [,,,,cs6f] = [1, 2, 3, 4, 5, 6];
+export const [cs6g, ,cs6h] = [1, 2, 3];
+export const cs6i = [1, ,2, , ,3,,];
+export const cs6j = [1 , , 2 ,, 3];
