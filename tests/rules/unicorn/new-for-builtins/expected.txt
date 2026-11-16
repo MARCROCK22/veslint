@@ -28,6 +28,7 @@ tests/rules/unicorn/new-for-builtins/cases.ts:52:13	unicorn/new-for-builtins	enf
 tests/rules/unicorn/new-for-builtins/cases.ts:54:10	unicorn/new-for-builtins	disallow	Use `String()` instead of `new String()`.
 tests/rules/unicorn/new-for-builtins/cases.ts:57:18	unicorn/new-for-builtins	disallow	Use `Boolean()` instead of `new Boolean()`.
 tests/rules/unicorn/new-for-builtins/cases.ts:59:1	unicorn/new-for-builtins	disallow	Use `String()` instead of `new String()`.
+tests/rules/unicorn/new-for-builtins/cases.ts:64:13	unicorn/new-for-builtins	enforce	Use `new Function()` instead of `Function()`.
 tests/rules/unicorn/new-for-builtins/esnext/cases.ts:2:12	unicorn/new-for-builtins	enforce	Use `new Temporal.PlainDate()` instead of `Temporal.PlainDate()`.
 tests/rules/unicorn/new-for-builtins/esnext/cases.ts:4:12	unicorn/new-for-builtins	disallowCallOrNew	`Temporal.Now` is not a function or constructor.
 tests/rules/unicorn/new-for-builtins/esnext/cases.ts:6:12	unicorn/new-for-builtins	disallowCallOrNew	`Temporal.Now` is not a function or constructor.

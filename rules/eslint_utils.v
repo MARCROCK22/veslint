@@ -882,8 +882,14 @@ fn es_is_pass_through(n C.TSNode) bool {
 		'sequence_expression' {
 			return node_key(es_sequence_last(parent)) == node_key(n)
 		}
-		'as_expression', 'satisfies_expression', 'type_assertion', 'non_null_expression',
-		'instantiation_expression' {
+		// The type of `x as T` and `x satisfies T` is a child of the expression in tree-sitter,
+		// while in ESTree it is in a TSTypeReference, which is not a pass-through: `(f as Function)()`
+		// does not call `Function`.
+		'as_expression', 'satisfies_expression' {
+			operand := first_named(parent) or { return false }
+			return node_key(unwrap_parens(operand)) == node_key(n)
+		}
+		'type_assertion', 'non_null_expression', 'instantiation_expression' {
 			return true
 		}
 		else {

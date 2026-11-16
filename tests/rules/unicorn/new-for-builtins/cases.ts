@@ -57,3 +57,8 @@ export function newOnNextLine() {
 const n13 = new (new Boolean(1).constructor)();
 let n14 = 1
 new String('x').length;
+// The type of an `as` or `satisfies` expression is not called.
+declare const someCallable: unknown;
+const n15 = (someCallable as Function)();
+const n16 = (someCallable satisfies Function as Function)();
+const n17 = (Function as unknown as () => number)();
