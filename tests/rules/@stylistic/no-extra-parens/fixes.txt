@@ -76,9 +76,11 @@ tests/rules/@stylistic/no-extra-parens/cases.ts:106:7	@stylistic/no-extra-parens
 tests/rules/@stylistic/no-extra-parens/cases.ts:107:5	@stylistic/no-extra-parens	unexpected	Unnecessary parentheses around expression.	fix	2467	2470	a	end	107	6
 tests/rules/@stylistic/no-extra-parens/cases.ts:108:28	@stylistic/no-extra-parens	unexpected	Unnecessary parentheses around expression.	fix	2504	2507	a	end	108	29
 tests/rules/@stylistic/no-extra-parens/cases.ts:109:11	@stylistic/no-extra-parens	unexpected	Unnecessary parentheses around expression.	fix	2533	2541	string	end	109	12
+tests/rules/@stylistic/no-extra-parens/cases.ts:111:11	@stylistic/no-extra-parens	unexpected	Unnecessary parentheses around expression.	fix	2584	2592	string	end	111	12
 tests/rules/@stylistic/no-extra-parens/cases.ts:112:12	@stylistic/no-extra-parens	unexpected	Unnecessary parentheses around expression.	fix	2607	2624	string | number	end	112	13
 tests/rules/@stylistic/no-extra-parens/cases.ts:113:11	@stylistic/no-extra-parens	unexpected	Unnecessary parentheses around expression.	fix	2639	2646	A & B	end	113	12
 tests/rules/@stylistic/no-extra-parens/cases.ts:114:11	@stylistic/no-extra-parens	unexpected	Unnecessary parentheses around expression.	fix	2662	2669	A | B	end	114	12
+tests/rules/@stylistic/no-extra-parens/cases.ts:115:11	@stylistic/no-extra-parens	unexpected	Unnecessary parentheses around expression.	fix	2685	2688	A	end	115	12
 tests/rules/@stylistic/no-extra-parens/cases.ts:116:12	@stylistic/no-extra-parens	unexpected	Unnecessary parentheses around expression.	fix	2705	2712	A | B	end	116	13
 tests/rules/@stylistic/no-extra-parens/cases.ts:120:21	@stylistic/no-extra-parens	unexpected	Unnecessary parentheses around expression.	fix	2791	2799	string	end	120	22
 tests/rules/@stylistic/no-extra-parens/cases.ts:121:14	@stylistic/no-extra-parens	unexpected	Unnecessary parentheses around expression.	fix	2820	2823	1	end	121	15
@@ -188,9 +190,11 @@ tests/rules/@stylistic/no-extra-parens/comment-pattern/cases.ts:106:7	@stylistic
 tests/rules/@stylistic/no-extra-parens/comment-pattern/cases.ts:107:5	@stylistic/no-extra-parens	unexpected	Unnecessary parentheses around expression.	fix	2467	2470	a	end	107	6
 tests/rules/@stylistic/no-extra-parens/comment-pattern/cases.ts:108:28	@stylistic/no-extra-parens	unexpected	Unnecessary parentheses around expression.	fix	2504	2507	a	end	108	29
 tests/rules/@stylistic/no-extra-parens/comment-pattern/cases.ts:109:11	@stylistic/no-extra-parens	unexpected	Unnecessary parentheses around expression.	fix	2533	2541	string	end	109	12
+tests/rules/@stylistic/no-extra-parens/comment-pattern/cases.ts:111:11	@stylistic/no-extra-parens	unexpected	Unnecessary parentheses around expression.	fix	2584	2592	string	end	111	12
 tests/rules/@stylistic/no-extra-parens/comment-pattern/cases.ts:112:12	@stylistic/no-extra-parens	unexpected	Unnecessary parentheses around expression.	fix	2607	2624	string | number	end	112	13
 tests/rules/@stylistic/no-extra-parens/comment-pattern/cases.ts:113:11	@stylistic/no-extra-parens	unexpected	Unnecessary parentheses around expression.	fix	2639	2646	A & B	end	113	12
 tests/rules/@stylistic/no-extra-parens/comment-pattern/cases.ts:114:11	@stylistic/no-extra-parens	unexpected	Unnecessary parentheses around expression.	fix	2662	2669	A | B	end	114	12
+tests/rules/@stylistic/no-extra-parens/comment-pattern/cases.ts:115:11	@stylistic/no-extra-parens	unexpected	Unnecessary parentheses around expression.	fix	2685	2688	A	end	115	12
 tests/rules/@stylistic/no-extra-parens/comment-pattern/cases.ts:116:12	@stylistic/no-extra-parens	unexpected	Unnecessary parentheses around expression.	fix	2705	2712	A | B	end	116	13
 tests/rules/@stylistic/no-extra-parens/comment-pattern/cases.ts:120:21	@stylistic/no-extra-parens	unexpected	Unnecessary parentheses around expression.	fix	2791	2799	string	end	120	22
 tests/rules/@stylistic/no-extra-parens/comment-pattern/cases.ts:121:14	@stylistic/no-extra-parens	unexpected	Unnecessary parentheses around expression.	fix	2820	2823	1	end	121	15
@@ -295,9 +299,11 @@ tests/rules/@stylistic/no-extra-parens/empty-object/cases.ts:106:7	@stylistic/no
 tests/rules/@stylistic/no-extra-parens/empty-object/cases.ts:107:5	@stylistic/no-extra-parens	unexpected	Unnecessary parentheses around expression.	fix	2467	2470	a	end	107	6
 tests/rules/@stylistic/no-extra-parens/empty-object/cases.ts:108:28	@stylistic/no-extra-parens	unexpected	Unnecessary parentheses around expression.	fix	2504	2507	a	end	108	29
 tests/rules/@stylistic/no-extra-parens/empty-object/cases.ts:109:11	@stylistic/no-extra-parens	unexpected	Unnecessary parentheses around expression.	fix	2533	2541	string	end	109	12
+tests/rules/@stylistic/no-extra-parens/empty-object/cases.ts:111:11	@stylistic/no-extra-parens	unexpected	Unnecessary parentheses around expression.	fix	2584	2592	string	end	111	12
 tests/rules/@stylistic/no-extra-parens/empty-object/cases.ts:112:12	@stylistic/no-extra-parens	unexpected	Unnecessary parentheses around expression.	fix	2607	2624	string | number	end	112	13
 tests/rules/@stylistic/no-extra-parens/empty-object/cases.ts:113:11	@stylistic/no-extra-parens	unexpected	Unnecessary parentheses around expression.	fix	2639	2646	A & B	end	113	12
 tests/rules/@stylistic/no-extra-parens/empty-object/cases.ts:114:11	@stylistic/no-extra-parens	unexpected	Unnecessary parentheses around expression.	fix	2662	2669	A | B	end	114	12
+tests/rules/@stylistic/no-extra-parens/empty-object/cases.ts:115:11	@stylistic/no-extra-parens	unexpected	Unnecessary parentheses around expression.	fix	2685	2688	A	end	115	12
 tests/rules/@stylistic/no-extra-parens/empty-object/cases.ts:116:12	@stylistic/no-extra-parens	unexpected	Unnecessary parentheses around expression.	fix	2705	2712	A | B	end	116	13
 tests/rules/@stylistic/no-extra-parens/empty-object/cases.ts:120:21	@stylistic/no-extra-parens	unexpected	Unnecessary parentheses around expression.	fix	2791	2799	string	end	120	22
 tests/rules/@stylistic/no-extra-parens/empty-object/cases.ts:121:14	@stylistic/no-extra-parens	unexpected	Unnecessary parentheses around expression.	fix	2820	2823	1	end	121	15
@@ -404,9 +410,11 @@ tests/rules/@stylistic/no-extra-parens/enforce/cases.ts:106:7	@stylistic/no-extr
 tests/rules/@stylistic/no-extra-parens/enforce/cases.ts:107:5	@stylistic/no-extra-parens	unexpected	Unnecessary parentheses around expression.	fix	2467	2470	a	end	107	6
 tests/rules/@stylistic/no-extra-parens/enforce/cases.ts:108:28	@stylistic/no-extra-parens	unexpected	Unnecessary parentheses around expression.	fix	2504	2507	a	end	108	29
 tests/rules/@stylistic/no-extra-parens/enforce/cases.ts:109:11	@stylistic/no-extra-parens	unexpected	Unnecessary parentheses around expression.	fix	2533	2541	string	end	109	12
+tests/rules/@stylistic/no-extra-parens/enforce/cases.ts:111:11	@stylistic/no-extra-parens	unexpected	Unnecessary parentheses around expression.	fix	2584	2592	string	end	111	12
 tests/rules/@stylistic/no-extra-parens/enforce/cases.ts:112:12	@stylistic/no-extra-parens	unexpected	Unnecessary parentheses around expression.	fix	2607	2624	string | number	end	112	13
 tests/rules/@stylistic/no-extra-parens/enforce/cases.ts:113:11	@stylistic/no-extra-parens	unexpected	Unnecessary parentheses around expression.	fix	2639	2646	A & B	end	113	12
 tests/rules/@stylistic/no-extra-parens/enforce/cases.ts:114:11	@stylistic/no-extra-parens	unexpected	Unnecessary parentheses around expression.	fix	2662	2669	A | B	end	114	12
+tests/rules/@stylistic/no-extra-parens/enforce/cases.ts:115:11	@stylistic/no-extra-parens	unexpected	Unnecessary parentheses around expression.	fix	2685	2688	A	end	115	12
 tests/rules/@stylistic/no-extra-parens/enforce/cases.ts:116:12	@stylistic/no-extra-parens	unexpected	Unnecessary parentheses around expression.	fix	2705	2712	A | B	end	116	13
 tests/rules/@stylistic/no-extra-parens/enforce/cases.ts:120:21	@stylistic/no-extra-parens	unexpected	Unnecessary parentheses around expression.	fix	2791	2799	string	end	120	22
 tests/rules/@stylistic/no-extra-parens/enforce/cases.ts:121:14	@stylistic/no-extra-parens	unexpected	Unnecessary parentheses around expression.	fix	2820	2823	1	end	121	15
@@ -447,6 +455,7 @@ tests/rules/@stylistic/no-extra-parens/exceptions/cases.ts:15:6	@stylistic/no-ex
 tests/rules/@stylistic/no-extra-parens/exceptions/cases.ts:15:19	@stylistic/no-extra-parens	unexpected	Unnecessary parentheses around expression.	fix	531	538	a = b	end	15	20
 tests/rules/@stylistic/no-extra-parens/exceptions/cases.ts:17:5	@stylistic/no-extra-parens	unexpected	Unnecessary parentheses around expression.	fix	561	566	a.b	end	17	6
 tests/rules/@stylistic/no-extra-parens/exceptions/cases.ts:19:1	@stylistic/no-extra-parens	unexpected	Unnecessary parentheses around expression.	fix	585	591	call	end	19	2
+tests/rules/@stylistic/no-extra-parens/exceptions/cases.ts:20:2	@stylistic/no-extra-parens	unexpected	Unnecessary parentheses around expression.	fix	596	606	a as any	end	20	3
 tests/rules/@stylistic/no-extra-parens/exceptions/cases.ts:23:1	@stylistic/no-extra-parens	unexpected	Unnecessary parentheses around expression.	fix	651	671	(function () {})()	end	23	2
 tests/rules/@stylistic/no-extra-parens/exceptions/cases.ts:26:1	@stylistic/no-extra-parens	unexpected	Unnecessary parentheses around expression.	fix	696	702	a?.b	end	26	2
 tests/rules/@stylistic/no-extra-parens/exceptions/cases.ts:27:5	@stylistic/no-extra-parens	unexpected	Unnecessary parentheses around expression.	fix	712	715	b	end	27	6
@@ -502,7 +511,9 @@ tests/rules/@stylistic/no-extra-parens/exceptions/cases.ts:106:7	@stylistic/no-e
 tests/rules/@stylistic/no-extra-parens/exceptions/cases.ts:107:5	@stylistic/no-extra-parens	unexpected	Unnecessary parentheses around expression.	fix	2467	2470	a	end	107	6
 tests/rules/@stylistic/no-extra-parens/exceptions/cases.ts:108:28	@stylistic/no-extra-parens	unexpected	Unnecessary parentheses around expression.	fix	2504	2507	a	end	108	29
 tests/rules/@stylistic/no-extra-parens/exceptions/cases.ts:109:11	@stylistic/no-extra-parens	unexpected	Unnecessary parentheses around expression.	fix	2533	2541	string	end	109	12
+tests/rules/@stylistic/no-extra-parens/exceptions/cases.ts:111:11	@stylistic/no-extra-parens	unexpected	Unnecessary parentheses around expression.	fix	2584	2592	string	end	111	12
 tests/rules/@stylistic/no-extra-parens/exceptions/cases.ts:112:12	@stylistic/no-extra-parens	unexpected	Unnecessary parentheses around expression.	fix	2607	2624	string | number	end	112	13
+tests/rules/@stylistic/no-extra-parens/exceptions/cases.ts:115:11	@stylistic/no-extra-parens	unexpected	Unnecessary parentheses around expression.	fix	2685	2688	A	end	115	12
 tests/rules/@stylistic/no-extra-parens/exceptions/cases.ts:116:12	@stylistic/no-extra-parens	unexpected	Unnecessary parentheses around expression.	fix	2705	2712	A | B	end	116	13
 tests/rules/@stylistic/no-extra-parens/exceptions/cases.ts:120:21	@stylistic/no-extra-parens	unexpected	Unnecessary parentheses around expression.	fix	2791	2799	string	end	120	22
 tests/rules/@stylistic/no-extra-parens/exceptions/cases.ts:121:14	@stylistic/no-extra-parens	unexpected	Unnecessary parentheses around expression.	fix	2820	2823	1	end	121	15
@@ -543,6 +554,7 @@ tests/rules/@stylistic/no-extra-parens/for-init/cases.ts:15:19	@stylistic/no-ext
 tests/rules/@stylistic/no-extra-parens/for-init/cases.ts:17:14	@stylistic/no-extra-parens	unexpected	Unnecessary parentheses around expression.	fix	741	751	a as any	end	17	15
 tests/rules/@stylistic/no-extra-parens/functions/cases.ts:12:19	@stylistic/no-extra-parens	unexpected	Unnecessary parentheses around expression.	fix	394	415	a satisfies unknown	end	12	20
 tests/rules/@stylistic/no-extra-parens/functions/cases.ts:13:26	@stylistic/no-extra-parens	unexpected	Unnecessary parentheses around expression.	fix	442	452	b as any	end	13	27
+tests/rules/@stylistic/no-extra-parens/functions/cases.ts:20:2	@stylistic/no-extra-parens	unexpected	Unnecessary parentheses around expression.	fix	596	606	a as any	end	20	3
 tests/rules/@stylistic/no-extra-parens/functions/cases.ts:30:5	@stylistic/no-extra-parens	unexpected	Unnecessary parentheses around expression.	fix	743	759	function () {}	end	30	6
 tests/rules/@stylistic/no-extra-parens/functions/cases.ts:67:6	@stylistic/no-extra-parens	unexpected	Unnecessary parentheses around expression.	fix	1696	1728	function () { return a in b; }	end	67	7
 tests/rules/@stylistic/no-extra-parens/functions/cases.ts:86:3	@stylistic/no-extra-parens	unexpected	Unnecessary parentheses around expression.	fix	2058	2068	b as any	end	86	4
@@ -665,9 +677,11 @@ tests/rules/@stylistic/no-extra-parens/spread/cases.ts:106:7	@stylistic/no-extra
 tests/rules/@stylistic/no-extra-parens/spread/cases.ts:107:5	@stylistic/no-extra-parens	unexpected	Unnecessary parentheses around expression.	fix	2467	2470	a	end	107	6
 tests/rules/@stylistic/no-extra-parens/spread/cases.ts:108:28	@stylistic/no-extra-parens	unexpected	Unnecessary parentheses around expression.	fix	2504	2507	a	end	108	29
 tests/rules/@stylistic/no-extra-parens/spread/cases.ts:109:11	@stylistic/no-extra-parens	unexpected	Unnecessary parentheses around expression.	fix	2533	2541	string	end	109	12
+tests/rules/@stylistic/no-extra-parens/spread/cases.ts:111:11	@stylistic/no-extra-parens	unexpected	Unnecessary parentheses around expression.	fix	2584	2592	string	end	111	12
 tests/rules/@stylistic/no-extra-parens/spread/cases.ts:112:12	@stylistic/no-extra-parens	unexpected	Unnecessary parentheses around expression.	fix	2607	2624	string | number	end	112	13
 tests/rules/@stylistic/no-extra-parens/spread/cases.ts:113:11	@stylistic/no-extra-parens	unexpected	Unnecessary parentheses around expression.	fix	2639	2646	A & B	end	113	12
 tests/rules/@stylistic/no-extra-parens/spread/cases.ts:114:11	@stylistic/no-extra-parens	unexpected	Unnecessary parentheses around expression.	fix	2662	2669	A | B	end	114	12
+tests/rules/@stylistic/no-extra-parens/spread/cases.ts:115:11	@stylistic/no-extra-parens	unexpected	Unnecessary parentheses around expression.	fix	2685	2688	A	end	115	12
 tests/rules/@stylistic/no-extra-parens/spread/cases.ts:116:12	@stylistic/no-extra-parens	unexpected	Unnecessary parentheses around expression.	fix	2705	2712	A | B	end	116	13
 tests/rules/@stylistic/no-extra-parens/spread/cases.ts:120:21	@stylistic/no-extra-parens	unexpected	Unnecessary parentheses around expression.	fix	2791	2799	string	end	120	22
 tests/rules/@stylistic/no-extra-parens/spread/cases.ts:121:14	@stylistic/no-extra-parens	unexpected	Unnecessary parentheses around expression.	fix	2820	2823	1	end	121	15
@@ -711,9 +725,218 @@ tests/rules/@stylistic/no-extra-parens/tsx-none/cases.tsx:9:35	@stylistic/no-ext
 tests/rules/@stylistic/no-extra-parens/tsx-none/cases.tsx:16:22	@stylistic/no-extra-parens	unexpected	Unnecessary parentheses around expression.	fix	313	333	<div /> as unknown	end	16	23
 tests/rules/@stylistic/no-extra-parens/tsx-single/cases.tsx:3:22	@stylistic/no-extra-parens	unexpected	Unnecessary parentheses around expression.	fix	80	113	\n  <div>\n    <span />\n  </div>\n	end	3	23
 tests/rules/@stylistic/no-extra-parens/tsx-single/cases.tsx:16:22	@stylistic/no-extra-parens	unexpected	Unnecessary parentheses around expression.	fix	313	333	<div /> as unknown	end	16	23
+tests/rules/@stylistic/no-extra-parens/tsx-spread-allow/cases.tsx:4:26	@stylistic/no-extra-parens	unexpected	Unnecessary parentheses around expression.	fix	133	136	b	end	4	27
+tests/rules/@stylistic/no-extra-parens/tsx-spread-allow/cases.tsx:5:27	@stylistic/no-extra-parens	unexpected	Unnecessary parentheses around expression.	fix	168	171	b	end	5	28
+tests/rules/@stylistic/no-extra-parens/tsx-spread-allow/cases.tsx:7:27	@stylistic/no-extra-parens	unexpected	Unnecessary parentheses around expression.	fix	241	247	b, c	end	7	28
+tests/rules/@stylistic/no-extra-parens/tsx-spread-allow/cases.tsx:14:27	@stylistic/no-extra-parens	unexpected	Unnecessary parentheses around expression.	fix	592	599	b = c	end	14	28
+tests/rules/@stylistic/no-extra-parens/tsx-spread-allow/cases.tsx:15:27	@stylistic/no-extra-parens	unexpected	Unnecessary parentheses around expression.	fix	631	640	() => b	end	15	28
+tests/rules/@stylistic/no-extra-parens/tsx-spread-allow/cases.tsx:16:27	@stylistic/no-extra-parens	unexpected	Unnecessary parentheses around expression.	fix	672	676	b!	end	16	28
+tests/rules/@stylistic/no-extra-parens/tsx-spread-allow/cases.tsx:17:27	@stylistic/no-extra-parens	unexpected	Unnecessary parentheses around expression.	fix	708	713	b.c	end	17	28
+tests/rules/@stylistic/no-extra-parens/tsx-spread-allow/cases.tsx:17:38	@stylistic/no-extra-parens	unexpected	Unnecessary parentheses around expression.	fix	719	724	b()	end	17	39
+tests/rules/@stylistic/no-extra-parens/tsx-spread-ignored/cases.tsx:4:26	@stylistic/no-extra-parens	unexpected	Unnecessary parentheses around expression.	fix	133	136	b	end	4	27
+tests/rules/@stylistic/no-extra-parens/tsx-spread-ignored/cases.tsx:5:27	@stylistic/no-extra-parens	unexpected	Unnecessary parentheses around expression.	fix	168	171	b	end	5	28
+tests/rules/@stylistic/no-extra-parens/tsx-spread-ignored/cases.tsx:7:27	@stylistic/no-extra-parens	unexpected	Unnecessary parentheses around expression.	fix	241	247	b, c	end	7	28
+tests/rules/@stylistic/no-extra-parens/tsx-spread-ignored/cases.tsx:13:45	@stylistic/no-extra-parens	unexpected	Unnecessary parentheses around expression.	fix	549	558	await b	end	13	46
+tests/rules/@stylistic/no-extra-parens/tsx-spread-ignored/cases.tsx:14:27	@stylistic/no-extra-parens	unexpected	Unnecessary parentheses around expression.	fix	592	599	b = c	end	14	28
+tests/rules/@stylistic/no-extra-parens/tsx-spread-ignored/cases.tsx:15:27	@stylistic/no-extra-parens	unexpected	Unnecessary parentheses around expression.	fix	631	640	() => b	end	15	28
+tests/rules/@stylistic/no-extra-parens/tsx-spread-ignored/cases.tsx:16:27	@stylistic/no-extra-parens	unexpected	Unnecessary parentheses around expression.	fix	672	676	b!	end	16	28
+tests/rules/@stylistic/no-extra-parens/tsx-spread-ignored/cases.tsx:17:27	@stylistic/no-extra-parens	unexpected	Unnecessary parentheses around expression.	fix	708	713	b.c	end	17	28
+tests/rules/@stylistic/no-extra-parens/tsx-spread-ignored/cases.tsx:17:38	@stylistic/no-extra-parens	unexpected	Unnecessary parentheses around expression.	fix	719	724	b()	end	17	39
+tests/rules/@stylistic/no-extra-parens/tsx-spread/cases.tsx:4:26	@stylistic/no-extra-parens	unexpected	Unnecessary parentheses around expression.	fix	133	136	b	end	4	27
+tests/rules/@stylistic/no-extra-parens/tsx-spread/cases.tsx:5:27	@stylistic/no-extra-parens	unexpected	Unnecessary parentheses around expression.	fix	168	171	b	end	5	28
+tests/rules/@stylistic/no-extra-parens/tsx-spread/cases.tsx:7:27	@stylistic/no-extra-parens	unexpected	Unnecessary parentheses around expression.	fix	241	247	b, c	end	7	28
+tests/rules/@stylistic/no-extra-parens/tsx-spread/cases.tsx:8:26	@stylistic/no-extra-parens	unexpected	Unnecessary parentheses around expression.	fix	279	287	b ?? c	end	8	27
+tests/rules/@stylistic/no-extra-parens/tsx-spread/cases.tsx:9:26	@stylistic/no-extra-parens	unexpected	Unnecessary parentheses around expression.	fix	318	329	a ? b : c	end	9	27
+tests/rules/@stylistic/no-extra-parens/tsx-spread/cases.tsx:12:27	@stylistic/no-extra-parens	unexpected	Unnecessary parentheses around expression.	fix	477	485	b && c	end	12	28
+tests/rules/@stylistic/no-extra-parens/tsx-spread/cases.tsx:12:41	@stylistic/no-extra-parens	unexpected	Unnecessary parentheses around expression.	fix	491	499	b || c	end	12	42
+tests/rules/@stylistic/no-extra-parens/tsx-spread/cases.tsx:13:45	@stylistic/no-extra-parens	unexpected	Unnecessary parentheses around expression.	fix	549	558	await b	end	13	46
+tests/rules/@stylistic/no-extra-parens/tsx-spread/cases.tsx:14:27	@stylistic/no-extra-parens	unexpected	Unnecessary parentheses around expression.	fix	592	599	b = c	end	14	28
+tests/rules/@stylistic/no-extra-parens/tsx-spread/cases.tsx:15:27	@stylistic/no-extra-parens	unexpected	Unnecessary parentheses around expression.	fix	631	640	() => b	end	15	28
+tests/rules/@stylistic/no-extra-parens/tsx-spread/cases.tsx:16:27	@stylistic/no-extra-parens	unexpected	Unnecessary parentheses around expression.	fix	672	676	b!	end	16	28
+tests/rules/@stylistic/no-extra-parens/tsx-spread/cases.tsx:17:27	@stylistic/no-extra-parens	unexpected	Unnecessary parentheses around expression.	fix	708	713	b.c	end	17	28
+tests/rules/@stylistic/no-extra-parens/tsx-spread/cases.tsx:17:38	@stylistic/no-extra-parens	unexpected	Unnecessary parentheses around expression.	fix	719	724	b()	end	17	39
 tests/rules/@stylistic/no-extra-parens/tsx/cases.tsx:2:23	@stylistic/no-extra-parens	unexpected	Unnecessary parentheses around expression.	fix	48	57	<div />	end	2	24
 tests/rules/@stylistic/no-extra-parens/tsx/cases.tsx:3:22	@stylistic/no-extra-parens	unexpected	Unnecessary parentheses around expression.	fix	80	113	\n  <div>\n    <span />\n  </div>\n	end	3	23
 tests/rules/@stylistic/no-extra-parens/tsx/cases.tsx:8:25	@stylistic/no-extra-parens	unexpected	Unnecessary parentheses around expression.	fix	139	150	<>text</>	end	8	26
 tests/rules/@stylistic/no-extra-parens/tsx/cases.tsx:9:25	@stylistic/no-extra-parens	unexpected	Unnecessary parentheses around expression.	fix	176	183	<b />	end	9	26
 tests/rules/@stylistic/no-extra-parens/tsx/cases.tsx:9:35	@stylistic/no-extra-parens	unexpected	Unnecessary parentheses around expression.	fix	186	193	<i />	end	9	36
 tests/rules/@stylistic/no-extra-parens/tsx/cases.tsx:16:22	@stylistic/no-extra-parens	unexpected	Unnecessary parentheses around expression.	fix	313	333	<div /> as unknown	end	16	23
+tests/rules/@stylistic/no-extra-parens/types-functions/cases.ts:4:3	@stylistic/no-extra-parens	unexpected	Unnecessary parentheses around expression.	fix	179	189	a as any	end	4	4
+tests/rules/@stylistic/no-extra-parens/types-functions/cases.ts:4:15	@stylistic/no-extra-parens	unexpected	Unnecessary parentheses around expression.	fix	191	212	b satisfies unknown	end	4	16
+tests/rules/@stylistic/no-extra-parens/types-functions/cases.ts:4:38	@stylistic/no-extra-parens	unexpected	Unnecessary parentheses around expression.	fix	214	222	<any>c	end	4	39
+tests/rules/@stylistic/no-extra-parens/types-functions/cases.ts:5:4	@stylistic/no-extra-parens	unexpected	Unnecessary parentheses around expression.	fix	234	244	a as any	end	5	5
+tests/rules/@stylistic/no-extra-parens/types-functions/cases.ts:6:5	@stylistic/no-extra-parens	unexpected	Unnecessary parentheses around expression.	fix	252	262	b as any	end	6	6
+tests/rules/@stylistic/no-extra-parens/types-functions/cases.ts:8:6	@stylistic/no-extra-parens	unexpected	Unnecessary parentheses around expression.	fix	279	289	b as any	end	8	7
+tests/rules/@stylistic/no-extra-parens/types-functions/cases.ts:10:20	@stylistic/no-extra-parens	unexpected	Unnecessary parentheses around expression.	fix	339	352	a as number	end	10	21
+tests/rules/@stylistic/no-extra-parens/types-functions/cases.ts:11:36	@stylistic/no-extra-parens	unexpected	Unnecessary parentheses around expression.	fix	394	407	b as number	end	11	37
+tests/rules/@stylistic/no-extra-parens/types-functions/cases.ts:12:20	@stylistic/no-extra-parens	unexpected	Unnecessary parentheses around expression.	fix	429	439	a as any	end	12	21
+tests/rules/@stylistic/no-extra-parens/types-functions/cases.ts:14:20	@stylistic/no-extra-parens	unexpected	Unnecessary parentheses around expression.	fix	494	504	a as any	end	14	21
+tests/rules/@stylistic/no-extra-parens/types-functions/cases.ts:17:30	@stylistic/no-extra-parens	unexpected	Unnecessary parentheses around expression.	fix	592	602	b as any	end	17	31
+tests/rules/@stylistic/no-extra-parens/types-functions/cases.ts:18:20	@stylistic/no-extra-parens	unexpected	Unnecessary parentheses around expression.	fix	624	641	a satisfies any	end	18	21
+tests/rules/@stylistic/no-extra-parens/types-functions/cases.ts:20:20	@stylistic/no-extra-parens	unexpected	Unnecessary parentheses around expression.	fix	695	703	<any>a	end	20	21
+tests/rules/@stylistic/no-extra-parens/types-functions/cases.ts:21:21	@stylistic/no-extra-parens	unexpected	Unnecessary parentheses around expression.	fix	728	738	a as any	end	21	22
+tests/rules/@stylistic/no-extra-parens/types-functions/cases.ts:22:20	@stylistic/no-extra-parens	unexpected	Unnecessary parentheses around expression.	fix	763	773	a as any	end	22	21
+tests/rules/@stylistic/no-extra-parens/types-functions/cases.ts:23:24	@stylistic/no-extra-parens	unexpected	Unnecessary parentheses around expression.	fix	807	817	b as any	end	23	25
+tests/rules/@stylistic/no-extra-parens/types-functions/cases.ts:23:39	@stylistic/no-extra-parens	unexpected	Unnecessary parentheses around expression.	fix	822	832	c as any	end	23	40
+tests/rules/@stylistic/no-extra-parens/types-functions/cases.ts:27:2	@stylistic/no-extra-parens	unexpected	Unnecessary parentheses around expression.	fix	944	954	a as any	end	27	3
+tests/rules/@stylistic/no-extra-parens/types-functions/cases.ts:29:6	@stylistic/no-extra-parens	unexpected	Unnecessary parentheses around expression.	fix	982	992	a as any	end	29	7
+tests/rules/@stylistic/no-extra-parens/types-functions/cases.ts:32:9	@stylistic/no-extra-parens	unexpected	Unnecessary parentheses around expression.	fix	1023	1033	a as any	end	32	10
+tests/rules/@stylistic/no-extra-parens/types-functions/cases.ts:35:37	@stylistic/no-extra-parens	unexpected	Unnecessary parentheses around expression.	fix	1113	1123	a as any	end	35	38
+tests/rules/@stylistic/no-extra-parens/types-functions/cases.ts:37:2	@stylistic/no-extra-parens	unexpected	Unnecessary parentheses around expression.	fix	1155	1165	a as any	end	37	3
+tests/rules/@stylistic/no-extra-parens/types-functions/cases.ts:39:4	@stylistic/no-extra-parens	unexpected	Unnecessary parentheses around expression.	fix	1181	1191	a as any	end	39	5
+tests/rules/@stylistic/no-extra-parens/types-functions/cases.ts:41:26	@stylistic/no-extra-parens	unexpected	Unnecessary parentheses around expression.	fix	1257	1267	a as any	end	41	27
+tests/rules/@stylistic/no-extra-parens/types-functions/cases.ts:43:21	@stylistic/no-extra-parens	unexpected	Unnecessary parentheses around expression.	fix	1324	1334	a as any	end	43	22
+tests/rules/@stylistic/no-extra-parens/types-functions/cases.ts:43:41	@stylistic/no-extra-parens	unexpected	Unnecessary parentheses around expression.	fix	1344	1365	c satisfies unknown	end	43	42
+tests/rules/@stylistic/no-extra-parens/types-functions/cases.ts:45:19	@stylistic/no-extra-parens	unexpected	Unnecessary parentheses around expression.	fix	1451	1461	a as any	end	45	20
+tests/rules/@stylistic/no-extra-parens/types-functions/cases.ts:45:49	@stylistic/no-extra-parens	unexpected	Unnecessary parentheses around expression.	fix	1481	1498	a satisfies any	end	45	50
+tests/rules/@stylistic/no-extra-parens/types-functions/cases.ts:47:21	@stylistic/no-extra-parens	unexpected	Unnecessary parentheses around expression.	fix	1557	1567	a as any	end	47	22
+tests/rules/@stylistic/no-extra-parens/types-nested/cases.ts:4:3	@stylistic/no-extra-parens	unexpected	Unnecessary parentheses around expression.	fix	179	189	a as any	end	4	4
+tests/rules/@stylistic/no-extra-parens/types-nested/cases.ts:4:15	@stylistic/no-extra-parens	unexpected	Unnecessary parentheses around expression.	fix	191	212	b satisfies unknown	end	4	16
+tests/rules/@stylistic/no-extra-parens/types-nested/cases.ts:4:38	@stylistic/no-extra-parens	unexpected	Unnecessary parentheses around expression.	fix	214	222	<any>c	end	4	39
+tests/rules/@stylistic/no-extra-parens/types-nested/cases.ts:4:48	@stylistic/no-extra-parens	unexpected	Unnecessary parentheses around expression.	fix	224	228	d!	end	4	49
+tests/rules/@stylistic/no-extra-parens/types-nested/cases.ts:5:4	@stylistic/no-extra-parens	unexpected	Unnecessary parentheses around expression.	fix	234	244	a as any	end	5	5
+tests/rules/@stylistic/no-extra-parens/types-nested/cases.ts:6:5	@stylistic/no-extra-parens	unexpected	Unnecessary parentheses around expression.	fix	252	262	b as any	end	6	6
+tests/rules/@stylistic/no-extra-parens/types-nested/cases.ts:7:5	@stylistic/no-extra-parens	unexpected	Unnecessary parentheses around expression.	fix	268	272	b!	end	7	6
+tests/rules/@stylistic/no-extra-parens/types-nested/cases.ts:8:6	@stylistic/no-extra-parens	unexpected	Unnecessary parentheses around expression.	fix	279	289	b as any	end	8	7
+tests/rules/@stylistic/no-extra-parens/types-nested/cases.ts:10:20	@stylistic/no-extra-parens	unexpected	Unnecessary parentheses around expression.	fix	339	352	a as number	end	10	21
+tests/rules/@stylistic/no-extra-parens/types-nested/cases.ts:11:36	@stylistic/no-extra-parens	unexpected	Unnecessary parentheses around expression.	fix	394	407	b as number	end	11	37
+tests/rules/@stylistic/no-extra-parens/types-nested/cases.ts:12:20	@stylistic/no-extra-parens	unexpected	Unnecessary parentheses around expression.	fix	429	439	a as any	end	12	21
+tests/rules/@stylistic/no-extra-parens/types-nested/cases.ts:14:20	@stylistic/no-extra-parens	unexpected	Unnecessary parentheses around expression.	fix	494	504	a as any	end	14	21
+tests/rules/@stylistic/no-extra-parens/types-nested/cases.ts:17:30	@stylistic/no-extra-parens	unexpected	Unnecessary parentheses around expression.	fix	592	602	b as any	end	17	31
+tests/rules/@stylistic/no-extra-parens/types-nested/cases.ts:18:20	@stylistic/no-extra-parens	unexpected	Unnecessary parentheses around expression.	fix	624	641	a satisfies any	end	18	21
+tests/rules/@stylistic/no-extra-parens/types-nested/cases.ts:20:20	@stylistic/no-extra-parens	unexpected	Unnecessary parentheses around expression.	fix	695	703	<any>a	end	20	21
+tests/rules/@stylistic/no-extra-parens/types-nested/cases.ts:21:21	@stylistic/no-extra-parens	unexpected	Unnecessary parentheses around expression.	fix	728	738	a as any	end	21	22
+tests/rules/@stylistic/no-extra-parens/types-nested/cases.ts:22:20	@stylistic/no-extra-parens	unexpected	Unnecessary parentheses around expression.	fix	763	773	a as any	end	22	21
+tests/rules/@stylistic/no-extra-parens/types-nested/cases.ts:23:24	@stylistic/no-extra-parens	unexpected	Unnecessary parentheses around expression.	fix	807	817	b as any	end	23	25
+tests/rules/@stylistic/no-extra-parens/types-nested/cases.ts:23:39	@stylistic/no-extra-parens	unexpected	Unnecessary parentheses around expression.	fix	822	832	c as any	end	23	40
+tests/rules/@stylistic/no-extra-parens/types-nested/cases.ts:24:26	@stylistic/no-extra-parens	unexpected	Unnecessary parentheses around expression.	fix	860	864	b!	end	24	27
+tests/rules/@stylistic/no-extra-parens/types-nested/cases.ts:24:33	@stylistic/no-extra-parens	unexpected	Unnecessary parentheses around expression.	fix	867	871	c!	end	24	34
+tests/rules/@stylistic/no-extra-parens/types-nested/cases.ts:27:2	@stylistic/no-extra-parens	unexpected	Unnecessary parentheses around expression.	fix	944	954	a as any	end	27	3
+tests/rules/@stylistic/no-extra-parens/types-nested/cases.ts:29:6	@stylistic/no-extra-parens	unexpected	Unnecessary parentheses around expression.	fix	982	992	a as any	end	29	7
+tests/rules/@stylistic/no-extra-parens/types-nested/cases.ts:31:2	@stylistic/no-extra-parens	unexpected	Unnecessary parentheses around expression.	fix	1006	1010	a!	end	31	3
+tests/rules/@stylistic/no-extra-parens/types-nested/cases.ts:32:9	@stylistic/no-extra-parens	unexpected	Unnecessary parentheses around expression.	fix	1023	1033	a as any	end	32	10
+tests/rules/@stylistic/no-extra-parens/types-nested/cases.ts:35:37	@stylistic/no-extra-parens	unexpected	Unnecessary parentheses around expression.	fix	1113	1123	a as any	end	35	38
+tests/rules/@stylistic/no-extra-parens/types-nested/cases.ts:37:2	@stylistic/no-extra-parens	unexpected	Unnecessary parentheses around expression.	fix	1155	1165	a as any	end	37	3
+tests/rules/@stylistic/no-extra-parens/types-nested/cases.ts:39:4	@stylistic/no-extra-parens	unexpected	Unnecessary parentheses around expression.	fix	1181	1191	a as any	end	39	5
+tests/rules/@stylistic/no-extra-parens/types-nested/cases.ts:41:26	@stylistic/no-extra-parens	unexpected	Unnecessary parentheses around expression.	fix	1257	1267	a as any	end	41	27
+tests/rules/@stylistic/no-extra-parens/types-nested/cases.ts:43:21	@stylistic/no-extra-parens	unexpected	Unnecessary parentheses around expression.	fix	1324	1334	a as any	end	43	22
+tests/rules/@stylistic/no-extra-parens/types-nested/cases.ts:43:34	@stylistic/no-extra-parens	unexpected	Unnecessary parentheses around expression.	fix	1337	1341	b!	end	43	35
+tests/rules/@stylistic/no-extra-parens/types-nested/cases.ts:43:41	@stylistic/no-extra-parens	unexpected	Unnecessary parentheses around expression.	fix	1344	1365	c satisfies unknown	end	43	42
+tests/rules/@stylistic/no-extra-parens/types-nested/cases.ts:44:59	@stylistic/no-extra-parens	unexpected	Unnecessary parentheses around expression.	fix	1426	1430	c!	end	44	60
+tests/rules/@stylistic/no-extra-parens/types-nested/cases.ts:45:19	@stylistic/no-extra-parens	unexpected	Unnecessary parentheses around expression.	fix	1451	1461	a as any	end	45	20
+tests/rules/@stylistic/no-extra-parens/types-nested/cases.ts:45:37	@stylistic/no-extra-parens	unexpected	Unnecessary parentheses around expression.	fix	1469	1473	a!	end	45	38
+tests/rules/@stylistic/no-extra-parens/types-nested/cases.ts:45:49	@stylistic/no-extra-parens	unexpected	Unnecessary parentheses around expression.	fix	1481	1498	a satisfies any	end	45	50
+tests/rules/@stylistic/no-extra-parens/types-nested/cases.ts:46:32	@stylistic/no-extra-parens	unexpected	Unnecessary parentheses around expression.	fix	1531	1535	c!	end	46	33
+tests/rules/@stylistic/no-extra-parens/types-nested/cases.ts:47:21	@stylistic/no-extra-parens	unexpected	Unnecessary parentheses around expression.	fix	1557	1567	a as any	end	47	22
+tests/rules/@stylistic/no-extra-parens/types-nested/cases.ts:47:33	@stylistic/no-extra-parens	unexpected	Unnecessary parentheses around expression.	fix	1569	1573	b!	end	47	34
+tests/rules/@stylistic/no-extra-parens/types-nested/cases.ts:69:11	@stylistic/no-extra-parens	unexpected	Unnecessary parentheses around expression.	fix	2335	2345	typeof x	end	69	12
+tests/rules/@stylistic/no-extra-parens/types-nested/cases.ts:70:11	@stylistic/no-extra-parens	unexpected	Unnecessary parentheses around expression.	fix	2365	2368	T	end	70	12
+tests/rules/@stylistic/no-extra-parens/types-nested/cases.ts:71:12	@stylistic/no-extra-parens	unexpected	Unnecessary parentheses around expression.	fix	2384	2391	A | B	end	71	13
+tests/rules/@stylistic/no-extra-parens/types-nested/cases.ts:72:14	@stylistic/no-extra-parens	unexpected	Unnecessary parentheses around expression.	fix	2410	2413	K	end	72	15
+tests/rules/@stylistic/no-extra-parens/types-nested/cases.ts:73:14	@stylistic/no-extra-parens	unexpected	Unnecessary parentheses around expression.	fix	2429	2443	K | 'length'	end	73	15
+tests/rules/@stylistic/no-extra-parens/types-nested/cases.ts:75:12	@stylistic/no-extra-parens	unexpected	Unnecessary parentheses around expression.	fix	2497	2507	string[]	end	75	13
+tests/rules/@stylistic/no-extra-parens/types-nested/cases.ts:76:13	@stylistic/no-extra-parens	unexpected	Unnecessary parentheses around expression.	fix	2529	2539	string[]	end	76	14
+tests/rules/@stylistic/no-extra-parens/types-nested/cases.ts:79:25	@stylistic/no-extra-parens	unexpected	Unnecessary parentheses around expression.	fix	2676	2683	A | B	end	79	26
+tests/rules/@stylistic/no-extra-parens/types-nested/cases.ts:79:35	@stylistic/no-extra-parens	unexpected	Unnecessary parentheses around expression.	fix	2686	2707	C extends A ? 1 : 2	end	79	36
+tests/rules/@stylistic/no-extra-parens/types-nested/cases.ts:80:26	@stylistic/no-extra-parens	unexpected	Unnecessary parentheses around expression.	fix	2734	2737	A	end	80	27
+tests/rules/@stylistic/no-extra-parens/types-nested/cases.ts:80:33	@stylistic/no-extra-parens	unexpected	Unnecessary parentheses around expression.	fix	2741	2744	C	end	80	34
+tests/rules/@stylistic/no-extra-parens/types-nested/cases.ts:81:41	@stylistic/no-extra-parens	unexpected	Unnecessary parentheses around expression.	fix	2786	2794	string	end	81	42
+tests/rules/@stylistic/no-extra-parens/types-nested/cases.ts:82:41	@stylistic/no-extra-parens	unexpected	Unnecessary parentheses around expression.	fix	2849	2857	string	end	82	42
+tests/rules/@stylistic/no-extra-parens/types-nested/cases.ts:83:30	@stylistic/no-extra-parens	unexpected	Unnecessary parentheses around expression.	fix	2901	2908	A | B	end	83	31
+tests/rules/@stylistic/no-extra-parens/types-nested/cases.ts:83:40	@stylistic/no-extra-parens	unexpected	Unnecessary parentheses around expression.	fix	2911	2918	A | B	end	83	41
+tests/rules/@stylistic/no-extra-parens/types-nested/cases.ts:84:30	@stylistic/no-extra-parens	unexpected	Unnecessary parentheses around expression.	fix	2969	2972	A	end	84	31
+tests/rules/@stylistic/no-extra-parens/types-nested/cases.ts:84:40	@stylistic/no-extra-parens	unexpected	Unnecessary parentheses around expression.	fix	2979	2982	B	end	84	41
+tests/rules/@stylistic/no-extra-parens/types-nested/cases.ts:85:15	@stylistic/no-extra-parens	unexpected	Unnecessary parentheses around expression.	fix	3030	3033	A	end	85	16
+tests/rules/@stylistic/no-extra-parens/types-nested/cases.ts:85:20	@stylistic/no-extra-parens	unexpected	Unnecessary parentheses around expression.	fix	3035	3042	B | C	end	85	21
+tests/rules/@stylistic/no-extra-parens/types-nested/cases.ts:86:18	@stylistic/no-extra-parens	unexpected	Unnecessary parentheses around expression.	fix	3062	3065	A	end	86	19
+tests/rules/@stylistic/no-extra-parens/types-nested/cases.ts:87:17	@stylistic/no-extra-parens	unexpected	Unnecessary parentheses around expression.	fix	3085	3097	() => void	end	87	18
+tests/rules/@stylistic/no-extra-parens/types-nested/cases.ts:88:3	@stylistic/no-extra-parens	unexpected	Unnecessary parentheses around expression.	fix	3102	3105	A	end	88	4
+tests/rules/@stylistic/no-extra-parens/types-nested/cases.ts:89:3	@stylistic/no-extra-parens	unexpected	Unnecessary parentheses around expression.	fix	3113	3116	A	end	89	4
+tests/rules/@stylistic/no-extra-parens/types-nested/cases.ts:90:28	@stylistic/no-extra-parens	unexpected	Unnecessary parentheses around expression.	fix	3153	3156	A	end	90	29
+tests/rules/@stylistic/no-extra-parens/types-nested/cases.ts:91:11	@stylistic/no-extra-parens	unexpected	Unnecessary parentheses around expression.	fix	3174	3177	A	end	91	12
+tests/rules/@stylistic/no-extra-parens/types-nested/cases.ts:91:17	@stylistic/no-extra-parens	unexpected	Unnecessary parentheses around expression.	fix	3180	3183	B	end	91	18
+tests/rules/@stylistic/no-extra-parens/types-nested/cases.ts:92:11	@stylistic/no-extra-parens	unexpected	Unnecessary parentheses around expression.	fix	3195	3200	A[]	end	92	12
+tests/rules/@stylistic/no-extra-parens/types-nested/cases.ts:93:11	@stylistic/no-extra-parens	unexpected	Unnecessary parentheses around expression.	fix	3216	3225	keyof T	end	93	12
+tests/rules/@stylistic/no-extra-parens/types-nested/cases.ts:95:11	@stylistic/no-extra-parens	unexpected	Unnecessary parentheses around expression.	fix	3269	3279	typeof x	end	95	12
+tests/rules/@stylistic/no-extra-parens/types-nested/cases.ts:96:11	@stylistic/no-extra-parens	unexpected	Unnecessary parentheses around expression.	fix	3295	3301	T[K]	end	96	12
+tests/rules/@stylistic/no-extra-parens/types-nested/cases.ts:97:11	@stylistic/no-extra-parens	unexpected	Unnecessary parentheses around expression.	fix	3317	3326	keyof T	end	97	12
+tests/rules/@stylistic/no-extra-parens/types-nested/cases.ts:98:11	@stylistic/no-extra-parens	unexpected	Unnecessary parentheses around expression.	fix	3342	3352	typeof x	end	98	12
+tests/rules/@stylistic/no-extra-parens/types-nested/cases.ts:99:11	@stylistic/no-extra-parens	unexpected	Unnecessary parentheses around expression.	fix	3368	3371	A	end	99	12
+tests/rules/@stylistic/no-extra-parens/types-nested/cases.ts:99:17	@stylistic/no-extra-parens	unexpected	Unnecessary parentheses around expression.	fix	3374	3377	B	end	99	18
+tests/rules/@stylistic/no-extra-parens/types-nested/cases.ts:103:15	@stylistic/no-extra-parens	unexpected	Unnecessary parentheses around expression.	fix	3493	3496	A	end	103	16
+tests/rules/@stylistic/no-extra-parens/types-nested/cases.ts:103:23	@stylistic/no-extra-parens	unexpected	Unnecessary parentheses around expression.	fix	3501	3504	B	end	103	24
+tests/rules/@stylistic/no-extra-parens/types/cases.ts:4:3	@stylistic/no-extra-parens	unexpected	Unnecessary parentheses around expression.	fix	179	189	a as any	end	4	4
+tests/rules/@stylistic/no-extra-parens/types/cases.ts:4:15	@stylistic/no-extra-parens	unexpected	Unnecessary parentheses around expression.	fix	191	212	b satisfies unknown	end	4	16
+tests/rules/@stylistic/no-extra-parens/types/cases.ts:4:38	@stylistic/no-extra-parens	unexpected	Unnecessary parentheses around expression.	fix	214	222	<any>c	end	4	39
+tests/rules/@stylistic/no-extra-parens/types/cases.ts:4:48	@stylistic/no-extra-parens	unexpected	Unnecessary parentheses around expression.	fix	224	228	d!	end	4	49
+tests/rules/@stylistic/no-extra-parens/types/cases.ts:5:4	@stylistic/no-extra-parens	unexpected	Unnecessary parentheses around expression.	fix	234	244	a as any	end	5	5
+tests/rules/@stylistic/no-extra-parens/types/cases.ts:6:5	@stylistic/no-extra-parens	unexpected	Unnecessary parentheses around expression.	fix	252	262	b as any	end	6	6
+tests/rules/@stylistic/no-extra-parens/types/cases.ts:7:5	@stylistic/no-extra-parens	unexpected	Unnecessary parentheses around expression.	fix	268	272	b!	end	7	6
+tests/rules/@stylistic/no-extra-parens/types/cases.ts:8:6	@stylistic/no-extra-parens	unexpected	Unnecessary parentheses around expression.	fix	279	289	b as any	end	8	7
+tests/rules/@stylistic/no-extra-parens/types/cases.ts:10:20	@stylistic/no-extra-parens	unexpected	Unnecessary parentheses around expression.	fix	339	352	a as number	end	10	21
+tests/rules/@stylistic/no-extra-parens/types/cases.ts:11:36	@stylistic/no-extra-parens	unexpected	Unnecessary parentheses around expression.	fix	394	407	b as number	end	11	37
+tests/rules/@stylistic/no-extra-parens/types/cases.ts:12:20	@stylistic/no-extra-parens	unexpected	Unnecessary parentheses around expression.	fix	429	439	a as any	end	12	21
+tests/rules/@stylistic/no-extra-parens/types/cases.ts:14:20	@stylistic/no-extra-parens	unexpected	Unnecessary parentheses around expression.	fix	494	504	a as any	end	14	21
+tests/rules/@stylistic/no-extra-parens/types/cases.ts:17:30	@stylistic/no-extra-parens	unexpected	Unnecessary parentheses around expression.	fix	592	602	b as any	end	17	31
+tests/rules/@stylistic/no-extra-parens/types/cases.ts:18:20	@stylistic/no-extra-parens	unexpected	Unnecessary parentheses around expression.	fix	624	641	a satisfies any	end	18	21
+tests/rules/@stylistic/no-extra-parens/types/cases.ts:20:20	@stylistic/no-extra-parens	unexpected	Unnecessary parentheses around expression.	fix	695	703	<any>a	end	20	21
+tests/rules/@stylistic/no-extra-parens/types/cases.ts:21:21	@stylistic/no-extra-parens	unexpected	Unnecessary parentheses around expression.	fix	728	738	a as any	end	21	22
+tests/rules/@stylistic/no-extra-parens/types/cases.ts:22:20	@stylistic/no-extra-parens	unexpected	Unnecessary parentheses around expression.	fix	763	773	a as any	end	22	21
+tests/rules/@stylistic/no-extra-parens/types/cases.ts:23:24	@stylistic/no-extra-parens	unexpected	Unnecessary parentheses around expression.	fix	807	817	b as any	end	23	25
+tests/rules/@stylistic/no-extra-parens/types/cases.ts:23:39	@stylistic/no-extra-parens	unexpected	Unnecessary parentheses around expression.	fix	822	832	c as any	end	23	40
+tests/rules/@stylistic/no-extra-parens/types/cases.ts:24:26	@stylistic/no-extra-parens	unexpected	Unnecessary parentheses around expression.	fix	860	864	b!	end	24	27
+tests/rules/@stylistic/no-extra-parens/types/cases.ts:24:33	@stylistic/no-extra-parens	unexpected	Unnecessary parentheses around expression.	fix	867	871	c!	end	24	34
+tests/rules/@stylistic/no-extra-parens/types/cases.ts:27:2	@stylistic/no-extra-parens	unexpected	Unnecessary parentheses around expression.	fix	944	954	a as any	end	27	3
+tests/rules/@stylistic/no-extra-parens/types/cases.ts:29:6	@stylistic/no-extra-parens	unexpected	Unnecessary parentheses around expression.	fix	982	992	a as any	end	29	7
+tests/rules/@stylistic/no-extra-parens/types/cases.ts:31:2	@stylistic/no-extra-parens	unexpected	Unnecessary parentheses around expression.	fix	1006	1010	a!	end	31	3
+tests/rules/@stylistic/no-extra-parens/types/cases.ts:32:9	@stylistic/no-extra-parens	unexpected	Unnecessary parentheses around expression.	fix	1023	1033	a as any	end	32	10
+tests/rules/@stylistic/no-extra-parens/types/cases.ts:35:37	@stylistic/no-extra-parens	unexpected	Unnecessary parentheses around expression.	fix	1113	1123	a as any	end	35	38
+tests/rules/@stylistic/no-extra-parens/types/cases.ts:37:2	@stylistic/no-extra-parens	unexpected	Unnecessary parentheses around expression.	fix	1155	1165	a as any	end	37	3
+tests/rules/@stylistic/no-extra-parens/types/cases.ts:39:4	@stylistic/no-extra-parens	unexpected	Unnecessary parentheses around expression.	fix	1181	1191	a as any	end	39	5
+tests/rules/@stylistic/no-extra-parens/types/cases.ts:41:26	@stylistic/no-extra-parens	unexpected	Unnecessary parentheses around expression.	fix	1257	1267	a as any	end	41	27
+tests/rules/@stylistic/no-extra-parens/types/cases.ts:43:21	@stylistic/no-extra-parens	unexpected	Unnecessary parentheses around expression.	fix	1324	1334	a as any	end	43	22
+tests/rules/@stylistic/no-extra-parens/types/cases.ts:43:34	@stylistic/no-extra-parens	unexpected	Unnecessary parentheses around expression.	fix	1337	1341	b!	end	43	35
+tests/rules/@stylistic/no-extra-parens/types/cases.ts:43:41	@stylistic/no-extra-parens	unexpected	Unnecessary parentheses around expression.	fix	1344	1365	c satisfies unknown	end	43	42
+tests/rules/@stylistic/no-extra-parens/types/cases.ts:44:59	@stylistic/no-extra-parens	unexpected	Unnecessary parentheses around expression.	fix	1426	1430	c!	end	44	60
+tests/rules/@stylistic/no-extra-parens/types/cases.ts:45:19	@stylistic/no-extra-parens	unexpected	Unnecessary parentheses around expression.	fix	1451	1461	a as any	end	45	20
+tests/rules/@stylistic/no-extra-parens/types/cases.ts:45:37	@stylistic/no-extra-parens	unexpected	Unnecessary parentheses around expression.	fix	1469	1473	a!	end	45	38
+tests/rules/@stylistic/no-extra-parens/types/cases.ts:45:49	@stylistic/no-extra-parens	unexpected	Unnecessary parentheses around expression.	fix	1481	1498	a satisfies any	end	45	50
+tests/rules/@stylistic/no-extra-parens/types/cases.ts:46:32	@stylistic/no-extra-parens	unexpected	Unnecessary parentheses around expression.	fix	1531	1535	c!	end	46	33
+tests/rules/@stylistic/no-extra-parens/types/cases.ts:47:21	@stylistic/no-extra-parens	unexpected	Unnecessary parentheses around expression.	fix	1557	1567	a as any	end	47	22
+tests/rules/@stylistic/no-extra-parens/types/cases.ts:47:33	@stylistic/no-extra-parens	unexpected	Unnecessary parentheses around expression.	fix	1569	1573	b!	end	47	34
+tests/rules/@stylistic/no-extra-parens/types/cases.ts:69:11	@stylistic/no-extra-parens	unexpected	Unnecessary parentheses around expression.	fix	2335	2345	typeof x	end	69	12
+tests/rules/@stylistic/no-extra-parens/types/cases.ts:70:11	@stylistic/no-extra-parens	unexpected	Unnecessary parentheses around expression.	fix	2365	2368	T	end	70	12
+tests/rules/@stylistic/no-extra-parens/types/cases.ts:71:12	@stylistic/no-extra-parens	unexpected	Unnecessary parentheses around expression.	fix	2384	2391	A | B	end	71	13
+tests/rules/@stylistic/no-extra-parens/types/cases.ts:72:14	@stylistic/no-extra-parens	unexpected	Unnecessary parentheses around expression.	fix	2410	2413	K	end	72	15
+tests/rules/@stylistic/no-extra-parens/types/cases.ts:73:14	@stylistic/no-extra-parens	unexpected	Unnecessary parentheses around expression.	fix	2429	2443	K | 'length'	end	73	15
+tests/rules/@stylistic/no-extra-parens/types/cases.ts:75:12	@stylistic/no-extra-parens	unexpected	Unnecessary parentheses around expression.	fix	2497	2507	string[]	end	75	13
+tests/rules/@stylistic/no-extra-parens/types/cases.ts:76:13	@stylistic/no-extra-parens	unexpected	Unnecessary parentheses around expression.	fix	2529	2539	string[]	end	76	14
+tests/rules/@stylistic/no-extra-parens/types/cases.ts:79:25	@stylistic/no-extra-parens	unexpected	Unnecessary parentheses around expression.	fix	2676	2683	A | B	end	79	26
+tests/rules/@stylistic/no-extra-parens/types/cases.ts:79:35	@stylistic/no-extra-parens	unexpected	Unnecessary parentheses around expression.	fix	2686	2707	C extends A ? 1 : 2	end	79	36
+tests/rules/@stylistic/no-extra-parens/types/cases.ts:80:26	@stylistic/no-extra-parens	unexpected	Unnecessary parentheses around expression.	fix	2734	2737	A	end	80	27
+tests/rules/@stylistic/no-extra-parens/types/cases.ts:80:33	@stylistic/no-extra-parens	unexpected	Unnecessary parentheses around expression.	fix	2741	2744	C	end	80	34
+tests/rules/@stylistic/no-extra-parens/types/cases.ts:81:41	@stylistic/no-extra-parens	unexpected	Unnecessary parentheses around expression.	fix	2786	2794	string	end	81	42
+tests/rules/@stylistic/no-extra-parens/types/cases.ts:82:41	@stylistic/no-extra-parens	unexpected	Unnecessary parentheses around expression.	fix	2849	2857	string	end	82	42
+tests/rules/@stylistic/no-extra-parens/types/cases.ts:83:30	@stylistic/no-extra-parens	unexpected	Unnecessary parentheses around expression.	fix	2901	2908	A | B	end	83	31
+tests/rules/@stylistic/no-extra-parens/types/cases.ts:83:40	@stylistic/no-extra-parens	unexpected	Unnecessary parentheses around expression.	fix	2911	2918	A | B	end	83	41
+tests/rules/@stylistic/no-extra-parens/types/cases.ts:84:30	@stylistic/no-extra-parens	unexpected	Unnecessary parentheses around expression.	fix	2969	2972	A	end	84	31
+tests/rules/@stylistic/no-extra-parens/types/cases.ts:84:40	@stylistic/no-extra-parens	unexpected	Unnecessary parentheses around expression.	fix	2979	2982	B	end	84	41
+tests/rules/@stylistic/no-extra-parens/types/cases.ts:85:15	@stylistic/no-extra-parens	unexpected	Unnecessary parentheses around expression.	fix	3030	3033	A	end	85	16
+tests/rules/@stylistic/no-extra-parens/types/cases.ts:85:20	@stylistic/no-extra-parens	unexpected	Unnecessary parentheses around expression.	fix	3035	3042	B | C	end	85	21
+tests/rules/@stylistic/no-extra-parens/types/cases.ts:86:18	@stylistic/no-extra-parens	unexpected	Unnecessary parentheses around expression.	fix	3062	3065	A	end	86	19
+tests/rules/@stylistic/no-extra-parens/types/cases.ts:87:17	@stylistic/no-extra-parens	unexpected	Unnecessary parentheses around expression.	fix	3085	3097	() => void	end	87	18
+tests/rules/@stylistic/no-extra-parens/types/cases.ts:88:3	@stylistic/no-extra-parens	unexpected	Unnecessary parentheses around expression.	fix	3102	3105	A	end	88	4
+tests/rules/@stylistic/no-extra-parens/types/cases.ts:89:3	@stylistic/no-extra-parens	unexpected	Unnecessary parentheses around expression.	fix	3113	3116	A	end	89	4
+tests/rules/@stylistic/no-extra-parens/types/cases.ts:90:28	@stylistic/no-extra-parens	unexpected	Unnecessary parentheses around expression.	fix	3153	3156	A	end	90	29
+tests/rules/@stylistic/no-extra-parens/types/cases.ts:91:11	@stylistic/no-extra-parens	unexpected	Unnecessary parentheses around expression.	fix	3174	3177	A	end	91	12
+tests/rules/@stylistic/no-extra-parens/types/cases.ts:91:17	@stylistic/no-extra-parens	unexpected	Unnecessary parentheses around expression.	fix	3180	3183	B	end	91	18
+tests/rules/@stylistic/no-extra-parens/types/cases.ts:92:11	@stylistic/no-extra-parens	unexpected	Unnecessary parentheses around expression.	fix	3195	3200	A[]	end	92	12
+tests/rules/@stylistic/no-extra-parens/types/cases.ts:93:11	@stylistic/no-extra-parens	unexpected	Unnecessary parentheses around expression.	fix	3216	3225	keyof T	end	93	12
+tests/rules/@stylistic/no-extra-parens/types/cases.ts:95:11	@stylistic/no-extra-parens	unexpected	Unnecessary parentheses around expression.	fix	3269	3279	typeof x	end	95	12
+tests/rules/@stylistic/no-extra-parens/types/cases.ts:96:11	@stylistic/no-extra-parens	unexpected	Unnecessary parentheses around expression.	fix	3295	3301	T[K]	end	96	12
+tests/rules/@stylistic/no-extra-parens/types/cases.ts:97:11	@stylistic/no-extra-parens	unexpected	Unnecessary parentheses around expression.	fix	3317	3326	keyof T	end	97	12
+tests/rules/@stylistic/no-extra-parens/types/cases.ts:98:11	@stylistic/no-extra-parens	unexpected	Unnecessary parentheses around expression.	fix	3342	3352	typeof x	end	98	12
+tests/rules/@stylistic/no-extra-parens/types/cases.ts:99:11	@stylistic/no-extra-parens	unexpected	Unnecessary parentheses around expression.	fix	3368	3371	A	end	99	12
+tests/rules/@stylistic/no-extra-parens/types/cases.ts:99:17	@stylistic/no-extra-parens	unexpected	Unnecessary parentheses around expression.	fix	3374	3377	B	end	99	18
+tests/rules/@stylistic/no-extra-parens/types/cases.ts:103:15	@stylistic/no-extra-parens	unexpected	Unnecessary parentheses around expression.	fix	3493	3496	A	end	103	16
+tests/rules/@stylistic/no-extra-parens/types/cases.ts:103:23	@stylistic/no-extra-parens	unexpected	Unnecessary parentheses around expression.	fix	3501	3504	B	end	103	24

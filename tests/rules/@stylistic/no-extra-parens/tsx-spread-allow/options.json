@@ -1,0 +1,1 @@
+["all", {"allowNodesInSpreadElement": {"LogicalExpression": true, "ConditionalExpression": true, "AwaitExpression": true}}]

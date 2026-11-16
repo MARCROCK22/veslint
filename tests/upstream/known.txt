@@ -1380,16 +1380,16 @@ eslint	dot-location._js_/i6	typescript-eslint's parser: Decimals with leading ze
 eslint	dot-location._js_/i7	typescript-eslint's parser: Decimals with leading zeros are not allowed.
 # @stylistic/quotes: JavaScript cases with octal or non-octal decimal escape sequences (`'\1'`, `'\8'`), which
 # typescript-eslint's parser rejects; tree-sitter parses them.
-eslint	quotes._js_/i40	typescript-eslint's parser: Octal escape sequences are not allowed.
+eslint	quotes._js_/i38	typescript-eslint's parser: Octal escape sequences are not allowed.
+eslint	quotes._js_/i39	typescript-eslint's parser: Octal escape sequences are not allowed.
 eslint	quotes._js_/i41	typescript-eslint's parser: Octal escape sequences are not allowed.
+eslint	quotes._js_/i42	typescript-eslint's parser: Octal escape sequences are not allowed.
 eslint	quotes._js_/i43	typescript-eslint's parser: Octal escape sequences are not allowed.
 eslint	quotes._js_/i44	typescript-eslint's parser: Octal escape sequences are not allowed.
 eslint	quotes._js_/i45	typescript-eslint's parser: Octal escape sequences are not allowed.
 eslint	quotes._js_/i46	typescript-eslint's parser: Octal escape sequences are not allowed.
 eslint	quotes._js_/i47	typescript-eslint's parser: Octal escape sequences are not allowed.
-eslint	quotes._js_/i48	typescript-eslint's parser: Octal escape sequences are not allowed.
-eslint	quotes._js_/i49	typescript-eslint's parser: Octal escape sequences are not allowed.
-eslint	quotes._js_/i50	typescript-eslint's parser: Escape sequence '\8' is not allowed.
+eslint	quotes._js_/i48	typescript-eslint's parser: Escape sequence '\8' is not allowed.
 # @stylistic/spaced-comment: a valid case with an /*eslint-disable no-alert, no-console */ comment, which ESLint 10.15.0
 # reports as an unused disable directive (reportUnusedDisableDirectives).
 eslint	spaced-comment/v24	ESLint reports the unused eslint-disable directive of the case
@@ -1429,18 +1429,18 @@ veslint	comma-dangle._js_/i16	a JavaScript case with an old ecmaVersion: as Type
 # parentheses); and legacy octal and leading-zero decimals, which typescript-eslint's parser rejects.
 eslint	no-extra-parens._js_/v144	a JavaScript case: `let` as an identifier is not one in TypeScript
 veslint	no-extra-parens._js_/v144	a JavaScript case: `let` as an identifier is not one in TypeScript
-eslint	no-extra-parens._js_/v380	a JavaScript case: `let` as an identifier is not one in TypeScript
-veslint	no-extra-parens._js_/v380	a JavaScript case: `let` as an identifier is not one in TypeScript
-eslint	no-extra-parens._js_/v381	a JavaScript case: `let` as an identifier is not one in TypeScript
-veslint	no-extra-parens._js_/v381	a JavaScript case: `let` as an identifier is not one in TypeScript
 eslint	no-extra-parens._js_/v384	a JavaScript case: `let` as an identifier is not one in TypeScript
 veslint	no-extra-parens._js_/v384	a JavaScript case: `let` as an identifier is not one in TypeScript
-eslint	no-extra-parens._js_/i599	the expected output takes several passes of fixes, one removes one pair of parentheses
-veslint	no-extra-parens._js_/i599	the expected output takes several passes of fixes, one removes one pair of parentheses
-eslint	no-extra-parens._ts_/i20	the expected output takes several passes of fixes, one removes one pair of parentheses
-veslint	no-extra-parens._ts_/i20	the expected output takes several passes of fixes, one removes one pair of parentheses
-eslint	no-extra-parens._ts_/i22	the expected output takes several passes of fixes, one removes one pair of parentheses
-veslint	no-extra-parens._ts_/i22	the expected output takes several passes of fixes, one removes one pair of parentheses
+eslint	no-extra-parens._js_/v385	a JavaScript case: `let` as an identifier is not one in TypeScript
+veslint	no-extra-parens._js_/v385	a JavaScript case: `let` as an identifier is not one in TypeScript
+eslint	no-extra-parens._js_/v388	a JavaScript case: `let` as an identifier is not one in TypeScript
+veslint	no-extra-parens._js_/v388	a JavaScript case: `let` as an identifier is not one in TypeScript
+eslint	no-extra-parens._js_/i603	the expected output takes several passes of fixes, one removes one pair of parentheses
+veslint	no-extra-parens._js_/i603	the expected output takes several passes of fixes, one removes one pair of parentheses
+eslint	no-extra-parens._ts_/i21	the expected output takes several passes of fixes, one removes one pair of parentheses
+veslint	no-extra-parens._ts_/i21	the expected output takes several passes of fixes, one removes one pair of parentheses
+eslint	no-extra-parens._ts_/i23	the expected output takes several passes of fixes, one removes one pair of parentheses
+veslint	no-extra-parens._ts_/i23	the expected output takes several passes of fixes, one removes one pair of parentheses
 eslint	no-extra-parens._js_/v149	typescript-eslint's parser: Decimals with leading zeros are not allowed.
 eslint	no-extra-parens._js_/v150	typescript-eslint's parser: Decimals with leading zeros are not allowed.
 eslint	no-extra-parens._js_/v151	typescript-eslint's parser: Decimals with leading zeros are not allowed.

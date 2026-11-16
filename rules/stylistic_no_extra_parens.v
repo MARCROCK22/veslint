@@ -6,7 +6,7 @@ import jsregexp
 import time
 import x.json2
 
-// Port of the `@stylistic/no-extra-parens` rule of @stylistic/eslint-plugin 5.10.0, with its
+// Port of the `@stylistic/no-extra-parens` rule of @stylistic/eslint-plugin 6.0.1, with its
 // options (`"all"`, the default, or `"functions"`, and conditionalAssign,
 // ternaryOperandBinaryExpressions, nestedBinaryExpressions, returnAssign, ignoreJSX,
 // enforceForArrowConditionals, enforceForSequenceExpressions, enforceForNewInMemberExpressions,
@@ -14,37 +14,11 @@ import x.json2
 // nestedConditionalExpressions, allowNodesInSpreadElement and ignoredNodes) and its fixes.
 //
 // The rule queues its listeners and runs them at `Program:exit`, skipping the nodes of
-// `ignoredNodes`; this port does the same with the traversal's events. Where the rule hands a
-// copy of a node with another type to its checks (`{ ...node.left, type: SequenceExpression }`
-// for a type assertion), the port uses a SneRef with that type and `fake` set: a copy is never
-// `===` to a node of the tree (getParentSyntaxParen, the callee of its parent, the reports
-// buffered for a `for` init).
+// `ignoredNodes`; this port does the same with the traversal's events.
 
 const snep_messages = {
 	'unexpected': 'Unnecessary parentheses around expression.'
 }
-
-// The node types of eslint-visitor-keys 4.2.1 (KEYS), which getPrecedence gives 20 by default.
-const snep_eslint_keys = ['ArrayExpression', 'ArrayPattern', 'ArrowFunctionExpression',
-	'AssignmentExpression', 'AssignmentPattern', 'AwaitExpression', 'BinaryExpression',
-	'BlockStatement', 'BreakStatement', 'CallExpression', 'CatchClause', 'ChainExpression',
-	'ClassBody', 'ClassDeclaration', 'ClassExpression', 'ConditionalExpression', 'ContinueStatement',
-	'DebuggerStatement', 'DoWhileStatement', 'EmptyStatement', 'ExperimentalRestProperty',
-	'ExperimentalSpreadProperty', 'ExportAllDeclaration', 'ExportDefaultDeclaration',
-	'ExportNamedDeclaration', 'ExportSpecifier', 'ExpressionStatement', 'ForInStatement',
-	'ForOfStatement', 'ForStatement', 'FunctionDeclaration', 'FunctionExpression', 'Identifier',
-	'IfStatement', 'ImportAttribute', 'ImportDeclaration', 'ImportDefaultSpecifier',
-	'ImportExpression', 'ImportNamespaceSpecifier', 'ImportSpecifier', 'JSXAttribute',
-	'JSXClosingElement', 'JSXClosingFragment', 'JSXElement', 'JSXEmptyExpression',
-	'JSXExpressionContainer', 'JSXFragment', 'JSXIdentifier', 'JSXMemberExpression',
-	'JSXNamespacedName', 'JSXOpeningElement', 'JSXOpeningFragment', 'JSXSpreadAttribute',
-	'JSXSpreadChild', 'JSXText', 'LabeledStatement', 'Literal', 'LogicalExpression',
-	'MemberExpression', 'MetaProperty', 'MethodDefinition', 'NewExpression', 'ObjectExpression',
-	'ObjectPattern', 'PrivateIdentifier', 'Program', 'Property', 'PropertyDefinition', 'RestElement',
-	'ReturnStatement', 'SequenceExpression', 'SpreadElement', 'StaticBlock', 'Super', 'SwitchCase',
-	'SwitchStatement', 'TaggedTemplateExpression', 'TemplateElement', 'TemplateLiteral',
-	'ThisExpression', 'ThrowStatement', 'TryStatement', 'UnaryExpression', 'UpdateExpression',
-	'VariableDeclaration', 'VariableDeclarator', 'WhileStatement', 'WithStatement', 'YieldExpression']
 
 const snep_precedence_assignment = 1
 const snep_precedence_update = 17
@@ -117,16 +91,8 @@ fn snep_options(given []json2.Any) !SnepOptions {
 	}
 }
 
-// SneRef is a node as the rule's checks see it: a node of the tree, or a copy of it with another
-// type (`fake`).
-struct SneRef {
-	node int
-	typ  estree.NodeType
-	fake bool
-}
-
 struct SnepBuffered {
-	ref     SneRef
+	node    int
 	finding Finding
 }
 
@@ -203,13 +169,6 @@ fn (mut c Checker) lint_stylistic_no_extra_parens(root C.TSNode, abs_path string
 	return x.findings
 }
 
-fn (x &SnepCtx) real(node int) SneRef {
-	return SneRef{
-		node: node
-		typ:  x.t.typ(node)
-	}
-}
-
 fn (x &SnepCtx) child(node int, key estree.Key) int {
 	return x.t.node(node, key) or { -1 }
 }
@@ -228,37 +187,31 @@ fn (x &SnepCtx) operator(node int) string {
 
 // is_type_assertion ports isTypeAssertion.
 fn (x &SnepCtx) is_type_assertion(node int) bool {
-	return node >= 0 && x.t.typ(node) in [.ts_as_expression, .ts_non_null_expression,
-		.ts_satisfies_expression, .ts_type_assertion]
+	return node >= 0 && x.t.typ(node) in [.ts_as_expression, .ts_satisfies_expression,
+		.ts_type_assertion]
 }
 
-// ref_of is the node, or a copy of it with the type `typ` when it is a type assertion.
-fn (x &SnepCtx) ref_of(node int, typ estree.NodeType) SneRef {
-	if x.is_type_assertion(node) {
-		return SneRef{
-			node: node
-			typ:  typ
-			fake: true
-		}
-	}
-	return x.real(node)
-}
-
-// precedence ports getPrecedence.
-fn (x &SnepCtx) precedence(ref SneRef) int {
-	match ref.typ {
+// precedence ports getPrecedence (every node type is one of @typescript-eslint/visitor-keys,
+// which gives 20 by default).
+fn (x &SnepCtx) precedence(node int) int {
+	typ := x.t.typ(node)
+	match typ {
 		.sequence_expression {
 			return 0
 		}
-		.assignment_expression, .arrow_function_expression, .yield_expression {
+		.assignment_expression, .arrow_function_expression, .yield_expression, .ts_function_type,
+		.ts_constructor_type {
 			return 1
+		}
+		.ts_as_expression, .ts_non_null_expression, .ts_satisfies_expression, .ts_type_assertion {
+			return 2
 		}
 		.conditional_expression, .ts_conditional_type {
 			return 3
 		}
 		.logical_expression, .binary_expression {
-			operator := x.operator(ref.node)
-			if ref.typ == .logical_expression {
+			operator := x.operator(node)
+			if typ == .logical_expression {
 				if operator in ['||', '??'] {
 					return 4
 				}
@@ -285,6 +238,9 @@ fn (x &SnepCtx) precedence(ref SneRef) int {
 		.ts_intersection_type {
 			return 8
 		}
+		.ts_type_operator {
+			return if x.operator(node) == 'keyof' { 10 } else { 16 }
+		}
 		.unary_expression, .await_expression {
 			return 16
 		}
@@ -297,27 +253,23 @@ fn (x &SnepCtx) precedence(ref SneRef) int {
 		.new_expression {
 			return 19
 		}
-		.ts_import_type, .ts_array_type {
-			return 20
-		}
 		else {
-			return if ref.typ.type_name() in snep_eslint_keys { 20 } else { -1 }
+			return 20
 		}
 	}
 }
 
 // layers counts the parentheses around the node (isParenthesized of eslint-utils with growing
-// `times`): not those of its parent's syntax, which a copy never is the child of.
-fn (x &SnepCtx) layers(ref SneRef) int {
+// `times`): not those of its parent's syntax.
+fn (x &SnepCtx) layers(node int) int {
 	t := x.t
-	parent := t.nodes[ref.node].parent
-	if parent < 0 || (!ref.fake && t.typ(parent) == .catch_clause
-		&& x.child(parent, .param) == ref.node) {
+	parent := t.nodes[node].parent
+	if parent < 0 || (t.typ(parent) == .catch_clause && x.child(parent, .param) == node) {
 		return 0
 	}
-	syntax := if ref.fake { ?SourceToken(none) } else { x.c.un_parent_syntax_paren(t, x.tokens, ref.node) }
-	mut head := t.nodes[ref.node].start
-	mut tail := t.nodes[ref.node].end
+	syntax := x.c.un_parent_syntax_paren(t, x.tokens, node)
+	mut head := t.nodes[node].start
+	mut tail := t.nodes[node].end
 	mut count := 0
 	for {
 		before := x.tokens.before(head, false) or { break }
@@ -337,12 +289,12 @@ fn (x &SnepCtx) layers(ref SneRef) int {
 	return count
 }
 
-fn (x &SnepCtx) is_parenthesised(ref SneRef) bool {
-	return x.layers(ref) >= 1
+fn (x &SnepCtx) is_parenthesised(node int) bool {
+	return x.layers(node) >= 1
 }
 
-fn (x &SnepCtx) is_parenthesised_twice(ref SneRef) bool {
-	return x.layers(ref) >= 2
+fn (x &SnepCtx) is_parenthesised_twice(node int) bool {
+	return x.layers(node) >= 2
 }
 
 fn (x &SnepCtx) is_single_line(node int) bool {
@@ -350,70 +302,75 @@ fn (x &SnepCtx) is_single_line(node int) bool {
 }
 
 // skip_chain ports skipChainExpression.
-fn (x &SnepCtx) skip_chain(ref SneRef) SneRef {
-	if ref.typ == .chain_expression {
-		return x.real(x.child(ref.node, .expression))
+fn (x &SnepCtx) skip_chain(node int) int {
+	if node >= 0 && x.t.typ(node) == .chain_expression {
+		return x.child(node, .expression)
 	}
-	return ref
+	return node
 }
 
 // is_immediate_function_prototype_method_call ports isImmediateFunctionPrototypeMethodCall.
-fn (x &SnepCtx) is_immediate_function_prototype_method_call(ref SneRef) bool {
-	call := x.skip_chain(ref)
-	if call.node < 0 || call.typ != .call_expression {
+fn (x &SnepCtx) is_immediate_function_prototype_method_call(node int) bool {
+	call := x.skip_chain(node)
+	if call < 0 || x.t.typ(call) != .call_expression {
 		return false
 	}
-	callee_node := x.child(call.node, .callee)
-	if callee_node < 0 {
+	callee := x.skip_chain(x.child(call, .callee))
+	if callee < 0 || x.t.typ(callee) != .member_expression {
 		return false
 	}
-	callee := x.skip_chain(x.real(callee_node))
-	if callee.node < 0 || callee.typ != .member_expression {
-		return false
-	}
-	object := x.child(callee.node, .object)
+	object := x.child(callee, .object)
 	if object < 0 || x.t.typ(object) != .function_expression {
 		return false
 	}
-	name := es_tree_static_property_name(x.t, callee.node) or { return false }
+	name := es_tree_static_property_name(x.t, callee) or { return false }
 	return name in ['call', 'apply']
 }
 
 // rule_applies ports ruleApplies.
-fn (x &SnepCtx) rule_applies(ref SneRef) bool {
+fn (x &SnepCtx) rule_applies(node int) bool {
 	o := x.options
-	if ref.typ in [.jsx_element, .jsx_fragment] {
+	typ := x.t.typ(node)
+	if typ in [.jsx_element, .jsx_fragment] {
 		match o.ignore_jsx {
 			'all' { return false }
-			'multi-line' { return x.is_single_line(ref.node) }
-			'single-line' { return !x.is_single_line(ref.node) }
+			'multi-line' { return x.is_single_line(node) }
+			'single-line' { return !x.is_single_line(node) }
 			else {}
 		}
 	}
-	if ref.typ == .sequence_expression && o.ignore_sequence_expressions {
+	if typ == .sequence_expression && o.ignore_sequence_expressions {
 		return false
 	}
-	if o.ignore_function_prototype && x.is_immediate_function_prototype_method_call(ref) {
+	if o.ignore_function_prototype && x.is_immediate_function_prototype_method_call(node) {
 		return false
 	}
-	return o.all_nodes || ref.typ in [.function_expression, .arrow_function_expression]
-}
-
-fn (x &SnepCtx) has_excess_parens(ref SneRef) bool {
-	return x.rule_applies(ref) && x.is_parenthesised(ref)
-}
-
-fn (x &SnepCtx) has_double_excess_parens(ref SneRef) bool {
-	return x.rule_applies(ref) && x.is_parenthesised_twice(ref)
-}
-
-fn (x &SnepCtx) has_excess_parens_with_precedence(ref SneRef, lower_limit int) bool {
-	if x.rule_applies(ref) && x.is_parenthesised(ref) {
-		if x.precedence(ref) >= lower_limit || x.is_parenthesised_twice(ref) {
-			return true
-		}
+	if typ in [.function_expression, .arrow_function_expression] {
+		return true
 	}
-	return false
+	if x.is_type_assertion(node) {
+		return true
+	}
+	return o.all_nodes
+}
+
+fn (x &SnepCtx) has_excess_parens(node int) bool {
+	return x.rule_applies(node) && x.is_parenthesised(node)
+}
+
+fn (x &SnepCtx) has_double_excess_parens(node int) bool {
+	return x.rule_applies(node) && x.is_parenthesised_twice(node)
+}
+
+fn (x &SnepCtx) has_excess_parens_with_precedence(node int, lower_limit int) bool {
+	if !x.rule_applies(node) {
+		return false
+	}
+	return if x.precedence(node) >= lower_limit {
+		x.is_parenthesised(node)
+	} else {
+		x.is_parenthesised_twice(node)
+	}
 }
 
 // is_cond_assign_exception ports isCondAssignException with the type of the test.
@@ -460,34 +417,27 @@ fn (x &SnepCtx) is_new_expression_with_parens(node int) bool {
 }
 
 // is_member_exp_in_new_callee ports isMemberExpInNewCallee.
-fn (x &SnepCtx) is_member_exp_in_new_callee(ref SneRef) bool {
-	if ref.typ != .member_expression || ref.fake {
+fn (x &SnepCtx) is_member_exp_in_new_callee(node int) bool {
+	if x.t.typ(node) != .member_expression {
 		return false
 	}
-	parent := x.t.nodes[ref.node].parent
+	parent := x.t.nodes[node].parent
 	if parent < 0 {
 		return false
 	}
-	if x.t.typ(parent) == .new_expression && x.child(parent, .callee) == ref.node {
+	if x.t.typ(parent) == .new_expression && x.child(parent, .callee) == node {
 		return true
 	}
-	return x.child(parent, .object) == ref.node && x.is_member_exp_in_new_callee(x.real(parent))
+	return x.child(parent, .object) == node && x.is_member_exp_in_new_callee(parent)
 }
 
-// does_member_expression_contain_call_expression ports doesMemberExpressionContainCallExpression,
-// with the object as the check sees it.
-fn (x &SnepCtx) does_member_expression_contain_call_expression(object SneRef) bool {
-	mut current := object.node
-	mut typ := object.typ
-	for typ == .member_expression {
-		next := x.child(current, .object)
-		if next < 0 {
-			break
-		}
-		current = next
-		typ = x.t.typ(current)
+// does_member_expression_contain_call_expression ports doesMemberExpressionContainCallExpression.
+fn (x &SnepCtx) does_member_expression_contain_call_expression(node int) bool {
+	mut current := x.child(node, .object)
+	for current >= 0 && x.t.typ(current) == .member_expression {
+		current = x.child(current, .object)
 	}
-	return typ == .call_expression
+	return current >= 0 && x.t.typ(current) == .call_expression
 }
 
 // contains_assignment ports containsAssignment.
@@ -536,16 +486,16 @@ fn (x &SnepCtx) is_return_assign_exception(node int) bool {
 }
 
 // has_excess_parens_no_line_terminator ports hasExcessParensNoLineTerminator.
-fn (x &SnepCtx) has_excess_parens_no_line_terminator(token SourceToken, ref SneRef) bool {
-	if sty_same_line_offsets(x.t, token.end, x.t.nodes[ref.node].start) {
-		return x.has_excess_parens(ref)
+fn (x &SnepCtx) has_excess_parens_no_line_terminator(token SourceToken, node int) bool {
+	if sty_same_line_offsets(x.t, token.end, x.t.nodes[node].start) {
+		return x.has_excess_parens(node)
 	}
-	return x.has_double_excess_parens(ref)
+	return x.has_double_excess_parens(node)
 }
 
 // requires_leading_space ports requiresLeadingSpace.
-fn (x &SnepCtx) requires_leading_space(ref SneRef) bool {
-	left := x.tokens.before(x.t.nodes[ref.node].start, false) or { return false }
+fn (x &SnepCtx) requires_leading_space(node int) bool {
+	left := x.tokens.before(x.t.nodes[node].start, false) or { return false }
 	before := x.tokens.before(left.start, true) or { return false }
 	after := x.tokens.after(left.end, true) or { return false }
 	return before.end == left.start && left.end == after.start
@@ -553,21 +503,21 @@ fn (x &SnepCtx) requires_leading_space(ref SneRef) bool {
 }
 
 // requires_trailing_space ports requiresTrailingSpace.
-fn (x &SnepCtx) requires_trailing_space(ref SneRef) bool {
-	right := x.tokens.after(x.t.nodes[ref.node].end, false) or { return false }
+fn (x &SnepCtx) requires_trailing_space(node int) bool {
+	right := x.tokens.after(x.t.nodes[node].end, false) or { return false }
 	after := x.tokens.after(right.end, false) or { return false }
-	before := un_last_token(x.t, x.tokens, ref.node) or { return false }
+	before := un_last_token(x.t, x.tokens, node) or { return false }
 	return !x.tokens.is_space_between(right.end, after.start)
 		&& !x.c.es_can_tokens_be_adjacent(before, after)
 }
 
 // is_iife ports isIIFE.
-fn (x &SnepCtx) is_iife(ref SneRef) bool {
-	call := x.skip_chain(ref)
-	if call.node < 0 || call.typ != .call_expression {
+fn (x &SnepCtx) is_iife(node int) bool {
+	call := x.skip_chain(node)
+	if call < 0 || x.t.typ(call) != .call_expression {
 		return false
 	}
-	callee := x.child(call.node, .callee)
+	callee := x.child(call, .callee)
 	return callee >= 0 && x.t.typ(callee) == .function_expression
 }
 
@@ -576,16 +526,16 @@ fn (x &SnepCtx) can_be_assignment_target(node int) bool {
 	return node >= 0 && x.t.typ(node) in [.identifier, .member_expression]
 }
 
-fn (x &SnepCtx) is_regexp_literal(ref SneRef) bool {
-	return ref.typ == .literal && x.t.prop(ref.node, .regex) != none
+fn (x &SnepCtx) is_regexp_literal(node int) bool {
+	return x.t.typ(node) == .literal && x.t.prop(node, .regex) != none
 }
 
 // is_decimal_integer ports isDecimalInteger: /^(?:0|0[0-7]*[89]\d*|[1-9](?:_?\d)*)$/u on the raw.
-fn (x &SnepCtx) is_decimal_integer(ref SneRef) bool {
-	if ref.typ != .literal || x.t.get(ref.node, .value) !is f64 {
+fn (x &SnepCtx) is_decimal_integer(node int) bool {
+	if x.t.typ(node) != .literal || x.t.get(node, .value) !is f64 {
 		return false
 	}
-	raw := x.t.string_of(ref.node, .raw) or { return false }
+	raw := x.t.string_of(node, .raw) or { return false }
 	if raw == '0' {
 		return true
 	}
@@ -618,15 +568,15 @@ fn (x &SnepCtx) is_decimal_integer(ref SneRef) bool {
 }
 
 // is_fixable ports isFixable.
-fn (x &SnepCtx) is_fixable(ref SneRef) bool {
-	if ref.typ != .literal || x.t.get(ref.node, .value) !is string {
+fn (x &SnepCtx) is_fixable(node int) bool {
+	if x.t.typ(node) != .literal || x.t.get(node, .value) !is string {
 		return true
 	}
-	if x.is_parenthesised_twice(ref) {
+	if x.is_parenthesised_twice(node) {
 		return true
 	}
 	// !isTopLevelExpressionStatement(node.parent)
-	parent := x.t.nodes[ref.node].parent
+	parent := x.t.nodes[node].parent
 	if parent < 0 || x.t.typ(parent) != .expression_statement {
 		return true
 	}
@@ -694,26 +644,26 @@ fn (x &SnepCtx) is_allowed_by_comment_directive(left SourceToken) bool {
 }
 
 // report ports report.
-fn (mut x SnepCtx) report(ref SneRef) {
+fn (mut x SnepCtx) report(node int) {
 	t := x.t
-	mut left := x.tokens.before(t.nodes[ref.node].start, false) or { return }
-	mut right := x.tokens.after(t.nodes[ref.node].end, false) or { return }
-	if !x.is_parenthesised_twice(ref) {
-		first := un_first_token(t, x.tokens, ref.node, 0) or { return }
+	mut left := x.tokens.before(t.nodes[node].start, false) or { return }
+	mut right := x.tokens.after(t.nodes[node].end, false) or { return }
+	if !x.is_parenthesised_twice(node) {
+		first := un_first_token(t, x.tokens, node, 0) or { return }
 		if x.tokens_to_ignore[first.start] {
 			return
 		}
-		if x.is_iife(ref) {
+		if x.is_iife(node) {
 			// !("callee" in node && isParenthesised(node.callee))
-			callee := if ref.typ == .call_expression { x.child(ref.node, .callee) } else { -1 }
-			if callee < 0 || !x.is_parenthesised(x.real(callee)) {
+			callee := if t.typ(node) == .call_expression { x.child(node, .callee) } else { -1 }
+			if callee < 0 || !x.is_parenthesised(callee) {
 				return
 			}
 		}
 	}
 	mut paren_layers := 2
 	for x.is_allowed_by_comment_directive(left) {
-		if x.layers(ref) < paren_layers {
+		if x.layers(node) < paren_layers {
 			return
 		}
 		mut index := source_tokens_index(x.tokens.tokens, left.start) - 1
@@ -736,14 +686,14 @@ fn (mut x SnepCtx) report(ref SneRef) {
 	}
 	mut has_fix := false
 	mut fix := Fix{}
-	if x.is_fixable(ref) {
+	if x.is_fixable(node) {
 		has_fix, fix = x.c.merge_fixes([
-			fix_replace_range(left.start, left.end, if x.requires_leading_space(ref) {
+			fix_replace_range(left.start, left.end, if x.requires_leading_space(node) {
 				' '
 			} else {
 				''
 			}),
-			fix_replace_range(right.start, right.end, if x.requires_trailing_space(ref) {
+			fix_replace_range(right.start, right.end, if x.requires_trailing_space(node) {
 				' '
 			} else {
 				''
@@ -757,7 +707,7 @@ fn (mut x SnepCtx) report(ref SneRef) {
 		fix:        fix
 	}
 	if x.buffers.len > 0 {
-		x.buffers[x.buffers.len - 1].reports << SnepBuffered{ref, finding}
+		x.buffers[x.buffers.len - 1].reports << SnepBuffered{node, finding}
 		return
 	}
 	x.findings << finding
@@ -783,7 +733,7 @@ fn (x &SnepCtx) is_in_current_reports_buffer(node int) bool {
 	if x.buffers.len == 0 {
 		return false
 	}
-	return x.buffers.last().reports.any(!it.ref.fake && it.ref.node == node)
+	return x.buffers.last().reports.any(it.node == node)
 }
 
 // is_safely_enclosing_in_expression ports isSafelyEnclosingInExpression.
@@ -836,9 +786,9 @@ fn (mut x SnepCtx) init_exit(node int) {
 					skip = true
 					break
 				}
-				if x.is_parenthesised(x.real(path_node)) {
+				if x.is_parenthesised(path_node) {
 					if x.is_in_current_reports_buffer(path_node) {
-						if x.is_parenthesised_twice(x.real(path_node)) {
+						if x.is_parenthesised_twice(path_node) {
 							skip = true
 							break
 						}
@@ -854,8 +804,7 @@ fn (mut x SnepCtx) init_exit(node int) {
 			if !skip && node_to_exclude >= 0 {
 				// removeFromCurrentReportsBuffer.
 				last := x.buffers.len - 1
-				x.buffers[last].reports = x.buffers[last].reports.filter(it.ref.fake
-					|| it.ref.node != node_to_exclude)
+				x.buffers[last].reports = x.buffers[last].reports.filter(it.node != node_to_exclude)
 			}
 		}
 	}
@@ -898,67 +847,67 @@ fn (mut x SnepCtx) ignore_let(node int, needs_bracket bool) {
 }
 
 // check_argument_with_precedence ports checkArgumentWithPrecedence.
-fn (mut x SnepCtx) check_argument_with_precedence(node int, argument SneRef) {
-	if argument.node >= 0 && x.has_excess_parens_with_precedence(argument, x.precedence(x.real(node))) {
+fn (mut x SnepCtx) check_argument_with_precedence(node int) {
+	argument := x.child(node, .argument)
+	if argument >= 0 && x.has_excess_parens_with_precedence(argument, x.precedence(node)) {
 		x.report(argument)
 	}
 }
 
-fn (x &SnepCtx) is_logical(ref SneRef) bool {
-	return ref.typ == .logical_expression && x.operator(ref.node) in ['&&', '||']
+fn (x &SnepCtx) is_logical(node int) bool {
+	return x.t.typ(node) == .logical_expression && x.operator(node) in ['&&', '||']
 }
 
-fn (x &SnepCtx) is_coalesce(ref SneRef) bool {
-	return ref.typ == .logical_expression && x.operator(ref.node) == '??'
+fn (x &SnepCtx) is_coalesce(node int) bool {
+	return x.t.typ(node) == .logical_expression && x.operator(node) == '??'
 }
 
 // is_mixed_logical_and_coalesce_expressions ports isMixedLogicalAndCoalesceExpressions.
-fn (x &SnepCtx) is_mixed_logical_and_coalesce_expressions(left SneRef, right SneRef) bool {
+fn (x &SnepCtx) is_mixed_logical_and_coalesce_expressions(left int, right int) bool {
 	return (x.is_logical(left) && x.is_coalesce(right))
 		|| (x.is_coalesce(left) && x.is_logical(right))
+}
+
+// check_binary_logical_should_skip ports shouldSkip of checkBinaryLogical.
+fn (x &SnepCtx) check_binary_logical_should_skip(expression int) bool {
+	if x.is_type_assertion(expression) {
+		return !x.has_double_excess_parens(expression)
+	}
+	return (x.options.ignore_nested_binary
+		&& x.t.typ(expression) in [.binary_expression, .logical_expression])
+		|| !x.has_excess_parens(expression)
 }
 
 // check_binary_logical ports checkBinaryLogical.
 fn (mut x SnepCtx) check_binary_logical(node int) {
 	t := x.t
-	left_node := x.child(node, .left)
-	right_node := x.child(node, .right)
-	is_left_ta := x.is_type_assertion(left_node)
-	is_right_ta := x.is_type_assertion(right_node)
-	if is_left_ta && is_right_ta {
+	left := x.child(node, .left)
+	right := x.child(node, .right)
+	if left < 0 || right < 0 {
 		return
 	}
-	n := SneRef{
-		node: node
-		typ:  t.typ(node)
-		fake: is_left_ta || is_right_ta
-	}
-	left := x.ref_of(left_node, .sequence_expression)
-	right := x.ref_of(right_node, .sequence_expression)
-	prec := x.precedence(n)
-	left_precedence := x.precedence(left)
-	right_precedence := x.precedence(right)
+	node_precedence := x.precedence(node)
 	is_exponentiation := x.operator(node) == '**'
-	o := x.options
-	should_skip_left := o.ignore_nested_binary
-		&& left.typ in [.binary_expression, .logical_expression]
-	should_skip_right := o.ignore_nested_binary
-		&& right.typ in [.binary_expression, .logical_expression]
-	if !should_skip_left && x.has_excess_parens(left) {
+	if !x.check_binary_logical_should_skip(left) {
+		left_precedence := x.precedence(left)
 		parent := t.nodes[node].parent
+		// The parent is a ReturnStatement spanning multiple lines without parentheses.
 		return_exception := parent >= 0 && t.typ(parent) == .return_statement
-			&& !sty_same_line_offsets(t, t.nodes[parent].start, t.nodes[left.node].start)
-			&& !x.is_parenthesised(n)
-		if (!(left.typ in [.await_expression, .unary_expression] && is_exponentiation)
-			&& !x.is_mixed_logical_and_coalesce_expressions(left, n) && !return_exception
-			&& (left_precedence > prec || (left_precedence == prec && !is_exponentiation)))
+			&& !sty_same_line_offsets(t, t.nodes[parent].start, t.nodes[left].start)
+			&& !x.is_parenthesised(node)
+		if (!(t.typ(left) in [.await_expression, .unary_expression] && is_exponentiation)
+			&& !return_exception && !x.is_mixed_logical_and_coalesce_expressions(left, node)
+			&& (left_precedence > node_precedence
+			|| (left_precedence == node_precedence && !is_exponentiation)))
 			|| x.is_parenthesised_twice(left) {
 			x.report(left)
 		}
 	}
-	if !should_skip_right && x.has_excess_parens(right) {
-		if (!x.is_mixed_logical_and_coalesce_expressions(right, n)
-			&& (right_precedence > prec || (right_precedence == prec && is_exponentiation)))
+	if !x.check_binary_logical_should_skip(right) {
+		right_precedence := x.precedence(right)
+		if (!x.is_mixed_logical_and_coalesce_expressions(right, node)
+			&& (right_precedence > node_precedence
+			|| (right_precedence == node_precedence && is_exponentiation)))
 			|| x.is_parenthesised_twice(right) {
 			x.report(right)
 		}
@@ -968,59 +917,43 @@ fn (mut x SnepCtx) check_binary_logical(node int) {
 // check_call_new ports checkCallNew.
 fn (mut x SnepCtx) check_call_new(node int) {
 	t := x.t
-	callee_node := x.child(node, .callee)
-	if callee_node < 0 {
+	callee := x.child(node, .callee)
+	if callee < 0 {
 		return
 	}
-	callee := x.ref_of(callee_node, .sequence_expression)
-	n := SneRef{
-		node: node
-		typ:  t.typ(node)
-		fake: callee.fake
-	}
-	if x.has_excess_parens_with_precedence(callee, x.precedence(n)) {
-		// isIIFE(node) of the node as the check sees it: its callee may be a copy.
-		is_iife := n.typ == .call_expression && callee.typ == .function_expression
-		optional := n.typ == .call_expression && x.flag(node, .optional)
-		if x.has_double_excess_parens(callee) || !(is_iife
-			|| (callee.typ == .new_expression && !x.is_new_expression_with_parens(callee.node)
-			&& !(n.typ == .new_expression && !x.is_new_expression_with_parens(node)))
-			|| (n.typ == .new_expression && callee.typ == .member_expression
-			&& x.does_member_expression_contain_call_expression(x.real(x.child(callee.node, .object))))
-			|| (!optional && callee.typ == .chain_expression)) {
+	typ := t.typ(node)
+	callee_typ := t.typ(callee)
+	if x.has_excess_parens_with_precedence(callee, x.precedence(node)) {
+		optional := typ == .call_expression && x.flag(node, .optional)
+		if x.has_double_excess_parens(callee) || !(x.is_iife(node)
+			|| (callee_typ == .new_expression && !x.is_new_expression_with_parens(callee)
+			&& !(typ == .new_expression && !x.is_new_expression_with_parens(node)))
+			|| (typ == .new_expression && callee_typ == .member_expression
+			&& x.does_member_expression_contain_call_expression(callee))
+			|| (!optional && callee_typ == .chain_expression)) {
 			x.report(callee)
 		}
 	}
 	for argument in x.children(node, .arguments) {
-		ref := x.real(argument)
-		if x.has_excess_parens_with_precedence(ref, snep_precedence_assignment) {
-			x.report(ref)
+		if x.has_excess_parens_with_precedence(argument, snep_precedence_assignment) {
+			x.report(argument)
 		}
 	}
 }
 
-// check_class ports checkClass (a TSAsExpression super class is a SequenceExpression).
+// check_class ports checkClass.
 fn (mut x SnepCtx) check_class(node int) {
 	super_class := x.child(node, .super_class)
 	if super_class < 0 {
 		return
 	}
-	ref := if x.t.typ(super_class) == .ts_as_expression {
-		SneRef{
-			node: super_class
-			typ:  .sequence_expression
-			fake: true
-		}
+	excess := if x.precedence(super_class) > snep_precedence_update {
+		x.has_excess_parens(super_class)
 	} else {
-		x.real(super_class)
-	}
-	excess := if x.precedence(ref) > snep_precedence_update {
-		x.has_excess_parens(ref)
-	} else {
-		x.has_double_excess_parens(ref)
+		x.has_double_excess_parens(super_class)
 	}
 	if excess {
-		x.report(ref)
+		x.report(super_class)
 	}
 }
 
@@ -1030,8 +963,7 @@ fn (mut x SnepCtx) check_expression_or_export_statement(node int) {
 		return
 	}
 	t := x.t
-	ref := x.real(node)
-	first := if x.is_parenthesised(ref) {
+	first := if x.is_parenthesised(node) {
 		x.tokens.before(t.nodes[node].start, false) or { return }
 	} else {
 		un_first_token(t, x.tokens, node, 0) or { return }
@@ -1061,7 +993,7 @@ fn (mut x SnepCtx) check_expression_or_export_statement(node int) {
 					ignore = th.kind == .keyword && x.c.token_text(th) == 'function'
 				}
 			}
-			// veslint keeps these parentheses on purpose (@stylistic 5.10.0 removes them): without
+			// veslint keeps these parentheses on purpose (@stylistic 6.0.1 removes them): without
 			// them, TypeScript parses `type satisfies never;` or `(namespace) as X;` as a declaration.
 			if !ignore {
 				if a := after_closing {
@@ -1075,12 +1007,12 @@ fn (mut x SnepCtx) check_expression_or_export_statement(node int) {
 	}
 	parent := t.nodes[node].parent
 	excess := if parent >= 0 && t.typ(parent) == .export_default_declaration {
-		x.has_excess_parens_with_precedence(ref, snep_precedence_assignment)
+		x.has_excess_parens_with_precedence(node, snep_precedence_assignment)
 	} else {
-		x.has_excess_parens(ref)
+		x.has_excess_parens(node)
 	}
 	if excess {
-		x.report(ref)
+		x.report(node)
 	}
 }
 
@@ -1113,55 +1045,58 @@ fn (x &SnepCtx) starts_declaration(word SourceToken, next SourceToken) bool {
 	}
 }
 
-// check_unary_update ports checkUnaryUpdate.
-fn (mut x SnepCtx) check_unary_update(node int) {
-	argument := x.child(node, .argument)
-	if argument < 0 {
-		return
-	}
-	x.check_argument_with_precedence(node, x.ref_of(argument, .sequence_expression))
-}
-
 // check_class_property ports checkClassProperty.
 fn (mut x SnepCtx) check_class_property(node int) {
 	key := x.child(node, .key)
 	if x.flag(node, .computed) && key >= 0
-		&& x.has_excess_parens_with_precedence(x.real(key), snep_precedence_assignment) {
-		x.report(x.real(key))
+		&& x.has_excess_parens_with_precedence(key, snep_precedence_assignment) {
+		x.report(key)
 	}
 	value := x.child(node, .value)
-	if value >= 0 && x.has_excess_parens_with_precedence(x.real(value), snep_precedence_assignment) {
-		x.report(x.real(value))
+	if value >= 0 && x.has_excess_parens_with_precedence(value, snep_precedence_assignment) {
+		x.report(value)
 	}
+}
+
+// check_spread ports checkSpread.
+fn (mut x SnepCtx) check_spread(node int) {
+	o := x.options
+	argument := x.child(node, .argument)
+	if argument < 0 || x.is_type_assertion(argument) {
+		return
+	}
+	if o.has_allow_nodes_in_spread && x.t.typ(argument).type_name() in o.allow_nodes_in_spread {
+		return
+	}
+	x.report_if_excess_with_precedence(argument, snep_precedence_assignment)
 }
 
 // check_ts_binary_type ports checkTSBinaryType.
 fn (mut x SnepCtx) check_ts_binary_type(node int) {
-	prec := x.precedence(x.real(node))
+	prec := x.precedence(node)
 	for typ in x.children(node, .types) {
-		ref := x.real(typ)
 		excess := if x.options.ignore_nested_binary
-			&& ref.typ in [.ts_union_type, .ts_intersection_type] {
-			x.is_parenthesised_twice(ref)
+			&& x.t.typ(typ) in [.ts_union_type, .ts_intersection_type] {
+			x.is_parenthesised_twice(typ)
 		} else {
-			x.has_excess_parens_with_precedence(ref, prec)
+			x.has_excess_parens_with_precedence(typ, prec)
 		}
 		if excess {
-			x.report(ref)
+			x.report(typ)
 		}
 	}
 }
 
 // report_if is `if (hasExcessParens(node)) report(node)` for a child that may be missing.
 fn (mut x SnepCtx) report_if_excess(node int) {
-	if node >= 0 && x.has_excess_parens(x.real(node)) {
-		x.report(x.real(node))
+	if node >= 0 && x.has_excess_parens(node) {
+		x.report(node)
 	}
 }
 
 fn (mut x SnepCtx) report_if_excess_with_precedence(node int, lower_limit int) {
-	if node >= 0 && x.has_excess_parens_with_precedence(x.real(node), lower_limit) {
-		x.report(x.real(node))
+	if node >= 0 && x.has_excess_parens_with_precedence(node, lower_limit) {
+		x.report(node)
 	}
 }
 
@@ -1172,13 +1107,7 @@ fn (mut x SnepCtx) listen(node int) bool {
 	match t.typ(node) {
 		.array_expression {
 			for element in x.children(node, .elements) {
-				if element < 0 {
-					continue
-				}
-				ref := x.ref_of(element, .function_expression)
-				if x.has_excess_parens_with_precedence(ref, snep_precedence_assignment) {
-					x.report(ref)
-				}
+				x.report_if_excess_with_precedence(element, snep_precedence_assignment)
 			}
 		}
 		.array_pattern {
@@ -1190,13 +1119,7 @@ fn (mut x SnepCtx) listen(node int) bool {
 		}
 		.arrow_function_expression {
 			body := x.child(node, .body)
-			if body < 0 || x.is_type_assertion(body) || x.is_return_assign_exception(node) {
-				return true
-			}
-			if t.typ(body) == .conditional_expression && o.ignore_arrow_conditionals {
-				return true
-			}
-			if t.typ(body) == .block_statement {
+			if body < 0 {
 				return true
 			}
 			if first := x.first_token_not_paren(body) {
@@ -1206,18 +1129,27 @@ fn (mut x SnepCtx) listen(node int) bool {
 					}
 				}
 			}
+			if x.is_type_assertion(body) || x.is_return_assign_exception(node) {
+				return true
+			}
+			if t.typ(body) == .conditional_expression && o.ignore_arrow_conditionals {
+				return true
+			}
+			if t.typ(body) == .block_statement {
+				return true
+			}
 			x.report_if_excess_with_precedence(body, snep_precedence_assignment)
 		}
 		.assignment_expression {
 			left := x.child(node, .left)
 			right := x.child(node, .right)
-			if x.can_be_assignment_target(left) && x.has_excess_parens(x.real(left))
+			if x.can_be_assignment_target(left) && x.has_excess_parens(left)
 				&& (!x.is_anonymous_function_assignment_exception(node, left, right)
-				|| x.is_parenthesised_twice(x.real(left))) {
-				x.report(x.real(left))
+				|| x.is_parenthesised_twice(left)) {
+				x.report(left)
 			}
 			if !x.is_return_assign_exception(node) {
-				x.report_if_excess_with_precedence(right, x.precedence(x.real(node)))
+				x.report_if_excess_with_precedence(right, x.precedence(node))
 			}
 		}
 		.assignment_pattern {
@@ -1227,8 +1159,8 @@ fn (mut x SnepCtx) listen(node int) bool {
 			}
 			x.report_if_excess_with_precedence(x.child(node, .right), snep_precedence_assignment)
 		}
-		.await_expression {
-			x.check_unary_update(node)
+		.await_expression, .unary_expression {
+			x.check_argument_with_precedence(node)
 		}
 		.binary_expression {
 			if x.buffers.len > 0 && x.operator(node) == 'in' {
@@ -1281,13 +1213,13 @@ fn (mut x SnepCtx) listen(node int) bool {
 		}
 		.for_statement {
 			test := x.child(node, .test)
-			if test >= 0 && x.has_excess_parens(x.real(test))
+			if test >= 0 && x.has_excess_parens(test)
 				&& !x.is_cond_assign_exception(x.test_type(node)) && !x.is_type_assertion(test) {
-				x.report(x.real(test))
+				x.report(test)
 			}
 			update := x.child(node, .update)
-			if update >= 0 && x.has_excess_parens(x.real(update)) && !x.is_type_assertion(update) {
-				x.report(x.real(update))
+			if update >= 0 && x.has_excess_parens(update) && !x.is_type_assertion(update) {
+				x.report(update)
 			}
 			init := x.child(node, .init)
 			if init >= 0 && !x.is_type_assertion(init) {
@@ -1302,13 +1234,16 @@ fn (mut x SnepCtx) listen(node int) bool {
 			source := x.child(node, .source)
 			if source >= 0 {
 				if t.typ(source) == .sequence_expression {
-					if x.has_double_excess_parens(x.real(source)) {
-						x.report(x.real(source))
+					if x.has_double_excess_parens(source) {
+						x.report(source)
 					}
 				} else {
 					x.report_if_excess(source)
 				}
 			}
+		}
+		.jsx_spread_attribute, .spread_element {
+			x.check_spread(node)
 		}
 		.logical_expression {
 			x.check_binary_logical(node)
@@ -1356,29 +1291,16 @@ fn (mut x SnepCtx) listen(node int) bool {
 				return true
 			}
 			argument := x.child(node, .argument)
-			if argument >= 0 {
-				ref := x.real(argument)
-				if x.has_excess_parens_no_line_terminator(return_token, ref)
-					&& !x.is_regexp_literal(ref) {
-					x.report(ref)
-				}
+			if argument >= 0 && x.has_excess_parens_no_line_terminator(return_token, argument)
+				&& !x.is_regexp_literal(argument) {
+				x.report(argument)
 			}
 		}
 		.sequence_expression {
-			prec := x.precedence(x.real(node))
+			prec := x.precedence(node)
 			for expression in x.children(node, .expressions) {
 				x.report_if_excess_with_precedence(expression, prec)
 			}
-		}
-		.spread_element {
-			argument := x.child(node, .argument)
-			if argument < 0 || x.is_type_assertion(argument) {
-				return true
-			}
-			if o.has_allow_nodes_in_spread && t.typ(argument).type_name() in o.allow_nodes_in_spread {
-				return true
-			}
-			x.report_if_excess_with_precedence(argument, snep_precedence_assignment)
 		}
 		.switch_case {
 			test := x.child(node, .test)
@@ -1400,39 +1322,31 @@ fn (mut x SnepCtx) listen(node int) bool {
 				return true
 			}
 			throw_token := un_first_token(t, x.tokens, node, 0) or { return true }
-			if x.has_excess_parens_no_line_terminator(throw_token, x.real(argument)) {
-				x.report(x.real(argument))
+			if x.has_excess_parens_no_line_terminator(throw_token, argument) {
+				x.report(argument)
 			}
-		}
-		.unary_expression {
-			x.check_unary_update(node)
 		}
 		.update_expression {
 			argument := x.child(node, .argument)
 			if argument < 0 {
 				return true
 			}
-			if x.is_type_assertion(argument) {
-				x.check_unary_update(node)
-			} else if x.flag(node, .prefix) {
-				x.check_argument_with_precedence(node, x.real(argument))
+			if x.flag(node, .prefix) {
+				x.check_argument_with_precedence(node)
 			} else {
 				last := un_last_token(t, x.tokens, node) or { return true }
 				if sty_same_line_offsets(t, t.nodes[argument].end, last.start) {
-					x.check_argument_with_precedence(node, x.real(argument))
-				} else if x.has_double_excess_parens(x.real(argument)) {
-					x.report(x.real(argument))
+					x.check_argument_with_precedence(node)
+				} else if x.has_double_excess_parens(argument) {
+					x.report(argument)
 				}
 			}
 		}
 		.variable_declarator {
 			init := x.child(node, .init)
-			if init >= 0 {
-				ref := x.ref_of(init, .function_expression)
-				if x.has_excess_parens_with_precedence(ref, snep_precedence_assignment)
-					&& !x.is_regexp_literal(ref) {
-					x.report(ref)
-				}
+			if init >= 0 && x.has_excess_parens_with_precedence(init, snep_precedence_assignment)
+				&& !x.is_regexp_literal(init) {
+				x.report(init)
 			}
 		}
 		.with_statement {
@@ -1443,19 +1357,37 @@ fn (mut x SnepCtx) listen(node int) bool {
 			if argument < 0 || x.is_type_assertion(argument) {
 				return true
 			}
-			ref := x.real(argument)
 			mut matched := false
-			if x.precedence(ref) >= x.precedence(x.real(node)) {
+			if x.precedence(argument) >= x.precedence(node) {
 				if yield_token := un_first_token(t, x.tokens, node, 0) {
-					matched = x.has_excess_parens_no_line_terminator(yield_token, ref)
+					matched = x.has_excess_parens_no_line_terminator(yield_token, argument)
 				}
 			}
-			if matched || x.has_double_excess_parens(ref) {
-				x.report(ref)
+			if matched || x.has_double_excess_parens(argument) {
+				x.report(argument)
 			}
 		}
 		.ts_array_type {
-			x.report_if_excess_with_precedence(x.child(node, .element_type), x.precedence(x.real(node)))
+			x.report_if_excess_with_precedence(x.child(node, .element_type), x.precedence(node))
+		}
+		.ts_indexed_access_type {
+			x.report_if_excess_with_precedence(x.child(node, .object_type), x.precedence(node))
+			x.report_if_excess(x.child(node, .index_type))
+		}
+		.ts_conditional_type {
+			// The check type and extends type are not checked, as a nested conditional type needs
+			// its parens there.
+			x.report_if_excess(x.child(node, .true_type))
+			x.report_if_excess(x.child(node, .false_type))
+		}
+		.ts_type_parameter {
+			x.report_if_excess(x.child(node, .constraint))
+			x.report_if_excess(x.child(node, .default_))
+		}
+		.ts_type_parameter_instantiation {
+			for param in x.children(node, .params) {
+				x.report_if_excess(param)
+			}
 		}
 		.ts_intersection_type, .ts_union_type {
 			x.check_ts_binary_type(node)
@@ -1486,91 +1418,79 @@ fn (x &SnepCtx) is_anonymous_function_assignment_exception(node int, left int, r
 	return typ in [.function_expression, .class_expression] && x.child(right, .id) < 0
 }
 
-// check_conditional ports the ConditionalExpression listener: the first type assertion of the
-// test, the consequent and the alternate is a SequenceExpression.
-fn (mut x SnepCtx) check_conditional(node int) {
-	test_node := x.child(node, .test)
-	consequent_node := x.child(node, .consequent)
-	alternate_node := x.child(node, .alternate)
-	mut test := x.real(test_node)
-	mut consequent := x.real(consequent_node)
-	mut alternate := x.real(alternate_node)
-	if x.is_type_assertion(test_node) {
-		test = x.ref_of(test_node, .sequence_expression)
-	} else if x.is_type_assertion(consequent_node) {
-		consequent = x.ref_of(consequent_node, .sequence_expression)
-	} else if x.is_type_assertion(alternate_node) {
-		alternate = x.ref_of(alternate_node, .sequence_expression)
+// check_conditional_should_check ports shouldCheck of the ConditionalExpression listener.
+fn (x &SnepCtx) check_conditional_should_check(expression int, precedence_limit int) bool {
+	return if x.is_type_assertion(expression) {
+		x.has_double_excess_parens(expression)
+	} else {
+		x.has_excess_parens_with_precedence(expression, precedence_limit)
 	}
-	if x.is_return_assign_exception(node) {
+}
+
+// check_conditional ports the ConditionalExpression listener.
+fn (mut x SnepCtx) check_conditional(node int) {
+	t := x.t
+	test := x.child(node, .test)
+	consequent := x.child(node, .consequent)
+	alternate := x.child(node, .alternate)
+	if test < 0 || consequent < 0 || alternate < 0 || x.is_return_assign_exception(node) {
 		return
 	}
 	o := x.options
 	binary := [estree.NodeType.binary_expression, .logical_expression]
-	if !(o.except_cond_ternary && test.typ in binary)
-		&& !(o.allow_nested_ternary && test.typ == .conditional_expression)
-		&& !x.is_cond_assign_exception(test.typ)
-		&& x.has_excess_parens_with_precedence(test, snep_precedence_or) {
+	if !(o.except_cond_ternary && t.typ(test) in binary)
+		&& !(o.allow_nested_ternary && t.typ(test) == .conditional_expression)
+		&& !x.is_cond_assign_exception(t.typ(test))
+		&& x.check_conditional_should_check(test, snep_precedence_or) {
 		x.report(test)
 	}
-	if !(o.except_cond_ternary && consequent.typ in binary)
-		&& !(o.allow_nested_ternary && consequent.typ == .conditional_expression)
-		&& x.has_excess_parens_with_precedence(consequent, snep_precedence_assignment) {
+	if !(o.except_cond_ternary && t.typ(consequent) in binary)
+		&& !(o.allow_nested_ternary && t.typ(consequent) == .conditional_expression)
+		&& x.check_conditional_should_check(consequent, snep_precedence_assignment) {
 		x.report(consequent)
 	}
-	if !(o.except_cond_ternary && alternate.typ in binary)
-		&& !(o.allow_nested_ternary && alternate.typ == .conditional_expression)
-		&& x.has_excess_parens_with_precedence(alternate, snep_precedence_assignment) {
+	if !(o.except_cond_ternary && t.typ(alternate) in binary)
+		&& !(o.allow_nested_ternary && t.typ(alternate) == .conditional_expression)
+		&& x.check_conditional_should_check(alternate, snep_precedence_assignment) {
 		x.report(alternate)
 	}
 }
 
-// check_member ports the MemberExpression listener: a type assertion object is a
-// SequenceExpression, else a type assertion property is a FunctionExpression.
+// check_member ports the MemberExpression listener.
 fn (mut x SnepCtx) check_member(node int) {
 	t := x.t
-	object_node := x.child(node, .object)
-	property_node := x.child(node, .property)
-	if object_node < 0 || property_node < 0 {
+	object := x.child(node, .object)
+	property := x.child(node, .property)
+	if object < 0 || property < 0 {
 		return
-	}
-	mut object := x.real(object_node)
-	mut property := x.real(property_node)
-	if x.is_type_assertion(object_node) {
-		object = x.ref_of(object_node, .sequence_expression)
-	} else if x.is_type_assertion(property_node) {
-		property = x.ref_of(property_node, .function_expression)
-	}
-	n := SneRef{
-		node: node
-		typ:  .member_expression
-		fake: object.fake || property.fake
 	}
 	o := x.options
 	computed := x.flag(node, .computed)
 	parent := t.nodes[node].parent
-	mut has_excess := false
-	if x.is_member_exp_in_new_callee(n) && x.does_member_expression_contain_call_expression(object) {
-		has_excess = x.has_double_excess_parens(object)
+	is_object_type_assertion := x.is_type_assertion(object)
+	should_allow_wrap_once := is_object_type_assertion
+		|| (x.is_member_exp_in_new_callee(node)
+		&& x.does_member_expression_contain_call_expression(node))
+	has_excess := if should_allow_wrap_once {
+		x.has_double_excess_parens(object)
 	} else {
-		parent_is_call_of_node := !n.fake && parent >= 0
-			&& x.child(parent, .callee) == node
-		has_excess = x.has_excess_parens(object)
-			&& !(parent >= 0 && x.is_immediate_function_prototype_method_call(x.real(parent))
-			&& parent_is_call_of_node && o.ignore_function_prototype)
+		x.has_excess_parens(object) && !(parent >= 0
+			&& x.is_immediate_function_prototype_method_call(parent)
+			&& x.child(parent, .callee) == node && o.ignore_function_prototype)
 	}
-	if has_excess && x.precedence(object) >= x.precedence(n)
+	object_typ := t.typ(object)
+	if has_excess && x.precedence(object) >= x.precedence(node)
 		&& (computed || !(x.is_decimal_integer(object) || x.is_regexp_literal(object))) {
 		x.report(object)
 	}
-	if has_excess && object.typ == .call_expression {
+	if has_excess && (is_object_type_assertion || object_typ == .call_expression) {
 		x.report(object)
 	}
-	if has_excess && !o.ignore_new_in_member_expr && object.typ == .new_expression
-		&& x.is_new_expression_with_parens(object.node) {
+	if has_excess && !o.ignore_new_in_member_expr && object_typ == .new_expression
+		&& x.is_new_expression_with_parens(object) {
 		x.report(object)
 	}
-	if has_excess && x.flag(node, .optional) && object.typ == .chain_expression {
+	if has_excess && x.flag(node, .optional) && object_typ == .chain_expression {
 		x.report(object)
 	}
 	if computed && x.has_excess_parens(property) {
