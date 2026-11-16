@@ -1,4 +1,4 @@
-// Default options: no space before the colon, one after; a space on both sides of `=>`.
+// The colons of type annotations (no space before, one after by default), and `=>`, no longer checked in 6.0.
 let a1:string;
 let a2 : string;
 let a3 :string;
