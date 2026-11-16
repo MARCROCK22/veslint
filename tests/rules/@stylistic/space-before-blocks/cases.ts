@@ -38,3 +38,9 @@ function f9(): void{}
 function f10(x: number): x is 1{ return true }
 const f11 = (): void =>{};
 type T = { a: 1 };
+// 6.0.0: the brace of a class body after the `class` keyword
+const sbb6A = (class{ static{} });
+const sbb6B = (class { static {} });
+const sbb6C = (class  {});
+export default class{}
+export { sbb6A, sbb6B, sbb6C };

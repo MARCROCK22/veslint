@@ -4,7 +4,7 @@ import estree
 import time
 import x.json2
 
-// Port of the `@stylistic/space-before-blocks` rule of @stylistic/eslint-plugin 5.10.0, with its
+// Port of the `@stylistic/space-before-blocks` rule of @stylistic/eslint-plugin 6.0.1, with its
 // options (`"always"`, the default, `"never"`, or an object with `keywords`, `functions`,
 // `classes` and `modules`, each `"always"`, `"never"` or `"off"`) and its fixes.
 
@@ -13,8 +13,7 @@ const ssbb_messages = {
 	'missingSpace':    'Missing space before opening brace.'
 }
 
-// SsbbSpacing is what a kind of block asks: `always` (requireSpace), `never` (requireNoSpace),
-// or neither.
+// SsbbSpacing is what a kind of block asks: `always`, `never`, or neither (`off`).
 struct SsbbSpacing {
 	always bool
 	never  bool
@@ -31,8 +30,10 @@ fn ssbb_options(given []json2.Any) !SsbbOptions {
 	options := sty_options(given, [json2.Any('always')])
 	config := if options.len > 0 { options[0] } else { json2.Any(json2.Null{}) }
 	if config is map[string]json2.Any {
+		// categoryConfig: `{ functions: 'always', keywords: 'always', classes: 'always', modules:
+		// 'always', ...config }`
 		spacing := fn [config] (key string) SsbbSpacing {
-			value := sty_option_string([config[key] or { json2.Any(json2.Null{}) }], 0, '')
+			value := sty_option_string([config[key] or { json2.Any('always') }], 0, '')
 			return SsbbSpacing{value == 'always', value == 'never'}
 		}
 		return SsbbOptions{
@@ -97,12 +98,13 @@ fn ssbb_is_function_body(t &estree.EsTree, node int) bool {
 }
 
 // ssbb_is_conflicted ports isConflicted: the spacing is checked by `arrow-spacing`,
-// `keyword-spacing` or `switch-colon-spacing`.
+// `keyword-spacing` (not that of a class body, as `class{}`) or `switch-colon-spacing`.
 fn (c &Checker) ssbb_is_conflicted(t &estree.EsTree, tokens &SourceTokens, preceding SourceToken, node int) bool {
 	if c.token_is(preceding, '=>') {
 		return true
 	}
-	if preceding.kind == .keyword && !ssbb_is_function_body(t, node) {
+	if preceding.kind == .keyword && !ssbb_is_function_body(t, node)
+		&& (node < 0 || t.typ(node) != .class_body) {
 		return true
 	}
 	if c.token_is(preceding, ':') && node >= 0 {
