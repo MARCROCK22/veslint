@@ -7,7 +7,8 @@
 #   1. download the tarball of the commit (no git repository);
 #   2. `bun install --frozen-lockfile --ignore-scripts` (local, without install scripts), then the
 #      versions veslint ports on top of Spider-Byte's lockfile: ESLint 10.15.0, typescript-eslint
-#      8.72.2 and eslint-plugin-unicorn 79.0.0 (the versions of @marcrock22/eslintcf 0.0.1). These
+#      8.72.2, eslint-plugin-unicorn 79.0.0 and @stylistic/eslint-plugin 6.0.1 (the versions of
+#      @marcrock22/eslintcf). These
 #      packages are the oracle of the other test scripts too (tests/rules/*.sh, tools/).
 set -uo pipefail
 cd "$(dirname "$0")/.."
@@ -49,8 +50,9 @@ if [[ ! -d $SB/node_modules ]]; then
 	(cd "$SB" && bun install --frozen-lockfile --ignore-scripts)
 fi
 ORACLES=(eslint@10.15.0 typescript-eslint@8.72.2 eslint-plugin-unicorn@79.0.0 @typescript-eslint/utils@8.72.2
-	@typescript-eslint/parser@8.72.2)
-if [[ $(node -p "require('$SB/node_modules/eslint/package.json').version" 2> /dev/null) != 10.15.0 ]]; then
+	@typescript-eslint/parser@8.72.2 @stylistic/eslint-plugin@6.0.1)
+if [[ $(node -p "require('$SB/node_modules/eslint/package.json').version" 2> /dev/null) != 10.15.0 ||
+	$(node -p "require('$SB/node_modules/@stylistic/eslint-plugin/package.json').version" 2> /dev/null) != 6.0.1 ]]; then
 	(cd "$SB" && bun add -d --ignore-scripts "${ORACLES[@]}")
 fi
 [[ -x ./veslint ]] || make build

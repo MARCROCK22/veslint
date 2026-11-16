@@ -5,7 +5,7 @@ import time
 import x.json2
 
 // Port of the `@stylistic/nonblock-statement-body-position` rule of @stylistic/eslint-plugin
-// 5.10.0, with its options (`"beside"`, the default, `"below"` or `"any"`, and `overrides` per
+// 6.0.1, with its options (`"beside"`, the default, `"below"` or `"any"`, and `overrides` per
 // keyword: `if`, `else`, `while`, `do` and `for`) and its fixes.
 
 const snsbp_messages = {

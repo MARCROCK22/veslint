@@ -4,7 +4,7 @@ import estree
 import time
 import x.json2
 
-// Port of the `@stylistic/arrow-spacing` rule of @stylistic/eslint-plugin 5.10.0, with its options
+// Port of the `@stylistic/arrow-spacing` rule of @stylistic/eslint-plugin 6.0.1, with its options
 // (`before` and `after`, true by default) and its fixes.
 
 const sarws_messages = {

@@ -4,7 +4,7 @@ import estree
 import time
 import x.json2
 
-// Port of the `@stylistic/function-call-spacing` rule of @stylistic/eslint-plugin 5.10.0, with
+// Port of the `@stylistic/function-call-spacing` rule of @stylistic/eslint-plugin 6.0.1, with
 // its options (`"never"`, the default, or `"always"` with `allowNewlines` and `optionalChain`) and
 // its fixes: the spacing between the callee of a call, a `new` or an `import()` and its `(`.
 

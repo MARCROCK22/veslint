@@ -2,6 +2,16 @@
 
 Each version is a release on GitHub with the veslint binaries (Linux x64, Windows x64) and the VS Code extension. The section of a version is the text of its release.
 
+## 0.26.0
+
+- **@stylistic/eslint-plugin 6.0.1:** the 54 `@stylistic/*` rules follow 6.0.1 (they followed 5.10.0) and pass the cases of its tests. What changes for a configuration:
+  - `@stylistic/exp-list-style` is now `@stylistic/list-style`; its overrides take `multiLine` (not `multiline`), and the new option `empty` handles empty lists, imports and exports.
+  - New defaults: `dot-location` is `property`, and `no-multi-spaces` has no `exceptions`.
+  - Options removed: `"avoid-escape"` and a boolean `allowTemplateLiterals` of `quotes`, `"unix"` and `"windows"` of `eol-last`, the boolean of `no-mixed-spaces-and-tabs`, `overrides.arrow` of `type-annotation-spacing` (which no longer checks `=>`). A configuration that still has them is rejected, as ESLint does.
+  - New options: `before` and `after` of `type-generic-spacing`, `ignoreOperators` of `space-infix-ops`, the `questionMark` override and `"ignore"` of `type-annotation-spacing`.
+  - What the rules report: the `=` of a type parameter's default is checked by `space-infix-ops` (no longer by `type-generic-spacing`); the space before a class body's `{` by `space-before-blocks` (no longer by `keyword-spacing`); `keyword-spacing` checks `for await` as `for` and keeps comments in its fixes; `no-extra-parens` checks more type positions and JSX spread attributes and keeps the parentheses of an arrow body that starts with an object literal; `list-style` finds the `]` of a typed array pattern and the `)` of a call whose last argument is parenthesized (it no longer undoes `type-annotation-spacing` on `([a, b]: T) => …`); and fixes in `block-spacing`, `comma-spacing`, `key-spacing`, `multiline-ternary`, `object-curly-spacing`, `rest-spread-spacing`, `space-before-function-paren` and `spaced-comment`.
+- `@marcrock22/eslintcf` uses @stylistic 6 too (with `list-style`).
+
 ## 0.25.2
 
 - **`--fix` stops at a fix that breaks the code:** when the fixes of a pass give code that TypeScript's parser rejects, the file is reported with that error, `Parsing error: …`, and nothing else, and it is not fixed further, as ESLint does. tree-sitter reads some of that code (`type satisfies never;`, a declaration `type satisfies` without `=`; `<T>(x: T) => x` in a `.tsx` file, an unclosed JSX element), and such a fix went on unnoticed. Only the errors the fixes add count: the parser of tsgo 7.1 rejects some code that the one of TypeScript 6.0.3, which ESLint uses, takes (`x < 0 as any ** 2`).

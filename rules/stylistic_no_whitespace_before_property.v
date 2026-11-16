@@ -3,7 +3,7 @@ module rules
 import estree
 import time
 
-// Port of the `@stylistic/no-whitespace-before-property` rule of @stylistic/eslint-plugin 5.10.0,
+// Port of the `@stylistic/no-whitespace-before-property` rule of @stylistic/eslint-plugin 6.0.1,
 // with its fixes: whitespace before the property of a MemberExpression, the index of a
 // TSIndexedAccessType, the right side of a TSQualifiedName and the qualifier of a TSImportType.
 

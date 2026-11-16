@@ -4,7 +4,7 @@ import estree
 import time
 import x.json2
 
-// Port of the `@stylistic/exp-jsx-props-style` rule of @stylistic/eslint-plugin 5.10.0
+// Port of the `@stylistic/exp-jsx-props-style` rule of @stylistic/eslint-plugin 6.0.1
 // (experimental, rules/jsx-props-style), with its options (`singleLine.maxItems`,
 // `multiLine.minItems` and `multiLine.maxItemsPerLine`) and its fixes: the line breaks between the
 // attributes of a JSX opening element.

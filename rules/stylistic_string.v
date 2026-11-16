@@ -2,7 +2,7 @@ module rules
 
 import jsregexp
 
-// sty_string_length ports getStringLength of @stylistic/eslint-plugin 5.10.0
+// sty_string_length ports getStringLength of @stylistic/eslint-plugin 6.0.1
 // (shared/utils/string.ts): the length of a string of printable ASCII characters, else its number
 // of graphemes as Intl.Segmenter counts them (the extended grapheme clusters of UAX #29, without
 // the Indic conjunct rule GB9c).

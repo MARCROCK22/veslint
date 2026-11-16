@@ -3,7 +3,7 @@ module rules
 import time
 import x.json2
 
-// Port of the `@stylistic/implicit-arrow-linebreak` rule of @stylistic/eslint-plugin 5.10.0, with
+// Port of the `@stylistic/implicit-arrow-linebreak` rule of @stylistic/eslint-plugin 6.0.1, with
 // its option (`"beside"`, the default, or `"below"`) and its fixes.
 
 const sial_messages = {

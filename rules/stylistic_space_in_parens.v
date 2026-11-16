@@ -5,7 +5,7 @@ import treesitter { node_kind }
 import time
 import x.json2
 
-// Port of the `@stylistic/space-in-parens` rule of @stylistic/eslint-plugin 5.10.0, with its
+// Port of the `@stylistic/space-in-parens` rule of @stylistic/eslint-plugin 6.0.1, with its
 // options (`"always"` or `"never"`, the default, and the `exceptions` `{}`, `[]`, `()` and
 // `empty`) and its fixes.
 

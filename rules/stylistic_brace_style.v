@@ -4,7 +4,7 @@ import estree
 import time
 import x.json2
 
-// Port of the `@stylistic/brace-style` rule of @stylistic/eslint-plugin 5.10.0, with its options
+// Port of the `@stylistic/brace-style` rule of @stylistic/eslint-plugin 6.0.1, with its options
 // (`"1tbs"`, the default, `"stroustrup"` or `"allman"`, and `allowSingleLine`) and its fixes.
 
 const sbs_messages = {

@@ -1,4 +1,4 @@
-// Stands in for shared/test-utils (`#test`) of eslint-stylistic v5.10.0 while
+// Stands in for shared/test-utils (`#test`) of eslint-stylistic v6.0.1 while
 // tools/gen_upstream_cases.mjs loads the test files of @stylistic/eslint-plugin: `run(…)` of
 // eslint-vitest-rule-tester 3.1.0 records the cases instead of running them, each normalized as
 // its normalizeTestCase and normalizeCaseError normalize them (a string error is a messageId; the

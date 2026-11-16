@@ -4,7 +4,7 @@ import estree
 import time
 import x.json2
 
-// Port of the `@stylistic/arrow-parens` rule of @stylistic/eslint-plugin 5.10.0, with its options
+// Port of the `@stylistic/arrow-parens` rule of @stylistic/eslint-plugin 6.0.1, with its options
 // (`"always"`, the default, or `"as-needed"` with `requireForBlockBody`) and its fixes: the
 // parentheses around the single parameter of an arrow function.
 

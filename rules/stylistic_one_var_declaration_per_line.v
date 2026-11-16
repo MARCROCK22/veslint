@@ -3,7 +3,7 @@ module rules
 import time
 import x.json2
 
-// Port of the `@stylistic/one-var-declaration-per-line` rule of @stylistic/eslint-plugin 5.10.0,
+// Port of the `@stylistic/one-var-declaration-per-line` rule of @stylistic/eslint-plugin 6.0.1,
 // with its option (`"initializations"`, the default, or `"always"`) and its fixes.
 
 const sovdpl_messages = {

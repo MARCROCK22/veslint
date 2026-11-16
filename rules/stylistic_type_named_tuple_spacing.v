@@ -3,7 +3,7 @@ module rules
 import estree
 import time
 
-// Port of the `@stylistic/type-named-tuple-spacing` rule of @stylistic/eslint-plugin 5.10.0 (no
+// Port of the `@stylistic/type-named-tuple-spacing` rule of @stylistic/eslint-plugin 6.0.1 (no
 // options), with its fixes.
 
 const stnts_messages = {

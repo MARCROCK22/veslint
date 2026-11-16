@@ -4,7 +4,7 @@ import estree
 import time
 import x.json2
 
-// Port of the `@stylistic/semi-style` rule of @stylistic/eslint-plugin 5.10.0, with its option
+// Port of the `@stylistic/semi-style` rule of @stylistic/eslint-plugin 6.0.1, with its option
 // (`"last"`, the default, or `"first"`) and its fixes.
 
 const ssms_messages = {

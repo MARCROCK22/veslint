@@ -4,7 +4,7 @@ import estree
 import time
 import x.json2
 
-// Port of the `@stylistic/member-delimiter-style` rule of @stylistic/eslint-plugin 5.10.0, with its
+// Port of the `@stylistic/member-delimiter-style` rule of @stylistic/eslint-plugin 6.0.1, with its
 // options (`multiline` and `singleline`, each with `delimiter` and `requireLast`, `overrides` for
 // `interface` and `typeLiteral`, and `multilineDetection`) and its fixes: the delimiters after the
 // members of interfaces and type literals.

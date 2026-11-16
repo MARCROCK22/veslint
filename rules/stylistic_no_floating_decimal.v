@@ -2,7 +2,7 @@ module rules
 
 import time
 
-// Port of the `@stylistic/no-floating-decimal` rule of @stylistic/eslint-plugin 5.10.0, with its
+// Port of the `@stylistic/no-floating-decimal` rule of @stylistic/eslint-plugin 6.0.1, with its
 // fixes.
 
 const snfd_messages = {

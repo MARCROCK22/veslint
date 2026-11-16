@@ -4,7 +4,7 @@ import estree
 import time
 import x.json2
 
-// Port of the `@stylistic/space-unary-ops` rule of @stylistic/eslint-plugin 5.10.0, with its
+// Port of the `@stylistic/space-unary-ops` rule of @stylistic/eslint-plugin 6.0.1, with its
 // options (`words`, `nonwords` and `overrides`) and its fixes: the spaces after the word operators
 // (`typeof`, `void`, `delete`, `new`, `yield`, `await`) and around the other unary and update
 // operators and the `!` of non-null assertions.

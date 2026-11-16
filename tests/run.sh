@@ -1014,7 +1014,7 @@ mapfile -t core_upstream < <(find tests/rules -mindepth 2 -maxdepth 2 -name upst
 # of v79.0.0), the same way.
 mapfile -t unicorn_upstream < <(upstream_rules_of unicorn)
 # The rules of @stylistic/eslint-plugin (tests/rules/@stylistic/<rule>/upstream.json, from
-# rules/<rule>/*.test.ts of eslint-stylistic v5.10.0), the same way.
+# rules/<rule>/*.test.ts of eslint-stylistic v6.0.1), the same way.
 mapfile -t stylistic_upstream < <([[ -d tests/rules/@stylistic ]] && upstream_rules_of @stylistic)
 # The rules of eslint-plugin-perfectionist (tests/rules/perfectionist/<rule>/upstream.json, from
 # test/rules/<rule>.test.ts of v5.13.0), the same way.

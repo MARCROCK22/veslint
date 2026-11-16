@@ -3,7 +3,7 @@ module rules
 import estree
 import time
 
-// Port of the `@stylistic/no-extra-semi` rule of @stylistic/eslint-plugin 5.10.0, with its fixes.
+// Port of the `@stylistic/no-extra-semi` rule of @stylistic/eslint-plugin 6.0.1, with its fixes.
 
 const snes_messages = {
 	'unexpected': 'Unnecessary semicolon.'

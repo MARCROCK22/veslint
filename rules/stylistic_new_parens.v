@@ -3,7 +3,7 @@ module rules
 import time
 import x.json2
 
-// Port of the `@stylistic/new-parens` rule of @stylistic/eslint-plugin 5.10.0, with its option
+// Port of the `@stylistic/new-parens` rule of @stylistic/eslint-plugin 6.0.1, with its option
 // (`"always"`, the default, or `"never"`) and its fixes.
 
 const snwp_messages = {

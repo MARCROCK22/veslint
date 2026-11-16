@@ -147,7 +147,7 @@ mkdir -p build/upstream/unicorn-deps
 
 ## @stylistic/eslint-plugin (the `@stylistic/*` rules)
 
-The cases of `packages/eslint-plugin/rules/<rule>/*.test.ts` of eslint-stylistic v5.10.0 (one rule
+The cases of `packages/eslint-plugin/rules/<rule>/*.test.ts` of eslint-stylistic v6.0.1 (one rule
 may have a `._js_.test.ts` and a `._ts_.test.ts`). They run with eslint-vitest-rule-tester 3.1.0,
 which `tools/upstream/stylistic-test.mjs` stands in for (the test files import it as `#test`, which
 the generator rewrites to the stub's path): `run(…)` records the cases, normalized as that tester
@@ -159,7 +159,7 @@ invalid case without errors expects at least one problem. The rule of the tests 
 plugin of `build/eval` (the same version) gives the messages. A sparse clone:
 
 ```sh
-git clone --depth 1 --branch v5.10.0 --filter=blob:none --sparse \
+git clone --depth 1 --branch v6.0.1 --filter=blob:none --sparse \
   https://github.com/eslint-stylistic/eslint-stylistic build/upstream/stylistic
 git -C build/upstream/stylistic sparse-checkout set packages/eslint-plugin shared /package.json \
   /pnpm-workspace.yaml /pnpm-lock.yaml /LICENSE /alias.mjs /vitest.config.unit.ts /tsconfig.base.json

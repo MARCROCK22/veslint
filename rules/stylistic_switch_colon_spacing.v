@@ -4,7 +4,7 @@ import estree
 import time
 import x.json2
 
-// Port of the `@stylistic/switch-colon-spacing` rule of @stylistic/eslint-plugin 5.10.0, with its
+// Port of the `@stylistic/switch-colon-spacing` rule of @stylistic/eslint-plugin 6.0.1, with its
 // options (`before`, false by default, and `after`, true by default) and its fixes.
 
 const sscs_messages = {

@@ -4,7 +4,7 @@ import estree
 import time
 import x.json2
 
-// Port of the `@stylistic/yield-star-spacing` rule of @stylistic/eslint-plugin 5.10.0, with its
+// Port of the `@stylistic/yield-star-spacing` rule of @stylistic/eslint-plugin 6.0.1, with its
 // option (`"before"`, `"after"`, the default, `"both"`, `"neither"`, or an object with `before`
 // and `after`) and its fixes.
 

@@ -3,7 +3,7 @@ module rules
 import estree
 import x.json2
 
-// Helpers of @stylistic/eslint-plugin 5.10.0 (shared/utils of eslint-stylistic) and of ESLint's
+// Helpers of @stylistic/eslint-plugin 6.0.1 (shared/utils of eslint-stylistic) and of ESLint's
 // SourceCode that its rules use, on the ESTree and the tokens of typescript-estree.
 
 // sty_same_line ports isTokenOnSameLine(left, right): the end of `left` and the start of `right`

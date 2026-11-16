@@ -3,7 +3,7 @@ module rules
 import time
 import x.json2
 
-// Port of the `@stylistic/no-trailing-spaces` rule of @stylistic/eslint-plugin 5.10.0, with its
+// Port of the `@stylistic/no-trailing-spaces` rule of @stylistic/eslint-plugin 6.0.1, with its
 // options (`skipBlankLines` and `ignoreComments`) and its fixes.
 
 const sntr_messages = {
