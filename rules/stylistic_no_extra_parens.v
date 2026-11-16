@@ -1061,6 +1061,13 @@ fn (mut x SnepCtx) check_expression_or_export_statement(node int) {
 					ignore = th.kind == .keyword && x.c.token_text(th) == 'function'
 				}
 			}
+			// veslint keeps these parentheses on purpose (@stylistic 5.10.0 removes them): without
+			// them, TypeScript parses `type satisfies never;` or `(namespace) as X;` as a declaration.
+			if !ignore {
+				if a := after_closing {
+					ignore = x.starts_declaration(s, a)
+				}
+			}
 			if ignore {
 				x.tokens_to_ignore[s.start] = true
 			}
@@ -1074,6 +1081,35 @@ fn (mut x SnepCtx) check_expression_or_export_statement(node int) {
 	}
 	if excess {
 		x.report(ref)
+	}
+}
+
+// snep_reserved_words are the words TypeScript's parser never takes as an identifier.
+const snep_reserved_words = ['break', 'case', 'catch', 'class', 'const', 'continue', 'debugger',
+	'default', 'delete', 'do', 'else', 'enum', 'export', 'extends', 'false', 'finally', 'for', 'function',
+	'if', 'import', 'in', 'instanceof', 'new', 'null', 'return', 'super', 'switch', 'this', 'throw', 'true',
+	'try', 'typeof', 'var', 'void', 'while', 'with']
+
+// starts_declaration tells whether a statement that starts with the identifier `word` followed by
+// `next` is a declaration for TypeScript's parser (isDeclaration and isUsingDeclaration of
+// parser.ts): `type x`, `interface x`, `namespace x`, `module x` or `module 'x'` and `using x` on one
+// line, and `global {`, `global x` or `global export`.
+fn (x &SnepCtx) starts_declaration(word SourceToken, next SourceToken) bool {
+	if word.kind != .identifier && word.kind != .keyword {
+		return false
+	}
+	text := x.c.token_text(next)
+	identifier := next.kind == .identifier
+		|| (next.kind == .keyword && text !in snep_reserved_words)
+	between := x.c.src[word.end..next.start]
+	same_line := !between.contains('\n') && !between.contains('\r') && !between.contains(' ')
+		&& !between.contains(' ')
+	return match x.c.token_text(word) {
+		'type', 'interface' { same_line && identifier }
+		'namespace', 'module' { same_line && (identifier || next.kind == .string_) }
+		'using' { same_line && (identifier || x.c.token_is(next, '{')) }
+		'global' { identifier || text == 'export' || x.c.token_is(next, '{') }
+		else { false }
 	}
 }
 

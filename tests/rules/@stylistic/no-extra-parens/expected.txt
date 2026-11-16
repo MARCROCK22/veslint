@@ -107,6 +107,9 @@ tests/rules/@stylistic/no-extra-parens/cases.ts:175:7	@stylistic/no-extra-parens
 tests/rules/@stylistic/no-extra-parens/cases.ts:176:11	@stylistic/no-extra-parens	unexpected	Unnecessary parentheses around expression.
 tests/rules/@stylistic/no-extra-parens/cases.ts:177:9	@stylistic/no-extra-parens	unexpected	Unnecessary parentheses around expression.
 tests/rules/@stylistic/no-extra-parens/cases.ts:178:5	@stylistic/no-extra-parens	unexpected	Unnecessary parentheses around expression.
+tests/rules/@stylistic/no-extra-parens/cases.ts:189:1	@stylistic/no-extra-parens	unexpected	Unnecessary parentheses around expression.
+tests/rules/@stylistic/no-extra-parens/cases.ts:190:1	@stylistic/no-extra-parens	unexpected	Unnecessary parentheses around expression.
+tests/rules/@stylistic/no-extra-parens/cases.ts:191:1	@stylistic/no-extra-parens	unexpected	Unnecessary parentheses around expression.
 tests/rules/@stylistic/no-extra-parens/comment-pattern/cases.ts:4:19	@stylistic/no-extra-parens	unexpected	Unnecessary parentheses around expression.
 tests/rules/@stylistic/no-extra-parens/comment-pattern/cases.ts:6:20	@stylistic/no-extra-parens	unexpected	Unnecessary parentheses around expression.
 tests/rules/@stylistic/no-extra-parens/comment-pattern/cases.ts:7:19	@stylistic/no-extra-parens	unexpected	Unnecessary parentheses around expression.

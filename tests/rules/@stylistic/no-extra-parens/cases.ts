@@ -176,3 +176,16 @@ a = - (-b);
 a = typeof(b);
 a = void(0);
 a = (b)in c;
+// Without their parentheses TypeScript parses these statements as declarations: veslint keeps them
+// (@stylistic removes them, and the code no longer parses).
+declare const type: unknown, namespace: unknown, module: unknown, global: unknown, using: unknown;
+(type satisfies unknown);
+(type) as unknown;
+(namespace as unknown);
+(module satisfies unknown);
+(global as unknown);
+(using as unknown);
+// These are still expressions without them.
+(type);
+(namespace).valueOf();
+(module)['exports'];

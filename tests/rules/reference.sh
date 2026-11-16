@@ -119,7 +119,8 @@ for dir in "${rule_dirs[@]}"; do
 	if [[ -f $dir/fixes.txt ]]; then
 		grep -P "^tests/rules/${rule}/(.+/)?cases\.tsx?:.*\t${rule}\t" "$TMP/reference.fixes.txt" | sort > "$TMP/ref.txt"
 		# fixes.known.txt: where veslint fixes on purpose otherwise than the reference, pairs of
-		# lines `eslint<TAB><its line>` and `veslint<TAB><veslint's line>` (documented in internals.md).
+		# lines `eslint<TAB><its line>` and `veslint<TAB><veslint's line>` (documented in internals.md);
+		# an empty line of veslint's: it does not report that finding on purpose (limitations.txt).
 		if [[ -f $dir/fixes.known.txt ]]; then
 			python3 - "$dir/fixes.known.txt" "$TMP/ref.txt" <<'PY'
 import sys
@@ -132,7 +133,7 @@ lines = open(sys.argv[2], encoding='utf-8').read().splitlines()
 missing = [k for k in swap if k not in lines]
 if missing:
     sys.exit(f'fixes.known.txt: the reference no longer gives {missing}')
-open(sys.argv[2], 'w', encoding='utf-8').write(''.join(swap.get(line, line) + '\n' for line in lines))
+open(sys.argv[2], 'w', encoding='utf-8').write(''.join(swap.get(line, line) + '\n' for line in lines if swap.get(line, line)))
 PY
 			sort "$TMP/ref.txt" -o "$TMP/ref.txt"
 		fi

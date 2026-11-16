@@ -1,0 +1,5 @@
+tests/rules/@stylistic/no-extra-parens/cases.ts:182:1	@stylistic/no-extra-parens	unexpected	Unnecessary parentheses around expression.
+tests/rules/@stylistic/no-extra-parens/cases.ts:184:1	@stylistic/no-extra-parens	unexpected	Unnecessary parentheses around expression.
+tests/rules/@stylistic/no-extra-parens/cases.ts:185:1	@stylistic/no-extra-parens	unexpected	Unnecessary parentheses around expression.
+tests/rules/@stylistic/no-extra-parens/cases.ts:186:1	@stylistic/no-extra-parens	unexpected	Unnecessary parentheses around expression.
+tests/rules/@stylistic/no-extra-parens/cases.ts:187:1	@stylistic/no-extra-parens	unexpected	Unnecessary parentheses around expression.

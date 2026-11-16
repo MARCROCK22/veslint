@@ -1,0 +1,14 @@
+# veslint keeps on purpose the parentheses of an expression statement that, without them, TypeScript
+# parses as a declaration (`type satisfies unknown;` is a type alias without `=`), which @stylistic
+# 5.10.0 and 6.0.0 remove (checkExpressionOrExportStatement only knows the declarations of
+# JavaScript): veslint does not report them (they are in limitations.txt too).
+eslint	tests/rules/@stylistic/no-extra-parens/cases.ts:182:1	@stylistic/no-extra-parens	unexpected	Unnecessary parentheses around expression.	fix	4115	4139	type satisfies unknown	end	182	2
+veslint	
+eslint	tests/rules/@stylistic/no-extra-parens/cases.ts:184:1	@stylistic/no-extra-parens	unexpected	Unnecessary parentheses around expression.	fix	4160	4182	namespace as unknown	end	184	2
+veslint	
+eslint	tests/rules/@stylistic/no-extra-parens/cases.ts:185:1	@stylistic/no-extra-parens	unexpected	Unnecessary parentheses around expression.	fix	4184	4210	module satisfies unknown	end	185	2
+veslint	
+eslint	tests/rules/@stylistic/no-extra-parens/cases.ts:186:1	@stylistic/no-extra-parens	unexpected	Unnecessary parentheses around expression.	fix	4212	4231	global as unknown	end	186	2
+veslint	
+eslint	tests/rules/@stylistic/no-extra-parens/cases.ts:187:1	@stylistic/no-extra-parens	unexpected	Unnecessary parentheses around expression.	fix	4233	4251	using as unknown	end	187	2
+veslint	

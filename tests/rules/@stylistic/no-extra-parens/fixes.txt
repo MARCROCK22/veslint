@@ -107,6 +107,9 @@ tests/rules/@stylistic/no-extra-parens/cases.ts:175:7	@stylistic/no-extra-parens
 tests/rules/@stylistic/no-extra-parens/cases.ts:176:11	@stylistic/no-extra-parens	unexpected	Unnecessary parentheses around expression.	fix	3824	3827	 b	end	176	12
 tests/rules/@stylistic/no-extra-parens/cases.ts:177:9	@stylistic/no-extra-parens	unexpected	Unnecessary parentheses around expression.	fix	3837	3840	 0	end	177	10
 tests/rules/@stylistic/no-extra-parens/cases.ts:178:5	@stylistic/no-extra-parens	unexpected	Unnecessary parentheses around expression.	fix	3846	3849	b 	end	178	6
+tests/rules/@stylistic/no-extra-parens/cases.ts:189:1	@stylistic/no-extra-parens	unexpected	Unnecessary parentheses around expression.	fix	4298	4304	type	end	189	2
+tests/rules/@stylistic/no-extra-parens/cases.ts:190:1	@stylistic/no-extra-parens	unexpected	Unnecessary parentheses around expression.	fix	4306	4317	namespace	end	190	2
+tests/rules/@stylistic/no-extra-parens/cases.ts:191:1	@stylistic/no-extra-parens	unexpected	Unnecessary parentheses around expression.	fix	4329	4337	module	end	191	2
 tests/rules/@stylistic/no-extra-parens/comment-pattern/cases.ts:4:19	@stylistic/no-extra-parens	unexpected	Unnecessary parentheses around expression.	fix	127	130	a	end	4	20
 tests/rules/@stylistic/no-extra-parens/comment-pattern/cases.ts:6:20	@stylistic/no-extra-parens	unexpected	Unnecessary parentheses around expression.	fix	182	189	a + b	end	6	21
 tests/rules/@stylistic/no-extra-parens/comment-pattern/cases.ts:7:19	@stylistic/no-extra-parens	unexpected	Unnecessary parentheses around expression.	fix	214	221	a * b	end	7	20
