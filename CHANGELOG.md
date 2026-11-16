@@ -2,6 +2,13 @@
 
 Each version is a release on GitHub with the veslint binaries (Linux x64, Windows x64) and the VS Code extension. The section of a version is the text of its release.
 
+## 0.25.2
+
+- **`--fix` stops at a fix that breaks the code:** when the fixes of a pass give code that TypeScript's parser rejects, the file is reported with that error, `Parsing error: …`, and nothing else, and it is not fixed further, as ESLint does. tree-sitter reads some of that code (`type satisfies never;`, a declaration `type satisfies` without `=`; `<T>(x: T) => x` in a `.tsx` file, an unclosed JSX element), and such a fix went on unnoticed. Only the errors the fixes add count: the parser of tsgo 7.1 rejects some code that the one of TypeScript 6.0.3, which ESLint uses, takes (`x < 0 as any ** 2`).
+- **`@stylistic/no-extra-parens` keeps the parentheses that make an expression of a statement** that TypeScript would otherwise read as a declaration: `(type satisfies never);`, `(namespace as X);`, and the same with `module`, `global` and `using`. @stylistic removes them and the code no longer parses (`void (type satisfies never);` became that through `@typescript-eslint/no-meaningless-void-operator`); here veslint differs from ESLint on purpose.
+- **Fixes:** `unicorn/new-for-builtins` no longer reports the type of `(f as Function)()`, which does not call `Function`.
+- **`tests/eval_eslintcf.sh`** runs the whole configuration of `@marcrock22/eslintcf` on real projects (Spider-Byte, zod, recharts and eslintcf itself) with ESLint and with veslint, and compares the findings, what `--fix` leaves and what each fix brings.
+
 ## 0.25.1
 
 - **`perfectionist/sort-switch-case`: the cases of a block move together.** When the fix moves a block of cases that fall through (`case a:` `case b: {…}`), its cases stay together and the blank lines between blocks stay where they were. eslint-plugin-perfectionist puts each case in the place of another and can leave a blank line inside the block, which `no-fallthrough` then reports; here veslint fixes otherwise than ESLint on purpose.
