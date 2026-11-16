@@ -4,7 +4,7 @@ import estree
 import time
 import x.json2
 
-// Port of the `@stylistic/block-spacing` rule of @stylistic/eslint-plugin 5.10.0, with its option
+// Port of the `@stylistic/block-spacing` rule of @stylistic/eslint-plugin 6.0.1, with its option
 // (`"always"`, the default, or `"never"`) and its fixes: the spaces after the `{` and before the `}`
 // of blocks, static blocks and switch statements.
 
@@ -37,10 +37,16 @@ fn (mut c Checker) lint_stylistic_block_spacing(root C.TSNode, abs_path string, 
 
 // sbls_check ports checkSpacingInsideBraces.
 fn (c &Checker) sbls_check(t &estree.EsTree, tokens &SourceTokens, node int, always bool, mut findings []Finding) {
-	// getOpenBrace: the first `{` token of the node.
+	// getOpenBrace: the first `{` token of the node; for a switch statement, the first `{` after
+	// the discriminant, which may itself contain braces, e.g. `switch (a || {}) {}`.
 	mut open_brace := SourceToken{}
 	mut found := false
-	for token in tokens.inside(t.nodes[node].start, t.nodes[node].end, false) {
+	mut from := t.nodes[node].start
+	if t.typ(node) == .switch_statement {
+		discriminant := t.node(node, .discriminant) or { return }
+		from = t.nodes[discriminant].end
+	}
+	for token in tokens.inside(from, t.nodes[node].end, false) {
 		if c.token_is(token, '{') {
 			open_brace = token
 			found = true
