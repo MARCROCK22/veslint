@@ -2,6 +2,13 @@
 
 Each version is a release on GitHub with the veslint binaries (Linux x64, Windows x64) and the VS Code extension. The section of a version is the text of its release.
 
+## 0.26.1
+
+- **`--fix` no longer grows in memory with every pass:** V keeps a closure, and what it captures, alive until it is released, and closures of the rules captured the checker of the pass, with its caches. `--fix` makes a checker per pass, so none was freed: on `src/services` of the TypeScript compiler (168 files) veslint went over 5 GB and took more than 20 minutes. Each file is now linted in a closure lifetime that releases them: on 73 of those files, 108 s and 470 MB, where it took 158 s and 5.3 GB (ESLint: 102 s, 2.8 GB). `veslint --server`, which lints again on every change, gained the same.
+- **Fixes:** `no-loop-func` and `strict` end the report of a method at the end of the method (it ended after its parameters); `@stylistic/list-style` writes a private name without its `#` in its messages (`'signal'`), as the value of its token is in typescript-estree.
+- **`--bench`:** `slowest_rules` lists every rule that ran, slowest first (it listed 20).
+- **`tests/eval_eslintcf.sh`** has four more projects: seyfert, valibot and ky (downloaded at a pinned commit) and, when named, `src/services` of the TypeScript compiler. veslint reports what ESLint does in all of them, but for the members of unions TypeScript 7.1 orders otherwise, and `--fix` leaves the same files but where veslint fixes otherwise on purpose (`sort-switch-case`, `(infer M)[]`).
+
 ## 0.26.0
 
 - **@stylistic/eslint-plugin 6.0.1:** the 54 `@stylistic/*` rules follow 6.0.1 (they followed 5.10.0) and pass the cases of its tests. What changes for a configuration:

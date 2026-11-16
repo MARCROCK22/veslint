@@ -12,14 +12,17 @@
 # build/eval/eslintcf/<project>/: `base` with eslintcf's eslint.config.mjs, `eslint-fix` and
 # `veslint-fix`. The results are in build/eval/eslintcf/<project>/*.txt and a summary is printed.
 #
-#   tests/eval_eslintcf.sh                        # every project: spider-byte zod recharts eslintcf
+#   tests/eval_eslintcf.sh                        # every project but typescript
+#   tests/eval_eslintcf.sh typescript             # src/services of the TypeScript compiler (slow)
 #   ESLINTCF=/path/to/eslintcf tests/eval_eslintcf.sh spider-byte
 #   RULES="'curly': 'off'" tests/eval_eslintcf.sh zod   # rules added to the configuration
 #
 # ESLINTCF is a checkout of MARCROCK22/eslintcf with its dist built and its node_modules installed
 # (build/upstream/eslintcf by default): its ESLint, plugins and TypeScript are the ones that run.
-# The projects come from tests/eval_spider_byte.sh and tests/eval_project.sh (zod, recharts). It is
-# not part of `make test`.
+# spider-byte comes from tests/eval_spider_byte.sh and zod, recharts and typescript from
+# tests/eval_project.sh. seyfert, valibot and ky are downloaded here (a pinned commit, no git
+# repository) the first time, with the type packages their sources need in build/eval/<project>.deps.
+# It is not part of `make test`.
 set -uo pipefail
 cd "$(dirname "$0")/.."
 ROOT=$(pwd)
@@ -32,8 +35,28 @@ OUT=$ROOT/build/eval/eslintcf
 }
 [[ -x ./veslint ]] || make veslint || exit 2
 PROJECTS=("$@")
-[[ ${#PROJECTS[@]} -gt 0 ]] || PROJECTS=(spider-byte zod recharts eslintcf)
+[[ ${#PROJECTS[@]} -gt 0 ]] || PROJECTS=(spider-byte zod recharts seyfert valibot ky eslintcf)
 export NODE_OPTIONS=--max-old-space-size=8192
+
+# fetch NAME REPOSITORY COMMIT [PACKAGE@VERSION...]: downloads the commit of the repository to
+# build/eval/NAME and installs the packages in build/eval/NAME.deps, its node_modules (only what is
+# missing).
+fetch() {
+	local name=$1 repository=$2 commit=$3 dir=$ROOT/build/eval/$1
+	shift 3
+	if [[ ! -d $dir ]]; then
+		mkdir -p "$dir"
+		curl -sfL "https://codeload.github.com/$repository/tar.gz/$commit" | tar xz -C "$dir" --strip-components=1 ||
+			{ rm -r "$dir"; echo "cannot download $repository" >&2; return 1; }
+	fi
+	[[ $# -gt 0 && ! -d $dir.deps/node_modules ]] || return 0
+	mkdir -p "$dir.deps"
+	python3 -I -c 'import json, sys
+json.dump({"private": True, "dependencies": dict(p.rsplit("@", 1) for p in sys.argv[2:])}, open(sys.argv[1], "w"), indent=2)' \
+		"$dir.deps/package.json" "$@" || return 1
+	(cd "$dir.deps" && npm install --ignore-scripts --no-audit --no-fund > /dev/null) || return 1
+	[[ -e $dir/node_modules ]] || ln -s "../$name.deps/node_modules" "$dir/node_modules"
+}
 
 # project NAME: SOURCE (the directory copied), TARGETS (what is linted, relative to it), IGNORES
 # (files the tsconfig.json leaves out, as eslint.config globs) and TSCONFIG (the tsconfig.json of the
@@ -50,6 +73,40 @@ project() {
 	recharts)
 		SOURCE=$ROOT/build/eval/recharts TARGETS=(src)
 		TSCONFIG=$(cat "$SOURCE/tsconfig.veslint.json") ;;
+	typescript)
+		SOURCE=$ROOT/build/eval/typescript TARGETS=(src/services)
+		TSCONFIG=$(cat "$SOURCE/tsconfig.veslint.json") ;;
+	seyfert)
+		# A Discord framework (classes, decorators), with its own tsconfig.json.
+		fetch seyfert tiramisulabs/seyfert 1cf6d5c22e68d64bccbdb57c25f37bead3d6cdd8 @types/node@26.6.6 || return 1
+		SOURCE=$ROOT/build/eval/seyfert TARGETS=(src) ;;
+	valibot)
+		# A schema library like zod, made of hundreds of small modules. Its tsconfig.json without the
+		# tests (they import vitest) and with moduleResolution bundler (TypeScript 7 has no node10).
+		fetch valibot open-circle/valibot d72f76fcf70ccfa0a5ca341b80da1d440ac60b11 || return 1
+		SOURCE=$ROOT/build/eval/valibot/library TARGETS=(src)
+		IGNORES="'src/**/*.test.ts', 'src/**/*.test-d.ts'"
+		TSCONFIG='{
+  "compilerOptions": {
+    "allowImportingTsExtensions": true,
+    "declaration": true,
+    "exactOptionalPropertyTypes": true,
+    "isolatedDeclarations": true,
+    "lib": ["ESNext", "DOM"],
+    "module": "ESNext",
+    "moduleResolution": "bundler",
+    "noEmit": true,
+    "skipLibCheck": true,
+    "strict": true,
+    "target": "ES2020"
+  },
+  "include": ["src"],
+  "exclude": ["src/**/*.test.ts", "src/**/*.test-d.ts"]
+}' ;;
+	ky)
+		# An HTTP client on fetch, with its own tsconfig.json (on @sindresorhus/tsconfig).
+		fetch ky sindresorhus/ky 3541888878c4d303a8bc2ad61815f4e048f55a5d @types/node@25.9.9 @sindresorhus/tsconfig@8.1.0 || return 1
+		SOURCE=$ROOT/build/eval/ky TARGETS=(source) ;;
 	eslintcf)
 		SOURCE=$ESLINTCF TARGETS=(src) IGNORES="'src/rules/__test__/**'" ;;
 	*)
@@ -127,7 +184,7 @@ for name in "${PROJECTS[@]}"; do
 
 	eslint_run "$dir/eslint-fix" "$dir/eslint-fix.txt" --fix
 	veslint_run "$dir/veslint-fix" "$dir/veslint-fix.txt" --fix
-	diff -ru --exclude node_modules "$dir/eslint-fix" "$dir/veslint-fix" > "$dir/fix.diff"
+	diff -ru --no-dereference --exclude node_modules "$dir/eslint-fix" "$dir/veslint-fix" > "$dir/fix.diff"
 	echo "--fix: $(grep -c '^diff -ru' "$dir/fix.diff") files differ ($dir/fix.diff)"
 
 	for tool in eslint veslint; do

@@ -1162,15 +1162,14 @@ fn es_modifying_references(tree &ScopeTree, v int) []int {
 	return out
 }
 
-// es_function_position is where the ESTree function starts: the function of a method starts at its
-// type parameters or parameters.
+// es_function_position is the place of the ESTree function: the function of a method starts at its
+// type parameters or parameters and ends with the method.
 fn es_function_position(f C.TSNode) Ident {
 	if node_kind(f) == 'method_definition' {
-		if type_parameters := node_field(f, 'type_parameters') {
-			return position_of(type_parameters)
-		}
-		if parameters := node_field(f, 'parameters') {
-			return position_of(parameters)
+		start := node_field(f, 'type_parameters') or { node_field(f, 'parameters') or { return position_of(f) } }
+		return Ident{
+			...position_of(start)
+			end_byte: node_end(f)
 		}
 	}
 	return position_of(f)

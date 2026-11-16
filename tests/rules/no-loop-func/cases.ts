@@ -51,3 +51,18 @@ async function later() {
   }
 }
 export { later, never };
+
+// A method in a loop: the function starts at its parameters and ends with the method.
+for (let i = 0; i < 3; i++) {
+	var methodShared = i;
+	const handlers = {
+		handle(value: number) {
+			return value + methodShared;
+		},
+		generic<T>(value: T) {
+			return [value, methodShared];
+		},
+	};
+	handlers.handle(1);
+	handlers.generic(2);
+}

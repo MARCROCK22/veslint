@@ -375,8 +375,7 @@ fn (c &Checker) sls_check_key(mut ctx SlsCtx, paren_type string, node int, items
 
 // sls_value is the `value` of a token or of a comment.
 fn (c &Checker) sls_value(token SourceToken) string {
-	text := c.token_text(token)
-	return if token.is_comment() { es_comment_value(text) } else { text }
+	return if token.is_comment() { es_comment_value(c.token_text(token)) } else { c.sty_token_value(token) }
 }
 
 fn (c &Checker) sls_report(prev SourceToken, next SourceToken, message_id string, has_fix bool, fix Fix) Finding {

@@ -91,3 +91,11 @@ log( );
 export const emptyArray = [ ];
 export const emptyObject = {};
 export {};
+
+// A private name in the message: the value of its token has no `#`.
+export class WithPrivateName {
+	#signal = 1;
+	read() {
+		return { value: this.#signal};
+	}
+}

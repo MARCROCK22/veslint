@@ -1,5 +1,6 @@
 module rules
 
+import builtin.closure
 import codepath
 import estree
 import json2
@@ -1870,7 +1871,64 @@ pub fn (mut c Checker) set_has_bom(has_bom bool) {
 	c.has_bom = has_bom
 }
 
+// ScopedLint carries what lint_file_in_lifetime runs into the closure of its frame and out of it.
+@[heap]
+struct ScopedLint {
+mut:
+	checker  &Checker = unsafe { nil }
+	parser   Parser
+	config   LintConfig
+	src      string
+	abs_path string
+	stats    Stats
+	result   FileLint
+	failure  string
+	failed   bool
+}
+
+// lint_file lints a file inside a closure lifetime and releases, when it returns, the closures the
+// rules made. V keeps every closure that is not released, and with it what it captured (often the
+// Checker, with its caches, or a tree), alive for the whole run: --fix makes a Checker per pass
+// and none of them was freed (gigabytes over a large project).
 pub fn (mut c Checker) lint_file(parser Parser, config LintConfig, src string, abs_path string, mut stats Stats) !FileLint {
+	mut scoped := &ScopedLint{
+		checker:  c
+		parser:   parser
+		config:   config
+		src:      src
+		abs_path: abs_path
+		stats:    stats
+	}
+	mut lifetime := closure.new_lifetime()
+	lifetime.frame(fn [mut scoped] () {
+		mut checker := scoped.checker
+		scoped.result = checker.lint_file_in_lifetime(scoped.parser, scoped.config, scoped.src,
+			scoped.abs_path, mut scoped.stats) or {
+			scoped.failure = err.msg()
+			scoped.failed = true
+			FileLint{}
+		}
+	})!
+	lifetime.dispose()!
+	stats = scoped.stats
+	result := scoped.result
+	failed, failure := scoped.failed, scoped.failure
+	// The closure of the frame is not released with the lifetime: it keeps `scoped`, which keeps
+	// nothing large from here on.
+	unsafe {
+		scoped.checker = nil
+	}
+	scoped.result = FileLint{}
+	scoped.config = LintConfig{}
+	scoped.src = ''
+	scoped.stats = Stats{}
+	if failed {
+		return error(failure)
+	}
+	return result
+}
+
+fn (mut c Checker) lint_file_in_lifetime(parser Parser, config LintConfig, src string, abs_path string, mut stats Stats) !FileLint {
 	sw := time.new_stopwatch()
 	mut tree := parser.parse(src)!
 	defer {

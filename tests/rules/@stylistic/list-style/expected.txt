@@ -60,6 +60,7 @@ tests/rules/@stylistic/list-style/cases.ts:71:4	@stylistic/list-style	shouldWrap
 tests/rules/@stylistic/list-style/cases.ts:79:6	@stylistic/list-style	shouldWrap	Should have line break between ')' and ')'
 tests/rules/@stylistic/list-style/cases.ts:88:27	@stylistic/list-style	shouldNotSpacing	Should not have space(s) between '[' and 'first2'
 tests/rules/@stylistic/list-style/cases.ts:88:43	@stylistic/list-style	shouldNotSpacing	Should not have space(s) between 'second2' and ']'
+tests/rules/@stylistic/list-style/cases.ts:99:31	@stylistic/list-style	shouldSpacing	Should have space between 'signal' and '}'
 tests/rules/@stylistic/list-style/empty-multiline/cases.ts:5:24	@stylistic/list-style	shouldNotWrap	Should not have line break(s) between '{' and '}'
 tests/rules/@stylistic/list-style/empty-multiline/cases.ts:7:25	@stylistic/list-style	shouldNotWrap	Should not have line break(s) between '{' and '}'
 tests/rules/@stylistic/list-style/empty-multiline/cases.ts:14:18	@stylistic/list-style	shouldNotWrap	Should not have line break(s) between '{' and '}'

@@ -82,7 +82,7 @@ mut:
 	rule_types_ms  f64
 	rule_eval_ms   f64
 	tsgo_requests  int
-	// The rules that took the longest, `<rule> <ms>`, slowest first (at most 20).
+	// Every rule that ran, `<rule> <ms>`, slowest first.
 	slowest_rules []string
 }
 
@@ -803,7 +803,7 @@ fn run_rules(opts Options, timeout time.Duration) !int {
 			compare_strings(a, b)
 		}
 	})
-	bench.slowest_rules = by_time#[..20].map('${it} ${stats.rule_ms[it]:.1f}')
+	bench.slowest_rules = by_time.map('${it} ${stats.rule_ms[it]:.1f}')
 	print(summary.table())
 	fixed_note := if opts.fix { '; ${fixed_files} files fixed' } else { '' }
 	eprintln(summary_line(problems, files.len, warnings) + fixed_note)

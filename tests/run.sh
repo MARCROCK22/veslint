@@ -697,6 +697,26 @@ else
 	ko "--bench writes the timings"
 	cat "$TMP/bench.json"
 fi
+# slowest_rules has every rule that ran (not one turned off), slowest first.
+printf '%s\n' '{"rules": {"no-debugger": [2], "eqeqeq": [2], "curly": [0], "@typescript-eslint/no-floating-promises": [2],' \
+	'"@stylistic/semi": [2], "unicorn/no-lonely-if": [1]}}' > "$TMP/bench-rules.json"
+./veslint --bench --config "$TMP/bench-rules.json" app.ts 2> "$TMP/bench-rules.out" > /dev/null
+listed=$(python3 -I - "$TMP/bench-rules.out" << 'PY'
+import json, sys
+bench = next(json.loads(line) for line in open(sys.argv[1]) if line.startswith("{"))
+entries = [entry.rsplit(" ", 1) for entry in bench["slowest_rules"]]
+names = sorted(name for name, _ in entries)
+times = [float(ms) for _, ms in entries]
+expected = sorted(["no-debugger", "eqeqeq", "@typescript-eslint/no-floating-promises", "@stylistic/semi",
+                   "unicorn/no-lonely-if"])
+print("ok" if names == expected and times == sorted(times, reverse=True) else " ".join(names))
+PY
+)
+if [[ $listed == ok ]]; then
+	ok "--bench lists the time of every rule that ran, slowest first"
+else
+	ko "--bench lists the time of every rule that ran, slowest first (it lists: $listed)"
+fi
 
 # 3. Errors of §9: each one ends with code 1 and a clear message, without hanging.
 expect_error() { # description expected_text command...
