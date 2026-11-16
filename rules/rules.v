@@ -1115,7 +1115,7 @@ pub const default_options = {
 	stylistic_function_call_spacing:                 '["never"]'
 	stylistic_brace_style:                           '["1tbs",{"allowSingleLine":false}]'
 	stylistic_comma_style:                           '["last"]'
-	stylistic_dot_location:                          '["object"]'
+	stylistic_dot_location:                          '["property"]'
 	stylistic_function_call_argument_newline:        '["always"]'
 	stylistic_function_paren_newline:                '["multiline"]'
 	stylistic_implicit_arrow_linebreak:              '["beside"]'
