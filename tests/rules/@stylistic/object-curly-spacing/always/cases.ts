@@ -85,3 +85,7 @@ void o1; void o2; void o3; void o4; void o5; void o6; void o7; void o8; void o9;
 void o11; void o12; void o13; void o14; void o15; void o16; void o17; void o18;
 void p1; void p2; void p3; void p4; void f1; void f2; void E1; void E2; void E3; void E4; void nested;
 export type { Stats, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, I1, I2, I3, I4, I5, I6 };
+// 6.0.0: an optional object pattern with a type annotation
+export type Ocs6A = ({ changes }?: { changes?: unknown }) => void;
+export type Ocs6B = ({changes}?: {changes?: unknown}) => void;
+export function ocs6C({ a }: { a: number } = { a: 1 }, {b}: {b: string}) { return a + b; }
