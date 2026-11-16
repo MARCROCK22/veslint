@@ -4,7 +4,7 @@ import estree
 import time
 import x.json2
 
-// Port of the `@stylistic/comma-style` rule of @stylistic/eslint-plugin 5.10.0, with its options
+// Port of the `@stylistic/comma-style` rule of @stylistic/eslint-plugin 6.0.1, with its options
 // (`"last"`, the default, or `"first"`, and `exceptions`, the node types not to check) and its
 // fixes.
 

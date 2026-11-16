@@ -4,7 +4,7 @@ import estree
 import time
 import x.json2
 
-// Port of the `@stylistic/comma-dangle` rule of @stylistic/eslint-plugin 5.10.0, with its options
+// Port of the `@stylistic/comma-dangle` rule of @stylistic/eslint-plugin 6.0.1, with its options
 // (`"never"`, the default, `"always"`, `"always-multiline"`, `"only-multiline"`, or one of those or
 // `"ignore"` per kind: `arrays`, `objects`, `imports`, `exports`, `functions`, `importAttributes`,
 // `dynamicImports`, `enums`, `generics`, `tuples`) and its fixes: the trailing commas of lists.

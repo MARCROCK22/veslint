@@ -4,7 +4,7 @@ import estree
 import time
 import x.json2
 
-// Port of the `@stylistic/quote-props` rule of @stylistic/eslint-plugin 5.10.0, with its options
+// Port of the `@stylistic/quote-props` rule of @stylistic/eslint-plugin 6.0.1, with its options
 // (`"always"`, the default, `"as-needed"`, `"consistent"` and `"consistent-as-needed"`, and
 // `keywords`, `unnecessary` and `numbers`) and its fixes: the quotes around the keys of objects,
 // object patterns, property signatures, enum members and import attributes.
