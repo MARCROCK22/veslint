@@ -7,7 +7,24 @@ only eslint	tests/rules/@stylistic/no-extra-parens/cases.ts:186:1	@stylistic/no-
 only eslint	tests/rules/@stylistic/no-extra-parens/cases.ts:187:1	@stylistic/no-extra-parens	unexpected	Unnecessary parentheses around expression.
 only eslint	tests/rules/@stylistic/no-extra-parens/cases.ts:194:31	@stylistic/no-extra-parens	unexpected	Unnecessary parentheses around expression.
 only eslint	tests/rules/@stylistic/no-extra-parens/cases.ts:195:29	@stylistic/no-extra-parens	unexpected	Unnecessary parentheses around expression.
+only eslint	tests/rules/@typescript-eslint/array-type/array-simple/cases.ts:61:25	@stylistic/no-extra-parens	unexpected	Unnecessary parentheses around expression.
+only eslint	tests/rules/@typescript-eslint/array-type/cases.ts:61:25	@stylistic/no-extra-parens	unexpected	Unnecessary parentheses around expression.
+only eslint	tests/rules/@typescript-eslint/array-type/generic-readonly-array/cases.ts:61:25	@stylistic/no-extra-parens	unexpected	Unnecessary parentheses around expression.
+only eslint	tests/rules/@typescript-eslint/array-type/generic-readonly-simple/cases.ts:61:25	@stylistic/no-extra-parens	unexpected	Unnecessary parentheses around expression.
+only eslint	tests/rules/@typescript-eslint/array-type/generic/cases.ts:61:25	@stylistic/no-extra-parens	unexpected	Unnecessary parentheses around expression.
+only eslint	tests/rules/@typescript-eslint/array-type/only-readonly/cases.ts:61:25	@stylistic/no-extra-parens	unexpected	Unnecessary parentheses around expression.
+only eslint	tests/rules/@typescript-eslint/array-type/readonly-generic/cases.ts:61:25	@stylistic/no-extra-parens	unexpected	Unnecessary parentheses around expression.
+only eslint	tests/rules/@typescript-eslint/array-type/readonly-simple/cases.ts:61:25	@stylistic/no-extra-parens	unexpected	Unnecessary parentheses around expression.
+only eslint	tests/rules/@typescript-eslint/array-type/simple-readonly-array/cases.ts:61:25	@stylistic/no-extra-parens	unexpected	Unnecessary parentheses around expression.
+only eslint	tests/rules/@typescript-eslint/array-type/simple-readonly-generic/cases.ts:61:25	@stylistic/no-extra-parens	unexpected	Unnecessary parentheses around expression.
+only eslint	tests/rules/@typescript-eslint/no-unnecessary-type-constraint/cases.ts:29:30	@stylistic/no-extra-parens	unexpected	Unnecessary parentheses around expression.
 only eslint	tests/rules/@typescript-eslint/non-nullable-type-assertion-style/cases.ts:62:11	@typescript-eslint/no-unsafe-type-assertion	unsafeTypeAssertion	Unsafe type assertion: type '"up" | "down"' is more narrow than the original type.
+only eslint	tests/rules/@typescript-eslint/prefer-readonly-parameter-types/conditional-origin/cases.ts:218:37	@stylistic/no-extra-parens	unexpected	Unnecessary parentheses around expression.
+only eslint	tests/rules/@typescript-eslint/prefer-readonly-parameter-types/conditional-origin/cases.ts:219:35	@stylistic/no-extra-parens	unexpected	Unnecessary parentheses around expression.
+only eslint	tests/rules/@typescript-eslint/prefer-readonly-parameter-types/conditional-origin/cases.ts:269:38	@stylistic/no-extra-parens	unexpected	Unnecessary parentheses around expression.
+only eslint	tests/rules/@typescript-eslint/prefer-readonly-parameter-types/conditional-origin/cases.ts:270:42	@stylistic/no-extra-parens	unexpected	Unnecessary parentheses around expression.
+only eslint	tests/rules/@typescript-eslint/prefer-readonly-parameter-types/conditional-origin/cases.ts:273:40	@stylistic/no-extra-parens	unexpected	Unnecessary parentheses around expression.
+only eslint	tests/rules/@typescript-eslint/prefer-readonly-parameter-types/conditional/cases.ts:40:34	@stylistic/no-extra-parens	unexpected	Unnecessary parentheses around expression.
 only eslint	tests/rules/@typescript-eslint/prefer-readonly-parameter-types/methods-readonly/cases.ts:159:15	@typescript-eslint/no-unnecessary-condition	alwaysTruthy	Unnecessary conditional, value is always truthy.
 only eslint	tests/rules/@typescript-eslint/prefer-readonly-parameter-types/methods-readonly/cases.ts:159:15	@typescript-eslint/strict-boolean-expressions	conditionErrorObject	Unexpected object value in conditional. The condition is always true.
 only veslint	tests/rules/@typescript-eslint/non-nullable-type-assertion-style/cases.ts:62:11	@typescript-eslint/no-unsafe-type-assertion	unsafeTypeAssertion	Unsafe type assertion: type '"down" | "up"' is more narrow than the original type.
