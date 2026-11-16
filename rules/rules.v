@@ -1125,7 +1125,7 @@ pub const default_options = {
 	stylistic_quotes:                                '["double",{"allowTemplateLiterals":"never","avoidEscape":false,"ignoreStringLiterals":false}]'
 	stylistic_no_multi_spaces:                       '[{"exceptions":{"Property":true,"ImportAttribute":true},"ignoreEOLComments":false,"includeTabs":true}]'
 	stylistic_no_trailing_spaces:                    '[{"skipBlankLines":false,"ignoreComments":false}]'
-	stylistic_no_mixed_spaces_and_tabs:              '[false]'
+	stylistic_no_mixed_spaces_and_tabs:              '[]'
 	stylistic_eol_last:                              '["always"]'
 	stylistic_spaced_comment:                        '["always"]'
 	stylistic_lines_between_class_members:           '["always",{"exceptAfterOverload":true,"exceptAfterSingleLine":false}]'

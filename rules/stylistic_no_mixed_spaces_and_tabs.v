@@ -3,8 +3,8 @@ module rules
 import time
 import x.json2
 
-// Port of the `@stylistic/no-mixed-spaces-and-tabs` rule of @stylistic/eslint-plugin 5.10.0,
-// with its option (`"smart-tabs"`, or the deprecated boolean).
+// Port of the `@stylistic/no-mixed-spaces-and-tabs` rule of @stylistic/eslint-plugin 6.0.1,
+// with its option (`"smart-tabs"`).
 
 const snmst_messages = {
 	'mixedSpacesAndTabs': 'Mixed spaces and tabs.'
@@ -15,9 +15,6 @@ fn snmst_options(given []json2.Any) !bool {
 	options := sty_options(given, decoded_default_options(stylistic_no_mixed_spaces_and_tabs))
 	if options.len > 0 {
 		style := options[0]
-		if style is bool {
-			return style
-		}
 		if style is string {
 			return style == 'smart-tabs'
 		}
