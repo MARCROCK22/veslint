@@ -1,4 +1,4 @@
-{"rule": "@stylistic/object-curly-spacing", "upstream": "@stylistic/eslint-plugin v5.10.0", "files": ["packages/eslint-plugin/rules/object-curly-spacing/object-curly-spacing._js_.test.ts","packages/eslint-plugin/rules/object-curly-spacing/object-curly-spacing._ts_.test.ts"],
+{"rule": "@stylistic/object-curly-spacing", "upstream": "@stylistic/eslint-plugin v6.0.1", "files": ["packages/eslint-plugin/rules/object-curly-spacing/object-curly-spacing._js_.test.ts","packages/eslint-plugin/rules/object-curly-spacing/object-curly-spacing._ts_.test.ts"],
 "messages": {"requireSpaceBefore":"A space is required before '{{token}}'.","requireSpaceAfter":"A space is required after '{{token}}'.","unexpectedSpaceBefore":"There should be no space before '{{token}}'.","unexpectedSpaceAfter":"There should be no space after '{{token}}'.","requiredSpaceInEmptyObject":"A space is required in empty '{{node}}'.","unexpectedSpaceInEmptyObject":"There should be no space in empty '{{node}}'."},
 "cases": [
 {"id":"object-curly-spacing._js_/v0","kind":"valid","code":"var obj = { foo: bar, baz: qux };","options":["always"],"file":"file.ts","tsconfig":null,"parser":"espree"},
@@ -292,6 +292,7 @@
 {"id":"object-curly-spacing._ts_/v89","kind":"valid","code":"import { } from \"package.json\" with { }","options":["never",{"emptyObjects":"always"}],"file":"file.ts","tsconfig":null},
 {"id":"object-curly-spacing._ts_/v90","kind":"valid","code":"enum Foo {}","options":["never",{"emptyObjects":"never"}],"file":"file.ts","tsconfig":null},
 {"id":"object-curly-spacing._ts_/v91","kind":"valid","code":"enum Foo { }","options":["never",{"emptyObjects":"always"}],"file":"file.ts","tsconfig":null},
+{"id":"object-curly-spacing._ts_/v92","kind":"valid","code":"type Foo = ({ changes }?: { changes?: unknown }) => void","options":["always"],"file":"file.ts","tsconfig":null},
 {"id":"object-curly-spacing._ts_/i0","kind":"invalid","code":"function foo ({a, b }: Props) {\n}","options":["never"],"file":"file.ts","tsconfig":null,"errors":[{"messageId":"unexpectedSpaceBefore","data":{"token":"}"},"line":1,"column":20,"endLine":1,"endColumn":21}],"output":"function foo ({a, b}: Props) {\n}"},
 {"id":"object-curly-spacing._ts_/i1","kind":"invalid","code":"type x = { f: number }","file":"file.ts","tsconfig":null,"errors":[{"messageId":"unexpectedSpaceAfter"},{"messageId":"unexpectedSpaceBefore"}],"output":"type x = {f: number}"},
 {"id":"object-curly-spacing._ts_/i2","kind":"invalid","code":"type x = { f: number}","file":"file.ts","tsconfig":null,"errors":[{"messageId":"unexpectedSpaceAfter"}],"output":"type x = {f: number}"},

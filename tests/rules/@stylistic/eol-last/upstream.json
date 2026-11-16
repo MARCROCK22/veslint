@@ -1,4 +1,4 @@
-{"rule": "@stylistic/eol-last", "upstream": "@stylistic/eslint-plugin v5.10.0", "files": ["packages/eslint-plugin/rules/eol-last/eol-last._css_.test.ts","packages/eslint-plugin/rules/eol-last/eol-last._unknown_.test.ts","packages/eslint-plugin/rules/eol-last/eol-last.test.ts"],
+{"rule": "@stylistic/eol-last", "upstream": "@stylistic/eslint-plugin v6.0.1", "files": ["packages/eslint-plugin/rules/eol-last/eol-last._css_.test.ts","packages/eslint-plugin/rules/eol-last/eol-last._unknown_.test.ts","packages/eslint-plugin/rules/eol-last/eol-last.test.ts"],
 "messages": {"missing":"Newline required at end of file but not found.","unexpected":"Newline not allowed at end of file."},
 "cases": [
 {"id":"eol-last._css_/v0","kind":"valid","code":"","file":"file.ts","tsconfig":null,"parser":"espree","skip":"the css language: not TypeScript"},
@@ -37,17 +37,6 @@
 {"id":"eol-last/v9","kind":"valid","code":"var a = 123;","options":["never"],"file":"file.ts","tsconfig":null},
 {"id":"eol-last/v10","kind":"valid","code":"var a = 123;\nvar b = 456;","options":["never"],"file":"file.ts","tsconfig":null},
 {"id":"eol-last/v11","kind":"valid","code":"var a = 123;\r\nvar b = 456;","options":["never"],"file":"file.ts","tsconfig":null},
-{"id":"eol-last/v12","kind":"valid","code":"","options":["unix"],"file":"file.ts","tsconfig":null},
-{"id":"eol-last/v13","kind":"valid","code":"\n","options":["unix"],"file":"file.ts","tsconfig":null},
-{"id":"eol-last/v14","kind":"valid","code":"var a = 123;\n","options":["unix"],"file":"file.ts","tsconfig":null},
-{"id":"eol-last/v15","kind":"valid","code":"var a = 123;\n\n","options":["unix"],"file":"file.ts","tsconfig":null},
-{"id":"eol-last/v16","kind":"valid","code":"var a = 123;\n   \n","options":["unix"],"file":"file.ts","tsconfig":null},
-{"id":"eol-last/v17","kind":"valid","code":"","options":["windows"],"file":"file.ts","tsconfig":null},
-{"id":"eol-last/v18","kind":"valid","code":"\n","options":["windows"],"file":"file.ts","tsconfig":null},
-{"id":"eol-last/v19","kind":"valid","code":"\r\n","options":["windows"],"file":"file.ts","tsconfig":null},
-{"id":"eol-last/v20","kind":"valid","code":"var a = 123;\r\n","options":["windows"],"file":"file.ts","tsconfig":null},
-{"id":"eol-last/v21","kind":"valid","code":"var a = 123;\r\n\r\n","options":["windows"],"file":"file.ts","tsconfig":null},
-{"id":"eol-last/v22","kind":"valid","code":"var a = 123;\r\n   \r\n","options":["windows"],"file":"file.ts","tsconfig":null},
 {"id":"eol-last/i0","kind":"invalid","code":"var a = 123;","file":"file.ts","tsconfig":null,"errors":[{"messageId":"missing","line":1,"column":13}],"output":"var a = 123;\n"},
 {"id":"eol-last/i1","kind":"invalid","code":"var a = 123;\n   ","file":"file.ts","tsconfig":null,"errors":[{"messageId":"missing","line":2,"column":4}],"output":"var a = 123;\n   \n"},
 {"id":"eol-last/i2","kind":"invalid","code":"var a = 123;\n","options":["never"],"file":"file.ts","tsconfig":null,"errors":[{"messageId":"unexpected","line":1,"column":13,"endLine":2,"endColumn":1}],"output":"var a = 123;"},
@@ -55,9 +44,5 @@
 {"id":"eol-last/i4","kind":"invalid","code":"var a = 123;\r\n\r\n","options":["never"],"file":"file.ts","tsconfig":null,"errors":[{"messageId":"unexpected","line":2,"column":1,"endLine":3,"endColumn":1}],"output":"var a = 123;"},
 {"id":"eol-last/i5","kind":"invalid","code":"var a = 123;\nvar b = 456;\n","options":["never"],"file":"file.ts","tsconfig":null,"errors":[{"messageId":"unexpected","line":2,"column":13,"endLine":3,"endColumn":1}],"output":"var a = 123;\nvar b = 456;"},
 {"id":"eol-last/i6","kind":"invalid","code":"var a = 123;\r\nvar b = 456;\r\n","options":["never"],"file":"file.ts","tsconfig":null,"errors":[{"messageId":"unexpected","line":2,"column":13,"endLine":3,"endColumn":1}],"output":"var a = 123;\r\nvar b = 456;"},
-{"id":"eol-last/i7","kind":"invalid","code":"var a = 123;\n\n","options":["never"],"file":"file.ts","tsconfig":null,"errors":[{"messageId":"unexpected","line":2,"column":1,"endLine":3,"endColumn":1}],"output":"var a = 123;"},
-{"id":"eol-last/i8","kind":"invalid","code":"var a = 123;","options":["unix"],"file":"file.ts","tsconfig":null,"errors":[{"messageId":"missing","line":1,"column":13}],"output":"var a = 123;\n"},
-{"id":"eol-last/i9","kind":"invalid","code":"var a = 123;\n   ","options":["unix"],"file":"file.ts","tsconfig":null,"errors":[{"messageId":"missing","line":2,"column":4}],"output":"var a = 123;\n   \n"},
-{"id":"eol-last/i10","kind":"invalid","code":"var a = 123;","options":["windows"],"file":"file.ts","tsconfig":null,"errors":[{"messageId":"missing","line":1,"column":13}],"output":"var a = 123;\r\n"},
-{"id":"eol-last/i11","kind":"invalid","code":"var a = 123;\r\n   ","options":["windows"],"file":"file.ts","tsconfig":null,"errors":[{"messageId":"missing","line":2,"column":4}],"output":"var a = 123;\r\n   \r\n"}
+{"id":"eol-last/i7","kind":"invalid","code":"var a = 123;\n\n","options":["never"],"file":"file.ts","tsconfig":null,"errors":[{"messageId":"unexpected","line":2,"column":1,"endLine":3,"endColumn":1}],"output":"var a = 123;"}
 ]}

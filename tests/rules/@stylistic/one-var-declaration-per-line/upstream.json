@@ -1,4 +1,4 @@
-{"rule": "@stylistic/one-var-declaration-per-line", "upstream": "@stylistic/eslint-plugin v5.10.0", "files": ["packages/eslint-plugin/rules/one-var-declaration-per-line/one-var-declaration-per-line.test.ts"],
+{"rule": "@stylistic/one-var-declaration-per-line", "upstream": "@stylistic/eslint-plugin v6.0.1", "files": ["packages/eslint-plugin/rules/one-var-declaration-per-line/one-var-declaration-per-line.test.ts"],
 "messages": {"expectVarOnNewline":"Expected variable declaration to be on a new line."},
 "cases": [
 {"id":"one-var-declaration-per-line/v0","kind":"valid","code":"var a, b, c,\nd = 0;","options":["initializations"],"file":"file.ts","tsconfig":null,"parser":"espree"},

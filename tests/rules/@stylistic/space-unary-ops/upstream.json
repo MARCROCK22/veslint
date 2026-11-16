@@ -1,4 +1,4 @@
-{"rule": "@stylistic/space-unary-ops", "upstream": "@stylistic/eslint-plugin v5.10.0", "files": ["packages/eslint-plugin/rules/space-unary-ops/space-unary-ops.test.ts"],
+{"rule": "@stylistic/space-unary-ops", "upstream": "@stylistic/eslint-plugin v6.0.1", "files": ["packages/eslint-plugin/rules/space-unary-ops/space-unary-ops.test.ts"],
 "messages": {"unexpectedBefore":"Unexpected space before unary operator '{{operator}}'.","unexpectedAfter":"Unexpected space after unary operator '{{operator}}'.","unexpectedAfterWord":"Unexpected space after unary word operator '{{word}}'.","requireAfterWord":"Unary word operator '{{word}}' must be followed by whitespace.","requireAfter":"Unary operator '{{operator}}' must be followed by whitespace.","requireBefore":"Space is required before unary operator '{{operator}}'."},
 "cases": [
 {"id":"space-unary-ops/v0","kind":"valid","code":"++this.a","options":[{"words":true}],"file":"file.ts","tsconfig":null},

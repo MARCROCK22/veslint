@@ -1,4 +1,4 @@
-{"rule": "@stylistic/new-parens", "upstream": "@stylistic/eslint-plugin v5.10.0", "files": ["packages/eslint-plugin/rules/new-parens/new-parens.test.ts"],
+{"rule": "@stylistic/new-parens", "upstream": "@stylistic/eslint-plugin v6.0.1", "files": ["packages/eslint-plugin/rules/new-parens/new-parens.test.ts"],
 "messages": {"missing":"Missing '()' invoking a constructor.","unnecessary":"Unnecessary '()' invoking a constructor with no arguments."},
 "cases": [
 {"id":"new-parens/v0","kind":"valid","code":"var a = new Date();","file":"file.ts","tsconfig":null,"parser":"espree"},

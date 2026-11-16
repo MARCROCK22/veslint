@@ -428,7 +428,7 @@ pub const stylistic_semi_style = '@stylistic/semi-style'
 pub const stylistic_semi = '@stylistic/semi'
 pub const stylistic_object_curly_newline = '@stylistic/object-curly-newline'
 pub const stylistic_object_property_newline = '@stylistic/object-property-newline'
-pub const stylistic_exp_list_style = '@stylistic/exp-list-style'
+pub const stylistic_list_style = '@stylistic/list-style'
 pub const stylistic_exp_jsx_props_style = '@stylistic/exp-jsx-props-style'
 pub const stylistic_arrow_parens = '@stylistic/arrow-parens'
 pub const stylistic_comma_dangle = '@stylistic/comma-dangle'
@@ -592,7 +592,7 @@ pub const names = [no_floating_promises, await_thenable, require_await, return_a
 	stylistic_no_mixed_spaces_and_tabs, stylistic_eol_last, stylistic_spaced_comment,
 	stylistic_lines_between_class_members, stylistic_new_parens, stylistic_no_floating_decimal,
 	stylistic_no_extra_semi, stylistic_semi_style, stylistic_semi, stylistic_object_curly_newline,
-	stylistic_object_property_newline, stylistic_exp_list_style, stylistic_exp_jsx_props_style,
+	stylistic_object_property_newline, stylistic_list_style, stylistic_exp_jsx_props_style,
 	stylistic_arrow_parens, stylistic_comma_dangle, stylistic_member_delimiter_style,
 	stylistic_quote_props, stylistic_no_extra_parens, marcrock_no_newline_if_body_class_empty,
 	marcrock_numeric_separators, marcrock_uppercase_first_class_letter, marcrock_prefer_at,
@@ -699,7 +699,7 @@ pub const untyped_rules = [adjacent_overload_signatures, array_type, class_liter
 	stylistic_no_mixed_spaces_and_tabs, stylistic_eol_last, stylistic_spaced_comment,
 	stylistic_lines_between_class_members, stylistic_new_parens, stylistic_no_floating_decimal,
 	stylistic_no_extra_semi, stylistic_semi_style, stylistic_semi, stylistic_object_curly_newline,
-	stylistic_object_property_newline, stylistic_exp_list_style, stylistic_exp_jsx_props_style,
+	stylistic_object_property_newline, stylistic_list_style, stylistic_exp_jsx_props_style,
 	stylistic_arrow_parens, stylistic_comma_dangle, stylistic_member_delimiter_style,
 	stylistic_quote_props, stylistic_no_extra_parens, marcrock_no_newline_if_body_class_empty,
 	marcrock_numeric_separators, marcrock_uppercase_first_class_letter,
@@ -1136,7 +1136,7 @@ pub const default_options = {
 	stylistic_semi:                                  '["always"]'
 	stylistic_object_curly_newline:                  '[]'
 	stylistic_object_property_newline:               '[{"allowAllPropertiesOnSameLine":false}]'
-	stylistic_exp_list_style:                        '[{"singleLine":{"spacing":"never","maxItems":1.7976931348623157e+308},"multiLine":{"minItems":0},"overrides":{"{}":{"singleLine":{"spacing":"always"}}}}]'
+	stylistic_list_style:                        '[{"singleLine":{"spacing":"never","maxItems":1.7976931348623157e+308},"multiLine":{"minItems":0},"overrides":{"{}":{"singleLine":{"spacing":"always"}}}}]'
 	stylistic_exp_jsx_props_style:                   '[{"singleLine":{"maxItems":1.7976931348623157e+308},"multiLine":{"minItems":0,"maxItemsPerLine":1}}]'
 	stylistic_arrow_parens:                          '["always"]'
 	stylistic_comma_dangle:                          '["never"]'
@@ -1738,7 +1738,7 @@ pub fn message(rule string, finding Finding) string {
 		stylistic_semi { ssemi_messages }
 		stylistic_object_curly_newline { socn_messages }
 		stylistic_object_property_newline { sopn_messages }
-		stylistic_exp_list_style { sls_messages }
+		stylistic_list_style { sls_messages }
 		stylistic_exp_jsx_props_style { sjps_messages }
 		stylistic_arrow_parens { sap_messages }
 		stylistic_comma_dangle { scd_messages }
@@ -3194,8 +3194,8 @@ fn (mut c Checker) lint_rule(rule string, root C.TSNode, abs_path string, mut st
 		stylistic_object_property_newline {
 			return c.lint_stylistic_object_property_newline(root, abs_path, mut stats)!
 		}
-		stylistic_exp_list_style {
-			return c.lint_stylistic_exp_list_style(root, abs_path, mut stats)!
+		stylistic_list_style {
+			return c.lint_stylistic_list_style(root, abs_path, mut stats)!
 		}
 		stylistic_exp_jsx_props_style {
 			return c.lint_stylistic_exp_jsx_props_style(root, abs_path, mut stats)!

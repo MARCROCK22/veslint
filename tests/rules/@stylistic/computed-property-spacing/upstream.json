@@ -1,4 +1,4 @@
-{"rule": "@stylistic/computed-property-spacing", "upstream": "@stylistic/eslint-plugin v5.10.0", "files": ["packages/eslint-plugin/rules/computed-property-spacing/computed-property-spacing._js_.test.ts","packages/eslint-plugin/rules/computed-property-spacing/computed-property-spacing._ts_.test.ts"],
+{"rule": "@stylistic/computed-property-spacing", "upstream": "@stylistic/eslint-plugin v6.0.1", "files": ["packages/eslint-plugin/rules/computed-property-spacing/computed-property-spacing._js_.test.ts","packages/eslint-plugin/rules/computed-property-spacing/computed-property-spacing._ts_.test.ts"],
 "messages": {"unexpectedSpaceBefore":"There should be no space before '{{tokenValue}}'.","unexpectedSpaceAfter":"There should be no space after '{{tokenValue}}'.","missingSpaceBefore":"A space is required before '{{tokenValue}}'.","missingSpaceAfter":"A space is required after '{{tokenValue}}'."},
 "cases": [
 {"id":"computed-property-spacing._js_/v0","kind":"valid","code":"obj[foo]","file":"file.ts","tsconfig":null,"parser":"espree"},

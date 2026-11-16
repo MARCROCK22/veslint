@@ -1,4 +1,4 @@
-{"rule": "@stylistic/object-property-newline", "upstream": "@stylistic/eslint-plugin v5.10.0", "files": ["packages/eslint-plugin/rules/object-property-newline/object-property-newline._js_.test.ts","packages/eslint-plugin/rules/object-property-newline/object-property-newline._ts_.test.ts"],
+{"rule": "@stylistic/object-property-newline", "upstream": "@stylistic/eslint-plugin v6.0.1", "files": ["packages/eslint-plugin/rules/object-property-newline/object-property-newline._js_.test.ts","packages/eslint-plugin/rules/object-property-newline/object-property-newline._ts_.test.ts"],
 "messages": {"propertiesOnNewlineAll":"Object properties must go on a new line if they aren't all on the same line.","propertiesOnNewline":"Object properties must go on a new line."},
 "cases": [
 {"id":"object-property-newline._js_/v0","kind":"valid","code":"var obj = {\nk1: 'val1',\nk2: 'val2',\nk3: 'val3',\nk4: 'val4'\n};","file":"file.ts","tsconfig":null},

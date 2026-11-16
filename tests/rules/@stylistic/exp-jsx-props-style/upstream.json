@@ -1,4 +1,4 @@
-{"rule": "@stylistic/exp-jsx-props-style", "upstream": "@stylistic/eslint-plugin v5.10.0", "files": ["packages/eslint-plugin/rules/jsx-props-style/jsx-props-style.test.ts"],
+{"rule": "@stylistic/exp-jsx-props-style", "upstream": "@stylistic/eslint-plugin v6.0.1", "files": ["packages/eslint-plugin/rules/jsx-props-style/jsx-props-style.test.ts"],
 "messages": {"shouldWrap":"Prop `{{prop}}` must be placed on a new line","shouldNotWrap":"Prop `{{prop}}` should not be placed on a new line"},
 "cases": [
 {"id":"jsx-props-style/v0","kind":"valid","code":"<App />","file":"react.tsx","tsconfig":null,"parserOptions":{"ecmaFeatures":{"jsx":true}}},

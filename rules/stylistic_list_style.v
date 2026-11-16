@@ -4,7 +4,7 @@ import estree
 import time
 import x.json2
 
-// Port of the `@stylistic/exp-list-style` rule of @stylistic/eslint-plugin 5.10.0 (experimental,
+// Port of the `@stylistic/list-style` rule of @stylistic/eslint-plugin 5.10.0 (experimental,
 // rules/list-style), with its options (`singleLine` with `spacing` and `maxItems`, `multiLine` with
 // `minItems`, and `overrides` by kind of bracket or by node type, or `"off"`) and its fixes: the
 // spaces inside the brackets of a list on one line, and the line breaks between the items of a
@@ -126,10 +126,10 @@ mut:
 	resolved map[string]SlsConfig
 }
 
-fn (mut c Checker) lint_stylistic_exp_list_style(root C.TSNode, abs_path string, mut stats Stats) ![]Finding {
+fn (mut c Checker) lint_stylistic_list_style(root C.TSNode, abs_path string, mut stats Stats) ![]Finding {
 	sw := time.new_stopwatch()
 	mut findings := []Finding{}
-	options := sls_options(c.rule_options(stylistic_exp_list_style))!
+	options := sls_options(c.rule_options(stylistic_list_style))!
 	t := c.es_tree(root, abs_path) or { return findings }
 	mut ctx := SlsCtx{
 		t:       t

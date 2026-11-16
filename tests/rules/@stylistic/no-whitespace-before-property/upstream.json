@@ -1,4 +1,4 @@
-{"rule": "@stylistic/no-whitespace-before-property", "upstream": "@stylistic/eslint-plugin v5.10.0", "files": ["packages/eslint-plugin/rules/no-whitespace-before-property/no-whitespace-before-property._js_.test.ts","packages/eslint-plugin/rules/no-whitespace-before-property/no-whitespace-before-property._ts_.test.ts"],
+{"rule": "@stylistic/no-whitespace-before-property", "upstream": "@stylistic/eslint-plugin v6.0.1", "files": ["packages/eslint-plugin/rules/no-whitespace-before-property/no-whitespace-before-property._js_.test.ts","packages/eslint-plugin/rules/no-whitespace-before-property/no-whitespace-before-property._ts_.test.ts"],
 "messages": {"unexpectedWhitespace":"Unexpected whitespace before property {{propName}}."},
 "cases": [
 {"id":"no-whitespace-before-property._js_/v0","kind":"valid","code":"foo.bar","file":"file.ts","tsconfig":null,"parser":"espree"},

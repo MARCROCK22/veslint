@@ -1,4 +1,4 @@
-{"rule": "@stylistic/comma-style", "upstream": "@stylistic/eslint-plugin v5.10.0", "files": ["packages/eslint-plugin/rules/comma-style/comma-style.test.ts"],
+{"rule": "@stylistic/comma-style", "upstream": "@stylistic/eslint-plugin v6.0.1", "files": ["packages/eslint-plugin/rules/comma-style/comma-style.test.ts"],
 "messages": {"unexpectedLineBeforeAndAfterComma":"Bad line breaking before and after ','.","expectedCommaFirst":"',' should be placed first.","expectedCommaLast":"',' should be placed last."},
 "cases": [
 {"id":"comma-style/v0","kind":"valid","code":"var foo = 1, bar = 3;","file":"file.ts","tsconfig":null},

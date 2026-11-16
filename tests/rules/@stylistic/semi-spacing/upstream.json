@@ -1,4 +1,4 @@
-{"rule": "@stylistic/semi-spacing", "upstream": "@stylistic/eslint-plugin v5.10.0", "files": ["packages/eslint-plugin/rules/semi-spacing/semi-spacing._js_.test.ts","packages/eslint-plugin/rules/semi-spacing/semi-spacing._ts_.test.ts"],
+{"rule": "@stylistic/semi-spacing", "upstream": "@stylistic/eslint-plugin v6.0.1", "files": ["packages/eslint-plugin/rules/semi-spacing/semi-spacing._js_.test.ts","packages/eslint-plugin/rules/semi-spacing/semi-spacing._ts_.test.ts"],
 "messages": {"unexpectedWhitespaceBefore":"Unexpected whitespace before semicolon.","unexpectedWhitespaceAfter":"Unexpected whitespace after semicolon.","missingWhitespaceBefore":"Missing whitespace before semicolon.","missingWhitespaceAfter":"Missing whitespace after semicolon."},
 "cases": [
 {"id":"semi-spacing._js_/v0","kind":"valid","code":"var a = 'b';","file":"file.ts","tsconfig":null},

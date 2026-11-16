@@ -1,4 +1,4 @@
-{"rule": "@stylistic/rest-spread-spacing", "upstream": "@stylistic/eslint-plugin v5.10.0", "files": ["packages/eslint-plugin/rules/rest-spread-spacing/rest-spread-spacing.test.ts"],
+{"rule": "@stylistic/rest-spread-spacing", "upstream": "@stylistic/eslint-plugin v6.0.1", "files": ["packages/eslint-plugin/rules/rest-spread-spacing/rest-spread-spacing.test.ts"],
 "messages": {"unexpectedWhitespace":"Unexpected whitespace after {{type}} operator.","expectedWhitespace":"Expected whitespace after {{type}} operator."},
 "cases": [
 {"id":"rest-spread-spacing/v0","kind":"valid","code":"fn(...args)","file":"file.ts","tsconfig":null},
@@ -32,6 +32,10 @@
 {"id":"rest-spread-spacing/v28","kind":"valid","code":"let { x, y, ... z } = { x: 1, y: 2, a: 3, b: 4 };","options":["always"],"file":"file.ts","tsconfig":null,"parserOptions":{"ecmaVersion":2018}},
 {"id":"rest-spread-spacing/v29","kind":"valid","code":"let { x, y, ...\tz } = { x: 1, y: 2, a: 3, b: 4 };","options":["always"],"file":"file.ts","tsconfig":null,"parserOptions":{"ecmaVersion":2018}},
 {"id":"rest-spread-spacing/v30","kind":"valid","code":"let { x, y, ...\nz } = { x: 1, y: 2, a: 3, b: 4 };","options":["always"],"file":"file.ts","tsconfig":null,"parserOptions":{"ecmaVersion":2018}},
+{"id":"rest-spread-spacing/v31","kind":"valid","code":"[.../** @type {string} */ (expr)]","file":"file.ts","tsconfig":null},
+{"id":"rest-spread-spacing/v32","kind":"valid","code":"[.../* comment1 */ /* comment2 */ (expr)]","file":"file.ts","tsconfig":null},
+{"id":"rest-spread-spacing/v33","kind":"valid","code":"[... /** @type {string} */ (expr)]","options":["always"],"file":"file.ts","tsconfig":null},
+{"id":"rest-spread-spacing/v34","kind":"valid","code":"[... /* a */ /* b */ (expr)]","options":["always"],"file":"file.ts","tsconfig":null},
 {"id":"rest-spread-spacing/i0","kind":"invalid","code":"fn(... args)","file":"file.ts","tsconfig":null,"errors":[{"line":1,"column":7,"endLine":1,"endColumn":8,"messageId":"unexpectedWhitespace","data":{"type":"spread"}}],"output":"fn(...args)"},
 {"id":"rest-spread-spacing/i1","kind":"invalid","code":"fn(...  args)","file":"file.ts","tsconfig":null,"errors":[{"line":1,"column":7,"endLine":1,"endColumn":9,"messageId":"unexpectedWhitespace","data":{"type":"spread"}}],"output":"fn(...args)"},
 {"id":"rest-spread-spacing/i2","kind":"invalid","code":"fn(...\targs)","file":"file.ts","tsconfig":null,"errors":[{"line":1,"column":7,"endLine":1,"endColumn":8,"messageId":"unexpectedWhitespace","data":{"type":"spread"}}],"output":"fn(...args)"},
@@ -82,5 +86,7 @@
 {"id":"rest-spread-spacing/i47","kind":"invalid","code":"let { x, y, ... z } = { x: 1, y: 2, a: 3, b: 4 };","options":["never"],"file":"file.ts","tsconfig":null,"parserOptions":{"ecmaVersion":2018},"errors":[{"line":1,"column":16,"endLine":1,"endColumn":17,"messageId":"unexpectedWhitespace","data":{"type":"rest property"}}],"output":"let { x, y, ...z } = { x: 1, y: 2, a: 3, b: 4 };"},
 {"id":"rest-spread-spacing/i48","kind":"invalid","code":"let { x, y, ...\tz } = { x: 1, y: 2, a: 3, b: 4 };","options":["never"],"file":"file.ts","tsconfig":null,"parserOptions":{"ecmaVersion":2018},"errors":[{"line":1,"column":16,"endLine":1,"endColumn":17,"messageId":"unexpectedWhitespace","data":{"type":"rest property"}}],"output":"let { x, y, ...z } = { x: 1, y: 2, a: 3, b: 4 };"},
 {"id":"rest-spread-spacing/i49","kind":"invalid","code":"let { x, y, ...\nz } = { x: 1, y: 2, a: 3, b: 4 };","options":["never"],"file":"file.ts","tsconfig":null,"parserOptions":{"ecmaVersion":2018},"errors":[{"line":1,"column":16,"endLine":2,"endColumn":1,"messageId":"unexpectedWhitespace","data":{"type":"rest property"}}],"output":"let { x, y, ...z } = { x: 1, y: 2, a: 3, b: 4 };"},
-{"id":"rest-spread-spacing/i50","kind":"invalid","code":"let { x, y, ...z } = { x: 1, y: 2, a: 3, b: 4 };","options":["always"],"file":"file.ts","tsconfig":null,"parserOptions":{"ecmaVersion":2018},"errors":[{"line":1,"column":13,"endLine":1,"endColumn":16,"messageId":"expectedWhitespace","data":{"type":"rest property"}}],"output":"let { x, y, ... z } = { x: 1, y: 2, a: 3, b: 4 };"}
+{"id":"rest-spread-spacing/i50","kind":"invalid","code":"let { x, y, ...z } = { x: 1, y: 2, a: 3, b: 4 };","options":["always"],"file":"file.ts","tsconfig":null,"parserOptions":{"ecmaVersion":2018},"errors":[{"line":1,"column":13,"endLine":1,"endColumn":16,"messageId":"expectedWhitespace","data":{"type":"rest property"}}],"output":"let { x, y, ... z } = { x: 1, y: 2, a: 3, b: 4 };"},
+{"id":"rest-spread-spacing/i51","kind":"invalid","code":"[... /** @type {string} */ (expr)]","options":["never"],"file":"file.ts","tsconfig":null,"errors":[{"messageId":"unexpectedWhitespace","data":{"type":"spread"}}],"output":"[.../** @type {string} */ (expr)]"},
+{"id":"rest-spread-spacing/i52","kind":"invalid","code":"[.../** @type {string} */ (expr)]","options":["always"],"file":"file.ts","tsconfig":null,"errors":[{"messageId":"expectedWhitespace","data":{"type":"spread"}}],"output":"[... /** @type {string} */ (expr)]"}
 ]}

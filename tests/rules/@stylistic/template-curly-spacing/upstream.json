@@ -1,4 +1,4 @@
-{"rule": "@stylistic/template-curly-spacing", "upstream": "@stylistic/eslint-plugin v5.10.0", "files": ["packages/eslint-plugin/rules/template-curly-spacing/template-curly-spacing.test.ts"],
+{"rule": "@stylistic/template-curly-spacing", "upstream": "@stylistic/eslint-plugin v6.0.1", "files": ["packages/eslint-plugin/rules/template-curly-spacing/template-curly-spacing.test.ts"],
 "messages": {"expectedBefore":"Expected space(s) before '}'.","expectedAfter":"Expected space(s) after '${'.","unexpectedBefore":"Unexpected space(s) before '}'.","unexpectedAfter":"Unexpected space(s) after '${'."},
 "cases": [
 {"id":"template-curly-spacing/v0","kind":"valid","code":"{ foo }","file":"file.ts","tsconfig":null},

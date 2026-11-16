@@ -1,4 +1,4 @@
-{"rule": "@stylistic/template-tag-spacing", "upstream": "@stylistic/eslint-plugin v5.10.0", "files": ["packages/eslint-plugin/rules/template-tag-spacing/template-tag-spacing.test.ts"],
+{"rule": "@stylistic/template-tag-spacing", "upstream": "@stylistic/eslint-plugin v6.0.1", "files": ["packages/eslint-plugin/rules/template-tag-spacing/template-tag-spacing.test.ts"],
 "messages": {"unexpected":"Unexpected space between template tag and template literal.","missing":"Missing space between template tag and template literal."},
 "cases": [
 {"id":"template-tag-spacing/v0","kind":"valid","code":"tag`name`","file":"file.ts","tsconfig":null},

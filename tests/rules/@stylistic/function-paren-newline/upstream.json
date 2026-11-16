@@ -1,4 +1,4 @@
-{"rule": "@stylistic/function-paren-newline", "upstream": "@stylistic/eslint-plugin v5.10.0", "files": ["packages/eslint-plugin/rules/function-paren-newline/function-paren-newline.test.ts"],
+{"rule": "@stylistic/function-paren-newline", "upstream": "@stylistic/eslint-plugin v6.0.1", "files": ["packages/eslint-plugin/rules/function-paren-newline/function-paren-newline.test.ts"],
 "messages": {"expectedBefore":"Expected newline before ')'.","expectedAfter":"Expected newline after '('.","expectedBetween":"Expected newline between arguments/params.","unexpectedBefore":"Unexpected newline before ')'.","unexpectedAfter":"Unexpected newline after '('."},
 "cases": [
 {"id":"function-paren-newline/v0","kind":"valid","code":"new new Foo();","file":"file.ts","tsconfig":null,"parser":"espree"},

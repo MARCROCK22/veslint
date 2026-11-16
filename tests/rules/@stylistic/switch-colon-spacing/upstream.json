@@ -1,4 +1,4 @@
-{"rule": "@stylistic/switch-colon-spacing", "upstream": "@stylistic/eslint-plugin v5.10.0", "files": ["packages/eslint-plugin/rules/switch-colon-spacing/switch-colon-spacing.test.ts"],
+{"rule": "@stylistic/switch-colon-spacing", "upstream": "@stylistic/eslint-plugin v6.0.1", "files": ["packages/eslint-plugin/rules/switch-colon-spacing/switch-colon-spacing.test.ts"],
 "messages": {"expectedBefore":"Expected space(s) before this colon.","expectedAfter":"Expected space(s) after this colon.","unexpectedBefore":"Unexpected space(s) before this colon.","unexpectedAfter":"Unexpected space(s) after this colon."},
 "cases": [
 {"id":"switch-colon-spacing/v0","kind":"valid","code":"switch(a){}","file":"file.ts","tsconfig":null},

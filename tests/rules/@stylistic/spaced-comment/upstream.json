@@ -1,4 +1,4 @@
-{"rule": "@stylistic/spaced-comment", "upstream": "@stylistic/eslint-plugin v5.10.0", "files": ["packages/eslint-plugin/rules/spaced-comment/spaced-comment.test.ts"],
+{"rule": "@stylistic/spaced-comment", "upstream": "@stylistic/eslint-plugin v6.0.1", "files": ["packages/eslint-plugin/rules/spaced-comment/spaced-comment.test.ts"],
 "messages": {"unexpectedSpaceAfterMarker":"Unexpected space or tab after marker ({{refChar}}) in comment.","expectedExceptionAfter":"Expected exception block, space or tab after '{{refChar}}' in comment.","unexpectedSpaceBefore":"Unexpected space or tab before '*/' in comment.","unexpectedSpaceAfter":"Unexpected space or tab after '{{refChar}}' in comment.","expectedSpaceBefore":"Expected space or tab before '*/' in comment.","expectedSpaceAfter":"Expected space or tab after '{{refChar}}' in comment."},
 "cases": [
 {"id":"spaced-comment/v0","kind":"valid","code":"// A valid comment starting with space\nvar a = 1;","options":["always"],"file":"file.ts","tsconfig":null},

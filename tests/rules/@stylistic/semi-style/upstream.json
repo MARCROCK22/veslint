@@ -1,4 +1,4 @@
-{"rule": "@stylistic/semi-style", "upstream": "@stylistic/eslint-plugin v5.10.0", "files": ["packages/eslint-plugin/rules/semi-style/semi-style.test.ts"],
+{"rule": "@stylistic/semi-style", "upstream": "@stylistic/eslint-plugin v6.0.1", "files": ["packages/eslint-plugin/rules/semi-style/semi-style.test.ts"],
 "messages": {"expectedSemiColon":"Expected this semicolon to be at {{pos}}."},
 "cases": [
 {"id":"semi-style/v0","kind":"valid","code":";","file":"file.ts","tsconfig":null},

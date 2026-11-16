@@ -1,4 +1,4 @@
-{"rule": "@stylistic/nonblock-statement-body-position", "upstream": "@stylistic/eslint-plugin v5.10.0", "files": ["packages/eslint-plugin/rules/nonblock-statement-body-position/nonblock-statement-body-position.test.ts"],
+{"rule": "@stylistic/nonblock-statement-body-position", "upstream": "@stylistic/eslint-plugin v6.0.1", "files": ["packages/eslint-plugin/rules/nonblock-statement-body-position/nonblock-statement-body-position.test.ts"],
 "messages": {"expectNoLinebreak":"Expected no linebreak before this statement.","expectLinebreak":"Expected a linebreak before this statement."},
 "cases": [
 {"id":"nonblock-statement-body-position/v0","kind":"valid","code":"if (foo) bar;","file":"file.ts","tsconfig":null},

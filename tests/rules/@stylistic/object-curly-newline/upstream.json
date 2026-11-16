@@ -1,4 +1,4 @@
-{"rule": "@stylistic/object-curly-newline", "upstream": "@stylistic/eslint-plugin v5.10.0", "files": ["packages/eslint-plugin/rules/object-curly-newline/object-curly-newline._js_.test.ts","packages/eslint-plugin/rules/object-curly-newline/object-curly-newline._ts_.test.ts"],
+{"rule": "@stylistic/object-curly-newline", "upstream": "@stylistic/eslint-plugin v6.0.1", "files": ["packages/eslint-plugin/rules/object-curly-newline/object-curly-newline._js_.test.ts","packages/eslint-plugin/rules/object-curly-newline/object-curly-newline._ts_.test.ts"],
 "messages": {"unexpectedLinebreakBeforeClosingBrace":"Unexpected line break before this closing brace.","unexpectedLinebreakAfterOpeningBrace":"Unexpected line break after this opening brace.","expectedLinebreakBeforeClosingBrace":"Expected a line break before this closing brace.","expectedLinebreakAfterOpeningBrace":"Expected a line break after this opening brace."},
 "cases": [
 {"id":"object-curly-newline._js_/v0","kind":"valid","code":"var a = {\n};","file":"file.ts","tsconfig":null},

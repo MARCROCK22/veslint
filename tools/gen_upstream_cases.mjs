@@ -88,13 +88,13 @@ const SOURCES = {
     needs: [path.join(UNICORN, 'test'), path.join(UNICORN_DEPS, 'outdent')],
     extra: { outdent: path.join(UNICORN_DEPS, 'outdent') },
   },
-  // @stylistic/eslint-plugin v5.10.0 (the `@stylistic/*` rules): rules/<rule>/*.test.ts of
+  // @stylistic/eslint-plugin v6.0.1 (the `@stylistic/*` rules): rules/<rule>/*.test.ts of
   // packages/eslint-plugin in eslint-stylistic, run by eslint-vitest-rule-tester 3.1.0 with
   // typescript-eslint's parser without types (`lang: 'ts'`, the default) or espree (`lang: 'js'`),
   // linted as TypeScript in the file.ts (react.tsx with JSX) of typescript-eslint's fixtures, one pass
   // of fixes, and an output checked only when the case gives one.
   '@stylistic/': {
-    label: '@stylistic/eslint-plugin v5.10.0',
+    label: '@stylistic/eslint-plugin v6.0.1',
     stylistic: true,
     clone: STYLISTIC,
     tests: path.join(STYLISTIC, 'packages/eslint-plugin/rules'),
@@ -378,7 +378,7 @@ function testFiles(name, source) {
     return files;
   }
   if (source.stylistic) {
-    // The experimental rules (`exp-list-style`) are tested in the directory of their source (`list-style`).
+    // An experimental rule (`exp-jsx-props-style`) is tested in the directory of its source (`jsx-props-style`).
     const dir = path.join(source.tests, name.replace(/^exp-/, ''));
     return fs.existsSync(dir)
       ? fs.readdirSync(dir).filter(entry => entry.endsWith('.test.ts')).sort().map(entry => path.join(dir, entry))

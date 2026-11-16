@@ -1,4 +1,4 @@
-{"rule": "@stylistic/quote-props", "upstream": "@stylistic/eslint-plugin v5.10.0", "files": ["packages/eslint-plugin/rules/quote-props/quote-props._js_.test.ts","packages/eslint-plugin/rules/quote-props/quote-props._ts_.test.ts"],
+{"rule": "@stylistic/quote-props", "upstream": "@stylistic/eslint-plugin v6.0.1", "files": ["packages/eslint-plugin/rules/quote-props/quote-props._js_.test.ts","packages/eslint-plugin/rules/quote-props/quote-props._ts_.test.ts"],
 "messages": {"requireQuotesDueToReservedWord":"Properties should be quoted as '{{property}}' is a reserved word.","inconsistentlyQuotedProperty":"Inconsistently quoted property '{{key}}' found.","unnecessarilyQuotedProperty":"Unnecessarily quoted property '{{property}}' found.","unquotedReservedProperty":"Unquoted reserved word '{{property}}' used as key.","unquotedNumericProperty":"Unquoted number literal '{{property}}' used as key.","unquotedPropertyFound":"Unquoted property '{{property}}' found.","redundantQuoting":"Properties shouldn't be quoted as all quotes are redundant."},
 "cases": [
 {"id":"quote-props._js_/v0","kind":"valid","code":"({ '0': 0 })","file":"file.ts","tsconfig":null,"parser":"espree"},
