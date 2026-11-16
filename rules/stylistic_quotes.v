@@ -4,10 +4,10 @@ import estree
 import time
 import x.json2
 
-// Port of the `@stylistic/quotes` rule of @stylistic/eslint-plugin 5.10.0, with its options
+// Port of the `@stylistic/quotes` rule of @stylistic/eslint-plugin 6.0.1, with its options
 // (`"double"`, the default, `"single"` or `"backtick"`, and `avoidEscape`,
-// `allowTemplateLiterals` — `"never"`, `"avoidEscape"`, `"always"` or the deprecated booleans —,
-// `ignoreStringLiterals`, or the deprecated `"avoid-escape"`) and its fixes.
+// `allowTemplateLiterals` — `"never"`, `"avoidEscape"` or `"always"` — and
+// `ignoreStringLiterals`) and its fixes.
 
 const squo_messages = {
 	'wrongQuotes': 'Strings must use {{description}}.'
@@ -51,14 +51,7 @@ fn squo_options(given []json2.Any) !SquoOptions {
 		if allow is string {
 			always = allow == 'always'
 			to_avoid_escape = always || allow == 'avoidEscape'
-		} else if allow is bool {
-			// Deprecated.
-			always = allow
-			to_avoid_escape = allow
 		}
-	} else if second is string && second == 'avoid-escape' {
-		// Deprecated.
-		avoid_escape = true
 	}
 	return SquoOptions{
 		quote_option:                            quote_option
