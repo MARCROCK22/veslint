@@ -128,3 +128,22 @@ export const oddKeys = {
   "é" /* ü */  : 1,
   [`a${c}`]:2,
 };
+// 6.0.0: a parenthesized type is aligned from its `(`
+interface Ksp6A {
+  b: 7;
+  aaa: (123);
+}
+interface Ksp6B {
+  aaa: 7;
+  b: (123);
+}
+interface Ksp6C {
+  aaa:   ((string | number));
+  b: (() => void);
+  cc:  /* c */ (boolean);
+}
+type Ksp6D = {
+  x: (1);
+  longer: 2;
+};
+export type { Ksp6A, Ksp6B, Ksp6C, Ksp6D };

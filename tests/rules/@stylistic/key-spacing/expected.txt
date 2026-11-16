@@ -245,6 +245,13 @@ tests/rules/@stylistic/key-spacing/align-colon/cases.ts:124:3	@stylistic/key-spa
 tests/rules/@stylistic/key-spacing/align-colon/cases.ts:125:3	@stylistic/key-spacing	extraKey	Extra space after key '[k: string /* x */]'.
 tests/rules/@stylistic/key-spacing/align-colon/cases.ts:128:7	@stylistic/key-spacing	missingKey	Missing space after key 'é'.
 tests/rules/@stylistic/key-spacing/align-colon/cases.ts:129:13	@stylistic/key-spacing	missingValue	Missing space before value for computed key '`a${c}`'.
+tests/rules/@stylistic/key-spacing/align-colon/cases.ts:133:3	@stylistic/key-spacing	missingKey	Missing space after key 'b'.
+tests/rules/@stylistic/key-spacing/align-colon/cases.ts:138:3	@stylistic/key-spacing	missingKey	Missing space after key 'b'.
+tests/rules/@stylistic/key-spacing/align-colon/cases.ts:141:3	@stylistic/key-spacing	extraValue	Extra space before value for key 'aaa'.
+tests/rules/@stylistic/key-spacing/align-colon/cases.ts:142:3	@stylistic/key-spacing	missingKey	Missing space after key 'b'.
+tests/rules/@stylistic/key-spacing/align-colon/cases.ts:143:3	@stylistic/key-spacing	missingKey	Missing space after key 'cc'.
+tests/rules/@stylistic/key-spacing/align-colon/cases.ts:143:3	@stylistic/key-spacing	extraValue	Extra space before value for key 'cc'.
+tests/rules/@stylistic/key-spacing/align-colon/cases.ts:146:3	@stylistic/key-spacing	missingKey	Missing space after key 'x'.
 tests/rules/@stylistic/key-spacing/align-object-no-on/cases.ts:3:27	@stylistic/key-spacing	extraKey	Extra space after key 'b'.
 tests/rules/@stylistic/key-spacing/align-object-no-on/cases.ts:3:28	@stylistic/key-spacing	extraValue	Extra space before value for key 'b'.
 tests/rules/@stylistic/key-spacing/align-object-no-on/cases.ts:3:34	@stylistic/key-spacing	extraKey	Extra space after key 'c'.
@@ -483,6 +490,24 @@ tests/rules/@stylistic/key-spacing/align-object/cases.ts:125:3	@stylistic/key-sp
 tests/rules/@stylistic/key-spacing/align-object/cases.ts:128:18	@stylistic/key-spacing	missingValue	Missing space before value for key 'é'.
 tests/rules/@stylistic/key-spacing/align-object/cases.ts:129:11	@stylistic/key-spacing	missingKey	Missing space after computed key '`a${c}`'.
 tests/rules/@stylistic/key-spacing/align-object/cases.ts:129:13	@stylistic/key-spacing	missingValue	Missing space before value for computed key '`a${c}`'.
+tests/rules/@stylistic/key-spacing/align-object/cases.ts:133:3	@stylistic/key-spacing	missingValue	Missing space before value for key 'b'.
+tests/rules/@stylistic/key-spacing/align-object/cases.ts:133:3	@stylistic/key-spacing	missingKey	Missing space after key 'b'.
+tests/rules/@stylistic/key-spacing/align-object/cases.ts:134:3	@stylistic/key-spacing	missingValue	Missing space before value for key 'aaa'.
+tests/rules/@stylistic/key-spacing/align-object/cases.ts:134:3	@stylistic/key-spacing	missingKey	Missing space after key 'aaa'.
+tests/rules/@stylistic/key-spacing/align-object/cases.ts:137:3	@stylistic/key-spacing	missingValue	Missing space before value for key 'aaa'.
+tests/rules/@stylistic/key-spacing/align-object/cases.ts:137:3	@stylistic/key-spacing	missingKey	Missing space after key 'aaa'.
+tests/rules/@stylistic/key-spacing/align-object/cases.ts:138:3	@stylistic/key-spacing	missingValue	Missing space before value for key 'b'.
+tests/rules/@stylistic/key-spacing/align-object/cases.ts:138:3	@stylistic/key-spacing	missingKey	Missing space after key 'b'.
+tests/rules/@stylistic/key-spacing/align-object/cases.ts:141:3	@stylistic/key-spacing	extraValue	Extra space before value for key 'aaa'.
+tests/rules/@stylistic/key-spacing/align-object/cases.ts:141:3	@stylistic/key-spacing	missingKey	Missing space after key 'aaa'.
+tests/rules/@stylistic/key-spacing/align-object/cases.ts:142:3	@stylistic/key-spacing	missingValue	Missing space before value for key 'b'.
+tests/rules/@stylistic/key-spacing/align-object/cases.ts:142:3	@stylistic/key-spacing	missingKey	Missing space after key 'b'.
+tests/rules/@stylistic/key-spacing/align-object/cases.ts:143:3	@stylistic/key-spacing	extraValue	Extra space before value for key 'cc'.
+tests/rules/@stylistic/key-spacing/align-object/cases.ts:143:3	@stylistic/key-spacing	missingKey	Missing space after key 'cc'.
+tests/rules/@stylistic/key-spacing/align-object/cases.ts:146:3	@stylistic/key-spacing	missingValue	Missing space before value for key 'x'.
+tests/rules/@stylistic/key-spacing/align-object/cases.ts:146:3	@stylistic/key-spacing	missingKey	Missing space after key 'x'.
+tests/rules/@stylistic/key-spacing/align-object/cases.ts:147:3	@stylistic/key-spacing	missingValue	Missing space before value for key 'longer'.
+tests/rules/@stylistic/key-spacing/align-object/cases.ts:147:3	@stylistic/key-spacing	missingKey	Missing space after key 'longer'.
 tests/rules/@stylistic/key-spacing/align-value/cases.ts:3:23	@stylistic/key-spacing	missingValue	Missing space before value for key 'a'.
 tests/rules/@stylistic/key-spacing/align-value/cases.ts:3:27	@stylistic/key-spacing	extraKey	Extra space after key 'b'.
 tests/rules/@stylistic/key-spacing/align-value/cases.ts:3:34	@stylistic/key-spacing	extraKey	Extra space after key 'c'.
@@ -582,6 +607,12 @@ tests/rules/@stylistic/key-spacing/align-value/cases.ts:125:3	@stylistic/key-spa
 tests/rules/@stylistic/key-spacing/align-value/cases.ts:128:14	@stylistic/key-spacing	extraKey	Extra space after key 'é'.
 tests/rules/@stylistic/key-spacing/align-value/cases.ts:128:18	@stylistic/key-spacing	missingValue	Missing space before value for key 'é'.
 tests/rules/@stylistic/key-spacing/align-value/cases.ts:129:13	@stylistic/key-spacing	missingValue	Missing space before value for computed key '`a${c}`'.
+tests/rules/@stylistic/key-spacing/align-value/cases.ts:133:3	@stylistic/key-spacing	missingValue	Missing space before value for key 'b'.
+tests/rules/@stylistic/key-spacing/align-value/cases.ts:138:3	@stylistic/key-spacing	missingValue	Missing space before value for key 'b'.
+tests/rules/@stylistic/key-spacing/align-value/cases.ts:141:3	@stylistic/key-spacing	extraValue	Extra space before value for key 'aaa'.
+tests/rules/@stylistic/key-spacing/align-value/cases.ts:142:3	@stylistic/key-spacing	missingValue	Missing space before value for key 'b'.
+tests/rules/@stylistic/key-spacing/align-value/cases.ts:143:3	@stylistic/key-spacing	extraValue	Extra space before value for key 'cc'.
+tests/rules/@stylistic/key-spacing/align-value/cases.ts:146:3	@stylistic/key-spacing	missingValue	Missing space before value for key 'x'.
 tests/rules/@stylistic/key-spacing/align-with-multiline/cases.ts:3:21	@stylistic/key-spacing	missingKey	Missing space after key 'a'.
 tests/rules/@stylistic/key-spacing/align-with-multiline/cases.ts:3:23	@stylistic/key-spacing	missingValue	Missing space before value for key 'a'.
 tests/rules/@stylistic/key-spacing/align-with-multiline/cases.ts:3:34	@stylistic/key-spacing	extraKey	Extra space after key 'c'.
@@ -955,6 +986,8 @@ tests/rules/@stylistic/key-spacing/cases.ts:124:3	@stylistic/key-spacing	extraVa
 tests/rules/@stylistic/key-spacing/cases.ts:125:3	@stylistic/key-spacing	extraKey	Extra space after key '[k: string /* x */]'.
 tests/rules/@stylistic/key-spacing/cases.ts:128:14	@stylistic/key-spacing	extraKey	Extra space after key 'é'.
 tests/rules/@stylistic/key-spacing/cases.ts:129:13	@stylistic/key-spacing	missingValue	Missing space before value for computed key '`a${c}`'.
+tests/rules/@stylistic/key-spacing/cases.ts:141:3	@stylistic/key-spacing	extraValue	Extra space before value for key 'aaa'.
+tests/rules/@stylistic/key-spacing/cases.ts:143:3	@stylistic/key-spacing	extraValue	Extra space before value for key 'cc'.
 tests/rules/@stylistic/key-spacing/ignored-align/cases.ts:67:16	@stylistic/key-spacing	missingValue	Missing space before value for key 'a'.
 tests/rules/@stylistic/key-spacing/ignored-align/cases.ts:67:26	@stylistic/key-spacing	extraKey	Extra space after key 'b'.
 tests/rules/@stylistic/key-spacing/ignored-align/cases.ts:67:26	@stylistic/key-spacing	missingValue	Missing space before value for key 'b'.
@@ -1390,6 +1423,12 @@ tests/rules/@stylistic/key-spacing/multiline-align-object-value/cases.ts:124:3	@
 tests/rules/@stylistic/key-spacing/multiline-align-object-value/cases.ts:125:3	@stylistic/key-spacing	extraValue	Extra space before value for key '[k: string /* x */]'.
 tests/rules/@stylistic/key-spacing/multiline-align-object-value/cases.ts:128:18	@stylistic/key-spacing	missingValue	Missing space before value for key 'é'.
 tests/rules/@stylistic/key-spacing/multiline-align-object-value/cases.ts:129:13	@stylistic/key-spacing	missingValue	Missing space before value for computed key '`a${c}`'.
+tests/rules/@stylistic/key-spacing/multiline-align-object-value/cases.ts:133:3	@stylistic/key-spacing	missingValue	Missing space before value for key 'b'.
+tests/rules/@stylistic/key-spacing/multiline-align-object-value/cases.ts:138:3	@stylistic/key-spacing	missingValue	Missing space before value for key 'b'.
+tests/rules/@stylistic/key-spacing/multiline-align-object-value/cases.ts:141:3	@stylistic/key-spacing	extraValue	Extra space before value for key 'aaa'.
+tests/rules/@stylistic/key-spacing/multiline-align-object-value/cases.ts:142:3	@stylistic/key-spacing	missingValue	Missing space before value for key 'b'.
+tests/rules/@stylistic/key-spacing/multiline-align-object-value/cases.ts:143:3	@stylistic/key-spacing	extraValue	Extra space before value for key 'cc'.
+tests/rules/@stylistic/key-spacing/multiline-align-object-value/cases.ts:146:3	@stylistic/key-spacing	missingValue	Missing space before value for key 'x'.
 tests/rules/@stylistic/key-spacing/multiline-align-object/cases.ts:3:23	@stylistic/key-spacing	missingValue	Missing space before value for key 'a'.
 tests/rules/@stylistic/key-spacing/multiline-align-object/cases.ts:3:27	@stylistic/key-spacing	extraKey	Extra space after key 'b'.
 tests/rules/@stylistic/key-spacing/multiline-align-object/cases.ts:3:34	@stylistic/key-spacing	extraKey	Extra space after key 'c'.
