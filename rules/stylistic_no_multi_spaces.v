@@ -3,8 +3,9 @@ module rules
 import time
 import x.json2
 
-// Port of the `@stylistic/no-multi-spaces` rule of @stylistic/eslint-plugin 5.10.0, with its
-// options (`exceptions`, by node type, `ignoreEOLComments` and `includeTabs`) and its fixes.
+// Port of the `@stylistic/no-multi-spaces` rule of @stylistic/eslint-plugin 6.0.1, with its
+// options (`exceptions`, by node type, none by default since 6.0.0, `ignoreEOLComments` and
+// `includeTabs`) and its fixes.
 
 const snms_messages = {
 	'multipleSpaces': "Multiple spaces found before '{{displayValue}}'."

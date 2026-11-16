@@ -7,6 +7,8 @@ tests/rules/@stylistic/no-multi-spaces/cases.ts:5:23	@stylistic/no-multi-spaces	
 tests/rules/@stylistic/no-multi-spaces/cases.ts:5:36	@stylistic/no-multi-spaces	multipleSpaces	Multiple spaces found before '{'.	fix	149	151	 	end	5	38
 tests/rules/@stylistic/no-multi-spaces/cases.ts:6:11	@stylistic/no-multi-spaces	multipleSpaces	Multiple spaces found before '?'.	fix	163	165	 	end	6	13
 tests/rules/@stylistic/no-multi-spaces/cases.ts:6:16	@stylistic/no-multi-spaces	multipleSpaces	Multiple spaces found before ':'.	fix	168	171	 	end	6	19
+tests/rules/@stylistic/no-multi-spaces/cases.ts:8:19	@stylistic/no-multi-spaces	multipleSpaces	Multiple spaces found before '1'.	fix	198	201	 	end	8	22
+tests/rules/@stylistic/no-multi-spaces/cases.ts:8:31	@stylistic/no-multi-spaces	multipleSpaces	Multiple spaces found before '['.	fix	210	212	 	end	8	33
 tests/rules/@stylistic/no-multi-spaces/cases.ts:8:36	@stylistic/no-multi-spaces	multipleSpaces	Multiple spaces found before '2'.	fix	215	217	 	end	8	38
 tests/rules/@stylistic/no-multi-spaces/cases.ts:10:8	@stylistic/no-multi-spaces	multipleSpaces	Multiple spaces found before '='.	fix	240	242	 	end	10	10
 tests/rules/@stylistic/no-multi-spaces/cases.ts:11:21	@stylistic/no-multi-spaces	multipleSpaces	Multiple spaces found before 'priv'.	fix	267	269	 	end	11	23
@@ -19,6 +21,7 @@ tests/rules/@stylistic/no-multi-spaces/cases.ts:16:17	@stylistic/no-multi-spaces
 tests/rules/@stylistic/no-multi-spaces/cases.ts:16:20	@stylistic/no-multi-spaces	multipleSpaces	Multiple spaces found before 'number'.	fix	374	376	 	end	16	22
 tests/rules/@stylistic/no-multi-spaces/cases.ts:17:17	@stylistic/no-multi-spaces	multipleSpaces	Multiple spaces found before 'T'.	fix	400	402	 	end	17	19
 tests/rules/@stylistic/no-multi-spaces/cases.ts:18:34	@stylistic/no-multi-spaces	multipleSpaces	Multiple spaces found before '{'.	fix	440	442	 	end	18	36
+tests/rules/@stylistic/no-multi-spaces/cases.ts:18:43	@stylistic/no-multi-spaces	multipleSpaces	Multiple spaces found before '"json"'.	fix	449	451	 	end	18	45
 tests/rules/@stylistic/no-multi-spaces/cases.ts:19:5	@stylistic/no-multi-spaces	multipleSpaces	Multiple spaces found before '"x"'.	fix	465	467	 	end	19	7
 tests/rules/@stylistic/no-multi-spaces/cases.ts:19:11	@stylistic/no-multi-spaces	multipleSpaces	Multiple spaces found before '/* short */'.	fix	471	473	 	end	19	13
 tests/rules/@stylistic/no-multi-spaces/cases.ts:20:10	@stylistic/no-multi-spaces	multipleSpaces	Multiple spaces found before '/* a comment l...*/'.	fix	495	497	 	end	20	12
@@ -28,19 +31,17 @@ tests/rules/@stylistic/no-multi-spaces/cases.ts:24:10	@stylistic/no-multi-spaces
 tests/rules/@stylistic/no-multi-spaces/cases.ts:25:10	@stylistic/no-multi-spaces	multipleSpaces	Multiple spaces found before '// ünïcödé ✓✓✓...'.	fix	661	663	 	end	25	12
 tests/rules/@stylistic/no-multi-spaces/cases.ts:26:10	@stylistic/no-multi-spaces	multipleSpaces	Multiple spaces found before '// 😀😀😀😀😀�...'.	fix	693	695	 	end	26	12
 tests/rules/@stylistic/no-multi-spaces/cases.ts:27:9	@stylistic/no-multi-spaces	multipleSpaces	Multiple spaces found before 'const'.	fix	721	723	 	end	27	11
+tests/rules/@stylistic/no-multi-spaces/cases.ts:28:15	@stylistic/no-multi-spaces	multipleSpaces	Multiple spaces found before '1'.	fix	750	752	 	end	28	17
 tests/rules/@stylistic/no-multi-spaces/cases.ts:29:8	@stylistic/no-multi-spaces	multipleSpaces	Multiple spaces found before '='.	fix	764	766	 	end	29	10
 tests/rules/@stylistic/no-multi-spaces/cases.ts:29:11	@stylistic/no-multi-spaces	multipleSpaces	Multiple spaces found before '['.	fix	767	769	 	end	29	13
 tests/rules/@stylistic/no-multi-spaces/cases.ts:29:16	@stylistic/no-multi-spaces	multipleSpaces	Multiple spaces found before '2'.	fix	772	775	 	end	29	19
+tests/rules/@stylistic/no-multi-spaces/exceptions-property/cases.ts:2:30	@stylistic/no-multi-spaces	multipleSpaces	Multiple spaces found before '{'.	fix	58	60	 	end	2	32
+tests/rules/@stylistic/no-multi-spaces/exceptions-property/cases.ts:3:8	@stylistic/no-multi-spaces	multipleSpaces	Multiple spaces found before '='.	fix	87	89	 	end	3	10
+tests/rules/@stylistic/no-multi-spaces/exceptions-property/cases.ts:3:13	@stylistic/no-multi-spaces	multipleSpaces	Multiple spaces found before '+'.	fix	92	94	 	end	3	15
 tests/rules/@stylistic/no-multi-spaces/exceptions/cases.ts:3:15	@stylistic/no-multi-spaces	multipleSpaces	Multiple spaces found before '1'.	fix	48	50	 	end	3	17
 tests/rules/@stylistic/no-multi-spaces/exceptions/cases.ts:4:5	@stylistic/no-multi-spaces	multipleSpaces	Multiple spaces found before 'b'.	fix	59	61	 	end	4	7
 tests/rules/@stylistic/no-multi-spaces/ignore-eol/cases.ts:3:13	@stylistic/no-multi-spaces	multipleSpaces	Multiple spaces found before '/* not last */'.	fix	81	83	 	end	3	15
 tests/rules/@stylistic/no-multi-spaces/ignore-eol/cases.ts:4:8	@stylistic/no-multi-spaces	multipleSpaces	Multiple spaces found before '='.	fix	118	120	 	end	4	10
-tests/rules/@stylistic/no-multi-spaces/no-exceptions/cases.ts:1:15	@stylistic/no-multi-spaces	multipleSpaces	Multiple spaces found before '1'.	fix	14	16	 	end	1	17
-tests/rules/@stylistic/no-multi-spaces/no-exceptions/cases.ts:1:22	@stylistic/no-multi-spaces	multipleSpaces	Multiple spaces found before '2'.	fix	21	24	 	end	1	25
-tests/rules/@stylistic/no-multi-spaces/no-exceptions/cases.ts:2:30	@stylistic/no-multi-spaces	multipleSpaces	Multiple spaces found before '{'.	fix	58	60	 	end	2	32
-tests/rules/@stylistic/no-multi-spaces/no-exceptions/cases.ts:2:39	@stylistic/no-multi-spaces	multipleSpaces	Multiple spaces found before '"json"'.	fix	67	70	 	end	2	42
-tests/rules/@stylistic/no-multi-spaces/no-exceptions/cases.ts:3:8	@stylistic/no-multi-spaces	multipleSpaces	Multiple spaces found before '='.	fix	87	89	 	end	3	10
-tests/rules/@stylistic/no-multi-spaces/no-exceptions/cases.ts:3:13	@stylistic/no-multi-spaces	multipleSpaces	Multiple spaces found before '+'.	fix	92	94	 	end	3	15
 tests/rules/@stylistic/no-multi-spaces/no-tabs/cases.ts:3:10	@stylistic/no-multi-spaces	multipleSpaces	Multiple spaces found before '3'.	fix	37	39	 	end	3	12
 tests/rules/@stylistic/no-multi-spaces/tsx/cases.tsx:1:23	@stylistic/no-multi-spaces	multipleSpaces	Multiple spaces found before 'id'.	fix	22	24	 	end	1	25
 tests/rules/@stylistic/no-multi-spaces/tsx/cases.tsx:1:31	@stylistic/no-multi-spaces	multipleSpaces	Multiple spaces found before 'className'.	fix	30	32	 	end	1	33

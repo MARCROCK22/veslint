@@ -1123,7 +1123,7 @@ pub const default_options = {
 	stylistic_nonblock_statement_body_position:      '["beside"]'
 	stylistic_one_var_declaration_per_line:          '["initializations"]'
 	stylistic_quotes:                                '["double",{"allowTemplateLiterals":"never","avoidEscape":false,"ignoreStringLiterals":false}]'
-	stylistic_no_multi_spaces:                       '[{"exceptions":{"Property":true,"ImportAttribute":true},"ignoreEOLComments":false,"includeTabs":true}]'
+	stylistic_no_multi_spaces:                       '[{"ignoreEOLComments":false,"includeTabs":true}]'
 	stylistic_no_trailing_spaces:                    '[{"skipBlankLines":false,"ignoreComments":false}]'
 	stylistic_no_mixed_spaces_and_tabs:              '[false]'
 	stylistic_eol_last:                              '["always"]'
