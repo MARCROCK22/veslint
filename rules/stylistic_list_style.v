@@ -4,11 +4,11 @@ import estree
 import time
 import x.json2
 
-// Port of the `@stylistic/list-style` rule of @stylistic/eslint-plugin 5.10.0 (experimental,
-// rules/list-style), with its options (`singleLine` with `spacing` and `maxItems`, `multiLine` with
+// Port of the `@stylistic/list-style` rule of @stylistic/eslint-plugin 6.0.1 (rules/list-style),
+// with its options (`empty`, `singleLine` with `spacing` and `maxItems`, `multiLine` with
 // `minItems`, and `overrides` by kind of bracket or by node type, or `"off"`) and its fixes: the
-// spaces inside the brackets of a list on one line, and the line breaks between the items of a
-// list on several lines. Lists: arrays, array patterns, tuple types, parameters, arguments, the
+// spaces inside the brackets of a list on one line, the line breaks between the items of a list on
+// several lines, and the brackets of an empty list (`empty`). Lists: arrays, array patterns, tuple types, parameters, arguments, the
 // test of an `if`, objects, object patterns, import and export specifiers, import attributes, type
 // literals, interface bodies, enum bodies, type parameters and type arguments.
 
@@ -24,6 +24,7 @@ const sls_messages = {
 // false).
 struct SlsConfig {
 	off            bool
+	empty          string
 	spacing_always bool
 	max_items      int
 	min_items      int
@@ -31,6 +32,7 @@ struct SlsConfig {
 
 // SlsOptions are the options of the rule as given (merged with the defaults).
 struct SlsOptions {
+	empty       string
 	single_line map[string]json2.Any
 	multi_line  map[string]json2.Any
 	overrides   map[string]json2.Any
@@ -39,6 +41,7 @@ struct SlsOptions {
 fn sls_options(given []json2.Any) !SlsOptions {
 	options := sty_options(given, [
 		json2.Any({
+			'empty':      json2.Any('ignore')
 			'singleLine': json2.Any({
 				'spacing':  json2.Any('never')
 				'maxItems': json2.Any(json2.Null{})
@@ -56,7 +59,9 @@ fn sls_options(given []json2.Any) !SlsOptions {
 		}),
 	])
 	object := sty_option_object(options, 0)
+	empty := object['empty'] or { json2.Any(json2.Null{}) }
 	return SlsOptions{
+		empty:       if empty is string { empty } else { 'ignore' }
 		single_line: sls_object(object['singleLine'] or { json2.Any(json2.Null{}) })
 		multi_line:  sls_object(object['multiLine'] or { json2.Any(json2.Null{}) })
 		overrides:   sls_object(object['overrides'] or { json2.Any(json2.Null{}) })
@@ -99,19 +104,31 @@ fn sls_resolve(options SlsOptions, paren_type string, node_type string) SlsConfi
 	single_line := sls_spread(options.single_line, sls_object(paren['singleLine'] or {
 		json2.Any(json2.Null{})
 	}), sls_object(by_node['singleLine'] or { json2.Any(json2.Null{}) }))
-	multiline := sls_spread(options.multi_line, sls_object(paren['multiline'] or {
+	multi_line := sls_spread(options.multi_line, sls_object(paren['multiLine'] or {
 		json2.Any(json2.Null{})
-	}), sls_object(by_node['multiline'] or { json2.Any(json2.Null{}) }))
+	}), sls_object(by_node['multiLine'] or { json2.Any(json2.Null{}) }))
+	// overridesByNode.empty ?? overridesByParen.empty ?? empty
+	mut empty := options.empty
+	if value := by_node['empty'] {
+		if value is string {
+			empty = value
+		}
+	} else if value := paren['empty'] {
+		if value is string {
+			empty = value
+		}
+	}
 	mut max_items := max_i32
 	if value := single_line['maxItems'] {
 		max_items = sty_option_count(value)
 	}
 	mut min_items := max_i32
-	if value := multiline['minItems'] {
+	if value := multi_line['minItems'] {
 		min_items = sty_option_count(value)
 	}
 	spacing := single_line['spacing'] or { json2.Any(json2.Null{}) }
 	return SlsConfig{
+		empty:          empty
 		spacing_always: spacing is string && spacing == 'always'
 		max_items:      max_items
 		min_items:      min_items
@@ -157,14 +174,18 @@ fn (mut c Checker) lint_stylistic_list_style(root C.TSNode, abs_path string, mut
 			}
 			.export_all_declaration {
 				if attributes := t.list(node, .attributes) {
-					c.sls_check(mut ctx, '{}', node, attributes, mut findings)
+					c.sls_check_key(mut ctx, '{}', node, attributes, 'ImportAttributes', mut
+						findings)
 				}
 			}
 			.export_named_declaration {
-				c.sls_check(mut ctx, '{}', node, t.list(node, .specifiers) or { []int{} }, mut
-					findings)
+				if (t.node(node, .declaration) or { -1 }) < 0 {
+					c.sls_check(mut ctx, '{}', node, t.list(node, .specifiers) or { []int{} }, mut
+						findings)
+				}
 				if attributes := t.list(node, .attributes) {
-					c.sls_check(mut ctx, '{}', node, attributes, mut findings)
+					c.sls_check_key(mut ctx, '{}', node, attributes, 'ImportAttributes', mut
+						findings)
 				}
 			}
 			.if_statement {
@@ -173,9 +194,13 @@ fn (mut c Checker) lint_stylistic_list_style(root C.TSNode, abs_path string, mut
 			}
 			.import_declaration {
 				specifiers := (t.list(node, .specifiers) or { []int{} }).filter(t.typ(it) == .import_specifier)
-				c.sls_check(mut ctx, '{}', node, specifiers, mut findings)
+				// specifiers.length || a `{` before the source
+				if specifiers.len > 0 || c.sls_brace_before_source(ctx, node) {
+					c.sls_check(mut ctx, '{}', node, specifiers, mut findings)
+				}
 				if attributes := t.list(node, .attributes) {
-					c.sls_check(mut ctx, '{}', node, attributes, mut findings)
+					c.sls_check_key(mut ctx, '{}', node, attributes, 'ImportAttributes', mut
+						findings)
 				}
 			}
 			.object_expression, .object_pattern {
@@ -217,8 +242,24 @@ fn (c &Checker) sls_paren_matches(token SourceToken, paren_type string, left boo
 	}
 }
 
+// sls_brace_before_source tells whether a token of the import declaration before its source is a
+// `{` (`import {} from 'x'`).
+fn (c &Checker) sls_brace_before_source(ctx SlsCtx, node int) bool {
+	t := ctx.t
+	source := t.node(node, .source) or { return false }
+	for token in ctx.tokens.inside(t.nodes[node].start, t.nodes[node].end, false) {
+		if token.start >= t.nodes[source].start {
+			break
+		}
+		if c.token_is(token, '{') {
+			return true
+		}
+	}
+	return false
+}
+
 // sls_left_paren ports getLeftParen.
-fn (c &Checker) sls_left_paren(ctx SlsCtx, node int, items []int, paren_type string) ?SourceToken {
+fn (c &Checker) sls_left_paren(ctx SlsCtx, node int, items []int, paren_type string, node_type string) ?SourceToken {
 	t := ctx.t
 	match t.typ(node) {
 		.call_expression, .new_expression {
@@ -229,6 +270,22 @@ fn (c &Checker) sls_left_paren(ctx SlsCtx, node int, items []int, paren_type str
 			return un_first_token(t, ctx.tokens, node, 0)
 		}
 		else {
+			if items.len == 0 {
+				if node_type == 'ImportAttributes' {
+					// getTokenAfter(node.source, isOpeningBraceToken)
+					source := t.node(node, .source)?
+					return c.un_token_after_punctuator(ctx.tokens, t.nodes[source].end, '{')
+				}
+				// The first token of the node that is a left bracket followed by a right one.
+				tokens := ctx.tokens.inside(t.nodes[node].start, t.nodes[node].end, false)
+				for i := 0; i + 1 < tokens.len; i++ {
+					if c.sls_paren_matches(tokens[i], paren_type, true)
+						&& c.sls_paren_matches(tokens[i + 1], paren_type, false) {
+						return tokens[i]
+					}
+				}
+				return none
+			}
 			if items[0] < 0 {
 				return none
 			}
@@ -239,10 +296,26 @@ fn (c &Checker) sls_left_paren(ctx SlsCtx, node int, items []int, paren_type str
 }
 
 // sls_right_paren ports getRightParen.
-fn (c &Checker) sls_right_paren(ctx SlsCtx, node int, items []int, paren_type string) ?SourceToken {
+fn (c &Checker) sls_right_paren(ctx SlsCtx, node int, items []int, paren_type string, left SourceToken) ?SourceToken {
 	t := ctx.t
+	if items.len == 0 {
+		maybe_right := ctx.tokens.after(left.end, false)?
+		return if c.sls_paren_matches(maybe_right, paren_type, false) { maybe_right } else { none }
+	}
 	match t.typ(node) {
-		.array_expression, .array_pattern {
+		.call_expression, .new_expression {
+			// fun(a, (b))
+			maybe_right := un_last_token(t, ctx.tokens, node)?
+			return if c.token_is(maybe_right, ')') { maybe_right } else { none }
+		}
+		.array_expression {
+			return un_last_token(t, ctx.tokens, node)
+		}
+		.array_pattern {
+			if annotation := t.node(node, .type_annotation) {
+				// const [a, b]: string[] = foo
+				return ctx.tokens.before(t.nodes[annotation].start, false)
+			}
 			return un_last_token(t, ctx.tokens, node)
 		}
 		else {
@@ -263,19 +336,15 @@ fn (c &Checker) sls_right_paren(ctx SlsCtx, node int, items []int, paren_type st
 	}
 }
 
-// sls_check ports check.
+// sls_check ports check without an override key.
 fn (c &Checker) sls_check(mut ctx SlsCtx, paren_type string, node int, items []int, mut findings []Finding) {
-	if items.len == 0 {
-		return
-	}
+	c.sls_check_key(mut ctx, paren_type, node, items, ctx.t.typ(node).type_name(), mut
+		findings)
+}
+
+// sls_check_key ports check.
+fn (c &Checker) sls_check_key(mut ctx SlsCtx, paren_type string, node int, items []int, node_type string, mut findings []Finding) {
 	t := ctx.t
-	left := c.sls_left_paren(ctx, node, items, paren_type) or { return }
-	right := c.sls_right_paren(ctx, node, items, paren_type) or { return }
-	node_type := if items[0] >= 0 && t.typ(items[0]) == .import_attribute {
-		'ImportAttributes'
-	} else {
-		t.typ(node).type_name()
-	}
 	config := ctx.resolved[node_type] or {
 		resolved := sls_resolve(ctx.options, paren_type, node_type)
 		ctx.resolved[node_type] = resolved
@@ -284,8 +353,21 @@ fn (c &Checker) sls_check(mut ctx SlsCtx, paren_type string, node int, items []i
 	if config.off {
 		return
 	}
+	// getParens
+	left := c.sls_left_paren(ctx, node, items, paren_type, node_type) or { return }
+	right := c.sls_right_paren(ctx, node, items, paren_type, left) or { return }
+	if left.start < t.nodes[node].start || right.end > t.nodes[node].end {
+		return
+	}
+	is_empty := items.len == 0
+	if is_empty && config.empty == 'ignore' {
+		return
+	}
 	if sty_same_line(t, left, right) && items.len <= config.max_items {
-		c.sls_check_spacing(ctx, left, right, config, mut findings)
+		should_space := if is_empty { config.empty == 'always' } else { config.spacing_always }
+		c.sls_check_spacing(ctx, left, right, should_space, mut findings)
+	} else if is_empty {
+		c.sls_check_empty_wrap(ctx, left, right, config, mut findings)
 	} else {
 		c.sls_check_wrap(ctx, node, items, left, right, config, mut findings)
 	}
@@ -311,20 +393,50 @@ fn (c &Checker) sls_report(prev SourceToken, next SourceToken, message_id string
 }
 
 // sls_check_spacing ports checkSpacing.
-fn (c &Checker) sls_check_spacing(ctx SlsCtx, left SourceToken, right SourceToken, config SlsConfig, mut findings []Finding) {
+fn (c &Checker) sls_check_spacing(ctx SlsCtx, left SourceToken, right SourceToken, should_space bool, mut findings []Finding) {
 	first := ctx.tokens.after(left.end, true) or { return }
 	last := ctx.tokens.before(right.start, true) or { return }
-	for pair in [[left, first], [last, right]] {
+	mut pairs := [[left, first]]
+	if first.start != right.start {
+		pairs << [last, right]
+	}
+	for pair in pairs {
 		prev, next := pair[0], pair[1]
 		spaced := ctx.tokens.is_space_between(prev.end, next.start)
-		if !spaced && config.spacing_always {
+		if !spaced && should_space {
 			findings << c.sls_report(prev, next, 'shouldSpacing', true, fix_insert_at(prev.end,
 				' '))
-		} else if spaced && !config.spacing_always {
+		} else if spaced && !should_space {
 			findings << c.sls_report(prev, next, 'shouldNotSpacing', true, fix_remove_range(prev.end,
 				next.start))
 		}
 	}
+}
+
+// sls_check_empty_wrap ports checkEmptyWrap: the brackets of an empty list on several lines.
+fn (c &Checker) sls_check_empty_wrap(ctx SlsCtx, left SourceToken, right SourceToken, config SlsConfig, mut findings []Finding) {
+	t := ctx.t
+	first := ctx.tokens.after(left.end, true) or { return }
+	last := ctx.tokens.before(right.start, true) or { return }
+	if first.start != right.start {
+		for pair in [[left, first], [last, right]] {
+			prev, next := pair[0], pair[1]
+			if sty_same_line(t, prev, next) {
+				// safeReplaceTextBetween(prev, next, '\n')
+				has_fix := !ctx.tokens.comments_exist_between(prev.end, next.start)
+				findings << c.sls_report(prev, next, 'shouldWrap', has_fix, fix_replace_range(prev.end,
+					next.start, '\n'))
+			}
+		}
+		return
+	}
+	if config.min_items == 0 {
+		return
+	}
+	replacement := if config.empty == 'always' { ' ' } else { '' }
+	has_fix := !ctx.tokens.comments_exist_between(left.end, right.start)
+	findings << c.sls_report(left, right, 'shouldNotWrap', has_fix, fix_replace_range(left.end,
+		right.start, replacement))
 }
 
 // sls_check_wrap ports checkWrap.

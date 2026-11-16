@@ -4,19 +4,21 @@ import estree
 import time
 import x.json2
 
-// Port of the `@stylistic/type-annotation-spacing` rule of @stylistic/eslint-plugin 5.10.0, with its
-// options (`before` and `after`, and their `overrides` for `colon`, `arrow` (or `"ignore"`),
-// `variable`, `parameter`, `property` and `returnType`) and its fixes.
+// Port of the `@stylistic/type-annotation-spacing` rule of @stylistic/eslint-plugin 6.0.1, with its
+// options (`before` and `after`, and their `overrides` for `colon`, and `variable`, `parameter`,
+// `property`, `returnType` and `questionMark` (the `?` of an optional annotation), each of them or
+// `"ignore"`) and its fixes.
 
 const stas_messages = {
 	'expectedSpaceAfter':     "Expected a space after the '{{type}}'."
 	'expectedSpaceBefore':    "Expected a space before the '{{type}}'."
 	'unexpectedSpaceAfter':   "Unexpected space after the '{{type}}'."
 	'unexpectedSpaceBefore':  "Unexpected space before the '{{type}}'."
+	'expectedSpaceBetween':   "Expected a space between the '{{previousToken}}' and the '{{type}}'."
 	'unexpectedSpaceBetween': "Unexpected space between the '{{previousToken}}' and the '{{type}}'."
 }
 
-// StasSpacing is a spacing config of createRules; `ignore` is the `"ignore"` of `arrow`.
+// StasSpacing is a spacing config of createRules; `ignore` is `"ignore"`.
 struct StasSpacing {
 	ignore bool
 	before bool
@@ -24,12 +26,12 @@ struct StasSpacing {
 }
 
 struct StasOptions {
-	colon       StasSpacing
-	arrow       StasSpacing
-	variable    StasSpacing
-	property    StasSpacing
-	parameter   StasSpacing
-	return_type StasSpacing
+	colon         StasSpacing
+	variable      StasSpacing
+	property      StasSpacing
+	parameter     StasSpacing
+	return_type   StasSpacing
+	question_mark StasSpacing
 }
 
 // stas_merge is `{ ...base, ...object }` for the keys `before` and `after`.
@@ -38,6 +40,17 @@ fn stas_merge(base StasSpacing, object map[string]json2.Any) StasSpacing {
 		before: sty_option_bool(object, 'before') or { base.before }
 		after:  sty_option_bool(object, 'after') or { base.after }
 	}
+}
+
+// stas_merge_or_ignore is `override[key] === 'ignore' ? 'ignore' : { ...base, ...override[key] }`.
+fn stas_merge_or_ignore(base StasSpacing, override map[string]json2.Any, key string) StasSpacing {
+	value := override[key] or { json2.Any(json2.Null{}) }
+	if value is string && value == 'ignore' {
+		return StasSpacing{
+			ignore: true
+		}
+	}
+	return stas_merge(base, stas_override(override, key))
 }
 
 // stas_override is `override[key]` when it is an object, else an empty one.
@@ -58,24 +71,16 @@ fn stas_options(given []json2.Any) !StasOptions {
 		before: false
 		after:  true
 	}, config), stas_override(override, 'colon'))
-	arrow_value := override['arrow'] or { json2.Any(json2.Null{}) }
-	arrow := if arrow_value is string {
-		StasSpacing{
-			ignore: true
-		}
-	} else {
-		stas_merge(stas_merge(StasSpacing{
-			before: true
-			after:  true
-		}, config), stas_override(override, 'arrow'))
-	}
 	return StasOptions{
-		colon:       colon
-		arrow:       arrow
-		variable:    stas_merge(colon, stas_override(override, 'variable'))
-		property:    stas_merge(colon, stas_override(override, 'property'))
-		parameter:   stas_merge(colon, stas_override(override, 'parameter'))
-		return_type: stas_merge(colon, stas_override(override, 'returnType'))
+		colon:         colon
+		variable:      stas_merge_or_ignore(colon, override, 'variable')
+		property:      stas_merge_or_ignore(colon, override, 'property')
+		parameter:     stas_merge_or_ignore(colon, override, 'parameter')
+		return_type:   stas_merge_or_ignore(colon, override, 'returnType')
+		question_mark: stas_merge_or_ignore(StasSpacing{
+			before: colon.before
+			after:  false
+		}, override, 'questionMark')
 	}
 }
 
@@ -124,9 +129,6 @@ fn stas_rules(t &estree.EsTree, options StasOptions, node int) StasSpacing {
 		return options.colon
 	}
 	typ := t.typ(scope)
-	if typ in [.ts_function_type, .ts_constructor_type] {
-		return options.arrow
-	}
 	if typ == .identifier {
 		identifier_parent := t.nodes[scope].parent
 		if identifier_parent >= 0 {
@@ -156,19 +158,28 @@ fn (c &Checker) stas_check(t &estree.EsTree, tokens &SourceTokens, type_annotati
 	for c.token_is(punctuator_end, '(') {
 		punctuator_end = tokens.before(punctuator_end.start, false) or { return }
 	}
-	mut punctuator_start := punctuator_end
-	mut previous := tokens.before(punctuator_end.start, false) or { return }
 	mut typ := c.token_text(punctuator_end)
-	if typ !in [':', '=>'] {
+	if typ != ':' {
 		return
 	}
+	mut punctuator_start := punctuator_end
+	mut previous := tokens.before(punctuator_end.start, false) or { return }
 	config := stas_rules(t, options, type_annotation)
 	if config.ignore {
 		return
 	}
-	if typ == ':' && c.token_text(previous) == '?' {
+	mut before := config.before
+	after := config.after
+	if c.token_text(previous) == '?' && !options.question_mark.ignore {
+		question_mark := options.question_mark
+		has_inner_space := tokens.is_space_between(previous.end, punctuator_start.start)
 		// space between ? and :
-		if tokens.is_space_between(previous.end, punctuator_start.start) {
+		if question_mark.after && !has_inner_space {
+			findings << c.stas_report(punctuator_start, 'expectedSpaceBetween', {
+				'type':          typ
+				'previousToken': c.token_text(previous)
+			}, fix_replace_range(previous.end, previous.end, ' '))
+		} else if !question_mark.after && has_inner_space {
 			findings << c.stas_report(punctuator_start, 'unexpectedSpaceBetween', {
 				'type':          typ
 				'previousToken': c.token_text(previous)
@@ -178,6 +189,8 @@ fn (c &Checker) stas_check(t &estree.EsTree, tokens &SourceTokens, type_annotati
 		typ = '?:'
 		punctuator_start = previous
 		previous = tokens.before(previous.start, false) or { return }
+		// outer space (before `?`) follows the questionMark override
+		before = question_mark.before
 		// handle the +/- modifiers for optional modification operators
 		previous_text := c.token_text(previous)
 		if previous_text in ['+', '-'] {
@@ -187,21 +200,21 @@ fn (c &Checker) stas_check(t &estree.EsTree, tokens &SourceTokens, type_annotati
 		}
 	}
 	has_next_space := tokens.is_space_between(punctuator_end.end, annotation_start)
-	if config.after && !has_next_space {
+	if after && !has_next_space {
 		findings << c.stas_report(punctuator_end, 'expectedSpaceAfter', {
 			'type': typ
 		}, fix_replace_range(punctuator_end.end, punctuator_end.end, ' '))
-	} else if !config.after && has_next_space {
+	} else if !after && has_next_space {
 		findings << c.stas_report(punctuator_end, 'unexpectedSpaceAfter', {
 			'type': typ
 		}, fix_remove_range(punctuator_end.end, annotation_start))
 	}
 	has_previous_space := tokens.is_space_between(previous.end, punctuator_start.start)
-	if config.before && !has_previous_space {
+	if before && !has_previous_space {
 		findings << c.stas_report(punctuator_start, 'expectedSpaceBefore', {
 			'type': typ
 		}, fix_replace_range(previous.end, previous.end, ' '))
-	} else if !config.before && has_previous_space {
+	} else if !before && has_previous_space {
 		findings << c.stas_report(punctuator_start, 'unexpectedSpaceBefore', {
 			'type': typ
 		}, fix_remove_range(previous.end, punctuator_start.start))

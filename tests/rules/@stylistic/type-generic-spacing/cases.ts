@@ -71,3 +71,33 @@ type T20 <T> = T;
 const a14: Array<　number> = [];
 type T21<T = true> = T;
 type T22<T = true> = T;
+// 6.0: the space after type arguments and type parameters (`after`), and named function and class
+// expressions.
+const a15 = call<string> ();
+const a16 = new Map<string, number> ();
+const a17 = tag<number> `x`;
+const a18 = call<string>/* comment */();
+const a19 = call<string> /* comment */();
+const a20 = new Map<string, number>;
+const a21 = call<string>
+	();
+interface I2 {
+	<K> (x: K): K;
+	new<K> (x: K): K;
+	new <K>(x: K): K;
+	m <K> (x: K): K;
+	m2<K>(x: K): K;
+}
+type T23 = <K> (x: K) => K;
+type T24 = new<K> (x: K) => K;
+type T25 = new <K>(x: K) => K;
+const f9 = function named <T>(x: T): T { return x; };
+const f10 = function named<T> (x: T): T { return x; };
+const C5 = class Named <T> {};
+const C6 = class Named<T> {};
+const f11 = async <T>(x: T): Promise<T> => x;
+function f12
+<T>(x: T): T { return x; }
+type T26 /* comment */<T> = T;
+export type { T23, T24, T25, I2 };
+export { a15, a16, a17, a18, a19, a20, a21, f9, f10, f11, f12, C5, C6 };

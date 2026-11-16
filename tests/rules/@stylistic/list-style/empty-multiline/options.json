@@ -1,0 +1,1 @@
+[{"empty": "always", "multiLine": {"minItems": 1}, "overrides": {"ImportAttributes": {"empty": "never"}, "TSEnumBody": "off", "ArrayExpression": {"empty": "ignore"}, "()": {"multiLine": {"minItems": 0}}}}]

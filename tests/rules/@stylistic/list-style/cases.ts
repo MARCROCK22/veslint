@@ -69,3 +69,25 @@ export const typed = log< string >('x');
 export const holes2 = [
   , 1,
   2];
+// 6.0: the closing paren of a call whose last argument is parenthesized.
+log(
+  1,
+  (2)
+);
+log(
+  1,
+  (2));
+export const constructed = new Map<string, number>(
+  (items.map(item => [String(item), item] as const))
+);
+// 6.0: the closing bracket of an array pattern with a type annotation.
+export function pattern([
+  first,
+  second,
+]: number[]): number { return first + second; }
+export function pattern2([ first2, second2 ]: number[]): number { return first2 + second2; }
+// Empty lists are ignored by default.
+log( );
+export const emptyArray = [ ];
+export const emptyObject = {};
+export {};

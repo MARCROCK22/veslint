@@ -2,22 +2,52 @@ module rules
 
 import estree
 import time
+import x.json2
 
-// Port of the `@stylistic/type-generic-spacing` rule of @stylistic/eslint-plugin 5.10.0 (no
-// options), with its fixes.
+// Port of the `@stylistic/type-generic-spacing` rule of @stylistic/eslint-plugin 6.0.1, with its
+// options (`before` and `after`: the space before a type parameter declaration or instantiation and
+// the one after it) and its fixes. The spaces around the `=` of a default of a type parameter
+// moved to `@stylistic/space-infix-ops` in 6.0.
 
 const stgs_messages = {
 	'genericSpacingMismatch': 'Generic spaces mismatch'
 }
 
-// The parents of a type parameter declaration that may have a space before it.
-const stgs_preserve_prefix_space_before_generic = [estree.NodeType.ts_call_signature_declaration,
-	.arrow_function_expression, .ts_function_type, .ts_constructor_type, .function_expression,
-	.class_expression]
+// SKIP_BEFORE_CHECK: the parents of a type parameter declaration or instantiation whose space
+// before it is not checked.
+const stgs_skip_before_check = [estree.NodeType.ts_call_signature_declaration,
+	.ts_construct_signature_declaration, .arrow_function_expression, .ts_function_type,
+	.ts_constructor_type]
+
+// SHOULD_CHECK_AFTER: the parents of a type parameter declaration or instantiation whose space
+// after it is checked.
+const stgs_should_check_after = [estree.NodeType.call_expression, .new_expression,
+	.tagged_template_expression, .ts_call_signature_declaration, .ts_construct_signature_declaration,
+	.ts_method_signature, .ts_function_type, .ts_constructor_type]
+
+struct StgsOptions {
+	before bool
+	after  bool
+}
+
+fn stgs_options(given []json2.Any) !StgsOptions {
+	options := sty_options(given, [
+		json2.Any({
+			'before': json2.Any(false)
+			'after':  json2.Any(false)
+		}),
+	])
+	object := sty_option_object(options, 0)
+	return StgsOptions{
+		before: sty_option_bool(object, 'before') or { false }
+		after:  sty_option_bool(object, 'after') or { false }
+	}
+}
 
 fn (mut c Checker) lint_stylistic_type_generic_spacing(root C.TSNode, abs_path string, mut stats Stats) ![]Finding {
 	sw := time.new_stopwatch()
 	mut findings := []Finding{}
+	options := stgs_options(c.rule_options(stylistic_type_generic_spacing))!
 	t := c.es_tree(root, abs_path) or { return findings }
 	tokens := c.un_tokens(t)
 	// In the order of ESLint's traversal: reports that start at the same place keep it.
@@ -27,30 +57,11 @@ fn (mut c Checker) lint_stylistic_type_generic_spacing(root C.TSNode, abs_path s
 		}
 		node := step.node
 		match t.typ(node) {
-			.ts_type_parameter_instantiation {
+			.ts_type_parameter_instantiation, .ts_type_parameter_declaration {
 				stats.checked++
+				c.stgs_check_before(t, tokens, node, options, mut findings)
+				c.stgs_check_after(t, tokens, node, options, mut findings)
 				c.stgs_check_params(t, tokens, node, mut findings)
-			}
-			.ts_type_parameter_declaration {
-				stats.checked++
-				parent := t.nodes[node].parent
-				if parent < 0 || t.typ(parent) !in stgs_preserve_prefix_space_before_generic {
-					start := t.nodes[node].start
-					space_start := stgs_trailing_space_start(c.src, start)
-					if space_start < start {
-						findings << Finding{
-							stmt:       c.position_range(start, t.nodes[node].end)
-							message_id: 'genericSpacingMismatch'
-							has_fix:    true
-							fix:        fix_remove_range(space_start, start)
-						}
-					}
-				}
-				c.stgs_check_params(t, tokens, node, mut findings)
-			}
-			.ts_type_parameter {
-				stats.checked++
-				c.stgs_check_default(t, node, mut findings)
 			}
 			else {}
 		}
@@ -59,22 +70,68 @@ fn (mut c Checker) lint_stylistic_type_generic_spacing(root C.TSNode, abs_path s
 	return findings
 }
 
-// stgs_trailing_space_start is where the whitespace (JavaScript's `\s`) that ends at `end`
-// starts: `text.slice(0, end).match(/(\s+)$/)`.
-fn stgs_trailing_space_start(src string, end int) int {
-	mut start := end
-	for start > 0 {
-		mut previous := start - 1
-		for previous > 0 && src[previous] & 0xc0 == 0x80 {
-			previous--
-		}
-		runes := src[previous..start].runes()
-		if runes.len != 1 || !is_js_space(runes[0]) {
-			break
-		}
-		start = previous
+// stgs_skip_before ports shouldSkipBeforeCheck.
+fn stgs_skip_before(t &estree.EsTree, node int) bool {
+	parent := t.nodes[node].parent
+	if parent < 0 {
+		return false
 	}
-	return start
+	parent_type := t.typ(parent)
+	if parent_type in stgs_skip_before_check {
+		return true
+	}
+	// const foo = function <T>() {} and const foo = class <T> {}
+	if parent_type in [.function_expression, .class_expression] {
+		return (t.node(parent, .id) or { -1 }) < 0
+	}
+	return false
+}
+
+// stgs_check_before ports checkBefore.
+fn (c &Checker) stgs_check_before(t &estree.EsTree, tokens &SourceTokens, node int, options StgsOptions, mut findings []Finding) {
+	if stgs_skip_before(t, node) {
+		return
+	}
+	start := t.nodes[node].start
+	pre_token := tokens.before(start, true) or { return }
+	has_space := pre_token.end != start
+	if options.before == has_space {
+		return
+	}
+	findings << Finding{
+		stmt:       c.position_range(pre_token.end, start)
+		message_id: 'genericSpacingMismatch'
+		has_fix:    true
+		fix:        if options.before {
+			fix_insert_at(start, ' ')
+		} else {
+			fix_replace_range(pre_token.end, start, '')
+		}
+	}
+}
+
+// stgs_check_after ports checkAfter.
+fn (c &Checker) stgs_check_after(t &estree.EsTree, tokens &SourceTokens, node int, options StgsOptions, mut findings []Finding) {
+	parent := t.nodes[node].parent
+	if parent < 0 || t.typ(parent) !in stgs_should_check_after {
+		return
+	}
+	end := t.nodes[node].end
+	next_token := tokens.after(end, true) or { return }
+	has_space := next_token.start != end
+	if options.after == has_space {
+		return
+	}
+	findings << Finding{
+		stmt:       c.position_range(end, next_token.start)
+		message_id: 'genericSpacingMismatch'
+		has_fix:    true
+		fix:        if options.after {
+			fix_insert_at(end, ' ')
+		} else {
+			fix_replace_range(end, next_token.start, '')
+		}
+	}
 }
 
 // stgs_check_params ports the checkBracketSpacing of the params of a type parameter instantiation
@@ -113,56 +170,4 @@ fn (c &Checker) stgs_remove_space_between(left_end int, right_start int, mut fin
 		has_fix:    true
 		fix:        fix_remove_range(left_end, right_start)
 	}
-}
-
-// stgs_check_default ports the check of TSTypeParameter: one space around the `=` of a default.
-fn (c &Checker) stgs_check_default(t &estree.EsTree, node int, mut findings []Finding) {
-	default_node := t.node(node, .default_) or { return }
-	end_node := t.node(node, .constraint) or { t.node(node, .name) or { return } }
-	from := t.nodes[end_node].end
-	to := t.nodes[default_node].start
-	if from > to {
-		return
-	}
-	span := c.src[from..to]
-	if stgs_has_spaced_equal(span) {
-		return
-	}
-	findings << Finding{
-		stmt:       c.position_range(from, to)
-		message_id: 'genericSpacingMismatch'
-		has_fix:    true
-		fix:        fix_replace_range(from, to, stgs_replace_equal(span))
-	}
-}
-
-// stgs_has_spaced_equal is `/(?:^|[^ ]) = (?:$|[^ ])/.test(span)`.
-fn stgs_has_spaced_equal(span string) bool {
-	for i := 0; i + 3 <= span.len; i++ {
-		if span[i..i + 3] == ' = ' && (i == 0 || span[i - 1] != ` `)
-			&& (i + 3 == span.len || span[i + 3] != ` `) {
-			return true
-		}
-	}
-	return false
-}
-
-// stgs_replace_equal is `span.replace(/\s*=\s*/, ' = ')`: the first `=` and the whitespace around
-// it.
-fn stgs_replace_equal(span string) string {
-	equal := span.index('=') or { return span }
-	start := stgs_trailing_space_start(span, equal)
-	mut end := equal + 1
-	for end < span.len {
-		length := utf8_char_len(span[end])
-		if end + length > span.len {
-			break
-		}
-		runes := span[end..end + length].runes()
-		if runes.len != 1 || !is_js_space(runes[0]) {
-			break
-		}
-		end += length
-	}
-	return span[..start] + ' = ' + span[end..]
 }
