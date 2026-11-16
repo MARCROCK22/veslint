@@ -4,7 +4,7 @@ import estree
 import time
 import x.json2
 
-// Port of the `@stylistic/rest-spread-spacing` rule of @stylistic/eslint-plugin 5.10.0, with its
+// Port of the `@stylistic/rest-spread-spacing` rule of @stylistic/eslint-plugin 6.0.1, with its
 // option (`"always"` or `"never"`, the default) and its fixes.
 
 const srsp_messages = {
@@ -43,7 +43,7 @@ fn (mut c Checker) lint_stylistic_rest_spread_spacing(root C.TSNode, abs_path st
 // srsp_check_white_space ports checkWhiteSpace.
 fn (c &Checker) srsp_check_white_space(t &estree.EsTree, tokens &SourceTokens, node int, options SrspOptions, mut findings []Finding) {
 	operator := un_first_token(t, tokens, node, 0) or { return }
-	next_token := tokens.after(operator.end, false) or { return }
+	next_token := tokens.after(operator.end, true) or { return }
 	has_whitespace := tokens.is_space_between(operator.end, next_token.start)
 	parent := t.nodes[node].parent
 	mut typ := ''

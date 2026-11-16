@@ -8,6 +8,7 @@ tests/rules/@stylistic/rest-spread-spacing/always/cases.ts:11:4	@stylistic/rest-
 tests/rules/@stylistic/rest-spread-spacing/always/cases.ts:12:24	@stylistic/rest-spread-spacing	expectedWhitespace	Expected whitespace after rest operator.
 tests/rules/@stylistic/rest-spread-spacing/always/cases.ts:15:19	@stylistic/rest-spread-spacing	expectedWhitespace	Expected whitespace after rest operator.
 tests/rules/@stylistic/rest-spread-spacing/always/cases.ts:16:12	@stylistic/rest-spread-spacing	expectedWhitespace	Expected whitespace after rest property operator.
+tests/rules/@stylistic/rest-spread-spacing/always/cases.ts:24:4	@stylistic/rest-spread-spacing	expectedWhitespace	Expected whitespace after spread operator.
 tests/rules/@stylistic/rest-spread-spacing/cases.ts:7:7	@stylistic/rest-spread-spacing	unexpectedWhitespace	Unexpected whitespace after spread operator.
 tests/rules/@stylistic/rest-spread-spacing/cases.ts:8:7	@stylistic/rest-spread-spacing	unexpectedWhitespace	Unexpected whitespace after spread operator.
 tests/rules/@stylistic/rest-spread-spacing/cases.ts:8:18	@stylistic/rest-spread-spacing	unexpectedWhitespace	Unexpected whitespace after spread operator.
@@ -17,12 +18,13 @@ tests/rules/@stylistic/rest-spread-spacing/cases.ts:11:27	@stylistic/rest-spread
 tests/rules/@stylistic/rest-spread-spacing/cases.ts:12:7	@stylistic/rest-spread-spacing	unexpectedWhitespace	Unexpected whitespace after spread operator.
 tests/rules/@stylistic/rest-spread-spacing/cases.ts:13:7	@stylistic/rest-spread-spacing	unexpectedWhitespace	Unexpected whitespace after spread operator.
 tests/rules/@stylistic/rest-spread-spacing/cases.ts:15:7	@stylistic/rest-spread-spacing	unexpectedWhitespace	Unexpected whitespace after spread operator.
-tests/rules/@stylistic/rest-spread-spacing/cases.ts:19:27	@stylistic/rest-spread-spacing	unexpectedWhitespace	Unexpected whitespace after rest operator.
-tests/rules/@stylistic/rest-spread-spacing/cases.ts:22:38	@stylistic/rest-spread-spacing	unexpectedWhitespace	Unexpected whitespace after rest operator.
-tests/rules/@stylistic/rest-spread-spacing/cases.ts:23:22	@stylistic/rest-spread-spacing	unexpectedWhitespace	Unexpected whitespace after rest operator.
-tests/rules/@stylistic/rest-spread-spacing/cases.ts:24:15	@stylistic/rest-spread-spacing	unexpectedWhitespace	Unexpected whitespace after rest property operator.
-tests/rules/@stylistic/rest-spread-spacing/cases.ts:25:11	@stylistic/rest-spread-spacing	unexpectedWhitespace	Unexpected whitespace after rest operator.
-tests/rules/@stylistic/rest-spread-spacing/cases.ts:26:7	@stylistic/rest-spread-spacing	unexpectedWhitespace	Unexpected whitespace after rest property operator.
-tests/rules/@stylistic/rest-spread-spacing/cases.ts:27:16	@stylistic/rest-spread-spacing	unexpectedWhitespace	Unexpected whitespace after rest operator.
-tests/rules/@stylistic/rest-spread-spacing/cases.ts:31:17	@stylistic/rest-spread-spacing	unexpectedWhitespace	Unexpected whitespace after rest operator.
-tests/rules/@stylistic/rest-spread-spacing/cases.ts:34:28	@stylistic/rest-spread-spacing	unexpectedWhitespace	Unexpected whitespace after rest operator.
+tests/rules/@stylistic/rest-spread-spacing/cases.ts:18:19	@stylistic/rest-spread-spacing	unexpectedWhitespace	Unexpected whitespace after spread operator.
+tests/rules/@stylistic/rest-spread-spacing/cases.ts:22:27	@stylistic/rest-spread-spacing	unexpectedWhitespace	Unexpected whitespace after rest operator.
+tests/rules/@stylistic/rest-spread-spacing/cases.ts:25:38	@stylistic/rest-spread-spacing	unexpectedWhitespace	Unexpected whitespace after rest operator.
+tests/rules/@stylistic/rest-spread-spacing/cases.ts:26:22	@stylistic/rest-spread-spacing	unexpectedWhitespace	Unexpected whitespace after rest operator.
+tests/rules/@stylistic/rest-spread-spacing/cases.ts:27:15	@stylistic/rest-spread-spacing	unexpectedWhitespace	Unexpected whitespace after rest property operator.
+tests/rules/@stylistic/rest-spread-spacing/cases.ts:28:11	@stylistic/rest-spread-spacing	unexpectedWhitespace	Unexpected whitespace after rest operator.
+tests/rules/@stylistic/rest-spread-spacing/cases.ts:29:7	@stylistic/rest-spread-spacing	unexpectedWhitespace	Unexpected whitespace after rest property operator.
+tests/rules/@stylistic/rest-spread-spacing/cases.ts:30:16	@stylistic/rest-spread-spacing	unexpectedWhitespace	Unexpected whitespace after rest operator.
+tests/rules/@stylistic/rest-spread-spacing/cases.ts:34:17	@stylistic/rest-spread-spacing	unexpectedWhitespace	Unexpected whitespace after rest operator.
+tests/rules/@stylistic/rest-spread-spacing/cases.ts:37:28	@stylistic/rest-spread-spacing	unexpectedWhitespace	Unexpected whitespace after rest operator.

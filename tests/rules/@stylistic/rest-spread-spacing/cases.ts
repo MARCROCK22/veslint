@@ -14,6 +14,9 @@ fn(...
 	args);
 fn(... /* comment */ args);
 fn(.../* comment */args);
+fn(.../* comment */ args);
+const typed = [... /** @type {string} */ (args)];
+const typedFine = [.../* a */ /* b */ (args)];
 
 // Reported: rest elements in parameters, patterns and assignments.
 function restParameter(... values: number[]): number[] {
@@ -47,5 +50,5 @@ type Tuple = [... number[]];
 type Spread<T extends unknown[]> = [...T, string];
 const { b, ...others } = obj;
 
-export { spreadArray, spreadObject, restParameter, restArrow, firstItem, restItems, a, restProperties, WithRest, fine, fineRest, b, others };
+export { typed, typedFine, spreadArray, spreadObject, restParameter, restArrow, firstItem, restItems, a, restProperties, WithRest, fine, fineRest, b, others };
 export type { Tuple, Spread };
