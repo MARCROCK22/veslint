@@ -1,0 +1,1 @@
+[{"empty": "never", "overrides": {"{}": {"empty": "always"}, "TSTupleType": {"empty": "always"}}}]

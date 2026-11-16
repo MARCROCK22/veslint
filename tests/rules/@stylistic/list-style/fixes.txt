@@ -57,6 +57,53 @@ tests/rules/@stylistic/list-style/cases.ts:68:26	@stylistic/list-style	shouldNot
 tests/rules/@stylistic/list-style/cases.ts:68:33	@stylistic/list-style	shouldNotSpacing	Should not have space(s) between 'string' and '>'	fix	1610	1611		end	68	34
 tests/rules/@stylistic/list-style/cases.ts:70:4	@stylistic/list-style	shouldWrap	Should have line break between ',' and '1'	fix	1647	1647	\n	end	70	5
 tests/rules/@stylistic/list-style/cases.ts:71:4	@stylistic/list-style	shouldWrap	Should have line break between '2' and ']'	fix	1653	1653	\n	end	71	4
+tests/rules/@stylistic/list-style/cases.ts:79:6	@stylistic/list-style	shouldWrap	Should have line break between ')' and ')'	fix	1764	1764	\n	end	79	6
+tests/rules/@stylistic/list-style/cases.ts:88:27	@stylistic/list-style	shouldNotSpacing	Should not have space(s) between '[' and 'first2'	fix	2066	2067		end	88	28
+tests/rules/@stylistic/list-style/cases.ts:88:43	@stylistic/list-style	shouldNotSpacing	Should not have space(s) between 'second2' and ']'	fix	2082	2083		end	88	44
+tests/rules/@stylistic/list-style/empty-multiline/cases.ts:5:24	@stylistic/list-style	shouldNotWrap	Should not have line break(s) between '{' and '}'	fix	177	178	 	end	6	1
+tests/rules/@stylistic/list-style/empty-multiline/cases.ts:7:25	@stylistic/list-style	shouldNotWrap	Should not have line break(s) between '{' and '}'	fix	205	207	 	end	9	1
+tests/rules/@stylistic/list-style/empty-multiline/cases.ts:14:18	@stylistic/list-style	shouldNotWrap	Should not have line break(s) between '{' and '}'	fix	261	262	 	end	15	1
+tests/rules/@stylistic/list-style/empty-multiline/cases.ts:16:17	@stylistic/list-style	shouldNotWrap	Should not have line break(s) between '{' and '}'	fix	280	281	 	end	17	1
+tests/rules/@stylistic/list-style/empty-multiline/cases.ts:22:26	@stylistic/list-style	shouldSpacing	Should have space between '{' and '}'	fix	382	382	 	end	22	26
+tests/rules/@stylistic/list-style/empty-multiline/cases.ts:24:27	@stylistic/list-style	shouldWrap	Should have line break between '{' and ' comment '	fix	441	442	\n	end	24	28
+tests/rules/@stylistic/list-style/empty-multiline/cases.ts:27:16	@stylistic/list-style	shouldWrap	Should have line break between ' comment ' and '}'	fix	502	503	\n	end	27	17
+tests/rules/@stylistic/list-style/empty-multiline/cases.ts:31:5	@stylistic/list-style	shouldWrap	Should have line break between '(' and ' comment '	fix	557	557	\n	end	31	5
+tests/rules/@stylistic/list-style/empty-multiline/cases.ts:33:28	@stylistic/list-style	shouldWrap	Should have line break between '{' and ' a '	fix	601	602	\n	end	33	29
+tests/rules/@stylistic/list-style/empty-multiline/cases.ts:34:10	@stylistic/list-style	shouldWrap	Should have line break between ' b ' and '}'	fix	619	620	\n	end	34	11
+tests/rules/@stylistic/list-style/empty-multiline/cases.ts:35:9	@stylistic/list-style	shouldNotWrap	Should not have line break(s) between '{' and '}'	fix	631	632	 	end	36	1
+tests/rules/@stylistic/list-style/empty-multiline/cases.ts:37:9	@stylistic/list-style	shouldSpacing	Should have space between '{' and '}'	fix	658	658	 	end	37	9
+tests/rules/@stylistic/list-style/empty-multiline/cases.ts:37:34	@stylistic/list-style	shouldNotWrap	Should not have line break(s) between '{' and '}'	fix	683	684		end	38	1
+tests/rules/@stylistic/list-style/empty-multiline/cases.ts:39:38	@stylistic/list-style	shouldNotSpacing	Should not have space(s) between '{' and '}'	fix	724	725		end	39	39
+tests/rules/@stylistic/list-style/empty-never/cases.ts:3:23	@stylistic/list-style	shouldNotSpacing	Should not have space(s) between '[' and ']'	fix	125	126		end	3	24
+tests/rules/@stylistic/list-style/empty-never/cases.ts:5:24	@stylistic/list-style	shouldSpacing	Should have space between '{' and '}'	fix	178	178	 	end	5	24
+tests/rules/@stylistic/list-style/empty-never/cases.ts:8:8	@stylistic/list-style	shouldNotSpacing	Should not have space(s) between '[' and ']'	fix	245	246		end	8	9
+tests/rules/@stylistic/list-style/empty-never/cases.ts:9:8	@stylistic/list-style	shouldSpacing	Should have space between '{' and '}'	fix	262	262	 	end	9	8
+tests/rules/@stylistic/list-style/empty-never/cases.ts:10:15	@stylistic/list-style	shouldSpacing	Should have space between '[' and ']'	fix	290	290	 	end	10	15
+tests/rules/@stylistic/list-style/empty-never/cases.ts:12:17	@stylistic/list-style	shouldSpacing	Should have space between '{' and '}'	fix	328	328	 	end	12	17
+tests/rules/@stylistic/list-style/empty-never/cases.ts:13:18	@stylistic/list-style	shouldSpacing	Should have space between '{' and '}'	fix	348	348	 	end	13	18
+tests/rules/@stylistic/list-style/empty-never/cases.ts:14:17	@stylistic/list-style	shouldSpacing	Should have space between '{' and '}'	fix	366	366	 	end	14	17
+tests/rules/@stylistic/list-style/empty-never/cases.ts:17:29	@stylistic/list-style	shouldNotSpacing	Should not have space(s) between '(' and ')'	fix	465	466		end	17	30
+tests/rules/@stylistic/list-style/empty-never/cases.ts:18:37	@stylistic/list-style	shouldNotSpacing	Should not have space(s) between '(' and ')'	fix	507	508		end	18	38
+tests/rules/@stylistic/list-style/empty-never/cases.ts:19:23	@stylistic/list-style	shouldNotSpacing	Should not have space(s) between '(' and ')'	fix	536	537		end	19	24
+tests/rules/@stylistic/list-style/empty-never/cases.ts:20:13	@stylistic/list-style	shouldNotSpacing	Should not have space(s) between '(' and ')'	fix	558	559		end	20	14
+tests/rules/@stylistic/list-style/empty-never/cases.ts:21:13	@stylistic/list-style	shouldNotSpacing	Should not have space(s) between '(' and ')'	fix	574	575		end	21	14
+tests/rules/@stylistic/list-style/empty-never/cases.ts:22:9	@stylistic/list-style	shouldNotSpacing	Should not have space(s) between '(' and ')'	fix	586	587		end	22	10
+tests/rules/@stylistic/list-style/empty-never/cases.ts:23:25	@stylistic/list-style	shouldNotSpacing	Should not have space(s) between '(' and ')'	fix	614	615		end	23	26
+tests/rules/@stylistic/list-style/empty-never/cases.ts:24:22	@stylistic/list-style	shouldNotSpacing	Should not have space(s) between '(' and ')'	fix	639	640		end	24	23
+tests/rules/@stylistic/list-style/empty-never/cases.ts:25:27	@stylistic/list-style	shouldNotSpacing	Should not have space(s) between '(' and ')'	fix	677	678		end	25	28
+tests/rules/@stylistic/list-style/empty-never/cases.ts:27:29	@stylistic/list-style	shouldNotSpacing	Should not have space(s) between '(' and ')'	fix	745	746		end	27	30
+tests/rules/@stylistic/list-style/empty-never/cases.ts:27:46	@stylistic/list-style	shouldNotSpacing	Should not have space(s) between '(' and ')'	fix	762	763		end	27	47
+tests/rules/@stylistic/list-style/empty-never/cases.ts:28:26	@stylistic/list-style	shouldNotSpacing	Should not have space(s) between '(' and ')'	fix	807	808		end	28	27
+tests/rules/@stylistic/list-style/empty-never/cases.ts:29:5	@stylistic/list-style	shouldNotSpacing	Should not have space(s) between '(' and ' comment '	fix	819	820		end	29	6
+tests/rules/@stylistic/list-style/empty-never/cases.ts:29:19	@stylistic/list-style	shouldNotSpacing	Should not have space(s) between ' comment ' and ')'	fix	833	834		end	29	20
+tests/rules/@stylistic/list-style/empty-never/cases.ts:31:27	@stylistic/list-style	shouldSpacing	Should have space between '{' and ' comment '	fix	883	883	 	end	31	27
+tests/rules/@stylistic/list-style/empty-never/cases.ts:31:40	@stylistic/list-style	shouldSpacing	Should have space between ' comment ' and '}'	fix	896	896	 	end	31	40
+tests/rules/@stylistic/list-style/empty-never/cases.ts:33:9	@stylistic/list-style	shouldSpacing	Should have space between '{' and '}'	fix	954	954	 	end	33	9
+tests/rules/@stylistic/list-style/empty-never/cases.ts:38:9	@stylistic/list-style	shouldSpacing	Should have space between '{' and '}'	fix	1099	1099	 	end	38	9
+tests/rules/@stylistic/list-style/empty-never/cases.ts:41:23	@stylistic/list-style	shouldNotSpacing	Should not have space(s) between '(' and ')'	fix	1167	1168		end	41	24
+tests/rules/@stylistic/list-style/empty-never/cases.ts:42:25	@stylistic/list-style	shouldSpacing	Should have space between '{' and '}'	fix	1195	1195	 	end	42	25
+tests/rules/@stylistic/list-style/empty-never/cases.ts:42:29	@stylistic/list-style	shouldNotSpacing	Should not have space(s) between '[' and ']'	fix	1199	1200		end	42	30
+tests/rules/@stylistic/list-style/empty-never/cases.ts:42:34	@stylistic/list-style	shouldNotSpacing	Should not have space(s) between '(' and ')'	fix	1204	1205		end	42	35
 tests/rules/@stylistic/list-style/max-items/cases.ts:4:19	@stylistic/list-style	shouldNotSpacing	Should not have space(s) between '[' and '1'	fix	137	138		end	4	20
 tests/rules/@stylistic/list-style/max-items/cases.ts:4:24	@stylistic/list-style	shouldNotSpacing	Should not have space(s) between '2' and ']'	fix	142	143		end	4	25
 tests/rules/@stylistic/list-style/max-items/cases.ts:5:19	@stylistic/list-style	shouldSpacing	Should have space between '{' and 'a'	fix	164	164	 	end	5	19
