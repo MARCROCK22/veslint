@@ -4,32 +4,45 @@ import estree
 import time
 import x.json2
 
-// Port of the `@stylistic/space-infix-ops` rule of @stylistic/eslint-plugin 5.10.0, with its
-// options (`int32Hint` and `ignoreTypes`) and its fixes: the spaces around the operators of binary,
-// logical and assignment expressions, assignment patterns, conditional expressions and types,
-// variable declarators, class properties, enum members, type aliases, and union and intersection
-// types.
+// Port of the `@stylistic/space-infix-ops` rule of @stylistic/eslint-plugin 6.0.1, with its
+// options (`int32Hint`, `ignoreOperators` and `ignoreTypes`) and its fixes: the spaces around the
+// operators of binary, logical and assignment expressions, assignment patterns, conditional
+// expressions and types, variable declarators, class properties, enum members, type aliases,
+// union and intersection types, and the defaults of type parameters.
 
 const ssio_messages = {
 	'missingSpace': "Operator '{{operator}}' must be spaced."
 }
 
 struct SsioOptions {
-	int32_hint   bool
-	ignore_types bool
+	int32_hint       bool
+	ignore_operators []string
+	ignore_types     bool
 }
 
 fn ssio_options(given []json2.Any) !SsioOptions {
 	options := sty_options(given, [
 		json2.Any({
-			'int32Hint':   json2.Any(false)
-			'ignoreTypes': json2.Any(false)
+			'int32Hint':       json2.Any(false)
+			'ignoreOperators': json2.Any([]json2.Any{})
+			'ignoreTypes':     json2.Any(false)
 		}),
 	])
 	object := sty_option_object(options, 0)
+	mut ignore_operators := []string{}
+	if list := object['ignoreOperators'] {
+		if list is []json2.Any {
+			for item in list {
+				if item is string {
+					ignore_operators << item
+				}
+			}
+		}
+	}
 	return SsioOptions{
-		int32_hint:   sty_option_bool(object, 'int32Hint') or { false }
-		ignore_types: sty_option_bool(object, 'ignoreTypes') or { false }
+		int32_hint:       sty_option_bool(object, 'int32Hint') or { false }
+		ignore_operators: ignore_operators
+		ignore_types:     sty_option_bool(object, 'ignoreTypes') or { false }
 	}
 }
 
@@ -56,35 +69,35 @@ fn (mut c Checker) lint_stylistic_space_infix_ops(root C.TSNode, abs_path string
 				consequent := t.node(node, .consequent) or { continue }
 				alternate := t.node(node, .alternate) or { continue }
 				c.ssio_check_assignment_space(t, tokens, node, t.nodes[test].end,
-					t.nodes[consequent].start, mut findings)
+					t.nodes[consequent].start, options, mut findings)
 				c.ssio_check_assignment_space(t, tokens, node, t.nodes[consequent].end,
-					t.nodes[alternate].start, mut findings)
+					t.nodes[alternate].start, options, mut findings)
 			}
 			.variable_declarator {
 				stats.checked++
 				id := t.node(node, .id) or { continue }
 				init := t.node(node, .init) or { continue }
 				left := t.node(id, .type_annotation) or { id }
-				c.ssio_check_assignment_space(t, tokens, node, t.nodes[left].end, t.nodes[init].start, mut
-					findings)
+				c.ssio_check_assignment_space(t, tokens, node, t.nodes[left].end, t.nodes[init].start,
+					options, mut findings)
 			}
 			.property_definition, .accessor_property {
 				stats.checked++
-				c.ssio_check_property_assignment(t, tokens, node, mut findings)
+				c.ssio_check_property_assignment(t, tokens, node, options, mut findings)
 			}
 			.ts_enum_member {
 				stats.checked++
 				id := t.node(node, .id) or { continue }
 				initializer := t.node(node, .initializer) or { continue }
 				c.ssio_check_assignment_space(t, tokens, node, t.nodes[id].end,
-					t.nodes[initializer].start, mut findings)
+					t.nodes[initializer].start, options, mut findings)
 			}
 			.ts_type_alias_declaration {
 				stats.checked++
 				left := t.node(node, .type_parameters) or { t.node(node, .id) or { continue } }
 				annotation := t.node(node, .type_annotation) or { continue }
 				c.ssio_check_assignment_space(t, tokens, node, t.nodes[left].end,
-					t.nodes[annotation].start, mut findings)
+					t.nodes[annotation].start, options, mut findings)
 			}
 			.ts_union_type, .ts_intersection_type {
 				stats.checked++
@@ -96,9 +109,16 @@ fn (mut c Checker) lint_stylistic_space_infix_ops(root C.TSNode, abs_path string
 				true_type := t.node(node, .true_type) or { continue }
 				false_type := t.node(node, .false_type) or { continue }
 				c.ssio_check_assignment_space(t, tokens, node, t.nodes[extends_type].end,
-					t.nodes[true_type].start, mut findings)
+					t.nodes[true_type].start, options, mut findings)
 				c.ssio_check_assignment_space(t, tokens, node, t.nodes[true_type].end,
-					t.nodes[false_type].start, mut findings)
+					t.nodes[false_type].start, options, mut findings)
+			}
+			.ts_type_parameter {
+				stats.checked++
+				left := t.node(node, .constraint) or { t.node(node, .name) or { continue } }
+				default_node := t.node(node, .default_) or { continue }
+				c.ssio_check_assignment_space(t, tokens, node, t.nodes[left].end,
+					t.nodes[default_node].start, options, mut findings)
 			}
 			else {}
 		}
@@ -161,14 +181,20 @@ fn (c &Checker) ssio_check_binary(t &estree.EsTree, tokens &SourceTokens, node i
 	if options.int32_hint && c.un_text(t, node).ends_with('|0') {
 		return
 	}
+	if operator_value in options.ignore_operators {
+		return
+	}
 	c.ssio_report(tokens, operator, mut findings)
 }
 
 // ssio_check_assignment_space ports checkAndReportAssignmentSpace for what ends at `left_end` and
 // what starts at `right_start`: the first `=`, `?` or `:` between them.
-fn (c &Checker) ssio_check_assignment_space(t &estree.EsTree, tokens &SourceTokens, node int, left_end int, right_start int, mut findings []Finding) {
+fn (c &Checker) ssio_check_assignment_space(t &estree.EsTree, tokens &SourceTokens, node int, left_end int, right_start int, options SsioOptions, mut findings []Finding) {
 	for token in tokens.inside(left_end, right_start, false) {
 		if token.kind == .punctuator && c.token_text(token) in ['=', '?', ':'] {
+			if c.token_text(token) in options.ignore_operators {
+				return
+			}
 			if ssio_not_spaced(tokens, token) {
 				c.ssio_report(tokens, token, mut findings)
 			}
@@ -178,7 +204,7 @@ fn (c &Checker) ssio_check_assignment_space(t &estree.EsTree, tokens &SourceToke
 }
 
 // ssio_check_property_assignment ports checkPropertyAssignment.
-fn (c &Checker) ssio_check_property_assignment(t &estree.EsTree, tokens &SourceTokens, node int, mut findings []Finding) {
+fn (c &Checker) ssio_check_property_assignment(t &estree.EsTree, tokens &SourceTokens, node int, options SsioOptions, mut findings []Finding) {
 	value := t.node(node, .value) or { return }
 	key := t.node(node, .key) or { return }
 	annotation := t.node(node, .type_annotation) or { -1 }
@@ -191,7 +217,8 @@ fn (c &Checker) ssio_check_property_assignment(t &estree.EsTree, tokens &SourceT
 	} else {
 		left_end = t.nodes[key].end
 	}
-	c.ssio_check_assignment_space(t, tokens, node, left_end, t.nodes[value].start, mut findings)
+	c.ssio_check_assignment_space(t, tokens, node, left_end, t.nodes[value].start, options, mut
+		findings)
 }
 
 // ssio_check_ts_binary ports checkTSBinary.
@@ -211,7 +238,7 @@ fn (c &Checker) ssio_check_ts_binary(t &estree.EsTree, tokens &SourceTokens, nod
 			continue
 		}
 		operator := tokens.tokens[index]
-		if c.token_text(operator) !in ['|', '&'] {
+		if c.token_text(operator) !in ['|', '&'] || c.token_text(operator) in options.ignore_operators {
 			continue
 		}
 		if ssio_not_spaced(tokens, operator) {

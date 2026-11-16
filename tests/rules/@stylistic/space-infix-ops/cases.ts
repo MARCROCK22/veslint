@@ -74,3 +74,18 @@ export type { T1, T2, T3, T4, T5, T6, T7, T8, T10, T11, T12, T13, T14 };
 export const big = a+b*a-b/a;
 export const neg = a+-b, neg2 = a- -b, inc = a+ +b;
 export const cmp = f(a)+f(b);
+// 6.0: the defaults of type parameters.
+type P1<T=true> = T;
+type P2<T =true> = T;
+type P3<T= true> = T;
+type P4<T = true> = T;
+type P5<T extends boolean=true> = T;
+type P6<T extends (boolean)=(true)> = T;
+type P7<T
+  =true> = T;
+type P8<T /* = */= true> = T;
+export function p9<T=string>(x: T): T { return x; }
+export class P10<T=string, K extends keyof T=keyof T> { t?: T; k?: K; }
+export interface P11<T=string> { t: T }
+type P12<T extends string = 'a', K = T extends 'a'?1:2> = [T, K];
+export type { P1, P2, P3, P4, P5, P6, P7, P8, P12 };
