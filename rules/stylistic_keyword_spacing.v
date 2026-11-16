@@ -5,7 +5,7 @@ import time
 import treesitter { node_kind, node_parent }
 import x.json2
 
-// Port of the `@stylistic/keyword-spacing` rule of @stylistic/eslint-plugin 5.10.0, with its
+// Port of the `@stylistic/keyword-spacing` rule of @stylistic/eslint-plugin 6.0.1, with its
 // options (`before` and `after`, true by default, and `overrides` per keyword) and its fixes.
 
 const skwsp_messages = {
@@ -126,12 +126,16 @@ fn (c &Checker) skwsp_visit(mut x SkwspCtx, node int) {
 		}
 		.for_in_statement, .for_of_statement {
 			if t.typ(node) == .for_of_statement && (t.flag(node, .await_) or { false }) {
-				if first := un_first_token(t, x.tokens, node, 0) {
-					c.skwsp_before(mut x, first, skwsp_prev_token)
+				// `for await` is treated as `for`: one token from `for` to `await`, whose text is
+				// what the source has between them.
+				first := un_first_token(t, x.tokens, node, 0) or { return }
+				second := un_first_token(t, x.tokens, node, 1) or { return }
+				for_await := SourceToken{
+					...first
+					end: second.end
 				}
-				if second := un_first_token(t, x.tokens, node, 1) {
-					c.skwsp_after(mut x, second, skwsp_next_token)
-				}
+				c.skwsp_before_as(mut x, for_await, 'for', skwsp_prev_token)
+				c.skwsp_after_as(mut x, for_await, 'for', skwsp_next_token)
 			} else {
 				c.skwsp_around_first_token(mut x, node)
 			}
@@ -151,8 +155,8 @@ fn (c &Checker) skwsp_visit(mut x SkwspCtx, node int) {
 			c.skwsp_after(mut x, in_token, skwsp_next_token)
 		}
 		.class_declaration, .class_expression {
-			// checkSpacingForClass
-			c.skwsp_around_first_token(mut x, node)
+			// checkSpacingForClass (the space after `class` is space-before-blocks' since 6.0.0)
+			c.skwsp_before_first_token(mut x, node)
 			c.skwsp_around_token_before(mut x, t.node(node, .super_class))
 		}
 		.export_named_declaration, .export_default_declaration, .export_all_declaration,
@@ -251,10 +255,25 @@ fn skwsp_is_check_type(token SourceToken) bool {
 
 // skwsp_before ports checkSpacingBefore: expectSpaceBefore or unexpectSpaceBefore.
 fn (c &Checker) skwsp_before(mut x SkwspCtx, token SourceToken, pattern []string) {
+	c.skwsp_before_as(mut x, token, c.token_text(token), pattern)
+}
+
+// skwsp_token_value is the `value` of the token next to a keyword: a comment's has no `//`, `/*`
+// and `*/`.
+fn (c &Checker) skwsp_token_value(token SourceToken) string {
+	return match token.kind {
+		.line_comment, .block_comment { es_comment_value(c.token_text(token)) }
+		else { c.token_text(token) }
+	}
+}
+
+// skwsp_before_as is skwsp_before with the options of `key` (checkMethodMap[token.value]). The
+// message has the token's text (sourceCode.getText(token)). unexpectSpaceBefore sees comments.
+fn (c &Checker) skwsp_before_as(mut x SkwspCtx, token SourceToken, key string, pattern []string) {
 	value := c.token_text(token)
-	expect := x.skwsp_spacing(value).before
-	prev := x.tokens.before(token.start, false) or { return }
-	prev_value := c.token_text(prev)
+	expect := x.skwsp_spacing(key).before
+	prev := x.tokens.before(token.start, !expect) or { return }
+	prev_value := c.skwsp_token_value(prev)
 	// isOpenParenOfTemplate
 	if !(skwsp_is_check_type(prev) || prev_value in pattern)
 		|| (prev.kind == .template && prev_value.ends_with('\${')) || prev.start in x.ignored
@@ -273,10 +292,15 @@ fn (c &Checker) skwsp_before(mut x SkwspCtx, token SourceToken, pattern []string
 
 // skwsp_after ports checkSpacingAfter: expectSpaceAfter or unexpectSpaceAfter.
 fn (c &Checker) skwsp_after(mut x SkwspCtx, token SourceToken, pattern []string) {
+	c.skwsp_after_as(mut x, token, c.token_text(token), pattern)
+}
+
+// skwsp_after_as is skwsp_after with the options of `key`. unexpectSpaceAfter sees comments.
+fn (c &Checker) skwsp_after_as(mut x SkwspCtx, token SourceToken, key string, pattern []string) {
 	value := c.token_text(token)
-	expect := x.skwsp_spacing(value).after
-	next := x.tokens.after(token.end, false) or { return }
-	next_value := c.token_text(next)
+	expect := x.skwsp_spacing(key).after
+	next := x.tokens.after(token.end, !expect) or { return }
+	next_value := c.skwsp_token_value(next)
 	// isCloseParenOfTemplate
 	if !(skwsp_is_check_type(next) || next_value in pattern)
 		|| (next.kind == .template && next_value.starts_with('}')) || next.start in x.ignored

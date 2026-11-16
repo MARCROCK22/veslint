@@ -12,8 +12,8 @@ tests/rules/@stylistic/keyword-spacing/cases.ts:18:1	@stylistic/keyword-spacing	
 tests/rules/@stylistic/keyword-spacing/cases.ts:19:1	@stylistic/keyword-spacing	expectedAfter	Expected space(s) after "for".	fix	326	326	 	end	19	4
 tests/rules/@stylistic/keyword-spacing/cases.ts:20:14	@stylistic/keyword-spacing	expectedAfter	Expected space(s) after "in".	fix	358	358	 	end	20	16
 tests/rules/@stylistic/keyword-spacing/cases.ts:21:14	@stylistic/keyword-spacing	expectedAfter	Expected space(s) after "of".	fix	381	381	 	end	21	16
-tests/rules/@stylistic/keyword-spacing/cases.ts:23:7	@stylistic/keyword-spacing	expectedAfter	Expected space(s) after "await".	fix	422	422	 	end	23	12
-tests/rules/@stylistic/keyword-spacing/cases.ts:25:7	@stylistic/keyword-spacing	expectedAfter	Expected space(s) after "await".	fix	481	481	 	end	25	12
+tests/rules/@stylistic/keyword-spacing/cases.ts:23:3	@stylistic/keyword-spacing	expectedAfter	Expected space(s) after "for await".	fix	422	422	 	end	23	12
+tests/rules/@stylistic/keyword-spacing/cases.ts:25:3	@stylistic/keyword-spacing	expectedAfter	Expected space(s) after "for await".	fix	481	481	 	end	25	12
 tests/rules/@stylistic/keyword-spacing/cases.ts:28:3	@stylistic/keyword-spacing	expectedAfter	Expected space(s) after "return".	fix	543	543	 	end	28	9
 tests/rules/@stylistic/keyword-spacing/cases.ts:32:1	@stylistic/keyword-spacing	expectedAfter	Expected space(s) after "switch".	fix	573	573	 	end	32	7
 tests/rules/@stylistic/keyword-spacing/cases.ts:32:11	@stylistic/keyword-spacing	expectedAfter	Expected space(s) after "case".	fix	581	581	 	end	32	15
@@ -42,6 +42,12 @@ tests/rules/@stylistic/keyword-spacing/cases.ts:103:16	@stylistic/keyword-spacin
 tests/rules/@stylistic/keyword-spacing/cases.ts:104:16	@stylistic/keyword-spacing	expectedBefore	Expected space(s) before "as".	fix	2002	2002	 	end	104	18
 tests/rules/@stylistic/keyword-spacing/cases.ts:105:16	@stylistic/keyword-spacing	expectedBefore	Expected space(s) before "satisfies".	fix	2027	2027	 	end	105	25
 tests/rules/@stylistic/keyword-spacing/cases.ts:107:16	@stylistic/keyword-spacing	expectedBefore	Expected space(s) before "satisfies".	fix	2084	2084	 	end	107	25
+tests/rules/@stylistic/keyword-spacing/cases.ts:115:3	@stylistic/keyword-spacing	expectedAfter	Expected space(s) after "for await".	fix	2376	2376	 	end	115	12
+tests/rules/@stylistic/keyword-spacing/cases.ts:116:5	@stylistic/keyword-spacing	expectedBefore	Expected space(s) before "for await".	fix	2401	2401	 	end	116	14
+tests/rules/@stylistic/keyword-spacing/cases.ts:117:6	@stylistic/keyword-spacing	expectedAfter	Expected space(s) after "for  await".	fix	2447	2447	 	end	117	16
+tests/rules/@stylistic/keyword-spacing/cases.ts:118:3	@stylistic/keyword-spacing	expectedAfter	Expected space(s) after "for/* c */await".	fix	2485	2485	 	end	118	18
+tests/rules/@stylistic/keyword-spacing/cases.ts:120:27	@stylistic/keyword-spacing	expectedAfter	Expected space(s) after "else".	fix	2570	2570	 	end	120	31
+tests/rules/@stylistic/keyword-spacing/cases.ts:121:12	@stylistic/keyword-spacing	expectedBefore	Expected space(s) before "else".	fix	2584	2584	 	end	121	16
 tests/rules/@stylistic/keyword-spacing/modules/cases.ts:1:1	@stylistic/keyword-spacing	expectedAfter	Expected space(s) after "import".	fix	6	6	 	end	1	7
 tests/rules/@stylistic/keyword-spacing/modules/cases.ts:1:10	@stylistic/keyword-spacing	expectedBefore	Expected space(s) before "from".	fix	9	9	 	end	1	14
 tests/rules/@stylistic/keyword-spacing/modules/cases.ts:1:10	@stylistic/keyword-spacing	expectedAfter	Expected space(s) after "from".	fix	13	13	 	end	1	14
@@ -85,6 +91,21 @@ tests/rules/@stylistic/keyword-spacing/neither/cases.ts:7:4	@stylistic/keyword-s
 tests/rules/@stylistic/keyword-spacing/neither/cases.ts:7:16	@stylistic/keyword-spacing	unexpectedAfter	Unexpected space(s) after "of".	fix	155	156		end	7	17
 tests/rules/@stylistic/keyword-spacing/neither/cases.ts:8:22	@stylistic/keyword-spacing	unexpectedAfter	Unexpected space(s) after "return".	fix	185	186		end	8	23
 tests/rules/@stylistic/keyword-spacing/neither/cases.ts:12:31	@stylistic/keyword-spacing	unexpectedAfter	Unexpected space(s) after "return".	fix	299	300		end	12	32
+tests/rules/@stylistic/keyword-spacing/neither/cases.ts:16:14	@stylistic/keyword-spacing	unexpectedAfter	Unexpected space(s) after "for await".	fix	495	496		end	16	15
+tests/rules/@stylistic/keyword-spacing/neither/cases.ts:17:5	@stylistic/keyword-spacing	unexpectedBefore	Unexpected space(s) before "for  await".	fix	521	522		end	17	6
+tests/rules/@stylistic/keyword-spacing/neither/cases.ts:19:12	@stylistic/keyword-spacing	unexpectedAfter	Unexpected space(s) after "for await".	fix	602	604		end	19	14
+tests/rules/@stylistic/keyword-spacing/neither/cases.ts:20:5	@stylistic/keyword-spacing	unexpectedAfter	Unexpected space(s) after "if".	fix	629	630		end	20	6
+tests/rules/@stylistic/keyword-spacing/neither/cases.ts:21:5	@stylistic/keyword-spacing	unexpectedAfter	Unexpected space(s) after "if".	fix	662	663		end	21	6
+tests/rules/@stylistic/keyword-spacing/neither/cases.ts:22:5	@stylistic/keyword-spacing	unexpectedAfter	Unexpected space(s) after "if".	fix	695	696		end	22	6
+tests/rules/@stylistic/keyword-spacing/neither/cases.ts:22:18	@stylistic/keyword-spacing	unexpectedBefore	Unexpected space(s) before "else".	fix	708	709		end	22	19
+tests/rules/@stylistic/keyword-spacing/neither/cases.ts:22:23	@stylistic/keyword-spacing	unexpectedAfter	Unexpected space(s) after "else".	fix	713	714		end	22	24
+tests/rules/@stylistic/keyword-spacing/neither/cases.ts:23:5	@stylistic/keyword-spacing	unexpectedAfter	Unexpected space(s) after "if".	fix	721	722		end	23	6
+tests/rules/@stylistic/keyword-spacing/neither/cases.ts:23:12	@stylistic/keyword-spacing	unexpectedBefore	Unexpected space(s) before "else".	fix	728	729		end	23	13
+tests/rules/@stylistic/keyword-spacing/neither/cases.ts:23:17	@stylistic/keyword-spacing	unexpectedAfter	Unexpected space(s) after "else".	fix	733	734		end	23	18
+tests/rules/@stylistic/keyword-spacing/neither/cases.ts:24:5	@stylistic/keyword-spacing	unexpectedAfter	Unexpected space(s) after "if".	fix	747	748		end	24	6
+tests/rules/@stylistic/keyword-spacing/neither/cases.ts:24:12	@stylistic/keyword-spacing	unexpectedBefore	Unexpected space(s) before "else".	fix	754	755		end	24	13
+tests/rules/@stylistic/keyword-spacing/neither/cases.ts:24:17	@stylistic/keyword-spacing	unexpectedAfter	Unexpected space(s) after "else".	fix	759	760		end	24	18
+tests/rules/@stylistic/keyword-spacing/neither/cases.ts:29:9	@stylistic/keyword-spacing	unexpectedAfter	Unexpected space(s) after "return".	fix	855	856		end	29	10
 tests/rules/@stylistic/keyword-spacing/no-after/cases.ts:3:3	@stylistic/keyword-spacing	unexpectedAfter	Unexpected space(s) after "if".	fix	71	72		end	3	4
 tests/rules/@stylistic/keyword-spacing/no-after/cases.ts:3:15	@stylistic/keyword-spacing	unexpectedAfter	Unexpected space(s) after "else".	fix	83	84		end	3	16
 tests/rules/@stylistic/keyword-spacing/no-after/cases.ts:4:8	@stylistic/keyword-spacing	expectedBefore	Expected space(s) before "else".	fix	94	94	 	end	4	12
@@ -106,6 +127,19 @@ tests/rules/@stylistic/keyword-spacing/no-after/cases.ts:16:16	@stylistic/keywor
 tests/rules/@stylistic/keyword-spacing/no-after/cases.ts:16:42	@stylistic/keyword-spacing	unexpectedAfter	Unexpected space(s) after "async".	fix	429	430		end	16	43
 tests/rules/@stylistic/keyword-spacing/no-after/cases.ts:17:17	@stylistic/keyword-spacing	unexpectedAfter	Unexpected space(s) after "static".	fix	458	459		end	17	18
 tests/rules/@stylistic/keyword-spacing/no-after/cases.ts:17:27	@stylistic/keyword-spacing	unexpectedAfter	Unexpected space(s) after "static".	fix	468	469		end	17	28
+tests/rules/@stylistic/keyword-spacing/no-after/cases.ts:23:5	@stylistic/keyword-spacing	expectedBefore	Expected space(s) before "for await".	fix	701	701	 	end	23	14
+tests/rules/@stylistic/keyword-spacing/no-after/cases.ts:23:14	@stylistic/keyword-spacing	unexpectedAfter	Unexpected space(s) after "for await".	fix	710	711		end	23	15
+tests/rules/@stylistic/keyword-spacing/no-after/cases.ts:26:12	@stylistic/keyword-spacing	unexpectedAfter	Unexpected space(s) after "for await".	fix	817	819		end	26	14
+tests/rules/@stylistic/keyword-spacing/no-after/cases.ts:27:5	@stylistic/keyword-spacing	unexpectedAfter	Unexpected space(s) after "if".	fix	844	845		end	27	6
+tests/rules/@stylistic/keyword-spacing/no-after/cases.ts:28:5	@stylistic/keyword-spacing	unexpectedAfter	Unexpected space(s) after "if".	fix	877	878		end	28	6
+tests/rules/@stylistic/keyword-spacing/no-after/cases.ts:28:12	@stylistic/keyword-spacing	expectedBefore	Expected space(s) before "else".	fix	884	884	 	end	28	16
+tests/rules/@stylistic/keyword-spacing/no-after/cases.ts:29:5	@stylistic/keyword-spacing	unexpectedAfter	Unexpected space(s) after "if".	fix	910	911		end	29	6
+tests/rules/@stylistic/keyword-spacing/no-after/cases.ts:29:23	@stylistic/keyword-spacing	unexpectedAfter	Unexpected space(s) after "else".	fix	928	929		end	29	24
+tests/rules/@stylistic/keyword-spacing/no-after/cases.ts:30:5	@stylistic/keyword-spacing	unexpectedAfter	Unexpected space(s) after "if".	fix	936	937		end	30	6
+tests/rules/@stylistic/keyword-spacing/no-after/cases.ts:30:17	@stylistic/keyword-spacing	unexpectedAfter	Unexpected space(s) after "else".	fix	948	949		end	30	18
+tests/rules/@stylistic/keyword-spacing/no-after/cases.ts:31:5	@stylistic/keyword-spacing	unexpectedAfter	Unexpected space(s) after "if".	fix	962	963		end	31	6
+tests/rules/@stylistic/keyword-spacing/no-after/cases.ts:31:17	@stylistic/keyword-spacing	unexpectedAfter	Unexpected space(s) after "else".	fix	974	975		end	31	18
+tests/rules/@stylistic/keyword-spacing/no-after/cases.ts:36:9	@stylistic/keyword-spacing	unexpectedAfter	Unexpected space(s) after "return".	fix	1070	1071		end	36	10
 tests/rules/@stylistic/keyword-spacing/no-before/cases.ts:3:10	@stylistic/keyword-spacing	unexpectedBefore	Unexpected space(s) before "else".	fix	78	79		end	3	11
 tests/rules/@stylistic/keyword-spacing/no-before/cases.ts:4:10	@stylistic/keyword-spacing	expectedAfter	Expected space(s) after "else".	fix	100	100	 	end	4	14
 tests/rules/@stylistic/keyword-spacing/no-before/cases.ts:5:7	@stylistic/keyword-spacing	unexpectedBefore	Unexpected space(s) before "catch".	fix	109	110		end	5	8
@@ -114,6 +148,14 @@ tests/rules/@stylistic/keyword-spacing/no-before/cases.ts:6:6	@stylistic/keyword
 tests/rules/@stylistic/keyword-spacing/no-before/cases.ts:7:14	@stylistic/keyword-spacing	unexpectedBefore	Unexpected space(s) before "as".	fix	164	165		end	7	15
 tests/rules/@stylistic/keyword-spacing/no-before/cases.ts:8:14	@stylistic/keyword-spacing	unexpectedBefore	Unexpected space(s) before "satisfies".	fix	186	187		end	8	15
 tests/rules/@stylistic/keyword-spacing/no-before/cases.ts:9:16	@stylistic/keyword-spacing	unexpectedBefore	Unexpected space(s) before "satisfies".	fix	223	224		end	9	17
+tests/rules/@stylistic/keyword-spacing/no-before/cases.ts:24:3	@stylistic/keyword-spacing	expectedAfter	Expected space(s) after "for await".	fix	728	728	 	end	24	12
+tests/rules/@stylistic/keyword-spacing/no-before/cases.ts:26:5	@stylistic/keyword-spacing	unexpectedBefore	Unexpected space(s) before "for  await".	fix	788	789		end	26	6
+tests/rules/@stylistic/keyword-spacing/no-before/cases.ts:26:6	@stylistic/keyword-spacing	expectedAfter	Expected space(s) after "for  await".	fix	799	799	 	end	26	16
+tests/rules/@stylistic/keyword-spacing/no-before/cases.ts:27:3	@stylistic/keyword-spacing	expectedAfter	Expected space(s) after "for/* c */await".	fix	837	837	 	end	27	18
+tests/rules/@stylistic/keyword-spacing/no-before/cases.ts:29:27	@stylistic/keyword-spacing	expectedAfter	Expected space(s) after "else".	fix	922	922	 	end	29	31
+tests/rules/@stylistic/keyword-spacing/no-before/cases.ts:31:18	@stylistic/keyword-spacing	unexpectedBefore	Unexpected space(s) before "else".	fix	975	976		end	31	19
+tests/rules/@stylistic/keyword-spacing/no-before/cases.ts:32:12	@stylistic/keyword-spacing	unexpectedBefore	Unexpected space(s) before "else".	fix	995	996		end	32	13
+tests/rules/@stylistic/keyword-spacing/no-before/cases.ts:33:12	@stylistic/keyword-spacing	unexpectedBefore	Unexpected space(s) before "else".	fix	1021	1022		end	33	13
 tests/rules/@stylistic/keyword-spacing/overrides-partial/cases.ts:2:3	@stylistic/keyword-spacing	unexpectedAfter	Unexpected space(s) after "if".	fix	24	25		end	2	4
 tests/rules/@stylistic/keyword-spacing/overrides-partial/cases.ts:2:15	@stylistic/keyword-spacing	unexpectedAfter	Unexpected space(s) after "else".	fix	36	37		end	2	16
 tests/rules/@stylistic/keyword-spacing/overrides-partial/cases.ts:3:8	@stylistic/keyword-spacing	expectedBefore	Expected space(s) before "else".	fix	47	47	 	end	3	12
@@ -136,7 +178,24 @@ tests/rules/@stylistic/keyword-spacing/overrides/cases.ts:14:80	@stylistic/keywo
 tests/rules/@stylistic/keyword-spacing/overrides/cases.ts:14:86	@stylistic/keyword-spacing	unexpectedAfter	Unexpected space(s) after "async".	fix	405	406		end	14	87
 tests/rules/@stylistic/keyword-spacing/overrides/cases.ts:14:95	@stylistic/keyword-spacing	unexpectedBefore	Unexpected space(s) before "async".	fix	414	415		end	14	96
 tests/rules/@stylistic/keyword-spacing/overrides/cases.ts:15:18	@stylistic/keyword-spacing	unexpectedAfter	Unexpected space(s) after "async".	fix	448	449		end	15	19
+tests/rules/@stylistic/keyword-spacing/overrides/cases.ts:16:31	@stylistic/keyword-spacing	unexpectedAfter	Unexpected space(s) after "for await".	fix	507	508		end	16	32
 tests/rules/@stylistic/keyword-spacing/overrides/cases.ts:16:43	@stylistic/keyword-spacing	unexpectedAfter	Unexpected space(s) after "of".	fix	519	520		end	16	44
+tests/rules/@stylistic/keyword-spacing/overrides/cases.ts:16:51	@stylistic/keyword-spacing	unexpectedBefore	Unexpected space(s) before "for".	fix	527	528		end	16	52
+tests/rules/@stylistic/keyword-spacing/overrides/cases.ts:16:55	@stylistic/keyword-spacing	unexpectedAfter	Unexpected space(s) after "for".	fix	531	532		end	16	56
+tests/rules/@stylistic/keyword-spacing/overrides/cases.ts:23:14	@stylistic/keyword-spacing	unexpectedAfter	Unexpected space(s) after "for await".	fix	825	826		end	23	15
+tests/rules/@stylistic/keyword-spacing/overrides/cases.ts:24:5	@stylistic/keyword-spacing	unexpectedBefore	Unexpected space(s) before "for  await".	fix	851	852		end	24	6
+tests/rules/@stylistic/keyword-spacing/overrides/cases.ts:26:12	@stylistic/keyword-spacing	unexpectedAfter	Unexpected space(s) after "for await".	fix	932	934		end	26	14
+tests/rules/@stylistic/keyword-spacing/overrides/cases.ts:27:5	@stylistic/keyword-spacing	unexpectedAfter	Unexpected space(s) after "if".	fix	959	960		end	27	6
+tests/rules/@stylistic/keyword-spacing/overrides/cases.ts:28:5	@stylistic/keyword-spacing	unexpectedAfter	Unexpected space(s) after "if".	fix	992	993		end	28	6
+tests/rules/@stylistic/keyword-spacing/overrides/cases.ts:29:5	@stylistic/keyword-spacing	unexpectedAfter	Unexpected space(s) after "if".	fix	1025	1026		end	29	6
+tests/rules/@stylistic/keyword-spacing/overrides/cases.ts:29:18	@stylistic/keyword-spacing	unexpectedBefore	Unexpected space(s) before "else".	fix	1038	1039		end	29	19
+tests/rules/@stylistic/keyword-spacing/overrides/cases.ts:29:23	@stylistic/keyword-spacing	unexpectedAfter	Unexpected space(s) after "else".	fix	1043	1044		end	29	24
+tests/rules/@stylistic/keyword-spacing/overrides/cases.ts:30:5	@stylistic/keyword-spacing	unexpectedAfter	Unexpected space(s) after "if".	fix	1051	1052		end	30	6
+tests/rules/@stylistic/keyword-spacing/overrides/cases.ts:30:12	@stylistic/keyword-spacing	unexpectedBefore	Unexpected space(s) before "else".	fix	1058	1059		end	30	13
+tests/rules/@stylistic/keyword-spacing/overrides/cases.ts:30:17	@stylistic/keyword-spacing	unexpectedAfter	Unexpected space(s) after "else".	fix	1063	1064		end	30	18
+tests/rules/@stylistic/keyword-spacing/overrides/cases.ts:31:5	@stylistic/keyword-spacing	unexpectedAfter	Unexpected space(s) after "if".	fix	1077	1078		end	31	6
+tests/rules/@stylistic/keyword-spacing/overrides/cases.ts:31:12	@stylistic/keyword-spacing	unexpectedBefore	Unexpected space(s) before "else".	fix	1084	1085		end	31	13
+tests/rules/@stylistic/keyword-spacing/overrides/cases.ts:31:17	@stylistic/keyword-spacing	unexpectedAfter	Unexpected space(s) after "else".	fix	1089	1090		end	31	18
 tests/rules/@stylistic/keyword-spacing/tsx/cases.tsx:12:22	@stylistic/keyword-spacing	expectedBefore	Expected space(s) before "as".	fix	388	388	 	end	12	24
 tests/rules/@stylistic/keyword-spacing/tsx/cases.tsx:13:27	@stylistic/keyword-spacing	expectedBefore	Expected space(s) before "as".	fix	422	422	 	end	13	29
 tests/rules/@stylistic/keyword-spacing/tsx/cases.tsx:14:22	@stylistic/keyword-spacing	expectedBefore	Expected space(s) before "as".	fix	451	451	 	end	14	24
