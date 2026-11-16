@@ -4,7 +4,7 @@ import estree
 import time
 import x.json2
 
-// Port of the `@stylistic/multiline-ternary` rule of @stylistic/eslint-plugin 5.10.0, with its
+// Port of the `@stylistic/multiline-ternary` rule of @stylistic/eslint-plugin 6.0.1, with its
 // options (`"always"`, the default, `"always-multiline"` or `"never"`, and `ignoreJSX`) and its
 // fixes.
 
@@ -72,7 +72,10 @@ fn (c &Checker) smtn_check(t &estree.EsTree, tokens &SourceTokens, node int, opt
 	consequent_and_alternate_same_line := sty_same_line(t, last_of_consequent, first_of_alternate)
 	has_comments := tokens.comments_inside(t.nodes[node].start, t.nodes[node].end).len > 0
 	if options.ignore_jsx {
-		parent := t.nodes[node].parent
+		mut parent := t.nodes[node].parent
+		for parent >= 0 && t.typ(parent) == .conditional_expression {
+			parent = t.nodes[parent].parent
+		}
 		if parent >= 0 && t.typ(parent) in [.jsx_element, .jsx_fragment, .jsx_expression_container] {
 			return
 		}
