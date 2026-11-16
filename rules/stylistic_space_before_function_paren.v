@@ -4,7 +4,7 @@ import estree
 import time
 import x.json2
 
-// Port of the `@stylistic/space-before-function-paren` rule of @stylistic/eslint-plugin 5.10.0,
+// Port of the `@stylistic/space-before-function-paren` rule of @stylistic/eslint-plugin 6.0.1,
 // with its options (`"always"`, the default, `"never"`, or an object with `anonymous`, `named`,
 // `asyncArrow` and `catch`, each `"always"`, `"never"` or `"ignore"`) and its fixes.
 
@@ -141,8 +141,9 @@ fn (c &Checker) ssbfp_check_function(t &estree.EsTree, tokens &SourceTokens, nod
 		return
 	}
 	type_parameters := t.node(node, .type_parameters) or { -1 }
-	has_id := t.node(node, .id) != none
-	if config == 'always' && type_parameters >= 0 && !has_id {
+	// Anonymous functions with type parameters: no space demanded between `>` and `(`; methods
+	// are named by their parent (isNamedFunction).
+	if config == 'always' && type_parameters >= 0 && !ssbfp_is_named_function(t, node) {
 		return
 	}
 	mut left := SourceToken{}
