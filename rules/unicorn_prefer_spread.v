@@ -407,9 +407,8 @@ fn (mut c Checker) upsp_method_call_to_spread(mut ctx UnCtx, node int) ?Fix {
 // contextual typing of an inline source expression, so the fix is a suggestion unless the call
 // initializes an unannotated variable and the types say that the copy has the type of the source.
 fn (mut c Checker) upsp_should_suggest_spread(mut ctx UnCtx, node int, array int) bool {
-	// Neither a TypeScript file nor a SourceFile of ScriptKind TS or TSX (TypeScript reads a .vue
-	// file with the ScriptKind of an extra extension).
-	if !c.is_typescript_file() {
+	// Neither a TypeScript file nor a SourceFile of ScriptKind TS or TSX.
+	if !c.is_typescript_file() && !c.is_ts_script_kind() {
 		return false
 	}
 	t := ctx.t

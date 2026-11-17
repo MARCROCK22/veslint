@@ -74,6 +74,13 @@ fn (c &Checker) is_typescript_file() bool {
 	return !c.is_vue()
 }
 
+// is_ts_script_kind: TypeScript reads the file as ScriptKind TS or TSX. A .vue file is of the
+// kind TypeScript gives an extra extension (Deferred) in the project service, and TS in the
+// programs typescript-eslint makes for `parserOptions.project`.
+fn (c &Checker) is_ts_script_kind() bool {
+	return !c.is_vue() || c.project_programs
+}
+
 // parse_text is the text tree-sitter parsed: the masked script of a .vue file (same length as the
 // file), the source of any other.
 fn (c &Checker) parse_text() string {

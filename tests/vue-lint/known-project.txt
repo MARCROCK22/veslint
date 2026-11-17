@@ -1,0 +1,85 @@
+# Differences of `VUE_LINT_PROJECT=1 tests/vue-lint/compare.sh` (parserOptions.project, on the
+# groups of the corpus): the same reasons as known.txt, which says more.
+#
+# tree-sitter's TypeScript grammar reads the script differently from TypeScript (syntax errors in
+# the one-token-per-line cases of script-indent), as on a .ts file.
+only eslint	g01/src/script-indent_v175.vue:11:4	@typescript-eslint/no-unsafe-member-access	errorMemberExpression	Unsafe member access .d on a type that cannot be resolved.	end	11	5
+only eslint	g01/src/script-indent_v175.vue:12:18	marcrock/no-newline-if-body-class-empty	noNewLine	Empty body class should not have a newline.	fix	89	90		end	13	2
+only eslint	g01/src/script-indent_v175.vue:8:1	@stylistic/no-extra-parens	unexpected	Unnecessary parentheses around expression.	fix	58	65	\n  d\n	end	8	2
+only eslint	g07/src/script-indent_i169.vue:11:2	@typescript-eslint/no-unsafe-member-access	errorMemberExpression	Unsafe member access .d on a type that cannot be resolved.	end	11	3
+only eslint	g07/src/script-indent_i169.vue:12:18	marcrock/no-newline-if-body-class-empty	noNewLine	Empty body class should not have a newline.	fix	83	84		end	13	2
+only eslint	g07/src/script-indent_i169.vue:8:1	@stylistic/no-extra-parens	unexpected	Unnecessary parentheses around expression.	fix	56	61	\nd\n	end	8	2
+#
+# The same difference on a .ts file with the code of the script.
+only eslint	g00/src/no-use-computed-property-like-method_i10.vue:11:15	@typescript-eslint/no-unsafe-return	unsafeReturn	Unsafe return of a value of type `any`.	end	11	25
+only eslint	g07/src/no-use-computed-property-like-method_v13.vue:11:15	@typescript-eslint/no-unsafe-return	unsafeReturn	Unsafe return of a value of type `any`.	end	11	25
+only eslint	g15/src/no-use-computed-property-like-method_i9.vue:10:15	@typescript-eslint/no-unsafe-return	unsafeReturn	Unsafe return of a value of type `any`.	end	10	25
+only veslint	g00/src/no-use-computed-property-like-method_i10.vue:11:15	@typescript-eslint/no-unsafe-return	unsafeReturn	Unsafe return of a value of type error.	end	11	25
+only veslint	g06/src/script-indent_v212.vue:4:3	no-import-assign	readonly	'foo' is read-only.	end	4	6
+only veslint	g07/src/no-use-computed-property-like-method_v13.vue:11:15	@typescript-eslint/no-unsafe-return	unsafeReturn	Unsafe return of a value of type error.	end	11	25
+only veslint	g07/src/script-indent_i111.vue:14:1	@typescript-eslint/no-use-before-define	noUseBeforeDefine	'Bar' was used before it was defined.	end	14	4
+only veslint	g07/src/script-indent_i111.vue:16:2	@stylistic/semi	missingSemi	Missing semicolon.	fix	127	127	;	end	17	1
+only veslint	g07/src/script-indent_i111.vue:17:1	@typescript-eslint/no-unused-expressions	unusedExpression	Expected an assignment or function call and instead saw an expression.	end	17	5
+only veslint	g07/src/script-indent_i111.vue:17:5	@stylistic/semi	missingSemi	Missing semicolon.	fix	132	132	;	end	18	1
+only veslint	g07/src/script-indent_i111.vue:18:1	@typescript-eslint/no-unused-expressions	unusedExpression	Expected an assignment or function call and instead saw an expression.	end	18	7
+only veslint	g08/src/no-undef-properties_v21.vue:3:22	@typescript-eslint/prefer-readonly-parameter-types	shouldBeReadonly	Parameter should be a read only type.	end	3	34
+only veslint	g08/src/script-indent_v116.vue:14:3	@typescript-eslint/no-use-before-define	noUseBeforeDefine	'Bar' was used before it was defined.	end	14	6
+only veslint	g08/src/script-indent_v116.vue:16:2	@stylistic/semi	missingSemi	Missing semicolon.	fix	147	147	;	end	17	1
+only veslint	g08/src/script-indent_v116.vue:17:3	@typescript-eslint/no-unused-expressions	unusedExpression	Expected an assignment or function call and instead saw an expression.	end	17	7
+only veslint	g08/src/script-indent_v116.vue:17:7	@stylistic/semi	missingSemi	Missing semicolon.	fix	154	154	;	end	18	1
+only veslint	g08/src/script-indent_v116.vue:18:3	@typescript-eslint/no-unused-expressions	unusedExpression	Expected an assignment or function call and instead saw an expression.	end	18	9
+only veslint	g10/src/script-indent_i202.vue:4:1	no-import-assign	readonly	'foo' is read-only.	end	4	4
+only veslint	g11/src/script-indent_i232.vue:3:10	@typescript-eslint/no-use-before-define	noUseBeforeDefine	'a' was used before it was defined.	end	3	11
+only veslint	g11/src/script-indent_i232.vue:3:13	@stylistic/semi	missingSemi	Missing semicolon.	fix	70	70	;	end	4	1
+only veslint	g11/src/script-indent_i232.vue:4:1	@typescript-eslint/no-unused-expressions	unusedExpression	Expected an assignment or function call and instead saw an expression.	end	4	5
+only veslint	g11/src/script-indent_i232.vue:4:5	@stylistic/semi	missingSemi	Missing semicolon.	fix	75	75	;	end	5	1
+only veslint	g11/src/script-indent_i232.vue:5:1	@typescript-eslint/no-unused-expressions	unusedExpression	Expected an assignment or function call and instead saw an expression.	end	6	2
+only veslint	g11/src/script-indent_i232.vue:7:10	@typescript-eslint/no-use-before-define	noUseBeforeDefine	'b' was used before it was defined.	end	7	11
+only veslint	g11/src/script-indent_i232.vue:7:13	@stylistic/semi	missingSemi	Missing semicolon.	fix	96	96	;	end	8	1
+only veslint	g11/src/script-indent_i232.vue:8:1	@typescript-eslint/no-unused-expressions	unusedExpression	Expected an assignment or function call and instead saw an expression.	end	8	5
+only veslint	g11/src/script-indent_i232.vue:8:5	@stylistic/semi	missingSemi	Missing semicolon.	fix	101	101	;	end	9	1
+only veslint	g11/src/script-indent_i232.vue:9:1	@typescript-eslint/no-unused-expressions	unusedExpression	Expected an assignment or function call and instead saw an expression.	end	9	6
+only veslint	g13/src/script-indent_i36.vue:13:1	@typescript-eslint/no-use-before-define	noUseBeforeDefine	'Bar' was used before it was defined.	end	13	4
+only veslint	g13/src/script-indent_i36.vue:14:2	@stylistic/semi	missingSemi	Missing semicolon.	fix	111	111	;	end	15	1
+only veslint	g13/src/script-indent_i36.vue:15:1	@typescript-eslint/no-unused-expressions	unusedExpression	Expected an assignment or function call and instead saw an expression.	end	15	5
+only veslint	g13/src/script-indent_i36.vue:15:5	@stylistic/semi	missingSemi	Missing semicolon.	fix	116	116	;	end	16	1
+only veslint	g13/src/script-indent_i36.vue:16:1	@typescript-eslint/no-unused-expressions	unusedExpression	Expected an assignment or function call and instead saw an expression.	end	16	7
+only veslint	g14/src/no-undef-properties_i16.vue:3:22	@typescript-eslint/prefer-readonly-parameter-types	shouldBeReadonly	Parameter should be a read only type.	end	3	35
+only veslint	g14/src/script-indent_v36.vue:13:3	@typescript-eslint/no-use-before-define	noUseBeforeDefine	'Bar' was used before it was defined.	end	13	6
+only veslint	g14/src/script-indent_v36.vue:14:2	@stylistic/semi	missingSemi	Missing semicolon.	fix	123	123	;	end	15	1
+only veslint	g14/src/script-indent_v36.vue:15:3	@typescript-eslint/no-unused-expressions	unusedExpression	Expected an assignment or function call and instead saw an expression.	end	15	7
+only veslint	g14/src/script-indent_v36.vue:15:7	@stylistic/semi	missingSemi	Missing semicolon.	fix	130	130	;	end	16	1
+only veslint	g14/src/script-indent_v36.vue:16:3	@typescript-eslint/no-unused-expressions	unusedExpression	Expected an assignment or function call and instead saw an expression.	end	16	9
+only veslint	g15/src/no-use-computed-property-like-method_i9.vue:10:15	@typescript-eslint/no-unsafe-return	unsafeReturn	Unsafe return of a value of type error.	end	10	25
+only veslint	g15/src/script-indent_v243.vue:3:10	@typescript-eslint/no-use-before-define	noUseBeforeDefine	'a' was used before it was defined.	end	3	11
+only veslint	g15/src/script-indent_v243.vue:3:13	@stylistic/semi	missingSemi	Missing semicolon.	fix	70	70	;	end	4	1
+only veslint	g15/src/script-indent_v243.vue:4:3	@typescript-eslint/no-unused-expressions	unusedExpression	Expected an assignment or function call and instead saw an expression.	end	4	7
+only veslint	g15/src/script-indent_v243.vue:4:7	@stylistic/semi	missingSemi	Missing semicolon.	fix	77	77	;	end	5	1
+only veslint	g15/src/script-indent_v243.vue:5:3	@typescript-eslint/no-unused-expressions	unusedExpression	Expected an assignment or function call and instead saw an expression.	end	6	2
+only veslint	g15/src/script-indent_v243.vue:7:10	@typescript-eslint/no-use-before-define	noUseBeforeDefine	'b' was used before it was defined.	end	7	11
+only veslint	g15/src/script-indent_v243.vue:7:13	@stylistic/semi	missingSemi	Missing semicolon.	fix	100	100	;	end	8	1
+only veslint	g15/src/script-indent_v243.vue:8:3	@typescript-eslint/no-unused-expressions	unusedExpression	Expected an assignment or function call and instead saw an expression.	end	8	7
+only veslint	g15/src/script-indent_v243.vue:8:7	@stylistic/semi	missingSemi	Missing semicolon.	fix	107	107	;	end	9	1
+only veslint	g15/src/script-indent_v243.vue:9:3	@typescript-eslint/no-unused-expressions	unusedExpression	Expected an assignment or function call and instead saw an expression.	end	9	8
+#
+# Types the two compilers give differently, depending on the program and the order of the queries.
+only eslint	g00/src/no-deprecated-dollar-scopedslots-api_i4.vue:8:13	@typescript-eslint/no-unsafe-return	unsafeReturn	Unsafe return of a value of type `any`.	end	8	32
+only eslint	g00/src/no-deprecated-dollar-scopedslots-api_i4.vue:8:20	@typescript-eslint/no-unsafe-call	unsafeCall	Unsafe call of an `any` typed value.	end	8	25
+only eslint	g00/src/no-deprecated-dollar-scopedslots-api_i4.vue:8:22	@typescript-eslint/no-unsafe-member-access	unsafeMemberExpression	Unsafe member access .foo on an `any` value.	end	8	25
+only eslint	g02/src/no-deprecated-dollar-scopedslots-api_i3.vue:9:13	@typescript-eslint/no-unsafe-return	unsafeReturn	Unsafe return of a value of type `any`.	end	9	35
+only eslint	g02/src/no-deprecated-dollar-scopedslots-api_i3.vue:9:20	@typescript-eslint/no-unsafe-call	unsafeCall	Unsafe call of an `any` typed value.	end	9	28
+only eslint	g02/src/no-deprecated-dollar-scopedslots-api_i3.vue:9:25	@typescript-eslint/no-unsafe-member-access	unsafeMemberExpression	Unsafe member access .foo on an `any` value.	end	9	28
+only eslint	g02/src/no-undef-components_i7.vue:4:21	@typescript-eslint/no-unsafe-argument	unsafeArgument	Unsafe argument of type error typed assigned to a parameter of type `(ComponentOptionsBase<{}, {}, {}, {}, {}, ComponentOptionsMixin, ComponentOptionsMixin, {}, string, {}, {}, string, {}, {}, {}, string, ComponentProvideOptions> & { ...; }) | undefined`.	end	4	28
+only eslint	g03/src/no-deprecated-dollar-listeners-api_i3.vue:10:15	@typescript-eslint/no-unsafe-return	unsafeReturn	Unsafe return of a value of type `any`.	end	10	26
+only eslint	g03/src/valid-define-options_v4.vue:5:21	@typescript-eslint/no-unsafe-argument	unsafeArgument	Unsafe argument of type error typed assigned to a parameter of type `(ComponentOptionsBase<{}, {}, {}, {}, {}, ComponentOptionsMixin, ComponentOptionsMixin, {}, string, {}, {}, string, {}, {}, {}, string, ComponentProvideOptions> & { ...; }) | undefined`.	end	5	24
+only eslint	g04/src/require-slots-as-functions_i0.vue:8:28	@typescript-eslint/no-unsafe-assignment	unsafeArraySpread	Unsafe spread of an `any` value in an array.	end	8	39
+only veslint	g00/src/no-deprecated-dollar-scopedslots-api_i4.vue:8:13	@typescript-eslint/no-unsafe-return	unsafeReturn	Unsafe return of a value of type error.	end	8	32
+only veslint	g00/src/no-deprecated-dollar-scopedslots-api_i4.vue:8:20	@typescript-eslint/no-unsafe-call	errorCall	Unsafe call of a type that could not be resolved.	end	8	25
+only veslint	g00/src/no-deprecated-dollar-scopedslots-api_i4.vue:8:22	@typescript-eslint/no-unsafe-member-access	errorMemberExpression	Unsafe member access .foo on a type that cannot be resolved.	end	8	25
+only veslint	g02/src/no-deprecated-dollar-scopedslots-api_i3.vue:9:13	@typescript-eslint/no-unsafe-return	unsafeReturn	Unsafe return of a value of type error.	end	9	35
+only veslint	g02/src/no-deprecated-dollar-scopedslots-api_i3.vue:9:20	@typescript-eslint/no-unsafe-call	errorCall	Unsafe call of a type that could not be resolved.	end	9	28
+only veslint	g02/src/no-deprecated-dollar-scopedslots-api_i3.vue:9:25	@typescript-eslint/no-unsafe-member-access	errorMemberExpression	Unsafe member access .foo on a type that cannot be resolved.	end	9	28
+only veslint	g02/src/no-undef-components_i7.vue:4:21	@typescript-eslint/no-unsafe-argument	unsafeArgument	Unsafe argument of type error typed assigned to a parameter of type `(ComponentOptionsBase<{}, {}, {}, {}, {}, ComponentOptionsMixin, ComponentOptionsMixin, {}, string, {}, {}, string, {}, {}, {}, string, ComponentProvideOptions> & ...) | undefined`.	end	4	28
+only veslint	g03/src/no-deprecated-dollar-listeners-api_i3.vue:10:15	@typescript-eslint/no-unsafe-return	unsafeReturn	Unsafe return of a value of type error.	end	10	26
+only veslint	g03/src/valid-define-options_v4.vue:5:21	@typescript-eslint/no-unsafe-argument	unsafeArgument	Unsafe argument of type error typed assigned to a parameter of type `(ComponentOptionsBase<{}, {}, {}, {}, {}, ComponentOptionsMixin, ComponentOptionsMixin, {}, string, {}, {}, string, {}, {}, {}, string, ComponentProvideOptions> & ...) | undefined`.	end	5	24
+only veslint	g04/src/require-slots-as-functions_i0.vue:8:28	@typescript-eslint/no-unsafe-assignment	unsafeArraySpread	Unsafe spread of an error typed value in an array.	end	8	39

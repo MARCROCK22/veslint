@@ -557,6 +557,7 @@ fn (l &LoadedConfig) lint_config(index int) rules.LintConfig {
 		language:             entry.language
 		settings:             entry.settings
 		program_directory:    if entry.project_programs { os.getwd() } else { '' }
+		project_programs:     entry.project_programs
 	}
 }
 

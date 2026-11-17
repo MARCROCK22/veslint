@@ -61,7 +61,10 @@ fn include_twins(mut client tsgo.Client, twins map[string][]string) ![]string {
 	mut served := []string{}
 	for tsconfig, paths in twins {
 		parsed := client.parse_config_file(tsconfig)!
-		keys := parsed.file_names.map(tsgo.path_key(it))
+		mut keys := map[string]bool{}
+		for name in parsed.file_names {
+			keys[tsgo.path_key(name)] = true
+		}
 		missing := paths.filter(tsgo.path_key(it) !in keys)
 		if missing.len == 0 {
 			continue

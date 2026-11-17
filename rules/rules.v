@@ -1264,6 +1264,10 @@ pub:
 	// settings are the shared settings of the configuration (ESLint's `settings`, which rules read
 	// as context.settings).
 	settings map[string]json2.Any
+	// project_programs: typescript-eslint gets the types from the programs of
+	// `parserOptions.project`, not from the project service (a .vue file is a SourceFile of
+	// ScriptKind TS in such a program, and of the extension's own kind for the project service).
+	project_programs bool
 pub mut:
 	// program_directory is the current directory of ESLint's program, which `from: "file"` type
 	// specifiers are relative to, when it is not the directory of the tsconfig (see specifiers.v).
@@ -1964,6 +1968,7 @@ fn (mut c Checker) lint_file_in_lifetime(parser Parser, config LintConfig, src s
 	c.ecma_version = config.language.ecma_version
 	c.language = config.language
 	c.settings = config.settings
+	c.project_programs = config.project_programs
 	c.reset_file_types()
 	fatal := c.parsing_error(ts_path)
 	if fatal.len > 0 {
@@ -3530,6 +3535,8 @@ mut:
 	jsdoc_deprecation_cache map[int]string
 	// the .vue file being linted (vue_file.v), set before lint_file by set_vue
 	vue VueView
+	// LintConfig.project_programs of the file being linted
+	project_programs bool
 }
 
 // DeclarationAsts keeps the AstTree of the files whose declarations the rules look at, by tsgo
