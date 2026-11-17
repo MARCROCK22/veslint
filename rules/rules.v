@@ -479,6 +479,21 @@ pub const vue_no_v_text = 'vue/no-v-text'
 pub const vue_no_duplicate_attributes = 'vue/no-duplicate-attributes'
 pub const vue_comment_directive = 'vue/comment-directive'
 pub const vue_no_parsing_error = 'vue/no-parsing-error'
+pub const vue_no_deprecated_v_is = 'vue/no-deprecated-v-is'
+pub const vue_no_deprecated_scope_attribute = 'vue/no-deprecated-scope-attribute'
+pub const vue_no_deprecated_filter = 'vue/no-deprecated-filter'
+pub const vue_no_deprecated_inline_template = 'vue/no-deprecated-inline-template'
+pub const vue_require_component_is = 'vue/require-component-is'
+pub const vue_no_deprecated_v_on_native_modifier = 'vue/no-deprecated-v-on-native-modifier'
+pub const vue_no_v_model_argument = 'vue/no-v-model-argument'
+pub const vue_no_textarea_mustache = 'vue/no-textarea-mustache'
+pub const vue_no_use_v_else_with_v_for = 'vue/no-use-v-else-with-v-for'
+pub const vue_no_v_for_template_key = 'vue/no-v-for-template-key'
+pub const vue_no_template_key = 'vue/no-template-key'
+pub const vue_no_custom_modifiers_on_v_model = 'vue/no-custom-modifiers-on-v-model'
+pub const vue_no_deprecated_v_bind_sync = 'vue/no-deprecated-v-bind-sync'
+pub const vue_no_spaces_around_equal_signs_in_attribute = 'vue/no-spaces-around-equal-signs-in-attribute'
+pub const vue_no_deprecated_v_on_number_modifiers = 'vue/no-deprecated-v-on-number-modifiers'
 pub const names = [no_floating_promises, await_thenable, require_await, return_await,
 	no_misused_promises, no_unsafe_call, no_unsafe_member_access, no_unsafe_return,
 	no_unsafe_assignment, no_unsafe_argument, restrict_template_expressions,
@@ -613,7 +628,13 @@ pub const names = [no_floating_promises, await_thenable, require_await, return_a
 	parameter_properties, prefer_literal_enum_member, no_magic_numbers, no_restricted_types,
 	no_generated_empty_object_type, no_unsafe_enum_assignment, member_ordering,
 	perfectionist_sort_classes, perfectionist_sort_imports, vue_comment_directive,
-	vue_no_parsing_error, vue_no_v_html, vue_no_v_text, vue_no_duplicate_attributes]
+	vue_no_parsing_error, vue_no_v_html, vue_no_v_text, vue_no_duplicate_attributes,
+	vue_no_deprecated_v_is, vue_no_deprecated_scope_attribute, vue_no_deprecated_filter,
+	vue_no_deprecated_inline_template, vue_require_component_is,
+	vue_no_deprecated_v_on_native_modifier, vue_no_v_model_argument, vue_no_textarea_mustache,
+	vue_no_use_v_else_with_v_for, vue_no_v_for_template_key, vue_no_template_key,
+	vue_no_custom_modifiers_on_v_model, vue_no_deprecated_v_bind_sync,
+	vue_no_spaces_around_equal_signs_in_attribute, vue_no_deprecated_v_on_number_modifiers]
 
 // untyped_rules are the ported rules that need no types (`meta.docs.requiresTypeChecking` is false
 // in typescript-eslint; the eslint-plugin-unicorn rules that read the types when the parser has a
@@ -720,7 +741,13 @@ pub const untyped_rules = [adjacent_overload_signatures, array_type, class_liter
 	explicit_function_return_type, explicit_module_boundary_types, explicit_member_accessibility,
 	parameter_properties, prefer_literal_enum_member, no_magic_numbers, no_restricted_types,
 	member_ordering, perfectionist_sort_classes, perfectionist_sort_imports, vue_no_v_html,
-	vue_no_v_text, vue_no_duplicate_attributes, vue_comment_directive, vue_no_parsing_error]
+	vue_no_v_text, vue_no_duplicate_attributes, vue_comment_directive, vue_no_parsing_error,
+	vue_no_deprecated_v_is, vue_no_deprecated_scope_attribute, vue_no_deprecated_filter,
+	vue_no_deprecated_inline_template, vue_require_component_is,
+	vue_no_deprecated_v_on_native_modifier, vue_no_v_model_argument, vue_no_textarea_mustache,
+	vue_no_use_v_else_with_v_for, vue_no_v_for_template_key, vue_no_template_key,
+	vue_no_custom_modifiers_on_v_model, vue_no_deprecated_v_bind_sync,
+	vue_no_spaces_around_equal_signs_in_attribute, vue_no_deprecated_v_on_number_modifiers]
 
 // needs_types tells whether a rule asks tsgo for the types of the program.
 pub fn needs_types(rule string) bool {
@@ -1194,6 +1221,21 @@ pub const default_options = {
 	vue_no_duplicate_attributes:                     '[]'
 	vue_comment_directive:                           '[]'
 	vue_no_parsing_error:                            '[]'
+	vue_no_deprecated_v_is:                          '[]'
+	vue_no_deprecated_scope_attribute:               '[]'
+	vue_no_deprecated_filter:                        '[]'
+	vue_no_deprecated_inline_template:               '[]'
+	vue_require_component_is:                        '[]'
+	vue_no_deprecated_v_on_native_modifier:          '[]'
+	vue_no_v_model_argument:                         '[]'
+	vue_no_textarea_mustache:                        '[]'
+	vue_no_use_v_else_with_v_for:                    '[]'
+	vue_no_v_for_template_key:                       '[]'
+	vue_no_template_key:                             '[]'
+	vue_no_custom_modifiers_on_v_model:              '[]'
+	vue_no_deprecated_v_bind_sync:                   '[]'
+	vue_no_spaces_around_equal_signs_in_attribute:   '[]'
+	vue_no_deprecated_v_on_number_modifiers:         '[]'
 }
 
 // Finding is a problem a rule found at a node.
@@ -1816,6 +1858,21 @@ pub fn message(rule string, finding Finding) string {
 		vue_no_duplicate_attributes { vnda_messages }
 		vue_comment_directive { vcd_messages }
 		vue_no_parsing_error { vnpe_messages }
+		vue_no_deprecated_v_is { vndvi_messages }
+		vue_no_deprecated_scope_attribute { vndsa_messages }
+		vue_no_deprecated_filter { vndf_messages }
+		vue_no_deprecated_inline_template { vndit_messages }
+		vue_require_component_is { vrci_messages }
+		vue_no_deprecated_v_on_native_modifier { vndvonm_messages }
+		vue_no_v_model_argument { vnvma_messages }
+		vue_no_textarea_mustache { vntm_messages }
+		vue_no_use_v_else_with_v_for { vnuvewvf_messages }
+		vue_no_v_for_template_key { vnvftk_messages }
+		vue_no_template_key { vntk_messages }
+		vue_no_custom_modifiers_on_v_model { vncmovm_messages }
+		vue_no_deprecated_v_bind_sync { vndvbs_messages }
+		vue_no_spaces_around_equal_signs_in_attribute { vnsaesia_messages }
+		vue_no_deprecated_v_on_number_modifiers { vndvonum_messages }
 		else { map[string]string{} }
 	}
 	return interpolate(messages[finding.message_id] or { finding.message_id }, finding.data)
@@ -3460,6 +3517,51 @@ fn (mut c Checker) lint_rule(rule string, root C.TSNode, abs_path string, mut st
 		}
 		vue_no_parsing_error {
 			return c.lint_vue_no_parsing_error(root, abs_path, mut stats)!
+		}
+		vue_no_deprecated_v_is {
+			return c.lint_vue_no_deprecated_v_is(root, abs_path, mut stats)!
+		}
+		vue_no_deprecated_scope_attribute {
+			return c.lint_vue_no_deprecated_scope_attribute(root, abs_path, mut stats)!
+		}
+		vue_no_deprecated_filter {
+			return c.lint_vue_no_deprecated_filter(root, abs_path, mut stats)!
+		}
+		vue_no_deprecated_inline_template {
+			return c.lint_vue_no_deprecated_inline_template(root, abs_path, mut stats)!
+		}
+		vue_require_component_is {
+			return c.lint_vue_require_component_is(root, abs_path, mut stats)!
+		}
+		vue_no_deprecated_v_on_native_modifier {
+			return c.lint_vue_no_deprecated_v_on_native_modifier(root, abs_path, mut stats)!
+		}
+		vue_no_v_model_argument {
+			return c.lint_vue_no_v_model_argument(root, abs_path, mut stats)!
+		}
+		vue_no_textarea_mustache {
+			return c.lint_vue_no_textarea_mustache(root, abs_path, mut stats)!
+		}
+		vue_no_use_v_else_with_v_for {
+			return c.lint_vue_no_use_v_else_with_v_for(root, abs_path, mut stats)!
+		}
+		vue_no_v_for_template_key {
+			return c.lint_vue_no_v_for_template_key(root, abs_path, mut stats)!
+		}
+		vue_no_template_key {
+			return c.lint_vue_no_template_key(root, abs_path, mut stats)!
+		}
+		vue_no_custom_modifiers_on_v_model {
+			return c.lint_vue_no_custom_modifiers_on_v_model(root, abs_path, mut stats)!
+		}
+		vue_no_deprecated_v_bind_sync {
+			return c.lint_vue_no_deprecated_v_bind_sync(root, abs_path, mut stats)!
+		}
+		vue_no_spaces_around_equal_signs_in_attribute {
+			return c.lint_vue_no_spaces_around_equal_signs_in_attribute(root, abs_path, mut stats)!
+		}
+		vue_no_deprecated_v_on_number_modifiers {
+			return c.lint_vue_no_deprecated_v_on_number_modifiers(root, abs_path, mut stats)!
 		}
 		else { return error('unknown rule: ${rule}') }
 	}

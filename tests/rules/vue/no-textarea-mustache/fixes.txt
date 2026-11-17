@@ -1,0 +1,4 @@
+tests/rules/vue/no-textarea-mustache/cases.vue:4:23	vue/no-textarea-mustache	unexpected	Unexpected mustache. Use 'v-model' instead.	end	4	31
+tests/rules/vue/no-textarea-mustache/cases.vue:5:38	vue/no-textarea-mustache	unexpected	Unexpected mustache. Use 'v-model' instead.	end	5	46
+tests/rules/vue/no-textarea-mustache/cases.vue:6:23	vue/no-textarea-mustache	unexpected	Unexpected mustache. Use 'v-model' instead.	end	6	31
+tests/rules/vue/no-textarea-mustache/cases.vue:6:36	vue/no-textarea-mustache	unexpected	Unexpected mustache. Use 'v-model' instead.	end	6	44

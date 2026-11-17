@@ -1,0 +1,2 @@
+tests/rules/vue/no-deprecated-scope-attribute/cases.vue:39:21	vue/no-deprecated-scope-attribute	forbiddenScopeAttribute	`scope` attributes are deprecated.	fix	609	614	slot-scope	end	39	26
+tests/rules/vue/no-deprecated-scope-attribute/cases.vue:46:33	vue/no-deprecated-scope-attribute	forbiddenScopeAttribute	`scope` attributes are deprecated.	fix	754	759	slot-scope	end	46	38

@@ -1,0 +1,2 @@
+tests/rules/vue/no-deprecated-v-on-native-modifier/cases.vue:7:26	vue/no-deprecated-v-on-native-modifier	deprecated	'.native' modifier on 'v-on' directive is deprecated.
+tests/rules/vue/no-deprecated-v-on-native-modifier/cases.vue:8:30	vue/no-deprecated-v-on-native-modifier	deprecated	'.native' modifier on 'v-on' directive is deprecated.

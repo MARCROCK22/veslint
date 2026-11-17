@@ -1,0 +1,8 @@
+tests/rules/vue/no-deprecated-filter/cases.vue:4:11	vue/no-deprecated-filter	noDeprecatedFilter	Filters are deprecated.
+tests/rules/vue/no-deprecated-filter/cases.vue:5:11	vue/no-deprecated-filter	noDeprecatedFilter	Filters are deprecated.
+tests/rules/vue/no-deprecated-filter/cases.vue:6:11	vue/no-deprecated-filter	noDeprecatedFilter	Filters are deprecated.
+tests/rules/vue/no-deprecated-filter/cases.vue:7:11	vue/no-deprecated-filter	noDeprecatedFilter	Filters are deprecated.
+tests/rules/vue/no-deprecated-filter/cases.vue:8:40	vue/no-deprecated-filter	noDeprecatedFilter	Filters are deprecated.
+tests/rules/vue/no-deprecated-filter/cases.vue:9:24	vue/no-deprecated-filter	noDeprecatedFilter	Filters are deprecated.
+tests/rules/vue/no-deprecated-filter/cases.vue:10:24	vue/no-deprecated-filter	noDeprecatedFilter	Filters are deprecated.
+tests/rules/vue/no-deprecated-filter/cases.vue:11:24	vue/no-deprecated-filter	noDeprecatedFilter	Filters are deprecated.

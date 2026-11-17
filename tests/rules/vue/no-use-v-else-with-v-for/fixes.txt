@@ -1,0 +1,2 @@
+tests/rules/vue/no-use-v-else-with-v-for/cases.vue:24:11	vue/no-use-v-else-with-v-for	unexpectedDirectiveWithVFor	Unexpected `v-else` and `v-for` on the same element. Move `v-else` to a wrapper element instead.	end	24	52
+tests/rules/vue/no-use-v-else-with-v-for/cases.vue:28:11	vue/no-use-v-else-with-v-for	unexpectedDirectiveWithVFor	Unexpected `v-else-if` and `v-for` on the same element. Move `v-else-if` to a wrapper element instead.	end	28	61

@@ -1,0 +1,2 @@
+tests/rules/vue/no-custom-modifiers-on-v-model/cases.vue:10:21	vue/no-custom-modifiers-on-v-model	notSupportedModifier	'v-model' directives don't support the modifier 'aaa'.
+tests/rules/vue/no-custom-modifiers-on-v-model/cases.vue:11:21	vue/no-custom-modifiers-on-v-model	notSupportedModifier	'v-model' directives don't support the modifier 'aaa'.

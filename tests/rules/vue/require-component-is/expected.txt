@@ -1,0 +1,2 @@
+tests/rules/vue/require-component-is/cases.vue:4:8	vue/require-component-is	requireComponentIs	Expected '<component>' elements to have 'v-bind:is' attribute.
+tests/rules/vue/require-component-is/cases.vue:5:8	vue/require-component-is	requireComponentIs	Expected '<component>' elements to have 'v-bind:is' attribute.
