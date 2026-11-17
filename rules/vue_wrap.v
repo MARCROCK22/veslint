@@ -661,9 +661,15 @@ fn (mut c Checker) vue_wrap_base(base string, root C.TSNode, abs_path string, mu
 	return match base {
 		vue_wrap_no_console { c.vue_wrap_no_console_base(root, abs_path, mut stats)! }
 		vue_wrap_camelcase { c.lint_camelcase_base(root, abs_path, mut stats)! }
-		vue_wrap_operator_linebreak { c.lint_stylistic_operator_linebreak(root, abs_path, mut stats)! }
-		vue_wrap_array_bracket_newline { c.lint_stylistic_array_bracket_newline(root, abs_path, mut stats)! }
-		vue_wrap_array_element_newline { c.lint_stylistic_array_element_newline(root, abs_path, mut stats)! }
+		vue_wrap_operator_linebreak {
+			c.lint_stylistic_operator_linebreak(root, abs_path, mut stats)!
+		}
+		vue_wrap_array_bracket_newline {
+			c.lint_stylistic_array_bracket_newline(root, abs_path, mut stats)!
+		}
+		vue_wrap_array_element_newline {
+			c.lint_stylistic_array_element_newline(root, abs_path, mut stats)!
+		}
 		else { c.lint_rule(base, root, abs_path, mut stats)! }
 	}
 }
