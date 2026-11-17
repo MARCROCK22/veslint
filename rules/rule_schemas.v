@@ -483,6 +483,18 @@ const rule_option_schemas = {
 	'vue/no-deprecated-v-bind-sync':                                   '{"type":"array","minItems":0,"maxItems":0}'
 	'vue/no-spaces-around-equal-signs-in-attribute':                   '{"type":"array","minItems":0,"maxItems":0}'
 	'vue/no-deprecated-v-on-number-modifiers':                         '{"type":"array","minItems":0,"maxItems":0}'
+	'vue/valid-v-bind':                                                '{"type":"array","minItems":0,"maxItems":0}'
+	'vue/valid-v-cloak':                                               '{"type":"array","minItems":0,"maxItems":0}'
+	'vue/valid-v-html':                                                '{"type":"array","minItems":0,"maxItems":0}'
+	'vue/valid-v-once':                                                '{"type":"array","minItems":0,"maxItems":0}'
+	'vue/valid-v-pre':                                                 '{"type":"array","minItems":0,"maxItems":0}'
+	'vue/valid-v-text':                                                '{"type":"array","minItems":0,"maxItems":0}'
+	'vue/valid-v-show':                                                '{"type":"array","minItems":0,"maxItems":0}'
+	'vue/valid-v-if':                                                  '{"type":"array","minItems":0,"maxItems":0}'
+	'vue/valid-v-else-if':                                             '{"type":"array","minItems":0,"maxItems":0}'
+	'vue/valid-v-else':                                                '{"type":"array","minItems":0,"maxItems":0}'
+	'vue/valid-v-is':                                                  '{"type":"array","minItems":0,"maxItems":0}'
+	'vue/valid-v-on':                                                  '{"type":"array","items":[{"type":"object","properties":{"modifiers":{"type":"array","items":{"type":"string"}}},"additionalProperties":false}],"minItems":0,"maxItems":1}'
 }
 
 // eslint_rule_default_options are the meta.defaultOptions of the rules of ESLint and of

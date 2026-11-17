@@ -240,6 +240,7 @@ pub fn check_options(rule string, options []json2.Any) !bool {
 		vue_no_duplicate_attributes { vnda_options(options)! }
 		vue_comment_directive { vcd_options(options)! }
 		vue_no_parsing_error { vnpe_options(options)! }
+		vue_valid_v_on { vvon_options(options)! }
 		else { return false }
 	}
 	return true

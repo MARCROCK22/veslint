@@ -1,0 +1,6 @@
+tests/rules/vue/valid-v-cloak/cases.vue:3:21	vue/valid-v-cloak	unexpectedArgument	'v-cloak' directives require no argument.
+tests/rules/vue/valid-v-cloak/cases.vue:4:21	vue/valid-v-cloak	unexpectedModifier	'v-cloak' directives require no modifier.
+tests/rules/vue/valid-v-cloak/cases.vue:5:21	vue/valid-v-cloak	unexpectedValue	'v-cloak' directives require no attribute value.
+tests/rules/vue/valid-v-cloak/cases.vue:6:21	vue/valid-v-cloak	unexpectedValue	'v-cloak' directives require no attribute value.
+tests/rules/vue/valid-v-cloak/cases.vue:7:21	vue/valid-v-cloak	unexpectedValue	'v-cloak' directives require no attribute value.
+tests/rules/vue/valid-v-cloak/cases.vue:8:21	vue/valid-v-cloak	unexpectedValue	'v-cloak' directives require no attribute value.

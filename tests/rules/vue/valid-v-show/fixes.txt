@@ -1,0 +1,5 @@
+tests/rules/vue/valid-v-show/cases.vue:5:20	vue/valid-v-show	unexpectedArgument	'v-show' directives require no argument.	end	5	23
+tests/rules/vue/valid-v-show/cases.vue:6:20	vue/valid-v-show	unexpectedModifier	'v-show' directives require no modifier.	end	6	23
+tests/rules/vue/valid-v-show/cases.vue:7:13	vue/valid-v-show	expectedValue	'v-show' directives require that attribute value.	end	7	19
+tests/rules/vue/valid-v-show/cases.vue:8:13	vue/valid-v-show	expectedValue	'v-show' directives require that attribute value.	end	8	22
+tests/rules/vue/valid-v-show/cases.vue:9:18	vue/valid-v-show	unexpectedTemplate	'v-show' directives cannot be put on <template> tags.	end	9	36
