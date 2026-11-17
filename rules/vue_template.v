@@ -336,8 +336,12 @@ fn (c &Checker) vue_report_vnode(i int, message_id string, data map[string]strin
 	return c.vue_report(start, end, message_id, data)
 }
 
-// vue_text is the source text of [start, end).
+// vue_text is sourceCode.text.slice(start, end): empty when end is before start (the value of a
+// same-name shorthand `:foo` has the range of the argument, inside the key).
 fn (c &Checker) vue_text(start int, end int) string {
+	if end <= start {
+		return ''
+	}
 	return c.vue.doc.src[start..end]
 }
 

@@ -188,8 +188,7 @@ bun tools/gen_upstream_cases.mjs marcrock/prefer-at
 
 The cases of `tests/lib/rules/<rule>.test.ts` (and `tests/lib/rules/<rule>/*.test.ts`, the test file
 of each feature of no-unsupported-features) of vuejs/eslint-plugin-vue v10.12.1 (`d33df42`), for
-all its 256 rules, in `tests/rules/vue/<rule>/upstream.json`: 10,899 cases and 31 lints. No rule
-is ported yet. The tests run with vitest and ESLint 10's own RuleTester, which `tests/eslint-compat.ts`
+all its 256 rules, in `tests/rules/vue/<rule>/upstream.json`: 10,899 cases and 31 lints. The tests run with vitest and ESLint 10's own RuleTester, which `tests/eslint-compat.ts`
 hands them (eslint-compat-utils); `tools/upstream/vue-test.mjs` stands in for that module while
 `tools/gen_upstream_cases.mjs` loads them: `RuleTester.run` records the cases, and `ESLint` and
 `Linter` are the real classes, which record what the `it` blocks of comment-directive, block-order
@@ -254,3 +253,38 @@ bun tools/gen_upstream_cases.mjs vue/        # every rule; or name some: vue/htm
 
 The generator also makes the clone's node_modules (links to `build/upstream/vue-deps`), which the
 reference script needs.
+
+### How veslint runs them: TypeScript only
+
+veslint lints only TypeScript (`.claude/VUE.md`), and reads every `.vue` file with vue-eslint-parser
+and typescript-eslint's parser (also its template expressions, which upstream parses with espree).
+`node tests/rules/vue/upstream_ts.mjs [vue/<rule>...]` (without names, the vue/* rules veslint has:
+the directories of `tests/rules/vue` with an `expected.txt`) converts the cases of each rule that way
+and writes them to `tests/rules/vue/<rule>/upstream.ts.json`, which `tests/upstream_check.py` runs
+for a `vue/` rule:
+
+- a `.vue` case gets `lang="ts"` on each top-level `<script>` without a lang (`lang="js"` becomes
+  `ts`, `jsx` `tsx`; vue-eslint-parser finds the elements) and typescript-eslint's parser as
+  vue-eslint-parser's `parserOptions.parser`; a case that is not a `.vue` becomes a TypeScript file
+  (`test.ts`, `.tsx` with JSX) read by typescript-eslint's parser; a case without a file name is
+  `test.vue` (or `test.ts`);
+- ESLint's RuleTester runs the converted case: if it still gives what the test expects, the
+  expectation stays the test's (`"expectation": "upstream"`); if not, it is what ESLint gives on the
+  converted case (`"expectation": "eslint"`: every problem with its messageId, message, location,
+  end and suggestions, and the output of one pass of fixes);
+- `skipped` lists the cases that cannot be converted, with why: a text with a lone surrogate (a file
+  cannot hold it), a `.vue` file ESLint reads as a script (espree or typescript-eslint's parser
+  without vue-eslint-parser: veslint reads every `.vue` file as an SFC), a script whose lang is not
+  JavaScript or TypeScript, or a converted text typescript-eslint's parser rejects;
+- the `lints` of comment-directive (`ESLint` with the `vue/vue` processor) are converted the same
+  way, with the rules of their configuration that veslint has (`no-unused-vars` becomes
+  `@typescript-eslint/no-unused-vars`), and their expectation is all that ESLint gives on the
+  converted text, compared whole and in order.
+
+`tests/upstream_check.py` runs them in the fixtures `tests/upstream/vue/setup.sh` makes (a case's
+file at its path there; the typed ones `src/test.vue` with the program of `tsconfig.json`), with
+one pass of fixes (ESLint's RuleTester). `tests/rules/reference.sh` checks with ESLint that
+`upstream.json` gives what each test expects, that `upstream.ts.json` is what
+`upstream_ts.mjs --check` makes now, and that veslint prints, case by case, ESLint's lines on every
+converted case (`--out DIR` writes them).
+

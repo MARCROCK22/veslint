@@ -1,0 +1,13 @@
+tests/rules/vue/no-restricted-html-elements/options-3ad69be9/cases.vue:2:3	vue/no-restricted-html-elements	forbiddenElement	Unexpected use of forbidden element div.	end	2	8
+tests/rules/vue/no-restricted-html-elements/options-58f00150/cases.vue:4:13	vue/no-restricted-html-elements	forbiddenElement	Unexpected use of forbidden element button.	end	4	35
+tests/rules/vue/no-restricted-html-elements/options-6410ab78/cases.vue:2:13	vue/no-restricted-html-elements	customMessage	Use simplified shapes instead	end	2	44
+tests/rules/vue/no-restricted-html-elements/options-6410ab78/cases.vue:2:51	vue/no-restricted-html-elements	customMessage	Use simplified shapes instead	end	2	75
+tests/rules/vue/no-restricted-html-elements/options-7b3945d3/cases.vue:2:8	vue/no-restricted-html-elements	customMessage	Custom error	end	2	17
+tests/rules/vue/no-restricted-html-elements/options-998d01d1/cases.vue:2:3	vue/no-restricted-html-elements	forbiddenElement	Unexpected use of forbidden element div.	end	2	8
+tests/rules/vue/no-restricted-html-elements/options-998d01d1/cases.vue:3:3	vue/no-restricted-html-elements	forbiddenElement	Unexpected use of forbidden element div.	end	3	8
+tests/rules/vue/no-restricted-html-elements/options-998d01d1/cases.vue:3:8	vue/no-restricted-html-elements	forbiddenElement	Unexpected use of forbidden element div.	end	3	25
+tests/rules/vue/no-restricted-html-elements/options-acb60487/cases.vue:2:24	vue/no-restricted-html-elements	customMessage	Avoid using operators directly	end	2	28
+tests/rules/vue/no-restricted-html-elements/options-c33a4ac1/cases.vue:2:14	vue/no-restricted-html-elements	forbiddenElement	Unexpected use of forbidden element mfrac.	end	2	21
+tests/rules/vue/no-restricted-html-elements/options-cc25809c/cases.vue:2:8	vue/no-restricted-html-elements	customMessage	Prefer the use of <NuxtLink> component	end	2	11
+tests/rules/vue/no-restricted-html-elements/options-cc25809c/cases.vue:2:15	vue/no-restricted-html-elements	customMessage	Prefer the use of <NuxtLink> component	end	2	27
+tests/rules/vue/no-restricted-html-elements/options-d7abb79f/cases.vue:3:13	vue/no-restricted-html-elements	forbiddenElement	Unexpected use of forbidden element circle.	end	3	28

@@ -1,0 +1,3 @@
+<template>
+  <div><math><mfrac><mn>1</mn><mn>2</mn></mfrac></math></div>
+</template>

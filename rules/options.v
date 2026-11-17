@@ -246,6 +246,11 @@ pub fn check_options(rule string, options []json2.Any) !bool {
 		vue_no_use_v_if_with_v_for { vnuviwvf_options(options)! }
 		vue_v_for_delimiter_style { vvfds_options(options)! }
 		vue_no_v_text_v_html_on_component { vnvtvhoc_options(options)! }
+		vue_no_lone_template { vnlt_options(options)! }
+		vue_html_button_has_type { vhbht_options(options)! }
+		vue_no_deprecated_router_link_tag_prop { vndrltp_options(options)! }
+		vue_no_restricted_html_elements { vnrhe_options(options)! }
+		vue_mustache_interpolation_spacing { vmis_options(options)! }
 		else { return false }
 	}
 	return true

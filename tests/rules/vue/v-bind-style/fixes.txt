@@ -1,4 +1,6 @@
 tests/rules/vue/v-bind-style/cases.vue:6:13	vue/v-bind-style	unexpectedLonghand	Unexpected 'v-bind' before ':'.	fix	174	180		end	6	29
+tests/rules/vue/v-bind-style/extra/cases.vue:5:18	vue/v-bind-style	unexpectedLonghand	Unexpected 'v-bind' before ':'.	fix	100	106		end	5	41
+tests/rules/vue/v-bind-style/extra/cases.vue:5:49	vue/v-bind-style	unexpectedLonghand	Unexpected 'v-bind' before ':'.	fix	131	137		end	5	61
 tests/rules/vue/v-bind-style/options-0436848e/cases.vue:5:13	vue/v-bind-style	unexpectedLonghand	Unexpected 'v-bind' before ':'.	fix	136	142		end	5	29
 tests/rules/vue/v-bind-style/options-0436848e/cases.vue:6:13	vue/v-bind-style	unexpectedLonghand	Unexpected 'v-bind' before ':'.	fix	178	184		end	6	23
 tests/rules/vue/v-bind-style/options-3181d8f5/cases.vue:4:13	vue/v-bind-style	unexpectedShorthand	Unexpected same-name shorthand.	fix	114	114	="foo"	end	4	23

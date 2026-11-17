@@ -14,3 +14,5 @@ tests/rules/vue/no-spaces-around-equal-signs-in-attribute/cases.vue:39:20	vue/no
 tests/rules/vue/no-spaces-around-equal-signs-in-attribute/cases.vue:40:19	vue/no-spaces-around-equal-signs-in-attribute	unexpectedSpaces	Unexpected spaces found around equal signs.	fix	967	970	=	end	40	22
 tests/rules/vue/no-spaces-around-equal-signs-in-attribute/cases.vue:41:19	vue/no-spaces-around-equal-signs-in-attribute	unexpectedSpaces	Unexpected spaces found around equal signs.	fix	995	998	=	end	41	22
 tests/rules/vue/no-spaces-around-equal-signs-in-attribute/cases.vue:42:19	vue/no-spaces-around-equal-signs-in-attribute	unexpectedSpaces	Unexpected spaces found around equal signs.	fix	1031	1034	=	end	42	22
+tests/rules/vue/no-spaces-around-equal-signs-in-attribute/extra/cases.vue:6:45	vue/no-spaces-around-equal-signs-in-attribute	unexpectedSpaces	Unexpected spaces found around equal signs.	fix	211	214	=	end	6	48
+tests/rules/vue/no-spaces-around-equal-signs-in-attribute/extra/cases.vue:6:54	vue/no-spaces-around-equal-signs-in-attribute	unexpectedSpaces	Unexpected spaces found around equal signs.	fix	220	224	=	end	6	58

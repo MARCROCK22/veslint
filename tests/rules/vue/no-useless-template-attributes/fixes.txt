@@ -1,0 +1,4 @@
+tests/rules/vue/no-useless-template-attributes/cases.vue:56:30	vue/no-useless-template-attributes	unexpectedAttr	Unexpected useless attribute on `<template>`.	end	56	45
+tests/rules/vue/no-useless-template-attributes/cases.vue:57:36	vue/no-useless-template-attributes	unexpectedDir	Unexpected useless directive on `<template>`.	end	57	44
+tests/rules/vue/no-useless-template-attributes/cases.vue:58:36	vue/no-useless-template-attributes	unexpectedAttr	Unexpected useless attribute on `<template>`.	end	58	47
+tests/rules/vue/no-useless-template-attributes/cases.vue:59:30	vue/no-useless-template-attributes	unexpectedDir	Unexpected useless directive on `<template>`.	end	59	44

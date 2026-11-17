@@ -517,6 +517,12 @@ pub const vue_html_end_tags = 'vue/html-end-tags'
 pub const vue_valid_attribute_name = 'vue/valid-attribute-name'
 pub const vue_v_for_delimiter_style = 'vue/v-for-delimiter-style'
 pub const vue_no_v_text_v_html_on_component = 'vue/no-v-text-v-html-on-component'
+pub const vue_no_lone_template = 'vue/no-lone-template'
+pub const vue_html_button_has_type = 'vue/html-button-has-type'
+pub const vue_no_deprecated_router_link_tag_prop = 'vue/no-deprecated-router-link-tag-prop'
+pub const vue_no_restricted_html_elements = 'vue/no-restricted-html-elements'
+pub const vue_no_useless_template_attributes = 'vue/no-useless-template-attributes'
+pub const vue_mustache_interpolation_spacing = 'vue/mustache-interpolation-spacing'
 pub const names = [no_floating_promises, await_thenable, require_await, return_await,
 	no_misused_promises, no_unsafe_call, no_unsafe_member_access, no_unsafe_return,
 	no_unsafe_assignment, no_unsafe_argument, restrict_template_expressions,
@@ -663,7 +669,9 @@ pub const names = [no_floating_promises, await_thenable, require_await, return_a
 	vue_valid_v_is, vue_valid_v_on, vue_v_on_style, vue_v_bind_style, vue_no_multiple_objects_in_class,
 	vue_require_v_for_key, vue_no_deprecated_html_element_is, vue_no_use_v_if_with_v_for,
 	vue_no_v_for_template_key_on_child, vue_html_end_tags, vue_valid_attribute_name,
-	vue_v_for_delimiter_style, vue_no_v_text_v_html_on_component]
+	vue_v_for_delimiter_style, vue_no_v_text_v_html_on_component, vue_no_lone_template,
+	vue_html_button_has_type, vue_no_deprecated_router_link_tag_prop, vue_no_restricted_html_elements,
+	vue_no_useless_template_attributes, vue_mustache_interpolation_spacing]
 
 // untyped_rules are the ported rules that need no types (`meta.docs.requiresTypeChecking` is false
 // in typescript-eslint; the eslint-plugin-unicorn rules that read the types when the parser has a
@@ -782,7 +790,9 @@ pub const untyped_rules = [adjacent_overload_signatures, array_type, class_liter
 	vue_valid_v_is, vue_valid_v_on, vue_v_on_style, vue_v_bind_style, vue_no_multiple_objects_in_class,
 	vue_require_v_for_key, vue_no_deprecated_html_element_is, vue_no_use_v_if_with_v_for,
 	vue_no_v_for_template_key_on_child, vue_html_end_tags, vue_valid_attribute_name,
-	vue_v_for_delimiter_style, vue_no_v_text_v_html_on_component]
+	vue_v_for_delimiter_style, vue_no_v_text_v_html_on_component, vue_no_lone_template,
+	vue_html_button_has_type, vue_no_deprecated_router_link_tag_prop, vue_no_restricted_html_elements,
+	vue_no_useless_template_attributes, vue_mustache_interpolation_spacing]
 
 // needs_types tells whether a rule asks tsgo for the types of the program.
 pub fn needs_types(rule string) bool {
@@ -1294,6 +1304,12 @@ pub const default_options = {
 	vue_valid_attribute_name:                        '[]'
 	vue_v_for_delimiter_style:                       '[]'
 	vue_no_v_text_v_html_on_component:               '[]'
+	vue_no_lone_template:                            '[]'
+	vue_html_button_has_type:                        '[]'
+	vue_no_deprecated_router_link_tag_prop:          '[]'
+	vue_no_restricted_html_elements:                 '[]'
+	vue_no_useless_template_attributes:              '[]'
+	vue_mustache_interpolation_spacing:              '[]'
 }
 
 // Finding is a problem a rule found at a node.
@@ -1954,6 +1970,12 @@ pub fn message(rule string, finding Finding) string {
 		vue_valid_attribute_name { vvan_messages }
 		vue_v_for_delimiter_style { vvfds_messages }
 		vue_no_v_text_v_html_on_component { vnvtvhoc_messages }
+		vue_no_lone_template { vnlt_messages }
+		vue_html_button_has_type { vhbht_messages }
+		vue_no_deprecated_router_link_tag_prop { vndrltp_messages }
+		vue_no_restricted_html_elements { vnrhe_messages }
+		vue_no_useless_template_attributes { vnuta_messages }
+		vue_mustache_interpolation_spacing { vmis_messages }
 		else { map[string]string{} }
 	}
 	return interpolate(messages[finding.message_id] or { finding.message_id }, finding.data)
@@ -3712,6 +3734,24 @@ fn (mut c Checker) lint_rule(rule string, root C.TSNode, abs_path string, mut st
 		}
 		vue_no_v_text_v_html_on_component {
 			return c.lint_vue_no_v_text_v_html_on_component(root, abs_path, mut stats)!
+		}
+		vue_no_lone_template {
+			return c.lint_vue_no_lone_template(root, abs_path, mut stats)!
+		}
+		vue_html_button_has_type {
+			return c.lint_vue_html_button_has_type(root, abs_path, mut stats)!
+		}
+		vue_no_deprecated_router_link_tag_prop {
+			return c.lint_vue_no_deprecated_router_link_tag_prop(root, abs_path, mut stats)!
+		}
+		vue_no_restricted_html_elements {
+			return c.lint_vue_no_restricted_html_elements(root, abs_path, mut stats)!
+		}
+		vue_no_useless_template_attributes {
+			return c.lint_vue_no_useless_template_attributes(root, abs_path, mut stats)!
+		}
+		vue_mustache_interpolation_spacing {
+			return c.lint_vue_mustache_interpolation_spacing(root, abs_path, mut stats)!
 		}
 		else { return error('unknown rule: ${rule}') }
 	}

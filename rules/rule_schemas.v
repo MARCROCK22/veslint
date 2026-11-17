@@ -506,6 +506,12 @@ const rule_option_schemas = {
 	'vue/valid-attribute-name':                                        '{"type":"array","minItems":0,"maxItems":0}'
 	'vue/v-for-delimiter-style':                                       '{"type":"array","items":[{"enum":["in","of"]}],"minItems":0,"maxItems":1}'
 	'vue/no-v-text-v-html-on-component':                               '{"type":"array","items":[{"type":"object","properties":{"allow":{"type":"array","items":{"type":"string"},"uniqueItems":true},"ignoreElementNamespaces":{"type":"boolean"}},"additionalProperties":false}],"minItems":0,"maxItems":1}'
+	'vue/no-lone-template':                                            '{"type":"array","items":[{"type":"object","properties":{"ignoreAccessible":{"type":"boolean"}},"additionalProperties":false}],"minItems":0,"maxItems":1}'
+	'vue/html-button-has-type':                                        '{"type":"array","items":[{"type":"object","properties":{"button":{"type":"boolean"},"submit":{"type":"boolean"},"reset":{"type":"boolean"}},"additionalProperties":false}],"minItems":0,"maxItems":1}'
+	'vue/no-deprecated-router-link-tag-prop':                          '{"type":"array","items":[{"type":"object","properties":{"components":{"type":"array","items":{"type":"string"},"uniqueItems":true,"minItems":1}},"additionalProperties":false}],"minItems":0,"maxItems":1}'
+	'vue/no-restricted-html-elements':                                 '{"type":"array","items":{"oneOf":[{"type":"string"},{"type":"object","properties":{"element":{"oneOf":[{"type":"string"},{"type":"array","items":{"type":"string"}}]},"message":{"type":"string","minLength":1}},"required":["element"],"additionalProperties":false}]},"uniqueItems":true,"minItems":0}'
+	'vue/no-useless-template-attributes':                              '{"type":"array","minItems":0,"maxItems":0}'
+	'vue/mustache-interpolation-spacing':                              '{"type":"array","items":[{"enum":["always","never"]}],"minItems":0,"maxItems":1}'
 }
 
 // eslint_rule_default_options are the meta.defaultOptions of the rules of ESLint and of
