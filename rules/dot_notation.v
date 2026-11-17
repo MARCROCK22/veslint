@@ -4,7 +4,6 @@ import json2
 import jsregexp
 import time
 import treesitter { Ident, node_end, node_field, node_kind, node_parent, node_start, nodes_of_kinds, position_of }
-import offsets { utf16_offsets }
 import tsgo { SymbolResponse, TypeResponse, handle_index, handle_path }
 
 // Port of the `dot-notation` rule of typescript-eslint 8.72.2, which extends the ESLint 10.15.0
@@ -198,8 +197,7 @@ fn (mut c Checker) dotn_type_exemptions(computed []DotnComputed, o DotnOptions, 
 		spans << node_span(unwrap_parens(object))
 	}
 	c.resolve_spans(spans, abs_path, mut stats)!
-	symbols := c.client.symbols_at(c.snapshot, c.project, abs_path, utf16_offsets(c.src,
-		computed.map(node_start(it.property))))!
+	symbols := c.client.symbols_at(c.snapshot, c.project, abs_path, c.ts_offsets(computed.map(node_start(it.property))))!
 	if symbols.len != computed.len {
 		return error('protocol: tsgo returned ${symbols.len} symbols for ${computed.len} positions')
 	}

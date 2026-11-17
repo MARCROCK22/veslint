@@ -6,9 +6,9 @@ const path = require('node:path');
 const { parseOutput, parseStderr } = require('./parse');
 
 const configNames = ['js', 'mjs', 'cjs', 'ts', 'mts', 'cts'].map(extension => `eslint.config.${extension}`);
-const typescriptExtensions = ['.ts', '.mts', '.cts', '.tsx'];
+const typescriptExtensions = ['.ts', '.mts', '.cts', '.tsx', '.vue'];
 
-/** veslint only reads TypeScript files. */
+/** veslint only reads TypeScript files, and Vue files (it lints their TypeScript scripts). */
 function isTypeScriptPath(file) {
   return typescriptExtensions.includes(path.extname(file).toLowerCase());
 }

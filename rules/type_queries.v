@@ -2,7 +2,6 @@ module rules
 
 import tsgo { ParameterResponse, SignatureResponse, SymbolResponse, TypeResponse }
 import treesitter { children, has_child_kind, node_end, node_field, node_kind, node_parent, node_start }
-import offsets { utf16_offsets }
 
 // Type queries to tsgo, with caches by id. The type of each expression is requested per node
 // (getTypeAtLocations), and it is the exact one, like checker.getTypeAtLocation in typescript-eslint.
@@ -424,11 +423,11 @@ fn (mut c Checker) resolve_new(spans []Span, abs_path string, mut stats Stats) !
 	mut bytes := []int{}
 	for key in order {
 		for s in variants[key] {
-			bytes << c.tokens.last_end(node_start(s.first))
-			bytes << c.tokens.last_end(s.end)
+			bytes << node_start(s.first)
+			bytes << s.end
 		}
 	}
-	units := utf16_offsets(c.src, bytes)
+	units := c.ts_spans(bytes)
 	if c.ast_path != abs_path {
 		c.ast = c.client.source_file_ast(c.snapshot, c.project, abs_path)!
 		c.ast_path = abs_path

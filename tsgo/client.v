@@ -48,7 +48,7 @@ mut:
 	// serves_files tells that tsgo was started with the readFile callback.
 	served       map[string]string
 	serves_files bool
-	// virtual are files that exist only for tsgo (the TypeScript twin of a .vue, see vue_types.v):
+	// virtual are files that exist only for tsgo (the TypeScript twin of a .vue file, see rules/vue_file.v):
 	// with the fileExists, stat and getAccessibleEntries callbacks, tsgo finds them as files, also
 	// when it lists their directory, and readFile gives their served text. By path_key; the
 	// basenames of the virtual files of each directory are in virtual_dirs.
@@ -120,9 +120,40 @@ pub fn start_virtual(bin string, cwd string, timeout time.Duration, files map[st
 // add_virtual makes `path`, which is served, a file for tsgo though it is not on disk.
 fn (mut c Client) add_virtual(path string) {
 	key := path_key(path)
+	if key in c.virtual {
+		return
+	}
 	c.virtual[key] = true
 	dir := path_key(os.dir(path))
 	c.virtual_dirs[dir] << os.file_name(path)
+}
+
+// remove_virtual makes `path` no longer a file for tsgo (tsgo has to be told it was deleted).
+pub fn (mut c Client) remove_virtual(path string) {
+	key := path_key(path)
+	c.served.delete(key)
+	c.virtual.delete(key)
+	dir := path_key(os.dir(path))
+	name := os.file_name(path)
+	if names := c.virtual_dirs[dir] {
+		c.virtual_dirs[dir] = names.filter(it != name)
+	}
+}
+
+// has_virtual_fs: the client was started with virtual files (start_virtual), so it can be given
+// more (serve_virtual).
+pub fn (c &Client) has_virtual_fs() bool {
+	return c.virtual_fs
+}
+
+// serve_virtual makes `path` a virtual file with `text` from the next snapshot on (a client of
+// start_virtual); tsgo has to be told it was created (FileChangeSet.created) when it is new, which
+// this tells.
+pub fn (mut c Client) serve_virtual(path string, text string) bool {
+	c.served[path_key(path)] = text
+	is_new := path_key(path) !in c.virtual
+	c.add_virtual(path)
+	return is_new
 }
 
 // start_serving starts tsgo like start, always with its readFile callback, for a process that

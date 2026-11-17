@@ -27,12 +27,14 @@
     "typescript",
     "lint",
     "typescript-eslint",
+    "vue",
     "veslint"
   ],
   "main": "./extension.js",
   "activationEvents": [
     "onLanguage:typescript",
-    "onLanguage:typescriptreact"
+    "onLanguage:typescriptreact",
+    "onLanguage:vue"
   ],
   "contributes": {
     "commands": [
@@ -74,7 +76,7 @@
           "type": "boolean",
           "default": true,
           "scope": "resource",
-          "description": "Lint TypeScript files with veslint."
+          "description": "Lint TypeScript and Vue files with veslint."
         },
         "veslint.path": {
           "type": "string",

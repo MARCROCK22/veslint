@@ -19,6 +19,7 @@ const updater = require('./lib/updater');
 const selector = [
   { language: 'typescript', scheme: 'file' },
   { language: 'typescriptreact', scheme: 'file' },
+  { language: 'vue', scheme: 'file' },
 ];
 const fixAllKind = vscode.CodeActionKind.SourceFixAll.append('veslint');
 const severities = {
@@ -766,7 +767,7 @@ function activate(context) {
   }
   // TypeScript files that change on disk (saved here, or by another program): the servers read
   // them again. A tsconfig.json or a package that changes: they read everything again.
-  const sourceWatcher = vscode.workspace.createFileSystemWatcher('**/*.{ts,mts,cts,tsx}');
+  const sourceWatcher = vscode.workspace.createFileSystemWatcher('**/*.{ts,mts,cts,tsx,vue}');
   context.subscriptions.push(
     sourceWatcher.onDidChange(uri => sourceChanged(uri, 'changed')),
     sourceWatcher.onDidCreate(uri => sourceChanged(uri, 'created')),

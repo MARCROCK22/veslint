@@ -404,6 +404,7 @@ pub fn node_parent(n C.TSNode) ?C.TSNode {
 // of that is trivia; this index gives the bounds of a node as TypeScript sees them, even when
 // tree-sitter puts a trailing comment in the node (it happens without `;`).
 pub struct TokenEnds {
+pub:
 	ends []int
 }
 
