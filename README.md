@@ -76,14 +76,16 @@ With files and neither `--config` nor `--rule`, veslint prints the type TypeScri
 
 The exit code is 0 when there are no problems, 1 when there are (warnings do not count, as in ESLint) or veslint failed, and 2 for a usage error.
 
-Environment variables: `VESLINT_TIMEOUT_MS` (how long to wait for each answer of the TypeScript compiler, 30000 by default) and `VESLINT_CPUS` (how many CPUs veslint and the compiler use: 2 by default, which is fastest; 0 for all).
+Environment variables: `VESLINT_TIMEOUT_MS` (how long to wait for each answer of the TypeScript compiler, 30000 by default), `VESLINT_CPUS` (how many CPUs veslint and the compiler use: 2 by default, which is fastest; 0 for all) and `VESLINT_CONFIG_CACHE` (`0` resolves the `eslint.config.*` again on every run, see [Configuration](#configuration)).
 
 ## Configuration
 
 `--config` takes one of these:
 
 - **An ESLint configuration** (`eslint.config.js`, `.mjs`, `.cjs`, `.ts`, `.mts`, `.cts`). It is JavaScript, so veslint asks your project's own ESLint to resolve it, which needs [`bun`](https://bun.sh) and ESLint installed in the project. `files`, `ignores`, rules per folder, `linterOptions` and `languageOptions` work as in ESLint.
-- **The resolved configuration** that `--print-config` prints. It needs neither `bun` nor ESLint: save it once and lint with it.
+
+  Resolving it loads ESLint and every plugin, often more than a second, so veslint saves what ESLint resolved in `node_modules/.cache/veslint` (the closest `node_modules`) and uses it again until something it came from changes: the configuration, a file or module it reads (including the plugins), an environment variable it reads, the files to lint, or the `eslint.config.*` that applies to a folder. `VESLINT_CONFIG_CACHE=0` turns that off.
+- **The resolved configuration** that `--print-config` prints. It needs neither `bun` nor ESLint: save it once and lint with it. The paths in it are relative to its own folder, so save it inside the project, at the place you ran `--print-config` from or above it, for example next to the `eslint.config.*` (`veslint --print-config . > veslint.json`). Saved elsewhere, its files are not found.
 - **A JSON with a `rules` section**, like the output of `eslint --print-config`:
 
   ```json
@@ -161,7 +163,7 @@ The extension shows the problems of the TypeScript files you open and type, unde
 
 - **TypeScript only.** JavaScript files are not linted, even in a project with `allowJs`.
 - **Linux x64 and Windows x64.** Other platforms need a build from source, which is not tested there.
-- **An `eslint.config.*` needs `bun`** to be read; the resolved configuration (`--print-config`) does not.
+- **An `eslint.config.*` needs `bun`** to be read; the resolved configuration (`--print-config`) does not. A cached resolution is reused while the files and modules the configuration read and the environment variables it read stay the same: a configuration that depends on something else (the date, a file it lists but does not read, a new `tsconfig.json` a glob of `parserOptions.project` matches) needs `VESLINT_CONFIG_CACHE=0`.
 - **The newest TypeScript syntax** may not be read yet: veslint warns when a file has syntax it does not understand, and some problems of that file may be missing.
 - **Plugins:** only the rules listed above. Rules of other plugins are skipped with a warning.
 

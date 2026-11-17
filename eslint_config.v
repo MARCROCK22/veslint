@@ -29,8 +29,47 @@ import { builtinRules } from 'eslint/use-at-your-own-risk';
 import fs from 'node:fs';
 import path from 'node:path';
 import { createRequire } from 'node:module';
-const [, cwd, configPath, listPath, mode] = process.argv;
+import { fileURLToPath } from 'node:url';
+const [, cwd, configPath, listPath, mode, inputsPath] = process.argv;
 const { files } = JSON.parse(fs.readFileSync(listPath, 'utf8'));
+// With `inputsPath`, what the resolution read is written there for the cache of resolved
+// configurations (config_cache.v): the files read through fs, the modules loaded (in bun,
+// require.cache has the ES modules too) and the environment variables read, with their values.
+const reads = new Set();
+const envRead = {};
+if (inputsPath) {
+  const track = file => {
+    try {
+      const name = file instanceof URL ? fileURLToPath(file) : Buffer.isBuffer(file) ? file.toString() : file;
+      if (typeof name === 'string') reads.add(path.resolve(name));
+    } catch {}
+  };
+  for (const name of ['readFileSync', 'readFile']) {
+    const original = fs[name];
+    fs[name] = function (file, ...rest) {
+      track(file);
+      return original.call(this, file, ...rest);
+    };
+  }
+  const readPromise = fs.promises.readFile;
+  fs.promises.readFile = function (file, ...rest) {
+    track(file);
+    return readPromise.call(this, file, ...rest);
+  };
+  const note = (target, key) => {
+    if (typeof key === 'string' && !Object.hasOwn(envRead, key)) envRead[key] = target[key] ?? null;
+  };
+  process.env = new Proxy(process.env, {
+    get(target, key) {
+      note(target, key);
+      return target[key];
+    },
+    has(target, key) {
+      note(target, key);
+      return key in target;
+    },
+  });
+}
 // The typescript-estree that typescript-eslint uses in this project: its resolveProjectList and
 // the tsconfigRootDir it infers from where its configs were read.
 let estree;
@@ -173,6 +212,10 @@ if (Object.keys(ruleDefaults).length > 0) {
 }
 // Infinity (an option of @stylistic's experimental rules) as the largest finite number, not null.
 process.stdout.write(JSON.stringify(result, (key, value) => (value === Infinity ? Number.MAX_VALUE : value === -Infinity ? -Number.MAX_VALUE : value)));
+if (inputsPath) {
+  const modules = Object.keys(require.cache).map(key => key.split('?')[0]).filter(key => path.isAbsolute(key));
+  fs.writeFileSync(inputsPath, JSON.stringify({ files: [...new Set([...modules, ...reads])], env: envRead }));
+}
 } catch (error) {
   // An error of ESLint about the configuration has a message template, or names the key that is
   // wrong; any other error is not for veslint to word.
@@ -533,7 +576,7 @@ fn load_config_with(path string, files []string, lookup bool) !LoadedConfig {
 		if !os.is_file(path) {
 			return error('cannot read ${path}')
 		}
-		resolved := resolve_with_bun(os.abs_path(path), files.map(os.abs_path(it)), lookup)!
+		resolved := resolve_cached(os.abs_path(path), files.map(os.abs_path(it)), lookup)!
 		return loaded_from_resolved(resolved, path, os.dir(os.abs_path(path)), files)!
 	}
 	text := os.read_file(path) or { return error('cannot read ${path}: ${err.msg()}') }
@@ -598,6 +641,12 @@ fn load_config_with(path string, files []string, lookup bool) !LoadedConfig {
 // resolve_with_bun runs the resolver with bun. `eslint` is resolved from the directory of the
 // configuration (the project's own ESLint), or from VESLINT_ESLINT_DIR when it is set.
 fn resolve_with_bun(config_path string, files []string, lookup bool) !string {
+	return resolve_with_bun_inputs(config_path, files, lookup, '')
+}
+
+// resolve_with_bun_inputs is resolve_with_bun; with `inputs_path`, the resolver writes there what
+// the resolution read (see eslint_resolver).
+fn resolve_with_bun_inputs(config_path string, files []string, lookup bool, inputs_path string) !string {
 	bun := os.find_abs_path_of_executable('bun') or {
 		return error('reading ${config_path} needs `bun` in PATH: an ESLint configuration is JavaScript, and ESLint itself resolves it. Without bun, pass a resolved JSON (see --print-config)')
 	}
@@ -614,7 +663,7 @@ fn resolve_with_bun(config_path string, files []string, lookup bool) !string {
 	mut process := os.new_process(bun)
 	eslint_dir := os.getenv_opt('VESLINT_ESLINT_DIR') or { os.dir(config_path) }
 	process.set_args(['--cwd=${os.abs_path(eslint_dir)}', '-e', eslint_resolver, '--', os.getwd(),
-		config_path, list_path, if lookup { 'lookup' } else { 'config' }])
+		config_path, list_path, if lookup { 'lookup' } else { 'config' }, inputs_path])
 	process.set_redirect_stdio()
 	process.run()
 	output := process.stdout_slurp()
@@ -683,7 +732,7 @@ fn loaded_from_resolved(text string, path string, base_dir string, files []strin
 	for file in files {
 		abs := os.abs_path(file)
 		item := by_path[abs] or {
-			return error('${path}: ${file} is not in the resolved configuration; resolve it again')
+			return error('${path}: ${file} is not in the resolved configuration (its relative paths start at ${base_dir}); print it again with --print-config and save it inside the project')
 		}
 		entry := item.as_map()
 		if message := entry['message'] {

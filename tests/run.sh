@@ -8,6 +8,9 @@ TMP=$(mktemp -d)
 trap 'rm -rf "$TMP"' EXIT
 pass=0
 fail=0
+# Every configuration is resolved by ESLint through bun, but in the tests of the cache of resolved
+# configurations, which turn it on.
+export VESLINT_CONFIG_CACHE=0
 # On Windows (Git Bash or MSYS2) the binary is veslint.exe and some tests run another way or are
 # skipped; see internals.md, "Windows".
 windows=0
@@ -455,6 +458,73 @@ if command -v bun > /dev/null && [[ -d build/eval/spider-byte/node_modules/eslin
 		rule_config --rule eqeqeq a.ts
 		rule_config --rule no-var a.ts
 	fi
+	# The cache of resolved configurations (config_cache.v), in node_modules/.cache/veslint of the
+	# project: a resolution is used again, without bun (a `bun` that fails comes first in PATH), until
+	# what it came from changes: a module the configuration imports, a file it reads, an environment
+	# variable it reads, or (looking the configuration up) the closest eslint.config.* of a directory.
+	# VESLINT_CONFIG_CACHE=0 turns it off.
+	cache_project="$TMP/cache-project"
+	mkdir -p "$cache_project/node_modules" "$cache_project/src" "$TMP/failing-bun"
+	printf '#!/bin/sh\necho "the bun of the test ran" >&2\nexit 3\n' > "$TMP/failing-bun/bun"
+	chmod +x "$TMP/failing-bun/bun"
+	cat > "$cache_project/eslint.config.mjs" <<-'EOF'
+		import fs from 'node:fs';
+		import severity from './severity.mjs';
+		const extra = JSON.parse(fs.readFileSync(new URL('./extra.json', import.meta.url), 'utf8'));
+		export default [{ files: ['**/*.ts'], rules: { 'no-debugger': severity, eqeqeq: process.env.VESLINT_TEST_EQEQEQ ?? 'off', ...extra } }];
+	EOF
+	echo "export default 'error';" > "$cache_project/severity.mjs"
+	echo '{ "no-var": "warn" }' > "$cache_project/extra.json"
+	echo 'debugger;' > "$cache_project/src/a.ts"
+	# resolved [bun|cached|uncached] ARGS...: --print-config in the project, with the cache, with the
+	# failing bun first in PATH, or without the cache; the rules of src/a.ts, or the error.
+	resolved() {
+		local mode=$1 path=$PATH cache=1
+		shift
+		[[ $mode == bun ]] || path="$TMP/failing-bun:$PATH"
+		[[ $mode != uncached ]] || cache=0
+		(cd "$cache_project" && PATH="$path" VESLINT_CONFIG_CACHE=$cache VESLINT_ESLINT_DIR="$ROOT/build/eval/spider-byte" \
+			"$ROOT/veslint" --print-config "$@" 2>&1) | python3 -I -c '
+import json, sys
+text = sys.stdin.read()
+try:
+	resolved = json.loads(text)
+except ValueError:
+	print(text.strip().splitlines()[0] if text.strip() else "(nothing)")
+	sys.exit()
+entry = next(f for f in resolved["files"] if f["path"] == "src/a.ts")
+print(json.dumps(resolved["configs"][entry["config"]]["rules"], sort_keys=True))'
+	}
+	config_mode=(--config eslint.config.mjs src/a.ts)
+	first=$(resolved bun "${config_mode[@]}")
+	again=$(resolved cached "${config_mode[@]}")
+	off=$(resolved uncached "${config_mode[@]}")
+	echo "export default 'warn';" > "$cache_project/severity.mjs"
+	module=$(resolved cached "${config_mode[@]}")
+	module_bun=$(resolved bun "${config_mode[@]}")
+	echo '{ "no-var": "error" }' > "$cache_project/extra.json"
+	read_file=$(resolved cached "${config_mode[@]}")
+	resolved bun "${config_mode[@]}" > /dev/null
+	env_cached=$(VESLINT_TEST_EQEQEQ=error resolved cached "${config_mode[@]}")
+	env_bun=$(VESLINT_TEST_EQEQEQ=error resolved bun "${config_mode[@]}")
+	resolved bun . > /dev/null
+	lookup_again=$(resolved cached .)
+	echo 'export default [];' > "$cache_project/src/eslint.config.mjs"
+	lookup_new=$(resolved cached .)
+	rm "$cache_project/src/eslint.config.mjs"
+	# What the failing bun gives.
+	failed='(bun exited with code 3)'
+	if [[ $first == *'"no-debugger": [2]'* && $first == *'"no-var": [1]'* && $again == "$first" &&
+		$off == *"$failed"* && $module == *"$failed"* && $module_bun == *'"no-debugger": [1]'* &&
+		$read_file == *"$failed"* && $env_cached == *"$failed"* && $env_bun == *'"eqeqeq": [2'* &&
+		$lookup_again == *'"no-debugger": [1]'* && $lookup_new == *"$failed"* &&
+		-n $(ls "$cache_project/node_modules/.cache/veslint"/config-*.json) ]]; then
+		ok "the cache of resolved configurations, and what makes it resolve again"
+	else
+		ko "the cache of resolved configurations"
+		printf '%s\n' "first $first" "again $again" "off $off" "module $module" "module_bun $module_bun" \
+			"read_file $read_file" "env_cached $env_cached" "env_bun $env_bun" "lookup_again $lookup_again" "lookup_new $lookup_new"
+	fi
 fi
 code=0
 (cd tests/config && ../../veslint --config resolved.json --summary .) > "$TMP/summary.out" 2> "$TMP/summary.err" || code=$?
@@ -471,6 +541,12 @@ expect_usage_error "a directory whose files are all ignored" 'all of the files m
 	--config tests/config/resolved.json tests/config/ignored
 expect_usage_error "a directory without TypeScript files" "No files matching the pattern" "$TMP/no-ts"
 expect_usage_error "a directory without --config and no eslint.config.* above it" "no ESLint configuration" "$TMP/no-config"
+# A resolved configuration saved outside the project: its paths, relative to its folder, lead nowhere.
+mkdir -p "$TMP/elsewhere"
+cp tests/config/resolved.json "$TMP/elsewhere/"
+expect_usage_error "a resolved configuration saved outside the project names where its paths start" \
+	"tests/config/base.ts is not in the resolved configuration (its relative paths start at $TMP/elsewhere)" \
+	--config "$TMP/elsewhere/resolved.json" tests/config/base.ts
 expect_usage_error "--summary cannot be combined with --fixes" "cannot be combined" --summary --fixes --rule no-var app.ts
 expect_usage_error "--summary needs rules" "--summary needs rules" --summary app.ts
 expect_usage_error "--rule takes a single rule" "a single rule" \

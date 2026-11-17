@@ -2,6 +2,11 @@
 
 Each version is a release on GitHub with the veslint binaries (Linux x64, Windows x64) and the VS Code extension. The section of a version is the text of its release.
 
+## 0.28.0
+
+- **The resolved configuration is cached:** resolving an `eslint.config.*` starts bun and loads ESLint and every plugin, more than a second for a usual configuration. veslint now saves what ESLint resolved in `node_modules/.cache/veslint` and uses it again until something it came from changes: the configuration, a file or module it reads (the plugins too), an environment variable it reads, the files to lint, or the `eslint.config.*` that applies to a folder. On @marcrock22/eslintcf, `veslint .` goes from 3.8 s to 2.1 s, and `--print-config` from 1.7 s to 0.06 s. `VESLINT_CONFIG_CACHE=0` turns it off.
+- **A resolved configuration saved outside the project** (`--print-config`) finds none of its files, since its paths are relative to its own folder: the README says where to save it, and the error names the folder its paths are relative to.
+
 ## 0.27.0
 
 - **On npm:** `npm install --save-dev @marcrock22/veslint` (or `bun add -d`, `pnpm add -D`) installs the `veslint` command: `npx veslint .`. The package runs the binary of your platform, which npm installs with the optional dependency `@marcrock22/veslint-linux-x64` or `@marcrock22/veslint-win32-x64`, together with the TypeScript 7 compiler it uses. Each release publishes them (`npm/`, `npm/stage.sh`).
