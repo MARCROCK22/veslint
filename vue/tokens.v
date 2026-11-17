@@ -16,8 +16,9 @@ const keyword_tokens = ['break', 'case', 'catch', 'class', 'const', 'continue', 
 const name_kinds = ['identifier', 'property_identifier', 'shorthand_property_identifier',
 	'shorthand_property_identifier_pattern', 'type_identifier', 'statement_identifier']
 
-// Leaves that are one token per character for TypeScript.
-const split_leaves = ['?:', '-?:', '+?:', '{|', '|}', '/>']
+// Leaves that are one token per character for TypeScript (`</` of a JSX closing tag is `<` and
+// `/`).
+const split_leaves = ['?:', '-?:', '+?:', '{|', '|}', '/>', '</']
 
 // SnipToken is a token or a comment of a snippet, in bytes of the snippet.
 struct SnipToken {

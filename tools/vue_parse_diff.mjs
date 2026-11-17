@@ -141,9 +141,11 @@ function canonical(oracle, file) {
   if (code.charCodeAt(0) === 0xfeff) code = code.slice(1);
   let parsed;
   try {
-    parsed = parseWith(oracle, code, file, false);
-    const doc = parsed.result.services.getDocumentFragment();
-    if (scriptLang(doc) === 'tsx') parsed = parseWith(oracle, code, file, true);
+    // The script's lang decides the dialect (lang="tsx": JSX); a parse that skips the script
+    // tells it.
+    const bare = oracle.vep.parseForESLint(code, { filePath: file, parser: false, ecmaVersion: 'latest', sourceType: 'module' });
+    const jsx = scriptLang(bare.services.getDocumentFragment()) === 'tsx';
+    parsed = parseWith(oracle, code, file, jsx);
   } catch (e) {
     return { fatal: { message: e.message, index: e.index ?? null } };
   }
@@ -162,6 +164,7 @@ function canonical(oracle, file) {
       loc: locOf(ast),
       tokens: (ast.tokens ?? []).map(token),
       comments: (ast.comments ?? []).map(token),
+      body: ast.body.map(node),
     },
     codes: [...codes].sort(),
   };
@@ -385,6 +388,14 @@ for (const file of list) {
   const v = vValues.get(file);
   // The codes are a set: the V side lists them in no particular order.
   if (v?.codes) v.codes.sort();
+  // Keys that start with `_` are notes of the V side, not part of the comparison.
+  const notes = {};
+  if (v)
+    for (const k of Object.keys(v))
+      if (k.startsWith('_')) {
+        notes[k] = v[k];
+        delete v[k];
+      }
   // VUE_DIFF_SKIP=key,key leaves top-level keys out of the comparison (while working on others).
   for (const k of (process.env.VUE_DIFF_SKIP ?? '').split(',').filter(Boolean)) {
     if (v) delete v[k];
@@ -399,11 +410,13 @@ for (const file of list) {
   const where = d.at.replace(/\[\d+\]/g, '[]').replace(/ \(.*$/, '');
   const category = where.split('.').slice(0, 4).join('.');
   categories.set(category, (categories.get(category) ?? 0) + 1);
-  diffs.push({ rel, d, ctx: context(o, d.at), known: known.get(rel) });
+  diffs.push({ rel, d, ctx: context(o, d.at), known: known.get(rel), notes });
 }
+const o_fatal = rel => oracleValues.get(path.join(corpusDir, rel))?.fatal || oracleValues.get(rel)?.fatal;
 const lines = [];
-for (const { rel, d, ctx, known: k } of diffs) {
-  lines.push(`${rel}${k ? `\t(known: ${k})` : ''}\n  at ${d.at}${ctx ? ` in ${ctx}` : ''}\n  V:      ${JSON.stringify(d.a)?.slice(0, 400)}\n  oracle: ${JSON.stringify(d.b)?.slice(0, 400)}`);
+for (const { rel, d, ctx, known: k, notes } of diffs) {
+  const why = notes._scriptError ? ' [tree-sitter: syntax error in the script]' : o_fatal(rel) ? ' [vue-eslint-parser: fatal error]' : '';
+  lines.push(`${rel}${why}${k ? `\t(known: ${k})` : ''}\n  at ${d.at}${ctx ? ` in ${ctx}` : ''}\n  V:      ${JSON.stringify(d.a)?.slice(0, 400)}\n  oracle: ${JSON.stringify(d.b)?.slice(0, 400)}`);
 }
 fs.writeFileSync(path.join(out, 'diff.txt'), lines.join('\n') + '\n');
 const unexpected = diffs.filter(x => !x.known).length;

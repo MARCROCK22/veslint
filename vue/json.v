@@ -46,7 +46,16 @@ pub fn (d &Document) to_json() string {
 	d.json_tokens(mut b, s.tokens)
 	b.write_string(',"comments":')
 	d.json_tokens(mut b, s.comments)
-	b.write_string('},"codes":[')
+	b.write_string(',"body":[')
+	if s.has_es {
+		for k, st in s.es.list(s.es.root, .body) or { []int{} } {
+			if k > 0 {
+				b.write_u8(`,`)
+			}
+			d.json_es(mut b, &s.es, st)
+		}
+	}
+	b.write_string(']},"_scriptError":${s.has_error},"codes":[')
 	mut first := true
 	for code in d.parser_codes() {
 		if !first {
