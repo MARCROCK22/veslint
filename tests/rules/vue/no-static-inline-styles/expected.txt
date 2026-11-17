@@ -1,0 +1,25 @@
+tests/rules/vue/no-static-inline-styles/cases.vue:47:14	vue/no-static-inline-styles	forbiddenStyleAttr	`style` attributes are forbidden.
+tests/rules/vue/no-static-inline-styles/cases.vue:50:14	vue/no-static-inline-styles	forbiddenStyleAttr	`style` attributes are forbidden.
+tests/rules/vue/no-static-inline-styles/cases.vue:53:14	vue/no-static-inline-styles	forbiddenStaticInlineStyle	Static inline `style` are forbidden.
+tests/rules/vue/no-static-inline-styles/cases.vue:58:14	vue/no-static-inline-styles	forbiddenStaticInlineStyle	Static inline `style` are forbidden.
+tests/rules/vue/no-static-inline-styles/cases.vue:63:14	vue/no-static-inline-styles	forbiddenStaticInlineStyle	Static inline `style` are forbidden.
+tests/rules/vue/no-static-inline-styles/cases.vue:70:11	vue/no-static-inline-styles	forbiddenStaticInlineStyle	Static inline `style` are forbidden.
+tests/rules/vue/no-static-inline-styles/cases.vue:75:11	vue/no-static-inline-styles	forbiddenStaticInlineStyle	Static inline `style` are forbidden.
+tests/rules/vue/no-static-inline-styles/cases.vue:80:14	vue/no-static-inline-styles	forbiddenStaticInlineStyle	Static inline `style` are forbidden.
+tests/rules/vue/no-static-inline-styles/cases.vue:87:13	vue/no-static-inline-styles	forbiddenStaticInlineStyle	Static inline `style` are forbidden.
+tests/rules/vue/no-static-inline-styles/cases.vue:94:13	vue/no-static-inline-styles	forbiddenStaticInlineStyle	Static inline `style` are forbidden.
+tests/rules/vue/no-static-inline-styles/cases.vue:95:13	vue/no-static-inline-styles	forbiddenStaticInlineStyle	Static inline `style` are forbidden.
+tests/rules/vue/no-static-inline-styles/cases.vue:95:55	vue/no-static-inline-styles	forbiddenStaticInlineStyle	Static inline `style` are forbidden.
+tests/rules/vue/no-static-inline-styles/cases.vue:100:14	vue/no-static-inline-styles	forbiddenStaticInlineStyle	Static inline `style` are forbidden.
+tests/rules/vue/no-static-inline-styles/cases.vue:108:13	vue/no-static-inline-styles	forbiddenStaticInlineStyle	Static inline `style` are forbidden.
+tests/rules/vue/no-static-inline-styles/extra-allow/cases.vue:3:10	vue/no-static-inline-styles	forbiddenStyleAttr	`style` attributes are forbidden.
+tests/rules/vue/no-static-inline-styles/extra/cases.vue:3:10	vue/no-static-inline-styles	forbiddenStyleAttr	`style` attributes are forbidden.
+tests/rules/vue/no-static-inline-styles/extra/cases.vue:3:29	vue/no-static-inline-styles	forbiddenStaticInlineStyle	Static inline `style` are forbidden.
+tests/rules/vue/no-static-inline-styles/extra/cases.vue:4:10	vue/no-static-inline-styles	forbiddenStaticInlineStyle	Static inline `style` are forbidden.
+tests/rules/vue/no-static-inline-styles/extra/cases.vue:5:21	vue/no-static-inline-styles	forbiddenStaticInlineStyle	Static inline `style` are forbidden.
+tests/rules/vue/no-static-inline-styles/extra/cases.vue:6:21	vue/no-static-inline-styles	forbiddenStaticInlineStyle	Static inline `style` are forbidden.
+tests/rules/vue/no-static-inline-styles/extra/cases.vue:7:20	vue/no-static-inline-styles	forbiddenStaticInlineStyle	Static inline `style` are forbidden.
+tests/rules/vue/no-static-inline-styles/extra/cases.vue:8:20	vue/no-static-inline-styles	forbiddenStaticInlineStyle	Static inline `style` are forbidden.
+tests/rules/vue/no-static-inline-styles/extra/cases.vue:10:10	vue/no-static-inline-styles	forbiddenStaticInlineStyle	Static inline `style` are forbidden.
+tests/rules/vue/no-static-inline-styles/extra/cases.vue:11:10	vue/no-static-inline-styles	forbiddenStaticInlineStyle	Static inline `style` are forbidden.
+tests/rules/vue/no-static-inline-styles/extra/cases.vue:13:10	vue/no-static-inline-styles	forbiddenStaticInlineStyle	Static inline `style` are forbidden.

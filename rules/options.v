@@ -258,6 +258,13 @@ pub fn check_options(rule string, options []json2.Any) !bool {
 		vue_no_literals_in_template { vnlit_options(options)! }
 		vue_require_toggle_inside_transition { vrtit_options(options)! }
 		vue_no_restricted_static_attribute { vnrsa_options(options)! }
+		vue_html_closing_bracket_spacing { vhcbs_options(options)! }
+		vue_html_closing_bracket_newline { vhcbn_options(options)! }
+		vue_attribute_hyphenation { vah_options(options)! }
+		vue_v_on_event_hyphenation { voeh_options(options)! }
+		vue_no_static_inline_styles { vnsis_options(options)! }
+		vue_no_child_content { vncc_options(options)! }
+		vue_no_template_target_blank { vnttb_options(options)! }
 		else { return false }
 	}
 	return true

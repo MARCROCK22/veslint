@@ -531,6 +531,14 @@ pub const vue_html_quotes = 'vue/html-quotes'
 pub const vue_no_literals_in_template = 'vue/no-literals-in-template'
 pub const vue_require_toggle_inside_transition = 'vue/require-toggle-inside-transition'
 pub const vue_no_restricted_static_attribute = 'vue/no-restricted-static-attribute'
+pub const vue_html_closing_bracket_spacing = 'vue/html-closing-bracket-spacing'
+pub const vue_html_closing_bracket_newline = 'vue/html-closing-bracket-newline'
+pub const vue_attribute_hyphenation = 'vue/attribute-hyphenation'
+pub const vue_v_on_event_hyphenation = 'vue/v-on-event-hyphenation'
+pub const vue_valid_v_memo = 'vue/valid-v-memo'
+pub const vue_no_static_inline_styles = 'vue/no-static-inline-styles'
+pub const vue_no_child_content = 'vue/no-child-content'
+pub const vue_no_template_target_blank = 'vue/no-template-target-blank'
 pub const names = [no_floating_promises, await_thenable, require_await, return_await,
 	no_misused_promises, no_unsafe_call, no_unsafe_member_access, no_unsafe_return,
 	no_unsafe_assignment, no_unsafe_argument, restrict_template_expressions,
@@ -682,7 +690,10 @@ pub const names = [no_floating_promises, await_thenable, require_await, return_a
 	vue_no_useless_template_attributes, vue_mustache_interpolation_spacing,
 	vue_static_class_names_order, vue_restricted_component_names, vue_slot_name_casing,
 	vue_first_attribute_linebreak, vue_html_quotes, vue_no_literals_in_template,
-	vue_require_toggle_inside_transition, vue_no_restricted_static_attribute]
+	vue_require_toggle_inside_transition, vue_no_restricted_static_attribute,
+	vue_html_closing_bracket_spacing, vue_html_closing_bracket_newline, vue_attribute_hyphenation,
+	vue_v_on_event_hyphenation, vue_valid_v_memo, vue_no_static_inline_styles, vue_no_child_content,
+	vue_no_template_target_blank]
 
 // untyped_rules are the ported rules that need no types (`meta.docs.requiresTypeChecking` is false
 // in typescript-eslint; the eslint-plugin-unicorn rules that read the types when the parser has a
@@ -806,7 +817,10 @@ pub const untyped_rules = [adjacent_overload_signatures, array_type, class_liter
 	vue_no_useless_template_attributes, vue_mustache_interpolation_spacing,
 	vue_static_class_names_order, vue_restricted_component_names, vue_slot_name_casing,
 	vue_first_attribute_linebreak, vue_html_quotes, vue_no_literals_in_template,
-	vue_require_toggle_inside_transition, vue_no_restricted_static_attribute]
+	vue_require_toggle_inside_transition, vue_no_restricted_static_attribute,
+	vue_html_closing_bracket_spacing, vue_html_closing_bracket_newline, vue_attribute_hyphenation,
+	vue_v_on_event_hyphenation, vue_valid_v_memo, vue_no_static_inline_styles, vue_no_child_content,
+	vue_no_template_target_blank]
 
 // needs_types tells whether a rule asks tsgo for the types of the program.
 pub fn needs_types(rule string) bool {
@@ -1332,6 +1346,14 @@ pub const default_options = {
 	vue_no_literals_in_template:                     '[]'
 	vue_require_toggle_inside_transition:            '[]'
 	vue_no_restricted_static_attribute:              '[]'
+	vue_html_closing_bracket_spacing:                '[]'
+	vue_html_closing_bracket_newline:                '[]'
+	vue_attribute_hyphenation:                       '[]'
+	vue_v_on_event_hyphenation:                      '[]'
+	vue_valid_v_memo:                                '[]'
+	vue_no_static_inline_styles:                     '[]'
+	vue_no_child_content:                            '[]'
+	vue_no_template_target_blank:                    '[]'
 }
 
 // Finding is a problem a rule found at a node.
@@ -1464,12 +1486,14 @@ pub:
 }
 
 // Suggestion is one of the suggestions of a report: its message is the template `message_id` of
-// the rule with `data`, and `fix` what applying it does.
+// the rule with `data`, and `fix` what applying it does. A suggestion with a text of its own and
+// no messageId (ESLint's `desc` alone) has that text in `desc` and an empty message_id.
 pub struct Suggestion {
 pub:
 	message_id string
 	data       map[string]string
 	fix        Fix
+	desc       string
 }
 
 // Stats are the --rule mode timings and counters that `--bench` reports.
@@ -2006,6 +2030,14 @@ pub fn message(rule string, finding Finding) string {
 		vue_no_literals_in_template { vnlit_messages }
 		vue_require_toggle_inside_transition { vrtit_messages }
 		vue_no_restricted_static_attribute { vnrsa_messages }
+		vue_html_closing_bracket_spacing { vhcbs_messages }
+		vue_html_closing_bracket_newline { vhcbn_messages }
+		vue_attribute_hyphenation { vah_messages }
+		vue_v_on_event_hyphenation { voeh_messages }
+		vue_valid_v_memo { vvm_messages }
+		vue_no_static_inline_styles { vnsis_messages }
+		vue_no_child_content { vncc_messages }
+		vue_no_template_target_blank { vnttb_messages }
 		else { map[string]string{} }
 	}
 	return interpolate(messages[finding.message_id] or { finding.message_id }, finding.data)
@@ -2013,6 +2045,9 @@ pub fn message(rule string, finding Finding) string {
 
 // suggestion_message is the text of a suggestion of `rule` (ESLint's `desc`).
 pub fn suggestion_message(rule string, suggestion Suggestion) string {
+	if suggestion.desc != '' {
+		return suggestion.desc
+	}
 	return message(rule, Finding{
 		message_id: suggestion.message_id
 		data:       suggestion.data
@@ -3806,6 +3841,30 @@ fn (mut c Checker) lint_rule(rule string, root C.TSNode, abs_path string, mut st
 		}
 		vue_no_restricted_static_attribute {
 			return c.lint_vue_no_restricted_static_attribute(root, abs_path, mut stats)!
+		}
+		vue_html_closing_bracket_spacing {
+			return c.lint_vue_html_closing_bracket_spacing(root, abs_path, mut stats)!
+		}
+		vue_html_closing_bracket_newline {
+			return c.lint_vue_html_closing_bracket_newline(root, abs_path, mut stats)!
+		}
+		vue_attribute_hyphenation {
+			return c.lint_vue_attribute_hyphenation(root, abs_path, mut stats)!
+		}
+		vue_v_on_event_hyphenation {
+			return c.lint_vue_v_on_event_hyphenation(root, abs_path, mut stats)!
+		}
+		vue_valid_v_memo {
+			return c.lint_vue_valid_v_memo(root, abs_path, mut stats)!
+		}
+		vue_no_static_inline_styles {
+			return c.lint_vue_no_static_inline_styles(root, abs_path, mut stats)!
+		}
+		vue_no_child_content {
+			return c.lint_vue_no_child_content(root, abs_path, mut stats)!
+		}
+		vue_no_template_target_blank {
+			return c.lint_vue_no_template_target_blank(root, abs_path, mut stats)!
 		}
 		else { return error('unknown rule: ${rule}') }
 	}

@@ -94,7 +94,11 @@ fn vue_tpl_static_property_name(t &estree.EsTree, node int) ?string {
 		.member_expression {
 			property := t.node(node, .property)?
 			if !computed {
-				return if t.typ(property) == .identifier { t.string_of(property, .name) } else { none }
+				return if t.typ(property) == .identifier {
+					t.string_of(property, .name)
+				} else {
+					none
+				}
 			}
 			return vue_tpl_string_literal_value(t, property, false)
 		}

@@ -113,7 +113,11 @@ fn (c &Checker) vnrsa_default_message(attr int, option &VnrsaOption) string {
 	key := c.vue.doc.nodes[node.key].raw_name
 	mut value := ''
 	if option.use_value {
-		value = if node.value < 0 { '` set to `true' } else { '="${c.vue.doc.nodes[node.value].text}"' }
+		value = if node.value < 0 {
+			'` set to `true'
+		} else {
+			'="${c.vue.doc.nodes[node.value].text}"'
+		}
 	}
 	on := if option.use_element {
 		' on `<${c.vue.doc.nodes[c.vue_attribute_element(attr)].raw_name}>`'
