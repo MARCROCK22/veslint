@@ -1,0 +1,65 @@
+tests/rules/vue/no-deprecated-slot-attribute/cases.vue:39:21	vue/no-deprecated-slot-attribute	forbiddenSlotAttribute	`slot` attributes are deprecated.	fix	698	702	v-slot	end	39	25
+tests/rules/vue/no-deprecated-slot-attribute/cases.vue:44:21	vue/no-deprecated-slot-attribute	forbiddenSlotAttribute	`slot` attributes are deprecated.	fix	801	812	v-slot:name	end	44	25
+tests/rules/vue/no-deprecated-slot-attribute/cases.vue:49:21	vue/no-deprecated-slot-attribute	forbiddenSlotAttribute	`slot` attributes are deprecated.	fix	911	947	v-slot:name="{a}" unknown 	end	49	25
+tests/rules/vue/no-deprecated-slot-attribute/cases.vue:54:21	vue/no-deprecated-slot-attribute	forbiddenSlotAttribute	`slot` attributes are deprecated.	fix	1046	1069	v-slot:name="{a}" 	end	54	25
+tests/rules/vue/no-deprecated-slot-attribute/cases.vue:59:21	vue/no-deprecated-slot-attribute	forbiddenSlotAttribute	`slot` attributes are deprecated.	fix	1167	1181	v-slot:nameFoo	end	59	25
+tests/rules/vue/no-deprecated-slot-attribute/cases.vue:64:21	vue/no-deprecated-slot-attribute	forbiddenSlotAttribute	`slot` attributes are deprecated.	end	64	25
+tests/rules/vue/no-deprecated-slot-attribute/cases.vue:65:21	vue/no-deprecated-slot-attribute	forbiddenSlotAttribute	`slot` attributes are deprecated.	end	65	25
+tests/rules/vue/no-deprecated-slot-attribute/cases.vue:66:21	vue/no-deprecated-slot-attribute	forbiddenSlotAttribute	`slot` attributes are deprecated.	end	66	25
+tests/rules/vue/no-deprecated-slot-attribute/cases.vue:67:21	vue/no-deprecated-slot-attribute	forbiddenSlotAttribute	`slot` attributes are deprecated.	end	67	25
+tests/rules/vue/no-deprecated-slot-attribute/cases.vue:68:21	vue/no-deprecated-slot-attribute	forbiddenSlotAttribute	`slot` attributes are deprecated.	end	68	25
+tests/rules/vue/no-deprecated-slot-attribute/cases.vue:73:21	vue/no-deprecated-slot-attribute	forbiddenSlotAttribute	`slot` attributes are deprecated.	fix	1591	1607	v-slot:[name]	end	73	32
+tests/rules/vue/no-deprecated-slot-attribute/cases.vue:78:21	vue/no-deprecated-slot-attribute	forbiddenSlotAttribute	`slot` attributes are deprecated.	end	78	26
+tests/rules/vue/no-deprecated-slot-attribute/cases.vue:83:21	vue/no-deprecated-slot-attribute	forbiddenSlotAttribute	`slot` attributes are deprecated.	fix	1820	1840	v-slot:[slotName]	end	83	26
+tests/rules/vue/no-deprecated-slot-attribute/cases.vue:88:21	vue/no-deprecated-slot-attribute	forbiddenSlotAttribute	`slot` attributes are deprecated.	end	88	26
+tests/rules/vue/no-deprecated-slot-attribute/cases.vue:93:21	vue/no-deprecated-slot-attribute	forbiddenSlotAttribute	`slot` attributes are deprecated.	end	93	26
+tests/rules/vue/no-deprecated-slot-attribute/cases.vue:98:21	vue/no-deprecated-slot-attribute	forbiddenSlotAttribute	`slot` attributes are deprecated.	end	98	26
+tests/rules/vue/no-deprecated-slot-attribute/cases.vue:103:21	vue/no-deprecated-slot-attribute	forbiddenSlotAttribute	`slot` attributes are deprecated.	end	103	26
+tests/rules/vue/no-deprecated-slot-attribute/cases.vue:108:21	vue/no-deprecated-slot-attribute	forbiddenSlotAttribute	`slot` attributes are deprecated.	fix	2391	2396	v-slot:[slot]	end	108	26
+tests/rules/vue/no-deprecated-slot-attribute/cases.vue:113:14	vue/no-deprecated-slot-attribute	forbiddenSlotAttribute	`slot` attributes are deprecated.	fix	2484	2501	<template v-slot:name>\n<a  />\n</template>	end	113	18
+tests/rules/vue/no-deprecated-slot-attribute/cases.vue:118:14	vue/no-deprecated-slot-attribute	forbiddenSlotAttribute	`slot` attributes are deprecated.	fix	2572	2590	<template v-slot:[name]>\n<a  />\n</template>	end	118	19
+tests/rules/vue/no-deprecated-slot-attribute/cases.vue:123:21	vue/no-deprecated-slot-attribute	forbiddenSlotAttribute	`slot` attributes are deprecated.	fix	2674	2688	v-slot:foo-bar	end	123	25
+tests/rules/vue/no-deprecated-slot-attribute/cases.vue:130:21	vue/no-deprecated-slot-attribute	forbiddenSlotAttribute	`slot` attributes are deprecated.	fix	2815	2829	v-slot:foo_bar	end	130	25
+tests/rules/vue/no-deprecated-slot-attribute/cases.vue:137:21	vue/no-deprecated-slot-attribute	forbiddenSlotAttribute	`slot` attributes are deprecated.	fix	2956	2966	v-slot:123	end	137	25
+tests/rules/vue/no-deprecated-slot-attribute/cases.vue:144:21	vue/no-deprecated-slot-attribute	forbiddenSlotAttribute	`slot` attributes are deprecated.	fix	3096	3112	v-slot:some-slot	end	144	25
+tests/rules/vue/no-deprecated-slot-attribute/cases.vue:149:23	vue/no-deprecated-slot-attribute	forbiddenSlotAttribute	`slot` attributes are deprecated.	end	149	27
+tests/rules/vue/no-deprecated-slot-attribute/cases.vue:157:37	vue/no-deprecated-slot-attribute	forbiddenSlotAttribute	`slot` attributes are deprecated.	end	157	41
+tests/rules/vue/no-deprecated-slot-attribute/cases.vue:160:37	vue/no-deprecated-slot-attribute	forbiddenSlotAttribute	`slot` attributes are deprecated.	fix	3534	3543	v-slot:[x]	end	160	42
+tests/rules/vue/no-deprecated-slot-attribute/cases.vue:167:21	vue/no-deprecated-slot-attribute	forbiddenSlotAttribute	`slot` attributes are deprecated.	end	167	25
+tests/rules/vue/no-deprecated-slot-attribute/cases.vue:170:21	vue/no-deprecated-slot-attribute	forbiddenSlotAttribute	`slot` attributes are deprecated.	end	170	25
+tests/rules/vue/no-deprecated-slot-attribute/cases.vue:177:30	vue/no-deprecated-slot-attribute	forbiddenSlotAttribute	`slot` attributes are deprecated.	fix	3882	3892	v-slot:one	end	177	34
+tests/rules/vue/no-deprecated-slot-attribute/cases.vue:180:28	vue/no-deprecated-slot-attribute	forbiddenSlotAttribute	`slot` attributes are deprecated.	fix	3957	3967	v-slot:one	end	180	32
+tests/rules/vue/no-deprecated-slot-attribute/cases.vue:187:37	vue/no-deprecated-slot-attribute	forbiddenSlotAttribute	`slot` attributes are deprecated.	end	187	42
+tests/rules/vue/no-deprecated-slot-attribute/cases.vue:190:37	vue/no-deprecated-slot-attribute	forbiddenSlotAttribute	`slot` attributes are deprecated.	end	190	42
+tests/rules/vue/no-deprecated-slot-attribute/cases.vue:197:37	vue/no-deprecated-slot-attribute	forbiddenSlotAttribute	`slot` attributes are deprecated.	fix	4343	4352	v-slot:[x]	end	197	42
+tests/rules/vue/no-deprecated-slot-attribute/cases.vue:200:37	vue/no-deprecated-slot-attribute	forbiddenSlotAttribute	`slot` attributes are deprecated.	fix	4426	4435	v-slot:[x]	end	200	42
+tests/rules/vue/no-deprecated-slot-attribute/cases.vue:207:41	vue/no-deprecated-slot-attribute	forbiddenSlotAttribute	`slot` attributes are deprecated.	end	207	46
+tests/rules/vue/no-deprecated-slot-attribute/cases.vue:210:37	vue/no-deprecated-slot-attribute	forbiddenSlotAttribute	`slot` attributes are deprecated.	fix	4666	4675	v-slot:[x]	end	210	42
+tests/rules/vue/no-deprecated-slot-attribute/cases.vue:219:13	vue/no-deprecated-slot-attribute	forbiddenSlotAttribute	`slot` attributes are deprecated.	fix	4791	4913	<template v-for="slot in Object.keys($slots)" v-slot:[slot]>\n<slot\n            \n            \n            :name="slot"\n          ></slot>\n</template>	end	219	18
+tests/rules/vue/no-deprecated-slot-attribute/cases.vue:226:16	vue/no-deprecated-slot-attribute	forbiddenSlotAttribute	`slot` attributes are deprecated.	end	226	20
+tests/rules/vue/no-deprecated-slot-attribute/extra-ignore/cases.vue:4:12	vue/no-deprecated-slot-attribute	forbiddenSlotAttribute	`slot` attributes are deprecated.	end	4	16
+tests/rules/vue/no-deprecated-slot-attribute/extra-ignore/cases.vue:5:12	vue/no-deprecated-slot-attribute	forbiddenSlotAttribute	`slot` attributes are deprecated.	end	5	16
+tests/rules/vue/no-deprecated-slot-attribute/extra-ignore/cases.vue:6:17	vue/no-deprecated-slot-attribute	forbiddenSlotAttribute	`slot` attributes are deprecated.	fix	94	121	v-slot:b="{ x }" 	end	6	21
+tests/rules/vue/no-deprecated-slot-attribute/extra/cases.vue:4:12	vue/no-deprecated-slot-attribute	forbiddenSlotAttribute	`slot` attributes are deprecated.	end	4	16
+tests/rules/vue/no-deprecated-slot-attribute/extra/cases.vue:5:12	vue/no-deprecated-slot-attribute	forbiddenSlotAttribute	`slot` attributes are deprecated.	end	5	16
+tests/rules/vue/no-deprecated-slot-attribute/extra/cases.vue:6:17	vue/no-deprecated-slot-attribute	forbiddenSlotAttribute	`slot` attributes are deprecated.	fix	94	121	v-slot:b="{ x }" 	end	6	21
+tests/rules/vue/no-deprecated-slot-attribute/extra/cases.vue:7:31	vue/no-deprecated-slot-attribute	forbiddenSlotAttribute	`slot` attributes are deprecated.	fix	147	192	<template v-for="i in list" v-slot:[i]>\n<span   :key="i" />\n</template>	end	7	36
+tests/rules/vue/no-deprecated-slot-attribute/extra/cases.vue:8:31	vue/no-deprecated-slot-attribute	forbiddenSlotAttribute	`slot` attributes are deprecated.	end	8	36
+tests/rules/vue/no-deprecated-slot-attribute/extra/cases.vue:9:10	vue/no-deprecated-slot-attribute	forbiddenSlotAttribute	`slot` attributes are deprecated.	fix	257	285	<template v-slot:[name]>\n<p  scope="s" />\n</template>	end	9	15
+tests/rules/vue/no-deprecated-slot-attribute/extra/cases.vue:10:10	vue/no-deprecated-slot-attribute	forbiddenSlotAttribute	`slot` attributes are deprecated.	fix	292	303	<template v-slot:[slot]>\n<p  />\n</template>	end	10	15
+tests/rules/vue/no-deprecated-slot-attribute/extra/cases.vue:11:10	vue/no-deprecated-slot-attribute	forbiddenSlotAttribute	`slot` attributes are deprecated.	end	11	14
+tests/rules/vue/no-deprecated-slot-attribute/extra/cases.vue:12:10	vue/no-deprecated-slot-attribute	forbiddenSlotAttribute	`slot` attributes are deprecated.	fix	340	353	<template v-slot>\n<p  />\n</template>	end	12	14
+tests/rules/vue/no-deprecated-slot-attribute/extra/cases.vue:13:10	vue/no-deprecated-slot-attribute	forbiddenSlotAttribute	`slot` attributes are deprecated.	fix	360	370	<template v-slot>\n<p  />\n</template>	end	13	14
+tests/rules/vue/no-deprecated-slot-attribute/extra/cases.vue:14:19	vue/no-deprecated-slot-attribute	forbiddenSlotAttribute	`slot` attributes are deprecated.	fix	377	400	<template v-slot:d>\n<p v-if="c"  />\n</template>	end	14	23
+tests/rules/vue/no-deprecated-slot-attribute/extra/cases.vue:14:40	vue/no-deprecated-slot-attribute	forbiddenSlotAttribute	`slot` attributes are deprecated.	fix	400	421	<template v-slot:d>\n<p v-else  />\n</template>	end	14	44
+tests/rules/vue/no-deprecated-slot-attribute/extra/cases.vue:16:16	vue/no-deprecated-slot-attribute	forbiddenSlotAttribute	`slot` attributes are deprecated.	end	16	20
+tests/rules/vue/no-deprecated-slot-attribute/extra/cases.vue:17:30	vue/no-deprecated-slot-attribute	forbiddenSlotAttribute	`slot` attributes are deprecated.	end	17	34
+tests/rules/vue/no-deprecated-slot-attribute/extra/cases.vue:18:20	vue/no-deprecated-slot-attribute	forbiddenSlotAttribute	`slot` attributes are deprecated.	fix	535	552	<template v-slot:g>\n<span  />\n</template>	end	18	24
+tests/rules/vue/no-deprecated-slot-attribute/extra/cases.vue:19:22	vue/no-deprecated-slot-attribute	forbiddenSlotAttribute	`slot` attributes are deprecated.	fix	578	595	<template v-slot:h>\n<span  />\n</template>	end	19	26
+tests/rules/vue/no-deprecated-slot-attribute/options-3fb81608/cases.vue:7:16	vue/no-deprecated-slot-attribute	forbiddenSlotAttribute	`slot` attributes are deprecated.	fix	110	157	<template v-slot:two>\n<two >\n            B\n          </two>\n</template>	end	7	20
+tests/rules/vue/no-deprecated-slot-attribute/options-6a8d0d13/cases.vue:9:16	vue/no-deprecated-slot-attribute	forbiddenSlotAttribute	`slot` attributes are deprecated.	fix	158	205	<template v-slot:two>\n<two >\n            B\n          </two>\n</template>	end	9	20
+tests/rules/vue/no-deprecated-slot-attribute/options-6a8d0d13/cases.vue:21:16	vue/no-deprecated-slot-attribute	forbiddenSlotAttribute	`slot` attributes are deprecated.	fix	392	440	<template v-slot:[two]>\n<two >\n            B\n          </two>\n</template>	end	21	21
+tests/rules/vue/no-deprecated-slot-attribute/options-c9b606e7/cases.vue:7:16	vue/no-deprecated-slot-attribute	forbiddenSlotAttribute	`slot` attributes are deprecated.	fix	110	157	<template v-slot:two>\n<two >\n            B\n          </two>\n</template>	end	7	20
+tests/rules/vue/no-deprecated-slot-attribute/options-e4f19246/cases.vue:7:16	vue/no-deprecated-slot-attribute	forbiddenSlotAttribute	`slot` attributes are deprecated.	fix	110	157	<template v-slot:two>\n<two >\n            B\n          </two>\n</template>	end	7	20
+tests/rules/vue/no-deprecated-slot-attribute/options-e4f19246/cases.vue:17:16	vue/no-deprecated-slot-attribute	forbiddenSlotAttribute	`slot` attributes are deprecated.	fix	295	343	<template v-slot:[two]>\n<two >\n            B\n          </two>\n</template>	end	17	21
+tests/rules/vue/no-deprecated-slot-attribute/options-f0c86fc4/cases.vue:9:16	vue/no-deprecated-slot-attribute	forbiddenSlotAttribute	`slot` attributes are deprecated.	fix	158	205	<template v-slot:two>\n<two >\n            B\n          </two>\n</template>	end	9	20

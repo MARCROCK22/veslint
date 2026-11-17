@@ -547,6 +547,10 @@ pub const vue_valid_v_bind_sync = 'vue/valid-v-bind-sync'
 pub const vue_v_slot_style = 'vue/v-slot-style'
 pub const vue_prefer_true_attribute_shorthand = 'vue/prefer-true-attribute-shorthand'
 pub const vue_no_dupe_v_else_if = 'vue/no-dupe-v-else-if'
+pub const vue_no_deprecated_slot_attribute = 'vue/no-deprecated-slot-attribute'
+pub const vue_no_deprecated_slot_scope_attribute = 'vue/no-deprecated-slot-scope-attribute'
+pub const vue_this_in_template = 'vue/this-in-template'
+pub const vue_no_unused_vars = 'vue/no-unused-vars'
 pub const names = [no_floating_promises, await_thenable, require_await, return_await,
 	no_misused_promises, no_unsafe_call, no_unsafe_member_access, no_unsafe_return,
 	no_unsafe_assignment, no_unsafe_argument, restrict_template_expressions,
@@ -703,7 +707,8 @@ pub const names = [no_floating_promises, await_thenable, require_await, return_a
 	vue_v_on_event_hyphenation, vue_valid_v_memo, vue_no_static_inline_styles, vue_no_child_content,
 	vue_no_template_target_blank, vue_no_restricted_class, vue_no_useless_v_bind,
 	vue_no_restricted_v_bind, vue_no_restricted_v_on, vue_valid_v_bind_sync, vue_v_slot_style,
-	vue_prefer_true_attribute_shorthand, vue_no_dupe_v_else_if]
+	vue_prefer_true_attribute_shorthand, vue_no_dupe_v_else_if, vue_no_deprecated_slot_attribute,
+	vue_no_deprecated_slot_scope_attribute, vue_this_in_template, vue_no_unused_vars]
 
 // untyped_rules are the ported rules that need no types (`meta.docs.requiresTypeChecking` is false
 // in typescript-eslint; the eslint-plugin-unicorn rules that read the types when the parser has a
@@ -832,7 +837,8 @@ pub const untyped_rules = [adjacent_overload_signatures, array_type, class_liter
 	vue_v_on_event_hyphenation, vue_valid_v_memo, vue_no_static_inline_styles, vue_no_child_content,
 	vue_no_template_target_blank, vue_no_restricted_class, vue_no_useless_v_bind,
 	vue_no_restricted_v_bind, vue_no_restricted_v_on, vue_valid_v_bind_sync, vue_v_slot_style,
-	vue_prefer_true_attribute_shorthand, vue_no_dupe_v_else_if]
+	vue_prefer_true_attribute_shorthand, vue_no_dupe_v_else_if, vue_no_deprecated_slot_attribute,
+	vue_no_deprecated_slot_scope_attribute, vue_this_in_template, vue_no_unused_vars]
 
 // needs_types tells whether a rule asks tsgo for the types of the program.
 pub fn needs_types(rule string) bool {
@@ -1374,6 +1380,10 @@ pub const default_options = {
 	vue_v_slot_style:                                '[]'
 	vue_prefer_true_attribute_shorthand:             '[]'
 	vue_no_dupe_v_else_if:                           '[]'
+	vue_no_deprecated_slot_attribute:                '[]'
+	vue_no_deprecated_slot_scope_attribute:          '[]'
+	vue_this_in_template:                            '[]'
+	vue_no_unused_vars:                              '[]'
 }
 
 // Finding is a problem a rule found at a node.
@@ -2066,6 +2076,10 @@ pub fn message(rule string, finding Finding) string {
 		vue_v_slot_style { vvss_messages }
 		vue_prefer_true_attribute_shorthand { vptas_messages }
 		vue_no_dupe_v_else_if { vndvei_messages }
+		vue_no_deprecated_slot_attribute { vndslota_messages }
+		vue_no_deprecated_slot_scope_attribute { vndslotsa_messages }
+		vue_this_in_template { vtit_messages }
+		vue_no_unused_vars { vnuv_messages }
 		else { map[string]string{} }
 	}
 	return interpolate(messages[finding.message_id] or { finding.message_id }, finding.data)
@@ -3917,6 +3931,18 @@ fn (mut c Checker) lint_rule(rule string, root C.TSNode, abs_path string, mut st
 		}
 		vue_no_dupe_v_else_if {
 			return c.lint_vue_no_dupe_v_else_if(root, abs_path, mut stats)!
+		}
+		vue_no_deprecated_slot_attribute {
+			return c.lint_vue_no_deprecated_slot_attribute(root, abs_path, mut stats)!
+		}
+		vue_no_deprecated_slot_scope_attribute {
+			return c.lint_vue_no_deprecated_slot_scope_attribute(root, abs_path, mut stats)!
+		}
+		vue_this_in_template {
+			return c.lint_vue_this_in_template(root, abs_path, mut stats)!
+		}
+		vue_no_unused_vars {
+			return c.lint_vue_no_unused_vars(root, abs_path, mut stats)!
 		}
 		else { return error('unknown rule: ${rule}') }
 	}

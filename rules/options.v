@@ -271,6 +271,9 @@ pub fn check_options(rule string, options []json2.Any) !bool {
 		vue_no_restricted_v_on { vnrvo_options(options)! }
 		vue_v_slot_style { vvss_options(options)! }
 		vue_prefer_true_attribute_shorthand { vptas_options(options)! }
+		vue_no_deprecated_slot_attribute { vndslota_options(options)! }
+		vue_this_in_template { vtit_options(options)! }
+		vue_no_unused_vars { vnuv_options(options)! }
 		else { return false }
 	}
 	return true

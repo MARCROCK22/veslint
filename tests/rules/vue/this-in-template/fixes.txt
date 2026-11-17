@@ -1,0 +1,66 @@
+tests/rules/vue/this-in-template/cases.vue:31:16	vue/this-in-template	unexpected	Unexpected usage of 'this'.	fix	1200	1208	foo	end	31	20
+tests/rules/vue/this-in-template/cases.vue:32:16	vue/this-in-template	unexpected	Unexpected usage of 'this'.	fix	1239	1247	foo	end	32	20
+tests/rules/vue/this-in-template/cases.vue:33:16	vue/this-in-template	unexpected	Unexpected usage of 'this'.	fix	1280	1288	foo	end	33	20
+tests/rules/vue/this-in-template/cases.vue:34:21	vue/this-in-template	unexpected	Unexpected usage of 'this'.	fix	1330	1338	foo	end	34	25
+tests/rules/vue/this-in-template/cases.vue:35:27	vue/this-in-template	unexpected	Unexpected usage of 'this'.	fix	1379	1387	foo	end	35	31
+tests/rules/vue/this-in-template/cases.vue:36:27	vue/this-in-template	unexpected	Unexpected usage of 'this'.	fix	1429	1437	foo	end	36	31
+tests/rules/vue/this-in-template/cases.vue:37:19	vue/this-in-template	unexpected	Unexpected usage of 'this'.	fix	1473	1481	foo	end	37	23
+tests/rules/vue/this-in-template/cases.vue:38:27	vue/this-in-template	unexpected	Unexpected usage of 'this'.	fix	1522	1530	bar	end	38	31
+tests/rules/vue/this-in-template/cases.vue:39:16	vue/this-in-template	unexpected	Unexpected usage of 'this'.	fix	1560	1569	foo	end	39	20
+tests/rules/vue/this-in-template/cases.vue:40:16	vue/this-in-template	unexpected	Unexpected usage of 'this'.	fix	1600	1609	foo	end	40	20
+tests/rules/vue/this-in-template/cases.vue:41:16	vue/this-in-template	unexpected	Unexpected usage of 'this'.	fix	1642	1651	foo	end	41	20
+tests/rules/vue/this-in-template/cases.vue:42:21	vue/this-in-template	unexpected	Unexpected usage of 'this'.	fix	1693	1702	foo	end	42	25
+tests/rules/vue/this-in-template/cases.vue:43:27	vue/this-in-template	unexpected	Unexpected usage of 'this'.	fix	1743	1752	foo	end	43	31
+tests/rules/vue/this-in-template/cases.vue:44:27	vue/this-in-template	unexpected	Unexpected usage of 'this'.	fix	1794	1803	foo	end	44	31
+tests/rules/vue/this-in-template/cases.vue:45:19	vue/this-in-template	unexpected	Unexpected usage of 'this'.	fix	1839	1848	foo	end	45	23
+tests/rules/vue/this-in-template/cases.vue:46:27	vue/this-in-template	unexpected	Unexpected usage of 'this'.	fix	1889	1898	bar	end	46	31
+tests/rules/vue/this-in-template/cases.vue:47:16	vue/this-in-template	unexpected	Unexpected usage of 'this'.	fix	1928	1938	xs	end	47	20
+tests/rules/vue/this-in-template/cases.vue:48:16	vue/this-in-template	unexpected	Unexpected usage of 'this'.	fix	1969	1986	xs0AZ_foo	end	48	20
+tests/rules/vue/this-in-template/extra-always/cases.vue:2:50	vue/this-in-template	expected	Expected 'this'.	fix	60	60	this.	end	2	53
+tests/rules/vue/this-in-template/extra-always/cases.vue:4:53	vue/this-in-template	expected	Expected 'this'.	fix	262	262	this.	end	4	54
+tests/rules/vue/this-in-template/extra-always/cases.vue:9:31	vue/this-in-template	expected	Expected 'this'.	fix	555	555	this.	end	9	35
+tests/rules/vue/this-in-template/extra-always/cases.vue:9:52	vue/this-in-template	expected	Expected 'this'.	fix	576	576	this.	end	9	57
+tests/rules/vue/this-in-template/extra/cases.vue:2:16	vue/this-in-template	unexpected	Unexpected usage of 'this'.	fix	26	34	cls	end	2	20
+tests/rules/vue/this-in-template/extra/cases.vue:2:28	vue/this-in-template	unexpected	Unexpected usage of 'this'.	fix	38	46	arg	end	2	32
+tests/rules/vue/this-in-template/extra/cases.vue:2:39	vue/this-in-template	unexpected	Unexpected usage of 'this'.	fix	49	57	val	end	2	43
+tests/rules/vue/this-in-template/extra/cases.vue:2:62	vue/this-in-template	unexpected	Unexpected usage of 'this'.	fix	72	83	handle	end	2	66
+tests/rules/vue/this-in-template/extra/cases.vue:3:8	vue/this-in-template	unexpected	Unexpected usage of 'this'.	fix	101	107	a	end	3	12
+tests/rules/vue/this-in-template/extra/cases.vue:3:21	vue/this-in-template	unexpected	Unexpected usage of 'this'.	fix	114	121	b	end	3	25
+tests/rules/vue/this-in-template/extra/cases.vue:3:35	vue/this-in-template	unexpected	Unexpected usage of 'this'.	fix	128	137	c	end	3	39
+tests/rules/vue/this-in-template/extra/cases.vue:3:51	vue/this-in-template	unexpected	Unexpected usage of 'this'.	fix	144	153	d	end	3	55
+tests/rules/vue/this-in-template/extra/cases.vue:4:25	vue/this-in-template	unexpected	Unexpected usage of 'this'.	fix	234	244	$data	end	4	29
+tests/rules/vue/this-in-template/extra/cases.vue:4:67	vue/this-in-template	unexpected	Unexpected usage of 'this'.	fix	276	282	e	end	4	71
+tests/rules/vue/this-in-template/extra/cases.vue:4:82	vue/this-in-template	unexpected	Unexpected usage of 'this'.	fix	291	301	$g	end	4	86
+tests/rules/vue/this-in-template/extra/cases.vue:4:99	vue/this-in-template	unexpected	Unexpected usage of 'this'.	fix	308	316	h_i	end	4	103
+tests/rules/vue/this-in-template/extra/cases.vue:5:25	vue/this-in-template	unexpected	Unexpected usage of 'this'.	fix	344	354	items	end	5	29
+tests/rules/vue/this-in-template/extra/cases.vue:6:37	vue/this-in-template	unexpected	Unexpected usage of 'this'.	fix	408	418	other	end	6	41
+tests/rules/vue/this-in-template/extra/cases.vue:10:8	vue/this-in-template	unexpected	Unexpected usage of 'this'.	fix	598	607	item	end	10	12
+tests/rules/vue/this-in-template/extra/cases.vue:11:21	vue/this-in-template	unexpected	Unexpected usage of 'this'.	fix	631	641	model	end	11	25
+tests/rules/vue/this-in-template/options-2014a731/cases.vue:49:16	vue/this-in-template	expected	Expected 'this'.	fix	2216	2216	this.	end	49	19
+tests/rules/vue/this-in-template/options-2014a731/cases.vue:50:16	vue/this-in-template	expected	Expected 'this'.	fix	2250	2250	this.	end	50	19
+tests/rules/vue/this-in-template/options-2014a731/cases.vue:51:16	vue/this-in-template	expected	Expected 'this'.	fix	2286	2286	this.	end	51	19
+tests/rules/vue/this-in-template/options-2014a731/cases.vue:52:21	vue/this-in-template	expected	Expected 'this'.	fix	2331	2331	this.	end	52	24
+tests/rules/vue/this-in-template/options-2014a731/cases.vue:53:27	vue/this-in-template	expected	Expected 'this'.	fix	2375	2375	this.	end	53	30
+tests/rules/vue/this-in-template/options-2014a731/cases.vue:54:27	vue/this-in-template	expected	Expected 'this'.	fix	2420	2420	this.	end	54	30
+tests/rules/vue/this-in-template/options-2014a731/cases.vue:55:19	vue/this-in-template	expected	Expected 'this'.	fix	2459	2459	this.	end	55	22
+tests/rules/vue/this-in-template/options-2014a731/cases.vue:56:27	vue/this-in-template	expected	Expected 'this'.	fix	2503	2503	this.	end	56	30
+tests/rules/vue/this-in-template/options-97252a20/cases.vue:29:16	vue/this-in-template	unexpected	Unexpected usage of 'this'.	fix	1161	1169	foo	end	29	20
+tests/rules/vue/this-in-template/options-97252a20/cases.vue:30:16	vue/this-in-template	unexpected	Unexpected usage of 'this'.	fix	1200	1208	foo	end	30	20
+tests/rules/vue/this-in-template/options-97252a20/cases.vue:31:16	vue/this-in-template	unexpected	Unexpected usage of 'this'.	fix	1241	1249	foo	end	31	20
+tests/rules/vue/this-in-template/options-97252a20/cases.vue:32:21	vue/this-in-template	unexpected	Unexpected usage of 'this'.	fix	1291	1299	foo	end	32	25
+tests/rules/vue/this-in-template/options-97252a20/cases.vue:33:27	vue/this-in-template	unexpected	Unexpected usage of 'this'.	fix	1340	1348	foo	end	33	31
+tests/rules/vue/this-in-template/options-97252a20/cases.vue:34:27	vue/this-in-template	unexpected	Unexpected usage of 'this'.	fix	1390	1398	foo	end	34	31
+tests/rules/vue/this-in-template/options-97252a20/cases.vue:35:19	vue/this-in-template	unexpected	Unexpected usage of 'this'.	fix	1434	1442	foo	end	35	23
+tests/rules/vue/this-in-template/options-97252a20/cases.vue:36:27	vue/this-in-template	unexpected	Unexpected usage of 'this'.	fix	1483	1491	bar	end	36	31
+tests/rules/vue/this-in-template/options-97252a20/cases.vue:37:16	vue/this-in-template	unexpected	Unexpected usage of 'this'.	fix	1521	1530	foo	end	37	20
+tests/rules/vue/this-in-template/options-97252a20/cases.vue:38:16	vue/this-in-template	unexpected	Unexpected usage of 'this'.	fix	1561	1570	foo	end	38	20
+tests/rules/vue/this-in-template/options-97252a20/cases.vue:39:16	vue/this-in-template	unexpected	Unexpected usage of 'this'.	fix	1603	1612	foo	end	39	20
+tests/rules/vue/this-in-template/options-97252a20/cases.vue:40:21	vue/this-in-template	unexpected	Unexpected usage of 'this'.	fix	1654	1663	foo	end	40	25
+tests/rules/vue/this-in-template/options-97252a20/cases.vue:41:27	vue/this-in-template	unexpected	Unexpected usage of 'this'.	fix	1704	1713	foo	end	41	31
+tests/rules/vue/this-in-template/options-97252a20/cases.vue:42:27	vue/this-in-template	unexpected	Unexpected usage of 'this'.	fix	1755	1764	foo	end	42	31
+tests/rules/vue/this-in-template/options-97252a20/cases.vue:43:19	vue/this-in-template	unexpected	Unexpected usage of 'this'.	fix	1800	1809	foo	end	43	23
+tests/rules/vue/this-in-template/options-97252a20/cases.vue:44:27	vue/this-in-template	unexpected	Unexpected usage of 'this'.	fix	1850	1859	bar	end	44	31
+tests/rules/vue/this-in-template/options-97252a20/cases.vue:45:16	vue/this-in-template	unexpected	Unexpected usage of 'this'.	fix	1889	1899	xs	end	45	20
+tests/rules/vue/this-in-template/options-97252a20/cases.vue:46:16	vue/this-in-template	unexpected	Unexpected usage of 'this'.	fix	1930	1947	xs0AZ_foo	end	46	20
+tests/rules/vue/this-in-template/options-97252a20/cases.vue:47:22	vue/this-in-template	unexpected	Unexpected usage of 'this'.	fix	1984	1993	$foo	end	47	26
+tests/rules/vue/this-in-template/options-97252a20/cases.vue:48:28	vue/this-in-template	unexpected	Unexpected usage of 'this'.	fix	2036	2045	$foo	end	48	32

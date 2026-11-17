@@ -1,0 +1,74 @@
+tests/rules/vue/no-unused-vars/cases.vue:19:19	vue/no-unused-vars	unusedVariable	'i' is defined but never used.	end	19	20
+tests/rules/vue/no-unused-vars/cases.vue:20:25	vue/no-unused-vars	unusedVariable	'props' is defined but never used.	end	20	30
+tests/rules/vue/no-unused-vars/cases.vue:21:26	vue/no-unused-vars	unusedVariable	'props' is defined but never used.	end	21	31
+tests/rules/vue/no-unused-vars/cases.vue:22:31	vue/no-unused-vars	unusedVariable	'props' is defined but never used.	end	22	36
+tests/rules/vue/no-unused-vars/cases.vue:23:41	vue/no-unused-vars	unusedVariable	'j' is defined but never used.	end	23	42
+tests/rules/vue/no-unused-vars/cases.vue:24:41	vue/no-unused-vars	unusedVariable	'f' is defined but never used.	end	24	42
+tests/rules/vue/no-unused-vars/cases.vue:25:21	vue/no-unused-vars	unusedVariable	'a' is defined but never used.	end	25	22
+tests/rules/vue/no-unused-vars/cases.vue:25:24	vue/no-unused-vars	unusedVariable	'b' is defined but never used.	end	25	25
+tests/rules/vue/no-unused-vars/cases.vue:25:27	vue/no-unused-vars	unusedVariable	'c' is defined but never used.	end	25	28
+tests/rules/vue/no-unused-vars/cases.vue:26:24	vue/no-unused-vars	unusedVariable	'b' is defined but never used.	end	26	25
+tests/rules/vue/no-unused-vars/cases.vue:26:27	vue/no-unused-vars	unusedVariable	'c' is defined but never used.	end	26	28
+tests/rules/vue/no-unused-vars/cases.vue:27:27	vue/no-unused-vars	unusedVariable	'c' is defined but never used.	end	27	28
+tests/rules/vue/no-unused-vars/cases.vue:28:27	vue/no-unused-vars	unusedVariable	'key' is defined but never used.	end	28	30
+tests/rules/vue/no-unused-vars/cases.vue:29:20	vue/no-unused-vars	unusedVariable	'_i' is defined but never used.	end	29	22
+tests/rules/vue/no-unused-vars/cases.vue:30:30	vue/no-unused-vars	unusedVariable	'a' is defined but never used.	end	30	31
+tests/rules/vue/no-unused-vars/cases.vue:31:29	vue/no-unused-vars	unusedVariable	'i' is defined but never used.	end	31	30
+tests/rules/vue/no-unused-vars/cases.vue:32:47	vue/no-unused-vars	unusedVariable	'a' is defined but never used.	end	32	48
+tests/rules/vue/no-unused-vars/cases.vue:33:22	vue/no-unused-vars	unusedVariable	'a' is defined but never used.	end	33	23
+tests/rules/vue/no-unused-vars/cases.vue:33:25	vue/no-unused-vars	unusedVariable	'b' is defined but never used.	end	33	26
+tests/rules/vue/no-unused-vars/cases.vue:33:30	vue/no-unused-vars	unusedVariable	'c' is defined but never used.	end	33	31
+tests/rules/vue/no-unused-vars/cases.vue:33:33	vue/no-unused-vars	unusedVariable	'd' is defined but never used.	end	33	34
+tests/rules/vue/no-unused-vars/cases.vue:34:22	vue/no-unused-vars	unusedVariable	'a' is defined but never used.	end	34	23
+tests/rules/vue/no-unused-vars/cases.vue:34:25	vue/no-unused-vars	unusedVariable	'b' is defined but never used.	end	34	26
+tests/rules/vue/no-unused-vars/cases.vue:34:33	vue/no-unused-vars	unusedVariable	'd' is defined but never used.	end	34	34
+tests/rules/vue/no-unused-vars/cases.vue:35:31	vue/no-unused-vars	unusedVariable	'a' is defined but never used.	end	35	32
+tests/rules/vue/no-unused-vars/cases.vue:35:34	vue/no-unused-vars	unusedVariable	'b' is defined but never used.	end	35	35
+tests/rules/vue/no-unused-vars/cases.vue:35:37	vue/no-unused-vars	unusedVariable	'c' is defined but never used.	end	35	38
+tests/rules/vue/no-unused-vars/cases.vue:36:22	vue/no-unused-vars	unusedVariable	'a' is defined but never used.	end	36	23
+tests/rules/vue/no-unused-vars/cases.vue:36:28	vue/no-unused-vars	unusedVariable	'bar' is defined but never used.	end	36	31
+tests/rules/vue/no-unused-vars/cases.vue:36:42	vue/no-unused-vars	unusedVariable	'd' is defined but never used.	end	36	43
+tests/rules/vue/no-unused-vars/cases.vue:37:38	vue/no-unused-vars	unusedVariable	'Comp' is defined but never used.	end	37	42
+tests/rules/vue/no-unused-vars/cases.vue:38:65	vue/no-unused-vars	unusedVariable	'props' is defined but never used.	end	38	70
+tests/rules/vue/no-unused-vars/extra-pattern/cases.vue:4:24	vue/no-unused-vars	unusedVariable	'index' is defined but never used.	end	4	29
+tests/rules/vue/no-unused-vars/extra-pattern/cases.vue:5:30	vue/no-unused-vars	unusedVariable	'd' is defined but never used.	end	5	31
+tests/rules/vue/no-unused-vars/extra-pattern/cases.vue:7:18	vue/no-unused-vars	unusedVariable	'x' is defined but never used.	end	7	19
+tests/rules/vue/no-unused-vars/extra-pattern/cases.vue:7:21	vue/no-unused-vars	unusedVariable	'y' is defined but never used.	end	7	22
+tests/rules/vue/no-unused-vars/extra-pattern/cases.vue:9:21	vue/no-unused-vars	unusedVariable	'p' is defined but never used.	end	9	22
+tests/rules/vue/no-unused-vars/extra-pattern/cases.vue:10:21	vue/no-unused-vars	unusedVariable	'props' is defined but never used.	end	10	26
+tests/rules/vue/no-unused-vars/extra-pattern/cases.vue:11:36	vue/no-unused-vars	unusedVariable	's' is defined but never used.	end	11	37
+tests/rules/vue/no-unused-vars/extra-pattern/cases.vue:12:18	vue/no-unused-vars	unusedVariable	'_a' is defined but never used.	end	12	20
+tests/rules/vue/no-unused-vars/extra-pattern/cases.vue:12:22	vue/no-unused-vars	unusedVariable	'_b' is defined but never used.	end	12	24
+tests/rules/vue/no-unused-vars/extra-pattern/cases.vue:13:23	vue/no-unused-vars	unusedVariable	'scope' is defined but never used.	end	13	28
+tests/rules/vue/no-unused-vars/extra-pattern/cases.vue:14:24	vue/no-unused-vars	unusedVariable	'i' is defined but never used.	end	14	25
+tests/rules/vue/no-unused-vars/extra-underscore/cases.vue:4:24	vue/no-unused-vars	unusedVariable	'index' is defined but never used.	suggestion	replaceWithUnderscore	Replace `index` with `_index` to ignore the unused variable.	98	103	_index	end	4	29
+tests/rules/vue/no-unused-vars/extra-underscore/cases.vue:5:20	vue/no-unused-vars	unusedVariable	'a' is defined but never used.	suggestion	replaceWithUnderscore	Replace `a` with `_a` to ignore the unused variable.	149	150	_a	end	5	21
+tests/rules/vue/no-unused-vars/extra-underscore/cases.vue:5:27	vue/no-unused-vars	unusedVariable	'c' is defined but never used.	suggestion	replaceWithUnderscore	Replace `c` with `_c` to ignore the unused variable.	156	157	_c	end	5	28
+tests/rules/vue/no-unused-vars/extra-underscore/cases.vue:5:30	vue/no-unused-vars	unusedVariable	'd' is defined but never used.	suggestion	replaceWithUnderscore	Replace `d` with `_d` to ignore the unused variable.	159	160	_d	end	5	31
+tests/rules/vue/no-unused-vars/extra-underscore/cases.vue:6:20	vue/no-unused-vars	unusedVariable	'a' is defined but never used.	suggestion	replaceWithUnderscore	Replace `a` with `_a` to ignore the unused variable.	215	216	_a	end	6	21
+tests/rules/vue/no-unused-vars/extra-underscore/cases.vue:7:18	vue/no-unused-vars	unusedVariable	'x' is defined but never used.	suggestion	replaceWithUnderscore	Replace `x` with `_x` to ignore the unused variable.	266	267	_x	end	7	19
+tests/rules/vue/no-unused-vars/extra-underscore/cases.vue:7:21	vue/no-unused-vars	unusedVariable	'y' is defined but never used.	suggestion	replaceWithUnderscore	Replace `y` with `_y` to ignore the unused variable.	269	270	_y	end	7	22
+tests/rules/vue/no-unused-vars/extra-underscore/cases.vue:9:21	vue/no-unused-vars	unusedVariable	'p' is defined but never used.	suggestion	replaceWithUnderscore	Replace `p` with `_p` to ignore the unused variable.	378	379	_p	end	9	22
+tests/rules/vue/no-unused-vars/extra-underscore/cases.vue:10:21	vue/no-unused-vars	unusedVariable	'props' is defined but never used.	suggestion	replaceWithUnderscore	Replace `props` with `_props` to ignore the unused variable.	421	426	_props	end	10	26
+tests/rules/vue/no-unused-vars/extra-underscore/cases.vue:11:36	vue/no-unused-vars	unusedVariable	's' is defined but never used.	suggestion	replaceWithUnderscore	Replace `s` with `_s` to ignore the unused variable.	466	467	_s	end	11	37
+tests/rules/vue/no-unused-vars/extra-underscore/cases.vue:13:23	vue/no-unused-vars	unusedVariable	'scope' is defined but never used.	suggestion	replaceWithUnderscore	Replace `scope` with `_scope` to ignore the unused variable.	562	567	_scope	end	13	28
+tests/rules/vue/no-unused-vars/extra-underscore/cases.vue:14:24	vue/no-unused-vars	unusedVariable	'i' is defined but never used.	suggestion	replaceWithUnderscore	Replace `i` with `_i` to ignore the unused variable.	595	596	_i	end	14	25
+tests/rules/vue/no-unused-vars/extra/cases.vue:4:24	vue/no-unused-vars	unusedVariable	'index' is defined but never used.	end	4	29
+tests/rules/vue/no-unused-vars/extra/cases.vue:5:20	vue/no-unused-vars	unusedVariable	'a' is defined but never used.	end	5	21
+tests/rules/vue/no-unused-vars/extra/cases.vue:5:27	vue/no-unused-vars	unusedVariable	'c' is defined but never used.	end	5	28
+tests/rules/vue/no-unused-vars/extra/cases.vue:5:30	vue/no-unused-vars	unusedVariable	'd' is defined but never used.	end	5	31
+tests/rules/vue/no-unused-vars/extra/cases.vue:6:20	vue/no-unused-vars	unusedVariable	'a' is defined but never used.	end	6	21
+tests/rules/vue/no-unused-vars/extra/cases.vue:7:18	vue/no-unused-vars	unusedVariable	'x' is defined but never used.	end	7	19
+tests/rules/vue/no-unused-vars/extra/cases.vue:7:21	vue/no-unused-vars	unusedVariable	'y' is defined but never used.	end	7	22
+tests/rules/vue/no-unused-vars/extra/cases.vue:9:21	vue/no-unused-vars	unusedVariable	'p' is defined but never used.	end	9	22
+tests/rules/vue/no-unused-vars/extra/cases.vue:10:21	vue/no-unused-vars	unusedVariable	'props' is defined but never used.	end	10	26
+tests/rules/vue/no-unused-vars/extra/cases.vue:11:36	vue/no-unused-vars	unusedVariable	's' is defined but never used.	end	11	37
+tests/rules/vue/no-unused-vars/extra/cases.vue:12:18	vue/no-unused-vars	unusedVariable	'_a' is defined but never used.	end	12	20
+tests/rules/vue/no-unused-vars/extra/cases.vue:12:22	vue/no-unused-vars	unusedVariable	'_b' is defined but never used.	end	12	24
+tests/rules/vue/no-unused-vars/extra/cases.vue:13:23	vue/no-unused-vars	unusedVariable	'scope' is defined but never used.	end	13	28
+tests/rules/vue/no-unused-vars/extra/cases.vue:14:24	vue/no-unused-vars	unusedVariable	'i' is defined but never used.	end	14	25
+tests/rules/vue/no-unused-vars/options-09f86de5/cases.vue:3:20	vue/no-unused-vars	unusedVariable	'x' is defined but never used.	suggestion	replaceWithUnderscore	Replace `x` with `_x` to ignore the unused variable.	73	74	_x	end	3	21
+tests/rules/vue/no-unused-vars/options-09f86de5/cases.vue:4:21	vue/no-unused-vars	unusedVariable	'a' is defined but never used.	suggestion	replaceWithUnderscore	Replace `a` with `_a` to ignore the unused variable.	131	132	_a	end	4	22
+tests/rules/vue/no-unused-vars/options-6596cbf4/cases.vue:3:26	vue/no-unused-vars	unusedVariable	'props' is defined but never used.	end	3	31
+tests/rules/vue/no-unused-vars/options-6596cbf4/cases.vue:4:31	vue/no-unused-vars	unusedVariable	'props' is defined but never used.	end	4	36
+tests/rules/vue/no-unused-vars/options-d2c9567e/cases.vue:3:20	vue/no-unused-vars	unusedVariable	'x' is defined but never used.	end	3	21
