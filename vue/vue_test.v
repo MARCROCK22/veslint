@@ -417,3 +417,31 @@ fn test_style_v_bind() {
 		.v_text]
 	assert d.snippets.map(it.code) == ['0(color)', '0(w.x)']
 }
+
+// ---- Found by fuzzing against vue-eslint-parser ----
+
+fn test_nul_in_a_directive_name() {
+	// The name has U+FFFD (three bytes) where the source has NUL (one): the key is cut by code
+	// point.
+	d := parse('<template><a :cl\x00ass="x"></a></template>')
+	a := first_element(d, 'a')
+	key := d.nodes[attribute(d, a, 0).key]
+	arg := d.nodes[key.argument]
+	assert arg.raw_name == 'cl\x00ass'
+	assert arg.name == 'cl�ass'
+	assert d.src[arg.start..arg.end] == 'cl\x00ass'
+}
+
+fn test_stream_error_after_a_named_reference() {
+	// `&amp;` moves the tokenizer's column without advance_location.
+	d := parse('<&amp;￾')
+	e := d.errors.filter(it.code == 'noncharacter-in-input-stream')[0]
+	assert e.line == 1 && e.column == 5
+}
+
+fn test_identifier_characters_typescript_rejects() {
+	d := parse('<template><a v-slot="a😀"></a>{{ b }}</template>')
+	assert d.errors.len == 1
+	assert d.errors[0].ts_message
+	assert d.errors[0].message == 'Invalid character.'
+}

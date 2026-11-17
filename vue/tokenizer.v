@@ -933,6 +933,7 @@ fn (mut t Tokenizer) s_markup_declaration_open(cp int) State {
 	if cp == `-` && t.boff + 1 < t.text.len && t.text[t.boff + 1] == `-` {
 		t.offset++
 		t.boff++
+		t.located++
 		t.start_token(.html_comment)
 		return .comment_start
 	}
@@ -944,6 +945,7 @@ fn (mut t Tokenizer) s_markup_declaration_open(cp int) State {
 	if cp == `[` && t.text_at(t.boff + 1, 'CDATA[') {
 		t.offset += 6
 		t.boff += 6
+		t.located += 6
 		if t.namespace == .html {
 			t.report_parse_error('cdata-in-html-content')
 			t.start_token(.html_bogus_comment)
@@ -1178,6 +1180,8 @@ fn (mut t Tokenizer) s_named_character_reference(cp int) State {
 		next := int(name[1])
 		t.offset += length - 1
 		t.boff += length - 1
+		// The column moves with them, without advance_location.
+		t.located += length - 1
 		if t.return_state in [.attribute_value_double_quoted, .attribute_value_single_quoted,
 			.attribute_value_unquoted] && !semi
 			&& (next == `=` || is_letter(next) || is_digit(next)) {

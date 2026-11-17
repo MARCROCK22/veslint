@@ -32,15 +32,50 @@ fn camelize(s string) string {
 	return out.bytestr()
 }
 
-// add_identifier makes a VIdentifier of the directive key from [start, end) of its text.
-fn (mut c ExprContext) key_identifier(key int, offset int, text string, raw string, start int, end int, name ?string) int {
+// KeyText is the name of an attribute as parseDirectiveKeyStatically indexes it: `text` (the
+// lower-cased name) and `raw` (the source) by code point, which keeps them aligned (a NUL of
+// the source is U+FFFD in the name); u16 are the UTF-16 offsets of the code points from the
+// key's start (start16 in the file).
+struct KeyText {
+	text    []rune
+	raw     []rune
+	u16     []int
+	start16 int
+}
+
+fn new_key_text(name string, raw string, start16 int) KeyText {
+	text := name.runes()
+	mut units := []int{cap: text.len + 1}
+	mut u := 0
+	for r in text {
+		units << u
+		u += if u32(r) >= 0x10000 { 2 } else { 1 }
+	}
+	units << u
+	return KeyText{
+		text:    text
+		raw:     raw.runes()
+		u16:     units
+		start16: start16
+	}
+}
+
+fn (k &KeyText) slice(r []rune, start int, end int) string {
+	a := if start < r.len { start } else { r.len }
+	b := if end < r.len { end } else { r.len }
+	return if a < b { r[a..b].string() } else { '' }
+}
+
+// key_identifier makes a VIdentifier of the directive key from the code points [start, end) of
+// the name.
+fn (mut c ExprContext) key_identifier(key int, k &KeyText, start int, end int, name ?string) int {
 	return c.doc.add_node(VNode{
 		typ:      .v_identifier
 		parent:   key
-		start:    offset + start
-		end:      offset + end
-		name:     name or { text[start..end] }
-		raw_name: raw[start..end]
+		start:    c.to_bytes(k.start16 + k.u16[start])
+		end:      c.to_bytes(k.start16 + k.u16[end])
+		name:     name or { k.slice(k.text, start, end) }
+		raw_name: k.slice(k.raw, start, end)
 	})
 }
 
@@ -48,9 +83,8 @@ fn (mut c ExprContext) key_identifier(key int, offset int, text string, raw stri
 // modifiers of the attribute name (a key is a single line).
 fn (mut c ExprContext) parse_directive_key_statically(attr_key int) int {
 	node := c.doc.nodes[attr_key]
-	text := node.name
-	raw := node.raw_name
-	offset := node.start
+	k := new_key_text(node.name, node.raw_name, c.doc.utf16(node.start))
+	text := k.text
 	key := c.doc.add_node(VNode{
 		typ:    .v_directive_key
 		start:  node.start
@@ -66,33 +100,50 @@ fn (mut c ExprContext) parse_directive_key_statically(attr_key int) int {
 			`@` { 'on' }
 			else { 'slot' }
 		}
-		name = c.key_identifier(key, offset, text, raw, 0, 1, sign)
+		name = c.key_identifier(key, k, 0, 1, sign)
 		i = 1
 	} else {
-		colon := text.index_u8(`:`)
+		colon := text.index(`:`)
 		if colon != -1 {
-			name = c.key_identifier(key, offset, text, raw, 0, colon, none)
+			name = c.key_identifier(key, k, 0, colon, none)
 			i = colon + 1
 		}
 	}
 	if name >= 0 && i < text.len && text[i] == `[` {
-		len := text[i..].last_index_u8(`]`)
+		mut len := -1
+		for j := text.len - 1; j >= i; j-- {
+			if text[j] == `]` {
+				len = j - i
+				break
+			}
+		}
 		if len != -1 {
-			argument = c.key_identifier(key, offset, text, raw, i, i + len + 1, none)
+			argument = c.key_identifier(key, k, i, i + len + 1, none)
 			i = i + len + 1 + if i + len + 1 < text.len && text[i + len + 1] == `.` { 1 } else { 0 }
 		}
 	}
 	mut modifiers := []int{}
-	rest := if i <= text.len { text[i..] } else { '' }
-	for part in rest.split('.') {
-		modifier := c.key_identifier(key, offset, text, raw, i, i + part.len, none)
-		if part == '' && i < text.len {
+	// text.slice(i).split('.'), by the lengths of its parts.
+	mut parts := []int{}
+	mut run := 0
+	for j in i .. text.len {
+		if text[j] == `.` {
+			parts << run
+			run = 0
+		} else {
+			run++
+		}
+	}
+	parts << run
+	for part in parts {
+		modifier := c.key_identifier(key, k, i, i + part, none)
+		if part == 0 && i < text.len {
 			c.doc.insert_error(ParseError{
-				message: "Unexpected token '${text[i..i + 1]}'"
-				index:   offset + i
+				message: "Unexpected token '${text[i].str()}'"
+				index:   c.to_bytes(k.start16 + k.u16[i])
 			})
 		}
-		i += part.len + 1
+		i += part + 1
 		modifiers << modifier
 	}
 	if name < 0 {
@@ -104,23 +155,34 @@ fn (mut c ExprContext) parse_directive_key_statically(attr_key int) int {
 	}
 	modifiers = modifiers.filter(c.doc.nodes[it].name != '')
 	if c.doc.nodes[name].name == 'v-' {
-		at := c.doc.nodes[name].end
-		ch := if at - offset < text.len { text[at - offset..at - offset + 1] } else { 'undefined' }
+		// The character after `v-` (`undefined` past the end).
+		ch := if text.len > 2 { text[2].str() } else { 'undefined' }
 		c.doc.insert_error(ParseError{
 			message: "Unexpected token '${ch}'"
-			index:   at
+			index:   c.doc.nodes[name].end
 		})
 	}
 	if c.doc.nodes[name].raw_name == '.' && !modifiers.any(c.doc.nodes[it].name == 'prop') {
-		base := if argument >= 0 { argument } else { name }
-		pos := c.doc.nodes[base].end - offset
-		prop := c.key_identifier(key, offset, text, raw, pos, pos, 'prop')
+		// The zero-width `prop` modifier goes after the argument, or after the name.
+		pos := if argument >= 0 { key_end_index(c, k, argument) } else { 1 }
+		prop := c.key_identifier(key, k, pos, pos, 'prop')
 		modifiers.insert(0, prop)
 	}
 	c.doc.nodes[key].dir_name = name
 	c.doc.nodes[key].argument = argument
 	c.doc.nodes[key].modifiers = modifiers
 	return key
+}
+
+// key_end_index is the code point index where an identifier of the key ends.
+fn key_end_index(c &ExprContext, k &KeyText, ident int) int {
+	end16 := c.doc.utf16(c.doc.nodes[ident].end) - k.start16
+	for i, u in k.u16 {
+		if u == end16 {
+			return i
+		}
+	}
+	return k.text.len
 }
 
 // directive_key_tokens is parseDirectiveKeyTokens.

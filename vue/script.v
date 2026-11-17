@@ -308,15 +308,22 @@ fn (mut c ExprContext) parse_masked(ranges [][]int) {
 		s.has_error = true
 		s.error_index = first_error_offset(root)
 	}
-	es := estree.convert_with(root, s.masked, tsx, estree.Options{
-		module:       true
-		allow_errors: true
-		regexp_valid: fn (pattern string, flags string) bool {
-			return jsregexp.regexp_new(estree.utf16_units(pattern), flags) != none
+	// A script with syntax errors is a parsing error for vue-eslint-parser: no Program then
+	// (its tokens still are).
+	if !s.has_error {
+		if es := estree.convert_with(root, s.masked, tsx, estree.Options{
+			module:       true
+			regexp_valid: fn (pattern string, flags string) bool {
+				return jsregexp.regexp_new(estree.utf16_units(pattern), flags) != none
+			}
+		})
+		{
+			s.es = es
+			s.has_es = true
+		} else {
+			s.has_error = true
 		}
-	}) or { return }
-	s.es = es
-	s.has_es = true
+	}
 	toks, comms := snippet_tokens(root, s.masked, tsx)
 	for t in toks {
 		if t.start in s.split_offsets {
@@ -349,7 +356,7 @@ fn (mut c ExprContext) parse_masked(ranges [][]int) {
 			}
 		}
 	}
-	if s.split_offsets.len > 0 {
+	if s.split_offsets.len > 0 && s.has_es {
 		c.drop_split_statements()
 	}
 }

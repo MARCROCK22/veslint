@@ -363,6 +363,21 @@ function withTsDiagnostics(file, value) {
     e.lineNumber = lo + 1;
     e.column = index - (lo === 0 ? 0 : lts[lo - 1]);
   }
+  // The errors without a code went in with insertError (before the first error whose index is
+  // not smaller), in document order; with their indexes known they go in again so.
+  const inserted = value.errors.filter(e => e.code === undefined);
+  const list = value.errors.filter(e => e.code !== undefined);
+  for (const e of inserted) {
+    let lo = 0;
+    let hi = list.length;
+    while (lo < hi) {
+      const mid = (lo + hi) >> 1;
+      if (list[mid].index < e.index) lo = mid + 1;
+      else hi = mid;
+    }
+    list.splice(lo, 0, e);
+  }
+  value.errors = list;
 }
 const vValues = new Map();
 for (const line of fs.readFileSync(path.join(out, 'v.jsonl'), 'utf8').split('\n').filter(Boolean)) {

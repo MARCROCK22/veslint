@@ -12,10 +12,11 @@ fn C.ts_node_is_missing(self C.TSNode) bool
 // needs: the tree-sitter parsers and the token replacements to apply to the document.
 struct ExprContext {
 mut:
-	doc  &Document = unsafe { nil }
-	opts Options
-	ts   &C.TSParser = unsafe { nil }
-	tsx  &C.TSParser = unsafe { nil }
+	doc     &Document = unsafe { nil }
+	opts    Options
+	ts      &C.TSParser = unsafe { nil }
+	tsx     &C.TSParser = unsafe { nil }
+	parsers &Parsers    = unsafe { nil }
 	// tsx_mode: the script is `lang="tsx"`, so expressions are parsed with JSX.
 	tsx_mode bool
 	// Replacements of the document's tokens (replaceTokens), applied in order by flush_tokens.
@@ -46,10 +47,11 @@ fn parse_err(perr ParseError) IError {
 
 fn new_expr_context(doc &Document, opts Options, parsers &Parsers) ExprContext {
 	mut ctx := ExprContext{
-		doc:  doc
-		opts: opts
-		ts:   parsers.ts
-		tsx:  parsers.tsx
+		doc:     doc
+		opts:    opts
+		ts:      parsers.ts
+		tsx:     parsers.tsx
+		parsers: parsers
 	}
 	lang := doc.script_lang() or { '' }
 	ctx.tsx_mode = lang == 'tsx'
@@ -62,6 +64,9 @@ fn new_expr_context(doc &Document, opts Options, parsers &Parsers) ExprContext {
 pub struct Parsers {
 	ts  &C.TSParser = unsafe { nil }
 	tsx &C.TSParser = unsafe { nil }
+	// What may start and continue an identifier beyond ASCII (tree-sitter takes more).
+	id_start    jsregexp.JsRegex
+	id_continue jsregexp.JsRegex
 }
 
 pub fn new_parsers() !&Parsers {
@@ -74,8 +79,10 @@ pub fn new_parsers() !&Parsers {
 		return error('the TypeScript grammar uses an ABI this tree-sitter runtime does not support')
 	}
 	return &Parsers{
-		ts:  ts
-		tsx: tsx
+		ts:          ts
+		tsx:         tsx
+		id_start:    jsregexp.js_regex_new('^[\\p{ID_Start}\$_]\$', 'u')!
+		id_continue: jsregexp.js_regex_new('^[\\p{ID_Continue}\$\\u200C\\u200D]\$', 'u')!
 	}
 }
 
@@ -151,6 +158,12 @@ fn (mut c ExprContext) parse_fragment(code string, calc Calc) !Fragment {
 		if at, msg := reserved_identifier(toks, code) {
 			error_at = at
 			message = msg
+		} else {
+			bad := c.invalid_identifier_char(toks, code)
+			if bad >= 0 {
+				error_at = bad
+				message = 'Invalid character.'
+			}
 		}
 	}
 	mut es := estree.EsTree{}
@@ -285,6 +298,45 @@ fn reserved_identifier(tokens []SnipToken, code string) ?(int, string) {
 		}
 	}
 	return none
+}
+
+// invalid_identifier_char is where a name has a character TypeScript does not take in an
+// identifier (an emoji, U+FFFD of a NUL…), or -1.
+fn (c &ExprContext) invalid_identifier_char(tokens []SnipToken, code string) int {
+	for t in tokens {
+		if t.typ != 'Identifier' && t.typ != 'PrivateIdentifier' {
+			continue
+		}
+		mut ascii := true
+		for i in t.start .. t.end {
+			if code[i] >= 0x80 {
+				ascii = false
+				break
+			}
+		}
+		if ascii {
+			continue
+		}
+		mut i := t.start
+		if t.typ == 'PrivateIdentifier' {
+			i++
+		}
+		mut first := true
+		for i < t.end {
+			cp, n := decode_cp(code, i)
+			if cp >= 0x80 {
+				mut units := []u16{}
+				jsregexp.append_utf16(mut units, cp)
+				re := if first { &c.parsers.id_start } else { &c.parsers.id_continue }
+				if !(re.test(units) or { true }) {
+					return i
+				}
+			}
+			first = false
+			i += n
+		}
+	}
+	return -1
 }
 
 // es is the EsTree of a snippet.
