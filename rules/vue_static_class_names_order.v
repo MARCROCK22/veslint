@@ -64,8 +64,8 @@ fn (mut c Checker) lint_vue_static_class_names_order(root C.TSNode, abs_path str
 		class_list := c.vue.doc.nodes[node.value].text
 		pieces := vscno_split_keeping_spaces(class_list)
 		divider := if pieces.len > 1 { pieces[1] } else { '' }
-		names := pieces.filter(js_trim(it) != '')
-		sorted := vscno_sorted(names).join(divider)
+		class_names := pieces.filter(js_trim(it) != '')
+		sorted := vscno_sorted(class_names).join(divider)
 		if class_list == sorted {
 			continue
 		}

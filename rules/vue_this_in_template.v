@@ -54,14 +54,14 @@ fn (mut c Checker) lint_vue_this_in_template(root C.TSNode, abs_path string, mut
 					scopes.pop()
 					continue
 				}
-				mut names := if scopes.len > 0 { scopes.last().clone() } else { []string{} }
+				mut scope_names := if scopes.len > 0 { scopes.last().clone() } else { []string{} }
 				for v in node.variables {
 					name := c.vue.doc.variables[v].name
-					if name !in names {
-						names << name
+					if name !in scope_names {
+						scope_names << name
 					}
 				}
-				scopes << names
+				scopes << scope_names
 				continue
 			}
 			if !always || step.leave || node.typ != .v_expression_container || scopes.len == 0 {

@@ -95,8 +95,8 @@ fn (c &Checker) vnrv_test(option &VnrvOption, attr int) bool {
 		return false
 	}
 	if option.has_modifiers {
-		names := c.vue_directive_modifiers(attr).map(c.vue.doc.nodes[it].name)
-		if !option.modifiers.all(it in names) {
+		modifier_names := c.vue_directive_modifiers(attr).map(c.vue.doc.nodes[it].name)
+		if !option.modifiers.all(it in modifier_names) {
 			return false
 		}
 	}

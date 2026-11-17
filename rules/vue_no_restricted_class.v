@@ -78,12 +78,12 @@ fn vnrc_extract(es &estree.EsTree, node int, text_only bool, mut out []VnrcClass
 				if es.typ(prop) != .property {
 					continue
 				}
-				names := vue_tpl_static_property_name(es, prop) or { continue }
-				if names == '' {
+				prop_names := vue_tpl_static_property_name(es, prop) or { continue }
+				if prop_names == '' {
 					continue
 				}
 				key := es.node(prop, .key) or { continue }
-				for name in vue_split_whitespace(names) {
+				for name in vue_split_whitespace(prop_names) {
 					out << VnrcClassName{name, key}
 				}
 			}
@@ -142,9 +142,9 @@ fn (mut c Checker) lint_vue_no_restricted_class(root C.TSNode, abs_path string, 
 			continue
 		}
 		es := c.vue_expr_es(e)
-		mut names := []VnrcClassName{}
-		vnrc_extract(es, e.node, false, mut names)
-		for n in names {
+		mut class_names := []VnrcClassName{}
+		vnrc_extract(es, e.node, false, mut class_names)
+		for n in class_names {
 			if forbidden.matches(n.name) {
 				findings << c.vue_report(es.nodes[n.node].start, es.nodes[n.node].end, 'forbiddenClass',
 					{
