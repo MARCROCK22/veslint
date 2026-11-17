@@ -502,6 +502,10 @@ const rule_option_schemas = {
 	'vue/no-deprecated-html-element-is':                               '{"type":"array","minItems":0,"maxItems":0}'
 	'vue/no-use-v-if-with-v-for':                                      '{"type":"array","items":[{"type":"object","properties":{"allowUsingIterationVar":{"type":"boolean"}},"additionalProperties":false}],"minItems":0,"maxItems":1}'
 	'vue/no-v-for-template-key-on-child':                              '{"type":"array","minItems":0,"maxItems":0}'
+	'vue/html-end-tags':                                               '{"type":"array","minItems":0,"maxItems":0}'
+	'vue/valid-attribute-name':                                        '{"type":"array","minItems":0,"maxItems":0}'
+	'vue/v-for-delimiter-style':                                       '{"type":"array","items":[{"enum":["in","of"]}],"minItems":0,"maxItems":1}'
+	'vue/no-v-text-v-html-on-component':                               '{"type":"array","items":[{"type":"object","properties":{"allow":{"type":"array","items":{"type":"string"},"uniqueItems":true},"ignoreElementNamespaces":{"type":"boolean"}},"additionalProperties":false}],"minItems":0,"maxItems":1}'
 }
 
 // eslint_rule_default_options are the meta.defaultOptions of the rules of ESLint and of

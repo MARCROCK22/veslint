@@ -131,3 +131,15 @@ fn (c &Checker) vue_token_after(offset int, include_comments bool) ?vue.Token {
 fn vue_is_js_comment(t vue.Token) bool {
 	return t.typ in ['Line', 'Block', 'Shebang']
 }
+
+// vue_token_after_where is getTokenAfter(node, filter): the first token that starts at or after
+// `offset` and passes the filter.
+fn (c &Checker) vue_token_after_where(offset int, filter fn (vue.Token) bool) ?vue.Token {
+	tokens := c.vue.doc.tokens
+	for i := vue_lower_bound(tokens, offset); i < tokens.len; i++ {
+		if filter(tokens[i]) {
+			return tokens[i]
+		}
+	}
+	return none
+}

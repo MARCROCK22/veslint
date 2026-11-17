@@ -513,6 +513,10 @@ pub const vue_require_v_for_key = 'vue/require-v-for-key'
 pub const vue_no_deprecated_html_element_is = 'vue/no-deprecated-html-element-is'
 pub const vue_no_use_v_if_with_v_for = 'vue/no-use-v-if-with-v-for'
 pub const vue_no_v_for_template_key_on_child = 'vue/no-v-for-template-key-on-child'
+pub const vue_html_end_tags = 'vue/html-end-tags'
+pub const vue_valid_attribute_name = 'vue/valid-attribute-name'
+pub const vue_v_for_delimiter_style = 'vue/v-for-delimiter-style'
+pub const vue_no_v_text_v_html_on_component = 'vue/no-v-text-v-html-on-component'
 pub const names = [no_floating_promises, await_thenable, require_await, return_await,
 	no_misused_promises, no_unsafe_call, no_unsafe_member_access, no_unsafe_return,
 	no_unsafe_assignment, no_unsafe_argument, restrict_template_expressions,
@@ -658,7 +662,8 @@ pub const names = [no_floating_promises, await_thenable, require_await, return_a
 	vue_valid_v_text, vue_valid_v_show, vue_valid_v_if, vue_valid_v_else_if, vue_valid_v_else,
 	vue_valid_v_is, vue_valid_v_on, vue_v_on_style, vue_v_bind_style, vue_no_multiple_objects_in_class,
 	vue_require_v_for_key, vue_no_deprecated_html_element_is, vue_no_use_v_if_with_v_for,
-	vue_no_v_for_template_key_on_child]
+	vue_no_v_for_template_key_on_child, vue_html_end_tags, vue_valid_attribute_name,
+	vue_v_for_delimiter_style, vue_no_v_text_v_html_on_component]
 
 // untyped_rules are the ported rules that need no types (`meta.docs.requiresTypeChecking` is false
 // in typescript-eslint; the eslint-plugin-unicorn rules that read the types when the parser has a
@@ -776,7 +781,8 @@ pub const untyped_rules = [adjacent_overload_signatures, array_type, class_liter
 	vue_valid_v_text, vue_valid_v_show, vue_valid_v_if, vue_valid_v_else_if, vue_valid_v_else,
 	vue_valid_v_is, vue_valid_v_on, vue_v_on_style, vue_v_bind_style, vue_no_multiple_objects_in_class,
 	vue_require_v_for_key, vue_no_deprecated_html_element_is, vue_no_use_v_if_with_v_for,
-	vue_no_v_for_template_key_on_child]
+	vue_no_v_for_template_key_on_child, vue_html_end_tags, vue_valid_attribute_name,
+	vue_v_for_delimiter_style, vue_no_v_text_v_html_on_component]
 
 // needs_types tells whether a rule asks tsgo for the types of the program.
 pub fn needs_types(rule string) bool {
@@ -1284,6 +1290,10 @@ pub const default_options = {
 	vue_no_deprecated_html_element_is:               '[]'
 	vue_no_use_v_if_with_v_for:                      '[]'
 	vue_no_v_for_template_key_on_child:              '[]'
+	vue_html_end_tags:                               '[]'
+	vue_valid_attribute_name:                        '[]'
+	vue_v_for_delimiter_style:                       '[]'
+	vue_no_v_text_v_html_on_component:               '[]'
 }
 
 // Finding is a problem a rule found at a node.
@@ -1940,6 +1950,10 @@ pub fn message(rule string, finding Finding) string {
 		vue_no_deprecated_html_element_is { vndhei_messages }
 		vue_no_use_v_if_with_v_for { vnuviwvf_messages }
 		vue_no_v_for_template_key_on_child { vnvftkoc_messages }
+		vue_html_end_tags { vhet_messages }
+		vue_valid_attribute_name { vvan_messages }
+		vue_v_for_delimiter_style { vvfds_messages }
+		vue_no_v_text_v_html_on_component { vnvtvhoc_messages }
 		else { map[string]string{} }
 	}
 	return interpolate(messages[finding.message_id] or { finding.message_id }, finding.data)
@@ -3686,6 +3700,18 @@ fn (mut c Checker) lint_rule(rule string, root C.TSNode, abs_path string, mut st
 		}
 		vue_no_v_for_template_key_on_child {
 			return c.lint_vue_no_v_for_template_key_on_child(root, abs_path, mut stats)!
+		}
+		vue_html_end_tags {
+			return c.lint_vue_html_end_tags(root, abs_path, mut stats)!
+		}
+		vue_valid_attribute_name {
+			return c.lint_vue_valid_attribute_name(root, abs_path, mut stats)!
+		}
+		vue_v_for_delimiter_style {
+			return c.lint_vue_v_for_delimiter_style(root, abs_path, mut stats)!
+		}
+		vue_no_v_text_v_html_on_component {
+			return c.lint_vue_no_v_text_v_html_on_component(root, abs_path, mut stats)!
 		}
 		else { return error('unknown rule: ${rule}') }
 	}

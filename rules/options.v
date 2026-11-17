@@ -244,6 +244,8 @@ pub fn check_options(rule string, options []json2.Any) !bool {
 		vue_v_on_style { vvos_options(options)! }
 		vue_v_bind_style { vvbs_options(options)! }
 		vue_no_use_v_if_with_v_for { vnuviwvf_options(options)! }
+		vue_v_for_delimiter_style { vvfds_options(options)! }
+		vue_no_v_text_v_html_on_component { vnvtvhoc_options(options)! }
 		else { return false }
 	}
 	return true
