@@ -51,6 +51,7 @@ fn (mut c Checker) lint_no_nonoctal_decimal_escape(root C.TSNode, abs_path strin
 				findings << Finding{
 					stmt:        c.position_range(escape_start, escape_end)
 					message_id:  'decimalEscape'
+					text_loc:    true
 					data:        {
 						'decimalEscape': decimal
 					}

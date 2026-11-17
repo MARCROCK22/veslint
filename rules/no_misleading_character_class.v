@@ -479,6 +479,7 @@ fn (mut c Checker) nmcc_verify(node C.TSNode, pattern []u16, flags string, fix ?
 			st.findings << Finding{
 				stmt:        c.position_range(offset, end_offset)
 				message_id:  k
+				text_loc:    true
 				suggestions: suggestions
 			}
 		}

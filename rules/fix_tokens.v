@@ -134,6 +134,9 @@ fn (mut c Checker) source_tokens(n C.TSNode) &SourceTokens {
 			root = node_parent(root) or { break }
 		}
 		c.file_tokens = build_source_tokens(root, c.src)
+		if c.is_vue() {
+			c.file_tokens = c.vue_tag_tokens(c.file_tokens, root)
+		}
 	}
 	return c.file_tokens
 }
@@ -201,7 +204,8 @@ fn source_tokens_jsx(root C.TSNode, tokens []SourceToken) []SourceToken {
 			continue
 		}
 		if token.kind in [.identifier, .keyword, .null_, .boolean]
-			&& parent_kind in ['jsx_opening_element', 'jsx_closing_element', 'jsx_self_closing_element', 'jsx_attribute', 'jsx_member_expression', 'jsx_namespace_name'] {
+			&& parent_kind in ['jsx_opening_element', 'jsx_closing_element', 'jsx_self_closing_element',
+				'jsx_attribute', 'jsx_member_expression', 'jsx_namespace_name'] {
 			out << SourceToken{token.start, token.end, .jsx_identifier, token.node}
 			continue
 		}

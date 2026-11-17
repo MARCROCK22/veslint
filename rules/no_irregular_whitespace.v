@@ -143,6 +143,7 @@ fn (mut c Checker) lint_no_irregular_whitespace(root C.TSNode, abs_path string, 
 		findings << Finding{
 			stmt:       c.position_range(offset, error[1])
 			message_id: 'noIrregularWhitespace'
+			text_loc:   true
 		}
 	}
 	stats.eval_ms += ms(sw.elapsed())

@@ -2,6 +2,7 @@ module rules
 
 import estree
 import offsets
+import treesitter { TokenEnds, token_ends }
 import vue
 
 // A .vue file is linted as ESLint lints it with vue-eslint-parser: the rules see the script as
@@ -39,6 +40,20 @@ mut:
 	has_code_ends bool
 }
 
+// file_token_ends are the token ends of the tree (TokenEnds): for a .vue file, without the `;`
+// the masked script has between two scripts (vue-eslint-parser drops it, and a statement that
+// ends with it ends at the token before it).
+fn (c &Checker) file_token_ends(root C.TSNode) TokenEnds {
+	ends := token_ends(root)
+	if !c.is_vue() || c.vue.doc.script.split_offsets.len == 0 {
+		return ends
+	}
+	split := c.vue.doc.script.split_offsets
+	return TokenEnds{
+		ends: ends.ends.filter(it - 1 !in split)
+	}
+}
+
 // set_vue makes the next lint_file lint `doc`, a parsed .vue file whose text is the one lint_file
 // gets, and whose twin tsgo has at `ts_path`. lint_file forgets it when it returns.
 pub fn (mut c Checker) set_vue(doc &vue.Document, ts_path string) {
@@ -51,6 +66,12 @@ pub fn (mut c Checker) set_vue(doc &vue.Document, ts_path string) {
 // is_vue: the file being linted is a .vue file.
 fn (c &Checker) is_vue() bool {
 	return c.vue.doc != unsafe { nil }
+}
+
+// is_typescript_file ports eslint-plugin-unicorn's isTypeScriptFile(context.physicalFilename): the
+// name ends in .ts, .mts, .cts or .tsx, which every file veslint lints has but a .vue file.
+fn (c &Checker) is_typescript_file() bool {
+	return !c.is_vue()
 }
 
 // parse_text is the text tree-sitter parsed: the masked script of a .vue file (same length as the
@@ -153,21 +174,64 @@ fn (c &Checker) file_offset_of_ts_end(b int) int {
 // vue_es_tree takes the ESTree of a .vue file from its document, which converted it from the same
 // tree, as vue-eslint-parser gives it: the Program has the range of the script (not the file's),
 // and the source text is the whole file.
-fn (mut c Checker) vue_es_tree() {
+fn (mut c Checker) vue_es_tree(root C.TSNode) {
 	script := &c.vue.doc.script
-	if !script.has_es {
+	source := if script.has_es {
+		script.es
+	} else if script.tree == unsafe { nil } {
+		// No script, or an empty one: lint_file parsed the masked file, which has no code.
+		estree.convert_with(root, script.masked, false, estree.Options{ module: true }) or {
+			c.file_es_state = .failed
+			return
+		}
+	} else {
+		// A script with syntax errors.
 		c.file_es_state = .failed
 		return
 	}
+	// The lines of vue-eslint-parser's locations end only at a line feed.
+	mut line_units := [0]
+	line_units << c.vue.doc.line_terminators
 	mut tree := estree.EsTree{
-		...script.es
-		nodes: script.es.nodes.clone()
-		src:   c.src
+		...source
+		nodes:       source.nodes.clone()
+		src:         c.src
+		line_starts: c.vue.doc.line_starts.clone()
+		line_units:  line_units
 	}
 	tree.nodes[tree.root].start = script.program_start
 	tree.nodes[tree.root].end = script.program_end
 	c.file_es = tree
 	c.file_es_state = .built
+}
+
+// vue_tag_tokens gives the tokens of a .vue file as vue-eslint-parser has them: without the `;`
+// the masked script has between two scripts, and with the `<script>` and `</script>` punctuators
+// it puts among them, one for each tag of the scripts (their range is the tag's): ESLint's token
+// queries find them before the first token of the script and after its last one.
+fn (c &Checker) vue_tag_tokens(tokens &SourceTokens, root C.TSNode) &SourceTokens {
+	script := &c.vue.doc.script
+	tags := script.tokens.filter(it.typ == 'Punctuator' && it.value in ['<script>', '</script>'])
+	if tags.len == 0 && script.split_offsets.len == 0 {
+		return tokens
+	}
+	mut all := tokens.all.filter(it.start !in script.split_offsets)
+	mut only := tokens.tokens.filter(it.start !in script.split_offsets)
+	for tag in tags {
+		token := SourceToken{
+			start: tag.start
+			end:   tag.end
+			kind:  .punctuator
+			node:  root
+		}
+		all.insert(source_tokens_index(all, tag.start), token)
+		only.insert(source_tokens_index(only, tag.start), token)
+	}
+	return &SourceTokens{
+		tokens:   only
+		comments: tokens.comments
+		all:      all
+	}
 }
 
 // last_end_in is TokenEnds.last_end on a sorted list of ends: the last one at or before `offset`.

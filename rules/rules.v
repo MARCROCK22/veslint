@@ -1202,6 +1202,11 @@ pub:
 	// ESLint's column of a parsing error is TypeScript's character, which counts from 0, where any
 	// other column counts from 1.
 	column_from_zero bool
+	// The rule builds its `loc` from offsets of the text (sourceCode.getLocFromIndex, or the
+	// lines of sourceCode.lines) and not from a node or a token: ESLint's lines end at CRLF, LF,
+	// CR, U+2028 and U+2029 there, where the locations of vue-eslint-parser's nodes and tokens
+	// end only at LF (the two only differ in a .vue file).
+	text_loc bool
 }
 
 // problem_rule is the `rule` of the problems ESLint reports without a rule (`ruleId: null`).
@@ -1952,7 +1957,7 @@ fn (mut c Checker) lint_file_in_lifetime(parser Parser, config LintConfig, src s
 	}
 	mut root := root_node(tree)
 	c.src = src
-	c.tokens = token_ends(root)
+	c.tokens = c.file_token_ends(root)
 	c.node_index = treesitter.new_node_index(root)
 	c.ast_path = ''
 	c.program_directory = config.program_directory
@@ -1980,7 +1985,7 @@ fn (mut c Checker) lint_file_in_lifetime(parser Parser, config LintConfig, src s
 		tree = parser.parse(reread)!
 		owned = true
 		root = root_node(tree)
-		c.tokens = token_ends(root)
+		c.tokens = c.file_token_ends(root)
 		c.node_index = treesitter.new_node_index(root)
 	}
 	unmatched_before := stats.unmatched

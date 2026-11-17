@@ -230,8 +230,15 @@ fn (mut c Checker) scope_libs(libs []string) &ScopeLibs {
 // the file and what its comments declare.
 fn (mut c Checker) file_scope_setup(config LintConfig, inline InlineConfig) ScopeSetup {
 	libs := c.scope_libs(scope_libs_of(c.scope_project, config.language))
-	return new_scope_setup(c.scope_project, config.language, inline.globals, inline.exported,
+	setup := new_scope_setup(c.scope_project, config.language, inline.globals, inline.exported,
 		libs)
+	if c.is_vue() && c.vue.doc.has_script_setup() {
+		return ScopeSetup{
+			...setup
+			vue: vue_scope_setup(c.vue.doc)
+		}
+	}
+	return setup
 }
 
 // OptionState tells an option that is not set from one set to null.
@@ -313,8 +320,12 @@ pub fn parse_language_options(value json2.Any) LanguageOptions {
 	mut jsx := false
 	if features := parser['ecmaFeatures'] {
 		if features is map[string]json2.Any {
-			jsx = (features.as_map()['jsx'] or { json2.Any(false) }).json_str() !in ['false', 'null',
-				'0', '""']
+			jsx = (features.as_map()['jsx'] or { json2.Any(false) }).json_str() !in [
+				'false',
+				'null',
+				'0',
+				'""',
+			]
 			global_return = (features.as_map()['globalReturn'] or { json2.Any(false) }).json_str() == 'true'
 			implied_strict = (features.as_map()['impliedStrict'] or { json2.Any(false) }).json_str() == 'true'
 		}
@@ -402,6 +413,8 @@ pub:
 	// nor whether the parser has a program (LanguageOptions.type_information), for
 	// eslint-plugin-unicorn's withTypeInformation
 	type_information bool = true
+	// A .vue file with a <script setup>: what vue-eslint-parser adds to the scopes (vue_scope.v).
+	vue VueScopeSetup
 }
 
 // ScopeLibs are the implicit variables a list of libs gives the global scope
@@ -849,6 +862,9 @@ fn build_scope_tree_with(root C.TSNode, src string, tokens TokenEnds, setup Scop
 		b.close()
 	}
 	b.implicit_globals()
+	if setup.vue.script_setup {
+		b.vue_script_setup_scope(setup.vue)
+	}
 	b.add_globals(setup.declared)
 	// markExportedVariables: only the variables of the global scope.
 	for name in setup.exported {

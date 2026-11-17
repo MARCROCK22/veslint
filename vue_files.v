@@ -55,11 +55,31 @@ fn uses_tsx_grammar(doc &vue.Document) bool {
 
 // vue_report_positions are the line and column ESLint prints for the start (and, with `ends`, the
 // end) of each finding of a .vue file: those of vue-eslint-parser's locations, whose lines end
-// only at a line feed.
+// only at a line feed, for a report on a node or a token; ESLint's own (offsets.utf16_positions)
+// for one whose rule computes its location from the text (Finding.text_loc).
 fn vue_report_positions(doc &vue.Document, findings []rules.Finding, ends bool) ([]offsets.DisplayPos, []offsets.DisplayPos) {
 	mut starts := []offsets.DisplayPos{cap: findings.len}
 	mut end_positions := []offsets.DisplayPos{}
+	text_located := findings.filter(it.text_loc)
+	mut text_starts := []offsets.DisplayPos{}
+	mut text_ends := []offsets.DisplayPos{}
+	if text_located.len > 0 {
+		_, text_starts = offsets.utf16_positions(doc.src, text_located.map(it.stmt))
+		_, text_ends = offsets.utf16_positions(doc.src, text_located.map(treesitter.Ident{
+			start_byte: if it.stmt.end_byte >= 0 { it.stmt.end_byte } else { it.stmt.start_byte }
+			row:        it.stmt.row
+		}))
+	}
+	mut next := 0
 	for f in findings {
+		if f.text_loc {
+			starts << text_starts[next]
+			if ends {
+				end_positions << text_ends[next]
+			}
+			next++
+			continue
+		}
 		loc := doc.loc(f.stmt.start_byte)
 		starts << offsets.DisplayPos{
 			// A report without a place in the file: ESLint's line 0.

@@ -32,6 +32,7 @@ fn (mut c Checker) lint_stylistic_eol_last(root C.TSNode, abs_path string, mut s
 		findings << Finding{
 			stmt:       c.position_range(src.len, -1)
 			message_id: 'missing'
+			text_loc:   true
 			has_fix:    true
 			fix:        fix_insert_at(src.len, '\n')
 		}
@@ -48,6 +49,7 @@ fn (mut c Checker) lint_stylistic_eol_last(root C.TSNode, abs_path string, mut s
 			stmt:       c.position_range(src.len - if src.ends_with('\r\n') { 2 } else { 1 },
 				src.len)
 			message_id: 'unexpected'
+			text_loc:   true
 			has_fix:    true
 			fix:        fix_remove_range(start, src.len)
 		}

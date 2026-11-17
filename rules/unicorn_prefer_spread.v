@@ -11,7 +11,8 @@ import tsgo { TypeResponse }
 // with its fixes and suggestions, and of the helpers it imports from rules/shared/
 // (array-concat-in-loop.js, array-range.js, buffer-reference.js, for-of-collection-loop.js and
 // typed-array.js). Like unicorn, it reads TypeScript's types (here tsgo's) only when the parser
-// has a program (withTypeInformation). veslint lints TypeScript files only (isTypeScriptFile).
+// has a program (withTypeInformation), and suggests a spread instead of fixing only in a TypeScript
+// file (isTypeScriptFile, which a .vue file is not).
 
 const upsp_messages = {
 	'array-from':                 'Prefer the spread operator over `Array.from(…)`.'
@@ -406,6 +407,11 @@ fn (mut c Checker) upsp_method_call_to_spread(mut ctx UnCtx, node int) ?Fix {
 // contextual typing of an inline source expression, so the fix is a suggestion unless the call
 // initializes an unannotated variable and the types say that the copy has the type of the source.
 fn (mut c Checker) upsp_should_suggest_spread(mut ctx UnCtx, node int, array int) bool {
+	// Neither a TypeScript file nor a SourceFile of ScriptKind TS or TSX (TypeScript reads a .vue
+	// file with the ScriptKind of an extra extension).
+	if !c.is_typescript_file() {
+		return false
+	}
 	t := ctx.t
 	parent := t.nodes[node].parent
 	if array < 0 || t.typ(array) != .identifier || parent < 0

@@ -99,8 +99,8 @@ pub fn (d &Document) script_lang() ?string {
 }
 
 // masked_script is the file with every character but those of the parsed script contents (and
-// the split `;`) replaced by a space, line breaks kept: tree-sitter positions in it are file
-// positions.
+// the split `;`) replaced by a space, line breaks kept, and a carriage return right after each
+// content (which ends a `//` comment there): tree-sitter positions in it are file positions.
 pub fn (d &Document) masked_script() string {
 	return d.script.masked
 }
@@ -359,6 +359,14 @@ fn (mut c ExprContext) parse_masked(ranges [][]int) {
 	mut masked := blank(c.doc.src, ranges).bytes()
 	for o in s.split_offsets {
 		masked[o] = `;`
+	}
+	// A `//` comment at the end of a content ends there, as the script parser reads the content
+	// alone: a carriage return in the place of the `<` of the end tag ends it for tree-sitter too,
+	// whose rows only count line feeds.
+	for r in ranges {
+		if r[1] < masked.len && masked[r[1]] == ` ` {
+			masked[r[1]] = `\r`
+		}
 	}
 	s.masked = masked.bytestr()
 	tsx := s.lang == .tsx

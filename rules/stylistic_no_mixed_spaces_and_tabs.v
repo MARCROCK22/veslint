@@ -74,6 +74,7 @@ fn (mut c Checker) lint_stylistic_no_mixed_spaces_and_tabs(root C.TSNode, abs_pa
 				findings << Finding{
 					stmt:       c.position_range(start, line_start + length)
 					message_id: 'mixedSpacesAndTabs'
+					text_loc:   true
 				}
 			}
 		}

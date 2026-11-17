@@ -8,6 +8,7 @@ import time
 import rules
 import treesitter
 import tsgo
+import vue
 
 // veslint --server: a process that stays alive between the requests of an editor, so that tsgo,
 // the project it has open and the tree-sitter parsers are not started again for every save.
@@ -142,6 +143,10 @@ mut:
 	served  map[string]string
 	changes tsgo.FileChangeSet // what changed since the last snapshot
 	queue   &RequestQueue = unsafe { nil }
+	// twins are the virtual TypeScript twins of the .vue files linted so far, with their text
+	// (vue_files.v): tsgo runs with virtual files once there is one.
+	twins       map[string]string
+	vue_parsers VueParsers
 }
 
 // serve answers requests until stdin ends.
@@ -165,6 +170,7 @@ fn serve(timeout time.Duration) {
 		s.stop()
 		s.parser.close()
 		s.tsx_parser.close()
+		s.vue_parsers.close()
 	}
 	reader := spawn read_requests(requests)
 	for {
@@ -374,6 +380,13 @@ fn (mut s Server) lint(id i64, config string, project string, files []string, te
 	}
 	mut entries := []RuleFile{cap: files.len}
 	mut tsconfigs := []string{}
+	// The documents of the .vue files, by path as given: freed when the answer is ready.
+	mut docs := map[string]&vue.Document{}
+	defer {
+		for _, mut doc in docs {
+			doc.free()
+		}
+	}
 	for path in files {
 		abs_path := os.abs_path(path)
 		if note := loaded.file_notes[abs_path] {
@@ -405,6 +418,24 @@ fn (mut s Server) lint(id i64, config string, project string, files []string, te
 			} else {
 				s.stop_serving(abs_path)
 			}
+		}
+		is_vue := rules.is_vue_path(path)
+		if is_vue {
+			mut doc := s.vue_parsers.parse(src) or {
+				errors.writeln('veslint: ${path}: ${err.msg()}')
+				return ServerAnswer{
+					id:     id
+					code:   1
+					stderr: errors.str()
+				}
+			}
+			if doc.script.lang == .js {
+				doc.free()
+				errors.writeln(vue_javascript_warning(path))
+				continue
+			}
+			s.set_twin(rules.vue_twin_path(abs_path), doc.script.code)
+			docs[path] = doc
 		}
 		named := if project_override == '' {
 			loaded.named_projects(abs_path)
@@ -440,6 +471,8 @@ fn (mut s Server) lint(id i64, config string, project string, files []string, te
 			named:    named
 			src:      src
 			has_bom:  has_bom
+			vue:      is_vue
+			ts_path:  if is_vue { rules.vue_twin_path(abs_path) } else { abs_path }
 		}
 	}
 	mut out := strings.new_builder(4096)
@@ -527,7 +560,12 @@ fn (mut s Server) lint(id i64, config string, project string, files []string, te
 		mut checker := s.checkers[project_id] or { continue }
 		checker.set_lint_stop(s.queue)
 		checker.set_has_bom(f.has_bom)
-		result := checker.lint_file(if treesitter.uses_jsx_dialect(f.path) {
+		doc := docs[f.path] or { unsafe { nil } }
+		if f.vue {
+			checker.set_vue(doc, f.ts_path)
+		}
+		result := checker.lint_file(if (f.vue && uses_tsx_grammar(doc))
+			|| (!f.vue && treesitter.uses_jsx_dialect(f.path)) {
 			s.tsx_parser
 		} else {
 			s.parser
@@ -549,7 +587,7 @@ fn (mut s Server) lint(id i64, config string, project string, files []string, te
 				stderr: errors.str()
 			}
 		}
-		report := file_report(f.path, f.src, result, fixes, unsafe { nil })
+		report := file_report(f.path, f.src, result, fixes, doc)
 		errors.write_string(report.stderr)
 		out.write_string(report.stdout)
 		problems += report.problems
@@ -568,7 +606,12 @@ fn (mut s Server) lint(id i64, config string, project string, files []string, te
 // of the last request is kept when nothing did, with the checkers and what they already asked.
 fn (mut s Server) snapshot_for(tsconfigs []string) ! {
 	if s.client == unsafe { nil } {
-		mut client := tsgo.start_serving(tsgo.binary_path(), os.dir(tsconfigs[0]), s.timeout)!
+		mut client := if s.twins.len > 0 {
+			tsgo.start_virtual(tsgo.binary_path(), os.dir(tsconfigs[0]), s.timeout, map[string]string{},
+				s.twins)!
+		} else {
+			tsgo.start_serving(tsgo.binary_path(), os.dir(tsconfigs[0]), s.timeout)!
+		}
 		for path, text in s.served {
 			client.serve(path, text)
 		}
@@ -600,6 +643,29 @@ fn (mut s Server) snapshot_for(tsconfigs []string) ! {
 	s.checkers = map[string]&rules.Checker{}
 	if previous != s.snap.snapshot {
 		s.client.release_snapshot(previous)!
+	}
+}
+
+// set_twin gives tsgo the twin of a .vue file with `code` from the next snapshot on. A tsgo started
+// without virtual files is stopped: the next snapshot starts one with them.
+fn (mut s Server) set_twin(path string, code string) {
+	if existing := s.twins[path] {
+		if existing == code {
+			return
+		}
+	}
+	s.twins[path] = code
+	if s.client == unsafe { nil } {
+		return
+	}
+	if !s.client.has_virtual_fs() {
+		s.stop()
+		return
+	}
+	if s.client.serve_virtual(path, code) {
+		s.changes.created << path
+	} else {
+		s.changes.changed << path
 	}
 }
 
