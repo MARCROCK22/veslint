@@ -145,9 +145,12 @@ pub mut:
 }
 
 // ParseError is an error of the document: an HTML parse error (`code` is its code, which is also
-// the message) or an error of a template expression (no code). `ts_message`: the message is
-// TypeScript's diagnostic for the snippet, which tree-sitter cannot give; `message` is then a
-// placeholder and `index` where tree-sitter found the error (see Snippet.code to ask tsgo).
+// the message) or an error of a template expression (no code). `ts_message`: vue-eslint-parser
+// reports there the first syntactic diagnostic TypeScript gives for the code of the snippet
+// `snippet`, which tree-sitter cannot give: `message` is a guess and `index` where tree-sitter
+// found the error. To have the real one, parse Snippet.code with TypeScript (tsgo), map the
+// diagnostic's start with Snippet.utf16_to_file, and when `adjust_end` is not -1 and the mapped
+// offset is at or past it, the message is "Unexpected end of expression.".
 pub struct ParseError {
 pub mut:
 	message    string
@@ -155,6 +158,7 @@ pub mut:
 	index      int
 	ts_message bool
 	snippet    int = -1
+	adjust_end int = -1
 	// line and column, when line is not 0, are the error's lineNumber and column instead of the
 	// location of `index`: the tokenizer reports the errors of the input stream with the location
 	// of the previous code point.
@@ -199,6 +203,12 @@ pub mut:
 	es   estree.EsTree
 	// to_file maps each byte offset of `code` (and its end) to a byte offset of the file.
 	to_file []int
+}
+
+// utf16_to_file maps a UTF-16 offset of the snippet's code (a TypeScript position) to a byte
+// offset of the file.
+pub fn (s &Snippet) utf16_to_file(u int) int {
+	return s.file_offset(new_text_index(s.code).to_byte(u))
 }
 
 // file_offset maps a byte offset of the snippet's code (a tree-sitter position) to the file.

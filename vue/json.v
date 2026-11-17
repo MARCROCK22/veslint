@@ -33,6 +33,9 @@ pub fn (d &Document) to_json() string {
 		if e.code != '' {
 			b.write_string(',"code":${estree.quote(e.code)}')
 		}
+		if e.ts_message && e.snippet >= 0 {
+			d.json_ts_error(mut b, e)
+		}
 		b.write_u8(`}`)
 	}
 	b.write_string('],"program":{')
@@ -54,6 +57,30 @@ pub fn (d &Document) to_json() string {
 	}
 	b.write_string(']}')
 	return b.str()
+}
+
+// json_ts_error writes what tools/vue_parse_diff.mjs needs to put TypeScript's diagnostic in
+// place of an error's guessed message, as the integration will with tsgo: the snippet's code, the
+// file offset (UTF-16) of each UTF-16 offset of the code, and adjust_end in UTF-16.
+fn (d &Document) json_ts_error(mut b strings.Builder, e ParseError) {
+	s := d.snippets[e.snippet]
+	b.write_string(',"_ts":{"code":${estree.quote(s.code)},"tsx":${s.tsx},"map":[')
+	mut first := true
+	mut i := 0
+	for i <= s.code.len {
+		if !first {
+			b.write_u8(`,`)
+		}
+		first = false
+		f := d.utf16_error(s.file_offset(i))
+		b.write_string(f.str())
+		if i < s.code.len && utf8_len(s.code[i]) == 4 {
+			b.write_string(',${f + 1}')
+		}
+		i += if i < s.code.len { utf8_len(s.code[i]) } else { 1 }
+	}
+	adjust := if e.adjust_end >= 0 { d.utf16_error(e.adjust_end) } else { -1 }
+	b.write_string('],"adjustEnd":${adjust}}')
 }
 
 // utf16_error converts the index of an error, which may be past the end of the file.

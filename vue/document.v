@@ -112,6 +112,10 @@ pub fn (mut d Document) free() {
 			s.tree = unsafe { nil }
 		}
 	}
+	if d.script.tree != unsafe { nil } {
+		treesitter.tree_delete(d.script.tree)
+		d.script.tree = unsafe { nil }
+	}
 }
 
 // parse_sfc parses a .vue file (UTF-8, without BOM) as vue-eslint-parser 10.4.2 does with

@@ -125,42 +125,6 @@ fn (mut c ExprContext) parse_fragment(code string, calc Calc) !Fragment {
 	tree := parse_ts(if c.tsx_mode { c.tsx } else { c.ts }, code)!
 	root := treesitter.root_node(tree)
 	code_index := new_text_index(code)
-	if C.ts_node_has_error(root) {
-		at := first_error_offset(root)
-		u := code_index.to_u16(at)
-		treesitter.tree_delete(tree)
-		mut perr := c.error_at('Parsing error.', u + c.doc.fix_offset(calc, u))
-		perr.ts_message = true
-		c.doc.snippets << Snippet{
-			code: code
-			tsx:  c.tsx_mode
-		}
-		perr.snippet = c.doc.snippets.len - 1
-		return parse_err(perr)
-	}
-	if at, message := reserved_identifier(root, code) {
-		u := code_index.to_u16(at)
-		treesitter.tree_delete(tree)
-		mut perr := c.error_at(message, u + c.doc.fix_offset(calc, u))
-		perr.ts_message = true
-		c.doc.snippets << Snippet{
-			code: code
-			tsx:  c.tsx_mode
-		}
-		perr.snippet = c.doc.snippets.len - 1
-		return parse_err(perr)
-	}
-	mut es := estree.convert_with(root, code, c.tsx_mode, estree.Options{
-		module:       true
-		regexp_valid: fn (pattern string, flags string) bool {
-			return jsregexp.regexp_new(estree.utf16_units(pattern), flags) != none
-		}
-	}) or {
-		treesitter.tree_delete(tree)
-		mut perr := c.error_at('Parsing error.', c.doc.fix_offset(calc, 0))
-		perr.ts_message = true
-		return parse_err(perr)
-	}
 	mut to_file := []int{len: code.len + 1}
 	mut b := 0
 	for b <= code.len {
@@ -173,6 +137,42 @@ fn (mut c ExprContext) parse_fragment(code string, calc Calc) !Fragment {
 			}
 		}
 		b += n
+	}
+	mut error_at := -1
+	mut message := 'Parsing error.'
+	if C.ts_node_has_error(root) {
+		error_at = first_error_offset(root)
+	} else if at, msg := reserved_identifier(root, code) {
+		error_at = at
+		message = msg
+	}
+	mut es := estree.EsTree{}
+	if error_at < 0 {
+		es = estree.convert_with(root, code, c.tsx_mode, estree.Options{
+			module:       true
+			regexp_valid: fn (pattern string, flags string) bool {
+				return jsregexp.regexp_new(estree.utf16_units(pattern), flags) != none
+			}
+		}) or {
+			error_at = 0
+			estree.EsTree{}
+		}
+	}
+	if error_at >= 0 {
+		// The message is TypeScript's diagnostic, which tree-sitter does not give: see
+		// ParseError.ts_message.
+		treesitter.tree_delete(tree)
+		c.doc.snippets << Snippet{
+			code:    code
+			tsx:     c.tsx_mode
+			to_file: to_file
+		}
+		return parse_err(ParseError{
+			message:    message
+			index:      to_file[error_at]
+			ts_message: true
+			snippet:    c.doc.snippets.len - 1
+		})
 	}
 	mut snip_start := []int{cap: es.nodes.len}
 	mut snip_end := []int{cap: es.nodes.len}
@@ -187,11 +187,12 @@ fn (mut c ExprContext) parse_fragment(code string, calc Calc) !Fragment {
 	toks, comms := snippet_tokens(root, code)
 	mut tokens := []Token{cap: toks.len}
 	for t in toks {
+		value := code[t.start..t.end]
 		tokens << Token{
 			typ:   t.typ
 			start: to_file[t.start]
 			end:   to_file[t.end]
-			value: code[t.start..t.end]
+			value: if t.typ == 'PrivateIdentifier' { value[1..] } else { value }
 		}
 	}
 	mut comments := []Token{cap: comms.len}

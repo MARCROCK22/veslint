@@ -322,9 +322,49 @@ for (let i = 0; i < shards.length; i++)
     const { path: p, value } = JSON.parse(line);
     oracleValues.set(p, value);
   }
+// The V side guesses the message of an error that is TypeScript's syntactic diagnostic for a
+// snippet (tree-sitter has none) and gives in `_ts` the snippet and how its offsets map to the
+// file; veslint's integration asks tsgo for that diagnostic. The same is done here with the
+// TypeScript of build/upstream/vue-deps, so that the comparison checks everything else exactly.
+const ts = createRequire(path.join(NM, 'x.js'))('typescript');
+function lineTerminators(text) {
+  const out = [];
+  for (let i = 0; i < text.length; i++) if (text.charCodeAt(i) === 10) out.push(i + 1);
+  return out;
+}
+function withTsDiagnostics(file, value) {
+  if (!value?.errors?.some(e => e._ts)) return;
+  let text = fs.readFileSync(file, 'utf8');
+  if (text.charCodeAt(0) === 0xfeff) text = text.slice(1);
+  const lts = lineTerminators(text);
+  for (const e of value.errors) {
+    if (!e._ts) continue;
+    const { code, tsx, map, adjustEnd } = e._ts;
+    delete e._ts;
+    const sf = ts.createSourceFile('snippet.vue', code, { languageVersion: ts.ScriptTarget.Latest }, true, tsx ? ts.ScriptKind.TSX : ts.ScriptKind.TS);
+    const d = sf.parseDiagnostics[0];
+    if (!d) {
+      e._noDiagnostic = true;
+      continue;
+    }
+    const index = map[Math.min(d.start, map.length - 1)];
+    e.index = index;
+    e.message = adjustEnd >= 0 && index >= adjustEnd ? 'Unexpected end of expression.' : ts.flattenDiagnosticMessageText(d.messageText, '\n');
+    let lo = 0;
+    let hi = lts.length;
+    while (lo < hi) {
+      const mid = (lo + hi) >> 1;
+      if (lts[mid] <= index) lo = mid + 1;
+      else hi = mid;
+    }
+    e.lineNumber = lo + 1;
+    e.column = index - (lo === 0 ? 0 : lts[lo - 1]);
+  }
+}
 const vValues = new Map();
 for (const line of fs.readFileSync(path.join(out, 'v.jsonl'), 'utf8').split('\n').filter(Boolean)) {
   const { path: p, value } = JSON.parse(line);
+  withTsDiagnostics(p, value);
   vValues.set(p, value);
 }
 

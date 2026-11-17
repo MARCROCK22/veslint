@@ -76,9 +76,12 @@ fn (c &ExprContext) adjust(err IError, code string, calc Calc) IError {
 	if err is ParseErr {
 		mut perr := err.perr
 		end := c.to_bytes(c.doc.offset_with_gap(calc, utf16_length(code)))
+		if perr.ts_message && perr.adjust_end < 0 {
+			perr.adjust_end = end
+		}
 		if perr.index >= end {
+			// A guess for a TypeScript error (ts_message stays: the real position decides).
 			perr.message = 'Unexpected end of expression.'
-			perr.ts_message = false
 		}
 		return parse_err(perr)
 	}
