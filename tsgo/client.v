@@ -48,6 +48,13 @@ mut:
 	// serves_files tells that tsgo was started with the readFile callback.
 	served       map[string]string
 	serves_files bool
+	// virtual are files that exist only for tsgo (the TypeScript twin of a .vue, see vue_types.v):
+	// with the fileExists, stat and getAccessibleEntries callbacks, tsgo finds them as files, also
+	// when it lists their directory, and readFile gives their served text. By path_key; the
+	// basenames of the virtual files of each directory are in virtual_dirs.
+	virtual      map[string]bool
+	virtual_dirs map[string][]string
+	virtual_fs   bool
 	// symbols are the symbols tsgo sent, by the int the rules know them by (see symbols.v).
 	symbols SymbolTable
 	// The module resolver of each project and the names each module file exports (modules.v).
@@ -96,6 +103,28 @@ pub fn start_with_files(bin string, cwd string, timeout time.Duration, files map
 	return start_process(bin, cwd, timeout, files, files.len > 0)
 }
 
+// start_virtual starts tsgo like start_with_files, with `virtual` files too: files that are not
+// on disk and that tsgo sees as files with that text (see Client.virtual).
+pub fn start_virtual(bin string, cwd string, timeout time.Duration, files map[string]string, virtual map[string]string) !&Client {
+	mut served := files.clone()
+	for path, text in virtual {
+		served[path] = text
+	}
+	mut c := start_process_with(bin, cwd, timeout, served, true, true)!
+	for path, _ in virtual {
+		c.add_virtual(path)
+	}
+	return c
+}
+
+// add_virtual makes `path`, which is served, a file for tsgo though it is not on disk.
+fn (mut c Client) add_virtual(path string) {
+	key := path_key(path)
+	c.virtual[key] = true
+	dir := path_key(os.dir(path))
+	c.virtual_dirs[dir] << os.file_name(path)
+}
+
 // start_serving starts tsgo like start, always with its readFile callback, for a process that
 // gives it text later (`veslint --server`: the unsaved text of an editor, see serve).
 pub fn start_serving(bin string, cwd string, timeout time.Duration) !&Client {
@@ -103,6 +132,10 @@ pub fn start_serving(bin string, cwd string, timeout time.Duration) !&Client {
 }
 
 fn start_process(bin string, cwd string, timeout time.Duration, files map[string]string, callbacks bool) !&Client {
+	return start_process_with(bin, cwd, timeout, files, callbacks, false)
+}
+
+fn start_process_with(bin string, cwd string, timeout time.Duration, files map[string]string, callbacks bool, virtual_fs bool) !&Client {
 	if !os.is_file(bin) || !os.is_executable(bin) {
 		return missing_binary_error(bin, current_host())
 	}
@@ -113,7 +146,9 @@ fn start_process(bin string, cwd string, timeout time.Duration, files map[string
 	}
 	mut p := os.new_process(bin)
 	mut args := ['--api', '--cwd', cwd]
-	if callbacks {
+	if virtual_fs {
+		args << '--callbacks=readFile,fileExists,stat,getAccessibleEntries'
+	} else if callbacks {
 		args << '--callbacks=readFile'
 	}
 	p.set_args(args)
@@ -132,6 +167,7 @@ fn start_process(bin string, cwd string, timeout time.Duration, files map[string
 		timeout:       timeout
 		served:        served_by_key(files)
 		serves_files:  callbacks
+		virtual_fs:    virtual_fs
 	}
 }
 
@@ -184,6 +220,60 @@ fn (mut c Client) answer_read_file(payload string) !bool {
 		c.timeout) or {
 		return error('tsgo exited unexpectedly (EOF) while it read `${path}`: ${err.msg()}')
 	}
+}
+
+// answer_virtual_fs answers the fileExists, stat and getAccessibleEntries callbacks: a virtual
+// file exists (with a stat tsgo makes up), a directory that has virtual files lists them besides
+// what is on disk, and anything else is tsgo's to look up on disk.
+fn (mut c Client) answer_virtual_fs(method string, payload string) !bool {
+	path := json2.decode[string](payload) or {
+		return error('protocol: the ${method} callback of tsgo has no path (${payload})')
+	}
+	key := path_key(path)
+	answer := match method {
+		'fileExists' {
+			if key in c.virtual { '{"kind":"value","value":true}' } else { read_from_disk }
+		}
+		'stat' {
+			if key in c.virtual { '{"kind":"fakeStat"}' } else { read_from_disk }
+		}
+		'getAccessibleEntries' {
+			if names := c.virtual_dirs[key] {
+				directory_entries(path, names)
+			} else {
+				read_from_disk
+			}
+		}
+		else {
+			return error('protocol: tsgo asked for the `${method}` callback, which veslint does not register')
+		}
+	}
+	return write_frame(c.proc.stdio_fd[0], encode_frame(msg_call_response, method, answer),
+		c.timeout) or {
+		return error('tsgo exited unexpectedly (EOF) during its ${method} callback for `${path}`: ${err.msg()}')
+	}
+}
+
+// directory_entries is the answer to getAccessibleEntries for a directory with virtual files: its
+// files and directories on disk (a symbolic link counts as what it points to, as TypeScript's
+// getAccessibleFileSystemEntries counts it) and the virtual ones.
+fn directory_entries(dir string, virtual_names []string) string {
+	mut files := []string{}
+	mut directories := []string{}
+	for name in os.ls(dir) or { []string{} } {
+		full := os.join_path(dir, name)
+		if os.is_dir(full) {
+			directories << name
+		} else if os.is_file(full) {
+			files << name
+		}
+	}
+	for name in virtual_names {
+		if name !in files {
+			files << name
+		}
+	}
+	return '{"kind":"value","value":{"files":${json2.encode(files)},"directories":${json2.encode(directories)}}}'
 }
 
 // read_frames runs in its own thread: it reads tsgo's stdout with blocking reads and hands over
@@ -279,12 +369,16 @@ fn (mut c Client) request(method string, payload string) !string {
 		}
 		f := ev.frame
 		if f.typ == msg_call {
-			if !c.serves_files || f.method != 'readFile' {
+			if !c.serves_files || (f.method != 'readFile' && !c.virtual_fs) {
 				return c.fail('protocol: tsgo asked for the `${f.method}` callback, but veslint registers no callbacks')
 			}
-			answered := c.answer_read_file(f.payload) or { return c.fail(err.msg()) }
+			answered := if f.method == 'readFile' {
+				c.answer_read_file(f.payload) or { return c.fail(err.msg()) }
+			} else {
+				c.answer_virtual_fs(f.method, f.payload) or { return c.fail(err.msg()) }
+			}
 			if !answered {
-				return c.fail('timeout: tsgo did not accept the answer to its `readFile` callback within ${c.timeout}')
+				return c.fail('timeout: tsgo did not accept the answer to its `${f.method}` callback within ${c.timeout}')
 			}
 			continue
 		}
