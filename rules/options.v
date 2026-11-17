@@ -265,6 +265,12 @@ pub fn check_options(rule string, options []json2.Any) !bool {
 		vue_no_static_inline_styles { vnsis_options(options)! }
 		vue_no_child_content { vncc_options(options)! }
 		vue_no_template_target_blank { vnttb_options(options)! }
+		vue_no_restricted_class { vnrc_options(options)! }
+		vue_no_useless_v_bind { vnuvb_options(options)! }
+		vue_no_restricted_v_bind { vnrvb_options(options)! }
+		vue_no_restricted_v_on { vnrvo_options(options)! }
+		vue_v_slot_style { vvss_options(options)! }
+		vue_prefer_true_attribute_shorthand { vptas_options(options)! }
 		else { return false }
 	}
 	return true

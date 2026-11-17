@@ -1,0 +1,22 @@
+tests/rules/vue/no-restricted-v-on/extra/cases.vue:3:24	vue/no-restricted-v-on	restrictedVOn	Using `v-on:click.prevent` is not allowed on this <MyComp>.
+tests/rules/vue/no-restricted-v-on/extra/cases.vue:3:57	vue/no-restricted-v-on	restrictedVOn	Using `v-on` is not allowed on this element.
+tests/rules/vue/no-restricted-v-on/extra/cases.vue:3:66	vue/no-restricted-v-on	restrictedVOn	Using `@Click.stop.once` is not allowed on this element.
+tests/rules/vue/no-restricted-v-on/extra/cases.vue:4:10	vue/no-restricted-v-on	restrictedVOn	m
+tests/rules/vue/no-restricted-v-on/extra/cases.vue:4:26	vue/no-restricted-v-on	restrictedVOn	Using `@keyup` is not allowed on this element.
+tests/rules/vue/no-restricted-v-on/options-29aafeed/cases.vue:2:13	vue/no-restricted-v-on	restrictedVOn	Using `@v-on` is not allowed on this element.
+tests/rules/vue/no-restricted-v-on/options-29aafeed/cases.vue:2:25	vue/no-restricted-v-on	restrictedVOn	Using `@foo.prevent` is not allowed on this element.
+tests/rules/vue/no-restricted-v-on/options-29aafeed/cases.vue:2:62	vue/no-restricted-v-on	restrictedVOn	Using `v-on` is not allowed on this element.
+tests/rules/vue/no-restricted-v-on/options-764fc695/cases.vue:2:13	vue/no-restricted-v-on	restrictedVOn	Using `@foo` is not allowed on this element.
+tests/rules/vue/no-restricted-v-on/options-764fc695/cases.vue:2:24	vue/no-restricted-v-on	restrictedVOn	Using `@bar` is not allowed on this element.
+tests/rules/vue/no-restricted-v-on/options-8872240b/cases.vue:5:13	vue/no-restricted-v-on	restrictedVOn	Using `@foo` is not allowed on this element.
+tests/rules/vue/no-restricted-v-on/options-8872240b/cases.vue:6:13	vue/no-restricted-v-on	restrictedVOn	Using `v-on:foo` is not allowed on this element.
+tests/rules/vue/no-restricted-v-on/options-941de983/cases.vue:2:13	vue/no-restricted-v-on	restrictedVOn	Using `@foo` is not allowed on this <div>.
+tests/rules/vue/no-restricted-v-on/options-9add7c8a/cases.vue:2:13	vue/no-restricted-v-on	restrictedVOn	Using `@foo.once` is not allowed on this element.
+tests/rules/vue/no-restricted-v-on/options-9affb4e7/cases.vue:3:14	vue/no-restricted-v-on	restrictedVOn	Using `@foo` is not allowed on this element.
+tests/rules/vue/no-restricted-v-on/options-b1dc652c/cases.vue:3:14	vue/no-restricted-v-on	restrictedVOn	foo
+tests/rules/vue/no-restricted-v-on/options-c33c4a48/cases.vue:2:13	vue/no-restricted-v-on	restrictedVOn	Using `@foo` is not allowed on this element.
+tests/rules/vue/no-restricted-v-on/options-c33c4a48/cases.vue:2:24	vue/no-restricted-v-on	restrictedVOn	Using `@bar` is not allowed on this element.
+tests/rules/vue/no-restricted-v-on/options-c7cca925/cases.vue:3:14	vue/no-restricted-v-on	restrictedVOn	Using `@v-on` is not allowed on this element.
+tests/rules/vue/no-restricted-v-on/options-c7cca925/cases.vue:4:19	vue/no-restricted-v-on	restrictedVOn	Using `@foo` is not allowed on this <MyButton>.
+tests/rules/vue/no-restricted-v-on/options-d44da225/cases.vue:2:13	vue/no-restricted-v-on	restrictedVOn	Using `v-on` is not allowed on this element.
+tests/rules/vue/no-restricted-v-on/options-dc0f90f0/cases.vue:2:13	vue/no-restricted-v-on	restrictedVOn	Using `@test` is not allowed on this element.

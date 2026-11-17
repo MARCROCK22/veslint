@@ -539,6 +539,14 @@ pub const vue_valid_v_memo = 'vue/valid-v-memo'
 pub const vue_no_static_inline_styles = 'vue/no-static-inline-styles'
 pub const vue_no_child_content = 'vue/no-child-content'
 pub const vue_no_template_target_blank = 'vue/no-template-target-blank'
+pub const vue_no_restricted_class = 'vue/no-restricted-class'
+pub const vue_no_useless_v_bind = 'vue/no-useless-v-bind'
+pub const vue_no_restricted_v_bind = 'vue/no-restricted-v-bind'
+pub const vue_no_restricted_v_on = 'vue/no-restricted-v-on'
+pub const vue_valid_v_bind_sync = 'vue/valid-v-bind-sync'
+pub const vue_v_slot_style = 'vue/v-slot-style'
+pub const vue_prefer_true_attribute_shorthand = 'vue/prefer-true-attribute-shorthand'
+pub const vue_no_dupe_v_else_if = 'vue/no-dupe-v-else-if'
 pub const names = [no_floating_promises, await_thenable, require_await, return_await,
 	no_misused_promises, no_unsafe_call, no_unsafe_member_access, no_unsafe_return,
 	no_unsafe_assignment, no_unsafe_argument, restrict_template_expressions,
@@ -693,7 +701,9 @@ pub const names = [no_floating_promises, await_thenable, require_await, return_a
 	vue_require_toggle_inside_transition, vue_no_restricted_static_attribute,
 	vue_html_closing_bracket_spacing, vue_html_closing_bracket_newline, vue_attribute_hyphenation,
 	vue_v_on_event_hyphenation, vue_valid_v_memo, vue_no_static_inline_styles, vue_no_child_content,
-	vue_no_template_target_blank]
+	vue_no_template_target_blank, vue_no_restricted_class, vue_no_useless_v_bind,
+	vue_no_restricted_v_bind, vue_no_restricted_v_on, vue_valid_v_bind_sync, vue_v_slot_style,
+	vue_prefer_true_attribute_shorthand, vue_no_dupe_v_else_if]
 
 // untyped_rules are the ported rules that need no types (`meta.docs.requiresTypeChecking` is false
 // in typescript-eslint; the eslint-plugin-unicorn rules that read the types when the parser has a
@@ -820,7 +830,9 @@ pub const untyped_rules = [adjacent_overload_signatures, array_type, class_liter
 	vue_require_toggle_inside_transition, vue_no_restricted_static_attribute,
 	vue_html_closing_bracket_spacing, vue_html_closing_bracket_newline, vue_attribute_hyphenation,
 	vue_v_on_event_hyphenation, vue_valid_v_memo, vue_no_static_inline_styles, vue_no_child_content,
-	vue_no_template_target_blank]
+	vue_no_template_target_blank, vue_no_restricted_class, vue_no_useless_v_bind,
+	vue_no_restricted_v_bind, vue_no_restricted_v_on, vue_valid_v_bind_sync, vue_v_slot_style,
+	vue_prefer_true_attribute_shorthand, vue_no_dupe_v_else_if]
 
 // needs_types tells whether a rule asks tsgo for the types of the program.
 pub fn needs_types(rule string) bool {
@@ -1354,6 +1366,14 @@ pub const default_options = {
 	vue_no_static_inline_styles:                     '[]'
 	vue_no_child_content:                            '[]'
 	vue_no_template_target_blank:                    '[]'
+	vue_no_restricted_class:                         '[]'
+	vue_no_useless_v_bind:                           '[]'
+	vue_no_restricted_v_bind:                        '[]'
+	vue_no_restricted_v_on:                          '[]'
+	vue_valid_v_bind_sync:                           '[]'
+	vue_v_slot_style:                                '[]'
+	vue_prefer_true_attribute_shorthand:             '[]'
+	vue_no_dupe_v_else_if:                           '[]'
 }
 
 // Finding is a problem a rule found at a node.
@@ -2038,6 +2058,14 @@ pub fn message(rule string, finding Finding) string {
 		vue_no_static_inline_styles { vnsis_messages }
 		vue_no_child_content { vncc_messages }
 		vue_no_template_target_blank { vnttb_messages }
+		vue_no_restricted_class { vnrc_messages }
+		vue_no_useless_v_bind { vnuvb_messages }
+		vue_no_restricted_v_bind { vnrvb_messages }
+		vue_no_restricted_v_on { vnrvo_messages }
+		vue_valid_v_bind_sync { vvbsync_messages }
+		vue_v_slot_style { vvss_messages }
+		vue_prefer_true_attribute_shorthand { vptas_messages }
+		vue_no_dupe_v_else_if { vndvei_messages }
 		else { map[string]string{} }
 	}
 	return interpolate(messages[finding.message_id] or { finding.message_id }, finding.data)
@@ -3865,6 +3893,30 @@ fn (mut c Checker) lint_rule(rule string, root C.TSNode, abs_path string, mut st
 		}
 		vue_no_template_target_blank {
 			return c.lint_vue_no_template_target_blank(root, abs_path, mut stats)!
+		}
+		vue_no_restricted_class {
+			return c.lint_vue_no_restricted_class(root, abs_path, mut stats)!
+		}
+		vue_no_useless_v_bind {
+			return c.lint_vue_no_useless_v_bind(root, abs_path, mut stats)!
+		}
+		vue_no_restricted_v_bind {
+			return c.lint_vue_no_restricted_v_bind(root, abs_path, mut stats)!
+		}
+		vue_no_restricted_v_on {
+			return c.lint_vue_no_restricted_v_on(root, abs_path, mut stats)!
+		}
+		vue_valid_v_bind_sync {
+			return c.lint_vue_valid_v_bind_sync(root, abs_path, mut stats)!
+		}
+		vue_v_slot_style {
+			return c.lint_vue_v_slot_style(root, abs_path, mut stats)!
+		}
+		vue_prefer_true_attribute_shorthand {
+			return c.lint_vue_prefer_true_attribute_shorthand(root, abs_path, mut stats)!
+		}
+		vue_no_dupe_v_else_if {
+			return c.lint_vue_no_dupe_v_else_if(root, abs_path, mut stats)!
 		}
 		else { return error('unknown rule: ${rule}') }
 	}
