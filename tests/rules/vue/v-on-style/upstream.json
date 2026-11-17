@@ -1,0 +1,12 @@
+{"rule": "vue/v-on-style", "upstream": "eslint-plugin-vue v10.12.1", "files": ["tests/lib/rules/v-on-style.test.ts"],
+"messages": {"expectedShorthand":"Expected '@' instead of 'v-on:'.","expectedLonghand":"Expected 'v-on:' instead of '@'."},
+"cases": [
+{"id":"v-on-style/v0","kind":"valid","code":"","filename":"test.vue","parser":"vue-eslint-parser","languageOptions":{"ecmaVersion":2015},"sfc":true,"script":"none"},
+{"id":"v-on-style/v1","kind":"valid","code":"<template><div v-on=\"foo\"></div></template>","filename":"test.vue","parser":"vue-eslint-parser","languageOptions":{"ecmaVersion":2015},"sfc":true,"script":"none"},
+{"id":"v-on-style/v2","kind":"valid","code":"<template><div @foo=\"foo\"></div></template>","filename":"test.vue","parser":"vue-eslint-parser","languageOptions":{"ecmaVersion":2015},"sfc":true,"script":"none"},
+{"id":"v-on-style/v3","kind":"valid","code":"<template><div @foo=\"foo\"></div></template>","options":["shorthand"],"filename":"test.vue","parser":"vue-eslint-parser","languageOptions":{"ecmaVersion":2015},"sfc":true,"script":"none"},
+{"id":"v-on-style/v4","kind":"valid","code":"<template><div v-on:foo=\"foo\"></div></template>","options":["longform"],"filename":"test.vue","parser":"vue-eslint-parser","languageOptions":{"ecmaVersion":2015},"sfc":true,"script":"none"},
+{"id":"v-on-style/i0","kind":"invalid","code":"<template><div v-on:foo=\"foo\"></div></template>","filename":"test.vue","parser":"vue-eslint-parser","languageOptions":{"ecmaVersion":2015},"sfc":true,"script":"none","errors":[{"message":"Expected '@' instead of 'v-on:'.","line":1,"column":16,"endLine":1,"endColumn":30}],"output":"<template><div @foo=\"foo\"></div></template>"},
+{"id":"v-on-style/i1","kind":"invalid","code":"<template><div v-on:foo=\"foo\"></div></template>","options":["shorthand"],"filename":"test.vue","parser":"vue-eslint-parser","languageOptions":{"ecmaVersion":2015},"sfc":true,"script":"none","errors":[{"message":"Expected '@' instead of 'v-on:'.","line":1,"column":16,"endLine":1,"endColumn":30}],"output":"<template><div @foo=\"foo\"></div></template>"},
+{"id":"v-on-style/i2","kind":"invalid","code":"<template><div @foo=\"foo\"></div></template>","options":["longform"],"filename":"test.vue","parser":"vue-eslint-parser","languageOptions":{"ecmaVersion":2015},"sfc":true,"script":"none","errors":[{"message":"Expected 'v-on:' instead of '@'.","line":1,"column":16,"endLine":1,"endColumn":26}],"output":"<template><div v-on:foo=\"foo\"></div></template>"}
+]}

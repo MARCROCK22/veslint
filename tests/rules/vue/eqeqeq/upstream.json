@@ -1,0 +1,8 @@
+{"rule": "vue/eqeqeq", "upstream": "eslint-plugin-vue v10.12.1", "files": ["tests/lib/rules/eqeqeq.test.ts"],
+"messages": {"unexpected":"Expected '{{expectedOperator}}' and instead saw '{{actualOperator}}'.","replaceOperator":"Use '{{expectedOperator}}' instead of '{{actualOperator}}'."},
+"cases": [
+{"id":"eqeqeq/v0","kind":"valid","code":"<template><div :attr=\"a === 1\" /></template>","parser":"vue-eslint-parser","languageOptions":{"ecmaVersion":2015},"sfc":true,"script":"none"},
+{"id":"eqeqeq/v1","kind":"valid","code":"\n    <style>\n    .text {\n      color: v-bind(a === 1 ? 'red' : 'blue')\n    }\n    </style>","parser":"vue-eslint-parser","languageOptions":{"ecmaVersion":2015},"sfc":true,"script":"none"},
+{"id":"eqeqeq/i0","kind":"invalid","code":"<template><div :attr=\"a == 1\" /></template>","parser":"vue-eslint-parser","languageOptions":{"ecmaVersion":2015},"sfc":true,"script":"none","errors":[{"message":"Expected '===' and instead saw '=='.","line":1,"column":25,"endLine":1,"endColumn":27,"suggestions":[{"desc":"Use '===' instead of '=='.","output":"<template><div :attr=\"a === 1\" /></template>"}]}]},
+{"id":"eqeqeq/i1","kind":"invalid","code":"\n      <style>\n      .text {\n        color: v-bind(a == 1 ? 'red' : 'blue')\n      }\n      </style>","parser":"vue-eslint-parser","languageOptions":{"ecmaVersion":2015},"sfc":true,"script":"none","errors":[{"message":"Expected '===' and instead saw '=='.","line":4,"column":25,"endLine":4,"endColumn":27,"suggestions":[{"desc":"Use '===' instead of '=='.","output":"\n      <style>\n      .text {\n        color: v-bind(a === 1 ? 'red' : 'blue')\n      }\n      </style>"}]}]}
+]}

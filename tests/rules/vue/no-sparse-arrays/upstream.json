@@ -1,0 +1,8 @@
+{"rule": "vue/no-sparse-arrays", "upstream": "eslint-plugin-vue v10.12.1", "files": ["tests/lib/rules/no-sparse-arrays.test.ts"],
+"messages": {"unexpectedSparseArray":"Unexpected comma in middle of array."},
+"cases": [
+{"id":"no-sparse-arrays/v0","kind":"valid","code":"<template>\n      <div :class=\"['foo', 'bar']\" />\n    </template>","parser":"vue-eslint-parser","languageOptions":{"ecmaVersion":2015},"sfc":true,"script":"none"},
+{"id":"no-sparse-arrays/v1","kind":"valid","code":"<template>\n      <div v-bind:[['foo'][0]]=\"bar\" />\n    </template>","parser":"vue-eslint-parser","languageOptions":{"ecmaVersion":2015},"sfc":true,"script":"none"},
+{"id":"no-sparse-arrays/i0","kind":"invalid","code":"\n      <template>\n        <div :class=\"[, 'foo', 'bar']\" />\n      </template>","parser":"vue-eslint-parser","languageOptions":{"ecmaVersion":2015},"sfc":true,"script":"none","errors":[{"message":"Unexpected comma in middle of array.","line":3,"endLine":3,"column":23,"endColumn":24}]},
+{"id":"no-sparse-arrays/i1","kind":"invalid","code":"\n      <template>\n        <div v-bind:[[,'foo'][1]]=\"bar\" />\n      </template>","parser":"vue-eslint-parser","languageOptions":{"ecmaVersion":2015},"sfc":true,"script":"none","errors":[{"message":"Unexpected comma in middle of array.","line":3,"endLine":3,"column":23,"endColumn":24}]}
+]}

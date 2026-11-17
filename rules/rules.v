@@ -1137,7 +1137,7 @@ pub const default_options = {
 	stylistic_semi:                                  '["always"]'
 	stylistic_object_curly_newline:                  '[]'
 	stylistic_object_property_newline:               '[{"allowAllPropertiesOnSameLine":false}]'
-	stylistic_list_style:                        '[{"empty":"ignore","singleLine":{"spacing":"never","maxItems":1.7976931348623157e+308},"multiLine":{"minItems":0},"overrides":{"{}":{"singleLine":{"spacing":"always"}}}}]'
+	stylistic_list_style:                            '[{"empty":"ignore","singleLine":{"spacing":"never","maxItems":1.7976931348623157e+308},"multiLine":{"minItems":0},"overrides":{"{}":{"singleLine":{"spacing":"always"}}}}]'
 	stylistic_exp_jsx_props_style:                   '[{"singleLine":{"maxItems":1.7976931348623157e+308},"multiLine":{"minItems":0,"maxItemsPerLine":1}}]'
 	stylistic_arrow_parens:                          '["always"]'
 	stylistic_comma_dangle:                          '["never"]'
@@ -1202,6 +1202,11 @@ pub:
 	// ESLint's column of a parsing error is TypeScript's character, which counts from 0, where any
 	// other column counts from 1.
 	column_from_zero bool
+	// The rule builds its `loc` from offsets of the text (sourceCode.getLocFromIndex, or the
+	// lines of sourceCode.lines) and not from a node or a token: ESLint's lines end at CRLF, LF,
+	// CR, U+2028 and U+2029 there, where the locations of vue-eslint-parser's nodes and tokens
+	// end only at LF (the two only differ in a .vue file).
+	text_loc bool
 }
 
 // problem_rule is the `rule` of the problems ESLint reports without a rule (`ruleId: null`).
@@ -1259,6 +1264,10 @@ pub:
 	// settings are the shared settings of the configuration (ESLint's `settings`, which rules read
 	// as context.settings).
 	settings map[string]json2.Any
+	// project_programs: typescript-eslint gets the types from the programs of
+	// `parserOptions.project`, not from the project service (a .vue file is a SourceFile of
+	// ScriptKind TS in such a program, and of the extension's own kind for the project service).
+	project_programs bool
 pub mut:
 	// program_directory is the current directory of ESLint's program, which `from: "file"` type
 	// specifiers are relative to, when it is not the directory of the tsconfig (see specifiers.v).
@@ -1837,7 +1846,7 @@ pub:
 	// TypeScript's parser found an error: `findings` is it alone, as ESLint reports a file it cannot
 	// parse (a fix may have given code tree-sitter reads and TypeScript does not).
 	parsing_error bool
-	unmatched     int       // nodes the rules could not analyze (summed per rule): no tsgo counterpart, or nested too deeply
+	unmatched     int // nodes the rules could not analyze (summed per rule): no tsgo counterpart, or nested too deeply
 }
 
 // lint_file applies the `selected` rules to a file (BOM already stripped), with a single parse and
@@ -1930,23 +1939,38 @@ pub fn (mut c Checker) lint_file(parser Parser, config LintConfig, src string, a
 
 fn (mut c Checker) lint_file_in_lifetime(parser Parser, config LintConfig, src string, abs_path string, mut stats Stats) !FileLint {
 	sw := time.new_stopwatch()
-	mut tree := parser.parse(src)!
+	// A .vue file comes parsed: its tree is the one of its masked script (vue_file.v), which the
+	// document owns; tsgo knows it by its twin.
+	vue_file := c.is_vue()
+	ts_path := if vue_file { c.vue.ts_path } else { abs_path }
+	mut owned := !vue_file || c.vue.doc.script.tree == unsafe { nil }
+	mut tree := if !vue_file {
+		parser.parse(src)!
+	} else if owned {
+		parser.parse(c.vue.doc.script.masked)!
+	} else {
+		c.vue.doc.script.tree
+	}
 	defer {
 		// The index points into the tree.
 		c.node_index = treesitter.NodeIndex{}
-		tree_delete(tree)
+		if owned {
+			tree_delete(tree)
+		}
+		c.vue = VueView{}
 	}
 	mut root := root_node(tree)
 	c.src = src
-	c.tokens = token_ends(root)
+	c.tokens = c.file_token_ends(root)
 	c.node_index = treesitter.new_node_index(root)
 	c.ast_path = ''
 	c.program_directory = config.program_directory
 	c.ecma_version = config.language.ecma_version
 	c.language = config.language
 	c.settings = config.settings
+	c.project_programs = config.project_programs
 	c.reset_file_types()
-	fatal := c.parsing_error(abs_path)
+	fatal := c.parsing_error(ts_path)
 	if fatal.len > 0 {
 		stats.parse_ms += ms(sw.elapsed())
 		stats.findings++
@@ -1957,13 +1981,16 @@ fn (mut c Checker) lint_file_in_lifetime(parser Parser, config LintConfig, src s
 	}
 	// Where TypeScript read an `await` as an identifier, the file is parsed again that way
 	// (rules/await_identifier.v).
-	reread := c.await_identifiers_source(root, abs_path)!
+	reread := c.await_identifiers_source(root, ts_path)!
 	if reread != '' {
 		c.node_index = treesitter.NodeIndex{}
-		tree_delete(tree)
+		if owned {
+			tree_delete(tree)
+		}
 		tree = parser.parse(reread)!
+		owned = true
 		root = root_node(tree)
-		c.tokens = token_ends(root)
+		c.tokens = c.file_token_ends(root)
 		c.node_index = treesitter.new_node_index(root)
 	}
 	unmatched_before := stats.unmatched
@@ -1984,7 +2011,7 @@ fn (mut c Checker) lint_file_in_lifetime(parser Parser, config LintConfig, src s
 		c.too_deep = 0
 		c.options[setting.name] = setting.options
 		rule_sw := time.new_stopwatch()
-		rule_findings := c.lint_rule(setting.name, root, abs_path, mut stats)!
+		rule_findings := c.lint_rule(setting.name, root, ts_path, mut stats)!
 		stats.rule_ms[setting.name] += ms(rule_sw.elapsed())
 		for f in rule_findings {
 			findings << Finding{
@@ -3396,18 +3423,18 @@ fn (mut c Checker) lint_rule(rule string, root C.TSNode, abs_path string, mut st
 @[heap]
 pub struct Checker {
 mut:
-	client                                  &Client = unsafe { nil }
-	snapshot                                int
-	snapshot_tsconfig                       string // made without a snapshot (defer_snapshot): the tsconfig make_snapshot opens
+	client            &Client = unsafe { nil }
+	snapshot          int
+	snapshot_tsconfig string // made without a snapshot (defer_snapshot): the tsconfig make_snapshot opens
 	// syntax_baseline is how many errors TypeScript's parser found in the file before --fix changed
 	// it: lint_file reports a parsing error when the fixes added one (-1: it does not check).
-	syntax_baseline int = -1
-	no_implicit_this                        bool   // isStrictCompilerOptionEnabled(…, 'noImplicitThis') of the project
-	strict_null_checks                      bool   // isStrictCompilerOptionEnabled(…, 'strictNullChecks') of the project
-	no_unchecked_indexed_access             bool   // isCompilerOptionEnabled(…, 'noUncheckedIndexedAccess') of the project
-	no_property_access_from_index_signature bool   // isCompilerOptionEnabled(…, 'noPropertyAccessFromIndexSignature') of the project
-	exact_optional_property_types           bool   // isCompilerOptionEnabled(…, 'exactOptionalPropertyTypes') of the project
-	decorator_metadata                      bool   // experimentalDecorators and emitDecoratorMetadata of the project (consistent-type-imports)
+	syntax_baseline                         int = -1
+	no_implicit_this                        bool // isStrictCompilerOptionEnabled(…, 'noImplicitThis') of the project
+	strict_null_checks                      bool // isStrictCompilerOptionEnabled(…, 'strictNullChecks') of the project
+	no_unchecked_indexed_access             bool // isCompilerOptionEnabled(…, 'noUncheckedIndexedAccess') of the project
+	no_property_access_from_index_signature bool // isCompilerOptionEnabled(…, 'noPropertyAccessFromIndexSignature') of the project
+	exact_optional_property_types           bool // isCompilerOptionEnabled(…, 'exactOptionalPropertyTypes') of the project
+	decorator_metadata                      bool // experimentalDecorators and emitDecoratorMetadata of the project (consistent-type-imports)
 	project                                 string
 	src                                     string
 	tokens                                  TokenEnds                          // token ends of the file (per file)
@@ -3506,6 +3533,10 @@ mut:
 	// no-deprecated: the reason of the first @deprecated tag of each symbol, or ndep_not_deprecated;
 	// kept for the whole run, as symbol ids are fixed for a Checker
 	jsdoc_deprecation_cache map[int]string
+	// the .vue file being linted (vue_file.v), set before lint_file by set_vue
+	vue VueView
+	// LintConfig.project_programs of the file being linted
+	project_programs bool
 }
 
 // DeclarationAsts keeps the AstTree of the files whose declarations the rules look at, by tsgo
@@ -3600,7 +3631,7 @@ fn (mut c Checker) parsing_error(abs_path string) []Finding {
 		}
 	}
 	return [Finding{
-		stmt:             c.position_at(offsets.byte_offset(c.src, first.pos))
+		stmt:             c.position_at(c.file_offset_of_ts_unit(first.pos))
 		rule:             problem_rule
 		message_id:       'fatal'
 		text:             'Parsing error: ${first.text}'

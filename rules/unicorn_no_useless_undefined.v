@@ -7,19 +7,83 @@ import time
 
 // Port of the `unicorn/no-useless-undefined` rule of eslint-plugin-unicorn 79.0.0, with its
 // options, fixes and suggestions. Its check of call arguments (`checkArguments`) only runs for files
-// that are not TypeScript (`isTypeScriptFile(context.physicalFilename)` ends the rule before it),
-// and veslint only lints TypeScript: that part never runs.
+// that are not TypeScript (`isTypeScriptFile(context.physicalFilename)` ends the rule before it):
+// of the files veslint lints, the .vue files.
 
 const unuu_messages = {
 	'no-useless-undefined':            'Do not use useless `undefined`.'
 	'no-useless-undefined/suggestion': 'Use the indexed access directly.'
 }
 
-fn unuu_options(options []json2.Any) !bool {
+// unuu_options gives checkArguments and checkArrowFunctionBody.
+fn unuu_options(options []json2.Any) !(bool, bool) {
 	o := option_object(unicorn_no_useless_undefined, options, ['checkArguments',
 		'checkArrowFunctionBody'])!
-	o.bool_value('checkArguments')!
-	return o.bool_value('checkArrowFunctionBody')!
+	return o.bool_value('checkArguments')!, o.bool_value('checkArrowFunctionBody')!
+}
+
+// unuu_compare_function_names are compareFunctionNames, and unuu_methods_with_undefined_argument
+// methodsWithUndefinedArgument: a trailing `undefined` is not the same as no argument for them.
+const unuu_compare_function_names = ['is', 'equal', 'notEqual', 'strictEqual', 'notStrictEqual',
+	'propertyVal', 'notPropertyVal', 'not', 'include', 'property', 'toBe', 'toHaveBeenCalledWith',
+	'toContain', 'toContainEqual', 'toEqual', 'same', 'notSame', 'strictSame', 'strictNotSame']
+const unuu_methods_with_undefined_argument = ['push', 'unshift', 'includes', 'concat', 'splice',
+	'toSpliced', 'lastIndexOf', 'reduce', 'reduceRight', 'String', 'fromCharCode', 'fromCodePoint',
+	'Number', 'max', 'min', 'hypot', 'Array', 'of', 'from', 'structuredClone', 'add', 'has', 'delete',
+	'set', 'createContext', 'useRef', 'ref']
+
+// unuu_should_ignore ports shouldIgnore: the callee's name (an identifier, or the property of a
+// non-computed member) is one of those, or `set` followed by a capital letter (`setState`).
+fn unuu_should_ignore(t &estree.EsTree, callee int) bool {
+	name := match t.typ(callee) {
+		.identifier {
+			t.string_of(callee, .name) or { '' }
+		}
+		.member_expression {
+			property := t.node(callee, .property) or { return false }
+			if (t.flag(callee, .computed) or { false }) || t.typ(property) != .identifier {
+				''
+			} else {
+				t.string_of(property, .name) or { '' }
+			}
+		}
+		else {
+			''
+		}
+	}
+	return name in unuu_compare_function_names || name in unuu_methods_with_undefined_argument
+		|| (name.len > 3 && name.starts_with('set') && name[3] >= `A` && name[3] <= `Z`)
+}
+
+// unuu_call ports the CallExpression listener of checkArguments: a trailing `undefined` argument.
+fn (mut c Checker) unuu_call(t &estree.EsTree, tokens &SourceTokens, node int) ![]Finding {
+	arguments := t.list(node, .arguments) or { return [] }
+	if arguments.len == 0 {
+		return []
+	}
+	last := arguments.last()
+	callee := t.node(node, .callee) or { return [] }
+	if !un_is_undefined(t, last) || unuu_should_ignore(t, callee) {
+		return []
+	}
+	// Function#bind(): only its `this` argument.
+	if !(t.flag(node, .optional) or { false }) && t.typ(callee) == .member_expression
+		&& !(t.flag(callee, .computed) or { false }) && arguments.len != 1 {
+		property := t.node(callee, .property) or { return [] }
+		if t.typ(property) == .identifier && (t.string_of(property, .name) or { '' }) == 'bind' {
+			return []
+		}
+	}
+	finding := Finding{
+		stmt:       c.es_tree_position(t, last)
+		message_id: 'no-useless-undefined'
+	}
+	removal := c.unb_argument_removal_range(t, tokens, last) or { return [finding] }
+	if un_has_comment_in_range(tokens, removal.start, removal.end) {
+		return [finding]
+	}
+	fix := c.unb_remove_argument(t, tokens, last) or { return [finding] }
+	return [c.with_fixes(finding, [fix])!]
 }
 
 // UnuuIndex is the result of getIndexAccess: the index without a positive constant subtracted from
@@ -90,14 +154,18 @@ fn unuu_is_safe_integer(value ?f64) bool {
 
 fn (mut c Checker) lint_unicorn_no_useless_undefined(root C.TSNode, abs_path string, mut stats Stats) ![]Finding {
 	sw := time.new_stopwatch()
-	check_arrow_function_body := unuu_options(c.rule_options(unicorn_no_useless_undefined))!
+	check_arguments, check_arrow_function_body := unuu_options(c.rule_options(unicorn_no_useless_undefined))!
 	mut findings := []Finding{}
 	t := c.es_tree(root, abs_path) or { return findings }
 	tokens := c.un_tokens(t)
+	calls := check_arguments && !c.is_typescript_file()
 	for node in 0 .. t.nodes.len {
 		f := match t.typ(node) {
 			.identifier { c.unuu_identifier(t, tokens, node, check_arrow_function_body)! }
 			.conditional_expression { c.unuu_conditional(t, tokens, node)! }
+			.call_expression {
+				if calls { c.unuu_call(t, tokens, node)! } else { continue }
+			}
 			else { continue }
 		}
 		stats.checked++
@@ -209,9 +277,9 @@ fn (mut c Checker) unuu_identifier(t &estree.EsTree, tokens &SourceTokens, node 
 				return [finding]
 			}
 			mut fixes := [fix_remove_range(start, end)]
-			// The file is TypeScript (isTypeScriptFile).
 			grand := t.nodes[parent].parent
-			if !(t.flag(left, .optional) or { false }) && unb_is_function(t, grand)
+			if (t.node(left, .type_annotation) != none || c.is_typescript_file())
+				&& !(t.flag(left, .optional) or { false }) && unb_is_function(t, grand)
 				&& parent in (t.list(grand, .params) or { []int{} }) {
 				if annotation := t.node(left, .type_annotation) {
 					fixes << fix_insert_at(t.nodes[annotation].start, '?')

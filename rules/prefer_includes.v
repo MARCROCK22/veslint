@@ -4,7 +4,6 @@ import jsregexp
 import time
 import tsgo { handle_index, handle_kind, handle_path }
 import treesitter { node_end, node_field, node_kind, node_start, nodes_of_kind, position_of }
-import offsets { utf16_offsets }
 
 // Port of the `prefer-includes` rule of typescript-eslint 8.72.2, with its fixes.
 //
@@ -83,8 +82,7 @@ fn (mut c Checker) lint_prefer_includes(root C.TSNode, abs_path string, mut stat
 	sw.restart()
 	mut findings := []Finding{}
 	if index_ofs.len > 0 {
-		symbols := c.client.symbols_at(c.snapshot, c.project, abs_path, utf16_offsets(c.src,
-			index_ofs.map(node_start(it.property))))!
+		symbols := c.client.symbols_at(c.snapshot, c.project, abs_path, c.ts_offsets(index_ofs.map(node_start(it.property))))!
 		if symbols.len != index_ofs.len {
 			return error('protocol: tsgo returned ${symbols.len} symbols for ${index_ofs.len} positions')
 		}

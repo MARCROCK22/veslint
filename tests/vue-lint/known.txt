@@ -1,0 +1,989 @@
+# Differences of tests/vue-lint/compare.sh (the project service): ESLint 10.15.0 + vue-eslint-parser
+# 10.4.2 + typescript-eslint 8.72.2 against veslint, with every rule, on the SFCs of the tests of
+# eslint-plugin-vue and tests/vue-lint/fixtures. None is a difference of the Vue integration: each
+# is one veslint has on a .ts file too, or one of the TypeScript compilers.
+#
+# The script has a TypeScript syntax error: vue-eslint-parser throws it, and ESLint lints nothing.
+not compared	s1319/src/script-indent_v52.vue	eslint	Parsing error: Expression expected.
+not compared	s1358/src/script-indent_v93.vue	eslint	Parsing error: Type expected.
+#
+# tree-sitter's TypeScript grammar reads the script differently from TypeScript (syntax errors in
+# the one-token-per-line cases of script-indent: a class member or a modifier followed by a line
+# break, `export {…}` then `from` on the next line, a method signature with its parameters on the
+# next line), as on a .ts file; tests/vue/known.txt lists them for the parser.
+only eslint	g01/src/script-indent_v175.vue:11:4	@typescript-eslint/no-unsafe-member-access	errorMemberExpression	Unsafe member access .d on a type that cannot be resolved.	end	11	5
+only eslint	g01/src/script-indent_v175.vue:12:18	marcrock/no-newline-if-body-class-empty	noNewLine	Empty body class should not have a newline.	fix	89	90		end	13	2
+only eslint	g01/src/script-indent_v175.vue:8:1	@stylistic/no-extra-parens	unexpected	Unnecessary parentheses around expression.	fix	58	65	\n  d\n	end	8	2
+only eslint	g07/src/script-indent_i169.vue:11:2	@typescript-eslint/no-unsafe-member-access	errorMemberExpression	Unsafe member access .d on a type that cannot be resolved.	end	11	3
+only eslint	g07/src/script-indent_i169.vue:12:18	marcrock/no-newline-if-body-class-empty	noNewLine	Empty body class should not have a newline.	fix	83	84		end	13	2
+only eslint	g07/src/script-indent_i169.vue:8:1	@stylistic/no-extra-parens	unexpected	Unnecessary parentheses around expression.	fix	56	61	\nd\n	end	8	2
+only eslint	s0918/src/script-indent_i103.vue:10:1	@stylistic/lines-between-class-members	always	Expected blank line between class members.	fix	95	95	\n	end	15	2
+only eslint	s0918/src/script-indent_i103.vue:10:1	@typescript-eslint/class-methods-use-this	missingThis	Expected 'this' to be used by class private setter #x.	end	12	1
+only eslint	s0918/src/script-indent_i103.vue:12:1	@stylistic/function-paren-newline	unexpectedAfter	Unexpected newline after '('.	fix	104	105		end	12	2
+only eslint	s0918/src/script-indent_i103.vue:14:1	@stylistic/function-paren-newline	unexpectedBefore	Unexpected newline before ')'.	fix	110	111		end	14	2
+only eslint	s0918/src/script-indent_i103.vue:14:3	@typescript-eslint/no-empty-function	unexpected	Unexpected empty private setter #x.	suggestion	suggestComment	Add comment inside empty private setter #x.	114	115	 /* empty */ 	end	15	2
+only eslint	s0918/src/script-indent_i103.vue:16:1	@stylistic/lines-between-class-members	always	Expected blank line between class members.	fix	116	116	\n	end	21	2
+only eslint	s0918/src/script-indent_i103.vue:16:1	@typescript-eslint/explicit-function-return-type	missingReturnType	Missing return type on function.	end	19	1
+only eslint	s0918/src/script-indent_i103.vue:16:1	@typescript-eslint/member-ordering	incorrectGroupOrder	Member y should be declared before all #private instance get definitions.	end	21	2
+only eslint	s0918/src/script-indent_i103.vue:16:1	getter-return	expected	Expected to return a value in static private getter #y.	end	19	1
+only eslint	s0918/src/script-indent_i103.vue:16:1	perfectionist/sort-classes	unexpectedClassesGroupOrder	Expected "#y" (private-static-get-method) to come before "#x" (private-set-method).	fix	81	346	static\nget\n#y\n(\n) {\n}\nstatic\nset\n#y\n(\nvalue\n) {\n}\nget\n#x\n(\n)\n{\n}\nset\n#x\n(\nvalue\n) {\n}\nstatic\n#staticInc\n(\n) {\nCounter\n.#y++;\nCounter.\n#y++;\n}\ninc() {\nthis\n.#inc\n(\n)\nthis.\n#inc\n(\n)\n}\n#inc\n(\n) {\nthis\n.#x++;\nthis.\n#x++;\nCounter\n.#staticInc\n(\n)\nCounter.\n#staticInc(\n)\n}	end	21	2
+only eslint	s0918/src/script-indent_i103.vue:19:1	@stylistic/function-paren-newline	unexpectedAfter	Unexpected newline after '('.	fix	132	133		end	19	2
+only eslint	s0918/src/script-indent_i103.vue:20:1	@stylistic/function-paren-newline	unexpectedBefore	Unexpected newline before ')'.	fix	132	133		end	20	2
+only eslint	s0918/src/script-indent_i103.vue:20:3	@typescript-eslint/no-empty-function	unexpected	Unexpected empty static private getter #y.	suggestion	suggestComment	Add comment inside empty static private getter #y.	136	137	 /* empty */ 	end	21	2
+only eslint	s0918/src/script-indent_i103.vue:22:1	@stylistic/lines-between-class-members	always	Expected blank line between class members.	fix	138	138	\n	end	28	2
+only eslint	s0918/src/script-indent_i103.vue:22:1	@typescript-eslint/member-ordering	incorrectGroupOrder	Member y should be declared before all #private instance set definitions.	end	28	2
+only eslint	s0918/src/script-indent_i103.vue:25:1	@stylistic/function-paren-newline	unexpectedAfter	Unexpected newline after '('.	fix	154	155		end	25	2
+only eslint	s0918/src/script-indent_i103.vue:27:1	@stylistic/function-paren-newline	unexpectedBefore	Unexpected newline before ')'.	fix	160	161		end	27	2
+only eslint	s0918/src/script-indent_i103.vue:27:3	@typescript-eslint/no-empty-function	unexpected	Unexpected empty static private setter #y.	suggestion	suggestComment	Add comment inside empty static private setter #y.	164	165	 /* empty */ 	end	28	2
+only eslint	s0918/src/script-indent_i103.vue:29:1	@stylistic/lines-between-class-members	always	Expected blank line between class members.	fix	166	166	\n	end	38	2
+only eslint	s0918/src/script-indent_i103.vue:29:1	@typescript-eslint/explicit-function-return-type	missingReturnType	Missing return type on function.	end	29	4
+only eslint	s0918/src/script-indent_i103.vue:29:1	@typescript-eslint/explicit-member-accessibility	missingAccessibility	Missing accessibility modifier on method definition inc.	suggestion	addExplicitAccessibility	Add 'public' accessibility modifier	167	167	public 	suggestion	addExplicitAccessibility	Add 'private' accessibility modifier	167	167	private 	suggestion	addExplicitAccessibility	Add 'protected' accessibility modifier	167	167	protected 	end	29	4
+only eslint	s0918/src/script-indent_i103.vue:29:4	@stylistic/space-before-function-paren	missingSpace	Missing space before function parentheses.	fix	170	170	 	end	29	5
+only eslint	s0918/src/script-indent_i103.vue:31:6	@stylistic/function-call-spacing	unexpectedWhitespace	Unexpected whitespace between function name and paren.	fix	185	186		end	32	1
+only eslint	s0918/src/script-indent_i103.vue:32:1	@stylistic/function-paren-newline	unexpectedAfter	Unexpected newline after '('.	fix	187	188		end	32	2
+only eslint	s0918/src/script-indent_i103.vue:33:1	@stylistic/function-paren-newline	unexpectedBefore	Unexpected newline before ')'.	fix	187	188		end	33	2
+only eslint	s0918/src/script-indent_i103.vue:33:2	@stylistic/semi	missingSemi	Missing semicolon.	fix	189	189	;	end	34	1
+only eslint	s0918/src/script-indent_i103.vue:34:5	@stylistic/dot-location	expectedDotBeforeProperty	Expected dot to be on same line as property.	fix	194	196	\n.	end	34	6
+only eslint	s0918/src/script-indent_i103.vue:35:5	@stylistic/function-call-spacing	unexpectedWhitespace	Unexpected whitespace between function name and paren.	fix	200	201		end	36	1
+only eslint	s0918/src/script-indent_i103.vue:36:1	@stylistic/function-paren-newline	unexpectedAfter	Unexpected newline after '('.	fix	202	203		end	36	2
+only eslint	s0918/src/script-indent_i103.vue:37:1	@stylistic/function-paren-newline	unexpectedBefore	Unexpected newline before ')'.	fix	202	203		end	37	2
+only eslint	s0918/src/script-indent_i103.vue:37:2	@stylistic/semi	missingSemi	Missing semicolon.	fix	204	204	;	end	38	1
+only eslint	s0918/src/script-indent_i103.vue:39:1	@stylistic/lines-between-class-members	always	Expected blank line between class members.	fix	206	206	\n	end	53	2
+only eslint	s0918/src/script-indent_i103.vue:39:1	@typescript-eslint/explicit-function-return-type	missingReturnType	Missing return type on function.	end	40	1
+only eslint	s0918/src/script-indent_i103.vue:40:1	@stylistic/function-paren-newline	unexpectedAfter	Unexpected newline after '('.	fix	213	214		end	40	2
+only eslint	s0918/src/script-indent_i103.vue:41:1	@stylistic/function-paren-newline	unexpectedBefore	Unexpected newline before ')'.	fix	213	214		end	41	2
+only eslint	s0918/src/script-indent_i103.vue:44:5	@stylistic/dot-location	expectedDotBeforeProperty	Expected dot to be on same line as property.	fix	234	236	\n.	end	44	6
+only eslint	s0918/src/script-indent_i103.vue:47:12	@stylistic/function-call-spacing	unexpectedWhitespace	Unexpected whitespace between function name and paren.	fix	261	262		end	48	1
+only eslint	s0918/src/script-indent_i103.vue:48:1	@stylistic/function-paren-newline	unexpectedAfter	Unexpected newline after '('.	fix	263	264		end	48	2
+only eslint	s0918/src/script-indent_i103.vue:49:1	@stylistic/function-paren-newline	unexpectedBefore	Unexpected newline before ')'.	fix	263	264		end	49	2
+only eslint	s0918/src/script-indent_i103.vue:49:2	@stylistic/semi	missingSemi	Missing semicolon.	fix	265	265	;	end	50	1
+only eslint	s0918/src/script-indent_i103.vue:4:1	@typescript-eslint/class-methods-use-this	missingThis	Expected 'this' to be used by class private getter #x.	end	6	1
+only eslint	s0918/src/script-indent_i103.vue:4:1	@typescript-eslint/explicit-function-return-type	missingReturnType	Missing return type on function.	end	6	1
+only eslint	s0918/src/script-indent_i103.vue:4:1	getter-return	expected	Expected to return a value in private getter #x.	end	6	1
+only eslint	s0918/src/script-indent_i103.vue:50:8	@stylistic/dot-location	expectedDotBeforeProperty	Expected dot to be on same line as property.	fix	273	275	\n.	end	50	9
+only eslint	s0918/src/script-indent_i103.vue:51:11	@stylistic/function-paren-newline	unexpectedAfter	Unexpected newline after '('.	fix	286	287		end	51	12
+only eslint	s0918/src/script-indent_i103.vue:52:1	@stylistic/function-paren-newline	unexpectedBefore	Unexpected newline before ')'.	fix	286	287		end	52	2
+only eslint	s0918/src/script-indent_i103.vue:52:2	@stylistic/semi	missingSemi	Missing semicolon.	fix	288	288	;	end	53	1
+only eslint	s0918/src/script-indent_i103.vue:54:1	@stylistic/lines-between-class-members	always	Expected blank line between class members.	fix	290	290	\n	end	62	2
+only eslint	s0918/src/script-indent_i103.vue:54:1	@typescript-eslint/explicit-function-return-type	missingReturnType	Missing return type on function.	end	56	1
+only eslint	s0918/src/script-indent_i103.vue:54:1	@typescript-eslint/member-ordering	incorrectGroupOrder	Member staticInc should be declared before all public instance method definitions.	end	62	2
+only eslint	s0918/src/script-indent_i103.vue:54:1	perfectionist/sort-classes	unexpectedClassesGroupOrder	Expected "#staticInc" (private-static-method) to come before "#inc" (private-method).	fix	81	346	static\nget\n#y\n(\n) {\n}\nstatic\nset\n#y\n(\nvalue\n) {\n}\nget\n#x\n(\n)\n{\n}\nset\n#x\n(\nvalue\n) {\n}\nstatic\n#staticInc\n(\n) {\nCounter\n.#y++;\nCounter.\n#y++;\n}\ninc() {\nthis\n.#inc\n(\n)\nthis.\n#inc\n(\n)\n}\n#inc\n(\n) {\nthis\n.#x++;\nthis.\n#x++;\nCounter\n.#staticInc\n(\n)\nCounter.\n#staticInc(\n)\n}	end	62	2
+only eslint	s0918/src/script-indent_i103.vue:56:1	@stylistic/function-paren-newline	unexpectedAfter	Unexpected newline after '('.	fix	310	311		end	56	2
+only eslint	s0918/src/script-indent_i103.vue:57:1	@stylistic/function-paren-newline	unexpectedBefore	Unexpected newline before ')'.	fix	310	311		end	57	2
+only eslint	s0918/src/script-indent_i103.vue:60:8	@stylistic/dot-location	expectedDotBeforeProperty	Expected dot to be on same line as property.	fix	337	339	\n.	end	60	9
+only eslint	s0918/src/script-indent_i103.vue:6:1	@stylistic/function-paren-newline	unexpectedAfter	Unexpected newline after '('.	fix	89	90		end	6	2
+only eslint	s0918/src/script-indent_i103.vue:7:1	@stylistic/function-paren-newline	unexpectedBefore	Unexpected newline before ')'.	fix	89	90		end	7	2
+only eslint	s0918/src/script-indent_i103.vue:8:1	@stylistic/brace-style	nextLineOpen	Opening curly brace does not appear on the same line as controlling statement.	fix	91	92	 	end	8	2
+only eslint	s0918/src/script-indent_i103.vue:8:1	@typescript-eslint/no-empty-function	unexpected	Unexpected empty private getter #x.	suggestion	suggestComment	Add comment inside empty private getter #x.	93	94	 /* empty */ 	end	9	2
+only eslint	s0930/src/script-indent_i115.vue:10:1	@stylistic/lines-between-class-members	always	Expected blank line between class members.	fix	192	192	\n	end	10	20
+only eslint	s0930/src/script-indent_i115.vue:10:1	@typescript-eslint/prefer-readonly	preferReadonly	Member 'g' is never reassigned; mark it as `readonly`.	fix	210	210	readonly 	end	10	20
+only eslint	s0930/src/script-indent_i115.vue:14:1	@typescript-eslint/explicit-member-accessibility	missingAccessibility	Missing accessibility modifier on class property a.	suggestion	addExplicitAccessibility	Add 'public' accessibility modifier	235	235	public 	suggestion	addExplicitAccessibility	Add 'private' accessibility modifier	235	235	private 	suggestion	addExplicitAccessibility	Add 'protected' accessibility modifier	235	235	protected 	end	14	20
+only eslint	s0930/src/script-indent_i115.vue:15:1	@stylistic/lines-between-class-members	always	Expected blank line between class members.	fix	255	255	\n	end	15	21
+only eslint	s0930/src/script-indent_i115.vue:15:1	@typescript-eslint/explicit-member-accessibility	missingAccessibility	Missing accessibility modifier on class property b.	suggestion	addExplicitAccessibility	Add 'public' accessibility modifier	256	256	public 	suggestion	addExplicitAccessibility	Add 'private' accessibility modifier	256	256	private 	suggestion	addExplicitAccessibility	Add 'protected' accessibility modifier	256	256	protected 	end	15	20
+only eslint	s0930/src/script-indent_i115.vue:16:1	@stylistic/lines-between-class-members	always	Expected blank line between class members.	fix	276	276	\n	end	16	28
+only eslint	s0930/src/script-indent_i115.vue:17:1	@stylistic/lines-between-class-members	always	Expected blank line between class members.	fix	304	304	\n	end	17	28
+only eslint	s0930/src/script-indent_i115.vue:18:1	@stylistic/lines-between-class-members	always	Expected blank line between class members.	fix	332	332	\n	end	18	28
+only eslint	s0930/src/script-indent_i115.vue:19:1	@stylistic/lines-between-class-members	always	Expected blank line between class members.	fix	360	360	\n	end	19	27
+only eslint	s0930/src/script-indent_i115.vue:19:1	@typescript-eslint/member-ordering	incorrectGroupOrder	Member a should be declared before all public abstract field definitions.	end	19	27
+only eslint	s0930/src/script-indent_i115.vue:19:1	perfectionist/sort-classes	unexpectedClassesGroupOrder	Expected "a" (static-property) to come before "e" (property).	fix	235	416	public static readonly  a;\nreadonly abstract a;\npublic abstract readonly  a;\nabstract readonly b;\nabstract readonly public c;\npublic abstract readonly d;\npublic readonly abstract e;	end	19	27
+only eslint	s0930/src/script-indent_i115.vue:19:23	@stylistic/no-multi-spaces	multipleSpaces	Multiple spaces found before 'a'.	fix	383	385	 	end	19	25
+only eslint	s0930/src/script-indent_i115.vue:20:1	@stylistic/lines-between-class-members	always	Expected blank line between class members.	fix	387	387	\n	end	20	29
+only eslint	s0930/src/script-indent_i115.vue:20:25	@stylistic/no-multi-spaces	multipleSpaces	Multiple spaces found before 'a'.	fix	412	414	 	end	20	27
+only eslint	s0930/src/script-indent_i115.vue:4:1	@typescript-eslint/explicit-member-accessibility	missingAccessibility	Missing accessibility modifier on class property a.	suggestion	addExplicitAccessibility	Add 'public' accessibility modifier	79	79	public 	suggestion	addExplicitAccessibility	Add 'private' accessibility modifier	79	79	private 	suggestion	addExplicitAccessibility	Add 'protected' accessibility modifier	79	79	protected 	end	4	11
+only eslint	s0930/src/script-indent_i115.vue:5:1	@stylistic/lines-between-class-members	always	Expected blank line between class members.	fix	90	90	\n	end	5	19
+only eslint	s0930/src/script-indent_i115.vue:6:1	@stylistic/lines-between-class-members	always	Expected blank line between class members.	fix	109	109	\n	end	6	19
+only eslint	s0930/src/script-indent_i115.vue:7:1	@stylistic/lines-between-class-members	always	Expected blank line between class members.	fix	128	128	\n	end	7	22
+only eslint	s0930/src/script-indent_i115.vue:8:1	@stylistic/lines-between-class-members	always	Expected blank line between class members.	fix	150	150	\n	end	8	22
+only eslint	s0930/src/script-indent_i115.vue:9:1	@stylistic/lines-between-class-members	always	Expected blank line between class members.	fix	172	172	\n	end	9	20
+only eslint	s0930/src/script-indent_i115.vue:9:1	@typescript-eslint/prefer-readonly	preferReadonly	Member 'f' is never reassigned; mark it as `readonly`.	fix	190	190	readonly 	end	9	20
+only eslint	s0930/src/script-indent_i115.vue:9:18	@typescript-eslint/no-unused-private-class-members	unusedPrivateClassMember	Private class member 'f' is defined but never used.	end	9	19
+only eslint	s0931/src/script-indent_i116.vue:10:1	@stylistic/quotes	wrongQuotes	Strings must use doublequote.	fix	80	83	"s"	end	10	4
+only eslint	s0931/src/script-indent_i116.vue:11:1	@stylistic/semi-style	expectedSemiColon	Expected this semicolon to be at the end of the previous line.	fix	83	86	;\n	end	11	2
+only eslint	s0931/src/script-indent_i116.vue:12:1	@stylistic/lines-between-class-members	always	Expected blank line between class members.	fix	85	85	\n	end	15	2
+only eslint	s0931/src/script-indent_i116.vue:15:1	@stylistic/semi-style	expectedSemiColon	Expected this semicolon to be at the end of the previous line.	fix	110	113	;\n	end	15	2
+only eslint	s0931/src/script-indent_i116.vue:4:1	@typescript-eslint/explicit-member-accessibility	missingAccessibility	Missing accessibility modifier on class property a.	suggestion	addExplicitAccessibility	Add 'public' accessibility modifier	61	61	public 	suggestion	addExplicitAccessibility	Add 'private' accessibility modifier	61	61	private 	suggestion	addExplicitAccessibility	Add 'protected' accessibility modifier	61	61	protected 	end	4	2
+only eslint	s0931/src/script-indent_i116.vue:6:1	@typescript-eslint/no-magic-numbers	noMagic	No magic number: 1.	end	6	2
+only eslint	s0931/src/script-indent_i116.vue:7:1	@stylistic/semi-style	expectedSemiColon	Expected this semicolon to be at the end of the previous line.	fix	66	69	;\n	end	7	2
+only eslint	s0931/src/script-indent_i116.vue:8:1	@stylistic/lines-between-class-members	always	Expected blank line between class members.	fix	68	68	\n	end	11	2
+only eslint	s0942/src/script-indent_i127.vue:11:1	@typescript-eslint/explicit-member-accessibility	missingAccessibility	Missing accessibility modifier on class property a.	suggestion	addExplicitAccessibility	Add 'public' accessibility modifier	111	111	public 	suggestion	addExplicitAccessibility	Add 'private' accessibility modifier	111	111	private 	suggestion	addExplicitAccessibility	Add 'protected' accessibility modifier	111	111	protected 	end	11	11
+only eslint	s0942/src/script-indent_i127.vue:12:1	@stylistic/lines-between-class-members	always	Expected blank line between class members.	fix	122	122	\n	end	12	19
+only eslint	s0942/src/script-indent_i127.vue:13:1	@stylistic/lines-between-class-members	always	Expected blank line between class members.	fix	141	141	\n	end	13	22
+only eslint	s0942/src/script-indent_i127.vue:4:1	@typescript-eslint/explicit-member-accessibility	missingAccessibility	Missing accessibility modifier on class property a.	suggestion	addExplicitAccessibility	Add 'public' accessibility modifier	61	61	public 	suggestion	addExplicitAccessibility	Add 'private' accessibility modifier	61	61	private 	suggestion	addExplicitAccessibility	Add 'protected' accessibility modifier	61	61	protected 	end	4	2
+only eslint	s0942/src/script-indent_i127.vue:5:1	@stylistic/lines-between-class-members	always	Expected blank line between class members.	fix	63	63	\n	end	5	10
+only eslint	s0942/src/script-indent_i127.vue:6:1	@stylistic/lines-between-class-members	always	Expected blank line between class members.	fix	73	73	\n	end	6	13
+only eslint	s0942/src/script-indent_i127.vue:7:1	@stylistic/lines-between-class-members	always	Expected blank line between class members.	fix	86	86	\n	end	7	11
+only eslint	s0949/src/script-indent_i133.vue:13:1	@stylistic/lines-between-class-members	always	Expected blank line between class members.	fix	157	157	\n	end	17	2
+only eslint	s0949/src/script-indent_i133.vue:4:1	@typescript-eslint/explicit-member-accessibility	missingAccessibility	Missing accessibility modifier on class property a.	suggestion	addExplicitAccessibility	Add 'public' accessibility modifier	79	79	public 	suggestion	addExplicitAccessibility	Add 'private' accessibility modifier	79	79	private 	suggestion	addExplicitAccessibility	Add 'protected' accessibility modifier	79	79	protected 	end	4	2
+only eslint	s0949/src/script-indent_i133.vue:6:1	@typescript-eslint/no-magic-numbers	noMagic	No magic number: 1.	end	6	2
+only eslint	s0949/src/script-indent_i133.vue:7:1	@stylistic/semi-style	expectedSemiColon	Expected this semicolon to be at the end of the previous line.	fix	84	87	;\n	end	7	2
+only eslint	s0949/src/script-indent_i133.vue:8:1	@stylistic/lines-between-class-members	always	Expected blank line between class members.	fix	86	86	\n	end	12	2
+only eslint	s1042/src/script-indent_i233.vue:10:1	@stylistic/lines-between-class-members	always	Expected blank line between class members.	fix	92	92	\n	end	15	2
+only eslint	s1042/src/script-indent_i233.vue:10:1	@typescript-eslint/class-methods-use-this	missingThis	Expected 'this' to be used by class private setter #x.	end	12	1
+only eslint	s1042/src/script-indent_i233.vue:12:1	@stylistic/function-paren-newline	unexpectedAfter	Unexpected newline after '('.	fix	101	102		end	12	2
+only eslint	s1042/src/script-indent_i233.vue:14:1	@stylistic/function-paren-newline	unexpectedBefore	Unexpected newline before ')'.	fix	107	108		end	14	2
+only eslint	s1042/src/script-indent_i233.vue:14:3	@typescript-eslint/no-empty-function	unexpected	Unexpected empty private setter #x.	suggestion	suggestComment	Add comment inside empty private setter #x.	111	112	 /* empty */ 	end	15	2
+only eslint	s1042/src/script-indent_i233.vue:16:1	@stylistic/lines-between-class-members	always	Expected blank line between class members.	fix	113	113	\n	end	21	2
+only eslint	s1042/src/script-indent_i233.vue:16:1	@typescript-eslint/explicit-function-return-type	missingReturnType	Missing return type on function.	end	19	1
+only eslint	s1042/src/script-indent_i233.vue:16:1	@typescript-eslint/member-ordering	incorrectGroupOrder	Member y should be declared before all #private instance get definitions.	end	21	2
+only eslint	s1042/src/script-indent_i233.vue:16:1	getter-return	expected	Expected to return a value in static private getter #y.	end	19	1
+only eslint	s1042/src/script-indent_i233.vue:16:1	perfectionist/sort-classes	unexpectedClassesGroupOrder	Expected "#y" (private-static-get-method) to come before "#x" (private-set-method).	fix	78	343	static\nget\n#y\n(\n) {\n}\nstatic\nset\n#y\n(\nvalue\n) {\n}\nget\n#x\n(\n)\n{\n}\nset\n#x\n(\nvalue\n) {\n}\nstatic\n#staticInc\n(\n) {\nCounter\n.#y++;\nCounter.\n#y++;\n}\ninc() {\nthis\n.#inc\n(\n)\nthis.\n#inc\n(\n)\n}\n#inc\n(\n) {\nthis\n.#x++;\nthis.\n#x++;\nCounter\n.#staticInc\n(\n)\nCounter.\n#staticInc(\n)\n}	end	21	2
+only eslint	s1042/src/script-indent_i233.vue:19:1	@stylistic/function-paren-newline	unexpectedAfter	Unexpected newline after '('.	fix	129	130		end	19	2
+only eslint	s1042/src/script-indent_i233.vue:20:1	@stylistic/function-paren-newline	unexpectedBefore	Unexpected newline before ')'.	fix	129	130		end	20	2
+only eslint	s1042/src/script-indent_i233.vue:20:3	@typescript-eslint/no-empty-function	unexpected	Unexpected empty static private getter #y.	suggestion	suggestComment	Add comment inside empty static private getter #y.	133	134	 /* empty */ 	end	21	2
+only eslint	s1042/src/script-indent_i233.vue:22:1	@stylistic/lines-between-class-members	always	Expected blank line between class members.	fix	135	135	\n	end	28	2
+only eslint	s1042/src/script-indent_i233.vue:22:1	@typescript-eslint/member-ordering	incorrectGroupOrder	Member y should be declared before all #private instance set definitions.	end	28	2
+only eslint	s1042/src/script-indent_i233.vue:25:1	@stylistic/function-paren-newline	unexpectedAfter	Unexpected newline after '('.	fix	151	152		end	25	2
+only eslint	s1042/src/script-indent_i233.vue:27:1	@stylistic/function-paren-newline	unexpectedBefore	Unexpected newline before ')'.	fix	157	158		end	27	2
+only eslint	s1042/src/script-indent_i233.vue:27:3	@typescript-eslint/no-empty-function	unexpected	Unexpected empty static private setter #y.	suggestion	suggestComment	Add comment inside empty static private setter #y.	161	162	 /* empty */ 	end	28	2
+only eslint	s1042/src/script-indent_i233.vue:29:1	@stylistic/lines-between-class-members	always	Expected blank line between class members.	fix	163	163	\n	end	38	2
+only eslint	s1042/src/script-indent_i233.vue:29:1	@typescript-eslint/explicit-function-return-type	missingReturnType	Missing return type on function.	end	29	4
+only eslint	s1042/src/script-indent_i233.vue:29:1	@typescript-eslint/explicit-member-accessibility	missingAccessibility	Missing accessibility modifier on method definition inc.	suggestion	addExplicitAccessibility	Add 'public' accessibility modifier	164	164	public 	suggestion	addExplicitAccessibility	Add 'private' accessibility modifier	164	164	private 	suggestion	addExplicitAccessibility	Add 'protected' accessibility modifier	164	164	protected 	end	29	4
+only eslint	s1042/src/script-indent_i233.vue:29:4	@stylistic/space-before-function-paren	missingSpace	Missing space before function parentheses.	fix	167	167	 	end	29	5
+only eslint	s1042/src/script-indent_i233.vue:31:6	@stylistic/function-call-spacing	unexpectedWhitespace	Unexpected whitespace between function name and paren.	fix	182	183		end	32	1
+only eslint	s1042/src/script-indent_i233.vue:32:1	@stylistic/function-paren-newline	unexpectedAfter	Unexpected newline after '('.	fix	184	185		end	32	2
+only eslint	s1042/src/script-indent_i233.vue:33:1	@stylistic/function-paren-newline	unexpectedBefore	Unexpected newline before ')'.	fix	184	185		end	33	2
+only eslint	s1042/src/script-indent_i233.vue:33:2	@stylistic/semi	missingSemi	Missing semicolon.	fix	186	186	;	end	34	1
+only eslint	s1042/src/script-indent_i233.vue:34:5	@stylistic/dot-location	expectedDotBeforeProperty	Expected dot to be on same line as property.	fix	191	193	\n.	end	34	6
+only eslint	s1042/src/script-indent_i233.vue:35:5	@stylistic/function-call-spacing	unexpectedWhitespace	Unexpected whitespace between function name and paren.	fix	197	198		end	36	1
+only eslint	s1042/src/script-indent_i233.vue:36:1	@stylistic/function-paren-newline	unexpectedAfter	Unexpected newline after '('.	fix	199	200		end	36	2
+only eslint	s1042/src/script-indent_i233.vue:37:1	@stylistic/function-paren-newline	unexpectedBefore	Unexpected newline before ')'.	fix	199	200		end	37	2
+only eslint	s1042/src/script-indent_i233.vue:37:2	@stylistic/semi	missingSemi	Missing semicolon.	fix	201	201	;	end	38	1
+only eslint	s1042/src/script-indent_i233.vue:39:1	@stylistic/lines-between-class-members	always	Expected blank line between class members.	fix	203	203	\n	end	53	2
+only eslint	s1042/src/script-indent_i233.vue:39:1	@typescript-eslint/explicit-function-return-type	missingReturnType	Missing return type on function.	end	40	1
+only eslint	s1042/src/script-indent_i233.vue:40:1	@stylistic/function-paren-newline	unexpectedAfter	Unexpected newline after '('.	fix	210	211		end	40	2
+only eslint	s1042/src/script-indent_i233.vue:41:1	@stylistic/function-paren-newline	unexpectedBefore	Unexpected newline before ')'.	fix	210	211		end	41	2
+only eslint	s1042/src/script-indent_i233.vue:44:5	@stylistic/dot-location	expectedDotBeforeProperty	Expected dot to be on same line as property.	fix	231	233	\n.	end	44	6
+only eslint	s1042/src/script-indent_i233.vue:47:12	@stylistic/function-call-spacing	unexpectedWhitespace	Unexpected whitespace between function name and paren.	fix	258	259		end	48	1
+only eslint	s1042/src/script-indent_i233.vue:48:1	@stylistic/function-paren-newline	unexpectedAfter	Unexpected newline after '('.	fix	260	261		end	48	2
+only eslint	s1042/src/script-indent_i233.vue:49:1	@stylistic/function-paren-newline	unexpectedBefore	Unexpected newline before ')'.	fix	260	261		end	49	2
+only eslint	s1042/src/script-indent_i233.vue:49:2	@stylistic/semi	missingSemi	Missing semicolon.	fix	262	262	;	end	50	1
+only eslint	s1042/src/script-indent_i233.vue:4:1	@typescript-eslint/class-methods-use-this	missingThis	Expected 'this' to be used by class private getter #x.	end	6	1
+only eslint	s1042/src/script-indent_i233.vue:4:1	@typescript-eslint/explicit-function-return-type	missingReturnType	Missing return type on function.	end	6	1
+only eslint	s1042/src/script-indent_i233.vue:4:1	getter-return	expected	Expected to return a value in private getter #x.	end	6	1
+only eslint	s1042/src/script-indent_i233.vue:50:8	@stylistic/dot-location	expectedDotBeforeProperty	Expected dot to be on same line as property.	fix	270	272	\n.	end	50	9
+only eslint	s1042/src/script-indent_i233.vue:51:11	@stylistic/function-paren-newline	unexpectedAfter	Unexpected newline after '('.	fix	283	284		end	51	12
+only eslint	s1042/src/script-indent_i233.vue:52:1	@stylistic/function-paren-newline	unexpectedBefore	Unexpected newline before ')'.	fix	283	284		end	52	2
+only eslint	s1042/src/script-indent_i233.vue:52:2	@stylistic/semi	missingSemi	Missing semicolon.	fix	285	285	;	end	53	1
+only eslint	s1042/src/script-indent_i233.vue:54:1	@stylistic/lines-between-class-members	always	Expected blank line between class members.	fix	287	287	\n	end	62	2
+only eslint	s1042/src/script-indent_i233.vue:54:1	@typescript-eslint/explicit-function-return-type	missingReturnType	Missing return type on function.	end	56	1
+only eslint	s1042/src/script-indent_i233.vue:54:1	@typescript-eslint/member-ordering	incorrectGroupOrder	Member staticInc should be declared before all public instance method definitions.	end	62	2
+only eslint	s1042/src/script-indent_i233.vue:54:1	perfectionist/sort-classes	unexpectedClassesGroupOrder	Expected "#staticInc" (private-static-method) to come before "#inc" (private-method).	fix	78	343	static\nget\n#y\n(\n) {\n}\nstatic\nset\n#y\n(\nvalue\n) {\n}\nget\n#x\n(\n)\n{\n}\nset\n#x\n(\nvalue\n) {\n}\nstatic\n#staticInc\n(\n) {\nCounter\n.#y++;\nCounter.\n#y++;\n}\ninc() {\nthis\n.#inc\n(\n)\nthis.\n#inc\n(\n)\n}\n#inc\n(\n) {\nthis\n.#x++;\nthis.\n#x++;\nCounter\n.#staticInc\n(\n)\nCounter.\n#staticInc(\n)\n}	end	62	2
+only eslint	s1042/src/script-indent_i233.vue:56:1	@stylistic/function-paren-newline	unexpectedAfter	Unexpected newline after '('.	fix	307	308		end	56	2
+only eslint	s1042/src/script-indent_i233.vue:57:1	@stylistic/function-paren-newline	unexpectedBefore	Unexpected newline before ')'.	fix	307	308		end	57	2
+only eslint	s1042/src/script-indent_i233.vue:60:8	@stylistic/dot-location	expectedDotBeforeProperty	Expected dot to be on same line as property.	fix	334	336	\n.	end	60	9
+only eslint	s1042/src/script-indent_i233.vue:6:1	@stylistic/function-paren-newline	unexpectedAfter	Unexpected newline after '('.	fix	86	87		end	6	2
+only eslint	s1042/src/script-indent_i233.vue:7:1	@stylistic/function-paren-newline	unexpectedBefore	Unexpected newline before ')'.	fix	86	87		end	7	2
+only eslint	s1042/src/script-indent_i233.vue:8:1	@stylistic/brace-style	nextLineOpen	Opening curly brace does not appear on the same line as controlling statement.	fix	88	89	 	end	8	2
+only eslint	s1042/src/script-indent_i233.vue:8:1	@typescript-eslint/no-empty-function	unexpected	Unexpected empty private getter #x.	suggestion	suggestComment	Add comment inside empty private getter #x.	90	91	 /* empty */ 	end	9	2
+only eslint	s1049/src/script-indent_i24.vue:14:1	@stylistic/quotes	wrongQuotes	Strings must use doublequote.	fix	106	109	"s"	end	14	4
+only eslint	s1049/src/script-indent_i24.vue:15:1	@stylistic/semi-style	expectedSemiColon	Expected this semicolon to be at the end of the previous line.	fix	109	112	;\n	end	15	2
+only eslint	s1049/src/script-indent_i24.vue:16:1	@stylistic/lines-between-class-members	always	Expected blank line between class members.	fix	111	111	\n	end	34	2
+only eslint	s1049/src/script-indent_i24.vue:17:1	@stylistic/type-annotation-spacing	unexpectedSpaceBefore	Unexpected space before the ':'.	fix	132	133		end	17	2
+only eslint	s1049/src/script-indent_i24.vue:19:1	@stylistic/quote-props	unquotedPropertyFound	Unquoted property 'key' found.	fix	137	140	"key"	end	19	13
+only eslint	s1049/src/script-indent_i24.vue:25:1	@typescript-eslint/member-ordering	incorrectGroupOrder	Member key should be declared before all field definitions.	end	30	2
+only eslint	s1049/src/script-indent_i24.vue:34:1	@stylistic/semi-style	expectedSemiColon	Expected this semicolon to be at the end of the previous line.	fix	216	219	;\n	end	34	2
+only eslint	s1049/src/script-indent_i24.vue:4:1	@typescript-eslint/explicit-member-accessibility	missingAccessibility	Missing accessibility modifier on class property a.	suggestion	addExplicitAccessibility	Add 'public' accessibility modifier	61	61	public 	suggestion	addExplicitAccessibility	Add 'private' accessibility modifier	61	61	private 	suggestion	addExplicitAccessibility	Add 'protected' accessibility modifier	61	61	protected 	end	4	2
+only eslint	s1049/src/script-indent_i24.vue:6:1	@typescript-eslint/no-magic-numbers	noMagic	No magic number: 1.	end	6	2
+only eslint	s1049/src/script-indent_i24.vue:7:1	@stylistic/semi-style	expectedSemiColon	Expected this semicolon to be at the end of the previous line.	fix	74	77	;\n	end	7	2
+only eslint	s1049/src/script-indent_i24.vue:8:1	@stylistic/lines-between-class-members	always	Expected blank line between class members.	fix	76	76	\n	end	15	2
+only eslint	s1049/src/script-indent_i24.vue:9:1	@stylistic/type-annotation-spacing	unexpectedSpaceBefore	Unexpected space before the ':'.	fix	85	86		end	9	2
+only eslint	s1055/src/script-indent_i247.vue:100:1	@stylistic/function-paren-newline	unexpectedBefore	Unexpected newline before ')'.	fix	543	544		end	100	2
+only eslint	s1055/src/script-indent_i247.vue:101:1	@typescript-eslint/explicit-function-return-type	missingReturnType	Missing return type on function.	end	103	1
+only eslint	s1055/src/script-indent_i247.vue:101:1	@typescript-eslint/explicit-member-accessibility	missingAccessibility	Missing accessibility modifier on get property accessor x.	suggestion	addExplicitAccessibility	Add 'public' accessibility modifier	546	546	public 	suggestion	addExplicitAccessibility	Add 'private' accessibility modifier	546	546	private 	suggestion	addExplicitAccessibility	Add 'protected' accessibility modifier	546	546	protected 	end	102	2
+only eslint	s1055/src/script-indent_i247.vue:103:1	@stylistic/function-paren-newline	unexpectedAfter	Unexpected newline after '('.	fix	553	554		end	103	2
+only eslint	s1055/src/script-indent_i247.vue:104:1	@stylistic/function-paren-newline	unexpectedBefore	Unexpected newline before ')'.	fix	553	554		end	104	2
+only eslint	s1055/src/script-indent_i247.vue:105:1	@stylistic/brace-style	nextLineOpen	Opening curly brace does not appear on the same line as controlling statement.	fix	555	556	 	end	105	2
+only eslint	s1055/src/script-indent_i247.vue:10:1	@stylistic/function-paren-newline	unexpectedAfter	Unexpected newline after '('.	fix	87	88		end	10	2
+only eslint	s1055/src/script-indent_i247.vue:110:13	@stylistic/function-call-spacing	unexpectedWhitespace	Unexpected whitespace between function name and paren.	fix	591	592		end	111	1
+only eslint	s1055/src/script-indent_i247.vue:111:1	@stylistic/function-paren-newline	unexpectedAfter	Unexpected newline after '('.	fix	593	594		end	111	2
+only eslint	s1055/src/script-indent_i247.vue:113:1	@stylistic/function-paren-newline	unexpectedBefore	Unexpected newline before ')'.	fix	599	600		end	113	2
+only eslint	s1055/src/script-indent_i247.vue:114:1	@typescript-eslint/explicit-function-return-type	missingReturnType	Missing return type on function.	end	116	1
+only eslint	s1055/src/script-indent_i247.vue:114:1	@typescript-eslint/explicit-member-accessibility	missingAccessibility	Missing accessibility modifier on get property accessor y.	suggestion	addExplicitAccessibility	Add 'public' accessibility modifier	602	602	public 	suggestion	addExplicitAccessibility	Add 'private' accessibility modifier	602	602	private 	suggestion	addExplicitAccessibility	Add 'protected' accessibility modifier	602	602	protected 	end	115	2
+only eslint	s1055/src/script-indent_i247.vue:116:1	@stylistic/function-paren-newline	unexpectedAfter	Unexpected newline after '('.	fix	609	610		end	116	2
+only eslint	s1055/src/script-indent_i247.vue:117:1	@stylistic/function-paren-newline	unexpectedBefore	Unexpected newline before ')'.	fix	609	610		end	117	2
+only eslint	s1055/src/script-indent_i247.vue:118:1	@stylistic/brace-style	nextLineOpen	Opening curly brace does not appear on the same line as controlling statement.	fix	611	612	 	end	118	2
+only eslint	s1055/src/script-indent_i247.vue:11:1	@stylistic/function-paren-newline	unexpectedBefore	Unexpected newline before ')'.	fix	87	88		end	11	2
+only eslint	s1055/src/script-indent_i247.vue:123:7	@typescript-eslint/no-redeclare	redeclared	'Greeter' is already defined.	end	123	14
+only eslint	s1055/src/script-indent_i247.vue:125:7	@stylistic/function-call-spacing	unexpectedWhitespace	Unexpected whitespace between function name and paren.	fix	659	660		end	126	1
+only eslint	s1055/src/script-indent_i247.vue:126:1	@stylistic/function-paren-newline	unexpectedAfter	Unexpected newline after '('.	fix	661	662		end	126	2
+only eslint	s1055/src/script-indent_i247.vue:128:1	@stylistic/function-paren-newline	unexpectedBefore	Unexpected newline before ')'.	fix	673	674		end	128	2
+only eslint	s1055/src/script-indent_i247.vue:129:1	@typescript-eslint/explicit-member-accessibility	missingAccessibility	Missing accessibility modifier on class property greeting.	suggestion	addExplicitAccessibility	Add 'public' accessibility modifier	676	676	public 	suggestion	addExplicitAccessibility	Add 'private' accessibility modifier	676	676	private 	suggestion	addExplicitAccessibility	Add 'protected' accessibility modifier	676	676	protected 	end	129	9
+only eslint	s1055/src/script-indent_i247.vue:12:1	@typescript-eslint/class-methods-use-this	missingThis	Expected 'this' to be used by class method 'method'.	end	13	1
+only eslint	s1055/src/script-indent_i247.vue:12:1	@typescript-eslint/explicit-function-return-type	missingReturnType	Missing return type on function.	end	13	1
+only eslint	s1055/src/script-indent_i247.vue:12:1	@typescript-eslint/explicit-member-accessibility	missingAccessibility	Missing accessibility modifier on method definition method.	suggestion	addExplicitAccessibility	Add 'public' accessibility modifier	90	90	public 	suggestion	addExplicitAccessibility	Add 'private' accessibility modifier	90	90	private 	suggestion	addExplicitAccessibility	Add 'protected' accessibility modifier	90	90	protected 	end	12	7
+only eslint	s1055/src/script-indent_i247.vue:130:1	@stylistic/type-annotation-spacing	unexpectedSpaceBefore	Unexpected space before the ':'.	fix	684	685		end	130	2
+only eslint	s1055/src/script-indent_i247.vue:132:1	@stylistic/semi-style	expectedSemiColon	Expected this semicolon to be at the end of the previous line.	fix	693	696	;\n	end	132	2
+only eslint	s1055/src/script-indent_i247.vue:133:1	@stylistic/lines-between-class-members	always	Expected blank line between class members.	fix	695	695	\n	end	135	2
+only eslint	s1055/src/script-indent_i247.vue:133:1	@typescript-eslint/explicit-member-accessibility	missingAccessibility	Missing accessibility modifier on method definition constructor.	suggestion	addExplicitAccessibility	Add 'public' accessibility modifier	696	696	public 	suggestion	addExplicitAccessibility	Add 'private' accessibility modifier	696	696	private 	suggestion	addExplicitAccessibility	Add 'protected' accessibility modifier	696	696	protected 	end	133	12
+only eslint	s1055/src/script-indent_i247.vue:133:12	@stylistic/space-before-function-paren	missingSpace	Missing space before function parentheses.	fix	707	707	 	end	133	13
+only eslint	s1055/src/script-indent_i247.vue:136:1	@stylistic/lines-between-class-members	always	Expected blank line between class members.	fix	753	753	\n	end	139	2
+only eslint	s1055/src/script-indent_i247.vue:136:1	@typescript-eslint/explicit-function-return-type	missingReturnType	Missing return type on function.	end	136	6
+only eslint	s1055/src/script-indent_i247.vue:136:1	@typescript-eslint/explicit-member-accessibility	missingAccessibility	Missing accessibility modifier on method definition greet.	suggestion	addExplicitAccessibility	Add 'public' accessibility modifier	754	754	public 	suggestion	addExplicitAccessibility	Add 'private' accessibility modifier	754	754	private 	suggestion	addExplicitAccessibility	Add 'protected' accessibility modifier	754	754	protected 	end	136	6
+only eslint	s1055/src/script-indent_i247.vue:136:6	@stylistic/space-before-function-paren	missingSpace	Missing space before function parentheses.	fix	759	759	 	end	136	7
+only eslint	s1055/src/script-indent_i247.vue:137:35	@stylistic/function-call-argument-newline	missingLineBreak	There should be a line break after this argument.	fix	798	799	\n	end	137	36
+only eslint	s1055/src/script-indent_i247.vue:138:34	@stylistic/function-call-argument-newline	missingLineBreak	There should be a line break after this argument.	fix	845	846	\n	end	138	35
+only eslint	s1055/src/script-indent_i247.vue:13:1	@stylistic/function-paren-newline	unexpectedAfter	Unexpected newline after '('.	fix	98	99		end	13	2
+only eslint	s1055/src/script-indent_i247.vue:142:7	@typescript-eslint/no-redeclare	redeclared	'BugReport' is already defined.	end	142	16
+only eslint	s1055/src/script-indent_i247.vue:143:1	@typescript-eslint/explicit-member-accessibility	missingAccessibility	Missing accessibility modifier on class property type.	suggestion	addExplicitAccessibility	Add 'public' accessibility modifier	885	885	public 	suggestion	addExplicitAccessibility	Add 'private' accessibility modifier	885	885	private 	suggestion	addExplicitAccessibility	Add 'protected' accessibility modifier	885	885	protected 	end	143	5
+only eslint	s1055/src/script-indent_i247.vue:144:1	@stylistic/lines-between-class-members	always	Expected blank line between class members.	fix	901	901	\n	end	144	15
+only eslint	s1055/src/script-indent_i247.vue:144:1	@typescript-eslint/explicit-member-accessibility	missingAccessibility	Missing accessibility modifier on class property title.	suggestion	addExplicitAccessibility	Add 'public' accessibility modifier	902	902	public 	suggestion	addExplicitAccessibility	Add 'private' accessibility modifier	902	902	private 	suggestion	addExplicitAccessibility	Add 'protected' accessibility modifier	902	902	protected 	end	144	6
+only eslint	s1055/src/script-indent_i247.vue:144:1	perfectionist/sort-classes	unexpectedClassesOrder	Expected "title" to come before "type".	fix	885	916	title: string;\ntype = "report";	end	144	15
+only eslint	s1055/src/script-indent_i247.vue:146:1	@typescript-eslint/explicit-member-accessibility	missingAccessibility	Missing accessibility modifier on method definition constructor.	suggestion	addExplicitAccessibility	Add 'public' accessibility modifier	918	918	public 	suggestion	addExplicitAccessibility	Add 'private' accessibility modifier	918	918	private 	suggestion	addExplicitAccessibility	Add 'protected' accessibility modifier	918	918	protected 	end	146	12
+only eslint	s1055/src/script-indent_i247.vue:146:12	@stylistic/space-before-function-paren	missingSpace	Missing space before function parentheses.	fix	929	929	 	end	146	13
+only eslint	s1055/src/script-indent_i247.vue:14:1	@stylistic/function-paren-newline	unexpectedBefore	Unexpected newline before ')'.	fix	98	99		end	14	2
+only eslint	s1055/src/script-indent_i247.vue:152:1	@typescript-eslint/explicit-function-return-type	missingReturnType	Missing return type on function.	end	153	1
+only eslint	s1055/src/script-indent_i247.vue:152:1	@typescript-eslint/explicit-member-accessibility	missingAccessibility	Missing accessibility modifier on method definition print.	suggestion	addExplicitAccessibility	Add 'public' accessibility modifier	973	973	public 	suggestion	addExplicitAccessibility	Add 'private' accessibility modifier	973	973	private 	suggestion	addExplicitAccessibility	Add 'protected' accessibility modifier	973	973	protected 	end	152	6
+only eslint	s1055/src/script-indent_i247.vue:153:1	@stylistic/function-paren-newline	unexpectedAfter	Unexpected newline after '('.	fix	980	981		end	153	2
+only eslint	s1055/src/script-indent_i247.vue:157:1	@stylistic/type-annotation-spacing	unexpectedSpaceBefore	Unexpected space before the ':'.	fix	999	1000		end	157	2
+only eslint	s1055/src/script-indent_i247.vue:159:1	@stylistic/function-paren-newline	unexpectedBefore	Unexpected newline before ')'.	fix	1009	1010		end	159	2
+only eslint	s1055/src/script-indent_i247.vue:15:1	@stylistic/brace-style	nextLineOpen	Opening curly brace does not appear on the same line as controlling statement.	fix	100	101	 	end	15	2
+only eslint	s1055/src/script-indent_i247.vue:15:1	@typescript-eslint/no-empty-function	unexpected	Unexpected empty method 'method'.	suggestion	suggestComment	Add comment inside empty method 'method'.	102	103	 /* empty */ 	end	16	2
+only eslint	s1055/src/script-indent_i247.vue:160:1	unicorn/prefer-ternary	prefer-ternary	This `if` statement can be replaced by a ternary expression.	fix	1014	1109	return verbose ? `type: ${this.type}\\ntitle: ${this.title}` : this.title;	end	164	2
+only eslint	s1055/src/script-indent_i247.vue:170:1	@stylistic/lines-between-class-members	always	Expected blank line between class members.	fix	1150	1150	\n	end	170	21
+only eslint	s1055/src/script-indent_i247.vue:170:1	perfectionist/sort-classes	unexpectedClassesOrder	Expected "_end" to come before "_start".	fix	1128	1447	@\nvalidate\n@\nReflect\n.\nmetadata(\n"design:type"\n,\nPoint\n)\nset\nend(value: Point) {\nthis._end = value;\n}\nget end() {\nreturn this._end;\n}\n@\nvalidate\n@\nReflect\n.\nmetadata(\n"design:type"\n,\nPoint\n)\nset start(value: Point) {\nthis._start = value;\n}\nget start() {\nreturn this._start;\n}\nprivate _end: Point;\nprivate _start: Point;	end	170	21
+only eslint	s1055/src/script-indent_i247.vue:171:1	@stylistic/lines-between-class-members	always	Expected blank line between class members.	fix	1171	1171	\n	end	183	2
+only eslint	s1055/src/script-indent_i247.vue:171:1	perfectionist/sort-classes	unexpectedClassesGroupOrder	Expected "start" (set-method) to come before "_end" (private-property).	fix	1128	1447	@\nvalidate\n@\nReflect\n.\nmetadata(\n"design:type"\n,\nPoint\n)\nset\nend(value: Point) {\nthis._end = value;\n}\nget end() {\nreturn this._end;\n}\n@\nvalidate\n@\nReflect\n.\nmetadata(\n"design:type"\n,\nPoint\n)\nset start(value: Point) {\nthis._start = value;\n}\nget start() {\nreturn this._start;\n}\nprivate _end: Point;\nprivate _start: Point;	end	183	2
+only eslint	s1055/src/script-indent_i247.vue:175:1	@stylistic/dot-location	expectedDotBeforeProperty	Expected dot to be on same line as property.	fix	1193	1195	\n.	end	175	2
+only eslint	s1055/src/script-indent_i247.vue:178:1	@stylistic/comma-style	unexpectedLineBeforeAndAfterComma	Bad line breaking before and after ','.	fix	1218	1221	,\n	end	178	2
+only eslint	s1055/src/script-indent_i247.vue:181:1	@typescript-eslint/explicit-member-accessibility	missingAccessibility	Missing accessibility modifier on set property accessor start.	suggestion	addExplicitAccessibility	Add 'public' accessibility modifier	1229	1229	public 	suggestion	addExplicitAccessibility	Add 'private' accessibility modifier	1229	1229	private 	suggestion	addExplicitAccessibility	Add 'protected' accessibility modifier	1229	1229	protected 	end	181	10
+only eslint	s1055/src/script-indent_i247.vue:181:10	@stylistic/space-before-function-paren	missingSpace	Missing space before function parentheses.	fix	1238	1238	 	end	181	11
+only eslint	s1055/src/script-indent_i247.vue:184:1	@stylistic/lines-between-class-members	always	Expected blank line between class members.	fix	1277	1277	\n	end	186	2
+only eslint	s1055/src/script-indent_i247.vue:184:1	@typescript-eslint/explicit-function-return-type	missingReturnType	Missing return type on function.	end	184	10
+only eslint	s1055/src/script-indent_i247.vue:184:1	@typescript-eslint/explicit-member-accessibility	missingAccessibility	Missing accessibility modifier on get property accessor start.	suggestion	addExplicitAccessibility	Add 'public' accessibility modifier	1278	1278	public 	suggestion	addExplicitAccessibility	Add 'private' accessibility modifier	1278	1278	private 	suggestion	addExplicitAccessibility	Add 'protected' accessibility modifier	1278	1278	protected 	end	184	10
+only eslint	s1055/src/script-indent_i247.vue:184:1	@typescript-eslint/member-ordering	incorrectGroupOrder	Member start should be declared before all public decorated set definitions.	end	186	2
+only eslint	s1055/src/script-indent_i247.vue:184:10	@stylistic/space-before-function-paren	missingSpace	Missing space before function parentheses.	fix	1287	1287	 	end	184	11
+only eslint	s1055/src/script-indent_i247.vue:187:1	@stylistic/lines-between-class-members	always	Expected blank line between class members.	fix	1313	1313	\n	end	200	2
+only eslint	s1055/src/script-indent_i247.vue:187:1	perfectionist/sort-classes	unexpectedClassesOrder	Expected "end" to come before "start".	fix	1128	1447	@\nvalidate\n@\nReflect\n.\nmetadata(\n"design:type"\n,\nPoint\n)\nset\nend(value: Point) {\nthis._end = value;\n}\nget end() {\nreturn this._end;\n}\n@\nvalidate\n@\nReflect\n.\nmetadata(\n"design:type"\n,\nPoint\n)\nset start(value: Point) {\nthis._start = value;\n}\nget start() {\nreturn this._start;\n}\nprivate _end: Point;\nprivate _start: Point;	end	200	2
+only eslint	s1055/src/script-indent_i247.vue:191:1	@stylistic/dot-location	expectedDotBeforeProperty	Expected dot to be on same line as property.	fix	1335	1337	\n.	end	191	2
+only eslint	s1055/src/script-indent_i247.vue:194:1	@stylistic/comma-style	unexpectedLineBeforeAndAfterComma	Bad line breaking before and after ','.	fix	1360	1363	,\n	end	194	2
+only eslint	s1055/src/script-indent_i247.vue:197:1	@typescript-eslint/explicit-member-accessibility	missingAccessibility	Missing accessibility modifier on set property accessor end.	suggestion	addExplicitAccessibility	Add 'public' accessibility modifier	1371	1371	public 	suggestion	addExplicitAccessibility	Add 'private' accessibility modifier	1371	1371	private 	suggestion	addExplicitAccessibility	Add 'protected' accessibility modifier	1371	1371	protected 	end	198	4
+only eslint	s1055/src/script-indent_i247.vue:198:4	@stylistic/space-before-function-paren	missingSpace	Missing space before function parentheses.	fix	1378	1378	 	end	198	5
+only eslint	s1055/src/script-indent_i247.vue:201:1	@stylistic/lines-between-class-members	always	Expected blank line between class members.	fix	1415	1415	\n	end	203	2
+only eslint	s1055/src/script-indent_i247.vue:201:1	@typescript-eslint/explicit-function-return-type	missingReturnType	Missing return type on function.	end	201	8
+only eslint	s1055/src/script-indent_i247.vue:201:1	@typescript-eslint/explicit-member-accessibility	missingAccessibility	Missing accessibility modifier on get property accessor end.	suggestion	addExplicitAccessibility	Add 'public' accessibility modifier	1416	1416	public 	suggestion	addExplicitAccessibility	Add 'private' accessibility modifier	1416	1416	private 	suggestion	addExplicitAccessibility	Add 'protected' accessibility modifier	1416	1416	protected 	end	201	8
+only eslint	s1055/src/script-indent_i247.vue:201:1	@typescript-eslint/member-ordering	incorrectGroupOrder	Member end should be declared before all public decorated set definitions.	end	203	2
+only eslint	s1055/src/script-indent_i247.vue:201:8	@stylistic/space-before-function-paren	missingSpace	Missing space before function parentheses.	fix	1423	1423	 	end	201	9
+only eslint	s1055/src/script-indent_i247.vue:22:1	@stylistic/brace-style	nextLineOpen	Opening curly brace does not appear on the same line as controlling statement.	fix	131	132	 	end	22	2
+only eslint	s1055/src/script-indent_i247.vue:23:1	@typescript-eslint/explicit-member-accessibility	missingAccessibility	Missing accessibility modifier on class property type.	suggestion	addExplicitAccessibility	Add 'public' accessibility modifier	134	134	public 	suggestion	addExplicitAccessibility	Add 'private' accessibility modifier	134	134	private 	suggestion	addExplicitAccessibility	Add 'protected' accessibility modifier	134	134	protected 	end	23	5
+only eslint	s1055/src/script-indent_i247.vue:26:1	@stylistic/semi-style	expectedSemiColon	Expected this semicolon to be at the end of the previous line.	fix	149	152	;\n	end	26	2
+only eslint	s1055/src/script-indent_i247.vue:27:1	@stylistic/lines-between-class-members	always	Expected blank line between class members.	fix	151	151	\n	end	30	2
+only eslint	s1055/src/script-indent_i247.vue:27:1	@typescript-eslint/explicit-member-accessibility	missingAccessibility	Missing accessibility modifier on class property title.	suggestion	addExplicitAccessibility	Add 'public' accessibility modifier	152	152	public 	suggestion	addExplicitAccessibility	Add 'private' accessibility modifier	152	152	private 	suggestion	addExplicitAccessibility	Add 'protected' accessibility modifier	152	152	protected 	end	27	6
+only eslint	s1055/src/script-indent_i247.vue:27:1	perfectionist/sort-classes	unexpectedClassesOrder	Expected "title" to come before "type".	fix	134	168	title\n:\nstring\n;\ntype\n=\n"report"\n;	end	30	2
+only eslint	s1055/src/script-indent_i247.vue:28:1	@stylistic/type-annotation-spacing	unexpectedSpaceBefore	Unexpected space before the ':'.	fix	157	158		end	28	2
+only eslint	s1055/src/script-indent_i247.vue:30:1	@stylistic/semi-style	expectedSemiColon	Expected this semicolon to be at the end of the previous line.	fix	166	170	;\n	end	30	2
+only eslint	s1055/src/script-indent_i247.vue:32:1	@typescript-eslint/explicit-member-accessibility	missingAccessibility	Missing accessibility modifier on method definition constructor.	suggestion	addExplicitAccessibility	Add 'public' accessibility modifier	170	170	public 	suggestion	addExplicitAccessibility	Add 'private' accessibility modifier	170	170	private 	suggestion	addExplicitAccessibility	Add 'protected' accessibility modifier	170	170	protected 	end	32	12
+only eslint	s1055/src/script-indent_i247.vue:33:1	@stylistic/function-paren-newline	unexpectedAfter	Unexpected newline after '('.	fix	183	184		end	33	2
+only eslint	s1055/src/script-indent_i247.vue:35:1	@stylistic/type-annotation-spacing	unexpectedSpaceBefore	Unexpected space before the ':'.	fix	185	186		end	35	2
+only eslint	s1055/src/script-indent_i247.vue:37:1	@stylistic/function-paren-newline	unexpectedBefore	Unexpected newline before ')'.	fix	194	195		end	37	2
+only eslint	s1055/src/script-indent_i247.vue:38:1	@stylistic/brace-style	nextLineOpen	Opening curly brace does not appear on the same line as controlling statement.	fix	196	197	 	end	38	2
+only eslint	s1055/src/script-indent_i247.vue:40:1	@stylistic/dot-location	expectedDotBeforeProperty	Expected dot to be on same line as property.	fix	204	206	\n.	end	40	2
+only eslint	s1055/src/script-indent_i247.vue:44:1	@stylistic/semi-style	expectedSemiColon	Expected this semicolon to be at the end of the previous line.	fix	215	218	;\n	end	44	2
+only eslint	s1055/src/script-indent_i247.vue:50:1	@stylistic/brace-style	nextLineOpen	Opening curly brace does not appear on the same line as controlling statement.	fix	236	237	 	end	50	2
+only eslint	s1055/src/script-indent_i247.vue:51:1	@typescript-eslint/explicit-member-accessibility	missingAccessibility	Missing accessibility modifier on class property greeting.	suggestion	addExplicitAccessibility	Add 'public' accessibility modifier	239	239	public 	suggestion	addExplicitAccessibility	Add 'private' accessibility modifier	239	239	private 	suggestion	addExplicitAccessibility	Add 'protected' accessibility modifier	239	239	protected 	end	51	9
+only eslint	s1055/src/script-indent_i247.vue:52:1	@stylistic/type-annotation-spacing	unexpectedSpaceBefore	Unexpected space before the ':'.	fix	247	248		end	52	2
+only eslint	s1055/src/script-indent_i247.vue:54:1	@stylistic/semi-style	expectedSemiColon	Expected this semicolon to be at the end of the previous line.	fix	256	259	;\n	end	54	2
+only eslint	s1055/src/script-indent_i247.vue:55:1	@stylistic/lines-between-class-members	always	Expected blank line between class members.	fix	258	258	\n	end	68	2
+only eslint	s1055/src/script-indent_i247.vue:55:1	@typescript-eslint/explicit-member-accessibility	missingAccessibility	Missing accessibility modifier on method definition constructor.	suggestion	addExplicitAccessibility	Add 'public' accessibility modifier	259	259	public 	suggestion	addExplicitAccessibility	Add 'private' accessibility modifier	259	259	private 	suggestion	addExplicitAccessibility	Add 'protected' accessibility modifier	259	259	protected 	end	55	12
+only eslint	s1055/src/script-indent_i247.vue:56:1	@stylistic/function-paren-newline	unexpectedAfter	Unexpected newline after '('.	fix	272	273		end	56	2
+only eslint	s1055/src/script-indent_i247.vue:58:1	@stylistic/type-annotation-spacing	unexpectedSpaceBefore	Unexpected space before the ':'.	fix	280	281		end	58	2
+only eslint	s1055/src/script-indent_i247.vue:5:1	@stylistic/brace-style	nextLineOpen	Opening curly brace does not appear on the same line as controlling statement.	fix	64	65	 	end	5	2
+only eslint	s1055/src/script-indent_i247.vue:60:1	@stylistic/function-paren-newline	unexpectedBefore	Unexpected newline before ')'.	fix	289	290		end	60	2
+only eslint	s1055/src/script-indent_i247.vue:61:1	@stylistic/brace-style	nextLineOpen	Opening curly brace does not appear on the same line as controlling statement.	fix	291	292	 	end	61	2
+only eslint	s1055/src/script-indent_i247.vue:63:1	@stylistic/dot-location	expectedDotBeforeProperty	Expected dot to be on same line as property.	fix	299	301	\n.	end	63	2
+only eslint	s1055/src/script-indent_i247.vue:67:1	@stylistic/semi-style	expectedSemiColon	Expected this semicolon to be at the end of the previous line.	fix	319	322	;\n	end	67	2
+only eslint	s1055/src/script-indent_i247.vue:6:7	@stylistic/function-call-spacing	unexpectedWhitespace	Unexpected whitespace between function name and paren.	fix	73	74		end	7	1
+only eslint	s1055/src/script-indent_i247.vue:71:11	@stylistic/function-call-spacing	unexpectedWhitespace	Unexpected whitespace between function name and paren.	fix	337	338		end	72	1
+only eslint	s1055/src/script-indent_i247.vue:72:1	@stylistic/function-paren-newline	unexpectedAfter	Unexpected newline after '('.	fix	339	340		end	72	2
+only eslint	s1055/src/script-indent_i247.vue:74:1	@stylistic/function-paren-newline	unexpectedBefore	Unexpected newline before ')'.	fix	345	346		end	74	2
+only eslint	s1055/src/script-indent_i247.vue:75:1	@typescript-eslint/explicit-function-return-type	missingReturnType	Missing return type on function.	end	76	1
+only eslint	s1055/src/script-indent_i247.vue:75:1	@typescript-eslint/explicit-member-accessibility	missingAccessibility	Missing accessibility modifier on method definition greet.	suggestion	addExplicitAccessibility	Add 'public' accessibility modifier	348	348	public 	suggestion	addExplicitAccessibility	Add 'private' accessibility modifier	348	348	private 	suggestion	addExplicitAccessibility	Add 'protected' accessibility modifier	348	348	protected 	end	75	6
+only eslint	s1055/src/script-indent_i247.vue:76:1	@stylistic/function-paren-newline	unexpectedAfter	Unexpected newline after '('.	fix	355	356		end	76	2
+only eslint	s1055/src/script-indent_i247.vue:77:1	@stylistic/function-paren-newline	unexpectedBefore	Unexpected newline before ')'.	fix	355	356		end	77	2
+only eslint	s1055/src/script-indent_i247.vue:78:1	@stylistic/brace-style	nextLineOpen	Opening curly brace does not appear on the same line as controlling statement.	fix	357	358	 	end	78	2
+only eslint	s1055/src/script-indent_i247.vue:7:1	@stylistic/function-paren-newline	unexpectedAfter	Unexpected newline after '('.	fix	75	76		end	7	2
+only eslint	s1055/src/script-indent_i247.vue:82:1	@stylistic/dot-location	expectedDotBeforeProperty	Expected dot to be on same line as property.	fix	384	386	\n.	end	82	2
+only eslint	s1055/src/script-indent_i247.vue:84:1	@stylistic/semi-style	expectedSemiColon	Expected this semicolon to be at the end of the previous line.	fix	394	397	;\n	end	84	2
+only eslint	s1055/src/script-indent_i247.vue:8:1	@stylistic/function-paren-newline	unexpectedBefore	Unexpected newline before ')'.	fix	75	76		end	8	2
+only eslint	s1055/src/script-indent_i247.vue:90:1	@stylistic/lines-between-class-members	always	Expected blank line between class members.	fix	435	435	\n	end	90	20
+only eslint	s1055/src/script-indent_i247.vue:91:1	@stylistic/lines-between-class-members	always	Expected blank line between class members.	fix	455	455	\n	end	94	2
+only eslint	s1055/src/script-indent_i247.vue:91:1	@typescript-eslint/explicit-member-accessibility	missingAccessibility	Missing accessibility modifier on method definition constructor.	suggestion	addExplicitAccessibility	Add 'public' accessibility modifier	456	456	public 	suggestion	addExplicitAccessibility	Add 'private' accessibility modifier	456	456	private 	suggestion	addExplicitAccessibility	Add 'protected' accessibility modifier	456	456	protected 	end	91	12
+only eslint	s1055/src/script-indent_i247.vue:91:12	@stylistic/space-before-function-paren	missingSpace	Missing space before function parentheses.	fix	467	467	 	end	91	13
+only eslint	s1055/src/script-indent_i247.vue:96:1	perfectionist/sort-classes	unexpectedClassesGroupOrder	Expected "x" (get-method) to come before "constructor" (constructor).	fix	416	631	@\nconfigurable\n(\nfalse\n)\nget\nx\n(\n)\n{\nreturn this._x;\n}\n@\nconfigurable\n(\nfalse\n)\nget\ny\n(\n)\n{\nreturn this._y;\n}\nprivate _x: number;\n\nprivate _y: number;\n\nconstructor(x: number, y: number) {\nthis._x = x;\nthis._y = y;\n}	end	107	2
+only eslint	s1055/src/script-indent_i247.vue:97:13	@stylistic/function-call-spacing	unexpectedWhitespace	Unexpected whitespace between function name and paren.	fix	535	536		end	98	1
+only eslint	s1055/src/script-indent_i247.vue:98:1	@stylistic/function-paren-newline	unexpectedAfter	Unexpected newline after '('.	fix	537	538		end	98	2
+only eslint	s1055/src/script-indent_i247.vue:9:8	@stylistic/function-call-spacing	unexpectedWhitespace	Unexpected whitespace between function name and paren.	fix	85	86		end	10	1
+only eslint	s1106/src/script-indent_i70.vue:10:1	@stylistic/brace-style	nextLineOpen	Opening curly brace does not appear on the same line as controlling statement.	fix	74	75	 	end	10	2
+only eslint	s1106/src/script-indent_i70.vue:11:1	@stylistic/no-extra-semi	unexpected	Unnecessary semicolon.	fix	75	80	{\n\n}	end	11	2
+only eslint	s1106/src/script-indent_i70.vue:13:1	@stylistic/lines-between-class-members	always	Expected blank line between class members.	fix	80	80	\n	end	20	2
+only eslint	s1106/src/script-indent_i70.vue:13:1	@typescript-eslint/explicit-function-return-type	missingReturnType	Missing return type on function.	end	16	1
+only eslint	s1106/src/script-indent_i70.vue:13:1	@typescript-eslint/explicit-member-accessibility	missingAccessibility	Missing accessibility modifier on get property accessor ccc.	suggestion	addExplicitAccessibility	Add 'public' accessibility modifier	81	81	public 	suggestion	addExplicitAccessibility	Add 'private' accessibility modifier	81	81	private 	suggestion	addExplicitAccessibility	Add 'protected' accessibility modifier	81	81	protected 	end	15	4
+only eslint	s1106/src/script-indent_i70.vue:13:1	@typescript-eslint/member-ordering	incorrectGroupOrder	Member ccc should be declared before all public instance method definitions.	end	20	2
+only eslint	s1106/src/script-indent_i70.vue:13:1	getter-return	expected	Expected to return a value in static getter 'ccc'.	end	16	1
+only eslint	s1106/src/script-indent_i70.vue:13:1	perfectionist/sort-classes	unexpectedClassesGroupOrder	Expected "ccc" (static-get-method) to come before "bbb" (method).	fix	61	141	static\nget\nccc\n(\n)\n{\n;\n}\nget\n[\ne\n]\n(\n)\n{\n;\n}\nbbb\n(\na\n,\nb\n)\n{\n;\n}\n[\nd\n]\n(\n)\n{\n;\n}	end	20	2
+only eslint	s1106/src/script-indent_i70.vue:16:1	@stylistic/function-paren-newline	unexpectedAfter	Unexpected newline after '('.	fix	97	98		end	16	2
+only eslint	s1106/src/script-indent_i70.vue:17:1	@stylistic/function-paren-newline	unexpectedBefore	Unexpected newline before ')'.	fix	97	98		end	17	2
+only eslint	s1106/src/script-indent_i70.vue:18:1	@stylistic/brace-style	nextLineOpen	Opening curly brace does not appear on the same line as controlling statement.	fix	99	100	 	end	18	2
+only eslint	s1106/src/script-indent_i70.vue:19:1	@stylistic/no-extra-semi	unexpected	Unnecessary semicolon.	fix	100	105	{\n\n}	end	19	2
+only eslint	s1106/src/script-indent_i70.vue:21:1	@stylistic/lines-between-class-members	always	Expected blank line between class members.	fix	105	105	\n	end	28	2
+only eslint	s1106/src/script-indent_i70.vue:21:1	@typescript-eslint/class-methods-use-this	missingThis	Expected 'this' to be used by class method.	end	24	1
+only eslint	s1106/src/script-indent_i70.vue:21:1	@typescript-eslint/explicit-function-return-type	missingReturnType	Missing return type on function.	end	24	1
+only eslint	s1106/src/script-indent_i70.vue:21:1	@typescript-eslint/explicit-member-accessibility	missingAccessibility	Missing accessibility modifier on method definition d.	suggestion	addExplicitAccessibility	Add 'public' accessibility modifier	106	106	public 	suggestion	addExplicitAccessibility	Add 'private' accessibility modifier	106	106	private 	suggestion	addExplicitAccessibility	Add 'protected' accessibility modifier	106	106	protected 	end	23	2
+only eslint	s1106/src/script-indent_i70.vue:24:1	@stylistic/function-paren-newline	unexpectedAfter	Unexpected newline after '('.	fix	113	114		end	24	2
+only eslint	s1106/src/script-indent_i70.vue:25:1	@stylistic/function-paren-newline	unexpectedBefore	Unexpected newline before ')'.	fix	113	114		end	25	2
+only eslint	s1106/src/script-indent_i70.vue:26:1	@stylistic/brace-style	nextLineOpen	Opening curly brace does not appear on the same line as controlling statement.	fix	115	116	 	end	26	2
+only eslint	s1106/src/script-indent_i70.vue:27:1	@stylistic/no-extra-semi	unexpected	Unnecessary semicolon.	fix	116	121	{\n\n}	end	27	2
+only eslint	s1106/src/script-indent_i70.vue:29:1	@stylistic/lines-between-class-members	always	Expected blank line between class members.	fix	121	121	\n	end	37	2
+only eslint	s1106/src/script-indent_i70.vue:29:1	@typescript-eslint/class-methods-use-this	missingThis	Expected 'this' to be used by class getter.	end	33	1
+only eslint	s1106/src/script-indent_i70.vue:29:1	@typescript-eslint/explicit-function-return-type	missingReturnType	Missing return type on function.	end	33	1
+only eslint	s1106/src/script-indent_i70.vue:29:1	@typescript-eslint/explicit-member-accessibility	missingAccessibility	Missing accessibility modifier on get property accessor e.	suggestion	addExplicitAccessibility	Add 'public' accessibility modifier	122	122	public 	suggestion	addExplicitAccessibility	Add 'private' accessibility modifier	122	122	private 	suggestion	addExplicitAccessibility	Add 'protected' accessibility modifier	122	122	protected 	end	32	2
+only eslint	s1106/src/script-indent_i70.vue:29:1	@typescript-eslint/member-ordering	incorrectGroupOrder	Member e should be declared before all public instance method definitions.	end	37	2
+only eslint	s1106/src/script-indent_i70.vue:29:1	getter-return	expected	Expected to return a value in getter.	end	33	1
+only eslint	s1106/src/script-indent_i70.vue:29:1	perfectionist/sort-classes	unexpectedClassesGroupOrder	Expected "e" (get-method) to come before "d" (method).	fix	61	141	static\nget\nccc\n(\n)\n{\n;\n}\nget\n[\ne\n]\n(\n)\n{\n;\n}\nbbb\n(\na\n,\nb\n)\n{\n;\n}\n[\nd\n]\n(\n)\n{\n;\n}	end	37	2
+only eslint	s1106/src/script-indent_i70.vue:33:1	@stylistic/function-paren-newline	unexpectedAfter	Unexpected newline after '('.	fix	133	134		end	33	2
+only eslint	s1106/src/script-indent_i70.vue:34:1	@stylistic/function-paren-newline	unexpectedBefore	Unexpected newline before ')'.	fix	133	134		end	34	2
+only eslint	s1106/src/script-indent_i70.vue:35:1	@stylistic/brace-style	nextLineOpen	Opening curly brace does not appear on the same line as controlling statement.	fix	135	136	 	end	35	2
+only eslint	s1106/src/script-indent_i70.vue:36:1	@stylistic/no-extra-semi	unexpected	Unnecessary semicolon.	fix	136	141	{\n\n}	end	36	2
+only eslint	s1106/src/script-indent_i70.vue:4:1	@typescript-eslint/class-methods-use-this	missingThis	Expected 'this' to be used by class method 'bbb'.	end	5	1
+only eslint	s1106/src/script-indent_i70.vue:4:1	@typescript-eslint/explicit-function-return-type	missingReturnType	Missing return type on function.	end	5	1
+only eslint	s1106/src/script-indent_i70.vue:4:1	@typescript-eslint/explicit-member-accessibility	missingAccessibility	Missing accessibility modifier on method definition bbb.	suggestion	addExplicitAccessibility	Add 'public' accessibility modifier	61	61	public 	suggestion	addExplicitAccessibility	Add 'private' accessibility modifier	61	61	private 	suggestion	addExplicitAccessibility	Add 'protected' accessibility modifier	61	61	protected 	end	4	4
+only eslint	s1106/src/script-indent_i70.vue:7:1	@stylistic/comma-style	unexpectedLineBeforeAndAfterComma	Bad line breaking before and after ','.	fix	68	71	,\n	end	7	2
+only eslint	s1116/src/script-indent_i80.vue:4:1	@typescript-eslint/class-methods-use-this	missingThis	Expected 'this' to be used by class method 'b'.	end	5	1
+only eslint	s1116/src/script-indent_i80.vue:4:1	@typescript-eslint/explicit-function-return-type	missingReturnType	Missing return type on function.	end	5	1
+only eslint	s1116/src/script-indent_i80.vue:4:1	@typescript-eslint/explicit-member-accessibility	missingAccessibility	Missing accessibility modifier on method definition b.	suggestion	addExplicitAccessibility	Add 'public' accessibility modifier	61	61	public 	suggestion	addExplicitAccessibility	Add 'private' accessibility modifier	61	61	private 	suggestion	addExplicitAccessibility	Add 'protected' accessibility modifier	61	61	protected 	end	4	2
+only eslint	s1116/src/script-indent_i80.vue:5:1	@stylistic/function-paren-newline	unexpectedAfter	Unexpected newline after '('.	fix	64	65		end	5	2
+only eslint	s1116/src/script-indent_i80.vue:6:1	@stylistic/function-paren-newline	unexpectedBefore	Unexpected newline before ')'.	fix	64	65		end	6	2
+only eslint	s1116/src/script-indent_i80.vue:7:10	@stylistic/semi	missingSemi	Missing semicolon.	fix	78	78	;	end	8	1
+only eslint	s1116/src/script-indent_i80.vue:7:8	@typescript-eslint/no-magic-numbers	noMagic	No magic number: 42.	end	7	10
+only eslint	s1123/src/script-indent_i87.vue:13:21	@stylistic/space-before-function-paren	missingSpace	Missing space before function parentheses.	fix	193	193	 	end	13	22
+only eslint	s1123/src/script-indent_i87.vue:15:1	@stylistic/comma-spacing	missing	A space is required after ','.	fix	199	199	 	end	15	2
+only eslint	s1123/src/script-indent_i87.vue:15:1	@stylistic/comma-style	expectedCommaLast	',' should be placed last.	fix	197	199	,\n	end	15	2
+only eslint	s1123/src/script-indent_i87.vue:16:2	@stylistic/semi	missingSemi	Missing semicolon.	fix	203	203	;	end	17	1
+only eslint	s1123/src/script-indent_i87.vue:17:18	@typescript-eslint/no-unused-private-class-members	unusedPrivateClassMember	Private class member 'f' is defined but never used.	end	17	19
+only eslint	s1123/src/script-indent_i87.vue:17:19	@stylistic/space-before-function-paren	missingSpace	Missing space before function parentheses.	fix	222	222	 	end	17	20
+only eslint	s1123/src/script-indent_i87.vue:19:1	@stylistic/comma-style	unexpectedLineBeforeAndAfterComma	Bad line breaking before and after ','.	fix	226	229	,\n	end	19	2
+only eslint	s1123/src/script-indent_i87.vue:23:19	@stylistic/space-before-function-paren	missingSpace	Missing space before function parentheses.	fix	254	254	 	end	23	20
+only eslint	s1123/src/script-indent_i87.vue:24:25	@stylistic/space-before-function-paren	missingSpace	Missing space before function parentheses.	fix	282	282	 	end	24	26
+only eslint	s1123/src/script-indent_i87.vue:26:1	@stylistic/comma-style	unexpectedLineBeforeAndAfterComma	Bad line breaking before and after ','.	fix	286	289	,\n	end	26	2
+only eslint	s1123/src/script-indent_i87.vue:4:1	@typescript-eslint/explicit-member-accessibility	missingAccessibility	Missing accessibility modifier on method definition a.	suggestion	addExplicitAccessibility	Add 'public' accessibility modifier	82	82	public 	suggestion	addExplicitAccessibility	Add 'private' accessibility modifier	82	82	private 	suggestion	addExplicitAccessibility	Add 'protected' accessibility modifier	82	82	protected 	end	4	11
+only eslint	s1123/src/script-indent_i87.vue:5:18	@stylistic/space-before-function-paren	missingSpace	Missing space before function parentheses.	fix	114	114	 	end	5	19
+only eslint	s1123/src/script-indent_i87.vue:9:21	@stylistic/space-before-function-paren	missingSpace	Missing space before function parentheses.	fix	161	161	 	end	9	22
+only eslint	s1142/src/script-indent_v108.vue:10:3	@stylistic/lines-between-class-members	always	Expected blank line between class members.	fix	111	111	\n	end	15	4
+only eslint	s1142/src/script-indent_v108.vue:10:3	@typescript-eslint/class-methods-use-this	missingThis	Expected 'this' to be used by class private setter #x.	end	12	5
+only eslint	s1142/src/script-indent_v108.vue:12:5	@stylistic/function-paren-newline	unexpectedAfter	Unexpected newline after '('.	fix	128	135		end	12	6
+only eslint	s1142/src/script-indent_v108.vue:14:5	@stylistic/function-paren-newline	unexpectedBefore	Unexpected newline before ')'.	fix	140	145		end	14	6
+only eslint	s1142/src/script-indent_v108.vue:14:7	@typescript-eslint/no-empty-function	unexpected	Unexpected empty private setter #x.	suggestion	suggestComment	Add comment inside empty private setter #x.	148	151	 /* empty */ 	end	15	4
+only eslint	s1142/src/script-indent_v108.vue:16:3	@stylistic/lines-between-class-members	always	Expected blank line between class members.	fix	152	152	\n	end	21	4
+only eslint	s1142/src/script-indent_v108.vue:16:3	@typescript-eslint/explicit-function-return-type	missingReturnType	Missing return type on function.	end	19	5
+only eslint	s1142/src/script-indent_v108.vue:16:3	@typescript-eslint/member-ordering	incorrectGroupOrder	Member y should be declared before all #private instance get definitions.	end	21	4
+only eslint	s1142/src/script-indent_v108.vue:16:3	getter-return	expected	Expected to return a value in static private getter #y.	end	19	5
+only eslint	s1142/src/script-indent_v108.vue:16:3	perfectionist/sort-classes	unexpectedClassesGroupOrder	Expected "#y" (private-static-get-method) to come before "#x" (private-set-method).	fix	83	572	static\n  get\n  #y\n    (\n    ) {\n  }\n  static\n  set\n  #y\n    (\n      value\n    ) {\n  }\n  get\n  #x\n    (\n    )\n  {\n  }\n  set\n  #x\n    (\n      value\n    ) {\n  }\n  static\n  #staticInc\n    (\n    ) {\n    Counter\n      .#y++;\n    Counter.\n      #y++;\n  }\n  inc() {\n    this\n      .#inc\n      (\n      )\n    this.\n      #inc\n      (\n      )\n  }\n  #inc\n    (\n    ) {\n    this\n      .#x++;\n    this.\n      #x++;\n    Counter\n      .#staticInc\n      (\n      )\n    Counter.\n      #staticInc(\n      )\n  }	end	21	4
+only eslint	s1142/src/script-indent_v108.vue:19:5	@stylistic/function-paren-newline	unexpectedAfter	Unexpected newline after '('.	fix	178	183		end	19	6
+only eslint	s1142/src/script-indent_v108.vue:20:5	@stylistic/function-paren-newline	unexpectedBefore	Unexpected newline before ')'.	fix	178	183		end	20	6
+only eslint	s1142/src/script-indent_v108.vue:20:7	@typescript-eslint/no-empty-function	unexpected	Unexpected empty static private getter #y.	suggestion	suggestComment	Add comment inside empty static private getter #y.	186	189	 /* empty */ 	end	21	4
+only eslint	s1142/src/script-indent_v108.vue:22:3	@stylistic/lines-between-class-members	always	Expected blank line between class members.	fix	190	190	\n	end	28	4
+only eslint	s1142/src/script-indent_v108.vue:22:3	@typescript-eslint/member-ordering	incorrectGroupOrder	Member y should be declared before all #private instance set definitions.	end	28	4
+only eslint	s1142/src/script-indent_v108.vue:25:5	@stylistic/function-paren-newline	unexpectedAfter	Unexpected newline after '('.	fix	216	223		end	25	6
+only eslint	s1142/src/script-indent_v108.vue:27:5	@stylistic/function-paren-newline	unexpectedBefore	Unexpected newline before ')'.	fix	228	233		end	27	6
+only eslint	s1142/src/script-indent_v108.vue:27:7	@typescript-eslint/no-empty-function	unexpected	Unexpected empty static private setter #y.	suggestion	suggestComment	Add comment inside empty static private setter #y.	236	239	 /* empty */ 	end	28	4
+only eslint	s1142/src/script-indent_v108.vue:29:3	@stylistic/lines-between-class-members	always	Expected blank line between class members.	fix	240	240	\n	end	38	4
+only eslint	s1142/src/script-indent_v108.vue:29:3	@typescript-eslint/explicit-function-return-type	missingReturnType	Missing return type on function.	end	29	6
+only eslint	s1142/src/script-indent_v108.vue:29:3	@typescript-eslint/explicit-member-accessibility	missingAccessibility	Missing accessibility modifier on method definition inc.	suggestion	addExplicitAccessibility	Add 'public' accessibility modifier	243	243	public 	suggestion	addExplicitAccessibility	Add 'private' accessibility modifier	243	243	private 	suggestion	addExplicitAccessibility	Add 'protected' accessibility modifier	243	243	protected 	end	29	6
+only eslint	s1142/src/script-indent_v108.vue:29:6	@stylistic/space-before-function-paren	missingSpace	Missing space before function parentheses.	fix	246	246	 	end	29	7
+only eslint	s1142/src/script-indent_v108.vue:31:12	@stylistic/function-call-spacing	unexpectedWhitespace	Unexpected whitespace between function name and paren.	fix	271	278		end	32	7
+only eslint	s1142/src/script-indent_v108.vue:32:7	@stylistic/function-paren-newline	unexpectedAfter	Unexpected newline after '('.	fix	279	286		end	32	8
+only eslint	s1142/src/script-indent_v108.vue:33:7	@stylistic/function-paren-newline	unexpectedBefore	Unexpected newline before ')'.	fix	279	286		end	33	8
+only eslint	s1142/src/script-indent_v108.vue:33:8	@stylistic/semi	missingSemi	Missing semicolon.	fix	287	287	;	end	34	1
+only eslint	s1142/src/script-indent_v108.vue:34:9	@stylistic/dot-location	expectedDotBeforeProperty	Expected dot to be on same line as property.	fix	296	304	\n      .	end	34	10
+only eslint	s1142/src/script-indent_v108.vue:35:11	@stylistic/function-call-spacing	unexpectedWhitespace	Unexpected whitespace between function name and paren.	fix	308	315		end	36	7
+only eslint	s1142/src/script-indent_v108.vue:36:7	@stylistic/function-paren-newline	unexpectedAfter	Unexpected newline after '('.	fix	316	323		end	36	8
+only eslint	s1142/src/script-indent_v108.vue:37:7	@stylistic/function-paren-newline	unexpectedBefore	Unexpected newline before ')'.	fix	316	323		end	37	8
+only eslint	s1142/src/script-indent_v108.vue:37:8	@stylistic/semi	missingSemi	Missing semicolon.	fix	324	324	;	end	38	1
+only eslint	s1142/src/script-indent_v108.vue:39:3	@stylistic/lines-between-class-members	always	Expected blank line between class members.	fix	328	328	\n	end	53	4
+only eslint	s1142/src/script-indent_v108.vue:39:3	@typescript-eslint/explicit-function-return-type	missingReturnType	Missing return type on function.	end	40	5
+only eslint	s1142/src/script-indent_v108.vue:40:5	@stylistic/function-paren-newline	unexpectedAfter	Unexpected newline after '('.	fix	341	346		end	40	6
+only eslint	s1142/src/script-indent_v108.vue:41:5	@stylistic/function-paren-newline	unexpectedBefore	Unexpected newline before ')'.	fix	341	346		end	41	6
+only eslint	s1142/src/script-indent_v108.vue:44:9	@stylistic/dot-location	expectedDotBeforeProperty	Expected dot to be on same line as property.	fix	380	388	\n      .	end	44	10
+only eslint	s1142/src/script-indent_v108.vue:47:18	@stylistic/function-call-spacing	unexpectedWhitespace	Unexpected whitespace between function name and paren.	fix	423	430		end	48	7
+only eslint	s1142/src/script-indent_v108.vue:48:7	@stylistic/function-paren-newline	unexpectedAfter	Unexpected newline after '('.	fix	431	438		end	48	8
+only eslint	s1142/src/script-indent_v108.vue:49:7	@stylistic/function-paren-newline	unexpectedBefore	Unexpected newline before ')'.	fix	431	438		end	49	8
+only eslint	s1142/src/script-indent_v108.vue:49:8	@stylistic/semi	missingSemi	Missing semicolon.	fix	439	439	;	end	50	1
+only eslint	s1142/src/script-indent_v108.vue:4:3	@typescript-eslint/class-methods-use-this	missingThis	Expected 'this' to be used by class private getter #x.	end	6	5
+only eslint	s1142/src/script-indent_v108.vue:4:3	@typescript-eslint/explicit-function-return-type	missingReturnType	Missing return type on function.	end	6	5
+only eslint	s1142/src/script-indent_v108.vue:4:3	getter-return	expected	Expected to return a value in private getter #x.	end	6	5
+only eslint	s1142/src/script-indent_v108.vue:50:12	@stylistic/dot-location	expectedDotBeforeProperty	Expected dot to be on same line as property.	fix	451	459	\n      .	end	50	13
+only eslint	s1142/src/script-indent_v108.vue:51:17	@stylistic/function-paren-newline	unexpectedAfter	Unexpected newline after '('.	fix	470	477		end	51	18
+only eslint	s1142/src/script-indent_v108.vue:52:7	@stylistic/function-paren-newline	unexpectedBefore	Unexpected newline before ')'.	fix	470	477		end	52	8
+only eslint	s1142/src/script-indent_v108.vue:52:8	@stylistic/semi	missingSemi	Missing semicolon.	fix	478	478	;	end	53	1
+only eslint	s1142/src/script-indent_v108.vue:54:3	@stylistic/lines-between-class-members	always	Expected blank line between class members.	fix	482	482	\n	end	62	4
+only eslint	s1142/src/script-indent_v108.vue:54:3	@typescript-eslint/explicit-function-return-type	missingReturnType	Missing return type on function.	end	56	5
+only eslint	s1142/src/script-indent_v108.vue:54:3	@typescript-eslint/member-ordering	incorrectGroupOrder	Member staticInc should be declared before all public instance method definitions.	end	62	4
+only eslint	s1142/src/script-indent_v108.vue:54:3	perfectionist/sort-classes	unexpectedClassesGroupOrder	Expected "#staticInc" (private-static-method) to come before "#inc" (private-method).	fix	83	572	static\n  get\n  #y\n    (\n    ) {\n  }\n  static\n  set\n  #y\n    (\n      value\n    ) {\n  }\n  get\n  #x\n    (\n    )\n  {\n  }\n  set\n  #x\n    (\n      value\n    ) {\n  }\n  static\n  #staticInc\n    (\n    ) {\n    Counter\n      .#y++;\n    Counter.\n      #y++;\n  }\n  inc() {\n    this\n      .#inc\n      (\n      )\n    this.\n      #inc\n      (\n      )\n  }\n  #inc\n    (\n    ) {\n    this\n      .#x++;\n    this.\n      #x++;\n    Counter\n      .#staticInc\n      (\n      )\n    Counter.\n      #staticInc(\n      )\n  }	end	62	4
+only eslint	s1142/src/script-indent_v108.vue:56:5	@stylistic/function-paren-newline	unexpectedAfter	Unexpected newline after '('.	fix	510	515		end	56	6
+only eslint	s1142/src/script-indent_v108.vue:57:5	@stylistic/function-paren-newline	unexpectedBefore	Unexpected newline before ')'.	fix	510	515		end	57	6
+only eslint	s1142/src/script-indent_v108.vue:60:12	@stylistic/dot-location	expectedDotBeforeProperty	Expected dot to be on same line as property.	fix	555	563	\n      .	end	60	13
+only eslint	s1142/src/script-indent_v108.vue:6:5	@stylistic/function-paren-newline	unexpectedAfter	Unexpected newline after '('.	fix	97	102		end	6	6
+only eslint	s1142/src/script-indent_v108.vue:7:5	@stylistic/function-paren-newline	unexpectedBefore	Unexpected newline before ')'.	fix	97	102		end	7	6
+only eslint	s1142/src/script-indent_v108.vue:8:3	@stylistic/brace-style	nextLineOpen	Opening curly brace does not appear on the same line as controlling statement.	fix	103	106	 	end	8	4
+only eslint	s1142/src/script-indent_v108.vue:8:3	@typescript-eslint/no-empty-function	unexpected	Unexpected empty private getter #x.	suggestion	suggestComment	Add comment inside empty private getter #x.	107	110	 /* empty */ 	end	9	4
+only eslint	s1155/src/script-indent_v120.vue:10:3	@stylistic/lines-between-class-members	always	Expected blank line between class members.	fix	204	204	\n	end	10	22
+only eslint	s1155/src/script-indent_v120.vue:10:3	@typescript-eslint/prefer-readonly	preferReadonly	Member 'g' is never reassigned; mark it as `readonly`.	fix	224	224	readonly 	end	10	22
+only eslint	s1155/src/script-indent_v120.vue:14:3	@typescript-eslint/explicit-member-accessibility	missingAccessibility	Missing accessibility modifier on class property a.	suggestion	addExplicitAccessibility	Add 'public' accessibility modifier	251	251	public 	suggestion	addExplicitAccessibility	Add 'private' accessibility modifier	251	251	private 	suggestion	addExplicitAccessibility	Add 'protected' accessibility modifier	251	251	protected 	end	14	22
+only eslint	s1155/src/script-indent_v120.vue:15:3	@stylistic/lines-between-class-members	always	Expected blank line between class members.	fix	271	271	\n	end	15	23
+only eslint	s1155/src/script-indent_v120.vue:15:3	@typescript-eslint/explicit-member-accessibility	missingAccessibility	Missing accessibility modifier on class property b.	suggestion	addExplicitAccessibility	Add 'public' accessibility modifier	274	274	public 	suggestion	addExplicitAccessibility	Add 'private' accessibility modifier	274	274	private 	suggestion	addExplicitAccessibility	Add 'protected' accessibility modifier	274	274	protected 	end	15	22
+only eslint	s1155/src/script-indent_v120.vue:16:3	@stylistic/lines-between-class-members	always	Expected blank line between class members.	fix	294	294	\n	end	16	30
+only eslint	s1155/src/script-indent_v120.vue:17:3	@stylistic/lines-between-class-members	always	Expected blank line between class members.	fix	324	324	\n	end	17	30
+only eslint	s1155/src/script-indent_v120.vue:18:3	@stylistic/lines-between-class-members	always	Expected blank line between class members.	fix	354	354	\n	end	18	30
+only eslint	s1155/src/script-indent_v120.vue:19:25	@stylistic/no-multi-spaces	multipleSpaces	Multiple spaces found before 'a'.	fix	409	411	 	end	19	27
+only eslint	s1155/src/script-indent_v120.vue:19:3	@stylistic/lines-between-class-members	always	Expected blank line between class members.	fix	384	384	\n	end	19	29
+only eslint	s1155/src/script-indent_v120.vue:19:3	@typescript-eslint/member-ordering	incorrectGroupOrder	Member a should be declared before all public abstract field definitions.	end	19	29
+only eslint	s1155/src/script-indent_v120.vue:19:3	perfectionist/sort-classes	unexpectedClassesGroupOrder	Expected "a" (static-property) to come before "e" (property).	fix	251	444	public static readonly  a;\n  readonly abstract a;\n  public abstract readonly  a;\n  abstract readonly b;\n  abstract readonly public c;\n  public abstract readonly d;\n  public readonly abstract e;	end	19	29
+only eslint	s1155/src/script-indent_v120.vue:20:27	@stylistic/no-multi-spaces	multipleSpaces	Multiple spaces found before 'a'.	fix	440	442	 	end	20	29
+only eslint	s1155/src/script-indent_v120.vue:20:3	@stylistic/lines-between-class-members	always	Expected blank line between class members.	fix	413	413	\n	end	20	31
+only eslint	s1155/src/script-indent_v120.vue:4:3	@typescript-eslint/explicit-member-accessibility	missingAccessibility	Missing accessibility modifier on class property a.	suggestion	addExplicitAccessibility	Add 'public' accessibility modifier	81	81	public 	suggestion	addExplicitAccessibility	Add 'private' accessibility modifier	81	81	private 	suggestion	addExplicitAccessibility	Add 'protected' accessibility modifier	81	81	protected 	end	4	13
+only eslint	s1155/src/script-indent_v120.vue:5:3	@stylistic/lines-between-class-members	always	Expected blank line between class members.	fix	92	92	\n	end	5	21
+only eslint	s1155/src/script-indent_v120.vue:6:3	@stylistic/lines-between-class-members	always	Expected blank line between class members.	fix	113	113	\n	end	6	21
+only eslint	s1155/src/script-indent_v120.vue:7:3	@stylistic/lines-between-class-members	always	Expected blank line between class members.	fix	134	134	\n	end	7	24
+only eslint	s1155/src/script-indent_v120.vue:8:3	@stylistic/lines-between-class-members	always	Expected blank line between class members.	fix	158	158	\n	end	8	24
+only eslint	s1155/src/script-indent_v120.vue:9:20	@typescript-eslint/no-unused-private-class-members	unusedPrivateClassMember	Private class member 'f' is defined but never used.	end	9	21
+only eslint	s1155/src/script-indent_v120.vue:9:3	@stylistic/lines-between-class-members	always	Expected blank line between class members.	fix	182	182	\n	end	9	22
+only eslint	s1155/src/script-indent_v120.vue:9:3	@typescript-eslint/prefer-readonly	preferReadonly	Member 'f' is never reassigned; mark it as `readonly`.	fix	202	202	readonly 	end	9	22
+only eslint	s1156/src/script-indent_v121.vue:10:5	@stylistic/quotes	wrongQuotes	Strings must use doublequote.	fix	102	105	"s"	end	10	8
+only eslint	s1156/src/script-indent_v121.vue:11:3	@stylistic/semi-style	expectedSemiColon	Expected this semicolon to be at the end of the previous line.	fix	105	112	;\n	end	11	4
+only eslint	s1156/src/script-indent_v121.vue:12:3	@stylistic/lines-between-class-members	always	Expected blank line between class members.	fix	109	109	\n	end	15	4
+only eslint	s1156/src/script-indent_v121.vue:15:3	@stylistic/semi-style	expectedSemiColon	Expected this semicolon to be at the end of the previous line.	fix	144	149	;\n	end	15	4
+only eslint	s1156/src/script-indent_v121.vue:4:3	@typescript-eslint/explicit-member-accessibility	missingAccessibility	Missing accessibility modifier on class property a.	suggestion	addExplicitAccessibility	Add 'public' accessibility modifier	63	63	public 	suggestion	addExplicitAccessibility	Add 'private' accessibility modifier	63	63	private 	suggestion	addExplicitAccessibility	Add 'protected' accessibility modifier	63	63	protected 	end	4	4
+only eslint	s1156/src/script-indent_v121.vue:6:5	@typescript-eslint/no-magic-numbers	noMagic	No magic number: 1.	end	6	6
+only eslint	s1156/src/script-indent_v121.vue:7:3	@stylistic/semi-style	expectedSemiColon	Expected this semicolon to be at the end of the previous line.	fix	76	83	;\n	end	7	4
+only eslint	s1156/src/script-indent_v121.vue:8:3	@stylistic/lines-between-class-members	always	Expected blank line between class members.	fix	80	80	\n	end	11	4
+only eslint	s1167/src/script-indent_v132.vue:11:3	@typescript-eslint/explicit-member-accessibility	missingAccessibility	Missing accessibility modifier on class property a.	suggestion	addExplicitAccessibility	Add 'public' accessibility modifier	121	121	public 	suggestion	addExplicitAccessibility	Add 'private' accessibility modifier	121	121	private 	suggestion	addExplicitAccessibility	Add 'protected' accessibility modifier	121	121	protected 	end	11	13
+only eslint	s1167/src/script-indent_v132.vue:12:3	@stylistic/lines-between-class-members	always	Expected blank line between class members.	fix	132	132	\n	end	12	21
+only eslint	s1167/src/script-indent_v132.vue:13:3	@stylistic/lines-between-class-members	always	Expected blank line between class members.	fix	153	153	\n	end	13	24
+only eslint	s1167/src/script-indent_v132.vue:4:3	@typescript-eslint/explicit-member-accessibility	missingAccessibility	Missing accessibility modifier on class property a.	suggestion	addExplicitAccessibility	Add 'public' accessibility modifier	63	63	public 	suggestion	addExplicitAccessibility	Add 'private' accessibility modifier	63	63	private 	suggestion	addExplicitAccessibility	Add 'protected' accessibility modifier	63	63	protected 	end	4	4
+only eslint	s1167/src/script-indent_v132.vue:5:3	@stylistic/lines-between-class-members	always	Expected blank line between class members.	fix	65	65	\n	end	5	12
+only eslint	s1167/src/script-indent_v132.vue:6:3	@stylistic/lines-between-class-members	always	Expected blank line between class members.	fix	77	77	\n	end	6	15
+only eslint	s1167/src/script-indent_v132.vue:7:3	@stylistic/lines-between-class-members	always	Expected blank line between class members.	fix	92	92	\n	end	7	13
+only eslint	s1173/src/script-indent_v138.vue:13:3	@stylistic/lines-between-class-members	always	Expected blank line between class members.	fix	179	179	\n	end	17	4
+only eslint	s1173/src/script-indent_v138.vue:4:3	@typescript-eslint/explicit-member-accessibility	missingAccessibility	Missing accessibility modifier on class property a.	suggestion	addExplicitAccessibility	Add 'public' accessibility modifier	81	81	public 	suggestion	addExplicitAccessibility	Add 'private' accessibility modifier	81	81	private 	suggestion	addExplicitAccessibility	Add 'protected' accessibility modifier	81	81	protected 	end	4	4
+only eslint	s1173/src/script-indent_v138.vue:6:5	@typescript-eslint/no-magic-numbers	noMagic	No magic number: 1.	end	6	6
+only eslint	s1173/src/script-indent_v138.vue:7:3	@stylistic/semi-style	expectedSemiColon	Expected this semicolon to be at the end of the previous line.	fix	94	101	;\n	end	7	4
+only eslint	s1173/src/script-indent_v138.vue:8:3	@stylistic/lines-between-class-members	always	Expected blank line between class members.	fix	98	98	\n	end	12	4
+only eslint	s1267/src/script-indent_v24.vue:14:5	@stylistic/quotes	wrongQuotes	Strings must use doublequote.	fix	146	149	"s"	end	14	8
+only eslint	s1267/src/script-indent_v24.vue:15:3	@stylistic/semi-style	expectedSemiColon	Expected this semicolon to be at the end of the previous line.	fix	149	156	;\n	end	15	4
+only eslint	s1267/src/script-indent_v24.vue:16:3	@stylistic/lines-between-class-members	always	Expected blank line between class members.	fix	153	153	\n	end	34	4
+only eslint	s1267/src/script-indent_v24.vue:17:5	@stylistic/type-annotation-spacing	unexpectedSpaceBefore	Unexpected space before the ':'.	fix	176	181		end	17	6
+only eslint	s1267/src/script-indent_v24.vue:19:7	@stylistic/quote-props	unquotedPropertyFound	Unquoted property 'key' found.	fix	195	198	"key"	end	19	19
+only eslint	s1267/src/script-indent_v24.vue:25:7	@typescript-eslint/member-ordering	incorrectGroupOrder	Member key should be declared before all field definitions.	end	30	8
+only eslint	s1267/src/script-indent_v24.vue:34:3	@stylistic/semi-style	expectedSemiColon	Expected this semicolon to be at the end of the previous line.	fix	366	371	;\n	end	34	4
+only eslint	s1267/src/script-indent_v24.vue:4:3	@typescript-eslint/explicit-member-accessibility	missingAccessibility	Missing accessibility modifier on class property a.	suggestion	addExplicitAccessibility	Add 'public' accessibility modifier	63	63	public 	suggestion	addExplicitAccessibility	Add 'private' accessibility modifier	63	63	private 	suggestion	addExplicitAccessibility	Add 'protected' accessibility modifier	63	63	protected 	end	4	4
+only eslint	s1267/src/script-indent_v24.vue:6:5	@typescript-eslint/no-magic-numbers	noMagic	No magic number: 1.	end	6	6
+only eslint	s1267/src/script-indent_v24.vue:7:3	@stylistic/semi-style	expectedSemiColon	Expected this semicolon to be at the end of the previous line.	fix	84	91	;\n	end	7	4
+only eslint	s1267/src/script-indent_v24.vue:8:3	@stylistic/lines-between-class-members	always	Expected blank line between class members.	fix	88	88	\n	end	15	4
+only eslint	s1267/src/script-indent_v24.vue:9:5	@stylistic/type-annotation-spacing	unexpectedSpaceBefore	Unexpected space before the ':'.	fix	99	104		end	9	6
+only eslint	s1271/src/script-indent_v244.vue:10:3	@stylistic/lines-between-class-members	always	Expected blank line between class members.	fix	108	108	\n	end	15	4
+only eslint	s1271/src/script-indent_v244.vue:10:3	@typescript-eslint/class-methods-use-this	missingThis	Expected 'this' to be used by class private setter #x.	end	12	5
+only eslint	s1271/src/script-indent_v244.vue:12:5	@stylistic/function-paren-newline	unexpectedAfter	Unexpected newline after '('.	fix	125	132		end	12	6
+only eslint	s1271/src/script-indent_v244.vue:14:5	@stylistic/function-paren-newline	unexpectedBefore	Unexpected newline before ')'.	fix	137	142		end	14	6
+only eslint	s1271/src/script-indent_v244.vue:14:7	@typescript-eslint/no-empty-function	unexpected	Unexpected empty private setter #x.	suggestion	suggestComment	Add comment inside empty private setter #x.	145	148	 /* empty */ 	end	15	4
+only eslint	s1271/src/script-indent_v244.vue:16:3	@stylistic/lines-between-class-members	always	Expected blank line between class members.	fix	149	149	\n	end	21	4
+only eslint	s1271/src/script-indent_v244.vue:16:3	@typescript-eslint/explicit-function-return-type	missingReturnType	Missing return type on function.	end	19	5
+only eslint	s1271/src/script-indent_v244.vue:16:3	@typescript-eslint/member-ordering	incorrectGroupOrder	Member y should be declared before all #private instance get definitions.	end	21	4
+only eslint	s1271/src/script-indent_v244.vue:16:3	getter-return	expected	Expected to return a value in static private getter #y.	end	19	5
+only eslint	s1271/src/script-indent_v244.vue:16:3	perfectionist/sort-classes	unexpectedClassesGroupOrder	Expected "#y" (private-static-get-method) to come before "#x" (private-set-method).	fix	80	569	static\n  get\n  #y\n    (\n    ) {\n  }\n  static\n  set\n  #y\n    (\n      value\n    ) {\n  }\n  get\n  #x\n    (\n    )\n  {\n  }\n  set\n  #x\n    (\n      value\n    ) {\n  }\n  static\n  #staticInc\n    (\n    ) {\n    Counter\n      .#y++;\n    Counter.\n      #y++;\n  }\n  inc() {\n    this\n      .#inc\n      (\n      )\n    this.\n      #inc\n      (\n      )\n  }\n  #inc\n    (\n    ) {\n    this\n      .#x++;\n    this.\n      #x++;\n    Counter\n      .#staticInc\n      (\n      )\n    Counter.\n      #staticInc(\n      )\n  }	end	21	4
+only eslint	s1271/src/script-indent_v244.vue:19:5	@stylistic/function-paren-newline	unexpectedAfter	Unexpected newline after '('.	fix	175	180		end	19	6
+only eslint	s1271/src/script-indent_v244.vue:20:5	@stylistic/function-paren-newline	unexpectedBefore	Unexpected newline before ')'.	fix	175	180		end	20	6
+only eslint	s1271/src/script-indent_v244.vue:20:7	@typescript-eslint/no-empty-function	unexpected	Unexpected empty static private getter #y.	suggestion	suggestComment	Add comment inside empty static private getter #y.	183	186	 /* empty */ 	end	21	4
+only eslint	s1271/src/script-indent_v244.vue:22:3	@stylistic/lines-between-class-members	always	Expected blank line between class members.	fix	187	187	\n	end	28	4
+only eslint	s1271/src/script-indent_v244.vue:22:3	@typescript-eslint/member-ordering	incorrectGroupOrder	Member y should be declared before all #private instance set definitions.	end	28	4
+only eslint	s1271/src/script-indent_v244.vue:25:5	@stylistic/function-paren-newline	unexpectedAfter	Unexpected newline after '('.	fix	213	220		end	25	6
+only eslint	s1271/src/script-indent_v244.vue:27:5	@stylistic/function-paren-newline	unexpectedBefore	Unexpected newline before ')'.	fix	225	230		end	27	6
+only eslint	s1271/src/script-indent_v244.vue:27:7	@typescript-eslint/no-empty-function	unexpected	Unexpected empty static private setter #y.	suggestion	suggestComment	Add comment inside empty static private setter #y.	233	236	 /* empty */ 	end	28	4
+only eslint	s1271/src/script-indent_v244.vue:29:3	@stylistic/lines-between-class-members	always	Expected blank line between class members.	fix	237	237	\n	end	38	4
+only eslint	s1271/src/script-indent_v244.vue:29:3	@typescript-eslint/explicit-function-return-type	missingReturnType	Missing return type on function.	end	29	6
+only eslint	s1271/src/script-indent_v244.vue:29:3	@typescript-eslint/explicit-member-accessibility	missingAccessibility	Missing accessibility modifier on method definition inc.	suggestion	addExplicitAccessibility	Add 'public' accessibility modifier	240	240	public 	suggestion	addExplicitAccessibility	Add 'private' accessibility modifier	240	240	private 	suggestion	addExplicitAccessibility	Add 'protected' accessibility modifier	240	240	protected 	end	29	6
+only eslint	s1271/src/script-indent_v244.vue:29:6	@stylistic/space-before-function-paren	missingSpace	Missing space before function parentheses.	fix	243	243	 	end	29	7
+only eslint	s1271/src/script-indent_v244.vue:31:12	@stylistic/function-call-spacing	unexpectedWhitespace	Unexpected whitespace between function name and paren.	fix	268	275		end	32	7
+only eslint	s1271/src/script-indent_v244.vue:32:7	@stylistic/function-paren-newline	unexpectedAfter	Unexpected newline after '('.	fix	276	283		end	32	8
+only eslint	s1271/src/script-indent_v244.vue:33:7	@stylistic/function-paren-newline	unexpectedBefore	Unexpected newline before ')'.	fix	276	283		end	33	8
+only eslint	s1271/src/script-indent_v244.vue:33:8	@stylistic/semi	missingSemi	Missing semicolon.	fix	284	284	;	end	34	1
+only eslint	s1271/src/script-indent_v244.vue:34:9	@stylistic/dot-location	expectedDotBeforeProperty	Expected dot to be on same line as property.	fix	293	301	\n      .	end	34	10
+only eslint	s1271/src/script-indent_v244.vue:35:11	@stylistic/function-call-spacing	unexpectedWhitespace	Unexpected whitespace between function name and paren.	fix	305	312		end	36	7
+only eslint	s1271/src/script-indent_v244.vue:36:7	@stylistic/function-paren-newline	unexpectedAfter	Unexpected newline after '('.	fix	313	320		end	36	8
+only eslint	s1271/src/script-indent_v244.vue:37:7	@stylistic/function-paren-newline	unexpectedBefore	Unexpected newline before ')'.	fix	313	320		end	37	8
+only eslint	s1271/src/script-indent_v244.vue:37:8	@stylistic/semi	missingSemi	Missing semicolon.	fix	321	321	;	end	38	1
+only eslint	s1271/src/script-indent_v244.vue:39:3	@stylistic/lines-between-class-members	always	Expected blank line between class members.	fix	325	325	\n	end	53	4
+only eslint	s1271/src/script-indent_v244.vue:39:3	@typescript-eslint/explicit-function-return-type	missingReturnType	Missing return type on function.	end	40	5
+only eslint	s1271/src/script-indent_v244.vue:40:5	@stylistic/function-paren-newline	unexpectedAfter	Unexpected newline after '('.	fix	338	343		end	40	6
+only eslint	s1271/src/script-indent_v244.vue:41:5	@stylistic/function-paren-newline	unexpectedBefore	Unexpected newline before ')'.	fix	338	343		end	41	6
+only eslint	s1271/src/script-indent_v244.vue:44:9	@stylistic/dot-location	expectedDotBeforeProperty	Expected dot to be on same line as property.	fix	377	385	\n      .	end	44	10
+only eslint	s1271/src/script-indent_v244.vue:47:18	@stylistic/function-call-spacing	unexpectedWhitespace	Unexpected whitespace between function name and paren.	fix	420	427		end	48	7
+only eslint	s1271/src/script-indent_v244.vue:48:7	@stylistic/function-paren-newline	unexpectedAfter	Unexpected newline after '('.	fix	428	435		end	48	8
+only eslint	s1271/src/script-indent_v244.vue:49:7	@stylistic/function-paren-newline	unexpectedBefore	Unexpected newline before ')'.	fix	428	435		end	49	8
+only eslint	s1271/src/script-indent_v244.vue:49:8	@stylistic/semi	missingSemi	Missing semicolon.	fix	436	436	;	end	50	1
+only eslint	s1271/src/script-indent_v244.vue:4:3	@typescript-eslint/class-methods-use-this	missingThis	Expected 'this' to be used by class private getter #x.	end	6	5
+only eslint	s1271/src/script-indent_v244.vue:4:3	@typescript-eslint/explicit-function-return-type	missingReturnType	Missing return type on function.	end	6	5
+only eslint	s1271/src/script-indent_v244.vue:4:3	getter-return	expected	Expected to return a value in private getter #x.	end	6	5
+only eslint	s1271/src/script-indent_v244.vue:50:12	@stylistic/dot-location	expectedDotBeforeProperty	Expected dot to be on same line as property.	fix	448	456	\n      .	end	50	13
+only eslint	s1271/src/script-indent_v244.vue:51:17	@stylistic/function-paren-newline	unexpectedAfter	Unexpected newline after '('.	fix	467	474		end	51	18
+only eslint	s1271/src/script-indent_v244.vue:52:7	@stylistic/function-paren-newline	unexpectedBefore	Unexpected newline before ')'.	fix	467	474		end	52	8
+only eslint	s1271/src/script-indent_v244.vue:52:8	@stylistic/semi	missingSemi	Missing semicolon.	fix	475	475	;	end	53	1
+only eslint	s1271/src/script-indent_v244.vue:54:3	@stylistic/lines-between-class-members	always	Expected blank line between class members.	fix	479	479	\n	end	62	4
+only eslint	s1271/src/script-indent_v244.vue:54:3	@typescript-eslint/explicit-function-return-type	missingReturnType	Missing return type on function.	end	56	5
+only eslint	s1271/src/script-indent_v244.vue:54:3	@typescript-eslint/member-ordering	incorrectGroupOrder	Member staticInc should be declared before all public instance method definitions.	end	62	4
+only eslint	s1271/src/script-indent_v244.vue:54:3	perfectionist/sort-classes	unexpectedClassesGroupOrder	Expected "#staticInc" (private-static-method) to come before "#inc" (private-method).	fix	80	569	static\n  get\n  #y\n    (\n    ) {\n  }\n  static\n  set\n  #y\n    (\n      value\n    ) {\n  }\n  get\n  #x\n    (\n    )\n  {\n  }\n  set\n  #x\n    (\n      value\n    ) {\n  }\n  static\n  #staticInc\n    (\n    ) {\n    Counter\n      .#y++;\n    Counter.\n      #y++;\n  }\n  inc() {\n    this\n      .#inc\n      (\n      )\n    this.\n      #inc\n      (\n      )\n  }\n  #inc\n    (\n    ) {\n    this\n      .#x++;\n    this.\n      #x++;\n    Counter\n      .#staticInc\n      (\n      )\n    Counter.\n      #staticInc(\n      )\n  }	end	62	4
+only eslint	s1271/src/script-indent_v244.vue:56:5	@stylistic/function-paren-newline	unexpectedAfter	Unexpected newline after '('.	fix	507	512		end	56	6
+only eslint	s1271/src/script-indent_v244.vue:57:5	@stylistic/function-paren-newline	unexpectedBefore	Unexpected newline before ')'.	fix	507	512		end	57	6
+only eslint	s1271/src/script-indent_v244.vue:60:12	@stylistic/dot-location	expectedDotBeforeProperty	Expected dot to be on same line as property.	fix	552	560	\n      .	end	60	13
+only eslint	s1271/src/script-indent_v244.vue:6:5	@stylistic/function-paren-newline	unexpectedAfter	Unexpected newline after '('.	fix	94	99		end	6	6
+only eslint	s1271/src/script-indent_v244.vue:7:5	@stylistic/function-paren-newline	unexpectedBefore	Unexpected newline before ')'.	fix	94	99		end	7	6
+only eslint	s1271/src/script-indent_v244.vue:8:3	@stylistic/brace-style	nextLineOpen	Opening curly brace does not appear on the same line as controlling statement.	fix	100	103	 	end	8	4
+only eslint	s1271/src/script-indent_v244.vue:8:3	@typescript-eslint/no-empty-function	unexpected	Unexpected empty private getter #x.	suggestion	suggestComment	Add comment inside empty private getter #x.	104	107	 /* empty */ 	end	9	4
+only eslint	s1284/src/script-indent_v258.vue:100:5	@stylistic/function-paren-newline	unexpectedBefore	Unexpected newline before ')'.	fix	853	858		end	100	6
+only eslint	s1284/src/script-indent_v258.vue:101:3	@typescript-eslint/explicit-function-return-type	missingReturnType	Missing return type on function.	end	103	5
+only eslint	s1284/src/script-indent_v258.vue:101:3	@typescript-eslint/explicit-member-accessibility	missingAccessibility	Missing accessibility modifier on get property accessor x.	suggestion	addExplicitAccessibility	Add 'public' accessibility modifier	862	862	public 	suggestion	addExplicitAccessibility	Add 'private' accessibility modifier	862	862	private 	suggestion	addExplicitAccessibility	Add 'protected' accessibility modifier	862	862	protected 	end	102	4
+only eslint	s1284/src/script-indent_v258.vue:103:5	@stylistic/function-paren-newline	unexpectedAfter	Unexpected newline after '('.	fix	875	880		end	103	6
+only eslint	s1284/src/script-indent_v258.vue:104:5	@stylistic/function-paren-newline	unexpectedBefore	Unexpected newline before ')'.	fix	875	880		end	104	6
+only eslint	s1284/src/script-indent_v258.vue:105:3	@stylistic/brace-style	nextLineOpen	Opening curly brace does not appear on the same line as controlling statement.	fix	881	884	 	end	105	4
+only eslint	s1284/src/script-indent_v258.vue:10:5	@stylistic/function-paren-newline	unexpectedAfter	Unexpected newline after '('.	fix	105	110		end	10	6
+only eslint	s1284/src/script-indent_v258.vue:110:15	@stylistic/function-call-spacing	unexpectedWhitespace	Unexpected whitespace between function name and paren.	fix	929	934		end	111	5
+only eslint	s1284/src/script-indent_v258.vue:111:5	@stylistic/function-paren-newline	unexpectedAfter	Unexpected newline after '('.	fix	935	942		end	111	6
+only eslint	s1284/src/script-indent_v258.vue:113:5	@stylistic/function-paren-newline	unexpectedBefore	Unexpected newline before ')'.	fix	947	952		end	113	6
+only eslint	s1284/src/script-indent_v258.vue:114:3	@typescript-eslint/explicit-function-return-type	missingReturnType	Missing return type on function.	end	116	5
+only eslint	s1284/src/script-indent_v258.vue:114:3	@typescript-eslint/explicit-member-accessibility	missingAccessibility	Missing accessibility modifier on get property accessor y.	suggestion	addExplicitAccessibility	Add 'public' accessibility modifier	956	956	public 	suggestion	addExplicitAccessibility	Add 'private' accessibility modifier	956	956	private 	suggestion	addExplicitAccessibility	Add 'protected' accessibility modifier	956	956	protected 	end	115	4
+only eslint	s1284/src/script-indent_v258.vue:116:5	@stylistic/function-paren-newline	unexpectedAfter	Unexpected newline after '('.	fix	969	974		end	116	6
+only eslint	s1284/src/script-indent_v258.vue:117:5	@stylistic/function-paren-newline	unexpectedBefore	Unexpected newline before ')'.	fix	969	974		end	117	6
+only eslint	s1284/src/script-indent_v258.vue:118:3	@stylistic/brace-style	nextLineOpen	Opening curly brace does not appear on the same line as controlling statement.	fix	975	978	 	end	118	4
+only eslint	s1284/src/script-indent_v258.vue:11:5	@stylistic/function-paren-newline	unexpectedBefore	Unexpected newline before ')'.	fix	105	110		end	11	6
+only eslint	s1284/src/script-indent_v258.vue:123:7	@typescript-eslint/no-redeclare	redeclared	'Greeter' is already defined.	end	123	14
+only eslint	s1284/src/script-indent_v258.vue:125:9	@stylistic/function-call-spacing	unexpectedWhitespace	Unexpected whitespace between function name and paren.	fix	1035	1040		end	126	5
+only eslint	s1284/src/script-indent_v258.vue:126:5	@stylistic/function-paren-newline	unexpectedAfter	Unexpected newline after '('.	fix	1041	1048		end	126	6
+only eslint	s1284/src/script-indent_v258.vue:128:5	@stylistic/function-paren-newline	unexpectedBefore	Unexpected newline before ')'.	fix	1059	1064		end	128	6
+only eslint	s1284/src/script-indent_v258.vue:129:3	@typescript-eslint/explicit-member-accessibility	missingAccessibility	Missing accessibility modifier on class property greeting.	suggestion	addExplicitAccessibility	Add 'public' accessibility modifier	1068	1068	public 	suggestion	addExplicitAccessibility	Add 'private' accessibility modifier	1068	1068	private 	suggestion	addExplicitAccessibility	Add 'protected' accessibility modifier	1068	1068	protected 	end	129	11
+only eslint	s1284/src/script-indent_v258.vue:12:3	@typescript-eslint/class-methods-use-this	missingThis	Expected 'this' to be used by class method 'method'.	end	13	5
+only eslint	s1284/src/script-indent_v258.vue:12:3	@typescript-eslint/explicit-function-return-type	missingReturnType	Missing return type on function.	end	13	5
+only eslint	s1284/src/script-indent_v258.vue:12:3	@typescript-eslint/explicit-member-accessibility	missingAccessibility	Missing accessibility modifier on method definition method.	suggestion	addExplicitAccessibility	Add 'public' accessibility modifier	114	114	public 	suggestion	addExplicitAccessibility	Add 'private' accessibility modifier	114	114	private 	suggestion	addExplicitAccessibility	Add 'protected' accessibility modifier	114	114	protected 	end	12	9
+only eslint	s1284/src/script-indent_v258.vue:130:5	@stylistic/type-annotation-spacing	unexpectedSpaceBefore	Unexpected space before the ':'.	fix	1076	1081		end	130	6
+only eslint	s1284/src/script-indent_v258.vue:132:3	@stylistic/semi-style	expectedSemiColon	Expected this semicolon to be at the end of the previous line.	fix	1093	1100	;\n	end	132	4
+only eslint	s1284/src/script-indent_v258.vue:133:14	@stylistic/space-before-function-paren	missingSpace	Missing space before function parentheses.	fix	1111	1111	 	end	133	15
+only eslint	s1284/src/script-indent_v258.vue:133:3	@stylistic/lines-between-class-members	always	Expected blank line between class members.	fix	1097	1097	\n	end	135	4
+only eslint	s1284/src/script-indent_v258.vue:133:3	@typescript-eslint/explicit-member-accessibility	missingAccessibility	Missing accessibility modifier on method definition constructor.	suggestion	addExplicitAccessibility	Add 'public' accessibility modifier	1100	1100	public 	suggestion	addExplicitAccessibility	Add 'private' accessibility modifier	1100	1100	private 	suggestion	addExplicitAccessibility	Add 'protected' accessibility modifier	1100	1100	protected 	end	133	14
+only eslint	s1284/src/script-indent_v258.vue:136:3	@stylistic/lines-between-class-members	always	Expected blank line between class members.	fix	1163	1163	\n	end	139	4
+only eslint	s1284/src/script-indent_v258.vue:136:3	@typescript-eslint/explicit-function-return-type	missingReturnType	Missing return type on function.	end	136	8
+only eslint	s1284/src/script-indent_v258.vue:136:3	@typescript-eslint/explicit-member-accessibility	missingAccessibility	Missing accessibility modifier on method definition greet.	suggestion	addExplicitAccessibility	Add 'public' accessibility modifier	1166	1166	public 	suggestion	addExplicitAccessibility	Add 'private' accessibility modifier	1166	1166	private 	suggestion	addExplicitAccessibility	Add 'protected' accessibility modifier	1166	1166	protected 	end	136	8
+only eslint	s1284/src/script-indent_v258.vue:136:8	@stylistic/space-before-function-paren	missingSpace	Missing space before function parentheses.	fix	1171	1171	 	end	136	9
+only eslint	s1284/src/script-indent_v258.vue:137:39	@stylistic/function-call-argument-newline	missingLineBreak	There should be a line break after this argument.	fix	1214	1215	\n	end	137	40
+only eslint	s1284/src/script-indent_v258.vue:138:38	@stylistic/function-call-argument-newline	missingLineBreak	There should be a line break after this argument.	fix	1265	1266	\n	end	138	39
+only eslint	s1284/src/script-indent_v258.vue:13:5	@stylistic/function-paren-newline	unexpectedAfter	Unexpected newline after '('.	fix	126	131		end	13	6
+only eslint	s1284/src/script-indent_v258.vue:142:7	@typescript-eslint/no-redeclare	redeclared	'BugReport' is already defined.	end	142	16
+only eslint	s1284/src/script-indent_v258.vue:143:3	@typescript-eslint/explicit-member-accessibility	missingAccessibility	Missing accessibility modifier on class property type.	suggestion	addExplicitAccessibility	Add 'public' accessibility modifier	1309	1309	public 	suggestion	addExplicitAccessibility	Add 'private' accessibility modifier	1309	1309	private 	suggestion	addExplicitAccessibility	Add 'protected' accessibility modifier	1309	1309	protected 	end	143	7
+only eslint	s1284/src/script-indent_v258.vue:144:3	@stylistic/lines-between-class-members	always	Expected blank line between class members.	fix	1325	1325	\n	end	144	17
+only eslint	s1284/src/script-indent_v258.vue:144:3	@typescript-eslint/explicit-member-accessibility	missingAccessibility	Missing accessibility modifier on class property title.	suggestion	addExplicitAccessibility	Add 'public' accessibility modifier	1328	1328	public 	suggestion	addExplicitAccessibility	Add 'private' accessibility modifier	1328	1328	private 	suggestion	addExplicitAccessibility	Add 'protected' accessibility modifier	1328	1328	protected 	end	144	8
+only eslint	s1284/src/script-indent_v258.vue:144:3	perfectionist/sort-classes	unexpectedClassesOrder	Expected "title" to come before "type".	fix	1309	1342	title: string;\n  type = "report";	end	144	17
+only eslint	s1284/src/script-indent_v258.vue:146:14	@stylistic/space-before-function-paren	missingSpace	Missing space before function parentheses.	fix	1357	1357	 	end	146	15
+only eslint	s1284/src/script-indent_v258.vue:146:3	@typescript-eslint/explicit-member-accessibility	missingAccessibility	Missing accessibility modifier on method definition constructor.	suggestion	addExplicitAccessibility	Add 'public' accessibility modifier	1346	1346	public 	suggestion	addExplicitAccessibility	Add 'private' accessibility modifier	1346	1346	private 	suggestion	addExplicitAccessibility	Add 'protected' accessibility modifier	1346	1346	protected 	end	146	14
+only eslint	s1284/src/script-indent_v258.vue:14:5	@stylistic/function-paren-newline	unexpectedBefore	Unexpected newline before ')'.	fix	126	131		end	14	6
+only eslint	s1284/src/script-indent_v258.vue:152:3	@typescript-eslint/explicit-function-return-type	missingReturnType	Missing return type on function.	end	153	5
+only eslint	s1284/src/script-indent_v258.vue:152:3	@typescript-eslint/explicit-member-accessibility	missingAccessibility	Missing accessibility modifier on method definition print.	suggestion	addExplicitAccessibility	Add 'public' accessibility modifier	1413	1413	public 	suggestion	addExplicitAccessibility	Add 'private' accessibility modifier	1413	1413	private 	suggestion	addExplicitAccessibility	Add 'protected' accessibility modifier	1413	1413	protected 	end	152	8
+only eslint	s1284/src/script-indent_v258.vue:153:5	@stylistic/function-paren-newline	unexpectedAfter	Unexpected newline after '('.	fix	1424	1431		end	153	6
+only eslint	s1284/src/script-indent_v258.vue:157:9	@stylistic/type-annotation-spacing	unexpectedSpaceBefore	Unexpected space before the ':'.	fix	1461	1470		end	157	10
+only eslint	s1284/src/script-indent_v258.vue:159:5	@stylistic/function-paren-newline	unexpectedBefore	Unexpected newline before ')'.	fix	1487	1492		end	159	6
+only eslint	s1284/src/script-indent_v258.vue:15:3	@stylistic/brace-style	nextLineOpen	Opening curly brace does not appear on the same line as controlling statement.	fix	132	135	 	end	15	4
+only eslint	s1284/src/script-indent_v258.vue:15:3	@typescript-eslint/no-empty-function	unexpected	Unexpected empty method 'method'.	suggestion	suggestComment	Add comment inside empty method 'method'.	136	139	 /* empty */ 	end	16	4
+only eslint	s1284/src/script-indent_v258.vue:160:5	unicorn/prefer-ternary	prefer-ternary	This `if` statement can be replaced by a ternary expression.	fix	1500	1615	return verbose ? `type: ${this.type}\\ntitle: ${this.title}` : this.title;	end	164	6
+only eslint	s1284/src/script-indent_v258.vue:170:3	@stylistic/lines-between-class-members	always	Expected blank line between class members.	fix	1660	1660	\n	end	170	23
+only eslint	s1284/src/script-indent_v258.vue:170:3	perfectionist/sort-classes	unexpectedClassesOrder	Expected "_end" to come before "_start".	fix	1638	2069	@\n  validate\n  @\n  Reflect\n    .\n    metadata(\n      "design:type"\n      ,\n      Point\n    )\n  set\n  end(value: Point) {\n    this._end = value;\n  }\n  get end() {\n    return this._end;\n  }\n  @\n  validate\n  @\n  Reflect\n    .\n    metadata(\n      "design:type"\n      ,\n      Point\n    )\n  set start(value: Point) {\n    this._start = value;\n  }\n  get start() {\n    return this._start;\n  }\n  private _end: Point;\n  private _start: Point;	end	170	23
+only eslint	s1284/src/script-indent_v258.vue:171:3	@stylistic/lines-between-class-members	always	Expected blank line between class members.	fix	1683	1683	\n	end	183	4
+only eslint	s1284/src/script-indent_v258.vue:171:3	perfectionist/sort-classes	unexpectedClassesGroupOrder	Expected "start" (set-method) to come before "_end" (private-property).	fix	1638	2069	@\n  validate\n  @\n  Reflect\n    .\n    metadata(\n      "design:type"\n      ,\n      Point\n    )\n  set\n  end(value: Point) {\n    this._end = value;\n  }\n  get end() {\n    return this._end;\n  }\n  @\n  validate\n  @\n  Reflect\n    .\n    metadata(\n      "design:type"\n      ,\n      Point\n    )\n  set start(value: Point) {\n    this._start = value;\n  }\n  get start() {\n    return this._start;\n  }\n  private _end: Point;\n  private _start: Point;	end	183	4
+only eslint	s1284/src/script-indent_v258.vue:175:5	@stylistic/dot-location	expectedDotBeforeProperty	Expected dot to be on same line as property.	fix	1717	1723	\n    .	end	175	6
+only eslint	s1284/src/script-indent_v258.vue:178:7	@stylistic/comma-style	unexpectedLineBeforeAndAfterComma	Bad line breaking before and after ','.	fix	1752	1767	,      \n      	end	178	8
+only eslint	s1284/src/script-indent_v258.vue:181:12	@stylistic/space-before-function-paren	missingSpace	Missing space before function parentheses.	fix	1790	1790	 	end	181	13
+only eslint	s1284/src/script-indent_v258.vue:181:3	@typescript-eslint/explicit-member-accessibility	missingAccessibility	Missing accessibility modifier on set property accessor start.	suggestion	addExplicitAccessibility	Add 'public' accessibility modifier	1781	1781	public 	suggestion	addExplicitAccessibility	Add 'private' accessibility modifier	1781	1781	private 	suggestion	addExplicitAccessibility	Add 'protected' accessibility modifier	1781	1781	protected 	end	181	12
+only eslint	s1284/src/script-indent_v258.vue:184:12	@stylistic/space-before-function-paren	missingSpace	Missing space before function parentheses.	fix	1847	1847	 	end	184	13
+only eslint	s1284/src/script-indent_v258.vue:184:3	@stylistic/lines-between-class-members	always	Expected blank line between class members.	fix	1835	1835	\n	end	186	4
+only eslint	s1284/src/script-indent_v258.vue:184:3	@typescript-eslint/explicit-function-return-type	missingReturnType	Missing return type on function.	end	184	12
+only eslint	s1284/src/script-indent_v258.vue:184:3	@typescript-eslint/explicit-member-accessibility	missingAccessibility	Missing accessibility modifier on get property accessor start.	suggestion	addExplicitAccessibility	Add 'public' accessibility modifier	1838	1838	public 	suggestion	addExplicitAccessibility	Add 'private' accessibility modifier	1838	1838	private 	suggestion	addExplicitAccessibility	Add 'protected' accessibility modifier	1838	1838	protected 	end	184	12
+only eslint	s1284/src/script-indent_v258.vue:184:3	@typescript-eslint/member-ordering	incorrectGroupOrder	Member start should be declared before all public decorated set definitions.	end	186	4
+only eslint	s1284/src/script-indent_v258.vue:187:3	@stylistic/lines-between-class-members	always	Expected blank line between class members.	fix	1879	1879	\n	end	200	4
+only eslint	s1284/src/script-indent_v258.vue:187:3	perfectionist/sort-classes	unexpectedClassesOrder	Expected "end" to come before "start".	fix	1638	2069	@\n  validate\n  @\n  Reflect\n    .\n    metadata(\n      "design:type"\n      ,\n      Point\n    )\n  set\n  end(value: Point) {\n    this._end = value;\n  }\n  get end() {\n    return this._end;\n  }\n  @\n  validate\n  @\n  Reflect\n    .\n    metadata(\n      "design:type"\n      ,\n      Point\n    )\n  set start(value: Point) {\n    this._start = value;\n  }\n  get start() {\n    return this._start;\n  }\n  private _end: Point;\n  private _start: Point;	end	200	4
+only eslint	s1284/src/script-indent_v258.vue:191:5	@stylistic/dot-location	expectedDotBeforeProperty	Expected dot to be on same line as property.	fix	1913	1919	\n    .	end	191	6
+only eslint	s1284/src/script-indent_v258.vue:194:7	@stylistic/comma-style	unexpectedLineBeforeAndAfterComma	Bad line breaking before and after ','.	fix	1948	1963	,      \n      	end	194	8
+only eslint	s1284/src/script-indent_v258.vue:197:3	@typescript-eslint/explicit-member-accessibility	missingAccessibility	Missing accessibility modifier on set property accessor end.	suggestion	addExplicitAccessibility	Add 'public' accessibility modifier	1977	1977	public 	suggestion	addExplicitAccessibility	Add 'private' accessibility modifier	1977	1977	private 	suggestion	addExplicitAccessibility	Add 'protected' accessibility modifier	1977	1977	protected 	end	198	6
+only eslint	s1284/src/script-indent_v258.vue:198:6	@stylistic/space-before-function-paren	missingSpace	Missing space before function parentheses.	fix	1986	1986	 	end	198	7
+only eslint	s1284/src/script-indent_v258.vue:201:10	@stylistic/space-before-function-paren	missingSpace	Missing space before function parentheses.	fix	2039	2039	 	end	201	11
+only eslint	s1284/src/script-indent_v258.vue:201:3	@stylistic/lines-between-class-members	always	Expected blank line between class members.	fix	2029	2029	\n	end	203	4
+only eslint	s1284/src/script-indent_v258.vue:201:3	@typescript-eslint/explicit-function-return-type	missingReturnType	Missing return type on function.	end	201	10
+only eslint	s1284/src/script-indent_v258.vue:201:3	@typescript-eslint/explicit-member-accessibility	missingAccessibility	Missing accessibility modifier on get property accessor end.	suggestion	addExplicitAccessibility	Add 'public' accessibility modifier	2032	2032	public 	suggestion	addExplicitAccessibility	Add 'private' accessibility modifier	2032	2032	private 	suggestion	addExplicitAccessibility	Add 'protected' accessibility modifier	2032	2032	protected 	end	201	10
+only eslint	s1284/src/script-indent_v258.vue:201:3	@typescript-eslint/member-ordering	incorrectGroupOrder	Member end should be declared before all public decorated set definitions.	end	203	4
+only eslint	s1284/src/script-indent_v258.vue:22:1	@stylistic/brace-style	nextLineOpen	Opening curly brace does not appear on the same line as controlling statement.	fix	169	170	 	end	22	2
+only eslint	s1284/src/script-indent_v258.vue:23:3	@typescript-eslint/explicit-member-accessibility	missingAccessibility	Missing accessibility modifier on class property type.	suggestion	addExplicitAccessibility	Add 'public' accessibility modifier	174	174	public 	suggestion	addExplicitAccessibility	Add 'private' accessibility modifier	174	174	private 	suggestion	addExplicitAccessibility	Add 'protected' accessibility modifier	174	174	protected 	end	23	7
+only eslint	s1284/src/script-indent_v258.vue:26:3	@stylistic/semi-style	expectedSemiColon	Expected this semicolon to be at the end of the previous line.	fix	197	204	;\n	end	26	4
+only eslint	s1284/src/script-indent_v258.vue:27:3	@stylistic/lines-between-class-members	always	Expected blank line between class members.	fix	201	201	\n	end	30	4
+only eslint	s1284/src/script-indent_v258.vue:27:3	@typescript-eslint/explicit-member-accessibility	missingAccessibility	Missing accessibility modifier on class property title.	suggestion	addExplicitAccessibility	Add 'public' accessibility modifier	204	204	public 	suggestion	addExplicitAccessibility	Add 'private' accessibility modifier	204	204	private 	suggestion	addExplicitAccessibility	Add 'protected' accessibility modifier	204	204	protected 	end	27	8
+only eslint	s1284/src/script-indent_v258.vue:27:3	perfectionist/sort-classes	unexpectedClassesOrder	Expected "title" to come before "type".	fix	174	230	title\n    :\n    string\n  ;\n  type\n    =\n    "report"\n  ;	end	30	4
+only eslint	s1284/src/script-indent_v258.vue:28:5	@stylistic/type-annotation-spacing	unexpectedSpaceBefore	Unexpected space before the ':'.	fix	209	214		end	28	6
+only eslint	s1284/src/script-indent_v258.vue:30:3	@stylistic/semi-style	expectedSemiColon	Expected this semicolon to be at the end of the previous line.	fix	226	234	;\n	end	30	4
+only eslint	s1284/src/script-indent_v258.vue:32:3	@typescript-eslint/explicit-member-accessibility	missingAccessibility	Missing accessibility modifier on method definition constructor.	suggestion	addExplicitAccessibility	Add 'public' accessibility modifier	234	234	public 	suggestion	addExplicitAccessibility	Add 'private' accessibility modifier	234	234	private 	suggestion	addExplicitAccessibility	Add 'protected' accessibility modifier	234	234	protected 	end	32	14
+only eslint	s1284/src/script-indent_v258.vue:33:5	@stylistic/function-paren-newline	unexpectedAfter	Unexpected newline after '('.	fix	251	258		end	33	6
+only eslint	s1284/src/script-indent_v258.vue:35:9	@stylistic/type-annotation-spacing	unexpectedSpaceBefore	Unexpected space before the ':'.	fix	259	268		end	35	10
+only eslint	s1284/src/script-indent_v258.vue:37:5	@stylistic/function-paren-newline	unexpectedBefore	Unexpected newline before ')'.	fix	284	289		end	37	6
+only eslint	s1284/src/script-indent_v258.vue:38:3	@stylistic/brace-style	nextLineOpen	Opening curly brace does not appear on the same line as controlling statement.	fix	290	293	 	end	38	4
+only eslint	s1284/src/script-indent_v258.vue:40:7	@stylistic/dot-location	expectedDotBeforeProperty	Expected dot to be on same line as property.	fix	310	318	\n      .	end	40	8
+only eslint	s1284/src/script-indent_v258.vue:44:5	@stylistic/semi-style	expectedSemiColon	Expected this semicolon to be at the end of the previous line.	fix	339	348	;\n	end	44	6
+only eslint	s1284/src/script-indent_v258.vue:50:1	@stylistic/brace-style	nextLineOpen	Opening curly brace does not appear on the same line as controlling statement.	fix	368	369	 	end	50	2
+only eslint	s1284/src/script-indent_v258.vue:51:3	@typescript-eslint/explicit-member-accessibility	missingAccessibility	Missing accessibility modifier on class property greeting.	suggestion	addExplicitAccessibility	Add 'public' accessibility modifier	373	373	public 	suggestion	addExplicitAccessibility	Add 'private' accessibility modifier	373	373	private 	suggestion	addExplicitAccessibility	Add 'protected' accessibility modifier	373	373	protected 	end	51	11
+only eslint	s1284/src/script-indent_v258.vue:52:5	@stylistic/type-annotation-spacing	unexpectedSpaceBefore	Unexpected space before the ':'.	fix	381	386		end	52	6
+only eslint	s1284/src/script-indent_v258.vue:54:3	@stylistic/semi-style	expectedSemiColon	Expected this semicolon to be at the end of the previous line.	fix	398	405	;\n	end	54	4
+only eslint	s1284/src/script-indent_v258.vue:55:3	@stylistic/lines-between-class-members	always	Expected blank line between class members.	fix	402	402	\n	end	68	4
+only eslint	s1284/src/script-indent_v258.vue:55:3	@typescript-eslint/explicit-member-accessibility	missingAccessibility	Missing accessibility modifier on method definition constructor.	suggestion	addExplicitAccessibility	Add 'public' accessibility modifier	405	405	public 	suggestion	addExplicitAccessibility	Add 'private' accessibility modifier	405	405	private 	suggestion	addExplicitAccessibility	Add 'protected' accessibility modifier	405	405	protected 	end	55	14
+only eslint	s1284/src/script-indent_v258.vue:56:5	@stylistic/function-paren-newline	unexpectedAfter	Unexpected newline after '('.	fix	422	429		end	56	6
+only eslint	s1284/src/script-indent_v258.vue:58:9	@stylistic/type-annotation-spacing	unexpectedSpaceBefore	Unexpected space before the ':'.	fix	436	445		end	58	10
+only eslint	s1284/src/script-indent_v258.vue:5:1	@stylistic/brace-style	nextLineOpen	Opening curly brace does not appear on the same line as controlling statement.	fix	66	67	 	end	5	2
+only eslint	s1284/src/script-indent_v258.vue:60:5	@stylistic/function-paren-newline	unexpectedBefore	Unexpected newline before ')'.	fix	461	466		end	60	6
+only eslint	s1284/src/script-indent_v258.vue:61:3	@stylistic/brace-style	nextLineOpen	Opening curly brace does not appear on the same line as controlling statement.	fix	467	470	 	end	61	4
+only eslint	s1284/src/script-indent_v258.vue:63:7	@stylistic/dot-location	expectedDotBeforeProperty	Expected dot to be on same line as property.	fix	487	495	\n      .	end	63	8
+only eslint	s1284/src/script-indent_v258.vue:67:5	@stylistic/semi-style	expectedSemiColon	Expected this semicolon to be at the end of the previous line.	fix	525	534	;\n	end	67	6
+only eslint	s1284/src/script-indent_v258.vue:6:9	@stylistic/function-call-spacing	unexpectedWhitespace	Unexpected whitespace between function name and paren.	fix	77	82		end	7	5
+only eslint	s1284/src/script-indent_v258.vue:71:13	@stylistic/function-call-spacing	unexpectedWhitespace	Unexpected whitespace between function name and paren.	fix	553	558		end	72	5
+only eslint	s1284/src/script-indent_v258.vue:72:5	@stylistic/function-paren-newline	unexpectedAfter	Unexpected newline after '('.	fix	559	566		end	72	6
+only eslint	s1284/src/script-indent_v258.vue:74:5	@stylistic/function-paren-newline	unexpectedBefore	Unexpected newline before ')'.	fix	571	576		end	74	6
+only eslint	s1284/src/script-indent_v258.vue:75:3	@typescript-eslint/explicit-function-return-type	missingReturnType	Missing return type on function.	end	76	5
+only eslint	s1284/src/script-indent_v258.vue:75:3	@typescript-eslint/explicit-member-accessibility	missingAccessibility	Missing accessibility modifier on method definition greet.	suggestion	addExplicitAccessibility	Add 'public' accessibility modifier	580	580	public 	suggestion	addExplicitAccessibility	Add 'private' accessibility modifier	580	580	private 	suggestion	addExplicitAccessibility	Add 'protected' accessibility modifier	580	580	protected 	end	75	8
+only eslint	s1284/src/script-indent_v258.vue:76:5	@stylistic/function-paren-newline	unexpectedAfter	Unexpected newline after '('.	fix	591	596		end	76	6
+only eslint	s1284/src/script-indent_v258.vue:77:5	@stylistic/function-paren-newline	unexpectedBefore	Unexpected newline before ')'.	fix	591	596		end	77	6
+only eslint	s1284/src/script-indent_v258.vue:78:3	@stylistic/brace-style	nextLineOpen	Opening curly brace does not appear on the same line as controlling statement.	fix	597	600	 	end	78	4
+only eslint	s1284/src/script-indent_v258.vue:7:5	@stylistic/function-paren-newline	unexpectedAfter	Unexpected newline after '('.	fix	83	88		end	7	6
+only eslint	s1284/src/script-indent_v258.vue:82:9	@stylistic/dot-location	expectedDotBeforeProperty	Expected dot to be on same line as property.	fix	650	660	\n        .	end	82	10
+only eslint	s1284/src/script-indent_v258.vue:84:5	@stylistic/semi-style	expectedSemiColon	Expected this semicolon to be at the end of the previous line.	fix	668	677	;\n	end	84	6
+only eslint	s1284/src/script-indent_v258.vue:8:5	@stylistic/function-paren-newline	unexpectedBefore	Unexpected newline before ')'.	fix	83	88		end	8	6
+only eslint	s1284/src/script-indent_v258.vue:90:3	@stylistic/lines-between-class-members	always	Expected blank line between class members.	fix	717	717	\n	end	90	22
+only eslint	s1284/src/script-indent_v258.vue:91:14	@stylistic/space-before-function-paren	missingSpace	Missing space before function parentheses.	fix	753	753	 	end	91	15
+only eslint	s1284/src/script-indent_v258.vue:91:3	@stylistic/lines-between-class-members	always	Expected blank line between class members.	fix	739	739	\n	end	94	4
+only eslint	s1284/src/script-indent_v258.vue:91:3	@typescript-eslint/explicit-member-accessibility	missingAccessibility	Missing accessibility modifier on method definition constructor.	suggestion	addExplicitAccessibility	Add 'public' accessibility modifier	742	742	public 	suggestion	addExplicitAccessibility	Add 'private' accessibility modifier	742	742	private 	suggestion	addExplicitAccessibility	Add 'protected' accessibility modifier	742	742	protected 	end	91	14
+only eslint	s1284/src/script-indent_v258.vue:96:3	perfectionist/sort-classes	unexpectedClassesGroupOrder	Expected "x" (get-method) to come before "constructor" (constructor).	fix	698	1003	@\n  configurable\n    (\n      false\n    )\n  get\n  x\n    (\n    )\n  {\n    return this._x;\n  }\n  @\n  configurable\n    (\n      false\n    )\n  get\n  y\n    (\n    )\n  {\n    return this._y;\n  }\n  private _x: number;\n\n  private _y: number;\n\n  constructor(x: number, y: number) {\n    this._x = x;\n    this._y = y;\n  }	end	107	4
+only eslint	s1284/src/script-indent_v258.vue:97:15	@stylistic/function-call-spacing	unexpectedWhitespace	Unexpected whitespace between function name and paren.	fix	835	840		end	98	5
+only eslint	s1284/src/script-indent_v258.vue:98:5	@stylistic/function-paren-newline	unexpectedAfter	Unexpected newline after '('.	fix	841	848		end	98	6
+only eslint	s1284/src/script-indent_v258.vue:9:10	@stylistic/function-call-spacing	unexpectedWhitespace	Unexpected whitespace between function name and paren.	fix	99	104		end	10	5
+only eslint	s1338/src/script-indent_v72.vue:10:3	@stylistic/brace-style	nextLineOpen	Opening curly brace does not appear on the same line as controlling statement.	fix	102	105	 	end	10	4
+only eslint	s1338/src/script-indent_v72.vue:11:5	@stylistic/no-extra-semi	unexpected	Unnecessary semicolon.	fix	105	116	{\n    \n  }	end	11	6
+only eslint	s1338/src/script-indent_v72.vue:13:3	@stylistic/lines-between-class-members	always	Expected blank line between class members.	fix	116	116	\n	end	20	4
+only eslint	s1338/src/script-indent_v72.vue:13:3	@typescript-eslint/explicit-function-return-type	missingReturnType	Missing return type on function.	end	16	5
+only eslint	s1338/src/script-indent_v72.vue:13:3	@typescript-eslint/explicit-member-accessibility	missingAccessibility	Missing accessibility modifier on get property accessor ccc.	suggestion	addExplicitAccessibility	Add 'public' accessibility modifier	119	119	public 	suggestion	addExplicitAccessibility	Add 'private' accessibility modifier	119	119	private 	suggestion	addExplicitAccessibility	Add 'protected' accessibility modifier	119	119	protected 	end	15	6
+only eslint	s1338/src/script-indent_v72.vue:13:3	@typescript-eslint/member-ordering	incorrectGroupOrder	Member ccc should be declared before all public instance method definitions.	end	20	4
+only eslint	s1338/src/script-indent_v72.vue:13:3	getter-return	expected	Expected to return a value in static getter 'ccc'.	end	16	5
+only eslint	s1338/src/script-indent_v72.vue:13:3	perfectionist/sort-classes	unexpectedClassesGroupOrder	Expected "ccc" (static-get-method) to come before "bbb" (method).	fix	63	249	static\n  get\n  ccc\n    (\n    )\n  {\n    ;\n  }\n  get\n  [\n    e\n  ]\n    (\n    )\n  {\n    ;\n  }\n  bbb\n    (\n      a\n      ,\n      b\n    )\n  {\n    ;\n  }\n  [\n    d\n  ]\n    (\n    )\n  {\n    ;\n  }	end	20	4
+only eslint	s1338/src/script-indent_v72.vue:16:5	@stylistic/function-paren-newline	unexpectedAfter	Unexpected newline after '('.	fix	143	148		end	16	6
+only eslint	s1338/src/script-indent_v72.vue:17:5	@stylistic/function-paren-newline	unexpectedBefore	Unexpected newline before ')'.	fix	143	148		end	17	6
+only eslint	s1338/src/script-indent_v72.vue:18:3	@stylistic/brace-style	nextLineOpen	Opening curly brace does not appear on the same line as controlling statement.	fix	149	152	 	end	18	4
+only eslint	s1338/src/script-indent_v72.vue:19:5	@stylistic/no-extra-semi	unexpected	Unnecessary semicolon.	fix	152	163	{\n    \n  }	end	19	6
+only eslint	s1338/src/script-indent_v72.vue:21:3	@stylistic/lines-between-class-members	always	Expected blank line between class members.	fix	163	163	\n	end	28	4
+only eslint	s1338/src/script-indent_v72.vue:21:3	@typescript-eslint/class-methods-use-this	missingThis	Expected 'this' to be used by class method.	end	24	5
+only eslint	s1338/src/script-indent_v72.vue:21:3	@typescript-eslint/explicit-function-return-type	missingReturnType	Missing return type on function.	end	24	5
+only eslint	s1338/src/script-indent_v72.vue:21:3	@typescript-eslint/explicit-member-accessibility	missingAccessibility	Missing accessibility modifier on method definition d.	suggestion	addExplicitAccessibility	Add 'public' accessibility modifier	166	166	public 	suggestion	addExplicitAccessibility	Add 'private' accessibility modifier	166	166	private 	suggestion	addExplicitAccessibility	Add 'protected' accessibility modifier	166	166	protected 	end	23	4
+only eslint	s1338/src/script-indent_v72.vue:24:5	@stylistic/function-paren-newline	unexpectedAfter	Unexpected newline after '('.	fix	183	188		end	24	6
+only eslint	s1338/src/script-indent_v72.vue:25:5	@stylistic/function-paren-newline	unexpectedBefore	Unexpected newline before ')'.	fix	183	188		end	25	6
+only eslint	s1338/src/script-indent_v72.vue:26:3	@stylistic/brace-style	nextLineOpen	Opening curly brace does not appear on the same line as controlling statement.	fix	189	192	 	end	26	4
+only eslint	s1338/src/script-indent_v72.vue:27:5	@stylistic/no-extra-semi	unexpected	Unnecessary semicolon.	fix	192	203	{\n    \n  }	end	27	6
+only eslint	s1338/src/script-indent_v72.vue:29:3	@stylistic/lines-between-class-members	always	Expected blank line between class members.	fix	203	203	\n	end	37	4
+only eslint	s1338/src/script-indent_v72.vue:29:3	@typescript-eslint/class-methods-use-this	missingThis	Expected 'this' to be used by class getter.	end	33	5
+only eslint	s1338/src/script-indent_v72.vue:29:3	@typescript-eslint/explicit-function-return-type	missingReturnType	Missing return type on function.	end	33	5
+only eslint	s1338/src/script-indent_v72.vue:29:3	@typescript-eslint/explicit-member-accessibility	missingAccessibility	Missing accessibility modifier on get property accessor e.	suggestion	addExplicitAccessibility	Add 'public' accessibility modifier	206	206	public 	suggestion	addExplicitAccessibility	Add 'private' accessibility modifier	206	206	private 	suggestion	addExplicitAccessibility	Add 'protected' accessibility modifier	206	206	protected 	end	32	4
+only eslint	s1338/src/script-indent_v72.vue:29:3	@typescript-eslint/member-ordering	incorrectGroupOrder	Member e should be declared before all public instance method definitions.	end	37	4
+only eslint	s1338/src/script-indent_v72.vue:29:3	getter-return	expected	Expected to return a value in getter.	end	33	5
+only eslint	s1338/src/script-indent_v72.vue:29:3	perfectionist/sort-classes	unexpectedClassesGroupOrder	Expected "e" (get-method) to come before "d" (method).	fix	63	249	static\n  get\n  ccc\n    (\n    )\n  {\n    ;\n  }\n  get\n  [\n    e\n  ]\n    (\n    )\n  {\n    ;\n  }\n  bbb\n    (\n      a\n      ,\n      b\n    )\n  {\n    ;\n  }\n  [\n    d\n  ]\n    (\n    )\n  {\n    ;\n  }	end	37	4
+only eslint	s1338/src/script-indent_v72.vue:33:5	@stylistic/function-paren-newline	unexpectedAfter	Unexpected newline after '('.	fix	229	234		end	33	6
+only eslint	s1338/src/script-indent_v72.vue:34:5	@stylistic/function-paren-newline	unexpectedBefore	Unexpected newline before ')'.	fix	229	234		end	34	6
+only eslint	s1338/src/script-indent_v72.vue:35:3	@stylistic/brace-style	nextLineOpen	Opening curly brace does not appear on the same line as controlling statement.	fix	235	238	 	end	35	4
+only eslint	s1338/src/script-indent_v72.vue:36:5	@stylistic/no-extra-semi	unexpected	Unnecessary semicolon.	fix	238	249	{\n    \n  }	end	36	6
+only eslint	s1338/src/script-indent_v72.vue:4:3	@typescript-eslint/class-methods-use-this	missingThis	Expected 'this' to be used by class method 'bbb'.	end	5	5
+only eslint	s1338/src/script-indent_v72.vue:4:3	@typescript-eslint/explicit-function-return-type	missingReturnType	Missing return type on function.	end	5	5
+only eslint	s1338/src/script-indent_v72.vue:4:3	@typescript-eslint/explicit-member-accessibility	missingAccessibility	Missing accessibility modifier on method definition bbb.	suggestion	addExplicitAccessibility	Add 'public' accessibility modifier	63	63	public 	suggestion	addExplicitAccessibility	Add 'private' accessibility modifier	63	63	private 	suggestion	addExplicitAccessibility	Add 'protected' accessibility modifier	63	63	protected 	end	4	6
+only eslint	s1338/src/script-indent_v72.vue:7:7	@stylistic/comma-style	unexpectedLineBeforeAndAfterComma	Bad line breaking before and after ','.	fix	80	95	,      \n      	end	7	8
+only eslint	s1348/src/script-indent_v82.vue:4:3	@typescript-eslint/class-methods-use-this	missingThis	Expected 'this' to be used by class method 'b'.	end	5	5
+only eslint	s1348/src/script-indent_v82.vue:4:3	@typescript-eslint/explicit-function-return-type	missingReturnType	Missing return type on function.	end	5	5
+only eslint	s1348/src/script-indent_v82.vue:4:3	@typescript-eslint/explicit-member-accessibility	missingAccessibility	Missing accessibility modifier on method definition b.	suggestion	addExplicitAccessibility	Add 'public' accessibility modifier	63	63	public 	suggestion	addExplicitAccessibility	Add 'private' accessibility modifier	63	63	private 	suggestion	addExplicitAccessibility	Add 'protected' accessibility modifier	63	63	protected 	end	4	4
+only eslint	s1348/src/script-indent_v82.vue:5:5	@stylistic/function-paren-newline	unexpectedAfter	Unexpected newline after '('.	fix	70	75		end	5	6
+only eslint	s1348/src/script-indent_v82.vue:6:5	@stylistic/function-paren-newline	unexpectedBefore	Unexpected newline before ')'.	fix	70	75		end	6	6
+only eslint	s1348/src/script-indent_v82.vue:7:12	@typescript-eslint/no-magic-numbers	noMagic	No magic number: 42.	end	7	14
+only eslint	s1348/src/script-indent_v82.vue:7:14	@stylistic/semi	missingSemi	Missing semicolon.	fix	92	92	;	end	8	1
+only eslint	s1356/src/script-indent_v90.vue:13:23	@stylistic/space-before-function-paren	missingSpace	Missing space before function parentheses.	fix	219	219	 	end	13	24
+only eslint	s1356/src/script-indent_v90.vue:15:5	@stylistic/comma-spacing	missing	A space is required after ','.	fix	233	233	 	end	15	6
+only eslint	s1356/src/script-indent_v90.vue:15:5	@stylistic/comma-style	expectedCommaLast	',' should be placed last.	fix	227	233	,\n    	end	15	6
+only eslint	s1356/src/script-indent_v90.vue:16:4	@stylistic/semi	missingSemi	Missing semicolon.	fix	239	239	;	end	17	1
+only eslint	s1356/src/script-indent_v90.vue:17:20	@typescript-eslint/no-unused-private-class-members	unusedPrivateClassMember	Private class member 'f' is defined but never used.	end	17	21
+only eslint	s1356/src/script-indent_v90.vue:17:21	@stylistic/space-before-function-paren	missingSpace	Missing space before function parentheses.	fix	260	260	 	end	17	22
+only eslint	s1356/src/script-indent_v90.vue:19:5	@stylistic/comma-style	unexpectedLineBeforeAndAfterComma	Bad line breaking before and after ','.	fix	268	279	,    \n    	end	19	6
+only eslint	s1356/src/script-indent_v90.vue:23:21	@stylistic/space-before-function-paren	missingSpace	Missing space before function parentheses.	fix	310	310	 	end	23	22
+only eslint	s1356/src/script-indent_v90.vue:24:27	@stylistic/space-before-function-paren	missingSpace	Missing space before function parentheses.	fix	340	340	 	end	24	28
+only eslint	s1356/src/script-indent_v90.vue:26:5	@stylistic/comma-style	unexpectedLineBeforeAndAfterComma	Bad line breaking before and after ','.	fix	348	359	,    \n    	end	26	6
+only eslint	s1356/src/script-indent_v90.vue:4:3	@typescript-eslint/explicit-member-accessibility	missingAccessibility	Missing accessibility modifier on method definition a.	suggestion	addExplicitAccessibility	Add 'public' accessibility modifier	84	84	public 	suggestion	addExplicitAccessibility	Add 'private' accessibility modifier	84	84	private 	suggestion	addExplicitAccessibility	Add 'protected' accessibility modifier	84	84	protected 	end	4	13
+only eslint	s1356/src/script-indent_v90.vue:5:20	@stylistic/space-before-function-paren	missingSpace	Missing space before function parentheses.	fix	118	118	 	end	5	21
+only eslint	s1356/src/script-indent_v90.vue:9:23	@stylistic/space-before-function-paren	missingSpace	Missing space before function parentheses.	fix	175	175	 	end	9	24
+only veslint	s0918/src/script-indent_i103.vue:11:1	@typescript-eslint/no-unused-private-class-members	unusedPrivateClassMember	Private class member '#x' is defined but never used.	end	11	3
+only veslint	s0918/src/script-indent_i103.vue:11:3	@typescript-eslint/adjacent-overload-signatures	adjacentSignature	All  signatures should be adjacent.	end	15	2
+only veslint	s0918/src/script-indent_i103.vue:11:3	@typescript-eslint/naming-convention	doesNotMatchFormat	Class Method name `` must match one of the following formats: camelCase	end	11	3
+only veslint	s0918/src/script-indent_i103.vue:11:3	@typescript-eslint/no-dupe-class-members	unexpected	Duplicate name ''.	end	11	3
+only veslint	s0918/src/script-indent_i103.vue:13:1	@typescript-eslint/no-unused-vars	unusedVar	'value' is defined but never used.	end	13	6
+only veslint	s0918/src/script-indent_i103.vue:14:3	@typescript-eslint/no-empty-function	unexpected	Unexpected empty method ''.	suggestion	suggestComment	Add comment inside empty method ''.	114	115	 /* empty */ 	end	15	2
+only veslint	s0918/src/script-indent_i103.vue:17:1	@typescript-eslint/no-dupe-class-members	unexpected	Duplicate name 'get'.	end	17	4
+only veslint	s0918/src/script-indent_i103.vue:18:3	@typescript-eslint/adjacent-overload-signatures	adjacentSignature	All  signatures should be adjacent.	end	21	2
+only veslint	s0918/src/script-indent_i103.vue:18:3	@typescript-eslint/naming-convention	doesNotMatchFormat	Class Method name `` must match one of the following formats: camelCase	end	18	3
+only veslint	s0918/src/script-indent_i103.vue:18:3	@typescript-eslint/no-dupe-class-members	unexpected	Duplicate name ''.	end	18	3
+only veslint	s0918/src/script-indent_i103.vue:20:3	@typescript-eslint/no-empty-function	unexpected	Unexpected empty method ''.	suggestion	suggestComment	Add comment inside empty method ''.	136	137	 /* empty */ 	end	21	2
+only veslint	s0918/src/script-indent_i103.vue:22:1	@typescript-eslint/no-dupe-class-members	unexpected	Duplicate name 'static'.	end	22	7
+only veslint	s0918/src/script-indent_i103.vue:23:1	@typescript-eslint/no-dupe-class-members	unexpected	Duplicate name 'set'.	end	23	4
+only veslint	s0918/src/script-indent_i103.vue:24:1	@typescript-eslint/no-unused-private-class-members	unusedPrivateClassMember	Private class member '#y' is defined but never used.	end	24	3
+only veslint	s0918/src/script-indent_i103.vue:24:1	@typescript-eslint/prefer-readonly	preferReadonly	Member '#y' is never reassigned; mark it as `readonly`.	fix	150	150	readonly 	end	24	3
+only veslint	s0918/src/script-indent_i103.vue:24:3	@typescript-eslint/adjacent-overload-signatures	adjacentSignature	All  signatures should be adjacent.	end	28	2
+only veslint	s0918/src/script-indent_i103.vue:24:3	@typescript-eslint/naming-convention	doesNotMatchFormat	Class Method name `` must match one of the following formats: camelCase	end	24	3
+only veslint	s0918/src/script-indent_i103.vue:24:3	@typescript-eslint/no-dupe-class-members	unexpected	Duplicate name ''.	end	24	3
+only veslint	s0918/src/script-indent_i103.vue:26:1	@typescript-eslint/no-unused-vars	unusedVar	'value' is defined but never used.	end	26	6
+only veslint	s0918/src/script-indent_i103.vue:27:3	@typescript-eslint/no-empty-function	unexpected	Unexpected empty method ''.	suggestion	suggestComment	Add comment inside empty method ''.	164	165	 /* empty */ 	end	28	2
+only veslint	s0918/src/script-indent_i103.vue:39:1	@typescript-eslint/prefer-readonly	preferReadonly	Member '#inc' is never reassigned; mark it as `readonly`.	fix	207	207	readonly 	end	39	5
+only veslint	s0918/src/script-indent_i103.vue:39:5	@typescript-eslint/adjacent-overload-signatures	adjacentSignature	All  signatures should be adjacent.	end	53	2
+only veslint	s0918/src/script-indent_i103.vue:39:5	@typescript-eslint/naming-convention	doesNotMatchFormat	Class Method name `` must match one of the following formats: camelCase	end	39	5
+only veslint	s0918/src/script-indent_i103.vue:39:5	@typescript-eslint/no-dupe-class-members	unexpected	Duplicate name ''.	end	39	5
+only veslint	s0918/src/script-indent_i103.vue:54:1	@typescript-eslint/no-dupe-class-members	unexpected	Duplicate name 'static'.	end	54	7
+only veslint	s0918/src/script-indent_i103.vue:55:1	@typescript-eslint/prefer-readonly	preferReadonly	Member '#staticInc' is never reassigned; mark it as `readonly`.	fix	298	298	readonly 	end	55	11
+only veslint	s0918/src/script-indent_i103.vue:55:11	@typescript-eslint/adjacent-overload-signatures	adjacentSignature	All  signatures should be adjacent.	end	62	2
+only veslint	s0918/src/script-indent_i103.vue:55:11	@typescript-eslint/naming-convention	doesNotMatchFormat	Class Method name `` must match one of the following formats: camelCase	end	55	11
+only veslint	s0918/src/script-indent_i103.vue:55:11	@typescript-eslint/no-dupe-class-members	unexpected	Duplicate name ''.	end	55	11
+only veslint	s0918/src/script-indent_i103.vue:5:3	@typescript-eslint/naming-convention	doesNotMatchFormat	Class Method name `` must match one of the following formats: camelCase	end	5	3
+only veslint	s0918/src/script-indent_i103.vue:8:1	@typescript-eslint/no-empty-function	unexpected	Unexpected empty method ''.	suggestion	suggestComment	Add comment inside empty method ''.	93	94	 /* empty */ 	end	9	2
+only veslint	s0930/src/script-indent_i115.vue:10:1	@typescript-eslint/prefer-readonly	preferReadonly	Member 'g' is never reassigned; mark it as `readonly`.	fix	210	210	readonly 	end	10	19
+only veslint	s1042/src/script-indent_i233.vue:11:1	@typescript-eslint/no-unused-private-class-members	unusedPrivateClassMember	Private class member '#x' is defined but never used.	end	11	3
+only veslint	s1042/src/script-indent_i233.vue:11:3	@typescript-eslint/adjacent-overload-signatures	adjacentSignature	All  signatures should be adjacent.	end	15	2
+only veslint	s1042/src/script-indent_i233.vue:11:3	@typescript-eslint/naming-convention	doesNotMatchFormat	Class Method name `` must match one of the following formats: camelCase	end	11	3
+only veslint	s1042/src/script-indent_i233.vue:11:3	@typescript-eslint/no-dupe-class-members	unexpected	Duplicate name ''.	end	11	3
+only veslint	s1042/src/script-indent_i233.vue:13:1	@typescript-eslint/no-unused-vars	unusedVar	'value' is defined but never used.	end	13	6
+only veslint	s1042/src/script-indent_i233.vue:14:3	@typescript-eslint/no-empty-function	unexpected	Unexpected empty method ''.	suggestion	suggestComment	Add comment inside empty method ''.	111	112	 /* empty */ 	end	15	2
+only veslint	s1042/src/script-indent_i233.vue:17:1	@typescript-eslint/no-dupe-class-members	unexpected	Duplicate name 'get'.	end	17	4
+only veslint	s1042/src/script-indent_i233.vue:18:3	@typescript-eslint/adjacent-overload-signatures	adjacentSignature	All  signatures should be adjacent.	end	21	2
+only veslint	s1042/src/script-indent_i233.vue:18:3	@typescript-eslint/naming-convention	doesNotMatchFormat	Class Method name `` must match one of the following formats: camelCase	end	18	3
+only veslint	s1042/src/script-indent_i233.vue:18:3	@typescript-eslint/no-dupe-class-members	unexpected	Duplicate name ''.	end	18	3
+only veslint	s1042/src/script-indent_i233.vue:20:3	@typescript-eslint/no-empty-function	unexpected	Unexpected empty method ''.	suggestion	suggestComment	Add comment inside empty method ''.	133	134	 /* empty */ 	end	21	2
+only veslint	s1042/src/script-indent_i233.vue:22:1	@typescript-eslint/no-dupe-class-members	unexpected	Duplicate name 'static'.	end	22	7
+only veslint	s1042/src/script-indent_i233.vue:23:1	@typescript-eslint/no-dupe-class-members	unexpected	Duplicate name 'set'.	end	23	4
+only veslint	s1042/src/script-indent_i233.vue:24:1	@typescript-eslint/no-unused-private-class-members	unusedPrivateClassMember	Private class member '#y' is defined but never used.	end	24	3
+only veslint	s1042/src/script-indent_i233.vue:24:1	@typescript-eslint/prefer-readonly	preferReadonly	Member '#y' is never reassigned; mark it as `readonly`.	fix	147	147	readonly 	end	24	3
+only veslint	s1042/src/script-indent_i233.vue:24:3	@typescript-eslint/adjacent-overload-signatures	adjacentSignature	All  signatures should be adjacent.	end	28	2
+only veslint	s1042/src/script-indent_i233.vue:24:3	@typescript-eslint/naming-convention	doesNotMatchFormat	Class Method name `` must match one of the following formats: camelCase	end	24	3
+only veslint	s1042/src/script-indent_i233.vue:24:3	@typescript-eslint/no-dupe-class-members	unexpected	Duplicate name ''.	end	24	3
+only veslint	s1042/src/script-indent_i233.vue:26:1	@typescript-eslint/no-unused-vars	unusedVar	'value' is defined but never used.	end	26	6
+only veslint	s1042/src/script-indent_i233.vue:27:3	@typescript-eslint/no-empty-function	unexpected	Unexpected empty method ''.	suggestion	suggestComment	Add comment inside empty method ''.	161	162	 /* empty */ 	end	28	2
+only veslint	s1042/src/script-indent_i233.vue:39:1	@typescript-eslint/prefer-readonly	preferReadonly	Member '#inc' is never reassigned; mark it as `readonly`.	fix	204	204	readonly 	end	39	5
+only veslint	s1042/src/script-indent_i233.vue:39:5	@typescript-eslint/adjacent-overload-signatures	adjacentSignature	All  signatures should be adjacent.	end	53	2
+only veslint	s1042/src/script-indent_i233.vue:39:5	@typescript-eslint/naming-convention	doesNotMatchFormat	Class Method name `` must match one of the following formats: camelCase	end	39	5
+only veslint	s1042/src/script-indent_i233.vue:39:5	@typescript-eslint/no-dupe-class-members	unexpected	Duplicate name ''.	end	39	5
+only veslint	s1042/src/script-indent_i233.vue:54:1	@typescript-eslint/no-dupe-class-members	unexpected	Duplicate name 'static'.	end	54	7
+only veslint	s1042/src/script-indent_i233.vue:55:1	@typescript-eslint/prefer-readonly	preferReadonly	Member '#staticInc' is never reassigned; mark it as `readonly`.	fix	295	295	readonly 	end	55	11
+only veslint	s1042/src/script-indent_i233.vue:55:11	@typescript-eslint/adjacent-overload-signatures	adjacentSignature	All  signatures should be adjacent.	end	62	2
+only veslint	s1042/src/script-indent_i233.vue:55:11	@typescript-eslint/naming-convention	doesNotMatchFormat	Class Method name `` must match one of the following formats: camelCase	end	55	11
+only veslint	s1042/src/script-indent_i233.vue:55:11	@typescript-eslint/no-dupe-class-members	unexpected	Duplicate name ''.	end	55	11
+only veslint	s1042/src/script-indent_i233.vue:5:3	@typescript-eslint/naming-convention	doesNotMatchFormat	Class Method name `` must match one of the following formats: camelCase	end	5	3
+only veslint	s1042/src/script-indent_i233.vue:8:1	@typescript-eslint/no-empty-function	unexpected	Unexpected empty method ''.	suggestion	suggestComment	Add comment inside empty method ''.	90	91	 /* empty */ 	end	9	2
+only veslint	s1055/src/script-indent_i247.vue:102:2	@typescript-eslint/naming-convention	doesNotMatchFormat	Class Method name `` must match one of the following formats: camelCase	end	102	2
+only veslint	s1055/src/script-indent_i247.vue:114:1	@typescript-eslint/no-dupe-class-members	unexpected	Duplicate name 'get'.	end	114	4
+only veslint	s1055/src/script-indent_i247.vue:115:2	@typescript-eslint/adjacent-overload-signatures	adjacentSignature	All  signatures should be adjacent.	end	120	2
+only veslint	s1055/src/script-indent_i247.vue:115:2	@typescript-eslint/naming-convention	doesNotMatchFormat	Class Method name `` must match one of the following formats: camelCase	end	115	2
+only veslint	s1055/src/script-indent_i247.vue:115:2	@typescript-eslint/no-dupe-class-members	unexpected	Duplicate name ''.	end	115	2
+only veslint	s1055/src/script-indent_i247.vue:12:7	@typescript-eslint/naming-convention	doesNotMatchFormat	Class Method name `` must match one of the following formats: camelCase	end	12	7
+only veslint	s1055/src/script-indent_i247.vue:152:6	@typescript-eslint/naming-convention	doesNotMatchFormat	Class Method name `` must match one of the following formats: camelCase	end	152	6
+only veslint	s1055/src/script-indent_i247.vue:15:1	@typescript-eslint/no-empty-function	unexpected	Unexpected empty method ''.	suggestion	suggestComment	Add comment inside empty method ''.	102	103	 /* empty */ 	end	16	2
+only veslint	s1055/src/script-indent_i247.vue:201:5	@typescript-eslint/no-dupe-class-members	unexpected	Duplicate name 'end'.	end	201	8
+only veslint	s1055/src/script-indent_i247.vue:32:12	@typescript-eslint/naming-convention	doesNotMatchFormat	Class Method name `` must match one of the following formats: camelCase	end	32	12
+only veslint	s1055/src/script-indent_i247.vue:55:12	@typescript-eslint/naming-convention	doesNotMatchFormat	Class Method name `` must match one of the following formats: camelCase	end	55	12
+only veslint	s1055/src/script-indent_i247.vue:75:6	@typescript-eslint/adjacent-overload-signatures	adjacentSignature	All  signatures should be adjacent.	end	85	2
+only veslint	s1055/src/script-indent_i247.vue:75:6	@typescript-eslint/naming-convention	doesNotMatchFormat	Class Method name `` must match one of the following formats: camelCase	end	75	6
+only veslint	s1055/src/script-indent_i247.vue:75:6	@typescript-eslint/no-dupe-class-members	unexpected	Duplicate name ''.	end	75	6
+only veslint	s1106/src/script-indent_i70.vue:15:4	@typescript-eslint/adjacent-overload-signatures	adjacentSignature	All  signatures should be adjacent.	end	20	2
+only veslint	s1106/src/script-indent_i70.vue:15:4	@typescript-eslint/naming-convention	doesNotMatchFormat	Class Method name `` must match one of the following formats: camelCase	end	15	4
+only veslint	s1106/src/script-indent_i70.vue:15:4	@typescript-eslint/no-dupe-class-members	unexpected	Duplicate name ''.	end	15	4
+only veslint	s1106/src/script-indent_i70.vue:23:2	@typescript-eslint/adjacent-overload-signatures	adjacentSignature	All  signatures should be adjacent.	end	28	2
+only veslint	s1106/src/script-indent_i70.vue:23:2	@typescript-eslint/naming-convention	doesNotMatchFormat	Class Method name `` must match one of the following formats: camelCase	end	23	2
+only veslint	s1106/src/script-indent_i70.vue:23:2	@typescript-eslint/no-dupe-class-members	unexpected	Duplicate name ''.	end	23	2
+only veslint	s1106/src/script-indent_i70.vue:29:1	@typescript-eslint/no-dupe-class-members	unexpected	Duplicate name 'get'.	end	29	4
+only veslint	s1106/src/script-indent_i70.vue:32:2	@typescript-eslint/adjacent-overload-signatures	adjacentSignature	All  signatures should be adjacent.	end	37	2
+only veslint	s1106/src/script-indent_i70.vue:32:2	@typescript-eslint/naming-convention	doesNotMatchFormat	Class Method name `` must match one of the following formats: camelCase	end	32	2
+only veslint	s1106/src/script-indent_i70.vue:32:2	@typescript-eslint/no-dupe-class-members	unexpected	Duplicate name ''.	end	32	2
+only veslint	s1106/src/script-indent_i70.vue:4:4	@typescript-eslint/naming-convention	doesNotMatchFormat	Class Method name `` must match one of the following formats: camelCase	end	4	4
+only veslint	s1116/src/script-indent_i80.vue:4:2	@typescript-eslint/naming-convention	doesNotMatchFormat	Class Method name `` must match one of the following formats: camelCase	end	4	2
+only veslint	s1123/src/script-indent_i87.vue:7:18	@typescript-eslint/naming-convention	doesNotMatchFormat	Class Method name `` must match one of the following formats: camelCase	end	7	18
+only veslint	s1142/src/script-indent_v108.vue:11:3	@typescript-eslint/no-unused-private-class-members	unusedPrivateClassMember	Private class member '#x' is defined but never used.	end	11	5
+only veslint	s1142/src/script-indent_v108.vue:11:5	@typescript-eslint/adjacent-overload-signatures	adjacentSignature	All  signatures should be adjacent.	end	15	4
+only veslint	s1142/src/script-indent_v108.vue:11:5	@typescript-eslint/naming-convention	doesNotMatchFormat	Class Method name `` must match one of the following formats: camelCase	end	11	5
+only veslint	s1142/src/script-indent_v108.vue:11:5	@typescript-eslint/no-dupe-class-members	unexpected	Duplicate name ''.	end	11	5
+only veslint	s1142/src/script-indent_v108.vue:13:7	@typescript-eslint/no-unused-vars	unusedVar	'value' is defined but never used.	end	13	12
+only veslint	s1142/src/script-indent_v108.vue:14:7	@typescript-eslint/no-empty-function	unexpected	Unexpected empty method ''.	suggestion	suggestComment	Add comment inside empty method ''.	148	151	 /* empty */ 	end	15	4
+only veslint	s1142/src/script-indent_v108.vue:17:3	@typescript-eslint/no-dupe-class-members	unexpected	Duplicate name 'get'.	end	17	6
+only veslint	s1142/src/script-indent_v108.vue:18:5	@typescript-eslint/adjacent-overload-signatures	adjacentSignature	All  signatures should be adjacent.	end	21	4
+only veslint	s1142/src/script-indent_v108.vue:18:5	@typescript-eslint/naming-convention	doesNotMatchFormat	Class Method name `` must match one of the following formats: camelCase	end	18	5
+only veslint	s1142/src/script-indent_v108.vue:18:5	@typescript-eslint/no-dupe-class-members	unexpected	Duplicate name ''.	end	18	5
+only veslint	s1142/src/script-indent_v108.vue:20:7	@typescript-eslint/no-empty-function	unexpected	Unexpected empty method ''.	suggestion	suggestComment	Add comment inside empty method ''.	186	189	 /* empty */ 	end	21	4
+only veslint	s1142/src/script-indent_v108.vue:22:3	@typescript-eslint/no-dupe-class-members	unexpected	Duplicate name 'static'.	end	22	9
+only veslint	s1142/src/script-indent_v108.vue:23:3	@typescript-eslint/no-dupe-class-members	unexpected	Duplicate name 'set'.	end	23	6
+only veslint	s1142/src/script-indent_v108.vue:24:3	@typescript-eslint/no-unused-private-class-members	unusedPrivateClassMember	Private class member '#y' is defined but never used.	end	24	5
+only veslint	s1142/src/script-indent_v108.vue:24:3	@typescript-eslint/prefer-readonly	preferReadonly	Member '#y' is never reassigned; mark it as `readonly`.	fix	208	208	readonly 	end	24	5
+only veslint	s1142/src/script-indent_v108.vue:24:5	@typescript-eslint/adjacent-overload-signatures	adjacentSignature	All  signatures should be adjacent.	end	28	4
+only veslint	s1142/src/script-indent_v108.vue:24:5	@typescript-eslint/naming-convention	doesNotMatchFormat	Class Method name `` must match one of the following formats: camelCase	end	24	5
+only veslint	s1142/src/script-indent_v108.vue:24:5	@typescript-eslint/no-dupe-class-members	unexpected	Duplicate name ''.	end	24	5
+only veslint	s1142/src/script-indent_v108.vue:26:7	@typescript-eslint/no-unused-vars	unusedVar	'value' is defined but never used.	end	26	12
+only veslint	s1142/src/script-indent_v108.vue:27:7	@typescript-eslint/no-empty-function	unexpected	Unexpected empty method ''.	suggestion	suggestComment	Add comment inside empty method ''.	236	239	 /* empty */ 	end	28	4
+only veslint	s1142/src/script-indent_v108.vue:39:3	@typescript-eslint/prefer-readonly	preferReadonly	Member '#inc' is never reassigned; mark it as `readonly`.	fix	331	331	readonly 	end	39	7
+only veslint	s1142/src/script-indent_v108.vue:39:7	@typescript-eslint/adjacent-overload-signatures	adjacentSignature	All  signatures should be adjacent.	end	53	4
+only veslint	s1142/src/script-indent_v108.vue:39:7	@typescript-eslint/naming-convention	doesNotMatchFormat	Class Method name `` must match one of the following formats: camelCase	end	39	7
+only veslint	s1142/src/script-indent_v108.vue:39:7	@typescript-eslint/no-dupe-class-members	unexpected	Duplicate name ''.	end	39	7
+only veslint	s1142/src/script-indent_v108.vue:54:3	@typescript-eslint/no-dupe-class-members	unexpected	Duplicate name 'static'.	end	54	9
+only veslint	s1142/src/script-indent_v108.vue:55:13	@typescript-eslint/adjacent-overload-signatures	adjacentSignature	All  signatures should be adjacent.	end	62	4
+only veslint	s1142/src/script-indent_v108.vue:55:13	@typescript-eslint/naming-convention	doesNotMatchFormat	Class Method name `` must match one of the following formats: camelCase	end	55	13
+only veslint	s1142/src/script-indent_v108.vue:55:13	@typescript-eslint/no-dupe-class-members	unexpected	Duplicate name ''.	end	55	13
+only veslint	s1142/src/script-indent_v108.vue:55:3	@typescript-eslint/prefer-readonly	preferReadonly	Member '#staticInc' is never reassigned; mark it as `readonly`.	fix	494	494	readonly 	end	55	13
+only veslint	s1142/src/script-indent_v108.vue:5:5	@typescript-eslint/naming-convention	doesNotMatchFormat	Class Method name `` must match one of the following formats: camelCase	end	5	5
+only veslint	s1142/src/script-indent_v108.vue:8:3	@typescript-eslint/no-empty-function	unexpected	Unexpected empty method ''.	suggestion	suggestComment	Add comment inside empty method ''.	107	110	 /* empty */ 	end	9	4
+only veslint	s1155/src/script-indent_v120.vue:10:3	@typescript-eslint/prefer-readonly	preferReadonly	Member 'g' is never reassigned; mark it as `readonly`.	fix	224	224	readonly 	end	10	21
+only veslint	s1271/src/script-indent_v244.vue:11:3	@typescript-eslint/no-unused-private-class-members	unusedPrivateClassMember	Private class member '#x' is defined but never used.	end	11	5
+only veslint	s1271/src/script-indent_v244.vue:11:5	@typescript-eslint/adjacent-overload-signatures	adjacentSignature	All  signatures should be adjacent.	end	15	4
+only veslint	s1271/src/script-indent_v244.vue:11:5	@typescript-eslint/naming-convention	doesNotMatchFormat	Class Method name `` must match one of the following formats: camelCase	end	11	5
+only veslint	s1271/src/script-indent_v244.vue:11:5	@typescript-eslint/no-dupe-class-members	unexpected	Duplicate name ''.	end	11	5
+only veslint	s1271/src/script-indent_v244.vue:13:7	@typescript-eslint/no-unused-vars	unusedVar	'value' is defined but never used.	end	13	12
+only veslint	s1271/src/script-indent_v244.vue:14:7	@typescript-eslint/no-empty-function	unexpected	Unexpected empty method ''.	suggestion	suggestComment	Add comment inside empty method ''.	145	148	 /* empty */ 	end	15	4
+only veslint	s1271/src/script-indent_v244.vue:17:3	@typescript-eslint/no-dupe-class-members	unexpected	Duplicate name 'get'.	end	17	6
+only veslint	s1271/src/script-indent_v244.vue:18:5	@typescript-eslint/adjacent-overload-signatures	adjacentSignature	All  signatures should be adjacent.	end	21	4
+only veslint	s1271/src/script-indent_v244.vue:18:5	@typescript-eslint/naming-convention	doesNotMatchFormat	Class Method name `` must match one of the following formats: camelCase	end	18	5
+only veslint	s1271/src/script-indent_v244.vue:18:5	@typescript-eslint/no-dupe-class-members	unexpected	Duplicate name ''.	end	18	5
+only veslint	s1271/src/script-indent_v244.vue:20:7	@typescript-eslint/no-empty-function	unexpected	Unexpected empty method ''.	suggestion	suggestComment	Add comment inside empty method ''.	183	186	 /* empty */ 	end	21	4
+only veslint	s1271/src/script-indent_v244.vue:22:3	@typescript-eslint/no-dupe-class-members	unexpected	Duplicate name 'static'.	end	22	9
+only veslint	s1271/src/script-indent_v244.vue:23:3	@typescript-eslint/no-dupe-class-members	unexpected	Duplicate name 'set'.	end	23	6
+only veslint	s1271/src/script-indent_v244.vue:24:3	@typescript-eslint/no-unused-private-class-members	unusedPrivateClassMember	Private class member '#y' is defined but never used.	end	24	5
+only veslint	s1271/src/script-indent_v244.vue:24:3	@typescript-eslint/prefer-readonly	preferReadonly	Member '#y' is never reassigned; mark it as `readonly`.	fix	205	205	readonly 	end	24	5
+only veslint	s1271/src/script-indent_v244.vue:24:5	@typescript-eslint/adjacent-overload-signatures	adjacentSignature	All  signatures should be adjacent.	end	28	4
+only veslint	s1271/src/script-indent_v244.vue:24:5	@typescript-eslint/naming-convention	doesNotMatchFormat	Class Method name `` must match one of the following formats: camelCase	end	24	5
+only veslint	s1271/src/script-indent_v244.vue:24:5	@typescript-eslint/no-dupe-class-members	unexpected	Duplicate name ''.	end	24	5
+only veslint	s1271/src/script-indent_v244.vue:26:7	@typescript-eslint/no-unused-vars	unusedVar	'value' is defined but never used.	end	26	12
+only veslint	s1271/src/script-indent_v244.vue:27:7	@typescript-eslint/no-empty-function	unexpected	Unexpected empty method ''.	suggestion	suggestComment	Add comment inside empty method ''.	233	236	 /* empty */ 	end	28	4
+only veslint	s1271/src/script-indent_v244.vue:39:3	@typescript-eslint/prefer-readonly	preferReadonly	Member '#inc' is never reassigned; mark it as `readonly`.	fix	328	328	readonly 	end	39	7
+only veslint	s1271/src/script-indent_v244.vue:39:7	@typescript-eslint/adjacent-overload-signatures	adjacentSignature	All  signatures should be adjacent.	end	53	4
+only veslint	s1271/src/script-indent_v244.vue:39:7	@typescript-eslint/naming-convention	doesNotMatchFormat	Class Method name `` must match one of the following formats: camelCase	end	39	7
+only veslint	s1271/src/script-indent_v244.vue:39:7	@typescript-eslint/no-dupe-class-members	unexpected	Duplicate name ''.	end	39	7
+only veslint	s1271/src/script-indent_v244.vue:54:3	@typescript-eslint/no-dupe-class-members	unexpected	Duplicate name 'static'.	end	54	9
+only veslint	s1271/src/script-indent_v244.vue:55:13	@typescript-eslint/adjacent-overload-signatures	adjacentSignature	All  signatures should be adjacent.	end	62	4
+only veslint	s1271/src/script-indent_v244.vue:55:13	@typescript-eslint/naming-convention	doesNotMatchFormat	Class Method name `` must match one of the following formats: camelCase	end	55	13
+only veslint	s1271/src/script-indent_v244.vue:55:13	@typescript-eslint/no-dupe-class-members	unexpected	Duplicate name ''.	end	55	13
+only veslint	s1271/src/script-indent_v244.vue:55:3	@typescript-eslint/prefer-readonly	preferReadonly	Member '#staticInc' is never reassigned; mark it as `readonly`.	fix	491	491	readonly 	end	55	13
+only veslint	s1271/src/script-indent_v244.vue:5:5	@typescript-eslint/naming-convention	doesNotMatchFormat	Class Method name `` must match one of the following formats: camelCase	end	5	5
+only veslint	s1271/src/script-indent_v244.vue:8:3	@typescript-eslint/no-empty-function	unexpected	Unexpected empty method ''.	suggestion	suggestComment	Add comment inside empty method ''.	104	107	 /* empty */ 	end	9	4
+only veslint	s1284/src/script-indent_v258.vue:102:4	@typescript-eslint/naming-convention	doesNotMatchFormat	Class Method name `` must match one of the following formats: camelCase	end	102	4
+only veslint	s1284/src/script-indent_v258.vue:114:3	@typescript-eslint/no-dupe-class-members	unexpected	Duplicate name 'get'.	end	114	6
+only veslint	s1284/src/script-indent_v258.vue:115:4	@typescript-eslint/adjacent-overload-signatures	adjacentSignature	All  signatures should be adjacent.	end	120	4
+only veslint	s1284/src/script-indent_v258.vue:115:4	@typescript-eslint/naming-convention	doesNotMatchFormat	Class Method name `` must match one of the following formats: camelCase	end	115	4
+only veslint	s1284/src/script-indent_v258.vue:115:4	@typescript-eslint/no-dupe-class-members	unexpected	Duplicate name ''.	end	115	4
+only veslint	s1284/src/script-indent_v258.vue:12:9	@typescript-eslint/naming-convention	doesNotMatchFormat	Class Method name `` must match one of the following formats: camelCase	end	12	9
+only veslint	s1284/src/script-indent_v258.vue:152:8	@typescript-eslint/naming-convention	doesNotMatchFormat	Class Method name `` must match one of the following formats: camelCase	end	152	8
+only veslint	s1284/src/script-indent_v258.vue:15:3	@typescript-eslint/no-empty-function	unexpected	Unexpected empty method ''.	suggestion	suggestComment	Add comment inside empty method ''.	136	139	 /* empty */ 	end	16	4
+only veslint	s1284/src/script-indent_v258.vue:201:7	@typescript-eslint/no-dupe-class-members	unexpected	Duplicate name 'end'.	end	201	10
+only veslint	s1284/src/script-indent_v258.vue:32:14	@typescript-eslint/naming-convention	doesNotMatchFormat	Class Method name `` must match one of the following formats: camelCase	end	32	14
+only veslint	s1284/src/script-indent_v258.vue:55:14	@typescript-eslint/naming-convention	doesNotMatchFormat	Class Method name `` must match one of the following formats: camelCase	end	55	14
+only veslint	s1284/src/script-indent_v258.vue:75:8	@typescript-eslint/adjacent-overload-signatures	adjacentSignature	All  signatures should be adjacent.	end	85	4
+only veslint	s1284/src/script-indent_v258.vue:75:8	@typescript-eslint/naming-convention	doesNotMatchFormat	Class Method name `` must match one of the following formats: camelCase	end	75	8
+only veslint	s1284/src/script-indent_v258.vue:75:8	@typescript-eslint/no-dupe-class-members	unexpected	Duplicate name ''.	end	75	8
+only veslint	s1338/src/script-indent_v72.vue:15:6	@typescript-eslint/adjacent-overload-signatures	adjacentSignature	All  signatures should be adjacent.	end	20	4
+only veslint	s1338/src/script-indent_v72.vue:15:6	@typescript-eslint/naming-convention	doesNotMatchFormat	Class Method name `` must match one of the following formats: camelCase	end	15	6
+only veslint	s1338/src/script-indent_v72.vue:15:6	@typescript-eslint/no-dupe-class-members	unexpected	Duplicate name ''.	end	15	6
+only veslint	s1338/src/script-indent_v72.vue:23:4	@typescript-eslint/adjacent-overload-signatures	adjacentSignature	All  signatures should be adjacent.	end	28	4
+only veslint	s1338/src/script-indent_v72.vue:23:4	@typescript-eslint/naming-convention	doesNotMatchFormat	Class Method name `` must match one of the following formats: camelCase	end	23	4
+only veslint	s1338/src/script-indent_v72.vue:23:4	@typescript-eslint/no-dupe-class-members	unexpected	Duplicate name ''.	end	23	4
+only veslint	s1338/src/script-indent_v72.vue:29:3	@typescript-eslint/no-dupe-class-members	unexpected	Duplicate name 'get'.	end	29	6
+only veslint	s1338/src/script-indent_v72.vue:32:4	@typescript-eslint/adjacent-overload-signatures	adjacentSignature	All  signatures should be adjacent.	end	37	4
+only veslint	s1338/src/script-indent_v72.vue:32:4	@typescript-eslint/naming-convention	doesNotMatchFormat	Class Method name `` must match one of the following formats: camelCase	end	32	4
+only veslint	s1338/src/script-indent_v72.vue:32:4	@typescript-eslint/no-dupe-class-members	unexpected	Duplicate name ''.	end	32	4
+only veslint	s1338/src/script-indent_v72.vue:4:6	@typescript-eslint/naming-convention	doesNotMatchFormat	Class Method name `` must match one of the following formats: camelCase	end	4	6
+only veslint	s1348/src/script-indent_v82.vue:4:4	@typescript-eslint/naming-convention	doesNotMatchFormat	Class Method name `` must match one of the following formats: camelCase	end	4	4
+only veslint	s1356/src/script-indent_v90.vue:7:20	@typescript-eslint/naming-convention	doesNotMatchFormat	Class Method name `` must match one of the following formats: camelCase	end	7	20
+#
+# The same difference on a .ts file with the code of the script (tree-sitter's reading of code
+# written one token per line, which has no syntax error; and the next group's types).
+only eslint	g00/src/no-use-computed-property-like-method_i10.vue:11:15	@typescript-eslint/no-unsafe-return	unsafeReturn	Unsafe return of a value of type `any`.	end	11	25
+only eslint	g07/src/no-use-computed-property-like-method_v13.vue:11:15	@typescript-eslint/no-unsafe-return	unsafeReturn	Unsafe return of a value of type `any`.	end	11	25
+only eslint	g15/src/no-use-computed-property-like-method_i9.vue:10:15	@typescript-eslint/no-unsafe-return	unsafeReturn	Unsafe return of a value of type `any`.	end	10	25
+only eslint	s0977/src/script-indent_i165.vue:5:1	@typescript-eslint/method-signature-style	errorMethod	Shorthand method signature is forbidden. Use a function property instead.	fix	74	101	fn: (\narg\n:\nA\n) => R\n|\nnull;	end	15	2
+only eslint	s1203/src/script-indent_v171.vue:5:3	@typescript-eslint/method-signature-style	errorMethod	Shorthand method signature is forbidden. Use a function property instead.	fix	76	151	fn: (\n      arg\n        :\n        A\n    ) => R\n    |\n    null;	end	15	4
+only veslint	g00/src/no-use-computed-property-like-method_i10.vue:11:15	@typescript-eslint/no-unsafe-return	unsafeReturn	Unsafe return of a value of type error.	end	11	25
+only veslint	g06/src/script-indent_v212.vue:4:3	no-import-assign	readonly	'foo' is read-only.	end	4	6
+only veslint	g07/src/no-use-computed-property-like-method_v13.vue:11:15	@typescript-eslint/no-unsafe-return	unsafeReturn	Unsafe return of a value of type error.	end	11	25
+only veslint	g07/src/script-indent_i111.vue:14:1	@typescript-eslint/no-use-before-define	noUseBeforeDefine	'Bar' was used before it was defined.	end	14	4
+only veslint	g07/src/script-indent_i111.vue:16:2	@stylistic/semi	missingSemi	Missing semicolon.	fix	127	127	;	end	17	1
+only veslint	g07/src/script-indent_i111.vue:17:1	@typescript-eslint/no-unused-expressions	unusedExpression	Expected an assignment or function call and instead saw an expression.	end	17	5
+only veslint	g07/src/script-indent_i111.vue:17:5	@stylistic/semi	missingSemi	Missing semicolon.	fix	132	132	;	end	18	1
+only veslint	g07/src/script-indent_i111.vue:18:1	@typescript-eslint/no-unused-expressions	unusedExpression	Expected an assignment or function call and instead saw an expression.	end	18	7
+only veslint	g08/src/no-undef-properties_v21.vue:3:22	@typescript-eslint/prefer-readonly-parameter-types	shouldBeReadonly	Parameter should be a read only type.	end	3	34
+only veslint	g08/src/script-indent_v116.vue:14:3	@typescript-eslint/no-use-before-define	noUseBeforeDefine	'Bar' was used before it was defined.	end	14	6
+only veslint	g08/src/script-indent_v116.vue:16:2	@stylistic/semi	missingSemi	Missing semicolon.	fix	147	147	;	end	17	1
+only veslint	g08/src/script-indent_v116.vue:17:3	@typescript-eslint/no-unused-expressions	unusedExpression	Expected an assignment or function call and instead saw an expression.	end	17	7
+only veslint	g08/src/script-indent_v116.vue:17:7	@stylistic/semi	missingSemi	Missing semicolon.	fix	154	154	;	end	18	1
+only veslint	g08/src/script-indent_v116.vue:18:3	@typescript-eslint/no-unused-expressions	unusedExpression	Expected an assignment or function call and instead saw an expression.	end	18	9
+only veslint	g10/src/script-indent_i202.vue:4:1	no-import-assign	readonly	'foo' is read-only.	end	4	4
+only veslint	g11/src/script-indent_i232.vue:3:10	@typescript-eslint/no-use-before-define	noUseBeforeDefine	'a' was used before it was defined.	end	3	11
+only veslint	g11/src/script-indent_i232.vue:3:13	@stylistic/semi	missingSemi	Missing semicolon.	fix	70	70	;	end	4	1
+only veslint	g11/src/script-indent_i232.vue:4:1	@typescript-eslint/no-unused-expressions	unusedExpression	Expected an assignment or function call and instead saw an expression.	end	4	5
+only veslint	g11/src/script-indent_i232.vue:4:5	@stylistic/semi	missingSemi	Missing semicolon.	fix	75	75	;	end	5	1
+only veslint	g11/src/script-indent_i232.vue:5:1	@typescript-eslint/no-unused-expressions	unusedExpression	Expected an assignment or function call and instead saw an expression.	end	6	2
+only veslint	g11/src/script-indent_i232.vue:7:10	@typescript-eslint/no-use-before-define	noUseBeforeDefine	'b' was used before it was defined.	end	7	11
+only veslint	g11/src/script-indent_i232.vue:7:13	@stylistic/semi	missingSemi	Missing semicolon.	fix	96	96	;	end	8	1
+only veslint	g11/src/script-indent_i232.vue:8:1	@typescript-eslint/no-unused-expressions	unusedExpression	Expected an assignment or function call and instead saw an expression.	end	8	5
+only veslint	g11/src/script-indent_i232.vue:8:5	@stylistic/semi	missingSemi	Missing semicolon.	fix	101	101	;	end	9	1
+only veslint	g11/src/script-indent_i232.vue:9:1	@typescript-eslint/no-unused-expressions	unusedExpression	Expected an assignment or function call and instead saw an expression.	end	9	6
+only veslint	g13/src/script-indent_i36.vue:13:1	@typescript-eslint/no-use-before-define	noUseBeforeDefine	'Bar' was used before it was defined.	end	13	4
+only veslint	g13/src/script-indent_i36.vue:14:2	@stylistic/semi	missingSemi	Missing semicolon.	fix	111	111	;	end	15	1
+only veslint	g13/src/script-indent_i36.vue:15:1	@typescript-eslint/no-unused-expressions	unusedExpression	Expected an assignment or function call and instead saw an expression.	end	15	5
+only veslint	g13/src/script-indent_i36.vue:15:5	@stylistic/semi	missingSemi	Missing semicolon.	fix	116	116	;	end	16	1
+only veslint	g13/src/script-indent_i36.vue:16:1	@typescript-eslint/no-unused-expressions	unusedExpression	Expected an assignment or function call and instead saw an expression.	end	16	7
+only veslint	g14/src/no-undef-properties_i16.vue:3:22	@typescript-eslint/prefer-readonly-parameter-types	shouldBeReadonly	Parameter should be a read only type.	end	3	35
+only veslint	g14/src/script-indent_v36.vue:13:3	@typescript-eslint/no-use-before-define	noUseBeforeDefine	'Bar' was used before it was defined.	end	13	6
+only veslint	g14/src/script-indent_v36.vue:14:2	@stylistic/semi	missingSemi	Missing semicolon.	fix	123	123	;	end	15	1
+only veslint	g14/src/script-indent_v36.vue:15:3	@typescript-eslint/no-unused-expressions	unusedExpression	Expected an assignment or function call and instead saw an expression.	end	15	7
+only veslint	g14/src/script-indent_v36.vue:15:7	@stylistic/semi	missingSemi	Missing semicolon.	fix	130	130	;	end	16	1
+only veslint	g14/src/script-indent_v36.vue:16:3	@typescript-eslint/no-unused-expressions	unusedExpression	Expected an assignment or function call and instead saw an expression.	end	16	9
+only veslint	g15/src/no-use-computed-property-like-method_i9.vue:10:15	@typescript-eslint/no-unsafe-return	unsafeReturn	Unsafe return of a value of type error.	end	10	25
+only veslint	g15/src/script-indent_v243.vue:3:10	@typescript-eslint/no-use-before-define	noUseBeforeDefine	'a' was used before it was defined.	end	3	11
+only veslint	g15/src/script-indent_v243.vue:3:13	@stylistic/semi	missingSemi	Missing semicolon.	fix	70	70	;	end	4	1
+only veslint	g15/src/script-indent_v243.vue:4:3	@typescript-eslint/no-unused-expressions	unusedExpression	Expected an assignment or function call and instead saw an expression.	end	4	7
+only veslint	g15/src/script-indent_v243.vue:4:7	@stylistic/semi	missingSemi	Missing semicolon.	fix	77	77	;	end	5	1
+only veslint	g15/src/script-indent_v243.vue:5:3	@typescript-eslint/no-unused-expressions	unusedExpression	Expected an assignment or function call and instead saw an expression.	end	6	2
+only veslint	g15/src/script-indent_v243.vue:7:10	@typescript-eslint/no-use-before-define	noUseBeforeDefine	'b' was used before it was defined.	end	7	11
+only veslint	g15/src/script-indent_v243.vue:7:13	@stylistic/semi	missingSemi	Missing semicolon.	fix	100	100	;	end	8	1
+only veslint	g15/src/script-indent_v243.vue:8:3	@typescript-eslint/no-unused-expressions	unusedExpression	Expected an assignment or function call and instead saw an expression.	end	8	7
+only veslint	g15/src/script-indent_v243.vue:8:7	@stylistic/semi	missingSemi	Missing semicolon.	fix	107	107	;	end	9	1
+only veslint	g15/src/script-indent_v243.vue:9:3	@typescript-eslint/no-unused-expressions	unusedExpression	Expected an assignment or function call and instead saw an expression.	end	9	8
+only veslint	s0977/src/script-indent_i165.vue:5:1	@stylistic/quote-props	unquotedPropertyFound	Unquoted property 'fn' found.	fix	74	76	"fn"	end	5	3
+only veslint	s0977/src/script-indent_i165.vue:5:3	@stylistic/member-delimiter-style	expectedSemi	Expected a semicolon.	fix	76	76	;	end	5	3
+only veslint	s0977/src/script-indent_i165.vue:6:1	@typescript-eslint/member-ordering	incorrectGroupOrder	Member call should be declared before all field definitions.	end	15	2
+only veslint	s0984/src/script-indent_i172.vue:8:1	@typescript-eslint/prefer-readonly	preferReadonly	Member '#y' is never reassigned; mark it as `readonly`.	fix	96	96	readonly 	end	8	3
+only veslint	s1129/src/script-indent_i96.vue:8:1	@typescript-eslint/prefer-readonly	preferReadonly	Member '#y' is never reassigned; mark it as `readonly`.	fix	99	99	readonly 	end	8	3
+only veslint	s1136/src/script-indent_v101.vue:8:3	@typescript-eslint/prefer-readonly	preferReadonly	Member '#y' is never reassigned; mark it as `readonly`.	fix	113	113	readonly 	end	8	5
+only veslint	s1203/src/script-indent_v171.vue:5:3	@stylistic/quote-props	unquotedPropertyFound	Unquoted property 'fn' found.	fix	76	78	"fn"	end	5	5
+only veslint	s1203/src/script-indent_v171.vue:5:5	@stylistic/member-delimiter-style	expectedSemi	Expected a semicolon.	fix	78	78	;	end	5	5
+only veslint	s1203/src/script-indent_v171.vue:6:5	@typescript-eslint/member-ordering	incorrectGroupOrder	Member call should be declared before all field definitions.	end	15	4
+only veslint	s1210/src/script-indent_v179.vue:8:3	@typescript-eslint/prefer-readonly	preferReadonly	Member '#y' is never reassigned; mark it as `readonly`.	fix	110	110	readonly 	end	8	5
+#
+# Types the two compilers give differently, and that depend on the program and on the order of the
+# checker's queries: the `this` of a method of an object literal whose property does not exist is
+# `any` for TypeScript 6.0.3 and the error type for tsgo 7.1 here (both agree in other programs),
+# and typeToString shortens an intersection to `& { ...; }` or to `& ...`.
+only eslint	g00/src/no-deprecated-dollar-scopedslots-api_i4.vue:8:13	@typescript-eslint/no-unsafe-return	unsafeReturn	Unsafe return of a value of type `any`.	end	8	32
+only eslint	g00/src/no-deprecated-dollar-scopedslots-api_i4.vue:8:20	@typescript-eslint/no-unsafe-call	unsafeCall	Unsafe call of an `any` typed value.	end	8	25
+only eslint	g00/src/no-deprecated-dollar-scopedslots-api_i4.vue:8:22	@typescript-eslint/no-unsafe-member-access	unsafeMemberExpression	Unsafe member access .foo on an `any` value.	end	8	25
+only eslint	g02/src/no-deprecated-dollar-scopedslots-api_i3.vue:9:13	@typescript-eslint/no-unsafe-return	unsafeReturn	Unsafe return of a value of type `any`.	end	9	35
+only eslint	g02/src/no-deprecated-dollar-scopedslots-api_i3.vue:9:20	@typescript-eslint/no-unsafe-call	unsafeCall	Unsafe call of an `any` typed value.	end	9	28
+only eslint	g02/src/no-deprecated-dollar-scopedslots-api_i3.vue:9:25	@typescript-eslint/no-unsafe-member-access	unsafeMemberExpression	Unsafe member access .foo on an `any` value.	end	9	28
+only eslint	g02/src/no-undef-components_i7.vue:4:21	@typescript-eslint/no-unsafe-argument	unsafeArgument	Unsafe argument of type error typed assigned to a parameter of type `(ComponentOptionsBase<{}, {}, {}, {}, {}, ComponentOptionsMixin, ComponentOptionsMixin, {}, string, {}, {}, string, {}, {}, {}, string, ComponentProvideOptions> & { ...; }) | undefined`.	end	4	28
+only eslint	g03/src/no-deprecated-dollar-listeners-api_i3.vue:10:15	@typescript-eslint/no-unsafe-return	unsafeReturn	Unsafe return of a value of type `any`.	end	10	26
+only eslint	g03/src/valid-define-options_v4.vue:5:21	@typescript-eslint/no-unsafe-argument	unsafeArgument	Unsafe argument of type error typed assigned to a parameter of type `(ComponentOptionsBase<{}, {}, {}, {}, {}, ComponentOptionsMixin, ComponentOptionsMixin, {}, string, {}, {}, string, {}, {}, {}, string, ComponentProvideOptions> & { ...; }) | undefined`.	end	5	24
+only eslint	g04/src/require-slots-as-functions_i0.vue:8:28	@typescript-eslint/no-unsafe-assignment	unsafeArraySpread	Unsafe spread of an `any` value in an array.	end	8	39
+only veslint	g00/src/no-deprecated-dollar-scopedslots-api_i4.vue:8:13	@typescript-eslint/no-unsafe-return	unsafeReturn	Unsafe return of a value of type error.	end	8	32
+only veslint	g00/src/no-deprecated-dollar-scopedslots-api_i4.vue:8:20	@typescript-eslint/no-unsafe-call	errorCall	Unsafe call of a type that could not be resolved.	end	8	25
+only veslint	g00/src/no-deprecated-dollar-scopedslots-api_i4.vue:8:22	@typescript-eslint/no-unsafe-member-access	errorMemberExpression	Unsafe member access .foo on a type that cannot be resolved.	end	8	25
+only veslint	g02/src/no-deprecated-dollar-scopedslots-api_i3.vue:9:13	@typescript-eslint/no-unsafe-return	unsafeReturn	Unsafe return of a value of type error.	end	9	35
+only veslint	g02/src/no-deprecated-dollar-scopedslots-api_i3.vue:9:20	@typescript-eslint/no-unsafe-call	errorCall	Unsafe call of a type that could not be resolved.	end	9	28
+only veslint	g02/src/no-deprecated-dollar-scopedslots-api_i3.vue:9:25	@typescript-eslint/no-unsafe-member-access	errorMemberExpression	Unsafe member access .foo on a type that cannot be resolved.	end	9	28
+only veslint	g02/src/no-undef-components_i7.vue:4:21	@typescript-eslint/no-unsafe-argument	unsafeArgument	Unsafe argument of type error typed assigned to a parameter of type `(ComponentOptionsBase<{}, {}, {}, {}, {}, ComponentOptionsMixin, ComponentOptionsMixin, {}, string, {}, {}, string, {}, {}, {}, string, ComponentProvideOptions> & ...) | undefined`.	end	4	28
+only veslint	g03/src/no-deprecated-dollar-listeners-api_i3.vue:10:15	@typescript-eslint/no-unsafe-return	unsafeReturn	Unsafe return of a value of type error.	end	10	26
+only veslint	g03/src/valid-define-options_v4.vue:5:21	@typescript-eslint/no-unsafe-argument	unsafeArgument	Unsafe argument of type error typed assigned to a parameter of type `(ComponentOptionsBase<{}, {}, {}, {}, {}, ComponentOptionsMixin, ComponentOptionsMixin, {}, string, {}, {}, string, {}, {}, {}, string, ComponentProvideOptions> & ...) | undefined`.	end	5	24
+only veslint	g04/src/require-slots-as-functions_i0.vue:8:28	@typescript-eslint/no-unsafe-assignment	unsafeArraySpread	Unsafe spread of an error typed value in an array.	end	8	39

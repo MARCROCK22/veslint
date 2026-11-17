@@ -1,0 +1,7 @@
+{"rule": "vue/no-deprecated-v-is", "upstream": "eslint-plugin-vue v10.12.1", "files": ["tests/lib/rules/no-deprecated-v-is.test.ts"],
+"messages": {"forbiddenVIs":"`v-is` directive is deprecated."},
+"cases": [
+{"id":"no-deprecated-v-is/v0","kind":"valid","code":"<template>\n      <div is=\"vue:MyComponent\" />\n    </template>","parser":"vue-eslint-parser","languageOptions":{"ecmaVersion":2015},"sfc":true,"script":"none"},
+{"id":"no-deprecated-v-is/v1","kind":"valid","code":"<template>\n      <component is=\"MyComponent\" />\n    </template>","parser":"vue-eslint-parser","languageOptions":{"ecmaVersion":2015},"sfc":true,"script":"none"},
+{"id":"no-deprecated-v-is/i0","kind":"invalid","code":"\n      <template>\n        <div v-is=\"'MyComponent'\" />\n      </template>","parser":"vue-eslint-parser","languageOptions":{"ecmaVersion":2015},"sfc":true,"script":"none","errors":[{"message":"`v-is` directive is deprecated.","line":3,"column":14,"endLine":3,"endColumn":18}]}
+]}

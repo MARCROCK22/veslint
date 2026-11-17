@@ -1,0 +1,8 @@
+{"rule": "vue/no-v-text", "upstream": "eslint-plugin-vue v10.12.1", "files": ["tests/lib/rules/no-v-text.test.ts"],
+"messages": {"unexpected":"Don't use 'v-text'."},
+"cases": [
+{"id":"no-v-text/v0","kind":"valid","code":"","filename":"test.vue","parser":"vue-eslint-parser","languageOptions":{"ecmaVersion":2015},"sfc":true,"script":"none"},
+{"id":"no-v-text/v1","kind":"valid","code":"<template></template>","filename":"test.vue","parser":"vue-eslint-parser","languageOptions":{"ecmaVersion":2015},"sfc":true,"script":"none"},
+{"id":"no-v-text/v2","kind":"valid","code":"<template><div>{{foobar}}</div></template>","filename":"test.vue","parser":"vue-eslint-parser","languageOptions":{"ecmaVersion":2015},"sfc":true,"script":"none"},
+{"id":"no-v-text/i0","kind":"invalid","code":"<template><div v-text=\"foobar\"></div></template>","filename":"test.vue","parser":"vue-eslint-parser","languageOptions":{"ecmaVersion":2015},"sfc":true,"script":"none","errors":[{"message":"Don't use 'v-text'.","line":1,"column":16,"endLine":1,"endColumn":31}]}
+]}

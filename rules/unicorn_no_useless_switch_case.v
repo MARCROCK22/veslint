@@ -3,7 +3,7 @@ module rules
 import time
 
 // Port of the `unicorn/no-useless-switch-case` rule of eslint-plugin-unicorn 79.0.0 (it has no
-// options), with its suggestion. veslint lints TypeScript files only (isTypeScriptFile).
+// options), with its suggestion. A .vue file is not a TypeScript file for it (isTypeScriptFile).
 
 const unusc_messages = {
 	'no-useless-switch-case/error':      'Useless case in switch statement.'
@@ -32,7 +32,8 @@ fn (mut c Checker) lint_unicorn_no_useless_switch_case(root C.TSNode, abs_path s
 			}
 			test := t.node(item, .test) or { continue }
 			// In TypeScript, `case undefined` and `case null` may narrow the type.
-			if unb_is_undefined_value(t, test) || c.unb_is_null_literal(t, test) {
+			if c.is_typescript_file()
+				&& (unb_is_undefined_value(t, test) || c.unb_is_null_literal(t, test)) {
 				continue
 			}
 			// `switch` evaluates every case test it reaches, so removing a case whose test has a

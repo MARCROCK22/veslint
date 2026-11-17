@@ -2,7 +2,7 @@
   "name": "veslint",
   "displayName": "veslint",
   "description": "ESLint, typescript-eslint and plugin rules from veslint, a TypeScript linter written in V that talks to the TypeScript 7 compiler: problems, fixes and suggestions as you type.",
-  "version": "0.28.0",
+  "version": "0.29.0",
   "publisher": "MARCROCK22",
   "icon": "images/icon.png",
   "galleryBanner": {
@@ -27,12 +27,14 @@
     "typescript",
     "lint",
     "typescript-eslint",
+    "vue",
     "veslint"
   ],
   "main": "./extension.js",
   "activationEvents": [
     "onLanguage:typescript",
-    "onLanguage:typescriptreact"
+    "onLanguage:typescriptreact",
+    "onLanguage:vue"
   ],
   "contributes": {
     "commands": [
@@ -74,7 +76,7 @@
           "type": "boolean",
           "default": true,
           "scope": "resource",
-          "description": "Lint TypeScript files with veslint."
+          "description": "Lint TypeScript and Vue files with veslint."
         },
         "veslint.path": {
           "type": "string",

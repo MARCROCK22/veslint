@@ -183,3 +183,74 @@ git clone https://github.com/MARCROCK22/eslintcf build/upstream/eslintcf
 git -C build/upstream/eslintcf checkout 0c25278
 bun tools/gen_upstream_cases.mjs marcrock/prefer-at
 ```
+
+## eslint-plugin-vue (the `vue/*` rules)
+
+The cases of `tests/lib/rules/<rule>.test.ts` (and `tests/lib/rules/<rule>/*.test.ts`, the test file
+of each feature of no-unsupported-features) of vuejs/eslint-plugin-vue v10.12.1 (`d33df42`), for
+all its 256 rules, in `tests/rules/vue/<rule>/upstream.json`: 10,899 cases and 31 lints. No rule
+is ported yet. The tests run with vitest and ESLint 10's own RuleTester, which `tests/eslint-compat.ts`
+hands them (eslint-compat-utils); `tools/upstream/vue-test.mjs` stands in for that module while
+`tools/gen_upstream_cases.mjs` loads them: `RuleTester.run` records the cases, and `ESLint` and
+`Linter` are the real classes, which record what the `it` blocks of comment-directive, block-order
+and no-unused-properties lint (run for real, with ESLint): those are the `lints` of upstream.json,
+with the configuration, the text and the problems (and output) ESLint gave.
+
+A case is written as ESLint 10's RuleTester runs it: the tester's configuration under the case's
+(languageOptions, parserOptions and settings merged), with
+
+- `parser`: the parser by package name (`vue-eslint-parser`, `@typescript-eslint/parser`, `espree`
+  when the test gives none, ESLint's default), and `parserOptions.parser`, the script parser of
+  vue-eslint-parser, by name too (one, `{"ts": …}` by lang, or null); upstream gives the module or
+  its resolved path, which vue-eslint-parser requires: the same module;
+- `filename` as the test gives it, relative to the directory the tests run in (the clone's root);
+  a path the test builds in it (`path.join(process.cwd(), 'test.vue')`, an option's module) is
+  written `<cwd>/…`. No `filename`: ESLint lints `<input>`;
+- the typed cases (`tests/test-utils/typescript.ts`): `file` `src/test.vue` of
+  `tests/upstream/vue/fixtures` (a copy of the clone's `tests/fixtures/typescript`) with the program
+  of `tsconfig` (`via: "project"`, `parserOptions.project` upstream) and `extraFileExtensions`;
+- `sfc`: whether vue-eslint-parser reads it as a Vue file (its isVueFile: a `.vue` file, or a text
+  that starts with `<`; with espree or typescript-eslint's parser a `test.vue` is a script), and
+  `script`: the lang of the script vue-eslint-parser parses (`js` without a lang attribute, `none`
+  without a script), or for another file `ts`/`tsx` by its extension or by typescript-eslint's
+  parser, else `js`/`jsx`; `scripts` when the two scripts of a file differ. veslint lints only
+  TypeScript scripts in a `.vue` (`.claude/VUE.md`): the cases with a JavaScript script, and those
+  that are not a `.vue`, stay here, to be listed as not applicable;
+- `rule` for the cases of another rule (jsx-uses-vars runs ESLint's no-unused-vars with
+  `vue/jsx-uses-vars` on), and `plugins` (`{"vue": {"rules": [...]}}`) for the rules of
+  eslint-plugin-vue a case turns on itself;
+- `messages`: those of the published rule, which the generator checks are the source's.
+
+The rules that wrap a rule of ESLint Stylistic take it from the `@stylistic/eslint-plugin` they find
+from the current directory when the plugin loads (5.10.0, in the clone's node_modules), and ESLint
+core's without it; comma-style's and func-call-spacing's tests expect what the version of ESLint
+Stylistic and of Node (19, 20, 22 and later) give, eqeqeq's and jsx-uses-vars' what that of ESLint
+gives (10.15.0). Fixtures of html-indent and script-indent become cases (the valid text, and the
+same text without indentation as an invalid case), with the options of their first line.
+
+`node tests/rules/vue/upstream_eslint.mjs [vue/<rule>...]` runs every case with ESLint 10.15.0 and
+the published eslint-plugin-vue through ESLint's own RuleTester (each case alone, in the clone's
+root, the typed ones in the directory `tests/upstream/vue/setup.sh` makes), and lints the `lints`
+again: all of them give what their test expects (`tests/upstream/vue/known.txt` would list those
+that do not). `--out DIR` writes ESLint's problems for each case. It takes about 30 seconds.
+
+They need the clone with the published build as its `dist` (the tests import it, and a case of
+no-restricted-call-after-await resolves the clone's package to it), and the packages of the tests
+(`tests/upstream/vue/eslint-plugin-vue.LICENSE` is the license of the tests and fixtures, MIT):
+
+```sh
+git clone --depth 1 --branch v10.12.1 https://github.com/vuejs/eslint-plugin-vue build/upstream/vue
+mkdir -p build/upstream/vue-deps && cd build/upstream/vue-deps
+# package.json: {"private": true, "dependencies": {"@stylistic/eslint-plugin": "^5.10.0",
+#   "@typescript-eslint/parser": "^8.72.2", "@typescript-eslint/types": "^8.72.2", "eslint": "^10.15.0",
+#   "eslint-compat-utils": "^0.6.5", "eslint-plugin-vue": "^10.12.1", "espree": "^11.2.0",
+#   "globals": "^17.7.0", "semver": "^7.8.6", "typescript": "^6.0.3", "vue": "3.5",
+#   "vue-eslint-parser": "^10.4.2"}}
+npm install --ignore-scripts --no-audit --no-fund
+cd ../../..
+cp -r build/upstream/vue-deps/node_modules/eslint-plugin-vue/dist build/upstream/vue/dist
+bun tools/gen_upstream_cases.mjs vue/        # every rule; or name some: vue/html-indent
+```
+
+The generator also makes the clone's node_modules (links to `build/upstream/vue-deps`), which the
+reference script needs.

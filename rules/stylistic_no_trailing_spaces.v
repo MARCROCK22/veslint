@@ -80,6 +80,7 @@ fn (mut c Checker) lint_stylistic_no_trailing_spaces(root C.TSNode, abs_path str
 				findings << Finding{
 					stmt:       c.position_range(blank_start, line_end)
 					message_id: 'trailingSpace'
+					text_loc:   true
 					has_fix:    true
 					fix:        fix_remove_range(blank_start, line_end)
 				}

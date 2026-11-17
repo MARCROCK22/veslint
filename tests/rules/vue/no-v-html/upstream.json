@@ -1,0 +1,14 @@
+{"rule": "vue/no-v-html", "upstream": "eslint-plugin-vue v10.12.1", "files": ["tests/lib/rules/no-v-html.test.ts"],
+"messages": {"unexpected":"'v-html' directive can lead to XSS attack."},
+"cases": [
+{"id":"no-v-html/v0","kind":"valid","code":"","filename":"test.vue","parser":"vue-eslint-parser","languageOptions":{"ecmaVersion":2015},"sfc":true,"script":"none"},
+{"id":"no-v-html/v1","kind":"valid","code":"<template></template>","filename":"test.vue","parser":"vue-eslint-parser","languageOptions":{"ecmaVersion":2015},"sfc":true,"script":"none"},
+{"id":"no-v-html/v2","kind":"valid","code":"<template><div v-if=\"foo\"></div></template>","filename":"test.vue","parser":"vue-eslint-parser","languageOptions":{"ecmaVersion":2015},"sfc":true,"script":"none"},
+{"id":"no-v-html/v3","kind":"valid","code":"<template><div v-if=\"foo\" v-bind=\"bar\"></div></template>","filename":"test.vue","parser":"vue-eslint-parser","languageOptions":{"ecmaVersion":2015},"sfc":true,"script":"none"},
+{"id":"no-v-html/v4","kind":"valid","code":"<template><div v-html=\"htmlKnownToBeSafe\"></div></template>","options":[{"ignorePattern":"^html"}],"filename":"test.vue","parser":"vue-eslint-parser","languageOptions":{"ecmaVersion":2015},"sfc":true,"script":"none"},
+{"id":"no-v-html/v5","kind":"valid","code":"<template><div v-html=\"$sanitize(test)\"></div></template>","options":[{"ignorePattern":"^\\$sanitize\\("}],"filename":"test.vue","parser":"vue-eslint-parser","languageOptions":{"ecmaVersion":2015},"sfc":true,"script":"none"},
+{"id":"no-v-html/i0","kind":"invalid","code":"<template><div v-html=\"foo\"></div></template>","filename":"test.vue","parser":"vue-eslint-parser","languageOptions":{"ecmaVersion":2015},"sfc":true,"script":"none","errors":[{"message":"'v-html' directive can lead to XSS attack.","line":1,"column":16,"endLine":1,"endColumn":28}]},
+{"id":"no-v-html/i1","kind":"invalid","code":"<template><ul v-html:aaa=\"userHTML\"></ul></template>","filename":"test.vue","parser":"vue-eslint-parser","languageOptions":{"ecmaVersion":2015},"sfc":true,"script":"none","errors":[{"message":"'v-html' directive can lead to XSS attack.","line":1,"column":15,"endLine":1,"endColumn":36}]},
+{"id":"no-v-html/i2","kind":"invalid","code":"<template><section v-html/></template>","filename":"test.vue","parser":"vue-eslint-parser","languageOptions":{"ecmaVersion":2015},"sfc":true,"script":"none","errors":[{"message":"'v-html' directive can lead to XSS attack.","line":1,"column":20,"endLine":1,"endColumn":26}]},
+{"id":"no-v-html/i3","kind":"invalid","code":"<template><div v-html=\"unsafeString\"></div></template>","options":[{"ignorePattern":"^html"}],"filename":"test.vue","parser":"vue-eslint-parser","languageOptions":{"ecmaVersion":2015},"sfc":true,"script":"none","errors":[{"message":"'v-html' directive can lead to XSS attack.","line":1,"column":16,"endLine":1,"endColumn":37}]}
+]}

@@ -1,0 +1,13 @@
+{"rule": "vue/valid-v-text", "upstream": "eslint-plugin-vue v10.12.1", "files": ["tests/lib/rules/valid-v-text.test.ts"],
+"messages": {"unexpectedArgument":"'v-text' directives require no argument.","unexpectedModifier":"'v-text' directives require no modifier.","expectedValue":"'v-text' directives require that attribute value."},
+"cases": [
+{"id":"valid-v-text/v0","kind":"valid","code":"test","filename":"test.js","parser":"vue-eslint-parser","languageOptions":{"ecmaVersion":2015},"sfc":false,"script":"js"},
+{"id":"valid-v-text/v1","kind":"valid","code":"","filename":"test.vue","parser":"vue-eslint-parser","languageOptions":{"ecmaVersion":2015},"sfc":true,"script":"none"},
+{"id":"valid-v-text/v2","kind":"valid","code":"<template><div v-text=\"foo\"></div></template>","filename":"test.vue","parser":"vue-eslint-parser","languageOptions":{"ecmaVersion":2015},"sfc":true,"script":"none"},
+{"id":"valid-v-text/v3","kind":"valid","code":"<template><div v-text=\".\" /></template>","filename":"parsing-error.vue","parser":"vue-eslint-parser","languageOptions":{"ecmaVersion":2015},"sfc":true,"script":"none"},
+{"id":"valid-v-text/v4","kind":"valid","code":"<template><div v-text=\"/**/\" /></template>","filename":"parsing-error.vue","parser":"vue-eslint-parser","languageOptions":{"ecmaVersion":2015},"sfc":true,"script":"none"},
+{"id":"valid-v-text/i0","kind":"invalid","code":"<template><div v-text:aaa=\"foo\"></div></template>","filename":"test.vue","parser":"vue-eslint-parser","languageOptions":{"ecmaVersion":2015},"sfc":true,"script":"none","errors":[{"message":"'v-text' directives require no argument.","line":1,"column":23,"endLine":1,"endColumn":26}]},
+{"id":"valid-v-text/i1","kind":"invalid","code":"<template><div v-text.aaa=\"foo\"></div></template>","filename":"test.vue","parser":"vue-eslint-parser","languageOptions":{"ecmaVersion":2015},"sfc":true,"script":"none","errors":[{"message":"'v-text' directives require no modifier.","line":1,"column":23,"endLine":1,"endColumn":26}]},
+{"id":"valid-v-text/i2","kind":"invalid","code":"<template><div v-text></div></template>","filename":"test.vue","parser":"vue-eslint-parser","languageOptions":{"ecmaVersion":2015},"sfc":true,"script":"none","errors":[{"message":"'v-text' directives require that attribute value.","line":1,"column":16,"endLine":1,"endColumn":22}]},
+{"id":"valid-v-text/i3","kind":"invalid","code":"<template><div v-text=\"\" /></template>","filename":"empty-value.vue","parser":"vue-eslint-parser","languageOptions":{"ecmaVersion":2015},"sfc":true,"script":"none","errors":[{"message":"'v-text' directives require that attribute value.","line":1,"column":16,"endLine":1,"endColumn":25}]}
+]}

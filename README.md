@@ -59,8 +59,9 @@ veslint <file.ts | directory>... [--config <file>] [--rule <rule> [--no-config-l
 
 | Option | What it does |
 |---|---|
-| `<directory>` | Lints the `.ts`, `.mts`, `.cts` and `.tsx` files under it, as `eslint .` does: `node_modules`, `.git` and what the configuration ignores are left out. |
+| `<directory>` | Lints the `.ts`, `.mts`, `.cts`, `.tsx` and `.vue` files under it, as `eslint .` does: `node_modules`, `.git` and what the configuration ignores are left out. |
 | `<file.ts>` | Lints that file. JavaScript files are not linted: veslint only reads TypeScript. |
+| `<file.vue>` | Lints the TypeScript script of a Vue file (`<script lang="ts">` and `<script setup lang="ts">`) as ESLint does with vue-eslint-parser and typescript-eslint's parser: the rules see the script with the positions of the file, and the types are those typescript-eslint gives with `extraFileExtensions: ['.vue']`. A Vue file whose script is JavaScript is skipped with a warning. |
 | `--config <file>` | The configuration (see below). Without it and without `--rule`, a directory is linted with the closest `eslint.config.*`. |
 | `--rule <rule>` | Lints with one rule, named as in ESLint: `no-var`, `@typescript-eslint/await-thenable`. Its options, and the files it lints, are the ones the closest `eslint.config.*` gives it (on with its default options when the configuration has it off); without a configuration, its default options. Directive comments for other rules are left alone: they are never reported as unused, and `--fix` keeps them. |
 | `--no-config-lookup` | With `--rule`: the rule's default options, without looking for an `eslint.config.*`. |
@@ -161,7 +162,8 @@ The extension shows the problems of the TypeScript files you open and type, unde
 
 ## Limits
 
-- **TypeScript only.** JavaScript files are not linted, even in a project with `allowJs`.
+- **TypeScript only.** JavaScript files are not linted, even in a project with `allowJs`, nor the JavaScript scripts of Vue files.
+- **Vue files:** the rules of eslint-plugin-vue are not there yet: only the script of a `.vue` file is linted, not its template. Two scripts that are not modules (no `import` or `export`) see each other's globals in veslint, where typescript-eslint has the other `.vue` files of the program as the text of the file.
 - **Linux x64 and Windows x64.** Other platforms need a build from source, which is not tested there.
 - **An `eslint.config.*` needs `bun`** to be read; the resolved configuration (`--print-config`) does not. A cached resolution is reused while the files and modules the configuration read and the environment variables it read stay the same: a configuration that depends on something else (the date, a file it lists but does not read, a new `tsconfig.json` a glob of `parserOptions.project` matches) needs `VESLINT_CONFIG_CACHE=0`.
 - **The newest TypeScript syntax** may not be read yet: veslint warns when a file has syntax it does not understand, and some problems of that file may be missing.

@@ -2,12 +2,23 @@ module main
 
 import os
 
-// Directories on the command line (`veslint .`, `veslint src`): veslint lists the TypeScript files
-// under each one as ESLint walks a directory, and ESLint's configuration then drops the ones it
-// does not lint (see parse_args).
+// Directories on the command line (`veslint .`, `veslint src`): veslint lists the TypeScript and
+// Vue files under each one as ESLint walks a directory, and ESLint's configuration then drops the
+// ones it does not lint (see parse_args).
 
-// typescript_extensions are the extensions of the files a directory brings.
-const typescript_extensions = ['.ts', '.mts', '.cts', '.tsx']
+// typescript_extensions are the extensions of the files a directory brings: TypeScript, and Vue
+// single-file components, whose TypeScript scripts are linted (vue_files.v).
+const typescript_extensions = ['.ts', '.mts', '.cts', '.tsx', '.vue']
+
+// is_typescript_path tells whether veslint lints a file of that name: a JavaScript file or any
+// other is rejected when given by name. A .vue file whose script is JavaScript is skipped later,
+// with a warning (vue_files.v).
+fn is_typescript_path(path string) bool {
+	return os.file_ext(path).to_lower() in typescript_extensions
+}
+
+// only_typescript is the error for a file veslint does not read.
+const only_typescript = 'veslint only reads TypeScript (.ts, .mts, .cts, .tsx) and Vue files with TypeScript scripts (.vue)'
 
 // directory_files lists the TypeScript files under `dir`, sorted, each as `dir` joined to its path
 // inside it (`.` is left out: `veslint .` prints `src/a.ts`). The directories ESLint never enters
