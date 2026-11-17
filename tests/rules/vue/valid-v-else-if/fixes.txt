@@ -1,0 +1,12 @@
+tests/rules/vue/valid-v-else-if/cases.vue:11:18	vue/valid-v-else-if	missingVIf	'v-else-if' directives require being preceded by the element which has a 'v-if' or 'v-else-if' directive.	end	11	33
+tests/rules/vue/valid-v-else-if/cases.vue:12:13	vue/valid-v-else-if	missingVIf	'v-else-if' directives require being preceded by the element which has a 'v-if' or 'v-else-if' directive.	end	12	28
+tests/rules/vue/valid-v-else-if/cases.vue:13:18	vue/valid-v-else-if	missingVIf	'v-else-if' directives require being preceded by the element which has a 'v-if' or 'v-else-if' directive.	end	13	33
+tests/rules/vue/valid-v-else-if/cases.vue:14:29	vue/valid-v-else-if	missingVIf	'v-else-if' directives require being preceded by the element which has a 'v-if' or 'v-else-if' directive.	end	14	44
+tests/rules/vue/valid-v-else-if/cases.vue:15:38	vue/valid-v-else-if	missingVIf	'v-else-if' directives require being preceded by the element which has a 'v-if' or 'v-else-if' directive.	end	15	53
+tests/rules/vue/valid-v-else-if/cases.vue:16:51	vue/valid-v-else-if	missingVIf	'v-else-if' directives require being preceded by the element which has a 'v-if' or 'v-else-if' directive.	end	16	66
+tests/rules/vue/valid-v-else-if/cases.vue:17:40	vue/valid-v-else-if	withVIf	'v-else-if' and 'v-if' directives can't exist on the same element.	end	17	55
+tests/rules/vue/valid-v-else-if/cases.vue:18:40	vue/valid-v-else-if	withVElse	'v-else-if' and 'v-else' directives can't exist on the same element.	end	18	55
+tests/rules/vue/valid-v-else-if/cases.vue:19:50	vue/valid-v-else-if	unexpectedArgument	'v-else-if' directives require no argument.	end	19	53
+tests/rules/vue/valid-v-else-if/cases.vue:20:50	vue/valid-v-else-if	unexpectedModifier	'v-else-if' directives require no modifier.	end	20	53
+tests/rules/vue/valid-v-else-if/cases.vue:21:40	vue/valid-v-else-if	expectedValue	'v-else-if' directives require that attribute value.	end	21	49
+tests/rules/vue/valid-v-else-if/cases.vue:22:35	vue/valid-v-else-if	expectedValue	'v-else-if' directives require that attribute value.	end	22	47

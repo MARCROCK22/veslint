@@ -1,0 +1,48 @@
+tests/rules/vue/no-parsing-error/cases.vue:6:13	vue/no-parsing-error	parsingError	Parsing error: Unexpected token ','.
+tests/rules/vue/no-parsing-error/cases.vue:6:21	vue/no-parsing-error	parsingError	Parsing error: Unexpected token '...'.
+tests/rules/vue/no-parsing-error/cases.vue:6:34	vue/no-parsing-error	parsingError	Parsing error: Unexpected end of expression.
+tests/rules/vue/no-parsing-error/cases.vue:6:42	vue/no-parsing-error	parsingError	Parsing error: ',' expected.
+tests/rules/vue/no-parsing-error/cases.vue:6:51	vue/no-parsing-error	parsingError	Parsing error: Expected to be an expression, but got empty.
+tests/rules/vue/no-parsing-error/cases.vue:6:62	vue/no-parsing-error	parsingError	Parsing error: Expected to be statements, but got empty.
+tests/rules/vue/no-parsing-error/cases.vue:7:10	vue/no-parsing-error	parsingError	Parsing error: ',' expected.
+tests/rules/vue/no-parsing-error/cases.vue:8:18	vue/no-parsing-error	parsingError	Parsing error: ',' expected.
+tests/rules/vue/no-parsing-error/cases.vue:9:15	vue/no-parsing-error	parsingError	Parsing error: Expected to be an alias, but got empty.
+tests/rules/vue/no-parsing-error/cases.vue:10:17	vue/no-parsing-error	parsingError	Parsing error: ')' expected.
+tests/rules/vue/no-parsing-error/cases.vue:10:29	vue/no-parsing-error	parsingError	Parsing error: Unexpected end of expression.
+tests/rules/vue/no-parsing-error/cases.vue:11:11	vue/no-parsing-error	parsingError	Parsing error: Dynamic argument cannot contain the ' ' character.
+tests/rules/vue/no-parsing-error/cases.vue:11:29	vue/no-parsing-error	parsingError	Parsing error: Unexpected end of expression.
+tests/rules/vue/no-parsing-error/cases.vue:11:50	vue/no-parsing-error	parsingError	Parsing error: Identifier expected.
+tests/rules/vue/no-parsing-error/cases.vue:12:20	vue/no-parsing-error	parsingError	Parsing error: Unexpected end of expression.
+tests/rules/vue/no-parsing-error/cases.vue:12:38	vue/no-parsing-error	parsingError	Parsing error: Unexpected end of expression.
+tests/rules/vue/no-parsing-error/cases.vue:13:16	vue/no-parsing-error	parsingError	Parsing error: Unexpected end of expression.
+tests/rules/vue/no-parsing-error/cases.vue:13:34	vue/no-parsing-error	parsingError	Parsing error: Unexpected end of expression.
+tests/rules/vue/no-parsing-error/eof/cases.vue:2:15	vue/no-parsing-error	parsingError	Parsing error: Unexpected end of expression.
+tests/rules/vue/no-parsing-error/eof/cases.vue:2:15	vue/no-parsing-error	parsingError	Parsing error: eof-in-tag.
+tests/rules/vue/no-parsing-error/expressions/cases.vue:2:25	vue/no-parsing-error	parsingError	Parsing error: Expression expected.
+tests/rules/vue/no-parsing-error/expressions/cases.vue:2:56	vue/no-parsing-error	parsingError	Parsing error: Unexpected end of expression.
+tests/rules/vue/no-parsing-error/expressions/cases.vue:2:93	vue/no-parsing-error	parsingError	Parsing error: Unexpected end of expression.
+tests/rules/vue/no-parsing-error/expressions/cases.vue:3:15	vue/no-parsing-error	parsingError	Parsing error: Expected to be a filter name, but got empty.
+tests/rules/vue/no-parsing-error/expressions/cases.vue:3:26	vue/no-parsing-error	parsingError	Parsing error: Expression expected.
+tests/rules/vue/no-parsing-error/expressions/cases.vue:3:42	vue/no-parsing-error	parsingError	Parsing error: Unexpected end of expression.
+tests/rules/vue/no-parsing-error/expressions/cases.vue:4:32	vue/no-parsing-error	parsingError	Parsing error: ',' expected.
+tests/rules/vue/no-parsing-error/html/cases.vue:2:15	vue/no-parsing-error	parsingError	Parsing error: duplicate-attribute.
+tests/rules/vue/no-parsing-error/html/cases.vue:2:29	vue/no-parsing-error	parsingError	Parsing error: unexpected-character-in-unquoted-attribute-value.
+tests/rules/vue/no-parsing-error/html/cases.vue:2:31	vue/no-parsing-error	parsingError	Parsing error: unexpected-character-in-unquoted-attribute-value.
+tests/rules/vue/no-parsing-error/html/cases.vue:2:36	vue/no-parsing-error	parsingError	Parsing error: unexpected-character-in-unquoted-attribute-value.
+tests/rules/vue/no-parsing-error/html/cases.vue:2:39	vue/no-parsing-error	parsingError	Parsing error: unexpected-character-in-attribute-name.
+tests/rules/vue/no-parsing-error/html/cases.vue:3:9	vue/no-parsing-error	parsingError	Parsing error: unexpected-solidus-in-tag.
+tests/rules/vue/no-parsing-error/html/cases.vue:3:27	vue/no-parsing-error	parsingError	Parsing error: end-tag-with-attributes.
+tests/rules/vue/no-parsing-error/html/cases.vue:4:13	vue/no-parsing-error	parsingError	Parsing error: null-character-reference.
+tests/rules/vue/no-parsing-error/html/cases.vue:4:22	vue/no-parsing-error	parsingError	Parsing error: unknown-named-character-reference.
+tests/rules/vue/no-parsing-error/html/cases.vue:4:27	vue/no-parsing-error	parsingError	Parsing error: missing-semicolon-after-character-reference.
+tests/rules/vue/no-parsing-error/html/cases.vue:4:37	vue/no-parsing-error	parsingError	Parsing error: surrogate-character-reference.
+tests/rules/vue/no-parsing-error/html/cases.vue:4:48	vue/no-parsing-error	parsingError	Parsing error: character-reference-outside-unicode-range.
+tests/rules/vue/no-parsing-error/html/cases.vue:5:18	vue/no-parsing-error	parsingError	Parsing error: incorrectly-closed-comment.
+tests/rules/vue/no-parsing-error/html/cases.vue:6:8	vue/no-parsing-error	parsingError	Parsing error: abrupt-closing-of-empty-comment.
+tests/rules/vue/no-parsing-error/html/cases.vue:7:4	vue/no-parsing-error	parsingError	Parsing error: unexpected-question-mark-instead-of-tag-name.
+tests/rules/vue/no-parsing-error/html/cases.vue:8:8	vue/no-parsing-error	parsingError	Parsing error: unexpected-solidus-in-tag.
+tests/rules/vue/no-parsing-error/html/cases.vue:9:5	vue/no-parsing-error	parsingError	Parsing error: invalid-first-character-of-tag-name.
+tests/rules/vue/no-parsing-error/options/cases.vue:4:13	vue/no-parsing-error	parsingError	Parsing error: ',' expected.
+tests/rules/vue/no-parsing-error/options/cases.vue:5:3	vue/no-parsing-error	parsingError	Parsing error: non-void-html-element-start-tag-with-trailing-solidus.
+tests/rules/vue/no-parsing-error/style/cases.vue:6:23	vue/no-parsing-error	parsingError	Parsing error: Unexpected end of expression.
+tests/rules/vue/no-parsing-error/style/cases.vue:7:25	vue/no-parsing-error	parsingError	Parsing error: ',' expected.

@@ -10,10 +10,13 @@ import unicorn from '../../build/eval/spider-byte/node_modules/eslint-plugin-uni
 import stylistic from '../../build/eval/spider-byte/node_modules/@stylistic/eslint-plugin/dist/index.js';
 import perfectionist from '../../build/upstream/perfectionist-deps/node_modules/eslint-plugin-perfectionist/dist/index.js';
 import marcrock from '../../build/eval/spider-byte/node_modules/@marcrock22/eslint/dist/rules/_.js';
+import vueParser from '../../build/upstream/vue-deps/node_modules/vue-eslint-parser/dist/index.cjs';
 
 const { plugin: seyfert } = createRequire(import.meta.url)(
   '../../build/upstream/seyfert/node_modules/@slipher/eslint-plugin',
 );
+const vue = createRequire(import.meta.url)('../../build/upstream/vue-deps/node_modules/eslint-plugin-vue');
+const plugins = { '@typescript-eslint': tseslint.plugin, '@stylistic': stylistic, perfectionist, marcrock, seyfert, unicorn, vue };
 
 const root = import.meta.dirname;
 // The directory of a rule is the one with an expected.txt, and its path is the rule's id; the files
@@ -30,7 +33,19 @@ export default [
       parser: tseslint.parser,
       parserOptions: { projectService: true, tsconfigRootDir: root },
     },
-    plugins: { '@typescript-eslint': tseslint.plugin, '@stylistic': stylistic, perfectionist, marcrock, seyfert, unicorn },
+    plugins,
+    rules: Object.fromEntries(ported.map(rule => [rule, 'error'])),
+  },
+  // The .vue fixtures (of the vue/* rules), as a Vue project reads them: vue-eslint-parser 10.4.2 with
+  // typescript-eslint's parser and eslint-plugin-vue 10.12.1's processor.
+  {
+    files: ['**/cases.vue'],
+    languageOptions: {
+      parser: vueParser,
+      parserOptions: { parser: tseslint.parser, projectService: true, tsconfigRootDir: root, extraFileExtensions: ['.vue'] },
+    },
+    plugins,
+    processor: 'vue/vue',
     rules: Object.fromEntries(ported.map(rule => [rule, 'error'])),
   },
 ];

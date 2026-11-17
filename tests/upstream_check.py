@@ -160,6 +160,14 @@ class Runner:
             language['globals'] = {**defaults.get('globals', {}), **case.get('languageOptions', {}).get('globals', {})}
         if case.get('parserOptions'):
             language['parserOptions'] = case['parserOptions']
+        if rule.startswith('vue/'):
+            # veslint's parser of .vue files is vue-eslint-parser with typescript-eslint's parser
+            # (tests/rules/vue/upstream_ts.mjs converts the cases to it): the case names them.
+            parser_options = {k: v for k, v in language.get('parserOptions', {}).items() if k != 'parser'}
+            if case.get('via') == 'project':
+                parser_options['project'] = [os.path.join(self.fixtures, case['tsconfig'])]
+            language.pop('parser', None)
+            language['parserOptions'] = parser_options
         # eslint-plugin-unicorn reads the types only when the parser has a program
         # (withTypeInformation), which a case has with `via` alone: the others say there is none;
         # so does @marcrock22/eslintcf's prefer-at (getParserServices(context, true)).
@@ -179,6 +187,34 @@ class Runner:
             with open(path, 'w', encoding='utf-8') as f:
                 f.write(text)
         return path
+
+    def lint_config_path(self, lint):
+        """The configuration of a lint of an `it` block (tests/rules/vue/upstream_ts.mjs): its rules
+        and languageOptions, without the parsers, the plugins and the processor (veslint's .vue
+        files are read with vue-eslint-parser and typescript-eslint's parser, and
+        vue/comment-directive applies the vue/vue processor's postprocess)."""
+        language = {k: v for k, v in lint['config'].get('languageOptions', {}).items() if k != 'parser'}
+        language['parserOptions'] = {k: v for k, v in language.get('parserOptions', {}).items() if k != 'parser'}
+        config = {'languageOptions': language, 'rules': lint['config'].get('rules', {})}
+        if 'linterOptions' in lint['config']:
+            config['linterOptions'] = lint['config']['linterOptions']
+        text = json.dumps(config, sort_keys=True)
+        path = os.path.join(self.configs, hashlib.sha1(text.encode()).hexdigest()[:16] + '.json')
+        if not os.path.exists(path):
+            with open(path, 'w', encoding='utf-8') as f:
+                f.write(text)
+        return path
+
+    def lint_whole(self, lint):
+        """veslint's answer for a lint: (exit code, file, lines, stderr)."""
+        file = os.path.join(self.fixtures, lint['filename'])
+        self.served.add(file)
+        answer = self.server.request({'config': self.lint_config_path(lint), 'project': '', 'files': [file],
+                                      'texts': {file: lint['code']}, 'fixes': True})
+        lines = answer['stdout'].split('\n')
+        if lines and lines[-1] == '':
+            lines.pop()
+        return answer['code'], file, lines, answer['stderr']
 
     def start_case(self, case):
         test_file = test_file_of(case['id'])
@@ -255,6 +291,30 @@ def check_project(veslint, fixtures, configs, project):
     return problems
 
 
+def check_lint(runner, lint):
+    """A lint of an `it` block (eslint-plugin-vue's comment-directive, with the vue/vue processor):
+    veslint's problems must be ESLint's, all of them and in order (rule, messageId when ESLint gives
+    one, message, line, column, end)."""
+    code, file, out, stderr = runner.lint_whole(lint)
+    if code > 1:
+        return [f'veslint exited with {code}: {stderr.strip()}']
+    prefix = file + ':'
+    keys = ('ruleId', 'messageId', 'message', 'line', 'column', 'endLine', 'endColumn')
+    got = []
+    for line in out:
+        if not line.startswith(prefix):
+            continue
+        f = parse_line(line, prefix)
+        got.append({'ruleId': None if f['rule'] == 'eslint' else f['rule'], 'messageId': f['messageId'], 'message': f['message'],
+                    'line': f['line'], 'column': f['column'], 'endLine': f['endLine'], 'endColumn': f['endColumn']})
+    wanted = [{key: m.get(key) for key in keys} for m in lint['messages']]
+    # A problem without a messageId (an unused disable directive) is compared without it.
+    got = [{**g, 'messageId': g['messageId'] if w['messageId'] is not None else None} for g, w in zip(got, wanted)] + got[len(wanted):]
+    if got != wanted:
+        return [f'veslint gives {json.dumps(got)}, ESLint {json.dumps(wanted)}']
+    return []
+
+
 def fix_passes(lint, code, findings, max_passes=10):
     """The outputs of RuleTester's passes of fixes: at most 10 (typescript-eslint's RuleTester; ESLint's,
     for its core rules, makes one), each on the text the last left."""
@@ -281,6 +341,9 @@ def max_passes_of(rule):
     eslint-plugin-perfectionist uses, the first and up to 11 more."""
     if rule.startswith('perfectionist/'):
         return 12
+    # eslint-plugin-vue's tests run ESLint's own RuleTester.
+    if rule.startswith('vue/'):
+        return 1
     return 10 if rule.startswith(('@typescript-eslint/', 'seyfert/', 'marcrock/')) else 1
 
 
@@ -388,11 +451,18 @@ def main():
     checked = set()
     total = 0
     for rule in rules:
-        with open(os.path.join(ROOT, 'tests/rules', rule, 'upstream.json'), encoding='utf-8') as f:
+        # eslint-plugin-vue's cases as veslint runs them, TypeScript only (tests/rules/vue/upstream_ts.mjs).
+        vue = rule.startswith('vue/')
+        with open(os.path.join(ROOT, 'tests/rules', rule, 'upstream.ts.json' if vue else 'upstream.json'), encoding='utf-8') as f:
             data = json.load(f)
         messages = data['messages']
         runner.defaults = data.get('languageOptions', {})
         cases = [c for c in data['cases'] if not c.get('skip')]
+        if vue:
+            # The file of a case in the fixtures of tests/upstream/vue/setup.sh.
+            for case in cases:
+                if case.get('via') != 'project':
+                    case['file'] = re.sub(r'^<cwd>/', '', case['filename'])
         failed = 0
         for case in cases:
             checked.add(case['id'])
@@ -430,7 +500,18 @@ def main():
                     failed += 1
                     unexpected += 1
                     print(f"  {project['id']}: " + '\n    '.join(problems))
-        count = len(cases) + len(projects)
+        lints = data.get('lints', [])
+        for lint in lints:
+            checked.add(lint['id'])
+            runner.start_case(lint)
+            problems = check_lint(runner, lint)
+            if problems:
+                failing.add(lint['id'])
+                if lint['id'] not in known:
+                    failed += 1
+                    unexpected += 1
+                    print(f"  {lint['id']}: " + '\n    '.join(problems))
+        count = len(cases) + len(projects) + len(lints)
         total += count
         status = 'ok    ' if failed == 0 else 'FAIL  '
         print(f'{status}{rule}: {count - failed} of {count} cases as the upstream test expects')

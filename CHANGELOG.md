@@ -2,6 +2,10 @@
 
 Each version is a release on GitHub with the veslint binaries (Linux x64, Windows x64) and the VS Code extension. The section of a version is the text of its release.
 
+## 0.30.0
+
+- **eslint-plugin-vue 10.12.1, the first 49 rules: the templates of `.vue` files are linted.** `vue/comment-directive` (`<!-- eslint-disable -->`, `-line`, `-next-line` and `eslint-enable` in a template, with the unused ones reported as the `vue/vue` processor does), `vue/no-parsing-error` (TypeScript's own messages for template expressions), the `valid-v-*` rules (bind, cloak, html, once, pre, text, show, if, else-if, else, is, on), the `no-deprecated-*` template rules, `require-v-for-key`, `no-use-v-if-with-v-for`, `v-on-style`, `v-bind-style`, `html-end-tags`, `mustache-interpolation-spacing` and more: the README lists them. Each one gives what ESLint gives, with its fixes, and passes the cases of its upstream tests (the ones with a JavaScript script are run with `lang="ts"`, their expectation taken from ESLint on the converted case). The other `vue/*` rules come in the next versions and are skipped with a warning.
+
 ## 0.29.0
 
 - **Vue files (`.vue`), their TypeScript script:** `veslint .` brings the `.vue` files, and every rule veslint has (with types) lints their `<script lang="ts">` and `<script setup lang="ts">` as ESLint does with vue-eslint-parser 10.4.2 and typescript-eslint's parser: the same problems, positions, fixes and suggestions (compared on 5,963 Vue files with every rule, `tests/vue-lint`). Types come from the code typescript-eslint type-checks for a `.vue`, given to the TypeScript 7 compiler as a file of its own that is never written to disk; in other files, `import App from './App.vue'` keeps the type of the `*.vue` declaration, as in ESLint. `--fix`, `--server` and the VS Code extension handle `.vue` too.

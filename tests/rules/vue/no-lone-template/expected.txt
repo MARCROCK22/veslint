@@ -1,0 +1,5 @@
+tests/rules/vue/no-lone-template/cases.vue:29:9	vue/no-lone-template	requireDirective	`<template>` require directive.
+tests/rules/vue/no-lone-template/options-aa4361ac/cases.vue:15:9	vue/no-lone-template	requireDirective	`<template>` require directive.
+tests/rules/vue/no-lone-template/options-aa4361ac/cases.vue:18:9	vue/no-lone-template	requireDirective	`<template>` require directive.
+tests/rules/vue/no-lone-template/options-aa4361ac/cases.vue:21:9	vue/no-lone-template	requireDirective	`<template>` require directive.
+tests/rules/vue/no-lone-template/options-aa4361ac/cases.vue:24:9	vue/no-lone-template	requireDirective	`<template>` require directive.

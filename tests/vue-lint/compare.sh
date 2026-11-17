@@ -22,6 +22,9 @@
 # part of `make test`.
 set -uo pipefail
 cd "$(dirname "$0")/../.."
+# The configuration lists the rule directories of tests/rules, which the cache of resolved
+# configurations does not see change: it is resolved each time.
+export VESLINT_CONFIG_CACHE=0
 ROOT=$(pwd)
 WORK=$(realpath -m "${1:-build/vue-lint}")
 JOBS=${JOBS:-$(nproc 2> /dev/null || echo 2)}

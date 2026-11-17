@@ -17,7 +17,7 @@ fi
 tests/rules/seyfert/setup.sh || exit 2
 TMP=$(mktemp -d)
 trap 'rm -rf "$TMP"' EXIT
-mapfile -t cases < <(find tests/rules -name cases.ts -o -name cases.tsx | sort)
+mapfile -t cases < <(find tests/rules -name cases.ts -o -name cases.tsx -o -name cases.vue | sort)
 python3 - > "$TMP/rules.json" <<'PY'
 import json, os
 # The directory of a rule is the one with an expected.txt, and its path is the rule's id.

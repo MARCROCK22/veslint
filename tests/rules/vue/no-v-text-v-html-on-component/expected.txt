@@ -1,0 +1,9 @@
+tests/rules/vue/no-v-text-v-html-on-component/cases.vue:16:22	vue/no-v-text-v-html-on-component	disallow	Using v-text on component may break component's content.
+tests/rules/vue/no-v-text-v-html-on-component/cases.vue:19:22	vue/no-v-text-v-html-on-component	disallow	Using v-html on component may break component's content.
+tests/rules/vue/no-v-text-v-html-on-component/cases.vue:22:36	vue/no-v-text-v-html-on-component	disallow	Using v-text on component may break component's content.
+tests/rules/vue/no-v-text-v-html-on-component/cases.vue:25:36	vue/no-v-text-v-html-on-component	disallow	Using v-html on component may break component's content.
+tests/rules/vue/no-v-text-v-html-on-component/cases.vue:28:30	vue/no-v-text-v-html-on-component	disallow	Using v-text on component may break component's content.
+tests/rules/vue/no-v-text-v-html-on-component/cases.vue:31:30	vue/no-v-text-v-html-on-component	disallow	Using v-html on component may break component's content.
+tests/rules/vue/no-v-text-v-html-on-component/options-22107b89/cases.vue:3:22	vue/no-v-text-v-html-on-component	disallow	Using v-html on component may break component's content.
+tests/rules/vue/no-v-text-v-html-on-component/options-4db22be5/cases.vue:3:12	vue/no-v-text-v-html-on-component	disallow	Using v-text on component may break component's content.
+tests/rules/vue/no-v-text-v-html-on-component/options-4db22be5/cases.vue:4:13	vue/no-v-text-v-html-on-component	disallow	Using v-text on component may break component's content.

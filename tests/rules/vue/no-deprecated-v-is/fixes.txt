@@ -1,0 +1,1 @@
+tests/rules/vue/no-deprecated-v-is/cases.vue:9:14	vue/no-deprecated-v-is	forbiddenVIs	`v-is` directive is deprecated.	end	9	18

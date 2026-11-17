@@ -1,0 +1,4 @@
+tests/rules/vue/no-v-for-template-key/cases.vue:11:39	vue/no-v-for-template-key	disallow	'<template v-for>' cannot be keyed. Place the key on real elements instead.
+tests/rules/vue/no-v-for-template-key/cases.vue:12:44	vue/no-v-for-template-key	disallow	'<template v-for>' cannot be keyed. Place the key on real elements instead.
+tests/rules/vue/no-v-for-template-key/cases.vue:13:39	vue/no-v-for-template-key	disallow	'<template v-for>' cannot be keyed. Place the key on real elements instead.
+tests/rules/vue/no-v-for-template-key/cases.vue:14:39	vue/no-v-for-template-key	disallow	'<template v-for>' cannot be keyed. Place the key on real elements instead.

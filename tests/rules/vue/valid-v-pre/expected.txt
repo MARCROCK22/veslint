@@ -1,0 +1,6 @@
+tests/rules/vue/valid-v-pre/cases.vue:3:19	vue/valid-v-pre	unexpectedArgument	'v-pre' directives require no argument.
+tests/rules/vue/valid-v-pre/cases.vue:4:19	vue/valid-v-pre	unexpectedModifier	'v-pre' directives require no modifier.
+tests/rules/vue/valid-v-pre/cases.vue:5:19	vue/valid-v-pre	unexpectedValue	'v-pre' directives require no attribute value.
+tests/rules/vue/valid-v-pre/cases.vue:6:19	vue/valid-v-pre	unexpectedValue	'v-pre' directives require no attribute value.
+tests/rules/vue/valid-v-pre/cases.vue:7:19	vue/valid-v-pre	unexpectedValue	'v-pre' directives require no attribute value.
+tests/rules/vue/valid-v-pre/cases.vue:8:19	vue/valid-v-pre	unexpectedValue	'v-pre' directives require no attribute value.

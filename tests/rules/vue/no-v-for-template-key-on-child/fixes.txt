@@ -1,0 +1,10 @@
+tests/rules/vue/no-v-for-template-key-on-child/cases.vue:24:46	vue/no-v-for-template-key-on-child	vForTemplateKeyPlacement	`<template v-for>` key should be placed on the `<template>` tag.	end	24	54
+tests/rules/vue/no-v-for-template-key-on-child/cases.vue:25:46	vue/no-v-for-template-key-on-child	vForTemplateKeyPlacement	`<template v-for>` key should be placed on the `<template>` tag.	end	25	57
+tests/rules/vue/no-v-for-template-key-on-child/cases.vue:26:57	vue/no-v-for-template-key-on-child	vForTemplateKeyPlacement	`<template v-for>` key should be placed on the `<template>` tag.	end	26	68
+tests/rules/vue/no-v-for-template-key-on-child/cases.vue:27:51	vue/no-v-for-template-key-on-child	vForTemplateKeyPlacement	`<template v-for>` key should be placed on the `<template>` tag.	end	27	62
+tests/rules/vue/no-v-for-template-key-on-child/cases.vue:28:58	vue/no-v-for-template-key-on-child	vForTemplateKeyPlacement	`<template v-for>` key should be placed on the `<template>` tag.	end	28	69
+tests/rules/vue/no-v-for-template-key-on-child/cases.vue:29:51	vue/no-v-for-template-key-on-child	vForTemplateKeyPlacement	`<template v-for>` key should be placed on the `<template>` tag.	end	29	70
+tests/rules/vue/no-v-for-template-key-on-child/cases.vue:29:78	vue/no-v-for-template-key-on-child	vForTemplateKeyPlacement	`<template v-for>` key should be placed on the `<template>` tag.	end	29	97
+tests/rules/vue/no-v-for-template-key-on-child/cases.vue:37:18	vue/no-v-for-template-key-on-child	vForTemplateKeyPlacement	`<template v-for>` key should be placed on the `<template>` tag.	end	37	33
+tests/rules/vue/no-v-for-template-key-on-child/cases.vue:38:18	vue/no-v-for-template-key-on-child	vForTemplateKeyPlacement	`<template v-for>` key should be placed on the `<template>` tag.	end	38	33
+tests/rules/vue/no-v-for-template-key-on-child/cases.vue:39:19	vue/no-v-for-template-key-on-child	vForTemplateKeyPlacement	`<template v-for>` key should be placed on the `<template>` tag.	end	39	34

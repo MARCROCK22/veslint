@@ -1,0 +1,8 @@
+tests/rules/vue/no-v-html/cases.vue:5:13	vue/no-v-html	unexpected	'v-html' directive can lead to XSS attack.
+tests/rules/vue/no-v-html/cases.vue:6:12	vue/no-v-html	unexpected	'v-html' directive can lead to XSS attack.
+tests/rules/vue/no-v-html/cases.vue:7:17	vue/no-v-html	unexpected	'v-html' directive can lead to XSS attack.
+tests/rules/vue/no-v-html/extra/cases.vue:6:18	vue/no-v-html	unexpected	'v-html' directive can lead to XSS attack.
+tests/rules/vue/no-v-html/extra/cases.vue:7:6	vue/no-v-html	unexpected	'v-html' directive can lead to XSS attack.
+tests/rules/vue/no-v-html/extra/cases.vue:7:23	vue/no-v-html	unexpected	'v-html' directive can lead to XSS attack.
+tests/rules/vue/no-v-html/extra/cases.vue:8:20	vue/no-v-html	unexpected	'v-html' directive can lead to XSS attack.
+tests/rules/vue/no-v-html/options-222e7805/cases.vue:3:13	vue/no-v-html	unexpected	'v-html' directive can lead to XSS attack.

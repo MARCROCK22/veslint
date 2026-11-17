@@ -1,0 +1,8 @@
+tests/rules/vue/html-end-tags/cases.vue:21:3	vue/html-end-tags	missingEndTag	'<div>' should have end tag.
+tests/rules/vue/html-end-tags/cases.vue:22:13	vue/html-end-tags	missingEndTag	'<p>' should have end tag.
+tests/rules/vue/html-end-tags/extra/cases.vue:3:5	vue/html-end-tags	missingEndTag	'<p>' should have end tag.
+tests/rules/vue/html-end-tags/extra/cases.vue:5:9	vue/html-end-tags	missingEndTag	'<li>' should have end tag.
+tests/rules/vue/html-end-tags/extra/cases.vue:5:14	vue/html-end-tags	missingEndTag	'<li>' should have end tag.
+tests/rules/vue/html-end-tags/extra/cases.vue:6:5	vue/html-end-tags	missingEndTag	'<option>' should have end tag.
+tests/rules/vue/html-end-tags/extra/cases.vue:8:5	vue/html-end-tags	missingEndTag	'<my-comp>' should have end tag.
+tests/rules/vue/html-end-tags/extra/cases.vue:10:12	vue/html-end-tags	missingEndTag	'<b>' should have end tag.

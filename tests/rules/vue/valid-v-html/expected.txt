@@ -1,0 +1,4 @@
+tests/rules/vue/valid-v-html/cases.vue:5:20	vue/valid-v-html	unexpectedArgument	'v-html' directives require no argument.
+tests/rules/vue/valid-v-html/cases.vue:6:20	vue/valid-v-html	unexpectedModifier	'v-html' directives require no modifier.
+tests/rules/vue/valid-v-html/cases.vue:7:13	vue/valid-v-html	expectedValue	'v-html' directives require that attribute value.
+tests/rules/vue/valid-v-html/cases.vue:8:13	vue/valid-v-html	expectedValue	'v-html' directives require that attribute value.

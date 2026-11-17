@@ -184,7 +184,7 @@ check_rule() { # directory of the rule
 	local dir=$1 rule out code cases
 	rule=${dir#tests/rules/}
 	out=${rule//\//__}
-	mapfile -t cases < <(find "$dir" -name cases.ts -o -name cases.tsx | sorted)
+	mapfile -t cases < <(find "$dir" -name cases.ts -o -name cases.tsx -o -name cases.vue | sorted)
 	code=0
 	lint_cases "$rule" "${cases[@]}" || code=$?
 	# A rule whose findings TypeScript does not allow in a file (no-octal) has none: code 0.
@@ -669,7 +669,7 @@ veslint_batched() {
 phase "directives, --fix, configurations and the command line"
 # `eslint --print-config`: numeric severities, the core require-await rule turned off and rules of
 # other plugins), with every rule of tests/rules and its default options.
-mapfile -t all_cases < <(find tests/rules -name cases.ts -o -name cases.tsx | sorted)
+mapfile -t all_cases < <(find tests/rules -name cases.ts -o -name cases.tsx -o -name cases.vue | sorted)
 [[ $seyfert_skipped -eq 0 ]] || mapfile -t all_cases < <(printf '%s\n' "${all_cases[@]}" | grep -v '^tests/rules/seyfert/')
 cat > "$TMP/all.json" << 'JSON'
 {"rules": {
@@ -1249,6 +1249,18 @@ if tests/upstream/seyfert/setup.sh "$TMP/upstream-seyfert" 2> "$TMP/upstream-sey
 	upstream_check "@slipher/eslint-plugin's own tests" "$TMP/upstream-seyfert" "$TMP/upstream-seyfert-configs" "${seyfert_upstream[@]}"
 else
 	echo "skip   @slipher/eslint-plugin's own tests: $(cat "$TMP/upstream-seyfert-setup.err")"
+fi
+# eslint-plugin-vue's own tests of the vue/* rules veslint has (the directories of tests/rules/vue
+# with an expected.txt): their cases converted to TypeScript, with the expectations of
+# upstream.ts.json (tests/rules/vue/upstream_ts.mjs), in the fixtures of tests/upstream/vue/setup.sh,
+# and the lints of comment-directive whole.
+mapfile -t vue_upstream < <(find tests/rules/vue -name expected.txt | sed -E 's|^tests/rules/(.*)/expected\.txt$|\1|' | sorted)
+if [[ ${#vue_upstream[@]} -gt 0 ]]; then
+	if tests/upstream/vue/setup.sh "$TMP/upstream-vue" 2> "$TMP/upstream-vue-setup.err"; then
+		upstream_check "eslint-plugin-vue's own tests" "$TMP/upstream-vue" "$TMP/upstream-vue-configs" "${vue_upstream[@]}"
+	else
+		echo "skip   eslint-plugin-vue's own tests: $(cat "$TMP/upstream-vue-setup.err")"
+	fi
 fi
 phase "the upstream tests of each plugin"
 

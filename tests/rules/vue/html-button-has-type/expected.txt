@@ -1,0 +1,16 @@
+tests/rules/vue/html-button-has-type/cases.vue:13:8	vue/html-button-has-type	missingTypeAttribute	Missing an explicit type attribute for button.
+tests/rules/vue/html-button-has-type/cases.vue:14:21	vue/html-button-has-type	emptyTypeAttribute	A value must be set for button type attribute.
+tests/rules/vue/html-button-has-type/cases.vue:15:16	vue/html-button-has-type	emptyTypeAttribute	A value must be set for button type attribute.
+tests/rules/vue/html-button-has-type/cases.vue:16:21	vue/html-button-has-type	invalidTypeAttribute	foo is an invalid value for button type attribute.
+tests/rules/vue/html-button-has-type/cases.vue:17:8	vue/html-button-has-type	missingTypeAttribute	Missing an explicit type attribute for button.
+tests/rules/vue/html-button-has-type/cases.vue:17:36	vue/html-button-has-type	missingTypeAttribute	Missing an explicit type attribute for button.
+tests/rules/vue/html-button-has-type/cases.vue:18:22	vue/html-button-has-type	emptyTypeAttribute	A value must be set for button type attribute.
+tests/rules/vue/html-button-has-type/options-0e7399a7/cases.vue:2:21	vue/html-button-has-type	forbiddenTypeAttribute	submit is a forbidden value for button type attribute.
+tests/rules/vue/html-button-has-type/options-2ebba4d8/cases.vue:5:30	vue/html-button-has-type	forbiddenTypeAttribute	reset is a forbidden value for button type attribute.
+tests/rules/vue/html-button-has-type/options-2ebba4d8/cases.vue:6:30	vue/html-button-has-type	emptyTypeAttribute	A value must be set for button type attribute.
+tests/rules/vue/html-button-has-type/options-2ebba4d8/cases.vue:7:30	vue/html-button-has-type	invalidTypeAttribute	foo is an invalid value for button type attribute.
+tests/rules/vue/html-button-has-type/options-3ad108f7/cases.vue:3:30	vue/html-button-has-type	forbiddenTypeAttribute	button is a forbidden value for button type attribute.
+tests/rules/vue/html-button-has-type/options-3ad108f7/cases.vue:4:30	vue/html-button-has-type	forbiddenTypeAttribute	submit is a forbidden value for button type attribute.
+tests/rules/vue/html-button-has-type/options-3ad108f7/cases.vue:5:30	vue/html-button-has-type	forbiddenTypeAttribute	reset is a forbidden value for button type attribute.
+tests/rules/vue/html-button-has-type/options-69e667b0/cases.vue:2:21	vue/html-button-has-type	forbiddenTypeAttribute	reset is a forbidden value for button type attribute.
+tests/rules/vue/html-button-has-type/options-9a9a0297/cases.vue:2:21	vue/html-button-has-type	forbiddenTypeAttribute	button is a forbidden value for button type attribute.

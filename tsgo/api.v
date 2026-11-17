@@ -1013,6 +1013,37 @@ pub fn (mut c Client) syntactic_diagnostics(snapshot int, project string, file s
 	return decode_response[[]Diagnostic]('getSyntacticDiagnostics', payload)!
 }
 
+struct TranspileOptions {
+	file_name          string @[json: 'fileName']
+	report_diagnostics bool   @[json: 'reportDiagnostics']
+}
+
+struct TranspileParams {
+	input   string
+	options TranspileOptions
+}
+
+struct TranspileResponse {
+	diagnostics []Diagnostic
+}
+
+// transpile_diagnostics gives the errors TypeScript's parser finds in a text of its own, outside
+// any program (transpileModule with reportDiagnostics, which reports the syntactic diagnostics of
+// the file; the file name decides TS or TSX). Positions are UTF-16 offsets of the text.
+pub fn (mut c Client) transpile_diagnostics(text string, file_name string) ![]Diagnostic {
+	payload := c.request('transpileModule', json2.encode(TranspileParams{
+		input:   text
+		options: TranspileOptions{
+			file_name:          file_name
+			report_diagnostics: true
+		}
+	}))!
+	if is_null_payload(payload) {
+		return []Diagnostic{}
+	}
+	return decode_response[TranspileResponse]('transpileModule', payload)!.diagnostics
+}
+
 // source_file_metadata gives the metadata of a program file (the null ones if it is not there).
 pub fn (mut c Client) source_file_metadata(snapshot int, project string, file string) !SourceFileMetadata {
 	payload := c.request('getSourceFileMetadata', json2.encode(SourceFileParams{

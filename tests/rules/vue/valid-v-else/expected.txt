@@ -1,0 +1,14 @@
+tests/rules/vue/valid-v-else/cases.vue:9:18	vue/valid-v-else	missingVIf	'v-else' directives require being preceded by the element which has a 'v-if' or 'v-else-if' directive.
+tests/rules/vue/valid-v-else/cases.vue:10:13	vue/valid-v-else	missingVIf	'v-else' directives require being preceded by the element which has a 'v-if' or 'v-else-if' directive.
+tests/rules/vue/valid-v-else/cases.vue:11:18	vue/valid-v-else	missingVIf	'v-else' directives require being preceded by the element which has a 'v-if' or 'v-else-if' directive.
+tests/rules/vue/valid-v-else/cases.vue:12:29	vue/valid-v-else	missingVIf	'v-else' directives require being preceded by the element which has a 'v-if' or 'v-else-if' directive.
+tests/rules/vue/valid-v-else/cases.vue:13:38	vue/valid-v-else	missingVIf	'v-else' directives require being preceded by the element which has a 'v-if' or 'v-else-if' directive.
+tests/rules/vue/valid-v-else/cases.vue:14:51	vue/valid-v-else	missingVIf	'v-else' directives require being preceded by the element which has a 'v-if' or 'v-else-if' directive.
+tests/rules/vue/valid-v-else/cases.vue:15:40	vue/valid-v-else	withVIf	'v-else' and 'v-if' directives can't exist on the same element. You may want 'v-else-if' directives.
+tests/rules/vue/valid-v-else/cases.vue:16:40	vue/valid-v-else	withVElseIf	'v-else' and 'v-else-if' directives can't exist on the same element.
+tests/rules/vue/valid-v-else/cases.vue:17:47	vue/valid-v-else	unexpectedArgument	'v-else' directives require no argument.
+tests/rules/vue/valid-v-else/cases.vue:18:47	vue/valid-v-else	unexpectedModifier	'v-else' directives require no modifier.
+tests/rules/vue/valid-v-else/cases.vue:19:47	vue/valid-v-else	unexpectedValue	'v-else' directives require no attribute value.
+tests/rules/vue/valid-v-else/cases.vue:20:42	vue/valid-v-else	unexpectedValue	'v-else' directives require no attribute value.
+tests/rules/vue/valid-v-else/cases.vue:21:42	vue/valid-v-else	unexpectedValue	'v-else' directives require no attribute value.
+tests/rules/vue/valid-v-else/cases.vue:22:42	vue/valid-v-else	unexpectedValue	'v-else' directives require no attribute value.
