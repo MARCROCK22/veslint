@@ -3896,7 +3896,7 @@ fn (mut c Checker) lint_rule(rule string, root C.TSNode, abs_path string, mut st
 		vue_comma_spacing, vue_multiline_ternary, vue_space_in_parens, vue_func_call_spacing,
 		vue_comma_style, vue_no_constant_condition, vue_no_console, vue_quote_props,
 		vue_no_extra_parens {
-			return c.lint_vue_wrap(rule, abs_path, mut stats)!
+			return c.lint_vue_wrap(rule, root, abs_path, mut stats)!
 		}
 		else { return error('unknown rule: ${rule}') }
 	}

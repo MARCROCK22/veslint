@@ -675,12 +675,16 @@ fn (mut c Checker) vue_wrap_base(base string, root C.TSNode, abs_path string, mu
 }
 
 // lint_vue_wrap lints a wrapper rule.
-fn (mut c Checker) lint_vue_wrap(rule string, abs_path string, mut stats Stats) ![]Finding {
+fn (mut c Checker) lint_vue_wrap(rule string, root C.TSNode, abs_path string, mut stats Stats) ![]Finding {
 	if !c.is_vue() {
 		return []
 	}
 	sw := time.new_stopwatch()
-	findings := c.vue_wrap_lint(rule, vue_wrap_of(rule), abs_path, mut stats)!
+	mut findings := c.vue_wrap_lint(rule, vue_wrap_of(rule), abs_path, mut stats)!
+	// camelcase's `Program` listener, moved to the root element of the template.
+	if rule == vue_camelcase && c.vue_has_template() {
+		findings << c.vncc_program(root, abs_path)!
+	}
 	stats.eval_ms += ms(sw.elapsed())
 	return findings
 }
