@@ -1,0 +1,4 @@
+tests/rules/vue/require-v-for-key/cases.vue:18:13	vue/require-v-for-key	requireKey	Elements in iteration expect to have 'v-bind:key' directives.	end	18	36
+tests/rules/vue/require-v-for-key/cases.vue:19:13	vue/require-v-for-key	requireKey	Elements in iteration expect to have 'v-bind:key' directives.	end	19	46
+tests/rules/vue/require-v-for-key/cases.vue:20:41	vue/require-v-for-key	requireKey	Elements in iteration expect to have 'v-bind:key' directives.	end	20	46
+tests/rules/vue/require-v-for-key/cases.vue:21:47	vue/require-v-for-key	requireKey	Elements in iteration expect to have 'v-bind:key' directives.	end	21	52

@@ -1,0 +1,23 @@
+tests/rules/vue/v-bind-style/cases.vue:6:13	vue/v-bind-style	unexpectedLonghand	Unexpected 'v-bind' before ':'.
+tests/rules/vue/v-bind-style/options-0436848e/cases.vue:5:13	vue/v-bind-style	unexpectedLonghand	Unexpected 'v-bind' before ':'.
+tests/rules/vue/v-bind-style/options-0436848e/cases.vue:6:13	vue/v-bind-style	unexpectedLonghand	Unexpected 'v-bind' before ':'.
+tests/rules/vue/v-bind-style/options-3181d8f5/cases.vue:4:13	vue/v-bind-style	unexpectedShorthand	Unexpected same-name shorthand.
+tests/rules/vue/v-bind-style/options-3181d8f5/cases.vue:5:13	vue/v-bind-style	unexpectedShorthand	Unexpected same-name shorthand.
+tests/rules/vue/v-bind-style/options-3181d8f5/cases.vue:5:13	vue/v-bind-style	expectedLonghandForProp	Expected 'v-bind:' instead of '.'.
+tests/rules/vue/v-bind-style/options-33de8469/cases.vue:4:13	vue/v-bind-style	expectedShorthand	Expected same-name shorthand.
+tests/rules/vue/v-bind-style/options-80a3e456/cases.vue:2:13	vue/v-bind-style	expectedLonghand	Expected 'v-bind' before ':'.
+tests/rules/vue/v-bind-style/options-80a3e456/cases.vue:3:13	vue/v-bind-style	expectedLonghandForProp	Expected 'v-bind:' instead of '.'.
+tests/rules/vue/v-bind-style/options-80a3e456/cases.vue:4:13	vue/v-bind-style	expectedLonghandForProp	Expected 'v-bind:' instead of '.'.
+tests/rules/vue/v-bind-style/options-80a3e456/cases.vue:5:13	vue/v-bind-style	expectedLonghandForProp	Expected 'v-bind:' instead of '.'.
+tests/rules/vue/v-bind-style/options-80a3e456/cases.vue:6:13	vue/v-bind-style	expectedLonghandForProp	Expected 'v-bind:' instead of '.'.
+tests/rules/vue/v-bind-style/options-80a3e456/cases.vue:7:13	vue/v-bind-style	expectedLonghand	Expected 'v-bind' before ':'.
+tests/rules/vue/v-bind-style/options-aad3ca25/cases.vue:8:13	vue/v-bind-style	unexpectedShorthand	Unexpected same-name shorthand.
+tests/rules/vue/v-bind-style/options-aad3ca25/cases.vue:9:13	vue/v-bind-style	unexpectedShorthand	Unexpected same-name shorthand.
+tests/rules/vue/v-bind-style/options-aad3ca25/cases.vue:10:13	vue/v-bind-style	unexpectedShorthand	Unexpected same-name shorthand.
+tests/rules/vue/v-bind-style/options-aad3ca25/cases.vue:11:13	vue/v-bind-style	unexpectedShorthand	Unexpected same-name shorthand.
+tests/rules/vue/v-bind-style/options-aad3ca25/cases.vue:12:13	vue/v-bind-style	unexpectedShorthand	Unexpected same-name shorthand.
+tests/rules/vue/v-bind-style/options-f7606f19/cases.vue:9:13	vue/v-bind-style	expectedShorthand	Expected same-name shorthand.
+tests/rules/vue/v-bind-style/options-f7606f19/cases.vue:10:13	vue/v-bind-style	expectedShorthand	Expected same-name shorthand.
+tests/rules/vue/v-bind-style/options-f7606f19/cases.vue:11:13	vue/v-bind-style	expectedShorthand	Expected same-name shorthand.
+tests/rules/vue/v-bind-style/options-f7606f19/cases.vue:12:13	vue/v-bind-style	expectedShorthand	Expected same-name shorthand.
+tests/rules/vue/v-bind-style/options-f7606f19/cases.vue:13:13	vue/v-bind-style	expectedShorthand	Expected same-name shorthand.

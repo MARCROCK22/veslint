@@ -1,0 +1,2 @@
+tests/rules/vue/no-deprecated-html-element-is/cases.vue:7:13	vue/no-deprecated-html-element-is	unexpected	The `is` attribute on HTML element are deprecated.
+tests/rules/vue/no-deprecated-html-element-is/cases.vue:8:13	vue/no-deprecated-html-element-is	unexpected	The `is` attribute on HTML element are deprecated.

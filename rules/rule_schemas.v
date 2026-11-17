@@ -495,6 +495,13 @@ const rule_option_schemas = {
 	'vue/valid-v-else':                                                '{"type":"array","minItems":0,"maxItems":0}'
 	'vue/valid-v-is':                                                  '{"type":"array","minItems":0,"maxItems":0}'
 	'vue/valid-v-on':                                                  '{"type":"array","items":[{"type":"object","properties":{"modifiers":{"type":"array","items":{"type":"string"}}},"additionalProperties":false}],"minItems":0,"maxItems":1}'
+	'vue/v-on-style':                                                  '{"type":"array","items":[{"enum":["shorthand","longform"]}],"minItems":0,"maxItems":1}'
+	'vue/v-bind-style':                                                '{"type":"array","items":[{"enum":["shorthand","longform"]},{"type":"object","properties":{"sameNameShorthand":{"enum":["always","never","ignore"]}},"additionalProperties":false}],"minItems":0,"maxItems":2}'
+	'vue/no-multiple-objects-in-class':                                '{"type":"array","minItems":0,"maxItems":0}'
+	'vue/require-v-for-key':                                           '{"type":"array","minItems":0,"maxItems":0}'
+	'vue/no-deprecated-html-element-is':                               '{"type":"array","minItems":0,"maxItems":0}'
+	'vue/no-use-v-if-with-v-for':                                      '{"type":"array","items":[{"type":"object","properties":{"allowUsingIterationVar":{"type":"boolean"}},"additionalProperties":false}],"minItems":0,"maxItems":1}'
+	'vue/no-v-for-template-key-on-child':                              '{"type":"array","minItems":0,"maxItems":0}'
 }
 
 // eslint_rule_default_options are the meta.defaultOptions of the rules of ESLint and of

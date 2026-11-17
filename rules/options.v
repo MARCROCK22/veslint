@@ -241,6 +241,9 @@ pub fn check_options(rule string, options []json2.Any) !bool {
 		vue_comment_directive { vcd_options(options)! }
 		vue_no_parsing_error { vnpe_options(options)! }
 		vue_valid_v_on { vvon_options(options)! }
+		vue_v_on_style { vvos_options(options)! }
+		vue_v_bind_style { vvbs_options(options)! }
+		vue_no_use_v_if_with_v_for { vnuviwvf_options(options)! }
 		else { return false }
 	}
 	return true

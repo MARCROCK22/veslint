@@ -506,6 +506,13 @@ pub const vue_valid_v_else_if = 'vue/valid-v-else-if'
 pub const vue_valid_v_else = 'vue/valid-v-else'
 pub const vue_valid_v_is = 'vue/valid-v-is'
 pub const vue_valid_v_on = 'vue/valid-v-on'
+pub const vue_v_on_style = 'vue/v-on-style'
+pub const vue_v_bind_style = 'vue/v-bind-style'
+pub const vue_no_multiple_objects_in_class = 'vue/no-multiple-objects-in-class'
+pub const vue_require_v_for_key = 'vue/require-v-for-key'
+pub const vue_no_deprecated_html_element_is = 'vue/no-deprecated-html-element-is'
+pub const vue_no_use_v_if_with_v_for = 'vue/no-use-v-if-with-v-for'
+pub const vue_no_v_for_template_key_on_child = 'vue/no-v-for-template-key-on-child'
 pub const names = [no_floating_promises, await_thenable, require_await, return_await,
 	no_misused_promises, no_unsafe_call, no_unsafe_member_access, no_unsafe_return,
 	no_unsafe_assignment, no_unsafe_argument, restrict_template_expressions,
@@ -649,7 +656,9 @@ pub const names = [no_floating_promises, await_thenable, require_await, return_a
 	vue_no_spaces_around_equal_signs_in_attribute, vue_no_deprecated_v_on_number_modifiers,
 	vue_valid_v_bind, vue_valid_v_cloak, vue_valid_v_html, vue_valid_v_once, vue_valid_v_pre,
 	vue_valid_v_text, vue_valid_v_show, vue_valid_v_if, vue_valid_v_else_if, vue_valid_v_else,
-	vue_valid_v_is, vue_valid_v_on]
+	vue_valid_v_is, vue_valid_v_on, vue_v_on_style, vue_v_bind_style, vue_no_multiple_objects_in_class,
+	vue_require_v_for_key, vue_no_deprecated_html_element_is, vue_no_use_v_if_with_v_for,
+	vue_no_v_for_template_key_on_child]
 
 // untyped_rules are the ported rules that need no types (`meta.docs.requiresTypeChecking` is false
 // in typescript-eslint; the eslint-plugin-unicorn rules that read the types when the parser has a
@@ -765,7 +774,9 @@ pub const untyped_rules = [adjacent_overload_signatures, array_type, class_liter
 	vue_no_spaces_around_equal_signs_in_attribute, vue_no_deprecated_v_on_number_modifiers,
 	vue_valid_v_bind, vue_valid_v_cloak, vue_valid_v_html, vue_valid_v_once, vue_valid_v_pre,
 	vue_valid_v_text, vue_valid_v_show, vue_valid_v_if, vue_valid_v_else_if, vue_valid_v_else,
-	vue_valid_v_is, vue_valid_v_on]
+	vue_valid_v_is, vue_valid_v_on, vue_v_on_style, vue_v_bind_style, vue_no_multiple_objects_in_class,
+	vue_require_v_for_key, vue_no_deprecated_html_element_is, vue_no_use_v_if_with_v_for,
+	vue_no_v_for_template_key_on_child]
 
 // needs_types tells whether a rule asks tsgo for the types of the program.
 pub fn needs_types(rule string) bool {
@@ -1266,6 +1277,13 @@ pub const default_options = {
 	vue_valid_v_else:                                '[]'
 	vue_valid_v_is:                                  '[]'
 	vue_valid_v_on:                                  '[]'
+	vue_v_on_style:                                  '[]'
+	vue_v_bind_style:                                '[]'
+	vue_no_multiple_objects_in_class:                '[]'
+	vue_require_v_for_key:                           '[]'
+	vue_no_deprecated_html_element_is:               '[]'
+	vue_no_use_v_if_with_v_for:                      '[]'
+	vue_no_v_for_template_key_on_child:              '[]'
 }
 
 // Finding is a problem a rule found at a node.
@@ -1915,6 +1933,13 @@ pub fn message(rule string, finding Finding) string {
 		vue_valid_v_else { vvelse_messages }
 		vue_valid_v_is { vvis_messages }
 		vue_valid_v_on { vvon_messages }
+		vue_v_on_style { vvos_messages }
+		vue_v_bind_style { vvbs_messages }
+		vue_no_multiple_objects_in_class { vnmoic_messages }
+		vue_require_v_for_key { vrvfk_messages }
+		vue_no_deprecated_html_element_is { vndhei_messages }
+		vue_no_use_v_if_with_v_for { vnuviwvf_messages }
+		vue_no_v_for_template_key_on_child { vnvftkoc_messages }
 		else { map[string]string{} }
 	}
 	return interpolate(messages[finding.message_id] or { finding.message_id }, finding.data)
@@ -3640,6 +3665,27 @@ fn (mut c Checker) lint_rule(rule string, root C.TSNode, abs_path string, mut st
 		}
 		vue_valid_v_on {
 			return c.lint_vue_valid_v_on(root, abs_path, mut stats)!
+		}
+		vue_v_on_style {
+			return c.lint_vue_v_on_style(root, abs_path, mut stats)!
+		}
+		vue_v_bind_style {
+			return c.lint_vue_v_bind_style(root, abs_path, mut stats)!
+		}
+		vue_no_multiple_objects_in_class {
+			return c.lint_vue_no_multiple_objects_in_class(root, abs_path, mut stats)!
+		}
+		vue_require_v_for_key {
+			return c.lint_vue_require_v_for_key(root, abs_path, mut stats)!
+		}
+		vue_no_deprecated_html_element_is {
+			return c.lint_vue_no_deprecated_html_element_is(root, abs_path, mut stats)!
+		}
+		vue_no_use_v_if_with_v_for {
+			return c.lint_vue_no_use_v_if_with_v_for(root, abs_path, mut stats)!
+		}
+		vue_no_v_for_template_key_on_child {
+			return c.lint_vue_no_v_for_template_key_on_child(root, abs_path, mut stats)!
 		}
 		else { return error('unknown rule: ${rule}') }
 	}
