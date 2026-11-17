@@ -106,7 +106,7 @@ fail=0
 mapfile -t rule_dirs < <(find tests/rules -name expected.txt | sed 's|/expected\.txt$||' | sort)
 for dir in "${rule_dirs[@]}"; do
 	rule=${dir#tests/rules/}
-	grep -P "^tests/rules/${rule}/(.+/)?cases\.tsx?:.*\t${rule}\t" "$TMP/reference.txt" | sort > "$TMP/ref.txt"
+	grep -P "^tests/rules/${rule}/(.+/)?cases\.(?:tsx?|vue):.*\t${rule}\t" "$TMP/reference.txt" | sort > "$TMP/ref.txt"
 	cat "$dir/expected.txt" "$dir/limitations.txt" 2> /dev/null | sort > "$TMP/expected.txt"
 	known=$(cat "$dir/limitations.txt" 2> /dev/null | wc -l)
 	if diff -u "$TMP/ref.txt" "$TMP/expected.txt" > "$TMP/diff.txt"; then
@@ -117,7 +117,7 @@ for dir in "${rule_dirs[@]}"; do
 		fail=1
 	fi
 	if [[ -f $dir/fixes.txt ]]; then
-		grep -P "^tests/rules/${rule}/(.+/)?cases\.tsx?:.*\t${rule}\t" "$TMP/reference.fixes.txt" | sort > "$TMP/ref.txt"
+		grep -P "^tests/rules/${rule}/(.+/)?cases\.(?:tsx?|vue):.*\t${rule}\t" "$TMP/reference.fixes.txt" | sort > "$TMP/ref.txt"
 		# fixes.known.txt: where veslint fixes on purpose otherwise than the reference, pairs of
 		# lines `eslint<TAB><its line>` and `veslint<TAB><veslint's line>` (documented in internals.md);
 		# an empty line of veslint's: it does not report that finding on purpose (limitations.txt).

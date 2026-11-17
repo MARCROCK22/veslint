@@ -18,12 +18,12 @@ fn vndrltp_options(options []json2.Any) ![]string {
 	} else {
 		['RouterLink']
 	}
-	mut names := []string{}
+	mut tags := []string{}
 	for component in components {
-		names << vue_kebab_case(component)
-		names << vue_pascal_case(component)
+		tags << vue_kebab_case(component)
+		tags << vue_pascal_case(component)
 	}
-	return names
+	return tags
 }
 
 fn (mut c Checker) lint_vue_no_deprecated_router_link_tag_prop(root C.TSNode, abs_path string, mut stats Stats) ![]Finding {
@@ -31,11 +31,11 @@ fn (mut c Checker) lint_vue_no_deprecated_router_link_tag_prop(root C.TSNode, ab
 		return []
 	}
 	sw := time.new_stopwatch()
-	names := vndrltp_options(c.rule_options(vue_no_deprecated_router_link_tag_prop))!
+	tags := vndrltp_options(c.rule_options(vue_no_deprecated_router_link_tag_prop))!
 	mut findings := []Finding{}
 	for i in c.vue_template_vnodes() {
 		node := &c.vue.doc.nodes[i]
-		if node.typ != .v_element || node.raw_name !in names {
+		if node.typ != .v_element || node.raw_name !in tags {
 			continue
 		}
 		stats.checked++
