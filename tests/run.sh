@@ -387,7 +387,7 @@ expect_usage_error() { # description expected_text arguments...
 		cat "$TMP/usage.err"
 	fi
 }
-for javascript_file in component.jsx script.js module.mjs common.cjs App.vue notes.md; do
+for javascript_file in component.jsx script.js module.mjs common.cjs App.svelte notes.md; do
 	expect_usage_error "a ${javascript_file##*.} file is rejected" "only reads TypeScript" "$javascript_file"
 done
 expect_usage_error "--server takes no files" "takes no files" --server app.ts
@@ -566,6 +566,72 @@ if [[ $code -eq 1 ]] && diff -u <(grep -P '^globals/a\.ts:.*\t@typescript-eslint
 else
 	ko "--config with languageOptions (code $code)"
 	cat "$TMP/globals.err"
+fi
+
+# Vue files (vue_files.v, rules/vue_file.v): the TypeScript scripts of tests/vue-lint/fixtures, with
+# every rule of tests/vue-lint/rules.json and the types of their project, give what ESLint gives
+# with vue-eslint-parser and typescript-eslint's parser: the problems with their fixes and
+# suggestions (tests/vue-lint/expected.txt), and --fix the files and the problems of
+# tests/vue-lint/fixed (both pinned from ESLint by tests/vue-lint/pin.sh; tests/vue-lint/compare.sh
+# compares thousands of SFCs). The server answers what the command line prints for them, the
+# identifier mode reads their scripts, and a .vue file whose script is JavaScript is not linted.
+code=0
+(cd tests/vue-lint/fixtures && ../../../veslint --config ../rules.json --fixes ./*.vue) > "$TMP/vue.out" 2> "$TMP/vue.err" || code=$?
+if [[ $code -eq 1 ]] && diff -u tests/vue-lint/expected.txt <(sed 's|^\./||' "$TMP/vue.out" | sorted); then
+	ok "Vue files: ESLint's problems, fixes and suggestions ($(wc -l < tests/vue-lint/expected.txt) lines)"
+else
+	ko "Vue files: not ESLint's problems (code $code)"
+	cat "$TMP/vue.err"
+fi
+mkdir -p "$TMP/vue-fix"
+cp tests/vue-lint/fixtures/*.vue tests/vue-lint/fixtures/*.ts tests/vue-lint/fixtures/tsconfig.json "$TMP/vue-fix/"
+code=0
+(cd "$TMP/vue-fix" && "$ROOT/veslint" --config "$ROOT/tests/vue-lint/rules.json" --fix --fixes ./*.vue) > "$TMP/vue-fix.out" 2> "$TMP/vue-fix.err" || code=$?
+vue_fixed=1
+for file in tests/vue-lint/fixtures/*.vue; do
+	cmp -s "tests/vue-lint/fixed/${file##*/}" "$TMP/vue-fix/${file##*/}" || { vue_fixed=0; diff -u "tests/vue-lint/fixed/${file##*/}" "$TMP/vue-fix/${file##*/}"; }
+done
+if [[ $code -eq 1 && $vue_fixed -eq 1 ]] && diff -u tests/vue-lint/fixed/expected.txt <(sed 's|^\./||' "$TMP/vue-fix.out" | sorted); then
+	ok "Vue files: --fix leaves the files and the problems eslint --fix leaves"
+else
+	ko "Vue files: --fix (code $code)"
+	cat "$TMP/vue-fix.err"
+fi
+python3 -c 'import json, sys; print(json.dumps({"id": 1, "config": "../rules.json", "files": sys.argv[1:]}))' tests/vue-lint/fixtures/*.vue |
+	sed 's|tests/vue-lint/fixtures/|<cwd>/|g' > "$TMP/vue-server.jsonl"
+code=0
+(cd tests/vue-lint/fixtures && ../../../veslint --config ../rules.json --fixes "$PWD"/*.vue) > "$TMP/vue-cli.out" 2> "$TMP/vue-cli.err" || code=$?
+if python3 tests/server_client.py ./veslint tests/vue-lint/fixtures "$TMP/vue-server.jsonl" > "$TMP/vue-server.out" 2> "$TMP/vue-server.err" &&
+	python3 - "$TMP/vue-server.out" "$TMP/vue-cli.out" "$TMP/vue-cli.err" "$code" "$PWD/tests/vue-lint/fixtures" << 'PY'
+import json, sys
+answer = json.loads(open(sys.argv[1]).readline())
+cwd = sys.argv[5]
+got = (answer['stdout'].replace('<cwd>', cwd), answer['stderr'].replace('<cwd>', cwd), answer['code'])
+sys.exit(0 if got == (open(sys.argv[2]).read(), open(sys.argv[3]).read(), int(sys.argv[4])) else 1)
+PY
+then
+	ok "Vue files: --server answers what the command line prints"
+else
+	ko "Vue files: --server does not answer what the command line prints"
+	cat "$TMP/vue-server.err"
+fi
+if (cd tests/vue-lint/fixtures && ../../../veslint both-scripts.vue) > "$TMP/vue-types.out" 2> "$TMP/vue-types.err" &&
+	grep -qP '^both-scripts\.vue:9:5\tcount\tnumber$' "$TMP/vue-types.out"; then
+	ok "Vue files: the identifiers of a script and their types"
+else
+	ko "Vue files: the identifiers of a script and their types"
+	cat "$TMP/vue-types.err"
+fi
+mkdir -p "$TMP/vue-javascript"
+printf '<script>\nvar a = 1\n</script>\n' > "$TMP/vue-javascript/App.vue"
+cp tests/vue-lint/fixtures/tsconfig.json "$TMP/vue-javascript/"
+code=0
+(cd "$TMP/vue-javascript" && "$ROOT/veslint" --rule no-var App.vue) > "$TMP/vue-javascript.out" 2> "$TMP/vue-javascript.err" || code=$?
+if [[ $code -eq 0 && ! -s "$TMP/vue-javascript.out" ]] && grep -qF 'warning: App.vue: not linted: its <script> is JavaScript' "$TMP/vue-javascript.err"; then
+	ok "Vue files: a JavaScript script is not linted, with a warning"
+else
+	ko "Vue files: a JavaScript script (code $code)"
+	cat "$TMP/vue-javascript.out" "$TMP/vue-javascript.err"
 fi
 
 # veslint_batched OUT ERR ARGUMENTS... -- FILES...: ./veslint with the arguments and the files,

@@ -147,6 +147,11 @@ mut:
 	// (vue_files.v): tsgo runs with virtual files once there is one.
 	twins       map[string]string
 	vue_parsers VueParsers
+	// twin_configs is the tsconfig of each twin, and included the twins include_twins looked at
+	// with the running tsgo.
+	twin_configs   map[string]string
+	included       map[string]bool
+	served_configs []string // the tsconfig files include_twins gave tsgo with twins added
 }
 
 // serve answers requests until stdin ends.
@@ -249,8 +254,17 @@ fn (mut s Server) handle(item ServerRequest) ServerAnswer {
 	s.changes.changed << request_paths(request, 'changed')
 	s.changes.created << request_paths(request, 'created')
 	s.changes.deleted << request_paths(request, 'deleted')
+	s.update_twins(request)
 	if request_bool(request, 'reset', false) {
 		s.changes.invalidate_all = true
+		// A tsconfig.json may have changed: the twins are added again to what is on disk.
+		if s.client != unsafe { nil } {
+			for tsconfig in s.served_configs {
+				s.client.stop_serving(tsconfig)
+			}
+		}
+		s.served_configs = []
+		s.included = map[string]bool{}
 	}
 	for path in request_paths(request, 'forget') {
 		s.stop_serving(path)
@@ -464,6 +478,9 @@ fn (mut s Server) lint(id i64, config string, project string, files []string, te
 		if tsconfig != '' && tsconfig !in tsconfigs {
 			tsconfigs << tsconfig
 		}
+		if is_vue && tsconfig != '' {
+			s.twin_configs[rules.vue_twin_path(abs_path)] = tsconfig
+		}
 		entries << RuleFile{
 			path:     path
 			abs_path: abs_path
@@ -593,7 +610,7 @@ fn (mut s Server) lint(id i64, config string, project string, files []string, te
 		problems += report.problems
 		warnings += report.warnings
 	}
-	errors.writeln(summary_line(problems, files.len, warnings))
+	errors.writeln(summary_line(problems, entries.len, warnings))
 	return ServerAnswer{
 		id:     id
 		code:   if problems - warnings > 0 { 1 } else { 0 }
@@ -617,6 +634,9 @@ fn (mut s Server) snapshot_for(tsconfigs []string) ! {
 		}
 		s.client = client
 		_ = s.client.initialize()!
+		s.included = map[string]bool{}
+		s.served_configs = []
+		s.include_twins()!
 		s.open_projects = tsconfigs.clone()
 		s.snap = s.client.create_snapshot(s.open_projects)!
 		s.projects = map_projects(s.open_projects, s.snap)!
@@ -624,6 +644,9 @@ fn (mut s Server) snapshot_for(tsconfigs []string) ! {
 		s.asts = map[string]&rules.DeclarationAsts{}
 		s.changes = tsgo.FileChangeSet{}
 		return
+	}
+	for tsconfig in s.include_twins()! {
+		s.changes.changed << tsconfig
 	}
 	mut opened := []string{}
 	for tsconfig in tsconfigs {
@@ -646,6 +669,30 @@ fn (mut s Server) snapshot_for(tsconfigs []string) ! {
 	}
 }
 
+// include_twins runs include_twins (vue_files.v) for the twins tsgo has not been looked at for:
+// it gives the tsconfig files it served again.
+fn (mut s Server) include_twins() ![]string {
+	mut twins := map[string][]string{}
+	mut fresh := false
+	for twin, tsconfig in s.twin_configs {
+		twins[tsconfig] << twin
+		if twin !in s.included {
+			fresh = true
+			s.included[twin] = true
+		}
+	}
+	if !fresh || !s.client.has_virtual_fs() {
+		return []string{}
+	}
+	served := include_twins(mut s.client, twins)!
+	for tsconfig in served {
+		if tsconfig !in s.served_configs {
+			s.served_configs << tsconfig
+		}
+	}
+	return served
+}
+
 // set_twin gives tsgo the twin of a .vue file with `code` from the next snapshot on. A tsgo started
 // without virtual files is stopped: the next snapshot starts one with them.
 fn (mut s Server) set_twin(path string, code string) {
@@ -666,6 +713,38 @@ fn (mut s Server) set_twin(path string, code string) {
 		s.changes.created << path
 	} else {
 		s.changes.changed << path
+	}
+}
+
+// update_twins gives the twins of the .vue files that changed on disk, or whose unsaved text is
+// forgotten, the code of the file on disk, and drops those of the ones deleted: tsgo does not read
+// a .vue file, only its twin.
+fn (mut s Server) update_twins(request map[string]json2.Any) {
+	forgotten := request_paths(request, 'forget')
+	for key in ['changed', 'created', 'forget'] {
+		for path in request_paths(request, key) {
+			twin := rules.vue_twin_path(path)
+			// While the editor has unsaved text, the twin has its code.
+			if twin !in s.twins || (path in s.served && path !in forgotten) {
+				continue
+			}
+			src, _, _ := read_source(path) or { continue }
+			mut doc := s.vue_parsers.parse(src) or { continue }
+			code := doc.script.code
+			doc.free()
+			s.set_twin(twin, code)
+		}
+	}
+	for path in request_paths(request, 'deleted') {
+		twin := rules.vue_twin_path(path)
+		if twin !in s.twins {
+			continue
+		}
+		s.twins.delete(twin)
+		if s.client != unsafe { nil } {
+			s.client.remove_virtual(twin)
+		}
+		s.changes.deleted << twin
 	}
 }
 

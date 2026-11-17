@@ -445,3 +445,59 @@ fn test_identifier_characters_typescript_rejects() {
 	assert d.errors[0].ts_message
 	assert d.errors[0].message == 'Invalid character.'
 }
+
+// file_to_synthetic is the inverse of synthetic_to_file on the scripts, -1 out of them (the
+// `export` a named export of a <script setup> loses, the tags), and synthetic_token_ends has the
+// ends of the punctuators the code adds, where TypeScript's next node starts.
+fn test_file_to_synthetic() {
+	d := parse(both)
+	s := d.script
+	at := both.index('import') or { 0 }
+	code_at := s.file_to_synthetic(at, false)
+	assert s.code[code_at..].starts_with('import')
+	assert s.synthetic_to_file(code_at, false) == at
+	assert s.file_to_synthetic(both.index('<template>') or { 0 }, false) == -1
+	// With two scripts, the named exports of the setup lose their `export`.
+	setup := parse('<script lang="ts">\nexport default {}\n</script>\n<script setup lang="ts">\nexport const x = 1\n</script>')
+	export_at := setup.src.last_index('export') or { 0 }
+	assert setup.script.file_to_synthetic(export_at, false) == -1
+	const_at := setup.src.index('const') or { 0 }
+	assert setup.script.code[setup.script.file_to_synthetic(const_at, false)..].starts_with('const x')
+	ends := s.synthetic_token_ends([])
+	block := s.code.index('{\n\n;') or { 0 }
+	assert block + 1 in ends
+}
+
+// With a generic, the code starts with the defines: the first statement's TypeScript node starts
+// after their `;`, and an offset of the file maps past them.
+fn test_file_to_synthetic_with_generic() {
+	src := '<script setup lang="ts" generic="T extends string">\nconst a: T = 1 as T\n</script>'
+	d := parse(src)
+	s := d.script
+	assert s.code.starts_with('type T'), s.code
+	at := src.index('const') or { 0 }
+	assert s.code[s.file_to_synthetic(at, false)..].starts_with('const a')
+	defines := s.code.index(';\n') or { 0 }
+	assert s.synthetic_token_ends([]) == [defines + 1], s.code
+}
+
+// A `//` comment that ends a script content ends there in the masked script, not in the end tag.
+fn test_line_comment_ends_with_the_content() {
+	src := '<script lang="ts">export default {} // c</script>\n<template><div/></template>'
+	d := parse(src)
+	assert d.script.comments.len == 1
+	assert d.script.comments[0].end == (src.index('</script>') or { 0 })
+	assert d.script.masked.len == src.len
+}
+
+// What marks the variables of a <script setup> as used by the template, in vue-eslint-parser's
+// order: an element that is a component, a custom directive, a `ref`, and the references of the
+// expressions that nothing in the template resolves (not those of a v-for).
+fn test_template_uses() {
+	d := parse('<script setup lang="ts" generic="T">\nconst a = 1\n</script>\n<template><my-comp v-focus ref="el" :x="a" /><div v-for="i in list">{{ i }}</div></template>')
+	assert d.has_script_setup()
+	assert d.script_setup_generic_names() == ['T']
+	uses := d.template_uses().map('${it.kind}:${it.name}')
+	assert uses == ['element:my-comp', 'component:v-focus', 'exact:el', 'exact:a', 'exact:list']
+	assert !parse('<script lang="ts">\nconst a = 1\n</script>').has_script_setup()
+}

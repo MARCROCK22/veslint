@@ -44,6 +44,7 @@ function loadExtension(t) {
 
 test('which files are TypeScript, and which configuration a folder has', () => {
   assert.ok(isTypeScriptPath('a.ts') && isTypeScriptPath('b.TSX') && isTypeScriptPath('c.mts') && isTypeScriptPath('d.cts'));
+  assert.ok(isTypeScriptPath('App.vue'));
   assert.ok(!isTypeScriptPath('a.js') && !isTypeScriptPath('a.jsx') && !isTypeScriptPath('a.json'));
   assert.equal(findConfig(fixture, ''), path.join(fixture, 'eslint.config.mjs'));
   assert.equal(findConfig(fixture, 'resolved.json'), path.join(fixture, 'resolved.json'));
@@ -301,7 +302,7 @@ test('the open files are linted again when a file they import changes, those on 
   await until(() => rulesOf(b).length === 0);
   // A change on disk of a file that is not open at all.
   fs.writeFileSync(a.uri.fsPath, asynchronous);
-  state.handlers['**/*.{ts,mts,cts,tsx}.onDidChange'](vscode.Uri.file(a.uri.fsPath));
+  state.handlers['**/*.{ts,mts,cts,tsx,vue}.onDidChange'](vscode.Uri.file(a.uri.fsPath));
   await until(() => rulesOf(b).length === 1);
 });
 

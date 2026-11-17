@@ -1,0 +1,203 @@
+bom.vue:1:1	unicode-bom	unexpected	Unexpected Unicode BOM (Byte Order Mark).	fix	-1	0	
+bom.vue:2:14	@stylistic/semi	missingSemi	Missing semicolon.	fix	38	38	;	end	3	1
+both-scripts.vue:10:1	@typescript-eslint/no-floating-promises	floatingVoid	Promises must be awaited, end with a call to .catch, end with a call to .then with a rejection handler or be explicitly marked as ignored with the `void` operator.	suggestion	floatingFixVoid	Add void operator to ignore.	224	224	void 	suggestion	floatingFixAwait	Add await operator.	224	224	await 	end	10	9
+both-scripts.vue:11:7	@typescript-eslint/no-unused-vars	unusedVar	'unused' is assigned a value but never used.	end	11	13
+both-scripts.vue:12:5	prefer-const	useConst	'x' is never reassigned. Use 'const' instead.	fix	251	266	const x: any = 3;	end	12	11
+both-scripts.vue:12:8	@typescript-eslint/no-explicit-any	unexpectedAny	Unexpected any. Specify a different type.	suggestion	suggestUnknown	Use `unknown` instead, this will force you to explicitly, and safely assert the type is correct.	258	261	unknown	suggestion	suggestNever	Use `never` instead, this is useful when instantiating generic type parameters that you don't need to know the type of.	258	261	never	end	12	11
+both-scripts.vue:13:1	@typescript-eslint/no-unused-expressions	unusedExpression	Expected an assignment or function call and instead saw an expression.	end	13	7
+both-scripts.vue:13:3	@typescript-eslint/no-unsafe-member-access	unsafeMemberExpression	Unsafe member access .foo on an `any` value.	end	13	6
+both-scripts.vue:2:1	@typescript-eslint/promise-function-async	missingAsync	Functions that return promises must be async.	fix	19	19	async 	end	2	15
+both-scripts.vue:2:15	@stylistic/space-before-function-paren	missingSpace	Missing space before function parentheses.	fix	33	33	 	end	2	16
+both-scripts.vue:2:35	@stylistic/brace-style	blockSameLine	Statement inside of curly braces should be on next line.	fix	54	54	\n	end	2	36
+both-scripts.vue:2:60	@typescript-eslint/no-magic-numbers	noMagic	No magic number: 1.	end	2	61
+both-scripts.vue:2:64	@stylistic/brace-style	singleLineClose	Closing curly brace should be on the same line as opening curly brace or on the line after the previous block.	fix	82	82	\n	end	2	65
+both-scripts.vue:3:17	@stylistic/object-curly-spacing	unexpectedSpaceAfter	There should be no space after '{'.	fix	100	101		end	3	18
+both-scripts.vue:3:18	@stylistic/quote-props	unquotedPropertyFound	Unquoted property 'name' found.	fix	101	105	"name"	end	3	30
+both-scripts.vue:3:24	@stylistic/quotes	wrongQuotes	Strings must use doublequote.	fix	107	113	"Both"	end	3	30
+both-scripts.vue:3:30	@stylistic/object-curly-spacing	unexpectedSpaceBefore	There should be no space before '}'.	fix	113	114		end	3	31
+both-scripts.vue:9:1	vars-on-top	top	All 'var' declarations must be at the top of the function scope.	end	9	21
+both-scripts.vue:9:19	@typescript-eslint/no-magic-numbers	noMagic	No magic number: 1.	end	9	20
+crlf.vue:6:1	no-var	unexpectedVar	Unexpected var, use let or const instead.	fix	68	85	let text = "crlf"	end	6	18
+crlf.vue:6:18	@stylistic/semi	missingSemi	Missing semicolon.	fix	85	85	;	end	7	1
+crlf.vue:8:10	@stylistic/brace-style	blockSameLine	Statement inside of curly braces should be on next line.	fix	115	115	\n	end	8	11
+crlf.vue:8:20	@stylistic/object-curly-spacing	unexpectedSpaceAfter	There should be no space after '{'.	fix	124	125		end	8	21
+crlf.vue:8:21	@stylistic/quote-props	unquotedPropertyFound	Unquoted property 'text' found.	fix	125	129	"text"	end	8	31
+crlf.vue:8:21	object-shorthand	expectedPropertyShorthand	Expected property shorthand.	fix	125	135	text	end	8	31
+crlf.vue:8:3	@typescript-eslint/explicit-function-return-type	missingReturnType	Missing return type on function.	end	8	7
+crlf.vue:8:3	@typescript-eslint/explicit-module-boundary-types	missingReturnType	Missing return type on function.	end	8	7
+crlf.vue:8:31	@stylistic/object-curly-spacing	unexpectedSpaceBefore	There should be no space before '}'.	fix	135	136		end	8	32
+crlf.vue:8:33	@stylistic/semi	missingSemi	Missing semicolon.	fix	137	137	;	end	8	34
+crlf.vue:8:34	@stylistic/brace-style	singleLineClose	Closing curly brace should be on the same line as opening curly brace or on the line after the previous block.	fix	138	138	\n	end	8	35
+crlf.vue:8:35	@stylistic/comma-dangle	unexpected	Unexpected trailing comma.	fix	138	145	}  \r\n}	end	8	36
+crlf.vue:8:36	@stylistic/no-trailing-spaces	trailingSpace	Trailing spaces not allowed.	fix	140	142		end	8	38
+crlf.vue:8:7	@stylistic/space-before-function-paren	missingSpace	Missing space before function parentheses.	fix	111	111	 	end	8	8
+crlf.vue:9:2	@stylistic/semi	missingSemi	Missing semicolon.	fix	145	145	;	end	10	1
+directives.vue:12:1	no-var	unexpectedVar	Unexpected var, use let or const instead.	fix	224	234	let c = 3;	end	12	11
+directives.vue:15:16	eslint	warning	Unused eslint-disable directive (no problems were reported from '@typescript-eslint/no-unused-vars').	fix	314	370	 
+directives.vue:15:5	prefer-const	useConst	'other' is never reassigned. Use 'const' instead.	fix	299	313	const other = 4;	end	15	10
+directives.vue:16:1	eslint	warning	Unused eslint-disable directive (no problems were reported from 'no-console').	fix	371	409	 
+directives.vue:18:17	@stylistic/object-curly-spacing	unexpectedSpaceAfter	There should be no space after '{'.	fix	465	466		end	18	18
+directives.vue:18:18	@stylistic/quote-props	unquotedPropertyFound	Unquoted property 'data' found.	fix	466	470	"data"	end	18	58
+directives.vue:18:18	@typescript-eslint/explicit-function-return-type	missingReturnType	Missing return type on function.	end	18	24
+directives.vue:18:18	@typescript-eslint/explicit-module-boundary-types	missingReturnType	Missing return type on function.	end	18	24
+directives.vue:18:32	@stylistic/object-curly-spacing	unexpectedSpaceAfter	There should be no space after '{'.	fix	480	481		end	18	33
+directives.vue:18:40	@stylistic/object-property-newline	propertiesOnNewline	Object properties must go on a new line.	fix	487	488	\n	end	18	55
+directives.vue:18:55	@stylistic/object-curly-spacing	unexpectedSpaceBefore	There should be no space before '}'.	fix	503	504		end	18	56
+directives.vue:18:58	@stylistic/object-curly-spacing	unexpectedSpaceBefore	There should be no space before '}'.	fix	506	507		end	18	59
+line-separator.vue:2:10	no-irregular-whitespace	noIrregularWhitespace	Irregular whitespace not allowed.	end	3	1
+line-separator.vue:6:20	@stylistic/no-trailing-spaces	trailingSpace	Trailing spaces not allowed.	fix	79	82		end	6	23
+line-separator.vue:7:17	@stylistic/object-curly-spacing	unexpectedSpaceAfter	There should be no space after '{'.	fix	118	119		end	7	18
+line-separator.vue:7:19	@stylistic/object-curly-spacing	unexpectedSpaceBefore	There should be no space before '}'.	fix	120	121		end	7	20
+line-separator.vue:7:21	@stylistic/semi	missingSemi	Missing semicolon.	fix	122	122	;	end	8	1
+line-separator.vue:9:10	@stylistic/eol-last	missing	Newline required at end of file but not found.	fix	132	132	\n
+setup-generic.vue:11:17	@stylistic/object-curly-spacing	unexpectedSpaceAfter	There should be no space after '{'.	fix	479	480		end	11	18
+setup-generic.vue:11:18	@stylistic/quote-props	unquotedPropertyFound	Unquoted property 'mounted' found.	fix	480	487	"mounted"	end	11	58
+setup-generic.vue:11:18	@typescript-eslint/explicit-function-return-type	missingReturnType	Missing return type on function.	end	11	27
+setup-generic.vue:11:28	@typescript-eslint/prefer-readonly-parameter-types	shouldBeReadonly	Parameter should be a read only type.	end	11	43
+setup-generic.vue:11:48	@typescript-eslint/no-confusing-void-expression	invalidVoidExprArrow	Returning a void expression from an arrow function shorthand is forbidden. Please add braces to the arrow function.	fix	509	520	 { el.focus(); }	end	11	58
+setup-generic.vue:11:58	@stylistic/object-curly-spacing	unexpectedSpaceBefore	There should be no space before '}'.	fix	520	521		end	11	59
+setup-generic.vue:12:17	@stylistic/quotes	wrongQuotes	Strings must use doublequote.	fix	540	543	"a"	end	12	20
+setup-generic.vue:12:5	prefer-const	useConst	'label' is never reassigned. Use 'const' instead.	fix	524	545	const label = ref('a');	end	12	10
+setup-generic.vue:13:1	no-var	unexpectedVar	Unexpected var, use let or const instead.	fix	546	589	let total = computed(() => props.size * 2);	end	13	44
+setup-generic.vue:13:41	@typescript-eslint/no-magic-numbers	noMagic	No magic number: 2.	end	13	42
+setup-generic.vue:14:7	@typescript-eslint/no-unused-vars	unusedVar	'unused' is assigned a value but never used.	end	14	13
+setup-generic.vue:16:1	@typescript-eslint/explicit-function-return-type	missingReturnType	Missing return type on function.	end	16	20
+setup-generic.vue:16:20	@stylistic/space-before-function-paren	missingSpace	Missing space before function parentheses.	fix	628	628	 	end	16	21
+setup-generic.vue:17:3	@typescript-eslint/no-floating-promises	floatingVoid	Promises must be awaited, end with a call to .catch, end with a call to .then with a rejection handler or be explicitly marked as ignored with the `void` operator.	suggestion	floatingFixVoid	Add void operator to ignore.	643	643	void 	suggestion	floatingFixAwait	Add await operator.	643	643	await 	end	17	11
+setup-generic.vue:17:8	@typescript-eslint/no-magic-numbers	noMagic	No magic number: 1.	end	17	9
+setup-generic.vue:18:7	@typescript-eslint/strict-boolean-expressions	conditionErrorNullableString	Unexpected nullable string value in conditional. Please handle the nullish/empty cases explicitly.	suggestion	conditionFixCompareNullish	Change condition to check for null/undefined (`value != null`)	658	663	maybe != null	suggestion	conditionFixDefaultEmptyString	Explicitly treat nullish value the same as an empty string (`value ?? ""`)	658	663	maybe ?? ""	suggestion	conditionFixCastBoolean	Explicitly convert value to a boolean (`Boolean(value)`)	658	663	Boolean(maybe)	end	18	12
+setup-generic.vue:19:10	@stylistic/quotes	wrongQuotes	Strings must use doublequote.	fix	676	684	"change"	end	19	18
+setup-generic.vue:19:19	@stylistic/function-call-argument-newline	missingLineBreak	There should be a line break after this argument.	fix	685	686	\n	end	19	20
+setup-generic.vue:21:14	@typescript-eslint/no-magic-numbers	noMagic	No magic number: 2.	end	21	15
+setup-generic.vue:22:10	@typescript-eslint/no-unnecessary-type-assertion	unnecessaryAssertion	This assertion is unnecessary since it does not change the type of the expression.	fix	729	734		end	22	20
+setup-generic.vue:25:15	@stylistic/object-curly-spacing	unexpectedSpaceAfter	There should be no space after '{'.	fix	753	754		end	25	16
+setup-generic.vue:25:20	@stylistic/object-curly-spacing	unexpectedSpaceBefore	There should be no space before '}'.	fix	758	759		end	25	21
+setup-generic.vue:2:15	perfectionist/sort-named-imports	unexpectedNamedImportsOrder	Expected "computed" to come before "ref".	fix	64	77	computed, ref	end	2	23
+setup-generic.vue:2:23	@stylistic/object-curly-spacing	unexpectedSpaceBefore	There should be no space before '}'.	fix	77	78		end	2	24
+setup-generic.vue:2:31	@stylistic/quotes	wrongQuotes	Strings must use doublequote.	fix	85	90	"vue"	end	2	36
+setup-generic.vue:2:9	@stylistic/object-curly-spacing	unexpectedSpaceAfter	There should be no space after '{'.	fix	63	64		end	2	10
+setup-generic.vue:3:1	perfectionist/sort-imports	missedSpacingBetweenImports	Missed spacing between "vue" and "./util".	fix	91	213	\n\nimport Unused from './both-scripts.vue';\nimport MyThing from './single-script.vue';\nimport { load, maybe } from './util';	end	3	38
+setup-generic.vue:3:21	@stylistic/object-curly-spacing	unexpectedSpaceBefore	There should be no space before '}'.	fix	112	113		end	3	22
+setup-generic.vue:3:29	@stylistic/quotes	wrongQuotes	Strings must use doublequote.	fix	120	128	"./util"	end	3	37
+setup-generic.vue:3:9	@stylistic/object-curly-spacing	unexpectedSpaceAfter	There should be no space after '{'.	fix	100	101		end	3	10
+setup-generic.vue:4:1	perfectionist/sort-imports	unexpectedImportsOrder	Expected "./single-script.vue" to come before "./util".	fix	91	213	\n\nimport Unused from './both-scripts.vue';\nimport MyThing from './single-script.vue';\nimport { load, maybe } from './util';	end	4	43
+setup-generic.vue:4:21	@stylistic/quotes	wrongQuotes	Strings must use doublequote.	fix	150	171	"./single-script.vue"	end	4	42
+setup-generic.vue:5:1	perfectionist/sort-imports	unexpectedImportsOrder	Expected "./both-scripts.vue" to come before "./single-script.vue".	fix	91	213	\n\nimport Unused from './both-scripts.vue';\nimport MyThing from './single-script.vue';\nimport { load, maybe } from './util';	end	5	41
+setup-generic.vue:5:20	@stylistic/quotes	wrongQuotes	Strings must use doublequote.	fix	192	212	"./both-scripts.vue"	end	5	40
+setup-generic.vue:5:8	@typescript-eslint/no-unused-vars	unusedVar	'Unused' is defined but never used.	suggestion	removeUnusedImportDeclaration	Remove unused import declaration.	173	214		end	5	14
+setup-generic.vue:7:41	@stylistic/object-curly-spacing	unexpectedSpaceAfter	There should be no space after '{'.	fix	255	256		end	7	42
+setup-generic.vue:7:42	@stylistic/quote-props	unquotedPropertyFound	Unquoted property 'item' found.	fix	256	260	"item"	end	7	50
+setup-generic.vue:7:51	@stylistic/object-property-newline	propertiesOnNewline	Object properties must go on a new line.	fix	264	265	\n	end	7	56
+setup-generic.vue:7:51	@stylistic/quote-props	unquotedPropertyFound	Unquoted property 'other' found.	fix	265	270	"other"	end	7	61
+setup-generic.vue:7:62	@stylistic/object-property-newline	propertiesOnNewline	Object properties must go on a new line.	fix	275	276	\n	end	7	66
+setup-generic.vue:7:62	@stylistic/quote-props	unquotedPropertyFound	Unquoted property 'size' found.	fix	276	280	"size"	end	7	75
+setup-generic.vue:7:75	@stylistic/object-curly-spacing	unexpectedSpaceBefore	There should be no space before '}'.	fix	289	290		end	7	76
+setup-generic.vue:7:81	@stylistic/function-call-argument-newline	missingLineBreak	There should be a line break after this argument.	fix	295	296	\n	end	7	82
+setup-generic.vue:7:83	@stylistic/object-curly-spacing	unexpectedSpaceAfter	There should be no space after '{'.	fix	297	298		end	7	84
+setup-generic.vue:7:84	@stylistic/quote-props	unquotedPropertyFound	Unquoted property 'size' found.	fix	298	302	"size"	end	7	91
+setup-generic.vue:7:91	@stylistic/object-curly-spacing	unexpectedSpaceBefore	There should be no space before '}'.	fix	305	306		end	7	92
+setup-generic.vue:8:27	@stylistic/object-curly-spacing	unexpectedSpaceAfter	There should be no space after '{'.	fix	336	337		end	8	28
+setup-generic.vue:8:28	@typescript-eslint/prefer-function-type	functionTypeOverCallableType	Type literal only has a call signature, you should use a function type instead.	fix	335	368	(e: 'change', value: T) => void	end	8	57
+setup-generic.vue:8:32	@stylistic/quotes	wrongQuotes	Strings must use doublequote.	fix	341	349	"change"	end	8	40
+setup-generic.vue:8:57	@stylistic/object-curly-spacing	unexpectedSpaceBefore	There should be no space before '}'.	fix	366	367		end	8	58
+setup-only-macros.vue:2:28	@stylistic/object-curly-spacing	unexpectedSpaceAfter	There should be no space after '{'.	fix	52	53		end	2	29
+setup-only-macros.vue:2:29	@stylistic/quote-props	unquotedPropertyFound	Unquoted property 'title' found.	fix	53	58	"title"	end	2	43
+setup-only-macros.vue:2:44	@stylistic/object-property-newline	propertiesOnNewline	Object properties must go on a new line.	fix	67	68	\n	end	2	49
+setup-only-macros.vue:2:44	@stylistic/quote-props	unquotedPropertyFound	Unquoted property 'count' found.	fix	68	73	"count"	end	2	58
+setup-only-macros.vue:2:58	@stylistic/object-curly-spacing	unexpectedSpaceBefore	There should be no space before '}'.	fix	82	83		end	2	59
+setup-only-macros.vue:2:63	@stylistic/semi	missingSemi	Missing semicolon.	fix	87	87	;	end	3	1
+setup-only-macros.vue:3:27	@stylistic/quotes	wrongQuotes	Strings must use doublequote.	fix	114	121	"close"	end	3	34
+setup-only-macros.vue:3:36	@stylistic/semi	missingSemi	Missing semicolon.	fix	123	123	;	end	4	1
+setup-only-macros.vue:4:24	@stylistic/semi	missingSemi	Missing semicolon.	fix	147	147	;	end	5	1
+setup-only-macros.vue:4:5	prefer-const	useConst	'local' is never reassigned. Use 'const' instead.	fix	124	147	const local = props.title	end	4	10
+setup-only-macros.vue:5:1	@typescript-eslint/explicit-function-return-type	missingReturnType	Missing return type on function.	end	5	15
+setup-only-macros.vue:5:15	@stylistic/space-before-function-paren	missingSpace	Missing space before function parentheses.	fix	162	162	 	end	5	16
+setup-only-macros.vue:6:16	@stylistic/semi	missingSemi	Missing semicolon.	fix	182	182	;	end	7	1
+setup-only-macros.vue:6:8	@stylistic/quotes	wrongQuotes	Strings must use doublequote.	fix	174	181	"close"	end	6	15
+single-script.vue:5:1	@typescript-eslint/promise-function-async	missingAsync	Functions that return promises must be async.	fix	61	61	async 	end	5	15
+single-script.vue:5:15	@stylistic/space-before-function-paren	missingSpace	Missing space before function parentheses.	fix	75	75	 	end	5	16
+single-script.vue:5:35	@stylistic/brace-style	blockSameLine	Statement inside of curly braces should be on next line.	fix	96	96	\n	end	5	36
+single-script.vue:5:60	@typescript-eslint/no-magic-numbers	noMagic	No magic number: 1.	end	5	61
+single-script.vue:5:64	@stylistic/brace-style	singleLineClose	Closing curly brace should be on the same line as opening curly brace or on the line after the previous block.	fix	124	124	\n	end	5	65
+single-script.vue:6:20	@stylistic/no-trailing-spaces	trailingSpace	Trailing spaces not allowed.	fix	145	148		end	6	23
+single-script.vue:6:20	@stylistic/semi	missingSemi	Missing semicolon.	fix	145	145	;	end	6	21
+single-script.vue:7:1	@typescript-eslint/no-floating-promises	floatingVoid	Promises must be awaited, end with a call to .catch, end with a call to .then with a rejection handler or be explicitly marked as ignored with the `void` operator.	suggestion	floatingFixVoid	Add void operator to ignore.	149	149	void 	suggestion	floatingFixAwait	Add await operator.	149	149	await 	end	7	8
+single-script.vue:7:8	@stylistic/semi	missingSemi	Missing semicolon.	fix	156	156	;	end	8	1
+single-script.vue:8:17	@stylistic/object-curly-spacing	unexpectedSpaceAfter	There should be no space after '{'.	fix	173	174		end	8	18
+single-script.vue:8:18	@typescript-eslint/explicit-function-return-type	missingReturnType	Missing return type on function.	end	8	22
+single-script.vue:8:18	@typescript-eslint/explicit-module-boundary-types	missingReturnType	Missing return type on function.	end	8	22
+single-script.vue:8:22	@stylistic/space-before-function-paren	missingSpace	Missing space before function parentheses.	fix	178	178	 	end	8	23
+single-script.vue:8:25	@stylistic/brace-style	blockSameLine	Statement inside of curly braces should be on next line.	fix	182	182	\n	end	8	26
+single-script.vue:8:35	@stylistic/object-curly-spacing	unexpectedSpaceAfter	There should be no space after '{'.	fix	191	192		end	8	36
+single-script.vue:8:39	@stylistic/object-curly-spacing	unexpectedSpaceBefore	There should be no space before '}'.	fix	195	196		end	8	40
+single-script.vue:8:41	@stylistic/semi	missingSemi	Missing semicolon.	fix	197	197	;	end	8	42
+single-script.vue:8:42	@stylistic/brace-style	singleLineClose	Closing curly brace should be on the same line as opening curly brace or on the line after the previous block.	fix	198	198	\n	end	8	43
+single-script.vue:8:43	@stylistic/object-curly-spacing	unexpectedSpaceBefore	There should be no space before '}'.	fix	199	200		end	8	44
+single-script.vue:8:45	@stylistic/semi	missingSemi	Missing semicolon.	fix	201	201	;	end	9	1
+template-only.vue:2:20	@stylistic/no-trailing-spaces	trailingSpace	Trailing spaces not allowed.	fix	30	33		end	2	23
+tsx-lang.vue:3:3	@stylistic/quote-props	unquotedPropertyFound	Unquoted property 'name' found.	fix	39	43	"name"	end	3	14
+tsx-lang.vue:3:9	@stylistic/quotes	wrongQuotes	Strings must use doublequote.	fix	45	50	"Tsx"	end	3	14
+tsx-lang.vue:4:3	@typescript-eslint/explicit-function-return-type	missingReturnType	Missing return type on function.	end	4	9
+tsx-lang.vue:4:3	@typescript-eslint/explicit-module-boundary-types	missingReturnType	Missing return type on function.	end	4	9
+tsx-lang.vue:4:9	@stylistic/space-before-function-paren	missingSpace	Missing space before function parentheses.	fix	60	60	 	end	4	10
+tsx-lang.vue:5:11	@typescript-eslint/no-inferrable-types	noInferrableType	Type number trivially inferred from a number literal, remove type annotation.	fix	81	89		end	5	30
+tsx-lang.vue:5:30	@stylistic/semi	missingSemi	Missing semicolon.	fix	94	94	;	end	6	1
+tsx-lang.vue:6:18	@stylistic/semi	missingSemi	Missing semicolon.	fix	112	112	;	end	7	1
+tsx-lang.vue:7:4	@stylistic/comma-dangle	unexpected	Unexpected trailing comma.	fix	115	119	}\n}	end	7	5
+tsx-lang.vue:8:2	@stylistic/semi	missingSemi	Missing semicolon.	fix	119	119	;	end	9	1
+types.vue:10:24	@stylistic/object-curly-spacing	unexpectedSpaceBefore	There should be no space before '}'.	fix	176	177		end	10	25
+types.vue:10:32	@stylistic/quotes	wrongQuotes	Strings must use doublequote.	fix	184	189	"vue"	end	10	37
+types.vue:10:9	@stylistic/object-curly-spacing	unexpectedSpaceAfter	There should be no space after '{'.	fix	161	162		end	10	10
+types.vue:11:1	perfectionist/sort-imports	missedSpacingBetweenImports	Missed spacing between "vue" and "./util".	fix	190	191	\n\n	end	11	31
+types.vue:11:14	@stylistic/object-curly-spacing	unexpectedSpaceBefore	There should be no space before '}'.	fix	204	205		end	11	15
+types.vue:11:22	@stylistic/quotes	wrongQuotes	Strings must use doublequote.	fix	212	220	"./util"	end	11	30
+types.vue:11:9	@stylistic/object-curly-spacing	unexpectedSpaceAfter	There should be no space after '{'.	fix	199	200		end	11	10
+types.vue:14:23	@stylistic/quotes	wrongQuotes	Strings must use doublequote.	fix	278	281	"x"	end	14	26
+types.vue:14:7	@typescript-eslint/no-inferrable-types	noInferrableType	Type string trivially inferred from a string literal, remove type annotation.	fix	267	275		end	14	26
+types.vue:19:3	require-atomic-updates	nonAtomicObjectUpdate	Possible race condition: `items.value` might be assigned based on an outdated state of `items`.	end	19	48
+types.vue:21:38	@typescript-eslint/no-magic-numbers	noMagic	No magic number: 1.	end	21	39
+types.vue:22:14	@stylistic/multiline-ternary	expectedTestCons	Expected newline between test and consequent of ternary expression.	fix	478	479	\n	end	22	36
+types.vue:22:35	@typescript-eslint/no-magic-numbers	noMagic	No magic number: 0.	end	22	36
+types.vue:22:39	@stylistic/multiline-ternary	expectedConsAlt	Expected newline between consequent and alternate of ternary expression.	fix	485	486	\n	end	22	43
+types.vue:23:16	@typescript-eslint/no-misused-promises	voidReturnArgument	Promise returned in function argument where a void return was expected.	end	25	2
+types.vue:23:2	@typescript-eslint/no-magic-numbers	noMagic	No magic number: 1.	end	23	3
+types.vue:23:26	@typescript-eslint/strict-void-return	asyncFunc	Async function used in a context where a void function is expected.	suggestion	suggestWrapInAsyncIIFE	Wrap the function body in an async IIFE.	510	552	 (n) => void (async () => {\n  await load(n + result);\n})()	end	23	28
+types.vue:23:5	@typescript-eslint/no-magic-numbers	noMagic	No magic number: 2.	end	23	6
+types.vue:23:8	unicorn/no-for-each	no-for-each/error	Use `for…of` instead of `.forEach(…)`.	end	23	15
+types.vue:26:1	@typescript-eslint/no-useless-empty-export	uselessExport	Empty export does nothing and can be removed.	fix	555	564		end	26	10
+types.vue:26:10	@stylistic/semi	missingSemi	Missing semicolon.	fix	564	564	;	end	27	1
+types.vue:26:8	unicorn/require-module-specifiers	error	export statement without specifiers is not allowed.	fix	555	564		end	26	10
+types.vue:2:15	@stylistic/object-curly-spacing	unexpectedSpaceBefore	There should be no space before '}'.	fix	33	34		end	2	16
+types.vue:2:23	@stylistic/quotes	wrongQuotes	Strings must use doublequote.	fix	41	49	"./util"	end	2	31
+types.vue:2:9	@stylistic/object-curly-spacing	unexpectedSpaceAfter	There should be no space after '{'.	fix	27	28		end	2	10
+types.vue:4:21	@stylistic/space-before-function-paren	missingSpace	Missing space before function parentheses.	fix	72	72	 	end	4	22
+types.vue:4:22	@typescript-eslint/prefer-readonly-parameter-types	shouldBeReadonly	Parameter should be a read only type.	end	4	37
+types.vue:4:8	@typescript-eslint/explicit-function-return-type	missingReturnType	Missing return type on function.	end	4	21
+types.vue:4:8	@typescript-eslint/explicit-module-boundary-types	missingReturnType	Missing return type on function.	end	4	21
+unicode.vue:6:18	@stylistic/quotes	wrongQuotes	Strings must use doublequote.	fix	121	131	"héllo 🎉"	end	6	28
+unicode.vue:6:29	no-useless-concat	unexpectedConcat	Unexpected string concatenation of literals.	end	6	30
+unicode.vue:6:38	@stylistic/semi	missingSemi	Missing semicolon.	fix	141	141	;	end	7	1
+unicode.vue:7:19	@stylistic/quotes	wrongQuotes	Strings must use doublequote.	fix	160	164	"😀"	end	7	23
+unicode.vue:7:5	@typescript-eslint/no-unused-vars	unusedVar	'unusedEmoji' is assigned a value but never used.	end	7	16
+unicode.vue:7:5	prefer-const	useConst	'unusedEmoji' is never reassigned. Use 'const' instead.	fix	142	165	const unusedEmoji = '😀';	end	7	16
+unicode.vue:8:14	no-misleading-character-class	surrogatePairWithoutUFlag	Unexpected surrogate pair in character class. Use 'u' flag.	suggestion	suggestUnicodeFlag	Add unicode 'u' flag to regex.	183	183	u	end	8	16
+unicode.vue:8:7	@typescript-eslint/no-unused-vars	unusedVar	're' is assigned a value but never used.	end	8	9
+unicorn-not-typescript.vue:10:29	@stylistic/function-call-argument-newline	missingLineBreak	There should be a line break after this argument.	fix	218	219	\n	end	10	30
+unicorn-not-typescript.vue:12:1	@typescript-eslint/explicit-function-return-type	missingReturnType	Missing return type on function.	end	12	14
+unicorn-not-typescript.vue:12:14	@stylistic/space-before-function-paren	missingSpace	Missing space before function parentheses.	fix	245	245	 	end	12	15
+unicorn-not-typescript.vue:14:5	unicorn/no-useless-switch-case	no-useless-switch-case/error	Useless case in switch statement.	suggestion	no-useless-switch-case/suggestion	Remove this case.	296	311		end	14	20
+unicorn-not-typescript.vue:15:10	@stylistic/quotes	wrongQuotes	Strings must use doublequote.	fix	321	324	"a"	end	15	13
+unicorn-not-typescript.vue:15:10	perfectionist/sort-switch-case	unexpectedSwitchCaseOrder	Expected "a" to come before "undefined".	fix	301	324	'a':\n    case undefined	end	15	13
+unicorn-not-typescript.vue:15:5	unicorn/no-useless-switch-case	no-useless-switch-case/error	Useless case in switch statement.	suggestion	no-useless-switch-case/suggestion	Remove this case.	316	325		end	15	14
+unicorn-not-typescript.vue:16:5	unicorn/switch-case-braces	switch-case-braces/missing	Missing braces in case clause.	fix	338	381	 {\n      return copy.length + bound().length;\n    }	end	16	13
+unicorn-not-typescript.vue:21:6	@stylistic/quotes	wrongQuotes	Strings must use doublequote.	fix	394	397	"a"	end	21	9
+unicorn-not-typescript.vue:2:1	@typescript-eslint/explicit-function-return-type	missingReturnType	Missing return type on function.	end	2	13
+unicorn-not-typescript.vue:2:13	@stylistic/space-before-function-paren	missingSpace	Missing space before function parentheses.	fix	37	37	 	end	2	14
+unicorn-not-typescript.vue:6:5	@typescript-eslint/no-magic-numbers	noMagic	No magic number: 1.	end	6	6
+unicorn-not-typescript.vue:6:7	@stylistic/function-call-argument-newline	missingLineBreak	There should be a line break after this argument.	fix	108	109	\n	end	6	8
+unicorn-not-typescript.vue:6:8	unicorn/no-useless-undefined	no-useless-undefined	Do not use useless `undefined`.	fix	107	118		end	6	17
+unicorn-not-typescript.vue:7:5	unicorn/no-useless-undefined	no-useless-undefined	Do not use useless `undefined`.	fix	125	134		end	7	14
+unicorn-not-typescript.vue:8:16	@typescript-eslint/no-magic-numbers	noMagic	No magic number: 1.	end	8	17
+unicorn-not-typescript.vue:8:19	@typescript-eslint/no-magic-numbers	noMagic	No magic number: 2.	end	8	20
+unicorn-not-typescript.vue:8:22	@typescript-eslint/no-magic-numbers	noMagic	No magic number: 3.	end	8	23
+unicorn-not-typescript.vue:9:20	unicorn/prefer-spread	array-slice	Prefer the spread operator over `Array#slice()`.	fix	175	188	[...items]	end	9	25

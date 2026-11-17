@@ -48,6 +48,11 @@ struct FileWork {
 	display  []offsets.DisplayPos
 	src      string // content without the BOM, as Node decodes it
 	not_utf8 bool   // the bytes are not valid UTF-8: tsgo is served `src`
+	// A .vue file: tsgo has its script in a virtual twin at ts_path (vue_files.v), with the text
+	// twin_code; ts_path is abs_path for any other file.
+	vue       bool
+	ts_path   string
+	twin_code string
 }
 
 // BenchReport holds the per-phase timings that `--bench` writes to stderr (PROMPT.md §8).
@@ -432,7 +437,19 @@ fn run(opts Options, timeout time.Duration) !int {
 	// Steps 1–5: read, strip the BOM, parse, collect identifiers, convert offsets and find the
 	// tsconfig of each file.
 	mut works := []FileWork{cap: opts.files.len}
+	mut vue_parsers := VueParsers{}
+	defer {
+		vue_parsers.close()
+	}
 	for path in opts.files {
+		if rules.is_vue_path(path) {
+			work := prepare_vue_file(mut vue_parsers, parser, path, project_override, opts.all_identifiers, mut
+				bench)!
+			if work.vue {
+				works << work
+			}
+			continue
+		}
 		works << prepare_file(if treesitter.uses_jsx_dialect(path) { tsx_parser } else { parser }, path,
 			project_override, opts.all_identifiers, mut bench)!
 	}
@@ -450,17 +467,32 @@ fn run(opts Options, timeout time.Duration) !int {
 	// Step 6: start tsgo, check the version, initialize and createSnapshot.
 	mut sw := time.new_stopwatch()
 	mut served := map[string]string{}
+	mut virtual := map[string]string{}
 	for w in works {
-		if w.not_utf8 {
+		if w.vue {
+			virtual[w.ts_path] = w.twin_code
+		} else if w.not_utf8 {
 			served[w.abs_path] = w.src
 		}
 	}
-	mut client := tsgo.start_with_files(tsgo.binary_path(), os.dir(tsconfigs[0]), timeout,
-		served)!
+	mut client := if virtual.len > 0 {
+		tsgo.start_virtual(tsgo.binary_path(), os.dir(tsconfigs[0]), timeout, served, virtual)!
+	} else {
+		tsgo.start_with_files(tsgo.binary_path(), os.dir(tsconfigs[0]), timeout, served)!
+	}
 	defer {
 		client.shutdown()
 	}
 	_ = client.initialize()!
+	if virtual.len > 0 {
+		mut twins := map[string][]string{}
+		for w in works {
+			if w.vue {
+				twins[w.tsconfig] << w.ts_path
+			}
+		}
+		include_twins(mut client, twins)!
+	}
 	bench.spawn_version_init_ms = ms(sw.elapsed())
 	sw.restart()
 	snap := client.create_snapshot(tsconfigs)!
@@ -637,6 +669,15 @@ fn run_rules(opts Options, timeout time.Duration) !int {
 		client.shutdown()
 	}
 	_ = client.initialize()!
+	if virtual.len > 0 {
+		mut twins := map[string][]string{}
+		for f in files {
+			if f.vue && f.tsconfig != '' {
+				twins[f.tsconfig] << f.ts_path
+			}
+		}
+		include_twins(mut client, twins)!
+	}
 	bench.spawn_version_init_ms = ms(sw.elapsed())
 	sw.restart()
 	// When no rule of the configurations needs types, tsgo only parses the tsconfigs and builds no
@@ -971,12 +1012,50 @@ fn prepare_file(parser treesitter.Parser, path string, project_override string, 
 	return FileWork{
 		path:     path
 		abs_path: abs_path
+		ts_path:  abs_path
 		tsconfig: tsconfig
 		idents:   idents
 		offsets:  utf16
 		display:  display
 		src:      if not_utf8 { src } else { '' }
 		not_utf8: not_utf8
+	}
+}
+
+// prepare_vue_file is prepare_file for a .vue file: the identifiers of its script, asked in its
+// twin. A file whose script is JavaScript is skipped with a warning (its FileWork is not `vue`).
+fn prepare_vue_file(mut vue_parsers VueParsers, parser treesitter.Parser, path string, project_override string, all bool, mut bench BenchReport) !FileWork {
+	mut sw := time.new_stopwatch()
+	src, _, _ := read_source(path)!
+	mut doc := vue_parsers.parse(src) or { return error('${path}: ${err.msg()}') }
+	defer {
+		doc.free()
+	}
+	if doc.script.lang == .js {
+		eprintln(vue_javascript_warning(path))
+		return FileWork{}
+	}
+	if doc.script.has_error {
+		eprintln('warning: ${path}: tree-sitter found syntax errors; results may be partial')
+	}
+	bench.read_parse_ms += ms(sw.elapsed())
+	sw.restart()
+	idents, utf16, display := vue_identifiers(parser, doc, all)
+	bench.query_ms += ms(sw.elapsed())
+	abs_path := os.abs_path(path)
+	tsconfig := if project_override != '' { project_override } else { find_tsconfig(abs_path)! }
+	bench.files++
+	bench.identifiers += idents.len
+	return FileWork{
+		path:      path
+		abs_path:  abs_path
+		ts_path:   rules.vue_twin_path(abs_path)
+		tsconfig:  tsconfig
+		idents:    idents
+		offsets:   utf16
+		display:   display
+		vue:       true
+		twin_code: doc.script.code
 	}
 }
 
@@ -1121,12 +1200,12 @@ fn is_project_of(p tsgo.ProjectResponse, tsconfig string) bool {
 fn query_file(mut client tsgo.Client, snapshot int, project string, w FileWork, per_identifier bool, mut bench BenchReport) !([]tsgo.SymbolResponse, []tsgo.TypeResponse) {
 	if !per_identifier {
 		mut sw := time.new_stopwatch()
-		symbols := client.symbols_at(snapshot, project, w.abs_path, w.offsets)!
+		symbols := client.symbols_at(snapshot, project, w.ts_path, w.offsets)!
 		symbols_elapsed := ms(sw.elapsed())
 		bench.add_symbols(symbols_elapsed)
 		bench.symbol_batches_ms << symbols_elapsed
 		sw.restart()
-		types := client.types_at(snapshot, project, w.abs_path, w.offsets)!
+		types := client.types_at(snapshot, project, w.ts_path, w.offsets)!
 		types_elapsed := ms(sw.elapsed())
 		bench.add_types(types_elapsed)
 		bench.type_batches_ms << types_elapsed
@@ -1139,10 +1218,10 @@ fn query_file(mut client tsgo.Client, snapshot int, project string, w FileWork, 
 	mut types := []tsgo.TypeResponse{cap: w.offsets.len}
 	for pos in w.offsets {
 		mut sw := time.new_stopwatch()
-		symbols << client.symbol_at(snapshot, project, w.abs_path, pos)!
+		symbols << client.symbol_at(snapshot, project, w.ts_path, pos)!
 		bench.add_symbols(ms(sw.elapsed()))
 		sw.restart()
-		types << client.type_at(snapshot, project, w.abs_path, pos)!
+		types << client.type_at(snapshot, project, w.ts_path, pos)!
 		bench.add_types(ms(sw.elapsed()))
 	}
 	return symbols, types

@@ -1,7 +1,10 @@
 module main
 
+import json2
 import offsets
+import os
 import rules
+import tsgo
 import treesitter
 import vue
 
@@ -46,6 +49,47 @@ fn (mut p VueParsers) twin_code(src string) !(string, bool) {
 		doc.free()
 	}
 	return doc.script.code, doc.script.lang != .js
+}
+
+// include_twins makes sure that the tsconfig of each .vue file has its twin in its program, as
+// typescript-eslint has the .vue file in it with extraFileExtensions ['.vue']: a tsconfig that
+// lists its `include` or its `files` may leave the twin out (`src/**/*.vue` does not match
+// `App.vue.vls.ts`). tsgo is then given that tsconfig with the missing twins added to its `files`
+// (its readFile callback serves it). `twins` are the twins of each tsconfig. Returns the tsconfig
+// files it served.
+fn include_twins(mut client tsgo.Client, twins map[string][]string) ![]string {
+	mut served := []string{}
+	for tsconfig, paths in twins {
+		parsed := client.parse_config_file(tsconfig)!
+		keys := parsed.file_names.map(tsgo.path_key(it))
+		missing := paths.filter(tsgo.path_key(it) !in keys)
+		if missing.len == 0 {
+			continue
+		}
+		text := os.read_file(tsconfig) or { continue }
+		raw := json2.decode[json2.Any](strip_jsonc(text)) or { continue }
+		if raw !is map[string]json2.Any {
+			continue
+		}
+		mut config := raw.as_map().clone()
+		// Without either, the default `include` (**/*) matches the twin already.
+		if 'include' !in config && 'files' !in config {
+			continue
+		}
+		mut listed := []json2.Any{}
+		if files := config['files'] {
+			if files is []json2.Any {
+				listed = files.clone()
+			}
+		}
+		for path in missing {
+			listed << json2.Any(path)
+		}
+		config['files'] = json2.Any(listed)
+		client.serve(tsconfig, json2.encode(json2.Any(config)))
+		served << tsconfig
+	}
+	return served
 }
 
 // uses_tsx_grammar: the script of the document is read with the grammar's tsx dialect.

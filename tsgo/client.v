@@ -128,6 +128,18 @@ fn (mut c Client) add_virtual(path string) {
 	c.virtual_dirs[dir] << os.file_name(path)
 }
 
+// remove_virtual makes `path` no longer a file for tsgo (tsgo has to be told it was deleted).
+pub fn (mut c Client) remove_virtual(path string) {
+	key := path_key(path)
+	c.served.delete(key)
+	c.virtual.delete(key)
+	dir := path_key(os.dir(path))
+	name := os.file_name(path)
+	if names := c.virtual_dirs[dir] {
+		c.virtual_dirs[dir] = names.filter(it != name)
+	}
+}
+
 // has_virtual_fs: the client was started with virtual files (start_virtual), so it can be given
 // more (serve_virtual).
 pub fn (c &Client) has_virtual_fs() bool {

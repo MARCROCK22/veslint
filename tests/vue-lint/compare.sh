@@ -10,7 +10,9 @@
 # compared. The differences must be those of tests/vue-lint/known.txt, which says why.
 #
 #   tests/vue-lint/compare.sh                    # the project service
-#   VUE_LINT_PROJECT=1 tests/vue-lint/compare.sh # parserOptions.project (known-project.txt)
+#   VUE_LINT_PROJECT=1 tests/vue-lint/compare.sh # parserOptions.project, on the groups only (a
+#                                                # program per project of one SFC is too much
+#                                                # memory for typescript-eslint): known-project.txt
 #   JOBS=2 tests/vue-lint/compare.sh /some/dir   # ESLint in 2 processes, the corpus in /some/dir
 #
 # ESLint's lines are kept in WORK under a key of the corpus, the configuration and the versions:
@@ -38,7 +40,10 @@ mkdir -p "$WORK"
 count=$(python3 tests/vue-lint/corpus.py "$WORK") || exit 2
 # The jobs of ESLint: each group, and the projects of one SFC by hundreds.
 mapfile -t groups < <(cd "$WORK" && ls -d g[0-9][0-9])
-mapfile -t alone < <(cd "$WORK" && ls -d s[0-9][0-9][0-9][0-9] 2> /dev/null)
+alone=()
+[[ $mode == project ]] || mapfile -t alone < <(cd "$WORK" && ls -d s[0-9][0-9][0-9][0-9] 2> /dev/null)
+veslint_files=('g[0-9][0-9]/src/*.vue')
+[[ $mode == project ]] || veslint_files+=('s[0-9][0-9][0-9][0-9]/src/*.vue')
 jobs_files=()
 for g in "${groups[@]}"; do
 	jobs_files+=("$g/src/*.vue")
@@ -53,7 +58,7 @@ import json, os
 rules = sorted(os.path.relpath(d, 'tests/rules') for d, _, files in os.walk('tests/rules') if 'expected.txt' in files and 'node_modules' not in d)
 print(json.dumps({'rules': {r: 'error' for r in rules}}))
 PY
-key=$( (cd "$WORK" && find g[0-9][0-9] s[0-9][0-9][0-9][0-9] -name '*.vue' -o -name '*.json' -o -name '*.d.ts' | LC_ALL=C sort | xargs cat; cat "$ROOT/tests/vue-lint/eslint.vue.config.mjs" "$ROOT/tests/vue-lint/eslint_each.mjs" "$WORK/rules.json" "$ESLINT_PACKAGE" "$ROOT/build/upstream/vue-deps/node_modules/vue-eslint-parser/package.json"; echo "$mode") | sha1sum | cut -c1-16)
+key=$( (cd "$WORK" && find g[0-9][0-9] "${alone[@]}" -name '*.vue' -o -name '*.json' -o -name '*.d.ts' | LC_ALL=C sort | xargs cat; cat "$ROOT/tests/vue-lint/eslint.vue.config.mjs" "$ROOT/tests/vue-lint/eslint_each.mjs" "$WORK/rules.json" "$ESLINT_PACKAGE" "$ROOT/build/upstream/vue-deps/node_modules/vue-eslint-parser/package.json"; echo "$mode") | sha1sum | cut -c1-16)
 ESLINT_LINES=$WORK/eslint.$mode.$key.txt
 if [[ ! -f $ESLINT_LINES ]]; then
 	echo "ESLint lints the $count SFCs in $JOBS processes"
@@ -76,7 +81,8 @@ if [[ ! -f $ESLINT_LINES ]]; then
 	done | LC_ALL=C sort > "$ESLINT_LINES.part" && mv "$ESLINT_LINES.part" "$ESLINT_LINES"
 fi
 # veslint with the same configuration, which ESLint resolves for it through bun.
-(cd "$WORK" && VESLINT_ESLINT_DIR=$ROOT/build/eval/spider-byte "$ROOT/veslint" --config "$ROOT/tests/vue-lint/eslint.vue.config.mjs" --fixes g[0-9][0-9]/src/*.vue s[0-9][0-9][0-9][0-9]/src/*.vue 2> veslint.err) | LC_ALL=C sort > "$WORK/veslint.txt"
+# shellcheck disable=SC2086 # the patterns expand in WORK
+(cd "$WORK" && VESLINT_ESLINT_DIR=$ROOT/build/eval/spider-byte "$ROOT/veslint" --config "$ROOT/tests/vue-lint/eslint.vue.config.mjs" --fixes ${veslint_files[*]} 2> veslint.err) | LC_ALL=C sort > "$WORK/veslint.txt"
 python3 - "$ESLINT_LINES" "$WORK/veslint.txt" "$WORK/diff.txt" <<'PY'
 import collections, sys
 def read(name):
@@ -105,8 +111,8 @@ PY
 if [[ ! -f $KNOWN ]]; then
 	: > "$KNOWN"
 fi
-# known.txt has the differences, each group after `#` lines that say why.
-if diff -u <(grep -v '^#' "$KNOWN") "$WORK/diff.txt" > "$WORK/known.diff"; then
+# known.txt has the differences, in groups after `#` lines that say why (compared sorted).
+if diff -u <(grep -v '^#' "$KNOWN" | LC_ALL=C sort) <(LC_ALL=C sort "$WORK/diff.txt") > "$WORK/known.diff"; then
 	echo "ok     every rule on $count SFCs ($mode): $(grep -v '^#' "$KNOWN" | grep -vc '^not compared') known differences, $(grep -c '^not compared' "$KNOWN") files not compared"
 else
 	echo "FAIL   the differences are not those of ${KNOWN#"$ROOT"/} (see $WORK/known.diff)"

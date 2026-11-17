@@ -1,9 +1,10 @@
 // Every rule veslint has, with its default options, on .vue files as a Vue project lints them:
 // vue-eslint-parser 10.4.2 with typescript-eslint's parser for the scripts and the types of the
 // project service (extraFileExtensions ['.vue']), or of `parserOptions.project` with
-// VUE_LINT_PROJECT=1. For tests/vue-lint/compare.sh, which runs ESLint in the directory of the
-// corpus (the tsconfigRootDir). The rules are the directories of tests/rules with an expected.txt,
-// as in tests/rules/eslint.cross.config.mjs; the `seyfert/*` rules are those of
+// VUE_LINT_PROJECT=1. For tests/vue-lint/compare.sh and pin.sh, which run ESLint in the directory
+// of the files (the tsconfigRootDir). The rules are the directories of tests/rules with an
+// expected.txt, as in tests/rules/eslint.cross.config.mjs, or those of the JSON file
+// VUE_LINT_RULES names (a `rules` section); the `seyfert/*` rules are those of
 // @slipher/eslint-plugin 1.1.0 (build/upstream/seyfert).
 import fs from 'node:fs';
 import { createRequire } from 'node:module';
@@ -20,11 +21,13 @@ const { plugin: seyfert } = createRequire(import.meta.url)(
 );
 
 const rules = path.join(import.meta.dirname, '..', 'rules');
-const ported = fs
-  .readdirSync(rules, { recursive: true })
-  .filter(file => path.basename(file) === 'expected.txt' && !file.split(path.sep).includes('node_modules'))
-  .map(file => path.dirname(file))
-  .sort();
+const ported = process.env.VUE_LINT_RULES
+  ? Object.keys(JSON.parse(fs.readFileSync(process.env.VUE_LINT_RULES, 'utf8')).rules)
+  : fs
+      .readdirSync(rules, { recursive: true })
+      .filter(file => path.basename(file) === 'expected.txt' && !file.split(path.sep).includes('node_modules'))
+      .map(file => path.dirname(file))
+      .sort();
 // `project: true` is the closest tsconfig.json of each file.
 const types = process.env.VUE_LINT_PROJECT === '1' ? { project: true } : { projectService: true };
 export default [
