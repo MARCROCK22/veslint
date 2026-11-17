@@ -8,6 +8,7 @@ import strings
 import time
 import treesitter
 import tsgo
+import vue
 
 // veslint: parses TypeScript with tree-sitter and asks tsgo (`tsc --api`) for the types.
 // Flow from PROMPT.md §4.
@@ -24,17 +25,17 @@ mut:
 	all_identifiers bool
 	bench           bool
 	per_identifier  bool
-	fixes           bool         // --fixes: print the fix and the suggestions of each finding
-	fix             bool         // --fix: apply the fixes and write the files, like `eslint --fix`
-	print_config    bool         // --print-config: print the resolved configuration and exit
-	summary         bool         // --summary: a table of the rules that report problems, not a line per problem
-	server          bool         // --server: lint the requests of an editor until stdin ends (server.v)
+	fixes           bool // --fixes: print the fix and the suggestions of each finding
+	fix             bool // --fix: apply the fixes and write the files, like `eslint --fix`
+	print_config    bool // --print-config: print the resolved configuration and exit
+	summary         bool // --summary: a table of the rules that report problems, not a line per problem
+	server          bool // --server: lint the requests of an editor until stdin ends (server.v)
 	// --no-config-lookup: --rule runs with the default options of the rule, not the ones of the
 	// closest ESLint configuration.
 	no_config_lookup bool
-	rules           []RuleConfig // the rules of --rule or of every configuration of --config
-	ignored         []string     // active rules from --config that veslint does not have
-	loaded          LoadedConfig // the configuration of each file (--rule: a single one)
+	rules            []RuleConfig // the rules of --rule or of every configuration of --config
+	ignored          []string     // active rules from --config that veslint does not have
+	loaded           LoadedConfig // the configuration of each file (--rule: a single one)
 }
 
 // FileWork gathers what veslint knows about a file before querying tsgo.
@@ -224,7 +225,7 @@ fn parse_args(args []string) !Options {
 					return error('unknown option: ${arg}')
 				}
 				if !os.is_dir(arg) && !is_typescript_path(arg) {
-					return error('${arg}: veslint only reads TypeScript (.ts, .mts, .cts, .tsx)')
+					return error('${arg}: ${only_typescript}')
 				}
 				targets << arg
 			}
@@ -507,6 +508,11 @@ struct RuleFile {
 	has_bom  bool
 	not_utf8 bool   // the bytes are not valid UTF-8: tsgo is served `src`
 	note     string // ESLint's message for a file it does not lint (ignored, or without configuration)
+	// A .vue file: tsgo has its script in a virtual twin, at ts_path with the text twin_code
+	// (vue_files.v); ts_path is abs_path for any other file.
+	vue       bool
+	ts_path   string
+	twin_code string
 }
 
 // run_rules applies the rules to the files and prints one line per problem:
@@ -539,6 +545,10 @@ fn run_rules(opts Options, timeout time.Duration) !int {
 	}
 	mut files := []RuleFile{cap: opts.files.len}
 	mut tsconfigs := []string{}
+	mut vue_parsers := VueParsers{}
+	defer {
+		vue_parsers.close()
+	}
 	for path in opts.files {
 		abs_path := os.abs_path(path)
 		if note := opts.loaded.file_notes[abs_path] {
@@ -550,6 +560,16 @@ fn run_rules(opts Options, timeout time.Duration) !int {
 			continue
 		}
 		src, has_bom, not_utf8 := read_source(path)!
+		is_vue := rules.is_vue_path(path)
+		mut twin_code := ''
+		if is_vue {
+			code, linted := vue_parsers.twin_code(src) or { return error('${path}: ${err.msg()}') }
+			if !linted {
+				eprintln(vue_javascript_warning(path))
+				continue
+			}
+			twin_code = code
+		}
 		named := if project_override == '' {
 			opts.loaded.named_projects(abs_path)
 		} else {
@@ -571,13 +591,16 @@ fn run_rules(opts Options, timeout time.Duration) !int {
 			tsconfigs << tsconfig
 		}
 		files << RuleFile{
-			path:     path
-			abs_path: abs_path
-			tsconfig: tsconfig
-			named:    named
-			src:      src
-			has_bom:  has_bom
-			not_utf8: not_utf8
+			path:      path
+			abs_path:  abs_path
+			tsconfig:  tsconfig
+			named:     named
+			src:       src
+			has_bom:   has_bom
+			not_utf8:  not_utf8
+			vue:       is_vue
+			ts_path:   if is_vue { rules.vue_twin_path(abs_path) } else { abs_path }
+			twin_code: twin_code
 		}
 	}
 	bench.files = files.len
@@ -597,13 +620,19 @@ fn run_rules(opts Options, timeout time.Duration) !int {
 	}
 	mut sw := time.new_stopwatch()
 	mut served := map[string]string{}
+	mut virtual := map[string]string{}
 	for f in files {
-		if f.not_utf8 {
+		if f.vue {
+			virtual[f.ts_path] = f.twin_code
+		} else if f.not_utf8 {
 			served[f.abs_path] = f.src
 		}
 	}
-	mut client := tsgo.start_with_files(tsgo.binary_path(), os.dir(tsconfigs[0]), timeout,
-		served)!
+	mut client := if virtual.len > 0 {
+		tsgo.start_virtual(tsgo.binary_path(), os.dir(tsconfigs[0]), timeout, served, virtual)!
+	} else {
+		tsgo.start_with_files(tsgo.binary_path(), os.dir(tsconfigs[0]), timeout, served)!
+	}
 	defer {
 		client.shutdown()
 	}
@@ -678,6 +707,11 @@ fn run_rules(opts Options, timeout time.Duration) !int {
 		mut src := f.src
 		mut has_bom := f.has_bom
 		mut result := rules.FileLint{}
+		// The document of a .vue file, parsed again after each pass of --fix.
+		mut doc := &vue.Document(unsafe { nil })
+		if f.vue {
+			doc = vue_parsers.parse(src) or { return error('${f.path}: ${err.msg()}') }
+		}
 		// --fix ports ESLint's verifyAndFix: lint, apply the fixes that do not overlap, and lint the
 		// result again, up to 10 passes or until two passes give the same text. tsgo only reads
 		// files, so each pass is written to disk and a new snapshot is taken.
@@ -708,12 +742,16 @@ fn run_rules(opts Options, timeout time.Duration) !int {
 				if pass == 1 {
 					// The checker may come from the passes of another file.
 					checker.check_syntax(-1)
-					syntax_baseline = checker.syntax_error_count(f.abs_path)
+					syntax_baseline = checker.syntax_error_count(f.ts_path)
 				} else {
 					checker.check_syntax(syntax_baseline)
 				}
 			}
-			result = checker.lint_file(if treesitter.uses_jsx_dialect(f.path) {
+			if f.vue {
+				checker.set_vue(doc, f.ts_path)
+			}
+			result = checker.lint_file(if (f.vue && uses_tsx_grammar(doc))
+				|| (!f.vue && treesitter.uses_jsx_dialect(f.path)) {
 				tsx_parser
 			} else {
 				parser
@@ -748,13 +786,20 @@ fn run_rules(opts Options, timeout time.Duration) !int {
 			os.write_file(f.path, if has_bom { offsets.utf8_bom + src } else { src }) or {
 				return error('cannot write ${f.path}: ${err.msg()}')
 			}
-			// What is on disk now is valid UTF-8: tsgo reads it from there.
-			client.stop_serving(f.abs_path)
+			if f.vue {
+				// The twin gets the code of the fixed script.
+				doc.free()
+				doc = vue_parsers.parse(src) or { return error('${f.path}: ${err.msg()}') }
+				client.serve(f.ts_path, doc.script.code)
+			} else {
+				// What is on disk now is valid UTF-8: tsgo reads it from there.
+				client.stop_serving(f.abs_path)
+			}
 			if pass == 1 {
 				fixed_files++
 			}
 			previous_snapshot := snap.snapshot
-			snap = client.update_snapshot_changed(snap, [f.abs_path])!
+			snap = client.update_snapshot_changed(snap, [f.ts_path])!
 			projects = map_projects(tsconfigs, snap)!
 			checkers.clear()
 			if snap.snapshot != previous_snapshot {
@@ -771,7 +816,10 @@ fn run_rules(opts Options, timeout time.Duration) !int {
 				checkers.delete(project)
 			}
 		}
-		report := file_report(f.path, src, result, opts.fixes)
+		report := file_report(f.path, src, result, opts.fixes, doc)
+		if f.vue {
+			doc.free()
+		}
 		eprint(report.stderr)
 		if opts.summary {
 			for finding in result.findings {
@@ -836,7 +884,7 @@ struct FileReport {
 
 // file_report writes the findings of a file (`path` as it is printed) and the warnings about how
 // it was read.
-fn file_report(path string, src string, result rules.FileLint, fixes bool) FileReport {
+fn file_report(path string, src string, result rules.FileLint, fixes bool, doc &vue.Document) FileReport {
 	mut errors := strings.new_builder(0)
 	if result.syntax_errors {
 		errors.writeln('warning: ${path}: tree-sitter found syntax errors; results may be partial')
@@ -850,14 +898,23 @@ fn file_report(path string, src string, result rules.FileLint, fixes bool) FileR
 			stderr: errors.str()
 		}
 	}
-	_, display := offsets.utf16_positions(src, findings.map(it.stmt))
+	mut display := []offsets.DisplayPos{}
 	// Where each report ends, for --fixes (an editor underlines the range).
 	mut ends := []offsets.DisplayPos{}
-	if fixes {
-		_, ends = offsets.utf16_positions(src, findings.map(treesitter.Ident{
-			start_byte: if it.stmt.end_byte >= 0 { it.stmt.end_byte } else { it.stmt.start_byte }
-			row:        it.stmt.row
-		}))
+	if doc != unsafe { nil } {
+		display, ends = vue_report_positions(doc, findings, fixes)
+	} else {
+		_, display = offsets.utf16_positions(src, findings.map(it.stmt))
+		if fixes {
+			_, ends = offsets.utf16_positions(src, findings.map(treesitter.Ident{
+				start_byte: if it.stmt.end_byte >= 0 {
+					it.stmt.end_byte
+				} else {
+					it.stmt.start_byte
+				}
+				row:        it.stmt.row
+			}))
+		}
 	}
 	mut out := strings.new_builder(findings.len * 200)
 	mut warnings := 0
@@ -978,7 +1035,7 @@ fn assign_named_projects(mut files []RuleFile, snap tsgo.UpdateSnapshotResponse)
 		if f.named.len == 0 {
 			continue
 		}
-		tsconfig := named_project(snap, f.named, f.abs_path) or { find_tsconfig(f.abs_path)! }
+		tsconfig := named_project(snap, f.named, f.ts_path) or { find_tsconfig(f.abs_path)! }
 		if tsconfig !in f.named && tsconfig !in opened
 			&& !snap.projects.any(is_project_of(it, tsconfig)) {
 			opened << tsconfig

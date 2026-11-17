@@ -20,6 +20,9 @@ enum EsFileState {
 
 // es_tree is the ESTree of the file, or none when the file has syntax errors.
 fn (mut c Checker) es_tree(root C.TSNode, abs_path string) ?&estree.EsTree {
+	if c.file_es_state == .unknown && c.is_vue() {
+		c.vue_es_tree()
+	}
 	if c.file_es_state == .unknown {
 		mut top := root
 		for {

@@ -26,6 +26,8 @@ pub:
 	gen_start int
 	gen_end   int
 	delta     int
+	// a `type T = …` of a generic, which points at the generic's parameter, not at its own text
+	define bool
 }
 
 // ScriptInfo is what the parser knows of the scripts.
@@ -52,6 +54,9 @@ pub mut:
 	combined bool
 	offset   int
 	remap    []RemapBlock
+	// With one script, the file range of its content in `code` (after the generic's defines).
+	content_start int
+	content_end   int
 	// split_punctuators are the offsets in `code` of the `;`, `{`, `}`, `(`, `)` it adds.
 	split_punctuators []int
 	// The range of the block of the setup statements in `code`.
@@ -117,6 +122,53 @@ pub fn (s &ScriptInfo) synthetic_to_file(offset int, end bool) int {
 	return offset + offset
 }
 
+// file_to_synthetic maps an offset of the file to ScriptInfo.code, the inverse of
+// synthetic_to_file for the script contents (`end`: the offset ends a range); -1 for an offset
+// out of them: in a tag, in the template, or in what the synthetic code leaves out (the `export`
+// of a named export of a <script setup>, the `as b` of its specifiers).
+pub fn (s &ScriptInfo) file_to_synthetic(offset int, end bool) int {
+	if !s.combined {
+		if offset < s.content_start || offset > s.content_end
+			|| (!end && offset == s.content_end) || (end && offset == s.content_start) {
+			return -1
+		}
+		return offset - s.offset
+	}
+	for b in s.remap {
+		start := b.gen_start + b.delta
+		stop := b.gen_end + b.delta
+		if !b.define && ((!end && start <= offset && offset < stop)
+			|| (end && start < offset && offset <= stop)) {
+			return offset - b.delta
+		}
+	}
+	return -1
+}
+
+// synthetic_token_ends are the ends, in ScriptInfo.code, of its tokens: those of `file_ends` (the
+// ends of the script's tokens in the file, sorted) that the code has, and those of what the code
+// adds (the punctuators that split it, the `;` after the generic's defines). Sorted.
+pub fn (s &ScriptInfo) synthetic_token_ends(file_ends []int) []int {
+	mut ends := []int{cap: file_ends.len + s.split_punctuators.len}
+	if !s.combined && s.content_start - s.offset > 0 {
+		// `type T = …;\n`: its `;` ends right before the line break.
+		ends << s.content_start - s.offset - 1
+	}
+	for p in s.split_punctuators {
+		if p < s.code.len && s.code[p] in [`;`, `{`, `}`, `(`, `)`] {
+			ends << p + 1
+		}
+	}
+	for e in file_ends {
+		mapped := s.file_to_synthetic(e, true)
+		if mapped >= 0 {
+			ends << mapped
+		}
+	}
+	ends.sort()
+	return ends
+}
+
 // text_child is the VText child of a script, if its first child is one.
 fn (d &Document) text_child(element int) int {
 	children := d.nodes[element].children
@@ -137,7 +189,11 @@ mut:
 fn (mut cb CodeBlocks) append(text string, file_offset int) {
 	start := cb.code.len
 	cb.code += js_trim_end(text)
-	cb.remap << RemapBlock{start, cb.code.len, file_offset - start}
+	cb.remap << RemapBlock{
+		gen_start: start
+		gen_end:   cb.code.len
+		delta:     file_offset - start
+	}
 }
 
 fn (mut cb CodeBlocks) append_split(p string) {
@@ -150,7 +206,12 @@ fn (mut cb CodeBlocks) append_blocks(other CodeBlocks) {
 	start := cb.code.len
 	cb.code += other.code
 	for b in other.remap {
-		cb.remap << RemapBlock{b.gen_start + start, b.gen_end + start, b.delta - start}
+		cb.remap << RemapBlock{
+			gen_start: b.gen_start + start
+			gen_end:   b.gen_end + start
+			delta:     b.delta - start
+			define:    b.define
+		}
 	}
 	for s in other.split {
 		cb.split << s + start
@@ -437,6 +498,8 @@ fn (mut c ExprContext) parse_single(element int) {
 	}
 	s.code = defs + content
 	s.offset = t.start - defs.len
+	s.content_start = t.start
+	s.content_end = t.end
 	s.codes << s.code
 	c.parse_masked([[t.start, t.end]])
 	s.program_start = t.start
@@ -635,6 +698,10 @@ fn (mut c ExprContext) setup_code_blocks(setup int, text int) !SetupBlocks {
 	blocks.append_split('{')
 	for d in c.extract_generic(setup) {
 		blocks.append(d.define, d.start)
+		blocks.remap[blocks.remap.len - 1] = RemapBlock{
+			...blocks.remap.last()
+			define: true
+		}
 		blocks.append_split(';')
 	}
 	blocks.append_blocks(statements)

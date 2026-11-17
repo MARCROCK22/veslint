@@ -323,7 +323,7 @@ fn (mut s Server) lint(id i64, config string, project string, files []string, te
 			return ServerAnswer{
 				id:     id
 				code:   2
-				stderr: 'veslint: ${path}: veslint only reads TypeScript (.ts, .mts, .cts, .tsx)\n'
+				stderr: 'veslint: ${path}: ${only_typescript}\n'
 			}
 		}
 	}
@@ -549,7 +549,7 @@ fn (mut s Server) lint(id i64, config string, project string, files []string, te
 				stderr: errors.str()
 			}
 		}
-		report := file_report(f.path, f.src, result, fixes)
+		report := file_report(f.path, f.src, result, fixes, unsafe { nil })
 		errors.write_string(report.stderr)
 		out.write_string(report.stdout)
 		problems += report.problems

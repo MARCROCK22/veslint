@@ -142,11 +142,11 @@ fn (c &Checker) sy_position_of(n SyNode) ?int {
 	for node.kind() == sy_kind_parenthesized_expression {
 		node = node.child('expression')
 	}
-	offset := node.tree.node_token_start(node.index)
-	if offset < 0 || offset > c.src.len {
+	ts_offset := node.tree.node_token_start(node.index)
+	if ts_offset < 0 || ts_offset > c.ts_text().len {
 		return none
 	}
-	return offset
+	return c.file_offset_of_ts_byte(ts_offset)
 }
 
 // sy_place_of is the place of a report on the counterpart of a node of the file being linted:
@@ -157,7 +157,12 @@ fn (c &Checker) sy_place_of(n SyNode) ?treesitter.Ident {
 	for node.kind() == sy_kind_parenthesized_expression {
 		node = node.child('expression')
 	}
-	end := node.tree.node_end_byte(node.index)
+	ts_end := node.tree.node_end_byte(node.index)
+	end := if ts_end < 0 || ts_end > c.ts_text().len {
+		-1
+	} else {
+		c.file_offset_of_ts_end(ts_end)
+	}
 	if end < start || end > c.src.len {
 		return c.position_at(start)
 	}

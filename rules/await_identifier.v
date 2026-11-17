@@ -1,6 +1,5 @@
 module rules
 
-import offsets { utf16_offsets }
 import treesitter { has_child_kind, node_end, node_field, node_kind, node_parent, node_start }
 
 // `await` as an identifier. TypeScript only reads `await` as the operator inside an async
@@ -36,17 +35,17 @@ fn (mut c Checker) await_identifiers_source(root C.TSNode, abs_path string) !str
 	// An identifier of TypeScript spans from the end of the previous token to the end of its own.
 	mut bytes := []int{cap: 2 * keywords.len}
 	for keyword in keywords {
-		bytes << c.tokens.last_end(node_start(keyword))
+		bytes << node_start(keyword)
 		bytes << node_end(keyword)
 	}
-	units := utf16_offsets(c.src, bytes)
+	units := c.ts_spans(bytes)
 	c.make_snapshot()!
 	if c.ast_path != abs_path {
 		// A file tsgo does not have is reported by the first rule that asks for its types.
 		c.ast = c.client.source_file_ast(c.snapshot, c.project, abs_path) or { return '' }
 		c.ast_path = abs_path
 	}
-	mut source := c.src.bytes()
+	mut source := c.parse_text().bytes()
 	mut found := false
 	for index, keyword in keywords {
 		if _ := c.ast.handle(units[2 * index], units[2 * index + 1], syntax_kind_identifier) {
