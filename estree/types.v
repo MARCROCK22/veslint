@@ -66,6 +66,17 @@ pub mut:
 	src         string
 	line_starts []int
 	line_units  []int
+	// visit, when not empty, are the nodes a rule's listeners get (by index): the others are
+	// still in the tree, but a traversal (steps) does not stop at them. A rule of ESLint run on the
+	// expressions of a Vue template gets only the nodes vue-eslint-parser's traversal visits, and
+	// not the code around them that makes a snippet parse (rules/vue_wrap.v).
+	visit []bool
+}
+
+// visits: a rule's listeners get the node (see EsTree.visit).
+@[inline]
+pub fn (t &EsTree) visits(i int) bool {
+	return t.visit.len == 0 || t.visit[i]
 }
 
 // Value is the value of a property as a sum type (see EsTree.get).

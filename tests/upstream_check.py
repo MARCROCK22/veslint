@@ -124,9 +124,9 @@ def apply_fixes(code, fixes):
 
 
 class Server:
-    def __init__(self, veslint):
+    def __init__(self, veslint, cwd=ROOT):
         # RuleTester's linting is not a single run of typescript-estree.
-        self.process = subprocess.Popen([veslint, '--server'], cwd=ROOT, stdin=subprocess.PIPE,
+        self.process = subprocess.Popen([veslint, '--server'], cwd=cwd, stdin=subprocess.PIPE,
                                         stdout=subprocess.PIPE, text=True, encoding='utf-8', bufsize=1,
                                         env={**os.environ, 'TSESTREE_SINGLE_RUN': 'false'})
         self.next_id = 0
@@ -145,13 +145,24 @@ class Server:
 
 class Runner:
     def __init__(self, veslint, fixtures, configs):
-        self.server = Server(veslint)
+        self.veslint = veslint
+        self.servers = {}
         self.fixtures = fixtures
         self.configs = configs
         self.served = set()
         self.test_file = None
         # The languageOptions of every case of the rule (upstream.json's own), under the case's.
         self.defaults = {}
+
+    def server_for(self, rule):
+        """The server a rule's cases run on. eslint-plugin-vue's ran in the root of its clone
+        (tests/rules/vue/eslint_run.mjs), where its wrapper rules find @stylistic/eslint-plugin (a
+        wrapper rule takes the rule of ESLint Stylistic it resolves from the current directory,
+        ESLint core's otherwise): veslint runs them from there too."""
+        cwd = os.path.realpath(os.path.join(ROOT, 'build/upstream/vue')) if rule.startswith('vue/') else ROOT
+        if cwd not in self.servers:
+            self.servers[cwd] = Server(self.veslint, cwd)
+        return self.servers[cwd]
 
     def config_path(self, rule, case, defaults=None):
         defaults = defaults or {}
@@ -209,7 +220,7 @@ class Runner:
         """veslint's answer for a lint: (exit code, file, lines, stderr)."""
         file = os.path.join(self.fixtures, lint['filename'])
         self.served.add(file)
-        answer = self.server.request({'config': self.lint_config_path(lint), 'project': '', 'files': [file],
+        answer = self.server_for('vue/').request({'config': self.lint_config_path(lint), 'project': '', 'files': [file],
                                       'texts': {file: lint['code']}, 'fixes': True})
         lines = answer['stdout'].split('\n')
         if lines and lines[-1] == '':
@@ -220,7 +231,8 @@ class Runner:
         test_file = test_file_of(case['id'])
         if test_file != self.test_file:
             if self.served:
-                self.server.request({'forget': sorted(self.served)})
+                for server in self.servers.values():
+                    server.request({'forget': sorted(self.served)})
                 self.served.clear()
             self.test_file = test_file
 
@@ -245,7 +257,7 @@ class Runner:
         file = os.path.join(self.fixtures, case['file']) if case.get('tsconfig') else os.path.join(base, case['file'])
         tsconfig = case.get('tsconfig')
         self.served.add(file)
-        answer = self.server.request({'config': self.config_path(rule, case, self.defaults),
+        answer = self.server_for(rule).request({'config': self.config_path(rule, case, self.defaults),
                                       'project': self.project_of(case, file) if tsconfig else '',
                                       'files': [file], 'texts': {file: code}, 'fixes': True})
         # Lines end with \n alone: str.splitlines would also split at a U+2028 of a fix.
@@ -523,7 +535,7 @@ def main():
     if lines_out:
         with open(lines_out, 'w', encoding='utf-8') as f:
             f.write(''.join(line + '\n' for line in all_lines))
-    if runner.server.close() != 0:
+    if any([server.close() != 0 for server in runner.servers.values()]):
         print('veslint --server did not exit cleanly')
         unexpected += 1
     listed = len([case_id for case_id in failing if case_id in known])

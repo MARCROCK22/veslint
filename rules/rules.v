@@ -523,6 +523,44 @@ pub const vue_no_deprecated_router_link_tag_prop = 'vue/no-deprecated-router-lin
 pub const vue_no_restricted_html_elements = 'vue/no-restricted-html-elements'
 pub const vue_no_useless_template_attributes = 'vue/no-useless-template-attributes'
 pub const vue_mustache_interpolation_spacing = 'vue/mustache-interpolation-spacing'
+pub const vue_arrow_spacing = 'vue/arrow-spacing'
+pub const vue_camelcase = 'vue/camelcase'
+pub const vue_comma_dangle = 'vue/comma-dangle'
+pub const vue_dot_location = 'vue/dot-location'
+pub const vue_no_empty_pattern = 'vue/no-empty-pattern'
+pub const vue_no_sparse_arrays = 'vue/no-sparse-arrays'
+pub const vue_operator_linebreak = 'vue/operator-linebreak'
+pub const vue_array_bracket_newline = 'vue/array-bracket-newline'
+pub const vue_array_bracket_spacing = 'vue/array-bracket-spacing'
+pub const vue_array_element_newline = 'vue/array-element-newline'
+pub const vue_block_spacing = 'vue/block-spacing'
+pub const vue_brace_style = 'vue/brace-style'
+pub const vue_dot_notation = 'vue/dot-notation'
+pub const vue_eqeqeq = 'vue/eqeqeq'
+pub const vue_key_spacing = 'vue/key-spacing'
+pub const vue_keyword_spacing = 'vue/keyword-spacing'
+pub const vue_no_restricted_syntax = 'vue/no-restricted-syntax'
+pub const vue_no_useless_concat = 'vue/no-useless-concat'
+pub const vue_object_curly_newline = 'vue/object-curly-newline'
+pub const vue_object_curly_spacing = 'vue/object-curly-spacing'
+pub const vue_object_property_newline = 'vue/object-property-newline'
+pub const vue_prefer_template = 'vue/prefer-template'
+pub const vue_no_implicit_coercion = 'vue/no-implicit-coercion'
+pub const vue_no_loss_of_precision = 'vue/no-loss-of-precision'
+pub const vue_no_negated_condition = 'vue/no-negated-condition'
+pub const vue_object_shorthand = 'vue/object-shorthand'
+pub const vue_space_infix_ops = 'vue/space-infix-ops'
+pub const vue_space_unary_ops = 'vue/space-unary-ops'
+pub const vue_template_curly_spacing = 'vue/template-curly-spacing'
+pub const vue_comma_spacing = 'vue/comma-spacing'
+pub const vue_multiline_ternary = 'vue/multiline-ternary'
+pub const vue_space_in_parens = 'vue/space-in-parens'
+pub const vue_func_call_spacing = 'vue/func-call-spacing'
+pub const vue_comma_style = 'vue/comma-style'
+pub const vue_no_constant_condition = 'vue/no-constant-condition'
+pub const vue_no_console = 'vue/no-console'
+pub const vue_quote_props = 'vue/quote-props'
+pub const vue_no_extra_parens = 'vue/no-extra-parens'
 pub const names = [no_floating_promises, await_thenable, require_await, return_await,
 	no_misused_promises, no_unsafe_call, no_unsafe_member_access, no_unsafe_return,
 	no_unsafe_assignment, no_unsafe_argument, restrict_template_expressions,
@@ -671,7 +709,16 @@ pub const names = [no_floating_promises, await_thenable, require_await, return_a
 	vue_no_v_for_template_key_on_child, vue_html_end_tags, vue_valid_attribute_name,
 	vue_v_for_delimiter_style, vue_no_v_text_v_html_on_component, vue_no_lone_template,
 	vue_html_button_has_type, vue_no_deprecated_router_link_tag_prop, vue_no_restricted_html_elements,
-	vue_no_useless_template_attributes, vue_mustache_interpolation_spacing]
+	vue_no_useless_template_attributes, vue_mustache_interpolation_spacing, vue_arrow_spacing,
+	vue_camelcase, vue_comma_dangle, vue_dot_location, vue_no_empty_pattern, vue_no_sparse_arrays,
+	vue_operator_linebreak, vue_array_bracket_newline, vue_array_bracket_spacing,
+	vue_array_element_newline, vue_block_spacing, vue_brace_style, vue_dot_notation, vue_eqeqeq,
+	vue_key_spacing, vue_keyword_spacing, vue_no_restricted_syntax, vue_no_useless_concat,
+	vue_object_curly_newline, vue_object_curly_spacing, vue_object_property_newline,
+	vue_prefer_template, vue_no_implicit_coercion, vue_no_loss_of_precision, vue_no_negated_condition,
+	vue_object_shorthand, vue_space_infix_ops, vue_space_unary_ops, vue_template_curly_spacing,
+	vue_comma_spacing, vue_multiline_ternary, vue_space_in_parens, vue_func_call_spacing,
+	vue_comma_style, vue_no_constant_condition, vue_no_console, vue_quote_props, vue_no_extra_parens]
 
 // untyped_rules are the ported rules that need no types (`meta.docs.requiresTypeChecking` is false
 // in typescript-eslint; the eslint-plugin-unicorn rules that read the types when the parser has a
@@ -792,7 +839,16 @@ pub const untyped_rules = [adjacent_overload_signatures, array_type, class_liter
 	vue_no_v_for_template_key_on_child, vue_html_end_tags, vue_valid_attribute_name,
 	vue_v_for_delimiter_style, vue_no_v_text_v_html_on_component, vue_no_lone_template,
 	vue_html_button_has_type, vue_no_deprecated_router_link_tag_prop, vue_no_restricted_html_elements,
-	vue_no_useless_template_attributes, vue_mustache_interpolation_spacing]
+	vue_no_useless_template_attributes, vue_mustache_interpolation_spacing, vue_arrow_spacing,
+	vue_camelcase, vue_comma_dangle, vue_dot_location, vue_no_empty_pattern, vue_no_sparse_arrays,
+	vue_operator_linebreak, vue_array_bracket_newline, vue_array_bracket_spacing,
+	vue_array_element_newline, vue_block_spacing, vue_brace_style, vue_dot_notation, vue_eqeqeq,
+	vue_key_spacing, vue_keyword_spacing, vue_no_restricted_syntax, vue_no_useless_concat,
+	vue_object_curly_newline, vue_object_curly_spacing, vue_object_property_newline,
+	vue_prefer_template, vue_no_implicit_coercion, vue_no_loss_of_precision, vue_no_negated_condition,
+	vue_object_shorthand, vue_space_infix_ops, vue_space_unary_ops, vue_template_curly_spacing,
+	vue_comma_spacing, vue_multiline_ternary, vue_space_in_parens, vue_func_call_spacing,
+	vue_comma_style, vue_no_constant_condition, vue_no_console, vue_quote_props, vue_no_extra_parens]
 
 // needs_types tells whether a rule asks tsgo for the types of the program.
 pub fn needs_types(rule string) bool {
@@ -1310,6 +1366,44 @@ pub const default_options = {
 	vue_no_restricted_html_elements:                 '[]'
 	vue_no_useless_template_attributes:              '[]'
 	vue_mustache_interpolation_spacing:              '[]'
+	vue_arrow_spacing:                               '[]'
+	vue_camelcase:                                   '[]'
+	vue_comma_dangle:                                '[]'
+	vue_dot_location:                                '[]'
+	vue_no_empty_pattern:                            '[]'
+	vue_no_sparse_arrays:                            '[]'
+	vue_operator_linebreak:                          '[]'
+	vue_array_bracket_newline:                       '[]'
+	vue_array_bracket_spacing:                       '[]'
+	vue_array_element_newline:                       '[]'
+	vue_block_spacing:                               '[]'
+	vue_brace_style:                                 '[]'
+	vue_dot_notation:                                '[]'
+	vue_eqeqeq:                                      '[]'
+	vue_key_spacing:                                 '[]'
+	vue_keyword_spacing:                             '[]'
+	vue_no_restricted_syntax:                        '[]'
+	vue_no_useless_concat:                           '[]'
+	vue_object_curly_newline:                        '[]'
+	vue_object_curly_spacing:                        '[]'
+	vue_object_property_newline:                     '[]'
+	vue_prefer_template:                             '[]'
+	vue_no_implicit_coercion:                        '[]'
+	vue_no_loss_of_precision:                        '[]'
+	vue_no_negated_condition:                        '[]'
+	vue_object_shorthand:                            '[]'
+	vue_space_infix_ops:                             '[]'
+	vue_space_unary_ops:                             '[]'
+	vue_template_curly_spacing:                      '[]'
+	vue_comma_spacing:                               '[]'
+	vue_multiline_ternary:                           '[]'
+	vue_space_in_parens:                             '[]'
+	vue_func_call_spacing:                           '[]'
+	vue_comma_style:                                 '[]'
+	vue_no_constant_condition:                       '[]'
+	vue_no_console:                                  '[]'
+	vue_quote_props:                                 '[]'
+	vue_no_extra_parens:                             '[]'
 }
 
 // Finding is a problem a rule found at a node.
@@ -1976,6 +2070,44 @@ pub fn message(rule string, finding Finding) string {
 		vue_no_restricted_html_elements { vnrhe_messages }
 		vue_no_useless_template_attributes { vnuta_messages }
 		vue_mustache_interpolation_spacing { vmis_messages }
+		vue_arrow_spacing { sarws_messages }
+		vue_camelcase { ccase_messages }
+		vue_comma_dangle { scd_messages }
+		vue_dot_location { sdl_messages }
+		vue_no_empty_pattern { nep_messages }
+		vue_no_sparse_arrays { nsa2_messages }
+		vue_operator_linebreak { solb_messages }
+		vue_array_bracket_newline { sabn_messages }
+		vue_array_bracket_spacing { sabs_messages }
+		vue_array_element_newline { saen_messages }
+		vue_block_spacing { sbls_messages }
+		vue_brace_style { sbs_messages }
+		vue_dot_notation { dotn_messages }
+		vue_eqeqeq { eqe_messages }
+		vue_key_spacing { sks_messages }
+		vue_keyword_spacing { skwsp_messages }
+		vue_no_restricted_syntax { nrsx_messages }
+		vue_no_useless_concat { nuconcat_messages }
+		vue_object_curly_newline { socn_messages }
+		vue_object_curly_spacing { socsp_messages }
+		vue_object_property_newline { sopn_messages }
+		vue_prefer_template { ptpl_messages }
+		vue_no_implicit_coercion { nic_messages }
+		vue_no_loss_of_precision { nlop_messages }
+		vue_no_negated_condition { nnc_messages }
+		vue_object_shorthand { os_messages }
+		vue_space_infix_ops { ssio_messages }
+		vue_space_unary_ops { ssuo_messages }
+		vue_template_curly_spacing { stcs_messages }
+		vue_comma_spacing { scmsp_messages }
+		vue_multiline_ternary { smtn_messages }
+		vue_space_in_parens { sinp_messages }
+		vue_func_call_spacing { sfcs_messages }
+		vue_comma_style { scst_messages }
+		vue_no_constant_condition { ncc_messages }
+		vue_no_console { vncon_messages }
+		vue_quote_props { sqp_messages }
+		vue_no_extra_parens { snep_messages }
 		else { map[string]string{} }
 	}
 	return interpolate(messages[finding.message_id] or { finding.message_id }, finding.data)
@@ -3753,6 +3885,19 @@ fn (mut c Checker) lint_rule(rule string, root C.TSNode, abs_path string, mut st
 		vue_mustache_interpolation_spacing {
 			return c.lint_vue_mustache_interpolation_spacing(root, abs_path, mut stats)!
 		}
+		vue_arrow_spacing, vue_camelcase, vue_comma_dangle, vue_dot_location, vue_no_empty_pattern,
+		vue_no_sparse_arrays, vue_operator_linebreak, vue_array_bracket_newline,
+		vue_array_bracket_spacing, vue_array_element_newline, vue_block_spacing, vue_brace_style,
+		vue_dot_notation, vue_eqeqeq, vue_key_spacing, vue_keyword_spacing,
+		vue_no_restricted_syntax, vue_no_useless_concat, vue_object_curly_newline,
+		vue_object_curly_spacing, vue_object_property_newline, vue_prefer_template,
+		vue_no_implicit_coercion, vue_no_loss_of_precision, vue_no_negated_condition,
+		vue_object_shorthand, vue_space_infix_ops, vue_space_unary_ops, vue_template_curly_spacing,
+		vue_comma_spacing, vue_multiline_ternary, vue_space_in_parens, vue_func_call_spacing,
+		vue_comma_style, vue_no_constant_condition, vue_no_console, vue_quote_props,
+		vue_no_extra_parens {
+			return c.lint_vue_wrap(rule, abs_path, mut stats)!
+		}
 		else { return error('unknown rule: ${rule}') }
 	}
 }
@@ -3876,6 +4021,11 @@ mut:
 	vue VueView
 	// LintConfig.project_programs of the file being linted
 	project_programs bool
+	// vue_wrap_core: a rule of ESLint Stylistic runs as the rule of ESLint core a wrapper rule of
+	// eslint-plugin-vue takes without @stylistic/eslint-plugin (vue_wrap.v); vue_stylistic is
+	// the major version of the one that resolves (0: not looked up yet, -1: none).
+	vue_wrap_core bool
+	vue_stylistic int
 }
 
 // DeclarationAsts keeps the AstTree of the files whose declarations the rules look at, by tsgo

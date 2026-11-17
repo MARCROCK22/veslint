@@ -14,6 +14,9 @@ fn (mut c Checker) lint_no_negated_condition(root C.TSNode, abs_path string, mut
 	mut findings := []Finding{}
 	t := c.es_tree(root, abs_path) or { return findings }
 	for node in 0 .. t.nodes.len {
+		if !t.visits(node) {
+			continue
+		}
 		typ := t.typ(node)
 		if typ !in [.if_statement, .conditional_expression] {
 			continue

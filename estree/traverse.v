@@ -38,7 +38,8 @@ pub:
 	leave bool
 }
 
-// steps are the enter and leave events of a traversal from the root, in order.
+// steps are the enter and leave events of a traversal from the root, in order (of the nodes it
+// visits: see EsTree.visit).
 pub fn (t &EsTree) steps() []Step {
 	mut out := []Step{cap: t.nodes.len * 2}
 	if t.root < 0 {
@@ -50,10 +51,14 @@ pub fn (t &EsTree) steps() []Step {
 	for stack.len > 0 {
 		top := stack.pop()
 		if top < -1 {
-			out << Step{-2 - top, true}
+			if t.visits(-2 - top) {
+				out << Step{-2 - top, true}
+			}
 			continue
 		}
-		out << Step{top, false}
+		if t.visits(top) {
+			out << Step{top, false}
+		}
 		stack << -2 - top
 		kids := t.children(top)
 		for k := kids.len - 1; k >= 0; k-- {

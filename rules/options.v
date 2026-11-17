@@ -287,6 +287,13 @@ pub fn effective_options(name string, options []json2.Any) ![]json2.Any {
 	// list of option objects, one of which useConfigurationIf picks), over their own defaults.
 	// The rules of eslint-plugin-vue have no meta.defaultOptions either: they read their options as
 	// written, with their defaults in their code.
+	// A wrapper rule of eslint-plugin-vue has the meta of the rule it wraps (its defaultOptions
+	// too): its options are that rule's (rules/vue_wrap.v).
+	if base := vue_wrap_base_rule(name) {
+		return effective_options(base, options) or {
+			return error(err.msg().replace_once('`${base}`', '`${name}`'))
+		}
+	}
 	if name.starts_with('perfectionist/') || name.starts_with('vue/') {
 		check_options(name, options) or { return error('`${name}`: ${err.msg()}') }
 		return options
