@@ -179,7 +179,7 @@ pub fn check_options(rule string, options []json2.Any) !bool {
 		stylistic_space_unary_ops { ssuo_options(options)! }
 		stylistic_function_call_spacing { sfcs_options(options)! }
 		stylistic_brace_style { sbs_options(options)! }
-		stylistic_comma_style { scst_options(options)! }
+		stylistic_comma_style { scst_options(options, false)! }
 		stylistic_dot_location { sdl_options(options)! }
 		stylistic_function_call_argument_newline { sfcan_options(options)! }
 		stylistic_function_paren_newline { sfpn_options(options)! }

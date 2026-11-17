@@ -42,6 +42,10 @@ struct VueWrap {
 	// per_root: the base rule walks tree-sitter's tree (nodes_of_kinds) and not the ESTree: it
 	// runs on each expression the traversal enters, as the root.
 	per_root bool
+	// slot_scope_as_function: the listener of FunctionExpression also gets each
+	// VSlotScopeExpression (vue/comma-style): the function of its snippet's wrapper, which has the
+	// same params, is visited.
+	slot_scope_as_function bool
 }
 
 // VueWrapSnippet is a snippet of the template and the ESTree nodes of it the traversal visits.
@@ -150,6 +154,24 @@ fn (mut c Checker) vue_wrap_snippets(w VueWrap) []VueWrapSnippet {
 		if c.vue_wrap_dynamic_container(n) {
 			dynamic++
 		}
+		if w.slot_scope_as_function && n.kind == .vnode
+			&& c.vue.doc.nodes[n.v].typ == .v_slot_scope_expression {
+			exprs := c.vue.doc.nodes[n.v].exprs
+			if exprs.len > 0 && exprs[0].kind == .estree {
+				function := c.vue.doc.snippets[exprs[0].snippet].es.nodes[exprs[0].node].parent
+				if function >= 0 {
+					mut at := index[exprs[0].snippet] or { -1 }
+					if at < 0 {
+						out << VueWrapSnippet{
+							snippet: exprs[0].snippet
+						}
+						at = out.len - 1
+						index[exprs[0].snippet] = at
+					}
+					out[at].visited << function
+				}
+			}
+		}
 		if n.kind == .estree {
 			mut at := index[n.snippet] or { -1 }
 			if at < 0 {
@@ -255,6 +277,55 @@ fn vue_wrap_tokens(doc &vue.Document, s &vue.Snippet, root C.TSNode) &SourceToke
 	}
 }
 
+// vue_wrap_conditional_tests are, by snippet, the expressions of the v-show, v-if and v-else-if
+// directives of the template, which vue/no-constant-condition checks as the tests of if
+// statements (its VDirectiveKey listener).
+fn (mut c Checker) vue_wrap_conditional_tests() map[int][]int {
+	mut out := map[int][]int{}
+	for v in c.vue_template_vnodes() {
+		key := &c.vue.doc.nodes[v]
+		if key.typ != .v_directive_key || key.dir_name < 0 || key.parent < 0 {
+			continue
+		}
+		if c.vue.doc.nodes[key.dir_name].name !in ['show', 'if', 'else-if'] {
+			continue
+		}
+		value := c.vue.doc.nodes[key.parent].value
+		if value < 0 {
+			continue
+		}
+		expression := c.vue.doc.nodes[value].expression
+		if expression.kind != .estree {
+			continue
+		}
+		out[expression.snippet] << expression.node
+	}
+	return out
+}
+
+// vue_wrap_html_quotes are, by snippet, the quote of the attribute value it is the expression of
+// (`VAttribute > VExpressionContainer.value` whose text starts with one).
+fn (c &Checker) vue_wrap_html_quotes() map[int]u8 {
+	mut out := map[int]u8{}
+	doc := c.vue.doc
+	for i, node in doc.nodes {
+		if node.typ != .v_expression_container || node.parent < 0
+			|| doc.nodes[node.parent].typ != .v_attribute || node.start >= doc.src.len {
+			continue
+		}
+		first := doc.src[node.start]
+		if first !in [`"`, `'`] {
+			continue
+		}
+		for step in vue_steps_from(doc, vue_vnode(i)) {
+			if step.node.kind == .estree {
+				out[step.node.snippet] = first
+			}
+		}
+	}
+	return out
+}
+
 // vue_wrap_lint runs the base rule of a wrapper rule on the template: its findings, in the file.
 fn (mut c Checker) vue_wrap_lint(rule string, w VueWrap, abs_path string, mut stats Stats) ![]Finding {
 	if w.apply_document {
@@ -281,6 +352,12 @@ fn (mut c Checker) vue_wrap_lint(rule string, w VueWrap, abs_path string, mut st
 		[][2]int{}
 	}
 	core := !c.vue_wrap_stylistic()
+	extra_tests := if rule == vue_no_constant_condition {
+		c.vue_wrap_conditional_tests()
+	} else {
+		map[int][]int{}
+	}
+	html_quotes := if rule == vue_quote_props { c.vue_wrap_html_quotes() } else { map[int]u8{} }
 	mut out := []Finding{}
 	for ws in snippets {
 		s := &doc.snippets[ws.snippet]
@@ -337,6 +414,18 @@ fn (mut c Checker) vue_wrap_lint(rule string, w VueWrap, abs_path string, mut st
 				[]Finding{}
 			}
 		}
+		if failure == '' {
+			for e in extra_tests[ws.snippet] or { []int{} } {
+				// The wrapper's VDirectiveKey listener: IfStatement's listener on {test: expression}.
+				if e < es.nodes.len && es.nodes[e].has_ts
+					&& c.es_is_constant(top, es.nodes[e].ts, true) {
+					found << Finding{
+						stmt:       c.es_tree_position(es, e)
+						message_id: 'unexpected'
+					}
+				}
+			}
+		}
 		mut moved := []Finding{}
 		for f in found {
 			if f.stmt.start_byte < content_start || f.stmt.start_byte > content_end {
@@ -348,8 +437,22 @@ fn (mut c Checker) vue_wrap_lint(rule string, w VueWrap, abs_path string, mut st
 		if failure != '' {
 			return error(failure)
 		}
+		quote := html_quotes[ws.snippet] or { u8(0) }
 		for f in moved {
 			if key_ranges.len > 0 && vue_wrap_in_dynamic_argument(f, key_ranges) {
+				continue
+			}
+			if quote != 0 && f.has_fix {
+				// vue/quote-props: in an attribute value between quotes, the quotes of the fixed
+				// text are the other ones.
+				safe := if quote == `"` { "'" } else { '"' }
+				out << Finding{
+					...f
+					fix: Fix{
+						...f.fix
+						text: f.fix.text.replace('"', safe).replace("'", safe)
+					}
+				}
 				continue
 			}
 			out << f
@@ -615,7 +718,8 @@ fn vue_wrap_of(rule string) VueWrap {
 		}
 		vue_comma_style {
 			VueWrap{
-				base: stylistic_comma_style
+				base:                   stylistic_comma_style
+				slot_scope_as_function: true
 			}
 		}
 		vue_no_constant_condition {
@@ -684,6 +788,10 @@ fn (mut c Checker) lint_vue_wrap(rule string, root C.TSNode, abs_path string, mu
 	// camelcase's `Program` listener, moved to the root element of the template.
 	if rule == vue_camelcase && c.vue_has_template() {
 		findings << c.vncc_program(root, abs_path)!
+	}
+	// no-extra-parens' own listeners, on the containers.
+	if rule == vue_no_extra_parens {
+		findings << c.vnep_vue_syntax()!
 	}
 	stats.eval_ms += ms(sw.elapsed())
 	return findings
