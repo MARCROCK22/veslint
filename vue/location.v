@@ -21,12 +21,6 @@ fn (d &Document) html_calc(base int, shift int) Calc {
 	}
 }
 
-fn offset_calc(offset int) Calc {
-	return Calc{
-		fixed: offset
-	}
-}
-
 // sub_after is getSubCalculatorAfter (its base plus a decoded index, as the original does).
 fn (d &Document) sub_after(c Calc, offset int) Calc {
 	return d.html_calc(c.base + offset, c.shift)

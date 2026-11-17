@@ -125,12 +125,6 @@ fn decode_cp(s string, i int) (u32, int) {
 	return cp, n
 }
 
-// cp_utf16_len is the number of UTF-16 units of a code point.
-@[inline]
-fn cp_utf16_len(cp u32) int {
-	return if cp >= 0x10000 { 2 } else { 1 }
-}
-
 // utf16_length is the length of a UTF-8 string in UTF-16 units.
 fn utf16_length(s string) int {
 	mut n := 0

@@ -2,6 +2,12 @@
 
 Each version is a release on GitHub with the veslint binaries (Linux x64, Windows x64) and the VS Code extension. The section of a version is the text of its release.
 
+## 0.29.0
+
+- **Vue files (`.vue`), their TypeScript script:** `veslint .` brings the `.vue` files, and every rule veslint has (with types) lints their `<script lang="ts">` and `<script setup lang="ts">` as ESLint does with vue-eslint-parser 10.4.2 and typescript-eslint's parser: the same problems, positions, fixes and suggestions (compared on 5,963 Vue files with every rule, `tests/vue-lint`). Types come from the code typescript-eslint type-checks for a `.vue`, given to the TypeScript 7 compiler as a file of its own that is never written to disk; in other files, `import App from './App.vue'` keeps the type of the `*.vue` declaration, as in ESLint. `--fix`, `--server` and the VS Code extension handle `.vue` too.
+- **Not yet:** the rules of eslint-plugin-vue and the template (they come in the next versions). A `.vue` whose script is JavaScript is not linted (veslint reads TypeScript only), with a warning.
+- **A file given by name that is neither TypeScript nor Vue** (`.js`, `.md`…) is rejected with a clear message, instead of failing in the compiler.
+
 ## 0.28.0
 
 - **The resolved configuration is cached:** resolving an `eslint.config.*` starts bun and loads ESLint and every plugin, more than a second for a usual configuration. veslint now saves what ESLint resolved in `node_modules/.cache/veslint` and uses it again until something it came from changes: the configuration, a file or module it reads (the plugins too), an environment variable it reads, the files to lint, or the `eslint.config.*` that applies to a folder. On @marcrock22/eslintcf, `veslint .` goes from 3.8 s to 2.1 s, and `--print-config` from 1.7 s to 0.06 s. `VESLINT_CONFIG_CACHE=0` turns it off.
