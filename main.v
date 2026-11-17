@@ -223,7 +223,7 @@ fn parse_args(args []string) !Options {
 				if arg.starts_with('-') {
 					return error('unknown option: ${arg}')
 				}
-				if !os.is_dir(arg) && treesitter.is_javascript_path(arg) {
+				if !os.is_dir(arg) && !is_typescript_path(arg) {
 					return error('${arg}: veslint only reads TypeScript (.ts, .mts, .cts, .tsx)')
 				}
 				targets << arg

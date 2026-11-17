@@ -9,6 +9,12 @@ import os
 // typescript_extensions are the extensions of the files a directory brings.
 const typescript_extensions = ['.ts', '.mts', '.cts', '.tsx']
 
+// is_typescript_path tells whether veslint lints a file of that name: a JavaScript file, a .vue
+// file or any other is rejected when given by name.
+fn is_typescript_path(path string) bool {
+	return os.file_ext(path).to_lower() in typescript_extensions
+}
+
 // directory_files lists the TypeScript files under `dir`, sorted, each as `dir` joined to its path
 // inside it (`.` is left out: `veslint .` prints `src/a.ts`). The directories ESLint never enters
 // by default (`node_modules` and `.git`, its default ignores) are not entered, and neither are

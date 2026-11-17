@@ -319,7 +319,7 @@ fn (mut s Server) set_served(path string, text string) {
 fn (mut s Server) lint(id i64, config string, project string, files []string, texts map[string]string, fixes bool) ServerAnswer {
 	mut errors := strings.new_builder(256)
 	for path in files {
-		if treesitter.is_javascript_path(path) {
+		if !is_typescript_path(path) {
 			return ServerAnswer{
 				id:     id
 				code:   2
