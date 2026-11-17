@@ -56,6 +56,11 @@ pub fn (d &Document) utf16(offset int) int {
 	return d.index.to_u16(offset)
 }
 
+// byte_offset converts a UTF-16 offset of the file (ESLint's `range`) to a byte offset.
+pub fn (d &Document) byte_offset(u16_offset int) int {
+	return d.index.to_byte(u16_offset)
+}
+
 // lang_of is getLang: the value of the first plain `lang` attribute of the element, if not empty.
 pub fn (d &Document) lang_of(element int) ?string {
 	start_tag := d.nodes[d.nodes[element].start_tag]

@@ -127,6 +127,16 @@ fn vue_report_positions(doc &vue.Document, findings []rules.Finding, ends bool) 
 			next++
 			continue
 		}
+		if f.fixed_line != 0 {
+			starts << offsets.DisplayPos{
+				line: f.fixed_line
+				col:  f.fixed_column
+			}
+			if ends {
+				end_positions << offsets.DisplayPos{}
+			}
+			continue
+		}
 		loc := doc.loc(f.stmt.start_byte)
 		starts << offsets.DisplayPos{
 			// A report without a place in the file: ESLint's line 0.

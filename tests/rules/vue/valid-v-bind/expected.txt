@@ -1,0 +1,3 @@
+tests/rules/vue/valid-v-bind/cases.vue:19:13	vue/valid-v-bind	expectedValue	'v-bind' directives require an attribute value.
+tests/rules/vue/valid-v-bind/cases.vue:20:18	vue/valid-v-bind	unsupportedModifier	'v-bind' directives don't support the modifier 'unknown'.
+tests/rules/vue/valid-v-bind/cases.vue:21:21	vue/valid-v-bind	expectedValue	'v-bind' directives require an attribute value.

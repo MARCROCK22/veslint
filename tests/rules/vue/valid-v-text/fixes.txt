@@ -1,0 +1,4 @@
+tests/rules/vue/valid-v-text/cases.vue:5:20	vue/valid-v-text	unexpectedArgument	'v-text' directives require no argument.	end	5	23
+tests/rules/vue/valid-v-text/cases.vue:6:20	vue/valid-v-text	unexpectedModifier	'v-text' directives require no modifier.	end	6	23
+tests/rules/vue/valid-v-text/cases.vue:7:13	vue/valid-v-text	expectedValue	'v-text' directives require that attribute value.	end	7	19
+tests/rules/vue/valid-v-text/cases.vue:8:13	vue/valid-v-text	expectedValue	'v-text' directives require that attribute value.	end	8	22

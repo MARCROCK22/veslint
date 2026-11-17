@@ -1,0 +1,1 @@
+tests/rules/vue/no-v-text/cases.vue:4:13	vue/no-v-text	unexpected	Don't use 'v-text'.	end	4	28

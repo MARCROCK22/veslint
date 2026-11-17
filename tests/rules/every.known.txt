@@ -12,3 +12,11 @@ tests/rules/@typescript-eslint/no-use-before-define/someday/cases.ts:98:7	no-use
 tests/rules/@typescript-eslint/no-use-before-define/type-references/cases.ts:98:7	no-useless-assignment	unnecessaryAssignment	The value assigned to 'callbackValue' is not used in subsequent statements.
 tests/rules/@typescript-eslint/no-use-before-define/typedefs-off/cases.ts:98:7	no-useless-assignment	unnecessaryAssignment	The value assigned to 'callbackValue' is not used in subsequent statements.
 tests/rules/@typescript-eslint/no-unnecessary-parameter-property-assignment/cases.ts:213:5	no-useless-assignment	unnecessaryAssignment	The value assigned to 'b' is not used in subsequent statements.
+# vue/comment-directive (on with every rule) applies the <!-- eslint-disable --> comments of its own
+# fixtures, as eslint-plugin-vue's processor does: the rules alone report what they disable.
+tests/rules/vue/comment-directive/cases.vue:4:8	vue/no-v-html	unexpected	'v-html' directive can lead to XSS attack.
+tests/rules/vue/comment-directive/cases.vue:6:8	vue/no-v-text	unexpected	Don't use 'v-text'.
+tests/rules/vue/comment-directive/cases.vue:8:8	vue/no-v-html	unexpected	'v-html' directive can lead to XSS attack.
+tests/rules/vue/comment-directive/unused/cases.vue:4:8	vue/no-v-html	unexpected	'v-html' directive can lead to XSS attack.
+tests/rules/vue/comment-directive/unused/cases.vue:6:8	vue/no-v-text	unexpected	Don't use 'v-text'.
+tests/rules/vue/comment-directive/unused/cases.vue:8:8	vue/no-v-html	unexpected	'v-html' directive can lead to XSS attack.

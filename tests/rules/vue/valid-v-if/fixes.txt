@@ -1,0 +1,6 @@
+tests/rules/vue/valid-v-if/cases.vue:5:18	vue/valid-v-if	withVElse	'v-if' and 'v-else' directives can't exist on the same element. You may want 'v-else-if' directives.	end	5	28
+tests/rules/vue/valid-v-if/cases.vue:6:18	vue/valid-v-if	withVElseIf	'v-if' and 'v-else-if' directives can't exist on the same element.	end	6	28
+tests/rules/vue/valid-v-if/cases.vue:7:23	vue/valid-v-if	unexpectedArgument	'v-if' directives require no argument.	end	7	26
+tests/rules/vue/valid-v-if/cases.vue:8:23	vue/valid-v-if	unexpectedModifier	'v-if' directives require no modifier.	end	8	26
+tests/rules/vue/valid-v-if/cases.vue:9:18	vue/valid-v-if	expectedValue	'v-if' directives require that attribute value.	end	9	22
+tests/rules/vue/valid-v-if/cases.vue:10:18	vue/valid-v-if	expectedValue	'v-if' directives require that attribute value.	end	10	25

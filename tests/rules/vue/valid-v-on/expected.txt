@@ -1,0 +1,8 @@
+tests/rules/vue/valid-v-on/cases.vue:23:24	vue/valid-v-on	unsupportedModifier	'v-on' directives don't support the modifier 'aaa'.
+tests/rules/vue/valid-v-on/cases.vue:24:13	vue/valid-v-on	expectedValueOrVerb	'v-on' directives require a value or verb modifier (like 'stop' or 'prevent').
+tests/rules/vue/valid-v-on/cases.vue:25:13	vue/valid-v-on	expectedValueOrVerb	'v-on' directives require a value or verb modifier (like 'stop' or 'prevent').
+tests/rules/vue/valid-v-on/cases.vue:26:20	vue/valid-v-on	avoidKeyword	Avoid using JavaScript keyword as "v-on" value: "const".
+tests/rules/vue/valid-v-on/cases.vue:27:20	vue/valid-v-on	avoidKeyword	Avoid using JavaScript keyword as "v-on" value: "delete".
+tests/rules/vue/valid-v-on/cases.vue:28:21	vue/valid-v-on	expectedValueOrVerb	'v-on' directives require a value or verb modifier (like 'stop' or 'prevent').
+tests/rules/vue/valid-v-on/options-783531fc/cases.vue:2:22	vue/valid-v-on	unsupportedModifier	'v-on' directives don't support the modifier 'bar'.
+tests/rules/vue/valid-v-on/options-7c556012/cases.vue:3:26	vue/valid-v-on	unsupportedModifier	'v-on' directives don't support the modifier 'aaa'.

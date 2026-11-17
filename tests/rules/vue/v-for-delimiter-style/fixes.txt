@@ -1,0 +1,7 @@
+tests/rules/vue/v-for-delimiter-style/cases.vue:9:20	vue/v-for-delimiter-style	expected	Expected 'in' instead of 'of' in 'v-for'.	fix	359	361	in	end	9	27
+tests/rules/vue/v-for-delimiter-style/cases.vue:10:20	vue/v-for-delimiter-style	expected	Expected 'in' instead of 'of' in 'v-for'.	fix	409	411	in	end	10	36
+tests/rules/vue/v-for-delimiter-style/cases.vue:11:20	vue/v-for-delimiter-style	expected	Expected 'in' instead of 'of' in 'v-for'.	fix	453	455	in	end	11	30
+tests/rules/vue/v-for-delimiter-style/cases.vue:12:20	vue/v-for-delimiter-style	expected	Expected 'in' instead of 'of' in 'v-for'.	fix	494	496	in	end	12	30
+tests/rules/vue/v-for-delimiter-style/cases.vue:13:20	vue/v-for-delimiter-style	expected	Expected 'in' instead of 'of' in 'v-for'.	fix	541	543	in	end	13	33
+tests/rules/vue/v-for-delimiter-style/options-756e1889/cases.vue:3:20	vue/v-for-delimiter-style	expected	Expected 'of' instead of 'in' in 'v-for'.	fix	73	75	of	end	3	27
+tests/rules/vue/v-for-delimiter-style/options-75969ac5/cases.vue:3:20	vue/v-for-delimiter-style	expected	Expected 'in' instead of 'of' in 'v-for'.	fix	73	75	in	end	3	27

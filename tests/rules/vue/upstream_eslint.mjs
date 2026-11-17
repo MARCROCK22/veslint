@@ -21,48 +21,14 @@
 // as tests/rules/upstream_eslint.mjs does. Exit code 1 when a case does not give what its test
 // expects (unless tests/upstream/vue/known.txt lists it), or a case listed there passes.
 import fs from 'node:fs';
-import os from 'node:os';
 import path from 'node:path';
-import { execFileSync } from 'node:child_process';
-import { createRequire } from 'node:module';
-
-const ROOT = path.resolve(import.meta.dirname, '../../..');
-const VUE = path.join(ROOT, 'build/upstream/vue');
-const NM = path.join(ROOT, 'build/upstream/vue-deps/node_modules');
-for (const needed of [NM, path.join(VUE, 'dist'), path.join(VUE, 'node_modules/@stylistic/eslint-plugin')]) {
-  if (!fs.existsSync(needed)) {
-    console.error(`missing ${path.relative(ROOT, needed)}: see tests/upstream/README.md`);
-    process.exit(2);
-  }
-}
-const TMP = fs.mkdtempSync(path.join(os.tmpdir(), 'veslint-vue-'));
-process.on('exit', () => fs.rmSync(TMP, { recursive: true, force: true }));
-const FIXTURES = path.join(TMP, 'fixtures');
-try {
-  execFileSync(path.join(ROOT, 'tests/upstream/vue/setup.sh'), [FIXTURES], { stdio: 'inherit' });
-} catch {
-  process.exit(2);
-}
-// eslint-plugin-vue makes its wrappers of ESLint Stylistic's rules when it loads, with the
-// @stylistic/eslint-plugin it finds from the current directory (5.10.0, in the clone's node_modules
-// that tools/gen_upstream_cases.mjs makes), and ESLint core's without it: it loads in the clone's root.
-const CWD = fs.realpathSync(VUE);
-process.chdir(CWD);
-const require = createRequire(path.join(NM, 'x.js'));
-const { RuleTester, ESLint, Linter } = require('eslint');
-const { builtinRules } = require('eslint/use-at-your-own-risk');
-const pluginVue = require('eslint-plugin-vue');
-const PARSERS = {
-  'vue-eslint-parser': require('vue-eslint-parser'),
-  '@typescript-eslint/parser': require('@typescript-eslint/parser'),
-  espree: require('espree'),
-};
-const { clearCaches } = PARSERS['@typescript-eslint/parser'];
+import { ROOT, runCase, lintMessages, clearCaches, testFileOf } from './eslint_run.mjs';
 
 let out = null;
 const args = process.argv.slice(2);
 if (args[0] === '--out') {
-  out = path.resolve(args[1]);
+  // eslint_run.mjs moved to the clone's root: a relative path is the caller's (PWD).
+  out = path.resolve(process.env.PWD ?? '.', args[1]);
   args.splice(0, 2);
 }
 const rules = args.length
@@ -73,120 +39,9 @@ const rules = args.length
       .sort()
       .map(entry => `vue/${entry}`);
 
-// `<cwd>/…` of a case: a path in the directory the case runs in.
-const withCwd = value => {
-  if (typeof value === 'string') return value === '<cwd>' || value.startsWith('<cwd>/') ? path.join(CWD, value.slice('<cwd>'.length)) : value;
-  if (Array.isArray(value)) return value.map(withCwd);
-  if (value && typeof value === 'object') return Object.fromEntries(Object.entries(value).map(([k, v]) => [k, withCwd(v)]));
-  return value;
-};
-
-const parserOf = name => {
-  if (name === null || name === undefined) return name;
-  if (!PARSERS[name]) throw new Error(`unknown parser ${name}`);
-  return PARSERS[name];
-};
-// parserOptions.parser of vue-eslint-parser: one parser or one per lang. Upstream gives the module
-// or its path, which vue-eslint-parser requires: the same module.
-const scriptParserOf = parser =>
-  parser && typeof parser === 'object' ? Object.fromEntries(Object.entries(parser).map(([lang, name]) => [lang, parserOf(name)])) : parserOf(parser);
-
-function languageOptionsOf(languageOptions = {}, parserName) {
-  const result = { ...languageOptions };
-  // espree is ESLint's default parser: a case that names it gave none.
-  if (parserName && parserName !== 'espree') result.parser = parserOf(parserName);
-  else if (result.parser !== undefined) result.parser = parserOf(result.parser);
-  if (result.parserOptions && 'parser' in result.parserOptions) {
-    result.parserOptions = { ...result.parserOptions, parser: scriptParserOf(result.parserOptions.parser) };
-  }
-  return result;
-}
-
-const pluginsOf = plugins =>
-  plugins &&
-  Object.fromEntries(
-    Object.entries(plugins).map(([prefix, plugin]) => [
-      prefix,
-      plugin === 'eslint-plugin-vue' ? pluginVue : { rules: Object.fromEntries(plugin.rules.map(name => [name, pluginVue.rules[name]])) },
-    ]),
-  );
-
-// The test case RuleTester receives.
-function itemOf(c) {
-  const item = { code: c.code };
-  if (c.name !== undefined) item.name = c.name;
-  if (c.options) item.options = withCwd(c.options);
-  const parserOptions = { ...c.parserOptions };
-  if (c.via === 'project') {
-    item.filename = path.join(FIXTURES, c.file);
-    parserOptions.project = [path.join(FIXTURES, c.tsconfig)];
-  } else if (c.filename !== undefined) {
-    item.filename = withCwd(c.filename);
-  }
-  const languageOptions = { ...c.languageOptions };
-  if (Object.keys(parserOptions).length) languageOptions.parserOptions = parserOptions;
-  item.languageOptions = languageOptionsOf(languageOptions, c.parser);
-  if (c.settings) item.settings = withCwd(c.settings);
-  if (c.plugins) item.plugins = pluginsOf(c.plugins);
-  if (c.kind === 'invalid') {
-    item.errors = c.errors;
-    if ('output' in c) item.output = c.output;
-  }
-  return item;
-}
-
-// RuleTester runs each case in an `it` block: here it runs at once, and its failure is kept.
-let failure = null;
-RuleTester.describe = (title, fn) => fn();
-RuleTester.it = (title, fn) => {
-  try {
-    fn();
-  } catch (error) {
-    failure = error;
-  }
-};
-RuleTester.itOnly = RuleTester.it;
-
-// The problems ESLint gives, the fields RuleTester and veslint look at.
-const MESSAGE_KEYS = ['ruleId', 'severity', 'message', 'messageId', 'line', 'column', 'endLine', 'endColumn', 'fatal', 'fix', 'suggestions'];
-const pick = m => Object.fromEntries(MESSAGE_KEYS.filter(k => k in m).map(k => [k, m[k]]));
-
-function runCase(name, c) {
-  const rule = c.rule ? builtinRules.get(c.rule) : pluginVue.rules[name];
-  const tester = new RuleTester();
-  // The problems of the first verify, the case's (the next ones check the output of the fixes).
-  let messages = null;
-  const verify = tester.linter.verify.bind(tester.linter);
-  tester.linter.verify = (...verifyArgs) => {
-    const result = verify(...verifyArgs);
-    messages ??= result;
-    return result;
-  };
-  failure = null;
-  try {
-    tester.run(c.rule ?? name, rule, c.kind === 'valid' ? { valid: [itemOf(c)], invalid: [] } : { valid: [], invalid: [itemOf(c)] });
-  } catch (error) {
-    failure = error;
-  }
-  return { failure, messages: (messages ?? []).map(pick) };
-}
-
 // A lint of an `it` block, linted again as the test did.
 async function runLint(lint) {
-  const { languageOptions, plugins, ...rest } = lint.config;
-  const config = { ...rest };
-  if (languageOptions) config.languageOptions = languageOptionsOf(languageOptions);
-  if (plugins) config.plugins = pluginsOf(plugins);
-  let messages;
-  let output;
-  if (lint.api === 'ESLint') {
-    const eslint = new ESLint({ overrideConfigFile: true, overrideConfig: config, fix: Boolean(lint.fix) });
-    const [result] = await eslint.lintText(lint.code, { filePath: lint.filename });
-    messages = result.messages.map(pick);
-    output = result.output;
-  } else {
-    messages = new Linter().verify(lint.code, config, lint.filename).map(pick);
-  }
+  const { messages, output } = await lintMessages(lint);
   const problems = [];
   if (JSON.stringify(messages) !== JSON.stringify(lint.messages)) {
     problems.push(`ESLint gives ${JSON.stringify(messages)}, recorded ${JSON.stringify(lint.messages)}`);
@@ -206,9 +61,6 @@ const known = new Map(
     .map(([id, reason]) => [id, reason]),
 );
 
-// The test file of a case: its id without the case and the run (`<file>[/r<n>]/<v|i><n>`).
-const testFileOf = id => id.split('/').slice(0, -1).filter((part, i, parts) => !(i === parts.length - 1 && /^r\d+$/.test(part))).join('/');
-
 let failed = false;
 let total = 0;
 let different = 0;
@@ -225,7 +77,7 @@ for (const ruleId of rules) {
       lastTestFile = testFile;
     }
     const { failure: error, messages } = runCase(name, c);
-    results.push({ filePath: c.id, messages });
+    results.push({ filePath: c.id, messages: messages ?? [] });
     if (error && !known.has(c.id)) problems.push(`${c.id}: ${error.message.split('\n').slice(0, 6).join('\n    ')}`);
     if (!error && known.has(c.id)) problems.push(`${c.id}: listed in tests/upstream/vue/known.txt, but passes`);
     if (error) different++;

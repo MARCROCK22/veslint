@@ -1,0 +1,2 @@
+tests/rules/vue/no-v-model-argument/cases.vue:3:21	vue/no-v-model-argument	vModelRequireNoArgument	'v-model' directives require no argument.
+tests/rules/vue/no-v-model-argument/cases.vue:4:21	vue/no-v-model-argument	vModelRequireNoArgument	'v-model' directives require no argument.

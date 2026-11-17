@@ -61,7 +61,7 @@ veslint <file.ts | directory>... [--config <file>] [--rule <rule> [--no-config-l
 |---|---|
 | `<directory>` | Lints the `.ts`, `.mts`, `.cts`, `.tsx` and `.vue` files under it, as `eslint .` does: `node_modules`, `.git` and what the configuration ignores are left out. |
 | `<file.ts>` | Lints that file. JavaScript files are not linted: veslint only reads TypeScript. |
-| `<file.vue>` | Lints the TypeScript script of a Vue file (`<script lang="ts">` and `<script setup lang="ts">`) as ESLint does with vue-eslint-parser and typescript-eslint's parser: the rules see the script with the positions of the file, and the types are those typescript-eslint gives with `extraFileExtensions: ['.vue']`. A Vue file whose script is JavaScript is skipped with a warning. |
+| `<file.vue>` | Lints the TypeScript script of a Vue file (`<script lang="ts">` and `<script setup lang="ts">`) and, with the `vue/*` rules, its template, as ESLint does with vue-eslint-parser and typescript-eslint's parser: the rules see the script with the positions of the file, and the types are those typescript-eslint gives with `extraFileExtensions: ['.vue']`. A Vue file whose script is JavaScript is skipped with a warning. |
 | `--config <file>` | The configuration (see below). Without it and without `--rule`, a directory is linted with the closest `eslint.config.*`. |
 | `--rule <rule>` | Lints with one rule, named as in ESLint: `no-var`, `@typescript-eslint/await-thenable`. Its options, and the files it lints, are the ones the closest `eslint.config.*` gives it (on with its default options when the configuration has it off); without a configuration, its default options. Directive comments for other rules are left alone: they are never reported as unused, and `--fix` keeps them. |
 | `--no-config-lookup` | With `--rule`: the rule's default options, without looking for an `eslint.config.*`. |
@@ -99,7 +99,7 @@ Directive comments work as in ESLint 10: `eslint-disable`, `eslint-enable`, `esl
 
 ## Rules
 
-veslint has **458 rules**, each with all its options, fixes and suggestions:
+veslint has **507 rules**, each with all its options, fixes and suggestions:
 
 <details>
 <summary><b>ESLint 10.15.0</b>: 139 rules</summary>
@@ -137,6 +137,13 @@ veslint has **458 rules**, each with all its options, fixes and suggestions:
 </details>
 
 <details>
+<summary><b>eslint-plugin-vue 10.12.1</b> (the templates of <code>.vue</code> files): 49 rules</summary>
+
+`vue/comment-directive`, `vue/html-button-has-type`, `vue/html-end-tags`, `vue/mustache-interpolation-spacing`, `vue/no-custom-modifiers-on-v-model`, `vue/no-deprecated-filter`, `vue/no-deprecated-html-element-is`, `vue/no-deprecated-inline-template`, `vue/no-deprecated-router-link-tag-prop`, `vue/no-deprecated-scope-attribute`, `vue/no-deprecated-v-bind-sync`, `vue/no-deprecated-v-is`, `vue/no-deprecated-v-on-native-modifier`, `vue/no-deprecated-v-on-number-modifiers`, `vue/no-duplicate-attributes`, `vue/no-lone-template`, `vue/no-multiple-objects-in-class`, `vue/no-parsing-error`, `vue/no-restricted-html-elements`, `vue/no-spaces-around-equal-signs-in-attribute`, `vue/no-template-key`, `vue/no-textarea-mustache`, `vue/no-use-v-else-with-v-for`, `vue/no-use-v-if-with-v-for`, `vue/no-useless-template-attributes`, `vue/no-v-for-template-key`, `vue/no-v-for-template-key-on-child`, `vue/no-v-html`, `vue/no-v-model-argument`, `vue/no-v-text`, `vue/no-v-text-v-html-on-component`, `vue/require-component-is`, `vue/require-v-for-key`, `vue/v-bind-style`, `vue/v-for-delimiter-style`, `vue/v-on-style`, `vue/valid-attribute-name`, `vue/valid-v-bind`, `vue/valid-v-cloak`, `vue/valid-v-else`, `vue/valid-v-else-if`, `vue/valid-v-html`, `vue/valid-v-if`, `vue/valid-v-is`, `vue/valid-v-on`, `vue/valid-v-once`, `vue/valid-v-pre`, `vue/valid-v-show`, `vue/valid-v-text`
+
+</details>
+
+<details>
 <summary><b>@slipher/eslint-plugin 1.1.0</b> (Seyfert bots): 15 rules</summary>
 
 `seyfert/autocomplete-respond`, `seyfert/config-default-export`, `seyfert/context-menu-declare`, `seyfert/declare-description`, `seyfert/decorator-on-command`, `seyfert/decorator-target`, `seyfert/group-exists`, `seyfert/i18n-resolve-with-get`, `seyfert/no-deep-imports`, `seyfert/no-hanging-middleware`, `seyfert/no-method-destructure`, `seyfert/options-use-builders`, `seyfert/prefer-typed-group`, `seyfert/require-declare`, `seyfert/required-options-order`
@@ -154,7 +161,7 @@ What each version added is in the [changelog](CHANGELOG.md).
 
 ### How it is checked
 
-Every rule passes all the cases of its own upstream tests, linted as TypeScript: 29,862 cases of typescript-eslint, 14,092 of ESLint, 14,962 of eslint-plugin-unicorn, 9,528 of @stylistic/eslint-plugin, 3,278 of eslint-plugin-perfectionist, 459 of @slipher/eslint-plugin and 206 of @marcrock22/eslintcf. On fixtures of its own, every rule gives exactly what ESLint gives: problems, messages, positions, fixes and suggestions. The rules are also compared with ESLint on real projects (a Discord bot, zod, recharts and the TypeScript compiler).
+Every rule passes all the cases of its own upstream tests, linted as TypeScript: 29,862 cases of typescript-eslint, 14,092 of ESLint, 14,962 of eslint-plugin-unicorn, 9,528 of @stylistic/eslint-plugin, 3,278 of eslint-plugin-perfectionist, 459 of @slipher/eslint-plugin, 206 of @marcrock22/eslintcf and 800 of eslint-plugin-vue (its JavaScript cases with `lang="ts"`, with what ESLint gives for them). On fixtures of its own, every rule gives exactly what ESLint gives: problems, messages, positions, fixes and suggestions. The rules are also compared with ESLint on real projects (a Discord bot, zod, recharts and the TypeScript compiler).
 
 ## VS Code extension
 
@@ -163,7 +170,7 @@ The extension shows the problems of the TypeScript files you open and type, unde
 ## Limits
 
 - **TypeScript only.** JavaScript files are not linted, even in a project with `allowJs`, nor the JavaScript scripts of Vue files.
-- **Vue files:** the rules of eslint-plugin-vue are not there yet: only the script of a `.vue` file is linted, not its template. Two scripts that are not modules (no `import` or `export`) see each other's globals in veslint, where typescript-eslint has the other `.vue` files of the program as the text of the file.
+- **Vue files:** 49 rules of eslint-plugin-vue so far (the others are skipped with a warning). `<!-- eslint-disable -->` comments in a template work when `vue/comment-directive` is on, as with eslint-plugin-vue's processor. `parserOptions.vueFeatures` is not read (the defaults are used). Two scripts that are not modules (no `import` or `export`) see each other's globals in veslint, where typescript-eslint has the other `.vue` files of the program as the text of the file.
 - **Linux x64 and Windows x64.** Other platforms need a build from source, which is not tested there.
 - **An `eslint.config.*` needs `bun`** to be read; the resolved configuration (`--print-config`) does not. A cached resolution is reused while the files and modules the configuration read and the environment variables it read stay the same: a configuration that depends on something else (the date, a file it lists but does not read, a new `tsconfig.json` a glob of `parserOptions.project` matches) needs `VESLINT_CONFIG_CACHE=0`.
 - **The newest TypeScript syntax** may not be read yet: veslint warns when a file has syntax it does not understand, and some problems of that file may be missing.

@@ -1,0 +1,3 @@
+tests/rules/vue/no-multiple-objects-in-class/cases.vue:5:13	vue/no-multiple-objects-in-class	unexpected	Unexpected multiple objects. Merge objects.
+tests/rules/vue/no-multiple-objects-in-class/cases.vue:6:13	vue/no-multiple-objects-in-class	unexpected	Unexpected multiple objects. Merge objects.
+tests/rules/vue/no-multiple-objects-in-class/cases.vue:7:13	vue/no-multiple-objects-in-class	unexpected	Unexpected multiple objects. Merge objects.

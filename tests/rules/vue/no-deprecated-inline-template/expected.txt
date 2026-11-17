@@ -1,0 +1,3 @@
+tests/rules/vue/no-deprecated-inline-template/cases.vue:6:22	vue/no-deprecated-inline-template	unexpected	`inline-template` are deprecated.
+tests/rules/vue/no-deprecated-inline-template/cases.vue:7:22	vue/no-deprecated-inline-template	unexpected	`inline-template` are deprecated.
+tests/rules/vue/no-deprecated-inline-template/cases.vue:8:22	vue/no-deprecated-inline-template	unexpected	`inline-template` are deprecated.

@@ -1,0 +1,3 @@
+tests/rules/vue/v-on-style/cases.vue:4:13	vue/v-on-style	expectedShorthand	Expected '@' instead of 'v-on:'.	fix	95	100	@	end	4	27
+tests/rules/vue/v-on-style/options-0436848e/cases.vue:3:13	vue/v-on-style	expectedShorthand	Expected '@' instead of 'v-on:'.	fix	59	64	@	end	3	27
+tests/rules/vue/v-on-style/options-80a3e456/cases.vue:3:13	vue/v-on-style	expectedLonghand	Expected 'v-on:' instead of '@'.	fix	63	64	v-on:	end	3	23

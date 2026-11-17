@@ -1,0 +1,6 @@
+tests/rules/vue/valid-v-once/cases.vue:3:20	vue/valid-v-once	unexpectedArgument	'v-once' directives require no argument.	end	3	23
+tests/rules/vue/valid-v-once/cases.vue:4:20	vue/valid-v-once	unexpectedModifier	'v-once' directives require no modifier.	end	4	23
+tests/rules/vue/valid-v-once/cases.vue:5:20	vue/valid-v-once	unexpectedValue	'v-once' directives require no attribute value.	end	5	25
+tests/rules/vue/valid-v-once/cases.vue:6:28	vue/valid-v-once	unexpectedValue	'v-once' directives require no attribute value.	end	6	31
+tests/rules/vue/valid-v-once/cases.vue:7:28	vue/valid-v-once	unexpectedValue	'v-once' directives require no attribute value.	end	7	34
+tests/rules/vue/valid-v-once/cases.vue:8:28	vue/valid-v-once	unexpectedValue	'v-once' directives require no attribute value.	end	8	30

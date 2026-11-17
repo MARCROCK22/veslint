@@ -1,0 +1,5 @@
+tests/rules/vue/valid-v-is/cases.vue:7:18	vue/valid-v-is	unexpectedArgument	'v-is' directives require no argument.	end	7	19
+tests/rules/vue/valid-v-is/cases.vue:8:18	vue/valid-v-is	unexpectedModifier	'v-is' directives require no modifier.	end	8	19
+tests/rules/vue/valid-v-is/cases.vue:9:13	vue/valid-v-is	expectedValue	'v-is' directives require that attribute value.	end	9	17
+tests/rules/vue/valid-v-is/cases.vue:10:13	vue/valid-v-is	expectedValue	'v-is' directives require that attribute value.	end	10	20
+tests/rules/vue/valid-v-is/cases.vue:11:21	vue/valid-v-is	ownerMustBeHTMLElement	'v-is' directive must be owned by a native HTML element, but 'mycomponent' is not.	end	11	31

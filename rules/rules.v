@@ -474,6 +474,55 @@ pub const no_unsafe_enum_assignment = '@typescript-eslint/no-unsafe-enum-assignm
 pub const member_ordering = '@typescript-eslint/member-ordering'
 pub const perfectionist_sort_classes = 'perfectionist/sort-classes'
 pub const perfectionist_sort_imports = 'perfectionist/sort-imports'
+pub const vue_no_v_html = 'vue/no-v-html'
+pub const vue_no_v_text = 'vue/no-v-text'
+pub const vue_no_duplicate_attributes = 'vue/no-duplicate-attributes'
+pub const vue_comment_directive = 'vue/comment-directive'
+pub const vue_no_parsing_error = 'vue/no-parsing-error'
+pub const vue_no_deprecated_v_is = 'vue/no-deprecated-v-is'
+pub const vue_no_deprecated_scope_attribute = 'vue/no-deprecated-scope-attribute'
+pub const vue_no_deprecated_filter = 'vue/no-deprecated-filter'
+pub const vue_no_deprecated_inline_template = 'vue/no-deprecated-inline-template'
+pub const vue_require_component_is = 'vue/require-component-is'
+pub const vue_no_deprecated_v_on_native_modifier = 'vue/no-deprecated-v-on-native-modifier'
+pub const vue_no_v_model_argument = 'vue/no-v-model-argument'
+pub const vue_no_textarea_mustache = 'vue/no-textarea-mustache'
+pub const vue_no_use_v_else_with_v_for = 'vue/no-use-v-else-with-v-for'
+pub const vue_no_v_for_template_key = 'vue/no-v-for-template-key'
+pub const vue_no_template_key = 'vue/no-template-key'
+pub const vue_no_custom_modifiers_on_v_model = 'vue/no-custom-modifiers-on-v-model'
+pub const vue_no_deprecated_v_bind_sync = 'vue/no-deprecated-v-bind-sync'
+pub const vue_no_spaces_around_equal_signs_in_attribute = 'vue/no-spaces-around-equal-signs-in-attribute'
+pub const vue_no_deprecated_v_on_number_modifiers = 'vue/no-deprecated-v-on-number-modifiers'
+pub const vue_valid_v_bind = 'vue/valid-v-bind'
+pub const vue_valid_v_cloak = 'vue/valid-v-cloak'
+pub const vue_valid_v_html = 'vue/valid-v-html'
+pub const vue_valid_v_once = 'vue/valid-v-once'
+pub const vue_valid_v_pre = 'vue/valid-v-pre'
+pub const vue_valid_v_text = 'vue/valid-v-text'
+pub const vue_valid_v_show = 'vue/valid-v-show'
+pub const vue_valid_v_if = 'vue/valid-v-if'
+pub const vue_valid_v_else_if = 'vue/valid-v-else-if'
+pub const vue_valid_v_else = 'vue/valid-v-else'
+pub const vue_valid_v_is = 'vue/valid-v-is'
+pub const vue_valid_v_on = 'vue/valid-v-on'
+pub const vue_v_on_style = 'vue/v-on-style'
+pub const vue_v_bind_style = 'vue/v-bind-style'
+pub const vue_no_multiple_objects_in_class = 'vue/no-multiple-objects-in-class'
+pub const vue_require_v_for_key = 'vue/require-v-for-key'
+pub const vue_no_deprecated_html_element_is = 'vue/no-deprecated-html-element-is'
+pub const vue_no_use_v_if_with_v_for = 'vue/no-use-v-if-with-v-for'
+pub const vue_no_v_for_template_key_on_child = 'vue/no-v-for-template-key-on-child'
+pub const vue_html_end_tags = 'vue/html-end-tags'
+pub const vue_valid_attribute_name = 'vue/valid-attribute-name'
+pub const vue_v_for_delimiter_style = 'vue/v-for-delimiter-style'
+pub const vue_no_v_text_v_html_on_component = 'vue/no-v-text-v-html-on-component'
+pub const vue_no_lone_template = 'vue/no-lone-template'
+pub const vue_html_button_has_type = 'vue/html-button-has-type'
+pub const vue_no_deprecated_router_link_tag_prop = 'vue/no-deprecated-router-link-tag-prop'
+pub const vue_no_restricted_html_elements = 'vue/no-restricted-html-elements'
+pub const vue_no_useless_template_attributes = 'vue/no-useless-template-attributes'
+pub const vue_mustache_interpolation_spacing = 'vue/mustache-interpolation-spacing'
 pub const names = [no_floating_promises, await_thenable, require_await, return_await,
 	no_misused_promises, no_unsafe_call, no_unsafe_member_access, no_unsafe_return,
 	no_unsafe_assignment, no_unsafe_argument, restrict_template_expressions,
@@ -607,7 +656,22 @@ pub const names = [no_floating_promises, await_thenable, require_await, return_a
 	explicit_function_return_type, explicit_module_boundary_types, explicit_member_accessibility,
 	parameter_properties, prefer_literal_enum_member, no_magic_numbers, no_restricted_types,
 	no_generated_empty_object_type, no_unsafe_enum_assignment, member_ordering,
-	perfectionist_sort_classes, perfectionist_sort_imports]
+	perfectionist_sort_classes, perfectionist_sort_imports, vue_comment_directive,
+	vue_no_parsing_error, vue_no_v_html, vue_no_v_text, vue_no_duplicate_attributes,
+	vue_no_deprecated_v_is, vue_no_deprecated_scope_attribute, vue_no_deprecated_filter,
+	vue_no_deprecated_inline_template, vue_require_component_is,
+	vue_no_deprecated_v_on_native_modifier, vue_no_v_model_argument, vue_no_textarea_mustache,
+	vue_no_use_v_else_with_v_for, vue_no_v_for_template_key, vue_no_template_key,
+	vue_no_custom_modifiers_on_v_model, vue_no_deprecated_v_bind_sync,
+	vue_no_spaces_around_equal_signs_in_attribute, vue_no_deprecated_v_on_number_modifiers,
+	vue_valid_v_bind, vue_valid_v_cloak, vue_valid_v_html, vue_valid_v_once, vue_valid_v_pre,
+	vue_valid_v_text, vue_valid_v_show, vue_valid_v_if, vue_valid_v_else_if, vue_valid_v_else,
+	vue_valid_v_is, vue_valid_v_on, vue_v_on_style, vue_v_bind_style, vue_no_multiple_objects_in_class,
+	vue_require_v_for_key, vue_no_deprecated_html_element_is, vue_no_use_v_if_with_v_for,
+	vue_no_v_for_template_key_on_child, vue_html_end_tags, vue_valid_attribute_name,
+	vue_v_for_delimiter_style, vue_no_v_text_v_html_on_component, vue_no_lone_template,
+	vue_html_button_has_type, vue_no_deprecated_router_link_tag_prop, vue_no_restricted_html_elements,
+	vue_no_useless_template_attributes, vue_mustache_interpolation_spacing]
 
 // untyped_rules are the ported rules that need no types (`meta.docs.requiresTypeChecking` is false
 // in typescript-eslint; the eslint-plugin-unicorn rules that read the types when the parser has a
@@ -713,7 +777,22 @@ pub const untyped_rules = [adjacent_overload_signatures, array_type, class_liter
 	perfectionist_sort_named_imports, perfectionist_sort_named_exports, perfectionist_sort_exports,
 	explicit_function_return_type, explicit_module_boundary_types, explicit_member_accessibility,
 	parameter_properties, prefer_literal_enum_member, no_magic_numbers, no_restricted_types,
-	member_ordering, perfectionist_sort_classes, perfectionist_sort_imports]
+	member_ordering, perfectionist_sort_classes, perfectionist_sort_imports, vue_no_v_html,
+	vue_no_v_text, vue_no_duplicate_attributes, vue_comment_directive, vue_no_parsing_error,
+	vue_no_deprecated_v_is, vue_no_deprecated_scope_attribute, vue_no_deprecated_filter,
+	vue_no_deprecated_inline_template, vue_require_component_is,
+	vue_no_deprecated_v_on_native_modifier, vue_no_v_model_argument, vue_no_textarea_mustache,
+	vue_no_use_v_else_with_v_for, vue_no_v_for_template_key, vue_no_template_key,
+	vue_no_custom_modifiers_on_v_model, vue_no_deprecated_v_bind_sync,
+	vue_no_spaces_around_equal_signs_in_attribute, vue_no_deprecated_v_on_number_modifiers,
+	vue_valid_v_bind, vue_valid_v_cloak, vue_valid_v_html, vue_valid_v_once, vue_valid_v_pre,
+	vue_valid_v_text, vue_valid_v_show, vue_valid_v_if, vue_valid_v_else_if, vue_valid_v_else,
+	vue_valid_v_is, vue_valid_v_on, vue_v_on_style, vue_v_bind_style, vue_no_multiple_objects_in_class,
+	vue_require_v_for_key, vue_no_deprecated_html_element_is, vue_no_use_v_if_with_v_for,
+	vue_no_v_for_template_key_on_child, vue_html_end_tags, vue_valid_attribute_name,
+	vue_v_for_delimiter_style, vue_no_v_text_v_html_on_component, vue_no_lone_template,
+	vue_html_button_has_type, vue_no_deprecated_router_link_tag_prop, vue_no_restricted_html_elements,
+	vue_no_useless_template_attributes, vue_mustache_interpolation_spacing]
 
 // needs_types tells whether a rule asks tsgo for the types of the program.
 pub fn needs_types(rule string) bool {
@@ -1182,6 +1261,55 @@ pub const default_options = {
 	member_ordering:                                 '[{"default":{"memberTypes":["signature","call-signature","public-static-field","protected-static-field","private-static-field","#private-static-field","public-decorated-field","protected-decorated-field","private-decorated-field","public-instance-field","protected-instance-field","private-instance-field","#private-instance-field","public-abstract-field","protected-abstract-field","public-field","protected-field","private-field","#private-field","static-field","instance-field","abstract-field","decorated-field","field","static-initialization","public-constructor","protected-constructor","private-constructor","constructor","public-static-accessor","protected-static-accessor","private-static-accessor","#private-static-accessor","public-decorated-accessor","protected-decorated-accessor","private-decorated-accessor","public-instance-accessor","protected-instance-accessor","private-instance-accessor","#private-instance-accessor","public-abstract-accessor","protected-abstract-accessor","public-accessor","protected-accessor","private-accessor","#private-accessor","static-accessor","instance-accessor","abstract-accessor","decorated-accessor","accessor","public-static-get","protected-static-get","private-static-get","#private-static-get","public-decorated-get","protected-decorated-get","private-decorated-get","public-instance-get","protected-instance-get","private-instance-get","#private-instance-get","public-abstract-get","protected-abstract-get","public-get","protected-get","private-get","#private-get","static-get","instance-get","abstract-get","decorated-get","get","public-static-set","protected-static-set","private-static-set","#private-static-set","public-decorated-set","protected-decorated-set","private-decorated-set","public-instance-set","protected-instance-set","private-instance-set","#private-instance-set","public-abstract-set","protected-abstract-set","public-set","protected-set","private-set","#private-set","static-set","instance-set","abstract-set","decorated-set","set","public-static-method","protected-static-method","private-static-method","#private-static-method","public-decorated-method","protected-decorated-method","private-decorated-method","public-instance-method","protected-instance-method","private-instance-method","#private-instance-method","public-abstract-method","protected-abstract-method","public-method","protected-method","private-method","#private-method","static-method","instance-method","abstract-method","decorated-method","method"]}}]'
 	perfectionist_sort_classes:                      '[]'
 	perfectionist_sort_imports:                      '[]'
+	vue_no_v_html:                                   '[]'
+	vue_no_v_text:                                   '[]'
+	vue_no_duplicate_attributes:                     '[]'
+	vue_comment_directive:                           '[]'
+	vue_no_parsing_error:                            '[]'
+	vue_no_deprecated_v_is:                          '[]'
+	vue_no_deprecated_scope_attribute:               '[]'
+	vue_no_deprecated_filter:                        '[]'
+	vue_no_deprecated_inline_template:               '[]'
+	vue_require_component_is:                        '[]'
+	vue_no_deprecated_v_on_native_modifier:          '[]'
+	vue_no_v_model_argument:                         '[]'
+	vue_no_textarea_mustache:                        '[]'
+	vue_no_use_v_else_with_v_for:                    '[]'
+	vue_no_v_for_template_key:                       '[]'
+	vue_no_template_key:                             '[]'
+	vue_no_custom_modifiers_on_v_model:              '[]'
+	vue_no_deprecated_v_bind_sync:                   '[]'
+	vue_no_spaces_around_equal_signs_in_attribute:   '[]'
+	vue_no_deprecated_v_on_number_modifiers:         '[]'
+	vue_valid_v_bind:                                '[]'
+	vue_valid_v_cloak:                               '[]'
+	vue_valid_v_html:                                '[]'
+	vue_valid_v_once:                                '[]'
+	vue_valid_v_pre:                                 '[]'
+	vue_valid_v_text:                                '[]'
+	vue_valid_v_show:                                '[]'
+	vue_valid_v_if:                                  '[]'
+	vue_valid_v_else_if:                             '[]'
+	vue_valid_v_else:                                '[]'
+	vue_valid_v_is:                                  '[]'
+	vue_valid_v_on:                                  '[]'
+	vue_v_on_style:                                  '[]'
+	vue_v_bind_style:                                '[]'
+	vue_no_multiple_objects_in_class:                '[]'
+	vue_require_v_for_key:                           '[]'
+	vue_no_deprecated_html_element_is:               '[]'
+	vue_no_use_v_if_with_v_for:                      '[]'
+	vue_no_v_for_template_key_on_child:              '[]'
+	vue_html_end_tags:                               '[]'
+	vue_valid_attribute_name:                        '[]'
+	vue_v_for_delimiter_style:                       '[]'
+	vue_no_v_text_v_html_on_component:               '[]'
+	vue_no_lone_template:                            '[]'
+	vue_html_button_has_type:                        '[]'
+	vue_no_deprecated_router_link_tag_prop:          '[]'
+	vue_no_restricted_html_elements:                 '[]'
+	vue_no_useless_template_attributes:              '[]'
+	vue_mustache_interpolation_spacing:              '[]'
 }
 
 // Finding is a problem a rule found at a node.
@@ -1207,6 +1335,12 @@ pub:
 	// CR, U+2028 and U+2029 there, where the locations of vue-eslint-parser's nodes and tokens
 	// end only at LF (the two only differ in a .vue file).
 	text_loc bool
+	// A report of a .vue file whose `loc` is a line and a column given as such
+	// (vue/no-parsing-error's, from the errors of the document, which may be past the end of the
+	// file): when fixed_line is not 0, ESLint's line and column are fixed_line and fixed_column
+	// (from 1), and the report has no end.
+	fixed_line   int
+	fixed_column int
 }
 
 // problem_rule is the `rule` of the problems ESLint reports without a rule (`ruleId: null`).
@@ -1793,6 +1927,55 @@ pub fn message(rule string, finding Finding) string {
 		member_ordering { mord_messages }
 		perfectionist_sort_classes { pfsc_messages }
 		perfectionist_sort_imports { pfsi_messages }
+		vue_no_v_html { vnvh_messages }
+		vue_no_v_text { vnvt_messages }
+		vue_no_duplicate_attributes { vnda_messages }
+		vue_comment_directive { vcd_messages }
+		vue_no_parsing_error { vnpe_messages }
+		vue_no_deprecated_v_is { vndvi_messages }
+		vue_no_deprecated_scope_attribute { vndsa_messages }
+		vue_no_deprecated_filter { vndf_messages }
+		vue_no_deprecated_inline_template { vndit_messages }
+		vue_require_component_is { vrci_messages }
+		vue_no_deprecated_v_on_native_modifier { vndvonm_messages }
+		vue_no_v_model_argument { vnvma_messages }
+		vue_no_textarea_mustache { vntm_messages }
+		vue_no_use_v_else_with_v_for { vnuvewvf_messages }
+		vue_no_v_for_template_key { vnvftk_messages }
+		vue_no_template_key { vntk_messages }
+		vue_no_custom_modifiers_on_v_model { vncmovm_messages }
+		vue_no_deprecated_v_bind_sync { vndvbs_messages }
+		vue_no_spaces_around_equal_signs_in_attribute { vnsaesia_messages }
+		vue_no_deprecated_v_on_number_modifiers { vndvonum_messages }
+		vue_valid_v_bind { vvbind_messages }
+		vue_valid_v_cloak { vvcloak_messages }
+		vue_valid_v_html { vvhtml_messages }
+		vue_valid_v_once { vvonce_messages }
+		vue_valid_v_pre { vvpre_messages }
+		vue_valid_v_text { vvtext_messages }
+		vue_valid_v_show { vvshow_messages }
+		vue_valid_v_if { vvif_messages }
+		vue_valid_v_else_if { vvelseif_messages }
+		vue_valid_v_else { vvelse_messages }
+		vue_valid_v_is { vvis_messages }
+		vue_valid_v_on { vvon_messages }
+		vue_v_on_style { vvos_messages }
+		vue_v_bind_style { vvbs_messages }
+		vue_no_multiple_objects_in_class { vnmoic_messages }
+		vue_require_v_for_key { vrvfk_messages }
+		vue_no_deprecated_html_element_is { vndhei_messages }
+		vue_no_use_v_if_with_v_for { vnuviwvf_messages }
+		vue_no_v_for_template_key_on_child { vnvftkoc_messages }
+		vue_html_end_tags { vhet_messages }
+		vue_valid_attribute_name { vvan_messages }
+		vue_v_for_delimiter_style { vvfds_messages }
+		vue_no_v_text_v_html_on_component { vnvtvhoc_messages }
+		vue_no_lone_template { vnlt_messages }
+		vue_html_button_has_type { vhbht_messages }
+		vue_no_deprecated_router_link_tag_prop { vndrltp_messages }
+		vue_no_restricted_html_elements { vnrhe_messages }
+		vue_no_useless_template_attributes { vnuta_messages }
+		vue_mustache_interpolation_spacing { vmis_messages }
 		else { map[string]string{} }
 	}
 	return interpolate(messages[finding.message_id] or { finding.message_id }, finding.data)
@@ -2032,6 +2215,15 @@ fn (mut c Checker) lint_file_in_lifetime(parser Parser, config LintConfig, src s
 	}
 	findings = sort_rule_findings(findings)
 	findings = c.apply_disable_directives(findings, inline, config)
+	// The template's directive comments of a .vue file: the postprocess of eslint-plugin-vue's
+	// processor, with its rule on (vue_comment_directive.v).
+	if c.is_vue() {
+		for setting in inline.rules {
+			if setting.name == vue_comment_directive {
+				findings = c.vue_comment_directive_postprocess(findings, setting)!
+			}
+		}
+	}
 	stats.findings += findings.len
 	return FileLint{
 		findings:      findings
@@ -3413,6 +3605,153 @@ fn (mut c Checker) lint_rule(rule string, root C.TSNode, abs_path string, mut st
 		}
 		perfectionist_sort_imports {
 			return c.lint_perfectionist_sort_imports(root, abs_path, mut stats)!
+		}
+		vue_no_v_html {
+			return c.lint_vue_no_v_html(root, abs_path, mut stats)!
+		}
+		vue_no_v_text {
+			return c.lint_vue_no_v_text(root, abs_path, mut stats)!
+		}
+		vue_no_duplicate_attributes {
+			return c.lint_vue_no_duplicate_attributes(root, abs_path, mut stats)!
+		}
+		vue_comment_directive {
+			return c.lint_vue_comment_directive(root, abs_path, mut stats)!
+		}
+		vue_no_parsing_error {
+			return c.lint_vue_no_parsing_error(root, abs_path, mut stats)!
+		}
+		vue_no_deprecated_v_is {
+			return c.lint_vue_no_deprecated_v_is(root, abs_path, mut stats)!
+		}
+		vue_no_deprecated_scope_attribute {
+			return c.lint_vue_no_deprecated_scope_attribute(root, abs_path, mut stats)!
+		}
+		vue_no_deprecated_filter {
+			return c.lint_vue_no_deprecated_filter(root, abs_path, mut stats)!
+		}
+		vue_no_deprecated_inline_template {
+			return c.lint_vue_no_deprecated_inline_template(root, abs_path, mut stats)!
+		}
+		vue_require_component_is {
+			return c.lint_vue_require_component_is(root, abs_path, mut stats)!
+		}
+		vue_no_deprecated_v_on_native_modifier {
+			return c.lint_vue_no_deprecated_v_on_native_modifier(root, abs_path, mut stats)!
+		}
+		vue_no_v_model_argument {
+			return c.lint_vue_no_v_model_argument(root, abs_path, mut stats)!
+		}
+		vue_no_textarea_mustache {
+			return c.lint_vue_no_textarea_mustache(root, abs_path, mut stats)!
+		}
+		vue_no_use_v_else_with_v_for {
+			return c.lint_vue_no_use_v_else_with_v_for(root, abs_path, mut stats)!
+		}
+		vue_no_v_for_template_key {
+			return c.lint_vue_no_v_for_template_key(root, abs_path, mut stats)!
+		}
+		vue_no_template_key {
+			return c.lint_vue_no_template_key(root, abs_path, mut stats)!
+		}
+		vue_no_custom_modifiers_on_v_model {
+			return c.lint_vue_no_custom_modifiers_on_v_model(root, abs_path, mut stats)!
+		}
+		vue_no_deprecated_v_bind_sync {
+			return c.lint_vue_no_deprecated_v_bind_sync(root, abs_path, mut stats)!
+		}
+		vue_no_spaces_around_equal_signs_in_attribute {
+			return c.lint_vue_no_spaces_around_equal_signs_in_attribute(root, abs_path, mut stats)!
+		}
+		vue_no_deprecated_v_on_number_modifiers {
+			return c.lint_vue_no_deprecated_v_on_number_modifiers(root, abs_path, mut stats)!
+		}
+		vue_valid_v_bind {
+			return c.lint_vue_valid_v_bind(root, abs_path, mut stats)!
+		}
+		vue_valid_v_cloak {
+			return c.lint_vue_valid_v_cloak(root, abs_path, mut stats)!
+		}
+		vue_valid_v_html {
+			return c.lint_vue_valid_v_html(root, abs_path, mut stats)!
+		}
+		vue_valid_v_once {
+			return c.lint_vue_valid_v_once(root, abs_path, mut stats)!
+		}
+		vue_valid_v_pre {
+			return c.lint_vue_valid_v_pre(root, abs_path, mut stats)!
+		}
+		vue_valid_v_text {
+			return c.lint_vue_valid_v_text(root, abs_path, mut stats)!
+		}
+		vue_valid_v_show {
+			return c.lint_vue_valid_v_show(root, abs_path, mut stats)!
+		}
+		vue_valid_v_if {
+			return c.lint_vue_valid_v_if(root, abs_path, mut stats)!
+		}
+		vue_valid_v_else_if {
+			return c.lint_vue_valid_v_else_if(root, abs_path, mut stats)!
+		}
+		vue_valid_v_else {
+			return c.lint_vue_valid_v_else(root, abs_path, mut stats)!
+		}
+		vue_valid_v_is {
+			return c.lint_vue_valid_v_is(root, abs_path, mut stats)!
+		}
+		vue_valid_v_on {
+			return c.lint_vue_valid_v_on(root, abs_path, mut stats)!
+		}
+		vue_v_on_style {
+			return c.lint_vue_v_on_style(root, abs_path, mut stats)!
+		}
+		vue_v_bind_style {
+			return c.lint_vue_v_bind_style(root, abs_path, mut stats)!
+		}
+		vue_no_multiple_objects_in_class {
+			return c.lint_vue_no_multiple_objects_in_class(root, abs_path, mut stats)!
+		}
+		vue_require_v_for_key {
+			return c.lint_vue_require_v_for_key(root, abs_path, mut stats)!
+		}
+		vue_no_deprecated_html_element_is {
+			return c.lint_vue_no_deprecated_html_element_is(root, abs_path, mut stats)!
+		}
+		vue_no_use_v_if_with_v_for {
+			return c.lint_vue_no_use_v_if_with_v_for(root, abs_path, mut stats)!
+		}
+		vue_no_v_for_template_key_on_child {
+			return c.lint_vue_no_v_for_template_key_on_child(root, abs_path, mut stats)!
+		}
+		vue_html_end_tags {
+			return c.lint_vue_html_end_tags(root, abs_path, mut stats)!
+		}
+		vue_valid_attribute_name {
+			return c.lint_vue_valid_attribute_name(root, abs_path, mut stats)!
+		}
+		vue_v_for_delimiter_style {
+			return c.lint_vue_v_for_delimiter_style(root, abs_path, mut stats)!
+		}
+		vue_no_v_text_v_html_on_component {
+			return c.lint_vue_no_v_text_v_html_on_component(root, abs_path, mut stats)!
+		}
+		vue_no_lone_template {
+			return c.lint_vue_no_lone_template(root, abs_path, mut stats)!
+		}
+		vue_html_button_has_type {
+			return c.lint_vue_html_button_has_type(root, abs_path, mut stats)!
+		}
+		vue_no_deprecated_router_link_tag_prop {
+			return c.lint_vue_no_deprecated_router_link_tag_prop(root, abs_path, mut stats)!
+		}
+		vue_no_restricted_html_elements {
+			return c.lint_vue_no_restricted_html_elements(root, abs_path, mut stats)!
+		}
+		vue_no_useless_template_attributes {
+			return c.lint_vue_no_useless_template_attributes(root, abs_path, mut stats)!
+		}
+		vue_mustache_interpolation_spacing {
+			return c.lint_vue_mustache_interpolation_spacing(root, abs_path, mut stats)!
 		}
 		else { return error('unknown rule: ${rule}') }
 	}

@@ -1,0 +1,10 @@
+{"rule":"vue/no-v-text","upstream":"eslint-plugin-vue v10.12.1","files":["tests/lib/rules/no-v-text.test.ts"],"messages":{"unexpected":"Don't use 'v-text'."},"generator":"tests/rules/vue/upstream_ts.mjs","cases":[
+{"id":"no-v-text/v0","kind":"valid","languageOptions":{"ecmaVersion":2015},"code":"","filename":"test.vue","parser":"vue-eslint-parser","parserOptions":{"parser":"@typescript-eslint/parser"},"expectation":"upstream"},
+{"id":"no-v-text/v1","kind":"valid","languageOptions":{"ecmaVersion":2015},"code":"<template></template>","filename":"test.vue","parser":"vue-eslint-parser","parserOptions":{"parser":"@typescript-eslint/parser"},"expectation":"upstream"},
+{"id":"no-v-text/v2","kind":"valid","languageOptions":{"ecmaVersion":2015},"code":"<template><div>{{foobar}}</div></template>","filename":"test.vue","parser":"vue-eslint-parser","parserOptions":{"parser":"@typescript-eslint/parser"},"expectation":"upstream"},
+{"id":"no-v-text/i0","kind":"invalid","languageOptions":{"ecmaVersion":2015},"code":"<template><div v-text=\"foobar\"></div></template>","filename":"test.vue","parser":"vue-eslint-parser","parserOptions":{"parser":"@typescript-eslint/parser"},"errors":[{"message":"Don't use 'v-text'.","line":1,"column":16,"endLine":1,"endColumn":31}],"expectation":"upstream"}
+],"lints":[
+
+],"skipped":[
+
+]}

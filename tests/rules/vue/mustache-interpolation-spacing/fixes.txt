@@ -1,0 +1,14 @@
+tests/rules/vue/mustache-interpolation-spacing/extra/cases.vue:5:62	vue/mustache-interpolation-spacing	expectedSpaceAfter	Expected 1 space after '{{', but not found.	fix	146	146	 	end	5	64
+tests/rules/vue/mustache-interpolation-spacing/extra/cases.vue:5:65	vue/mustache-interpolation-spacing	expectedSpaceBefore	Expected 1 space before '}}', but not found.	fix	147	147	 	end	5	67
+tests/rules/vue/mustache-interpolation-spacing/extra/cases.vue:7:33	vue/mustache-interpolation-spacing	expectedSpaceAfter	Expected 1 space after '{{', but not found.	fix	265	265	 	end	7	35
+tests/rules/vue/mustache-interpolation-spacing/extra/cases.vue:7:50	vue/mustache-interpolation-spacing	expectedSpaceBefore	Expected 1 space before '}}', but not found.	fix	280	280	 	end	7	52
+tests/rules/vue/mustache-interpolation-spacing/options-2014a731/cases.vue:6:20	vue/mustache-interpolation-spacing	expectedSpaceBefore	Expected 1 space before '}}', but not found.	fix	172	172	 	end	6	22
+tests/rules/vue/mustache-interpolation-spacing/options-2014a731/cases.vue:7:13	vue/mustache-interpolation-spacing	expectedSpaceAfter	Expected 1 space after '{{', but not found.	fix	201	201	 	end	7	15
+tests/rules/vue/mustache-interpolation-spacing/options-2014a731/cases.vue:8:13	vue/mustache-interpolation-spacing	expectedSpaceAfter	Expected 1 space after '{{', but not found.	fix	235	235	 	end	8	15
+tests/rules/vue/mustache-interpolation-spacing/options-2014a731/cases.vue:8:19	vue/mustache-interpolation-spacing	expectedSpaceBefore	Expected 1 space before '}}', but not found.	fix	239	239	 	end	8	21
+tests/rules/vue/mustache-interpolation-spacing/options-97252a20/cases.vue:5:13	vue/mustache-interpolation-spacing	unexpectedSpaceAfter	Expected no space after '{{', but found.	fix	125	126		end	5	16
+tests/rules/vue/mustache-interpolation-spacing/options-97252a20/cases.vue:6:19	vue/mustache-interpolation-spacing	unexpectedSpaceBefore	Expected no space before '}}', but found.	fix	163	164		end	6	22
+tests/rules/vue/mustache-interpolation-spacing/options-97252a20/cases.vue:7:13	vue/mustache-interpolation-spacing	unexpectedSpaceAfter	Expected no space after '{{', but found.	fix	193	194		end	7	16
+tests/rules/vue/mustache-interpolation-spacing/options-97252a20/cases.vue:7:20	vue/mustache-interpolation-spacing	unexpectedSpaceBefore	Expected no space before '}}', but found.	fix	198	199		end	7	23
+tests/rules/vue/mustache-interpolation-spacing/options-97252a20/cases.vue:8:13	vue/mustache-interpolation-spacing	unexpectedSpaceAfter	Expected no space after '{{', but found.	fix	228	231		end	8	18
+tests/rules/vue/mustache-interpolation-spacing/options-97252a20/cases.vue:8:22	vue/mustache-interpolation-spacing	unexpectedSpaceBefore	Expected no space before '}}', but found.	fix	235	238		end	8	27

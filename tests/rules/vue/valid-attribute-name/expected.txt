@@ -1,0 +1,5 @@
+tests/rules/vue/valid-attribute-name/cases.vue:16:11	vue/valid-attribute-name	attribute	Attribute name 0abc is not valid.
+tests/rules/vue/valid-attribute-name/cases.vue:17:11	vue/valid-attribute-name	attribute	Attribute name -def is not valid.
+tests/rules/vue/valid-attribute-name/cases.vue:18:11	vue/valid-attribute-name	attribute	Attribute name !ghi is not valid.
+tests/rules/vue/valid-attribute-name/cases.vue:19:11	vue/valid-attribute-name	attribute	Attribute name 0abc is not valid.
+tests/rules/vue/valid-attribute-name/cases.vue:20:11	vue/valid-attribute-name	attribute	Attribute name 0abc is not valid.
