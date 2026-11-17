@@ -1,0 +1,13 @@
+{"rule":"vue/static-class-names-order","upstream":"eslint-plugin-vue v10.12.1","files":["tests/lib/rules/static-class-names-order.test.ts"],"messages":{"shouldBeOrdered":"Classes should be ordered alphabetically."},"generator":"tests/rules/vue/upstream_ts.mjs","cases":[
+{"id":"static-class-names-order/v0","kind":"valid","languageOptions":{"ecmaVersion":2015},"code":"<template><div></div></template>","filename":"no-classes.vue","parser":"vue-eslint-parser","parserOptions":{"parser":"@typescript-eslint/parser"},"expectation":"upstream"},
+{"id":"static-class-names-order/v1","kind":"valid","languageOptions":{"ecmaVersion":2015},"code":"<template><div class=\"a\"></div></template>","filename":"one-class.vue","parser":"vue-eslint-parser","parserOptions":{"parser":"@typescript-eslint/parser"},"expectation":"upstream"},
+{"id":"static-class-names-order/v2","kind":"valid","languageOptions":{"ecmaVersion":2015},"code":"<template><div class=\"a b c\"></div></template>","filename":"single-space.vue","parser":"vue-eslint-parser","parserOptions":{"parser":"@typescript-eslint/parser"},"expectation":"upstream"},
+{"id":"static-class-names-order/v3","kind":"valid","languageOptions":{"ecmaVersion":2015},"code":"<template><div class=\"a       b       c\"></div></template>","filename":"multiple-spaces.vue","parser":"vue-eslint-parser","parserOptions":{"parser":"@typescript-eslint/parser"},"expectation":"upstream"},
+{"id":"static-class-names-order/v4","kind":"valid","languageOptions":{"ecmaVersion":2015},"code":"<template><div class=\"a  b  c\"></div></template>","filename":"tabs.vue","parser":"vue-eslint-parser","parserOptions":{"parser":"@typescript-eslint/parser"},"expectation":"upstream"},
+{"id":"static-class-names-order/i0","kind":"invalid","languageOptions":{"ecmaVersion":2015},"code":"<template><div class=\"b a\"></div></template>","filename":"two-classes.vue","parser":"vue-eslint-parser","parserOptions":{"parser":"@typescript-eslint/parser"},"errors":[{"message":"Classes should be ordered alphabetically.","line":1,"column":16,"endLine":1,"endColumn":27}],"output":"<template><div class=\"a b\"></div></template>","expectation":"upstream"},
+{"id":"static-class-names-order/i1","kind":"invalid","languageOptions":{"ecmaVersion":2015},"code":"<template>\n          <div class=\"c b a\">\n          </div>\n        </template>","filename":"three-classes.vue","parser":"vue-eslint-parser","parserOptions":{"parser":"@typescript-eslint/parser"},"errors":[{"message":"Classes should be ordered alphabetically.","line":2,"column":16,"endLine":2,"endColumn":29}],"output":"<template>\n          <div class=\"a b c\">\n          </div>\n        </template>","expectation":"upstream"}
+],"lints":[
+
+],"skipped":[
+
+]}

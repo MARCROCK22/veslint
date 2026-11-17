@@ -1,0 +1,5 @@
+tests/rules/vue/restricted-component-names/cases.vue:5:9	vue/restricted-component-names	invalidName	Component name "Button" is not allowed.
+tests/rules/vue/restricted-component-names/cases.vue:6:9	vue/restricted-component-names	invalidName	Component name "foo-button" is not allowed.
+tests/rules/vue/restricted-component-names/extra/cases.vue:4:5	vue/restricted-component-names	invalidName	Component name "my-button" is not allowed.
+tests/rules/vue/restricted-component-names/options-f54dd394/cases.vue:3:9	vue/restricted-component-names	invalidName	Component name "bar-button" is not allowed.
+tests/rules/vue/restricted-component-names/options-f54dd394/cases.vue:4:9	vue/restricted-component-names	invalidName	Component name "foo" is not allowed.

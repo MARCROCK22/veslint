@@ -1,0 +1,40 @@
+tests/rules/vue/html-quotes/cases.vue:4:19	vue/html-quotes	expected	Expected to be enclosed by double quotes.	fix	104	107	"foo"	end	4	22
+tests/rules/vue/html-quotes/cases.vue:5:19	vue/html-quotes	expected	Expected to be enclosed by double quotes.	fix	139	144	"foo"	end	5	24
+tests/rules/vue/html-quotes/cases.vue:6:20	vue/html-quotes	expected	Expected to be enclosed by double quotes.	fix	177	180	"foo"	end	6	23
+tests/rules/vue/html-quotes/cases.vue:7:20	vue/html-quotes	expected	Expected to be enclosed by double quotes.	fix	213	218	"foo"	end	7	25
+tests/rules/vue/html-quotes/cases.vue:8:20	vue/html-quotes	expected	Expected to be enclosed by double quotes.	fix	251	260	"foo+&quot;bar&quot;"	end	8	29
+tests/rules/vue/html-quotes/extra-double-escape/cases.vue:4:13	vue/html-quotes	expected	Expected to be enclosed by double quotes.	fix	43	44	"d"	end	4	14
+tests/rules/vue/html-quotes/extra-double-escape/cases.vue:4:17	vue/html-quotes	expected	Expected to be enclosed by double quotes.	fix	47	50	"f"	end	4	20
+tests/rules/vue/html-quotes/extra-double-escape/cases.vue:5:10	vue/html-quotes	expected	Expected to be enclosed by double quotes.	fix	96	97	"1"	end	5	11
+tests/rules/vue/html-quotes/extra-double-escape/cases.vue:5:26	vue/html-quotes	expected	Expected to be enclosed by double quotes.	fix	112	115	'x"y'	end	5	29
+tests/rules/vue/html-quotes/extra-double-escape/cases.vue:5:32	vue/html-quotes	expected	Expected to be enclosed by double quotes.	fix	118	121	"x'y"	end	5	35
+tests/rules/vue/html-quotes/extra-escape/cases.vue:3:7	vue/html-quotes	expected	Expected to be enclosed by single quotes.	fix	26	29	'1'	end	3	10
+tests/rules/vue/html-quotes/extra-escape/cases.vue:4:7	vue/html-quotes	expected	Expected to be enclosed by single quotes.	fix	37	40	'2'	end	4	10
+tests/rules/vue/html-quotes/extra-escape/cases.vue:4:13	vue/html-quotes	expected	Expected to be enclosed by single quotes.	fix	43	44	'd'	end	4	14
+tests/rules/vue/html-quotes/extra-escape/cases.vue:4:24	vue/html-quotes	expected	Expected to be enclosed by single quotes.	fix	54	57	'h'	end	4	27
+tests/rules/vue/html-quotes/extra-escape/cases.vue:4:31	vue/html-quotes	expected	Expected to be enclosed by single quotes.	fix	61	66	'`j`'	end	4	36
+tests/rules/vue/html-quotes/extra-escape/cases.vue:5:10	vue/html-quotes	expected	Expected to be enclosed by single quotes.	fix	96	97	'1'	end	5	11
+tests/rules/vue/html-quotes/extra-escape/cases.vue:5:26	vue/html-quotes	expected	Expected to be enclosed by single quotes.	fix	112	115	'x"y'	end	5	29
+tests/rules/vue/html-quotes/extra-escape/cases.vue:5:32	vue/html-quotes	expected	Expected to be enclosed by single quotes.	fix	118	121	"x'y"	end	5	35
+tests/rules/vue/html-quotes/extra/cases.vue:4:13	vue/html-quotes	expected	Expected to be enclosed by double quotes.	fix	43	44	"d"	end	4	14
+tests/rules/vue/html-quotes/extra/cases.vue:4:17	vue/html-quotes	expected	Expected to be enclosed by double quotes.	fix	47	50	"f"	end	4	20
+tests/rules/vue/html-quotes/extra/cases.vue:4:40	vue/html-quotes	expected	Expected to be enclosed by double quotes.	fix	70	78	"l(&quot;m&quot;)"	end	4	48
+tests/rules/vue/html-quotes/extra/cases.vue:5:10	vue/html-quotes	expected	Expected to be enclosed by double quotes.	fix	96	97	"1"	end	5	11
+tests/rules/vue/html-quotes/extra/cases.vue:5:14	vue/html-quotes	expected	Expected to be enclosed by double quotes.	fix	100	103	"&quot;"	end	5	17
+tests/rules/vue/html-quotes/extra/cases.vue:5:26	vue/html-quotes	expected	Expected to be enclosed by double quotes.	fix	112	115	"x&quot;y"	end	5	29
+tests/rules/vue/html-quotes/extra/cases.vue:5:32	vue/html-quotes	expected	Expected to be enclosed by double quotes.	fix	118	121	"x'y"	end	5	35
+tests/rules/vue/html-quotes/extra/cases.vue:6:13	vue/html-quotes	expected	Expected to be enclosed by double quotes.	fix	142	151	"&quot;a&quot; + b"	end	6	22
+tests/rules/vue/html-quotes/options-0a2a064a/cases.vue:5:19	vue/html-quotes	expected	Expected to be enclosed by single quotes.	fix	130	202	'foo></div></div>\n  <div><div class=foo></div></div>\n  <div><div class='	end	7	20
+tests/rules/vue/html-quotes/options-0a2a064a/cases.vue:8:20	vue/html-quotes	expected	Expected to be enclosed by single quotes.	fix	239	242	'foo'	end	8	23
+tests/rules/vue/html-quotes/options-0a2a064a/cases.vue:9:20	vue/html-quotes	expected	Expected to be enclosed by single quotes.	fix	275	280	'foo'	end	9	25
+tests/rules/vue/html-quotes/options-0a2a064a/cases.vue:10:20	vue/html-quotes	expected	Expected to be enclosed by single quotes.	fix	313	322	'foo+&apos;bar&apos;'	end	10	29
+tests/rules/vue/html-quotes/options-1c3f94cc/cases.vue:3:18	vue/html-quotes	expected	Expected to be enclosed by double quotes.	fix	68	73	"foo"	end	3	23
+tests/rules/vue/html-quotes/options-1c3f94cc/cases.vue:4:18	vue/html-quotes	expected	Expected to be enclosed by double quotes.	fix	104	111	'foo"bar'	end	4	25
+tests/rules/vue/html-quotes/options-1c3f94cc/cases.vue:5:18	vue/html-quotes	expected	Expected to be enclosed by double quotes.	fix	142	153	"foo&quot;bar'baz"	end	5	29
+tests/rules/vue/html-quotes/options-50a47794/cases.vue:5:19	vue/html-quotes	expected	Expected to be enclosed by double quotes.	fix	130	202	"foo></div></div>\n  <div><div class=foo></div></div>\n  <div><div class="	end	7	20
+tests/rules/vue/html-quotes/options-50a47794/cases.vue:8:20	vue/html-quotes	expected	Expected to be enclosed by double quotes.	fix	239	242	"foo"	end	8	23
+tests/rules/vue/html-quotes/options-50a47794/cases.vue:9:20	vue/html-quotes	expected	Expected to be enclosed by double quotes.	fix	275	280	"foo"	end	9	25
+tests/rules/vue/html-quotes/options-50a47794/cases.vue:10:20	vue/html-quotes	expected	Expected to be enclosed by double quotes.	fix	313	322	"foo+&quot;bar&quot;"	end	10	29
+tests/rules/vue/html-quotes/options-ca0a6b53/cases.vue:3:18	vue/html-quotes	expected	Expected to be enclosed by single quotes.	fix	68	73	'bar'	end	3	23
+tests/rules/vue/html-quotes/options-ca0a6b53/cases.vue:4:18	vue/html-quotes	expected	Expected to be enclosed by single quotes.	fix	104	111	"foo'bar"	end	4	25
+tests/rules/vue/html-quotes/options-ca0a6b53/cases.vue:5:18	vue/html-quotes	expected	Expected to be enclosed by single quotes.	fix	142	153	'foo"bar&apos;baz'	end	5	29

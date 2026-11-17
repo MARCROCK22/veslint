@@ -1,0 +1,1 @@
+[{"key": "foo", "value": true}, {"key": "/^ba/", "value": "/^qux$/i", "element": "/^My/"}, {"key": "bar", "value": true, "message": "no bar"}, "/^data-/", {"key": "baz", "element": "span"}]
