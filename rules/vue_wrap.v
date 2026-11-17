@@ -123,6 +123,23 @@ fn vue_wrap_find_stylistic(from string) int {
 	return -1
 }
 
+// vue_wrap_schema_name is the rule whose schema validates the options of a rule: for a wrapper
+// rule of eslint-plugin-vue, which has the meta of the rule it wraps, the rule of ESLint
+// Stylistic it takes when @stylistic/eslint-plugin resolves from the current directory (when
+// veslint has it: rule_option_schemas has ESLint core's rule as the wrapper's own, generated
+// where it does not resolve).
+pub fn vue_wrap_schema_name(name string) string {
+	if !name.starts_with('vue/') {
+		return name
+	}
+	base := vue_wrap_of(name).base
+	if !base.starts_with('@stylistic/') || base !in rule_option_schemas
+		|| vue_wrap_find_stylistic(os.getwd()) < 0 {
+		return name
+	}
+	return base
+}
+
 // vue_wrap_dynamic_container: the node is the VExpressionContainer of a dynamic argument
 // (`VDirectiveKey > VExpressionContainer`).
 fn (c &Checker) vue_wrap_dynamic_container(n VueTNode) bool {

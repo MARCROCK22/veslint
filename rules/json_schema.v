@@ -56,9 +56,10 @@ const schema_any_rules = ['const', 'enum', 'not', 'anyOf', 'oneOf', 'allOf']
 // default options of the rule's meta: the lines Config.validateRulesConfig makes of ajv's errors
 // (each one `\tValue <JSON> <message>.\n`), or '' when the options fit the schema.
 pub fn rule_options_problems(name string, options []json2.Any) string {
-	text := rule_option_schemas[name] or { return '' }
+	schema_name := vue_wrap_schema_name(name)
+	text := rule_option_schemas[schema_name] or { return '' }
 	schema := json2.decode[json2.Any](compiled_schema_text(text)) or { return '' }
-	return schema_problem_lines(schema, json2.Any(options_over_meta_defaults(name, options)))
+	return schema_problem_lines(schema, json2.Any(options_over_meta_defaults(schema_name, options)))
 }
 
 // SchemaCompileCache is ajv's cache of compiled schemas (Ajv#_cache): its key is the schema
