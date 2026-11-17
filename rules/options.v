@@ -236,6 +236,10 @@ pub fn check_options(rule string, options []json2.Any) !bool {
 		member_ordering { mord_options(options)! }
 		perfectionist_sort_classes { pf_options(options)! }
 		perfectionist_sort_imports { pf_options(options)! }
+		vue_no_v_html { vnvh_options(options)! }
+		vue_no_duplicate_attributes { vnda_options(options)! }
+		vue_comment_directive { vcd_options(options)! }
+		vue_no_parsing_error { vnpe_options(options)! }
 		else { return false }
 	}
 	return true
@@ -270,7 +274,9 @@ pub fn effective_options(name string, options []json2.Any) ![]json2.Any {
 	}
 	// The rules of eslint-plugin-perfectionist read their options as written (context.options: a
 	// list of option objects, one of which useConfigurationIf picks), over their own defaults.
-	if name.starts_with('perfectionist/') {
+	// The rules of eslint-plugin-vue have no meta.defaultOptions either: they read their options as
+	// written, with their defaults in their code.
+	if name.starts_with('perfectionist/') || name.starts_with('vue/') {
 		check_options(name, options) or { return error('`${name}`: ${err.msg()}') }
 		return options
 	}

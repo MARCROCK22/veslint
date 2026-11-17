@@ -38,6 +38,11 @@ mut:
 	// nodes begin (their `pos` includes the leading trivia). Built on first use, per file.
 	code_ends     []int
 	has_code_ends bool
+	// The traversal of the template (vue_template.v), built on first use.
+	steps      []VueStep
+	has_steps  bool
+	vnodes     []int
+	has_vnodes bool
 }
 
 // file_token_ends are the token ends of the tree (TokenEnds): for a .vue file, without the `;`

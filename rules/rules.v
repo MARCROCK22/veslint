@@ -474,6 +474,11 @@ pub const no_unsafe_enum_assignment = '@typescript-eslint/no-unsafe-enum-assignm
 pub const member_ordering = '@typescript-eslint/member-ordering'
 pub const perfectionist_sort_classes = 'perfectionist/sort-classes'
 pub const perfectionist_sort_imports = 'perfectionist/sort-imports'
+pub const vue_no_v_html = 'vue/no-v-html'
+pub const vue_no_v_text = 'vue/no-v-text'
+pub const vue_no_duplicate_attributes = 'vue/no-duplicate-attributes'
+pub const vue_comment_directive = 'vue/comment-directive'
+pub const vue_no_parsing_error = 'vue/no-parsing-error'
 pub const names = [no_floating_promises, await_thenable, require_await, return_await,
 	no_misused_promises, no_unsafe_call, no_unsafe_member_access, no_unsafe_return,
 	no_unsafe_assignment, no_unsafe_argument, restrict_template_expressions,
@@ -607,7 +612,8 @@ pub const names = [no_floating_promises, await_thenable, require_await, return_a
 	explicit_function_return_type, explicit_module_boundary_types, explicit_member_accessibility,
 	parameter_properties, prefer_literal_enum_member, no_magic_numbers, no_restricted_types,
 	no_generated_empty_object_type, no_unsafe_enum_assignment, member_ordering,
-	perfectionist_sort_classes, perfectionist_sort_imports]
+	perfectionist_sort_classes, perfectionist_sort_imports, vue_comment_directive,
+	vue_no_parsing_error, vue_no_v_html, vue_no_v_text, vue_no_duplicate_attributes]
 
 // untyped_rules are the ported rules that need no types (`meta.docs.requiresTypeChecking` is false
 // in typescript-eslint; the eslint-plugin-unicorn rules that read the types when the parser has a
@@ -713,7 +719,8 @@ pub const untyped_rules = [adjacent_overload_signatures, array_type, class_liter
 	perfectionist_sort_named_imports, perfectionist_sort_named_exports, perfectionist_sort_exports,
 	explicit_function_return_type, explicit_module_boundary_types, explicit_member_accessibility,
 	parameter_properties, prefer_literal_enum_member, no_magic_numbers, no_restricted_types,
-	member_ordering, perfectionist_sort_classes, perfectionist_sort_imports]
+	member_ordering, perfectionist_sort_classes, perfectionist_sort_imports, vue_no_v_html,
+	vue_no_v_text, vue_no_duplicate_attributes, vue_comment_directive, vue_no_parsing_error]
 
 // needs_types tells whether a rule asks tsgo for the types of the program.
 pub fn needs_types(rule string) bool {
@@ -1182,6 +1189,11 @@ pub const default_options = {
 	member_ordering:                                 '[{"default":{"memberTypes":["signature","call-signature","public-static-field","protected-static-field","private-static-field","#private-static-field","public-decorated-field","protected-decorated-field","private-decorated-field","public-instance-field","protected-instance-field","private-instance-field","#private-instance-field","public-abstract-field","protected-abstract-field","public-field","protected-field","private-field","#private-field","static-field","instance-field","abstract-field","decorated-field","field","static-initialization","public-constructor","protected-constructor","private-constructor","constructor","public-static-accessor","protected-static-accessor","private-static-accessor","#private-static-accessor","public-decorated-accessor","protected-decorated-accessor","private-decorated-accessor","public-instance-accessor","protected-instance-accessor","private-instance-accessor","#private-instance-accessor","public-abstract-accessor","protected-abstract-accessor","public-accessor","protected-accessor","private-accessor","#private-accessor","static-accessor","instance-accessor","abstract-accessor","decorated-accessor","accessor","public-static-get","protected-static-get","private-static-get","#private-static-get","public-decorated-get","protected-decorated-get","private-decorated-get","public-instance-get","protected-instance-get","private-instance-get","#private-instance-get","public-abstract-get","protected-abstract-get","public-get","protected-get","private-get","#private-get","static-get","instance-get","abstract-get","decorated-get","get","public-static-set","protected-static-set","private-static-set","#private-static-set","public-decorated-set","protected-decorated-set","private-decorated-set","public-instance-set","protected-instance-set","private-instance-set","#private-instance-set","public-abstract-set","protected-abstract-set","public-set","protected-set","private-set","#private-set","static-set","instance-set","abstract-set","decorated-set","set","public-static-method","protected-static-method","private-static-method","#private-static-method","public-decorated-method","protected-decorated-method","private-decorated-method","public-instance-method","protected-instance-method","private-instance-method","#private-instance-method","public-abstract-method","protected-abstract-method","public-method","protected-method","private-method","#private-method","static-method","instance-method","abstract-method","decorated-method","method"]}}]'
 	perfectionist_sort_classes:                      '[]'
 	perfectionist_sort_imports:                      '[]'
+	vue_no_v_html:                                   '[]'
+	vue_no_v_text:                                   '[]'
+	vue_no_duplicate_attributes:                     '[]'
+	vue_comment_directive:                           '[]'
+	vue_no_parsing_error:                            '[]'
 }
 
 // Finding is a problem a rule found at a node.
@@ -1207,6 +1219,12 @@ pub:
 	// CR, U+2028 and U+2029 there, where the locations of vue-eslint-parser's nodes and tokens
 	// end only at LF (the two only differ in a .vue file).
 	text_loc bool
+	// A report of a .vue file whose `loc` is a line and a column given as such
+	// (vue/no-parsing-error's, from the errors of the document, which may be past the end of the
+	// file): when fixed_line is not 0, ESLint's line and column are fixed_line and fixed_column
+	// (from 1), and the report has no end.
+	fixed_line   int
+	fixed_column int
 }
 
 // problem_rule is the `rule` of the problems ESLint reports without a rule (`ruleId: null`).
@@ -1793,6 +1811,11 @@ pub fn message(rule string, finding Finding) string {
 		member_ordering { mord_messages }
 		perfectionist_sort_classes { pfsc_messages }
 		perfectionist_sort_imports { pfsi_messages }
+		vue_no_v_html { vnvh_messages }
+		vue_no_v_text { vnvt_messages }
+		vue_no_duplicate_attributes { vnda_messages }
+		vue_comment_directive { vcd_messages }
+		vue_no_parsing_error { vnpe_messages }
 		else { map[string]string{} }
 	}
 	return interpolate(messages[finding.message_id] or { finding.message_id }, finding.data)
@@ -2032,6 +2055,15 @@ fn (mut c Checker) lint_file_in_lifetime(parser Parser, config LintConfig, src s
 	}
 	findings = sort_rule_findings(findings)
 	findings = c.apply_disable_directives(findings, inline, config)
+	// The template's directive comments of a .vue file: the postprocess of eslint-plugin-vue's
+	// processor, with its rule on (vue_comment_directive.v).
+	if c.is_vue() {
+		for setting in inline.rules {
+			if setting.name == vue_comment_directive {
+				findings = c.vue_comment_directive_postprocess(findings, setting)!
+			}
+		}
+	}
 	stats.findings += findings.len
 	return FileLint{
 		findings:      findings
@@ -3413,6 +3445,21 @@ fn (mut c Checker) lint_rule(rule string, root C.TSNode, abs_path string, mut st
 		}
 		perfectionist_sort_imports {
 			return c.lint_perfectionist_sort_imports(root, abs_path, mut stats)!
+		}
+		vue_no_v_html {
+			return c.lint_vue_no_v_html(root, abs_path, mut stats)!
+		}
+		vue_no_v_text {
+			return c.lint_vue_no_v_text(root, abs_path, mut stats)!
+		}
+		vue_no_duplicate_attributes {
+			return c.lint_vue_no_duplicate_attributes(root, abs_path, mut stats)!
+		}
+		vue_comment_directive {
+			return c.lint_vue_comment_directive(root, abs_path, mut stats)!
+		}
+		vue_no_parsing_error {
+			return c.lint_vue_no_parsing_error(root, abs_path, mut stats)!
 		}
 		else { return error('unknown rule: ${rule}') }
 	}
