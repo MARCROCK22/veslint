@@ -423,6 +423,7 @@ const unexpected = diffs.filter(x => !x.known).length;
 console.log(`${list.length} files: ${same} identical, ${diffs.length} different (${diffs.length - unexpected} known, ${unexpected} unexpected)`);
 console.log(`oracle ${tOracle} ms on ${shards.length} processes, V ${tV} ms on one`);
 for (const [c, n] of [...categories].sort((a, b) => b[1] - a[1]).slice(0, 25)) console.log(`  ${n}\t${c}`);
-const stale = [...known.keys()].filter(k => !diffs.some(x => x.rel === k));
+// Only a run over the whole corpus can tell that a listed file no longer differs.
+const stale = files.length ? [] : [...known.keys()].filter(k => !diffs.some(x => x.rel === k));
 if (stale.length) console.log(`known.txt lists ${stale.length} files that no longer differ: ${stale.slice(0, 5).join(' ')}`);
 process.exit(unexpected || stale.length ? 1 : 0);
