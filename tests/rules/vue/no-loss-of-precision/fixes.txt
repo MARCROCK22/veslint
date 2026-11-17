@@ -1,0 +1,4 @@
+tests/rules/vue/no-loss-of-precision/cases.vue:2:9	vue/no-loss-of-precision	noLossOfPrecision	This number literal will lose precision at runtime.	end	2	25
+tests/rules/vue/no-loss-of-precision/cases.vue:3:12	vue/no-loss-of-precision	noLossOfPrecision	This number literal will lose precision at runtime.	end	3	43
+tests/rules/vue/no-loss-of-precision/cases.vue:5:12	vue/no-loss-of-precision	noLossOfPrecision	This number literal will lose precision at runtime.	end	5	39
+tests/rules/vue/no-loss-of-precision/cases.vue:15:17	vue/no-loss-of-precision	noLossOfPrecision	This number literal will lose precision at runtime.	end	15	33

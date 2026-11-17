@@ -1,0 +1,7 @@
+tests/rules/vue/object-shorthand/cases.vue:2:14	vue/object-shorthand	expectedPropertyShorthand	Expected property shorthand.	fix	24	28	a	end	2	18
+tests/rules/vue/object-shorthand/cases.vue:3:11	vue/object-shorthand	expectedMethodShorthand	Expected method shorthand.	fix	45	72	f () { return 1 }	end	3	38
+tests/rules/vue/object-shorthand/cases.vue:5:14	vue/object-shorthand	expectedPropertyShorthand	Expected property shorthand.	fix	125	131	b	end	5	20
+tests/rules/vue/object-shorthand/options-avoid-quotes/cases.vue:3:14	vue/object-shorthand	expectedPropertyShorthand	Expected property shorthand.	fix	65	69	x	end	3	18
+tests/rules/vue/object-shorthand/options-consistent/cases.vue:2:12	vue/object-shorthand	unexpectedMix	Unexpected mix of shorthand and non-shorthand properties.	end	2	23
+tests/rules/vue/object-shorthand/options-never/cases.vue:2:14	vue/object-shorthand	expectedPropertyLongform	Expected longform property syntax.	fix	25	25	: a	end	2	15
+tests/rules/vue/object-shorthand/options-never/cases.vue:3:14	vue/object-shorthand	expectedMethodLongform	Expected longform method syntax.	fix	45	46	f: function	end	3	30

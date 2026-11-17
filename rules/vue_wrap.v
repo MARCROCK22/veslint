@@ -246,27 +246,39 @@ fn (mut c Checker) vue_wrap_restore(base string, saved VueWrapSaved) {
 	}
 }
 
-// vue_wrap_doc_has: the document has a token (or a comment) at [start, end) with this text.
-fn vue_wrap_doc_has(doc &vue.Document, start int, end int, text string, comment bool) bool {
+// vue_wrap_doc_token is the token (or the comment) the document has at [start, end), if any.
+fn vue_wrap_doc_token(doc &vue.Document, start int, end int, comment bool) ?vue.Token {
 	list := if comment { doc.comments } else { doc.tokens }
 	for i := vue_lower_bound(list, start); i < list.len && list[i].start == start; i++ {
-		if list[i].end != end {
-			continue
-		}
-		if comment || list[i].value == text || list[i].typ == 'PrivateIdentifier' {
-			return true
+		if list[i].end == end {
+			return list[i]
 		}
 	}
-	return false
+	return none
 }
 
-// vue_wrap_tokens are the tokens of a snippet the template token store has.
-fn vue_wrap_tokens(doc &vue.Document, s &vue.Snippet, root C.TSNode) &SourceTokens {
+// vue_wrap_tokens are the tokens of a snippet the template token store has, and the snippet's
+// code as the rules read it: where the store has another punctuator of the same length (the
+// parentheses of a v-for, which its snippet's wrapper makes brackets), the store's.
+fn vue_wrap_tokens(doc &vue.Document, s &vue.Snippet, root C.TSNode) (&SourceTokens, string) {
 	all := build_source_tokens(root, s.code)
 	mut kept := []SourceToken{cap: all.all.len}
+	mut code := []u8{}
 	for t in all.all {
-		if vue_wrap_doc_has(doc, s.file_offset(t.start), s.file_offset(t.end), s.code[t.start..t.end],
-			t.is_comment()) {
+		text := s.code[t.start..t.end]
+		token := vue_wrap_doc_token(doc, s.file_offset(t.start), s.file_offset(t.end),
+			t.is_comment()) or { continue }
+		if t.is_comment() || token.value == text || token.typ == 'PrivateIdentifier' {
+			kept << t
+			continue
+		}
+		if t.kind == .punctuator && token.typ == 'Punctuator' && token.value.len == text.len {
+			if code.len == 0 {
+				code = s.code.bytes()
+			}
+			for k in 0 .. text.len {
+				code[t.start + k] = token.value[k]
+			}
 			kept << t
 		}
 	}
@@ -274,7 +286,7 @@ fn vue_wrap_tokens(doc &vue.Document, s &vue.Snippet, root C.TSNode) &SourceToke
 		tokens:   kept.filter(!it.is_comment())
 		comments: kept.filter(it.is_comment())
 		all:      kept
-	}
+	}, if code.len == 0 { s.code } else { code.bytestr() }
 }
 
 // vue_wrap_conditional_tests are, by snippet, the expressions of the v-show, v-if and v-else-if
@@ -378,12 +390,12 @@ fn (mut c Checker) vue_wrap_lint(rule string, w VueWrap, abs_path string, mut st
 			}
 		}
 		es.visit = visit
-		tokens := vue_wrap_tokens(doc, s, top)
+		tokens, code := vue_wrap_tokens(doc, s, top)
 		// The tokens of the template in the snippet: a report outside them is on the wrapper.
 		content_start := if tokens.all.len > 0 { tokens.all[0].start } else { 0 }
 		content_end := if tokens.all.len > 0 { tokens.all.last().end } else { 0 }
 		saved := c.vue_wrap_save(w.base)
-		c.src = s.code
+		c.src = code
 		c.tokens = token_ends(top)
 		c.node_index = treesitter.NodeIndex{}
 		c.file_tokens = tokens
@@ -438,7 +450,8 @@ fn (mut c Checker) vue_wrap_lint(rule string, w VueWrap, abs_path string, mut st
 			return error(failure)
 		}
 		quote := html_quotes[ws.snippet] or { u8(0) }
-		for f in moved {
+		for found_moved in moved {
+			f := if core { vue_wrap_core_message(rule, found_moved) } else { found_moved }
 			if key_ranges.len > 0 && vue_wrap_in_dynamic_argument(f, key_ranges) {
 				continue
 			}
@@ -749,6 +762,54 @@ fn vue_wrap_of(rule string) VueWrap {
 		}
 		else {
 			VueWrap{}
+		}
+	}
+}
+
+// vssuo_messages are vue/space-unary-ops' messages: ESLint Stylistic's and ESLint core's, whose
+// messageIds differ (vue_wrap_core_message).
+const vssuo_messages = {
+	'unexpectedBefore':       "Unexpected space before unary operator '{{operator}}'."
+	'unexpectedAfter':        "Unexpected space after unary operator '{{operator}}'."
+	'unexpectedAfterWord':    "Unexpected space after unary word operator '{{word}}'."
+	'requireAfterWord':       "Unary word operator '{{word}}' must be followed by whitespace."
+	'requireAfter':           "Unary operator '{{operator}}' must be followed by whitespace."
+	'requireBefore':          "Space is required before unary operator '{{operator}}'."
+	'wordOperator':           "Unary word operator '{{word}}' must be followed by whitespace."
+	'operator':               "Unary operator '{{operator}}' must be followed by whitespace."
+	'beforeUnaryExpressions': "Space is required before unary expressions '{{token}}'."
+}
+
+// vue_wrap_core_message is a finding of a rule of ESLint Stylistic with the messageId (and data)
+// of ESLint core's rule, where they differ.
+fn vue_wrap_core_message(rule string, f Finding) Finding {
+	if rule != vue_space_unary_ops {
+		return f
+	}
+	return match f.message_id {
+		'requireAfterWord' {
+			Finding{
+				...f
+				message_id: 'wordOperator'
+			}
+		}
+		'requireAfter' {
+			Finding{
+				...f
+				message_id: 'operator'
+			}
+		}
+		'requireBefore' {
+			Finding{
+				...f
+				message_id: 'beforeUnaryExpressions'
+				data:       {
+					'token': f.data['operator'] or { '' }
+				}
+			}
+		}
+		else {
+			f
 		}
 	}
 }

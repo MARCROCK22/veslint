@@ -1,0 +1,14 @@
+tests/rules/vue/arrow-spacing/cases.vue:2:14	vue/arrow-spacing	expectedBefore	Missing space before =>.	fix	25	25	 	end	2	15
+tests/rules/vue/arrow-spacing/cases.vue:2:17	vue/arrow-spacing	expectedAfter	Missing space after =>.	fix	27	27	 	end	2	18
+tests/rules/vue/arrow-spacing/cases.vue:3:18	vue/arrow-spacing	expectedAfter	Missing space after =>.	fix	50	50	 	end	3	19
+tests/rules/vue/arrow-spacing/cases.vue:4:14	vue/arrow-spacing	expectedBefore	Missing space before =>.	fix	70	70	 	end	4	15
+tests/rules/vue/arrow-spacing/cases.vue:6:21	vue/arrow-spacing	expectedAfter	Missing space after =>.	fix	123	123	 	end	6	25
+tests/rules/vue/arrow-spacing/cases.vue:7:18	vue/arrow-spacing	expectedBefore	Missing space before =>.	fix	152	152	 	end	7	19
+tests/rules/vue/arrow-spacing/cases.vue:7:21	vue/arrow-spacing	expectedAfter	Missing space after =>.	fix	154	154	 	end	7	22
+tests/rules/vue/arrow-spacing/cases.vue:8:18	vue/arrow-spacing	expectedBefore	Missing space before =>.	fix	190	190	 	end	8	19
+tests/rules/vue/arrow-spacing/cases.vue:8:21	vue/arrow-spacing	expectedAfter	Missing space after =>.	fix	192	192	 	end	8	22
+tests/rules/vue/arrow-spacing/cases.vue:9:25	vue/arrow-spacing	expectedBefore	Missing space before =>.	fix	231	231	 	end	9	26
+tests/rules/vue/arrow-spacing/cases.vue:9:28	vue/arrow-spacing	expectedAfter	Missing space after =>.	fix	233	233	 	end	9	29
+tests/rules/vue/arrow-spacing/options-none/cases.vue:3:14	vue/arrow-spacing	unexpectedBefore	Unexpected space before =>.	fix	47	48		end	3	15
+tests/rules/vue/arrow-spacing/options-none/cases.vue:3:19	vue/arrow-spacing	unexpectedAfter	Unexpected space after =>.	fix	50	51		end	3	20
+tests/rules/vue/arrow-spacing/options-none/cases.vue:4:18	vue/arrow-spacing	unexpectedAfter	Unexpected space after =>.	fix	73	74		end	4	19

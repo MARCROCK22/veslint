@@ -1,0 +1,8 @@
+tests/rules/vue/eqeqeq/cases.vue:2:11	vue/eqeqeq	unexpected	Expected '===' and instead saw '=='.	suggestion	replaceOperator	Use '===' instead of '=='.	21	23	===	end	2	13
+tests/rules/vue/eqeqeq/cases.vue:3:14	vue/eqeqeq	unexpected	Expected '!==' and instead saw '!='.	suggestion	replaceOperator	Use '!==' instead of '!='.	46	48	!==	end	3	16
+tests/rules/vue/eqeqeq/cases.vue:4:23	vue/eqeqeq	unexpected	Expected '===' and instead saw '=='.	fix	80	82	===	end	4	25
+tests/rules/vue/eqeqeq/cases.vue:5:22	vue/eqeqeq	unexpected	Expected '===' and instead saw '=='.	suggestion	replaceOperator	Use '===' instead of '=='.	117	119	===	end	5	24
+tests/rules/vue/eqeqeq/cases.vue:16:20	vue/eqeqeq	unexpected	Expected '===' and instead saw '=='.	suggestion	replaceOperator	Use '===' instead of '=='.	276	278	===	end	16	22
+tests/rules/vue/eqeqeq/options-null-never/cases.vue:3:14	vue/eqeqeq	unexpected	Expected '==' and instead saw '==='.	suggestion	replaceOperator	Use '==' instead of '==='.	49	52	==	end	3	17
+tests/rules/vue/eqeqeq/options-null-never/cases.vue:4:14	vue/eqeqeq	unexpected	Expected '===' and instead saw '=='.	suggestion	replaceOperator	Use '===' instead of '=='.	75	77	===	end	4	16
+tests/rules/vue/eqeqeq/options-smart/cases.vue:2:11	vue/eqeqeq	unexpected	Expected '===' and instead saw '=='.	suggestion	replaceOperator	Use '===' instead of '=='.	21	23	===	end	2	13

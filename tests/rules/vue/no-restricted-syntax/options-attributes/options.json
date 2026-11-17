@@ -1,0 +1,1 @@
+[{"selector": "CallExpression > :nth-child(3)[value!=true]", "message": "Third argument of interpolate must be true"}, "CallExpression[callee.name='$gettext'] TemplateLiteral"]

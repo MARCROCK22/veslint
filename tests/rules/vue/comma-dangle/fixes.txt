@@ -1,0 +1,9 @@
+tests/rules/vue/comma-dangle/cases.vue:2:14	vue/comma-dangle	unexpected	Unexpected trailing comma.	fix	23	26	b]	end	2	15
+tests/rules/vue/comma-dangle/cases.vue:3:24	vue/comma-dangle	unexpected	Unexpected trailing comma.	fix	56	60	2 }	end	3	25
+tests/rules/vue/comma-dangle/cases.vue:6:6	vue/comma-dangle	unexpected	Unexpected trailing comma.	fix	89	95	2\n  ]	end	6	7
+tests/rules/vue/comma-dangle/cases.vue:8:23	vue/comma-dangle	unexpected	Unexpected trailing comma.	fix	121	124	b)	end	8	24
+tests/rules/vue/comma-dangle/options-always-multiline/cases.vue:5:9	vue/comma-dangle	missing	Missing trailing comma.	fix	63	68	2,\n  }	end	6	1
+tests/rules/vue/comma-dangle/options-always-multiline/cases.vue:11:18	vue/comma-dangle	unexpected	Unexpected trailing comma.	fix	124	128	1 }	end	11	19
+tests/rules/vue/comma-dangle/options-object/cases.vue:2:14	vue/comma-dangle	missing	Missing trailing comma.	fix	23	25	b,]	end	2	15
+tests/rules/vue/comma-dangle/options-object/cases.vue:3:24	vue/comma-dangle	unexpected	Unexpected trailing comma.	fix	55	59	2 }	end	3	25
+tests/rules/vue/comma-dangle/options-object/cases.vue:4:23	vue/comma-dangle	missing	Missing trailing comma.	fix	85	87	b,)	end	4	24

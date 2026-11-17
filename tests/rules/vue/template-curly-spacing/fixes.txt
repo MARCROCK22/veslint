@@ -1,0 +1,8 @@
+tests/rules/vue/template-curly-spacing/cases.vue:2:12	vue/template-curly-spacing	unexpectedAfter	Unexpected space(s) after '${'.	fix	22	23		end	2	13
+tests/rules/vue/template-curly-spacing/cases.vue:2:14	vue/template-curly-spacing	unexpectedBefore	Unexpected space(s) before '}'.	fix	24	25		end	2	15
+tests/rules/vue/template-curly-spacing/cases.vue:4:16	vue/template-curly-spacing	unexpectedAfter	Unexpected space(s) after '${'.	fix	74	75		end	4	17
+tests/rules/vue/template-curly-spacing/cases.vue:4:23	vue/template-curly-spacing	unexpectedBefore	Unexpected space(s) before '}'.	fix	81	82		end	4	24
+tests/rules/vue/template-curly-spacing/cases.vue:14:23	vue/template-curly-spacing	unexpectedAfter	Unexpected space(s) after '${'.	fix	207	208		end	14	24
+tests/rules/vue/template-curly-spacing/cases.vue:14:25	vue/template-curly-spacing	unexpectedBefore	Unexpected space(s) before '}'.	fix	209	210		end	14	26
+tests/rules/vue/template-curly-spacing/options-always/cases.vue:2:10	vue/template-curly-spacing	expectedAfter	Expected space(s) after '${'.	fix	22	22	 	end	2	12
+tests/rules/vue/template-curly-spacing/options-always/cases.vue:2:13	vue/template-curly-spacing	expectedBefore	Expected space(s) before '}'.	fix	23	23	 	end	2	14

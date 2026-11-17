@@ -1,0 +1,8 @@
+tests/rules/vue/block-spacing/cases.vue:2:22	vue/block-spacing	missing	Requires a space after '{'.
+tests/rules/vue/block-spacing/cases.vue:2:29	vue/block-spacing	missing	Requires a space before '}'.
+tests/rules/vue/block-spacing/cases.vue:3:23	vue/block-spacing	missing	Requires a space after '{'.
+tests/rules/vue/block-spacing/cases.vue:3:27	vue/block-spacing	missing	Requires a space before '}'.
+tests/rules/vue/block-spacing/cases.vue:4:24	vue/block-spacing	missing	Requires a space after '{'.
+tests/rules/vue/block-spacing/cases.vue:4:33	vue/block-spacing	missing	Requires a space before '}'.
+tests/rules/vue/block-spacing/options-never/cases.vue:2:23	vue/block-spacing	extra	Unexpected space(s) after '{'.
+tests/rules/vue/block-spacing/options-never/cases.vue:2:30	vue/block-spacing	extra	Unexpected space(s) before '}'.

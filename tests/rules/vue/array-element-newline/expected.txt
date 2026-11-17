@@ -1,0 +1,8 @@
+tests/rules/vue/array-element-newline/cases.vue:2:12	vue/array-element-newline	missingLineBreak	There should be a linebreak after this element.
+tests/rules/vue/array-element-newline/cases.vue:8:7	vue/array-element-newline	missingLineBreak	There should be a linebreak after this element.
+tests/rules/vue/array-element-newline/options-consistent/cases.vue:3:7	vue/array-element-newline	missingLineBreak	There should be a linebreak after this element.
+tests/rules/vue/array-element-newline/options-never/cases.vue:2:12	vue/array-element-newline	unexpectedLineBreak	There should be no linebreak here.
+tests/rules/vue/array-element-newline/options-never/cases.vue:5:22	vue/array-element-newline	unexpectedLineBreak	There should be no linebreak here.
+tests/rules/vue/array-element-newline/options-object/cases.vue:3:15	vue/array-element-newline	missingLineBreak	There should be a linebreak after this element.
+tests/rules/vue/array-element-newline/options-object/cases.vue:3:18	vue/array-element-newline	missingLineBreak	There should be a linebreak after this element.
+tests/rules/vue/array-element-newline/options-object/cases.vue:6:5	vue/array-element-newline	missingLineBreak	There should be a linebreak after this element.

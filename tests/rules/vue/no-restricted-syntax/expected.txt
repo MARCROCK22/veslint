@@ -1,0 +1,10 @@
+tests/rules/vue/no-restricted-syntax/options-attributes/cases.vue:2:40	vue/no-restricted-syntax	restrictedSyntax	Third argument of interpolate must be true
+tests/rules/vue/no-restricted-syntax/options-attributes/cases.vue:4:18	vue/no-restricted-syntax	restrictedSyntax	Using 'CallExpression[callee.name='$gettext'] TemplateLiteral' is not allowed.
+tests/rules/vue/no-restricted-syntax/options-calls/cases.vue:2:9	vue/no-restricted-syntax	restrictedSyntax	Using 'CallExpression' is not allowed.
+tests/rules/vue/no-restricted-syntax/options-calls/cases.vue:2:9	vue/no-restricted-syntax	restrictedSyntax	No foo.
+tests/rules/vue/no-restricted-syntax/options-calls/cases.vue:4:12	vue/no-restricted-syntax	restrictedSyntax	Using 'CallExpression' is not allowed.
+tests/rules/vue/no-restricted-syntax/options-calls/cases.vue:4:19	vue/no-restricted-syntax	restrictedSyntax	Using 'CallExpression' is not allowed.
+tests/rules/vue/no-restricted-syntax/options-calls/cases.vue:5:16	vue/no-restricted-syntax	restrictedSyntax	No foo.
+tests/rules/vue/no-restricted-syntax/options-calls/cases.vue:5:21	vue/no-restricted-syntax	restrictedSyntax	Using 'CallExpression' is not allowed.
+tests/rules/vue/no-restricted-syntax/options-calls/cases.vue:14:18	vue/no-restricted-syntax	restrictedSyntax	Using 'CallExpression' is not allowed.
+tests/rules/vue/no-restricted-syntax/options-calls/cases.vue:14:18	vue/no-restricted-syntax	restrictedSyntax	No foo.

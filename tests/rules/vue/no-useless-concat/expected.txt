@@ -1,0 +1,3 @@
+tests/rules/vue/no-useless-concat/cases.vue:2:13	vue/no-useless-concat	unexpectedConcat	Unexpected string concatenation of literals.
+tests/rules/vue/no-useless-concat/cases.vue:3:16	vue/no-useless-concat	unexpectedConcat	Unexpected string concatenation of literals.
+tests/rules/vue/no-useless-concat/cases.vue:16:24	vue/no-useless-concat	unexpectedConcat	Unexpected string concatenation of literals.

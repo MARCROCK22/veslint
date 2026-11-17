@@ -1,0 +1,7 @@
+tests/rules/vue/no-negated-condition/cases.vue:2:9	vue/no-negated-condition	unexpectedNegated	Unexpected negated condition.
+tests/rules/vue/no-negated-condition/cases.vue:3:16	vue/no-negated-condition	unexpectedNegated	Unexpected negated condition.
+tests/rules/vue/no-negated-condition/cases.vue:4:12	vue/no-negated-condition	unexpectedNegated	Unexpected negated condition.
+tests/rules/vue/no-negated-condition/cases.vue:5:12	vue/no-negated-condition	unexpectedNegated	Unexpected negated condition.
+tests/rules/vue/no-negated-condition/cases.vue:6:12	vue/no-negated-condition	unexpectedNegated	Unexpected negated condition.
+tests/rules/vue/no-negated-condition/cases.vue:6:21	vue/no-negated-condition	unexpectedNegated	Unexpected negated condition.
+tests/rules/vue/no-negated-condition/cases.vue:16:18	vue/no-negated-condition	unexpectedNegated	Unexpected negated condition.

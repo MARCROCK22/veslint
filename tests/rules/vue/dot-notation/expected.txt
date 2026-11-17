@@ -1,0 +1,9 @@
+tests/rules/vue/dot-notation/cases.vue:2:13	vue/dot-notation	useDot	["bar"] is better written in dot notation.
+tests/rules/vue/dot-notation/cases.vue:3:16	vue/dot-notation	useDot	[`baz`] is better written in dot notation.
+tests/rules/vue/dot-notation/cases.vue:4:16	vue/dot-notation	useDot	["while"] is better written in dot notation.
+tests/rules/vue/dot-notation/cases.vue:6:20	vue/dot-notation	useDot	["run"] is better written in dot notation.
+tests/rules/vue/dot-notation/cases.vue:7:14	vue/dot-notation	useDot	["key"] is better written in dot notation.
+tests/rules/vue/dot-notation/cases.vue:17:24	vue/dot-notation	useDot	["color"] is better written in dot notation.
+tests/rules/vue/dot-notation/options-keywords/cases.vue:3:16	vue/dot-notation	useBrackets	.while is a syntax error.
+tests/rules/vue/dot-notation/options-keywords/cases.vue:4:16	vue/dot-notation	useDot	["bar"] is better written in dot notation.
+tests/rules/vue/dot-notation/options-pattern/cases.vue:3:16	vue/dot-notation	useDot	["camelCase"] is better written in dot notation.
