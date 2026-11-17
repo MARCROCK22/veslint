@@ -791,11 +791,13 @@ fn (mut c Checker) es_property_name_unscoped(member C.TSNode) ?string {
 }
 
 // EsTrace is a trace map of ReferenceTracker: what to report at a path (READ, CALL, CONSTRUCT)
-// and the properties to follow.
+// and the properties to follow; `esm` is ReferenceTracker.ESM on a module of
+// es_esm_references (eslint_utils_esm.v).
 struct EsTrace {
 	read      bool
 	call      bool
 	construct bool
+	esm       bool
 	children  map[string]EsTrace
 }
 
@@ -1218,5 +1220,5 @@ fn (mut c Checker) es_is_property_descriptor(root C.TSNode, n C.TSNode) bool {
 	grandparent := node_parent(parent) or { return false }
 	return node_kind(grandparent) == 'object'
 		&& (c.es_is_argument_of_global_method_call(root, grandparent, 'Object', 'create', 1)
-		|| c.es_is_argument_of_global_method_call(root, grandparent, 'Object', 'defineProperties', 1))
+			|| c.es_is_argument_of_global_method_call(root, grandparent, 'Object', 'defineProperties', 1))
 }

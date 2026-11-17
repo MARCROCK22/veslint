@@ -251,6 +251,22 @@ pub fn check_options(rule string, options []json2.Any) !bool {
 		vue_no_deprecated_router_link_tag_prop { vndrltp_options(options)! }
 		vue_no_restricted_html_elements { vnrhe_options(options)! }
 		vue_mustache_interpolation_spacing { vmis_options(options)! }
+		vue_define_props_declaration { vue_define_props_declaration_options(options)! }
+		vue_max_template_depth { vue_max_template_depth_options(options)! }
+		vue_no_reserved_props { vue_no_reserved_props_options(options)! }
+		vue_max_props { vue_max_props_options(options)! }
+		vue_prop_name_casing { vue_prop_name_casing_options(options)! }
+		vue_define_props_destructuring { vue_define_props_destructuring_options(options)! }
+		vue_component_definition_name_casing {
+			vue_component_definition_name_casing_options(options)!
+		}
+		vue_require_macro_variable_name { vue_require_macro_variable_name_options(options)! }
+		vue_define_emits_declaration { vue_define_emits_declaration_options(options)! }
+		vue_no_restricted_block { vue_no_restricted_block_options(options)! }
+		vue_component_options_name_casing { vue_component_options_name_casing_options(options)! }
+		vue_max_lines_per_block { vue_max_lines_per_block_options(options)! }
+		vue_no_reserved_keys { vue_no_reserved_keys_options(options)! }
+		vue_return_in_computed_property { vue_return_in_computed_property_options(options)! }
 		else { return false }
 	}
 	return true
