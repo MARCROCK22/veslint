@@ -1,0 +1,5 @@
+tests/rules/vue/require-name-property/cases.ts:3:17	vue/require-name-property	missingName	Required name property is not set.	suggestion	addName	Add name property to component.	83	83	name: 'cases',\n    	end	5	2
+tests/rules/vue/require-name-property/cases.ts:8:20	vue/require-name-property	missingName	Required name property is not set.	suggestion	addName	Add name property to component.	166	166	name: 'cases',\n	end	8	37
+tests/rules/vue/require-name-property/cases.ts:9:9	vue/require-name-property	missingName	Required name property is not set.	suggestion	addName	Add name property to component.	192	192	\n  name: 'cases'\n	end	9	11
+tests/rules/vue/require-name-property/cases.vue:2:16	vue/require-name-property	missingName	Required name property is not set.	suggestion	addName	Add name property to component.	38	38	name: 'cases',\n  	end	6	2
+tests/rules/vue/require-name-property/empty/cases.vue:2:16	vue/require-name-property	missingName	Required name property is not set.	suggestion	addName	Add name property to component.	35	35	\n  name: 'cases'\n	end	2	18

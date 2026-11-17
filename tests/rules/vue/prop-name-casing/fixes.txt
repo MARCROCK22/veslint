@@ -1,0 +1,10 @@
+tests/rules/vue/prop-name-casing/cases.vue:5:5	vue/prop-name-casing	invalidCase	Prop "greeting_text" is not in camelCase.	end	5	26
+tests/rules/vue/prop-name-casing/cases.vue:6:5	vue/prop-name-casing	invalidCase	Prop "greeting-text" is not in camelCase.	end	6	28
+tests/rules/vue/prop-name-casing/cases.vue:7:5	vue/prop-name-casing	invalidCase	Prop "GreetingText" is not in camelCase.	end	7	25
+tests/rules/vue/prop-name-casing/cases.vue:8:5	vue/prop-name-casing	invalidCase	Prop "computed_key" is not in camelCase.	end	8	29
+tests/rules/vue/prop-name-casing/cases.vue:11:5	vue/prop-name-casing	invalidCase	Prop "_private" is not in camelCase.	end	11	21
+tests/rules/vue/prop-name-casing/options-ignore/cases.vue:3:51	vue/prop-name-casing	invalidCase	Prop "other_prop" is not in camelCase.	end	3	63
+tests/rules/vue/prop-name-casing/options-snake/cases.vue:3:25	vue/prop-name-casing	invalidCase	Prop "camelCase" is not in snake_case.	end	3	36
+tests/rules/vue/prop-name-casing/options-snake/cases.vue:3:38	vue/prop-name-casing	invalidCase	Prop "kebab-case" is not in snake_case.	end	3	50
+tests/rules/vue/prop-name-casing/setup/cases.vue:2:14	vue/prop-name-casing	invalidCase	Prop "snake_case" is not in camelCase.	end	2	26
+tests/rules/vue/prop-name-casing/setup/cases.vue:2:41	vue/prop-name-casing	invalidCase	Prop "tpl_name" is not in camelCase.	end	2	51

@@ -1,0 +1,7 @@
+tests/rules/vue/no-export-in-script-setup/cases.vue:5:1	vue/no-export-in-script-setup	forbidden	`<script setup>` cannot contain ES module exports.
+tests/rules/vue/no-export-in-script-setup/cases.vue:6:1	vue/no-export-in-script-setup	forbidden	`<script setup>` cannot contain ES module exports.
+tests/rules/vue/no-export-in-script-setup/cases.vue:7:1	vue/no-export-in-script-setup	forbidden	`<script setup>` cannot contain ES module exports.
+tests/rules/vue/no-export-in-script-setup/cases.vue:8:1	vue/no-export-in-script-setup	forbidden	`<script setup>` cannot contain ES module exports.
+tests/rules/vue/no-export-in-script-setup/cases.vue:9:1	vue/no-export-in-script-setup	forbidden	`<script setup>` cannot contain ES module exports.
+tests/rules/vue/no-export-in-script-setup/types/cases.vue:9:1	vue/no-export-in-script-setup	forbidden	`<script setup>` cannot contain ES module exports.
+tests/rules/vue/no-export-in-script-setup/types/cases.vue:10:1	vue/no-export-in-script-setup	forbidden	`<script setup>` cannot contain ES module exports.

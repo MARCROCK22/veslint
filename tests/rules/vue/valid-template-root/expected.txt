@@ -1,0 +1,3 @@
+tests/rules/vue/valid-template-root/cases.vue:2:3	vue/valid-template-root	emptySrc	The template root with 'src' attribute is required to be empty.
+tests/rules/vue/valid-template-root/cases.vue:2:14	vue/valid-template-root	emptySrc	The template root with 'src' attribute is required to be empty.
+tests/rules/vue/valid-template-root/empty/cases.vue:1:1	vue/valid-template-root	noChild	The template requires child element.

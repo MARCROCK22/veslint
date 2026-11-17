@@ -1,0 +1,8 @@
+tests/rules/vue/component-options-name-casing/cases.vue:4:5	vue/component-options-name-casing	caseNotMatched	Component name "fooBar" is not PascalCase.
+tests/rules/vue/component-options-name-casing/cases.vue:5:5	vue/component-options-name-casing	caseNotMatched	Component name "foo-bar" is not PascalCase.
+tests/rules/vue/component-options-name-casing/cases.vue:7:5	vue/component-options-name-casing	caseNotMatched	Component name "foo_bar" is not PascalCase.
+tests/rules/vue/component-options-name-casing/cases.vue:8:6	vue/component-options-name-casing	caseNotMatched	Component name "computedKey" is not PascalCase.
+tests/rules/vue/component-options-name-casing/options-camel/cases.vue:4:5	vue/component-options-name-casing	caseNotMatched	Component name "FooBar" is not camelCase.
+tests/rules/vue/component-options-name-casing/options-camel/cases.vue:5:5	vue/component-options-name-casing	caseNotMatched	Component name "foo-bar" is not camelCase.
+tests/rules/vue/component-options-name-casing/options-kebab/cases.vue:4:5	vue/component-options-name-casing	caseNotMatched	Component name "FooBar" is not kebab-case.
+tests/rules/vue/component-options-name-casing/options-kebab/cases.vue:5:5	vue/component-options-name-casing	caseNotMatched	Component name "fooBar" is not kebab-case.

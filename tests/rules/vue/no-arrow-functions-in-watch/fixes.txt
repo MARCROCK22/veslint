@@ -1,0 +1,7 @@
+tests/rules/vue/no-arrow-functions-in-watch/cases.ts:2:23	vue/no-arrow-functions-in-watch	noArrowFunctionsInWatch	You should not use an arrow function to define a watcher.	end	2	31
+tests/rules/vue/no-arrow-functions-in-watch/cases.vue:4:8	vue/no-arrow-functions-in-watch	noArrowFunctionsInWatch	You should not use an arrow function to define a watcher.	end	4	16
+tests/rules/vue/no-arrow-functions-in-watch/cases.vue:6:19	vue/no-arrow-functions-in-watch	noArrowFunctionsInWatch	You should not use an arrow function to define a watcher.	end	6	27
+tests/rules/vue/no-arrow-functions-in-watch/cases.vue:7:9	vue/no-arrow-functions-in-watch	noArrowFunctionsInWatch	You should not use an arrow function to define a watcher.	end	7	17
+tests/rules/vue/no-arrow-functions-in-watch/cases.vue:7:35	vue/no-arrow-functions-in-watch	noArrowFunctionsInWatch	You should not use an arrow function to define a watcher.	end	7	43
+tests/rules/vue/no-arrow-functions-in-watch/cases.vue:8:12	vue/no-arrow-functions-in-watch	noArrowFunctionsInWatch	You should not use an arrow function to define a watcher.	end	8	26
+tests/rules/vue/no-arrow-functions-in-watch/cases.vue:10:12	vue/no-arrow-functions-in-watch	noArrowFunctionsInWatch	You should not use an arrow function to define a watcher.	end	10	28

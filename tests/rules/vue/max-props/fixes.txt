@@ -1,0 +1,3 @@
+tests/rules/vue/max-props/options-2/cases.vue:3:3	vue/max-props	tooManyProps	Component has too many props (3). Maximum allowed is 2.	end	3	45
+tests/rules/vue/max-props/options-2/dupe/cases.vue:3:3	vue/max-props	tooManyProps	Component has too many props (3). Maximum allowed is 2.	end	3	31
+tests/rules/vue/max-props/options-2/setup/cases.vue:2:1	vue/max-props	tooManyProps	Component has too many props (4). Maximum allowed is 2.	end	2	64

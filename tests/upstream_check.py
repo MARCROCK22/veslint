@@ -166,6 +166,10 @@ class Runner:
             parser_options = {k: v for k, v in language.get('parserOptions', {}).items() if k != 'parser'}
             if case.get('via') == 'project':
                 parser_options['project'] = [os.path.join(self.fixtures, case['tsconfig'])]
+            else:
+                # Without `project` ESLint's parser has no program: the rules that read the types
+                # when there is one (isExhaustiveSwitch, the props of a type) do not.
+                parser_options['projectService'] = False
             language.pop('parser', None)
             language['parserOptions'] = parser_options
         # eslint-plugin-unicorn reads the types only when the parser has a program
@@ -176,8 +180,10 @@ class Runner:
         # eslint-plugin-unicorn's tests (ESLint's RuleTester through eslint-ava-rule-tester) do not
         # report unused disable directives.
         report = 0 if rule.startswith('unicorn/') else 1
+        # A case of eslint-plugin-vue's tests may test another rule (jsx-uses-vars' run no-unused-vars).
+        tested = case.get('rule', rule) if rule.startswith('vue/') else rule
         config = {'languageOptions': language, 'linterOptions': {'reportUnusedDisableDirectives': report},
-                  'rules': {rule: ['error', *case.get('options', [])]}}
+                  'rules': {tested: ['error', *case.get('options', [])]}}
         # The shared settings of the case (eslint-plugin-perfectionist's tests set `settings`).
         if case.get('settings'):
             config['settings'] = case['settings']

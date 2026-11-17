@@ -272,10 +272,22 @@ for a `vue/` rule:
   expectation stays the test's (`"expectation": "upstream"`); if not, it is what ESLint gives on the
   converted case (`"expectation": "eslint"`: every problem with its messageId, message, location,
   end and suggestions, and the output of one pass of fixes);
+- a `.vue` file ESLint reads as a script (espree or typescript-eslint's parser without
+  vue-eslint-parser: 2,984 cases of 26 script rules, the cases of `Vue.component(…)`,
+  `export default {…}` and the like of the script rules) stays a `.vue` file of the same name, as
+  veslint reads every `.vue` file, an SFC: its text becomes the content of a
+  `<script lang="ts">…</script>` (and so does the text of its expected output and of the outputs of
+  its suggestions). The rules see the same script, in a file of the same name (`isVueFile`), and
+  the cases' texts start with a line break, so the positions stay but on the first line; the
+  expectation is still the test's when ESLint gives it on the wrapped case (all but those whose
+  problems are on the first line, which take ESLint's);
+- a case of another rule (`rule`: jsx-uses-vars' tests run ESLint core's `no-unused-vars`, with
+  `vue/jsx-uses-vars` turned on by a comment of the case) runs that rule, typescript-eslint's
+  `no-unused-vars` for ESLint core's, as the lints do (`tests/upstream_check.py` turns on the
+  case's `rule` instead of the tested one);
 - `skipped` lists the cases that cannot be converted, with why: a text with a lone surrogate (a file
-  cannot hold it), a `.vue` file ESLint reads as a script (espree or typescript-eslint's parser
-  without vue-eslint-parser: veslint reads every `.vue` file as an SFC), a script whose lang is not
-  JavaScript or TypeScript, or a converted text typescript-eslint's parser rejects;
+  cannot hold it), a `.vue` file read as a script whose text has a `</script`, a script whose lang
+  is not JavaScript or TypeScript, or a converted text typescript-eslint's parser rejects;
 - the `lints` of comment-directive (`ESLint` with the `vue/vue` processor) are converted the same
   way, with the rules of their configuration that veslint has (`no-unused-vars` becomes
   `@typescript-eslint/no-unused-vars`), and their expectation is all that ESLint gives on the
@@ -283,7 +295,9 @@ for a `vue/` rule:
 
 `tests/upstream_check.py` runs them in the fixtures `tests/upstream/vue/setup.sh` makes (a case's
 file at its path there; the typed ones `src/test.vue` with the program of `tsconfig.json`), with
-one pass of fixes (ESLint's RuleTester). `tests/rules/reference.sh` checks with ESLint that
+one pass of fixes (ESLint's RuleTester). A case that is not typed has no program in ESLint, which
+the rules that read the types only when the parser has one see (isExhaustiveSwitch, the props of a
+type the checker gives): veslint gets `projectService: false` for it. `tests/rules/reference.sh` checks with ESLint that
 `upstream.json` gives what each test expects, that `upstream.ts.json` is what
 `upstream_ts.mjs --check` makes now, and that veslint prints, case by case, ESLint's lines on every
 converted case (`--out DIR` writes them).

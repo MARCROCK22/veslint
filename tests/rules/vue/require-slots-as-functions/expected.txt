@@ -1,0 +1,8 @@
+tests/rules/vue/require-slots-as-functions/cases.vue:4:27	vue/require-slots-as-functions	unexpected	Property in `$slots` should be used as function.
+tests/rules/vue/require-slots-as-functions/cases.vue:5:29	vue/require-slots-as-functions	unexpected	Property in `$slots` should be used as function.
+tests/rules/vue/require-slots-as-functions/cases.vue:6:31	vue/require-slots-as-functions	unexpected	Property in `$slots` should be used as function.
+tests/rules/vue/require-slots-as-functions/cases.vue:7:28	vue/require-slots-as-functions	unexpected	Property in `$slots` should be used as function.
+tests/rules/vue/require-slots-as-functions/cases.vue:8:27	vue/require-slots-as-functions	unexpected	Property in `$slots` should be used as function.
+tests/rules/vue/require-slots-as-functions/cases.vue:8:27	vue/require-slots-as-functions	unexpected	Property in `$slots` should be used as function.
+tests/rules/vue/require-slots-as-functions/cases.vue:12:21	vue/require-slots-as-functions	unexpected	Property in `$slots` should be used as function.
+tests/rules/vue/require-slots-as-functions/cases.vue:14:20	vue/require-slots-as-functions	unexpected	Property in `$slots` should be used as function.

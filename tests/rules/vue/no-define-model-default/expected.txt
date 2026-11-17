@@ -1,0 +1,4 @@
+tests/rules/vue/no-define-model-default/cases.vue:2:25	vue/no-define-model-default	unexpected	Unexpected default value for the "modelValue" model.
+tests/rules/vue/no-define-model-default/cases.vue:3:44	vue/no-define-model-default	unexpected	Unexpected default value for the "b" model.
+tests/rules/vue/no-define-model-default/cases.vue:5:30	vue/no-define-model-default	unexpected	Unexpected default value for the "d" model.
+tests/rules/vue/no-define-model-default/cases.vue:7:20	vue/no-define-model-default	unexpected	Unexpected default value for the "f" model.

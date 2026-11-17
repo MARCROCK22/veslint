@@ -1,6 +1,8 @@
 module rules
 
 import estree
+import treesitter { node_end }
+import tsgo { TypeResponse }
 
 // defineScriptSetupVisitor of eslint-plugin-vue 10.12.1's lib/utils/index.ts: the compiler
 // macros of `<script setup>` and what they define (getComponentPropsFromDefineProps,
@@ -249,7 +251,7 @@ fn (mut c Checker) vue_props_from_type_checker(t &estree.EsTree, node int, abs_p
 		kind: .unknown
 		node: node
 	}]
-	typ := c.unb_type_of(t, node, abs_path, mut stats) or { return unknown }
+	typ := c.vue_type_of_type_node(t, node, abs_path, mut stats) or { return unknown }
 	if typ.flags & (type_flag_any | type_flag_unknown | type_flag_never | type_flag_null) != 0 {
 		return unknown
 	}
@@ -260,6 +262,25 @@ fn (mut c Checker) vue_props_from_type_checker(t &estree.EsTree, node int, abs_p
 		name:     it.name
 		node:     node
 	})
+}
+
+// vue_type_of_type_node is checker.getTypeAtLocation of a type node (tsNodeMap.get(node)), none
+// when the parser has no program: a type reference is TypeScript's TypeReference, not the
+// identifier of its name, which has the same range.
+fn (mut c Checker) vue_type_of_type_node(t &estree.EsTree, node int, abs_path string, mut stats Stats) ?TypeResponse {
+	if !c.scope_setup.type_information {
+		return none
+	}
+	ts := t.ts_node(node)?
+	c.resolve_spans([
+		Span{
+			key:   node_key(ts)
+			first: ts
+			end:   node_end(ts)
+			kind:  if t.typ(node) == .ts_type_reference { syntax_kind_type_reference } else { 0 }
+		},
+	], abs_path, mut stats) or { return none }
+	return c.node_type(ts)
 }
 
 // vue_emits_from_type_define ports getComponentEmitsFromTypeDefine for the type literals,

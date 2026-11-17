@@ -1,0 +1,3 @@
+tests/rules/vue/no-shared-component-data/cases.ts:3:3	vue/no-shared-component-data	dataPropertyMustBeFunction	`data` property in component must be a function.
+tests/rules/vue/no-shared-component-data/cases.ts:8:3	vue/no-shared-component-data	dataPropertyMustBeFunction	`data` property in component must be a function.
+tests/rules/vue/no-shared-component-data/cases.vue:3:3	vue/no-shared-component-data	dataPropertyMustBeFunction	`data` property in component must be a function.

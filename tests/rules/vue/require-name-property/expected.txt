@@ -1,0 +1,5 @@
+tests/rules/vue/require-name-property/cases.ts:3:17	vue/require-name-property	missingName	Required name property is not set.
+tests/rules/vue/require-name-property/cases.ts:8:20	vue/require-name-property	missingName	Required name property is not set.
+tests/rules/vue/require-name-property/cases.ts:9:9	vue/require-name-property	missingName	Required name property is not set.
+tests/rules/vue/require-name-property/cases.vue:2:16	vue/require-name-property	missingName	Required name property is not set.
+tests/rules/vue/require-name-property/empty/cases.vue:2:16	vue/require-name-property	missingName	Required name property is not set.

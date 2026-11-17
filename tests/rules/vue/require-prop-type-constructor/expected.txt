@@ -1,0 +1,8 @@
+tests/rules/vue/require-prop-type-constructor/cases.vue:4:8	vue/require-prop-type-constructor	propTypeConstructor	The "a" property should be a constructor.
+tests/rules/vue/require-prop-type-constructor/cases.vue:5:9	vue/require-prop-type-constructor	propTypeConstructor	The "b" property should be a constructor.
+tests/rules/vue/require-prop-type-constructor/cases.vue:5:28	vue/require-prop-type-constructor	propTypeConstructor	The "b" property should be a constructor.
+tests/rules/vue/require-prop-type-constructor/cases.vue:6:16	vue/require-prop-type-constructor	propTypeConstructor	The "c" property should be a constructor.
+tests/rules/vue/require-prop-type-constructor/cases.vue:8:8	vue/require-prop-type-constructor	propTypeConstructor	The "e" property should be a constructor.
+tests/rules/vue/require-prop-type-constructor/cases.vue:9:16	vue/require-prop-type-constructor	propTypeConstructor	The "f" property should be a constructor.
+tests/rules/vue/require-prop-type-constructor/setup/cases.vue:2:18	vue/require-prop-type-constructor	propTypeConstructor	The "a" property should be a constructor.
+tests/rules/vue/require-prop-type-constructor/setup/cases.vue:2:46	vue/require-prop-type-constructor	propTypeConstructor	The "b" property should be a constructor.

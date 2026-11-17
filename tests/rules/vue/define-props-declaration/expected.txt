@@ -1,0 +1,2 @@
+tests/rules/vue/define-props-declaration/cases.vue:2:15	vue/define-props-declaration	hasArg	Use type-based declaration instead of runtime declaration.
+tests/rules/vue/define-props-declaration/options-runtime/cases.vue:2:15	vue/define-props-declaration	hasTypeArg	Use runtime declaration instead of type-based declaration.

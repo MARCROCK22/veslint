@@ -1,0 +1,4 @@
+tests/rules/vue/valid-model-definition/cases.vue:6:5	vue/valid-model-definition	invalidKey	Invalid key 'props' in model option.	end	6	15
+tests/rules/vue/valid-model-definition/cases.vue:7:5	vue/valid-model-definition	invalidKey	Invalid key 'events' in model option.	end	7	16
+tests/rules/vue/valid-model-definition/cases.vue:8:5	vue/valid-model-definition	invalidKey	Invalid key 'other' in model option.	end	8	15
+tests/rules/vue/valid-model-definition/cases.vue:9:5	vue/valid-model-definition	invalidKey	Invalid key 'tpl' in model option.	end	9	15

@@ -1,0 +1,7 @@
+tests/rules/vue/no-import-compiler-macros/cases.ts:1:15	vue/no-import-compiler-macros	onlyValidInScriptSetup	'defineOptions' is a compiler macro and can only be used inside <script setup>.	fix	10	27		end	1	28
+tests/rules/vue/no-import-compiler-macros/cases.ts:2:10	vue/no-import-compiler-macros	onlyValidInScriptSetup	'defineExpose' is a compiler macro and can only be used inside <script setup>.	fix	50	63		end	2	22
+tests/rules/vue/no-import-compiler-macros/cases.vue:2:15	vue/no-import-compiler-macros	noImportCompilerMacros	'defineProps' is a compiler macro and doesn't need to be imported.	fix	39	51		end	2	26
+tests/rules/vue/no-import-compiler-macros/cases.vue:2:28	vue/no-import-compiler-macros	noImportCompilerMacros	'defineEmits' is a compiler macro and doesn't need to be imported.	fix	50	63		end	2	39
+tests/rules/vue/no-import-compiler-macros/cases.vue:3:10	vue/no-import-compiler-macros	noImportCompilerMacros	'defineModel' is a compiler macro and doesn't need to be imported.	fix	77	124		end	3	21
+tests/rules/vue/no-import-compiler-macros/cases.vue:4:10	vue/no-import-compiler-macros	noImportCompilerMacros	'withDefaults' is a compiler macro and doesn't need to be imported.	fix	125	178		end	4	28
+tests/rules/vue/no-import-compiler-macros/cases.vue:6:15	vue/no-import-compiler-macros	noImportCompilerMacros	'defineExpose' is a compiler macro and doesn't need to be imported.	fix	215	254		end	6	27

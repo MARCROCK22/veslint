@@ -1,0 +1,6 @@
+tests/rules/vue/no-deprecated-destroyed-lifecycle/cases.ts:3:4	vue/no-deprecated-destroyed-lifecycle	deprecatedDestroyed	The `destroyed` lifecycle hook is deprecated. Use `unmounted` instead.
+tests/rules/vue/no-deprecated-destroyed-lifecycle/cases.ts:5:3	vue/no-deprecated-destroyed-lifecycle	deprecatedBeforeDestroy	The `beforeDestroy` lifecycle hook is deprecated. Use `beforeUnmount` instead.
+tests/rules/vue/no-deprecated-destroyed-lifecycle/cases.ts:8:4	vue/no-deprecated-destroyed-lifecycle	deprecatedDestroyed	The `destroyed` lifecycle hook is deprecated. Use `unmounted` instead.
+tests/rules/vue/no-deprecated-destroyed-lifecycle/cases.ts:9:3	vue/no-deprecated-destroyed-lifecycle	deprecatedBeforeDestroy	The `beforeDestroy` lifecycle hook is deprecated. Use `beforeUnmount` instead.
+tests/rules/vue/no-deprecated-destroyed-lifecycle/cases.vue:4:3	vue/no-deprecated-destroyed-lifecycle	deprecatedDestroyed	The `destroyed` lifecycle hook is deprecated. Use `unmounted` instead.
+tests/rules/vue/no-deprecated-destroyed-lifecycle/cases.vue:5:3	vue/no-deprecated-destroyed-lifecycle	deprecatedBeforeDestroy	The `beforeDestroy` lifecycle hook is deprecated. Use `beforeUnmount` instead.

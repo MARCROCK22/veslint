@@ -1,0 +1,1 @@
+["style", {"element": "/^foo-/", "message": "Do not use <foo-*>."}, {"element": "i18n"}]

@@ -1,0 +1,5 @@
+tests/rules/vue/require-render-return/cases.ts:3:3	vue/require-render-return	expectedReturn	Expected to return a value in render function.
+tests/rules/vue/require-render-return/cases.ts:8:3	vue/require-render-return	expectedReturn	Expected to return a value in render function.
+tests/rules/vue/require-render-return/cases.ts:11:3	vue/require-render-return	expectedReturn	Expected to return a value in render function.
+tests/rules/vue/require-render-return/cases.ts:42:3	vue/require-render-return	expectedReturn	Expected to return a value in render function.
+tests/rules/vue/require-render-return/cases.vue:3:3	vue/require-render-return	expectedReturn	Expected to return a value in render function.
