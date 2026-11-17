@@ -5,7 +5,8 @@
 // of the files (the tsconfigRootDir). The rules are the directories of tests/rules with an
 // expected.txt, as in tests/rules/eslint.cross.config.mjs, or those of the JSON file
 // VUE_LINT_RULES names (a `rules` section); the `seyfert/*` rules are those of
-// @slipher/eslint-plugin 1.1.0 (build/upstream/seyfert).
+// @slipher/eslint-plugin 1.1.0 (build/upstream/seyfert), the `vue/*` rules those of eslint-plugin-vue
+// 10.12.1 (build/upstream/vue-deps).
 import fs from 'node:fs';
 import { createRequire } from 'node:module';
 import path from 'node:path';
@@ -19,6 +20,8 @@ import marcrock from '../../build/eval/spider-byte/node_modules/@marcrock22/esli
 const { plugin: seyfert } = createRequire(import.meta.url)(
   '../../build/upstream/seyfert/node_modules/@slipher/eslint-plugin',
 );
+// eslint-plugin-vue 10.12.1, for the vue/* rules, with its processor (as its configurations set it).
+const vue = createRequire(import.meta.url)('../../build/upstream/vue-deps/node_modules/eslint-plugin-vue');
 
 const rules = path.join(import.meta.dirname, '..', 'rules');
 const ported = process.env.VUE_LINT_RULES
@@ -37,7 +40,8 @@ export default [
       parser: vueParser,
       parserOptions: { parser: tseslint.parser, ...types, tsconfigRootDir: process.cwd(), extraFileExtensions: ['.vue'] },
     },
-    plugins: { '@typescript-eslint': tseslint.plugin, '@stylistic': stylistic, perfectionist, marcrock, seyfert, unicorn },
+    plugins: { '@typescript-eslint': tseslint.plugin, '@stylistic': stylistic, perfectionist, marcrock, seyfert, unicorn, vue },
+    processor: 'vue/vue',
     rules: Object.fromEntries(ported.map(rule => [rule, 'error'])),
   },
 ];

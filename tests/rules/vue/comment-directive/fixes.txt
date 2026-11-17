@@ -1,0 +1,10 @@
+tests/rules/vue/comment-directive/unused/cases.vue:1:1	vue/comment-directive	unused	Unused eslint-disable directive (no problems were reported).	end	1	24
+tests/rules/vue/comment-directive/unused/cases.vue:3:23	vue/comment-directive	unusedRule	Unused eslint-disable directive (no problems were reported from 'vue/no-v-html').	end	3	36
+tests/rules/vue/comment-directive/unused/cases.vue:3:39	vue/comment-directive	unusedRule	Unused eslint-disable directive (no problems were reported from 'vue/no-v-text').	end	3	52
+tests/rules/vue/comment-directive/unused/cases.vue:6:26	vue/comment-directive	unused	Unused eslint-disable-line directive (no problems were reported).	end	6	54
+tests/rules/vue/comment-directive/unused/cases.vue:7:33	vue/comment-directive	unusedRule	Unused eslint-disable-next-line directive (no problems were reported from 'vue/no-v-text').	end	7	46
+tests/rules/vue/comment-directive/unused/cases.vue:7:48	vue/comment-directive	unusedRule	Unused eslint-disable-next-line directive (no problems were reported from 'vue/no-v-html').	end	7	61
+tests/rules/vue/comment-directive/unused/cases.vue:9:36	vue/comment-directive	unusedRule	Unused eslint-disable-line directive (no problems were reported from 'foo').	end	9	39
+tests/rules/vue/comment-directive/unused/cases.vue:10:29	vue/comment-directive	unusedRule	Unused eslint-disable-line directive (no problems were reported from 'vue/x').	end	10	34
+tests/rules/vue/comment-directive/unused/cases.vue:12:44	vue/comment-directive	unusedRule	Unused eslint-disable-next-line directive (no problems were reported from '😀').	end	12	46
+tests/rules/vue/comment-directive/unused/cases.vue:17:31	vue/comment-directive	unusedRule	Unused eslint-disable-next-line directive (no problems were reported from 'vue/no-v-html').	end	17	44

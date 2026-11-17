@@ -1,0 +1,6 @@
+tests/rules/vue/no-duplicate-attributes/cases.vue:8:22	vue/no-duplicate-attributes	duplicateAttribute	Duplicate attribute 'foo'.
+tests/rules/vue/no-duplicate-attributes/cases.vue:9:22	vue/no-duplicate-attributes	duplicateAttribute	Duplicate attribute 'foo'.
+tests/rules/vue/no-duplicate-attributes/options-3da242f5/cases.vue:2:24	vue/no-duplicate-attributes	duplicateAttribute	Duplicate attribute 'style'.
+tests/rules/vue/no-duplicate-attributes/options-3da242f5/cases.vue:3:25	vue/no-duplicate-attributes	duplicateAttribute	Duplicate attribute 'style'.
+tests/rules/vue/no-duplicate-attributes/options-65569ee4/cases.vue:2:24	vue/no-duplicate-attributes	duplicateAttribute	Duplicate attribute 'class'.
+tests/rules/vue/no-duplicate-attributes/options-65569ee4/cases.vue:3:25	vue/no-duplicate-attributes	duplicateAttribute	Duplicate attribute 'class'.

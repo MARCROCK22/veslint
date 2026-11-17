@@ -58,7 +58,7 @@ reference_in_groups() { # tag files...: reference_of on groups of consecutive fi
 # 26.13.0) stops matching an alternation in a regexp modifier group with the `u` flag at some point
 # of the run: `/^(?i:get|set)\p{Lu}/u` of naming-convention's regex fixture no longer matches
 # `SetÉtat`, which it matches in a new process (and in veslint).
-mapfile -t all_cases < <(find tests/rules -name cases.ts -o -name cases.tsx | sort)
+mapfile -t all_cases < <(find tests/rules -name cases.ts -o -name cases.tsx -o -name cases.vue | sort)
 # ESLint's lines of a rule directory are kept in build/eslint-cache/reference under the key of its
 # files, this configuration and the versions of ESLint and its plugins (tests/rules/eslint_cache.mjs):
 # ESLint lints only the cases of the directories without them.
@@ -217,7 +217,7 @@ for json in tests/config-errors/*.json; do
 	fi
 done
 # Any other message (parse errors, a rule in another rule's file) is a failure.
-if grep -vP "^tests/rules/((?:@[^/]+/|seyfert/|unicorn/|perfectionist/|marcrock/)?[^/]+)/(?:.+/)?cases\.tsx?:[0-9]+:[0-9]+\t\1\t" "$TMP/reference.txt" > "$TMP/others.txt"; then
+if grep -vP "^tests/rules/((?:@[^/]+/|seyfert/|unicorn/|perfectionist/|marcrock/|vue/)?[^/]+)/(?:.+/)?cases\.(?:tsx?|vue):[0-9]+:[0-9]+\t\1\t" "$TMP/reference.txt" > "$TMP/others.txt"; then
 	echo "FAIL   unexpected ESLint messages:"
 	cat "$TMP/others.txt"
 	fail=1
@@ -304,4 +304,39 @@ upstream_tests "@stylistic/eslint-plugin's tests" tests/upstream/setup.sh @styli
 upstream_tests "eslint-plugin-perfectionist's tests" tests/upstream/setup.sh perfectionist
 # The tests of @marcrock22/eslintcf's own rules (`marcrock/*`), the same way.
 upstream_tests "@marcrock22/eslintcf's tests" tests/upstream/setup.sh marcrock
+# eslint-plugin-vue's tests of the vue/* rules veslint has (tests/upstream/README.md): ESLint gives
+# what each test expects on tests/rules/vue/<rule>/upstream.json; the cases converted to TypeScript
+# (upstream.ts.json) are what tests/rules/vue/upstream_ts.mjs makes of them now; and on every
+# converted case veslint prints, line for line and in the same order, what ESLint gives.
+mapfile -t vue_rules < <(find tests/rules/vue -name expected.txt | sed -E 's|^tests/rules/(.*)/expected\.txt$|\1|' | sort)
+if [[ ${#vue_rules[@]} -gt 0 ]]; then
+	if node tests/rules/vue/upstream_eslint.mjs "${vue_rules[@]}" > "$TMP/vue-upstream.out" 2>&1; then
+		echo "ok     eslint-plugin-vue's tests: $(tail -1 "$TMP/vue-upstream.out")"
+	else
+		echo "FAIL   eslint-plugin-vue's tests: ESLint does not give what they expect"
+		grep -v '^ok' "$TMP/vue-upstream.out"
+		fail=1
+	fi
+	if node tests/rules/vue/upstream_ts.mjs --check --out "$TMP/vue-eslint" "${vue_rules[@]}" > "$TMP/vue-ts.out" 2>&1; then
+		echo "ok     eslint-plugin-vue's tests as TypeScript: $(tail -1 "$TMP/vue-ts.out")"
+	else
+		echo "FAIL   eslint-plugin-vue's tests as TypeScript: upstream.ts.json is not what ESLint gives"
+		grep -v '^vue/' "$TMP/vue-ts.out"
+		fail=1
+	fi
+	if ! tests/upstream/vue/setup.sh "$TMP/upstream-vue" 2> "$TMP/upstream-vue-setup.err"; then
+		echo "FAIL   eslint-plugin-vue's tests: $(cat "$TMP/upstream-vue-setup.err")"
+		fail=1
+	else
+		python3 tests/upstream_check.py ./veslint "$TMP/upstream-vue" "$TMP/upstream-configs-vue" \
+			--lines "$TMP/upstream-veslint-vue.txt" "${vue_rules[@]}" > /dev/null 2>&1
+		if python3 tests/upstream_compare.py "$TMP/vue-eslint" "$TMP/upstream-veslint-vue.txt" "${vue_rules[@]}" > "$TMP/upstream-compare.out"; then
+			echo "ok     eslint-plugin-vue's tests as TypeScript: $(tail -1 "$TMP/upstream-compare.out")"
+		else
+			echo "FAIL   eslint-plugin-vue's tests as TypeScript: veslint does not print what ESLint gives"
+			cat "$TMP/upstream-compare.out"
+			fail=1
+		fi
+	fi
+fi
 exit $fail

@@ -151,7 +151,10 @@ export function runCase(name, c) {
   } catch (error) {
     failure = error;
   }
-  return { failure, messages: messages && messages.map(pick) };
+  // RuleTester names the rule it tests `rule-to-test/<name>`: the problems get its real id.
+  const id = c.rule ?? `vue/${name}`;
+  const named = m => (m.ruleId?.startsWith('rule-to-test/') ? { ...m, ruleId: id } : m);
+  return { failure, messages: messages && messages.map(m => pick(named(m))) };
 }
 
 // lintMessages runs a lint of an `it` block (`api` ESLint or Linter, its configuration with the

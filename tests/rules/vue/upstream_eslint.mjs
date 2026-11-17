@@ -27,7 +27,8 @@ import { ROOT, runCase, lintMessages, clearCaches, testFileOf } from './eslint_r
 let out = null;
 const args = process.argv.slice(2);
 if (args[0] === '--out') {
-  out = path.resolve(args[1]);
+  // eslint_run.mjs moved to the clone's root: a relative path is the caller's (PWD).
+  out = path.resolve(process.env.PWD ?? '.', args[1]);
   args.splice(0, 2);
 }
 const rules = args.length

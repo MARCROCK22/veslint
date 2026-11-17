@@ -33,6 +33,21 @@ import { ROOT, runCase, lintMessages, clearCaches, testFileOf, require } from '.
 
 const RULES_DIR = path.join(ROOT, 'tests/rules/vue');
 const args = process.argv.slice(2);
+// --out DIR: ESLint's problems on each converted case also go to DIR/vue/<rule>.json, with the case's
+// id as the file path (for tests/upstream_compare.py, as tests/rules/vue/upstream_eslint.mjs does).
+// --check: upstream.ts.json is not written; the exit code is 1 when it is not what it would be.
+let out = null;
+let check = false;
+for (;;) {
+  if (args[0] === '--out') {
+    // eslint_run.mjs moved to the clone's root: a relative path is the caller's (PWD).
+    out = path.resolve(process.env.PWD ?? '.', args[1]);
+    args.splice(0, 2);
+  } else if (args[0] === '--check') {
+    check = true;
+    args.splice(0, 1);
+  } else break;
+}
 const rules = args.length
   ? args.map(id => id.replace(/^vue\//, ''))
   : fs
@@ -171,6 +186,7 @@ function convertLint(lint) {
   return { lint: { id: lint.id, name: lint.name, api: lint.api, config, code: converted.code, filename: lint.filename, ...(lint.fix && { fix: lint.fix }) } };
 }
 
+let stale = false;
 let total = 0;
 let kept = 0;
 let fromEslint = 0;
@@ -179,6 +195,7 @@ let lastTestFile = null;
 for (const rule of rules) {
   const data = JSON.parse(fs.readFileSync(path.join(RULES_DIR, rule, 'upstream.json'), 'utf8'));
   const cases = [];
+  const results = [];
   const skipped = [];
   const counts = { upstream: 0, eslint: 0 };
   for (const c of data.cases) {
@@ -198,6 +215,7 @@ for (const rule of rules) {
       if ('output' in c) item.output = c.output;
     }
     const { failure, messages } = runCase(rule, item);
+    if (messages && !messages.some(m => m.fatal)) results.push({ filePath: c.id, messages });
     if (!failure) {
       cases.push({ ...item, expectation: 'upstream' });
       counts.upstream++;
@@ -235,7 +253,19 @@ for (const rule of rules) {
   const text =
     JSON.stringify(header).slice(0, -1) +
     `,"cases":[\n${cases.map(c => JSON.stringify(c)).join(',\n')}\n],"lints":[\n${lints.map(l => JSON.stringify(l)).join(',\n')}\n],"skipped":[\n${skipped.map(s => JSON.stringify(s)).join(',\n')}\n]}\n`;
-  fs.writeFileSync(path.join(RULES_DIR, rule, 'upstream.ts.json'), text);
+  const file = path.join(RULES_DIR, rule, 'upstream.ts.json');
+  if (check) {
+    if (!fs.existsSync(file) || fs.readFileSync(file, 'utf8') !== text) {
+      console.log(`FAIL   vue/${rule}: tests/rules/vue/${rule}/upstream.ts.json is not what ESLint gives now (run node tests/rules/vue/upstream_ts.mjs vue/${rule})`);
+      stale = true;
+    }
+  } else {
+    fs.writeFileSync(file, text);
+  }
+  if (out) {
+    fs.mkdirSync(path.join(out, 'vue'), { recursive: true });
+    fs.writeFileSync(path.join(out, 'vue', `${rule}.json`), JSON.stringify(results));
+  }
   total += data.cases.length + (data.lints?.length ?? 0);
   kept += counts.upstream;
   fromEslint += counts.eslint;
@@ -245,3 +275,4 @@ for (const rule of rules) {
   );
 }
 console.log(`${total} cases: ${kept} with their test's expectation, ${fromEslint} with ESLint's on the converted case, ${skippedTotal} not convertible`);
+process.exit(stale ? 1 : 0);
