@@ -1,0 +1,12 @@
+{"rule": "vue/valid-v-html", "upstream": "eslint-plugin-vue v10.12.1", "files": ["tests/lib/rules/valid-v-html.test.ts"],
+"messages": {"unexpectedArgument":"'v-html' directives require no argument.","unexpectedModifier":"'v-html' directives require no modifier.","expectedValue":"'v-html' directives require that attribute value."},
+"cases": [
+{"id":"valid-v-html/v0","kind":"valid","code":"","filename":"test.vue","parser":"vue-eslint-parser","languageOptions":{"ecmaVersion":2015},"sfc":true,"script":"none"},
+{"id":"valid-v-html/v1","kind":"valid","code":"<template><div v-html=\"foo\"></div></template>","filename":"test.vue","parser":"vue-eslint-parser","languageOptions":{"ecmaVersion":2015},"sfc":true,"script":"none"},
+{"id":"valid-v-html/v2","kind":"valid","code":"<template><div v-html=\".\"></div></template>","filename":"parsing-error.vue","parser":"vue-eslint-parser","languageOptions":{"ecmaVersion":2015},"sfc":true,"script":"none"},
+{"id":"valid-v-html/v3","kind":"valid","code":"<template><div v-html=\"/**/\"></div></template>","filename":"comment-value.vue","parser":"vue-eslint-parser","languageOptions":{"ecmaVersion":2015},"sfc":true,"script":"none"},
+{"id":"valid-v-html/i0","kind":"invalid","code":"<template><div v-html:aaa=\"foo\"></div></template>","filename":"test.vue","parser":"vue-eslint-parser","languageOptions":{"ecmaVersion":2015},"sfc":true,"script":"none","errors":[{"message":"'v-html' directives require no argument.","line":1,"column":23,"endLine":1,"endColumn":26}]},
+{"id":"valid-v-html/i1","kind":"invalid","code":"<template><div v-html.aaa=\"foo\"></div></template>","filename":"test.vue","parser":"vue-eslint-parser","languageOptions":{"ecmaVersion":2015},"sfc":true,"script":"none","errors":[{"message":"'v-html' directives require no modifier.","line":1,"column":23,"endLine":1,"endColumn":26}]},
+{"id":"valid-v-html/i2","kind":"invalid","code":"<template><div v-html></div></template>","filename":"test.vue","parser":"vue-eslint-parser","languageOptions":{"ecmaVersion":2015},"sfc":true,"script":"none","errors":[{"message":"'v-html' directives require that attribute value.","line":1,"column":16,"endLine":1,"endColumn":22}]},
+{"id":"valid-v-html/i3","kind":"invalid","code":"<template><div v-html=\"\"></div></template>","filename":"empty-value.vue","parser":"vue-eslint-parser","languageOptions":{"ecmaVersion":2015},"sfc":true,"script":"none","errors":[{"message":"'v-html' directives require that attribute value.","line":1,"column":16,"endLine":1,"endColumn":25}]}
+]}

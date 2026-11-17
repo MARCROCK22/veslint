@@ -1,0 +1,10 @@
+{"rule": "vue/no-textarea-mustache", "upstream": "eslint-plugin-vue v10.12.1", "files": ["tests/lib/rules/no-textarea-mustache.test.ts"],
+"messages": {"unexpected":"Unexpected mustache. Use 'v-model' instead."},
+"cases": [
+{"id":"no-textarea-mustache/v0","kind":"valid","code":"","filename":"test.vue","parser":"vue-eslint-parser","languageOptions":{"ecmaVersion":2015},"sfc":true,"script":"none"},
+{"id":"no-textarea-mustache/v1","kind":"valid","code":"<template><div><textarea v-model=\"text\"></textarea></div></template>","filename":"test.vue","parser":"vue-eslint-parser","languageOptions":{"ecmaVersion":2015},"sfc":true,"script":"none"},
+{"id":"no-textarea-mustache/v2","kind":"valid","code":"<template><div><Textarea>{{text}}</Textarea></div></template>","filename":"test.vue","parser":"vue-eslint-parser","languageOptions":{"ecmaVersion":2015},"sfc":true,"script":"none"},
+{"id":"no-textarea-mustache/i0","kind":"invalid","code":"<template><div><textarea>{{text}}</textarea></div></template>","filename":"test.vue","parser":"vue-eslint-parser","languageOptions":{"ecmaVersion":2015},"sfc":true,"script":"none","errors":[{"message":"Unexpected mustache. Use 'v-model' instead.","line":1,"column":26,"endLine":1,"endColumn":34}]},
+{"id":"no-textarea-mustache/i1","kind":"invalid","code":"<template><div><textarea v-model=\"text\">{{text}}</textarea></div></template>","filename":"test.vue","parser":"vue-eslint-parser","languageOptions":{"ecmaVersion":2015},"sfc":true,"script":"none","errors":[{"message":"Unexpected mustache. Use 'v-model' instead.","line":1,"column":41,"endLine":1,"endColumn":49}]},
+{"id":"no-textarea-mustache/i2","kind":"invalid","code":"<template><div><textarea>{{text}} and {{text}}</textarea></div></template>","filename":"test.vue","parser":"vue-eslint-parser","languageOptions":{"ecmaVersion":2015},"sfc":true,"script":"none","errors":[{"message":"Unexpected mustache. Use 'v-model' instead.","line":1,"column":26,"endLine":1,"endColumn":34},{"message":"Unexpected mustache. Use 'v-model' instead.","line":1,"column":39,"endLine":1,"endColumn":47}]}
+]}

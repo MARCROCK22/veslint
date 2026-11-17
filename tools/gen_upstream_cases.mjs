@@ -7,6 +7,9 @@
 //
 //   bun tools/gen_upstream_cases.mjs [rule...]
 //
+// A rule is named by its id (`@typescript-eslint/await-thenable`, `vue/html-indent`); `vue/` alone
+// names every rule of eslint-plugin-vue, whose cases are not tied to a ported rule yet.
+//
 // Each test file is loaded as the test runner would load it, but @typescript-eslint/rule-tester and
 // vitest are replaced by the stubs in tools/upstream/: RuleTester.run records the cases. They are
 // normalized as RuleTester does (default file name, merged parser options, dependency constraints)
@@ -37,6 +40,8 @@ const STYLISTIC = path.join(ROOT, 'build/upstream/stylistic');
 const PERFECTIONIST = path.join(ROOT, 'build/upstream/perfectionist');
 const PERFECTIONIST_DEPS = path.join(ROOT, 'build/upstream/perfectionist-deps/node_modules');
 const ESLINTCF = path.join(ROOT, 'build/upstream/eslintcf');
+const VUE = path.join(ROOT, 'build/upstream/vue');
+const VUE_DEPS = path.join(ROOT, 'build/upstream/vue-deps/node_modules');
 
 // Where the tests of each plugin come from. `fixtures` is the directory the tests lint in, the one
 // the files of the cases are written relative to.
@@ -132,6 +137,24 @@ const SOURCES = {
     modules: path.join(ESLINTCF, 'node_modules'),
     needs: [path.join(ESLINTCF, 'src/rules/__test__')],
   },
+  // eslint-plugin-vue v10.12.1 (the `vue/*` rules): tests/lib/rules/<rule>.test.ts (and
+  // tests/lib/rules/<rule>/*.test.ts) of vuejs/eslint-plugin-vue, run by vitest with ESLint 10's
+  // RuleTester through tests/eslint-compat.ts (tools/upstream/vue-test.mjs), with the packages of
+  // build/upstream/vue-deps in place of the clone's devDependencies. The tests run in the clone's
+  // root (file names without a directory are relative to it); the typed ones lint
+  // src/test.vue of tests/fixtures/typescript with the program of its tsconfig.json. The cases
+  // are Vue files, or JavaScript and TypeScript files parsed by vue-eslint-parser, espree or
+  // typescript-eslint's parser: each one names its parsers and says what its script is.
+  'vue/': {
+    label: 'eslint-plugin-vue v10.12.1',
+    vue: true,
+    clone: VUE,
+    tests: path.join(VUE, 'tests/lib/rules'),
+    fixtures: realDir(path.join(VUE, 'tests/fixtures/typescript')),
+    modules: path.join(VUE, 'node_modules'),
+    dependencies: VUE_DEPS,
+    needs: [path.join(VUE, 'tests/lib/rules'), path.join(VUE, 'lib/rules'), path.join(VUE, 'dist'), path.join(VUE_DEPS, 'eslint-plugin-vue/dist')],
+  },
 };
 
 // A rule id with a plugin (`@typescript-eslint/…`, `seyfert/…`) or without one (ESLint core).
@@ -139,7 +162,8 @@ const sourceOf = rule =>
   rule.includes('/') ? Object.entries(SOURCES).find(([prefix]) => prefix && rule.startsWith(prefix)) : ['', SOURCES['']];
 
 // <clone>/node_modules (for @slipher/eslint-plugin, its package's): the packages of build/eval
-// (typescript-eslint 8.72.2, TypeScript 6.0.3), with the two stubs in place of the test framework.
+// (typescript-eslint 8.72.2, TypeScript 6.0.3), or those of the source's own `dependencies`
+// (eslint-plugin-vue's), with the two stubs in place of the test framework.
 function overlay(source) {
   const nm = source.modules;
   fs.rmSync(nm, { recursive: true, force: true });
@@ -150,9 +174,10 @@ function overlay(source) {
     fs.writeFileSync(path.join(dir, 'package.json'), JSON.stringify({ name, type: 'module', main: 'index.mjs' }));
     fs.symlinkSync(path.join(ROOT, 'tools/upstream', file), path.join(dir, 'index.mjs'));
   };
-  for (const entry of fs.readdirSync(DEPENDENCIES)) {
+  const dependencies = source.dependencies ?? DEPENDENCIES;
+  for (const entry of fs.readdirSync(dependencies)) {
     if (entry === '.bin' || entry === 'vitest' || source.leave?.includes(entry)) continue;
-    const from = path.join(DEPENDENCIES, entry);
+    const from = path.join(dependencies, entry);
     if (entry.startsWith('@')) {
       fs.mkdirSync(path.join(nm, entry));
       for (const pkg of fs.readdirSync(from)) {
@@ -377,6 +402,16 @@ function testFiles(name, source) {
     }
     return files;
   }
+  if (source.vue) {
+    // no-unsupported-features has a test file per feature, in a directory of its own.
+    const file = path.join(source.tests, `${name}.test.ts`);
+    const dir = path.join(source.tests, name);
+    const files = fs.existsSync(file) ? [file] : [];
+    if (fs.existsSync(dir)) {
+      files.push(...fs.readdirSync(dir).filter(entry => entry.endsWith('.test.ts')).sort().map(entry => path.join(dir, entry)));
+    }
+    return files;
+  }
   if (source.stylistic) {
     // An experimental rule (`exp-jsx-props-style`) is tested in the directory of its source (`jsx-props-style`).
     const dir = path.join(source.tests, name.replace(/^exp-/, ''));
@@ -400,6 +435,8 @@ function testFiles(name, source) {
 // @slipher/eslint-plugin make the rule from its factory themselves, and run it under its name.
 async function ruleObjectOf(name, source) {
   if (source === SOURCES['seyfert/'] || source.marcrock) return null;
+  // The source of the rule, which the test file imports: the same object.
+  if (source.vue) return (await import(pathToFileURL(path.join(source.clone, 'lib/rules', `${name}.ts`)).href)).default;
   if (source.unicorn) return (await unicornPlugin()).rules[name];
   if (source.stylistic) return (await stylisticPlugin()).rules[name];
   if (source.perfectionist) return (await perfectionistPlugin()).rules[name];
@@ -596,6 +633,228 @@ Bun.plugin({
     }));
   },
 });
+// The test files of eslint-plugin-vue import their harness from tests/eslint-compat.ts: the stub of
+// tools/upstream/vue-test.mjs. Those that lint with ESLint import the plugin from the clone's
+// `dist`, its build, which is the published one of build/upstream/vue-deps copied there
+// (tests/upstream/README.md); a case of no-restricted-call-after-await also resolves the clone's
+// package to it. The rule's source and the processor's (lib/) are the clone's, as upstream.
+Bun.plugin({
+  name: 'veslint-vue-tester',
+  setup(build) {
+    build.onLoad({ filter: /[\\/]vue[\\/]tests[\\/]eslint-compat\.ts$/ }, () => ({
+      contents: `export * from ${JSON.stringify(path.join(ROOT, 'tools/upstream/vue-test.mjs'))};`,
+      loader: 'js',
+    }));
+  },
+});
+// The packages of build/upstream/vue-deps, loaded when a rule of eslint-plugin-vue needs them (the
+// other plugins' cases do not need them installed).
+const requireVueDependency = name => createRequire(path.join(VUE_DEPS, 'x.js'))(name);
+const vueEslintBuiltinRules = name => requireVueDependency('eslint/use-at-your-own-risk').builtinRules.get(name);
+let vuePluginCache;
+function vuePlugin() {
+  vuePluginCache ??= requireVueDependency('eslint-plugin-vue');
+  return vuePluginCache;
+}
+
+// The name of a parser as a case gives it: the module (vue-eslint-parser, typescript-eslint's
+// parser, espree), its resolved path (`require.resolve('@typescript-eslint/parser')`) or the name of
+// its package, which vue-eslint-parser requires; null stays null (the default parser).
+const PARSER_NAMES = { 'vue-eslint-parser': 'vue-eslint-parser', 'typescript-eslint/parser': '@typescript-eslint/parser', espree: 'espree' };
+function parserName(parser, where) {
+  if (parser === null || parser === undefined) return parser;
+  if (typeof parser === 'string') {
+    if (!path.isAbsolute(parser)) return parser;
+    const match = parser.split(path.sep).join('/').match(/.*\/node_modules\/((?:@[^/]+\/)?[^/]+)\//);
+    if (!match) throw new Error(`${where}: the parser ${parser} is in no package`);
+    return match[1];
+  }
+  const name = PARSER_NAMES[parser.meta?.name ?? parser.name];
+  if (!name || (typeof parser.parse !== 'function' && typeof parser.parseForESLint !== 'function')) {
+    throw new Error(`${where}: an unknown parser (${parser.meta?.name ?? parser.name})`);
+  }
+  return name;
+}
+// parserOptions.parser of vue-eslint-parser: one parser, or one per lang of the script (`{ts, js}`).
+function scriptParserNames(parser, where) {
+  if (isObject(parser) && typeof parser.parse !== 'function' && typeof parser.parseForESLint !== 'function') {
+    return Object.fromEntries(Object.entries(parser).map(([lang, p]) => [lang, parserName(p, `${where}.${lang}`)]));
+  }
+  return parserName(parser, where);
+}
+function namedLanguageOptions(languageOptions, where) {
+  if (!languageOptions) return {};
+  const out = { ...languageOptions };
+  if ('parser' in out) out.parser = parserName(out.parser, `${where}: languageOptions.parser`);
+  if (out.parserOptions && 'parser' in out.parserOptions) {
+    out.parserOptions = { ...out.parserOptions, parser: scriptParserNames(out.parserOptions.parser, `${where}: parserOptions.parser`) };
+  }
+  return out;
+}
+
+// A rule of the plugin as a test hands it (its source in lib/rules): its name, from its docs.
+function vueRuleName(rule, where) {
+  const name = rule?.meta?.docs?.url?.match(/\/rules\/([a-z-]+)\.html$/)?.[1];
+  if (!name) throw new Error(`${where}: a rule that is none of eslint-plugin-vue's`);
+  return name;
+}
+// The `plugins` of a configuration: eslint-plugin-vue itself, or a plugin of the test's own with
+// some of its rules (`{vue: {rules: {'jsx-uses-vars': rule}}}`), written as their names.
+function namedPlugins(plugins, where) {
+  if (!plugins) return undefined;
+  return Object.fromEntries(
+    Object.entries(plugins).map(([prefix, plugin]) => {
+      // The build in the clone's dist.
+      if (plugin.meta?.name === 'eslint-plugin-vue' && plugin.rules && plugin.processors) return [prefix, 'eslint-plugin-vue'];
+      const keys = Object.keys(plugin);
+      if (keys.length !== 1 || keys[0] !== 'rules') throw new Error(`${where}: the plugin ${prefix} has ${keys.join(', ')}`);
+      for (const [name, rule] of Object.entries(plugin.rules)) {
+        if (vueRuleName(rule, `${where}: plugin ${prefix}`) !== name) throw new Error(`${where}: plugin ${prefix} names ${name} another rule`);
+      }
+      return [prefix, { rules: Object.keys(plugin.rules) }];
+    }),
+  );
+}
+
+// The tests run in the clone's root, and some give a path in it (a file name, or a module of an
+// option: path.join(process.cwd(), …)): it is written as `<cwd>/…`, the directory the case runs in.
+const VUE_ROOTS = [...new Set([realDir(VUE), VUE])];
+function withCwd(value) {
+  if (typeof value === 'string') {
+    const root = VUE_ROOTS.find(r => value === r || value.startsWith(`${r}${path.sep}`));
+    return root ? `<cwd>${value.slice(root.length).split(path.sep).join('/')}` : value;
+  }
+  if (Array.isArray(value)) return value.map(withCwd);
+  if (isObject(value)) return Object.fromEntries(Object.entries(value).map(([k, v]) => [k, withCwd(v)]));
+  return value;
+}
+
+// What the script of a case is, as vue-eslint-parser reads it. A Vue file (an SFC: vue-eslint-parser
+// with a .vue file, or with a text that starts with `<`, its isVueFile) has the lang of the script
+// it parses (`<script setup>` when there are two, else the first; `js` without a lang attribute),
+// or `none` without a script; another file is TypeScript when its extension says so, or else when
+// typescript-eslint's parser reads it (directly or as the parser of vue-eslint-parser), and
+// JavaScript otherwise.
+// The top-level elements come from vue-eslint-parser itself, without parsing the scripts
+// (`parser: false`).
+function scriptOf(code, filename, parser, parserOptions) {
+  const sfc = parser === 'vue-eslint-parser' && (path.extname(filename ?? '<input>') === '.vue' || /^\s*</u.test(code));
+  if (sfc) {
+    const { services } = requireVueDependency('vue-eslint-parser').parseForESLint(code, { parser: false, filePath: 'file.vue', ecmaVersion: 'latest', sourceType: 'module' });
+    const scripts = services.getDocumentFragment().children.filter(node => node.type === 'VElement' && node.name === 'script');
+    const isSetup = element => element.startTag.attributes.some(a => !a.directive && a.key.name === 'setup');
+    const langOf = element => element.startTag.attributes.find(a => !a.directive && a.key.name === 'lang')?.value?.value || 'js';
+    const script = (scripts.length === 2 && scripts.find(isSetup)) || scripts[0];
+    return { sfc, script: script ? langOf(script) : 'none', langs: [...new Set(scripts.map(langOf))] };
+  }
+  const extension = path.extname(filename ?? '').slice(1);
+  if (/^[mc]?[jt]sx?$/.test(extension)) return { sfc, script: extension.replace(/^[mc]/, ''), langs: [] };
+  const scriptParser = parser === 'vue-eslint-parser' ? parserOptions?.parser : parser;
+  const ts = scriptParser === '@typescript-eslint/parser' || (isObject(scriptParser) && Object.values(scriptParser).includes('@typescript-eslint/parser'));
+  return { sfc, script: ts ? 'ts' : 'js', langs: [] };
+}
+
+// The keys of a case that are not configuration (ESLint 10's RuleTesterParameters) and the keys of
+// configuration these tests use; another one is not handled.
+const RULE_TESTER_PARAMETERS = new Set(['name', 'code', 'filename', 'options', 'before', 'after', 'errors', 'output', 'only']);
+const VUE_CONFIG_KEYS = new Set(['languageOptions', 'settings', 'plugins']);
+
+// A case of eslint-plugin-vue's tests, as ESLint 10's RuleTester runs it: the configuration of the
+// tester under the case's (flat config merges languageOptions, parserOptions and settings), the
+// parsers by name, the file of the typed cases relative to tests/fixtures/typescript.
+function normalizeVue(run, raw, kind, index, prefix, source, testedRule) {
+  const test = typeof raw === 'string' ? { code: raw } : raw;
+  const id = `${prefix}/${kind[0]}${index}`;
+  for (const [where, object] of [['the tester', run.config], ['the case', test]]) {
+    for (const key of Object.keys(object)) {
+      if (!VUE_CONFIG_KEYS.has(key) && (where === 'the tester' || !RULE_TESTER_PARAMETERS.has(key))) {
+        throw new Error(`${id}: ${where} has ${key}, which is not handled`);
+      }
+    }
+  }
+  const languageOptions = deepMerge(namedLanguageOptions(run.config.languageOptions, id), namedLanguageOptions(test.languageOptions, id));
+  const { parser = 'espree', parserOptions: mergedParserOptions = {}, ...otherLanguageOptions } = languageOptions;
+  const { project, ...parserOptions } = mergedParserOptions;
+  const out = { id, kind };
+  if (testedRule) out.rule = testedRule;
+  if (test.name) out.name = test.name;
+  out.code = test.code;
+  if (test.options?.length) out.options = withCwd(test.options);
+  // A typed case (tests/test-utils/typescript.ts): src/test.vue with the program of tsconfig.json.
+  if (project) {
+    const tsconfigs = (Array.isArray(project) ? project : [project]).map(p => path.resolve(p));
+    if (tsconfigs.length !== 1 || !test.filename) throw new Error(`${id}: project ${JSON.stringify(project)} is not handled`);
+    const relative = file => path.relative(source.fixtures, realDir(file)).split(path.sep).join('/');
+    out.file = relative(path.resolve(test.filename));
+    out.tsconfig = relative(tsconfigs[0]);
+    if (out.file.startsWith('..') || out.tsconfig.startsWith('..')) throw new Error(`${id}: a typed case out of tests/fixtures/typescript`);
+    out.via = 'project';
+  } else if (test.filename !== undefined) {
+    out.filename = withCwd(test.filename);
+  }
+  out.parser = parser;
+  if (Object.keys(parserOptions).length) out.parserOptions = parserOptions;
+  if (Object.keys(otherLanguageOptions).length) out.languageOptions = otherLanguageOptions;
+  const settings = deepMerge(run.config.settings, test.settings);
+  if (Object.keys(settings).length) out.settings = withCwd(settings);
+  const plugins = namedPlugins(test.plugins ?? run.config.plugins, id);
+  if (test.plugins && run.config.plugins) throw new Error(`${id}: plugins in the tester and in the case`);
+  if (plugins) out.plugins = plugins;
+  const { sfc, script, langs } = scriptOf(test.code, test.filename, parser, parserOptions);
+  out.sfc = sfc;
+  out.script = script;
+  if (langs.length > 1) out.scripts = langs;
+  if (kind === 'invalid') {
+    out.errors = test.errors;
+    if ('output' in test && test.output !== undefined) out.output = test.output;
+  }
+  if (test.before || test.after) out.hooks = true;
+  if (test.only) out.only = true;
+  assertPlain(out, id);
+  return out;
+}
+
+// What an `it` block of the tests linted with ESLint or Linter (tools/upstream/vue-test.mjs): its
+// configuration with the parsers, plugins and processor by name, the text, the file, and the
+// problems ESLint gave (with the output of the fixes when the test fixes).
+const MESSAGE_KEYS = ['ruleId', 'severity', 'message', 'messageId', 'line', 'column', 'endLine', 'endColumn', 'fatal', 'fix', 'suggestions'];
+function normalizeVueLint(entry, id, name) {
+  let config;
+  let fix = false;
+  if (entry.api === 'ESLint') {
+    const { overrideConfigFile, overrideConfig, fix: fixOption, ...others } = entry.options;
+    if (overrideConfigFile !== true || Object.keys(others).length) throw new Error(`${id}: ESLint options ${Object.keys(entry.options).join(', ')} are not handled`);
+    config = overrideConfig;
+    fix = Boolean(fixOption);
+  } else {
+    config = entry.config;
+  }
+  if (Array.isArray(config)) throw new Error(`${id}: a configuration array is not handled`);
+  const { languageOptions, plugins, processor, ...rest } = config;
+  const named = { ...rest };
+  if (languageOptions) named.languageOptions = namedLanguageOptions(languageOptions, id);
+  if (plugins) named.plugins = namedPlugins(plugins, id);
+  if (processor) {
+    // lib/processor.ts, the plugin's processor `vue`.
+    if (typeof processor.preprocess !== 'function' || processor.meta?.name !== 'eslint-plugin-vue') throw new Error(`${id}: an unknown processor`);
+    named.processor = 'vue/vue';
+  }
+  const pick = m => Object.fromEntries(MESSAGE_KEYS.filter(k => k in m).map(k => [k, m[k]]));
+  const out = { id, name, api: entry.api, config: named };
+  if (fix) out.fix = true;
+  out.code = entry.code;
+  out.filename = entry.filePath ?? entry.filename;
+  if (entry.api === 'ESLint') {
+    if (entry.results.length !== 1) throw new Error(`${id}: ${entry.results.length} results`);
+    out.messages = entry.results[0].messages.map(pick);
+    if (entry.results[0].output !== undefined) out.output = entry.results[0].output;
+  } else {
+    out.messages = entry.messages.map(pick);
+  }
+  assertPlain(out, id);
+  return out;
+}
+
 let perfectionistPluginCache;
 async function perfectionistPlugin() {
   perfectionistPluginCache ??= (await import(pathToFileURL(path.join(PERFECTIONIST_DEPS, 'eslint-plugin-perfectionist/dist/index.js')).href)).default;
@@ -695,14 +954,23 @@ for (const name of ['describe', 'suite', 'it', 'test', 'beforeAll', 'afterAll', 
 // The rules by id: the path of their directory in tests/rules, the one with an expected.txt
 // (`@typescript-eslint/await-thenable`, `seyfert/require-declare`); the files of the packages in a
 // node_modules do not count.
+// `vue/` names every rule of eslint-plugin-vue (lib/rules/<rule>.ts of the clone).
+const vueRules = () =>
+  fs
+    .readdirSync(path.join(VUE, 'lib/rules'))
+    .filter(entry => entry.endsWith('.ts'))
+    .map(entry => `vue/${entry.slice(0, -'.ts'.length)}`);
 const rules = process.argv.slice(2).length
-  ? process.argv.slice(2)
+  ? process.argv.slice(2).flatMap(arg => (arg === 'vue/' ? vueRules() : [arg]))
   : fs
       .readdirSync(path.join(ROOT, 'tests/rules'), { recursive: true })
       .filter(file => path.basename(file) === 'expected.txt' && !file.split(path.sep).includes('node_modules'))
       .map(file => path.dirname(file).split(path.sep).join('/'));
 const overlaid = new Set();
 let failed = false;
+const START_CWD = process.cwd();
+// The counts of the `vue/*` rules, in total.
+const vueTotals = { rules: 0, cases: 0, valid: 0, invalid: 0, typed: 0, sfc: 0, sfcJs: 0, notSfc: 0, notSfcJs: 0, lints: 0 };
 for (const rule of rules.sort()) {
   const found = sourceOf(rule);
   if (!found) {
@@ -721,6 +989,9 @@ for (const rule of rules.sort()) {
     overlaid.add(source);
     if (source.core) stubEslintRuleTester();
   }
+  // eslint-plugin-vue's tests run in the clone's root (vitest's root): their file names and the
+  // paths they build with process.cwd() are relative to it.
+  process.chdir(source.vue ? realDir(VUE) : START_CWD);
   const name = rule.slice(prefix.length);
   const files = testFiles(name, source);
   if (!files.length) {
@@ -730,11 +1001,12 @@ for (const rule of rules.sort()) {
   }
   const cases = [];
   const projects = [];
+  const lints = [];
   let messages = {};
   const ruleObject = await ruleObjectOf(name, source);
   for (const file of files) {
     const before = recorded.length;
-    const tests = source === SOURCES['seyfert/'] || source.perfectionist ? [] : undefined;
+    const tests = source === SOURCES['seyfert/'] || source.perfectionist || source.vue ? [] : undefined;
     globalThis.__veslintTests = tests;
     if (source.core) {
       const copy = file.replace(/\.js$/u, '.veslint-raw.js');
@@ -747,10 +1019,13 @@ for (const rule of rules.sort()) {
     } else {
       await import(pathToFileURL(file).href);
     }
-    // The tests of the projects on disk, with ESLint: each must pass, as upstream.
+    // The tests of the projects on disk, with ESLint: each must pass, as upstream. Those of
+    // eslint-plugin-vue that lint with ESLint or Linter go to the `lints` of upstream.json.
     globalThis.__veslintProjects = [];
+    globalThis.__veslintLints = [];
     for (const test of tests ?? []) {
       const start = globalThis.__veslintProjects.length;
+      const lintStart = globalThis.__veslintLints.length;
       try {
         await test.fn();
       } catch (error) {
@@ -762,11 +1037,24 @@ for (const rule of rules.sort()) {
       for (const project of globalThis.__veslintProjects.slice(start)) {
         projects.push(normalizeProject(project, `${name}/p${projects.length}`, test.name));
       }
+      for (const entry of globalThis.__veslintLints.slice(lintStart)) {
+        lints.push(normalizeVueLint(entry, `${name}/l${lints.length}`, test.name));
+      }
     }
     globalThis.__veslintTests = undefined;
     globalThis.__veslintProjects = undefined;
+    globalThis.__veslintLints = undefined;
     const runs = recorded.slice(before);
     if (runs.length) messages = source.unicorn || source.stylistic || source.perfectionist ? (ruleObject.meta.messages ?? {}) : runs[0].messages;
+    // eslint-plugin-vue: the messages of the published rule (the oracle), which must be those of
+    // the source the tests run.
+    if (source.vue) {
+      messages = vuePlugin().rules[name].meta.messages ?? {};
+      if (JSON.stringify(messages) !== JSON.stringify(ruleObject.meta.messages ?? {})) {
+        console.error(`${rule}: the messages of lib/rules/${name}.ts are not those of the published rule`);
+        failed = true;
+      }
+    }
     // Every snapshot of unicorn's test file is one of the recorded invalid cases.
     if (source.unicorn) {
       // node's snapshots (test/snapshots/<rule>.js.snapshot, since v79): the first entry of each
@@ -784,6 +1072,8 @@ for (const rule of rules.sort()) {
     const stem =
       source === SOURCES['seyfert/'] || source.core || source.unicorn || source.marcrock
         ? name
+        : source.vue
+          ? path.relative(source.tests, file).replace(/\.test\.ts$/, '').split(path.sep).join('/')
         : source.stylistic
           ? path.basename(file).replace(/\.test\.ts$/, '')
           : source.perfectionist
@@ -795,11 +1085,25 @@ for (const rule of rules.sort()) {
       // own; another rule is left out.
       // An experimental rule of @stylistic runs under the name of its source (`list-style`).
       const runName = source.stylistic ? name.replace(/^exp-/, '') : name;
+      const casePrefix = runs.length > 1 ? `${stem}/r${r}` : stem;
+      // eslint-plugin-vue's tests run the rule under the name of their file
+      // (`no-unsupported-features/v-memo`), and jsx-uses-vars' tests ESLint's no-unused-vars with
+      // vue/jsx-uses-vars on: those cases name the rule they test.
+      if (source.vue) {
+        let testedRule;
+        if (run.rule !== ruleObject) {
+          if (run.rule !== vueEslintBuiltinRules(run.name)) throw new Error(`${rule}: ${stem} runs ${run.name}, a rule of its own`);
+          testedRule = run.name;
+          console.log(`${rule}: ${stem} runs ESLint's ${run.name}; its cases name it`);
+        }
+        (run.tests.valid ?? []).forEach((test, i) => cases.push(normalizeVue(run, test, 'valid', i, casePrefix, source, testedRule)));
+        (run.tests.invalid ?? []).forEach((test, i) => cases.push(normalizeVue(run, test, 'invalid', i, casePrefix, source, testedRule)));
+        return;
+      }
       if (run.rule !== ruleObject && run.name !== runName && !run.name.startsWith(`${runName} `)) {
         console.error(`${rule}: ${stem} runs ${run.name}; left out`);
         return;
       }
-      const casePrefix = runs.length > 1 ? `${stem}/r${r}` : stem;
       (run.tests.valid ?? []).forEach((test, i) => cases.push(normalize(run, test, 'valid', i, casePrefix, source)));
       (run.tests.invalid ?? []).forEach((test, i) => cases.push(normalize(run, test, 'invalid', i, casePrefix, source)));
     });
@@ -813,12 +1117,41 @@ for (const rule of rules.sort()) {
   if (source.unicorn) text += `"languageOptions": ${JSON.stringify({ globals: UNICORN_GLOBALS })},\n`;
   text += `"cases": [\n${lines.join(',\n')}\n]`;
   if (projects.length) text += `,\n"projects": [\n${projects.map(p => JSON.stringify(p)).join(',\n')}\n]`;
+  if (lints.length) text += `,\n"lints": [\n${lints.map(l => JSON.stringify(l)).join(',\n')}\n]`;
   text += '}\n';
+  // The directory of a rule of eslint-plugin-vue may not exist yet: its cases come before its port.
+  if (source.vue) fs.mkdirSync(path.join(ROOT, 'tests/rules', rule), { recursive: true });
   fs.writeFileSync(path.join(ROOT, 'tests/rules', rule, 'upstream.json'), text);
   const count = kind => cases.filter(c => c.kind === kind).length;
   const skipped = cases.filter(c => c.skip).length;
+  if (source.vue) {
+    const tally = {
+      typed: cases.filter(c => c.via).length,
+      sfc: cases.filter(c => c.sfc).length,
+      sfcJs: cases.filter(c => c.sfc && /^jsx?$/.test(c.script)).length,
+      notSfc: cases.filter(c => !c.sfc).length,
+      notSfcJs: cases.filter(c => !c.sfc && /^jsx?$/.test(c.script)).length,
+    };
+    console.log(
+      `${rule}: ${count('valid')} valid, ${count('invalid')} invalid; ${tally.typed} typed, ${tally.sfc} .vue (${tally.sfcJs} with a JavaScript script), ${tally.notSfc} not .vue (${tally.notSfcJs} JavaScript)${lints.length ? `, ${lints.length} lints` : ''}`,
+    );
+    vueTotals.rules++;
+    vueTotals.cases += cases.length;
+    vueTotals.valid += count('valid');
+    vueTotals.invalid += count('invalid');
+    vueTotals.lints += lints.length;
+    for (const key of Object.keys(tally)) vueTotals[key] += tally[key];
+    continue;
+  }
   console.log(
     `${rule}: ${count('valid')} valid, ${count('invalid')} invalid${skipped ? `, ${skipped} skipped` : ''}${projects.length ? `, ${projects.length} projects` : ''}`,
   );
 }
+if (vueTotals.rules > 1) {
+  const t = vueTotals;
+  console.log(
+    `eslint-plugin-vue: ${t.rules} rules, ${t.cases} cases (${t.valid} valid, ${t.invalid} invalid); ${t.typed} typed, ${t.sfc} .vue (${t.sfcJs} with a JavaScript script), ${t.notSfc} not .vue (${t.notSfcJs} JavaScript); ${t.lints} lints`,
+  );
+}
+process.chdir(START_CWD);
 process.exit(failed ? 1 : 0);

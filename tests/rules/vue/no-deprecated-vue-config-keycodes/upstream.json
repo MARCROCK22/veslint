@@ -1,0 +1,10 @@
+{"rule": "vue/no-deprecated-vue-config-keycodes", "upstream": "eslint-plugin-vue v10.12.1", "files": ["tests/lib/rules/no-deprecated-vue-config-keycodes.test.ts"],
+"messages": {"unexpected":"`Vue.config.keyCodes` are deprecated."},
+"cases": [
+{"id":"no-deprecated-vue-config-keycodes/v0","kind":"valid","code":"Vue.config.silent = true","filename":"test.js","parser":"vue-eslint-parser","languageOptions":{"ecmaVersion":2020},"sfc":false,"script":"js"},
+{"id":"no-deprecated-vue-config-keycodes/v1","kind":"valid","code":"config.keyCodes = {}","filename":"test.js","parser":"vue-eslint-parser","languageOptions":{"ecmaVersion":2020},"sfc":false,"script":"js"},
+{"id":"no-deprecated-vue-config-keycodes/v2","kind":"valid","code":"V.config.keyCodes = {}","filename":"test.js","parser":"vue-eslint-parser","languageOptions":{"ecmaVersion":2020},"sfc":false,"script":"js"},
+{"id":"no-deprecated-vue-config-keycodes/i0","kind":"invalid","code":"Vue.config.keyCodes = {}","filename":"test.js","parser":"vue-eslint-parser","languageOptions":{"ecmaVersion":2020},"sfc":false,"script":"js","errors":[{"message":"`Vue.config.keyCodes` are deprecated.","line":1,"column":1,"endLine":1,"endColumn":20}]},
+{"id":"no-deprecated-vue-config-keycodes/i1","kind":"invalid","code":"Vue?.config?.keyCodes","filename":"test.js","parser":"vue-eslint-parser","languageOptions":{"ecmaVersion":2020},"sfc":false,"script":"js","errors":[{"message":"`Vue.config.keyCodes` are deprecated.","line":1,"column":1,"endLine":1,"endColumn":22}]},
+{"id":"no-deprecated-vue-config-keycodes/i2","kind":"invalid","code":"(Vue?.config)?.keyCodes","filename":"test.js","parser":"vue-eslint-parser","languageOptions":{"ecmaVersion":2020},"sfc":false,"script":"js","errors":[{"message":"`Vue.config.keyCodes` are deprecated.","line":1,"column":1,"endLine":1,"endColumn":24}]}
+]}
