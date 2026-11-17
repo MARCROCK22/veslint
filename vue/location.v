@@ -60,3 +60,31 @@ fn (d &Document) fix_offset(c Calc, offset int) int {
 fn (d &Document) offset_with_gap(c Calc, index int) int {
 	return index + d.fix_offset(c, index)
 }
+
+// offsets_with_gap is offset_with_gap of every index from 0 to `count`, in one pass over the
+// gaps (the indexes grow, so does the first gap past them).
+fn (d &Document) offsets_with_gap(c Calc, count int) []int {
+	mut out := []int{len: count + 1}
+	if !c.html {
+		for i in 0 .. count + 1 {
+			out[i] = i + c.fixed
+		}
+		return out
+	}
+	gaps := d.gaps
+	mut first := sorted_last_index(gaps, c.shift + c.base)
+	for i in 0 .. count + 1 {
+		index := i + c.shift
+		for first < gaps.len && gaps[first] <= index + c.base {
+			first++
+		}
+		mut g0 := first
+		mut pos := index + c.base + g0 - c.base_index_of_gap
+		for g0 < gaps.len && gaps[g0] <= pos {
+			g0++
+			pos++
+		}
+		out[i] = i + c.base + (g0 - c.base_index_of_gap) + c.shift
+	}
+	return out
+}

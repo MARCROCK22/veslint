@@ -3,8 +3,9 @@ module main
 // The V side of tools/vue_parse_diff.mjs: prints, for each .vue file of a list, one JSON line
 // `{"path": …, "value": …}` with what vue.Document.to_json gives (or `{"fatal": …}`).
 //
-//   vue_dump json <list>    the files named one per line in <list>
-//   vue_dump time <file> [runs]
+//   vue_dump json <list>          the files named one per line in <list>
+//   vue_dump time <file> [runs]   the time to parse a file
+//   vue_dump bench <list> [runs]  the time to parse every file of the list (read beforehand)
 import os
 import time
 import offsets
@@ -39,6 +40,28 @@ fn main() {
 				out.writeln('{"path":${vue.json_string(path)},"value":${doc.to_json()}}') or {}
 				doc.free()
 			}
+		}
+		'bench' {
+			files := os.read_lines(os.args[2]) or { panic(err) }
+			runs := if os.args.len > 3 { os.args[3].int() } else { 1 }
+			mut sources := []string{}
+			mut bytes := 0
+			for path in files {
+				if path != '' {
+					sources << read_source(path)
+					bytes += sources.last().len
+				}
+			}
+			parsers := vue.new_parsers() or { panic(err) }
+			sw := time.new_stopwatch()
+			for _ in 0 .. runs {
+				for src in sources {
+					mut doc := vue.parse_sfc_with(src, vue.Options{}, parsers) or { continue }
+					doc.free()
+				}
+			}
+			ms := f64(sw.elapsed().microseconds()) / 1000 / runs
+			println('${sources.len} files, ${bytes} bytes: ${ms:.1f} ms per run')
 		}
 		'time' {
 			src := read_source(os.args[2])

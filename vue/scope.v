@@ -37,7 +37,6 @@ struct AScope {
 mut:
 	left      []int // references left to resolve
 	closed    bool
-	set       map[string]int
 	variables []int
 	through   []int
 	children  []int
@@ -188,7 +187,10 @@ fn (mut a Analyzer) resolve(s int, r int) bool {
 		is_value := flags & 2 != 0
 		return (ref.type_ && is_type) || (ref.value && is_value)
 	}
-	v := a.scopes[s].set[name] or { return false }
+	v := a.lookup(s, name)
+	if v < 0 {
+		return false
+	}
 	variable := a.vars[v]
 	if a.scopes[s].typ == .function {
 		block := a.scopes[s].block
@@ -217,15 +219,25 @@ fn (a &Analyzer) name_of(node int) string {
 	return a.es.string_of(node, .name) or { '' }
 }
 
+// lookup is the variable of that name of the scope (its `set`), or -1. Scopes of template
+// expressions hold a few variables: a scan beats a map.
+fn (a &Analyzer) lookup(s int, name string) int {
+	for v in a.scopes[s].variables {
+		if a.vars[v].name == name {
+			return v
+		}
+	}
+	return -1
+}
+
 fn (mut a Analyzer) define_variable(s int, name string, def ADef, with_def bool) {
-	mut v := a.scopes[s].set[name] or { -1 }
+	mut v := a.lookup(s, name)
 	if v < 0 {
 		a.vars << AVar{
 			name:  name
 			scope: s
 		}
 		v = a.vars.len - 1
-		a.scopes[s].set[name] = v
 		a.scopes[s].variables << v
 	}
 	if with_def {

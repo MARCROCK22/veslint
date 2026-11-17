@@ -13,6 +13,16 @@ const keyword_tokens = ['break', 'case', 'catch', 'class', 'const', 'continue', 
 	'void', 'while', 'with', 'implements', 'interface', 'let', 'package', 'private', 'protected',
 	'public', 'static', 'yield']
 
+const keyword_set = build_set(keyword_tokens)
+
+fn build_set(words []string) map[string]bool {
+	mut m := map[string]bool{}
+	for w in words {
+		m[w] = true
+	}
+	return m
+}
+
 const name_kinds = ['identifier', 'property_identifier', 'shorthand_property_identifier',
 	'shorthand_property_identifier_pattern', 'type_identifier', 'statement_identifier']
 
@@ -20,12 +30,14 @@ const name_kinds = ['identifier', 'property_identifier', 'shorthand_property_ide
 // `/`).
 const split_leaves = ['?:', '-?:', '+?:', '{|', '|}', '/>', '</']
 
-// SnipToken is a token or a comment of a snippet, in bytes of the snippet.
+// SnipToken is a token or a comment of a snippet, in bytes of the snippet. `reserved`: an
+// `identifier` whose text is a reserved word (see reserved_identifier).
 struct SnipToken {
-	start int
-	end   int
-	typ   string
-	node  C.TSNode
+	start    int
+	end      int
+	typ      string
+	node     C.TSNode
+	reserved bool
 }
 
 fn (t SnipToken) is_comment() bool {
@@ -33,10 +45,10 @@ fn (t SnipToken) is_comment() bool {
 }
 
 // snippet_tokens gives the tokens and the comments of a snippet's tree, in order.
-fn snippet_tokens(root C.TSNode, src string) ([]SnipToken, []SnipToken) {
+fn snippet_tokens(root C.TSNode, src string, tsx bool) ([]SnipToken, []SnipToken) {
 	mut all := []SnipToken{}
 	tokens_walk(root, src, mut all)
-	if src.contains('<') {
+	if tsx && src.contains('<') {
 		all = tokens_jsx(root, all)
 	}
 	mut tokens := []SnipToken{cap: all.len}
@@ -98,19 +110,19 @@ fn tokens_jsx(root C.TSNode, tokens []SnipToken) []SnipToken {
 		}
 		parent_kind := node_kind(node_parent(token.node) or { token.node })
 		if token.typ == 'String' && parent_kind == 'jsx_attribute' {
-			out << SnipToken{token.start, token.end, 'JSXText', token.node}
+			out << SnipToken{token.start, token.end, 'JSXText', token.node, false}
 			continue
 		}
 		if token.typ in ['Identifier', 'Keyword', 'Null', 'Boolean']
 			&& parent_kind in ['jsx_opening_element', 'jsx_closing_element', 'jsx_self_closing_element',
 				'jsx_attribute', 'jsx_member_expression', 'jsx_namespace_name'] {
-			out << SnipToken{token.start, token.end, 'JSXIdentifier', token.node}
+			out << SnipToken{token.start, token.end, 'JSXIdentifier', token.node, false}
 			continue
 		}
 		out << token
 	}
 	for gap in gaps {
-		out << SnipToken{gap.start, gap.end, 'JSXText', gap.node}
+		out << SnipToken{gap.start, gap.end, 'JSXText', gap.node, false}
 	}
 	out.sort_with_compare(fn (a &SnipToken, b &SnipToken) int {
 		return a.start - b.start
@@ -145,18 +157,18 @@ fn tokens_visit(node C.TSNode, src string, mut out []SnipToken) bool {
 	match kind {
 		'comment', 'html_comment' {
 			block := src[start..end].starts_with('/*')
-			out << SnipToken{start, end, if block { 'Block' } else { 'Line' }, node}
+			out << SnipToken{start, end, if block { 'Block' } else { 'Line' }, node, false}
 			return false
 		}
 		'hash_bang_line' {
 			return false
 		}
 		'string' {
-			out << SnipToken{start, end, 'String', node}
+			out << SnipToken{start, end, 'String', node, false}
 			return false
 		}
 		'regex' {
-			out << SnipToken{start, end, 'RegularExpression', node}
+			out << SnipToken{start, end, 'RegularExpression', node, false}
 			return false
 		}
 		'template_string', 'template_literal_type' {
@@ -171,18 +183,19 @@ fn tokens_visit(node C.TSNode, src string, mut out []SnipToken) bool {
 	if end <= start {
 		return false
 	}
-	text := src[start..end]
-	if text in split_leaves {
+	text := unsafe { tos(src.str + start, end - start) }
+	if text.len <= 2 && text in split_leaves {
 		for i in start .. end {
-			out << SnipToken{i, i + 1, 'Punctuator', node}
+			out << SnipToken{i, i + 1, 'Punctuator', node, false}
 		}
 		return false
 	}
-	out << SnipToken{start, end, if token_is_name(node, text) {
+	typ := if (text == 'const' || text == 'this') && token_is_name(node, text) {
 		'Identifier'
 	} else {
 		token_kind(kind, text)
-	}, node}
+	}
+	out << SnipToken{start, end, typ, node, kind == 'identifier' && text in reserved_set}
 	return false
 }
 
@@ -212,7 +225,7 @@ fn tokens_template(node C.TSNode, src string, mut out []SnipToken) {
 		if node_kind(child) !in ['template_substitution', 'template_type'] {
 			continue
 		}
-		out << SnipToken{piece, treesitter.node_start(child) + 2, 'Template', node}
+		out << SnipToken{piece, treesitter.node_start(child) + 2, 'Template', node, false}
 		for part in children(child) {
 			if node_kind(part) !in ['\${', '}'] {
 				tokens_walk(part, src, mut out)
@@ -220,7 +233,7 @@ fn tokens_template(node C.TSNode, src string, mut out []SnipToken) {
 		}
 		piece = treesitter.node_end(child) - 1
 	}
-	out << SnipToken{piece, treesitter.node_end(node), 'Template', node}
+	out << SnipToken{piece, treesitter.node_end(node), 'Template', node, false}
 }
 
 // token_kind ports getTokenType for a leaf of that kind and text.
@@ -240,7 +253,7 @@ fn token_kind(kind string, text string) string {
 	if text == 'true' || text == 'false' {
 		return 'Boolean'
 	}
-	if text in keyword_tokens {
+	if text in keyword_set {
 		return 'Keyword'
 	}
 	first := text[0]

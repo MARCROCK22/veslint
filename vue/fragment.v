@@ -125,11 +125,13 @@ fn (mut c ExprContext) parse_fragment(code string, calc Calc) !Fragment {
 	tree := parse_ts(if c.tsx_mode { c.tsx } else { c.ts }, code)!
 	root := treesitter.root_node(tree)
 	code_index := new_text_index(code)
+	// The file offset of each byte of the code (a byte inside a character: that character's
+	// offset plus the byte's).
+	u16_file := c.doc.offsets_with_gap(calc, code_index.u16_len)
 	mut to_file := []int{len: code.len + 1}
 	mut b := 0
 	for b <= code.len {
-		u := code_index.to_u16(b)
-		f := c.to_bytes(u + c.doc.fix_offset(calc, u))
+		f := c.to_bytes(u16_file[code_index.to_u16(b)])
 		n := if b < code.len { utf8_len(code[b]) } else { 1 }
 		for k in 0 .. n {
 			if b + k <= code.len {
@@ -140,11 +142,16 @@ fn (mut c ExprContext) parse_fragment(code string, calc Calc) !Fragment {
 	}
 	mut error_at := -1
 	mut message := 'Parsing error.'
+	mut toks := []SnipToken{}
+	mut comms := []SnipToken{}
 	if C.ts_node_has_error(root) {
 		error_at = first_error_offset(root)
-	} else if at, msg := reserved_identifier(root, code) {
-		error_at = at
-		message = msg
+	} else {
+		toks, comms = snippet_tokens(root, code, c.tsx_mode)
+		if at, msg := reserved_identifier(toks, code) {
+			error_at = at
+			message = msg
+		}
 	}
 	mut es := estree.EsTree{}
 	if error_at < 0 {
@@ -184,7 +191,6 @@ fn (mut c ExprContext) parse_fragment(code string, calc Calc) !Fragment {
 		node.start = to_file[node.start]
 		node.end = to_file[node.end]
 	}
-	toks, comms := snippet_tokens(root, code)
 	mut tokens := []Token{cap: toks.len}
 	for t in toks {
 		value := code[t.start..t.end]
@@ -255,24 +261,24 @@ const reserved_words = ['break', 'case', 'catch', 'class', 'const', 'continue', 
 	'in', 'instanceof', 'new', 'return', 'switch', 'throw', 'try', 'typeof', 'var', 'void', 'while',
 	'with']
 
+const reserved_set = build_set(reserved_words)
+
 // Of those, the ones that start an expression for TypeScript: it fails at the next token.
 const reserved_expression_starts = ['class', 'delete', 'function', 'import', 'new', 'typeof', 'void']
 
-// reserved_identifier finds an `identifier` that is a reserved word, and gives where TypeScript
-// reports it and (roughly) its message.
-fn reserved_identifier(root C.TSNode, code string) ?(int, string) {
-	for node in treesitter.nodes_of_kind(root, c'identifier') {
-		start := treesitter.node_start(node)
-		end := treesitter.node_end(node)
-		text := code[start..end]
-		if text !in reserved_words {
+// reserved_identifier gives, for the first `identifier` token that is a reserved word, where
+// TypeScript reports it and (roughly) its message.
+fn reserved_identifier(tokens []SnipToken, code string) ?(int, string) {
+	for t in tokens {
+		if !t.reserved {
 			continue
 		}
+		text := code[t.start..t.end]
 		if text in reserved_expression_starts {
-			return end + leading_space_len(code[end..]), 'Expression expected.'
+			return t.end + leading_space_len(code[t.end..]), 'Expression expected.'
 		}
-		parent := treesitter.node_parent(node) or { root }
-		return start, if treesitter.node_kind(parent) == 'arguments' {
+		parent := treesitter.node_parent(t.node) or { t.node }
+		return t.start, if treesitter.node_kind(parent) == 'arguments' {
 			'Argument expression expected.'
 		} else {
 			'Expression expected.'

@@ -49,6 +49,7 @@ mut:
 	attribute       int = -1
 	attribute_names map[string]bool
 	has_expr_start  bool
+	text_buf        []u8
 	expr_start      HTok
 	expr_tokens     []HTok
 	// Tree builder.
@@ -105,13 +106,17 @@ fn (mut p SfcParser) commit() IToken {
 	mut token := p.current
 	p.has_current = false
 	p.attribute = -1
+	if has_token && token.typ == .text {
+		token.value = p.text_buf.bytestr()
+	}
 	if p.has_expr_start {
 		// VExpressionEnd was not found: the deferred tokens become text.
 		start := p.expr_start
 		end := if p.expr_tokens.len > 0 { p.expr_tokens.last() } else { start }
-		mut value := start.value
+		mut value := []u8{}
+		append_str(mut value, start.value)
 		for t in p.expr_tokens {
-			value += t.value
+			append_str(mut value, t.value)
 		}
 		p.has_expr_start = false
 		p.expr_tokens = []HTok{}
@@ -120,17 +125,24 @@ fn (mut p SfcParser) commit() IToken {
 				typ:   .text
 				start: start.start
 				end:   end.end
-				value: value
+				value: value.bytestr()
 			}
 			has_token = true
 		} else if token.typ == .text {
 			token.end = end.end
-			token.value += value
+			token.value += value.bytestr()
 		} else {
 			panic('vue parser: unreachable')
 		}
 	}
 	return token
+}
+
+// append_str appends the bytes of a string (the values of text tokens are joined this way:
+// a text can be made of many tokens).
+@[inline]
+fn append_str(mut b []u8, s string) {
+	unsafe { b.push_many(s.str, s.len) }
 }
 
 fn (mut p SfcParser) report_token_error(start int, code string) {
@@ -162,18 +174,20 @@ fn (mut p SfcParser) process_text(token HTok) ?IToken {
 		result = p.commit()
 	} else if p.has_current {
 		if p.current.typ == .text && p.current.end == token.start {
-			p.current.value += token.value
+			append_str(mut p.text_buf, token.value)
 			p.current.end = token.end
 			return none
 		}
 		result = p.commit()
 	}
+	// The value of the current text is in text_buf until it is committed.
 	p.current = IToken{
 		typ:   .text
 		start: token.start
 		end:   token.end
-		value: token.value
 	}
+	p.text_buf.clear()
+	append_str(mut p.text_buf, token.value)
 	p.has_current = true
 	return result
 }
@@ -337,10 +351,11 @@ fn (mut p SfcParser) i_expression_end(token HTok) ?IToken {
 		p.process_text(token)
 		return result
 	}
-	mut value := ''
+	mut buf := []u8{}
 	for t in p.expr_tokens {
-		value += t.value
+		append_str(mut buf, t.value)
 	}
+	value := buf.bytestr()
 	p.doc.tokens << html_token(token)
 	p.has_expr_start = false
 	p.expr_tokens = []HTok{}

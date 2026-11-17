@@ -317,7 +317,7 @@ fn (mut c ExprContext) parse_masked(ranges [][]int) {
 	}) or { return }
 	s.es = es
 	s.has_es = true
-	toks, comms := snippet_tokens(root, s.masked)
+	toks, comms := snippet_tokens(root, s.masked, tsx)
 	for t in toks {
 		if t.start in s.split_offsets {
 			continue
@@ -377,14 +377,15 @@ fn (mut c ExprContext) drop_split_statements() {
 	}
 }
 
-// script_tag_tokens adds the `<script>` and `</script>` punctuators of the elements and sorts
-// the tokens.
+// script_tag_tokens adds the `<script>` and `</script>` punctuators of the elements where they
+// go among the (sorted) tokens.
 fn (mut c ExprContext) script_tag_tokens(elements []int) {
 	mut s := &c.doc.script
+	mut tags := []Token{}
 	for e in elements {
 		el := c.doc.nodes[e]
 		st := c.doc.nodes[el.start_tag]
-		s.tokens << Token{
+		tags << Token{
 			typ:   'Punctuator'
 			start: st.start
 			end:   st.end
@@ -392,7 +393,7 @@ fn (mut c ExprContext) script_tag_tokens(elements []int) {
 		}
 		if el.end_tag >= 0 {
 			et := c.doc.nodes[el.end_tag]
-			s.tokens << Token{
+			tags << Token{
 				typ:   'Punctuator'
 				start: et.start
 				end:   et.end
@@ -400,9 +401,9 @@ fn (mut c ExprContext) script_tag_tokens(elements []int) {
 			}
 		}
 	}
-	s.tokens.sort_with_compare(fn (a &Token, b &Token) int {
-		return a.start - b.start
-	})
+	for t in tags {
+		s.tokens.insert(sorted_index_by_start(s.tokens, t.start), t)
+	}
 }
 
 // parse_single is parseScriptElement.
