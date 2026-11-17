@@ -15,7 +15,8 @@ Shows in the editor what veslint reports: 139 rules of ESLint core, 127 rules of
 - **Install the extension** from the Visual Studio Marketplace (search for veslint in the Extensions view), or a `veslint-<version>.vsix` of the [releases](https://github.com/MARCROCK22/veslint/releases) with `Extensions: Install from VSIX...`.
 - **Get the binary** with `veslint: Update veslint` (Linux x64 and Windows x64): it downloads the latest release from GitHub, with the TypeScript 7 compiler it runs, into the extension's storage, and uses it from then on. When the extension cannot run veslint, it offers to download it.
 - **Updates:** once a day at most, the extension looks for a newer release and asks whether to install it: `Update`, `Release Notes` (its page on GitHub, with the summary of the version) or `Skip This Version`. It is never installed without asking; `veslint.checkForUpdates` turns the check off, and `veslint: Update veslint` looks for one at any time.
-- **Your own binary:** set `veslint.path` to it (one built from this repository with `make build`, or in your `PATH`). Then the downloaded one is not used. It needs the TypeScript 7 compiler in the `node_modules` next to the binary, as the release packages have it.
+- **The project's veslint from npm:** when the workspace has `@marcrock22/veslint` installed (`npm install --save-dev @marcrock22/veslint`, or with pnpm, bun or yarn), the extension uses its binary, the version the project pins, instead of the downloaded one; it is updated with the package manager, not with `veslint: Update veslint`.
+- **Your own binary:** set `veslint.path` to it (one built from this repository with `make build`, or in your `PATH`). Then the downloaded one is not used. It needs the TypeScript 7 compiler in the `node_modules` next to the binary or in one above it, as the release packages and npm have it.
 
 ## Requirements
 
@@ -26,7 +27,7 @@ Shows in the editor what veslint reports: 139 rules of ESLint core, 127 rules of
 | Setting | Default | What it is |
 |---|---|---|
 | `veslint.enable` | `true` | Lint TypeScript files. |
-| `veslint.path` | (not set) | The binary: a name in `PATH`, an absolute path, or a path relative to the workspace folder. Not set: the one `veslint: Update veslint` installed, or else `veslint` in `PATH`. |
+| `veslint.path` | (not set) | The binary: a name in `PATH`, an absolute path, or a path relative to the workspace folder. Not set: the one of `@marcrock22/veslint` in the workspace's `node_modules`, else the one `veslint: Update veslint` installed, else `veslint` in `PATH`. |
 | `veslint.config` | (empty) | The configuration file, relative to the workspace folder. Empty: the `eslint.config.*` at its root. |
 | `veslint.project` | (empty) | The `tsconfig.json` to use. Empty: the closest one to each file. |
 | `veslint.run` | `onType` | `onType` lints a file when it is opened, saved, and as you type (after `veslint.typingDelay`); `onSave`, when it is opened and saved; `manual`, only with the commands. |

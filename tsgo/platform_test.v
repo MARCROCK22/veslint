@@ -206,3 +206,26 @@ fn test_this_machine() {
 	assert rel_path == binary_rel_path_for(host)
 	assert os.is_file(os.join_path(@VMODROOT, rel_path)), rel_path
 }
+
+// The compiler is in the `node_modules` of the executable's directory or in the closest one above
+// it, as npm installs it for the package @marcrock22/veslint-<platform>-<arch>.
+fn test_binary_path_from() {
+	root := os.join_path(os.vtmp_dir(), 'veslint_binary_path_${os.getpid()}')
+	defer {
+		os.rmdir_all(root) or {}
+	}
+	pkg := os.join_path(root, 'node_modules', '@marcrock22', 'veslint-x')
+	os.mkdir_all(pkg)!
+	// None: the path next to the executable.
+	assert binary_path_from(pkg) == os.join_path(pkg, rel_path)
+	// Hoisted to the node_modules of the project.
+	hoisted := os.join_path(root, rel_path)
+	os.mkdir_all(os.dir(hoisted))!
+	os.write_file(hoisted, '')!
+	assert binary_path_from(pkg) == hoisted
+	// Nested in the package: the closest wins.
+	nested := os.join_path(pkg, rel_path)
+	os.mkdir_all(os.dir(nested))!
+	os.write_file(nested, '')!
+	assert binary_path_from(pkg) == nested
+}

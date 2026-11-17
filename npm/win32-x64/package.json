@@ -1,0 +1,29 @@
+{
+  "name": "@marcrock22/veslint-win32-x64",
+  "version": "0.27.0",
+  "description": "The veslint binary for Windows x64. Install @marcrock22/veslint, which runs it.",
+  "files": [
+    "veslint.exe"
+  ],
+  "os": [
+    "win32"
+  ],
+  "cpu": [
+    "x64"
+  ],
+  "dependencies": {
+    "@typescript/typescript-win32-x64": "7.1.0-beta"
+  },
+  "author": "MARCROCK22",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/MARCROCK22/veslint.git"
+  },
+  "homepage": "https://github.com/MARCROCK22/veslint#readme",
+  "bugs": {
+    "url": "https://github.com/MARCROCK22/veslint/issues"
+  },
+  "publishConfig": {
+    "access": "public"
+  }
+}

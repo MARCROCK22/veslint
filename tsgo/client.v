@@ -56,9 +56,30 @@ mut:
 	program_files    map[string][]string // by `snapshot:project` (source_file_names)
 }
 
-// tsgo_path returns the path of the pinned binary, relative to the veslint executable.
+// binary_path returns the path of the pinned binary for the veslint executable (see
+// binary_path_from).
 pub fn binary_path() string {
-	return os.join_path(os.dir(os.executable()), rel_path)
+	return binary_path_from(os.dir(os.executable()))
+}
+
+// binary_path_from is the compiler in the `node_modules` of `dir` (a release archive, a build) or,
+// as Node resolves a dependency, in the closest `node_modules` above it that has it: npm installs
+// the compiler of the package @marcrock22/veslint-<platform>-<arch> beside the package or in a
+// parent `node_modules`. Without one, the path in `dir`, which the error names.
+pub fn binary_path_from(dir string) string {
+	mut current := dir
+	for {
+		candidate := os.join_path(current, rel_path)
+		if os.is_file(candidate) {
+			return candidate
+		}
+		parent := os.dir(current)
+		if parent == current || !os.is_abs_path(parent) {
+			break
+		}
+		current = parent
+	}
+	return os.join_path(dir, rel_path)
 }
 
 // start_tsgo checks the binary and its version, and starts `tsc --api --cwd <cwd>` with a thread

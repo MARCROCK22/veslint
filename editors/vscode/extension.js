@@ -95,7 +95,7 @@ function settings(uri) {
   const config = vscode.workspace.getConfiguration('veslint', uri);
   return {
     enable: config.get('enable', true),
-    binary: binarySetting(config),
+    binary: binarySetting(config, uri && folderOf(uri)),
     config: config.get('config', ''),
     project: config.get('project', ''),
     run: runSetting(config),
@@ -112,11 +112,12 @@ function explicitPath(config) {
 }
 
 /**
- * The binary: the one of `veslint.path` when it was set; otherwise the one `veslint: Update
- * veslint` installed, or `veslint` in PATH.
+ * The binary: the one of `veslint.path` when it was set; otherwise the one the project installed
+ * from npm (@marcrock22/veslint, from the folder up), the one `veslint: Update veslint` installed,
+ * or `veslint` in PATH.
  */
-function binarySetting(config) {
-  return explicitPath(config) ?? managed?.binary ?? 'veslint';
+function binarySetting(config, folder) {
+  return explicitPath(config) ?? updater.projectBinary(folder) ?? managed?.binary ?? 'veslint';
 }
 
 /** The directory veslint runs in for a file: its workspace folder, or its own directory. */
@@ -594,9 +595,19 @@ async function installRelease(release) {
 /**
  * Looks for a newer veslint release. Asked for (`veslint: Update veslint`), it installs it; on its
  * own (at most once a day, with `veslint.checkForUpdates`), it asks first, and a version the user
- * skipped is not told about again.
+ * skipped is not told about again. A workspace that uses the veslint it installed from npm is not
+ * updated from GitHub.
  */
 async function checkForUpdates(asked) {
+  // A project that installed veslint from npm updates it with its package manager.
+  const folder = vscode.workspace.workspaceFolders?.[0]?.uri;
+  if (!explicitPath(vscode.workspace.getConfiguration('veslint', folder))) {
+    const fromNpm = updater.projectBinary(folder && folderOf(folder));
+    if (fromNpm) {
+      if (asked) vscode.window.showInformationMessage(`veslint: this workspace uses the veslint it installed from npm (${fromNpm}). Update @marcrock22/veslint with its package manager.`);
+      return;
+    }
+  }
   let release;
   try {
     release = await updater.latestRelease();

@@ -1,12 +1,14 @@
 'use strict';
 // The veslint binary of the GitHub releases: which version is the latest, which one a binary is,
-// and installing a release in the extension's storage. Nothing here needs VS Code.
+// and installing a release in the extension's storage; and the one a project installed from npm.
+// Nothing here needs VS Code.
 //
 // A release has, for each platform, `veslint-<version>-<platform>.tar.gz` (Linux) or `.zip`
 // (Windows) with a directory of the same name that holds the binary and the TypeScript 7 compiler
 // it runs. It is unpacked with `tar`, which Windows 10 and later also have (and which reads zip).
 const { spawn } = require('node:child_process');
 const fs = require('node:fs');
+const { createRequire } = require('node:module');
 const path = require('node:path');
 
 const repository = 'MARCROCK22/veslint';
@@ -17,6 +19,25 @@ function platformPackage(platform = process.platform, arch = process.arch) {
   if (platform === 'linux' && arch === 'x64') return { suffix: 'linux-x64', extension: '.tar.gz', executable: 'veslint' };
   if (platform === 'win32' && arch === 'x64') return { suffix: 'win32-x64', extension: '.zip', executable: 'veslint.exe' };
   return null;
+}
+
+/**
+ * The veslint a project installed from npm: the binary of @marcrock22/veslint-<platform>, the
+ * package of this platform that @marcrock22/veslint depends on, resolved from `folder` as Node
+ * resolves them (npm, pnpm, bun and yarn with node_modules lay them out differently); null when
+ * the project has none, or there is none for the platform.
+ */
+function projectBinary(folder, platform = process.platform, arch = process.arch) {
+  const pkg = platformPackage(platform, arch);
+  if (!pkg || !folder) return null;
+  try {
+    const main = createRequire(path.join(folder, 'package.json')).resolve('@marcrock22/veslint/package.json');
+    const own = createRequire(main).resolve(`@marcrock22/veslint-${pkg.suffix}/package.json`);
+    const binary = path.join(path.dirname(own), pkg.executable);
+    return fs.existsSync(binary) ? binary : null;
+  } catch {
+    return null;
+  }
 }
 
 /** The version `veslint --version` printed (`veslint 0.12.0`); null if it is not one. */
@@ -140,4 +161,4 @@ async function install(release, storage, { fetchImpl = fetch, platform = process
   return current;
 }
 
-module.exports = { repository, platformPackage, parseVersion, compareVersions, latestRelease, binaryVersion, installed, install };
+module.exports = { repository, platformPackage, projectBinary, parseVersion, compareVersions, latestRelease, binaryVersion, installed, install };

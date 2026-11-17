@@ -25,7 +25,16 @@ Install **veslint** from the Visual Studio Marketplace (`MARCROCK22.veslint`), t
 
 Download `veslint-<version>-linux-x64.tar.gz` or `veslint-<version>-win32-x64.zip` from the [releases](https://github.com/MARCROCK22/veslint/releases) and unpack it anywhere. It contains the `veslint` binary and the TypeScript 7 compiler it uses; keep them together. `veslint --version` prints the version.
 
-veslint runs on **Linux x64** and **Windows x64**. On other platforms, [build it from source](#building-from-source).
+### npm
+
+```sh
+npm install --save-dev @marcrock22/veslint   # or: bun add -d, pnpm add -D, yarn add -D
+npx veslint .
+```
+
+It installs the `veslint` command with the binary of your platform and the TypeScript 7 compiler it uses. `npm install --global @marcrock22/veslint` puts `veslint` in your `PATH`.
+
+veslint runs on **Linux x64** (glibc) and **Windows x64**. On other platforms, [build it from source](#building-from-source).
 
 ## Quick start
 

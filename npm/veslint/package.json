@@ -1,0 +1,37 @@
+{
+  "name": "@marcrock22/veslint",
+  "version": "0.27.0",
+  "description": "A TypeScript linter in V that talks to TypeScript 7 (tsc --api) directly: the rules of ESLint, typescript-eslint, unicorn, @stylistic, perfectionist and seyfert, with the same results.",
+  "bin": {
+    "veslint": "bin/veslint.js"
+  },
+  "files": [
+    "bin"
+  ],
+  "optionalDependencies": {
+    "@marcrock22/veslint-linux-x64": "0.27.0",
+    "@marcrock22/veslint-win32-x64": "0.27.0"
+  },
+  "keywords": [
+    "typescript",
+    "lint",
+    "linter",
+    "eslint",
+    "typescript-eslint"
+  ],
+  "author": "MARCROCK22",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/MARCROCK22/veslint.git"
+  },
+  "homepage": "https://github.com/MARCROCK22/veslint#readme",
+  "bugs": {
+    "url": "https://github.com/MARCROCK22/veslint/issues"
+  },
+  "engines": {
+    "node": ">=18"
+  },
+  "publishConfig": {
+    "access": "public"
+  }
+}

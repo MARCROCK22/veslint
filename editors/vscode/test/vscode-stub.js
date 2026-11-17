@@ -166,6 +166,9 @@ function create() {
         inspect: name => ({ key: `veslint.${name}`, defaultValue: state.defaults?.[name], globalValue: state.settings[name] }),
       }),
       getWorkspaceFolder: () => (state.folder ? { uri: Uri.file(state.folder) } : undefined),
+      get workspaceFolders() {
+        return state.folder ? [{ uri: Uri.file(state.folder) }] : undefined;
+      },
       onDidOpenTextDocument: event('open'),
       onDidSaveTextDocument: event('save'),
       onDidCloseTextDocument: event('close'),

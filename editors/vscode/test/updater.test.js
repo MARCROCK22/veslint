@@ -168,3 +168,85 @@ test('on its own, the check asks first, and only when the last one was a day ago
   assert.ok(old.get('veslint.lastUpdateCheck') > Date.now() - 60000);
   assert.ok(recent.get('veslint.lastUpdateCheck') < Date.now() - 30 * 60 * 1000);
 });
+
+/**
+ * A project with @marcrock22/veslint installed as npm lays it out (pnpm: in node_modules/.pnpm,
+ * with the package of the platform beside it), whose binary is `script`; its path.
+ */
+function npmProject(t, layout, script, executable = 'veslint') {
+  const project = fs.mkdtempSync(path.join(os.tmpdir(), 'veslint-npm-'));
+  t.after(() => fs.rmSync(project, { recursive: true, force: true }));
+  const scope =
+    layout === 'pnpm'
+      ? path.join(project, 'node_modules/.pnpm/@marcrock22+veslint@1.0.0/node_modules/@marcrock22')
+      : path.join(project, 'node_modules/@marcrock22');
+  for (const name of ['veslint', 'veslint-linux-x64']) {
+    fs.mkdirSync(path.join(scope, name), { recursive: true });
+    fs.writeFileSync(path.join(scope, name, 'package.json'), JSON.stringify({ name: `@marcrock22/${name}`, version: '1.0.0' }));
+  }
+  const binary = path.join(scope, 'veslint-linux-x64', executable);
+  fs.writeFileSync(binary, script, { mode: 0o755 });
+  if (layout === 'pnpm') {
+    // Only the package the project depends on is in its node_modules.
+    fs.mkdirSync(path.join(project, 'node_modules/@marcrock22'));
+    fs.symlinkSync(path.join(scope, 'veslint'), path.join(project, 'node_modules/@marcrock22/veslint'), 'dir');
+  }
+  return { project, binary: fs.realpathSync(binary) };
+}
+
+test('the veslint a project installed from npm', { skip: process.platform === 'win32' }, t => {
+  for (const layout of ['npm', 'pnpm']) {
+    const { project, binary } = npmProject(t, layout, '#!/bin/sh\n');
+    assert.equal(updater.projectBinary(project, 'linux', 'x64'), binary, layout);
+    // From a folder inside the project, as Node resolves it.
+    fs.mkdirSync(path.join(project, 'packages/app'), { recursive: true });
+    assert.equal(updater.projectBinary(path.join(project, 'packages/app'), 'linux', 'x64'), binary, layout);
+    // Not for another platform, nor where the package has no binary.
+    assert.equal(updater.projectBinary(project, 'darwin', 'arm64'), null);
+    assert.equal(updater.projectBinary(project, 'win32', 'x64'), null);
+    fs.rmSync(binary);
+    assert.equal(updater.projectBinary(project, 'linux', 'x64'), null);
+  }
+  assert.equal(updater.projectBinary(fs.mkdtempSync(path.join(os.tmpdir(), 'veslint-none-')), 'linux', 'x64'), null);
+  assert.equal(updater.projectBinary(undefined, 'linux', 'x64'), null);
+});
+
+test('a workspace with veslint from npm lints with it, and is not updated from GitHub', { skip: !linux || !fs.existsSync(binary) }, async t => {
+  const marker = path.join(fs.mkdtempSync(path.join(os.tmpdir(), 'veslint-ran-')), 'ran');
+  const { project } = npmProject(t, 'npm', `#!/bin/sh\necho "$@" >> "${marker}"\nexec "${binary}" "$@"\n`);
+  const fixture = path.join(root, 'tests/config');
+  for (const file of ['base.ts', 'resolved.json', 'tsconfig.json']) fs.copyFileSync(path.join(fixture, file), path.join(project, file));
+  const { fetchImpl } = fakeRelease(t, '9.9.9');
+  const { vscode, state, TextDocument } = create();
+  const load = Module._load;
+  Module._load = function (request, ...rest) {
+    return request === 'vscode' ? vscode : load.call(this, request, ...rest);
+  };
+  delete require.cache[require.resolve('../extension')];
+  const extension = require('../extension');
+  Module._load = load;
+  const realFetch = globalThis.fetch;
+  globalThis.fetch = fetchImpl;
+  const storage = fs.mkdtempSync(path.join(os.tmpdir(), 'veslint-extension-'));
+  t.after(() => {
+    extension.deactivate();
+    globalThis.fetch = realFetch;
+    fs.rmSync(storage, { recursive: true, force: true });
+  });
+  state.folder = project;
+  state.settings = { config: 'resolved.json', run: 'manual' };
+  const document = new TextDocument(path.join(project, 'base.ts'));
+  state.documents.push(document);
+  extension.activate({ subscriptions: [], globalStorageUri: { fsPath: storage }, globalState: memento() });
+  await state.commands['veslint.lintOpenFiles']();
+  const expected = fs
+    .readFileSync(path.join(fixture, 'expected.txt'), 'utf8')
+    .split('\n')
+    .filter(line => line.startsWith('base.ts:'));
+  assert.equal(state.diagnostics.get(document.uri.toString()).length, expected.length);
+  assert.ok(fs.existsSync(marker));
+  await state.commands['veslint.update']();
+  assert.equal(state.messages.length, 1);
+  assert.match(state.messages[0], /^veslint: this workspace uses the veslint it installed from npm \(.*veslint-linux-x64\/veslint\)\. Update @marcrock22\/veslint with its package manager\.$/);
+  assert.equal(updater.installed(path.join(storage, 'binary')), null);
+});

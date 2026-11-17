@@ -141,5 +141,5 @@ fn missing_binary_error(bin string, host Host) IError {
 	if !has_platform_package(host) {
 		return error('TypeScript 7 binary not found at ${bin}: typescript 7.1.0-beta has no native compiler for ${host_platform(host)}-${node_arch(host)} (it has: ${platform_packages.join(', ')})')
 	}
-	return error('TypeScript 7 binary not found at ${bin}; run `make deps`')
+	return error('TypeScript 7 binary not found at ${bin} nor in a node_modules above it; run `make deps` (or reinstall @marcrock22/veslint)')
 }

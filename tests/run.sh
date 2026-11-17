@@ -787,6 +787,52 @@ expect_error "timeout of a --version that never answers" "--version\` did not fi
 expect_error "timeout of a --version that answers and does not exit" "--version\` did not finish within" \
 	env VESLINT_TIMEOUT_MS=300 "$(sandbox version-linger)" app.ts
 expect_error "tsgo dies (EOF), with the stderr tail" "simulated failure" "$(sandbox die-on-start)" app.ts
+# The npm packages (npm/stage.sh): their versions are the release's and their compiler the one of
+# package.json; laid out as npm installs them, the `veslint` command of @marcrock22/veslint runs the
+# binary of @marcrock22/veslint-<platform>, which finds the compiler hoisted to the project's
+# node_modules, and ends with its exit code.
+npm_versions=$(python3 -I - "$extension_version" << 'PY'
+import json, sys
+version = sys.argv[1]
+typescript = json.load(open('package.json'))['dependencies']['typescript']
+wrong = []
+main = json.load(open('npm/veslint/package.json'))
+for name, got in [('version', main['version']), *main['optionalDependencies'].items()]:
+	if got != version:
+		wrong.append(f'npm/veslint {name} {got}')
+for platform in ['linux-x64', 'win32-x64']:
+	package = json.load(open(f'npm/{platform}/package.json'))
+	if package['version'] != version:
+		wrong.append(f'npm/{platform} {package["version"]}')
+	if package['dependencies'] != {f'@typescript/typescript-{platform}': typescript}:
+		wrong.append(f'npm/{platform} dependencies {package["dependencies"]}')
+print(' '.join(wrong) or 'ok')
+PY
+)
+if [[ $npm_versions == ok ]]; then
+	ok "npm packages: version $extension_version, the compiler of package.json"
+else
+	ko "npm packages: $npm_versions"
+fi
+if [[ $windows -eq 0 && $(platform_package) == typescript-linux-x64 ]] && command -v node > /dev/null; then
+	npm_project="$TMP/npm-project"
+	mkdir -p "$npm_project/node_modules/@marcrock22" "$npm_project/node_modules/@typescript"
+	npm/stage.sh "$TMP/npm" linux-x64=veslint
+	mv "$TMP/npm/veslint" "$npm_project/node_modules/@marcrock22/veslint"
+	mv "$TMP/npm/linux-x64" "$npm_project/node_modules/@marcrock22/veslint-linux-x64"
+	ln -s "$ROOT/node_modules/@typescript/typescript-linux-x64" "$npm_project/node_modules/@typescript/"
+	npm_veslint="$npm_project/node_modules/@marcrock22/veslint/bin/veslint.js"
+	code=0
+	node "$npm_veslint" --rule no-debugger --no-config-lookup tests/rules/no-debugger/cases.ts > "$TMP/npm.out" 2>&1 ||
+		code=$?
+	if [[ $code -eq 1 ]] && grep -q 'no-debugger' "$TMP/npm.out" &&
+		node "$npm_veslint" app.ts | diff -q - tests/expected/app.txt > /dev/null; then
+		ok "npm: the veslint command, with the compiler in the project's node_modules"
+	else
+		ko "npm: the veslint command (code $code)"
+		cat "$TMP/npm.out"
+	fi
+fi
 # veslint keeps itself and the tsgo it starts on two of the CPUs it may use (cpus.v), on
 # VESLINT_CPUS of them, and on all of them with VESLINT_CPUS=0; on Linux only.
 if [[ $windows -eq 0 ]]; then

@@ -2,6 +2,12 @@
 
 Each version is a release on GitHub with the veslint binaries (Linux x64, Windows x64) and the VS Code extension. The section of a version is the text of its release.
 
+## 0.27.0
+
+- **On npm:** `npm install --save-dev @marcrock22/veslint` (or `bun add -d`, `pnpm add -D`) installs the `veslint` command: `npx veslint .`. The package runs the binary of your platform, which npm installs with the optional dependency `@marcrock22/veslint-linux-x64` or `@marcrock22/veslint-win32-x64`, together with the TypeScript 7 compiler it uses. Each release publishes them (`npm/`, `npm/stage.sh`).
+- **The extension uses the project's veslint from npm:** with `veslint.path` not set, the binary of `@marcrock22/veslint` in the workspace's `node_modules` (npm, pnpm, bun or yarn) comes before the one `veslint: Update veslint` downloaded, so the editor lints with the version the project pins; such a workspace is not updated from GitHub.
+- **The compiler is looked for as Node resolves a dependency:** in the `node_modules` next to the binary, as before, and otherwise in the closest `node_modules` above it, where npm may install it.
+
 ## 0.26.1
 
 - **`--fix` no longer grows in memory with every pass:** V keeps a closure, and what it captures, alive until it is released, and closures of the rules captured the checker of the pass, with its caches. `--fix` makes a checker per pass, so none was freed: on `src/services` of the TypeScript compiler (168 files) veslint went over 5 GB and took more than 20 minutes. Each file is now linted in a closure lifetime that releases them: on 73 of those files, 108 s and 470 MB, where it took 158 s and 5.3 GB (ESLint: 102 s, 2.8 GB). `veslint --server`, which lints again on every change, gained the same.

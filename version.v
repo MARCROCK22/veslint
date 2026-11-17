@@ -1,5 +1,6 @@
 module main
 
-// version is the version of veslint, the one of its release (`v<version>` tag) and of the VS Code
-// extension (editors/vscode/package.json, which tests/run.sh checks against it).
-const version = '0.26.1'
+// version is the version of veslint, the one of its release (`v<version>` tag), of the VS Code
+// extension (editors/vscode/package.json) and of the npm packages (npm/*/package.json), which
+// tests/run.sh checks against it.
+const version = '0.27.0'
