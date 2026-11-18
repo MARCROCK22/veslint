@@ -358,12 +358,11 @@ fn svc_compile(text string, doc &svelte.Document, parsers &svelte.Parsers, opts 
 	mut d := unsafe { doc }
 	mut own := false
 	if text != doc.src {
-		parsed := if parsers != unsafe { nil } {
-			svelte.parse_svelte_with(text, parsers)
+		d = if parsers != unsafe { nil } {
+			svelte.parse_svelte_with(text, parsers) or { return SvcCompiled{} }
 		} else {
-			svelte.parse_svelte(text)
+			svelte.parse_svelte(text) or { return SvcCompiled{} }
 		}
-		d = parsed or { return SvcCompiled{} }
 		own = true
 	}
 	defer {
