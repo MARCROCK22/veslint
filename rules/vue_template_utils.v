@@ -93,3 +93,20 @@ fn (c &Checker) vue_variable_name(v int) string {
 fn (c &Checker) vue_expr_es(e vue.Expr) &estree.EsTree {
 	return &c.vue.doc.snippets[e.snippet].es
 }
+
+// vue_refers_to_upper_variable is hasReferenceUpperElementVariable (of vue/no-literals-in-template
+// and vue/v-on-handler-style): a reference to a variable of one of the elements `upper` is inside
+// [start, end].
+fn (c &Checker) vue_refers_to_upper_variable(upper []int, start int, end int) bool {
+	for element in upper {
+		for v in c.vue.doc.nodes[element].variables {
+			for r in c.vue.doc.variables[v].references {
+				id_start, id_end := c.vue_expr_range(c.vue.doc.references[r].id)
+				if start <= id_start && id_end <= end {
+					return true
+				}
+			}
+		}
+	}
+	return false
+}

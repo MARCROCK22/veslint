@@ -68,7 +68,7 @@ fn (mut c Checker) lint_vue_no_literals_in_template(root C.TSNode, abs_path stri
 			continue
 		}
 		start, end := c.vue_expr_range(e)
-		if c.vnlit_refers_to_upper_variable(upper, start, end) {
+		if c.vue_refers_to_upper_variable(upper, start, end) {
 			continue
 		}
 		findings << c.vue_report(start, end, 'unexpected', {
@@ -77,20 +77,4 @@ fn (mut c Checker) lint_vue_no_literals_in_template(root C.TSNode, abs_path stri
 	}
 	stats.eval_ms += ms(sw.elapsed())
 	return findings
-}
-
-// vnlit_refers_to_upper_variable is hasReferenceUpperElementVariable: a reference to a variable of
-// one of the elements is inside [start, end).
-fn (c &Checker) vnlit_refers_to_upper_variable(upper []int, start int, end int) bool {
-	for element in upper {
-		for v in c.vue.doc.nodes[element].variables {
-			for r in c.vue.doc.variables[v].references {
-				id_start, id_end := c.vue_expr_range(c.vue.doc.references[r].id)
-				if start <= id_start && id_end <= end {
-					return true
-				}
-			}
-		}
-	}
-	return false
 }
