@@ -1,0 +1,11 @@
+tests/rules/vue/no-required-prop-with-default/autofix-setup/cases.vue:3:3	vue/no-required-prop-with-default	requireOptional	Prop "a" should be optional.	fix	46	46	?	end	3	12
+tests/rules/vue/no-required-prop-with-default/autofix-setup/cases.vue:5:3	vue/no-required-prop-with-default	requireOptional	Prop "c-d" should be optional.	fix	75	75	?	end	5	16
+tests/rules/vue/no-required-prop-with-default/autofix-setup/cases.vue:7:3	vue/no-required-prop-with-default	requireOptional	Prop "f" should be optional.	fix	105	105	?	end	7	12
+tests/rules/vue/no-required-prop-with-default/autofix/cases.vue:4:5	vue/no-required-prop-with-default	requireOptional	Prop "a" should be optional.	fix	80	84	false	end	4	54
+tests/rules/vue/no-required-prop-with-default/autofix/cases.vue:6:5	vue/no-required-prop-with-default	requireOptional	Prop "c" should be optional.	fix	191	192	false	end	6	49
+tests/rules/vue/no-required-prop-with-default/cases.vue:4:5	vue/no-required-prop-with-default	requireOptional	Prop "a" should be optional.	suggestion	fixRequiredProp	Change this prop to be optional.	80	84	false	end	4	54
+tests/rules/vue/no-required-prop-with-default/cases.vue:6:5	vue/no-required-prop-with-default	requireOptional	Prop "c" should be optional.	suggestion	fixRequiredProp	Change this prop to be optional.	191	192	false	end	6	49
+tests/rules/vue/no-required-prop-with-default/destructure/cases.vue:2:38	vue/no-required-prop-with-default	requireOptional	Prop "a" should be optional.	suggestion	fixRequiredProp	Change this prop to be optional.	63	63	?	end	2	48
+tests/rules/vue/no-required-prop-with-default/setup/cases.vue:3:3	vue/no-required-prop-with-default	requireOptional	Prop "a" should be optional.	suggestion	fixRequiredProp	Change this prop to be optional.	46	46	?	end	3	12
+tests/rules/vue/no-required-prop-with-default/setup/cases.vue:5:3	vue/no-required-prop-with-default	requireOptional	Prop "c-d" should be optional.	suggestion	fixRequiredProp	Change this prop to be optional.	75	75	?	end	5	16
+tests/rules/vue/no-required-prop-with-default/setup/cases.vue:7:3	vue/no-required-prop-with-default	requireOptional	Prop "f" should be optional.	suggestion	fixRequiredProp	Change this prop to be optional.	105	105	?	end	7	12
