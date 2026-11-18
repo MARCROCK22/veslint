@@ -1,0 +1,10 @@
+tests/rules/svelte/prefer-const/cases.svelte:3:6	svelte/prefer-const	useConst	'count' is never reassigned. Use 'const' instead.
+tests/rules/svelte/prefer-const/cases.svelte:6:6	svelte/prefer-const	useConst	'raw' is never reassigned. Use 'const' instead.
+tests/rules/svelte/prefer-const/cases.svelte:7:6	svelte/prefer-const	useConst	'plain' is never reassigned. Use 'const' instead.
+tests/rules/svelte/prefer-const/cases.svelte:10:6	svelte/prefer-const	useConst	'optional' is never reassigned. Use 'const' instead.
+tests/rules/svelte/prefer-const/cases.svelte:14:11	svelte/prefer-const	useConst	'i' is never reassigned. Use 'const' instead.
+tests/rules/svelte/prefer-const/cases.ts:2:5	svelte/prefer-const	useConst	'a' is never reassigned. Use 'const' instead.
+tests/rules/svelte/prefer-const/cases.ts:4:5	svelte/prefer-const	useConst	'c' is never reassigned. Use 'const' instead.
+tests/rules/svelte/prefer-const/runes-option/cases.svelte:3:6	svelte/prefer-const	useConst	'doubled' is never reassigned. Use 'const' instead.
+tests/rules/svelte/prefer-const/runes-option/cases.svelte:4:8	svelte/prefer-const	useConst	'a' is never reassigned. Use 'const' instead.
+tests/rules/svelte/prefer-const/runes-option/cases.svelte:4:11	svelte/prefer-const	useConst	'b' is never reassigned. Use 'const' instead.

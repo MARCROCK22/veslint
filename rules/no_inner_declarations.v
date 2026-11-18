@@ -33,8 +33,12 @@ fn nid_options(options []json2.Any) !NidOptions {
 }
 
 fn (mut c Checker) lint_no_inner_declarations(root C.TSNode, abs_path string, mut stats Stats) ![]Finding {
+	return c.nid_lint(root, nid_options(c.rule_options(no_inner_declarations))!, mut stats)
+}
+
+// nid_lint is the rule with its options (svelte/no-inner-declarations runs it too).
+fn (mut c Checker) nid_lint(root C.TSNode, o NidOptions, mut stats Stats) ![]Finding {
 	sw := time.new_stopwatch()
-	o := nid_options(c.rule_options(no_inner_declarations))!
 	mut findings := []Finding{}
 	mut kinds := ['function_declaration', 'generator_function_declaration']
 	if o.both {

@@ -778,6 +778,9 @@ pub const svelte_no_reactive_functions = 'svelte/no-reactive-functions'
 pub const svelte_no_export_load_in_svelte_module_in_kit_pages = 'svelte/no-export-load-in-svelte-module-in-kit-pages'
 pub const svelte_valid_prop_names_in_kit_pages = 'svelte/valid-prop-names-in-kit-pages'
 pub const svelte_no_goto_without_base = 'svelte/no-goto-without-base'
+pub const svelte_prefer_const = 'svelte/prefer-const'
+pub const svelte_no_inner_declarations = 'svelte/no-inner-declarations'
+pub const svelte_no_trailing_spaces = 'svelte/no-trailing-spaces'
 pub const names = [no_floating_promises, await_thenable, require_await, return_await,
 	no_misused_promises, no_unsafe_call, no_unsafe_member_access, no_unsafe_return,
 	no_unsafe_assignment, no_unsafe_argument, restrict_template_expressions,
@@ -1010,7 +1013,8 @@ pub const names = [no_floating_promises, await_thenable, require_await, return_a
 	svelte_no_add_event_listener, svelte_no_dom_manipulating, svelte_no_extra_reactive_curlies,
 	svelte_no_reactive_literals, svelte_no_reactive_functions,
 	svelte_no_export_load_in_svelte_module_in_kit_pages, svelte_valid_prop_names_in_kit_pages,
-	svelte_no_goto_without_base]
+	svelte_no_goto_without_base, svelte_prefer_const, svelte_no_inner_declarations,
+	svelte_no_trailing_spaces]
 
 // untyped_rules are the ported rules that need no types (`meta.docs.requiresTypeChecking` is false
 // in typescript-eslint; the eslint-plugin-unicorn rules that read the types when the parser has a
@@ -1207,7 +1211,8 @@ pub const untyped_rules = [adjacent_overload_signatures, array_type, class_liter
 	svelte_no_add_event_listener, svelte_no_dom_manipulating, svelte_no_extra_reactive_curlies,
 	svelte_no_reactive_literals, svelte_no_reactive_functions,
 	svelte_no_export_load_in_svelte_module_in_kit_pages, svelte_valid_prop_names_in_kit_pages,
-	svelte_no_goto_without_base]
+	svelte_no_goto_without_base, svelte_prefer_const, svelte_no_inner_declarations,
+	svelte_no_trailing_spaces]
 
 // needs_types tells whether a rule asks tsgo for the types of the program.
 pub fn needs_types(rule string) bool {
@@ -1980,6 +1985,9 @@ pub const default_options = {
 	svelte_no_export_load_in_svelte_module_in_kit_pages: '[]'
 	svelte_valid_prop_names_in_kit_pages:                '[]'
 	svelte_no_goto_without_base:                         '[]'
+	svelte_prefer_const:                                 '[]'
+	svelte_no_inner_declarations:                        '[]'
+	svelte_no_trailing_spaces:                           '[]'
 }
 
 // Finding is a problem a rule found at a node.
@@ -2929,6 +2937,9 @@ pub fn message(rule string, finding Finding) string {
 		svelte_no_export_load_in_svelte_module_in_kit_pages { svnelisvmikp_messages }
 		svelte_valid_prop_names_in_kit_pages { svvpnikp_messages }
 		svelte_no_goto_without_base { svngwb_messages }
+		svelte_prefer_const { pconst_messages }
+		svelte_no_inner_declarations { nid_messages }
+		svelte_no_trailing_spaces { svnts_messages }
 		else { map[string]string{} }
 	}
 	return interpolate(messages[finding.message_id] or { finding.message_id }, finding.data)
@@ -5404,6 +5415,15 @@ fn (mut c Checker) lint_rule(rule string, root C.TSNode, abs_path string, mut st
 		}
 		svelte_no_goto_without_base {
 			return c.lint_svelte_no_goto_without_base(root, abs_path, mut stats)!
+		}
+		svelte_prefer_const {
+			return c.lint_svelte_prefer_const(root, abs_path, mut stats)!
+		}
+		svelte_no_inner_declarations {
+			return c.lint_svelte_no_inner_declarations(root, abs_path, mut stats)!
+		}
+		svelte_no_trailing_spaces {
+			return c.lint_svelte_no_trailing_spaces(root, abs_path, mut stats)!
 		}
 		else { return error('unknown rule: ${rule}') }
 	}
