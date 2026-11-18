@@ -4,6 +4,7 @@ bom.svelte:5:9	eqeqeq	unexpected	Expected '===' and instead saw '=='.	suggestion
 counter.svelte.ts:10:8	@stylistic/function-paren-newline	expectedBefore	Expected newline before ')'.	fix	331	331	\n	end	10	9
 counter.svelte.ts:13:3	@typescript-eslint/explicit-function-return-type	missingReturnType	Missing return type on function.	end	13	15
 counter.svelte.ts:16:3	@typescript-eslint/explicit-function-return-type	missingReturnType	Missing return type on function.	end	16	16
+counter.svelte.ts:2:81	vue/max-len	max	This line has a length of 89. Maximum allowed is 80.	end	2	90
 counter.svelte.ts:4:8	@typescript-eslint/explicit-function-return-type	missingReturnType	Missing return type on function.	end	4	31
 counter.svelte.ts:4:8	@typescript-eslint/explicit-module-boundary-types	missingReturnType	Missing return type on function.	end	4	31
 counter.svelte.ts:6:35	@typescript-eslint/no-magic-numbers	noMagic	No magic number: 2.	end	6	36
@@ -38,6 +39,7 @@ legacy.svelte:14:13	@stylistic/list-style	shouldSpacing	Should have space betwee
 legacy.svelte:14:7	@stylistic/list-style	shouldSpacing	Should have space between '{' and 'length'	fix	281	281	 	end	14	7
 legacy.svelte:16:2	@typescript-eslint/explicit-function-return-type	missingReturnType	Missing return type on function.	end	16	18
 legacy.svelte:17:13	@typescript-eslint/no-magic-numbers	noMagic	No magic number: 1.	end	17	14
+legacy.svelte:22:81	vue/max-len	max	This line has a length of 85. Maximum allowed is 80.	end	22	86
 legacy.svelte:2:10	@stylistic/list-style	shouldSpacing	Should have space between '{' and 'writable'	fix	28	28	 	end	2	10
 legacy.svelte:2:18	@stylistic/list-style	shouldSpacing	Should have space between 'writable' and '}'	fix	36	36	 	end	2	18
 legacy.svelte:7:27	@typescript-eslint/no-magic-numbers	noMagic	No magic number: 0.	end	7	28

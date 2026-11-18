@@ -12,11 +12,11 @@ undefined);
 
 function pick (kind: string | undefined) {
   switch (kind) {
-    case "a":
-    case undefined:
-    default: {
-      return copy.length + bound().length;
-    }
+  case "a":
+  case undefined:
+  default: {
+    return copy.length + bound().length;
+  }
   }
 }
 

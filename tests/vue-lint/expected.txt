@@ -1,30 +1,43 @@
 bom.vue:1:1	unicode-bom	unexpected	Unexpected Unicode BOM (Byte Order Mark).	fix	-1	0	
+bom.vue:1:1	vue/multi-word-component-names	unexpected	Component name "bom" should always be multi-word.
+bom.vue:1:15	vue/block-lang	unexpected	Do not specify the 'lang' attribute of '<script>'.	end	1	24
 bom.vue:2:14	@stylistic/semi	missingSemi	Missing semicolon.	fix	38	38	;	end	3	1
+bom.vue:4:1	vue/padding-line-between-blocks	always	Expected blank line before this block.	fix	48	48	\n	end	4	42
 both-scripts.vue:10:1	@typescript-eslint/no-floating-promises	floatingVoid	Promises must be awaited, end with a call to .catch, end with a call to .then with a rejection handler or be explicitly marked as ignored with the `void` operator.	suggestion	floatingFixVoid	Add void operator to ignore.	224	224	void 	suggestion	floatingFixAwait	Add await operator.	224	224	await 	end	10	9
 both-scripts.vue:11:7	@typescript-eslint/no-unused-vars	unusedVar	'unused' is assigned a value but never used.	end	11	13
 both-scripts.vue:12:5	prefer-const	useConst	'x' is never reassigned. Use 'const' instead.	fix	251	266	const x: any = 3;	end	12	11
 both-scripts.vue:12:8	@typescript-eslint/no-explicit-any	unexpectedAny	Unexpected any. Specify a different type.	suggestion	suggestUnknown	Use `unknown` instead, this will force you to explicitly, and safely assert the type is correct.	258	261	unknown	suggestion	suggestNever	Use `never` instead, this is useful when instantiating generic type parameters that you don't need to know the type of.	258	261	never	end	12	11
 both-scripts.vue:13:1	@typescript-eslint/no-unused-expressions	unusedExpression	Expected an assignment or function call and instead saw an expression.	end	13	7
 both-scripts.vue:13:3	@typescript-eslint/no-unsafe-member-access	unsafeMemberExpression	Unsafe member access .foo on an `any` value.	end	13	6
+both-scripts.vue:15:1	vue/padding-line-between-blocks	always	Expected blank line before this block.	fix	283	283	\n	end	15	44
+both-scripts.vue:1:9	vue/block-lang	unexpected	Do not specify the 'lang' attribute of '<script>'.	end	1	18
 both-scripts.vue:2:1	@typescript-eslint/promise-function-async	missingAsync	Functions that return promises must be async.	fix	19	19	async 	end	2	15
 both-scripts.vue:2:15	@stylistic/space-before-function-paren	missingSpace	Missing space before function parentheses.	fix	33	33	 	end	2	16
 both-scripts.vue:2:35	@stylistic/brace-style	blockSameLine	Statement inside of curly braces should be on next line.	fix	54	54	\n	end	2	36
 both-scripts.vue:2:60	@typescript-eslint/no-magic-numbers	noMagic	No magic number: 1.	end	2	61
 both-scripts.vue:2:64	@stylistic/brace-style	singleLineClose	Closing curly brace should be on the same line as opening curly brace or on the line after the previous block.	fix	82	82	\n	end	2	65
+both-scripts.vue:3:1	vue/prefer-define-options	preferDefineOptions	Use `defineOptions` instead of default export.	fix	83	167	\nconst top = 1;\n</script>\n\n<script setup lang="ts">\ndefineOptions({ name: 'Both' })\n	end	3	33
 both-scripts.vue:3:17	@stylistic/object-curly-spacing	unexpectedSpaceAfter	There should be no space after '{'.	fix	100	101		end	3	18
 both-scripts.vue:3:18	@stylistic/quote-props	unquotedPropertyFound	Unquoted property 'name' found.	fix	101	105	"name"	end	3	30
 both-scripts.vue:3:24	@stylistic/quotes	wrongQuotes	Strings must use doublequote.	fix	107	113	"Both"	end	3	30
+both-scripts.vue:3:24	vue/multi-word-component-names	unexpected	Component name "Both" should always be multi-word.	end	3	30
 both-scripts.vue:3:30	@stylistic/object-curly-spacing	unexpectedSpaceBefore	There should be no space before '}'.	fix	113	114		end	3	31
+both-scripts.vue:7:15	vue/block-lang	unexpected	Do not specify the 'lang' attribute of '<script>'.	end	7	24
 both-scripts.vue:9:1	vars-on-top	top	All 'var' declarations must be at the top of the function scope.	end	9	21
 both-scripts.vue:9:19	@typescript-eslint/no-magic-numbers	noMagic	No magic number: 1.	end	9	20
+crlf.vue:1:1	vue/multi-word-component-names	unexpected	Component name "crlf" should always be multi-word.
+crlf.vue:5:9	vue/block-lang	unexpected	Do not specify the 'lang' attribute of '<script>'.	end	5	18
 crlf.vue:6:1	no-var	unexpectedVar	Unexpected var, use let or const instead.	fix	68	85	let text = "crlf"	end	6	18
 crlf.vue:6:18	@stylistic/semi	missingSemi	Missing semicolon.	fix	85	85	;	end	7	1
+crlf.vue:7:16	vue/require-expose	requireExpose	The public properties of the component must be explicitly declared using `expose`. If the component does not have public properties, declare it empty.	suggestion	addExposeOptionForEmpty	Add the `expose` option to give an empty array.	103	103	\nexpose: [],	suggestion	addExposeOptionForAll	Add the `expose` option to declare all properties.	103	103	\nexpose: ["text"],	end	9	2
+crlf.vue:7:16	vue/require-name-property	missingName	Required name property is not set.	suggestion	addName	Add name property to component.	107	107	name: 'crlf',\n  	end	9	2
 crlf.vue:8:10	@stylistic/brace-style	blockSameLine	Statement inside of curly braces should be on next line.	fix	115	115	\n	end	8	11
 crlf.vue:8:20	@stylistic/object-curly-spacing	unexpectedSpaceAfter	There should be no space after '{'.	fix	124	125		end	8	21
 crlf.vue:8:21	@stylistic/quote-props	unquotedPropertyFound	Unquoted property 'text' found.	fix	125	129	"text"	end	8	31
 crlf.vue:8:21	object-shorthand	expectedPropertyShorthand	Expected property shorthand.	fix	125	135	text	end	8	31
 crlf.vue:8:3	@typescript-eslint/explicit-function-return-type	missingReturnType	Missing return type on function.	end	8	7
 crlf.vue:8:3	@typescript-eslint/explicit-module-boundary-types	missingReturnType	Missing return type on function.	end	8	7
+crlf.vue:8:3	vue/component-api-style	disallowComponentOption	Options API is not allowed in your project. `data` option is part of the Options API. Use `<script setup>` or Composition API instead.	end	8	7
 crlf.vue:8:31	@stylistic/object-curly-spacing	unexpectedSpaceBefore	There should be no space before '}'.	fix	135	136		end	8	32
 crlf.vue:8:33	@stylistic/semi	missingSemi	Missing semicolon.	fix	137	137	;	end	8	34
 crlf.vue:8:34	@stylistic/brace-style	singleLineClose	Closing curly brace should be on the same line as opening curly brace or on the line after the previous block.	fix	138	138	\n	end	8	35
@@ -36,20 +49,35 @@ directives.vue:12:1	no-var	unexpectedVar	Unexpected var, use let or const instea
 directives.vue:15:16	eslint	warning	Unused eslint-disable directive (no problems were reported from '@typescript-eslint/no-unused-vars').	fix	314	370	 	warning
 directives.vue:15:5	prefer-const	useConst	'other' is never reassigned. Use 'const' instead.	fix	299	313	const other = 4;	end	15	10
 directives.vue:16:1	eslint	warning	Unused eslint-disable directive (no problems were reported from 'no-console').	fix	371	409	 	warning
+directives.vue:18:16	vue/require-expose	requireExpose	The public properties of the component must be explicitly declared using `expose`. If the component does not have public properties, declare it empty.	suggestion	addExposeOptionForEmpty	Add the `expose` option to give an empty array.	465	465	\nexpose: [],	suggestion	addExposeOptionForAll	Add the `expose` option to declare all properties.	465	465	\nexpose: ["value", "unusedDirective"],	end	18	60
+directives.vue:18:16	vue/require-name-property	missingName	Required name property is not set.	suggestion	addName	Add name property to component.	466	466	name: 'directives',\n	end	18	60
 directives.vue:18:17	@stylistic/object-curly-spacing	unexpectedSpaceAfter	There should be no space after '{'.	fix	465	466		end	18	18
 directives.vue:18:18	@stylistic/quote-props	unquotedPropertyFound	Unquoted property 'data' found.	fix	466	470	"data"	end	18	58
 directives.vue:18:18	@typescript-eslint/explicit-function-return-type	missingReturnType	Missing return type on function.	end	18	24
 directives.vue:18:18	@typescript-eslint/explicit-module-boundary-types	missingReturnType	Missing return type on function.	end	18	24
+directives.vue:18:18	vue/component-api-style	disallowComponentOption	Options API is not allowed in your project. `data` option is part of the Options API. Use `<script setup>` or Composition API instead.	end	18	22
 directives.vue:18:32	@stylistic/object-curly-spacing	unexpectedSpaceAfter	There should be no space after '{'.	fix	480	481		end	18	33
 directives.vue:18:40	@stylistic/object-property-newline	propertiesOnNewline	Object properties must go on a new line.	fix	487	488	\n	end	18	55
+directives.vue:18:40	vue/sort-keys	sortKeys	Expected object keys to be in ascending order. 'unusedDirective' should be before 'value'.	end	18	55
 directives.vue:18:55	@stylistic/object-curly-spacing	unexpectedSpaceBefore	There should be no space before '}'.	fix	503	504		end	18	56
 directives.vue:18:58	@stylistic/object-curly-spacing	unexpectedSpaceBefore	There should be no space before '}'.	fix	506	507		end	18	59
+directives.vue:7:9	vue/block-lang	unexpected	Do not specify the 'lang' attribute of '<script>'.	end	7	18
+empty-script.vue:4:1	vue/no-empty-component-block	unexpected	`<script>` is empty. Empty block is not allowed.	fix	48	75		end	4	28
+empty-script.vue:4:1	vue/padding-line-between-blocks	always	Expected blank line before this block.	fix	47	47	\n	end	4	28
+empty-script.vue:4:9	vue/block-lang	unexpected	Do not specify the 'lang' attribute of '<script>'.	end	4	18
 line-separator.vue:2:10	no-irregular-whitespace	noIrregularWhitespace	Irregular whitespace not allowed.	end	3	1
+line-separator.vue:2:10	vue/no-irregular-whitespace	disallow	Irregular whitespace not allowed.	end	3	1
+line-separator.vue:2:6	vue/no-bare-strings-in-template	unexpected	Unexpected non-translated string used.	end	2	14
+line-separator.vue:4:1	vue/padding-line-between-blocks	always	Expected blank line before this block.	fix	40	40	\n	end	8	10
+line-separator.vue:4:9	vue/block-lang	unexpected	Do not specify the 'lang' attribute of '<script>'.	end	4	18
 line-separator.vue:6:20	@stylistic/no-trailing-spaces	trailingSpace	Trailing spaces not allowed.	fix	79	82		end	6	23
+line-separator.vue:7:16	vue/require-expose	requireExpose	The public properties of the component must be explicitly declared using `expose`. If the component does not have public properties, declare it empty.	suggestion	addExposeOptionForEmpty	Add the `expose` option to give an empty array.	118	118	\nexpose: [],	end	7	21
+line-separator.vue:7:16	vue/require-name-property	missingName	Required name property is not set.	suggestion	addName	Add name property to component.	119	119	name: 'line-separator',\n	end	7	21
 line-separator.vue:7:17	@stylistic/object-curly-spacing	unexpectedSpaceAfter	There should be no space after '{'.	fix	118	119		end	7	18
 line-separator.vue:7:19	@stylistic/object-curly-spacing	unexpectedSpaceBefore	There should be no space before '}'.	fix	120	121		end	7	20
 line-separator.vue:7:21	@stylistic/semi	missingSemi	Missing semicolon.	fix	122	122	;	end	8	1
 line-separator.vue:9:10	@stylistic/eol-last	missing	Newline required at end of file but not found.	fix	132	132	\n
+setup-generic.vue:10:18	vue/prefer-use-template-ref	preferUseTemplateRef	Replace 'ref' with 'useTemplateRef'.	end	10	52
 setup-generic.vue:11:17	@stylistic/object-curly-spacing	unexpectedSpaceAfter	There should be no space after '{'.	fix	479	480		end	11	18
 setup-generic.vue:11:18	@stylistic/quote-props	unquotedPropertyFound	Unquoted property 'mounted' found.	fix	480	487	"mounted"	end	11	58
 setup-generic.vue:11:18	@typescript-eslint/explicit-function-return-type	missingReturnType	Missing return type on function.	end	11	27
@@ -67,11 +95,20 @@ setup-generic.vue:17:3	@typescript-eslint/no-floating-promises	floatingVoid	Prom
 setup-generic.vue:17:8	@typescript-eslint/no-magic-numbers	noMagic	No magic number: 1.	end	17	9
 setup-generic.vue:18:7	@typescript-eslint/strict-boolean-expressions	conditionErrorNullableString	Unexpected nullable string value in conditional. Please handle the nullish/empty cases explicitly.	suggestion	conditionFixCompareNullish	Change condition to check for null/undefined (`value != null`)	658	663	maybe != null	suggestion	conditionFixDefaultEmptyString	Explicitly treat nullish value the same as an empty string (`value ?? ""`)	658	663	maybe ?? ""	suggestion	conditionFixCastBoolean	Explicitly convert value to a boolean (`Boolean(value)`)	658	663	Boolean(maybe)	end	18	12
 setup-generic.vue:19:10	@stylistic/quotes	wrongQuotes	Strings must use doublequote.	fix	676	684	"change"	end	19	18
+setup-generic.vue:19:10	vue/no-shadow-native-events	violation	Avoid shadowing the native event "change".	end	19	18
 setup-generic.vue:19:19	@stylistic/function-call-argument-newline	missingLineBreak	There should be a line break after this argument.	fix	685	686	\n	end	19	20
+setup-generic.vue:1:15	vue/block-lang	unexpected	Do not specify the 'lang' attribute of '<script>'.	end	1	24
 setup-generic.vue:21:14	@typescript-eslint/no-magic-numbers	noMagic	No magic number: 2.	end	21	15
 setup-generic.vue:22:10	@typescript-eslint/no-unnecessary-type-assertion	unnecessaryAssertion	This assertion is unnecessary since it does not change the type of the expression.	fix	729	734		end	22	20
 setup-generic.vue:25:15	@stylistic/object-curly-spacing	unexpectedSpaceAfter	There should be no space after '{'.	fix	753	754		end	25	16
 setup-generic.vue:25:20	@stylistic/object-curly-spacing	unexpectedSpaceBefore	There should be no space before '}'.	fix	758	759		end	25	21
+setup-generic.vue:29:21	vue/attributes-order	expectedOrder	Attribute "ref" should go before "v-focus".	fix	797	819	ref="inputRef" v-focus	end	29	35
+setup-generic.vue:29:21	vue/max-attributes-per-line	shouldBeOnNewLine	'ref' should be on a new line.	fix	804	805	\n	end	29	35
+setup-generic.vue:29:3	vue/component-name-in-template-casing	incorrectCase	Component name "my-thing" is not PascalCase.	fix	787	902	<MyThing v-focus ref="inputRef" :label="label" @click="save(props.item)">\n    {{ total }} {{ model }}\n  </MyThing	end	29	12
+setup-generic.vue:29:3	vue/restricted-component-names	invalidName	Component name "my-thing" is not allowed.	end	31	14
+setup-generic.vue:29:36	vue/max-attributes-per-line	shouldBeOnNewLine	':label' should be on a new line.	end	29	50
+setup-generic.vue:29:51	vue/max-attributes-per-line	shouldBeOnNewLine	'@click' should be on a new line.	end	29	76
+setup-generic.vue:29:59	vue/v-on-handler-style	preferMethodOverInline	Prefer method handler over inline handler in v-on.	end	29	75
 setup-generic.vue:2:15	perfectionist/sort-named-imports	unexpectedNamedImportsOrder	Expected "computed" to come before "ref".	fix	64	77	computed, ref	end	2	23
 setup-generic.vue:2:23	@stylistic/object-curly-spacing	unexpectedSpaceBefore	There should be no space before '}'.	fix	77	78		end	2	24
 setup-generic.vue:2:31	@stylistic/quotes	wrongQuotes	Strings must use doublequote.	fix	85	90	"vue"	end	2	36
@@ -85,35 +122,56 @@ setup-generic.vue:4:21	@stylistic/quotes	wrongQuotes	Strings must use doublequot
 setup-generic.vue:5:1	perfectionist/sort-imports	unexpectedImportsOrder	Expected "./both-scripts.vue" to come before "./single-script.vue".	fix	91	213	\n\nimport Unused from './both-scripts.vue';\nimport MyThing from './single-script.vue';\nimport { load, maybe } from './util';	end	5	41
 setup-generic.vue:5:20	@stylistic/quotes	wrongQuotes	Strings must use doublequote.	fix	192	212	"./both-scripts.vue"	end	5	40
 setup-generic.vue:5:8	@typescript-eslint/no-unused-vars	unusedVar	'Unused' is defined but never used.	suggestion	removeUnusedImportDeclaration	Remove unused import declaration.	173	214		end	5	14
+setup-generic.vue:7:28	vue/define-props-destructuring	preferDestructuring	Prefer destructuring from `defineProps` directly.	end	7	80
 setup-generic.vue:7:41	@stylistic/object-curly-spacing	unexpectedSpaceAfter	There should be no space after '{'.	fix	255	256		end	7	42
 setup-generic.vue:7:42	@stylistic/quote-props	unquotedPropertyFound	Unquoted property 'item' found.	fix	256	260	"item"	end	7	50
+setup-generic.vue:7:42	vue/require-prop-comment	requireJSDocComment	The "item" property should have a JSDoc comment.	end	7	50
 setup-generic.vue:7:51	@stylistic/object-property-newline	propertiesOnNewline	Object properties must go on a new line.	fix	264	265	\n	end	7	56
 setup-generic.vue:7:51	@stylistic/quote-props	unquotedPropertyFound	Unquoted property 'other' found.	fix	265	270	"other"	end	7	61
+setup-generic.vue:7:51	vue/no-unused-properties	unused	'other' of property found, but never used.	end	7	56
+setup-generic.vue:7:51	vue/require-default-prop	missingDefault	Prop 'other' requires default value to be set.	end	7	61
+setup-generic.vue:7:51	vue/require-prop-comment	requireJSDocComment	The "other" property should have a JSDoc comment.	end	7	61
 setup-generic.vue:7:62	@stylistic/object-property-newline	propertiesOnNewline	Object properties must go on a new line.	fix	275	276	\n	end	7	66
 setup-generic.vue:7:62	@stylistic/quote-props	unquotedPropertyFound	Unquoted property 'size' found.	fix	276	280	"size"	end	7	75
+setup-generic.vue:7:62	vue/require-prop-comment	requireJSDocComment	The "size" property should have a JSDoc comment.	end	7	75
 setup-generic.vue:7:75	@stylistic/object-curly-spacing	unexpectedSpaceBefore	There should be no space before '}'.	fix	289	290		end	7	76
 setup-generic.vue:7:81	@stylistic/function-call-argument-newline	missingLineBreak	There should be a line break after this argument.	fix	295	296	\n	end	7	82
+setup-generic.vue:7:81	vue/max-len	max	This line has a length of 94. Maximum allowed is 80.	end	7	95
 setup-generic.vue:7:83	@stylistic/object-curly-spacing	unexpectedSpaceAfter	There should be no space after '{'.	fix	297	298		end	7	84
 setup-generic.vue:7:84	@stylistic/quote-props	unquotedPropertyFound	Unquoted property 'size' found.	fix	298	302	"size"	end	7	91
 setup-generic.vue:7:91	@stylistic/object-curly-spacing	unexpectedSpaceBefore	There should be no space before '}'.	fix	305	306		end	7	92
 setup-generic.vue:8:27	@stylistic/object-curly-spacing	unexpectedSpaceAfter	There should be no space after '{'.	fix	336	337		end	8	28
 setup-generic.vue:8:28	@typescript-eslint/prefer-function-type	functionTypeOverCallableType	Type literal only has a call signature, you should use a function type instead.	fix	335	368	(e: 'change', value: T) => void	end	8	57
+setup-generic.vue:8:28	vue/no-shadow-native-events	violation	Avoid shadowing the native event "change".	end	8	57
 setup-generic.vue:8:32	@stylistic/quotes	wrongQuotes	Strings must use doublequote.	fix	341	349	"change"	end	8	40
 setup-generic.vue:8:57	@stylistic/object-curly-spacing	unexpectedSpaceBefore	There should be no space before '}'.	fix	366	367		end	8	58
+setup-only-macros.vue:11:26	vue/singleline-html-element-content-newline	unexpectedAfterClosingBracket	Expected 1 line break after opening tag (`<button>`), but no line breaks found.	fix	232	232	\n	end	11	26
+setup-only-macros.vue:11:3	vue/html-button-has-type	missingTypeAttribute	Missing an explicit type attribute for button.	end	11	26
+setup-only-macros.vue:11:37	vue/singleline-html-element-content-newline	unexpectedBeforeOpeningBracket	Expected 1 line break before closing tag (`</button>`), but no line breaks found.	fix	243	243	\n	end	11	37
+setup-only-macros.vue:1:15	vue/block-lang	unexpected	Do not specify the 'lang' attribute of '<script>'.	end	1	24
+setup-only-macros.vue:2:15	vue/define-props-destructuring	preferDestructuring	Prefer destructuring from `defineProps` directly.	end	2	63
 setup-only-macros.vue:2:28	@stylistic/object-curly-spacing	unexpectedSpaceAfter	There should be no space after '{'.	fix	52	53		end	2	29
 setup-only-macros.vue:2:29	@stylistic/quote-props	unquotedPropertyFound	Unquoted property 'title' found.	fix	53	58	"title"	end	2	43
+setup-only-macros.vue:2:29	vue/require-prop-comment	requireJSDocComment	The "title" property should have a JSDoc comment.	end	2	43
 setup-only-macros.vue:2:44	@stylistic/object-property-newline	propertiesOnNewline	Object properties must go on a new line.	fix	67	68	\n	end	2	49
 setup-only-macros.vue:2:44	@stylistic/quote-props	unquotedPropertyFound	Unquoted property 'count' found.	fix	68	73	"count"	end	2	58
+setup-only-macros.vue:2:44	vue/no-unused-properties	unused	'count' of property found, but never used.	end	2	49
+setup-only-macros.vue:2:44	vue/require-prop-comment	requireJSDocComment	The "count" property should have a JSDoc comment.	end	2	58
 setup-only-macros.vue:2:58	@stylistic/object-curly-spacing	unexpectedSpaceBefore	There should be no space before '}'.	fix	82	83		end	2	59
 setup-only-macros.vue:2:63	@stylistic/semi	missingSemi	Missing semicolon.	fix	87	87	;	end	3	1
+setup-only-macros.vue:3:14	vue/define-emits-declaration	hasArg	Use type based declaration instead of runtime declaration.	end	3	36
 setup-only-macros.vue:3:27	@stylistic/quotes	wrongQuotes	Strings must use doublequote.	fix	114	121	"close"	end	3	34
+setup-only-macros.vue:3:27	vue/require-emit-validator	missing	Emit "close" should define at least its validator function.	end	3	34
 setup-only-macros.vue:3:36	@stylistic/semi	missingSemi	Missing semicolon.	fix	123	123	;	end	4	1
+setup-only-macros.vue:4:13	vue/no-setup-props-reactivity-loss	getProperty	Getting a value from the `props` in root scope of `<script setup>` will cause the value to lose reactivity.	end	4	18
 setup-only-macros.vue:4:24	@stylistic/semi	missingSemi	Missing semicolon.	fix	147	147	;	end	5	1
 setup-only-macros.vue:4:5	prefer-const	useConst	'local' is never reassigned. Use 'const' instead.	fix	124	147	const local = props.title	end	4	10
 setup-only-macros.vue:5:1	@typescript-eslint/explicit-function-return-type	missingReturnType	Missing return type on function.	end	5	15
 setup-only-macros.vue:5:15	@stylistic/space-before-function-paren	missingSpace	Missing space before function parentheses.	fix	162	162	 	end	5	16
 setup-only-macros.vue:6:16	@stylistic/semi	missingSemi	Missing semicolon.	fix	182	182	;	end	7	1
 setup-only-macros.vue:6:8	@stylistic/quotes	wrongQuotes	Strings must use doublequote.	fix	174	181	"close"	end	6	15
+single-script.vue:4:1	vue/padding-line-between-blocks	always	Expected blank line before this block.	fix	41	41	\n	end	9	10
+single-script.vue:4:9	vue/block-lang	unexpected	Do not specify the 'lang' attribute of '<script>'.	end	4	18
 single-script.vue:5:1	@typescript-eslint/promise-function-async	missingAsync	Functions that return promises must be async.	fix	61	61	async 	end	5	15
 single-script.vue:5:15	@stylistic/space-before-function-paren	missingSpace	Missing space before function parentheses.	fix	75	75	 	end	5	16
 single-script.vue:5:35	@stylistic/brace-style	blockSameLine	Statement inside of curly braces should be on next line.	fix	96	96	\n	end	5	36
@@ -123,9 +181,12 @@ single-script.vue:6:20	@stylistic/no-trailing-spaces	trailingSpace	Trailing spac
 single-script.vue:6:20	@stylistic/semi	missingSemi	Missing semicolon.	fix	145	145	;	end	6	21
 single-script.vue:7:1	@typescript-eslint/no-floating-promises	floatingVoid	Promises must be awaited, end with a call to .catch, end with a call to .then with a rejection handler or be explicitly marked as ignored with the `void` operator.	suggestion	floatingFixVoid	Add void operator to ignore.	149	149	void 	suggestion	floatingFixAwait	Add await operator.	149	149	await 	end	7	8
 single-script.vue:7:8	@stylistic/semi	missingSemi	Missing semicolon.	fix	156	156	;	end	8	1
+single-script.vue:8:16	vue/require-expose	requireExpose	The public properties of the component must be explicitly declared using `expose`. If the component does not have public properties, declare it empty.	suggestion	addExposeOptionForEmpty	Add the `expose` option to give an empty array.	173	173	\nexpose: [],	suggestion	addExposeOptionForAll	Add the `expose` option to declare all properties.	173	173	\nexpose: ["msg"],	end	8	45
+single-script.vue:8:16	vue/require-name-property	missingName	Required name property is not set.	suggestion	addName	Add name property to component.	174	174	name: 'single-script',\n	end	8	45
 single-script.vue:8:17	@stylistic/object-curly-spacing	unexpectedSpaceAfter	There should be no space after '{'.	fix	173	174		end	8	18
 single-script.vue:8:18	@typescript-eslint/explicit-function-return-type	missingReturnType	Missing return type on function.	end	8	22
 single-script.vue:8:18	@typescript-eslint/explicit-module-boundary-types	missingReturnType	Missing return type on function.	end	8	22
+single-script.vue:8:18	vue/component-api-style	disallowComponentOption	Options API is not allowed in your project. `data` option is part of the Options API. Use `<script setup>` or Composition API instead.	end	8	22
 single-script.vue:8:22	@stylistic/space-before-function-paren	missingSpace	Missing space before function parentheses.	fix	178	178	 	end	8	23
 single-script.vue:8:25	@stylistic/brace-style	blockSameLine	Statement inside of curly braces should be on next line.	fix	182	182	\n	end	8	26
 single-script.vue:8:35	@stylistic/object-curly-spacing	unexpectedSpaceAfter	There should be no space after '{'.	fix	191	192		end	8	36
@@ -135,10 +196,15 @@ single-script.vue:8:42	@stylistic/brace-style	singleLineClose	Closing curly brac
 single-script.vue:8:43	@stylistic/object-curly-spacing	unexpectedSpaceBefore	There should be no space before '}'.	fix	199	200		end	8	44
 single-script.vue:8:45	@stylistic/semi	missingSemi	Missing semicolon.	fix	201	201	;	end	9	1
 template-only.vue:2:20	@stylistic/no-trailing-spaces	trailingSpace	Trailing spaces not allowed.	fix	30	33		end	2	23
+tsx-lang.vue:1:9	vue/block-lang	unexpected	Do not specify the 'lang' attribute of '<script>'.	end	1	19
+tsx-lang.vue:2:16	vue/require-expose	requireExpose	The public properties of the component must be explicitly declared using `expose`. If the component does not have public properties, declare it empty.	suggestion	addExposeOptionForEmpty	Add the `expose` option to give an empty array.	50	50	,\nexpose: []	end	8	2
 tsx-lang.vue:3:3	@stylistic/quote-props	unquotedPropertyFound	Unquoted property 'name' found.	fix	39	43	"name"	end	3	14
 tsx-lang.vue:3:9	@stylistic/quotes	wrongQuotes	Strings must use doublequote.	fix	45	50	"Tsx"	end	3	14
+tsx-lang.vue:3:9	vue/multi-word-component-names	unexpected	Component name "Tsx" should always be multi-word.	end	3	14
 tsx-lang.vue:4:3	@typescript-eslint/explicit-function-return-type	missingReturnType	Missing return type on function.	end	4	9
 tsx-lang.vue:4:3	@typescript-eslint/explicit-module-boundary-types	missingReturnType	Missing return type on function.	end	4	9
+tsx-lang.vue:4:3	vue/component-api-style	disallowComponentOption	Options API is not allowed in your project. `render` function is part of the Options API. Use `<script setup>` or Composition API instead.	end	4	9
+tsx-lang.vue:4:3	vue/padding-lines-in-component-definition	always	Expected blank line before this definition.	fix	51	51	\n	end	7	4
 tsx-lang.vue:4:9	@stylistic/space-before-function-paren	missingSpace	Missing space before function parentheses.	fix	60	60	 	end	4	10
 tsx-lang.vue:5:11	@typescript-eslint/no-inferrable-types	noInferrableType	Type number trivially inferred from a number literal, remove type annotation.	fix	81	89		end	5	30
 tsx-lang.vue:5:30	@stylistic/semi	missingSemi	Missing semicolon.	fix	94	94	;	end	6	1
@@ -154,9 +220,13 @@ types.vue:11:22	@stylistic/quotes	wrongQuotes	Strings must use doublequote.	fix	
 types.vue:11:9	@stylistic/object-curly-spacing	unexpectedSpaceAfter	There should be no space after '{'.	fix	199	200		end	11	10
 types.vue:14:23	@stylistic/quotes	wrongQuotes	Strings must use doublequote.	fix	278	281	"x"	end	14	26
 types.vue:14:7	@typescript-eslint/no-inferrable-types	noInferrableType	Type string trivially inferred from a string literal, remove type annotation.	fix	267	275		end	14	26
+types.vue:16:3	vue/no-ref-object-reactivity-loss	getValueInSameScope	Getting a value from the ref object in the same scope will cause the value to lose reactivity.	end	16	8
 types.vue:19:3	require-atomic-updates	nonAtomicObjectUpdate	Possible race condition: `items.value` might be assigned based on an outdated state of `items`.	end	19	48
+types.vue:1:1	vue/multi-word-component-names	unexpected	Component name "types" should always be multi-word.
+types.vue:1:9	vue/block-lang	unexpected	Do not specify the 'lang' attribute of '<script>'.	end	1	18
 types.vue:21:38	@typescript-eslint/no-magic-numbers	noMagic	No magic number: 1.	end	21	39
 types.vue:22:14	@stylistic/multiline-ternary	expectedTestCons	Expected newline between test and consequent of ternary expression.	fix	478	479	\n	end	22	36
+types.vue:22:14	vue/no-ref-object-reactivity-loss	getValueInSameScope	Getting a value from the ref object in the same scope will cause the value to lose reactivity.	end	22	19
 types.vue:22:35	@typescript-eslint/no-magic-numbers	noMagic	No magic number: 0.	end	22	36
 types.vue:22:39	@stylistic/multiline-ternary	expectedConsAlt	Expected newline between consequent and alternate of ternary expression.	fix	485	486	\n	end	22	43
 types.vue:23:16	@typescript-eslint/no-misused-promises	voidReturnArgument	Promise returned in function argument where a void return was expected.	end	25	2
@@ -165,15 +235,26 @@ types.vue:23:26	@typescript-eslint/strict-void-return	asyncFunc	Async function u
 types.vue:23:5	@typescript-eslint/no-magic-numbers	noMagic	No magic number: 2.	end	23	6
 types.vue:23:8	unicorn/no-for-each	no-for-each/error	Use `for…of` instead of `.forEach(…)`.	end	23	15
 types.vue:26:1	@typescript-eslint/no-useless-empty-export	uselessExport	Empty export does nothing and can be removed.	fix	555	564		end	26	10
+types.vue:26:1	vue/no-export-in-script-setup	forbidden	`<script setup>` cannot contain ES module exports.	end	26	10
 types.vue:26:10	@stylistic/semi	missingSemi	Missing semicolon.	fix	564	564	;	end	27	1
 types.vue:26:8	unicorn/require-module-specifiers	error	export statement without specifiers is not allowed.	fix	555	564		end	26	10
 types.vue:2:15	@stylistic/object-curly-spacing	unexpectedSpaceBefore	There should be no space before '}'.	fix	33	34		end	2	16
 types.vue:2:23	@stylistic/quotes	wrongQuotes	Strings must use doublequote.	fix	41	49	"./util"	end	2	31
 types.vue:2:9	@stylistic/object-curly-spacing	unexpectedSpaceAfter	There should be no space after '{'.	fix	27	28		end	2	10
+types.vue:30:33	vue/max-attributes-per-line	shouldBeOnNewLine	':key' should be on a new line.	fix	618	619	\n	end	30	44
+types.vue:30:45	vue/singleline-html-element-content-newline	unexpectedAfterClosingBracket	Expected 1 line break after opening tag (`<li>`), but no line breaks found.	fix	631	631	\n	end	30	45
+types.vue:30:66	vue/singleline-html-element-content-newline	unexpectedBeforeOpeningBracket	Expected 1 line break before closing tag (`</li>`), but no line breaks found.	fix	652	652	\n	end	30	66
 types.vue:4:21	@stylistic/space-before-function-paren	missingSpace	Missing space before function parentheses.	fix	72	72	 	end	4	22
 types.vue:4:22	@typescript-eslint/prefer-readonly-parameter-types	shouldBeReadonly	Parameter should be a read only type.	end	4	37
 types.vue:4:8	@typescript-eslint/explicit-function-return-type	missingReturnType	Missing return type on function.	end	4	21
 types.vue:4:8	@typescript-eslint/explicit-module-boundary-types	missingReturnType	Missing return type on function.	end	4	21
+types.vue:9:15	vue/block-lang	unexpected	Do not specify the 'lang' attribute of '<script>'.	end	9	24
+unicode.vue:1:1	vue/multi-word-component-names	unexpected	Component name "unicode" should always be multi-word.
+unicode.vue:2:13	vue/no-bare-strings-in-template	unexpectedInAttr	Unexpected non-translated string used in `title`.	end	2	23
+unicode.vue:2:24	vue/no-bare-strings-in-template	unexpected	Unexpected non-translated string used.	end	2	36
+unicode.vue:2:24	vue/singleline-html-element-content-newline	unexpectedAfterClosingBracket	Expected 1 line break after opening tag (`<h1>`), but no line breaks found.	fix	34	34	\n	end	2	24
+unicode.vue:2:50	vue/singleline-html-element-content-newline	unexpectedBeforeOpeningBracket	Expected 1 line break before closing tag (`</h1>`), but no line breaks found.	fix	60	60	\n	end	2	50
+unicode.vue:5:15	vue/block-lang	unexpected	Do not specify the 'lang' attribute of '<script>'.	end	5	24
 unicode.vue:6:18	@stylistic/quotes	wrongQuotes	Strings must use doublequote.	fix	121	131	"héllo 🎉"	end	6	28
 unicode.vue:6:29	no-useless-concat	unexpectedConcat	Unexpected string concatenation of literals.	end	6	30
 unicode.vue:6:38	@stylistic/semi	missingSemi	Missing semicolon.	fix	141	141	;	end	7	1
@@ -185,11 +266,16 @@ unicode.vue:8:7	@typescript-eslint/no-unused-vars	unusedVar	're' is assigned a v
 unicorn-not-typescript.vue:10:29	@stylistic/function-call-argument-newline	missingLineBreak	There should be a line break after this argument.	fix	218	219	\n	end	10	30
 unicorn-not-typescript.vue:12:1	@typescript-eslint/explicit-function-return-type	missingReturnType	Missing return type on function.	end	12	14
 unicorn-not-typescript.vue:12:14	@stylistic/space-before-function-paren	missingSpace	Missing space before function parentheses.	fix	245	245	 	end	12	15
+unicorn-not-typescript.vue:14:1	vue/script-indent	error	Expected indentation of 2 spaces but found 4 spaces.	fix	292	296	  	end	14	5
 unicorn-not-typescript.vue:14:5	unicorn/no-useless-switch-case	no-useless-switch-case/error	Useless case in switch statement.	suggestion	no-useless-switch-case/suggestion	Remove this case.	296	311		end	14	20
+unicorn-not-typescript.vue:15:1	vue/script-indent	error	Expected indentation of 2 spaces but found 4 spaces.	fix	312	316	  	end	15	5
 unicorn-not-typescript.vue:15:10	@stylistic/quotes	wrongQuotes	Strings must use doublequote.	fix	321	324	"a"	end	15	13
 unicorn-not-typescript.vue:15:10	perfectionist/sort-switch-case	unexpectedSwitchCaseOrder	Expected "a" to come before "undefined".	fix	301	324	'a':\n    case undefined	end	15	13
 unicorn-not-typescript.vue:15:5	unicorn/no-useless-switch-case	no-useless-switch-case/error	Useless case in switch statement.	suggestion	no-useless-switch-case/suggestion	Remove this case.	316	325		end	15	14
+unicorn-not-typescript.vue:16:1	vue/script-indent	error	Expected indentation of 2 spaces but found 4 spaces.	fix	326	330	  	end	16	5
 unicorn-not-typescript.vue:16:5	unicorn/switch-case-braces	switch-case-braces/missing	Missing braces in case clause.	fix	338	381	 {\n      return copy.length + bound().length;\n    }	end	16	13
+unicorn-not-typescript.vue:17:1	vue/script-indent	error	Expected indentation of 4 spaces but found 6 spaces.	fix	339	345	    	end	17	7
+unicorn-not-typescript.vue:1:15	vue/block-lang	unexpected	Do not specify the 'lang' attribute of '<script>'.	end	1	24
 unicorn-not-typescript.vue:21:6	@stylistic/quotes	wrongQuotes	Strings must use doublequote.	fix	394	397	"a"	end	21	9
 unicorn-not-typescript.vue:2:1	@typescript-eslint/explicit-function-return-type	missingReturnType	Missing return type on function.	end	2	13
 unicorn-not-typescript.vue:2:13	@stylistic/space-before-function-paren	missingSpace	Missing space before function parentheses.	fix	37	37	 	end	2	14

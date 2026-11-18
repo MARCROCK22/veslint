@@ -6,7 +6,7 @@
 const text = "crlf";
 export default {
   data () {
- return {text: text};
-}
+    return {text: text};
+  }
 };
 </script>
