@@ -1,5 +1,7 @@
 <script lang="ts">
-  let count = $state(1);
+  // A rune's name (here a key) would put the file in runes mode without the config.
+  const names = { $state: 1 };
+  let count = names.$state;
 </script>
 
 {#if count}
