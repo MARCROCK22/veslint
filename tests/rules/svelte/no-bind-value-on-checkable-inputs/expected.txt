@@ -1,0 +1,8 @@
+tests/rules/svelte/no-bind-value-on-checkable-inputs/cases.svelte:13:20	svelte/no-bind-value-on-checkable-inputs	checkboxValueBinding	`bind:value` does not work on checkbox inputs. Did you mean `bind:checked` or `bind:group`?
+tests/rules/svelte/no-bind-value-on-checkable-inputs/cases.svelte:14:21	svelte/no-bind-value-on-checkable-inputs	radioValueBinding	`bind:value` does not work on radio inputs. Did you mean `bind:group`?
+tests/rules/svelte/no-bind-value-on-checkable-inputs/cases.svelte:16:29	svelte/no-bind-value-on-checkable-inputs	checkboxValueBinding	`bind:value` does not work on checkbox inputs. Did you mean `bind:checked` or `bind:group`?
+tests/rules/svelte/no-bind-value-on-checkable-inputs/cases.svelte:17:29	svelte/no-bind-value-on-checkable-inputs	checkboxValueBinding	`bind:value` does not work on checkbox inputs. Did you mean `bind:checked` or `bind:group`?
+tests/rules/svelte/no-bind-value-on-checkable-inputs/cases.svelte:22:21	svelte/no-bind-value-on-checkable-inputs	radioValueBinding	`bind:value` does not work on radio inputs. Did you mean `bind:group`?
+tests/rules/svelte/no-bind-value-on-checkable-inputs/cases.svelte:23:8	svelte/no-bind-value-on-checkable-inputs	checkboxValueBinding	`bind:value` does not work on checkbox inputs. Did you mean `bind:checked` or `bind:group`?
+tests/rules/svelte/no-bind-value-on-checkable-inputs/cases.svelte:29:18	svelte/no-bind-value-on-checkable-inputs	radioValueBinding	`bind:value` does not work on radio inputs. Did you mean `bind:group`?
+tests/rules/svelte/no-bind-value-on-checkable-inputs/cases.svelte:31:32	svelte/no-bind-value-on-checkable-inputs	checkboxValueBinding	`bind:value` does not work on checkbox inputs. Did you mean `bind:checked` or `bind:group`?

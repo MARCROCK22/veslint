@@ -764,6 +764,7 @@ const rule_option_schemas = {
 	'svelte/experimental-require-strict-events':                       '{"type":"array","minItems":0,"maxItems":0}'
 	'svelte/sort-attributes':                                          '{"type":"array","items":[{"type":"object","properties":{"order":{"type":"array","items":{"anyOf":[{"type":"string"},{"type":"array","items":{"type":"string"},"uniqueItems":true,"minItems":1},{"type":"object","properties":{"match":{"anyOf":[{"type":"string"},{"type":"array","items":{"type":"string"},"uniqueItems":true,"minItems":1}]},"sort":{"enum":["alphabetical","ignore"]}},"required":["match","sort"],"additionalProperties":false}]},"uniqueItems":true,"additionalItems":false},"alphabetical":{"type":"boolean"}},"additionalProperties":false}],"minItems":0,"maxItems":1}'
 	'svelte/max-lines-per-block':                                      '{"type":"array","items":[{"type":"object","properties":{"script":{"type":"integer","minimum":1},"template":{"type":"integer","minimum":1},"style":{"type":"integer","minimum":1},"skipBlankLines":{"type":"boolean"},"skipComments":{"type":"boolean"}},"additionalProperties":false}],"minItems":0,"maxItems":1}'
+	'svelte/no-bind-value-on-checkable-inputs':                        '{"type":"array","minItems":0,"maxItems":0}'
 }
 
 // eslint_rule_default_options are the meta.defaultOptions of the rules of ESLint and of
