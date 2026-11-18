@@ -28,7 +28,7 @@ struct VrcoOption {
 fn vue_no_restricted_component_options_options(options []json2.Any) ![]VrcoOption {
 	mut out := []VrcoOption{}
 	for option in options {
-		mut names := []string{}
+		mut name_list := []string{}
 		mut message := ''
 		mut name_value := option
 		if option is map[string]json2.Any {
@@ -40,19 +40,19 @@ fn vue_no_restricted_component_options_options(options []json2.Any) ![]VrcoOptio
 			}
 		}
 		if name_value is string {
-			names << name_value
+			name_list << name_value
 		} else if name_value is []json2.Any {
 			for n in name_value {
 				if n !is string {
 					return error('a name of `${vue_no_restricted_component_options}` must be a string')
 				}
-				names << n as string
+				name_list << n as string
 			}
 		} else {
 			return error('an option of `${vue_no_restricted_component_options}` must be a string, a list or an object')
 		}
 		mut steps := []VrcoStep{}
-		for name in names {
+		for name in name_list {
 			if name == '*' {
 				steps << VrcoStep{
 					wildcard: true

@@ -6,3 +6,7 @@ tests/rules/vue/html-comment-content-spacing/exceptions/cases.vue:4:9	vue/html-c
 tests/rules/vue/html-comment-content-spacing/exceptions/cases.vue:4:16	vue/html-comment-content-spacing	expectedBeforeExceptionBlock	Expected space before exception block.
 tests/rules/vue/html-comment-content-spacing/never/cases.vue:2:7	vue/html-comment-content-spacing	unexpectedAfterHTMLCommentOpen	Unexpected space after '<!--'.
 tests/rules/vue/html-comment-content-spacing/never/cases.vue:2:15	vue/html-comment-content-spacing	unexpectedBeforeHTMLCommentOpen	Unexpected space before '-->'.
+tests/rules/vue/html-comment-content-spacing/outside/cases.vue:1:5	vue/html-comment-content-spacing	expectedAfterHTMLCommentOpen	Expected space after '<!--'.
+tests/rules/vue/html-comment-content-spacing/outside/cases.vue:1:16	vue/html-comment-content-spacing	expectedBeforeHTMLCommentOpen	Expected space before '-->'.
+tests/rules/vue/html-comment-content-spacing/outside/cases.vue:11:5	vue/html-comment-content-spacing	expectedAfterHTMLCommentOpen	Expected space after '<!--'.
+tests/rules/vue/html-comment-content-spacing/outside/cases.vue:11:8	vue/html-comment-content-spacing	expectedBeforeHTMLCommentOpen	Expected space before '-->'.

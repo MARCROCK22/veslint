@@ -393,7 +393,7 @@ fn (mut c Checker) lint_vue_prefer_import_from_vue(root C.TSNode, abs_path strin
 					continue
 				}
 				only_named := specifiers.all(t.typ(it) == .import_specifier)
-				names := if only_named {
+				name_list := if only_named {
 					specifiers.map(vpifv_module_export_name(t, t.node(it, .imported) or { -1 }))
 				} else {
 					[]string{}
@@ -412,15 +412,15 @@ fn (mut c Checker) lint_vue_prefer_import_from_vue(root C.TSNode, abs_path strin
 						break
 					}
 				}
-				c.vpifv_verify(t, t.node(node, .source) or { continue }, fixable, names, mut findings)
+				c.vpifv_verify(t, t.node(node, .source) or { continue }, fixable, name_list, mut findings)
 			}
 			.export_named_declaration {
 				source := t.node(node, .source) or { continue }
 				stats.checked++
 				specifiers := t.list(node, .specifiers) or { []int{} }
-				names := specifiers.map(vpifv_module_export_name(t, t.node(it, .local) or { -1 }))
-				fixable := names.all(it in vpifv_vue3_export_names)
-				c.vpifv_verify(t, source, fixable, names, mut findings)
+				name_list := specifiers.map(vpifv_module_export_name(t, t.node(it, .local) or { -1 }))
+				fixable := name_list.all(it in vpifv_vue3_export_names)
+				c.vpifv_verify(t, source, fixable, name_list, mut findings)
 			}
 			.export_all_declaration {
 				source := t.node(node, .source) or { continue }
@@ -443,14 +443,14 @@ fn vpifv_module_export_name(t &estree.EsTree, node int) string {
 	return t.string_of(node, .name) or { '' }
 }
 
-fn (c &Checker) vpifv_verify(t &estree.EsTree, source int, fixable bool, names []string, mut findings []Finding) {
+fn (c &Checker) vpifv_verify(t &estree.EsTree, source int, fixable bool, name_list []string, mut findings []Finding) {
 	value := t.get(source, .value)
 	if value !is string {
 		return
 	}
 	module := value as string
 	if module !in vpifv_target_modules
-		|| (names.len > 0 && names.all(it !in vpifv_vue3_export_names)) {
+		|| (name_list.len > 0 && name_list.all(it !in vpifv_vue3_export_names)) {
 		return
 	}
 	finding := Finding{

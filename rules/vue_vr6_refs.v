@@ -351,14 +351,14 @@ struct Vx6rNamedNest {
 // vx6r_merge orders the nest nodes by the first appearance of their names (a merged
 // allProperties), then by reference.
 fn vx6r_merge(named []Vx6rNamedNest) []Vx6rNest {
-	mut names := []string{}
+	mut name_list := []string{}
 	for n in named {
-		if n.name !in names {
-			names << n.name
+		if n.name !in name_list {
+			name_list << n.name
 		}
 	}
 	mut out := []Vx6rNest{}
-	for name in names {
+	for name in name_list {
 		for n in named {
 			if n.name == name {
 				out << n.nest

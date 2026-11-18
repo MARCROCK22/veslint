@@ -216,8 +216,8 @@ fn (mut c Checker) vre_suggestions(root C.TSNode, t &estree.EsTree, object int) 
 		}
 	}
 	if all.len > 0 {
-		names := all.map(js_json_stringify(json2.Any(it.name))).join(', ')
-		if fix := build('expose: [${names}]') {
+		name_list := all.map(js_json_stringify(json2.Any(it.name))).join(', ')
+		if fix := build('expose: [${name_list}]') {
 			ok, suggestion := c.suggestion('addExposeOptionForAll', {}, [fix])!
 			if ok {
 				out << suggestion

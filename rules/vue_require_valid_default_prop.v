@@ -236,13 +236,13 @@ fn (mut c Checker) vrvdp_process(t &estree.EsTree, props []VrvdpProp, others map
 		if defaults.len == 0 {
 			continue
 		}
-		mut names := []string{}
+		mut name_list := []string{}
 		for name in type_list {
-			if name in vrvdp_native_types && name !in names {
-				names << name
+			if name in vrvdp_native_types && name !in name_list {
+				name_list << name
 			}
 		}
-		if names.len == 0 {
+		if name_list.len == 0 {
 			continue
 		}
 		for d in defaults {
@@ -251,36 +251,36 @@ fn (mut c Checker) vrvdp_process(t &estree.EsTree, props []VrvdpProp, others map
 				continue
 			}
 			if value.function {
-				if 'Function' in names {
+				if 'Function' in name_list {
 					continue
 				}
 				if d.src == 'assignment' {
-					c.vrvdp_report(t, d.expression, prop, names, mut findings)
+					c.vrvdp_report(t, d.expression, prop, name_list, mut findings)
 					continue
 				}
 				if value.expression {
-					if value.return_type == '' || value.return_type in names {
+					if value.return_type == '' || value.return_type in name_list {
 						continue
 					}
-					c.vrvdp_report(t, value.body, prop, names, mut findings)
+					c.vrvdp_report(t, value.body, prop, name_list, mut findings)
 				} else {
 					contexts << VrvdpContext{
 						prop:     prop
-						types:    names
+						types:    name_list
 						body:     value.body
 						function: vue_skip_chain(t, d.expression)
 					}
 				}
 				continue
 			}
-			if value.typ in names
+			if value.typ in name_list
 				&& (d.src == 'assignment' || value.typ !in vrvdp_function_value_types) {
 				continue
 			}
 			expected := if d.src == 'assignment' {
-				names
+				name_list
 			} else {
-				names.map(if it in vrvdp_function_value_types { 'Function' } else { it })
+				name_list.map(if it in vrvdp_function_value_types { 'Function' } else { it })
 			}
 			c.vrvdp_report(t, d.expression, prop, expected, mut findings)
 		}

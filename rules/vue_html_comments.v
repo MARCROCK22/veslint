@@ -129,7 +129,7 @@ fn (c &Checker) vhc_parse(start int, end int, exceptions []string) ?VhcComment {
 	}
 }
 
-// vhc_comments is defineVisitor: the parsed HTML comments of the template (without the
+// vhc_comments is defineVisitor: the parsed HTML comments of the file (without the
 // `eslint-disable`/`eslint-enable` directives unless `include_directives`, never the IE
 // conditional comments); none for a file without a template or with an invalid end.
 fn (c &Checker) vhc_comments(exceptions []string, include_directives bool) []VhcComment {
@@ -138,14 +138,13 @@ fn (c &Checker) vhc_comments(exceptions []string, include_directives bool) []Vhc
 		return out
 	}
 	doc := c.vue.doc
-	body := doc.template_body
-	if body < 0 {
+	if doc.template_body < 0 {
 		return out
 	}
-	body_start := doc.nodes[body].start
-	body_end := doc.nodes[body].end
+	// templateBody.comments is the document's array: every HTML comment of the file, also the ones
+	// outside the <template>.
 	for comment in doc.comments {
-		if comment.typ != 'HTMLComment' || comment.start < body_start || comment.end > body_end {
+		if comment.typ != 'HTMLComment' {
 			continue
 		}
 		value := comment.value
