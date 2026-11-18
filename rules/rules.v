@@ -682,6 +682,7 @@ pub const vue_no_setup_props_reactivity_loss = 'vue/no-setup-props-reactivity-lo
 pub const vue_require_expose = 'vue/require-expose'
 pub const vue_no_side_effects_in_computed_properties = 'vue/no-side-effects-in-computed-properties'
 pub const vue_no_async_in_computed_properties = 'vue/no-async-in-computed-properties'
+pub const vue_no_dupe_keys = 'vue/no-dupe-keys'
 pub const names = [no_floating_promises, await_thenable, require_await, return_await,
 	no_misused_promises, no_unsafe_call, no_unsafe_member_access, no_unsafe_return,
 	no_unsafe_assignment, no_unsafe_argument, restrict_template_expressions,
@@ -880,7 +881,7 @@ pub const names = [no_floating_promises, await_thenable, require_await, return_a
 	vue_no_required_prop_with_default, vue_require_default_prop, vue_require_valid_default_prop,
 	vue_no_restricted_props, vue_require_typed_ref, vue_no_ref_as_operand,
 	vue_no_ref_object_reactivity_loss, vue_no_setup_props_reactivity_loss, vue_require_expose,
-	vue_no_side_effects_in_computed_properties, vue_no_async_in_computed_properties]
+	vue_no_side_effects_in_computed_properties, vue_no_async_in_computed_properties, vue_no_dupe_keys]
 
 // untyped_rules are the ported rules that need no types (`meta.docs.requiresTypeChecking` is false
 // in typescript-eslint; the eslint-plugin-unicorn rules that read the types when the parser has a
@@ -1724,6 +1725,7 @@ pub const default_options = {
 	vue_require_expose:                              '[]'
 	vue_no_side_effects_in_computed_properties:      '[]'
 	vue_no_async_in_computed_properties:             '[]'
+	vue_no_dupe_keys:                                '[]'
 }
 
 // Finding is a problem a rule found at a node.
@@ -2559,6 +2561,7 @@ pub fn message(rule string, finding Finding) string {
 			vue_no_side_effects_in_computed_properties_messages
 		}
 		vue_no_async_in_computed_properties { vue_no_async_in_computed_properties_messages }
+		vue_no_dupe_keys { vue_no_dupe_keys_messages }
 		else { map[string]string{} }
 	}
 	return interpolate(messages[finding.message_id] or { finding.message_id }, finding.data)
@@ -4714,6 +4717,9 @@ fn (mut c Checker) lint_rule(rule string, root C.TSNode, abs_path string, mut st
 		}
 		vue_no_async_in_computed_properties {
 			return c.lint_vue_no_async_in_computed_properties(root, abs_path, mut stats)!
+		}
+		vue_no_dupe_keys {
+			return c.lint_vue_no_dupe_keys(root, abs_path, mut stats)!
 		}
 		else { return error('unknown rule: ${rule}') }
 	}

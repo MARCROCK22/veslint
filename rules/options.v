@@ -328,6 +328,7 @@ pub fn check_options(rule string, options []json2.Any) !bool {
 		vue_no_async_in_computed_properties {
 			vue_no_async_in_computed_properties_options(options)!
 		}
+		vue_no_dupe_keys { vue_no_dupe_keys_options(options)! }
 		else { return false }
 	}
 	return true
