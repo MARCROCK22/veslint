@@ -1147,13 +1147,14 @@ fn (mut c Checker) es_declared_variables(root C.TSNode, n C.TSNode) []int {
 }
 
 // es_modifying_references ports getModifyingReferences: the writes that are not the initializer,
-// one per identifier (a destructuring default writes it twice).
+// one per identifier (a destructuring default writes it twice). It asks `init === false`: the
+// reference of a .svelte's bind: directive, whose `init` is undefined, is not one.
 fn es_modifying_references(tree &ScopeTree, v int) []int {
 	mut out := []int{}
 	references := tree.variables[v].references
 	for i, r in references {
 		reference := tree.references[r]
-		if reference.init || !reference.write {
+		if reference.init || !reference.write || reference.svelte_bind {
 			continue
 		}
 		if i > 0 && node_key(tree.references[references[i - 1]].identifier) == node_key(reference.identifier) {

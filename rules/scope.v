@@ -168,6 +168,9 @@ pub:
 	virtual bool
 pub mut:
 	resolved int = -1
+	// svelte_bind: the reference of a name a bind: directive is given, which svelte-eslint-parser
+	// makes read-write by overriding its methods: its `init` stays undefined (not false).
+	svelte_bind bool
 	// implicit is the node of maybeImplicitGlobal: the `=` assignment or for-in/of statement that
 	// writes it outside strict code.
 	implicit ?C.TSNode
