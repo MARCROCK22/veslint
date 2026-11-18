@@ -33,9 +33,9 @@ crlf.vue:8:36	@stylistic/no-trailing-spaces	trailingSpace	Trailing spaces not al
 crlf.vue:8:7	@stylistic/space-before-function-paren	missingSpace	Missing space before function parentheses.	fix	111	111	 	end	8	8
 crlf.vue:9:2	@stylistic/semi	missingSemi	Missing semicolon.	fix	145	145	;	end	10	1
 directives.vue:12:1	no-var	unexpectedVar	Unexpected var, use let or const instead.	fix	224	234	let c = 3;	end	12	11
-directives.vue:15:16	eslint	warning	Unused eslint-disable directive (no problems were reported from '@typescript-eslint/no-unused-vars').	fix	314	370	 
+directives.vue:15:16	eslint	warning	Unused eslint-disable directive (no problems were reported from '@typescript-eslint/no-unused-vars').	fix	314	370	 	warning
 directives.vue:15:5	prefer-const	useConst	'other' is never reassigned. Use 'const' instead.	fix	299	313	const other = 4;	end	15	10
-directives.vue:16:1	eslint	warning	Unused eslint-disable directive (no problems were reported from 'no-console').	fix	371	409	 
+directives.vue:16:1	eslint	warning	Unused eslint-disable directive (no problems were reported from 'no-console').	fix	371	409	 	warning
 directives.vue:18:17	@stylistic/object-curly-spacing	unexpectedSpaceAfter	There should be no space after '{'.	fix	465	466		end	18	18
 directives.vue:18:18	@stylistic/quote-props	unquotedPropertyFound	Unquoted property 'data' found.	fix	466	470	"data"	end	18	58
 directives.vue:18:18	@typescript-eslint/explicit-function-return-type	missingReturnType	Missing return type on function.	end	18	24
