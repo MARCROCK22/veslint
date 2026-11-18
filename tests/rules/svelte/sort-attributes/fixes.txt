@@ -1,0 +1,19 @@
+tests/rules/svelte/sort-attributes/cases.svelte:10:16	svelte/sort-attributes	shouldBefore	Attribute 'id' should go before 'class'.	fix	157	173	id="b" class="a"	end	10	22
+tests/rules/svelte/sort-attributes/cases.svelte:12:49	svelte/sort-attributes	shouldBefore	Attribute '--b' should go before 'style'.	fix	229	279	--b="1" style="color: red" style:top="0" class="c"	end	12	56
+tests/rules/svelte/sort-attributes/cases.svelte:12:57	svelte/sort-attributes	shouldBefore	Attribute '--a' should go before 'style'.	fix	229	287	--a="2" style="color: red" style:top="0" class="c" --b="1"	end	12	64
+tests/rules/svelte/sort-attributes/cases.svelte:13:36	svelte/sort-attributes	shouldBefore	Attribute 'type' should go before 'on:input'.	fix	302	341	type="text" on:input={f} bind:value={v}	end	13	47
+tests/rules/svelte/sort-attributes/cases.svelte:13:48	svelte/sort-attributes	shouldBefore	Attribute 'placeholder' should go before 'on:input'.	fix	302	357	placeholder="p" on:input={f} bind:value={v} type="text"	end	13	63
+tests/rules/svelte/sort-attributes/cases.svelte:14:23	svelte/sort-attributes	shouldBefore	Attribute 'class:a' should go before 'class:b'.	fix	366	399	class:a={active} class:b={active}	end	14	39
+tests/rules/svelte/sort-attributes/cases.svelte:17:17	svelte/sort-attributes	shouldBefore	Attribute 'data-a' should go before 'data-z'.	fix	518	539	data-a="2" data-z="1"	end	17	27
+tests/rules/svelte/sort-attributes/cases.svelte:17:28	svelte/sort-attributes	shouldBefore	Attribute 'aria-label' should go before 'data-z'.	fix	518	554	aria-label="l" data-z="1" data-a="2"	end	17	42
+tests/rules/svelte/sort-attributes/cases.svelte:20:2	svelte/sort-attributes	shouldBefore	Attribute 'id' should go before 'title'.	fix	568	585	id="i"\n\ttitle="t"	end	20	8
+tests/rules/svelte/sort-attributes/cases.svelte:21:2	svelte/sort-attributes	shouldBefore	Attribute 'class' should go before 'title'.	fix	568	596	class="c"\n\ttitle="t"\n\tid="i"	end	21	11
+tests/rules/svelte/sort-attributes/cases.svelte:23:13	svelte/sort-attributes	shouldBefore	Attribute 'a' should go before 'b'.	fix	611	622	a="2" b="1"	end	23	18
+tests/rules/svelte/sort-attributes/cases.svelte:23:19	svelte/sort-attributes	shouldBefore	Attribute 'id' should go before 'b'.	fix	611	629	id="i" b="1" a="2"	end	23	25
+tests/rules/svelte/sort-attributes/cases.svelte:24:14	svelte/sort-attributes	shouldBefore	Attribute 'id' should go before 'use:act'.	fix	638	652	id="x" use:act	end	24	20
+tests/rules/svelte/sort-attributes/cases.svelte:25:19	svelte/sort-attributes	shouldBefore	Attribute 'bind:this' should go before 'on:click'.	fix	665	692	bind:this={el} on:click={f}	end	25	33
+tests/rules/svelte/sort-attributes/options/cases.svelte:5:16	svelte/sort-attributes	shouldBefore	Attribute 'id' should go before 'class'.	fix	55	71	id="b" class="a"	end	5	22
+tests/rules/svelte/sort-attributes/options/cases.svelte:5:23	svelte/sort-attributes	shouldBefore	Attribute 'data-x' should go before 'class'.	fix	55	82	data-x="1" class="a" id="b"	end	5	33
+tests/rules/svelte/sort-attributes/options/cases.svelte:6:27	svelte/sort-attributes	shouldBefore	Attribute 'data-x' should go before 'title'.	fix	105	136	data-x="1" title="t" data-y="2"	end	6	37
+tests/rules/svelte/sort-attributes/options/cases.svelte:6:45	svelte/sort-attributes	shouldBefore	Attribute 'class:z' should go before 'title'.	fix	105	160	class:z={active} title="t" data-y="2" data-x="1" ID="u"	end	6	61
+tests/rules/svelte/sort-attributes/options/cases.svelte:6:62	svelte/sort-attributes	shouldBefore	Attribute 'class:y' should go before 'title'.	fix	105	177	class:y={active} title="t" data-y="2" data-x="1" ID="u" class:z={active}	end	6	78

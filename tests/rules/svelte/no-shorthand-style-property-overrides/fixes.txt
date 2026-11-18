@@ -1,0 +1,10 @@
+tests/rules/svelte/no-shorthand-style-property-overrides/cases.svelte:6:30	svelte/no-shorthand-style-property-overrides	unexpected	Unexpected shorthand 'margin' after 'margin-top'.	end	6	36
+tests/rules/svelte/no-shorthand-style-property-overrides/cases.svelte:8:37	svelte/no-shorthand-style-property-overrides	unexpected	Unexpected shorthand 'margin' after 'margin-left'.	end	8	43
+tests/rules/svelte/no-shorthand-style-property-overrides/cases.svelte:9:35	svelte/no-shorthand-style-property-overrides	unexpected	Unexpected shorthand '-webkit-flex' after '-webkit-flex-grow'.	end	9	47
+tests/rules/svelte/no-shorthand-style-property-overrides/cases.svelte:11:36	svelte/no-shorthand-style-property-overrides	unexpected	Unexpected shorthand 'background' after 'background-color'.	end	11	46
+tests/rules/svelte/no-shorthand-style-property-overrides/cases.svelte:11:77	svelte/no-shorthand-style-property-overrides	unexpected	Unexpected shorthand 'border' after 'border-top-width'.	end	11	83
+tests/rules/svelte/no-shorthand-style-property-overrides/cases.svelte:12:35	svelte/no-shorthand-style-property-overrides	unexpected	Unexpected shorthand 'font' after 'font-size'.	end	12	39
+tests/rules/svelte/no-shorthand-style-property-overrides/cases.svelte:13:38	svelte/no-shorthand-style-property-overrides	unexpected	Unexpected shorthand 'grid-gap' after 'grid-row-gap'.	end	13	46
+tests/rules/svelte/no-shorthand-style-property-overrides/cases.svelte:14:30	svelte/no-shorthand-style-property-overrides	unexpected	Unexpected shorthand 'padding' after 'padding-left'.	end	14	37
+tests/rules/svelte/no-shorthand-style-property-overrides/cases.svelte:14:42	svelte/no-shorthand-style-property-overrides	unexpected	Unexpected shorthand 'padding' after 'padding-left'.	end	14	49
+tests/rules/svelte/no-shorthand-style-property-overrides/cases.svelte:15:31	svelte/no-shorthand-style-property-overrides	unexpected	Unexpected shorthand 'margin' after 'margin-top'.	end	15	37

@@ -16,6 +16,8 @@ import stylistic from '../../build/eval/spider-byte/node_modules/@stylistic/esli
 import perfectionist from '../../build/upstream/perfectionist-deps/node_modules/eslint-plugin-perfectionist/dist/index.js';
 import marcrock from '../../build/eval/spider-byte/node_modules/@marcrock22/eslint/dist/rules/_.js';
 import vueParser from '../../build/upstream/vue-deps/node_modules/vue-eslint-parser/dist/index.cjs';
+// eslint-plugin-svelte's rules that read types load TypeScript 6.0.3 (see the module).
+import './svelte/typescript6.mjs';
 
 const { plugin: seyfert } = createRequire(import.meta.url)(
   '../../build/upstream/seyfert/node_modules/@slipher/eslint-plugin',

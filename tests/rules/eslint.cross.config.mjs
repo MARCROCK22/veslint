@@ -11,6 +11,8 @@ import stylistic from '../../build/eval/spider-byte/node_modules/@stylistic/esli
 import perfectionist from '../../build/upstream/perfectionist-deps/node_modules/eslint-plugin-perfectionist/dist/index.js';
 import marcrock from '../../build/eval/spider-byte/node_modules/@marcrock22/eslint/dist/rules/_.js';
 import vueParser from '../../build/upstream/vue-deps/node_modules/vue-eslint-parser/dist/index.cjs';
+// eslint-plugin-svelte's rules that read types load TypeScript 6.0.3 (see the module).
+import './svelte/typescript6.mjs';
 
 const { plugin: seyfert } = createRequire(import.meta.url)(
   '../../build/upstream/seyfert/node_modules/@slipher/eslint-plugin',
@@ -23,6 +25,8 @@ const plugins = { '@typescript-eslint': tseslint.plugin, '@stylistic': stylistic
 const root = import.meta.dirname;
 // The directory of a rule is the one with an expected.txt, and its path is the rule's id; the files
 // of the packages in a node_modules do not count.
+// The options of the rules whose schema needs some (tests/rules/required_options.json).
+const required = JSON.parse(fs.readFileSync(path.join(root, 'required_options.json'), 'utf8'));
 const ported = fs
   .readdirSync(root, { recursive: true })
   .filter(file => path.basename(file) === 'expected.txt' && !file.split(path.sep).includes('node_modules'))
@@ -36,7 +40,7 @@ export default [
       parserOptions: { projectService: true, tsconfigRootDir: root },
     },
     plugins,
-    rules: Object.fromEntries(ported.map(rule => [rule, 'error'])),
+    rules: Object.fromEntries(ported.map(rule => [rule, required[rule] ? ['error', ...required[rule]] : 'error'])),
   },
   // The .vue fixtures (of the vue/* rules), as a Vue project reads them: vue-eslint-parser 10.4.2 with
   // typescript-eslint's parser and eslint-plugin-vue 10.12.1's processor.
@@ -48,7 +52,7 @@ export default [
     },
     plugins,
     processor: 'vue/vue',
-    rules: Object.fromEntries(ported.map(rule => [rule, 'error'])),
+    rules: Object.fromEntries(ported.map(rule => [rule, required[rule] ? ['error', ...required[rule]] : 'error'])),
   },
   // The .svelte fixtures (of the svelte/* rules), as a Svelte project reads them: svelte-eslint-parser
   // 1.10.1 with typescript-eslint's parser and eslint-plugin-svelte 3.24.1's processor.
@@ -60,6 +64,6 @@ export default [
     },
     plugins,
     processor: 'svelte/svelte',
-    rules: Object.fromEntries(ported.map(rule => [rule, 'error'])),
+    rules: Object.fromEntries(ported.map(rule => [rule, required[rule] ? ['error', ...required[rule]] : 'error'])),
   },
 ];

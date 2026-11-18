@@ -1,0 +1,5 @@
+tests/rules/svelte/max-lines-per-block/skip/cases.svelte:1:29	svelte/max-lines-per-block	tooManyLines	template block has too many lines (5). Maximum allowed is 2.	end	2	1
+tests/rules/svelte/max-lines-per-block/skip/cases.svelte:15:1	svelte/max-lines-per-block	tooManyLines	<style> block has too many lines (2). Maximum allowed is 1.	end	20	9
+tests/rules/svelte/max-lines-per-block/small/cases.svelte:1:29	svelte/max-lines-per-block	tooManyLines	template block has too many lines (10). Maximum allowed is 2.	end	2	1
+tests/rules/svelte/max-lines-per-block/small/cases.svelte:2:1	svelte/max-lines-per-block	tooManyLines	<script> block has too many lines (6). Maximum allowed is 2.	end	9	10
+tests/rules/svelte/max-lines-per-block/small/cases.svelte:15:1	svelte/max-lines-per-block	tooManyLines	<style> block has too many lines (4). Maximum allowed is 1.	end	20	9

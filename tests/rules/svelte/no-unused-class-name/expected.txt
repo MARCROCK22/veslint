@@ -1,0 +1,5 @@
+tests/rules/svelte/no-unused-class-name/cases.svelte:5:1	svelte/no-unused-class-name	error	Unused class "unused".
+tests/rules/svelte/no-unused-class-name/cases.svelte:6:1	svelte/no-unused-class-name	error	Unused class "other".
+tests/rules/svelte/no-unused-class-name/cases.svelte:7:1	svelte/no-unused-class-name	error	Unused class "out".
+tests/rules/svelte/no-unused-class-name/cases.svelte:11:1	svelte/no-unused-class-name	error	Unused class "line".
+tests/rules/svelte/no-unused-class-name/options/cases.svelte:5:1	svelte/no-unused-class-name	error	Unused class "other".

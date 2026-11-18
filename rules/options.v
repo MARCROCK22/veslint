@@ -375,6 +375,13 @@ pub fn check_options(rule string, options []json2.Any) !bool {
 		svelte_html_self_closing { shsc_options(options)! }
 		svelte_block_lang { sbl_options(options)! }
 		svelte_prefer_class_directive { spcd_options(options)! }
+		svelte_no_restricted_html_elements { snrhe_options(options)! }
+		svelte_no_unknown_style_directive_property { snusdp_options(options)! }
+		svelte_consistent_selector_style { sccs_options(options)! }
+		svelte_no_unused_class_name { snucn_options(options)! }
+		svelte_sort_attributes { ssat_options(options)! }
+		svelte_max_lines_per_block { smlpb_options(options)! }
+		svelte_require_event_prefix { srep_options(options)! }
 		else { return false }
 	}
 	return true

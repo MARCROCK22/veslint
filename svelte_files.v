@@ -162,7 +162,16 @@ fn svelte_report_positions(doc &svelte.Document, findings []rules.Finding, ends 
 				col:  f.fixed_column
 			}
 			if ends {
-				end_positions << offsets.DisplayPos{}
+				// A `loc` given as lines and columns with an end (Finding.line_loc: the selectors
+				// of a <style> element).
+				end_positions << if f.line_loc {
+					offsets.DisplayPos{
+						line: f.fixed_end_line
+						col:  f.fixed_end_column
+					}
+				} else {
+					offsets.DisplayPos{}
+				}
 			}
 			continue
 		}

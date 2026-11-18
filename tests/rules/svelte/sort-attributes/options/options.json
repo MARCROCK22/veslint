@@ -1,0 +1,1 @@
+[{"order": ["id", ["/^data-/u", "!data-y"], {"match": "/^class/u", "sort": "alphabetical"}, {"match": ["title", "/^data-y$/"], "sort": "ignore"}], "alphabetical": true}]

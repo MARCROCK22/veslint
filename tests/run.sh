@@ -763,6 +763,8 @@ cat > "$TMP/all.json" << 'JSON'
   "@typescript-eslint/no-unsafe-call": [2], "@typescript-eslint/no-unsafe-member-access": [2, {"allowOptionalChaining": false}],
   "@typescript-eslint/no-unsafe-return": [2], "semi": [2, "always"], "@stylistic/indent": [1, 2]
 JSON
+# A rule whose schema needs options (tests/rules/required_options.json) gets those.
+python3 -c 'import json; [print(f", \"{r}\": {json.dumps([2, *o])}") for r, o in json.load(open("tests/rules/required_options.json")).items()]' >> "$TMP/all.json"
 for dir in "${rule_dirs[@]}"; do
 	r=${dir#tests/rules/}
 	grep -q "\"$r\"" "$TMP/all.json" || printf ', "%s": [2]\n' "$r" >> "$TMP/all.json"
@@ -781,6 +783,16 @@ echo '}}' >> "$TMP/all.json"
 # with VESLINT_MATRIX=1, which the battery of a release sets; without it, every rule at once.
 matrix_dirs=()
 [[ ${VESLINT_MATRIX:-0} != 1 ]] || matrix_dirs=("${rule_dirs[@]}")
+# alone_args rule n: the arguments that run one rule alone: `--rule`, or, for a rule whose schema
+# needs options, a configuration with the options all.json gives it.
+alone_args() {
+	if grep -q "\"$1\"" tests/rules/required_options.json; then
+		python3 -c 'import json, sys; o = json.load(open("tests/rules/required_options.json"))[sys.argv[1]]; print(json.dumps({"rules": {sys.argv[1]: [2, *o]}}))' "$1" > "$TMP/alone.$2.json"
+		echo --config "$TMP/alone.$2.json"
+	else
+		echo --rule "$1" --no-config-lookup
+	fi
+}
 jobs_started=0
 for dir in "${matrix_dirs[@]}"; do
 	throttle
@@ -788,7 +800,7 @@ for dir in "${matrix_dirs[@]}"; do
 	: > "$TMP/per-rule.$jobs_started.err"
 	(
 		code=0
-		veslint_batched "$TMP/per-rule.$jobs_started.out" "$TMP/per-rule.$jobs_started.err" --rule "${dir#tests/rules/}" --no-config-lookup -- "${all_cases[@]}" || code=$?
+		veslint_batched "$TMP/per-rule.$jobs_started.out" "$TMP/per-rule.$jobs_started.err" $(alone_args "${dir#tests/rules/}" $jobs_started) -- "${all_cases[@]}" || code=$?
 		echo "$code" > "$TMP/per-rule.$jobs_started.code"
 	) &
 	jobs_started=$((jobs_started + 1))
@@ -819,7 +831,7 @@ for ((n = 0; n < jobs_started; n++)); do
 	: > "$TMP/per-rule.$n.out"
 	: > "$TMP/per-rule.$n.err"
 	c=0
-	veslint_batched "$TMP/per-rule.$n.out" "$TMP/per-rule.$n.err" --rule "${dir#tests/rules/}" --no-config-lookup -- "${all_cases[@]}" || c=$?
+	veslint_batched "$TMP/per-rule.$n.out" "$TMP/per-rule.$n.err" $(alone_args "${dir#tests/rules/}" $n) -- "${all_cases[@]}" || c=$?
 	if run_failed "$c" "$TMP/per-rule.$n.err"; then
 		rerun_failed=1
 		echo "--rule ${dir#tests/rules/} failed twice (code $c):"
