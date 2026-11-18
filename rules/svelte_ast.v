@@ -215,7 +215,15 @@ fn (c &Checker) sv_directive_name(dir int) string {
 		'Class' { 'class' }
 		'EventHandler' { 'on' }
 		'Let' { 'let' }
-		'Transition' { if n.intro && n.outro { 'transition' } else if n.intro { 'in' } else { 'out' } }
+		'Transition' {
+			if n.intro && n.outro {
+				'transition'
+			} else if n.intro {
+				'in'
+			} else {
+				'out'
+			}
+		}
 		'Ref' { 'ref' }
 		else { '' }
 	}

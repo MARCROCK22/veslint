@@ -305,7 +305,11 @@ fn (c &Checker) svcd_process_comment(comment int, mut run SvcdRun) {
 			}
 		} else {
 			if run.set.report_unused {
-				run.reports << c.sv_report_snode(comment, if disable { 'unused' } else { 'unusedEnable' }, {
+				run.reports << c.sv_report_snode(comment, if disable {
+					'unused'
+				} else {
+					'unusedEnable'
+				}, {
 					'kind': parsed.typ
 				})
 			}
