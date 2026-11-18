@@ -783,6 +783,7 @@ const rule_option_schemas = {
 	'svelte/no-navigation-without-base':                               '{"type":"array","items":[{"type":"object","properties":{"ignoreGoto":{"type":"boolean"},"ignoreLinks":{"type":"boolean"},"ignorePushState":{"type":"boolean"},"ignoreReplaceState":{"type":"boolean"}},"additionalProperties":false}],"minItems":0,"maxItems":1}'
 	'svelte/require-store-reactive-access':                            '{"type":"array","minItems":0,"maxItems":0}'
 	'svelte/no-navigation-without-resolve':                            '{"type":"array","items":[{"type":"object","properties":{"ignoreGoto":{"type":"boolean"},"ignoreLinks":{"type":"boolean"},"ignorePushState":{"type":"boolean"},"ignoreReplaceState":{"type":"boolean"}},"additionalProperties":false}],"minItems":0,"maxItems":1}'
+	'svelte/no-unused-props':                                          '{"type":"array","items":[{"type":"object","properties":{"checkImportedTypes":{"type":"boolean","default":false},"ignoreTypePatterns":{"type":"array","items":{"type":"string"},"default":[]},"ignorePropertyPatterns":{"type":"array","items":{"type":"string"},"default":[]},"allowUnusedNestedProperties":{"type":"boolean","default":false}},"additionalProperties":false}],"minItems":0,"maxItems":1}'
 }
 
 // eslint_rule_default_options are the meta.defaultOptions of the rules of ESLint and of

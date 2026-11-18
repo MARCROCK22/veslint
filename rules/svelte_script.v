@@ -790,3 +790,24 @@ fn (mut c Checker) svsc_is_callable_ts(ts C.TSNode) bool {
 	apparent := c.apparent_of(t) or { return false }
 	return c.svsc_has_call_signatures(apparent, true)
 }
+
+// svsc_type_from_type_node is checker.getTypeFromTypeNode of a type node of the view: the tsgo
+// node of its range is found by resolve_node_types (the innermost one, a type reference's name)
+// and the outermost one with the same range is the type node.
+fn (mut c Checker) svsc_type_from_type_node(b &SvscBridge, i int, abs_path string, mut stats Stats) ?TypeResponse {
+	ts := c.svsc_lint_ts(b, i, abs_path, mut stats)?
+	handle := c.node_handles[node_key(ts)] or { return none }
+	tree := c.declaration_ast(tsgo.handle_path(handle)) or { return none }
+	mut index := tsgo.handle_index(handle)
+	start := tree.node_token_start(index)
+	end := tree.node_end_byte(index)
+	for {
+		parent := tree.node_parent(index)
+		if parent == 0 || tree.node_token_start(parent) != start || tree.node_end_byte(parent) != end {
+			break
+		}
+		index = parent
+	}
+	t := c.type_from_type_node(tree.node_handle(index)) or { return none }
+	return if t.is_null() { none } else { t }
+}

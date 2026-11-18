@@ -382,6 +382,7 @@ pub fn check_options(rule string, options []json2.Any) !bool {
 		svelte_no_reactive_reassign { svnrr_options(options)! }
 		svelte_no_navigation_without_base { svnnwb_options(options)! }
 		svelte_no_navigation_without_resolve { svnnwr_options(options)! }
+		svelte_no_unused_props { svnup_options(options)! }
 		else { return false }
 	}
 	return true
