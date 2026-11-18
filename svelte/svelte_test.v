@@ -191,3 +191,51 @@ fn test_scopes() {
 	}
 	assert store_refs == 1
 }
+
+// svelteParseContext.runes while parsing: svelteFeatures.runes (even when it is neither true nor
+// false) > <svelte:options runes> > the svelteConfig's compilerOptions.runes > undefined; with
+// runes off, `$state` is no global and no rune is declared in the virtual code.
+fn test_parse_options_runes() {
+	plain := '<script lang="ts">\n  let n = \$state(0);\n</script>\n<p>{n}</p>\n'
+	with_options := '<svelte:options runes={true} />\n' + plain
+	parsers := new_parsers() or { panic(err) }
+	defer {
+		parsers.close()
+	}
+	features_off := ParseOptions{
+		features_set: true
+		features:     .off
+	}
+	features_neither := ParseOptions{
+		features_set: true
+		config:       .off
+	}
+	config_off := ParseOptions{
+		config: .off
+	}
+	config_on := ParseOptions{
+		config: .on
+	}
+	cases := [
+		RunesCase{plain, ParseOptions{}, .unknown},
+		RunesCase{plain, config_off, .off},
+		RunesCase{plain, config_on, .on},
+		RunesCase{with_options, config_off, .on},
+		RunesCase{with_options, features_off, .off},
+		RunesCase{with_options, features_neither, .unknown},
+	]
+	for i, c in cases {
+		mut doc := parse_svelte_options(c.src, parsers, c.options) or { panic(err) }
+		assert doc.runes == c.want, 'case ${i}'
+		assert doc.options == c.options, 'case ${i}'
+		declared := doc.virtual_code.contains('declare function \$state')
+		assert declared == (c.want != .off), 'case ${i}: ${doc.virtual_code}'
+		doc.free()
+	}
+}
+
+struct RunesCase {
+	src     string
+	options ParseOptions
+	want    RunesMode
+}

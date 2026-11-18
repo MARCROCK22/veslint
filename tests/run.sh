@@ -716,6 +716,37 @@ if diff -u tests/rules/svelte/system/settings/ignore-warnings.txt "$TMP/svelte-s
 else
 	ko "svelte/system: settings.svelte.ignoreWarnings"
 fi
+# Runes mode while parsing (svelteParseContext.runes: rune declarations in the virtual code, rune
+# globals, the $props scope): parserOptions.svelteFeatures.runes, else <svelte:options runes>, else
+# the svelteConfig's compilerOptions.runes (parserOptions.svelteConfig, else svelte.config.js, which
+# says false there), as ESLint gives it for each configuration of tests/svelte-lint/runes (pinned
+# by its pin.sh), from the command line and from one --server that lints with each in turn.
+: > "$TMP/svelte-runes.out"
+: > "$TMP/svelte-runes-server.jsonl"
+runes_configs=(config-no-runes config-true features-false features-true none)
+for config in "${runes_configs[@]}"; do
+	(cd tests/svelte-lint/runes && ../../../veslint --config "$config.json" --fixes options.svelte plain.svelte 2> /dev/null) |
+		sed "s|^|$config: |" >> "$TMP/svelte-runes.out"
+	printf '{"id": 1, "config": "%s.json", "files": ["options.svelte", "plain.svelte"]}\n' "$config" >> "$TMP/svelte-runes-server.jsonl"
+done
+if diff -u tests/svelte-lint/runes/expected.txt <(sorted "$TMP/svelte-runes.out"); then
+	ok "Svelte files: runes mode from svelteFeatures.runes, <svelte:options>, svelteConfig and svelte.config.js"
+else
+	ko "Svelte files: runes mode from svelteFeatures.runes, <svelte:options>, svelteConfig and svelte.config.js"
+fi
+if python3 tests/server_client.py ./veslint tests/svelte-lint/runes "$TMP/svelte-runes-server.jsonl" > "$TMP/svelte-runes-server.out" 2> "$TMP/svelte-runes-server.err" &&
+	python3 -c '
+import json, sys
+for config, line in zip(sys.argv[2:], open(sys.argv[1], encoding="utf-8")):
+    for out in json.loads(line)["stdout"].splitlines():
+        print(f"{config}: {out}")
+' "$TMP/svelte-runes-server.out" "${runes_configs[@]}" | sorted > "$TMP/svelte-runes-server.lines" &&
+	diff -u tests/svelte-lint/runes/expected.txt "$TMP/svelte-runes-server.lines"; then
+	ok "Svelte files: --server parses with the runes mode of each configuration"
+else
+	ko "Svelte files: --server and the runes mode of each configuration"
+	cat "$TMP/svelte-runes-server.err"
+fi
 
 # veslint_batched OUT ERR ARGUMENTS... -- FILES...: ./veslint with the arguments and the files,
 # appending to OUT and ERR; the files go in batches that fit in a Windows command line (32,767
