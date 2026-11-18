@@ -3,7 +3,7 @@ module rules
 import json2
 import time
 import tsgo { TypeResponse }
-import treesitter { children, has_child_kind, named_children, node_end, node_field, node_kind, node_parent, node_start, nodes_of_kinds }
+import treesitter { Ident, children, has_child_kind, named_children, next_sibling, node_end, node_field, node_kind, node_parent, node_start, nodes_of_kinds }
 
 // Port of the `prefer-readonly` rule of typescript-eslint 8.72.2, with its `onlyInlineLambdas`
 // option and its fixer.
@@ -274,9 +274,7 @@ fn (mut c Checker) lint_prefer_readonly(root C.TSNode, abs_path string, mut stat
 			fixes << fix_insert_at(node_end(member.name_node), ': ${annotation}')
 		}
 		findings << c.with_fixes(Finding{
-			// getMemberHeadLoc: to the end of the key (its `]` when computed), or of the name of
-			// a parameter property.
-			stmt:       c.position_range(member_start(member.node).start_byte, c.prd_key_end(member))
+			stmt:       c.prd_report_range(member)
 			message_id: 'preferReadonly'
 			data:       {
 				'name': c.prd_name_text(member)
@@ -587,6 +585,23 @@ fn (mut c Checker) prd_type_annotation(report PrdReport) !string {
 		}
 	}
 	return annotation
+}
+
+// prd_report_range is where the problem is: getMemberHeadLoc, to the end of the key (its `]` when
+// computed) or of the name of a parameter property; an abstract property (TSAbstractPropertyDefinition
+// or TSAbstractAccessorProperty) is the whole node, with its `;`, as the rule reports it.
+fn (c &Checker) prd_report_range(member PrdMember) Ident {
+	if !member.is_parameter && node_kind(member.node) == 'public_field_definition'
+		&& has_child_kind(member.node, 'abstract') {
+		mut end := node_end(member.node)
+		if next := next_sibling(member.node) {
+			if node_kind(next) == ';' {
+				end = node_end(next)
+			}
+		}
+		return c.position_range(node_start(member.node), end)
+	}
+	return c.position_range(member_start(member.node).start_byte, c.prd_key_end(member))
 }
 
 // prd_key_end is where the head of a member ends (getMemberHeadLoc): after its key, or the `]`
