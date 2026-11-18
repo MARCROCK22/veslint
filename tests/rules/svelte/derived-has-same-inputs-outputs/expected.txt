@@ -1,0 +1,11 @@
+tests/rules/svelte/derived-has-same-inputs-outputs/cases.svelte:7:24	svelte/derived-has-same-inputs-outputs	unexpected	The argument name should be '$a'.
+tests/rules/svelte/derived-has-same-inputs-outputs/cases.svelte:9:30	svelte/derived-has-same-inputs-outputs	unexpected	The argument name should be '$a'.
+tests/rules/svelte/derived-has-same-inputs-outputs/cases.svelte:10:34	svelte/derived-has-same-inputs-outputs	unexpected	The argument name should be '$b'.
+tests/rules/svelte/derived-has-same-inputs-outputs/cases.svelte:11:24	svelte/derived-has-same-inputs-outputs	unexpected	The argument name should be '$a'.
+tests/rules/svelte/derived-has-same-inputs-outputs/cases.svelte:15:32	svelte/derived-has-same-inputs-outputs	unexpected	The argument name should be '$a'.
+tests/rules/svelte/derived-has-same-inputs-outputs/cases.svelte:15:42	svelte/derived-has-same-inputs-outputs	unexpected	The argument name should be '$b'.
+tests/rules/svelte/derived-has-same-inputs-outputs/cases.svelte:16:40	svelte/derived-has-same-inputs-outputs	unexpected	The argument name should be '$a'.
+tests/rules/svelte/derived-has-same-inputs-outputs/cases.svelte:20:24	svelte/derived-has-same-inputs-outputs	unexpected	The argument name should be '$a'.
+tests/rules/svelte/derived-has-same-inputs-outputs/cases.svelte:22:24	svelte/derived-has-same-inputs-outputs	unexpected	The argument name should be '$a'.
+tests/rules/svelte/derived-has-same-inputs-outputs/cases.ts:4:30	svelte/derived-has-same-inputs-outputs	unexpected	The argument name should be '$a'.
+tests/rules/svelte/derived-has-same-inputs-outputs/cases.ts:5:33	svelte/derived-has-same-inputs-outputs	unexpected	The argument name should be '$a'.

@@ -199,3 +199,40 @@ fn (mut c Checker) svsc_store_calls(root C.TSNode, abs_path string, names []stri
 	}
 	return out
 }
+
+// svsc_find_variable_for_replacement ports findVariableForReplacement (ast-utils.ts) on the lint
+// code: whether `replacement` is referenced or declared in the scope of `node` (a conflict), and
+// else the variable of that scope named `name` (-1 for none).
+fn (mut c Checker) svsc_find_variable_for_replacement(root C.TSNode, node C.TSNode, name string, replacement string) (bool, int) {
+	tree := c.scope_tree(root)
+	scope := tree.get_scope(node)
+	for r in tree.scopes[scope].references {
+		if tree.references[r].name == replacement {
+			return true, -1
+		}
+	}
+	mut variable := -1
+	for v in tree.scopes[scope].variables {
+		if tree.variables[v].name == replacement {
+			return true, -1
+		}
+		if tree.variables[v].name == name {
+			variable = v
+		}
+	}
+	return false, variable
+}
+
+// svsc_rename_fix is the fix of a suggestion that renames a parameter and the references of its
+// variable (one fix: ESLint merges a fixer's fixes).
+fn (mut c Checker) svsc_rename_fix(root C.TSNode, start int, end int, variable int, name string) ?Fix {
+	mut fixes := [fix_replace_range(start, end, name)]
+	if variable >= 0 {
+		tree := c.scope_tree(root)
+		for r in tree.variables[variable].references {
+			fixes << fix_replace(tree.references[r].identifier, name)
+		}
+	}
+	has, fix := c.merge_fixes(fixes) or { return none }
+	return if has { fix } else { none }
+}
