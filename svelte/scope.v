@@ -237,7 +237,17 @@ fn (a &Analyzer) name_of(node int) string {
 // lookup is the variable of that name of the scope (its `set`), or -1. Scopes of template
 // expressions hold a few variables: a scan beats a map.
 fn (a &Analyzer) lookup(s int, name string) int {
-	return a.scopes[s].set[name] or { -1 }
+	sc := &a.scopes[s]
+	// Few variables: a scan beats the map (which is only filled past 16).
+	if sc.variables.len <= 16 {
+		for v in sc.variables {
+			if a.vars[v].name == name {
+				return v
+			}
+		}
+		return -1
+	}
+	return sc.set[name] or { -1 }
 }
 
 fn (mut a Analyzer) define_variable(s int, name string, def ADef, with_def bool) {
@@ -249,7 +259,14 @@ fn (mut a Analyzer) define_variable(s int, name string, def ADef, with_def bool)
 		}
 		v = a.vars.len - 1
 		a.scopes[s].variables << v
-		a.scopes[s].set[name] = v
+		n := a.scopes[s].variables.len
+		if n == 17 {
+			for x in a.scopes[s].variables {
+				a.scopes[s].set[a.vars[x].name] = x
+			}
+		} else if n > 17 {
+			a.scopes[s].set[name] = v
+		}
 	}
 	if with_def {
 		a.vars[v].defs << def

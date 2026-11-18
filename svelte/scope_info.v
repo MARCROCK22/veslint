@@ -75,12 +75,19 @@ fn (c &Conv) in_user_text(p int) bool {
 	if !c.started || p < c.trimmed_len {
 		return true
 	}
-	for s in c.doc.segments {
-		if s.pre_start <= p && p < s.pre_start + s.len {
-			return true
+	// The segments are in pre order: the last one starting at or before p.
+	segs := c.doc.segments
+	mut lo := 0
+	mut hi := segs.len
+	for lo < hi {
+		mid := (lo + hi) / 2
+		if segs[mid].pre_start <= p {
+			lo = mid + 1
+		} else {
+			hi = mid
 		}
 	}
-	return false
+	return lo > 0 && p < segs[lo - 1].pre_start + segs[lo - 1].len
 }
 
 // build_scope builds Document.scope from the analysis of the pre-virtual code (pre_starts: the
@@ -270,13 +277,23 @@ fn (mut c Conv) build_scope(an &Analyzer, pre_starts []int, typed_lets []ScriptL
 
 // in_typing: the offset is in the typing of a typed expression (`(e)as (typing);`).
 fn (c &Conv) in_typing(p int, typed []ScriptLet) bool {
-	for l in typed {
-		s := l.segments[0]
-		if p >= s.pre_start + s.len && p < l.end {
-			return true
+	// The typed lets are in pre order: the last one starting at or before p.
+	mut lo := 0
+	mut hi := typed.len
+	for lo < hi {
+		mid := (lo + hi) / 2
+		if typed[mid].start <= p {
+			lo = mid + 1
+		} else {
+			hi = mid
 		}
 	}
-	return false
+	if lo == 0 {
+		return false
+	}
+	l := typed[lo - 1]
+	s := l.segments[0]
+	return p >= s.pre_start + s.len && p < l.end
 }
 
 // scope_edits are svelte-eslint-parser's edits after the restore (index.ts parseAsSvelte):
