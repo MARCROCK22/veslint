@@ -1,0 +1,8 @@
+tests/rules/svelte/no-unknown-style-directive-property/cases.svelte:6:12	svelte/no-unknown-style-directive-property	unknown	Unexpected unknown style directive property 'colour'.
+tests/rules/svelte/no-unknown-style-directive-property/cases.svelte:10:12	svelte/no-unknown-style-directive-property	unknown	Unexpected unknown style directive property 'unknown-prop'.
+tests/rules/svelte/no-unknown-style-directive-property/cases.svelte:11:12	svelte/no-unknown-style-directive-property	unknown	Unexpected unknown style directive property 'Color'.
+tests/rules/svelte/no-unknown-style-directive-property/cases.svelte:12:12	svelte/no-unknown-style-directive-property	unknown	Unexpected unknown style directive property 'my-prop'.
+tests/rules/svelte/no-unknown-style-directive-property/cases.svelte:13:13	svelte/no-unknown-style-directive-property	unknown	Unexpected unknown style directive property 'bad-é'.
+tests/rules/svelte/no-unknown-style-directive-property/cases.svelte:14:13	svelte/no-unknown-style-directive-property	unknown	Unexpected unknown style directive property 'nope'.
+tests/rules/svelte/no-unknown-style-directive-property/options/cases.svelte:5:12	svelte/no-unknown-style-directive-property	unknown	Unexpected unknown style directive property '-webkit-foo'.
+tests/rules/svelte/no-unknown-style-directive-property/options/cases.svelte:7:12	svelte/no-unknown-style-directive-property	unknown	Unexpected unknown style directive property 'other-prop'.

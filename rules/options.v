@@ -376,6 +376,7 @@ pub fn check_options(rule string, options []json2.Any) !bool {
 		svelte_block_lang { sbl_options(options)! }
 		svelte_prefer_class_directive { spcd_options(options)! }
 		svelte_no_restricted_html_elements { snrhe_options(options)! }
+		svelte_no_unknown_style_directive_property { snusdp_options(options)! }
 		else { return false }
 	}
 	return true

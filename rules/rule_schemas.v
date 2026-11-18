@@ -752,6 +752,11 @@ const rule_option_schemas = {
 	'svelte/block-lang':                                               '{"type":"array","items":[{"type":"object","properties":{"enforceScriptPresent":{"type":"boolean"},"enforceStylePresent":{"type":"boolean"},"script":{"oneOf":[{"type":["string","null"]},{"type":"array","items":{"type":["string","null"]},"minItems":1}]},"style":{"oneOf":[{"type":["string","null"]},{"type":"array","items":{"type":["string","null"]},"minItems":1}]}},"additionalProperties":false}],"minItems":0,"maxItems":1}'
 	'svelte/prefer-class-directive':                                   '{"type":"array","items":[{"type":"object","properties":{"prefer":{"enum":["always","empty"]}},"additionalProperties":false}],"minItems":0,"maxItems":1}'
 	'svelte/no-restricted-html-elements':                              '{"type":"array","items":{"oneOf":[{"type":"string"},{"type":"object","properties":{"elements":{"type":"array","items":{"type":["string"]},"uniqueItems":true,"minItems":1},"message":{"type":"string","minLength":1}},"additionalProperties":false,"minItems":1}]},"uniqueItems":true,"minItems":1}'
+	'svelte/no-unknown-style-directive-property':                      '{"type":"array","items":[{"type":"object","properties":{"ignoreProperties":{"type":"array","items":{"type":"string"},"uniqueItems":true,"minItems":1},"ignorePrefixed":{"type":"boolean"}},"additionalProperties":false}],"minItems":0,"maxItems":1}'
+	'svelte/no-dupe-style-properties':                                 '{"type":"array","minItems":0,"maxItems":0}'
+	'svelte/no-shorthand-style-property-overrides':                    '{"type":"array","minItems":0,"maxItems":0}'
+	'svelte/require-optimized-style-attribute':                        '{"type":"array","minItems":0,"maxItems":0}'
+	'svelte/prefer-style-directive':                                   '{"type":"array","minItems":0,"maxItems":0}'
 }
 
 // eslint_rule_default_options are the meta.defaultOptions of the rules of ESLint and of
