@@ -641,9 +641,10 @@ fi
 # the problems of tests/svelte-lint/fixed (both pinned from ESLint by tests/svelte-lint/pin.sh;
 # tests/svelte-lint/compare.sh compares thousands of files). The server answers what the command line
 # prints for them, the identifier mode reads them, an import of a component is the `*.svelte`
-# module, and a .svelte file whose script is JavaScript is not linted.
+# module, and a .svelte file whose script is JavaScript is not linted. A `.svelte.ts` module is
+# linted as svelte-eslint-parser reads one (the runes are declared for typescript-eslint).
 code=0
-(cd tests/svelte-lint/fixtures && ../../../veslint --config ../rules.json --fixes ./*.svelte) > "$TMP/svelte.out" 2> "$TMP/svelte.err" || code=$?
+(cd tests/svelte-lint/fixtures && ../../../veslint --config ../rules.json --fixes ./*.svelte ./*.svelte.ts) > "$TMP/svelte.out" 2> "$TMP/svelte.err" || code=$?
 if [[ $code -eq 1 ]] && diff -u tests/svelte-lint/expected.txt <(sed 's|^\./||' "$TMP/svelte.out" | sorted); then
 	ok "Svelte files: ESLint's problems, fixes and suggestions ($(wc -l < tests/svelte-lint/expected.txt) lines)"
 else
@@ -653,9 +654,9 @@ fi
 mkdir -p "$TMP/svelte-fix"
 cp tests/svelte-lint/fixtures/*.svelte tests/svelte-lint/fixtures/*.ts tests/svelte-lint/fixtures/tsconfig.json "$TMP/svelte-fix/"
 code=0
-(cd "$TMP/svelte-fix" && "$ROOT/veslint" --config "$ROOT/tests/svelte-lint/rules.json" --fix --fixes ./*.svelte) > "$TMP/svelte-fix.out" 2> "$TMP/svelte-fix.err" || code=$?
+(cd "$TMP/svelte-fix" && "$ROOT/veslint" --config "$ROOT/tests/svelte-lint/rules.json" --fix --fixes ./*.svelte ./*.svelte.ts) > "$TMP/svelte-fix.out" 2> "$TMP/svelte-fix.err" || code=$?
 svelte_fixed=1
-for file in tests/svelte-lint/fixtures/*.svelte; do
+for file in tests/svelte-lint/fixtures/*.svelte tests/svelte-lint/fixtures/*.svelte.ts; do
 	cmp -s "tests/svelte-lint/fixed/${file##*/}" "$TMP/svelte-fix/${file##*/}" || { svelte_fixed=0; diff -u "tests/svelte-lint/fixed/${file##*/}" "$TMP/svelte-fix/${file##*/}"; }
 done
 if [[ $code -eq 1 && $svelte_fixed -eq 1 ]] && diff -u tests/svelte-lint/fixed/expected.txt <(sed 's|^\./||' "$TMP/svelte-fix.out" | sorted); then
@@ -664,10 +665,10 @@ else
 	ko "Svelte files: --fix (code $code)"
 	cat "$TMP/svelte-fix.err"
 fi
-python3 -c 'import json, sys; print(json.dumps({"id": 1, "config": "../rules.json", "files": sys.argv[1:]}))' tests/svelte-lint/fixtures/*.svelte |
+python3 -c 'import json, sys; print(json.dumps({"id": 1, "config": "../rules.json", "files": sys.argv[1:]}))' tests/svelte-lint/fixtures/*.svelte tests/svelte-lint/fixtures/*.svelte.ts |
 	sed 's|tests/svelte-lint/fixtures/|<cwd>/|g' > "$TMP/svelte-server.jsonl"
 code=0
-(cd tests/svelte-lint/fixtures && ../../../veslint --config ../rules.json --fixes "$PWD"/*.svelte) > "$TMP/svelte-cli.out" 2> "$TMP/svelte-cli.err" || code=$?
+(cd tests/svelte-lint/fixtures && ../../../veslint --config ../rules.json --fixes "$PWD"/*.svelte "$PWD"/*.svelte.ts) > "$TMP/svelte-cli.out" 2> "$TMP/svelte-cli.err" || code=$?
 if python3 tests/server_client.py ./veslint tests/svelte-lint/fixtures "$TMP/svelte-server.jsonl" > "$TMP/svelte-server.out" 2> "$TMP/svelte-server.err" &&
 	python3 - "$TMP/svelte-server.out" "$TMP/svelte-cli.out" "$TMP/svelte-cli.err" "$code" "$PWD/tests/svelte-lint/fixtures" << 'PY'
 import json, sys

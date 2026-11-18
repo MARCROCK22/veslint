@@ -105,6 +105,9 @@ fn (c &Checker) ts_text() string {
 	if c.is_svelte() {
 		return c.svelte.doc.virtual_code
 	}
+	if c.svelte_module.on {
+		return c.svelte_module.code
+	}
 	return if c.is_vue() { c.vue.doc.script.code } else { c.src }
 }
 
@@ -131,7 +134,17 @@ fn (mut c Checker) ts_spans(pairs []int) []int {
 			bytes << c.tokens.last_end(pairs[i])
 			bytes << c.tokens.last_end(pairs[i + 1])
 		}
-		return offsets.utf16_offsets(c.src, bytes)
+		mut units := c.svelte_module_units(offsets.utf16_offsets(c.src, bytes))
+		if c.svelte_module.on {
+			// The first token after a module's leading white space follows the declarations.
+			m := c.svelte_module
+			for i := 0; i + 1 < pairs.len; i += 2 {
+				if pairs[i] >= m.at && units[i] < m.at_unit + m.inserted {
+					units[i] = m.at_unit + m.inserted
+				}
+			}
+		}
+		return units
 	}
 	ends := c.vue_code_ends()
 	script := &c.vue.doc.script
@@ -157,7 +170,7 @@ fn (c &Checker) ts_offsets(bytes []int) []int {
 		return bytes.map(c.svelte_virtual_start(it))
 	}
 	if !c.is_vue() {
-		return offsets.utf16_offsets(c.src, bytes)
+		return c.svelte_module_units(offsets.utf16_offsets(c.src, bytes))
 	}
 	script := &c.vue.doc.script
 	return c.code_units(bytes.map(script.file_to_synthetic(it, false)))
@@ -181,7 +194,7 @@ fn (c &Checker) file_offset_of_ts_unit(unit int) int {
 		return c.svelte_lint_offset_of_ts_unit(unit, false)
 	}
 	if !c.is_vue() {
-		return offsets.byte_offset(c.src, unit)
+		return offsets.byte_offset(c.src, c.svelte_module_file_unit(unit))
 	}
 	return c.file_offset_of_ts_byte(offsets.byte_offset(c.vue.doc.script.code, unit))
 }
@@ -194,7 +207,7 @@ fn (c &Checker) file_offset_of_ts_byte(b int) int {
 		return c.svelte_lint_offset_of_ts_unit(offsets.utf16_offsets(code, [b])[0], false)
 	}
 	if !c.is_vue() {
-		return b
+		return c.svelte_module_file_byte(b)
 	}
 	return c.vue.doc.script.synthetic_to_file(b, false)
 }
@@ -206,7 +219,7 @@ fn (c &Checker) file_offset_of_ts_end(b int) int {
 		return c.svelte_lint_offset_of_ts_unit(offsets.utf16_offsets(code, [b])[0], true)
 	}
 	if !c.is_vue() {
-		return b
+		return c.svelte_module_file_byte(b)
 	}
 	return c.vue.doc.script.synthetic_to_file(b, true)
 }

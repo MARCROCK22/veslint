@@ -34,7 +34,7 @@ const ported = process.env.SVELTE_LINT_RULES
 const types = process.env.SVELTE_LINT_PROJECT === '1' ? { project: true } : { projectService: true };
 export default [
   {
-    files: ['**/*.svelte'],
+    files: ['**/*.svelte', '**/*.svelte.ts'],
     languageOptions: {
       parser: svelteParser,
       parserOptions: { parser: tseslint.parser, ...types, tsconfigRootDir: process.cwd(), extraFileExtensions: ['.svelte'] },

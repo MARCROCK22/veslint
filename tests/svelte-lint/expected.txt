@@ -2,6 +2,22 @@ bom.svelte:1:1	unicode-bom	unexpected	Unexpected Unicode BOM (Byte Order Mark).	
 bom.svelte:2:6	prefer-const	useConst	'bom' is never reassigned. Use 'const' instead.	fix	20	32	const bom = 1;	end	2	9
 bom.svelte:5:12	@typescript-eslint/no-magic-numbers	noMagic	No magic number: 1.	end	5	13
 bom.svelte:5:9	eqeqeq	unexpected	Expected '===' and instead saw '=='.	suggestion	replaceOperator	Use '===' instead of '=='.	52	54	===	end	5	11
+counter.svelte.ts:12:12	@stylistic/space-before-function-paren	missingSpace	Missing space before function parentheses.	fix	357	357	 	end	12	13
+counter.svelte.ts:12:3	@stylistic/quote-props	unquotedPropertyFound	Unquoted property 'count' found.	fix	352	357	"count"	end	14	4
+counter.svelte.ts:12:3	@typescript-eslint/explicit-function-return-type	missingReturnType	Missing return type on function.	end	12	12
+counter.svelte.ts:15:27	@stylistic/comma-dangle	unexpected	Unexpected trailing comma.	fix	408	414	++\n\t}	end	15	28
+counter.svelte.ts:15:3	@stylistic/quote-props	unquotedPropertyFound	Unquoted property 'increment' found.	fix	386	395	"increment"	end	15	27
+counter.svelte.ts:15:3	@typescript-eslint/explicit-function-return-type	missingReturnType	Missing return type on function.	end	15	14
+counter.svelte.ts:4:30	@stylistic/space-before-function-paren	missingSpace	Missing space before function parentheses.	fix	163	163	 	end	4	31
+counter.svelte.ts:4:8	@typescript-eslint/explicit-function-return-type	missingReturnType	Missing return type on function.	end	4	30
+counter.svelte.ts:4:8	@typescript-eslint/explicit-module-boundary-types	missingReturnType	Missing return type on function.	end	4	30
+counter.svelte.ts:6:35	@typescript-eslint/no-magic-numbers	noMagic	No magic number: 2.	end	6	36
+counter.svelte.ts:7:22	@stylistic/quotes	wrongQuotes	Strings must use doublequote.	fix	272	275	"x"	end	7	25
+counter.svelte.ts:7:6	@typescript-eslint/no-unused-vars	unusedVar	'unused' is assigned a value but never used.	end	7	12
+counter.svelte.ts:7:6	prefer-const	useConst	'unused' is never reassigned. Use 'const' instead.	fix	252	277	const unused = $state('x');	end	7	12
+counter.svelte.ts:9:21	eqeqeq	unexpected	Expected '===' and instead saw '=='.	suggestion	replaceOperator	Use '===' instead of '=='.	315	317	===	end	9	23
+counter.svelte.ts:9:24	@typescript-eslint/no-magic-numbers	noMagic	No magic number: 0.	end	9	25
+counter.svelte.ts:9:26	@stylistic/function-call-argument-newline	missingLineBreak	There should be a line break after this argument.	fix	320	321	\n	end	9	27
 crlf.svelte:2:14	@stylistic/semi	missingSemi	Missing semicolon.	fix	33	33	;	end	3	1
 crlf.svelte:2:6	prefer-const	useConst	'crlf' is never reassigned. Use 'const' instead.	fix	21	33	const crlf = 1	end	2	10
 crlf.svelte:3:19	eqeqeq	unexpected	Expected '===' and instead saw '=='.	suggestion	replaceOperator	Use '===' instead of '=='.	53	55	===	end	3	21

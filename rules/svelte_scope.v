@@ -21,7 +21,9 @@ const svelte_rune_globals = ['\$state', '\$derived', '\$effect', '\$props', '\$b
 // SvelteScopeSetup is what the scope tree needs of the document.
 pub struct SvelteScopeSetup {
 pub:
-	on        bool
+	on bool
+	// module: a `.svelte.ts` module, whose only edit is the runes in the global scope.
+	module    bool
 	runes_off bool
 	// scripts are the <script> elements (offsets of the lint code, which are the file's there).
 	scripts []svelte.ScriptRange
@@ -44,6 +46,10 @@ fn (mut b ScopeBuilder) svelte_scope(setup SvelteScopeSetup) {
 	mut globals := ['\$\$slots', '\$\$props', '\$\$restProps']
 	if !setup.runes_off {
 		globals << svelte_rune_globals
+	}
+	if setup.module {
+		b.svelte_add_globals(svelte_rune_globals)
+		return
 	}
 	module := b.svelte_module_scope()
 	if module >= 0 {

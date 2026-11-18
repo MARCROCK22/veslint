@@ -1,6 +1,17 @@
 bom.svelte:5:12	@typescript-eslint/no-magic-numbers	noMagic	No magic number: 1.	end	5	13
 bom.svelte:5:5	@typescript-eslint/no-unnecessary-condition	comparisonBetweenLiteralTypes	Unnecessary conditional, comparison is always true, since `1 == 1` is true.	end	5	13
 bom.svelte:5:9	eqeqeq	unexpected	Expected '===' and instead saw '=='.	suggestion	replaceOperator	Use '===' instead of '=='.	54	56	===	end	5	11
+counter.svelte.ts:10:8	@stylistic/function-paren-newline	expectedBefore	Expected newline before ')'.	fix	331	331	\n	end	10	9
+counter.svelte.ts:13:3	@typescript-eslint/explicit-function-return-type	missingReturnType	Missing return type on function.	end	13	15
+counter.svelte.ts:16:3	@typescript-eslint/explicit-function-return-type	missingReturnType	Missing return type on function.	end	16	16
+counter.svelte.ts:4:8	@typescript-eslint/explicit-function-return-type	missingReturnType	Missing return type on function.	end	4	31
+counter.svelte.ts:4:8	@typescript-eslint/explicit-module-boundary-types	missingReturnType	Missing return type on function.	end	4	31
+counter.svelte.ts:6:35	@typescript-eslint/no-magic-numbers	noMagic	No magic number: 2.	end	6	36
+counter.svelte.ts:7:8	@typescript-eslint/no-unused-vars	unusedVar	'unused' is assigned a value but never used.	end	7	14
+counter.svelte.ts:9:14	@stylistic/function-paren-newline	expectedAfter	Expected newline after '('.	fix	312	312	\n	end	9	15
+counter.svelte.ts:9:21	eqeqeq	unexpected	Expected '===' and instead saw '=='.	suggestion	replaceOperator	Use '===' instead of '=='.	318	320	===	end	9	23
+counter.svelte.ts:9:24	@typescript-eslint/no-magic-numbers	noMagic	No magic number: 0.	end	9	25
+counter.svelte.ts:9:26	@stylistic/list-style	shouldNotWrap	Should not have line break(s) between ',' and 'doubled'	fix	323	324		end	10	1
 crlf.svelte:3:16	@typescript-eslint/no-unnecessary-condition	comparisonBetweenLiteralTypes	Unnecessary conditional, comparison is always true, since `1 == 1` is true.	end	3	25
 crlf.svelte:3:21	eqeqeq	unexpected	Expected '===' and instead saw '=='.	suggestion	replaceOperator	Use '===' instead of '=='.	58	60	===	end	3	23
 crlf.svelte:3:24	@typescript-eslint/no-magic-numbers	noMagic	No magic number: 1.	end	3	25

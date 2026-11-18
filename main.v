@@ -558,6 +558,8 @@ struct RuleFile {
 	svelte    bool
 	ts_path   string
 	twin_code string
+	// A `.svelte.ts` module: tsgo reads its virtual code instead of the file (svelte/module.v).
+	module svelte.ModuleVirtual
 }
 
 // run_rules applies the rules to the files and prints one line per problem:
@@ -627,6 +629,11 @@ fn run_rules(opts Options, timeout time.Duration) !int {
 			}
 			twin_code = code
 		}
+		module := if svelte.is_svelte_module_path(path) {
+			svelte_parsers.module_virtual(src) or { return error('${path}: ${err.msg()}') }
+		} else {
+			svelte.ModuleVirtual{}
+		}
 		named := if project_override == '' {
 			opts.loaded.named_projects(abs_path)
 		} else {
@@ -665,6 +672,7 @@ fn run_rules(opts Options, timeout time.Duration) !int {
 				abs_path
 			}
 			twin_code: twin_code
+			module:    module
 		}
 	}
 	bench.files = files.len
@@ -688,6 +696,8 @@ fn run_rules(opts Options, timeout time.Duration) !int {
 	for f in files {
 		if f.vue || f.svelte {
 			virtual[f.ts_path] = f.twin_code
+		} else if f.module.inserted > 0 {
+			served[f.abs_path] = f.module.code
 		} else if f.not_utf8 {
 			served[f.abs_path] = f.src
 		}
@@ -779,6 +789,7 @@ fn run_rules(opts Options, timeout time.Duration) !int {
 		}
 		mut src := f.src
 		mut has_bom := f.has_bom
+		mut module := f.module
 		mut result := rules.FileLint{}
 		// The document of a .vue file, parsed again after each pass of --fix.
 		mut doc := &vue.Document(unsafe { nil })
@@ -829,6 +840,8 @@ fn run_rules(opts Options, timeout time.Duration) !int {
 				checker.set_vue(doc, f.ts_path)
 			} else if f.svelte {
 				checker.set_svelte(sdoc, f.ts_path, svelte_parsers.parsers)
+			} else if module.inserted > 0 {
+				checker.set_svelte_module(src, module.code, module.at, module.inserted)
 			}
 			result = checker.lint_file(if (f.vue && uses_tsx_grammar(doc))
 				|| (!f.vue && !f.svelte && treesitter.uses_jsx_dialect(f.path)) {
@@ -875,6 +888,12 @@ fn run_rules(opts Options, timeout time.Duration) !int {
 				sdoc.free()
 				sdoc = svelte_parsers.parse(src) or { return error('${f.path}: ${err.msg()}') }
 				client.serve(f.ts_path, sdoc.virtual_code)
+			} else if f.module.inserted > 0 || module.inserted > 0 {
+				// The module's virtual code is made again from the fixed text.
+				module = svelte_parsers.module_virtual(src) or {
+					return error('${f.path}: ${err.msg()}')
+				}
+				client.serve(f.abs_path, module.code)
 			} else {
 				// What is on disk now is valid UTF-8: tsgo reads it from there.
 				client.stop_serving(f.abs_path)

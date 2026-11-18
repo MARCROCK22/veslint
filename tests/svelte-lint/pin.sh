@@ -28,11 +28,11 @@ for copy in lint fix; do
 	cp fixtures/*.svelte fixtures/*.ts fixtures/tsconfig.json "$TMP/$copy/"
 	ln -s "$ROOT/build/upstream/svelte-deps/node_modules/typescript" "$TMP/$copy/node_modules/typescript"
 done
-(cd "$TMP/lint" && node "$ROOT/tests/svelte-lint/eslint_each.mjs" "$ESLINT/package.json" "$DIR/eslint.svelte.config.mjs" ./*.svelte 2> /dev/null |
+(cd "$TMP/lint" && node "$ROOT/tests/svelte-lint/eslint_each.mjs" "$ESLINT/package.json" "$DIR/eslint.svelte.config.mjs" ./*.svelte ./*.svelte.ts 2> /dev/null |
 	python3 "$ROOT/tests/eslint_lines.py" fixes | sed 's|^\./||' | LC_ALL=C sort > "$DIR/expected.txt")
-(cd "$TMP/fix" && node "$ESLINT/bin/eslint.js" --config "$DIR/eslint.svelte.config.mjs" --fix --format json ./*.svelte 2> /dev/null |
+(cd "$TMP/fix" && node "$ESLINT/bin/eslint.js" --config "$DIR/eslint.svelte.config.mjs" --fix --format json ./*.svelte ./*.svelte.ts 2> /dev/null |
 	python3 "$ROOT/tests/eslint_lines.py" fixes | LC_ALL=C sort > "$DIR/fixed/expected.txt")
-for file in fixtures/*.svelte; do
+for file in fixtures/*.svelte fixtures/*.svelte.ts; do
 	cp "$TMP/fix/${file##*/}" "$DIR/fixed/${file##*/}"
 done
 echo "$(wc -l < "$DIR/expected.txt") problems, $(wc -l < "$DIR/fixed/expected.txt") after --fix"

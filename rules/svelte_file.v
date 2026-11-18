@@ -484,3 +484,66 @@ fn (c &Checker) svelte_wrapper_es_statement(t &estree.EsTree, node int) bool {
 	return c.is_svelte() && t.nodes[node].start >= c.svelte.doc.lint_start
 		&& c.svelte.doc.lint_to_file(t.nodes[node].start, false) < 0
 }
+
+// SvelteModuleView is the `.svelte.ts` module the Checker lints: tsgo has its virtual code, the
+// file with `inserted` bytes of declarations at byte offset `at` (svelte.ModuleVirtual); the
+// positions of the file after `at` are that many units further in it.
+struct SvelteModuleView {
+	on       bool
+	code     string
+	at       int
+	at_unit  int
+	inserted int
+}
+
+// set_svelte_module makes the next lint_file lint a `.svelte.ts` module whose virtual code tsgo
+// has (`src` is the file's text).
+pub fn (mut c Checker) set_svelte_module(src string, code string, at int, inserted int) {
+	c.svelte_module = SvelteModuleView{
+		on:       inserted > 0
+		code:     code
+		at:       at
+		at_unit:  offsets.utf16_offsets(src, [at])[0]
+		inserted: inserted
+	}
+}
+
+// svelte_module_units moves UTF-16 offsets of the file to the virtual code of a module.
+fn (c &Checker) svelte_module_units(units []int) []int {
+	if !c.svelte_module.on {
+		return units
+	}
+	m := c.svelte_module
+	return units.map(if it >= m.at_unit { it + m.inserted } else { it })
+}
+
+// svelte_module_file_unit moves a UTF-16 offset of a module's virtual code to the file (the
+// declarations are where they are inserted).
+fn (c &Checker) svelte_module_file_unit(unit int) int {
+	if !c.svelte_module.on {
+		return unit
+	}
+	m := c.svelte_module
+	return if unit >= m.at_unit + m.inserted {
+		unit - m.inserted
+	} else if unit >= m.at_unit {
+		m.at_unit
+	} else {
+		unit
+	}
+}
+
+// svelte_module_file_byte is svelte_module_file_unit for a byte offset.
+fn (c &Checker) svelte_module_file_byte(b int) int {
+	if !c.svelte_module.on {
+		return b
+	}
+	m := c.svelte_module
+	return if b >= m.at + m.inserted {
+		b - m.inserted
+	} else if b >= m.at {
+		m.at
+	} else {
+		b
+	}
+}

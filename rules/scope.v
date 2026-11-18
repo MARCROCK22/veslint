@@ -248,6 +248,15 @@ fn (mut c Checker) file_scope_setup(config LintConfig, inline InlineConfig) Scop
 			svelte: c.svelte_scope_setup()
 		}
 	}
+	if c.svelte_module.on {
+		return ScopeSetup{
+			...setup
+			svelte: SvelteScopeSetup{
+				on:     true
+				module: true
+			}
+		}
+	}
 	if c.is_vue() && c.vue.doc.has_script_setup() {
 		return ScopeSetup{
 			...setup

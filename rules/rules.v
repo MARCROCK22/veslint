@@ -2570,6 +2570,7 @@ fn (mut c Checker) lint_file_in_lifetime(parser Parser, config LintConfig, src s
 		}
 		c.vue = VueView{}
 		c.svelte = SvelteView{}
+		c.svelte_module = SvelteModuleView{}
 	}
 	mut root := root_node(tree)
 	// The text of a .svelte file's nodes: the file, then the template part of the lint code.
@@ -4544,6 +4545,9 @@ mut:
 	vue VueView
 	// the .svelte file being linted (svelte_file.v), set before lint_file by set_svelte
 	svelte SvelteView
+	// the `.svelte.ts` module being linted (svelte_file.v), set before lint_file by
+	// set_svelte_module
+	svelte_module SvelteModuleView
 	// what the vue/* script rules share about the file being linted (vue_component.v), built on
 	// first use (per file)
 	vue_script_info VueScript

@@ -441,6 +441,14 @@ fn (mut s Server) lint(id i64, config string, project string, files []string, te
 				s.stop_serving(abs_path)
 			}
 		}
+		// A `.svelte.ts` module: tsgo reads its virtual code (svelte/module.v).
+		mut module := svelte.ModuleVirtual{}
+		if svelte.is_svelte_module_path(path) {
+			module = s.svelte_parsers.module_virtual(src) or { svelte.ModuleVirtual{} }
+			if module.inserted > 0 {
+				s.set_served(abs_path, module.code)
+			}
+		}
 		is_vue := rules.is_vue_path(path)
 		if is_vue {
 			mut doc := s.vue_parsers.parse(src) or {
@@ -519,6 +527,7 @@ fn (mut s Server) lint(id i64, config string, project string, files []string, te
 			has_bom:  has_bom
 			vue:      is_vue
 			svelte:   is_svelte
+			module:   module
 			ts_path:  if is_vue {
 				rules.vue_twin_path(abs_path)
 			} else if is_svelte {
@@ -619,6 +628,8 @@ fn (mut s Server) lint(id i64, config string, project string, files []string, te
 			checker.set_vue(doc, f.ts_path)
 		} else if f.svelte {
 			checker.set_svelte(sdoc, f.ts_path, s.svelte_parsers.parsers)
+		} else if f.module.inserted > 0 {
+			checker.set_svelte_module(f.src, f.module.code, f.module.at, f.module.inserted)
 		}
 		result := checker.lint_file(if (f.vue && uses_tsx_grammar(doc))
 			|| (!f.vue && !f.svelte && treesitter.uses_jsx_dialect(f.path)) {

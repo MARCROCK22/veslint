@@ -35,6 +35,14 @@ fn (mut p SvelteParsers) close() {
 	}
 }
 
+// module_virtual is the virtual code of a `.svelte.ts` module (svelte/module.v).
+fn (mut p SvelteParsers) module_virtual(src string) !svelte.ModuleVirtual {
+	if p.parsers == unsafe { nil } {
+		p.parsers = svelte.new_parsers()!
+	}
+	return p.parsers.module_virtual(src)
+}
+
 // svelte_javascript_warning is the warning for a .svelte file that is not linted because its
 // script is JavaScript.
 fn svelte_javascript_warning(path string) string {
