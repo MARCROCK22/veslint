@@ -544,3 +544,153 @@ fn (mut c Checker) svsc_global_references(root C.TSNode, trace map[string]EsTrac
 	}
 	return out
 }
+
+// svsc_declarator_init is what the expression-affixes.ts helpers ask of an identifier: the
+// initializer of the one declarator of its variable (findVariable through a FindVariableContext,
+// `visited`: an identifier seen before gives no variable), none otherwise.
+fn (mut c Checker) svsc_declarator_init(root C.TSNode, e &SvscEs, id int, mut visited map[int]bool) ?int {
+	if visited[id] {
+		return none
+	}
+	visited[id] = true
+	t := e.t
+	mut name_node := -1
+	if e.svelte {
+		v := c.sv_find_variable(id)
+		if v < 0 {
+			return none
+		}
+		defs := c.svelte.doc.scope.variables[v].defs
+		if defs.len != 1 {
+			return none
+		}
+		name_node = defs[0].name
+	} else {
+		ts := t.ts_node(id)?
+		tree := c.scope_tree(root)
+		name := t.string_of(id, .name)?
+		scope := tree.get_scope(ts)
+		mut v := tree.find_variable(scope, name, t.nodes[id].start)
+		if v < 0 && name.starts_with('\$') {
+			v = tree.find_variable(scope, name[1..], t.nodes[id].start)
+		}
+		if v < 0 || tree.variables[v].identifiers.len != 1 {
+			return none
+		}
+		name_node = c.es_index_of(t, tree.variables[v].identifiers[0])?
+	}
+	parent := t.nodes[name_node].parent
+	if parent < 0 || t.typ(parent) != .variable_declarator {
+		return none
+	}
+	return t.node(parent, .init)
+}
+
+// svsc_template_parts are the expressions and quasis of a template literal in source order.
+fn svsc_template_parts(t &estree.EsTree, template int) []int {
+	mut parts := t.list(template, .expressions) or { []int{} }
+	parts << t.list(template, .quasis) or { []int{} }
+	parts.sort_with_compare(fn [t] (a &int, b &int) int {
+		return if t.nodes[*a].start < t.nodes[*b].start { -1 } else { 1 }
+	})
+	return parts
+}
+
+// svsc_raw is a TemplateElement's `value.raw`.
+fn svsc_raw(t &estree.EsTree, quasi int) string {
+	value := t.get(quasi, .value)
+	return if value is estree.TemplateValue { value.raw } else { '' }
+}
+
+// svsc_prefix_variable is extractExpressionPrefixVariable (expression-affixes.ts): the identifier a
+// URL expression starts with, followed through `const` initializers.
+fn (mut c Checker) svsc_prefix_variable(root C.TSNode, e &SvscEs, expression int, mut visited map[int]bool) ?int {
+	t := e.t
+	match t.typ(expression) {
+		.binary_expression {
+			left := t.node(expression, .left)?
+			if t.typ(left) == .private_identifier {
+				return none
+			}
+			return c.svsc_prefix_variable(root, e, left, mut visited)
+		}
+		.identifier {
+			init := c.svsc_declarator_init(root, e, expression, mut visited) or { return expression }
+			return c.svsc_prefix_variable(root, e, init, mut visited) or { expression }
+		}
+		.member_expression {
+			property := t.node(expression, .property)?
+			return if t.typ(property) == .identifier { property } else { none }
+		}
+		.template_literal {
+			for part in svsc_template_parts(t, expression) {
+				if t.typ(part) == .template_element && svsc_raw(t, part) == '' {
+					continue
+				}
+				if t.typ(part) != .template_element {
+					return c.svsc_prefix_variable(root, e, part, mut visited)
+				}
+				return none
+			}
+			return none
+		}
+		else {
+			return none
+		}
+	}
+}
+
+// svsc_base_references are extractBasePathReferences of the navigation rules: the identifiers of
+// the references to `base` of `$app/paths`, and the `base` of a member access of the module
+// (nodes of the view).
+fn (mut c Checker) svsc_base_references(root C.TSNode, b &SvscBridge) map[int]bool {
+	mut out := map[int]bool{}
+	tree := c.scope_tree(root)
+	for traced in c.es_esm_references(root, {
+		'\$app/paths': EsTrace{
+			esm:      true
+			children: {
+				'base': EsTrace{
+					read: true
+				}
+			}
+		}
+	}) {
+		if node_kind(traced.node) == 'import_specifier' {
+			v := c.svsc_import_variable(root, traced.node)
+			if v < 0 {
+				continue
+			}
+			for r in tree.variables[v].references {
+				lint_node := c.es_index_of(b.lint, tree.references[r].identifier) or { continue }
+				if b.lint.typ(lint_node) == .identifier {
+					out[b.view_of(lint_node) or { continue }] = true
+				}
+			}
+			continue
+		}
+		lint_node := c.es_index_of(b.lint, traced.node) or { continue }
+		if b.lint.typ(lint_node) != .member_expression {
+			continue
+		}
+		property := b.lint.node(lint_node, .property) or { continue }
+		if b.lint.typ(property) == .identifier
+			&& (b.lint.string_of(property, .name) or { '' }) == 'base' {
+			out[b.view_of(property) or { continue }] = true
+		}
+	}
+	return out
+}
+
+// svsc_url_is_absolute is /^[+a-z]*:/i.test(url).
+fn svsc_url_is_absolute(url string) bool {
+	for ch in url {
+		if ch == `:` {
+			return true
+		}
+		if !(ch == `+` || (ch >= `a` && ch <= `z`) || (ch >= `A` && ch <= `Z`)) {
+			return false
+		}
+	}
+	return false
+}

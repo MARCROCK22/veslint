@@ -1,0 +1,10 @@
+tests/rules/svelte/no-navigation-without-base/kit/cases.svelte:9:7	svelte/no-navigation-without-base	gotoNotPrefixed	Found a goto() call with a url that isn't prefixed with the base path.	end	9	13
+tests/rules/svelte/no-navigation-without-base/kit/cases.svelte:14:7	svelte/no-navigation-without-base	gotoNotPrefixed	Found a goto() call with a url that isn't prefixed with the base path.	end	14	12
+tests/rules/svelte/no-navigation-without-base/kit/cases.svelte:16:7	svelte/no-navigation-without-base	gotoNotPrefixed	Found a goto() call with a url that isn't prefixed with the base path.	end	16	28
+tests/rules/svelte/no-navigation-without-base/kit/cases.svelte:17:7	svelte/no-navigation-without-base	gotoNotPrefixed	Found a goto() call with a url that isn't prefixed with the base path.	end	17	16
+tests/rules/svelte/no-navigation-without-base/kit/cases.svelte:19:12	svelte/no-navigation-without-base	pushStateNotPrefixed	Found a pushState() call with a url that isn't prefixed with the base path.	end	19	18
+tests/rules/svelte/no-navigation-without-base/kit/cases.svelte:22:15	svelte/no-navigation-without-base	replaceStateNotPrefixed	Found a replaceState() call with a url that isn't prefixed with the base path.	end	22	21
+tests/rules/svelte/no-navigation-without-base/kit/cases.svelte:26:10	svelte/no-navigation-without-base	linkNotPrefixed	Found a link with a url that isn't prefixed with the base path.	end	26	14
+tests/rules/svelte/no-navigation-without-base/kit/cases.svelte:33:9	svelte/no-navigation-without-base	linkNotPrefixed	Found a link with a url that isn't prefixed with the base path.	end	33	16
+tests/rules/svelte/no-navigation-without-base/kit/cases.ts:3:6	svelte/no-navigation-without-base	gotoNotPrefixed	Found a goto() call with a url that isn't prefixed with the base path.	end	3	10
+tests/rules/svelte/no-navigation-without-base/kit/options/cases.svelte:19:12	svelte/no-navigation-without-base	pushStateNotPrefixed	Found a pushState() call with a url that isn't prefixed with the base path.	end	19	18
