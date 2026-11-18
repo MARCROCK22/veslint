@@ -776,6 +776,7 @@ pub const svelte_experimental_require_strict_events = 'svelte/experimental-requi
 pub const svelte_sort_attributes = 'svelte/sort-attributes'
 pub const svelte_max_lines_per_block = 'svelte/max-lines-per-block'
 pub const svelte_no_bind_value_on_checkable_inputs = 'svelte/no-bind-value-on-checkable-inputs'
+pub const svelte_require_event_prefix = 'svelte/require-event-prefix'
 pub const names = [no_floating_promises, await_thenable, require_await, return_await,
 	no_misused_promises, no_unsafe_call, no_unsafe_member_access, no_unsafe_return,
 	no_unsafe_assignment, no_unsafe_argument, restrict_template_expressions,
@@ -1007,7 +1008,8 @@ pub const names = [no_floating_promises, await_thenable, require_await, return_a
 	svelte_require_optimized_style_attribute, svelte_prefer_style_directive, svelte_valid_style_parse,
 	svelte_consistent_selector_style, svelte_no_unused_class_name,
 	svelte_experimental_require_slot_types, svelte_experimental_require_strict_events,
-	svelte_sort_attributes, svelte_max_lines_per_block, svelte_no_bind_value_on_checkable_inputs]
+	svelte_sort_attributes, svelte_max_lines_per_block, svelte_no_bind_value_on_checkable_inputs,
+	svelte_require_event_prefix]
 
 // untyped_rules are the ported rules that need no types (`meta.docs.requiresTypeChecking` is false
 // in typescript-eslint; the eslint-plugin-unicorn rules that read the types when the parser has a
@@ -1974,6 +1976,7 @@ pub const default_options = {
 	svelte_sort_attributes:                           '[]'
 	svelte_max_lines_per_block:                       '[]'
 	svelte_no_bind_value_on_checkable_inputs:         '[]'
+	svelte_require_event_prefix:                      '[]'
 }
 
 // Finding is a problem a rule found at a node.
@@ -2921,6 +2924,7 @@ pub fn message(rule string, finding Finding) string {
 		svelte_sort_attributes { ssat_messages }
 		svelte_max_lines_per_block { smlpb_messages }
 		svelte_no_bind_value_on_checkable_inputs { snbvci_messages }
+		svelte_require_event_prefix { srep_messages }
 		else { map[string]string{} }
 	}
 	return interpolate(messages[finding.message_id] or { finding.message_id }, finding.data)
@@ -5390,6 +5394,9 @@ fn (mut c Checker) lint_rule(rule string, root C.TSNode, abs_path string, mut st
 		}
 		svelte_no_bind_value_on_checkable_inputs {
 			return c.lint_svelte_no_bind_value_on_checkable_inputs(root, abs_path, mut stats)!
+		}
+		svelte_require_event_prefix {
+			return c.lint_svelte_require_event_prefix(root, abs_path, mut stats)!
 		}
 		else { return error('unknown rule: ${rule}') }
 	}

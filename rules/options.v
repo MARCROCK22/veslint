@@ -381,6 +381,7 @@ pub fn check_options(rule string, options []json2.Any) !bool {
 		svelte_no_unused_class_name { snucn_options(options)! }
 		svelte_sort_attributes { ssat_options(options)! }
 		svelte_max_lines_per_block { smlpb_options(options)! }
+		svelte_require_event_prefix { srep_options(options)! }
 		else { return false }
 	}
 	return true

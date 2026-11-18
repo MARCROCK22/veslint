@@ -1,0 +1,11 @@
+tests/rules/svelte/require-event-prefix/async/cases.svelte:3:3	svelte/require-event-prefix	nonPrefixedFunction	Component event name must start with "on".
+tests/rules/svelte/require-event-prefix/async/cases.svelte:5:3	svelte/require-event-prefix	nonPrefixedFunction	Component event name must start with "on".
+tests/rules/svelte/require-event-prefix/async/cases.svelte:6:3	svelte/require-event-prefix	nonPrefixedFunction	Component event name must start with "on".
+tests/rules/svelte/require-event-prefix/cases.svelte:4:3	svelte/require-event-prefix	nonPrefixedFunction	Component event name must start with "on".
+tests/rules/svelte/require-event-prefix/cases.svelte:6:3	svelte/require-event-prefix	nonPrefixedFunction	Component event name must start with "on".
+tests/rules/svelte/require-event-prefix/cases.svelte:8:3	svelte/require-event-prefix	nonPrefixedFunction	Component event name must start with "on".
+tests/rules/svelte/require-event-prefix/cases.svelte:15:49	svelte/require-event-prefix	nonPrefixedFunction	Component event name must start with "on".
+tests/rules/svelte/require-event-prefix/cases.svelte:16:13	svelte/require-event-prefix	nonPrefixedFunction	Component event name must start with "on".
+tests/rules/svelte/require-event-prefix/generics/cases.svelte:4:3	svelte/require-event-prefix	nonPrefixedFunction	Component event name must start with "on".
+tests/rules/svelte/require-event-prefix/generics/cases.svelte:7:3	svelte/require-event-prefix	nonPrefixedFunction	Component event name must start with "on".
+tests/rules/svelte/require-event-prefix/generics/cases.svelte:9:3	svelte/require-event-prefix	nonPrefixedFunction	Component event name must start with "on".
