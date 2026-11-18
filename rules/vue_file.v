@@ -301,3 +301,30 @@ fn last_end_in(ends []int, offset int) int {
 	}
 	return if lo == 0 { 0 } else { ends[lo - 1] }
 }
+
+// vue_parsing_error is ESLint's fatal problem for a .vue file whose <script setup> exports a type
+// next to a <script> (ScriptInfo.type_export): vue-eslint-parser's rewrite of the export is code
+// TypeScript's parser rejects, and the parse throws its first syntactic diagnostic (`Parsing
+// error: <message>`), at the line and 0-based column fixErrorLocation gives its offset. Nothing
+// when TypeScript finds no error in the code.
+fn (mut c Checker) vue_parsing_error() []Finding {
+	doc := c.vue.doc
+	diagnostics := c.client.transpile_diagnostics(doc.script.code, 'file.ts') or { return [] }
+	if diagnostics.len == 0 {
+		return []
+	}
+	loc := doc.error_loc(diagnostics[0].pos)
+	return [
+		Finding{
+			stmt:             treesitter.Ident{
+				start_byte: 0
+			}
+			rule:             problem_rule
+			message_id:       'fatal'
+			text:             'Parsing error: ${diagnostics[0].text}'
+			column_from_zero: true
+			fixed_line:       loc.line
+			fixed_column:     loc.column + 1
+		},
+	]
+}

@@ -2,6 +2,7 @@ module vue
 
 import estree
 import jsregexp
+import offsets
 import treesitter
 
 // The <script> side of a .vue file: which scripts make the Program, their language, the code
@@ -74,6 +75,11 @@ pub mut:
 	// parsing error from TypeScript then); error_index is where.
 	has_error   bool
 	error_index int
+	// type_export: the <script setup> (next to a <script>) has a named export without a
+	// declaration that exports a type (`export type { X }`, `export { type X as Y }`), which
+	// getScriptSetupCodeBlocks rewrites as `( type { X });` or `({ type X });`: code TypeScript's
+	// parser rejects, a parsing error of the whole file for vue-eslint-parser (error_loc).
+	type_export bool
 }
 
 // script_lang is getParserLangFromSFC: the lang of the <script setup> when there are exactly two
@@ -120,6 +126,24 @@ pub fn (s &ScriptInfo) synthetic_to_file(offset int, end bool) int {
 		}
 	}
 	return offset + offset
+}
+
+// error_loc is the line and (0-based) column vue-eslint-parser gives a parsing error of the script
+// parser at `unit`, a UTF-16 offset of ScriptInfo.code (fixErrorLocation): the offset of the file
+// of the code block it is in, else twice the offset (getFixOffset adds the offset itself when no
+// block has it).
+pub fn (d &Document) error_loc(unit int) Loc {
+	s := &d.script
+	offset := offsets.byte_offset(s.code, unit)
+	if !s.combined {
+		return d.loc(offset + s.offset)
+	}
+	for b in s.remap {
+		if b.gen_start <= offset && offset < b.gen_end {
+			return d.loc(offset + b.delta)
+		}
+	}
+	return d.loc_u16(unit + unit)
 }
 
 // file_to_synthetic maps an offset of the file to ScriptInfo.code, the inverse of
@@ -674,6 +698,12 @@ fn (mut c ExprContext) setup_code_blocks(setup int, text int) !SetupBlocks {
 					used = append_statement(mut statements, code, base, export_token.end - base,
 						end, used)
 				} else {
+					if (es.string_of(st, .export_kind) or { 'value' }) == 'type'
+						|| (es.list(st, .specifiers) or { []int{} }).any((es.string_of(it, .export_kind) or {
+							'value'
+						}) == 'type') {
+						c.doc.script.type_export = true
+					}
 					statements.append_split('(')
 					mut cursor := export_token.end - base
 					for spec in es.list(st, .specifiers) or { []int{} } {

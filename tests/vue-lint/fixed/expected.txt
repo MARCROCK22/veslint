@@ -138,6 +138,8 @@ tsx-lang.vue:3:11	vue/multi-word-component-names	unexpected	Component name "Tsx"
 tsx-lang.vue:5:3	@typescript-eslint/explicit-function-return-type	missingReturnType	Missing return type on function.	end	5	10
 tsx-lang.vue:5:3	@typescript-eslint/explicit-module-boundary-types	missingReturnType	Missing return type on function.	end	5	10
 tsx-lang.vue:5:3	vue/component-api-style	disallowComponentOption	Options API is not allowed in your project. `render` function is part of the Options API. Use `<script setup>` or Composition API instead.	end	5	9
+type-export-only.vue:7:12	eslint	fatal	Parsing error: ')' expected.
+type-export.vue:10:20	eslint	fatal	Parsing error: ',' expected.
 types.vue:10:23	@stylistic/list-style	shouldSpacing	Should have space between 'ref' and '}'	fix	174	174	 	end	10	23
 types.vue:10:9	@stylistic/list-style	shouldSpacing	Should have space between '{' and 'onMounted'	fix	160	160	 	end	10	9
 types.vue:12:13	@stylistic/list-style	shouldSpacing	Should have space between 'load' and '}'	fix	201	201	 	end	12	13

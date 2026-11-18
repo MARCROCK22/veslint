@@ -232,6 +232,8 @@ tsx-lang.vue:5:30	@stylistic/semi	missingSemi	Missing semicolon.	fix	94	94	;	end
 tsx-lang.vue:6:18	@stylistic/semi	missingSemi	Missing semicolon.	fix	112	112	;	end	7	1
 tsx-lang.vue:7:4	@stylistic/comma-dangle	unexpected	Unexpected trailing comma.	fix	115	119	}\n}	end	7	5
 tsx-lang.vue:8:2	@stylistic/semi	missingSemi	Missing semicolon.	fix	119	119	;	end	9	1
+type-export-only.vue:7:12	eslint	fatal	Parsing error: ')' expected.
+type-export.vue:10:20	eslint	fatal	Parsing error: ',' expected.
 types.vue:10:24	@stylistic/object-curly-spacing	unexpectedSpaceBefore	There should be no space before '}'.	fix	176	177		end	10	25
 types.vue:10:32	@stylistic/quotes	wrongQuotes	Strings must use doublequote.	fix	184	189	"vue"	end	10	37
 types.vue:10:9	@stylistic/object-curly-spacing	unexpectedSpaceAfter	There should be no space after '{'.	fix	161	162		end	10	10

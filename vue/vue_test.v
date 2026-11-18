@@ -404,6 +404,23 @@ fn test_script_lang_decision() {
 	assert parse('<script lang="JS">let a</script>').script.lang == .js
 }
 
+fn test_type_export_of_script_setup() {
+	two_scripts := '<script lang="ts">\nexport default {}\n</script>\n<script setup lang="ts">\n'
+	assert parse(two_scripts + 'type X = number\nexport type { X }\n</script>').script.type_export
+	assert parse(two_scripts + 'type X = number\nexport { type X as Y }\n</script>').script.type_export
+	assert !parse(two_scripts + 'const a = 1\nexport { a }\n</script>').script.type_export
+	assert !parse(two_scripts + "export type { X } from './x'\n</script>").script.type_export
+	assert !parse(two_scripts + 'export type X = number\n</script>').script.type_export
+	// A <script setup> alone is parsed as it is.
+	assert !parse('<script setup lang="ts">\ntype X = number\nexport type { X }\n</script>').script.type_export
+	// The error's place: the file's offset of the code block that has it, or twice the offset.
+	d := parse(two_scripts + 'type X = number\nexport type { X }\n</script>')
+	at := d.script.code.index('{ X }') or { -1 }
+	assert d.error_loc(at) == d.loc(d.src.index('{ X }') or { -1 })
+	split := d.script.code.index('\n(\n') or { -1 }
+	assert d.error_loc(split + 1) == d.loc_u16(2 * (split + 1))
+}
+
 fn test_generic_constraints() {
 	assert generic_constraint('T', 'T extends string') == ' string'
 	assert generic_constraint('U', 'U = number') == 'unknown'
