@@ -227,3 +227,108 @@ fn (r &VueTemplateRoots) parent(es &estree.EsTree, snippet int, node int) int {
 	}
 	return es.nodes[node].parent
 }
+
+// VueParentFn gives the parent of a node of an EsTree as the rules see it (-1 for none): the
+// script's own parent, or the template's (VueTemplateRoots.parent).
+type VueParentFn = fn (t &estree.EsTree, node int) int
+
+// vue_script_parent is the parent of a node of the script.
+fn vue_script_parent(t &estree.EsTree, node int) int {
+	return t.nodes[node].parent
+}
+
+// VueMutation is the result of findMutating: the kind of mutation, the node that mutates and the
+// member accesses between the mutated node and it.
+struct VueMutation {
+	kind       string // 'assignment', 'update' or 'call'
+	node       int
+	path_nodes []int
+}
+
+// vue_find_mutating ports findMutating: how the parents of `props` (a MemberExpression or an
+// Identifier) mutate it, through member accesses and chain expressions.
+fn vue_find_mutating(t &estree.EsTree, props int, parent_of VueParentFn) ?VueMutation {
+	mut path_nodes := []int{}
+	mut node := props
+	mut target := parent_of(t, node)
+	for target >= 0 {
+		match t.typ(target) {
+			.assignment_expression {
+				if (t.node(target, .left) or { -1 }) == node {
+					return VueMutation{'assignment', target, path_nodes}
+				}
+				return none
+			}
+			.update_expression {
+				return VueMutation{'update', target, path_nodes}
+			}
+			.unary_expression {
+				if (t.string_of(target, .operator) or { '' }) == 'delete' {
+					return VueMutation{'update', target, path_nodes}
+				}
+				return none
+			}
+			.call_expression {
+				if path_nodes.len > 0 && (t.node(target, .callee) or { -1 }) == node {
+					name := vue_static_property_name(t, path_nodes.last()) or { '' }
+					if name in ['push', 'pop', 'shift', 'unshift', 'reverse', 'splice', 'sort',
+						'copyWithin', 'fill'] {
+						path_nodes.pop()
+						return VueMutation{'call', target, path_nodes}
+					}
+				}
+				if vue_is_object_assign_call(t, target, node) {
+					return VueMutation{'call', target, path_nodes}
+				}
+				return none
+			}
+			.member_expression {
+				if (t.node(target, .object) or { -1 }) == node {
+					path_nodes << target
+					node = target
+					target = parent_of(t, target)
+					continue
+				}
+				return none
+			}
+			.chain_expression {
+				node = target
+				target = parent_of(t, target)
+				continue
+			}
+			else {
+				return none
+			}
+		}
+	}
+	return none
+}
+
+// vue_is_object_assign_call ports isObjectAssignCall: `Object.assign(node, …)`.
+fn vue_is_object_assign_call(t &estree.EsTree, call int, node int) bool {
+	args := t.list(call, .arguments) or { return false }
+	if args.len == 0 || args[0] != node {
+		return false
+	}
+	callee := t.node(call, .callee) or { return false }
+	if t.typ(callee) != .member_expression {
+		return false
+	}
+	object := t.node(callee, .object) or { return false }
+	property := t.node(callee, .property) or { return false }
+	return vue_identifier_name(t, object) == 'Object' && vue_identifier_name(t, property) == 'assign'
+}
+
+// vue_member_chaining ports getMemberChaining: the object at the bottom of a chain of member
+// accesses (through chain expressions), then the accesses from the innermost.
+fn vue_member_chaining(t &estree.EsTree, node int) []int {
+	mut nodes := []int{}
+	mut n := vue_skip_chain(t, node)
+	for n >= 0 && t.typ(n) == .member_expression {
+		nodes << n
+		n = vue_skip_chain(t, t.node(n, .object) or { break })
+	}
+	mut out := [n]
+	out << nodes.reverse()
+	return out
+}
