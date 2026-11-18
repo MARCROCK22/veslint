@@ -459,20 +459,30 @@ fn sv_json_path(value json2.Any, keys []string) ?json2.Any {
 // @sveltejs/kit found from the file's directory up, else from the dependencies of the
 // package.json files from there up (eslint-plugin-svelte's own package counts as SvelteKit 2, a
 // hack upstream keeps for its tests); the file type when the file is under the routes directory
-// (settings.svelte.kit.files.routes, else `src/routes`) of the project root (the directory of
-// the closest package.json). svelte.config.js's kit.files.routes is not read.
+// (settings.svelte.kit.files.routes, else parserOptions.svelteConfig's, else `src/routes`) of the
+// project root (the directory of the closest package.json). svelte.config.js's kit.files.routes is
+// not read.
 fn (c &Checker) sv_kit_context(path string) SvelteKitContext {
 	version := sv_kit_version(path)
 	if version == '' {
 		return SvelteKitContext{}
 	}
 	mut routes := 'src/routes'
+	mut from_settings := false
 	if svelte_settings := c.settings['svelte'] {
 		if r := sv_json_path(svelte_settings, ['kit', 'files', 'routes']) {
 			if r is string {
-				routes = r.trim_left('/')
+				routes = r
+				from_settings = true
 			}
 		}
+	}
+	if !from_settings && c.language.svelte_kit_routes != '' {
+		routes = c.language.svelte_kit_routes
+	}
+	// `.replace(/^\//, '')`: one leading slash.
+	if routes.starts_with('/') {
+		routes = routes[1..]
 	}
 	package_jsons := sv_package_jsons(path)
 	root := if package_jsons.len > 0 { os.dir(package_jsons[0]) } else { '' }

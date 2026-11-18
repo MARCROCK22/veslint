@@ -299,6 +299,10 @@ pub:
 	// withTypeInformation reads: veslint always has one, unless the parser options say
 	// `projectService` and `project` are off (and give no `programs`).
 	type_information bool = true
+	// parserOptions.svelteConfig.kit.files.routes of svelte-eslint-parser (its svelteParseContext's
+	// svelteConfig, which getSvelteContext reads under settings.svelte.kit.files.routes): '' when
+	// not a string.
+	svelte_kit_routes string
 }
 
 // parse_language_options reads the `languageOptions` of a configuration (as ESLint resolved it,
@@ -379,7 +383,22 @@ pub fn parse_language_options(value json2.Any) LanguageOptions {
 		global_return:           global_return
 		isolated_declarations:   isolated.json_str() !in ['false', 'null', '0', '""']
 		type_information:        type_information
+		svelte_kit_routes:       scope_svelte_kit_routes(parser)
 	}
+}
+
+// scope_svelte_kit_routes is parserOptions.svelteConfig.kit.files.routes ('' when it is not a
+// string).
+fn scope_svelte_kit_routes(parser map[string]json2.Any) string {
+	mut value := parser['svelteConfig'] or { return '' }
+	for key in ['kit', 'files', 'routes'] {
+		if value !is map[string]json2.Any {
+			return ''
+		}
+		object := value.as_map()
+		value = object[key] or { return '' }
+	}
+	return if value is string { value } else { '' }
 }
 
 // scope_name_option reads `jsxPragma` or `jsxFragmentName` of the parser options: not set, null

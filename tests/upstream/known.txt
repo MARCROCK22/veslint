@@ -1747,3 +1747,5 @@ veslint	vue/no-restricted-syntax/i1	selectors on vue-eslint-parser's V* nodes ar
 veslint	no-restricted-call-after-await/i6	a relative `module` needs the file in the current directory
 veslint	no-restricted-call-after-await/i7	a relative `module` needs the file in the current directory
 veslint	no-restricted-call-after-await/i8	an absolute `module` resolved through the clone's package.json
+# svelte/* script rules (SR2): svelte-eslint-parser's svelteConfig from svelte.config.js is not read (parserOptions.svelteConfig is)
+veslint	svelte/no-export-load-in-svelte-module-in-kit-pages/i2	kit.files.routes of the fixture's svelte.config.js (not read by veslint)

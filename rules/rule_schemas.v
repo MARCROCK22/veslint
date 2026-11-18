@@ -764,6 +764,9 @@ const rule_option_schemas = {
 	'svelte/no-extra-reactive-curlies':                                '{"type":"array","minItems":0,"maxItems":0}'
 	'svelte/no-reactive-literals':                                     '{"type":"array","minItems":0,"maxItems":0}'
 	'svelte/no-reactive-functions':                                    '{"type":"array","minItems":0,"maxItems":0}'
+	'svelte/no-export-load-in-svelte-module-in-kit-pages':             '{"type":"array","minItems":0,"maxItems":0}'
+	'svelte/valid-prop-names-in-kit-pages':                            '{"type":"array","minItems":0,"maxItems":0}'
+	'svelte/no-goto-without-base':                                     '{"type":"array","minItems":0,"maxItems":0}'
 }
 
 // eslint_rule_default_options are the meta.defaultOptions of the rules of ESLint and of

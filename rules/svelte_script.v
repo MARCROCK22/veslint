@@ -2,6 +2,7 @@ module rules
 
 import estree
 import svelte
+import treesitter { node_field, node_kind }
 
 // What the svelte/* rules that read the script share (eslint-plugin-svelte 3.24.1's rules on the
 // ESTree nodes of the script and of the template expressions). Several of them also lint
@@ -285,4 +286,39 @@ fn (mut c Checker) svsc_reactive_statements() []int {
 // svsc_is_function: the node is a function (the `:function` selector).
 fn svsc_is_function(t &estree.EsTree, i int) bool {
 	return t.typ(i) in [.function_declaration, .function_expression, .arrow_function_expression]
+}
+
+// svsc_script_of is the `<script>` element (a child of the Program) the ESTree node of the
+// document at `offset` is in, -1 for the template: what the rules that track `Program >
+// SvelteScriptElement` and its `:exit` know.
+fn (c &Checker) svsc_script_of(offset int) int {
+	doc := c.svelte.doc
+	for ch in doc.nodes[0].children {
+		n := &doc.nodes[ch]
+		if n.typ == .script_element && n.start <= offset && offset < n.end {
+			return ch
+		}
+	}
+	return -1
+}
+
+// svsc_kit_version_in: the file is in a SvelteKit project of one of these versions (the
+// condition `svelteKitVersions`).
+fn (c &Checker) svsc_kit_version_in(abs_path string, versions []string) bool {
+	return c.sv_kit_context(c.sv_file_path(abs_path)).version in versions
+}
+
+// svsc_kit_file_type is svelteKitFileType of the file.
+fn (c &Checker) svsc_kit_file_type(abs_path string) SvelteKitFileType {
+	return c.sv_kit_context(c.sv_file_path(abs_path)).file_type
+}
+
+// svsc_import_variable is the variable an import specifier found by ReferenceTracker declares
+// (findVariable of its `local`), -1 for another node.
+fn (mut c Checker) svsc_import_variable(root C.TSNode, specifier C.TSNode) int {
+	if node_kind(specifier) != 'import_specifier' {
+		return -1
+	}
+	local := node_field(specifier, 'alias') or { node_field(specifier, 'name') or { return -1 } }
+	return c.scope_tree(root).declared_variable(local)
 }
