@@ -100,7 +100,7 @@ Directive comments work as in ESLint 10: `eslint-disable`, `eslint-enable`, `esl
 
 ## Rules
 
-veslint has **746 rules**, each with all its options, fixes and suggestions:
+veslint has **762 rules**, each with all its options, fixes and suggestions:
 
 <details>
 <summary><b>ESLint 10.15.0</b>: 139 rules</summary>
@@ -147,9 +147,11 @@ Its 38 wrappers of rules of ESLint core and ESLint Stylistic, which run veslint'
 </details>
 
 <details>
-<summary><b>eslint-plugin-svelte 3.24.1</b> (the templates of <code>.svelte</code> files): 34 rules</summary>
+<summary><b>eslint-plugin-svelte 3.24.1</b> (the templates of <code>.svelte</code> files): 50 rules</summary>
 
-`svelte/block-lang`, `svelte/button-has-type`, `svelte/comment-directive`, `svelte/first-attribute-linebreak`, `svelte/html-closing-bracket-new-line`, `svelte/html-closing-bracket-spacing`, `svelte/html-quotes`, `svelte/html-self-closing`, `svelte/max-attributes-per-line`, `svelte/mustache-spacing`, `svelte/no-at-const-tags`, `svelte/no-at-debug-tags`, `svelte/no-at-html-tags`, `svelte/no-dupe-else-if-blocks`, `svelte/no-dupe-on-directives`, `svelte/no-dupe-use-directives`, `svelte/no-dynamic-slot-name`, `svelte/no-inline-styles`, `svelte/no-nested-style-tag`, `svelte/no-not-function-handler`, `svelte/no-object-in-text-mustaches`, `svelte/no-raw-special-elements`, `svelte/no-spaces-around-equal-signs-in-attribute`, `svelte/no-target-blank`, `svelte/no-useless-children-snippet`, `svelte/no-useless-mustaches`, `svelte/prefer-attribute-interpolation`, `svelte/prefer-class-directive`, `svelte/require-each-key`, `svelte/shorthand-attribute`, `svelte/shorthand-directive`, `svelte/spaced-html-comment`, `svelte/system`, `svelte/valid-each-key`
+`svelte/block-lang`, `svelte/button-has-type`, `svelte/comment-directive`, `svelte/consistent-selector-style`, `svelte/experimental-require-slot-types`, `svelte/experimental-require-strict-events`, `svelte/first-attribute-linebreak`, `svelte/html-closing-bracket-new-line`, `svelte/html-closing-bracket-spacing`, `svelte/html-quotes`, `svelte/html-self-closing`, `svelte/max-attributes-per-line`, `svelte/max-lines-per-block`, `svelte/mustache-spacing`, `svelte/no-at-const-tags`, `svelte/no-at-debug-tags`, `svelte/no-at-html-tags`, `svelte/no-bind-value-on-checkable-inputs`, `svelte/no-dupe-else-if-blocks`, `svelte/no-dupe-on-directives`, `svelte/no-dupe-style-properties`, `svelte/no-dupe-use-directives`, `svelte/no-dynamic-slot-name`, `svelte/no-inline-styles`, `svelte/no-nested-style-tag`, `svelte/no-not-function-handler`, `svelte/no-object-in-text-mustaches`, `svelte/no-raw-special-elements`, `svelte/no-restricted-html-elements`, `svelte/no-shorthand-style-property-overrides`, `svelte/no-spaces-around-equal-signs-in-attribute`, `svelte/no-target-blank`, `svelte/no-unknown-style-directive-property`, `svelte/no-unused-class-name`, `svelte/no-unused-svelte-ignore`, `svelte/no-useless-children-snippet`, `svelte/no-useless-mustaches`, `svelte/prefer-attribute-interpolation`, `svelte/prefer-class-directive`, `svelte/prefer-style-directive`, `svelte/require-each-key`, `svelte/require-event-prefix`, `svelte/require-optimized-style-attribute`, `svelte/shorthand-attribute`, `svelte/shorthand-directive`, `svelte/sort-attributes`, `svelte/spaced-html-comment`, `svelte/system`, `svelte/valid-each-key`, `svelte/valid-style-parse`
+
+`svelte/no-unused-svelte-ignore` reports only the `svelte-ignore` comments without a code: its other report, a code no warning uses, needs the Svelte compiler's warnings.
 
 </details>
 
