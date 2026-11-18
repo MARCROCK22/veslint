@@ -24,6 +24,19 @@ features-false: plain.svelte:6:18	@typescript-eslint/no-unsafe-call	errorCall	Un
 features-false: plain.svelte:6:9	@typescript-eslint/no-unsafe-assignment	anyAssignment	Unsafe assignment of an error typed value.	end	6	37
 features-true: options.svelte:5:9	prefer-const	useConst	'label' is never reassigned. Use 'const' instead.	end	5	14
 features-true: plain.svelte:4:9	prefer-const	useConst	'label' is never reassigned. Use 'const' instead.	end	4	14
+function: legacy.svelte:4:16	@typescript-eslint/no-unsafe-assignment	anyAssignment	Unsafe assignment of an error typed value.	end	4	36
+function: legacy.svelte:4:16	prefer-const	useConst	'value' is never reassigned. Use 'const' instead.	fix	166	248	const { label, value = $bindable(0) }: { label: string; value?: number } = $props();	end	4	21
+function: legacy.svelte:4:24	@typescript-eslint/no-unsafe-call	errorCall	Unsafe call of a type that could not be resolved.	end	4	33
+function: legacy.svelte:4:7	@typescript-eslint/no-unsafe-assignment	anyAssignment	Unsafe assignment of an error typed value.	end	4	84
+function: legacy.svelte:4:76	@typescript-eslint/no-unsafe-call	errorCall	Unsafe call of a type that could not be resolved.	end	4	82
+function: legacy.svelte:4:9	prefer-const	useConst	'label' is never reassigned. Use 'const' instead.	fix	166	248	const { label, value = $bindable(0) }: { label: string; value?: number } = $props();	end	4	14
+function: legacy.svelte:5:15	@typescript-eslint/no-unsafe-call	errorCall	Unsafe call of a type that could not be resolved.	end	5	21
+function: legacy.svelte:5:7	@typescript-eslint/no-unsafe-assignment	anyAssignment	Unsafe assignment of an error typed value.	end	5	24
+function: legacy.svelte:6:18	@typescript-eslint/no-unsafe-call	errorCall	Unsafe call of a type that could not be resolved.	end	6	26
+function: legacy.svelte:6:9	@typescript-eslint/no-unsafe-assignment	anyAssignment	Unsafe assignment of an error typed value.	end	6	37
+function: options.svelte:5:9	prefer-const	useConst	'label' is never reassigned. Use 'const' instead.	end	5	14
+function: plain.svelte:4:9	prefer-const	useConst	'label' is never reassigned. Use 'const' instead.	end	4	14
+function: warn.svelte:4:7	svelte/valid-compile	error	`count` is updated, but is not declared with `$state(...)`. Changing its value will not correctly trigger updates\nhttps://svelte.dev/e/non_reactive_update(non_reactive_update)	end	4	12
 none: options.svelte:5:9	prefer-const	useConst	'label' is never reassigned. Use 'const' instead.	end	5	14
 none: plain.svelte:4:16	@typescript-eslint/no-unsafe-assignment	anyAssignment	Unsafe assignment of an error typed value.	end	4	36
 none: plain.svelte:4:16	prefer-const	useConst	'value' is never reassigned. Use 'const' instead.	fix	166	248	const { label, value = $bindable(0) }: { label: string; value?: number } = $props();	end	4	21

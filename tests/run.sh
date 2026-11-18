@@ -664,6 +664,27 @@ if command -v bun > /dev/null && [[ -d build/eval/spider-byte/node_modules/eslin
 		ko "vueFeatures, svelteFeatures and svelteConfig of an eslint.config.mjs resolved through bun"
 		cat "$TMP/vue-features-bun.err"
 	fi
+	# A runes function of the file name in the svelteConfig of an eslint.config.mjs: the resolver
+	# calls it for each .svelte file as svelte-eslint-parser and eslint-plugin-svelte do, from the
+	# command line and from --server (which takes the resolution from the cache the first one
+	# wrote).
+	runes_function_files='"legacy-warn.svelte", "legacy.svelte", "options.svelte", "plain.svelte", "warn.svelte"'
+	(cd tests/svelte-lint/runes && VESLINT_ESLINT_DIR=../../../build/eval/spider-byte \
+		../../../veslint --config eslint.runes-function.config.mjs --fixes legacy-warn.svelte legacy.svelte options.svelte plain.svelte warn.svelte 2> "$TMP/svelte-runes-function.err") |
+		sed 's|^|function: |' | sorted > "$TMP/svelte-runes-function.out"
+	printf '{"id": 1, "config": "eslint.runes-function.config.mjs", "files": [%s]}\n' "$runes_function_files" > "$TMP/svelte-runes-function.jsonl"
+	if diff -u <(grep '^function: ' tests/svelte-lint/runes/expected.txt) "$TMP/svelte-runes-function.out" &&
+		VESLINT_ESLINT_DIR=$PWD/build/eval/spider-byte python3 tests/server_client.py ./veslint tests/svelte-lint/runes "$TMP/svelte-runes-function.jsonl" > "$TMP/svelte-runes-function-server.out" 2>> "$TMP/svelte-runes-function.err" &&
+		diff -u <(grep '^function: ' tests/svelte-lint/runes/expected.txt) <(python3 -c '
+import json, sys
+for out in json.loads(open(sys.argv[1], encoding="utf-8").readline())["stdout"].splitlines():
+    print(f"function: {out}")
+' "$TMP/svelte-runes-function-server.out" | sorted); then
+		ok "Svelte files: a runes function of the svelteConfig of an eslint.config.mjs, called for each file"
+	else
+		ko "Svelte files: a runes function of the svelteConfig of an eslint.config.mjs"
+		cat "$TMP/svelte-runes-function.err"
+	fi
 fi
 
 # Svelte files (svelte_files.v, rules/svelte_file.v): the scripts and the template expressions of

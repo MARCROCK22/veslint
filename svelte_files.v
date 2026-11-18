@@ -40,7 +40,16 @@ fn (l &LoadedConfig) svelte_parse_options(abs_path string) svelte.ParseOptions {
 	} else {
 		rules.LanguageOptions{}
 	}
-	return rules.svelte_parse_options(language, abs_path)
+	return rules.svelte_parse_options(l.file_language(abs_path, language), abs_path)
+}
+
+// file_language is `language`, the language options of the configuration of the file at
+// `abs_path`, with what a function given as parserOptions.svelteConfig.compilerOptions.runes gave
+// for that file, when the resolver called one for it (a .svelte file): what the file is parsed
+// and compiled with.
+fn (l &LoadedConfig) file_language(abs_path string, language rules.LanguageOptions) rules.LanguageOptions {
+	runes := l.file_runes[abs_path] or { return language }
+	return language.with_svelte_config_runes(runes)
 }
 
 fn (mut p SvelteParsers) close() {
