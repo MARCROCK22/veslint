@@ -395,3 +395,42 @@ fn (c &Checker) svsc_property_name(member int) ?string {
 fn svsc_in_range(t &estree.EsTree, i int, from int, to int) bool {
 	return from <= t.nodes[i].start && t.nodes[i].end <= to
 }
+
+// svsc_pattern_identifiers is iterateIdentifiers of a destructuring pattern, in its order.
+fn svsc_pattern_identifiers(t &estree.EsTree, pattern int) []int {
+	mut out := []int{}
+	mut buffer := [pattern]
+	for buffer.len > 0 {
+		p := buffer[0]
+		buffer.delete(0)
+		match t.typ(p) {
+			.identifier {
+				out << p
+			}
+			.array_pattern {
+				for element in t.list(p, .elements) or { []int{} } {
+					if element >= 0 {
+						buffer << element
+					}
+				}
+			}
+			.object_pattern {
+				for property in t.list(p, .properties) or { []int{} } {
+					if t.typ(property) == .property {
+						buffer << t.node(property, .value) or { continue }
+					} else if t.typ(property) == .rest_element {
+						buffer << property
+					}
+				}
+			}
+			.assignment_pattern {
+				buffer << t.node(p, .left) or { continue }
+			}
+			.rest_element {
+				buffer << t.node(p, .argument) or { continue }
+			}
+			else {}
+		}
+	}
+	return out
+}
