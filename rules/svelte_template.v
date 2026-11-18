@@ -381,10 +381,10 @@ const sv_rune_names = ['\$state', '\$derived', '\$effect', '\$props', '\$bindabl
 
 // sv_runes is svelteParseContext.runes of the file being linted, as getSvelteContext gives it (the
 // installed Svelte is 5): a component's from parserOptions.svelteFeatures.runes, else from
-// `<svelte:options runes={…}>`, else whether an
-// Identifier of the document has a rune's name (the compiler decides after parsing); a
-// `.svelte.[js|ts]` module is always in runes mode; other files have none (false here).
-// svelte.config.js's compilerOptions.runes is not read.
+// `<svelte:options runes={…}>`, else from the svelteConfig's compilerOptions.runes
+// (svelte_config.v), else whether an Identifier of the document has a rune's name (the compiler
+// decides after parsing); a `.svelte.[js|ts]` module is always in runes mode; other files have
+// none (false here).
 fn (c &Checker) sv_runes() bool {
 	if c.svelte_module.on {
 		return true
@@ -400,6 +400,10 @@ fn (c &Checker) sv_runes() bool {
 		.on { return true }
 		.off { return false }
 		else {}
+	}
+	config_runes := c.svelte_config(c.sv_file_path(c.svelte.ts_path)).runes
+	if config_runes >= 0 {
+		return config_runes == 1
 	}
 	for i, n in doc.es.nodes {
 		if n.typ == .identifier {
@@ -464,8 +468,8 @@ fn sv_json_path(value json2.Any, keys []string) ?json2.Any {
 // package.json files from there up (eslint-plugin-svelte's own package counts as SvelteKit 2, a
 // hack upstream keeps for its tests); the file type when the file is under the routes directory
 // (settings.svelte.kit.files.routes, else parserOptions.svelteConfig's, else `src/routes`) of the
-// project root (the directory of the closest package.json). svelte.config.js's kit.files.routes is
-// not read.
+// project root (the directory of the closest package.json). The svelteConfig is svelte-eslint-
+// parser's (svelte_config.v) for a component or a module, parserOptions.svelteConfig's otherwise.
 fn (c &Checker) sv_kit_context(path string) SvelteKitContext {
 	version := sv_kit_version(path)
 	if version == '' {
@@ -481,8 +485,15 @@ fn (c &Checker) sv_kit_context(path string) SvelteKitContext {
 			}
 		}
 	}
-	if !from_settings && c.language.svelte_kit_routes != '' {
-		routes = c.language.svelte_kit_routes
+	if !from_settings {
+		config_routes := if sv_file_type(path) != .none {
+			c.svelte_config(path).routes
+		} else {
+			c.language.svelte_kit_routes
+		}
+		if config_routes != '' {
+			routes = config_routes
+		}
 	}
 	// `.replace(/^\//, '')`: one leading slash.
 	if routes.starts_with('/') {

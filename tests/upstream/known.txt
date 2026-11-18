@@ -1747,28 +1747,33 @@ veslint	vue/no-restricted-syntax/i1	selectors on vue-eslint-parser's V* nodes ar
 veslint	no-restricted-call-after-await/i6	a relative `module` needs the file in the current directory
 veslint	no-restricted-call-after-await/i7	a relative `module` needs the file in the current directory
 veslint	no-restricted-call-after-await/i8	an absolute `module` resolved through the clone's package.json
-# svelte/no-unused-svelte-ignore reports a svelte-ignore code no warning of the Svelte compiler uses:
-# eslint-plugin-svelte compiles the component (shared/svelte-compile-warns) for those warnings, which
-# veslint does not have yet (they come with svelte/valid-compile); it reports only missingCode.
-veslint	svelte/no-unused-svelte-ignore/i0	unused needs the Svelte compiler's warnings
-veslint	svelte/no-unused-svelte-ignore/i1	unused needs the Svelte compiler's warnings
-veslint	svelte/no-unused-svelte-ignore/i2	unused needs the Svelte compiler's warnings
-veslint	svelte/no-unused-svelte-ignore/i3	unused needs the Svelte compiler's warnings
-veslint	svelte/no-unused-svelte-ignore/i4	unused needs the Svelte compiler's warnings
-veslint	svelte/no-unused-svelte-ignore/i5	unused needs the Svelte compiler's warnings
-veslint	svelte/no-unused-svelte-ignore/i6	unused needs the Svelte compiler's warnings
-veslint	svelte/no-unused-svelte-ignore/i7	unused needs the Svelte compiler's warnings
-veslint	svelte/no-unused-svelte-ignore/i9	unused needs the Svelte compiler's warnings
-veslint	svelte/no-unused-svelte-ignore/i10	unused needs the Svelte compiler's warnings
-veslint	svelte/no-unused-svelte-ignore/i14	unused needs the Svelte compiler's warnings
-veslint	svelte/no-unused-svelte-ignore/i15	unused needs the Svelte compiler's warnings
-veslint	svelte/no-unused-svelte-ignore/i16	unused needs the Svelte compiler's warnings
-veslint	svelte/no-unused-svelte-ignore/i17	unused needs the Svelte compiler's warnings
-veslint	svelte/no-unused-svelte-ignore/i18	unused needs the Svelte compiler's warnings
-veslint	svelte/no-unused-svelte-ignore/i19	unused needs the Svelte compiler's warnings
-veslint	svelte/no-unused-svelte-ignore/i20	unused needs the Svelte compiler's warnings
-veslint	svelte/no-unused-svelte-ignore/i21	unused needs the Svelte compiler's warnings
-veslint	svelte/no-unused-svelte-ignore/i25	unused needs the Svelte compiler's warnings
-veslint	svelte/no-unused-svelte-ignore/i26	unused needs the Svelte compiler's warnings
-# svelte/* script rules (SR2): svelte-eslint-parser's svelteConfig from svelte.config.js is not read (parserOptions.svelteConfig is)
-veslint	svelte/no-export-load-in-svelte-module-in-kit-pages/i2	kit.files.routes of the fixture's svelte.config.js (not read by veslint)
+# svelte/no-unused-svelte-ignore: eslint-plugin-svelte transforms a <style lang="…"> before it
+# compiles (postcss with the package's postcss.config.cjs, sass, less, stylus); veslint ports none
+# of them and strips the style (as eslint-plugin-svelte does when it cannot transform it), so the
+# CSS code of the svelte-ignore before it counts as used.
+veslint	svelte/no-unused-svelte-ignore/i16	<style lang="postcss">: postcss with postcss-nested (postcss.config.cjs) is not ported
+veslint	svelte/no-unused-svelte-ignore/i17	<style lang="postcss">: postcss with postcss-nested (postcss.config.cjs) is not ported
+veslint	svelte/no-unused-svelte-ignore/i18	<style lang="scss">: sass is not ported
+veslint	svelte/no-unused-svelte-ignore/i19	<style lang="sass">: sass is not ported
+veslint	svelte/no-unused-svelte-ignore/i20	<style lang="less">: less is not ported
+veslint	svelte/no-unused-svelte-ignore/i21	<style lang="stylus">: stylus is not ported
+veslint	svelte/no-unused-svelte-ignore/i25	<style lang="postcss">: postcss with postcss-nested (postcss.config.cjs) is not ported
+veslint	svelte/no-unused-svelte-ignore/i26	<style lang="postcss">: postcss with postcss-nested (postcss.config.cjs) is not ported
+# svelte/indent: eslint-plugin-svelte's indent fixtures written one token per line that veslint's
+# parser does not read as svelte-eslint-parser does (tree-sitter's grammar: a line break between
+# two tokens changes the statement or ends it; tests/svelte/known.txt lists them).
+veslint	svelte/indent/v0	tree-sitter: `let` + line break + name is an expression for the grammar (tests/svelte/known.txt)
+veslint	svelte/indent/i4	tree-sitter: `let` + line break + name is an expression for the grammar (tests/svelte/known.txt)
+veslint	svelte/indent/i20	tree-sitter: a line break between tokens typescript-estree reads as one statement (tests/svelte/known.txt)
+veslint	svelte/indent/i24	tree-sitter: a line break between tokens changes the statement (tests/svelte/known.txt)
+veslint	svelte/indent/i33	tree-sitter: a line break between tokens typescript-estree reads as one statement (tests/svelte/known.txt)
+veslint	svelte/indent/i45	tree-sitter: a line break between tokens typescript-estree reads as one statement (tests/svelte/known.txt)
+veslint	svelte/indent/i46	tree-sitter: a line break between tokens typescript-estree reads as one statement (tests/svelte/known.txt)
+veslint	svelte/indent/i50	tree-sitter: a line break between tokens typescript-estree reads as one statement (tests/svelte/known.txt)
+veslint	svelte/indent/i51	tree-sitter: a line break between tokens typescript-estree reads as one statement (tests/svelte/known.txt)
+veslint	svelte/indent/i57	tree-sitter: a line break between tokens typescript-estree reads as one statement (tests/svelte/known.txt)
+veslint	svelte/indent/i58	tree-sitter: a line break between tokens changes the statement (tests/svelte/known.txt)
+veslint	svelte/indent/i63	tree-sitter: a line break between tokens changes the statement (tests/svelte/known.txt)
+veslint	svelte/indent/i66	tree-sitter: a line break between tokens changes the statement (tests/svelte/known.txt)
+veslint	svelte/indent/i67	tree-sitter: a line break between tokens changes the statement (tests/svelte/known.txt)
+veslint	svelte/indent/i72	tree-sitter: a line break between tokens typescript-estree reads as one statement (tests/svelte/known.txt)

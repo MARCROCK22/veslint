@@ -48,6 +48,9 @@ mut:
 	has_steps  bool
 	snodes     []int
 	has_snodes bool
+	// compile: the Svelte compiler's warnings (svelte_compile_warns.v), computed on first use.
+	compile    ?SvcResult
+	node_index ?&SvcNodeIndex
 }
 
 // set_svelte makes the next lint_file lint `doc`, a parsed .svelte file whose text is the one

@@ -1,0 +1,14 @@
+# Files of tools/svelte_compile_diff.mjs's corpus (path in DIR/corpus) where svelte_compiler cannot
+# give what compile() gives, with the reason. eslint-plugin-svelte transpiles a TypeScript script
+# with TypeScript before compiling it, so acorn-typescript's own checks never reach compile() there.
+7d54708037b1.svelte	`let` on a line of its own then the name on the next: veslint's grammar takes `let` for an identifier (tests/svelte/known.txt)
+6d1e849c3608.svelte	`let` on a line of its own then the name on the next: veslint's grammar takes `let` for an identifier (tests/svelte/known.txt)
+c181387e779d.svelte	acorn-typescript: `import type Foo` twice declares the type twice (TypeScript removes both imports before eslint-plugin-svelte compiles)
+ea127487a93b.svelte	acorn-typescript: `import type Foo` twice declares the type twice (TypeScript removes both imports before eslint-plugin-svelte compiles)
+ee23016ebce3.svelte	acorn-typescript: a type alias declared twice (TypeScript removes it before eslint-plugin-svelte compiles)
+900879aec0b6.svelte	acorn-typescript: a type alias declared twice (TypeScript removes it before eslint-plugin-svelte compiles)
+a529abaa77ce.svelte	acorn-typescript: a type alias declared twice (TypeScript removes it before eslint-plugin-svelte compiles)
+c32087955876.svelte	acorn-typescript: a type alias declared twice (TypeScript removes it before eslint-plugin-svelte compiles)
+472528194ec5.svelte	acorn-typescript: `override` in a class without `extends` (TypeScript removes the modifier before eslint-plugin-svelte compiles)
+ceb4fdb9dd69.svelte	acorn-typescript: `override` in a class without `extends` (TypeScript removes the modifier before eslint-plugin-svelte compiles)
+5236bb05a946.svelte	<template lang="pug">: svelte-eslint-parser skips its content, the compiler parses it as markup
