@@ -1,0 +1,9 @@
+<template>
+  <div>
+        <div
+          prop-one="a"
+          prop-three="b"
+          :prop-two="c">
+        </div>
+      </div>
+</template>

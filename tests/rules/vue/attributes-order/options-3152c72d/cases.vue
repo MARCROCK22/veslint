@@ -1,0 +1,10 @@
+<template>
+  <div>
+        <div
+          boolean-prop
+          prop-one="a"
+          prop-two="b"
+          :prop-three="c">
+        </div>
+      </div>
+</template>
