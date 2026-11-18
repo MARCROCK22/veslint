@@ -626,7 +626,7 @@ fn (mut c Checker) vpr_build_to_ref_set(mut x VprExtractor) {
 	}
 	x.to_ref_built = true
 	for name in ['toRef', 'toRefs'] {
-		for call in c.vpr_traced_calls(x.root, x.t, name) {
+		for call in c.vue_composition_api_calls(x.root, x.t, [name]).map(it.call) {
 			if name == 'toRef' {
 				x.to_ref_nodes[call] = true
 			} else {
@@ -634,35 +634,6 @@ fn (mut c Checker) vpr_build_to_ref_set(mut x VprExtractor) {
 			}
 		}
 	}
-}
-
-// vpr_traced_calls are the calls iterateReferencesTraceMap gives for `{ [name]: { [CALL]: true } }`:
-// those of the function imported from the Vue modules, then of the global.
-fn (mut c Checker) vpr_traced_calls(root C.TSNode, t &estree.EsTree, name string) []int {
-	call_trace := EsTrace{
-		call: true
-	}
-	esm := EsTrace{
-		esm:      true
-		children: {
-			name: call_trace
-		}
-	}
-	mut esm_map := map[string]EsTrace{}
-	for module in vue_composition_modules {
-		esm_map[module] = esm
-	}
-	mut traced := c.es_esm_references(root, esm_map)
-	traced << c.es_global_references(root, {
-		name: call_trace
-	})
-	mut out := []int{}
-	for r in traced {
-		if call := c.es_index_of(t, r.node) {
-			out << call
-		}
-	}
-	return out
 }
 
 // vpr_from_function_param is extractFromFunctionParam.

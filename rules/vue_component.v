@@ -257,6 +257,49 @@ fn vue_is_vue_instance(t &estree.EsTree, node int) bool {
 // vue_composition_modules are the modules of createCompositionApiTraceMap.
 const vue_composition_modules = ['vue', '@vue/composition-api', '@nuxtjs/composition-api', '#imports']
 
+// VueTracedCall is a call iterateReferencesTraceMap reports: the CallExpression and the name it
+// calls.
+struct VueTracedCall {
+	call int
+	name string
+}
+
+// vue_composition_api_calls ports iterateReferencesTraceMap(tracker,
+// createCompositionApiTraceMap({ [name]: { [ReferenceTracker.CALL]: true }, … })): the
+// CallExpressions of the names imported from the composition API modules, then of the globals.
+fn (mut c Checker) vue_composition_api_calls(root C.TSNode, t &estree.EsTree, names []string) []VueTracedCall {
+	call_trace := EsTrace{
+		call: true
+	}
+	mut children := map[string]EsTrace{}
+	for name in names {
+		children[name] = call_trace
+	}
+	esm := EsTrace{
+		esm:      true
+		children: children
+	}
+	mut esm_map := map[string]EsTrace{}
+	for module in vue_composition_modules {
+		esm_map[module] = esm
+	}
+	mut traced := c.es_esm_references(root, esm_map)
+	traced << c.es_global_references(root, children)
+	mut out := []VueTracedCall{}
+	mut seen := map[int]bool{}
+	for r in traced {
+		if r.kind != 'call' || r.path.len == 0 {
+			continue
+		}
+		call := c.es_index_of(t, r.node) or { continue }
+		if t.typ(call) == .call_expression && call !in seen {
+			seen[call] = true
+			out << VueTracedCall{call, r.path.last()}
+		}
+	}
+	return out
+}
+
 // vue_like_packages are the modules isGlobalOrImportedFromVue takes an import or a require from.
 const vue_like_packages = ['vue', '@vue/composition-api', '@nuxtjs/composition-api']
 

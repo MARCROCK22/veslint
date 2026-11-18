@@ -19,7 +19,7 @@ fn (mut c Checker) lint_vue_no_side_effects_in_computed_properties(root C.TSNode
 	s := c.vue_script(root, abs_path) or { return findings }
 	t := c.es_tree(root, abs_path) or { return findings }
 	mut getters := []int{}
-	for call in c.vaa_trace_map_calls(root, t, ['computed']) {
+	for call in c.vue_composition_api_calls(root, t, ['computed']).map(it.call) {
 		getter := vue_getter_body_from_computed_function(t, call)
 		if getter >= 0 {
 			getters << getter

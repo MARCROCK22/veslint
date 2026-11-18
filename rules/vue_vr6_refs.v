@@ -7,44 +7,9 @@ import treesitter { node_kind }
 // extractRefObjectReferences), with the part of lib/utils/property-references.ts that the
 // destructuring of `toRefs(…)` reads (the nest nodes of a pattern). Nodes are ESTree indexes.
 
-// Vx6rDefine is a call of iterateDefineRefs: `ref(…)`, `computed(…)`… and the name called.
-struct Vx6rDefine {
-	call int
-	name string
-}
-
+// vx6r_define_names are the functions iterateDefineRefs traces.
 const vx6r_define_names = ['ref', 'computed', 'toRef', 'customRef', 'shallowRef', 'useTemplateRef',
 	'toRefs']
-
-// vx6r_define_refs ports iterateDefineRefs (iterateReferencesTraceMap: ES modules, then the
-// globals).
-fn (mut c Checker) vx6r_define_refs(root C.TSNode, t &estree.EsTree) []Vx6rDefine {
-	call_trace := EsTrace{
-		call: true
-	}
-	mut children := map[string]EsTrace{}
-	for name in vx6r_define_names {
-		children[name] = call_trace
-	}
-	mut esm_map := map[string]EsTrace{}
-	for module in vue_composition_modules {
-		esm_map[module] = EsTrace{
-			esm:      true
-			children: children
-		}
-	}
-	mut traced := c.es_esm_references(root, esm_map)
-	traced << c.es_global_references(root, children)
-	mut out := []Vx6rDefine{}
-	for r in traced {
-		call := c.es_index_of(t, r.node) or { continue }
-		if t.typ(call) != .call_expression || r.path.len == 0 {
-			continue
-		}
-		out << Vx6rDefine{call, r.path.last()}
-	}
-	return out
-}
 
 // Vx6rRef is a RefObjectReference: `pattern` for the 'pattern' type; `declarator` and
 // `declaration` of an identifier reference (-1 for null).
@@ -87,7 +52,8 @@ struct Vx6rCtx {
 // vx6r_extract ports extractRefObjectReferences.
 fn (mut c Checker) vx6r_extract(root C.TSNode, t &estree.EsTree) Vx6rRefs {
 	mut refs := Vx6rRefs{}
-	for d in c.vx6r_define_refs(root, t) {
+	// iterateDefineRefs
+	for d in c.vue_composition_api_calls(root, t, vx6r_define_names) {
 		c.vx6r_process_define_ref(root, t, mut refs, d.call, d.name)
 	}
 	for call in c.vx6r_define_models(root, t) {
