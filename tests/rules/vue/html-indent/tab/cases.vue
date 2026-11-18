@@ -1,0 +1,9 @@
+<template>
+	<div>
+		<span
+			class="a"
+		>x</span>
+	  <i>bad</i>
+    <em>spaces</em>
+	</div>
+</template>
