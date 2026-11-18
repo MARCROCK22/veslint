@@ -1,0 +1,1 @@
+tests/rules/svelte/no-conflicting-module-names/conflict/cases.svelte:1:1	svelte/no-conflicting-module-names	conflictOnComponent	The module `cases.svelte.ts` has the same name as this component. TypeScript resolves the import `./cases.svelte` to that module, not to this component. Rename `cases.svelte.ts`.
