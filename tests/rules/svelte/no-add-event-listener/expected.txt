@@ -1,0 +1,11 @@
+tests/rules/svelte/no-add-event-listener/cases.svelte:3:2	svelte/no-add-event-listener	unexpected	Do not use `addEventListener`. Use the `on` function from `svelte/events` instead.
+tests/rules/svelte/no-add-event-listener/cases.svelte:4:2	svelte/no-add-event-listener	unexpected	Do not use `addEventListener`. Use the `on` function from `svelte/events` instead.
+tests/rules/svelte/no-add-event-listener/cases.svelte:5:2	svelte/no-add-event-listener	unexpected	Do not use `addEventListener`. Use the `on` function from `svelte/events` instead.
+tests/rules/svelte/no-add-event-listener/cases.svelte:6:2	svelte/no-add-event-listener	unexpected	Do not use `addEventListener`. Use the `on` function from `svelte/events` instead.
+tests/rules/svelte/no-add-event-listener/cases.svelte:7:2	svelte/no-add-event-listener	unexpected	Do not use `addEventListener`. Use the `on` function from `svelte/events` instead.
+tests/rules/svelte/no-add-event-listener/cases.svelte:8:2	svelte/no-add-event-listener	unexpected	Do not use `addEventListener`. Use the `on` function from `svelte/events` instead.
+tests/rules/svelte/no-add-event-listener/cases.svelte:11:2	svelte/no-add-event-listener	unexpected	Do not use `addEventListener`. Use the `on` function from `svelte/events` instead.
+tests/rules/svelte/no-add-event-listener/cases.svelte:12:2	svelte/no-add-event-listener	unexpected	Do not use `addEventListener`. Use the `on` function from `svelte/events` instead.
+tests/rules/svelte/no-add-event-listener/cases.svelte:15:24	svelte/no-add-event-listener	unexpected	Do not use `addEventListener`. Use the `on` function from `svelte/events` instead.
+tests/rules/svelte/no-add-event-listener/cases.ts:2:1	svelte/no-add-event-listener	unexpected	Do not use `addEventListener`. Use the `on` function from `svelte/events` instead.
+tests/rules/svelte/no-add-event-listener/cases.ts:3:1	svelte/no-add-event-listener	unexpected	Do not use `addEventListener`. Use the `on` function from `svelte/events` instead.

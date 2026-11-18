@@ -236,3 +236,32 @@ fn (mut c Checker) svsc_rename_fix(root C.TSNode, start int, end int, variable i
 	has, fix := c.merge_fixes(fixes) or { return none }
 	return if has { fix } else { none }
 }
+
+// SvscToken is a token of the view: its range and whether it is a punctuator.
+struct SvscToken {
+	start      int
+	end        int
+	punctuator bool
+}
+
+// svsc_token_after is sourceCode.getTokenAfter of a node or token that ends at `offset` (comments
+// left out).
+fn (mut c Checker) svsc_token_after(root C.TSNode, e &SvscEs, offset int) ?SvscToken {
+	if e.svelte {
+		token := c.sv_token_after(offset, false)?
+		return SvscToken{token.start, token.end, token.typ == 'Punctuator'}
+	}
+	token := c.source_tokens(root).after(offset, false)?
+	return SvscToken{token.start, token.end, token.kind == .punctuator}
+}
+
+// svsc_token_before is sourceCode.getTokenBefore of a node or token that starts at `offset`
+// (comments left out).
+fn (mut c Checker) svsc_token_before(root C.TSNode, e &SvscEs, offset int) ?SvscToken {
+	if e.svelte {
+		token := c.sv_token_before(offset, false)?
+		return SvscToken{token.start, token.end, token.typ == 'Punctuator'}
+	}
+	token := c.source_tokens(root).before(offset, false)?
+	return SvscToken{token.start, token.end, token.kind == .punctuator}
+}

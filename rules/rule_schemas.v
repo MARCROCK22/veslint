@@ -758,6 +758,9 @@ const rule_option_schemas = {
 	'svelte/no-ignored-unsubscribe':                                   '{"type":"array","minItems":0,"maxItems":0}'
 	'svelte/require-store-callbacks-use-set-param':                    '{"type":"array","minItems":0,"maxItems":0}'
 	'svelte/derived-has-same-inputs-outputs':                          '{"type":"array","minItems":0,"maxItems":0}'
+	'svelte/require-event-dispatcher-types':                           '{"type":"array","minItems":0,"maxItems":0}'
+	'svelte/no-add-event-listener':                                    '{"type":"array","minItems":0,"maxItems":0}'
+	'svelte/no-dom-manipulating':                                      '{"type":"array","minItems":0,"maxItems":0}'
 }
 
 // eslint_rule_default_options are the meta.defaultOptions of the rules of ESLint and of
