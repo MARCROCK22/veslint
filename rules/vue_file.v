@@ -85,7 +85,8 @@ fn (c &Checker) is_typescript_file() bool {
 
 // is_ts_script_kind: TypeScript reads the file as ScriptKind TS or TSX. A .vue file is of the
 // kind TypeScript gives an extra extension (Deferred) in the project service, and TS in the
-// programs typescript-eslint makes for `parserOptions.project`. So is a .svelte file.
+// programs typescript-eslint makes for `parserOptions.project`. So is a .svelte file (but the
+// first one the project service opens for a project, before its program has the others).
 fn (c &Checker) is_ts_script_kind() bool {
 	return (!c.is_vue() && !c.is_svelte()) || c.project_programs
 }

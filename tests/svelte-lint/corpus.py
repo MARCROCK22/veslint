@@ -6,8 +6,11 @@ TypeScript: the case is linted as TypeScript, as the JavaScript tests of ESLint 
 fixtures of tests/svelte-lint/fixtures. Each file goes once (the same code in several cases is
 linted once), to WORK/gNN/src/<name>.svelte, NN from a hash of the name: a group is a project of
 its own (tsconfig.json, node_modules with svelte's types) so that typescript-eslint's programs
-stay small. The virtual code of a component is always a module, so the files of a group do not
-see each other's declarations. Prints the number of files."""
+stay small. The virtual code of a component is always a module, but typescript-eslint's program
+has the other .svelte files of the project as their raw text (only the linted file gets its
+virtual code), and the raw text of a file whose script has no import or export declares its
+names as globals, which the other files see: such a file is a project alone, WORK/sNNNN/src/
+<name>.svelte. Prints the number of files."""
 import glob, hashlib, json, os, re, shutil, sys
 
 GROUPS = 16
@@ -65,6 +68,18 @@ def write_project(d, svelte_types):
     os.symlink(svelte_types, os.path.join(d, "node_modules"))
 
 
+SCRIPT = re.compile(r"<script\b[^>]*>(.*?)</script>", re.S | re.I)
+# An import or export declaration at the start of a line (not a dynamic `import(…)`).
+MODULE = re.compile(r"^\s*(export\b|import\b(?!\s*[(.]))", re.M)
+
+
+def is_global_script(code):
+    """The scripts of the file have code and no import or export: TypeScript reads the raw file as
+    a script whose declarations are global."""
+    script = "".join(SCRIPT.findall(code))
+    return script.strip() != "" and MODULE.search(script) is None
+
+
 def safe(name):
     return re.sub(r"[^A-Za-z0-9_.-]", "_", name)
 
@@ -73,7 +88,7 @@ def main():
     work = os.path.abspath(sys.argv[1])
     if os.path.isdir(work):
         for entry in os.listdir(work):
-            if re.fullmatch(r"g\d\d", entry):
+            if re.fullmatch(r"g\d\d|s\d\d\d\d", entry):
                 shutil.rmtree(os.path.join(work, entry))
     files = {}  # name -> code
     seen = set()
@@ -110,8 +125,14 @@ def main():
     svelte_types = os.path.join(ROOT, "build/upstream/svelte-deps/node_modules")
     for g in range(GROUPS):
         write_project(os.path.join(work, f"g{g:02d}"), svelte_types)
+    alone = 0
     for name, code in sorted(files.items()):
-        d = os.path.join(work, f"g{group_of(name):02d}")
+        if is_global_script(code):
+            d = os.path.join(work, f"s{alone:04d}")
+            write_project(d, svelte_types)
+            alone += 1
+        else:
+            d = os.path.join(work, f"g{group_of(name):02d}")
         with open(os.path.join(d, "src", name + ".svelte"), "w", encoding="utf-8", newline="") as out:
             out.write(code)
     print(len(files))

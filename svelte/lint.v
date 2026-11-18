@@ -111,16 +111,15 @@ fn (mut c Conv) build_lint_code() {
 			.prep {
 				edits << LintEdit{l.start, l.head_end, ''}
 			}
-			.variable_declarator, .declaration {
-				// `const p;` / `let p;`: svelte-eslint-parser drops the `;`; a line break and an
-				// empty block end the declaration instead.
+			.declaration {
+				// `{let p}` is the VariableDeclaration `let p` without `;` (svelte-eslint-parser
+				// drops it): a line break and an empty block end it instead. On a line of its own:
+				// it comes after a `{`, not after a wrapper. (`{@const p}` is the declarator alone,
+				// which no rule checks for a `;`.)
 				if l.head_end - 1 >= 0 && pre[l.head_end - 1] == `;` {
 					edits << LintEdit{l.head_end - 1, l.head_end, '\n{}'}
 				}
-				if l.kind == .declaration {
-					// On a line of its own: `{let …}` comes after a `{`, not after a wrapper.
-					edits << LintEdit{l.start, l.start, '\n'}
-				}
+				edits << LintEdit{l.start, l.start, '\n'}
 			}
 			else {}
 		}

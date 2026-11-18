@@ -198,15 +198,24 @@ fn (c &Checker) svelte_move_findings(findings []Finding) []Finding {
 			&& f.rule in svelte_generics_alias_rules {
 			continue
 		}
-		start := if f.stmt.row < 0 {
+		mut start := if f.stmt.row < 0 {
 			f.stmt.start_byte
 		} else {
 			doc.lint_to_file(f.stmt.start_byte, false)
 		}
+		mut end := if f.stmt.end_byte < 0 { -1 } else { doc.lint_end_to_file(f.stmt.end_byte) }
+		if start < 0 && f.rule == stylistic_semi && f.has_fix && f.fix.start == f.fix.end
+			&& f.fix.start == f.stmt.start_byte {
+			// The `;` missing after a `{let}` declaration, where its fix inserts it; the report
+			// ends at the next character of the file.
+			start = doc.lint_to_file(f.stmt.start_byte, true)
+			if start >= 0 && f.stmt.end_byte >= 0 && start < doc.src.len {
+				end = start + utf8_char_len(doc.src[start])
+			}
+		}
 		if start < 0 {
 			continue
 		}
-		end := if f.stmt.end_byte < 0 { -1 } else { doc.lint_end_to_file(f.stmt.end_byte) }
 		mut fix := f.fix
 		mut has_fix := f.has_fix
 		if has_fix {
@@ -456,4 +465,18 @@ fn (c &Checker) svelte_file_tokens() []SourceToken {
 // svelte_generics_alias_rules are the rules that report on the tokens the lint code's type aliases
 // of the `generics` attribute add (`type`, `=`, `;`), which a TSTypeParameter does not have.
 const svelte_generics_alias_rules = [stylistic_space_infix_ops, stylistic_semi_spacing, stylistic_semi,
-	stylistic_semi_style, stylistic_no_extra_semi, stylistic_keyword_spacing]
+	stylistic_semi_style, stylistic_no_extra_semi, stylistic_keyword_spacing,
+	consistent_type_definitions]
+
+// svelte_wrapper_statement: the statement is a wrapper of the lint code's template part (it starts
+// with a character of its own): its expression is in no statement for ESLint.
+fn (c &Checker) svelte_wrapper_statement(n C.TSNode) bool {
+	return c.is_svelte() && node_start(n) >= c.svelte.doc.lint_start
+		&& c.svelte.doc.lint_to_file(node_start(n), false) < 0
+}
+
+// svelte_wrapper_es_statement is svelte_wrapper_statement for an ESTree node.
+fn (c &Checker) svelte_wrapper_es_statement(t &estree.EsTree, node int) bool {
+	return c.is_svelte() && t.nodes[node].start >= c.svelte.doc.lint_start
+		&& c.svelte.doc.lint_to_file(t.nodes[node].start, false) < 0
+}

@@ -25,21 +25,21 @@ const snep_precedence_update = 17
 const snep_precedence_or = 4
 
 struct SnepOptions {
-	all_nodes                     bool
-	except_cond_assign            bool
-	except_cond_ternary           bool
-	ignore_nested_binary          bool
-	except_return_assign          bool
-	ignore_jsx                    string
-	ignore_arrow_conditionals     bool
-	ignore_sequence_expressions   bool
-	ignore_new_in_member_expr     bool
-	ignore_function_prototype     bool
-	allow_parens_after_comment    string
-	allow_nested_ternary          bool
-	has_allow_nodes_in_spread     bool // `ALL_NODES && options`: a set, even an empty one
-	allow_nodes_in_spread         []string
-	ignored_nodes                 []string
+	all_nodes                   bool
+	except_cond_assign          bool
+	except_cond_ternary         bool
+	ignore_nested_binary        bool
+	except_return_assign        bool
+	ignore_jsx                  string
+	ignore_arrow_conditionals   bool
+	ignore_sequence_expressions bool
+	ignore_new_in_member_expr   bool
+	ignore_function_prototype   bool
+	allow_parens_after_comment  string
+	allow_nested_ternary        bool
+	has_allow_nodes_in_spread   bool // `ALL_NODES && options`: a set, even an empty one
+	allow_nodes_in_spread       []string
+	ignored_nodes               []string
 }
 
 fn snep_options(given []json2.Any) !SnepOptions {
@@ -110,7 +110,7 @@ struct SnepCtx {
 	regex   ?jsregexp.JsRegex
 mut:
 	tokens_to_ignore map[int]bool // by the start of the token
-	buffers          []SnepBuffer  // reportsBuffer, the innermost last
+	buffers          []SnepBuffer // reportsBuffer, the innermost last
 	findings         []Finding
 }
 
@@ -905,7 +905,7 @@ fn (mut x SnepCtx) check_binary_logical(node int) {
 		if (!(t.typ(left) in [.await_expression, .unary_expression] && is_exponentiation)
 			&& !return_exception && !x.is_mixed_logical_and_coalesce_expressions(left, node)
 			&& (left_precedence > node_precedence
-			|| (left_precedence == node_precedence && !is_exponentiation)))
+				|| (left_precedence == node_precedence && !is_exponentiation)))
 			|| x.is_parenthesised_twice(left) {
 			x.report(left)
 		}
@@ -914,7 +914,7 @@ fn (mut x SnepCtx) check_binary_logical(node int) {
 		right_precedence := x.precedence(right)
 		if (!x.is_mixed_logical_and_coalesce_expressions(right, node)
 			&& (right_precedence > node_precedence
-			|| (right_precedence == node_precedence && is_exponentiation)))
+				|| (right_precedence == node_precedence && is_exponentiation)))
 			|| x.is_parenthesised_twice(right) {
 			x.report(right)
 		}
@@ -934,9 +934,9 @@ fn (mut x SnepCtx) check_call_new(node int) {
 		optional := typ == .call_expression && x.flag(node, .optional)
 		if x.has_double_excess_parens(callee) || !(x.is_iife(node)
 			|| (callee_typ == .new_expression && !x.is_new_expression_with_parens(callee)
-			&& !(typ == .new_expression && !x.is_new_expression_with_parens(node)))
+				&& !(typ == .new_expression && !x.is_new_expression_with_parens(node)))
 			|| (typ == .new_expression && callee_typ == .member_expression
-			&& x.does_member_expression_contain_call_expression(callee))
+				&& x.does_member_expression_contain_call_expression(callee))
 			|| (!optional && callee_typ == .chain_expression)) {
 			x.report(callee)
 		}
@@ -1025,9 +1025,9 @@ fn (mut x SnepCtx) check_expression_or_export_statement(node int) {
 
 // snep_reserved_words are the words TypeScript's parser never takes as an identifier.
 const snep_reserved_words = ['break', 'case', 'catch', 'class', 'const', 'continue', 'debugger',
-	'default', 'delete', 'do', 'else', 'enum', 'export', 'extends', 'false', 'finally', 'for', 'function',
-	'if', 'import', 'in', 'instanceof', 'new', 'null', 'return', 'super', 'switch', 'this', 'throw', 'true',
-	'try', 'typeof', 'var', 'void', 'while', 'with']
+	'default', 'delete', 'do', 'else', 'enum', 'export', 'extends', 'false', 'finally', 'for',
+	'function', 'if', 'import', 'in', 'instanceof', 'new', 'null', 'return', 'super', 'switch',
+	'this', 'throw', 'true', 'try', 'typeof', 'var', 'void', 'while', 'with']
 
 // starts_declaration tells whether a statement that starts with the identifier `word` followed by
 // `next` is a declaration for TypeScript's parser (isDeclaration and isUsingDeclaration of
@@ -1152,7 +1152,7 @@ fn (mut x SnepCtx) listen(node int) bool {
 			right := x.child(node, .right)
 			if x.can_be_assignment_target(left) && x.has_excess_parens(left)
 				&& (!x.is_anonymous_function_assignment_exception(node, left, right)
-				|| x.is_parenthesised_twice(left)) {
+					|| x.is_parenthesised_twice(left)) {
 				x.report(left)
 			}
 			if !x.is_return_assign_exception(node) {
@@ -1193,7 +1193,10 @@ fn (mut x SnepCtx) listen(node int) bool {
 			x.check_expression_or_export_statement(x.child(node, .declaration))
 		}
 		.expression_statement {
-			x.check_expression_or_export_statement(x.child(node, .expression))
+			// A template expression of a .svelte file is in no statement for ESLint.
+			if !x.c.svelte_wrapper_es_statement(t, node) {
+				x.check_expression_or_export_statement(x.child(node, .expression))
+			}
 		}
 		.for_in_statement {
 			left := x.child(node, .left)
@@ -1477,7 +1480,7 @@ fn (mut x SnepCtx) check_member(node int) {
 	is_object_type_assertion := x.is_type_assertion(object)
 	should_allow_wrap_once := is_object_type_assertion
 		|| (x.is_member_exp_in_new_callee(node)
-		&& x.does_member_expression_contain_call_expression(node))
+			&& x.does_member_expression_contain_call_expression(node))
 	has_excess := if should_allow_wrap_once {
 		x.has_double_excess_parens(object)
 	} else {

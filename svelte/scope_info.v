@@ -417,6 +417,9 @@ fn (mut c Conv) store_scope() {
 	}
 	globals := c.svelte_globals()
 	module := 1
+	// The write-only references (`$store = 1`): their store gets a virtual read reference when
+	// nothing else reads it.
+	mut write_only := []int{}
 	for r in c.doc.scope.scopes[0].through.clone() {
 		name := c.ref_name(r)
 		if !name.starts_with('\$') || name in globals {
@@ -432,11 +435,40 @@ fn (mut c Conv) store_scope() {
 		if v < 0 {
 			continue
 		}
+		if c.doc.scope.references[r].write && !c.doc.scope.references[r].read {
+			write_only << r
+		}
 		c.doc.scope.references[r].read = true
 		c.doc.scope.references[r].write = false
 		c.doc.scope.references[r].resolved = v
 		c.add_reference_sorted(v, r)
 		c.remove_through(r, module)
+	}
+	mut marked := map[int]bool{}
+	for r in write_only {
+		v := c.doc.scope.references[r].resolved
+		if v < 0 || v in marked {
+			continue
+		}
+		marked[v] = true
+		variable := c.doc.scope.variables[v]
+		if variable.defs.len == 0 {
+			continue
+		}
+		first := variable.defs[0].name
+		if variable.references.any(it !in write_only
+			&& c.doc.scope.references[it].identifier != first) {
+			continue
+		}
+		c.doc.scope.references << SReference{
+			identifier: first
+			from:       module
+			resolved:   v
+			read:       true
+			is_value:   true
+			virtual:    true
+		}
+		c.add_reference_sorted(v, c.doc.scope.references.len - 1)
 	}
 }
 
