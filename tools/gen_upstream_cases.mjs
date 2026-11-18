@@ -8,7 +8,8 @@
 //   bun tools/gen_upstream_cases.mjs [rule...]
 //
 // A rule is named by its id (`@typescript-eslint/await-thenable`, `vue/html-indent`); `vue/` alone
-// names every rule of eslint-plugin-vue, whose cases are not tied to a ported rule yet.
+// names every rule of eslint-plugin-vue, and `svelte/` every rule of eslint-plugin-svelte, whose
+// cases are not tied to a ported rule yet.
 //
 // Each test file is loaded as the test runner would load it, but @typescript-eslint/rule-tester and
 // vitest are replaced by the stubs in tools/upstream/: RuleTester.run records the cases. They are
@@ -42,6 +43,9 @@ const PERFECTIONIST_DEPS = path.join(ROOT, 'build/upstream/perfectionist-deps/no
 const ESLINTCF = path.join(ROOT, 'build/upstream/eslintcf');
 const VUE = path.join(ROOT, 'build/upstream/vue');
 const VUE_DEPS = path.join(ROOT, 'build/upstream/vue-deps/node_modules');
+const SVELTE = path.join(ROOT, 'build/upstream/svelte');
+const SVELTE_PACKAGE = path.join(SVELTE, 'packages/eslint-plugin-svelte');
+const SVELTE_DEPS = path.join(ROOT, 'build/upstream/svelte-deps/node_modules');
 
 // Where the tests of each plugin come from. `fixtures` is the directory the tests lint in, the one
 // the files of the cases are written relative to.
@@ -154,6 +158,23 @@ const SOURCES = {
     modules: path.join(VUE, 'node_modules'),
     dependencies: VUE_DEPS,
     needs: [path.join(VUE, 'tests/lib/rules'), path.join(VUE, 'lib/rules'), path.join(VUE, 'dist'), path.join(VUE_DEPS, 'eslint-plugin-vue/dist')],
+  },
+  // eslint-plugin-svelte v3.24.1 (the `svelte/*` rules): tests/src/rules/<rule>.ts of the package
+  // packages/eslint-plugin-svelte of sveltejs/eslint-plugin-svelte, run by mocha with ESLint's
+  // RuleTester (tests/utils/eslint-compat.ts: tools/upstream/svelte-test.mjs), with the packages of
+  // build/upstream/svelte-deps in place of the monorepo's. Nearly every test file hands RuleTester
+  // the cases loadTestCases of tests/utils/utils.ts reads from the fixtures of the rule
+  // (tests/fixtures/rules/<rule>/{valid,invalid}/…): each one lints its own file there, with the
+  // program of tests/fixtures/rules/tsconfig.json; the tests run in the package's directory.
+  'svelte/': {
+    label: 'eslint-plugin-svelte v3.24.1',
+    svelte: true,
+    clone: SVELTE_PACKAGE,
+    tests: path.join(SVELTE_PACKAGE, 'tests/src/rules'),
+    fixtures: realDir(path.join(SVELTE_PACKAGE, 'tests/fixtures/rules')),
+    modules: path.join(SVELTE_PACKAGE, 'node_modules'),
+    dependencies: SVELTE_DEPS,
+    needs: [path.join(SVELTE_PACKAGE, 'tests/src/rules'), path.join(SVELTE_PACKAGE, 'src/rules'), path.join(SVELTE_DEPS, 'eslint-plugin-svelte/lib')],
   },
 };
 
@@ -412,6 +433,11 @@ function testFiles(name, source) {
     }
     return files;
   }
+  if (source.svelte) {
+    // One test file per rule (`@typescript-eslint/no-unnecessary-condition` in a directory).
+    const file = path.join(source.tests, `${name}.ts`);
+    return fs.existsSync(file) ? [file] : [];
+  }
   if (source.stylistic) {
     // An experimental rule (`exp-jsx-props-style`) is tested in the directory of its source (`jsx-props-style`).
     const dir = path.join(source.tests, name.replace(/^exp-/, ''));
@@ -437,6 +463,7 @@ async function ruleObjectOf(name, source) {
   if (source === SOURCES['seyfert/'] || source.marcrock) return null;
   // The source of the rule, which the test file imports: the same object.
   if (source.vue) return (await import(pathToFileURL(path.join(source.clone, 'lib/rules', `${name}.ts`)).href)).default;
+  if (source.svelte) return (await import(pathToFileURL(path.join(source.clone, 'src/rules', `${name}.ts`)).href)).default;
   if (source.unicorn) return (await unicornPlugin()).rules[name];
   if (source.stylistic) return (await stylisticPlugin()).rules[name];
   if (source.perfectionist) return (await perfectionistPlugin()).rules[name];
@@ -855,6 +882,268 @@ function normalizeVueLint(entry, id, name) {
   return out;
 }
 
+// The test files of eslint-plugin-svelte import RuleTester from tests/utils/eslint-compat.ts: the
+// stub of tools/upstream/svelte-test.mjs; comment-directive.ts takes loadESLint from `eslint`: the
+// stub's too. tests/utils/utils.ts (loadTestCases) is the real one, with three changes: it lists a
+// directory sorted, as node does (libuv sorts scandir; Bun does not), so that the cases come in
+// upstream's order; a fixture its `_requirements.json` (or `<case>-requirements.json`) excludes
+// with the packages installed is recorded (`__veslintSvelteSkipped`); and it never writes a
+// missing errors.yaml or output (upstream writes them with ESLint the first time a fixture runs:
+// here it is an error). tools/lib/write.ts, which it imports, would load prettier: a stub.
+const SVELTE_UTILS_PATCHES = [
+  ['for (const filename of fs.readdirSync(rootDir)) {', 'for (const filename of fs.readdirSync(rootDir).sort()) {'],
+  [
+    '\t\t) {\n\t\t\treturn false;\n\t\t}\n\t\treturn true;\n\t}',
+    '\t\t) {\n\t\t\t(globalThis as any).__veslintSvelteSkipped?.push({ file: inputFile, requirements });\n\t\t\treturn false;\n\t\t}\n\t\treturn true;\n\t}',
+  ],
+  ['\tconst linter = new Linter();\n\tconst errorFile', '\tthrow new Error(`${inputFile}: its errors.yaml or output is missing (upstream writes it)`);\n\tconst linter = new Linter();\n\tconst errorFile'],
+];
+Bun.plugin({
+  name: 'veslint-svelte-tester',
+  setup(build) {
+    const stub = JSON.stringify(path.join(ROOT, 'tools/upstream/svelte-test.mjs'));
+    build.onLoad({ filter: /[\\/]eslint-plugin-svelte[\\/]tests[\\/]utils[\\/]eslint-compat\.ts$/ }, () => ({
+      contents: `export { RuleTester } from ${stub};`,
+      loader: 'js',
+    }));
+    build.onLoad({ filter: /[\\/]eslint-plugin-svelte[\\/]tools[\\/]lib[\\/]write\.ts$/ }, () => ({
+      contents: `export async function writeAndFormat(file) { throw new Error(\`\${file}: the generator writes no fixture\`); }`,
+      loader: 'js',
+    }));
+    build.onLoad({ filter: /[\\/]eslint-plugin-svelte[\\/]tests[\\/]utils[\\/]utils\.ts$/ }, ({ path: file }) => {
+      let text = fs.readFileSync(file, 'utf8');
+      for (const [from, to] of SVELTE_UTILS_PATCHES) {
+        if (!text.includes(from)) throw new Error(`${file} changed: no \`${from}\` in it`);
+        text = text.replace(from, to);
+      }
+      return { contents: text, loader: 'ts' };
+    });
+    build.onLoad({ filter: /[\\/]eslint-plugin-svelte[\\/]tests[\\/]src[\\/]rules[\\/]comment-directive\.ts$/ }, ({ path: file }) => {
+      const text = fs.readFileSync(file, 'utf8');
+      if (!text.includes("from 'eslint';")) throw new Error(`${file} changed: it does not import from 'eslint'`);
+      return { contents: text.replace("from 'eslint';", `from ${stub};`), loader: 'ts' };
+    });
+  },
+});
+const requireSvelteDependency = name => createRequire(path.join(SVELTE_DEPS, 'x.js'))(name);
+let sveltePluginCache;
+function sveltePlugin() {
+  sveltePluginCache ??= requireSvelteDependency('eslint-plugin-svelte');
+  return sveltePluginCache;
+}
+let svelteParserCache;
+async function svelteParser() {
+  svelteParserCache ??= await import(pathToFileURL(createRequire(path.join(SVELTE_DEPS, 'x.js')).resolve('svelte-eslint-parser')).href);
+  return svelteParserCache;
+}
+
+// The name of a parser of a case of eslint-plugin-svelte: the module (svelte-eslint-parser,
+// typescript-eslint's parser, @babel/eslint-parser) or the name of its package (in
+// parserOptions.parser, which svelte-eslint-parser requires from its own directory).
+const SVELTE_PARSER_NAMES = { 'svelte-eslint-parser': 'svelte-eslint-parser', 'typescript-eslint/parser': '@typescript-eslint/parser', espree: 'espree' };
+function svelteParserName(parser, where) {
+  if (parser === null || parser === undefined || typeof parser === 'string') return parser;
+  if (isObject(parser) && typeof parser.parse !== 'function' && typeof parser.parseForESLint !== 'function') {
+    // parserOptions.parser of svelte-eslint-parser: one per lang of the script.
+    return Object.fromEntries(Object.entries(parser).map(([lang, p]) => [lang, svelteParserName(p, `${where}.${lang}`)]));
+  }
+  const name = SVELTE_PARSER_NAMES[parser.meta?.name ?? parser.name];
+  if (!name) throw new Error(`${where}: an unknown parser (${parser.meta?.name ?? parser.name})`);
+  return name;
+}
+
+// A path of the package (the directory the tests run in) left in an option or a setting would not
+// hold elsewhere: none is expected.
+const SVELTE_ROOTS = [...new Set([realDir(SVELTE_PACKAGE), SVELTE_PACKAGE])];
+function assertNoSveltePath(value, where) {
+  if (typeof value === 'string' && SVELTE_ROOTS.some(root => value.includes(root))) throw new Error(`${where}: a path of the package (${value})`);
+  if (Array.isArray(value)) value.forEach((v, i) => assertNoSveltePath(v, `${where}[${i}]`));
+  else if (isObject(value)) for (const [k, v] of Object.entries(value)) assertNoSveltePath(v, `${where}.${k}`);
+}
+
+// A configuration of `_config.cjs` may hold functions (svelteConfig.onwarn, warningFilter,
+// compilerOptions.runes): each is written `{"$function": <its source>}`, and the case names the
+// module (`configModule`) the runner takes them from.
+function withFunctions(value) {
+  if (typeof value === 'function') return { $function: value.toString() };
+  if (Array.isArray(value)) return value.map(withFunctions);
+  if (isObject(value)) return Object.fromEntries(Object.entries(value).map(([k, v]) => [k, withFunctions(v)]));
+  return value;
+}
+const hasFunction = value =>
+  typeof value === 'function' || (Array.isArray(value) ? value.some(hasFunction) : isObject(value) && Object.values(value).some(hasFunction));
+
+// The script of a case as svelte-eslint-parser reads it. A component (svelte-eslint-parser with a
+// file that does not end in .svelte.js or .svelte.ts: a `.svelte`, or one of the other extensions
+// of no-conflicting-module-names' fixtures) has the scripts of its top-level <script> elements in
+// one program, whose lang is that of the attributes of all of them (each one's `lang` over the
+// earlier one's, svelte-eslint-parser's context): parserOptions.parser[lang || 'js'] parses it,
+// so `script` is that key (`ts`, `js`, or another lang as written), `none` without a script, and
+// `scripts` the lang of each element when they differ. Another file (a .svelte.js/.svelte.ts
+// module, which svelte-eslint-parser parses as a script, or a .js/.ts file) has the lang of its
+// extension. `typescript` says whether typescript-eslint's parser reads the script.
+async function svelteScriptOf(code, file, parser, parserOptions) {
+  const svelte = parser === 'svelte-eslint-parser' && !/\.svelte\.[jt]s$/u.test(file);
+  const scriptParserName = lang => {
+    const p = parserOptions?.parser;
+    if (typeof p === 'string') return p;
+    if (isObject(p)) return p[lang || 'js'] ?? 'espree';
+    return 'espree';
+  };
+  if (!svelte) {
+    const lang = path.extname(file).slice(1).replace(/^[mc]/u, '');
+    const reader = parser === 'svelte-eslint-parser' ? scriptParserName(lang) : parser;
+    return { svelte, script: lang, langs: [], typescript: reader === '@typescript-eslint/parser' };
+  }
+  let elements;
+  try {
+    const { ast } = (await svelteParser()).parseForESLint(code, {
+      ...parserOptions,
+      filePath: 'file.svelte',
+      ecmaVersion: 'latest',
+      sourceType: 'module',
+    });
+    elements = ast.body
+      .filter(node => node.type === 'SvelteScriptElement')
+      .map(node =>
+        Object.fromEntries(
+          node.startTag.attributes
+            .filter(a => a.type === 'SvelteAttribute' && Array.isArray(a.value) && a.value.length)
+            .map(a => [a.key.name, a.value[0].type === 'SvelteLiteral' ? a.value[0].value : undefined]),
+        ),
+      );
+  } catch {
+    // A text svelte-eslint-parser rejects (a case of a parse error): its start tags, as written.
+    elements = [...code.matchAll(/<script(\s[^>]*)?>/gu)].map(m =>
+      Object.fromEntries([...(m[1] ?? '').matchAll(/([\w-]+)\s*=\s*(?:"([^"]*)"|'([^']*)'|([^\s"'>]+))/gu)].map(a => [a[1], a[2] ?? a[3] ?? a[4]])),
+    );
+  }
+  if (!elements.length) return { svelte, script: 'none', langs: [], typescript: false };
+  const merged = Object.assign({}, ...elements);
+  const script = merged.lang || 'js';
+  const langs = [...new Set(elements.map(attrs => attrs.lang || 'js'))];
+  return { svelte, script, langs, typescript: scriptParserName(merged.lang) === '@typescript-eslint/parser' };
+}
+
+// The keys of a case of eslint-plugin-svelte's tests that are not configuration (ESLint 10's
+// RuleTesterParameters) and the keys of configuration they use; another one is not handled.
+const SVELTE_CONFIG_KEYS = new Set(['languageOptions', 'settings']);
+
+// A case of eslint-plugin-svelte's tests, as ESLint 10's RuleTester runs it: the configuration of
+// the tester under the case's (flat config merges languageOptions, parserOptions and settings),
+// the parsers by name, the file relative to tests/fixtures/rules, the program of `project` (all
+// the cases of loadTestCases: tests/fixtures/rules/tsconfig.json) as `tsconfig` and `via`.
+async function normalizeSvelte(run, raw, kind, index, prefix, source) {
+  const test = typeof raw === 'string' ? { code: raw } : raw;
+  const id = `${prefix}/${kind[0]}${index}`;
+  for (const [where, object] of [['the tester', run.config], ['the case', test]]) {
+    for (const key of Object.keys(object)) {
+      if (!SVELTE_CONFIG_KEYS.has(key) && (where === 'the tester' || !RULE_TESTER_PARAMETERS.has(key))) {
+        throw new Error(`${id}: ${where} has ${key}, which is not handled`);
+      }
+    }
+  }
+  const named = languageOptions => {
+    if (!languageOptions) return {};
+    const out = { ...languageOptions };
+    if ('parser' in out) out.parser = svelteParserName(out.parser, `${id}: languageOptions.parser`);
+    if (out.parserOptions && 'parser' in out.parserOptions) {
+      out.parserOptions = { ...out.parserOptions, parser: svelteParserName(out.parserOptions.parser, `${id}: parserOptions.parser`) };
+    }
+    return out;
+  };
+  const languageOptions = deepMerge(named(run.config.languageOptions), named(test.languageOptions));
+  const { parser = 'espree', parserOptions: mergedParserOptions = {}, ...otherLanguageOptions } = languageOptions;
+  const { project, ...parserOptions } = mergedParserOptions;
+  const out = { id, kind };
+  if (test.name) out.name = test.name;
+  out.code = test.code;
+  if (test.options?.length) out.options = test.options;
+  if (!test.filename) throw new Error(`${id}: a case without a file`);
+  const relative = file => path.relative(source.fixtures, realDir(path.dirname(file)) + path.sep + path.basename(file)).split(path.sep).join('/');
+  out.file = relative(path.resolve(test.filename));
+  if (out.file.startsWith('..')) throw new Error(`${id}: a file out of tests/fixtures/rules (${test.filename})`);
+  if (project) {
+    if (typeof project !== 'string') throw new Error(`${id}: project ${JSON.stringify(project)} is not handled`);
+    out.tsconfig = relative(path.resolve(project));
+    out.via = 'project';
+  }
+  out.parser = parser;
+  if (Object.keys(parserOptions).length) out.parserOptions = withFunctions(parserOptions);
+  if (Object.keys(otherLanguageOptions).length) out.languageOptions = otherLanguageOptions;
+  // A configuration with functions: the `_config.cjs` it comes from (the closest one, as getConfig
+  // finds it: `<case>-config.cjs` or `_config.cjs` of the directory).
+  if (hasFunction(parserOptions) || hasFunction(otherLanguageOptions)) {
+    const input = path.resolve(test.filename);
+    const module = [
+      input.replace(/(input|\+.+)(?:\.[a-z]+)+$/u, 'config.js'),
+      path.join(path.dirname(input), '_config.js'),
+      input.replace(/(input|\+.+)(?:\.[a-z]+)+$/u, 'config.cjs'),
+      path.join(path.dirname(input), '_config.cjs'),
+    ].find(f => fs.existsSync(f));
+    if (!module) throw new Error(`${id}: functions in its configuration, from no config module`);
+    out.configModule = relative(module);
+  }
+  const settings = deepMerge(run.config.settings, test.settings);
+  if (Object.keys(settings).length) out.settings = settings;
+  const { svelte, script, langs, typescript } = await svelteScriptOf(test.code, out.file, parser, parserOptions);
+  out.svelte = svelte;
+  out.script = script;
+  if (langs.length > 1) out.scripts = langs;
+  out.typescript = typescript;
+  if (kind === 'invalid') {
+    out.errors = test.errors;
+    if ('output' in test && test.output !== undefined) out.output = test.output;
+  }
+  if (test.before || test.after) out.hooks = true;
+  if (test.only) out.only = true;
+  assertPlain(out, id);
+  assertNoSveltePath({ options: out.options, settings: out.settings, parserOptions: out.parserOptions }, id);
+  return out;
+}
+
+// A fixture loadTestCases leaves out because its requirements (`_requirements.json`) do not hold
+// with the packages installed (ESLint 10, Svelte 5, TypeScript 6): its file and text, and why.
+function normalizeSvelteSkipped(entry, index, prefix, source, ruleName) {
+  const file = path.relative(source.fixtures, entry.file).split(path.sep).join('/');
+  const kind = file.slice(ruleName.length + 1).split('/')[0];
+  if (kind !== 'valid' && kind !== 'invalid') throw new Error(`${prefix}: ${file} is neither valid nor invalid`);
+  const out = { id: `${prefix}/s${index}`, kind, name: path.join(ruleName, file.slice(ruleName.length + 1)), code: fs.readFileSync(entry.file, 'utf8'), file };
+  out.skip = `requirements ${JSON.stringify(entry.requirements)}`;
+  return out;
+}
+
+// What an `it` block of comment-directive.ts linted with ESLint (tools/upstream/svelte-test.mjs):
+// its configuration with the parser, plugin and processor by name, the text, the file, and the
+// problems ESLint gave.
+function normalizeSvelteLint(entry, id, name) {
+  if (entry.api !== 'ESLint') throw new Error(`${id}: ${entry.api} is not handled`);
+  const { overrideConfigFile, baseConfig, ...others } = entry.options;
+  if (overrideConfigFile !== true || Object.keys(others).length) throw new Error(`${id}: ESLint options ${Object.keys(entry.options).join(', ')} are not handled`);
+  if (Array.isArray(baseConfig)) throw new Error(`${id}: a configuration array is not handled`);
+  const { languageOptions, plugins, ...rest } = baseConfig;
+  const named = { ...rest };
+  if (languageOptions) {
+    named.languageOptions = { ...languageOptions };
+    if ('parser' in languageOptions) named.languageOptions.parser = svelteParserName(languageOptions.parser, `${id}: parser`);
+  }
+  if (plugins) {
+    named.plugins = Object.fromEntries(
+      Object.entries(plugins).map(([prefix, plugin]) => {
+        if (plugin.meta?.name !== 'eslint-plugin-svelte') throw new Error(`${id}: the plugin ${prefix} is not eslint-plugin-svelte`);
+        return [prefix, 'eslint-plugin-svelte'];
+      }),
+    );
+  }
+  if (typeof named.processor !== 'string' && named.processor !== undefined) throw new Error(`${id}: a processor object is not handled`);
+  if (entry.results.length !== 1) throw new Error(`${id}: ${entry.results.length} results`);
+  const pick = m => Object.fromEntries(MESSAGE_KEYS.filter(k => k in m).map(k => [k, m[k]]));
+  const out = { id, name, api: entry.api, config: named, code: entry.code, filename: entry.filePath, messages: entry.results[0].messages.map(pick) };
+  if (entry.results[0].output !== undefined) out.output = entry.results[0].output;
+  assertPlain(out, id);
+  return out;
+}
+
 let perfectionistPluginCache;
 async function perfectionistPlugin() {
   perfectionistPluginCache ??= (await import(pathToFileURL(path.join(PERFECTIONIST_DEPS, 'eslint-plugin-perfectionist/dist/index.js')).href)).default;
@@ -960,8 +1249,11 @@ const vueRules = () =>
     .readdirSync(path.join(VUE, 'lib/rules'))
     .filter(entry => entry.endsWith('.ts'))
     .map(entry => `vue/${entry.slice(0, -'.ts'.length)}`);
+// `svelte/` names every rule of eslint-plugin-svelte (those of the published plugin, whose sources
+// are src/rules/<rule>.ts of the clone).
+const svelteRules = () => Object.keys(sveltePlugin().rules).map(name => `svelte/${name}`);
 const rules = process.argv.slice(2).length
-  ? process.argv.slice(2).flatMap(arg => (arg === 'vue/' ? vueRules() : [arg]))
+  ? process.argv.slice(2).flatMap(arg => (arg === 'vue/' ? vueRules() : arg === 'svelte/' ? svelteRules() : [arg]))
   : fs
       .readdirSync(path.join(ROOT, 'tests/rules'), { recursive: true })
       .filter(file => path.basename(file) === 'expected.txt' && !file.split(path.sep).includes('node_modules'))
@@ -971,6 +1263,8 @@ let failed = false;
 const START_CWD = process.cwd();
 // The counts of the `vue/*` rules, in total.
 const vueTotals = { rules: 0, cases: 0, valid: 0, invalid: 0, typed: 0, sfc: 0, sfcJs: 0, notSfc: 0, notSfcJs: 0, lints: 0 };
+// The counts of the `svelte/*` rules, in total.
+const svelteTotals = { rules: 0, cases: 0, valid: 0, invalid: 0, skipped: 0, typed: 0, svelte: 0, svelteTs: 0, svelteJs: 0, svelteOther: 0, svelteNone: 0, notSvelte: 0, notSvelteTs: 0, lints: 0 };
 for (const rule of rules.sort()) {
   const found = sourceOf(rule);
   if (!found) {
@@ -991,7 +1285,10 @@ for (const rule of rules.sort()) {
   }
   // eslint-plugin-vue's tests run in the clone's root (vitest's root): their file names and the
   // paths they build with process.cwd() are relative to it.
-  process.chdir(source.vue ? realDir(VUE) : START_CWD);
+  // eslint-plugin-svelte's run in its package's directory (mocha's): the routes of SvelteKit in
+  // their svelte.config are relative to it, and the plugin loads typescript, sass, less… from it.
+  process.chdir(source.vue ? realDir(VUE) : source.svelte ? realDir(SVELTE_PACKAGE) : START_CWD);
+  if (source.svelte) globalThis.before ??= (await import(pathToFileURL(path.join(ROOT, 'tools/upstream/svelte-test.mjs')).href)).before;
   const name = rule.slice(prefix.length);
   const files = testFiles(name, source);
   if (!files.length) {
@@ -1006,8 +1303,9 @@ for (const rule of rules.sort()) {
   const ruleObject = await ruleObjectOf(name, source);
   for (const file of files) {
     const before = recorded.length;
-    const tests = source === SOURCES['seyfert/'] || source.perfectionist || source.vue ? [] : undefined;
+    const tests = source === SOURCES['seyfert/'] || source.perfectionist || source.vue || source.svelte ? [] : undefined;
     globalThis.__veslintTests = tests;
+    globalThis.__veslintSvelteSkipped = source.svelte ? [] : undefined;
     if (source.core) {
       const copy = file.replace(/\.js$/u, '.veslint-raw.js');
       fs.writeFileSync(copy, inlineStringRaw(fs.readFileSync(file, 'utf8')));
@@ -1038,7 +1336,7 @@ for (const rule of rules.sort()) {
         projects.push(normalizeProject(project, `${name}/p${projects.length}`, test.name));
       }
       for (const entry of globalThis.__veslintLints.slice(lintStart)) {
-        lints.push(normalizeVueLint(entry, `${name}/l${lints.length}`, test.name));
+        lints.push(source.svelte ? normalizeSvelteLint(entry, `${name}/l${lints.length}`, test.name) : normalizeVueLint(entry, `${name}/l${lints.length}`, test.name));
       }
     }
     globalThis.__veslintTests = undefined;
@@ -1048,6 +1346,14 @@ for (const rule of rules.sort()) {
     if (runs.length) messages = source.unicorn || source.stylistic || source.perfectionist ? (ruleObject.meta.messages ?? {}) : runs[0].messages;
     // eslint-plugin-vue: the messages of the published rule (the oracle), which must be those of
     // the source the tests run.
+    // eslint-plugin-svelte: likewise, the published rule's.
+    if (source.svelte) {
+      messages = sveltePlugin().rules[name].meta.messages ?? {};
+      if (JSON.stringify(messages) !== JSON.stringify(ruleObject.meta.messages ?? {})) {
+        console.error(`${rule}: the messages of src/rules/${name}.ts are not those of the published rule`);
+        failed = true;
+      }
+    }
     if (source.vue) {
       messages = vuePlugin().rules[name].meta.messages ?? {};
       if (JSON.stringify(messages) !== JSON.stringify(ruleObject.meta.messages ?? {})) {
@@ -1070,7 +1376,7 @@ for (const rule of rules.sort()) {
       }
     }
     const stem =
-      source === SOURCES['seyfert/'] || source.core || source.unicorn || source.marcrock
+      source === SOURCES['seyfert/'] || source.core || source.unicorn || source.marcrock || source.svelte
         ? name
         : source.vue
           ? path.relative(source.tests, file).replace(/\.test\.ts$/, '').split(path.sep).join('/')
@@ -1079,6 +1385,19 @@ for (const rule of rules.sort()) {
           : source.perfectionist
             ? path.relative(source.tests, file).replace(/\.test\.ts$/, '').split(path.sep).join('/')
           : path.relative(path.join(source.tests, 'rules'), file).replace(/\.test\.ts$/, '').split(path.sep).join('/');
+    // eslint-plugin-svelte: its rule under its own name, each case normalized (with
+    // svelte-eslint-parser, asynchronously), then the fixtures its requirements leave out.
+    if (source.svelte) {
+      for (const [r, run] of runs.entries()) {
+        if (run.rule !== ruleObject || run.name !== name) throw new Error(`${rule}: ${stem} runs ${run.name}, not the rule`);
+        const casePrefix = runs.length > 1 ? `${stem}/r${r}` : stem;
+        for (const [i, test] of (run.tests.valid ?? []).entries()) cases.push(await normalizeSvelte(run, test, 'valid', i, casePrefix, source));
+        for (const [i, test] of (run.tests.invalid ?? []).entries()) cases.push(await normalizeSvelte(run, test, 'invalid', i, casePrefix, source));
+      }
+      globalThis.__veslintSvelteSkipped.forEach((entry, i) => cases.push(normalizeSvelteSkipped(entry, i, stem, source, name)));
+      globalThis.__veslintSvelteSkipped = undefined;
+      continue;
+    }
     runs.forEach((run, r) => {
       // A test file may run its rule more than once under a longer label
       // ("non-nullable-type-assertion-style - noUncheckedIndexedAccess"), or under a label of its
@@ -1115,15 +1434,56 @@ for (const rule of rules.sort()) {
   // The languageOptions every case has under its own: unicorn's tests give the globals of
   // test/utils/language-options.js.
   if (source.unicorn) text += `"languageOptions": ${JSON.stringify({ globals: UNICORN_GLOBALS })},\n`;
-  text += `"cases": [\n${lines.join(',\n')}\n]`;
+  // eslint-plugin-svelte: loadTestCases gives every case the browser globals of the `globals` its
+  // tests import (16.4.0): when every case has them, they are written once here, the languageOptions
+  // under each case's own (an upstream.json without them has no case of loadTestCases).
+  if (source.svelte) {
+    const browser = requireSvelteDependency('globals').browser;
+    const run = cases.filter(c => !c.skip);
+    const withBrowser = run.filter(c => c.languageOptions?.globals && JSON.stringify(c.languageOptions.globals) === JSON.stringify(browser));
+    if (withBrowser.length && withBrowser.length !== run.length) throw new Error(`${rule}: ${withBrowser.length} of ${run.length} cases have the browser globals`);
+    if (run.some(c => c.languageOptions?.globals && !withBrowser.includes(c))) throw new Error(`${rule}: globals other than the browser ones`);
+    if (withBrowser.length) {
+      for (const c of withBrowser) {
+        delete c.languageOptions.globals;
+        if (!Object.keys(c.languageOptions).length) delete c.languageOptions;
+      }
+      text += `"languageOptions": ${JSON.stringify({ globals: browser })},\n`;
+    }
+  }
+  text += `"cases": [\n${(source.svelte ? cases.map(c => JSON.stringify(c)) : lines).join(',\n')}\n]`;
   if (projects.length) text += `,\n"projects": [\n${projects.map(p => JSON.stringify(p)).join(',\n')}\n]`;
   if (lints.length) text += `,\n"lints": [\n${lints.map(l => JSON.stringify(l)).join(',\n')}\n]`;
   text += '}\n';
   // The directory of a rule of eslint-plugin-vue may not exist yet: its cases come before its port.
-  if (source.vue) fs.mkdirSync(path.join(ROOT, 'tests/rules', rule), { recursive: true });
+  if (source.vue || source.svelte) fs.mkdirSync(path.join(ROOT, 'tests/rules', rule), { recursive: true });
   fs.writeFileSync(path.join(ROOT, 'tests/rules', rule, 'upstream.json'), text);
   const count = kind => cases.filter(c => c.kind === kind).length;
   const skipped = cases.filter(c => c.skip).length;
+  if (source.svelte) {
+    const run = cases.filter(c => !c.skip);
+    const tally = {
+      skipped: cases.length - run.length,
+      typed: run.filter(c => c.via && c.typescript).length,
+      svelte: run.filter(c => c.svelte).length,
+      svelteTs: run.filter(c => c.svelte && c.typescript).length,
+      svelteJs: run.filter(c => c.svelte && c.script === 'js').length,
+      svelteOther: run.filter(c => c.svelte && !c.typescript && !['js', 'none'].includes(c.script)).length,
+      svelteNone: run.filter(c => c.svelte && c.script === 'none').length,
+      notSvelte: run.filter(c => !c.svelte).length,
+      notSvelteTs: run.filter(c => !c.svelte && c.typescript).length,
+    };
+    console.log(
+      `${rule}: ${run.filter(c => c.kind === 'valid').length} valid, ${run.filter(c => c.kind === 'invalid').length} invalid${tally.skipped ? ` (+${tally.skipped} skipped)` : ''}; ${tally.typed} typed; ${tally.svelte} components (${tally.svelteTs} TS, ${tally.svelteJs} JS, ${tally.svelteOther} other lang, ${tally.svelteNone} no script), ${tally.notSvelte} not components (${tally.notSvelteTs} TS)${lints.length ? `, ${lints.length} lints` : ''}`,
+    );
+    svelteTotals.rules++;
+    svelteTotals.cases += run.length;
+    svelteTotals.valid += run.filter(c => c.kind === 'valid').length;
+    svelteTotals.invalid += run.filter(c => c.kind === 'invalid').length;
+    svelteTotals.lints += lints.length;
+    for (const key of Object.keys(tally)) svelteTotals[key] += tally[key];
+    continue;
+  }
   if (source.vue) {
     const tally = {
       typed: cases.filter(c => c.via).length,
@@ -1145,6 +1505,12 @@ for (const rule of rules.sort()) {
   }
   console.log(
     `${rule}: ${count('valid')} valid, ${count('invalid')} invalid${skipped ? `, ${skipped} skipped` : ''}${projects.length ? `, ${projects.length} projects` : ''}`,
+  );
+}
+if (svelteTotals.rules > 1) {
+  const t = svelteTotals;
+  console.log(
+    `eslint-plugin-svelte: ${t.rules} rules, ${t.cases} cases (${t.valid} valid, ${t.invalid} invalid) + ${t.skipped} skipped by their requirements; ${t.typed} typed; ${t.svelte} components (${t.svelteTs} TS script, ${t.svelteJs} JS, ${t.svelteOther} other lang, ${t.svelteNone} no script), ${t.notSvelte} not components (${t.notSvelteTs} TS); ${t.lints} lints`,
   );
 }
 if (vueTotals.rules > 1) {

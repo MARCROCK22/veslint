@@ -302,3 +302,82 @@ type the checker gives): veslint gets `projectService: false` for it. `tests/rul
 `upstream_ts.mjs --check` makes now, and that veslint prints, case by case, ESLint's lines on every
 converted case (`--out DIR` writes them).
 
+
+## eslint-plugin-svelte (the `svelte/*` rules)
+
+The cases of `tests/src/rules/<rule>.ts` of the package `packages/eslint-plugin-svelte` of
+sveltejs/eslint-plugin-svelte at `eslint-plugin-svelte@3.24.1`, for all its 86 rules, in
+`tests/rules/svelte/<rule>/upstream.json` (`@typescript-eslint/no-unnecessary-condition` a level
+deeper): 1,478 cases, 64 more its fixtures' requirements leave out, and 29 lints. The tests run
+with mocha and ESLint's RuleTester (`tests/utils/eslint-compat.ts`, which
+`tools/upstream/svelte-test.mjs` stands in for while `tools/gen_upstream_cases.mjs` loads them).
+All but two test files hand RuleTester what `loadTestCases` of `tests/utils/utils.ts` reads from
+the rule's fixtures, `tests/fixtures/rules/<rule>/{valid,invalid}/`: each `*input.<ext>` (or
+`+<route>` file) is a case, with the options and configuration of `<case>-config.json` or the
+directory's `_config.json` (`.cjs`), the problems of `<case>-errors.yaml` (message, line, column,
+suggestions: no end) and, for a fixable rule, the output of `<case>-output.<ext>` (null when it is
+the input). The generator loads `utils.ts` itself, listing the directories sorted (as node does),
+recording the fixtures whose `<case>-requirements.json` / `_requirements.json` do not hold with the
+packages installed (`skip`: Svelte 3/4-only fixtures, 4 ESLint 9-only ones, 3 for
+typescript-eslint < 6.11), and failing where upstream would write a missing errors.yaml or output.
+no-conflicting-module-names lists its cases (files of its fixtures that it reads the siblings of),
+and comment-directive lints with ESLint in `it` blocks: those are the `lints`, run for real.
+
+A case is written as ESLint 10's RuleTester runs it: the tester's configuration under the case's,
+with
+
+- `file`: the case's own file, relative to `tests/fixtures/rules`; every case lints its fixture in
+  place (some rules read the disk around it: svelte.config.js, the modules beside a component), in
+  the package's directory, the tests' current directory (the routes of SvelteKit in the
+  configurations are relative to it, and the plugin loads typescript, sass, less and stylus from
+  it);
+- `tsconfig`/`via: "project"`: `loadTestCases` gives every case `parserOptions.project`,
+  `tests/fixtures/rules/tsconfig.json` (`include: ["**/*.svelte", "**/*.ts"]`), and
+  `extraFileExtensions: [".svelte"]`: a script typescript-eslint's parser reads has the types of
+  that program (`typescript: true`; 330 cases), one program for all (mocha runs every test file in
+  one process);
+- `parser`: svelte-eslint-parser (for `.svelte` and `.svelte.{js,ts}` files),
+  `@typescript-eslint/parser` (a `.ts` file), `espree` (a `.js` file: ESLint's default), and
+  `parserOptions.parser` by name as upstream gives it, `{"ts": "@typescript-eslint/parser", "js":
+  "espree"}`, which svelte-eslint-parser requires from its own directory and indexes with the
+  script's `lang` (`lang="typescript"` gets espree);
+- `languageOptions`: ecmaVersion `latest`, sourceType `module`; the browser globals of `globals`
+  16.4.0, which every case of `loadTestCases` has, are the `languageOptions` of the upstream.json,
+  under each case's;
+- `configModule`: the `_config.cjs` of a configuration with functions (svelteConfig's `onwarn`,
+  `warningFilter`, `compilerOptions.runes`), each written `{"$function": <source>}`;
+- `svelte`: whether svelte-eslint-parser reads the file as a component (any file but
+  `.svelte.js`/`.svelte.ts`, which it parses as a script module), and `script`: the lang of the
+  component's one script program (the `lang` of its `<script>` elements, the last one's winning,
+  as svelte-eslint-parser merges them; `js` without one, `none` without a script; `scripts` when
+  the elements differ), or the extension of another file. 1,455 components (329 with a TypeScript
+  script, 830 JavaScript, 19 another lang, 277 without a script) and 23 other files (12 `.js`, 1
+  `.ts`, 10 script modules). The cases with a JavaScript script stay here (veslint lints only
+  TypeScript scripts: `.claude/SVELTE.md`), to be converted to `lang="ts"` as for Vue;
+- `messages`: those of the published rule, which the generator checks are the source's.
+
+`node tests/rules/svelte/upstream_eslint.mjs [--out DIR] [svelte/<rule>...]` runs every case with
+ESLint 10.15.0 and the published eslint-plugin-svelte through ESLint's own RuleTester (each case
+alone, in place) and lints the `lints` again: all of them give what their test expects
+(`tests/upstream/svelte/known.txt` would list those that do not), also with svelte 5.57.3. It
+takes about 45 seconds and 1.5 GB.
+
+They need the clone and the packages of the tests (svelte 5.56.0 and the rest as the monorepo's
+lockfile has them; ESLint 10.15.0, typescript-eslint 8.72.2 and TypeScript 6.0.3 instead of
+9.39.1, 8.57.0 and 5.9.3):
+
+```sh
+git clone --depth 1 --branch eslint-plugin-svelte@3.24.1 https://github.com/sveltejs/eslint-plugin-svelte build/upstream/svelte
+mkdir -p build/upstream/svelte-deps && cd build/upstream/svelte-deps
+# package.json: {"private": true, "dependencies": {"@typescript-eslint/parser": "8.72.2",
+#   "eslint": "10.15.0", "eslint-plugin-svelte": "3.24.1", "globals": "16.4.0", "less": "4.4.2",
+#   "postcss-nested": "7.0.2", "sass": "1.93.2", "semver": "7.7.3", "stylus": "0.64.0",
+#   "svelte": "5.56.0", "svelte-eslint-parser": "1.10.1", "svelte-i18n": "4.0.1",
+#   "typescript": "6.0.3", "yaml": "2.9.0"}}
+npm install --ignore-scripts --no-audit --no-fund
+cd ../../..
+bun tools/gen_upstream_cases.mjs svelte/      # every rule; or name some: svelte/indent
+```
+
+The generator also makes the package's node_modules (links to `build/upstream/svelte-deps`),
+which the reference script needs.
