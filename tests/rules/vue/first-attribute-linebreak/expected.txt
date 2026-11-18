@@ -1,0 +1,9 @@
+tests/rules/vue/first-attribute-linebreak/cases.vue:23:20	vue/first-attribute-linebreak	expected	Expected a linebreak before this attribute.
+tests/rules/vue/first-attribute-linebreak/extra-beside/cases.vue:7:11	vue/first-attribute-linebreak	expected	Expected a linebreak before this attribute.
+tests/rules/vue/first-attribute-linebreak/extra/cases.vue:3:11	vue/first-attribute-linebreak	expected	Expected a linebreak before this attribute.
+tests/rules/vue/first-attribute-linebreak/extra/cases.vue:10:13	vue/first-attribute-linebreak	expected	Expected a linebreak before this attribute.
+tests/rules/vue/first-attribute-linebreak/extra/cases.vue:13:13	vue/first-attribute-linebreak	expected	Expected a linebreak before this attribute.
+tests/rules/vue/first-attribute-linebreak/options-b9b62442/cases.vue:4:11	vue/first-attribute-linebreak	unexpected	Expected no linebreak before this attribute.
+tests/rules/vue/first-attribute-linebreak/options-b9b62442/cases.vue:13:11	vue/first-attribute-linebreak	unexpected	Expected no linebreak before this attribute.
+tests/rules/vue/first-attribute-linebreak/options-ee0d5f0d/cases.vue:8:20	vue/first-attribute-linebreak	expected	Expected a linebreak before this attribute.
+tests/rules/vue/first-attribute-linebreak/options-ee0d5f0d/cases.vue:15:20	vue/first-attribute-linebreak	expected	Expected a linebreak before this attribute.

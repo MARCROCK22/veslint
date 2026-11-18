@@ -1,0 +1,22 @@
+tests/rules/vue/no-restricted-static-attribute/extra/cases.vue:3:10	vue/no-restricted-static-attribute	restrictedAttr	Using `foo` set to `true` is not allowed.
+tests/rules/vue/no-restricted-static-attribute/extra/cases.vue:3:14	vue/no-restricted-static-attribute	restrictedAttr	no bar
+tests/rules/vue/no-restricted-static-attribute/extra/cases.vue:3:42	vue/no-restricted-static-attribute	restrictedAttr	Using `data-x` is not allowed.
+tests/rules/vue/no-restricted-static-attribute/extra/cases.vue:4:13	vue/no-restricted-static-attribute	restrictedAttr	Using `foo="foo"` is not allowed.
+tests/rules/vue/no-restricted-static-attribute/extra/cases.vue:4:23	vue/no-restricted-static-attribute	restrictedAttr	no bar
+tests/rules/vue/no-restricted-static-attribute/extra/cases.vue:4:27	vue/no-restricted-static-attribute	restrictedAttr	Using `baz="QUX"` on `<MyComp>` is not allowed.
+tests/rules/vue/no-restricted-static-attribute/options-392629c3/cases.vue:2:13	vue/no-restricted-static-attribute	restrictedAttr	Using `foo` set to `true` is not allowed.
+tests/rules/vue/no-restricted-static-attribute/options-392629c3/cases.vue:2:30	vue/no-restricted-static-attribute	restrictedAttr	Using `foo="foo"` is not allowed.
+tests/rules/vue/no-restricted-static-attribute/options-392629c3/cases.vue:2:40	vue/no-restricted-static-attribute	restrictedAttr	Using `vv` is not allowed.
+tests/rules/vue/no-restricted-static-attribute/options-392629c3/cases.vue:2:67	vue/no-restricted-static-attribute	restrictedAttr	Using `vvv` is not allowed.
+tests/rules/vue/no-restricted-static-attribute/options-392629c3/cases.vue:2:77	vue/no-restricted-static-attribute	restrictedAttr	Using `bar="vv"` is not allowed.
+tests/rules/vue/no-restricted-static-attribute/options-413358a6/cases.vue:4:19	vue/no-restricted-static-attribute	restrictedAttr	Using `foo` on `<MyButton>` is not allowed.
+tests/rules/vue/no-restricted-static-attribute/options-589080ec/cases.vue:3:14	vue/no-restricted-static-attribute	restrictedAttr	Using `foo` is not allowed.
+tests/rules/vue/no-restricted-static-attribute/options-702b601a/cases.vue:2:13	vue/no-restricted-static-attribute	restrictedAttr	Using `foo` is not allowed.
+tests/rules/vue/no-restricted-static-attribute/options-702b601a/cases.vue:2:23	vue/no-restricted-static-attribute	restrictedAttr	Using `bar` is not allowed.
+tests/rules/vue/no-restricted-static-attribute/options-764fc695/cases.vue:2:13	vue/no-restricted-static-attribute	restrictedAttr	Using `foo` is not allowed.
+tests/rules/vue/no-restricted-static-attribute/options-764fc695/cases.vue:2:23	vue/no-restricted-static-attribute	restrictedAttr	Using `bar` is not allowed.
+tests/rules/vue/no-restricted-static-attribute/options-8872240b/cases.vue:5:13	vue/no-restricted-static-attribute	restrictedAttr	Using `foo` is not allowed.
+tests/rules/vue/no-restricted-static-attribute/options-8872240b/cases.vue:6:13	vue/no-restricted-static-attribute	restrictedAttr	Using `foo` is not allowed.
+tests/rules/vue/no-restricted-static-attribute/options-8a99f86c/cases.vue:3:30	vue/no-restricted-static-attribute	restrictedAttr	Using `foo="bar"` is not allowed.
+tests/rules/vue/no-restricted-static-attribute/options-8ba14cd0/cases.vue:3:14	vue/no-restricted-static-attribute	restrictedAttr	foo
+tests/rules/vue/no-restricted-static-attribute/options-e007684c/cases.vue:2:13	vue/no-restricted-static-attribute	restrictedAttr	Using `foo` is not allowed.

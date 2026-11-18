@@ -1,0 +1,10 @@
+tests/rules/vue/static-class-names-order/cases.vue:7:13	vue/static-class-names-order	shouldBeOrdered	Classes should be ordered alphabetically.
+tests/rules/vue/static-class-names-order/cases.vue:9:16	vue/static-class-names-order	shouldBeOrdered	Classes should be ordered alphabetically.
+tests/rules/vue/static-class-names-order/extra/cases.vue:2:8	vue/static-class-names-order	shouldBeOrdered	Classes should be ordered alphabetically.
+tests/rules/vue/static-class-names-order/extra/cases.vue:3:8	vue/static-class-names-order	shouldBeOrdered	Classes should be ordered alphabetically.
+tests/rules/vue/static-class-names-order/extra/cases.vue:4:8	vue/static-class-names-order	shouldBeOrdered	Classes should be ordered alphabetically.
+tests/rules/vue/static-class-names-order/extra/cases.vue:6:8	vue/static-class-names-order	shouldBeOrdered	Classes should be ordered alphabetically.
+tests/rules/vue/static-class-names-order/extra/cases.vue:7:8	vue/static-class-names-order	shouldBeOrdered	Classes should be ordered alphabetically.
+tests/rules/vue/static-class-names-order/extra/cases.vue:8:8	vue/static-class-names-order	shouldBeOrdered	Classes should be ordered alphabetically.
+tests/rules/vue/static-class-names-order/extra/cases.vue:9:8	vue/static-class-names-order	shouldBeOrdered	Classes should be ordered alphabetically.
+tests/rules/vue/static-class-names-order/extra/cases.vue:10:8	vue/static-class-names-order	shouldBeOrdered	Classes should be ordered alphabetically.

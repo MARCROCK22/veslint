@@ -1,0 +1,46 @@
+tests/rules/vue/no-useless-v-bind/cases.vue:14:14	vue/no-useless-v-bind	unexpected	Unexpected `v-bind` with a string literal value.	fix	264	275	id="foo"	end	14	25
+tests/rules/vue/no-useless-v-bind/cases.vue:15:14	vue/no-useless-v-bind	unexpected	Unexpected `v-bind` with a string literal value.	fix	292	309	id="foo"	end	15	31
+tests/rules/vue/no-useless-v-bind/cases.vue:18:14	vue/no-useless-v-bind	unexpected	Unexpected `v-bind` with a string literal value.	end	18	40
+tests/rules/vue/no-useless-v-bind/cases.vue:19:14	vue/no-useless-v-bind	unexpected	Unexpected `v-bind` with a string literal value.	end	20	10
+tests/rules/vue/no-useless-v-bind/cases.vue:23:14	vue/no-useless-v-bind	unexpected	Unexpected `v-bind` with a string literal value.	end	23	24
+tests/rules/vue/no-useless-v-bind/cases.vue:24:14	vue/no-useless-v-bind	unexpected	Unexpected `v-bind` with a string literal value.	end	24	24
+tests/rules/vue/no-useless-v-bind/cases.vue:27:14	vue/no-useless-v-bind	unexpected	Unexpected `v-bind` with a string literal value.	fix	536	550	id="&quot;"	end	27	28
+tests/rules/vue/no-useless-v-bind/cases.vue:28:14	vue/no-useless-v-bind	unexpected	Unexpected `v-bind` with a string literal value.	fix	567	585	id=&quot;&apos;	end	28	32
+tests/rules/vue/no-useless-v-bind/cases.vue:29:14	vue/no-useless-v-bind	unexpected	Unexpected `v-bind` with a string literal value.	fix	602	612	id="\\"	end	29	24
+tests/rules/vue/no-useless-v-bind/cases.vue:30:14	vue/no-useless-v-bind	unexpected	Unexpected `v-bind` with a string literal value.	fix	629	640	id="\\r"	end	30	25
+tests/rules/vue/no-useless-v-bind/cases.vue:32:14	vue/no-useless-v-bind	unexpected	Unexpected `v-bind` with a string literal value.	fix	683	694	id="foo"	end	32	25
+tests/rules/vue/no-useless-v-bind/cases.vue:34:14	vue/no-useless-v-bind	unexpected	Unexpected `v-bind` with a string literal value.	fix	745	759	id='&apos;'	end	34	28
+tests/rules/vue/no-useless-v-bind/cases.vue:35:14	vue/no-useless-v-bind	unexpected	Unexpected `v-bind` with a string literal value.	fix	776	785	id=foo	end	35	23
+tests/rules/vue/no-useless-v-bind/cases.vue:38:14	vue/no-useless-v-bind	unexpected	Unexpected `v-bind` with a string literal value.	fix	823	842	id="foo"	end	38	33
+tests/rules/vue/no-useless-v-bind/cases.vue:39:14	vue/no-useless-v-bind	unexpected	Unexpected `v-bind` with a string literal value.	fix	859	878	id='foo'	end	39	33
+tests/rules/vue/no-useless-v-bind/cases.vue:40:14	vue/no-useless-v-bind	unexpected	Unexpected `v-bind` with a string literal value.	fix	895	912	id="foo"	end	40	31
+tests/rules/vue/no-useless-v-bind/cases.vue:41:14	vue/no-useless-v-bind	unexpected	Unexpected `v-bind` with a string literal value.	fix	929	946	id='foo'	end	41	31
+tests/rules/vue/no-useless-v-bind/cases.vue:42:14	vue/no-useless-v-bind	unexpected	Unexpected `v-bind` with a string literal value.	fix	963	980	id=" 'foo' "	end	42	31
+tests/rules/vue/no-useless-v-bind/cases.vue:43:14	vue/no-useless-v-bind	unexpected	Unexpected `v-bind` with a string literal value.	fix	997	1014	id=' "foo" '	end	43	31
+tests/rules/vue/no-useless-v-bind/extra-opts/cases.vue:3:13	vue/no-useless-v-bind	unexpected	Unexpected `v-bind` with a string literal value.	fix	31	39	a="x"	end	3	21
+tests/rules/vue/no-useless-v-bind/extra-opts/cases.vue:3:22	vue/no-useless-v-bind	unexpected	Unexpected `v-bind` with a string literal value.	fix	40	54	b="y"	end	3	36
+tests/rules/vue/no-useless-v-bind/extra-opts/cases.vue:3:49	vue/no-useless-v-bind	unexpected	Unexpected `v-bind` with a string literal value.	fix	67	78	d="a'b"	end	3	60
+tests/rules/vue/no-useless-v-bind/extra-opts/cases.vue:3:61	vue/no-useless-v-bind	unexpected	Unexpected `v-bind` with a string literal value.	fix	79	90	e="a`b"	end	3	72
+tests/rules/vue/no-useless-v-bind/extra-opts/cases.vue:4:13	vue/no-useless-v-bind	unexpected	Unexpected `v-bind` with a string literal value.	fix	162	176	i='q"uote'	end	4	27
+tests/rules/vue/no-useless-v-bind/extra-opts/cases.vue:4:28	vue/no-useless-v-bind	unexpected	Unexpected `v-bind` with a string literal value.	fix	177	187	j="\\x"	end	4	38
+tests/rules/vue/no-useless-v-bind/extra-opts/cases.vue:4:39	vue/no-useless-v-bind	unexpected	Unexpected `v-bind` with a string literal value.	fix	188	196	k="é"	end	4	47
+tests/rules/vue/no-useless-v-bind/extra-opts/cases.vue:4:55	vue/no-useless-v-bind	unexpected	Unexpected `v-bind` with a string literal value.	fix	204	212	m=&apos;u&apos;	end	4	63
+tests/rules/vue/no-useless-v-bind/extra-opts/cases.vue:4:64	vue/no-useless-v-bind	unexpected	Unexpected `v-bind` with a string literal value.	fix	213	221	n="A"	end	4	72
+tests/rules/vue/no-useless-v-bind/extra-opts/cases.vue:4:73	vue/no-useless-v-bind	unexpected	Unexpected `v-bind` with a string literal value.	fix	222	233	o="ab"	end	5	4
+tests/rules/vue/no-useless-v-bind/extra-opts/cases.vue:6:13	vue/no-useless-v-bind	unexpected	Unexpected `v-bind` with a string literal value.	fix	249	273	p="double&quot;quote"	end	6	37
+tests/rules/vue/no-useless-v-bind/extra-opts/cases.vue:6:38	vue/no-useless-v-bind	unexpected	Unexpected `v-bind` with a string literal value.	fix	274	294	q='single&apos;q'	end	6	58
+tests/rules/vue/no-useless-v-bind/extra/cases.vue:3:13	vue/no-useless-v-bind	unexpected	Unexpected `v-bind` with a string literal value.	fix	31	39	a="x"	end	3	21
+tests/rules/vue/no-useless-v-bind/extra/cases.vue:3:22	vue/no-useless-v-bind	unexpected	Unexpected `v-bind` with a string literal value.	fix	40	54	b="y"	end	3	36
+tests/rules/vue/no-useless-v-bind/extra/cases.vue:3:37	vue/no-useless-v-bind	unexpected	Unexpected `v-bind` with a string literal value.	end	3	48
+tests/rules/vue/no-useless-v-bind/extra/cases.vue:3:49	vue/no-useless-v-bind	unexpected	Unexpected `v-bind` with a string literal value.	fix	67	78	d="a'b"	end	3	60
+tests/rules/vue/no-useless-v-bind/extra/cases.vue:3:61	vue/no-useless-v-bind	unexpected	Unexpected `v-bind` with a string literal value.	fix	79	90	e="a`b"	end	3	72
+tests/rules/vue/no-useless-v-bind/extra/cases.vue:3:73	vue/no-useless-v-bind	unexpected	Unexpected `v-bind` with a string literal value.	end	3	89
+tests/rules/vue/no-useless-v-bind/extra/cases.vue:4:13	vue/no-useless-v-bind	unexpected	Unexpected `v-bind` with a string literal value.	fix	162	176	i='q"uote'	end	4	27
+tests/rules/vue/no-useless-v-bind/extra/cases.vue:4:28	vue/no-useless-v-bind	unexpected	Unexpected `v-bind` with a string literal value.	fix	177	187	j="\\x"	end	4	38
+tests/rules/vue/no-useless-v-bind/extra/cases.vue:4:39	vue/no-useless-v-bind	unexpected	Unexpected `v-bind` with a string literal value.	fix	188	196	k="é"	end	4	47
+tests/rules/vue/no-useless-v-bind/extra/cases.vue:4:55	vue/no-useless-v-bind	unexpected	Unexpected `v-bind` with a string literal value.	fix	204	212	m=&apos;u&apos;	end	4	63
+tests/rules/vue/no-useless-v-bind/extra/cases.vue:4:64	vue/no-useless-v-bind	unexpected	Unexpected `v-bind` with a string literal value.	fix	213	221	n="A"	end	4	72
+tests/rules/vue/no-useless-v-bind/extra/cases.vue:4:73	vue/no-useless-v-bind	unexpected	Unexpected `v-bind` with a string literal value.	fix	222	233	o="ab"	end	5	4
+tests/rules/vue/no-useless-v-bind/extra/cases.vue:6:13	vue/no-useless-v-bind	unexpected	Unexpected `v-bind` with a string literal value.	fix	249	273	p="double&quot;quote"	end	6	37
+tests/rules/vue/no-useless-v-bind/extra/cases.vue:6:38	vue/no-useless-v-bind	unexpected	Unexpected `v-bind` with a string literal value.	fix	274	294	q='single&apos;q'	end	6	58
+tests/rules/vue/no-useless-v-bind/extra/cases.vue:6:59	vue/no-useless-v-bind	unexpected	Unexpected `v-bind` with a string literal value.	end	6	70

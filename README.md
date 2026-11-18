@@ -99,7 +99,7 @@ Directive comments work as in ESLint 10: `eslint-disable`, `eslint-enable`, `esl
 
 ## Rules
 
-veslint has **507 rules**, each with all its options, fixes and suggestions:
+veslint has **535 rules**, each with all its options, fixes and suggestions:
 
 <details>
 <summary><b>ESLint 10.15.0</b>: 139 rules</summary>
@@ -137,9 +137,9 @@ veslint has **507 rules**, each with all its options, fixes and suggestions:
 </details>
 
 <details>
-<summary><b>eslint-plugin-vue 10.12.1</b> (the templates of <code>.vue</code> files): 49 rules</summary>
+<summary><b>eslint-plugin-vue 10.12.1</b> (the templates of <code>.vue</code> files): 77 rules</summary>
 
-`vue/comment-directive`, `vue/html-button-has-type`, `vue/html-end-tags`, `vue/mustache-interpolation-spacing`, `vue/no-custom-modifiers-on-v-model`, `vue/no-deprecated-filter`, `vue/no-deprecated-html-element-is`, `vue/no-deprecated-inline-template`, `vue/no-deprecated-router-link-tag-prop`, `vue/no-deprecated-scope-attribute`, `vue/no-deprecated-v-bind-sync`, `vue/no-deprecated-v-is`, `vue/no-deprecated-v-on-native-modifier`, `vue/no-deprecated-v-on-number-modifiers`, `vue/no-duplicate-attributes`, `vue/no-lone-template`, `vue/no-multiple-objects-in-class`, `vue/no-parsing-error`, `vue/no-restricted-html-elements`, `vue/no-spaces-around-equal-signs-in-attribute`, `vue/no-template-key`, `vue/no-textarea-mustache`, `vue/no-use-v-else-with-v-for`, `vue/no-use-v-if-with-v-for`, `vue/no-useless-template-attributes`, `vue/no-v-for-template-key`, `vue/no-v-for-template-key-on-child`, `vue/no-v-html`, `vue/no-v-model-argument`, `vue/no-v-text`, `vue/no-v-text-v-html-on-component`, `vue/require-component-is`, `vue/require-v-for-key`, `vue/v-bind-style`, `vue/v-for-delimiter-style`, `vue/v-on-style`, `vue/valid-attribute-name`, `vue/valid-v-bind`, `vue/valid-v-cloak`, `vue/valid-v-else`, `vue/valid-v-else-if`, `vue/valid-v-html`, `vue/valid-v-if`, `vue/valid-v-is`, `vue/valid-v-on`, `vue/valid-v-once`, `vue/valid-v-pre`, `vue/valid-v-show`, `vue/valid-v-text`
+`vue/attribute-hyphenation`, `vue/comment-directive`, `vue/first-attribute-linebreak`, `vue/html-button-has-type`, `vue/html-closing-bracket-newline`, `vue/html-closing-bracket-spacing`, `vue/html-end-tags`, `vue/html-quotes`, `vue/mustache-interpolation-spacing`, `vue/no-child-content`, `vue/no-custom-modifiers-on-v-model`, `vue/no-deprecated-filter`, `vue/no-deprecated-html-element-is`, `vue/no-deprecated-inline-template`, `vue/no-deprecated-router-link-tag-prop`, `vue/no-deprecated-scope-attribute`, `vue/no-deprecated-slot-attribute`, `vue/no-deprecated-slot-scope-attribute`, `vue/no-deprecated-v-bind-sync`, `vue/no-deprecated-v-is`, `vue/no-deprecated-v-on-native-modifier`, `vue/no-deprecated-v-on-number-modifiers`, `vue/no-dupe-v-else-if`, `vue/no-duplicate-attributes`, `vue/no-literals-in-template`, `vue/no-lone-template`, `vue/no-multiple-objects-in-class`, `vue/no-parsing-error`, `vue/no-restricted-class`, `vue/no-restricted-html-elements`, `vue/no-restricted-static-attribute`, `vue/no-restricted-v-bind`, `vue/no-restricted-v-on`, `vue/no-spaces-around-equal-signs-in-attribute`, `vue/no-static-inline-styles`, `vue/no-template-key`, `vue/no-template-target-blank`, `vue/no-textarea-mustache`, `vue/no-unused-vars`, `vue/no-use-v-else-with-v-for`, `vue/no-use-v-if-with-v-for`, `vue/no-useless-template-attributes`, `vue/no-useless-v-bind`, `vue/no-v-for-template-key`, `vue/no-v-for-template-key-on-child`, `vue/no-v-html`, `vue/no-v-model-argument`, `vue/no-v-text`, `vue/no-v-text-v-html-on-component`, `vue/prefer-true-attribute-shorthand`, `vue/require-component-is`, `vue/require-toggle-inside-transition`, `vue/require-v-for-key`, `vue/restricted-component-names`, `vue/slot-name-casing`, `vue/static-class-names-order`, `vue/this-in-template`, `vue/v-bind-style`, `vue/v-for-delimiter-style`, `vue/v-on-event-hyphenation`, `vue/v-on-style`, `vue/v-slot-style`, `vue/valid-attribute-name`, `vue/valid-v-bind`, `vue/valid-v-bind-sync`, `vue/valid-v-cloak`, `vue/valid-v-else`, `vue/valid-v-else-if`, `vue/valid-v-html`, `vue/valid-v-if`, `vue/valid-v-is`, `vue/valid-v-memo`, `vue/valid-v-on`, `vue/valid-v-once`, `vue/valid-v-pre`, `vue/valid-v-show`, `vue/valid-v-text`
 
 </details>
 
@@ -161,7 +161,7 @@ What each version added is in the [changelog](CHANGELOG.md).
 
 ### How it is checked
 
-Every rule passes all the cases of its own upstream tests, linted as TypeScript: 29,862 cases of typescript-eslint, 14,092 of ESLint, 14,962 of eslint-plugin-unicorn, 9,528 of @stylistic/eslint-plugin, 3,278 of eslint-plugin-perfectionist, 459 of @slipher/eslint-plugin, 206 of @marcrock22/eslintcf and 800 of eslint-plugin-vue (its JavaScript cases with `lang="ts"`, with what ESLint gives for them). On fixtures of its own, every rule gives exactly what ESLint gives: problems, messages, positions, fixes and suggestions. The rules are also compared with ESLint on real projects (a Discord bot, zod, recharts and the TypeScript compiler).
+Every rule passes all the cases of its own upstream tests, linted as TypeScript: 29,862 cases of typescript-eslint, 14,092 of ESLint, 14,962 of eslint-plugin-unicorn, 9,528 of @stylistic/eslint-plugin, 3,278 of eslint-plugin-perfectionist, 459 of @slipher/eslint-plugin, 206 of @marcrock22/eslintcf and 1,642 of eslint-plugin-vue (its JavaScript cases with `lang="ts"`, with what ESLint gives for them). On fixtures of its own, every rule gives exactly what ESLint gives: problems, messages, positions, fixes and suggestions. The rules are also compared with ESLint on real projects (a Discord bot, zod, recharts and the TypeScript compiler).
 
 ## VS Code extension
 
@@ -170,7 +170,7 @@ The extension shows the problems of the TypeScript files you open and type, unde
 ## Limits
 
 - **TypeScript only.** JavaScript files are not linted, even in a project with `allowJs`, nor the JavaScript scripts of Vue files.
-- **Vue files:** 49 rules of eslint-plugin-vue so far (the others are skipped with a warning). `<!-- eslint-disable -->` comments in a template work when `vue/comment-directive` is on, as with eslint-plugin-vue's processor. `parserOptions.vueFeatures` is not read (the defaults are used). Two scripts that are not modules (no `import` or `export`) see each other's globals in veslint, where typescript-eslint has the other `.vue` files of the program as the text of the file.
+- **Vue files:** 77 rules of eslint-plugin-vue so far (the others are skipped with a warning). `<!-- eslint-disable -->` comments in a template work when `vue/comment-directive` is on, as with eslint-plugin-vue's processor. `parserOptions.vueFeatures` is not read (the defaults are used). Two scripts that are not modules (no `import` or `export`) see each other's globals in veslint, where typescript-eslint has the other `.vue` files of the program as the text of the file.
 - **Linux x64 and Windows x64.** Other platforms need a build from source, which is not tested there.
 - **An `eslint.config.*` needs `bun`** to be read; the resolved configuration (`--print-config`) does not. A cached resolution is reused while the files and modules the configuration read and the environment variables it read stay the same: a configuration that depends on something else (the date, a file it lists but does not read, a new `tsconfig.json` a glob of `parserOptions.project` matches) needs `VESLINT_CONFIG_CACHE=0`.
 - **The newest TypeScript syntax** may not be read yet: veslint warns when a file has syntax it does not understand, and some problems of that file may be missing.

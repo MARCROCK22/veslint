@@ -1,0 +1,1 @@
+[null, {"argument": "click", "modifiers": ["prevent"], "element": "/^My/"}, {"argument": "/^click$/i", "modifiers": ["stop", "once"]}, "keyup", {"argument": "click", "element": "div", "modifiers": ["self"], "message": "m"}]

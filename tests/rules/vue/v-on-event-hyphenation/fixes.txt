@@ -1,0 +1,18 @@
+tests/rules/vue/v-on-event-hyphenation/cases.vue:15:25	vue/v-on-event-hyphenation	mustBeHyphenated	v-on event '@customEvent' must be hyphenated.	end	15	47
+tests/rules/vue/v-on-event-hyphenation/extra-never/cases.vue:3:61	vue/v-on-event-hyphenation	cannotBeHyphenated	v-on event '@my-event' can't be hyphenated.	fix	80	88	myEvent	end	3	74
+tests/rules/vue/v-on-event-hyphenation/extra-never/cases.vue:5:33	vue/v-on-event-hyphenation	cannotBeHyphenated	v-on event '@custom-event' can't be hyphenated.	fix	199	211	customEvent	end	5	50
+tests/rules/vue/v-on-event-hyphenation/extra/cases.vue:3:13	vue/v-on-event-hyphenation	mustBeHyphenated	v-on event '@myEvent' must be hyphenated.	fix	32	39	my-event	end	3	25
+tests/rules/vue/v-on-event-hyphenation/extra/cases.vue:3:26	vue/v-on-event-hyphenation	mustBeHyphenated	v-on event 'v-on:fooBar.once' must be hyphenated.	fix	49	55	foo-bar	end	3	46
+tests/rules/vue/v-on-event-hyphenation/extra/cases.vue:3:109	vue/v-on-event-hyphenation	mustBeHyphenated	v-on event '@UPPER' must be hyphenated.	fix	128	133	u-p-p-e-r	end	3	119
+tests/rules/vue/v-on-event-hyphenation/options-1bdc0c61/cases.vue:3:25	vue/v-on-event-hyphenation	cannotBeHyphenated	v-on event 'v-on:custom-event' can't be hyphenated.	fix	48	60	customEvent	end	3	51
+tests/rules/vue/v-on-event-hyphenation/options-1bdc0c61/cases.vue:7:23	vue/v-on-event-hyphenation	cannotBeHyphenated	v-on event '@update:model-value' can't be hyphenated.	fix	165	183	update:modelValue	end	7	48
+tests/rules/vue/v-on-event-hyphenation/options-1bdc0c61/cases.vue:11:23	vue/v-on-event-hyphenation	cannotBeHyphenated	v-on event '@up-date:modelValue' can't be hyphenated.	fix	285	303	upDate:modelValue	end	11	48
+tests/rules/vue/v-on-event-hyphenation/options-1bdc0c61/cases.vue:12:23	vue/v-on-event-hyphenation	cannotBeHyphenated	v-on event '@upDate:model-value' can't be hyphenated.	fix	335	353	upDate:modelValue	end	12	48
+tests/rules/vue/v-on-event-hyphenation/options-1bdc0c61/cases.vue:13:23	vue/v-on-event-hyphenation	cannotBeHyphenated	v-on event '@up-date:model-value' can't be hyphenated.	fix	385	404	upDate:modelValue	end	13	49
+tests/rules/vue/v-on-event-hyphenation/options-5c946e44/cases.vue:3:25	vue/v-on-event-hyphenation	mustBeHyphenated	v-on event '@customEvent' must be hyphenated.	fix	44	55	custom-event	end	3	47
+tests/rules/vue/v-on-event-hyphenation/options-5c946e44/cases.vue:6:23	vue/v-on-event-hyphenation	mustBeHyphenated	v-on event '@update:modelValue' must be hyphenated.	fix	112	129	update:model-value	end	6	47
+tests/rules/vue/v-on-event-hyphenation/options-5c946e44/cases.vue:10:23	vue/v-on-event-hyphenation	mustBeHyphenated	v-on event '@upDate:modelValue' must be hyphenated.	fix	232	249	up-date:model-value	end	10	47
+tests/rules/vue/v-on-event-hyphenation/options-5c946e44/cases.vue:11:23	vue/v-on-event-hyphenation	mustBeHyphenated	v-on event '@up-date:modelValue' must be hyphenated.	fix	281	299	up-date:model-value	end	11	48
+tests/rules/vue/v-on-event-hyphenation/options-5c946e44/cases.vue:12:23	vue/v-on-event-hyphenation	mustBeHyphenated	v-on event '@upDate:model-value' must be hyphenated.	fix	331	349	up-date:model-value	end	12	48
+tests/rules/vue/v-on-event-hyphenation/options-b126ce41/cases.vue:3:23	vue/v-on-event-hyphenation	mustBeHyphenated	v-on event 'v-on:customEvent' must be hyphenated.	fix	46	57	custom-event	end	3	48
+tests/rules/vue/v-on-event-hyphenation/options-f06594b0/cases.vue:3:23	vue/v-on-event-hyphenation	cannotBeHyphenated	v-on event 'v-on:custom-event' can't be hyphenated.	fix	46	58	customEvent	end	3	49

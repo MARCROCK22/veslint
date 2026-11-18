@@ -259,7 +259,8 @@ function casesOf(namespace, rules, id, schema, first, limit) {
   return cases;
 }
 
-// The options of the fixtures: the rules must take them all.
+// The options of the fixtures: the rules must take them all. Those a configuration comment cannot
+// hold (a regular expression with `*/`, as `/^my-.*/i`) are left out.
 function fixtureOptions(name) {
   const directory = path.join(root, 'tests/rules', name);
   if (!fs.existsSync(directory)) {
@@ -268,7 +269,8 @@ function fixtureOptions(name) {
   return fs.readdirSync(directory, { recursive: true })
     .filter(file => path.basename(file) === 'options.json')
     .sort()
-    .map(file => JSON.parse(fs.readFileSync(path.join(directory, file), 'utf8')));
+    .map(file => JSON.parse(fs.readFileSync(path.join(directory, file), 'utf8')))
+    .filter(options => !JSON.stringify(options).includes('*/'));
 }
 
 // More lists for some rules: the two with meta.defaultOptions, which ESLint merges the options over

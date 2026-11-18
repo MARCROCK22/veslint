@@ -1,0 +1,38 @@
+tests/rules/vue/attribute-hyphenation/extra-never/cases.vue:7:62	vue/attribute-hyphenation	cannotBeHyphenated	Attribute ':foo-bar.camel' can't be hyphenated.	fix	338	352	:fooBar.camel	end	7	80
+tests/rules/vue/attribute-hyphenation/extra/cases.vue:3:13	vue/attribute-hyphenation	mustBeHyphenated	Attribute 'myProp' must be hyphenated.	fix	31	37	my-prop	end	3	23
+tests/rules/vue/attribute-hyphenation/extra/cases.vue:3:24	vue/attribute-hyphenation	mustBeHyphenated	Attribute ':myProp2' must be hyphenated.	fix	42	50	:my-prop2	end	3	36
+tests/rules/vue/attribute-hyphenation/extra/cases.vue:3:37	vue/attribute-hyphenation	mustBeHyphenated	Attribute 'v-model:myModel' must be hyphenated.	fix	55	70	v-model:my-model	end	3	56
+tests/rules/vue/attribute-hyphenation/extra/cases.vue:3:57	vue/attribute-hyphenation	mustBeHyphenated	Attribute 'v-bind:fooBar.sync' must be hyphenated.	end	3	79
+tests/rules/vue/attribute-hyphenation/extra/cases.vue:3:116	vue/attribute-hyphenation	mustBeHyphenated	Attribute 'MyUpper' must be hyphenated.	end	3	127
+tests/rules/vue/attribute-hyphenation/extra/cases.vue:3:128	vue/attribute-hyphenation	mustBeHyphenated	Attribute 'dataFoo' must be hyphenated.	fix	146	153	data-foo	end	3	139
+tests/rules/vue/attribute-hyphenation/extra/cases.vue:4:11	vue/attribute-hyphenation	mustBeHyphenated	Attribute 'myName' must be hyphenated.	fix	184	190	my-name	end	4	21
+tests/rules/vue/attribute-hyphenation/extra/cases.vue:7:51	vue/attribute-hyphenation	mustBeHyphenated	Attribute 'fooBAR' must be hyphenated.	fix	327	333	foo-b-a-r	end	7	61
+tests/rules/vue/attribute-hyphenation/extra/cases.vue:8:23	vue/attribute-hyphenation	mustBeHyphenated	Attribute 'someAttr' must be hyphenated.	fix	382	390	some-attr	end	8	35
+tests/rules/vue/attribute-hyphenation/options-1e0e4c6d/cases.vue:2:21	vue/attribute-hyphenation	mustBeHyphenated	Attribute 'v-bind:MyProp' must be hyphenated.	end	2	41
+tests/rules/vue/attribute-hyphenation/options-2014a731/cases.vue:8:21	vue/attribute-hyphenation	mustBeHyphenated	Attribute 'MyProp' must be hyphenated.	end	8	33
+tests/rules/vue/attribute-hyphenation/options-2014a731/cases.vue:9:21	vue/attribute-hyphenation	mustBeHyphenated	Attribute ':MyProp' must be hyphenated.	end	9	35
+tests/rules/vue/attribute-hyphenation/options-2014a731/cases.vue:10:21	vue/attribute-hyphenation	mustBeHyphenated	Attribute 'v-bind:MyProp' must be hyphenated.	end	10	41
+tests/rules/vue/attribute-hyphenation/options-2014a731/cases.vue:11:21	vue/attribute-hyphenation	mustBeHyphenated	Attribute 'v-model:myProp' must be hyphenated.	fix	618	632	v-model:my-prop	end	11	42
+tests/rules/vue/attribute-hyphenation/options-2014a731/cases.vue:12:21	vue/attribute-hyphenation	mustBeHyphenated	Attribute 'v-model:MyProp' must be hyphenated.	end	12	42
+tests/rules/vue/attribute-hyphenation/options-2014a731/cases.vue:13:19	vue/attribute-hyphenation	mustBeHyphenated	Attribute 'MyProp' must be hyphenated.	end	13	31
+tests/rules/vue/attribute-hyphenation/options-2014a731/cases.vue:14:21	vue/attribute-hyphenation	mustBeHyphenated	Attribute ':attr_Gg' must be hyphenated.	end	14	36
+tests/rules/vue/attribute-hyphenation/options-2014a731/cases.vue:15:21	vue/attribute-hyphenation	mustBeHyphenated	Attribute ':Attr_Hh' must be hyphenated.	end	15	36
+tests/rules/vue/attribute-hyphenation/options-2014a731/cases.vue:16:21	vue/attribute-hyphenation	mustBeHyphenated	Attribute ':_attr_Jj' must be hyphenated.	end	16	37
+tests/rules/vue/attribute-hyphenation/options-2014a731/cases.vue:17:21	vue/attribute-hyphenation	mustBeHyphenated	Attribute ':_attrKk' must be hyphenated.	end	17	36
+tests/rules/vue/attribute-hyphenation/options-2014a731/cases.vue:18:21	vue/attribute-hyphenation	mustBeHyphenated	Attribute ':_AttrLl' must be hyphenated.	end	18	36
+tests/rules/vue/attribute-hyphenation/options-2014a731/cases.vue:19:21	vue/attribute-hyphenation	mustBeHyphenated	Attribute ':myAge.sync' must be hyphenated.	end	19	39
+tests/rules/vue/attribute-hyphenation/options-3405e2a9/cases.vue:4:111	vue/attribute-hyphenation	cannotBeHyphenated	Attribute 'third-custom' can't be hyphenated.	fix	285	297	thirdCustom	end	4	129
+tests/rules/vue/attribute-hyphenation/options-52521a88/cases.vue:2:21	vue/attribute-hyphenation	mustBeHyphenated	Attribute 'v-bind:propID' must be hyphenated.	fix	31	44	v-bind:prop-i-d	end	2	41
+tests/rules/vue/attribute-hyphenation/options-8772f68a/cases.vue:3:17	vue/attribute-hyphenation	mustBeHyphenated	Attribute 'myProp' must be hyphenated.	fix	35	41	my-prop	end	3	23
+tests/rules/vue/attribute-hyphenation/options-97252a20/cases.vue:8:21	vue/attribute-hyphenation	cannotBeHyphenated	Attribute 'my-prop' can't be hyphenated.	fix	468	475	myProp	end	8	34
+tests/rules/vue/attribute-hyphenation/options-97252a20/cases.vue:9:21	vue/attribute-hyphenation	cannotBeHyphenated	Attribute ':my-prop' can't be hyphenated.	fix	524	532	:myProp	end	9	36
+tests/rules/vue/attribute-hyphenation/options-97252a20/cases.vue:10:21	vue/attribute-hyphenation	cannotBeHyphenated	Attribute 'v-bind:my-prop' can't be hyphenated.	fix	582	596	v-bind:myProp	end	10	42
+tests/rules/vue/attribute-hyphenation/options-97252a20/cases.vue:11:21	vue/attribute-hyphenation	cannotBeHyphenated	Attribute 'v-model:my-prop' can't be hyphenated.	fix	646	661	v-model:myProp	end	11	43
+tests/rules/vue/attribute-hyphenation/options-97252a20/cases.vue:13:71	vue/attribute-hyphenation	cannotBeHyphenated	Attribute 'custom-hyphen' can't be hyphenated.	fix	769	782	customHyphen	end	13	90
+tests/rules/vue/attribute-hyphenation/options-97252a20/cases.vue:13:91	vue/attribute-hyphenation	cannotBeHyphenated	Attribute 'second-custom' can't be hyphenated.	fix	789	802	secondCustom	end	13	110
+tests/rules/vue/attribute-hyphenation/options-97252a20/cases.vue:17:19	vue/attribute-hyphenation	cannotBeHyphenated	Attribute 'my-prop' can't be hyphenated.	fix	927	934	myProp	end	17	32
+tests/rules/vue/attribute-hyphenation/options-97252a20/cases.vue:18:21	vue/attribute-hyphenation	cannotBeHyphenated	Attribute ':my-custom_prop' can't be hyphenated.	end	18	43
+tests/rules/vue/attribute-hyphenation/options-97252a20/cases.vue:19:21	vue/attribute-hyphenation	cannotBeHyphenated	Attribute ':my-age.sync' can't be hyphenated.	end	19	40
+tests/rules/vue/attribute-hyphenation/options-bd611955/cases.vue:2:43	vue/attribute-hyphenation	cannotBeHyphenated	Attribute ':second-prop' can't be hyphenated.	fix	53	65	:secondProp	end	2	62
+tests/rules/vue/attribute-hyphenation/options-c1fd4126/cases.vue:2:21	vue/attribute-hyphenation	mustBeHyphenated	Attribute 'v-bind:myProp' must be hyphenated.	fix	31	44	v-bind:my-prop	end	2	41
+tests/rules/vue/attribute-hyphenation/options-e7549cbc/cases.vue:3:17	vue/attribute-hyphenation	cannotBeHyphenated	Attribute 'my-prop' can't be hyphenated.	fix	35	42	myProp	end	3	24

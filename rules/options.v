@@ -251,6 +251,29 @@ pub fn check_options(rule string, options []json2.Any) !bool {
 		vue_no_deprecated_router_link_tag_prop { vndrltp_options(options)! }
 		vue_no_restricted_html_elements { vnrhe_options(options)! }
 		vue_mustache_interpolation_spacing { vmis_options(options)! }
+		vue_restricted_component_names { vrcn_options(options)! }
+		vue_slot_name_casing { vsnc_options(options)! }
+		vue_first_attribute_linebreak { vfal_options(options)! }
+		vue_html_quotes { vhq_options(options)! }
+		vue_no_literals_in_template { vnlit_options(options)! }
+		vue_require_toggle_inside_transition { vrtit_options(options)! }
+		vue_no_restricted_static_attribute { vnrsa_options(options)! }
+		vue_html_closing_bracket_spacing { vhcbs_options(options)! }
+		vue_html_closing_bracket_newline { vhcbn_options(options)! }
+		vue_attribute_hyphenation { vah_options(options)! }
+		vue_v_on_event_hyphenation { voeh_options(options)! }
+		vue_no_static_inline_styles { vnsis_options(options)! }
+		vue_no_child_content { vncc_options(options)! }
+		vue_no_template_target_blank { vnttb_options(options)! }
+		vue_no_restricted_class { vnrc_options(options)! }
+		vue_no_useless_v_bind { vnuvb_options(options)! }
+		vue_no_restricted_v_bind { vnrvb_options(options)! }
+		vue_no_restricted_v_on { vnrvo_options(options)! }
+		vue_v_slot_style { vvss_options(options)! }
+		vue_prefer_true_attribute_shorthand { vptas_options(options)! }
+		vue_no_deprecated_slot_attribute { vndslota_options(options)! }
+		vue_this_in_template { vtit_options(options)! }
+		vue_no_unused_vars { vnuv_options(options)! }
 		else { return false }
 	}
 	return true
