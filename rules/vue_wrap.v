@@ -86,9 +86,20 @@ fn (mut c Checker) vue_wrap_stylistic() bool {
 // vue_wrap_stylistic finds (-1 without one).
 fn (mut c Checker) vue_wrap_stylistic_major() int {
 	if c.vue_stylistic == 0 {
-		c.vue_stylistic = vue_wrap_find_stylistic(os.getwd())
+		c.vue_stylistic = vue_wrap_find_stylistic(vue_wrap_plugin_directory())
 	}
 	return c.vue_stylistic
+}
+
+// vue_wrap_plugin_directory is the current directory of the ESLint that loads eslint-plugin-vue:
+// veslint's, or the one where it resolves the configuration with bun when VESLINT_ESLINT_DIR sets
+// it (eslint_config.v), so that the rule veslint runs is the one whose options the resolved
+// configuration has.
+fn vue_wrap_plugin_directory() string {
+	if dir := os.getenv_opt('VESLINT_ESLINT_DIR') {
+		return os.real_path(os.abs_path(dir))
+	}
+	return os.getwd()
 }
 
 // vue_wrap_find_stylistic is the major version of the @stylistic/eslint-plugin found from a
@@ -134,7 +145,7 @@ pub fn vue_wrap_schema_name(name string) string {
 	}
 	base := vue_wrap_of(name).base
 	if !base.starts_with('@stylistic/') || base !in rule_option_schemas
-		|| vue_wrap_find_stylistic(os.getwd()) < 0 {
+		|| vue_wrap_find_stylistic(vue_wrap_plugin_directory()) < 0 {
 		return name
 	}
 	return base
@@ -256,6 +267,7 @@ fn (mut c Checker) vue_wrap_restore(base string, saved VueWrapSaved) {
 	c.file_scopes = saved.file_scopes
 	c.vue = saved.vue
 	c.vue_wrap_core = false
+	c.vue_wrap_roots = map[u64]bool{}
 	if saved.has_options {
 		c.options[base] = saved.options
 	} else {
@@ -407,6 +419,24 @@ fn (mut c Checker) vue_wrap_lint(rule string, w VueWrap, abs_path string, mut st
 			}
 		}
 		es.visit = visit
+		// The parent of an expression the traversal enters from a V* node (a VExpressionContainer,
+		// VOnExpression, VForExpression, VSlotScopeExpression…) is a node of no type the rules
+		// know, and not the wrapper's: a node of its own the traversal never reaches.
+		inert := es.nodes.len
+		mut roots := map[u64]bool{}
+		for r in ws.roots {
+			if r < es.nodes.len {
+				es.nodes[r].parent = inert
+				if es.nodes[r].has_ts {
+					roots[node_key(es.nodes[r].ts)] = true
+				}
+			}
+		}
+		es.nodes << estree.EsNode{
+			typ:    .ts_abstract_keyword
+			parent: -1
+		}
+		es.visit << false
 		tokens, code := vue_wrap_tokens(doc, s, top)
 		// The tokens of the template in the snippet: a report outside them is on the wrapper.
 		content_start := if tokens.all.len > 0 { tokens.all[0].start } else { 0 }
@@ -424,6 +454,7 @@ fn (mut c Checker) vue_wrap_lint(rule string, w VueWrap, abs_path string, mut st
 		c.file_scopes = unsafe { nil }
 		c.vue = VueView{}
 		c.vue_wrap_core = core
+		c.vue_wrap_roots = roots
 		c.options[w.base] = options
 		mut found := []Finding{}
 		mut failure := ''

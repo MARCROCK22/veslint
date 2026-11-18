@@ -5,3 +5,5 @@ tests/rules/vue/no-empty-pattern/cases.vue:5:22	vue/no-empty-pattern	unexpected	
 tests/rules/vue/no-empty-pattern/cases.vue:6:22	vue/no-empty-pattern	unexpected	Unexpected empty object pattern.	end	6	24
 tests/rules/vue/no-empty-pattern/cases.vue:8:17	vue/no-empty-pattern	unexpected	Unexpected empty object pattern.	end	8	19
 tests/rules/vue/no-empty-pattern/options-parameters/cases.vue:4:22	vue/no-empty-pattern	unexpected	Unexpected empty object pattern.	end	4	24
+tests/rules/vue/no-empty-pattern/options-parameters/cases.vue:5:17	vue/no-empty-pattern	unexpected	Unexpected empty object pattern.	end	5	19
+tests/rules/vue/no-empty-pattern/options-parameters/cases.vue:6:22	vue/no-empty-pattern	unexpected	Unexpected empty object pattern.	end	6	24

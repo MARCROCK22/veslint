@@ -11,6 +11,7 @@
     return 1
   }" />
   <div @click="() => { a() }" />
+  <div @click="{a();b();}" />
 </template>
 
 <script setup lang="ts">

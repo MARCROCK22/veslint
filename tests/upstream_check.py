@@ -442,6 +442,15 @@ def known_cases(tool):
     return known
 
 
+def known_key(rule, case_id, known):
+    """The id a case has in known.txt: a case of a vue/* rule may be listed with the rule's
+    prefix (`vue/no-restricted-syntax/i1`), as its id without it may also be the id of a case of
+    the rule of ESLint core of the same name."""
+    if rule.startswith('vue/') and 'vue/' + case_id in known:
+        return 'vue/' + case_id
+    return case_id
+
+
 def main():
     args = sys.argv[1:]
     lines_out = None
@@ -477,7 +486,8 @@ def main():
                     case['file'] = re.sub(r'^<cwd>/', '', case['filename'])
         failed = 0
         for case in cases:
-            checked.add(case['id'])
+            key = known_key(rule, case['id'], known)
+            checked.add(key)
             runner.start_case(case)
             code, file, out, stderr = runner.lint(rule, case, case['code'])
             if code > 1:
@@ -497,8 +507,8 @@ def main():
                 outputs = fix_passes(relint, case['code'], findings, max_passes_of(rule)) if case['kind'] == 'invalid' and 'output' in case else []
                 problems = check(case, messages, findings, outputs, rule.startswith('perfectionist/'))
             if problems:
-                failing.add(case['id'])
-                if case['id'] not in known:
+                failing.add(key)
+                if key not in known:
                     failed += 1
                     unexpected += 1
                     print(f"  {case['id']}: " + '\n    '.join(problems))

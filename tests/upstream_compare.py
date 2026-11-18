@@ -36,7 +36,9 @@ def main():
             results = json.load(f)
         for result in results:
             case = result['filePath']
-            if case in known:
+            # A case of a vue/* rule may be listed with the rule's prefix (its id without it is
+            # also the id of a case of the rule of ESLint core of the same name).
+            if case in known or (rule.startswith('vue/') and 'vue/' + case in known):
                 continue
             cases += 1
             theirs = [re.sub('[\ud800-\udfff]', '�', line) for line in eslint_lines.lines([result], True)]

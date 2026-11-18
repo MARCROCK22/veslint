@@ -4026,6 +4026,10 @@ mut:
 	// the major version of the one that resolves (0: not looked up yet, -1: none).
 	vue_wrap_core bool
 	vue_stylistic int
+	// vue_wrap_roots are the tree-sitter nodes of the expressions the template's traversal enters
+	// from its V* nodes, while a wrapper rule runs on a snippet: their parent is none of the
+	// snippet's.
+	vue_wrap_roots map[u64]bool
 }
 
 // DeclarationAsts keeps the AstTree of the files whose declarations the rules look at, by tsgo
