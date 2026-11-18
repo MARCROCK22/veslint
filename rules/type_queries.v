@@ -442,7 +442,9 @@ fn (mut c Checker) resolve_new(spans []Span, abs_path string, mut stats Stats) !
 		for s in variants[key] {
 			pos, end := units[2 * i], units[2 * i + 1]
 			i++
-			optional = optional && s.optional
+			// A wrapper of a .svelte file's lint code is no node of ESLint's: it has nothing to
+			// analyze.
+			optional = optional && (s.optional || c.svelte_wrapper_node(s.first))
 			if found {
 				continue
 			}

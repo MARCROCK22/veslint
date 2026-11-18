@@ -30,7 +30,7 @@ fn (mut c Checker) lint_stylistic_no_trailing_spaces(root C.TSNode, abs_path str
 	options := sntr_options(c.rule_options(stylistic_no_trailing_spaces))!
 	t := c.es_tree(root, abs_path) or { return findings }
 	stats.checked++
-	src := c.src
+	src := c.file_text()
 	// getCommentLineNumbers: the lines of the comments, but the last one of a block comment.
 	mut comment_lines := map[int]bool{}
 	if options.ignore_comments {

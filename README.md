@@ -59,9 +59,10 @@ veslint <file.ts | directory>... [--config <file>] [--rule <rule> [--no-config-l
 
 | Option | What it does |
 |---|---|
-| `<directory>` | Lints the `.ts`, `.mts`, `.cts`, `.tsx` and `.vue` files under it, as `eslint .` does: `node_modules`, `.git` and what the configuration ignores are left out. |
+| `<directory>` | Lints the `.ts`, `.mts`, `.cts`, `.tsx`, `.vue` and `.svelte` files under it, as `eslint .` does: `node_modules`, `.git` and what the configuration ignores are left out. |
 | `<file.ts>` | Lints that file. JavaScript files are not linted: veslint only reads TypeScript. |
 | `<file.vue>` | Lints the TypeScript script of a Vue file (`<script lang="ts">` and `<script setup lang="ts">`) and, with the `vue/*` rules, its template, as ESLint does with vue-eslint-parser and typescript-eslint's parser: the rules see the script with the positions of the file, and the types are those typescript-eslint gives with `extraFileExtensions: ['.vue']`. A Vue file whose script is JavaScript is skipped with a warning. |
+| `<file.svelte>` | Lints the TypeScript script of a Svelte file (`<script lang="ts">`, `<script module lang="ts">`) and the `.svelte.ts` modules, as ESLint does with svelte-eslint-parser and typescript-eslint's parser: runes, stores (`$store`), `$:` statements, props and generics as svelte-eslint-parser models them, and the types typescript-eslint gives with `extraFileExtensions: ['.svelte']`. A Svelte file whose script is JavaScript is not linted (with a warning). The rules of eslint-plugin-svelte come in the next versions. |
 | `--config <file>` | The configuration (see below). Without it and without `--rule`, a directory is linted with the closest `eslint.config.*`. |
 | `--rule <rule>` | Lints with one rule, named as in ESLint: `no-var`, `@typescript-eslint/await-thenable`. Its options, and the files it lints, are the ones the closest `eslint.config.*` gives it (on with its default options when the configuration has it off); without a configuration, its default options. Directive comments for other rules are left alone: they are never reported as unused, and `--fix` keeps them. |
 | `--no-config-lookup` | With `--rule`: the rule's default options, without looking for an `eslint.config.*`. |
@@ -171,7 +172,7 @@ The extension shows the problems of the TypeScript files you open and type, unde
 
 ## Limits
 
-- **TypeScript only.** JavaScript files are not linted, even in a project with `allowJs`, nor the JavaScript scripts of Vue files.
+- **TypeScript only.** JavaScript files are not linted, even in a project with `allowJs`, nor the JavaScript scripts of Vue and Svelte files.
 - **Vue files:** 254 rules of eslint-plugin-vue so far (the others are skipped with a warning). `<!-- eslint-disable -->` comments in a template work when `vue/comment-directive` is on, as with eslint-plugin-vue's processor. `parserOptions.vueFeatures` is not read (the defaults are used). Two scripts that are not modules (no `import` or `export`) see each other's globals in veslint, where typescript-eslint has the other `.vue` files of the program as the text of the file.
 - **Linux x64 and Windows x64.** Other platforms need a build from source, which is not tested there.
 - **An `eslint.config.*` needs `bun`** to be read; the resolved configuration (`--print-config`) does not. A cached resolution is reused while the files and modules the configuration read and the environment variables it read stay the same: a configuration that depends on something else (the date, a file it lists but does not read, a new `tsconfig.json` a glob of `parserOptions.project` matches) needs `VESLINT_CONFIG_CACHE=0`.

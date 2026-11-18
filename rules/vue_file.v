@@ -80,24 +80,34 @@ fn (c &Checker) is_vue() bool {
 // is_typescript_file ports eslint-plugin-unicorn's isTypeScriptFile(context.physicalFilename): the
 // name ends in .ts, .mts, .cts or .tsx, which every file veslint lints has but a .vue file.
 fn (c &Checker) is_typescript_file() bool {
-	return !c.is_vue()
+	return !c.is_vue() && !c.is_svelte()
 }
 
 // is_ts_script_kind: TypeScript reads the file as ScriptKind TS or TSX. A .vue file is of the
 // kind TypeScript gives an extra extension (Deferred) in the project service, and TS in the
-// programs typescript-eslint makes for `parserOptions.project`.
+// programs typescript-eslint makes for `parserOptions.project`. So is a .svelte file (but the
+// first one the project service opens for a project, before its program has the others).
 fn (c &Checker) is_ts_script_kind() bool {
-	return !c.is_vue() || c.project_programs
+	return (!c.is_vue() && !c.is_svelte()) || c.project_programs
 }
 
 // parse_text is the text tree-sitter parsed: the masked script of a .vue file (same length as the
-// file), the source of any other.
+// file), the lint code of a .svelte file (svelte_file.v), the source of any other.
 fn (c &Checker) parse_text() string {
+	if c.is_svelte() {
+		return c.svelte.doc.lint_code
+	}
 	return if c.is_vue() { c.vue.doc.script.masked } else { c.src }
 }
 
 // ts_text is the text tsgo has for the file being linted.
 fn (c &Checker) ts_text() string {
+	if c.is_svelte() {
+		return c.svelte.doc.virtual_code
+	}
+	if c.svelte_module.on {
+		return c.svelte_module.code
+	}
 	return if c.is_vue() { c.vue.doc.script.code } else { c.src }
 }
 
@@ -115,13 +125,26 @@ fn (mut c Checker) vue_code_ends() []int {
 // has: `pos` is the end of the token before it, `end` the end of its last token, in UTF-16 units.
 // A node the twin does not have gets -1.
 fn (mut c Checker) ts_spans(pairs []int) []int {
+	if c.is_svelte() {
+		return c.svelte_ts_spans(pairs)
+	}
 	if !c.is_vue() {
 		mut bytes := []int{cap: pairs.len}
 		for i := 0; i + 1 < pairs.len; i += 2 {
 			bytes << c.tokens.last_end(pairs[i])
 			bytes << c.tokens.last_end(pairs[i + 1])
 		}
-		return offsets.utf16_offsets(c.src, bytes)
+		mut units := c.svelte_module_units(offsets.utf16_offsets(c.src, bytes))
+		if c.svelte_module.on {
+			// The first token after a module's leading white space follows the declarations.
+			m := c.svelte_module
+			for i := 0; i + 1 < pairs.len; i += 2 {
+				if pairs[i] >= m.at && units[i] < m.at_unit + m.inserted {
+					units[i] = m.at_unit + m.inserted
+				}
+			}
+		}
+		return units
 	}
 	ends := c.vue_code_ends()
 	script := &c.vue.doc.script
@@ -143,8 +166,11 @@ fn (mut c Checker) ts_spans(pairs []int) []int {
 // ts_offsets converts byte offsets of the file to UTF-16 offsets of the text tsgo has (-1 for an
 // offset the twin does not have).
 fn (c &Checker) ts_offsets(bytes []int) []int {
+	if c.is_svelte() {
+		return bytes.map(c.svelte_virtual_start(it))
+	}
 	if !c.is_vue() {
-		return offsets.utf16_offsets(c.src, bytes)
+		return c.svelte_module_units(offsets.utf16_offsets(c.src, bytes))
 	}
 	script := &c.vue.doc.script
 	return c.code_units(bytes.map(script.file_to_synthetic(it, false)))
@@ -164,8 +190,11 @@ fn (c &Checker) code_units(bytes []int) []int {
 // file_offset_of_ts_unit converts a UTF-16 offset of the text tsgo has (a TypeScript position) to
 // a byte offset of the file.
 fn (c &Checker) file_offset_of_ts_unit(unit int) int {
+	if c.is_svelte() {
+		return c.svelte_lint_offset_of_ts_unit(unit, false)
+	}
 	if !c.is_vue() {
-		return offsets.byte_offset(c.src, unit)
+		return offsets.byte_offset(c.src, c.svelte_module_file_unit(unit))
 	}
 	return c.file_offset_of_ts_byte(offsets.byte_offset(c.vue.doc.script.code, unit))
 }
@@ -173,16 +202,24 @@ fn (c &Checker) file_offset_of_ts_unit(unit int) int {
 // file_offset_of_ts_byte converts a byte offset of the text tsgo has to a byte offset of the
 // file, as vue-eslint-parser moves the positions typescript-estree gives.
 fn (c &Checker) file_offset_of_ts_byte(b int) int {
+	if c.is_svelte() {
+		code := c.svelte.doc.virtual_code
+		return c.svelte_lint_offset_of_ts_unit(offsets.utf16_offsets(code, [b])[0], false)
+	}
 	if !c.is_vue() {
-		return b
+		return c.svelte_module_file_byte(b)
 	}
 	return c.vue.doc.script.synthetic_to_file(b, false)
 }
 
 // file_offset_of_ts_end is file_offset_of_ts_byte for the end of a range.
 fn (c &Checker) file_offset_of_ts_end(b int) int {
+	if c.is_svelte() {
+		code := c.svelte.doc.virtual_code
+		return c.svelte_lint_offset_of_ts_unit(offsets.utf16_offsets(code, [b])[0], true)
+	}
 	if !c.is_vue() {
-		return b
+		return c.svelte_module_file_byte(b)
 	}
 	return c.vue.doc.script.synthetic_to_file(b, true)
 }

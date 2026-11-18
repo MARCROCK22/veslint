@@ -71,6 +71,10 @@ pub mut:
 	// expressions of a Vue template gets only the nodes vue-eslint-parser's traversal visits, and
 	// not the code around them that makes a snippet parse (rules/vue_wrap.v).
 	visit []bool
+	// foreign are the types of the nodes that are not ESTree's, by index: the Svelte nodes a
+	// .svelte file's template expressions are under (`SvelteIfBlock`…), whose `typ` is a
+	// placeholder no rule handles (rules/svelte_file.v).
+	foreign map[int]string
 }
 
 // visits: a rule's listeners get the node (see EsTree.visit).

@@ -13,6 +13,9 @@ fn (mut c Checker) lint_no_label_var(root C.TSNode, abs_path string, mut stats S
 	sw := time.new_stopwatch()
 	mut findings := []Finding{}
 	for node in c.nodes_of_kinds(root, ['labeled_statement'], []) {
+		if c.is_svelte_reactive_statement(node) {
+			continue
+		}
 		label := node_field(node, 'label') or { continue }
 		stats.checked++
 		tree := c.scope_tree(root)

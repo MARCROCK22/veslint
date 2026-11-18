@@ -32,7 +32,7 @@ fn (mut c Checker) lint_no_unused_labels(root C.TSNode, abs_path string, mut sta
 	}
 	for node in c.nodes_of_kinds(root, ['labeled_statement'], []) {
 		stats.checked++
-		if node_key(node) in used {
+		if node_key(node) in used || c.is_svelte_reactive_statement(node) {
 			continue
 		}
 		label := node_field(node, 'label') or { continue }

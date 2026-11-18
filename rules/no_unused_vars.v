@@ -387,7 +387,7 @@ fn (mut c Checker) nuv_keep(mut s NuvState, v int, used bool) !bool {
 			return false
 		}
 		if o.args == 'after-used' && nuv_parent_is_function(name)
-			&& !s.nuv_is_after_last_used_arg(v) {
+			&& !c.svelte_wrapper_parameter(name) && !s.nuv_is_after_last_used_arg(v) {
 			return false
 		}
 	} else if is_identifier && nuv_test(o.vars_pattern, name_text)! {

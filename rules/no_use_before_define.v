@@ -149,7 +149,15 @@ fn (c &Checker) nubd_defined_before_use(tree &ScopeTree, v int, reference ScopeR
 		// but a named export of an implicit variable, which is not defined in the file.
 		return false
 	}
-	return c.identifier_end(variable.identifiers[0]) <= c.identifier_end(reference.identifier)
+	mut defined_end := c.identifier_end(variable.identifiers[0])
+	mut used_end := c.identifier_end(reference.identifier)
+	if c.is_svelte() {
+		// The lint code has the template's pieces in another order than the file: ESLint's ranges
+		// are the file's.
+		defined_end = c.svelte.doc.lint_end_to_file(defined_end)
+		used_end = c.svelte.doc.lint_end_to_file(used_end)
+	}
+	return defined_end <= used_end
 		&& !(reference.value_ref && c.nubd_in_initializer(tree, v, reference))
 }
 

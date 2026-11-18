@@ -34,6 +34,9 @@ fn (mut c Checker) lint_no_labels(root C.TSNode, abs_path string, mut stats Stat
 	for node in c.nodes_of_kinds(root, kinds, []) {
 		stats.checked++
 		if node_kind(node) == 'labeled_statement' {
+			if c.is_svelte_reactive_statement(node) {
+				continue
+			}
 			if !nl_allowed(o, nl_body_kind(node)) {
 				findings << Finding{
 					stmt:       position_of(node)

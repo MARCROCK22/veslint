@@ -2,6 +2,11 @@
 
 Each version is a release on GitHub with the veslint binaries (Linux x64, Windows x64) and the VS Code extension. The section of a version is the text of its release.
 
+## 0.33.0
+
+- **Svelte files (`.svelte`), their TypeScript script:** `veslint .` brings the `.svelte` files and the `.svelte.ts` modules, and every rule veslint has (with types) lints their `<script lang="ts">` as ESLint does with svelte-eslint-parser 1.10.1 and typescript-eslint's parser: runes, stores (`$store`), `$:` statements, props, snippets and generics as svelte-eslint-parser models them, with the same problems, positions, fixes and suggestions (compared on 1,890 Svelte files with every rule, `tests/svelte-lint`). Types come from the code typescript-eslint type-checks for a `.svelte`, given to the TypeScript 7 compiler as a file of its own that is never written to disk; in other files, `import App from './App.svelte'` keeps the type of the `*.svelte` declaration, as in ESLint. `--fix`, `--server` and the VS Code extension handle `.svelte` too. The parser (`svelte/`) is a port of svelte-eslint-parser and of the Svelte 5 compiler's template parser it reads.
+- **Not yet:** the rules of eslint-plugin-svelte (they come in the next versions). A `.svelte` whose script is JavaScript is not linted (veslint reads TypeScript only), with a warning.
+
 ## 0.32.0
 
 - **93 more rules of eslint-plugin-vue 10.12.1: 254 of its 256** (`vue/html-indent` and `vue/script-indent` come later):

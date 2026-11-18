@@ -69,7 +69,11 @@ fn (mut c Checker) lint_no_redeclare(root C.TSNode, abs_path string, mut stats S
 				continue
 			}
 			first := declarations[0]
-			detail := if first.kind == 'builtin' { 'redeclaredAsBuiltin' } else { 'redeclaredBySyntax' }
+			detail := if first.kind == 'builtin' {
+				'redeclaredAsBuiltin'
+			} else {
+				'redeclaredBySyntax'
+			}
 			for d in declarations[1..] {
 				if d.kind == 'builtin' {
 					continue
@@ -99,6 +103,11 @@ fn (mut c Checker) tsnr_is_checked_scope(t &estree.EsTree, tree &ScopeTree, s in
 		return true
 	}
 	if node_kind(scope.block) == 'program' {
+		// A .svelte file: the Program's scope is the global one (svelte-eslint-parser's
+		// acquire), and the module scope's block is not the global scope's.
+		if c.is_svelte() {
+			return false
+		}
 		return scope.upper == 0 && tree.scopes[0].children.len > 0 && tree.scopes[0].children[0] == s
 	}
 	match scope.kind {

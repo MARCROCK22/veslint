@@ -43,7 +43,8 @@ fn (mut c Checker) lint_stylistic_no_multi_spaces(root C.TSNode, abs_path string
 	options := snms_options(c.rule_options(stylistic_no_multi_spaces))!
 	t := c.es_tree(root, abs_path) or { return findings }
 	tokens := c.un_tokens(t)
-	all := tokens.all
+	// A .svelte file: every token of svelte-eslint-parser, the template's markup included.
+	all := if c.is_svelte() { c.svelte_file_tokens() } else { tokens.all }
 	stats.checked++
 	for left_index in 0 .. all.len - 1 {
 		left := all[left_index]

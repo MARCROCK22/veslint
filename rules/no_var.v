@@ -185,7 +185,9 @@ fn (mut c Checker) nvar_can_fix(root C.TSNode, node C.TSNode, estree C.TSNode) b
 		body := node_field(parent, 'body') or { return true }
 		return node_key(body) != node_key(node)
 	}
-	return node_kind(parent) in ['program', 'statement_block']
+	// A statement of a .svelte file's script is in a SvelteScriptElement, which is not a list of
+	// statements for ESLint (STATEMENT_LIST_PARENTS).
+	return (node_kind(parent) == 'program' && !c.is_svelte()) || node_kind(parent) == 'statement_block'
 }
 
 // nvar_has_unsafe_hoisted_function_reference ports hasUnsafeHoistedFunctionReference: a reference

@@ -1,0 +1,499 @@
+# Differences of tests/svelte-lint/compare.sh (the project service): ESLint 10.15.0 + svelte-eslint-parser
+# 1.10.1 + typescript-eslint 8.72.2 against veslint, with every rule, on the .svelte files of the tests of
+# eslint-plugin-svelte and svelte-eslint-parser and tests/svelte-lint/fixtures. Each group says why.
+#
+# A rule of ESLint throws on the file: typescript-eslint's no-unused-vars reads the `type` of the node
+# of a `$: x = …` variable's ComputedVariable definition, which svelte-eslint-parser leaves without one
+# (an upstream bug); only-throw-error, a variable the parser's scope manager lost.
+not compared	g00/src/require-store-reactive-access_i2.svelte	crash	@typescript-eslint/no-unused-vars: Cannot read properties of undefined (reading 'type')
+not compared	g02/src/no-immutable-reactive-statements_i2.svelte	crash	@typescript-eslint/no-unused-vars: Cannot read properties of undefined (reading 'type')
+not compared	g02/src/no-unused-svelte-ignore_i15.svelte	crash	@typescript-eslint/no-unused-vars: Cannot read properties of undefined (reading 'type')
+not compared	g03/src/valid-compile_v24.svelte	crash	@typescript-eslint/no-unused-vars: Cannot read properties of undefined (reading 'type')
+not compared	g04/src/parser_integrations_scope-tests_ts-scope01-input.svelte	crash	@typescript-eslint/no-unused-vars: Cannot read properties of undefined (reading 'type')
+not compared	g06/src/prefer-destructured-store-props_v3.svelte	crash	@typescript-eslint/no-unused-vars: Cannot read properties of undefined (reading 'type')
+not compared	g06/src/require-store-reactive-access_i15.svelte	crash	@typescript-eslint/no-unused-vars: Cannot read properties of undefined (reading 'type')
+not compared	g07/src/parser_parser_ast_style-in-script-input.svelte	crash	@typescript-eslint/no-unused-vars: Cannot read properties of undefined (reading 'type')
+not compared	g09/src/parser_integrations_type-info-tests_no-unnecessary-condition02-input.svelte	crash	@typescript-eslint/no-unused-vars: Cannot read properties of undefined (reading 'type')
+not compared	g10/src/no-immutable-reactive-statements_v12.svelte	crash	@typescript-eslint/no-unused-vars: Cannot read properties of undefined (reading 'type')
+not compared	g10/src/require-store-reactive-access_v4.svelte	crash	@typescript-eslint/no-unused-vars: Cannot read properties of undefined (reading 'type')
+not compared	g12/src/parser_parser_ast_docs_component-format_01-script_03-_-marks-a-statement-as-reactive_03-input.svelte	crash	@typescript-eslint/no-unused-vars: Cannot read properties of undefined (reading 'type')
+not compared	g13/src/no-immutable-reactive-statements_i3.svelte	crash	@typescript-eslint/no-unused-vars: Cannot read properties of undefined (reading 'type')
+not compared	g13/src/require-store-reactive-access_i3.svelte	crash	@typescript-eslint/no-unused-vars: Cannot read properties of undefined (reading 'type')
+not compared	g13/src/require-store-reactive-access_v10.svelte	crash	@typescript-eslint/no-unused-vars: Cannot read properties of undefined (reading 'type')
+not compared	g13/src/require-store-reactive-access_v3.svelte	crash	@typescript-eslint/no-unused-vars: Cannot read properties of undefined (reading 'type')
+not compared	g15/src/parser_integrations_type-info-tests_no-unnecessary-condition01-input.svelte	crash	@typescript-eslint/no-unused-vars: Cannot read properties of undefined (reading 'type')
+not compared	g15/src/parser_integrations_type-info-tests_no-unnecessary-condition03-input.svelte	crash	@typescript-eslint/no-unused-vars: Cannot read properties of undefined (reading 'type')
+not compared	s0043/src/indent_i37.svelte	crash	@typescript-eslint/only-throw-error: Non-null Assertion Failed: Variable e should exist in scope manager
+not compared	s0175/src/no-extra-reactive-curlies_v0.svelte	crash	@typescript-eslint/no-unused-vars: Cannot read properties of undefined (reading 'type')
+not compared	s0179/src/no-immutable-reactive-statements_i1.svelte	crash	@typescript-eslint/no-unused-vars: Cannot read properties of undefined (reading 'type')
+not compared	s0228/src/no-reactive-functions_i0.svelte	crash	@typescript-eslint/no-unused-vars: Cannot read properties of undefined (reading 'type')
+not compared	s0230/src/no-reactive-literals_i0.svelte	crash	@typescript-eslint/no-unused-vars: Cannot read properties of undefined (reading 'type')
+not compared	s0231/src/no-reactive-literals_v0.svelte	crash	@typescript-eslint/no-unused-vars: Cannot read properties of undefined (reading 'type')
+not compared	s0418/src/parser_integrations_type-info-tests_issue226-input.svelte	crash	@typescript-eslint/no-unused-vars: Cannot read properties of undefined (reading 'type')
+not compared	s0554/src/parser_parser_ast_ts-issue226-type-output.svelte	crash	@typescript-eslint/no-unused-vars: Cannot read properties of undefined (reading 'type')
+#
+# eslint-plugin-svelte's indent fixtures written one token per line: tree-sitter's grammar reads some
+# line breaks as statement ends where typescript-estree does not (as on a .ts file; tests/svelte/known.txt
+# lists these files for the parser).
+only eslint	g00/src/indent_v0.svelte:10:5	prefer-const	useConst	'label' is never reassigned. Use 'const' instead.	fix	99	150	const\n    label\n      =\n      `${area} square pixels`	end	10	10
+only eslint	g00/src/indent_v0.svelte:12:30	@stylistic/semi	missingSemi	Missing semicolon.	fix	150	150	;	end	13	1
+only eslint	g00/src/indent_v0.svelte:15:7	@typescript-eslint/no-unsafe-call	errorCall	Unsafe call of a type that could not be resolved.	end	15	13
+only eslint	g00/src/indent_v0.svelte:5:11	@typescript-eslint/no-unsafe-member-access	unsafeMemberExpression	Unsafe member access .width on an `any` value.	end	5	16
+only eslint	g00/src/indent_v0.svelte:7:13	@typescript-eslint/no-unsafe-member-access	unsafeMemberExpression	Unsafe member access .height on an `any` value.	end	7	19
+only eslint	g00/src/indent_v0.svelte:7:19	@stylistic/semi	missingSemi	Missing semicolon.	fix	91	91	;	end	8	1
+only eslint	g04/src/indent_i51.svelte:11:2	@typescript-eslint/no-unsafe-member-access	errorMemberExpression	Unsafe member access .d on a type that cannot be resolved.	end	11	3
+only eslint	g04/src/indent_i51.svelte:12:14	@typescript-eslint/no-extraneous-class	empty	Unexpected empty class.	end	12	17
+only eslint	g04/src/indent_i51.svelte:12:18	marcrock/no-newline-if-body-class-empty	noNewLine	Empty body class should not have a newline.	fix	81	82		end	13	2
+only eslint	g04/src/indent_i51.svelte:8:1	@stylistic/no-extra-parens	unexpected	Unnecessary parentheses around expression.	fix	54	59	\nd\n	end	8	2
+only eslint	g04/src/indent_i84.svelte:9:1	@stylistic/semi-style	expectedSemiColon	Expected this semicolon to be at the end of the previous line.	fix	87	90	;\n	end	9	2
+only eslint	g04/src/indent_i85.svelte:9:1	@stylistic/semi-style	expectedSemiColon	Expected this semicolon to be at the end of the previous line.	fix	93	96	;\n	end	9	2
+only eslint	g05/src/indent_i24.svelte:21:1	@stylistic/semi-style	expectedSemiColon	Expected this semicolon to be at the end of the previous line.	fix	141	144	;\n	end	21	2
+only eslint	g05/src/indent_i66.svelte:22:1	@stylistic/semi-style	expectedSemiColon	Expected this semicolon to be at the end of the previous line.	fix	127	130	;\n	end	22	2
+only eslint	g11/src/indent_i67.svelte:25:1	@stylistic/semi-style	expectedSemiColon	Expected this semicolon to be at the end of the previous line.	fix	151	154	;\n	end	25	2
+only eslint	g12/src/indent_i4.svelte:10:1	prefer-const	useConst	'label' is never reassigned. Use 'const' instead.	fix	61	96	const\nlabel\n=\n`${area} square pixels`	end	10	6
+only eslint	g12/src/indent_i4.svelte:12:24	@stylistic/semi	missingSemi	Missing semicolon.	fix	96	96	;	end	13	1
+only eslint	g12/src/indent_i4.svelte:15:5	@typescript-eslint/no-unsafe-call	errorCall	Unsafe call of a type that could not be resolved.	end	15	11
+only eslint	g12/src/indent_i4.svelte:5:5	@typescript-eslint/no-unsafe-member-access	unsafeMemberExpression	Unsafe member access .width on an `any` value.	end	5	10
+only eslint	g12/src/indent_i4.svelte:7:11	@stylistic/semi	missingSemi	Missing semicolon.	fix	57	57	;	end	8	1
+only eslint	g12/src/indent_i4.svelte:7:5	@typescript-eslint/no-unsafe-member-access	unsafeMemberExpression	Unsafe member access .height on an `any` value.	end	7	11
+only eslint	s0026/src/indent_i17.svelte:3:1	@stylistic/brace-style	nextLineOpen	Opening curly brace does not appear on the same line as controlling statement.	fix	43	44	 	end	3	2
+only eslint	s0030/src/indent_i20.svelte:10:1	@stylistic/brace-style	nextLineOpen	Opening curly brace does not appear on the same line as controlling statement.	fix	66	67	 	end	10	2
+only eslint	s0030/src/indent_i20.svelte:10:1	@typescript-eslint/no-empty-function	unexpected	Unexpected empty static method 's'.	suggestion	suggestComment	Add comment inside empty static method 's'.	68	69	 /* empty */ 	end	11	2
+only eslint	s0030/src/indent_i20.svelte:13:1	@typescript-eslint/class-methods-use-this	missingThis	Expected 'this' to be used by class getter 'a'.	end	15	1
+only eslint	s0030/src/indent_i20.svelte:13:1	@typescript-eslint/explicit-function-return-type	missingReturnType	Missing return type on function.	end	15	1
+only eslint	s0030/src/indent_i20.svelte:13:1	@typescript-eslint/explicit-member-accessibility	missingAccessibility	Missing accessibility modifier on get property accessor a.	suggestion	addExplicitAccessibility	Add 'public' accessibility modifier	72	72	public 	suggestion	addExplicitAccessibility	Add 'private' accessibility modifier	72	72	private 	suggestion	addExplicitAccessibility	Add 'protected' accessibility modifier	72	72	protected 	end	14	2
+only eslint	s0030/src/indent_i20.svelte:13:1	@typescript-eslint/member-ordering	incorrectGroupOrder	Member a should be declared before all public static method definitions.	end	18	2
+only eslint	s0030/src/indent_i20.svelte:13:1	getter-return	expected	Expected to return a value in getter 'a'.	end	15	1
+only eslint	s0030/src/indent_i20.svelte:13:1	perfectionist/sort-classes	unexpectedClassesGroupOrder	Expected "a" (get-method) to come before "s" (static-method).	fix	54	102	get\na\n(\n)\n{\n}\n\nset\na\n(\na\n)\n{\n}\n\nstatic\ns\n(\n)\n{\n}	end	18	2
+only eslint	s0030/src/indent_i20.svelte:15:1	@stylistic/function-paren-newline	unexpectedAfter	Unexpected newline after '('.	fix	79	80		end	15	2
+only eslint	s0030/src/indent_i20.svelte:16:1	@stylistic/function-paren-newline	unexpectedBefore	Unexpected newline before ')'.	fix	79	80		end	16	2
+only eslint	s0030/src/indent_i20.svelte:17:1	@stylistic/brace-style	nextLineOpen	Opening curly brace does not appear on the same line as controlling statement.	fix	81	82	 	end	17	2
+only eslint	s0030/src/indent_i20.svelte:17:1	@typescript-eslint/no-empty-function	unexpected	Unexpected empty getter 'a'.	suggestion	suggestComment	Add comment inside empty getter 'a'.	83	84	 /* empty */ 	end	18	2
+only eslint	s0030/src/indent_i20.svelte:20:1	@typescript-eslint/class-methods-use-this	missingThis	Expected 'this' to be used by class setter 'a'.	end	22	1
+only eslint	s0030/src/indent_i20.svelte:20:1	@typescript-eslint/explicit-member-accessibility	missingAccessibility	Missing accessibility modifier on set property accessor a.	suggestion	addExplicitAccessibility	Add 'public' accessibility modifier	87	87	public 	suggestion	addExplicitAccessibility	Add 'private' accessibility modifier	87	87	private 	suggestion	addExplicitAccessibility	Add 'protected' accessibility modifier	87	87	protected 	end	21	2
+only eslint	s0030/src/indent_i20.svelte:20:1	@typescript-eslint/member-ordering	incorrectGroupOrder	Member a should be declared before all public static method definitions.	end	26	2
+only eslint	s0030/src/indent_i20.svelte:22:1	@stylistic/function-paren-newline	unexpectedAfter	Unexpected newline after '('.	fix	94	95		end	22	2
+only eslint	s0030/src/indent_i20.svelte:24:1	@stylistic/function-paren-newline	unexpectedBefore	Unexpected newline before ')'.	fix	96	97		end	24	2
+only eslint	s0030/src/indent_i20.svelte:25:1	@stylistic/brace-style	nextLineOpen	Opening curly brace does not appear on the same line as controlling statement.	fix	98	99	 	end	25	2
+only eslint	s0030/src/indent_i20.svelte:25:1	@typescript-eslint/no-empty-function	unexpected	Unexpected empty setter 'a'.	suggestion	suggestComment	Add comment inside empty setter 'a'.	100	101	 /* empty */ 	end	26	2
+only eslint	s0030/src/indent_i20.svelte:28:1	@typescript-eslint/class-methods-use-this	missingThis	Expected 'this' to be used by class method 'f'.	end	29	1
+only eslint	s0030/src/indent_i20.svelte:28:1	@typescript-eslint/explicit-function-return-type	missingReturnType	Missing return type on function.	end	29	1
+only eslint	s0030/src/indent_i20.svelte:28:1	@typescript-eslint/explicit-member-accessibility	missingAccessibility	Missing accessibility modifier on method definition f.	suggestion	addExplicitAccessibility	Add 'public' accessibility modifier	104	104	public 	suggestion	addExplicitAccessibility	Add 'private' accessibility modifier	104	104	private 	suggestion	addExplicitAccessibility	Add 'protected' accessibility modifier	104	104	protected 	end	28	2
+only eslint	s0030/src/indent_i20.svelte:29:1	@stylistic/function-paren-newline	unexpectedAfter	Unexpected newline after '('.	fix	107	108		end	29	2
+only eslint	s0030/src/indent_i20.svelte:30:1	@stylistic/function-paren-newline	unexpectedBefore	Unexpected newline before ')'.	fix	107	108		end	30	2
+only eslint	s0030/src/indent_i20.svelte:31:1	@stylistic/brace-style	nextLineOpen	Opening curly brace does not appear on the same line as controlling statement.	fix	109	110	 	end	31	2
+only eslint	s0030/src/indent_i20.svelte:31:1	@typescript-eslint/no-empty-function	unexpected	Unexpected empty method 'f'.	suggestion	suggestComment	Add comment inside empty method 'f'.	111	112	 /* empty */ 	end	32	2
+only eslint	s0030/src/indent_i20.svelte:35:1	@typescript-eslint/no-unused-vars	unusedVar	'B' is defined but never used.	end	35	2
+only eslint	s0030/src/indent_i20.svelte:38:1	@stylistic/brace-style	nextLineOpen	Opening curly brace does not appear on the same line as controlling statement.	fix	133	134	 	end	38	2
+only eslint	s0030/src/indent_i20.svelte:39:1	@typescript-eslint/class-methods-use-this	missingThis	Expected 'this' to be used by class method 'f'.	end	40	1
+only eslint	s0030/src/indent_i20.svelte:39:1	@typescript-eslint/explicit-function-return-type	missingReturnType	Missing return type on function.	end	40	1
+only eslint	s0030/src/indent_i20.svelte:39:1	@typescript-eslint/explicit-member-accessibility	missingAccessibility	Missing accessibility modifier on method definition f.	suggestion	addExplicitAccessibility	Add 'public' accessibility modifier	136	136	public 	suggestion	addExplicitAccessibility	Add 'private' accessibility modifier	136	136	private 	suggestion	addExplicitAccessibility	Add 'protected' accessibility modifier	136	136	protected 	end	39	2
+only eslint	s0030/src/indent_i20.svelte:40:1	@stylistic/function-paren-newline	unexpectedAfter	Unexpected newline after '('.	fix	139	140		end	40	2
+only eslint	s0030/src/indent_i20.svelte:41:1	@stylistic/function-paren-newline	unexpectedBefore	Unexpected newline before ')'.	fix	139	140		end	41	2
+only eslint	s0030/src/indent_i20.svelte:42:1	@stylistic/brace-style	nextLineOpen	Opening curly brace does not appear on the same line as controlling statement.	fix	141	142	 	end	42	2
+only eslint	s0030/src/indent_i20.svelte:42:1	@typescript-eslint/no-empty-function	unexpected	Unexpected empty method 'f'.	suggestion	suggestComment	Add comment inside empty method 'f'.	143	144	 /* empty */ 	end	43	2
+only eslint	s0030/src/indent_i20.svelte:48:1	@stylistic/brace-style	nextLineOpen	Opening curly brace does not appear on the same line as controlling statement.	fix	157	158	 	end	48	2
+only eslint	s0030/src/indent_i20.svelte:49:1	@typescript-eslint/class-methods-use-this	missingThis	Expected 'this' to be used by class method 'f'.	end	50	1
+only eslint	s0030/src/indent_i20.svelte:49:1	@typescript-eslint/explicit-function-return-type	missingReturnType	Missing return type on function.	end	50	1
+only eslint	s0030/src/indent_i20.svelte:49:1	@typescript-eslint/explicit-member-accessibility	missingAccessibility	Missing accessibility modifier on method definition f.	suggestion	addExplicitAccessibility	Add 'public' accessibility modifier	160	160	public 	suggestion	addExplicitAccessibility	Add 'private' accessibility modifier	160	160	private 	suggestion	addExplicitAccessibility	Add 'protected' accessibility modifier	160	160	protected 	end	49	2
+only eslint	s0030/src/indent_i20.svelte:50:1	@stylistic/function-paren-newline	unexpectedAfter	Unexpected newline after '('.	fix	163	164		end	50	2
+only eslint	s0030/src/indent_i20.svelte:51:1	@stylistic/function-paren-newline	unexpectedBefore	Unexpected newline before ')'.	fix	163	164		end	51	2
+only eslint	s0030/src/indent_i20.svelte:52:1	@stylistic/brace-style	nextLineOpen	Opening curly brace does not appear on the same line as controlling statement.	fix	165	166	 	end	52	2
+only eslint	s0030/src/indent_i20.svelte:52:1	@typescript-eslint/no-empty-function	unexpected	Unexpected empty method 'f'.	suggestion	suggestComment	Add comment inside empty method 'f'.	167	168	 /* empty */ 	end	53	2
+only eslint	s0030/src/indent_i20.svelte:54:2	@stylistic/semi	missingSemi	Missing semicolon.	fix	171	171	;	end	55	1
+only eslint	s0030/src/indent_i20.svelte:5:1	@stylistic/brace-style	nextLineOpen	Opening curly brace does not appear on the same line as controlling statement.	fix	51	52	 	end	5	2
+only eslint	s0030/src/indent_i20.svelte:6:1	@typescript-eslint/explicit-function-return-type	missingReturnType	Missing return type on function.	end	8	1
+only eslint	s0030/src/indent_i20.svelte:6:1	@typescript-eslint/explicit-member-accessibility	missingAccessibility	Missing accessibility modifier on method definition s.	suggestion	addExplicitAccessibility	Add 'public' accessibility modifier	54	54	public 	suggestion	addExplicitAccessibility	Add 'private' accessibility modifier	54	54	private 	suggestion	addExplicitAccessibility	Add 'protected' accessibility modifier	54	54	protected 	end	7	2
+only eslint	s0030/src/indent_i20.svelte:8:1	@stylistic/function-paren-newline	unexpectedAfter	Unexpected newline after '('.	fix	64	65		end	8	2
+only eslint	s0030/src/indent_i20.svelte:9:1	@stylistic/function-paren-newline	unexpectedBefore	Unexpected newline before ')'.	fix	64	65		end	9	2
+only eslint	s0034/src/indent_i26.svelte:16:1	@stylistic/quotes	wrongQuotes	Strings must use doublequote.	fix	76	79	"a"	end	16	4
+only eslint	s0034/src/indent_i26.svelte:30:1	@stylistic/semi-style	expectedSemiColon	Expected this semicolon to be at the end of the previous line.	fix	120	123	;\n	end	30	2
+only eslint	s0038/src/indent_i32.svelte:35:1	@stylistic/semi-style	expectedSemiColon	Expected this semicolon to be at the end of the previous line.	fix	108	111	;\n	end	35	2
+only eslint	s0039/src/indent_i33.svelte:11:10	@stylistic/semi	missingSemi	Missing semicolon.	fix	90	90	;	end	12	1
+only eslint	s0039/src/indent_i33.svelte:11:8	@typescript-eslint/no-magic-numbers	noMagic	No magic number: 42.	end	11	10
+only eslint	s0039/src/indent_i33.svelte:15:7	@typescript-eslint/no-unused-vars	unusedVar	'o' is assigned a value but never used.	end	15	8
+only eslint	s0039/src/indent_i33.svelte:16:1	@typescript-eslint/explicit-function-return-type	missingReturnType	Missing return type on function.	end	17	1
+only eslint	s0039/src/indent_i33.svelte:18:10	@stylistic/semi	missingSemi	Missing semicolon.	fix	124	124	;	end	19	1
+only eslint	s0039/src/indent_i33.svelte:18:8	@typescript-eslint/no-magic-numbers	noMagic	No magic number: 42.	end	18	10
+only eslint	s0039/src/indent_i33.svelte:20:1	@typescript-eslint/explicit-function-return-type	missingReturnType	Missing return type on function.	end	21	1
+only eslint	s0039/src/indent_i33.svelte:22:10	@stylistic/semi	missingSemi	Missing semicolon.	fix	144	144	;	end	23	1
+only eslint	s0039/src/indent_i33.svelte:22:8	@typescript-eslint/no-magic-numbers	noMagic	No magic number: 42.	end	22	10
+only eslint	s0039/src/indent_i33.svelte:24:2	@stylistic/semi	missingSemi	Missing semicolon.	fix	148	148	;	end	25	1
+only eslint	s0039/src/indent_i33.svelte:3:7	@typescript-eslint/no-unused-vars	unusedVar	'A' is defined but never used.	end	3	8
+only eslint	s0039/src/indent_i33.svelte:4:1	@typescript-eslint/class-methods-use-this	missingThis	Expected 'this' to be used by class method 'a'.	end	5	1
+only eslint	s0039/src/indent_i33.svelte:4:1	@typescript-eslint/explicit-function-return-type	missingReturnType	Missing return type on function.	end	5	1
+only eslint	s0039/src/indent_i33.svelte:4:1	@typescript-eslint/explicit-member-accessibility	missingAccessibility	Missing accessibility modifier on method definition a.	suggestion	addExplicitAccessibility	Add 'public' accessibility modifier	54	54	public 	suggestion	addExplicitAccessibility	Add 'private' accessibility modifier	54	54	private 	suggestion	addExplicitAccessibility	Add 'protected' accessibility modifier	54	54	protected 	end	4	2
+only eslint	s0039/src/indent_i33.svelte:6:10	@stylistic/semi	missingSemi	Missing semicolon.	fix	70	70	;	end	7	1
+only eslint	s0039/src/indent_i33.svelte:6:8	@typescript-eslint/no-magic-numbers	noMagic	No magic number: 42.	end	6	10
+only eslint	s0039/src/indent_i33.svelte:9:1	@typescript-eslint/class-methods-use-this	missingThis	Expected 'this' to be used by class method 'b'.	end	10	1
+only eslint	s0039/src/indent_i33.svelte:9:1	@typescript-eslint/explicit-function-return-type	missingReturnType	Missing return type on function.	end	10	1
+only eslint	s0039/src/indent_i33.svelte:9:1	@typescript-eslint/explicit-member-accessibility	missingAccessibility	Missing accessibility modifier on method definition b.	suggestion	addExplicitAccessibility	Add 'public' accessibility modifier	74	74	public 	suggestion	addExplicitAccessibility	Add 'private' accessibility modifier	74	74	private 	suggestion	addExplicitAccessibility	Add 'protected' accessibility modifier	74	74	protected 	end	9	2
+only eslint	s0050/src/indent_i45.svelte:10:1	@typescript-eslint/explicit-member-accessibility	missingAccessibility	Missing accessibility modifier on method definition fn.	suggestion	addExplicitAccessibility	Add 'public' accessibility modifier	84	84	public 	suggestion	addExplicitAccessibility	Add 'private' accessibility modifier	84	84	private 	suggestion	addExplicitAccessibility	Add 'protected' accessibility modifier	84	84	protected 	end	10	12
+only eslint	s0050/src/indent_i45.svelte:14:1	@stylistic/type-annotation-spacing	unexpectedSpaceBefore	Unexpected space before the ':'.	fix	101	102		end	14	2
+only eslint	s0050/src/indent_i45.svelte:15:8	@stylistic/semi	missingSemi	Missing semicolon.	fix	111	111	;	end	16	1
+only eslint	s0050/src/indent_i45.svelte:18:7	@typescript-eslint/no-unused-vars	unusedVar	'Foo' is defined but never used.	end	18	10
+only eslint	s0050/src/indent_i45.svelte:19:1	@typescript-eslint/explicit-member-accessibility	missingAccessibility	Missing accessibility modifier on method definition constructor.	suggestion	addExplicitAccessibility	Add 'public' accessibility modifier	127	127	public 	suggestion	addExplicitAccessibility	Add 'private' accessibility modifier	127	127	private 	suggestion	addExplicitAccessibility	Add 'protected' accessibility modifier	127	127	protected 	end	19	12
+only eslint	s0050/src/indent_i45.svelte:19:1	@typescript-eslint/max-params	exceed	Constructor has too many parameters (4). Maximum allowed is 3.	end	20	1
+only eslint	s0050/src/indent_i45.svelte:21:1	@typescript-eslint/parameter-properties	preferClassProperty	Property a should be declared as a class property.	end	23	7
+only eslint	s0050/src/indent_i45.svelte:22:1	@stylistic/type-annotation-spacing	unexpectedSpaceBefore	Unexpected space before the ':'.	fix	152	153		end	22	2
+only eslint	s0050/src/indent_i45.svelte:22:2	@stylistic/no-trailing-spaces	trailingSpace	Trailing spaces not allowed.	fix	154	155		end	22	3
+only eslint	s0050/src/indent_i45.svelte:24:1	@stylistic/comma-style	unexpectedLineBeforeAndAfterComma	Bad line breaking before and after ','.	fix	162	165	,\n	end	24	2
+only eslint	s0050/src/indent_i45.svelte:25:1	@typescript-eslint/parameter-properties	preferClassProperty	Property b should be declared as a class property.	end	27	7
+only eslint	s0050/src/indent_i45.svelte:26:1	@stylistic/type-annotation-spacing	unexpectedSpaceBefore	Unexpected space before the ':'.	fix	185	186		end	26	2
+only eslint	s0050/src/indent_i45.svelte:26:2	@stylistic/no-trailing-spaces	trailingSpace	Trailing spaces not allowed.	fix	187	188		end	26	3
+only eslint	s0050/src/indent_i45.svelte:28:1	@stylistic/comma-style	unexpectedLineBeforeAndAfterComma	Bad line breaking before and after ','.	fix	195	198	,\n	end	28	2
+only eslint	s0050/src/indent_i45.svelte:29:1	@typescript-eslint/parameter-properties	preferClassProperty	Property c should be declared as a class property.	end	33	3
+only eslint	s0050/src/indent_i45.svelte:29:11	@typescript-eslint/no-inferrable-types	noInferrableType	Type number trivially inferred from a number literal, remove type annotation.	fix	210	218		end	33	3
+only eslint	s0050/src/indent_i45.svelte:30:1	@stylistic/type-annotation-spacing	unexpectedSpaceBefore	Unexpected space before the ':'.	fix	209	210		end	30	2
+only eslint	s0050/src/indent_i45.svelte:33:1	@typescript-eslint/no-magic-numbers	noMagic	No magic number: 30.	end	33	3
+only eslint	s0050/src/indent_i45.svelte:34:1	@stylistic/comma-style	unexpectedLineBeforeAndAfterComma	Bad line breaking before and after ','.	fix	223	226	,\n	end	34	2
+only eslint	s0050/src/indent_i45.svelte:35:1	@typescript-eslint/parameter-properties	preferClassProperty	Property d should be declared as a class property.	end	39	6
+only eslint	s0050/src/indent_i45.svelte:35:20	@typescript-eslint/no-inferrable-types	noInferrableType	Type boolean trivially inferred from a boolean literal, remove type annotation.	fix	247	256		end	39	6
+only eslint	s0050/src/indent_i45.svelte:36:1	@stylistic/type-annotation-spacing	unexpectedSpaceBefore	Unexpected space before the ':'.	fix	246	247		end	36	2
+only eslint	s0050/src/indent_i45.svelte:37:8	@stylistic/no-trailing-spaces	trailingSpace	Trailing spaces not allowed.	fix	256	257		end	37	9
+only eslint	s0050/src/indent_i45.svelte:38:2	@stylistic/no-trailing-spaces	trailingSpace	Trailing spaces not allowed.	fix	259	260		end	38	3
+only eslint	s0050/src/indent_i45.svelte:3:1	@typescript-eslint/no-unused-expressions	unusedExpression	Expected an assignment or function call and instead saw an expression.	end	3	9
+only eslint	s0050/src/indent_i45.svelte:3:9	@stylistic/semi	missingSemi	Missing semicolon.	fix	52	52	;	end	4	1
+only eslint	s0050/src/indent_i45.svelte:40:2	@stylistic/no-trailing-spaces	trailingSpace	Trailing spaces not allowed.	fix	268	269		end	40	3
+only eslint	s0050/src/indent_i45.svelte:41:1	@stylistic/brace-style	nextLineOpen	Opening curly brace does not appear on the same line as controlling statement.	fix	268	270	 	end	41	2
+only eslint	s0050/src/indent_i45.svelte:46:1	@typescript-eslint/explicit-member-accessibility	missingAccessibility	Missing accessibility modifier on class property prop.	suggestion	addExplicitAccessibility	Add 'public' accessibility modifier	289	289	public 	suggestion	addExplicitAccessibility	Add 'private' accessibility modifier	289	289	private 	suggestion	addExplicitAccessibility	Add 'protected' accessibility modifier	289	289	protected 	end	46	5
+only eslint	s0050/src/indent_i45.svelte:47:1	@stylistic/type-annotation-spacing	unexpectedSpaceBefore	Unexpected space before the ':'.	fix	293	294		end	47	2
+only eslint	s0050/src/indent_i45.svelte:49:1	@stylistic/lines-between-class-members	always	Expected blank line between class members.	fix	303	303	\n	end	52	8
+only eslint	s0050/src/indent_i45.svelte:49:1	@typescript-eslint/explicit-member-accessibility	missingAccessibility	Missing accessibility modifier on class property opt.	suggestion	addExplicitAccessibility	Add 'public' accessibility modifier	304	304	public 	suggestion	addExplicitAccessibility	Add 'private' accessibility modifier	304	304	private 	suggestion	addExplicitAccessibility	Add 'protected' accessibility modifier	304	304	protected 	end	49	4
+only eslint	s0050/src/indent_i45.svelte:49:1	perfectionist/sort-classes	unexpectedClassesOrder	Expected "opt" to come before "prop".	fix	289	341	opt\n?\n:\nnumber;\nopt2\n?\n:\nnumber\n=\n42;\nprop\n:\nnumber;	end	52	8
+only eslint	s0050/src/indent_i45.svelte:50:1	@stylistic/type-annotation-spacing	unexpectedSpaceBefore	Unexpected space before the '?:'.	fix	307	308		end	50	2
+only eslint	s0050/src/indent_i45.svelte:51:1	@stylistic/type-annotation-spacing	unexpectedSpaceBetween	Unexpected space between the '?' and the ':'.	fix	309	310		end	51	2
+only eslint	s0050/src/indent_i45.svelte:53:1	@stylistic/lines-between-class-members	always	Expected blank line between class members.	fix	319	319	\n	end	58	4
+only eslint	s0050/src/indent_i45.svelte:53:1	@typescript-eslint/explicit-member-accessibility	missingAccessibility	Missing accessibility modifier on class property opt2.	suggestion	addExplicitAccessibility	Add 'public' accessibility modifier	320	320	public 	suggestion	addExplicitAccessibility	Add 'private' accessibility modifier	320	320	private 	suggestion	addExplicitAccessibility	Add 'protected' accessibility modifier	320	320	protected 	end	53	5
+only eslint	s0050/src/indent_i45.svelte:54:1	@stylistic/type-annotation-spacing	unexpectedSpaceBefore	Unexpected space before the '?:'.	fix	324	325		end	54	2
+only eslint	s0050/src/indent_i45.svelte:55:1	@stylistic/type-annotation-spacing	unexpectedSpaceBetween	Unexpected space between the '?' and the ':'.	fix	326	327		end	55	2
+only eslint	s0050/src/indent_i45.svelte:58:1	@typescript-eslint/no-magic-numbers	noMagic	No magic number: 42.	end	58	3
+only eslint	s0050/src/indent_i45.svelte:5:1	@typescript-eslint/no-unused-vars	unusedVar	'C' is defined but never used.	end	5	2
+only eslint	s0050/src/indent_i45.svelte:6:1	@stylistic/brace-style	nextLineOpen	Opening curly brace does not appear on the same line as controlling statement.	fix	60	61	 	end	6	2
+only eslint	s0050/src/indent_i45.svelte:7:1	@typescript-eslint/explicit-member-accessibility	missingAccessibility	Missing accessibility modifier on class property f.	suggestion	addExplicitAccessibility	Add 'public' accessibility modifier	63	63	public 	suggestion	addExplicitAccessibility	Add 'private' accessibility modifier	63	63	private 	suggestion	addExplicitAccessibility	Add 'protected' accessibility modifier	63	63	protected 	end	7	11
+only eslint	s0050/src/indent_i45.svelte:8:1	@stylistic/type-annotation-spacing	unexpectedSpaceBefore	Unexpected space before the ':'.	fix	73	74		end	8	2
+only eslint	s0050/src/indent_i45.svelte:9:8	@stylistic/semi	missingSemi	Missing semicolon.	fix	83	83	;	end	10	1
+only eslint	s0051/src/indent_i46.svelte:14:1	@stylistic/quotes	wrongQuotes	Strings must use doublequote.	fix	99	102	"s"	end	14	4
+only eslint	s0051/src/indent_i46.svelte:15:1	@stylistic/semi-style	expectedSemiColon	Expected this semicolon to be at the end of the previous line.	fix	102	105	;\n	end	15	2
+only eslint	s0051/src/indent_i46.svelte:16:1	@stylistic/lines-between-class-members	always	Expected blank line between class members.	fix	104	104	\n	end	34	2
+only eslint	s0051/src/indent_i46.svelte:16:1	@typescript-eslint/no-unsafe-assignment	anyAssignment	Unsafe assignment of an error typed value.	end	34	2
+only eslint	s0051/src/indent_i46.svelte:17:1	@stylistic/type-annotation-spacing	unexpectedSpaceBefore	Unexpected space before the ':'.	fix	125	126		end	17	2
+only eslint	s0051/src/indent_i46.svelte:19:1	@stylistic/quote-props	unquotedPropertyFound	Unquoted property 'key' found.	fix	130	133	"key"	end	19	13
+only eslint	s0051/src/indent_i46.svelte:21:1	@typescript-eslint/no-deprecated	deprecated	`name` is deprecated.	end	21	5
+only eslint	s0051/src/indent_i46.svelte:25:1	@typescript-eslint/member-ordering	incorrectGroupOrder	Member key should be declared before all field definitions.	end	30	2
+only eslint	s0051/src/indent_i46.svelte:34:1	@stylistic/semi-style	expectedSemiColon	Expected this semicolon to be at the end of the previous line.	fix	209	212	;\n	end	34	2
+only eslint	s0051/src/indent_i46.svelte:3:7	@typescript-eslint/no-unused-vars	unusedVar	'A' is defined but never used.	end	3	8
+only eslint	s0051/src/indent_i46.svelte:4:1	@typescript-eslint/explicit-member-accessibility	missingAccessibility	Missing accessibility modifier on class property a.	suggestion	addExplicitAccessibility	Add 'public' accessibility modifier	54	54	public 	suggestion	addExplicitAccessibility	Add 'private' accessibility modifier	54	54	private 	suggestion	addExplicitAccessibility	Add 'protected' accessibility modifier	54	54	protected 	end	4	2
+only eslint	s0051/src/indent_i46.svelte:4:1	@typescript-eslint/no-inferrable-types	noInferrableType	Type number trivially inferred from a number literal, remove type annotation.	fix	55	63		end	7	2
+only eslint	s0051/src/indent_i46.svelte:6:1	@typescript-eslint/no-magic-numbers	noMagic	No magic number: 1.	end	6	2
+only eslint	s0051/src/indent_i46.svelte:7:1	@stylistic/semi-style	expectedSemiColon	Expected this semicolon to be at the end of the previous line.	fix	67	70	;\n	end	7	2
+only eslint	s0051/src/indent_i46.svelte:8:1	@stylistic/lines-between-class-members	always	Expected blank line between class members.	fix	69	69	\n	end	15	2
+only eslint	s0051/src/indent_i46.svelte:9:1	@stylistic/type-annotation-spacing	unexpectedSpaceBefore	Unexpected space before the ':'.	fix	78	79		end	9	2
+only eslint	s0053/src/indent_i50.svelte:100:1	@stylistic/function-paren-newline	unexpectedBefore	Unexpected newline before ')'.	fix	541	542		end	100	2
+only eslint	s0053/src/indent_i50.svelte:101:1	@typescript-eslint/explicit-function-return-type	missingReturnType	Missing return type on function.	end	103	1
+only eslint	s0053/src/indent_i50.svelte:101:1	@typescript-eslint/explicit-member-accessibility	missingAccessibility	Missing accessibility modifier on get property accessor x.	suggestion	addExplicitAccessibility	Add 'public' accessibility modifier	544	544	public 	suggestion	addExplicitAccessibility	Add 'private' accessibility modifier	544	544	private 	suggestion	addExplicitAccessibility	Add 'protected' accessibility modifier	544	544	protected 	end	102	2
+only eslint	s0053/src/indent_i50.svelte:103:1	@stylistic/function-paren-newline	unexpectedAfter	Unexpected newline after '('.	fix	551	552		end	103	2
+only eslint	s0053/src/indent_i50.svelte:104:1	@stylistic/function-paren-newline	unexpectedBefore	Unexpected newline before ')'.	fix	551	552		end	104	2
+only eslint	s0053/src/indent_i50.svelte:105:1	@stylistic/brace-style	nextLineOpen	Opening curly brace does not appear on the same line as controlling statement.	fix	553	554	 	end	105	2
+only eslint	s0053/src/indent_i50.svelte:10:1	@stylistic/function-paren-newline	unexpectedAfter	Unexpected newline after '('.	fix	85	86		end	10	2
+only eslint	s0053/src/indent_i50.svelte:110:1	@typescript-eslint/no-unsafe-call	errorCall	Unsafe call of a type that could not be resolved.	end	110	13
+only eslint	s0053/src/indent_i50.svelte:110:13	@stylistic/function-call-spacing	unexpectedWhitespace	Unexpected whitespace between function name and paren.	fix	589	590		end	111	1
+only eslint	s0053/src/indent_i50.svelte:111:1	@stylistic/function-paren-newline	unexpectedAfter	Unexpected newline after '('.	fix	591	592		end	111	2
+only eslint	s0053/src/indent_i50.svelte:111:1	no-unexpected-multiline	function	Unexpected newline between function and ( of function call.	end	111	2
+only eslint	s0053/src/indent_i50.svelte:113:1	@stylistic/function-paren-newline	unexpectedBefore	Unexpected newline before ')'.	fix	597	598		end	113	2
+only eslint	s0053/src/indent_i50.svelte:114:1	@typescript-eslint/explicit-function-return-type	missingReturnType	Missing return type on function.	end	116	1
+only eslint	s0053/src/indent_i50.svelte:114:1	@typescript-eslint/explicit-member-accessibility	missingAccessibility	Missing accessibility modifier on get property accessor y.	suggestion	addExplicitAccessibility	Add 'public' accessibility modifier	600	600	public 	suggestion	addExplicitAccessibility	Add 'private' accessibility modifier	600	600	private 	suggestion	addExplicitAccessibility	Add 'protected' accessibility modifier	600	600	protected 	end	115	2
+only eslint	s0053/src/indent_i50.svelte:116:1	@stylistic/function-paren-newline	unexpectedAfter	Unexpected newline after '('.	fix	607	608		end	116	2
+only eslint	s0053/src/indent_i50.svelte:117:1	@stylistic/function-paren-newline	unexpectedBefore	Unexpected newline before ')'.	fix	607	608		end	117	2
+only eslint	s0053/src/indent_i50.svelte:118:1	@stylistic/brace-style	nextLineOpen	Opening curly brace does not appear on the same line as controlling statement.	fix	609	610	 	end	118	2
+only eslint	s0053/src/indent_i50.svelte:11:1	@stylistic/function-paren-newline	unexpectedBefore	Unexpected newline before ')'.	fix	85	86		end	11	2
+only eslint	s0053/src/indent_i50.svelte:125:1	@typescript-eslint/no-unsafe-call	errorCall	Unsafe call of a type that could not be resolved.	end	125	7
+only eslint	s0053/src/indent_i50.svelte:125:7	@stylistic/function-call-spacing	unexpectedWhitespace	Unexpected whitespace between function name and paren.	fix	657	658		end	126	1
+only eslint	s0053/src/indent_i50.svelte:126:1	@stylistic/function-paren-newline	unexpectedAfter	Unexpected newline after '('.	fix	659	660		end	126	2
+only eslint	s0053/src/indent_i50.svelte:126:1	no-unexpected-multiline	function	Unexpected newline between function and ( of function call.	end	126	2
+only eslint	s0053/src/indent_i50.svelte:128:1	@stylistic/function-paren-newline	unexpectedBefore	Unexpected newline before ')'.	fix	671	672		end	128	2
+only eslint	s0053/src/indent_i50.svelte:129:1	@typescript-eslint/explicit-member-accessibility	missingAccessibility	Missing accessibility modifier on class property greeting.	suggestion	addExplicitAccessibility	Add 'public' accessibility modifier	674	674	public 	suggestion	addExplicitAccessibility	Add 'private' accessibility modifier	674	674	private 	suggestion	addExplicitAccessibility	Add 'protected' accessibility modifier	674	674	protected 	end	129	9
+only eslint	s0053/src/indent_i50.svelte:12:1	@typescript-eslint/class-methods-use-this	missingThis	Expected 'this' to be used by class method 'method'.	end	13	1
+only eslint	s0053/src/indent_i50.svelte:12:1	@typescript-eslint/explicit-function-return-type	missingReturnType	Missing return type on function.	end	13	1
+only eslint	s0053/src/indent_i50.svelte:12:1	@typescript-eslint/explicit-member-accessibility	missingAccessibility	Missing accessibility modifier on method definition method.	suggestion	addExplicitAccessibility	Add 'public' accessibility modifier	88	88	public 	suggestion	addExplicitAccessibility	Add 'private' accessibility modifier	88	88	private 	suggestion	addExplicitAccessibility	Add 'protected' accessibility modifier	88	88	protected 	end	12	7
+only eslint	s0053/src/indent_i50.svelte:130:1	@stylistic/type-annotation-spacing	unexpectedSpaceBefore	Unexpected space before the ':'.	fix	682	683		end	130	2
+only eslint	s0053/src/indent_i50.svelte:132:1	@stylistic/semi-style	expectedSemiColon	Expected this semicolon to be at the end of the previous line.	fix	691	694	;\n	end	132	2
+only eslint	s0053/src/indent_i50.svelte:133:1	@stylistic/lines-between-class-members	always	Expected blank line between class members.	fix	693	693	\n	end	135	2
+only eslint	s0053/src/indent_i50.svelte:133:1	@typescript-eslint/explicit-member-accessibility	missingAccessibility	Missing accessibility modifier on method definition constructor.	suggestion	addExplicitAccessibility	Add 'public' accessibility modifier	694	694	public 	suggestion	addExplicitAccessibility	Add 'private' accessibility modifier	694	694	private 	suggestion	addExplicitAccessibility	Add 'protected' accessibility modifier	694	694	protected 	end	133	12
+only eslint	s0053/src/indent_i50.svelte:133:12	@stylistic/space-before-function-paren	missingSpace	Missing space before function parentheses.	fix	705	705	 	end	133	13
+only eslint	s0053/src/indent_i50.svelte:136:1	@stylistic/lines-between-class-members	always	Expected blank line between class members.	fix	751	751	\n	end	139	2
+only eslint	s0053/src/indent_i50.svelte:136:1	@typescript-eslint/explicit-function-return-type	missingReturnType	Missing return type on function.	end	136	6
+only eslint	s0053/src/indent_i50.svelte:136:1	@typescript-eslint/explicit-member-accessibility	missingAccessibility	Missing accessibility modifier on method definition greet.	suggestion	addExplicitAccessibility	Add 'public' accessibility modifier	752	752	public 	suggestion	addExplicitAccessibility	Add 'private' accessibility modifier	752	752	private 	suggestion	addExplicitAccessibility	Add 'protected' accessibility modifier	752	752	protected 	end	136	6
+only eslint	s0053/src/indent_i50.svelte:136:6	@stylistic/space-before-function-paren	missingSpace	Missing space before function parentheses.	fix	757	757	 	end	136	7
+only eslint	s0053/src/indent_i50.svelte:137:20	@typescript-eslint/no-unsafe-call	errorCall	Unsafe call of a type that could not be resolved.	end	137	29
+only eslint	s0053/src/indent_i50.svelte:137:35	@stylistic/function-call-argument-newline	missingLineBreak	There should be a line break after this argument.	fix	796	797	\n	end	137	36
+only eslint	s0053/src/indent_i50.svelte:137:5	@typescript-eslint/no-unsafe-assignment	anyAssignment	Unsafe assignment of an error typed value.	end	137	47
+only eslint	s0053/src/indent_i50.svelte:137:5	prefer-const	useConst	'formatString' is never reassigned. Use 'const' instead.	fix	762	809	const formatString = getFormat(this, "greeting");	end	137	17
+only eslint	s0053/src/indent_i50.svelte:138:1	@typescript-eslint/no-unsafe-return	unsafeReturn	Unsafe return of a value of type error.	end	138	50
+only eslint	s0053/src/indent_i50.svelte:138:21	@typescript-eslint/no-unsafe-member-access	errorMemberExpression	Unsafe member access .replace on a type that cannot be resolved.	end	138	28
+only eslint	s0053/src/indent_i50.svelte:138:34	@stylistic/function-call-argument-newline	missingLineBreak	There should be a line break after this argument.	fix	843	844	\n	end	138	35
+only eslint	s0053/src/indent_i50.svelte:138:8	@typescript-eslint/no-unsafe-call	errorCall	Unsafe call of a type that could not be resolved.	end	138	28
+only eslint	s0053/src/indent_i50.svelte:13:1	@stylistic/function-paren-newline	unexpectedAfter	Unexpected newline after '('.	fix	96	97		end	13	2
+only eslint	s0053/src/indent_i50.svelte:143:1	@typescript-eslint/explicit-member-accessibility	missingAccessibility	Missing accessibility modifier on class property type.	suggestion	addExplicitAccessibility	Add 'public' accessibility modifier	883	883	public 	suggestion	addExplicitAccessibility	Add 'private' accessibility modifier	883	883	private 	suggestion	addExplicitAccessibility	Add 'protected' accessibility modifier	883	883	protected 	end	143	5
+only eslint	s0053/src/indent_i50.svelte:144:1	@stylistic/lines-between-class-members	always	Expected blank line between class members.	fix	899	899	\n	end	144	15
+only eslint	s0053/src/indent_i50.svelte:144:1	@typescript-eslint/explicit-member-accessibility	missingAccessibility	Missing accessibility modifier on class property title.	suggestion	addExplicitAccessibility	Add 'public' accessibility modifier	900	900	public 	suggestion	addExplicitAccessibility	Add 'private' accessibility modifier	900	900	private 	suggestion	addExplicitAccessibility	Add 'protected' accessibility modifier	900	900	protected 	end	144	6
+only eslint	s0053/src/indent_i50.svelte:144:1	perfectionist/sort-classes	unexpectedClassesOrder	Expected "title" to come before "type".	fix	883	914	title: string;\ntype = "report";	end	144	15
+only eslint	s0053/src/indent_i50.svelte:146:1	@typescript-eslint/explicit-member-accessibility	missingAccessibility	Missing accessibility modifier on method definition constructor.	suggestion	addExplicitAccessibility	Add 'public' accessibility modifier	916	916	public 	suggestion	addExplicitAccessibility	Add 'private' accessibility modifier	916	916	private 	suggestion	addExplicitAccessibility	Add 'protected' accessibility modifier	916	916	protected 	end	146	12
+only eslint	s0053/src/indent_i50.svelte:146:12	@stylistic/space-before-function-paren	missingSpace	Missing space before function parentheses.	fix	927	927	 	end	146	13
+only eslint	s0053/src/indent_i50.svelte:14:1	@stylistic/function-paren-newline	unexpectedBefore	Unexpected newline before ')'.	fix	96	97		end	14	2
+only eslint	s0053/src/indent_i50.svelte:152:1	@typescript-eslint/explicit-function-return-type	missingReturnType	Missing return type on function.	end	153	1
+only eslint	s0053/src/indent_i50.svelte:152:1	@typescript-eslint/explicit-member-accessibility	missingAccessibility	Missing accessibility modifier on method definition print.	suggestion	addExplicitAccessibility	Add 'public' accessibility modifier	971	971	public 	suggestion	addExplicitAccessibility	Add 'private' accessibility modifier	971	971	private 	suggestion	addExplicitAccessibility	Add 'protected' accessibility modifier	971	971	protected 	end	152	6
+only eslint	s0053/src/indent_i50.svelte:153:1	@stylistic/function-paren-newline	unexpectedAfter	Unexpected newline after '('.	fix	978	979		end	153	2
+only eslint	s0053/src/indent_i50.svelte:157:1	@stylistic/type-annotation-spacing	unexpectedSpaceBefore	Unexpected space before the ':'.	fix	997	998		end	157	2
+only eslint	s0053/src/indent_i50.svelte:159:1	@stylistic/function-paren-newline	unexpectedBefore	Unexpected newline before ')'.	fix	1007	1008		end	159	2
+only eslint	s0053/src/indent_i50.svelte:15:1	@stylistic/brace-style	nextLineOpen	Opening curly brace does not appear on the same line as controlling statement.	fix	98	99	 	end	15	2
+only eslint	s0053/src/indent_i50.svelte:15:1	@typescript-eslint/no-empty-function	unexpected	Unexpected empty method 'method'.	suggestion	suggestComment	Add comment inside empty method 'method'.	100	101	 /* empty */ 	end	16	2
+only eslint	s0053/src/indent_i50.svelte:160:1	unicorn/prefer-ternary	prefer-ternary	This `if` statement can be replaced by a ternary expression.	fix	1012	1107	return verbose ? `type: ${this.type}\\ntitle: ${this.title}` : this.title;	end	164	2
+only eslint	s0053/src/indent_i50.svelte:162:8	no-else-return	unexpected	Unnecessary 'else' after 'return'.	fix	977	1109	(\n@\nrequired\nverbose\n:\nboolean\n) {\nif (verbose) {\nreturn `type: ${this.type}\\ntitle: ${this.title}`;\n} \nreturn this.title;\n\n}	end	164	2
+only eslint	s0053/src/indent_i50.svelte:168:7	@typescript-eslint/no-unused-vars	unusedVar	'Line' is defined but never used.	end	168	11
+only eslint	s0053/src/indent_i50.svelte:170:1	@stylistic/lines-between-class-members	always	Expected blank line between class members.	fix	1148	1148	\n	end	170	21
+only eslint	s0053/src/indent_i50.svelte:170:1	perfectionist/sort-classes	unexpectedClassesOrder	Expected "_end" to come before "_start".	fix	1126	1445	@\nvalidate\n@\nReflect\n.\nmetadata(\n"design:type"\n,\nPoint\n)\nset\nend(value: Point) {\nthis._end = value;\n}\nget end() {\nreturn this._end;\n}\n@\nvalidate\n@\nReflect\n.\nmetadata(\n"design:type"\n,\nPoint\n)\nset start(value: Point) {\nthis._start = value;\n}\nget start() {\nreturn this._start;\n}\nprivate _end: Point;\nprivate _start: Point;	end	170	21
+only eslint	s0053/src/indent_i50.svelte:171:1	@stylistic/lines-between-class-members	always	Expected blank line between class members.	fix	1169	1169	\n	end	183	2
+only eslint	s0053/src/indent_i50.svelte:171:1	perfectionist/sort-classes	unexpectedClassesGroupOrder	Expected "start" (set-method) to come before "_end" (private-property).	fix	1126	1445	@\nvalidate\n@\nReflect\n.\nmetadata(\n"design:type"\n,\nPoint\n)\nset\nend(value: Point) {\nthis._end = value;\n}\nget end() {\nreturn this._end;\n}\n@\nvalidate\n@\nReflect\n.\nmetadata(\n"design:type"\n,\nPoint\n)\nset start(value: Point) {\nthis._start = value;\n}\nget start() {\nreturn this._start;\n}\nprivate _end: Point;\nprivate _start: Point;	end	183	2
+only eslint	s0053/src/indent_i50.svelte:174:1	@typescript-eslint/no-unsafe-call	errorCall	Unsafe call of a type that could not be resolved.	end	176	9
+only eslint	s0053/src/indent_i50.svelte:175:1	@stylistic/dot-location	expectedDotBeforeProperty	Expected dot to be on same line as property.	fix	1191	1193	\n.	end	175	2
+only eslint	s0053/src/indent_i50.svelte:178:1	@stylistic/comma-style	unexpectedLineBeforeAndAfterComma	Bad line breaking before and after ','.	fix	1216	1219	,\n	end	178	2
+only eslint	s0053/src/indent_i50.svelte:181:1	@typescript-eslint/explicit-member-accessibility	missingAccessibility	Missing accessibility modifier on set property accessor start.	suggestion	addExplicitAccessibility	Add 'public' accessibility modifier	1227	1227	public 	suggestion	addExplicitAccessibility	Add 'private' accessibility modifier	1227	1227	private 	suggestion	addExplicitAccessibility	Add 'protected' accessibility modifier	1227	1227	protected 	end	181	10
+only eslint	s0053/src/indent_i50.svelte:181:10	@stylistic/space-before-function-paren	missingSpace	Missing space before function parentheses.	fix	1236	1236	 	end	181	11
+only eslint	s0053/src/indent_i50.svelte:181:11	@typescript-eslint/prefer-readonly-parameter-types	shouldBeReadonly	Parameter should be a read only type.	end	181	23
+only eslint	s0053/src/indent_i50.svelte:184:1	@stylistic/lines-between-class-members	always	Expected blank line between class members.	fix	1275	1275	\n	end	186	2
+only eslint	s0053/src/indent_i50.svelte:184:1	@typescript-eslint/explicit-function-return-type	missingReturnType	Missing return type on function.	end	184	10
+only eslint	s0053/src/indent_i50.svelte:184:1	@typescript-eslint/explicit-member-accessibility	missingAccessibility	Missing accessibility modifier on get property accessor start.	suggestion	addExplicitAccessibility	Add 'public' accessibility modifier	1276	1276	public 	suggestion	addExplicitAccessibility	Add 'private' accessibility modifier	1276	1276	private 	suggestion	addExplicitAccessibility	Add 'protected' accessibility modifier	1276	1276	protected 	end	184	10
+only eslint	s0053/src/indent_i50.svelte:184:1	@typescript-eslint/member-ordering	incorrectGroupOrder	Member start should be declared before all public decorated set definitions.	end	186	2
+only eslint	s0053/src/indent_i50.svelte:184:10	@stylistic/space-before-function-paren	missingSpace	Missing space before function parentheses.	fix	1285	1285	 	end	184	11
+only eslint	s0053/src/indent_i50.svelte:187:1	@stylistic/lines-between-class-members	always	Expected blank line between class members.	fix	1311	1311	\n	end	200	2
+only eslint	s0053/src/indent_i50.svelte:187:1	perfectionist/sort-classes	unexpectedClassesOrder	Expected "end" to come before "start".	fix	1126	1445	@\nvalidate\n@\nReflect\n.\nmetadata(\n"design:type"\n,\nPoint\n)\nset\nend(value: Point) {\nthis._end = value;\n}\nget end() {\nreturn this._end;\n}\n@\nvalidate\n@\nReflect\n.\nmetadata(\n"design:type"\n,\nPoint\n)\nset start(value: Point) {\nthis._start = value;\n}\nget start() {\nreturn this._start;\n}\nprivate _end: Point;\nprivate _start: Point;	end	200	2
+only eslint	s0053/src/indent_i50.svelte:190:1	@typescript-eslint/no-unsafe-call	errorCall	Unsafe call of a type that could not be resolved.	end	192	9
+only eslint	s0053/src/indent_i50.svelte:191:1	@stylistic/dot-location	expectedDotBeforeProperty	Expected dot to be on same line as property.	fix	1333	1335	\n.	end	191	2
+only eslint	s0053/src/indent_i50.svelte:194:1	@stylistic/comma-style	unexpectedLineBeforeAndAfterComma	Bad line breaking before and after ','.	fix	1358	1361	,\n	end	194	2
+only eslint	s0053/src/indent_i50.svelte:197:1	@typescript-eslint/explicit-member-accessibility	missingAccessibility	Missing accessibility modifier on set property accessor end.	suggestion	addExplicitAccessibility	Add 'public' accessibility modifier	1369	1369	public 	suggestion	addExplicitAccessibility	Add 'private' accessibility modifier	1369	1369	private 	suggestion	addExplicitAccessibility	Add 'protected' accessibility modifier	1369	1369	protected 	end	198	4
+only eslint	s0053/src/indent_i50.svelte:198:4	@stylistic/space-before-function-paren	missingSpace	Missing space before function parentheses.	fix	1376	1376	 	end	198	5
+only eslint	s0053/src/indent_i50.svelte:198:5	@typescript-eslint/prefer-readonly-parameter-types	shouldBeReadonly	Parameter should be a read only type.	end	198	17
+only eslint	s0053/src/indent_i50.svelte:201:1	@stylistic/lines-between-class-members	always	Expected blank line between class members.	fix	1413	1413	\n	end	203	2
+only eslint	s0053/src/indent_i50.svelte:201:1	@typescript-eslint/explicit-function-return-type	missingReturnType	Missing return type on function.	end	201	8
+only eslint	s0053/src/indent_i50.svelte:201:1	@typescript-eslint/explicit-member-accessibility	missingAccessibility	Missing accessibility modifier on get property accessor end.	suggestion	addExplicitAccessibility	Add 'public' accessibility modifier	1414	1414	public 	suggestion	addExplicitAccessibility	Add 'private' accessibility modifier	1414	1414	private 	suggestion	addExplicitAccessibility	Add 'protected' accessibility modifier	1414	1414	protected 	end	201	8
+only eslint	s0053/src/indent_i50.svelte:201:1	@typescript-eslint/member-ordering	incorrectGroupOrder	Member end should be declared before all public decorated set definitions.	end	203	2
+only eslint	s0053/src/indent_i50.svelte:201:8	@stylistic/space-before-function-paren	missingSpace	Missing space before function parentheses.	fix	1421	1421	 	end	201	9
+only eslint	s0053/src/indent_i50.svelte:21:1	@typescript-eslint/no-unused-vars	unusedVar	'BugReport' is defined but never used.	end	21	10
+only eslint	s0053/src/indent_i50.svelte:22:1	@stylistic/brace-style	nextLineOpen	Opening curly brace does not appear on the same line as controlling statement.	fix	129	130	 	end	22	2
+only eslint	s0053/src/indent_i50.svelte:23:1	@typescript-eslint/explicit-member-accessibility	missingAccessibility	Missing accessibility modifier on class property type.	suggestion	addExplicitAccessibility	Add 'public' accessibility modifier	132	132	public 	suggestion	addExplicitAccessibility	Add 'private' accessibility modifier	132	132	private 	suggestion	addExplicitAccessibility	Add 'protected' accessibility modifier	132	132	protected 	end	23	5
+only eslint	s0053/src/indent_i50.svelte:26:1	@stylistic/semi-style	expectedSemiColon	Expected this semicolon to be at the end of the previous line.	fix	147	150	;\n	end	26	2
+only eslint	s0053/src/indent_i50.svelte:27:1	@stylistic/lines-between-class-members	always	Expected blank line between class members.	fix	149	149	\n	end	30	2
+only eslint	s0053/src/indent_i50.svelte:27:1	@typescript-eslint/explicit-member-accessibility	missingAccessibility	Missing accessibility modifier on class property title.	suggestion	addExplicitAccessibility	Add 'public' accessibility modifier	150	150	public 	suggestion	addExplicitAccessibility	Add 'private' accessibility modifier	150	150	private 	suggestion	addExplicitAccessibility	Add 'protected' accessibility modifier	150	150	protected 	end	27	6
+only eslint	s0053/src/indent_i50.svelte:27:1	perfectionist/sort-classes	unexpectedClassesOrder	Expected "title" to come before "type".	fix	132	166	title\n:\nstring\n;\ntype\n=\n"report"\n;	end	30	2
+only eslint	s0053/src/indent_i50.svelte:28:1	@stylistic/type-annotation-spacing	unexpectedSpaceBefore	Unexpected space before the ':'.	fix	155	156		end	28	2
+only eslint	s0053/src/indent_i50.svelte:30:1	@stylistic/semi-style	expectedSemiColon	Expected this semicolon to be at the end of the previous line.	fix	164	168	;\n	end	30	2
+only eslint	s0053/src/indent_i50.svelte:32:1	@typescript-eslint/explicit-member-accessibility	missingAccessibility	Missing accessibility modifier on method definition constructor.	suggestion	addExplicitAccessibility	Add 'public' accessibility modifier	168	168	public 	suggestion	addExplicitAccessibility	Add 'private' accessibility modifier	168	168	private 	suggestion	addExplicitAccessibility	Add 'protected' accessibility modifier	168	168	protected 	end	32	12
+only eslint	s0053/src/indent_i50.svelte:33:1	@stylistic/function-paren-newline	unexpectedAfter	Unexpected newline after '('.	fix	181	182		end	33	2
+only eslint	s0053/src/indent_i50.svelte:35:1	@stylistic/type-annotation-spacing	unexpectedSpaceBefore	Unexpected space before the ':'.	fix	183	184		end	35	2
+only eslint	s0053/src/indent_i50.svelte:37:1	@stylistic/function-paren-newline	unexpectedBefore	Unexpected newline before ')'.	fix	192	193		end	37	2
+only eslint	s0053/src/indent_i50.svelte:38:1	@stylistic/brace-style	nextLineOpen	Opening curly brace does not appear on the same line as controlling statement.	fix	194	195	 	end	38	2
+only eslint	s0053/src/indent_i50.svelte:40:1	@stylistic/dot-location	expectedDotBeforeProperty	Expected dot to be on same line as property.	fix	202	204	\n.	end	40	2
+only eslint	s0053/src/indent_i50.svelte:44:1	@stylistic/semi-style	expectedSemiColon	Expected this semicolon to be at the end of the previous line.	fix	213	216	;\n	end	44	2
+only eslint	s0053/src/indent_i50.svelte:49:1	@typescript-eslint/no-unused-vars	unusedVar	'Greeter' is defined but never used.	end	49	8
+only eslint	s0053/src/indent_i50.svelte:4:1	@typescript-eslint/no-unused-vars	unusedVar	'ExampleClass' is defined but never used.	end	4	13
+only eslint	s0053/src/indent_i50.svelte:50:1	@stylistic/brace-style	nextLineOpen	Opening curly brace does not appear on the same line as controlling statement.	fix	234	235	 	end	50	2
+only eslint	s0053/src/indent_i50.svelte:51:1	@typescript-eslint/explicit-member-accessibility	missingAccessibility	Missing accessibility modifier on class property greeting.	suggestion	addExplicitAccessibility	Add 'public' accessibility modifier	237	237	public 	suggestion	addExplicitAccessibility	Add 'private' accessibility modifier	237	237	private 	suggestion	addExplicitAccessibility	Add 'protected' accessibility modifier	237	237	protected 	end	51	9
+only eslint	s0053/src/indent_i50.svelte:52:1	@stylistic/type-annotation-spacing	unexpectedSpaceBefore	Unexpected space before the ':'.	fix	245	246		end	52	2
+only eslint	s0053/src/indent_i50.svelte:54:1	@stylistic/semi-style	expectedSemiColon	Expected this semicolon to be at the end of the previous line.	fix	254	257	;\n	end	54	2
+only eslint	s0053/src/indent_i50.svelte:55:1	@stylistic/lines-between-class-members	always	Expected blank line between class members.	fix	256	256	\n	end	68	2
+only eslint	s0053/src/indent_i50.svelte:55:1	@typescript-eslint/explicit-member-accessibility	missingAccessibility	Missing accessibility modifier on method definition constructor.	suggestion	addExplicitAccessibility	Add 'public' accessibility modifier	257	257	public 	suggestion	addExplicitAccessibility	Add 'private' accessibility modifier	257	257	private 	suggestion	addExplicitAccessibility	Add 'protected' accessibility modifier	257	257	protected 	end	55	12
+only eslint	s0053/src/indent_i50.svelte:56:1	@stylistic/function-paren-newline	unexpectedAfter	Unexpected newline after '('.	fix	270	271		end	56	2
+only eslint	s0053/src/indent_i50.svelte:58:1	@stylistic/type-annotation-spacing	unexpectedSpaceBefore	Unexpected space before the ':'.	fix	278	279		end	58	2
+only eslint	s0053/src/indent_i50.svelte:5:1	@stylistic/brace-style	nextLineOpen	Opening curly brace does not appear on the same line as controlling statement.	fix	62	63	 	end	5	2
+only eslint	s0053/src/indent_i50.svelte:60:1	@stylistic/function-paren-newline	unexpectedBefore	Unexpected newline before ')'.	fix	287	288		end	60	2
+only eslint	s0053/src/indent_i50.svelte:61:1	@stylistic/brace-style	nextLineOpen	Opening curly brace does not appear on the same line as controlling statement.	fix	289	290	 	end	61	2
+only eslint	s0053/src/indent_i50.svelte:63:1	@stylistic/dot-location	expectedDotBeforeProperty	Expected dot to be on same line as property.	fix	297	299	\n.	end	63	2
+only eslint	s0053/src/indent_i50.svelte:67:1	@stylistic/semi-style	expectedSemiColon	Expected this semicolon to be at the end of the previous line.	fix	317	320	;\n	end	67	2
+only eslint	s0053/src/indent_i50.svelte:6:2	@typescript-eslint/no-unsafe-call	errorCall	Unsafe call of a type that could not be resolved.	end	6	7
+only eslint	s0053/src/indent_i50.svelte:6:7	@stylistic/function-call-spacing	unexpectedWhitespace	Unexpected whitespace between function name and paren.	fix	71	72		end	7	1
+only eslint	s0053/src/indent_i50.svelte:71:1	@typescript-eslint/no-unsafe-call	errorCall	Unsafe call of a type that could not be resolved.	end	71	11
+only eslint	s0053/src/indent_i50.svelte:71:11	@stylistic/function-call-spacing	unexpectedWhitespace	Unexpected whitespace between function name and paren.	fix	335	336		end	72	1
+only eslint	s0053/src/indent_i50.svelte:72:1	@stylistic/function-paren-newline	unexpectedAfter	Unexpected newline after '('.	fix	337	338		end	72	2
+only eslint	s0053/src/indent_i50.svelte:72:1	no-unexpected-multiline	function	Unexpected newline between function and ( of function call.	end	72	2
+only eslint	s0053/src/indent_i50.svelte:74:1	@stylistic/function-paren-newline	unexpectedBefore	Unexpected newline before ')'.	fix	343	344		end	74	2
+only eslint	s0053/src/indent_i50.svelte:75:1	@typescript-eslint/explicit-function-return-type	missingReturnType	Missing return type on function.	end	76	1
+only eslint	s0053/src/indent_i50.svelte:75:1	@typescript-eslint/explicit-member-accessibility	missingAccessibility	Missing accessibility modifier on method definition greet.	suggestion	addExplicitAccessibility	Add 'public' accessibility modifier	346	346	public 	suggestion	addExplicitAccessibility	Add 'private' accessibility modifier	346	346	private 	suggestion	addExplicitAccessibility	Add 'protected' accessibility modifier	346	346	protected 	end	75	6
+only eslint	s0053/src/indent_i50.svelte:76:1	@stylistic/function-paren-newline	unexpectedAfter	Unexpected newline after '('.	fix	353	354		end	76	2
+only eslint	s0053/src/indent_i50.svelte:77:1	@stylistic/function-paren-newline	unexpectedBefore	Unexpected newline before ')'.	fix	353	354		end	77	2
+only eslint	s0053/src/indent_i50.svelte:78:1	@stylistic/brace-style	nextLineOpen	Opening curly brace does not appear on the same line as controlling statement.	fix	355	356	 	end	78	2
+only eslint	s0053/src/indent_i50.svelte:79:8	prefer-template	unexpectedStringConcatenation	Unexpected string concatenation.	fix	365	392	`Hello, ${\n\nthis\n.\ngreeting}`	end	83	9
+only eslint	s0053/src/indent_i50.svelte:7:1	@stylistic/function-paren-newline	unexpectedAfter	Unexpected newline after '('.	fix	73	74		end	7	2
+only eslint	s0053/src/indent_i50.svelte:82:1	@stylistic/dot-location	expectedDotBeforeProperty	Expected dot to be on same line as property.	fix	382	384	\n.	end	82	2
+only eslint	s0053/src/indent_i50.svelte:84:1	@stylistic/semi-style	expectedSemiColon	Expected this semicolon to be at the end of the previous line.	fix	392	395	;\n	end	84	2
+only eslint	s0053/src/indent_i50.svelte:89:1	@typescript-eslint/prefer-readonly	preferReadonly	Member '_x' is never reassigned; mark it as `readonly`.	fix	422	422	readonly 	end	89	11
+only eslint	s0053/src/indent_i50.svelte:8:1	@stylistic/function-paren-newline	unexpectedBefore	Unexpected newline before ')'.	fix	73	74		end	8	2
+only eslint	s0053/src/indent_i50.svelte:90:1	@stylistic/lines-between-class-members	always	Expected blank line between class members.	fix	433	433	\n	end	90	20
+only eslint	s0053/src/indent_i50.svelte:90:1	@typescript-eslint/prefer-readonly	preferReadonly	Member '_y' is never reassigned; mark it as `readonly`.	fix	442	442	readonly 	end	90	11
+only eslint	s0053/src/indent_i50.svelte:91:1	@stylistic/lines-between-class-members	always	Expected blank line between class members.	fix	453	453	\n	end	94	2
+only eslint	s0053/src/indent_i50.svelte:91:1	@typescript-eslint/explicit-member-accessibility	missingAccessibility	Missing accessibility modifier on method definition constructor.	suggestion	addExplicitAccessibility	Add 'public' accessibility modifier	454	454	public 	suggestion	addExplicitAccessibility	Add 'private' accessibility modifier	454	454	private 	suggestion	addExplicitAccessibility	Add 'protected' accessibility modifier	454	454	protected 	end	91	12
+only eslint	s0053/src/indent_i50.svelte:91:12	@stylistic/space-before-function-paren	missingSpace	Missing space before function parentheses.	fix	465	465	 	end	91	13
+only eslint	s0053/src/indent_i50.svelte:96:1	perfectionist/sort-classes	unexpectedClassesGroupOrder	Expected "x" (get-method) to come before "constructor" (constructor).	fix	414	629	@\nconfigurable\n(\nfalse\n)\nget\nx\n(\n)\n{\nreturn this._x;\n}\n@\nconfigurable\n(\nfalse\n)\nget\ny\n(\n)\n{\nreturn this._y;\n}\nprivate _x: number;\n\nprivate _y: number;\n\nconstructor(x: number, y: number) {\nthis._x = x;\nthis._y = y;\n}	end	107	2
+only eslint	s0053/src/indent_i50.svelte:97:1	@typescript-eslint/no-unsafe-call	errorCall	Unsafe call of a type that could not be resolved.	end	97	13
+only eslint	s0053/src/indent_i50.svelte:97:13	@stylistic/function-call-spacing	unexpectedWhitespace	Unexpected whitespace between function name and paren.	fix	533	534		end	98	1
+only eslint	s0053/src/indent_i50.svelte:98:1	@stylistic/function-paren-newline	unexpectedAfter	Unexpected newline after '('.	fix	535	536		end	98	2
+only eslint	s0053/src/indent_i50.svelte:98:1	no-unexpected-multiline	function	Unexpected newline between function and ( of function call.	end	98	2
+only eslint	s0053/src/indent_i50.svelte:9:2	@typescript-eslint/no-unsafe-call	errorCall	Unsafe call of a type that could not be resolved.	end	9	8
+only eslint	s0053/src/indent_i50.svelte:9:8	@stylistic/function-call-spacing	unexpectedWhitespace	Unexpected whitespace between function name and paren.	fix	83	84		end	10	1
+only eslint	s0058/src/indent_i57.svelte:14:1	@stylistic/quote-props	unquotedPropertyFound	Unquoted property 'bar' found.	fix	100	103	"bar"	end	16	7
+only eslint	s0058/src/indent_i57.svelte:15:1	@stylistic/type-annotation-spacing	unexpectedSpaceBefore	Unexpected space before the ':'.	fix	103	104		end	15	2
+only eslint	s0058/src/indent_i57.svelte:16:7	@stylistic/member-delimiter-style	expectedSemi	Expected a semicolon.	fix	112	112	;	end	16	7
+only eslint	s0058/src/indent_i57.svelte:19:1	@typescript-eslint/no-unused-vars	unusedVar	'Impl' is defined but never used.	end	19	5
+only eslint	s0058/src/indent_i57.svelte:24:1	@stylistic/comma-style	unexpectedLineBeforeAndAfterComma	Bad line breaking before and after ','.	fix	149	152	,\n	end	24	2
+only eslint	s0058/src/indent_i57.svelte:25:1	perfectionist/sort-heritage-clauses	unexpectedHeritageClausesOrder	Expected "I" to come before "I2".	fix	147	153	I\n,\nI2	end	25	2
+only eslint	s0058/src/indent_i57.svelte:26:1	@stylistic/brace-style	nextLineOpen	Opening curly brace does not appear on the same line as controlling statement.	fix	153	154	 	end	26	2
+only eslint	s0058/src/indent_i57.svelte:29:1	@typescript-eslint/no-magic-numbers	noMagic	No magic number: 42.	end	29	3
+only eslint	s0058/src/indent_i57.svelte:29:3	@stylistic/semi	missingSemi	Missing semicolon.	fix	171	171	;	end	30	1
+only eslint	s0058/src/indent_i57.svelte:30:1	@stylistic/lines-between-class-members	always	Expected blank line between class members.	fix	171	171	\n	end	36	2
+only eslint	s0058/src/indent_i57.svelte:30:1	@typescript-eslint/class-methods-use-this	missingThis	Expected 'this' to be used by class getter 'bar'.	end	32	1
+only eslint	s0058/src/indent_i57.svelte:30:1	@typescript-eslint/explicit-function-return-type	missingReturnType	Missing return type on function.	end	32	1
+only eslint	s0058/src/indent_i57.svelte:31:1	@typescript-eslint/class-literal-property-style	preferFieldStyle	Literals should be exposed using readonly fields.	suggestion	preferFieldStyleSuggestion	Replace the literals with readonly fields.	172	210	protected readonly bar\n= 'abc';	end	31	4
+only eslint	s0058/src/indent_i57.svelte:32:1	@stylistic/function-paren-newline	unexpectedAfter	Unexpected newline after '('.	fix	191	192		end	32	2
+only eslint	s0058/src/indent_i57.svelte:33:1	@stylistic/function-paren-newline	unexpectedBefore	Unexpected newline before ')'.	fix	191	192		end	33	2
+only eslint	s0058/src/indent_i57.svelte:34:1	@stylistic/brace-style	nextLineOpen	Opening curly brace does not appear on the same line as controlling statement.	fix	193	194	 	end	34	2
+only eslint	s0058/src/indent_i57.svelte:35:13	@stylistic/semi	missingSemi	Missing semicolon.	fix	208	208	;	end	36	1
+only eslint	s0058/src/indent_i57.svelte:35:8	@stylistic/quotes	wrongQuotes	Strings must use doublequote.	fix	203	208	"abc"	end	35	13
+only eslint	s0058/src/indent_i57.svelte:40:1	@typescript-eslint/no-unused-vars	unusedVar	'Impl2' is defined but never used.	end	40	6
+only eslint	s0058/src/indent_i57.svelte:45:1	@stylistic/comma-style	unexpectedLineBeforeAndAfterComma	Bad line breaking before and after ','.	fix	249	252	,\n	end	45	2
+only eslint	s0058/src/indent_i57.svelte:46:1	perfectionist/sort-heritage-clauses	unexpectedHeritageClausesOrder	Expected "I" to come before "I2".	fix	247	253	I\n,\nI2	end	46	2
+only eslint	s0058/src/indent_i57.svelte:47:1	@stylistic/brace-style	nextLineOpen	Opening curly brace does not appear on the same line as controlling statement.	fix	253	254	 	end	47	2
+only eslint	s0058/src/indent_i57.svelte:50:1	@typescript-eslint/no-magic-numbers	noMagic	No magic number: 42.	end	50	3
+only eslint	s0058/src/indent_i57.svelte:50:3	@stylistic/semi	missingSemi	Missing semicolon.	fix	271	271	;	end	51	1
+only eslint	s0058/src/indent_i57.svelte:51:1	@stylistic/lines-between-class-members	always	Expected blank line between class members.	fix	271	271	\n	end	57	2
+only eslint	s0058/src/indent_i57.svelte:51:1	@typescript-eslint/class-methods-use-this	missingThis	Expected 'this' to be used by class getter 'bar'.	end	53	1
+only eslint	s0058/src/indent_i57.svelte:51:1	@typescript-eslint/explicit-function-return-type	missingReturnType	Missing return type on function.	end	53	1
+only eslint	s0058/src/indent_i57.svelte:52:1	@typescript-eslint/class-literal-property-style	preferFieldStyle	Literals should be exposed using readonly fields.	suggestion	preferFieldStyleSuggestion	Replace the literals with readonly fields.	272	310	protected readonly bar\n= 'abc';	end	52	4
+only eslint	s0058/src/indent_i57.svelte:53:1	@stylistic/function-paren-newline	unexpectedAfter	Unexpected newline after '('.	fix	291	292		end	53	2
+only eslint	s0058/src/indent_i57.svelte:54:1	@stylistic/function-paren-newline	unexpectedBefore	Unexpected newline before ')'.	fix	291	292		end	54	2
+only eslint	s0058/src/indent_i57.svelte:55:1	@stylistic/brace-style	nextLineOpen	Opening curly brace does not appear on the same line as controlling statement.	fix	293	294	 	end	55	2
+only eslint	s0058/src/indent_i57.svelte:56:13	@stylistic/semi	missingSemi	Missing semicolon.	fix	308	308	;	end	57	1
+only eslint	s0058/src/indent_i57.svelte:56:8	@stylistic/quotes	wrongQuotes	Strings must use doublequote.	fix	303	308	"abc"	end	56	13
+only eslint	s0058/src/indent_i57.svelte:5:1	@stylistic/quote-props	unquotedPropertyFound	Unquoted property 'foo' found.	fix	58	61	"foo"	end	8	7
+only eslint	s0058/src/indent_i57.svelte:6:1	@stylistic/type-annotation-spacing	unexpectedSpaceBefore	Unexpected space before the '?:'.	fix	61	62		end	6	2
+only eslint	s0058/src/indent_i57.svelte:7:1	@stylistic/type-annotation-spacing	unexpectedSpaceBetween	Unexpected space between the '?' and the ':'.	fix	63	64		end	7	2
+only eslint	s0058/src/indent_i57.svelte:8:7	@stylistic/member-delimiter-style	expectedSemi	Expected a semicolon.	fix	72	72	;	end	8	7
+only eslint	s0059/src/indent_i58.svelte:4:1	@typescript-eslint/method-signature-style	errorMethod	Shorthand method signature is forbidden. Use a function property instead.	fix	58	86	fn?: (\na\n:\nstring\n) => number	end	12	7
+only eslint	s0065/src/indent_i63.svelte:34:1	@typescript-eslint/no-unused-vars	unusedVar	'x' is assigned a value but never used.	end	34	2
+only eslint	s0065/src/indent_i63.svelte:40:1	@stylistic/semi-style	expectedSemiColon	Expected this semicolon to be at the end of the previous line.	fix	165	168	;\n	end	40	2
+only eslint	s0069/src/indent_i71.svelte:50:1	@stylistic/no-extra-parens	unexpected	Unnecessary parentheses around expression.	fix	251	262	\ninfer\nU\n	end	50	2
+only eslint	s0070/src/indent_i72.svelte:10:3	@stylistic/semi	missingSemi	Missing semicolon.	fix	74	74	;	end	11	1
+only eslint	s0070/src/indent_i72.svelte:12:6	@typescript-eslint/no-unused-vars	unusedVar	'A' is defined but never used.	end	12	7
+only eslint	s0070/src/indent_i72.svelte:13:1	@stylistic/no-whitespace-before-property	unexpectedWhitespace	Unexpected whitespace before property B.	fix	101	104	.	end	20	2
+only eslint	s0070/src/indent_i72.svelte:13:1	@typescript-eslint/consistent-type-imports	noImportTypeAnnotations	`import()` type annotations are forbidden.	end	20	2
+only eslint	s0070/src/indent_i72.svelte:15:1	@stylistic/quotes	wrongQuotes	Strings must use doublequote.	fix	94	99	"foo"	end	15	6
+only eslint	s0070/src/indent_i72.svelte:17:1	@stylistic/dot-location	expectedDotBeforeProperty	Expected dot to be on same line as property.	fix	102	104	\n.	end	17	2
+only eslint	s0070/src/indent_i72.svelte:22:1	@typescript-eslint/no-unsafe-call	errorCall	Unsafe call of a type that could not be resolved.	end	22	9
+only eslint	s0070/src/indent_i72.svelte:22:1	@typescript-eslint/no-unused-expressions	unusedExpression	Expected an assignment or function call and instead saw an expression.	end	27	2
+only eslint	s0070/src/indent_i72.svelte:22:9	@stylistic/function-call-spacing	unexpectedWhitespace	Unexpected whitespace between function name and paren.	fix	121	122		end	23	1
+only eslint	s0070/src/indent_i72.svelte:23:1	@stylistic/function-paren-newline	unexpectedAfter	Unexpected newline after '('.	fix	123	124		end	23	2
+only eslint	s0070/src/indent_i72.svelte:23:1	no-unexpected-multiline	function	Unexpected newline between function and ( of function call.	end	23	2
+only eslint	s0070/src/indent_i72.svelte:24:1	@stylistic/quotes	wrongQuotes	Strings must use doublequote.	fix	124	129	"foo"	end	24	6
+only eslint	s0070/src/indent_i72.svelte:25:1	@stylistic/function-paren-newline	unexpectedBefore	Unexpected newline before ')'.	fix	129	130		end	25	2
+only eslint	s0070/src/indent_i72.svelte:26:1	@stylistic/dot-location	expectedDotBeforeProperty	Expected dot to be on same line as property.	fix	132	134	\n.	end	26	2
+only eslint	s0070/src/indent_i72.svelte:27:1	@typescript-eslint/no-unsafe-member-access	errorMemberExpression	Unsafe member access .B on a type that cannot be resolved.	end	27	2
+only eslint	s0070/src/indent_i72.svelte:27:2	@stylistic/semi	missingSemi	Missing semicolon.	fix	135	135	;	end	28	1
+only eslint	s0070/src/indent_i72.svelte:30:1	@typescript-eslint/no-unused-vars	unusedVar	'foo' is defined but never used.	end	30	4
+only eslint	s0070/src/indent_i72.svelte:33:1	@stylistic/type-annotation-spacing	unexpectedSpaceBefore	Unexpected space before the ':'.	fix	155	156		end	33	2
+only eslint	s0070/src/indent_i72.svelte:5:1	@typescript-eslint/no-redundant-type-constituents	errorTypeOverrides	'U' is an 'error' type that acts as 'any' and overrides all other types in this union type.	end	5	2
+only eslint	s0070/src/indent_i72.svelte:7:1	perfectionist/sort-union-types	unexpectedUnionTypesOrder	Expected "null" to come before "U".	fix	53	61	null\n|\nU	end	7	5
+only eslint	s0070/src/indent_i72.svelte:7:5	@stylistic/semi	missingSemi	Missing semicolon.	fix	61	61	;	end	8	1
+only eslint	s0070/src/indent_i72.svelte:9:6	@typescript-eslint/no-unused-vars	unusedVar	'V' is defined but never used.	end	9	7
+only veslint	g00/src/indent_v0.svelte:1:0	eslint	fatal	Parsing error: svelte: the restore of a declaration found no VariableDeclaration
+only veslint	g04/src/indent_i49.svelte:13:1	@typescript-eslint/triple-slash-reference	tripleSlashReference	Do not use a triple slash reference for helpers.d.ts, use `import` style instead.	end	13	38
+only veslint	g04/src/indent_i49.svelte:14:1	@typescript-eslint/triple-slash-reference	tripleSlashReference	Do not use a triple slash reference for lib/rules/index.d.ts, use `import` style instead.	end	14	46
+only veslint	g04/src/indent_i51.svelte:11:0	eslint	fatal	Parsing error: Parsing error.
+only veslint	g04/src/indent_i84.svelte:9:1	@stylistic/semi-style	expectedSemiColon	Expected this semicolon to be at the end of the previous line.	fix	87	89	;\n	end	9	2
+only veslint	g04/src/indent_i85.svelte:9:1	@stylistic/semi-style	expectedSemiColon	Expected this semicolon to be at the end of the previous line.	fix	93	95	;\n	end	9	2
+only veslint	g05/src/indent_i24.svelte:31:1	@typescript-eslint/no-use-before-define	noUseBeforeDefine	'a1' was used before it was defined.	end	31	3
+only veslint	g05/src/indent_i24.svelte:33:1	@typescript-eslint/no-use-before-define	noUseBeforeDefine	'b1' was used before it was defined.	end	33	3
+only veslint	g05/src/indent_i24.svelte:34:2	@stylistic/semi	missingSemi	Missing semicolon.	fix	188	188	;	end	35	1
+only veslint	g05/src/indent_i24.svelte:35:1	@typescript-eslint/no-unused-expressions	unusedExpression	Expected an assignment or function call and instead saw an expression.	end	35	5
+only veslint	g05/src/indent_i24.svelte:35:5	@stylistic/semi	missingSemi	Missing semicolon.	fix	193	193	;	end	36	1
+only veslint	g05/src/indent_i24.svelte:36:1	@typescript-eslint/no-unused-expressions	unusedExpression	Expected an assignment or function call and instead saw an expression.	end	36	6
+only veslint	g05/src/indent_i24.svelte:39:1	@typescript-eslint/no-use-before-define	noUseBeforeDefine	'a1' was used before it was defined.	end	39	3
+only veslint	g05/src/indent_i24.svelte:43:1	@typescript-eslint/no-use-before-define	noUseBeforeDefine	'b1' was used before it was defined.	end	43	3
+only veslint	g05/src/indent_i24.svelte:46:2	@stylistic/semi	missingSemi	Missing semicolon.	fix	230	230	;	end	47	1
+only veslint	g05/src/indent_i24.svelte:47:1	@typescript-eslint/no-unused-expressions	unusedExpression	Expected an assignment or function call and instead saw an expression.	end	47	5
+only veslint	g05/src/indent_i24.svelte:47:5	@stylistic/semi	missingSemi	Missing semicolon.	fix	235	235	;	end	48	1
+only veslint	g05/src/indent_i24.svelte:48:1	@typescript-eslint/no-unused-expressions	unusedExpression	Expected an assignment or function call and instead saw an expression.	end	48	6
+only veslint	g05/src/indent_i66.svelte:13:1	@typescript-eslint/no-use-before-define	noUseBeforeDefine	'Bar' was used before it was defined.	end	13	4
+only veslint	g05/src/indent_i66.svelte:14:2	@stylistic/semi	missingSemi	Missing semicolon.	fix	95	95	;	end	15	1
+only veslint	g05/src/indent_i66.svelte:15:1	@typescript-eslint/no-unused-expressions	unusedExpression	Expected an assignment or function call and instead saw an expression.	end	15	5
+only veslint	g05/src/indent_i66.svelte:15:5	@stylistic/semi	missingSemi	Missing semicolon.	fix	100	100	;	end	16	1
+only veslint	g05/src/indent_i66.svelte:16:1	@typescript-eslint/no-unused-expressions	unusedExpression	Expected an assignment or function call and instead saw an expression.	end	16	7
+only veslint	g05/src/indent_i66.svelte:22:1	@stylistic/semi-style	expectedSemiColon	Expected this semicolon to be at the end of the previous line.	fix	127	129	;\n	end	22	2
+only veslint	g11/src/indent_i67.svelte:14:1	@typescript-eslint/no-use-before-define	noUseBeforeDefine	'Bar' was used before it was defined.	end	14	4
+only veslint	g11/src/indent_i67.svelte:16:2	@stylistic/semi	missingSemi	Missing semicolon.	fix	111	111	;	end	17	1
+only veslint	g11/src/indent_i67.svelte:17:1	@typescript-eslint/no-unused-expressions	unusedExpression	Expected an assignment or function call and instead saw an expression.	end	17	5
+only veslint	g11/src/indent_i67.svelte:17:5	@stylistic/semi	missingSemi	Missing semicolon.	fix	116	116	;	end	18	1
+only veslint	g11/src/indent_i67.svelte:18:1	@typescript-eslint/no-unused-expressions	unusedExpression	Expected an assignment or function call and instead saw an expression.	end	18	7
+only veslint	g11/src/indent_i67.svelte:25:1	@stylistic/semi-style	expectedSemiColon	Expected this semicolon to be at the end of the previous line.	fix	151	153	;\n	end	25	2
+only veslint	g12/src/indent_i4.svelte:1:0	eslint	fatal	Parsing error: svelte: the restore of a declaration found no VariableDeclaration
+only veslint	g14/src/indent_i39.svelte:23:12	@typescript-eslint/naming-convention	doesNotMatchFormat	Function name `example_2` must match one of the following formats: camelCase	end	23	21
+only veslint	g14/src/indent_i39.svelte:31:10	@typescript-eslint/naming-convention	doesNotMatchFormat	Function name `example_3` must match one of the following formats: camelCase	end	31	19
+only veslint	s0026/src/indent_i17.svelte:3:1	no-lone-blocks	redundantBlock	Block is redundant.	end	7	2
+only veslint	s0030/src/indent_i20.svelte:7:1	eslint	fatal	Parsing error: Parsing error.
+only veslint	s0034/src/indent_i26.svelte:16:1	@stylistic/quotes	wrongQuotes	Strings must use doublequote.	end	16	4
+only veslint	s0034/src/indent_i26.svelte:30:1	@stylistic/semi-style	expectedSemiColon	Expected this semicolon to be at the end of the previous line.	fix	120	122	;\n	end	30	2
+only veslint	s0038/src/indent_i32.svelte:35:1	@stylistic/semi-style	expectedSemiColon	Expected this semicolon to be at the end of the previous line.	fix	108	110	;\n	end	35	2
+only veslint	s0039/src/indent_i33.svelte:4:1	eslint	fatal	Parsing error: Parsing error.
+only veslint	s0050/src/indent_i45.svelte:10:11	eslint	fatal	Parsing error: Parsing error.
+only veslint	s0051/src/indent_i46.svelte:16:19	eslint	fatal	Parsing error: Parsing error.
+only veslint	s0053/src/indent_i50.svelte:12:6	eslint	fatal	Parsing error: Parsing error.
+only veslint	s0058/src/indent_i57.svelte:31:3	eslint	fatal	Parsing error: Parsing error.
+only veslint	s0059/src/indent_i58.svelte:4:1	@stylistic/quote-props	unquotedPropertyFound	Unquoted property 'fn' found.	fix	58	60	"fn"	end	5	2
+only veslint	s0059/src/indent_i58.svelte:5:2	@stylistic/member-delimiter-style	expectedSemi	Expected a semicolon.	fix	62	62	;	end	5	2
+only veslint	s0059/src/indent_i58.svelte:6:1	@typescript-eslint/member-ordering	incorrectGroupOrder	Member call should be declared before all field definitions.	end	12	7
+only veslint	s0065/src/indent_i63.svelte:26:1	@typescript-eslint/no-unused-expressions	unusedExpression	Expected an assignment or function call and instead saw an expression.	end	26	4
+only veslint	s0065/src/indent_i63.svelte:26:4	@stylistic/semi	missingSemi	Missing semicolon.	fix	125	125	;	end	27	1
+only veslint	s0065/src/indent_i63.svelte:33:1	@typescript-eslint/no-unused-expressions	unusedExpression	Expected an assignment or function call and instead saw an expression.	end	33	4
+only veslint	s0065/src/indent_i63.svelte:33:4	@stylistic/semi	missingSemi	Missing semicolon.	fix	148	148	;	end	34	1
+only veslint	s0065/src/indent_i63.svelte:40:1	@stylistic/semi-style	expectedSemiColon	Expected this semicolon to be at the end of the previous line.	fix	165	167	;\n	end	40	2
+only veslint	s0070/src/indent_i72.svelte:9:5	eslint	fatal	Parsing error: Parsing error.
+#
+# TypeScript 7.1 (tsgo) and 6.0.3 (typescript-eslint) give different types, as on a .ts file:
+# `Array.from(x)` of an undeclared `x` (the {#each} of the virtual code) is `unknown[]` for tsgo and
+# `any[]` for TypeScript 6; a union's members in another order; a store of an unresolved name.
+only eslint	g04/src/parser_parser_ast_docs_template-syntax_06-hash-each_04-input.svelte:1:28	@typescript-eslint/no-unsafe-member-access	unsafeMemberExpression	Unsafe member access .id on an `any` value.	end	1	30
+only eslint	g04/src/parser_parser_ast_docs_template-syntax_06-hash-each_04-input.svelte:2:12	@typescript-eslint/no-unsafe-member-access	unsafeMemberExpression	Unsafe member access .name on an `any` value.	end	2	16
+only eslint	g04/src/parser_parser_ast_docs_template-syntax_06-hash-each_04-input.svelte:2:26	@typescript-eslint/no-unsafe-member-access	unsafeMemberExpression	Unsafe member access .qty on an `any` value.	end	2	29
+only eslint	g04/src/parser_parser_ast_docs_template-syntax_06-hash-each_04-input.svelte:6:31	@typescript-eslint/no-unsafe-member-access	unsafeMemberExpression	Unsafe member access .id on an `any` value.	end	6	33
+only eslint	g04/src/parser_parser_ast_docs_template-syntax_06-hash-each_04-input.svelte:7:21	@typescript-eslint/no-unsafe-member-access	unsafeMemberExpression	Unsafe member access .name on an `any` value.	end	7	25
+only eslint	g04/src/parser_parser_ast_docs_template-syntax_06-hash-each_04-input.svelte:7:35	@typescript-eslint/no-unsafe-member-access	unsafeMemberExpression	Unsafe member access .qty on an `any` value.	end	7	38
+only eslint	g07/src/mustache-spacing_i4.svelte:2:19	@typescript-eslint/no-unsafe-member-access	unsafeMemberExpression	Unsafe member access .width on an `any` value.	end	2	24
+only eslint	g07/src/mustache-spacing_i4.svelte:2:31	@typescript-eslint/no-unsafe-member-access	unsafeMemberExpression	Unsafe member access .height on an `any` value.	end	2	37
+only eslint	g07/src/parser_parser_ast_docs_template-syntax_06-hash-each_02-input.svelte:4:13	@typescript-eslint/no-unsafe-member-access	unsafeMemberExpression	Unsafe member access .name on an `any` value.	end	4	17
+only eslint	g07/src/parser_parser_ast_docs_template-syntax_06-hash-each_02-input.svelte:4:27	@typescript-eslint/no-unsafe-member-access	unsafeMemberExpression	Unsafe member access .qty on an `any` value.	end	4	30
+only eslint	g09/src/parser_parser_ast_svelte5_docs_snippets_01-input.svelte:14:13	@typescript-eslint/no-unsafe-member-access	unsafeMemberExpression	Unsafe member access .href on an `any` value.	end	14	17
+only eslint	g09/src/parser_parser_ast_svelte5_docs_snippets_01-input.svelte:15:18	@typescript-eslint/no-unsafe-member-access	unsafeMemberExpression	Unsafe member access .href on an `any` value.	end	15	22
+only eslint	g11/src/parser_parser_ast_docs_template-syntax_06-hash-each_06-input.svelte:2:11	@typescript-eslint/no-unsafe-member-access	unsafeMemberExpression	Unsafe member access .text on an `any` value.	end	2	15
+only eslint	g12/src/parser_parser_ast_docs_template-syntax_06-hash-each_03-input.svelte:2:21	@typescript-eslint/no-unsafe-member-access	unsafeMemberExpression	Unsafe member access .name on an `any` value.	end	2	25
+only eslint	g12/src/parser_parser_ast_docs_template-syntax_06-hash-each_03-input.svelte:2:35	@typescript-eslint/no-unsafe-member-access	unsafeMemberExpression	Unsafe member access .qty on an `any` value.	end	2	38
+only eslint	s0392/src/no-unused-svelte-ignore_v8.svelte:5:33	@typescript-eslint/no-unsafe-argument	unsafeArgument	Unsafe argument of type error typed assigned to a parameter of type `RequestInfo | URL`.	end	5	36
+only eslint	s0392/src/no-unused-svelte-ignore_v8.svelte:9:22	@typescript-eslint/no-unsafe-argument	unsafeArgument	Unsafe argument of type error typed assigned to a parameter of type `RequestInfo | URL`.	end	9	25
+only veslint	g00/src/prefer-destructured-store-props_v4.svelte:5:14	@typescript-eslint/restrict-template-expressions	invalidType	Invalid type "unknown" of template literal expression.	end	5	17
+only veslint	s0392/src/no-unused-svelte-ignore_v8.svelte:5:33	@typescript-eslint/no-unsafe-argument	unsafeArgument	Unsafe argument of type error typed assigned to a parameter of type `URL | RequestInfo`.	end	5	36
+only veslint	s0392/src/no-unused-svelte-ignore_v8.svelte:9:22	@typescript-eslint/no-unsafe-argument	unsafeArgument	Unsafe argument of type error typed assigned to a parameter of type `URL | RequestInfo`.	end	9	25
+#
+# The last statement of the script without `;`, followed by a comment: svelte-eslint-parser's range of
+# that statement ends where the comment ends (the separator `;` it adds after the script is trimmed
+# back to the end of the trimmed text), so prefer-const's fix replaces the comment too.
+only eslint	s0536/src/parser_parser_ast_svelte5_ts-snippet01-type-output.svelte:2:9	prefer-const	useConst	'msg' is never reassigned. Use 'const' instead.	fix	23	50	const msg = "" // msg: string	end	2	12
+only eslint	s0539/src/parser_parser_ast_trailing-comment01-input.svelte:3:7	prefer-const	useConst	'b' is never reassigned. Use 'const' instead.	fix	34	50	const b = /a/\n  //	end	3	8
+only veslint	s0536/src/parser_parser_ast_svelte5_ts-snippet01-type-output.svelte:2:9	prefer-const	useConst	'msg' is never reassigned. Use 'const' instead.	fix	23	35	const msg = ""	end	2	12
+only veslint	s0539/src/parser_parser_ast_trailing-comment01-input.svelte:3:7	prefer-const	useConst	'b' is never reassigned. Use 'const' instead.	fix	34	45	const b = /a/	end	3	8
+#
+# A project of one file: the project service opens the linted file first, as ScriptKind TS (the other
+# .svelte files of a project come from its `include` as ScriptKind Deferred, which veslint gives every
+# .svelte file in the project service): unicorn/prefer-spread suggests instead of fixing.
+only eslint	s0243/src/no-reactive-reassign_v0.svelte:16:10	unicorn/prefer-spread	array-slice	Prefer the spread operator over `Array#slice()`.	suggestion	spread	Use the spread operator.	339	353	[...array2]	end	16	15
+only eslint	s0243/src/no-reactive-reassign_v0.svelte:17:10	unicorn/prefer-spread	array-concat	Prefer the spread operator over `Array#concat(…)`.	suggestion	spread	Use the spread operator.	363	378	[...array3]	end	17	16
+only eslint	s0582/src/parser_parser_ast_tutorial_each-block-bindings-input.svelte:9:17	unicorn/prefer-spread	array-concat	Prefer the spread operator over `Array#concat(…)`.	suggestion	spread	Use the spread operator.	203	242	[...todos, { done: false, text: '' }]	end	9	23
+only veslint	s0243/src/no-reactive-reassign_v0.svelte:16:10	unicorn/prefer-spread	array-slice	Prefer the spread operator over `Array#slice()`.	fix	339	353	[...array2]	end	16	15
+only veslint	s0243/src/no-reactive-reassign_v0.svelte:17:10	unicorn/prefer-spread	array-concat	Prefer the spread operator over `Array#concat(…)`.	fix	363	378	[...array3]	end	17	16
+only veslint	s0582/src/parser_parser_ast_tutorial_each-block-bindings-input.svelte:9:17	unicorn/prefer-spread	array-concat	Prefer the spread operator over `Array#concat(…)`.	fix	203	242	[...todos, { done: false, text: '' }]	end	9	23

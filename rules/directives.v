@@ -84,6 +84,14 @@ mut:
 // line_column is ESLint's position of a byte offset in a message: 1-based line and column, the
 // column in UTF-16 units.
 fn (c &Checker) line_column(lines offsets.LineStarts, offset int) (int, int) {
+	if c.is_svelte() {
+		// svelte-eslint-parser's location of the place of the file.
+		file := c.svelte.doc.lint_to_file(offset, false)
+		if file >= 0 {
+			loc := c.svelte.doc.loc(file)
+			return loc.line, loc.column + 1
+		}
+	}
 	return lines.line_index(offset) + 1, utf16_column(c.src, offset) + 1
 }
 

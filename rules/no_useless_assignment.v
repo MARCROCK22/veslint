@@ -115,6 +115,9 @@ fn (mut c Checker) lint_no_useless_assignment(root C.TSNode, abs_path string, mu
 					expression = t.node(ev.node, .init) or { continue }
 					pattern = t.node(ev.node, .id) or { continue }
 				} else if typ == .assignment_expression {
+					if c.svelte_binding_assignment(t, ev.node) {
+						continue
+					}
 					pattern = t.node(ev.node, .left) or { continue }
 					expression = t.node(ev.node, .right) or { -1 }
 				} else if typ == .update_expression {

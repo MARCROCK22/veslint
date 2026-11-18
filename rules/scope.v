@@ -58,11 +58,14 @@ pub enum DefKind {
 	ts_module_name
 	type_definition
 	variable
+	// svelte-eslint-parser's ComputedVariable (`$: x = …`, svelte_scope.v): a plain object, not a
+	// Definition of the scope manager, so neither a variable nor a type definition.
+	svelte_computed
 }
 
 // is_variable_definition ports Definition.isVariableDefinition.
 pub fn (k DefKind) is_variable_definition() bool {
-	return k != .type_definition
+	return k != .type_definition && k != .svelte_computed
 }
 
 // is_type_definition ports Definition.isTypeDefinition.
@@ -159,6 +162,9 @@ pub:
 	init       bool
 	type_ref   bool
 	value_ref  bool
+	// virtual: a reference svelte-eslint-parser adds (svelte_scope.v); a prop's has a copy of the
+	// identifier, another node for the rules that compare them.
+	virtual bool
 pub mut:
 	resolved int = -1
 	// implicit is the node of maybeImplicitGlobal: the `=` assignment or for-in/of statement that
@@ -236,6 +242,21 @@ fn (mut c Checker) file_scope_setup(config LintConfig, inline InlineConfig) Scop
 	libs := c.scope_libs(scope_libs_of(c.scope_project, config.language))
 	setup := new_scope_setup(c.scope_project, config.language, inline.globals, inline.exported,
 		libs)
+	if c.is_svelte() {
+		return ScopeSetup{
+			...setup
+			svelte: c.svelte_scope_setup()
+		}
+	}
+	if c.svelte_module.on {
+		return ScopeSetup{
+			...setup
+			svelte: SvelteScopeSetup{
+				on:     true
+				module: true
+			}
+		}
+	}
 	if c.is_vue() && c.vue.doc.has_script_setup() {
 		return ScopeSetup{
 			...setup
@@ -419,6 +440,8 @@ pub:
 	type_information bool = true
 	// A .vue file with a <script setup>: what vue-eslint-parser adds to the scopes (vue_scope.v).
 	vue VueScopeSetup
+	// A .svelte file: what svelte-eslint-parser adds to the scopes (svelte_scope.v).
+	svelte SvelteScopeSetup
 }
 
 // ScopeLibs are the implicit variables a list of libs gives the global scope
@@ -886,6 +909,9 @@ fn build_scope_tree_with(root C.TSNode, src string, tokens TokenEnds, setup Scop
 	if setup.vue.script_setup {
 		b.vue_detach_setup_scopes(setup.vue)
 		b.vue_script_setup_scope(setup.vue)
+	}
+	if setup.svelte.on {
+		b.svelte_scope(setup.svelte)
 	}
 	b.add_globals(setup.declared)
 	// markExportedVariables: only the variables of the global scope.

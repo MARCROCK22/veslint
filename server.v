@@ -8,6 +8,7 @@ import time
 import rules
 import treesitter
 import tsgo
+import svelte
 import vue
 
 // veslint --server: a process that stays alive between the requests of an editor, so that tsgo,
@@ -145,8 +146,9 @@ mut:
 	queue   &RequestQueue = unsafe { nil }
 	// twins are the virtual TypeScript twins of the .vue files linted so far, with their text
 	// (vue_files.v): tsgo runs with virtual files once there is one.
-	twins       map[string]string
-	vue_parsers VueParsers
+	twins          map[string]string
+	vue_parsers    VueParsers
+	svelte_parsers SvelteParsers
 	// twin_configs is the tsconfig of each twin, and included the twins include_twins looked at
 	// with the running tsgo.
 	twin_configs   map[string]string
@@ -176,6 +178,7 @@ fn serve(timeout time.Duration) {
 		s.parser.close()
 		s.tsx_parser.close()
 		s.vue_parsers.close()
+		s.svelte_parsers.close()
 	}
 	reader := spawn read_requests(requests)
 	for {
@@ -396,9 +399,14 @@ fn (mut s Server) lint(id i64, config string, project string, files []string, te
 	mut tsconfigs := []string{}
 	// The documents of the .vue files, by path as given: freed when the answer is ready.
 	mut docs := map[string]&vue.Document{}
+	// The same for the .svelte files.
+	mut sdocs := map[string]&svelte.Document{}
 	defer {
 		for _, mut doc in docs {
 			doc.free()
+		}
+		for _, mut sdoc in sdocs {
+			sdoc.free()
 		}
 	}
 	for path in files {
@@ -433,6 +441,14 @@ fn (mut s Server) lint(id i64, config string, project string, files []string, te
 				s.stop_serving(abs_path)
 			}
 		}
+		// A `.svelte.ts` module: tsgo reads its virtual code (svelte/module.v).
+		mut module := svelte.ModuleVirtual{}
+		if svelte.is_svelte_module_path(path) {
+			module = s.svelte_parsers.module_virtual(src) or { svelte.ModuleVirtual{} }
+			if module.inserted > 0 {
+				s.set_served(abs_path, module.code)
+			}
+		}
 		is_vue := rules.is_vue_path(path)
 		if is_vue {
 			mut doc := s.vue_parsers.parse(src) or {
@@ -450,6 +466,24 @@ fn (mut s Server) lint(id i64, config string, project string, files []string, te
 			}
 			s.set_twin(rules.vue_twin_path(abs_path), doc.script.code)
 			docs[path] = doc
+		}
+		is_svelte := rules.is_svelte_path(path)
+		if is_svelte {
+			mut sdoc := s.svelte_parsers.parse(src) or {
+				errors.writeln('veslint: ${path}: ${err.msg()}')
+				return ServerAnswer{
+					id:     id
+					code:   1
+					stderr: errors.str()
+				}
+			}
+			if !svelte_is_typescript(sdoc) {
+				sdoc.free()
+				errors.writeln(svelte_javascript_warning(path))
+				continue
+			}
+			s.set_twin(rules.svelte_twin_path(abs_path), sdoc.virtual_code)
+			sdocs[path] = sdoc
 		}
 		named := if project_override == '' {
 			loaded.named_projects(abs_path)
@@ -481,6 +515,9 @@ fn (mut s Server) lint(id i64, config string, project string, files []string, te
 		if is_vue && tsconfig != '' {
 			s.twin_configs[rules.vue_twin_path(abs_path)] = tsconfig
 		}
+		if is_svelte && tsconfig != '' {
+			s.twin_configs[rules.svelte_twin_path(abs_path)] = tsconfig
+		}
 		entries << RuleFile{
 			path:     path
 			abs_path: abs_path
@@ -489,7 +526,15 @@ fn (mut s Server) lint(id i64, config string, project string, files []string, te
 			src:      src
 			has_bom:  has_bom
 			vue:      is_vue
-			ts_path:  if is_vue { rules.vue_twin_path(abs_path) } else { abs_path }
+			svelte:   is_svelte
+			module:   module
+			ts_path:  if is_vue {
+				rules.vue_twin_path(abs_path)
+			} else if is_svelte {
+				rules.svelte_twin_path(abs_path)
+			} else {
+				abs_path
+			}
 		}
 	}
 	mut out := strings.new_builder(4096)
@@ -578,11 +623,16 @@ fn (mut s Server) lint(id i64, config string, project string, files []string, te
 		checker.set_lint_stop(s.queue)
 		checker.set_has_bom(f.has_bom)
 		doc := docs[f.path] or { unsafe { nil } }
+		sdoc := sdocs[f.path] or { unsafe { nil } }
 		if f.vue {
 			checker.set_vue(doc, f.ts_path)
+		} else if f.svelte {
+			checker.set_svelte(sdoc, f.ts_path, s.svelte_parsers.parsers)
+		} else if f.module.inserted > 0 {
+			checker.set_svelte_module(f.src, f.module.code, f.module.at, f.module.inserted)
 		}
 		result := checker.lint_file(if (f.vue && uses_tsx_grammar(doc))
-			|| (!f.vue && treesitter.uses_jsx_dialect(f.path)) {
+			|| (!f.vue && !f.svelte && treesitter.uses_jsx_dialect(f.path)) {
 			s.tsx_parser
 		} else {
 			s.parser
@@ -604,7 +654,7 @@ fn (mut s Server) lint(id i64, config string, project string, files []string, te
 				stderr: errors.str()
 			}
 		}
-		report := file_report(f.path, f.src, result, fixes, doc)
+		report := file_report(f.path, f.src, result, fixes, doc, sdoc)
 		errors.write_string(report.stderr)
 		out.write_string(report.stdout)
 		problems += report.problems
@@ -716,7 +766,7 @@ fn (mut s Server) set_twin(path string, code string) {
 	}
 }
 
-// update_twins gives the twins of the .vue files that changed on disk, or whose unsaved text is
+// update_twins gives the twins of the .vue and .svelte files that changed on disk, or whose unsaved text is
 // forgotten, the code of the file on disk, and drops those of the ones deleted: tsgo does not read
 // a .vue file, only its twin.
 fn (mut s Server) update_twins(request map[string]json2.Any) {
@@ -729,6 +779,13 @@ fn (mut s Server) update_twins(request map[string]json2.Any) {
 				continue
 			}
 			src, _, _ := read_source(path) or { continue }
+			if rules.is_svelte_path(path) {
+				mut sdoc := s.svelte_parsers.parse(src) or { continue }
+				code := sdoc.virtual_code
+				sdoc.free()
+				s.set_twin(twin, code)
+				continue
+			}
 			mut doc := s.vue_parsers.parse(src) or { continue }
 			code := doc.script.code
 			doc.free()
