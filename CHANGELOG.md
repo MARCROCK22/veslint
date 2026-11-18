@@ -2,12 +2,15 @@
 
 Each version is a release on GitHub with the veslint binaries (Linux x64, Windows x64) and the VS Code extension. The section of a version is the text of its release.
 
+## 0.35.3
+
+- **Svelte: a `runes` function in `parserOptions.svelteConfig`** of an `eslint.config.*` (`runes: ({ filename }) => …`) is called for each `.svelte` file with its path when ESLint resolves the configuration, as svelte-eslint-parser and eslint-plugin-svelte call it; the parse, the types and the rules (`svelte/valid-compile`…) follow what it gives (it was taken as unset), also from a saved `--print-config`, which keeps it per file.
+
 ## 0.35.2
 
 - **`parserOptions` of an `eslint.config.*` kept whole:** `vueFeatures`, `svelteFeatures` and `svelteConfig` given in an `eslint.config.*` were lost (only a JSON configuration passed them on); now they reach the parse and the rules.
 - **Vue:** `parserOptions.vueFeatures` is read (`filter`, `interpolationAsNonHTML`, `styleCSSVariableInjection`, `customMacros`), as vue-eslint-parser reads it; `export type { … }` in a `<script setup>` next to a `<script>` is the fatal parsing error ESLint gives; `lang="TS"`, `lang="typescript"` and other spellings of TypeScript are linted as TypeScript, as with typescript-eslint's parser.
-- **Svelte:** `lang="TS"` and other spellings are TypeScript too; `bind:value={x}` no longer makes `no-const-assign` (and `no-class-assign`, `no-func-assign`, `no-global-assign`) report `x`, as in ESLint; a `runes` written as a function in `svelte.config.js` is unset, as svelte-eslint-parser reads it.
-- **Svelte: a `runes` function in `parserOptions.svelteConfig`** of an `eslint.config.*` (`runes: ({ filename }) => …`) is called for each `.svelte` file with its path when ESLint resolves the configuration, as svelte-eslint-parser and eslint-plugin-svelte call it; the parse, the types and the rules (`svelte/valid-compile`…) follow what it gives (it was taken as unset), also from a saved `--print-config`, which keeps it per file.
+- **Svelte:** `lang="TS"` and other spellings are TypeScript too; `bind:value={x}` no longer makes `no-const-assign` (and `no-class-assign`, `no-func-assign`, `no-global-assign`) report `x`, as in ESLint; a `runes` written as a function in `svelte.config.js` is unset, as svelte-eslint-parser reads it (in `parserOptions.svelteConfig` it is a limit: veslint does not call JavaScript functions; README).
 - Internal: 21 helpers of eslint-plugin-vue ported twice by parallel batches are one each now (the output is the same).
 
 ## 0.35.1
