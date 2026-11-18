@@ -403,7 +403,8 @@ fn (mut b ScopeBuilder) svelte_props_scope(module int, script svelte.ScriptRange
 						}
 						init = parts[0]
 					}
-					if node_kind(name) != 'object_pattern' || !b.svelte_is_call_of(init, '\$props') {
+					if node_kind(name) != 'object_pattern'
+						|| !b.svelte_is_call_of(unwrap_parens(init), '\$props') {
 						continue
 					}
 					for t in b.svelte_pattern_targets(name) {
@@ -414,7 +415,7 @@ fn (mut b ScopeBuilder) svelte_props_scope(module int, script svelte.ScriptRange
 						pattern := node_parent(right) or { continue }
 						left := node_field(pattern, 'left') or { continue }
 						if node_key(left) != node_key(t.ident)
-							|| !b.svelte_is_call_of(right, '\$bindable') {
+							|| !b.svelte_is_call_of(unwrap_parens(right), '\$bindable') {
 							continue
 						}
 						b.svelte_add_prop_reference(module, t.ident, mut done)

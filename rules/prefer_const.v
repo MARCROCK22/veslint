@@ -176,7 +176,7 @@ fn pconst_destructuring_host(tree &ScopeTree, r int) ?C.TSNode {
 }
 
 // pconst_can_become_declaration ports canBecomeVariableDeclaration.
-fn pconst_can_become_declaration(identifier C.TSNode) bool {
+fn pconst_can_become_declaration(identifier C.TSNode, svelte bool) bool {
 	node, child := pconst_skip_patterns(identifier) or { return false }
 	if pconst_is_declarator(node, child) {
 		return true
@@ -193,7 +193,10 @@ fn pconst_can_become_declaration(identifier C.TSNode) bool {
 	}
 	host := node_parent(statement) or { return false }
 	return match node_kind(host) {
-		'program', 'switch_case', 'switch_default' { true }
+		// A statement at the top of a .svelte file's script is in a SvelteScriptElement for
+		// ESLint, and a template expression is not a statement.
+		'program' { !svelte }
+		'switch_case', 'switch_default' { true }
 		'statement_block' {
 			node_kind(node_parent(host) or { host }) !in ['internal_module', 'module',
 				'ambient_declaration']
@@ -346,7 +349,7 @@ fn (c &Checker) pconst_identifier(tree &ScopeTree, v int, ignore_read_before_ass
 		}
 	}
 	if writer < 0 || tree.references[writer].from != variable.scope
-		|| !pconst_can_become_declaration(tree.references[writer].identifier) {
+		|| !pconst_can_become_declaration(tree.references[writer].identifier, c.is_svelte()) {
 		return none
 	}
 	if read_before_init {

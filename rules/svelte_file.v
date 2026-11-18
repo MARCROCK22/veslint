@@ -153,11 +153,31 @@ fn (c &Checker) svelte_lint_offset_of_ts_unit(unit int, end bool) int {
 
 // svelte_es_tree is es_tree for a .svelte file: the ESTree of the lint tree.
 fn (mut c Checker) svelte_es_tree(top C.TSNode) {
-	tree := estree.convert_with(top, c.src, false, estree.Options{
+	mut tree := estree.convert_with(top, c.src, false, estree.Options{
 		module: true
 	}) or {
 		c.file_es_state = .failed
 		return
+	}
+	// A template expression's parent is its Svelte node for ESLint, not the wrapper's statement:
+	// a node of a placeholder type (named in `foreign`) the traversal never reaches.
+	doc := c.svelte.doc
+	for st in tree.list(tree.root, .body) or { []int{} } {
+		if tree.nodes[st].typ != .expression_statement || tree.nodes[st].start < doc.lint_start
+			|| doc.lint_to_file(tree.nodes[st].start, false) >= 0 {
+			continue
+		}
+		expression := tree.node(st, .expression) or { continue }
+		target := doc.lint_parents[tree.nodes[expression].start] or { continue }
+		parent := tree.nodes.len
+		tree.nodes << estree.EsNode{
+			typ:    .ts_abstract_keyword
+			start:  tree.nodes[expression].start
+			end:    tree.nodes[expression].end
+			parent: -1
+		}
+		tree.nodes[expression].parent = parent
+		tree.foreign[parent] = doc.nodes[target].typ.type_name()
 	}
 	c.file_es = tree
 	c.file_es_state = .built
@@ -172,6 +192,12 @@ fn (c &Checker) svelte_move_findings(findings []Finding) []Finding {
 	mut out := []Finding{cap: findings.len}
 	mut seen := map[string]bool{}
 	for f in findings {
+		// The `generics` attribute's type parameters are type aliases in the lint code: what a rule
+		// says of the aliases' own tokens is not ESLint's.
+		if doc.lint_generics_start >= 0 && f.stmt.start_byte >= doc.lint_generics_start
+			&& f.rule in svelte_generics_alias_rules {
+			continue
+		}
 		start := if f.stmt.row < 0 {
 			f.stmt.start_byte
 		} else {
@@ -348,8 +374,8 @@ fn (c &Checker) svelte_binding_assignment(t &estree.EsTree, node int) bool {
 // {#snippet} are not functions for ESLint (their parameters belong to a Svelte block), so their
 // reports on those functions' heads are not ESLint's. The rules that look at the scopes (unused or
 // shadowed variables) keep theirs, as ESLint's scopes have those parameters.
-const svelte_function_shape_rules = [prefer_readonly_parameter_types, stylistic_space_before_function_paren,
-	stylistic_function_paren_newline]
+const svelte_function_shape_rules = [prefer_readonly_parameter_types,
+	stylistic_space_before_function_paren, stylistic_function_paren_newline]
 
 // svelte_drop_wrapper_function_findings drops what svelte_function_shape_rules report in the
 // head (from its start to its body) of a function of the template part that is a wrapper.
@@ -379,3 +405,55 @@ fn (mut c Checker) svelte_drop_wrapper_function_findings(root C.TSNode, findings
 		return true
 	})
 }
+
+// svelte_wrapper_parameter: the name is a parameter of a function of the lint code that is a
+// wrapper (of {#each}, let:, {:then}, {:catch} or {#snippet}): for ESLint its parent is the Svelte
+// block, not a function.
+fn (c &Checker) svelte_wrapper_parameter(name C.TSNode) bool {
+	if !c.is_svelte() || node_start(name) < c.svelte.doc.lint_start {
+		return false
+	}
+	mut node := node_parent(name) or { return false }
+	for node_kind(node) !in ['arrow_function', 'function_declaration'] {
+		node = node_parent(node) or { return false }
+	}
+	return c.svelte.doc.lint_to_file(node_start(node), false) < 0
+}
+
+// svelte_file_tokens are the tokens and comments svelte-eslint-parser gives ESLint for the file
+// (the script's, the markup's and the template expressions'), at their offsets of the file, which
+// are offsets of the source text too (the lint text starts with the file): for the rules that walk
+// every token of the file.
+fn (c &Checker) svelte_file_tokens() []SourceToken {
+	doc := c.svelte.doc
+	mut out := []SourceToken{cap: doc.tokens.len + doc.comments.len}
+	mut i := 0
+	mut j := 0
+	for i < doc.tokens.len || j < doc.comments.len {
+		take_comment := j < doc.comments.len
+			&& (i >= doc.tokens.len || doc.comments[j].start < doc.tokens[i].start)
+		if take_comment {
+			cm := doc.comments[j]
+			out << SourceToken{
+				start: cm.start
+				end:   cm.end
+				kind:  if cm.typ == 'Line' { .line_comment } else { .block_comment }
+			}
+			j++
+		} else {
+			tk := doc.tokens[i]
+			out << SourceToken{
+				start: tk.start
+				end:   tk.end
+				kind:  if tk.typ == 'PrivateIdentifier' { .private_identifier } else { .punctuator }
+			}
+			i++
+		}
+	}
+	return out
+}
+
+// svelte_generics_alias_rules are the rules that report on the tokens the lint code's type aliases
+// of the `generics` attribute add (`type`, `=`, `;`), which a TSTypeParameter does not have.
+const svelte_generics_alias_rules = [stylistic_space_infix_ops, stylistic_semi_spacing, stylistic_semi,
+	stylistic_semi_style, stylistic_no_extra_semi, stylistic_keyword_spacing]

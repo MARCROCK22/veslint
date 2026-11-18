@@ -111,6 +111,17 @@ fn (mut c Conv) build_lint_code() {
 			.prep {
 				edits << LintEdit{l.start, l.head_end, ''}
 			}
+			.variable_declarator, .declaration {
+				// `const p;` / `let p;`: svelte-eslint-parser drops the `;`; a line break and an
+				// empty block end the declaration instead.
+				if l.head_end - 1 >= 0 && pre[l.head_end - 1] == `;` {
+					edits << LintEdit{l.head_end - 1, l.head_end, '\n{}'}
+				}
+				if l.kind == .declaration {
+					// On a line of its own: `{let …}` comes after a `{`, not after a wrapper.
+					edits << LintEdit{l.start, l.start, '\n'}
+				}
+			}
 			else {}
 		}
 	}
@@ -136,8 +147,23 @@ fn (mut c Conv) build_lint_code() {
 	out << `{`
 	out << `}`
 	mut lint_segments := []Segment{cap: segments.len}
+	generics_start := c.trimmed_len + 2 + c.before_spaces.len + c.render.len + c.snippet.len
+	doc.lint_generics_start = -1
+	mut pre_to_lint := map[int]int{}
 	for piece in c.lint_pieces(first, segments) {
-		emit_lint_piece(pre, piece[0], piece[1], edits, segments, mut out, mut lint_segments)
+		if piece[0] == generics_start && piece[1] > piece[0] {
+			doc.lint_generics_start = out.len
+		}
+		emit_lint_piece(pre, piece[0], piece[1], edits, segments, mut out, mut lint_segments, mut
+			pre_to_lint)
+	}
+	// The Svelte node each template expression is under (the node whose property it is).
+	for l in c.lets {
+		if l.kind in [.expression, .if_block, .each_block] && l.segments.len > 0 && l.target >= 0 {
+			if at := pre_to_lint[l.segments[0].pre_start] {
+				doc.lint_parents[at] = l.target
+			}
+		}
 	}
 	doc.lint_code = out.bytestr()
 	doc.lint_start = first + 1
@@ -224,7 +250,7 @@ fn (c &Conv) lint_pieces(first int, segments []Segment) [][2]int {
 
 // emit_lint_piece copies [from, to) of the pre-virtual code to the lint code with the edits and
 // the segments in it.
-fn emit_lint_piece(pre string, from int, to int, edits []LintEdit, segments []Segment, mut out []u8, mut lint_segments []Segment) {
+fn emit_lint_piece(pre string, from int, to int, edits []LintEdit, segments []Segment, mut out []u8, mut lint_segments []Segment, mut pre_to_lint map[int]int) {
 	mut cursor := from
 	mut si := 0
 	for si < segments.len && segments[si].pre_start < from {
@@ -237,6 +263,7 @@ fn emit_lint_piece(pre string, from int, to int, edits []LintEdit, segments []Se
 		for si < segments.len && segments[si].pre_start < e.start {
 			s := segments[si]
 			lint_segments << Segment{s.pre_start - cursor + out.len, s.len, s.file_start}
+			pre_to_lint[s.pre_start] = s.pre_start - cursor + out.len
 			si++
 		}
 		out << pre[cursor..e.start].bytes()
@@ -246,6 +273,7 @@ fn emit_lint_piece(pre string, from int, to int, edits []LintEdit, segments []Se
 	for si < segments.len && segments[si].pre_start < to {
 		s := segments[si]
 		lint_segments << Segment{s.pre_start - cursor + out.len, s.len, s.file_start}
+		pre_to_lint[s.pre_start] = s.pre_start - cursor + out.len
 		si++
 	}
 	out << pre[cursor..to].bytes()

@@ -73,6 +73,12 @@ pub mut:
 	lint_code     string
 	lint_start    int
 	lint_segments []Segment
+	// lint_generics_start: where the type aliases of the `generics` attribute are in the lint
+	// code (-1 without them).
+	lint_generics_start int = -1
+	// lint_parents: the Svelte node (index of nodes) of the template expression that starts at
+	// that offset of the lint code.
+	lint_parents map[int]int
 }
 
 // Parsers are the tree-sitter parsers parse_svelte_with reuses from file to file.
