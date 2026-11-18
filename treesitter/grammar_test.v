@@ -266,3 +266,38 @@ fn test_nothing_continues_an_arrow_block() {
 	assert statements_of('f = function () {}\n-bar') == 'program(expression_statement(assignment_expression(identifier,binary_expression(function_expression(formal_parameters,statement_block),identifier))))'
 	assert statements_of('a = 1\n/2/g') == 'program(expression_statement(assignment_expression(identifier,binary_expression(binary_expression(number,number),identifier))))'
 }
+
+// Where TypeScript reads on after a line break that would otherwise end a member or a statement
+// (code written one token per line): the name of a member before its `(` or `<`, `static`, `get`
+// and `set` before a name, `export {…}` before `from`, and `let` before a binding name.
+fn test_line_breaks_typescript_reads_on() {
+	method := 'method_definition(property_identifier,formal_parameters,statement_block)'
+	assert statements_of('class A {\n  a\n  () {}\n  b?\n  <T>() {}\n  c\n  [d] = 1\n}') == 'program(class_declaration(type_identifier,class_body(${method},method_definition(property_identifier,type_parameters(type_parameter(type_identifier)),formal_parameters,statement_block),public_field_definition(property_identifier),public_field_definition(computed_property_name(identifier),number))))'
+	// `static`, `get` and `set` are modifiers before a name on the next line (not before a `*`
+	// for `get`); the other modifiers are names then.
+	assert statements_of('class A {\n  static\n  s() {}\n  get\n  #x() { return 1 }\n  set\n  [k](v) {}\n  get\n  *g() {}\n  public\n  static\n  f() {}\n}') == 'program(class_declaration(type_identifier,class_body(${method},method_definition(private_property_identifier,formal_parameters,statement_block(return_statement(number))),method_definition(computed_property_name(identifier),formal_parameters(required_parameter(identifier)),statement_block),public_field_definition(property_identifier),${method},public_field_definition(property_identifier),${method})))'
+	// In a type, after a name; after a type annotation a `(` starts a call signature.
+	assert statements_of('interface I {\n  a\n  (x: number): string\n  b: number\n  (x: number): string\n  get\n  c(): number\n}') == 'program(interface_declaration(type_identifier,interface_body(method_signature(property_identifier,formal_parameters(required_parameter(identifier,type_annotation(predefined_type))),type_annotation(predefined_type)),property_signature(property_identifier,type_annotation(predefined_type)),call_signature(formal_parameters(required_parameter(identifier,type_annotation(predefined_type))),type_annotation(predefined_type)),method_signature(property_identifier,formal_parameters,type_annotation(predefined_type)))))'
+	assert statements_of('export {\n  a\n}\nfrom\n  "m"\nexport type { b }\nfrom "m"\nexport { c }\nfromage()') == 'program(export_statement(export_clause(export_specifier(identifier)),string(string_fragment)),export_statement(export_clause(export_specifier(identifier)),string(string_fragment)),export_statement(export_clause(export_specifier(identifier))),expression_statement(call_expression(identifier,arguments)))'
+	// Not before a reserved word.
+	assert statements_of('let\nx = 1\nlet\n[a] = b\nlet\nif (a) {}') == 'program(lexical_declaration(variable_declarator(identifier,number)),lexical_declaration(variable_declarator(array_pattern(identifier),identifier)),expression_statement(identifier),if_statement(parenthesized_expression(identifier),statement_block))'
+}
+
+// A mapped type only when its `[K in T]` comes right after the `{`, as for TypeScript; after
+// another member it is a property with a computed name.
+fn test_mapped_type_only_first() {
+	assert statements_of('type T = { a: string; [k in o]: number }\ntype U = { [K in X]: Y }') == 'program(type_alias_declaration(type_identifier,object_type(property_signature(property_identifier,type_annotation(predefined_type)),property_signature(computed_property_name(binary_expression(identifier,identifier)),type_annotation(predefined_type)))),type_alias_declaration(type_identifier,object_type(index_signature(mapped_type_clause(type_identifier,type_identifier),type_annotation(type_identifier)))))'
+}
+
+// Modifiers in an order TypeScript parses (and reports), and a decorator whose member access has
+// an object in parentheses.
+fn test_modifier_order_and_decorators() {
+	assert statements_of('abstract class A {\n  abstract public b;\n  readonly protected c = 1;\n  abstract protected m(): void;\n}') == 'program(abstract_class_declaration(type_identifier,class_body(public_field_definition(accessibility_modifier,property_identifier),public_field_definition(accessibility_modifier,property_identifier,number),abstract_method_signature(accessibility_modifier,property_identifier,formal_parameters,type_annotation(predefined_type)))))'
+	assert statements_of('@(d).e\nclass A {}') == 'program(class_declaration(decorator(member_expression(parenthesized_expression(identifier),property_identifier)),type_identifier,class_body))'
+}
+
+// A line break after `yield` ends it without an operand, and nothing continues it then: the next
+// line is another statement, unless a `,` or a `)` goes on with what is around the `yield`.
+fn test_yield_ends_at_a_line_break() {
+	assert statements_of('function *a() {\n  yield\n  (b);\n  yield\n  -b\n  f(yield\n  , 1)\n  yield *\n  b\n}') == 'program(generator_function_declaration(identifier,formal_parameters,statement_block(expression_statement(yield_expression),expression_statement(parenthesized_expression(identifier)),expression_statement(yield_expression),expression_statement(unary_expression(identifier)),expression_statement(call_expression(identifier,arguments(yield_expression,number))),expression_statement(yield_expression(identifier)))))'
+}

@@ -239,6 +239,12 @@ class Union {
 abstract class Abstract {
   private concrete = 1;
   abstract run(): void;
+  // An abstract property is reported as a whole node, its `;` too.
+  private abstract field: number;
+  abstract private other;
+  @Reflect.metadata('k', 'v') private abstract decorated: number;
+  private abstract
+  split: number
 }
 class Overloaded {
   constructor(a: string);

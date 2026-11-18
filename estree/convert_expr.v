@@ -472,7 +472,7 @@ fn (mut c Converter) object(n C.TSNode) int {
 				props << p
 			}
 			'method_definition' {
-				props << c.method(k.n, k.kind, [], c.start(k.n), c.end(k.n), true, Extra{})
+				props << c.method(k.n, k.kind, [], c.start(k.n), c.end(k.n), true)
 			}
 			else {
 				props << c.expr(k.n)
