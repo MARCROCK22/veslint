@@ -315,6 +315,11 @@ pub fn check_options(rule string, options []json2.Any) !bool {
 			vue_padding_lines_in_component_definition_options(options)!
 		}
 		vue_sort_keys { vue_sort_keys_options(options)! }
+		vue_html_comment_content_spacing { vue_html_comment_content_spacing_options(options)! }
+		vue_html_comment_content_newline { vue_html_comment_content_newline_options(options)! }
+		vue_html_comment_indent { vue_html_comment_indent_options(options)! }
+		vue_no_multi_spaces { vue_no_multi_spaces_options(options)! }
+		vue_block_order { vue_block_order_options(options)! }
 		else { return false }
 	}
 	return true

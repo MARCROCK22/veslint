@@ -659,6 +659,11 @@ pub const vue_define_macros_order = 'vue/define-macros-order'
 pub const vue_order_in_components = 'vue/order-in-components'
 pub const vue_padding_lines_in_component_definition = 'vue/padding-lines-in-component-definition'
 pub const vue_sort_keys = 'vue/sort-keys'
+pub const vue_html_comment_content_spacing = 'vue/html-comment-content-spacing'
+pub const vue_html_comment_content_newline = 'vue/html-comment-content-newline'
+pub const vue_html_comment_indent = 'vue/html-comment-indent'
+pub const vue_no_multi_spaces = 'vue/no-multi-spaces'
+pub const vue_block_order = 'vue/block-order'
 pub const names = [no_floating_promises, await_thenable, require_await, return_await,
 	no_misused_promises, no_unsafe_call, no_unsafe_member_access, no_unsafe_return,
 	no_unsafe_assignment, no_unsafe_argument, restrict_template_expressions,
@@ -850,7 +855,8 @@ pub const names = [no_floating_promises, await_thenable, require_await, return_a
 	vue_require_typed_object_prop, vue_return_in_emits_validator, vue_valid_define_props,
 	vue_valid_define_emits, vue_valid_define_options, vue_require_prop_comment,
 	vue_define_macros_order, vue_order_in_components, vue_padding_lines_in_component_definition,
-	vue_sort_keys]
+	vue_sort_keys, vue_html_comment_content_spacing, vue_html_comment_content_newline,
+	vue_html_comment_indent, vue_no_multi_spaces, vue_block_order]
 
 // untyped_rules are the ported rules that need no types (`meta.docs.requiresTypeChecking` is false
 // in typescript-eslint; the eslint-plugin-unicorn rules that read the types when the parser has a
@@ -1012,7 +1018,8 @@ pub const untyped_rules = [adjacent_overload_signatures, array_type, class_liter
 	vue_require_typed_object_prop, vue_return_in_emits_validator, vue_valid_define_props,
 	vue_valid_define_emits, vue_valid_define_options, vue_require_prop_comment,
 	vue_define_macros_order, vue_order_in_components, vue_padding_lines_in_component_definition,
-	vue_sort_keys]
+	vue_sort_keys, vue_html_comment_content_spacing, vue_html_comment_content_newline,
+	vue_html_comment_indent, vue_no_multi_spaces, vue_block_order]
 
 // needs_types tells whether a rule asks tsgo for the types of the program.
 pub fn needs_types(rule string) bool {
@@ -1666,6 +1673,11 @@ pub const default_options = {
 	vue_order_in_components:                         '[]'
 	vue_padding_lines_in_component_definition:       '[]'
 	vue_sort_keys:                                   '[]'
+	vue_html_comment_content_spacing:                '[]'
+	vue_html_comment_content_newline:                '[]'
+	vue_html_comment_indent:                         '[]'
+	vue_no_multi_spaces:                             '[]'
+	vue_block_order:                                 '[]'
 }
 
 // Finding is a problem a rule found at a node.
@@ -2476,6 +2488,11 @@ pub fn message(rule string, finding Finding) string {
 			vue_padding_lines_in_component_definition_messages
 		}
 		vue_sort_keys { vue_sort_keys_messages }
+		vue_html_comment_content_spacing { vue_html_comment_content_spacing_messages }
+		vue_html_comment_content_newline { vue_html_comment_content_newline_messages }
+		vue_html_comment_indent { vue_html_comment_indent_messages }
+		vue_no_multi_spaces { vue_no_multi_spaces_messages }
+		vue_block_order { vue_block_order_messages }
 		else { map[string]string{} }
 	}
 	return interpolate(messages[finding.message_id] or { finding.message_id }, finding.data)
@@ -4562,6 +4579,21 @@ fn (mut c Checker) lint_rule(rule string, root C.TSNode, abs_path string, mut st
 		}
 		vue_sort_keys {
 			return c.lint_vue_sort_keys(root, abs_path, mut stats)!
+		}
+		vue_html_comment_content_spacing {
+			return c.lint_vue_html_comment_content_spacing(root, abs_path, mut stats)!
+		}
+		vue_html_comment_content_newline {
+			return c.lint_vue_html_comment_content_newline(root, abs_path, mut stats)!
+		}
+		vue_html_comment_indent {
+			return c.lint_vue_html_comment_indent(root, abs_path, mut stats)!
+		}
+		vue_no_multi_spaces {
+			return c.lint_vue_no_multi_spaces(root, abs_path, mut stats)!
+		}
+		vue_block_order {
+			return c.lint_vue_block_order(root, abs_path, mut stats)!
 		}
 		else { return error('unknown rule: ${rule}') }
 	}
