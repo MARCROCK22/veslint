@@ -298,6 +298,8 @@ pub fn check_options(rule string, options []json2.Any) !bool {
 		vue_custom_event_name_casing { vcenc_options(options)! }
 		vue_no_restricted_custom_event { vnrce_options(options)! }
 		vue_require_explicit_emits { vree_options(options)! }
+		vue_no_undef_components { vnuco_options(options)! }
+		vue_v_on_handler_style { vohs_options(options)! }
 		else { return false }
 	}
 	return true

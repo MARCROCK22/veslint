@@ -651,6 +651,8 @@ pub const vue_no_unused_emit_declarations = 'vue/no-unused-emit-declarations'
 pub const vue_prefer_single_event_payload = 'vue/prefer-single-event-payload'
 pub const vue_no_shadow_native_events = 'vue/no-shadow-native-events'
 pub const vue_require_explicit_emits = 'vue/require-explicit-emits'
+pub const vue_no_undef_components = 'vue/no-undef-components'
+pub const vue_v_on_handler_style = 'vue/v-on-handler-style'
 pub const names = [no_floating_promises, await_thenable, require_await, return_await,
 	no_misused_promises, no_unsafe_call, no_unsafe_member_access, no_unsafe_return,
 	no_unsafe_assignment, no_unsafe_argument, restrict_template_expressions,
@@ -839,7 +841,8 @@ pub const names = [no_floating_promises, await_thenable, require_await, return_a
 	vue_no_template_shadow, vue_require_explicit_slots, vue_no_undef_directives,
 	vue_component_name_in_template_casing, vue_no_unused_refs, vue_custom_event_name_casing,
 	vue_no_restricted_custom_event, vue_no_unused_emit_declarations, vue_prefer_single_event_payload,
-	vue_no_shadow_native_events, vue_require_explicit_emits]
+	vue_no_shadow_native_events, vue_require_explicit_emits, vue_no_undef_components,
+	vue_v_on_handler_style]
 
 // untyped_rules are the ported rules that need no types (`meta.docs.requiresTypeChecking` is false
 // in typescript-eslint; the eslint-plugin-unicorn rules that read the types when the parser has a
@@ -996,7 +999,8 @@ pub const untyped_rules = [adjacent_overload_signatures, array_type, class_liter
 	vue_no_deprecated_dollar_listeners_api, vue_no_deprecated_dollar_scopedslots_api,
 	vue_prefer_use_template_ref, vue_no_duplicate_attr_inheritance, vue_no_unused_components,
 	vue_no_undef_directives, vue_component_name_in_template_casing, vue_no_unused_refs,
-	vue_custom_event_name_casing, vue_no_restricted_custom_event]
+	vue_custom_event_name_casing, vue_no_restricted_custom_event, vue_no_undef_components,
+	vue_v_on_handler_style]
 
 // needs_types tells whether a rule asks tsgo for the types of the program.
 pub fn needs_types(rule string) bool {
@@ -1642,6 +1646,8 @@ pub const default_options = {
 	vue_prefer_single_event_payload:                 '[]'
 	vue_no_shadow_native_events:                     '[]'
 	vue_require_explicit_emits:                      '[]'
+	vue_no_undef_components:                         '[]'
+	vue_v_on_handler_style:                          '[]'
 }
 
 // Finding is a problem a rule found at a node.
@@ -2442,6 +2448,8 @@ pub fn message(rule string, finding Finding) string {
 		vue_prefer_single_event_payload { vue_prefer_single_event_payload_messages }
 		vue_no_shadow_native_events { vue_no_shadow_native_events_messages }
 		vue_require_explicit_emits { vue_require_explicit_emits_messages }
+		vue_no_undef_components { vue_no_undef_components_messages }
+		vue_v_on_handler_style { vue_v_on_handler_style_messages }
 		else { map[string]string{} }
 	}
 	return interpolate(messages[finding.message_id] or { finding.message_id }, finding.data)
@@ -4504,6 +4512,12 @@ fn (mut c Checker) lint_rule(rule string, root C.TSNode, abs_path string, mut st
 		}
 		vue_require_explicit_emits {
 			return c.lint_vue_require_explicit_emits(root, abs_path, mut stats)!
+		}
+		vue_no_undef_components {
+			return c.lint_vue_no_undef_components(root, abs_path, mut stats)!
+		}
+		vue_v_on_handler_style {
+			return c.lint_vue_v_on_handler_style(root, abs_path, mut stats)!
 		}
 		else { return error('unknown rule: ${rule}') }
 	}
