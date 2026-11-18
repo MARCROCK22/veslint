@@ -1,34 +1,7 @@
 # Files of tools/svelte_parse_diff.mjs's corpus (content hash) whose difference is expected: path, reason, origin.
-# 28 are eslint-plugin-svelte's indent fixtures written one token per line: tree-sitter's grammar
-# (the patched tree-sitter-typescript) reads some line breaks as statement ends where typescript-estree does not.
-da6a506d9bbd.svelte	tree-sitter: `let` + line break + name is an expression for the grammar, a declaration for TypeScript	indent/v0
-b48e17200f33.svelte	tree-sitter: `let` + line break + name is an expression for the grammar, a declaration for TypeScript	indent/i4
-0082d5e0dd18.svelte	tree-sitter: a line break between tokens typescript-estree reads as one statement (one-token-per-line fixture)	indent/i20
-a4a0e0c838c0.svelte	tree-sitter: a line break between tokens changes the statement (one-token-per-line fixture)	indent/i24
-50c58163e463.svelte	tree-sitter: a line break between tokens typescript-estree reads as one statement (one-token-per-line fixture)	indent/i33
-c790f7763570.svelte	tree-sitter: a line break between tokens typescript-estree reads as one statement (one-token-per-line fixture)	indent/i45
-6f5d4caaf56c.svelte	tree-sitter: a line break between tokens typescript-estree reads as one statement (one-token-per-line fixture)	indent/i46
-4973221e7c73.svelte	tree-sitter: a line break between tokens typescript-estree reads as one statement (one-token-per-line fixture)	indent/i50
-65dd0e21f3a0.svelte	tree-sitter: a line break between tokens typescript-estree reads as one statement (one-token-per-line fixture)	indent/i51
-fc9259589f24.svelte	tree-sitter: a line break between tokens typescript-estree reads as one statement (one-token-per-line fixture)	indent/i57
-f1bfa12c2cfe.svelte	tree-sitter: a line break between tokens changes the statement (one-token-per-line fixture)	indent/i58
-7d54708037b1.svelte	tree-sitter: a line break between tokens changes the statement (one-token-per-line fixture)	indent/i63
-9d999d7d8e31.svelte	tree-sitter: a line break between tokens changes the statement (one-token-per-line fixture)	indent/i66
-85e99470d923.svelte	tree-sitter: a line break between tokens changes the statement (one-token-per-line fixture)	indent/i67
-8d0cc61b194f.svelte	tree-sitter: a line break between tokens typescript-estree reads as one statement (one-token-per-line fixture)	indent/i72
-0a455719a197.svelte	tree-sitter: a line break between tokens typescript-estree reads as one statement (one-token-per-line fixture)	build/upstream/svelte/packages/eslint-plugin-svelte/tests/fixtures/rules/indent/invalid/script-class01-output.svelte
-972e2078d2c4.svelte	tree-sitter: a line break between tokens changes the statement (one-token-per-line fixture)	build/upstream/svelte/packages/eslint-plugin-svelte/tests/fixtures/rules/indent/invalid/script-export01-output.svelte
-31a5b9071457.svelte	tree-sitter: a line break between tokens typescript-estree reads as one statement (one-token-per-line fixture)	build/upstream/svelte/packages/eslint-plugin-svelte/tests/fixtures/rules/indent/invalid/script-methods01-output.svelte
-1575130936bd.svelte	tree-sitter: a line break between tokens typescript-estree reads as one statement (one-token-per-line fixture)	build/upstream/svelte/packages/eslint-plugin-svelte/tests/fixtures/rules/indent/invalid/ts/ts-class01-output.svelte
-337cd27e44be.svelte	tree-sitter: a line break between tokens typescript-estree reads as one statement (one-token-per-line fixture)	build/upstream/svelte/packages/eslint-plugin-svelte/tests/fixtures/rules/indent/invalid/ts/ts-class02-output.svelte
-55e266b6a798.svelte	tree-sitter: a line break between tokens typescript-estree reads as one statement (one-token-per-line fixture)	build/upstream/svelte/packages/eslint-plugin-svelte/tests/fixtures/rules/indent/invalid/ts/ts-decorator01-output.svelte
-890248f7c207.svelte	tree-sitter: a line break between tokens typescript-estree reads as one statement (one-token-per-line fixture)	build/upstream/svelte/packages/eslint-plugin-svelte/tests/fixtures/rules/indent/invalid/ts/ts-decorator02-output.svelte
-b43485814ed1.svelte	tree-sitter: a line break between tokens typescript-estree reads as one statement (one-token-per-line fixture)	build/upstream/svelte/packages/eslint-plugin-svelte/tests/fixtures/rules/indent/invalid/ts/ts-interface01-output.svelte
-7db8992bf1a1.svelte	tree-sitter: a line break between tokens changes the statement (one-token-per-line fixture)	build/upstream/svelte/packages/eslint-plugin-svelte/tests/fixtures/rules/indent/invalid/ts/ts-interface02-output.svelte
-6d1e849c3608.svelte	tree-sitter: a line break between tokens changes the statement (one-token-per-line fixture)	build/upstream/svelte/packages/eslint-plugin-svelte/tests/fixtures/rules/indent/invalid/ts/ts-type-annotation02-output.svelte
-7b3f89445ecc.svelte	tree-sitter: a line break between tokens changes the statement (one-token-per-line fixture)	build/upstream/svelte/packages/eslint-plugin-svelte/tests/fixtures/rules/indent/invalid/ts/ts-type-only-import-export02-output.svelte
-4a905e01dee7.svelte	tree-sitter: a line break between tokens changes the statement (one-token-per-line fixture)	build/upstream/svelte/packages/eslint-plugin-svelte/tests/fixtures/rules/indent/invalid/ts/ts-type-only-import-export03-output.svelte
-ffb42f2ef178.svelte	tree-sitter: a line break between tokens typescript-estree reads as one statement (one-token-per-line fixture)	build/upstream/svelte/packages/eslint-plugin-svelte/tests/fixtures/rules/indent/invalid/ts/ts-types03-output.svelte
+# 2 are eslint-plugin-svelte's indent fixtures with a JSDoc type tree-sitter's grammar does not read.
+8d0cc61b194f.svelte	tree-sitter: `T!` (a JSDoc non-null type, which TypeScript parses and reports) is a syntax error for the grammar, and estree/ has no TSJSDocNonNullableType	indent/i72
+ffb42f2ef178.svelte	tree-sitter: `T!` (a JSDoc non-null type, which TypeScript parses and reports) is a syntax error for the grammar, and estree/ has no TSJSDocNonNullableType	build/upstream/svelte/packages/eslint-plugin-svelte/tests/fixtures/rules/indent/invalid/ts/ts-types03-output.svelte
 a6e9668444b5.svelte	error position: acorn reports an invalid each pattern at its last token, veslint where tree-sitter fails	../../svelte-spec/probes/cases/err/e9.svelte
 # Open differences of the scope summary (see the header of scope_info.v):
 25f1d0c017e7.svelte	open (scope): the references of the typings of use: (Parameters<typeof action>) are not where svelte-eslint-parser puts them	no-dupe-use-directives/v1
