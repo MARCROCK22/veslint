@@ -4245,6 +4245,7 @@ fn (mut c Checker) lint_rule(rule string, root C.TSNode, abs_path string, mut st
 		}
 		vue_no_unused_vars {
 			return c.lint_vue_no_unused_vars(root, abs_path, mut stats)!
+		}
 		vue_no_define_model_default {
 			return c.lint_vue_no_define_model_default(root, abs_path, mut stats)!
 		}

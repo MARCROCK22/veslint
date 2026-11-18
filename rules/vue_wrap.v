@@ -31,7 +31,7 @@ import time
 // The `Program` listeners of the base rule, which wrapRuleModule moves to the root element of the
 // template (or to the document fragment), run once per snippet: the rules ported here only scan
 // the tokens there, which the snippets of the template make up between them (camelcase's, which
-// reads the script's global scope, runs once: vncc_program). The listeners a wrapper adds are
+// reads the script's global scope, runs once: vcamel_program). The listeners a wrapper adds are
 // vue_wrap_conditional_tests (no-constant-condition), vue_wrap_html_quotes (quote-props),
 // slot_scope_as_function (comma-style), vnep_vue_syntax (no-extra-parens) and the bases of their
 // own (vue_wrap_base).
@@ -958,7 +958,7 @@ fn (mut c Checker) lint_vue_wrap(rule string, root C.TSNode, abs_path string, mu
 	mut findings := c.vue_wrap_lint(rule, vue_wrap_of(rule), abs_path, mut stats)!
 	// camelcase's `Program` listener, moved to the root element of the template.
 	if rule == vue_camelcase && c.vue_has_template() {
-		findings << c.vncc_program(root, abs_path)!
+		findings << c.vcamel_program(root, abs_path)!
 	}
 	// no-extra-parens' own listeners, on the containers.
 	if rule == vue_no_extra_parens {

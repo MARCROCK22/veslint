@@ -11,7 +11,7 @@ import treesitter { node_parent }
 // scope tree of the snippet), and its `Program` listener, which wrapRuleModule moves to the root
 // element of the template: there sourceCode.getScope(node) finds no scope of the template and
 // gives the global scope of the script, so it reports the script's references to global
-// variables (vncc_program). Options: allow, ignoreDestructuring, ignoreGlobals, ignoreImports and
+// variables (vcamel_program). Options: allow, ignoreDestructuring, ignoreGlobals, ignoreImports and
 // properties, over the rule's meta.defaultOptions.
 
 const ccase_messages = {
@@ -19,7 +19,7 @@ const ccase_messages = {
 	'notCamelCasePrivate': '#{{name}} is not in camel case.'
 }
 
-struct VnccOptions {
+struct VcamelOptions {
 	allow                []string
 	ignore_destructuring bool
 	ignore_globals       bool
@@ -27,9 +27,9 @@ struct VnccOptions {
 	properties_never     bool
 }
 
-fn vncc_options(options []json2.Any) !VnccOptions {
+fn vcamel_options(options []json2.Any) !VcamelOptions {
 	if options.len == 0 {
-		return VnccOptions{}
+		return VcamelOptions{}
 	}
 	first := options[0]
 	if first !is map[string]json2.Any {
@@ -51,7 +51,7 @@ fn vncc_options(options []json2.Any) !VnccOptions {
 		return value is bool && value
 	}
 	properties := o['properties'] or { json2.Any('always') }
-	return VnccOptions{
+	return VcamelOptions{
 		allow:                allow
 		ignore_destructuring: flag('ignoreDestructuring')
 		ignore_globals:       flag('ignoreGlobals')
@@ -60,8 +60,8 @@ fn vncc_options(options []json2.Any) !VnccOptions {
 	}
 }
 
-// vncc_is_underscored ports isUnderscored.
-fn vncc_is_underscored(name string) bool {
+// vcamel_is_underscored ports isUnderscored.
+fn vcamel_is_underscored(name string) bool {
 	// Most names have no `_` (the globals of the libs among them): no copy for those.
 	if !name.contains('_') {
 		return false
@@ -71,10 +71,10 @@ fn vncc_is_underscored(name string) bool {
 	return body.contains('_') && jsregexp.js_to_upper(units) != units
 }
 
-// vncc_is_good_name ports isGoodName (with isAllowed: an entry equal to the name or a `u` regular
+// vcamel_is_good_name ports isGoodName (with isAllowed: an entry equal to the name or a `u` regular
 // expression it matches).
-fn vncc_is_good_name(name string, o VnccOptions) bool {
-	if !vncc_is_underscored(name) {
+fn vcamel_is_good_name(name string, o VcamelOptions) bool {
+	if !vcamel_is_underscored(name) {
 		return true
 	}
 	for entry in o.allow {
@@ -89,16 +89,16 @@ fn vncc_is_good_name(name string, o VnccOptions) bool {
 	return false
 }
 
-// VnccCtx is what the listeners share: the tree, the options and the reported starts.
-struct VnccCtx {
+// VcamelCtx is what the listeners share: the tree, the options and the reported starts.
+struct VcamelCtx {
 	t &estree.EsTree
-	o VnccOptions
+	o VcamelOptions
 mut:
 	reported map[int]bool
 	findings []Finding
 }
 
-fn (mut x VnccCtx) report(c &Checker, node int) {
+fn (mut x VcamelCtx) report(c &Checker, node int) {
 	start := x.t.nodes[node].start
 	if start in x.reported {
 		return
@@ -117,27 +117,27 @@ fn (mut x VnccCtx) report(c &Checker, node int) {
 	}
 }
 
-fn vncc_parent(t &estree.EsTree, node int) int {
+fn vcamel_parent(t &estree.EsTree, node int) int {
 	return t.nodes[node].parent
 }
 
-fn vncc_is(t &estree.EsTree, parent int, key estree.Key, node int) bool {
+fn vcamel_is(t &estree.EsTree, parent int, key estree.Key, node int) bool {
 	return parent >= 0 && (t.node(parent, key) or { -1 }) == node
 }
 
-// vncc_is_assignment_target ports isAssignmentTarget.
-fn vncc_is_assignment_target(t &estree.EsTree, node int) bool {
-	parent := vncc_parent(t, node)
+// vcamel_is_assignment_target ports isAssignmentTarget.
+fn vcamel_is_assignment_target(t &estree.EsTree, node int) bool {
+	parent := vcamel_parent(t, node)
 	if parent < 0 {
 		return false
 	}
 	return match t.typ(parent) {
 		.assignment_expression, .assignment_pattern {
-			vncc_is(t, parent, .left, node)
+			vcamel_is(t, parent, .left, node)
 		}
 		.property {
-			grand := vncc_parent(t, parent)
-			grand >= 0 && t.typ(grand) == .object_pattern && vncc_is(t, parent, .value, node)
+			grand := vcamel_parent(t, parent)
+			grand >= 0 && t.typ(grand) == .object_pattern && vcamel_is(t, parent, .value, node)
 		}
 		.array_pattern, .rest_element {
 			true
@@ -148,23 +148,23 @@ fn vncc_is_assignment_target(t &estree.EsTree, node int) bool {
 	}
 }
 
-// vncc_equals_to_original_name ports equalsToOriginalName.
-fn vncc_equals_to_original_name(t &estree.EsTree, node int) bool {
+// vcamel_equals_to_original_name ports equalsToOriginalName.
+fn vcamel_equals_to_original_name(t &estree.EsTree, node int) bool {
 	local := t.string_of(node, .name) or { '' }
 	mut value := node
-	if vncc_parent(t, node) >= 0 && t.typ(vncc_parent(t, node)) == .assignment_pattern {
-		value = vncc_parent(t, node)
+	if vcamel_parent(t, node) >= 0 && t.typ(vcamel_parent(t, node)) == .assignment_pattern {
+		value = vcamel_parent(t, node)
 	}
-	parent := vncc_parent(t, value)
+	parent := vcamel_parent(t, value)
 	if parent < 0 {
 		return false
 	}
 	match t.typ(parent) {
 		.property {
-			grand := vncc_parent(t, parent)
+			grand := vcamel_parent(t, parent)
 			key := t.node(parent, .key) or { return false }
 			return grand >= 0 && t.typ(grand) in [.object_pattern, .object_expression]
-				&& vncc_is(t, parent, .value, value) && !(t.flag(parent, .computed) or { false })
+				&& vcamel_is(t, parent, .value, value) && !(t.flag(parent, .computed) or { false })
 				&& t.typ(key) == .identifier && (t.string_of(key, .name) or { '' }) == local
 		}
 		.import_specifier {
@@ -174,7 +174,7 @@ fn vncc_equals_to_original_name(t &estree.EsTree, node int) bool {
 			} else {
 				t.string_of(imported, .value) or { '' }
 			}
-			return vncc_is(t, parent, .local, node) && name == local
+			return vcamel_is(t, parent, .local, node) && name == local
 		}
 		else {
 			return false
@@ -182,34 +182,34 @@ fn vncc_equals_to_original_name(t &estree.EsTree, node int) bool {
 	}
 }
 
-// vncc_is_import_attribute_key ports isImportAttributeKey.
-fn vncc_is_import_attribute_key(t &estree.EsTree, node int) bool {
-	parent := vncc_parent(t, node)
-	return parent >= 0 && t.typ(parent) == .import_attribute && vncc_is(t, parent, .key, node)
+// vcamel_is_import_attribute_key ports isImportAttributeKey.
+fn vcamel_is_import_attribute_key(t &estree.EsTree, node int) bool {
+	parent := vcamel_parent(t, node)
+	return parent >= 0 && t.typ(parent) == .import_attribute && vcamel_is(t, parent, .key, node)
 }
 
 // report_reference_id ports reportReferenceId.
-fn (mut x VnccCtx) report_reference_id(c &Checker, node int) {
+fn (mut x VcamelCtx) report_reference_id(c &Checker, node int) {
 	t := x.t
-	parent := vncc_parent(t, node)
+	parent := vcamel_parent(t, node)
 	if parent >= 0 && t.typ(parent) in [.call_expression, .new_expression] {
 		return
 	}
-	if parent >= 0 && t.typ(parent) == .assignment_pattern && vncc_is(t, parent, .right, node) {
+	if parent >= 0 && t.typ(parent) == .assignment_pattern && vcamel_is(t, parent, .right, node) {
 		return
 	}
-	if x.o.ignore_destructuring && vncc_equals_to_original_name(t, node) {
+	if x.o.ignore_destructuring && vcamel_equals_to_original_name(t, node) {
 		return
 	}
-	if vncc_is_import_attribute_key(t, node) {
+	if vcamel_is_import_attribute_key(t, node) {
 		return
 	}
 	x.report(c, node)
 }
 
-// vncc_declared_variables ports getDeclaredVariables of a declaration, a function, a class or a
+// vcamel_declared_variables ports getDeclaredVariables of a declaration, a function, a class or a
 // catch clause: the variables whose definitions that node makes.
-fn vncc_declared_variables(tree &ScopeTree, t &estree.EsTree, node int) []int {
+fn vcamel_declared_variables(tree &ScopeTree, t &estree.EsTree, node int) []int {
 	ts := t.nodes[node].ts
 	typ := t.typ(node)
 	mut out := []int{}
@@ -242,12 +242,12 @@ fn vncc_declared_variables(tree &ScopeTree, t &estree.EsTree, node int) []int {
 	return out
 }
 
-// vncc_id_of is the ESTree Identifier of a variable's name or reference: of a shorthand
+// vcamel_id_of is the ESTree Identifier of a variable's name or reference: of a shorthand
 // property, which has its key and its value on the same tree-sitter node, the value.
-fn (mut c Checker) vncc_id_of(t &estree.EsTree, n C.TSNode) ?int {
+fn (mut c Checker) vcamel_id_of(t &estree.EsTree, n C.TSNode) ?int {
 	id := c.es_index_of(t, n)?
-	parent := vncc_parent(t, id)
-	if parent >= 0 && t.typ(parent) == .property && vncc_is(t, parent, .key, id) {
+	parent := vcamel_parent(t, id)
+	if parent >= 0 && t.typ(parent) == .property && vcamel_is(t, parent, .key, id) {
 		if value := t.node(parent, .value) {
 			if t.nodes[value].start == t.nodes[id].start && t.typ(value) == .identifier {
 				return value
@@ -264,9 +264,9 @@ fn (mut c Checker) vncc_id_of(t &estree.EsTree, n C.TSNode) ?int {
 }
 
 fn (mut c Checker) lint_camelcase_base(root C.TSNode, abs_path string, mut stats Stats) ![]Finding {
-	o := vncc_options(c.rule_options(vue_wrap_camelcase))!
+	o := vcamel_options(c.rule_options(vue_wrap_camelcase))!
 	t := c.es_tree(root, abs_path) or { return []Finding{} }
-	mut x := VnccCtx{
+	mut x := VcamelCtx{
 		t: t
 		o: o
 	}
@@ -275,20 +275,20 @@ fn (mut c Checker) lint_camelcase_base(root C.TSNode, abs_path string, mut stats
 			continue
 		}
 		node := step.node
-		parent := vncc_parent(t, node)
+		parent := vcamel_parent(t, node)
 		match t.typ(node) {
 			.variable_declaration, .function_declaration, .function_expression,
 			.arrow_function_expression, .class_declaration, .class_expression, .catch_clause {
 				stats.checked++
 				// The scope tree only when there is a declaration (most expressions have none).
 				tree := c.scope_tree(t.nodes[t.root].ts)
-				for v in vncc_declared_variables(tree, t, node) {
+				for v in vcamel_declared_variables(tree, t, node) {
 					variable := tree.variables[v]
-					if vncc_is_good_name(variable.name, o) || variable.identifiers.len == 0 {
+					if vcamel_is_good_name(variable.name, o) || variable.identifiers.len == 0 {
 						continue
 					}
-					id := c.vncc_id_of(t, variable.identifiers[0]) or { continue }
-					if !(o.ignore_destructuring && vncc_equals_to_original_name(t, id)) {
+					id := c.vcamel_id_of(t, variable.identifiers[0]) or { continue }
+					if !(o.ignore_destructuring && vcamel_equals_to_original_name(t, id)) {
 						x.report(c, id)
 					}
 					for r in variable.references {
@@ -296,23 +296,23 @@ fn (mut c Checker) lint_camelcase_base(root C.TSNode, abs_path string, mut stats
 						if reference.init {
 							continue
 						}
-						ref := c.vncc_id_of(t, reference.identifier) or { continue }
+						ref := c.vcamel_id_of(t, reference.identifier) or { continue }
 						x.report_reference_id(c, ref)
 					}
 				}
 			}
 			.identifier, .private_identifier {
-				if parent < 0 || !vncc_is(t, parent, .key, node) && !vncc_is(t, parent, .property, node) {
+				if parent < 0 || !vcamel_is(t, parent, .key, node) && !vcamel_is(t, parent, .property, node) {
 					continue
 				}
 				computed := t.flag(parent, .computed) or { false }
 				ptyp := t.typ(parent)
-				grand := vncc_parent(t, parent)
+				grand := vcamel_parent(t, parent)
 				if ptyp == .member_expression {
 					// MemberExpression[computed!=true] > Identifier.property
 					if computed || t.typ(node) != .identifier || o.properties_never
-						|| !vncc_is_assignment_target(t, parent)
-						|| vncc_is_good_name(t.string_of(node, .name) or { '' }, o) {
+						|| !vcamel_is_assignment_target(t, parent)
+						|| vcamel_is_good_name(t.string_of(node, .name) or { '' }, o) {
 						continue
 					}
 					x.report(c, node)
@@ -324,8 +324,8 @@ fn (mut c Checker) lint_camelcase_base(root C.TSNode, abs_path string, mut stats
 					!computed && (ptyp in [.method_definition, .property_definition]
 						|| (ptyp == .property && grand >= 0 && t.typ(grand) == .object_expression))
 				}
-				if !keyed || o.properties_never || vncc_is_import_attribute_key(t, node)
-					|| vncc_is_good_name(t.string_of(node, .name) or { '' }, o) {
+				if !keyed || o.properties_never || vcamel_is_import_attribute_key(t, node)
+					|| vcamel_is_good_name(t.string_of(node, .name) or { '' }, o) {
 					continue
 				}
 				x.report(c, node)
@@ -336,17 +336,17 @@ fn (mut c Checker) lint_camelcase_base(root C.TSNode, abs_path string, mut stats
 	return x.findings
 }
 
-// vncc_program ports the `Program` listener as it runs on the template: on the global scope of
+// vcamel_program ports the `Program` listener as it runs on the template: on the global scope of
 // the script (its globals without declarations and the references that resolve to nothing).
-fn (mut c Checker) vncc_program(root C.TSNode, abs_path string) ![]Finding {
-	o := vncc_options(c.rule_options(vue_camelcase))!
+fn (mut c Checker) vcamel_program(root C.TSNode, abs_path string) ![]Finding {
+	o := vcamel_options(c.rule_options(vue_camelcase))!
 	// Every name it reports has a `_`: a script without one needs no scope tree.
 	if !c.vue.doc.script.code.contains('_') {
 		return []Finding{}
 	}
 	t := c.es_tree(root, abs_path) or { return []Finding{} }
 	tree := c.scope_tree(root)
-	mut x := VnccCtx{
+	mut x := VcamelCtx{
 		t: t
 		o: o
 	}
@@ -356,19 +356,19 @@ fn (mut c Checker) vncc_program(root C.TSNode, abs_path string) ![]Finding {
 	if !o.ignore_globals {
 		for v in tree.scopes[tree.global_scope()].variables {
 			variable := unsafe { &tree.variables[v] }
-			if variable.identifiers.len > 0 || vncc_is_good_name(variable.name, o) {
+			if variable.identifiers.len > 0 || vcamel_is_good_name(variable.name, o) {
 				continue
 			}
 			for r in variable.references {
-				ref := c.vncc_id_of(t, tree.references[r].identifier) or { continue }
+				ref := c.vcamel_id_of(t, tree.references[r].identifier) or { continue }
 				x.report_reference_id(c, ref)
 			}
 		}
 	}
 	for r in tree.through {
 		reference := tree.references[r]
-		id := c.vncc_id_of(t, reference.identifier) or { continue }
-		if vncc_is_good_name(reference.name, o) || vncc_is_import_attribute_key(t, id) {
+		id := c.vcamel_id_of(t, reference.identifier) or { continue }
+		if vcamel_is_good_name(reference.name, o) || vcamel_is_import_attribute_key(t, id) {
 			continue
 		}
 		x.report_reference_id(c, id)
