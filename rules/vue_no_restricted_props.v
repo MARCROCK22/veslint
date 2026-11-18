@@ -80,7 +80,7 @@ fn (mut c Checker) lint_vue_no_restricted_props(root C.TSNode, abs_path string, 
 	}
 	s := c.vue_script(root, abs_path) or { return findings }
 	t := c.es_tree(root, abs_path) or { return findings }
-	for call in c.vx6_define_props_calls(t) {
+	for call in c.vue_macros_named(t, 'defineProps') {
 		props := c.vue_define_props(root, t, call, abs_path, true, mut stats)
 		c.vnrp_process(t, props, call, options, mut findings, mut stats)!
 	}

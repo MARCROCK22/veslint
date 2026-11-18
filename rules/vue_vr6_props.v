@@ -451,11 +451,6 @@ fn vx6_destructure_defaults(t &estree.EsTree, call int) map[string]Vx6Destructur
 	return out
 }
 
-// vx6_define_props_calls are the defineProps calls of `<script setup>` (onDefinePropsEnter).
-fn (mut c Checker) vx6_define_props_calls(t &estree.EsTree) []int {
-	return c.vue_macros_named(t, 'defineProps')
-}
-
 // vx6_property_value_of is `findProperty(object, name)?.value`: -1 for none.
 fn vx6_property_value_of(t &estree.EsTree, object int, name string) int {
 	p := vue_find_property(t, object, name, none)
