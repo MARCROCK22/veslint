@@ -474,3 +474,18 @@ fn vx6_property_value_of(t &estree.EsTree, object int, name string) int {
 	p := vue_find_property(t, object, name, none)
 	return if p >= 0 { vue_property_value(t, p) } else { -1 }
 }
+
+// vx6_infer_type_props are the `types` of the props the checker gives a type of `defineProps`
+// (extractRuntimeProps of ts-types.ts: inferRuntimeTypeInternal of each property's type), by
+// name; empty without types.
+fn (mut c Checker) vx6_infer_type_props(t &estree.EsTree, node int, abs_path string, mut stats Stats) map[string][]string {
+	mut out := map[string][]string{}
+	typ := c.vue_type_of_type_node(t, node, abs_path, mut stats) or { return out }
+	ts := t.ts_node(node) or { return out }
+	at := c.symbol_location(ts)
+	for property in c.properties(typ) or { return out } {
+		property_type := c.symbol_type_at(property, at) or { continue }
+		out[property.name] = c.vx6_infer_runtime_type_internal(property_type, 0) or { ['null'] }
+	}
+	return out
+}
