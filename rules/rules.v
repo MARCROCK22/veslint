@@ -747,6 +747,8 @@ pub const svelte_shorthand_directive = 'svelte/shorthand-directive'
 pub const svelte_html_closing_bracket_spacing = 'svelte/html-closing-bracket-spacing'
 pub const svelte_html_closing_bracket_new_line = 'svelte/html-closing-bracket-new-line'
 pub const svelte_no_dynamic_slot_name = 'svelte/no-dynamic-slot-name'
+pub const svelte_html_quotes = 'svelte/html-quotes'
+pub const svelte_mustache_spacing = 'svelte/mustache-spacing'
 pub const names = [no_floating_promises, await_thenable, require_await, return_await,
 	no_misused_promises, no_unsafe_call, no_unsafe_member_access, no_unsafe_return,
 	no_unsafe_assignment, no_unsafe_argument, restrict_template_expressions,
@@ -967,7 +969,8 @@ pub const names = [no_floating_promises, await_thenable, require_await, return_a
 	svelte_no_spaces_around_equal_signs_in_attribute, svelte_spaced_html_comment,
 	svelte_no_dupe_else_if_blocks, svelte_no_useless_mustaches, svelte_first_attribute_linebreak,
 	svelte_shorthand_directive, svelte_html_closing_bracket_spacing,
-	svelte_html_closing_bracket_new_line, svelte_no_dynamic_slot_name]
+	svelte_html_closing_bracket_new_line, svelte_no_dynamic_slot_name, svelte_html_quotes,
+	svelte_mustache_spacing]
 
 // untyped_rules are the ported rules that need no types (`meta.docs.requiresTypeChecking` is false
 // in typescript-eslint; the eslint-plugin-unicorn rules that read the types when the parser has a
@@ -1152,7 +1155,8 @@ pub const untyped_rules = [adjacent_overload_signatures, array_type, class_liter
 	svelte_shorthand_attribute, svelte_no_spaces_around_equal_signs_in_attribute,
 	svelte_spaced_html_comment, svelte_no_dupe_else_if_blocks, svelte_no_useless_mustaches,
 	svelte_first_attribute_linebreak, svelte_shorthand_directive, svelte_html_closing_bracket_spacing,
-	svelte_html_closing_bracket_new_line, svelte_no_dynamic_slot_name]
+	svelte_html_closing_bracket_new_line, svelte_no_dynamic_slot_name, svelte_html_quotes,
+	svelte_mustache_spacing]
 
 // needs_types tells whether a rule asks tsgo for the types of the program.
 pub fn needs_types(rule string) bool {
@@ -1894,6 +1898,8 @@ pub const default_options = {
 	svelte_html_closing_bracket_spacing:              '[]'
 	svelte_html_closing_bracket_new_line:             '[]'
 	svelte_no_dynamic_slot_name:                      '[]'
+	svelte_html_quotes:                               '[]'
+	svelte_mustache_spacing:                          '[]'
 }
 
 // Finding is a problem a rule found at a node.
@@ -2812,6 +2818,8 @@ pub fn message(rule string, finding Finding) string {
 		svelte_html_closing_bracket_spacing { shcbs_messages }
 		svelte_html_closing_bracket_new_line { shcbnl_messages }
 		svelte_no_dynamic_slot_name { sndsn_messages }
+		svelte_html_quotes { shq_messages }
+		svelte_mustache_spacing { smsp_messages }
 		else { map[string]string{} }
 	}
 	return interpolate(messages[finding.message_id] or { finding.message_id }, finding.data)
@@ -5194,6 +5202,12 @@ fn (mut c Checker) lint_rule(rule string, root C.TSNode, abs_path string, mut st
 		}
 		svelte_no_dynamic_slot_name {
 			return c.lint_svelte_no_dynamic_slot_name(root, abs_path, mut stats)!
+		}
+		svelte_html_quotes {
+			return c.lint_svelte_html_quotes(root, abs_path, mut stats)!
+		}
+		svelte_mustache_spacing {
+			return c.lint_svelte_mustache_spacing(root, abs_path, mut stats)!
 		}
 		else { return error('unknown rule: ${rule}') }
 	}

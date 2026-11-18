@@ -161,3 +161,27 @@ fn (c &Checker) sv_snode_loc_end(i int) int {
 	n := &c.svelte.doc.nodes[i]
 	return if n.loc_end >= 0 { n.loc_end } else { n.end }
 }
+
+// sv_token_after_value is getTokenAfter with a filter that takes a punctuator of that value (eslint-utils'
+// isClosingBraceToken for `}`): the first such token from `offset` on.
+fn (c &Checker) sv_token_after_value(offset int, value string) ?svelte.Token {
+	tokens := c.svelte.doc.tokens
+	for i := sv_lower_bound(tokens, offset); i < tokens.len; i++ {
+		if sv_is_punctuator(tokens[i], value) {
+			return tokens[i]
+		}
+	}
+	return none
+}
+
+// sv_token_before_value is getTokenBefore with such a filter: the last such token that ends at
+// or before `offset`.
+fn (c &Checker) sv_token_before_value(offset int, value string) ?svelte.Token {
+	tokens := c.svelte.doc.tokens
+	for i := sv_upper_end(tokens, offset) - 1; i >= 0; i-- {
+		if sv_is_punctuator(tokens[i], value) {
+			return tokens[i]
+		}
+	}
+	return none
+}

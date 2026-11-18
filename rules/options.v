@@ -368,6 +368,8 @@ pub fn check_options(rule string, options []json2.Any) !bool {
 		svelte_shorthand_directive { svshd_options(options)! }
 		svelte_html_closing_bracket_spacing { shcbs_options(options)! }
 		svelte_html_closing_bracket_new_line { shcbnl_options(options)! }
+		svelte_html_quotes { shq_options(options)! }
+		svelte_mustache_spacing { smsp_options(options)! }
 		else { return false }
 	}
 	return true
