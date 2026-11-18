@@ -1,0 +1,7 @@
+tests/rules/svelte/infinite-reactive-loop/cases.svelte:11:3	svelte/infinite-reactive-loop	unexpected	Possibly it may occur an infinite reactive loop.	end	11	4
+tests/rules/svelte/infinite-reactive-loop/cases.svelte:18:3	svelte/infinite-reactive-loop	unexpected	Possibly it may occur an infinite reactive loop.	end	18	4
+tests/rules/svelte/infinite-reactive-loop/cases.svelte:22:3	svelte/infinite-reactive-loop	unexpectedCall	Possibly it may occur an infinite reactive loop because this function may update `a`.	end	22	9
+tests/rules/svelte/infinite-reactive-loop/cases.svelte:27:3	svelte/infinite-reactive-loop	unexpected	Possibly it may occur an infinite reactive loop.	end	27	4
+tests/rules/svelte/infinite-reactive-loop/cases.svelte:35:3	svelte/infinite-reactive-loop	unexpectedCall	Possibly it may occur an infinite reactive loop because this function may update `d`.	end	35	11
+tests/rules/svelte/infinite-reactive-loop/cases.svelte:43:4	svelte/infinite-reactive-loop	unexpected	Possibly it may occur an infinite reactive loop.	end	43	5
+tests/rules/svelte/infinite-reactive-loop/cases.svelte:46:21	svelte/infinite-reactive-loop	unexpected	Possibly it may occur an infinite reactive loop.	end	46	22
