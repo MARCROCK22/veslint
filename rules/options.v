@@ -379,6 +379,7 @@ pub fn check_options(rule string, options []json2.Any) !bool {
 		svelte_no_unknown_style_directive_property { snusdp_options(options)! }
 		svelte_consistent_selector_style { sccs_options(options)! }
 		svelte_no_unused_class_name { snucn_options(options)! }
+		svelte_sort_attributes { ssat_options(options)! }
 		else { return false }
 	}
 	return true

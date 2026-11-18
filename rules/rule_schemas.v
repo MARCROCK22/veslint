@@ -762,6 +762,7 @@ const rule_option_schemas = {
 	'svelte/no-unused-class-name':                                     '{"type":"array","items":[{"type":"object","properties":{"allowedClassNames":{"type":"array","items":{"type":"string"}}},"additionalProperties":false}],"minItems":0,"maxItems":1}'
 	'svelte/experimental-require-slot-types':                          '{"type":"array","minItems":0,"maxItems":0}'
 	'svelte/experimental-require-strict-events':                       '{"type":"array","minItems":0,"maxItems":0}'
+	'svelte/sort-attributes':                                          '{"type":"array","items":[{"type":"object","properties":{"order":{"type":"array","items":{"anyOf":[{"type":"string"},{"type":"array","items":{"type":"string"},"uniqueItems":true,"minItems":1},{"type":"object","properties":{"match":{"anyOf":[{"type":"string"},{"type":"array","items":{"type":"string"},"uniqueItems":true,"minItems":1}]},"sort":{"enum":["alphabetical","ignore"]}},"required":["match","sort"],"additionalProperties":false}]},"uniqueItems":true,"additionalItems":false},"alphabetical":{"type":"boolean"}},"additionalProperties":false}],"minItems":0,"maxItems":1}'
 }
 
 // eslint_rule_default_options are the meta.defaultOptions of the rules of ESLint and of
