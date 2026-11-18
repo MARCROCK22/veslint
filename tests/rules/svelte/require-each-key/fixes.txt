@@ -1,0 +1,4 @@
+tests/rules/svelte/require-each-key/cases.svelte:5:1	svelte/require-each-key	expectedKey	Each block should have a key	end	5	22
+tests/rules/svelte/require-each-key/cases.svelte:8:1	svelte/require-each-key	expectedKey	Each block should have a key	end	8	25
+tests/rules/svelte/require-each-key/cases.svelte:14:1	svelte/require-each-key	expectedKey	Each block should have a key	end	14	30
+tests/rules/svelte/require-each-key/cases.svelte:22:2	svelte/require-each-key	expectedKey	Each block should have a key	end	24	3

@@ -30,6 +30,9 @@ import sys
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 BOM = '﻿'
+# The package of eslint-plugin-svelte in its clone: its tests ran in that directory, on the files of
+# tests/fixtures/rules (tests/rules/svelte/eslint_run.mjs).
+SVELTE_PACKAGE = 'build/upstream/svelte/packages/eslint-plugin-svelte'
 PLACEHOLDER = re.compile(r'\{\{([^{}]+?)\}\}')
 
 
@@ -158,8 +161,15 @@ class Runner:
         """The server a rule's cases run on. eslint-plugin-vue's ran in the root of its clone
         (tests/rules/vue/eslint_run.mjs), where its wrapper rules find @stylistic/eslint-plugin (a
         wrapper rule takes the rule of ESLint Stylistic it resolves from the current directory,
-        ESLint core's otherwise): veslint runs them from there too."""
-        cwd = os.path.realpath(os.path.join(ROOT, 'build/upstream/vue')) if rule.startswith('vue/') else ROOT
+        ESLint core's otherwise): veslint runs them from there too. eslint-plugin-svelte's ran in
+        its package's directory (tests/rules/svelte/eslint_run.mjs), where the routes of SvelteKit
+        of their configurations are."""
+        if rule.startswith('vue/'):
+            cwd = os.path.realpath(os.path.join(ROOT, 'build/upstream/vue'))
+        elif rule.startswith('svelte/'):
+            cwd = os.path.realpath(os.path.join(ROOT, SVELTE_PACKAGE))
+        else:
+            cwd = ROOT
         if cwd not in self.servers:
             self.servers[cwd] = Server(self.veslint, cwd)
         return self.servers[cwd]
@@ -171,9 +181,10 @@ class Runner:
             language['globals'] = {**defaults.get('globals', {}), **case.get('languageOptions', {}).get('globals', {})}
         if case.get('parserOptions'):
             language['parserOptions'] = case['parserOptions']
-        if rule.startswith('vue/'):
+        if rule.startswith(('vue/', 'svelte/')):
             # veslint's parser of .vue files is vue-eslint-parser with typescript-eslint's parser
-            # (tests/rules/vue/upstream_ts.mjs converts the cases to it): the case names them.
+            # (tests/rules/vue/upstream_ts.mjs converts the cases to it), and that of .svelte files
+            # svelte-eslint-parser with it (tests/rules/svelte/upstream_ts.mjs): the case names them.
             parser_options = {k: v for k, v in language.get('parserOptions', {}).items() if k != 'parser'}
             if case.get('via') == 'project':
                 parser_options['project'] = [os.path.join(self.fixtures, case['tsconfig'])]
@@ -189,12 +200,18 @@ class Runner:
         if rule.startswith(('unicorn/', 'marcrock/')) and not case.get('via'):
             language['parserOptions'] = {**language.get('parserOptions', {}), 'projectService': False}
         # eslint-plugin-unicorn's tests (ESLint's RuleTester through eslint-ava-rule-tester) do not
-        # report unused disable directives.
-        report = 0 if rule.startswith('unicorn/') else 1
+        # report unused disable directives, nor do eslint-plugin-svelte's (ESLint 10's RuleTester
+        # verifies with a config array of its own, without the default `linterOptions`: a case's
+        # `// eslint-disable-next-line prefer-template` is not reported as unused).
+        report = 0 if rule.startswith(('unicorn/', 'svelte/')) else 1
         # A case of eslint-plugin-vue's tests may test another rule (jsx-uses-vars' run no-unused-vars).
         tested = case.get('rule', rule) if rule.startswith('vue/') else rule
+        # ESLint's RuleTester turns the rule on as a warning (severity 1): a report without a
+        # messageId says so in its line, which tests/rules/reference.sh compares for
+        # eslint-plugin-svelte's tests (svelte/block-lang, svelte/no-target-blank report so).
+        severity = 'warn' if rule.startswith('svelte/') else 'error'
         config = {'languageOptions': language, 'linterOptions': {'reportUnusedDisableDirectives': report},
-                  'rules': {tested: ['error', *case.get('options', [])]}}
+                  'rules': {tested: [severity, *case.get('options', [])]}}
         # The shared settings of the case (eslint-plugin-perfectionist's tests set `settings`).
         if case.get('settings'):
             config['settings'] = case['settings']
@@ -222,11 +239,12 @@ class Runner:
                 f.write(text)
         return path
 
-    def lint_whole(self, lint, code=None):
-        """veslint's answer for a lint, on its code or on CODE: (exit code, file, lines, stderr)."""
+    def lint_whole(self, rule, lint, code=None):
+        """veslint's answer for a lint of RULE's tests, on its code or on CODE: (exit code, file,
+        lines, stderr)."""
         file = os.path.join(self.fixtures, lint['filename'])
         self.served.add(file)
-        answer = self.server_for('vue/').request({'config': self.lint_config_path(lint), 'project': '', 'files': [file],
+        answer = self.server_for(rule).request({'config': self.lint_config_path(lint), 'project': '', 'files': [file],
                                       'texts': {file: lint['code'] if code is None else code}, 'fixes': True})
         lines = answer['stdout'].split('\n')
         if lines and lines[-1] == '':
@@ -309,7 +327,7 @@ def check_project(veslint, fixtures, configs, project):
     return problems
 
 
-def check_lint(runner, lint):
+def check_lint(runner, rule, lint):
     """A lint of an `it` block (eslint-plugin-vue's comment-directive, with the vue/vue processor):
     veslint's problems must be ESLint's, all of them and in order (rule, messageId when ESLint gives
     one, message, line, column, end). A lint with `fix` is ESLint's with fix: true, as
@@ -317,7 +335,7 @@ def check_lint(runner, lint):
     text = lint['code']
     passes = 0
     while True:
-        code, file, out, stderr = runner.lint_whole(lint, text)
+        code, file, out, stderr = runner.lint_whole(rule, lint, text)
         if code > 1:
             return [f'veslint exited with {code}: {stderr.strip()}']
         prefix = file + ':'
@@ -371,8 +389,8 @@ def max_passes_of(rule):
     eslint-plugin-perfectionist uses, the first and up to 11 more."""
     if rule.startswith('perfectionist/'):
         return 12
-    # eslint-plugin-vue's tests run ESLint's own RuleTester.
-    if rule.startswith('vue/'):
+    # eslint-plugin-vue's and eslint-plugin-svelte's tests run ESLint's own RuleTester.
+    if rule.startswith(('vue/', 'svelte/')):
         return 1
     return 10 if rule.startswith(('@typescript-eslint/', 'seyfert/', 'marcrock/')) else 1
 
@@ -463,9 +481,10 @@ def known_cases(tool):
 def known_key(rule, case_id, known):
     """The id a case has in known.txt: a case of a vue/* rule may be listed with the rule's
     prefix (`vue/no-restricted-syntax/i1`), as its id without it may also be the id of a case of
-    the rule of ESLint core of the same name."""
-    if rule.startswith('vue/') and 'vue/' + case_id in known:
-        return 'vue/' + case_id
+    the rule of ESLint core of the same name; so may a case of a svelte/* rule."""
+    for prefix in ('vue/', 'svelte/'):
+        if rule.startswith(prefix) and prefix + case_id in known:
+            return prefix + case_id
     return case_id
 
 
@@ -490,9 +509,11 @@ def main():
     checked = set()
     total = 0
     for rule in rules:
-        # eslint-plugin-vue's cases as veslint runs them, TypeScript only (tests/rules/vue/upstream_ts.mjs).
+        # eslint-plugin-vue's and eslint-plugin-svelte's cases as veslint runs them, TypeScript only
+        # (tests/rules/vue/upstream_ts.mjs, tests/rules/svelte/upstream_ts.mjs).
         vue = rule.startswith('vue/')
-        with open(os.path.join(ROOT, 'tests/rules', rule, 'upstream.ts.json' if vue else 'upstream.json'), encoding='utf-8') as f:
+        converted = vue or rule.startswith('svelte/')
+        with open(os.path.join(ROOT, 'tests/rules', rule, 'upstream.ts.json' if converted else 'upstream.json'), encoding='utf-8') as f:
             data = json.load(f)
         messages = data['messages']
         runner.defaults = data.get('languageOptions', {})
@@ -544,7 +565,7 @@ def main():
         for lint in lints:
             checked.add(lint['id'])
             runner.start_case(lint)
-            problems = check_lint(runner, lint)
+            problems = check_lint(runner, rule, lint)
             if problems:
                 failing.add(lint['id'])
                 if lint['id'] not in known:

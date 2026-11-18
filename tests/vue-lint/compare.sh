@@ -59,7 +59,8 @@ done
 python3 - > "$WORK/rules.json" <<'PY'
 import json, os
 rules = sorted(os.path.relpath(d, 'tests/rules') for d, _, files in os.walk('tests/rules') if 'expected.txt' in files and 'node_modules' not in d)
-print(json.dumps({'rules': {r: 'error' for r in rules}}))
+required = json.load(open('tests/rules/required_options.json', encoding='utf-8'))
+print(json.dumps({'rules': {r: ['error', *required[r]] if r in required else 'error' for r in rules}}))
 PY
 key=$( (cd "$WORK" && find g[0-9][0-9] "${alone[@]}" -name '*.vue' -o -name '*.json' -o -name '*.d.ts' | LC_ALL=C sort | xargs cat; cat "$ROOT/tests/vue-lint/eslint.vue.config.mjs" "$ROOT/tests/vue-lint/eslint_each.mjs" "$WORK/rules.json" "$ESLINT_PACKAGE" "$ROOT/build/upstream/vue-deps/node_modules/vue-eslint-parser/package.json"; echo "$mode") | sha1sum | cut -c1-16)
 ESLINT_LINES=$WORK/eslint.$mode.$key.txt

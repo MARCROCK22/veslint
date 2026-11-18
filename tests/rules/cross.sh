@@ -17,12 +17,13 @@ fi
 tests/rules/seyfert/setup.sh || exit 2
 TMP=$(mktemp -d)
 trap 'rm -rf "$TMP"' EXIT
-mapfile -t cases < <(find tests/rules -name cases.ts -o -name cases.tsx -o -name cases.vue | sort)
+mapfile -t cases < <(find tests/rules -name cases.ts -o -name cases.tsx -o -name cases.vue -o -name cases.svelte | sort)
 python3 - > "$TMP/rules.json" <<'PY'
 import json, os
 # The directory of a rule is the one with an expected.txt, and its path is the rule's id.
 rules = sorted(os.path.relpath(d, 'tests/rules') for d, _, files in os.walk('tests/rules') if 'expected.txt' in files)
-print(json.dumps({'rules': {r: 'error' for r in rules}}))
+required = json.load(open('tests/rules/required_options.json', encoding='utf-8'))
+print(json.dumps({'rules': {r: ['error', *required[r]] if r in required else 'error' for r in rules}}))
 PY
 # ESLint's lines of a rule directory are kept in build/eslint-cache/cross under the key of its files,
 # the rules that run (rules.json), this configuration and the versions of ESLint and its plugins

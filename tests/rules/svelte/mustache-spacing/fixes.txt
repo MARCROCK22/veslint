@@ -1,0 +1,180 @@
+tests/rules/svelte/mustache-spacing/after-expression/cases.svelte:10:4	svelte/mustache-spacing	unexpectedOpening	Expected no space after '{', but found.	fix	155	156		end	10	6
+tests/rules/svelte/mustache-spacing/after-expression/cases.svelte:10:7	svelte/mustache-spacing	unexpectedClosing	Expected no space before '}', but found.	fix	157	158		end	10	9
+tests/rules/svelte/mustache-spacing/after-expression/cases.svelte:11:4	svelte/mustache-spacing	unexpectedOpening	Expected no space after '{', but found.	fix	168	169		end	11	6
+tests/rules/svelte/mustache-spacing/after-expression/cases.svelte:12:6	svelte/mustache-spacing	unexpectedClosing	Expected no space before '}', but found.	fix	181	182		end	12	8
+tests/rules/svelte/mustache-spacing/after-expression/cases.svelte:14:13	svelte/mustache-spacing	unexpectedClosing	Expected no space before '}', but found.	fix	218	219		end	14	15
+tests/rules/svelte/mustache-spacing/after-expression/cases.svelte:16:13	svelte/mustache-spacing	unexpectedOpening	Expected no space after '{', but found.	fix	260	261		end	16	15
+tests/rules/svelte/mustache-spacing/after-expression/cases.svelte:16:16	svelte/mustache-spacing	unexpectedClosing	Expected no space before '}', but found.	fix	262	263		end	16	18
+tests/rules/svelte/mustache-spacing/after-expression/cases.svelte:18:6	svelte/mustache-spacing	unexpectedOpening	Expected no space after '{', but found.	fix	295	296		end	18	8
+tests/rules/svelte/mustache-spacing/after-expression/cases.svelte:18:9	svelte/mustache-spacing	unexpectedClosing	Expected no space before '}', but found.	fix	297	298		end	18	11
+tests/rules/svelte/mustache-spacing/after-expression/cases.svelte:20:6	svelte/mustache-spacing	unexpectedOpening	Expected no space after '{', but found.	fix	336	337		end	20	8
+tests/rules/svelte/mustache-spacing/after-expression/cases.svelte:20:16	svelte/mustache-spacing	unexpectedClosing	Expected no space before '}', but found.	fix	345	346		end	20	18
+tests/rules/svelte/mustache-spacing/after-expression/cases.svelte:21:18	svelte/mustache-spacing	unexpectedOpening	Expected no space after '{', but found.	fix	373	374		end	21	20
+tests/rules/svelte/mustache-spacing/after-expression/cases.svelte:21:27	svelte/mustache-spacing	unexpectedClosing	Expected no space before '}', but found.	fix	381	382		end	21	29
+tests/rules/svelte/mustache-spacing/after-expression/cases.svelte:22:19	svelte/mustache-spacing	unexpectedOpening	Expected no space after '{', but found.	fix	414	415		end	22	21
+tests/rules/svelte/mustache-spacing/after-expression/cases.svelte:22:26	svelte/mustache-spacing	unexpectedClosing	Expected no space before '}', but found.	fix	420	421		end	22	28
+tests/rules/svelte/mustache-spacing/after-expression/cases.svelte:23:18	svelte/mustache-spacing	unexpectedOpening	Expected no space after '{', but found.	fix	444	445		end	23	20
+tests/rules/svelte/mustache-spacing/after-expression/cases.svelte:23:25	svelte/mustache-spacing	unexpectedClosing	Expected no space before '}', but found.	fix	450	451		end	23	27
+tests/rules/svelte/mustache-spacing/after-expression/cases.svelte:24:9	svelte/mustache-spacing	expectedClosing	Expected 1 space before '}', but not found.	fix	468	468	 	end	24	10
+tests/rules/svelte/mustache-spacing/after-expression/cases.svelte:25:1	svelte/mustache-spacing	unexpectedOpening	Expected no space after '{', but found.	fix	471	472		end	25	3
+tests/rules/svelte/mustache-spacing/after-expression/cases.svelte:26:10	svelte/mustache-spacing	expectedClosing	Expected 1 space before '}', but not found.	fix	491	491	 	end	26	11
+tests/rules/svelte/mustache-spacing/after-expression/cases.svelte:27:1	svelte/mustache-spacing	unexpectedOpening	Expected no space after '{', but found.	fix	494	495		end	27	3
+tests/rules/svelte/mustache-spacing/after-expression/cases.svelte:28:7	svelte/mustache-spacing	expectedClosing	Expected 1 space before '}', but not found.	fix	512	512	 	end	28	8
+tests/rules/svelte/mustache-spacing/after-expression/cases.svelte:28:20	svelte/mustache-spacing	expectedClosing	Expected 1 space before '}', but not found.	fix	525	525	 	end	28	21
+tests/rules/svelte/mustache-spacing/after-expression/cases.svelte:29:1	svelte/mustache-spacing	unexpectedOpening	Expected no space after '{', but found.	fix	542	543		end	29	3
+tests/rules/svelte/mustache-spacing/after-expression/cases.svelte:29:11	svelte/mustache-spacing	unexpectedOpening	Expected no space after '{', but found.	fix	552	553		end	29	13
+tests/rules/svelte/mustache-spacing/after-expression/cases.svelte:29:26	svelte/mustache-spacing	unexpectedOpening	Expected no space after '{', but found.	fix	567	568		end	29	28
+tests/rules/svelte/mustache-spacing/after-expression/cases.svelte:29:33	svelte/mustache-spacing	unexpectedClosing	Expected no space before '}', but found.	fix	573	574		end	29	35
+tests/rules/svelte/mustache-spacing/after-expression/cases.svelte:29:36	svelte/mustache-spacing	unexpectedOpening	Expected no space after '{', but found.	fix	577	578		end	29	38
+tests/rules/svelte/mustache-spacing/after-expression/cases.svelte:29:41	svelte/mustache-spacing	unexpectedClosing	Expected no space before '}', but found.	fix	581	582		end	29	43
+tests/rules/svelte/mustache-spacing/after-expression/cases.svelte:30:31	svelte/mustache-spacing	expectedClosing	Expected 1 space before '}', but not found.	fix	614	614	 	end	30	32
+tests/rules/svelte/mustache-spacing/after-expression/cases.svelte:31:1	svelte/mustache-spacing	unexpectedOpening	Expected no space after '{', but found.	fix	633	634		end	31	3
+tests/rules/svelte/mustache-spacing/after-expression/cases.svelte:31:30	svelte/mustache-spacing	unexpectedOpening	Expected no space after '{', but found.	fix	662	663		end	31	32
+tests/rules/svelte/mustache-spacing/after-expression/cases.svelte:31:37	svelte/mustache-spacing	unexpectedClosing	Expected no space before '}', but found.	fix	668	669		end	31	39
+tests/rules/svelte/mustache-spacing/after-expression/cases.svelte:32:8	svelte/mustache-spacing	expectedClosing	Expected 1 space before '}', but not found.	fix	678	678	 	end	32	9
+tests/rules/svelte/mustache-spacing/after-expression/cases.svelte:33:1	svelte/mustache-spacing	unexpectedOpening	Expected no space after '{', but found.	fix	688	689		end	33	3
+tests/rules/svelte/mustache-spacing/after-expression/cases.svelte:33:12	svelte/mustache-spacing	unexpectedOpening	Expected no space after '{', but found.	fix	699	700		end	33	14
+tests/rules/svelte/mustache-spacing/after-expression/cases.svelte:33:18	svelte/mustache-spacing	unexpectedClosing	Expected no space before '}', but found.	fix	704	705		end	33	20
+tests/rules/svelte/mustache-spacing/after-expression/cases.svelte:34:10	svelte/mustache-spacing	expectedClosing	Expected 1 space before '}', but not found.	fix	716	716	 	end	34	11
+tests/rules/svelte/mustache-spacing/after-expression/cases.svelte:34:20	svelte/mustache-spacing	expectedClosing	Expected 1 space before '}', but not found.	fix	726	726	 	end	34	21
+tests/rules/svelte/mustache-spacing/after-expression/cases.svelte:34:33	svelte/mustache-spacing	expectedClosing	Expected 1 space before '}', but not found.	fix	739	739	 	end	34	34
+tests/rules/svelte/mustache-spacing/after-expression/cases.svelte:35:1	svelte/mustache-spacing	unexpectedOpening	Expected no space after '{', but found.	fix	753	754		end	35	3
+tests/rules/svelte/mustache-spacing/after-expression/cases.svelte:35:14	svelte/mustache-spacing	unexpectedOpening	Expected no space after '{', but found.	fix	766	767		end	35	16
+tests/rules/svelte/mustache-spacing/after-expression/cases.svelte:35:28	svelte/mustache-spacing	unexpectedOpening	Expected no space after '{', but found.	fix	780	781		end	35	30
+tests/rules/svelte/mustache-spacing/after-expression/cases.svelte:35:43	svelte/mustache-spacing	unexpectedOpening	Expected no space after '{', but found.	fix	795	796		end	35	45
+tests/rules/svelte/mustache-spacing/after-expression/cases.svelte:35:51	svelte/mustache-spacing	unexpectedClosing	Expected no space before '}', but found.	fix	802	803		end	35	53
+tests/rules/svelte/mustache-spacing/after-expression/cases.svelte:36:17	svelte/mustache-spacing	expectedClosing	Expected 1 space before '}', but not found.	fix	821	821	 	end	36	18
+tests/rules/svelte/mustache-spacing/after-expression/cases.svelte:37:1	svelte/mustache-spacing	unexpectedOpening	Expected no space after '{', but found.	fix	835	836		end	37	3
+tests/rules/svelte/mustache-spacing/after-expression/cases.svelte:37:16	svelte/mustache-spacing	unexpectedClosing	Expected no space before '}', but found.	fix	849	850		end	37	18
+tests/rules/svelte/mustache-spacing/after-expression/cases.svelte:37:19	svelte/mustache-spacing	unexpectedOpening	Expected no space after '{', but found.	fix	853	854		end	37	21
+tests/rules/svelte/mustache-spacing/after-expression/cases.svelte:37:27	svelte/mustache-spacing	unexpectedClosing	Expected no space before '}', but found.	fix	860	861		end	37	29
+tests/rules/svelte/mustache-spacing/after-expression/cases.svelte:38:23	svelte/mustache-spacing	expectedClosing	Expected 1 space before '}', but not found.	fix	885	885	 	end	38	24
+tests/rules/svelte/mustache-spacing/after-expression/cases.svelte:39:1	svelte/mustache-spacing	unexpectedOpening	Expected no space after '{', but found.	fix	901	902		end	39	3
+tests/rules/svelte/mustache-spacing/after-expression/cases.svelte:39:18	svelte/mustache-spacing	unexpectedOpening	Expected no space after '{', but found.	fix	918	919		end	39	20
+tests/rules/svelte/mustache-spacing/after-expression/cases.svelte:39:28	svelte/mustache-spacing	unexpectedClosing	Expected no space before '}', but found.	fix	927	928		end	39	30
+tests/rules/svelte/mustache-spacing/after-expression/cases.svelte:40:14	svelte/mustache-spacing	expectedClosing	Expected 1 space before '}', but not found.	fix	943	943	 	end	40	15
+tests/rules/svelte/mustache-spacing/after-expression/cases.svelte:41:1	svelte/mustache-spacing	unexpectedOpening	Expected no space after '{', but found.	fix	946	947		end	41	3
+tests/rules/svelte/mustache-spacing/always/cases.svelte:9:4	svelte/mustache-spacing	expectedOpening	Expected 1 space after '{', but not found.	fix	144	144	 	end	9	5
+tests/rules/svelte/mustache-spacing/always/cases.svelte:9:6	svelte/mustache-spacing	expectedClosing	Expected 1 space before '}', but not found.	fix	145	145	 	end	9	7
+tests/rules/svelte/mustache-spacing/always/cases.svelte:11:7	svelte/mustache-spacing	expectedClosing	Expected 1 space before '}', but not found.	fix	170	170	 	end	11	8
+tests/rules/svelte/mustache-spacing/always/cases.svelte:12:4	svelte/mustache-spacing	expectedOpening	Expected 1 space after '{', but not found.	fix	180	180	 	end	12	5
+tests/rules/svelte/mustache-spacing/always/cases.svelte:13:4	svelte/mustache-spacing	expectedOpening	Expected 1 space after '{', but not found.	fix	192	192	 	end	13	5
+tests/rules/svelte/mustache-spacing/always/cases.svelte:13:13	svelte/mustache-spacing	expectedClosing	Expected 1 space before '}', but not found.	fix	200	200	 	end	13	14
+tests/rules/svelte/mustache-spacing/always/cases.svelte:14:4	svelte/mustache-spacing	expectedOpening	Expected 1 space after '{', but not found.	fix	210	210	 	end	14	5
+tests/rules/svelte/mustache-spacing/always/cases.svelte:15:12	svelte/mustache-spacing	expectedOpening	Expected 1 space after '{', but not found.	fix	237	237	 	end	15	13
+tests/rules/svelte/mustache-spacing/always/cases.svelte:15:14	svelte/mustache-spacing	expectedClosing	Expected 1 space before '}', but not found.	fix	238	238	 	end	15	15
+tests/rules/svelte/mustache-spacing/always/cases.svelte:17:6	svelte/mustache-spacing	expectedOpening	Expected 1 space after '{', but not found.	fix	279	279	 	end	17	7
+tests/rules/svelte/mustache-spacing/always/cases.svelte:17:8	svelte/mustache-spacing	expectedClosing	Expected 1 space before '}', but not found.	fix	280	280	 	end	17	9
+tests/rules/svelte/mustache-spacing/always/cases.svelte:19:6	svelte/mustache-spacing	expectedOpening	Expected 1 space after '{', but not found.	fix	313	313	 	end	19	7
+tests/rules/svelte/mustache-spacing/always/cases.svelte:19:15	svelte/mustache-spacing	expectedClosing	Expected 1 space before '}', but not found.	fix	321	321	 	end	19	16
+tests/rules/svelte/mustache-spacing/always/cases.svelte:24:1	svelte/mustache-spacing	expectedOpening	Expected 1 space after '{', but not found.	fix	461	461	 	end	24	2
+tests/rules/svelte/mustache-spacing/always/cases.svelte:24:9	svelte/mustache-spacing	expectedClosing	Expected 1 space before '}', but not found.	fix	468	468	 	end	24	10
+tests/rules/svelte/mustache-spacing/always/cases.svelte:26:1	svelte/mustache-spacing	expectedOpening	Expected 1 space after '{', but not found.	fix	483	483	 	end	26	2
+tests/rules/svelte/mustache-spacing/always/cases.svelte:26:10	svelte/mustache-spacing	expectedClosing	Expected 1 space before '}', but not found.	fix	491	491	 	end	26	11
+tests/rules/svelte/mustache-spacing/always/cases.svelte:28:1	svelte/mustache-spacing	expectedOpening	Expected 1 space after '{', but not found.	fix	507	507	 	end	28	2
+tests/rules/svelte/mustache-spacing/always/cases.svelte:28:7	svelte/mustache-spacing	expectedClosing	Expected 1 space before '}', but not found.	fix	512	512	 	end	28	8
+tests/rules/svelte/mustache-spacing/always/cases.svelte:28:9	svelte/mustache-spacing	expectedOpening	Expected 1 space after '{', but not found.	fix	515	515	 	end	28	10
+tests/rules/svelte/mustache-spacing/always/cases.svelte:28:20	svelte/mustache-spacing	expectedClosing	Expected 1 space before '}', but not found.	fix	525	525	 	end	28	21
+tests/rules/svelte/mustache-spacing/always/cases.svelte:28:22	svelte/mustache-spacing	expectedOpening	Expected 1 space after '{', but not found.	fix	528	528	 	end	28	23
+tests/rules/svelte/mustache-spacing/always/cases.svelte:28:28	svelte/mustache-spacing	expectedClosing	Expected 1 space before '}', but not found.	fix	533	533	 	end	28	29
+tests/rules/svelte/mustache-spacing/always/cases.svelte:28:30	svelte/mustache-spacing	expectedOpening	Expected 1 space after '{', but not found.	fix	536	536	 	end	28	31
+tests/rules/svelte/mustache-spacing/always/cases.svelte:28:34	svelte/mustache-spacing	expectedClosing	Expected 1 space before '}', but not found.	fix	539	539	 	end	28	35
+tests/rules/svelte/mustache-spacing/always/cases.svelte:30:1	svelte/mustache-spacing	expectedOpening	Expected 1 space after '{', but not found.	fix	585	585	 	end	30	2
+tests/rules/svelte/mustache-spacing/always/cases.svelte:30:31	svelte/mustache-spacing	expectedClosing	Expected 1 space before '}', but not found.	fix	614	614	 	end	30	32
+tests/rules/svelte/mustache-spacing/always/cases.svelte:30:32	svelte/mustache-spacing	expectedOpening	Expected 1 space after '{', but not found.	fix	616	616	 	end	30	33
+tests/rules/svelte/mustache-spacing/always/cases.svelte:30:37	svelte/mustache-spacing	expectedClosing	Expected 1 space before '}', but not found.	fix	620	620	 	end	30	38
+tests/rules/svelte/mustache-spacing/always/cases.svelte:30:38	svelte/mustache-spacing	expectedOpening	Expected 1 space after '{', but not found.	fix	622	622	 	end	30	39
+tests/rules/svelte/mustache-spacing/always/cases.svelte:30:40	svelte/mustache-spacing	expectedClosing	Expected 1 space before '}', but not found.	fix	623	623	 	end	30	41
+tests/rules/svelte/mustache-spacing/always/cases.svelte:30:41	svelte/mustache-spacing	expectedOpening	Expected 1 space after '{', but not found.	fix	625	625	 	end	30	42
+tests/rules/svelte/mustache-spacing/always/cases.svelte:30:47	svelte/mustache-spacing	expectedClosing	Expected 1 space before '}', but not found.	fix	630	630	 	end	30	48
+tests/rules/svelte/mustache-spacing/always/cases.svelte:31:24	svelte/mustache-spacing	expectedOpening	Expected 1 space after '{', but not found.	fix	656	656	 	end	31	25
+tests/rules/svelte/mustache-spacing/always/cases.svelte:31:29	svelte/mustache-spacing	expectedClosing	Expected 1 space before '}', but not found.	fix	660	660	 	end	31	30
+tests/rules/svelte/mustache-spacing/always/cases.svelte:32:1	svelte/mustache-spacing	expectedOpening	Expected 1 space after '{', but not found.	fix	672	672	 	end	32	2
+tests/rules/svelte/mustache-spacing/always/cases.svelte:32:8	svelte/mustache-spacing	expectedClosing	Expected 1 space before '}', but not found.	fix	678	678	 	end	32	9
+tests/rules/svelte/mustache-spacing/always/cases.svelte:32:10	svelte/mustache-spacing	expectedOpening	Expected 1 space after '{', but not found.	fix	681	681	 	end	32	11
+tests/rules/svelte/mustache-spacing/always/cases.svelte:32:15	svelte/mustache-spacing	expectedClosing	Expected 1 space before '}', but not found.	fix	685	685	 	end	32	16
+tests/rules/svelte/mustache-spacing/always/cases.svelte:34:1	svelte/mustache-spacing	expectedOpening	Expected 1 space after '{', but not found.	fix	708	708	 	end	34	2
+tests/rules/svelte/mustache-spacing/always/cases.svelte:34:10	svelte/mustache-spacing	expectedClosing	Expected 1 space before '}', but not found.	fix	716	716	 	end	34	11
+tests/rules/svelte/mustache-spacing/always/cases.svelte:34:12	svelte/mustache-spacing	expectedOpening	Expected 1 space after '{', but not found.	fix	719	719	 	end	34	13
+tests/rules/svelte/mustache-spacing/always/cases.svelte:34:20	svelte/mustache-spacing	expectedClosing	Expected 1 space before '}', but not found.	fix	726	726	 	end	34	21
+tests/rules/svelte/mustache-spacing/always/cases.svelte:34:21	svelte/mustache-spacing	expectedOpening	Expected 1 space after '{', but not found.	fix	728	728	 	end	34	22
+tests/rules/svelte/mustache-spacing/always/cases.svelte:34:23	svelte/mustache-spacing	expectedClosing	Expected 1 space before '}', but not found.	fix	729	729	 	end	34	24
+tests/rules/svelte/mustache-spacing/always/cases.svelte:34:24	svelte/mustache-spacing	expectedOpening	Expected 1 space after '{', but not found.	fix	731	731	 	end	34	25
+tests/rules/svelte/mustache-spacing/always/cases.svelte:34:33	svelte/mustache-spacing	expectedClosing	Expected 1 space before '}', but not found.	fix	739	739	 	end	34	34
+tests/rules/svelte/mustache-spacing/always/cases.svelte:34:34	svelte/mustache-spacing	expectedOpening	Expected 1 space after '{', but not found.	fix	741	741	 	end	34	35
+tests/rules/svelte/mustache-spacing/always/cases.svelte:34:36	svelte/mustache-spacing	expectedClosing	Expected 1 space before '}', but not found.	fix	742	742	 	end	34	37
+tests/rules/svelte/mustache-spacing/always/cases.svelte:34:37	svelte/mustache-spacing	expectedOpening	Expected 1 space after '{', but not found.	fix	744	744	 	end	34	38
+tests/rules/svelte/mustache-spacing/always/cases.svelte:34:44	svelte/mustache-spacing	expectedClosing	Expected 1 space before '}', but not found.	fix	750	750	 	end	34	45
+tests/rules/svelte/mustache-spacing/always/cases.svelte:35:25	svelte/mustache-spacing	expectedOpening	Expected 1 space after '{', but not found.	fix	777	777	 	end	35	26
+tests/rules/svelte/mustache-spacing/always/cases.svelte:35:27	svelte/mustache-spacing	expectedClosing	Expected 1 space before '}', but not found.	fix	778	778	 	end	35	28
+tests/rules/svelte/mustache-spacing/always/cases.svelte:35:40	svelte/mustache-spacing	expectedOpening	Expected 1 space after '{', but not found.	fix	792	792	 	end	35	41
+tests/rules/svelte/mustache-spacing/always/cases.svelte:35:42	svelte/mustache-spacing	expectedClosing	Expected 1 space before '}', but not found.	fix	793	793	 	end	35	43
+tests/rules/svelte/mustache-spacing/always/cases.svelte:36:1	svelte/mustache-spacing	expectedOpening	Expected 1 space after '{', but not found.	fix	806	806	 	end	36	2
+tests/rules/svelte/mustache-spacing/always/cases.svelte:36:17	svelte/mustache-spacing	expectedClosing	Expected 1 space before '}', but not found.	fix	821	821	 	end	36	18
+tests/rules/svelte/mustache-spacing/always/cases.svelte:36:18	svelte/mustache-spacing	expectedOpening	Expected 1 space after '{', but not found.	fix	823	823	 	end	36	19
+tests/rules/svelte/mustache-spacing/always/cases.svelte:36:20	svelte/mustache-spacing	expectedClosing	Expected 1 space before '}', but not found.	fix	824	824	 	end	36	21
+tests/rules/svelte/mustache-spacing/always/cases.svelte:36:21	svelte/mustache-spacing	expectedOpening	Expected 1 space after '{', but not found.	fix	826	826	 	end	36	22
+tests/rules/svelte/mustache-spacing/always/cases.svelte:36:28	svelte/mustache-spacing	expectedClosing	Expected 1 space before '}', but not found.	fix	832	832	 	end	36	29
+tests/rules/svelte/mustache-spacing/always/cases.svelte:38:1	svelte/mustache-spacing	expectedOpening	Expected 1 space after '{', but not found.	fix	864	864	 	end	38	2
+tests/rules/svelte/mustache-spacing/always/cases.svelte:38:23	svelte/mustache-spacing	expectedClosing	Expected 1 space before '}', but not found.	fix	885	885	 	end	38	24
+tests/rules/svelte/mustache-spacing/always/cases.svelte:38:24	svelte/mustache-spacing	expectedOpening	Expected 1 space after '{', but not found.	fix	887	887	 	end	38	25
+tests/rules/svelte/mustache-spacing/always/cases.svelte:38:26	svelte/mustache-spacing	expectedClosing	Expected 1 space before '}', but not found.	fix	888	888	 	end	38	27
+tests/rules/svelte/mustache-spacing/always/cases.svelte:38:27	svelte/mustache-spacing	expectedOpening	Expected 1 space after '{', but not found.	fix	890	890	 	end	38	28
+tests/rules/svelte/mustache-spacing/always/cases.svelte:38:36	svelte/mustache-spacing	expectedClosing	Expected 1 space before '}', but not found.	fix	898	898	 	end	38	37
+tests/rules/svelte/mustache-spacing/always/cases.svelte:40:1	svelte/mustache-spacing	expectedOpening	Expected 1 space after '{', but not found.	fix	931	931	 	end	40	2
+tests/rules/svelte/mustache-spacing/always/cases.svelte:40:14	svelte/mustache-spacing	expectedClosing	Expected 1 space before '}', but not found.	fix	943	943	 	end	40	15
+tests/rules/svelte/mustache-spacing/cases.svelte:10:4	svelte/mustache-spacing	unexpectedOpening	Expected no space after '{', but found.	fix	155	156		end	10	6
+tests/rules/svelte/mustache-spacing/cases.svelte:10:7	svelte/mustache-spacing	unexpectedClosing	Expected no space before '}', but found.	fix	157	158		end	10	9
+tests/rules/svelte/mustache-spacing/cases.svelte:11:4	svelte/mustache-spacing	unexpectedOpening	Expected no space after '{', but found.	fix	168	169		end	11	6
+tests/rules/svelte/mustache-spacing/cases.svelte:12:6	svelte/mustache-spacing	unexpectedClosing	Expected no space before '}', but found.	fix	181	182		end	12	8
+tests/rules/svelte/mustache-spacing/cases.svelte:14:13	svelte/mustache-spacing	unexpectedClosing	Expected no space before '}', but found.	fix	218	219		end	14	15
+tests/rules/svelte/mustache-spacing/cases.svelte:16:13	svelte/mustache-spacing	unexpectedOpening	Expected no space after '{', but found.	fix	260	261		end	16	15
+tests/rules/svelte/mustache-spacing/cases.svelte:16:16	svelte/mustache-spacing	unexpectedClosing	Expected no space before '}', but found.	fix	262	263		end	16	18
+tests/rules/svelte/mustache-spacing/cases.svelte:18:6	svelte/mustache-spacing	unexpectedOpening	Expected no space after '{', but found.	fix	295	296		end	18	8
+tests/rules/svelte/mustache-spacing/cases.svelte:18:9	svelte/mustache-spacing	unexpectedClosing	Expected no space before '}', but found.	fix	297	298		end	18	11
+tests/rules/svelte/mustache-spacing/cases.svelte:20:6	svelte/mustache-spacing	unexpectedOpening	Expected no space after '{', but found.	fix	336	337		end	20	8
+tests/rules/svelte/mustache-spacing/cases.svelte:20:16	svelte/mustache-spacing	unexpectedClosing	Expected no space before '}', but found.	fix	345	346		end	20	18
+tests/rules/svelte/mustache-spacing/cases.svelte:21:18	svelte/mustache-spacing	unexpectedOpening	Expected no space after '{', but found.	fix	373	374		end	21	20
+tests/rules/svelte/mustache-spacing/cases.svelte:21:27	svelte/mustache-spacing	unexpectedClosing	Expected no space before '}', but found.	fix	381	382		end	21	29
+tests/rules/svelte/mustache-spacing/cases.svelte:22:19	svelte/mustache-spacing	unexpectedOpening	Expected no space after '{', but found.	fix	414	415		end	22	21
+tests/rules/svelte/mustache-spacing/cases.svelte:22:26	svelte/mustache-spacing	unexpectedClosing	Expected no space before '}', but found.	fix	420	421		end	22	28
+tests/rules/svelte/mustache-spacing/cases.svelte:23:18	svelte/mustache-spacing	unexpectedOpening	Expected no space after '{', but found.	fix	444	445		end	23	20
+tests/rules/svelte/mustache-spacing/cases.svelte:23:25	svelte/mustache-spacing	unexpectedClosing	Expected no space before '}', but found.	fix	450	451		end	23	27
+tests/rules/svelte/mustache-spacing/cases.svelte:25:1	svelte/mustache-spacing	unexpectedOpening	Expected no space after '{', but found.	fix	471	472		end	25	3
+tests/rules/svelte/mustache-spacing/cases.svelte:25:10	svelte/mustache-spacing	unexpectedClosing	Expected no space before '}', but found.	fix	479	480		end	25	12
+tests/rules/svelte/mustache-spacing/cases.svelte:27:1	svelte/mustache-spacing	unexpectedOpening	Expected no space after '{', but found.	fix	494	495		end	27	3
+tests/rules/svelte/mustache-spacing/cases.svelte:27:11	svelte/mustache-spacing	unexpectedClosing	Expected no space before '}', but found.	fix	503	504		end	27	13
+tests/rules/svelte/mustache-spacing/cases.svelte:29:1	svelte/mustache-spacing	unexpectedOpening	Expected no space after '{', but found.	fix	542	543		end	29	3
+tests/rules/svelte/mustache-spacing/cases.svelte:29:8	svelte/mustache-spacing	unexpectedClosing	Expected no space before '}', but found.	fix	548	549		end	29	10
+tests/rules/svelte/mustache-spacing/cases.svelte:29:11	svelte/mustache-spacing	unexpectedOpening	Expected no space after '{', but found.	fix	552	553		end	29	13
+tests/rules/svelte/mustache-spacing/cases.svelte:29:23	svelte/mustache-spacing	unexpectedClosing	Expected no space before '}', but found.	fix	563	564		end	29	25
+tests/rules/svelte/mustache-spacing/cases.svelte:29:26	svelte/mustache-spacing	unexpectedOpening	Expected no space after '{', but found.	fix	567	568		end	29	28
+tests/rules/svelte/mustache-spacing/cases.svelte:29:33	svelte/mustache-spacing	unexpectedClosing	Expected no space before '}', but found.	fix	573	574		end	29	35
+tests/rules/svelte/mustache-spacing/cases.svelte:29:36	svelte/mustache-spacing	unexpectedOpening	Expected no space after '{', but found.	fix	577	578		end	29	38
+tests/rules/svelte/mustache-spacing/cases.svelte:29:41	svelte/mustache-spacing	unexpectedClosing	Expected no space before '}', but found.	fix	581	582		end	29	43
+tests/rules/svelte/mustache-spacing/cases.svelte:31:1	svelte/mustache-spacing	unexpectedOpening	Expected no space after '{', but found.	fix	633	634		end	31	3
+tests/rules/svelte/mustache-spacing/cases.svelte:31:22	svelte/mustache-spacing	unexpectedClosing	Expected no space before '}', but found.	fix	653	654		end	31	24
+tests/rules/svelte/mustache-spacing/cases.svelte:31:30	svelte/mustache-spacing	unexpectedOpening	Expected no space after '{', but found.	fix	662	663		end	31	32
+tests/rules/svelte/mustache-spacing/cases.svelte:31:37	svelte/mustache-spacing	unexpectedClosing	Expected no space before '}', but found.	fix	668	669		end	31	39
+tests/rules/svelte/mustache-spacing/cases.svelte:33:1	svelte/mustache-spacing	unexpectedOpening	Expected no space after '{', but found.	fix	688	689		end	33	3
+tests/rules/svelte/mustache-spacing/cases.svelte:33:9	svelte/mustache-spacing	unexpectedClosing	Expected no space before '}', but found.	fix	695	696		end	33	11
+tests/rules/svelte/mustache-spacing/cases.svelte:33:12	svelte/mustache-spacing	unexpectedOpening	Expected no space after '{', but found.	fix	699	700		end	33	14
+tests/rules/svelte/mustache-spacing/cases.svelte:33:18	svelte/mustache-spacing	unexpectedClosing	Expected no space before '}', but found.	fix	704	705		end	33	20
+tests/rules/svelte/mustache-spacing/cases.svelte:35:1	svelte/mustache-spacing	unexpectedOpening	Expected no space after '{', but found.	fix	753	754		end	35	3
+tests/rules/svelte/mustache-spacing/cases.svelte:35:11	svelte/mustache-spacing	unexpectedClosing	Expected no space before '}', but found.	fix	762	763		end	35	13
+tests/rules/svelte/mustache-spacing/cases.svelte:35:14	svelte/mustache-spacing	unexpectedOpening	Expected no space after '{', but found.	fix	766	767		end	35	16
+tests/rules/svelte/mustache-spacing/cases.svelte:35:23	svelte/mustache-spacing	unexpectedClosing	Expected no space before '}', but found.	fix	774	775		end	35	25
+tests/rules/svelte/mustache-spacing/cases.svelte:35:28	svelte/mustache-spacing	unexpectedOpening	Expected no space after '{', but found.	fix	780	781		end	35	30
+tests/rules/svelte/mustache-spacing/cases.svelte:35:38	svelte/mustache-spacing	unexpectedClosing	Expected no space before '}', but found.	fix	789	790		end	35	40
+tests/rules/svelte/mustache-spacing/cases.svelte:35:43	svelte/mustache-spacing	unexpectedOpening	Expected no space after '{', but found.	fix	795	796		end	35	45
+tests/rules/svelte/mustache-spacing/cases.svelte:35:51	svelte/mustache-spacing	unexpectedClosing	Expected no space before '}', but found.	fix	802	803		end	35	53
+tests/rules/svelte/mustache-spacing/cases.svelte:37:1	svelte/mustache-spacing	unexpectedOpening	Expected no space after '{', but found.	fix	835	836		end	37	3
+tests/rules/svelte/mustache-spacing/cases.svelte:37:16	svelte/mustache-spacing	unexpectedClosing	Expected no space before '}', but found.	fix	849	850		end	37	18
+tests/rules/svelte/mustache-spacing/cases.svelte:37:19	svelte/mustache-spacing	unexpectedOpening	Expected no space after '{', but found.	fix	853	854		end	37	21
+tests/rules/svelte/mustache-spacing/cases.svelte:37:27	svelte/mustache-spacing	unexpectedClosing	Expected no space before '}', but found.	fix	860	861		end	37	29
+tests/rules/svelte/mustache-spacing/cases.svelte:39:1	svelte/mustache-spacing	unexpectedOpening	Expected no space after '{', but found.	fix	901	902		end	39	3
+tests/rules/svelte/mustache-spacing/cases.svelte:39:15	svelte/mustache-spacing	unexpectedClosing	Expected no space before '}', but found.	fix	914	915		end	39	17
+tests/rules/svelte/mustache-spacing/cases.svelte:39:18	svelte/mustache-spacing	unexpectedOpening	Expected no space after '{', but found.	fix	918	919		end	39	20
+tests/rules/svelte/mustache-spacing/cases.svelte:39:28	svelte/mustache-spacing	unexpectedClosing	Expected no space before '}', but found.	fix	927	928		end	39	30
+tests/rules/svelte/mustache-spacing/cases.svelte:41:1	svelte/mustache-spacing	unexpectedOpening	Expected no space after '{', but found.	fix	946	947		end	41	3
+tests/rules/svelte/mustache-spacing/cases.svelte:41:15	svelte/mustache-spacing	unexpectedClosing	Expected no space before '}', but found.	fix	959	960		end	41	17

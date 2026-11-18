@@ -1,0 +1,14 @@
+tests/rules/svelte/first-attribute-linebreak/below/cases.svelte:1:9	svelte/first-attribute-linebreak	expected	Expected a linebreak before this attribute.
+tests/rules/svelte/first-attribute-linebreak/below/cases.svelte:5:6	svelte/first-attribute-linebreak	expected	Expected a linebreak before this attribute.
+tests/rules/svelte/first-attribute-linebreak/below/cases.svelte:8:6	svelte/first-attribute-linebreak	expected	Expected a linebreak before this attribute.
+tests/rules/svelte/first-attribute-linebreak/below/cases.svelte:16:13	svelte/first-attribute-linebreak	expected	Expected a linebreak before this attribute.
+tests/rules/svelte/first-attribute-linebreak/below/cases.svelte:18:17	svelte/first-attribute-linebreak	expected	Expected a linebreak before this attribute.
+tests/rules/svelte/first-attribute-linebreak/below/cases.svelte:19:26	svelte/first-attribute-linebreak	expected	Expected a linebreak before this attribute.
+tests/rules/svelte/first-attribute-linebreak/below/cases.svelte:20:6	svelte/first-attribute-linebreak	expected	Expected a linebreak before this attribute.
+tests/rules/svelte/first-attribute-linebreak/beside/cases.svelte:7:2	svelte/first-attribute-linebreak	unexpected	Expected no linebreak before this attribute.
+tests/rules/svelte/first-attribute-linebreak/beside/cases.svelte:11:2	svelte/first-attribute-linebreak	unexpected	Expected no linebreak before this attribute.
+tests/rules/svelte/first-attribute-linebreak/beside/cases.svelte:15:2	svelte/first-attribute-linebreak	unexpected	Expected no linebreak before this attribute.
+tests/rules/svelte/first-attribute-linebreak/cases.svelte:7:2	svelte/first-attribute-linebreak	unexpected	Expected no linebreak before this attribute.
+tests/rules/svelte/first-attribute-linebreak/cases.svelte:8:6	svelte/first-attribute-linebreak	expected	Expected a linebreak before this attribute.
+tests/rules/svelte/first-attribute-linebreak/cases.svelte:15:2	svelte/first-attribute-linebreak	unexpected	Expected no linebreak before this attribute.
+tests/rules/svelte/first-attribute-linebreak/cases.svelte:16:13	svelte/first-attribute-linebreak	expected	Expected a linebreak before this attribute.

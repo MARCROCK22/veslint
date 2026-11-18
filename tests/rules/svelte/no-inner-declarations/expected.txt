@@ -1,0 +1,3 @@
+tests/rules/svelte/no-inner-declarations/both/cases.svelte:5:3	svelte/no-inner-declarations	moveDeclToRoot	Move function declaration to program root.
+tests/rules/svelte/no-inner-declarations/both/cases.svelte:14:3	svelte/no-inner-declarations	moveDeclToRoot	Move function declaration to program root.
+tests/rules/svelte/no-inner-declarations/both/cases.svelte:15:3	svelte/no-inner-declarations	moveDeclToRoot	Move variable declaration to program root.

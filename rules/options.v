@@ -358,6 +358,38 @@ pub fn check_options(rule string, options []json2.Any) !bool {
 			vue_no_async_in_computed_properties_options(options)!
 		}
 		vue_no_dupe_keys { vue_no_dupe_keys_options(options)! }
+		svelte_comment_directive { svcd_options(options)! }
+		svelte_button_has_type { sbht_options(options)! }
+		svelte_no_target_blank { sntb_options(options)! }
+		svelte_shorthand_attribute { svsha_options(options)! }
+		svelte_spaced_html_comment { sshc_options(options)! }
+		svelte_no_useless_mustaches { snum_options(options)! }
+		svelte_first_attribute_linebreak { sfal_options(options)! }
+		svelte_shorthand_directive { svshd_options(options)! }
+		svelte_html_closing_bracket_spacing { shcbs_options(options)! }
+		svelte_html_closing_bracket_new_line { shcbnl_options(options)! }
+		svelte_html_quotes { shq_options(options)! }
+		svelte_mustache_spacing { smsp_options(options)! }
+		svelte_no_inline_styles { snis_options(options)! }
+		svelte_max_attributes_per_line { smapl_options(options)! }
+		svelte_html_self_closing { shsc_options(options)! }
+		svelte_block_lang { sbl_options(options)! }
+		svelte_prefer_class_directive { spcd_options(options)! }
+		svelte_no_restricted_html_elements { snrhe_options(options)! }
+		svelte_no_unknown_style_directive_property { snusdp_options(options)! }
+		svelte_consistent_selector_style { sccs_options(options)! }
+		svelte_no_unused_class_name { snucn_options(options)! }
+		svelte_sort_attributes { ssat_options(options)! }
+		svelte_max_lines_per_block { smlpb_options(options)! }
+		svelte_require_event_prefix { srep_options(options)! }
+		svelte_prefer_const { svpc_options(options)! }
+		svelte_no_inner_declarations { svnid_options(options)! }
+		svelte_no_trailing_spaces { svnts_options(options)! }
+		svelte_no_unnecessary_state_wrap { svnusw_options(options)! }
+		svelte_no_reactive_reassign { svnrr_options(options)! }
+		svelte_no_navigation_without_base { svnnwb_options(options)! }
+		svelte_no_navigation_without_resolve { svnnwr_options(options)! }
+		svelte_no_unused_props { svnup_options(options)! }
 		else { return false }
 	}
 	return true
@@ -401,7 +433,8 @@ pub fn effective_options(name string, options []json2.Any) ![]json2.Any {
 			return error(err.msg().replace_once('`${base}`', '`${name}`'))
 		}
 	}
-	if name.starts_with('perfectionist/') || name.starts_with('vue/') {
+	// So have those of eslint-plugin-svelte.
+	if name.starts_with('perfectionist/') || name.starts_with('vue/') || name.starts_with('svelte/') {
 		check_options(name, options) or { return error('`${name}`: ${err.msg()}') }
 		return options
 	}

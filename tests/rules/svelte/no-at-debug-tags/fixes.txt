@@ -1,0 +1,5 @@
+tests/rules/svelte/no-at-debug-tags/cases.svelte:6:1	svelte/no-at-debug-tags	unexpected	Unexpected `{@debug}`.	suggestion	suggestRemove	Remove `{@debug}` from the source	65	73		end	6	9
+tests/rules/svelte/no-at-debug-tags/cases.svelte:7:1	svelte/no-at-debug-tags	unexpected	Unexpected `{@debug}`.	suggestion	suggestRemove	Remove `{@debug}` from the source	74	84		end	7	11
+tests/rules/svelte/no-at-debug-tags/cases.svelte:8:1	svelte/no-at-debug-tags	unexpected	Unexpected `{@debug}`.	suggestion	suggestRemove	Remove `{@debug}` from the source	85	98		end	8	14
+tests/rules/svelte/no-at-debug-tags/cases.svelte:9:6	svelte/no-at-debug-tags	unexpected	Unexpected `{@debug}`.	suggestion	suggestRemove	Remove `{@debug}` from the source	104	114		end	9	16
+tests/rules/svelte/no-at-debug-tags/cases.svelte:11:2	svelte/no-at-debug-tags	unexpected	Unexpected `{@debug}`.	suggestion	suggestRemove	Remove `{@debug}` from the source	142	155		end	11	15

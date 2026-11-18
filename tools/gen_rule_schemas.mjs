@@ -12,7 +12,7 @@ import fs from 'node:fs';
 import path from 'node:path';
 import { createRequire } from 'node:module';
 import { execFileSync } from 'node:child_process';
-import { portedRules, checkSchema, ruleDefaults, seyfertPlugin, unicornPlugin, stylisticPlugin, perfectionistPlugin, marcrockPlugin, vuePlugin, pluginOf, jsonInfinity } from './rule_schema_support.mjs';
+import { portedRules, checkSchema, ruleDefaults, seyfertPlugin, unicornPlugin, stylisticPlugin, perfectionistPlugin, marcrockPlugin, vuePlugin, sveltePlugin, pluginOf, jsonInfinity } from './rule_schema_support.mjs';
 
 const root = path.resolve(import.meta.dirname, '..');
 const modules = path.join(root, 'build/eval/spider-byte/node_modules');
@@ -26,7 +26,7 @@ const version = name => JSON.parse(fs.readFileSync(path.join(modules, name, 'pac
 const literal = text => `'${text.replace(/\\/g, '\\\\').replace(/'/g, "\\'").replace(/\$/g, '\\$')}'`;
 
 const schemas = [];
-const plugins = { '': { rules: Object.fromEntries(builtinRules) }, '@typescript-eslint': plugin, seyfert: seyfertPlugin(root), unicorn: unicornPlugin(root), '@stylistic': stylisticPlugin(root), perfectionist: await perfectionistPlugin(root), marcrock: await marcrockPlugin(root), vue: vuePlugin(root) };
+const plugins = { '': { rules: Object.fromEntries(builtinRules) }, '@typescript-eslint': plugin, seyfert: seyfertPlugin(root), unicorn: unicornPlugin(root), '@stylistic': stylisticPlugin(root), perfectionist: await perfectionistPlugin(root), marcrock: await marcrockPlugin(root), vue: vuePlugin(root), svelte: sveltePlugin(root) };
 for (const id of portedRules(root)) {
   const [namespace, owner, name] = pluginOf(id, plugins);
   const rule = owner.rules[name];
@@ -40,8 +40,9 @@ for (const id of portedRules(root)) {
   // A wrapper rule of eslint-plugin-vue has the meta of the rule of ESLint core it wraps (where
   // @stylistic/eslint-plugin does not resolve, as here), whose schema has `default`s ajv fills in
   // (useDefaults) and rules/json_schema.v does not: they only add what is valid, and the rule's
-  // port has the same defaults.
-  checkSchema(schema, name, rule.meta?.defaultOptions, [], namespace === 'vue' && Boolean(rule.meta?.docs?.extensionSource));
+  // port has the same defaults. So do the `default`s of eslint-plugin-svelte's schemas
+  // (svelte/no-unused-props'), which schema_fill_defaults fills in for the messages, as ajv does.
+  checkSchema(schema, name, rule.meta?.defaultOptions, [], (namespace === 'vue' && Boolean(rule.meta?.docs?.extensionSource)) || namespace === 'svelte');
   schemas.push(`\t'${id}': ${literal(JSON.stringify(schema, jsonInfinity))}`);
 }
 const defaults = ruleDefaults(builtinRules, plugins).map(([id, options]) => `\t'${id}': ${literal(JSON.stringify(options, jsonInfinity))}`);

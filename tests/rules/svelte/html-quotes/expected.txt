@@ -1,0 +1,29 @@
+tests/rules/svelte/html-quotes/avoid/cases.svelte:8:12	svelte/html-quotes	expectedEnclosedBy	Expected to be enclosed by double quotes.
+tests/rules/svelte/html-quotes/avoid/cases.svelte:9:12	svelte/html-quotes	expectedEnclosedBy	Expected to be enclosed by double quotes.
+tests/rules/svelte/html-quotes/avoid/cases.svelte:13:12	svelte/html-quotes	unexpectedEnclosed	Unexpected to be enclosed by any quotes.
+tests/rules/svelte/html-quotes/avoid/cases.svelte:14:12	svelte/html-quotes	unexpectedEnclosed	Unexpected to be enclosed by any quotes.
+tests/rules/svelte/html-quotes/avoid/cases.svelte:16:12	svelte/html-quotes	expectedEnclosedBy	Expected to be enclosed by double quotes.
+tests/rules/svelte/html-quotes/avoid/cases.svelte:17:12	svelte/html-quotes	expectedEnclosedBy	Expected to be enclosed by double quotes.
+tests/rules/svelte/html-quotes/avoid/cases.svelte:20:18	svelte/html-quotes	unexpectedEnclosed	Unexpected to be enclosed by any quotes.
+tests/rules/svelte/html-quotes/avoid/cases.svelte:24:18	svelte/html-quotes	expectedEnclosedBy	Expected to be enclosed by double quotes.
+tests/rules/svelte/html-quotes/avoid/cases.svelte:25:22	svelte/html-quotes	expectedEnclosedBy	Expected to be enclosed by double quotes.
+tests/rules/svelte/html-quotes/cases.svelte:8:12	svelte/html-quotes	expectedEnclosedBy	Expected to be enclosed by double quotes.
+tests/rules/svelte/html-quotes/cases.svelte:9:12	svelte/html-quotes	expectedEnclosedBy	Expected to be enclosed by double quotes.
+tests/rules/svelte/html-quotes/cases.svelte:13:12	svelte/html-quotes	unexpectedEnclosed	Unexpected to be enclosed by any quotes.
+tests/rules/svelte/html-quotes/cases.svelte:14:12	svelte/html-quotes	unexpectedEnclosed	Unexpected to be enclosed by any quotes.
+tests/rules/svelte/html-quotes/cases.svelte:16:12	svelte/html-quotes	expectedEnclosedBy	Expected to be enclosed by double quotes.
+tests/rules/svelte/html-quotes/cases.svelte:18:12	svelte/html-quotes	unexpectedEnclosed	Unexpected to be enclosed by any quotes.
+tests/rules/svelte/html-quotes/cases.svelte:20:18	svelte/html-quotes	unexpectedEnclosed	Unexpected to be enclosed by any quotes.
+tests/rules/svelte/html-quotes/cases.svelte:24:18	svelte/html-quotes	expectedEnclosedBy	Expected to be enclosed by double quotes.
+tests/rules/svelte/html-quotes/single-quoted/cases.svelte:1:14	svelte/html-quotes	expectedEnclosedBy	Expected to be enclosed by single quotes.
+tests/rules/svelte/html-quotes/single-quoted/cases.svelte:7:12	svelte/html-quotes	expectedEnclosedBy	Expected to be enclosed by single quotes.
+tests/rules/svelte/html-quotes/single-quoted/cases.svelte:9:12	svelte/html-quotes	expectedEnclosedBy	Expected to be enclosed by single quotes.
+tests/rules/svelte/html-quotes/single-quoted/cases.svelte:12:12	svelte/html-quotes	expectedEnclosedBy	Expected to be enclosed by single quotes.
+tests/rules/svelte/html-quotes/single-quoted/cases.svelte:13:12	svelte/html-quotes	expectedEnclosedBy	Expected to be enclosed by single quotes.
+tests/rules/svelte/html-quotes/single-quoted/cases.svelte:15:12	svelte/html-quotes	expectedEnclosedBy	Expected to be enclosed by single quotes.
+tests/rules/svelte/html-quotes/single-quoted/cases.svelte:17:12	svelte/html-quotes	expectedEnclosed	Expected to be enclosed by quotes.
+tests/rules/svelte/html-quotes/single-quoted/cases.svelte:19:18	svelte/html-quotes	expectedEnclosedBy	Expected to be enclosed by single quotes.
+tests/rules/svelte/html-quotes/single-quoted/cases.svelte:20:18	svelte/html-quotes	expectedEnclosedBy	Expected to be enclosed by single quotes.
+tests/rules/svelte/html-quotes/single-quoted/cases.svelte:21:19	svelte/html-quotes	expectedEnclosedBy	Expected to be enclosed by single quotes.
+tests/rules/svelte/html-quotes/single-quoted/cases.svelte:23:18	svelte/html-quotes	expectedEnclosedBy	Expected to be enclosed by single quotes.
+tests/rules/svelte/html-quotes/single-quoted/cases.svelte:25:22	svelte/html-quotes	expectedEnclosed	Expected to be enclosed by quotes.

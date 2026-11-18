@@ -153,6 +153,18 @@ pub fn (d &Document) byte_offset(u int) int {
 	return d.index.to_byte(u)
 }
 
+// offset_of_loc is the byte offset of a line (from 1) and a UTF-16 column (from 0) of
+// svelte-eslint-parser's lines (clamped to the text).
+pub fn (d &Document) offset_of_loc(line int, column int) int {
+	if line < 1 {
+		return 0
+	}
+	if line > d.lc.line_starts.len {
+		return d.src.len
+	}
+	return d.index.to_byte(d.lc.line_starts[line - 1] + column)
+}
+
 // free deletes the tree-sitter tree.
 pub fn (mut d Document) free() {
 	if d.tree != unsafe { nil } {

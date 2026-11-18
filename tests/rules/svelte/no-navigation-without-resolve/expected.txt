@@ -1,0 +1,10 @@
+tests/rules/svelte/no-navigation-without-resolve/kit/cases.svelte:15:7	svelte/no-navigation-without-resolve	gotoWithoutResolve	Unexpected goto() call without resolve().
+tests/rules/svelte/no-navigation-without-resolve/kit/cases.svelte:18:7	svelte/no-navigation-without-resolve	gotoWithoutResolve	Unexpected goto() call without resolve().
+tests/rules/svelte/no-navigation-without-resolve/kit/cases.svelte:21:7	svelte/no-navigation-without-resolve	gotoWithoutResolve	Unexpected goto() call without resolve().
+tests/rules/svelte/no-navigation-without-resolve/kit/cases.svelte:22:7	svelte/no-navigation-without-resolve	gotoWithoutResolve	Unexpected goto() call without resolve().
+tests/rules/svelte/no-navigation-without-resolve/kit/cases.svelte:25:7	svelte/no-navigation-without-resolve	gotoWithoutResolve	Unexpected goto() call without resolve().
+tests/rules/svelte/no-navigation-without-resolve/kit/cases.svelte:26:7	svelte/no-navigation-without-resolve	gotoWithoutResolve	Unexpected goto() call without resolve().
+tests/rules/svelte/no-navigation-without-resolve/kit/cases.svelte:28:12	svelte/no-navigation-without-resolve	pushStateWithoutResolve	Unexpected pushState() call without resolve().
+tests/rules/svelte/no-navigation-without-resolve/kit/cases.svelte:39:4	svelte/no-navigation-without-resolve	linkWithoutResolve	Unexpected href link without resolve().
+tests/rules/svelte/no-navigation-without-resolve/kit/cases.ts:3:6	svelte/no-navigation-without-resolve	gotoWithoutResolve	Unexpected goto() call without resolve().
+tests/rules/svelte/no-navigation-without-resolve/kit/options/cases.svelte:39:4	svelte/no-navigation-without-resolve	linkWithoutResolve	Unexpected href link without resolve().

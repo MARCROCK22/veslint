@@ -1,0 +1,1 @@
+tests/rules/svelte/experimental-require-slot-types/cases.svelte:1:2	svelte/experimental-require-slot-types	missingSlotsInterface	The component must define the $$Slots interface.

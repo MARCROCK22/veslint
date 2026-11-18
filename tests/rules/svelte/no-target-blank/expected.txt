@@ -1,0 +1,15 @@
+tests/rules/svelte/no-target-blank/cases.svelte:6:31	svelte/no-target-blank	error	Using target="_blank" without rel="noopener noreferrer" is a security risk.
+tests/rules/svelte/no-target-blank/cases.svelte:7:25	svelte/no-target-blank	error	Using target="_blank" without rel="noopener noreferrer" is a security risk.
+tests/rules/svelte/no-target-blank/cases.svelte:8:24	svelte/no-target-blank	error	Using target="_blank" without rel="noopener noreferrer" is a security risk.
+tests/rules/svelte/no-target-blank/cases.svelte:10:15	svelte/no-target-blank	error	Using target="_blank" without rel="noopener noreferrer" is a security risk.
+tests/rules/svelte/no-target-blank/cases.svelte:11:19	svelte/no-target-blank	error	Using target="_blank" without rel="noopener noreferrer" is a security risk.
+tests/rules/svelte/no-target-blank/cases.svelte:12:11	svelte/no-target-blank	error	Using target="_blank" without rel="noopener noreferrer" is a security risk.
+tests/rules/svelte/no-target-blank/cases.svelte:13:21	svelte/no-target-blank	error	Using target="_blank" without rel="noopener noreferrer" is a security risk.
+tests/rules/svelte/no-target-blank/cases.svelte:16:31	svelte/no-target-blank	error	Using target="_blank" without rel="noopener noreferrer" is a security risk.
+tests/rules/svelte/no-target-blank/cases.svelte:17:31	svelte/no-target-blank	error	Using target="_blank" without rel="noopener noreferrer" is a security risk.
+tests/rules/svelte/no-target-blank/cases.svelte:21:2	svelte/no-target-blank	error	Using target="_blank" without rel="noopener noreferrer" is a security risk.
+tests/rules/svelte/no-target-blank/referrer-never/cases.svelte:6:31	svelte/no-target-blank	error	Using target="_blank" without rel="noopener noreferrer" is a security risk.
+tests/rules/svelte/no-target-blank/referrer-never/cases.svelte:7:25	svelte/no-target-blank	error	Using target="_blank" without rel="noopener noreferrer" is a security risk.
+tests/rules/svelte/no-target-blank/referrer-never/cases.svelte:8:24	svelte/no-target-blank	error	Using target="_blank" without rel="noopener noreferrer" is a security risk.
+tests/rules/svelte/no-target-blank/referrer-never/cases.svelte:17:31	svelte/no-target-blank	error	Using target="_blank" without rel="noopener noreferrer" is a security risk.
+tests/rules/svelte/no-target-blank/referrer-never/cases.svelte:21:2	svelte/no-target-blank	error	Using target="_blank" without rel="noopener noreferrer" is a security risk.

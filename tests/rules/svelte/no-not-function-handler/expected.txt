@@ -1,0 +1,15 @@
+tests/rules/svelte/no-not-function-handler/cases.svelte:10:19	svelte/no-not-function-handler	unexpected	Unexpected object in event handler.
+tests/rules/svelte/no-not-function-handler/cases.svelte:11:19	svelte/no-not-function-handler	unexpected	Unexpected array in event handler.
+tests/rules/svelte/no-not-function-handler/cases.svelte:12:19	svelte/no-not-function-handler	unexpected	Unexpected class in event handler.
+tests/rules/svelte/no-not-function-handler/cases.svelte:13:19	svelte/no-not-function-handler	unexpected	Unexpected string value in event handler.
+tests/rules/svelte/no-not-function-handler/cases.svelte:14:19	svelte/no-not-function-handler	unexpected	Unexpected number value in event handler.
+tests/rules/svelte/no-not-function-handler/cases.svelte:15:19	svelte/no-not-function-handler	unexpected	Unexpected boolean value in event handler.
+tests/rules/svelte/no-not-function-handler/cases.svelte:17:19	svelte/no-not-function-handler	unexpected	Unexpected regex value in event handler.
+tests/rules/svelte/no-not-function-handler/cases.svelte:18:19	svelte/no-not-function-handler	unexpected	Unexpected bigint value in event handler.
+tests/rules/svelte/no-not-function-handler/cases.svelte:19:19	svelte/no-not-function-handler	unexpected	Unexpected string value in event handler.
+tests/rules/svelte/no-not-function-handler/cases.svelte:20:19	svelte/no-not-function-handler	unexpected	Unexpected object in event handler.
+tests/rules/svelte/no-not-function-handler/cases.svelte:21:19	svelte/no-not-function-handler	unexpected	Unexpected object in event handler.
+tests/rules/svelte/no-not-function-handler/cases.svelte:22:19	svelte/no-not-function-handler	unexpected	Unexpected string value in event handler.
+tests/rules/svelte/no-not-function-handler/cases.svelte:24:18	svelte/no-not-function-handler	unexpected	Unexpected object in event handler.
+tests/rules/svelte/no-not-function-handler/cases.svelte:25:19	svelte/no-not-function-handler	unexpected	Unexpected string value in event handler.
+tests/rules/svelte/no-not-function-handler/cases.svelte:26:22	svelte/no-not-function-handler	unexpected	Unexpected object in event handler.

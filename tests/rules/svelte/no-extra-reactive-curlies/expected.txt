@@ -1,0 +1,4 @@
+tests/rules/svelte/no-extra-reactive-curlies/cases.svelte:4:5	svelte/no-extra-reactive-curlies	extraCurlies	Do not wrap reactive statements in curly braces unless necessary.
+tests/rules/svelte/no-extra-reactive-curlies/cases.svelte:7:5	svelte/no-extra-reactive-curlies	extraCurlies	Do not wrap reactive statements in curly braces unless necessary.
+tests/rules/svelte/no-extra-reactive-curlies/cases.svelte:8:5	svelte/no-extra-reactive-curlies	extraCurlies	Do not wrap reactive statements in curly braces unless necessary.
+tests/rules/svelte/no-extra-reactive-curlies/cases.svelte:22:5	svelte/no-extra-reactive-curlies	extraCurlies	Do not wrap reactive statements in curly braces unless necessary.

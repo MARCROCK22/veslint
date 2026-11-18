@@ -1,0 +1,11 @@
+{"rule":"svelte/require-event-dispatcher-types","upstream":"eslint-plugin-svelte v3.24.1","files":["tests/src/rules/require-event-dispatcher-types.ts"],"messages":{"missingTypeParameter":"Type parameters missing for the `createEventDispatcher` function call."},"generator":"tests/rules/svelte/upstream_ts.mjs","cases":[
+
+],"lints":[
+
+],"skipped":[
+{"id":"require-event-dispatcher-types/s0","reason":"upstream's requirements leave it out"},
+{"id":"require-event-dispatcher-types/s1","reason":"upstream's requirements leave it out"},
+{"id":"require-event-dispatcher-types/s2","reason":"upstream's requirements leave it out"},
+{"id":"require-event-dispatcher-types/s3","reason":"upstream's requirements leave it out"},
+{"id":"require-event-dispatcher-types/s4","reason":"upstream's requirements leave it out"}
+]}

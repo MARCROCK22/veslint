@@ -1,0 +1,3 @@
+tests/rules/svelte/no-nested-style-tag/cases.svelte:6:2	svelte/no-nested-style-tag	nestedStyle	Nested `<style>` elements are not scoped and may lead to unintended styles being applied.
+tests/rules/svelte/no-nested-style-tag/cases.svelte:11:2	svelte/no-nested-style-tag	nestedStyle	Nested `<style>` elements are not scoped and may lead to unintended styles being applied.
+tests/rules/svelte/no-nested-style-tag/cases.svelte:14:2	svelte/no-nested-style-tag	nestedStyle	Nested `<style>` elements are not scoped and may lead to unintended styles being applied.

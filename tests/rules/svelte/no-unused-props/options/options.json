@@ -1,0 +1,1 @@
+[{"checkImportedTypes": true, "ignorePropertyPatterns": ["ignoredProp", "/^Sk/"], "ignoreTypePatterns": ["Skipped"], "allowUnusedNestedProperties": true}]

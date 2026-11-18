@@ -1,0 +1,29 @@
+tests/rules/svelte/html-quotes/avoid/cases.svelte:8:12	svelte/html-quotes	expectedEnclosedBy	Expected to be enclosed by double quotes.	fix	121	129	"single"	end	8	20
+tests/rules/svelte/html-quotes/avoid/cases.svelte:9:12	svelte/html-quotes	expectedEnclosedBy	Expected to be enclosed by double quotes.	fix	148	156	"unquoted"	end	9	20
+tests/rules/svelte/html-quotes/avoid/cases.svelte:13:12	svelte/html-quotes	unexpectedEnclosed	Unexpected to be enclosed by any quotes.	fix	277	282	{a}	end	13	17
+tests/rules/svelte/html-quotes/avoid/cases.svelte:14:12	svelte/html-quotes	unexpectedEnclosed	Unexpected to be enclosed by any quotes.	fix	301	306	{a}	end	14	17
+tests/rules/svelte/html-quotes/avoid/cases.svelte:16:12	svelte/html-quotes	expectedEnclosedBy	Expected to be enclosed by double quotes.	fix	358	372	"pre {a} post"	end	16	26
+tests/rules/svelte/html-quotes/avoid/cases.svelte:17:12	svelte/html-quotes	expectedEnclosedBy	Expected to be enclosed by double quotes.	fix	391	402	"{a + 'x y'}"	end	17	23
+tests/rules/svelte/html-quotes/avoid/cases.svelte:20:18	svelte/html-quotes	unexpectedEnclosed	Unexpected to be enclosed by any quotes.	fix	497	508	{handler}	end	20	29
+tests/rules/svelte/html-quotes/avoid/cases.svelte:24:18	svelte/html-quotes	expectedEnclosedBy	Expected to be enclosed by double quotes.	fix	611	616	"red"	end	24	23
+tests/rules/svelte/html-quotes/avoid/cases.svelte:25:22	svelte/html-quotes	expectedEnclosedBy	Expected to be enclosed by double quotes.	fix	645	652	"{'div'}"	end	25	29
+tests/rules/svelte/html-quotes/cases.svelte:8:12	svelte/html-quotes	expectedEnclosedBy	Expected to be enclosed by double quotes.	fix	121	129	"single"	end	8	20
+tests/rules/svelte/html-quotes/cases.svelte:9:12	svelte/html-quotes	expectedEnclosedBy	Expected to be enclosed by double quotes.	fix	148	156	"unquoted"	end	9	20
+tests/rules/svelte/html-quotes/cases.svelte:13:12	svelte/html-quotes	unexpectedEnclosed	Unexpected to be enclosed by any quotes.	fix	277	282	{a}	end	13	17
+tests/rules/svelte/html-quotes/cases.svelte:14:12	svelte/html-quotes	unexpectedEnclosed	Unexpected to be enclosed by any quotes.	fix	301	306	{a}	end	14	17
+tests/rules/svelte/html-quotes/cases.svelte:16:12	svelte/html-quotes	expectedEnclosedBy	Expected to be enclosed by double quotes.	fix	358	372	"pre {a} post"	end	16	26
+tests/rules/svelte/html-quotes/cases.svelte:18:12	svelte/html-quotes	unexpectedEnclosed	Unexpected to be enclosed by any quotes.	fix	421	434	{a + 'x y'}	end	18	25
+tests/rules/svelte/html-quotes/cases.svelte:20:18	svelte/html-quotes	unexpectedEnclosed	Unexpected to be enclosed by any quotes.	fix	497	508	{handler}	end	20	29
+tests/rules/svelte/html-quotes/cases.svelte:24:18	svelte/html-quotes	expectedEnclosedBy	Expected to be enclosed by double quotes.	fix	611	616	"red"	end	24	23
+tests/rules/svelte/html-quotes/single-quoted/cases.svelte:1:14	svelte/html-quotes	expectedEnclosedBy	Expected to be enclosed by single quotes.	fix	13	17	'ts'	end	1	18
+tests/rules/svelte/html-quotes/single-quoted/cases.svelte:7:12	svelte/html-quotes	expectedEnclosedBy	Expected to be enclosed by single quotes.	fix	94	102	'double'	end	7	20
+tests/rules/svelte/html-quotes/single-quoted/cases.svelte:9:12	svelte/html-quotes	expectedEnclosedBy	Expected to be enclosed by single quotes.	fix	148	156	'unquoted'	end	9	20
+tests/rules/svelte/html-quotes/single-quoted/cases.svelte:12:12	svelte/html-quotes	expectedEnclosedBy	Expected to be enclosed by single quotes.	fix	255	258	'{a}'	end	12	15
+tests/rules/svelte/html-quotes/single-quoted/cases.svelte:13:12	svelte/html-quotes	expectedEnclosedBy	Expected to be enclosed by single quotes.	fix	277	282	'{a}'	end	13	17
+tests/rules/svelte/html-quotes/single-quoted/cases.svelte:15:12	svelte/html-quotes	expectedEnclosedBy	Expected to be enclosed by single quotes.	fix	325	339	'pre {a} post'	end	15	26
+tests/rules/svelte/html-quotes/single-quoted/cases.svelte:17:12	svelte/html-quotes	expectedEnclosed	Expected to be enclosed by quotes.	fix	391	402	"{a + 'x y'}"	end	17	23
+tests/rules/svelte/html-quotes/single-quoted/cases.svelte:19:18	svelte/html-quotes	expectedEnclosedBy	Expected to be enclosed by single quotes.	fix	459	468	'{handler}'	end	19	27
+tests/rules/svelte/html-quotes/single-quoted/cases.svelte:20:18	svelte/html-quotes	expectedEnclosedBy	Expected to be enclosed by single quotes.	fix	497	508	'{handler}'	end	20	29
+tests/rules/svelte/html-quotes/single-quoted/cases.svelte:21:19	svelte/html-quotes	expectedEnclosedBy	Expected to be enclosed by single quotes.	fix	538	541	'{b}'	end	21	22
+tests/rules/svelte/html-quotes/single-quoted/cases.svelte:23:18	svelte/html-quotes	expectedEnclosedBy	Expected to be enclosed by single quotes.	fix	583	586	'{a}'	end	23	21
+tests/rules/svelte/html-quotes/single-quoted/cases.svelte:25:22	svelte/html-quotes	expectedEnclosed	Expected to be enclosed by quotes.	fix	645	652	"{'div'}"	end	25	29

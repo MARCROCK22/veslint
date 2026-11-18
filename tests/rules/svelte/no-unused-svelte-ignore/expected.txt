@@ -1,0 +1,5 @@
+tests/rules/svelte/no-unused-svelte-ignore/cases.svelte:2:2	svelte/no-unused-svelte-ignore	missingCode	svelte-ignore comment must include the code
+tests/rules/svelte/no-unused-svelte-ignore/cases.svelte:4:2	svelte/no-unused-svelte-ignore	missingCode	svelte-ignore comment must include the code
+tests/rules/svelte/no-unused-svelte-ignore/cases.svelte:10:1	svelte/no-unused-svelte-ignore	missingCode	svelte-ignore comment must include the code
+tests/rules/svelte/no-unused-svelte-ignore/cases.svelte:12:1	svelte/no-unused-svelte-ignore	missingCode	svelte-ignore comment must include the code
+tests/rules/svelte/no-unused-svelte-ignore/cases.svelte:16:1	svelte/no-unused-svelte-ignore	missingCode	svelte-ignore comment must include the code

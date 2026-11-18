@@ -1,0 +1,4 @@
+tests/rules/svelte/no-ignored-unsubscribe/cases.svelte:5:8	svelte/no-ignored-unsubscribe	forbidden	Ignoring returned value of the subscribe method is forbidden.
+tests/rules/svelte/no-ignored-unsubscribe/cases.svelte:10:9	svelte/no-ignored-unsubscribe	forbidden	Ignoring returned value of the subscribe method is forbidden.
+tests/rules/svelte/no-ignored-unsubscribe/cases.svelte:14:9	svelte/no-ignored-unsubscribe	forbidden	Ignoring returned value of the subscribe method is forbidden.
+tests/rules/svelte/no-ignored-unsubscribe/cases.ts:2:7	svelte/no-ignored-unsubscribe	forbidden	Ignoring returned value of the subscribe method is forbidden.

@@ -1,0 +1,6 @@
+tests/rules/svelte/no-dupe-use-directives/cases.svelte:6:6	svelte/no-dupe-use-directives	duplication	This `use:tooltip` directive is the same and duplicate directives in L6.	end	6	17
+tests/rules/svelte/no-dupe-use-directives/cases.svelte:6:18	svelte/no-dupe-use-directives	duplication	This `use:tooltip` directive is the same and duplicate directives in L6.	end	6	29
+tests/rules/svelte/no-dupe-use-directives/cases.svelte:7:6	svelte/no-dupe-use-directives	duplication	This `use:tooltip` directive is the same and duplicate directives in L7.	end	7	23
+tests/rules/svelte/no-dupe-use-directives/cases.svelte:7:24	svelte/no-dupe-use-directives	duplication	This `use:tooltip` directive is the same and duplicate directives in L7.	end	7	41
+tests/rules/svelte/no-dupe-use-directives/cases.svelte:11:2	svelte/no-dupe-use-directives	duplication	This `use:tooltip` directive is the same and duplicate directives in L13.	end	11	19
+tests/rules/svelte/no-dupe-use-directives/cases.svelte:13:2	svelte/no-dupe-use-directives	duplication	This `use:tooltip` directive is the same and duplicate directives in L11.	end	13	21

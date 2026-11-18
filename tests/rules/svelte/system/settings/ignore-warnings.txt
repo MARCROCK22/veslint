@@ -1,0 +1,9 @@
+ok: sys.svelte:8:11	svelte/no-spaces-around-equal-signs-in-attribute	noSpaces	Unexpected spaces found around equal signs.
+bad: sys.svelte:1:1	svelte/system	error	The `settings.svelte.ignoreWarnings` must be an array.
+bad: sys.svelte:6:1	svelte/no-at-html-tags	unexpected	`{@html}` can lead to XSS attack.
+bad: sys.svelte:7:1	svelte/no-at-debug-tags	unexpected	Unexpected `{@debug}`.
+bad: sys.svelte:8:11	svelte/no-spaces-around-equal-signs-in-attribute	noSpaces	Unexpected spaces found around equal signs.
+num: sys.svelte:1:1	svelte/system	error	The array element in the `settings.svelte.ignoreWarnings` must be a string.
+num: sys.svelte:6:1	svelte/no-at-html-tags	unexpected	`{@html}` can lead to XSS attack.
+num: sys.svelte:7:1	svelte/no-at-debug-tags	unexpected	Unexpected `{@debug}`.
+num: sys.svelte:8:11	svelte/no-spaces-around-equal-signs-in-attribute	noSpaces	Unexpected spaces found around equal signs.

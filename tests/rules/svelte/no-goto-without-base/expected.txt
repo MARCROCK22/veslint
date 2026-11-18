@@ -1,0 +1,10 @@
+tests/rules/svelte/no-goto-without-base/kit/cases.svelte:9:7	svelte/no-goto-without-base	isNotPrefixedWithBasePath	Found a goto() call with a url that isn't prefixed with the base path.
+tests/rules/svelte/no-goto-without-base/kit/cases.svelte:12:7	svelte/no-goto-without-base	isNotPrefixedWithBasePath	Found a goto() call with a url that isn't prefixed with the base path.
+tests/rules/svelte/no-goto-without-base/kit/cases.svelte:15:7	svelte/no-goto-without-base	isNotPrefixedWithBasePath	Found a goto() call with a url that isn't prefixed with the base path.
+tests/rules/svelte/no-goto-without-base/kit/cases.svelte:17:5	svelte/no-goto-without-base	isNotPrefixedWithBasePath	Found a goto() call with a url that isn't prefixed with the base path.
+tests/rules/svelte/no-goto-without-base/kit/cases.svelte:18:18	svelte/no-goto-without-base	isNotPrefixedWithBasePath	Found a goto() call with a url that isn't prefixed with the base path.
+tests/rules/svelte/no-goto-without-base/kit/cases.svelte:20:7	svelte/no-goto-without-base	isNotPrefixedWithBasePath	Found a goto() call with a url that isn't prefixed with the base path.
+tests/rules/svelte/no-goto-without-base/kit/cases.svelte:22:7	svelte/no-goto-without-base	isNotPrefixedWithBasePath	Found a goto() call with a url that isn't prefixed with the base path.
+tests/rules/svelte/no-goto-without-base/kit/cases.svelte:23:7	svelte/no-goto-without-base	isNotPrefixedWithBasePath	Found a goto() call with a url that isn't prefixed with the base path.
+tests/rules/svelte/no-goto-without-base/kit/cases.svelte:26:29	svelte/no-goto-without-base	isNotPrefixedWithBasePath	Found a goto() call with a url that isn't prefixed with the base path.
+tests/rules/svelte/no-goto-without-base/kit/cases.ts:4:6	svelte/no-goto-without-base	isNotPrefixedWithBasePath	Found a goto() call with a url that isn't prefixed with the base path.

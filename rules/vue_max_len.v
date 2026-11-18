@@ -315,16 +315,19 @@ fn (mut c Checker) lint_vue_max_len(root C.TSNode, abs_path string, mut stats St
 	}
 	url := jsregexp.js_regex_new('[^:/?#]:\\/\\/[^?#]', 'u')!
 	mut findings := []Finding{}
-	starts := vmaxlen_line_starts(c.src)
+	// The lines of the file: for a .svelte file, not those of the template part of its lint code
+	// that follows the file in the source text (file_text).
+	file_text := c.file_text()
+	starts := vmaxlen_line_starts(file_text)
 	for i, line_start in starts {
 		line_number := i + 1
-		mut line_end := c.src.len
+		mut line_end := file_text.len
 		if i + 1 < starts.len {
 			// The line without the line break before the next one.
 			line_end = starts[i + 1]
-			last := c.src[line_end - 1]
+			last := file_text[line_end - 1]
 			if last == `\n` {
-				line_end -= if line_end - 2 >= line_start && c.src[line_end - 2] == `\r` {
+				line_end -= if line_end - 2 >= line_start && file_text[line_end - 2] == `\r` {
 					2
 				} else {
 					1
@@ -335,7 +338,7 @@ fn (mut c Checker) lint_vue_max_len(root C.TSNode, abs_path string, mut stats St
 				line_end -= 3
 			}
 		}
-		line := c.src[line_start..line_end]
+		line := file_text[line_start..line_end]
 		in_script := script_range.len > 0 && script_range[0] <= line_number
 			&& line_number <= script_range[1]
 		in_template := template_range.len > 0 && template_range[0] <= line_number

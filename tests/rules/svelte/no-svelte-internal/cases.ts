@@ -1,0 +1,10 @@
+import { noop } from 'svelte/internal';
+import 'svelte/internal/client';
+import { writable } from 'svelte/store';
+export { flush } from 'svelte/internal';
+export * from 'svelte/internal/server';
+export type { Fake } from 'svelte/internal/types';
+export const lazy = import('svelte/internal');
+export const other = import('svelte/internals');
+noop;
+writable;

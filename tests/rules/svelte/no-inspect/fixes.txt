@@ -1,0 +1,6 @@
+tests/rules/svelte/no-inspect/cases.svelte:3:2	svelte/no-inspect	unexpected	Do not use $inspect directive	end	3	10
+tests/rules/svelte/no-inspect/cases.svelte:4:2	svelte/no-inspect	unexpected	Do not use $inspect directive	end	4	10
+tests/rules/svelte/no-inspect/cases.svelte:5:18	svelte/no-inspect	unexpected	Do not use $inspect directive	end	5	26
+tests/rules/svelte/no-inspect/cases.svelte:6:8	svelte/no-inspect	unexpected	Do not use $inspect directive	end	6	16
+tests/rules/svelte/no-inspect/cases.svelte:8:3	svelte/no-inspect	unexpected	Do not use $inspect directive	end	8	11
+tests/rules/svelte/no-inspect/cases.svelte:13:13	svelte/no-inspect	unexpected	Do not use $inspect directive	end	13	21

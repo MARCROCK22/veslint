@@ -1,0 +1,8 @@
+tests/rules/svelte/require-optimized-style-attribute/cases.svelte:8:6	svelte/require-optimized-style-attribute	shorthand	It cannot be optimized because style attribute is specified using shorthand.
+tests/rules/svelte/require-optimized-style-attribute/cases.svelte:10:13	svelte/require-optimized-style-attribute	interpolationKey	It cannot be optimized because property of style declaration contain interpolation.
+tests/rules/svelte/require-optimized-style-attribute/cases.svelte:12:25	svelte/require-optimized-style-attribute	comment	It cannot be optimized because contains comments.
+tests/rules/svelte/require-optimized-style-attribute/cases.svelte:13:25	svelte/require-optimized-style-attribute	complex	It cannot be optimized because too complex.
+tests/rules/svelte/require-optimized-style-attribute/cases.svelte:14:12	svelte/require-optimized-style-attribute	complex	It cannot be optimized because too complex.
+tests/rules/svelte/require-optimized-style-attribute/cases.svelte:16:13	svelte/require-optimized-style-attribute	complex	It cannot be optimized because too complex.
+tests/rules/svelte/require-optimized-style-attribute/cases.svelte:20:6	svelte/require-optimized-style-attribute	complex	It cannot be optimized because too complex.
+tests/rules/svelte/require-optimized-style-attribute/cases.svelte:21:13	svelte/require-optimized-style-attribute	interpolationKey	It cannot be optimized because property of style declaration contain interpolation.

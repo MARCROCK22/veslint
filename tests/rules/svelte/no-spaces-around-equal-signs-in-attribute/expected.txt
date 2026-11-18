@@ -1,0 +1,10 @@
+tests/rules/svelte/no-spaces-around-equal-signs-in-attribute/cases.svelte:6:11	svelte/no-spaces-around-equal-signs-in-attribute	noSpaces	Unexpected spaces found around equal signs.
+tests/rules/svelte/no-spaces-around-equal-signs-in-attribute/cases.svelte:7:11	svelte/no-spaces-around-equal-signs-in-attribute	noSpaces	Unexpected spaces found around equal signs.
+tests/rules/svelte/no-spaces-around-equal-signs-in-attribute/cases.svelte:8:11	svelte/no-spaces-around-equal-signs-in-attribute	noSpaces	Unexpected spaces found around equal signs.
+tests/rules/svelte/no-spaces-around-equal-signs-in-attribute/cases.svelte:10:11	svelte/no-spaces-around-equal-signs-in-attribute	noSpaces	Unexpected spaces found around equal signs.
+tests/rules/svelte/no-spaces-around-equal-signs-in-attribute/cases.svelte:13:14	svelte/no-spaces-around-equal-signs-in-attribute	noSpaces	Unexpected spaces found around equal signs.
+tests/rules/svelte/no-spaces-around-equal-signs-in-attribute/cases.svelte:14:18	svelte/no-spaces-around-equal-signs-in-attribute	noSpaces	Unexpected spaces found around equal signs.
+tests/rules/svelte/no-spaces-around-equal-signs-in-attribute/cases.svelte:15:17	svelte/no-spaces-around-equal-signs-in-attribute	noSpaces	Unexpected spaces found around equal signs.
+tests/rules/svelte/no-spaces-around-equal-signs-in-attribute/cases.svelte:16:22	svelte/no-spaces-around-equal-signs-in-attribute	noSpaces	Unexpected spaces found around equal signs.
+tests/rules/svelte/no-spaces-around-equal-signs-in-attribute/cases.svelte:17:18	svelte/no-spaces-around-equal-signs-in-attribute	noSpaces	Unexpected spaces found around equal signs.
+tests/rules/svelte/no-spaces-around-equal-signs-in-attribute/cases.svelte:19:11	svelte/no-spaces-around-equal-signs-in-attribute	noSpaces	Unexpected spaces found around equal signs.

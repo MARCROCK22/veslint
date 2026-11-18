@@ -56,8 +56,15 @@ mut:
 }
 
 fn (mut c Checker) lint_prefer_const(root C.TSNode, abs_path string, mut stats Stats) ![]Finding {
-	sw := time.new_stopwatch()
 	o := pconst_options(c.rule_options(prefer_const))!
+	return c.pconst_lint(root, o, []string{}, mut stats)
+}
+
+// pconst_lint is the rule with its options; the `let` declarations with a declarator whose
+// initializer calls one of `excluded_runes` (or a member of one) are not checked
+// (svelte/prefer-const's excludedRunes).
+fn (mut c Checker) pconst_lint(root C.TSNode, o PconstOptions, excluded_runes []string, mut stats Stats) ![]Finding {
+	sw := time.new_stopwatch()
 	tree := c.scope_tree(root)
 	// The variables of the `let` declarations (not in the init of a `for`), in the order of the
 	// declarations and, in each one, of the definitions: getDeclaredVariables of each `let`
@@ -70,6 +77,9 @@ fn (mut c Checker) lint_prefer_const(root C.TSNode, abs_path string, mut stats S
 				continue
 			}
 			declaration := es_def_parent(def) or { continue }
+			if excluded_runes.len > 0 && c.pconst_calls_rune(declaration, excluded_runes) {
+				continue
+			}
 			if node_kind(declaration) == 'lexical_declaration' {
 				if parent := node_parent(declaration) {
 					if node_kind(parent) == 'for_statement' {
@@ -130,6 +140,36 @@ fn (mut c Checker) lint_prefer_const(root C.TSNode, abs_path string, mut stats S
 	}
 	stats.eval_ms += ms(sw.elapsed())
 	return findings
+}
+
+// pconst_calls_rune: a declarator of the `let` declaration has an initializer that calls one of the
+// runes, or a member of one (`$derived.by(…)`): shouldSkipDeclaration of svelte/prefer-const.
+fn (c &Checker) pconst_calls_rune(declaration C.TSNode, runes []string) bool {
+	if node_kind(declaration) != 'lexical_declaration' {
+		return false
+	}
+	for declarator in named_children(declaration) {
+		if node_kind(declarator) != 'variable_declarator' {
+			continue
+		}
+		init := unwrap_parens(node_field(declarator, 'value') or { continue })
+		// An optional call (`$props?.()`, `$derived?.by()`) is a ChainExpression in ESTree.
+		if node_kind(init) != 'call_expression' || is_optional_element(init) {
+			continue
+		}
+		callee := unwrap_parens(node_field(init, 'function') or { continue })
+		mut name_node := callee
+		if node_kind(callee) == 'member_expression' {
+			if is_optional_element(callee) {
+				continue
+			}
+			name_node = unwrap_parens(node_field(callee, 'object') or { continue })
+		}
+		if node_kind(name_node) == 'identifier' && c.text(name_node) in runes {
+			return true
+		}
+	}
+	return false
 }
 
 // pconst_skip_patterns walks up from a node past the patterns (PATTERN_TYPE) and parentheses: the

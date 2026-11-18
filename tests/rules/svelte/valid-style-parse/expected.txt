@@ -1,0 +1,4 @@
+tests/rules/svelte/valid-style-parse/cases.svelte:7:1	svelte/valid-style-parse	error	Error parsing style element. Error message: "tests/rules/svelte/valid-style-parse/cases.svelte:6:3: Unknown word color"
+tests/rules/svelte/valid-style-parse/lang/cases.svelte:7:1	svelte/valid-style-parse	error	Found unsupported style element language "stylus"
+tests/rules/svelte/valid-style-parse/scss/cases.svelte:7:1	svelte/valid-style-parse	error	Error parsing style element. Error message: "tests/rules/svelte/valid-style-parse/scss/cases.svelte:9:14: Unclosed string"
+tests/rules/svelte/valid-style-parse/unclosed/cases.svelte:7:1	svelte/valid-style-parse	error	Error parsing style element. Error message: "tests/rules/svelte/valid-style-parse/unclosed/cases.svelte:1:1: Unclosed block"

@@ -1,0 +1,8 @@
+tests/rules/svelte/no-dynamic-slot-name/cases.svelte:9:12	svelte/no-dynamic-slot-name	unexpected	`<slot>` name cannot be dynamic.
+tests/rules/svelte/no-dynamic-slot-name/cases.svelte:10:13	svelte/no-dynamic-slot-name	unexpected	`<slot>` name cannot be dynamic.
+tests/rules/svelte/no-dynamic-slot-name/cases.svelte:11:17	svelte/no-dynamic-slot-name	unexpected	`<slot>` name cannot be dynamic.
+tests/rules/svelte/no-dynamic-slot-name/cases.svelte:12:12	svelte/no-dynamic-slot-name	unexpected	`<slot>` name cannot be dynamic.
+tests/rules/svelte/no-dynamic-slot-name/cases.svelte:13:12	svelte/no-dynamic-slot-name	unexpected	`<slot>` name cannot be dynamic.
+tests/rules/svelte/no-dynamic-slot-name/cases.svelte:14:12	svelte/no-dynamic-slot-name	unexpected	`<slot>` name cannot be dynamic.
+tests/rules/svelte/no-dynamic-slot-name/cases.svelte:15:7	svelte/no-dynamic-slot-name	requireValue	`<slot>` name requires a value.
+tests/rules/svelte/no-dynamic-slot-name/cases.svelte:17:12	svelte/no-dynamic-slot-name	unexpected	`<slot>` name cannot be dynamic.
