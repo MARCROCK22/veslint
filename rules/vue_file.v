@@ -54,9 +54,6 @@ mut:
 // ends with it ends at the token before it).
 fn (c &Checker) file_token_ends(root C.TSNode) TokenEnds {
 	ends := token_ends(root)
-	if c.is_svelte() {
-		return c.svelte_file_token_ends(ends)
-	}
 	if !c.is_vue() || c.vue.doc.script.split_offsets.len == 0 {
 		return ends
 	}

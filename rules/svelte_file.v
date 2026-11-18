@@ -2,7 +2,7 @@ module rules
 
 import estree
 import offsets
-import treesitter { TokenEnds }
+import treesitter { node_field, node_kind, node_parent, node_start }
 import svelte
 import tsgo
 
@@ -58,18 +58,6 @@ pub fn (mut c Checker) set_svelte(doc &svelte.Document, ts_path string, parsers 
 // is_svelte: the file being linted is a .svelte file.
 fn (c &Checker) is_svelte() bool {
 	return c.svelte.doc != unsafe { nil }
-}
-
-// svelte_file_token_ends are the token ends of the lint tree without the separator's `;`
-// (svelte-eslint-parser drops it, and a last statement that took it ends before it).
-fn (c &Checker) svelte_file_token_ends(ends TokenEnds) TokenEnds {
-	sep := c.svelte.doc.separator
-	if sep < 0 {
-		return ends
-	}
-	return TokenEnds{
-		ends: ends.ends.filter(it != sep + 2)
-	}
 }
 
 // svelte_code_ends are the token ends of the virtual code (see SvelteView).
@@ -322,4 +310,35 @@ fn ts_line_and_character(text string, unit int) (int, int) {
 		}
 	}
 	return line, unit - line_start
+}
+
+// is_svelte_reactive_statement: a top-level `$:` statement of a .svelte file's script, which is a
+// SvelteReactiveStatement for ESLint, not a LabeledStatement (the rules about labels skip it).
+fn (c &Checker) is_svelte_reactive_statement(n C.TSNode) bool {
+	if !c.is_svelte() || node_kind(n) != 'labeled_statement'
+		|| node_start(n) >= c.svelte.doc.lint_start {
+		return false
+	}
+	label := node_field(n, 'label') or { return false }
+	parent := node_parent(n) or { return false }
+	return c.text(label) == '\$' && node_kind(parent) == 'program'
+}
+
+// file_text is the text of the file: for a .svelte file, the source text without the template
+// part of the lint code (what the rules that read the text, not the nodes, look at).
+fn (c &Checker) file_text() string {
+	if c.is_svelte() {
+		return c.src[..c.svelte.doc.src.len]
+	}
+	return c.src
+}
+
+// svelte_binding_assignment: the assignment is the lint code's wrapper of a `bind:` directive's
+// name (`(0,(name)+=0);`), not an assignment of the file: its right side is the wrapper's.
+fn (c &Checker) svelte_binding_assignment(t &estree.EsTree, node int) bool {
+	if !c.is_svelte() || t.nodes[node].start < c.svelte.doc.lint_start {
+		return false
+	}
+	right := t.node(node, .right) or { return false }
+	return c.svelte.doc.lint_to_file(t.nodes[right].start, false) < 0
 }

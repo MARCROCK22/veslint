@@ -1,0 +1,26 @@
+// eslint_each.mjs ESLINT_PACKAGE_JSON CONFIG FILE...: lints each file on its own with ESLint's API
+// (in the current directory), so that a rule that throws on one file only loses that file. Prints
+// ESLint's JSON results; a file a rule threw on has one fatal message with the rule `crash`.
+import { createRequire } from 'node:module';
+import path from 'node:path';
+const [eslintPackage, config, ...files] = process.argv.slice(2);
+const { ESLint } = createRequire(path.resolve(eslintPackage))('eslint');
+// eslint-plugin-vue makes its wrapper rules when it loads, of ESLint Stylistic's rules when
+// @stylistic/eslint-plugin resolves from the current directory: it loads where veslint resolves the
+// configuration with bun (VESLINT_ESLINT_DIR, the directory of that ESLint), as veslint decides.
+const here = process.cwd();
+process.chdir(path.dirname(path.dirname(path.dirname(path.resolve(eslintPackage)))));
+createRequire(import.meta.url)('../../build/upstream/vue-deps/node_modules/eslint-plugin-vue');
+process.chdir(here);
+const eslint = new ESLint({ overrideConfigFile: config });
+const results = [];
+for (const file of files) {
+  try {
+    results.push(...(await eslint.lintFiles([file])));
+  } catch (error) {
+    const message = String(error?.message ?? error).split('\n')[0];
+    const rule = /Rule: "([^"]+)"/.exec(String(error?.message ?? ''))?.[1] ?? 'unknown';
+    results.push({ filePath: path.resolve(file), messages: [{ ruleId: 'crash', fatal: true, severity: 2, line: 0, column: 0, message: `${rule}: ${message}` }] });
+  }
+}
+process.stdout.write(JSON.stringify(results));

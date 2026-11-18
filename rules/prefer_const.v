@@ -273,6 +273,11 @@ fn (c &Checker) pconst_identifier(tree &ScopeTree, v int, ignore_read_before_ass
 	for r in variable.references {
 		reference := tree.references[r]
 		if reference.write {
+			// A prop's virtual reference: its identifier is a copy whose parent is the script
+			// element, which cannot become a declaration, and another node than the definition's.
+			if reference.virtual {
+				return none
+			}
 			if writer >= 0 && node_key(tree.references[writer].identifier) != node_key(reference.identifier) {
 				return none
 			}
