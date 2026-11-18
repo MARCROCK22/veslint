@@ -702,6 +702,20 @@ else
 	ko "Svelte files: a JavaScript script (code $code)"
 	cat "$TMP/svelte-javascript.out" "$TMP/svelte-javascript.err"
 fi
+# svelte/system: the rules settings.svelte.ignoreWarnings names (exactly, or by a `/regexp/`) are
+# disabled outside the scripts, and an ignoreWarnings that is not an array of strings is reported,
+# as ESLint gives them with eslint-plugin-svelte's processor (tests/rules/svelte/system/settings:
+# a configuration of each kind and what ESLint gave, pinned).
+: > "$TMP/svelte-system.out"
+for config in ok bad num; do
+	(cd tests/rules/svelte/system/settings && ../../../../../veslint --config "$config.json" sys.svelte 2> /dev/null) |
+		sed "s|^|$config: |" >> "$TMP/svelte-system.out"
+done
+if diff -u tests/rules/svelte/system/settings/expected.txt "$TMP/svelte-system.out"; then
+	ok "svelte/system: settings.svelte.ignoreWarnings"
+else
+	ko "svelte/system: settings.svelte.ignoreWarnings"
+fi
 
 # veslint_batched OUT ERR ARGUMENTS... -- FILES...: ./veslint with the arguments and the files,
 # appending to OUT and ERR; the files go in batches that fit in a Windows command line (32,767

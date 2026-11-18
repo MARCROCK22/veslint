@@ -429,6 +429,7 @@ fn (mut c Checker) svcd_system_set() (SvcdSet, []Finding) {
 		stmt:         c.position_range(0, 0)
 		fixed_line:   1
 		fixed_column: 1
+		no_end:       true
 	}
 	match ignore {
 		json2.Null {}
