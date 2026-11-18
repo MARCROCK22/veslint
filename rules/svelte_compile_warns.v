@@ -283,11 +283,12 @@ fn (mut c Checker) svc_compute() SvcResult {
 			has_script = true
 		}
 	}
+	config := c.svelte_config(c.sv_file_path(c.svelte.ts_path))
 	compiled := svc_compile(text, doc, c.svelte.parsers, svelte_compiler.Options{
 		custom_element: c.svc_custom_element()
 		transpiled:     true
-		runes:          c.language.svelte_config_runes
-		async:          c.language.svelte_config_async
+		runes:          config.runes
+		async:          config.async
 	}, c.script_target <= 1)
 	if compiled.is_error {
 		return SvcResult{
@@ -333,10 +334,10 @@ fn (mut c Checker) svc_compute() SvcResult {
 		}
 	}
 	// compilerOptions.runes applies unless <svelte:options runes> is there, as in Svelte.
-	runes := if c.svc_options_runes() || c.language.svelte_config_runes < 0 {
+	runes := if c.svc_options_runes() || config.runes < 0 {
 		compiled.runes
 	} else {
-		c.language.svelte_config_runes == 1
+		config.runes == 1
 	}
 	return SvcResult{
 		warnings:       warnings

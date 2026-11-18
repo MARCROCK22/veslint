@@ -13,6 +13,7 @@ tests/rules/svelte/valid-compile/cases.svelte:31:1	svelte/valid-compile	error	Bu
 tests/rules/svelte/valid-compile/cases.svelte:32:1	svelte/valid-compile	error	Avoid `<marquee>` elements\nhttps://svelte.dev/e/a11y_distracting_elements(a11y_distracting_elements)
 tests/rules/svelte/valid-compile/cases.svelte:33:12	svelte/valid-compile	error	Empty block\nhttps://svelte.dev/e/block_empty(block_empty)
 tests/rules/svelte/valid-compile/cases.svelte:37:9	svelte/valid-compile	error	A bidirectional control character was detected in your code. These characters can be used to alter the visual direction of your code and could have unintended consequences\nhttps://svelte.dev/e/bidirectional_control_characters(bidirectional_control_characters)
+tests/rules/svelte/valid-compile/config-runes/on/cases.svelte:2:7	svelte/valid-compile	error	`count` is updated, but is not declared with `$state(...)`. Changing its value will not correctly trigger updates\nhttps://svelte.dev/e/non_reactive_update(non_reactive_update)
 tests/rules/svelte/valid-compile/css/cases.svelte:9:2	svelte/valid-compile	error	Unused CSS selector ".unused"\nhttps://svelte.dev/e/css_unused_selector(css_unused_selector)
 tests/rules/svelte/valid-compile/css/cases.svelte:12:2	svelte/valid-compile	error	Unused CSS selector ":global(.g) .missing"\nhttps://svelte.dev/e/css_unused_selector(css_unused_selector)
 tests/rules/svelte/valid-compile/css/cases.svelte:15:2	svelte/valid-compile	error	Unused CSS selector "div > p"\nhttps://svelte.dev/e/css_unused_selector(css_unused_selector)

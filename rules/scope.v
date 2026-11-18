@@ -303,6 +303,9 @@ pub:
 	// svelteConfig, which getSvelteContext reads under settings.svelte.kit.files.routes): '' when
 	// not a string.
 	svelte_kit_routes string
+	// svelte_config_given: parserOptions.svelteConfig is truthy (svelte-eslint-parser then takes it
+	// as the svelteConfig and does not read svelte.config.js).
+	svelte_config_given bool
 	// svelte_config_runes / svelte_config_async: parserOptions.svelteConfig.compilerOptions.runes
 	// (-1 unset, 0 false, 1 true) and .experimental.async, what eslint-plugin-svelte compiles with.
 	svelte_config_runes int = -1
@@ -404,6 +407,12 @@ pub fn parse_language_options(value json2.Any) LanguageOptions {
 		global_return:           global_return
 		isolated_declarations:   isolated.json_str() !in ['false', 'null', '0', '""']
 		type_information:        type_information
+		svelte_config_given:     (parser['svelteConfig'] or { json2.Any(false) }).json_str() !in [
+			'false',
+			'null',
+			'0',
+			'""',
+		]
 		svelte_kit_routes:       scope_svelte_kit_routes(parser)
 		svelte_config_runes:     scope_svelte_compiler_option(parser, ['runes'])
 		svelte_config_async:     scope_svelte_compiler_option(parser, ['experimental', 'async']) == 1
