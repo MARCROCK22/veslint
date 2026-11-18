@@ -24,61 +24,26 @@ not compared	g13/src/require-store-reactive-access_v3.svelte	crash	@typescript-e
 not compared	g15/src/parser_integrations_type-info-tests_no-unnecessary-condition01-input.svelte	crash	@typescript-eslint/no-unused-vars: Cannot read properties of undefined (reading 'type')
 not compared	g15/src/parser_integrations_type-info-tests_no-unnecessary-condition03-input.svelte	crash	@typescript-eslint/no-unused-vars: Cannot read properties of undefined (reading 'type')
 #
-# eslint-plugin-svelte's indent fixtures written one token per line: tree-sitter's grammar reads some
-# line breaks as statement ends where typescript-estree does not (as on a .ts file; tests/svelte/known.txt
-# lists these files for the parser).
-only eslint	g00/src/indent_v0.svelte:10:5	prefer-const	useConst	'label' is never reassigned. Use 'const' instead.	fix	99	150	const\n    label\n      =\n      `${area} square pixels`	end	10	10
-only eslint	g00/src/indent_v0.svelte:12:30	@stylistic/semi	missingSemi	Missing semicolon.	fix	150	150	;	end	13	1
-only eslint	g00/src/indent_v0.svelte:15:7	@typescript-eslint/no-unsafe-call	errorCall	Unsafe call of a type that could not be resolved.	end	15	13
+# eslint-plugin-svelte's indent fixtures written one token per line. Their scripts parse as
+# typescript-estree reads them (tools/svelte_parse_diff.mjs) but indent_i72's, whose JSDoc type `T!`
+# tree-sitter's grammar does not read (tests/svelte/known.txt): veslint lints none of it. The others are
+# open differences of the rules on that code (the ranges of semi-style's fixes at the end of the script,
+# quotes in a tagged template, types of the virtual code), not of the parser.
 only eslint	g00/src/indent_v0.svelte:5:11	@typescript-eslint/no-unsafe-member-access	unsafeMemberExpression	Unsafe member access .width on an `any` value.	end	5	16
 only eslint	g00/src/indent_v0.svelte:7:13	@typescript-eslint/no-unsafe-member-access	unsafeMemberExpression	Unsafe member access .height on an `any` value.	end	7	19
-only eslint	g00/src/indent_v0.svelte:7:19	@stylistic/semi	missingSemi	Missing semicolon.	fix	91	91	;	end	8	1
-only eslint	g04/src/indent_i51.svelte:11:2	@typescript-eslint/no-unsafe-member-access	errorMemberExpression	Unsafe member access .d on a type that cannot be resolved.	end	11	3
-only eslint	g04/src/indent_i51.svelte:12:14	@typescript-eslint/no-extraneous-class	empty	Unexpected empty class.	end	12	17
-only eslint	g04/src/indent_i51.svelte:12:18	marcrock/no-newline-if-body-class-empty	noNewLine	Empty body class should not have a newline.	fix	81	82		end	13	2
-only eslint	g04/src/indent_i51.svelte:8:1	@stylistic/no-extra-parens	unexpected	Unnecessary parentheses around expression.	fix	54	59	\nd\n	end	8	2
 only eslint	g04/src/indent_i84.svelte:9:1	@stylistic/semi-style	expectedSemiColon	Expected this semicolon to be at the end of the previous line.	fix	87	90	;\n	end	9	2
 only eslint	g04/src/indent_i85.svelte:9:1	@stylistic/semi-style	expectedSemiColon	Expected this semicolon to be at the end of the previous line.	fix	93	96	;\n	end	9	2
 only eslint	g05/src/indent_i24.svelte:21:1	@stylistic/semi-style	expectedSemiColon	Expected this semicolon to be at the end of the previous line.	fix	141	144	;\n	end	21	2
 only eslint	g05/src/indent_i66.svelte:22:1	@stylistic/semi-style	expectedSemiColon	Expected this semicolon to be at the end of the previous line.	fix	127	130	;\n	end	22	2
 only eslint	g11/src/indent_i67.svelte:25:1	@stylistic/semi-style	expectedSemiColon	Expected this semicolon to be at the end of the previous line.	fix	151	154	;\n	end	25	2
-only eslint	g12/src/indent_i4.svelte:10:1	prefer-const	useConst	'label' is never reassigned. Use 'const' instead.	fix	61	96	const\nlabel\n=\n`${area} square pixels`	end	10	6
-only eslint	g12/src/indent_i4.svelte:12:24	@stylistic/semi	missingSemi	Missing semicolon.	fix	96	96	;	end	13	1
-only eslint	g12/src/indent_i4.svelte:15:5	@typescript-eslint/no-unsafe-call	errorCall	Unsafe call of a type that could not be resolved.	end	15	11
 only eslint	g12/src/indent_i4.svelte:5:5	@typescript-eslint/no-unsafe-member-access	unsafeMemberExpression	Unsafe member access .width on an `any` value.	end	5	10
-only eslint	g12/src/indent_i4.svelte:7:11	@stylistic/semi	missingSemi	Missing semicolon.	fix	57	57	;	end	8	1
 only eslint	g12/src/indent_i4.svelte:7:5	@typescript-eslint/no-unsafe-member-access	unsafeMemberExpression	Unsafe member access .height on an `any` value.	end	7	11
-only veslint	g00/src/indent_v0.svelte:1:0	eslint	fatal	Parsing error: svelte: the restore of a declaration found no VariableDeclaration
 only veslint	g04/src/indent_i49.svelte:13:1	@typescript-eslint/triple-slash-reference	tripleSlashReference	Do not use a triple slash reference for helpers.d.ts, use `import` style instead.	end	13	38
 only veslint	g04/src/indent_i49.svelte:14:1	@typescript-eslint/triple-slash-reference	tripleSlashReference	Do not use a triple slash reference for lib/rules/index.d.ts, use `import` style instead.	end	14	46
-only veslint	g04/src/indent_i51.svelte:11:0	eslint	fatal	Parsing error: Parsing error.
 only veslint	g04/src/indent_i84.svelte:9:1	@stylistic/semi-style	expectedSemiColon	Expected this semicolon to be at the end of the previous line.	fix	87	89	;\n	end	9	2
 only veslint	g04/src/indent_i85.svelte:9:1	@stylistic/semi-style	expectedSemiColon	Expected this semicolon to be at the end of the previous line.	fix	93	95	;\n	end	9	2
-only veslint	g05/src/indent_i24.svelte:31:1	@typescript-eslint/no-use-before-define	noUseBeforeDefine	'a1' was used before it was defined.	end	31	3
-only veslint	g05/src/indent_i24.svelte:33:1	@typescript-eslint/no-use-before-define	noUseBeforeDefine	'b1' was used before it was defined.	end	33	3
-only veslint	g05/src/indent_i24.svelte:34:2	@stylistic/semi	missingSemi	Missing semicolon.	fix	188	188	;	end	35	1
-only veslint	g05/src/indent_i24.svelte:35:1	@typescript-eslint/no-unused-expressions	unusedExpression	Expected an assignment or function call and instead saw an expression.	end	35	5
-only veslint	g05/src/indent_i24.svelte:35:5	@stylistic/semi	missingSemi	Missing semicolon.	fix	193	193	;	end	36	1
-only veslint	g05/src/indent_i24.svelte:36:1	@typescript-eslint/no-unused-expressions	unusedExpression	Expected an assignment or function call and instead saw an expression.	end	36	6
-only veslint	g05/src/indent_i24.svelte:39:1	@typescript-eslint/no-use-before-define	noUseBeforeDefine	'a1' was used before it was defined.	end	39	3
-only veslint	g05/src/indent_i24.svelte:43:1	@typescript-eslint/no-use-before-define	noUseBeforeDefine	'b1' was used before it was defined.	end	43	3
-only veslint	g05/src/indent_i24.svelte:46:2	@stylistic/semi	missingSemi	Missing semicolon.	fix	230	230	;	end	47	1
-only veslint	g05/src/indent_i24.svelte:47:1	@typescript-eslint/no-unused-expressions	unusedExpression	Expected an assignment or function call and instead saw an expression.	end	47	5
-only veslint	g05/src/indent_i24.svelte:47:5	@stylistic/semi	missingSemi	Missing semicolon.	fix	235	235	;	end	48	1
-only veslint	g05/src/indent_i24.svelte:48:1	@typescript-eslint/no-unused-expressions	unusedExpression	Expected an assignment or function call and instead saw an expression.	end	48	6
-only veslint	g05/src/indent_i66.svelte:13:1	@typescript-eslint/no-use-before-define	noUseBeforeDefine	'Bar' was used before it was defined.	end	13	4
-only veslint	g05/src/indent_i66.svelte:14:2	@stylistic/semi	missingSemi	Missing semicolon.	fix	95	95	;	end	15	1
-only veslint	g05/src/indent_i66.svelte:15:1	@typescript-eslint/no-unused-expressions	unusedExpression	Expected an assignment or function call and instead saw an expression.	end	15	5
-only veslint	g05/src/indent_i66.svelte:15:5	@stylistic/semi	missingSemi	Missing semicolon.	fix	100	100	;	end	16	1
-only veslint	g05/src/indent_i66.svelte:16:1	@typescript-eslint/no-unused-expressions	unusedExpression	Expected an assignment or function call and instead saw an expression.	end	16	7
 only veslint	g05/src/indent_i66.svelte:22:1	@stylistic/semi-style	expectedSemiColon	Expected this semicolon to be at the end of the previous line.	fix	127	129	;\n	end	22	2
-only veslint	g11/src/indent_i67.svelte:14:1	@typescript-eslint/no-use-before-define	noUseBeforeDefine	'Bar' was used before it was defined.	end	14	4
-only veslint	g11/src/indent_i67.svelte:16:2	@stylistic/semi	missingSemi	Missing semicolon.	fix	111	111	;	end	17	1
-only veslint	g11/src/indent_i67.svelte:17:1	@typescript-eslint/no-unused-expressions	unusedExpression	Expected an assignment or function call and instead saw an expression.	end	17	5
-only veslint	g11/src/indent_i67.svelte:17:5	@stylistic/semi	missingSemi	Missing semicolon.	fix	116	116	;	end	18	1
-only veslint	g11/src/indent_i67.svelte:18:1	@typescript-eslint/no-unused-expressions	unusedExpression	Expected an assignment or function call and instead saw an expression.	end	18	7
 only veslint	g11/src/indent_i67.svelte:25:1	@stylistic/semi-style	expectedSemiColon	Expected this semicolon to be at the end of the previous line.	fix	151	153	;\n	end	25	2
-only veslint	g12/src/indent_i4.svelte:1:0	eslint	fatal	Parsing error: svelte: the restore of a declaration found no VariableDeclaration
 only veslint	g14/src/indent_i39.svelte:23:12	@typescript-eslint/naming-convention	doesNotMatchFormat	Function name `example_2` must match one of the following formats: camelCase	end	23	21
 only veslint	g14/src/indent_i39.svelte:31:10	@typescript-eslint/naming-convention	doesNotMatchFormat	Function name `example_3` must match one of the following formats: camelCase	end	31	19
 #
