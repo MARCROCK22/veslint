@@ -287,8 +287,10 @@ for (const rule of rules) {
     fs.writeFileSync(file, text);
   }
   if (out) {
-    fs.mkdirSync(path.join(out, 'svelte'), { recursive: true });
-    fs.writeFileSync(path.join(out, 'svelte', `${rule}.json`), JSON.stringify(results));
+    // A rule id may have a scope of its own (`svelte/@typescript-eslint/no-unnecessary-condition`).
+    const target = path.join(out, 'svelte', `${rule}.json`);
+    fs.mkdirSync(path.dirname(target), { recursive: true });
+    fs.writeFileSync(target, JSON.stringify(results));
   }
   total += data.cases.length + (data.lints?.length ?? 0);
   kept += counts.upstream;

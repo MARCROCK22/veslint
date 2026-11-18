@@ -217,7 +217,7 @@ for json in tests/config-errors/*.json; do
 	fi
 done
 # Any other message (parse errors, a rule in another rule's file) is a failure.
-if grep -vP "^tests/rules/((?:@[^/]+/|seyfert/|unicorn/|perfectionist/|marcrock/|vue/|svelte/)?[^/]+)/(?:.+/)?cases\.(?:tsx?|vue|svelte):[0-9]+:[0-9]+\t\1\t" "$TMP/reference.txt" > "$TMP/others.txt"; then
+if grep -vP "^tests/rules/((?:svelte/@[^/]+/|@[^/]+/|seyfert/|unicorn/|perfectionist/|marcrock/|vue/|svelte/)?[^/]+)/(?:.+/)?cases\.(?:tsx?|vue|svelte):[0-9]+:[0-9]+\t\1\t" "$TMP/reference.txt" > "$TMP/others.txt"; then
 	echo "FAIL   unexpected ESLint messages:"
 	cat "$TMP/others.txt"
 	fail=1
