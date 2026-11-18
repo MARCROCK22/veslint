@@ -68,6 +68,7 @@ fn (mut c Checker) lint_vue_block_order(root C.TSNode, abs_path string, mut stat
 				}
 				message_id: 'error'
 				text:       order.selector.error
+				no_end:     true
 			}
 		}
 	}

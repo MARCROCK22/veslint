@@ -1757,6 +1757,9 @@ pub:
 	// (from 1), and the report has no end.
 	fixed_line   int
 	fixed_column int
+	// The report's `loc` is a line and a column without an end (`{ line: 0, column: 0 }`, a
+	// selector error of vue/block-order): the line has no end with --fixes.
+	no_end bool
 }
 
 // problem_rule is the `rule` of the problems ESLint reports without a rule (`ruleId: null`).
