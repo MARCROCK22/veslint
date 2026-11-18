@@ -62,6 +62,10 @@ fn vncc_options(options []json2.Any) !VnccOptions {
 
 // vncc_is_underscored ports isUnderscored.
 fn vncc_is_underscored(name string) bool {
+	// Most names have no `_` (the globals of the libs among them): no copy for those.
+	if !name.contains('_') {
+		return false
+	}
 	body := name.trim_left('_').trim_right('_')
 	units := utf16_units(body)
 	return body.contains('_') && jsregexp.js_to_upper(units) != units
@@ -262,7 +266,6 @@ fn (mut c Checker) vncc_id_of(t &estree.EsTree, n C.TSNode) ?int {
 fn (mut c Checker) lint_camelcase_base(root C.TSNode, abs_path string, mut stats Stats) ![]Finding {
 	o := vncc_options(c.rule_options(vue_wrap_camelcase))!
 	t := c.es_tree(root, abs_path) or { return []Finding{} }
-	tree := c.scope_tree(t.nodes[t.root].ts)
 	mut x := VnccCtx{
 		t: t
 		o: o
@@ -277,6 +280,8 @@ fn (mut c Checker) lint_camelcase_base(root C.TSNode, abs_path string, mut stats
 			.variable_declaration, .function_declaration, .function_expression,
 			.arrow_function_expression, .class_declaration, .class_expression, .catch_clause {
 				stats.checked++
+				// The scope tree only when there is a declaration (most expressions have none).
+				tree := c.scope_tree(t.nodes[t.root].ts)
 				for v in vncc_declared_variables(tree, t, node) {
 					variable := tree.variables[v]
 					if vncc_is_good_name(variable.name, o) || variable.identifiers.len == 0 {
@@ -335,6 +340,10 @@ fn (mut c Checker) lint_camelcase_base(root C.TSNode, abs_path string, mut stats
 // the script (its globals without declarations and the references that resolve to nothing).
 fn (mut c Checker) vncc_program(root C.TSNode, abs_path string) ![]Finding {
 	o := vncc_options(c.rule_options(vue_camelcase))!
+	// Every name it reports has a `_`: a script without one needs no scope tree.
+	if !c.vue.doc.script.code.contains('_') {
+		return []Finding{}
+	}
 	t := c.es_tree(root, abs_path) or { return []Finding{} }
 	tree := c.scope_tree(root)
 	mut x := VnccCtx{
@@ -346,7 +355,7 @@ fn (mut c Checker) vncc_program(root C.TSNode, abs_path string) ![]Finding {
 	}
 	if !o.ignore_globals {
 		for v in tree.scopes[tree.global_scope()].variables {
-			variable := tree.variables[v]
+			variable := unsafe { &tree.variables[v] }
 			if variable.identifiers.len > 0 || vncc_is_good_name(variable.name, o) {
 				continue
 			}

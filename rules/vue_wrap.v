@@ -174,6 +174,17 @@ fn (c &Checker) vue_wrap_dynamic_container(n VueTNode) bool {
 // vue_wrap_snippets are the snippets of the template (or of the document) with the nodes the
 // traversal visits, in the order it enters them.
 fn (mut c Checker) vue_wrap_snippets(w VueWrap) []VueWrapSnippet {
+	// The same for every rule with the same flags: once per file.
+	key := int(w.apply_document) | int(w.skip_dynamic_arguments) << 1 | int(w.slot_scope_as_function) << 2
+	if cached := c.vue.wrap_snippets[key] {
+		return cached
+	}
+	out := c.vue_wrap_snippets_of(w)
+	c.vue.wrap_snippets[key] = out
+	return out
+}
+
+fn (mut c Checker) vue_wrap_snippets_of(w VueWrap) []VueWrapSnippet {
 	steps := if w.apply_document { c.vue_document_steps() } else { c.vue_template_steps() }
 	mut out := []VueWrapSnippet{}
 	mut index := map[int]int{}
@@ -376,6 +387,43 @@ fn (c &Checker) vue_wrap_html_quotes() map[int]u8 {
 	return out
 }
 
+// VueWrapCached is what the wrapper rules make of a snippet, once per file (VueView.wrap_cache):
+// its ESTree in its own offsets, its tokens of the template token store, the code the rules read
+// and its token ends.
+struct VueWrapCached {
+	ok     bool // the snippet converts
+	es     estree.EsTree
+	tokens &SourceTokens = unsafe { nil }
+	code   string
+	ends   treesitter.TokenEnds
+}
+
+fn (mut c Checker) vue_wrap_cached(snippet int, top C.TSNode) VueWrapCached {
+	if cached := c.vue.wrap_cache[snippet] {
+		return cached
+	}
+	s := &c.vue.doc.snippets[snippet]
+	es := estree.convert_with(top, s.code, s.tsx, estree.Options{
+		module:       true
+		regexp_valid: fn (pattern string, flags string) bool {
+			return jsregexp.regexp_new(estree.utf16_units(pattern), flags) != none
+		}
+	}) or {
+		c.vue.wrap_cache[snippet] = VueWrapCached{}
+		return VueWrapCached{}
+	}
+	tokens, code := vue_wrap_tokens(c.vue.doc, s, top)
+	cached := VueWrapCached{
+		ok:     true
+		es:     es
+		tokens: tokens
+		code:   code
+		ends:   token_ends(top)
+	}
+	c.vue.wrap_cache[snippet] = cached
+	return cached
+}
+
 // vue_wrap_lint runs the base rule of a wrapper rule on the template: its findings, in the file.
 fn (mut c Checker) vue_wrap_lint(rule string, w VueWrap, abs_path string, mut stats Stats) ![]Finding {
 	if w.apply_document {
@@ -415,12 +463,15 @@ fn (mut c Checker) vue_wrap_lint(rule string, w VueWrap, abs_path string, mut st
 			continue
 		}
 		top := root_node(s.tree)
-		mut es := estree.convert_with(top, s.code, s.tsx, estree.Options{
-			module:       true
-			regexp_valid: fn (pattern string, flags string) bool {
-				return jsregexp.regexp_new(estree.utf16_units(pattern), flags) != none
-			}
-		}) or { continue }
+		cached := c.vue_wrap_cached(ws.snippet, top)
+		if !cached.ok {
+			continue
+		}
+		// The nodes are the cache's copy: their parents change below.
+		mut es := estree.EsTree{
+			...cached.es
+			nodes: cached.es.nodes.clone()
+		}
 		mut visit := []bool{len: es.nodes.len}
 		for i in ws.visited {
 			if i < visit.len {
@@ -446,13 +497,13 @@ fn (mut c Checker) vue_wrap_lint(rule string, w VueWrap, abs_path string, mut st
 			parent: -1
 		}
 		es.visit << false
-		tokens, code := vue_wrap_tokens(doc, s, top)
+		tokens, code := cached.tokens, cached.code
 		// The tokens of the template in the snippet: a report outside them is on the wrapper.
 		content_start := if tokens.all.len > 0 { tokens.all[0].start } else { 0 }
 		content_end := if tokens.all.len > 0 { tokens.all.last().end } else { 0 }
 		saved := c.vue_wrap_save(w.base)
 		c.src = code
-		c.tokens = token_ends(top)
+		c.tokens = cached.ends
 		c.node_index = treesitter.NodeIndex{}
 		c.file_tokens = tokens
 		c.file_es_state = .built
@@ -472,6 +523,8 @@ fn (mut c Checker) vue_wrap_lint(rule string, w VueWrap, abs_path string, mut st
 				if r >= es.nodes.len || !es.nodes[r].has_ts {
 					continue
 				}
+				// scope_tree is built from the root it is first asked with: a subtree.
+				c.file_scopes = unsafe { nil }
 				found << c.vue_wrap_base(w.base, es.nodes[r].ts, abs_path, mut stats) or {
 					failure = err.msg()
 					break
