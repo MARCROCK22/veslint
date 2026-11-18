@@ -863,11 +863,26 @@ phase "each rule alone on every fixture, and every rule at once"
 printf '{"rules": {"@typescript-eslint/no-floating-promises": "warn"}}' > "$TMP/warn.json"
 code=0
 ./veslint --config "$TMP/warn.json" tests/rules/@typescript-eslint/no-floating-promises/cases.ts > "$TMP/warn.out" 2> "$TMP/warn-config.err" || code=$?
-if [[ $code -eq 0 && -s "$TMP/warn.out" ]] && grep -q 'of them warnings' "$TMP/warn-config.err"; then
-	ok "--config: a rule set to warn reports and exits with code 0"
+# Each line of a warning is the line of the error (expected.txt, pinned with the rule set to error)
+# with the field `warning` at the end.
+if [[ $code -eq 0 && -s "$TMP/warn.out" ]] && grep -q 'of them warnings' "$TMP/warn-config.err" &&
+	diff -u <(grep '^tests/rules/@typescript-eslint/no-floating-promises/cases\.ts:' tests/rules/@typescript-eslint/no-floating-promises/expected.txt | sed 's/$/\twarning/') "$TMP/warn.out"; then
+	ok "--config: a rule set to warn reports, its lines end with the field warning, and it exits with code 0"
 else
 	ko "--config: a rule set to warn (code $code)"
 	cat "$TMP/warn-config.err"
+fi
+# A warn rule and an error rule in the same file, without --fixes: each line is that of --fixes
+# (tests/config/expected.txt) without the fix, the suggestions and the end, and keeps its `warning`.
+code=0
+(cd tests/config && ../../veslint --config resolved.json base.ts) > "$TMP/levels.out" 2> "$TMP/levels.err" || code=$?
+if [[ $code -eq 1 ]] && grep -q $'^base\\.ts:[0-9:]*\t@typescript-eslint/await-thenable\t.*\twarning$' "$TMP/levels.out" &&
+	grep -q $'^base\\.ts:[0-9:]*\t@typescript-eslint/no-floating-promises\t' "$TMP/levels.out" &&
+	diff -u <(grep '^base\.ts:' tests/config/expected.txt | awk -F'\t' -v OFS='\t' '{ print $1, $2, $3, $4 ($NF == "warning" ? "\twarning" : "") }') "$TMP/levels.out"; then
+	ok "an error and a warning in the same file: only the warning ends with the field warning"
+else
+	ko "an error and a warning in the same file (code $code)"
+	cat "$TMP/levels.err"
 fi
 printf '{"rules": {"@typescript-eslint/no-for-in-array": ["error", {"anything": true}]}}' > "$TMP/options.json"
 # Options that do not fit the schema of the rule are rejected with ESLint's own words (see also

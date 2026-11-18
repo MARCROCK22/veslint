@@ -1174,6 +1174,17 @@ fn (mut p CParser) element() ! {
 			if pn.typ.is_element() && pn.name == name {
 				break
 			}
+			if pn.typ == .regular_element {
+				if !p.has_auto || p.auto_tag != name {
+					frag := p.ast.fragments[pn.fragment]
+					p.ast.warnings << CWarning{
+						code:  'element_implicitly_closed'
+						start: pn.start
+						end:   if frag.len > 0 { p.ast.nodes[frag[0]].start } else { start }
+						args:  ['</${name}>', '</${pn.name}>']
+					}
+				}
+			}
 			if pn.typ != .regular_element {
 				if p.has_auto && p.auto_tag == name {
 					return compile_error('element_invalid_closing_tag_autoclosed', '`</${name}>` attempted to close element that was already automatically closed by `<${p.auto_reason}>` (cannot nest `<${p.auto_reason}>` inside `<${name}>`)',
@@ -1237,6 +1248,13 @@ fn (mut p CParser) element() ! {
 	p.allow_whitespace()
 	if parent >= 0 && p.ast.nodes[parent].typ == .regular_element
 		&& closing_tag_omitted(p.ast.nodes[parent].name, name) {
+		pfrag := p.ast.fragments[p.ast.nodes[parent].fragment]
+		p.ast.warnings << CWarning{
+			code:  'element_implicitly_closed'
+			start: p.ast.nodes[parent].start
+			end:   if pfrag.len > 0 { p.ast.nodes[pfrag[0]].start } else { start }
+			args:  ['<${name}>', '</${p.ast.nodes[parent].name}>']
+		}
 		p.ast.nodes[parent].end = start
 		p.pop()
 		p.auto_tag = p.ast.nodes[parent].name
@@ -1311,6 +1329,11 @@ fn (mut p CParser) element() ! {
 				dn.start)
 		}
 		if !p.is_expression_attribute(dn) {
+			p.ast.warnings << CWarning{
+				code:  'svelte_element_invalid_this'
+				start: dn.start
+				end:   dn.end
+			}
 			chunk := p.ast.nodes[dn.value[0]]
 			if chunk.typ == .text {
 				el.expression = p.ast.add_expr(CExpr{
@@ -1869,6 +1892,13 @@ fn (mut p CParser) read_script(start int, attributes []int) !int {
 		if an.name in ['server', 'client', 'worker', 'test', 'default'] {
 			return compile_error('script_reserved_attribute', 'The `${an.name}` attribute is reserved and cannot be used',
 				an.start)
+		}
+		if an.name !in ['context', 'generics', 'lang', 'module'] {
+			p.ast.warnings << CWarning{
+				code:  'script_unknown_attribute'
+				start: an.start
+				end:   an.end
+			}
 		}
 		if an.name == 'module' {
 			if an.value_kind != .true_ {

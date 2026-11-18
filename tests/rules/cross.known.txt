@@ -28,15 +28,19 @@ only eslint	tests/rules/@typescript-eslint/prefer-readonly-parameter-types/condi
 only eslint	tests/rules/@typescript-eslint/prefer-readonly-parameter-types/conditional/cases.ts:40:34	@stylistic/no-extra-parens	unexpected	Unnecessary parentheses around expression.
 only eslint	tests/rules/@typescript-eslint/prefer-readonly-parameter-types/methods-readonly/cases.ts:159:15	@typescript-eslint/no-unnecessary-condition	alwaysTruthy	Unnecessary conditional, value is always truthy.
 only eslint	tests/rules/@typescript-eslint/prefer-readonly-parameter-types/methods-readonly/cases.ts:159:15	@typescript-eslint/strict-boolean-expressions	conditionErrorObject	Unexpected object value in conditional. The condition is always true.
+only eslint	tests/rules/@typescript-eslint/prefer-readonly-parameter-types/methods-readonly/cases.ts:159:15	svelte/@typescript-eslint/no-unnecessary-condition	alwaysTruthy	Unnecessary conditional, value is always truthy.
 only eslint	tests/rules/vue/max-len/i23/cases.vue:9:9	@typescript-eslint/prefer-includes	preferStringIncludes	Use `String#includes()` method with a string instead.
 only eslint	tests/rules/vue/max-len/i24/cases.vue:3:9	@typescript-eslint/prefer-includes	preferStringIncludes	Use `String#includes()` method with a string instead.
 only eslint	tests/rules/vue/max-len/v17/cases.vue:9:9	@typescript-eslint/prefer-includes	preferStringIncludes	Use `String#includes()` method with a string instead.
 only eslint	tests/rules/vue/max-len/v18/cases.vue:3:9	@typescript-eslint/prefer-includes	preferStringIncludes	Use `String#includes()` method with a string instead.
 only eslint	tests/rules/vue/no-computed-properties-in-data/cases.vue:7:14	@typescript-eslint/no-unsafe-assignment	anyAssignment	Unsafe assignment of an `any` value.
 only eslint	tests/rules/vue/no-computed-properties-in-data/cases.vue:7:17	@typescript-eslint/no-unsafe-assignment	anyAssignment	Unsafe assignment of an `any` value.
+only eslint	tests/rules/vue/script-indent/options/cases.vue:5:12	@typescript-eslint/no-unnecessary-condition	comparisonBetweenLiteralTypes	Unnecessary conditional, comparison is always true, since `1 === 1` is true.
 only veslint	tests/rules/@typescript-eslint/non-nullable-type-assertion-style/cases.ts:62:11	@typescript-eslint/no-unsafe-type-assertion	unsafeTypeAssertion	Unsafe type assertion: type '"down" | "up"' is more narrow than the original type.
 only veslint	tests/rules/@typescript-eslint/prefer-readonly-parameter-types/methods-readonly/cases.ts:159:1	@typescript-eslint/no-unsafe-assignment	anyAssignment	Unsafe assignment of an `any` value.
 only veslint	tests/rules/@typescript-eslint/prefer-readonly-parameter-types/methods-readonly/cases.ts:159:15	@typescript-eslint/strict-boolean-expressions	conditionErrorAny	Unexpected any value in conditional. An explicit comparison or type conversion is required.
 only veslint	tests/rules/@typescript-eslint/prefer-readonly-parameter-types/methods-readonly/cases.ts:159:27	@typescript-eslint/prefer-nullish-coalescing	preferNullishOverOr	Prefer using nullish coalescing operator (`??`) instead of a logical or (`||`), as it is a safer operator.
 only veslint	tests/rules/vue/no-computed-properties-in-data/cases.vue:7:14	@typescript-eslint/no-unsafe-assignment	anyAssignment	Unsafe assignment of an error typed value.
 only veslint	tests/rules/vue/no-computed-properties-in-data/cases.vue:7:17	@typescript-eslint/no-unsafe-assignment	anyAssignment	Unsafe assignment of an error typed value.
+only veslint	tests/rules/vue/script-indent/edge/cases.vue:3:12	@typescript-eslint/restrict-plus-operands	invalid	Invalid operand for a '+' operation. Operands must each be a number or string, allowing a string + any of: `any`, `boolean`, `null`, `RegExp`, `undefined`. Got `{ b: number; c: number; d: number; }`.
+only veslint	tests/rules/vue/script-indent/edge/cases.vue:3:8	@typescript-eslint/no-unsafe-assignment	anyAssignment	Unsafe assignment of an error typed value.

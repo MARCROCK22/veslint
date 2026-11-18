@@ -1,0 +1,1 @@
+[2, {"ignores": ["VAttribute", "MemberExpression[computed=true] *.property"]}]

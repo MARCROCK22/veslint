@@ -206,6 +206,18 @@ pub mut:
 	module   int = -1
 	css      int = -1
 	ts       bool
+	// warnings: the warnings of the parse phase (element_implicitly_closed,
+	// svelte_element_invalid_this, script_unknown_attribute), in the order they are emitted.
+	warnings []CWarning
+}
+
+// CWarning is a warning of the compiler's parser: its code, range and message arguments.
+pub struct CWarning {
+pub:
+	code  string
+	start int
+	end   int
+	args  []string
 }
 
 fn (mut a CAst) add(n CNode) int {

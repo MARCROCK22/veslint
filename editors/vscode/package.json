@@ -2,7 +2,7 @@
   "name": "veslint",
   "displayName": "veslint",
   "description": "ESLint, typescript-eslint and plugin rules from veslint, a TypeScript linter written in V that talks to the TypeScript 7 compiler: problems, fixes and suggestions as you type.",
-  "version": "0.34.0",
+  "version": "0.35.0",
   "publisher": "MARCROCK22",
   "icon": "images/icon.png",
   "galleryBanner": {
@@ -124,14 +124,22 @@
         "veslint.severity": {
           "type": "string",
           "enum": [
+            "auto",
             "error",
             "warning",
             "information",
             "hint"
           ],
-          "default": "warning",
+          "enumDescriptions": [
+            "As the rule is set: `error` as an error, `warn` as a warning, as in ESLint.",
+            "Every problem of a rule as an error.",
+            "Every problem of a rule as a warning.",
+            "Every problem of a rule as information.",
+            "Every problem of a rule as a hint."
+          ],
+          "default": "auto",
           "scope": "resource",
-          "markdownDescription": "How the problems of the rules are shown. veslint's output does not tell whether a rule is set to `error` or to `warn`, so all of them get this severity; unused directive comments and configuration errors keep their own."
+          "markdownDescription": "How the problems of the rules are shown. `auto` shows each one as its rule is set, `error` or `warn`, as ESLint does; the other values show all of them with that severity. Unused directive comments and configuration errors always keep their own."
         },
         "veslint.timeout": {
           "type": "number",

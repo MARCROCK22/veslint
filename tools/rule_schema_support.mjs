@@ -5,11 +5,12 @@ import path from 'node:path';
 import { createRequire } from 'node:module';
 
 // portedRules are the ids of the rules of rules/rules.v, in the order of its `names`
-// (`@typescript-eslint/await-thenable`, `seyfert/require-declare`).
+// (`@typescript-eslint/await-thenable`, `seyfert/require-declare`,
+// `svelte/@typescript-eslint/no-unnecessary-condition`).
 export function portedRules(root) {
   const source = fs.readFileSync(path.join(root, 'rules/rules.v'), 'utf8');
   // A rule id with a plugin, or without one (ESLint core).
-  const byConst = new Map([...source.matchAll(/^pub const (\w+) = '((?:(?:@typescript-eslint|@stylistic|perfectionist|marcrock|seyfert|unicorn|vue|svelte)\/)?[a-z0-9-]+)'$/gm)].map(m => [m[1], m[2]]));
+  const byConst = new Map([...source.matchAll(/^pub const (\w+) = '((?:(?:@typescript-eslint|@stylistic|perfectionist|marcrock|seyfert|unicorn|vue|svelte)\/)?(?:@typescript-eslint\/)?[a-z0-9-]+)'$/gm)].map(m => [m[1], m[2]]));
   const list = /^pub const names = \[([^\]]+)\]/m.exec(source);
   if (!list) {
     throw new Error('rules/rules.v: `names` not found');

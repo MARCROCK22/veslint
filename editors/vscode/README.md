@@ -32,7 +32,7 @@ Shows in the editor what veslint reports: 139 rules of ESLint core, 127 rules of
 | `veslint.project` | (empty) | The `tsconfig.json` to use. Empty: the closest one to each file. |
 | `veslint.run` | `onType` | `onType` lints a file when it is opened, saved, and as you type (after `veslint.typingDelay`); `onSave`, when it is opened and saved; `manual`, only with the commands. |
 | `veslint.typingDelay` | `0` | Milliseconds that typing must pause before a file is linted with `onType`. `0` lints after every change: a lint that the next change makes useless is skipped if it has not started, and given up by the server if it has; the problems of a text that changed while it was linted are not shown. A larger value lints less often while you type, which saves CPU on large files. |
-| `veslint.severity` | `warning` | How the problems of the rules are shown. |
+| `veslint.severity` | `auto` | How the problems of the rules are shown: `auto` as each rule is set (`error` or `warn`), as the ESLint extension does; `error`, `warning`, `information` or `hint` shows all of them with that severity. Unused directive comments and configuration errors keep their own. |
 | `veslint.timeout` | `120000` | Milliseconds after which a lint is stopped (with its server: the next lint starts another). |
 | `veslint.checkForUpdates` | `true` | Look for a newer veslint release once a day at most, and ask whether to install it. |
 
@@ -44,7 +44,7 @@ Shows in the editor what veslint reports: 139 rules of ESLint core, 127 rules of
 - **The open files are linted again when any TypeScript file of their folder changes,** whether they import it or not: veslint does not know which files depend on which. Only those on screen are linted at once.
 - **Each server keeps the TypeScript compiler of its folder in memory** while VS Code is open, as the TypeScript language service does.
 - **A resolved configuration is renewed when an `eslint.config.*` file changes** (or with the reload command), not when something it imports changes.
-- **One severity for every rule.** veslint's output does not tell `error` from `warn`, so the problems of the rules are shown with `veslint.severity`.
+- **With veslint older than 0.35.0,** whose output does not tell `error` from `warn`, `auto` shows every problem of a rule as an error; set `veslint.severity` to `warning` there, or update veslint.
 - **A problem is underlined over ESLint's range,** from where it starts to where it ends (veslint 0.12.0 and later); with an older veslint, whose output has only where a problem starts, from there to the end of the word.
 - **After an update, reload the window** (`Developer: Reload Window`): VS Code keeps the settings of the version it loaded first until then (in the Settings editor, `veslint.run` may still show `onSave` as its default). The extension lints while typing anyway, unless `veslint.run` is set.
 - JavaScript files are not linted: veslint only reads TypeScript. A Vue or Svelte file whose script is JavaScript is not linted either (veslint says so in its output).

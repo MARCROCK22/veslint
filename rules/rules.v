@@ -811,6 +811,11 @@ pub const svelte_no_navigation_without_base = 'svelte/no-navigation-without-base
 pub const svelte_require_store_reactive_access = 'svelte/require-store-reactive-access'
 pub const svelte_no_navigation_without_resolve = 'svelte/no-navigation-without-resolve'
 pub const svelte_no_unused_props = 'svelte/no-unused-props'
+pub const svelte_valid_compile = 'svelte/valid-compile'
+pub const svelte_indent = 'svelte/indent'
+pub const svelte_ts_no_unnecessary_condition = 'svelte/@typescript-eslint/no-unnecessary-condition'
+pub const vue_html_indent = 'vue/html-indent'
+pub const vue_script_indent = 'vue/script-indent'
 pub const names = [no_floating_promises, await_thenable, require_await, return_await,
 	no_misused_promises, no_unsafe_call, no_unsafe_member_access, no_unsafe_return,
 	no_unsafe_assignment, no_unsafe_argument, restrict_template_expressions,
@@ -1043,8 +1048,8 @@ pub const names = [no_floating_promises, await_thenable, require_await, return_a
 	svelte_consistent_selector_style, svelte_no_unused_class_name,
 	svelte_experimental_require_slot_types, svelte_experimental_require_strict_events,
 	svelte_sort_attributes, svelte_max_lines_per_block, svelte_no_bind_value_on_checkable_inputs,
-	svelte_require_event_prefix, svelte_no_unused_svelte_ignore,
-	svelte_no_svelte_internal, svelte_no_inspect, svelte_no_store_async, svelte_require_stores_init,
+	svelte_require_event_prefix, svelte_no_unused_svelte_ignore, svelte_no_svelte_internal,
+	svelte_no_inspect, svelte_no_store_async, svelte_require_stores_init,
 	svelte_no_ignored_unsubscribe, svelte_require_store_callbacks_use_set_param,
 	svelte_derived_has_same_inputs_outputs, svelte_require_event_dispatcher_types,
 	svelte_no_add_event_listener, svelte_no_dom_manipulating, svelte_no_extra_reactive_curlies,
@@ -1057,7 +1062,9 @@ pub const names = [no_floating_promises, await_thenable, require_await, return_a
 	svelte_no_immutable_reactive_statements, svelte_infinite_reactive_loop,
 	svelte_prefer_svelte_reactivity, svelte_prefer_destructured_store_props,
 	svelte_no_top_level_browser_globals, svelte_no_navigation_without_base,
-	svelte_require_store_reactive_access, svelte_no_navigation_without_resolve, svelte_no_unused_props]
+	svelte_require_store_reactive_access, svelte_no_navigation_without_resolve, svelte_no_unused_props,
+	svelte_valid_compile, svelte_indent, svelte_ts_no_unnecessary_condition, vue_html_indent,
+	vue_script_indent]
 
 // untyped_rules are the ported rules that need no types (`meta.docs.requiresTypeChecking` is false
 // in typescript-eslint; the eslint-plugin-unicorn rules that read the types when the parser has a
@@ -1254,12 +1261,11 @@ pub const untyped_rules = [adjacent_overload_signatures, array_type, class_liter
 	svelte_consistent_selector_style, svelte_no_unused_class_name,
 	svelte_experimental_require_slot_types, svelte_experimental_require_strict_events,
 	svelte_sort_attributes, svelte_max_lines_per_block, svelte_no_bind_value_on_checkable_inputs,
-	svelte_no_unused_svelte_ignore,
-	svelte_no_svelte_internal, svelte_no_inspect, svelte_no_store_async, svelte_require_stores_init,
-	svelte_no_ignored_unsubscribe, svelte_require_store_callbacks_use_set_param,
-	svelte_derived_has_same_inputs_outputs, svelte_require_event_dispatcher_types,
-	svelte_no_add_event_listener, svelte_no_dom_manipulating, svelte_no_extra_reactive_curlies,
-	svelte_no_reactive_literals, svelte_no_reactive_functions,
+	svelte_no_unused_svelte_ignore, svelte_no_svelte_internal, svelte_no_inspect,
+	svelte_no_store_async, svelte_require_stores_init, svelte_no_ignored_unsubscribe,
+	svelte_require_store_callbacks_use_set_param, svelte_derived_has_same_inputs_outputs,
+	svelte_require_event_dispatcher_types, svelte_no_add_event_listener, svelte_no_dom_manipulating,
+	svelte_no_extra_reactive_curlies, svelte_no_reactive_literals, svelte_no_reactive_functions,
 	svelte_no_export_load_in_svelte_module_in_kit_pages, svelte_valid_prop_names_in_kit_pages,
 	svelte_no_goto_without_base, svelte_prefer_const, svelte_no_inner_declarations,
 	svelte_no_trailing_spaces, svelte_no_conflicting_module_names,
@@ -1267,7 +1273,8 @@ pub const untyped_rules = [adjacent_overload_signatures, array_type, class_liter
 	svelte_prefer_writable_derived, svelte_no_reactive_reassign,
 	svelte_no_immutable_reactive_statements, svelte_infinite_reactive_loop,
 	svelte_prefer_svelte_reactivity, svelte_prefer_destructured_store_props,
-	svelte_no_top_level_browser_globals, svelte_no_navigation_without_base]
+	svelte_no_top_level_browser_globals, svelte_no_navigation_without_base, svelte_valid_compile,
+	svelte_indent, vue_html_indent, vue_script_indent]
 
 // needs_types tells whether a rule asks tsgo for the types of the program.
 pub fn needs_types(rule string) bool {
@@ -2057,22 +2064,27 @@ pub const default_options = {
 	svelte_require_store_reactive_access:                '[]'
 	svelte_no_navigation_without_resolve:                '[]'
 	svelte_no_unused_props:                              '[]'
-	svelte_no_restricted_html_elements:               '[]'
-	svelte_no_unknown_style_directive_property:       '[]'
-	svelte_no_dupe_style_properties:                  '[]'
-	svelte_no_shorthand_style_property_overrides:     '[]'
-	svelte_require_optimized_style_attribute:         '[]'
-	svelte_prefer_style_directive:                    '[]'
-	svelte_valid_style_parse:                         '[]'
-	svelte_consistent_selector_style:                 '[]'
-	svelte_no_unused_class_name:                      '[]'
-	svelte_experimental_require_slot_types:           '[]'
-	svelte_experimental_require_strict_events:        '[]'
-	svelte_sort_attributes:                           '[]'
-	svelte_max_lines_per_block:                       '[]'
-	svelte_no_bind_value_on_checkable_inputs:         '[]'
-	svelte_require_event_prefix:                      '[]'
-	svelte_no_unused_svelte_ignore:                   '[]'
+	svelte_no_restricted_html_elements:                  '[]'
+	svelte_no_unknown_style_directive_property:          '[]'
+	svelte_no_dupe_style_properties:                     '[]'
+	svelte_no_shorthand_style_property_overrides:        '[]'
+	svelte_require_optimized_style_attribute:            '[]'
+	svelte_prefer_style_directive:                       '[]'
+	svelte_valid_style_parse:                            '[]'
+	svelte_consistent_selector_style:                    '[]'
+	svelte_no_unused_class_name:                         '[]'
+	svelte_experimental_require_slot_types:              '[]'
+	svelte_experimental_require_strict_events:           '[]'
+	svelte_sort_attributes:                              '[]'
+	svelte_max_lines_per_block:                          '[]'
+	svelte_no_bind_value_on_checkable_inputs:            '[]'
+	svelte_require_event_prefix:                         '[]'
+	svelte_no_unused_svelte_ignore:                      '[]'
+	svelte_valid_compile:                                '[]'
+	svelte_indent:                                       '[]'
+	svelte_ts_no_unnecessary_condition:                  '[]'
+	vue_html_indent:                                     '[]'
+	vue_script_indent:                                   '[]'
 }
 
 // Finding is a problem a rule found at a node.
@@ -3055,6 +3067,11 @@ pub fn message(rule string, finding Finding) string {
 		svelte_require_store_reactive_access { svrsra_messages }
 		svelte_no_navigation_without_resolve { svnnwr_messages }
 		svelte_no_unused_props { svnup_messages }
+		svelte_valid_compile { map[string]string{} }
+		svelte_indent { svi_messages }
+		svelte_ts_no_unnecessary_condition { svnuc_messages }
+		vue_html_indent { map[string]string{} }
+		vue_script_indent { map[string]string{} }
 		else { map[string]string{} }
 	}
 	return interpolate(messages[finding.message_id] or { finding.message_id }, finding.data)
@@ -5630,6 +5647,21 @@ fn (mut c Checker) lint_rule(rule string, root C.TSNode, abs_path string, mut st
 		svelte_no_unused_props {
 			return c.lint_svelte_no_unused_props(root, abs_path, mut stats)!
 		}
+		svelte_valid_compile {
+			return c.lint_svelte_valid_compile(root, abs_path, mut stats)!
+		}
+		svelte_indent {
+			return c.lint_svelte_indent(root, abs_path, mut stats)!
+		}
+		svelte_ts_no_unnecessary_condition {
+			return c.lint_svelte_ts_no_unnecessary_condition(root, abs_path, mut stats)!
+		}
+		vue_html_indent {
+			return c.lint_vue_html_indent(root, abs_path, mut stats)!
+		}
+		vue_script_indent {
+			return c.lint_vue_script_indent(root, abs_path, mut stats)!
+		}
 		else { return error('unknown rule: ${rule}') }
 	}
 }
@@ -5727,7 +5759,10 @@ mut:
 	// scope_project is what the compiler options of the project decide about the scopes of its
 	// files, scope_setup the setup of the file being linted (file_scope_setup) and
 	// scope_libs_cache the implicit variables of each list of libs (scope_libs).
-	scope_project    ScopeProject
+	scope_project ScopeProject
+	// script_target: the `target` of the tsconfig (TypeScript's ScriptTarget; ESNext when unset),
+	// which eslint-plugin-svelte transpiles the scripts of a .svelte file to before compiling it.
+	script_target    int = 99
 	scope_setup      ScopeSetup
 	scope_libs_cache map[string]&ScopeLibs
 	nc_unused        map[int]bool // naming-convention: the unused variables of the file
@@ -5818,6 +5853,7 @@ pub fn new_checker(client &Client, snapshot int, project string, options Compile
 		decorator_metadata:                      (options.experimental_decorators or { false })
 			&& (options.emit_decorator_metadata or { false })
 		scope_project:                           new_scope_project(options)
+		script_target:                           options.target or { 99 }
 	}
 	return checker
 }

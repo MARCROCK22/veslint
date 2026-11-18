@@ -303,6 +303,13 @@ pub:
 	// svelteConfig, which getSvelteContext reads under settings.svelte.kit.files.routes): '' when
 	// not a string.
 	svelte_kit_routes string
+	// svelte_config_given: parserOptions.svelteConfig is truthy (svelte-eslint-parser then takes it
+	// as the svelteConfig and does not read svelte.config.js).
+	svelte_config_given bool
+	// svelte_config_runes / svelte_config_async: parserOptions.svelteConfig.compilerOptions.runes
+	// (-1 unset, 0 false, 1 true) and .experimental.async, what eslint-plugin-svelte compiles with.
+	svelte_config_runes int = -1
+	svelte_config_async bool
 	// parserOptions.svelteFeatures.runes of svelte-eslint-parser (unset when null or absent), which
 	// decides svelteParseContext.runes before `<svelte:options runes>`.
 	svelte_runes_state OptionState
@@ -400,7 +407,15 @@ pub fn parse_language_options(value json2.Any) LanguageOptions {
 		global_return:           global_return
 		isolated_declarations:   isolated.json_str() !in ['false', 'null', '0', '""']
 		type_information:        type_information
+		svelte_config_given:     (parser['svelteConfig'] or { json2.Any(false) }).json_str() !in [
+			'false',
+			'null',
+			'0',
+			'""',
+		]
 		svelte_kit_routes:       scope_svelte_kit_routes(parser)
+		svelte_config_runes:     scope_svelte_compiler_option(parser, ['runes'])
+		svelte_config_async:     scope_svelte_compiler_option(parser, ['experimental', 'async']) == 1
 		svelte_runes_state:      runes_state
 		svelte_runes:            runes
 	}
@@ -418,6 +433,25 @@ fn scope_svelte_kit_routes(parser map[string]json2.Any) string {
 		value = object[key] or { return '' }
 	}
 	return if value is string { value } else { '' }
+}
+
+// scope_svelte_compiler_option is parserOptions.svelteConfig.compilerOptions.<path> as a boolean:
+// -1 when not set (or null), else 0 or 1.
+fn scope_svelte_compiler_option(parser map[string]json2.Any, path []string) int {
+	mut value := parser['svelteConfig'] or { return -1 }
+	mut keys := ['compilerOptions']
+	keys << path
+	for key in keys {
+		if value !is map[string]json2.Any {
+			return -1
+		}
+		object := value.as_map()
+		value = object[key] or { return -1 }
+	}
+	if value is json2.Null {
+		return -1
+	}
+	return if value.json_str() in ['false', '0', '""'] { 0 } else { 1 }
 }
 
 // scope_name_option reads `jsxPragma` or `jsxFragmentName` of the parser options: not set, null

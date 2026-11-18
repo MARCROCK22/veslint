@@ -1,0 +1,32 @@
+tests/rules/vue/script-indent/cases.vue:9:1	vue/script-indent	error	Expected indentation of 2 spaces but found 4 spaces.	fix	156	160	  	end	9	5
+tests/rules/vue/script-indent/cases.vue:18:1	vue/script-indent	error	Expected indentation of 2 spaces but found 4 spaces.	fix	242	246	  	end	18	5
+tests/rules/vue/script-indent/cases.vue:23:1	vue/script-indent	error	Expected indentation of 2 spaces but found 4 spaces.	fix	329	333	  	end	23	5
+tests/rules/vue/script-indent/cases.vue:31:1	vue/script-indent	error	Expected indentation of 2 spaces but found 4 spaces.	fix	421	425	  	end	31	5
+tests/rules/vue/script-indent/cases.vue:37:1	vue/script-indent	error	Expected indentation of 4 spaces but found 6 spaces.	fix	546	552	    	end	37	7
+tests/rules/vue/script-indent/cases.vue:41:1	vue/script-indent	error	Expected indentation of 2 spaces but found 4 spaces.	fix	589	593	  	end	41	5
+tests/rules/vue/script-indent/cases.vue:44:1	vue/script-indent	error	Expected indentation of 4 spaces but found 2 spaces.	fix	630	632	    	end	44	3
+tests/rules/vue/script-indent/cases.vue:51:1	vue/script-indent	error	Expected indentation of 2 spaces but found 4 spaces.	fix	736	740	  	end	51	5
+tests/rules/vue/script-indent/cases.vue:59:1	vue/script-indent	error	Expected indentation of 0 spaces but found 2 spaces.	fix	867	869		end	59	3
+tests/rules/vue/script-indent/cases.vue:60:1	vue/script-indent	error	Expected indentation of 2 spaces but found 4 spaces.	fix	878	882	  	end	60	5
+tests/rules/vue/script-indent/cases.vue:61:1	vue/script-indent	error	Expected indentation of 4 spaces but found 6 spaces.	fix	887	893	    	end	61	7
+tests/rules/vue/script-indent/cases.vue:62:1	vue/script-indent	error	Expected indentation of 4 spaces but found 6 spaces.	fix	896	902	    	end	62	7
+tests/rules/vue/script-indent/cases.vue:63:1	vue/script-indent	error	Expected indentation of 2 spaces but found 4 spaces.	fix	904	908	  	end	63	5
+tests/rules/vue/script-indent/cases.vue:68:1	vue/script-indent	error	Expected indentation of 0 spaces but found 2 spaces.	fix	949	995	/*\n * misaligned\n * block comment\n */	end	68	3
+tests/rules/vue/script-indent/cases.vue:72:1	vue/script-indent	error	Expected indentation of 0 spaces but found 4 spaces.	fix	996	1000		end	72	5
+tests/rules/vue/script-indent/cases.vue:73:1	vue/script-indent	error	Expected indentation of 0 spaces but found 4 spaces.	fix	1027	1031		end	73	5
+tests/rules/vue/script-indent/cases.vue:74:1	vue/script-indent	error	Expected indentation of 0 spaces but found 2 spaces.	fix	1047	1049		end	74	3
+tests/rules/vue/script-indent/cases.vue:78:1	vue/script-indent	error	Expected indentation of 4 spaces but found 2 spaces.	fix	1113	1115	    	end	78	3
+tests/rules/vue/script-indent/cases.vue:86:1	vue/script-indent	error	Expected indentation of 0 spaces but found 2 spaces.	fix	1189	1191		end	86	3
+tests/rules/vue/script-indent/cases.vue:89:1	vue/script-indent	error	Expected indentation of 2 spaces but found 4 spaces.	fix	1225	1229	  	end	89	5
+tests/rules/vue/script-indent/edge/cases.vue:2:1	vue/script-indent	error	Expected indentation of 0 spaces but found 2 spaces.	fix	37	39		end	2	3
+tests/rules/vue/script-indent/edge/cases.vue:3:1	vue/script-indent	error	Expected " " character, but found "　" character.	fix	54	55		end	3	2
+tests/rules/vue/script-indent/ignores/cases.vue:9:1	vue/script-indent	error	Expected indentation of 0 spaces but found 2 spaces.	fix	80	82		end	9	3
+tests/rules/vue/script-indent/ignores/cases.vue:10:1	vue/script-indent	error	Expected indentation of 2 spaces but found 0 spaces.	fix	94	94	  	end	10	1
+tests/rules/vue/script-indent/options/cases.vue:2:1	vue/script-indent	error	Expected indentation of 4 spaces but found 0 spaces.	fix	25	25	    	end	2	1
+tests/rules/vue/script-indent/options/cases.vue:3:1	vue/script-indent	error	Expected indentation of 4 spaces but found 2 spaces.	fix	37	39	    	end	3	3
+tests/rules/vue/script-indent/options/cases.vue:5:1	vue/script-indent	error	Expected indentation of 8 spaces but found 6 spaces.	fix	68	74	        	end	5	7
+tests/rules/vue/script-indent/options/cases.vue:6:1	vue/script-indent	error	Expected indentation of 12 spaces but found 8 spaces.	fix	82	90	            	end	6	9
+tests/rules/vue/script-indent/options/cases.vue:7:1	vue/script-indent	error	Expected indentation of 8 spaces but found 4 spaces.	fix	96	100	        	end	7	5
+tests/rules/vue/script-indent/options/cases.vue:8:1	vue/script-indent	error	Expected indentation of 12 spaces but found 8 spaces.	fix	109	117	            	end	8	9
+tests/rules/vue/script-indent/tab/cases.vue:4:1	vue/script-indent	error	Expected "\\t" character, but found " " character.	fix	44	46	\t	end	4	2
+tests/rules/vue/script-indent/tab/cases.vue:5:1	vue/script-indent	error	Expected indentation of 1 tab but found 2 tabs.	fix	52	54	\t	end	5	3

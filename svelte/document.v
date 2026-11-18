@@ -76,6 +76,8 @@ pub mut:
 	// lint_generics_start: where the type aliases of the `generics` attribute are in the lint
 	// code (-1 without them).
 	lint_generics_start int = -1
+	// cast: the Svelte compiler's template AST (compile_parse), what svelte_compiler analyzes.
+	cast CAst
 	// lint_parents: the Svelte node (index of nodes) of the template expression that starts at
 	// that offset of the lint code.
 	lint_parents map[int]int
@@ -211,6 +213,7 @@ pub fn parse_svelte_with(src string, parsers &Parsers) !&Document {
 		}
 		return err
 	}
+	doc.cast = ca
 	mut c := &Conv{
 		code:    src
 		doc:     doc
