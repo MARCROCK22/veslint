@@ -143,7 +143,8 @@ fn (mut c Conv) process_attribute_value(values []int, attr int, attr_parent int)
 			c.doc.nodes[attr].values << lit
 			continue
 		}
-		c.doc.nodes[attr].values << c.mustache_of(v, attr, '')
+		m := c.mustache_of(v, attr, '')
+		c.doc.nodes[attr].values << m
 	}
 }
 

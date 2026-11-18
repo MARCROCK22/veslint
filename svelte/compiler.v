@@ -2541,7 +2541,8 @@ fn (mut p CParser) next() ! {
 			}
 			if !p.eat('}') {
 				p.require_whitespace()!
-				p.ast.nodes[block].await_value = p.read_pattern()!
+				value := p.read_pattern()!
+				p.ast.nodes[block].await_value = value
 				p.allow_whitespace()
 				p.eat_required('}')!
 			}
@@ -2558,7 +2559,8 @@ fn (mut p CParser) next() ! {
 			}
 			if !p.eat('}') {
 				p.require_whitespace()!
-				p.ast.nodes[block].await_error = p.read_pattern()!
+				value := p.read_pattern()!
+				p.ast.nodes[block].await_error = value
 				p.allow_whitespace()
 				p.eat_required('}')!
 			}

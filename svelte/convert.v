@@ -420,7 +420,9 @@ fn (mut c Conv) convert_script(script int) int {
 	st := c.new_start_tag(el, cn.start)
 	c.doc.nodes[el].start_tag = st
 	if b := c.sc.find_block('script', cn.start, cn.end) {
-		c.doc.nodes[st].attributes = c.convert_block_attributes(b.attrs, st)
+		// (The right side grows the arena: computed first, see tests/v-bugs.)
+		converted := c.convert_block_attributes(b.attrs, st)
+		c.doc.nodes[st].attributes = converted
 	}
 	c.extract_element_tags(el, 'script', fn (mut c Conv, el int, s int, e int) Ref {
 		c.add_token('HTMLIdentifier', s, e)
@@ -446,7 +448,9 @@ fn (mut c Conv) convert_style(css int) int {
 	st := c.new_start_tag(el, cn.start)
 	c.doc.nodes[el].start_tag = st
 	if b := c.sc.find_block('style', cn.start, cn.end) {
-		c.doc.nodes[st].attributes = c.convert_block_attributes(b.attrs, st)
+		// (The right side grows the arena: computed first, see tests/v-bugs.)
+		converted := c.convert_block_attributes(b.attrs, st)
+		c.doc.nodes[st].attributes = converted
 	}
 	c.extract_element_tags(el, 'style', fn (mut c Conv, el int, s int, e int) Ref {
 		c.add_token('HTMLIdentifier', s, e)
