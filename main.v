@@ -956,6 +956,21 @@ fn file_report(path string, src string, result rules.FileLint, fixes bool, doc &
 				row:        it.stmt.row
 			}))
 		}
+		// A `loc` given as lines and columns (Finding.line_loc).
+		for i, f in findings {
+			if f.line_loc {
+				display[i] = offsets.DisplayPos{
+					line: f.fixed_line
+					col:  f.fixed_column
+				}
+				if fixes {
+					ends[i] = offsets.DisplayPos{
+						line: f.fixed_end_line
+						col:  f.fixed_end_column
+					}
+				}
+			}
+		}
 	}
 	mut out := strings.new_builder(findings.len * 200)
 	mut warnings := 0

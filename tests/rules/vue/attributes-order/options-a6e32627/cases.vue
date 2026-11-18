@@ -1,0 +1,30 @@
+<template>
+  <div>
+        <div
+          @click="handleClick"
+          v-bind="attrs"
+        ></div>
+      </div>
+  <div>
+        <div
+          ref="ref"
+          @click="handleClick"
+          v-bind="attrs"
+          @input="handleInput"/>
+      </div>
+  <div>
+        <div
+          a="1"
+          v-bind="$attrs"
+          v-model="modelValue"
+          b="2"
+        />
+      </div>
+  <div>
+        <div
+          v-bind="$attrs"
+          b="2"
+          v-model="modelValue"
+        />
+      </div>
+</template>

@@ -1,0 +1,15 @@
+<template>
+  <div>
+        <div
+          ref="ref"
+          @click="handleClick"
+          v-bind="object"
+          @input="handleInput"/>
+      </div>
+  <div>
+        <div
+          v-bind="object"
+          @click="handleClick"
+          attr="foo"/>
+      </div>
+</template>

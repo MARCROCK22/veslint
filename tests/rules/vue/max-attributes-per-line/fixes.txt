@@ -1,0 +1,10 @@
+tests/rules/vue/max-attributes-per-line/cases.vue:18:35	vue/max-attributes-per-line	shouldBeOnNewLine	'age' should be on a new line.	fix	380	381	\n	end	18	43
+tests/rules/vue/max-attributes-per-line/cases.vue:19:37	vue/max-attributes-per-line	shouldBeOnNewLine	':age' should be on a new line.	fix	444	445	\n	end	19	52
+tests/rules/vue/max-attributes-per-line/cases.vue:20:30	vue/max-attributes-per-line	shouldBeOnNewLine	'v-bind' should be on a new line.	fix	508	509	\n	end	20	43
+tests/rules/vue/max-attributes-per-line/cases.vue:21:37	vue/max-attributes-per-line	shouldBeOnNewLine	'@buy' should be on a new line.	fix	577	578	\n	end	21	54
+tests/rules/vue/max-attributes-per-line/cases.vue:22:37	vue/max-attributes-per-line	shouldBeOnNewLine	'@click.stop' should be on a new line.	fix	650	651	\n	end	22	48
+tests/rules/vue/max-attributes-per-line/cases.vue:23:37	vue/max-attributes-per-line	shouldBeOnNewLine	'v-if' should be on a new line.	fix	717	718	\n	end	23	53
+tests/rules/vue/max-attributes-per-line/cases.vue:24:38	vue/max-attributes-per-line	shouldBeOnNewLine	'v-bind:age' should be on a new line.	fix	787	791	\n	end	24	59
+tests/rules/vue/max-attributes-per-line/options-41b4d4eb/cases.vue:3:25	vue/max-attributes-per-line	shouldBeOnNewLine	'age' should be on a new line.	fix	52	53	\n	end	3	33
+tests/rules/vue/max-attributes-per-line/options-7f71e7e7/cases.vue:2:44	vue/max-attributes-per-line	shouldBeOnNewLine	'job' should be on a new line.	fix	53	54	\n	end	2	53
+tests/rules/vue/max-attributes-per-line/options-bcfaaaf1/cases.vue:3:25	vue/max-attributes-per-line	shouldBeOnNewLine	'age' should be on a new line.	fix	52	53	\n	end	3	33

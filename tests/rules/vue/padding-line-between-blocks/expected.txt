@@ -1,0 +1,14 @@
+tests/rules/vue/padding-line-between-blocks/i0/cases.vue:3:7	vue/padding-line-between-blocks	always	Expected blank line before this block.
+tests/rules/vue/padding-line-between-blocks/i0/cases.vue:4:7	vue/padding-line-between-blocks	always	Expected blank line before this block.
+tests/rules/vue/padding-line-between-blocks/i1/cases.vue:4:7	vue/padding-line-between-blocks	never	Unexpected blank line before this block.
+tests/rules/vue/padding-line-between-blocks/i1/cases.vue:6:7	vue/padding-line-between-blocks	never	Unexpected blank line before this block.
+tests/rules/vue/padding-line-between-blocks/i2/cases.vue:2:28	vue/padding-line-between-blocks	always	Expected blank line before this block.
+tests/rules/vue/padding-line-between-blocks/i2/cases.vue:2:55	vue/padding-line-between-blocks	always	Expected blank line before this block.
+tests/rules/vue/padding-line-between-blocks/i3/cases.vue:4:7	vue/padding-line-between-blocks	always	Expected blank line before this block.
+tests/rules/vue/padding-line-between-blocks/i3/cases.vue:7:7	vue/padding-line-between-blocks	always	Expected blank line before this block.
+tests/rules/vue/padding-line-between-blocks/i4/cases.vue:5:7	vue/padding-line-between-blocks	never	Unexpected blank line before this block.
+tests/rules/vue/padding-line-between-blocks/i4/cases.vue:8:7	vue/padding-line-between-blocks	never	Unexpected blank line before this block.
+tests/rules/vue/padding-line-between-blocks/i4/cases.vue:12:7	vue/padding-line-between-blocks	never	Unexpected blank line before this block.
+tests/rules/vue/padding-line-between-blocks/i5/cases.vue:3:23	vue/padding-line-between-blocks	always	Expected blank line before this block.
+tests/rules/vue/padding-line-between-blocks/i5/cases.vue:4:18	vue/padding-line-between-blocks	always	Expected blank line before this block.
+tests/rules/vue/padding-line-between-blocks/i6/cases.vue:23:7	vue/padding-line-between-blocks	never	Unexpected blank line before this block.

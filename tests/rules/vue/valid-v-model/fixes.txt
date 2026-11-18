@@ -1,0 +1,22 @@
+tests/rules/vue/valid-v-model/cases.vue:41:13	vue/valid-v-model	unexpectedInvalidElement	'v-model' directives aren't supported on <div> elements.	end	41	26
+tests/rules/vue/valid-v-model/cases.vue:42:23	vue/valid-v-model	unexpectedArgument	'v-model' directives require no argument.	end	42	26
+tests/rules/vue/valid-v-model/cases.vue:43:23	vue/valid-v-model	unexpectedModifier	'v-model' directives don't support the modifier 'aaa'.	end	43	26
+tests/rules/vue/valid-v-model/cases.vue:44:15	vue/valid-v-model	missingValue	'v-model' directives require that attribute value.	end	44	22
+tests/rules/vue/valid-v-model/cases.vue:45:24	vue/valid-v-model	unexpectedNonLhsExpression	'v-model' directives require the attribute value which is valid as LHS.	end	45	29
+tests/rules/vue/valid-v-model/cases.vue:46:27	vue/valid-v-model	unexpectedInputFile	'v-model' directives don't support 'file' input type.	end	46	38
+tests/rules/vue/valid-v-model/cases.vue:47:52	vue/valid-v-model	unexpectedUpdateIterationVariable	'v-model' directives cannot update the iteration variable 'x' itself.	end	47	53
+tests/rules/vue/valid-v-model/cases.vue:48:53	vue/valid-v-model	unexpectedUpdateIterationVariable	'v-model' directives cannot update the iteration variable 'x' itself.	end	48	54
+tests/rules/vue/valid-v-model/cases.vue:49:55	vue/valid-v-model	unexpectedUpdateIterationVariable	'v-model' directives cannot update the iteration variable 'x' itself.	end	49	56
+tests/rules/vue/valid-v-model/cases.vue:50:52	vue/valid-v-model	unexpectedUpdateIterationVariable	'v-model' directives cannot update the iteration variable 'e' itself.	end	50	53
+tests/rules/vue/valid-v-model/cases.vue:51:21	vue/valid-v-model	missingValue	'v-model' directives require that attribute value.	end	51	31
+tests/rules/vue/valid-v-model/cases.vue:52:24	vue/valid-v-model	unexpectedOptionalChaining	Optional chaining cannot appear in 'v-model' directives.	end	52	32
+tests/rules/vue/valid-v-model/cases.vue:53:24	vue/valid-v-model	unexpectedOptionalChaining	Optional chaining cannot appear in 'v-model' directives.	end	53	36
+tests/rules/vue/valid-v-model/cases.vue:54:24	vue/valid-v-model	unexpectedOptionalChaining	Optional chaining cannot appear in 'v-model' directives.	end	54	33
+tests/rules/vue/valid-v-model/cases.vue:55:24	vue/valid-v-model	unexpectedNullObject	'v-model' directive has potential null object property access.	end	55	32
+tests/rules/vue/valid-v-model/cases.vue:56:24	vue/valid-v-model	unexpectedNullObject	'v-model' directive has potential null object property access.	end	56	34
+tests/rules/vue/valid-v-model/cases.vue:57:24	vue/valid-v-model	unexpectedNullObject	'v-model' directive has potential null object property access.	end	57	34
+tests/rules/vue/valid-v-model/cases.vue:58:30	vue/valid-v-model	unexpectedNonLhsExpression	'v-model' directives require the attribute value which is valid as LHS.	end	58	43
+tests/rules/vue/valid-v-model/cases.vue:59:30	vue/valid-v-model	unexpectedNonLhsExpression	'v-model' directives require the attribute value which is valid as LHS.	end	59	34
+tests/rules/vue/valid-v-model/cases.vue:60:30	vue/valid-v-model	unexpectedNonLhsExpression	'v-model' directives require the attribute value which is valid as LHS.	end	60	54
+tests/rules/vue/valid-v-model/cases.vue:61:30	vue/valid-v-model	unexpectedNonLhsExpression	'v-model' directives require the attribute value which is valid as LHS.	end	61	37
+tests/rules/vue/valid-v-model/cases.vue:62:30	vue/valid-v-model	unexpectedNonLhsExpression	'v-model' directives require the attribute value which is valid as LHS.	end	62	63

@@ -1,0 +1,59 @@
+tests/rules/vue/no-duplicate-class-names/cases.vue:14:19	vue/no-duplicate-class-names	duplicateClassNames	Duplicate class name 'foo'.
+tests/rules/vue/no-duplicate-class-names/cases.vue:15:19	vue/no-duplicate-class-names	duplicateClassNames	Duplicate class names 'foo', 'bar'.
+tests/rules/vue/no-duplicate-class-names/cases.vue:16:21	vue/no-duplicate-class-names	duplicateClassNames	Duplicate class name 'foo'.
+tests/rules/vue/no-duplicate-class-names/cases.vue:17:21	vue/no-duplicate-class-names	duplicateClassNames	Duplicate class name 'foo'.
+tests/rules/vue/no-duplicate-class-names/cases.vue:18:23	vue/no-duplicate-class-names	duplicateClassNames	Duplicate class name 'foo'.
+tests/rules/vue/no-duplicate-class-names/cases.vue:19:23	vue/no-duplicate-class-names	duplicateClassNames	Duplicate class name 'foo'.
+tests/rules/vue/no-duplicate-class-names/cases.vue:19:44	vue/no-duplicate-class-names	duplicateClassNames	Duplicate class name 'bar'.
+tests/rules/vue/no-duplicate-class-names/cases.vue:20:22	vue/no-duplicate-class-names	duplicateClassNames	Duplicate class name 'foo'.
+tests/rules/vue/no-duplicate-class-names/cases.vue:21:22	vue/no-duplicate-class-names	duplicateClassNames	Duplicate class name 'foo'.
+tests/rules/vue/no-duplicate-class-names/cases.vue:21:33	vue/no-duplicate-class-names	duplicateClassNames	Duplicate class name 'bar'.
+tests/rules/vue/no-duplicate-class-names/cases.vue:22:22	vue/no-duplicate-class-names	duplicateClassNames	Duplicate class name 'foo'.
+tests/rules/vue/no-duplicate-class-names/cases.vue:22:35	vue/no-duplicate-class-names	duplicateClassNames	Duplicate class name 'bar'.
+tests/rules/vue/no-duplicate-class-names/cases.vue:23:32	vue/no-duplicate-class-names	duplicateClassNames	Duplicate class name 'foo'.
+tests/rules/vue/no-duplicate-class-names/cases.vue:24:21	vue/no-duplicate-class-names	duplicateClassNames	Duplicate class name 'foo'.
+tests/rules/vue/no-duplicate-class-names/cases.vue:25:19	vue/no-duplicate-class-names	duplicateClassNames	Duplicate class name 'foo'.
+tests/rules/vue/no-duplicate-class-names/cases.vue:26:19	vue/no-duplicate-class-names	duplicateClassNames	Duplicate class name 'foo'.
+tests/rules/vue/no-duplicate-class-names/cases.vue:27:19	vue/no-duplicate-class-names	duplicateClassNames	Duplicate class name 'foo'.
+tests/rules/vue/no-duplicate-class-names/cases.vue:28:8	vue/no-duplicate-class-names	duplicateClassNames	Duplicate class name 'foo'.
+tests/rules/vue/no-duplicate-class-names/cases.vue:29:8	vue/no-duplicate-class-names	duplicateClassNames	Duplicate class name 'foo'.
+tests/rules/vue/no-duplicate-class-names/cases.vue:30:8	vue/no-duplicate-class-names	duplicateClassNames	Duplicate class name 'foo'.
+tests/rules/vue/no-duplicate-class-names/cases.vue:31:8	vue/no-duplicate-class-names	duplicateClassNames	Duplicate class names 'foo', 'bar'.
+tests/rules/vue/no-duplicate-class-names/cases.vue:32:8	vue/no-duplicate-class-names	duplicateClassNames	Duplicate class name 'foo'.
+tests/rules/vue/no-duplicate-class-names/cases.vue:33:8	vue/no-duplicate-class-names	duplicateClassNames	Duplicate class name 'foo'.
+tests/rules/vue/no-duplicate-class-names/cases.vue:34:8	vue/no-duplicate-class-names	duplicateClassNames	Duplicate class name 'foo'.
+tests/rules/vue/no-duplicate-class-names/cases.vue:35:8	vue/no-duplicate-class-names	duplicateClassNames	Duplicate class name 'foo'.
+tests/rules/vue/no-duplicate-class-names/cases.vue:36:8	vue/no-duplicate-class-names	duplicateClassNames	Duplicate class name 'foo'.
+tests/rules/vue/no-duplicate-class-names/cases.vue:37:21	vue/no-duplicate-class-names	duplicateClassNames	Duplicate class name 'foo'.
+tests/rules/vue/no-duplicate-class-names/cases.vue:38:21	vue/no-duplicate-class-names	duplicateClassNames	Duplicate class name 'foo'.
+tests/rules/vue/no-duplicate-class-names/cases.vue:39:21	vue/no-duplicate-class-names	duplicateClassNames	Duplicate class name 'foo'.
+tests/rules/vue/no-duplicate-class-names/cases.vue:40:33	vue/no-duplicate-class-names	duplicateClassNames	Duplicate class name 'foo'.
+tests/rules/vue/no-duplicate-class-names/cases.vue:41:33	vue/no-duplicate-class-names	duplicateClassNames	Duplicate class name 'foo'.
+tests/rules/vue/no-duplicate-class-names/cases.vue:42:33	vue/no-duplicate-class-names	duplicateClassNames	Duplicate class name 'foo'.
+tests/rules/vue/no-duplicate-class-names/cases.vue:43:52	vue/no-duplicate-class-names	duplicateClassNames	Duplicate class name 'foo'.
+tests/rules/vue/no-duplicate-class-names/cases.vue:44:41	vue/no-duplicate-class-names	duplicateClassNames	Duplicate class name 'bar'.
+tests/rules/vue/no-duplicate-class-names/cases.vue:45:51	vue/no-duplicate-class-names	duplicateClassNames	Duplicate class name 'foo'.
+tests/rules/vue/no-duplicate-class-names/cases.vue:46:33	vue/no-duplicate-class-names	duplicateClassNames	Duplicate class name 'bar'.
+tests/rules/vue/no-duplicate-class-names/cases.vue:47:33	vue/no-duplicate-class-names	duplicateClassNames	Duplicate class name 'foo'.
+tests/rules/vue/no-duplicate-class-names/extra/cases.vue:4:16	vue/no-duplicate-class-names	duplicateClassNames	Duplicate class names 'a', 'b'.
+tests/rules/vue/no-duplicate-class-names/extra/cases.vue:5:5	vue/no-duplicate-class-names	duplicateClassNames	Duplicate class names 'a', 'a'.
+tests/rules/vue/no-duplicate-class-names/extra/cases.vue:5:16	vue/no-duplicate-class-names	duplicateClassNames	Duplicate class name 'a'.
+tests/rules/vue/no-duplicate-class-names/extra/cases.vue:5:30	vue/no-duplicate-class-names	duplicateClassNames	Duplicate class name 'b'.
+tests/rules/vue/no-duplicate-class-names/extra/cases.vue:5:38	vue/no-duplicate-class-names	duplicateClassNames	Duplicate class name 'a'.
+tests/rules/vue/no-duplicate-class-names/extra/cases.vue:6:18	vue/no-duplicate-class-names	duplicateClassNames	Duplicate class name 'x'.
+tests/rules/vue/no-duplicate-class-names/extra/cases.vue:7:18	vue/no-duplicate-class-names	duplicateClassNames	Duplicate class name 'p'.
+tests/rules/vue/no-duplicate-class-names/extra/cases.vue:8:18	vue/no-duplicate-class-names	duplicateClassNames	Duplicate class name 'k'.
+tests/rules/vue/no-duplicate-class-names/extra/cases.vue:10:18	vue/no-duplicate-class-names	duplicateClassNames	Duplicate class name 'n'.
+tests/rules/vue/no-duplicate-class-names/extra/cases.vue:10:24	vue/no-duplicate-class-names	duplicateClassNames	Duplicate class name 'o'.
+tests/rules/vue/no-duplicate-class-names/extra/cases.vue:11:5	vue/no-duplicate-class-names	duplicateClassNames	Duplicate class names 'r', 'r'.
+tests/rules/vue/no-duplicate-class-names/extra/cases.vue:11:18	vue/no-duplicate-class-names	duplicateClassNames	Duplicate class name 'r'.
+tests/rules/vue/no-duplicate-class-names/extra/cases.vue:11:31	vue/no-duplicate-class-names	duplicateClassNames	Duplicate class name 's'.
+tests/rules/vue/no-duplicate-class-names/extra/cases.vue:12:23	vue/no-duplicate-class-names	duplicateClassNames	Duplicate class name 't'.
+tests/rules/vue/no-duplicate-class-names/extra/cases.vue:14:5	vue/no-duplicate-class-names	duplicateClassNames	Duplicate class names 'v', 'v'.
+tests/rules/vue/no-duplicate-class-names/extra/cases.vue:14:23	vue/no-duplicate-class-names	duplicateClassNames	Duplicate class name 'v'.
+tests/rules/vue/no-duplicate-class-names/extra/cases.vue:15:18	vue/no-duplicate-class-names	duplicateClassNames	Duplicate class name 'w'.
+tests/rules/vue/no-duplicate-class-names/extra/cases.vue:16:5	vue/no-duplicate-class-names	duplicateClassNames	Duplicate class name 'a'.
+tests/rules/vue/no-duplicate-class-names/extra/cases.vue:16:5	vue/no-duplicate-class-names	duplicateClassNames	Duplicate class names 'b', 'b'.
+tests/rules/vue/no-duplicate-class-names/extra/cases.vue:16:5	vue/no-duplicate-class-names	duplicateClassNames	Duplicate class name 'a'.
+tests/rules/vue/no-duplicate-class-names/extra/cases.vue:16:31	vue/no-duplicate-class-names	duplicateClassNames	Duplicate class name 'a'.
+tests/rules/vue/no-duplicate-class-names/extra/cases.vue:16:36	vue/no-duplicate-class-names	duplicateClassNames	Duplicate class name 'b'.

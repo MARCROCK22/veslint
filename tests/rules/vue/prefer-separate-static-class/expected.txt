@@ -1,0 +1,36 @@
+tests/rules/vue/prefer-separate-static-class/cases.vue:19:27	vue/prefer-separate-static-class	preferSeparateStaticClass	Static class "static-class" should be in a static `class` attribute.
+tests/rules/vue/prefer-separate-static-class/cases.vue:20:27	vue/prefer-separate-static-class	preferSeparateStaticClass	Static class "static-class" should be in a static `class` attribute.
+tests/rules/vue/prefer-separate-static-class/cases.vue:21:21	vue/prefer-separate-static-class	preferSeparateStaticClass	Static class "static-class" should be in a static `class` attribute.
+tests/rules/vue/prefer-separate-static-class/cases.vue:22:21	vue/prefer-separate-static-class	preferSeparateStaticClass	Static class "static-class" should be in a static `class` attribute.
+tests/rules/vue/prefer-separate-static-class/cases.vue:23:21	vue/prefer-separate-static-class	preferSeparateStaticClass	Static class "form-item input" should be in a static `class` attribute.
+tests/rules/vue/prefer-separate-static-class/cases.vue:24:36	vue/prefer-separate-static-class	preferSeparateStaticClass	Static class "static-class" should be in a static `class` attribute.
+tests/rules/vue/prefer-separate-static-class/cases.vue:25:29	vue/prefer-separate-static-class	preferSeparateStaticClass	Static class "static-class" should be in a static `class` attribute.
+tests/rules/vue/prefer-separate-static-class/cases.vue:26:21	vue/prefer-separate-static-class	preferSeparateStaticClass	Static class "static-class" should be in a static `class` attribute.
+tests/rules/vue/prefer-separate-static-class/cases.vue:27:22	vue/prefer-separate-static-class	preferSeparateStaticClass	Static class "static-class" should be in a static `class` attribute.
+tests/rules/vue/prefer-separate-static-class/cases.vue:28:22	vue/prefer-separate-static-class	preferSeparateStaticClass	Static class "static-class" should be in a static `class` attribute.
+tests/rules/vue/prefer-separate-static-class/cases.vue:29:22	vue/prefer-separate-static-class	preferSeparateStaticClass	Static class "foo" should be in a static `class` attribute.
+tests/rules/vue/prefer-separate-static-class/cases.vue:30:23	vue/prefer-separate-static-class	preferSeparateStaticClass	Static class "static-class" should be in a static `class` attribute.
+tests/rules/vue/prefer-separate-static-class/cases.vue:31:22	vue/prefer-separate-static-class	preferSeparateStaticClass	Static class "static-class" should be in a static `class` attribute.
+tests/rules/vue/prefer-separate-static-class/cases.vue:32:55	vue/prefer-separate-static-class	preferSeparateStaticClass	Static class "static-class" should be in a static `class` attribute.
+tests/rules/vue/prefer-separate-static-class/cases.vue:33:22	vue/prefer-separate-static-class	preferSeparateStaticClass	Static class "static-class" should be in a static `class` attribute.
+tests/rules/vue/prefer-separate-static-class/cases.vue:34:45	vue/prefer-separate-static-class	preferSeparateStaticClass	Static class "static-class" should be in a static `class` attribute.
+tests/rules/vue/prefer-separate-static-class/cases.vue:35:37	vue/prefer-separate-static-class	preferSeparateStaticClass	Static class "staticClass" should be in a static `class` attribute.
+tests/rules/vue/prefer-separate-static-class/cases.vue:41:40	vue/prefer-separate-static-class	preferSeparateStaticClass	Static class "static-class" should be in a static `class` attribute.
+tests/rules/vue/prefer-separate-static-class/cases.vue:50:15	vue/prefer-separate-static-class	preferSeparateStaticClass	Static class "static-class-a" should be in a static `class` attribute.
+tests/rules/vue/prefer-separate-static-class/cases.vue:51:16	vue/prefer-separate-static-class	preferSeparateStaticClass	Static class "static-class-b" should be in a static `class` attribute.
+tests/rules/vue/prefer-separate-static-class/extra/cases.vue:3:20	vue/prefer-separate-static-class	preferSeparateStaticClass	Static class "a" should be in a static `class` attribute.
+tests/rules/vue/prefer-separate-static-class/extra/cases.vue:4:23	vue/prefer-separate-static-class	preferSeparateStaticClass	Static class "a" should be in a static `class` attribute.
+tests/rules/vue/prefer-separate-static-class/extra/cases.vue:5:22	vue/prefer-separate-static-class	preferSeparateStaticClass	Static class "a" should be in a static `class` attribute.
+tests/rules/vue/prefer-separate-static-class/extra/cases.vue:6:22	vue/prefer-separate-static-class	preferSeparateStaticClass	Static class "a" should be in a static `class` attribute.
+tests/rules/vue/prefer-separate-static-class/extra/cases.vue:7:21	vue/prefer-separate-static-class	preferSeparateStaticClass	Static class "x" should be in a static `class` attribute.
+tests/rules/vue/prefer-separate-static-class/extra/cases.vue:7:34	vue/prefer-separate-static-class	preferSeparateStaticClass	Static class "y" should be in a static `class` attribute.
+tests/rules/vue/prefer-separate-static-class/extra/cases.vue:7:67	vue/prefer-separate-static-class	preferSeparateStaticClass	Static class "v-1" should be in a static `class` attribute.
+tests/rules/vue/prefer-separate-static-class/extra/cases.vue:8:33	vue/prefer-separate-static-class	preferSeparateStaticClass	Static class "a b" should be in a static `class` attribute.
+tests/rules/vue/prefer-separate-static-class/extra/cases.vue:8:40	vue/prefer-separate-static-class	preferSeparateStaticClass	Static class "c" should be in a static `class` attribute.
+tests/rules/vue/prefer-separate-static-class/extra/cases.vue:8:45	vue/prefer-separate-static-class	preferSeparateStaticClass	Static class "d" should be in a static `class` attribute.
+tests/rules/vue/prefer-separate-static-class/extra/cases.vue:8:54	vue/prefer-separate-static-class	preferSeparateStaticClass	Static class "f" should be in a static `class` attribute.
+tests/rules/vue/prefer-separate-static-class/extra/cases.vue:9:24	vue/prefer-separate-static-class	preferSeparateStaticClass	Static class "q" should be in a static `class` attribute.
+tests/rules/vue/prefer-separate-static-class/extra/cases.vue:10:24	vue/prefer-separate-static-class	preferSeparateStaticClass	Static class "p" should be in a static `class` attribute.
+tests/rules/vue/prefer-separate-static-class/extra/cases.vue:11:28	vue/prefer-separate-static-class	preferSeparateStaticClass	Static class "m" should be in a static `class` attribute.
+tests/rules/vue/prefer-separate-static-class/extra/cases.vue:11:41	vue/prefer-separate-static-class	preferSeparateStaticClass	Static class "n" should be in a static `class` attribute.
+tests/rules/vue/prefer-separate-static-class/extra/cases.vue:14:20	vue/prefer-separate-static-class	preferSeparateStaticClass	Static class "a" should be in a static `class` attribute.

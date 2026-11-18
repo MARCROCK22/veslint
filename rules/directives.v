@@ -90,7 +90,15 @@ fn (c &Checker) line_column(lines offsets.LineStarts, offset int) (int, int) {
 // finding_line is ESLint's line of a problem: 1-based, and 0 for a report without a place in the
 // file (a negative row, see offsets.utf16_positions).
 fn finding_line(lines offsets.LineStarts, f Finding) int {
+	if f.line_loc {
+		return f.fixed_line
+	}
 	return if f.stmt.row < 0 { 0 } else { lines.line_index(f.stmt.start_byte) + 1 }
+}
+
+// finding_column is the column (from 1) ESLint sorts a problem by.
+fn finding_column(src string, f Finding) int {
+	return if f.line_loc { f.fixed_column } else { utf16_column(src, f.stmt.start_byte) + 1 }
 }
 
 // directive_problem is a problem about a comment: `level` is fatal, error or warning, and `rule`
@@ -773,7 +781,7 @@ fn (mut c Checker) apply_disable_directives(findings []Finding, inline InlineCon
 	mut columns := []int{cap: all.len}
 	for f in all {
 		lines << finding_line(inline.lines, f)
-		columns << utf16_column(c.src, f.stmt.start_byte) + 1
+		columns << finding_column(c.src, f)
 	}
 	mut order := []int{len: all.len, init: index}
 	order.sort_with_compare(fn [lines, columns] (a &int, b &int) int {
@@ -879,7 +887,7 @@ fn (mut c Checker) apply_disable_directives(findings []Finding, inline InlineCon
 	mut out_lines := out.map(finding_line(inline.lines, it))
 	mut out_columns := []int{cap: out.len}
 	for f in out {
-		out_columns << utf16_column(c.src, f.stmt.start_byte) + 1
+		out_columns << finding_column(c.src, f)
 	}
 	mut out_order := []int{len: out.len, init: index}
 	out_order.sort_with_compare(fn [out_lines, out_columns] (a &int, b &int) int {
@@ -1010,7 +1018,11 @@ fn unused_directive_finding(comment DirectiveComment, enable bool, description s
 	} else {
 		'Unused eslint-disable directive (no problems were reported).'
 	}
-	problem := directive_problem(comment, if config.report_unused == 1 { 'warning' } else { 'error' },
+	problem := directive_problem(comment, if config.report_unused == 1 {
+		'warning'
+	} else {
+		'error'
+	},
 		problem_rule, text)
 	return Finding{
 		...problem

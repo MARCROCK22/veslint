@@ -1,0 +1,1 @@
+<template>  <div>bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb</div></template><script setup lang="ts">const s = "a long string, a long string, a long string, a long string, a long string"</script>

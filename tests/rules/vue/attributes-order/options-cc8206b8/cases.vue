@@ -1,0 +1,10 @@
+<template>
+  <div>
+        <div
+          :prop-one="a"
+          v-model="value"
+          boolean-prop
+          prop-two="b"
+          :prop-three="c"/>
+      </div>
+</template>

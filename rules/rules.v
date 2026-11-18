@@ -635,6 +635,29 @@ pub const vue_no_constant_condition = 'vue/no-constant-condition'
 pub const vue_no_console = 'vue/no-console'
 pub const vue_quote_props = 'vue/quote-props'
 pub const vue_no_extra_parens = 'vue/no-extra-parens'
+pub const vue_max_attributes_per_line = 'vue/max-attributes-per-line'
+pub const vue_no_useless_mustaches = 'vue/no-useless-mustaches'
+pub const vue_no_negated_v_if_condition = 'vue/no-negated-v-if-condition'
+pub const vue_use_v_on_exact = 'vue/use-v-on-exact'
+pub const vue_prefer_v_model = 'vue/prefer-v-model'
+pub const vue_singleline_html_element_content_newline = 'vue/singleline-html-element-content-newline'
+pub const vue_multiline_html_element_content_newline = 'vue/multiline-html-element-content-newline'
+pub const vue_html_self_closing = 'vue/html-self-closing'
+pub const vue_padding_line_between_blocks = 'vue/padding-line-between-blocks'
+pub const vue_padding_line_between_tags = 'vue/padding-line-between-tags'
+pub const vue_block_tag_newline = 'vue/block-tag-newline'
+pub const vue_block_lang = 'vue/block-lang'
+pub const vue_no_bare_strings_in_template = 'vue/no-bare-strings-in-template'
+pub const vue_v_if_else_key = 'vue/v-if-else-key'
+pub const vue_no_irregular_whitespace = 'vue/no-irregular-whitespace'
+pub const vue_valid_v_for = 'vue/valid-v-for'
+pub const vue_valid_v_model = 'vue/valid-v-model'
+pub const vue_valid_v_slot = 'vue/valid-v-slot'
+pub const vue_no_unsupported_features = 'vue/no-unsupported-features'
+pub const vue_prefer_separate_static_class = 'vue/prefer-separate-static-class'
+pub const vue_no_duplicate_class_names = 'vue/no-duplicate-class-names'
+pub const vue_max_len = 'vue/max-len'
+pub const vue_attributes_order = 'vue/attributes-order'
 pub const names = [no_floating_promises, await_thenable, require_await, return_await,
 	no_misused_promises, no_unsafe_call, no_unsafe_member_access, no_unsafe_return,
 	no_unsafe_assignment, no_unsafe_argument, restrict_template_expressions,
@@ -808,8 +831,8 @@ pub const names = [no_floating_promises, await_thenable, require_await, return_a
 	vue_component_options_name_casing, vue_max_lines_per_block, vue_no_multiple_slot_args,
 	vue_no_reserved_keys, vue_no_deprecated_delete_set, vue_require_prop_types,
 	vue_return_in_computed_property, vue_no_deprecated_props_default_this,
-	vue_require_slots_as_functions, vue_require_name_property, vue_arrow_spacing,
-	vue_camelcase, vue_comma_dangle, vue_dot_location, vue_no_empty_pattern, vue_no_sparse_arrays,
+	vue_require_slots_as_functions, vue_require_name_property, vue_arrow_spacing, vue_camelcase,
+	vue_comma_dangle, vue_dot_location, vue_no_empty_pattern, vue_no_sparse_arrays,
 	vue_operator_linebreak, vue_array_bracket_newline, vue_array_bracket_spacing,
 	vue_array_element_newline, vue_block_spacing, vue_brace_style, vue_dot_notation, vue_eqeqeq,
 	vue_key_spacing, vue_keyword_spacing, vue_no_restricted_syntax, vue_no_useless_concat,
@@ -817,7 +840,14 @@ pub const names = [no_floating_promises, await_thenable, require_await, return_a
 	vue_prefer_template, vue_no_implicit_coercion, vue_no_loss_of_precision, vue_no_negated_condition,
 	vue_object_shorthand, vue_space_infix_ops, vue_space_unary_ops, vue_template_curly_spacing,
 	vue_comma_spacing, vue_multiline_ternary, vue_space_in_parens, vue_func_call_spacing,
-	vue_comma_style, vue_no_constant_condition, vue_no_console, vue_quote_props, vue_no_extra_parens]
+	vue_comma_style, vue_no_constant_condition, vue_no_console, vue_quote_props, vue_no_extra_parens,
+	vue_max_attributes_per_line, vue_no_useless_mustaches, vue_no_negated_v_if_condition,
+	vue_use_v_on_exact, vue_prefer_v_model, vue_singleline_html_element_content_newline,
+	vue_multiline_html_element_content_newline, vue_html_self_closing, vue_padding_line_between_blocks,
+	vue_padding_line_between_tags, vue_block_tag_newline, vue_block_lang,
+	vue_no_bare_strings_in_template, vue_v_if_else_key, vue_no_irregular_whitespace, vue_valid_v_for,
+	vue_valid_v_model, vue_valid_v_slot, vue_no_unsupported_features, vue_prefer_separate_static_class,
+	vue_no_duplicate_class_names, vue_max_len, vue_attributes_order]
 
 // untyped_rules are the ported rules that need no types (`meta.docs.requiresTypeChecking` is false
 // in typescript-eslint; the eslint-plugin-unicorn rules that read the types when the parser has a
@@ -961,8 +991,8 @@ pub const untyped_rules = [adjacent_overload_signatures, array_type, class_liter
 	vue_define_emits_declaration, vue_require_prop_type_constructor, vue_no_restricted_block,
 	vue_component_options_name_casing, vue_max_lines_per_block, vue_no_multiple_slot_args,
 	vue_no_deprecated_delete_set, vue_require_prop_types, vue_no_deprecated_props_default_this,
-	vue_require_slots_as_functions, vue_require_name_property, vue_arrow_spacing,
-	vue_camelcase, vue_comma_dangle, vue_dot_location, vue_no_empty_pattern, vue_no_sparse_arrays,
+	vue_require_slots_as_functions, vue_require_name_property, vue_arrow_spacing, vue_camelcase,
+	vue_comma_dangle, vue_dot_location, vue_no_empty_pattern, vue_no_sparse_arrays,
 	vue_operator_linebreak, vue_array_bracket_newline, vue_array_bracket_spacing,
 	vue_array_element_newline, vue_block_spacing, vue_brace_style, vue_dot_notation, vue_eqeqeq,
 	vue_key_spacing, vue_keyword_spacing, vue_no_restricted_syntax, vue_no_useless_concat,
@@ -970,7 +1000,14 @@ pub const untyped_rules = [adjacent_overload_signatures, array_type, class_liter
 	vue_prefer_template, vue_no_implicit_coercion, vue_no_loss_of_precision, vue_no_negated_condition,
 	vue_object_shorthand, vue_space_infix_ops, vue_space_unary_ops, vue_template_curly_spacing,
 	vue_comma_spacing, vue_multiline_ternary, vue_space_in_parens, vue_func_call_spacing,
-	vue_comma_style, vue_no_constant_condition, vue_no_console, vue_quote_props, vue_no_extra_parens]
+	vue_comma_style, vue_no_constant_condition, vue_no_console, vue_quote_props, vue_no_extra_parens,
+	vue_max_attributes_per_line, vue_no_useless_mustaches, vue_no_negated_v_if_condition,
+	vue_use_v_on_exact, vue_prefer_v_model, vue_singleline_html_element_content_newline,
+	vue_multiline_html_element_content_newline, vue_html_self_closing, vue_padding_line_between_blocks,
+	vue_padding_line_between_tags, vue_block_tag_newline, vue_block_lang,
+	vue_no_bare_strings_in_template, vue_v_if_else_key, vue_no_irregular_whitespace, vue_valid_v_for,
+	vue_valid_v_model, vue_valid_v_slot, vue_no_unsupported_features, vue_prefer_separate_static_class,
+	vue_no_duplicate_class_names, vue_max_len, vue_attributes_order]
 
 // needs_types tells whether a rule asks tsgo for the types of the program.
 pub fn needs_types(rule string) bool {
@@ -1600,6 +1637,29 @@ pub const default_options = {
 	vue_no_console:                                  '[]'
 	vue_quote_props:                                 '["always"]'
 	vue_no_extra_parens:                             '["all"]'
+	vue_max_attributes_per_line:                     '[]'
+	vue_no_useless_mustaches:                        '[]'
+	vue_no_negated_v_if_condition:                   '[]'
+	vue_use_v_on_exact:                              '[]'
+	vue_prefer_v_model:                              '[]'
+	vue_singleline_html_element_content_newline:     '[]'
+	vue_multiline_html_element_content_newline:      '[]'
+	vue_html_self_closing:                           '[]'
+	vue_padding_line_between_blocks:                 '[]'
+	vue_padding_line_between_tags:                   '[]'
+	vue_block_tag_newline:                           '[]'
+	vue_block_lang:                                  '[]'
+	vue_no_bare_strings_in_template:                 '[]'
+	vue_v_if_else_key:                               '[]'
+	vue_no_irregular_whitespace:                     '[]'
+	vue_valid_v_for:                                 '[]'
+	vue_valid_v_model:                               '[]'
+	vue_valid_v_slot:                                '[]'
+	vue_no_unsupported_features:                     '[]'
+	vue_prefer_separate_static_class:                '[]'
+	vue_no_duplicate_class_names:                    '[]'
+	vue_max_len:                                     '[]'
+	vue_attributes_order:                            '[]'
 }
 
 // Finding is a problem a rule found at a node.
@@ -1625,12 +1685,23 @@ pub:
 	// CR, U+2028 and U+2029 there, where the locations of vue-eslint-parser's nodes and tokens
 	// end only at LF (the two only differ in a .vue file).
 	text_loc bool
+	// Only the start (text_loc_start) or only the end (text_loc_end) of the `loc` comes from the
+	// text, the other side from a node or a token (vue/block-tag-newline's).
+	text_loc_start bool
+	text_loc_end   bool
 	// A report of a .vue file whose `loc` is a line and a column given as such
 	// (vue/no-parsing-error's, from the errors of the document, which may be past the end of the
 	// file): when fixed_line is not 0, ESLint's line and column are fixed_line and fixed_column
 	// (from 1), and the report has no end.
 	fixed_line   int
 	fixed_column int
+	// A report of any file whose `loc` is a start and an end given as lines and columns (from 1)
+	// that need not be places of the text (vue/max-len's: the column of the limit and the length
+	// of the line, tabs counted as tabWidth): fixed_line and fixed_column, fixed_end_line and
+	// fixed_end_column. `stmt` is a place on that line, for what needs a byte offset.
+	line_loc         bool
+	fixed_end_line   int
+	fixed_end_column int
 }
 
 // problem_rule is the `rule` of the problems ESLint reports without a rule (`ruleId: null`).
@@ -2382,6 +2453,29 @@ pub fn message(rule string, finding Finding) string {
 		vue_no_console { vncon_messages }
 		vue_quote_props { sqp_messages }
 		vue_no_extra_parens { snep_messages }
+		vue_max_attributes_per_line { vmapl_messages }
+		vue_no_useless_mustaches { vnum_messages }
+		vue_no_negated_v_if_condition { vnvic_messages }
+		vue_use_v_on_exact { vuvoe_messages }
+		vue_prefer_v_model { vpvm_messages }
+		vue_singleline_html_element_content_newline { vhecn_single_messages }
+		vue_multiline_html_element_content_newline { vhecn_multi_messages }
+		vue_html_self_closing { vhsc_messages }
+		vue_padding_line_between_blocks { vplbb_messages }
+		vue_padding_line_between_tags { vplbt_messages }
+		vue_block_tag_newline { vbtn_messages }
+		vue_block_lang { vblang_messages }
+		vue_no_bare_strings_in_template { vnbs_messages }
+		vue_v_if_else_key { vviek_messages }
+		vue_no_irregular_whitespace { vnirw_messages }
+		vue_valid_v_for { vvfor_messages }
+		vue_valid_v_model { vvmod_messages }
+		vue_valid_v_slot { vvslot_messages }
+		vue_no_unsupported_features { vnuf_messages }
+		vue_prefer_separate_static_class { vpssc_messages }
+		vue_no_duplicate_class_names { vndcn_messages }
+		vue_max_len { vmaxlen_messages }
+		vue_attributes_order { vattro_messages }
 		else { map[string]string{} }
 	}
 	return interpolate(messages[finding.message_id] or { finding.message_id }, finding.data)
@@ -4396,6 +4490,75 @@ fn (mut c Checker) lint_rule(rule string, root C.TSNode, abs_path string, mut st
 		vue_comma_style, vue_no_constant_condition, vue_no_console, vue_quote_props,
 		vue_no_extra_parens {
 			return c.lint_vue_wrap(rule, root, abs_path, mut stats)!
+		}
+		vue_max_attributes_per_line {
+			return c.lint_vue_max_attributes_per_line(root, abs_path, mut stats)!
+		}
+		vue_no_useless_mustaches {
+			return c.lint_vue_no_useless_mustaches(root, abs_path, mut stats)!
+		}
+		vue_no_negated_v_if_condition {
+			return c.lint_vue_no_negated_v_if_condition(root, abs_path, mut stats)!
+		}
+		vue_use_v_on_exact {
+			return c.lint_vue_use_v_on_exact(root, abs_path, mut stats)!
+		}
+		vue_prefer_v_model {
+			return c.lint_vue_prefer_v_model(root, abs_path, mut stats)!
+		}
+		vue_singleline_html_element_content_newline {
+			return c.lint_vue_singleline_html_element_content_newline(root, abs_path, mut stats)!
+		}
+		vue_multiline_html_element_content_newline {
+			return c.lint_vue_multiline_html_element_content_newline(root, abs_path, mut stats)!
+		}
+		vue_html_self_closing {
+			return c.lint_vue_html_self_closing(root, abs_path, mut stats)!
+		}
+		vue_padding_line_between_blocks {
+			return c.lint_vue_padding_line_between_blocks(root, abs_path, mut stats)!
+		}
+		vue_padding_line_between_tags {
+			return c.lint_vue_padding_line_between_tags(root, abs_path, mut stats)!
+		}
+		vue_block_tag_newline {
+			return c.lint_vue_block_tag_newline(root, abs_path, mut stats)!
+		}
+		vue_block_lang {
+			return c.lint_vue_block_lang(root, abs_path, mut stats)!
+		}
+		vue_no_bare_strings_in_template {
+			return c.lint_vue_no_bare_strings_in_template(root, abs_path, mut stats)!
+		}
+		vue_v_if_else_key {
+			return c.lint_vue_v_if_else_key(root, abs_path, mut stats)!
+		}
+		vue_no_irregular_whitespace {
+			return c.lint_vue_no_irregular_whitespace(root, abs_path, mut stats)!
+		}
+		vue_valid_v_for {
+			return c.lint_vue_valid_v_for(root, abs_path, mut stats)!
+		}
+		vue_valid_v_model {
+			return c.lint_vue_valid_v_model(root, abs_path, mut stats)!
+		}
+		vue_valid_v_slot {
+			return c.lint_vue_valid_v_slot(root, abs_path, mut stats)!
+		}
+		vue_no_unsupported_features {
+			return c.lint_vue_no_unsupported_features(root, abs_path, mut stats)!
+		}
+		vue_prefer_separate_static_class {
+			return c.lint_vue_prefer_separate_static_class(root, abs_path, mut stats)!
+		}
+		vue_no_duplicate_class_names {
+			return c.lint_vue_no_duplicate_class_names(root, abs_path, mut stats)!
+		}
+		vue_max_len {
+			return c.lint_vue_max_len(root, abs_path, mut stats)!
+		}
+		vue_attributes_order {
+			return c.lint_vue_attributes_order(root, abs_path, mut stats)!
 		}
 		else { return error('unknown rule: ${rule}') }
 	}

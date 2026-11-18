@@ -1,0 +1,10 @@
+tests/rules/vue/max-attributes-per-line/cases.vue:18:35	vue/max-attributes-per-line	shouldBeOnNewLine	'age' should be on a new line.
+tests/rules/vue/max-attributes-per-line/cases.vue:19:37	vue/max-attributes-per-line	shouldBeOnNewLine	':age' should be on a new line.
+tests/rules/vue/max-attributes-per-line/cases.vue:20:30	vue/max-attributes-per-line	shouldBeOnNewLine	'v-bind' should be on a new line.
+tests/rules/vue/max-attributes-per-line/cases.vue:21:37	vue/max-attributes-per-line	shouldBeOnNewLine	'@buy' should be on a new line.
+tests/rules/vue/max-attributes-per-line/cases.vue:22:37	vue/max-attributes-per-line	shouldBeOnNewLine	'@click.stop' should be on a new line.
+tests/rules/vue/max-attributes-per-line/cases.vue:23:37	vue/max-attributes-per-line	shouldBeOnNewLine	'v-if' should be on a new line.
+tests/rules/vue/max-attributes-per-line/cases.vue:24:38	vue/max-attributes-per-line	shouldBeOnNewLine	'v-bind:age' should be on a new line.
+tests/rules/vue/max-attributes-per-line/options-41b4d4eb/cases.vue:3:25	vue/max-attributes-per-line	shouldBeOnNewLine	'age' should be on a new line.
+tests/rules/vue/max-attributes-per-line/options-7f71e7e7/cases.vue:2:44	vue/max-attributes-per-line	shouldBeOnNewLine	'job' should be on a new line.
+tests/rules/vue/max-attributes-per-line/options-bcfaaaf1/cases.vue:3:25	vue/max-attributes-per-line	shouldBeOnNewLine	'age' should be on a new line.
