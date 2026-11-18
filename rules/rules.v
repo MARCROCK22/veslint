@@ -5733,10 +5733,10 @@ mut:
 	// scope_project is what the compiler options of the project decide about the scopes of its
 	// files, scope_setup the setup of the file being linted (file_scope_setup) and
 	// scope_libs_cache the implicit variables of each list of libs (scope_libs).
-	scope_project    ScopeProject
+	scope_project ScopeProject
 	// script_target: the `target` of the tsconfig (TypeScript's ScriptTarget; ESNext when unset),
 	// which eslint-plugin-svelte transpiles the scripts of a .svelte file to before compiling it.
-	script_target int = 99
+	script_target    int = 99
 	scope_setup      ScopeSetup
 	scope_libs_cache map[string]&ScopeLibs
 	nc_unused        map[int]bool // naming-convention: the unused variables of the file

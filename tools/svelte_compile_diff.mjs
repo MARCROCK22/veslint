@@ -6,7 +6,8 @@
 // Without files the corpus is every `.svelte` code of tests/rules/svelte/*/upstream.json and the
 // .svelte files of eslint-plugin-svelte's and svelte-eslint-parser's fixtures, of svelte's own
 // tests (build/upstream/svelte-repo/packages/svelte/tests, a clone of sveltejs/svelte at the
-// svelte@5.56.0 tag, when present) and of tests/svelte-compile, deduplicated, written to
+// svelte@5.56.0 tag, when present), the fixtures of tests/rules/svelte and tests/svelte-compile,
+// deduplicated, written to
 // DIR/corpus. Each file is compiled as eslint-plugin-svelte compiles it, without its source
 // transformations: compile(code, {generate: false, customElement: true when <svelte:options> has
 // `tag` or `customElement`}). Both sides give the warnings (code, message, start, end) in order,
@@ -65,6 +66,7 @@ function buildCorpus(dir) {
     'build/upstream/svelte/packages/eslint-plugin-svelte/tests/fixtures',
     'build/upstream/svelte-eslint-parser/tests/fixtures',
     'build/upstream/svelte-repo/packages/svelte/tests',
+    'tests/rules/svelte',
     'tests/svelte-compile',
   ])
     walk(path.resolve(ROOT, d), extra);

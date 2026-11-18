@@ -212,6 +212,29 @@ fn (mut c AcornChecker) visit(node int) {
 			}
 			c.pop()
 		}
+		'AssignmentExpression', 'UpdateExpression' {
+			// acorn's toAssignable / checkLValSimple: what typescript-eslint's parser lets through.
+			target := t.get(node, if t.typ(node) == 'UpdateExpression' {
+				Key.argument
+			} else {
+				Key.left
+			})
+			mut ok := t.typ(target) in ['Identifier', 'MemberExpression']
+			if t.typ(node) == 'AssignmentExpression' && t.text(node, .operator) == '=' {
+				ok = ok || t.typ(target) in ['ObjectPattern', 'ArrayPattern']
+			}
+			if !ok && c.err == none && t.nodes[target].start != no_pos {
+				start := t.nodes[target].start
+				c.err = CompileError{
+					diag:  e_js_parse_error('Assigning to rvalue')
+					start: start
+					end:   start
+				}
+			}
+			for ch in t.children(node) {
+				c.visit(ch)
+			}
+		}
 		'SwitchStatement' {
 			c.visit(t.get(node, .discriminant))
 			c.push(0)
