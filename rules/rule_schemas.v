@@ -781,6 +781,7 @@ const rule_option_schemas = {
 	'svelte/prefer-destructured-store-props':                          '{"type":"array","minItems":0,"maxItems":0}'
 	'svelte/no-top-level-browser-globals':                             '{"type":"array","minItems":0,"maxItems":0}'
 	'svelte/no-navigation-without-base':                               '{"type":"array","items":[{"type":"object","properties":{"ignoreGoto":{"type":"boolean"},"ignoreLinks":{"type":"boolean"},"ignorePushState":{"type":"boolean"},"ignoreReplaceState":{"type":"boolean"}},"additionalProperties":false}],"minItems":0,"maxItems":1}'
+	'svelte/require-store-reactive-access':                            '{"type":"array","minItems":0,"maxItems":0}'
 }
 
 // eslint_rule_default_options are the meta.defaultOptions of the rules of ESLint and of

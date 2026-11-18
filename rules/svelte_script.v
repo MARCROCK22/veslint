@@ -3,6 +3,7 @@ module rules
 import estree
 import svelte
 import treesitter { node_field, node_kind }
+import tsgo { ParameterResponse, TypeResponse }
 
 // What the svelte/* rules that read the script share (eslint-plugin-svelte 3.24.1's rules on the
 // ESTree nodes of the script and of the template expressions). Several of them also lint
@@ -693,4 +694,99 @@ fn svsc_url_is_absolute(url string) bool {
 		}
 	}
 	return false
+}
+
+// svsc_lint_ts is the tree-sitter node of the lint code a view's node is (whose type tsgo can
+// give), its type requested.
+fn (mut c Checker) svsc_lint_ts(b &SvscBridge, i int, abs_path string, mut stats Stats) ?C.TSNode {
+	lint := b.lint_of(i)?
+	ts := b.lint.ts_node(lint)?
+	c.resolve_node_types([ts], abs_path, mut stats) or { return none }
+	return ts
+}
+
+// svsc_is_store_ts is createStoreCheckerForTS (reference-helpers/svelte-store.ts): the apparent
+// type of the node has a `subscribe` whose signatures take two functions (with `consistent`, every
+// type of a union does).
+fn (mut c Checker) svsc_is_store_ts(ts C.TSNode, consistent bool) bool {
+	t := c.node_type(ts) or { return false }
+	apparent := c.apparent_of(t) or { return false }
+	return c.svsc_store_type(apparent, consistent, c.symbol_location(ts))
+}
+
+fn (mut c Checker) svsc_store_type(t TypeResponse, consistent bool, at SymbolLocation) bool {
+	if t.flags & type_flag_union != 0 {
+		members := c.members_of(t) or { return false }
+		for member in members {
+			ok := c.svsc_store_type(member, consistent, at)
+			if consistent && !ok {
+				return false
+			}
+			if !consistent && ok {
+				return true
+			}
+		}
+		return consistent
+	}
+	subscribe := c.property(t, 'subscribe') or { return false }
+	if subscribe.is_null() {
+		return false
+	}
+	subscribe_type := c.symbol_type_at(subscribe, at) or { return false }
+	return c.svsc_subscribe_type(subscribe_type, consistent, at)
+}
+
+// svsc_subscribe_type is isStoreSubscribeSignatureType.
+fn (mut c Checker) svsc_subscribe_type(t TypeResponse, consistent bool, at SymbolLocation) bool {
+	if t.flags & type_flag_union != 0 {
+		members := c.members_of(t) or { return false }
+		for member in members {
+			ok := c.svsc_subscribe_type(member, consistent, at)
+			if consistent && !ok {
+				return false
+			}
+			if !consistent && ok {
+				return true
+			}
+		}
+		return consistent
+	}
+	for signature in c.signatures_of(t, signature_kind_call) or { return false } {
+		params := c.signature_parameters(signature) or { continue }
+		if params.len >= 2 && c.svsc_maybe_function_param(params[0], at)
+			&& c.svsc_maybe_function_param(params[1], at) {
+			return true
+		}
+	}
+	return false
+}
+
+// svsc_maybe_function_param is maybeFunctionSymbol.
+fn (mut c Checker) svsc_maybe_function_param(param ParameterResponse, at SymbolLocation) bool {
+	t := c.parameter_type_at(param, at) or { return false }
+	apparent := c.apparent_of(t) or { return false }
+	return c.svsc_has_call_signatures(apparent, false)
+}
+
+// svsc_has_call_signatures is eachTypeCheck(type, { consistent: false }, t =>
+// t.getCallSignatures().length > 0), each type made apparent when `apparent`.
+fn (mut c Checker) svsc_has_call_signatures(t TypeResponse, apparent bool) bool {
+	if t.flags & type_flag_union != 0 {
+		members := c.members_of(t) or { return false }
+		for member in members {
+			if c.svsc_has_call_signatures(member, apparent) {
+				return true
+			}
+		}
+		return false
+	}
+	target := if apparent { c.apparent_of(t) or { return false } } else { t }
+	return (c.signatures_of(target, signature_kind_call) or { return false }).len > 0
+}
+
+// svsc_is_callable_ts is createCallableChecker's check.
+fn (mut c Checker) svsc_is_callable_ts(ts C.TSNode) bool {
+	t := c.node_type(ts) or { return false }
+	apparent := c.apparent_of(t) or { return false }
+	return c.svsc_has_call_signatures(apparent, true)
 }
