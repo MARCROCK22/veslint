@@ -13,7 +13,7 @@ const emit = defineEmits<(e: "change", value: T) => void>();
 const model = defineModel<string>();
 const inputRef = ref<HTMLInputElement | null>(null);
 const vFocus = {"mounted": (el: HTMLElement) => {
- el.focus();
+  el.focus();
 }};
 const label = ref("a");
 const total = computed(() => props.size * 2);
@@ -33,7 +33,12 @@ defineExpose({ save });
 </script>
 
 <template>
-  <my-thing v-focus ref="inputRef" :label="label" @click="save(props.item)">
+  <MyThing
+    ref="inputRef"
+    v-focus
+    :label="label"
+    @click="save(props.item)"
+  >
     {{ total }} {{ model }}
-  </my-thing>
+  </MyThing>
 </template>

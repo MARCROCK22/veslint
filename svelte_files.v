@@ -21,11 +21,26 @@ mut:
 	parsers &svelte.Parsers = unsafe { nil }
 }
 
-fn (mut p SvelteParsers) parse(src string) !&svelte.Document {
+// parse parses a .svelte file with the runes options of its configuration (svelte_parse_options).
+fn (mut p SvelteParsers) parse(src string, options svelte.ParseOptions) !&svelte.Document {
 	if p.parsers == unsafe { nil } {
 		p.parsers = svelte.new_parsers()!
 	}
-	return svelte.parse_svelte_with(src, p.parsers)
+	return svelte.parse_svelte_options(src, p.parsers, options)
+}
+
+// svelte_parse_options are the runes options svelte-eslint-parser parses the .svelte file at
+// `abs_path` with: its configuration's parserOptions.svelteFeatures.runes and svelteConfig, else
+// svelte.config.js (rules.svelte_parse_options). Without a configuration (the type mode), only
+// svelte.config.js.
+fn (l &LoadedConfig) svelte_parse_options(abs_path string) svelte.ParseOptions {
+	index := l.file_config[abs_path] or { 0 }
+	language := if index < l.configs.len {
+		l.configs[index].language
+	} else {
+		rules.LanguageOptions{}
+	}
+	return rules.svelte_parse_options(language, abs_path)
 }
 
 fn (mut p SvelteParsers) close() {
@@ -84,8 +99,8 @@ fn svelte_has_script_tag(src string) bool {
 
 // twin_code is the code tsgo is given for a .svelte file (its twin's text) and whether the file
 // is linted: not when its script is JavaScript.
-fn (mut p SvelteParsers) twin_code(src string) !(string, bool) {
-	mut doc := p.parse(src)!
+fn (mut p SvelteParsers) twin_code(src string, options svelte.ParseOptions) !(string, bool) {
+	mut doc := p.parse(src, options)!
 	defer {
 		doc.free()
 	}
@@ -237,10 +252,10 @@ fn svelte_identifiers(parser treesitter.Parser, doc &svelte.Document, all bool) 
 // prepare_svelte_file is prepare_file for a .svelte file: the identifiers of its script and of
 // its template, asked in its twin. A file whose script is JavaScript is skipped with a warning
 // (its FileWork is not `svelte`).
-fn prepare_svelte_file(mut svelte_parsers SvelteParsers, parser treesitter.Parser, path string, project_override string, all bool, mut bench BenchReport) !FileWork {
+fn prepare_svelte_file(mut svelte_parsers SvelteParsers, parser treesitter.Parser, path string, project_override string, all bool, options svelte.ParseOptions, mut bench BenchReport) !FileWork {
 	mut sw := time.new_stopwatch()
 	src, _, _ := read_source(path)!
-	mut doc := svelte_parsers.parse(src) or { return error('${path}: ${err.msg()}') }
+	mut doc := svelte_parsers.parse(src, options) or { return error('${path}: ${err.msg()}') }
 	defer {
 		doc.free()
 	}

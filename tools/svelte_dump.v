@@ -3,7 +3,11 @@ module main
 // The V side of tools/svelte_parse_diff.mjs: prints, for each .svelte file of a list, one JSON line
 // `{"path": …, "value": …}` with what svelte.Document.to_json gives (or `{"fatal": …}`).
 //
-//   svelte_dump json <list>          the files named one per line in <list>
+//   svelte_dump json <list> [--runes V] [--config-runes V]
+//                                    the files named one per line in <list>, parsed with
+//                                    parserOptions.svelteFeatures.runes and the svelteConfig's
+//                                    compilerOptions.runes set to V (true or false; unset when
+//                                    not given)
 //   svelte_dump time <file> [runs]   the time to parse a file
 //   svelte_dump bench <list> [runs]  the time to parse every file of the list (read beforehand)
 import os
@@ -27,13 +31,36 @@ fn main() {
 		'json' {
 			files := os.read_lines(os.args[2]) or { panic(err) }
 			parsers := svelte.new_parsers() or { panic(err) }
+			mut options := svelte.ParseOptions{}
+			for i := 3; i + 1 < os.args.len; i += 2 {
+				mode := svelte.runes_mode(os.args[i + 1] == 'true')
+				options = match os.args[i] {
+					'--runes' {
+						svelte.ParseOptions{
+							...options
+							features_set: true
+							features:     mode
+						}
+					}
+					'--config-runes' {
+						svelte.ParseOptions{
+							...options
+							config: mode
+						}
+					}
+					else {
+						eprintln('unknown option ${os.args[i]}')
+						exit(2)
+					}
+				}
+			}
 			mut out := os.stdout()
 			for path in files {
 				if path == '' {
 					continue
 				}
 				src := read_source(path)
-				mut doc := svelte.parse_svelte_with(src, parsers) or {
+				mut doc := svelte.parse_svelte_options(src, parsers, options) or {
 					out.writeln('{"path":${svelte.json_string(path)},"value":{"fatal":{"message":${svelte.json_string(err.msg())},"index":null}}}') or {}
 					continue
 				}

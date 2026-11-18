@@ -7,6 +7,12 @@
 not compared	s1319/src/script-indent_v52.vue	eslint	Parsing error: Expression expected.
 not compared	s1358/src/script-indent_v93.vue	eslint	Parsing error: Type expected.
 #
+# A rule of ESLint throws on the file: eslint-plugin-vue's no-restricted-component-names reads the
+# `type` of the first argument of a `defineOptions()` without one (an upstream bug).
+not compared	s0688/src/no-undef-components_i6.vue	crash	vue/no-restricted-component-names: Cannot read properties of undefined (reading 'type')
+not compared	s1377/src/valid-define-options_i2.vue	crash	vue/no-restricted-component-names: Cannot read properties of undefined (reading 'type')
+not compared	s1378/src/valid-define-options_i3.vue	crash	vue/no-restricted-component-names: Cannot read properties of undefined (reading 'type')
+#
 # tree-sitter's TypeScript grammar reads the script differently from TypeScript (syntax errors in
 # the one-token-per-line cases of script-indent: a class member or a modifier followed by a line
 # break, `export {…}` then `from` on the next line, a method signature with its parameters on the
@@ -1011,12 +1017,6 @@ only veslint	g02/src/no-undef-components_i7.vue:4:21	@typescript-eslint/no-unsaf
 only veslint	g03/src/no-deprecated-dollar-listeners-api_i3.vue:10:15	@typescript-eslint/no-unsafe-return	unsafeReturn	Unsafe return of a value of type error.	end	10	26
 only veslint	g03/src/valid-define-options_v4.vue:5:21	@typescript-eslint/no-unsafe-argument	unsafeArgument	Unsafe argument of type error typed assigned to a parameter of type `(ComponentOptionsBase<{}, {}, {}, {}, {}, ComponentOptionsMixin, ComponentOptionsMixin, {}, string, {}, {}, string, {}, {}, {}, string, ComponentProvideOptions> & ...) | undefined`.	end	5	24
 only veslint	g04/src/require-slots-as-functions_i0.vue:8:28	@typescript-eslint/no-unsafe-assignment	unsafeArraySpread	Unsafe spread of an error typed value in an array.	end	8	39
-# vue/no-parsing-error: tsgo gives the syntactic diagnostics of a template expression sorted by position,
-# where typescript-estree throws the first one TypeScript reported: here the scanner's unterminated
-# string, reported at its end (past the expression: "Unexpected end of expression."), before the
-# "',' expected." at its start.
-only eslint	g08/src/no-useless-mustaches_v1.vue:5:12	vue/no-parsing-error	parsingError	Parsing error: Unexpected end of expression.
-only veslint	g08/src/no-useless-mustaches_v1.vue:5:9	vue/no-parsing-error	parsingError	Parsing error: ',' expected.
 #
 # The wrapper rules (rules/vue_wrap.v) on a template expression tree-sitter's grammar reads with a
 # syntax error (a class method's name, its parameters and its body one token per line), which

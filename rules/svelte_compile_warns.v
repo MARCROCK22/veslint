@@ -358,11 +358,17 @@ fn svc_compile(text string, doc &svelte.Document, parsers &svelte.Parsers, opts 
 	mut d := unsafe { doc }
 	mut own := false
 	if text != doc.src {
-		d = if parsers != unsafe { nil } {
-			svelte.parse_svelte_with(text, parsers) or { return SvcCompiled{} }
-		} else {
-			svelte.parse_svelte(text) or { return SvcCompiled{} }
+		mut use := unsafe { parsers }
+		if use == unsafe { nil } {
+			use = svelte.new_parsers() or { return SvcCompiled{} }
 		}
+		defer {
+			if use != parsers {
+				use.close()
+			}
+		}
+		// Parsed as the file was (its runes options).
+		d = svelte.parse_svelte_options(text, use, doc.options) or { return SvcCompiled{} }
 		own = true
 	}
 	defer {

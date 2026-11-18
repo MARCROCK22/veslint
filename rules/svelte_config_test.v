@@ -1,5 +1,8 @@
 module rules
 
+import json2
+import svelte
+
 // The static reading of svelte.config.js (svelte_config.v): the cases of svelte-eslint-parser's
 // tests/src/svelte-config/parser.ts, and more whose results its parseConfig 1.10.1 gave.
 
@@ -106,5 +109,35 @@ fn test_svelte_config_static_reading() {
 		got := svcfg_parse(case.code)
 		assert got.runes == case.runes, case.code
 		assert got.routes == case.routes, case.code
+	}
+}
+
+// svelte_parse_options: svelteFeatures.runes (even neither true nor false) wins; a given
+// svelteConfig replaces svelte.config.js (whose path is looked for from the file: there is none
+// above this directory's files).
+fn test_svelte_parse_options() {
+	path := @FILE
+	for text, want in {
+		'{}':                                                                                                            svelte.ParseOptions{}
+		'{"parserOptions": {"svelteFeatures": {"runes": false}}}':                                                       svelte.ParseOptions{
+			features_set: true
+			features:     .off
+		}
+		'{"parserOptions": {"svelteFeatures": {"runes": true}, "svelteConfig": {"compilerOptions": {"runes": false}}}}': svelte.ParseOptions{
+			features_set: true
+			features:     .on
+		}
+		'{"parserOptions": {"svelteFeatures": {"runes": 1}}}':                                                           svelte.ParseOptions{
+			features_set: true
+		}
+		'{"parserOptions": {"svelteFeatures": {"runes": null}}}':                                                        svelte.ParseOptions{}
+		'{"parserOptions": {"svelteConfig": {"compilerOptions": {"runes": true}}}}':                                     svelte.ParseOptions{
+			config: .on
+		}
+		'{"parserOptions": {"svelteConfig": {"compilerOptions": {"runes": "yes"}}}}':                                    svelte.ParseOptions{}
+		'{"parserOptions": {"svelteConfig": {"kit": {}}}}':                                                              svelte.ParseOptions{}
+	} {
+		language := parse_language_options(json2.decode[json2.Any](text) or { panic(err) })
+		assert svelte_parse_options(language, path) == want, text
 	}
 }

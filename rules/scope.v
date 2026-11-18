@@ -3,6 +3,7 @@ module rules
 import json2
 import jsregexp
 import math
+import svelte
 import tsgo { CompilerOptions }
 import treesitter { TokenEnds, children, has_child_kind, named_children, next_sibling, node_end, node_field, node_kind, node_parent, node_start }
 
@@ -314,6 +315,11 @@ pub:
 	// decides svelteParseContext.runes before `<svelte:options runes>`.
 	svelte_runes_state OptionState
 	svelte_runes       bool
+	// The same two runes values as svelte-eslint-parser's parse reads them (`=== true`,
+	// `=== false`, anything else neither): svelteFeatures.runes when svelte_runes_state is set,
+	// svelteConfig.compilerOptions.runes when svelte_config_runes is.
+	svelte_runes_parse        svelte.RunesMode
+	svelte_config_runes_parse svelte.RunesMode
 }
 
 // parse_language_options reads the `languageOptions` of a configuration (as ESLint resolved it,
@@ -372,6 +378,7 @@ pub fn parse_language_options(value json2.Any) LanguageOptions {
 	}
 	mut runes_state := OptionState.unset
 	mut runes := false
+	mut runes_parse := svelte.RunesMode.unknown
 	if features := parser['svelteFeatures'] {
 		if features is map[string]json2.Any {
 			if runes_value := features.as_map()['runes'] {
@@ -379,6 +386,7 @@ pub fn parse_language_options(value json2.Any) LanguageOptions {
 					// `!= null`, then used as a boolean.
 					runes_state = .set
 					runes = runes_value.json_str() !in ['false', '0', '""']
+					runes_parse = scope_runes_mode(runes_value)
 				}
 			}
 		}
@@ -390,35 +398,65 @@ pub fn parse_language_options(value json2.Any) LanguageOptions {
 		json2.Any(false)
 	}.json_str() !in ['false', 'null', '0', '""'])
 	return LanguageOptions{
-		ecma_version:            normalize_ecma_version(options['ecmaVersion'] or {
+		ecma_version:              normalize_ecma_version(options['ecmaVersion'] or {
 			json2.Any('latest')
 		})
-		source_type:             if source_type is string { source_type } else { 'module' }
-		globals:                 globals
-		parser_source_type:      if parser_source_type is string { parser_source_type } else { '' }
-		has_lib:                 has_lib
-		lib:                     lib
-		implied_strict:          implied_strict
-		jsx:                     jsx
-		jsx_pragma_state:        pragma_state
-		jsx_pragma:              pragma
-		jsx_fragment_name_state: fragment_state
-		jsx_fragment_name:       fragment
-		global_return:           global_return
-		isolated_declarations:   isolated.json_str() !in ['false', 'null', '0', '""']
-		type_information:        type_information
-		svelte_config_given:     (parser['svelteConfig'] or { json2.Any(false) }).json_str() !in [
+		source_type:               if source_type is string { source_type } else { 'module' }
+		globals:                   globals
+		parser_source_type:        if parser_source_type is string {
+			parser_source_type
+		} else {
+			''
+		}
+		has_lib:                   has_lib
+		lib:                       lib
+		implied_strict:            implied_strict
+		jsx:                       jsx
+		jsx_pragma_state:          pragma_state
+		jsx_pragma:                pragma
+		jsx_fragment_name_state:   fragment_state
+		jsx_fragment_name:         fragment
+		global_return:             global_return
+		isolated_declarations:     isolated.json_str() !in ['false', 'null', '0', '""']
+		type_information:          type_information
+		svelte_config_given:       (parser['svelteConfig'] or { json2.Any(false) }).json_str() !in [
 			'false',
 			'null',
 			'0',
 			'""',
 		]
-		svelte_kit_routes:       scope_svelte_kit_routes(parser)
-		svelte_config_runes:     scope_svelte_compiler_option(parser, ['runes'])
-		svelte_config_async:     scope_svelte_compiler_option(parser, ['experimental', 'async']) == 1
-		svelte_runes_state:      runes_state
-		svelte_runes:            runes
+		svelte_kit_routes:         scope_svelte_kit_routes(parser)
+		svelte_config_runes:       scope_svelte_compiler_option(parser, ['runes'])
+		svelte_config_async:       scope_svelte_compiler_option(parser, ['experimental', 'async']) == 1
+		svelte_runes_state:        runes_state
+		svelte_runes:              runes
+		svelte_runes_parse:        runes_parse
+		svelte_config_runes_parse: scope_runes_mode(scope_svelte_config_value(parser,
+			['compilerOptions', 'runes']) or { json2.Any(json2.null) })
 	}
+}
+
+// scope_runes_mode is how svelte-eslint-parser's parse reads a runes value that is set: `true` and
+// `false` decide (`runes === true`, `runes === false`), anything else is neither.
+fn scope_runes_mode(value json2.Any) svelte.RunesMode {
+	return match value.json_str() {
+		'true' { svelte.RunesMode.on }
+		'false' { svelte.RunesMode.off }
+		else { svelte.RunesMode.unknown }
+	}
+}
+
+// scope_svelte_config_value is parserOptions.svelteConfig.<path> (none when a step is missing).
+fn scope_svelte_config_value(parser map[string]json2.Any, path []string) ?json2.Any {
+	mut value := parser['svelteConfig'] or { return none }
+	for key in path {
+		if value !is map[string]json2.Any {
+			return none
+		}
+		object := value.as_map()
+		value = object[key] or { return none }
+	}
+	return value
 }
 
 // scope_svelte_kit_routes is parserOptions.svelteConfig.kit.files.routes ('' when it is not a
@@ -438,16 +476,9 @@ fn scope_svelte_kit_routes(parser map[string]json2.Any) string {
 // scope_svelte_compiler_option is parserOptions.svelteConfig.compilerOptions.<path> as a boolean:
 // -1 when not set (or null), else 0 or 1.
 fn scope_svelte_compiler_option(parser map[string]json2.Any, path []string) int {
-	mut value := parser['svelteConfig'] or { return -1 }
 	mut keys := ['compilerOptions']
 	keys << path
-	for key in keys {
-		if value !is map[string]json2.Any {
-			return -1
-		}
-		object := value.as_map()
-		value = object[key] or { return -1 }
-	}
+	value := scope_svelte_config_value(parser, keys) or { return -1 }
 	if value is json2.Null {
 		return -1
 	}

@@ -9,5 +9,7 @@ function close () {
 </script>
 
 <template>
-  <button @click="close">{{ local }}</button>
+  <button @click="close">
+    {{ local }}
+  </button>
 </template>

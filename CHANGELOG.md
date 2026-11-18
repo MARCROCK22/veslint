@@ -2,6 +2,12 @@
 
 Each version is a release on GitHub with the veslint binaries (Linux x64, Windows x64) and the VS Code extension. The section of a version is the text of its release.
 
+## 0.35.1
+
+- **Svelte: the runes setting of the configuration in the parse**, as svelte-eslint-parser resolves it (`parserOptions.svelteFeatures.runes`, then `<svelte:options runes>`, then `compilerOptions.runes` of `parserOptions.svelteConfig` or `svelte.config.js`): with `runes: false` the runes are not declared and `$bindable` props are plain, in the types and the scopes the rules see (it was only read by the svelte/* rules).
+- **`vue/max-len` in `.svelte` files** measures the whole file, as ESLint does with svelte-eslint-parser's tokens (a long HTML comment after `</script>` was not measured).
+- Test tooling: `tests/vue-lint` and `tests/svelte-lint` compare again (the Vue configuration no longer loads the svelte/* rules; the Svelte one gives svelte-eslint-parser TypeScript 6, as its JavaScript files need), pinned with every rule.
+
 ## 0.35.0
 
 - **eslint-plugin-svelte complete: all 86 rules.** `svelte/valid-compile` and the `unused` message of `svelte/no-unused-svelte-ignore` give the Svelte compiler's warnings (accessibility, unused CSS selectors, runes, `$:`…) from a port of the analysis of Svelte 5.56.0's `compile()` to V (`svelte_compiler/`), with no JavaScript runtime: identical to `compile()` on 6,319 files. `svelte/indent` and `svelte/@typescript-eslint/no-unnecessary-condition` complete the plugin. `<style>` blocks in sass, less or stylus are left out of the compiler's input (their CSS warnings are missing).
