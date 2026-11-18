@@ -1,0 +1,10 @@
+tests/rules/svelte/no-spaces-around-equal-signs-in-attribute/cases.svelte:6:11	svelte/no-spaces-around-equal-signs-in-attribute	noSpaces	Unexpected spaces found around equal signs.	fix	79	82	=	end	6	14
+tests/rules/svelte/no-spaces-around-equal-signs-in-attribute/cases.svelte:7:11	svelte/no-spaces-around-equal-signs-in-attribute	noSpaces	Unexpected spaces found around equal signs.	fix	103	105	=	end	7	13
+tests/rules/svelte/no-spaces-around-equal-signs-in-attribute/cases.svelte:8:11	svelte/no-spaces-around-equal-signs-in-attribute	noSpaces	Unexpected spaces found around equal signs.	fix	126	128	=	end	8	13
+tests/rules/svelte/no-spaces-around-equal-signs-in-attribute/cases.svelte:10:11	svelte/no-spaces-around-equal-signs-in-attribute	noSpaces	Unexpected spaces found around equal signs.	fix	171	176	=	end	12	2
+tests/rules/svelte/no-spaces-around-equal-signs-in-attribute/cases.svelte:13:14	svelte/no-spaces-around-equal-signs-in-attribute	noSpaces	Unexpected spaces found around equal signs.	fix	200	203	=	end	13	17
+tests/rules/svelte/no-spaces-around-equal-signs-in-attribute/cases.svelte:14:18	svelte/no-spaces-around-equal-signs-in-attribute	noSpaces	Unexpected spaces found around equal signs.	fix	237	240	=	end	14	21
+tests/rules/svelte/no-spaces-around-equal-signs-in-attribute/cases.svelte:15:17	svelte/no-spaces-around-equal-signs-in-attribute	noSpaces	Unexpected spaces found around equal signs.	fix	263	266	=	end	15	20
+tests/rules/svelte/no-spaces-around-equal-signs-in-attribute/cases.svelte:16:22	svelte/no-spaces-around-equal-signs-in-attribute	noSpaces	Unexpected spaces found around equal signs.	fix	300	302	=	end	16	24
+tests/rules/svelte/no-spaces-around-equal-signs-in-attribute/cases.svelte:17:18	svelte/no-spaces-around-equal-signs-in-attribute	noSpaces	Unexpected spaces found around equal signs.	fix	345	348	=	end	17	21
+tests/rules/svelte/no-spaces-around-equal-signs-in-attribute/cases.svelte:19:11	svelte/no-spaces-around-equal-signs-in-attribute	noSpaces	Unexpected spaces found around equal signs.	fix	388	391	=	end	19	14

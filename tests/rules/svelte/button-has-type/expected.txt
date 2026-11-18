@@ -1,0 +1,16 @@
+tests/rules/svelte/button-has-type/cases.svelte:7:1	svelte/button-has-type	missingTypeAttribute	Missing an explicit type attribute for button.
+tests/rules/svelte/button-has-type/cases.svelte:11:9	svelte/button-has-type	emptyTypeAttribute	A value must be set for button type attribute.
+tests/rules/svelte/button-has-type/cases.svelte:12:9	svelte/button-has-type	emptyTypeAttribute	A value must be set for button type attribute.
+tests/rules/svelte/button-has-type/cases.svelte:13:9	svelte/button-has-type	invalidTypeAttribute	foo is an invalid value for button type attribute.
+tests/rules/svelte/button-has-type/cases.svelte:19:1	svelte/button-has-type	missingTypeAttribute	Missing an explicit type attribute for button.
+tests/rules/svelte/button-has-type/cases.svelte:20:1	svelte/button-has-type	missingTypeAttribute	Missing an explicit type attribute for button.
+tests/rules/svelte/button-has-type/cases.svelte:24:6	svelte/button-has-type	missingTypeAttribute	Missing an explicit type attribute for button.
+tests/rules/svelte/button-has-type/forbid/cases.svelte:7:1	svelte/button-has-type	missingTypeAttribute	Missing an explicit type attribute for button.
+tests/rules/svelte/button-has-type/forbid/cases.svelte:8:9	svelte/button-has-type	forbiddenTypeAttribute	button is a forbidden value for button type attribute.
+tests/rules/svelte/button-has-type/forbid/cases.svelte:10:9	svelte/button-has-type	forbiddenTypeAttribute	reset is a forbidden value for button type attribute.
+tests/rules/svelte/button-has-type/forbid/cases.svelte:11:9	svelte/button-has-type	emptyTypeAttribute	A value must be set for button type attribute.
+tests/rules/svelte/button-has-type/forbid/cases.svelte:12:9	svelte/button-has-type	emptyTypeAttribute	A value must be set for button type attribute.
+tests/rules/svelte/button-has-type/forbid/cases.svelte:13:9	svelte/button-has-type	invalidTypeAttribute	foo is an invalid value for button type attribute.
+tests/rules/svelte/button-has-type/forbid/cases.svelte:19:1	svelte/button-has-type	missingTypeAttribute	Missing an explicit type attribute for button.
+tests/rules/svelte/button-has-type/forbid/cases.svelte:20:1	svelte/button-has-type	missingTypeAttribute	Missing an explicit type attribute for button.
+tests/rules/svelte/button-has-type/forbid/cases.svelte:24:6	svelte/button-has-type	missingTypeAttribute	Missing an explicit type attribute for button.

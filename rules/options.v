@@ -359,6 +359,11 @@ pub fn check_options(rule string, options []json2.Any) !bool {
 		}
 		vue_no_dupe_keys { vue_no_dupe_keys_options(options)! }
 		svelte_comment_directive { svcd_options(options)! }
+		svelte_button_has_type { sbht_options(options)! }
+		svelte_no_target_blank { sntb_options(options)! }
+		svelte_shorthand_attribute { svsha_options(options)! }
+		svelte_spaced_html_comment { sshc_options(options)! }
+		svelte_no_useless_mustaches { snum_options(options)! }
 		else { return false }
 	}
 	return true

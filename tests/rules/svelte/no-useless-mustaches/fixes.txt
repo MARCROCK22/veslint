@@ -1,0 +1,43 @@
+tests/rules/svelte/no-useless-mustaches/cases.svelte:5:4	svelte/no-useless-mustaches	unexpected	Unexpected mustache interpolation with a string literal value.	fix	47	55	text	end	5	12
+tests/rules/svelte/no-useless-mustaches/cases.svelte:6:4	svelte/no-useless-mustaches	unexpected	Unexpected mustache interpolation with a string literal value.	fix	63	71	text	end	6	12
+tests/rules/svelte/no-useless-mustaches/cases.svelte:7:4	svelte/no-useless-mustaches	unexpected	Unexpected mustache interpolation with a string literal value.	fix	79	87	text	end	7	12
+tests/rules/svelte/no-useless-mustaches/cases.svelte:9:4	svelte/no-useless-mustaches	unexpected	Unexpected mustache interpolation with a string literal value.	fix	115	122	&lt;b&gt;	end	9	11
+tests/rules/svelte/no-useless-mustaches/cases.svelte:10:4	svelte/no-useless-mustaches	unexpected	Unexpected mustache interpolation with a string literal value.	end	10	16
+tests/rules/svelte/no-useless-mustaches/cases.svelte:11:4	svelte/no-useless-mustaches	unexpected	Unexpected mustache interpolation with a string literal value.	end	11	12
+tests/rules/svelte/no-useless-mustaches/cases.svelte:12:4	svelte/no-useless-mustaches	unexpected	Unexpected mustache interpolation with a string literal value.	fix	166	174	a\\b	end	12	12
+tests/rules/svelte/no-useless-mustaches/cases.svelte:13:4	svelte/no-useless-mustaches	unexpected	Unexpected mustache interpolation with a string literal value.	fix	182	190	a'b	end	13	12
+tests/rules/svelte/no-useless-mustaches/cases.svelte:15:4	svelte/no-useless-mustaches	unexpected	Unexpected mustache interpolation with a string literal value.	end	15	20
+tests/rules/svelte/no-useless-mustaches/cases.svelte:19:12	svelte/no-useless-mustaches	unexpected	Unexpected mustache interpolation with a string literal value.	fix	276	281	"x"	end	19	17
+tests/rules/svelte/no-useless-mustaches/cases.svelte:20:13	svelte/no-useless-mustaches	unexpected	Unexpected mustache interpolation with a string literal value.	fix	301	308	x&quot;y	end	20	20
+tests/rules/svelte/no-useless-mustaches/cases.svelte:21:13	svelte/no-useless-mustaches	unexpected	Unexpected mustache interpolation with a string literal value.	fix	329	336	x&y	end	21	20
+tests/rules/svelte/no-useless-mustaches/cases.svelte:22:14	svelte/no-useless-mustaches	unexpected	Unexpected mustache interpolation with a string literal value.	fix	358	363	b	end	22	19
+tests/rules/svelte/no-useless-mustaches/cases.svelte:23:18	svelte/no-useless-mustaches	unexpected	Unexpected mustache interpolation with a string literal value.	fix	390	397	"red"	end	23	25
+tests/rules/svelte/no-useless-mustaches/cases.svelte:25:4	svelte/no-useless-mustaches	unexpected	Unexpected mustache interpolation with a string literal value.	fix	422	426		end	25	8
+tests/rules/svelte/no-useless-mustaches/ignore-comment/cases.svelte:5:4	svelte/no-useless-mustaches	unexpected	Unexpected mustache interpolation with a string literal value.	fix	47	55	text	end	5	12
+tests/rules/svelte/no-useless-mustaches/ignore-comment/cases.svelte:6:4	svelte/no-useless-mustaches	unexpected	Unexpected mustache interpolation with a string literal value.	fix	63	71	text	end	6	12
+tests/rules/svelte/no-useless-mustaches/ignore-comment/cases.svelte:7:4	svelte/no-useless-mustaches	unexpected	Unexpected mustache interpolation with a string literal value.	fix	79	87	text	end	7	12
+tests/rules/svelte/no-useless-mustaches/ignore-comment/cases.svelte:9:4	svelte/no-useless-mustaches	unexpected	Unexpected mustache interpolation with a string literal value.	fix	115	122	&lt;b&gt;	end	9	11
+tests/rules/svelte/no-useless-mustaches/ignore-comment/cases.svelte:10:4	svelte/no-useless-mustaches	unexpected	Unexpected mustache interpolation with a string literal value.	end	10	16
+tests/rules/svelte/no-useless-mustaches/ignore-comment/cases.svelte:11:4	svelte/no-useless-mustaches	unexpected	Unexpected mustache interpolation with a string literal value.	end	11	12
+tests/rules/svelte/no-useless-mustaches/ignore-comment/cases.svelte:12:4	svelte/no-useless-mustaches	unexpected	Unexpected mustache interpolation with a string literal value.	fix	166	174	a\\b	end	12	12
+tests/rules/svelte/no-useless-mustaches/ignore-comment/cases.svelte:13:4	svelte/no-useless-mustaches	unexpected	Unexpected mustache interpolation with a string literal value.	fix	182	190	a'b	end	13	12
+tests/rules/svelte/no-useless-mustaches/ignore-comment/cases.svelte:19:12	svelte/no-useless-mustaches	unexpected	Unexpected mustache interpolation with a string literal value.	fix	276	281	"x"	end	19	17
+tests/rules/svelte/no-useless-mustaches/ignore-comment/cases.svelte:20:13	svelte/no-useless-mustaches	unexpected	Unexpected mustache interpolation with a string literal value.	fix	301	308	x&quot;y	end	20	20
+tests/rules/svelte/no-useless-mustaches/ignore-comment/cases.svelte:21:13	svelte/no-useless-mustaches	unexpected	Unexpected mustache interpolation with a string literal value.	fix	329	336	x&y	end	21	20
+tests/rules/svelte/no-useless-mustaches/ignore-comment/cases.svelte:22:14	svelte/no-useless-mustaches	unexpected	Unexpected mustache interpolation with a string literal value.	fix	358	363	b	end	22	19
+tests/rules/svelte/no-useless-mustaches/ignore-comment/cases.svelte:23:18	svelte/no-useless-mustaches	unexpected	Unexpected mustache interpolation with a string literal value.	fix	390	397	"red"	end	23	25
+tests/rules/svelte/no-useless-mustaches/ignore-comment/cases.svelte:25:4	svelte/no-useless-mustaches	unexpected	Unexpected mustache interpolation with a string literal value.	fix	422	426		end	25	8
+tests/rules/svelte/no-useless-mustaches/ignore-escape/cases.svelte:5:4	svelte/no-useless-mustaches	unexpected	Unexpected mustache interpolation with a string literal value.	fix	47	55	text	end	5	12
+tests/rules/svelte/no-useless-mustaches/ignore-escape/cases.svelte:6:4	svelte/no-useless-mustaches	unexpected	Unexpected mustache interpolation with a string literal value.	fix	63	71	text	end	6	12
+tests/rules/svelte/no-useless-mustaches/ignore-escape/cases.svelte:7:4	svelte/no-useless-mustaches	unexpected	Unexpected mustache interpolation with a string literal value.	fix	79	87	text	end	7	12
+tests/rules/svelte/no-useless-mustaches/ignore-escape/cases.svelte:9:4	svelte/no-useless-mustaches	unexpected	Unexpected mustache interpolation with a string literal value.	fix	115	122	&lt;b&gt;	end	9	11
+tests/rules/svelte/no-useless-mustaches/ignore-escape/cases.svelte:10:4	svelte/no-useless-mustaches	unexpected	Unexpected mustache interpolation with a string literal value.	end	10	16
+tests/rules/svelte/no-useless-mustaches/ignore-escape/cases.svelte:12:4	svelte/no-useless-mustaches	unexpected	Unexpected mustache interpolation with a string literal value.	fix	166	174	a\\b	end	12	12
+tests/rules/svelte/no-useless-mustaches/ignore-escape/cases.svelte:13:4	svelte/no-useless-mustaches	unexpected	Unexpected mustache interpolation with a string literal value.	fix	182	190	a'b	end	13	12
+tests/rules/svelte/no-useless-mustaches/ignore-escape/cases.svelte:15:4	svelte/no-useless-mustaches	unexpected	Unexpected mustache interpolation with a string literal value.	end	15	20
+tests/rules/svelte/no-useless-mustaches/ignore-escape/cases.svelte:19:12	svelte/no-useless-mustaches	unexpected	Unexpected mustache interpolation with a string literal value.	fix	276	281	"x"	end	19	17
+tests/rules/svelte/no-useless-mustaches/ignore-escape/cases.svelte:20:13	svelte/no-useless-mustaches	unexpected	Unexpected mustache interpolation with a string literal value.	fix	301	308	x&quot;y	end	20	20
+tests/rules/svelte/no-useless-mustaches/ignore-escape/cases.svelte:21:13	svelte/no-useless-mustaches	unexpected	Unexpected mustache interpolation with a string literal value.	fix	329	336	x&y	end	21	20
+tests/rules/svelte/no-useless-mustaches/ignore-escape/cases.svelte:22:14	svelte/no-useless-mustaches	unexpected	Unexpected mustache interpolation with a string literal value.	fix	358	363	b	end	22	19
+tests/rules/svelte/no-useless-mustaches/ignore-escape/cases.svelte:23:18	svelte/no-useless-mustaches	unexpected	Unexpected mustache interpolation with a string literal value.	fix	390	397	"red"	end	23	25
+tests/rules/svelte/no-useless-mustaches/ignore-escape/cases.svelte:25:4	svelte/no-useless-mustaches	unexpected	Unexpected mustache interpolation with a string literal value.	fix	422	426		end	25	8

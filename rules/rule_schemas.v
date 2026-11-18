@@ -721,6 +721,16 @@ const rule_option_schemas = {
 	'svelte/system':                                                   '{"type":"array","minItems":0,"maxItems":0}'
 	'svelte/no-at-html-tags':                                          '{"type":"array","minItems":0,"maxItems":0}'
 	'svelte/no-at-debug-tags':                                         '{"type":"array","minItems":0,"maxItems":0}'
+	'svelte/button-has-type':                                          '{"type":"array","items":[{"type":"object","properties":{"button":{"type":"boolean"},"submit":{"type":"boolean"},"reset":{"type":"boolean"}},"additionalProperties":false}],"minItems":0,"maxItems":1}'
+	'svelte/no-target-blank':                                          '{"type":"array","items":[{"type":"object","properties":{"allowReferrer":{"type":"boolean"},"enforceDynamicLinks":{"enum":["always","never"]}},"additionalProperties":false}],"minItems":0,"maxItems":1}'
+	'svelte/require-each-key':                                         '{"type":"array","minItems":0,"maxItems":0}'
+	'svelte/valid-each-key':                                           '{"type":"array","minItems":0,"maxItems":0}'
+	'svelte/no-object-in-text-mustaches':                              '{"type":"array","minItems":0,"maxItems":0}'
+	'svelte/shorthand-attribute':                                      '{"type":"array","items":[{"type":"object","properties":{"prefer":{"enum":["always","never"]}},"additionalProperties":false}],"minItems":0,"maxItems":1}'
+	'svelte/no-spaces-around-equal-signs-in-attribute':                '{"type":"array","minItems":0,"maxItems":0}'
+	'svelte/spaced-html-comment':                                      '{"type":"array","items":[{"enum":["always","never"]}],"minItems":0,"maxItems":1}'
+	'svelte/no-dupe-else-if-blocks':                                   '{"type":"array","minItems":0,"maxItems":0}'
+	'svelte/no-useless-mustaches':                                     '{"type":"array","items":[{"type":"object","properties":{"ignoreIncludesComment":{"type":"boolean"},"ignoreStringEscape":{"type":"boolean"}},"additionalProperties":false}],"minItems":0,"maxItems":1}'
 }
 
 // eslint_rule_default_options are the meta.defaultOptions of the rules of ESLint and of

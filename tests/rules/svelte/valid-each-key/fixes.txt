@@ -1,0 +1,4 @@
+tests/rules/svelte/valid-each-key/cases.svelte:8:23	svelte/valid-each-key	keyUseEachVars	Expected key to use the variables which are defined by the `{#each}` block.	end	8	28
+tests/rules/svelte/valid-each-key/cases.svelte:9:23	svelte/valid-each-key	keyUseEachVars	Expected key to use the variables which are defined by the `{#each}` block.	end	9	33
+tests/rules/svelte/valid-each-key/cases.svelte:11:31	svelte/valid-each-key	keyUseEachVars	Expected key to use the variables which are defined by the `{#each}` block.	end	11	40
+tests/rules/svelte/valid-each-key/cases.svelte:15:23	svelte/valid-each-key	keyUseEachVars	Expected key to use the variables which are defined by the `{#each}` block.	end	15	38
