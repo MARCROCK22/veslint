@@ -4,8 +4,9 @@ import estree
 import treesitter { node_kind }
 
 // lib/utils/ref-object-references.ts of eslint-plugin-vue 10.12.1 (iterateDefineRefs,
-// extractRefObjectReferences), with the part of lib/utils/property-references.ts that the
-// destructuring of `toRefs(…)` reads (the nest nodes of a pattern). Nodes are ESTree indexes.
+// extractRefObjectReferences); the destructuring of `toRefs(…)` is read with
+// vue_property_references.v (extractFromPattern, allProperties and getNestNodes). Nodes are
+// ESTree indexes.
 
 // vx6r_define_names are the functions iterateDefineRefs traces.
 const vx6r_define_names = ['ref', 'computed', 'toRef', 'customRef', 'shallowRef', 'useTemplateRef',
@@ -122,12 +123,15 @@ fn (mut c Checker) vx6r_process_define_ref(root C.TSNode, t &estree.EsTree, mut 
 	}
 	ctx := Vx6rCtx{method, node, [node]}
 	if method == 'toRefs' {
-		mut visited := map[int]bool{}
-		for nest in c.vx6r_nest_from_pattern(root, t, pattern, mut visited) {
-			if nest.expression {
-				c.vx6r_process_member_expression(root, t, mut refs, nest.node, ctx)
-			} else {
-				c.vx6r_process_pattern(root, t, mut refs, nest.node, ctx)
+		mut x := c.vpr_new_extractor(root, t, false, false)
+		references := c.vpr_from_pattern(mut x, pattern)
+		for property in c.vpr_all_properties(mut x, references) {
+			for nest in c.vpr_get_nest_nodes(mut x, references, property.name) {
+				if nest.expression {
+					c.vx6r_process_member_expression(root, t, mut refs, nest.node.node, ctx)
+				} else {
+					c.vx6r_process_pattern(root, t, mut refs, nest.node.node, ctx)
+				}
 			}
 		}
 	} else {
@@ -260,225 +264,4 @@ fn (mut c Checker) vx6r_es_node(t &estree.EsTree, n C.TSNode, kind string) int {
 		node = treesitter.node_parent(node) or { return -1 }
 	}
 	return c.es_index_of(t, node) or { -1 }
-}
-
-// Vx6rNest is a NestPropertyNode: the member expression (`expression`) or the pattern of a
-// property.
-struct Vx6rNest {
-	expression bool
-	node       int
-}
-
-// vx6r_nest_from_pattern are the nest nodes of every property of a pattern
-// (extractFromPattern(…).allProperties() and getNestNodes of each, in that order).
-fn (mut c Checker) vx6r_nest_from_pattern(root C.TSNode, t &estree.EsTree, pattern int, mut visited map[int]bool) []Vx6rNest {
-	mut node := pattern
-	for node >= 0 && t.typ(node) == .assignment_pattern {
-		node = t.node(node, .left) or { return [] }
-	}
-	if node < 0 || node in visited {
-		return []
-	}
-	visited[node] = true
-	match t.typ(node) {
-		.object_pattern {
-			return vx6r_merge(vx6r_object_named(t, node))
-		}
-		.identifier {
-			return c.vx6r_nest_from_identifier(root, t, node, mut visited)
-		}
-		else {
-			return []
-		}
-	}
-}
-
-// vx6r_nest_from_identifier is extractFromIdentifier: the nest nodes of the references of the
-// variable, merged by name.
-fn (mut c Checker) vx6r_nest_from_identifier(root C.TSNode, t &estree.EsTree, node int, mut visited map[int]bool) []Vx6rNest {
-	v := c.unb_find_variable(root, t, node)
-	if v < 0 {
-		return []
-	}
-	tree := c.scope_tree(root)
-	mut named := []Vx6rNamedNest{}
-	for r in tree.variables[v].references {
-		id := c.es_index_of(t, tree.references[r].identifier) or { continue }
-		named << c.vx6r_nest_from_expression(root, t, id, mut visited)
-	}
-	return vx6r_merge(named)
-}
-
-struct Vx6rNamedNest {
-	name string
-	nest Vx6rNest
-}
-
-// vx6r_merge orders the nest nodes by the first appearance of their names (a merged
-// allProperties), then by reference.
-fn vx6r_merge(named []Vx6rNamedNest) []Vx6rNest {
-	mut name_list := []string{}
-	for n in named {
-		if n.name !in name_list {
-			name_list << n.name
-		}
-	}
-	mut out := []Vx6rNest{}
-	for name in name_list {
-		for n in named {
-			if n.name == name {
-				out << n.nest
-			}
-		}
-	}
-	return out
-}
-
-// vx6r_nest_from_expression is extractFromExpression's nest nodes, with their names.
-fn (mut c Checker) vx6r_nest_from_expression(root C.TSNode, t &estree.EsTree, node int, mut visited map[int]bool) []Vx6rNamedNest {
-	parent := t.nodes[node].parent
-	if parent < 0 {
-		return []
-	}
-	match t.typ(parent) {
-		.assignment_expression {
-			if (t.node(parent, .right) or { -1 }) == node
-				&& (t.string_of(parent, .operator) or { '' }) == '=' {
-				return c.vx6r_named(root, t, t.node(parent, .left) or { -1 }, mut visited)
-			}
-		}
-		.variable_declarator {
-			if (t.node(parent, .init) or { -1 }) == node {
-				return c.vx6r_named(root, t, t.node(parent, .id) or { -1 }, mut visited)
-			}
-		}
-		.member_expression {
-			if (t.node(parent, .object) or { -1 }) != node {
-				return []
-			}
-			name := vue_static_property_name(t, parent) or { '' }
-			grand := t.nodes[parent].parent
-			if name == '\$props' && grand >= 0 && t.typ(grand) == .member_expression {
-				prop_name := vue_static_property_name(t, grand) or { '' }
-				if prop_name == '' {
-					return []
-				}
-				return [Vx6rNamedNest{prop_name, Vx6rNest{true, grand}}]
-			}
-			if name != '' {
-				return [Vx6rNamedNest{name, Vx6rNest{true, parent}}]
-			}
-		}
-		.call_expression {
-			args := t.list(parent, .arguments) or { []int{} }
-			index := args.index(node)
-			callee := t.node(parent, .callee) or { -1 }
-			if index < 0 || callee < 0 || t.typ(callee) != .identifier {
-				return []
-			}
-			function := c.vx6r_find_function(root, t, callee, 0)
-			if function < 0 {
-				// toRef/toRefs and unknown calls give no nest nodes here.
-				return []
-			}
-			params := t.list(function, .params) or { []int{} }
-			if index >= params.len {
-				return []
-			}
-			return c.vx6r_named(root, t, params[index], mut visited)
-		}
-		.chain_expression {
-			return c.vx6r_nest_from_expression(root, t, parent, mut visited)
-		}
-		else {}
-	}
-	return []
-}
-
-// vx6r_named are the nest nodes of a pattern with their names.
-fn (mut c Checker) vx6r_named(root C.TSNode, t &estree.EsTree, pattern int, mut visited map[int]bool) []Vx6rNamedNest {
-	mut node := pattern
-	for node >= 0 && t.typ(node) == .assignment_pattern {
-		node = t.node(node, .left) or { return [] }
-	}
-	if node < 0 {
-		return []
-	}
-	if t.typ(node) == .object_pattern {
-		return vx6r_object_named(t, node)
-	}
-	if t.typ(node) == .identifier {
-		if node in visited {
-			return []
-		}
-		visited[node] = true
-		v := c.unb_find_variable(root, t, node)
-		if v < 0 {
-			return []
-		}
-		tree := c.scope_tree(root)
-		mut out := []Vx6rNamedNest{}
-		for r in tree.variables[v].references {
-			id := c.es_index_of(t, tree.references[r].identifier) or { continue }
-			out << c.vx6r_nest_from_expression(root, t, id, mut visited)
-		}
-		return out
-	}
-	return []
-}
-
-// vx6r_find_function is property-references' findFunction.
-fn (mut c Checker) vx6r_find_function(root C.TSNode, t &estree.EsTree, id int, depth int) int {
-	if depth > 10 {
-		return -1
-	}
-	v := c.unb_find_variable(root, t, id)
-	if v < 0 {
-		return -1
-	}
-	tree := c.scope_tree(root)
-	defs := tree.variables[v].defs
-	if defs.len != 1 {
-		return -1
-	}
-	def := defs[0]
-	if node_kind(def.node) == 'function_declaration' {
-		return c.es_index_of(t, def.node) or { -1 }
-	}
-	if def.kind == .variable && def.parent_kind == 'const' {
-		init := def.init or { return -1 }
-		es := c.es_index_of(t, unwrap_parens(init)) or { return -1 }
-		if t.typ(es) in [.function_expression, .arrow_function_expression] {
-			return es
-		}
-		if t.typ(es) == .identifier {
-			return c.vx6r_find_function(root, t, es, depth + 1)
-		}
-	}
-	return -1
-}
-
-// vx6r_object_named is PropertyReferencesForObject of an object pattern: the nest nodes of each
-// property (its value through defaults, when an identifier, member expression or pattern), with
-// the property's name; none (ANY) when a property is a rest element or has no static name.
-fn vx6r_object_named(t &estree.EsTree, node int) []Vx6rNamedNest {
-	mut out := []Vx6rNamedNest{}
-	for p in t.list(node, .properties) or { []int{} } {
-		if t.typ(p) != .property {
-			return []
-		}
-		name := vue_static_property_name(t, p) or { return [] }
-		if name == '' {
-			return []
-		}
-		mut value := t.node(p, .value) or { -1 }
-		for value >= 0 && t.typ(value) == .assignment_pattern {
-			value = t.node(value, .left) or { -1 }
-		}
-		if value >= 0 && t.typ(value) in [.identifier, .member_expression, .object_pattern,
-			.array_pattern] {
-			out << Vx6rNamedNest{name, Vx6rNest{false, value}}
-		}
-	}
-	return out
 }

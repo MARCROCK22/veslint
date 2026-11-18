@@ -4,12 +4,11 @@ import estree
 import vue
 
 // Port of lib/utils/property-references.ts of eslint-plugin-vue 10.12.1
-// (definePropertyReferenceExtractor and mergePropertyReferences, without getNestNodes, which
-// no rule of this port reads): what properties of a value (`this`, the props, a variable, a
+// (definePropertyReferenceExtractor and mergePropertyReferences): what properties of a value (`this`, the props, a variable, a
 // function parameter, the names of the template's expressions) the code reads, and what it reads
 // of those properties. An IPropertyReferences is a VprRef in the extractor's arena (`refs`),
-// vpr_any and vpr_never being ANY and NEVER; its methods are vpr_has_property, vpr_all_properties
-// and vpr_get_nest.
+// vpr_any and vpr_never being ANY and NEVER; its methods are vpr_has_property, vpr_all_properties,
+// vpr_get_nest and vpr_get_nest_nodes.
 //
 // A node is named by its tree and its index there (VprNode): tree 0 is the script's EsTree,
 // tree s + 1 the EsTree of the template's (or a style's) snippet s. In a snippet, the parent of
@@ -334,6 +333,60 @@ fn (mut c Checker) vpr_get_nest(mut x VprExtractor, r int, name string) int {
 				}
 			}
 			return vpr_merge(mut x, nest)
+		}
+	}
+}
+
+// VprNestNode is a NestPropertyNode: a member expression (`expression`) or a pattern.
+struct VprNestNode {
+	expression bool
+	node       VprNode
+}
+
+// vpr_get_nest_nodes is IPropertyReferences.getNestNodes.
+fn (mut c Checker) vpr_get_nest_nodes(mut x VprExtractor, r int, name string) []VprNestNode {
+	ref := x.refs[r]
+	match ref.kind {
+		.any, .never, .unknown_call, .path, .name_literal, .name {
+			return []
+		}
+		.member {
+			return if name == ref.name { [VprNestNode{true, ref.node}] } else { [] }
+		}
+		.object {
+			properties := ref.properties[name] or { return [] }
+			mut values := properties.map(x.t.node(it, .value) or { -1 })
+			mut out := []VprNestNode{}
+			for values.len > 0 {
+				node := values[0]
+				values.delete(0)
+				if node < 0 {
+					break
+				}
+				match x.t.typ(node) {
+					.identifier, .member_expression, .object_pattern, .array_pattern {
+						out << VprNestNode{false, VprNode{0, node}}
+					}
+					.assignment_pattern {
+						values.insert(0, x.t.node(node, .left) or { -1 })
+					}
+					else {}
+				}
+			}
+			return out
+		}
+		.to_refs {
+			nest := c.vpr_get_nest(mut x, ref.refs[0], name)
+			return c.vpr_get_nest_nodes(mut x, nest, 'value')
+		}
+		.merge {
+			mut out := []VprNestNode{}
+			for sub in ref.refs {
+				if c.vpr_has_property(mut x, sub, name, VprHasOptions{}) {
+					out << c.vpr_get_nest_nodes(mut x, sub, name)
+				}
+			}
+			return out
 		}
 	}
 }
