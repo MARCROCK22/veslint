@@ -328,3 +328,70 @@ fn (mut c Checker) svsc_import_variable(root C.TSNode, specifier C.TSNode) int {
 	local := node_field(specifier, 'alias') or { node_field(specifier, 'name') or { return -1 } }
 	return c.scope_tree(root).declared_variable(local)
 }
+
+// SvscDefKind is the `type` of a definition of the document's scope manager, as far as the rules
+// tell them apart.
+enum SvscDefKind {
+	other
+	variable       // `Variable`: node is the VariableDeclarator
+	import_binding // `ImportBinding`
+	function_name  // `FunctionName`: node is the function
+	computed       // svelte-eslint-parser's `ComputedVariable` (`$: x = …`): node is the assignment
+}
+
+// svsc_def is the type and node of a definition of doc.scope (from its name's place).
+fn (c &Checker) svsc_def(def svelte.SDef) (SvscDefKind, int) {
+	es := &c.svelte.doc.es
+	parent := es.nodes[def.name].parent
+	if def.computed {
+		return SvscDefKind.computed, parent
+	}
+	if parent >= 0 {
+		match es.typ(parent) {
+			.import_specifier, .import_default_specifier, .import_namespace_specifier {
+				return SvscDefKind.import_binding, parent
+			}
+			.function_declaration, .function_expression {
+				if (es.node(parent, .id) or { -1 }) == def.name {
+					return SvscDefKind.function_name, parent
+				}
+			}
+			else {}
+		}
+	}
+	declarator := c.sv_def_declarator(def.name)
+	if declarator >= 0 {
+		return SvscDefKind.variable, declarator
+	}
+	return SvscDefKind.other, -1
+}
+
+// svsc_toplevel_scope is the module scope of the document's scope manager (else the global one).
+fn (c &Checker) svsc_toplevel_scope() int {
+	info := &c.svelte.doc.scope
+	for child in info.scopes[0].children {
+		if info.scopes[child].typ == 'module' {
+			return child
+		}
+	}
+	return 0
+}
+
+// svsc_property_name is getPropertyName of eslint-utils for a MemberExpression of the document
+// (without a scope: a computed key is a constant string).
+fn (c &Checker) svsc_property_name(member int) ?string {
+	es := &c.svelte.doc.es
+	property := es.node(member, .property)?
+	if es.flag(member, .computed) or { false } {
+		return c.sv_string_if_constant(property)
+	}
+	if es.typ(property) == .private_identifier {
+		return none
+	}
+	return es.string_of(property, .name)
+}
+
+// svsc_in_range: [start, end) of the node is inside [from, to).
+fn svsc_in_range(t &estree.EsTree, i int, from int, to int) bool {
+	return from <= t.nodes[i].start && t.nodes[i].end <= to
+}

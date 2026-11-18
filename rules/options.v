@@ -379,6 +379,7 @@ pub fn check_options(rule string, options []json2.Any) !bool {
 		svelte_no_inner_declarations { svnid_options(options)! }
 		svelte_no_trailing_spaces { svnts_options(options)! }
 		svelte_no_unnecessary_state_wrap { svnusw_options(options)! }
+		svelte_no_reactive_reassign { svnrr_options(options)! }
 		else { return false }
 	}
 	return true
