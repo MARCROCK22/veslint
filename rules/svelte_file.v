@@ -255,6 +255,10 @@ fn (c &Checker) svelte_move_findings(findings []Finding) []Finding {
 
 // svelte_move_fix moves a fix of the lint code to the file; none when it touches a wrapper.
 fn svelte_move_fix(doc &svelte.Document, fix Fix) ?Fix {
+	if fix.start < 0 {
+		// unicode-bom's removal of the BOM, before the text.
+		return fix
+	}
 	if fix.end == fix.start {
 		// An insertion: after a character of the file, or before one.
 		mut at := doc.lint_to_file(fix.start, true)

@@ -1,0 +1,107 @@
+bom.svelte:1:1	unicode-bom	unexpected	Unexpected Unicode BOM (Byte Order Mark).	fix	-1	0	
+bom.svelte:2:6	prefer-const	useConst	'bom' is never reassigned. Use 'const' instead.	fix	20	32	const bom = 1;	end	2	9
+bom.svelte:5:12	@typescript-eslint/no-magic-numbers	noMagic	No magic number: 1.	end	5	13
+bom.svelte:5:9	eqeqeq	unexpected	Expected '===' and instead saw '=='.	suggestion	replaceOperator	Use '===' instead of '=='.	52	54	===	end	5	11
+crlf.svelte:2:14	@stylistic/semi	missingSemi	Missing semicolon.	fix	33	33	;	end	3	1
+crlf.svelte:2:6	prefer-const	useConst	'crlf' is never reassigned. Use 'const' instead.	fix	21	33	const crlf = 1	end	2	10
+crlf.svelte:3:19	eqeqeq	unexpected	Expected '===' and instead saw '=='.	suggestion	replaceOperator	Use '===' instead of '=='.	53	55	===	end	3	21
+crlf.svelte:3:22	@typescript-eslint/no-magic-numbers	noMagic	No magic number: 1.	end	3	23
+crlf.svelte:3:23	@stylistic/semi	missingSemi	Missing semicolon.	fix	57	57	;	end	4	1
+crlf.svelte:3:6	prefer-const	useConst	'other' is never reassigned. Use 'const' instead.	fix	36	57	const other = crlf == 1	end	3	11
+crlf.svelte:6:12	@typescript-eslint/no-unnecessary-boolean-literal-compare	direct	This expression unnecessarily compares a boolean value to a boolean instead of using it directly.	fix	83	96	other	end	6	25
+crlf.svelte:6:18	eqeqeq	unexpected	Expected '===' and instead saw '=='.	suggestion	replaceOperator	Use '===' instead of '=='.	89	91	===	end	6	20
+directives.svelte:12:26	eqeqeq	unexpected	Expected '===' and instead saw '=='.	suggestion	replaceOperator	Use '===' instead of '=='.	290	292	===	end	12	28
+directives.svelte:12:29	@typescript-eslint/no-magic-numbers	noMagic	No magic number: 3.	end	12	30
+directives.svelte:3:2	vars-on-top	top	All 'var' declarations must be at the top of the function scope.	end	3	16
+directives.svelte:5:24	@typescript-eslint/no-magic-numbers	noMagic	No magic number: 1.	end	5	25
+directives.svelte:8:6	prefer-const	useConst	'third' is never reassigned. Use 'const' instead.	fix	205	219	const third = 3;	end	8	11
+generics.svelte:1:40	@stylistic/object-curly-spacing	unexpectedSpaceAfter	There should be no space after '{'.	fix	39	40		end	1	41
+generics.svelte:1:41	@stylistic/quote-props	unquotedPropertyFound	Unquoted property 'id' found.	fix	40	42	"id"	end	1	51
+generics.svelte:1:51	@stylistic/object-curly-spacing	unexpectedSpaceBefore	There should be no space before '}'.	fix	50	51		end	1	52
+generics.svelte:2:14	prefer-const	useConst	'pick' is never reassigned. Use 'const' instead.	fix	68	134	const { rows, pick }: { rows: T[]; pick: (row: T) => U } = $props();	end	2	18
+generics.svelte:2:18	@stylistic/object-curly-spacing	unexpectedSpaceBefore	There should be no space before '}'.	fix	84	85		end	2	19
+generics.svelte:2:23	@stylistic/object-curly-spacing	unexpectedSpaceAfter	There should be no space after '{'.	fix	89	90		end	2	24
+generics.svelte:2:24	@stylistic/quote-props	unquotedPropertyFound	Unquoted property 'rows' found.	fix	90	94	"rows"	end	2	34
+generics.svelte:2:35	@stylistic/object-property-newline	propertiesOnNewline	Object properties must go on a new line.	fix	100	101	\n	end	2	39
+generics.svelte:2:35	@stylistic/quote-props	unquotedPropertyFound	Unquoted property 'pick' found.	fix	101	105	"pick"	end	2	54
+generics.svelte:2:42	@typescript-eslint/prefer-readonly-parameter-types	shouldBeReadonly	Parameter should be a read only type.	end	2	48
+generics.svelte:2:54	@stylistic/object-curly-spacing	unexpectedSpaceBefore	There should be no space before '}'.	fix	120	121		end	2	55
+generics.svelte:2:7	@stylistic/object-curly-spacing	unexpectedSpaceAfter	There should be no space after '{'.	fix	73	74		end	2	8
+generics.svelte:2:8	prefer-const	useConst	'rows' is never reassigned. Use 'const' instead.	fix	68	134	const { rows, pick }: { rows: T[]; pick: (row: T) => U } = $props();	end	2	12
+generics.svelte:7:23	@typescript-eslint/explicit-function-return-type	missingReturnType	Missing return type on function.	end	7	25
+generics.svelte:7:26	@stylistic/no-extra-parens	unexpected	Unnecessary parentheses around expression.	fix	241	257	selected = row	end	7	27
+legacy.svelte:10:24	@typescript-eslint/no-magic-numbers	noMagic	No magic number: 2.	end	10	25
+legacy.svelte:11:18	@typescript-eslint/no-magic-numbers	noMagic	No magic number: 3.	end	11	19
+legacy.svelte:12:15	@stylistic/quotes	wrongQuotes	Strings must use doublequote.	fix	263	269	"many"	end	12	21
+legacy.svelte:14:14	@stylistic/object-curly-spacing	unexpectedSpaceBefore	There should be no space before '}'.	fix	288	289		end	14	15
+legacy.svelte:14:7	@stylistic/object-curly-spacing	unexpectedSpaceAfter	There should be no space after '{'.	fix	281	282		end	14	8
+legacy.svelte:16:17	@stylistic/space-before-function-paren	missingSpace	Missing space before function parentheses.	fix	319	319	 	end	16	18
+legacy.svelte:16:2	@typescript-eslint/explicit-function-return-type	missingReturnType	Missing return type on function.	end	16	17
+legacy.svelte:17:13	@typescript-eslint/no-magic-numbers	noMagic	No magic number: 1.	end	17	14
+legacy.svelte:2:10	@stylistic/object-curly-spacing	unexpectedSpaceAfter	There should be no space after '{'.	fix	28	29		end	2	11
+legacy.svelte:2:19	@stylistic/object-curly-spacing	unexpectedSpaceBefore	There should be no space before '}'.	fix	37	38		end	2	20
+legacy.svelte:2:27	@stylistic/quotes	wrongQuotes	Strings must use doublequote.	fix	45	59	"svelte/store"	end	2	41
+legacy.svelte:5:21	@stylistic/quotes	wrongQuotes	Strings must use doublequote.	fix	108	114	"none"	end	5	27
+legacy.svelte:7:25	@typescript-eslint/no-magic-numbers	noMagic	No magic number: 0.	end	7	26
+legacy.svelte:7:6	prefer-const	useConst	'written' is never reassigned. Use 'const' instead.	fix	134	160	const written = writable(0);	end	7	13
+module.svelte:2:25	@stylistic/object-curly-spacing	unexpectedSpaceAfter	There should be no space after '{'.	fix	60	61		end	2	26
+module.svelte:2:26	@stylistic/quote-props	unquotedPropertyFound	Unquoted property 'counter' found.	fix	61	68	"counter"	end	2	36
+module.svelte:2:36	@stylistic/object-curly-spacing	unexpectedSpaceBefore	There should be no space before '}'.	fix	71	72		end	2	37
+module.svelte:3:2	no-var	unexpectedVar	Unexpected var, use let or const instead.	end	3	14
+module.svelte:3:2	vars-on-top	top	All 'var' declarations must be at the top of the function scope.	end	3	14
+module.svelte:7:6	prefer-const	useConst	'local' is never reassigned. Use 'const' instead.	fix	120	153	const local = shared.counter + old;	end	7	11
+module.svelte:8:19	@stylistic/semi	missingSemi	Missing semicolon.	fix	172	172	;	end	9	1
+module.svelte:8:6	prefer-const	useConst	'other' is never reassigned. Use 'const' instead.	fix	155	172	const other = local	end	8	11
+runes.svelte:10:33	@typescript-eslint/no-magic-numbers	noMagic	No magic number: 2.	end	10	34
+runes.svelte:10:6	prefer-const	useConst	'doubled' is never reassigned. Use 'const' instead.	fix	202	236	const doubled = $derived(count * 2);	end	10	13
+runes.svelte:11:6	prefer-const	useConst	'total' is never reassigned. Use 'const' instead.	fix	238	300	const total = $derived.by<number>(() => items.length + doubled);	end	11	11
+runes.svelte:12:20	@stylistic/quotes	wrongQuotes	Strings must use doublequote.	fix	320	327	"world"	end	12	27
+runes.svelte:13:22	@typescript-eslint/no-magic-numbers	noMagic	No magic number: 1.	end	13	23
+runes.svelte:13:6	@typescript-eslint/no-unused-vars	unusedVar	'unused' is assigned a value but never used.	end	13	12
+runes.svelte:13:6	prefer-const	useConst	'unused' is never reassigned. Use 'const' instead.	fix	331	354	const unused = $state(1);	end	13	12
+runes.svelte:14:25	@typescript-eslint/no-magic-numbers	noMagic	No magic number: 0.	end	14	26
+runes.svelte:17:21	@stylistic/function-call-argument-newline	missingLineBreak	There should be a line break after this argument.	fix	421	422	\n	end	17	22
+runes.svelte:20:18	@stylistic/space-before-function-paren	missingSpace	Missing space before function parentheses.	fix	453	453	 	end	20	19
+runes.svelte:20:19	@typescript-eslint/prefer-readonly-parameter-types	shouldBeReadonly	Parameter should be a read only type.	end	20	36
+runes.svelte:21:19	@typescript-eslint/no-magic-numbers	noMagic	No magic number: 1.	end	21	20
+runes.svelte:21:3	operator-assignment	replaced	Assignment (=) can be replaced with operator assignment (+=).	fix	483	500	count += 1	end	21	20
+runes.svelte:22:21	@typescript-eslint/no-magic-numbers	noMagic	No magic number: 1.	end	22	22
+runes.svelte:22:3	operator-assignment	replaced	Assignment (=) can be replaced with operator assignment (+=).	fix	504	523	$store += 1	end	22	22
+runes.svelte:23:28	eqeqeq	unexpected	Expected '===' and instead saw '=='.	suggestion	replaceOperator	Use '===' instead of '=='.	552	554	===	end	23	30
+runes.svelte:23:31	@typescript-eslint/no-magic-numbers	noMagic	No magic number: 0.	end	23	32
+runes.svelte:26:2	@typescript-eslint/explicit-function-return-type	missingReturnType	Missing return type on function.	end	26	21
+runes.svelte:26:2	@typescript-eslint/require-await	missingAwait	Async function 'load' has no 'await' expression.	suggestion	removeAsync	Remove 'async'.	564	570		end	26	21
+runes.svelte:26:21	@stylistic/space-before-function-paren	missingSpace	Missing space before function parentheses.	fix	583	583	 	end	26	22
+runes.svelte:27:11	@stylistic/object-curly-spacing	unexpectedSpaceAfter	There should be no space after '{'.	fix	598	599		end	27	12
+runes.svelte:27:12	@stylistic/quote-props	unquotedPropertyFound	Unquoted property 'status' found.	fix	599	605	"status"	end	27	23
+runes.svelte:27:23	@stylistic/object-curly-spacing	unexpectedSpaceBefore	There should be no space before '}'.	fix	610	611		end	27	24
+runes.svelte:2:10	@stylistic/object-curly-spacing	unexpectedSpaceAfter	There should be no space after '{'.	fix	28	29		end	2	11
+runes.svelte:2:19	@stylistic/object-curly-spacing	unexpectedSpaceBefore	There should be no space before '}'.	fix	37	38		end	2	20
+runes.svelte:2:27	@stylistic/quotes	wrongQuotes	Strings must use doublequote.	fix	45	59	"svelte/store"	end	2	41
+runes.svelte:31:24	@typescript-eslint/no-magic-numbers	noMagic	No magic number: 10.	end	31	26
+runes.svelte:33:38	unicorn/explicit-length-check	zero	Use `.length === 0` when checking length is zero.	fix	739	756	items.length === 0	end	33	55
+runes.svelte:33:51	eqeqeq	unexpected	Expected '===' and instead saw '=='.	suggestion	replaceOperator	Use '===' instead of '=='.	752	754	===	end	33	53
+runes.svelte:33:54	@typescript-eslint/no-magic-numbers	noMagic	No magic number: 0.	end	33	55
+runes.svelte:40:14	@typescript-eslint/no-magic-numbers	noMagic	No magic number: 1.	end	40	15
+runes.svelte:40:27	@typescript-eslint/no-magic-numbers	noMagic	No magic number: 5.	end	40	28
+runes.svelte:42:17	eqeqeq	unexpected	Expected '===' and instead saw '=='.	suggestion	replaceOperator	Use '===' instead of '=='.	983	985	===	end	42	19
+runes.svelte:42:20	@typescript-eslint/no-magic-numbers	noMagic	No magic number: 5.	end	42	21
+runes.svelte:55:14	@stylistic/quotes	wrongQuotes	Strings must use doublequote.	fix	1232	1235	"a"	end	55	17
+runes.svelte:55:18	@stylistic/function-call-argument-newline	missingLineBreak	There should be a line break after this argument.	fix	1236	1237	\n	end	55	19
+runes.svelte:55:19	@typescript-eslint/no-magic-numbers	noMagic	No magic number: 1.	end	55	20
+runes.svelte:5:3	@stylistic/quote-props	unquotedPropertyFound	Unquoted property 'title' found.	fix	83	88	"title"	end	5	17
+runes.svelte:6:3	@stylistic/quote-props	unquotedPropertyFound	Unquoted property 'count' found.	fix	100	105	"count"	end	6	18
+runes.svelte:7:3	@stylistic/quote-props	unquotedPropertyFound	Unquoted property 'items' found.	fix	118	123	"items"	end	7	19
+runes.svelte:9:33	@typescript-eslint/no-magic-numbers	noMagic	No magic number: 0.	end	9	34
+runes.svelte:9:37	prefer-const	useConst	'items' is never reassigned. Use 'const' instead.	end	9	42
+runes.svelte:9:42	@stylistic/object-curly-spacing	unexpectedSpaceBefore	There should be no space before '}'.	fix	179	180		end	9	43
+runes.svelte:9:7	@stylistic/object-curly-spacing	unexpectedSpaceAfter	There should be no space after '{'.	fix	144	145		end	9	8
+runes.svelte:9:8	prefer-const	useConst	'title' is never reassigned. Use 'const' instead.	end	9	13
+template-only.svelte:1:22	eqeqeq	unexpected	Expected '===' and instead saw '=='.	suggestion	replaceOperator	Use '===' instead of '=='.	21	23	===	end	1	24
+unicode.svelte:2:13	@stylistic/quotes	wrongQuotes	Strings must use doublequote.	fix	31	41	"naïve 😀"	end	2	23
+unicode.svelte:2:6	prefer-const	useConst	'café' is never reassigned. Use 'const' instead.	fix	20	42	const café = 'naïve 😀';	end	2	10
+unicode.svelte:3:19	eqeqeq	unexpected	Expected '===' and instead saw '=='.	suggestion	replaceOperator	Use '===' instead of '=='.	61	63	===	end	3	21
+unicode.svelte:3:22	@stylistic/quotes	wrongQuotes	Strings must use doublequote.	fix	64	68	"😀"	end	3	26
+unicode.svelte:3:6	prefer-const	useConst	'emoji' is never reassigned. Use 'const' instead.	fix	44	69	const emoji = café == '😀';	end	3	11
+unicode.svelte:6:25	@typescript-eslint/no-unnecessary-boolean-literal-compare	direct	This expression unnecessarily compares a boolean value to a boolean instead of using it directly.	fix	105	118	emoji	end	6	38
+unicode.svelte:6:31	eqeqeq	unexpected	Expected '===' and instead saw '=='.	suggestion	replaceOperator	Use '===' instead of '=='.	111	113	===	end	6	33
