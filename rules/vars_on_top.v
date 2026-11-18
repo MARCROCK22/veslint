@@ -49,7 +49,9 @@ fn (mut c Checker) lint_vars_on_top(root C.TSNode, abs_path string, mut stats St
 			continue
 		}
 		if node_kind(parent) == 'program' {
-			on_top = vot_is_on_top(estree, parent, false)
+			// A statement of a .svelte file's script is in a SvelteScriptElement for ESLint: not on
+			// top of a function scope.
+			on_top = !c.is_svelte() && vot_is_on_top(estree, parent, false)
 		} else if node_kind(parent) == 'statement_block' {
 			if owner := node_parent(parent) {
 				if node_kind(owner) in function_kinds {

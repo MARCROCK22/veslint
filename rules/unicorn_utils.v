@@ -321,7 +321,7 @@ fn (mut c Checker) un_is_same_reference(t &estree.EsTree, left_node int, right_n
 			return (t.flag(left, .computed) or { false }) == (t.flag(right, .computed) or { false })
 				&& c.un_is_same_reference(t, left_object, right_object)
 				&& c.un_is_same_reference(t, t.node(left, .property) or { return false }, t.node(right,
-				.property) or { return false })
+					.property) or { return false })
 		}
 		else {
 			return false
@@ -340,9 +340,8 @@ fn un_logical_child_needs_parens(t &estree.EsTree, node int, operator string) bo
 	if typ == .logical_expression && (t.string_of(node, .operator) or { '' }) == operator {
 		return false
 	}
-	return typ in [.await_expression, .binary_expression, .logical_expression,
-		.conditional_expression, .assignment_expression, .arrow_function_expression,
-		.yield_expression, .sequence_expression]
+	return typ in [.await_expression, .binary_expression, .logical_expression, .conditional_expression,
+		.assignment_expression, .arrow_function_expression, .yield_expression, .sequence_expression]
 }
 
 // un_enter_order are the nodes of the tree in the order ESLint's traversal enters them.
@@ -371,9 +370,9 @@ const un_reserved_names = ['break', 'case', 'catch', 'continue', 'debugger', 'de
 	'finally', 'for', 'function', 'if', 'return', 'switch', 'throw', 'try', 'var', 'const', 'while',
 	'with', 'new', 'this', 'super', 'class', 'extends', 'export', 'import', 'null', 'true', 'false',
 	'in', 'instanceof', 'typeof', 'void', 'delete', 'implements', 'interface', 'let', 'package',
-	'private', 'protected', 'public', 'static', 'yield', 'await', 'enum', 'eval', 'arguments', 'as',
-	'any', 'boolean', 'constructor', 'declare', 'get', 'module', 'require', 'number', 'set', 'string',
-	'symbol', 'type', 'from', 'of']
+	'private', 'protected', 'public', 'static', 'yield', 'await', 'enum', 'eval', 'arguments',
+	'as', 'any', 'boolean', 'constructor', 'declare', 'get', 'module', 'require', 'number', 'set',
+	'string', 'symbol', 'type', 'from', 'of']
 
 // un_valid_identifier ports isValidIdentifier of get-available-variable-name.js for an ASCII name
 // (the names veslint's rules generate).
@@ -463,10 +462,10 @@ fn un_has_side_effect(t &estree.EsTree, node int, o UnSideEffect) bool {
 			return true
 		}
 		.binary_expression {
-			if conversion && (t.string_of(node, .operator) or { '' }) in ['==', '!=', '<', '<=', '>',
-				'>=', '<<', '>>', '>>>', '+', '-', '*', '/', '%', '|', '^', '&', 'in']
+			if conversion && (t.string_of(node, .operator) or { '' }) in ['==', '!=', '<', '<=',
+				'>', '>=', '<<', '>>', '>>>', '+', '-', '*', '/', '%', '|', '^', '&', 'in']
 				&& (!un_is_type(t, t.node(node, .left) or { -1 }, .literal)
-				|| !un_is_type(t, t.node(node, .right) or { -1 }, .literal)) {
+					|| !un_is_type(t, t.node(node, .right) or { -1 }, .literal)) {
 				return true
 			}
 		}
@@ -738,7 +737,7 @@ fn (c &Checker) un_is_in_unparenthesized_new_callee(t &estree.EsTree, tokens &So
 		}
 		if (t.typ(parent) == .member_expression && (t.node(parent, .object) or { -1 }) == node)
 			|| (t.typ(parent) == .tagged_template_expression
-			&& (t.node(parent, .tag) or { -1 }) == node)
+				&& (t.node(parent, .tag) or { -1 }) == node)
 			|| (un_is_ts_expression_wrapper(t, parent) && (t.node(parent, .expression) or { -1 }) == node) {
 			node = parent
 			continue
@@ -780,8 +779,8 @@ fn (c &Checker) un_has_unparenthesized_optional_chain_element(t &estree.EsTree, 
 	if un_is_ts_expression_wrapper(t, node) || t.typ(node) == .chain_expression {
 		return c.un_parentheses(t, tokens, node).len == 0
 			&& c.un_has_unparenthesized_optional_chain_element(t, tokens, t.node(node, .expression) or {
-			return false
-		})
+				return false
+			})
 	}
 	if !un_is_chain_element(t, node) {
 		return false
@@ -878,9 +877,9 @@ fn un_is_function_call(t &estree.EsTree, node int, name string) bool {
 
 const un_math_properties = ['E', 'LN2', 'LN10', 'LOG2E', 'LOG10E', 'PI', 'SQRT1_2', 'SQRT2']
 const un_math_methods = ['abs', 'acos', 'acosh', 'asin', 'asinh', 'atan', 'atanh', 'atan2', 'cbrt',
-	'ceil', 'clz32', 'cos', 'cosh', 'exp', 'expm1', 'f16round', 'floor', 'fround', 'hypot', 'imul', 'log', 'log1p',
-	'log10', 'log2', 'max', 'min', 'pow', 'random', 'round', 'sign', 'sin', 'sinh', 'sqrt', 'tan',
-	'tanh', 'trunc']
+	'ceil', 'clz32', 'cos', 'cosh', 'exp', 'expm1', 'f16round', 'floor', 'fround', 'hypot', 'imul',
+	'log', 'log1p', 'log10', 'log2', 'max', 'min', 'pow', 'random', 'round', 'sign', 'sin', 'sinh',
+	'sqrt', 'tan', 'tanh', 'trunc']
 const un_number_properties = ['EPSILON', 'MAX_SAFE_INTEGER', 'MAX_VALUE', 'MIN_SAFE_INTEGER',
 	'MIN_VALUE', 'NaN', 'NEGATIVE_INFINITY', 'POSITIVE_INFINITY']
 
@@ -907,7 +906,7 @@ fn (c &Checker) un_switch_new_to_call(t &estree.EsTree, tokens &SourceTokens, no
 	callee := t.node(node, .callee) or { return [] }
 	should_parenthesize := c.un_is_in_unparenthesized_new_callee(t, tokens, node)
 		|| (!un_same_line(t, new_token.start, t.nodes[callee].start)
-		&& c.un_unparenthesized_keyword_argument_parent(t, tokens, node) != none)
+			&& c.un_unparenthesized_keyword_argument_parent(t, tokens, node) != none)
 	mut fixes := [
 		fix_replace_range(new_token.start, new_token.end, if should_parenthesize { '(' } else { '' }),
 		c.un_remove_spaces_after(new_token.end),
@@ -1282,7 +1281,11 @@ fn un_is_prototype_property(t &estree.EsTree, node int, object string, propertie
 		return false
 	}
 	object_node := t.node(node, .object) or { return false }
-	return un_is_member(t, object_node, objects: [object], properties: ['prototype'], optional: false)
+	return un_is_member(t, object_node,
+		objects:    [object]
+		properties: ['prototype']
+		optional:   false
+	)
 		|| (object == 'Array' && un_is_empty_array(t, object_node))
 		|| (object == 'Object' && un_is_empty_object(t, object_node))
 }
@@ -1322,7 +1325,11 @@ fn un_is_node_value_not_function(t &estree.EsTree, node int) bool {
 		.object_expression, .template_literal, .unary_expression, .update_expression,
 		.assignment_expression, .await_expression, .new_expression, .tagged_template_expression,
 		.this_expression] || un_is_undefined(t, node) || (un_is_call(t, node)
-		&& !un_is_method_call(t, node, methods: ['bind'], optional_call: false, optional_member: false))
+		&& !un_is_method_call(t, node,
+			methods:         ['bind']
+			optional_call:   false
+			optional_member: false
+		))
 }
 
 // un_is_logical ports isLogicalExpression: `&&` or `||` (not `??`).
@@ -1364,6 +1371,10 @@ fn un_is_control_flow_test(t &estree.EsTree, node int) bool {
 	parent := t.nodes[node].parent
 	if parent >= 0 && t.typ(parent) in [.if_statement, .conditional_expression, .while_statement,
 		.do_while_statement, .for_statement] && t.node(parent, .test) or { -1 } == node {
+		return true
+	}
+	// `{#if test}` (the test of a SvelteIfBlock is its `expression`).
+	if t.foreign[parent] or { '' } == 'SvelteIfBlock' {
 		return true
 	}
 	if un_is_logical(t, parent) {
@@ -1753,7 +1764,7 @@ fn (c &Checker) un_unparenthesized_keyword_argument_parent(t &estree.EsTree, tok
 		parent := t.nodes[node].parent
 		if parent >= 0 && (t.node(parent, .argument) or { -1 }) == node
 			&& (t.typ(parent) in [.return_statement, .throw_statement]
-			|| (t.typ(parent) == .yield_expression && !(t.flag(parent, .delegate) or { false }))) {
+				|| (t.typ(parent) == .yield_expression && !(t.flag(parent, .delegate) or { false }))) {
 			return parent
 		}
 		if parent < 0 || t.nodes[parent].start != t.nodes[node].start {
@@ -1889,7 +1900,10 @@ fn un_source_lines(src string) []string {
 			start = i
 			continue
 		}
-		if b == 0xe2 && i + 2 < src.len && src[i + 1] == 0x80 && src[i + 2] in [u8(0xa8), 0xa9] {
+		if b == 0xe2 && i + 2 < src.len && src[i + 1] == 0x80 && src[i + 2] in [
+			u8(0xa8),
+			0xa9,
+		] {
 			lines << src[start..i]
 			i += 3
 			start = i

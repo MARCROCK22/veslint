@@ -332,6 +332,14 @@ fn (mut x Virt) rune_variables() {
 		if !x.through_has(g) {
 			continue
 		}
+		x.v.append_virtual(rune_declarations(g))
+	}
+}
+
+// rune_declarations are the declarations analyzeRuneVariables gives a rune the code references.
+fn rune_declarations(g string) string {
+	mut out := ''
+	{
 		mut fns := []string{}
 		mut nss := []string{}
 		match g {
@@ -369,12 +377,13 @@ fn (mut x Virt) rune_variables() {
 			else {}
 		}
 		for f in fns {
-			x.v.append_virtual('declare function ${g}${f};')
+			out += 'declare function ${g}${f};'
 		}
 		for ns in nss {
-			x.v.append_virtual('declare namespace ${g} { ${ns} }')
+			out += 'declare namespace ${g} { ${ns} }'
 		}
 	}
+	return out
 }
 
 fn (x &Virt) has_export_declaration() bool {

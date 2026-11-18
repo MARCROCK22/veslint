@@ -139,6 +139,10 @@ fn (mut c Checker) is_missing_semicolon_before(e EsNode) bool {
 	for _ in 0 .. max_expression_depth {
 		parent := node.parent() or { return false }
 		if !parent.chain && node_kind(parent.node) == 'expression_statement' {
+			// A template expression of a .svelte file is in no statement for ESLint.
+			if c.svelte_wrapper_statement(parent.node) {
+				return false
+			}
 			if previous := wrapping_previous_statement(parent.node) {
 				last := c.last_token(previous) or { return false }
 				if !c.token_is(last, ';') {

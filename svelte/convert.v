@@ -36,8 +36,8 @@ enum Setter as u8 {
 }
 
 // Segment maps a piece of a let's text, copied from the file, back to it (remapNodes).
-struct Segment {
-mut:
+pub struct Segment {
+pub mut:
 	pre_start  int // byte offset in the pre-virtual code
 	len        int
 	file_start int
@@ -82,6 +82,9 @@ mut:
 	// whose scope is registered to the Svelte block.
 	matched    int = -1
 	scope_node int = -1
+	// head_end: where the let's own text ends in the pre-virtual code (`end` moves to the end of
+	// its scope when the scope closes).
+	head_end int
 }
 
 // ParamSetter is where a param of nestBlock goes.
@@ -132,7 +135,9 @@ mut:
 	slots           []int
 	elements        map[int]int // Svelte element → compiler node
 	snippets        []int
-	err             ?ParseError
+	// else_starts: where each `else ` of an {:else} is in the pre-virtual code.
+	else_starts []int
+	err         ?ParseError
 }
 
 struct CloseScope {
@@ -229,6 +234,7 @@ fn (mut c Conv) append_let(l ScriptLet, text string, kind Area) int {
 	s, e := c.add_let(text, kind)
 	sl.start = s
 	sl.end = e
+	sl.head_end = e
 	for mut seg in sl.segments {
 		seg.pre_start += s
 	}
@@ -1264,7 +1270,8 @@ fn (mut c Conv) nest_if_block(test int, if_block int) int {
 
 fn (mut c Conv) begin_else(if_let int) {
 	c.close_scope()
-	c.add_let('else ', c.current_kind)
+	at, _ := c.add_let('else ', c.current_kind)
+	c.else_starts << at
 	c.push_scope(if_let, '', c.current_kind)
 }
 

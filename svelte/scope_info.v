@@ -8,9 +8,11 @@ module svelte
 // snippets' `return`, the preparation scripts of `{:then}`), with the scopes of the blocks
 // registered to the Svelte nodes, and the edits of src/parser/analyze-scope.ts and index.ts:
 // the Svelte globals in the global scope, `$store` references resolved to the store variable,
-// `$: x = …` variables. Not ported: the props' virtual references (analyzePropsScope), the
-// snippets' references (analyzeSnippetsScope), the scopes of conditional/function/mapped
-// types of the typings (removed upstream).
+// `$: x = …` variables, the virtual references of props, of write-only stores and of snippets.
+// A variable's references are in the order of their resolution (the order the analysis gives).
+// Open (tests/svelte/known.txt): where upstream puts the references of the typings of `use:`
+// (shifted virtual positions), and the order of a through list when the virtual code's
+// declarations (`$props`, `$$props`…) are removed before the render function is merged.
 
 pub struct SScope {
 pub mut:
@@ -267,12 +269,6 @@ fn (mut c Conv) build_scope(an &Analyzer, pre_starts []int, typed_lets []ScriptL
 	doc.scope = info
 	c.merge_order(pre_starts)
 	c.scope_edits()
-	// References are kept sorted by position (merged scopes are, upstream).
-	for mut v in doc.scope.variables {
-		v.references.sort_with_compare(fn [doc] (a &int, b &int) int {
-			return doc.es.nodes[doc.scope.references[*a].identifier].start - doc.es.nodes[doc.scope.references[*b].identifier].start
-		})
-	}
 }
 
 // in_typing: the offset is in the typing of a typed expression (`(e)as (typing);`).
@@ -417,6 +413,9 @@ fn (mut c Conv) store_scope() {
 	}
 	globals := c.svelte_globals()
 	module := 1
+	// The write-only references (`$store = 1`): their store gets a virtual read reference when
+	// nothing else reads it.
+	mut write_only := []int{}
 	for r in c.doc.scope.scopes[0].through.clone() {
 		name := c.ref_name(r)
 		if !name.starts_with('\$') || name in globals {
@@ -432,11 +431,40 @@ fn (mut c Conv) store_scope() {
 		if v < 0 {
 			continue
 		}
+		if c.doc.scope.references[r].write && !c.doc.scope.references[r].read {
+			write_only << r
+		}
 		c.doc.scope.references[r].read = true
 		c.doc.scope.references[r].write = false
 		c.doc.scope.references[r].resolved = v
 		c.add_reference_sorted(v, r)
 		c.remove_through(r, module)
+	}
+	mut marked := map[int]bool{}
+	for r in write_only {
+		v := c.doc.scope.references[r].resolved
+		if v < 0 || v in marked {
+			continue
+		}
+		marked[v] = true
+		variable := c.doc.scope.variables[v]
+		if variable.defs.len == 0 {
+			continue
+		}
+		first := variable.defs[0].name
+		if variable.references.any(it !in write_only
+			&& c.doc.scope.references[it].identifier != first) {
+			continue
+		}
+		c.doc.scope.references << SReference{
+			identifier: first
+			from:       module
+			resolved:   v
+			read:       true
+			is_value:   true
+			virtual:    true
+		}
+		c.add_reference_sorted(v, c.doc.scope.references.len - 1)
 	}
 }
 

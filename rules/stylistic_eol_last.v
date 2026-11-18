@@ -21,7 +21,7 @@ fn (mut c Checker) lint_stylistic_eol_last(root C.TSNode, abs_path string, mut s
 	mut findings := []Finding{}
 	mode := seol_options(c.rule_options(stylistic_eol_last))!
 	stats.checked++
-	src := c.src
+	src := c.file_text()
 	ends_with_newline := src.ends_with('\n')
 	// Empty source is always valid.
 	if src.len == 0 {

@@ -74,6 +74,7 @@ fn (mut c Conv) restore() ! {
 	pre := c.pre_code()
 	doc.pre = pre
 	doc.pre_u16 = c.pre_code_u16()
+	c.build_lint_code()
 	if c.started {
 		doc.separator = c.trimmed_len
 		prefix := if c.trimmed_len + 2 > c.code.len { c.trimmed_len + 2 } else { c.code.len }
