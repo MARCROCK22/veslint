@@ -65,10 +65,10 @@ fn (mut c Checker) lint_vue_require_explicit_slots(root C.TSNode, abs_path strin
 					continue
 				}
 				es := &doc.snippets[expression.snippet].es
-				if !vue_tpl_is_string_literal(es, expression.node) {
+				if !vue_is_string_literal(es, expression.node) {
 					continue
 				}
-				value := vue_tpl_string_literal_value(es, expression.node, false) or { '' }
+				value := vue_string_literal_value(es, expression.node, false) or { '' }
 				name = if value == '' { none } else { value }
 			} else {
 				name = if attr.value >= 0 { doc.nodes[attr.value].text } else { none }

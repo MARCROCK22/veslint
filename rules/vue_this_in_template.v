@@ -96,7 +96,7 @@ fn (mut c Checker) lint_vue_this_in_template(root C.TSNode, abs_path string, mut
 			continue
 		}
 		stats.checked++
-		name := vue_tpl_static_property_name(es, parent) or { continue }
+		name := vue_static_property_name(es, parent) or { continue }
 		if name == '' || name in scopes.last() || name in vue_js_reserved_names
 			|| vtit_not_identifier(name) {
 			continue

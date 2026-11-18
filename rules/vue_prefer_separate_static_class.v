@@ -28,7 +28,7 @@ fn vpssc_static_classes(t &estree.EsTree, node int) []int {
 			return out
 		}
 	}
-	if vue_tpl_is_string_literal(t, node) {
+	if vue_is_string_literal(t, node) {
 		return [node]
 	}
 	mut out := []int{}
@@ -51,7 +51,7 @@ fn vpssc_static_classes(t &estree.EsTree, node int) []int {
 					continue
 				}
 				key := t.node(property, .key) or { continue }
-				if vue_tpl_is_string_literal(t, key) || (t.typ(key) == .identifier
+				if vue_is_string_literal(t, key) || (t.typ(key) == .identifier
 					&& !(t.flag(property, .computed) or { false })) {
 					out << key
 				}
@@ -88,7 +88,7 @@ fn vpssc_class_name(t &estree.EsTree, node int) ?string {
 		value := vpssc_cooked(t, node)?
 		return vue_split_whitespace(js_trim(value)).join(' ')
 	}
-	return vue_tpl_string_literal_value(t, node, true)
+	return vue_string_literal_value(t, node, true)
 }
 
 fn (mut c Checker) lint_vue_prefer_separate_static_class(root C.TSNode, abs_path string, mut stats Stats) ![]Finding {
@@ -145,7 +145,7 @@ fn (c &Checker) vpssc_fixes(attr int, t &estree.EsTree, expression int, class_no
 	mut fixes := []Fix{}
 	mut removed := false
 	attr_start, attr_end := c.vue_vnode_range(attr)
-	if vue_tpl_is_string_literal(t, expression) {
+	if vue_is_string_literal(t, expression) {
 		fixes << fix_remove_range(attr_start, attr_end)
 		removed = true
 	} else {
