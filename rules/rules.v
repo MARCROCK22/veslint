@@ -648,6 +648,7 @@ pub const vue_padding_line_between_tags = 'vue/padding-line-between-tags'
 pub const vue_block_tag_newline = 'vue/block-tag-newline'
 pub const vue_block_lang = 'vue/block-lang'
 pub const vue_no_bare_strings_in_template = 'vue/no-bare-strings-in-template'
+pub const vue_v_if_else_key = 'vue/v-if-else-key'
 pub const names = [no_floating_promises, await_thenable, require_await, return_await,
 	no_misused_promises, no_unsafe_call, no_unsafe_member_access, no_unsafe_return,
 	no_unsafe_assignment, no_unsafe_argument, restrict_template_expressions,
@@ -835,7 +836,7 @@ pub const names = [no_floating_promises, await_thenable, require_await, return_a
 	vue_use_v_on_exact, vue_prefer_v_model, vue_singleline_html_element_content_newline,
 	vue_multiline_html_element_content_newline, vue_html_self_closing, vue_padding_line_between_blocks,
 	vue_padding_line_between_tags, vue_block_tag_newline, vue_block_lang,
-	vue_no_bare_strings_in_template]
+	vue_no_bare_strings_in_template, vue_v_if_else_key]
 
 // untyped_rules are the ported rules that need no types (`meta.docs.requiresTypeChecking` is false
 // in typescript-eslint; the eslint-plugin-unicorn rules that read the types when the parser has a
@@ -993,7 +994,7 @@ pub const untyped_rules = [adjacent_overload_signatures, array_type, class_liter
 	vue_use_v_on_exact, vue_prefer_v_model, vue_singleline_html_element_content_newline,
 	vue_multiline_html_element_content_newline, vue_html_self_closing, vue_padding_line_between_blocks,
 	vue_padding_line_between_tags, vue_block_tag_newline, vue_block_lang,
-	vue_no_bare_strings_in_template]
+	vue_no_bare_strings_in_template, vue_v_if_else_key]
 
 // needs_types tells whether a rule asks tsgo for the types of the program.
 pub fn needs_types(rule string) bool {
@@ -1636,6 +1637,7 @@ pub const default_options = {
 	vue_block_tag_newline:                           '[]'
 	vue_block_lang:                                  '[]'
 	vue_no_bare_strings_in_template:                 '[]'
+	vue_v_if_else_key:                               '[]'
 }
 
 // Finding is a problem a rule found at a node.
@@ -2435,6 +2437,7 @@ pub fn message(rule string, finding Finding) string {
 		vue_block_tag_newline { vbtn_messages }
 		vue_block_lang { vblang_messages }
 		vue_no_bare_strings_in_template { vnbs_messages }
+		vue_v_if_else_key { vviek_messages }
 		else { map[string]string{} }
 	}
 	return interpolate(messages[finding.message_id] or { finding.message_id }, finding.data)
@@ -4488,6 +4491,9 @@ fn (mut c Checker) lint_rule(rule string, root C.TSNode, abs_path string, mut st
 		}
 		vue_no_bare_strings_in_template {
 			return c.lint_vue_no_bare_strings_in_template(root, abs_path, mut stats)!
+		}
+		vue_v_if_else_key {
+			return c.lint_vue_v_if_else_key(root, abs_path, mut stats)!
 		}
 		else { return error('unknown rule: ${rule}') }
 	}
