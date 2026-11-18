@@ -1,6 +1,7 @@
 module rules
 
 import estree
+import tsgo
 
 // The helpers of eslint-plugin-vue 10.12.1's emit rules (custom-event-name-casing,
 // no-restricted-custom-event, no-unused-emit-declarations, prefer-single-event-payload,
@@ -250,4 +251,90 @@ fn vue_emit_call_of_context(t &estree.EsTree, call int, ctx VueSetupContext) boo
 	name, member := vue_callee_member(t, call) or { return false }
 	object := t.node(member, .object) or { return false }
 	return name == 'emit' && t.typ(object) == .identifier && object in ctx.context_ids
+}
+
+// vue_define_emits_typed is getComponentEmitsFromDefineEmits with the types the checker gives:
+// vue_define_emits, but the parts of the type argument that are not type literals, interfaces
+// nor function types are read with the checker (getComponentEmitsFromTypeDefineTypes).
+fn (mut c Checker) vue_define_emits_typed(root C.TSNode, t &estree.EsTree, call int, abs_path string, mut stats Stats) []VueProp {
+	args := t.list(call, .arguments) or { []int{} }
+	params := vue_type_arguments(t, call)
+	if args.len > 0 || params.len == 0 {
+		return c.vue_define_emits(root, t, call)
+	}
+	mut out := []VueProp{}
+	for def in c.vue_flatten_type_nodes(root, t, params[0]) {
+		if t.typ(def) in [.ts_function_type, .ts_interface_body, .ts_type_literal] {
+			out << c.vue_emits_from_type_define(root, t, def)
+		} else {
+			out << c.vue_emits_from_type_checker(t, def, abs_path, mut stats)
+		}
+	}
+	return out
+}
+
+// vue_symbol_flags_function_or_method are SymbolFlags.Function | SymbolFlags.Method.
+const vue_symbol_flags_function_or_method = u32(16 | 8192)
+
+// vue_emits_from_type_checker ports getComponentEmitsFromTypeDefineTypes (extractRuntimeEmits of
+// ts-types.ts): for a function type, the string literal types of the first parameter of each call
+// signature; for an object type, its property names; unknown otherwise.
+fn (mut c Checker) vue_emits_from_type_checker(t &estree.EsTree, node int, abs_path string, mut stats Stats) []VueProp {
+	unknown := VueProp{
+		kind: .unknown
+		node: node
+	}
+	typ := c.vue_type_of_type_node(t, node, abs_path, mut stats) or { return [unknown] }
+	if typ.flags & (type_flag_any | type_flag_unknown | type_flag_never | type_flag_null) != 0 {
+		return [unknown]
+	}
+	signatures := c.signatures_of(typ, 0) or { []tsgo.SignatureResponse{} }
+	symbol := c.symbol_of(typ) or { tsgo.SymbolResponse{} }
+	mut out := []VueProp{}
+	if symbol.flags & vue_symbol_flags_function_or_method != 0 || signatures.len > 0 {
+		for signature in signatures {
+			params := c.signature_parameters(signature) or { []tsgo.ParameterResponse{} }
+			if params.len == 0 {
+				out << unknown
+				continue
+			}
+			param_type := c.symbol_type(params[0].id) or {
+				out << unknown
+				continue
+			}
+			// iterateTypes: the members of a union that is not boolean.
+			members := if param_type.flags & type_flag_union != 0
+				&& param_type.flags & type_flag_boolean_like == 0 {
+				c.members_of(param_type) or { [param_type] }
+			} else {
+				[param_type]
+			}
+			for member in members {
+				value := member.value
+				if member.flags & type_flag_string_literal != 0 && value is string {
+					out << VueProp{
+						kind:     .infer_type
+						has_name: true
+						name:     value
+						node:     node
+					}
+				} else {
+					out << unknown
+				}
+			}
+		}
+		return out
+	}
+	if typ.flags & type_flag_object != 0 {
+		for property in c.properties(typ) or { []tsgo.SymbolResponse{} } {
+			out << VueProp{
+				kind:     .infer_type
+				has_name: true
+				name:     property.name
+				node:     node
+			}
+		}
+		return out
+	}
+	return [unknown]
 }

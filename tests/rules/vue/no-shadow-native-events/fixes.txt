@@ -1,0 +1,14 @@
+tests/rules/vue/no-shadow-native-events/cases.vue:2:25	vue/no-shadow-native-events	violation	Avoid shadowing the native event "click".	end	2	32
+tests/rules/vue/no-shadow-native-events/cases.vue:3:25	vue/no-shadow-native-events	violation	Avoid shadowing the native event "CLICK".	end	3	32
+tests/rules/vue/no-shadow-native-events/cases.vue:4:24	vue/no-shadow-native-events	violation	Avoid shadowing the native event "focus".	end	4	31
+tests/rules/vue/no-shadow-native-events/cases.vue:8:27	vue/no-shadow-native-events	violation	Avoid shadowing the native event "click".	end	8	34
+tests/rules/vue/no-shadow-native-events/cases.vue:8:36	vue/no-shadow-native-events	violation	Avoid shadowing the native event "Input".	end	8	43
+tests/rules/vue/no-shadow-native-events/cases.vue:9:6	vue/no-shadow-native-events	violation	Avoid shadowing the native event "keydown".	end	9	15
+tests/rules/vue/no-shadow-native-events/cases.vue:10:8	vue/no-shadow-native-events	violation	Avoid shadowing the native event "keyup".	end	10	15
+tests/rules/vue/no-shadow-native-events/cases.vue:14:12	vue/no-shadow-native-events	violation	Avoid shadowing the native event "submit".	end	14	24
+tests/rules/vue/no-shadow-native-events/cases.vue:14:26	vue/no-shadow-native-events	violation	Avoid shadowing the native event "change".	end	14	42
+tests/rules/vue/no-shadow-native-events/cases.vue:15:31	vue/no-shadow-native-events	violation	Avoid shadowing the native event "scroll".	end	15	39
+tests/rules/vue/no-shadow-native-events/cases.vue:16:33	vue/no-shadow-native-events	violation	Avoid shadowing the native event "blur".	end	16	39
+tests/rules/vue/no-shadow-native-events/typed/cases.vue:3:13	vue/no-shadow-native-events	violation	Avoid shadowing the native event "click".	end	3	18
+tests/rules/vue/no-shadow-native-events/typed/cases.vue:3:13	vue/no-shadow-native-events	violation	Avoid shadowing the native event "focus".	end	3	18
+tests/rules/vue/no-shadow-native-events/typed/cases.vue:4:13	vue/no-shadow-native-events	violation	Avoid shadowing the native event "submit".	end	4	21

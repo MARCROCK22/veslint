@@ -1,0 +1,7 @@
+tests/rules/vue/no-unused-emit-declarations/cases.vue:6:72	vue/no-unused-emit-declarations	unused	`unused` is defined as emit but never used.	end	6	80
+tests/rules/vue/no-unused-emit-declarations/cases.vue:13:27	vue/no-unused-emit-declarations	unused	`update:other` is defined as emit but never used.	end	13	41
+tests/rules/vue/no-unused-emit-declarations/options/cases.vue:3:24	vue/no-unused-emit-declarations	unused	`unused` is defined as emit but never used.	end	3	51
+tests/rules/vue/no-unused-emit-declarations/options/cases.vue:3:53	vue/no-unused-emit-declarations	unused	`quoted-unused` is defined as emit but never used.	end	3	74
+tests/rules/vue/no-unused-emit-declarations/typed/cases.vue:6:26	vue/no-unused-emit-declarations	unused	`click` is defined as emit but never used.	end	6	31
+tests/rules/vue/no-unused-emit-declarations/typed/cases.vue:6:26	vue/no-unused-emit-declarations	unused	`focus` is defined as emit but never used.	end	6	31
+tests/rules/vue/no-unused-emit-declarations/typed/cases.vue:6:26	vue/no-unused-emit-declarations	unused	`unusedTyped` is defined as emit but never used.	end	6	31
