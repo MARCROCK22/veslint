@@ -119,6 +119,19 @@ fn vue_report_positions(doc &vue.Document, findings []rules.Finding, ends bool) 
 	}
 	mut next := 0
 	for f in findings {
+		if f.line_loc {
+			starts << offsets.DisplayPos{
+				line: f.fixed_line
+				col:  f.fixed_column
+			}
+			if ends {
+				end_positions << offsets.DisplayPos{
+					line: f.fixed_end_line
+					col:  f.fixed_end_column
+				}
+			}
+			continue
+		}
 		if f.text_loc {
 			starts << text_starts[next]
 			if ends {

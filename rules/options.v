@@ -304,6 +304,7 @@ pub fn check_options(rule string, options []json2.Any) !bool {
 		vue_valid_v_for { vvfor_options(options)! }
 		vue_valid_v_slot { vvslot_options(options)! }
 		vue_no_unsupported_features { vnuf_options(options)! }
+		vue_max_len { vmaxlen_options(options)! }
 		else { return false }
 	}
 	return true
