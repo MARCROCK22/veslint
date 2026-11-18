@@ -30,7 +30,8 @@ const ported = process.env.VUE_LINT_RULES
   ? Object.keys(JSON.parse(fs.readFileSync(process.env.VUE_LINT_RULES, 'utf8')).rules)
   : fs
       .readdirSync(rules, { recursive: true })
-      .filter(file => path.basename(file) === 'expected.txt' && !file.split(path.sep).includes('node_modules'))
+      // The svelte/* rules belong to another plugin, which this configuration does not load.
+      .filter(file => path.basename(file) === 'expected.txt' && !file.split(path.sep).includes('node_modules') && file.split(path.sep)[0] !== 'svelte')
       .map(file => path.dirname(file))
       .sort();
 // `project: true` is the closest tsconfig.json of each file.

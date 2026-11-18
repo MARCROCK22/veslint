@@ -21,14 +21,20 @@ onMounted(async () => {
 });
 const result = await Promise.resolve(1);
 const flag = items.value.length > 0
-? true
-: false;
+  ? true
+  : false;
 [1, 2].forEach(async (n) => {
   await load(n + result);
 });
-
 </script>
 
 <template>
-  <ul><li v-for="item in items" :key="item">{{ item }} {{ flag }}</li></ul>
+  <ul>
+    <li
+      v-for="item in items"
+      :key="item"
+    >
+      {{ item }} {{ flag }}
+    </li>
+  </ul>
 </template>

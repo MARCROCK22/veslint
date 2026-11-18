@@ -1,5 +1,7 @@
 <template>
-  <h1 title="Grüße 🎉">Ünïcödé ✓ — {{ greeting }}</h1>
+  <h1 title="Grüße 🎉">
+    Ünïcödé ✓ — {{ greeting }}
+  </h1>
 </template>
 
 <script setup lang="ts">

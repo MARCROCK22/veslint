@@ -214,6 +214,29 @@ fn (c &Checker) vmaxlen_mark(l &VmaxlenLines, start int, end int, mut lines map[
 	}
 }
 
+// vmaxlen_svelte_range is the script's range of lines of a .svelte file: from the first to the last
+// of svelte-eslint-parser's tokens and comments of the whole file ([] without any).
+fn (c &Checker) vmaxlen_svelte_range(l &VmaxlenLines) []int {
+	tokens := c.svelte.doc.tokens
+	comments := c.svelte.doc.comments
+	if tokens.len > 0 {
+		first := c.vmaxlen_line(l, sv_token_loc_start(tokens[0]))
+		last := c.vmaxlen_line(l, sv_token_loc_end(tokens.last()))
+		if comments.len > 0 {
+			first_comment := c.vmaxlen_line(l, sv_token_loc_start(comments[0]))
+			last_comment := c.vmaxlen_line(l, sv_token_loc_end(comments.last()))
+			return [if first < first_comment { first } else { first_comment },
+				if last > last_comment { last } else { last_comment }]
+		}
+		return [first, last]
+	}
+	if comments.len > 0 {
+		return [c.vmaxlen_line(l, sv_token_loc_start(comments[0])),
+			c.vmaxlen_line(l, sv_token_loc_end(comments.last()))]
+	}
+	return []
+}
+
 fn (mut c Checker) lint_vue_max_len(root C.TSNode, abs_path string, mut stats Stats) ![]Finding {
 	sw := time.new_stopwatch()
 	stats.checked++
@@ -238,7 +261,24 @@ fn (mut c Checker) lint_vue_max_len(root C.TSNode, abs_path string, mut stats St
 	mut regexps := map[int]bool{}
 	mut texts := map[int]bool{}
 	mut attributes := map[int]bool{}
+	// A .svelte file: svelte-eslint-parser's tokens of the whole file (the markup's, the script's and
+	// the template expressions', HTML comments among them) are `sourceCode.ast.tokens`.
+	if c.is_svelte() {
+		for token in c.svelte.doc.tokens {
+			start, end := sv_token_loc_start(token), sv_token_loc_end(token)
+			match token.typ {
+				'String' { c.vmaxlen_mark(&l, start, end, mut strings) }
+				'Template' { c.vmaxlen_mark(&l, start, end, mut templates) }
+				'RegularExpression' { c.vmaxlen_mark(&l, start, end, mut regexps) }
+				'HTMLText' { c.vmaxlen_mark(&l, start, end, mut texts) }
+				else {}
+			}
+		}
+	}
 	for token in script_tokens {
+		if c.is_svelte() {
+			break
+		}
 		match token.kind {
 			.string_ { c.vmaxlen_mark(&l, token.start, token.end, mut strings) }
 			.template { c.vmaxlen_mark(&l, token.start, token.end, mut templates) }
@@ -279,7 +319,11 @@ fn (mut c Checker) lint_vue_max_len(root C.TSNode, abs_path string, mut stats St
 	mut by_line := map[int][]VmaxlenComment{}
 	if o.ignore_comments || o.comments != 0 || o.ignore_trailing {
 		mut comments := []VmaxlenComment{}
-		script := script_comments.map(c.vmaxlen_comment(&l, it.start, it.end))
+		script := if c.is_svelte() {
+			c.svelte.doc.comments.map(c.vmaxlen_comment(&l, sv_token_loc_start(it), sv_token_loc_end(it)))
+		} else {
+			script_comments.map(c.vmaxlen_comment(&l, it.start, it.end))
+		}
 		if template_first {
 			comments << template_comments
 			comments << script
@@ -294,7 +338,9 @@ fn (mut c Checker) lint_vue_max_len(root C.TSNode, abs_path string, mut stats St
 		}
 	}
 	mut script_range := []int{}
-	if script_tokens.len > 0 {
+	if c.is_svelte() {
+		script_range = c.vmaxlen_svelte_range(&l)
+	} else if script_tokens.len > 0 {
 		first := c.vmaxlen_line(&l, script_tokens[0].start)
 		last := c.vmaxlen_line(&l, script_tokens.last().end)
 		if script_comments.len > 0 {

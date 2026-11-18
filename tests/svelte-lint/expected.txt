@@ -8,6 +8,7 @@ counter.svelte.ts:12:3	@typescript-eslint/explicit-function-return-type	missingR
 counter.svelte.ts:15:27	@stylistic/comma-dangle	unexpected	Unexpected trailing comma.	fix	408	414	++\n\t}	end	15	28
 counter.svelte.ts:15:3	@stylistic/quote-props	unquotedPropertyFound	Unquoted property 'increment' found.	fix	386	395	"increment"	end	15	27
 counter.svelte.ts:15:3	@typescript-eslint/explicit-function-return-type	missingReturnType	Missing return type on function.	end	15	14
+counter.svelte.ts:2:81	vue/max-len	max	This line has a length of 89. Maximum allowed is 80.	end	2	90
 counter.svelte.ts:4:30	@stylistic/space-before-function-paren	missingSpace	Missing space before function parentheses.	fix	163	163	 	end	4	31
 counter.svelte.ts:4:8	@typescript-eslint/explicit-function-return-type	missingReturnType	Missing return type on function.	end	4	30
 counter.svelte.ts:4:8	@typescript-eslint/explicit-module-boundary-types	missingReturnType	Missing return type on function.	end	4	30
@@ -54,6 +55,7 @@ legacy.svelte:14:7	@stylistic/object-curly-spacing	unexpectedSpaceAfter	There sh
 legacy.svelte:16:17	@stylistic/space-before-function-paren	missingSpace	Missing space before function parentheses.	fix	319	319	 	end	16	18
 legacy.svelte:16:2	@typescript-eslint/explicit-function-return-type	missingReturnType	Missing return type on function.	end	16	17
 legacy.svelte:17:13	@typescript-eslint/no-magic-numbers	noMagic	No magic number: 1.	end	17	14
+legacy.svelte:22:81	vue/max-len	max	This line has a length of 85. Maximum allowed is 80.	end	22	86
 legacy.svelte:2:10	@stylistic/object-curly-spacing	unexpectedSpaceAfter	There should be no space after '{'.	fix	28	29		end	2	11
 legacy.svelte:2:19	@stylistic/object-curly-spacing	unexpectedSpaceBefore	There should be no space before '}'.	fix	37	38		end	2	20
 legacy.svelte:2:27	@stylistic/quotes	wrongQuotes	Strings must use doublequote.	fix	45	59	"svelte/store"	end	2	41

@@ -40,8 +40,14 @@ for needed in "$ESLINT_PACKAGE" build/upstream/svelte-deps/node_modules/svelte-e
 	[[ -e $needed ]] || { echo "missing $needed (see the header of $0)" >&2; exit 2; }
 done
 [[ -x ./veslint ]] || { echo "missing ./veslint" >&2; exit 2; }
-mkdir -p "$WORK"
+mkdir -p "$WORK/node_modules"
 count=$(python3 tests/svelte-lint/corpus.py "$WORK") || exit 2
+# ESLint runs in WORK, with `typescript` in its node_modules, as in a project: svelte-eslint-parser
+# makes the JavaScript program of a file without `lang` with the newest `typescript` it reaches from
+# the current directory, which, without it, can be veslint's own (7.1.0-beta in the node_modules of
+# the checkout, the native compiler, without the JavaScript API: "Cannot read properties of
+# undefined (reading 'JavaScriptFile')" on every such file when WORK is under build/).
+ln -sfn "$ROOT/build/upstream/svelte-deps/node_modules/typescript" "$WORK/node_modules/typescript"
 mapfile -t groups < <(cd "$WORK" && ls -d g[0-9][0-9])
 alone=()
 # parserOptions.project: the groups only (a program per project of one file is too much memory
@@ -64,7 +70,7 @@ required = json.load(open('tests/rules/required_options.json', encoding='utf-8')
 print(json.dumps({'rules': {r: ['error', *required[r]] if r in required else 'error' for r in rules}}))
 PY
 export SVELTE_LINT_RULES=$WORK/rules.json
-key=$( (cd "$WORK" && find "${groups[@]}" "${alone[@]}" -name '*.svelte' -o -name '*.json' -o -name '*.d.ts' | LC_ALL=C sort | xargs cat; cat "$ROOT/tests/svelte-lint/eslint.svelte.config.mjs" "$ROOT/tests/svelte-lint/eslint_each.mjs" "$ROOT/tests/eslint_lines.py" "$WORK/rules.json" "$ESLINT_PACKAGE" "$ROOT/build/upstream/svelte-deps/node_modules/svelte-eslint-parser/package.json"; echo "$mode") | sha1sum | cut -c1-16)
+key=$( (cd "$WORK" && find "${groups[@]}" "${alone[@]}" -name '*.svelte' -o -name '*.json' -o -name '*.d.ts' | LC_ALL=C sort | xargs cat; cat "$ROOT/tests/svelte-lint/eslint.svelte.config.mjs" "$ROOT/tests/svelte-lint/eslint_each.mjs" "$ROOT/tests/eslint_lines.py" "$WORK/rules.json" "$ESLINT_PACKAGE" "$ROOT/build/upstream/svelte-deps/node_modules/svelte-eslint-parser/package.json" "$WORK/node_modules/typescript/package.json"; echo "$mode") | sha1sum | cut -c1-16)
 ESLINT_LINES=$WORK/eslint.$mode.$key.txt
 if [[ ! -f $ESLINT_LINES ]]; then
 	echo "ESLint lints the $count files in $JOBS processes"
