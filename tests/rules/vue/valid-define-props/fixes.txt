@@ -1,0 +1,9 @@
+tests/rules/vue/valid-define-props/both/cases.vue:7:1	vue/valid-define-props	definedInBoth	Props are defined in both `defineProps` and `export default {}`.	end	7	19
+tests/rules/vue/valid-define-props/cases.vue:5:1	vue/valid-define-props	hasTypeAndArg	`defineProps` has both a type-only props and an argument.	end	5	42
+tests/rules/vue/valid-define-props/cases.vue:5:1	vue/valid-define-props	multiple	`defineProps` has been called multiple times.	end	5	42
+tests/rules/vue/valid-define-props/cases.vue:6:1	vue/valid-define-props	multiple	`defineProps` has been called multiple times.	end	6	61
+tests/rules/vue/valid-define-props/cases.vue:6:18	vue/valid-define-props	referencingLocally	`defineProps` is referencing locally declared variables.	end	6	21
+tests/rules/vue/valid-define-props/cases.vue:6:26	vue/valid-define-props	referencingLocally	`defineProps` is referencing locally declared variables.	end	6	31
+tests/rules/vue/valid-define-props/cases.vue:6:44	vue/valid-define-props	referencingLocally	`defineProps` is referencing locally declared variables.	end	6	49
+tests/rules/vue/valid-define-props/empty/cases.vue:2:1	vue/valid-define-props	notDefined	Props are not defined.	end	2	14
+tests/rules/vue/valid-define-props/local/cases.vue:5:45	vue/valid-define-props	referencingLocally	`defineProps` is referencing locally declared variables.	end	5	53

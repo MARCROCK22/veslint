@@ -651,6 +651,10 @@ pub const vue_component_api_style = 'vue/component-api-style'
 pub const vue_no_reserved_component_names = 'vue/no-reserved-component-names'
 pub const vue_require_typed_object_prop = 'vue/require-typed-object-prop'
 pub const vue_return_in_emits_validator = 'vue/return-in-emits-validator'
+pub const vue_valid_define_props = 'vue/valid-define-props'
+pub const vue_valid_define_emits = 'vue/valid-define-emits'
+pub const vue_valid_define_options = 'vue/valid-define-options'
+pub const vue_require_prop_comment = 'vue/require-prop-comment'
 pub const names = [no_floating_promises, await_thenable, require_await, return_await,
 	no_misused_promises, no_unsafe_call, no_unsafe_member_access, no_unsafe_return,
 	no_unsafe_assignment, no_unsafe_argument, restrict_template_expressions,
@@ -839,7 +843,8 @@ pub const names = [no_floating_promises, await_thenable, require_await, return_a
 	vue_match_component_file_name, vue_enforce_style_attribute, vue_require_direct_export,
 	vue_no_restricted_component_names, vue_no_restricted_component_options, vue_prefer_import_from_vue,
 	vue_new_line_between_multi_line_property, vue_component_api_style, vue_no_reserved_component_names,
-	vue_require_typed_object_prop, vue_return_in_emits_validator]
+	vue_require_typed_object_prop, vue_return_in_emits_validator, vue_valid_define_props,
+	vue_valid_define_emits, vue_valid_define_options, vue_require_prop_comment]
 
 // untyped_rules are the ported rules that need no types (`meta.docs.requiresTypeChecking` is false
 // in typescript-eslint; the eslint-plugin-unicorn rules that read the types when the parser has a
@@ -998,7 +1003,8 @@ pub const untyped_rules = [adjacent_overload_signatures, array_type, class_liter
 	vue_match_component_file_name, vue_enforce_style_attribute, vue_require_direct_export,
 	vue_no_restricted_component_names, vue_no_restricted_component_options, vue_prefer_import_from_vue,
 	vue_new_line_between_multi_line_property, vue_component_api_style, vue_no_reserved_component_names,
-	vue_require_typed_object_prop, vue_return_in_emits_validator]
+	vue_require_typed_object_prop, vue_return_in_emits_validator, vue_valid_define_props,
+	vue_valid_define_emits, vue_valid_define_options, vue_require_prop_comment]
 
 // needs_types tells whether a rule asks tsgo for the types of the program.
 pub fn needs_types(rule string) bool {
@@ -1644,6 +1650,10 @@ pub const default_options = {
 	vue_no_reserved_component_names:                 '[]'
 	vue_require_typed_object_prop:                   '[]'
 	vue_return_in_emits_validator:                   '[]'
+	vue_valid_define_props:                          '[]'
+	vue_valid_define_emits:                          '[]'
+	vue_valid_define_options:                        '[]'
+	vue_require_prop_comment:                        '[]'
 }
 
 // Finding is a problem a rule found at a node.
@@ -2444,6 +2454,10 @@ pub fn message(rule string, finding Finding) string {
 		vue_no_reserved_component_names { vue_no_reserved_component_names_messages }
 		vue_require_typed_object_prop { vue_require_typed_object_prop_messages }
 		vue_return_in_emits_validator { vue_return_in_emits_validator_messages }
+		vue_valid_define_props { vue_valid_define_props_messages }
+		vue_valid_define_emits { vue_valid_define_emits_messages }
+		vue_valid_define_options { vue_valid_define_options_messages }
+		vue_require_prop_comment { vue_require_prop_comment_messages }
 		else { map[string]string{} }
 	}
 	return interpolate(messages[finding.message_id] or { finding.message_id }, finding.data)
@@ -4506,6 +4520,18 @@ fn (mut c Checker) lint_rule(rule string, root C.TSNode, abs_path string, mut st
 		}
 		vue_return_in_emits_validator {
 			return c.lint_vue_return_in_emits_validator(root, abs_path, mut stats)!
+		}
+		vue_valid_define_props {
+			return c.lint_vue_valid_define_props(root, abs_path, mut stats)!
+		}
+		vue_valid_define_emits {
+			return c.lint_vue_valid_define_emits(root, abs_path, mut stats)!
+		}
+		vue_valid_define_options {
+			return c.lint_vue_valid_define_options(root, abs_path, mut stats)!
+		}
+		vue_require_prop_comment {
+			return c.lint_vue_require_prop_comment(root, abs_path, mut stats)!
 		}
 		else { return error('unknown rule: ${rule}') }
 	}

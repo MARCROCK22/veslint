@@ -1,0 +1,14 @@
+tests/rules/vue/require-prop-comment/any/cases.ts:10:5	vue/require-prop-comment	requireAnyComment	The "w" property should have a comment.
+tests/rules/vue/require-prop-comment/block/cases.ts:5:5	vue/require-prop-comment	requireBlockComment	The "x" property should have a block comment.
+tests/rules/vue/require-prop-comment/block/cases.ts:9:5	vue/require-prop-comment	requireBlockComment	The "z" property should have a block comment.
+tests/rules/vue/require-prop-comment/block/cases.ts:10:5	vue/require-prop-comment	requireBlockComment	The "w" property should have a block comment.
+tests/rules/vue/require-prop-comment/cases.vue:7:5	vue/require-prop-comment	requireJSDocComment	The "b" property should have a JSDoc comment.
+tests/rules/vue/require-prop-comment/cases.vue:9:5	vue/require-prop-comment	requireJSDocComment	The "c" property should have a JSDoc comment.
+tests/rules/vue/require-prop-comment/cases.vue:12:5	vue/require-prop-comment	requireJSDocComment	The "e" property should have a JSDoc comment.
+tests/rules/vue/require-prop-comment/cases.vue:14:5	vue/require-prop-comment	requireJSDocComment	The "f" property should have a JSDoc comment.
+tests/rules/vue/require-prop-comment/cases.vue:15:5	vue/require-prop-comment	requireJSDocComment	The "g" property should have a JSDoc comment.
+tests/rules/vue/require-prop-comment/line/cases.ts:7:5	vue/require-prop-comment	requireLineComment	The "y" property should have a line comment.
+tests/rules/vue/require-prop-comment/line/cases.ts:9:5	vue/require-prop-comment	requireLineComment	The "z" property should have a line comment.
+tests/rules/vue/require-prop-comment/line/cases.ts:10:5	vue/require-prop-comment	requireLineComment	The "w" property should have a line comment.
+tests/rules/vue/require-prop-comment/setup/cases.vue:6:3	vue/require-prop-comment	requireJSDocComment	The "b" property should have a JSDoc comment.
+tests/rules/vue/require-prop-comment/setup/cases.vue:7:3	vue/require-prop-comment	requireJSDocComment	The "c" property should have a JSDoc comment.

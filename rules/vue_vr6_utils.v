@@ -2,6 +2,7 @@ module rules
 
 import estree
 import offsets
+import treesitter
 
 // Helpers of lib/utils (eslint-plugin-vue 10.12.1) for the script rules of the VR6 batch (prefix
 // `vx6_`), which the shared vue_*.v files do not have.
@@ -78,4 +79,88 @@ fn (s &VueScript) vx6_script_setup_imports(t &estree.EsTree) []int {
 		}
 	}
 	return out
+}
+
+// vx6_type_node_types are TYPE_NODE_TYPES of lib/utils/ts-utils/ts-ast.ts (isTypeNode).
+const vx6_type_node_types = ['TSAbstractKeyword', 'TSAnyKeyword', 'TSAsyncKeyword', 'TSArrayType',
+	'TSBigIntKeyword', 'TSBooleanKeyword', 'TSConditionalType', 'TSConstructorType', 'TSDeclareKeyword',
+	'TSExportKeyword', 'TSFunctionType', 'TSImportType', 'TSIndexedAccessType', 'TSInferType',
+	'TSIntersectionType', 'TSIntrinsicKeyword', 'TSLiteralType', 'TSMappedType', 'TSNamedTupleMember',
+	'TSNeverKeyword', 'TSNullKeyword', 'TSNumberKeyword', 'TSObjectKeyword', 'TSOptionalType',
+	'TSQualifiedName', 'TSPrivateKeyword', 'TSProtectedKeyword', 'TSPublicKeyword', 'TSReadonlyKeyword',
+	'TSRestType', 'TSStaticKeyword', 'TSStringKeyword', 'TSSymbolKeyword', 'TSTemplateLiteralType',
+	'TSThisType', 'TSTupleType', 'TSTypeLiteral', 'TSTypeOperator', 'TSTypePredicate', 'TSTypeQuery',
+	'TSTypeReference', 'TSUndefinedKeyword', 'TSUnionType', 'TSUnknownKeyword', 'TSVoidKeyword']
+
+// vx6_is_within_type_node ports isWithinTypeNode: the node or one of its ancestors is a type.
+fn vx6_is_within_type_node(t &estree.EsTree, node int) bool {
+	mut n := node
+	for n >= 0 {
+		if t.typ(n).type_name() in vx6_type_node_types {
+			return true
+		}
+		n = t.nodes[n].parent
+	}
+	return false
+}
+
+// vx6_referencing_locally is the Identifier listener of valid-define-props, valid-define-emits
+// and valid-define-options: the identifiers of `<script setup>` inside one of the arguments that
+// reference a variable `<script setup>` declares outside that argument (not an import; with
+// `allow_const_literals`, not a `const` initialized with a literal), out of type annotations, in
+// order. Each identifier is reported once per argument that contains it.
+fn (mut c Checker) vx6_referencing_locally(root C.TSNode, t &estree.EsTree, s &VueScript, arguments []int, allow_const_literals bool) []int {
+	mut out := []int{}
+	if arguments.len == 0 {
+		return out
+	}
+	tree := c.scope_tree(root)
+	for node in 0 .. t.nodes.len {
+		if t.typ(node) != .identifier || !s.in_script_setup(t, node) {
+			continue
+		}
+		for argument in arguments {
+			if !vx6_is_in_range(t, argument, node) {
+				continue
+			}
+			v := c.unb_find_variable(root, t, node)
+			if v < 0 {
+				continue
+			}
+			ts := t.ts_node(node) or { continue }
+			key := node_key(ts)
+			variable := tree.variables[v]
+			if variable.references.all(node_key(tree.references[it].identifier) != key) {
+				continue
+			}
+			if variable.defs.len == 0 {
+				continue
+			}
+			arg_start := t.nodes[argument].start
+			arg_end := t.nodes[argument].end
+			if variable.defs.any(it.kind == .import_binding
+				|| !(s.setup_start <= treesitter.node_start(it.name)
+					&& treesitter.node_end(it.name) <= s.setup_end)
+				|| (arg_start <= treesitter.node_start(it.name)
+					&& treesitter.node_end(it.name) <= arg_end)
+				|| (allow_const_literals && c.vx6_is_const_literal(t, it))) {
+				continue
+			}
+			if vx6_is_within_type_node(t, node) {
+				continue
+			}
+			out << node
+		}
+	}
+	return out
+}
+
+// vx6_is_const_literal: a definition `const x = <Literal>`.
+fn (mut c Checker) vx6_is_const_literal(t &estree.EsTree, def ScopeDefinition) bool {
+	if def.kind != .variable || def.parent_kind != 'const' {
+		return false
+	}
+	init := def.init or { return false }
+	es := c.es_index_of(t, unwrap_parens(init)) or { return false }
+	return t.typ(es) == .literal
 }

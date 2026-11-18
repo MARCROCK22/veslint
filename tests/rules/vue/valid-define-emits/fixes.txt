@@ -1,0 +1,9 @@
+tests/rules/vue/valid-define-emits/both/cases.vue:7:1	vue/valid-define-emits	definedInBoth	Custom events are defined in both `defineEmits` and `export default {}`.	end	7	19
+tests/rules/vue/valid-define-emits/cases.vue:5:1	vue/valid-define-emits	hasTypeAndArg	`defineEmits` has both a type-only emit and an argument.	end	5	42
+tests/rules/vue/valid-define-emits/cases.vue:5:1	vue/valid-define-emits	multiple	`defineEmits` has been called multiple times.	end	5	42
+tests/rules/vue/valid-define-emits/cases.vue:6:1	vue/valid-define-emits	multiple	`defineEmits` has been called multiple times.	end	6	61
+tests/rules/vue/valid-define-emits/cases.vue:6:18	vue/valid-define-emits	referencingLocally	`defineEmits` is referencing locally declared variables.	end	6	21
+tests/rules/vue/valid-define-emits/cases.vue:6:26	vue/valid-define-emits	referencingLocally	`defineEmits` is referencing locally declared variables.	end	6	31
+tests/rules/vue/valid-define-emits/cases.vue:6:44	vue/valid-define-emits	referencingLocally	`defineEmits` is referencing locally declared variables.	end	6	49
+tests/rules/vue/valid-define-emits/empty/cases.vue:2:1	vue/valid-define-emits	notDefined	Custom events are not defined.	end	2	14
+tests/rules/vue/valid-define-emits/local/cases.vue:5:45	vue/valid-define-emits	referencingLocally	`defineEmits` is referencing locally declared variables.	end	5	53

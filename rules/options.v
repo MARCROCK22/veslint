@@ -308,6 +308,7 @@ pub fn check_options(rule string, options []json2.Any) !bool {
 		}
 		vue_component_api_style { vue_component_api_style_options(options)! }
 		vue_no_reserved_component_names { vue_no_reserved_component_names_options(options)! }
+		vue_require_prop_comment { vue_require_prop_comment_options(options)! }
 		else { return false }
 	}
 	return true
