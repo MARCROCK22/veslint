@@ -760,6 +760,8 @@ const rule_option_schemas = {
 	'svelte/valid-style-parse':                                        '{"type":"array","minItems":0,"maxItems":0}'
 	'svelte/consistent-selector-style':                                '{"type":"array","items":[{"type":"object","properties":{"checkGlobal":{"type":"boolean"},"style":{"type":"array","items":{"enum":["class","id","type"]},"maxItems":3,"uniqueItems":true}},"additionalProperties":false}],"minItems":0,"maxItems":1}'
 	'svelte/no-unused-class-name':                                     '{"type":"array","items":[{"type":"object","properties":{"allowedClassNames":{"type":"array","items":{"type":"string"}}},"additionalProperties":false}],"minItems":0,"maxItems":1}'
+	'svelte/experimental-require-slot-types':                          '{"type":"array","minItems":0,"maxItems":0}'
+	'svelte/experimental-require-strict-events':                       '{"type":"array","minItems":0,"maxItems":0}'
 }
 
 // eslint_rule_default_options are the meta.defaultOptions of the rules of ESLint and of

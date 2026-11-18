@@ -1,0 +1,12 @@
+{"rule":"svelte/experimental-require-strict-events","upstream":"eslint-plugin-svelte v3.24.1","files":["tests/src/rules/experimental-require-strict-events.ts"],"messages":{"missingStrictEvents":"The component must have the strictEvents attribute on its <script> tag or it must define the $$Events interface."},"generator":"tests/rules/svelte/upstream_ts.mjs","cases":[
+
+],"lints":[
+
+],"skipped":[
+{"id":"experimental-require-strict-events/s0","reason":"upstream's requirements leave it out"},
+{"id":"experimental-require-strict-events/s1","reason":"upstream's requirements leave it out"},
+{"id":"experimental-require-strict-events/s2","reason":"upstream's requirements leave it out"},
+{"id":"experimental-require-strict-events/s3","reason":"upstream's requirements leave it out"},
+{"id":"experimental-require-strict-events/s4","reason":"upstream's requirements leave it out"},
+{"id":"experimental-require-strict-events/s5","reason":"upstream's requirements leave it out"}
+]}
