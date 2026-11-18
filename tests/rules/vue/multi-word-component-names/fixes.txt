@@ -1,0 +1,7 @@
+tests/rules/vue/multi-word-component-names/cases.ts:3:15	vue/multi-word-component-names	unexpected	Component name "todo" should always be multi-word.	end	3	21
+tests/rules/vue/multi-word-component-names/cases.ts:6:15	vue/multi-word-component-names	unexpected	Component name "Todo" should always be multi-word.	end	6	21
+tests/rules/vue/multi-word-component-names/cases.vue:3:9	vue/multi-word-component-names	unexpected	Component name "Item" should always be multi-word.	end	3	15
+tests/rules/vue/multi-word-component-names/setup-unnamed/cases.vue:1:1	vue/multi-word-component-names	unexpected	Component name "cases" should always be multi-word.
+tests/rules/vue/multi-word-component-names/setup/cases.vue:2:23	vue/multi-word-component-names	unexpected	Component name "Single" should always be multi-word.	end	2	31
+tests/rules/vue/multi-word-component-names/template-only/cases.vue:1:1	vue/multi-word-component-names	unexpected	Component name "cases" should always be multi-word.
+tests/rules/vue/multi-word-component-names/unnamed/cases.vue:1:1	vue/multi-word-component-names	unexpected	Component name "cases" should always be multi-word.

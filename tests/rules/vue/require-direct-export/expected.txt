@@ -1,0 +1,4 @@
+tests/rules/vue/require-direct-export/cases.tsx:2:1	vue/require-direct-export	expectedDirectExport	Expected the component literal to be directly exported.
+tests/rules/vue/require-direct-export/cases.vue:3:1	vue/require-direct-export	expectedDirectExport	Expected the component literal to be directly exported.
+tests/rules/vue/require-direct-export/functional-ok/disallow/cases.vue:2:1	vue/require-direct-export	expectedDirectExport	Expected the component literal to be directly exported.
+tests/rules/vue/require-direct-export/functional/cases.vue:2:1	vue/require-direct-export	expectedDirectExport	Expected the component literal to be directly exported.

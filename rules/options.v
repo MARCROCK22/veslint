@@ -290,6 +290,15 @@ pub fn check_options(rule string, options []json2.Any) !bool {
 		vue_max_lines_per_block { vue_max_lines_per_block_options(options)! }
 		vue_no_reserved_keys { vue_no_reserved_keys_options(options)! }
 		vue_return_in_computed_property { vue_return_in_computed_property_options(options)! }
+		vue_multi_word_component_names { vue_multi_word_component_names_options(options)! }
+		vue_no_multiple_template_root { vue_no_multiple_template_root_options(options)! }
+		vue_no_potential_component_option_typo {
+			vue_no_potential_component_option_typo_options(options)!
+		}
+		vue_no_deprecated_model_definition { vue_no_deprecated_model_definition_options(options)! }
+		vue_match_component_file_name { vue_match_component_file_name_options(options)! }
+		vue_enforce_style_attribute { vue_enforce_style_attribute_options(options)! }
+		vue_require_direct_export { vue_require_direct_export_options(options)! }
 		else { return false }
 	}
 	return true
