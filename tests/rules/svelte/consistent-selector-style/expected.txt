@@ -1,0 +1,22 @@
+tests/rules/svelte/consistent-selector-style/cases.svelte:28:2	svelte/consistent-selector-style	classShouldBeType	Selector should select by element type instead of class
+tests/rules/svelte/consistent-selector-style/cases.svelte:29:2	svelte/consistent-selector-style	classShouldBeType	Selector should select by element type instead of class
+tests/rules/svelte/consistent-selector-style/cases.svelte:33:2	svelte/consistent-selector-style	classShouldBeType	Selector should select by element type instead of class
+tests/rules/svelte/consistent-selector-style/cases.svelte:34:2	svelte/consistent-selector-style	classShouldBeId	Selector should select by ID instead of class
+tests/rules/svelte/consistent-selector-style/cases.svelte:35:2	svelte/consistent-selector-style	classShouldBeType	Selector should select by element type instead of class
+tests/rules/svelte/consistent-selector-style/cases.svelte:37:2	svelte/consistent-selector-style	classShouldBeType	Selector should select by element type instead of class
+tests/rules/svelte/consistent-selector-style/cases.svelte:39:6	svelte/consistent-selector-style	classShouldBeType	Selector should select by element type instead of class
+tests/rules/svelte/consistent-selector-style/cases.svelte:40:12	svelte/consistent-selector-style	classShouldBeType	Selector should select by element type instead of class
+tests/rules/svelte/consistent-selector-style/cases.svelte:40:16	svelte/consistent-selector-style	classShouldBeType	Selector should select by element type instead of class
+tests/rules/svelte/consistent-selector-style/cases.svelte:40:20	svelte/consistent-selector-style	classShouldBeType	Selector should select by element type instead of class
+tests/rules/svelte/consistent-selector-style/cases.svelte:42:15	svelte/consistent-selector-style	classShouldBeType	Selector should select by element type instead of class
+tests/rules/svelte/consistent-selector-style/cases.svelte:43:4	svelte/consistent-selector-style	classShouldBeType	Selector should select by element type instead of class
+tests/rules/svelte/consistent-selector-style/cases.svelte:44:2	svelte/consistent-selector-style	idShouldBeType	Selector should select by element type instead of ID
+tests/rules/svelte/consistent-selector-style/cases.svelte:46:3	svelte/consistent-selector-style	classShouldBeType	Selector should select by element type instead of class
+tests/rules/svelte/consistent-selector-style/cases.svelte:48:2	svelte/consistent-selector-style	classShouldBeType	Selector should select by element type instead of class
+tests/rules/svelte/consistent-selector-style/cases.svelte:49:2	svelte/consistent-selector-style	idShouldBeType	Selector should select by element type instead of ID
+tests/rules/svelte/consistent-selector-style/cases.svelte:51:2	svelte/consistent-selector-style	classShouldBeType	Selector should select by element type instead of class
+tests/rules/svelte/consistent-selector-style/cases.svelte:52:2	svelte/consistent-selector-style	classShouldBeType	Selector should select by element type instead of class
+tests/rules/svelte/consistent-selector-style/options/cases.svelte:12:2	svelte/consistent-selector-style	idShouldBeClass	Selector should select by class instead of ID
+tests/rules/svelte/consistent-selector-style/options/cases.svelte:13:2	svelte/consistent-selector-style	typeShouldBeClass	Selector should select by class instead of element type
+tests/rules/svelte/consistent-selector-style/options/cases.svelte:14:2	svelte/consistent-selector-style	typeShouldBeClass	Selector should select by class instead of element type
+tests/rules/svelte/consistent-selector-style/options/cases.svelte:16:10	svelte/consistent-selector-style	idShouldBeClass	Selector should select by class instead of ID

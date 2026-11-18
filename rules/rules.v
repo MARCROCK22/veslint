@@ -768,6 +768,9 @@ pub const svelte_no_dupe_style_properties = 'svelte/no-dupe-style-properties'
 pub const svelte_no_shorthand_style_property_overrides = 'svelte/no-shorthand-style-property-overrides'
 pub const svelte_require_optimized_style_attribute = 'svelte/require-optimized-style-attribute'
 pub const svelte_prefer_style_directive = 'svelte/prefer-style-directive'
+pub const svelte_valid_style_parse = 'svelte/valid-style-parse'
+pub const svelte_consistent_selector_style = 'svelte/consistent-selector-style'
+pub const svelte_no_unused_class_name = 'svelte/no-unused-class-name'
 pub const names = [no_floating_promises, await_thenable, require_await, return_await,
 	no_misused_promises, no_unsafe_call, no_unsafe_member_access, no_unsafe_return,
 	no_unsafe_assignment, no_unsafe_argument, restrict_template_expressions,
@@ -996,7 +999,8 @@ pub const names = [no_floating_promises, await_thenable, require_await, return_a
 	svelte_no_not_function_handler, svelte_block_lang, svelte_prefer_class_directive,
 	svelte_no_restricted_html_elements, svelte_no_unknown_style_directive_property,
 	svelte_no_dupe_style_properties, svelte_no_shorthand_style_property_overrides,
-	svelte_require_optimized_style_attribute, svelte_prefer_style_directive]
+	svelte_require_optimized_style_attribute, svelte_prefer_style_directive, svelte_valid_style_parse,
+	svelte_consistent_selector_style, svelte_no_unused_class_name]
 
 // untyped_rules are the ported rules that need no types (`meta.docs.requiresTypeChecking` is false
 // in typescript-eslint; the eslint-plugin-unicorn rules that read the types when the parser has a
@@ -1189,7 +1193,8 @@ pub const untyped_rules = [adjacent_overload_signatures, array_type, class_liter
 	svelte_no_not_function_handler, svelte_block_lang, svelte_prefer_class_directive,
 	svelte_no_restricted_html_elements, svelte_no_unknown_style_directive_property,
 	svelte_no_dupe_style_properties, svelte_no_shorthand_style_property_overrides,
-	svelte_require_optimized_style_attribute, svelte_prefer_style_directive]
+	svelte_require_optimized_style_attribute, svelte_prefer_style_directive, svelte_valid_style_parse,
+	svelte_consistent_selector_style, svelte_no_unused_class_name]
 
 // needs_types tells whether a rule asks tsgo for the types of the program.
 pub fn needs_types(rule string) bool {
@@ -1952,6 +1957,9 @@ pub const default_options = {
 	svelte_no_shorthand_style_property_overrides:     '[]'
 	svelte_require_optimized_style_attribute:         '[]'
 	svelte_prefer_style_directive:                    '[]'
+	svelte_valid_style_parse:                         '[]'
+	svelte_consistent_selector_style:                 '[]'
+	svelte_no_unused_class_name:                      '[]'
 }
 
 // Finding is a problem a rule found at a node.
@@ -2891,6 +2899,9 @@ pub fn message(rule string, finding Finding) string {
 		svelte_no_shorthand_style_property_overrides { snspo_messages }
 		svelte_require_optimized_style_attribute { sroa_messages }
 		svelte_prefer_style_directive { spsd_messages }
+		svelte_valid_style_parse { svsp_messages }
+		svelte_consistent_selector_style { sccs_messages }
+		svelte_no_unused_class_name { snucn_messages }
 		else { map[string]string{} }
 	}
 	return interpolate(messages[finding.message_id] or { finding.message_id }, finding.data)
@@ -5336,6 +5347,15 @@ fn (mut c Checker) lint_rule(rule string, root C.TSNode, abs_path string, mut st
 		}
 		svelte_prefer_style_directive {
 			return c.lint_svelte_prefer_style_directive(root, abs_path, mut stats)!
+		}
+		svelte_valid_style_parse {
+			return c.lint_svelte_valid_style_parse(root, abs_path, mut stats)!
+		}
+		svelte_consistent_selector_style {
+			return c.lint_svelte_consistent_selector_style(root, abs_path, mut stats)!
+		}
+		svelte_no_unused_class_name {
+			return c.lint_svelte_no_unused_class_name(root, abs_path, mut stats)!
 		}
 		else { return error('unknown rule: ${rule}') }
 	}
