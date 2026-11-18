@@ -731,6 +731,15 @@ fn (mut b Builder) js(e int) !int {
 	}
 	mut start := n.start
 	mut end := n.end
+	if typ == 'Identifier' && b.transpiled && b.in_script {
+		// TypeScript's output has no annotation: the name alone (typescript-estree's range covers
+		// `name?: T`).
+		if name := b.es.string_of(e, .name) {
+			if end > start + name.len {
+				end = start + name.len
+			}
+		}
+	}
 	if typ == 'TemplateElement' {
 		// typescript-estree's TemplateElement includes its delimiters, acorn's does not.
 		start++
