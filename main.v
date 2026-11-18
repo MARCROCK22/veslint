@@ -456,8 +456,8 @@ fn run(opts Options, timeout time.Duration) !int {
 			continue
 		}
 		if rules.is_vue_path(path) {
-			work := prepare_vue_file(mut vue_parsers, parser, path, project_override, opts.all_identifiers, mut
-				bench)!
+			work := prepare_vue_file(mut vue_parsers, parser, path, project_override, opts.all_identifiers,
+				opts.loaded.vue_parse_options(os.abs_path(path)), mut bench)!
 			if work.vue {
 				works << work
 			}
@@ -561,6 +561,8 @@ struct RuleFile {
 	twin_code string
 	// svelte_options: the runes options a .svelte file is parsed with (svelte_parse_options).
 	svelte_options svelte.ParseOptions
+	// vue_options: the vueFeatures a .vue file is parsed with (vue_parse_options).
+	vue_options vue.Options
 	// A `.svelte.ts` module: tsgo reads its virtual code instead of the file (svelte/module.v).
 	module svelte.ModuleVirtual
 }
@@ -621,8 +623,11 @@ fn run_rules(opts Options, timeout time.Duration) !int {
 		} else {
 			svelte.ParseOptions{}
 		}
+		vue_options := if is_vue { opts.loaded.vue_parse_options(abs_path) } else { vue.Options{} }
 		if is_vue {
-			code, linted := vue_parsers.twin_code(src) or { return error('${path}: ${err.msg()}') }
+			code, linted := vue_parsers.twin_code(src, vue_options) or {
+				return error('${path}: ${err.msg()}')
+			}
 			if !linted {
 				eprintln(vue_javascript_warning(path))
 				continue
@@ -682,6 +687,7 @@ fn run_rules(opts Options, timeout time.Duration) !int {
 			}
 			twin_code:      twin_code
 			svelte_options: svelte_options
+			vue_options:    vue_options
 			module:         module
 		}
 	}
@@ -804,7 +810,7 @@ fn run_rules(opts Options, timeout time.Duration) !int {
 		// The document of a .vue file, parsed again after each pass of --fix.
 		mut doc := &vue.Document(unsafe { nil })
 		if f.vue {
-			doc = vue_parsers.parse(src) or { return error('${f.path}: ${err.msg()}') }
+			doc = vue_parsers.parse(src, f.vue_options) or { return error('${f.path}: ${err.msg()}') }
 		}
 		// The document of a .svelte file, the same way.
 		mut sdoc := &svelte.Document(unsafe { nil })
@@ -892,7 +898,7 @@ fn run_rules(opts Options, timeout time.Duration) !int {
 			if f.vue {
 				// The twin gets the code of the fixed script.
 				doc.free()
-				doc = vue_parsers.parse(src) or { return error('${f.path}: ${err.msg()}') }
+				doc = vue_parsers.parse(src, f.vue_options) or { return error('${f.path}: ${err.msg()}') }
 				client.serve(f.ts_path, doc.script.code)
 			} else if f.svelte {
 				sdoc.free()
@@ -1122,10 +1128,10 @@ fn prepare_file(parser treesitter.Parser, path string, project_override string, 
 
 // prepare_vue_file is prepare_file for a .vue file: the identifiers of its script, asked in its
 // twin. A file whose script is JavaScript is skipped with a warning (its FileWork is not `vue`).
-fn prepare_vue_file(mut vue_parsers VueParsers, parser treesitter.Parser, path string, project_override string, all bool, mut bench BenchReport) !FileWork {
+fn prepare_vue_file(mut vue_parsers VueParsers, parser treesitter.Parser, path string, project_override string, all bool, options vue.Options, mut bench BenchReport) !FileWork {
 	mut sw := time.new_stopwatch()
 	src, _, _ := read_source(path)!
-	mut doc := vue_parsers.parse(src) or { return error('${path}: ${err.msg()}') }
+	mut doc := vue_parsers.parse(src, options) or { return error('${path}: ${err.msg()}') }
 	defer {
 		doc.free()
 	}

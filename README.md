@@ -196,7 +196,7 @@ The extension shows the problems of the TypeScript files you open and type, unde
 ## Limits
 
 - **TypeScript only.** JavaScript files are not linted, even in a project with `allowJs`, nor the JavaScript scripts of Vue and Svelte files.
-- **Vue files:** all 256 rules of eslint-plugin-vue. `<!-- eslint-disable -->` comments in a template work when `vue/comment-directive` is on, as with eslint-plugin-vue's processor. `parserOptions.vueFeatures` is not read (the defaults are used). Two scripts that are not modules (no `import` or `export`) see each other's globals in veslint, where typescript-eslint has the other `.vue` files of the program as the text of the file.
+- **Vue files:** all 256 rules of eslint-plugin-vue. `<!-- eslint-disable -->` comments in a template work when `vue/comment-directive` is on, as with eslint-plugin-vue's processor. Two scripts that are not modules (no `import` or `export`) see each other's globals in veslint, where typescript-eslint has the other `.vue` files of the program as the text of the file.
 - **Linux x64 and Windows x64.** Other platforms need a build from source, which is not tested there.
 - **An `eslint.config.*` needs `bun`** to be read; the resolved configuration (`--print-config`) does not. A cached resolution is reused while the files and modules the configuration read and the environment variables it read stay the same: a configuration that depends on something else (the date, a file it lists but does not read, a new `tsconfig.json` a glob of `parserOptions.project` matches) needs `VESLINT_CONFIG_CACHE=0`.
 - **The newest TypeScript syntax** may not be read yet: veslint warns when a file has syntax it does not understand, and some problems of that file may be missing.

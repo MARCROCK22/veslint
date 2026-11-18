@@ -97,12 +97,15 @@ mut:
 	value string
 }
 
-// Options are vue-eslint-parser's `vueFeatures` the parser follows.
+// Options are vue-eslint-parser's `vueFeatures` the parser follows (parserOptions.vueFeatures).
 pub struct Options {
 pub:
 	interpolation_as_non_html    bool = true
 	filter                       bool = true
 	style_css_variable_injection bool = true
+	// custom_macros: names that resolve to variables of the global scope in a <script setup>, as
+	// the compiler macros do (the strings of vueFeatures.customMacros).
+	custom_macros []string
 }
 
 struct Tokenizer {

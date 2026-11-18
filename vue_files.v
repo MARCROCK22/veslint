@@ -21,11 +21,23 @@ mut:
 	parsers &vue.Parsers = unsafe { nil }
 }
 
-fn (mut p VueParsers) parse(src string) !&vue.Document {
+// parse parses a .vue file with the vueFeatures of its configuration (vue_parse_options).
+fn (mut p VueParsers) parse(src string, options vue.Options) !&vue.Document {
 	if p.parsers == unsafe { nil } {
 		p.parsers = vue.new_parsers()!
 	}
-	return vue.parse_sfc_with(src, vue.Options{}, p.parsers)
+	return vue.parse_sfc_with(src, options, p.parsers)
+}
+
+// vue_parse_options are the vueFeatures vue-eslint-parser parses the .vue file at `abs_path`
+// with: its configuration's parserOptions.vueFeatures. Without a configuration (the type mode),
+// the defaults.
+fn (l &LoadedConfig) vue_parse_options(abs_path string) vue.Options {
+	index := l.file_config[abs_path] or { 0 }
+	if index < l.configs.len {
+		return l.configs[index].language.vue_features
+	}
+	return vue.Options{}
 }
 
 fn (mut p VueParsers) close() {
@@ -43,8 +55,8 @@ fn vue_javascript_warning(path string) string {
 
 // twin_code is the code tsgo is given for a .vue file (its twin's text) and whether the file is
 // linted: not when its script is JavaScript.
-fn (mut p VueParsers) twin_code(src string) !(string, bool) {
-	mut doc := p.parse(src)!
+fn (mut p VueParsers) twin_code(src string, options vue.Options) !(string, bool) {
+	mut doc := p.parse(src, options)!
 	defer {
 		doc.free()
 	}
