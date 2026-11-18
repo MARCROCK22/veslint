@@ -558,13 +558,13 @@ fn (mut z Analyzer) scope_visit(node int, scope int) ! {
 			catch_ := t.get(node, .catch_)
 			if catch_ >= 0 {
 				z.scope_child(node, catch_, scope)!
-				error := t.get(node, .error)
-				if error >= 0 {
+				err_pat := t.get(node, .error)
+				if err_pat >= 0 {
 					catch_scope := z.s.of[catch_]
 					error_scope := z.s.new_scope(scope, false)
-					z.s.of[error] = error_scope
-					z.scope_child(node, error, error_scope)!
-					for id in t.extract_identifiers(error) {
+					z.s.of[err_pat] = error_scope
+					z.scope_child(node, err_pat, error_scope)!
+					for id in t.extract_identifiers(err_pat) {
 						z.declare(catch_scope, id, 'template', 'const', -1)!
 						z.declare(error_scope, id, 'normal', 'const', -1)!
 					}

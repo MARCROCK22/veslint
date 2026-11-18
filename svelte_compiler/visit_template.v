@@ -1010,10 +1010,10 @@ fn (mut z Analyzer) visit_component(node int, st State) ! {
 		s.has_parent_element = false
 		s.component_slots = slots
 		// `{ ...node.fragment, nodes }`: a copy of the fragment with this slot's nodes.
-		copy := z.t.new_node('Fragment', no_pos, no_pos)
-		z.t.set_list(copy, .nodes, groups[slot_name])
-		z.t.set_flag(copy, .transparent, t.flag(frag, .transparent))
-		z.child(node, copy, s)!
+		slot_frag := z.t.new_node('Fragment', no_pos, no_pos)
+		z.t.set_list(slot_frag, .nodes, groups[slot_name])
+		z.t.set_flag(slot_frag, .transparent, t.flag(frag, .transparent))
+		z.child(node, slot_frag, s)!
 	}
 }
 

@@ -1956,32 +1956,87 @@ const binding_properties = [
 	BindingProperty{ name: 'scrollY', has_valid: true, valid: ['svelte:window'], has_invalid: false, invalid: []string{} },
 	BindingProperty{ name: 'online', has_valid: true, valid: ['svelte:window'], has_invalid: false, invalid: []string{} },
 	BindingProperty{ name: 'devicePixelRatio', has_valid: true, valid: ['svelte:window'], has_invalid: false, invalid: []string{} },
-	BindingProperty{ name: 'clientWidth', has_valid: false, valid: []string{}, has_invalid: true, invalid: ['svelte:window',
-		'svelte:document'] },
-	BindingProperty{ name: 'clientHeight', has_valid: false, valid: []string{}, has_invalid: true, invalid: ['svelte:window',
-		'svelte:document'] },
-	BindingProperty{ name: 'offsetWidth', has_valid: false, valid: []string{}, has_invalid: true, invalid: ['svelte:window',
-		'svelte:document'] },
-	BindingProperty{ name: 'offsetHeight', has_valid: false, valid: []string{}, has_invalid: true, invalid: ['svelte:window',
-		'svelte:document'] },
-	BindingProperty{ name: 'contentRect', has_valid: false, valid: []string{}, has_invalid: true, invalid: ['svelte:window',
-		'svelte:document'] },
-	BindingProperty{ name: 'contentBoxSize', has_valid: false, valid: []string{}, has_invalid: true, invalid: ['svelte:window',
-		'svelte:document'] },
-	BindingProperty{ name: 'borderBoxSize', has_valid: false, valid: []string{}, has_invalid: true, invalid: ['svelte:window',
-		'svelte:document'] },
-	BindingProperty{ name: 'devicePixelContentBoxSize', has_valid: false, valid: []string{}, has_invalid: true, invalid: ['svelte:window',
-		'svelte:document'] },
+	BindingProperty{
+		name:        'clientWidth'
+		has_valid:   false
+		valid:       []string{}
+		has_invalid: true
+		invalid:     ['svelte:window', 'svelte:document']
+	},
+	BindingProperty{
+		name:        'clientHeight'
+		has_valid:   false
+		valid:       []string{}
+		has_invalid: true
+		invalid:     ['svelte:window', 'svelte:document']
+	},
+	BindingProperty{
+		name:        'offsetWidth'
+		has_valid:   false
+		valid:       []string{}
+		has_invalid: true
+		invalid:     ['svelte:window', 'svelte:document']
+	},
+	BindingProperty{
+		name:        'offsetHeight'
+		has_valid:   false
+		valid:       []string{}
+		has_invalid: true
+		invalid:     ['svelte:window', 'svelte:document']
+	},
+	BindingProperty{
+		name:        'contentRect'
+		has_valid:   false
+		valid:       []string{}
+		has_invalid: true
+		invalid:     ['svelte:window', 'svelte:document']
+	},
+	BindingProperty{
+		name:        'contentBoxSize'
+		has_valid:   false
+		valid:       []string{}
+		has_invalid: true
+		invalid:     ['svelte:window', 'svelte:document']
+	},
+	BindingProperty{
+		name:        'borderBoxSize'
+		has_valid:   false
+		valid:       []string{}
+		has_invalid: true
+		invalid:     ['svelte:window', 'svelte:document']
+	},
+	BindingProperty{
+		name:        'devicePixelContentBoxSize'
+		has_valid:   false
+		valid:       []string{}
+		has_invalid: true
+		invalid:     ['svelte:window', 'svelte:document']
+	},
 	BindingProperty{ name: 'indeterminate', has_valid: true, valid: ['input'], has_invalid: false, invalid: []string{} },
 	BindingProperty{ name: 'checked', has_valid: true, valid: ['input'], has_invalid: false, invalid: []string{} },
 	BindingProperty{ name: 'group', has_valid: true, valid: ['input'], has_invalid: false, invalid: []string{} },
 	BindingProperty{ name: 'this', has_valid: false, valid: []string{}, has_invalid: false, invalid: []string{} },
-	BindingProperty{ name: 'innerText', has_valid: false, valid: []string{}, has_invalid: true, invalid: ['svelte:window',
-		'svelte:document'] },
-	BindingProperty{ name: 'innerHTML', has_valid: false, valid: []string{}, has_invalid: true, invalid: ['svelte:window',
-		'svelte:document'] },
-	BindingProperty{ name: 'textContent', has_valid: false, valid: []string{}, has_invalid: true, invalid: ['svelte:window',
-		'svelte:document'] },
+	BindingProperty{
+		name:        'innerText'
+		has_valid:   false
+		valid:       []string{}
+		has_invalid: true
+		invalid:     ['svelte:window', 'svelte:document']
+	},
+	BindingProperty{
+		name:        'innerHTML'
+		has_valid:   false
+		valid:       []string{}
+		has_invalid: true
+		invalid:     ['svelte:window', 'svelte:document']
+	},
+	BindingProperty{
+		name:        'textContent'
+		has_valid:   false
+		valid:       []string{}
+		has_invalid: true
+		invalid:     ['svelte:window', 'svelte:document']
+	},
 	BindingProperty{ name: 'open', has_valid: true, valid: ['details'], has_invalid: false, invalid: []string{} },
 	BindingProperty{ name: 'value', has_valid: true, valid: ['input', 'textarea', 'select'], has_invalid: false, invalid: []string{} },
 	BindingProperty{ name: 'files', has_valid: true, valid: ['input'], has_invalid: false, invalid: []string{} },
@@ -2002,55 +2057,235 @@ struct Disallowed {
 
 const disallowed_children = [
 	Disallowed{ parent: 'li', has_direct: true, direct: ['li'], has_descendant: false, descendant: []string{}, has_reset_by: false, reset_by: []string{}, has_only: false, only: []string{} },
-	Disallowed{ parent: 'dt', has_direct: false, direct: []string{}, has_descendant: true, descendant: ['dt',
-		'dd'], has_reset_by: true, reset_by: ['dl'], has_only: false, only: []string{} },
-	Disallowed{ parent: 'dd', has_direct: false, direct: []string{}, has_descendant: true, descendant: ['dt',
-		'dd'], has_reset_by: true, reset_by: ['dl'], has_only: false, only: []string{} },
-	Disallowed{ parent: 'p', has_direct: false, direct: []string{}, has_descendant: true, descendant: ['address',
-		'article', 'aside', 'blockquote', 'div', 'dl', 'fieldset', 'footer', 'form', 'h1', 'h2',
-		'h3', 'h4', 'h5', 'h6', 'header', 'hgroup', 'hr', 'main', 'menu', 'nav', 'ol', 'p', 'pre',
-		'section', 'table', 'ul'], has_reset_by: false, reset_by: []string{}, has_only: false, only: []string{} },
-	Disallowed{ parent: 'rt', has_direct: false, direct: []string{}, has_descendant: true, descendant: ['rt',
-		'rp'], has_reset_by: false, reset_by: []string{}, has_only: false, only: []string{} },
-	Disallowed{ parent: 'rp', has_direct: false, direct: []string{}, has_descendant: true, descendant: ['rt',
-		'rp'], has_reset_by: false, reset_by: []string{}, has_only: false, only: []string{} },
+	Disallowed{
+		parent:         'dt'
+		has_direct:     false
+		direct:         []string{}
+		has_descendant: true
+		descendant:     ['dt', 'dd']
+		has_reset_by:   true
+		reset_by:       ['dl']
+		has_only:       false
+		only:           []string{}
+	},
+	Disallowed{
+		parent:         'dd'
+		has_direct:     false
+		direct:         []string{}
+		has_descendant: true
+		descendant:     ['dt', 'dd']
+		has_reset_by:   true
+		reset_by:       ['dl']
+		has_only:       false
+		only:           []string{}
+	},
+	Disallowed{
+		parent:         'p'
+		has_direct:     false
+		direct:         []string{}
+		has_descendant: true
+		descendant:     ['address', 'article', 'aside', 'blockquote', 'div', 'dl', 'fieldset',
+			'footer', 'form', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'header', 'hgroup', 'hr', 'main',
+			'menu', 'nav', 'ol', 'p', 'pre', 'section', 'table', 'ul']
+		has_reset_by:   false
+		reset_by:       []string{}
+		has_only:       false
+		only:           []string{}
+	},
+	Disallowed{
+		parent:         'rt'
+		has_direct:     false
+		direct:         []string{}
+		has_descendant: true
+		descendant:     ['rt', 'rp']
+		has_reset_by:   false
+		reset_by:       []string{}
+		has_only:       false
+		only:           []string{}
+	},
+	Disallowed{
+		parent:         'rp'
+		has_direct:     false
+		direct:         []string{}
+		has_descendant: true
+		descendant:     ['rt', 'rp']
+		has_reset_by:   false
+		reset_by:       []string{}
+		has_only:       false
+		only:           []string{}
+	},
 	Disallowed{ parent: 'optgroup', has_direct: false, direct: []string{}, has_descendant: true, descendant: ['optgroup'], has_reset_by: false, reset_by: []string{}, has_only: false, only: []string{} },
-	Disallowed{ parent: 'option', has_direct: false, direct: []string{}, has_descendant: true, descendant: ['option',
-		'optgroup'], has_reset_by: false, reset_by: []string{}, has_only: false, only: []string{} },
-	Disallowed{ parent: 'thead', has_direct: false, direct: []string{}, has_descendant: false, descendant: []string{}, has_reset_by: false, reset_by: []string{}, has_only: true, only: ['tr',
-		'style', 'script', 'template'] },
-	Disallowed{ parent: 'tbody', has_direct: false, direct: []string{}, has_descendant: false, descendant: []string{}, has_reset_by: false, reset_by: []string{}, has_only: true, only: ['tr',
-		'style', 'script', 'template'] },
-	Disallowed{ parent: 'tfoot', has_direct: false, direct: []string{}, has_descendant: false, descendant: []string{}, has_reset_by: false, reset_by: []string{}, has_only: true, only: ['tr',
-		'style', 'script', 'template'] },
-	Disallowed{ parent: 'tr', has_direct: false, direct: []string{}, has_descendant: false, descendant: []string{}, has_reset_by: false, reset_by: []string{}, has_only: true, only: ['th',
-		'td', 'style', 'script', 'template'] },
+	Disallowed{
+		parent:         'option'
+		has_direct:     false
+		direct:         []string{}
+		has_descendant: true
+		descendant:     ['option', 'optgroup']
+		has_reset_by:   false
+		reset_by:       []string{}
+		has_only:       false
+		only:           []string{}
+	},
+	Disallowed{
+		parent:         'thead'
+		has_direct:     false
+		direct:         []string{}
+		has_descendant: false
+		descendant:     []string{}
+		has_reset_by:   false
+		reset_by:       []string{}
+		has_only:       true
+		only:           ['tr', 'style', 'script', 'template']
+	},
+	Disallowed{
+		parent:         'tbody'
+		has_direct:     false
+		direct:         []string{}
+		has_descendant: false
+		descendant:     []string{}
+		has_reset_by:   false
+		reset_by:       []string{}
+		has_only:       true
+		only:           ['tr', 'style', 'script', 'template']
+	},
+	Disallowed{
+		parent:         'tfoot'
+		has_direct:     false
+		direct:         []string{}
+		has_descendant: false
+		descendant:     []string{}
+		has_reset_by:   false
+		reset_by:       []string{}
+		has_only:       true
+		only:           ['tr', 'style', 'script', 'template']
+	},
+	Disallowed{
+		parent:         'tr'
+		has_direct:     false
+		direct:         []string{}
+		has_descendant: false
+		descendant:     []string{}
+		has_reset_by:   false
+		reset_by:       []string{}
+		has_only:       true
+		only:           ['th', 'td', 'style', 'script', 'template']
+	},
 	Disallowed{ parent: 'td', has_direct: true, direct: ['td', 'th', 'tr'], has_descendant: false, descendant: []string{}, has_reset_by: false, reset_by: []string{}, has_only: false, only: []string{} },
 	Disallowed{ parent: 'th', has_direct: true, direct: ['td', 'th', 'tr'], has_descendant: false, descendant: []string{}, has_reset_by: false, reset_by: []string{}, has_only: false, only: []string{} },
 	Disallowed{ parent: 'form', has_direct: false, direct: []string{}, has_descendant: true, descendant: ['form'], has_reset_by: false, reset_by: []string{}, has_only: false, only: []string{} },
 	Disallowed{ parent: 'a', has_direct: false, direct: []string{}, has_descendant: true, descendant: ['a'], has_reset_by: false, reset_by: []string{}, has_only: false, only: []string{} },
 	Disallowed{ parent: 'button', has_direct: false, direct: []string{}, has_descendant: true, descendant: ['button'], has_reset_by: false, reset_by: []string{}, has_only: false, only: []string{} },
-	Disallowed{ parent: 'h1', has_direct: false, direct: []string{}, has_descendant: true, descendant: ['h1',
-		'h2', 'h3', 'h4', 'h5', 'h6'], has_reset_by: false, reset_by: []string{}, has_only: false, only: []string{} },
-	Disallowed{ parent: 'h2', has_direct: false, direct: []string{}, has_descendant: true, descendant: ['h1',
-		'h2', 'h3', 'h4', 'h5', 'h6'], has_reset_by: false, reset_by: []string{}, has_only: false, only: []string{} },
-	Disallowed{ parent: 'h3', has_direct: false, direct: []string{}, has_descendant: true, descendant: ['h1',
-		'h2', 'h3', 'h4', 'h5', 'h6'], has_reset_by: false, reset_by: []string{}, has_only: false, only: []string{} },
-	Disallowed{ parent: 'h4', has_direct: false, direct: []string{}, has_descendant: true, descendant: ['h1',
-		'h2', 'h3', 'h4', 'h5', 'h6'], has_reset_by: false, reset_by: []string{}, has_only: false, only: []string{} },
-	Disallowed{ parent: 'h5', has_direct: false, direct: []string{}, has_descendant: true, descendant: ['h1',
-		'h2', 'h3', 'h4', 'h5', 'h6'], has_reset_by: false, reset_by: []string{}, has_only: false, only: []string{} },
-	Disallowed{ parent: 'h6', has_direct: false, direct: []string{}, has_descendant: true, descendant: ['h1',
-		'h2', 'h3', 'h4', 'h5', 'h6'], has_reset_by: false, reset_by: []string{}, has_only: false, only: []string{} },
-	Disallowed{ parent: 'colgroup', has_direct: false, direct: []string{}, has_descendant: false, descendant: []string{}, has_reset_by: false, reset_by: []string{}, has_only: true, only: ['col',
-		'template'] },
-	Disallowed{ parent: 'table', has_direct: false, direct: []string{}, has_descendant: false, descendant: []string{}, has_reset_by: false, reset_by: []string{}, has_only: true, only: ['caption',
-		'colgroup', 'tbody', 'thead', 'tfoot', 'style', 'script', 'template'] },
-	Disallowed{ parent: 'head', has_direct: false, direct: []string{}, has_descendant: false, descendant: []string{}, has_reset_by: false, reset_by: []string{}, has_only: true, only: ['base',
-		'basefont', 'bgsound', 'link', 'meta', 'title', 'noscript', 'noframes', 'style', 'script',
-		'template'] },
-	Disallowed{ parent: 'html', has_direct: false, direct: []string{}, has_descendant: false, descendant: []string{}, has_reset_by: false, reset_by: []string{}, has_only: true, only: ['head',
-		'body', 'frameset'] },
+	Disallowed{
+		parent:         'h1'
+		has_direct:     false
+		direct:         []string{}
+		has_descendant: true
+		descendant:     ['h1', 'h2', 'h3', 'h4', 'h5', 'h6']
+		has_reset_by:   false
+		reset_by:       []string{}
+		has_only:       false
+		only:           []string{}
+	},
+	Disallowed{
+		parent:         'h2'
+		has_direct:     false
+		direct:         []string{}
+		has_descendant: true
+		descendant:     ['h1', 'h2', 'h3', 'h4', 'h5', 'h6']
+		has_reset_by:   false
+		reset_by:       []string{}
+		has_only:       false
+		only:           []string{}
+	},
+	Disallowed{
+		parent:         'h3'
+		has_direct:     false
+		direct:         []string{}
+		has_descendant: true
+		descendant:     ['h1', 'h2', 'h3', 'h4', 'h5', 'h6']
+		has_reset_by:   false
+		reset_by:       []string{}
+		has_only:       false
+		only:           []string{}
+	},
+	Disallowed{
+		parent:         'h4'
+		has_direct:     false
+		direct:         []string{}
+		has_descendant: true
+		descendant:     ['h1', 'h2', 'h3', 'h4', 'h5', 'h6']
+		has_reset_by:   false
+		reset_by:       []string{}
+		has_only:       false
+		only:           []string{}
+	},
+	Disallowed{
+		parent:         'h5'
+		has_direct:     false
+		direct:         []string{}
+		has_descendant: true
+		descendant:     ['h1', 'h2', 'h3', 'h4', 'h5', 'h6']
+		has_reset_by:   false
+		reset_by:       []string{}
+		has_only:       false
+		only:           []string{}
+	},
+	Disallowed{
+		parent:         'h6'
+		has_direct:     false
+		direct:         []string{}
+		has_descendant: true
+		descendant:     ['h1', 'h2', 'h3', 'h4', 'h5', 'h6']
+		has_reset_by:   false
+		reset_by:       []string{}
+		has_only:       false
+		only:           []string{}
+	},
+	Disallowed{
+		parent:         'colgroup'
+		has_direct:     false
+		direct:         []string{}
+		has_descendant: false
+		descendant:     []string{}
+		has_reset_by:   false
+		reset_by:       []string{}
+		has_only:       true
+		only:           ['col', 'template']
+	},
+	Disallowed{
+		parent:         'table'
+		has_direct:     false
+		direct:         []string{}
+		has_descendant: false
+		descendant:     []string{}
+		has_reset_by:   false
+		reset_by:       []string{}
+		has_only:       true
+		only:           ['caption', 'colgroup', 'tbody', 'thead', 'tfoot', 'style', 'script', 'template']
+	},
+	Disallowed{
+		parent:         'head'
+		has_direct:     false
+		direct:         []string{}
+		has_descendant: false
+		descendant:     []string{}
+		has_reset_by:   false
+		reset_by:       []string{}
+		has_only:       true
+		only:           ['base', 'basefont', 'bgsound', 'link', 'meta', 'title', 'noscript', 'noframes',
+			'style', 'script', 'template']
+	},
+	Disallowed{
+		parent:         'html'
+		has_direct:     false
+		direct:         []string{}
+		has_descendant: false
+		descendant:     []string{}
+		has_reset_by:   false
+		reset_by:       []string{}
+		has_only:       true
+		only:           ['head', 'body', 'frameset']
+	},
 	Disallowed{ parent: 'frameset', has_direct: false, direct: []string{}, has_descendant: false, descendant: []string{}, has_reset_by: false, reset_by: []string{}, has_only: true, only: ['frame'] },
 	Disallowed{ parent: '#document', has_direct: false, direct: []string{}, has_descendant: false, descendant: []string{}, has_reset_by: false, reset_by: []string{}, has_only: true, only: ['html'] },
 ]
@@ -2261,30 +2496,54 @@ const interactive_element_role_schemas = [
 	Schema{ name: 'th', has_attributes: false, attributes: []SchemaAttr{} },
 	Schema{ name: 'th', has_attributes: true, attributes: [SchemaAttr{ name: 'scope', has_value: true, value: 'col' }] },
 	Schema{ name: 'th', has_attributes: true, attributes: [SchemaAttr{ name: 'scope', has_value: true, value: 'colgroup' }] },
-	Schema{ name: 'input', has_attributes: true, attributes: [
-		SchemaAttr{ name: 'list', has_value: false, value: '' },
-		SchemaAttr{ name: 'type', has_value: true, value: 'email' },
-	] },
-	Schema{ name: 'input', has_attributes: true, attributes: [
-		SchemaAttr{ name: 'list', has_value: false, value: '' },
-		SchemaAttr{ name: 'type', has_value: true, value: 'search' },
-	] },
-	Schema{ name: 'input', has_attributes: true, attributes: [
-		SchemaAttr{ name: 'list', has_value: false, value: '' },
-		SchemaAttr{ name: 'type', has_value: true, value: 'tel' },
-	] },
-	Schema{ name: 'input', has_attributes: true, attributes: [
-		SchemaAttr{ name: 'list', has_value: false, value: '' },
-		SchemaAttr{ name: 'type', has_value: true, value: 'text' },
-	] },
-	Schema{ name: 'input', has_attributes: true, attributes: [
-		SchemaAttr{ name: 'list', has_value: false, value: '' },
-		SchemaAttr{ name: 'type', has_value: true, value: 'url' },
-	] },
-	Schema{ name: 'select', has_attributes: true, attributes: [
-		SchemaAttr{ name: 'multiple', has_value: false, value: '' },
-		SchemaAttr{ name: 'size', has_value: false, value: '' },
-	] },
+	Schema{
+		name:           'input'
+		has_attributes: true
+		attributes:     [
+			SchemaAttr{ name: 'list', has_value: false, value: '' },
+			SchemaAttr{ name: 'type', has_value: true, value: 'email' },
+		]
+	},
+	Schema{
+		name:           'input'
+		has_attributes: true
+		attributes:     [
+			SchemaAttr{ name: 'list', has_value: false, value: '' },
+			SchemaAttr{ name: 'type', has_value: true, value: 'search' },
+		]
+	},
+	Schema{
+		name:           'input'
+		has_attributes: true
+		attributes:     [
+			SchemaAttr{ name: 'list', has_value: false, value: '' },
+			SchemaAttr{ name: 'type', has_value: true, value: 'tel' },
+		]
+	},
+	Schema{
+		name:           'input'
+		has_attributes: true
+		attributes:     [
+			SchemaAttr{ name: 'list', has_value: false, value: '' },
+			SchemaAttr{ name: 'type', has_value: true, value: 'text' },
+		]
+	},
+	Schema{
+		name:           'input'
+		has_attributes: true
+		attributes:     [
+			SchemaAttr{ name: 'list', has_value: false, value: '' },
+			SchemaAttr{ name: 'type', has_value: true, value: 'url' },
+		]
+	},
+	Schema{
+		name:           'select'
+		has_attributes: true
+		attributes:     [
+			SchemaAttr{ name: 'multiple', has_value: false, value: '' },
+			SchemaAttr{ name: 'size', has_value: false, value: '' },
+		]
+	},
 	Schema{ name: 'dialog', has_attributes: false, attributes: []SchemaAttr{} },
 	Schema{ name: 'td', has_attributes: false, attributes: []SchemaAttr{} },
 	Schema{ name: 'a', has_attributes: true, attributes: [SchemaAttr{ name: 'href', has_value: false, value: '' }] },
@@ -2297,32 +2556,56 @@ const interactive_element_role_schemas = [
 	Schema{ name: 'tr', has_attributes: false, attributes: []SchemaAttr{} },
 	Schema{ name: 'th', has_attributes: true, attributes: [SchemaAttr{ name: 'scope', has_value: true, value: 'row' }] },
 	Schema{ name: 'th', has_attributes: true, attributes: [SchemaAttr{ name: 'scope', has_value: true, value: 'rowgroup' }] },
-	Schema{ name: 'input', has_attributes: true, attributes: [
-		SchemaAttr{ name: 'list', has_value: false, value: '' },
-		SchemaAttr{ name: 'type', has_value: true, value: 'search' },
-	] },
+	Schema{
+		name:           'input'
+		has_attributes: true
+		attributes:     [
+			SchemaAttr{ name: 'list', has_value: false, value: '' },
+			SchemaAttr{ name: 'type', has_value: true, value: 'search' },
+		]
+	},
 	Schema{ name: 'input', has_attributes: true, attributes: [SchemaAttr{ name: 'type', has_value: true, value: 'range' }] },
 	Schema{ name: 'input', has_attributes: true, attributes: [SchemaAttr{ name: 'type', has_value: true, value: 'number' }] },
-	Schema{ name: 'input', has_attributes: true, attributes: [
-		SchemaAttr{ name: 'type', has_value: false, value: '' },
-		SchemaAttr{ name: 'list', has_value: false, value: '' },
-	] },
-	Schema{ name: 'input', has_attributes: true, attributes: [
-		SchemaAttr{ name: 'list', has_value: false, value: '' },
-		SchemaAttr{ name: 'type', has_value: true, value: 'email' },
-	] },
-	Schema{ name: 'input', has_attributes: true, attributes: [
-		SchemaAttr{ name: 'list', has_value: false, value: '' },
-		SchemaAttr{ name: 'type', has_value: true, value: 'tel' },
-	] },
-	Schema{ name: 'input', has_attributes: true, attributes: [
-		SchemaAttr{ name: 'list', has_value: false, value: '' },
-		SchemaAttr{ name: 'type', has_value: true, value: 'text' },
-	] },
-	Schema{ name: 'input', has_attributes: true, attributes: [
-		SchemaAttr{ name: 'list', has_value: false, value: '' },
-		SchemaAttr{ name: 'type', has_value: true, value: 'url' },
-	] },
+	Schema{
+		name:           'input'
+		has_attributes: true
+		attributes:     [
+			SchemaAttr{ name: 'type', has_value: false, value: '' },
+			SchemaAttr{ name: 'list', has_value: false, value: '' },
+		]
+	},
+	Schema{
+		name:           'input'
+		has_attributes: true
+		attributes:     [
+			SchemaAttr{ name: 'list', has_value: false, value: '' },
+			SchemaAttr{ name: 'type', has_value: true, value: 'email' },
+		]
+	},
+	Schema{
+		name:           'input'
+		has_attributes: true
+		attributes:     [
+			SchemaAttr{ name: 'list', has_value: false, value: '' },
+			SchemaAttr{ name: 'type', has_value: true, value: 'tel' },
+		]
+	},
+	Schema{
+		name:           'input'
+		has_attributes: true
+		attributes:     [
+			SchemaAttr{ name: 'list', has_value: false, value: '' },
+			SchemaAttr{ name: 'type', has_value: true, value: 'text' },
+		]
+	},
+	Schema{
+		name:           'input'
+		has_attributes: true
+		attributes:     [
+			SchemaAttr{ name: 'list', has_value: false, value: '' },
+			SchemaAttr{ name: 'type', has_value: true, value: 'url' },
+		]
+	},
 	Schema{ name: 'textarea', has_attributes: false, attributes: []SchemaAttr{} },
 ]
 
@@ -2477,20 +2760,29 @@ const aria_props = [
 	AriaProp{ name: 'aria-colindex', typ: 'integer', values: []string{} },
 	AriaProp{ name: 'aria-colspan', typ: 'integer', values: []string{} },
 	AriaProp{ name: 'aria-controls', typ: 'idlist', values: []string{} },
-	AriaProp{ name: 'aria-current', typ: 'token', values: ['page', 'step', 'location', 'date',
-		'time', 'true', 'false'] },
+	AriaProp{
+		name:   'aria-current'
+		typ:    'token'
+		values: ['page', 'step', 'location', 'date', 'time', 'true', 'false']
+	},
 	AriaProp{ name: 'aria-describedby', typ: 'idlist', values: []string{} },
 	AriaProp{ name: 'aria-description', typ: 'string', values: []string{} },
 	AriaProp{ name: 'aria-details', typ: 'id', values: []string{} },
 	AriaProp{ name: 'aria-disabled', typ: 'boolean', values: []string{} },
-	AriaProp{ name: 'aria-dropeffect', typ: 'tokenlist', values: ['copy', 'execute', 'link', 'move',
-		'none', 'popup'] },
+	AriaProp{
+		name:   'aria-dropeffect'
+		typ:    'tokenlist'
+		values: ['copy', 'execute', 'link', 'move', 'none', 'popup']
+	},
 	AriaProp{ name: 'aria-errormessage', typ: 'id', values: []string{} },
 	AriaProp{ name: 'aria-expanded', typ: 'boolean', values: []string{} },
 	AriaProp{ name: 'aria-flowto', typ: 'idlist', values: []string{} },
 	AriaProp{ name: 'aria-grabbed', typ: 'boolean', values: []string{} },
-	AriaProp{ name: 'aria-haspopup', typ: 'token', values: ['false', 'true', 'menu', 'listbox',
-		'tree', 'grid', 'dialog'] },
+	AriaProp{
+		name:   'aria-haspopup'
+		typ:    'token'
+		values: ['false', 'true', 'menu', 'listbox', 'tree', 'grid', 'dialog']
+	},
 	AriaProp{ name: 'aria-hidden', typ: 'boolean', values: []string{} },
 	AriaProp{ name: 'aria-invalid', typ: 'token', values: ['grammar', 'false', 'spelling', 'true'] },
 	AriaProp{ name: 'aria-keyshortcuts', typ: 'string', values: []string{} },
@@ -2507,8 +2799,11 @@ const aria_props = [
 	AriaProp{ name: 'aria-posinset', typ: 'integer', values: []string{} },
 	AriaProp{ name: 'aria-pressed', typ: 'tristate', values: []string{} },
 	AriaProp{ name: 'aria-readonly', typ: 'boolean', values: []string{} },
-	AriaProp{ name: 'aria-relevant', typ: 'tokenlist', values: ['additions', 'all', 'removals',
-		'text'] },
+	AriaProp{
+		name:   'aria-relevant'
+		typ:    'tokenlist'
+		values: ['additions', 'all', 'removals', 'text']
+	},
 	AriaProp{ name: 'aria-required', typ: 'boolean', values: []string{} },
 	AriaProp{ name: 'aria-roledescription', typ: 'string', values: []string{} },
 	AriaProp{ name: 'aria-rowcount', typ: 'integer', values: []string{} },
@@ -2531,651 +2826,1202 @@ struct RoleDef {
 }
 
 const role_defs = [
-	RoleDef{ name: 'command', props: ['aria-atomic', 'aria-busy', 'aria-controls', 'aria-current',
-		'aria-describedby', 'aria-details', 'aria-dropeffect', 'aria-flowto', 'aria-grabbed',
-		'aria-hidden', 'aria-keyshortcuts', 'aria-label', 'aria-labelledby', 'aria-live', 'aria-owns',
-		'aria-relevant', 'aria-roledescription'], required: []string{} },
-	RoleDef{ name: 'composite', props: ['aria-activedescendant', 'aria-disabled', 'aria-atomic',
-		'aria-busy', 'aria-controls', 'aria-current', 'aria-describedby', 'aria-details',
-		'aria-dropeffect', 'aria-flowto', 'aria-grabbed', 'aria-hidden', 'aria-keyshortcuts',
-		'aria-label', 'aria-labelledby', 'aria-live', 'aria-owns', 'aria-relevant',
-		'aria-roledescription'], required: []string{} },
-	RoleDef{ name: 'input', props: ['aria-disabled', 'aria-atomic', 'aria-busy', 'aria-controls',
-		'aria-current', 'aria-describedby', 'aria-details', 'aria-dropeffect', 'aria-flowto',
-		'aria-grabbed', 'aria-hidden', 'aria-keyshortcuts', 'aria-label', 'aria-labelledby', 'aria-live',
-		'aria-owns', 'aria-relevant', 'aria-roledescription'], required: []string{} },
-	RoleDef{ name: 'landmark', props: ['aria-atomic', 'aria-busy', 'aria-controls', 'aria-current',
-		'aria-describedby', 'aria-details', 'aria-dropeffect', 'aria-flowto', 'aria-grabbed',
-		'aria-hidden', 'aria-keyshortcuts', 'aria-label', 'aria-labelledby', 'aria-live', 'aria-owns',
-		'aria-relevant', 'aria-roledescription'], required: []string{} },
-	RoleDef{ name: 'range', props: ['aria-valuemax', 'aria-valuemin', 'aria-valuenow', 'aria-atomic',
-		'aria-busy', 'aria-controls', 'aria-current', 'aria-describedby', 'aria-details',
-		'aria-dropeffect', 'aria-flowto', 'aria-grabbed', 'aria-hidden', 'aria-keyshortcuts',
-		'aria-label', 'aria-labelledby', 'aria-live', 'aria-owns', 'aria-relevant',
-		'aria-roledescription'], required: []string{} },
-	RoleDef{ name: 'roletype', props: ['aria-atomic', 'aria-busy', 'aria-controls', 'aria-current',
-		'aria-describedby', 'aria-details', 'aria-dropeffect', 'aria-flowto', 'aria-grabbed',
-		'aria-hidden', 'aria-keyshortcuts', 'aria-label', 'aria-labelledby', 'aria-live', 'aria-owns',
-		'aria-relevant', 'aria-roledescription'], required: []string{} },
-	RoleDef{ name: 'section', props: ['aria-atomic', 'aria-busy', 'aria-controls', 'aria-current',
-		'aria-describedby', 'aria-details', 'aria-dropeffect', 'aria-flowto', 'aria-grabbed',
-		'aria-hidden', 'aria-keyshortcuts', 'aria-label', 'aria-labelledby', 'aria-live', 'aria-owns',
-		'aria-relevant', 'aria-roledescription'], required: []string{} },
-	RoleDef{ name: 'sectionhead', props: ['aria-atomic', 'aria-busy', 'aria-controls', 'aria-current',
-		'aria-describedby', 'aria-details', 'aria-dropeffect', 'aria-flowto', 'aria-grabbed',
-		'aria-hidden', 'aria-keyshortcuts', 'aria-label', 'aria-labelledby', 'aria-live', 'aria-owns',
-		'aria-relevant', 'aria-roledescription'], required: []string{} },
-	RoleDef{ name: 'select', props: ['aria-orientation', 'aria-atomic', 'aria-busy', 'aria-controls',
-		'aria-current', 'aria-describedby', 'aria-details', 'aria-dropeffect', 'aria-flowto',
-		'aria-grabbed', 'aria-hidden', 'aria-keyshortcuts', 'aria-label', 'aria-labelledby', 'aria-live',
-		'aria-owns', 'aria-relevant', 'aria-roledescription', 'aria-activedescendant', 'aria-disabled'], required: []string{} },
-	RoleDef{ name: 'structure', props: ['aria-atomic', 'aria-busy', 'aria-controls', 'aria-current',
-		'aria-describedby', 'aria-details', 'aria-dropeffect', 'aria-flowto', 'aria-grabbed',
-		'aria-hidden', 'aria-keyshortcuts', 'aria-label', 'aria-labelledby', 'aria-live', 'aria-owns',
-		'aria-relevant', 'aria-roledescription'], required: []string{} },
-	RoleDef{ name: 'widget', props: ['aria-atomic', 'aria-busy', 'aria-controls', 'aria-current',
-		'aria-describedby', 'aria-details', 'aria-dropeffect', 'aria-flowto', 'aria-grabbed',
-		'aria-hidden', 'aria-keyshortcuts', 'aria-label', 'aria-labelledby', 'aria-live', 'aria-owns',
-		'aria-relevant', 'aria-roledescription'], required: []string{} },
-	RoleDef{ name: 'window', props: ['aria-modal', 'aria-atomic', 'aria-busy', 'aria-controls',
-		'aria-current', 'aria-describedby', 'aria-details', 'aria-dropeffect', 'aria-flowto',
-		'aria-grabbed', 'aria-hidden', 'aria-keyshortcuts', 'aria-label', 'aria-labelledby', 'aria-live',
-		'aria-owns', 'aria-relevant', 'aria-roledescription'], required: []string{} },
-	RoleDef{ name: 'alert', props: ['aria-atomic', 'aria-live', 'aria-busy', 'aria-controls',
-		'aria-current', 'aria-describedby', 'aria-details', 'aria-dropeffect', 'aria-flowto',
-		'aria-grabbed', 'aria-hidden', 'aria-keyshortcuts', 'aria-label', 'aria-labelledby', 'aria-owns',
-		'aria-relevant', 'aria-roledescription'], required: []string{} },
-	RoleDef{ name: 'alertdialog', props: ['aria-atomic', 'aria-busy', 'aria-controls', 'aria-current',
-		'aria-describedby', 'aria-details', 'aria-dropeffect', 'aria-flowto', 'aria-grabbed',
-		'aria-hidden', 'aria-keyshortcuts', 'aria-label', 'aria-labelledby', 'aria-live', 'aria-owns',
-		'aria-relevant', 'aria-roledescription', 'aria-modal'], required: []string{} },
-	RoleDef{ name: 'application', props: ['aria-activedescendant', 'aria-disabled', 'aria-errormessage',
-		'aria-expanded', 'aria-haspopup', 'aria-invalid', 'aria-atomic', 'aria-busy', 'aria-controls',
-		'aria-current', 'aria-describedby', 'aria-details', 'aria-dropeffect', 'aria-flowto',
-		'aria-grabbed', 'aria-hidden', 'aria-keyshortcuts', 'aria-label', 'aria-labelledby', 'aria-live',
-		'aria-owns', 'aria-relevant', 'aria-roledescription'], required: []string{} },
-	RoleDef{ name: 'article', props: ['aria-posinset', 'aria-setsize', 'aria-atomic', 'aria-busy',
-		'aria-controls', 'aria-current', 'aria-describedby', 'aria-details', 'aria-dropeffect',
-		'aria-flowto', 'aria-grabbed', 'aria-hidden', 'aria-keyshortcuts', 'aria-label',
-		'aria-labelledby', 'aria-live', 'aria-owns', 'aria-relevant', 'aria-roledescription'], required: []string{} },
-	RoleDef{ name: 'banner', props: ['aria-atomic', 'aria-busy', 'aria-controls', 'aria-current',
-		'aria-describedby', 'aria-details', 'aria-dropeffect', 'aria-flowto', 'aria-grabbed',
-		'aria-hidden', 'aria-keyshortcuts', 'aria-label', 'aria-labelledby', 'aria-live', 'aria-owns',
-		'aria-relevant', 'aria-roledescription'], required: []string{} },
-	RoleDef{ name: 'blockquote', props: ['aria-atomic', 'aria-busy', 'aria-controls', 'aria-current',
-		'aria-describedby', 'aria-details', 'aria-dropeffect', 'aria-flowto', 'aria-grabbed',
-		'aria-hidden', 'aria-keyshortcuts', 'aria-label', 'aria-labelledby', 'aria-live', 'aria-owns',
-		'aria-relevant', 'aria-roledescription'], required: []string{} },
-	RoleDef{ name: 'button', props: ['aria-disabled', 'aria-expanded', 'aria-haspopup', 'aria-pressed',
-		'aria-atomic', 'aria-busy', 'aria-controls', 'aria-current', 'aria-describedby', 'aria-details',
-		'aria-dropeffect', 'aria-flowto', 'aria-grabbed', 'aria-hidden', 'aria-keyshortcuts',
-		'aria-label', 'aria-labelledby', 'aria-live', 'aria-owns', 'aria-relevant',
-		'aria-roledescription'], required: []string{} },
-	RoleDef{ name: 'caption', props: ['aria-atomic', 'aria-busy', 'aria-controls', 'aria-current',
-		'aria-describedby', 'aria-details', 'aria-dropeffect', 'aria-flowto', 'aria-grabbed',
-		'aria-hidden', 'aria-keyshortcuts', 'aria-label', 'aria-labelledby', 'aria-live', 'aria-owns',
-		'aria-relevant', 'aria-roledescription'], required: []string{} },
-	RoleDef{ name: 'cell', props: ['aria-colindex', 'aria-colspan', 'aria-rowindex', 'aria-rowspan',
-		'aria-atomic', 'aria-busy', 'aria-controls', 'aria-current', 'aria-describedby', 'aria-details',
-		'aria-dropeffect', 'aria-flowto', 'aria-grabbed', 'aria-hidden', 'aria-keyshortcuts',
-		'aria-label', 'aria-labelledby', 'aria-live', 'aria-owns', 'aria-relevant',
-		'aria-roledescription'], required: []string{} },
-	RoleDef{ name: 'checkbox', props: ['aria-checked', 'aria-errormessage', 'aria-expanded',
-		'aria-invalid', 'aria-readonly', 'aria-required', 'aria-atomic', 'aria-busy', 'aria-controls',
-		'aria-current', 'aria-describedby', 'aria-details', 'aria-dropeffect', 'aria-flowto',
-		'aria-grabbed', 'aria-hidden', 'aria-keyshortcuts', 'aria-label', 'aria-labelledby', 'aria-live',
-		'aria-owns', 'aria-relevant', 'aria-roledescription', 'aria-disabled'], required: ['aria-checked'] },
-	RoleDef{ name: 'code', props: ['aria-atomic', 'aria-busy', 'aria-controls', 'aria-current',
-		'aria-describedby', 'aria-details', 'aria-dropeffect', 'aria-flowto', 'aria-grabbed',
-		'aria-hidden', 'aria-keyshortcuts', 'aria-label', 'aria-labelledby', 'aria-live', 'aria-owns',
-		'aria-relevant', 'aria-roledescription'], required: []string{} },
-	RoleDef{ name: 'columnheader', props: ['aria-sort', 'aria-atomic', 'aria-busy', 'aria-controls',
-		'aria-current', 'aria-describedby', 'aria-details', 'aria-dropeffect', 'aria-flowto',
-		'aria-grabbed', 'aria-hidden', 'aria-keyshortcuts', 'aria-label', 'aria-labelledby', 'aria-live',
-		'aria-owns', 'aria-relevant', 'aria-roledescription', 'aria-colindex', 'aria-colspan',
-		'aria-rowindex', 'aria-rowspan', 'aria-disabled', 'aria-errormessage', 'aria-expanded',
-		'aria-haspopup', 'aria-invalid', 'aria-readonly', 'aria-required', 'aria-selected'], required: []string{} },
-	RoleDef{ name: 'combobox', props: ['aria-activedescendant', 'aria-autocomplete', 'aria-errormessage',
-		'aria-invalid', 'aria-readonly', 'aria-required', 'aria-expanded', 'aria-haspopup',
-		'aria-atomic', 'aria-busy', 'aria-controls', 'aria-current', 'aria-describedby', 'aria-details',
-		'aria-dropeffect', 'aria-flowto', 'aria-grabbed', 'aria-hidden', 'aria-keyshortcuts',
-		'aria-label', 'aria-labelledby', 'aria-live', 'aria-owns', 'aria-relevant',
-		'aria-roledescription', 'aria-disabled'], required: ['aria-controls', 'aria-expanded'] },
-	RoleDef{ name: 'complementary', props: ['aria-atomic', 'aria-busy', 'aria-controls', 'aria-current',
-		'aria-describedby', 'aria-details', 'aria-dropeffect', 'aria-flowto', 'aria-grabbed',
-		'aria-hidden', 'aria-keyshortcuts', 'aria-label', 'aria-labelledby', 'aria-live', 'aria-owns',
-		'aria-relevant', 'aria-roledescription'], required: []string{} },
-	RoleDef{ name: 'contentinfo', props: ['aria-atomic', 'aria-busy', 'aria-controls', 'aria-current',
-		'aria-describedby', 'aria-details', 'aria-dropeffect', 'aria-flowto', 'aria-grabbed',
-		'aria-hidden', 'aria-keyshortcuts', 'aria-label', 'aria-labelledby', 'aria-live', 'aria-owns',
-		'aria-relevant', 'aria-roledescription'], required: []string{} },
-	RoleDef{ name: 'definition', props: ['aria-atomic', 'aria-busy', 'aria-controls', 'aria-current',
-		'aria-describedby', 'aria-details', 'aria-dropeffect', 'aria-flowto', 'aria-grabbed',
-		'aria-hidden', 'aria-keyshortcuts', 'aria-label', 'aria-labelledby', 'aria-live', 'aria-owns',
-		'aria-relevant', 'aria-roledescription'], required: []string{} },
-	RoleDef{ name: 'deletion', props: ['aria-atomic', 'aria-busy', 'aria-controls', 'aria-current',
-		'aria-describedby', 'aria-details', 'aria-dropeffect', 'aria-flowto', 'aria-grabbed',
-		'aria-hidden', 'aria-keyshortcuts', 'aria-label', 'aria-labelledby', 'aria-live', 'aria-owns',
-		'aria-relevant', 'aria-roledescription'], required: []string{} },
-	RoleDef{ name: 'dialog', props: ['aria-atomic', 'aria-busy', 'aria-controls', 'aria-current',
-		'aria-describedby', 'aria-details', 'aria-dropeffect', 'aria-flowto', 'aria-grabbed',
-		'aria-hidden', 'aria-keyshortcuts', 'aria-label', 'aria-labelledby', 'aria-live', 'aria-owns',
-		'aria-relevant', 'aria-roledescription', 'aria-modal'], required: []string{} },
-	RoleDef{ name: 'directory', props: ['aria-atomic', 'aria-busy', 'aria-controls', 'aria-current',
-		'aria-describedby', 'aria-details', 'aria-dropeffect', 'aria-flowto', 'aria-grabbed',
-		'aria-hidden', 'aria-keyshortcuts', 'aria-label', 'aria-labelledby', 'aria-live', 'aria-owns',
-		'aria-relevant', 'aria-roledescription'], required: []string{} },
-	RoleDef{ name: 'document', props: ['aria-atomic', 'aria-busy', 'aria-controls', 'aria-current',
-		'aria-describedby', 'aria-details', 'aria-dropeffect', 'aria-flowto', 'aria-grabbed',
-		'aria-hidden', 'aria-keyshortcuts', 'aria-label', 'aria-labelledby', 'aria-live', 'aria-owns',
-		'aria-relevant', 'aria-roledescription'], required: []string{} },
-	RoleDef{ name: 'emphasis', props: ['aria-atomic', 'aria-busy', 'aria-controls', 'aria-current',
-		'aria-describedby', 'aria-details', 'aria-dropeffect', 'aria-flowto', 'aria-grabbed',
-		'aria-hidden', 'aria-keyshortcuts', 'aria-label', 'aria-labelledby', 'aria-live', 'aria-owns',
-		'aria-relevant', 'aria-roledescription'], required: []string{} },
-	RoleDef{ name: 'feed', props: ['aria-atomic', 'aria-busy', 'aria-controls', 'aria-current',
-		'aria-describedby', 'aria-details', 'aria-dropeffect', 'aria-flowto', 'aria-grabbed',
-		'aria-hidden', 'aria-keyshortcuts', 'aria-label', 'aria-labelledby', 'aria-live', 'aria-owns',
-		'aria-relevant', 'aria-roledescription'], required: []string{} },
-	RoleDef{ name: 'figure', props: ['aria-atomic', 'aria-busy', 'aria-controls', 'aria-current',
-		'aria-describedby', 'aria-details', 'aria-dropeffect', 'aria-flowto', 'aria-grabbed',
-		'aria-hidden', 'aria-keyshortcuts', 'aria-label', 'aria-labelledby', 'aria-live', 'aria-owns',
-		'aria-relevant', 'aria-roledescription'], required: []string{} },
-	RoleDef{ name: 'form', props: ['aria-atomic', 'aria-busy', 'aria-controls', 'aria-current',
-		'aria-describedby', 'aria-details', 'aria-dropeffect', 'aria-flowto', 'aria-grabbed',
-		'aria-hidden', 'aria-keyshortcuts', 'aria-label', 'aria-labelledby', 'aria-live', 'aria-owns',
-		'aria-relevant', 'aria-roledescription'], required: []string{} },
-	RoleDef{ name: 'generic', props: ['aria-atomic', 'aria-busy', 'aria-controls', 'aria-current',
-		'aria-describedby', 'aria-details', 'aria-dropeffect', 'aria-flowto', 'aria-grabbed',
-		'aria-hidden', 'aria-keyshortcuts', 'aria-label', 'aria-labelledby', 'aria-live', 'aria-owns',
-		'aria-relevant', 'aria-roledescription'], required: []string{} },
-	RoleDef{ name: 'grid', props: ['aria-multiselectable', 'aria-readonly', 'aria-atomic', 'aria-busy',
-		'aria-controls', 'aria-current', 'aria-describedby', 'aria-details', 'aria-dropeffect',
-		'aria-flowto', 'aria-grabbed', 'aria-hidden', 'aria-keyshortcuts', 'aria-label',
-		'aria-labelledby', 'aria-live', 'aria-owns', 'aria-relevant', 'aria-roledescription',
-		'aria-activedescendant', 'aria-disabled', 'aria-colcount', 'aria-rowcount'], required: []string{} },
-	RoleDef{ name: 'gridcell', props: ['aria-disabled', 'aria-errormessage', 'aria-expanded',
-		'aria-haspopup', 'aria-invalid', 'aria-readonly', 'aria-required', 'aria-selected',
-		'aria-atomic', 'aria-busy', 'aria-controls', 'aria-current', 'aria-describedby', 'aria-details',
-		'aria-dropeffect', 'aria-flowto', 'aria-grabbed', 'aria-hidden', 'aria-keyshortcuts',
-		'aria-label', 'aria-labelledby', 'aria-live', 'aria-owns', 'aria-relevant',
-		'aria-roledescription', 'aria-colindex', 'aria-colspan', 'aria-rowindex', 'aria-rowspan'], required: []string{} },
-	RoleDef{ name: 'group', props: ['aria-activedescendant', 'aria-disabled', 'aria-atomic', 'aria-busy',
-		'aria-controls', 'aria-current', 'aria-describedby', 'aria-details', 'aria-dropeffect',
-		'aria-flowto', 'aria-grabbed', 'aria-hidden', 'aria-keyshortcuts', 'aria-label',
-		'aria-labelledby', 'aria-live', 'aria-owns', 'aria-relevant', 'aria-roledescription'], required: []string{} },
-	RoleDef{ name: 'heading', props: ['aria-level', 'aria-atomic', 'aria-busy', 'aria-controls',
-		'aria-current', 'aria-describedby', 'aria-details', 'aria-dropeffect', 'aria-flowto',
-		'aria-grabbed', 'aria-hidden', 'aria-keyshortcuts', 'aria-label', 'aria-labelledby', 'aria-live',
-		'aria-owns', 'aria-relevant', 'aria-roledescription'], required: ['aria-level'] },
-	RoleDef{ name: 'img', props: ['aria-atomic', 'aria-busy', 'aria-controls', 'aria-current',
-		'aria-describedby', 'aria-details', 'aria-dropeffect', 'aria-flowto', 'aria-grabbed',
-		'aria-hidden', 'aria-keyshortcuts', 'aria-label', 'aria-labelledby', 'aria-live', 'aria-owns',
-		'aria-relevant', 'aria-roledescription'], required: []string{} },
-	RoleDef{ name: 'insertion', props: ['aria-atomic', 'aria-busy', 'aria-controls', 'aria-current',
-		'aria-describedby', 'aria-details', 'aria-dropeffect', 'aria-flowto', 'aria-grabbed',
-		'aria-hidden', 'aria-keyshortcuts', 'aria-label', 'aria-labelledby', 'aria-live', 'aria-owns',
-		'aria-relevant', 'aria-roledescription'], required: []string{} },
-	RoleDef{ name: 'link', props: ['aria-disabled', 'aria-expanded', 'aria-haspopup', 'aria-atomic',
-		'aria-busy', 'aria-controls', 'aria-current', 'aria-describedby', 'aria-details',
-		'aria-dropeffect', 'aria-flowto', 'aria-grabbed', 'aria-hidden', 'aria-keyshortcuts',
-		'aria-label', 'aria-labelledby', 'aria-live', 'aria-owns', 'aria-relevant',
-		'aria-roledescription'], required: []string{} },
-	RoleDef{ name: 'list', props: ['aria-atomic', 'aria-busy', 'aria-controls', 'aria-current',
-		'aria-describedby', 'aria-details', 'aria-dropeffect', 'aria-flowto', 'aria-grabbed',
-		'aria-hidden', 'aria-keyshortcuts', 'aria-label', 'aria-labelledby', 'aria-live', 'aria-owns',
-		'aria-relevant', 'aria-roledescription'], required: []string{} },
-	RoleDef{ name: 'listbox', props: ['aria-errormessage', 'aria-expanded', 'aria-invalid',
-		'aria-multiselectable', 'aria-readonly', 'aria-required', 'aria-orientation', 'aria-atomic',
-		'aria-busy', 'aria-controls', 'aria-current', 'aria-describedby', 'aria-details',
-		'aria-dropeffect', 'aria-flowto', 'aria-grabbed', 'aria-hidden', 'aria-keyshortcuts',
-		'aria-label', 'aria-labelledby', 'aria-live', 'aria-owns', 'aria-relevant',
-		'aria-roledescription', 'aria-activedescendant', 'aria-disabled'], required: []string{} },
-	RoleDef{ name: 'listitem', props: ['aria-level', 'aria-posinset', 'aria-setsize', 'aria-atomic',
-		'aria-busy', 'aria-controls', 'aria-current', 'aria-describedby', 'aria-details',
-		'aria-dropeffect', 'aria-flowto', 'aria-grabbed', 'aria-hidden', 'aria-keyshortcuts',
-		'aria-label', 'aria-labelledby', 'aria-live', 'aria-owns', 'aria-relevant',
-		'aria-roledescription'], required: []string{} },
-	RoleDef{ name: 'log', props: ['aria-live', 'aria-atomic', 'aria-busy', 'aria-controls',
-		'aria-current', 'aria-describedby', 'aria-details', 'aria-dropeffect', 'aria-flowto',
-		'aria-grabbed', 'aria-hidden', 'aria-keyshortcuts', 'aria-label', 'aria-labelledby', 'aria-owns',
-		'aria-relevant', 'aria-roledescription'], required: []string{} },
-	RoleDef{ name: 'main', props: ['aria-atomic', 'aria-busy', 'aria-controls', 'aria-current',
-		'aria-describedby', 'aria-details', 'aria-dropeffect', 'aria-flowto', 'aria-grabbed',
-		'aria-hidden', 'aria-keyshortcuts', 'aria-label', 'aria-labelledby', 'aria-live', 'aria-owns',
-		'aria-relevant', 'aria-roledescription'], required: []string{} },
-	RoleDef{ name: 'mark', props: ['aria-braillelabel', 'aria-brailleroledescription',
-		'aria-description', 'aria-atomic', 'aria-busy', 'aria-controls', 'aria-current',
-		'aria-describedby', 'aria-details', 'aria-dropeffect', 'aria-flowto', 'aria-grabbed',
-		'aria-hidden', 'aria-keyshortcuts', 'aria-label', 'aria-labelledby', 'aria-live', 'aria-owns',
-		'aria-relevant', 'aria-roledescription'], required: []string{} },
-	RoleDef{ name: 'marquee', props: ['aria-atomic', 'aria-busy', 'aria-controls', 'aria-current',
-		'aria-describedby', 'aria-details', 'aria-dropeffect', 'aria-flowto', 'aria-grabbed',
-		'aria-hidden', 'aria-keyshortcuts', 'aria-label', 'aria-labelledby', 'aria-live', 'aria-owns',
-		'aria-relevant', 'aria-roledescription'], required: []string{} },
-	RoleDef{ name: 'math', props: ['aria-atomic', 'aria-busy', 'aria-controls', 'aria-current',
-		'aria-describedby', 'aria-details', 'aria-dropeffect', 'aria-flowto', 'aria-grabbed',
-		'aria-hidden', 'aria-keyshortcuts', 'aria-label', 'aria-labelledby', 'aria-live', 'aria-owns',
-		'aria-relevant', 'aria-roledescription'], required: []string{} },
-	RoleDef{ name: 'menu', props: ['aria-orientation', 'aria-atomic', 'aria-busy', 'aria-controls',
-		'aria-current', 'aria-describedby', 'aria-details', 'aria-dropeffect', 'aria-flowto',
-		'aria-grabbed', 'aria-hidden', 'aria-keyshortcuts', 'aria-label', 'aria-labelledby', 'aria-live',
-		'aria-owns', 'aria-relevant', 'aria-roledescription', 'aria-activedescendant', 'aria-disabled'], required: []string{} },
-	RoleDef{ name: 'menubar', props: ['aria-orientation', 'aria-atomic', 'aria-busy', 'aria-controls',
-		'aria-current', 'aria-describedby', 'aria-details', 'aria-dropeffect', 'aria-flowto',
-		'aria-grabbed', 'aria-hidden', 'aria-keyshortcuts', 'aria-label', 'aria-labelledby', 'aria-live',
-		'aria-owns', 'aria-relevant', 'aria-roledescription', 'aria-activedescendant', 'aria-disabled'], required: []string{} },
-	RoleDef{ name: 'menuitem', props: ['aria-disabled', 'aria-expanded', 'aria-haspopup',
-		'aria-posinset', 'aria-setsize', 'aria-atomic', 'aria-busy', 'aria-controls', 'aria-current',
-		'aria-describedby', 'aria-details', 'aria-dropeffect', 'aria-flowto', 'aria-grabbed',
-		'aria-hidden', 'aria-keyshortcuts', 'aria-label', 'aria-labelledby', 'aria-live', 'aria-owns',
-		'aria-relevant', 'aria-roledescription'], required: []string{} },
-	RoleDef{ name: 'menuitemcheckbox', props: ['aria-atomic', 'aria-busy', 'aria-controls',
-		'aria-current', 'aria-describedby', 'aria-details', 'aria-dropeffect', 'aria-flowto',
-		'aria-grabbed', 'aria-hidden', 'aria-keyshortcuts', 'aria-label', 'aria-labelledby', 'aria-live',
-		'aria-owns', 'aria-relevant', 'aria-roledescription', 'aria-disabled', 'aria-checked',
-		'aria-errormessage', 'aria-expanded', 'aria-invalid', 'aria-readonly', 'aria-required',
-		'aria-haspopup', 'aria-posinset', 'aria-setsize'], required: ['aria-checked'] },
-	RoleDef{ name: 'menuitemradio', props: ['aria-atomic', 'aria-busy', 'aria-controls', 'aria-current',
-		'aria-describedby', 'aria-details', 'aria-dropeffect', 'aria-flowto', 'aria-grabbed',
-		'aria-hidden', 'aria-keyshortcuts', 'aria-label', 'aria-labelledby', 'aria-live', 'aria-owns',
-		'aria-relevant', 'aria-roledescription', 'aria-disabled', 'aria-checked', 'aria-errormessage',
-		'aria-expanded', 'aria-invalid', 'aria-readonly', 'aria-required', 'aria-haspopup',
-		'aria-posinset', 'aria-setsize'], required: ['aria-checked'] },
-	RoleDef{ name: 'meter', props: ['aria-valuetext', 'aria-valuemax', 'aria-valuemin', 'aria-atomic',
-		'aria-busy', 'aria-controls', 'aria-current', 'aria-describedby', 'aria-details',
-		'aria-dropeffect', 'aria-flowto', 'aria-grabbed', 'aria-hidden', 'aria-keyshortcuts',
-		'aria-label', 'aria-labelledby', 'aria-live', 'aria-owns', 'aria-relevant',
-		'aria-roledescription', 'aria-valuenow'], required: ['aria-valuenow'] },
-	RoleDef{ name: 'navigation', props: ['aria-atomic', 'aria-busy', 'aria-controls', 'aria-current',
-		'aria-describedby', 'aria-details', 'aria-dropeffect', 'aria-flowto', 'aria-grabbed',
-		'aria-hidden', 'aria-keyshortcuts', 'aria-label', 'aria-labelledby', 'aria-live', 'aria-owns',
-		'aria-relevant', 'aria-roledescription'], required: []string{} },
+	RoleDef{
+		name:     'command'
+		props:    ['aria-atomic', 'aria-busy', 'aria-controls', 'aria-current', 'aria-describedby',
+			'aria-details', 'aria-dropeffect', 'aria-flowto', 'aria-grabbed', 'aria-hidden',
+			'aria-keyshortcuts', 'aria-label', 'aria-labelledby', 'aria-live', 'aria-owns',
+			'aria-relevant', 'aria-roledescription']
+		required: []string{}
+	},
+	RoleDef{
+		name:     'composite'
+		props:    ['aria-activedescendant', 'aria-disabled', 'aria-atomic', 'aria-busy', 'aria-controls',
+			'aria-current', 'aria-describedby', 'aria-details', 'aria-dropeffect', 'aria-flowto',
+			'aria-grabbed', 'aria-hidden', 'aria-keyshortcuts', 'aria-label', 'aria-labelledby',
+			'aria-live', 'aria-owns', 'aria-relevant', 'aria-roledescription']
+		required: []string{}
+	},
+	RoleDef{
+		name:     'input'
+		props:    ['aria-disabled', 'aria-atomic', 'aria-busy', 'aria-controls', 'aria-current',
+			'aria-describedby', 'aria-details', 'aria-dropeffect', 'aria-flowto', 'aria-grabbed',
+			'aria-hidden', 'aria-keyshortcuts', 'aria-label', 'aria-labelledby', 'aria-live',
+			'aria-owns', 'aria-relevant', 'aria-roledescription']
+		required: []string{}
+	},
+	RoleDef{
+		name:     'landmark'
+		props:    ['aria-atomic', 'aria-busy', 'aria-controls', 'aria-current', 'aria-describedby',
+			'aria-details', 'aria-dropeffect', 'aria-flowto', 'aria-grabbed', 'aria-hidden',
+			'aria-keyshortcuts', 'aria-label', 'aria-labelledby', 'aria-live', 'aria-owns',
+			'aria-relevant', 'aria-roledescription']
+		required: []string{}
+	},
+	RoleDef{
+		name:     'range'
+		props:    ['aria-valuemax', 'aria-valuemin', 'aria-valuenow', 'aria-atomic', 'aria-busy',
+			'aria-controls', 'aria-current', 'aria-describedby', 'aria-details', 'aria-dropeffect',
+			'aria-flowto', 'aria-grabbed', 'aria-hidden', 'aria-keyshortcuts', 'aria-label',
+			'aria-labelledby', 'aria-live', 'aria-owns', 'aria-relevant', 'aria-roledescription']
+		required: []string{}
+	},
+	RoleDef{
+		name:     'roletype'
+		props:    ['aria-atomic', 'aria-busy', 'aria-controls', 'aria-current', 'aria-describedby',
+			'aria-details', 'aria-dropeffect', 'aria-flowto', 'aria-grabbed', 'aria-hidden',
+			'aria-keyshortcuts', 'aria-label', 'aria-labelledby', 'aria-live', 'aria-owns',
+			'aria-relevant', 'aria-roledescription']
+		required: []string{}
+	},
+	RoleDef{
+		name:     'section'
+		props:    ['aria-atomic', 'aria-busy', 'aria-controls', 'aria-current', 'aria-describedby',
+			'aria-details', 'aria-dropeffect', 'aria-flowto', 'aria-grabbed', 'aria-hidden',
+			'aria-keyshortcuts', 'aria-label', 'aria-labelledby', 'aria-live', 'aria-owns',
+			'aria-relevant', 'aria-roledescription']
+		required: []string{}
+	},
+	RoleDef{
+		name:     'sectionhead'
+		props:    ['aria-atomic', 'aria-busy', 'aria-controls', 'aria-current', 'aria-describedby',
+			'aria-details', 'aria-dropeffect', 'aria-flowto', 'aria-grabbed', 'aria-hidden',
+			'aria-keyshortcuts', 'aria-label', 'aria-labelledby', 'aria-live', 'aria-owns',
+			'aria-relevant', 'aria-roledescription']
+		required: []string{}
+	},
+	RoleDef{
+		name:     'select'
+		props:    ['aria-orientation', 'aria-atomic', 'aria-busy', 'aria-controls', 'aria-current',
+			'aria-describedby', 'aria-details', 'aria-dropeffect', 'aria-flowto', 'aria-grabbed',
+			'aria-hidden', 'aria-keyshortcuts', 'aria-label', 'aria-labelledby', 'aria-live',
+			'aria-owns', 'aria-relevant', 'aria-roledescription', 'aria-activedescendant',
+			'aria-disabled']
+		required: []string{}
+	},
+	RoleDef{
+		name:     'structure'
+		props:    ['aria-atomic', 'aria-busy', 'aria-controls', 'aria-current', 'aria-describedby',
+			'aria-details', 'aria-dropeffect', 'aria-flowto', 'aria-grabbed', 'aria-hidden',
+			'aria-keyshortcuts', 'aria-label', 'aria-labelledby', 'aria-live', 'aria-owns',
+			'aria-relevant', 'aria-roledescription']
+		required: []string{}
+	},
+	RoleDef{
+		name:     'widget'
+		props:    ['aria-atomic', 'aria-busy', 'aria-controls', 'aria-current', 'aria-describedby',
+			'aria-details', 'aria-dropeffect', 'aria-flowto', 'aria-grabbed', 'aria-hidden',
+			'aria-keyshortcuts', 'aria-label', 'aria-labelledby', 'aria-live', 'aria-owns',
+			'aria-relevant', 'aria-roledescription']
+		required: []string{}
+	},
+	RoleDef{
+		name:     'window'
+		props:    ['aria-modal', 'aria-atomic', 'aria-busy', 'aria-controls', 'aria-current',
+			'aria-describedby', 'aria-details', 'aria-dropeffect', 'aria-flowto', 'aria-grabbed',
+			'aria-hidden', 'aria-keyshortcuts', 'aria-label', 'aria-labelledby', 'aria-live',
+			'aria-owns', 'aria-relevant', 'aria-roledescription']
+		required: []string{}
+	},
+	RoleDef{
+		name:     'alert'
+		props:    ['aria-atomic', 'aria-live', 'aria-busy', 'aria-controls', 'aria-current',
+			'aria-describedby', 'aria-details', 'aria-dropeffect', 'aria-flowto', 'aria-grabbed',
+			'aria-hidden', 'aria-keyshortcuts', 'aria-label', 'aria-labelledby', 'aria-owns',
+			'aria-relevant', 'aria-roledescription']
+		required: []string{}
+	},
+	RoleDef{
+		name:     'alertdialog'
+		props:    ['aria-atomic', 'aria-busy', 'aria-controls', 'aria-current', 'aria-describedby',
+			'aria-details', 'aria-dropeffect', 'aria-flowto', 'aria-grabbed', 'aria-hidden',
+			'aria-keyshortcuts', 'aria-label', 'aria-labelledby', 'aria-live', 'aria-owns',
+			'aria-relevant', 'aria-roledescription', 'aria-modal']
+		required: []string{}
+	},
+	RoleDef{
+		name:     'application'
+		props:    ['aria-activedescendant', 'aria-disabled', 'aria-errormessage', 'aria-expanded',
+			'aria-haspopup', 'aria-invalid', 'aria-atomic', 'aria-busy', 'aria-controls', 'aria-current',
+			'aria-describedby', 'aria-details', 'aria-dropeffect', 'aria-flowto', 'aria-grabbed',
+			'aria-hidden', 'aria-keyshortcuts', 'aria-label', 'aria-labelledby', 'aria-live',
+			'aria-owns', 'aria-relevant', 'aria-roledescription']
+		required: []string{}
+	},
+	RoleDef{
+		name:     'article'
+		props:    ['aria-posinset', 'aria-setsize', 'aria-atomic', 'aria-busy', 'aria-controls',
+			'aria-current', 'aria-describedby', 'aria-details', 'aria-dropeffect', 'aria-flowto',
+			'aria-grabbed', 'aria-hidden', 'aria-keyshortcuts', 'aria-label', 'aria-labelledby',
+			'aria-live', 'aria-owns', 'aria-relevant', 'aria-roledescription']
+		required: []string{}
+	},
+	RoleDef{
+		name:     'banner'
+		props:    ['aria-atomic', 'aria-busy', 'aria-controls', 'aria-current', 'aria-describedby',
+			'aria-details', 'aria-dropeffect', 'aria-flowto', 'aria-grabbed', 'aria-hidden',
+			'aria-keyshortcuts', 'aria-label', 'aria-labelledby', 'aria-live', 'aria-owns',
+			'aria-relevant', 'aria-roledescription']
+		required: []string{}
+	},
+	RoleDef{
+		name:     'blockquote'
+		props:    ['aria-atomic', 'aria-busy', 'aria-controls', 'aria-current', 'aria-describedby',
+			'aria-details', 'aria-dropeffect', 'aria-flowto', 'aria-grabbed', 'aria-hidden',
+			'aria-keyshortcuts', 'aria-label', 'aria-labelledby', 'aria-live', 'aria-owns',
+			'aria-relevant', 'aria-roledescription']
+		required: []string{}
+	},
+	RoleDef{
+		name:     'button'
+		props:    ['aria-disabled', 'aria-expanded', 'aria-haspopup', 'aria-pressed', 'aria-atomic',
+			'aria-busy', 'aria-controls', 'aria-current', 'aria-describedby', 'aria-details',
+			'aria-dropeffect', 'aria-flowto', 'aria-grabbed', 'aria-hidden', 'aria-keyshortcuts',
+			'aria-label', 'aria-labelledby', 'aria-live', 'aria-owns', 'aria-relevant',
+			'aria-roledescription']
+		required: []string{}
+	},
+	RoleDef{
+		name:     'caption'
+		props:    ['aria-atomic', 'aria-busy', 'aria-controls', 'aria-current', 'aria-describedby',
+			'aria-details', 'aria-dropeffect', 'aria-flowto', 'aria-grabbed', 'aria-hidden',
+			'aria-keyshortcuts', 'aria-label', 'aria-labelledby', 'aria-live', 'aria-owns',
+			'aria-relevant', 'aria-roledescription']
+		required: []string{}
+	},
+	RoleDef{
+		name:     'cell'
+		props:    ['aria-colindex', 'aria-colspan', 'aria-rowindex', 'aria-rowspan', 'aria-atomic',
+			'aria-busy', 'aria-controls', 'aria-current', 'aria-describedby', 'aria-details',
+			'aria-dropeffect', 'aria-flowto', 'aria-grabbed', 'aria-hidden', 'aria-keyshortcuts',
+			'aria-label', 'aria-labelledby', 'aria-live', 'aria-owns', 'aria-relevant',
+			'aria-roledescription']
+		required: []string{}
+	},
+	RoleDef{
+		name:     'checkbox'
+		props:    ['aria-checked', 'aria-errormessage', 'aria-expanded', 'aria-invalid', 'aria-readonly',
+			'aria-required', 'aria-atomic', 'aria-busy', 'aria-controls', 'aria-current',
+			'aria-describedby', 'aria-details', 'aria-dropeffect', 'aria-flowto', 'aria-grabbed',
+			'aria-hidden', 'aria-keyshortcuts', 'aria-label', 'aria-labelledby', 'aria-live',
+			'aria-owns', 'aria-relevant', 'aria-roledescription', 'aria-disabled']
+		required: ['aria-checked']
+	},
+	RoleDef{
+		name:     'code'
+		props:    ['aria-atomic', 'aria-busy', 'aria-controls', 'aria-current', 'aria-describedby',
+			'aria-details', 'aria-dropeffect', 'aria-flowto', 'aria-grabbed', 'aria-hidden',
+			'aria-keyshortcuts', 'aria-label', 'aria-labelledby', 'aria-live', 'aria-owns',
+			'aria-relevant', 'aria-roledescription']
+		required: []string{}
+	},
+	RoleDef{
+		name:     'columnheader'
+		props:    ['aria-sort', 'aria-atomic', 'aria-busy', 'aria-controls', 'aria-current',
+			'aria-describedby', 'aria-details', 'aria-dropeffect', 'aria-flowto', 'aria-grabbed',
+			'aria-hidden', 'aria-keyshortcuts', 'aria-label', 'aria-labelledby', 'aria-live',
+			'aria-owns', 'aria-relevant', 'aria-roledescription', 'aria-colindex', 'aria-colspan',
+			'aria-rowindex', 'aria-rowspan', 'aria-disabled', 'aria-errormessage', 'aria-expanded',
+			'aria-haspopup', 'aria-invalid', 'aria-readonly', 'aria-required', 'aria-selected']
+		required: []string{}
+	},
+	RoleDef{
+		name:     'combobox'
+		props:    ['aria-activedescendant', 'aria-autocomplete', 'aria-errormessage', 'aria-invalid',
+			'aria-readonly', 'aria-required', 'aria-expanded', 'aria-haspopup', 'aria-atomic',
+			'aria-busy', 'aria-controls', 'aria-current', 'aria-describedby', 'aria-details',
+			'aria-dropeffect', 'aria-flowto', 'aria-grabbed', 'aria-hidden', 'aria-keyshortcuts',
+			'aria-label', 'aria-labelledby', 'aria-live', 'aria-owns', 'aria-relevant',
+			'aria-roledescription', 'aria-disabled']
+		required: ['aria-controls', 'aria-expanded']
+	},
+	RoleDef{
+		name:     'complementary'
+		props:    ['aria-atomic', 'aria-busy', 'aria-controls', 'aria-current', 'aria-describedby',
+			'aria-details', 'aria-dropeffect', 'aria-flowto', 'aria-grabbed', 'aria-hidden',
+			'aria-keyshortcuts', 'aria-label', 'aria-labelledby', 'aria-live', 'aria-owns',
+			'aria-relevant', 'aria-roledescription']
+		required: []string{}
+	},
+	RoleDef{
+		name:     'contentinfo'
+		props:    ['aria-atomic', 'aria-busy', 'aria-controls', 'aria-current', 'aria-describedby',
+			'aria-details', 'aria-dropeffect', 'aria-flowto', 'aria-grabbed', 'aria-hidden',
+			'aria-keyshortcuts', 'aria-label', 'aria-labelledby', 'aria-live', 'aria-owns',
+			'aria-relevant', 'aria-roledescription']
+		required: []string{}
+	},
+	RoleDef{
+		name:     'definition'
+		props:    ['aria-atomic', 'aria-busy', 'aria-controls', 'aria-current', 'aria-describedby',
+			'aria-details', 'aria-dropeffect', 'aria-flowto', 'aria-grabbed', 'aria-hidden',
+			'aria-keyshortcuts', 'aria-label', 'aria-labelledby', 'aria-live', 'aria-owns',
+			'aria-relevant', 'aria-roledescription']
+		required: []string{}
+	},
+	RoleDef{
+		name:     'deletion'
+		props:    ['aria-atomic', 'aria-busy', 'aria-controls', 'aria-current', 'aria-describedby',
+			'aria-details', 'aria-dropeffect', 'aria-flowto', 'aria-grabbed', 'aria-hidden',
+			'aria-keyshortcuts', 'aria-label', 'aria-labelledby', 'aria-live', 'aria-owns',
+			'aria-relevant', 'aria-roledescription']
+		required: []string{}
+	},
+	RoleDef{
+		name:     'dialog'
+		props:    ['aria-atomic', 'aria-busy', 'aria-controls', 'aria-current', 'aria-describedby',
+			'aria-details', 'aria-dropeffect', 'aria-flowto', 'aria-grabbed', 'aria-hidden',
+			'aria-keyshortcuts', 'aria-label', 'aria-labelledby', 'aria-live', 'aria-owns',
+			'aria-relevant', 'aria-roledescription', 'aria-modal']
+		required: []string{}
+	},
+	RoleDef{
+		name:     'directory'
+		props:    ['aria-atomic', 'aria-busy', 'aria-controls', 'aria-current', 'aria-describedby',
+			'aria-details', 'aria-dropeffect', 'aria-flowto', 'aria-grabbed', 'aria-hidden',
+			'aria-keyshortcuts', 'aria-label', 'aria-labelledby', 'aria-live', 'aria-owns',
+			'aria-relevant', 'aria-roledescription']
+		required: []string{}
+	},
+	RoleDef{
+		name:     'document'
+		props:    ['aria-atomic', 'aria-busy', 'aria-controls', 'aria-current', 'aria-describedby',
+			'aria-details', 'aria-dropeffect', 'aria-flowto', 'aria-grabbed', 'aria-hidden',
+			'aria-keyshortcuts', 'aria-label', 'aria-labelledby', 'aria-live', 'aria-owns',
+			'aria-relevant', 'aria-roledescription']
+		required: []string{}
+	},
+	RoleDef{
+		name:     'emphasis'
+		props:    ['aria-atomic', 'aria-busy', 'aria-controls', 'aria-current', 'aria-describedby',
+			'aria-details', 'aria-dropeffect', 'aria-flowto', 'aria-grabbed', 'aria-hidden',
+			'aria-keyshortcuts', 'aria-label', 'aria-labelledby', 'aria-live', 'aria-owns',
+			'aria-relevant', 'aria-roledescription']
+		required: []string{}
+	},
+	RoleDef{
+		name:     'feed'
+		props:    ['aria-atomic', 'aria-busy', 'aria-controls', 'aria-current', 'aria-describedby',
+			'aria-details', 'aria-dropeffect', 'aria-flowto', 'aria-grabbed', 'aria-hidden',
+			'aria-keyshortcuts', 'aria-label', 'aria-labelledby', 'aria-live', 'aria-owns',
+			'aria-relevant', 'aria-roledescription']
+		required: []string{}
+	},
+	RoleDef{
+		name:     'figure'
+		props:    ['aria-atomic', 'aria-busy', 'aria-controls', 'aria-current', 'aria-describedby',
+			'aria-details', 'aria-dropeffect', 'aria-flowto', 'aria-grabbed', 'aria-hidden',
+			'aria-keyshortcuts', 'aria-label', 'aria-labelledby', 'aria-live', 'aria-owns',
+			'aria-relevant', 'aria-roledescription']
+		required: []string{}
+	},
+	RoleDef{
+		name:     'form'
+		props:    ['aria-atomic', 'aria-busy', 'aria-controls', 'aria-current', 'aria-describedby',
+			'aria-details', 'aria-dropeffect', 'aria-flowto', 'aria-grabbed', 'aria-hidden',
+			'aria-keyshortcuts', 'aria-label', 'aria-labelledby', 'aria-live', 'aria-owns',
+			'aria-relevant', 'aria-roledescription']
+		required: []string{}
+	},
+	RoleDef{
+		name:     'generic'
+		props:    ['aria-atomic', 'aria-busy', 'aria-controls', 'aria-current', 'aria-describedby',
+			'aria-details', 'aria-dropeffect', 'aria-flowto', 'aria-grabbed', 'aria-hidden',
+			'aria-keyshortcuts', 'aria-label', 'aria-labelledby', 'aria-live', 'aria-owns',
+			'aria-relevant', 'aria-roledescription']
+		required: []string{}
+	},
+	RoleDef{
+		name:     'grid'
+		props:    ['aria-multiselectable', 'aria-readonly', 'aria-atomic', 'aria-busy', 'aria-controls',
+			'aria-current', 'aria-describedby', 'aria-details', 'aria-dropeffect', 'aria-flowto',
+			'aria-grabbed', 'aria-hidden', 'aria-keyshortcuts', 'aria-label', 'aria-labelledby',
+			'aria-live', 'aria-owns', 'aria-relevant', 'aria-roledescription', 'aria-activedescendant',
+			'aria-disabled', 'aria-colcount', 'aria-rowcount']
+		required: []string{}
+	},
+	RoleDef{
+		name:     'gridcell'
+		props:    ['aria-disabled', 'aria-errormessage', 'aria-expanded', 'aria-haspopup',
+			'aria-invalid', 'aria-readonly', 'aria-required', 'aria-selected', 'aria-atomic',
+			'aria-busy', 'aria-controls', 'aria-current', 'aria-describedby', 'aria-details',
+			'aria-dropeffect', 'aria-flowto', 'aria-grabbed', 'aria-hidden', 'aria-keyshortcuts',
+			'aria-label', 'aria-labelledby', 'aria-live', 'aria-owns', 'aria-relevant',
+			'aria-roledescription', 'aria-colindex', 'aria-colspan', 'aria-rowindex', 'aria-rowspan']
+		required: []string{}
+	},
+	RoleDef{
+		name:     'group'
+		props:    ['aria-activedescendant', 'aria-disabled', 'aria-atomic', 'aria-busy', 'aria-controls',
+			'aria-current', 'aria-describedby', 'aria-details', 'aria-dropeffect', 'aria-flowto',
+			'aria-grabbed', 'aria-hidden', 'aria-keyshortcuts', 'aria-label', 'aria-labelledby',
+			'aria-live', 'aria-owns', 'aria-relevant', 'aria-roledescription']
+		required: []string{}
+	},
+	RoleDef{
+		name:     'heading'
+		props:    ['aria-level', 'aria-atomic', 'aria-busy', 'aria-controls', 'aria-current',
+			'aria-describedby', 'aria-details', 'aria-dropeffect', 'aria-flowto', 'aria-grabbed',
+			'aria-hidden', 'aria-keyshortcuts', 'aria-label', 'aria-labelledby', 'aria-live',
+			'aria-owns', 'aria-relevant', 'aria-roledescription']
+		required: ['aria-level']
+	},
+	RoleDef{
+		name:     'img'
+		props:    ['aria-atomic', 'aria-busy', 'aria-controls', 'aria-current', 'aria-describedby',
+			'aria-details', 'aria-dropeffect', 'aria-flowto', 'aria-grabbed', 'aria-hidden',
+			'aria-keyshortcuts', 'aria-label', 'aria-labelledby', 'aria-live', 'aria-owns',
+			'aria-relevant', 'aria-roledescription']
+		required: []string{}
+	},
+	RoleDef{
+		name:     'insertion'
+		props:    ['aria-atomic', 'aria-busy', 'aria-controls', 'aria-current', 'aria-describedby',
+			'aria-details', 'aria-dropeffect', 'aria-flowto', 'aria-grabbed', 'aria-hidden',
+			'aria-keyshortcuts', 'aria-label', 'aria-labelledby', 'aria-live', 'aria-owns',
+			'aria-relevant', 'aria-roledescription']
+		required: []string{}
+	},
+	RoleDef{
+		name:     'link'
+		props:    ['aria-disabled', 'aria-expanded', 'aria-haspopup', 'aria-atomic', 'aria-busy',
+			'aria-controls', 'aria-current', 'aria-describedby', 'aria-details', 'aria-dropeffect',
+			'aria-flowto', 'aria-grabbed', 'aria-hidden', 'aria-keyshortcuts', 'aria-label',
+			'aria-labelledby', 'aria-live', 'aria-owns', 'aria-relevant', 'aria-roledescription']
+		required: []string{}
+	},
+	RoleDef{
+		name:     'list'
+		props:    ['aria-atomic', 'aria-busy', 'aria-controls', 'aria-current', 'aria-describedby',
+			'aria-details', 'aria-dropeffect', 'aria-flowto', 'aria-grabbed', 'aria-hidden',
+			'aria-keyshortcuts', 'aria-label', 'aria-labelledby', 'aria-live', 'aria-owns',
+			'aria-relevant', 'aria-roledescription']
+		required: []string{}
+	},
+	RoleDef{
+		name:     'listbox'
+		props:    ['aria-errormessage', 'aria-expanded', 'aria-invalid', 'aria-multiselectable',
+			'aria-readonly', 'aria-required', 'aria-orientation', 'aria-atomic', 'aria-busy',
+			'aria-controls', 'aria-current', 'aria-describedby', 'aria-details', 'aria-dropeffect',
+			'aria-flowto', 'aria-grabbed', 'aria-hidden', 'aria-keyshortcuts', 'aria-label',
+			'aria-labelledby', 'aria-live', 'aria-owns', 'aria-relevant', 'aria-roledescription',
+			'aria-activedescendant', 'aria-disabled']
+		required: []string{}
+	},
+	RoleDef{
+		name:     'listitem'
+		props:    ['aria-level', 'aria-posinset', 'aria-setsize', 'aria-atomic', 'aria-busy',
+			'aria-controls', 'aria-current', 'aria-describedby', 'aria-details', 'aria-dropeffect',
+			'aria-flowto', 'aria-grabbed', 'aria-hidden', 'aria-keyshortcuts', 'aria-label',
+			'aria-labelledby', 'aria-live', 'aria-owns', 'aria-relevant', 'aria-roledescription']
+		required: []string{}
+	},
+	RoleDef{
+		name:     'log'
+		props:    ['aria-live', 'aria-atomic', 'aria-busy', 'aria-controls', 'aria-current',
+			'aria-describedby', 'aria-details', 'aria-dropeffect', 'aria-flowto', 'aria-grabbed',
+			'aria-hidden', 'aria-keyshortcuts', 'aria-label', 'aria-labelledby', 'aria-owns',
+			'aria-relevant', 'aria-roledescription']
+		required: []string{}
+	},
+	RoleDef{
+		name:     'main'
+		props:    ['aria-atomic', 'aria-busy', 'aria-controls', 'aria-current', 'aria-describedby',
+			'aria-details', 'aria-dropeffect', 'aria-flowto', 'aria-grabbed', 'aria-hidden',
+			'aria-keyshortcuts', 'aria-label', 'aria-labelledby', 'aria-live', 'aria-owns',
+			'aria-relevant', 'aria-roledescription']
+		required: []string{}
+	},
+	RoleDef{
+		name:     'mark'
+		props:    ['aria-braillelabel', 'aria-brailleroledescription', 'aria-description', 'aria-atomic',
+			'aria-busy', 'aria-controls', 'aria-current', 'aria-describedby', 'aria-details',
+			'aria-dropeffect', 'aria-flowto', 'aria-grabbed', 'aria-hidden', 'aria-keyshortcuts',
+			'aria-label', 'aria-labelledby', 'aria-live', 'aria-owns', 'aria-relevant',
+			'aria-roledescription']
+		required: []string{}
+	},
+	RoleDef{
+		name:     'marquee'
+		props:    ['aria-atomic', 'aria-busy', 'aria-controls', 'aria-current', 'aria-describedby',
+			'aria-details', 'aria-dropeffect', 'aria-flowto', 'aria-grabbed', 'aria-hidden',
+			'aria-keyshortcuts', 'aria-label', 'aria-labelledby', 'aria-live', 'aria-owns',
+			'aria-relevant', 'aria-roledescription']
+		required: []string{}
+	},
+	RoleDef{
+		name:     'math'
+		props:    ['aria-atomic', 'aria-busy', 'aria-controls', 'aria-current', 'aria-describedby',
+			'aria-details', 'aria-dropeffect', 'aria-flowto', 'aria-grabbed', 'aria-hidden',
+			'aria-keyshortcuts', 'aria-label', 'aria-labelledby', 'aria-live', 'aria-owns',
+			'aria-relevant', 'aria-roledescription']
+		required: []string{}
+	},
+	RoleDef{
+		name:     'menu'
+		props:    ['aria-orientation', 'aria-atomic', 'aria-busy', 'aria-controls', 'aria-current',
+			'aria-describedby', 'aria-details', 'aria-dropeffect', 'aria-flowto', 'aria-grabbed',
+			'aria-hidden', 'aria-keyshortcuts', 'aria-label', 'aria-labelledby', 'aria-live',
+			'aria-owns', 'aria-relevant', 'aria-roledescription', 'aria-activedescendant',
+			'aria-disabled']
+		required: []string{}
+	},
+	RoleDef{
+		name:     'menubar'
+		props:    ['aria-orientation', 'aria-atomic', 'aria-busy', 'aria-controls', 'aria-current',
+			'aria-describedby', 'aria-details', 'aria-dropeffect', 'aria-flowto', 'aria-grabbed',
+			'aria-hidden', 'aria-keyshortcuts', 'aria-label', 'aria-labelledby', 'aria-live',
+			'aria-owns', 'aria-relevant', 'aria-roledescription', 'aria-activedescendant',
+			'aria-disabled']
+		required: []string{}
+	},
+	RoleDef{
+		name:     'menuitem'
+		props:    ['aria-disabled', 'aria-expanded', 'aria-haspopup', 'aria-posinset', 'aria-setsize',
+			'aria-atomic', 'aria-busy', 'aria-controls', 'aria-current', 'aria-describedby',
+			'aria-details', 'aria-dropeffect', 'aria-flowto', 'aria-grabbed', 'aria-hidden',
+			'aria-keyshortcuts', 'aria-label', 'aria-labelledby', 'aria-live', 'aria-owns',
+			'aria-relevant', 'aria-roledescription']
+		required: []string{}
+	},
+	RoleDef{
+		name:     'menuitemcheckbox'
+		props:    ['aria-atomic', 'aria-busy', 'aria-controls', 'aria-current', 'aria-describedby',
+			'aria-details', 'aria-dropeffect', 'aria-flowto', 'aria-grabbed', 'aria-hidden',
+			'aria-keyshortcuts', 'aria-label', 'aria-labelledby', 'aria-live', 'aria-owns',
+			'aria-relevant', 'aria-roledescription', 'aria-disabled', 'aria-checked',
+			'aria-errormessage', 'aria-expanded', 'aria-invalid', 'aria-readonly', 'aria-required',
+			'aria-haspopup', 'aria-posinset', 'aria-setsize']
+		required: ['aria-checked']
+	},
+	RoleDef{
+		name:     'menuitemradio'
+		props:    ['aria-atomic', 'aria-busy', 'aria-controls', 'aria-current', 'aria-describedby',
+			'aria-details', 'aria-dropeffect', 'aria-flowto', 'aria-grabbed', 'aria-hidden',
+			'aria-keyshortcuts', 'aria-label', 'aria-labelledby', 'aria-live', 'aria-owns',
+			'aria-relevant', 'aria-roledescription', 'aria-disabled', 'aria-checked',
+			'aria-errormessage', 'aria-expanded', 'aria-invalid', 'aria-readonly', 'aria-required',
+			'aria-haspopup', 'aria-posinset', 'aria-setsize']
+		required: ['aria-checked']
+	},
+	RoleDef{
+		name:     'meter'
+		props:    ['aria-valuetext', 'aria-valuemax', 'aria-valuemin', 'aria-atomic', 'aria-busy',
+			'aria-controls', 'aria-current', 'aria-describedby', 'aria-details', 'aria-dropeffect',
+			'aria-flowto', 'aria-grabbed', 'aria-hidden', 'aria-keyshortcuts', 'aria-label',
+			'aria-labelledby', 'aria-live', 'aria-owns', 'aria-relevant', 'aria-roledescription',
+			'aria-valuenow']
+		required: ['aria-valuenow']
+	},
+	RoleDef{
+		name:     'navigation'
+		props:    ['aria-atomic', 'aria-busy', 'aria-controls', 'aria-current', 'aria-describedby',
+			'aria-details', 'aria-dropeffect', 'aria-flowto', 'aria-grabbed', 'aria-hidden',
+			'aria-keyshortcuts', 'aria-label', 'aria-labelledby', 'aria-live', 'aria-owns',
+			'aria-relevant', 'aria-roledescription']
+		required: []string{}
+	},
 	RoleDef{ name: 'none', props: []string{}, required: []string{} },
-	RoleDef{ name: 'note', props: ['aria-atomic', 'aria-busy', 'aria-controls', 'aria-current',
-		'aria-describedby', 'aria-details', 'aria-dropeffect', 'aria-flowto', 'aria-grabbed',
-		'aria-hidden', 'aria-keyshortcuts', 'aria-label', 'aria-labelledby', 'aria-live', 'aria-owns',
-		'aria-relevant', 'aria-roledescription'], required: []string{} },
-	RoleDef{ name: 'option', props: ['aria-checked', 'aria-posinset', 'aria-setsize', 'aria-selected',
-		'aria-atomic', 'aria-busy', 'aria-controls', 'aria-current', 'aria-describedby', 'aria-details',
-		'aria-dropeffect', 'aria-flowto', 'aria-grabbed', 'aria-hidden', 'aria-keyshortcuts',
-		'aria-label', 'aria-labelledby', 'aria-live', 'aria-owns', 'aria-relevant',
-		'aria-roledescription', 'aria-disabled'], required: ['aria-selected'] },
-	RoleDef{ name: 'paragraph', props: ['aria-atomic', 'aria-busy', 'aria-controls', 'aria-current',
-		'aria-describedby', 'aria-details', 'aria-dropeffect', 'aria-flowto', 'aria-grabbed',
-		'aria-hidden', 'aria-keyshortcuts', 'aria-label', 'aria-labelledby', 'aria-live', 'aria-owns',
-		'aria-relevant', 'aria-roledescription'], required: []string{} },
-	RoleDef{ name: 'presentation', props: ['aria-atomic', 'aria-busy', 'aria-controls', 'aria-current',
-		'aria-describedby', 'aria-details', 'aria-dropeffect', 'aria-flowto', 'aria-grabbed',
-		'aria-hidden', 'aria-keyshortcuts', 'aria-label', 'aria-labelledby', 'aria-live', 'aria-owns',
-		'aria-relevant', 'aria-roledescription'], required: []string{} },
-	RoleDef{ name: 'progressbar', props: ['aria-valuetext', 'aria-atomic', 'aria-busy', 'aria-controls',
-		'aria-current', 'aria-describedby', 'aria-details', 'aria-dropeffect', 'aria-flowto',
-		'aria-grabbed', 'aria-hidden', 'aria-keyshortcuts', 'aria-label', 'aria-labelledby', 'aria-live',
-		'aria-owns', 'aria-relevant', 'aria-roledescription', 'aria-valuemax', 'aria-valuemin',
-		'aria-valuenow'], required: []string{} },
-	RoleDef{ name: 'radio', props: ['aria-checked', 'aria-posinset', 'aria-setsize', 'aria-atomic',
-		'aria-busy', 'aria-controls', 'aria-current', 'aria-describedby', 'aria-details',
-		'aria-dropeffect', 'aria-flowto', 'aria-grabbed', 'aria-hidden', 'aria-keyshortcuts',
-		'aria-label', 'aria-labelledby', 'aria-live', 'aria-owns', 'aria-relevant',
-		'aria-roledescription', 'aria-disabled'], required: ['aria-checked'] },
-	RoleDef{ name: 'radiogroup', props: ['aria-errormessage', 'aria-invalid', 'aria-readonly',
-		'aria-required', 'aria-atomic', 'aria-busy', 'aria-controls', 'aria-current', 'aria-describedby',
-		'aria-details', 'aria-dropeffect', 'aria-flowto', 'aria-grabbed', 'aria-hidden',
-		'aria-keyshortcuts', 'aria-label', 'aria-labelledby', 'aria-live', 'aria-owns', 'aria-relevant',
-		'aria-roledescription', 'aria-activedescendant', 'aria-disabled', 'aria-orientation'], required: []string{} },
-	RoleDef{ name: 'region', props: ['aria-atomic', 'aria-busy', 'aria-controls', 'aria-current',
-		'aria-describedby', 'aria-details', 'aria-dropeffect', 'aria-flowto', 'aria-grabbed',
-		'aria-hidden', 'aria-keyshortcuts', 'aria-label', 'aria-labelledby', 'aria-live', 'aria-owns',
-		'aria-relevant', 'aria-roledescription'], required: []string{} },
-	RoleDef{ name: 'row', props: ['aria-colindex', 'aria-expanded', 'aria-level', 'aria-posinset',
-		'aria-rowindex', 'aria-selected', 'aria-setsize', 'aria-atomic', 'aria-busy', 'aria-controls',
-		'aria-current', 'aria-describedby', 'aria-details', 'aria-dropeffect', 'aria-flowto',
-		'aria-grabbed', 'aria-hidden', 'aria-keyshortcuts', 'aria-label', 'aria-labelledby', 'aria-live',
-		'aria-owns', 'aria-relevant', 'aria-roledescription', 'aria-activedescendant', 'aria-disabled'], required: []string{} },
-	RoleDef{ name: 'rowgroup', props: ['aria-atomic', 'aria-busy', 'aria-controls', 'aria-current',
-		'aria-describedby', 'aria-details', 'aria-dropeffect', 'aria-flowto', 'aria-grabbed',
-		'aria-hidden', 'aria-keyshortcuts', 'aria-label', 'aria-labelledby', 'aria-live', 'aria-owns',
-		'aria-relevant', 'aria-roledescription'], required: []string{} },
-	RoleDef{ name: 'rowheader', props: ['aria-sort', 'aria-atomic', 'aria-busy', 'aria-controls',
-		'aria-current', 'aria-describedby', 'aria-details', 'aria-dropeffect', 'aria-flowto',
-		'aria-grabbed', 'aria-hidden', 'aria-keyshortcuts', 'aria-label', 'aria-labelledby', 'aria-live',
-		'aria-owns', 'aria-relevant', 'aria-roledescription', 'aria-colindex', 'aria-colspan',
-		'aria-rowindex', 'aria-rowspan', 'aria-disabled', 'aria-errormessage', 'aria-expanded',
-		'aria-haspopup', 'aria-invalid', 'aria-readonly', 'aria-required', 'aria-selected'], required: []string{} },
-	RoleDef{ name: 'scrollbar', props: ['aria-disabled', 'aria-valuetext', 'aria-orientation',
-		'aria-valuemax', 'aria-valuemin', 'aria-atomic', 'aria-busy', 'aria-controls', 'aria-current',
-		'aria-describedby', 'aria-details', 'aria-dropeffect', 'aria-flowto', 'aria-grabbed',
-		'aria-hidden', 'aria-keyshortcuts', 'aria-label', 'aria-labelledby', 'aria-live', 'aria-owns',
-		'aria-relevant', 'aria-roledescription', 'aria-valuenow'], required: ['aria-controls',
-		'aria-valuenow'] },
-	RoleDef{ name: 'search', props: ['aria-atomic', 'aria-busy', 'aria-controls', 'aria-current',
-		'aria-describedby', 'aria-details', 'aria-dropeffect', 'aria-flowto', 'aria-grabbed',
-		'aria-hidden', 'aria-keyshortcuts', 'aria-label', 'aria-labelledby', 'aria-live', 'aria-owns',
-		'aria-relevant', 'aria-roledescription'], required: []string{} },
-	RoleDef{ name: 'searchbox', props: ['aria-atomic', 'aria-busy', 'aria-controls', 'aria-current',
-		'aria-describedby', 'aria-details', 'aria-dropeffect', 'aria-flowto', 'aria-grabbed',
-		'aria-hidden', 'aria-keyshortcuts', 'aria-label', 'aria-labelledby', 'aria-live', 'aria-owns',
-		'aria-relevant', 'aria-roledescription', 'aria-disabled', 'aria-activedescendant',
-		'aria-autocomplete', 'aria-errormessage', 'aria-haspopup', 'aria-invalid', 'aria-multiline',
-		'aria-placeholder', 'aria-readonly', 'aria-required'], required: []string{} },
-	RoleDef{ name: 'separator', props: ['aria-disabled', 'aria-orientation', 'aria-valuemax',
-		'aria-valuemin', 'aria-valuenow', 'aria-valuetext', 'aria-atomic', 'aria-busy', 'aria-controls',
-		'aria-current', 'aria-describedby', 'aria-details', 'aria-dropeffect', 'aria-flowto',
-		'aria-grabbed', 'aria-hidden', 'aria-keyshortcuts', 'aria-label', 'aria-labelledby', 'aria-live',
-		'aria-owns', 'aria-relevant', 'aria-roledescription'], required: []string{} },
-	RoleDef{ name: 'slider', props: ['aria-errormessage', 'aria-haspopup', 'aria-invalid',
-		'aria-readonly', 'aria-valuetext', 'aria-orientation', 'aria-valuemax', 'aria-valuemin',
-		'aria-atomic', 'aria-busy', 'aria-controls', 'aria-current', 'aria-describedby', 'aria-details',
-		'aria-dropeffect', 'aria-flowto', 'aria-grabbed', 'aria-hidden', 'aria-keyshortcuts',
-		'aria-label', 'aria-labelledby', 'aria-live', 'aria-owns', 'aria-relevant',
-		'aria-roledescription', 'aria-disabled', 'aria-valuenow'], required: ['aria-valuenow'] },
-	RoleDef{ name: 'spinbutton', props: ['aria-errormessage', 'aria-invalid', 'aria-readonly',
-		'aria-required', 'aria-valuetext', 'aria-valuenow', 'aria-atomic', 'aria-busy', 'aria-controls',
-		'aria-current', 'aria-describedby', 'aria-details', 'aria-dropeffect', 'aria-flowto',
-		'aria-grabbed', 'aria-hidden', 'aria-keyshortcuts', 'aria-label', 'aria-labelledby', 'aria-live',
-		'aria-owns', 'aria-relevant', 'aria-roledescription', 'aria-activedescendant', 'aria-disabled',
-		'aria-valuemax', 'aria-valuemin'], required: []string{} },
-	RoleDef{ name: 'status', props: ['aria-atomic', 'aria-live', 'aria-busy', 'aria-controls',
-		'aria-current', 'aria-describedby', 'aria-details', 'aria-dropeffect', 'aria-flowto',
-		'aria-grabbed', 'aria-hidden', 'aria-keyshortcuts', 'aria-label', 'aria-labelledby', 'aria-owns',
-		'aria-relevant', 'aria-roledescription'], required: []string{} },
-	RoleDef{ name: 'strong', props: ['aria-atomic', 'aria-busy', 'aria-controls', 'aria-current',
-		'aria-describedby', 'aria-details', 'aria-dropeffect', 'aria-flowto', 'aria-grabbed',
-		'aria-hidden', 'aria-keyshortcuts', 'aria-label', 'aria-labelledby', 'aria-live', 'aria-owns',
-		'aria-relevant', 'aria-roledescription'], required: []string{} },
-	RoleDef{ name: 'subscript', props: ['aria-atomic', 'aria-busy', 'aria-controls', 'aria-current',
-		'aria-describedby', 'aria-details', 'aria-dropeffect', 'aria-flowto', 'aria-grabbed',
-		'aria-hidden', 'aria-keyshortcuts', 'aria-label', 'aria-labelledby', 'aria-live', 'aria-owns',
-		'aria-relevant', 'aria-roledescription'], required: []string{} },
-	RoleDef{ name: 'superscript', props: ['aria-atomic', 'aria-busy', 'aria-controls', 'aria-current',
-		'aria-describedby', 'aria-details', 'aria-dropeffect', 'aria-flowto', 'aria-grabbed',
-		'aria-hidden', 'aria-keyshortcuts', 'aria-label', 'aria-labelledby', 'aria-live', 'aria-owns',
-		'aria-relevant', 'aria-roledescription'], required: []string{} },
-	RoleDef{ name: 'switch', props: ['aria-atomic', 'aria-busy', 'aria-controls', 'aria-current',
-		'aria-describedby', 'aria-details', 'aria-dropeffect', 'aria-flowto', 'aria-grabbed',
-		'aria-hidden', 'aria-keyshortcuts', 'aria-label', 'aria-labelledby', 'aria-live', 'aria-owns',
-		'aria-relevant', 'aria-roledescription', 'aria-disabled', 'aria-checked', 'aria-errormessage',
-		'aria-expanded', 'aria-invalid', 'aria-readonly', 'aria-required'], required: ['aria-checked'] },
-	RoleDef{ name: 'tab', props: ['aria-disabled', 'aria-expanded', 'aria-haspopup', 'aria-posinset',
-		'aria-setsize', 'aria-selected', 'aria-atomic', 'aria-busy', 'aria-controls', 'aria-current',
-		'aria-describedby', 'aria-details', 'aria-dropeffect', 'aria-flowto', 'aria-grabbed',
-		'aria-hidden', 'aria-keyshortcuts', 'aria-label', 'aria-labelledby', 'aria-live', 'aria-owns',
-		'aria-relevant', 'aria-roledescription'], required: []string{} },
-	RoleDef{ name: 'table', props: ['aria-colcount', 'aria-rowcount', 'aria-atomic', 'aria-busy',
-		'aria-controls', 'aria-current', 'aria-describedby', 'aria-details', 'aria-dropeffect',
-		'aria-flowto', 'aria-grabbed', 'aria-hidden', 'aria-keyshortcuts', 'aria-label',
-		'aria-labelledby', 'aria-live', 'aria-owns', 'aria-relevant', 'aria-roledescription'], required: []string{} },
-	RoleDef{ name: 'tablist', props: ['aria-level', 'aria-multiselectable', 'aria-orientation',
-		'aria-atomic', 'aria-busy', 'aria-controls', 'aria-current', 'aria-describedby', 'aria-details',
-		'aria-dropeffect', 'aria-flowto', 'aria-grabbed', 'aria-hidden', 'aria-keyshortcuts',
-		'aria-label', 'aria-labelledby', 'aria-live', 'aria-owns', 'aria-relevant',
-		'aria-roledescription', 'aria-activedescendant', 'aria-disabled'], required: []string{} },
-	RoleDef{ name: 'tabpanel', props: ['aria-atomic', 'aria-busy', 'aria-controls', 'aria-current',
-		'aria-describedby', 'aria-details', 'aria-dropeffect', 'aria-flowto', 'aria-grabbed',
-		'aria-hidden', 'aria-keyshortcuts', 'aria-label', 'aria-labelledby', 'aria-live', 'aria-owns',
-		'aria-relevant', 'aria-roledescription'], required: []string{} },
-	RoleDef{ name: 'term', props: ['aria-atomic', 'aria-busy', 'aria-controls', 'aria-current',
-		'aria-describedby', 'aria-details', 'aria-dropeffect', 'aria-flowto', 'aria-grabbed',
-		'aria-hidden', 'aria-keyshortcuts', 'aria-label', 'aria-labelledby', 'aria-live', 'aria-owns',
-		'aria-relevant', 'aria-roledescription'], required: []string{} },
-	RoleDef{ name: 'textbox', props: ['aria-activedescendant', 'aria-autocomplete', 'aria-errormessage',
-		'aria-haspopup', 'aria-invalid', 'aria-multiline', 'aria-placeholder', 'aria-readonly',
-		'aria-required', 'aria-atomic', 'aria-busy', 'aria-controls', 'aria-current', 'aria-describedby',
-		'aria-details', 'aria-dropeffect', 'aria-flowto', 'aria-grabbed', 'aria-hidden',
-		'aria-keyshortcuts', 'aria-label', 'aria-labelledby', 'aria-live', 'aria-owns', 'aria-relevant',
-		'aria-roledescription', 'aria-disabled'], required: []string{} },
-	RoleDef{ name: 'time', props: ['aria-atomic', 'aria-busy', 'aria-controls', 'aria-current',
-		'aria-describedby', 'aria-details', 'aria-dropeffect', 'aria-flowto', 'aria-grabbed',
-		'aria-hidden', 'aria-keyshortcuts', 'aria-label', 'aria-labelledby', 'aria-live', 'aria-owns',
-		'aria-relevant', 'aria-roledescription'], required: []string{} },
-	RoleDef{ name: 'timer', props: ['aria-atomic', 'aria-busy', 'aria-controls', 'aria-current',
-		'aria-describedby', 'aria-details', 'aria-dropeffect', 'aria-flowto', 'aria-grabbed',
-		'aria-hidden', 'aria-keyshortcuts', 'aria-label', 'aria-labelledby', 'aria-live', 'aria-owns',
-		'aria-relevant', 'aria-roledescription'], required: []string{} },
-	RoleDef{ name: 'toolbar', props: ['aria-orientation', 'aria-atomic', 'aria-busy', 'aria-controls',
-		'aria-current', 'aria-describedby', 'aria-details', 'aria-dropeffect', 'aria-flowto',
-		'aria-grabbed', 'aria-hidden', 'aria-keyshortcuts', 'aria-label', 'aria-labelledby', 'aria-live',
-		'aria-owns', 'aria-relevant', 'aria-roledescription', 'aria-activedescendant', 'aria-disabled'], required: []string{} },
-	RoleDef{ name: 'tooltip', props: ['aria-atomic', 'aria-busy', 'aria-controls', 'aria-current',
-		'aria-describedby', 'aria-details', 'aria-dropeffect', 'aria-flowto', 'aria-grabbed',
-		'aria-hidden', 'aria-keyshortcuts', 'aria-label', 'aria-labelledby', 'aria-live', 'aria-owns',
-		'aria-relevant', 'aria-roledescription'], required: []string{} },
-	RoleDef{ name: 'tree', props: ['aria-errormessage', 'aria-invalid', 'aria-multiselectable',
-		'aria-required', 'aria-orientation', 'aria-atomic', 'aria-busy', 'aria-controls', 'aria-current',
-		'aria-describedby', 'aria-details', 'aria-dropeffect', 'aria-flowto', 'aria-grabbed',
-		'aria-hidden', 'aria-keyshortcuts', 'aria-label', 'aria-labelledby', 'aria-live', 'aria-owns',
-		'aria-relevant', 'aria-roledescription', 'aria-activedescendant', 'aria-disabled'], required: []string{} },
-	RoleDef{ name: 'treegrid', props: ['aria-atomic', 'aria-busy', 'aria-controls', 'aria-current',
-		'aria-describedby', 'aria-details', 'aria-dropeffect', 'aria-flowto', 'aria-grabbed',
-		'aria-hidden', 'aria-keyshortcuts', 'aria-label', 'aria-labelledby', 'aria-live', 'aria-owns',
-		'aria-relevant', 'aria-roledescription', 'aria-activedescendant', 'aria-disabled',
-		'aria-multiselectable', 'aria-readonly', 'aria-colcount', 'aria-rowcount', 'aria-orientation',
-		'aria-errormessage', 'aria-invalid', 'aria-required'], required: []string{} },
-	RoleDef{ name: 'treeitem', props: ['aria-expanded', 'aria-haspopup', 'aria-atomic', 'aria-busy',
-		'aria-controls', 'aria-current', 'aria-describedby', 'aria-details', 'aria-dropeffect',
-		'aria-flowto', 'aria-grabbed', 'aria-hidden', 'aria-keyshortcuts', 'aria-label',
-		'aria-labelledby', 'aria-live', 'aria-owns', 'aria-relevant', 'aria-roledescription',
-		'aria-level', 'aria-posinset', 'aria-setsize', 'aria-disabled', 'aria-checked', 'aria-selected'], required: ['aria-selected'] },
-	RoleDef{ name: 'doc-abstract', props: ['aria-disabled', 'aria-errormessage', 'aria-expanded',
-		'aria-haspopup', 'aria-invalid', 'aria-atomic', 'aria-busy', 'aria-controls', 'aria-current',
-		'aria-describedby', 'aria-details', 'aria-dropeffect', 'aria-flowto', 'aria-grabbed',
-		'aria-hidden', 'aria-keyshortcuts', 'aria-label', 'aria-labelledby', 'aria-live', 'aria-owns',
-		'aria-relevant', 'aria-roledescription'], required: []string{} },
-	RoleDef{ name: 'doc-acknowledgments', props: ['aria-disabled', 'aria-errormessage', 'aria-expanded',
-		'aria-haspopup', 'aria-invalid', 'aria-atomic', 'aria-busy', 'aria-controls', 'aria-current',
-		'aria-describedby', 'aria-details', 'aria-dropeffect', 'aria-flowto', 'aria-grabbed',
-		'aria-hidden', 'aria-keyshortcuts', 'aria-label', 'aria-labelledby', 'aria-live', 'aria-owns',
-		'aria-relevant', 'aria-roledescription'], required: []string{} },
-	RoleDef{ name: 'doc-afterword', props: ['aria-disabled', 'aria-errormessage', 'aria-expanded',
-		'aria-haspopup', 'aria-invalid', 'aria-atomic', 'aria-busy', 'aria-controls', 'aria-current',
-		'aria-describedby', 'aria-details', 'aria-dropeffect', 'aria-flowto', 'aria-grabbed',
-		'aria-hidden', 'aria-keyshortcuts', 'aria-label', 'aria-labelledby', 'aria-live', 'aria-owns',
-		'aria-relevant', 'aria-roledescription'], required: []string{} },
-	RoleDef{ name: 'doc-appendix', props: ['aria-disabled', 'aria-errormessage', 'aria-expanded',
-		'aria-haspopup', 'aria-invalid', 'aria-atomic', 'aria-busy', 'aria-controls', 'aria-current',
-		'aria-describedby', 'aria-details', 'aria-dropeffect', 'aria-flowto', 'aria-grabbed',
-		'aria-hidden', 'aria-keyshortcuts', 'aria-label', 'aria-labelledby', 'aria-live', 'aria-owns',
-		'aria-relevant', 'aria-roledescription'], required: []string{} },
-	RoleDef{ name: 'doc-backlink', props: ['aria-errormessage', 'aria-invalid', 'aria-atomic',
-		'aria-busy', 'aria-controls', 'aria-current', 'aria-describedby', 'aria-details',
-		'aria-dropeffect', 'aria-flowto', 'aria-grabbed', 'aria-hidden', 'aria-keyshortcuts',
-		'aria-label', 'aria-labelledby', 'aria-live', 'aria-owns', 'aria-relevant',
-		'aria-roledescription', 'aria-disabled', 'aria-expanded', 'aria-haspopup'], required: []string{} },
-	RoleDef{ name: 'doc-biblioentry', props: ['aria-disabled', 'aria-errormessage', 'aria-expanded',
-		'aria-haspopup', 'aria-invalid', 'aria-atomic', 'aria-busy', 'aria-controls', 'aria-current',
-		'aria-describedby', 'aria-details', 'aria-dropeffect', 'aria-flowto', 'aria-grabbed',
-		'aria-hidden', 'aria-keyshortcuts', 'aria-label', 'aria-labelledby', 'aria-live', 'aria-owns',
-		'aria-relevant', 'aria-roledescription', 'aria-level', 'aria-posinset', 'aria-setsize'], required: []string{} },
-	RoleDef{ name: 'doc-bibliography', props: ['aria-disabled', 'aria-errormessage', 'aria-expanded',
-		'aria-haspopup', 'aria-invalid', 'aria-atomic', 'aria-busy', 'aria-controls', 'aria-current',
-		'aria-describedby', 'aria-details', 'aria-dropeffect', 'aria-flowto', 'aria-grabbed',
-		'aria-hidden', 'aria-keyshortcuts', 'aria-label', 'aria-labelledby', 'aria-live', 'aria-owns',
-		'aria-relevant', 'aria-roledescription'], required: []string{} },
-	RoleDef{ name: 'doc-biblioref', props: ['aria-errormessage', 'aria-invalid', 'aria-atomic',
-		'aria-busy', 'aria-controls', 'aria-current', 'aria-describedby', 'aria-details',
-		'aria-dropeffect', 'aria-flowto', 'aria-grabbed', 'aria-hidden', 'aria-keyshortcuts',
-		'aria-label', 'aria-labelledby', 'aria-live', 'aria-owns', 'aria-relevant',
-		'aria-roledescription', 'aria-disabled', 'aria-expanded', 'aria-haspopup'], required: []string{} },
-	RoleDef{ name: 'doc-chapter', props: ['aria-disabled', 'aria-errormessage', 'aria-expanded',
-		'aria-haspopup', 'aria-invalid', 'aria-atomic', 'aria-busy', 'aria-controls', 'aria-current',
-		'aria-describedby', 'aria-details', 'aria-dropeffect', 'aria-flowto', 'aria-grabbed',
-		'aria-hidden', 'aria-keyshortcuts', 'aria-label', 'aria-labelledby', 'aria-live', 'aria-owns',
-		'aria-relevant', 'aria-roledescription'], required: []string{} },
-	RoleDef{ name: 'doc-colophon', props: ['aria-disabled', 'aria-errormessage', 'aria-expanded',
-		'aria-haspopup', 'aria-invalid', 'aria-atomic', 'aria-busy', 'aria-controls', 'aria-current',
-		'aria-describedby', 'aria-details', 'aria-dropeffect', 'aria-flowto', 'aria-grabbed',
-		'aria-hidden', 'aria-keyshortcuts', 'aria-label', 'aria-labelledby', 'aria-live', 'aria-owns',
-		'aria-relevant', 'aria-roledescription'], required: []string{} },
-	RoleDef{ name: 'doc-conclusion', props: ['aria-disabled', 'aria-errormessage', 'aria-expanded',
-		'aria-haspopup', 'aria-invalid', 'aria-atomic', 'aria-busy', 'aria-controls', 'aria-current',
-		'aria-describedby', 'aria-details', 'aria-dropeffect', 'aria-flowto', 'aria-grabbed',
-		'aria-hidden', 'aria-keyshortcuts', 'aria-label', 'aria-labelledby', 'aria-live', 'aria-owns',
-		'aria-relevant', 'aria-roledescription'], required: []string{} },
-	RoleDef{ name: 'doc-cover', props: ['aria-disabled', 'aria-errormessage', 'aria-expanded',
-		'aria-haspopup', 'aria-invalid', 'aria-atomic', 'aria-busy', 'aria-controls', 'aria-current',
-		'aria-describedby', 'aria-details', 'aria-dropeffect', 'aria-flowto', 'aria-grabbed',
-		'aria-hidden', 'aria-keyshortcuts', 'aria-label', 'aria-labelledby', 'aria-live', 'aria-owns',
-		'aria-relevant', 'aria-roledescription'], required: []string{} },
-	RoleDef{ name: 'doc-credit', props: ['aria-disabled', 'aria-errormessage', 'aria-expanded',
-		'aria-haspopup', 'aria-invalid', 'aria-atomic', 'aria-busy', 'aria-controls', 'aria-current',
-		'aria-describedby', 'aria-details', 'aria-dropeffect', 'aria-flowto', 'aria-grabbed',
-		'aria-hidden', 'aria-keyshortcuts', 'aria-label', 'aria-labelledby', 'aria-live', 'aria-owns',
-		'aria-relevant', 'aria-roledescription'], required: []string{} },
-	RoleDef{ name: 'doc-credits', props: ['aria-disabled', 'aria-errormessage', 'aria-expanded',
-		'aria-haspopup', 'aria-invalid', 'aria-atomic', 'aria-busy', 'aria-controls', 'aria-current',
-		'aria-describedby', 'aria-details', 'aria-dropeffect', 'aria-flowto', 'aria-grabbed',
-		'aria-hidden', 'aria-keyshortcuts', 'aria-label', 'aria-labelledby', 'aria-live', 'aria-owns',
-		'aria-relevant', 'aria-roledescription'], required: []string{} },
-	RoleDef{ name: 'doc-dedication', props: ['aria-disabled', 'aria-errormessage', 'aria-expanded',
-		'aria-haspopup', 'aria-invalid', 'aria-atomic', 'aria-busy', 'aria-controls', 'aria-current',
-		'aria-describedby', 'aria-details', 'aria-dropeffect', 'aria-flowto', 'aria-grabbed',
-		'aria-hidden', 'aria-keyshortcuts', 'aria-label', 'aria-labelledby', 'aria-live', 'aria-owns',
-		'aria-relevant', 'aria-roledescription'], required: []string{} },
-	RoleDef{ name: 'doc-endnote', props: ['aria-disabled', 'aria-errormessage', 'aria-expanded',
-		'aria-haspopup', 'aria-invalid', 'aria-atomic', 'aria-busy', 'aria-controls', 'aria-current',
-		'aria-describedby', 'aria-details', 'aria-dropeffect', 'aria-flowto', 'aria-grabbed',
-		'aria-hidden', 'aria-keyshortcuts', 'aria-label', 'aria-labelledby', 'aria-live', 'aria-owns',
-		'aria-relevant', 'aria-roledescription', 'aria-level', 'aria-posinset', 'aria-setsize'], required: []string{} },
-	RoleDef{ name: 'doc-endnotes', props: ['aria-disabled', 'aria-errormessage', 'aria-expanded',
-		'aria-haspopup', 'aria-invalid', 'aria-atomic', 'aria-busy', 'aria-controls', 'aria-current',
-		'aria-describedby', 'aria-details', 'aria-dropeffect', 'aria-flowto', 'aria-grabbed',
-		'aria-hidden', 'aria-keyshortcuts', 'aria-label', 'aria-labelledby', 'aria-live', 'aria-owns',
-		'aria-relevant', 'aria-roledescription'], required: []string{} },
-	RoleDef{ name: 'doc-epigraph', props: ['aria-disabled', 'aria-errormessage', 'aria-expanded',
-		'aria-haspopup', 'aria-invalid', 'aria-atomic', 'aria-busy', 'aria-controls', 'aria-current',
-		'aria-describedby', 'aria-details', 'aria-dropeffect', 'aria-flowto', 'aria-grabbed',
-		'aria-hidden', 'aria-keyshortcuts', 'aria-label', 'aria-labelledby', 'aria-live', 'aria-owns',
-		'aria-relevant', 'aria-roledescription'], required: []string{} },
-	RoleDef{ name: 'doc-epilogue', props: ['aria-disabled', 'aria-errormessage', 'aria-expanded',
-		'aria-haspopup', 'aria-invalid', 'aria-atomic', 'aria-busy', 'aria-controls', 'aria-current',
-		'aria-describedby', 'aria-details', 'aria-dropeffect', 'aria-flowto', 'aria-grabbed',
-		'aria-hidden', 'aria-keyshortcuts', 'aria-label', 'aria-labelledby', 'aria-live', 'aria-owns',
-		'aria-relevant', 'aria-roledescription'], required: []string{} },
-	RoleDef{ name: 'doc-errata', props: ['aria-disabled', 'aria-errormessage', 'aria-expanded',
-		'aria-haspopup', 'aria-invalid', 'aria-atomic', 'aria-busy', 'aria-controls', 'aria-current',
-		'aria-describedby', 'aria-details', 'aria-dropeffect', 'aria-flowto', 'aria-grabbed',
-		'aria-hidden', 'aria-keyshortcuts', 'aria-label', 'aria-labelledby', 'aria-live', 'aria-owns',
-		'aria-relevant', 'aria-roledescription'], required: []string{} },
-	RoleDef{ name: 'doc-example', props: ['aria-disabled', 'aria-errormessage', 'aria-expanded',
-		'aria-haspopup', 'aria-invalid', 'aria-atomic', 'aria-busy', 'aria-controls', 'aria-current',
-		'aria-describedby', 'aria-details', 'aria-dropeffect', 'aria-flowto', 'aria-grabbed',
-		'aria-hidden', 'aria-keyshortcuts', 'aria-label', 'aria-labelledby', 'aria-live', 'aria-owns',
-		'aria-relevant', 'aria-roledescription'], required: []string{} },
-	RoleDef{ name: 'doc-footnote', props: ['aria-disabled', 'aria-errormessage', 'aria-expanded',
-		'aria-haspopup', 'aria-invalid', 'aria-atomic', 'aria-busy', 'aria-controls', 'aria-current',
-		'aria-describedby', 'aria-details', 'aria-dropeffect', 'aria-flowto', 'aria-grabbed',
-		'aria-hidden', 'aria-keyshortcuts', 'aria-label', 'aria-labelledby', 'aria-live', 'aria-owns',
-		'aria-relevant', 'aria-roledescription'], required: []string{} },
-	RoleDef{ name: 'doc-foreword', props: ['aria-disabled', 'aria-errormessage', 'aria-expanded',
-		'aria-haspopup', 'aria-invalid', 'aria-atomic', 'aria-busy', 'aria-controls', 'aria-current',
-		'aria-describedby', 'aria-details', 'aria-dropeffect', 'aria-flowto', 'aria-grabbed',
-		'aria-hidden', 'aria-keyshortcuts', 'aria-label', 'aria-labelledby', 'aria-live', 'aria-owns',
-		'aria-relevant', 'aria-roledescription'], required: []string{} },
-	RoleDef{ name: 'doc-glossary', props: ['aria-disabled', 'aria-errormessage', 'aria-expanded',
-		'aria-haspopup', 'aria-invalid', 'aria-atomic', 'aria-busy', 'aria-controls', 'aria-current',
-		'aria-describedby', 'aria-details', 'aria-dropeffect', 'aria-flowto', 'aria-grabbed',
-		'aria-hidden', 'aria-keyshortcuts', 'aria-label', 'aria-labelledby', 'aria-live', 'aria-owns',
-		'aria-relevant', 'aria-roledescription'], required: []string{} },
-	RoleDef{ name: 'doc-glossref', props: ['aria-errormessage', 'aria-invalid', 'aria-atomic',
-		'aria-busy', 'aria-controls', 'aria-current', 'aria-describedby', 'aria-details',
-		'aria-dropeffect', 'aria-flowto', 'aria-grabbed', 'aria-hidden', 'aria-keyshortcuts',
-		'aria-label', 'aria-labelledby', 'aria-live', 'aria-owns', 'aria-relevant',
-		'aria-roledescription', 'aria-disabled', 'aria-expanded', 'aria-haspopup'], required: []string{} },
-	RoleDef{ name: 'doc-index', props: ['aria-disabled', 'aria-errormessage', 'aria-expanded',
-		'aria-haspopup', 'aria-invalid', 'aria-atomic', 'aria-busy', 'aria-controls', 'aria-current',
-		'aria-describedby', 'aria-details', 'aria-dropeffect', 'aria-flowto', 'aria-grabbed',
-		'aria-hidden', 'aria-keyshortcuts', 'aria-label', 'aria-labelledby', 'aria-live', 'aria-owns',
-		'aria-relevant', 'aria-roledescription'], required: []string{} },
-	RoleDef{ name: 'doc-introduction', props: ['aria-disabled', 'aria-errormessage', 'aria-expanded',
-		'aria-haspopup', 'aria-invalid', 'aria-atomic', 'aria-busy', 'aria-controls', 'aria-current',
-		'aria-describedby', 'aria-details', 'aria-dropeffect', 'aria-flowto', 'aria-grabbed',
-		'aria-hidden', 'aria-keyshortcuts', 'aria-label', 'aria-labelledby', 'aria-live', 'aria-owns',
-		'aria-relevant', 'aria-roledescription'], required: []string{} },
-	RoleDef{ name: 'doc-noteref', props: ['aria-errormessage', 'aria-invalid', 'aria-atomic',
-		'aria-busy', 'aria-controls', 'aria-current', 'aria-describedby', 'aria-details',
-		'aria-dropeffect', 'aria-flowto', 'aria-grabbed', 'aria-hidden', 'aria-keyshortcuts',
-		'aria-label', 'aria-labelledby', 'aria-live', 'aria-owns', 'aria-relevant',
-		'aria-roledescription', 'aria-disabled', 'aria-expanded', 'aria-haspopup'], required: []string{} },
-	RoleDef{ name: 'doc-notice', props: ['aria-disabled', 'aria-errormessage', 'aria-expanded',
-		'aria-haspopup', 'aria-invalid', 'aria-atomic', 'aria-busy', 'aria-controls', 'aria-current',
-		'aria-describedby', 'aria-details', 'aria-dropeffect', 'aria-flowto', 'aria-grabbed',
-		'aria-hidden', 'aria-keyshortcuts', 'aria-label', 'aria-labelledby', 'aria-live', 'aria-owns',
-		'aria-relevant', 'aria-roledescription'], required: []string{} },
-	RoleDef{ name: 'doc-pagebreak', props: ['aria-errormessage', 'aria-expanded', 'aria-haspopup',
-		'aria-invalid', 'aria-atomic', 'aria-busy', 'aria-controls', 'aria-current', 'aria-describedby',
-		'aria-details', 'aria-dropeffect', 'aria-flowto', 'aria-grabbed', 'aria-hidden',
-		'aria-keyshortcuts', 'aria-label', 'aria-labelledby', 'aria-live', 'aria-owns', 'aria-relevant',
-		'aria-roledescription', 'aria-disabled', 'aria-orientation', 'aria-valuemax', 'aria-valuemin',
-		'aria-valuenow', 'aria-valuetext'], required: []string{} },
-	RoleDef{ name: 'doc-pagefooter', props: ['aria-braillelabel', 'aria-brailleroledescription',
-		'aria-description', 'aria-disabled', 'aria-errormessage', 'aria-haspopup', 'aria-invalid',
-		'aria-atomic', 'aria-busy', 'aria-controls', 'aria-current', 'aria-describedby', 'aria-details',
-		'aria-dropeffect', 'aria-flowto', 'aria-grabbed', 'aria-hidden', 'aria-keyshortcuts',
-		'aria-label', 'aria-labelledby', 'aria-live', 'aria-owns', 'aria-relevant',
-		'aria-roledescription'], required: []string{} },
-	RoleDef{ name: 'doc-pageheader', props: ['aria-braillelabel', 'aria-brailleroledescription',
-		'aria-description', 'aria-disabled', 'aria-errormessage', 'aria-haspopup', 'aria-invalid',
-		'aria-atomic', 'aria-busy', 'aria-controls', 'aria-current', 'aria-describedby', 'aria-details',
-		'aria-dropeffect', 'aria-flowto', 'aria-grabbed', 'aria-hidden', 'aria-keyshortcuts',
-		'aria-label', 'aria-labelledby', 'aria-live', 'aria-owns', 'aria-relevant',
-		'aria-roledescription'], required: []string{} },
-	RoleDef{ name: 'doc-pagelist', props: ['aria-disabled', 'aria-errormessage', 'aria-expanded',
-		'aria-haspopup', 'aria-invalid', 'aria-atomic', 'aria-busy', 'aria-controls', 'aria-current',
-		'aria-describedby', 'aria-details', 'aria-dropeffect', 'aria-flowto', 'aria-grabbed',
-		'aria-hidden', 'aria-keyshortcuts', 'aria-label', 'aria-labelledby', 'aria-live', 'aria-owns',
-		'aria-relevant', 'aria-roledescription'], required: []string{} },
-	RoleDef{ name: 'doc-part', props: ['aria-disabled', 'aria-errormessage', 'aria-expanded',
-		'aria-haspopup', 'aria-invalid', 'aria-atomic', 'aria-busy', 'aria-controls', 'aria-current',
-		'aria-describedby', 'aria-details', 'aria-dropeffect', 'aria-flowto', 'aria-grabbed',
-		'aria-hidden', 'aria-keyshortcuts', 'aria-label', 'aria-labelledby', 'aria-live', 'aria-owns',
-		'aria-relevant', 'aria-roledescription'], required: []string{} },
-	RoleDef{ name: 'doc-preface', props: ['aria-disabled', 'aria-errormessage', 'aria-expanded',
-		'aria-haspopup', 'aria-invalid', 'aria-atomic', 'aria-busy', 'aria-controls', 'aria-current',
-		'aria-describedby', 'aria-details', 'aria-dropeffect', 'aria-flowto', 'aria-grabbed',
-		'aria-hidden', 'aria-keyshortcuts', 'aria-label', 'aria-labelledby', 'aria-live', 'aria-owns',
-		'aria-relevant', 'aria-roledescription'], required: []string{} },
-	RoleDef{ name: 'doc-prologue', props: ['aria-disabled', 'aria-errormessage', 'aria-expanded',
-		'aria-haspopup', 'aria-invalid', 'aria-atomic', 'aria-busy', 'aria-controls', 'aria-current',
-		'aria-describedby', 'aria-details', 'aria-dropeffect', 'aria-flowto', 'aria-grabbed',
-		'aria-hidden', 'aria-keyshortcuts', 'aria-label', 'aria-labelledby', 'aria-live', 'aria-owns',
-		'aria-relevant', 'aria-roledescription'], required: []string{} },
+	RoleDef{
+		name:     'note'
+		props:    ['aria-atomic', 'aria-busy', 'aria-controls', 'aria-current', 'aria-describedby',
+			'aria-details', 'aria-dropeffect', 'aria-flowto', 'aria-grabbed', 'aria-hidden',
+			'aria-keyshortcuts', 'aria-label', 'aria-labelledby', 'aria-live', 'aria-owns',
+			'aria-relevant', 'aria-roledescription']
+		required: []string{}
+	},
+	RoleDef{
+		name:     'option'
+		props:    ['aria-checked', 'aria-posinset', 'aria-setsize', 'aria-selected', 'aria-atomic',
+			'aria-busy', 'aria-controls', 'aria-current', 'aria-describedby', 'aria-details',
+			'aria-dropeffect', 'aria-flowto', 'aria-grabbed', 'aria-hidden', 'aria-keyshortcuts',
+			'aria-label', 'aria-labelledby', 'aria-live', 'aria-owns', 'aria-relevant',
+			'aria-roledescription', 'aria-disabled']
+		required: ['aria-selected']
+	},
+	RoleDef{
+		name:     'paragraph'
+		props:    ['aria-atomic', 'aria-busy', 'aria-controls', 'aria-current', 'aria-describedby',
+			'aria-details', 'aria-dropeffect', 'aria-flowto', 'aria-grabbed', 'aria-hidden',
+			'aria-keyshortcuts', 'aria-label', 'aria-labelledby', 'aria-live', 'aria-owns',
+			'aria-relevant', 'aria-roledescription']
+		required: []string{}
+	},
+	RoleDef{
+		name:     'presentation'
+		props:    ['aria-atomic', 'aria-busy', 'aria-controls', 'aria-current', 'aria-describedby',
+			'aria-details', 'aria-dropeffect', 'aria-flowto', 'aria-grabbed', 'aria-hidden',
+			'aria-keyshortcuts', 'aria-label', 'aria-labelledby', 'aria-live', 'aria-owns',
+			'aria-relevant', 'aria-roledescription']
+		required: []string{}
+	},
+	RoleDef{
+		name:     'progressbar'
+		props:    ['aria-valuetext', 'aria-atomic', 'aria-busy', 'aria-controls', 'aria-current',
+			'aria-describedby', 'aria-details', 'aria-dropeffect', 'aria-flowto', 'aria-grabbed',
+			'aria-hidden', 'aria-keyshortcuts', 'aria-label', 'aria-labelledby', 'aria-live',
+			'aria-owns', 'aria-relevant', 'aria-roledescription', 'aria-valuemax', 'aria-valuemin',
+			'aria-valuenow']
+		required: []string{}
+	},
+	RoleDef{
+		name:     'radio'
+		props:    ['aria-checked', 'aria-posinset', 'aria-setsize', 'aria-atomic', 'aria-busy',
+			'aria-controls', 'aria-current', 'aria-describedby', 'aria-details', 'aria-dropeffect',
+			'aria-flowto', 'aria-grabbed', 'aria-hidden', 'aria-keyshortcuts', 'aria-label',
+			'aria-labelledby', 'aria-live', 'aria-owns', 'aria-relevant', 'aria-roledescription',
+			'aria-disabled']
+		required: ['aria-checked']
+	},
+	RoleDef{
+		name:     'radiogroup'
+		props:    ['aria-errormessage', 'aria-invalid', 'aria-readonly', 'aria-required', 'aria-atomic',
+			'aria-busy', 'aria-controls', 'aria-current', 'aria-describedby', 'aria-details',
+			'aria-dropeffect', 'aria-flowto', 'aria-grabbed', 'aria-hidden', 'aria-keyshortcuts',
+			'aria-label', 'aria-labelledby', 'aria-live', 'aria-owns', 'aria-relevant',
+			'aria-roledescription', 'aria-activedescendant', 'aria-disabled', 'aria-orientation']
+		required: []string{}
+	},
+	RoleDef{
+		name:     'region'
+		props:    ['aria-atomic', 'aria-busy', 'aria-controls', 'aria-current', 'aria-describedby',
+			'aria-details', 'aria-dropeffect', 'aria-flowto', 'aria-grabbed', 'aria-hidden',
+			'aria-keyshortcuts', 'aria-label', 'aria-labelledby', 'aria-live', 'aria-owns',
+			'aria-relevant', 'aria-roledescription']
+		required: []string{}
+	},
+	RoleDef{
+		name:     'row'
+		props:    ['aria-colindex', 'aria-expanded', 'aria-level', 'aria-posinset', 'aria-rowindex',
+			'aria-selected', 'aria-setsize', 'aria-atomic', 'aria-busy', 'aria-controls', 'aria-current',
+			'aria-describedby', 'aria-details', 'aria-dropeffect', 'aria-flowto', 'aria-grabbed',
+			'aria-hidden', 'aria-keyshortcuts', 'aria-label', 'aria-labelledby', 'aria-live',
+			'aria-owns', 'aria-relevant', 'aria-roledescription', 'aria-activedescendant',
+			'aria-disabled']
+		required: []string{}
+	},
+	RoleDef{
+		name:     'rowgroup'
+		props:    ['aria-atomic', 'aria-busy', 'aria-controls', 'aria-current', 'aria-describedby',
+			'aria-details', 'aria-dropeffect', 'aria-flowto', 'aria-grabbed', 'aria-hidden',
+			'aria-keyshortcuts', 'aria-label', 'aria-labelledby', 'aria-live', 'aria-owns',
+			'aria-relevant', 'aria-roledescription']
+		required: []string{}
+	},
+	RoleDef{
+		name:     'rowheader'
+		props:    ['aria-sort', 'aria-atomic', 'aria-busy', 'aria-controls', 'aria-current',
+			'aria-describedby', 'aria-details', 'aria-dropeffect', 'aria-flowto', 'aria-grabbed',
+			'aria-hidden', 'aria-keyshortcuts', 'aria-label', 'aria-labelledby', 'aria-live',
+			'aria-owns', 'aria-relevant', 'aria-roledescription', 'aria-colindex', 'aria-colspan',
+			'aria-rowindex', 'aria-rowspan', 'aria-disabled', 'aria-errormessage', 'aria-expanded',
+			'aria-haspopup', 'aria-invalid', 'aria-readonly', 'aria-required', 'aria-selected']
+		required: []string{}
+	},
+	RoleDef{
+		name:     'scrollbar'
+		props:    ['aria-disabled', 'aria-valuetext', 'aria-orientation', 'aria-valuemax',
+			'aria-valuemin', 'aria-atomic', 'aria-busy', 'aria-controls', 'aria-current',
+			'aria-describedby', 'aria-details', 'aria-dropeffect', 'aria-flowto', 'aria-grabbed',
+			'aria-hidden', 'aria-keyshortcuts', 'aria-label', 'aria-labelledby', 'aria-live',
+			'aria-owns', 'aria-relevant', 'aria-roledescription', 'aria-valuenow']
+		required: ['aria-controls', 'aria-valuenow']
+	},
+	RoleDef{
+		name:     'search'
+		props:    ['aria-atomic', 'aria-busy', 'aria-controls', 'aria-current', 'aria-describedby',
+			'aria-details', 'aria-dropeffect', 'aria-flowto', 'aria-grabbed', 'aria-hidden',
+			'aria-keyshortcuts', 'aria-label', 'aria-labelledby', 'aria-live', 'aria-owns',
+			'aria-relevant', 'aria-roledescription']
+		required: []string{}
+	},
+	RoleDef{
+		name:     'searchbox'
+		props:    ['aria-atomic', 'aria-busy', 'aria-controls', 'aria-current', 'aria-describedby',
+			'aria-details', 'aria-dropeffect', 'aria-flowto', 'aria-grabbed', 'aria-hidden',
+			'aria-keyshortcuts', 'aria-label', 'aria-labelledby', 'aria-live', 'aria-owns',
+			'aria-relevant', 'aria-roledescription', 'aria-disabled', 'aria-activedescendant',
+			'aria-autocomplete', 'aria-errormessage', 'aria-haspopup', 'aria-invalid', 'aria-multiline',
+			'aria-placeholder', 'aria-readonly', 'aria-required']
+		required: []string{}
+	},
+	RoleDef{
+		name:     'separator'
+		props:    ['aria-disabled', 'aria-orientation', 'aria-valuemax', 'aria-valuemin',
+			'aria-valuenow', 'aria-valuetext', 'aria-atomic', 'aria-busy', 'aria-controls',
+			'aria-current', 'aria-describedby', 'aria-details', 'aria-dropeffect', 'aria-flowto',
+			'aria-grabbed', 'aria-hidden', 'aria-keyshortcuts', 'aria-label', 'aria-labelledby',
+			'aria-live', 'aria-owns', 'aria-relevant', 'aria-roledescription']
+		required: []string{}
+	},
+	RoleDef{
+		name:     'slider'
+		props:    ['aria-errormessage', 'aria-haspopup', 'aria-invalid', 'aria-readonly',
+			'aria-valuetext', 'aria-orientation', 'aria-valuemax', 'aria-valuemin', 'aria-atomic',
+			'aria-busy', 'aria-controls', 'aria-current', 'aria-describedby', 'aria-details',
+			'aria-dropeffect', 'aria-flowto', 'aria-grabbed', 'aria-hidden', 'aria-keyshortcuts',
+			'aria-label', 'aria-labelledby', 'aria-live', 'aria-owns', 'aria-relevant',
+			'aria-roledescription', 'aria-disabled', 'aria-valuenow']
+		required: ['aria-valuenow']
+	},
+	RoleDef{
+		name:     'spinbutton'
+		props:    ['aria-errormessage', 'aria-invalid', 'aria-readonly', 'aria-required',
+			'aria-valuetext', 'aria-valuenow', 'aria-atomic', 'aria-busy', 'aria-controls',
+			'aria-current', 'aria-describedby', 'aria-details', 'aria-dropeffect', 'aria-flowto',
+			'aria-grabbed', 'aria-hidden', 'aria-keyshortcuts', 'aria-label', 'aria-labelledby',
+			'aria-live', 'aria-owns', 'aria-relevant', 'aria-roledescription', 'aria-activedescendant',
+			'aria-disabled', 'aria-valuemax', 'aria-valuemin']
+		required: []string{}
+	},
+	RoleDef{
+		name:     'status'
+		props:    ['aria-atomic', 'aria-live', 'aria-busy', 'aria-controls', 'aria-current',
+			'aria-describedby', 'aria-details', 'aria-dropeffect', 'aria-flowto', 'aria-grabbed',
+			'aria-hidden', 'aria-keyshortcuts', 'aria-label', 'aria-labelledby', 'aria-owns',
+			'aria-relevant', 'aria-roledescription']
+		required: []string{}
+	},
+	RoleDef{
+		name:     'strong'
+		props:    ['aria-atomic', 'aria-busy', 'aria-controls', 'aria-current', 'aria-describedby',
+			'aria-details', 'aria-dropeffect', 'aria-flowto', 'aria-grabbed', 'aria-hidden',
+			'aria-keyshortcuts', 'aria-label', 'aria-labelledby', 'aria-live', 'aria-owns',
+			'aria-relevant', 'aria-roledescription']
+		required: []string{}
+	},
+	RoleDef{
+		name:     'subscript'
+		props:    ['aria-atomic', 'aria-busy', 'aria-controls', 'aria-current', 'aria-describedby',
+			'aria-details', 'aria-dropeffect', 'aria-flowto', 'aria-grabbed', 'aria-hidden',
+			'aria-keyshortcuts', 'aria-label', 'aria-labelledby', 'aria-live', 'aria-owns',
+			'aria-relevant', 'aria-roledescription']
+		required: []string{}
+	},
+	RoleDef{
+		name:     'superscript'
+		props:    ['aria-atomic', 'aria-busy', 'aria-controls', 'aria-current', 'aria-describedby',
+			'aria-details', 'aria-dropeffect', 'aria-flowto', 'aria-grabbed', 'aria-hidden',
+			'aria-keyshortcuts', 'aria-label', 'aria-labelledby', 'aria-live', 'aria-owns',
+			'aria-relevant', 'aria-roledescription']
+		required: []string{}
+	},
+	RoleDef{
+		name:     'switch'
+		props:    ['aria-atomic', 'aria-busy', 'aria-controls', 'aria-current', 'aria-describedby',
+			'aria-details', 'aria-dropeffect', 'aria-flowto', 'aria-grabbed', 'aria-hidden',
+			'aria-keyshortcuts', 'aria-label', 'aria-labelledby', 'aria-live', 'aria-owns',
+			'aria-relevant', 'aria-roledescription', 'aria-disabled', 'aria-checked',
+			'aria-errormessage', 'aria-expanded', 'aria-invalid', 'aria-readonly', 'aria-required']
+		required: ['aria-checked']
+	},
+	RoleDef{
+		name:     'tab'
+		props:    ['aria-disabled', 'aria-expanded', 'aria-haspopup', 'aria-posinset', 'aria-setsize',
+			'aria-selected', 'aria-atomic', 'aria-busy', 'aria-controls', 'aria-current',
+			'aria-describedby', 'aria-details', 'aria-dropeffect', 'aria-flowto', 'aria-grabbed',
+			'aria-hidden', 'aria-keyshortcuts', 'aria-label', 'aria-labelledby', 'aria-live',
+			'aria-owns', 'aria-relevant', 'aria-roledescription']
+		required: []string{}
+	},
+	RoleDef{
+		name:     'table'
+		props:    ['aria-colcount', 'aria-rowcount', 'aria-atomic', 'aria-busy', 'aria-controls',
+			'aria-current', 'aria-describedby', 'aria-details', 'aria-dropeffect', 'aria-flowto',
+			'aria-grabbed', 'aria-hidden', 'aria-keyshortcuts', 'aria-label', 'aria-labelledby',
+			'aria-live', 'aria-owns', 'aria-relevant', 'aria-roledescription']
+		required: []string{}
+	},
+	RoleDef{
+		name:     'tablist'
+		props:    ['aria-level', 'aria-multiselectable', 'aria-orientation', 'aria-atomic', 'aria-busy',
+			'aria-controls', 'aria-current', 'aria-describedby', 'aria-details', 'aria-dropeffect',
+			'aria-flowto', 'aria-grabbed', 'aria-hidden', 'aria-keyshortcuts', 'aria-label',
+			'aria-labelledby', 'aria-live', 'aria-owns', 'aria-relevant', 'aria-roledescription',
+			'aria-activedescendant', 'aria-disabled']
+		required: []string{}
+	},
+	RoleDef{
+		name:     'tabpanel'
+		props:    ['aria-atomic', 'aria-busy', 'aria-controls', 'aria-current', 'aria-describedby',
+			'aria-details', 'aria-dropeffect', 'aria-flowto', 'aria-grabbed', 'aria-hidden',
+			'aria-keyshortcuts', 'aria-label', 'aria-labelledby', 'aria-live', 'aria-owns',
+			'aria-relevant', 'aria-roledescription']
+		required: []string{}
+	},
+	RoleDef{
+		name:     'term'
+		props:    ['aria-atomic', 'aria-busy', 'aria-controls', 'aria-current', 'aria-describedby',
+			'aria-details', 'aria-dropeffect', 'aria-flowto', 'aria-grabbed', 'aria-hidden',
+			'aria-keyshortcuts', 'aria-label', 'aria-labelledby', 'aria-live', 'aria-owns',
+			'aria-relevant', 'aria-roledescription']
+		required: []string{}
+	},
+	RoleDef{
+		name:     'textbox'
+		props:    ['aria-activedescendant', 'aria-autocomplete', 'aria-errormessage', 'aria-haspopup',
+			'aria-invalid', 'aria-multiline', 'aria-placeholder', 'aria-readonly', 'aria-required',
+			'aria-atomic', 'aria-busy', 'aria-controls', 'aria-current', 'aria-describedby',
+			'aria-details', 'aria-dropeffect', 'aria-flowto', 'aria-grabbed', 'aria-hidden',
+			'aria-keyshortcuts', 'aria-label', 'aria-labelledby', 'aria-live', 'aria-owns',
+			'aria-relevant', 'aria-roledescription', 'aria-disabled']
+		required: []string{}
+	},
+	RoleDef{
+		name:     'time'
+		props:    ['aria-atomic', 'aria-busy', 'aria-controls', 'aria-current', 'aria-describedby',
+			'aria-details', 'aria-dropeffect', 'aria-flowto', 'aria-grabbed', 'aria-hidden',
+			'aria-keyshortcuts', 'aria-label', 'aria-labelledby', 'aria-live', 'aria-owns',
+			'aria-relevant', 'aria-roledescription']
+		required: []string{}
+	},
+	RoleDef{
+		name:     'timer'
+		props:    ['aria-atomic', 'aria-busy', 'aria-controls', 'aria-current', 'aria-describedby',
+			'aria-details', 'aria-dropeffect', 'aria-flowto', 'aria-grabbed', 'aria-hidden',
+			'aria-keyshortcuts', 'aria-label', 'aria-labelledby', 'aria-live', 'aria-owns',
+			'aria-relevant', 'aria-roledescription']
+		required: []string{}
+	},
+	RoleDef{
+		name:     'toolbar'
+		props:    ['aria-orientation', 'aria-atomic', 'aria-busy', 'aria-controls', 'aria-current',
+			'aria-describedby', 'aria-details', 'aria-dropeffect', 'aria-flowto', 'aria-grabbed',
+			'aria-hidden', 'aria-keyshortcuts', 'aria-label', 'aria-labelledby', 'aria-live',
+			'aria-owns', 'aria-relevant', 'aria-roledescription', 'aria-activedescendant',
+			'aria-disabled']
+		required: []string{}
+	},
+	RoleDef{
+		name:     'tooltip'
+		props:    ['aria-atomic', 'aria-busy', 'aria-controls', 'aria-current', 'aria-describedby',
+			'aria-details', 'aria-dropeffect', 'aria-flowto', 'aria-grabbed', 'aria-hidden',
+			'aria-keyshortcuts', 'aria-label', 'aria-labelledby', 'aria-live', 'aria-owns',
+			'aria-relevant', 'aria-roledescription']
+		required: []string{}
+	},
+	RoleDef{
+		name:     'tree'
+		props:    ['aria-errormessage', 'aria-invalid', 'aria-multiselectable', 'aria-required',
+			'aria-orientation', 'aria-atomic', 'aria-busy', 'aria-controls', 'aria-current',
+			'aria-describedby', 'aria-details', 'aria-dropeffect', 'aria-flowto', 'aria-grabbed',
+			'aria-hidden', 'aria-keyshortcuts', 'aria-label', 'aria-labelledby', 'aria-live',
+			'aria-owns', 'aria-relevant', 'aria-roledescription', 'aria-activedescendant',
+			'aria-disabled']
+		required: []string{}
+	},
+	RoleDef{
+		name:     'treegrid'
+		props:    ['aria-atomic', 'aria-busy', 'aria-controls', 'aria-current', 'aria-describedby',
+			'aria-details', 'aria-dropeffect', 'aria-flowto', 'aria-grabbed', 'aria-hidden',
+			'aria-keyshortcuts', 'aria-label', 'aria-labelledby', 'aria-live', 'aria-owns',
+			'aria-relevant', 'aria-roledescription', 'aria-activedescendant', 'aria-disabled',
+			'aria-multiselectable', 'aria-readonly', 'aria-colcount', 'aria-rowcount',
+			'aria-orientation', 'aria-errormessage', 'aria-invalid', 'aria-required']
+		required: []string{}
+	},
+	RoleDef{
+		name:     'treeitem'
+		props:    ['aria-expanded', 'aria-haspopup', 'aria-atomic', 'aria-busy', 'aria-controls',
+			'aria-current', 'aria-describedby', 'aria-details', 'aria-dropeffect', 'aria-flowto',
+			'aria-grabbed', 'aria-hidden', 'aria-keyshortcuts', 'aria-label', 'aria-labelledby',
+			'aria-live', 'aria-owns', 'aria-relevant', 'aria-roledescription', 'aria-level',
+			'aria-posinset', 'aria-setsize', 'aria-disabled', 'aria-checked', 'aria-selected']
+		required: ['aria-selected']
+	},
+	RoleDef{
+		name:     'doc-abstract'
+		props:    ['aria-disabled', 'aria-errormessage', 'aria-expanded', 'aria-haspopup',
+			'aria-invalid', 'aria-atomic', 'aria-busy', 'aria-controls', 'aria-current',
+			'aria-describedby', 'aria-details', 'aria-dropeffect', 'aria-flowto', 'aria-grabbed',
+			'aria-hidden', 'aria-keyshortcuts', 'aria-label', 'aria-labelledby', 'aria-live',
+			'aria-owns', 'aria-relevant', 'aria-roledescription']
+		required: []string{}
+	},
+	RoleDef{
+		name:     'doc-acknowledgments'
+		props:    ['aria-disabled', 'aria-errormessage', 'aria-expanded', 'aria-haspopup',
+			'aria-invalid', 'aria-atomic', 'aria-busy', 'aria-controls', 'aria-current',
+			'aria-describedby', 'aria-details', 'aria-dropeffect', 'aria-flowto', 'aria-grabbed',
+			'aria-hidden', 'aria-keyshortcuts', 'aria-label', 'aria-labelledby', 'aria-live',
+			'aria-owns', 'aria-relevant', 'aria-roledescription']
+		required: []string{}
+	},
+	RoleDef{
+		name:     'doc-afterword'
+		props:    ['aria-disabled', 'aria-errormessage', 'aria-expanded', 'aria-haspopup',
+			'aria-invalid', 'aria-atomic', 'aria-busy', 'aria-controls', 'aria-current',
+			'aria-describedby', 'aria-details', 'aria-dropeffect', 'aria-flowto', 'aria-grabbed',
+			'aria-hidden', 'aria-keyshortcuts', 'aria-label', 'aria-labelledby', 'aria-live',
+			'aria-owns', 'aria-relevant', 'aria-roledescription']
+		required: []string{}
+	},
+	RoleDef{
+		name:     'doc-appendix'
+		props:    ['aria-disabled', 'aria-errormessage', 'aria-expanded', 'aria-haspopup',
+			'aria-invalid', 'aria-atomic', 'aria-busy', 'aria-controls', 'aria-current',
+			'aria-describedby', 'aria-details', 'aria-dropeffect', 'aria-flowto', 'aria-grabbed',
+			'aria-hidden', 'aria-keyshortcuts', 'aria-label', 'aria-labelledby', 'aria-live',
+			'aria-owns', 'aria-relevant', 'aria-roledescription']
+		required: []string{}
+	},
+	RoleDef{
+		name:     'doc-backlink'
+		props:    ['aria-errormessage', 'aria-invalid', 'aria-atomic', 'aria-busy', 'aria-controls',
+			'aria-current', 'aria-describedby', 'aria-details', 'aria-dropeffect', 'aria-flowto',
+			'aria-grabbed', 'aria-hidden', 'aria-keyshortcuts', 'aria-label', 'aria-labelledby',
+			'aria-live', 'aria-owns', 'aria-relevant', 'aria-roledescription', 'aria-disabled',
+			'aria-expanded', 'aria-haspopup']
+		required: []string{}
+	},
+	RoleDef{
+		name:     'doc-biblioentry'
+		props:    ['aria-disabled', 'aria-errormessage', 'aria-expanded', 'aria-haspopup',
+			'aria-invalid', 'aria-atomic', 'aria-busy', 'aria-controls', 'aria-current',
+			'aria-describedby', 'aria-details', 'aria-dropeffect', 'aria-flowto', 'aria-grabbed',
+			'aria-hidden', 'aria-keyshortcuts', 'aria-label', 'aria-labelledby', 'aria-live',
+			'aria-owns', 'aria-relevant', 'aria-roledescription', 'aria-level', 'aria-posinset',
+			'aria-setsize']
+		required: []string{}
+	},
+	RoleDef{
+		name:     'doc-bibliography'
+		props:    ['aria-disabled', 'aria-errormessage', 'aria-expanded', 'aria-haspopup',
+			'aria-invalid', 'aria-atomic', 'aria-busy', 'aria-controls', 'aria-current',
+			'aria-describedby', 'aria-details', 'aria-dropeffect', 'aria-flowto', 'aria-grabbed',
+			'aria-hidden', 'aria-keyshortcuts', 'aria-label', 'aria-labelledby', 'aria-live',
+			'aria-owns', 'aria-relevant', 'aria-roledescription']
+		required: []string{}
+	},
+	RoleDef{
+		name:     'doc-biblioref'
+		props:    ['aria-errormessage', 'aria-invalid', 'aria-atomic', 'aria-busy', 'aria-controls',
+			'aria-current', 'aria-describedby', 'aria-details', 'aria-dropeffect', 'aria-flowto',
+			'aria-grabbed', 'aria-hidden', 'aria-keyshortcuts', 'aria-label', 'aria-labelledby',
+			'aria-live', 'aria-owns', 'aria-relevant', 'aria-roledescription', 'aria-disabled',
+			'aria-expanded', 'aria-haspopup']
+		required: []string{}
+	},
+	RoleDef{
+		name:     'doc-chapter'
+		props:    ['aria-disabled', 'aria-errormessage', 'aria-expanded', 'aria-haspopup',
+			'aria-invalid', 'aria-atomic', 'aria-busy', 'aria-controls', 'aria-current',
+			'aria-describedby', 'aria-details', 'aria-dropeffect', 'aria-flowto', 'aria-grabbed',
+			'aria-hidden', 'aria-keyshortcuts', 'aria-label', 'aria-labelledby', 'aria-live',
+			'aria-owns', 'aria-relevant', 'aria-roledescription']
+		required: []string{}
+	},
+	RoleDef{
+		name:     'doc-colophon'
+		props:    ['aria-disabled', 'aria-errormessage', 'aria-expanded', 'aria-haspopup',
+			'aria-invalid', 'aria-atomic', 'aria-busy', 'aria-controls', 'aria-current',
+			'aria-describedby', 'aria-details', 'aria-dropeffect', 'aria-flowto', 'aria-grabbed',
+			'aria-hidden', 'aria-keyshortcuts', 'aria-label', 'aria-labelledby', 'aria-live',
+			'aria-owns', 'aria-relevant', 'aria-roledescription']
+		required: []string{}
+	},
+	RoleDef{
+		name:     'doc-conclusion'
+		props:    ['aria-disabled', 'aria-errormessage', 'aria-expanded', 'aria-haspopup',
+			'aria-invalid', 'aria-atomic', 'aria-busy', 'aria-controls', 'aria-current',
+			'aria-describedby', 'aria-details', 'aria-dropeffect', 'aria-flowto', 'aria-grabbed',
+			'aria-hidden', 'aria-keyshortcuts', 'aria-label', 'aria-labelledby', 'aria-live',
+			'aria-owns', 'aria-relevant', 'aria-roledescription']
+		required: []string{}
+	},
+	RoleDef{
+		name:     'doc-cover'
+		props:    ['aria-disabled', 'aria-errormessage', 'aria-expanded', 'aria-haspopup',
+			'aria-invalid', 'aria-atomic', 'aria-busy', 'aria-controls', 'aria-current',
+			'aria-describedby', 'aria-details', 'aria-dropeffect', 'aria-flowto', 'aria-grabbed',
+			'aria-hidden', 'aria-keyshortcuts', 'aria-label', 'aria-labelledby', 'aria-live',
+			'aria-owns', 'aria-relevant', 'aria-roledescription']
+		required: []string{}
+	},
+	RoleDef{
+		name:     'doc-credit'
+		props:    ['aria-disabled', 'aria-errormessage', 'aria-expanded', 'aria-haspopup',
+			'aria-invalid', 'aria-atomic', 'aria-busy', 'aria-controls', 'aria-current',
+			'aria-describedby', 'aria-details', 'aria-dropeffect', 'aria-flowto', 'aria-grabbed',
+			'aria-hidden', 'aria-keyshortcuts', 'aria-label', 'aria-labelledby', 'aria-live',
+			'aria-owns', 'aria-relevant', 'aria-roledescription']
+		required: []string{}
+	},
+	RoleDef{
+		name:     'doc-credits'
+		props:    ['aria-disabled', 'aria-errormessage', 'aria-expanded', 'aria-haspopup',
+			'aria-invalid', 'aria-atomic', 'aria-busy', 'aria-controls', 'aria-current',
+			'aria-describedby', 'aria-details', 'aria-dropeffect', 'aria-flowto', 'aria-grabbed',
+			'aria-hidden', 'aria-keyshortcuts', 'aria-label', 'aria-labelledby', 'aria-live',
+			'aria-owns', 'aria-relevant', 'aria-roledescription']
+		required: []string{}
+	},
+	RoleDef{
+		name:     'doc-dedication'
+		props:    ['aria-disabled', 'aria-errormessage', 'aria-expanded', 'aria-haspopup',
+			'aria-invalid', 'aria-atomic', 'aria-busy', 'aria-controls', 'aria-current',
+			'aria-describedby', 'aria-details', 'aria-dropeffect', 'aria-flowto', 'aria-grabbed',
+			'aria-hidden', 'aria-keyshortcuts', 'aria-label', 'aria-labelledby', 'aria-live',
+			'aria-owns', 'aria-relevant', 'aria-roledescription']
+		required: []string{}
+	},
+	RoleDef{
+		name:     'doc-endnote'
+		props:    ['aria-disabled', 'aria-errormessage', 'aria-expanded', 'aria-haspopup',
+			'aria-invalid', 'aria-atomic', 'aria-busy', 'aria-controls', 'aria-current',
+			'aria-describedby', 'aria-details', 'aria-dropeffect', 'aria-flowto', 'aria-grabbed',
+			'aria-hidden', 'aria-keyshortcuts', 'aria-label', 'aria-labelledby', 'aria-live',
+			'aria-owns', 'aria-relevant', 'aria-roledescription', 'aria-level', 'aria-posinset',
+			'aria-setsize']
+		required: []string{}
+	},
+	RoleDef{
+		name:     'doc-endnotes'
+		props:    ['aria-disabled', 'aria-errormessage', 'aria-expanded', 'aria-haspopup',
+			'aria-invalid', 'aria-atomic', 'aria-busy', 'aria-controls', 'aria-current',
+			'aria-describedby', 'aria-details', 'aria-dropeffect', 'aria-flowto', 'aria-grabbed',
+			'aria-hidden', 'aria-keyshortcuts', 'aria-label', 'aria-labelledby', 'aria-live',
+			'aria-owns', 'aria-relevant', 'aria-roledescription']
+		required: []string{}
+	},
+	RoleDef{
+		name:     'doc-epigraph'
+		props:    ['aria-disabled', 'aria-errormessage', 'aria-expanded', 'aria-haspopup',
+			'aria-invalid', 'aria-atomic', 'aria-busy', 'aria-controls', 'aria-current',
+			'aria-describedby', 'aria-details', 'aria-dropeffect', 'aria-flowto', 'aria-grabbed',
+			'aria-hidden', 'aria-keyshortcuts', 'aria-label', 'aria-labelledby', 'aria-live',
+			'aria-owns', 'aria-relevant', 'aria-roledescription']
+		required: []string{}
+	},
+	RoleDef{
+		name:     'doc-epilogue'
+		props:    ['aria-disabled', 'aria-errormessage', 'aria-expanded', 'aria-haspopup',
+			'aria-invalid', 'aria-atomic', 'aria-busy', 'aria-controls', 'aria-current',
+			'aria-describedby', 'aria-details', 'aria-dropeffect', 'aria-flowto', 'aria-grabbed',
+			'aria-hidden', 'aria-keyshortcuts', 'aria-label', 'aria-labelledby', 'aria-live',
+			'aria-owns', 'aria-relevant', 'aria-roledescription']
+		required: []string{}
+	},
+	RoleDef{
+		name:     'doc-errata'
+		props:    ['aria-disabled', 'aria-errormessage', 'aria-expanded', 'aria-haspopup',
+			'aria-invalid', 'aria-atomic', 'aria-busy', 'aria-controls', 'aria-current',
+			'aria-describedby', 'aria-details', 'aria-dropeffect', 'aria-flowto', 'aria-grabbed',
+			'aria-hidden', 'aria-keyshortcuts', 'aria-label', 'aria-labelledby', 'aria-live',
+			'aria-owns', 'aria-relevant', 'aria-roledescription']
+		required: []string{}
+	},
+	RoleDef{
+		name:     'doc-example'
+		props:    ['aria-disabled', 'aria-errormessage', 'aria-expanded', 'aria-haspopup',
+			'aria-invalid', 'aria-atomic', 'aria-busy', 'aria-controls', 'aria-current',
+			'aria-describedby', 'aria-details', 'aria-dropeffect', 'aria-flowto', 'aria-grabbed',
+			'aria-hidden', 'aria-keyshortcuts', 'aria-label', 'aria-labelledby', 'aria-live',
+			'aria-owns', 'aria-relevant', 'aria-roledescription']
+		required: []string{}
+	},
+	RoleDef{
+		name:     'doc-footnote'
+		props:    ['aria-disabled', 'aria-errormessage', 'aria-expanded', 'aria-haspopup',
+			'aria-invalid', 'aria-atomic', 'aria-busy', 'aria-controls', 'aria-current',
+			'aria-describedby', 'aria-details', 'aria-dropeffect', 'aria-flowto', 'aria-grabbed',
+			'aria-hidden', 'aria-keyshortcuts', 'aria-label', 'aria-labelledby', 'aria-live',
+			'aria-owns', 'aria-relevant', 'aria-roledescription']
+		required: []string{}
+	},
+	RoleDef{
+		name:     'doc-foreword'
+		props:    ['aria-disabled', 'aria-errormessage', 'aria-expanded', 'aria-haspopup',
+			'aria-invalid', 'aria-atomic', 'aria-busy', 'aria-controls', 'aria-current',
+			'aria-describedby', 'aria-details', 'aria-dropeffect', 'aria-flowto', 'aria-grabbed',
+			'aria-hidden', 'aria-keyshortcuts', 'aria-label', 'aria-labelledby', 'aria-live',
+			'aria-owns', 'aria-relevant', 'aria-roledescription']
+		required: []string{}
+	},
+	RoleDef{
+		name:     'doc-glossary'
+		props:    ['aria-disabled', 'aria-errormessage', 'aria-expanded', 'aria-haspopup',
+			'aria-invalid', 'aria-atomic', 'aria-busy', 'aria-controls', 'aria-current',
+			'aria-describedby', 'aria-details', 'aria-dropeffect', 'aria-flowto', 'aria-grabbed',
+			'aria-hidden', 'aria-keyshortcuts', 'aria-label', 'aria-labelledby', 'aria-live',
+			'aria-owns', 'aria-relevant', 'aria-roledescription']
+		required: []string{}
+	},
+	RoleDef{
+		name:     'doc-glossref'
+		props:    ['aria-errormessage', 'aria-invalid', 'aria-atomic', 'aria-busy', 'aria-controls',
+			'aria-current', 'aria-describedby', 'aria-details', 'aria-dropeffect', 'aria-flowto',
+			'aria-grabbed', 'aria-hidden', 'aria-keyshortcuts', 'aria-label', 'aria-labelledby',
+			'aria-live', 'aria-owns', 'aria-relevant', 'aria-roledescription', 'aria-disabled',
+			'aria-expanded', 'aria-haspopup']
+		required: []string{}
+	},
+	RoleDef{
+		name:     'doc-index'
+		props:    ['aria-disabled', 'aria-errormessage', 'aria-expanded', 'aria-haspopup',
+			'aria-invalid', 'aria-atomic', 'aria-busy', 'aria-controls', 'aria-current',
+			'aria-describedby', 'aria-details', 'aria-dropeffect', 'aria-flowto', 'aria-grabbed',
+			'aria-hidden', 'aria-keyshortcuts', 'aria-label', 'aria-labelledby', 'aria-live',
+			'aria-owns', 'aria-relevant', 'aria-roledescription']
+		required: []string{}
+	},
+	RoleDef{
+		name:     'doc-introduction'
+		props:    ['aria-disabled', 'aria-errormessage', 'aria-expanded', 'aria-haspopup',
+			'aria-invalid', 'aria-atomic', 'aria-busy', 'aria-controls', 'aria-current',
+			'aria-describedby', 'aria-details', 'aria-dropeffect', 'aria-flowto', 'aria-grabbed',
+			'aria-hidden', 'aria-keyshortcuts', 'aria-label', 'aria-labelledby', 'aria-live',
+			'aria-owns', 'aria-relevant', 'aria-roledescription']
+		required: []string{}
+	},
+	RoleDef{
+		name:     'doc-noteref'
+		props:    ['aria-errormessage', 'aria-invalid', 'aria-atomic', 'aria-busy', 'aria-controls',
+			'aria-current', 'aria-describedby', 'aria-details', 'aria-dropeffect', 'aria-flowto',
+			'aria-grabbed', 'aria-hidden', 'aria-keyshortcuts', 'aria-label', 'aria-labelledby',
+			'aria-live', 'aria-owns', 'aria-relevant', 'aria-roledescription', 'aria-disabled',
+			'aria-expanded', 'aria-haspopup']
+		required: []string{}
+	},
+	RoleDef{
+		name:     'doc-notice'
+		props:    ['aria-disabled', 'aria-errormessage', 'aria-expanded', 'aria-haspopup',
+			'aria-invalid', 'aria-atomic', 'aria-busy', 'aria-controls', 'aria-current',
+			'aria-describedby', 'aria-details', 'aria-dropeffect', 'aria-flowto', 'aria-grabbed',
+			'aria-hidden', 'aria-keyshortcuts', 'aria-label', 'aria-labelledby', 'aria-live',
+			'aria-owns', 'aria-relevant', 'aria-roledescription']
+		required: []string{}
+	},
+	RoleDef{
+		name:     'doc-pagebreak'
+		props:    ['aria-errormessage', 'aria-expanded', 'aria-haspopup', 'aria-invalid', 'aria-atomic',
+			'aria-busy', 'aria-controls', 'aria-current', 'aria-describedby', 'aria-details',
+			'aria-dropeffect', 'aria-flowto', 'aria-grabbed', 'aria-hidden', 'aria-keyshortcuts',
+			'aria-label', 'aria-labelledby', 'aria-live', 'aria-owns', 'aria-relevant',
+			'aria-roledescription', 'aria-disabled', 'aria-orientation', 'aria-valuemax',
+			'aria-valuemin', 'aria-valuenow', 'aria-valuetext']
+		required: []string{}
+	},
+	RoleDef{
+		name:     'doc-pagefooter'
+		props:    ['aria-braillelabel', 'aria-brailleroledescription', 'aria-description',
+			'aria-disabled', 'aria-errormessage', 'aria-haspopup', 'aria-invalid', 'aria-atomic',
+			'aria-busy', 'aria-controls', 'aria-current', 'aria-describedby', 'aria-details',
+			'aria-dropeffect', 'aria-flowto', 'aria-grabbed', 'aria-hidden', 'aria-keyshortcuts',
+			'aria-label', 'aria-labelledby', 'aria-live', 'aria-owns', 'aria-relevant',
+			'aria-roledescription']
+		required: []string{}
+	},
+	RoleDef{
+		name:     'doc-pageheader'
+		props:    ['aria-braillelabel', 'aria-brailleroledescription', 'aria-description',
+			'aria-disabled', 'aria-errormessage', 'aria-haspopup', 'aria-invalid', 'aria-atomic',
+			'aria-busy', 'aria-controls', 'aria-current', 'aria-describedby', 'aria-details',
+			'aria-dropeffect', 'aria-flowto', 'aria-grabbed', 'aria-hidden', 'aria-keyshortcuts',
+			'aria-label', 'aria-labelledby', 'aria-live', 'aria-owns', 'aria-relevant',
+			'aria-roledescription']
+		required: []string{}
+	},
+	RoleDef{
+		name:     'doc-pagelist'
+		props:    ['aria-disabled', 'aria-errormessage', 'aria-expanded', 'aria-haspopup',
+			'aria-invalid', 'aria-atomic', 'aria-busy', 'aria-controls', 'aria-current',
+			'aria-describedby', 'aria-details', 'aria-dropeffect', 'aria-flowto', 'aria-grabbed',
+			'aria-hidden', 'aria-keyshortcuts', 'aria-label', 'aria-labelledby', 'aria-live',
+			'aria-owns', 'aria-relevant', 'aria-roledescription']
+		required: []string{}
+	},
+	RoleDef{
+		name:     'doc-part'
+		props:    ['aria-disabled', 'aria-errormessage', 'aria-expanded', 'aria-haspopup',
+			'aria-invalid', 'aria-atomic', 'aria-busy', 'aria-controls', 'aria-current',
+			'aria-describedby', 'aria-details', 'aria-dropeffect', 'aria-flowto', 'aria-grabbed',
+			'aria-hidden', 'aria-keyshortcuts', 'aria-label', 'aria-labelledby', 'aria-live',
+			'aria-owns', 'aria-relevant', 'aria-roledescription']
+		required: []string{}
+	},
+	RoleDef{
+		name:     'doc-preface'
+		props:    ['aria-disabled', 'aria-errormessage', 'aria-expanded', 'aria-haspopup',
+			'aria-invalid', 'aria-atomic', 'aria-busy', 'aria-controls', 'aria-current',
+			'aria-describedby', 'aria-details', 'aria-dropeffect', 'aria-flowto', 'aria-grabbed',
+			'aria-hidden', 'aria-keyshortcuts', 'aria-label', 'aria-labelledby', 'aria-live',
+			'aria-owns', 'aria-relevant', 'aria-roledescription']
+		required: []string{}
+	},
+	RoleDef{
+		name:     'doc-prologue'
+		props:    ['aria-disabled', 'aria-errormessage', 'aria-expanded', 'aria-haspopup',
+			'aria-invalid', 'aria-atomic', 'aria-busy', 'aria-controls', 'aria-current',
+			'aria-describedby', 'aria-details', 'aria-dropeffect', 'aria-flowto', 'aria-grabbed',
+			'aria-hidden', 'aria-keyshortcuts', 'aria-label', 'aria-labelledby', 'aria-live',
+			'aria-owns', 'aria-relevant', 'aria-roledescription']
+		required: []string{}
+	},
 	RoleDef{ name: 'doc-pullquote', props: []string{}, required: []string{} },
-	RoleDef{ name: 'doc-qna', props: ['aria-disabled', 'aria-errormessage', 'aria-expanded',
-		'aria-haspopup', 'aria-invalid', 'aria-atomic', 'aria-busy', 'aria-controls', 'aria-current',
-		'aria-describedby', 'aria-details', 'aria-dropeffect', 'aria-flowto', 'aria-grabbed',
-		'aria-hidden', 'aria-keyshortcuts', 'aria-label', 'aria-labelledby', 'aria-live', 'aria-owns',
-		'aria-relevant', 'aria-roledescription'], required: []string{} },
-	RoleDef{ name: 'doc-subtitle', props: ['aria-disabled', 'aria-errormessage', 'aria-expanded',
-		'aria-haspopup', 'aria-invalid', 'aria-atomic', 'aria-busy', 'aria-controls', 'aria-current',
-		'aria-describedby', 'aria-details', 'aria-dropeffect', 'aria-flowto', 'aria-grabbed',
-		'aria-hidden', 'aria-keyshortcuts', 'aria-label', 'aria-labelledby', 'aria-live', 'aria-owns',
-		'aria-relevant', 'aria-roledescription'], required: []string{} },
-	RoleDef{ name: 'doc-tip', props: ['aria-disabled', 'aria-errormessage', 'aria-expanded',
-		'aria-haspopup', 'aria-invalid', 'aria-atomic', 'aria-busy', 'aria-controls', 'aria-current',
-		'aria-describedby', 'aria-details', 'aria-dropeffect', 'aria-flowto', 'aria-grabbed',
-		'aria-hidden', 'aria-keyshortcuts', 'aria-label', 'aria-labelledby', 'aria-live', 'aria-owns',
-		'aria-relevant', 'aria-roledescription'], required: []string{} },
-	RoleDef{ name: 'doc-toc', props: ['aria-disabled', 'aria-errormessage', 'aria-expanded',
-		'aria-haspopup', 'aria-invalid', 'aria-atomic', 'aria-busy', 'aria-controls', 'aria-current',
-		'aria-describedby', 'aria-details', 'aria-dropeffect', 'aria-flowto', 'aria-grabbed',
-		'aria-hidden', 'aria-keyshortcuts', 'aria-label', 'aria-labelledby', 'aria-live', 'aria-owns',
-		'aria-relevant', 'aria-roledescription'], required: []string{} },
-	RoleDef{ name: 'graphics-document', props: ['aria-disabled', 'aria-errormessage', 'aria-expanded',
-		'aria-haspopup', 'aria-invalid', 'aria-atomic', 'aria-busy', 'aria-controls', 'aria-current',
-		'aria-describedby', 'aria-details', 'aria-dropeffect', 'aria-flowto', 'aria-grabbed',
-		'aria-hidden', 'aria-keyshortcuts', 'aria-label', 'aria-labelledby', 'aria-live', 'aria-owns',
-		'aria-relevant', 'aria-roledescription'], required: []string{} },
-	RoleDef{ name: 'graphics-object', props: ['aria-errormessage', 'aria-expanded', 'aria-haspopup',
-		'aria-invalid', 'aria-atomic', 'aria-busy', 'aria-controls', 'aria-current', 'aria-describedby',
-		'aria-details', 'aria-dropeffect', 'aria-flowto', 'aria-grabbed', 'aria-hidden',
-		'aria-keyshortcuts', 'aria-label', 'aria-labelledby', 'aria-live', 'aria-owns', 'aria-relevant',
-		'aria-roledescription', 'aria-activedescendant', 'aria-disabled'], required: []string{} },
-	RoleDef{ name: 'graphics-symbol', props: ['aria-disabled', 'aria-errormessage', 'aria-expanded',
-		'aria-haspopup', 'aria-invalid', 'aria-atomic', 'aria-busy', 'aria-controls', 'aria-current',
-		'aria-describedby', 'aria-details', 'aria-dropeffect', 'aria-flowto', 'aria-grabbed',
-		'aria-hidden', 'aria-keyshortcuts', 'aria-label', 'aria-labelledby', 'aria-live', 'aria-owns',
-		'aria-relevant', 'aria-roledescription'], required: []string{} },
+	RoleDef{
+		name:     'doc-qna'
+		props:    ['aria-disabled', 'aria-errormessage', 'aria-expanded', 'aria-haspopup',
+			'aria-invalid', 'aria-atomic', 'aria-busy', 'aria-controls', 'aria-current',
+			'aria-describedby', 'aria-details', 'aria-dropeffect', 'aria-flowto', 'aria-grabbed',
+			'aria-hidden', 'aria-keyshortcuts', 'aria-label', 'aria-labelledby', 'aria-live',
+			'aria-owns', 'aria-relevant', 'aria-roledescription']
+		required: []string{}
+	},
+	RoleDef{
+		name:     'doc-subtitle'
+		props:    ['aria-disabled', 'aria-errormessage', 'aria-expanded', 'aria-haspopup',
+			'aria-invalid', 'aria-atomic', 'aria-busy', 'aria-controls', 'aria-current',
+			'aria-describedby', 'aria-details', 'aria-dropeffect', 'aria-flowto', 'aria-grabbed',
+			'aria-hidden', 'aria-keyshortcuts', 'aria-label', 'aria-labelledby', 'aria-live',
+			'aria-owns', 'aria-relevant', 'aria-roledescription']
+		required: []string{}
+	},
+	RoleDef{
+		name:     'doc-tip'
+		props:    ['aria-disabled', 'aria-errormessage', 'aria-expanded', 'aria-haspopup',
+			'aria-invalid', 'aria-atomic', 'aria-busy', 'aria-controls', 'aria-current',
+			'aria-describedby', 'aria-details', 'aria-dropeffect', 'aria-flowto', 'aria-grabbed',
+			'aria-hidden', 'aria-keyshortcuts', 'aria-label', 'aria-labelledby', 'aria-live',
+			'aria-owns', 'aria-relevant', 'aria-roledescription']
+		required: []string{}
+	},
+	RoleDef{
+		name:     'doc-toc'
+		props:    ['aria-disabled', 'aria-errormessage', 'aria-expanded', 'aria-haspopup',
+			'aria-invalid', 'aria-atomic', 'aria-busy', 'aria-controls', 'aria-current',
+			'aria-describedby', 'aria-details', 'aria-dropeffect', 'aria-flowto', 'aria-grabbed',
+			'aria-hidden', 'aria-keyshortcuts', 'aria-label', 'aria-labelledby', 'aria-live',
+			'aria-owns', 'aria-relevant', 'aria-roledescription']
+		required: []string{}
+	},
+	RoleDef{
+		name:     'graphics-document'
+		props:    ['aria-disabled', 'aria-errormessage', 'aria-expanded', 'aria-haspopup',
+			'aria-invalid', 'aria-atomic', 'aria-busy', 'aria-controls', 'aria-current',
+			'aria-describedby', 'aria-details', 'aria-dropeffect', 'aria-flowto', 'aria-grabbed',
+			'aria-hidden', 'aria-keyshortcuts', 'aria-label', 'aria-labelledby', 'aria-live',
+			'aria-owns', 'aria-relevant', 'aria-roledescription']
+		required: []string{}
+	},
+	RoleDef{
+		name:     'graphics-object'
+		props:    ['aria-errormessage', 'aria-expanded', 'aria-haspopup', 'aria-invalid', 'aria-atomic',
+			'aria-busy', 'aria-controls', 'aria-current', 'aria-describedby', 'aria-details',
+			'aria-dropeffect', 'aria-flowto', 'aria-grabbed', 'aria-hidden', 'aria-keyshortcuts',
+			'aria-label', 'aria-labelledby', 'aria-live', 'aria-owns', 'aria-relevant',
+			'aria-roledescription', 'aria-activedescendant', 'aria-disabled']
+		required: []string{}
+	},
+	RoleDef{
+		name:     'graphics-symbol'
+		props:    ['aria-disabled', 'aria-errormessage', 'aria-expanded', 'aria-haspopup',
+			'aria-invalid', 'aria-atomic', 'aria-busy', 'aria-controls', 'aria-current',
+			'aria-describedby', 'aria-details', 'aria-dropeffect', 'aria-flowto', 'aria-grabbed',
+			'aria-hidden', 'aria-keyshortcuts', 'aria-label', 'aria-labelledby', 'aria-live',
+			'aria-owns', 'aria-relevant', 'aria-roledescription']
+		required: []string{}
+	},
 ]
 
 // ElementAx is an entry of axobject-query's elementAXObjects: an element schema and the roles
@@ -3193,20 +4039,29 @@ const element_ax_objects = [
 	ElementAx{ schema: Schema{ name: 'button', has_attributes: false, attributes: []SchemaAttr{} }, roles: ['button'] },
 	ElementAx{ schema: Schema{ name: 'canvas', has_attributes: false, attributes: []SchemaAttr{} }, roles: []string{} },
 	ElementAx{ schema: Schema{ name: 'caption', has_attributes: false, attributes: []SchemaAttr{} }, roles: []string{} },
-	ElementAx{ schema: Schema{ name: 'td', has_attributes: false, attributes: []SchemaAttr{} }, roles: [
-		'cell',
-		'gridcell',
-	] },
-	ElementAx{ schema: Schema{ name: 'input', has_attributes: true, attributes: [SchemaAttr{ name: 'type', has_value: true, value: 'checkbox' }] }, roles: [
-		'checkbox',
-		'switch',
-	] },
+	ElementAx{
+		schema: Schema{ name: 'td', has_attributes: false, attributes: []SchemaAttr{} }
+		roles:  [
+			'cell',
+			'gridcell',
+		]
+	},
+	ElementAx{
+		schema: Schema{ name: 'input', has_attributes: true, attributes: [SchemaAttr{ name: 'type', has_value: true, value: 'checkbox' }] }
+		roles:  [
+			'checkbox',
+			'switch',
+		]
+	},
 	ElementAx{ schema: Schema{ name: 'input', has_attributes: true, attributes: [SchemaAttr{ name: 'type', has_value: true, value: 'color' }] }, roles: []string{} },
 	ElementAx{ schema: Schema{ name: 'th', has_attributes: false, attributes: []SchemaAttr{} }, roles: ['columnheader'] },
-	ElementAx{ schema: Schema{ name: 'select', has_attributes: false, attributes: []SchemaAttr{} }, roles: [
-		'combobox',
-		'listbox',
-	] },
+	ElementAx{
+		schema: Schema{ name: 'select', has_attributes: false, attributes: []SchemaAttr{} }
+		roles:  [
+			'combobox',
+			'listbox',
+		]
+	},
 	ElementAx{ schema: Schema{ name: 'input', has_attributes: true, attributes: [SchemaAttr{ name: 'type', has_value: true, value: 'date' }] }, roles: []string{} },
 	ElementAx{ schema: Schema{ name: 'input', has_attributes: true, attributes: [SchemaAttr{ name: 'type', has_value: true, value: 'datetime' }] }, roles: []string{} },
 	ElementAx{ schema: Schema{ name: 'dfn', has_attributes: false, attributes: []SchemaAttr{} }, roles: []string{} },

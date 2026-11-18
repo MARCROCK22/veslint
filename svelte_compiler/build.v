@@ -65,6 +65,27 @@ mut:
 	// opaque: inside an import or `export default`/`export *` declaration, whose children
 	// remove_typescript_nodes does not visit (no TypeScript error comes from them).
 	opaque int
+	// parse_errs: the errors of the parse phase found while building (the first in the source
+	// wins, as the parser stops at it); ts_err: the first error of remove_typescript_nodes
+	// (which runs after parsing).
+	parse_errs []CompileError
+	ts_err     ?CompileError
+}
+
+fn (mut b Builder) ts_fail(d Diag, start int, end int) {
+	if b.ts_err == none {
+		b.ts_err = CompileError{
+			diag:  d
+			start: start
+			end:   end
+		}
+	}
+}
+
+fn (mut b Builder) parse_fail(e ?CompileError) {
+	if err := e {
+		b.parse_errs << err
+	}
 }
 
 // build_component builds the Component of a parsed .svelte file. `transpiled`: see Builder.
@@ -108,10 +129,30 @@ pub fn build_component(doc &svelte.Document, transpiled bool) !&Component {
 			pos++
 		}
 		if pos < c.src.len && c.src[pos] == `/` {
-			return compile_err(e_expected_token('>'), pos, pos)
+			b.parse_errs << CompileError{
+				diag:  e_expected_token('>')
+				start: pos
+				end:   pos
+			}
 		}
 	}
 	c.fragment = b.fragment(ca.fragment, false)!
+	for n in c.t.list(c.fragment, .nodes) {
+		// svelte-eslint-parser hands the compiler a self-closing <script/> or <style/> renamed
+		// (`<s---- />`): an element for svelte/.
+		nname := c.t.name(n)
+		if c.t.typ(n) == 'RegularElement' && nname.len >= 2 && nname[0] == `s`
+			&& nname[1..].trim_left('-') == '' && (c.src[c.t.nodes[n].start + 1..].starts_with('script')
+			|| c.src[c.t.nodes[n].start + 1..].starts_with('style')) && c.t.nodes[n].end >= 2
+			&& c.src[c.t.nodes[n].end - 2] == `/` {
+			pos := c.t.nodes[n].end - 2
+			b.parse_errs << CompileError{
+				diag:  e_expected_token('>')
+				start: pos
+				end:   pos
+			}
+		}
+	}
 	if ca.instance >= 0 {
 		c.instance = b.script(ca.instance)!
 	}
@@ -124,7 +165,14 @@ pub fn build_component(doc &svelte.Document, transpiled bool) !&Component {
 	if ca.css >= 0 {
 		css := ca.nodes[ca.css]
 		c.style_comment = b.prev_comment(css.start)
-		c.css = b.stylesheet(css)!
+		c.css = b.stylesheet(css) or {
+			if err is CompileError {
+				b.parse_errs << err
+				-1
+			} else {
+				return err
+			}
+		}
 	}
 	for script in [c.instance, c.module] {
 		if script < 0 {
@@ -142,6 +190,21 @@ pub fn build_component(doc &svelte.Document, transpiled bool) !&Component {
 			prog := c.t.get(script, .content)
 			c.t.nodes[prog].leading = [c.t.comments.len - 1]
 		}
+	}
+	// The parser stops at its first error; read_options runs at its end; then
+	// remove_typescript_nodes.
+	if b.parse_errs.len > 0 {
+		mut first := b.parse_errs[0]
+		for e in b.parse_errs {
+			if e.start < first.start {
+				first = e
+			}
+		}
+		return first
+	}
+	b.validate_options()!
+	if e := b.ts_err {
+		return e
 	}
 	return c
 }
@@ -233,7 +296,11 @@ fn (mut b Builder) template_node(n int) !int {
 		.each_block {
 			b.c.t.set_node(i, .expression, b.expr(cn.expression)!)
 			b.c.t.set_node(i, .body, b.fragment(cn.body, false)!)
-			b.c.t.set_node(i, .context, if cn.context >= 0 { b.expr(cn.context)! } else { -1 })
+			context := if cn.context >= 0 { b.expr(cn.context)! } else { -1 }
+			b.c.t.set_node(i, .context, context)
+			if context >= 0 {
+				b.parse_fail(b.check_pattern(context))
+			}
 			if cn.has_index {
 				b.c.t.set_str(i, .index, cn.index)
 			}
@@ -246,8 +313,15 @@ fn (mut b Builder) template_node(n int) !int {
 		}
 		.await_block {
 			b.c.t.set_node(i, .expression, b.expr(cn.expression)!)
-			b.c.t.set_node(i, .value, if cn.await_value >= 0 { b.expr(cn.await_value)! } else { -1 })
-			b.c.t.set_node(i, .error, if cn.await_error >= 0 { b.expr(cn.await_error)! } else { -1 })
+			value := if cn.await_value >= 0 { b.expr(cn.await_value)! } else { -1 }
+			err_pat := if cn.await_error >= 0 { b.expr(cn.await_error)! } else { -1 }
+			b.c.t.set_node(i, .value, value)
+			b.c.t.set_node(i, .error, err_pat)
+			for pat in [value, err_pat] {
+				if pat >= 0 {
+					b.parse_fail(b.check_pattern(pat))
+				}
+			}
 			b.c.t.set_node(i, .pending, b.opt_fragment(cn.pending)!)
 			b.c.t.set_node(i, .then, b.opt_fragment(cn.then)!)
 			b.c.t.set_node(i, .catch_, b.opt_fragment(cn.catch_)!)
@@ -260,7 +334,9 @@ fn (mut b Builder) template_node(n int) !int {
 			b.c.t.set_node(i, .expression, b.expr(cn.expression)!)
 			mut params := []int{}
 			for e in cn.parameters {
-				params << b.expr(e)!
+				pat := b.expr(e)!
+				b.parse_fail(b.check_pattern(pat))
+				params << pat
 			}
 			b.c.t.set_list(i, .parameters, params)
 			b.c.t.set_node(i, .body, b.fragment(cn.body, false)!)
@@ -362,6 +438,7 @@ fn (mut b Builder) script(s int) !int {
 	}
 	b.c.t.set_list(prog, .body, body)
 	b.c.t.set_node(i, .content, prog)
+	b.parse_fail(check_redeclarations(b.c.t, prog))
 	b.attach_comments(prog, cn.content_start, cn.content_end, true)
 	return i
 }
@@ -409,6 +486,7 @@ fn (mut b Builder) expr(e int) !int {
 		if found >= 0 {
 			i := b.js(found)!
 			b.attach_comments(i, b.read_start(ce.start), ce.end, false)
+			b.parse_fail(check_redeclarations(b.c.t, i))
 			return i
 		}
 		b.c.misses++
@@ -559,7 +637,7 @@ fn (mut b Builder) js(e int) !int {
 		}
 		'TSEnumDeclaration' {
 			if !b.quiet() {
-				return compile_err(e_typescript_invalid_feature('enums'), n.start, n.end)
+				b.ts_fail(e_typescript_invalid_feature('enums'), n.start, n.end)
 			}
 			return b.empty()
 		}
@@ -570,8 +648,7 @@ fn (mut b Builder) js(e int) !int {
 					for st in b.es.list(body, .body) or { []int{} } {
 						r := b.js(st)!
 						if r >= 0 && b.c.t.typ(r) != 'EmptyStatement' {
-							return compile_err(e_typescript_invalid_feature('namespaces with non-type nodes'),
-								n.start, n.end)
+							b.ts_fail(e_typescript_invalid_feature('namespaces with non-type nodes'), n.start, n.end)
 						}
 					}
 				}
@@ -581,8 +658,7 @@ fn (mut b Builder) js(e int) !int {
 		'TSParameterProperty' {
 			if !b.quiet() && (b.es.flag(e, .readonly) or { false }
 				|| b.es.string_of(e, .accessibility) or { '' } != '') {
-				return compile_err(e_typescript_invalid_feature('accessibility modifiers on constructor parameters'),
-					n.start, n.end)
+				b.ts_fail(e_typescript_invalid_feature('accessibility modifiers on constructor parameters'), n.start, n.end)
 			}
 			return b.js(b.es.node(e, .parameter) or { -1 })!
 		}
@@ -593,8 +669,15 @@ fn (mut b Builder) js(e int) !int {
 			if b.quiet() {
 				return b.empty()
 			}
-			return compile_err(e_typescript_invalid_feature('decorators (related TSC proposal is not stage 4 yet)'),
+			b.ts_fail(e_typescript_invalid_feature('decorators (related TSC proposal is not stage 4 yet)'),
 				n.start, n.end)
+			return b.empty()
+		}
+		'AccessorProperty' {
+			if !b.quiet() {
+				b.ts_fail(e_typescript_invalid_feature('accessor fields (related TSC proposal is not stage 4 yet)'),
+					n.start, n.end)
+			}
 		}
 		else {}
 	}
@@ -632,7 +715,7 @@ fn (mut b Builder) js(e int) !int {
 		end -= if b.es.flag(e, .tail) or { false } { 1 } else { 2 }
 	}
 	out_typ := match typ {
-		'TSAbstractPropertyDefinition' { 'PropertyDefinition' }
+		'TSAbstractPropertyDefinition', 'AccessorProperty' { 'PropertyDefinition' }
 		else { typ }
 	}
 	i := b.c.t.new_node(out_typ, start, end)
@@ -662,7 +745,7 @@ fn (mut b Builder) js(e int) !int {
 		}
 		if name == 'decorators' && p.kind == .list && b.es.lists[p.idx].len > 0 && !b.quiet() {
 			d := b.es.nodes[b.es.lists[p.idx][0]]
-			return compile_err(e_typescript_invalid_feature('decorators (related TSC proposal is not stage 4 yet)'),
+			b.ts_fail(e_typescript_invalid_feature('decorators (related TSC proposal is not stage 4 yet)'),
 				d.start, d.end)
 		}
 		k := es_keys[name] or { continue }
@@ -736,7 +819,7 @@ fn (mut b Builder) js(e int) !int {
 		}
 		'PropertyDefinition' {
 			if b.c.t.flag(i, .accessor) && !b.quiet() {
-				return compile_err(e_typescript_invalid_feature('accessor fields (related TSC proposal is not stage 4 yet)'),
+				b.ts_fail(e_typescript_invalid_feature('accessor fields (related TSC proposal is not stage 4 yet)'),
 					start, end)
 			}
 		}
