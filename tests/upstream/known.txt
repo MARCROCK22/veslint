@@ -52,8 +52,6 @@ eslint	no-setter-return/v102	typescript-eslint's lib declares `Object`, which `g
 # TypeScript does not parse the octal literal `012` (typescript-eslint's parser fails); tree-sitter does.
 eslint	no-dupe-keys/v14	typescript-eslint's parser rejects the octal literal `012`
 eslint	no-dupe-keys/i5	typescript-eslint's parser rejects the octal literal `012`
-# tree-sitter reads `static get` before a line break as a field named `get` and an automatic `;`.
-veslint	grouped-accessor-pairs/r0/i56	tree-sitter reads `static get \n a(){}` as the field `get` and the method `a`
 veslint	no-extra-boolean-cast/v19	typescript-eslint's lib declares `Boolean`, which `globals: {Boolean: "off"}` does not remove
 eslint	no-extra-boolean-cast/v19	typescript-eslint's lib declares `Boolean`, which `globals: {Boolean: "off"}` does not remove
 veslint	no-implicit-coercion/i10	typescript-eslint's lib declares `Boolean`, which `globals: {Boolean: "off"}` does not remove: veslint fixes instead of suggesting
@@ -1448,9 +1446,6 @@ eslint	no-extra-parens._js_/v152	typescript-eslint's parser: Decimals with leadi
 eslint	no-extra-parens._js_/i151	typescript-eslint's parser: Decimals with leading zeros are not allowed.
 eslint	no-extra-parens._js_/i152	typescript-eslint's parser: Decimals with leading zeros are not allowed.
 eslint	no-extra-parens._js_/i150	typescript-eslint's parser: Octal literals are not allowed.
-# @stylistic/no-extra-parens: tree-sitter does not end `yield` at a line break (no automatic semicolon there):
-# `yield` + line break + `(b)` is one yield expression for veslint, a `yield` and the statement `(b)` for TypeScript.
-veslint	no-extra-parens._js_/i252	tree-sitter reads `yield` and the expression on the next line as one yield expression
 # eslint-plugin-perfectionist (P1): the disable comments of these cases name the rule
 # `rule-to-test/<rule>`, the name eslint-vitest-rule-tester gives it.
 eslint	sort-array-includes/i142	disables rule-to-test/sort-array-includes, the name the tester gives the rule
