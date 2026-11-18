@@ -37,6 +37,12 @@ out.push(`const entity_names = [${Object.keys(entities).map(q).join(', ')}]`, ''
 out.push(`const entity_codes = [${Object.values(entities).join(', ')}]`, '');
 out.push('// reserved_words are the words read_identifier rejects (unexpected_reserved_word).');
 out.push(`const reserved_words = [${reserved.map(q).join(', ')}]`, '');
+// The order of the implicit variables in the global scope (what scope.variables lists).
+const { analyze } = await import(pathToFileURL(path.join(ROOT, 'build/upstream/svelte-deps/node_modules/@typescript-eslint/scope-manager/dist/index.js')));
+const sm = analyze({ type: 'Program', body: [], sourceType: 'module', range: [0, 0], loc: { start: { line: 1, column: 0 }, end: { line: 1, column: 0 } } }, { sourceType: 'module' });
+const order = sm.globalScope.variables.map(v => v.name);
+out.push('// lib_global_order: the implicit variables in the order of the global scope\'s variables.');
+out.push(`const lib_global_order = [${order.map(q).join(', ')}]`, '');
 out.push('// lib_globals are the implicit variables typescript-eslint\'s scope manager puts in the global');
 out.push('// scope (the lib `esnext` with its dependencies, and `const`), by name: 1 a type, 2 a value, 3 both.');
 out.push('const lib_globals = {');

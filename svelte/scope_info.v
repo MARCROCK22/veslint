@@ -66,9 +66,8 @@ pub mut:
 }
 
 const scope_type_names = ['global', 'module', 'function', 'block', 'for', 'catch', 'class',
-	'class-field-initializer', 'class-static-block', 'conditionalType',
-	'function-expression-name', 'functionType', 'mappedType', 'switch', 'tsEnum', 'tsModule',
-	'type']
+	'class-field-initializer', 'class-static-block', 'conditionalType', 'function-expression-name',
+	'functionType', 'mappedType', 'switch', 'tsEnum', 'tsModule', 'type']
 
 // in_user_text tells whether a byte offset of the pre-virtual code is code of the file (the
 // script, or a template expression copied from the file), as opposed to text the parser made.
@@ -591,8 +590,8 @@ fn (mut c Conv) props_scope(script int) {
 		} else if typ == .variable_declaration && c.runes != .off {
 			for d in c.es_list(st, .declarations) {
 				mut init := c.es_node(d, .init)
-				for init >= 0 && c.doc.es.nodes[init].typ in [.ts_non_null_expression, .ts_as_expression,
-					.ts_satisfies_expression, .ts_type_assertion] {
+				for init >= 0 && c.doc.es.nodes[init].typ in [.ts_non_null_expression,
+					.ts_as_expression, .ts_satisfies_expression, .ts_type_assertion] {
 					init = c.es_node(init, .expression)
 				}
 				if init < 0 || c.doc.es.nodes[init].typ != .call_expression {
@@ -740,7 +739,8 @@ fn (mut c Conv) merge_order(pre_starts []int) {
 	for st in c.doc.reactive.keys() {
 		body := c.es_node(st, .body)
 		if body >= 0 {
-			wrapped << [pre_starts[body], pre_starts[body] + (c.doc.es.nodes[body].end - c.doc.es.nodes[body].start)]
+			wrapped << [pre_starts[body],
+				pre_starts[body] + (c.doc.es.nodes[body].end - c.doc.es.nodes[body].start)]
 		}
 	}
 	merged := fn [c, pre_starts, render_start, render_end, wrapped] (id int) bool {
