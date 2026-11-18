@@ -1,6 +1,6 @@
 {
   "name": "@marcrock22/veslint-linux-x64",
-  "version": "0.35.3",
+  "version": "0.36.0",
   "description": "The veslint binary for Linux x64. Install @marcrock22/veslint, which runs it.",
   "files": [
     "veslint"
