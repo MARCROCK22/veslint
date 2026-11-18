@@ -1,0 +1,1 @@
+[[{"blankLine": "always", "next": "*:multi-line", "prev": "*:single-line"}, {"blankLine": "always", "next": "*:multi-line", "prev": "*:multi-line"}, {"blankLine": "never", "next": "*:single-line", "prev": "*:single-line"}]]

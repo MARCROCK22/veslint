@@ -1,0 +1,64 @@
+tests/rules/vue/padding-line-between-tags/cases.vue:12:3	vue/padding-line-between-tags	always	Expected blank line before this tag.	fix	135	135	\n	end	14	13
+tests/rules/vue/padding-line-between-tags/cases.vue:15:3	vue/padding-line-between-tags	always	Expected blank line before this tag.	fix	191	191	\n	end	16	13
+tests/rules/vue/padding-line-between-tags/cases.vue:17:3	vue/padding-line-between-tags	always	Expected blank line before this tag.	fix	212	212	\n	end	24	13
+tests/rules/vue/padding-line-between-tags/cases.vue:20:11	vue/padding-line-between-tags	always	Expected blank line before this tag.	fix	256	256	\n	end	21	17
+tests/rules/vue/padding-line-between-tags/cases.vue:22:11	vue/padding-line-between-tags	always	Expected blank line before this tag.	fix	289	289	\n	end	22	18
+tests/rules/vue/padding-line-between-tags/cases.vue:25:3	vue/padding-line-between-tags	always	Expected blank line before this tag.	fix	335	335	\n	end	37	13
+tests/rules/vue/padding-line-between-tags/cases.vue:30:13	vue/padding-line-between-tags	always	Expected blank line before this tag.	fix	407	407	\n	end	31	18
+tests/rules/vue/padding-line-between-tags/cases.vue:32:13	vue/padding-line-between-tags	always	Expected blank line before this tag.	fix	442	442	\n	end	32	19
+tests/rules/vue/padding-line-between-tags/cases.vue:33:13	vue/padding-line-between-tags	always	Expected blank line before this tag.	fix	461	461	\n	end	34	18
+tests/rules/vue/padding-line-between-tags/cases.vue:38:3	vue/padding-line-between-tags	always	Expected blank line before this tag.	fix	540	540	\n	end	48	13
+tests/rules/vue/padding-line-between-tags/cases.vue:42:11	vue/padding-line-between-tags	always	Expected blank line before this tag.	fix	593	593	\n	end	46	16
+tests/rules/vue/padding-line-between-tags/cases.vue:49:3	vue/padding-line-between-tags	always	Expected blank line before this tag.	fix	711	711	\n	end	64	13
+tests/rules/vue/padding-line-between-tags/cases.vue:53:11	vue/padding-line-between-tags	always	Expected blank line before this tag.	fix	764	764	\n	end	60	16
+tests/rules/vue/padding-line-between-tags/cases.vue:57:15	vue/padding-line-between-tags	always	Expected blank line before this tag.	fix	833	833	\n	end	58	19
+tests/rules/vue/padding-line-between-tags/cases.vue:62:9	vue/padding-line-between-tags	always	Expected blank line before this tag.	fix	919	919	\n	end	63	15
+tests/rules/vue/padding-line-between-tags/cases.vue:65:3	vue/padding-line-between-tags	always	Expected blank line before this tag.	fix	961	961	\n	end	69	13
+tests/rules/vue/padding-line-between-tags/cases.vue:67:18	vue/padding-line-between-tags	always	Expected blank line before this tag.	fix	1001	1001	\n\n          	end	67	25
+tests/rules/vue/padding-line-between-tags/cases.vue:70:3	vue/padding-line-between-tags	always	Expected blank line before this tag.	fix	1036	1036	\n	end	74	13
+tests/rules/vue/padding-line-between-tags/cases.vue:72:23	vue/padding-line-between-tags	always	Expected blank line before this tag.	fix	1081	1081	\n\n          	end	72	30
+tests/rules/vue/padding-line-between-tags/extra-crlf/cases.vue:4:5	vue/padding-line-between-tags	always	Expected blank line before this tag.	fix	32	32	\n	end	4	12
+tests/rules/vue/padding-line-between-tags/extra-crlf/cases.vue:7:13	vue/padding-line-between-tags	always	Expected blank line before this tag.	fix	62	62	\n\n    	end	7	20
+tests/rules/vue/padding-line-between-tags/extra-never/cases.vue:7:5	vue/padding-line-between-tags	never	Unexpected blank line before this tag.	fix	30	46	\n    text\n    	end	7	12
+tests/rules/vue/padding-line-between-tags/extra-never/cases.vue:11:5	vue/padding-line-between-tags	never	Unexpected blank line before this tag.	fix	65	72	\n    	end	12	10
+tests/rules/vue/padding-line-between-tags/options-133c9a25/cases.vue:8:11	vue/padding-line-between-tags	always	Expected blank line before this tag.	fix	90	90	\n	end	8	17
+tests/rules/vue/padding-line-between-tags/options-151c56c3/cases.vue:7:11	vue/padding-line-between-tags	always	Expected blank line before this tag.	fix	87	87	\n	end	7	17
+tests/rules/vue/padding-line-between-tags/options-185ac185/cases.vue:15:3	vue/padding-line-between-tags	always	Expected blank line before this tag.	fix	243	243	\n	end	27	13
+tests/rules/vue/padding-line-between-tags/options-185ac185/cases.vue:19:11	vue/padding-line-between-tags	never	Unexpected blank line before this tag.	fix	300	312	\n          	end	19	35
+tests/rules/vue/padding-line-between-tags/options-185ac185/cases.vue:23:11	vue/padding-line-between-tags	always	Expected blank line before this tag.	fix	392	392	\n	end	25	17
+tests/rules/vue/padding-line-between-tags/options-3331623b/cases.vue:15:3	vue/padding-line-between-tags	always	Expected blank line before this tag.	fix	209	209	\n	end	25	13
+tests/rules/vue/padding-line-between-tags/options-3331623b/cases.vue:20:11	vue/padding-line-between-tags	always	Expected blank line before this tag.	fix	287	287	\n	end	20	35
+tests/rules/vue/padding-line-between-tags/options-3331623b/cases.vue:21:11	vue/padding-line-between-tags	always	Expected blank line before this tag.	fix	322	322	\n	end	23	17
+tests/rules/vue/padding-line-between-tags/options-380c8f5c/cases.vue:16:11	vue/padding-line-between-tags	always	Expected blank line before this tag.	fix	245	245	\n	end	18	17
+tests/rules/vue/padding-line-between-tags/options-380c8f5c/cases.vue:19:11	vue/padding-line-between-tags	always	Expected blank line before this tag.	fix	301	301	\n	end	19	35
+tests/rules/vue/padding-line-between-tags/options-5344adc7/cases.vue:21:13	vue/padding-line-between-tags	always	Expected blank line before this tag.	fix	296	296	\n	end	21	24
+tests/rules/vue/padding-line-between-tags/options-53570928/cases.vue:7:13	vue/padding-line-between-tags	always	Expected blank line before this tag.	fix	82	82	\n	end	7	19
+tests/rules/vue/padding-line-between-tags/options-5b5be079/cases.vue:11:11	vue/padding-line-between-tags	never	Unexpected blank line before this tag.	fix	108	120	\n          	end	11	17
+tests/rules/vue/padding-line-between-tags/options-64596f0d/cases.vue:5:11	vue/padding-line-between-tags	always	Expected blank line before this tag.	fix	50	50	\n	end	5	17
+tests/rules/vue/padding-line-between-tags/options-64596f0d/cases.vue:8:11	vue/padding-line-between-tags	always	Expected blank line before this tag.	fix	90	90	\n	end	8	17
+tests/rules/vue/padding-line-between-tags/options-64596f0d/cases.vue:10:11	vue/padding-line-between-tags	never	Unexpected blank line before this tag.	fix	107	119	\n          	end	10	17
+tests/rules/vue/padding-line-between-tags/options-6b0ed853/cases.vue:24:13	vue/padding-line-between-tags	never	Unexpected blank line before this tag.	fix	304	319	\n            	end	24	19
+tests/rules/vue/padding-line-between-tags/options-6b0ed853/cases.vue:26:13	vue/padding-line-between-tags	never	Unexpected blank line before this tag.	fix	325	339	\n            	end	27	18
+tests/rules/vue/padding-line-between-tags/options-6b0ed853/cases.vue:35:11	vue/padding-line-between-tags	never	Unexpected blank line before this tag.	fix	449	461	\n          	end	36	17
+tests/rules/vue/padding-line-between-tags/options-6b0ed853/cases.vue:38:11	vue/padding-line-between-tags	never	Unexpected blank line before this tag.	fix	483	495	\n          	end	38	18
+tests/rules/vue/padding-line-between-tags/options-6b0ed853/cases.vue:45:12	vue/padding-line-between-tags	never	Unexpected blank line before this tag.	fix	569	583	A\n          C	end	45	19
+tests/rules/vue/padding-line-between-tags/options-6b0ed853/cases.vue:53:12	vue/padding-line-between-tags	never	Unexpected blank line before this tag.	fix	657	683	A\n          B\n          C	end	53	19
+tests/rules/vue/padding-line-between-tags/options-6b0ed853/cases.vue:62:12	vue/padding-line-between-tags	never	Unexpected blank line before this tag.	fix	757	784	A\n          B\n          C	end	62	19
+tests/rules/vue/padding-line-between-tags/options-6b0ed853/cases.vue:73:12	vue/padding-line-between-tags	never	Unexpected blank line before this tag.	fix	858	887	A\n          B\n          C	end	73	19
+tests/rules/vue/padding-line-between-tags/options-6d2e6c07/cases.vue:25:11	vue/padding-line-between-tags	never	Unexpected blank line before this tag.	fix	290	302	\n          	end	25	16
+tests/rules/vue/padding-line-between-tags/options-6d2e6c07/cases.vue:28:11	vue/padding-line-between-tags	never	Unexpected blank line before this tag.	fix	323	335	\n          	end	28	18
+tests/rules/vue/padding-line-between-tags/options-6d2e6c07/cases.vue:31:11	vue/padding-line-between-tags	never	Unexpected blank line before this tag.	fix	360	372	\n          	end	31	18
+tests/rules/vue/padding-line-between-tags/options-b65c9e3f/cases.vue:5:11	vue/padding-line-between-tags	always	Expected blank line before this tag.	fix	52	52	\n	end	5	17
+tests/rules/vue/padding-line-between-tags/options-b65c9e3f/cases.vue:7:11	vue/padding-line-between-tags	always	Expected blank line before this tag.	fix	91	91	\n	end	7	17
+tests/rules/vue/padding-line-between-tags/options-b65c9e3f/cases.vue:9:11	vue/padding-line-between-tags	always	Expected blank line before this tag.	fix	126	126	\n	end	9	20
+tests/rules/vue/padding-line-between-tags/options-d9c3fca1/cases.vue:8:13	vue/padding-line-between-tags	always	Expected blank line before this tag.	fix	101	101	\n	end	9	18
+tests/rules/vue/padding-line-between-tags/options-db6d6ab5/cases.vue:16:3	vue/padding-line-between-tags	always	Expected blank line before this tag.	fix	224	224	\n	end	28	13
+tests/rules/vue/padding-line-between-tags/options-db6d6ab5/cases.vue:20:11	vue/padding-line-between-tags	never	Unexpected blank line before this tag.	fix	276	288	\n          	end	20	30
+tests/rules/vue/padding-line-between-tags/options-db6d6ab5/cases.vue:21:11	vue/padding-line-between-tags	always	Expected blank line before this tag.	fix	307	307	\n	end	23	17
+tests/rules/vue/padding-line-between-tags/options-db6d6ab5/cases.vue:24:11	vue/padding-line-between-tags	always	Expected blank line before this tag.	fix	358	358	\n	end	26	17
+tests/rules/vue/padding-line-between-tags/options-f7fdacb2/cases.vue:9:11	vue/padding-line-between-tags	always	Expected blank line before this tag.	fix	107	107	\n	end	9	17
+tests/rules/vue/padding-line-between-tags/options-fb27cb6f/cases.vue:44:11	vue/padding-line-between-tags	always	Expected blank line before this tag.	fix	608	608	\n	end	44	22
+tests/rules/vue/padding-line-between-tags/options-fb27cb6f/cases.vue:55:11	vue/padding-line-between-tags	always	Expected blank line before this tag.	fix	793	793	\n	end	55	22
+tests/rules/vue/padding-line-between-tags/options-fb27cb6f/cases.vue:56:11	vue/padding-line-between-tags	always	Expected blank line before this tag.	fix	815	815	\n	end	56	22
+tests/rules/vue/padding-line-between-tags/options-fb27cb6f/cases.vue:57:11	vue/padding-line-between-tags	always	Expected blank line before this tag.	fix	837	837	\n	end	57	22
+tests/rules/vue/padding-line-between-tags/options-fb27cb6f/cases.vue:68:11	vue/padding-line-between-tags	never	Unexpected blank line before this tag.	fix	1010	1022	\n          	end	68	18

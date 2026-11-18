@@ -295,6 +295,8 @@ pub fn check_options(rule string, options []json2.Any) !bool {
 		vue_singleline_html_element_content_newline { vhecn_single_options(options)! }
 		vue_multiline_html_element_content_newline { vhecn_multi_options(options)! }
 		vue_html_self_closing { vhsc_options(options)! }
+		vue_padding_line_between_blocks { vplbb_options(options)! }
+		vue_padding_line_between_tags { vplbt_options(options)! }
 		else { return false }
 	}
 	return true
