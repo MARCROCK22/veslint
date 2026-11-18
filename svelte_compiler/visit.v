@@ -35,7 +35,7 @@ fn (mut z Analyzer) visit(node int, st State) ! {
 	mut ignores := []string{}
 	if z.t.typ(parent) == 'Fragment' && typ != 'Comment' && typ != 'Text' {
 		nodes := z.t.list(parent, .nodes)
-		idx := nodes.index(node)
+		idx := z.position_in(parent, node, nodes)
 		for i := idx - 1; i >= 0; i-- {
 			prev := nodes[i]
 			if z.t.typ(prev) == 'Comment' {
@@ -67,6 +67,18 @@ fn (mut z Analyzer) visit(node int, st State) ! {
 	if ignores.len > 0 {
 		z.pop_ignore()
 	}
+}
+
+// position_in is `parent.nodes.indexOf(node)` (positions cached per fragment: a long fragment
+// would make it quadratic).
+fn (mut z Analyzer) position_in(parent int, node int, nodes []int) int {
+	if parent !in z.positions_done {
+		z.positions_done[parent] = true
+		for k := nodes.len - 1; k >= 0; k-- {
+			z.positions[(u64(u32(parent)) << 32) | u64(u32(nodes[k]))] = k
+		}
+	}
+	return z.positions[(u64(u32(parent)) << 32) | u64(u32(node))] or { -1 }
 }
 
 // next visits the children of `node` (context.next).
@@ -691,7 +703,7 @@ fn (mut z Analyzer) v_class_declaration(node int, st State) ! {
 	z.next(node, st)!
 }
 
-fn (mut z Analyzer) v_export_default(node int, st State) ! {
+fn (mut z Analyzer) v_export_default(node int, _ State) ! {
 	// st.ast_type is always set in a component.
 	return z.error_at(node, e_module_illegal_default_export())
 }
@@ -886,7 +898,7 @@ fn (mut z Analyzer) v_identifier(node int, st State) ! {
 				snippet_name = t.name(t.get(anc, .expression))
 			} else if snippet_name != '' && grand >= 0 && t.typ(anc) == 'Fragment'
 				&& (t.is_component_node(grand) || (t.typ(grand) == 'SvelteBoundary'
-				&& snippet_name in ['failed', 'pending'])) {
+					&& snippet_name in ['failed', 'pending'])) {
 				owner := if t.is_component_node(grand) {
 					(z.component_scopes[grand] or { map[string]int{} })['default'] or { -1 }
 				} else {
@@ -929,7 +941,7 @@ fn (z &Analyzer) should_proxy(node int, scope int) bool {
 	return true
 }
 
-fn (mut z Analyzer) v_import(node int, st State) ! {
+fn (mut z Analyzer) v_import(node int, _ State) ! {
 	if !z.runes {
 		return
 	}

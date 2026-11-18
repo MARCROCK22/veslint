@@ -300,7 +300,8 @@ fn (mut c Checker) svc_compute() SvcResult {
 	mut warnings := []SvcWarning{}
 	mut unused := ignore_items.clone()
 	for w in compiled.warnings {
-		if !c.svc_ignored(w, ignore_items, mut unused) {
+		// Without svelte-ignore comments nothing is ignored.
+		if ignore_items.len == 0 || !c.svc_ignored(w, ignore_items, mut unused) {
 			warnings << w
 		}
 	}
@@ -507,36 +508,93 @@ fn (c &Checker) svc_is_js(r svelte.Ref) bool {
 	return typ != 'Program' && !typ.starts_with('Svelte')
 }
 
-// svc_node_at is sourceCode.getNodeByRangeIndex: the deepest node whose range holds `index`.
-fn (mut c Checker) svc_node_at(index int) ?svelte.Ref {
-	steps := c.sv_steps()
-	mut result := ?svelte.Ref(none)
-	mut skip_depth := 0
-	for step in steps {
-		if skip_depth > 0 {
-			if step.leave {
-				skip_depth--
-			} else {
-				skip_depth++
-			}
-			continue
-		}
+// SvcNodeIndex is the traversal's nodes in entering order with their ranges and children (in
+// order), and whether each node's children are sorted by start without overlapping (then
+// svc_node_at finds the child that holds an offset by a binary search).
+struct SvcNodeIndex {
+mut:
+	refs     []svelte.Ref
+	start    []int
+	end      []int
+	children [][]int
+	sorted   []bool
+}
+
+fn (mut c Checker) svc_node_index() &SvcNodeIndex {
+	if idx := c.svelte.node_index {
+		return idx
+	}
+	mut idx := &SvcNodeIndex{}
+	mut stack := []int{}
+	for step in c.sv_steps() {
 		if step.leave {
-			if r := result {
-				if r.es == step.node.es && r.idx == step.node.idx {
-					break
-				}
-			}
+			stack.pop()
 			continue
 		}
 		start, end := c.svc_range(step.node)
-		if start <= index && index < end {
-			result = step.node
-		} else {
-			skip_depth = 1
+		k := idx.refs.len
+		if stack.len > 0 {
+			idx.children[stack.last()] << k
+		}
+		stack << k
+		idx.refs << step.node
+		idx.start << start
+		idx.end << end
+		idx.children << []int{}
+		idx.sorted << true
+	}
+	for k, kids in idx.children {
+		for m in 1 .. kids.len {
+			if idx.start[kids[m]] < idx.end[kids[m - 1]] {
+				idx.sorted[k] = false
+				break
+			}
 		}
 	}
-	return result
+	c.svelte.node_index = idx
+	return idx
+}
+
+// svc_node_at is sourceCode.getNodeByRangeIndex: the deepest node whose range holds `index`
+// (ESLint's traversal enters the first child that holds it, skipping the others).
+fn (mut c Checker) svc_node_at(index int) ?svelte.Ref {
+	idx := c.svc_node_index()
+	if idx.refs.len == 0 || !(idx.start[0] <= index && index < idx.end[0]) {
+		return none
+	}
+	mut cur := 0
+	for {
+		kids := idx.children[cur]
+		mut next := -1
+		if idx.sorted[cur] {
+			// The last child that starts at or before `index`.
+			mut lo := 0
+			mut hi := kids.len
+			for lo < hi {
+				mid := (lo + hi) / 2
+				if idx.start[kids[mid]] <= index {
+					lo = mid + 1
+				} else {
+					hi = mid
+				}
+			}
+			if lo > 0 && index < idx.end[kids[lo - 1]] {
+				next = kids[lo - 1]
+			}
+		} else {
+			for k in kids {
+				if idx.start[k] <= index && index < idx.end[k] {
+					next = k
+					break
+				}
+			}
+		}
+		if next < 0 {
+			break
+		}
+		cur = next
+	}
+	return idx.refs[cur]
 }
 
 fn (mut c Checker) svc_warning_node(w SvcWarning) ?svelte.Ref {

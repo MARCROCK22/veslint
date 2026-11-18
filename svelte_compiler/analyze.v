@@ -80,6 +80,10 @@ pub mut:
 	ignore_stack [][]string
 	ignore_map   map[int][]string
 	path         []int
+	// positions: the position of a node in a fragment (key: fragment << 32 | node), for the
+	// fragments in positions_done (position_in).
+	positions      map[u64]int
+	positions_done map[int]bool
 	// analysis
 	runes                 bool
 	maybe_runes           bool

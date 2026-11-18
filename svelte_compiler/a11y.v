@@ -305,7 +305,7 @@ fn (mut z Analyzer) check_element(node int) {
 				z.warn(node, w_a11y_consider_explicit_label())
 			}
 			if name == 'a' {
-				// (an if-guard as the value of an if expression miscompiles: V bug 18)
+				// (an if-guard `h` as an if expression's value takes the type of the earlier `h`: V bug 20)
 				mut href := attribute_map['href'] or { -1 }
 				if href < 0 {
 					href = attribute_map['xlink:href'] or { -1 }
