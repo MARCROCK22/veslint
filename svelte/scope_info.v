@@ -8,9 +8,11 @@ module svelte
 // snippets' `return`, the preparation scripts of `{:then}`), with the scopes of the blocks
 // registered to the Svelte nodes, and the edits of src/parser/analyze-scope.ts and index.ts:
 // the Svelte globals in the global scope, `$store` references resolved to the store variable,
-// `$: x = …` variables. Not ported: the props' virtual references (analyzePropsScope), the
-// snippets' references (analyzeSnippetsScope), the scopes of conditional/function/mapped
-// types of the typings (removed upstream).
+// `$: x = …` variables, the virtual references of props, of write-only stores and of snippets.
+// A variable's references are in the order of their resolution (the order the analysis gives).
+// Open (tests/svelte/known.txt): where upstream puts the references of the typings of `use:`
+// (shifted virtual positions), and the order of a through list when the virtual code's
+// declarations (`$props`, `$$props`…) are removed before the render function is merged.
 
 pub struct SScope {
 pub mut:
@@ -267,12 +269,6 @@ fn (mut c Conv) build_scope(an &Analyzer, pre_starts []int, typed_lets []ScriptL
 	doc.scope = info
 	c.merge_order(pre_starts)
 	c.scope_edits()
-	// References are kept sorted by position (merged scopes are, upstream).
-	for mut v in doc.scope.variables {
-		v.references.sort_with_compare(fn [doc] (a &int, b &int) int {
-			return doc.es.nodes[doc.scope.references[*a].identifier].start - doc.es.nodes[doc.scope.references[*b].identifier].start
-		})
-	}
 }
 
 // in_typing: the offset is in the typing of a typed expression (`(e)as (typing);`).
