@@ -259,6 +259,7 @@ fn (mut c Conv) build_scope(an &Analyzer, pre_starts []int, typed_lets []ScriptL
 		}
 	}
 	doc.scope = info
+	c.merge_order(pre_starts)
 	c.scope_edits()
 	// References are kept sorted by position (merged scopes are, upstream).
 	for mut v in doc.scope.variables {
@@ -285,7 +286,71 @@ fn (mut c Conv) scope_edits() {
 	c.store_scope()
 	c.reactive_scope()
 	c.store_scope()
+	c.snippets_scope()
 	c.add_global_variables()
+}
+
+// snippets_scope is analyzeSnippetsScope: the name of a snippet given to a component (or
+// svelte:component / svelte:boundary) is not a variable unless used, then it gets a virtual
+// read reference.
+fn (mut c Conv) snippets_scope() {
+	for sb in c.snippets {
+		parent := c.doc.nodes[sb].parent
+		pn := c.doc.nodes[parent]
+		if pn.typ != .element {
+			continue
+		}
+		if pn.kind != 'component' {
+			if pn.kind != 'special' {
+				continue
+			}
+			name := c.element_name_of(parent)
+			if name != 'svelte:component' && name != 'svelte:boundary' {
+				continue
+			}
+		}
+		id := c.doc.nodes[sb].id.idx
+		if id < 0 {
+			continue
+		}
+		mut scope := -1
+		for k, s in c.doc.scope.scopes {
+			if !s.block.es && s.block.idx == sb {
+				scope = k
+				break
+			}
+		}
+		if scope < 0 {
+			continue
+		}
+		upper := c.doc.scope.scopes[scope].upper
+		if upper < 0 {
+			continue
+		}
+		name := c.doc.es.string_of(id, .name) or { '' }
+		for k, vi in c.doc.scope.scopes[upper].variables {
+			v := c.doc.scope.variables[vi]
+			if v.name != name {
+				continue
+			}
+			def_ids := v.defs.map(it.name)
+			refs := v.references.filter(c.doc.scope.references[it].identifier !in def_ids)
+			if refs.len == 0 {
+				c.doc.scope.scopes[upper].variables.delete(k)
+			} else {
+				c.doc.scope.references << SReference{
+					identifier: id
+					from:       upper
+					resolved:   vi
+					read:       true
+					is_value:   true
+					virtual:    true
+				}
+				c.add_reference_sorted(vi, c.doc.scope.references.len - 1)
+			}
+			break
+		}
+	}
 }
 
 fn (c &Conv) ref_name(r int) string {
@@ -300,11 +365,31 @@ fn (c &Conv) svelte_globals() []string {
 	return g
 }
 
-// remove_through takes a reference out of the through lists of a scope and of those above.
+// remove_through is removeReferenceFromThrough: the reference leaves the through lists of its
+// scope and of those above; the other references of the same name there resolve to the same
+// variable (added to its references).
 fn (mut c Conv) remove_through(r int, from int) {
+	name := c.ref_name(r)
+	v := c.doc.scope.references[r].resolved
 	mut s := from
 	for s >= 0 {
-		c.doc.scope.scopes[s].through = c.doc.scope.scopes[s].through.filter(it != r)
+		mut kept := []int{}
+		for x in c.doc.scope.scopes[s].through {
+			if x == r {
+				continue
+			}
+			if c.ref_name(x) == name {
+				if c.doc.scope.references[x].resolved != v {
+					c.doc.scope.references[x].resolved = v
+					if v >= 0 {
+						c.add_reference_sorted(v, x)
+					}
+				}
+				continue
+			}
+			kept << x
+		}
+		c.doc.scope.scopes[s].through = kept
 		s = c.doc.scope.scopes[s].upper
 	}
 }
@@ -396,7 +481,11 @@ fn (mut c Conv) reactive_scope() {
 				}]
 			}
 			v = c.doc.scope.variables.len - 1
-			c.doc.scope.scopes[1].variables << v
+			// addVariable: sorted by the first identifier.
+			vars := c.doc.scope.scopes[1].variables.clone()
+			c.doc.scope.scopes[1].variables = c.sorted_insert(vars, [v], fn [c] (i int) int {
+				return c.var_position(i)
+			})
 		}
 		c.doc.scope.references[r].resolved = v
 		c.remove_through(r, 1)
@@ -595,5 +684,85 @@ fn (mut c Conv) add_prop_reference(id int) {
 			prop:       true
 		}
 		c.add_reference_sorted(vi, c.doc.scope.references.len - 1)
+	}
+}
+
+fn (c &Conv) var_position(v int) int {
+	variable := c.doc.scope.variables[v]
+	if variable.defs.len > 0 && variable.defs[0].name >= 0 {
+		return c.doc.es.nodes[variable.defs[0].name].start
+	}
+	if variable.references.len > 0 {
+		return c.doc.es.nodes[c.doc.scope.references[variable.references[0]].identifier].start
+	}
+	return 0
+}
+
+// sorted_insert is addElementsToSortedArray: each element goes after the items whose position
+// is not greater than its own (the list is taken as sorted).
+fn (c &Conv) sorted_insert(list []int, elements []int, pos fn (i int) int) []int {
+	mut out := list.clone()
+	for e in elements {
+		p := pos(e)
+		mut lo := 0
+		mut hi := out.len
+		for lo < hi {
+			mid := (lo + hi) / 2
+			if pos(out[mid]) <= p {
+				lo = mid + 1
+			} else {
+				hi = mid
+			}
+		}
+		out.insert(lo, e)
+	}
+	return out
+}
+
+// merge_order puts the module scope's references and variables in the order the TypeScript
+// path gives: those that were in the render function, in a `$:` statement's function or in a
+// `$derived` argument's function were merged in (removeFunctionScope) at their sorted
+// positions; the others keep the analysis order.
+fn (mut c Conv) merge_order(pre_starts []int) {
+	if c.doc.scope.scopes.len < 2 || !c.started {
+		// Without template expressions the render function is empty; `$:` and `$derived`
+		// still merge.
+	}
+	render_start := c.trimmed_len + 2
+	render_end := if c.started { c.code.len + c.render.len } else { -1 }
+	mut wrapped := [][]int{} // pre ranges of `$:` bodies / right sides and `$derived` arguments
+	for st in c.doc.reactive.keys() {
+		body := c.es_node(st, .body)
+		if body >= 0 {
+			wrapped << [pre_starts[body], pre_starts[body] + (c.doc.es.nodes[body].end - c.doc.es.nodes[body].start)]
+		}
+	}
+	merged := fn [c, pre_starts, render_start, render_end, wrapped] (id int) bool {
+		p := pre_starts[id]
+		if c.started && p >= render_start && p < render_end {
+			return true
+		}
+		for w in wrapped {
+			if p >= w[0] && p < w[1] {
+				return true
+			}
+		}
+		return false
+	}
+	// (References keep the analysis order: what the TypeScript path gives.)
+	mut vbase := []int{}
+	mut vextra := []int{}
+	for v in c.doc.scope.scopes[1].variables {
+		variable := c.doc.scope.variables[v]
+		if variable.defs.len > 0 && variable.defs[0].name >= 0 && merged(variable.defs[0].name) {
+			vextra << v
+		} else {
+			vbase << v
+		}
+	}
+	if vextra.len > 0 {
+		c.doc.scope.scopes[1].variables = c.sorted_insert(vbase, vextra, fn [c] (i int) int {
+			return c.var_position(i)
+		})
 	}
 }
