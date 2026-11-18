@@ -387,7 +387,7 @@ expect_usage_error() { # description expected_text arguments...
 		cat "$TMP/usage.err"
 	fi
 }
-for javascript_file in component.jsx script.js module.mjs common.cjs App.svelte notes.md; do
+for javascript_file in component.jsx script.js module.mjs common.cjs styles.css notes.md; do
 	expect_usage_error "a ${javascript_file##*.} file is rejected" "only reads TypeScript" "$javascript_file"
 done
 expect_usage_error "--server takes no files" "takes no files" --server app.ts
