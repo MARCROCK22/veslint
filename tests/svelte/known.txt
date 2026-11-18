@@ -1,0 +1,67 @@
+# Files of tools/svelte_parse_diff.mjs's corpus (content hash) whose difference is expected: path, reason, origin.
+# 28 are eslint-plugin-svelte's indent fixtures written one token per line: tree-sitter's grammar
+# (the patched tree-sitter-typescript) reads some line breaks as statement ends where typescript-estree does not.
+da6a506d9bbd.svelte	tree-sitter: `let` + line break + name is an expression for the grammar, a declaration for TypeScript	indent/v0
+b48e17200f33.svelte	tree-sitter: `let` + line break + name is an expression for the grammar, a declaration for TypeScript	indent/i4
+0082d5e0dd18.svelte	tree-sitter: a line break between tokens typescript-estree reads as one statement (one-token-per-line fixture)	indent/i20
+a4a0e0c838c0.svelte	tree-sitter: a line break between tokens changes the statement (one-token-per-line fixture)	indent/i24
+50c58163e463.svelte	tree-sitter: a line break between tokens typescript-estree reads as one statement (one-token-per-line fixture)	indent/i33
+c790f7763570.svelte	tree-sitter: a line break between tokens typescript-estree reads as one statement (one-token-per-line fixture)	indent/i45
+6f5d4caaf56c.svelte	tree-sitter: a line break between tokens typescript-estree reads as one statement (one-token-per-line fixture)	indent/i46
+4973221e7c73.svelte	tree-sitter: a line break between tokens typescript-estree reads as one statement (one-token-per-line fixture)	indent/i50
+65dd0e21f3a0.svelte	tree-sitter: a line break between tokens typescript-estree reads as one statement (one-token-per-line fixture)	indent/i51
+fc9259589f24.svelte	tree-sitter: a line break between tokens typescript-estree reads as one statement (one-token-per-line fixture)	indent/i57
+f1bfa12c2cfe.svelte	tree-sitter: a line break between tokens changes the statement (one-token-per-line fixture)	indent/i58
+7d54708037b1.svelte	tree-sitter: a line break between tokens changes the statement (one-token-per-line fixture)	indent/i63
+9d999d7d8e31.svelte	tree-sitter: a line break between tokens changes the statement (one-token-per-line fixture)	indent/i66
+85e99470d923.svelte	tree-sitter: a line break between tokens changes the statement (one-token-per-line fixture)	indent/i67
+8d0cc61b194f.svelte	tree-sitter: a line break between tokens typescript-estree reads as one statement (one-token-per-line fixture)	indent/i72
+0a455719a197.svelte	tree-sitter: a line break between tokens typescript-estree reads as one statement (one-token-per-line fixture)	build/upstream/svelte/packages/eslint-plugin-svelte/tests/fixtures/rules/indent/invalid/script-class01-output.svelte
+972e2078d2c4.svelte	tree-sitter: a line break between tokens changes the statement (one-token-per-line fixture)	build/upstream/svelte/packages/eslint-plugin-svelte/tests/fixtures/rules/indent/invalid/script-export01-output.svelte
+31a5b9071457.svelte	tree-sitter: a line break between tokens typescript-estree reads as one statement (one-token-per-line fixture)	build/upstream/svelte/packages/eslint-plugin-svelte/tests/fixtures/rules/indent/invalid/script-methods01-output.svelte
+1575130936bd.svelte	tree-sitter: a line break between tokens typescript-estree reads as one statement (one-token-per-line fixture)	build/upstream/svelte/packages/eslint-plugin-svelte/tests/fixtures/rules/indent/invalid/ts/ts-class01-output.svelte
+337cd27e44be.svelte	tree-sitter: a line break between tokens typescript-estree reads as one statement (one-token-per-line fixture)	build/upstream/svelte/packages/eslint-plugin-svelte/tests/fixtures/rules/indent/invalid/ts/ts-class02-output.svelte
+55e266b6a798.svelte	tree-sitter: a line break between tokens typescript-estree reads as one statement (one-token-per-line fixture)	build/upstream/svelte/packages/eslint-plugin-svelte/tests/fixtures/rules/indent/invalid/ts/ts-decorator01-output.svelte
+890248f7c207.svelte	tree-sitter: a line break between tokens typescript-estree reads as one statement (one-token-per-line fixture)	build/upstream/svelte/packages/eslint-plugin-svelte/tests/fixtures/rules/indent/invalid/ts/ts-decorator02-output.svelte
+b43485814ed1.svelte	tree-sitter: a line break between tokens typescript-estree reads as one statement (one-token-per-line fixture)	build/upstream/svelte/packages/eslint-plugin-svelte/tests/fixtures/rules/indent/invalid/ts/ts-interface01-output.svelte
+7db8992bf1a1.svelte	tree-sitter: a line break between tokens changes the statement (one-token-per-line fixture)	build/upstream/svelte/packages/eslint-plugin-svelte/tests/fixtures/rules/indent/invalid/ts/ts-interface02-output.svelte
+6d1e849c3608.svelte	tree-sitter: a line break between tokens changes the statement (one-token-per-line fixture)	build/upstream/svelte/packages/eslint-plugin-svelte/tests/fixtures/rules/indent/invalid/ts/ts-type-annotation02-output.svelte
+7b3f89445ecc.svelte	tree-sitter: a line break between tokens changes the statement (one-token-per-line fixture)	build/upstream/svelte/packages/eslint-plugin-svelte/tests/fixtures/rules/indent/invalid/ts/ts-type-only-import-export02-output.svelte
+4a905e01dee7.svelte	tree-sitter: a line break between tokens changes the statement (one-token-per-line fixture)	build/upstream/svelte/packages/eslint-plugin-svelte/tests/fixtures/rules/indent/invalid/ts/ts-type-only-import-export03-output.svelte
+ffb42f2ef178.svelte	tree-sitter: a line break between tokens typescript-estree reads as one statement (one-token-per-line fixture)	build/upstream/svelte/packages/eslint-plugin-svelte/tests/fixtures/rules/indent/invalid/ts/ts-types03-output.svelte
+a6e9668444b5.svelte	error position: acorn reports an invalid each pattern at its last token, veslint where tree-sitter fails	../../svelte-spec/probes/cases/err/e9.svelte
+# Open differences of the scope summary (scope_info.v is a partial port, see its header):
+69f6d3059650.svelte	open (scope): the references of the typings of use: (Parameters<typeof action>) are not where svelte-eslint-parser puts them	no-dupe-use-directives/v0
+25f1d0c017e7.svelte	open (scope): the references of the typings of use: (Parameters<typeof action>) are not where svelte-eslint-parser puts them	no-dupe-use-directives/v1
+94fa30a8cfdb.svelte	open (scope): the references of the typings of use: (Parameters<typeof action>) are not where svelte-eslint-parser puts them	no-dupe-use-directives/i0
+7a4407815f74.svelte	open (scope): the references of the typings of use: (Parameters<typeof action>) are not where svelte-eslint-parser puts them	no-dupe-use-directives/i2
+7ab262fdfb83.svelte	open (scope): virtual references (props, write-only stores) not all ported	no-unused-props/i41
+14f4fdedcb2c.svelte	open (scope): references in the type arguments of $derived.by	prefer-derived-over-derived-by/i8
+59fa5f97f6c4.svelte	open (scope): references to the generics type parameters	require-event-prefix/v6
+da612705b407.svelte	open (scope): references to the generics type parameters	require-event-prefix/v24
+3c6c006da68d.svelte	open (scope): virtual references (props, write-only stores) not all ported	require-store-reactive-access/v19
+41e47d51307d.svelte	open (scope): virtual references (props, write-only stores) not all ported	valid-prop-names-in-kit-pages/v5
+9e5003e8f9d6.svelte	open (scope): virtual references (props, write-only stores) not all ported	build/upstream/svelte/packages/eslint-plugin-svelte/tests/fixtures/rules/prefer-derived-over-derived-by/invalid/return-type-output.svelte
+89ddf7504e39.svelte	open (scope): virtual references (props, write-only stores) not all ported	build/upstream/svelte-eslint-parser/tests/fixtures/integrations/scope-tests/bindable-no-useless-assignment-parenthesized-input.svelte
+c888824db3d6.svelte	open (scope): snippet scopes (shadowing)	build/upstream/svelte-eslint-parser/tests/fixtures/integrations/snippet-scope/snippet-shadow-scope-input.svelte
+8bddcbf6c6c1.svelte	open (scope): virtual references (props, write-only stores) not all ported	build/upstream/svelte-eslint-parser/tests/fixtures/integrations/type-info-tests/$bindable-no-useless-default-assignment-input.svelte
+5111e27c16c3.svelte	open (scope): virtual references (props, write-only stores) not all ported	build/upstream/svelte-eslint-parser/tests/fixtures/parser/ast/$var-input.svelte
+df5f54299096.svelte	open (scope): the references of the typings of use: (Parameters<typeof action>) are not where svelte-eslint-parser puts them	build/upstream/svelte-eslint-parser/tests/fixtures/parser/ast/docs/template-syntax/11-element-directives/06-use-action/01-input.svelte
+40b0f01658bc.svelte	open (scope): the references of the typings of use: (Parameters<typeof action>) are not where svelte-eslint-parser puts them	build/upstream/svelte-eslint-parser/tests/fixtures/parser/ast/docs/template-syntax/11-element-directives/06-use-action/03-input.svelte
+52e10c401be1.svelte	open (scope): snippet scopes (shadowing)	build/upstream/svelte-eslint-parser/tests/fixtures/parser/ast/svelte5/docs/snippets/05-snippet-scope-input.svelte
+48d1b30669ef.svelte	open (scope): references to the generics type parameters	build/upstream/svelte-eslint-parser/tests/fixtures/parser/ast/ts-generics03-input.svelte
+8b3318ad0864.svelte	open (scope): references to the generics type parameters	build/upstream/svelte-eslint-parser/tests/fixtures/parser/ast/ts-generics03-type-output.svelte
+2e8d7b9c002a.svelte	open (scope): references to the generics type parameters	build/upstream/svelte-eslint-parser/tests/fixtures/parser/ast/ts-generics04-with-spaces-input.svelte
+c1af6d2fd08a.svelte	open (scope): references to the generics type parameters	build/upstream/svelte-eslint-parser/tests/fixtures/parser/ast/ts-generics04-with-spaces-type-output.svelte
+a4e36a33f7f4.svelte	open (scope): references to the generics type parameters	build/upstream/svelte-eslint-parser/tests/fixtures/parser/ast/ts-generics05-with-spaces-input.svelte
+c0bab9805899.svelte	open (scope): references to the generics type parameters	build/upstream/svelte-eslint-parser/tests/fixtures/parser/ast/ts-generics05-with-spaces-type-output.svelte
+474704acc664.svelte	open (scope): references to the generics type parameters	build/upstream/svelte-eslint-parser/tests/fixtures/parser/ast/ts-generics06-complex-input.svelte
+2f372a9aaa8b.svelte	open (scope): the references of the typings of use: (Parameters<typeof action>) are not where svelte-eslint-parser puts them	build/upstream/svelte-eslint-parser/tests/fixtures/parser/ast/ts-use01-input.svelte
+1f0b8e9601de.svelte	open (scope): the references of the typings of use: (Parameters<typeof action>) are not where svelte-eslint-parser puts them	build/upstream/svelte-eslint-parser/tests/fixtures/parser/ast/ts-use01-type-output.svelte
+28435fadf4e8.svelte	open (scope): the references of the typings of use: (Parameters<typeof action>) are not where svelte-eslint-parser puts them	build/upstream/svelte-eslint-parser/tests/fixtures/parser/ast/tutorial/adding-parameters-to-actions-input.svelte
+62afa6062675.svelte	open (scope): virtual references (props, write-only stores) not all ported	build/upstream/svelte-eslint-parser/tests/fixtures/parser/ast/tutorial/svelte-element-input.svelte
+3d0d275cffee.svelte	open (scope): virtual references (props, write-only stores) not all ported	build/upstream/svelte-eslint-parser/tests/fixtures/parser/ast/unused-write-only-store-input.svelte
+fd20373e5ac3.svelte	open (scope): the references of the typings of use: (Parameters<typeof action>) are not where svelte-eslint-parser puts them	../../svelte-spec/probes/cases/attrs.svelte
+f851edaee4f8.svelte	open (scope): virtual references (props, write-only stores) not all ported	../../svelte-spec/probes/cases/two-ctx.svelte
+8bb22b060877.svelte	open (scope): virtual references (props, write-only stores) not all ported	../../svelte-spec/probes/cases/two.svelte
+1fc7ea10df03.svelte	open (scope): the references of the typings of use: (Parameters<typeof action>) are not where svelte-eslint-parser puts them	../../svelte-spec/probes/cases/typing.svelte
