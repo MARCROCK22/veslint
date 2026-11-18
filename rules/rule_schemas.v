@@ -753,6 +753,9 @@ const rule_option_schemas = {
 	'svelte/prefer-class-directive':                                   '{"type":"array","items":[{"type":"object","properties":{"prefer":{"enum":["always","empty"]}},"additionalProperties":false}],"minItems":0,"maxItems":1}'
 	'svelte/no-svelte-internal':                                       '{"type":"array","minItems":0,"maxItems":0}'
 	'svelte/no-inspect':                                               '{"type":"array","minItems":0,"maxItems":0}'
+	'svelte/no-store-async':                                           '{"type":"array","minItems":0,"maxItems":0}'
+	'svelte/require-stores-init':                                      '{"type":"array","minItems":0,"maxItems":0}'
+	'svelte/no-ignored-unsubscribe':                                   '{"type":"array","minItems":0,"maxItems":0}'
 }
 
 // eslint_rule_default_options are the meta.defaultOptions of the rules of ESLint and of

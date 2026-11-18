@@ -163,3 +163,39 @@ fn svsc_string_literal(t &estree.EsTree, i int) ?string {
 	}
 	return none
 }
+
+// SvscStoreCall is a call of a store function of `svelte/store` (extractStoreReferences): the
+// CallExpression (an ESTree node of the lint code) and the function's name.
+struct SvscStoreCall {
+	node int
+	name string
+}
+
+// svsc_store_calls ports extractStoreReferences: the calls of `writable`, `readable` and `derived`
+// (those of `names`) imported from `svelte/store`, found by ReferenceTracker on the lint code.
+fn (mut c Checker) svsc_store_calls(root C.TSNode, abs_path string, names []string) []SvscStoreCall {
+	if !c.src.contains('svelte/store') {
+		return []
+	}
+	t := c.es_tree(root, abs_path) or { return [] }
+	mut children := map[string]EsTrace{}
+	for name in ['writable', 'readable', 'derived'] {
+		children[name] = EsTrace{
+			call: name in names
+		}
+	}
+	mut out := []SvscStoreCall{}
+	for traced in c.es_esm_references(root, {
+		'svelte/store': EsTrace{
+			esm:      true
+			children: children
+		}
+	}) {
+		node := c.es_index_of(t, traced.node) or { continue }
+		out << SvscStoreCall{
+			node: node
+			name: traced.path.last()
+		}
+	}
+	return out
+}

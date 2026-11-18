@@ -764,6 +764,9 @@ pub const svelte_block_lang = 'svelte/block-lang'
 pub const svelte_prefer_class_directive = 'svelte/prefer-class-directive'
 pub const svelte_no_svelte_internal = 'svelte/no-svelte-internal'
 pub const svelte_no_inspect = 'svelte/no-inspect'
+pub const svelte_no_store_async = 'svelte/no-store-async'
+pub const svelte_require_stores_init = 'svelte/require-stores-init'
+pub const svelte_no_ignored_unsubscribe = 'svelte/no-ignored-unsubscribe'
 pub const names = [no_floating_promises, await_thenable, require_await, return_await,
 	no_misused_promises, no_unsafe_call, no_unsafe_member_access, no_unsafe_return,
 	no_unsafe_assignment, no_unsafe_argument, restrict_template_expressions,
@@ -990,7 +993,8 @@ pub const names = [no_floating_promises, await_thenable, require_await, return_a
 	svelte_no_dupe_use_directives, svelte_prefer_attribute_interpolation,
 	svelte_max_attributes_per_line, svelte_html_self_closing, svelte_no_at_const_tags,
 	svelte_no_not_function_handler, svelte_block_lang, svelte_prefer_class_directive,
-	svelte_no_svelte_internal, svelte_no_inspect]
+	svelte_no_svelte_internal, svelte_no_inspect, svelte_no_store_async, svelte_require_stores_init,
+	svelte_no_ignored_unsubscribe]
 
 // untyped_rules are the ported rules that need no types (`meta.docs.requiresTypeChecking` is false
 // in typescript-eslint; the eslint-plugin-unicorn rules that read the types when the parser has a
@@ -1181,7 +1185,8 @@ pub const untyped_rules = [adjacent_overload_signatures, array_type, class_liter
 	svelte_no_dupe_use_directives, svelte_prefer_attribute_interpolation,
 	svelte_max_attributes_per_line, svelte_html_self_closing, svelte_no_at_const_tags,
 	svelte_no_not_function_handler, svelte_block_lang, svelte_prefer_class_directive,
-	svelte_no_svelte_internal, svelte_no_inspect]
+	svelte_no_svelte_internal, svelte_no_inspect, svelte_no_store_async, svelte_require_stores_init,
+	svelte_no_ignored_unsubscribe]
 
 // needs_types tells whether a rule asks tsgo for the types of the program.
 pub fn needs_types(rule string) bool {
@@ -1940,6 +1945,9 @@ pub const default_options = {
 	svelte_prefer_class_directive:                    '[]'
 	svelte_no_svelte_internal:                        '[]'
 	svelte_no_inspect:                                '[]'
+	svelte_no_store_async:                            '[]'
+	svelte_require_stores_init:                       '[]'
+	svelte_no_ignored_unsubscribe:                    '[]'
 }
 
 // Finding is a problem a rule found at a node.
@@ -2875,6 +2883,9 @@ pub fn message(rule string, finding Finding) string {
 		svelte_prefer_class_directive { spcd_messages }
 		svelte_no_svelte_internal { svnsi_messages }
 		svelte_no_inspect { svnin_messages }
+		svelte_no_store_async { svnsa_messages }
+		svelte_require_stores_init { svrsi_messages }
+		svelte_no_ignored_unsubscribe { svniu_messages }
 		else { map[string]string{} }
 	}
 	return interpolate(messages[finding.message_id] or { finding.message_id }, finding.data)
@@ -5308,6 +5319,15 @@ fn (mut c Checker) lint_rule(rule string, root C.TSNode, abs_path string, mut st
 		}
 		svelte_no_inspect {
 			return c.lint_svelte_no_inspect(root, abs_path, mut stats)!
+		}
+		svelte_no_store_async {
+			return c.lint_svelte_no_store_async(root, abs_path, mut stats)!
+		}
+		svelte_require_stores_init {
+			return c.lint_svelte_require_stores_init(root, abs_path, mut stats)!
+		}
+		svelte_no_ignored_unsubscribe {
+			return c.lint_svelte_no_ignored_unsubscribe(root, abs_path, mut stats)!
 		}
 		else { return error('unknown rule: ${rule}') }
 	}

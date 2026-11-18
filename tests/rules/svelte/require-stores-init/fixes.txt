@@ -1,0 +1,8 @@
+tests/rules/svelte/require-stores-init/cases.svelte:7:12	svelte/require-stores-init	storeDefaultValue	Always set a default value for svelte stores.	end	7	22
+tests/rules/svelte/require-stores-init/cases.svelte:8:12	svelte/require-stores-init	storeDefaultValue	Always set a default value for svelte stores.	end	8	22
+tests/rules/svelte/require-stores-init/cases.svelte:9:12	svelte/require-stores-init	storeDefaultValue	Always set a default value for svelte stores.	end	9	34
+tests/rules/svelte/require-stores-init/cases.svelte:12:12	svelte/require-stores-init	storeDefaultValue	Always set a default value for svelte stores.	end	12	15
+tests/rules/svelte/require-stores-init/cases.svelte:13:12	svelte/require-stores-init	storeDefaultValue	Always set a default value for svelte stores.	end	13	29
+tests/rules/svelte/require-stores-init/cases.svelte:15:12	svelte/require-stores-init	storeDefaultValue	Always set a default value for svelte stores.	end	15	22
+tests/rules/svelte/require-stores-init/cases.ts:3:18	svelte/require-stores-init	storeDefaultValue	Always set a default value for svelte stores.	end	3	28
+tests/rules/svelte/require-stores-init/cases.ts:4:18	svelte/require-stores-init	storeDefaultValue	Always set a default value for svelte stores.	end	4	40
