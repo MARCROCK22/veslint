@@ -784,6 +784,7 @@ pub const svelte_no_trailing_spaces = 'svelte/no-trailing-spaces'
 pub const svelte_no_conflicting_module_names = 'svelte/no-conflicting-module-names'
 pub const svelte_prefer_derived_over_derived_by = 'svelte/prefer-derived-over-derived-by'
 pub const svelte_no_unnecessary_state_wrap = 'svelte/no-unnecessary-state-wrap'
+pub const svelte_prefer_writable_derived = 'svelte/prefer-writable-derived'
 pub const names = [no_floating_promises, await_thenable, require_await, return_await,
 	no_misused_promises, no_unsafe_call, no_unsafe_member_access, no_unsafe_return,
 	no_unsafe_assignment, no_unsafe_argument, restrict_template_expressions,
@@ -1018,7 +1019,8 @@ pub const names = [no_floating_promises, await_thenable, require_await, return_a
 	svelte_no_export_load_in_svelte_module_in_kit_pages, svelte_valid_prop_names_in_kit_pages,
 	svelte_no_goto_without_base, svelte_prefer_const, svelte_no_inner_declarations,
 	svelte_no_trailing_spaces, svelte_no_conflicting_module_names,
-	svelte_prefer_derived_over_derived_by, svelte_no_unnecessary_state_wrap]
+	svelte_prefer_derived_over_derived_by, svelte_no_unnecessary_state_wrap,
+	svelte_prefer_writable_derived]
 
 // untyped_rules are the ported rules that need no types (`meta.docs.requiresTypeChecking` is false
 // in typescript-eslint; the eslint-plugin-unicorn rules that read the types when the parser has a
@@ -1217,7 +1219,8 @@ pub const untyped_rules = [adjacent_overload_signatures, array_type, class_liter
 	svelte_no_export_load_in_svelte_module_in_kit_pages, svelte_valid_prop_names_in_kit_pages,
 	svelte_no_goto_without_base, svelte_prefer_const, svelte_no_inner_declarations,
 	svelte_no_trailing_spaces, svelte_no_conflicting_module_names,
-	svelte_prefer_derived_over_derived_by, svelte_no_unnecessary_state_wrap]
+	svelte_prefer_derived_over_derived_by, svelte_no_unnecessary_state_wrap,
+	svelte_prefer_writable_derived]
 
 // needs_types tells whether a rule asks tsgo for the types of the program.
 pub fn needs_types(rule string) bool {
@@ -1996,6 +1999,7 @@ pub const default_options = {
 	svelte_no_conflicting_module_names:                  '[]'
 	svelte_prefer_derived_over_derived_by:               '[]'
 	svelte_no_unnecessary_state_wrap:                    '[]'
+	svelte_prefer_writable_derived:                      '[]'
 }
 
 // Finding is a problem a rule found at a node.
@@ -2951,6 +2955,7 @@ pub fn message(rule string, finding Finding) string {
 		svelte_no_conflicting_module_names { svncmn_messages }
 		svelte_prefer_derived_over_derived_by { svpdodb_messages }
 		svelte_no_unnecessary_state_wrap { svnusw_messages }
+		svelte_prefer_writable_derived { svpwd_messages }
 		else { map[string]string{} }
 	}
 	return interpolate(messages[finding.message_id] or { finding.message_id }, finding.data)
@@ -5444,6 +5449,9 @@ fn (mut c Checker) lint_rule(rule string, root C.TSNode, abs_path string, mut st
 		}
 		svelte_no_unnecessary_state_wrap {
 			return c.lint_svelte_no_unnecessary_state_wrap(root, abs_path, mut stats)!
+		}
+		svelte_prefer_writable_derived {
+			return c.lint_svelte_prefer_writable_derived(root, abs_path, mut stats)!
 		}
 		else { return error('unknown rule: ${rule}') }
 	}
