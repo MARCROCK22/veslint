@@ -1,0 +1,14 @@
+tests/rules/svelte/first-attribute-linebreak/below/cases.svelte:1:9	svelte/first-attribute-linebreak	expected	Expected a linebreak before this attribute.	fix	7	8	\n	end	1	18
+tests/rules/svelte/first-attribute-linebreak/below/cases.svelte:5:6	svelte/first-attribute-linebreak	expected	Expected a linebreak before this attribute.	fix	46	47	\n	end	5	15
+tests/rules/svelte/first-attribute-linebreak/below/cases.svelte:8:6	svelte/first-attribute-linebreak	expected	Expected a linebreak before this attribute.	fix	111	112	\n	end	8	15
+tests/rules/svelte/first-attribute-linebreak/below/cases.svelte:16:13	svelte/first-attribute-linebreak	expected	Expected a linebreak before this attribute.	fix	212	213	\n	end	16	21
+tests/rules/svelte/first-attribute-linebreak/below/cases.svelte:18:17	svelte/first-attribute-linebreak	expected	Expected a linebreak before this attribute.	fix	251	252	\n	end	18	29
+tests/rules/svelte/first-attribute-linebreak/below/cases.svelte:19:26	svelte/first-attribute-linebreak	expected	Expected a linebreak before this attribute.	fix	317	318	\n	end	19	35
+tests/rules/svelte/first-attribute-linebreak/below/cases.svelte:20:6	svelte/first-attribute-linebreak	expected	Expected a linebreak before this attribute.	fix	339	340	\n	end	20	9
+tests/rules/svelte/first-attribute-linebreak/beside/cases.svelte:7:2	svelte/first-attribute-linebreak	unexpected	Expected no linebreak before this attribute.	fix	78	80	 	end	7	11
+tests/rules/svelte/first-attribute-linebreak/beside/cases.svelte:11:2	svelte/first-attribute-linebreak	unexpected	Expected no linebreak before this attribute.	fix	144	146	 	end	11	11
+tests/rules/svelte/first-attribute-linebreak/beside/cases.svelte:15:2	svelte/first-attribute-linebreak	unexpected	Expected no linebreak before this attribute.	fix	181	183	 	end	15	16
+tests/rules/svelte/first-attribute-linebreak/cases.svelte:7:2	svelte/first-attribute-linebreak	unexpected	Expected no linebreak before this attribute.	fix	78	80	 	end	7	11
+tests/rules/svelte/first-attribute-linebreak/cases.svelte:8:6	svelte/first-attribute-linebreak	expected	Expected a linebreak before this attribute.	fix	111	112	\n	end	8	15
+tests/rules/svelte/first-attribute-linebreak/cases.svelte:15:2	svelte/first-attribute-linebreak	unexpected	Expected no linebreak before this attribute.	fix	181	183	 	end	15	16
+tests/rules/svelte/first-attribute-linebreak/cases.svelte:16:13	svelte/first-attribute-linebreak	expected	Expected a linebreak before this attribute.	fix	212	213	\n	end	16	21

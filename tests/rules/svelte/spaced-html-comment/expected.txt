@@ -1,0 +1,11 @@
+tests/rules/svelte/spaced-html-comment/cases.svelte:5:1	svelte/spaced-html-comment	expectedSpaceAfter	Expected space or tab after '<!--' in comment.
+tests/rules/svelte/spaced-html-comment/cases.svelte:5:1	svelte/spaced-html-comment	expectedSpaceBefore	Expected space or tab before '-->' in comment.
+tests/rules/svelte/spaced-html-comment/cases.svelte:6:1	svelte/spaced-html-comment	expectedSpaceBefore	Expected space or tab before '-->' in comment.
+tests/rules/svelte/spaced-html-comment/cases.svelte:7:1	svelte/spaced-html-comment	expectedSpaceAfter	Expected space or tab after '<!--' in comment.
+tests/rules/svelte/spaced-html-comment/cases.svelte:15:1	svelte/spaced-html-comment	expectedSpaceAfter	Expected space or tab after '<!--' in comment.
+tests/rules/svelte/spaced-html-comment/never/cases.svelte:6:1	svelte/spaced-html-comment	unexpectedSpaceAfter	Unexpected space or tab after '<!--' in comment.
+tests/rules/svelte/spaced-html-comment/never/cases.svelte:7:1	svelte/spaced-html-comment	unexpectedSpaceBefore	Unexpected space or tab before '-->' in comment.
+tests/rules/svelte/spaced-html-comment/never/cases.svelte:8:1	svelte/spaced-html-comment	unexpectedSpaceAfter	Unexpected space or tab after '<!--' in comment.
+tests/rules/svelte/spaced-html-comment/never/cases.svelte:8:1	svelte/spaced-html-comment	unexpectedSpaceBefore	Unexpected space or tab before '-->' in comment.
+tests/rules/svelte/spaced-html-comment/never/cases.svelte:9:1	svelte/spaced-html-comment	unexpectedSpaceAfter	Unexpected space or tab after '<!--' in comment.
+tests/rules/svelte/spaced-html-comment/never/cases.svelte:9:1	svelte/spaced-html-comment	unexpectedSpaceBefore	Unexpected space or tab before '-->' in comment.

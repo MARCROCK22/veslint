@@ -1,0 +1,14 @@
+tests/rules/svelte/html-closing-bracket-spacing/cases.svelte:1:18	svelte/html-closing-bracket-spacing	unexpectedSpace	Expected no space before '>', but found.
+tests/rules/svelte/html-closing-bracket-spacing/cases.svelte:6:5	svelte/html-closing-bracket-spacing	unexpectedSpace	Expected no space before '>', but found.
+tests/rules/svelte/html-closing-bracket-spacing/cases.svelte:6:13	svelte/html-closing-bracket-spacing	unexpectedSpace	Expected no space before '>', but found.
+tests/rules/svelte/html-closing-bracket-spacing/cases.svelte:7:15	svelte/html-closing-bracket-spacing	unexpectedSpace	Expected no space before '>', but found.
+tests/rules/svelte/html-closing-bracket-spacing/cases.svelte:8:4	svelte/html-closing-bracket-spacing	expectedSpace	Expected space before '>', but not found.
+tests/rules/svelte/html-closing-bracket-spacing/cases.svelte:11:17	svelte/html-closing-bracket-spacing	expectedSpace	Expected space before '>', but not found.
+tests/rules/svelte/html-closing-bracket-spacing/cases.svelte:15:3	svelte/html-closing-bracket-spacing	unexpectedSpace	Expected no space before '>', but found.
+tests/rules/svelte/html-closing-bracket-spacing/inverse/cases.svelte:3:9	svelte/html-closing-bracket-spacing	expectedSpace	Expected space before '>', but not found.
+tests/rules/svelte/html-closing-bracket-spacing/inverse/cases.svelte:5:5	svelte/html-closing-bracket-spacing	expectedSpace	Expected space before '>', but not found.
+tests/rules/svelte/html-closing-bracket-spacing/inverse/cases.svelte:5:12	svelte/html-closing-bracket-spacing	expectedSpace	Expected space before '>', but not found.
+tests/rules/svelte/html-closing-bracket-spacing/inverse/cases.svelte:7:24	svelte/html-closing-bracket-spacing	expectedSpace	Expected space before '>', but not found.
+tests/rules/svelte/html-closing-bracket-spacing/inverse/cases.svelte:9:4	svelte/html-closing-bracket-spacing	unexpectedSpace	Expected no space before '>', but found.
+tests/rules/svelte/html-closing-bracket-spacing/inverse/cases.svelte:10:4	svelte/html-closing-bracket-spacing	unexpectedSpace	Expected no space before '>', but found.
+tests/rules/svelte/html-closing-bracket-spacing/inverse/cases.svelte:15:11	svelte/html-closing-bracket-spacing	expectedSpace	Expected space before '>', but not found.

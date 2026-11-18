@@ -1,0 +1,1 @@
+{"rules": {"svelte/no-at-html-tags": "error", "svelte/no-at-debug-tags": "error", "svelte/no-spaces-around-equal-signs-in-attribute": "error", "svelte/system": "error", "svelte/comment-directive": "error"}, "settings": {"svelte": {"ignoreWarnings": [1]}}}

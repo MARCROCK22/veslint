@@ -1,0 +1,4 @@
+tests/rules/svelte/block-lang/cases.svelte:1:1	svelte/block-lang	error	The lang attribute of the <script> block should be omitted.
+tests/rules/svelte/block-lang/cases.svelte:7:1	svelte/block-lang	error	The lang attribute of the <style> block should be omitted.
+tests/rules/svelte/block-lang/enforce-missing/cases.svelte:1:2	svelte/block-lang	error	The <style> block should be present and its lang attribute should be "scss".
+tests/rules/svelte/block-lang/ts-or-none/cases.svelte:7:1	svelte/block-lang	error	The lang attribute of the <style> block should be omitted.

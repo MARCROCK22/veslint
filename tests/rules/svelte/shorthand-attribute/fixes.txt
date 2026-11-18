@@ -1,0 +1,9 @@
+tests/rules/svelte/shorthand-attribute/cases.svelte:7:6	svelte/shorthand-attribute	expectedShorthand	Expected shorthand attribute.	fix	86	92		end	7	19
+tests/rules/svelte/shorthand-attribute/cases.svelte:8:6	svelte/shorthand-attribute	expectedShorthand	Expected shorthand attribute.	fix	112	127	{title}	end	8	21
+tests/rules/svelte/shorthand-attribute/cases.svelte:9:6	svelte/shorthand-attribute	expectedShorthand	Expected shorthand attribute.	fix	140	155	{title}	end	9	21
+tests/rules/svelte/shorthand-attribute/cases.svelte:10:6	svelte/shorthand-attribute	expectedShorthand	Expected shorthand attribute.	fix	168	172		end	10	15
+tests/rules/svelte/shorthand-attribute/cases.svelte:13:8	svelte/shorthand-attribute	expectedShorthand	Expected shorthand attribute.	fix	239	245		end	13	21
+tests/rules/svelte/shorthand-attribute/cases.svelte:14:8	svelte/shorthand-attribute	expectedShorthand	Expected shorthand attribute.	fix	263	269		end	14	23
+tests/rules/svelte/shorthand-attribute/cases.svelte:16:7	svelte/shorthand-attribute	expectedShorthand	Expected shorthand attribute.	fix	317	323		end	16	20
+tests/rules/svelte/shorthand-attribute/cases.svelte:17:6	svelte/shorthand-attribute	expectedShorthand	Expected shorthand attribute.	fix	339	347		end	18	9
+tests/rules/svelte/shorthand-attribute/never/cases.svelte:12:6	svelte/shorthand-attribute	expectedRegular	Expected regular attribute syntax.	fix	217	217	title=	end	12	13

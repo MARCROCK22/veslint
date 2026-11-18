@@ -1,0 +1,10 @@
+tests/rules/svelte/shorthand-directive/cases.svelte:7:8	svelte/shorthand-directive	expectedShorthand	Expected shorthand directive.
+tests/rules/svelte/shorthand-directive/cases.svelte:9:8	svelte/shorthand-directive	expectedShorthand	Expected shorthand directive.
+tests/rules/svelte/shorthand-directive/cases.svelte:11:6	svelte/shorthand-directive	expectedShorthand	Expected shorthand directive.
+tests/rules/svelte/shorthand-directive/cases.svelte:13:6	svelte/shorthand-directive	expectedShorthand	Expected shorthand directive.
+tests/rules/svelte/shorthand-directive/cases.svelte:14:6	svelte/shorthand-directive	expectedShorthand	Expected shorthand directive.
+tests/rules/svelte/shorthand-directive/cases.svelte:15:6	svelte/shorthand-directive	expectedShorthand	Expected shorthand directive.
+tests/rules/svelte/shorthand-directive/cases.svelte:20:8	svelte/shorthand-directive	expectedShorthand	Expected shorthand directive.
+tests/rules/svelte/shorthand-directive/never/cases.svelte:8:8	svelte/shorthand-directive	expectedRegular	Expected regular directive syntax.
+tests/rules/svelte/shorthand-directive/never/cases.svelte:12:6	svelte/shorthand-directive	expectedRegular	Expected regular directive syntax.
+tests/rules/svelte/shorthand-directive/never/cases.svelte:16:6	svelte/shorthand-directive	expectedRegular	Expected regular directive syntax.

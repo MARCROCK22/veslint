@@ -1,0 +1,10 @@
+tests/rules/svelte/shorthand-directive/cases.svelte:7:8	svelte/shorthand-directive	expectedShorthand	Expected shorthand directive.	fix	104	112		end	7	26
+tests/rules/svelte/shorthand-directive/cases.svelte:9:8	svelte/shorthand-directive	expectedShorthand	Expected shorthand directive.	fix	154	164		end	9	28
+tests/rules/svelte/shorthand-directive/cases.svelte:11:6	svelte/shorthand-directive	expectedShorthand	Expected shorthand directive.	fix	215	224		end	11	27
+tests/rules/svelte/shorthand-directive/cases.svelte:13:6	svelte/shorthand-directive	expectedShorthand	Expected shorthand directive.	fix	274	285		end	13	29
+tests/rules/svelte/shorthand-directive/cases.svelte:14:6	svelte/shorthand-directive	expectedShorthand	Expected shorthand directive.	fix	309	317		end	14	25
+tests/rules/svelte/shorthand-directive/cases.svelte:15:6	svelte/shorthand-directive	expectedShorthand	Expected shorthand directive.	fix	341	351		end	15	27
+tests/rules/svelte/shorthand-directive/cases.svelte:20:8	svelte/shorthand-directive	expectedShorthand	Expected shorthand directive.	fix	497	507		end	20	28
+tests/rules/svelte/shorthand-directive/never/cases.svelte:8:8	svelte/shorthand-directive	expectedRegular	Expected regular directive syntax.	fix	133	133	={value}	end	8	18
+tests/rules/svelte/shorthand-directive/never/cases.svelte:12:6	svelte/shorthand-directive	expectedRegular	Expected regular directive syntax.	fix	249	249	={active}	end	12	18
+tests/rules/svelte/shorthand-directive/never/cases.svelte:16:6	svelte/shorthand-directive	expectedRegular	Expected regular directive syntax.	fix	375	375	={color}	end	16	17

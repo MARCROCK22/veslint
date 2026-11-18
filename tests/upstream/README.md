@@ -381,3 +381,47 @@ bun tools/gen_upstream_cases.mjs svelte/      # every rule; or name some: svelte
 
 The generator also makes the package's node_modules (links to `build/upstream/svelte-deps`),
 which the reference script needs.
+
+### How veslint runs them: TypeScript only
+
+veslint lints only TypeScript scripts of `.svelte` files (`.claude/SVELTE.md`), and reads every
+component with svelte-eslint-parser and typescript-eslint's parser as its one script parser (also its
+template expressions, and a component without a script, which upstream parses with espree).
+`node tests/rules/svelte/upstream_ts.mjs [--out DIR] [--check] [svelte/<rule>...]` (without names, the
+svelte/* rules veslint has: the directories of `tests/rules/svelte` with an `expected.txt`) converts
+the cases of each rule that way and writes them to `tests/rules/svelte/<rule>/upstream.ts.json`,
+which `tests/upstream_check.py` runs for a `svelte/` rule:
+
+- a component gets `lang="ts"` on each top-level `<script>` without a lang (`lang="js"` and
+  `lang="javascript"` become `ts`; the Svelte compiler finds the elements), and
+  `parserOptions.parser` becomes `@typescript-eslint/parser` (one parser, not one by lang); it keeps
+  its file and the program of `tests/fixtures/rules/tsconfig.json`. A component the compiler rejects
+  keeps its text (its error is the case) when its scripts are TypeScript already;
+- a JavaScript file that is not a component becomes a TypeScript file (`x.js` -> `x.ts`,
+  `x.svelte.js` -> `x.svelte.ts`), which is not on disk and so in no program (no types);
+- RuleTester runs the converted case: if it still gives what the test expects, the expectation
+  stays the test's (`"expectation": "upstream"`); if not, it is what ESLint gives on the converted
+  case (`"expectation": "eslint"`: every problem with its messageId, message, location, end and
+  suggestions, and the output of one pass of fixes). The inserted `lang="ts"` is an attribute of the
+  script's start tag, which the rules about tags and attributes see: most of those cases take
+  ESLint's expectation;
+- `skipped` lists the cases that cannot be converted, with why: those upstream's requirements leave
+  out (Svelte 3/4 and the like), a script whose lang is neither JavaScript nor TypeScript (`sass`), a
+  configuration with functions (`_config.cjs`: a veslint configuration is JSON), a text with a lone
+  surrogate, a case of no-conflicting-module-names whose subject is a JavaScript file's name, or a
+  converted text the parser rejects;
+- the `lints` of comment-directive (`ESLint` with the `svelte/svelte` processor) are converted the
+  same way, with the rules of their configuration that veslint has (`no-unused-vars` becomes
+  `@typescript-eslint/no-unused-vars`; `no-undef` and ESLint core's `space-infix-ops` are left out),
+  and their expectation is all that ESLint gives on the converted text, compared whole and in order.
+
+`tests/upstream_check.py` runs them in place, in the clone's `tests/fixtures/rules` (the typed ones
+with the program of its `tsconfig.json`), from the package's directory (the routes of SvelteKit of
+some configurations are relative to it), with one pass of fixes, and turns the rule on as a warning,
+as ESLint's RuleTester does (the line of a report without a messageId says `warning`).
+`tests/run.sh` runs them for the svelte/* rules veslint has ("eslint-plugin-svelte's own tests");
+`tests/rules/reference.sh` checks with ESLint that `upstream.json` gives what each test expects,
+that `upstream.ts.json` is what `upstream_ts.mjs --check` makes now, and that veslint prints, case by
+case, ESLint's lines on every converted case. For the 34 rules of batch SR0: 316 cases and lints,
+212 with their test's expectation, 73 with ESLint's on the converted case, 29 lints, 2 not
+convertible (block-lang's `lang="sass"` and `lang="scss"` scripts).

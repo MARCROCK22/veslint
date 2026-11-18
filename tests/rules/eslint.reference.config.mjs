@@ -1,10 +1,12 @@
 // Reference config for tests/rules/reference.sh: typescript-eslint 8.72.2 (installed in build/eval
 // by tests/eval_spider_byte.sh) and, for the `seyfert/*` rules, @slipher/eslint-plugin 1.1.0
 // (build/upstream/seyfert, see tests/upstream/README.md). Each rule ported to veslint has a directory
-// tests/rules/<rule id>/, and is enabled only on its cases.ts, cases.tsx and cases.vue files: with its
-// default options or, in a subdirectory with options.json, with those. A .vue file is read as a Vue
-// project reads it: vue-eslint-parser 10.4.2 with typescript-eslint's parser and eslint-plugin-vue
-// 10.12.1's processor (build/upstream/vue-deps).
+// tests/rules/<rule id>/, and is enabled only on its cases.ts, cases.tsx, cases.vue and cases.svelte
+// files: with its default options or, in a subdirectory with options.json, with those. A .vue file is
+// read as a Vue project reads it: vue-eslint-parser 10.4.2 with typescript-eslint's parser and
+// eslint-plugin-vue 10.12.1's processor (build/upstream/vue-deps); a .svelte file as a Svelte project
+// reads it: svelte-eslint-parser 1.10.1 with typescript-eslint's parser and eslint-plugin-svelte
+// 3.24.1's processor (build/upstream/svelte-deps).
 import fs from 'node:fs';
 import { createRequire } from 'node:module';
 import path from 'node:path';
@@ -19,7 +21,9 @@ const { plugin: seyfert } = createRequire(import.meta.url)(
   '../../build/upstream/seyfert/node_modules/@slipher/eslint-plugin',
 );
 const vue = createRequire(import.meta.url)('../../build/upstream/vue-deps/node_modules/eslint-plugin-vue');
-const plugins = { '@typescript-eslint': tseslint.plugin, '@stylistic': stylistic, perfectionist, marcrock, seyfert, unicorn, vue };
+const svelteParser = createRequire(import.meta.url)('../../build/upstream/svelte-deps/node_modules/svelte-eslint-parser');
+const svelte = createRequire(import.meta.url)('../../build/upstream/svelte-deps/node_modules/eslint-plugin-svelte');
+const plugins = { '@typescript-eslint': tseslint.plugin, '@stylistic': stylistic, perfectionist, marcrock, seyfert, unicorn, vue, svelte };
 
 // The directory of a rule is the one with an expected.txt, and its path is the rule's id
 // (`@typescript-eslint/await-thenable`); the files of the packages in a node_modules do not count.
@@ -49,6 +53,16 @@ const withDefaults = ported.flatMap(rule => [
     processor: 'vue/vue',
     rules: { [rule]: 'error' },
   },
+  {
+    files: [`**/rules/${rule}/**/cases.svelte`],
+    languageOptions: {
+      parser: svelteParser,
+      parserOptions: { parser: tseslint.parser, projectService: true, tsconfigRootDir: import.meta.dirname, extraFileExtensions: ['.svelte'] },
+    },
+    plugins,
+    processor: 'svelte/svelte',
+    rules: { [rule]: 'error' },
+  },
 ]);
 
 // A subdirectory with options.json (the list of options of the rule) tests other options.
@@ -57,7 +71,7 @@ const withOptions = ported.flatMap(rule =>
     .readdirSync(path.join(import.meta.dirname, rule), { recursive: true })
     .filter(file => path.basename(file) === 'options.json')
     .map(file => ({
-      files: [`**/rules/${rule}/${path.dirname(file)}/cases.ts`, `**/rules/${rule}/${path.dirname(file)}/cases.tsx`, `**/rules/${rule}/${path.dirname(file)}/cases.vue`],
+      files: [`**/rules/${rule}/${path.dirname(file)}/cases.ts`, `**/rules/${rule}/${path.dirname(file)}/cases.tsx`, `**/rules/${rule}/${path.dirname(file)}/cases.vue`, `**/rules/${rule}/${path.dirname(file)}/cases.svelte`],
       rules: {
         [rule]: [
           'error',

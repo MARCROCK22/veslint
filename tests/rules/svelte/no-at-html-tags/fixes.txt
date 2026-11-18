@@ -1,0 +1,4 @@
+tests/rules/svelte/no-at-html-tags/cases.svelte:6:1	svelte/no-at-html-tags	unexpected	`{@html}` can lead to XSS attack.	end	6	13
+tests/rules/svelte/no-at-html-tags/cases.svelte:7:6	svelte/no-at-html-tags	unexpected	`{@html}` can lead to XSS attack.	end	7	25
+tests/rules/svelte/no-at-html-tags/cases.svelte:10:2	svelte/no-at-html-tags	unexpected	`{@html}` can lead to XSS attack.	end	10	20
+tests/rules/svelte/no-at-html-tags/cases.svelte:12:20	svelte/no-at-html-tags	unexpected	`{@html}` can lead to XSS attack.	end	13	14

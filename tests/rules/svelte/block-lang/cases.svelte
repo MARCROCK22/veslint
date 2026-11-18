@@ -1,0 +1,9 @@
+<script lang="ts">
+	const a = 1;
+</script>
+
+<p>{a}</p>
+
+<style lang="scss">
+	p { color: red; }
+</style>

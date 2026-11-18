@@ -1,0 +1,4 @@
+tests/rules/svelte/no-at-const-tags/cases.svelte:6:2	svelte/no-at-const-tags	unexpected	Use `{const ...}` declaration tag instead of legacy `{@const ...}`.	fix	112	136	const double = $derived(item * 2)	end	6	28
+tests/rules/svelte/no-at-const-tags/cases.svelte:7:2	svelte/no-at-const-tags	unexpected	Use `{const ...}` declaration tag instead of legacy `{@const ...}`.	fix	140	141		end	7	39
+tests/rules/svelte/no-at-const-tags/cases.svelte:8:2	svelte/no-at-const-tags	unexpected	Use `{const ...}` declaration tag instead of legacy `{@const ...}`.	fix	180	200	const spaced = $derived(item)	end	8	25
+tests/rules/svelte/no-at-const-tags/options-runes/cases.svelte:7:2	svelte/no-at-const-tags	unexpected	Use `{const ...}` declaration tag instead of legacy `{@const ...}`.	fix	106	130	const double = $derived(item * 2)	end	7	28

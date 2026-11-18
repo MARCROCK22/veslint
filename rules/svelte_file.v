@@ -42,6 +42,12 @@ mut:
 	// TypeScript's nodes begin. Built on first use.
 	code_ends     []int
 	has_code_ends bool
+	// The traversal of the whole document for the svelte/* rules (svelte_template.v), built on
+	// first use: its events, and the Svelte nodes in the order it enters them.
+	steps      []SvelteStep
+	has_steps  bool
+	snodes     []int
+	has_snodes bool
 }
 
 // set_svelte makes the next lint_file lint `doc`, a parsed .svelte file whose text is the one
@@ -192,6 +198,11 @@ fn (c &Checker) svelte_move_findings(findings []Finding) []Finding {
 	mut out := []Finding{cap: findings.len}
 	mut seen := map[string]bool{}
 	for f in findings {
+		// The svelte/* rules report on the document (svelte_template.v): offsets of the file.
+		if f.rule.starts_with(svelte_rule_prefix) {
+			out << f
+			continue
+		}
 		// The `generics` attribute's type parameters are type aliases in the lint code: what a rule
 		// says of the aliases' own tokens is not ESLint's.
 		if doc.lint_generics_start >= 0 && f.stmt.start_byte >= doc.lint_generics_start

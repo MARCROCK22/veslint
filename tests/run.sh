@@ -184,7 +184,7 @@ check_rule() { # directory of the rule
 	local dir=$1 rule out code cases
 	rule=${dir#tests/rules/}
 	out=${rule//\//__}
-	mapfile -t cases < <(find "$dir" -name cases.ts -o -name cases.tsx -o -name cases.vue | sorted)
+	mapfile -t cases < <(find "$dir" -name cases.ts -o -name cases.tsx -o -name cases.vue -o -name cases.svelte | sorted)
 	code=0
 	lint_cases "$rule" "${cases[@]}" || code=$?
 	# A rule whose findings TypeScript does not allow in a file (no-octal) has none: code 0.
@@ -702,6 +702,20 @@ else
 	ko "Svelte files: a JavaScript script (code $code)"
 	cat "$TMP/svelte-javascript.out" "$TMP/svelte-javascript.err"
 fi
+# svelte/system: the rules settings.svelte.ignoreWarnings names (exactly, or by a `/regexp/`) are
+# disabled outside the scripts, and an ignoreWarnings that is not an array of strings is reported,
+# as ESLint gives them with eslint-plugin-svelte's processor (tests/rules/svelte/system/settings:
+# a configuration of each kind and what ESLint gave, pinned).
+: > "$TMP/svelte-system.out"
+for config in ok bad num; do
+	(cd tests/rules/svelte/system/settings && ../../../../../veslint --config "$config.json" sys.svelte 2> /dev/null) |
+		sed "s|^|$config: |" >> "$TMP/svelte-system.out"
+done
+if diff -u tests/rules/svelte/system/settings/ignore-warnings.txt "$TMP/svelte-system.out"; then
+	ok "svelte/system: settings.svelte.ignoreWarnings"
+else
+	ko "svelte/system: settings.svelte.ignoreWarnings"
+fi
 
 # veslint_batched OUT ERR ARGUMENTS... -- FILES...: ./veslint with the arguments and the files,
 # appending to OUT and ERR; the files go in batches that fit in a Windows command line (32,767
@@ -738,7 +752,7 @@ veslint_batched() {
 phase "directives, --fix, configurations and the command line"
 # `eslint --print-config`: numeric severities, the core require-await rule turned off and rules of
 # other plugins), with every rule of tests/rules and its default options.
-mapfile -t all_cases < <(find tests/rules -name cases.ts -o -name cases.tsx -o -name cases.vue | sorted)
+mapfile -t all_cases < <(find tests/rules -name cases.ts -o -name cases.tsx -o -name cases.vue -o -name cases.svelte | sorted)
 [[ $seyfert_skipped -eq 0 ]] || mapfile -t all_cases < <(printf '%s\n' "${all_cases[@]}" | grep -v '^tests/rules/seyfert/')
 cat > "$TMP/all.json" << 'JSON'
 {"rules": {
@@ -1329,6 +1343,20 @@ if [[ ${#vue_upstream[@]} -gt 0 ]]; then
 		upstream_check "eslint-plugin-vue's own tests" "$TMP/upstream-vue" "$TMP/upstream-vue-configs" "${vue_upstream[@]}"
 	else
 		echo "skip   eslint-plugin-vue's own tests: $(cat "$TMP/upstream-vue-setup.err")"
+	fi
+fi
+# eslint-plugin-svelte's own tests of the svelte/* rules veslint has (the directories of
+# tests/rules/svelte with an expected.txt): their cases converted to TypeScript, with the
+# expectations of upstream.ts.json (tests/rules/svelte/upstream_ts.mjs), in place in the clone's
+# tests/fixtures/rules (the typed ones with the program of its tsconfig.json), and the lints of
+# comment-directive whole.
+mapfile -t svelte_upstream < <(find tests/rules/svelte -name expected.txt | sed -E 's|^tests/rules/(.*)/expected\.txt$|\1|' | sorted)
+if [[ ${#svelte_upstream[@]} -gt 0 ]]; then
+	svelte_fixtures=build/upstream/svelte/packages/eslint-plugin-svelte/tests/fixtures/rules
+	if [[ -f $svelte_fixtures/tsconfig.json ]]; then
+		upstream_check "eslint-plugin-svelte's own tests" "$svelte_fixtures" "$TMP/upstream-svelte-configs" "${svelte_upstream[@]}"
+	else
+		echo "skip   eslint-plugin-svelte's own tests: missing $svelte_fixtures (see tests/upstream/README.md)"
 	fi
 fi
 phase "the upstream tests of each plugin"

@@ -130,6 +130,8 @@ export function runCase(name, c, defaults) {
   return { failure, messages: messages && messages.map(m => pick(named(m))) };
 }
 
+const tsPlugin = () => createRequire(path.join(ROOT, 'build/eval/spider-byte/node_modules/x.js'))('@typescript-eslint/eslint-plugin');
+
 // lintMessages runs a lint of an `it` block (ESLint with its configuration, the parser and the
 // plugin by name): the problems and the output ESLint gives.
 export async function lintMessages(lint) {
@@ -143,6 +145,9 @@ export async function lintMessages(lint) {
   if (plugins) {
     config.plugins = Object.fromEntries(
       Object.entries(plugins).map(([prefix, plugin]) => {
+        // typescript-eslint's plugin: the lints converted to TypeScript (upstream_ts.mjs) run its
+        // no-unused-vars, from build/eval (8.72.2, as the parser).
+        if (plugin === '@typescript-eslint/eslint-plugin') return [prefix, tsPlugin()];
         if (plugin !== 'eslint-plugin-svelte') throw new Error(`${lint.id}: unknown plugin ${plugin}`);
         return [prefix, pluginSvelte];
       }),

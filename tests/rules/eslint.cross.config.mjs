@@ -16,7 +16,9 @@ const { plugin: seyfert } = createRequire(import.meta.url)(
   '../../build/upstream/seyfert/node_modules/@slipher/eslint-plugin',
 );
 const vue = createRequire(import.meta.url)('../../build/upstream/vue-deps/node_modules/eslint-plugin-vue');
-const plugins = { '@typescript-eslint': tseslint.plugin, '@stylistic': stylistic, perfectionist, marcrock, seyfert, unicorn, vue };
+const svelteParser = createRequire(import.meta.url)('../../build/upstream/svelte-deps/node_modules/svelte-eslint-parser');
+const svelte = createRequire(import.meta.url)('../../build/upstream/svelte-deps/node_modules/eslint-plugin-svelte');
+const plugins = { '@typescript-eslint': tseslint.plugin, '@stylistic': stylistic, perfectionist, marcrock, seyfert, unicorn, vue, svelte };
 
 const root = import.meta.dirname;
 // The directory of a rule is the one with an expected.txt, and its path is the rule's id; the files
@@ -46,6 +48,18 @@ export default [
     },
     plugins,
     processor: 'vue/vue',
+    rules: Object.fromEntries(ported.map(rule => [rule, 'error'])),
+  },
+  // The .svelte fixtures (of the svelte/* rules), as a Svelte project reads them: svelte-eslint-parser
+  // 1.10.1 with typescript-eslint's parser and eslint-plugin-svelte 3.24.1's processor.
+  {
+    files: ['**/cases.svelte'],
+    languageOptions: {
+      parser: svelteParser,
+      parserOptions: { parser: tseslint.parser, projectService: true, tsconfigRootDir: root, extraFileExtensions: ['.svelte'] },
+    },
+    plugins,
+    processor: 'svelte/svelte',
     rules: Object.fromEntries(ported.map(rule => [rule, 'error'])),
   },
 ];

@@ -58,7 +58,7 @@ reference_in_groups() { # tag files...: reference_of on groups of consecutive fi
 # 26.13.0) stops matching an alternation in a regexp modifier group with the `u` flag at some point
 # of the run: `/^(?i:get|set)\p{Lu}/u` of naming-convention's regex fixture no longer matches
 # `SetÉtat`, which it matches in a new process (and in veslint).
-mapfile -t all_cases < <(find tests/rules -name cases.ts -o -name cases.tsx -o -name cases.vue | sort)
+mapfile -t all_cases < <(find tests/rules -name cases.ts -o -name cases.tsx -o -name cases.vue -o -name cases.svelte | sort)
 # ESLint's lines of a rule directory are kept in build/eslint-cache/reference under the key of its
 # files, this configuration and the versions of ESLint and its plugins (tests/rules/eslint_cache.mjs):
 # ESLint lints only the cases of the directories without them.
@@ -106,7 +106,7 @@ fail=0
 mapfile -t rule_dirs < <(find tests/rules -name expected.txt | sed 's|/expected\.txt$||' | sort)
 for dir in "${rule_dirs[@]}"; do
 	rule=${dir#tests/rules/}
-	grep -P "^tests/rules/${rule}/(.+/)?cases\.(?:tsx?|vue):.*\t${rule}\t" "$TMP/reference.txt" | sort > "$TMP/ref.txt"
+	grep -P "^tests/rules/${rule}/(.+/)?cases\.(?:tsx?|vue|svelte):.*\t${rule}\t" "$TMP/reference.txt" | sort > "$TMP/ref.txt"
 	cat "$dir/expected.txt" "$dir/limitations.txt" 2> /dev/null | sort > "$TMP/expected.txt"
 	known=$(cat "$dir/limitations.txt" 2> /dev/null | wc -l)
 	if diff -u "$TMP/ref.txt" "$TMP/expected.txt" > "$TMP/diff.txt"; then
@@ -117,7 +117,7 @@ for dir in "${rule_dirs[@]}"; do
 		fail=1
 	fi
 	if [[ -f $dir/fixes.txt ]]; then
-		grep -P "^tests/rules/${rule}/(.+/)?cases\.(?:tsx?|vue):.*\t${rule}\t" "$TMP/reference.fixes.txt" | sort > "$TMP/ref.txt"
+		grep -P "^tests/rules/${rule}/(.+/)?cases\.(?:tsx?|vue|svelte):.*\t${rule}\t" "$TMP/reference.fixes.txt" | sort > "$TMP/ref.txt"
 		# fixes.known.txt: where veslint fixes on purpose otherwise than the reference, pairs of
 		# lines `eslint<TAB><its line>` and `veslint<TAB><veslint's line>` (documented in internals.md);
 		# an empty line of veslint's: it does not report that finding on purpose (limitations.txt).
@@ -217,7 +217,7 @@ for json in tests/config-errors/*.json; do
 	fi
 done
 # Any other message (parse errors, a rule in another rule's file) is a failure.
-if grep -vP "^tests/rules/((?:@[^/]+/|seyfert/|unicorn/|perfectionist/|marcrock/|vue/)?[^/]+)/(?:.+/)?cases\.(?:tsx?|vue):[0-9]+:[0-9]+\t\1\t" "$TMP/reference.txt" > "$TMP/others.txt"; then
+if grep -vP "^tests/rules/((?:@[^/]+/|seyfert/|unicorn/|perfectionist/|marcrock/|vue/|svelte/)?[^/]+)/(?:.+/)?cases\.(?:tsx?|vue|svelte):[0-9]+:[0-9]+\t\1\t" "$TMP/reference.txt" > "$TMP/others.txt"; then
 	echo "FAIL   unexpected ESLint messages:"
 	cat "$TMP/others.txt"
 	fail=1
@@ -339,4 +339,35 @@ if [[ ${#vue_rules[@]} -gt 0 ]]; then
 		fi
 	fi
 fi
+# eslint-plugin-svelte's tests of the svelte/* rules veslint has (tests/upstream/README.md): ESLint
+# gives what each test expects on tests/rules/svelte/<rule>/upstream.json; the cases converted to
+# TypeScript (upstream.ts.json) are what tests/rules/svelte/upstream_ts.mjs makes of them now; and on
+# every converted case veslint prints, line for line and in the same order, what ESLint gives.
+mapfile -t svelte_rules < <(find tests/rules/svelte -name expected.txt | sed -E 's|^tests/rules/(.*)/expected\.txt$|\1|' | sort)
+if [[ ${#svelte_rules[@]} -gt 0 ]]; then
+	if node tests/rules/svelte/upstream_eslint.mjs "${svelte_rules[@]}" > "$TMP/svelte-upstream.out" 2>&1; then
+		echo "ok     eslint-plugin-svelte's tests: $(tail -1 "$TMP/svelte-upstream.out")"
+	else
+		echo "FAIL   eslint-plugin-svelte's tests: ESLint does not give what they expect"
+		grep -v '^ok' "$TMP/svelte-upstream.out"
+		fail=1
+	fi
+	if node tests/rules/svelte/upstream_ts.mjs --check --out "$TMP/svelte-eslint" "${svelte_rules[@]}" > "$TMP/svelte-ts.out" 2>&1; then
+		echo "ok     eslint-plugin-svelte's tests as TypeScript: $(tail -1 "$TMP/svelte-ts.out")"
+	else
+		echo "FAIL   eslint-plugin-svelte's tests as TypeScript: upstream.ts.json is not what ESLint gives"
+		grep -v '^svelte/' "$TMP/svelte-ts.out"
+		fail=1
+	fi
+	python3 tests/upstream_check.py ./veslint build/upstream/svelte/packages/eslint-plugin-svelte/tests/fixtures/rules \
+		"$TMP/upstream-configs-svelte" --lines "$TMP/upstream-veslint-svelte.txt" "${svelte_rules[@]}" > /dev/null 2>&1
+	if python3 tests/upstream_compare.py "$TMP/svelte-eslint" "$TMP/upstream-veslint-svelte.txt" "${svelte_rules[@]}" > "$TMP/upstream-compare.out"; then
+		echo "ok     eslint-plugin-svelte's tests as TypeScript: $(tail -1 "$TMP/upstream-compare.out")"
+	else
+		echo "FAIL   eslint-plugin-svelte's tests as TypeScript: veslint does not print what ESLint gives"
+		cat "$TMP/upstream-compare.out"
+		fail=1
+	fi
+fi
+
 exit $fail

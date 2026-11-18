@@ -1,0 +1,9 @@
+tests/rules/svelte/no-object-in-text-mustaches/cases.svelte:5:4	svelte/no-object-in-text-mustaches	unexpected	Unexpected object in text mustache interpolation.
+tests/rules/svelte/no-object-in-text-mustaches/cases.svelte:6:4	svelte/no-object-in-text-mustaches	unexpected	Unexpected array in text mustache interpolation.
+tests/rules/svelte/no-object-in-text-mustaches/cases.svelte:7:4	svelte/no-object-in-text-mustaches	unexpected	Unexpected function in text mustache interpolation.
+tests/rules/svelte/no-object-in-text-mustaches/cases.svelte:8:4	svelte/no-object-in-text-mustaches	unexpected	Unexpected function in text mustache interpolation.
+tests/rules/svelte/no-object-in-text-mustaches/cases.svelte:9:4	svelte/no-object-in-text-mustaches	unexpected	Unexpected class in text mustache interpolation.
+tests/rules/svelte/no-object-in-text-mustaches/cases.svelte:12:16	svelte/no-object-in-text-mustaches	unexpected	Unexpected object in text mustache interpolation.
+tests/rules/svelte/no-object-in-text-mustaches/cases.svelte:14:18	svelte/no-object-in-text-mustaches	unexpected	Unexpected object in text mustache interpolation.
+tests/rules/svelte/no-object-in-text-mustaches/cases.svelte:15:1	svelte/no-object-in-text-mustaches	unexpected	Unexpected object in text mustache interpolation.
+tests/rules/svelte/no-object-in-text-mustaches/cases.svelte:16:4	svelte/no-object-in-text-mustaches	unexpected	Unexpected object in text mustache interpolation.
