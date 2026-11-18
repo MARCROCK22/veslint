@@ -188,13 +188,13 @@ fn (c &Checker) vpssc_fixes(attr int, t &estree.EsTree, expression int, class_no
 // when that comma does not end the list.
 fn (c &Checker) vpssc_remove_with_comma(t &estree.EsTree, node int) Fix {
 	start, end := t.nodes[node].start, t.nodes[node].end
-	if prev := c.vue_token_before(start, false) {
+	if prev := c.vue_token_before(start, false, false) {
 		if prev.typ == 'Punctuator' && prev.value == ',' {
 			return fix_remove_range(prev.start, end)
 		}
 	}
-	if next := c.vue_token_after(end, false) {
-		if next_next := c.vue_token_after(next.end, false) {
+	if next := c.vue_token_after(end, false, false) {
+		if next_next := c.vue_token_after(next.end, false, false) {
 			if next.typ == 'Punctuator' && next.value == ','
 				&& (next_next.typ != 'Punctuator' || next_next.value !in [']', '}']) {
 				return fix_remove_range(start, next_next.start)

@@ -164,7 +164,7 @@ fn (mut c Checker) lint_vue_html_closing_bracket_newline(root C.TSNode, abs_path
 		if closing.typ != 'HTMLSelfClosingTagClose' && closing.typ != 'HTMLTagClose' {
 			continue
 		}
-		prev := c.vue_token_before(closing.start, false) or { continue }
+		prev := c.vue_token_before(closing.start, false, false) or { continue }
 		prev_end_line := c.vue.doc.loc(prev.end).line
 		singleline := c.vue.doc.loc(start).line == prev_end_line
 		expected := c.vhcbn_expected(node, opts, singleline)

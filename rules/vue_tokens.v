@@ -71,17 +71,18 @@ fn (c &Checker) vue_last_token_in(start int, end int) ?vue.Token {
 	return none
 }
 
-// vue_token_before is getTokenBefore(node): the last token that ends at or before `offset`
-// (comments too with `include_comments`).
-fn (c &Checker) vue_token_before(offset int, include_comments bool) ?vue.Token {
+// vue_token_before is getTokenBefore(node, {includeComments, filter}): the last token that ends
+// at or before `offset` (comments too with `include_comments`; with `skip_whitespace`, the filter
+// that takes out HTMLWhitespace tokens).
+fn (c &Checker) vue_token_before(offset int, include_comments bool, skip_whitespace bool) ?vue.Token {
 	mut best := ?vue.Token(none)
 	tokens := c.vue.doc.tokens
-	mut i := vue_lower_bound(tokens, offset) - 1
-	for i >= 0 && tokens[i].end > offset {
-		i--
-	}
-	if i >= 0 {
+	for i := vue_lower_bound(tokens, offset) - 1; i >= 0; i-- {
+		if tokens[i].end > offset || (skip_whitespace && tokens[i].typ == 'HTMLWhitespace') {
+			continue
+		}
 		best = tokens[i]
+		break
 	}
 	if include_comments {
 		comments := c.vue.doc.comments
@@ -102,14 +103,18 @@ fn (c &Checker) vue_token_before(offset int, include_comments bool) ?vue.Token {
 	return best
 }
 
-// vue_token_after is getTokenAfter(node): the first token that starts at or after `offset`
-// (comments too with `include_comments`).
-fn (c &Checker) vue_token_after(offset int, include_comments bool) ?vue.Token {
+// vue_token_after is getTokenAfter(node, {includeComments, filter}): the first token that starts
+// at or after `offset` (comments too with `include_comments`; with `skip_whitespace`, the filter
+// that takes out HTMLWhitespace tokens).
+fn (c &Checker) vue_token_after(offset int, include_comments bool, skip_whitespace bool) ?vue.Token {
 	mut best := ?vue.Token(none)
 	tokens := c.vue.doc.tokens
-	i := vue_lower_bound(tokens, offset)
-	if i < tokens.len {
+	for i := vue_lower_bound(tokens, offset); i < tokens.len; i++ {
+		if skip_whitespace && tokens[i].typ == 'HTMLWhitespace' {
+			continue
+		}
 		best = tokens[i]
+		break
 	}
 	if include_comments {
 		comments := c.vue.doc.comments

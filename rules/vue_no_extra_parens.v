@@ -19,8 +19,8 @@ fn (c &Checker) vnep_parenthesized(times int, start int, end int) bool {
 	mut right_at := end
 	mut n := times
 	for {
-		left := c.vue_token_before(left_at, false) or { return false }
-		right := c.vue_token_after(right_at, false) or { return false }
+		left := c.vue_token_before(left_at, false, false) or { return false }
+		right := c.vue_token_after(right_at, false, false) or { return false }
 		if !vnep_paren(left, '(') || !vnep_paren(right, ')') {
 			return false
 		}
@@ -126,8 +126,8 @@ fn (mut c Checker) vnep_vue_syntax() ![]Finding {
 			|| c.vnep_style_variable_without_quote(i, start)) {
 			continue
 		}
-		left := c.vue_token_before(start, false) or { continue }
-		right := c.vue_token_after(end, false) or { continue }
+		left := c.vue_token_before(start, false, false) or { continue }
+		right := c.vue_token_after(end, false, false) or { continue }
 		findings << c.with_fixes(c.vue_report(left.start, left.end, 'unexpected', {}), [
 			Fix{
 				start: left.start

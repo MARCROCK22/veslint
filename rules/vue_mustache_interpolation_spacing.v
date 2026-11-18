@@ -43,8 +43,8 @@ fn (mut c Checker) lint_vue_mustache_interpolation_spacing(root C.TSNode, abs_pa
 		if open.typ != 'VExpressionStart' || close.typ != 'VExpressionEnd' {
 			continue
 		}
-		first := c.vue_token_after(open.end, true) or { continue }
-		last := c.vue_token_before(close.start, true) or { continue }
+		first := c.vue_token_after(open.end, true, false) or { continue }
+		last := c.vue_token_before(close.start, true, false) or { continue }
 		if always {
 			if open.end == first.start {
 				findings << c.with_fixes(c.vue_report(open.start, open.end, 'expectedSpaceAfter',

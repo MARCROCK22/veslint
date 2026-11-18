@@ -352,7 +352,7 @@ fn (mut c Checker) lint_vue_no_deprecated_slot_scope_attribute(root C.TSNode, ab
 			findings << c.with_fixes(report, [fix_replace_range(node.start, node.end, replace_text)])!
 			continue
 		}
-		before := c.vue_token_before(node.start, false) or {
+		before := c.vue_token_before(node.start, false, false) or {
 			findings << report
 			continue
 		}
