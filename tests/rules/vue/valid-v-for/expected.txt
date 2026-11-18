@@ -1,0 +1,23 @@
+tests/rules/vue/valid-v-for/cases.vue:49:24	vue/valid-v-for	unexpectedArgument	'v-for' directives require no argument.
+tests/rules/vue/valid-v-for/cases.vue:50:24	vue/valid-v-for	unexpectedModifier	'v-for' directives require no modifier.
+tests/rules/vue/valid-v-for/cases.vue:51:18	vue/valid-v-for	expectedValue	'v-for' directives require that attribute value.
+tests/rules/vue/valid-v-for/cases.vue:52:25	vue/valid-v-for	invalidEmptyAlias	Invalid empty alias.
+tests/rules/vue/valid-v-for/cases.vue:53:25	vue/valid-v-for	invalidEmptyAlias	Invalid empty alias.
+tests/rules/vue/valid-v-for/cases.vue:54:25	vue/valid-v-for	invalidEmptyAlias	Invalid empty alias.
+tests/rules/vue/valid-v-for/cases.vue:55:28	vue/valid-v-for	invalidAlias	Invalid alias '{b,c}'.
+tests/rules/vue/valid-v-for/cases.vue:56:30	vue/valid-v-for	invalidAlias	Invalid alias '{c,d}'.
+tests/rules/vue/valid-v-for/cases.vue:57:13	vue/valid-v-for	requireKey	Custom elements in iteration require 'v-bind:key' directives.
+tests/rules/vue/valid-v-for/cases.vue:58:13	vue/valid-v-for	requireKey	Custom elements in iteration require 'v-bind:key' directives.
+tests/rules/vue/valid-v-for/cases.vue:59:13	vue/valid-v-for	requireKey	Custom elements in iteration require 'v-bind:key' directives.
+tests/rules/vue/valid-v-for/cases.vue:60:13	vue/valid-v-for	requireKey	Custom elements in iteration require 'v-bind:key' directives.
+tests/rules/vue/valid-v-for/cases.vue:61:36	vue/valid-v-for	keyUseFVorVars	Expected 'v-bind:key' directive to use the variables which are defined by the 'v-for' directive.
+tests/rules/vue/valid-v-for/cases.vue:62:49	vue/valid-v-for	keyUseFVorVars	Expected 'v-bind:key' directive to use the variables which are defined by the 'v-for' directive.
+tests/rules/vue/valid-v-for/cases.vue:63:36	vue/valid-v-for	keyUseFVorVars	Expected 'v-bind:key' directive to use the variables which are defined by the 'v-for' directive.
+tests/rules/vue/valid-v-for/cases.vue:64:49	vue/valid-v-for	keyUseFVorVars	Expected 'v-bind:key' directive to use the variables which are defined by the 'v-for' directive.
+tests/rules/vue/valid-v-for/cases.vue:65:55	vue/valid-v-for	keyUseFVorVars	Expected 'v-bind:key' directive to use the variables which are defined by the 'v-for' directive.
+tests/rules/vue/valid-v-for/cases.vue:66:63	vue/valid-v-for	keyUseFVorVars	Expected 'v-bind:key' directive to use the variables which are defined by the 'v-for' directive.
+tests/rules/vue/valid-v-for/cases.vue:70:37	vue/valid-v-for	keyUseFVorVars	Expected 'v-bind:key' directive to use the variables which are defined by the 'v-for' directive.
+tests/rules/vue/valid-v-for/cases.vue:79:37	vue/valid-v-for	keyUseFVorVars	Expected 'v-bind:key' directive to use the variables which are defined by the 'v-for' directive.
+tests/rules/vue/valid-v-for/cases.vue:88:37	vue/valid-v-for	keyUseFVorVars	Expected 'v-bind:key' directive to use the variables which are defined by the 'v-for' directive.
+tests/rules/vue/valid-v-for/cases.vue:94:13	vue/valid-v-for	expectedValue	'v-for' directives require that attribute value.
+tests/rules/vue/valid-v-for/options-7cc71f4f/cases.vue:2:25	vue/valid-v-for	invalidEmptyAlias	Invalid empty alias.
