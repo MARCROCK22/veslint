@@ -96,6 +96,7 @@ fn (mut c Conv) restore() ! {
 		return
 	}
 	doc.es = es
+	pre_starts := doc.es.nodes.map(it.start)
 	toks, comms := snippet_tokens(root, pre, false)
 	c.build_virtual(toks, comms)
 	first_let := if c.lets.len > 0 { c.lets[0].start } else { pre.len + 1 }
@@ -150,6 +151,7 @@ fn (mut c Conv) restore() ! {
 	}
 	c.merge_generics()
 	for i, l in c.lets {
+		c.lets[i].matched = matched[i]
 		c.restore_let(l, matched[i], toks, comms)
 		if c.err != none {
 			break
@@ -207,7 +209,34 @@ fn (mut c Conv) restore() ! {
 			message: 'The script is unterminated'
 			index:   doc.es.nodes[statements[si]].end
 		}
+		return
 	}
+	// The scopes of the lets' blocks.
+	for i, l in c.lets {
+		m := matched[i]
+		if m < 0 {
+			continue
+		}
+		c.lets[i].scope_node = match l.kind {
+			.block_params, .each_block {
+				mut call := c.es_node(m, .expression)
+				if l.kind == .each_block {
+					args := c.es_list(call, .arguments)
+					call = if args.len > 0 { args[0] } else { -1 }
+				}
+				call
+			}
+			.if_block {
+				c.es_node(m, .consequent)
+			}
+			else {
+				m
+			}
+		}
+	}
+	typed := c.lets.filter(it.typed)
+	an := c.an
+	c.build_scope(&an, pre_starts, typed)
 }
 
 fn comment_token(src string, t SnipToken, start int, end int) Token {
@@ -377,6 +406,8 @@ fn (mut c Conv) restore_let(l ScriptLet, m int, toks []SnipToken, comms []SnipTo
 		.expression {
 			mut node := c.es_node(m, .expression)
 			if l.typed {
+				// The typing moves with the expression (its references stay, shifted).
+				c.remap(c.es_node(node, .type_annotation), l.segments)
 				node = c.es_node(node, .expression)
 			}
 			c.remap(node, l.segments)

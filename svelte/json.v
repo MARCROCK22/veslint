@@ -20,6 +20,8 @@ pub fn (d &Document) to_json() string {
 	d.json_tokens(mut b, d.tokens)
 	b.write_string(',"comments":')
 	d.json_tokens(mut b, d.comments)
+	b.write_string(',"~scope":')
+	d.json_scope(mut b)
 	b.write_string(',"~codes":[')
 	for k, code in d.parser_codes() {
 		if k > 0 {
@@ -453,4 +455,61 @@ fn f64_hex(f f64) string {
 // json_string quotes a string for JSON (UTF-16 escapes outside printable ASCII).
 pub fn json_string(s string) string {
 	return estree.quote(s)
+}
+
+// json_scope writes the summary of the scope manager tools/svelte_parse_diff.mjs compares.
+fn (d &Document) json_scope(mut b strings.Builder) {
+	info := &d.scope
+	b.write_u8(`[`)
+	for k, s in info.scopes {
+		if k > 0 {
+			b.write_u8(`,`)
+		}
+		block := if k == 0 {
+			'global'
+		} else if s.block.es {
+			n := d.es.nodes[s.block.idx]
+			'${d.es_type_name(s.block.idx)}@${d.utf16(n.start)},${d.utf16(n.end)}'
+		} else {
+			n := d.nodes[s.block.idx]
+			'${n.typ.type_name()}@${d.utf16(n.start)},${d.utf16(n.end)}'
+		}
+		b.write_string('{"type":"${s.typ}","block":${estree.quote(block)},"upper":${s.upper},"variables":[')
+		mut first := true
+		for vi in s.variables {
+			v := info.variables[vi]
+			if k == 0 && v.defs.len == 0 && v.references.len == 0 {
+				continue
+			}
+			if !first {
+				b.write_u8(`,`)
+			}
+			first = false
+			b.write_string('{"name":${estree.quote(v.name)},"defs":${v.defs.len},"refs":[')
+			b.write_string(v.references.map(d.utf16(d.es.nodes[info.references[it].identifier].start).str()).join(','))
+			b.write_string(']}')
+		}
+		b.write_string('],"references":[')
+		for ri, r in s.references {
+			if ri > 0 {
+				b.write_u8(`,`)
+			}
+			ref := info.references[r]
+			name := d.es.string_of(ref.identifier, .name) or { '' }
+			resolved := if ref.resolved >= 0 {
+				estree.quote(info.variables[ref.resolved].name)
+			} else if ref.resolved == -2 {
+				estree.quote(name)
+			} else {
+				'null'
+			}
+			b.write_string('{"name":${estree.quote(name)},"at":${d.utf16(d.es.nodes[ref.identifier].start)},"resolved":${resolved}}')
+		}
+		b.write_string('],"through":[')
+		b.write_string(s.through.map(estree.quote('${d.es.string_of(info.references[it].identifier, .name) or {
+			''
+		}}@${d.utf16(d.es.nodes[info.references[it].identifier].start)}')).join(','))
+		b.write_string(']}')
+	}
+	b.write_u8(`]`)
 }

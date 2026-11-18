@@ -80,6 +80,24 @@ function any(value) {
 
 const token = t => ({ type: t.type, value: t.value, range: [...t.range], loc: locOf(t) });
 
+// scopeSummary is what both sides print of the scope manager: per scope its type, block
+// (`Type@start,end`), upper, variables (name, number of definitions, where their references
+// are; the global scope's only when used or defined), references (name, where, resolved name)
+// and through.
+function scopeSummary(sm) {
+  const scopes = sm.scopes;
+  return scopes.map((s, k) => ({
+    type: s.type,
+    block: k === 0 ? 'global' : `${s.block.type}@${s.block.range?.[0]},${s.block.range?.[1]}`,
+    upper: s.upper ? scopes.indexOf(s.upper) : -1,
+    variables: s.variables
+      .filter(v => k !== 0 || v.defs.length || v.references.length)
+      .map(v => ({ name: v.name, defs: v.defs.length, refs: v.references.map(r => r.identifier.range[0]) })),
+    references: s.references.map(r => ({ name: r.identifier.name, at: r.identifier.range[0], resolved: r.resolved ? r.resolved.name : null })),
+    through: s.through.map(r => `${r.identifier.name}@${r.identifier.range[0]}`),
+  }));
+}
+
 // canonical is what both sides print for a file.
 function canonical(oracle, file) {
   let code = fs.readFileSync(file, 'utf8');
@@ -111,6 +129,7 @@ function canonical(oracle, file) {
   }
   const ast = result.ast;
   return {
+    '~scope': scopeSummary(result.scopeManager),
     program: node(ast),
     tokens: (ast.tokens ?? []).map(token),
     comments: (ast.comments ?? []).map(token),

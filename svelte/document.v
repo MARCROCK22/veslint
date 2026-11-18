@@ -61,6 +61,8 @@ pub mut:
 	virtual_code      string
 	virtual_offsets   []VOffset
 	virtual_fragments []VRange
+	// scope: the scope manager (see scope_info.v).
+	scope ScopeInfo
 	// runes: svelteParseContext.runes while parsing (`<svelte:options runes={…}>`).
 	runes RunesMode
 	// generics_code: the code `void function<…>(){}` handed to the script parser for the

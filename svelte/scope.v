@@ -38,6 +38,7 @@ struct AScope {
 mut:
 	left      []int // references left to resolve
 	closed    bool
+	set       map[string]int
 	variables []int
 	through   []int
 	children  []int
@@ -53,7 +54,8 @@ struct AVar {
 	name  string
 	scope int
 mut:
-	defs []ADef
+	defs       []ADef
+	references []int
 }
 
 const ref_read = u8(1)
@@ -65,10 +67,13 @@ struct ARef {
 	flag  u8
 	type_ bool
 	value bool
+mut:
+	from     int
+	resolved int = -1 // a variable, -2 for an implicit lib variable
 }
 
 struct Analyzer {
-	es &EsTree
+	es &EsTree = unsafe { nil }
 mut:
 	scopes []AScope
 	cur    int = -1
@@ -186,7 +191,11 @@ fn (mut a Analyzer) resolve(s int, r int) bool {
 		flags := lib_globals[name] or { return false }
 		is_type := flags & 1 != 0
 		is_value := flags & 2 != 0
-		return (ref.type_ && is_type) || (ref.value && is_value)
+		ok := (ref.type_ && is_type) || (ref.value && is_value)
+		if ok {
+			a.refs[r].resolved = -2
+		}
+		return ok
 	}
 	v := a.lookup(s, name)
 	if v < 0 {
@@ -210,7 +219,12 @@ fn (mut a Analyzer) resolve(s int, r int) bool {
 		is_type = variable.defs.any(it.is_type)
 		is_value = variable.defs.any(it.is_value)
 	}
-	return (ref.type_ && is_type) || (ref.value && is_value)
+	ok := (ref.type_ && is_type) || (ref.value && is_value)
+	if ok {
+		a.refs[r].resolved = v
+		a.vars[v].references << r
+	}
+	return ok
 }
 
 fn (a &Analyzer) name_of(node int) string {
@@ -223,12 +237,7 @@ fn (a &Analyzer) name_of(node int) string {
 // lookup is the variable of that name of the scope (its `set`), or -1. Scopes of template
 // expressions hold a few variables: a scan beats a map.
 fn (a &Analyzer) lookup(s int, name string) int {
-	for v in a.scopes[s].variables {
-		if a.vars[v].name == name {
-			return v
-		}
-	}
-	return -1
+	return a.scopes[s].set[name] or { -1 }
 }
 
 fn (mut a Analyzer) define_variable(s int, name string, def ADef, with_def bool) {
@@ -240,6 +249,7 @@ fn (mut a Analyzer) define_variable(s int, name string, def ADef, with_def bool)
 		}
 		v = a.vars.len - 1
 		a.scopes[s].variables << v
+		a.scopes[s].set[name] = v
 	}
 	if with_def {
 		a.vars[v].defs << def
@@ -268,6 +278,7 @@ fn (mut a Analyzer) reference(node int, flag u8, type_ bool, value bool) {
 		flag:  flag
 		type_: type_
 		value: value
+		from:  a.cur
 	}
 	r := a.refs.len - 1
 	if !a.scopes[a.cur].closed {

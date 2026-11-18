@@ -78,6 +78,10 @@ mut:
 	// range was widened over), -1 when the let has none.
 	core_start int = -1
 	core_end   int = -1
+	// matched: the statement of the pre-virtual code the restore found; scope_node: the node
+	// whose scope is registered to the Svelte block.
+	matched    int = -1
+	scope_node int = -1
 }
 
 // ParamSetter is where a param of nestBlock goes.
@@ -124,6 +128,7 @@ mut:
 	generics_code   string
 	generics_offset int
 	runes           RunesMode
+	an              Analyzer
 	slots           []int
 	elements        map[int]int // Svelte element → compiler node
 	snippets        []int

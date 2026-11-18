@@ -182,6 +182,7 @@ fn (mut c Conv) build_virtual(toks []SnipToken, comms []SnipToken) {
 	x.apply(mut root_tr)
 	x.v.append_original(x.v.oindex.u16_len)
 	x.component_default_export(c)
+	c.an = x.an
 	doc.virtual_code = x.v.script.bytestr()
 	doc.virtual_offsets = x.v.offsets
 	doc.virtual_fragments = x.v.fragments
