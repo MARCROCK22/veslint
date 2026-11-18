@@ -1,0 +1,12 @@
+tests/rules/vue/no-undef-components/cases.vue:5:5	vue/no-undef-components	undef	The '<OtherComp>' component has been used, but not defined.
+tests/rules/vue/no-undef-components/cases.vue:6:5	vue/no-undef-components	typeOnly	The '<TypeOnly>' component has been used, but 'TypeOnly' only refers to a type.
+tests/rules/vue/no-undef-components/cases.vue:7:5	vue/no-undef-components	typeOnly	The '<InterfaceOnly>' component has been used, but 'InterfaceOnly' only refers to a type.
+tests/rules/vue/no-undef-components/cases.vue:9:5	vue/no-undef-components	undef	The '<Undefined>' component has been used, but not defined.
+tests/rules/vue/no-undef-components/cases.vue:10:33	vue/no-undef-components	undef	The '<RouterView>' component has been used, but not defined.
+tests/rules/vue/no-undef-components/cases.vue:11:16	vue/no-undef-components	undef	The '<Undefined2>' component has been used, but not defined.
+tests/rules/vue/no-undef-components/ignore/cases.vue:2:47	vue/no-undef-components	undef	The '<Other>' component has been used, but not defined.
+tests/rules/vue/no-undef-components/options/cases.vue:3:67	vue/no-undef-components	undef	The '<KebabReg>' component has been used, but not defined.
+tests/rules/vue/no-undef-components/options/cases.vue:4:16	vue/no-undef-components	undef	The '<Lit>' component has been used, but not defined.
+tests/rules/vue/no-undef-components/options/cases.vue:4:35	vue/no-undef-components	undef	The '<Lit2>' component has been used, but not defined.
+tests/rules/vue/no-undef-components/options/cases.vue:4:62	vue/no-undef-components	undef	The '<5>' component has been used, but not defined.
+tests/rules/vue/no-undef-components/setup-name/cases.vue:2:24	vue/no-undef-components	undef	The '<Plain>' component has been used, but not defined.

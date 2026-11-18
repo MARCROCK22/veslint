@@ -635,6 +635,99 @@ pub const vue_no_constant_condition = 'vue/no-constant-condition'
 pub const vue_no_console = 'vue/no-console'
 pub const vue_quote_props = 'vue/quote-props'
 pub const vue_no_extra_parens = 'vue/no-extra-parens'
+pub const vue_max_attributes_per_line = 'vue/max-attributes-per-line'
+pub const vue_no_useless_mustaches = 'vue/no-useless-mustaches'
+pub const vue_no_negated_v_if_condition = 'vue/no-negated-v-if-condition'
+pub const vue_use_v_on_exact = 'vue/use-v-on-exact'
+pub const vue_prefer_v_model = 'vue/prefer-v-model'
+pub const vue_singleline_html_element_content_newline = 'vue/singleline-html-element-content-newline'
+pub const vue_multiline_html_element_content_newline = 'vue/multiline-html-element-content-newline'
+pub const vue_html_self_closing = 'vue/html-self-closing'
+pub const vue_padding_line_between_blocks = 'vue/padding-line-between-blocks'
+pub const vue_padding_line_between_tags = 'vue/padding-line-between-tags'
+pub const vue_block_tag_newline = 'vue/block-tag-newline'
+pub const vue_block_lang = 'vue/block-lang'
+pub const vue_no_bare_strings_in_template = 'vue/no-bare-strings-in-template'
+pub const vue_v_if_else_key = 'vue/v-if-else-key'
+pub const vue_no_irregular_whitespace = 'vue/no-irregular-whitespace'
+pub const vue_valid_v_for = 'vue/valid-v-for'
+pub const vue_valid_v_model = 'vue/valid-v-model'
+pub const vue_valid_v_slot = 'vue/valid-v-slot'
+pub const vue_no_unsupported_features = 'vue/no-unsupported-features'
+pub const vue_prefer_separate_static_class = 'vue/prefer-separate-static-class'
+pub const vue_no_duplicate_class_names = 'vue/no-duplicate-class-names'
+pub const vue_max_len = 'vue/max-len'
+pub const vue_attributes_order = 'vue/attributes-order'
+pub const vue_no_deprecated_dollar_listeners_api = 'vue/no-deprecated-dollar-listeners-api'
+pub const vue_no_deprecated_dollar_scopedslots_api = 'vue/no-deprecated-dollar-scopedslots-api'
+pub const vue_prefer_use_template_ref = 'vue/prefer-use-template-ref'
+pub const vue_no_duplicate_attr_inheritance = 'vue/no-duplicate-attr-inheritance'
+pub const vue_no_unused_components = 'vue/no-unused-components'
+pub const vue_no_template_shadow = 'vue/no-template-shadow'
+pub const vue_require_explicit_slots = 'vue/require-explicit-slots'
+pub const vue_no_undef_directives = 'vue/no-undef-directives'
+pub const vue_component_name_in_template_casing = 'vue/component-name-in-template-casing'
+pub const vue_no_unused_refs = 'vue/no-unused-refs'
+pub const vue_custom_event_name_casing = 'vue/custom-event-name-casing'
+pub const vue_no_restricted_custom_event = 'vue/no-restricted-custom-event'
+pub const vue_no_unused_emit_declarations = 'vue/no-unused-emit-declarations'
+pub const vue_prefer_single_event_payload = 'vue/prefer-single-event-payload'
+pub const vue_no_shadow_native_events = 'vue/no-shadow-native-events'
+pub const vue_require_explicit_emits = 'vue/require-explicit-emits'
+pub const vue_no_undef_components = 'vue/no-undef-components'
+pub const vue_v_on_handler_style = 'vue/v-on-handler-style'
+pub const vue_no_mutating_props = 'vue/no-mutating-props'
+pub const vue_no_use_computed_property_like_method = 'vue/no-use-computed-property-like-method'
+pub const vue_no_unused_properties = 'vue/no-unused-properties'
+pub const vue_no_undef_properties = 'vue/no-undef-properties'
+pub const vue_prefer_define_options = 'vue/prefer-define-options'
+pub const vue_multi_word_component_names = 'vue/multi-word-component-names'
+pub const vue_no_multiple_template_root = 'vue/no-multiple-template-root'
+pub const vue_no_potential_component_option_typo = 'vue/no-potential-component-option-typo'
+pub const vue_no_deprecated_model_definition = 'vue/no-deprecated-model-definition'
+pub const vue_match_component_file_name = 'vue/match-component-file-name'
+pub const vue_enforce_style_attribute = 'vue/enforce-style-attribute'
+pub const vue_require_direct_export = 'vue/require-direct-export'
+pub const vue_no_restricted_component_names = 'vue/no-restricted-component-names'
+pub const vue_no_restricted_component_options = 'vue/no-restricted-component-options'
+pub const vue_prefer_import_from_vue = 'vue/prefer-import-from-vue'
+pub const vue_new_line_between_multi_line_property = 'vue/new-line-between-multi-line-property'
+pub const vue_component_api_style = 'vue/component-api-style'
+pub const vue_no_reserved_component_names = 'vue/no-reserved-component-names'
+pub const vue_require_typed_object_prop = 'vue/require-typed-object-prop'
+pub const vue_return_in_emits_validator = 'vue/return-in-emits-validator'
+pub const vue_valid_define_props = 'vue/valid-define-props'
+pub const vue_valid_define_emits = 'vue/valid-define-emits'
+pub const vue_valid_define_options = 'vue/valid-define-options'
+pub const vue_require_prop_comment = 'vue/require-prop-comment'
+pub const vue_define_macros_order = 'vue/define-macros-order'
+pub const vue_order_in_components = 'vue/order-in-components'
+pub const vue_padding_lines_in_component_definition = 'vue/padding-lines-in-component-definition'
+pub const vue_sort_keys = 'vue/sort-keys'
+pub const vue_html_comment_content_spacing = 'vue/html-comment-content-spacing'
+pub const vue_html_comment_content_newline = 'vue/html-comment-content-newline'
+pub const vue_html_comment_indent = 'vue/html-comment-indent'
+pub const vue_no_multi_spaces = 'vue/no-multi-spaces'
+pub const vue_block_order = 'vue/block-order'
+pub const vue_no_lifecycle_after_await = 'vue/no-lifecycle-after-await'
+pub const vue_no_watch_after_await = 'vue/no-watch-after-await'
+pub const vue_no_expose_after_await = 'vue/no-expose-after-await'
+pub const vue_no_restricted_call_after_await = 'vue/no-restricted-call-after-await'
+pub const vue_next_tick_style = 'vue/next-tick-style'
+pub const vue_valid_next_tick = 'vue/valid-next-tick'
+pub const vue_no_boolean_default = 'vue/no-boolean-default'
+pub const vue_no_required_prop_with_default = 'vue/no-required-prop-with-default'
+pub const vue_require_default_prop = 'vue/require-default-prop'
+pub const vue_require_valid_default_prop = 'vue/require-valid-default-prop'
+pub const vue_no_restricted_props = 'vue/no-restricted-props'
+pub const vue_require_typed_ref = 'vue/require-typed-ref'
+pub const vue_no_ref_as_operand = 'vue/no-ref-as-operand'
+pub const vue_no_ref_object_reactivity_loss = 'vue/no-ref-object-reactivity-loss'
+pub const vue_no_setup_props_reactivity_loss = 'vue/no-setup-props-reactivity-loss'
+pub const vue_require_expose = 'vue/require-expose'
+pub const vue_no_side_effects_in_computed_properties = 'vue/no-side-effects-in-computed-properties'
+pub const vue_no_async_in_computed_properties = 'vue/no-async-in-computed-properties'
+pub const vue_no_dupe_keys = 'vue/no-dupe-keys'
 pub const names = [no_floating_promises, await_thenable, require_await, return_await,
 	no_misused_promises, no_unsafe_call, no_unsafe_member_access, no_unsafe_return,
 	no_unsafe_assignment, no_unsafe_argument, restrict_template_expressions,
@@ -808,8 +901,8 @@ pub const names = [no_floating_promises, await_thenable, require_await, return_a
 	vue_component_options_name_casing, vue_max_lines_per_block, vue_no_multiple_slot_args,
 	vue_no_reserved_keys, vue_no_deprecated_delete_set, vue_require_prop_types,
 	vue_return_in_computed_property, vue_no_deprecated_props_default_this,
-	vue_require_slots_as_functions, vue_require_name_property, vue_arrow_spacing,
-	vue_camelcase, vue_comma_dangle, vue_dot_location, vue_no_empty_pattern, vue_no_sparse_arrays,
+	vue_require_slots_as_functions, vue_require_name_property, vue_arrow_spacing, vue_camelcase,
+	vue_comma_dangle, vue_dot_location, vue_no_empty_pattern, vue_no_sparse_arrays,
 	vue_operator_linebreak, vue_array_bracket_newline, vue_array_bracket_spacing,
 	vue_array_element_newline, vue_block_spacing, vue_brace_style, vue_dot_notation, vue_eqeqeq,
 	vue_key_spacing, vue_keyword_spacing, vue_no_restricted_syntax, vue_no_useless_concat,
@@ -817,7 +910,38 @@ pub const names = [no_floating_promises, await_thenable, require_await, return_a
 	vue_prefer_template, vue_no_implicit_coercion, vue_no_loss_of_precision, vue_no_negated_condition,
 	vue_object_shorthand, vue_space_infix_ops, vue_space_unary_ops, vue_template_curly_spacing,
 	vue_comma_spacing, vue_multiline_ternary, vue_space_in_parens, vue_func_call_spacing,
-	vue_comma_style, vue_no_constant_condition, vue_no_console, vue_quote_props, vue_no_extra_parens]
+	vue_comma_style, vue_no_constant_condition, vue_no_console, vue_quote_props, vue_no_extra_parens,
+	vue_max_attributes_per_line, vue_no_useless_mustaches, vue_no_negated_v_if_condition,
+	vue_use_v_on_exact, vue_prefer_v_model, vue_singleline_html_element_content_newline,
+	vue_multiline_html_element_content_newline, vue_html_self_closing, vue_padding_line_between_blocks,
+	vue_padding_line_between_tags, vue_block_tag_newline, vue_block_lang,
+	vue_no_bare_strings_in_template, vue_v_if_else_key, vue_no_irregular_whitespace, vue_valid_v_for,
+	vue_valid_v_model, vue_valid_v_slot, vue_no_unsupported_features, vue_prefer_separate_static_class,
+	vue_no_duplicate_class_names, vue_max_len, vue_attributes_order,
+	vue_no_deprecated_dollar_listeners_api, vue_no_deprecated_dollar_scopedslots_api,
+	vue_prefer_use_template_ref, vue_no_duplicate_attr_inheritance, vue_no_unused_components,
+	vue_no_template_shadow, vue_require_explicit_slots, vue_no_undef_directives,
+	vue_component_name_in_template_casing, vue_no_unused_refs, vue_custom_event_name_casing,
+	vue_no_restricted_custom_event, vue_no_unused_emit_declarations, vue_prefer_single_event_payload,
+	vue_no_shadow_native_events, vue_require_explicit_emits, vue_no_undef_components,
+	vue_v_on_handler_style, vue_no_mutating_props, vue_no_use_computed_property_like_method,
+	vue_no_unused_properties, vue_no_undef_properties, vue_prefer_define_options,
+	vue_multi_word_component_names, vue_no_multiple_template_root,
+	vue_no_potential_component_option_typo, vue_no_deprecated_model_definition,
+	vue_match_component_file_name, vue_enforce_style_attribute, vue_require_direct_export,
+	vue_no_restricted_component_names, vue_no_restricted_component_options, vue_prefer_import_from_vue,
+	vue_new_line_between_multi_line_property, vue_component_api_style, vue_no_reserved_component_names,
+	vue_require_typed_object_prop, vue_return_in_emits_validator, vue_valid_define_props,
+	vue_valid_define_emits, vue_valid_define_options, vue_require_prop_comment,
+	vue_define_macros_order, vue_order_in_components, vue_padding_lines_in_component_definition,
+	vue_sort_keys, vue_html_comment_content_spacing, vue_html_comment_content_newline,
+	vue_html_comment_indent, vue_no_multi_spaces, vue_block_order, vue_no_lifecycle_after_await,
+	vue_no_watch_after_await, vue_no_expose_after_await, vue_no_restricted_call_after_await,
+	vue_next_tick_style, vue_valid_next_tick, vue_no_boolean_default,
+	vue_no_required_prop_with_default, vue_require_default_prop, vue_require_valid_default_prop,
+	vue_no_restricted_props, vue_require_typed_ref, vue_no_ref_as_operand,
+	vue_no_ref_object_reactivity_loss, vue_no_setup_props_reactivity_loss, vue_require_expose,
+	vue_no_side_effects_in_computed_properties, vue_no_async_in_computed_properties, vue_no_dupe_keys]
 
 // untyped_rules are the ported rules that need no types (`meta.docs.requiresTypeChecking` is false
 // in typescript-eslint; the eslint-plugin-unicorn rules that read the types when the parser has a
@@ -961,8 +1085,8 @@ pub const untyped_rules = [adjacent_overload_signatures, array_type, class_liter
 	vue_define_emits_declaration, vue_require_prop_type_constructor, vue_no_restricted_block,
 	vue_component_options_name_casing, vue_max_lines_per_block, vue_no_multiple_slot_args,
 	vue_no_deprecated_delete_set, vue_require_prop_types, vue_no_deprecated_props_default_this,
-	vue_require_slots_as_functions, vue_require_name_property, vue_arrow_spacing,
-	vue_camelcase, vue_comma_dangle, vue_dot_location, vue_no_empty_pattern, vue_no_sparse_arrays,
+	vue_require_slots_as_functions, vue_require_name_property, vue_arrow_spacing, vue_camelcase,
+	vue_comma_dangle, vue_dot_location, vue_no_empty_pattern, vue_no_sparse_arrays,
 	vue_operator_linebreak, vue_array_bracket_newline, vue_array_bracket_spacing,
 	vue_array_element_newline, vue_block_spacing, vue_brace_style, vue_dot_notation, vue_eqeqeq,
 	vue_key_spacing, vue_keyword_spacing, vue_no_restricted_syntax, vue_no_useless_concat,
@@ -970,7 +1094,33 @@ pub const untyped_rules = [adjacent_overload_signatures, array_type, class_liter
 	vue_prefer_template, vue_no_implicit_coercion, vue_no_loss_of_precision, vue_no_negated_condition,
 	vue_object_shorthand, vue_space_infix_ops, vue_space_unary_ops, vue_template_curly_spacing,
 	vue_comma_spacing, vue_multiline_ternary, vue_space_in_parens, vue_func_call_spacing,
-	vue_comma_style, vue_no_constant_condition, vue_no_console, vue_quote_props, vue_no_extra_parens]
+	vue_comma_style, vue_no_constant_condition, vue_no_console, vue_quote_props, vue_no_extra_parens,
+	vue_max_attributes_per_line, vue_no_useless_mustaches, vue_no_negated_v_if_condition,
+	vue_use_v_on_exact, vue_prefer_v_model, vue_singleline_html_element_content_newline,
+	vue_multiline_html_element_content_newline, vue_html_self_closing, vue_padding_line_between_blocks,
+	vue_padding_line_between_tags, vue_block_tag_newline, vue_block_lang,
+	vue_no_bare_strings_in_template, vue_v_if_else_key, vue_no_irregular_whitespace, vue_valid_v_for,
+	vue_valid_v_model, vue_valid_v_slot, vue_no_unsupported_features, vue_prefer_separate_static_class,
+	vue_no_duplicate_class_names, vue_max_len, vue_attributes_order,
+	vue_no_deprecated_dollar_listeners_api, vue_no_deprecated_dollar_scopedslots_api,
+	vue_prefer_use_template_ref, vue_no_duplicate_attr_inheritance, vue_no_unused_components,
+	vue_no_undef_directives, vue_component_name_in_template_casing, vue_no_unused_refs,
+	vue_custom_event_name_casing, vue_no_restricted_custom_event, vue_no_undef_components,
+	vue_v_on_handler_style, vue_no_use_computed_property_like_method, vue_prefer_define_options,
+	vue_multi_word_component_names, vue_no_multiple_template_root,
+	vue_no_potential_component_option_typo, vue_no_deprecated_model_definition,
+	vue_match_component_file_name, vue_enforce_style_attribute, vue_require_direct_export,
+	vue_no_restricted_component_names, vue_no_restricted_component_options, vue_prefer_import_from_vue,
+	vue_new_line_between_multi_line_property, vue_component_api_style, vue_no_reserved_component_names,
+	vue_require_typed_object_prop, vue_return_in_emits_validator, vue_valid_define_props,
+	vue_valid_define_emits, vue_valid_define_options, vue_require_prop_comment,
+	vue_define_macros_order, vue_order_in_components, vue_padding_lines_in_component_definition,
+	vue_sort_keys, vue_html_comment_content_spacing, vue_html_comment_content_newline,
+	vue_html_comment_indent, vue_no_multi_spaces, vue_block_order, vue_no_lifecycle_after_await,
+	vue_no_watch_after_await, vue_no_expose_after_await, vue_no_restricted_call_after_await,
+	vue_next_tick_style, vue_valid_next_tick, vue_require_typed_ref, vue_no_ref_object_reactivity_loss,
+	vue_no_setup_props_reactivity_loss, vue_require_expose, vue_no_side_effects_in_computed_properties,
+	vue_no_async_in_computed_properties]
 
 // needs_types tells whether a rule asks tsgo for the types of the program.
 pub fn needs_types(rule string) bool {
@@ -1600,6 +1750,99 @@ pub const default_options = {
 	vue_no_console:                                  '[]'
 	vue_quote_props:                                 '["always"]'
 	vue_no_extra_parens:                             '["all"]'
+	vue_max_attributes_per_line:                     '[]'
+	vue_no_useless_mustaches:                        '[]'
+	vue_no_negated_v_if_condition:                   '[]'
+	vue_use_v_on_exact:                              '[]'
+	vue_prefer_v_model:                              '[]'
+	vue_singleline_html_element_content_newline:     '[]'
+	vue_multiline_html_element_content_newline:      '[]'
+	vue_html_self_closing:                           '[]'
+	vue_padding_line_between_blocks:                 '[]'
+	vue_padding_line_between_tags:                   '[]'
+	vue_block_tag_newline:                           '[]'
+	vue_block_lang:                                  '[]'
+	vue_no_bare_strings_in_template:                 '[]'
+	vue_v_if_else_key:                               '[]'
+	vue_no_irregular_whitespace:                     '[]'
+	vue_valid_v_for:                                 '[]'
+	vue_valid_v_model:                               '[]'
+	vue_valid_v_slot:                                '[]'
+	vue_no_unsupported_features:                     '[]'
+	vue_prefer_separate_static_class:                '[]'
+	vue_no_duplicate_class_names:                    '[]'
+	vue_max_len:                                     '[]'
+	vue_attributes_order:                            '[]'
+	vue_no_deprecated_dollar_listeners_api:          '[]'
+	vue_no_deprecated_dollar_scopedslots_api:        '[]'
+	vue_prefer_use_template_ref:                     '[]'
+	vue_no_duplicate_attr_inheritance:               '[]'
+	vue_no_unused_components:                        '[]'
+	vue_no_template_shadow:                          '[]'
+	vue_require_explicit_slots:                      '[]'
+	vue_no_undef_directives:                         '[]'
+	vue_component_name_in_template_casing:           '[]'
+	vue_no_unused_refs:                              '[]'
+	vue_custom_event_name_casing:                    '[]'
+	vue_no_restricted_custom_event:                  '[]'
+	vue_no_unused_emit_declarations:                 '[]'
+	vue_prefer_single_event_payload:                 '[]'
+	vue_no_shadow_native_events:                     '[]'
+	vue_require_explicit_emits:                      '[]'
+	vue_no_undef_components:                         '[]'
+	vue_v_on_handler_style:                          '[]'
+	vue_no_mutating_props:                           '[]'
+	vue_no_use_computed_property_like_method:        '[]'
+	vue_no_unused_properties:                        '[]'
+	vue_no_undef_properties:                         '[]'
+	vue_prefer_define_options:                       '[]'
+	vue_multi_word_component_names:                  '[]'
+	vue_no_multiple_template_root:                   '[]'
+	vue_no_potential_component_option_typo:          '[]'
+	vue_no_deprecated_model_definition:              '[]'
+	vue_match_component_file_name:                   '[]'
+	vue_enforce_style_attribute:                     '[]'
+	vue_require_direct_export:                       '[]'
+	vue_no_restricted_component_names:               '[]'
+	vue_no_restricted_component_options:             '[]'
+	vue_prefer_import_from_vue:                      '[]'
+	vue_new_line_between_multi_line_property:        '[]'
+	vue_component_api_style:                         '[]'
+	vue_no_reserved_component_names:                 '[]'
+	vue_require_typed_object_prop:                   '[]'
+	vue_return_in_emits_validator:                   '[]'
+	vue_valid_define_props:                          '[]'
+	vue_valid_define_emits:                          '[]'
+	vue_valid_define_options:                        '[]'
+	vue_require_prop_comment:                        '[]'
+	vue_define_macros_order:                         '[]'
+	vue_order_in_components:                         '[]'
+	vue_padding_lines_in_component_definition:       '[]'
+	vue_sort_keys:                                   '[]'
+	vue_html_comment_content_spacing:                '[]'
+	vue_html_comment_content_newline:                '[]'
+	vue_html_comment_indent:                         '[]'
+	vue_no_multi_spaces:                             '[]'
+	vue_block_order:                                 '[]'
+	vue_no_lifecycle_after_await:                    '[]'
+	vue_no_watch_after_await:                        '[]'
+	vue_no_expose_after_await:                       '[]'
+	vue_no_restricted_call_after_await:              '[]'
+	vue_next_tick_style:                             '[]'
+	vue_valid_next_tick:                             '[]'
+	vue_no_boolean_default:                          '[]'
+	vue_no_required_prop_with_default:               '[]'
+	vue_require_default_prop:                        '[]'
+	vue_require_valid_default_prop:                  '[]'
+	vue_no_restricted_props:                         '[]'
+	vue_require_typed_ref:                           '[]'
+	vue_no_ref_as_operand:                           '[]'
+	vue_no_ref_object_reactivity_loss:               '[]'
+	vue_no_setup_props_reactivity_loss:              '[]'
+	vue_require_expose:                              '[]'
+	vue_no_side_effects_in_computed_properties:      '[]'
+	vue_no_async_in_computed_properties:             '[]'
+	vue_no_dupe_keys:                                '[]'
 }
 
 // Finding is a problem a rule found at a node.
@@ -1625,12 +1868,26 @@ pub:
 	// CR, U+2028 and U+2029 there, where the locations of vue-eslint-parser's nodes and tokens
 	// end only at LF (the two only differ in a .vue file).
 	text_loc bool
+	// Only the start (text_loc_start) or only the end (text_loc_end) of the `loc` comes from the
+	// text, the other side from a node or a token (vue/block-tag-newline's).
+	text_loc_start bool
+	text_loc_end   bool
 	// A report of a .vue file whose `loc` is a line and a column given as such
 	// (vue/no-parsing-error's, from the errors of the document, which may be past the end of the
 	// file): when fixed_line is not 0, ESLint's line and column are fixed_line and fixed_column
 	// (from 1), and the report has no end.
 	fixed_line   int
 	fixed_column int
+	// A report of any file whose `loc` is a start and an end given as lines and columns (from 1)
+	// that need not be places of the text (vue/max-len's: the column of the limit and the length
+	// of the line, tabs counted as tabWidth): fixed_line and fixed_column, fixed_end_line and
+	// fixed_end_column. `stmt` is a place on that line, for what needs a byte offset.
+	line_loc         bool
+	fixed_end_line   int
+	fixed_end_column int
+	// The report's `loc` is a line and a column without an end (`{ line: 0, column: 0 }`, a
+	// selector error of vue/block-order): the line has no end with --fixes.
+	no_end bool
 }
 
 // problem_rule is the `rule` of the problems ESLint reports without a rule (`ruleId: null`).
@@ -2382,6 +2639,109 @@ pub fn message(rule string, finding Finding) string {
 		vue_no_console { vncon_messages }
 		vue_quote_props { sqp_messages }
 		vue_no_extra_parens { snep_messages }
+		vue_max_attributes_per_line { vmapl_messages }
+		vue_no_useless_mustaches { vnum_messages }
+		vue_no_negated_v_if_condition { vnvic_messages }
+		vue_use_v_on_exact { vuvoe_messages }
+		vue_prefer_v_model { vpvm_messages }
+		vue_singleline_html_element_content_newline { vhecn_single_messages }
+		vue_multiline_html_element_content_newline { vhecn_multi_messages }
+		vue_html_self_closing { vhsc_messages }
+		vue_padding_line_between_blocks { vplbb_messages }
+		vue_padding_line_between_tags { vplbt_messages }
+		vue_block_tag_newline { vbtn_messages }
+		vue_block_lang { vblang_messages }
+		vue_no_bare_strings_in_template { vnbs_messages }
+		vue_v_if_else_key { vviek_messages }
+		vue_no_irregular_whitespace { vnirw_messages }
+		vue_valid_v_for { vvfor_messages }
+		vue_valid_v_model { vvmod_messages }
+		vue_valid_v_slot { vvslot_messages }
+		vue_no_unsupported_features { vnuf_messages }
+		vue_prefer_separate_static_class { vpssc_messages }
+		vue_no_duplicate_class_names { vndcn_messages }
+		vue_max_len { vmaxlen_messages }
+		vue_attributes_order { vattro_messages }
+		vue_no_deprecated_dollar_listeners_api { vue_no_deprecated_dollar_listeners_api_messages }
+		vue_no_deprecated_dollar_scopedslots_api {
+			vue_no_deprecated_dollar_scopedslots_api_messages
+		}
+		vue_prefer_use_template_ref { vue_prefer_use_template_ref_messages }
+		vue_no_duplicate_attr_inheritance { vue_no_duplicate_attr_inheritance_messages }
+		vue_no_unused_components { vue_no_unused_components_messages }
+		vue_no_template_shadow { vue_no_template_shadow_messages }
+		vue_require_explicit_slots { vue_require_explicit_slots_messages }
+		vue_no_undef_directives { vue_no_undef_directives_messages }
+		vue_component_name_in_template_casing { vue_component_name_in_template_casing_messages }
+		vue_no_unused_refs { vue_no_unused_refs_messages }
+		vue_custom_event_name_casing { vue_custom_event_name_casing_messages }
+		vue_no_restricted_custom_event { vue_no_restricted_custom_event_messages }
+		vue_no_unused_emit_declarations { vue_no_unused_emit_declarations_messages }
+		vue_prefer_single_event_payload { vue_prefer_single_event_payload_messages }
+		vue_no_shadow_native_events { vue_no_shadow_native_events_messages }
+		vue_require_explicit_emits { vue_require_explicit_emits_messages }
+		vue_no_undef_components { vue_no_undef_components_messages }
+		vue_v_on_handler_style { vue_v_on_handler_style_messages }
+		vue_no_mutating_props { vue_no_mutating_props_messages }
+		vue_no_use_computed_property_like_method {
+			vue_no_use_computed_property_like_method_messages
+		}
+		vue_no_unused_properties { vue_no_unused_properties_messages }
+		vue_no_undef_properties { vue_no_undef_properties_messages }
+		vue_prefer_define_options { vue_prefer_define_options_messages }
+		vue_multi_word_component_names { vue_multi_word_component_names_messages }
+		vue_no_multiple_template_root { vue_no_multiple_template_root_messages }
+		vue_no_potential_component_option_typo { vue_no_potential_component_option_typo_messages }
+		vue_no_deprecated_model_definition { vue_no_deprecated_model_definition_messages }
+		vue_match_component_file_name { vue_match_component_file_name_messages }
+		vue_enforce_style_attribute { vue_enforce_style_attribute_messages }
+		vue_require_direct_export { vue_require_direct_export_messages }
+		vue_no_restricted_component_names { vue_no_restricted_component_names_messages }
+		vue_no_restricted_component_options { vue_no_restricted_component_options_messages }
+		vue_prefer_import_from_vue { vue_prefer_import_from_vue_messages }
+		vue_new_line_between_multi_line_property {
+			vue_new_line_between_multi_line_property_messages
+		}
+		vue_component_api_style { vue_component_api_style_messages }
+		vue_no_reserved_component_names { vue_no_reserved_component_names_messages }
+		vue_require_typed_object_prop { vue_require_typed_object_prop_messages }
+		vue_return_in_emits_validator { vue_return_in_emits_validator_messages }
+		vue_valid_define_props { vue_valid_define_props_messages }
+		vue_valid_define_emits { vue_valid_define_emits_messages }
+		vue_valid_define_options { vue_valid_define_options_messages }
+		vue_require_prop_comment { vue_require_prop_comment_messages }
+		vue_define_macros_order { vue_define_macros_order_messages }
+		vue_order_in_components { vue_order_in_components_messages }
+		vue_padding_lines_in_component_definition {
+			vue_padding_lines_in_component_definition_messages
+		}
+		vue_sort_keys { vue_sort_keys_messages }
+		vue_html_comment_content_spacing { vue_html_comment_content_spacing_messages }
+		vue_html_comment_content_newline { vue_html_comment_content_newline_messages }
+		vue_html_comment_indent { vue_html_comment_indent_messages }
+		vue_no_multi_spaces { vue_no_multi_spaces_messages }
+		vue_block_order { vue_block_order_messages }
+		vue_no_lifecycle_after_await { vue_no_lifecycle_after_await_messages }
+		vue_no_watch_after_await { vue_no_watch_after_await_messages }
+		vue_no_expose_after_await { vue_no_expose_after_await_messages }
+		vue_no_restricted_call_after_await { vue_no_restricted_call_after_await_messages }
+		vue_next_tick_style { vue_next_tick_style_messages }
+		vue_valid_next_tick { vue_valid_next_tick_messages }
+		vue_no_boolean_default { vue_no_boolean_default_messages }
+		vue_no_required_prop_with_default { vue_no_required_prop_with_default_messages }
+		vue_require_default_prop { vue_require_default_prop_messages }
+		vue_require_valid_default_prop { vue_require_valid_default_prop_messages }
+		vue_no_restricted_props { vue_no_restricted_props_messages }
+		vue_require_typed_ref { vue_require_typed_ref_messages }
+		vue_no_ref_as_operand { vue_no_ref_as_operand_messages }
+		vue_no_ref_object_reactivity_loss { vue_no_ref_object_reactivity_loss_messages }
+		vue_no_setup_props_reactivity_loss { vue_no_setup_props_reactivity_loss_messages }
+		vue_require_expose { vue_require_expose_messages }
+		vue_no_side_effects_in_computed_properties {
+			vue_no_side_effects_in_computed_properties_messages
+		}
+		vue_no_async_in_computed_properties { vue_no_async_in_computed_properties_messages }
+		vue_no_dupe_keys { vue_no_dupe_keys_messages }
 		else { map[string]string{} }
 	}
 	return interpolate(messages[finding.message_id] or { finding.message_id }, finding.data)
@@ -2593,6 +2953,7 @@ fn (mut c Checker) lint_file_in_lifetime(parser Parser, config LintConfig, src s
 	c.scope_setup = c.file_scope_setup(config, inline)
 	mut findings := []Finding{}
 	c.file_rules = inline.rules.map(it.name)
+	c.vue_template_owner = c.vue_template_owner_of(config, inline)
 	for setting in inline.rules {
 		if c.lint_stop.stop() {
 			return error(lint_stopped)
@@ -4397,6 +4758,285 @@ fn (mut c Checker) lint_rule(rule string, root C.TSNode, abs_path string, mut st
 		vue_no_extra_parens {
 			return c.lint_vue_wrap(rule, root, abs_path, mut stats)!
 		}
+		vue_max_attributes_per_line {
+			return c.lint_vue_max_attributes_per_line(root, abs_path, mut stats)!
+		}
+		vue_no_useless_mustaches {
+			return c.lint_vue_no_useless_mustaches(root, abs_path, mut stats)!
+		}
+		vue_no_negated_v_if_condition {
+			return c.lint_vue_no_negated_v_if_condition(root, abs_path, mut stats)!
+		}
+		vue_use_v_on_exact {
+			return c.lint_vue_use_v_on_exact(root, abs_path, mut stats)!
+		}
+		vue_prefer_v_model {
+			return c.lint_vue_prefer_v_model(root, abs_path, mut stats)!
+		}
+		vue_singleline_html_element_content_newline {
+			return c.lint_vue_singleline_html_element_content_newline(root, abs_path, mut stats)!
+		}
+		vue_multiline_html_element_content_newline {
+			return c.lint_vue_multiline_html_element_content_newline(root, abs_path, mut stats)!
+		}
+		vue_html_self_closing {
+			return c.lint_vue_html_self_closing(root, abs_path, mut stats)!
+		}
+		vue_padding_line_between_blocks {
+			return c.lint_vue_padding_line_between_blocks(root, abs_path, mut stats)!
+		}
+		vue_padding_line_between_tags {
+			return c.lint_vue_padding_line_between_tags(root, abs_path, mut stats)!
+		}
+		vue_block_tag_newline {
+			return c.lint_vue_block_tag_newline(root, abs_path, mut stats)!
+		}
+		vue_block_lang {
+			return c.lint_vue_block_lang(root, abs_path, mut stats)!
+		}
+		vue_no_bare_strings_in_template {
+			return c.lint_vue_no_bare_strings_in_template(root, abs_path, mut stats)!
+		}
+		vue_v_if_else_key {
+			return c.lint_vue_v_if_else_key(root, abs_path, mut stats)!
+		}
+		vue_no_irregular_whitespace {
+			return c.lint_vue_no_irregular_whitespace(root, abs_path, mut stats)!
+		}
+		vue_valid_v_for {
+			return c.lint_vue_valid_v_for(root, abs_path, mut stats)!
+		}
+		vue_valid_v_model {
+			return c.lint_vue_valid_v_model(root, abs_path, mut stats)!
+		}
+		vue_valid_v_slot {
+			return c.lint_vue_valid_v_slot(root, abs_path, mut stats)!
+		}
+		vue_no_unsupported_features {
+			return c.lint_vue_no_unsupported_features(root, abs_path, mut stats)!
+		}
+		vue_prefer_separate_static_class {
+			return c.lint_vue_prefer_separate_static_class(root, abs_path, mut stats)!
+		}
+		vue_no_duplicate_class_names {
+			return c.lint_vue_no_duplicate_class_names(root, abs_path, mut stats)!
+		}
+		vue_max_len {
+			return c.lint_vue_max_len(root, abs_path, mut stats)!
+		}
+		vue_attributes_order {
+			return c.lint_vue_attributes_order(root, abs_path, mut stats)!
+		}
+		vue_no_deprecated_dollar_listeners_api {
+			return c.lint_vue_no_deprecated_dollar_listeners_api(root, abs_path, mut stats)!
+		}
+		vue_no_deprecated_dollar_scopedslots_api {
+			return c.lint_vue_no_deprecated_dollar_scopedslots_api(root, abs_path, mut stats)!
+		}
+		vue_prefer_use_template_ref {
+			return c.lint_vue_prefer_use_template_ref(root, abs_path, mut stats)!
+		}
+		vue_no_duplicate_attr_inheritance {
+			return c.lint_vue_no_duplicate_attr_inheritance(root, abs_path, mut stats)!
+		}
+		vue_no_unused_components {
+			return c.lint_vue_no_unused_components(root, abs_path, mut stats)!
+		}
+		vue_no_template_shadow {
+			return c.lint_vue_no_template_shadow(root, abs_path, mut stats)!
+		}
+		vue_require_explicit_slots {
+			return c.lint_vue_require_explicit_slots(root, abs_path, mut stats)!
+		}
+		vue_no_undef_directives {
+			return c.lint_vue_no_undef_directives(root, abs_path, mut stats)!
+		}
+		vue_component_name_in_template_casing {
+			return c.lint_vue_component_name_in_template_casing(root, abs_path, mut stats)!
+		}
+		vue_no_unused_refs {
+			return c.lint_vue_no_unused_refs(root, abs_path, mut stats)!
+		}
+		vue_custom_event_name_casing {
+			return c.lint_vue_custom_event_name_casing(root, abs_path, mut stats)!
+		}
+		vue_no_restricted_custom_event {
+			return c.lint_vue_no_restricted_custom_event(root, abs_path, mut stats)!
+		}
+		vue_no_unused_emit_declarations {
+			return c.lint_vue_no_unused_emit_declarations(root, abs_path, mut stats)!
+		}
+		vue_prefer_single_event_payload {
+			return c.lint_vue_prefer_single_event_payload(root, abs_path, mut stats)!
+		}
+		vue_no_shadow_native_events {
+			return c.lint_vue_no_shadow_native_events(root, abs_path, mut stats)!
+		}
+		vue_require_explicit_emits {
+			return c.lint_vue_require_explicit_emits(root, abs_path, mut stats)!
+		}
+		vue_no_undef_components {
+			return c.lint_vue_no_undef_components(root, abs_path, mut stats)!
+		}
+		vue_v_on_handler_style {
+			return c.lint_vue_v_on_handler_style(root, abs_path, mut stats)!
+		}
+		vue_no_mutating_props {
+			return c.lint_vue_no_mutating_props(root, abs_path, mut stats)!
+		}
+		vue_no_use_computed_property_like_method {
+			return c.lint_vue_no_use_computed_property_like_method(root, abs_path, mut stats)!
+		}
+		vue_no_unused_properties {
+			return c.lint_vue_no_unused_properties(root, abs_path, mut stats)!
+		}
+		vue_no_undef_properties {
+			return c.lint_vue_no_undef_properties(root, abs_path, mut stats)!
+		}
+		vue_prefer_define_options {
+			return c.lint_vue_prefer_define_options(root, abs_path, mut stats)!
+		}
+		vue_multi_word_component_names {
+			return c.lint_vue_multi_word_component_names(root, abs_path, mut stats)!
+		}
+		vue_no_multiple_template_root {
+			return c.lint_vue_no_multiple_template_root(root, abs_path, mut stats)!
+		}
+		vue_no_potential_component_option_typo {
+			return c.lint_vue_no_potential_component_option_typo(root, abs_path, mut stats)!
+		}
+		vue_no_deprecated_model_definition {
+			return c.lint_vue_no_deprecated_model_definition(root, abs_path, mut stats)!
+		}
+		vue_match_component_file_name {
+			return c.lint_vue_match_component_file_name(root, abs_path, mut stats)!
+		}
+		vue_enforce_style_attribute {
+			return c.lint_vue_enforce_style_attribute(root, abs_path, mut stats)!
+		}
+		vue_require_direct_export {
+			return c.lint_vue_require_direct_export(root, abs_path, mut stats)!
+		}
+		vue_no_restricted_component_names {
+			return c.lint_vue_no_restricted_component_names(root, abs_path, mut stats)!
+		}
+		vue_no_restricted_component_options {
+			return c.lint_vue_no_restricted_component_options(root, abs_path, mut stats)!
+		}
+		vue_prefer_import_from_vue {
+			return c.lint_vue_prefer_import_from_vue(root, abs_path, mut stats)!
+		}
+		vue_new_line_between_multi_line_property {
+			return c.lint_vue_new_line_between_multi_line_property(root, abs_path, mut stats)!
+		}
+		vue_component_api_style {
+			return c.lint_vue_component_api_style(root, abs_path, mut stats)!
+		}
+		vue_no_reserved_component_names {
+			return c.lint_vue_no_reserved_component_names(root, abs_path, mut stats)!
+		}
+		vue_require_typed_object_prop {
+			return c.lint_vue_require_typed_object_prop(root, abs_path, mut stats)!
+		}
+		vue_return_in_emits_validator {
+			return c.lint_vue_return_in_emits_validator(root, abs_path, mut stats)!
+		}
+		vue_valid_define_props {
+			return c.lint_vue_valid_define_props(root, abs_path, mut stats)!
+		}
+		vue_valid_define_emits {
+			return c.lint_vue_valid_define_emits(root, abs_path, mut stats)!
+		}
+		vue_valid_define_options {
+			return c.lint_vue_valid_define_options(root, abs_path, mut stats)!
+		}
+		vue_require_prop_comment {
+			return c.lint_vue_require_prop_comment(root, abs_path, mut stats)!
+		}
+		vue_define_macros_order {
+			return c.lint_vue_define_macros_order(root, abs_path, mut stats)!
+		}
+		vue_order_in_components {
+			return c.lint_vue_order_in_components(root, abs_path, mut stats)!
+		}
+		vue_padding_lines_in_component_definition {
+			return c.lint_vue_padding_lines_in_component_definition(root, abs_path, mut stats)!
+		}
+		vue_sort_keys {
+			return c.lint_vue_sort_keys(root, abs_path, mut stats)!
+		}
+		vue_html_comment_content_spacing {
+			return c.lint_vue_html_comment_content_spacing(root, abs_path, mut stats)!
+		}
+		vue_html_comment_content_newline {
+			return c.lint_vue_html_comment_content_newline(root, abs_path, mut stats)!
+		}
+		vue_html_comment_indent {
+			return c.lint_vue_html_comment_indent(root, abs_path, mut stats)!
+		}
+		vue_no_multi_spaces {
+			return c.lint_vue_no_multi_spaces(root, abs_path, mut stats)!
+		}
+		vue_block_order {
+			return c.lint_vue_block_order(root, abs_path, mut stats)!
+		}
+		vue_no_lifecycle_after_await {
+			return c.lint_vue_no_lifecycle_after_await(root, abs_path, mut stats)!
+		}
+		vue_no_watch_after_await {
+			return c.lint_vue_no_watch_after_await(root, abs_path, mut stats)!
+		}
+		vue_no_expose_after_await {
+			return c.lint_vue_no_expose_after_await(root, abs_path, mut stats)!
+		}
+		vue_no_restricted_call_after_await {
+			return c.lint_vue_no_restricted_call_after_await(root, abs_path, mut stats)!
+		}
+		vue_next_tick_style {
+			return c.lint_vue_next_tick_style(root, abs_path, mut stats)!
+		}
+		vue_valid_next_tick {
+			return c.lint_vue_valid_next_tick(root, abs_path, mut stats)!
+		}
+		vue_no_boolean_default {
+			return c.lint_vue_no_boolean_default(root, abs_path, mut stats)!
+		}
+		vue_no_required_prop_with_default {
+			return c.lint_vue_no_required_prop_with_default(root, abs_path, mut stats)!
+		}
+		vue_require_default_prop {
+			return c.lint_vue_require_default_prop(root, abs_path, mut stats)!
+		}
+		vue_require_valid_default_prop {
+			return c.lint_vue_require_valid_default_prop(root, abs_path, mut stats)!
+		}
+		vue_no_restricted_props {
+			return c.lint_vue_no_restricted_props(root, abs_path, mut stats)!
+		}
+		vue_require_typed_ref {
+			return c.lint_vue_require_typed_ref(root, abs_path, mut stats)!
+		}
+		vue_no_ref_as_operand {
+			return c.lint_vue_no_ref_as_operand(root, abs_path, mut stats)!
+		}
+		vue_no_ref_object_reactivity_loss {
+			return c.lint_vue_no_ref_object_reactivity_loss(root, abs_path, mut stats)!
+		}
+		vue_no_setup_props_reactivity_loss {
+			return c.lint_vue_no_setup_props_reactivity_loss(root, abs_path, mut stats)!
+		}
+		vue_require_expose {
+			return c.lint_vue_require_expose(root, abs_path, mut stats)!
+		}
+		vue_no_side_effects_in_computed_properties {
+			return c.lint_vue_no_side_effects_in_computed_properties(root, abs_path, mut stats)!
+		}
+		vue_no_async_in_computed_properties {
+			return c.lint_vue_no_async_in_computed_properties(root, abs_path, mut stats)!
+		}
+		vue_no_dupe_keys {
+			return c.lint_vue_no_dupe_keys(root, abs_path, mut stats)!
+		}
 		else { return error('unknown rule: ${rule}') }
 	}
 }
@@ -4501,6 +5141,9 @@ mut:
 	// file_rules are the rules that run on the file being linted (what one rule may see of
 	// another: ESLint runs them on the same scope manager)
 	file_rules []string
+	// vue_template_owner is the rule in whose Program:exit vue-eslint-parser walks the template of
+	// the .vue file being linted ('' for none; vue_template.v)
+	vue_template_owner string
 	// asked before each rule of a file whether to give the lint up (set_lint_stop)
 	lint_stop LintStop = NoLintStop{}
 	// tokens and comments of the file (source_tokens), built on first use (per file)

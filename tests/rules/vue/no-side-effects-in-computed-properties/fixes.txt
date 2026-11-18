@@ -1,0 +1,13 @@
+tests/rules/vue/no-side-effects-in-computed-properties/cases.vue:9:7	vue/no-side-effects-in-computed-properties	unexpectedSideEffectInProperty	Unexpected side effect in "one" computed property.	end	9	17
+tests/rules/vue/no-side-effects-in-computed-properties/cases.vue:10:7	vue/no-side-effects-in-computed-properties	unexpectedSideEffectInProperty	Unexpected side effect in "one" computed property.	end	10	15
+tests/rules/vue/no-side-effects-in-computed-properties/cases.vue:11:7	vue/no-side-effects-in-computed-properties	unexpectedSideEffectInProperty	Unexpected side effect in "one" computed property.	end	11	24
+tests/rules/vue/no-side-effects-in-computed-properties/cases.vue:12:7	vue/no-side-effects-in-computed-properties	unexpectedSideEffectInProperty	Unexpected side effect in "one" computed property.	end	12	24
+tests/rules/vue/no-side-effects-in-computed-properties/cases.vue:13:7	vue/no-side-effects-in-computed-properties	unexpectedSideEffectInProperty	Unexpected side effect in "one" computed property.	end	13	24
+tests/rules/vue/no-side-effects-in-computed-properties/cases.vue:14:7	vue/no-side-effects-in-computed-properties	unexpectedSideEffectInProperty	Unexpected side effect in "one" computed property.	end	14	34
+tests/rules/vue/no-side-effects-in-computed-properties/cases.vue:15:12	vue/no-side-effects-in-computed-properties	unexpectedSideEffectInProperty	Unexpected side effect in "one" computed property.	end	15	16
+tests/rules/vue/no-side-effects-in-computed-properties/cases.vue:16:11	vue/no-side-effects-in-computed-properties	unexpectedSideEffectInProperty	Unexpected side effect in "one" computed property.	end	16	14
+tests/rules/vue/no-side-effects-in-computed-properties/cases.vue:22:9	vue/no-side-effects-in-computed-properties	unexpectedSideEffectInProperty	Unexpected side effect in "two" computed property.	end	22	19
+tests/rules/vue/no-side-effects-in-computed-properties/options/cases.ts:5:30	vue/no-side-effects-in-computed-properties	unexpectedSideEffectInFunction	Unexpected side effect in computed function.	end	5	39
+tests/rules/vue/no-side-effects-in-computed-properties/setup/cases.vue:5:26	vue/no-side-effects-in-computed-properties	unexpectedSideEffectInFunction	Unexpected side effect in computed function.	end	5	39
+tests/rules/vue/no-side-effects-in-computed-properties/setup/cases.vue:7:3	vue/no-side-effects-in-computed-properties	unexpectedSideEffectInFunction	Unexpected side effect in computed function.	end	7	21
+tests/rules/vue/no-side-effects-in-computed-properties/setup/cases.vue:12:35	vue/no-side-effects-in-computed-properties	unexpectedSideEffectInFunction	Unexpected side effect in computed function.	end	12	50

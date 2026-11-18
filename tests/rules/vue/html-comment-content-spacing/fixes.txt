@@ -1,0 +1,12 @@
+tests/rules/vue/html-comment-content-spacing/cases.vue:2:7	vue/html-comment-content-spacing	expectedAfterHTMLCommentOpen	Expected space after '<!--'.	fix	17	17	 	end	2	7
+tests/rules/vue/html-comment-content-spacing/cases.vue:2:14	vue/html-comment-content-spacing	expectedBeforeHTMLCommentOpen	Expected space before '-->'.	fix	24	24	 	end	2	14
+tests/rules/vue/html-comment-content-spacing/exceptions/cases.vue:2:8	vue/html-comment-content-spacing	expectedAfterExceptionBlock	Expected space after exception block.	end	2	8
+tests/rules/vue/html-comment-content-spacing/exceptions/cases.vue:2:15	vue/html-comment-content-spacing	expectedBeforeExceptionBlock	Expected space before exception block.	end	2	15
+tests/rules/vue/html-comment-content-spacing/exceptions/cases.vue:4:9	vue/html-comment-content-spacing	expectedAfterExceptionBlock	Expected space after exception block.	end	4	9
+tests/rules/vue/html-comment-content-spacing/exceptions/cases.vue:4:16	vue/html-comment-content-spacing	expectedBeforeExceptionBlock	Expected space before exception block.	end	4	16
+tests/rules/vue/html-comment-content-spacing/never/cases.vue:2:7	vue/html-comment-content-spacing	unexpectedAfterHTMLCommentOpen	Unexpected space after '<!--'.	fix	17	18		end	2	8
+tests/rules/vue/html-comment-content-spacing/never/cases.vue:2:15	vue/html-comment-content-spacing	unexpectedBeforeHTMLCommentOpen	Unexpected space before '-->'.	fix	25	26		end	2	16
+tests/rules/vue/html-comment-content-spacing/outside/cases.vue:1:5	vue/html-comment-content-spacing	expectedAfterHTMLCommentOpen	Expected space after '<!--'.	fix	4	4	 	end	1	5
+tests/rules/vue/html-comment-content-spacing/outside/cases.vue:1:16	vue/html-comment-content-spacing	expectedBeforeHTMLCommentOpen	Expected space before '-->'.	fix	15	15	 	end	1	16
+tests/rules/vue/html-comment-content-spacing/outside/cases.vue:11:5	vue/html-comment-content-spacing	expectedAfterHTMLCommentOpen	Expected space after '<!--'.	fix	132	132	 	end	11	5
+tests/rules/vue/html-comment-content-spacing/outside/cases.vue:11:8	vue/html-comment-content-spacing	expectedBeforeHTMLCommentOpen	Expected space before '-->'.	fix	135	135	 	end	11	8

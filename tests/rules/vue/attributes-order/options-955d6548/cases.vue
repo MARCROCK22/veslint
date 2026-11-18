@@ -1,0 +1,9 @@
+<template>
+  <div>
+        <div
+          :prop-bind="prop"
+          prop-one="prop"
+          prop-two="prop">
+        </div>
+      </div>
+</template>

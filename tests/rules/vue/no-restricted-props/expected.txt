@@ -1,0 +1,6 @@
+tests/rules/vue/no-restricted-props/array/cases.ts:2:42	vue/no-restricted-props	restrictedProp	Using `foo` props is not allowed.
+tests/rules/vue/no-restricted-props/opts/cases.vue:4:5	vue/no-restricted-props	restrictedProp	Using `foo` props is not allowed.
+tests/rules/vue/no-restricted-props/opts/cases.vue:5:5	vue/no-restricted-props	restrictedProp	No bar.
+tests/rules/vue/no-restricted-props/opts/cases.vue:6:5	vue/no-restricted-props	restrictedProp	Using `qux` props is not allowed.
+tests/rules/vue/no-restricted-props/setup/cases.vue:2:55	vue/no-restricted-props	restrictedProp	Using `foo` props is not allowed.
+tests/rules/vue/no-restricted-props/setup/cases.vue:2:69	vue/no-restricted-props	restrictedProp	Using `qux` props is not allowed.

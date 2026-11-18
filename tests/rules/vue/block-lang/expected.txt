@@ -1,0 +1,24 @@
+tests/rules/vue/block-lang/extra-required/cases.vue:1:1	vue/block-lang	missingBlock	The '<style>' block is missing.
+tests/rules/vue/block-lang/extra-required/cases.vue:1:1	vue/block-lang	missingBlock	The '<custom>' block is missing.
+tests/rules/vue/block-lang/extra-required/cases.vue:3:7	vue/block-lang	expected	Only 'json', and 'json5' can be used for the 'lang' attribute of '<i18n>'.
+tests/rules/vue/block-lang/i10/cases.vue:1:11	vue/block-lang	unexpected	Do not specify the 'lang' attribute of '<template>'.
+tests/rules/vue/block-lang/i10/cases.vue:2:15	vue/block-lang	unexpected	Do not specify the 'lang' attribute of '<script>'.
+tests/rules/vue/block-lang/i10/cases.vue:3:14	vue/block-lang	unexpected	Do not specify the 'lang' attribute of '<style>'.
+tests/rules/vue/block-lang/i11/cases.vue:1:1	vue/block-lang	missingBlock	The '<script>' block is missing.
+tests/rules/vue/block-lang/i12/cases.vue:1:1	vue/block-lang	missingBlock	The '<script>' block is missing.
+tests/rules/vue/block-lang/i13/cases.vue:1:1	vue/block-lang	missingBlock	The '<script>' block is missing.
+tests/rules/vue/block-lang/i14/cases.vue:1:1	vue/block-lang	missingBlock	The '<template>' block is missing.
+tests/rules/vue/block-lang/i15/cases.vue:1:1	vue/block-lang	missingBlock	The '<i18n>' block is missing.
+tests/rules/vue/block-lang/i16/cases.vue:1:1	vue/block-lang	missingBlock	The '<script>' block is missing.
+tests/rules/vue/block-lang/i16/cases.vue:1:1	vue/block-lang	missingBlock	The '<style>' block is missing.
+tests/rules/vue/block-lang/i19/cases.vue:1:1	vue/block-lang	missingBlock	The '<script>' block is missing.
+tests/rules/vue/block-lang/i4/cases.vue:1:30	vue/block-lang	unexpected	Do not specify the 'lang' attribute of '<script>'.
+tests/rules/vue/block-lang/i5/cases.vue:1:30	vue/block-lang	unexpected	Do not specify the 'lang' attribute of '<script>'.
+tests/rules/vue/block-lang/i6/cases.vue:1:30	vue/block-lang	unexpected	Do not specify the 'lang' attribute of '<script>'.
+tests/rules/vue/block-lang/i7/cases.vue:1:1	vue/block-lang	missing	The 'lang' attribute of '<i18n>' is missing.
+tests/rules/vue/block-lang/i8/cases.vue:2:13	vue/block-lang	useOrNot	Only 'json' can be used for the 'lang' attribute of '<i18n>'. Or, not specifying the 'lang' attribute is allowed.
+tests/rules/vue/block-lang/i9/cases.vue:2:13	vue/block-lang	useOrNot	Only 'json', and 'yaml' can be used for the 'lang' attribute of '<i18n>'. Or, not specifying the 'lang' attribute is allowed.
+tests/rules/vue/block-lang/v1/cases.vue:2:15	vue/block-lang	unexpected	Do not specify the 'lang' attribute of '<script>'.
+tests/rules/vue/block-lang/v10/cases.vue:2:15	vue/block-lang	unexpected	Do not specify the 'lang' attribute of '<script>'.
+tests/rules/vue/block-lang/v3/cases.vue:3:15	vue/block-lang	unexpected	Do not specify the 'lang' attribute of '<script>'.
+tests/rules/vue/block-lang/v9/cases.vue:2:15	vue/block-lang	unexpected	Do not specify the 'lang' attribute of '<script>'.

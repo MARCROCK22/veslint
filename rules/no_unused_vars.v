@@ -210,8 +210,10 @@ fn (mut c Checker) lint_no_unused_vars(root C.TSNode, abs_path string, mut stats
 	}
 	mut unused_list := []int{}
 	mut used_list := []int{}
-	for scope in tree.scopes {
-		if scope.kind == .function_expression_name {
+	// collectVariables goes down the tree from the global scope.
+	reachable := tree.reachable()
+	for i, scope in tree.scopes {
+		if scope.kind == .function_expression_name || !reachable[i] {
 			continue
 		}
 		for v in scope.variables {

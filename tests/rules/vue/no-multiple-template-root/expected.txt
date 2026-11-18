@@ -1,0 +1,8 @@
+tests/rules/vue/no-multiple-template-root/cases.vue:4:3	vue/no-multiple-template-root	multipleRoot	The template root requires exactly one element.
+tests/rules/vue/no-multiple-template-root/chain/cases.vue:3:3	vue/no-multiple-template-root	disallowedElement	The template root disallows '<template>' elements.
+tests/rules/vue/no-multiple-template-root/chain/cases.vue:4:3	vue/no-multiple-template-root	disallowedElement	The template root disallows '<slot>' elements.
+tests/rules/vue/no-multiple-template-root/chain/cases.vue:4:3	vue/no-multiple-template-root	disallowedDirective	The template root disallows 'v-for' directives.
+tests/rules/vue/no-multiple-template-root/chain2/cases.vue:4:3	vue/no-multiple-template-root	multipleRoot	The template root requires exactly one element.
+tests/rules/vue/no-multiple-template-root/comments/cases.vue:2:3	vue/no-multiple-template-root	commentRoot	The template root disallows comments.
+tests/rules/vue/no-multiple-template-root/comments/cases.vue:4:3	vue/no-multiple-template-root	commentRoot	The template root disallows comments.
+tests/rules/vue/no-multiple-template-root/text/cases.vue:2:9	vue/no-multiple-template-root	textRoot	The template root requires an element rather than texts.

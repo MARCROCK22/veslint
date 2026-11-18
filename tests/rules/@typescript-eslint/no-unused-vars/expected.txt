@@ -666,3 +666,9 @@ tests/rules/@typescript-eslint/no-unused-vars/static-block/cases.ts:130:11	@type
 tests/rules/@typescript-eslint/no-unused-vars/static-block/cases.ts:143:19	@typescript-eslint/no-unused-vars	unusedVar	'Ambient' is defined but never used.
 tests/rules/@typescript-eslint/no-unused-vars/static-block/cases.ts:155:13	@typescript-eslint/no-unused-vars	unusedVar	'Hidden' is defined but never used.
 tests/rules/@typescript-eslint/no-unused-vars/static-block/cases.ts:166:7	@typescript-eslint/no-unused-vars	usedOnlyAsType	'inReturn' is assigned a value but only used as a type.
+tests/rules/@typescript-eslint/no-unused-vars/vue-both-scripts/cases.vue:15:7	@typescript-eslint/no-unused-vars	unusedVar	'unused' is assigned a value but never used.
+tests/rules/@typescript-eslint/no-unused-vars/vue-setup-only/cases.vue:3:14	@typescript-eslint/no-unused-vars	unusedVar	'e' is defined but never used.
+tests/rules/@typescript-eslint/no-unused-vars/vue-setup-only/cases.vue:4:17	@typescript-eslint/no-unused-vars	unusedVar	'a' is defined but never used.
+tests/rules/@typescript-eslint/no-unused-vars/vue-setup-only/cases.vue:6:9	@typescript-eslint/no-unused-vars	unusedVar	'inner' is assigned a value but never used.
+tests/rules/@typescript-eslint/no-unused-vars/vue-setup-only/cases.vue:9:5	@typescript-eslint/no-unused-vars	unusedVar	'p' is defined but never used.
+tests/rules/@typescript-eslint/no-unused-vars/vue-setup-only/cases.vue:11:7	@typescript-eslint/no-unused-vars	unusedVar	'unused' is assigned a value but never used.

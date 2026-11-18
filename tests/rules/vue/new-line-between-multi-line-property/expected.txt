@@ -1,0 +1,7 @@
+tests/rules/vue/new-line-between-multi-line-property/cases.vue:7:6	vue/new-line-between-multi-line-property	missingEmptyLine	Enforce new lines between multi-line properties in Vue components.
+tests/rules/vue/new-line-between-multi-line-property/cases.vue:11:6	vue/new-line-between-multi-line-property	missingEmptyLine	Enforce new lines between multi-line properties in Vue components.
+tests/rules/vue/new-line-between-multi-line-property/cases.vue:13:4	vue/new-line-between-multi-line-property	missingEmptyLine	Enforce new lines between multi-line properties in Vue components.
+tests/rules/vue/new-line-between-multi-line-property/cases.vue:18:4	vue/new-line-between-multi-line-property	missingEmptyLine	Enforce new lines between multi-line properties in Vue components.
+tests/rules/vue/new-line-between-multi-line-property/cases.vue:28:4	vue/new-line-between-multi-line-property	missingEmptyLine	Enforce new lines between multi-line properties in Vue components.
+tests/rules/vue/new-line-between-multi-line-property/opts/cases.vue:6:4	vue/new-line-between-multi-line-property	missingEmptyLine	Enforce new lines between multi-line properties in Vue components.
+tests/rules/vue/new-line-between-multi-line-property/opts/cases.vue:9:4	vue/new-line-between-multi-line-property	missingEmptyLine	Enforce new lines between multi-line properties in Vue components.

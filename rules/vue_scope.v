@@ -17,14 +17,44 @@ pub:
 	script_setup bool
 	uses         []vue.TemplateUse
 	generic      []string
+	// The file range of the <script setup>'s content when vue-eslint-parser parses it as a block
+	// after the other script (-1 otherwise): see vue_detach_setup_scopes.
+	block_start int = -1
+	block_end   int = -1
 }
 
 fn vue_scope_setup(doc &vue.Document) VueScopeSetup {
+	block_start, block_end := doc.script_setup_block()
 	return VueScopeSetup{
 		script_setup: true
 		uses:         doc.template_uses()
 		generic:      doc.script_setup_generic_names()
+		block_start:  block_start
+		block_end:    block_end
 	}
+}
+
+// vue_detach_setup_scopes ports remapScope of vue-eslint-parser's script-setup/index.ts: with a
+// <script> and a <script setup>, the setup statements are parsed in a block, whose scope remapScope
+// takes out of the module scope's children after moving its variables to the module scope; the
+// scopes of the block itself (its functions, classes, blocks…) keep it as their upper scope and are
+// no longer in the tree that goes down from the global scope (rules that walk it, as
+// no-unused-vars' collectVariables or no-shadow, do not see them). veslint has no block scope: the
+// scopes of the module scope inside the setup's content leave its children the same way.
+fn (mut b ScopeBuilder) vue_detach_setup_scopes(setup VueScopeSetup) {
+	if setup.block_start < 0 {
+		return
+	}
+	// The block's upper scope: the module scope, or the global one of a script.
+	mut upper := 0
+	for child in b.tree.scopes[0].children {
+		if b.tree.scopes[child].kind == .esmodule {
+			upper = child
+			break
+		}
+	}
+	b.tree.scopes[upper].children = b.tree.scopes[upper].children.filter(!(b.tree.scopes[it].start >= setup.block_start
+		&& b.tree.scopes[it].end <= setup.block_end))
 }
 
 // vue_script_setup_scope ports analyzeUsedInTemplateVariables and analyzeScriptSetupVariables.

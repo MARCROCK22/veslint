@@ -1,0 +1,15 @@
+tests/rules/vue/require-valid-default-prop/cases.vue:4:33	vue/require-valid-default-prop	invalidType	Type of the default value for 'a' prop must be a string.	end	4	34
+tests/rules/vue/require-valid-default-prop/cases.vue:5:39	vue/require-valid-default-prop	invalidType	Type of the default value for 'b' prop must be a number.	end	5	42
+tests/rules/vue/require-valid-default-prop/cases.vue:6:33	vue/require-valid-default-prop	invalidType	Type of the default value for 'c' prop must be a function.	end	6	35
+tests/rules/vue/require-valid-default-prop/cases.vue:7:61	vue/require-valid-default-prop	invalidType	Type of the default value for 'd' prop must be a array.	end	7	64
+tests/rules/vue/require-valid-default-prop/cases.vue:8:43	vue/require-valid-default-prop	invalidType	Type of the default value for 'e' prop must be a string or number.	end	8	47
+tests/rules/vue/require-valid-default-prop/cases.vue:9:35	vue/require-valid-default-prop	invalidType	Type of the default value for 'f' prop must be a function.	end	9	36
+tests/rules/vue/require-valid-default-prop/destructure/cases.vue:2:13	vue/require-valid-default-prop	invalidType	Type of the default value for 'a' prop must be a string.	end	2	14
+tests/rules/vue/require-valid-default-prop/destructure/cases.vue:2:28	vue/require-valid-default-prop	invalidType	Type of the default value for 'c' prop must be a string.	end	2	35
+tests/rules/vue/require-valid-default-prop/model/cases.vue:2:42	vue/require-valid-default-prop	invalidType	Type of the default value for 'modelValue' prop must be a string.	end	2	43
+tests/rules/vue/require-valid-default-prop/model/cases.vue:3:53	vue/require-valid-default-prop	invalidType	Type of the default value for 'b' prop must be a number.	end	3	56
+tests/rules/vue/require-valid-default-prop/model/cases.vue:4:62	vue/require-valid-default-prop	invalidType	Type of the default value for 'c' prop must be a array.	end	4	65
+tests/rules/vue/require-valid-default-prop/setup/cases.vue:4:6	vue/require-valid-default-prop	invalidType	Type of the default value for 'a' prop must be a string.	end	4	7
+tests/rules/vue/require-valid-default-prop/setup/cases.vue:5:6	vue/require-valid-default-prop	invalidType	Type of the default value for 'b' prop must be a function.	end	5	8
+tests/rules/vue/require-valid-default-prop/setup/cases.vue:6:6	vue/require-valid-default-prop	invalidType	Type of the default value for 'c' prop must be a boolean.	end	6	9
+tests/rules/vue/require-valid-default-prop/setup/cases.vue:7:12	vue/require-valid-default-prop	invalidType	Type of the default value for 'd' prop must be a object.	end	7	13

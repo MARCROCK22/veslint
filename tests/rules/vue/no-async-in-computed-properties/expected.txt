@@ -1,0 +1,22 @@
+tests/rules/vue/no-async-in-computed-properties/cases.vue:6:14	vue/no-async-in-computed-properties	unexpectedInProperty	Unexpected async function declaration in "one" computed property.
+tests/rules/vue/no-async-in-computed-properties/cases.vue:7:7	vue/no-async-in-computed-properties	unexpectedInProperty	Unexpected await operator in "one" computed property.
+tests/rules/vue/no-async-in-computed-properties/cases.vue:11:7	vue/no-async-in-computed-properties	unexpectedInProperty	Unexpected asynchronous action in "two" computed property.
+tests/rules/vue/no-async-in-computed-properties/cases.vue:12:7	vue/no-async-in-computed-properties	unexpectedInProperty	Unexpected asynchronous action in "two" computed property.
+tests/rules/vue/no-async-in-computed-properties/cases.vue:13:7	vue/no-async-in-computed-properties	unexpectedInProperty	Unexpected Promise object in "two" computed property.
+tests/rules/vue/no-async-in-computed-properties/cases.vue:14:7	vue/no-async-in-computed-properties	unexpectedInProperty	Unexpected timed function in "two" computed property.
+tests/rules/vue/no-async-in-computed-properties/cases.vue:15:7	vue/no-async-in-computed-properties	unexpectedInProperty	Unexpected timed function in "two" computed property.
+tests/rules/vue/no-async-in-computed-properties/cases.vue:16:7	vue/no-async-in-computed-properties	unexpectedInProperty	Unexpected asynchronous action in "two" computed property.
+tests/rules/vue/no-async-in-computed-properties/cases.vue:17:7	vue/no-async-in-computed-properties	unexpectedInProperty	Unexpected asynchronous action in "two" computed property.
+tests/rules/vue/no-async-in-computed-properties/cases.vue:22:9	vue/no-async-in-computed-properties	unexpectedInProperty	Unexpected asynchronous action in "three" computed property.
+tests/rules/vue/no-async-in-computed-properties/ignored/cases.vue:6:14	vue/no-async-in-computed-properties	unexpectedInProperty	Unexpected async function declaration in "one" computed property.
+tests/rules/vue/no-async-in-computed-properties/ignored/cases.vue:7:7	vue/no-async-in-computed-properties	unexpectedInProperty	Unexpected await operator in "one" computed property.
+tests/rules/vue/no-async-in-computed-properties/ignored/cases.vue:12:7	vue/no-async-in-computed-properties	unexpectedInProperty	Unexpected asynchronous action in "two" computed property.
+tests/rules/vue/no-async-in-computed-properties/ignored/cases.vue:13:7	vue/no-async-in-computed-properties	unexpectedInProperty	Unexpected Promise object in "two" computed property.
+tests/rules/vue/no-async-in-computed-properties/ignored/cases.vue:14:7	vue/no-async-in-computed-properties	unexpectedInProperty	Unexpected timed function in "two" computed property.
+tests/rules/vue/no-async-in-computed-properties/ignored/cases.vue:15:7	vue/no-async-in-computed-properties	unexpectedInProperty	Unexpected timed function in "two" computed property.
+tests/rules/vue/no-async-in-computed-properties/ignored/cases.vue:16:7	vue/no-async-in-computed-properties	unexpectedInProperty	Unexpected asynchronous action in "two" computed property.
+tests/rules/vue/no-async-in-computed-properties/ignored/cases.vue:17:7	vue/no-async-in-computed-properties	unexpectedInProperty	Unexpected asynchronous action in "two" computed property.
+tests/rules/vue/no-async-in-computed-properties/ignored/cases.vue:22:9	vue/no-async-in-computed-properties	unexpectedInProperty	Unexpected asynchronous action in "three" computed property.
+tests/rules/vue/no-async-in-computed-properties/setup/cases.vue:4:20	vue/no-async-in-computed-properties	unexpectedInFunction	Unexpected async function declaration in computed function.
+tests/rules/vue/no-async-in-computed-properties/setup/cases.vue:5:26	vue/no-async-in-computed-properties	unexpectedInFunction	Unexpected asynchronous action in computed function.
+tests/rules/vue/no-async-in-computed-properties/setup/cases.vue:7:3	vue/no-async-in-computed-properties	unexpectedInFunction	Unexpected timed function in computed function.

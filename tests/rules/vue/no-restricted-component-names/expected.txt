@@ -1,0 +1,5 @@
+tests/rules/vue/no-restricted-component-names/opts/cases.ts:2:25	vue/no-restricted-component-names	disallow	Using component name `FooBar` is not allowed.
+tests/rules/vue/no-restricted-component-names/opts/cases.ts:6:29	vue/no-restricted-component-names	disallow	Using component name `foo-bar` is not allowed.
+tests/rules/vue/no-restricted-component-names/opts/cases.vue:3:9	vue/no-restricted-component-names	disallow	Using component name `foo-bar` is not allowed.
+tests/rules/vue/no-restricted-component-names/opts/cases.vue:7:23	vue/no-restricted-component-names	disallow	No Baz.
+tests/rules/vue/no-restricted-component-names/suggest/cases.ts:2:25	vue/no-restricted-component-names	disallow	Using component name `Old` is not allowed.

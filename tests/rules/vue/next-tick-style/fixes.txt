@@ -1,0 +1,15 @@
+tests/rules/vue/next-tick-style/callback/cases.vue:9:11	vue/next-tick-style	useCallback	Pass a callback function to `nextTick` instead of using the returned Promise.	end	9	19
+tests/rules/vue/next-tick-style/callback/cases.vue:10:5	vue/next-tick-style	useCallback	Pass a callback function to `nextTick` instead of using the returned Promise.	end	10	13
+tests/rules/vue/next-tick-style/callback/cases.vue:11:5	vue/next-tick-style	useCallback	Pass a callback function to `nextTick` instead of using the returned Promise.	end	11	13
+tests/rules/vue/next-tick-style/callback/cases.vue:14:5	vue/next-tick-style	useCallback	Pass a callback function to `nextTick` instead of using the returned Promise.	end	14	13
+tests/rules/vue/next-tick-style/callback/cases.vue:15:11	vue/next-tick-style	useCallback	Pass a callback function to `nextTick` instead of using the returned Promise.	end	15	19
+tests/rules/vue/next-tick-style/callback/cases.vue:16:12	vue/next-tick-style	useCallback	Pass a callback function to `nextTick` instead of using the returned Promise.	end	16	20
+tests/rules/vue/next-tick-style/callback/cases.vue:20:27	vue/next-tick-style	useCallback	Pass a callback function to `nextTick` instead of using the returned Promise.	end	20	35
+tests/rules/vue/next-tick-style/cases.vue:6:10	vue/next-tick-style	usePromise	Use the Promise returned by `nextTick` instead of passing a callback function.	fix	173	173	().then	end	6	19
+tests/rules/vue/next-tick-style/cases.vue:7:9	vue/next-tick-style	usePromise	Use the Promise returned by `nextTick` instead of passing a callback function.	fix	200	200	().then	end	7	17
+tests/rules/vue/next-tick-style/cases.vue:8:5	vue/next-tick-style	usePromise	Use the Promise returned by `nextTick` instead of passing a callback function.	fix	223	223	().then	end	8	13
+tests/rules/vue/next-tick-style/cases.vue:11:5	vue/next-tick-style	usePromise	Use the Promise returned by `nextTick` instead of passing a callback function.	fix	297	297	().then	end	11	13
+tests/rules/vue/next-tick-style/cases.vue:14:5	vue/next-tick-style	usePromise	Use the Promise returned by `nextTick` instead of passing a callback function.	fix	354	354	().then	end	14	13
+tests/rules/vue/next-tick-style/cases.vue:15:11	vue/next-tick-style	usePromise	Use the Promise returned by `nextTick` instead of passing a callback function.	fix	386	386	().then	end	15	19
+tests/rules/vue/next-tick-style/cases.vue:16:12	vue/next-tick-style	usePromise	Use the Promise returned by `nextTick` instead of passing a callback function.	fix	416	416	().then	end	16	20
+tests/rules/vue/next-tick-style/cases.vue:20:27	vue/next-tick-style	usePromise	Use the Promise returned by `nextTick` instead of passing a callback function.	fix	481	481	().then	end	20	35

@@ -1,0 +1,21 @@
+tests/rules/vue/no-undef-properties/cases.vue:2:60	vue/no-undef-properties	undef	'undef1' is not defined.	end	2	66
+tests/rules/vue/no-undef-properties/cases.vue:4:37	vue/no-undef-properties	undef	'undef2' is not defined.	end	4	43
+tests/rules/vue/no-undef-properties/cases.vue:5:44	vue/no-undef-properties	undef	'undef3' is not defined.	end	5	50
+tests/rules/vue/no-undef-properties/cases.vue:15:20	vue/no-undef-properties	undef	'styleVar' is not defined.	end	15	28
+tests/rules/vue/no-undef-properties/functional/cases.vue:2:31	vue/no-undef-properties	undef	'b' is not defined.	end	2	32
+tests/rules/vue/no-undef-properties/ignores/cases.vue:2:11	vue/no-undef-properties	undef	'$store' is not defined.	end	2	17
+tests/rules/vue/no-undef-properties/ignores/cases.vue:2:39	vue/no-undef-properties	undef	'other' is not defined.	end	2	44
+tests/rules/vue/no-undef-properties/options-api/cases.vue:2:25	vue/no-undef-properties	undef	'a.x' is not defined.	end	2	26
+tests/rules/vue/no-undef-properties/options-api/cases.vue:2:81	vue/no-undef-properties	undef	'notDefined' is not defined.	end	2	91
+tests/rules/vue/no-undef-properties/options-api/cases.vue:11:26	vue/no-undef-properties	undefProps	'cfoo' is not defined in props.	end	11	30
+tests/rules/vue/no-undef-properties/options-api/cases.vue:15:35	vue/no-undef-properties	undef	'zzz' is not defined.	end	15	38
+tests/rules/vue/no-undef-properties/options-api/cases.vue:16:22	vue/no-undef-properties	undef	'yyy' is not defined.	end	16	25
+tests/rules/vue/no-undef-properties/options-api/cases.vue:17:29	vue/no-undef-properties	undef	'xxx' is not defined.	end	17	32
+tests/rules/vue/no-undef-properties/options-api/cases.vue:23:12	vue/no-undef-properties	undef	'missingMethod' is not defined.	end	23	25
+tests/rules/vue/no-undef-properties/options-api/cases.vue:27:12	vue/no-undef-properties	undef	'viaSelf' is not defined.	end	27	19
+tests/rules/vue/no-undef-properties/options-api/cases.vue:31:5	vue/no-undef-properties	undef	'a.b.q' is not defined.	end	31	12
+tests/rules/vue/no-undef-properties/options-api/cases.vue:32:8	vue/no-undef-properties	undef	'unknownHandler' is not defined.	end	32	24
+tests/rules/vue/no-undef-properties/options-api/cases.vue:34:12	vue/no-undef-properties	undef	'notExposed' is not defined.	end	34	24
+tests/rules/vue/no-undef-properties/options-api/cases.vue:37:32	vue/no-undef-properties	undef	'notAProp' is not defined.	end	37	40
+tests/rules/vue/no-undef-properties/order/cases.vue:2:21	vue/no-undef-properties	undef	'dup2' is not defined.	end	2	25
+tests/rules/vue/no-undef-properties/order/cases.vue:14:20	vue/no-undef-properties	undef	'dup' is not defined.	end	14	23

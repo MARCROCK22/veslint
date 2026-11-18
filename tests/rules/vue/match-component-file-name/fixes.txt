@@ -1,0 +1,3 @@
+tests/rules/vue/match-component-file-name/case/cases.vue:2:23	vue/match-component-file-name	shouldMatchFileName	Component name `Cases` should match file name `cases`.	suggestion		Rename component to match file name.	47	54	'cases'	end	2	30
+tests/rules/vue/match-component-file-name/template/cases.vue:3:9	vue/match-component-file-name	shouldMatchFileName	Component name `my-cases` should match file name `cases`.	suggestion		Rename component to match file name.	44	54	`cases`	end	3	19
+tests/rules/vue/match-component-file-name/vue/cases.vue:3:9	vue/match-component-file-name	shouldMatchFileName	Component name `MyComponent` should match file name `cases`.	suggestion		Rename component to match file name.	44	57	'cases'	end	3	22

@@ -1,0 +1,3 @@
+tests/rules/vue/enforce-style-attribute/cases.vue:3:1	vue/enforce-style-attribute	notAllowedPlain	Plain <style> tags are not allowed. Allowed: scoped.
+tests/rules/vue/enforce-style-attribute/module/cases.vue:3:1	vue/enforce-style-attribute	notAllowedScoped	The scoped attribute is not allowed. Allowed: module, plain.
+tests/rules/vue/enforce-style-attribute/plain2/cases.vue:1:1	vue/enforce-style-attribute	notAllowedScoped	The scoped attribute is not allowed. Allowed: plain.

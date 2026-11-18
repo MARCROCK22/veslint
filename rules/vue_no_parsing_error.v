@@ -106,6 +106,60 @@ fn (c &Checker) vue_error_loc(e vue.ParseError) vue.Loc {
 	return vue.Loc{last.line, last.column + (e.index - doc.src.len)}
 }
 
+// vue_scanner_order puts each "Unterminated string literal." (1002, which TypeScript's scanner
+// reports at the end of the string's line when it reads the token) before the parser's errors at
+// the string's start, which TypeScript reports after it, once the token is the current one
+// (`0(a "x` gives it, then "',' expected." at the quote). Positions are UTF-16 offsets of code.
+fn vue_scanner_order(code string, diagnostics []tsgo.Diagnostic) []tsgo.Diagnostic {
+	if !diagnostics.any(it.code == 1002) {
+		return diagnostics
+	}
+	mut units := []u16{cap: code.len}
+	for r in code.runes() {
+		if r > 0xffff {
+			v := u32(r) - 0x10000
+			units << u16(0xd800 + (v >> 10))
+			units << u16(0xdc00 + (v & 0x3ff))
+		} else {
+			units << u16(r)
+		}
+	}
+	mut out := diagnostics.clone()
+	for i := 0; i < out.len; i++ {
+		u := out[i]
+		if u.code != 1002 {
+			continue
+		}
+		// The first error before it whose position is a quote that opens a string running to it.
+		for j in 0 .. i {
+			if vue_opens_string_to(units, out[j].pos, u.pos) {
+				out.delete(i)
+				out.insert(j, u)
+				break
+			}
+		}
+	}
+	return out
+}
+
+// vue_opens_string_to: units[start] is a quote, and the text after it up to end has neither a line
+// terminator nor that quote unescaped (a string from start would be unterminated at end).
+fn vue_opens_string_to(units []u16, start int, end int) bool {
+	if start < 0 || start >= end || end > units.len || units[start] !in [u16(`'`), u16(`"`)] {
+		return false
+	}
+	quote := units[start]
+	mut k := start + 1
+	for k < end {
+		ch := units[k]
+		if ch in [u16(`\n`), u16(`\r`), u16(0x2028), u16(0x2029)] || ch == quote {
+			return false
+		}
+		k += if ch == u16(`\\`) { 2 } else { 1 }
+	}
+	return true
+}
+
 // vue_document_errors are the errors of the document as vue-eslint-parser gives them: those whose
 // message is TypeScript's first syntactic diagnostic for the code of a template expression
 // (ParseError.ts_message) get it from tsgo, with its position, and go back among the errors without
@@ -138,9 +192,11 @@ fn (mut c Checker) vue_document_errors() []vue.ParseError {
 		}
 		// typescript-estree throws the first diagnostic the parser reported; tsgo gives them by
 		// position, which puts the ones reported once what follows was parsed (a JSX element or
-		// fragment without its closing tag, JSX expressions without one parent) first.
-		mut first := diagnostics[0]
-		for d in diagnostics {
+		// fragment without its closing tag, JSX expressions without one parent) first, and those
+		// reported at the start of an unterminated string before the string's own.
+		ordered := vue_scanner_order(snippet.code, diagnostics)
+		mut first := ordered[0]
+		for d in ordered {
 			if d.code !in [17008, 17014, 2657] {
 				first = d
 				break

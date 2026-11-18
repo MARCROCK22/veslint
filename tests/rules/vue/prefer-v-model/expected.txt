@@ -1,0 +1,9 @@
+tests/rules/vue/prefer-v-model/cases.vue:17:22	vue/prefer-v-model	preferVModel	Prefer `v-model` over the `:modelValue`/`@update:modelValue` pair.
+tests/rules/vue/prefer-v-model/cases.vue:18:22	vue/prefer-v-model	preferVModel	Prefer `v-model` over the `:model-value`/`@update:model-value` pair.
+tests/rules/vue/prefer-v-model/cases.vue:21:13	vue/prefer-v-model	preferVModel	Prefer `v-model:foo` over the `:foo`/`@update:foo` pair.
+tests/rules/vue/prefer-v-model/cases.vue:26:22	vue/prefer-v-model	preferVModel	Prefer `v-model:foo` over the `:foo`/`@update:foo` pair.
+tests/rules/vue/prefer-v-model/cases.vue:27:22	vue/prefer-v-model	preferVModel	Prefer `v-model:foo` over the `:foo`/`@update:foo` pair.
+tests/rules/vue/prefer-v-model/cases.vue:28:22	vue/prefer-v-model	preferVModel	Prefer `v-model:foo` over the `:foo`/`@update:foo` pair.
+tests/rules/vue/prefer-v-model/cases.vue:29:22	vue/prefer-v-model	preferVModel	Prefer `v-model:foo` over the `:foo`/`@update:foo` pair.
+tests/rules/vue/prefer-v-model/cases.vue:30:22	vue/prefer-v-model	preferVModel	Prefer `v-model:foo` over the `:foo`/`@update:foo` pair.
+tests/rules/vue/prefer-v-model/cases.vue:30:56	vue/prefer-v-model	preferVModel	Prefer `v-model:bar` over the `:bar`/`@update:bar` pair.

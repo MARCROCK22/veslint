@@ -1,0 +1,26 @@
+<template>
+  <div>
+        <div
+          bb="v"
+          zz="v"
+          aaa="v"
+          @click="fn"
+          @keyup="fn"
+          @submit="fn"
+        ></div>
+      </div>
+  <div>
+        <div
+          aa="v"
+          z="v"
+        ></div>
+      </div>
+  <div>
+        <div
+          zz="v"
+          bb="v"
+          @keyup="fn"
+          @click="fn"
+        ></div>
+      </div>
+</template>

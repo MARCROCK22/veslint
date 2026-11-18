@@ -1,0 +1,20 @@
+<template>
+  <div>
+          <div
+            v-if="!visible"
+            class="content"
+            v-model="foo"
+            v-text="textContent"
+            >
+          </div>
+        </div>
+  <div>
+            <div
+              class="content"
+              v-if="!visible"
+              v-model="foo"
+              v-text="textContent"
+              >
+            </div>
+          </div>
+</template>

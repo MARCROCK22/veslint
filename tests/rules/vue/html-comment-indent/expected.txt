@@ -1,0 +1,7 @@
+tests/rules/vue/html-comment-indent/cases.vue:3:3	vue/html-comment-indent	unexpectedRelativeIndentation	Expected relative indentation of 2 spaces but found 0 spaces.
+tests/rules/vue/html-comment-indent/cases.vue:4:3	vue/html-comment-indent	unexpectedRelativeIndentation	Expected relative indentation of 2 spaces but found 4 spaces.
+tests/rules/vue/html-comment-indent/cases.vue:9:5	vue/html-comment-indent	unexpectedRelativeIndentation	Expected relative indentation of 2 spaces but found 6 spaces.
+tests/rules/vue/html-comment-indent/cases.vue:10:5	vue/html-comment-indent	unexpectedRelativeIndentation	Expected relative indentation of 0 spaces but found 2 spaces.
+tests/rules/vue/html-comment-indent/four/cases.vue:4:3	vue/html-comment-indent	unexpectedRelativeIndentation	Expected relative indentation of 4 spaces but found 2 spaces.
+tests/rules/vue/html-comment-indent/outside/cases.vue:6:1	vue/html-comment-indent	unexpectedIndentation	Expected indentation of 2 spaces but found 4 spaces.
+tests/rules/vue/html-comment-indent/tab/cases.vue:3:1	vue/html-comment-indent	unexpectedBaseIndentation	Expected base point indentation of 1 tab, but found 1 space.

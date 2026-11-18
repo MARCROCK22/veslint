@@ -107,7 +107,7 @@ fn uses_tsx_grammar(doc &vue.Document) bool {
 fn vue_report_positions(doc &vue.Document, findings []rules.Finding, ends bool) ([]offsets.DisplayPos, []offsets.DisplayPos) {
 	mut starts := []offsets.DisplayPos{cap: findings.len}
 	mut end_positions := []offsets.DisplayPos{}
-	text_located := findings.filter(it.text_loc)
+	text_located := findings.filter(it.text_loc || it.text_loc_start || it.text_loc_end)
 	mut text_starts := []offsets.DisplayPos{}
 	mut text_ends := []offsets.DisplayPos{}
 	if text_located.len > 0 {
@@ -119,10 +119,51 @@ fn vue_report_positions(doc &vue.Document, findings []rules.Finding, ends bool) 
 	}
 	mut next := 0
 	for f in findings {
+		if f.line_loc {
+			starts << offsets.DisplayPos{
+				line: f.fixed_line
+				col:  f.fixed_column
+			}
+			if ends {
+				end_positions << offsets.DisplayPos{
+					line: f.fixed_end_line
+					col:  f.fixed_end_column
+				}
+			}
+			continue
+		}
 		if f.text_loc {
 			starts << text_starts[next]
 			if ends {
 				end_positions << text_ends[next]
+			}
+			next++
+			continue
+		}
+		if f.text_loc_start || f.text_loc_end {
+			loc := doc.loc(f.stmt.start_byte)
+			starts << if f.text_loc_start {
+				text_starts[next]
+			} else {
+				offsets.DisplayPos{
+					line: loc.line
+					col:  loc.column + 1
+				}
+			}
+			if ends {
+				end := doc.loc(if f.stmt.end_byte >= 0 {
+					f.stmt.end_byte
+				} else {
+					f.stmt.start_byte
+				})
+				end_positions << if f.text_loc_end {
+					text_ends[next]
+				} else {
+					offsets.DisplayPos{
+						line: end.line
+						col:  end.column + 1
+					}
+				}
 			}
 			next++
 			continue

@@ -1,0 +1,8 @@
+tests/rules/vue/no-undef-directives/cases.vue:2:37	vue/no-undef-directives	undef	The 'v-other' directive has been used, but not defined.	end	2	44
+tests/rules/vue/no-undef-directives/cases.vue:2:54	vue/no-undef-directives	undef	The 'v-Upper' directive has been used, but not defined.	end	2	61
+tests/rules/vue/no-undef-directives/cases.vue:2:62	vue/no-undef-directives	undef	The 'v-snake_case' directive has been used, but not defined.	end	2	74
+tests/rules/vue/no-undef-directives/cases.vue:2:75	vue/no-undef-directives	undef	The 'v-ignored-one' directive has been used, but not defined.	end	2	88
+tests/rules/vue/no-undef-directives/ignore/cases.vue:2:8	vue/no-undef-directives	undef	The 'v-foo-bar' directive has been used, but not defined.	end	2	17
+tests/rules/vue/no-undef-directives/ignore/cases.vue:2:43	vue/no-undef-directives	undef	The 'v-other' directive has been used, but not defined.	end	2	50
+tests/rules/vue/no-undef-directives/options-api/cases.vue:2:16	vue/no-undef-directives	undef	The 'v-local' directive has been used, but not defined.	end	2	23
+tests/rules/vue/no-undef-directives/options-api/cases.vue:2:24	vue/no-undef-directives	undef	The 'v-Upper' directive has been used, but not defined.	end	2	31

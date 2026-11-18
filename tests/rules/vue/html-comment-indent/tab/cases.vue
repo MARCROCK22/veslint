@@ -1,0 +1,6 @@
+<template>
+	<!--
+    spaces
+		ok
+	-->
+</template>

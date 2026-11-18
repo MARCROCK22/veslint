@@ -1,6 +1,7 @@
 module rules
 
 import estree
+import json2
 import vue
 
 // The template side of the vue/* rules: what eslint-plugin-vue 10.12.1's rules get from
@@ -47,6 +48,64 @@ pub:
 // defineTemplateBodyVisitor's listeners run.
 fn (c &Checker) vue_has_template() bool {
 	return c.is_vue() && c.vue.doc.template_body >= 0
+}
+
+// vue_template_owner_of is the rule in whose Program:exit vue-eslint-parser walks the template
+// (defineTemplateBodyVisitor of parser-services.ts): the first rule ESLint creates that calls
+// defineTemplateBodyVisitor (vue_template_owners.v), in the order of the configuration's rules and
+// then of those only a configuration comment turns on; '' when none runs or the file has no
+// templateBody. Its listeners of Program:exit run before the template's, those of every other rule
+// after them: what a rule that also has a Program:exit listener sees first depends on it.
+fn (c &Checker) vue_template_owner_of(config LintConfig, inline InlineConfig) string {
+	if !c.vue_has_template() {
+		return ''
+	}
+	mut options := map[string][]json2.Any{}
+	for setting in inline.rules {
+		options[setting.name] = setting.options
+	}
+	mut others := config.other_active.filter(it !in inline.other_off)
+	others << inline.other_active
+	mut order := config.all_rules.keys()
+	order << inline.rules.map(it.name).filter(it !in config.all_rules)
+	order << inline.other_active.filter(it !in config.all_rules)
+	for name in order {
+		condition := vue_template_owners[name] or { continue }
+		if name !in options && name !in others {
+			continue
+		}
+		rule_options := options[name] or { []json2.Any{} }
+		takes := match condition {
+			'options' {
+				rule_options.len > 0
+			}
+			'version' {
+				first := if rule_options.len > 0 {
+					rule_options[0]
+				} else {
+					json2.Any(json2.Null{})
+				}
+				version := if first is map[string]json2.Any {
+					first['version'] or { json2.Any(json2.Null{}) }
+				} else {
+					json2.Any(json2.Null{})
+				}
+				version is string && version != ''
+			}
+			'ts_script' {
+				doc := c.vue.doc
+				doc.nodes[0].children.any(doc.nodes[it].typ == .v_element
+					&& doc.nodes[it].name == 'script' && c.vue_has_attribute(it, 'lang', 'ts'))
+			}
+			else {
+				true
+			}
+		}
+		if takes {
+			return name
+		}
+	}
+	return ''
 }
 
 // vue_template_steps are the events of vue-eslint-parser's traversal of templateBody

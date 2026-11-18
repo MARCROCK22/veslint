@@ -1,0 +1,8 @@
+tests/rules/vue/no-deprecated-dollar-listeners-api/cases.vue:2:16	vue/no-deprecated-dollar-listeners-api	deprecated	The `$listeners` is deprecated.	end	2	26
+tests/rules/vue/no-deprecated-dollar-listeners-api/cases.vue:2:36	vue/no-deprecated-dollar-listeners-api	deprecated	The `$listeners` is deprecated.	end	2	46
+tests/rules/vue/no-deprecated-dollar-listeners-api/cases.vue:4:8	vue/no-deprecated-dollar-listeners-api	deprecated	The `$listeners` is deprecated.	end	4	18
+tests/rules/vue/no-deprecated-dollar-listeners-api/cases.vue:11:22	vue/no-deprecated-dollar-listeners-api	deprecated	The `$listeners` is deprecated.	end	11	32
+tests/rules/vue/no-deprecated-dollar-listeners-api/cases.vue:11:37	vue/no-deprecated-dollar-listeners-api	deprecated	The `$listeners` is deprecated.	end	11	47
+tests/rules/vue/no-deprecated-dollar-listeners-api/cases.vue:11:55	vue/no-deprecated-dollar-listeners-api	deprecated	The `$listeners` is deprecated.	end	11	65
+tests/rules/vue/no-deprecated-dollar-listeners-api/cases.vue:14:22	vue/no-deprecated-dollar-listeners-api	deprecated	The `$listeners` is deprecated.	end	14	32
+tests/rules/vue/no-deprecated-dollar-listeners-api/script-only/cases.vue:5:32	vue/no-deprecated-dollar-listeners-api	deprecated	The `$listeners` is deprecated.	end	5	42

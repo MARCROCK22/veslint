@@ -1,0 +1,9 @@
+tests/rules/vue/require-explicit-slots/cases.vue:5:5	vue/require-explicit-slots	requireExplicitSlots	Slots must be explicitly defined.
+tests/rules/vue/require-explicit-slots/cases.vue:7:5	vue/require-explicit-slots	requireExplicitSlots	Slots must be explicitly defined.
+tests/rules/vue/require-explicit-slots/cases.vue:9:5	vue/require-explicit-slots	requireExplicitSlots	Slots must be explicitly defined.
+tests/rules/vue/require-explicit-slots/cases.vue:10:5	vue/require-explicit-slots	requireExplicitSlots	Slots must be explicitly defined.
+tests/rules/vue/require-explicit-slots/cases.vue:11:5	vue/require-explicit-slots	requireExplicitSlots	Slots must be explicitly defined.
+tests/rules/vue/require-explicit-slots/cases.vue:23:3	vue/require-explicit-slots	alreadyDefinedSlot	Slot foo is already defined.
+tests/rules/vue/require-explicit-slots/checker/cases.vue:3:3	vue/require-explicit-slots	requireExplicitSlots	Slots must be explicitly defined.
+tests/rules/vue/require-explicit-slots/options-api/cases.vue:3:3	vue/require-explicit-slots	requireExplicitSlots	Slots must be explicitly defined.
+tests/rules/vue/require-explicit-slots/options-api/cases.vue:10:5	vue/require-explicit-slots	alreadyDefinedSlot	Slot a is already defined.
