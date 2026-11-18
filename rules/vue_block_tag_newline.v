@@ -106,7 +106,7 @@ fn vbtn_phrase(n int) string {
 }
 
 fn (mut c Checker) lint_vue_block_tag_newline(root C.TSNode, abs_path string, mut stats Stats) ![]Finding {
-	if !c.is_vue() || c.vu4_has_invalid_eof() {
+	if !c.is_vue() || c.vue_has_invalid_eof() {
 		return []
 	}
 	sw := time.new_stopwatch()
