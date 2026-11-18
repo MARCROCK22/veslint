@@ -1,0 +1,9 @@
+tests/rules/vue/quote-props/cases.vue:2:17	vue/quote-props	unquotedPropertyFound	Unquoted property 'height' found.	fix	27	33	'height'	end	2	32
+tests/rules/vue/quote-props/cases.vue:3:17	vue/quote-props	unquotedPropertyFound	Unquoted property 'height' found.	fix	64	70	"height"	end	3	32
+tests/rules/vue/quote-props/cases.vue:4:11	vue/quote-props	unquotedPropertyFound	Unquoted property 'a' found.	fix	95	96	"a"	end	4	15
+tests/rules/vue/quote-props/options-as-needed/cases.vue:2:17	vue/quote-props	unnecessarilyQuotedProperty	Unnecessarily quoted property 'height' found.	fix	27	35	height	end	2	34
+tests/rules/vue/quote-props/options-as-needed/cases.vue:3:11	vue/quote-props	unnecessarilyQuotedProperty	Unnecessarily quoted property 'a' found.	fix	76	79	a	end	3	17
+tests/rules/vue/quote-props/options-consistent-plain/cases.vue:2:36	vue/quote-props	inconsistentlyQuotedProperty	Inconsistently quoted property 'width' found.	fix	46	51	'width'	end	2	44
+tests/rules/vue/quote-props/options-consistent/cases.vue:2:17	vue/quote-props	redundantQuoting	Properties shouldn't be quoted as all quotes are redundant.	fix	27	35	height	end	2	34
+tests/rules/vue/quote-props/options-consistent/cases.vue:3:17	vue/quote-props	redundantQuoting	Properties shouldn't be quoted as all quotes are redundant.	fix	76	79	a	end	3	23
+tests/rules/vue/quote-props/options-consistent/cases.vue:3:25	vue/quote-props	redundantQuoting	Properties shouldn't be quoted as all quotes are redundant.	fix	84	87	b	end	3	31

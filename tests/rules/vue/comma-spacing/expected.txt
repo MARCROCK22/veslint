@@ -1,0 +1,9 @@
+tests/rules/vue/comma-spacing/cases.vue:2:14	vue/comma-spacing	unexpected	There should be no space before ','.
+tests/rules/vue/comma-spacing/cases.vue:2:14	vue/comma-spacing	missing	A space is required after ','.
+tests/rules/vue/comma-spacing/cases.vue:3:14	vue/comma-spacing	missing	A space is required after ','.
+tests/rules/vue/comma-spacing/cases.vue:4:20	vue/comma-spacing	missing	A space is required after ','.
+tests/rules/vue/comma-spacing/cases.vue:5:20	vue/comma-spacing	unexpected	There should be no space before ','.
+tests/rules/vue/comma-spacing/cases.vue:5:20	vue/comma-spacing	missing	A space is required after ','.
+tests/rules/vue/comma-spacing/cases.vue:17:22	vue/comma-spacing	missing	A space is required after ','.
+tests/rules/vue/comma-spacing/options-before/cases.vue:2:13	vue/comma-spacing	missing	A space is required before ','.
+tests/rules/vue/comma-spacing/options-before/cases.vue:2:13	vue/comma-spacing	unexpected	There should be no space after ','.

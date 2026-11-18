@@ -1,0 +1,12 @@
+tests/rules/vue/camelcase/cases.vue:2:14	vue/camelcase	notCamelCase	Identifier 'my_pref' is not in camel case.
+tests/rules/vue/camelcase/cases.vue:3:20	vue/camelcase	notCamelCase	Identifier 'some_prop' is not in camel case.
+tests/rules/vue/camelcase/cases.vue:5:38	vue/camelcase	notCamelCase	Identifier 'my_pref' is not in camel case.
+tests/rules/vue/camelcase/cases.vue:5:62	vue/camelcase	notCamelCase	Identifier 'other_var' is not in camel case.
+tests/rules/vue/camelcase/cases.vue:6:36	vue/camelcase	notCamelCase	Identifier 'alias_name' is not in camel case.
+tests/rules/vue/camelcase/cases.vue:7:25	vue/camelcase	notCamelCase	Identifier 'my_handler' is not in camel case.
+tests/rules/vue/camelcase/cases.vue:7:36	vue/camelcase	notCamelCase	Identifier 'a_b' is not in camel case.
+tests/rules/vue/camelcase/cases.vue:7:50	vue/camelcase	notCamelCase	Identifier 'a_b' is not in camel case.
+tests/rules/vue/camelcase/cases.vue:15:15	vue/camelcase	notCamelCase	Identifier 'my_unknown_global' is not in camel case.
+tests/rules/vue/camelcase/options-allow/cases.vue:2:26	vue/camelcase	notCamelCase	Identifier 'your_pref' is not in camel case.
+tests/rules/vue/camelcase/options-ignore-destructuring/cases.vue:4:33	vue/camelcase	notCamelCase	Identifier 'other_name' is not in camel case.
+tests/rules/vue/camelcase/options-properties-never/cases.vue:4:24	vue/camelcase	notCamelCase	Identifier 'my_pref' is not in camel case.

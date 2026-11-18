@@ -1,0 +1,7 @@
+tests/rules/vue/space-infix-ops/cases.vue:2:10	vue/space-infix-ops	missingSpace	Operator '+' must be spaced.	fix	20	21	 + 	end	2	11
+tests/rules/vue/space-infix-ops/cases.vue:3:13	vue/space-infix-ops	missingSpace	Operator '||' must be spaced.	fix	42	44	 || 	end	3	15
+tests/rules/vue/space-infix-ops/cases.vue:4:17	vue/space-infix-ops	missingSpace	Operator '=' must be spaced.	fix	66	67	 = 	end	4	18
+tests/rules/vue/space-infix-ops/cases.vue:5:13	vue/space-infix-ops	missingSpace	Operator '?' must be spaced.	fix	85	86	 ? 	end	5	14
+tests/rules/vue/space-infix-ops/cases.vue:5:15	vue/space-infix-ops	missingSpace	Operator ':' must be spaced.	fix	87	88	 : 	end	5	16
+tests/rules/vue/space-infix-ops/cases.vue:16:19	vue/space-infix-ops	missingSpace	Operator '+' must be spaced.	fix	224	225	 + 	end	16	20
+tests/rules/vue/space-infix-ops/options-int32/cases.vue:3:13	vue/space-infix-ops	missingSpace	Operator '+' must be spaced.	fix	42	43	 + 	end	3	14

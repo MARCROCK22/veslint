@@ -46,6 +46,9 @@ fn (mut c Checker) lint_stylistic_array_bracket_spacing(root C.TSNode, abs_path 
 	t := c.es_tree(root, abs_path) or { return findings }
 	tokens := c.un_tokens(t)
 	for node in 0 .. t.nodes.len {
+		if !t.visits(node) {
+			continue
+		}
 		if t.typ(node) !in [.array_pattern, .array_expression] {
 			continue
 		}

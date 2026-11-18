@@ -1,0 +1,9 @@
+tests/rules/vue/multiline-ternary/cases.vue:2:9	vue/multiline-ternary	expectedTestCons	Expected newline between test and consequent of ternary expression.
+tests/rules/vue/multiline-ternary/cases.vue:2:13	vue/multiline-ternary	expectedConsAlt	Expected newline between consequent and alternate of ternary expression.
+tests/rules/vue/multiline-ternary/cases.vue:4:7	vue/multiline-ternary	expectedConsAlt	Expected newline between consequent and alternate of ternary expression.
+tests/rules/vue/multiline-ternary/cases.vue:17:18	vue/multiline-ternary	expectedTestCons	Expected newline between test and consequent of ternary expression.
+tests/rules/vue/multiline-ternary/cases.vue:17:22	vue/multiline-ternary	expectedConsAlt	Expected newline between consequent and alternate of ternary expression.
+tests/rules/vue/multiline-ternary/options-always-multiline/cases.vue:4:7	vue/multiline-ternary	expectedConsAlt	Expected newline between consequent and alternate of ternary expression.
+tests/rules/vue/multiline-ternary/options-always-multiline/cases.vue:5:12	vue/multiline-ternary	expectedTestCons	Expected newline between test and consequent of ternary expression.
+tests/rules/vue/multiline-ternary/options-never/cases.vue:3:12	vue/multiline-ternary	unexpectedTestCons	Unexpected newline between test and consequent of ternary expression.
+tests/rules/vue/multiline-ternary/options-never/cases.vue:4:7	vue/multiline-ternary	unexpectedConsAlt	Unexpected newline between consequent and alternate of ternary expression.

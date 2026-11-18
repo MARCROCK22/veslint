@@ -1,0 +1,4 @@
+tests/rules/vue/prefer-template/cases.vue:2:9	vue/prefer-template	unexpectedStringConcatenation	Unexpected string concatenation.	fix	19	41	`Hello, ${  name  }!`	end	2	31
+tests/rules/vue/prefer-template/cases.vue:3:12	vue/prefer-template	unexpectedStringConcatenation	Unexpected string concatenation.	fix	60	67	`x${  y}`	end	3	19
+tests/rules/vue/prefer-template/cases.vue:5:22	vue/prefer-template	unexpectedStringConcatenation	Unexpected string concatenation.	fix	114	123	`n: ${  n}`	end	5	31
+tests/rules/vue/prefer-template/cases.vue:15:20	vue/prefer-template	unexpectedStringConcatenation	Unexpected string concatenation.	fix	244	251	`a${  b}`	end	15	27

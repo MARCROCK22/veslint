@@ -1,0 +1,1 @@
+["CallExpression", {"selector": "Identifier[name='foo']", "message": "No foo."}]

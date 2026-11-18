@@ -1,0 +1,5 @@
+tests/rules/vue/no-console/cases.vue:2:9	vue/no-console	unexpected	Unexpected console statement.	end	2	16
+tests/rules/vue/no-console/cases.vue:3:16	vue/no-console	unexpected	Unexpected console statement.	end	3	23
+tests/rules/vue/no-console/cases.vue:4:12	vue/no-console	unexpected	Unexpected console statement.	end	4	19
+tests/rules/vue/no-console/cases.vue:6:22	vue/no-console	unexpected	Unexpected console statement.	end	6	29
+tests/rules/vue/no-console/options-allow/cases.vue:2:9	vue/no-console	unexpected	Unexpected console statement.	end	2	16

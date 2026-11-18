@@ -213,6 +213,11 @@ fn (c &Checker) sfcs_check_spacing(t &estree.EsTree, tokens &SourceTokens, node 
 	text_between := sfcs_strip_comments(c.src[left.end..right.start])
 	has_whitespace := sfcs_has_space(text_between)
 	has_newline := has_whitespace && sfcs_has_line_terminator(text_between)
+	if c.vue_wrap_core {
+		c.sfcs_check_spacing_core(tokens, left, right, options, is_optional_call, has_whitespace,
+			has_newline, mut findings)
+		return
+	}
 	if options.never {
 		if has_whitespace {
 			c.sfcs_report(left, right, 'unexpectedWhitespace', sfcs_safe_replace(tokens, left,
@@ -239,8 +244,8 @@ fn (c &Checker) sfcs_check_spacing(t &estree.EsTree, tokens &SourceTokens, node 
 		}
 		mut text := text_between
 		if !options.allow_newlines {
-			text = text.replace('\r\n', ' ').replace_each(['\r', ' ', '\n', ' ', ' ', ' ',
-				' ', ' '])
+			text = text.replace('\r\n', ' ').replace_each(['\r', ' ', '\n', ' ', ' ', ' ', ' ',
+				' '])
 		}
 		if !correct_prefix {
 			text = if options.before_optional { ' ${text}' } else { sfcs_trim_start(text) }
@@ -257,5 +262,62 @@ fn (c &Checker) sfcs_check_spacing(t &estree.EsTree, tokens &SourceTokens, node 
 	} else if !options.allow_newlines && has_newline {
 		c.sfcs_report(left, right, 'unexpectedNewline', sfcs_safe_replace(tokens, left, right,
 			' '), mut findings)
+	}
+}
+
+// sfcs_previous_char is the start of the character before `offset` (`column - 1`).
+fn (c &Checker) sfcs_previous_char(offset int) int {
+	mut i := offset - 1
+	for i > 0 && c.src[i] & 0xc0 == 0x80 {
+		i--
+	}
+	return if i < 0 { 0 } else { i }
+}
+
+// sfcs_check_spacing_core is checkSpacing of ESLint core's func-call-spacing, which
+// vue/func-call-spacing runs without @stylistic/eslint-plugin (vue_wrap.v): no option for the
+// spaces around `?.`, its own places and fixes.
+fn (c &Checker) sfcs_check_spacing_core(tokens &SourceTokens, left SourceToken, right SourceToken, options SfcsOptions, optional bool, has_whitespace bool, has_newline bool, mut findings []Finding) {
+	if options.never && has_whitespace {
+		mut fix := ?Fix(none)
+		if !tokens.comments_exist_between(left.end, right.start) {
+			if optional {
+				fix = fix_replace_range(left.end, right.start, '?.')
+			} else if !has_newline {
+				fix = fix_remove_range(left.end, right.start)
+			}
+		}
+		findings << Finding{
+			stmt:       c.position_range(left.end, c.sfcs_previous_char(right.start))
+			message_id: 'unexpectedWhitespace'
+			has_fix:    fix != none
+			fix:        fix or { Fix{} }
+		}
+	} else if !options.never && !has_whitespace {
+		findings << Finding{
+			stmt:       c.position_range(c.sfcs_previous_char(left.end), right.start)
+			message_id: 'missing'
+			has_fix:    !optional
+			fix:        if optional { Fix{} } else { fix_insert_at(right.start, ' ') }
+		}
+	} else if !options.never && !options.allow_newlines && has_newline {
+		mut fix := ?Fix(none)
+		if optional && !tokens.comments_exist_between(left.end, right.start) {
+			if qd := tokens.after(left.end, false) {
+				fix = if qd.start == left.end {
+					fix_replace_range(left.end, right.start, '?. ')
+				} else if qd.end == right.start {
+					fix_replace_range(left.end, right.start, ' ?.')
+				} else {
+					fix_replace_range(left.end, right.start, ' ?. ')
+				}
+			}
+		}
+		findings << Finding{
+			stmt:       c.position_range(left.end, right.start)
+			message_id: 'unexpectedNewline'
+			has_fix:    fix != none
+			fix:        fix or { Fix{} }
+		}
 	}
 }

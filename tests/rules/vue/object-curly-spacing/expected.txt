@@ -1,0 +1,13 @@
+tests/rules/vue/object-curly-spacing/cases.vue:2:10	vue/object-curly-spacing	unexpectedSpaceAfter	There should be no space after '{'.
+tests/rules/vue/object-curly-spacing/cases.vue:2:15	vue/object-curly-spacing	unexpectedSpaceBefore	There should be no space before '}'.
+tests/rules/vue/object-curly-spacing/cases.vue:3:13	vue/object-curly-spacing	unexpectedSpaceAfter	There should be no space after '{'.
+tests/rules/vue/object-curly-spacing/cases.vue:3:15	vue/object-curly-spacing	unexpectedSpaceBefore	There should be no space before '}'.
+tests/rules/vue/object-curly-spacing/cases.vue:4:23	vue/object-curly-spacing	unexpectedSpaceAfter	There should be no space after '{'.
+tests/rules/vue/object-curly-spacing/cases.vue:4:25	vue/object-curly-spacing	unexpectedSpaceBefore	There should be no space before '}'.
+tests/rules/vue/object-curly-spacing/options-always/cases.vue:2:9	vue/object-curly-spacing	requireSpaceAfter	A space is required after '{'.
+tests/rules/vue/object-curly-spacing/options-always/cases.vue:2:14	vue/object-curly-spacing	requireSpaceBefore	A space is required before '}'.
+tests/rules/vue/object-curly-spacing/options-always/cases.vue:3:12	vue/object-curly-spacing	requireSpaceAfter	A space is required after '{'.
+tests/rules/vue/object-curly-spacing/options-always/cases.vue:3:14	vue/object-curly-spacing	requireSpaceBefore	A space is required before '}'.
+tests/rules/vue/object-curly-spacing/options-always/cases.vue:4:25	vue/object-curly-spacing	requireSpaceBefore	A space is required before '}'.
+tests/rules/vue/object-curly-spacing/options-exceptions/cases.vue:2:25	vue/object-curly-spacing	unexpectedSpaceBefore	There should be no space before '}'.
+tests/rules/vue/object-curly-spacing/options-exceptions/cases.vue:3:20	vue/object-curly-spacing	unexpectedSpaceBefore	There should be no space before '}'.

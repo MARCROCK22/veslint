@@ -1,0 +1,15 @@
+tests/rules/vue/object-curly-newline/cases.vue:2:12	vue/object-curly-newline	unexpectedLinebreakAfterOpeningBrace	Unexpected line break after this opening brace.
+tests/rules/vue/object-curly-newline/cases.vue:6:3	vue/object-curly-newline	unexpectedLinebreakBeforeClosingBrace	Unexpected line break before this closing brace.
+tests/rules/vue/object-curly-newline/cases.vue:7:22	vue/object-curly-newline	unexpectedLinebreakAfterOpeningBrace	Unexpected line break after this opening brace.
+tests/rules/vue/object-curly-newline/options-always/cases.vue:2:12	vue/object-curly-newline	expectedLinebreakAfterOpeningBrace	Expected a line break after this opening brace.
+tests/rules/vue/object-curly-newline/options-always/cases.vue:2:17	vue/object-curly-newline	expectedLinebreakBeforeClosingBrace	Expected a line break before this closing brace.
+tests/rules/vue/object-curly-newline/options-always/cases.vue:3:12	vue/object-curly-newline	expectedLinebreakAfterOpeningBrace	Expected a line break after this opening brace.
+tests/rules/vue/object-curly-newline/options-always/cases.vue:3:13	vue/object-curly-newline	expectedLinebreakBeforeClosingBrace	Expected a line break before this closing brace.
+tests/rules/vue/object-curly-newline/options-never/cases.vue:2:12	vue/object-curly-newline	unexpectedLinebreakAfterOpeningBrace	Unexpected line break after this opening brace.
+tests/rules/vue/object-curly-newline/options-never/cases.vue:4:3	vue/object-curly-newline	unexpectedLinebreakBeforeClosingBrace	Unexpected line break before this closing brace.
+tests/rules/vue/object-curly-newline/options-object/cases.vue:2:12	vue/object-curly-newline	expectedLinebreakAfterOpeningBrace	Expected a line break after this opening brace.
+tests/rules/vue/object-curly-newline/options-object/cases.vue:2:23	vue/object-curly-newline	expectedLinebreakBeforeClosingBrace	Expected a line break before this closing brace.
+tests/rules/vue/object-curly-newline/options-object/cases.vue:4:12	vue/object-curly-newline	expectedLinebreakAfterOpeningBrace	Expected a line break after this opening brace.
+tests/rules/vue/object-curly-newline/options-object/cases.vue:4:16	vue/object-curly-newline	unexpectedLinebreakAfterOpeningBrace	Unexpected line break after this opening brace.
+tests/rules/vue/object-curly-newline/options-object/cases.vue:6:3	vue/object-curly-newline	unexpectedLinebreakBeforeClosingBrace	Unexpected line break before this closing brace.
+tests/rules/vue/object-curly-newline/options-object/cases.vue:6:4	vue/object-curly-newline	expectedLinebreakBeforeClosingBrace	Expected a line break before this closing brace.

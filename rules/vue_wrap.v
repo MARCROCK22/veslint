@@ -1,0 +1,984 @@
+module rules
+
+import codepath
+import estree
+import jsregexp
+import os
+import treesitter { Ident, root_node, token_ends }
+import vue
+import json2
+import time
+
+// The wrapper rules of eslint-plugin-vue 10.12.1 (`vue/<rule>`: lib/utils/index.ts's wrapCoreRule
+// and wrapStylisticOrCoreRule): a rule of ESLint core or of ESLint Stylistic run on the
+// expressions of the template. veslint runs its own port of that rule (the `base`) on each
+// template expression, its snippet (vue.Snippet: the code vue-eslint-parser parses, with the
+// wrapper that makes it parse, as `0(…)`, and its tree-sitter tree), with:
+//   - the Checker on the snippet: its code as the source text, its tree, its ESTree (in the
+//     snippet's offsets) and its tokens; and back on the file afterwards (VueWrapSaved);
+//   - the nodes the rule's listeners get limited to the ones vue-eslint-parser's traversal visits
+//     (EsTree.visit): not the wrapper's, not the type arguments eslint-visitor-keys skips, not those
+//     of a dynamic argument with skipDynamicArguments; a rule that walks tree-sitter's tree runs on
+//     the subtree of each expression the traversal enters (VueWrap.per_root);
+//   - the parent of those expressions a node of no type the rules know, as their V* parent is
+//     for ESLint's rules (and, for the rules on tree-sitter's tree, c.vue_wrap_roots);
+//   - the tokens those of the template token store: the snippet's tokens the document has at the
+//     same place with the same text (not the wrapper's), or with another punctuator of the same
+//     length (the parentheses of a v-for, which its wrapper makes brackets: the code the rule reads
+//     has the document's);
+//   - its reports, fixes and suggestions moved to the file (Snippet.file_offset), the ones that
+//     overlap a dynamic argument dropped with skipDynamicArgumentsReport.
+// The `Program` listeners of the base rule, which wrapRuleModule moves to the root element of the
+// template (or to the document fragment), run once per snippet: the rules ported here only scan
+// the tokens there, which the snippets of the template make up between them (camelcase's, which
+// reads the script's global scope, runs once: vncc_program). The listeners a wrapper adds are
+// vue_wrap_conditional_tests (no-constant-condition), vue_wrap_html_quotes (quote-props),
+// slot_scope_as_function (comma-style), vnep_vue_syntax (no-extra-parens) and the bases of their
+// own (vue_wrap_base).
+//
+// eslint-plugin-vue takes the rule of ESLint Stylistic when @stylistic/eslint-plugin resolves from
+// the current directory of the ESLint that loads it, and ESLint core's otherwise
+// (vue_wrap_stylistic); veslint's ports are of ESLint Stylistic, and `c.vue_wrap_core` tells them
+// to give what the rule of ESLint core gives where the two differ (vue_wrap_core_message, and in
+// the bases: comma-style, func-call-spacing, operator-linebreak, the array newlines).
+
+// VueWrap is the WrapRuleOptions of a wrapper rule, with the rule veslint runs.
+struct VueWrap {
+	base                          string // the veslint rule run on the template
+	apply_document                bool   // applyDocument: the whole document, <style> v-bind() included
+	skip_dynamic_arguments        bool   // skipDynamicArguments
+	skip_dynamic_arguments_report bool   // skipDynamicArgumentsReport
+	// per_root: the base rule walks tree-sitter's tree (nodes_of_kinds) and not the ESTree: it
+	// runs on each expression the traversal enters, as the root.
+	per_root bool
+	// slot_scope_as_function: the listener of FunctionExpression also gets each
+	// VSlotScopeExpression (vue/comma-style): the function of its snippet's wrapper, which has the
+	// same params, is visited.
+	slot_scope_as_function bool
+}
+
+// VueWrapSnippet is a snippet of the template and the ESTree nodes of it the traversal visits.
+struct VueWrapSnippet {
+	snippet int
+mut:
+	visited []int // in the order the traversal enters them
+	roots   []int // the visited nodes whose parent in the traversal is not one of the snippet
+}
+
+// VueWrapSaved is the Checker's file state while a base rule runs on a snippet.
+struct VueWrapSaved {
+	src                   string
+	tokens                treesitter.TokenEnds
+	node_index            treesitter.NodeIndex
+	file_tokens           &SourceTokens = unsafe { nil }
+	file_es_state         EsFileState
+	file_es               estree.EsTree
+	file_es_by_ts         map[u64]int
+	file_code_paths       codepath.Analysis
+	file_code_paths_built bool
+	file_scopes           &ScopeTree = unsafe { nil }
+	vue                   VueView
+	has_options           bool
+	options               []json2.Any
+}
+
+// vue_wrap_stylistic ports getStylisticRule's lookup: @stylistic/eslint-plugin resolves from
+// the current directory (a node_modules/@stylistic/eslint-plugin in it or above it, as Node's
+// require from there finds it). eslint-plugin-vue also tries @stylistic/eslint-plugin-ts and
+// @stylistic/eslint-plugin-js, deprecated packages veslint does not look for. It decides when it
+// loads: the answer is kept for the Checker's life.
+fn (mut c Checker) vue_wrap_stylistic() bool {
+	return c.vue_wrap_stylistic_major() > 0
+}
+
+// vue_wrap_stylistic_major is the major version of the @stylistic/eslint-plugin
+// vue_wrap_stylistic finds (-1 without one).
+fn (mut c Checker) vue_wrap_stylistic_major() int {
+	if c.vue_stylistic == 0 {
+		c.vue_stylistic = vue_wrap_find_stylistic(vue_wrap_plugin_directory())
+	}
+	return c.vue_stylistic
+}
+
+// vue_wrap_plugin_directory is the current directory of the ESLint that loads eslint-plugin-vue:
+// veslint's, or the one where it resolves the configuration with bun when VESLINT_ESLINT_DIR sets
+// it (eslint_config.v), so that the rule veslint runs is the one whose options the resolved
+// configuration has.
+fn vue_wrap_plugin_directory() string {
+	if dir := os.getenv_opt('VESLINT_ESLINT_DIR') {
+		return os.real_path(os.abs_path(dir))
+	}
+	return os.getwd()
+}
+
+// vue_wrap_find_stylistic is the major version of the @stylistic/eslint-plugin found from a
+// directory, -1 if none (or 1 when its package.json gives no version veslint reads).
+fn vue_wrap_find_stylistic(from string) int {
+	mut dir := from
+	for {
+		if os.base(dir) != 'node_modules' {
+			manifest := os.join_path(dir, 'node_modules', '@stylistic', 'eslint-plugin',
+				'package.json')
+			if os.exists(manifest) {
+				text := os.read_file(manifest) or { return 1 }
+				decoded := json2.decode[json2.Any](text) or { return 1 }
+				if decoded is map[string]json2.Any {
+					version := decoded['version'] or { json2.Any('') }
+					if version is string {
+						major := version.all_before('.').int()
+						if major > 0 {
+							return major
+						}
+					}
+				}
+				return 1
+			}
+		}
+		parent := os.dir(dir)
+		if parent == dir || parent == '' {
+			return -1
+		}
+		dir = parent
+	}
+	return -1
+}
+
+// vue_wrap_schema_name is the rule whose schema validates the options of a rule: for a wrapper
+// rule of eslint-plugin-vue, which has the meta of the rule it wraps, the rule of ESLint
+// Stylistic it takes when @stylistic/eslint-plugin resolves from the current directory (when
+// veslint has it: rule_option_schemas has ESLint core's rule as the wrapper's own, generated
+// where it does not resolve).
+pub fn vue_wrap_schema_name(name string) string {
+	if !name.starts_with('vue/') {
+		return name
+	}
+	base := vue_wrap_of(name).base
+	if !base.starts_with('@stylistic/') || base !in rule_option_schemas
+		|| vue_wrap_find_stylistic(vue_wrap_plugin_directory()) < 0 {
+		return name
+	}
+	return base
+}
+
+// vue_wrap_dynamic_container: the node is the VExpressionContainer of a dynamic argument
+// (`VDirectiveKey > VExpressionContainer`).
+fn (c &Checker) vue_wrap_dynamic_container(n VueTNode) bool {
+	if n.kind != .vnode {
+		return false
+	}
+	node := &c.vue.doc.nodes[n.v]
+	return node.typ == .v_expression_container && node.parent >= 0
+		&& c.vue.doc.nodes[node.parent].typ == .v_directive_key
+}
+
+// vue_wrap_snippets are the snippets of the template (or of the document) with the nodes the
+// traversal visits, in the order it enters them.
+fn (mut c Checker) vue_wrap_snippets(w VueWrap) []VueWrapSnippet {
+	// The same for every rule with the same flags: once per file.
+	key := int(w.apply_document) | int(w.skip_dynamic_arguments) << 1 | int(w.slot_scope_as_function) << 2
+	if cached := c.vue.wrap_snippets[key] {
+		return cached
+	}
+	out := c.vue_wrap_snippets_of(w)
+	c.vue.wrap_snippets[key] = out
+	return out
+}
+
+fn (mut c Checker) vue_wrap_snippets_of(w VueWrap) []VueWrapSnippet {
+	steps := if w.apply_document { c.vue_document_steps() } else { c.vue_template_steps() }
+	mut out := []VueWrapSnippet{}
+	mut index := map[int]int{}
+	mut stack := []VueTNode{}
+	mut dynamic := 0
+	for step in steps {
+		n := step.node
+		if step.leave {
+			stack.pop()
+			if c.vue_wrap_dynamic_container(n) {
+				dynamic--
+			}
+			continue
+		}
+		if c.vue_wrap_dynamic_container(n) {
+			dynamic++
+		}
+		if w.slot_scope_as_function && n.kind == .vnode
+			&& c.vue.doc.nodes[n.v].typ == .v_slot_scope_expression {
+			exprs := c.vue.doc.nodes[n.v].exprs
+			if exprs.len > 0 && exprs[0].kind == .estree {
+				function := c.vue.doc.snippets[exprs[0].snippet].es.nodes[exprs[0].node].parent
+				if function >= 0 {
+					mut at := index[exprs[0].snippet] or { -1 }
+					if at < 0 {
+						out << VueWrapSnippet{
+							snippet: exprs[0].snippet
+						}
+						at = out.len - 1
+						index[exprs[0].snippet] = at
+					}
+					out[at].visited << function
+				}
+			}
+		}
+		if n.kind == .estree {
+			mut at := index[n.snippet] or { -1 }
+			if at < 0 {
+				out << VueWrapSnippet{
+					snippet: n.snippet
+				}
+				at = out.len - 1
+				index[n.snippet] = at
+			}
+			if !(w.skip_dynamic_arguments && dynamic > 0) {
+				out[at].visited << n.es
+				if stack.len == 0 || stack.last().kind != .estree
+					|| stack.last().snippet != n.snippet {
+					out[at].roots << n.es
+				}
+			}
+		}
+		stack << n
+	}
+	return out
+}
+
+// vue_wrap_directive_key_ranges are the ranges of the dynamic arguments
+// (wrapContextToOverrideReportMethodToSkipDynamicArgument's directiveKeyRanges).
+fn (c &Checker) vue_wrap_directive_key_ranges() [][2]int {
+	mut out := [][2]int{}
+	for node in c.vue.doc.nodes {
+		if node.typ == .v_expression_container && node.parent >= 0
+			&& c.vue.doc.nodes[node.parent].typ == .v_directive_key {
+			out << [node.start, node.end]!
+		}
+	}
+	return out
+}
+
+// vue_wrap_save keeps the Checker's file state; vue_wrap_restore puts it back.
+fn (mut c Checker) vue_wrap_save(base string) VueWrapSaved {
+	return VueWrapSaved{
+		src:                   c.src
+		tokens:                c.tokens
+		node_index:            c.node_index
+		file_tokens:           c.file_tokens
+		file_es_state:         c.file_es_state
+		file_es:               c.file_es
+		file_es_by_ts:         c.file_es_by_ts
+		file_code_paths:       c.file_code_paths
+		file_code_paths_built: c.file_code_paths_built
+		file_scopes:           c.file_scopes
+		vue:                   c.vue
+		has_options:           base in c.options
+		options:               c.options[base] or { []json2.Any{} }
+	}
+}
+
+fn (mut c Checker) vue_wrap_restore(base string, saved VueWrapSaved) {
+	c.src = saved.src
+	c.tokens = saved.tokens
+	c.node_index = saved.node_index
+	c.file_tokens = saved.file_tokens
+	c.file_es_state = saved.file_es_state
+	c.file_es = saved.file_es
+	c.file_es_by_ts = saved.file_es_by_ts
+	c.file_code_paths = saved.file_code_paths
+	c.file_code_paths_built = saved.file_code_paths_built
+	c.file_scopes = saved.file_scopes
+	c.vue = saved.vue
+	c.vue_wrap_core = false
+	c.vue_wrap_roots = map[u64]bool{}
+	if saved.has_options {
+		c.options[base] = saved.options
+	} else {
+		c.options.delete(base)
+	}
+}
+
+// vue_wrap_doc_token is the token (or the comment) the document has at [start, end), if any.
+fn vue_wrap_doc_token(doc &vue.Document, start int, end int, comment bool) ?vue.Token {
+	list := if comment { doc.comments } else { doc.tokens }
+	for i := vue_lower_bound(list, start); i < list.len && list[i].start == start; i++ {
+		if list[i].end == end {
+			return list[i]
+		}
+	}
+	return none
+}
+
+// vue_wrap_tokens are the tokens of a snippet the template token store has, and the snippet's
+// code as the rules read it: where the store has another punctuator of the same length (the
+// parentheses of a v-for, which its snippet's wrapper makes brackets), the store's.
+fn vue_wrap_tokens(doc &vue.Document, s &vue.Snippet, root C.TSNode) (&SourceTokens, string) {
+	all := build_source_tokens(root, s.code)
+	mut kept := []SourceToken{cap: all.all.len}
+	mut code := []u8{}
+	for t in all.all {
+		text := s.code[t.start..t.end]
+		token := vue_wrap_doc_token(doc, s.file_offset(t.start), s.file_offset(t.end),
+			t.is_comment()) or { continue }
+		if t.is_comment() || token.value == text || token.typ == 'PrivateIdentifier' {
+			kept << t
+			continue
+		}
+		if t.kind == .punctuator && token.typ == 'Punctuator' && token.value.len == text.len {
+			if code.len == 0 {
+				code = s.code.bytes()
+			}
+			for k in 0 .. text.len {
+				code[t.start + k] = token.value[k]
+			}
+			kept << t
+		}
+	}
+	return &SourceTokens{
+		tokens:   kept.filter(!it.is_comment())
+		comments: kept.filter(it.is_comment())
+		all:      kept
+	}, if code.len == 0 { s.code } else { code.bytestr() }
+}
+
+// vue_wrap_conditional_tests are, by snippet, the expressions of the v-show, v-if and v-else-if
+// directives of the template, which vue/no-constant-condition checks as the tests of if
+// statements (its VDirectiveKey listener).
+fn (mut c Checker) vue_wrap_conditional_tests() map[int][]int {
+	mut out := map[int][]int{}
+	for v in c.vue_template_vnodes() {
+		key := &c.vue.doc.nodes[v]
+		if key.typ != .v_directive_key || key.dir_name < 0 || key.parent < 0 {
+			continue
+		}
+		if c.vue.doc.nodes[key.dir_name].name !in ['show', 'if', 'else-if'] {
+			continue
+		}
+		value := c.vue.doc.nodes[key.parent].value
+		if value < 0 {
+			continue
+		}
+		expression := c.vue.doc.nodes[value].expression
+		if expression.kind != .estree {
+			continue
+		}
+		out[expression.snippet] << expression.node
+	}
+	return out
+}
+
+// vue_wrap_html_quotes are, by snippet, the quote of the attribute value it is the expression of
+// (`VAttribute > VExpressionContainer.value` whose text starts with one).
+fn (c &Checker) vue_wrap_html_quotes() map[int]u8 {
+	mut out := map[int]u8{}
+	doc := c.vue.doc
+	for i, node in doc.nodes {
+		if node.typ != .v_expression_container || node.parent < 0
+			|| doc.nodes[node.parent].typ != .v_attribute || node.start >= doc.src.len {
+			continue
+		}
+		first := doc.src[node.start]
+		if first !in [`"`, `'`] {
+			continue
+		}
+		for step in vue_steps_from(doc, vue_vnode(i)) {
+			if step.node.kind == .estree {
+				out[step.node.snippet] = first
+			}
+		}
+	}
+	return out
+}
+
+// VueWrapCached is what the wrapper rules make of a snippet, once per file (VueView.wrap_cache):
+// its ESTree in its own offsets, its tokens of the template token store, the code the rules read
+// and its token ends.
+struct VueWrapCached {
+	ok     bool // the snippet converts
+	es     estree.EsTree
+	tokens &SourceTokens = unsafe { nil }
+	code   string
+	ends   treesitter.TokenEnds
+}
+
+fn (mut c Checker) vue_wrap_cached(snippet int, top C.TSNode) VueWrapCached {
+	if cached := c.vue.wrap_cache[snippet] {
+		return cached
+	}
+	s := &c.vue.doc.snippets[snippet]
+	es := estree.convert_with(top, s.code, s.tsx, estree.Options{
+		module:       true
+		regexp_valid: fn (pattern string, flags string) bool {
+			return jsregexp.regexp_new(estree.utf16_units(pattern), flags) != none
+		}
+	}) or {
+		c.vue.wrap_cache[snippet] = VueWrapCached{}
+		return VueWrapCached{}
+	}
+	tokens, code := vue_wrap_tokens(c.vue.doc, s, top)
+	cached := VueWrapCached{
+		ok:     true
+		es:     es
+		tokens: tokens
+		code:   code
+		ends:   token_ends(top)
+	}
+	c.vue.wrap_cache[snippet] = cached
+	return cached
+}
+
+// vue_wrap_lint runs the base rule of a wrapper rule on the template: its findings, in the file.
+fn (mut c Checker) vue_wrap_lint(rule string, w VueWrap, abs_path string, mut stats Stats) ![]Finding {
+	if w.apply_document {
+		if !c.is_vue() {
+			return []
+		}
+	} else if !c.vue_has_template() {
+		return []
+	}
+	snippets := c.vue_wrap_snippets(w)
+	if snippets.len == 0 {
+		return []
+	}
+	doc := c.vue.doc
+	mut options := c.rule_options(rule)
+	// The default of dot-location is "property" since ESLint Stylistic 6, "object" before it and
+	// in ESLint core.
+	if rule == vue_dot_location && options.len == 0 && c.vue_wrap_stylistic_major() < 6 {
+		options = [json2.Any('object')]
+	}
+	key_ranges := if w.skip_dynamic_arguments_report {
+		c.vue_wrap_directive_key_ranges()
+	} else {
+		[][2]int{}
+	}
+	core := !c.vue_wrap_stylistic()
+	extra_tests := if rule == vue_no_constant_condition {
+		c.vue_wrap_conditional_tests()
+	} else {
+		map[int][]int{}
+	}
+	html_quotes := if rule == vue_quote_props { c.vue_wrap_html_quotes() } else { map[int]u8{} }
+	mut out := []Finding{}
+	for ws in snippets {
+		s := &doc.snippets[ws.snippet]
+		if s.tree == unsafe { nil } || (w.per_root && ws.roots.len == 0) {
+			continue
+		}
+		top := root_node(s.tree)
+		cached := c.vue_wrap_cached(ws.snippet, top)
+		if !cached.ok {
+			continue
+		}
+		// The nodes are the cache's copy: their parents change below.
+		mut es := estree.EsTree{
+			...cached.es
+			nodes: cached.es.nodes.clone()
+		}
+		mut visit := []bool{len: es.nodes.len}
+		for i in ws.visited {
+			if i < visit.len {
+				visit[i] = true
+			}
+		}
+		es.visit = visit
+		// The parent of an expression the traversal enters from a V* node (a VExpressionContainer,
+		// VOnExpression, VForExpression, VSlotScopeExpression…) is a node of no type the rules
+		// know, and not the wrapper's: a node of its own the traversal never reaches.
+		inert := es.nodes.len
+		mut roots := map[u64]bool{}
+		for r in ws.roots {
+			if r < es.nodes.len {
+				es.nodes[r].parent = inert
+				if es.nodes[r].has_ts {
+					roots[node_key(es.nodes[r].ts)] = true
+				}
+			}
+		}
+		es.nodes << estree.EsNode{
+			typ:    .ts_abstract_keyword
+			parent: -1
+		}
+		es.visit << false
+		tokens, code := cached.tokens, cached.code
+		// The tokens of the template in the snippet: a report outside them is on the wrapper.
+		content_start := if tokens.all.len > 0 { tokens.all[0].start } else { 0 }
+		content_end := if tokens.all.len > 0 { tokens.all.last().end } else { 0 }
+		saved := c.vue_wrap_save(w.base)
+		c.src = code
+		c.tokens = cached.ends
+		c.node_index = treesitter.NodeIndex{}
+		c.file_tokens = tokens
+		c.file_es_state = .built
+		c.file_es = es
+		c.file_es_by_ts = map[u64]int{}
+		c.file_code_paths = codepath.Analysis{}
+		c.file_code_paths_built = false
+		c.file_scopes = unsafe { nil }
+		c.vue = VueView{}
+		c.vue_wrap_core = core
+		c.vue_wrap_roots = roots
+		c.options[w.base] = options
+		mut found := []Finding{}
+		mut failure := ''
+		if w.per_root {
+			for r in ws.roots {
+				if r >= es.nodes.len || !es.nodes[r].has_ts {
+					continue
+				}
+				// scope_tree is built from the root it is first asked with: a subtree.
+				c.file_scopes = unsafe { nil }
+				found << c.vue_wrap_base(w.base, es.nodes[r].ts, abs_path, mut stats) or {
+					failure = err.msg()
+					break
+				}
+			}
+		} else {
+			found = c.vue_wrap_base(w.base, top, abs_path, mut stats) or {
+				failure = err.msg()
+				[]Finding{}
+			}
+		}
+		if failure == '' {
+			for e in extra_tests[ws.snippet] or { []int{} } {
+				// The wrapper's VDirectiveKey listener: IfStatement's listener on {test: expression}.
+				if e < es.nodes.len && es.nodes[e].has_ts
+					&& c.es_is_constant(top, es.nodes[e].ts, true) {
+					found << Finding{
+						stmt:       c.es_tree_position(es, e)
+						message_id: 'unexpected'
+					}
+				}
+			}
+		}
+		mut moved := []Finding{}
+		for f in found {
+			if f.stmt.start_byte < content_start || f.stmt.start_byte > content_end {
+				continue
+			}
+			moved << c.vue_wrap_move(c.trimmed_end(f.stmt), f, s)
+		}
+		c.vue_wrap_restore(w.base, saved)
+		if failure != '' {
+			return error(failure)
+		}
+		quote := html_quotes[ws.snippet] or { u8(0) }
+		for found_moved in moved {
+			f := if core { vue_wrap_core_message(rule, found_moved) } else { found_moved }
+			if key_ranges.len > 0 && vue_wrap_in_dynamic_argument(f, key_ranges) {
+				continue
+			}
+			if quote != 0 && f.has_fix {
+				// vue/quote-props: in an attribute value between quotes, the quotes of the fixed
+				// text are the other ones.
+				safe := if quote == `"` { "'" } else { '"' }
+				out << Finding{
+					...f
+					fix: Fix{
+						...f.fix
+						text: f.fix.text.replace('"', safe).replace("'", safe)
+					}
+				}
+				continue
+			}
+			out << f
+		}
+	}
+	return out
+}
+
+// vue_wrap_move moves a finding of a snippet (its place already trimmed) to the file.
+fn (c &Checker) vue_wrap_move(place Ident, f Finding, s &vue.Snippet) Finding {
+	return Finding{
+		...f
+		stmt:        Ident{
+			text:       place.text
+			start_byte: s.file_offset(place.start_byte)
+			row:        if place.row < 0 { place.row } else { 0 }
+			end_byte:   if place.end_byte < 0 { -1 } else { s.file_offset(place.end_byte) }
+		}
+		fix:         vue_wrap_move_fix(f.fix, s)
+		suggestions: f.suggestions.map(Suggestion{
+			...it
+			fix: vue_wrap_move_fix(it.fix, s)
+		})
+	}
+}
+
+fn vue_wrap_move_fix(fix Fix, s &vue.Snippet) Fix {
+	return Fix{
+		start: s.file_offset(fix.start)
+		end:   s.file_offset(fix.end)
+		text:  fix.text
+	}
+}
+
+// vue_wrap_in_dynamic_argument: the report overlaps a dynamic argument (its range, or its start
+// alone when it has no end).
+fn vue_wrap_in_dynamic_argument(f Finding, ranges [][2]int) bool {
+	start := f.stmt.start_byte
+	end := if f.stmt.end_byte < 0 { start } else { f.stmt.end_byte }
+	for r in ranges {
+		if start < r[1] && r[0] < end {
+			return true
+		}
+	}
+	return false
+}
+
+// vue_wrap_of is the WrapRuleOptions of each wrapper rule (lib/rules/<rule>.ts), with the rule
+// veslint runs for it: for the rules of ESLint Stylistic, veslint's port of it, which also gives
+// what ESLint core's gives (vue_wrap_core); the bases veslint does not have as rules of their own
+// are run by vue_wrap_base.
+fn vue_wrap_of(rule string) VueWrap {
+	return match rule {
+		vue_arrow_spacing {
+			VueWrap{
+				base: stylistic_arrow_spacing
+			}
+		}
+		vue_camelcase {
+			VueWrap{
+				base: vue_wrap_camelcase
+			}
+		}
+		vue_comma_dangle {
+			VueWrap{
+				base: stylistic_comma_dangle
+			}
+		}
+		vue_dot_location {
+			VueWrap{
+				base: stylistic_dot_location
+			}
+		}
+		vue_no_empty_pattern {
+			VueWrap{
+				base:     no_empty_pattern
+				per_root: true
+			}
+		}
+		vue_no_sparse_arrays {
+			VueWrap{
+				base:     no_sparse_arrays
+				per_root: true
+			}
+		}
+		vue_operator_linebreak {
+			VueWrap{
+				base: vue_wrap_operator_linebreak
+			}
+		}
+		vue_array_bracket_newline {
+			VueWrap{
+				base:                   vue_wrap_array_bracket_newline
+				skip_dynamic_arguments: true
+			}
+		}
+		vue_array_bracket_spacing {
+			VueWrap{
+				base:                   stylistic_array_bracket_spacing
+				skip_dynamic_arguments: true
+			}
+		}
+		vue_array_element_newline {
+			VueWrap{
+				base:                   vue_wrap_array_element_newline
+				skip_dynamic_arguments: true
+			}
+		}
+		vue_block_spacing {
+			VueWrap{
+				base:                   stylistic_block_spacing
+				skip_dynamic_arguments: true
+			}
+		}
+		vue_brace_style {
+			VueWrap{
+				base:                   stylistic_brace_style
+				skip_dynamic_arguments: true
+			}
+		}
+		vue_dot_notation {
+			// ESLint Stylistic has no dot-notation: ESLint core's, always.
+			VueWrap{
+				base:           core_dot_notation
+				apply_document: true
+				per_root:       true
+			}
+		}
+		vue_eqeqeq {
+			VueWrap{
+				base:           eqeqeq
+				apply_document: true
+				per_root:       true
+			}
+		}
+		vue_key_spacing {
+			VueWrap{
+				base:                   stylistic_key_spacing
+				skip_dynamic_arguments: true
+			}
+		}
+		vue_keyword_spacing {
+			VueWrap{
+				base:                   stylistic_keyword_spacing
+				skip_dynamic_arguments: true
+			}
+		}
+		vue_no_restricted_syntax {
+			VueWrap{
+				base:           no_restricted_syntax
+				apply_document: true
+			}
+		}
+		vue_no_useless_concat {
+			VueWrap{
+				base:           no_useless_concat
+				apply_document: true
+				per_root:       true
+			}
+		}
+		vue_object_curly_newline {
+			VueWrap{
+				base:                   stylistic_object_curly_newline
+				skip_dynamic_arguments: true
+			}
+		}
+		vue_object_curly_spacing {
+			VueWrap{
+				base:                   stylistic_object_curly_spacing
+				skip_dynamic_arguments: true
+			}
+		}
+		vue_object_property_newline {
+			VueWrap{
+				base:                   stylistic_object_property_newline
+				skip_dynamic_arguments: true
+			}
+		}
+		vue_prefer_template {
+			VueWrap{
+				base:           prefer_template
+				apply_document: true
+				per_root:       true
+			}
+		}
+		vue_no_implicit_coercion {
+			VueWrap{
+				base:           no_implicit_coercion
+				apply_document: true
+				per_root:       true
+			}
+		}
+		vue_no_loss_of_precision {
+			VueWrap{
+				base:           no_loss_of_precision
+				apply_document: true
+				per_root:       true
+			}
+		}
+		vue_no_negated_condition {
+			VueWrap{
+				base:           no_negated_condition
+				apply_document: true
+			}
+		}
+		vue_object_shorthand {
+			VueWrap{
+				base:                   object_shorthand
+				skip_dynamic_arguments: true
+				per_root:               true
+			}
+		}
+		vue_space_infix_ops {
+			VueWrap{
+				base:                   stylistic_space_infix_ops
+				skip_dynamic_arguments: true
+				apply_document:         true
+			}
+		}
+		vue_space_unary_ops {
+			VueWrap{
+				base:                   stylistic_space_unary_ops
+				skip_dynamic_arguments: true
+				apply_document:         true
+			}
+		}
+		vue_template_curly_spacing {
+			VueWrap{
+				base:                   stylistic_template_curly_spacing
+				skip_dynamic_arguments: true
+				apply_document:         true
+			}
+		}
+		vue_comma_spacing {
+			VueWrap{
+				base:                          stylistic_comma_spacing
+				skip_dynamic_arguments:        true
+				skip_dynamic_arguments_report: true
+				apply_document:                true
+			}
+		}
+		vue_multiline_ternary {
+			VueWrap{
+				base:                   stylistic_multiline_ternary
+				skip_dynamic_arguments: true
+				apply_document:         true
+			}
+		}
+		vue_space_in_parens {
+			VueWrap{
+				base:                          stylistic_space_in_parens
+				skip_dynamic_arguments:        true
+				skip_dynamic_arguments_report: true
+				apply_document:                true
+			}
+		}
+		vue_func_call_spacing {
+			VueWrap{
+				base:                   stylistic_function_call_spacing
+				skip_dynamic_arguments: true
+				apply_document:         true
+			}
+		}
+		vue_comma_style {
+			VueWrap{
+				base:                   stylistic_comma_style
+				slot_scope_as_function: true
+			}
+		}
+		vue_no_constant_condition {
+			VueWrap{
+				base:     no_constant_condition
+				per_root: true
+			}
+		}
+		vue_no_console {
+			// skipBaseHandlers: only the MemberExpression listener of the wrapper's create.
+			VueWrap{
+				base: vue_wrap_no_console
+			}
+		}
+		vue_quote_props {
+			VueWrap{
+				base:                   stylistic_quote_props
+				skip_dynamic_arguments: true
+			}
+		}
+		vue_no_extra_parens {
+			VueWrap{
+				base:                   stylistic_no_extra_parens
+				skip_dynamic_arguments: true
+				apply_document:         true
+			}
+		}
+		else {
+			VueWrap{}
+		}
+	}
+}
+
+// vssuo_messages are vue/space-unary-ops' messages: ESLint Stylistic's and ESLint core's, whose
+// messageIds differ (vue_wrap_core_message).
+const vssuo_messages = {
+	'unexpectedBefore':       "Unexpected space before unary operator '{{operator}}'."
+	'unexpectedAfter':        "Unexpected space after unary operator '{{operator}}'."
+	'unexpectedAfterWord':    "Unexpected space after unary word operator '{{word}}'."
+	'requireAfterWord':       "Unary word operator '{{word}}' must be followed by whitespace."
+	'requireAfter':           "Unary operator '{{operator}}' must be followed by whitespace."
+	'requireBefore':          "Space is required before unary operator '{{operator}}'."
+	'wordOperator':           "Unary word operator '{{word}}' must be followed by whitespace."
+	'operator':               "Unary operator '{{operator}}' must be followed by whitespace."
+	'beforeUnaryExpressions': "Space is required before unary expressions '{{token}}'."
+}
+
+// vue_wrap_core_message is a finding of a rule of ESLint Stylistic with the messageId (and data)
+// of ESLint core's rule, where they differ.
+fn vue_wrap_core_message(rule string, f Finding) Finding {
+	if rule != vue_space_unary_ops {
+		return f
+	}
+	return match f.message_id {
+		'requireAfterWord' {
+			Finding{
+				...f
+				message_id: 'wordOperator'
+			}
+		}
+		'requireAfter' {
+			Finding{
+				...f
+				message_id: 'operator'
+			}
+		}
+		'requireBefore' {
+			Finding{
+				...f
+				message_id: 'beforeUnaryExpressions'
+				data:       {
+					'token': f.data['operator'] or { '' }
+				}
+			}
+		}
+		else {
+			f
+		}
+	}
+}
+
+// The bases veslint has no rule of its own for (run by vue_wrap_base).
+const vue_wrap_camelcase = 'camelcase'
+const vue_wrap_operator_linebreak = '@stylistic/operator-linebreak'
+const vue_wrap_array_bracket_newline = '@stylistic/array-bracket-newline'
+const vue_wrap_array_element_newline = '@stylistic/array-element-newline'
+const vue_wrap_no_console = 'vue/no-console:base'
+
+// vue_wrap_base runs a base rule on the snippet the Checker is on.
+fn (mut c Checker) vue_wrap_base(base string, root C.TSNode, abs_path string, mut stats Stats) ![]Finding {
+	return match base {
+		vue_wrap_no_console { c.vue_wrap_no_console_base(root, abs_path, mut stats)! }
+		vue_wrap_camelcase { c.lint_camelcase_base(root, abs_path, mut stats)! }
+		vue_wrap_operator_linebreak {
+			c.lint_stylistic_operator_linebreak(root, abs_path, mut stats)!
+		}
+		vue_wrap_array_bracket_newline {
+			c.lint_stylistic_array_bracket_newline(root, abs_path, mut stats)!
+		}
+		vue_wrap_array_element_newline {
+			c.lint_stylistic_array_element_newline(root, abs_path, mut stats)!
+		}
+		else { c.lint_rule(base, root, abs_path, mut stats)! }
+	}
+}
+
+// lint_vue_wrap lints a wrapper rule.
+fn (mut c Checker) lint_vue_wrap(rule string, root C.TSNode, abs_path string, mut stats Stats) ![]Finding {
+	if !c.is_vue() {
+		return []
+	}
+	sw := time.new_stopwatch()
+	mut findings := c.vue_wrap_lint(rule, vue_wrap_of(rule), abs_path, mut stats)!
+	// camelcase's `Program` listener, moved to the root element of the template.
+	if rule == vue_camelcase && c.vue_has_template() {
+		findings << c.vncc_program(root, abs_path)!
+	}
+	// no-extra-parens' own listeners, on the containers.
+	if rule == vue_no_extra_parens {
+		findings << c.vnep_vue_syntax()!
+	}
+	stats.eval_ms += ms(sw.elapsed())
+	return findings
+}
+
+// vue_wrap_base_rule is the veslint rule a wrapper rule runs, when it is one (the options of the
+// wrapper are those of that rule: its meta, defaultOptions included, is the wrapper's).
+pub fn vue_wrap_base_rule(rule string) ?string {
+	if !rule.starts_with('vue/') {
+		return none
+	}
+	base := vue_wrap_of(rule).base
+	// dot-location's default depends on the rule it wraps (vue_wrap_lint): its options are taken
+	// as written.
+	if base == '' || base.starts_with('vue/') || base !in names || rule == vue_dot_location {
+		return none
+	}
+	return base
+}

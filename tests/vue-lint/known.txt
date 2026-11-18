@@ -1017,3 +1017,37 @@ only veslint	g04/src/require-slots-as-functions_i0.vue:8:28	@typescript-eslint/n
 # "',' expected." at its start.
 only eslint	g08/src/no-useless-mustaches_v1.vue:5:12	vue/no-parsing-error	parsingError	Parsing error: Unexpected end of expression.
 only veslint	g08/src/no-useless-mustaches_v1.vue:5:9	vue/no-parsing-error	parsingError	Parsing error: ',' expected.
+#
+# The wrapper rules (rules/vue_wrap.v) on a template expression tree-sitter's grammar reads with a
+# syntax error (a class method's name, its parameters and its body one token per line), which
+# vue-eslint-parser parses: veslint has no tree for it, as for the same code on a .ts file.
+only eslint	g07/src/html-indent_v36.vue:11:7	vue/brace-style	nextLineOpen	Opening curly brace does not appear on the same line as controlling statement.	fix	137	144	 	end	11	8
+only eslint	g07/src/html-indent_v36.vue:19:7	vue/brace-style	nextLineOpen	Opening curly brace does not appear on the same line as controlling statement.	fix	216	223	 	end	19	8
+only eslint	g07/src/html-indent_v36.vue:27:7	vue/brace-style	nextLineOpen	Opening curly brace does not appear on the same line as controlling statement.	fix	288	295	 	end	27	8
+only eslint	g07/src/html-indent_v36.vue:36:7	vue/brace-style	nextLineOpen	Opening curly brace does not appear on the same line as controlling statement.	fix	370	377	 	end	36	8
+only eslint	g07/src/html-indent_v36.vue:8:11	vue/comma-style	unexpectedLineBeforeAndAfterComma	Bad line breaking before and after ','.	fix	103	126	,          \n          	end	8	12
+only eslint	g08/src/html-indent_i36.vue:11:1	vue/brace-style	nextLineOpen	Opening curly brace does not appear on the same line as controlling statement.	fix	79	80	 	end	11	2
+only eslint	g08/src/html-indent_i36.vue:19:1	vue/brace-style	nextLineOpen	Opening curly brace does not appear on the same line as controlling statement.	fix	104	105	 	end	19	2
+only eslint	g08/src/html-indent_i36.vue:27:1	vue/brace-style	nextLineOpen	Opening curly brace does not appear on the same line as controlling statement.	fix	120	121	 	end	27	2
+only eslint	g08/src/html-indent_i36.vue:36:1	vue/brace-style	nextLineOpen	Opening curly brace does not appear on the same line as controlling statement.	fix	140	141	 	end	36	2
+only eslint	g08/src/html-indent_i36.vue:8:1	vue/comma-style	unexpectedLineBeforeAndAfterComma	Bad line breaking before and after ','.	fix	73	76	,\n	end	8	2
+#
+# vue/dot-notation's fix of `this['x']` at the end of a mustache: ESLint core's adds a space when
+# the token after the bracket cannot follow the property name, and there the token store has
+# the mustache's `}}` (VExpressionEnd); veslint's snippet has no token after the expression.
+only eslint	g00/src/this-in-template_v27.vue:1:39	vue/dot-notation	useDot	["x"] is better written in dot notation.	fix	37	42	.x 	end	1	42
+only eslint	g01/src/this-in-template_v40.vue:1:44	vue/dot-notation	useDot	["x"] is better written in dot notation.	fix	42	47	.x 	end	1	47
+only eslint	g02/src/this-in-template_v14.vue:1:39	vue/dot-notation	useDot	["x"] is better written in dot notation.	fix	37	42	.x 	end	1	42
+only eslint	g11/src/this-in-template_v52.vue:1:47	vue/dot-notation	useDot	["foo"] is better written in dot notation.	fix	45	52	.foo 	end	1	52
+only eslint	g12/src/this-in-template_v53.vue:1:45	vue/dot-notation	useDot	["x"] is better written in dot notation.	fix	43	48	.x 	end	1	48
+only eslint	g13/src/this-in-template_v26.vue:1:41	vue/dot-notation	useDot	["foo"] is better written in dot notation.	fix	39	46	.foo 	end	1	46
+only eslint	g14/src/this-in-template_v13.vue:1:41	vue/dot-notation	useDot	["foo"] is better written in dot notation.	fix	39	46	.foo 	end	1	46
+only eslint	g15/src/this-in-template_v39.vue:1:46	vue/dot-notation	useDot	["foo"] is better written in dot notation.	fix	44	51	.foo 	end	1	51
+only veslint	g00/src/this-in-template_v27.vue:1:39	vue/dot-notation	useDot	["x"] is better written in dot notation.	fix	37	42	.x	end	1	42
+only veslint	g01/src/this-in-template_v40.vue:1:44	vue/dot-notation	useDot	["x"] is better written in dot notation.	fix	42	47	.x	end	1	47
+only veslint	g02/src/this-in-template_v14.vue:1:39	vue/dot-notation	useDot	["x"] is better written in dot notation.	fix	37	42	.x	end	1	42
+only veslint	g11/src/this-in-template_v52.vue:1:47	vue/dot-notation	useDot	["foo"] is better written in dot notation.	fix	45	52	.foo	end	1	52
+only veslint	g12/src/this-in-template_v53.vue:1:45	vue/dot-notation	useDot	["x"] is better written in dot notation.	fix	43	48	.x	end	1	48
+only veslint	g13/src/this-in-template_v26.vue:1:41	vue/dot-notation	useDot	["foo"] is better written in dot notation.	fix	39	46	.foo	end	1	46
+only veslint	g14/src/this-in-template_v13.vue:1:41	vue/dot-notation	useDot	["foo"] is better written in dot notation.	fix	39	46	.foo	end	1	46
+only veslint	g15/src/this-in-template_v39.vue:1:46	vue/dot-notation	useDot	["foo"] is better written in dot notation.	fix	44	51	.foo	end	1	51

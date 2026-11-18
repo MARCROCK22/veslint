@@ -1,0 +1,9 @@
+tests/rules/vue/operator-linebreak/cases.vue:3:5	vue/operator-linebreak	operatorAtEnd	'+' should be placed at the end of the line.
+tests/rules/vue/operator-linebreak/cases.vue:9:17	vue/operator-linebreak	operatorAtBeginning	'?' should be placed at the beginning of the line.
+tests/rules/vue/operator-linebreak/cases.vue:10:7	vue/operator-linebreak	operatorAtBeginning	':' should be placed at the beginning of the line.
+tests/rules/vue/operator-linebreak/cases.vue:13:5	vue/operator-linebreak	operatorAtEnd	'=' should be placed at the end of the line.
+tests/rules/vue/operator-linebreak/cases.vue:15:5	vue/operator-linebreak	badLinebreak	Bad line breaking before and after '&&'.
+tests/rules/vue/operator-linebreak/options-before/cases.vue:4:14	vue/operator-linebreak	operatorAtBeginning	'+' should be placed at the beginning of the line.
+tests/rules/vue/operator-linebreak/options-before/cases.vue:6:17	vue/operator-linebreak	operatorAtBeginning	'?' should be placed at the beginning of the line.
+tests/rules/vue/operator-linebreak/options-none/cases.vue:3:5	vue/operator-linebreak	noLinebreak	There should be no line break before or after '+'.
+tests/rules/vue/operator-linebreak/options-none/cases.vue:4:14	vue/operator-linebreak	noLinebreak	There should be no line break before or after '+'.

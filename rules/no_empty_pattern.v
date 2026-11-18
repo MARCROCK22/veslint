@@ -37,7 +37,10 @@ fn (mut c Checker) lint_no_empty_pattern(root C.TSNode, abs_path string, mut sta
 		if named_children(node).any(node_kind(it) != 'comment') {
 			continue
 		}
-		if allow_parameters && nep_is_parameter(node) {
+		// In a template (vue/no-empty-pattern), a parameter of a slot scope is one of the
+		// VSlotScopeExpression, no function's.
+		if allow_parameters && nep_is_parameter(node) && !c.vue_wrap_roots[node_key(node)]
+			&& !c.vue_wrap_roots[node_key(node_parent(node) or { node })] {
 			continue
 		}
 		findings << Finding{

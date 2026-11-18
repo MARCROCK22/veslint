@@ -1,0 +1,7 @@
+tests/rules/vue/object-shorthand/cases.vue:2:14	vue/object-shorthand	expectedPropertyShorthand	Expected property shorthand.
+tests/rules/vue/object-shorthand/cases.vue:3:11	vue/object-shorthand	expectedMethodShorthand	Expected method shorthand.
+tests/rules/vue/object-shorthand/cases.vue:5:14	vue/object-shorthand	expectedPropertyShorthand	Expected property shorthand.
+tests/rules/vue/object-shorthand/options-avoid-quotes/cases.vue:3:14	vue/object-shorthand	expectedPropertyShorthand	Expected property shorthand.
+tests/rules/vue/object-shorthand/options-consistent/cases.vue:2:12	vue/object-shorthand	unexpectedMix	Unexpected mix of shorthand and non-shorthand properties.
+tests/rules/vue/object-shorthand/options-never/cases.vue:2:14	vue/object-shorthand	expectedPropertyLongform	Expected longform property syntax.
+tests/rules/vue/object-shorthand/options-never/cases.vue:3:14	vue/object-shorthand	expectedMethodLongform	Expected longform method syntax.

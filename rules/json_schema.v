@@ -56,9 +56,103 @@ const schema_any_rules = ['const', 'enum', 'not', 'anyOf', 'oneOf', 'allOf']
 // default options of the rule's meta: the lines Config.validateRulesConfig makes of ajv's errors
 // (each one `\tValue <JSON> <message>.\n`), or '' when the options fit the schema.
 pub fn rule_options_problems(name string, options []json2.Any) string {
-	text := rule_option_schemas[name] or { return '' }
+	schema_name := vue_wrap_schema_name(name)
+	text := rule_option_schemas[schema_name] or { return '' }
 	schema := json2.decode[json2.Any](compiled_schema_text(text)) or { return '' }
-	return schema_problem_lines(schema, json2.Any(options_over_meta_defaults(name, options)))
+	return schema_problem_lines(schema, schema_fill_defaults(schema, json2.Any(options_over_meta_defaults(schema_name,
+		options))))
+}
+
+// schema_fill_defaults ports ajv's useDefaults, which ESLint's validator has: a property missing
+// from an object gets the `default` of its schema in `properties` (after the others, in the order
+// of the schema), within `items` and `allOf` but not in `anyOf`, `oneOf`, `not` or `if`. ajv
+// validates (and its errors print) the filled value. Only the rules of ESLint core that
+// eslint-plugin-vue's wrapper rules take have such defaults (tools/gen_rule_schemas.mjs).
+fn schema_fill_defaults(schema json2.Any, data json2.Any) json2.Any {
+	if schema !is map[string]json2.Any {
+		return data
+	}
+	s := schema as map[string]json2.Any
+	mut out := data
+	if all_of := s['allOf'] {
+		if all_of is []json2.Any {
+			for sub in all_of {
+				out = schema_fill_defaults(sub, out)
+			}
+		}
+	}
+	// ajv stops at the first error, and checks the number of properties or items before it
+	// descends into them (and fills them).
+	limit := fn [s] (key string) ?f64 {
+		value := s[key] or { return none }
+		return if value is f64 {
+			value
+		} else if value is i64 {
+			f64(value)
+		} else {
+			none
+		}
+	}
+	if out is map[string]json2.Any {
+		count := f64((out as map[string]json2.Any).len)
+		if max := limit('maxProperties') {
+			if count > max {
+				return out
+			}
+		}
+		if min := limit('minProperties') {
+			if count < min {
+				return out
+			}
+		}
+		if properties := s['properties'] {
+			if properties is map[string]json2.Any {
+				mut filled := map[string]json2.Any{}
+				for key, value in out {
+					filled[key] = if sub := properties[key] {
+						schema_fill_defaults(sub, value)
+					} else {
+						value
+					}
+				}
+				for key, sub in properties {
+					if key in filled || sub !is map[string]json2.Any {
+						continue
+					}
+					if default_value := (sub as map[string]json2.Any)['default'] {
+						filled[key] = default_value
+					}
+				}
+				out = json2.Any(filled)
+			}
+		}
+	}
+	if out is []json2.Any {
+		count := f64((out as []json2.Any).len)
+		if max := limit('maxItems') {
+			if count > max {
+				return out
+			}
+		}
+		if min := limit('minItems') {
+			if count < min {
+				return out
+			}
+		}
+		if items := s['items'] {
+			mut filled := []json2.Any{}
+			for i, item in out {
+				sub := if items is []json2.Any {
+					if i < items.len { items[i] } else { json2.Any(json2.Null{}) }
+				} else {
+					items
+				}
+				filled << schema_fill_defaults(sub, item)
+			}
+			out = json2.Any(filled)
+		}
+	}
+	return out
 }
 
 // SchemaCompileCache is ajv's cache of compiled schemas (Ajv#_cache): its key is the schema
