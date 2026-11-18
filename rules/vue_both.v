@@ -127,3 +127,48 @@ fn vue_registered_components(t &estree.EsTree, object int) []VueRegisteredCompon
 	}
 	return out
 }
+
+// vue_define_slots ports getComponentSlotsFromDefineSlots: the slots of the type argument of
+// `defineSlots<…>()` (a ComponentSlot is a VueProp: `name` is its slotName, `has_name` false for
+// null), the members of its type literals and interfaces and the properties the checker gives
+// the other types (getComponentSlotsFromTypeDefineTypes); one unknown slot without a type argument.
+fn (mut c Checker) vue_define_slots(root C.TSNode, t &estree.EsTree, call int, abs_path string, mut stats Stats) []VueProp {
+	params := vue_type_arguments(t, call)
+	if params.len == 0 {
+		return [VueProp{
+			kind: .unknown
+		}]
+	}
+	mut out := []VueProp{}
+	for def in c.vue_flatten_type_nodes(root, t, params[0]) {
+		if t.typ(def) !in [.ts_interface_body, .ts_type_literal] {
+			out << c.vue_props_from_type_checker(t, def, abs_path, mut stats)
+			continue
+		}
+		for member in vue_type_members(t, def) {
+			if t.typ(member) !in [.ts_property_signature, .ts_method_signature] {
+				continue
+			}
+			key := t.node(member, .key) or { continue }
+			if t.typ(key) !in [.identifier, .literal] {
+				out << VueProp{
+					kind: .unknown
+					node: key
+				}
+				continue
+			}
+			out << VueProp{
+				kind:     .type_
+				has_name: true
+				name:     if t.typ(key) == .identifier {
+					t.string_of(key, .name) or { '' }
+				} else {
+					vue_literal_string(t, key)
+				}
+				node:     member
+				key:      key
+			}
+		}
+	}
+	return out
+}

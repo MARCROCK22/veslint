@@ -292,6 +292,7 @@ pub fn check_options(rule string, options []json2.Any) !bool {
 		vue_return_in_computed_property { vue_return_in_computed_property_options(options)! }
 		vue_no_duplicate_attr_inheritance { vndai_options(options)! }
 		vue_no_unused_components { vnuc_options(options)! }
+		vue_no_template_shadow { vnts_options(options)! }
 		else { return false }
 	}
 	return true
