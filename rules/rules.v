@@ -925,8 +925,8 @@ pub const names = [no_floating_promises, await_thenable, require_await, return_a
 	vue_no_restricted_custom_event, vue_no_unused_emit_declarations, vue_prefer_single_event_payload,
 	vue_no_shadow_native_events, vue_require_explicit_emits, vue_no_undef_components,
 	vue_v_on_handler_style, vue_no_mutating_props, vue_no_use_computed_property_like_method,
-	vue_no_unused_properties, vue_no_undef_properties,
-	vue_prefer_define_options, vue_multi_word_component_names, vue_no_multiple_template_root,
+	vue_no_unused_properties, vue_no_undef_properties, vue_prefer_define_options,
+	vue_multi_word_component_names, vue_no_multiple_template_root,
 	vue_no_potential_component_option_typo, vue_no_deprecated_model_definition,
 	vue_match_component_file_name, vue_enforce_style_attribute, vue_require_direct_export,
 	vue_no_restricted_component_names, vue_no_restricted_component_options, vue_prefer_import_from_vue,
@@ -1106,8 +1106,8 @@ pub const untyped_rules = [adjacent_overload_signatures, array_type, class_liter
 	vue_prefer_use_template_ref, vue_no_duplicate_attr_inheritance, vue_no_unused_components,
 	vue_no_undef_directives, vue_component_name_in_template_casing, vue_no_unused_refs,
 	vue_custom_event_name_casing, vue_no_restricted_custom_event, vue_no_undef_components,
-	vue_v_on_handler_style, vue_no_use_computed_property_like_method,
-	vue_prefer_define_options, vue_multi_word_component_names, vue_no_multiple_template_root,
+	vue_v_on_handler_style, vue_no_use_computed_property_like_method, vue_prefer_define_options,
+	vue_multi_word_component_names, vue_no_multiple_template_root,
 	vue_no_potential_component_option_typo, vue_no_deprecated_model_definition,
 	vue_match_component_file_name, vue_enforce_style_attribute, vue_require_direct_export,
 	vue_no_restricted_component_names, vue_no_restricted_component_options, vue_prefer_import_from_vue,
@@ -2953,6 +2953,7 @@ fn (mut c Checker) lint_file_in_lifetime(parser Parser, config LintConfig, src s
 	c.scope_setup = c.file_scope_setup(config, inline)
 	mut findings := []Finding{}
 	c.file_rules = inline.rules.map(it.name)
+	c.vue_template_owner = c.vue_template_owner_of(config, inline)
 	for setting in inline.rules {
 		if c.lint_stop.stop() {
 			return error(lint_stopped)
@@ -5140,6 +5141,9 @@ mut:
 	// file_rules are the rules that run on the file being linted (what one rule may see of
 	// another: ESLint runs them on the same scope manager)
 	file_rules []string
+	// vue_template_owner is the rule in whose Program:exit vue-eslint-parser walks the template of
+	// the .vue file being linted ('' for none; vue_template.v)
+	vue_template_owner string
 	// asked before each rule of a file whether to give the lint up (set_lint_stop)
 	lint_stop LintStop = NoLintStop{}
 	// tokens and comments of the file (source_tokens), built on first use (per file)

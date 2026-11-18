@@ -46,3 +46,7 @@ tests/rules/vue/no-parsing-error/options/cases.vue:4:13	vue/no-parsing-error	par
 tests/rules/vue/no-parsing-error/options/cases.vue:5:3	vue/no-parsing-error	parsingError	Parsing error: non-void-html-element-start-tag-with-trailing-solidus.
 tests/rules/vue/no-parsing-error/style/cases.vue:6:23	vue/no-parsing-error	parsingError	Parsing error: Unexpected end of expression.
 tests/rules/vue/no-parsing-error/style/cases.vue:7:25	vue/no-parsing-error	parsingError	Parsing error: ',' expected.
+tests/rules/vue/no-parsing-error/unterminated-string/cases.vue:3:8	vue/no-parsing-error	parsingError	Parsing error: Unexpected end of expression.
+tests/rules/vue/no-parsing-error/unterminated-string/cases.vue:4:17	vue/no-parsing-error	parsingError	Parsing error: Unexpected end of expression.
+tests/rules/vue/no-parsing-error/unterminated-string/cases.vue:5:21	vue/no-parsing-error	parsingError	Parsing error: Unexpected end of expression.
+tests/rules/vue/no-parsing-error/unterminated-string/cases.vue:6:12	vue/no-parsing-error	parsingError	Parsing error: Unexpected token ','.

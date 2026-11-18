@@ -41,10 +41,9 @@ fn (mut st VnuedState) add_call(t &estree.EsTree, call int) {
 	}
 }
 
+// Also in a TypeScript file: the rule composes its script listeners with defineTemplateBodyVisitor's
+// (which gives none there) instead of handing them to it.
 fn (mut c Checker) lint_vue_no_unused_emit_declarations(root C.TSNode, abs_path string, mut stats Stats) ![]Finding {
-	if !c.is_vue() {
-		return []
-	}
 	sw := time.new_stopwatch()
 	mut findings := []Finding{}
 	s := c.vue_script(root, abs_path) or { return findings }
@@ -222,7 +221,7 @@ fn vnued_has_arguments_references(t &estree.EsTree, call int, ctx VueSetupContex
 			for property in t.list(argument, .properties) or { []int{} } {
 				if t.typ(property) == .property
 					&& vnued_has_expression_reference(t, t.node(property, .value) or { continue }, ctx, mut
-					st) {
+						st) {
 					return true
 				}
 			}

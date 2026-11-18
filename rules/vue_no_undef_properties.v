@@ -156,24 +156,38 @@ fn (mut c Checker) lint_vue_no_undef_properties(root C.TSNode, abs_path string, 
 			c.vnudp_verify(t, owner, refs, false, mut st)
 		}
 	}
-	// Program:exit: the styles' `v-bind()`; then the template's expressions.
+	// Program:exit: the styles' `v-bind()`, and the template's expressions. vue-eslint-parser walks
+	// the template in the Program:exit of the first rule that asks for it (vue_template_owner_of):
+	// after this rule's own when it is this one, before it when another rule comes first.
 	template_ctx := vnudp_template_context(t, st)
 	if template_ctx != -2 {
+		template_first := c.vue_template_owner != vue_no_undef_properties
+		if template_first {
+			c.vnudp_verify_template(t, template_ctx, mut st, mut stats)
+		}
 		if style := c.vpr_from_style_variables(mut st.x) {
 			c.vnudp_verify(t, template_ctx, style, false, mut st)
 		}
-		if c.vue_has_template() {
-			for v in c.vue_template_vnodes() {
-				if c.vue.doc.nodes[v].typ == .v_expression_container {
-					stats.checked++
-					refs := c.vpr_from_container(mut st.x, v, true)
-					c.vnudp_verify(t, template_ctx, refs, false, mut st)
-				}
-			}
+		if !template_first {
+			c.vnudp_verify_template(t, template_ctx, mut st, mut stats)
 		}
 	}
 	stats.eval_ms += ms(sw.elapsed())
 	return st.findings
+}
+
+// vnudp_verify_template is the template's listener: the expressions of the template.
+fn (mut c Checker) vnudp_verify_template(t &estree.EsTree, template_ctx int, mut st VnudpState, mut stats Stats) {
+	if !c.vue_has_template() {
+		return
+	}
+	for v in c.vue_template_vnodes() {
+		if c.vue.doc.nodes[v].typ == .v_expression_container {
+			stats.checked++
+			refs := c.vpr_from_container(mut st.x, v, true)
+			c.vnudp_verify(t, template_ctx, refs, false, mut st)
+		}
+	}
 }
 
 // vnudp_template_context is getVueComponentContextForTemplate: the Program's context, or the
