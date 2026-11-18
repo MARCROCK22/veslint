@@ -812,6 +812,7 @@ pub const svelte_require_store_reactive_access = 'svelte/require-store-reactive-
 pub const svelte_no_navigation_without_resolve = 'svelte/no-navigation-without-resolve'
 pub const svelte_no_unused_props = 'svelte/no-unused-props'
 pub const svelte_valid_compile = 'svelte/valid-compile'
+pub const svelte_indent = 'svelte/indent'
 pub const names = [no_floating_promises, await_thenable, require_await, return_await,
 	no_misused_promises, no_unsafe_call, no_unsafe_member_access, no_unsafe_return,
 	no_unsafe_assignment, no_unsafe_argument, restrict_template_expressions,
@@ -1059,7 +1060,7 @@ pub const names = [no_floating_promises, await_thenable, require_await, return_a
 	svelte_prefer_svelte_reactivity, svelte_prefer_destructured_store_props,
 	svelte_no_top_level_browser_globals, svelte_no_navigation_without_base,
 	svelte_require_store_reactive_access, svelte_no_navigation_without_resolve, svelte_no_unused_props,
-	svelte_valid_compile]
+	svelte_valid_compile, svelte_indent]
 
 // untyped_rules are the ported rules that need no types (`meta.docs.requiresTypeChecking` is false
 // in typescript-eslint; the eslint-plugin-unicorn rules that read the types when the parser has a
@@ -1268,7 +1269,8 @@ pub const untyped_rules = [adjacent_overload_signatures, array_type, class_liter
 	svelte_prefer_writable_derived, svelte_no_reactive_reassign,
 	svelte_no_immutable_reactive_statements, svelte_infinite_reactive_loop,
 	svelte_prefer_svelte_reactivity, svelte_prefer_destructured_store_props,
-	svelte_no_top_level_browser_globals, svelte_no_navigation_without_base, svelte_valid_compile]
+	svelte_no_top_level_browser_globals, svelte_no_navigation_without_base, svelte_valid_compile,
+	svelte_indent]
 
 // needs_types tells whether a rule asks tsgo for the types of the program.
 pub fn needs_types(rule string) bool {
@@ -2075,6 +2077,7 @@ pub const default_options = {
 	svelte_require_event_prefix:                         '[]'
 	svelte_no_unused_svelte_ignore:                      '[]'
 	svelte_valid_compile:                                '[]'
+	svelte_indent:                                       '[]'
 }
 
 // Finding is a problem a rule found at a node.
@@ -3058,6 +3061,7 @@ pub fn message(rule string, finding Finding) string {
 		svelte_no_navigation_without_resolve { svnnwr_messages }
 		svelte_no_unused_props { svnup_messages }
 		svelte_valid_compile { map[string]string{} }
+		svelte_indent { svi_messages }
 		else { map[string]string{} }
 	}
 	return interpolate(messages[finding.message_id] or { finding.message_id }, finding.data)
@@ -5635,6 +5639,9 @@ fn (mut c Checker) lint_rule(rule string, root C.TSNode, abs_path string, mut st
 		}
 		svelte_valid_compile {
 			return c.lint_svelte_valid_compile(root, abs_path, mut stats)!
+		}
+		svelte_indent {
+			return c.lint_svelte_indent(root, abs_path, mut stats)!
 		}
 		else { return error('unknown rule: ${rule}') }
 	}

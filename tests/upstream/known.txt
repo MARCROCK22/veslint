@@ -1761,3 +1761,21 @@ veslint	svelte/no-unused-svelte-ignore/i25	<style lang="postcss">: postcss with 
 veslint	svelte/no-unused-svelte-ignore/i26	<style lang="postcss">: postcss with postcss-nested (postcss.config.cjs) is not ported
 # svelte/* script rules (SR2): svelte-eslint-parser's svelteConfig from svelte.config.js is not read (parserOptions.svelteConfig is)
 veslint	svelte/no-export-load-in-svelte-module-in-kit-pages/i2	kit.files.routes of the fixture's svelte.config.js (not read by veslint)
+# svelte/indent: eslint-plugin-svelte's indent fixtures written one token per line that veslint's
+# parser does not read as svelte-eslint-parser does (tree-sitter's grammar: a line break between
+# two tokens changes the statement or ends it; tests/svelte/known.txt lists them).
+veslint	svelte/indent/v0	tree-sitter: `let` + line break + name is an expression for the grammar (tests/svelte/known.txt)
+veslint	svelte/indent/i4	tree-sitter: `let` + line break + name is an expression for the grammar (tests/svelte/known.txt)
+veslint	svelte/indent/i20	tree-sitter: a line break between tokens typescript-estree reads as one statement (tests/svelte/known.txt)
+veslint	svelte/indent/i24	tree-sitter: a line break between tokens changes the statement (tests/svelte/known.txt)
+veslint	svelte/indent/i33	tree-sitter: a line break between tokens typescript-estree reads as one statement (tests/svelte/known.txt)
+veslint	svelte/indent/i45	tree-sitter: a line break between tokens typescript-estree reads as one statement (tests/svelte/known.txt)
+veslint	svelte/indent/i46	tree-sitter: a line break between tokens typescript-estree reads as one statement (tests/svelte/known.txt)
+veslint	svelte/indent/i50	tree-sitter: a line break between tokens typescript-estree reads as one statement (tests/svelte/known.txt)
+veslint	svelte/indent/i51	tree-sitter: a line break between tokens typescript-estree reads as one statement (tests/svelte/known.txt)
+veslint	svelte/indent/i57	tree-sitter: a line break between tokens typescript-estree reads as one statement (tests/svelte/known.txt)
+veslint	svelte/indent/i58	tree-sitter: a line break between tokens changes the statement (tests/svelte/known.txt)
+veslint	svelte/indent/i63	tree-sitter: a line break between tokens changes the statement (tests/svelte/known.txt)
+veslint	svelte/indent/i66	tree-sitter: a line break between tokens changes the statement (tests/svelte/known.txt)
+veslint	svelte/indent/i67	tree-sitter: a line break between tokens changes the statement (tests/svelte/known.txt)
+veslint	svelte/indent/i72	tree-sitter: a line break between tokens typescript-estree reads as one statement (tests/svelte/known.txt)
