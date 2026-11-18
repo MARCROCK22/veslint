@@ -1,0 +1,7 @@
+tests/rules/vue/no-constant-condition/cases.vue:2:14	vue/no-constant-condition	unexpected	Unexpected constant condition.	end	2	18
+tests/rules/vue/no-constant-condition/cases.vue:3:19	vue/no-constant-condition	unexpected	Unexpected constant condition.	end	3	21
+tests/rules/vue/no-constant-condition/cases.vue:4:16	vue/no-constant-condition	unexpected	Unexpected constant condition.	end	4	21
+tests/rules/vue/no-constant-condition/cases.vue:5:9	vue/no-constant-condition	unexpected	Unexpected constant condition.	end	5	13
+tests/rules/vue/no-constant-condition/cases.vue:6:20	vue/no-constant-condition	unexpected	Unexpected constant condition.	end	6	21
+tests/rules/vue/no-constant-condition/options-loops/cases.vue:2:23	vue/no-constant-condition	unexpected	Unexpected constant condition.	end	2	27
+tests/rules/vue/no-constant-condition/options-loops/cases.vue:3:22	vue/no-constant-condition	unexpected	Unexpected constant condition.	end	3	23

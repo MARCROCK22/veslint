@@ -1,0 +1,2 @@
+tests/rules/vue/no-deprecated-props-default-this/cases.vue:7:16	vue/no-deprecated-props-default-this	deprecated	Props default value factory functions no longer have access to `this`.
+tests/rules/vue/no-deprecated-props-default-this/cases.vue:21:25	vue/no-deprecated-props-default-this	deprecated	Props default value factory functions no longer have access to `this`.

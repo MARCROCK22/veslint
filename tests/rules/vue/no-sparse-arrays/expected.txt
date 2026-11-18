@@ -1,0 +1,4 @@
+tests/rules/vue/no-sparse-arrays/cases.vue:2:12	vue/no-sparse-arrays	unexpectedSparseArray	Unexpected comma in middle of array.
+tests/rules/vue/no-sparse-arrays/cases.vue:3:13	vue/no-sparse-arrays	unexpectedSparseArray	Unexpected comma in middle of array.
+tests/rules/vue/no-sparse-arrays/cases.vue:4:16	vue/no-sparse-arrays	unexpectedSparseArray	Unexpected comma in middle of array.
+tests/rules/vue/no-sparse-arrays/cases.vue:4:21	vue/no-sparse-arrays	unexpectedSparseArray	Unexpected comma in middle of array.

@@ -1,0 +1,36 @@
+tests/rules/vue/no-literals-in-template/cases.vue:65:19	vue/no-literals-in-template	unexpected	Unexpected array literal in template.
+tests/rules/vue/no-literals-in-template/cases.vue:66:19	vue/no-literals-in-template	unexpected	Unexpected array literal in template.
+tests/rules/vue/no-literals-in-template/cases.vue:67:19	vue/no-literals-in-template	unexpected	Unexpected object literal in template.
+tests/rules/vue/no-literals-in-template/cases.vue:68:19	vue/no-literals-in-template	unexpected	Unexpected object literal in template.
+tests/rules/vue/no-literals-in-template/cases.vue:69:24	vue/no-literals-in-template	unexpected	Unexpected arrow function literal in template.
+tests/rules/vue/no-literals-in-template/cases.vue:70:24	vue/no-literals-in-template	unexpected	Unexpected function literal in template.
+tests/rules/vue/no-literals-in-template/cases.vue:71:19	vue/no-literals-in-template	unexpected	Unexpected array literal in template.
+tests/rules/vue/no-literals-in-template/cases.vue:72:19	vue/no-literals-in-template	unexpected	Unexpected object literal in template.
+tests/rules/vue/no-literals-in-template/cases.vue:73:21	vue/no-literals-in-template	unexpected	Unexpected object literal in template.
+tests/rules/vue/no-literals-in-template/cases.vue:74:25	vue/no-literals-in-template	unexpected	Unexpected object literal in template.
+tests/rules/vue/no-literals-in-template/cases.vue:75:25	vue/no-literals-in-template	unexpected	Unexpected array literal in template.
+tests/rules/vue/no-literals-in-template/cases.vue:76:25	vue/no-literals-in-template	unexpected	Unexpected arrow function literal in template.
+tests/rules/vue/no-literals-in-template/cases.vue:77:25	vue/no-literals-in-template	unexpected	Unexpected function literal in template.
+tests/rules/vue/no-literals-in-template/cases.vue:78:27	vue/no-literals-in-template	unexpected	Unexpected object literal in template.
+tests/rules/vue/no-literals-in-template/cases.vue:79:27	vue/no-literals-in-template	unexpected	Unexpected array literal in template.
+tests/rules/vue/no-literals-in-template/cases.vue:80:27	vue/no-literals-in-template	unexpected	Unexpected arrow function literal in template.
+tests/rules/vue/no-literals-in-template/cases.vue:81:27	vue/no-literals-in-template	unexpected	Unexpected function literal in template.
+tests/rules/vue/no-literals-in-template/cases.vue:82:27	vue/no-literals-in-template	unexpected	Unexpected object literal in template.
+tests/rules/vue/no-literals-in-template/cases.vue:83:27	vue/no-literals-in-template	unexpected	Unexpected array literal in template.
+tests/rules/vue/no-literals-in-template/cases.vue:84:27	vue/no-literals-in-template	unexpected	Unexpected arrow function literal in template.
+tests/rules/vue/no-literals-in-template/cases.vue:85:27	vue/no-literals-in-template	unexpected	Unexpected function literal in template.
+tests/rules/vue/no-literals-in-template/cases.vue:88:33	vue/no-literals-in-template	unexpected	Unexpected object literal in template.
+tests/rules/vue/no-literals-in-template/cases.vue:94:35	vue/no-literals-in-template	unexpected	Unexpected object literal in template.
+tests/rules/vue/no-literals-in-template/cases.vue:100:33	vue/no-literals-in-template	unexpected	Unexpected array literal in template.
+tests/rules/vue/no-literals-in-template/cases.vue:106:35	vue/no-literals-in-template	unexpected	Unexpected array literal in template.
+tests/rules/vue/no-literals-in-template/cases.vue:112:37	vue/no-literals-in-template	unexpected	Unexpected arrow function literal in template.
+tests/rules/vue/no-literals-in-template/cases.vue:118:39	vue/no-literals-in-template	unexpected	Unexpected arrow function literal in template.
+tests/rules/vue/no-literals-in-template/cases.vue:124:37	vue/no-literals-in-template	unexpected	Unexpected function literal in template.
+tests/rules/vue/no-literals-in-template/cases.vue:130:42	vue/no-literals-in-template	unexpected	Unexpected function literal in template.
+tests/rules/vue/no-literals-in-template/extra/cases.vue:3:75	vue/no-literals-in-template	unexpected	Unexpected array literal in template.
+tests/rules/vue/no-literals-in-template/extra/cases.vue:4:55	vue/no-literals-in-template	unexpected	Unexpected function literal in template.
+tests/rules/vue/no-literals-in-template/extra/cases.vue:6:32	vue/no-literals-in-template	unexpected	Unexpected object literal in template.
+tests/rules/vue/no-literals-in-template/extra/cases.vue:6:50	vue/no-literals-in-template	unexpected	Unexpected object literal in template.
+tests/rules/vue/no-literals-in-template/extra/cases.vue:6:68	vue/no-literals-in-template	unexpected	Unexpected array literal in template.
+tests/rules/vue/no-literals-in-template/options-4c763068/cases.vue:3:34	vue/no-literals-in-template	unexpected	Unexpected array literal in template.
+tests/rules/vue/no-literals-in-template/options-99d45cab/cases.vue:3:37	vue/no-literals-in-template	unexpected	Unexpected array literal in template.

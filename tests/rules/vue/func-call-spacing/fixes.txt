@@ -1,0 +1,6 @@
+tests/rules/vue/func-call-spacing/cases.vue:2:11	vue/func-call-spacing	unexpectedWhitespace	Unexpected whitespace between function name and paren.	fix	21	22		end	2	11
+tests/rules/vue/func-call-spacing/cases.vue:3:18	vue/func-call-spacing	unexpectedWhitespace	Unexpected whitespace between function name and paren.	end	4	4
+tests/rules/vue/func-call-spacing/cases.vue:15:20	vue/func-call-spacing	unexpectedWhitespace	Unexpected whitespace between function name and paren.	fix	204	205		end	15	20
+tests/rules/vue/func-call-spacing/options-always/cases.vue:2:10	vue/func-call-spacing	missing	Missing space between function name and paren.	fix	21	21	 	end	2	11
+tests/rules/vue/func-call-spacing/options-always/cases.vue:3:18	vue/func-call-spacing	unexpectedNewline	Unexpected newline between function name and paren.	end	4	5
+tests/rules/vue/func-call-spacing/options-newlines/cases.vue:2:10	vue/func-call-spacing	missing	Missing space between function name and paren.	fix	21	21	 	end	2	11

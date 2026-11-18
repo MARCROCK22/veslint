@@ -1,0 +1,1 @@
+tests/rules/vue/no-deprecated-functional-template/cases.vue:1:11	vue/no-deprecated-functional-template	unexpected	The `functional` template are deprecated.	end	1	21

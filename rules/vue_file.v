@@ -43,6 +43,10 @@ mut:
 	has_steps  bool
 	vnodes     []int
 	has_vnodes bool
+	// What the wrapper rules make of each snippet (vue_wrap.v), built on first use.
+	wrap_cache map[int]VueWrapCached
+	// The snippets each set of flags of the wrapper rules visits (vue_wrap_snippets).
+	wrap_snippets map[int][]VueWrapSnippet
 }
 
 // file_token_ends are the token ends of the tree (TokenEnds): for a .vue file, without the `;`

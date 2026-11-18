@@ -1,0 +1,9 @@
+tests/rules/vue/brace-style/cases.vue:3:3	vue/brace-style	nextLineOpen	Opening curly brace does not appear on the same line as controlling statement.	fix	32	35	 	end	3	4
+tests/rules/vue/brace-style/cases.vue:5:3	vue/brace-style	nextLineClose	Closing curly brace does not appear on the same line as the subsequent block.	fix	48	51	 	end	5	4
+tests/rules/vue/brace-style/cases.vue:10:3	vue/brace-style	nextLineOpen	Opening curly brace does not appear on the same line as controlling statement.	fix	96	99	 	end	10	4
+tests/rules/vue/brace-style/cases.vue:13:22	vue/brace-style	blockSameLine	Statement inside of curly braces should be on next line.	fix	144	144	\n	end	13	23
+tests/rules/vue/brace-style/cases.vue:13:28	vue/brace-style	singleLineClose	Closing curly brace should be on the same line as opening curly brace or on the line after the previous block.	fix	149	149	\n	end	13	29
+tests/rules/vue/brace-style/cases.vue:14:16	vue/brace-style	blockSameLine	Statement inside of curly braces should be on next line.	fix	171	171	\n	end	14	17
+tests/rules/vue/brace-style/cases.vue:14:25	vue/brace-style	singleLineClose	Closing curly brace should be on the same line as opening curly brace or on the line after the previous block.	fix	179	179	\n	end	14	26
+tests/rules/vue/brace-style/options-allman/cases.vue:2:23	vue/brace-style	sameLineOpen	Opening curly brace appears on the same line as controlling statement.	fix	33	33	\n	end	2	24
+tests/rules/vue/brace-style/options-stroustrup/cases.vue:4:3	vue/brace-style	sameLineClose	Closing curly brace appears on the same line as the subsequent block.	fix	46	46	\n	end	4	4

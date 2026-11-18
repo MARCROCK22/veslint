@@ -1,0 +1,25 @@
+tests/rules/vue/no-restricted-v-bind/cases.vue:5:13	vue/no-restricted-v-bind	restrictedVBind	Using `:v-xxx` is not allowed. Instead, remove `:` and use it as directive.
+tests/rules/vue/no-restricted-v-bind/cases.vue:6:13	vue/no-restricted-v-bind	restrictedVBind	Using `:v-xxx` is not allowed. Instead, remove `:` and use it as directive.
+tests/rules/vue/no-restricted-v-bind/extra-opts/cases.vue:3:52	vue/no-restricted-v-bind	restrictedVBind	Using `v-bind` is not allowed.
+tests/rules/vue/no-restricted-v-bind/extra-opts/cases.vue:3:72	vue/no-restricted-v-bind	restrictedVBind	Using `:foo.prop` on `<MyComp>` is not allowed.
+tests/rules/vue/no-restricted-v-bind/extra-opts/cases.vue:3:86	vue/no-restricted-v-bind	restrictedVBind	no f
+tests/rules/vue/no-restricted-v-bind/extra-opts/cases.vue:3:106	vue/no-restricted-v-bind	restrictedVBind	no f
+tests/rules/vue/no-restricted-v-bind/extra-opts/cases.vue:4:10	vue/no-restricted-v-bind	restrictedVBind	no f
+tests/rules/vue/no-restricted-v-bind/extra-opts/cases.vue:4:19	vue/no-restricted-v-bind	restrictedVBind	Using `:bar` on `<div>` is not allowed.
+tests/rules/vue/no-restricted-v-bind/extra/cases.vue:3:13	vue/no-restricted-v-bind	restrictedVBind	Using `:v-xxx` is not allowed. Instead, remove `:` and use it as directive.
+tests/rules/vue/no-restricted-v-bind/extra/cases.vue:3:24	vue/no-restricted-v-bind	restrictedVBind	Using `:v-xxx` is not allowed. Instead, remove `:` and use it as directive.
+tests/rules/vue/no-restricted-v-bind/extra/cases.vue:3:41	vue/no-restricted-v-bind	restrictedVBind	Using `:v-xxx` is not allowed. Instead, remove `:` and use it as directive.
+tests/rules/vue/no-restricted-v-bind/options-5cb7fb76/cases.vue:2:13	vue/no-restricted-v-bind	restrictedVBind	Using `:foo.attr` is not allowed.
+tests/rules/vue/no-restricted-v-bind/options-6f5d85d4/cases.vue:3:13	vue/no-restricted-v-bind	restrictedVBind	Using `:foo.sync` is not allowed.
+tests/rules/vue/no-restricted-v-bind/options-753bab68/cases.vue:2:13	vue/no-restricted-v-bind	restrictedVBind	Using `:v-on` is not allowed.
+tests/rules/vue/no-restricted-v-bind/options-753bab68/cases.vue:2:19	vue/no-restricted-v-bind	restrictedVBind	Using `:foo.sync` is not allowed.
+tests/rules/vue/no-restricted-v-bind/options-753bab68/cases.vue:2:47	vue/no-restricted-v-bind	restrictedVBind	Using `v-bind` is not allowed.
+tests/rules/vue/no-restricted-v-bind/options-764fc695/cases.vue:2:13	vue/no-restricted-v-bind	restrictedVBind	Using `:foo` is not allowed.
+tests/rules/vue/no-restricted-v-bind/options-764fc695/cases.vue:2:24	vue/no-restricted-v-bind	restrictedVBind	Using `:bar` is not allowed.
+tests/rules/vue/no-restricted-v-bind/options-8872240b/cases.vue:5:13	vue/no-restricted-v-bind	restrictedVBind	Using `:foo` is not allowed.
+tests/rules/vue/no-restricted-v-bind/options-9affb4e7/cases.vue:3:14	vue/no-restricted-v-bind	restrictedVBind	Using `:foo` is not allowed.
+tests/rules/vue/no-restricted-v-bind/options-b1dc652c/cases.vue:3:14	vue/no-restricted-v-bind	restrictedVBind	foo
+tests/rules/vue/no-restricted-v-bind/options-c33c4a48/cases.vue:2:13	vue/no-restricted-v-bind	restrictedVBind	Using `:foo` is not allowed.
+tests/rules/vue/no-restricted-v-bind/options-c33c4a48/cases.vue:2:24	vue/no-restricted-v-bind	restrictedVBind	Using `:bar` is not allowed.
+tests/rules/vue/no-restricted-v-bind/options-c7cca925/cases.vue:3:14	vue/no-restricted-v-bind	restrictedVBind	Using `:v-on` is not allowed.
+tests/rules/vue/no-restricted-v-bind/options-c7cca925/cases.vue:4:19	vue/no-restricted-v-bind	restrictedVBind	Using `:foo` on `<MyButton>` is not allowed.

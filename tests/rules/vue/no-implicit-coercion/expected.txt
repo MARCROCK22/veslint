@@ -1,0 +1,10 @@
+tests/rules/vue/no-implicit-coercion/cases.vue:2:9	vue/no-implicit-coercion	implicitCoercion	Unexpected implicit coercion encountered. Use `Boolean(foo)` instead.
+tests/rules/vue/no-implicit-coercion/cases.vue:3:12	vue/no-implicit-coercion	implicitCoercion	Unexpected implicit coercion encountered. Use `Number(foo)` instead.
+tests/rules/vue/no-implicit-coercion/cases.vue:4:12	vue/no-implicit-coercion	implicitCoercion	Unexpected implicit coercion encountered. Use `String(foo)` instead.
+tests/rules/vue/no-implicit-coercion/cases.vue:5:12	vue/no-implicit-coercion	implicitCoercion	Unexpected implicit coercion encountered. Use `foo.indexOf(1) !== -1` instead.
+tests/rules/vue/no-implicit-coercion/cases.vue:6:16	vue/no-implicit-coercion	implicitCoercion	Unexpected implicit coercion encountered. Use `foo = String(foo)` instead.
+tests/rules/vue/no-implicit-coercion/cases.vue:7:12	vue/no-implicit-coercion	implicitCoercion	Unexpected implicit coercion encountered. Use `Number(foo)` instead.
+tests/rules/vue/no-implicit-coercion/cases.vue:17:18	vue/no-implicit-coercion	implicitCoercion	Unexpected implicit coercion encountered. Use `String(w)` instead.
+tests/rules/vue/no-implicit-coercion/options-allow/cases.vue:3:12	vue/no-implicit-coercion	implicitCoercion	Unexpected implicit coercion encountered. Use `String(foo)` instead.
+tests/rules/vue/no-implicit-coercion/options-allow/cases.vue:4:12	vue/no-implicit-coercion	implicitCoercion	Unexpected implicit coercion encountered. Use `Number(foo)` instead.
+tests/rules/vue/no-implicit-coercion/options-boolean/cases.vue:3:12	vue/no-implicit-coercion	implicitCoercion	Unexpected implicit coercion encountered. Use `Number(foo)` instead.

@@ -1,0 +1,3 @@
+tests/rules/vue/no-restricted-block/options/cases.vue:2:1	vue/no-restricted-block	restrictedBlock	Using `<style>` is not allowed.
+tests/rules/vue/no-restricted-block/options/cases.vue:3:1	vue/no-restricted-block	restrictedBlock	Do not use <foo-*>.
+tests/rules/vue/no-restricted-block/options/cases.vue:4:1	vue/no-restricted-block	restrictedBlock	Using `<i18n>` is not allowed.

@@ -37,7 +37,11 @@ for (const id of portedRules(root)) {
   if (schema === null) {
     throw new Error(`${name}: \`schema: false\` (no validation) is not supported`);
   }
-  checkSchema(schema, name, rule.meta?.defaultOptions);
+  // A wrapper rule of eslint-plugin-vue has the meta of the rule of ESLint core it wraps (where
+  // @stylistic/eslint-plugin does not resolve, as here), whose schema has `default`s ajv fills in
+  // (useDefaults) and rules/json_schema.v does not: they only add what is valid, and the rule's
+  // port has the same defaults.
+  checkSchema(schema, name, rule.meta?.defaultOptions, [], namespace === 'vue' && Boolean(rule.meta?.docs?.extensionSource));
   schemas.push(`\t'${id}': ${literal(JSON.stringify(schema, jsonInfinity))}`);
 }
 const defaults = ruleDefaults(builtinRules, plugins).map(([id, options]) => `\t'${id}': ${literal(JSON.stringify(options, jsonInfinity))}`);

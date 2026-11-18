@@ -19,9 +19,24 @@ struct ScstOptions {
 	exceptions map[string]bool
 }
 
-fn scst_options(given []json2.Any) !ScstOptions {
+// scst_core_exceptions are the default exceptions of ESLint core's comma-style, which
+// vue/comma-style runs without @stylistic/eslint-plugin (vue_wrap.v); ESLint Stylistic has none.
+const scst_core_exceptions = ['ArrayPattern', 'ArrowFunctionExpression', 'CallExpression',
+	'FunctionDeclaration', 'FunctionExpression', 'ImportDeclaration', 'ObjectPattern', 'NewExpression']
+
+// scst_core_types are the node types ESLint core's comma-style checks.
+const scst_core_types = ['VariableDeclaration', 'ObjectExpression', 'ObjectPattern', 'ArrayExpression',
+	'ArrayPattern', 'FunctionDeclaration', 'FunctionExpression', 'ArrowFunctionExpression',
+	'CallExpression', 'ImportDeclaration', 'NewExpression']
+
+fn scst_options(given []json2.Any, core bool) !ScstOptions {
 	options := sty_options(given, [json2.Any('last')])
 	mut exceptions := map[string]bool{}
+	if core {
+		for name in scst_core_exceptions {
+			exceptions[name] = true
+		}
+	}
 	object := sty_option_object(options, 1)
 	if given_exceptions := object['exceptions'] {
 		if given_exceptions is map[string]json2.Any {
@@ -41,7 +56,7 @@ fn scst_options(given []json2.Any) !ScstOptions {
 fn (mut c Checker) lint_stylistic_comma_style(root C.TSNode, abs_path string, mut stats Stats) ![]Finding {
 	sw := time.new_stopwatch()
 	mut findings := []Finding{}
-	options := scst_options(c.rule_options(stylistic_comma_style))!
+	options := scst_options(c.rule_options(stylistic_comma_style), c.vue_wrap_core)!
 	t := c.es_tree(root, abs_path) or { return findings }
 	tokens := c.un_tokens(t)
 	for step in t.steps() {
@@ -74,7 +89,8 @@ fn (mut c Checker) lint_stylistic_comma_style(root C.TSNode, abs_path string, mu
 			.ts_tuple_type { .element_types }
 			else { continue }
 		}
-		if options.exceptions[typ.type_name()] {
+		if options.exceptions[typ.type_name()]
+			|| (c.vue_wrap_core && typ.type_name() !in scst_core_types) {
 			continue
 		}
 		stats.checked++

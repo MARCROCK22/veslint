@@ -1,0 +1,1 @@
+[null, {"argument": "foo", "modifiers": ["prop"], "element": "/^My/"}, {"argument": "/^f/i", "modifiers": [], "message": "no f"}, {"argument": "bar", "element": "div"}]

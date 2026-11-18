@@ -1,0 +1,16 @@
+tests/rules/vue/no-deprecated-slot-scope-attribute/cases.vue:39:21	vue/no-deprecated-slot-scope-attribute	forbiddenSlotScopeAttribute	`slot-scope` are deprecated.	fix	710	726	v-slot="{a}"	end	39	31
+tests/rules/vue/no-deprecated-slot-scope-attribute/cases.vue:44:21	vue/no-deprecated-slot-scope-attribute	forbiddenSlotScopeAttribute	`slot-scope` are deprecated.	fix	824	834	v-slot	end	44	31
+tests/rules/vue/no-deprecated-slot-scope-attribute/cases.vue:49:14	vue/no-deprecated-slot-scope-attribute	forbiddenSlotScopeAttribute	`slot-scope` are deprecated.	fix	922	944	<template v-slot="{a}">\n<a />\n</template>	end	49	24
+tests/rules/vue/no-deprecated-slot-scope-attribute/cases.vue:54:21	vue/no-deprecated-slot-scope-attribute	forbiddenSlotScopeAttribute	`slot-scope` are deprecated.	end	54	31
+tests/rules/vue/no-deprecated-slot-scope-attribute/cases.vue:59:21	vue/no-deprecated-slot-scope-attribute	forbiddenSlotScopeAttribute	`slot-scope` are deprecated.	end	59	31
+tests/rules/vue/no-deprecated-slot-scope-attribute/cases.vue:64:37	vue/no-deprecated-slot-scope-attribute	forbiddenSlotScopeAttribute	`slot-scope` are deprecated.	end	64	47
+tests/rules/vue/no-deprecated-slot-scope-attribute/cases.vue:71:21	vue/no-deprecated-slot-scope-attribute	forbiddenSlotScopeAttribute	`slot-scope` are deprecated.	end	71	31
+tests/rules/vue/no-deprecated-slot-scope-attribute/extra/cases.vue:4:12	vue/no-deprecated-slot-scope-attribute	forbiddenSlotScopeAttribute	`slot-scope` are deprecated.	end	4	22
+tests/rules/vue/no-deprecated-slot-scope-attribute/extra/cases.vue:5:17	vue/no-deprecated-slot-scope-attribute	forbiddenSlotScopeAttribute	`slot-scope` are deprecated.	end	5	27
+tests/rules/vue/no-deprecated-slot-scope-attribute/extra/cases.vue:6:22	vue/no-deprecated-slot-scope-attribute	forbiddenSlotScopeAttribute	`slot-scope` are deprecated.	end	6	32
+tests/rules/vue/no-deprecated-slot-scope-attribute/extra/cases.vue:7:23	vue/no-deprecated-slot-scope-attribute	forbiddenSlotScopeAttribute	`slot-scope` are deprecated.	end	7	33
+tests/rules/vue/no-deprecated-slot-scope-attribute/extra/cases.vue:9:9	vue/no-deprecated-slot-scope-attribute	forbiddenSlotScopeAttribute	`slot-scope` are deprecated.	end	9	19
+tests/rules/vue/no-deprecated-slot-scope-attribute/extra/cases.vue:11:23	vue/no-deprecated-slot-scope-attribute	forbiddenSlotScopeAttribute	`slot-scope` are deprecated.	end	11	33
+tests/rules/vue/no-deprecated-slot-scope-attribute/extra/cases.vue:11:50	vue/no-deprecated-slot-scope-attribute	forbiddenSlotScopeAttribute	`slot-scope` are deprecated.	end	11	60
+tests/rules/vue/no-deprecated-slot-scope-attribute/extra/cases.vue:12:16	vue/no-deprecated-slot-scope-attribute	forbiddenSlotScopeAttribute	`slot-scope` are deprecated.	end	12	26
+tests/rules/vue/no-deprecated-slot-scope-attribute/extra/cases.vue:13:13	vue/no-deprecated-slot-scope-attribute	forbiddenSlotScopeAttribute	`slot-scope` are deprecated.	end	13	23

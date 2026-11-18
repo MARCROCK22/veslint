@@ -1,0 +1,7 @@
+tests/rules/vue/one-component-per-file/cases.ts:2:20	vue/one-component-per-file	tooManyComponents	There is more than one component in this file.
+tests/rules/vue/one-component-per-file/cases.ts:3:20	vue/one-component-per-file	tooManyComponents	There is more than one component in this file.
+tests/rules/vue/one-component-per-file/cases.ts:5:12	vue/one-component-per-file	tooManyComponents	There is more than one component in this file.
+tests/rules/vue/one-component-per-file/cases.vue:3:31	vue/one-component-per-file	tooManyComponents	There is more than one component in this file.
+tests/rules/vue/one-component-per-file/cases.vue:4:16	vue/one-component-per-file	tooManyComponents	There is more than one component in this file.
+tests/rules/vue/one-component-per-file/mark/cases.ts:2:11	vue/one-component-per-file	tooManyComponents	There is more than one component in this file.
+tests/rules/vue/one-component-per-file/mark/cases.ts:4:11	vue/one-component-per-file	tooManyComponents	There is more than one component in this file.

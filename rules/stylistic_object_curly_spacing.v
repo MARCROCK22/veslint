@@ -78,6 +78,9 @@ fn (mut c Checker) lint_stylistic_object_curly_spacing(root C.TSNode, abs_path s
 		options: options
 	}
 	for node in 0 .. t.nodes.len {
+		if !t.visits(node) {
+			continue
+		}
 		typ := t.typ(node)
 		match typ {
 			.object_pattern, .object_expression {

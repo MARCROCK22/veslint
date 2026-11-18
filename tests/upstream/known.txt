@@ -1733,3 +1733,9 @@ veslint	sort-imports/r0/i247	the alphabet has lone surrogates, which veslint's J
 # veslint reads every .vue file with vue-eslint-parser's default vueFeatures; a case that sets
 # parserOptions.vueFeatures (filters off) is read with them on.
 veslint	no-deprecated-filter/v2	veslint does not read parserOptions.vueFeatures: filters stay on
+# vue/no-restricted-syntax runs ESLint core's rule on the template's snippets (rules/vue_wrap.v):
+# its selectors match the ESTree nodes of the expressions, with their ESTree ancestors; a selector
+# that names vue-eslint-parser's V* nodes (`VElement > VExpressionContainer CallExpression`) matches
+# nothing, as veslint has no selector engine for the template's own nodes yet (listed with the
+# rule's prefix: no-restricted-syntax/i1 is also a case of ESLint core's rule).
+veslint	vue/no-restricted-syntax/i1	selectors on vue-eslint-parser's V* nodes are not matched

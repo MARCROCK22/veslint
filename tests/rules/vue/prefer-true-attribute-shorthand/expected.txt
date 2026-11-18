@@ -1,0 +1,17 @@
+tests/rules/vue/prefer-true-attribute-shorthand/cases.vue:39:17	vue/prefer-true-attribute-shorthand	expectShort	Boolean prop with 'true' value should be written in shorthand form.
+tests/rules/vue/prefer-true-attribute-shorthand/cases.vue:42:17	vue/prefer-true-attribute-shorthand	expectShort	Boolean prop with 'true' value should be written in shorthand form.
+tests/rules/vue/prefer-true-attribute-shorthand/extra-except/cases.vue:3:13	vue/prefer-true-attribute-shorthand	expectShort	Boolean prop with 'true' value should be written in shorthand form.
+tests/rules/vue/prefer-true-attribute-shorthand/extra-except/cases.vue:3:23	vue/prefer-true-attribute-shorthand	expectLong	Boolean prop with 'true' value should be written in long form.
+tests/rules/vue/prefer-true-attribute-shorthand/extra-except/cases.vue:3:86	vue/prefer-true-attribute-shorthand	expectShort	Boolean prop with 'true' value should be written in shorthand form.
+tests/rules/vue/prefer-true-attribute-shorthand/extra-never/cases.vue:3:23	vue/prefer-true-attribute-shorthand	expectLong	Boolean prop with 'true' value should be written in long form.
+tests/rules/vue/prefer-true-attribute-shorthand/extra/cases.vue:3:13	vue/prefer-true-attribute-shorthand	expectShort	Boolean prop with 'true' value should be written in shorthand form.
+tests/rules/vue/prefer-true-attribute-shorthand/extra/cases.vue:3:25	vue/prefer-true-attribute-shorthand	expectShort	Boolean prop with 'true' value should be written in shorthand form.
+tests/rules/vue/prefer-true-attribute-shorthand/extra/cases.vue:3:41	vue/prefer-true-attribute-shorthand	expectShort	Boolean prop with 'true' value should be written in shorthand form.
+tests/rules/vue/prefer-true-attribute-shorthand/extra/cases.vue:3:86	vue/prefer-true-attribute-shorthand	expectShort	Boolean prop with 'true' value should be written in shorthand form.
+tests/rules/vue/prefer-true-attribute-shorthand/options-2014a731/cases.vue:6:17	vue/prefer-true-attribute-shorthand	expectShort	Boolean prop with 'true' value should be written in shorthand form.
+tests/rules/vue/prefer-true-attribute-shorthand/options-2014a731/cases.vue:9:17	vue/prefer-true-attribute-shorthand	expectShort	Boolean prop with 'true' value should be written in shorthand form.
+tests/rules/vue/prefer-true-attribute-shorthand/options-97252a20/cases.vue:12:17	vue/prefer-true-attribute-shorthand	expectLong	Boolean prop with 'true' value should be written in long form.
+tests/rules/vue/prefer-true-attribute-shorthand/options-c239a6fe/cases.vue:6:17	vue/prefer-true-attribute-shorthand	expectLong	Boolean prop with 'true' value should be written in long form.
+tests/rules/vue/prefer-true-attribute-shorthand/options-c239a6fe/cases.vue:6:23	vue/prefer-true-attribute-shorthand	expectLong	Boolean prop with 'true' value should be written in long form.
+tests/rules/vue/prefer-true-attribute-shorthand/options-e2e8ba1b/cases.vue:6:17	vue/prefer-true-attribute-shorthand	expectShort	Boolean prop with 'true' value should be written in shorthand form.
+tests/rules/vue/prefer-true-attribute-shorthand/options-e2e8ba1b/cases.vue:6:31	vue/prefer-true-attribute-shorthand	expectShort	Boolean prop with 'true' value should be written in shorthand form.

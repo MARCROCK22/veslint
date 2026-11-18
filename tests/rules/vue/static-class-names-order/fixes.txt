@@ -1,0 +1,10 @@
+tests/rules/vue/static-class-names-order/cases.vue:7:13	vue/static-class-names-order	shouldBeOrdered	Classes should be ordered alphabetically.	fix	220	225	"a b"	end	7	24
+tests/rules/vue/static-class-names-order/cases.vue:9:16	vue/static-class-names-order	shouldBeOrdered	Classes should be ordered alphabetically.	fix	268	275	"a b c"	end	9	29
+tests/rules/vue/static-class-names-order/extra/cases.vue:2:8	vue/static-class-names-order	shouldBeOrdered	Classes should be ordered alphabetically.	fix	24	30	"a b"	end	2	20
+tests/rules/vue/static-class-names-order/extra/cases.vue:3:8	vue/static-class-names-order	shouldBeOrdered	Classes should be ordered alphabetically.	fix	51	57	"a b"	end	3	20
+tests/rules/vue/static-class-names-order/extra/cases.vue:4:8	vue/static-class-names-order	shouldBeOrdered	Classes should be ordered alphabetically.	fix	78	87	"a A b B"	end	4	23
+tests/rules/vue/static-class-names-order/extra/cases.vue:6:8	vue/static-class-names-order	shouldBeOrdered	Classes should be ordered alphabetically.	fix	130	137	"a\tb"	end	6	21
+tests/rules/vue/static-class-names-order/extra/cases.vue:7:8	vue/static-class-names-order	shouldBeOrdered	Classes should be ordered alphabetically.	fix	158	181	"item-1 item-10 item-2"	end	7	37
+tests/rules/vue/static-class-names-order/extra/cases.vue:8:8	vue/static-class-names-order	shouldBeOrdered	Classes should be ordered alphabetically.	fix	202	209	"e é f"	end	8	21
+tests/rules/vue/static-class-names-order/extra/cases.vue:9:8	vue/static-class-names-order	shouldBeOrdered	Classes should be ordered alphabetically.	fix	230	241	"a b&c"	end	9	25
+tests/rules/vue/static-class-names-order/extra/cases.vue:10:8	vue/static-class-names-order	shouldBeOrdered	Classes should be ordered alphabetically.	fix	262	267	"a b"	end	10	19

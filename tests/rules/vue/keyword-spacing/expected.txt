@@ -1,0 +1,9 @@
+tests/rules/vue/keyword-spacing/cases.vue:2:16	vue/keyword-spacing	expectedAfter	Expected space(s) after "if".
+tests/rules/vue/keyword-spacing/cases.vue:2:26	vue/keyword-spacing	expectedBefore	Expected space(s) before "else".
+tests/rules/vue/keyword-spacing/cases.vue:2:26	vue/keyword-spacing	expectedAfter	Expected space(s) after "else".
+tests/rules/vue/keyword-spacing/cases.vue:5:16	vue/keyword-spacing	expectedAfter	Expected space(s) after "for".
+tests/rules/vue/keyword-spacing/cases.vue:6:23	vue/keyword-spacing	expectedAfter	Expected space(s) after "return".
+tests/rules/vue/keyword-spacing/options-none/cases.vue:2:18	vue/keyword-spacing	unexpectedAfter	Unexpected space(s) after "if".
+tests/rules/vue/keyword-spacing/options-none/cases.vue:2:30	vue/keyword-spacing	unexpectedBefore	Unexpected space(s) before "else".
+tests/rules/vue/keyword-spacing/options-none/cases.vue:2:35	vue/keyword-spacing	unexpectedAfter	Unexpected space(s) after "else".
+tests/rules/vue/keyword-spacing/options-overrides/cases.vue:2:18	vue/keyword-spacing	unexpectedAfter	Unexpected space(s) after "if".

@@ -1,0 +1,15 @@
+tests/rules/vue/no-child-content/cases.vue:13:26	vue/no-child-content	disallowedChildContent	Child content is disallowed because it will be overwritten by the v-html directive.
+tests/rules/vue/no-child-content/cases.vue:14:26	vue/no-child-content	disallowedChildContent	Child content is disallowed because it will be overwritten by the v-html directive.
+tests/rules/vue/no-child-content/cases.vue:15:26	vue/no-child-content	disallowedChildContent	Child content is disallowed because it will be overwritten by the v-html directive.
+tests/rules/vue/no-child-content/cases.vue:16:26	vue/no-child-content	disallowedChildContent	Child content is disallowed because it will be overwritten by the v-html directive.
+tests/rules/vue/no-child-content/cases.vue:18:29	vue/no-child-content	disallowedChildContent	Child content is disallowed because it will be overwritten by the v-html directive.
+tests/rules/vue/no-child-content/cases.vue:24:26	vue/no-child-content	disallowedChildContent	Child content is disallowed because it will be overwritten by the v-text directive.
+tests/rules/vue/no-child-content/extra-opts/cases.vue:4:21	vue/no-child-content	disallowedChildContent	Child content is disallowed because it will be overwritten by the v-html directive.
+tests/rules/vue/no-child-content/extra-opts/cases.vue:5:21	vue/no-child-content	disallowedChildContent	Child content is disallowed because it will be overwritten by the v-text directive.
+tests/rules/vue/no-child-content/extra-opts/cases.vue:11:29	vue/no-child-content	disallowedChildContent	Child content is disallowed because it will be overwritten by the v-html directive.
+tests/rules/vue/no-child-content/extra-opts/cases.vue:12:23	vue/no-child-content	disallowedChildContent	Child content is disallowed because it will be overwritten by the v-custom directive.
+tests/rules/vue/no-child-content/extra/cases.vue:4:21	vue/no-child-content	disallowedChildContent	Child content is disallowed because it will be overwritten by the v-html directive.
+tests/rules/vue/no-child-content/extra/cases.vue:5:21	vue/no-child-content	disallowedChildContent	Child content is disallowed because it will be overwritten by the v-text directive.
+tests/rules/vue/no-child-content/extra/cases.vue:11:29	vue/no-child-content	disallowedChildContent	Child content is disallowed because it will be overwritten by the v-html directive.
+tests/rules/vue/no-child-content/options-a84f3aea/cases.vue:3:23	vue/no-child-content	disallowedChildContent	Child content is disallowed because it will be overwritten by the v-t directive.
+tests/rules/vue/no-child-content/options-a84f3aea/cases.vue:4:26	vue/no-child-content	disallowedChildContent	Child content is disallowed because it will be overwritten by the v-html directive.

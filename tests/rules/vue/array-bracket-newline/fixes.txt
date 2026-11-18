@@ -1,0 +1,16 @@
+tests/rules/vue/array-bracket-newline/cases.vue:2:9	vue/array-bracket-newline	unexpectedOpeningLinebreak	There should be no linebreak after '['.	fix	20	25		end	2	10
+tests/rules/vue/array-bracket-newline/cases.vue:4:12	vue/array-bracket-newline	missingOpeningLinebreak	A linebreak is required after '['.	fix	50	50	\n	end	4	13
+tests/rules/vue/array-bracket-newline/cases.vue:5:6	vue/array-bracket-newline	missingClosingLinebreak	A linebreak is required before ']'.	fix	58	58	\n	end	5	7
+tests/rules/vue/array-bracket-newline/cases.vue:6:12	vue/array-bracket-newline	unexpectedOpeningLinebreak	There should be no linebreak after '['.	fix	76	81		end	6	13
+tests/rules/vue/array-bracket-newline/cases.vue:8:3	vue/array-bracket-newline	unexpectedClosingLinebreak	There should be no linebreak before ']'.	fix	82	85		end	8	4
+tests/rules/vue/array-bracket-newline/options-always/cases.vue:2:12	vue/array-bracket-newline	missingOpeningLinebreak	A linebreak is required after '['.	fix	23	23	\n	end	2	13
+tests/rules/vue/array-bracket-newline/options-always/cases.vue:2:17	vue/array-bracket-newline	missingClosingLinebreak	A linebreak is required before ']'.	fix	27	27	\n	end	2	18
+tests/rules/vue/array-bracket-newline/options-always/cases.vue:3:12	vue/array-bracket-newline	missingOpeningLinebreak	A linebreak is required after '['.	fix	45	45	\n	end	3	13
+tests/rules/vue/array-bracket-newline/options-always/cases.vue:3:13	vue/array-bracket-newline	missingClosingLinebreak	A linebreak is required before ']'.	fix	45	45	\n	end	3	14
+tests/rules/vue/array-bracket-newline/options-consistent/cases.vue:3:9	vue/array-bracket-newline	missingClosingLinebreak	A linebreak is required before ']'.	fix	32	32	\n	end	3	10
+tests/rules/vue/array-bracket-newline/options-min-items/cases.vue:2:12	vue/array-bracket-newline	missingOpeningLinebreak	A linebreak is required after '['.	fix	23	23	\n	end	2	13
+tests/rules/vue/array-bracket-newline/options-min-items/cases.vue:2:17	vue/array-bracket-newline	missingClosingLinebreak	A linebreak is required before ']'.	fix	27	27	\n	end	2	18
+tests/rules/vue/array-bracket-newline/options-min-items/cases.vue:4:12	vue/array-bracket-newline	unexpectedOpeningLinebreak	There should be no linebreak after '['.	fix	64	69		end	4	13
+tests/rules/vue/array-bracket-newline/options-min-items/cases.vue:6:3	vue/array-bracket-newline	unexpectedClosingLinebreak	There should be no linebreak before ']'.	fix	70	73		end	6	4
+tests/rules/vue/array-bracket-newline/options-never/cases.vue:2:12	vue/array-bracket-newline	unexpectedOpeningLinebreak	There should be no linebreak after '['.	fix	23	28		end	2	13
+tests/rules/vue/array-bracket-newline/options-never/cases.vue:4:3	vue/array-bracket-newline	unexpectedClosingLinebreak	There should be no linebreak before ']'.	fix	32	35		end	4	4

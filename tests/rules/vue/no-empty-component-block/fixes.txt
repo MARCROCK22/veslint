@@ -1,0 +1,5 @@
+tests/rules/vue/no-empty-component-block/cases.vue:1:1	vue/no-empty-component-block	unexpected	`<template>` is empty. Empty block is not allowed.	fix	0	21		end	1	22
+tests/rules/vue/no-empty-component-block/cases.vue:2:1	vue/no-empty-component-block	unexpected	`<script>` is empty. Empty block is not allowed.	fix	22	50		end	3	10
+tests/rules/vue/no-empty-component-block/cases.vue:4:1	vue/no-empty-component-block	unexpected	`<style>` is empty. Empty block is not allowed.	fix	51	68		end	4	18
+tests/rules/vue/no-empty-component-block/cases.vue:6:1	vue/no-empty-component-block	unexpected	`<style>` is empty. Empty block is not allowed.	fix	99	121		end	6	23
+tests/rules/vue/no-empty-component-block/self/cases.vue:1:1	vue/no-empty-component-block	unexpected	`<template>` is empty. Empty block is not allowed.	fix	0	11		end	1	12

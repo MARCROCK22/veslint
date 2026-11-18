@@ -90,6 +90,13 @@ function toTypeScriptSfc(code) {
 
 const TS_PARSER = '@typescript-eslint/parser';
 
+// wrapScript makes a script the content of the <script lang="ts"> of a .vue file.
+const wrapScript = code => `<script lang="ts">${code}</script>`;
+const wrapSuggestions = error =>
+  error && typeof error === 'object' && Array.isArray(error.suggestions)
+    ? { ...error, suggestions: error.suggestions.map(s => ('output' in s ? { ...s, output: wrapScript(s.output) } : s)) }
+    : error;
+
 // convert gives the converted case (without its expectation) or the reason it cannot be.
 function convert(c) {
   if (/[\uD800-\uDBFF](?![\uDC00-\uDFFF])|(?<![\uD800-\uDBFF])[\uDC00-\uDFFF]/.test(c.code)) {
@@ -102,7 +109,7 @@ function convert(c) {
     ...(c.options && { options: c.options }),
     ...(c.settings && { settings: c.settings }),
     ...(c.plugins && { plugins: c.plugins }),
-    ...(c.rule && { rule: c.rule }),
+    ...(c.rule && { rule: LINT_RULE_RENAMES[c.rule] ?? c.rule }),
     languageOptions: { ...c.languageOptions },
   };
   const filename = c.filename;
@@ -124,7 +131,17 @@ function convert(c) {
     };
   }
   if (filename && path.extname(filename) === '.vue') {
-    return { reason: `ESLint reads this .vue file as a script (${c.parser}), veslint reads every .vue file as an SFC` };
+    // A .vue file ESLint reads as a script (espree or typescript-eslint's parser): veslint reads
+    // every .vue file as an SFC, so the script becomes the content of a <script lang="ts"> of the
+    // same file, which the rules see as the same script of a file of the same name (a case's text
+    // starts with a line break, so the positions stay). The expected output gets the same tags.
+    if (/<\/script/i.test(c.code)) return { reason: 'a .vue file ESLint reads as a script, with a `</script` in its text' };
+    const parserOptions = { ...c.parserOptions, parser: TS_PARSER };
+    return {
+      case: { ...base, code: wrapScript(c.code), filename, parser: 'vue-eslint-parser', parserOptions },
+      converted: true,
+      wrapped: true,
+    };
   }
   const jsx = c.script === 'jsx' || c.script === 'tsx' || /\.[jt]sx$/.test(filename ?? '') || c.languageOptions?.parserOptions?.ecmaFeatures?.jsx || c.parserOptions?.ecmaFeatures?.jsx;
   const file = filename ? filename.replace(/\.[mc]?[jt]sx?$|$/, jsx ? '.tsx' : '.ts') : jsx ? 'test.tsx' : 'test.ts';
@@ -211,8 +228,8 @@ for (const rule of rules) {
     }
     const item = { ...conv.case };
     if (c.kind === 'invalid') {
-      item.errors = c.errors;
-      if ('output' in c) item.output = c.output;
+      item.errors = conv.wrapped && Array.isArray(c.errors) ? c.errors.map(wrapSuggestions) : c.errors;
+      if ('output' in c) item.output = conv.wrapped && typeof c.output === 'string' ? wrapScript(c.output) : c.output;
     }
     const { failure, messages } = runCase(rule, item);
     if (messages && !messages.some(m => m.fatal)) results.push({ filePath: c.id, messages });

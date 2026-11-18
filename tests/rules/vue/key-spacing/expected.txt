@@ -1,0 +1,11 @@
+tests/rules/vue/key-spacing/cases.vue:2:15	vue/key-spacing	missingValue	Missing space before value for key 'a'.
+tests/rules/vue/key-spacing/cases.vue:2:19	vue/key-spacing	extraKey	Extra space after key 'b'.
+tests/rules/vue/key-spacing/cases.vue:2:21	vue/key-spacing	missingValue	Missing space before value for key 'b'.
+tests/rules/vue/key-spacing/cases.vue:3:12	vue/key-spacing	extraKey	Extra space after key 'x'.
+tests/rules/vue/key-spacing/cases.vue:3:14	vue/key-spacing	missingValue	Missing space before value for key 'x'.
+tests/rules/vue/key-spacing/cases.vue:6:11	vue/key-spacing	extraValue	Extra space before value for key 'longer'.
+tests/rules/vue/key-spacing/cases.vue:8:26	vue/key-spacing	missingValue	Missing space before value for key 'a'.
+tests/rules/vue/key-spacing/options-align/cases.vue:3:12	vue/key-spacing	missingValue	Missing space before value for key 'short'.
+tests/rules/vue/key-spacing/options-align/cases.vue:5:10	vue/key-spacing	missingValue	Missing space before value for key 'x'.
+tests/rules/vue/key-spacing/options-before/cases.vue:2:13	vue/key-spacing	missingKey	Missing space after key 'a'.
+tests/rules/vue/key-spacing/options-before/cases.vue:2:20	vue/key-spacing	extraValue	Extra space before value for key 'b'.

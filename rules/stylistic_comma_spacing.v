@@ -43,6 +43,9 @@ fn (mut c Checker) lint_stylistic_comma_spacing(root C.TSNode, abs_path string, 
 	mut ignored_before := map[int]bool{}
 	mut ignored_after := map[int]bool{}
 	for node in 0 .. t.nodes.len {
+		if !t.visits(node) {
+			continue
+		}
 		match t.typ(node) {
 			.array_expression, .array_pattern {
 				c.scmsp_ignore_null_elements(t, tokens, node, mut ignored_before, mut ignored_after)

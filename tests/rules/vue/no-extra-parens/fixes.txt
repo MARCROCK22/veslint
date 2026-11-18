@@ -1,0 +1,8 @@
+tests/rules/vue/no-extra-parens/cases.vue:2:9	vue/no-extra-parens	unexpected	Unnecessary parentheses around expression.	fix	19	22	a	end	2	10
+tests/rules/vue/no-extra-parens/cases.vue:3:12	vue/no-extra-parens	unexpected	Unnecessary parentheses around expression.	fix	41	48	b + c	end	3	13
+tests/rules/vue/no-extra-parens/cases.vue:4:13	vue/no-extra-parens	unexpected	Unnecessary parentheses around expression.	fix	65	68	d	end	4	14
+tests/rules/vue/no-extra-parens/cases.vue:5:16	vue/no-extra-parens	unexpected	Unnecessary parentheses around expression.	fix	89	92	g	end	5	17
+tests/rules/vue/no-extra-parens/cases.vue:6:12	vue/no-extra-parens	unexpected	Unnecessary parentheses around expression.	fix	110	117	a * b	end	6	13
+tests/rules/vue/no-extra-parens/cases.vue:19:18	vue/no-extra-parens	unexpected	Unnecessary parentheses around expression.	fix	339	342	x	end	19	19
+tests/rules/vue/no-extra-parens/options-functions/cases.vue:2:9	vue/no-extra-parens	unexpected	Unnecessary parentheses around expression.	fix	19	22	a	end	2	10
+tests/rules/vue/no-extra-parens/options-nested/cases.vue:3:12	vue/no-extra-parens	unexpected	Unnecessary parentheses around expression.	fix	49	52	a	end	3	13

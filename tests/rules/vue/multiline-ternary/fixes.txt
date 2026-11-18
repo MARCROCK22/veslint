@@ -1,0 +1,9 @@
+tests/rules/vue/multiline-ternary/cases.vue:2:9	vue/multiline-ternary	expectedTestCons	Expected newline between test and consequent of ternary expression.	fix	20	21	\n	end	2	10
+tests/rules/vue/multiline-ternary/cases.vue:2:13	vue/multiline-ternary	expectedConsAlt	Expected newline between consequent and alternate of ternary expression.	fix	24	25	\n	end	2	14
+tests/rules/vue/multiline-ternary/cases.vue:4:7	vue/multiline-ternary	expectedConsAlt	Expected newline between consequent and alternate of ternary expression.	fix	56	57	\n	end	4	8
+tests/rules/vue/multiline-ternary/cases.vue:17:18	vue/multiline-ternary	expectedTestCons	Expected newline between test and consequent of ternary expression.	fix	225	226	\n	end	17	19
+tests/rules/vue/multiline-ternary/cases.vue:17:22	vue/multiline-ternary	expectedConsAlt	Expected newline between consequent and alternate of ternary expression.	fix	229	230	\n	end	17	23
+tests/rules/vue/multiline-ternary/options-always-multiline/cases.vue:4:7	vue/multiline-ternary	expectedConsAlt	Expected newline between consequent and alternate of ternary expression.	fix	56	57	\n	end	4	8
+tests/rules/vue/multiline-ternary/options-always-multiline/cases.vue:5:12	vue/multiline-ternary	expectedTestCons	Expected newline between test and consequent of ternary expression.	fix	77	78	\n	end	5	13
+tests/rules/vue/multiline-ternary/options-never/cases.vue:3:12	vue/multiline-ternary	unexpectedTestCons	Unexpected newline between test and consequent of ternary expression.	fix	48	53		end	3	13
+tests/rules/vue/multiline-ternary/options-never/cases.vue:4:7	vue/multiline-ternary	unexpectedConsAlt	Unexpected newline between consequent and alternate of ternary expression.	fix	56	61		end	4	8

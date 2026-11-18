@@ -1,0 +1,6 @@
+tests/rules/vue/comma-style/cases.vue:3:5	vue/comma-style	expectedCommaLast	',' should be placed last.
+tests/rules/vue/comma-style/cases.vue:5:5	vue/comma-style	expectedCommaLast	',' should be placed last.
+tests/rules/vue/comma-style/cases.vue:11:5	vue/comma-style	expectedCommaLast	',' should be placed last.
+tests/rules/vue/comma-style/options-exceptions/cases.vue:5:5	vue/comma-style	expectedCommaLast	',' should be placed last.
+tests/rules/vue/comma-style/options-exceptions/cases.vue:7:5	vue/comma-style	expectedCommaLast	',' should be placed last.
+tests/rules/vue/comma-style/options-first/cases.vue:2:14	vue/comma-style	expectedCommaFirst	',' should be placed first.

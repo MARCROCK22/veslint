@@ -1,0 +1,30 @@
+tests/rules/vue/valid-v-bind-sync/cases.vue:56:35	vue/valid-v-bind-sync	unexpectedNonLhsExpression	'.sync' modifiers require the attribute value which is valid as LHS.	end	56	40
+tests/rules/vue/valid-v-bind-sync/cases.vue:59:41	vue/valid-v-bind-sync	unexpectedNonLhsExpression	'.sync' modifiers require the attribute value which is valid as LHS.	end	59	46
+tests/rules/vue/valid-v-bind-sync/cases.vue:62:18	vue/valid-v-bind-sync	unexpectedInvalidElement	'.sync' modifiers aren't supported on <input> non Vue-components.	end	62	33
+tests/rules/vue/valid-v-bind-sync/cases.vue:65:35	vue/valid-v-bind-sync	unexpectedNonLhsExpression	'.sync' modifiers require the attribute value which is valid as LHS.	end	65	40
+tests/rules/vue/valid-v-bind-sync/cases.vue:68:35	vue/valid-v-bind-sync	unexpectedNonLhsExpression	'.sync' modifiers require the attribute value which is valid as LHS.	end	68	45
+tests/rules/vue/valid-v-bind-sync/cases.vue:71:18	vue/valid-v-bind-sync	unexpectedInvalidElement	'.sync' modifiers aren't supported on <input> non Vue-components.	end	71	39
+tests/rules/vue/valid-v-bind-sync/cases.vue:75:37	vue/valid-v-bind-sync	unexpectedUpdateIterationVariable	'.sync' modifiers cannot update the iteration variable 'x' itself.	end	75	38
+tests/rules/vue/valid-v-bind-sync/cases.vue:80:43	vue/valid-v-bind-sync	unexpectedUpdateIterationVariable	'.sync' modifiers cannot update the iteration variable 'e' itself.	end	80	44
+tests/rules/vue/valid-v-bind-sync/cases.vue:87:47	vue/valid-v-bind-sync	unexpectedUpdateIterationVariable	'.sync' modifiers cannot update the iteration variable 'e1' itself.	end	87	49
+tests/rules/vue/valid-v-bind-sync/cases.vue:94:43	vue/valid-v-bind-sync	unexpectedUpdateIterationVariable	'.sync' modifiers cannot update the iteration variable 'index' itself.	end	94	48
+tests/rules/vue/valid-v-bind-sync/cases.vue:98:16	vue/valid-v-bind-sync	unexpectedInvalidElement	'.sync' modifiers aren't supported on <div> non Vue-components.	end	98	31
+tests/rules/vue/valid-v-bind-sync/cases.vue:100:34	vue/valid-v-bind-sync	unexpectedNonLhsExpression	'.sync' modifiers require the attribute value which is valid as LHS.	end	100	39
+tests/rules/vue/valid-v-bind-sync/cases.vue:101:37	vue/valid-v-bind-sync	unexpectedNonLhsExpression	'.sync' modifiers require the attribute value which is valid as LHS.	end	101	42
+tests/rules/vue/valid-v-bind-sync/cases.vue:102:32	vue/valid-v-bind-sync	unexpectedOptionalChaining	Optional chaining cannot appear in 'v-bind' with '.sync' modifiers.	end	102	40
+tests/rules/vue/valid-v-bind-sync/cases.vue:103:32	vue/valid-v-bind-sync	unexpectedOptionalChaining	Optional chaining cannot appear in 'v-bind' with '.sync' modifiers.	end	103	44
+tests/rules/vue/valid-v-bind-sync/cases.vue:104:32	vue/valid-v-bind-sync	unexpectedOptionalChaining	Optional chaining cannot appear in 'v-bind' with '.sync' modifiers.	end	104	41
+tests/rules/vue/valid-v-bind-sync/cases.vue:105:32	vue/valid-v-bind-sync	unexpectedNullObject	'.sync' modifier has potential null object property access.	end	105	40
+tests/rules/vue/valid-v-bind-sync/cases.vue:106:32	vue/valid-v-bind-sync	unexpectedNullObject	'.sync' modifier has potential null object property access.	end	106	42
+tests/rules/vue/valid-v-bind-sync/cases.vue:107:32	vue/valid-v-bind-sync	unexpectedNullObject	'.sync' modifier has potential null object property access.	end	107	42
+tests/rules/vue/valid-v-bind-sync/cases.vue:108:28	vue/valid-v-bind-sync	unexpectedInvalidElement	'.sync' modifiers aren't supported on <tr> non Vue-components.	end	108	59
+tests/rules/vue/valid-v-bind-sync/cases.vue:109:27	vue/valid-v-bind-sync	unexpectedInvalidElement	'.sync' modifiers aren't supported on <tr> non Vue-components.	end	109	58
+tests/rules/vue/valid-v-bind-sync/extra/cases.vue:3:10	vue/valid-v-bind-sync	unexpectedInvalidElement	'.sync' modifiers aren't supported on <div> non Vue-components.	end	3	23
+tests/rules/vue/valid-v-bind-sync/extra/cases.vue:4:24	vue/valid-v-bind-sync	unexpectedOptionalChaining	Optional chaining cannot appear in 'v-bind' with '.sync' modifiers.	end	4	28
+tests/rules/vue/valid-v-bind-sync/extra/cases.vue:4:41	vue/valid-v-bind-sync	unexpectedNullObject	'.sync' modifier has potential null object property access.	end	4	49
+tests/rules/vue/valid-v-bind-sync/extra/cases.vue:4:62	vue/valid-v-bind-sync	unexpectedNullObject	'.sync' modifier has potential null object property access.	end	4	68
+tests/rules/vue/valid-v-bind-sync/extra/cases.vue:4:116	vue/valid-v-bind-sync	unexpectedNonLhsExpression	'.sync' modifiers require the attribute value which is valid as LHS.	end	4	121
+tests/rules/vue/valid-v-bind-sync/extra/cases.vue:5:52	vue/valid-v-bind-sync	unexpectedUpdateIterationVariable	'.sync' modifiers cannot update the iteration variable 'x' itself.	end	5	53
+tests/rules/vue/valid-v-bind-sync/extra/cases.vue:5:78	vue/valid-v-bind-sync	unexpectedUpdateIterationVariable	'.sync' modifiers cannot update the iteration variable 'i' itself.	end	5	79
+tests/rules/vue/valid-v-bind-sync/extra/cases.vue:6:46	vue/valid-v-bind-sync	unexpectedUpdateIterationVariable	'.sync' modifiers cannot update the iteration variable 's' itself.	end	6	47
+tests/rules/vue/valid-v-bind-sync/extra/cases.vue:8:40	vue/valid-v-bind-sync	unexpectedNonLhsExpression	'.sync' modifiers require the attribute value which is valid as LHS.	end	8	42

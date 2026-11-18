@@ -1,0 +1,4 @@
+tests/rules/vue/prefer-prop-type-boolean-first/cases.vue:4:17	vue/prefer-prop-type-boolean-first	shouldBeFirst	Type `Boolean` should be at first in prop types.
+tests/rules/vue/prefer-prop-type-boolean-first/cases.vue:5:25	vue/prefer-prop-type-boolean-first	shouldBeFirst	Type `Boolean` should be at first in prop types.
+tests/rules/vue/prefer-prop-type-boolean-first/cases.vue:8:19	vue/prefer-prop-type-boolean-first	shouldBeFirst	Type `Boolean` should be at first in prop types.
+tests/rules/vue/prefer-prop-type-boolean-first/setup/cases.vue:2:27	vue/prefer-prop-type-boolean-first	shouldBeFirst	Type `Boolean` should be at first in prop types.

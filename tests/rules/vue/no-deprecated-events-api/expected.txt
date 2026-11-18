@@ -1,0 +1,7 @@
+tests/rules/vue/no-deprecated-events-api/cases.vue:4:10	vue/no-deprecated-events-api	noDeprecatedEventsApi	The Events api `$on`, `$off` `$once` is deprecated. Using external library instead, for example mitt.
+tests/rules/vue/no-deprecated-events-api/cases.vue:5:10	vue/no-deprecated-events-api	noDeprecatedEventsApi	The Events api `$on`, `$off` `$once` is deprecated. Using external library instead, for example mitt.
+tests/rules/vue/no-deprecated-events-api/cases.vue:6:10	vue/no-deprecated-events-api	noDeprecatedEventsApi	The Events api `$on`, `$off` `$once` is deprecated. Using external library instead, for example mitt.
+tests/rules/vue/no-deprecated-events-api/cases.vue:8:11	vue/no-deprecated-events-api	noDeprecatedEventsApi	The Events api `$on`, `$off` `$once` is deprecated. Using external library instead, for example mitt.
+tests/rules/vue/no-deprecated-events-api/cases.vue:9:13	vue/no-deprecated-events-api	noDeprecatedEventsApi	The Events api `$on`, `$off` `$once` is deprecated. Using external library instead, for example mitt.
+tests/rules/vue/no-deprecated-events-api/cases.vue:11:8	vue/no-deprecated-events-api	noDeprecatedEventsApi	The Events api `$on`, `$off` `$once` is deprecated. Using external library instead, for example mitt.
+tests/rules/vue/no-deprecated-events-api/cases.vue:12:10	vue/no-deprecated-events-api	noDeprecatedEventsApi	The Events api `$on`, `$off` `$once` is deprecated. Using external library instead, for example mitt.

@@ -1,0 +1,8 @@
+tests/rules/vue/component-definition-name-casing/cases.ts:3:15	vue/component-definition-name-casing	incorrectCase	Property name "my-component" is not PascalCase.	fix	61	73	MyComponent	end	3	29
+tests/rules/vue/component-definition-name-casing/cases.ts:5:15	vue/component-definition-name-casing	incorrectCase	Property name "my_component" is not PascalCase.	fix	128	140	MyComponent	end	5	29
+tests/rules/vue/component-definition-name-casing/cases.ts:7:19	vue/component-definition-name-casing	incorrectCase	Property name "my-mixin" is not PascalCase.	fix	191	199	MyMixin	end	7	29
+tests/rules/vue/component-definition-name-casing/cases.ts:8:17	vue/component-definition-name-casing	incorrectCase	Property name "vue-instance" is not PascalCase.	fix	221	233	VueInstance	end	8	31
+tests/rules/vue/component-definition-name-casing/cases.vue:3:9	vue/component-definition-name-casing	incorrectCase	Property name "foo-bar" is not PascalCase.	fix	45	52	FooBar	end	3	18
+tests/rules/vue/component-definition-name-casing/options-kebab/cases.ts:2:15	vue/component-definition-name-casing	incorrectCase	Property name "MyComponent" is not kebab-case.	fix	38	49	my-component	end	2	28
+tests/rules/vue/component-definition-name-casing/options-kebab/cases.ts:3:39	vue/component-definition-name-casing	incorrectCase	Property name "FooBar" is not kebab-case.	fix	95	101	foo-bar	end	3	47
+tests/rules/vue/component-definition-name-casing/setup/cases.vue:2:23	vue/component-definition-name-casing	incorrectCase	Property name "foo_bar" is not PascalCase.	fix	48	55	FooBar	end	2	32

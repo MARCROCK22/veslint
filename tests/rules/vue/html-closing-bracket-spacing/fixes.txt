@@ -1,0 +1,29 @@
+tests/rules/vue/html-closing-bracket-spacing/cases.vue:7:7	vue/html-closing-bracket-spacing	unexpected	Expected no space before '>', but found.	fix	189	190		end	7	9
+tests/rules/vue/html-closing-bracket-spacing/cases.vue:8:8	vue/html-closing-bracket-spacing	unexpected	Expected no space before '>', but found.	fix	199	200		end	8	10
+tests/rules/vue/html-closing-bracket-spacing/cases.vue:9:7	vue/html-closing-bracket-spacing	missing	Expected a space before '/>', but not found.	fix	208	208	 	end	9	9
+tests/rules/vue/html-closing-bracket-spacing/cases.vue:12:11	vue/html-closing-bracket-spacing	unexpected	Expected no space before '>', but found.	fix	236	237		end	12	13
+tests/rules/vue/html-closing-bracket-spacing/cases.vue:13:11	vue/html-closing-bracket-spacing	missing	Expected a space before '/>', but not found.	fix	255	255	 	end	13	13
+tests/rules/vue/html-closing-bracket-spacing/cases.vue:16:15	vue/html-closing-bracket-spacing	unexpected	Expected no space before '>', but found.	fix	287	288		end	16	17
+tests/rules/vue/html-closing-bracket-spacing/cases.vue:17:15	vue/html-closing-bracket-spacing	missing	Expected a space before '/>', but not found.	fix	310	310	 	end	17	17
+tests/rules/vue/html-closing-bracket-spacing/extra-opts/cases.vue:1:10	vue/html-closing-bracket-spacing	missing	Expected a space before '>', but not found.	fix	9	9	 	end	1	11
+tests/rules/vue/html-closing-bracket-spacing/extra-opts/cases.vue:4:16	vue/html-closing-bracket-spacing	unexpected	Expected no space before '/>', but found.	fix	53	54		end	4	19
+tests/rules/vue/html-closing-bracket-spacing/extra-opts/cases.vue:7:17	vue/html-closing-bracket-spacing	missing	Expected a space before '>', but not found.	fix	109	109	 	end	7	18
+tests/rules/vue/html-closing-bracket-spacing/extra-opts/cases.vue:9:19	vue/html-closing-bracket-spacing	unexpected	Expected no space before '/>', but found.	fix	140	143		end	9	24
+tests/rules/vue/html-closing-bracket-spacing/extra-opts/cases.vue:14:18	vue/html-closing-bracket-spacing	missing	Expected a space before '>', but not found.	fix	213	213	 	end	14	19
+tests/rules/vue/html-closing-bracket-spacing/extra-opts/cases.vue:16:9	vue/html-closing-bracket-spacing	missing	Expected a space before '>', but not found.	fix	235	235	 	end	16	10
+tests/rules/vue/html-closing-bracket-spacing/extra/cases.vue:2:7	vue/html-closing-bracket-spacing	unexpected	Expected no space before '>', but found.	fix	17	18		end	2	9
+tests/rules/vue/html-closing-bracket-spacing/extra/cases.vue:3:16	vue/html-closing-bracket-spacing	missing	Expected a space before '/>', but not found.	fix	35	35	 	end	3	18
+tests/rules/vue/html-closing-bracket-spacing/extra/cases.vue:6:12	vue/html-closing-bracket-spacing	unexpected	Expected no space before '>', but found.	fix	85	86		end	6	14
+tests/rules/vue/html-closing-bracket-spacing/extra/cases.vue:6:17	vue/html-closing-bracket-spacing	unexpected	Expected no space before '>', but found.	fix	90	91		end	6	19
+tests/rules/vue/html-closing-bracket-spacing/extra/cases.vue:8:8	vue/html-closing-bracket-spacing	unexpected	Expected no space before '>', but found.	fix	118	120		end	8	11
+tests/rules/vue/html-closing-bracket-spacing/extra/cases.vue:12:8	vue/html-closing-bracket-spacing	unexpected	Expected no space before '>', but found.	fix	179	181		end	12	11
+tests/rules/vue/html-closing-bracket-spacing/extra/cases.vue:13:11	vue/html-closing-bracket-spacing	unexpected	Expected no space before '>', but found.	fix	193	194		end	13	13
+tests/rules/vue/html-closing-bracket-spacing/no-template/cases.vue:1:18	vue/html-closing-bracket-spacing	unexpected	Expected no space before '>', but found.	fix	17	18		end	1	20
+tests/rules/vue/html-closing-bracket-spacing/no-template/cases.vue:5:7	vue/html-closing-bracket-spacing	unexpected	Expected no space before '>', but found.	fix	49	50		end	5	9
+tests/rules/vue/html-closing-bracket-spacing/no-template/cases.vue:5:16	vue/html-closing-bracket-spacing	unexpected	Expected no space before '>', but found.	fix	58	59		end	5	18
+tests/rules/vue/html-closing-bracket-spacing/options-339170f1/cases.vue:1:10	vue/html-closing-bracket-spacing	missing	Expected a space before '>', but not found.	fix	9	9	 	end	1	11
+tests/rules/vue/html-closing-bracket-spacing/options-339170f1/cases.vue:2:7	vue/html-closing-bracket-spacing	missing	Expected a space before '>', but not found.	fix	17	17	 	end	2	8
+tests/rules/vue/html-closing-bracket-spacing/options-339170f1/cases.vue:2:13	vue/html-closing-bracket-spacing	missing	Expected a space before '>', but not found.	fix	23	23	 	end	2	14
+tests/rules/vue/html-closing-bracket-spacing/options-339170f1/cases.vue:3:11	vue/html-closing-bracket-spacing	missing	Expected a space before '>', but not found.	fix	35	35	 	end	3	12
+tests/rules/vue/html-closing-bracket-spacing/options-de165379/cases.vue:1:10	vue/html-closing-bracket-spacing	missing	Expected a space before '>', but not found.	fix	9	9	 	end	1	11
+tests/rules/vue/html-closing-bracket-spacing/options-de165379/cases.vue:2:7	vue/html-closing-bracket-spacing	missing	Expected a space before '>', but not found.	fix	17	17	 	end	2	8

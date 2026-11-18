@@ -211,6 +211,10 @@ fn (mut c Checker) scope_tree(root C.TSNode) &ScopeTree {
 			c.scope_setup = default_scope_setup()
 		}
 		c.file_scopes = build_scope_tree_with(root, c.src, c.tokens, c.scope_setup)
+		// vue/jsx-uses-vars marks the variables of JSX element names as used for the other rules.
+		if vue_jsx_uses_vars in c.file_rules {
+			vue_mark_jsx_uses_vars(root, c.src, mut c.file_scopes)
+		}
 	}
 	return c.file_scopes
 }

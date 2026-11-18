@@ -1,0 +1,16 @@
+tests/rules/vue/array-bracket-spacing/cases.vue:2:10	vue/array-bracket-spacing	unexpectedSpaceAfter	There should be no space after '['.	fix	20	21		end	2	11
+tests/rules/vue/array-bracket-spacing/cases.vue:2:15	vue/array-bracket-spacing	unexpectedSpaceBefore	There should be no space before ']'.	fix	25	26		end	2	16
+tests/rules/vue/array-bracket-spacing/cases.vue:3:13	vue/array-bracket-spacing	unexpectedSpaceAfter	There should be no space after '['.	fix	47	48		end	3	14
+tests/rules/vue/array-bracket-spacing/cases.vue:3:15	vue/array-bracket-spacing	unexpectedSpaceBefore	There should be no space before ']'.	fix	49	50		end	3	16
+tests/rules/vue/array-bracket-spacing/cases.vue:4:23	vue/array-bracket-spacing	unexpectedSpaceAfter	There should be no space after '['.	fix	87	88		end	4	24
+tests/rules/vue/array-bracket-spacing/cases.vue:4:25	vue/array-bracket-spacing	unexpectedSpaceBefore	There should be no space before ']'.	fix	89	90		end	4	26
+tests/rules/vue/array-bracket-spacing/options-always/cases.vue:2:9	vue/array-bracket-spacing	missingSpaceAfter	A space is required after '['.	fix	20	20	 	end	2	10
+tests/rules/vue/array-bracket-spacing/options-always/cases.vue:2:14	vue/array-bracket-spacing	missingSpaceBefore	A space is required before ']'.	fix	24	24	 	end	2	15
+tests/rules/vue/array-bracket-spacing/options-always/cases.vue:3:23	vue/array-bracket-spacing	missingSpaceAfter	A space is required after '['.	fix	56	56	 	end	3	24
+tests/rules/vue/array-bracket-spacing/options-always/cases.vue:3:25	vue/array-bracket-spacing	missingSpaceBefore	A space is required before ']'.	fix	57	57	 	end	3	26
+tests/rules/vue/array-bracket-spacing/options-exceptions/cases.vue:2:10	vue/array-bracket-spacing	unexpectedSpaceAfter	There should be no space after '['.	fix	20	21		end	2	11
+tests/rules/vue/array-bracket-spacing/options-exceptions/cases.vue:2:15	vue/array-bracket-spacing	unexpectedSpaceBefore	There should be no space before ']'.	fix	25	26		end	2	16
+tests/rules/vue/array-bracket-spacing/options-exceptions/cases.vue:3:12	vue/array-bracket-spacing	missingSpaceAfter	A space is required after '['.	fix	47	47	 	end	3	13
+tests/rules/vue/array-bracket-spacing/options-exceptions/cases.vue:3:14	vue/array-bracket-spacing	missingSpaceBefore	A space is required before ']'.	fix	48	48	 	end	3	15
+tests/rules/vue/array-bracket-spacing/options-exceptions/cases.vue:3:23	vue/array-bracket-spacing	missingSpaceAfter	A space is required after '['.	fix	58	58	 	end	3	24
+tests/rules/vue/array-bracket-spacing/options-exceptions/cases.vue:3:25	vue/array-bracket-spacing	missingSpaceBefore	A space is required before ']'.	fix	59	59	 	end	3	26

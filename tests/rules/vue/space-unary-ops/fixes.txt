@@ -1,0 +1,9 @@
+tests/rules/vue/space-unary-ops/cases.vue:2:9	vue/space-unary-ops	unexpectedAfter	Unexpected space after unary operator '-'.	fix	20	21		end	2	12
+tests/rules/vue/space-unary-ops/cases.vue:3:12	vue/space-unary-ops	unexpectedAfter	Unexpected space after unary operator '!'.	fix	42	43		end	3	15
+tests/rules/vue/space-unary-ops/cases.vue:4:12	vue/space-unary-ops	wordOperator	Unary word operator 'typeof' must be followed by whitespace.	fix	66	66	 	end	4	21
+tests/rules/vue/space-unary-ops/cases.vue:5:16	vue/space-unary-ops	unexpectedBefore	Unexpected space before unary operator '++'.	fix	90	91		end	5	20
+tests/rules/vue/space-unary-ops/cases.vue:7:12	vue/space-unary-ops	wordOperator	Unary word operator 'void' must be followed by whitespace.	fix	136	136	 	end	7	19
+tests/rules/vue/space-unary-ops/cases.vue:18:18	vue/space-unary-ops	unexpectedAfter	Unexpected space after unary operator '-'.	fix	256	257		end	18	21
+tests/rules/vue/space-unary-ops/options-nonwords/cases.vue:2:9	vue/space-unary-ops	operator	Unary operator '-' must be followed by whitespace.	fix	20	20	 	end	2	11
+tests/rules/vue/space-unary-ops/options-nonwords/cases.vue:3:12	vue/space-unary-ops	operator	Unary operator '!' must be followed by whitespace.	fix	41	41	 	end	3	14
+tests/rules/vue/space-unary-ops/options-nonwords/cases.vue:5:16	vue/space-unary-ops	operator	Unary operator '++' must be followed by whitespace.	fix	88	88	 	end	5	19

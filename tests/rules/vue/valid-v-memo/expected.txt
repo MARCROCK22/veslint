@@ -1,0 +1,21 @@
+tests/rules/vue/valid-v-memo/cases.vue:8:20	vue/valid-v-memo	unexpectedArgument	'v-memo' directives require no argument.
+tests/rules/vue/valid-v-memo/cases.vue:9:20	vue/valid-v-memo	unexpectedModifier	'v-memo' directives require no modifier.
+tests/rules/vue/valid-v-memo/cases.vue:10:13	vue/valid-v-memo	expectedValue	'v-memo' directives require that attribute value.
+tests/rules/vue/valid-v-memo/cases.vue:11:13	vue/valid-v-memo	expectedValue	'v-memo' directives require that attribute value.
+tests/rules/vue/valid-v-memo/cases.vue:13:22	vue/valid-v-memo	expectedArray	'v-memo' directives require the attribute value to be an array.
+tests/rules/vue/valid-v-memo/cases.vue:14:26	vue/valid-v-memo	expectedArray	'v-memo' directives require the attribute value to be an array.
+tests/rules/vue/valid-v-memo/cases.vue:14:31	vue/valid-v-memo	expectedArray	'v-memo' directives require the attribute value to be an array.
+tests/rules/vue/valid-v-memo/cases.vue:15:33	vue/valid-v-memo	expectedArray	'v-memo' directives require the attribute value to be an array.
+tests/rules/vue/valid-v-memo/cases.vue:16:22	vue/valid-v-memo	expectedArray	'v-memo' directives require the attribute value to be an array.
+tests/rules/vue/valid-v-memo/cases.vue:17:24	vue/valid-v-memo	expectedArray	'v-memo' directives require the attribute value to be an array.
+tests/rules/vue/valid-v-memo/cases.vue:19:37	vue/valid-v-memo	insideVFor	'v-memo' directive does not work inside 'v-for'.
+tests/rules/vue/valid-v-memo/extra/cases.vue:4:12	vue/valid-v-memo	insideVFor	'v-memo' directive does not work inside 'v-for'.
+tests/rules/vue/valid-v-memo/extra/cases.vue:6:15	vue/valid-v-memo	insideVFor	'v-memo' directive does not work inside 'v-for'.
+tests/rules/vue/valid-v-memo/extra/cases.vue:6:22	vue/valid-v-memo	unexpectedArgument	'v-memo' directives require no argument.
+tests/rules/vue/valid-v-memo/extra/cases.vue:6:26	vue/valid-v-memo	unexpectedModifier	'v-memo' directives require no modifier.
+tests/rules/vue/valid-v-memo/extra/cases.vue:10:10	vue/valid-v-memo	expectedValue	'v-memo' directives require that attribute value.
+tests/rules/vue/valid-v-memo/extra/cases.vue:11:10	vue/valid-v-memo	expectedValue	'v-memo' directives require that attribute value.
+tests/rules/vue/valid-v-memo/extra/cases.vue:14:31	vue/valid-v-memo	expectedArray	'v-memo' directives require the attribute value to be an array.
+tests/rules/vue/valid-v-memo/extra/cases.vue:15:18	vue/valid-v-memo	expectedArray	'v-memo' directives require the attribute value to be an array.
+tests/rules/vue/valid-v-memo/extra/cases.vue:16:18	vue/valid-v-memo	expectedArray	'v-memo' directives require the attribute value to be an array.
+tests/rules/vue/valid-v-memo/extra/cases.vue:19:19	vue/valid-v-memo	expectedArray	'v-memo' directives require the attribute value to be an array.

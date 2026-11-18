@@ -1,0 +1,9 @@
+tests/rules/vue/no-reserved-props/cases.vue:3:11	vue/no-reserved-props	reserved	'key' is a reserved attribute and cannot be used as props.	end	3	16
+tests/rules/vue/no-reserved-props/cases.vue:3:18	vue/no-reserved-props	reserved	'ref' is a reserved attribute and cannot be used as props.	end	3	23
+tests/rules/vue/no-reserved-props/options-2/cases.vue:3:12	vue/no-reserved-props	reserved	'key' is a reserved attribute and cannot be used as props.	end	3	23
+tests/rules/vue/no-reserved-props/options-2/cases.vue:3:25	vue/no-reserved-props	reserved	'is' is a reserved attribute and cannot be used as props.	end	3	35
+tests/rules/vue/no-reserved-props/options-2/cases.vue:3:37	vue/no-reserved-props	reserved	'slot-scope' is a reserved attribute and cannot be used as props.	end	3	54
+tests/rules/vue/no-reserved-props/options-2/cases.vue:3:56	vue/no-reserved-props	reserved	'slot-scope' is a reserved attribute and cannot be used as props.	end	3	76
+tests/rules/vue/no-reserved-props/options-2/cases.vue:3:78	vue/no-reserved-props	reserved	'class' is a reserved attribute and cannot be used as props.	end	3	91
+tests/rules/vue/no-reserved-props/setup/cases.vue:3:3	vue/no-reserved-props	reserved	'key' is a reserved attribute and cannot be used as props.	end	3	14
+tests/rules/vue/no-reserved-props/setup/cases.vue:4:3	vue/no-reserved-props	reserved	'ref' is a reserved attribute and cannot be used as props.	end	4	16

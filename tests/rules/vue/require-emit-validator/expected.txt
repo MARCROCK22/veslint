@@ -1,0 +1,6 @@
+tests/rules/vue/require-emit-validator/cases.vue:4:5	vue/require-emit-validator	skipped	Emit "a" should not skip validation, or you may define a validator function with no parameters.
+tests/rules/vue/require-emit-validator/cases.vue:7:5	vue/require-emit-validator	missing	Emit "d" should define at least its validator function.
+tests/rules/vue/require-emit-validator/cases.vue:9:5	vue/require-emit-validator	skipped	Emit "Unknown emit" should not skip validation, or you may define a validator function with no parameters.
+tests/rules/vue/require-emit-validator/setup/cases.vue:2:27	vue/require-emit-validator	missing	Emit "a" should define at least its validator function.
+tests/rules/vue/require-emit-validator/setup/cases.vue:2:32	vue/require-emit-validator	missing	Emit "b" should define at least its validator function.
+tests/rules/vue/require-emit-validator/setup/cases.vue:2:35	vue/require-emit-validator	missing	Emit "Unknown emit" should define at least its validator function.

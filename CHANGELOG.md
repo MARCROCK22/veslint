@@ -2,6 +2,14 @@
 
 Each version is a release on GitHub with the veslint binaries (Linux x64, Windows x64) and the VS Code extension. The section of a version is the text of its release.
 
+## 0.31.0
+
+- **112 more rules of eslint-plugin-vue 10.12.1 (161 of its 256):**
+  - **Template:** 28 rules, among them `attribute-hyphenation`, `v-on-event-hyphenation`, `html-quotes`, `html-closing-bracket-newline` and `-spacing`, `first-attribute-linebreak`, `this-in-template`, `no-unused-vars`, `no-dupe-v-else-if`, `v-slot-style`, `no-deprecated-slot-attribute` and `valid-v-memo`.
+  - **Components:** 46 rules on the script side, with the detection of Vue components (options objects, `defineComponent`, `<script setup>` and its macros: `defineProps`, `defineEmits`, `defineModel`…), among them `prop-name-casing`, `require-prop-types`, `require-default-export`, `no-reserved-keys`, `no-props-shadow`, `define-props-declaration` and `component-definition-name-casing`. Eight of them read types, as their TypeScript versions do.
+  - **The template's expressions:** the 38 rules that apply an ESLint or @stylistic rule to them (`vue/eqeqeq`, `vue/no-extra-parens`, `vue/space-infix-ops`, `vue/object-curly-spacing`…), each with ESLint's or @stylistic's version as eslint-plugin-vue picks it (@stylistic when the project has it).
+- Each one gives what ESLint gives and passes the cases of its upstream tests: 2,795 cases of eslint-plugin-vue in all, 2 of them known differences (`tests/upstream/known.txt`).
+
 ## 0.30.0
 
 - **eslint-plugin-vue 10.12.1, the first 49 rules: the templates of `.vue` files are linted.** `vue/comment-directive` (`<!-- eslint-disable -->`, `-line`, `-next-line` and `eslint-enable` in a template, with the unused ones reported as the `vue/vue` processor does), `vue/no-parsing-error` (TypeScript's own messages for template expressions), the `valid-v-*` rules (bind, cloak, html, once, pre, text, show, if, else-if, else, is, on), the `no-deprecated-*` template rules, `require-v-for-key`, `no-use-v-if-with-v-for`, `v-on-style`, `v-bind-style`, `html-end-tags`, `mustache-interpolation-spacing` and more: the README lists them. Each one gives what ESLint gives, with its fixes, and passes the cases of its upstream tests (the ones with a JavaScript script are run with `lang="ts"`, their expectation taken from ESLint on the converted case). The other `vue/*` rules come in the next versions and are skipped with a warning.

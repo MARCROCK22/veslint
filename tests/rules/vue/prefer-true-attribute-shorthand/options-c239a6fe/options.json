@@ -1,0 +1,1 @@
+["always", {"except": ["value", "/^foo-/"]}]

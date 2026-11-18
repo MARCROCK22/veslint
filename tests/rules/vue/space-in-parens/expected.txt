@@ -1,0 +1,16 @@
+tests/rules/vue/space-in-parens/cases.vue:2:12	vue/space-in-parens	rejectedOpeningSpace	There should be no space after this paren.
+tests/rules/vue/space-in-parens/cases.vue:2:14	vue/space-in-parens	rejectedClosingSpace	There should be no space before this paren.
+tests/rules/vue/space-in-parens/cases.vue:3:13	vue/space-in-parens	rejectedOpeningSpace	There should be no space after this paren.
+tests/rules/vue/space-in-parens/cases.vue:3:15	vue/space-in-parens	rejectedClosingSpace	There should be no space before this paren.
+tests/rules/vue/space-in-parens/cases.vue:4:19	vue/space-in-parens	rejectedOpeningSpace	There should be no space after this paren.
+tests/rules/vue/space-in-parens/cases.vue:4:19	vue/space-in-parens	rejectedClosingSpace	There should be no space before this paren.
+tests/rules/vue/space-in-parens/cases.vue:5:16	vue/space-in-parens	rejectedOpeningSpace	There should be no space after this paren.
+tests/rules/vue/space-in-parens/cases.vue:5:28	vue/space-in-parens	rejectedClosingSpace	There should be no space before this paren.
+tests/rules/vue/space-in-parens/cases.vue:15:21	vue/space-in-parens	rejectedOpeningSpace	There should be no space after this paren.
+tests/rules/vue/space-in-parens/cases.vue:15:23	vue/space-in-parens	rejectedClosingSpace	There should be no space before this paren.
+tests/rules/vue/space-in-parens/options-always/cases.vue:2:11	vue/space-in-parens	missingOpeningSpace	There must be a space after this paren.
+tests/rules/vue/space-in-parens/options-always/cases.vue:2:13	vue/space-in-parens	missingClosingSpace	There must be a space before this paren.
+tests/rules/vue/space-in-parens/options-exceptions/cases.vue:2:12	vue/space-in-parens	rejectedOpeningSpace	There should be no space after this paren.
+tests/rules/vue/space-in-parens/options-exceptions/cases.vue:2:14	vue/space-in-parens	rejectedClosingSpace	There should be no space before this paren.
+tests/rules/vue/space-in-parens/options-exceptions/cases.vue:3:19	vue/space-in-parens	rejectedOpeningSpace	There should be no space after this paren.
+tests/rules/vue/space-in-parens/options-exceptions/cases.vue:3:19	vue/space-in-parens	rejectedClosingSpace	There should be no space before this paren.

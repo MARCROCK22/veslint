@@ -1,0 +1,4 @@
+tests/rules/vue/dot-location/cases.vue:3:5	vue/dot-location	expectedDotAfterObject	Expected dot to be on same line as object.	fix	25	31	.\n    	end	3	6
+tests/rules/vue/dot-location/cases.vue:7:5	vue/dot-location	expectedDotAfterObject	Expected dot to be on same line as object.	fix	78	84	.\n    	end	7	6
+tests/rules/vue/dot-location/cases.vue:9:5	vue/dot-location	expectedDotAfterObject	Expected dot to be on same line as object.	fix	115	122	?.\n    	end	9	7
+tests/rules/vue/dot-location/options-property/cases.vue:4:15	vue/dot-location	expectedDotBeforeProperty	Expected dot to be on same line as property.	fix	53	59	\n    .	end	4	16

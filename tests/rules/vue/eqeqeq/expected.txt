@@ -1,0 +1,8 @@
+tests/rules/vue/eqeqeq/cases.vue:2:11	vue/eqeqeq	unexpected	Expected '===' and instead saw '=='.
+tests/rules/vue/eqeqeq/cases.vue:3:14	vue/eqeqeq	unexpected	Expected '!==' and instead saw '!='.
+tests/rules/vue/eqeqeq/cases.vue:4:23	vue/eqeqeq	unexpected	Expected '===' and instead saw '=='.
+tests/rules/vue/eqeqeq/cases.vue:5:22	vue/eqeqeq	unexpected	Expected '===' and instead saw '=='.
+tests/rules/vue/eqeqeq/cases.vue:16:20	vue/eqeqeq	unexpected	Expected '===' and instead saw '=='.
+tests/rules/vue/eqeqeq/options-null-never/cases.vue:3:14	vue/eqeqeq	unexpected	Expected '==' and instead saw '==='.
+tests/rules/vue/eqeqeq/options-null-never/cases.vue:4:14	vue/eqeqeq	unexpected	Expected '===' and instead saw '=='.
+tests/rules/vue/eqeqeq/options-smart/cases.vue:2:11	vue/eqeqeq	unexpected	Expected '===' and instead saw '=='.

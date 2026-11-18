@@ -1,0 +1,10 @@
+tests/rules/vue/no-deprecated-delete-set/cases.vue:5:10	vue/no-deprecated-delete-set	deprecated	The `$delete`, `$set` is deprecated.	end	5	14
+tests/rules/vue/no-deprecated-delete-set/cases.vue:6:10	vue/no-deprecated-delete-set	deprecated	The `$delete`, `$set` is deprecated.	end	6	17
+tests/rules/vue/no-deprecated-delete-set/cases.vue:7:9	vue/no-deprecated-delete-set	deprecated	The `$delete`, `$set` is deprecated.	end	7	12
+tests/rules/vue/no-deprecated-delete-set/cases.vue:8:9	vue/no-deprecated-delete-set	deprecated	The `$delete`, `$set` is deprecated.	end	8	15
+tests/rules/vue/no-deprecated-delete-set/cases.vue:10:8	vue/no-deprecated-delete-set	deprecated	The `$delete`, `$set` is deprecated.	end	10	12
+tests/rules/vue/no-deprecated-delete-set/cases.vue:14:1	vue/no-deprecated-delete-set	deprecated	The `$delete`, `$set` is deprecated.	end	14	4
+tests/rules/vue/no-deprecated-delete-set/cases.vue:15:1	vue/no-deprecated-delete-set	deprecated	The `$delete`, `$set` is deprecated.	end	15	7
+tests/rules/vue/no-deprecated-delete-set/setup/cases.vue:4:5	vue/no-deprecated-delete-set	deprecated	The `$delete`, `$set` is deprecated.	end	4	8
+tests/rules/vue/no-deprecated-delete-set/setup/cases.vue:7:10	vue/no-deprecated-delete-set	deprecated	The `$delete`, `$set` is deprecated.	end	7	17
+tests/rules/vue/no-deprecated-delete-set/setup/cases.vue:7:10	vue/no-deprecated-delete-set	deprecated	The `$delete`, `$set` is deprecated.	end	7	17

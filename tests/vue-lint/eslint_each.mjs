@@ -5,6 +5,13 @@ import { createRequire } from 'node:module';
 import path from 'node:path';
 const [eslintPackage, config, ...files] = process.argv.slice(2);
 const { ESLint } = createRequire(path.resolve(eslintPackage))('eslint');
+// eslint-plugin-vue makes its wrapper rules when it loads, of ESLint Stylistic's rules when
+// @stylistic/eslint-plugin resolves from the current directory: it loads where veslint resolves the
+// configuration with bun (VESLINT_ESLINT_DIR, the directory of that ESLint), as veslint decides.
+const here = process.cwd();
+process.chdir(path.dirname(path.dirname(path.dirname(path.resolve(eslintPackage)))));
+createRequire(import.meta.url)('../../build/upstream/vue-deps/node_modules/eslint-plugin-vue');
+process.chdir(here);
 const eslint = new ESLint({ overrideConfigFile: config });
 const results = [];
 for (const file of files) {
