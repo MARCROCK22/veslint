@@ -28,13 +28,15 @@
     "lint",
     "typescript-eslint",
     "vue",
+    "svelte",
     "veslint"
   ],
   "main": "./extension.js",
   "activationEvents": [
     "onLanguage:typescript",
     "onLanguage:typescriptreact",
-    "onLanguage:vue"
+    "onLanguage:vue",
+    "onLanguage:svelte"
   ],
   "contributes": {
     "commands": [
