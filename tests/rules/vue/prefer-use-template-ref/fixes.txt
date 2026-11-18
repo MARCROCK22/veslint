@@ -1,0 +1,6 @@
+tests/rules/vue/prefer-use-template-ref/arrow/cases.vue:9:15	vue/prefer-use-template-ref	preferUseTemplateRef	Replace 'ref' with 'useTemplateRef'.	end	9	20
+tests/rules/vue/prefer-use-template-ref/cases.vue:12:14	vue/prefer-use-template-ref	preferUseTemplateRef	Replace 'ref' with 'useTemplateRef'.	end	12	19
+tests/rules/vue/prefer-use-template-ref/cases.vue:13:15	vue/prefer-use-template-ref	preferUseTemplateRef	Replace 'shallowRef' with 'useTemplateRef'.	end	13	45
+tests/rules/vue/prefer-use-template-ref/cases.vue:14:13	vue/prefer-use-template-ref	preferUseTemplateRef	Replace 'ref' with 'useTemplateRef'.	end	14	22
+tests/rules/vue/prefer-use-template-ref/options-api/cases.vue:10:15	vue/prefer-use-template-ref	preferUseTemplateRef	Replace 'ref' with 'useTemplateRef'.	end	10	20
+tests/rules/vue/prefer-use-template-ref/options-api/cases.vue:11:15	vue/prefer-use-template-ref	preferUseTemplateRef	Replace 'shallowRef' with 'useTemplateRef'.	end	11	27

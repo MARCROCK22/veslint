@@ -1,0 +1,7 @@
+tests/rules/vue/no-deprecated-dollar-scopedslots-api/cases.vue:2:16	vue/no-deprecated-dollar-scopedslots-api	deprecated	The `$scopedSlots` is deprecated.	fix	26	38	$slots	end	2	28
+tests/rules/vue/no-deprecated-dollar-scopedslots-api/cases.vue:2:38	vue/no-deprecated-dollar-scopedslots-api	deprecated	The `$scopedSlots` is deprecated.	fix	48	60	$slots	end	2	50
+tests/rules/vue/no-deprecated-dollar-scopedslots-api/cases.vue:4:8	vue/no-deprecated-dollar-scopedslots-api	deprecated	The `$scopedSlots` is deprecated.	fix	139	151	$slots	end	4	20
+tests/rules/vue/no-deprecated-dollar-scopedslots-api/cases.vue:11:22	vue/no-deprecated-dollar-scopedslots-api	deprecated	The `$scopedSlots` is deprecated.	fix	267	279	$slots	end	11	34
+tests/rules/vue/no-deprecated-dollar-scopedslots-api/cases.vue:11:39	vue/no-deprecated-dollar-scopedslots-api	deprecated	The `$scopedSlots` is deprecated.	fix	284	296	$slots	end	11	51
+tests/rules/vue/no-deprecated-dollar-scopedslots-api/cases.vue:11:59	vue/no-deprecated-dollar-scopedslots-api	deprecated	The `$scopedSlots` is deprecated.	fix	304	316	$slots	end	11	71
+tests/rules/vue/no-deprecated-dollar-scopedslots-api/cases.vue:14:22	vue/no-deprecated-dollar-scopedslots-api	deprecated	The `$scopedSlots` is deprecated.	fix	397	409	$slots	end	14	34

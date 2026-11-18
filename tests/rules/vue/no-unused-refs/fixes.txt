@@ -1,0 +1,4 @@
+tests/rules/vue/no-unused-refs/cases.vue:3:12	vue/no-unused-refs	unused	'unused' is defined as ref, but never used.	end	3	20
+tests/rules/vue/no-unused-refs/cases.vue:10:12	vue/no-unused-refs	unused	'' is defined as ref, but never used.	end	10	14
+tests/rules/vue/no-unused-refs/setup/cases.vue:3:12	vue/no-unused-refs	unused	'other' is defined as ref, but never used.	end	3	19
+tests/rules/vue/no-unused-refs/setup/cases.vue:5:27	vue/no-unused-refs	unused	'loop' is defined as ref, but never used.	end	5	33

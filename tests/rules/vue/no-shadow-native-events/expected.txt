@@ -1,0 +1,14 @@
+tests/rules/vue/no-shadow-native-events/cases.vue:2:25	vue/no-shadow-native-events	violation	Avoid shadowing the native event "click".
+tests/rules/vue/no-shadow-native-events/cases.vue:3:25	vue/no-shadow-native-events	violation	Avoid shadowing the native event "CLICK".
+tests/rules/vue/no-shadow-native-events/cases.vue:4:24	vue/no-shadow-native-events	violation	Avoid shadowing the native event "focus".
+tests/rules/vue/no-shadow-native-events/cases.vue:8:27	vue/no-shadow-native-events	violation	Avoid shadowing the native event "click".
+tests/rules/vue/no-shadow-native-events/cases.vue:8:36	vue/no-shadow-native-events	violation	Avoid shadowing the native event "Input".
+tests/rules/vue/no-shadow-native-events/cases.vue:9:6	vue/no-shadow-native-events	violation	Avoid shadowing the native event "keydown".
+tests/rules/vue/no-shadow-native-events/cases.vue:10:8	vue/no-shadow-native-events	violation	Avoid shadowing the native event "keyup".
+tests/rules/vue/no-shadow-native-events/cases.vue:14:12	vue/no-shadow-native-events	violation	Avoid shadowing the native event "submit".
+tests/rules/vue/no-shadow-native-events/cases.vue:14:26	vue/no-shadow-native-events	violation	Avoid shadowing the native event "change".
+tests/rules/vue/no-shadow-native-events/cases.vue:15:31	vue/no-shadow-native-events	violation	Avoid shadowing the native event "scroll".
+tests/rules/vue/no-shadow-native-events/cases.vue:16:33	vue/no-shadow-native-events	violation	Avoid shadowing the native event "blur".
+tests/rules/vue/no-shadow-native-events/typed/cases.vue:3:13	vue/no-shadow-native-events	violation	Avoid shadowing the native event "click".
+tests/rules/vue/no-shadow-native-events/typed/cases.vue:3:13	vue/no-shadow-native-events	violation	Avoid shadowing the native event "focus".
+tests/rules/vue/no-shadow-native-events/typed/cases.vue:4:13	vue/no-shadow-native-events	violation	Avoid shadowing the native event "submit".

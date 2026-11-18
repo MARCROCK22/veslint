@@ -306,6 +306,19 @@ pub fn check_options(rule string, options []json2.Any) !bool {
 		vue_no_unsupported_features { vnuf_options(options)! }
 		vue_max_len { vmaxlen_options(options)! }
 		vue_attributes_order { vattro_options(options)! }
+		vue_no_duplicate_attr_inheritance { vndai_options(options)! }
+		vue_no_unused_components { vnuc_options(options)! }
+		vue_no_template_shadow { vnts_options(options)! }
+		vue_no_undef_directives { vnud_options(options)! }
+		vue_component_name_in_template_casing { vcnitc_options(options)! }
+		vue_custom_event_name_casing { vcenc_options(options)! }
+		vue_no_restricted_custom_event { vnrce_options(options)! }
+		vue_require_explicit_emits { vree_options(options)! }
+		vue_no_undef_components { vnuco_options(options)! }
+		vue_v_on_handler_style { vohs_options(options)! }
+		vue_no_mutating_props { vnmp_options(options)! }
+		vue_no_unused_properties { vnup_options(options)! }
+		vue_no_undef_properties { vnudp_options(options)! }
 		else { return false }
 	}
 	return true
