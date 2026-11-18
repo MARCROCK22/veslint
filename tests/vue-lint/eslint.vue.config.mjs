@@ -24,6 +24,8 @@ const { plugin: seyfert } = createRequire(import.meta.url)(
 const vue = createRequire(import.meta.url)('../../build/upstream/vue-deps/node_modules/eslint-plugin-vue');
 
 const rules = path.join(import.meta.dirname, '..', 'rules');
+// The options of the rules whose schema needs some (tests/rules/required_options.json).
+const required = JSON.parse(fs.readFileSync(path.join(import.meta.dirname, '..', 'rules', 'required_options.json'), 'utf8'));
 const ported = process.env.VUE_LINT_RULES
   ? Object.keys(JSON.parse(fs.readFileSync(process.env.VUE_LINT_RULES, 'utf8')).rules)
   : fs
@@ -42,6 +44,6 @@ export default [
     },
     plugins: { '@typescript-eslint': tseslint.plugin, '@stylistic': stylistic, perfectionist, marcrock, seyfert, unicorn, vue },
     processor: 'vue/vue',
-    rules: Object.fromEntries(ported.map(rule => [rule, 'error'])),
+    rules: Object.fromEntries(ported.map(rule => [rule, required[rule] ? ['error', ...required[rule]] : 'error'])),
   },
 ];

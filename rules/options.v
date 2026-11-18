@@ -375,6 +375,7 @@ pub fn check_options(rule string, options []json2.Any) !bool {
 		svelte_html_self_closing { shsc_options(options)! }
 		svelte_block_lang { sbl_options(options)! }
 		svelte_prefer_class_directive { spcd_options(options)! }
+		svelte_no_restricted_html_elements { snrhe_options(options)! }
 		else { return false }
 	}
 	return true

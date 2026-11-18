@@ -1,0 +1,7 @@
+tests/rules/svelte/no-restricted-html-elements/objects/cases.svelte:5:1	svelte/no-restricted-html-elements	error	Unexpected use of forbidden HTML element div.
+tests/rules/svelte/no-restricted-html-elements/objects/cases.svelte:6:1	svelte/no-restricted-html-elements	error	Unexpected use of forbidden HTML element marquee.
+tests/rules/svelte/no-restricted-html-elements/objects/cases.svelte:8:1	svelte/no-restricted-html-elements	error	Use the Button component.
+tests/rules/svelte/no-restricted-html-elements/objects/cases.svelte:11:4	svelte/no-restricted-html-elements	error	Unexpected use of forbidden HTML element marquee.
+tests/rules/svelte/no-restricted-html-elements/strings/cases.svelte:6:1	svelte/no-restricted-html-elements	error	Unexpected use of forbidden HTML element marquee.
+tests/rules/svelte/no-restricted-html-elements/strings/cases.svelte:7:1	svelte/no-restricted-html-elements	error	Unexpected use of forbidden HTML element blink.
+tests/rules/svelte/no-restricted-html-elements/strings/cases.svelte:11:4	svelte/no-restricted-html-elements	error	Unexpected use of forbidden HTML element marquee.

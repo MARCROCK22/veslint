@@ -18,7 +18,8 @@ trap 'rm -rf "$TMP"' EXIT
 (cd "$ROOT" && python3 - > "$DIR/rules.json") <<'PY'
 import json, os
 rules = sorted(os.path.relpath(d, 'tests/rules') for d, _, files in os.walk('tests/rules') if 'expected.txt' in files and 'node_modules' not in d)
-print(json.dumps({'rules': {r: 'error' for r in rules}}, indent=1))
+required = json.load(open('tests/rules/required_options.json', encoding='utf-8'))
+print(json.dumps({'rules': {r: ['error', *required[r]] if r in required else 'error' for r in rules}}, indent=1))
 PY
 export VUE_LINT_RULES=$DIR/rules.json
 cd fixtures
