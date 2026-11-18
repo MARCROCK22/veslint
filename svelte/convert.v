@@ -1039,7 +1039,7 @@ fn (mut c Conv) process_this_attribute(ch int, expr int, el int) {
 
 fn (mut c Conv) create_this_attribute(el int, start_index int, eq int, value string) int {
 	value_start := c.first_non_space(eq + 1)
-	quote := if c.code[value_start..].starts_with(value) {
+	quote := if at_(c.code, value_start, value) {
 		''
 	} else {
 		c.code[value_start..value_start + 1]
@@ -1107,7 +1107,7 @@ fn (c &Conv) find_start_index_of_this(ch int) ?int {
 fn (c &Conv) find_this(from int, to int) int {
 	mut i := from
 	for i < to && i < c.code.len {
-		if c.code[i..].starts_with('this') {
+		if at_(c.code, i, 'this') {
 			return i
 		}
 		i++
@@ -1147,7 +1147,7 @@ fn (mut c Conv) extract_element_tags(el int, _name string, build NameBuilder) {
 		c.doc.nodes[st].self_closing = true
 		return
 	}
-	end_open := c.code[..n.end - 1].last_index('<') or { -1 }
+	end_open := last_byte_before(c.code, `<`, n.end - 1)
 	if end_open <= start_tag_end - 1 {
 		return
 	}

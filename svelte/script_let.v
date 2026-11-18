@@ -76,6 +76,8 @@ fn (mut c Conv) restore() ! {
 	doc.pre_u16 = c.pre_code_u16()
 	if c.started {
 		doc.separator = c.trimmed_len
+		prefix := if c.trimmed_len + 2 > c.code.len { c.trimmed_len + 2 } else { c.code.len }
+		doc.lets_index = new_text_index(pre[prefix..])
 	}
 	tree := parse_ts(c.parsers.ts, pre)!
 	doc.tree = tree
@@ -625,6 +627,10 @@ fn (c &Conv) pre_code_u16() string {
 // has_type_info is hasTypeInfo of a compiler expression: its text parsed by tree-sitter.
 fn (c &Conv) has_type_info(e int) bool {
 	ex := c.ca.exprs[e]
+	// An identifier (the usual handler) has none: no parse needed.
+	if ex.kind == .identifier && ex.leading.len == 0 && ex.trailing.len == 0 {
+		return false
+	}
 	text := c.code[ex.start..ex.end]
 	code := '(${text});'
 	tree := parse_ts(c.parsers.ts, code) or { return false }

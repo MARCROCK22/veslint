@@ -343,7 +343,10 @@ fn (c &Conv) build_function_bindings_type(cn CNode, element int, expr int) strin
 // is_function_bindings_text: the text between the `{` before the expression and the expression
 // is empty once comments are removed (isFunctionBindings).
 fn (c &Conv) is_function_bindings_text(start int) bool {
-	open := c.code[..start].last_index('{') or { return false }
+	open := last_byte_before(c.code, `{`, start)
+	if open < 0 {
+		return false
+	}
 	between := strip_js_comments(c.code[open + 1..start])
 	return is_blank(between)
 }

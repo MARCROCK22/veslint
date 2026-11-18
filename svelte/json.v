@@ -75,7 +75,7 @@ fn pre_u16_offset(d &Document, p int) int {
 	if p < prefix {
 		return d.utf16(d.separator) + (p - d.separator)
 	}
-	return prefix16 + u16_len_of(d.pre[prefix..p])
+	return prefix16 + d.lets_index.to_u16(p - prefix)
 }
 
 // ts_line_column is TypeScript's line (from 1) and character of a UTF-16 offset.

@@ -77,7 +77,7 @@ fn extract_blocks(code string, mut attrs BlockAttrs) []Block {
 	mut i := 0
 	for i < code.len {
 		lt := code.index_after('<', i) or { break }
-		if code[lt..].starts_with('<!--') {
+		if at_(code, lt, '<!--') {
 			e := code.index_after('-->', lt + 4) or {
 				// `<!--[\s\S]*?-->` does not match: the scan goes on from the next character.
 				i = lt + 1
@@ -88,7 +88,7 @@ fn extract_blocks(code string, mut attrs BlockAttrs) []Block {
 		}
 		mut tag := ''
 		for t in ['script', 'style', 'template'] {
-			if lower[lt + 1..].starts_with(t) {
+			if at_(lower, lt + 1, t) {
 				tag = t
 				break
 			}
@@ -332,13 +332,13 @@ fn parse_attribute_mustache(code string, i0 int) ?Mustache {
 	mut i := skip_html_spaces(code, i0 + 1)
 	mut start := i
 	for i < code.len {
-		if code[i..].starts_with('//') {
+		if at_(code, i, '//') {
 			nl := code.index_after('\n', i + 2) or { code.len - 1 }
 			i = skip_html_spaces(code, nl + 1)
 			start = i
 			continue
 		}
-		if code[i..].starts_with('/*') {
+		if at_(code, i, '/*') {
 			e := code.index_after('*/', i + 2) or { code.len - 2 }
 			i = skip_html_spaces(code, e + 2)
 			start = i

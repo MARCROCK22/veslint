@@ -13,7 +13,7 @@ fn (c &Conv) start_block_index(end_index int, block string) int {
 				_, n := code_point_at(c.code, next)
 				next += n
 			}
-			if next < c.code.len && c.code[next..].starts_with(block) {
+			if next < c.code.len && at_(c.code, next, block) {
 				return i
 			}
 		}

@@ -302,3 +302,29 @@ fn ascii_lower(s string) string {
 	}
 	return out.bytestr()
 }
+
+// at_ tells whether `prefix` is at offset i of s (s[i..].starts_with without the copy).
+@[inline]
+fn at_(s string, i int, prefix string) bool {
+	if i < 0 || s.len - i < prefix.len {
+		return false
+	}
+	for k in 0 .. prefix.len {
+		if s[i + k] != prefix[k] {
+			return false
+		}
+	}
+	return true
+}
+
+// last_byte_before is s[..end].last_index_u8(b) without the copy (-1 if absent).
+fn last_byte_before(s string, b u8, end int) int {
+	mut i := if end > s.len { s.len } else { end } - 1
+	for i >= 0 {
+		if s[i] == b {
+			return i
+		}
+		i--
+	}
+	return -1
+}

@@ -43,6 +43,8 @@ pub mut:
 	pre       string
 	pre_u16   string
 	separator int // `\n;` at [separator, separator+2) of pre (-1: no template expression)
+	// lets_index: the UTF-16 index of pre after the script part (the template expressions).
+	lets_index TextIndex
 	// segments map the pieces of pre copied from the file (template expressions) back to it.
 	segments []Segment
 	// template: the code handed to the compiler.

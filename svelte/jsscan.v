@@ -243,7 +243,7 @@ fn (mut s JsScanner) scan(i int, regex_ok bool) Tok {
 		return Tok{.invalid, i, src.len}
 	}
 	for p in js_puncts {
-		if src[i..].starts_with(p) {
+		if at_(src, i, p) {
 			if p == '?.' && i + 2 < src.len && src[i + 2].is_digit() {
 				continue
 			}

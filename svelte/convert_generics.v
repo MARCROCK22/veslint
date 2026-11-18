@@ -116,7 +116,7 @@ fn (mut c Conv) add_generic_type_alias(param int) {
 		c_start = c.g_file(es.nodes[constraint].start)
 		c_end = if default_ >= 0 { c.g_file(es.nodes[constraint].end) } else { c.g_file(pn.end) }
 		if idx := c.token_index(id_end, c_start, fn (code string, i int) bool {
-			return code[i..].starts_with('extends')
+			return at_(code, i, 'extends')
 		})
 		{
 			id_end = idx
@@ -180,12 +180,12 @@ fn (c &Conv) token_index(start int, end int, target fn (code string, i int) bool
 		if target(code, i) {
 			return i
 		}
-		if code[i..].starts_with('//') {
+		if at_(code, i, '//') {
 			lf := code.index_after('\n', i) or { return none }
 			i = lf + 1
 			continue
 		}
-		if code[i..].starts_with('/*') {
+		if at_(code, i, '/*') {
 			e := code.index_after('*/', i) or { return none }
 			i = e + 2
 			continue

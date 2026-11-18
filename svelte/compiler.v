@@ -30,12 +30,12 @@ fn compiler_ts(template string) bool {
 	mut i := 0
 	for i < template.len {
 		lt := template.index_after('<', i) or { return false }
-		if template[lt..].starts_with('<!--') {
+		if at_(template, lt, '<!--') {
 			e := template.index_after('-->', lt + 4) or { return false }
 			i = e + 3
 			continue
 		}
-		if template[lt..].starts_with('<script') && lt + 7 < template.len
+		if at_(template, lt, '<script') && lt + 7 < template.len
 			&& is_space_at(template, lt + 7) {
 			if lang := script_lang_regex_match(template, lt + 7) {
 				return lang == 'ts'
@@ -88,7 +88,7 @@ fn script_lang_regex_match(t string, i int) ?string {
 fn last_index_in(t string, needle string, lo int, hi int) ?int {
 	mut k := hi - needle.len
 	for k >= lo {
-		if t[k..].starts_with(needle) {
+		if at_(t, k, needle) {
 			return k
 		}
 		k--
@@ -1842,7 +1842,7 @@ fn (mut p CParser) read_script(start int, attributes []int) !int {
 	mut close_start := -1
 	mut close_end := -1
 	for i < p.src.len {
-		if p.src[i] == `<` && p.src[i..].starts_with('</script') {
+		if p.src[i] == `<` && at_(p.src, i, '</script') {
 			mut k := i + 8
 			for k < p.src.len {
 				ok, n := is_js_ws(p.src, k)
