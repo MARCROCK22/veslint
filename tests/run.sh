@@ -666,8 +666,7 @@ if command -v bun > /dev/null && [[ -d build/eval/spider-byte/node_modules/eslin
 	fi
 	# A runes function of the file name in the svelteConfig of an eslint.config.mjs: the resolver
 	# calls it for each .svelte file as svelte-eslint-parser and eslint-plugin-svelte do, from the
-	# command line and from --server (which takes the resolution from the cache the first one
-	# wrote).
+	# command line and from --server.
 	runes_function_files='"legacy-warn.svelte", "legacy.svelte", "options.svelte", "plain.svelte", "warn.svelte"'
 	(cd tests/svelte-lint/runes && VESLINT_ESLINT_DIR=../../../build/eval/spider-byte \
 		../../../veslint --config eslint.runes-function.config.mjs --fixes legacy-warn.svelte legacy.svelte options.svelte plain.svelte warn.svelte 2> "$TMP/svelte-runes-function.err") |
@@ -782,7 +781,7 @@ for config in "${runes_configs[@]}"; do
 		sed "s|^|$config: |" >> "$TMP/svelte-runes.out"
 	printf '{"id": 1, "config": "%s.json", "files": ["options.svelte", "plain.svelte"]}\n' "$config" >> "$TMP/svelte-runes-server.jsonl"
 done
-if diff -u tests/svelte-lint/runes/expected.txt <(sorted "$TMP/svelte-runes.out"); then
+if diff -u <(grep -v '^function: ' tests/svelte-lint/runes/expected.txt) <(sorted "$TMP/svelte-runes.out"); then
 	ok "Svelte files: runes mode from svelteFeatures.runes, <svelte:options>, svelteConfig and svelte.config.js"
 else
 	ko "Svelte files: runes mode from svelteFeatures.runes, <svelte:options>, svelteConfig and svelte.config.js"
@@ -794,7 +793,7 @@ for config, line in zip(sys.argv[2:], open(sys.argv[1], encoding="utf-8")):
     for out in json.loads(line)["stdout"].splitlines():
         print(f"{config}: {out}")
 ' "$TMP/svelte-runes-server.out" "${runes_configs[@]}" | sorted > "$TMP/svelte-runes-server.lines" &&
-	diff -u tests/svelte-lint/runes/expected.txt "$TMP/svelte-runes-server.lines"; then
+	diff -u <(grep -v '^function: ' tests/svelte-lint/runes/expected.txt) "$TMP/svelte-runes-server.lines"; then
 	ok "Svelte files: --server parses with the runes mode of each configuration"
 else
 	ko "Svelte files: --server and the runes mode of each configuration"
