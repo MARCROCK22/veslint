@@ -244,8 +244,8 @@ fn (c &Checker) sfcs_check_spacing(t &estree.EsTree, tokens &SourceTokens, node 
 		}
 		mut text := text_between
 		if !options.allow_newlines {
-			text = text.replace('\r\n', ' ').replace_each(['\r', ' ', '\n', ' ', ' ', ' ',
-				' ', ' '])
+			text = text.replace('\r\n', ' ').replace_each(['\r', ' ', '\n', ' ', ' ', ' ', ' ',
+				' '])
 		}
 		if !correct_prefix {
 			text = if options.before_optional { ' ${text}' } else { sfcs_trim_start(text) }

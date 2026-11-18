@@ -20,18 +20,27 @@ import time
 //     (EsTree.visit): not the wrapper's, not the type arguments eslint-visitor-keys skips, not those
 //     of a dynamic argument with skipDynamicArguments; a rule that walks tree-sitter's tree runs on
 //     the subtree of each expression the traversal enters (VueWrap.per_root);
+//   - the parent of those expressions a node of no type the rules know, as their V* parent is
+//     for ESLint's rules (and, for the rules on tree-sitter's tree, c.vue_wrap_roots);
 //   - the tokens those of the template token store: the snippet's tokens the document has at the
-//     same place with the same text (not the wrapper's);
+//     same place with the same text (not the wrapper's), or with another punctuator of the same
+//     length (the parentheses of a v-for, which its wrapper makes brackets: the code the rule reads
+//     has the document's);
 //   - its reports, fixes and suggestions moved to the file (Snippet.file_offset), the ones that
 //     overlap a dynamic argument dropped with skipDynamicArgumentsReport.
 // The `Program` listeners of the base rule, which wrapRuleModule moves to the root element of the
 // template (or to the document fragment), run once per snippet: the rules ported here only scan
-// the tokens there, which the snippets of the template make up between them.
+// the tokens there, which the snippets of the template make up between them (camelcase's, which
+// reads the script's global scope, runs once: vncc_program). The listeners a wrapper adds are
+// vue_wrap_conditional_tests (no-constant-condition), vue_wrap_html_quotes (quote-props),
+// slot_scope_as_function (comma-style), vnep_vue_syntax (no-extra-parens) and the bases of their
+// own (vue_wrap_base).
 //
 // eslint-plugin-vue takes the rule of ESLint Stylistic when @stylistic/eslint-plugin resolves from
-// the current directory, and ESLint core's otherwise (vue_wrap_stylistic); veslint's ports are of
-// ESLint Stylistic, and `c.vue_wrap_core` tells them to give what the rule of ESLint core gives
-// where the two differ.
+// the current directory of the ESLint that loads it, and ESLint core's otherwise
+// (vue_wrap_stylistic); veslint's ports are of ESLint Stylistic, and `c.vue_wrap_core` tells them
+// to give what the rule of ESLint core gives where the two differ (vue_wrap_core_message, and in
+// the bases: comma-style, func-call-spacing, operator-linebreak, the array newlines).
 
 // VueWrap is the WrapRuleOptions of a wrapper rule, with the rule veslint runs.
 struct VueWrap {
