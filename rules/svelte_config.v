@@ -166,7 +166,9 @@ fn (v SvcfgValue) key_string() string {
 	return match v.kind {
 		.undefined { 'undefined' }
 		.null { 'null' }
-		.boolean { if v.b { 'true' } else { 'false' } }
+		.boolean {
+			if v.b { 'true' } else { 'false' }
+		}
 		.number { js_number_to_string(v.n) }
 		.string, .bigint, .regexp { v.s }
 		.object { '[object Object]' }
@@ -268,29 +270,41 @@ fn (mut ev SvcfgEvaluator) config() SvelteConfigValues {
 fn (ev &SvcfgEvaluator) literal(i int) SvcfgValue {
 	value := ev.t.get(i, .value)
 	return match value {
-		string { SvcfgValue{
+		string {
+			SvcfgValue{
 				kind: .string
 				s:    value
-			} }
-		f64 { SvcfgValue{
+			}
+		}
+		f64 {
+			SvcfgValue{
 				kind: .number
 				n:    value
-			} }
-		bool { SvcfgValue{
+			}
+		}
+		bool {
+			SvcfgValue{
 				kind: .boolean
 				b:    value
-			} }
-		estree.BigIntValue { SvcfgValue{
+			}
+		}
+		estree.BigIntValue {
+			SvcfgValue{
 				kind: .bigint
 				s:    value.digits
-			} }
-		estree.RegExpValue { SvcfgValue{
+			}
+		}
+		estree.RegExpValue {
+			SvcfgValue{
 				kind: .regexp
 				s:    ev.t.src[ev.t.nodes[i].start..ev.t.nodes[i].end]
-			} }
-		else { SvcfgValue{
+			}
+		}
+		else {
+			SvcfgValue{
 				kind: .null
-			} }
+			}
+		}
 	}
 }
 
