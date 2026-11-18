@@ -1,6 +1,5 @@
 module rules
 
-import estree
 import time
 import treesitter { node_end, node_start }
 
@@ -100,7 +99,7 @@ fn (mut c Checker) lint_vue_no_side_effects_in_computed_properties(root C.TSNode
 			invalid := if is_vue_set {
 				property
 			} else if is_this {
-				vx6_find_mutating(t, mem)
+				if m := vue_find_mutating(t, mem, vue_script_parent) { m.node } else { -1 }
 			} else {
 				-1
 			}
@@ -142,7 +141,7 @@ fn (mut c Checker) lint_vue_no_side_effects_in_computed_properties(root C.TSNode
 		if !inside_setup || (t.nodes[f].start <= def_start && def_end <= t.nodes[f].end) {
 			continue
 		}
-		invalid := vx6_find_mutating(t, node)
+		invalid := if m := vue_find_mutating(t, node, vue_script_parent) { m.node } else { -1 }
 		if invalid >= 0 {
 			findings << Finding{
 				stmt:       c.es_tree_position(t, invalid)
@@ -153,4 +152,3 @@ fn (mut c Checker) lint_vue_no_side_effects_in_computed_properties(root C.TSNode
 	stats.eval_ms += ms(sw.elapsed())
 	return findings
 }
-
