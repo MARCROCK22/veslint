@@ -11,7 +11,8 @@
 # of tests/svelte-lint/known.txt, which says why.
 #
 #   tests/svelte-lint/compare.sh                       # the project service
-#   SVELTE_LINT_PROJECT=1 tests/svelte-lint/compare.sh # parserOptions.project: known-project.txt
+#   SVELTE_LINT_PROJECT=1 tests/svelte-lint/compare.sh # parserOptions.project, on the groups only:
+#                                                      # known-project.txt
 #   JOBS=2 tests/svelte-lint/compare.sh /some/dir      # ESLint in 2 processes, the corpus in /some/dir
 #
 # ESLint's lines are kept in WORK under a key of the corpus, the configuration and the versions:
@@ -41,7 +42,10 @@ done
 mkdir -p "$WORK"
 count=$(python3 tests/svelte-lint/corpus.py "$WORK") || exit 2
 mapfile -t groups < <(cd "$WORK" && ls -d g[0-9][0-9])
-mapfile -t alone < <(cd "$WORK" && ls -d s[0-9][0-9][0-9][0-9] 2> /dev/null)
+alone=()
+# parserOptions.project: the groups only (a program per project of one file is too much memory
+# for typescript-eslint).
+[[ $mode == project ]] || mapfile -t alone < <(cd "$WORK" && ls -d s[0-9][0-9][0-9][0-9] 2> /dev/null)
 # The jobs of ESLint: each group, and the projects of one file by hundreds.
 jobs_files=()
 for g in "${groups[@]}"; do
@@ -82,7 +86,7 @@ if [[ ! -f $ESLINT_LINES ]]; then
 fi
 # veslint with the same configuration, which ESLint resolves for it through bun.
 # shellcheck disable=SC2086 # the patterns expand in WORK
-(cd "$WORK" && VESLINT_ESLINT_DIR=$ROOT/build/eval/spider-byte "$ROOT/veslint" --config "$ROOT/tests/svelte-lint/eslint.svelte.config.mjs" --fixes g[0-9][0-9]/src/*.svelte $(ls -d s[0-9][0-9][0-9][0-9] 2> /dev/null | sed 's|$|/src/*.svelte|') 2> veslint.err) | LC_ALL=C sort > "$WORK/veslint.txt"
+(cd "$WORK" && VESLINT_ESLINT_DIR=$ROOT/build/eval/spider-byte "$ROOT/veslint" --config "$ROOT/tests/svelte-lint/eslint.svelte.config.mjs" --fixes g[0-9][0-9]/src/*.svelte ${alone[@]/%//src/*.svelte} 2> veslint.err) | LC_ALL=C sort > "$WORK/veslint.txt"
 python3 - "$ESLINT_LINES" "$WORK/veslint.txt" "$WORK/diff.txt" <<'PY'
 import collections, sys
 def read(name):

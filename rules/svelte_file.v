@@ -547,3 +547,9 @@ fn (c &Checker) svelte_module_file_byte(b int) int {
 		b
 	}
 }
+
+// svelte_wrapper_node: the node starts on a character of a wrapper of the lint code's template
+// part (it has no counterpart in the virtual code, and is no node of ESLint's).
+fn (c &Checker) svelte_wrapper_node(n C.TSNode) bool {
+	return c.svelte_wrapper_statement(n)
+}
