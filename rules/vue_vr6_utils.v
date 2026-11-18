@@ -164,3 +164,48 @@ fn (mut c Checker) vx6_is_const_literal(t &estree.EsTree, def ScopeDefinition) b
 	es := c.es_index_of(t, unwrap_parens(init)) or { return false }
 	return t.typ(es) == .literal
 }
+
+// vx6_v8_sort sorts the indexes 0..n the way V8's Array.prototype.sort (TimSort) orders an array
+// of fewer than 64 elements with `cmp`: the run at the start (reversed when it descends), then a
+// binary insertion of the others. A comparator that never answers 0 (`a > b ? 1 : -1`) puts equal
+// elements in an order a stable sort would not, which the rules' reports depend on.
+fn vx6_v8_sort(n int, cmp fn (int, int) int) []int {
+	mut a := []int{len: n, init: index}
+	if n < 2 {
+		return a
+	}
+	mut run := 2
+	descending := cmp(a[1], a[0]) < 0
+	mut previous := a[1]
+	for idx in 2 .. n {
+		order := cmp(a[idx], previous)
+		if (descending && order >= 0) || (!descending && order < 0) {
+			break
+		}
+		previous = a[idx]
+		run++
+	}
+	if descending {
+		for i in 0 .. run / 2 {
+			a[i], a[run - 1 - i] = a[run - 1 - i], a[i]
+		}
+	}
+	for start in run .. n {
+		pivot := a[start]
+		mut left := 0
+		mut right := start
+		for left < right {
+			mid := left + ((right - left) >> 1)
+			if cmp(pivot, a[mid]) < 0 {
+				right = mid
+			} else {
+				left = mid + 1
+			}
+		}
+		for p := start; p > left; p-- {
+			a[p] = a[p - 1]
+		}
+		a[left] = pivot
+	}
+	return a
+}
