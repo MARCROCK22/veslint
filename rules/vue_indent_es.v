@@ -1,7 +1,5 @@
 module rules
 
-import estree
-
 // The ES and Vue listeners of eslint-plugin-vue 10.12.1's indent-common.ts (see vue_indent.v).
 
 fn (x &VindCtx) ftn(n VindNode) int {
@@ -878,9 +876,4 @@ fn (mut x VindCtx) es_program(n VindNode) {
 	for statement in x.list(n, .body) {
 		x.top_level(statement, base)
 	}
-}
-
-// vind_key is a shorthand for the estree keys the TypeScript listeners use by name.
-fn vind_key(name string) estree.Key {
-	return estree.key_from_name(name) or { panic('unknown ESTree key ${name}') }
 }
