@@ -34,3 +34,7 @@ tests/rules/prefer-const/redeclared/cases.ts:8:7	prefer-const	useConst	'w' is ne
 tests/rules/prefer-const/redeclared/cases.ts:12:6	prefer-const	useConst	'm' is never reassigned. Use 'const' instead.
 tests/rules/prefer-const/redeclared/cases.ts:12:6	prefer-const	useConst	'm' is never reassigned. Use 'const' instead.
 tests/rules/prefer-const/redeclared/cases.ts:12:9	prefer-const	useConst	'n' is never reassigned. Use 'const' instead.
+tests/rules/prefer-const/svelte-config-runes/off/cases.svelte:6:9	prefer-const	useConst	'label' is never reassigned. Use 'const' instead.
+tests/rules/prefer-const/svelte-config-runes/off/cases.svelte:6:16	prefer-const	useConst	'value' is never reassigned. Use 'const' instead.
+tests/rules/prefer-const/svelte-config-runes/on/cases.svelte:6:9	prefer-const	useConst	'label' is never reassigned. Use 'const' instead.
+tests/rules/prefer-const/svelte-config-runes/unset/cases.svelte:6:9	prefer-const	useConst	'label' is never reassigned. Use 'const' instead.
