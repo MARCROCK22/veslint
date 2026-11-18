@@ -9,6 +9,7 @@
 	import { getContext } from 'svelte';
 	import Child from './Child.svelte';
 	const count = writable(0);
+	let bound = writable('');
 	const ro = readable('x');
 	const both = derived(count, (c) => c * 2);
 	const maybe: Readable<number> | undefined = undefined;
@@ -52,7 +53,7 @@
 <div title="a {ro}"></div>
 <Child value={count} />
 <Child {count} />
-<input bind:value={count} />
+<input bind:value={bound} />
 <div class:active={count}></div>
 <div style:color={ro}></div>
 <div bind:this={el}></div>

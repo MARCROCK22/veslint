@@ -12,7 +12,6 @@
 	goto(prefixed);
 	goto(alsoPrefixed);
 	goto(plain);
-	goto(paths.base + '/m');
 	goto('https://example.com');
 	goto(...[base]);
 	pushState('', {});

@@ -160,6 +160,21 @@ fn (c &Checker) svpdsp_reactive_variables(object int, prop string) []int {
 	return out
 }
 
+// svpdsp_may_have_store_access: the text has a `$` followed by the start of a name other than `$`
+// (a `$foo` the rule may look at; the `${` of a template literal is not one).
+fn svpdsp_may_have_store_access(src string) bool {
+	mut i := src.index_u8(`$`)
+	for i >= 0 && i + 1 < src.len {
+		next := src[i + 1]
+		if next.is_letter() || next == `_` || next >= 0x80 {
+			return true
+		}
+		j := src[i + 1..].index_u8(`$`)
+		i = if j < 0 { -1 } else { i + 1 + j }
+	}
+	return false
+}
+
 struct SvpdspAccess {
 	node int
 mut:
@@ -167,7 +182,7 @@ mut:
 }
 
 fn (mut c Checker) lint_svelte_prefer_destructured_store_props(root C.TSNode, abs_path string, mut stats Stats) ![]Finding {
-	if !c.is_svelte() && !c.src.contains('\$') {
+	if !c.is_svelte() && !svpdsp_may_have_store_access(c.src) {
 		return []
 	}
 	e := c.svsc_es(root, abs_path) or { return [] }
