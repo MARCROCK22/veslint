@@ -114,12 +114,18 @@ fn (c &Checker) svsc_report(e &SvscEs, i int, message_id string, data map[string
 }
 
 // svsc_moved moves the findings a rule made on the lint code of a .svelte file to the file (as
-// lint_file does with the other rules' findings).
+// lint_file does with the other rules' findings), one by one: two equal reports of the rule are
+// both ESLint's (svelte_move_findings keeps one of a list's duplicates, for the rules that read
+// the template's copy of the text).
 fn (c &Checker) svsc_moved(findings []Finding) []Finding {
-	if c.is_svelte() {
-		return c.svelte_move_findings(findings)
+	if !c.is_svelte() {
+		return findings
 	}
-	return findings
+	mut out := []Finding{cap: findings.len}
+	for f in findings {
+		out << c.svelte_move_findings([f])
+	}
+	return out
 }
 
 // SvscRunes is the `runes` of getSvelteContext: null for a file that is neither a component nor a

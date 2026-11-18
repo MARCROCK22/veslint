@@ -1,0 +1,13 @@
+tests/rules/svelte/no-unnecessary-state-wrap/cases.svelte:7:19	svelte/no-unnecessary-state-wrap	unnecessaryStateWrap	SvelteSet is already reactive, $state wrapping is unnecessary.
+tests/rules/svelte/no-unnecessary-state-wrap/cases.svelte:8:17	svelte/no-unnecessary-state-wrap	unnecessaryStateWrap	SvelteMap is already reactive, $state wrapping is unnecessary.
+tests/rules/svelte/no-unnecessary-state-wrap/cases.svelte:9:19	svelte/no-unnecessary-state-wrap	unnecessaryStateWrap	SvelteURL is already reactive, $state wrapping is unnecessary.
+tests/rules/svelte/no-unnecessary-state-wrap/cases.svelte:10:19	svelte/no-unnecessary-state-wrap	unnecessaryStateWrap	SvelteDate is already reactive, $state wrapping is unnecessary.
+tests/rules/svelte/no-unnecessary-state-wrap/cases.svelte:11:19	svelte/no-unnecessary-state-wrap	unnecessaryStateWrap	SvelteURLSearchParams is already reactive, $state wrapping is unnecessary.
+tests/rules/svelte/no-unnecessary-state-wrap/cases.svelte:12:19	svelte/no-unnecessary-state-wrap	unnecessaryStateWrap	MediaQuery is already reactive, $state wrapping is unnecessary.
+tests/rules/svelte/no-unnecessary-state-wrap/options/cases.svelte:7:19	svelte/no-unnecessary-state-wrap	unnecessaryStateWrap	SvelteSet is already reactive, $state wrapping is unnecessary.
+tests/rules/svelte/no-unnecessary-state-wrap/options/cases.svelte:7:19	svelte/no-unnecessary-state-wrap	unnecessaryStateWrap	SvelteSet is already reactive, $state wrapping is unnecessary.
+tests/rules/svelte/no-unnecessary-state-wrap/options/cases.svelte:9:19	svelte/no-unnecessary-state-wrap	unnecessaryStateWrap	SvelteURL is already reactive, $state wrapping is unnecessary.
+tests/rules/svelte/no-unnecessary-state-wrap/options/cases.svelte:10:19	svelte/no-unnecessary-state-wrap	unnecessaryStateWrap	SvelteDate is already reactive, $state wrapping is unnecessary.
+tests/rules/svelte/no-unnecessary-state-wrap/options/cases.svelte:11:19	svelte/no-unnecessary-state-wrap	unnecessaryStateWrap	SvelteURLSearchParams is already reactive, $state wrapping is unnecessary.
+tests/rules/svelte/no-unnecessary-state-wrap/options/cases.svelte:12:19	svelte/no-unnecessary-state-wrap	unnecessaryStateWrap	MediaQuery is already reactive, $state wrapping is unnecessary.
+tests/rules/svelte/no-unnecessary-state-wrap/options/cases.svelte:13:19	svelte/no-unnecessary-state-wrap	unnecessaryStateWrap	Custom is already reactive, $state wrapping is unnecessary.
