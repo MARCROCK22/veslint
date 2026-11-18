@@ -1,0 +1,22 @@
+<template>
+  <div>
+          <IgnoreTag>content</IgnoreTag>
+          <IgnoreTag
+            id="test-pre"
+          >content</IgnoreTag>
+          <IgnoreTag><div
+            >content</div></IgnoreTag>
+          <IgnoreTag>content
+            content</IgnoreTag>
+        </div>
+  <div>
+          <ignore-tag>content</ignore-tag>
+          <ignore-tag
+            id="test-pre"
+          >content</ignore-tag>
+          <ignore-tag><div
+            >content</div></ignore-tag>
+          <ignore-tag>content
+            content</ignore-tag>
+        </div>
+</template>

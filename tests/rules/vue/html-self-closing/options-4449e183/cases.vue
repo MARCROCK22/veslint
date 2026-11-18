@@ -1,0 +1,14 @@
+<template>
+  <div>
+  <div></div>
+  <div/>
+  <img>
+  <img/>
+  <x-test></x-test>
+  <x-test/>
+  <svg><path></path></svg>
+  <svg><path/></svg>
+  <math><mspace></mspace></math>
+  <math><mspace/></math>
+</div>
+</template>

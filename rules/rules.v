@@ -640,6 +640,9 @@ pub const vue_no_useless_mustaches = 'vue/no-useless-mustaches'
 pub const vue_no_negated_v_if_condition = 'vue/no-negated-v-if-condition'
 pub const vue_use_v_on_exact = 'vue/use-v-on-exact'
 pub const vue_prefer_v_model = 'vue/prefer-v-model'
+pub const vue_singleline_html_element_content_newline = 'vue/singleline-html-element-content-newline'
+pub const vue_multiline_html_element_content_newline = 'vue/multiline-html-element-content-newline'
+pub const vue_html_self_closing = 'vue/html-self-closing'
 pub const names = [no_floating_promises, await_thenable, require_await, return_await,
 	no_misused_promises, no_unsafe_call, no_unsafe_member_access, no_unsafe_return,
 	no_unsafe_assignment, no_unsafe_argument, restrict_template_expressions,
@@ -824,7 +827,8 @@ pub const names = [no_floating_promises, await_thenable, require_await, return_a
 	vue_comma_spacing, vue_multiline_ternary, vue_space_in_parens, vue_func_call_spacing,
 	vue_comma_style, vue_no_constant_condition, vue_no_console, vue_quote_props, vue_no_extra_parens,
 	vue_max_attributes_per_line, vue_no_useless_mustaches, vue_no_negated_v_if_condition,
-	vue_use_v_on_exact, vue_prefer_v_model]
+	vue_use_v_on_exact, vue_prefer_v_model, vue_singleline_html_element_content_newline,
+	vue_multiline_html_element_content_newline, vue_html_self_closing]
 
 // untyped_rules are the ported rules that need no types (`meta.docs.requiresTypeChecking` is false
 // in typescript-eslint; the eslint-plugin-unicorn rules that read the types when the parser has a
@@ -979,7 +983,8 @@ pub const untyped_rules = [adjacent_overload_signatures, array_type, class_liter
 	vue_comma_spacing, vue_multiline_ternary, vue_space_in_parens, vue_func_call_spacing,
 	vue_comma_style, vue_no_constant_condition, vue_no_console, vue_quote_props, vue_no_extra_parens,
 	vue_max_attributes_per_line, vue_no_useless_mustaches, vue_no_negated_v_if_condition,
-	vue_use_v_on_exact, vue_prefer_v_model]
+	vue_use_v_on_exact, vue_prefer_v_model, vue_singleline_html_element_content_newline,
+	vue_multiline_html_element_content_newline, vue_html_self_closing]
 
 // needs_types tells whether a rule asks tsgo for the types of the program.
 pub fn needs_types(rule string) bool {
@@ -1614,6 +1619,9 @@ pub const default_options = {
 	vue_no_negated_v_if_condition:                   '[]'
 	vue_use_v_on_exact:                              '[]'
 	vue_prefer_v_model:                              '[]'
+	vue_singleline_html_element_content_newline:     '[]'
+	vue_multiline_html_element_content_newline:      '[]'
+	vue_html_self_closing:                           '[]'
 }
 
 // Finding is a problem a rule found at a node.
@@ -2401,6 +2409,9 @@ pub fn message(rule string, finding Finding) string {
 		vue_no_negated_v_if_condition { vnvic_messages }
 		vue_use_v_on_exact { vuvoe_messages }
 		vue_prefer_v_model { vpvm_messages }
+		vue_singleline_html_element_content_newline { vhecn_single_messages }
+		vue_multiline_html_element_content_newline { vhecn_multi_messages }
+		vue_html_self_closing { vhsc_messages }
 		else { map[string]string{} }
 	}
 	return interpolate(messages[finding.message_id] or { finding.message_id }, finding.data)
@@ -4430,6 +4441,15 @@ fn (mut c Checker) lint_rule(rule string, root C.TSNode, abs_path string, mut st
 		}
 		vue_prefer_v_model {
 			return c.lint_vue_prefer_v_model(root, abs_path, mut stats)!
+		}
+		vue_singleline_html_element_content_newline {
+			return c.lint_vue_singleline_html_element_content_newline(root, abs_path, mut stats)!
+		}
+		vue_multiline_html_element_content_newline {
+			return c.lint_vue_multiline_html_element_content_newline(root, abs_path, mut stats)!
+		}
+		vue_html_self_closing {
+			return c.lint_vue_html_self_closing(root, abs_path, mut stats)!
 		}
 		else { return error('unknown rule: ${rule}') }
 	}

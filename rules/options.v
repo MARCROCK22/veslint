@@ -292,6 +292,9 @@ pub fn check_options(rule string, options []json2.Any) !bool {
 		vue_return_in_computed_property { vue_return_in_computed_property_options(options)! }
 		vue_max_attributes_per_line { vmapl_options(options)! }
 		vue_no_useless_mustaches { vnum_options(options)! }
+		vue_singleline_html_element_content_newline { vhecn_single_options(options)! }
+		vue_multiline_html_element_content_newline { vhecn_multi_options(options)! }
+		vue_html_self_closing { vhsc_options(options)! }
 		else { return false }
 	}
 	return true
