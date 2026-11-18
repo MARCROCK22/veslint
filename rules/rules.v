@@ -645,6 +645,7 @@ pub const vue_multiline_html_element_content_newline = 'vue/multiline-html-eleme
 pub const vue_html_self_closing = 'vue/html-self-closing'
 pub const vue_padding_line_between_blocks = 'vue/padding-line-between-blocks'
 pub const vue_padding_line_between_tags = 'vue/padding-line-between-tags'
+pub const vue_block_tag_newline = 'vue/block-tag-newline'
 pub const names = [no_floating_promises, await_thenable, require_await, return_await,
 	no_misused_promises, no_unsafe_call, no_unsafe_member_access, no_unsafe_return,
 	no_unsafe_assignment, no_unsafe_argument, restrict_template_expressions,
@@ -831,7 +832,7 @@ pub const names = [no_floating_promises, await_thenable, require_await, return_a
 	vue_max_attributes_per_line, vue_no_useless_mustaches, vue_no_negated_v_if_condition,
 	vue_use_v_on_exact, vue_prefer_v_model, vue_singleline_html_element_content_newline,
 	vue_multiline_html_element_content_newline, vue_html_self_closing, vue_padding_line_between_blocks,
-	vue_padding_line_between_tags]
+	vue_padding_line_between_tags, vue_block_tag_newline]
 
 // untyped_rules are the ported rules that need no types (`meta.docs.requiresTypeChecking` is false
 // in typescript-eslint; the eslint-plugin-unicorn rules that read the types when the parser has a
@@ -988,7 +989,7 @@ pub const untyped_rules = [adjacent_overload_signatures, array_type, class_liter
 	vue_max_attributes_per_line, vue_no_useless_mustaches, vue_no_negated_v_if_condition,
 	vue_use_v_on_exact, vue_prefer_v_model, vue_singleline_html_element_content_newline,
 	vue_multiline_html_element_content_newline, vue_html_self_closing, vue_padding_line_between_blocks,
-	vue_padding_line_between_tags]
+	vue_padding_line_between_tags, vue_block_tag_newline]
 
 // needs_types tells whether a rule asks tsgo for the types of the program.
 pub fn needs_types(rule string) bool {
@@ -1628,6 +1629,7 @@ pub const default_options = {
 	vue_html_self_closing:                           '[]'
 	vue_padding_line_between_blocks:                 '[]'
 	vue_padding_line_between_tags:                   '[]'
+	vue_block_tag_newline:                           '[]'
 }
 
 // Finding is a problem a rule found at a node.
@@ -1653,6 +1655,10 @@ pub:
 	// CR, U+2028 and U+2029 there, where the locations of vue-eslint-parser's nodes and tokens
 	// end only at LF (the two only differ in a .vue file).
 	text_loc bool
+	// Only the start (text_loc_start) or only the end (text_loc_end) of the `loc` comes from the
+	// text, the other side from a node or a token (vue/block-tag-newline's).
+	text_loc_start bool
+	text_loc_end   bool
 	// A report of a .vue file whose `loc` is a line and a column given as such
 	// (vue/no-parsing-error's, from the errors of the document, which may be past the end of the
 	// file): when fixed_line is not 0, ESLint's line and column are fixed_line and fixed_column
@@ -2420,6 +2426,7 @@ pub fn message(rule string, finding Finding) string {
 		vue_html_self_closing { vhsc_messages }
 		vue_padding_line_between_blocks { vplbb_messages }
 		vue_padding_line_between_tags { vplbt_messages }
+		vue_block_tag_newline { vbtn_messages }
 		else { map[string]string{} }
 	}
 	return interpolate(messages[finding.message_id] or { finding.message_id }, finding.data)
@@ -4464,6 +4471,9 @@ fn (mut c Checker) lint_rule(rule string, root C.TSNode, abs_path string, mut st
 		}
 		vue_padding_line_between_tags {
 			return c.lint_vue_padding_line_between_tags(root, abs_path, mut stats)!
+		}
+		vue_block_tag_newline {
+			return c.lint_vue_block_tag_newline(root, abs_path, mut stats)!
 		}
 		else { return error('unknown rule: ${rule}') }
 	}
