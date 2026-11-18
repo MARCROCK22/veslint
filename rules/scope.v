@@ -303,6 +303,10 @@ pub:
 	// svelteConfig, which getSvelteContext reads under settings.svelte.kit.files.routes): '' when
 	// not a string.
 	svelte_kit_routes string
+	// parserOptions.svelteFeatures.runes of svelte-eslint-parser (unset when null or absent), which
+	// decides svelteParseContext.runes before `<svelte:options runes>`.
+	svelte_runes_state OptionState
+	svelte_runes       bool
 }
 
 // parse_language_options reads the `languageOptions` of a configuration (as ESLint resolved it,
@@ -359,6 +363,19 @@ pub fn parse_language_options(value json2.Any) LanguageOptions {
 			implied_strict = (features.as_map()['impliedStrict'] or { json2.Any(false) }).json_str() == 'true'
 		}
 	}
+	mut runes_state := OptionState.unset
+	mut runes := false
+	if features := parser['svelteFeatures'] {
+		if features is map[string]json2.Any {
+			if runes_value := features.as_map()['runes'] {
+				if runes_value !is json2.Null {
+					// `!= null`, then used as a boolean.
+					runes_state = .set
+					runes = runes_value.json_str() !in ['false', '0', '""']
+				}
+			}
+		}
+	}
 	parser_source_type := parser['sourceType'] or { json2.Any('') }
 	isolated := parser['isolatedDeclarations'] or { json2.Any(false) }
 	program_keys := ['projectService', 'project', 'programs'].filter(it in parser)
@@ -384,6 +401,8 @@ pub fn parse_language_options(value json2.Any) LanguageOptions {
 		isolated_declarations:   isolated.json_str() !in ['false', 'null', '0', '""']
 		type_information:        type_information
 		svelte_kit_routes:       scope_svelte_kit_routes(parser)
+		svelte_runes_state:      runes_state
+		svelte_runes:            runes
 	}
 }
 

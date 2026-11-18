@@ -380,7 +380,8 @@ const sv_rune_names = ['\$state', '\$derived', '\$effect', '\$props', '\$bindabl
 	'\$host']
 
 // sv_runes is svelteParseContext.runes of the file being linted, as getSvelteContext gives it (the
-// installed Svelte is 5): a component's from `<svelte:options runes={…}>`, else whether an
+// installed Svelte is 5): a component's from parserOptions.svelteFeatures.runes, else from
+// `<svelte:options runes={…}>`, else whether an
 // Identifier of the document has a rune's name (the compiler decides after parsing); a
 // `.svelte.[js|ts]` module is always in runes mode; other files have none (false here).
 // svelte.config.js's compilerOptions.runes is not read.
@@ -390,6 +391,9 @@ fn (c &Checker) sv_runes() bool {
 	}
 	if !c.is_svelte() {
 		return false
+	}
+	if c.language.svelte_runes_state == .set {
+		return c.language.svelte_runes
 	}
 	doc := c.svelte.doc
 	match doc.runes {

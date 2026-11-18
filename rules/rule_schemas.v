@@ -777,6 +777,7 @@ const rule_option_schemas = {
 	'svelte/no-reactive-reassign':                                     '{"type":"array","items":[{"type":"object","properties":{"props":{"type":"boolean"}},"additionalProperties":false}],"minItems":0,"maxItems":1}'
 	'svelte/no-immutable-reactive-statements':                         '{"type":"array","minItems":0,"maxItems":0}'
 	'svelte/infinite-reactive-loop':                                   '{"type":"array","minItems":0,"maxItems":0}'
+	'svelte/prefer-svelte-reactivity':                                 '{"type":"array","minItems":0,"maxItems":0}'
 }
 
 // eslint_rule_default_options are the meta.defaultOptions of the rules of ESLint and of

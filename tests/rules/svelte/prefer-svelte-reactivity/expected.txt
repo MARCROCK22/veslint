@@ -1,0 +1,14 @@
+tests/rules/svelte/prefer-svelte-reactivity/cases.svelte:3:15	svelte/prefer-svelte-reactivity	mutableDateUsed	Found a mutable instance of the built-in Date class. Use SvelteDate instead.
+tests/rules/svelte/prefer-svelte-reactivity/cases.svelte:7:14	svelte/prefer-svelte-reactivity	mutableMapUsed	Found a mutable instance of the built-in Map class. Use SvelteMap instead.
+tests/rules/svelte/prefer-svelte-reactivity/cases.svelte:9:14	svelte/prefer-svelte-reactivity	mutableSetUsed	Found a mutable instance of the built-in Set class. Use SvelteSet instead.
+tests/rules/svelte/prefer-svelte-reactivity/cases.svelte:13:14	svelte/prefer-svelte-reactivity	mutableURLUsed	Found a mutable instance of the built-in URL class. Use SvelteURL instead.
+tests/rules/svelte/prefer-svelte-reactivity/cases.svelte:17:17	svelte/prefer-svelte-reactivity	mutableURLSearchParamsUsed	Found a mutable instance of the built-in URLSearchParams class. Use SvelteURLSearchParams instead.
+tests/rules/svelte/prefer-svelte-reactivity/cases.svelte:19:19	svelte/prefer-svelte-reactivity	mutableMapUsed	Found a mutable instance of the built-in Map class. Use SvelteMap instead.
+tests/rules/svelte/prefer-svelte-reactivity/cases.svelte:22:20	svelte/prefer-svelte-reactivity	mutableSetUsed	Found a mutable instance of the built-in Set class. Use SvelteSet instead.
+tests/rules/svelte/prefer-svelte-reactivity/cases.svelte:26:17	svelte/prefer-svelte-reactivity	mutableMapUsed	Found a mutable instance of the built-in Map class. Use SvelteMap instead.
+tests/rules/svelte/prefer-svelte-reactivity/cases.svelte:37:15	svelte/prefer-svelte-reactivity	mutableSetUsed	Found a mutable instance of the built-in Set class. Use SvelteSet instead.
+tests/rules/svelte/prefer-svelte-reactivity/cases.svelte:40:16	svelte/prefer-svelte-reactivity	mutableDateUsed	Found a mutable instance of the built-in Date class. Use SvelteDate instead.
+tests/rules/svelte/prefer-svelte-reactivity/cases.svelte:41:17	svelte/prefer-svelte-reactivity	mutableDateUsed	Found a mutable instance of the built-in Date class. Use SvelteDate instead.
+tests/rules/svelte/prefer-svelte-reactivity/cases.svelte:46:16	svelte/prefer-svelte-reactivity	mutableDateUsed	Found a mutable instance of the built-in Date class. Use SvelteDate instead.
+tests/rules/svelte/prefer-svelte-reactivity/cases.svelte:49:13	svelte/prefer-svelte-reactivity	mutableURLUsed	Found a mutable instance of the built-in URL class. Use SvelteURL instead.
+tests/rules/svelte/prefer-svelte-reactivity/cases.svelte:50:9	svelte/prefer-svelte-reactivity	mutableURLUsed	Found a mutable instance of the built-in URL class. Use SvelteURL instead.
