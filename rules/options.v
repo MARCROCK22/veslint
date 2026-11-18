@@ -321,6 +321,7 @@ pub fn check_options(rule string, options []json2.Any) !bool {
 		vue_no_multi_spaces { vue_no_multi_spaces_options(options)! }
 		vue_block_order { vue_block_order_options(options)! }
 		vue_no_restricted_call_after_await { vue_no_restricted_call_after_await_options(options)! }
+		vue_next_tick_style { vue_next_tick_style_options(options)! }
 		else { return false }
 	}
 	return true
