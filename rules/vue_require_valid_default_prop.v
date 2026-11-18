@@ -80,7 +80,7 @@ fn (mut c Checker) lint_vue_require_valid_default_prop(root C.TSNode, abs_path s
 			}
 		}
 	}
-	for call in c.vx6_define_props_calls(t) {
+	for call in c.vue_macros_named(t, 'defineProps') {
 		with_defaults := c.vx6_with_defaults_expressions(root, t, call)
 		destructure := vx6_destructure_defaults(t, call)
 		mut others := map[string][]VrvdpDefault{}

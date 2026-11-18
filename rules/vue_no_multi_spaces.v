@@ -63,7 +63,7 @@ fn (mut c Checker) lint_vue_no_multi_spaces(root C.TSNode, abs_path string, mut 
 			mut ignore := o.ignore_properties
 				&& (vnms_is_colon(c, token) || vnms_is_colon(c, prev))
 			if !ignore && o.ignore_eol_comments && token.typ in ['Line', 'Block'] {
-				if next := c.vue_token_after(token.end, true) {
+				if next := c.vue_token_after(token.end, true, false) {
 					if doc.loc(next.start).line > doc.loc(token.end).line {
 						ignore = true
 					}
@@ -78,8 +78,8 @@ fn (mut c Checker) lint_vue_no_multi_spaces(root C.TSNode, abs_path string, mut 
 			}
 			findings << c.with_fixes(c.vue_report(prev.end, token.start, 'multipleSpaces',
 				{
-				'displayValue': c.src[token.start..token.end]
-			}), [fix_replace_range(prev.end, token.start, ' ')])!
+					'displayValue': c.src[token.start..token.end]
+				}), [fix_replace_range(prev.end, token.start, ' ')])!
 		}
 	}
 	stats.eval_ms += ms(sw.elapsed())

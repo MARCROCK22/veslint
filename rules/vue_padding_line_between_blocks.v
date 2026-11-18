@@ -26,11 +26,6 @@ fn vplbb_options(options []json2.Any) !bool {
 	return value as string == 'always'
 }
 
-// vu4_has_invalid_eof is hasInvalidEOF of the Program: the template has an `eof-*` parse error.
-fn (c &Checker) vu4_has_invalid_eof() bool {
-	return c.vue_has_template() && c.vue.doc.errors.any(it.code.starts_with('eof-'))
-}
-
 // vu4_split_lines_last is the last piece of `text.split(/\r\n|[\r\n  ]/)`.
 fn vu4_split_lines_last(text string) string {
 	mut last := 0
@@ -53,7 +48,7 @@ fn vu4_split_lines_last(text string) string {
 }
 
 fn (mut c Checker) lint_vue_padding_line_between_blocks(root C.TSNode, abs_path string, mut stats Stats) ![]Finding {
-	if !c.is_vue() || c.vu4_has_invalid_eof() {
+	if !c.is_vue() || c.vue_has_invalid_eof() {
 		return []
 	}
 	sw := time.new_stopwatch()

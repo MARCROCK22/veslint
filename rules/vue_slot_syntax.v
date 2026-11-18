@@ -24,7 +24,7 @@ const vndslotsa_messages = {
 	'forbiddenSlotScopeAttribute': '`slot-scope` are deprecated.'
 }
 
-// VueSlotVForVars is SlotVForVariables: the VForExpression of the element's `v-for` and its
+// VueSlotVForVars is SlotVForVariables (VSlotVForVariables of vue/valid-v-slot): the VForExpression of the element's `v-for` and its
 // variables the `:slot` uses.
 struct VueSlotVForVars {
 	expr      int // the VForExpression
@@ -86,7 +86,7 @@ fn (c &Checker) vue_slot_context(element int) VueSlotContext {
 	}
 }
 
-// vue_using_iteration_vars is getUsingIterationVars: the `v-for` variables defined in the start
+// vue_using_iteration_vars is getUsingIterationVars (of can-convert-to-v-slot and vue/valid-v-slot): the `v-for` variables defined in the start
 // tag of `element` that the expression container refers to.
 fn (c &Checker) vue_using_iteration_vars(container int, element int) []int {
 	mut out := []int{}
@@ -139,7 +139,8 @@ fn (c &Checker) vue_has_same_slot_directive(owner int, target VueSlotContext) bo
 	return false
 }
 
-// vue_slot_expr_equal is isEqual: the same type and the same tokens.
+// vue_slot_expr_equal is isEqual (of can-convert-to-v-slot and vue/valid-v-slot): the same type and
+// the same tokens.
 fn (c &Checker) vue_slot_expr_equal(a vue.Expr, b vue.Expr) bool {
 	if a.is_null() || b.is_null() {
 		return a.is_null() && b.is_null()
@@ -152,7 +153,8 @@ fn (c &Checker) vue_slot_expr_equal(a vue.Expr, b vue.Expr) bool {
 	return c.vue_equal_tokens(a_start, a_end, b_start, b_end)
 }
 
-// vue_slot_v_for_vars_equal is areSlotVForVariablesEqual.
+// vue_slot_v_for_vars_equal is areSlotVForVariablesEqual (vue/valid-v-slot's
+// areVSlotVForVariablesEqual is the same).
 fn (c &Checker) vue_slot_v_for_vars_equal(a VueSlotVForVars, b VueSlotVForVars) bool {
 	a_expr := &c.vue.doc.nodes[a.expr]
 	b_expr := &c.vue.doc.nodes[b.expr]
@@ -352,7 +354,7 @@ fn (mut c Checker) lint_vue_no_deprecated_slot_scope_attribute(root C.TSNode, ab
 			findings << c.with_fixes(report, [fix_replace_range(node.start, node.end, replace_text)])!
 			continue
 		}
-		before := c.vue_token_before(node.start, false) or {
+		before := c.vue_token_before(node.start, false, false) or {
 			findings << report
 			continue
 		}

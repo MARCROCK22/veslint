@@ -2,7 +2,6 @@ module rules
 
 import json2
 import time
-import vue
 
 // Port of the `vue/valid-v-slot` rule of eslint-plugin-vue 10.12.1 (option `allowModifiers`): a
 // `v-slot` not owned by a custom component, a named slot not on a `<template>`, a default slot on
@@ -24,13 +23,6 @@ const vvslot_messages = {
 fn vvslot_options(options []json2.Any) !bool {
 	o := option_object(vue_valid_v_slot, options, ['allowModifiers'])!
 	return o.bool_value('allowModifiers')!
-}
-
-// VvslotVFor is VSlotVForVariables: the VForExpression node and the v-for variables the slot's
-// dynamic name uses.
-struct VvslotVFor {
-	expr      int
-	variables []int
 }
 
 // vvslot_child_groups is getSlotDirectivesOnChildren: by chain of child elements, the v-slot of
@@ -67,31 +59,8 @@ fn (c &Checker) vvslot_name(slot int) string {
 	return c.vue_text(argument.start, key.end)
 }
 
-// vvslot_using_vars is getUsingIterationVars: the v-for variables (defined in the element's start
-// tag) the dynamic argument refers to.
-fn (c &Checker) vvslot_using_vars(slot int, element int) []int {
-	key := &c.vue.doc.nodes[c.vue.doc.nodes[slot].key]
-	mut out := []int{}
-	if key.argument < 0 || c.vue.doc.nodes[key.argument].typ != .v_expression_container {
-		return out
-	}
-	start_tag := &c.vue.doc.nodes[c.vue.doc.nodes[element].start_tag]
-	for r in c.vue.doc.nodes[key.argument].references {
-		v := c.vue.doc.references[r].variable
-		if v < 0 {
-			continue
-		}
-		variable := c.vue.doc.variables[v]
-		id_start, id_end := c.vue_expr_range(variable.id)
-		if variable.kind == 'v-for' && id_start > start_tag.start && id_end < start_tag.end {
-			out << v
-		}
-	}
-	return out
-}
-
 // vvslot_vfor is getVSlotVForVariableIfUsingIterationVars.
-fn (c &Checker) vvslot_vfor(slot int, v_for int) ?VvslotVFor {
+fn (c &Checker) vvslot_vfor(slot int, v_for int) ?VueSlotVForVars {
 	if v_for < 0 {
 		return none
 	}
@@ -103,78 +72,19 @@ fn (c &Checker) vvslot_vfor(slot int, v_for int) ?VvslotVFor {
 	if e.kind != .vnode || c.vue.doc.nodes[e.node].typ != .v_for_expression {
 		return none
 	}
-	vars := c.vvslot_using_vars(slot, c.vue_attribute_element(slot))
+	vars := c.vue_using_iteration_vars(c.vue.doc.nodes[c.vue.doc.nodes[slot].key].argument,
+		c.vue_attribute_element(slot))
 	if vars.len == 0 {
 		return none
 	}
-	return VvslotVFor{
+	return VueSlotVForVars{
 		expr:      e.node
 		variables: vars
 	}
 }
 
-fn (c &Checker) vvslot_expr_equal(a vue.Expr, b vue.Expr) bool {
-	if a.is_null() || b.is_null() {
-		return a.is_null() && b.is_null()
-	}
-	if c.vue_expr_type(a) != c.vue_expr_type(b) {
-		return false
-	}
-	a_start, a_end := c.vue_expr_range(a)
-	b_start, b_end := c.vue_expr_range(b)
-	return c.vue_equal_tokens(a_start, a_end, b_start, b_end)
-}
-
-// vvslot_var_in is `variables.find((v) => utils.isInRange(ptn, v.id))`.
-fn (c &Checker) vvslot_var_in(ptn vue.Expr, variables []int) int {
-	if ptn.is_null() {
-		return -1
-	}
-	p_start, p_end := c.vue_expr_range(ptn)
-	for v in variables {
-		s, e := c.vue_expr_range(c.vue.doc.variables[v].id)
-		if p_start <= s && e <= p_end {
-			return v
-		}
-	}
-	return -1
-}
-
-// vvslot_vfor_equal is areVSlotVForVariablesEqual.
-fn (c &Checker) vvslot_vfor_equal(a VvslotVFor, b VvslotVFor) bool {
-	a_expr := &c.vue.doc.nodes[a.expr]
-	b_expr := &c.vue.doc.nodes[b.expr]
-	if a.variables.len != b.variables.len || !c.vvslot_expr_equal(a_expr.right, b_expr.right) {
-		return false
-	}
-	mut checked := map[string]bool{}
-	len := if a_expr.exprs.len < b_expr.exprs.len { a_expr.exprs.len } else { b_expr.exprs.len }
-	for k in 0 .. len {
-		a_ptn := a_expr.exprs[k]
-		b_ptn := b_expr.exprs[k]
-		a_var := c.vvslot_var_in(a_ptn, a.variables)
-		b_var := c.vvslot_var_in(b_ptn, b.variables)
-		if a_var >= 0 && b_var >= 0 {
-			a_name := c.vue.doc.variables[a_var].name
-			if a_name != c.vue.doc.variables[b_var].name || !c.vvslot_expr_equal(a_ptn, b_ptn) {
-				return false
-			}
-			checked[a_name] = true
-		} else if a_var >= 0 || b_var >= 0 {
-			return false
-		}
-	}
-	for v in a.variables {
-		name := c.vue.doc.variables[v].name
-		if name !in checked && !b.variables.any(c.vue.doc.variables[it].name == name) {
-			return false
-		}
-	}
-	return true
-}
-
 // vvslot_same_slot is filterSameSlot.
-fn (c &Checker) vvslot_same_slot(groups [][]int, current int, current_vfor ?VvslotVFor) [][]int {
+fn (c &Checker) vvslot_same_slot(groups [][]int, current int, current_vfor ?VueSlotVForVars) [][]int {
 	name := c.vvslot_name(current)
 	mut out := [][]int{}
 	for group in groups {
@@ -186,7 +96,7 @@ fn (c &Checker) vvslot_same_slot(groups [][]int, current int, current_vfor ?Vvsl
 			v_for := c.vue_get_directive(c.vue_attribute_element(slot), 'for', none)
 			slot_vfor := c.vvslot_vfor(slot, v_for)
 			same := if cur := current_vfor {
-				if other := slot_vfor { c.vvslot_vfor_equal(cur, other) } else { false }
+				if other := slot_vfor { c.vue_slot_v_for_vars_equal(cur, other) } else { false }
 			} else {
 				if _ := slot_vfor { false } else { true }
 			}

@@ -65,10 +65,10 @@ fn (mut c Checker) lint_vue_no_useless_v_bind(root C.TSNode, abs_path string, mu
 			continue
 		}
 		es := c.vue_expr_es(e)
-		if !vue_tpl_is_string_literal(es, e.node) {
+		if !vue_is_string_literal(es, e.node) {
 			continue
 		}
-		str_value := vue_tpl_string_literal_value(es, e.node, false) or { continue }
+		str_value := vue_string_literal_value(es, e.node, false) or { continue }
 		expression := es.nodes[e.node]
 		raw_value := if expression.typ == .literal {
 			text := c.vue_text(expression.start, expression.end)

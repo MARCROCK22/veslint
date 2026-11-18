@@ -57,14 +57,7 @@ fn vue_skip_default_param(t &estree.EsTree, node int) int {
 // ObjectPattern with that static name, -1 for none.
 fn vue_find_assignment_property(t &estree.EsTree, pattern int, name string) int {
 	for p in t.list(pattern, .properties) or { []int{} } {
-		if t.typ(p) != .property {
-			continue
-		}
-		parent := t.nodes[p].parent
-		if parent >= 0 && t.typ(parent) != .object_pattern {
-			continue
-		}
-		if (vue_static_property_name(t, p) or { continue }) == name {
+		if t.typ(p) == .property && (vue_static_property_name(t, p) or { continue }) == name {
 			return p
 		}
 	}
@@ -251,26 +244,6 @@ fn vue_emit_call_of_context(t &estree.EsTree, call int, ctx VueSetupContext) boo
 	name, member := vue_callee_member(t, call) or { return false }
 	object := t.node(member, .object) or { return false }
 	return name == 'emit' && t.typ(object) == .identifier && object in ctx.context_ids
-}
-
-// vue_define_emits_typed is getComponentEmitsFromDefineEmits with the types the checker gives:
-// vue_define_emits, but the parts of the type argument that are not type literals, interfaces
-// nor function types are read with the checker (getComponentEmitsFromTypeDefineTypes).
-fn (mut c Checker) vue_define_emits_typed(root C.TSNode, t &estree.EsTree, call int, abs_path string, mut stats Stats) []VueProp {
-	args := t.list(call, .arguments) or { []int{} }
-	params := vue_type_arguments(t, call)
-	if args.len > 0 || params.len == 0 {
-		return c.vue_define_emits(root, t, call)
-	}
-	mut out := []VueProp{}
-	for def in c.vue_flatten_type_nodes(root, t, params[0]) {
-		if t.typ(def) in [.ts_function_type, .ts_interface_body, .ts_type_literal] {
-			out << c.vue_emits_from_type_define(root, t, def)
-		} else {
-			out << c.vue_emits_from_type_checker(t, def, abs_path, mut stats)
-		}
-	}
-	return out
 }
 
 // vue_symbol_flags_function_or_method are SymbolFlags.Function | SymbolFlags.Method.

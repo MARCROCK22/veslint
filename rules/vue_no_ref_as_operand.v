@@ -178,7 +178,7 @@ fn (mut c Checker) vnrao_emit_candidates(root C.TSNode, t &estree.EsTree, s &Vue
 		mut emit_set := map[u64]bool{}
 		mut context_set := map[u64]bool{}
 		if t.typ(param) == .object_pattern {
-			property := vx6_find_assignment_property(t, param, 'emit')
+			property := vue_find_assignment_property(t, param, 'emit')
 			if property < 0 {
 				continue
 			}

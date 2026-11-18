@@ -39,7 +39,7 @@ fn (mut c Checker) lint_vue_no_setup_props_reactivity_loss(root C.TSNode, abs_pa
 	}
 	mut scopes := map[int]VnsprlScope{}
 	// onDefinePropsEnter
-	for call in c.vx6_define_props_calls(t) {
+	for call in c.vue_macros_named(t, 'defineProps') {
 		mut target := call
 		if vue_has_with_defaults(t, target) {
 			target = t.nodes[target].parent

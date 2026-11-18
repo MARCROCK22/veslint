@@ -144,8 +144,9 @@ fn (mut c Checker) vue_define_props(root C.TSNode, t &estree.EsTree, call int, a
 	}]
 }
 
-// vue_define_emits ports getComponentEmitsFromDefineEmits.
-fn (mut c Checker) vue_define_emits(root C.TSNode, t &estree.EsTree, call int) []VueProp {
+// vue_define_emits ports getComponentEmitsFromDefineEmits. Without `with_types` the types the
+// checker would read (getComponentEmitsFromTypeDefineTypes) are unknown emits.
+fn (mut c Checker) vue_define_emits(root C.TSNode, t &estree.EsTree, call int, abs_path string, with_types bool, mut stats Stats) []VueProp {
 	args := t.list(call, .arguments) or { []int{} }
 	if args.len > 0 {
 		def := c.vue_object_or_array(root, t, args[0])
@@ -159,7 +160,7 @@ fn (mut c Checker) vue_define_emits(root C.TSNode, t &estree.EsTree, call int) [
 	}
 	params := vue_type_arguments(t, call)
 	if params.len > 0 {
-		return c.vue_emits_from_type_define(root, t, params[0])
+		return c.vue_emits_from_type_define(root, t, params[0], abs_path, with_types, mut stats)
 	}
 	return [VueProp{
 		kind: .unknown
@@ -283,11 +284,10 @@ fn (mut c Checker) vue_type_of_type_node(t &estree.EsTree, node int, abs_path st
 	return c.node_type(ts)
 }
 
-// vue_emits_from_type_define ports getComponentEmitsFromTypeDefine for the type literals,
-// interfaces and function types the type is made of (extractRuntimeEmits); another type, whose
-// emits come from the checker upstream (getComponentEmitsFromTypeDefineTypes), is an unknown emit
-// here: no rule of this batch reads them.
-fn (mut c Checker) vue_emits_from_type_define(root C.TSNode, t &estree.EsTree, node int) []VueProp {
+// vue_emits_from_type_define ports getComponentEmitsFromTypeDefine: the type literals,
+// interfaces and function types the type is made of (extractRuntimeEmits), and the emits the
+// checker gives the other types (getComponentEmitsFromTypeDefineTypes; unknown without types).
+fn (mut c Checker) vue_emits_from_type_define(root C.TSNode, t &estree.EsTree, node int, abs_path string, with_types bool, mut stats Stats) []VueProp {
 	mut out := []VueProp{}
 	for def in c.vue_flatten_type_nodes(root, t, node) {
 		if t.typ(def) == .ts_function_type {
@@ -296,9 +296,13 @@ fn (mut c Checker) vue_emits_from_type_define(root C.TSNode, t &estree.EsTree, n
 			continue
 		}
 		if t.typ(def) !in [.ts_interface_body, .ts_type_literal] {
-			out << VueProp{
-				kind: .unknown
-				node: def
+			if with_types {
+				out << c.vue_emits_from_type_checker(t, def, abs_path, mut stats)
+			} else {
+				out << VueProp{
+					kind: .unknown
+					node: def
+				}
 			}
 			continue
 		}

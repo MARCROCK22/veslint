@@ -68,7 +68,7 @@ fn (mut c Checker) lint_vue_first_attribute_linebreak(root C.TSNode, abs_path st
 		} else {
 			'expected'
 		}, {})
-		prev := c.vue_token_before(c.vue.doc.nodes[first].start, true) or {
+		prev := c.vue_token_before(c.vue.doc.nodes[first].start, true, false) or {
 			findings << report
 			continue
 		}

@@ -47,10 +47,10 @@ fn (mut c Checker) lint_vue_no_useless_mustaches(root C.TSNode, abs_path string,
 		}
 		stats.checked++
 		t := c.vue_expr_es(e)
-		if !vue_tpl_is_string_literal(t, e.node) {
+		if !vue_is_string_literal(t, e.node) {
 			continue
 		}
-		str_value := vue_tpl_string_literal_value(t, e.node, false) or { continue }
+		str_value := vue_string_literal_value(t, e.node, false) or { continue }
 		expr_start, expr_end := c.vue_expr_range(e)
 		expr_text := c.vue_text(expr_start, expr_end)
 		raw_value := if t.typ(e.node) == .literal {

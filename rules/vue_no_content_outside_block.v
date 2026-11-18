@@ -25,11 +25,11 @@ fn (mut c Checker) lint_vue_no_content_outside_block(root C.TSNode, abs_path str
 		}
 		stats.checked++
 		raw := doc.src[node.start..node.end]
-		leading := vue_js_space_prefix(raw)
+		leading := vu4_trim_start_offset(raw, 0)
 		if leading == raw.len {
 			continue
 		}
-		trailing := vue_js_space_suffix(raw)
+		trailing := raw.len - vu4_trim_end_offset(raw, raw.len)
 		start := node.start + leading
 		end := node.end - trailing
 		has_fix, suggestion := c.suggestion('removeContent', {}, [fix_remove_range(start, end)])!
@@ -42,29 +42,4 @@ fn (mut c Checker) lint_vue_no_content_outside_block(root C.TSNode, abs_path str
 	}
 	stats.eval_ms += ms(sw.elapsed())
 	return findings
-}
-
-// vue_js_space_prefix is how many bytes of JavaScript white space and line terminators the text
-// starts with (what trimStart removes).
-fn vue_js_space_prefix(s string) int {
-	mut i := 0
-	for i < s.len {
-		len := utf8_char_len(s[i])
-		r := s[i..i + len].runes()[0]
-		if !is_js_space(r) {
-			break
-		}
-		i += len
-	}
-	return i
-}
-
-// vue_js_space_suffix is how many bytes of white space the text ends with (what trimEnd removes).
-fn vue_js_space_suffix(s string) int {
-	runes := s.runes()
-	mut bytes := 0
-	for i := runes.len - 1; i >= 0 && is_js_space(runes[i]); i-- {
-		bytes += runes[i].length_in_bytes()
-	}
-	return bytes
 }

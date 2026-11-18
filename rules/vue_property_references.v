@@ -4,12 +4,11 @@ import estree
 import vue
 
 // Port of lib/utils/property-references.ts of eslint-plugin-vue 10.12.1
-// (definePropertyReferenceExtractor and mergePropertyReferences, without getNestNodes, which
-// no rule of this port reads): what properties of a value (`this`, the props, a variable, a
+// (definePropertyReferenceExtractor and mergePropertyReferences): what properties of a value (`this`, the props, a variable, a
 // function parameter, the names of the template's expressions) the code reads, and what it reads
 // of those properties. An IPropertyReferences is a VprRef in the extractor's arena (`refs`),
-// vpr_any and vpr_never being ANY and NEVER; its methods are vpr_has_property, vpr_all_properties
-// and vpr_get_nest.
+// vpr_any and vpr_never being ANY and NEVER; its methods are vpr_has_property, vpr_all_properties,
+// vpr_get_nest and vpr_get_nest_nodes.
 //
 // A node is named by its tree and its index there (VprNode): tree 0 is the script's EsTree,
 // tree s + 1 the EsTree of the template's (or a style's) snippet s. In a snippet, the parent of
@@ -338,6 +337,60 @@ fn (mut c Checker) vpr_get_nest(mut x VprExtractor, r int, name string) int {
 	}
 }
 
+// VprNestNode is a NestPropertyNode: a member expression (`expression`) or a pattern.
+struct VprNestNode {
+	expression bool
+	node       VprNode
+}
+
+// vpr_get_nest_nodes is IPropertyReferences.getNestNodes.
+fn (mut c Checker) vpr_get_nest_nodes(mut x VprExtractor, r int, name string) []VprNestNode {
+	ref := x.refs[r]
+	match ref.kind {
+		.any, .never, .unknown_call, .path, .name_literal, .name {
+			return []
+		}
+		.member {
+			return if name == ref.name { [VprNestNode{true, ref.node}] } else { [] }
+		}
+		.object {
+			properties := ref.properties[name] or { return [] }
+			mut values := properties.map(x.t.node(it, .value) or { -1 })
+			mut out := []VprNestNode{}
+			for values.len > 0 {
+				node := values[0]
+				values.delete(0)
+				if node < 0 {
+					break
+				}
+				match x.t.typ(node) {
+					.identifier, .member_expression, .object_pattern, .array_pattern {
+						out << VprNestNode{false, VprNode{0, node}}
+					}
+					.assignment_pattern {
+						values.insert(0, x.t.node(node, .left) or { -1 })
+					}
+					else {}
+				}
+			}
+			return out
+		}
+		.to_refs {
+			nest := c.vpr_get_nest(mut x, ref.refs[0], name)
+			return c.vpr_get_nest_nodes(mut x, nest, 'value')
+		}
+		.merge {
+			mut out := []VprNestNode{}
+			for sub in ref.refs {
+				if c.vpr_has_property(mut x, sub, name, VprHasOptions{}) {
+					out << c.vpr_get_nest_nodes(mut x, sub, name)
+				}
+			}
+			return out
+		}
+	}
+}
+
 // vpr_nest_from_pattern is getNestFromPattern.
 fn (mut c Checker) vpr_nest_from_pattern(mut x VprExtractor, pattern int) int {
 	if pattern < 0 {
@@ -626,7 +679,7 @@ fn (mut c Checker) vpr_build_to_ref_set(mut x VprExtractor) {
 	}
 	x.to_ref_built = true
 	for name in ['toRef', 'toRefs'] {
-		for call in c.vpr_traced_calls(x.root, x.t, name) {
+		for call in c.vue_composition_api_calls(x.root, x.t, [name]).map(it.call) {
 			if name == 'toRef' {
 				x.to_ref_nodes[call] = true
 			} else {
@@ -634,35 +687,6 @@ fn (mut c Checker) vpr_build_to_ref_set(mut x VprExtractor) {
 			}
 		}
 	}
-}
-
-// vpr_traced_calls are the calls iterateReferencesTraceMap gives for `{ [name]: { [CALL]: true } }`:
-// those of the function imported from the Vue modules, then of the global.
-fn (mut c Checker) vpr_traced_calls(root C.TSNode, t &estree.EsTree, name string) []int {
-	call_trace := EsTrace{
-		call: true
-	}
-	esm := EsTrace{
-		esm:      true
-		children: {
-			name: call_trace
-		}
-	}
-	mut esm_map := map[string]EsTrace{}
-	for module in vue_composition_modules {
-		esm_map[module] = esm
-	}
-	mut traced := c.es_esm_references(root, esm_map)
-	traced << c.es_global_references(root, {
-		name: call_trace
-	})
-	mut out := []int{}
-	for r in traced {
-		if call := c.es_index_of(t, r.node) {
-			out << call
-		}
-	}
-	return out
 }
 
 // vpr_from_function_param is extractFromFunctionParam.

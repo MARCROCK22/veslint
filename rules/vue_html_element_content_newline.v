@@ -132,8 +132,8 @@ fn (mut c Checker) vhecn_lint(opts VhecnOptions, multiline bool, mut stats Stats
 			|| (opts.ignore_when_no_attributes && start_tag.attributes.len == 0) {
 			continue
 		}
-		content_first := c.vu4_token_after(start_tag.end, true, true) or { continue }
-		content_last := c.vu4_token_before(end_tag.start, true, true) or { continue }
+		content_first := c.vue_token_after(start_tag.end, true, true) or { continue }
+		content_last := c.vue_token_before(end_tag.start, true, true) or { continue }
 		if opts.ignore_when_empty && node.children.len == 0 && content_first.start >= end_tag.start {
 			continue
 		}

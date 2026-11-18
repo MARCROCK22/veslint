@@ -425,10 +425,10 @@ fn (mut c Checker) vnudp_setup_to_refs_names(root C.TSNode, t &estree.EsTree, ob
 fn (mut c Checker) vnudp_reactive_object_from_to_refs(root C.TSNode, t &estree.EsTree, node int, mut st VnudpState) int {
 	if !st.built {
 		st.built = true
-		for call in c.vpr_traced_calls(root, t, 'reactive') {
+		for call in c.vue_composition_api_calls(root, t, ['reactive']).map(it.call) {
 			st.reactive[call] = true
 		}
-		for call in c.vpr_traced_calls(root, t, 'toRefs') {
+		for call in c.vue_composition_api_calls(root, t, ['toRefs']).map(it.call) {
 			st.to_refs[call] = true
 		}
 	}

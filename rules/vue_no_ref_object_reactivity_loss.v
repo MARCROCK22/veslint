@@ -39,7 +39,7 @@ fn (mut c Checker) lint_vue_no_ref_object_reactivity_loss(root C.TSNode, abs_pat
 			}
 			target = t.node(node, .object) or { continue }
 		} else if t.typ(node) == .object_pattern {
-			if vx6_find_assignment_property(t, node, 'value') < 0 {
+			if vue_find_assignment_property(t, node, 'value') < 0 {
 				continue
 			}
 			target = node

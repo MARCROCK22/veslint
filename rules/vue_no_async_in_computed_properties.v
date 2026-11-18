@@ -46,7 +46,7 @@ fn (mut c Checker) lint_vue_no_async_in_computed_properties(root C.TSNode, abs_p
 	}
 	t := c.es_tree(root, abs_path) or { return findings }
 	mut getters := []int{}
-	for call in c.vaa_trace_map_calls(root, t, ['computed']) {
+	for call in c.vue_composition_api_calls(root, t, ['computed']).map(it.call) {
 		getter := vue_getter_body_from_computed_function(t, call)
 		if getter >= 0 {
 			getters << getter
@@ -109,8 +109,13 @@ fn (mut c Checker) lint_vue_no_async_in_computed_properties(root C.TSNode, abs_p
 			target_body = t.node(f, .body) or { continue }
 		}
 		stats.checked++
-		properties := if setup_mode { []VueComputedProperty{} } else { computed[owner] or {
-				[]VueComputedProperty{}} }
+		properties := if setup_mode {
+			[]VueComputedProperty{}
+		} else {
+			computed[owner] or {
+				[]VueComputedProperty{}
+			}
+		}
 		start_line, _ := t.line_column(t.nodes[node].start)
 		end_line, _ := t.line_column(t.nodes[node].end)
 		within := fn [t, start_line, end_line] (body int) bool {
@@ -126,7 +131,11 @@ fn (mut c Checker) lint_vue_no_async_in_computed_properties(root C.TSNode, abs_p
 					message_id: 'unexpectedInProperty'
 					data:       {
 						'expressionName': kind
-						'propertyName':   if cp.has_key && cp.key != '' { cp.key } else { 'unknown' }
+						'propertyName':   if cp.has_key && cp.key != '' {
+							cp.key
+						} else {
+							'unknown'
+						}
 					}
 				}
 				reported = true

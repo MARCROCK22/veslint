@@ -51,7 +51,7 @@ fn (mut c Checker) lint_vue_prefer_single_event_payload(root C.TSNode, abs_path 
 		callee := vue_skip_chain(t, t.node(node, .callee) or { continue })
 		// defineScriptSetupVisitor.
 		if node in define_emits {
-			for emit in c.vue_define_emits_typed(root, t, node, abs_path, mut stats) {
+			for emit in c.vue_define_emits(root, t, node, abs_path, true, mut stats) {
 				c.vpsep_verify_declaration(t, emit, mut findings)
 			}
 			id := vue_define_emits_variable(t, node)
@@ -124,8 +124,8 @@ fn (c &Checker) vpsep_verify_call(t &estree.EsTree, call int, mut findings []Fin
 	}
 	findings << c.vue_report(t.nodes[args[2]].start, t.nodes[args.last()].end, 'preferSinglePayload',
 		{
-		'name': name
-	})
+			'name': name
+		})
 }
 
 // vpsep_verify_declaration is verifyEmitDeclaration.
@@ -167,6 +167,6 @@ fn (c &Checker) vpsep_verify_declaration(t &estree.EsTree, emit VueProp, mut fin
 	}
 	findings << c.vue_report(t.nodes[parameters[first]].start, t.nodes[parameters.last()].end,
 		'preferSinglePayloadInDeclaration', {
-		'name': if emit.has_name { emit.name } else { 'unknown' }
-	})
+			'name': if emit.has_name { emit.name } else { 'unknown' }
+		})
 }
