@@ -213,7 +213,22 @@ for (const file of files) {
     indexes.set(key, configs.length);
     configs.push(slim);
   }
-  out.push({ path: file, config: indexes.get(key) });
+  const entry = { path: file, config: indexes.get(key) };
+  // A function as parserOptions.svelteConfig.compilerOptions.runes, which JSON leaves out of the
+  // configuration: svelte-eslint-parser (isRunesAsParseContext, with parserOptions.filePath)
+  // and eslint-plugin-svelte (getWarningsFromCode, with context.filename) call it with the path
+  // ESLint lints the file under, which is this one. So it is called here for each .svelte file
+  // and what it gives is kept with the file (svelteConfigRunes): true and false, which decide; a
+  // string or a finite number as it is; anything else as 1 or 0 by whether it is truthy, which is
+  // all they read of it; nothing for null or undefined, which leave runes unset.
+  const runes = given.svelteConfig?.compilerOptions?.runes;
+  if (typeof runes === 'function' && file.toLowerCase().endsWith('.svelte')) {
+    const value = runes({ filename: file });
+    if (value != null) {
+      entry.svelteConfigRunes = ['boolean', 'string'].includes(typeof value) || Number.isFinite(value) ? value : value ? 1 : 0;
+    }
+  }
+  out.push(entry);
 }
 const result = { eslint: ESLint.version, pluginRules: [...pluginRules].sort(), configs, files: out };
 if (Object.keys(ruleDefaults).length > 0) {
@@ -514,8 +529,12 @@ struct LoadedConfig {
 	// The default options (meta.defaultOptions) of the rules that have them, when ESLint
 	// resolved the configuration and some part of it has reportUnusedInlineConfigs.
 	rule_defaults map[string]json2.Any
-	resolved      string // the resolved JSON, for --print-config
-	only_rule     string // the rule of --rule, the only one that runs
+	// What a function given as parserOptions.svelteConfig.compilerOptions.runes gave for each
+	// .svelte file (absolute path) the resolver called it for (svelteConfigRunes; see
+	// eslint_resolver and file_language).
+	file_runes map[string]json2.Any
+	resolved   string // the resolved JSON, for --print-config
+	only_rule  string // the rule of --rule, the only one that runs
 }
 
 // named_projects are the tsconfig files `parserOptions.project` names in the configuration of a
@@ -689,8 +708,9 @@ fn resolve_with_bun_inputs(config_path string, files []string, lookup bool, inpu
 
 // loaded_from_resolved reads the resolved JSON: `configs` (each with `rules`, `linterOptions` and
 // `languageOptions`),
-// `files` (each with its `path` and either the index of its `config` or ESLint's `message` for a
-// file it does not lint) and `pluginRules`. A relative `path` is relative to `base_dir`, the
+// `files` (each with its `path` and either the index of its `config`, with, for a .svelte file,
+// `svelteConfigRunes` when the resolver called a runes function for it, or ESLint's `message` for
+// a file it does not lint) and `pluginRules`. A relative `path` is relative to `base_dir`, the
 // directory of the configuration or of the saved JSON.
 fn loaded_from_resolved(text string, path string, base_dir string, files []string) !LoadedConfig {
 	root := json2.decode[json2.Any](text) or {
@@ -739,6 +759,7 @@ fn loaded_from_resolved(text string, path string, base_dir string, files []strin
 	}
 	mut file_config := map[string]int{}
 	mut file_notes := map[string]string{}
+	mut file_runes := map[string]json2.Any{}
 	for file in files {
 		abs := os.abs_path(file)
 		item := by_path[abs] or {
@@ -754,11 +775,15 @@ fn loaded_from_resolved(text string, path string, base_dir string, files []strin
 			return error('${path}: ${file} has no configuration in the resolved configuration')
 		}
 		file_config[abs] = index
+		if runes := entry['svelteConfigRunes'] {
+			file_runes[abs] = runes
+		}
 	}
 	return LoadedConfig{
 		configs:        configs
 		file_config:    file_config
 		file_notes:     file_notes
+		file_runes:     file_runes
 		plugin_rules:   (object['pluginRules'] or { json2.Any([]json2.Any{}) }).as_array().map(it.str())
 		strict_plugins: 'pluginRules' in object
 		rule_defaults:  (object['ruleDefaults'] or { json2.Any(map[string]json2.Any{}) }).as_map()

@@ -141,3 +141,35 @@ fn test_svelte_parse_options() {
 		assert svelte_parse_options(language, path) == want, text
 	}
 }
+
+// with_svelte_config_runes: what a runes function of parserOptions.svelteConfig gave for a file
+// (the resolver's svelteConfigRunes) is read as a runes value written there: true and false decide
+// the parse, anything else is neither; the compiler takes it as a boolean.
+fn test_with_svelte_config_runes() {
+	language := parse_language_options(json2.decode[json2.Any]('{"parserOptions": {"svelteConfig": {"compilerOptions": {}}}}') or {
+		panic(err)
+	})
+	path := @FILE
+	assert svelte_parse_options(language, path) == svelte.ParseOptions{}
+	for text, want in {
+		'true':  svelte.RunesMode.on
+		'false': .off
+		'"yes"': .unknown
+		'0':     .unknown
+	} {
+		value := json2.decode[json2.Any](text) or { panic(err) }
+		got := language.with_svelte_config_runes(value)
+		assert svelte_parse_options(got, path) == svelte.ParseOptions{
+			config: want
+		}, text
+		assert svelte_config_of(got, path).runes == if text in ['false', '0'] { 0 } else { 1 }, text
+	}
+	// svelteFeatures.runes still wins.
+	features := parse_language_options(json2.decode[json2.Any]('{"parserOptions": {"svelteFeatures": {"runes": false}, "svelteConfig": {"compilerOptions": {}}}}') or {
+		panic(err)
+	})
+	assert svelte_parse_options(features.with_svelte_config_runes(json2.Any(true)), path) == svelte.ParseOptions{
+		features_set: true
+		features:     .off
+	}
+}
