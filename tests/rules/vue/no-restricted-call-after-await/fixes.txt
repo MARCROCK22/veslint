@@ -1,0 +1,4 @@
+tests/rules/vue/no-restricted-call-after-await/local/cases.vue:9:5	vue/no-restricted-call-after-await	restricted	`import("./foo").bar` is forbidden after an `await` expression.	end	9	10
+tests/rules/vue/no-restricted-call-after-await/local/cases.vue:11:5	vue/no-restricted-call-after-await	restricted	`import("./lib").default` is forbidden after an `await` expression.	end	11	10
+tests/rules/vue/no-restricted-call-after-await/opts/cases.vue:9:5	vue/no-restricted-call-after-await	restricted	`import("vue-i18n").useI18n` is forbidden after an `await` expression.	end	9	14
+tests/rules/vue/no-restricted-call-after-await/opts/cases.vue:10:5	vue/no-restricted-call-after-await	restricted	No route here.	end	10	15

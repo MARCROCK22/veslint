@@ -664,6 +664,10 @@ pub const vue_html_comment_content_newline = 'vue/html-comment-content-newline'
 pub const vue_html_comment_indent = 'vue/html-comment-indent'
 pub const vue_no_multi_spaces = 'vue/no-multi-spaces'
 pub const vue_block_order = 'vue/block-order'
+pub const vue_no_lifecycle_after_await = 'vue/no-lifecycle-after-await'
+pub const vue_no_watch_after_await = 'vue/no-watch-after-await'
+pub const vue_no_expose_after_await = 'vue/no-expose-after-await'
+pub const vue_no_restricted_call_after_await = 'vue/no-restricted-call-after-await'
 pub const names = [no_floating_promises, await_thenable, require_await, return_await,
 	no_misused_promises, no_unsafe_call, no_unsafe_member_access, no_unsafe_return,
 	no_unsafe_assignment, no_unsafe_argument, restrict_template_expressions,
@@ -856,7 +860,8 @@ pub const names = [no_floating_promises, await_thenable, require_await, return_a
 	vue_valid_define_emits, vue_valid_define_options, vue_require_prop_comment,
 	vue_define_macros_order, vue_order_in_components, vue_padding_lines_in_component_definition,
 	vue_sort_keys, vue_html_comment_content_spacing, vue_html_comment_content_newline,
-	vue_html_comment_indent, vue_no_multi_spaces, vue_block_order]
+	vue_html_comment_indent, vue_no_multi_spaces, vue_block_order, vue_no_lifecycle_after_await,
+	vue_no_watch_after_await, vue_no_expose_after_await, vue_no_restricted_call_after_await]
 
 // untyped_rules are the ported rules that need no types (`meta.docs.requiresTypeChecking` is false
 // in typescript-eslint; the eslint-plugin-unicorn rules that read the types when the parser has a
@@ -1019,7 +1024,8 @@ pub const untyped_rules = [adjacent_overload_signatures, array_type, class_liter
 	vue_valid_define_emits, vue_valid_define_options, vue_require_prop_comment,
 	vue_define_macros_order, vue_order_in_components, vue_padding_lines_in_component_definition,
 	vue_sort_keys, vue_html_comment_content_spacing, vue_html_comment_content_newline,
-	vue_html_comment_indent, vue_no_multi_spaces, vue_block_order]
+	vue_html_comment_indent, vue_no_multi_spaces, vue_block_order, vue_no_lifecycle_after_await,
+	vue_no_watch_after_await, vue_no_expose_after_await, vue_no_restricted_call_after_await]
 
 // needs_types tells whether a rule asks tsgo for the types of the program.
 pub fn needs_types(rule string) bool {
@@ -1678,6 +1684,10 @@ pub const default_options = {
 	vue_html_comment_indent:                         '[]'
 	vue_no_multi_spaces:                             '[]'
 	vue_block_order:                                 '[]'
+	vue_no_lifecycle_after_await:                    '[]'
+	vue_no_watch_after_await:                        '[]'
+	vue_no_expose_after_await:                       '[]'
+	vue_no_restricted_call_after_await:              '[]'
 }
 
 // Finding is a problem a rule found at a node.
@@ -2493,6 +2503,10 @@ pub fn message(rule string, finding Finding) string {
 		vue_html_comment_indent { vue_html_comment_indent_messages }
 		vue_no_multi_spaces { vue_no_multi_spaces_messages }
 		vue_block_order { vue_block_order_messages }
+		vue_no_lifecycle_after_await { vue_no_lifecycle_after_await_messages }
+		vue_no_watch_after_await { vue_no_watch_after_await_messages }
+		vue_no_expose_after_await { vue_no_expose_after_await_messages }
+		vue_no_restricted_call_after_await { vue_no_restricted_call_after_await_messages }
 		else { map[string]string{} }
 	}
 	return interpolate(messages[finding.message_id] or { finding.message_id }, finding.data)
@@ -4594,6 +4608,18 @@ fn (mut c Checker) lint_rule(rule string, root C.TSNode, abs_path string, mut st
 		}
 		vue_block_order {
 			return c.lint_vue_block_order(root, abs_path, mut stats)!
+		}
+		vue_no_lifecycle_after_await {
+			return c.lint_vue_no_lifecycle_after_await(root, abs_path, mut stats)!
+		}
+		vue_no_watch_after_await {
+			return c.lint_vue_no_watch_after_await(root, abs_path, mut stats)!
+		}
+		vue_no_expose_after_await {
+			return c.lint_vue_no_expose_after_await(root, abs_path, mut stats)!
+		}
+		vue_no_restricted_call_after_await {
+			return c.lint_vue_no_restricted_call_after_await(root, abs_path, mut stats)!
 		}
 		else { return error('unknown rule: ${rule}') }
 	}

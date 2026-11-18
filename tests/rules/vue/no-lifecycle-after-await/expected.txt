@@ -1,0 +1,2 @@
+tests/rules/vue/no-lifecycle-after-await/cases.vue:9:5	vue/no-lifecycle-after-await	forbidden	Lifecycle hooks are forbidden after an `await` expression.
+tests/rules/vue/no-lifecycle-after-await/define/cases.ts:6:5	vue/no-lifecycle-after-await	forbidden	Lifecycle hooks are forbidden after an `await` expression.
