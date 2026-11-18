@@ -774,6 +774,7 @@ pub const svelte_no_unused_class_name = 'svelte/no-unused-class-name'
 pub const svelte_experimental_require_slot_types = 'svelte/experimental-require-slot-types'
 pub const svelte_experimental_require_strict_events = 'svelte/experimental-require-strict-events'
 pub const svelte_sort_attributes = 'svelte/sort-attributes'
+pub const svelte_max_lines_per_block = 'svelte/max-lines-per-block'
 pub const names = [no_floating_promises, await_thenable, require_await, return_await,
 	no_misused_promises, no_unsafe_call, no_unsafe_member_access, no_unsafe_return,
 	no_unsafe_assignment, no_unsafe_argument, restrict_template_expressions,
@@ -1005,7 +1006,7 @@ pub const names = [no_floating_promises, await_thenable, require_await, return_a
 	svelte_require_optimized_style_attribute, svelte_prefer_style_directive, svelte_valid_style_parse,
 	svelte_consistent_selector_style, svelte_no_unused_class_name,
 	svelte_experimental_require_slot_types, svelte_experimental_require_strict_events,
-	svelte_sort_attributes]
+	svelte_sort_attributes, svelte_max_lines_per_block]
 
 // untyped_rules are the ported rules that need no types (`meta.docs.requiresTypeChecking` is false
 // in typescript-eslint; the eslint-plugin-unicorn rules that read the types when the parser has a
@@ -1201,7 +1202,7 @@ pub const untyped_rules = [adjacent_overload_signatures, array_type, class_liter
 	svelte_require_optimized_style_attribute, svelte_prefer_style_directive, svelte_valid_style_parse,
 	svelte_consistent_selector_style, svelte_no_unused_class_name,
 	svelte_experimental_require_slot_types, svelte_experimental_require_strict_events,
-	svelte_sort_attributes]
+	svelte_sort_attributes, svelte_max_lines_per_block]
 
 // needs_types tells whether a rule asks tsgo for the types of the program.
 pub fn needs_types(rule string) bool {
@@ -1970,6 +1971,7 @@ pub const default_options = {
 	svelte_experimental_require_slot_types:           '[]'
 	svelte_experimental_require_strict_events:        '[]'
 	svelte_sort_attributes:                           '[]'
+	svelte_max_lines_per_block:                       '[]'
 }
 
 // Finding is a problem a rule found at a node.
@@ -2915,6 +2917,7 @@ pub fn message(rule string, finding Finding) string {
 		svelte_experimental_require_slot_types { serst_messages }
 		svelte_experimental_require_strict_events { serse_messages }
 		svelte_sort_attributes { ssat_messages }
+		svelte_max_lines_per_block { smlpb_messages }
 		else { map[string]string{} }
 	}
 	return interpolate(messages[finding.message_id] or { finding.message_id }, finding.data)
@@ -5378,6 +5381,9 @@ fn (mut c Checker) lint_rule(rule string, root C.TSNode, abs_path string, mut st
 		}
 		svelte_sort_attributes {
 			return c.lint_svelte_sort_attributes(root, abs_path, mut stats)!
+		}
+		svelte_max_lines_per_block {
+			return c.lint_svelte_max_lines_per_block(root, abs_path, mut stats)!
 		}
 		else { return error('unknown rule: ${rule}') }
 	}
