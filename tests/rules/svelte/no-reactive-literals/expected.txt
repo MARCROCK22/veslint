@@ -1,0 +1,10 @@
+tests/rules/svelte/no-reactive-literals/cases.svelte:4:2	svelte/no-reactive-literals	noReactiveLiterals	Do not assign literal values inside reactive statements unless absolutely necessary.
+tests/rules/svelte/no-reactive-literals/cases.svelte:5:2	svelte/no-reactive-literals	noReactiveLiterals	Do not assign literal values inside reactive statements unless absolutely necessary.
+tests/rules/svelte/no-reactive-literals/cases.svelte:6:2	svelte/no-reactive-literals	noReactiveLiterals	Do not assign literal values inside reactive statements unless absolutely necessary.
+tests/rules/svelte/no-reactive-literals/cases.svelte:7:2	svelte/no-reactive-literals	noReactiveLiterals	Do not assign literal values inside reactive statements unless absolutely necessary.
+tests/rules/svelte/no-reactive-literals/cases.svelte:8:2	svelte/no-reactive-literals	noReactiveLiterals	Do not assign literal values inside reactive statements unless absolutely necessary.
+tests/rules/svelte/no-reactive-literals/cases.svelte:9:2	svelte/no-reactive-literals	noReactiveLiterals	Do not assign literal values inside reactive statements unless absolutely necessary.
+tests/rules/svelte/no-reactive-literals/cases.svelte:10:2	svelte/no-reactive-literals	noReactiveLiterals	Do not assign literal values inside reactive statements unless absolutely necessary.
+tests/rules/svelte/no-reactive-literals/cases.svelte:14:2	svelte/no-reactive-literals	noReactiveLiterals	Do not assign literal values inside reactive statements unless absolutely necessary.
+tests/rules/svelte/no-reactive-literals/cases.svelte:20:2	svelte/no-reactive-literals	noReactiveLiterals	Do not assign literal values inside reactive statements unless absolutely necessary.
+tests/rules/svelte/no-reactive-literals/cases.svelte:21:2	svelte/no-reactive-literals	noReactiveLiterals	Do not assign literal values inside reactive statements unless absolutely necessary.

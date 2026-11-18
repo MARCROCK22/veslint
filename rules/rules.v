@@ -772,6 +772,9 @@ pub const svelte_derived_has_same_inputs_outputs = 'svelte/derived-has-same-inpu
 pub const svelte_require_event_dispatcher_types = 'svelte/require-event-dispatcher-types'
 pub const svelte_no_add_event_listener = 'svelte/no-add-event-listener'
 pub const svelte_no_dom_manipulating = 'svelte/no-dom-manipulating'
+pub const svelte_no_extra_reactive_curlies = 'svelte/no-extra-reactive-curlies'
+pub const svelte_no_reactive_literals = 'svelte/no-reactive-literals'
+pub const svelte_no_reactive_functions = 'svelte/no-reactive-functions'
 pub const names = [no_floating_promises, await_thenable, require_await, return_await,
 	no_misused_promises, no_unsafe_call, no_unsafe_member_access, no_unsafe_return,
 	no_unsafe_assignment, no_unsafe_argument, restrict_template_expressions,
@@ -1001,7 +1004,8 @@ pub const names = [no_floating_promises, await_thenable, require_await, return_a
 	svelte_no_svelte_internal, svelte_no_inspect, svelte_no_store_async, svelte_require_stores_init,
 	svelte_no_ignored_unsubscribe, svelte_require_store_callbacks_use_set_param,
 	svelte_derived_has_same_inputs_outputs, svelte_require_event_dispatcher_types,
-	svelte_no_add_event_listener, svelte_no_dom_manipulating]
+	svelte_no_add_event_listener, svelte_no_dom_manipulating, svelte_no_extra_reactive_curlies,
+	svelte_no_reactive_literals, svelte_no_reactive_functions]
 
 // untyped_rules are the ported rules that need no types (`meta.docs.requiresTypeChecking` is false
 // in typescript-eslint; the eslint-plugin-unicorn rules that read the types when the parser has a
@@ -1195,7 +1199,8 @@ pub const untyped_rules = [adjacent_overload_signatures, array_type, class_liter
 	svelte_no_svelte_internal, svelte_no_inspect, svelte_no_store_async, svelte_require_stores_init,
 	svelte_no_ignored_unsubscribe, svelte_require_store_callbacks_use_set_param,
 	svelte_derived_has_same_inputs_outputs, svelte_require_event_dispatcher_types,
-	svelte_no_add_event_listener, svelte_no_dom_manipulating]
+	svelte_no_add_event_listener, svelte_no_dom_manipulating, svelte_no_extra_reactive_curlies,
+	svelte_no_reactive_literals, svelte_no_reactive_functions]
 
 // needs_types tells whether a rule asks tsgo for the types of the program.
 pub fn needs_types(rule string) bool {
@@ -1962,6 +1967,9 @@ pub const default_options = {
 	svelte_require_event_dispatcher_types:            '[]'
 	svelte_no_add_event_listener:                     '[]'
 	svelte_no_dom_manipulating:                       '[]'
+	svelte_no_extra_reactive_curlies:                 '[]'
+	svelte_no_reactive_literals:                      '[]'
+	svelte_no_reactive_functions:                     '[]'
 }
 
 // Finding is a problem a rule found at a node.
@@ -2905,6 +2913,9 @@ pub fn message(rule string, finding Finding) string {
 		svelte_require_event_dispatcher_types { svredt_messages }
 		svelte_no_add_event_listener { svnael_messages }
 		svelte_no_dom_manipulating { svndm_messages }
+		svelte_no_extra_reactive_curlies { svnerc_messages }
+		svelte_no_reactive_literals { svnrl_messages }
+		svelte_no_reactive_functions { svnrf_messages }
 		else { map[string]string{} }
 	}
 	return interpolate(messages[finding.message_id] or { finding.message_id }, finding.data)
@@ -5362,6 +5373,15 @@ fn (mut c Checker) lint_rule(rule string, root C.TSNode, abs_path string, mut st
 		}
 		svelte_no_dom_manipulating {
 			return c.lint_svelte_no_dom_manipulating(root, abs_path, mut stats)!
+		}
+		svelte_no_extra_reactive_curlies {
+			return c.lint_svelte_no_extra_reactive_curlies(root, abs_path, mut stats)!
+		}
+		svelte_no_reactive_literals {
+			return c.lint_svelte_no_reactive_literals(root, abs_path, mut stats)!
+		}
+		svelte_no_reactive_functions {
+			return c.lint_svelte_no_reactive_functions(root, abs_path, mut stats)!
 		}
 		else { return error('unknown rule: ${rule}') }
 	}

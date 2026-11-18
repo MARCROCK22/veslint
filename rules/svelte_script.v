@@ -265,3 +265,24 @@ fn (mut c Checker) svsc_token_before(root C.TSNode, e &SvscEs, offset int) ?Svsc
 	token := c.source_tokens(root).before(offset, false)?
 	return SvscToken{token.start, token.end, token.kind == .punctuator}
 }
+
+// svsc_reactive_statements are the SvelteReactiveStatement nodes of a .svelte file (the top-level
+// `$:` statements of doc.es) in traversal order.
+fn (mut c Checker) svsc_reactive_statements() []int {
+	if !c.is_svelte() || c.svelte.doc.reactive.len == 0 {
+		return []
+	}
+	doc := c.svelte.doc
+	mut out := []int{}
+	for step in c.sv_steps() {
+		if step.node.es && !step.leave && step.node.idx in doc.reactive {
+			out << step.node.idx
+		}
+	}
+	return out
+}
+
+// svsc_is_function: the node is a function (the `:function` selector).
+fn svsc_is_function(t &estree.EsTree, i int) bool {
+	return t.typ(i) in [.function_declaration, .function_expression, .arrow_function_expression]
+}
