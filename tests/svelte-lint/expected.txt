@@ -47,6 +47,12 @@ generics.svelte:2:7	@stylistic/object-curly-spacing	unexpectedSpaceAfter	There s
 generics.svelte:2:8	prefer-const	useConst	'rows' is never reassigned. Use 'const' instead.	fix	68	134	const { rows, pick }: { rows: T[]; pick: (row: T) => U } = $props();	end	2	12
 generics.svelte:7:23	@typescript-eslint/explicit-function-return-type	missingReturnType	Missing return type on function.	end	7	25
 generics.svelte:7:26	@stylistic/no-extra-parens	unexpected	Unnecessary parentheses around expression.	fix	241	257	selected = row	end	7	27
+lang-mixed.svelte:4:2	no-var	unexpectedVar	Unexpected var, use let or const instead.	end	4	33
+lang-mixed.svelte:4:2	vars-on-top	top	All 'var' declarations must be at the top of the function scope.	end	4	33
+lang-upper.svelte:2:81	vue/max-len	max	This line has a length of 95. Maximum allowed is 80.	end	2	96
+lang-upper.svelte:3:6	@typescript-eslint/no-inferrable-types	noInferrableType	Type number trivially inferred from a number literal, remove type annotation.	fix	124	132		end	3	23
+lang-upper.svelte:4:16	@stylistic/quotes	wrongQuotes	Strings must use doublequote.	fix	153	160	"count"	end	4	23
+lang-upper.svelte:7:22	@typescript-eslint/explicit-function-return-type	missingReturnType	Missing return type on function.	end	7	24
 legacy.svelte:10:24	@typescript-eslint/no-magic-numbers	noMagic	No magic number: 2.	end	10	25
 legacy.svelte:11:18	@typescript-eslint/no-magic-numbers	noMagic	No magic number: 3.	end	11	19
 legacy.svelte:12:15	@stylistic/quotes	wrongQuotes	Strings must use doublequote.	fix	263	269	"many"	end	12	21

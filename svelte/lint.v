@@ -54,6 +54,7 @@ fn (mut c Conv) build_lint_code() {
 						// name, in an expression whose value is used (not one that only modifies it).
 						edits << LintEdit{l.start, l.start + 1, '[('}
 						edits << LintEdit{after, l.head_end - 1, '+=0]'}
+						doc.lint_bindings << segs[0].file_start
 					} else if l.typed {
 						// `(part)as (typing);`: the typing goes.
 						edits << LintEdit{after, l.head_end - 1, ''}

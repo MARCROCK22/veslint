@@ -34,6 +34,7 @@ tests/rules/prefer-const/redeclared/cases.ts:8:7	prefer-const	useConst	'w' is ne
 tests/rules/prefer-const/redeclared/cases.ts:12:6	prefer-const	useConst	'm' is never reassigned. Use 'const' instead.	fix	292	312	const [m, n] = [1, 2];	end	12	7
 tests/rules/prefer-const/redeclared/cases.ts:12:6	prefer-const	useConst	'm' is never reassigned. Use 'const' instead.	fix	292	312	const [m, n] = [1, 2];	end	12	7
 tests/rules/prefer-const/redeclared/cases.ts:12:9	prefer-const	useConst	'n' is never reassigned. Use 'const' instead.	fix	292	312	const [m, n] = [1, 2];	end	12	10
+tests/rules/prefer-const/svelte-config-runes/function/cases.svelte:6:9	prefer-const	useConst	'label' is never reassigned. Use 'const' instead.	end	6	14
 tests/rules/prefer-const/svelte-config-runes/off/cases.svelte:6:9	prefer-const	useConst	'label' is never reassigned. Use 'const' instead.	fix	333	415	const { label, value = $bindable(0) }: { label: string; value?: number } = $props();	end	6	14
 tests/rules/prefer-const/svelte-config-runes/off/cases.svelte:6:16	prefer-const	useConst	'value' is never reassigned. Use 'const' instead.	fix	333	415	const { label, value = $bindable(0) }: { label: string; value?: number } = $props();	end	6	21
 tests/rules/prefer-const/svelte-config-runes/on/cases.svelte:6:9	prefer-const	useConst	'label' is never reassigned. Use 'const' instead.	end	6	14

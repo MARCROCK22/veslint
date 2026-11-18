@@ -38,6 +38,18 @@ directives.vue:18:39	@stylistic/list-style	shouldNotWrap	Should not have line br
 directives.vue:19:1	vue/script-indent	error	Expected indentation of 32 spaces but found 0 spaces.	fix	397	397	                                	end	19	1
 directives.vue:19:1	vue/sort-keys	sortKeys	Expected object keys to be in ascending order. 'unusedDirective' should be before 'value'.	end	19	16
 directives.vue:7:9	vue/block-lang	unexpected	Do not specify the 'lang' attribute of '<script>'.	end	7	18
+lang-typescript.vue:1:9	vue/block-lang	unexpected	Do not specify the 'lang' attribute of '<script>'.	end	1	26
+lang-typescript.vue:3:16	vue/require-expose	requireExpose	The public properties of the component must be explicitly declared using `expose`. If the component does not have public properties, declare it empty.	suggestion	addExposeOptionForEmpty	Add the `expose` option to give an empty array.	84	84	\nexpose: [],	suggestion	addExposeOptionForAll	Add the `expose` option to declare all properties.	84	84	\nexpose: ["answer"],	end	7	2
+lang-typescript.vue:3:16	vue/require-name-property	missingName	Required name property is not set.	suggestion	addName	Add name property to component.	87	87	name: 'lang-typescript',\n  	end	7	2
+lang-typescript.vue:4:3	@typescript-eslint/explicit-function-return-type	missingReturnType	Missing return type on function.	end	4	8
+lang-typescript.vue:4:3	@typescript-eslint/explicit-module-boundary-types	missingReturnType	Missing return type on function.	end	4	8
+lang-typescript.vue:4:3	vue/component-api-style	disallowComponentOption	Options API is not allowed in your project. `data` option is part of the Options API. Use `<script setup>` or Composition API instead.	end	4	7
+lang-typescript.vue:5:13	@stylistic/object-curly-spacing	unexpectedSpaceAfter	There should be no space after '{'.	fix	109	110		end	5	14
+lang-typescript.vue:5:14	@stylistic/quote-props	unquotedPropertyFound	Unquoted property 'answer' found.	fix	110	116	"answer"	end	5	34
+lang-typescript.vue:5:22	@typescript-eslint/no-magic-numbers	noMagic	No magic number: 42.	end	5	24
+lang-typescript.vue:5:34	@stylistic/object-curly-spacing	unexpectedSpaceBefore	There should be no space before '}'.	fix	130	131		end	5	35
+lang-upper.vue:1:15	vue/block-lang	unexpected	Do not specify the 'lang' attribute of '<script>'.	end	1	24
+lang-upper.vue:2:81	vue/max-len	max	This line has a length of 90. Maximum allowed is 80.	end	2	91
 line-separator.vue:2:10	no-irregular-whitespace	noIrregularWhitespace	Irregular whitespace not allowed.	end	3	1
 line-separator.vue:2:10	vue/no-irregular-whitespace	disallow	Irregular whitespace not allowed.	end	3	1
 line-separator.vue:2:6	vue/no-bare-strings-in-template	unexpected	Unexpected non-translated string used.	end	2	14
@@ -126,6 +138,8 @@ tsx-lang.vue:3:11	vue/multi-word-component-names	unexpected	Component name "Tsx"
 tsx-lang.vue:5:3	@typescript-eslint/explicit-function-return-type	missingReturnType	Missing return type on function.	end	5	10
 tsx-lang.vue:5:3	@typescript-eslint/explicit-module-boundary-types	missingReturnType	Missing return type on function.	end	5	10
 tsx-lang.vue:5:3	vue/component-api-style	disallowComponentOption	Options API is not allowed in your project. `render` function is part of the Options API. Use `<script setup>` or Composition API instead.	end	5	9
+type-export-only.vue:7:12	eslint	fatal	Parsing error: ')' expected.
+type-export.vue:10:20	eslint	fatal	Parsing error: ',' expected.
 types.vue:10:23	@stylistic/list-style	shouldSpacing	Should have space between 'ref' and '}'	fix	174	174	 	end	10	23
 types.vue:10:9	@stylistic/list-style	shouldSpacing	Should have space between '{' and 'onMounted'	fix	160	160	 	end	10	9
 types.vue:12:13	@stylistic/list-style	shouldSpacing	Should have space between 'load' and '}'	fix	201	201	 	end	12	13

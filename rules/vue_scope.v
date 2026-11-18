@@ -17,6 +17,8 @@ pub:
 	script_setup bool
 	uses         []vue.TemplateUse
 	generic      []string
+	// custom_macros: parserOptions.vueFeatures.customMacros, resolved as the compiler macros are.
+	custom_macros []string
 	// The file range of the <script setup>'s content when vue-eslint-parser parses it as a block
 	// after the other script (-1 otherwise): see vue_detach_setup_scopes.
 	block_start int = -1
@@ -26,11 +28,12 @@ pub:
 fn vue_scope_setup(doc &vue.Document) VueScopeSetup {
 	block_start, block_end := doc.script_setup_block()
 	return VueScopeSetup{
-		script_setup: true
-		uses:         doc.template_uses()
-		generic:      doc.script_setup_generic_names()
-		block_start:  block_start
-		block_end:    block_end
+		script_setup:  true
+		uses:          doc.template_uses()
+		generic:       doc.script_setup_generic_names()
+		custom_macros: doc.options.custom_macros
+		block_start:   block_start
+		block_end:     block_end
 	}
 }
 
@@ -92,7 +95,8 @@ fn (mut b ScopeBuilder) vue_script_setup_scope(setup VueScopeSetup) {
 	for r in b.tree.through {
 		ref := b.tree.references[r]
 		from_kind := b.tree.scopes[ref.from].kind
-		if (ref.name in vue_compiler_macros && from_kind in [.global, .esmodule])
+		if ((ref.name in vue_compiler_macros || ref.name in setup.custom_macros)
+			&& from_kind in [.global, .esmodule])
 			|| ref.name in setup.generic {
 			v := b.define_variable(0, ref.name)
 			b.tree.references[r].resolved = v

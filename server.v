@@ -152,6 +152,8 @@ mut:
 	// svelte_options: the runes options each .svelte file (absolute path) was last linted with,
 	// which its twin is made with again when the file changes (update_twins).
 	svelte_options map[string]svelte.ParseOptions
+	// vue_options: the vueFeatures each .vue file (absolute path) was last linted with, the same way.
+	vue_options map[string]vue.Options
 	// twin_configs is the tsconfig of each twin, and included the twins include_twins looked at
 	// with the running tsgo.
 	twin_configs   map[string]string
@@ -454,7 +456,9 @@ fn (mut s Server) lint(id i64, config string, project string, files []string, te
 		}
 		is_vue := rules.is_vue_path(path)
 		if is_vue {
-			mut doc := s.vue_parsers.parse(src) or {
+			vue_options := loaded.vue_parse_options(abs_path)
+			s.vue_options[abs_path] = vue_options
+			mut doc := s.vue_parsers.parse(src, vue_options) or {
 				errors.writeln('veslint: ${path}: ${err.msg()}')
 				return ServerAnswer{
 					id:     id
@@ -793,7 +797,9 @@ fn (mut s Server) update_twins(request map[string]json2.Any) {
 				s.set_twin(twin, code)
 				continue
 			}
-			mut doc := s.vue_parsers.parse(src) or { continue }
+			mut doc := s.vue_parsers.parse(src, s.vue_options[os.abs_path(path)] or { vue.Options{} }) or {
+				continue
+			}
 			code := doc.script.code
 			doc.free()
 			s.set_twin(twin, code)

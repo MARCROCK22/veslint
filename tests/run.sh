@@ -633,6 +633,38 @@ else
 	ko "Vue files: a JavaScript script (code $code)"
 	cat "$TMP/vue-javascript.out" "$TMP/vue-javascript.err"
 fi
+# parserOptions.vueFeatures (filter, interpolationAsNonHTML, styleCSSVariableInjection, customMacros,
+# each read as vue-eslint-parser reads it), as ESLint gives it for each configuration of
+# tests/vue-lint/features (pinned by its pin.sh); and through an eslint.config.mjs, whose resolution
+# by ESLint keeps them (and svelteFeatures and svelteConfig: the runes of tests/svelte-lint/runes).
+features_configs=(css-off falsy filter-off interpolation-off macros none)
+features_files=(filters.vue interpolation.vue macros.vue style.vue)
+for config in "${features_configs[@]}"; do
+	(cd tests/vue-lint/features && ../../../veslint --config "$config.json" --fixes "${features_files[@]}" 2> /dev/null) |
+		sed "s|^|$config: |"
+done | sorted > "$TMP/vue-features.out"
+if diff -u tests/vue-lint/features/expected.txt "$TMP/vue-features.out"; then
+	ok "Vue files: the vueFeatures of parserOptions"
+else
+	ko "Vue files: the vueFeatures of parserOptions"
+fi
+if command -v bun > /dev/null && [[ -d build/eval/spider-byte/node_modules/eslint ]]; then
+	(cd tests/vue-lint/features && FEATURES_CONFIG=$PWD/falsy.json VESLINT_ESLINT_DIR=../../../build/eval/spider-byte \
+		../../../veslint --config eslint.features.config.mjs --fixes "${features_files[@]}" 2> "$TMP/vue-features-bun.err") |
+		sed 's|^|falsy: |' | sorted > "$TMP/vue-features-bun.out"
+	for config in config-true features-false; do
+		(cd tests/svelte-lint/runes && RUNES_CONFIG=$PWD/$config.json VESLINT_ESLINT_DIR=../../../build/eval/spider-byte \
+			../../../veslint --config eslint.runes.config.mjs --fixes options.svelte plain.svelte 2>> "$TMP/vue-features-bun.err") |
+			sed "s|^|$config: |"
+	done | sorted > "$TMP/svelte-features-bun.out"
+	if diff -u <(grep '^falsy: ' tests/vue-lint/features/expected.txt) "$TMP/vue-features-bun.out" &&
+		diff -u <(grep -E '^(config-true|features-false): ' tests/svelte-lint/runes/expected.txt) "$TMP/svelte-features-bun.out"; then
+		ok "vueFeatures, svelteFeatures and svelteConfig of an eslint.config.mjs resolved through bun"
+	else
+		ko "vueFeatures, svelteFeatures and svelteConfig of an eslint.config.mjs resolved through bun"
+		cat "$TMP/vue-features-bun.err"
+	fi
+fi
 
 # Svelte files (svelte_files.v, rules/svelte_file.v): the scripts and the template expressions of
 # tests/svelte-lint/fixtures, with every rule of tests/svelte-lint/rules.json and the types of their

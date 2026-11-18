@@ -33,6 +33,10 @@ generics.svelte:2:56	@stylistic/list-style	shouldSpacing	Should have space betwe
 generics.svelte:2:9	@stylistic/list-style	shouldSpacing	Should have space between '{' and 'rows'	fix	75	75	 	end	2	9
 generics.svelte:7:20	no-return-assign	arrowAssignment	Arrow function should not return assignment.	end	7	40
 generics.svelte:7:23	@typescript-eslint/explicit-function-return-type	missingReturnType	Missing return type on function.	end	7	25
+lang-mixed.svelte:4:2	no-var	unexpectedVar	Unexpected var, use let or const instead.	end	4	33
+lang-mixed.svelte:4:2	vars-on-top	top	All 'var' declarations must be at the top of the function scope.	end	4	33
+lang-upper.svelte:2:81	vue/max-len	max	This line has a length of 95. Maximum allowed is 80.	end	2	96
+lang-upper.svelte:7:22	@typescript-eslint/explicit-function-return-type	missingReturnType	Missing return type on function.	end	7	24
 legacy.svelte:10:24	@typescript-eslint/no-magic-numbers	noMagic	No magic number: 2.	end	10	25
 legacy.svelte:11:18	@typescript-eslint/no-magic-numbers	noMagic	No magic number: 3.	end	11	19
 legacy.svelte:14:13	@stylistic/list-style	shouldSpacing	Should have space between 'length' and '}'	fix	287	287	 	end	14	13

@@ -77,6 +77,9 @@ pub mut:
 	lint_code     string
 	lint_start    int
 	lint_segments []Segment
+	// lint_bindings: the file offsets of the names a bind: directive is given (`bind:x={name}`,
+	// wrapped as `[(name)+=0];`).
+	lint_bindings []int
 	// lint_generics_start: where the type aliases of the `generics` attribute are in the lint
 	// code (-1 without them).
 	lint_generics_start int = -1
