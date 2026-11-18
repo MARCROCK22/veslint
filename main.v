@@ -448,7 +448,8 @@ fn run(opts Options, timeout time.Duration) !int {
 	for path in opts.files {
 		if rules.is_svelte_path(path) {
 			work := prepare_svelte_file(mut svelte_parsers, parser, path, project_override,
-				opts.all_identifiers, mut bench)!
+				opts.all_identifiers, opts.loaded.svelte_parse_options(os.abs_path(path)), mut
+				bench)!
 			if work.svelte {
 				works << work
 			}
@@ -558,6 +559,8 @@ struct RuleFile {
 	svelte    bool
 	ts_path   string
 	twin_code string
+	// svelte_options: the runes options a .svelte file is parsed with (svelte_parse_options).
+	svelte_options svelte.ParseOptions
 	// A `.svelte.ts` module: tsgo reads its virtual code instead of the file (svelte/module.v).
 	module svelte.ModuleVirtual
 }
@@ -613,6 +616,11 @@ fn run_rules(opts Options, timeout time.Duration) !int {
 		is_vue := rules.is_vue_path(path)
 		is_svelte := rules.is_svelte_path(path)
 		mut twin_code := ''
+		svelte_options := if is_svelte {
+			opts.loaded.svelte_parse_options(abs_path)
+		} else {
+			svelte.ParseOptions{}
+		}
 		if is_vue {
 			code, linted := vue_parsers.twin_code(src) or { return error('${path}: ${err.msg()}') }
 			if !linted {
@@ -621,7 +629,7 @@ fn run_rules(opts Options, timeout time.Duration) !int {
 			}
 			twin_code = code
 		} else if is_svelte {
-			code, linted := svelte_parsers.twin_code(src) or {
+			code, linted := svelte_parsers.twin_code(src, svelte_options) or {
 				return error('${path}: ${err.msg()}')
 			}
 			if !linted {
@@ -656,24 +664,25 @@ fn run_rules(opts Options, timeout time.Duration) !int {
 			tsconfigs << tsconfig
 		}
 		files << RuleFile{
-			path:      path
-			abs_path:  abs_path
-			tsconfig:  tsconfig
-			named:     named
-			src:       src
-			has_bom:   has_bom
-			not_utf8:  not_utf8
-			vue:       is_vue
-			svelte:    is_svelte
-			ts_path:   if is_vue {
+			path:           path
+			abs_path:       abs_path
+			tsconfig:       tsconfig
+			named:          named
+			src:            src
+			has_bom:        has_bom
+			not_utf8:       not_utf8
+			vue:            is_vue
+			svelte:         is_svelte
+			ts_path:        if is_vue {
 				rules.vue_twin_path(abs_path)
 			} else if is_svelte {
 				rules.svelte_twin_path(abs_path)
 			} else {
 				abs_path
 			}
-			twin_code: twin_code
-			module:    module
+			twin_code:      twin_code
+			svelte_options: svelte_options
+			module:         module
 		}
 	}
 	bench.files = files.len
@@ -800,7 +809,7 @@ fn run_rules(opts Options, timeout time.Duration) !int {
 		// The document of a .svelte file, the same way.
 		mut sdoc := &svelte.Document(unsafe { nil })
 		if f.svelte {
-			sdoc = svelte_parsers.parse(src) or { return error('${f.path}: ${err.msg()}') }
+			sdoc = svelte_parsers.parse(src, f.svelte_options) or { return error('${f.path}: ${err.msg()}') }
 		}
 		// --fix ports ESLint's verifyAndFix: lint, apply the fixes that do not overlap, and lint the
 		// result again, up to 10 passes or until two passes give the same text. tsgo only reads
@@ -887,7 +896,7 @@ fn run_rules(opts Options, timeout time.Duration) !int {
 				client.serve(f.ts_path, doc.script.code)
 			} else if f.svelte {
 				sdoc.free()
-				sdoc = svelte_parsers.parse(src) or { return error('${f.path}: ${err.msg()}') }
+				sdoc = svelte_parsers.parse(src, f.svelte_options) or { return error('${f.path}: ${err.msg()}') }
 				client.serve(f.ts_path, sdoc.virtual_code)
 			} else if f.module.inserted > 0 || module.inserted > 0 {
 				// The module's virtual code is made again from the fixed text.

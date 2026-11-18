@@ -63,8 +63,12 @@ pub mut:
 	virtual_fragments []VRange
 	// scope: the scope manager (see scope_info.v).
 	scope ScopeInfo
-	// runes: svelteParseContext.runes while parsing (`<svelte:options runes={…}>`).
+	// runes: svelteParseContext.runes while parsing (parserOptions.svelteFeatures.runes, else
+	// `<svelte:options runes={…}>`, else the svelteConfig's compilerOptions.runes: see
+	// ParseOptions).
 	runes RunesMode
+	// options: what the document was parsed with (a text derived from it is parsed the same way).
+	options ParseOptions
 	// generics_code: the code `void function<…>(){}` handed to the script parser for the
 	// `generics` attribute ('' without one).
 	generics_code string
@@ -179,6 +183,24 @@ pub fn (mut d Document) free() {
 	d.extra_trees = []
 }
 
+// ParseOptions are the configuration's say in svelteParseContext.runes while parsing
+// (isRunesAsParseContext of svelte-eslint-parser's svelte-parse-context.ts): `features` is
+// parserOptions.svelteFeatures.runes when `features_set` (`!= null`: it wins over everything, even
+// when it is neither true nor false, `.unknown`), `config` the compilerOptions.runes of the
+// svelteConfig (parserOptions.svelteConfig, else svelte.config.js), which
+// `<svelte:options runes={…}>` overrides (`.unknown`: not set).
+pub struct ParseOptions {
+pub:
+	features_set bool
+	features     RunesMode
+	config       RunesMode
+}
+
+// runes_mode is a boolean option as a RunesMode.
+pub fn runes_mode(on bool) RunesMode {
+	return if on { RunesMode.on } else { RunesMode.off }
+}
+
 // parse_svelte parses a .svelte file (UTF-8, without BOM). To parse many files, make the
 // Parsers once and use parse_svelte_with.
 pub fn parse_svelte(src string) !&Document {
@@ -189,15 +211,22 @@ pub fn parse_svelte(src string) !&Document {
 	return parse_svelte_with(src, parsers)
 }
 
-// parse_svelte_with parses a .svelte file with parsers kept from file to file. A file
-// svelte-eslint-parser rejects gives a Document with `error` set (and what was built so far).
+// parse_svelte_with parses a .svelte file with parsers kept from file to file, without runes
+// options (see parse_svelte_options). A file svelte-eslint-parser rejects gives a Document with
+// `error` set (and what was built so far).
 pub fn parse_svelte_with(src string, parsers &Parsers) !&Document {
+	return parse_svelte_options(src, parsers, ParseOptions{})
+}
+
+// parse_svelte_options is parse_svelte_with with the configuration's runes options.
+pub fn parse_svelte_options(src string, parsers &Parsers, options ParseOptions) !&Document {
 	index := new_text_index(src)
 	mut doc := &Document{
 		src:       src
 		index:     index
 		lc:        new_lines_and_columns(src, &index)
 		separator: -1
+		options:   options
 	}
 	sc := split_document(src)
 	doc.template = sc.template
@@ -221,8 +250,12 @@ pub fn parse_svelte_with(src string, parsers &Parsers) !&Document {
 		sc:      sc
 		parsers: parsers
 	}
-	if ca.options >= 0 && ca.nodes[ca.options].has_runes {
-		c.runes = if ca.nodes[ca.options].runes { RunesMode.on } else { RunesMode.off }
+	c.runes = if options.features_set {
+		options.features
+	} else if ca.options >= 0 && ca.nodes[ca.options].has_runes {
+		runes_mode(ca.nodes[ca.options].runes)
+	} else {
+		options.config
 	}
 	doc.runes = c.runes
 	c.convert_root()
