@@ -1168,7 +1168,7 @@ fn (mut c Conv) add_expression(expr int, target int, typing string, setter Sette
 }
 
 fn (mut c Conv) add_expression_from_range(s int, e int, target int, typing string, setter Setter, check string) {
-	part := c.code[s..e]
+	part := js_slice(c.code, s, e)
 	typed := typing != '' && c.is_ts()
 	text := if typed { '(${part})as (${typing});' } else { '(${part});' }
 	c.append_let(ScriptLet{
@@ -1455,4 +1455,21 @@ fn json_quote(s string) string {
 
 // convert_generics is convertGenericsAttribute (root.ts): not done yet.
 fn (mut c Conv) convert_generics(script int) {
+}
+
+// js_slice is String#slice: a negative index counts from the end; an empty string when start
+// is not before end (getNodeRange's balancing loop can leave start at -1).
+fn js_slice(s string, start int, end int) string {
+	mut a := if start < 0 { s.len + start } else { start }
+	mut b := if end < 0 { s.len + end } else { end }
+	if a < 0 {
+		a = 0
+	}
+	if b > s.len {
+		b = s.len
+	}
+	if a >= b {
+		return ''
+	}
+	return s[a..b]
 }
