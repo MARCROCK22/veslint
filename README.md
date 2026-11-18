@@ -99,7 +99,7 @@ Directive comments work as in ESLint 10: `eslint-disable`, `eslint-enable`, `esl
 
 ## Rules
 
-veslint has **712 rules**, each with all its options, fixes and suggestions:
+veslint has **746 rules**, each with all its options, fixes and suggestions:
 
 <details>
 <summary><b>ESLint 10.15.0</b>: 139 rules</summary>
@@ -146,6 +146,13 @@ Its 38 wrappers of rules of ESLint core and ESLint Stylistic, which run veslint'
 </details>
 
 <details>
+<summary><b>eslint-plugin-svelte 3.24.1</b> (the templates of <code>.svelte</code> files): 34 rules</summary>
+
+`svelte/block-lang`, `svelte/button-has-type`, `svelte/comment-directive`, `svelte/first-attribute-linebreak`, `svelte/html-closing-bracket-new-line`, `svelte/html-closing-bracket-spacing`, `svelte/html-quotes`, `svelte/html-self-closing`, `svelte/max-attributes-per-line`, `svelte/mustache-spacing`, `svelte/no-at-const-tags`, `svelte/no-at-debug-tags`, `svelte/no-at-html-tags`, `svelte/no-dupe-else-if-blocks`, `svelte/no-dupe-on-directives`, `svelte/no-dupe-use-directives`, `svelte/no-dynamic-slot-name`, `svelte/no-inline-styles`, `svelte/no-nested-style-tag`, `svelte/no-not-function-handler`, `svelte/no-object-in-text-mustaches`, `svelte/no-raw-special-elements`, `svelte/no-spaces-around-equal-signs-in-attribute`, `svelte/no-target-blank`, `svelte/no-useless-children-snippet`, `svelte/no-useless-mustaches`, `svelte/prefer-attribute-interpolation`, `svelte/prefer-class-directive`, `svelte/require-each-key`, `svelte/shorthand-attribute`, `svelte/shorthand-directive`, `svelte/spaced-html-comment`, `svelte/system`, `svelte/valid-each-key`
+
+</details>
+
+<details>
 <summary><b>@slipher/eslint-plugin 1.1.0</b> (Seyfert bots): 15 rules</summary>
 
 `seyfert/autocomplete-respond`, `seyfert/config-default-export`, `seyfert/context-menu-declare`, `seyfert/declare-description`, `seyfert/decorator-on-command`, `seyfert/decorator-target`, `seyfert/group-exists`, `seyfert/i18n-resolve-with-get`, `seyfert/no-deep-imports`, `seyfert/no-hanging-middleware`, `seyfert/no-method-destructure`, `seyfert/options-use-builders`, `seyfert/prefer-typed-group`, `seyfert/require-declare`, `seyfert/required-options-order`
@@ -163,7 +170,7 @@ What each version added is in the [changelog](CHANGELOG.md).
 
 ### How it is checked
 
-Every rule passes all the cases of its own upstream tests, linted as TypeScript: 29,862 cases of typescript-eslint, 14,092 of ESLint, 14,962 of eslint-plugin-unicorn, 9,528 of @stylistic/eslint-plugin, 3,278 of eslint-plugin-perfectionist, 459 of @slipher/eslint-plugin, 206 of @marcrock22/eslintcf and 10,085 of eslint-plugin-vue (its JavaScript cases with `lang="ts"`, with what ESLint gives for them). On fixtures of its own, every rule gives exactly what ESLint gives: problems, messages, positions, fixes and suggestions. The rules are also compared with ESLint on real projects (a Discord bot, zod, recharts and the TypeScript compiler).
+Every rule passes all the cases of its own upstream tests, linted as TypeScript: 29,862 cases of typescript-eslint, 14,092 of ESLint, 14,962 of eslint-plugin-unicorn, 9,528 of @stylistic/eslint-plugin, 3,278 of eslint-plugin-perfectionist, 459 of @slipher/eslint-plugin, 206 of @marcrock22/eslintcf, 10,085 of eslint-plugin-vue and 314 of eslint-plugin-svelte (their JavaScript cases with `lang="ts"`, with what ESLint gives for them). On fixtures of its own, every rule gives exactly what ESLint gives: problems, messages, positions, fixes and suggestions. The rules are also compared with ESLint on real projects (a Discord bot, zod, recharts and the TypeScript compiler).
 
 ## VS Code extension
 

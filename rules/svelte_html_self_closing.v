@@ -54,6 +54,11 @@ fn shsc_options(options []json2.Any) !map[string]string {
 		}
 		return o
 	}
+	// Another value than an object or a preset (the schema's object branch has no `type`) leaves
+	// the defaults.
+	if option !is map[string]json2.Any {
+		return o
+	}
 	object := option_object(svelte_html_self_closing, options, ['void', 'normal', 'svg', 'math',
 		'component', 'svelte'])!
 	for k, _ in o {
