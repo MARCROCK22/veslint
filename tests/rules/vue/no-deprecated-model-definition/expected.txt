@@ -1,0 +1,4 @@
+tests/rules/vue/no-deprecated-model-definition/cases.ts:3:3	vue/no-deprecated-model-definition	deprecatedModel	`model` definition is deprecated.
+tests/rules/vue/no-deprecated-model-definition/cases.vue:3:3	vue/no-deprecated-model-definition	deprecatedModel	`model` definition is deprecated.
+tests/rules/vue/no-deprecated-model-definition/compat/cases.ts:9:3	vue/no-deprecated-model-definition	vue3Compat	`model` definition is deprecated. You may use the Vue 3-compatible `modelValue`/`update:modelValue` though.
+tests/rules/vue/no-deprecated-model-definition/compat/cases.vue:3:3	vue/no-deprecated-model-definition	vue3Compat	`model` definition is deprecated. You may use the Vue 3-compatible `modelValue`/`update:modelValue` though.

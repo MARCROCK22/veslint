@@ -1,0 +1,11 @@
+tests/rules/vue/no-template-shadow/allow/cases.vue:4:17	vue/no-template-shadow	alreadyDeclaredInUpperScope	Variable 'm' is already declared in the upper scope.
+tests/rules/vue/no-template-shadow/allow/cases.vue:5:17	vue/no-template-shadow	alreadyDeclaredInUpperScope	Variable 'p' is already declared in the upper scope.
+tests/rules/vue/no-template-shadow/cases.vue:4:20	vue/no-template-shadow	alreadyDeclaredInUpperScope	Variable 'item' is already declared in the upper scope.
+tests/rules/vue/no-template-shadow/cases.vue:5:18	vue/no-template-shadow	alreadyDeclaredInUpperScope	Variable 'a' is already declared in the upper scope.
+tests/rules/vue/no-template-shadow/cases.vue:7:21	vue/no-template-shadow	alreadyDeclaredInUpperScope	Variable 'msg' is already declared in the upper scope.
+tests/rules/vue/no-template-shadow/cases.vue:7:26	vue/no-template-shadow	alreadyDeclaredInUpperScope	Variable 'ok' is already declared in the upper scope.
+tests/rules/vue/no-template-shadow/cases.vue:10:15	vue/no-template-shadow	alreadyDeclaredInUpperScope	Variable 'Typed' is already declared in the upper scope.
+tests/rules/vue/no-template-shadow/cases.vue:11:15	vue/no-template-shadow	alreadyDeclaredInUpperScope	Variable 'fromProp' is already declared in the upper scope.
+tests/rules/vue/no-template-shadow/cases.vue:12:15	vue/no-template-shadow	alreadyDeclaredInUpperScope	Variable 'extra' is already declared in the upper scope.
+tests/rules/vue/no-template-shadow/options-api/cases.vue:2:15	vue/no-template-shadow	alreadyDeclaredInUpperScope	Variable 's' is already declared in the upper scope.
+tests/rules/vue/no-template-shadow/options-api/cases.vue:4:15	vue/no-template-shadow	alreadyDeclaredInUpperScope	Variable 'asyncThing' is already declared in the upper scope.

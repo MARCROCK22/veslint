@@ -1,0 +1,7 @@
+tests/rules/vue/no-deprecated-dollar-scopedslots-api/cases.vue:2:16	vue/no-deprecated-dollar-scopedslots-api	deprecated	The `$scopedSlots` is deprecated.
+tests/rules/vue/no-deprecated-dollar-scopedslots-api/cases.vue:2:38	vue/no-deprecated-dollar-scopedslots-api	deprecated	The `$scopedSlots` is deprecated.
+tests/rules/vue/no-deprecated-dollar-scopedslots-api/cases.vue:4:8	vue/no-deprecated-dollar-scopedslots-api	deprecated	The `$scopedSlots` is deprecated.
+tests/rules/vue/no-deprecated-dollar-scopedslots-api/cases.vue:11:22	vue/no-deprecated-dollar-scopedslots-api	deprecated	The `$scopedSlots` is deprecated.
+tests/rules/vue/no-deprecated-dollar-scopedslots-api/cases.vue:11:39	vue/no-deprecated-dollar-scopedslots-api	deprecated	The `$scopedSlots` is deprecated.
+tests/rules/vue/no-deprecated-dollar-scopedslots-api/cases.vue:11:59	vue/no-deprecated-dollar-scopedslots-api	deprecated	The `$scopedSlots` is deprecated.
+tests/rules/vue/no-deprecated-dollar-scopedslots-api/cases.vue:14:22	vue/no-deprecated-dollar-scopedslots-api	deprecated	The `$scopedSlots` is deprecated.

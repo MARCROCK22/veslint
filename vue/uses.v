@@ -42,6 +42,26 @@ pub fn (d &Document) has_script_setup() bool {
 	return d.top_elements('script').any(d.is_script_setup(it))
 }
 
+// script_setup_block is the file range of the content of the <script setup> when vue-eslint-parser
+// wraps it in a block statement (parseScriptSetupElements: the file has two top-level scripts and
+// the setup one has content); (-1, -1) otherwise.
+pub fn (d &Document) script_setup_block() (int, int) {
+	scripts := d.top_elements('script')
+	if scripts.len != 2 {
+		return -1, -1
+	}
+	for s in scripts {
+		if d.is_script_setup(s) {
+			text := d.text_child(s)
+			if text < 0 {
+				return -1, -1
+			}
+			return d.nodes[text].start, d.nodes[text].end
+		}
+	}
+	return -1, -1
+}
+
 // script_setup_generic_names are the names a `generic` of the <script setup> defines.
 pub fn (d &Document) script_setup_generic_names() []string {
 	for s in d.top_elements('script') {

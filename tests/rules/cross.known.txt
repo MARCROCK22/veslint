@@ -1,5 +1,6 @@
 not compared	tests/rules/unicorn/no-useless-undefined/cases.ts	crash	@typescript-eslint/no-deprecated: Cannot read properties of undefined (reading 'kind')
 not compared	tests/rules/unicorn/prefer-number-properties/export/cases.ts	crash	@typescript-eslint/no-use-before-define: Cannot read properties of undefined (reading 'range')
+not compared	tests/rules/vue/valid-define-options/cases.vue	crash	vue/no-restricted-component-names: Cannot read properties of undefined (reading 'type')
 only eslint	tests/rules/@stylistic/no-extra-parens/cases.ts:182:1	@stylistic/no-extra-parens	unexpected	Unnecessary parentheses around expression.
 only eslint	tests/rules/@stylistic/no-extra-parens/cases.ts:184:1	@stylistic/no-extra-parens	unexpected	Unnecessary parentheses around expression.
 only eslint	tests/rules/@stylistic/no-extra-parens/cases.ts:185:1	@stylistic/no-extra-parens	unexpected	Unnecessary parentheses around expression.
@@ -27,6 +28,10 @@ only eslint	tests/rules/@typescript-eslint/prefer-readonly-parameter-types/condi
 only eslint	tests/rules/@typescript-eslint/prefer-readonly-parameter-types/conditional/cases.ts:40:34	@stylistic/no-extra-parens	unexpected	Unnecessary parentheses around expression.
 only eslint	tests/rules/@typescript-eslint/prefer-readonly-parameter-types/methods-readonly/cases.ts:159:15	@typescript-eslint/no-unnecessary-condition	alwaysTruthy	Unnecessary conditional, value is always truthy.
 only eslint	tests/rules/@typescript-eslint/prefer-readonly-parameter-types/methods-readonly/cases.ts:159:15	@typescript-eslint/strict-boolean-expressions	conditionErrorObject	Unexpected object value in conditional. The condition is always true.
+only eslint	tests/rules/vue/max-len/i23/cases.vue:9:9	@typescript-eslint/prefer-includes	preferStringIncludes	Use `String#includes()` method with a string instead.
+only eslint	tests/rules/vue/max-len/i24/cases.vue:3:9	@typescript-eslint/prefer-includes	preferStringIncludes	Use `String#includes()` method with a string instead.
+only eslint	tests/rules/vue/max-len/v17/cases.vue:9:9	@typescript-eslint/prefer-includes	preferStringIncludes	Use `String#includes()` method with a string instead.
+only eslint	tests/rules/vue/max-len/v18/cases.vue:3:9	@typescript-eslint/prefer-includes	preferStringIncludes	Use `String#includes()` method with a string instead.
 only eslint	tests/rules/vue/no-computed-properties-in-data/cases.vue:7:14	@typescript-eslint/no-unsafe-assignment	anyAssignment	Unsafe assignment of an `any` value.
 only eslint	tests/rules/vue/no-computed-properties-in-data/cases.vue:7:17	@typescript-eslint/no-unsafe-assignment	anyAssignment	Unsafe assignment of an `any` value.
 only veslint	tests/rules/@typescript-eslint/non-nullable-type-assertion-style/cases.ts:62:11	@typescript-eslint/no-unsafe-type-assertion	unsafeTypeAssertion	Unsafe type assertion: type '"down" | "up"' is more narrow than the original type.

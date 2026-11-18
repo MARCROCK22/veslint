@@ -1,0 +1,11 @@
+<template>
+  <div>
+        <div
+          v-if="condition"
+          v-show="show"
+          short="val"
+          medium-attr="value"
+          very-long-attribute-name="value">
+        </div>
+      </div>
+</template>

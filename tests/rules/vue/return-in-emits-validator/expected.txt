@@ -1,0 +1,8 @@
+tests/rules/vue/return-in-emits-validator/cases.vue:4:8	vue/return-in-emits-validator	expectedTrue	Expected to return a true value in "a" emits validator.
+tests/rules/vue/return-in-emits-validator/cases.vue:6:6	vue/return-in-emits-validator	expectedTrue	Expected to return a true value in "c" emits validator.
+tests/rules/vue/return-in-emits-validator/cases.vue:9:6	vue/return-in-emits-validator	expectedBoolean	Expected to return a boolean value in "d" emits validator.
+tests/rules/vue/return-in-emits-validator/cases.vue:16:6	vue/return-in-emits-validator	expectedTrue	Expected to return a true value in "f" emits validator.
+tests/rules/vue/return-in-emits-validator/cases.vue:21:16	vue/return-in-emits-validator	expectedTrue	Expected to return a true value in "Unknown" emits validator.
+tests/rules/vue/return-in-emits-validator/cases.vue:22:8	vue/return-in-emits-validator	expectedTrue	Expected to return a true value in "i" emits validator.
+tests/rules/vue/return-in-emits-validator/setup/cases.vue:3:6	vue/return-in-emits-validator	expectedTrue	Expected to return a true value in "a" emits validator.
+tests/rules/vue/return-in-emits-validator/setup/cases.vue:4:6	vue/return-in-emits-validator	expectedTrue	Expected to return a true value in "b" emits validator.

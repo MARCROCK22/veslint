@@ -1,0 +1,8 @@
+tests/rules/vue/valid-define-options/cases.vue:4:1	vue/valid-define-options	disallowProp	`defineOptions()` cannot be used to declare `props`. Use `defineProps()` instead.
+tests/rules/vue/valid-define-options/cases.vue:4:1	vue/valid-define-options	disallowProp	`defineOptions()` cannot be used to declare `emits`. Use `defineEmits()` instead.
+tests/rules/vue/valid-define-options/cases.vue:4:1	vue/valid-define-options	multiple	`defineOptions` has been called multiple times.
+tests/rules/vue/valid-define-options/cases.vue:4:14	vue/valid-define-options	typeArgs	`defineOptions()` cannot accept type arguments.
+tests/rules/vue/valid-define-options/cases.vue:4:47	vue/valid-define-options	referencingLocally	`defineOptions` is referencing locally declared variables.
+tests/rules/vue/valid-define-options/cases.vue:5:1	vue/valid-define-options	notDefined	Options are not defined.
+tests/rules/vue/valid-define-options/cases.vue:5:1	vue/valid-define-options	multiple	`defineOptions` has been called multiple times.
+tests/rules/vue/valid-define-options/ok/cases.vue:3:1	vue/valid-define-options	disallowProp	`defineOptions()` cannot be used to declare `slots`. Use `defineSlots()` instead.

@@ -1,0 +1,10 @@
+tests/rules/vue/no-negated-v-if-condition/cases.vue:59:20	vue/no-negated-v-if-condition	negatedCondition	Unexpected negated condition in v-if with v-else.
+tests/rules/vue/no-negated-v-if-condition/cases.vue:63:20	vue/no-negated-v-if-condition	negatedCondition	Unexpected negated condition in v-if with v-else.
+tests/rules/vue/no-negated-v-if-condition/cases.vue:67:20	vue/no-negated-v-if-condition	negatedCondition	Unexpected negated condition in v-if with v-else.
+tests/rules/vue/no-negated-v-if-condition/cases.vue:71:20	vue/no-negated-v-if-condition	negatedCondition	Unexpected negated condition in v-if with v-else.
+tests/rules/vue/no-negated-v-if-condition/cases.vue:76:26	vue/no-negated-v-if-condition	negatedCondition	Unexpected negated condition in v-if with v-else.
+tests/rules/vue/no-negated-v-if-condition/cases.vue:81:26	vue/no-negated-v-if-condition	negatedCondition	Unexpected negated condition in v-if with v-else.
+tests/rules/vue/no-negated-v-if-condition/cases.vue:85:20	vue/no-negated-v-if-condition	negatedCondition	Unexpected negated condition in v-if with v-else.
+tests/rules/vue/no-negated-v-if-condition/cases.vue:89:20	vue/no-negated-v-if-condition	negatedCondition	Unexpected negated condition in v-if with v-else.
+tests/rules/vue/no-negated-v-if-condition/cases.vue:90:23	vue/no-negated-v-if-condition	negatedCondition	Unexpected negated condition in v-if with v-else.
+tests/rules/vue/no-negated-v-if-condition/cases.vue:94:23	vue/no-negated-v-if-condition	negatedCondition	Unexpected negated condition in v-if with v-else.

@@ -1,0 +1,8 @@
+tests/rules/vue/no-potential-component-option-typo/cases.vue:3:3	vue/no-potential-component-option-typo	potentialTypo	'method' may be a typo, which is similar to option [methods].
+tests/rules/vue/no-potential-component-option-typo/cases.vue:4:3	vue/no-potential-component-option-typo	potentialTypo	'dat' may be a typo, which is similar to option [data].
+tests/rules/vue/no-potential-component-option-typo/cases.vue:8:3	vue/no-potential-component-option-typo	potentialTypo	'propz' may be a typo, which is similar to option [props].
+tests/rules/vue/no-potential-component-option-typo/cases.vue:9:4	vue/no-potential-component-option-typo	potentialTypo	'watc' may be a typo, which is similar to option [watch].
+tests/rules/vue/no-potential-component-option-typo/options/cases.vue:3:3	vue/no-potential-component-option-typo	potentialTypo	'method' may be a typo, which is similar to option [methods].
+tests/rules/vue/no-potential-component-option-typo/options/cases.vue:4:3	vue/no-potential-component-option-typo	potentialTypo	'middlewares' may be a typo, which is similar to option [middleware].
+tests/rules/vue/no-potential-component-option-typo/options/cases.vue:5:3	vue/no-potential-component-option-typo	potentialTypo	'beforeRouteEnterr' may be a typo, which is similar to option [beforeRouteEnter].
+tests/rules/vue/no-potential-component-option-typo/options/cases.vue:7:3	vue/no-potential-component-option-typo	potentialTypo	'bar' may be a typo, which is similar to option [baz].

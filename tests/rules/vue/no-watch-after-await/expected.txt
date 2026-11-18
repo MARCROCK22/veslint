@@ -1,0 +1,2 @@
+tests/rules/vue/no-watch-after-await/cases.vue:9:5	vue/no-watch-after-await	forbidden	`watch` is forbidden after an `await` expression.
+tests/rules/vue/no-watch-after-await/cases.vue:10:5	vue/no-watch-after-await	forbidden	`watch` is forbidden after an `await` expression.

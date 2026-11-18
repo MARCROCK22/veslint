@@ -1,0 +1,37 @@
+tests/rules/vue/valid-v-slot/cases.vue:97:16	vue/valid-v-slot	ownerMustBeCustomElement	'v-slot' directive must be owned by a custom element, but 'div' is not.
+tests/rules/vue/valid-v-slot/cases.vue:100:21	vue/valid-v-slot	ownerMustBeCustomElement	'v-slot' directive must be owned by a custom element, but 'div' is not.
+tests/rules/vue/valid-v-slot/cases.vue:103:16	vue/valid-v-slot	ownerMustBeCustomElement	'v-slot' directive must be owned by a custom element, but 'div' is not.
+tests/rules/vue/valid-v-slot/cases.vue:103:16	vue/valid-v-slot	namedSlotMustBeOnTemplate	Named slots must use '<template>' on a custom element.
+tests/rules/vue/valid-v-slot/cases.vue:106:26	vue/valid-v-slot	ownerMustBeCustomElement	'v-slot' directive must be owned by a custom element, but 'div' is not.
+tests/rules/vue/valid-v-slot/cases.vue:109:24	vue/valid-v-slot	namedSlotMustBeOnTemplate	Named slots must use '<template>' on a custom element.
+tests/rules/vue/valid-v-slot/cases.vue:112:24	vue/valid-v-slot	defaultSlotMustBeOnTemplate	Default slot must use '<template>' on a custom element when there are other named slots.
+tests/rules/vue/valid-v-slot/cases.vue:118:40	vue/valid-v-slot	namedSlotMustBeOnTemplate	Named slots must use '<template>' on a custom element.
+tests/rules/vue/valid-v-slot/cases.vue:118:40	vue/valid-v-slot	disallowDuplicateSlotsOnElement	An element cannot have multiple 'v-slot' directives.
+tests/rules/vue/valid-v-slot/cases.vue:122:34	vue/valid-v-slot	disallowDuplicateSlotsOnElement	An element cannot have multiple 'v-slot' directives.
+tests/rules/vue/valid-v-slot/cases.vue:128:23	vue/valid-v-slot	disallowDuplicateSlotsOnChildren	An element cannot have multiple '<template>' elements which are distributed to the same slot.
+tests/rules/vue/valid-v-slot/cases.vue:134:23	vue/valid-v-slot	disallowDuplicateSlotsOnChildren	An element cannot have multiple '<template>' elements which are distributed to the same slot.
+tests/rules/vue/valid-v-slot/cases.vue:140:23	vue/valid-v-slot	disallowDuplicateSlotsOnChildren	An element cannot have multiple '<template>' elements which are distributed to the same slot.
+tests/rules/vue/valid-v-slot/cases.vue:146:23	vue/valid-v-slot	disallowDuplicateSlotsOnChildren	An element cannot have multiple '<template>' elements which are distributed to the same slot.
+tests/rules/vue/valid-v-slot/cases.vue:152:23	vue/valid-v-slot	disallowDuplicateSlotsOnChildren	An element cannot have multiple '<template>' elements which are distributed to the same slot.
+tests/rules/vue/valid-v-slot/cases.vue:159:23	vue/valid-v-slot	disallowDuplicateSlotsOnChildren	An element cannot have multiple '<template>' elements which are distributed to the same slot.
+tests/rules/vue/valid-v-slot/cases.vue:164:58	vue/valid-v-slot	disallowDuplicateSlotsOnChildren	An element cannot have multiple '<template>' elements which are distributed to the same slot.
+tests/rules/vue/valid-v-slot/cases.vue:169:58	vue/valid-v-slot	disallowDuplicateSlotsOnChildren	An element cannot have multiple '<template>' elements which are distributed to the same slot.
+tests/rules/vue/valid-v-slot/cases.vue:174:52	vue/valid-v-slot	disallowDuplicateSlotsOnChildren	An element cannot have multiple '<template>' elements which are distributed to the same slot.
+tests/rules/vue/valid-v-slot/cases.vue:175:52	vue/valid-v-slot	disallowDuplicateSlotsOnChildren	An element cannot have multiple '<template>' elements which are distributed to the same slot.
+tests/rules/vue/valid-v-slot/cases.vue:175:52	vue/valid-v-slot	disallowDuplicateSlotsOnChildren	An element cannot have multiple '<template>' elements which are distributed to the same slot.
+tests/rules/vue/valid-v-slot/cases.vue:181:52	vue/valid-v-slot	disallowDuplicateSlotsOnChildren	An element cannot have multiple '<template>' elements which are distributed to the same slot.
+tests/rules/vue/valid-v-slot/cases.vue:187:52	vue/valid-v-slot	disallowDuplicateSlotsOnChildren	An element cannot have multiple '<template>' elements which are distributed to the same slot.
+tests/rules/vue/valid-v-slot/cases.vue:192:23	vue/valid-v-slot	disallowArgumentUseSlotParams	Dynamic argument of 'v-slot' directive cannot use that slot parameter.
+tests/rules/vue/valid-v-slot/cases.vue:196:31	vue/valid-v-slot	disallowAnyModifier	'v-slot' directive doesn't support any modifier.
+tests/rules/vue/valid-v-slot/cases.vue:200:30	vue/valid-v-slot	disallowAnyModifier	'v-slot' directive doesn't support any modifier.
+tests/rules/vue/valid-v-slot/cases.vue:205:34	vue/valid-v-slot	disallowAnyModifier	'v-slot' directive doesn't support any modifier.
+tests/rules/vue/valid-v-slot/cases.vue:209:24	vue/valid-v-slot	requireAttributeValue	'v-slot' directive on a custom element requires that attribute value.
+tests/rules/vue/valid-v-slot/cases.vue:211:21	vue/valid-v-slot	requireAttributeValue	'v-slot' directive on a custom element requires that attribute value.
+tests/rules/vue/valid-v-slot/cases.vue:212:21	vue/valid-v-slot	requireAttributeValue	'v-slot' directive on a custom element requires that attribute value.
+tests/rules/vue/valid-v-slot/cases.vue:213:21	vue/valid-v-slot	requireAttributeValue	'v-slot' directive on a custom element requires that attribute value.
+tests/rules/vue/valid-v-slot/options-1054377d/cases.vue:4:34	vue/valid-v-slot	disallowAnyModifier	'v-slot' directive doesn't support any modifier.
+tests/rules/vue/valid-v-slot/options-1054377d/cases.vue:10:34	vue/valid-v-slot	disallowAnyModifier	'v-slot' directive doesn't support any modifier.
+tests/rules/vue/valid-v-slot/options-1054377d/cases.vue:11:34	vue/valid-v-slot	disallowAnyModifier	'v-slot' directive doesn't support any modifier.
+tests/rules/vue/valid-v-slot/options-1054377d/cases.vue:12:34	vue/valid-v-slot	disallowAnyModifier	'v-slot' directive doesn't support any modifier.
+tests/rules/vue/valid-v-slot/options-cac7a3ad/cases.vue:18:23	vue/valid-v-slot	disallowDuplicateSlotsOnChildren	An element cannot have multiple '<template>' elements which are distributed to the same slot.
+tests/rules/vue/valid-v-slot/options-cac7a3ad/cases.vue:23:30	vue/valid-v-slot	disallowAnyModifier	'v-slot' directive doesn't support any modifier.

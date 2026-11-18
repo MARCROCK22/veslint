@@ -1,0 +1,32 @@
+tests/rules/vue/block-tag-newline/extra-cr/cases.vue:1:11	vue/block-tag-newline	expectedOpeningLinebreak	Expected 1 line break after '<template>', but 3 line breaks found.	fix	10	13	\n	end	4	1
+tests/rules/vue/block-tag-newline/extra-cr/cases.vue:5:7	vue/block-tag-newline	expectedClosingLinebreak	Expected 1 line break  before '</template>', but 3 line breaks found.	fix	26	29	\n	end	1	30
+tests/rules/vue/block-tag-newline/extra-cr/cases.vue:1:49	vue/block-tag-newline	expectedOpeningLinebreak	Expected 1 line break after '<style>', but 3 line breaks found.	fix	48	54	\n	end	12	1
+tests/rules/vue/block-tag-newline/extra-cr/cases.vue:13:4	vue/block-tag-newline	expectedClosingLinebreak	Expected 1 line break  before '</style>', but 3 line breaks found.	fix	62	68	\n	end	8	1
+tests/rules/vue/block-tag-newline/extra-ls/cases.vue:1:11	vue/block-tag-newline	expectedOpeningLinebreak	Expected 1 line break after '<template>', but 3 line breaks found.	fix	10	13	\n	end	4	1
+tests/rules/vue/block-tag-newline/extra-ls/cases.vue:5:7	vue/block-tag-newline	expectedClosingLinebreak	Expected 1 line break  before '</template>', but 3 line breaks found.	fix	26	29	\n	end	4	1
+tests/rules/vue/block-tag-newline/extra-ls/cases.vue:5:8	vue/block-tag-newline	missingOpeningLinebreak	A line break is required after '<style>'.	fix	48	48	\n	end	5	8
+tests/rules/vue/block-tag-newline/extra-ls/cases.vue:6:4	vue/block-tag-newline	missingClosingLinebreak	A line break is required before '</style>'.	fix	55	55	\n	end	6	4
+tests/rules/vue/block-tag-newline/i0/cases.vue:1:11	vue/block-tag-newline	missingOpeningLinebreak	A line break is required after '<template>'.	fix	10	10	\n	end	1	11
+tests/rules/vue/block-tag-newline/i0/cases.vue:3:19	vue/block-tag-newline	missingOpeningLinebreak	A line break is required after '<script>'.	fix	48	48	\n	end	3	19
+tests/rules/vue/block-tag-newline/i1/cases.vue:2:8	vue/block-tag-newline	missingClosingLinebreak	A line break is required before '</template>'.	fix	18	18	\n	end	2	8
+tests/rules/vue/block-tag-newline/i1/cases.vue:4:6	vue/block-tag-newline	missingClosingLinebreak	A line break is required before '</script>'.	fix	54	54	\n	end	4	6
+tests/rules/vue/block-tag-newline/i2/cases.vue:1:11	vue/block-tag-newline	missingOpeningLinebreak	A line break is required after '<template>'.	fix	10	10	\n	end	1	11
+tests/rules/vue/block-tag-newline/i2/cases.vue:2:7	vue/block-tag-newline	missingClosingLinebreak	A line break is required before '</template>'.	fix	22	22	\n	end	2	7
+tests/rules/vue/block-tag-newline/i2/cases.vue:3:19	vue/block-tag-newline	missingOpeningLinebreak	A line break is required after '<script>'.	fix	52	52	\n	end	3	19
+tests/rules/vue/block-tag-newline/i2/cases.vue:4:6	vue/block-tag-newline	missingClosingLinebreak	A line break is required before '</script>'.	fix	63	63	\n	end	4	6
+tests/rules/vue/block-tag-newline/i3/cases.vue:1:11	vue/block-tag-newline	unexpectedOpeningLinebreak	There should be no line break after '<template>'.	fix	10	11		end	2	1
+tests/rules/vue/block-tag-newline/i3/cases.vue:3:7	vue/block-tag-newline	unexpectedOpeningLinebreak	There should be no line break after '<template>'.	fix	23	24		end	4	1
+tests/rules/vue/block-tag-newline/i3/cases.vue:5:19	vue/block-tag-newline	unexpectedOpeningLinebreak	There should be no line break after '<script>'.	fix	54	55		end	6	1
+tests/rules/vue/block-tag-newline/i3/cases.vue:6:6	vue/block-tag-newline	unexpectedOpeningLinebreak	There should be no line break after '<script>'.	fix	60	61		end	7	1
+tests/rules/vue/block-tag-newline/i4/cases.vue:1:11	vue/block-tag-newline	missingOpeningLinebreak	A line break is required after '<template>'.	fix	10	10	\n	end	1	11
+tests/rules/vue/block-tag-newline/i4/cases.vue:2:7	vue/block-tag-newline	missingClosingLinebreak	A line break is required before '</template>'.	fix	22	22	\n	end	2	7
+tests/rules/vue/block-tag-newline/i4/cases.vue:3:19	vue/block-tag-newline	missingOpeningLinebreak	A line break is required after '<script>'.	fix	52	52	\n	end	3	19
+tests/rules/vue/block-tag-newline/i4/cases.vue:3:24	vue/block-tag-newline	missingClosingLinebreak	A line break is required before '</script>'.	fix	57	57	\n	end	3	24
+tests/rules/vue/block-tag-newline/i5/cases.vue:1:11	vue/block-tag-newline	expectedOpeningLinebreak	Expected 1 line break after '<template>', but 2 line breaks found.	fix	10	12	\n	end	3	1
+tests/rules/vue/block-tag-newline/i5/cases.vue:3:8	vue/block-tag-newline	expectedClosingLinebreak	Expected 1 line break  before '</template>', but 2 line breaks found.	fix	19	21	\n	end	5	1
+tests/rules/vue/block-tag-newline/i5/cases.vue:6:19	vue/block-tag-newline	expectedOpeningLinebreak	Expected 1 line break after '<script>', but 2 line breaks found.	fix	51	53	\n	end	8	1
+tests/rules/vue/block-tag-newline/i5/cases.vue:9:6	vue/block-tag-newline	expectedClosingLinebreak	Expected 1 line break  before '</script>', but 2 line breaks found.	fix	64	66	\n	end	11	1
+tests/rules/vue/block-tag-newline/i6/cases.vue:1:11	vue/block-tag-newline	expectedOpeningLinebreak	Expected 2 line breaks after '<template>', but 3 line breaks found.	fix	10	13	\n\n	end	4	1
+tests/rules/vue/block-tag-newline/i6/cases.vue:10:6	vue/block-tag-newline	expectedClosingLinebreak	Expected 2 line breaks  before '</script>', but 3 line breaks found.	fix	65	68	\n\n	end	13	1
+tests/rules/vue/block-tag-newline/i7/cases.vue:5:6	vue/block-tag-newline	unexpectedOpeningLinebreak	There should be no line break after '<script>'.	fix	60	63		end	8	1
+tests/rules/vue/block-tag-newline/i7/cases.vue:9:2	vue/block-tag-newline	missingClosingLinebreak	A line break is required before '</docs>'.	fix	80	80	\n	end	9	2

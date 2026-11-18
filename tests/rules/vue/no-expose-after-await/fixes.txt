@@ -1,0 +1,4 @@
+tests/rules/vue/no-expose-after-await/cases.vue:7:5	vue/no-expose-after-await	forbidden	`expose` is forbidden after an `await` expression.	end	7	15
+tests/rules/vue/no-expose-after-await/context/cases.vue:6:5	vue/no-expose-after-await	forbidden	`expose` is forbidden after an `await` expression.	end	6	19
+tests/rules/vue/no-expose-after-await/context/cases.vue:7:5	vue/no-expose-after-await	forbidden	`expose` is forbidden after an `await` expression.	end	7	20
+tests/rules/vue/no-expose-after-await/setup/cases.vue:5:1	vue/no-expose-after-await	forbidden	`defineExpose` is forbidden after an `await` expression.	end	5	17

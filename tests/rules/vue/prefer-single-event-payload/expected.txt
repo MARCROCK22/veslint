@@ -1,0 +1,13 @@
+tests/rules/vue/prefer-single-event-payload/cases.vue:3:35	vue/prefer-single-event-payload	preferSinglePayload	Pass a single payload object instead of multiple arguments when emitting the "two" event.
+tests/rules/vue/prefer-single-event-payload/cases.vue:4:36	vue/prefer-single-event-payload	preferSinglePayload	Pass a single payload object instead of multiple arguments when emitting the "three" event.
+tests/rules/vue/prefer-single-event-payload/cases.vue:5:34	vue/prefer-single-event-payload	preferSinglePayload	Pass a single payload object instead of multiple arguments when emitting the "unknown" event.
+tests/rules/vue/prefer-single-event-payload/cases.vue:10:25	vue/prefer-single-event-payload	preferSinglePayloadInDeclaration	Declare a single payload parameter instead of multiple parameters for the "two" event.
+tests/rules/vue/prefer-single-event-payload/cases.vue:12:22	vue/prefer-single-event-payload	preferSinglePayloadInDeclaration	Declare a single payload parameter instead of multiple parameters for the "three" event.
+tests/rules/vue/prefer-single-event-payload/cases.vue:13:21	vue/prefer-single-event-payload	preferSinglePayloadInDeclaration	Declare a single payload parameter instead of multiple parameters for the "method" event.
+tests/rules/vue/prefer-single-event-payload/cases.vue:16:16	vue/prefer-single-event-payload	preferSinglePayload	Pass a single payload object instead of multiple arguments when emitting the "two" event.
+tests/rules/vue/prefer-single-event-payload/cases.vue:17:18	vue/prefer-single-event-payload	preferSinglePayload	Pass a single payload object instead of multiple arguments when emitting the "two" event.
+tests/rules/vue/prefer-single-event-payload/cases.vue:21:29	vue/prefer-single-event-payload	preferSinglePayloadInDeclaration	Declare a single payload parameter instead of multiple parameters for the "obj" event.
+tests/rules/vue/prefer-single-event-payload/cases.vue:22:41	vue/prefer-single-event-payload	preferSinglePayload	Pass a single payload object instead of multiple arguments when emitting the "obj" event.
+tests/rules/vue/prefer-single-event-payload/cases.vue:22:67	vue/prefer-single-event-payload	preferSinglePayload	Pass a single payload object instead of multiple arguments when emitting the "any" event.
+tests/rules/vue/prefer-single-event-payload/cases.vue:23:42	vue/prefer-single-event-payload	preferSinglePayload	Pass a single payload object instead of multiple arguments when emitting the "ctx" event.
+tests/rules/vue/prefer-single-event-payload/typed/cases.vue:4:34	vue/prefer-single-event-payload	preferSinglePayloadInDeclaration	Declare a single payload parameter instead of multiple parameters for the "fn" event.

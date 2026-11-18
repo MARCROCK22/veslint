@@ -1,0 +1,14 @@
+tests/rules/vue/padding-line-between-blocks/i0/cases.vue:3:7	vue/padding-line-between-blocks	always	Expected blank line before this block.	fix	28	28	\n	end	3	34
+tests/rules/vue/padding-line-between-blocks/i0/cases.vue:4:7	vue/padding-line-between-blocks	always	Expected blank line before this block.	fix	62	62	\n	end	4	22
+tests/rules/vue/padding-line-between-blocks/i1/cases.vue:4:7	vue/padding-line-between-blocks	never	Unexpected blank line before this block.	fix	28	36	\n      	end	4	34
+tests/rules/vue/padding-line-between-blocks/i1/cases.vue:6:7	vue/padding-line-between-blocks	never	Unexpected blank line before this block.	fix	63	71	\n      	end	6	22
+tests/rules/vue/padding-line-between-blocks/i2/cases.vue:2:28	vue/padding-line-between-blocks	always	Expected blank line before this block.	fix	28	28	\n\n	end	2	55
+tests/rules/vue/padding-line-between-blocks/i2/cases.vue:2:55	vue/padding-line-between-blocks	always	Expected blank line before this block.	fix	55	55	\n\n	end	2	70
+tests/rules/vue/padding-line-between-blocks/i3/cases.vue:4:7	vue/padding-line-between-blocks	always	Expected blank line before this block.	fix	28	28	\n	end	4	34
+tests/rules/vue/padding-line-between-blocks/i3/cases.vue:7:7	vue/padding-line-between-blocks	always	Expected blank line before this block.	fix	85	85	\n	end	7	22
+tests/rules/vue/padding-line-between-blocks/i4/cases.vue:5:7	vue/padding-line-between-blocks	never	Unexpected blank line before this block.	fix	28	36	\n      	end	5	34
+tests/rules/vue/padding-line-between-blocks/i4/cases.vue:8:7	vue/padding-line-between-blocks	never	Unexpected blank line before this block.	fix	109	117	\n      	end	8	22
+tests/rules/vue/padding-line-between-blocks/i4/cases.vue:12:7	vue/padding-line-between-blocks	never	Unexpected blank line before this block.	fix	155	163	\n      	end	12	20
+tests/rules/vue/padding-line-between-blocks/i5/cases.vue:3:23	vue/padding-line-between-blocks	always	Expected blank line before this block.	fix	32	32	\n	end	3	50
+tests/rules/vue/padding-line-between-blocks/i5/cases.vue:4:18	vue/padding-line-between-blocks	always	Expected blank line before this block.	fix	82	82	\n\n	end	4	33
+tests/rules/vue/padding-line-between-blocks/i6/cases.vue:23:7	vue/padding-line-between-blocks	never	Unexpected blank line before this block.	fix	34	175	\n      <!-- comment -->\n      TEXT TEXT\n      <!-- comment\n\n\n      comment -->\n      <!-- comment -->\n      TEXT\n      TEXT\n      	end	23	22

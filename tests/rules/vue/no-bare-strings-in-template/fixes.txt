@@ -1,0 +1,22 @@
+tests/rules/vue/no-bare-strings-in-template/cases.vue:94:13	vue/no-bare-strings-in-template	unexpected	Unexpected non-translated string used.	end	94	24
+tests/rules/vue/no-bare-strings-in-template/cases.vue:96:17	vue/no-bare-strings-in-template	unexpectedInAttr	Unexpected non-translated string used in `title`.	end	96	30
+tests/rules/vue/no-bare-strings-in-template/cases.vue:97:22	vue/no-bare-strings-in-template	unexpectedInAttr	Unexpected non-translated string used in `aria-label`.	end	97	35
+tests/rules/vue/no-bare-strings-in-template/cases.vue:98:28	vue/no-bare-strings-in-template	unexpectedInAttr	Unexpected non-translated string used in `aria-placeholder`.	end	98	41
+tests/rules/vue/no-bare-strings-in-template/cases.vue:99:32	vue/no-bare-strings-in-template	unexpectedInAttr	Unexpected non-translated string used in `aria-roledescription`.	end	99	45
+tests/rules/vue/no-bare-strings-in-template/cases.vue:100:26	vue/no-bare-strings-in-template	unexpectedInAttr	Unexpected non-translated string used in `aria-valuetext`.	end	100	39
+tests/rules/vue/no-bare-strings-in-template/cases.vue:102:18	vue/no-bare-strings-in-template	unexpectedInAttr	Unexpected non-translated string used in `alt`.	end	102	31
+tests/rules/vue/no-bare-strings-in-template/cases.vue:103:28	vue/no-bare-strings-in-template	unexpectedInAttr	Unexpected non-translated string used in `placeholder`.	end	103	41
+tests/rules/vue/no-bare-strings-in-template/cases.vue:104:20	vue/no-bare-strings-in-template	unexpectedInAttr	Unexpected non-translated string used in `v-text`.	end	104	35
+tests/rules/vue/no-bare-strings-in-template/extra/cases.vue:6:8	vue/no-bare-strings-in-template	unexpected	Unexpected non-translated string used.	end	6	11
+tests/rules/vue/no-bare-strings-in-template/extra/cases.vue:7:20	vue/no-bare-strings-in-template	unexpectedInAttr	Unexpected non-translated string used in `label`.	end	7	24
+tests/rules/vue/no-bare-strings-in-template/extra/cases.vue:8:19	vue/no-bare-strings-in-template	unexpectedInAttr	Unexpected non-translated string used in `label`.	end	8	23
+tests/rules/vue/no-bare-strings-in-template/extra/cases.vue:10:15	vue/no-bare-strings-in-template	unexpected	Unexpected non-translated string used.	end	10	20
+tests/rules/vue/no-bare-strings-in-template/options-17c4a958/cases.vue:4:13	vue/no-bare-strings-in-template	unexpected	Unexpected non-translated string used.	end	4	20
+tests/rules/vue/no-bare-strings-in-template/options-a46796a9/cases.vue:3:13	vue/no-bare-strings-in-template	unexpected	Unexpected non-translated string used.	end	3	37
+tests/rules/vue/no-bare-strings-in-template/options-baa056bc/cases.vue:3:19	vue/no-bare-strings-in-template	unexpectedInAttr	Unexpected non-translated string used in `v-foo`.	end	3	34
+tests/rules/vue/no-bare-strings-in-template/options-bd33745b/cases.vue:4:13	vue/no-bare-strings-in-template	unexpected	Unexpected non-translated string used.	end	4	24
+tests/rules/vue/no-bare-strings-in-template/options-bd33745b/cases.vue:5:13	vue/no-bare-strings-in-template	unexpected	Unexpected non-translated string used.	end	5	18
+tests/rules/vue/no-bare-strings-in-template/options-eadf64a9/cases.vue:3:17	vue/no-bare-strings-in-template	unexpectedInAttr	Unexpected non-translated string used in `foo`.	end	3	30
+tests/rules/vue/no-bare-strings-in-template/options-eadf64a9/cases.vue:4:17	vue/no-bare-strings-in-template	unexpectedInAttr	Unexpected non-translated string used in `bar`.	end	4	30
+tests/rules/vue/no-bare-strings-in-template/options-eadf64a9/cases.vue:5:17	vue/no-bare-strings-in-template	unexpectedInAttr	Unexpected non-translated string used in `foo`.	end	5	30
+tests/rules/vue/no-bare-strings-in-template/options-ee9c96d5/cases.vue:6:13	vue/no-bare-strings-in-template	unexpected	Unexpected non-translated string used.	end	6	22

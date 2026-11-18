@@ -1,0 +1,6 @@
+<template>
+  <!--
+      four
+    two
+  -->
+</template>

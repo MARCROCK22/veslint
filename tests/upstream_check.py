@@ -222,12 +222,12 @@ class Runner:
                 f.write(text)
         return path
 
-    def lint_whole(self, lint):
-        """veslint's answer for a lint: (exit code, file, lines, stderr)."""
+    def lint_whole(self, lint, code=None):
+        """veslint's answer for a lint, on its code or on CODE: (exit code, file, lines, stderr)."""
         file = os.path.join(self.fixtures, lint['filename'])
         self.served.add(file)
         answer = self.server_for('vue/').request({'config': self.lint_config_path(lint), 'project': '', 'files': [file],
-                                      'texts': {file: lint['code']}, 'fixes': True})
+                                      'texts': {file: lint['code'] if code is None else code}, 'fixes': True})
         lines = answer['stdout'].split('\n')
         if lines and lines[-1] == '':
             lines.pop()
@@ -312,25 +312,37 @@ def check_project(veslint, fixtures, configs, project):
 def check_lint(runner, lint):
     """A lint of an `it` block (eslint-plugin-vue's comment-directive, with the vue/vue processor):
     veslint's problems must be ESLint's, all of them and in order (rule, messageId when ESLint gives
-    one, message, line, column, end)."""
-    code, file, out, stderr = runner.lint_whole(lint)
-    if code > 1:
-        return [f'veslint exited with {code}: {stderr.strip()}']
-    prefix = file + ':'
+    one, message, line, column, end). A lint with `fix` is ESLint's with fix: true, as
+    Linter.verifyAndFix: up to 10 passes of fixes, then the problems no pass fixed and the output."""
+    text = lint['code']
+    passes = 0
+    while True:
+        code, file, out, stderr = runner.lint_whole(lint, text)
+        if code > 1:
+            return [f'veslint exited with {code}: {stderr.strip()}']
+        prefix = file + ':'
+        findings = [parse_line(line, prefix) for line in out if line.startswith(prefix)]
+        # Each pass lints the text the last left; the problems are those of the last lint (the
+        # fixes of a pass that applies none leave all its problems).
+        if not lint.get('fix') or passes == 10:
+            break
+        fixed = apply_fixes(text, [f['fix'] for f in findings if f['fix']])
+        if fixed == text:
+            break
+        text = fixed
+        passes += 1
     keys = ('ruleId', 'messageId', 'message', 'line', 'column', 'endLine', 'endColumn')
-    got = []
-    for line in out:
-        if not line.startswith(prefix):
-            continue
-        f = parse_line(line, prefix)
-        got.append({'ruleId': None if f['rule'] == 'eslint' else f['rule'], 'messageId': f['messageId'], 'message': f['message'],
-                    'line': f['line'], 'column': f['column'], 'endLine': f['endLine'], 'endColumn': f['endColumn']})
+    got = [{'ruleId': None if f['rule'] == 'eslint' else f['rule'], 'messageId': f['messageId'], 'message': f['message'],
+            'line': f['line'], 'column': f['column'], 'endLine': f['endLine'], 'endColumn': f['endColumn']} for f in findings]
     wanted = [{key: m.get(key) for key in keys} for m in lint['messages']]
     # A problem without a messageId (an unused disable directive) is compared without it.
     got = [{**g, 'messageId': g['messageId'] if w['messageId'] is not None else None} for g, w in zip(got, wanted)] + got[len(wanted):]
+    problems = []
     if got != wanted:
-        return [f'veslint gives {json.dumps(got)}, ESLint {json.dumps(wanted)}']
-    return []
+        problems.append(f'veslint gives {json.dumps(got)}, ESLint {json.dumps(wanted)}')
+    if 'output' in lint and lint['output'] != text:
+        problems.append(f'veslint fixes it to {json.dumps(text)}, ESLint to {json.dumps(lint["output"])}')
+    return problems
 
 
 def fix_passes(lint, code, findings, max_passes=10):

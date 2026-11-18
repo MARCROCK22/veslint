@@ -33,7 +33,12 @@ fn (mut c Checker) lint_no_unmodified_loop_condition(root C.TSNode, abs_path str
 	mut findings := []Finding{}
 	mut groups := map[u64][]NulcCondition{}
 	mut group_order := []u64{}
+	// Program:exit goes down the tree from the global scope (the variables of each scope).
+	reachable := tree.reachable()
 	for variable in tree.variables {
+		if variable.scope >= 0 && !reachable[variable.scope] {
+			continue
+		}
 		stats.checked++
 		mut conditions := []NulcCondition{}
 		for r in variable.references {

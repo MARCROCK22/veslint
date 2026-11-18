@@ -745,6 +745,23 @@ pub fn (t &ScopeTree) function_scope_of(n C.TSNode) int {
 	return -1
 }
 
+// reachable tells, for each scope, whether it is in the tree that goes down from the global scope
+// by `children` (childScopes): what a rule that walks the scopes from there sees. Every scope is,
+// but those vue-eslint-parser takes out of the tree (vue_detach_setup_scopes).
+pub fn (t &ScopeTree) reachable() []bool {
+	mut out := []bool{len: t.scopes.len}
+	if t.scopes.len == 0 {
+		return out
+	}
+	mut stack := [0]
+	for stack.len > 0 {
+		s := stack.pop()
+		out[s] = true
+		stack << t.scopes[s].children
+	}
+	return out
+}
+
 // find_variable ports eslint-utils findVariable: from `scope` (descending first, if `location` is a
 // byte offset, into the innermost child scope whose block contains it, like getInnermostScope), the
 // first scope upward that declares `name`; -1 if none.
@@ -890,6 +907,7 @@ fn build_scope_tree_with(root C.TSNode, src string, tokens TokenEnds, setup Scop
 	}
 	b.implicit_globals()
 	if setup.vue.script_setup {
+		b.vue_detach_setup_scopes(setup.vue)
 		b.vue_script_setup_scope(setup.vue)
 	}
 	if setup.svelte.on {

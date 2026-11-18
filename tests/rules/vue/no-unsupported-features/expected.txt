@@ -1,0 +1,86 @@
+tests/rules/vue/no-unsupported-features/define-model-i0/cases.vue:3:23	vue/no-unsupported-features	forbiddenDefineModel	`defineModel()` macros are not supported until Vue.js "3.4.0".
+tests/rules/vue/no-unsupported-features/define-options-i0/cases.vue:3:9	vue/no-unsupported-features	forbiddenDefineOptions	`defineOptions()` macros are not supported until Vue.js "3.3.0".
+tests/rules/vue/no-unsupported-features/define-options-i1/cases.vue:3:9	vue/no-unsupported-features	forbiddenDefineOptions	`defineOptions()` macros are not supported until Vue.js "3.3.0".
+tests/rules/vue/no-unsupported-features/define-slots-i0/cases.vue:3:23	vue/no-unsupported-features	forbiddenDefineSlots	`defineSlots()` macros are not supported until Vue.js "3.3.0".
+tests/rules/vue/no-unsupported-features/dynamic-directive-arguments-i0/cases.vue:3:13	vue/no-unsupported-features	forbiddenDynamicDirectiveArguments	Dynamic arguments are not supported until Vue.js "2.6.0".
+tests/rules/vue/no-unsupported-features/dynamic-directive-arguments-i1/cases.vue:3:13	vue/no-unsupported-features	forbiddenDynamicDirectiveArguments	Dynamic arguments are not supported until Vue.js "2.6.0".
+tests/rules/vue/no-unsupported-features/extra-ignored/cases.vue:1:9	vue/no-unsupported-features	forbiddenScriptSetup	`<script setup>` is not supported until Vue.js "2.7.0".
+tests/rules/vue/no-unsupported-features/extra-ignored/cases.vue:3:15	vue/no-unsupported-features	forbiddenDefineSlots	`defineSlots()` macros are not supported until Vue.js "3.3.0".
+tests/rules/vue/no-unsupported-features/extra-ignored/cases.vue:4:2	vue/no-unsupported-features	forbiddenDefineOptions	`defineOptions()` macros are not supported until Vue.js "3.3.0".
+tests/rules/vue/no-unsupported-features/extra-ignored/cases.vue:8:23	vue/no-unsupported-features	forbiddenDynamicDirectiveArguments	Dynamic arguments are not supported until Vue.js "2.6.0".
+tests/rules/vue/no-unsupported-features/extra-ignored/cases.vue:8:41	vue/no-unsupported-features	forbiddenVBindSameNameShorthand	`v-bind` same-name shorthand is not supported until Vue.js "3.4.0".
+tests/rules/vue/no-unsupported-features/extra-ignored/cases.vue:8:49	vue/no-unsupported-features	forbiddenVBindSameNameShorthand	`v-bind` same-name shorthand is not supported until Vue.js "3.4.0".
+tests/rules/vue/no-unsupported-features/extra-ignored/cases.vue:8:49	vue/no-unsupported-features	forbiddenVBindPropModifierShorthand	`.prop` shorthand are not supported until Vue.js "3.2.0".
+tests/rules/vue/no-unsupported-features/extra-ignored/cases.vue:8:65	vue/no-unsupported-features	forbiddenVModelArgument	Argument on `v-model` is not supported until Vue.js "3.0.0".
+tests/rules/vue/no-unsupported-features/extra-ignored/cases.vue:8:71	vue/no-unsupported-features	forbiddenVModelCustomModifiers	Custom modifiers on `v-model` are not supported until Vue.js "3.0.0".
+tests/rules/vue/no-unsupported-features/extra-ignored/cases.vue:8:93	vue/no-unsupported-features	forbiddenVBindAttrModifier	`.attr` modifiers on `v-bind` are not supported until Vue.js "3.2.0".
+tests/rules/vue/no-unsupported-features/extra-ignored/cases.vue:9:16	vue/no-unsupported-features	forbiddenDynamicDirectiveArguments	Dynamic arguments are not supported until Vue.js "2.6.0".
+tests/rules/vue/no-unsupported-features/extra-ignored/cases.vue:12:10	vue/no-unsupported-features	forbiddenSlotScopeAttribute	`slot-scope` are not supported except Vue.js ">=2.5.0 <3.0.0".
+tests/rules/vue/no-unsupported-features/extra-ignored/cases.vue:12:25	vue/no-unsupported-features	forbiddenVMemo	`v-memo` are not supported until Vue.js "3.2.0".
+tests/rules/vue/no-unsupported-features/extra-ignored/cases.vue:12:54	vue/no-unsupported-features	forbiddenIsAttributeWithVuePrefix	`is="vue:"` are not supported until Vue.js "3.1.0".
+tests/rules/vue/no-unsupported-features/extra-ignored/cases.vue:13:20	vue/no-unsupported-features	forbiddenVModelArgument	Argument on `v-model` is not supported until Vue.js "3.0.0".
+tests/rules/vue/no-unsupported-features/extra-ignored/cases.vue:13:20	vue/no-unsupported-features	forbiddenDynamicDirectiveArguments	Dynamic arguments are not supported until Vue.js "2.6.0".
+tests/rules/vue/no-unsupported-features/extra-ignored/cases.vue:13:34	vue/no-unsupported-features	forbiddenVBindPropModifierShorthand	`.prop` shorthand are not supported until Vue.js "3.2.0".
+tests/rules/vue/no-unsupported-features/extra-ignored/cases.vue:18:13	vue/no-unsupported-features	forbiddenStyleCssVarsInjection	SFC CSS variable injection is not supported until Vue.js ">=3.0.3 || >=2.7.0 <3.0.0".
+tests/rules/vue/no-unsupported-features/extra-ignored/cases.vue:19:13	vue/no-unsupported-features	forbiddenStyleCssVarsInjection	SFC CSS variable injection is not supported until Vue.js ">=3.0.3 || >=2.7.0 <3.0.0".
+tests/rules/vue/no-unsupported-features/extra-options/cases.vue:4:9	vue/no-unsupported-features	forbiddenScriptSetup	`<script setup>` is not supported until Vue.js "2.7.0".
+tests/rules/vue/no-unsupported-features/extra-options/cases.vue:5:1	vue/no-unsupported-features	forbiddenDefineOptions	`defineOptions()` macros are not supported until Vue.js "3.3.0".
+tests/rules/vue/no-unsupported-features/extra-options/cases.vue:9:8	vue/no-unsupported-features	forbiddenVBindSameNameShorthand	`v-bind` same-name shorthand is not supported until Vue.js "3.4.0".
+tests/rules/vue/no-unsupported-features/extra-range/cases.vue:1:9	vue/no-unsupported-features	forbiddenScriptSetup	`<script setup>` is not supported until Vue.js "2.7.0".
+tests/rules/vue/no-unsupported-features/extra-range/cases.vue:2:17	vue/no-unsupported-features	forbiddenDefineModel	`defineModel()` macros are not supported until Vue.js "3.4.0".
+tests/rules/vue/no-unsupported-features/extra-range/cases.vue:3:15	vue/no-unsupported-features	forbiddenDefineSlots	`defineSlots()` macros are not supported until Vue.js "3.3.0".
+tests/rules/vue/no-unsupported-features/extra-range/cases.vue:4:2	vue/no-unsupported-features	forbiddenDefineOptions	`defineOptions()` macros are not supported until Vue.js "3.3.0".
+tests/rules/vue/no-unsupported-features/extra-range/cases.vue:8:16	vue/no-unsupported-features	forbiddenVSlot	`v-slot` are not supported until Vue.js "2.6.0".
+tests/rules/vue/no-unsupported-features/extra-range/cases.vue:8:23	vue/no-unsupported-features	forbiddenDynamicDirectiveArguments	Dynamic arguments are not supported until Vue.js "2.6.0".
+tests/rules/vue/no-unsupported-features/extra-range/cases.vue:8:41	vue/no-unsupported-features	forbiddenVBindSameNameShorthand	`v-bind` same-name shorthand is not supported until Vue.js "3.4.0".
+tests/rules/vue/no-unsupported-features/extra-range/cases.vue:8:49	vue/no-unsupported-features	forbiddenVBindSameNameShorthand	`v-bind` same-name shorthand is not supported until Vue.js "3.4.0".
+tests/rules/vue/no-unsupported-features/extra-range/cases.vue:8:49	vue/no-unsupported-features	forbiddenVBindPropModifierShorthand	`.prop` shorthand are not supported until Vue.js "3.2.0".
+tests/rules/vue/no-unsupported-features/extra-range/cases.vue:8:65	vue/no-unsupported-features	forbiddenVModelArgument	Argument on `v-model` is not supported until Vue.js "3.0.0".
+tests/rules/vue/no-unsupported-features/extra-range/cases.vue:8:71	vue/no-unsupported-features	forbiddenVModelCustomModifiers	Custom modifiers on `v-model` are not supported until Vue.js "3.0.0".
+tests/rules/vue/no-unsupported-features/extra-range/cases.vue:8:93	vue/no-unsupported-features	forbiddenVBindAttrModifier	`.attr` modifiers on `v-bind` are not supported until Vue.js "3.2.0".
+tests/rules/vue/no-unsupported-features/extra-range/cases.vue:9:15	vue/no-unsupported-features	forbiddenVSlot	`v-slot` are not supported until Vue.js "2.6.0".
+tests/rules/vue/no-unsupported-features/extra-range/cases.vue:9:16	vue/no-unsupported-features	forbiddenDynamicDirectiveArguments	Dynamic arguments are not supported until Vue.js "2.6.0".
+tests/rules/vue/no-unsupported-features/extra-range/cases.vue:10:15	vue/no-unsupported-features	forbiddenVSlot	`v-slot` are not supported until Vue.js "2.6.0".
+tests/rules/vue/no-unsupported-features/extra-range/cases.vue:11:15	vue/no-unsupported-features	forbiddenVSlot	`v-slot` are not supported until Vue.js "2.6.0".
+tests/rules/vue/no-unsupported-features/extra-range/cases.vue:12:25	vue/no-unsupported-features	forbiddenVMemo	`v-memo` are not supported until Vue.js "3.2.0".
+tests/rules/vue/no-unsupported-features/extra-range/cases.vue:12:38	vue/no-unsupported-features	forbiddenVIs	`v-is` are not supported until Vue.js "3.0.0".
+tests/rules/vue/no-unsupported-features/extra-range/cases.vue:12:54	vue/no-unsupported-features	forbiddenIsAttributeWithVuePrefix	`is="vue:"` are not supported until Vue.js "3.1.0".
+tests/rules/vue/no-unsupported-features/extra-range/cases.vue:13:20	vue/no-unsupported-features	forbiddenVModelArgument	Argument on `v-model` is not supported until Vue.js "3.0.0".
+tests/rules/vue/no-unsupported-features/extra-range/cases.vue:13:20	vue/no-unsupported-features	forbiddenDynamicDirectiveArguments	Dynamic arguments are not supported until Vue.js "2.6.0".
+tests/rules/vue/no-unsupported-features/extra-range/cases.vue:13:34	vue/no-unsupported-features	forbiddenVBindPropModifierShorthand	`.prop` shorthand are not supported until Vue.js "3.2.0".
+tests/rules/vue/no-unsupported-features/extra-range/cases.vue:18:13	vue/no-unsupported-features	forbiddenStyleCssVarsInjection	SFC CSS variable injection is not supported until Vue.js ">=3.0.3 || >=2.7.0 <3.0.0".
+tests/rules/vue/no-unsupported-features/extra-range/cases.vue:19:13	vue/no-unsupported-features	forbiddenStyleCssVarsInjection	SFC CSS variable injection is not supported until Vue.js ">=3.0.3 || >=2.7.0 <3.0.0".
+tests/rules/vue/no-unsupported-features/is-attribute-with-vue-prefix-i0/cases.vue:3:17	vue/no-unsupported-features	forbiddenIsAttributeWithVuePrefix	`is="vue:"` are not supported until Vue.js "3.1.0".
+tests/rules/vue/no-unsupported-features/no-unsupported-features-i0/cases.vue:4:21	vue/no-unsupported-features	forbiddenVSlot	`v-slot` are not supported until Vue.js "2.6.0".
+tests/rules/vue/no-unsupported-features/no-unsupported-features-i0/cases.vue:6:16	vue/no-unsupported-features	forbiddenDynamicDirectiveArguments	Dynamic arguments are not supported until Vue.js "2.6.0".
+tests/rules/vue/no-unsupported-features/script-setup-i0/cases.vue:2:25	vue/no-unsupported-features	forbiddenScriptSetup	`<script setup>` is not supported until Vue.js "2.7.0".
+tests/rules/vue/no-unsupported-features/slot-scope-attribute-i0/cases.vue:4:14	vue/no-unsupported-features	forbiddenSlotScopeAttribute	`slot-scope` are not supported except Vue.js ">=2.5.0 <3.0.0".
+tests/rules/vue/no-unsupported-features/slot-scope-attribute-i1/cases.vue:4:14	vue/no-unsupported-features	forbiddenSlotScopeAttribute	`slot-scope` are not supported except Vue.js ">=2.5.0 <3.0.0".
+tests/rules/vue/no-unsupported-features/slot-scope-attribute-i2/cases.vue:4:14	vue/no-unsupported-features	forbiddenSlotScopeAttribute	`slot-scope` are not supported except Vue.js ">=2.5.0 <3.0.0".
+tests/rules/vue/no-unsupported-features/style-css-vars-injection-i0/cases.vue:21:18	vue/no-unsupported-features	forbiddenStyleCssVarsInjection	SFC CSS variable injection is not supported until Vue.js ">=3.0.3 || >=2.7.0 <3.0.0".
+tests/rules/vue/no-unsupported-features/style-css-vars-injection-i0/cases.vue:24:22	vue/no-unsupported-features	forbiddenStyleCssVarsInjection	SFC CSS variable injection is not supported until Vue.js ">=3.0.3 || >=2.7.0 <3.0.0".
+tests/rules/vue/no-unsupported-features/v-bind-attr-modifier-i0/cases.vue:3:19	vue/no-unsupported-features	forbiddenVBindAttrModifier	`.attr` modifiers on `v-bind` are not supported until Vue.js "3.2.0".
+tests/rules/vue/no-unsupported-features/v-bind-prop-modifier-shorthand-i0/cases.vue:3:12	vue/no-unsupported-features	forbiddenVBindPropModifierShorthand	`.prop` shorthand are not supported until Vue.js "3.2.0".
+tests/rules/vue/no-unsupported-features/v-bind-prop-modifier-shorthand-i1/cases.vue:3:12	vue/no-unsupported-features	forbiddenVBindPropModifierShorthand	`.prop` shorthand are not supported until Vue.js "3.2.0".
+tests/rules/vue/no-unsupported-features/v-bind-prop-modifier-shorthand-i2/cases.vue:3:12	vue/no-unsupported-features	forbiddenVBindPropModifierShorthand	`.prop` shorthand are not supported until Vue.js "3.2.0".
+tests/rules/vue/no-unsupported-features/v-bind-same-name-shorthand-i0/cases.vue:3:14	vue/no-unsupported-features	forbiddenVBindSameNameShorthand	`v-bind` same-name shorthand is not supported until Vue.js "3.4.0".
+tests/rules/vue/no-unsupported-features/v-bind-same-name-shorthand-i1/cases.vue:3:14	vue/no-unsupported-features	forbiddenVBindSameNameShorthand	`v-bind` same-name shorthand is not supported until Vue.js "3.4.0".
+tests/rules/vue/no-unsupported-features/v-bind-same-name-shorthand-i2/cases.vue:3:14	vue/no-unsupported-features	forbiddenVBindSameNameShorthand	`v-bind` same-name shorthand is not supported until Vue.js "3.4.0".
+tests/rules/vue/no-unsupported-features/v-is-i0/cases.vue:3:14	vue/no-unsupported-features	forbiddenVIs	`v-is` are not supported until Vue.js "3.0.0".
+tests/rules/vue/no-unsupported-features/v-memo-i0/cases.vue:3:14	vue/no-unsupported-features	forbiddenVMemo	`v-memo` are not supported until Vue.js "3.2.0".
+tests/rules/vue/no-unsupported-features/v-model-argument-i0/cases.vue:3:26	vue/no-unsupported-features	forbiddenVModelArgument	Argument on `v-model` is not supported until Vue.js "3.0.0".
+tests/rules/vue/no-unsupported-features/v-model-custom-modifiers-i0/cases.vue:3:30	vue/no-unsupported-features	forbiddenVModelCustomModifiers	Custom modifiers on `v-model` are not supported until Vue.js "3.0.0".
+tests/rules/vue/no-unsupported-features/v-model-custom-modifiers-i1/cases.vue:3:26	vue/no-unsupported-features	forbiddenVModelCustomModifiers	Custom modifiers on `v-model` are not supported until Vue.js "3.0.0".
+tests/rules/vue/no-unsupported-features/v-slot-i0/cases.vue:4:21	vue/no-unsupported-features	forbiddenVSlot	`v-slot` are not supported until Vue.js "2.6.0".
+tests/rules/vue/no-unsupported-features/v-slot-i1/cases.vue:4:21	vue/no-unsupported-features	forbiddenVSlot	`v-slot` are not supported until Vue.js "2.6.0".
+tests/rules/vue/no-unsupported-features/v-slot-i10/cases.vue:4:21	vue/no-unsupported-features	forbiddenVSlot	`v-slot` are not supported until Vue.js "2.6.0".
+tests/rules/vue/no-unsupported-features/v-slot-i11/cases.vue:4:21	vue/no-unsupported-features	forbiddenVSlot	`v-slot` are not supported until Vue.js "2.6.0".
+tests/rules/vue/no-unsupported-features/v-slot-i12/cases.vue:3:19	vue/no-unsupported-features	forbiddenVSlot	`v-slot` are not supported until Vue.js "2.6.0".
+tests/rules/vue/no-unsupported-features/v-slot-i2/cases.vue:4:21	vue/no-unsupported-features	forbiddenVSlot	`v-slot` are not supported until Vue.js "2.6.0".
+tests/rules/vue/no-unsupported-features/v-slot-i3/cases.vue:4:21	vue/no-unsupported-features	forbiddenVSlot	`v-slot` are not supported until Vue.js "2.6.0".
+tests/rules/vue/no-unsupported-features/v-slot-i4/cases.vue:4:21	vue/no-unsupported-features	forbiddenVSlot	`v-slot` are not supported until Vue.js "2.6.0".
+tests/rules/vue/no-unsupported-features/v-slot-i5/cases.vue:4:21	vue/no-unsupported-features	forbiddenVSlot	`v-slot` are not supported until Vue.js "2.6.0".
+tests/rules/vue/no-unsupported-features/v-slot-i6/cases.vue:4:21	vue/no-unsupported-features	forbiddenVSlot	`v-slot` are not supported until Vue.js "2.6.0".
+tests/rules/vue/no-unsupported-features/v-slot-i7/cases.vue:4:21	vue/no-unsupported-features	forbiddenVSlot	`v-slot` are not supported until Vue.js "2.6.0".
+tests/rules/vue/no-unsupported-features/v-slot-i8/cases.vue:4:21	vue/no-unsupported-features	forbiddenVSlot	`v-slot` are not supported until Vue.js "2.6.0".
+tests/rules/vue/no-unsupported-features/v-slot-i9/cases.vue:4:21	vue/no-unsupported-features	forbiddenVSlot	`v-slot` are not supported until Vue.js "2.6.0".

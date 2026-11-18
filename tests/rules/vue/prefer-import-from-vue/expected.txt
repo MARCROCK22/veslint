@@ -1,0 +1,9 @@
+tests/rules/vue/prefer-import-from-vue/cases.ts:1:31	vue/prefer-import-from-vue	importedAtVue	Import from 'vue' instead of '@vue/runtime-dom'.
+tests/rules/vue/prefer-import-from-vue/cases.ts:3:43	vue/prefer-import-from-vue	importedAtVue	Import from 'vue' instead of '@vue/reactivity'.
+tests/rules/vue/prefer-import-from-vue/cases.ts:4:22	vue/prefer-import-from-vue	importedAtVue	Import from 'vue' instead of '@vue/shared'.
+tests/rules/vue/prefer-import-from-vue/cases.ts:5:17	vue/prefer-import-from-vue	importedAtVue	Import from 'vue' instead of '@vue/runtime-dom'.
+tests/rules/vue/prefer-import-from-vue/cases.ts:6:8	vue/prefer-import-from-vue	importedAtVue	Import from 'vue' instead of '@vue/runtime-dom'.
+tests/rules/vue/prefer-import-from-vue/cases.ts:8:21	vue/prefer-import-from-vue	importedAtVue	Import from 'vue' instead of '@vue/reactivity'.
+tests/rules/vue/prefer-import-from-vue/cases.ts:10:15	vue/prefer-import-from-vue	importedAtVue	Import from 'vue' instead of '@vue/runtime-core'.
+tests/rules/vue/prefer-import-from-vue/cases.ts:11:21	vue/prefer-import-from-vue	importedAtVue	Import from 'vue' instead of '@vue/runtime-core'.
+tests/rules/vue/prefer-import-from-vue/cases.vue:2:26	vue/prefer-import-from-vue	importedAtVue	Import from 'vue' instead of '@vue/reactivity'.

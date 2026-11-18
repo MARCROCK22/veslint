@@ -1,0 +1,1 @@
+["bad", {"event": "/^regex/", "message": "No regex events."}, {"event": "quoted", "suggest": "it's \"new\""}, {"event": "tpl", "suggest": "tpl2"}]

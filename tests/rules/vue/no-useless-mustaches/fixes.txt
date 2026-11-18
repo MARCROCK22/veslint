@@ -1,0 +1,73 @@
+tests/rules/vue/no-useless-mustaches/cases.vue:13:9	vue/no-useless-mustaches	unexpected	Unexpected mustache interpolation with a string literal value.	fix	167	178	foo	end	13	20
+tests/rules/vue/no-useless-mustaches/cases.vue:16:9	vue/no-useless-mustaches	unexpected	Unexpected mustache interpolation with a string literal value.	end	16	35
+tests/rules/vue/no-useless-mustaches/cases.vue:17:9	vue/no-useless-mustaches	unexpected	Unexpected mustache interpolation with a string literal value.	end	18	12
+tests/rules/vue/no-useless-mustaches/cases.vue:21:9	vue/no-useless-mustaches	unexpected	Unexpected mustache interpolation with a string literal value.	end	21	19
+tests/rules/vue/no-useless-mustaches/cases.vue:22:9	vue/no-useless-mustaches	unexpected	Unexpected mustache interpolation with a string literal value.	end	22	19
+tests/rules/vue/no-useless-mustaches/cases.vue:25:9	vue/no-useless-mustaches	unexpected	Unexpected mustache interpolation with a string literal value.	fix	365	379	&quot;	end	25	23
+tests/rules/vue/no-useless-mustaches/cases.vue:26:9	vue/no-useless-mustaches	unexpected	Unexpected mustache interpolation with a string literal value.	fix	388	408	&quot;&apos;	end	26	29
+tests/rules/vue/no-useless-mustaches/cases.vue:27:9	vue/no-useless-mustaches	unexpected	Unexpected mustache interpolation with a string literal value.	fix	417	427	\\	end	27	19
+tests/rules/vue/no-useless-mustaches/cases.vue:28:9	vue/no-useless-mustaches	unexpected	Unexpected mustache interpolation with a string literal value.	fix	436	447	\\r	end	28	20
+tests/rules/vue/no-useless-mustaches/cases.vue:30:9	vue/no-useless-mustaches	unexpected	Unexpected mustache interpolation with a string literal value.	fix	474	485	foo	end	30	20
+tests/rules/vue/no-useless-mustaches/cases.vue:32:9	vue/no-useless-mustaches	unexpected	Unexpected mustache interpolation with a string literal value.	fix	520	534	&apos;	end	32	23
+tests/rules/vue/no-useless-mustaches/cases.vue:33:9	vue/no-useless-mustaches	unexpected	Unexpected mustache interpolation with a string literal value.	fix	543	554	foo	end	33	20
+tests/rules/vue/no-useless-mustaches/cases.vue:36:9	vue/no-useless-mustaches	unexpected	Unexpected mustache interpolation with a string literal value.	fix	584	605	msg	end	36	30
+tests/rules/vue/no-useless-mustaches/cases.vue:37:9	vue/no-useless-mustaches	unexpected	Unexpected mustache interpolation with a string literal value.	fix	614	635	msg	end	37	30
+tests/rules/vue/no-useless-mustaches/cases.vue:38:9	vue/no-useless-mustaches	unexpected	Unexpected mustache interpolation with a string literal value.	fix	644	660	msg	end	38	25
+tests/rules/vue/no-useless-mustaches/cases.vue:39:9	vue/no-useless-mustaches	unexpected	Unexpected mustache interpolation with a string literal value.	fix	669	685	msg	end	39	25
+tests/rules/vue/no-useless-mustaches/cases.vue:40:9	vue/no-useless-mustaches	unexpected	Unexpected mustache interpolation with a string literal value.	fix	694	710	msg	end	40	25
+tests/rules/vue/no-useless-mustaches/cases.vue:41:9	vue/no-useless-mustaches	unexpected	Unexpected mustache interpolation with a string literal value.	fix	719	735	msg	end	41	25
+tests/rules/vue/no-useless-mustaches/cases.vue:42:9	vue/no-useless-mustaches	unexpected	Unexpected mustache interpolation with a string literal value.	fix	744	772	&lt;msg&gt;	end	42	37
+tests/rules/vue/no-useless-mustaches/cases.vue:43:9	vue/no-useless-mustaches	unexpected	Unexpected mustache interpolation with a string literal value.	fix	781	806	I&apos;m	end	43	34
+tests/rules/vue/no-useless-mustaches/cases.vue:44:9	vue/no-useless-mustaches	unexpected	Unexpected mustache interpolation with a string literal value.	end	44	27
+tests/rules/vue/no-useless-mustaches/cases.vue:47:9	vue/no-useless-mustaches	unexpected	Unexpected mustache interpolation with a string literal value.	fix	863	875	I'm	end	47	21
+tests/rules/vue/no-useless-mustaches/cases.vue:48:9	vue/no-useless-mustaches	unexpected	Unexpected mustache interpolation with a string literal value.	fix	884	901	"Happy"	end	48	26
+tests/rules/vue/no-useless-mustaches/cases.vue:49:9	vue/no-useless-mustaches	unexpected	Unexpected mustache interpolation with a string literal value.	fix	910	943	backtick ` and dollar $	end	49	42
+tests/rules/vue/no-useless-mustaches/cases.vue:50:9	vue/no-useless-mustaches	unexpected	Unexpected mustache interpolation with a string literal value.	fix	952	962	\\	end	50	19
+tests/rules/vue/no-useless-mustaches/cases.vue:53:9	vue/no-useless-mustaches	unexpected	Unexpected mustache interpolation with a string literal value.	fix	992	1004	&lt;	end	53	21
+tests/rules/vue/no-useless-mustaches/cases.vue:54:9	vue/no-useless-mustaches	unexpected	Unexpected mustache interpolation with a string literal value.	fix	1013	1025	&gt;	end	54	21
+tests/rules/vue/no-useless-mustaches/cases.vue:55:9	vue/no-useless-mustaches	unexpected	Unexpected mustache interpolation with a string literal value.	fix	1034	1047	&amp;	end	55	22
+tests/rules/vue/no-useless-mustaches/cases.vue:56:9	vue/no-useless-mustaches	unexpected	Unexpected mustache interpolation with a string literal value.	fix	1056	1071	&#8212;	end	56	24
+tests/rules/vue/no-useless-mustaches/cases.vue:59:9	vue/no-useless-mustaches	unexpected	Unexpected mustache interpolation with a string literal value.	fix	1101	1110	&lt;	end	59	18
+tests/rules/vue/no-useless-mustaches/cases.vue:60:9	vue/no-useless-mustaches	unexpected	Unexpected mustache interpolation with a string literal value.	fix	1119	1129	&lt;&lt;	end	60	19
+tests/rules/vue/no-useless-mustaches/cases.vue:61:9	vue/no-useless-mustaches	unexpected	Unexpected mustache interpolation with a string literal value.	fix	1138	1163	can be &lt; anywhere	end	61	34
+tests/rules/vue/no-useless-mustaches/cases.vue:62:9	vue/no-useless-mustaches	unexpected	Unexpected mustache interpolation with a string literal value.	fix	1172	1185	&lt;tag>	end	62	22
+tests/rules/vue/no-useless-mustaches/cases.vue:65:15	vue/no-useless-mustaches	unexpected	Unexpected mustache interpolation with a string literal value.	end	65	25
+tests/rules/vue/no-useless-mustaches/cases.vue:66:15	vue/no-useless-mustaches	unexpected	Unexpected mustache interpolation with a string literal value.	end	66	29
+tests/rules/vue/no-useless-mustaches/cases.vue:67:15	vue/no-useless-mustaches	unexpected	Unexpected mustache interpolation with a string literal value.	end	67	24
+tests/rules/vue/no-useless-mustaches/cases.vue:67:24	vue/no-useless-mustaches	unexpected	Unexpected mustache interpolation with a string literal value.	fix	1307	1316	{	end	67	33
+tests/rules/vue/no-useless-mustaches/cases.vue:68:15	vue/no-useless-mustaches	unexpected	Unexpected mustache interpolation with a string literal value.	end	68	27
+tests/rules/vue/no-useless-mustaches/cases.vue:71:12	vue/no-useless-mustaches	unexpected	Unexpected mustache interpolation with a string literal value.	end	71	21
+tests/rules/vue/no-useless-mustaches/cases.vue:72:13	vue/no-useless-mustaches	unexpected	Unexpected mustache interpolation with a string literal value.	end	72	25
+tests/rules/vue/no-useless-mustaches/cases.vue:73:15	vue/no-useless-mustaches	unexpected	Unexpected mustache interpolation with a string literal value.	end	73	25
+tests/rules/vue/no-useless-mustaches/cases.vue:74:12	vue/no-useless-mustaches	unexpected	Unexpected mustache interpolation with a string literal value.	end	74	25
+tests/rules/vue/no-useless-mustaches/cases.vue:75:13	vue/no-useless-mustaches	unexpected	Unexpected mustache interpolation with a string literal value.	end	75	21
+tests/rules/vue/no-useless-mustaches/cases.vue:76:54	vue/no-useless-mustaches	unexpected	Unexpected mustache interpolation with a string literal value.	end	76	65
+tests/rules/vue/no-useless-mustaches/cases.vue:77:12	vue/no-useless-mustaches	unexpected	Unexpected mustache interpolation with a string literal value.	end	77	26
+tests/rules/vue/no-useless-mustaches/cases.vue:78:12	vue/no-useless-mustaches	unexpected	Unexpected mustache interpolation with a string literal value.	end	78	26
+tests/rules/vue/no-useless-mustaches/cases.vue:79:12	vue/no-useless-mustaches	unexpected	Unexpected mustache interpolation with a string literal value.	end	79	25
+tests/rules/vue/no-useless-mustaches/cases.vue:80:12	vue/no-useless-mustaches	unexpected	Unexpected mustache interpolation with a string literal value.	fix	1726	1749	Tom &amp; Jerry	end	80	35
+tests/rules/vue/no-useless-mustaches/cases.vue:83:9	vue/no-useless-mustaches	unexpected	Unexpected mustache interpolation with a string literal value.	end	84	8
+tests/rules/vue/no-useless-mustaches/cases.vue:87:9	vue/no-useless-mustaches	unexpected	Unexpected mustache interpolation with a string literal value.	end	87	23
+tests/rules/vue/no-useless-mustaches/cases.vue:88:9	vue/no-useless-mustaches	unexpected	Unexpected mustache interpolation with a string literal value.	end	88	23
+tests/rules/vue/no-useless-mustaches/cases.vue:89:9	vue/no-useless-mustaches	unexpected	Unexpected mustache interpolation with a string literal value.	end	89	24
+tests/rules/vue/no-useless-mustaches/cases.vue:90:9	vue/no-useless-mustaches	unexpected	Unexpected mustache interpolation with a string literal value.	end	90	19
+tests/rules/vue/no-useless-mustaches/extra/cases.vue:2:8	vue/no-useless-mustaches	unexpected	Unexpected mustache interpolation with a string literal value.	fix	18	37	héllo wörld	end	2	27
+tests/rules/vue/no-useless-mustaches/extra/cases.vue:3:12	vue/no-useless-mustaches	unexpected	Unexpected mustache interpolation with a string literal value.	end	3	21
+tests/rules/vue/no-useless-mustaches/extra/cases.vue:4:9	vue/no-useless-mustaches	unexpected	Unexpected mustache interpolation with a string literal value.	end	4	20
+tests/rules/vue/no-useless-mustaches/extra/cases.vue:5:8	vue/no-useless-mustaches	unexpected	Unexpected mustache interpolation with a string literal value.	fix	104	121	a &amp; b	end	5	25
+tests/rules/vue/no-useless-mustaches/extra/cases.vue:6:8	vue/no-useless-mustaches	unexpected	Unexpected mustache interpolation with a string literal value.	end	6	21
+tests/rules/vue/no-useless-mustaches/extra/cases.vue:7:8	vue/no-useless-mustaches	unexpected	Unexpected mustache interpolation with a string literal value.	end	7	26
+tests/rules/vue/no-useless-mustaches/extra/cases.vue:8:8	vue/no-useless-mustaches	unexpected	Unexpected mustache interpolation with a string literal value.	end	8	26
+tests/rules/vue/no-useless-mustaches/extra/cases.vue:9:8	vue/no-useless-mustaches	unexpected	Unexpected mustache interpolation with a string literal value.	fix	226	239	a A b	end	9	21
+tests/rules/vue/no-useless-mustaches/extra/cases.vue:10:8	vue/no-useless-mustaches	unexpected	Unexpected mustache interpolation with a string literal value.	fix	253	267	a ' b	end	10	22
+tests/rules/vue/no-useless-mustaches/extra/cases.vue:11:8	vue/no-useless-mustaches	unexpected	Unexpected mustache interpolation with a string literal value.	fix	281	295	a " b	end	11	22
+tests/rules/vue/no-useless-mustaches/extra/cases.vue:12:8	vue/no-useless-mustaches	unexpected	Unexpected mustache interpolation with a string literal value.	fix	309	320	tpl	end	12	19
+tests/rules/vue/no-useless-mustaches/extra/cases.vue:13:8	vue/no-useless-mustaches	unexpected	Unexpected mustache interpolation with a string literal value.	end	13	21
+tests/rules/vue/no-useless-mustaches/extra/cases.vue:14:8	vue/no-useless-mustaches	unexpected	Unexpected mustache interpolation with a string literal value.	end	14	21
+tests/rules/vue/no-useless-mustaches/extra/cases.vue:15:10	vue/no-useless-mustaches	unexpected	Unexpected mustache interpolation with a string literal value.	fix	390	399	{	end	15	19
+tests/rules/vue/no-useless-mustaches/extra/cases.vue:16:8	vue/no-useless-mustaches	unexpected	Unexpected mustache interpolation with a string literal value.	fix	413	424	&lt;b>	end	16	19
+tests/rules/vue/no-useless-mustaches/extra/cases.vue:17:8	vue/no-useless-mustaches	unexpected	Unexpected mustache interpolation with a string literal value.	end	17	25
+tests/rules/vue/no-useless-mustaches/extra/cases.vue:18:8	vue/no-useless-mustaches	unexpected	Unexpected mustache interpolation with a string literal value.	fix	469	481	a\\b	end	18	20
+tests/rules/vue/no-useless-mustaches/extra/cases.vue:19:8	vue/no-useless-mustaches	unexpected	Unexpected mustache interpolation with a string literal value.	fix	495	511	😀 emoji	end	19	24
+tests/rules/vue/no-useless-mustaches/extra/cases.vue:21:17	vue/no-useless-mustaches	unexpected	Unexpected mustache interpolation with a string literal value.	fix	555	564	y	end	21	26
+tests/rules/vue/no-useless-mustaches/extra/cases.vue:21:26	vue/no-useless-mustaches	unexpected	Unexpected mustache interpolation with a string literal value.	fix	564	573	z	end	21	35

@@ -1,0 +1,33 @@
+tests/rules/vue/html-self-closing/cases.vue:19:13	vue/html-self-closing	requireSelfClosing	Require self-closing on HTML elements (<div>).
+tests/rules/vue/html-self-closing/cases.vue:20:12	vue/html-self-closing	disallowSelfClosing	Disallow self-closing on HTML void elements (<img/>).
+tests/rules/vue/html-self-closing/cases.vue:21:16	vue/html-self-closing	requireSelfClosing	Require self-closing on Vue.js custom components (<x-test>).
+tests/rules/vue/html-self-closing/cases.vue:23:60	vue/html-self-closing	requireSelfClosing	Require self-closing on Vue.js custom components (<el-table-column>).
+tests/rules/vue/html-self-closing/cases.vue:24:31	vue/html-self-closing	requireSelfClosing	Require self-closing on HTML elements (<span>).
+tests/rules/vue/html-self-closing/cases.vue:25:24	vue/html-self-closing	requireSelfClosing	Require self-closing on Vue.js custom components (<x-test>).
+tests/rules/vue/html-self-closing/cases.vue:26:19	vue/html-self-closing	requireSelfClosing	Require self-closing on Vue.js custom components (<x-test>).
+tests/rules/vue/html-self-closing/cases.vue:27:21	vue/html-self-closing	requireSelfClosing	Require self-closing on Vue.js custom components (<x-test>).
+tests/rules/vue/html-self-closing/cases.vue:28:20	vue/html-self-closing	requireSelfClosing	Require self-closing on Vue.js custom components (<x-test>).
+tests/rules/vue/html-self-closing/cases.vue:29:17	vue/html-self-closing	requireSelfClosing	Require self-closing on Vue.js custom components (<x-test>).
+tests/rules/vue/html-self-closing/cases.vue:30:20	vue/html-self-closing	requireSelfClosing	Require self-closing on Vue.js custom components (<x-test>).
+tests/rules/vue/html-self-closing/cases.vue:33:9	vue/html-self-closing	requireSelfClosing	Require self-closing on HTML elements (<div>).
+tests/rules/vue/html-self-closing/cases.vue:34:9	vue/html-self-closing	requireSelfClosing	Require self-closing on HTML elements (<div>).
+tests/rules/vue/html-self-closing/cases.vue:37:4	vue/html-self-closing	requireSelfClosing	Require self-closing on HTML elements (<div>).
+tests/rules/vue/html-self-closing/cases.vue:38:27	vue/html-self-closing	requireSelfClosing	Require self-closing on Vue.js custom components (<MyComponent>).
+tests/rules/vue/html-self-closing/cases.vue:39:23	vue/html-self-closing	requireSelfClosing	Require self-closing on SVG elements (<path>).
+tests/rules/vue/html-self-closing/cases.vue:41:19	vue/html-self-closing	requireSelfClosing	Require self-closing on SVG elements (<path>).
+tests/rules/vue/html-self-closing/cases.vue:42:22	vue/html-self-closing	requireSelfClosing	Require self-closing on MathML elements (<mspace>).
+tests/rules/vue/html-self-closing/cases.vue:43:14	vue/html-self-closing	requireSelfClosing	Require self-closing on Vue.js custom components (<slot>).
+tests/rules/vue/html-self-closing/options-1dbf2af1/cases.vue:3:8	vue/html-self-closing	requireSelfClosing	Require self-closing on HTML elements (<div>).
+tests/rules/vue/html-self-closing/options-24d13b51/cases.vue:4:7	vue/html-self-closing	disallowSelfClosing	Disallow self-closing on HTML elements (<div/>).
+tests/rules/vue/html-self-closing/options-2892b4b9/cases.vue:5:3	vue/html-self-closing	requireSelfClosing	Require self-closing on HTML void elements (<img>).
+tests/rules/vue/html-self-closing/options-28f6df93/cases.vue:6:7	vue/html-self-closing	disallowSelfClosing	Disallow self-closing on HTML void elements (<img/>).
+tests/rules/vue/html-self-closing/options-37283bd4/cases.vue:2:8	vue/html-self-closing	requireSelfClosing	Require self-closing on HTML void elements (<img>).
+tests/rules/vue/html-self-closing/options-4449e183/cases.vue:12:16	vue/html-self-closing	disallowSelfClosing	Disallow self-closing on MathML elements (<mspace/>).
+tests/rules/vue/html-self-closing/options-4ce86e92/cases.vue:11:17	vue/html-self-closing	requireSelfClosing	Require self-closing on MathML elements (<mspace>).
+tests/rules/vue/html-self-closing/options-5aea0659/cases.vue:3:13	vue/html-self-closing	disallowSelfClosing	Disallow self-closing on HTML elements (<div/>).
+tests/rules/vue/html-self-closing/options-5aea0659/cases.vue:4:15	vue/html-self-closing	requireSelfClosing	Require self-closing on Vue.js custom components (<slot>).
+tests/rules/vue/html-self-closing/options-5aea0659/cases.vue:5:37	vue/html-self-closing	requireSelfClosing	Require self-closing on Vue.js custom components (<template>).
+tests/rules/vue/html-self-closing/options-97b59621/cases.vue:7:11	vue/html-self-closing	requireSelfClosing	Require self-closing on Vue.js custom components (<x-test>).
+tests/rules/vue/html-self-closing/options-b83be2f9/cases.vue:10:13	vue/html-self-closing	disallowSelfClosing	Disallow self-closing on SVG elements (<path/>).
+tests/rules/vue/html-self-closing/options-c738427b/cases.vue:8:10	vue/html-self-closing	disallowSelfClosing	Disallow self-closing on Vue.js custom components (<x-test/>).
+tests/rules/vue/html-self-closing/options-d77b2ddf/cases.vue:9:14	vue/html-self-closing	requireSelfClosing	Require self-closing on SVG elements (<path>).

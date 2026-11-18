@@ -2,6 +2,15 @@
 
 Each version is a release on GitHub with the veslint binaries (Linux x64, Windows x64) and the VS Code extension. The section of a version is the text of its release.
 
+## 0.32.0
+
+- **93 more rules of eslint-plugin-vue 10.12.1: 254 of its 256** (`vue/html-indent` and `vue/script-indent` come later):
+  - **Template:** 23 rules, among them `attributes-order`, `max-len`, `max-attributes-per-line`, `html-self-closing`, `singleline-` and `multiline-html-element-content-newline`, `padding-line-between-blocks` and `-tags`, `valid-v-for`, `valid-v-model`, `valid-v-slot`, `no-duplicate-class-names`, `no-unsupported-features` and `block-lang`.
+  - **Template and component:** 22 rules, among them `no-undef-components`, `no-unused-components`, `no-undef-properties`, `no-unused-properties`, `no-mutating-props`, `require-explicit-emits`, `no-unused-emit-declarations`, `v-on-handler-style` and `component-name-in-template-casing`.
+  - **Components:** 48 rules on the script side, among them `order-in-components`, `define-macros-order`, `require-default-prop`, `require-valid-default-prop`, `no-setup-props-reactivity-loss`, `no-ref-as-operand`, `no-async-in-computed-properties`, `no-dupe-keys`, `sort-keys`, `block-order` and the `html-comment-*` rules. Props declared by type (`defineProps<T>()`) get their runtime types and `required` from the TypeScript checker, and `withDefaults` its defaults.
+- Each one gives what ESLint gives and passes the cases of its upstream tests: 10,085 cases of eslint-plugin-vue in all, 5 of them known differences.
+- **Fixes found with all the rules together:** a `.vue` with both `<script>` and `<script setup>` no longer reports the variables of the setup's inner functions as unused (vue-eslint-parser leaves those scopes out of the tree); `vue/no-undef-properties` reports a name where ESLint does whatever the order of the rules; `vue/no-parsing-error` gives TypeScript's message for an unterminated string.
+
 ## 0.31.0
 
 - **112 more rules of eslint-plugin-vue 10.12.1 (161 of its 256):**

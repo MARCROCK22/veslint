@@ -1,0 +1,6 @@
+tests/rules/vue/no-restricted-props/array/cases.ts:2:42	vue/no-restricted-props	restrictedProp	Using `foo` props is not allowed.	suggestion	instead	Instead, change to `baz`.	79	84	"baz"	end	2	47
+tests/rules/vue/no-restricted-props/opts/cases.vue:4:5	vue/no-restricted-props	restrictedProp	Using `foo` props is not allowed.	end	4	8
+tests/rules/vue/no-restricted-props/opts/cases.vue:5:5	vue/no-restricted-props	restrictedProp	No bar.	suggestion	instead	Instead, change to `bar`.	68	77	"bar"	end	5	14
+tests/rules/vue/no-restricted-props/opts/cases.vue:6:5	vue/no-restricted-props	restrictedProp	Using `qux` props is not allowed.	suggestion	instead	Instead, change to `q-x`.	91	94	"q-x"	end	6	8
+tests/rules/vue/no-restricted-props/setup/cases.vue:2:55	vue/no-restricted-props	restrictedProp	Using `foo` props is not allowed.	suggestion	instead	Instead, change to `renamed`.	33	135	renamed:foo = 'x', qux } = withDefaults(defineProps<{ renamed?: string; qux?: number; other?: string }>(), {\n  renamed	end	2	58
+tests/rules/vue/no-restricted-props/setup/cases.vue:2:69	vue/no-restricted-props	restrictedProp	Using `qux` props is not allowed.	suggestion	instead	Instead, change to `q-x`.	44	147	"q-x":qux } = withDefaults(defineProps<{ foo?: string; "q-x"?: number; other?: string }>(), {\n  foo: 'y',\n  "q-x"	end	2	72

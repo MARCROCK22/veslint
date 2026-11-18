@@ -1,0 +1,1 @@
+[[{"blankLine": "always", "next": "*", "prev": "*"}, {"blankLine": "never", "next": "div", "prev": "br"}, {"blankLine": "never", "next": "img", "prev": "br"}]]

@@ -1,0 +1,18 @@
+tests/rules/vue/no-unused-properties/all-groups/cases.vue:8:17	vue/no-unused-properties	unused	'p2' of property found, but never used.
+tests/rules/vue/no-unused-properties/all-groups/cases.vue:9:18	vue/no-unused-properties	unused	'i2' of inject found, but never used.
+tests/rules/vue/no-unused-properties/all-groups/cases.vue:14:14	vue/no-unused-properties	unused	'ad' of async data found, but never used.
+tests/rules/vue/no-unused-properties/all-groups/cases.vue:20:28	vue/no-unused-properties	unused	'stateB' of computed property found, but never used.
+tests/rules/vue/no-unused-properties/all-groups/cases.vue:25:32	vue/no-unused-properties	unused	'act2' of method found, but never used.
+tests/rules/vue/no-unused-properties/all-groups/cases.vue:35:21	vue/no-unused-properties	unused	's2' of property returned from `setup()` found, but never used.
+tests/rules/vue/no-unused-properties/cases.vue:6:58	vue/no-unused-properties	unused	'hidden' of property found, but never used.
+tests/rules/vue/no-unused-properties/cases.vue:9:21	vue/no-unused-properties	unused	'unusedModel' of property found, but never used.
+tests/rules/vue/no-unused-properties/cases.vue:10:1	vue/no-unused-properties	unused	'modelValue' of property found, but never used.
+tests/rules/vue/no-unused-properties/deep/cases.vue:10:25	vue/no-unused-properties	unused	'state.unused' of data found, but never used.
+tests/rules/vue/no-unused-properties/deep/cases.vue:10:52	vue/no-unused-properties	unused	'state.nested.y' of data found, but never used.
+tests/rules/vue/no-unused-properties/public/cases.vue:9:5	vue/no-unused-properties	unused	'p' of property found, but never used.
+tests/rules/vue/no-unused-properties/public/cases.vue:16:7	vue/no-unused-properties	unused	'd2' of data found, but never used.
+tests/rules/vue/no-unused-properties/public/cases.vue:27:5	vue/no-unused-properties	unused	'm3' of method found, but never used.
+tests/rules/vue/no-unused-properties/public/cases.vue:29:5	vue/no-unused-properties	unused	'm4' of method found, but never used.
+tests/rules/vue/no-unused-properties/unreferenced/cases.vue:7:21	vue/no-unused-properties	unused	'c' of property found, but never used.
+tests/rules/vue/no-unused-properties/unreferenced/cases.vue:9:5	vue/no-unused-properties	unused	'x' of computed property found, but never used.
+tests/rules/vue/no-unused-properties/unreferenced/cases.vue:10:5	vue/no-unused-properties	unused	'y' of computed property found, but never used.

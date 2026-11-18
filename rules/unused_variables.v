@@ -16,9 +16,11 @@ const unused_loop_kinds = ['do_statement', 'for_statement', 'for_in_statement', 
 fn (mut c Checker) unused_variables(root C.TSNode, tree &ScopeTree) map[int]bool {
 	marked := c.unused_marked(root, tree)
 	mut unused := map[int]bool{}
-	for scope in tree.scopes {
+	// collectUnusedVariables goes down the tree from the global scope.
+	reachable := tree.reachable()
+	for i, scope in tree.scopes {
 		// The name of a function expression is not looked at.
-		if scope.kind == .function_expression_name {
+		if scope.kind == .function_expression_name || !reachable[i] {
 			continue
 		}
 		for v in scope.variables {

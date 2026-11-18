@@ -1,0 +1,9 @@
+tests/rules/vue/padding-lines-in-component-definition/cases.vue:4:3	vue/padding-lines-in-component-definition	always	Expected blank line before this definition.
+tests/rules/vue/padding-lines-in-component-definition/cases.vue:7:3	vue/padding-lines-in-component-definition	always	Expected blank line before this definition.
+tests/rules/vue/padding-lines-in-component-definition/group/cases.ts:5:3	vue/padding-lines-in-component-definition	groupSingleLineProperties	Unexpected blank line between single line properties.
+tests/rules/vue/padding-lines-in-component-definition/group/cases.ts:6:3	vue/padding-lines-in-component-definition	always	Expected blank line before this definition.
+tests/rules/vue/padding-lines-in-component-definition/group/cases.ts:9:3	vue/padding-lines-in-component-definition	always	Expected blank line before this definition.
+tests/rules/vue/padding-lines-in-component-definition/never/cases.vue:5:3	vue/padding-lines-in-component-definition	never	Unexpected blank line before this definition.
+tests/rules/vue/padding-lines-in-component-definition/never/cases.vue:9:3	vue/padding-lines-in-component-definition	never	Unexpected blank line before this definition.
+tests/rules/vue/padding-lines-in-component-definition/within/cases.vue:5:5	vue/padding-lines-in-component-definition	always	Expected blank line before this definition.
+tests/rules/vue/padding-lines-in-component-definition/within/cases.vue:21:3	vue/padding-lines-in-component-definition	always	Expected blank line before this definition.

@@ -1,0 +1,2 @@
+<template />
+<script lang="ts" />

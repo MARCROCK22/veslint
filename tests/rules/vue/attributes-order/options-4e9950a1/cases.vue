@@ -1,0 +1,10 @@
+<template>
+  <div>
+        <div
+          a="1"
+          v-bind="$attrs"
+          v-model="modelValue"
+          b="2"
+        />
+      </div>
+</template>

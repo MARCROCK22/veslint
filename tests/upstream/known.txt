@@ -1739,3 +1739,11 @@ veslint	no-deprecated-filter/v2	veslint does not read parserOptions.vueFeatures:
 # nothing, as veslint has no selector engine for the template's own nodes yet (listed with the
 # rule's prefix: no-restricted-syntax/i1 is also a case of ESLint core's rule).
 veslint	vue/no-restricted-syntax/i1	selectors on vue-eslint-parser's V* nodes are not matched
+# vue/no-restricted-call-after-await resolves a relative `module` from context.cwd and the imports
+# from the file's directory: the test lints <cwd>/test.vue from the root of eslint-plugin-vue's clone
+# (and `<cwd>/dist/index.js` is that package's `main`), the harness lints the case from the fixtures'
+# directory with the clone as the current directory, where the paths do not meet. The rule's own
+# fixtures (tests/rules/vue/no-restricted-call-after-await/local) check these paths against ESLint.
+veslint	no-restricted-call-after-await/i6	a relative `module` needs the file in the current directory
+veslint	no-restricted-call-after-await/i7	a relative `module` needs the file in the current directory
+veslint	no-restricted-call-after-await/i8	an absolute `module` resolved through the clone's package.json

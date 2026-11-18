@@ -1,0 +1,11 @@
+tests/rules/vue/no-required-prop-with-default/autofix-setup/cases.vue:3:3	vue/no-required-prop-with-default	requireOptional	Prop "a" should be optional.
+tests/rules/vue/no-required-prop-with-default/autofix-setup/cases.vue:5:3	vue/no-required-prop-with-default	requireOptional	Prop "c-d" should be optional.
+tests/rules/vue/no-required-prop-with-default/autofix-setup/cases.vue:7:3	vue/no-required-prop-with-default	requireOptional	Prop "f" should be optional.
+tests/rules/vue/no-required-prop-with-default/autofix/cases.vue:4:5	vue/no-required-prop-with-default	requireOptional	Prop "a" should be optional.
+tests/rules/vue/no-required-prop-with-default/autofix/cases.vue:6:5	vue/no-required-prop-with-default	requireOptional	Prop "c" should be optional.
+tests/rules/vue/no-required-prop-with-default/cases.vue:4:5	vue/no-required-prop-with-default	requireOptional	Prop "a" should be optional.
+tests/rules/vue/no-required-prop-with-default/cases.vue:6:5	vue/no-required-prop-with-default	requireOptional	Prop "c" should be optional.
+tests/rules/vue/no-required-prop-with-default/destructure/cases.vue:2:38	vue/no-required-prop-with-default	requireOptional	Prop "a" should be optional.
+tests/rules/vue/no-required-prop-with-default/setup/cases.vue:3:3	vue/no-required-prop-with-default	requireOptional	Prop "a" should be optional.
+tests/rules/vue/no-required-prop-with-default/setup/cases.vue:5:3	vue/no-required-prop-with-default	requireOptional	Prop "c-d" should be optional.
+tests/rules/vue/no-required-prop-with-default/setup/cases.vue:7:3	vue/no-required-prop-with-default	requireOptional	Prop "f" should be optional.

@@ -1,0 +1,40 @@
+tests/rules/vue/v-on-handler-style/cases.vue:3:21	vue/v-on-handler-style	preferMethodOverInline	Prefer method handler over inline handler in v-on.
+tests/rules/vue/v-on-handler-style/cases.vue:4:21	vue/v-on-handler-style	preferMethodOverInline	Prefer method handler over inline handler in v-on.
+tests/rules/vue/v-on-handler-style/cases.vue:5:21	vue/v-on-handler-style	preferMethodOverInline	Prefer method handler over inline handler in v-on.
+tests/rules/vue/v-on-handler-style/cases.vue:6:21	vue/v-on-handler-style	preferMethodOverInlineWithoutIdCall	Prefer method handler over inline handler in v-on. Note that you may need to create a new method.
+tests/rules/vue/v-on-handler-style/cases.vue:8:21	vue/v-on-handler-style	preferMethodOverInlineFunction	Prefer method handler over inline function in v-on.
+tests/rules/vue/v-on-handler-style/cases.vue:9:21	vue/v-on-handler-style	preferMethodOverInlineFunction	Prefer method handler over inline function in v-on.
+tests/rules/vue/v-on-handler-style/cases.vue:10:21	vue/v-on-handler-style	preferMethodOverInlineFunction	Prefer method handler over inline function in v-on.
+tests/rules/vue/v-on-handler-style/cases.vue:11:21	vue/v-on-handler-style	preferMethodOverInline	Prefer method handler over inline handler in v-on.
+tests/rules/vue/v-on-handler-style/cases.vue:12:21	vue/v-on-handler-style	preferMethodOverInline	Prefer method handler over inline handler in v-on.
+tests/rules/vue/v-on-handler-style/cases.vue:13:49	vue/v-on-handler-style	preferInlineFunctionOverInline	Prefer inline function over inline handler in v-on.
+tests/rules/vue/v-on-handler-style/cases.vue:14:21	vue/v-on-handler-style	preferMethodOverInline	Prefer method handler over inline handler in v-on.
+tests/rules/vue/v-on-handler-style/cases.vue:15:21	vue/v-on-handler-style	preferMethodOverInlineWithoutIdCall	Prefer method handler over inline handler in v-on. Note that you may need to create a new method.
+tests/rules/vue/v-on-handler-style/comment/cases.vue:2:19	vue/v-on-handler-style	preferInlineFunctionOverInline	Prefer inline function over inline handler in v-on.
+tests/rules/vue/v-on-handler-style/inline-function/cases.vue:3:21	vue/v-on-handler-style	preferInlineFunctionOverInline	Prefer inline function over inline handler in v-on.
+tests/rules/vue/v-on-handler-style/inline-function/cases.vue:4:21	vue/v-on-handler-style	preferInlineFunctionOverInline	Prefer inline function over inline handler in v-on.
+tests/rules/vue/v-on-handler-style/inline-function/cases.vue:5:21	vue/v-on-handler-style	preferInlineFunctionOverInline	Prefer inline function over inline handler in v-on.
+tests/rules/vue/v-on-handler-style/inline-function/cases.vue:6:21	vue/v-on-handler-style	preferInlineFunctionOverInline	Prefer inline function over inline handler in v-on.
+tests/rules/vue/v-on-handler-style/inline-function/cases.vue:7:21	vue/v-on-handler-style	preferInlineFunctionOverMethod	Prefer inline function over method handler in v-on.
+tests/rules/vue/v-on-handler-style/inline-function/cases.vue:11:21	vue/v-on-handler-style	preferInlineFunctionOverInline	Prefer inline function over inline handler in v-on.
+tests/rules/vue/v-on-handler-style/inline-function/cases.vue:12:21	vue/v-on-handler-style	preferInlineFunctionOverInline	Prefer inline function over inline handler in v-on.
+tests/rules/vue/v-on-handler-style/inline-function/cases.vue:13:49	vue/v-on-handler-style	preferInlineFunctionOverInline	Prefer inline function over inline handler in v-on.
+tests/rules/vue/v-on-handler-style/inline-function/cases.vue:14:21	vue/v-on-handler-style	preferInlineFunctionOverInline	Prefer inline function over inline handler in v-on.
+tests/rules/vue/v-on-handler-style/inline-function/cases.vue:15:21	vue/v-on-handler-style	preferInlineFunctionOverInline	Prefer inline function over inline handler in v-on.
+tests/rules/vue/v-on-handler-style/inline/cases.vue:7:21	vue/v-on-handler-style	preferInlineOverMethod	Prefer inline handler over method handler in v-on.
+tests/rules/vue/v-on-handler-style/inline/cases.vue:8:21	vue/v-on-handler-style	preferInlineOverInlineFunction	Prefer inline handler over inline function in v-on.
+tests/rules/vue/v-on-handler-style/inline/cases.vue:9:21	vue/v-on-handler-style	preferInlineOverInlineFunction	Prefer inline handler over inline function in v-on.
+tests/rules/vue/v-on-handler-style/inline/cases.vue:10:21	vue/v-on-handler-style	preferInlineOverInlineFunction	Prefer inline handler over inline function in v-on.
+tests/rules/vue/v-on-handler-style/inline/cases.vue:13:75	vue/v-on-handler-style	preferInlineOverInlineFunction	Prefer inline handler over inline function in v-on.
+tests/rules/vue/v-on-handler-style/method-inline/cases.vue:3:21	vue/v-on-handler-style	preferMethodOverInline	Prefer method handler over inline handler in v-on.
+tests/rules/vue/v-on-handler-style/method-inline/cases.vue:4:21	vue/v-on-handler-style	preferMethodOverInline	Prefer method handler over inline handler in v-on.
+tests/rules/vue/v-on-handler-style/method-inline/cases.vue:5:21	vue/v-on-handler-style	preferMethodOverInline	Prefer method handler over inline handler in v-on.
+tests/rules/vue/v-on-handler-style/method-inline/cases.vue:6:21	vue/v-on-handler-style	preferMethodOverInlineWithoutIdCall	Prefer method handler over inline handler in v-on. Note that you may need to create a new method.
+tests/rules/vue/v-on-handler-style/method-inline/cases.vue:8:21	vue/v-on-handler-style	preferMethodOverInlineFunction	Prefer method handler over inline function in v-on.
+tests/rules/vue/v-on-handler-style/method-inline/cases.vue:9:21	vue/v-on-handler-style	preferMethodOverInlineFunction	Prefer method handler over inline function in v-on.
+tests/rules/vue/v-on-handler-style/method-inline/cases.vue:10:21	vue/v-on-handler-style	preferMethodOverInlineFunction	Prefer method handler over inline function in v-on.
+tests/rules/vue/v-on-handler-style/method-inline/cases.vue:11:21	vue/v-on-handler-style	preferMethodOverInline	Prefer method handler over inline handler in v-on.
+tests/rules/vue/v-on-handler-style/method-inline/cases.vue:12:21	vue/v-on-handler-style	preferMethodOverInline	Prefer method handler over inline handler in v-on.
+tests/rules/vue/v-on-handler-style/method-inline/cases.vue:13:75	vue/v-on-handler-style	preferInlineOverInlineFunction	Prefer inline handler over inline function in v-on.
+tests/rules/vue/v-on-handler-style/method-inline/cases.vue:14:21	vue/v-on-handler-style	preferMethodOverInline	Prefer method handler over inline handler in v-on.
+tests/rules/vue/v-on-handler-style/method-inline/cases.vue:15:21	vue/v-on-handler-style	preferMethodOverInlineWithoutIdCall	Prefer method handler over inline handler in v-on. Note that you may need to create a new method.

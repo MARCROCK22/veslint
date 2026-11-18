@@ -1,0 +1,12 @@
+<template>
+  <div>
+        <div
+          v-model="a
+          :class="b"
+          :is="c"
+          prop-one="d"
+          class="e"
+          prop-two="f">
+        </div>
+      </div>
+</template>

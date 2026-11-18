@@ -1,0 +1,14 @@
+tests/rules/vue/no-multi-spaces/cases.vue:2:7	vue/no-multi-spaces	multipleSpaces	Multiple spaces found before 'class'.	fix	17	20	 	end	2	10
+tests/rules/vue/no-multi-spaces/cases.vue:2:21	vue/no-multi-spaces	multipleSpaces	Multiple spaces found before ':'.	fix	31	35	 	end	2	25
+tests/rules/vue/no-multi-spaces/cases.vue:2:37	vue/no-multi-spaces	multipleSpaces	Multiple spaces found before '>'.	fix	47	49	 	end	2	39
+tests/rules/vue/no-multi-spaces/cases.vue:3:10	vue/no-multi-spaces	multipleSpaces	Multiple spaces found before 'v-if'.	fix	60	62	 	end	3	12
+tests/rules/vue/no-multi-spaces/cases.vue:3:19	vue/no-multi-spaces	multipleSpaces	Multiple spaces found before '&&'.	fix	69	71	 	end	3	21
+tests/rules/vue/no-multi-spaces/cases.vue:3:23	vue/no-multi-spaces	multipleSpaces	Multiple spaces found before 'b'.	fix	73	75	 	end	3	25
+tests/rules/vue/no-multi-spaces/cases.vue:4:13	vue/no-multi-spaces	multipleSpaces	Multiple spaces found before '+'.	fix	93	96	 	end	4	16
+tests/rules/vue/no-multi-spaces/cases.vue:4:17	vue/no-multi-spaces	multipleSpaces	Multiple spaces found before '1'.	fix	97	100	 	end	4	20
+tests/rules/vue/no-multi-spaces/cases.vue:5:7	vue/no-multi-spaces	multipleSpaces	Multiple spaces found before '/>'.	fix	111	114	 	end	5	10
+tests/rules/vue/no-multi-spaces/cases.vue:8:8	vue/no-multi-spaces	multipleSpaces	Multiple spaces found before 'setup'.	fix	164	166	 	end	8	10
+tests/rules/vue/no-multi-spaces/cases.vue:8:15	vue/no-multi-spaces	multipleSpaces	Multiple spaces found before 'lang'.	fix	171	174	 	end	8	18
+tests/rules/vue/no-multi-spaces/cases.vue:13:7	vue/no-multi-spaces	multipleSpaces	Multiple spaces found before 'scoped'.	fix	241	244	 	end	13	10
+tests/rules/vue/no-multi-spaces/cases.vue:14:8	vue/no-multi-spaces	multipleSpaces	Multiple spaces found before '>'.	fix	259	261	 	end	14	10
+tests/rules/vue/no-multi-spaces/ignore/cases.vue:4:10	vue/no-multi-spaces	multipleSpaces	Multiple spaces found before '/>'.	fix	105	107	 	end	4	12

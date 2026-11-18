@@ -1,0 +1,1 @@
+["init", ["props", "*", "required"], {"name": ["methods", "/^a$/"], "message": "No a."}, "*"]

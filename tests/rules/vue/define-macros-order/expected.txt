@@ -1,0 +1,4 @@
+tests/rules/vue/define-macros-order/cases.vue:8:1	vue/define-macros-order	macrosNotAtTop	defineProps should be placed at the top of `<script setup>` (after any potential import statements or type definitions).
+tests/rules/vue/define-macros-order/custom/cases.vue:5:1	vue/define-macros-order	macrosNotAtTop	definePage should be placed at the top of `<script setup>` (after any potential import statements or type definitions).
+tests/rules/vue/define-macros-order/expose/cases.vue:4:1	vue/define-macros-order	defineExposeNotTheLast	`defineExpose` should be the last statement in `<script setup>`.
+tests/rules/vue/define-macros-order/unordered/cases.vue:3:39	vue/define-macros-order	macrosUnordered	defineProps should be above defineEmits.

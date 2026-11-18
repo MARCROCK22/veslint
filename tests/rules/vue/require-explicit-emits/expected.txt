@@ -1,0 +1,14 @@
+tests/rules/vue/require-explicit-emits/allow-props/cases.vue:3:25	vue/require-explicit-emits	missing	The "bar" event has been triggered but not declared on `defineEmits`.
+tests/rules/vue/require-explicit-emits/cases.vue:3:25	vue/require-explicit-emits	missing	The "missing" event has been triggered but not declared on `defineEmits`.
+tests/rules/vue/require-explicit-emits/cases.vue:4:24	vue/require-explicit-emits	missing	The "viaVar" event has been triggered but not declared on `defineEmits`.
+tests/rules/vue/require-explicit-emits/cases.vue:9:6	vue/require-explicit-emits	missing	The "scriptMissing" event has been triggered but not declared on `defineEmits`.
+tests/rules/vue/require-explicit-emits/empty-array/cases.vue:2:25	vue/require-explicit-emits	missing	The "one" event has been triggered but not declared on `emits` option.
+tests/rules/vue/require-explicit-emits/empty-object/cases.vue:2:25	vue/require-explicit-emits	missing	The "one" event has been triggered but not declared on `emits` option.
+tests/rules/vue/require-explicit-emits/no-emits/cases.vue:5:31	vue/require-explicit-emits	missing	The "a" event has been triggered but not declared on `emits` option.
+tests/rules/vue/require-explicit-emits/options-array/cases.vue:2:25	vue/require-explicit-emits	missing	The "foo" event has been triggered but not declared on `emits` option.
+tests/rules/vue/require-explicit-emits/options-array/cases.vue:7:31	vue/require-explicit-emits	missing	The "qux" event has been triggered but not declared on `emits` option.
+tests/rules/vue/require-explicit-emits/options-array/cases.vue:7:51	vue/require-explicit-emits	missing	The "opt" event has been triggered but not declared on `emits` option.
+tests/rules/vue/require-explicit-emits/options-array/cases.vue:8:33	vue/require-explicit-emits	missing	The "fromSetup" event has been triggered but not declared on `emits` option.
+tests/rules/vue/require-explicit-emits/options-object/cases.vue:5:40	vue/require-explicit-emits	missing	The "ctx" event has been triggered but not declared on `emits` option.
+tests/rules/vue/require-explicit-emits/setup-none/cases.vue:2:25	vue/require-explicit-emits	missing	The "a" event has been triggered but not declared on `defineEmits`.
+tests/rules/vue/require-explicit-emits/typed/cases.vue:3:25	vue/require-explicit-emits	missing	The "c" event has been triggered but not declared on `defineEmits`.
