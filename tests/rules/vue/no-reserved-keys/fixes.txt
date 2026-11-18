@@ -1,0 +1,11 @@
+tests/rules/vue/no-reserved-keys/cases.vue:3:11	vue/no-reserved-keys	reserved	Key '$el' is reserved.	end	3	16
+tests/rules/vue/no-reserved-keys/cases.vue:5:5	vue/no-reserved-keys	reserved	Key '$on' is reserved.	end	5	8
+tests/rules/vue/no-reserved-keys/cases.vue:6:9	vue/no-reserved-keys	reserved	Key '$data' is reserved.	end	6	14
+tests/rules/vue/no-reserved-keys/cases.vue:10:14	vue/no-reserved-keys	startsWithUnderscore	Keys starting with '_' are reserved in '_private' group.	end	10	22
+tests/rules/vue/no-reserved-keys/cases.vue:10:27	vue/no-reserved-keys	reserved	Key '$emit' is reserved.	end	10	32
+tests/rules/vue/no-reserved-keys/cases.vue:12:23	vue/no-reserved-keys	startsWithUnderscore	Keys starting with '_' are reserved in '_x' group.	end	12	25
+tests/rules/vue/no-reserved-keys/cases.vue:13:14	vue/no-reserved-keys	reserved	Key '$nextTick' is reserved.	end	13	23
+tests/rules/vue/no-reserved-keys/cases.vue:14:19	vue/no-reserved-keys	reserved	Key '$watch' is reserved.	end	14	25
+tests/rules/vue/no-reserved-keys/options/cases.vue:3:10	vue/no-reserved-keys	reserved	Key 'bar' is reserved.	end	3	13
+tests/rules/vue/no-reserved-keys/options/cases.vue:4:11	vue/no-reserved-keys	reserved	Key 'bar' is reserved.	end	4	16
+tests/rules/vue/no-reserved-keys/setup/cases.vue:2:15	vue/no-reserved-keys	reserved	Key '$el' is reserved.	end	2	27

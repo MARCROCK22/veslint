@@ -5,9 +5,11 @@
 # the one-token-per-line cases of script-indent), as on a .ts file.
 only eslint	g01/src/script-indent_v175.vue:11:4	@typescript-eslint/no-unsafe-member-access	errorMemberExpression	Unsafe member access .d on a type that cannot be resolved.	end	11	5
 only eslint	g01/src/script-indent_v175.vue:12:18	marcrock/no-newline-if-body-class-empty	noNewLine	Empty body class should not have a newline.	fix	89	90		end	13	2
+only eslint	g01/src/script-indent_v175.vue:14:1	vue/require-default-export	missing	Missing default export.	end	14	10
 only eslint	g01/src/script-indent_v175.vue:8:1	@stylistic/no-extra-parens	unexpected	Unnecessary parentheses around expression.	fix	58	65	\n  d\n	end	8	2
 only eslint	g07/src/script-indent_i169.vue:11:2	@typescript-eslint/no-unsafe-member-access	errorMemberExpression	Unsafe member access .d on a type that cannot be resolved.	end	11	3
 only eslint	g07/src/script-indent_i169.vue:12:18	marcrock/no-newline-if-body-class-empty	noNewLine	Empty body class should not have a newline.	fix	83	84		end	13	2
+only eslint	g07/src/script-indent_i169.vue:14:1	vue/require-default-export	missing	Missing default export.	end	14	10
 only eslint	g07/src/script-indent_i169.vue:8:1	@stylistic/no-extra-parens	unexpected	Unnecessary parentheses around expression.	fix	56	61	\nd\n	end	8	2
 #
 # The same difference on a .ts file with the code of the script.

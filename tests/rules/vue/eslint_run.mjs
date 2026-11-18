@@ -136,7 +136,13 @@ export const pick = m => Object.fromEntries(MESSAGE_KEYS.filter(k => k in m).map
 // gives what its test expects) and the problems of the first verify (the case's; the next ones
 // check the output of the fixes), null when RuleTester failed before linting.
 export function runCase(name, c) {
-  const rule = c.rule ? builtinRules.get(c.rule) : pluginVue.rules[name];
+  // A case of another rule: one of ESLint core, or of typescript-eslint (upstream_ts.mjs runs
+  // jsx-uses-vars' cases of no-unused-vars with typescript-eslint's).
+  const rule = c.rule
+    ? c.rule.startsWith('@typescript-eslint/')
+      ? pluginsOf({ ts: '@typescript-eslint/eslint-plugin' }).ts.rules[c.rule.slice('@typescript-eslint/'.length)]
+      : builtinRules.get(c.rule)
+    : pluginVue.rules[name];
   const tester = new RuleTester();
   let messages = null;
   const verify = tester.linter.verify.bind(tester.linter);

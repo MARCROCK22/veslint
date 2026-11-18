@@ -1,0 +1,2 @@
+tests/rules/vue/require-default-export/cases.vue:4:1	vue/require-default-export	missing	Missing default export.	end	4	10
+tests/rules/vue/require-default-export/component/cases.vue:4:1	vue/require-default-export	mustBeDefaultExport	Component must be the default export.	end	4	10

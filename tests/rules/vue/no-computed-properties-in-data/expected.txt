@@ -1,0 +1,2 @@
+tests/rules/vue/no-computed-properties-in-data/cases.vue:4:15	vue/no-computed-properties-in-data	cannotBeUsed	The computed property cannot be used in `data()` because it is before initialization.
+tests/rules/vue/no-computed-properties-in-data/cases.vue:7:26	vue/no-computed-properties-in-data	cannotBeUsed	The computed property cannot be used in `data()` because it is before initialization.

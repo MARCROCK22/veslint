@@ -66,6 +66,7 @@ fn (mut c Checker) reset_es_file() {
 	c.file_es_by_ts = map[u64]int{}
 	c.file_code_paths_built = false
 	c.file_code_paths = codepath.Analysis{}
+	c.vue_script_info = VueScript{}
 }
 
 // es_index_of is the ESTree node a tree-sitter node of the file was converted to (the innermost

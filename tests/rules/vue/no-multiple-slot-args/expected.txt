@@ -1,0 +1,5 @@
+tests/rules/vue/no-multiple-slot-args/cases.vue:4:28	vue/no-multiple-slot-args	unexpected	Unexpected multiple arguments.
+tests/rules/vue/no-multiple-slot-args/cases.vue:5:27	vue/no-multiple-slot-args	unexpectedSpread	Unexpected spread argument.
+tests/rules/vue/no-multiple-slot-args/cases.vue:6:26	vue/no-multiple-slot-args	unexpected	Unexpected multiple arguments.
+tests/rules/vue/no-multiple-slot-args/cases.vue:8:10	vue/no-multiple-slot-args	unexpected	Unexpected multiple arguments.
+tests/rules/vue/no-multiple-slot-args/cases.vue:11:10	vue/no-multiple-slot-args	unexpected	Unexpected multiple arguments.

@@ -1,0 +1,4 @@
+tests/rules/vue/no-props-shadow/cases.vue:5:7	vue/no-props-shadow	shadow	Declaration of 'bar' shadows the prop with the same name.	end	5	10
+tests/rules/vue/no-props-shadow/cases.vue:6:10	vue/no-props-shadow	shadow	Declaration of 'baz' shadows the prop with the same name.	end	6	13
+tests/rules/vue/no-props-shadow/cases.vue:8:7	vue/no-props-shadow	shadow	Declaration of 'fn' shadows the prop with the same name.	end	8	9
+tests/rules/vue/no-props-shadow/destructure/cases.vue:2:7	vue/no-props-shadow	shadow	Declaration of 'a' shadows the prop with the same name.	end	2	8

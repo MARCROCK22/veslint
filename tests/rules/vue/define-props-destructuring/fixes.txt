@@ -1,0 +1,4 @@
+tests/rules/vue/define-props-destructuring/cases.vue:2:15	vue/define-props-destructuring	preferDestructuring	Prefer destructuring from `defineProps` directly.	end	2	41
+tests/rules/vue/define-props-destructuring/options-always/cases.vue:2:1	vue/define-props-destructuring	preferDestructuring	Prefer destructuring from `defineProps` directly.	end	2	27
+tests/rules/vue/define-props-destructuring/options-never/cases.vue:2:15	vue/define-props-destructuring	avoidDestructuring	Avoid destructuring from `defineProps`.	end	2	41
+tests/rules/vue/define-props-destructuring/with-defaults/cases.vue:2:15	vue/define-props-destructuring	avoidWithDefaults	Avoid using `withDefaults` with destructuring.	end	2	27

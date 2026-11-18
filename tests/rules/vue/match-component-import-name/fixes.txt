@@ -1,0 +1,3 @@
+tests/rules/vue/match-component-import-name/cases.vue:8:5	vue/match-component-import-name	unexpected	Component alias fooBar should be one of: FooBar, foo-bar.	end	8	19
+tests/rules/vue/match-component-import-name/cases.vue:9:5	vue/match-component-import-name	unexpected	Component alias Qux should be one of: Baz, baz.	end	9	13
+tests/rules/vue/match-component-import-name/cases.vue:13:5	vue/match-component-import-name	unexpected	Component alias 1 should be one of: Baz, baz.	end	13	11

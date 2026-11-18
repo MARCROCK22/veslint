@@ -1,0 +1,1 @@
+["camelCase", {"ignoreProps": ["ignored_prop", "/^(data|aria)-/"]}]

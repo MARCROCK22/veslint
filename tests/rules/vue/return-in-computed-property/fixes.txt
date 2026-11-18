@@ -1,0 +1,8 @@
+tests/rules/vue/return-in-computed-property/cases.vue:4:6	vue/return-in-computed-property	expectedReturnInProperty	Expected to return a value in "a" computed property.	end	4	11
+tests/rules/vue/return-in-computed-property/cases.vue:6:10	vue/return-in-computed-property	expectedReturnInProperty	Expected to return a value in "b" computed property.	end	10	8
+tests/rules/vue/return-in-computed-property/cases.vue:12:6	vue/return-in-computed-property	expectedReturnInProperty	Expected to return a value in "c" computed property.	end	14	6
+tests/rules/vue/return-in-computed-property/cases.vue:18:10	vue/return-in-computed-property	expectedReturnInProperty	Expected to return a value in "e" computed property.	end	18	15
+tests/rules/vue/return-in-computed-property/cases.vue:19:8	vue/return-in-computed-property	expectedReturnInProperty	Expected to return a value in "Unknown" computed property.	end	19	13
+tests/rules/vue/return-in-computed-property/options-undefined/cases.vue:7:6	vue/return-in-computed-property	expectedReturnInProperty	Expected to return a value in "b" computed property.	end	7	11
+tests/rules/vue/return-in-computed-property/setup/cases.vue:5:20	vue/return-in-computed-property	expectedReturnInFunction	Expected to return a value in computed function.	end	5	28
+tests/rules/vue/return-in-computed-property/setup/cases.vue:7:6	vue/return-in-computed-property	expectedReturnInFunction	Expected to return a value in computed function.	end	9	4

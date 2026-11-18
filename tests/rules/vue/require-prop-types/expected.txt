@@ -1,0 +1,10 @@
+tests/rules/vue/require-prop-types/array/cases.ts:2:30	vue/require-prop-types	requireType	Prop "a" should define at least its type.
+tests/rules/vue/require-prop-types/array/cases.ts:2:35	vue/require-prop-types	requireType	Prop "b" should define at least its type.
+tests/rules/vue/require-prop-types/array/cases.ts:2:38	vue/require-prop-types	requireType	Prop "c" should define at least its type.
+tests/rules/vue/require-prop-types/cases.vue:4:5	vue/require-prop-types	requireType	Prop "a" should define at least its type.
+tests/rules/vue/require-prop-types/cases.vue:5:5	vue/require-prop-types	requireType	Prop "b" should define at least its type.
+tests/rules/vue/require-prop-types/cases.vue:7:5	vue/require-prop-types	requireType	Prop "d" should define at least its type.
+tests/rules/vue/require-prop-types/cases.vue:8:5	vue/require-prop-types	requireType	Prop "e" should define at least its type.
+tests/rules/vue/require-prop-types/setup/cases.vue:2:15	vue/require-prop-types	requireType	Prop "a" should define at least its type.
+tests/rules/vue/require-prop-types/setup/cases.vue:3:11	vue/require-prop-types	requireType	Prop "modelValue" should define at least its type.
+tests/rules/vue/require-prop-types/setup/cases.vue:4:28	vue/require-prop-types	requireType	Prop "n" should define at least its type.

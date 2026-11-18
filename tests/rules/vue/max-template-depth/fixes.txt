@@ -1,0 +1,4 @@
+tests/rules/vue/max-template-depth/options-2/cases.vue:4:7	vue/max-template-depth	templateTooDeep	Element is nested too deeply (depth of 3, maximum allowed is 2).	end	6	13
+tests/rules/vue/max-template-depth/options-2/cases.vue:5:9	vue/max-template-depth	templateTooDeep	Element is nested too deeply (depth of 4, maximum allowed is 2).	end	5	29
+tests/rules/vue/max-template-depth/options-2/cases.vue:5:15	vue/max-template-depth	templateTooDeep	Element is nested too deeply (depth of 5, maximum allowed is 2).	end	5	22
+tests/rules/vue/max-template-depth/options-2/cases.vue:7:7	vue/max-template-depth	templateTooDeep	Element is nested too deeply (depth of 3, maximum allowed is 2).	end	7	14

@@ -1,0 +1,8 @@
+tests/rules/vue/require-macro-variable-name/cases.vue:3:7	vue/require-macro-variable-name	requireName	The variable name of "defineProps" must be "props".
+tests/rules/vue/require-macro-variable-name/cases.vue:4:7	vue/require-macro-variable-name	requireName	The variable name of "defineEmits" must be "emit".
+tests/rules/vue/require-macro-variable-name/cases.vue:5:7	vue/require-macro-variable-name	requireName	The variable name of "defineSlots" must be "slots".
+tests/rules/vue/require-macro-variable-name/cases.vue:6:7	vue/require-macro-variable-name	requireName	The variable name of "useSlots" must be "slots".
+tests/rules/vue/require-macro-variable-name/cases.vue:7:7	vue/require-macro-variable-name	requireName	The variable name of "useAttrs" must be "attrs".
+tests/rules/vue/require-macro-variable-name/cases.vue:8:7	vue/require-macro-variable-name	requireName	The variable name of "defineProps" must be "props".
+tests/rules/vue/require-macro-variable-name/cases.vue:11:9	vue/require-macro-variable-name	requireName	The variable name of "useAttrs" must be "attrs".
+tests/rules/vue/require-macro-variable-name/options/cases.vue:2:7	vue/require-macro-variable-name	requireName	The variable name of "defineProps" must be "customProps".

@@ -1,0 +1,5 @@
+tests/rules/vue/define-emits-declaration/cases.vue:2:14	vue/define-emits-declaration	hasArg	Use type based declaration instead of runtime declaration.	end	2	32
+tests/rules/vue/define-emits-declaration/options-literal/cases.vue:3:3	vue/define-emits-declaration	hasTypeCallArg	Use new type literal declaration instead of the old call signature declaration.	end	3	29
+tests/rules/vue/define-emits-declaration/options-literal/cases.vue:5:3	vue/define-emits-declaration	hasTypeCallArg	Use new type literal declaration instead of the old call signature declaration.	end	5	12
+tests/rules/vue/define-emits-declaration/options-literal/fn/cases.vue:2:26	vue/define-emits-declaration	hasTypeCallArg	Use new type literal declaration instead of the old call signature declaration.	end	2	42
+tests/rules/vue/define-emits-declaration/options-runtime/cases.vue:2:14	vue/define-emits-declaration	hasTypeArg	Use runtime declaration instead of type based declaration.	end	2	38

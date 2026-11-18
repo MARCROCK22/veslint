@@ -13,9 +13,11 @@ not compared	s1358/src/script-indent_v93.vue	eslint	Parsing error: Type expected
 # next line), as on a .ts file; tests/vue/known.txt lists them for the parser.
 only eslint	g01/src/script-indent_v175.vue:11:4	@typescript-eslint/no-unsafe-member-access	errorMemberExpression	Unsafe member access .d on a type that cannot be resolved.	end	11	5
 only eslint	g01/src/script-indent_v175.vue:12:18	marcrock/no-newline-if-body-class-empty	noNewLine	Empty body class should not have a newline.	fix	89	90		end	13	2
+only eslint	g01/src/script-indent_v175.vue:14:1	vue/require-default-export	missing	Missing default export.	end	14	10
 only eslint	g01/src/script-indent_v175.vue:8:1	@stylistic/no-extra-parens	unexpected	Unnecessary parentheses around expression.	fix	58	65	\n  d\n	end	8	2
 only eslint	g07/src/script-indent_i169.vue:11:2	@typescript-eslint/no-unsafe-member-access	errorMemberExpression	Unsafe member access .d on a type that cannot be resolved.	end	11	3
 only eslint	g07/src/script-indent_i169.vue:12:18	marcrock/no-newline-if-body-class-empty	noNewLine	Empty body class should not have a newline.	fix	83	84		end	13	2
+only eslint	g07/src/script-indent_i169.vue:14:1	vue/require-default-export	missing	Missing default export.	end	14	10
 only eslint	g07/src/script-indent_i169.vue:8:1	@stylistic/no-extra-parens	unexpected	Unnecessary parentheses around expression.	fix	56	61	\nd\n	end	8	2
 only eslint	s0918/src/script-indent_i103.vue:10:1	@stylistic/lines-between-class-members	always	Expected blank line between class members.	fix	95	95	\n	end	15	2
 only eslint	s0918/src/script-indent_i103.vue:10:1	@typescript-eslint/class-methods-use-this	missingThis	Expected 'this' to be used by class private setter #x.	end	12	1
@@ -71,6 +73,7 @@ only eslint	s0918/src/script-indent_i103.vue:54:1	perfectionist/sort-classes	une
 only eslint	s0918/src/script-indent_i103.vue:56:1	@stylistic/function-paren-newline	unexpectedAfter	Unexpected newline after '('.	fix	310	311		end	56	2
 only eslint	s0918/src/script-indent_i103.vue:57:1	@stylistic/function-paren-newline	unexpectedBefore	Unexpected newline before ')'.	fix	310	311		end	57	2
 only eslint	s0918/src/script-indent_i103.vue:60:8	@stylistic/dot-location	expectedDotBeforeProperty	Expected dot to be on same line as property.	fix	337	339	\n.	end	60	9
+only eslint	s0918/src/script-indent_i103.vue:64:1	vue/require-default-export	missing	Missing default export.	end	64	10
 only eslint	s0918/src/script-indent_i103.vue:6:1	@stylistic/function-paren-newline	unexpectedAfter	Unexpected newline after '('.	fix	89	90		end	6	2
 only eslint	s0918/src/script-indent_i103.vue:7:1	@stylistic/function-paren-newline	unexpectedBefore	Unexpected newline before ')'.	fix	89	90		end	7	2
 only eslint	s0918/src/script-indent_i103.vue:8:1	@stylistic/brace-style	nextLineOpen	Opening curly brace does not appear on the same line as controlling statement.	fix	91	92	 	end	8	2
@@ -89,6 +92,7 @@ only eslint	s0930/src/script-indent_i115.vue:19:1	perfectionist/sort-classes	une
 only eslint	s0930/src/script-indent_i115.vue:19:23	@stylistic/no-multi-spaces	multipleSpaces	Multiple spaces found before 'a'.	fix	383	385	 	end	19	25
 only eslint	s0930/src/script-indent_i115.vue:20:1	@stylistic/lines-between-class-members	always	Expected blank line between class members.	fix	387	387	\n	end	20	29
 only eslint	s0930/src/script-indent_i115.vue:20:25	@stylistic/no-multi-spaces	multipleSpaces	Multiple spaces found before 'a'.	fix	412	414	 	end	20	27
+only eslint	s0930/src/script-indent_i115.vue:22:1	vue/require-default-export	missing	Missing default export.	end	22	10
 only eslint	s0930/src/script-indent_i115.vue:4:1	@typescript-eslint/explicit-member-accessibility	missingAccessibility	Missing accessibility modifier on class property a.	suggestion	addExplicitAccessibility	Add 'public' accessibility modifier	79	79	public 	suggestion	addExplicitAccessibility	Add 'private' accessibility modifier	79	79	private 	suggestion	addExplicitAccessibility	Add 'protected' accessibility modifier	79	79	protected 	end	4	11
 only eslint	s0930/src/script-indent_i115.vue:5:1	@stylistic/lines-between-class-members	always	Expected blank line between class members.	fix	90	90	\n	end	5	19
 only eslint	s0930/src/script-indent_i115.vue:6:1	@stylistic/lines-between-class-members	always	Expected blank line between class members.	fix	109	109	\n	end	6	19
@@ -101,6 +105,7 @@ only eslint	s0931/src/script-indent_i116.vue:10:1	@stylistic/quotes	wrongQuotes	
 only eslint	s0931/src/script-indent_i116.vue:11:1	@stylistic/semi-style	expectedSemiColon	Expected this semicolon to be at the end of the previous line.	fix	83	86	;\n	end	11	2
 only eslint	s0931/src/script-indent_i116.vue:12:1	@stylistic/lines-between-class-members	always	Expected blank line between class members.	fix	85	85	\n	end	15	2
 only eslint	s0931/src/script-indent_i116.vue:15:1	@stylistic/semi-style	expectedSemiColon	Expected this semicolon to be at the end of the previous line.	fix	110	113	;\n	end	15	2
+only eslint	s0931/src/script-indent_i116.vue:17:1	vue/require-default-export	missing	Missing default export.	end	17	10
 only eslint	s0931/src/script-indent_i116.vue:4:1	@typescript-eslint/explicit-member-accessibility	missingAccessibility	Missing accessibility modifier on class property a.	suggestion	addExplicitAccessibility	Add 'public' accessibility modifier	61	61	public 	suggestion	addExplicitAccessibility	Add 'private' accessibility modifier	61	61	private 	suggestion	addExplicitAccessibility	Add 'protected' accessibility modifier	61	61	protected 	end	4	2
 only eslint	s0931/src/script-indent_i116.vue:6:1	@typescript-eslint/no-magic-numbers	noMagic	No magic number: 1.	end	6	2
 only eslint	s0931/src/script-indent_i116.vue:7:1	@stylistic/semi-style	expectedSemiColon	Expected this semicolon to be at the end of the previous line.	fix	66	69	;\n	end	7	2
@@ -108,11 +113,13 @@ only eslint	s0931/src/script-indent_i116.vue:8:1	@stylistic/lines-between-class-
 only eslint	s0942/src/script-indent_i127.vue:11:1	@typescript-eslint/explicit-member-accessibility	missingAccessibility	Missing accessibility modifier on class property a.	suggestion	addExplicitAccessibility	Add 'public' accessibility modifier	111	111	public 	suggestion	addExplicitAccessibility	Add 'private' accessibility modifier	111	111	private 	suggestion	addExplicitAccessibility	Add 'protected' accessibility modifier	111	111	protected 	end	11	11
 only eslint	s0942/src/script-indent_i127.vue:12:1	@stylistic/lines-between-class-members	always	Expected blank line between class members.	fix	122	122	\n	end	12	19
 only eslint	s0942/src/script-indent_i127.vue:13:1	@stylistic/lines-between-class-members	always	Expected blank line between class members.	fix	141	141	\n	end	13	22
+only eslint	s0942/src/script-indent_i127.vue:15:1	vue/require-default-export	missing	Missing default export.	end	15	10
 only eslint	s0942/src/script-indent_i127.vue:4:1	@typescript-eslint/explicit-member-accessibility	missingAccessibility	Missing accessibility modifier on class property a.	suggestion	addExplicitAccessibility	Add 'public' accessibility modifier	61	61	public 	suggestion	addExplicitAccessibility	Add 'private' accessibility modifier	61	61	private 	suggestion	addExplicitAccessibility	Add 'protected' accessibility modifier	61	61	protected 	end	4	2
 only eslint	s0942/src/script-indent_i127.vue:5:1	@stylistic/lines-between-class-members	always	Expected blank line between class members.	fix	63	63	\n	end	5	10
 only eslint	s0942/src/script-indent_i127.vue:6:1	@stylistic/lines-between-class-members	always	Expected blank line between class members.	fix	73	73	\n	end	6	13
 only eslint	s0942/src/script-indent_i127.vue:7:1	@stylistic/lines-between-class-members	always	Expected blank line between class members.	fix	86	86	\n	end	7	11
 only eslint	s0949/src/script-indent_i133.vue:13:1	@stylistic/lines-between-class-members	always	Expected blank line between class members.	fix	157	157	\n	end	17	2
+only eslint	s0949/src/script-indent_i133.vue:19:1	vue/require-default-export	missing	Missing default export.	end	19	10
 only eslint	s0949/src/script-indent_i133.vue:4:1	@typescript-eslint/explicit-member-accessibility	missingAccessibility	Missing accessibility modifier on class property a.	suggestion	addExplicitAccessibility	Add 'public' accessibility modifier	79	79	public 	suggestion	addExplicitAccessibility	Add 'private' accessibility modifier	79	79	private 	suggestion	addExplicitAccessibility	Add 'protected' accessibility modifier	79	79	protected 	end	4	2
 only eslint	s0949/src/script-indent_i133.vue:6:1	@typescript-eslint/no-magic-numbers	noMagic	No magic number: 1.	end	6	2
 only eslint	s0949/src/script-indent_i133.vue:7:1	@stylistic/semi-style	expectedSemiColon	Expected this semicolon to be at the end of the previous line.	fix	84	87	;\n	end	7	2
@@ -171,6 +178,7 @@ only eslint	s1042/src/script-indent_i233.vue:54:1	perfectionist/sort-classes	une
 only eslint	s1042/src/script-indent_i233.vue:56:1	@stylistic/function-paren-newline	unexpectedAfter	Unexpected newline after '('.	fix	307	308		end	56	2
 only eslint	s1042/src/script-indent_i233.vue:57:1	@stylistic/function-paren-newline	unexpectedBefore	Unexpected newline before ')'.	fix	307	308		end	57	2
 only eslint	s1042/src/script-indent_i233.vue:60:8	@stylistic/dot-location	expectedDotBeforeProperty	Expected dot to be on same line as property.	fix	334	336	\n.	end	60	9
+only eslint	s1042/src/script-indent_i233.vue:64:1	vue/require-default-export	missing	Missing default export.	end	64	10
 only eslint	s1042/src/script-indent_i233.vue:6:1	@stylistic/function-paren-newline	unexpectedAfter	Unexpected newline after '('.	fix	86	87		end	6	2
 only eslint	s1042/src/script-indent_i233.vue:7:1	@stylistic/function-paren-newline	unexpectedBefore	Unexpected newline before ')'.	fix	86	87		end	7	2
 only eslint	s1042/src/script-indent_i233.vue:8:1	@stylistic/brace-style	nextLineOpen	Opening curly brace does not appear on the same line as controlling statement.	fix	88	89	 	end	8	2
@@ -182,6 +190,7 @@ only eslint	s1049/src/script-indent_i24.vue:17:1	@stylistic/type-annotation-spac
 only eslint	s1049/src/script-indent_i24.vue:19:1	@stylistic/quote-props	unquotedPropertyFound	Unquoted property 'key' found.	fix	137	140	"key"	end	19	13
 only eslint	s1049/src/script-indent_i24.vue:25:1	@typescript-eslint/member-ordering	incorrectGroupOrder	Member key should be declared before all field definitions.	end	30	2
 only eslint	s1049/src/script-indent_i24.vue:34:1	@stylistic/semi-style	expectedSemiColon	Expected this semicolon to be at the end of the previous line.	fix	216	219	;\n	end	34	2
+only eslint	s1049/src/script-indent_i24.vue:36:1	vue/require-default-export	missing	Missing default export.	end	36	10
 only eslint	s1049/src/script-indent_i24.vue:4:1	@typescript-eslint/explicit-member-accessibility	missingAccessibility	Missing accessibility modifier on class property a.	suggestion	addExplicitAccessibility	Add 'public' accessibility modifier	61	61	public 	suggestion	addExplicitAccessibility	Add 'private' accessibility modifier	61	61	private 	suggestion	addExplicitAccessibility	Add 'protected' accessibility modifier	61	61	protected 	end	4	2
 only eslint	s1049/src/script-indent_i24.vue:6:1	@typescript-eslint/no-magic-numbers	noMagic	No magic number: 1.	end	6	2
 only eslint	s1049/src/script-indent_i24.vue:7:1	@stylistic/semi-style	expectedSemiColon	Expected this semicolon to be at the end of the previous line.	fix	74	77	;\n	end	7	2
@@ -263,6 +272,7 @@ only eslint	s1055/src/script-indent_i247.vue:201:1	@typescript-eslint/explicit-f
 only eslint	s1055/src/script-indent_i247.vue:201:1	@typescript-eslint/explicit-member-accessibility	missingAccessibility	Missing accessibility modifier on get property accessor end.	suggestion	addExplicitAccessibility	Add 'public' accessibility modifier	1416	1416	public 	suggestion	addExplicitAccessibility	Add 'private' accessibility modifier	1416	1416	private 	suggestion	addExplicitAccessibility	Add 'protected' accessibility modifier	1416	1416	protected 	end	201	8
 only eslint	s1055/src/script-indent_i247.vue:201:1	@typescript-eslint/member-ordering	incorrectGroupOrder	Member end should be declared before all public decorated set definitions.	end	203	2
 only eslint	s1055/src/script-indent_i247.vue:201:8	@stylistic/space-before-function-paren	missingSpace	Missing space before function parentheses.	fix	1423	1423	 	end	201	9
+only eslint	s1055/src/script-indent_i247.vue:205:1	vue/require-default-export	missing	Missing default export.	end	205	10
 only eslint	s1055/src/script-indent_i247.vue:22:1	@stylistic/brace-style	nextLineOpen	Opening curly brace does not appear on the same line as controlling statement.	fix	131	132	 	end	22	2
 only eslint	s1055/src/script-indent_i247.vue:23:1	@typescript-eslint/explicit-member-accessibility	missingAccessibility	Missing accessibility modifier on class property type.	suggestion	addExplicitAccessibility	Add 'public' accessibility modifier	134	134	public 	suggestion	addExplicitAccessibility	Add 'private' accessibility modifier	134	134	private 	suggestion	addExplicitAccessibility	Add 'protected' accessibility modifier	134	134	protected 	end	23	5
 only eslint	s1055/src/script-indent_i247.vue:26:1	@stylistic/semi-style	expectedSemiColon	Expected this semicolon to be at the end of the previous line.	fix	149	152	;\n	end	26	2
@@ -343,10 +353,12 @@ only eslint	s1106/src/script-indent_i70.vue:33:1	@stylistic/function-paren-newli
 only eslint	s1106/src/script-indent_i70.vue:34:1	@stylistic/function-paren-newline	unexpectedBefore	Unexpected newline before ')'.	fix	133	134		end	34	2
 only eslint	s1106/src/script-indent_i70.vue:35:1	@stylistic/brace-style	nextLineOpen	Opening curly brace does not appear on the same line as controlling statement.	fix	135	136	 	end	35	2
 only eslint	s1106/src/script-indent_i70.vue:36:1	@stylistic/no-extra-semi	unexpected	Unnecessary semicolon.	fix	136	141	{\n\n}	end	36	2
+only eslint	s1106/src/script-indent_i70.vue:39:1	vue/require-default-export	missing	Missing default export.	end	39	10
 only eslint	s1106/src/script-indent_i70.vue:4:1	@typescript-eslint/class-methods-use-this	missingThis	Expected 'this' to be used by class method 'bbb'.	end	5	1
 only eslint	s1106/src/script-indent_i70.vue:4:1	@typescript-eslint/explicit-function-return-type	missingReturnType	Missing return type on function.	end	5	1
 only eslint	s1106/src/script-indent_i70.vue:4:1	@typescript-eslint/explicit-member-accessibility	missingAccessibility	Missing accessibility modifier on method definition bbb.	suggestion	addExplicitAccessibility	Add 'public' accessibility modifier	61	61	public 	suggestion	addExplicitAccessibility	Add 'private' accessibility modifier	61	61	private 	suggestion	addExplicitAccessibility	Add 'protected' accessibility modifier	61	61	protected 	end	4	4
 only eslint	s1106/src/script-indent_i70.vue:7:1	@stylistic/comma-style	unexpectedLineBeforeAndAfterComma	Bad line breaking before and after ','.	fix	68	71	,\n	end	7	2
+only eslint	s1116/src/script-indent_i80.vue:10:1	vue/require-default-export	missing	Missing default export.	end	10	10
 only eslint	s1116/src/script-indent_i80.vue:4:1	@typescript-eslint/class-methods-use-this	missingThis	Expected 'this' to be used by class method 'b'.	end	5	1
 only eslint	s1116/src/script-indent_i80.vue:4:1	@typescript-eslint/explicit-function-return-type	missingReturnType	Missing return type on function.	end	5	1
 only eslint	s1116/src/script-indent_i80.vue:4:1	@typescript-eslint/explicit-member-accessibility	missingAccessibility	Missing accessibility modifier on method definition b.	suggestion	addExplicitAccessibility	Add 'public' accessibility modifier	61	61	public 	suggestion	addExplicitAccessibility	Add 'private' accessibility modifier	61	61	private 	suggestion	addExplicitAccessibility	Add 'protected' accessibility modifier	61	61	protected 	end	4	2
@@ -364,6 +376,7 @@ only eslint	s1123/src/script-indent_i87.vue:19:1	@stylistic/comma-style	unexpect
 only eslint	s1123/src/script-indent_i87.vue:23:19	@stylistic/space-before-function-paren	missingSpace	Missing space before function parentheses.	fix	254	254	 	end	23	20
 only eslint	s1123/src/script-indent_i87.vue:24:25	@stylistic/space-before-function-paren	missingSpace	Missing space before function parentheses.	fix	282	282	 	end	24	26
 only eslint	s1123/src/script-indent_i87.vue:26:1	@stylistic/comma-style	unexpectedLineBeforeAndAfterComma	Bad line breaking before and after ','.	fix	286	289	,\n	end	26	2
+only eslint	s1123/src/script-indent_i87.vue:30:1	vue/require-default-export	missing	Missing default export.	end	30	10
 only eslint	s1123/src/script-indent_i87.vue:4:1	@typescript-eslint/explicit-member-accessibility	missingAccessibility	Missing accessibility modifier on method definition a.	suggestion	addExplicitAccessibility	Add 'public' accessibility modifier	82	82	public 	suggestion	addExplicitAccessibility	Add 'private' accessibility modifier	82	82	private 	suggestion	addExplicitAccessibility	Add 'protected' accessibility modifier	82	82	protected 	end	4	11
 only eslint	s1123/src/script-indent_i87.vue:5:18	@stylistic/space-before-function-paren	missingSpace	Missing space before function parentheses.	fix	114	114	 	end	5	19
 only eslint	s1123/src/script-indent_i87.vue:9:21	@stylistic/space-before-function-paren	missingSpace	Missing space before function parentheses.	fix	161	161	 	end	9	22
@@ -421,6 +434,7 @@ only eslint	s1142/src/script-indent_v108.vue:54:3	perfectionist/sort-classes	une
 only eslint	s1142/src/script-indent_v108.vue:56:5	@stylistic/function-paren-newline	unexpectedAfter	Unexpected newline after '('.	fix	510	515		end	56	6
 only eslint	s1142/src/script-indent_v108.vue:57:5	@stylistic/function-paren-newline	unexpectedBefore	Unexpected newline before ')'.	fix	510	515		end	57	6
 only eslint	s1142/src/script-indent_v108.vue:60:12	@stylistic/dot-location	expectedDotBeforeProperty	Expected dot to be on same line as property.	fix	555	563	\n      .	end	60	13
+only eslint	s1142/src/script-indent_v108.vue:64:1	vue/require-default-export	missing	Missing default export.	end	64	10
 only eslint	s1142/src/script-indent_v108.vue:6:5	@stylistic/function-paren-newline	unexpectedAfter	Unexpected newline after '('.	fix	97	102		end	6	6
 only eslint	s1142/src/script-indent_v108.vue:7:5	@stylistic/function-paren-newline	unexpectedBefore	Unexpected newline before ')'.	fix	97	102		end	7	6
 only eslint	s1142/src/script-indent_v108.vue:8:3	@stylistic/brace-style	nextLineOpen	Opening curly brace does not appear on the same line as controlling statement.	fix	103	106	 	end	8	4
@@ -439,6 +453,7 @@ only eslint	s1155/src/script-indent_v120.vue:19:3	@typescript-eslint/member-orde
 only eslint	s1155/src/script-indent_v120.vue:19:3	perfectionist/sort-classes	unexpectedClassesGroupOrder	Expected "a" (static-property) to come before "e" (property).	fix	251	444	public static readonly  a;\n  readonly abstract a;\n  public abstract readonly  a;\n  abstract readonly b;\n  abstract readonly public c;\n  public abstract readonly d;\n  public readonly abstract e;	end	19	29
 only eslint	s1155/src/script-indent_v120.vue:20:27	@stylistic/no-multi-spaces	multipleSpaces	Multiple spaces found before 'a'.	fix	440	442	 	end	20	29
 only eslint	s1155/src/script-indent_v120.vue:20:3	@stylistic/lines-between-class-members	always	Expected blank line between class members.	fix	413	413	\n	end	20	31
+only eslint	s1155/src/script-indent_v120.vue:22:1	vue/require-default-export	missing	Missing default export.	end	22	10
 only eslint	s1155/src/script-indent_v120.vue:4:3	@typescript-eslint/explicit-member-accessibility	missingAccessibility	Missing accessibility modifier on class property a.	suggestion	addExplicitAccessibility	Add 'public' accessibility modifier	81	81	public 	suggestion	addExplicitAccessibility	Add 'private' accessibility modifier	81	81	private 	suggestion	addExplicitAccessibility	Add 'protected' accessibility modifier	81	81	protected 	end	4	13
 only eslint	s1155/src/script-indent_v120.vue:5:3	@stylistic/lines-between-class-members	always	Expected blank line between class members.	fix	92	92	\n	end	5	21
 only eslint	s1155/src/script-indent_v120.vue:6:3	@stylistic/lines-between-class-members	always	Expected blank line between class members.	fix	113	113	\n	end	6	21
@@ -451,6 +466,7 @@ only eslint	s1156/src/script-indent_v121.vue:10:5	@stylistic/quotes	wrongQuotes	
 only eslint	s1156/src/script-indent_v121.vue:11:3	@stylistic/semi-style	expectedSemiColon	Expected this semicolon to be at the end of the previous line.	fix	105	112	;\n	end	11	4
 only eslint	s1156/src/script-indent_v121.vue:12:3	@stylistic/lines-between-class-members	always	Expected blank line between class members.	fix	109	109	\n	end	15	4
 only eslint	s1156/src/script-indent_v121.vue:15:3	@stylistic/semi-style	expectedSemiColon	Expected this semicolon to be at the end of the previous line.	fix	144	149	;\n	end	15	4
+only eslint	s1156/src/script-indent_v121.vue:17:1	vue/require-default-export	missing	Missing default export.	end	17	10
 only eslint	s1156/src/script-indent_v121.vue:4:3	@typescript-eslint/explicit-member-accessibility	missingAccessibility	Missing accessibility modifier on class property a.	suggestion	addExplicitAccessibility	Add 'public' accessibility modifier	63	63	public 	suggestion	addExplicitAccessibility	Add 'private' accessibility modifier	63	63	private 	suggestion	addExplicitAccessibility	Add 'protected' accessibility modifier	63	63	protected 	end	4	4
 only eslint	s1156/src/script-indent_v121.vue:6:5	@typescript-eslint/no-magic-numbers	noMagic	No magic number: 1.	end	6	6
 only eslint	s1156/src/script-indent_v121.vue:7:3	@stylistic/semi-style	expectedSemiColon	Expected this semicolon to be at the end of the previous line.	fix	76	83	;\n	end	7	4
@@ -458,11 +474,13 @@ only eslint	s1156/src/script-indent_v121.vue:8:3	@stylistic/lines-between-class-
 only eslint	s1167/src/script-indent_v132.vue:11:3	@typescript-eslint/explicit-member-accessibility	missingAccessibility	Missing accessibility modifier on class property a.	suggestion	addExplicitAccessibility	Add 'public' accessibility modifier	121	121	public 	suggestion	addExplicitAccessibility	Add 'private' accessibility modifier	121	121	private 	suggestion	addExplicitAccessibility	Add 'protected' accessibility modifier	121	121	protected 	end	11	13
 only eslint	s1167/src/script-indent_v132.vue:12:3	@stylistic/lines-between-class-members	always	Expected blank line between class members.	fix	132	132	\n	end	12	21
 only eslint	s1167/src/script-indent_v132.vue:13:3	@stylistic/lines-between-class-members	always	Expected blank line between class members.	fix	153	153	\n	end	13	24
+only eslint	s1167/src/script-indent_v132.vue:15:1	vue/require-default-export	missing	Missing default export.	end	15	10
 only eslint	s1167/src/script-indent_v132.vue:4:3	@typescript-eslint/explicit-member-accessibility	missingAccessibility	Missing accessibility modifier on class property a.	suggestion	addExplicitAccessibility	Add 'public' accessibility modifier	63	63	public 	suggestion	addExplicitAccessibility	Add 'private' accessibility modifier	63	63	private 	suggestion	addExplicitAccessibility	Add 'protected' accessibility modifier	63	63	protected 	end	4	4
 only eslint	s1167/src/script-indent_v132.vue:5:3	@stylistic/lines-between-class-members	always	Expected blank line between class members.	fix	65	65	\n	end	5	12
 only eslint	s1167/src/script-indent_v132.vue:6:3	@stylistic/lines-between-class-members	always	Expected blank line between class members.	fix	77	77	\n	end	6	15
 only eslint	s1167/src/script-indent_v132.vue:7:3	@stylistic/lines-between-class-members	always	Expected blank line between class members.	fix	92	92	\n	end	7	13
 only eslint	s1173/src/script-indent_v138.vue:13:3	@stylistic/lines-between-class-members	always	Expected blank line between class members.	fix	179	179	\n	end	17	4
+only eslint	s1173/src/script-indent_v138.vue:19:1	vue/require-default-export	missing	Missing default export.	end	19	10
 only eslint	s1173/src/script-indent_v138.vue:4:3	@typescript-eslint/explicit-member-accessibility	missingAccessibility	Missing accessibility modifier on class property a.	suggestion	addExplicitAccessibility	Add 'public' accessibility modifier	81	81	public 	suggestion	addExplicitAccessibility	Add 'private' accessibility modifier	81	81	private 	suggestion	addExplicitAccessibility	Add 'protected' accessibility modifier	81	81	protected 	end	4	4
 only eslint	s1173/src/script-indent_v138.vue:6:5	@typescript-eslint/no-magic-numbers	noMagic	No magic number: 1.	end	6	6
 only eslint	s1173/src/script-indent_v138.vue:7:3	@stylistic/semi-style	expectedSemiColon	Expected this semicolon to be at the end of the previous line.	fix	94	101	;\n	end	7	4
@@ -474,6 +492,7 @@ only eslint	s1267/src/script-indent_v24.vue:17:5	@stylistic/type-annotation-spac
 only eslint	s1267/src/script-indent_v24.vue:19:7	@stylistic/quote-props	unquotedPropertyFound	Unquoted property 'key' found.	fix	195	198	"key"	end	19	19
 only eslint	s1267/src/script-indent_v24.vue:25:7	@typescript-eslint/member-ordering	incorrectGroupOrder	Member key should be declared before all field definitions.	end	30	8
 only eslint	s1267/src/script-indent_v24.vue:34:3	@stylistic/semi-style	expectedSemiColon	Expected this semicolon to be at the end of the previous line.	fix	366	371	;\n	end	34	4
+only eslint	s1267/src/script-indent_v24.vue:36:1	vue/require-default-export	missing	Missing default export.	end	36	10
 only eslint	s1267/src/script-indent_v24.vue:4:3	@typescript-eslint/explicit-member-accessibility	missingAccessibility	Missing accessibility modifier on class property a.	suggestion	addExplicitAccessibility	Add 'public' accessibility modifier	63	63	public 	suggestion	addExplicitAccessibility	Add 'private' accessibility modifier	63	63	private 	suggestion	addExplicitAccessibility	Add 'protected' accessibility modifier	63	63	protected 	end	4	4
 only eslint	s1267/src/script-indent_v24.vue:6:5	@typescript-eslint/no-magic-numbers	noMagic	No magic number: 1.	end	6	6
 only eslint	s1267/src/script-indent_v24.vue:7:3	@stylistic/semi-style	expectedSemiColon	Expected this semicolon to be at the end of the previous line.	fix	84	91	;\n	end	7	4
@@ -533,6 +552,7 @@ only eslint	s1271/src/script-indent_v244.vue:54:3	perfectionist/sort-classes	une
 only eslint	s1271/src/script-indent_v244.vue:56:5	@stylistic/function-paren-newline	unexpectedAfter	Unexpected newline after '('.	fix	507	512		end	56	6
 only eslint	s1271/src/script-indent_v244.vue:57:5	@stylistic/function-paren-newline	unexpectedBefore	Unexpected newline before ')'.	fix	507	512		end	57	6
 only eslint	s1271/src/script-indent_v244.vue:60:12	@stylistic/dot-location	expectedDotBeforeProperty	Expected dot to be on same line as property.	fix	552	560	\n      .	end	60	13
+only eslint	s1271/src/script-indent_v244.vue:64:1	vue/require-default-export	missing	Missing default export.	end	64	10
 only eslint	s1271/src/script-indent_v244.vue:6:5	@stylistic/function-paren-newline	unexpectedAfter	Unexpected newline after '('.	fix	94	99		end	6	6
 only eslint	s1271/src/script-indent_v244.vue:7:5	@stylistic/function-paren-newline	unexpectedBefore	Unexpected newline before ')'.	fix	94	99		end	7	6
 only eslint	s1271/src/script-indent_v244.vue:8:3	@stylistic/brace-style	nextLineOpen	Opening curly brace does not appear on the same line as controlling statement.	fix	100	103	 	end	8	4
@@ -613,6 +633,7 @@ only eslint	s1284/src/script-indent_v258.vue:201:3	@stylistic/lines-between-clas
 only eslint	s1284/src/script-indent_v258.vue:201:3	@typescript-eslint/explicit-function-return-type	missingReturnType	Missing return type on function.	end	201	10
 only eslint	s1284/src/script-indent_v258.vue:201:3	@typescript-eslint/explicit-member-accessibility	missingAccessibility	Missing accessibility modifier on get property accessor end.	suggestion	addExplicitAccessibility	Add 'public' accessibility modifier	2032	2032	public 	suggestion	addExplicitAccessibility	Add 'private' accessibility modifier	2032	2032	private 	suggestion	addExplicitAccessibility	Add 'protected' accessibility modifier	2032	2032	protected 	end	201	10
 only eslint	s1284/src/script-indent_v258.vue:201:3	@typescript-eslint/member-ordering	incorrectGroupOrder	Member end should be declared before all public decorated set definitions.	end	203	4
+only eslint	s1284/src/script-indent_v258.vue:205:1	vue/require-default-export	missing	Missing default export.	end	205	10
 only eslint	s1284/src/script-indent_v258.vue:22:1	@stylistic/brace-style	nextLineOpen	Opening curly brace does not appear on the same line as controlling statement.	fix	169	170	 	end	22	2
 only eslint	s1284/src/script-indent_v258.vue:23:3	@typescript-eslint/explicit-member-accessibility	missingAccessibility	Missing accessibility modifier on class property type.	suggestion	addExplicitAccessibility	Add 'public' accessibility modifier	174	174	public 	suggestion	addExplicitAccessibility	Add 'private' accessibility modifier	174	174	private 	suggestion	addExplicitAccessibility	Add 'protected' accessibility modifier	174	174	protected 	end	23	7
 only eslint	s1284/src/script-indent_v258.vue:26:3	@stylistic/semi-style	expectedSemiColon	Expected this semicolon to be at the end of the previous line.	fix	197	204	;\n	end	26	4
@@ -693,10 +714,12 @@ only eslint	s1338/src/script-indent_v72.vue:33:5	@stylistic/function-paren-newli
 only eslint	s1338/src/script-indent_v72.vue:34:5	@stylistic/function-paren-newline	unexpectedBefore	Unexpected newline before ')'.	fix	229	234		end	34	6
 only eslint	s1338/src/script-indent_v72.vue:35:3	@stylistic/brace-style	nextLineOpen	Opening curly brace does not appear on the same line as controlling statement.	fix	235	238	 	end	35	4
 only eslint	s1338/src/script-indent_v72.vue:36:5	@stylistic/no-extra-semi	unexpected	Unnecessary semicolon.	fix	238	249	{\n    \n  }	end	36	6
+only eslint	s1338/src/script-indent_v72.vue:39:1	vue/require-default-export	missing	Missing default export.	end	39	10
 only eslint	s1338/src/script-indent_v72.vue:4:3	@typescript-eslint/class-methods-use-this	missingThis	Expected 'this' to be used by class method 'bbb'.	end	5	5
 only eslint	s1338/src/script-indent_v72.vue:4:3	@typescript-eslint/explicit-function-return-type	missingReturnType	Missing return type on function.	end	5	5
 only eslint	s1338/src/script-indent_v72.vue:4:3	@typescript-eslint/explicit-member-accessibility	missingAccessibility	Missing accessibility modifier on method definition bbb.	suggestion	addExplicitAccessibility	Add 'public' accessibility modifier	63	63	public 	suggestion	addExplicitAccessibility	Add 'private' accessibility modifier	63	63	private 	suggestion	addExplicitAccessibility	Add 'protected' accessibility modifier	63	63	protected 	end	4	6
 only eslint	s1338/src/script-indent_v72.vue:7:7	@stylistic/comma-style	unexpectedLineBeforeAndAfterComma	Bad line breaking before and after ','.	fix	80	95	,      \n      	end	7	8
+only eslint	s1348/src/script-indent_v82.vue:10:1	vue/require-default-export	missing	Missing default export.	end	10	10
 only eslint	s1348/src/script-indent_v82.vue:4:3	@typescript-eslint/class-methods-use-this	missingThis	Expected 'this' to be used by class method 'b'.	end	5	5
 only eslint	s1348/src/script-indent_v82.vue:4:3	@typescript-eslint/explicit-function-return-type	missingReturnType	Missing return type on function.	end	5	5
 only eslint	s1348/src/script-indent_v82.vue:4:3	@typescript-eslint/explicit-member-accessibility	missingAccessibility	Missing accessibility modifier on method definition b.	suggestion	addExplicitAccessibility	Add 'public' accessibility modifier	63	63	public 	suggestion	addExplicitAccessibility	Add 'private' accessibility modifier	63	63	private 	suggestion	addExplicitAccessibility	Add 'protected' accessibility modifier	63	63	protected 	end	4	4
@@ -714,6 +737,7 @@ only eslint	s1356/src/script-indent_v90.vue:19:5	@stylistic/comma-style	unexpect
 only eslint	s1356/src/script-indent_v90.vue:23:21	@stylistic/space-before-function-paren	missingSpace	Missing space before function parentheses.	fix	310	310	 	end	23	22
 only eslint	s1356/src/script-indent_v90.vue:24:27	@stylistic/space-before-function-paren	missingSpace	Missing space before function parentheses.	fix	340	340	 	end	24	28
 only eslint	s1356/src/script-indent_v90.vue:26:5	@stylistic/comma-style	unexpectedLineBeforeAndAfterComma	Bad line breaking before and after ','.	fix	348	359	,    \n    	end	26	6
+only eslint	s1356/src/script-indent_v90.vue:30:1	vue/require-default-export	missing	Missing default export.	end	30	10
 only eslint	s1356/src/script-indent_v90.vue:4:3	@typescript-eslint/explicit-member-accessibility	missingAccessibility	Missing accessibility modifier on method definition a.	suggestion	addExplicitAccessibility	Add 'public' accessibility modifier	84	84	public 	suggestion	addExplicitAccessibility	Add 'private' accessibility modifier	84	84	private 	suggestion	addExplicitAccessibility	Add 'protected' accessibility modifier	84	84	protected 	end	4	13
 only eslint	s1356/src/script-indent_v90.vue:5:20	@stylistic/space-before-function-paren	missingSpace	Missing space before function parentheses.	fix	118	118	 	end	5	21
 only eslint	s1356/src/script-indent_v90.vue:9:23	@stylistic/space-before-function-paren	missingSpace	Missing space before function parentheses.	fix	175	175	 	end	9	24
