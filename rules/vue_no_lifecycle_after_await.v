@@ -27,7 +27,7 @@ fn (mut c Checker) lint_vue_no_lifecycle_after_await(root C.TSNode, abs_path str
 	if calls.len == 0 {
 		return findings
 	}
-	hooks := c.vaa_trace_map_calls(root, t, vnlaa_hooks)
+	hooks := c.vue_composition_api_calls(root, t, vnlaa_hooks).map(it.call)
 	for call in calls {
 		stats.checked++
 		if call !in hooks || (t.list(call, .arguments) or { []int{} }).len >= 2 {

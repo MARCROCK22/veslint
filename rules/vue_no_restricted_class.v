@@ -30,24 +30,11 @@ struct VnrcClassName {
 	node int
 }
 
-// vnrc_literal_string is String(node.value) of a Literal.
-fn vnrc_literal_string(es &estree.EsTree, node int) string {
-	v := es.get(node, .value)
-	return match v {
-		string { v }
-		f64 { js_number_to_string(v) }
-		bool { v.str() }
-		estree.BigIntValue { es.string_of(node, .bigint) or { '' } }
-		estree.RegExpValue { vue_tpl_string_literal_value(es, node, false) or { '' } }
-		else { 'null' }
-	}
-}
-
 // vnrc_extract is extractClassNames.
 fn vnrc_extract(es &estree.EsTree, node int, text_only bool, mut out []VnrcClassName) {
 	match es.typ(node) {
 		.literal {
-			for name in vue_split_whitespace(vnrc_literal_string(es, node)) {
+			for name in vue_split_whitespace(vue_literal_string(es, node)) {
 				out << VnrcClassName{name, node}
 			}
 		}
@@ -78,7 +65,7 @@ fn vnrc_extract(es &estree.EsTree, node int, text_only bool, mut out []VnrcClass
 				if es.typ(prop) != .property {
 					continue
 				}
-				prop_names := vue_tpl_static_property_name(es, prop) or { continue }
+				prop_names := vue_static_property_name(es, prop) or { continue }
 				if prop_names == '' {
 					continue
 				}

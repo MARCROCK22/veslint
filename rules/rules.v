@@ -3242,6 +3242,17 @@ fn (mut c Checker) lint_file_in_lifetime(parser Parser, config LintConfig, src s
 			parsing_error: true
 		}
 	}
+	if vue_file && c.vue.doc.script.type_export {
+		fatal := c.vue_parsing_error()
+		if fatal.len > 0 {
+			c.vue = VueView{}
+			stats.findings++
+			return FileLint{
+				findings:      fatal
+				parsing_error: true
+			}
+		}
+	}
 	mut owned := !vue_file || c.vue.doc.script.tree == unsafe { nil }
 	mut tree := if svelte_file {
 		parser.parse(c.svelte.doc.lint_code)!

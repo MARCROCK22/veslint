@@ -1,7 +1,5 @@
 module rules
 
-import vue
-
 // Small helpers shared by the vue/* rules of batch VR4 (prefix vu4_).
 
 // vu4_slice_units is `text.slice(start, end)` on UTF-16 units (a negative end counts from the end).
@@ -47,66 +45,6 @@ fn vu4_trim_start_offset(text string, offset int) int {
 		k += len
 	}
 	return k
-}
-
-// vu4_token_after is the template token store's getTokenAfter(offset, {includeComments, filter:
-// not HTMLWhitespace}) (with `skip_whitespace`): the first token, or comment, that starts at or
-// after `offset`.
-fn (c &Checker) vu4_token_after(offset int, include_comments bool, skip_whitespace bool) ?vue.Token {
-	mut best := ?vue.Token(none)
-	tokens := c.vue.doc.tokens
-	for i := vue_lower_bound(tokens, offset); i < tokens.len; i++ {
-		if skip_whitespace && tokens[i].typ == 'HTMLWhitespace' {
-			continue
-		}
-		best = tokens[i]
-		break
-	}
-	if include_comments {
-		comments := c.vue.doc.comments
-		j := vue_lower_bound(comments, offset)
-		if j < comments.len {
-			if b := best {
-				if comments[j].start < b.start {
-					best = comments[j]
-				}
-			} else {
-				best = comments[j]
-			}
-		}
-	}
-	return best
-}
-
-// vu4_token_before is getTokenBefore(offset, {includeComments, filter}): the last token, or
-// comment, that ends at or before `offset`.
-fn (c &Checker) vu4_token_before(offset int, include_comments bool, skip_whitespace bool) ?vue.Token {
-	mut best := ?vue.Token(none)
-	tokens := c.vue.doc.tokens
-	for i := vue_lower_bound(tokens, offset) - 1; i >= 0; i-- {
-		if tokens[i].end > offset || (skip_whitespace && tokens[i].typ == 'HTMLWhitespace') {
-			continue
-		}
-		best = tokens[i]
-		break
-	}
-	if include_comments {
-		comments := c.vue.doc.comments
-		mut j := vue_lower_bound(comments, offset) - 1
-		for j >= 0 && comments[j].end > offset {
-			j--
-		}
-		if j >= 0 {
-			if b := best {
-				if comments[j].start > b.start {
-					best = comments[j]
-				}
-			} else {
-				best = comments[j]
-			}
-		}
-	}
-	return best
 }
 
 // vu4_line is the line (from 1) of a byte offset of the file, as vue-eslint-parser counts them.

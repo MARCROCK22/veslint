@@ -63,7 +63,7 @@ fn (mut c Checker) lint_vue_no_dupe_keys(root C.TSNode, abs_path string, mut sta
 	mut prop_refs := []int{}
 	mut prop_names := []string{}
 	mut reported := map[int]bool{} // ESTree nodes of the reported definitions
-	for call in c.vx6_define_props_calls(t) {
+	for call in c.vue_macros_named(t, 'defineProps') {
 		pattern := vndk_props_pattern(t, call)
 		prop_refs = if pattern >= 0 { c.vndk_extract_references(root, t, pattern) } else { []int{} }
 		prop_refs << call

@@ -1,0 +1,26 @@
+css-off: filters.vue:3:7	@typescript-eslint/no-unused-vars	unusedVar	'upper' is assigned a value but never used.	end	3	12
+css-off: filters.vue:7:9	vue/no-deprecated-filter	noDeprecatedFilter	Filters are deprecated.	end	7	20
+css-off: filters.vue:8:14	vue/no-deprecated-filter	noDeprecatedFilter	Filters are deprecated.	end	8	25
+css-off: interpolation.vue:7:10	vue/space-infix-ops	missingSpace	Operator '<' must be spaced.	fix	80	81	 < 	end	7	11
+css-off: style.vue:2:7	@typescript-eslint/no-unused-vars	unusedVar	'color' is assigned a value but never used.	end	2	12
+falsy: filters.vue:7:9	vue/no-restricted-syntax	restrictedSyntax	Using 'BinaryExpression[operator="|"]' is not allowed.	end	7	20
+falsy: filters.vue:8:14	vue/no-restricted-syntax	restrictedSyntax	Using 'BinaryExpression[operator="|"]' is not allowed.	end	8	25
+falsy: interpolation.vue:7:10	vue/space-infix-ops	missingSpace	Operator '<' must be spaced.	fix	80	81	 < 	end	7	11
+falsy: style.vue:2:7	@typescript-eslint/no-unused-vars	unusedVar	'color' is assigned a value but never used.	end	2	12
+filter-off: filters.vue:7:9	vue/no-restricted-syntax	restrictedSyntax	Using 'BinaryExpression[operator="|"]' is not allowed.	end	7	20
+filter-off: filters.vue:8:14	vue/no-restricted-syntax	restrictedSyntax	Using 'BinaryExpression[operator="|"]' is not allowed.	end	8	25
+filter-off: interpolation.vue:7:10	vue/space-infix-ops	missingSpace	Operator '<' must be spaced.	fix	80	81	 < 	end	7	11
+interpolation-off: filters.vue:3:7	@typescript-eslint/no-unused-vars	unusedVar	'upper' is assigned a value but never used.	end	3	12
+interpolation-off: filters.vue:7:9	vue/no-deprecated-filter	noDeprecatedFilter	Filters are deprecated.	end	7	20
+interpolation-off: filters.vue:8:14	vue/no-deprecated-filter	noDeprecatedFilter	Filters are deprecated.	end	8	25
+interpolation-off: interpolation.vue:3:7	@typescript-eslint/no-unused-vars	unusedVar	'b' is assigned a value but never used.	end	3	8
+interpolation-off: interpolation.vue:7:15	vue/no-parsing-error	parsingError	Parsing error: unexpected-character-in-attribute-name.
+interpolation-off: interpolation.vue:7:17	vue/no-parsing-error	parsingError	Parsing error: unexpected-solidus-in-tag.
+macros: filters.vue:3:7	@typescript-eslint/no-unused-vars	unusedVar	'upper' is assigned a value but never used.	end	3	12
+macros: filters.vue:7:9	vue/no-deprecated-filter	noDeprecatedFilter	Filters are deprecated.	end	7	20
+macros: filters.vue:8:14	vue/no-deprecated-filter	noDeprecatedFilter	Filters are deprecated.	end	8	25
+macros: interpolation.vue:7:10	vue/space-infix-ops	missingSpace	Operator '<' must be spaced.	fix	80	81	 < 	end	7	11
+none: filters.vue:3:7	@typescript-eslint/no-unused-vars	unusedVar	'upper' is assigned a value but never used.	end	3	12
+none: filters.vue:7:9	vue/no-deprecated-filter	noDeprecatedFilter	Filters are deprecated.	end	7	20
+none: filters.vue:8:14	vue/no-deprecated-filter	noDeprecatedFilter	Filters are deprecated.	end	8	25
+none: interpolation.vue:7:10	vue/space-infix-ops	missingSpace	Operator '<' must be spaced.	fix	80	81	 < 	end	7	11

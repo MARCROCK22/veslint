@@ -36,7 +36,7 @@ fn (mut c Checker) lint_vue_no_required_prop_with_default(root C.TSNode, abs_pat
 			c.vnrpwd_handle(root, t, prop, map[string]bool{}, autofix, abs_path, mut findings, mut stats)!
 		}
 	}
-	for call in c.vx6_define_props_calls(t) {
+	for call in c.vue_macros_named(t, 'defineProps') {
 		mut defaults := map[string]bool{}
 		for name, _ in c.vx6_with_defaults_expressions(root, t, call).props {
 			defaults[name] = true
@@ -64,7 +64,7 @@ fn (mut c Checker) vnrpwd_handle(root C.TSNode, t &estree.EsTree, prop VueProp, 
 			return
 		}
 		node := vue_property_value(t, required)
-		if node >= 0 && t.typ(node) == .literal && vx6_literal_truthy(t, node) {
+		if node >= 0 && t.typ(node) == .literal && vue_literal_truthy(t, node) {
 			findings << c.vnrpwd_report(t, prop, fix_replace_range(t.nodes[node].start,
 				t.nodes[node].end, 'false'), autofix)!
 		}

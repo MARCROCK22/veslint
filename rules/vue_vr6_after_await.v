@@ -102,36 +102,3 @@ fn (mut c Checker) vaa_setup_calls_after_await(t &estree.EsTree, s &VueScript, s
 	}
 	return out
 }
-
-// vaa_trace_map_calls are the CallExpressions of iterateReferencesTraceMap with the names
-// `called` (ES modules of createCompositionApiTraceMap, then the globals).
-fn (mut c Checker) vaa_trace_map_calls(root C.TSNode, t &estree.EsTree, called []string) []int {
-	call_trace := EsTrace{
-		call: true
-	}
-	mut children := map[string]EsTrace{}
-	for name in called {
-		children[name] = call_trace
-	}
-	esm := EsTrace{
-		esm:      true
-		children: children
-	}
-	mut esm_map := map[string]EsTrace{}
-	for module in vue_composition_modules {
-		esm_map[module] = esm
-	}
-	mut traced := c.es_esm_references(root, esm_map)
-	traced << c.es_global_references(root, children)
-	mut out := []int{}
-	for r in traced {
-		if r.kind != 'call' {
-			continue
-		}
-		call := c.es_index_of(t, r.node) or { continue }
-		if t.typ(call) == .call_expression && call !in out {
-			out << call
-		}
-	}
-	return out
-}

@@ -16,20 +16,6 @@ const svndm_methods = ['appendChild', 'insertBefore', 'normalize', 'removeChild'
 
 const svndm_properties = ['textContent', 'innerHTML', 'outerHTML', 'innerText', 'outerText']
 
-// svndm_property_name is getPropertyName of eslint-utils for a MemberExpression of the document
-// (without a scope: a computed key is a constant string).
-fn (c &Checker) svndm_property_name(member int) ?string {
-	es := &c.svelte.doc.es
-	property := es.node(member, .property)?
-	if es.flag(member, .computed) or { false } {
-		return c.sv_string_if_constant(property)
-	}
-	if es.typ(property) == .private_identifier {
-		return none
-	}
-	return es.string_of(property, .name)
-}
-
 // svndm_verify is verifyIdentifier.
 fn (c &Checker) svndm_verify(id int, mut findings []Finding) {
 	es := &c.svelte.doc.es
@@ -39,7 +25,7 @@ fn (c &Checker) svndm_verify(id int, mut findings []Finding) {
 		return
 	}
 	member := member_ref.idx
-	name := c.svndm_property_name(member) or { return }
+	name := c.svsc_property_name(member) or { return }
 	mut target := member
 	mut parent := c.sv_parent(sv_es_ref(target)) or { return }
 	for parent.es && es.typ(parent.idx) == .chain_expression {

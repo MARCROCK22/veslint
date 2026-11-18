@@ -64,7 +64,7 @@ fn (mut c Checker) lint_vue_return_in_emits_validator(root C.TSNode, abs_path st
 	t := c.es_tree(root, abs_path) or { return findings }
 	mut validators := []VrievValidator{}
 	for call in c.vue_macros_named(t, 'defineEmits') {
-		vriev_collect(t, c.vue_define_emits(root, t, call), t.nodes[call].start, mut validators)
+		vriev_collect(t, c.vue_define_emits(root, t, call, abs_path, false, mut stats), t.nodes[call].start, mut validators)
 	}
 	for obj in s.objects_of(vue_all_object_types) {
 		vriev_collect(t, vue_emits_from_options(t, obj), t.nodes[obj].start, mut validators)

@@ -178,6 +178,15 @@ for (const file of files) {
   for (const name of ['globalReturn', 'jsx']) {
     if (given.ecmaFeatures?.[name] !== undefined) (parserOptions.ecmaFeatures ??= {})[name] = given.ecmaFeatures[name];
   }
+  // What vue-eslint-parser (vueFeatures) and svelte-eslint-parser (svelteFeatures, svelteConfig)
+  // parse with, as JSON writes it: a function in it is left out (a function in their place is an
+  // empty object, which is what they read of it).
+  for (const name of ['vueFeatures', 'svelteFeatures', 'svelteConfig']) {
+    if (given[name] === undefined) continue;
+    try {
+      parserOptions[name] = JSON.parse(JSON.stringify(given[name]) ?? '{}');
+    } catch {}
+  }
   const languageOptions = {
     ecmaVersion: config.languageOptions?.ecmaVersion,
     sourceType: config.languageOptions?.sourceType,

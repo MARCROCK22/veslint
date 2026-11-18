@@ -28,7 +28,7 @@ fn vpssc_static_classes(t &estree.EsTree, node int) []int {
 			return out
 		}
 	}
-	if vue_tpl_is_string_literal(t, node) {
+	if vue_is_string_literal(t, node) {
 		return [node]
 	}
 	mut out := []int{}
@@ -51,7 +51,7 @@ fn vpssc_static_classes(t &estree.EsTree, node int) []int {
 					continue
 				}
 				key := t.node(property, .key) or { continue }
-				if vue_tpl_is_string_literal(t, key) || (t.typ(key) == .identifier
+				if vue_is_string_literal(t, key) || (t.typ(key) == .identifier
 					&& !(t.flag(property, .computed) or { false })) {
 					out << key
 				}
@@ -88,7 +88,7 @@ fn vpssc_class_name(t &estree.EsTree, node int) ?string {
 		value := vpssc_cooked(t, node)?
 		return vue_split_whitespace(js_trim(value)).join(' ')
 	}
-	return vue_tpl_string_literal_value(t, node, true)
+	return vue_string_literal_value(t, node, true)
 }
 
 fn (mut c Checker) lint_vue_prefer_separate_static_class(root C.TSNode, abs_path string, mut stats Stats) ![]Finding {
@@ -145,7 +145,7 @@ fn (c &Checker) vpssc_fixes(attr int, t &estree.EsTree, expression int, class_no
 	mut fixes := []Fix{}
 	mut removed := false
 	attr_start, attr_end := c.vue_vnode_range(attr)
-	if vue_tpl_is_string_literal(t, expression) {
+	if vue_is_string_literal(t, expression) {
 		fixes << fix_remove_range(attr_start, attr_end)
 		removed = true
 	} else {
@@ -188,13 +188,13 @@ fn (c &Checker) vpssc_fixes(attr int, t &estree.EsTree, expression int, class_no
 // when that comma does not end the list.
 fn (c &Checker) vpssc_remove_with_comma(t &estree.EsTree, node int) Fix {
 	start, end := t.nodes[node].start, t.nodes[node].end
-	if prev := c.vue_token_before(start, false) {
+	if prev := c.vue_token_before(start, false, false) {
 		if prev.typ == 'Punctuator' && prev.value == ',' {
 			return fix_remove_range(prev.start, end)
 		}
 	}
-	if next := c.vue_token_after(end, false) {
-		if next_next := c.vue_token_after(next.end, false) {
+	if next := c.vue_token_after(end, false, false) {
+		if next_next := c.vue_token_after(next.end, false, false) {
 			if next.typ == 'Punctuator' && next.value == ','
 				&& (next_next.typ != 'Punctuator' || next_next.value !in [']', '}']) {
 				return fix_remove_range(start, next_next.start)

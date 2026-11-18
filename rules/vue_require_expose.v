@@ -57,7 +57,7 @@ fn (mut c Checker) lint_vue_require_expose(root C.TSNode, abs_path string, mut s
 		mut context_set := map[u64]bool{}
 		mut expose_set := map[u64]bool{}
 		if t.typ(param) == .object_pattern {
-			property := vx6_find_assignment_property(t, param, 'expose')
+			property := vue_find_assignment_property(t, param, 'expose')
 			if property < 0 {
 				continue
 			}
@@ -205,7 +205,7 @@ fn (mut c Checker) vre_suggestions(root C.TSNode, t &estree.EsTree, object int) 
 		between := c.src[left_end..right_start]
 		multiline := between.contains('\n') || (!c.is_vue()
 			&& (between.contains('\r') || between.contains(' ')
-			|| between.contains(' ')))
+				|| between.contains(' ')))
 		return fix_insert_at(left_end, '\n${text}${if multiline { '' } else { '\n' }}')
 	}
 	mut out := []Suggestion{}

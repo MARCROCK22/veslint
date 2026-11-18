@@ -40,7 +40,7 @@ fn (mut c Checker) lint_vue_no_expose_after_await(root C.TSNode, abs_path string
 		mut context_set := map[u64]bool{}
 		mut expose_set := map[u64]bool{}
 		if t.typ(param) == .object_pattern {
-			property := vx6_find_assignment_property(t, param, 'expose')
+			property := vue_find_assignment_property(t, param, 'expose')
 			if property < 0 {
 				continue
 			}

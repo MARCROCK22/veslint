@@ -18,6 +18,8 @@ pub mut:
 	// template_body is the element vue-eslint-parser makes `templateBody`, or -1.
 	template_body int = -1
 	script        ScriptInfo
+	// options: the vueFeatures the document was parsed with.
+	options Options
 	// line_terminators are the UTF-16 offsets right after each LF (vue-eslint-parser breaks
 	// lines at LF only); gaps the UTF-16 offsets of the source the decoded text skips.
 	line_terminators []int
@@ -137,8 +139,9 @@ pub fn parse_sfc(src string) !&Document {
 // parse_sfc_with is parse_sfc with vueFeatures options and parsers kept from file to file.
 pub fn parse_sfc_with(src string, opts Options, parsers &Parsers) !&Document {
 	mut doc := &Document{
-		src:   src
-		index: new_text_index(src)
+		src:     src
+		index:   new_text_index(src)
+		options: opts
 	}
 	doc.nodes << VNode{
 		typ: .v_document_fragment

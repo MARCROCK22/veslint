@@ -1,0 +1,1 @@
+{"rules": {"vue/no-deprecated-filter": "error", "vue/no-parsing-error": "error", "@typescript-eslint/no-unused-vars": "error", "vue/mustache-interpolation-spacing": "error", "vue/space-infix-ops": "error", "vue/no-restricted-syntax": ["error", "BinaryExpression[operator=\"|\"]"]}}

@@ -23,7 +23,7 @@ fn (mut c Checker) lint_vue_require_emit_validator(root C.TSNode, abs_path strin
 		emits << vue_emits_from_options(t, obj)
 	}
 	for call in c.vue_macros_named(t, 'defineEmits') {
-		emits << c.vue_define_emits(root, t, call)
+		emits << c.vue_define_emits(root, t, call, abs_path, false, mut stats)
 	}
 	for emit in emits {
 		stats.checked++

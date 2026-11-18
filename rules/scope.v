@@ -5,6 +5,7 @@ import jsregexp
 import math
 import svelte
 import tsgo { CompilerOptions }
+import vue
 import treesitter { TokenEnds, children, has_child_kind, named_children, next_sibling, node_end, node_field, node_kind, node_parent, node_start }
 
 // Lexical scopes of a file, like the scope manager of typescript-eslint 8.72.2 (scope-manager:
@@ -168,6 +169,9 @@ pub:
 	virtual bool
 pub mut:
 	resolved int = -1
+	// svelte_bind: the reference of a name a bind: directive is given, which svelte-eslint-parser
+	// makes read-write by overriding its methods: its `init` stays undefined (not false).
+	svelte_bind bool
 	// implicit is the node of maybeImplicitGlobal: the `=` assignment or for-in/of statement that
 	// writes it outside strict code.
 	implicit ?C.TSNode
@@ -320,6 +324,8 @@ pub:
 	// svelteConfig.compilerOptions.runes when svelte_config_runes is.
 	svelte_runes_parse        svelte.RunesMode
 	svelte_config_runes_parse svelte.RunesMode
+	// parserOptions.vueFeatures of vue-eslint-parser, which a .vue file is parsed with.
+	vue_features vue.Options
 }
 
 // parse_language_options reads the `languageOptions` of a configuration (as ESLint resolved it,
@@ -433,6 +439,38 @@ pub fn parse_language_options(value json2.Any) LanguageOptions {
 		svelte_runes_parse:        runes_parse
 		svelte_config_runes_parse: scope_runes_mode(scope_svelte_config_value(parser,
 			['compilerOptions', 'runes']) or { json2.Any(json2.null) })
+		vue_features:              scope_vue_features(parser)
+	}
+}
+
+// scope_vue_features reads parserOptions.vueFeatures as vue-eslint-parser does: each boolean
+// feature is `vueFeatures?.<name> ?? true` taken as a condition (null or missing is on, any falsy
+// value off), and customMacros the strings of an array.
+fn scope_vue_features(parser map[string]json2.Any) vue.Options {
+	value := parser['vueFeatures'] or { return vue.Options{} }
+	if value !is map[string]json2.Any {
+		return vue.Options{}
+	}
+	features := value.as_map()
+	on := fn [features] (name string) bool {
+		feature := features[name] or { return true }
+		return feature is json2.Null || feature.json_str() !in ['false', '0', '""']
+	}
+	mut macros := []string{}
+	if list := features['customMacros'] {
+		if list is []json2.Any {
+			for item in list {
+				if item is string {
+					macros << item
+				}
+			}
+		}
+	}
+	return vue.Options{
+		interpolation_as_non_html:    on('interpolationAsNonHTML')
+		filter:                       on('filter')
+		style_css_variable_injection: on('styleCSSVariableInjection')
+		custom_macros:                macros
 	}
 }
 

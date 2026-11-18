@@ -29,6 +29,8 @@ pub:
 	scripts []svelte.ScriptRange
 	// snippet_names are the lint code offsets of the names of the snippets given to components.
 	snippet_names []int
+	// bindings are the lint code offsets of the names given to bind: directives.
+	bindings []int
 }
 
 fn (c &Checker) svelte_scope_setup() SvelteScopeSetup {
@@ -38,6 +40,7 @@ fn (c &Checker) svelte_scope_setup() SvelteScopeSetup {
 		runes_off:     doc.runes == .off
 		scripts:       doc.script_ranges()
 		snippet_names: doc.component_snippet_names().map(c.svelte_file_to_lint(it, false)).filter(it >= 0)
+		bindings:      doc.lint_bindings.map(c.svelte_file_to_lint(it, false)).filter(it >= 0)
 	}
 }
 
@@ -58,12 +61,26 @@ fn (mut b ScopeBuilder) svelte_scope(setup SvelteScopeSetup) {
 		b.svelte_store_scope(module, globals)
 	}
 	b.svelte_snippets_scope(setup.snippet_names)
+	b.svelte_binding_references(setup.bindings)
 	b.svelte_add_globals(globals)
 	if module >= 0 {
 		for script in setup.scripts {
 			if !script.context_module {
 				b.svelte_props_scope(module, script, setup.runes_off)
 			}
+		}
+	}
+}
+
+// svelte_binding_references marks the references of the names given to bind: directives
+// (convertBindingDirective overrides their isWrite/isRead methods: `init` stays undefined).
+fn (mut b ScopeBuilder) svelte_binding_references(bindings []int) {
+	if bindings.len == 0 {
+		return
+	}
+	for r, reference in b.tree.references {
+		if !reference.virtual && node_start(reference.identifier) in bindings {
+			b.tree.references[r].svelte_bind = true
 		}
 	}
 }

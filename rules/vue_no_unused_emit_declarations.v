@@ -77,7 +77,7 @@ fn (mut c Checker) lint_vue_no_unused_emit_declarations(root C.TSNode, abs_path 
 			c.vnued_call(root, t, node, owner, true, mut st)
 		}
 		if node in define_emits {
-			st.declare(c.vue_define_emits_typed(root, t, node, abs_path, mut stats))
+			st.declare(c.vue_define_emits(root, t, node, abs_path, true, mut stats))
 			id := vue_define_emits_variable(t, node)
 			if id >= 0 {
 				st.emit_param_name = vue_identifier_name(t, id)

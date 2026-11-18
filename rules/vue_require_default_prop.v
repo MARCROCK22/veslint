@@ -14,16 +14,16 @@ const vue_require_default_prop_messages = {
 const vrdp_native_types = ['String', 'Number', 'Boolean', 'Function', 'Object', 'Array', 'Symbol']
 
 // vrdp_object_prototype are the names `{}[name]` finds on Object.prototype.
-const vrdp_object_prototype = ['constructor', 'hasOwnProperty', 'isPrototypeOf',
-	'propertyIsEnumerable', 'toLocaleString', 'toString', 'valueOf', '__proto__', '__defineGetter__',
-	'__defineSetter__', '__lookupGetter__', '__lookupSetter__']
+const vrdp_object_prototype = ['constructor', 'hasOwnProperty', 'isPrototypeOf', 'propertyIsEnumerable',
+	'toLocaleString', 'toString', 'valueOf', '__proto__', '__defineGetter__', '__defineSetter__',
+	'__lookupGetter__', '__lookupSetter__']
 
 fn (mut c Checker) lint_vue_require_default_prop(root C.TSNode, abs_path string, mut stats Stats) ![]Finding {
 	sw := time.new_stopwatch()
 	mut findings := []Finding{}
 	s := c.vue_script(root, abs_path) or { return findings }
 	t := c.es_tree(root, abs_path) or { return findings }
-	for call in c.vx6_define_props_calls(t) {
+	for call in c.vue_macros_named(t, 'defineProps') {
 		has_with_defaults := vue_has_with_defaults(t, call)
 		with_defaults := c.vx6_with_defaults_expressions(root, t, call)
 		destructure := vue_is_using_props_destructure(t, call)

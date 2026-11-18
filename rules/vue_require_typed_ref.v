@@ -35,7 +35,7 @@ fn (mut c Checker) lint_vue_require_typed_ref(root C.TSNode, abs_path string, mu
 		}
 	}
 	t := c.es_tree(root, abs_path) or { return findings }
-	for d in c.vx6r_define_refs(root, t) {
+	for d in c.vue_composition_api_calls(root, t, vx6r_define_names) {
 		if d.name !in ['ref', 'shallowRef'] {
 			continue
 		}

@@ -1,6 +1,5 @@
 module rules
 
-import estree
 import json2
 
 // Port of the `vue/no-console` rule of eslint-plugin-vue 10.12.1: ESLint core's no-console
@@ -34,17 +33,6 @@ fn vncon_allowed(options []json2.Any) []string {
 	return out
 }
 
-// vncon_static_property_name ports eslint-plugin-vue's getStaticPropertyName for a
-// MemberExpression (with getStringLiteralValue: a literal's value as a string, a template without
-// expressions' cooked text).
-fn vncon_static_property_name(t &estree.EsTree, node int) ?string {
-	property := t.node(node, .property)?
-	if !(t.flag(node, .computed) or { false }) {
-		return if t.typ(property) == .identifier { t.string_of(property, .name) } else { none }
-	}
-	return es_tree_static_string_value(t, property)
-}
-
 fn (mut c Checker) vue_wrap_no_console_base(root C.TSNode, abs_path string, mut stats Stats) ![]Finding {
 	mut findings := []Finding{}
 	allowed := vncon_allowed(c.rule_options(vue_wrap_no_console))
@@ -59,7 +47,7 @@ fn (mut c Checker) vue_wrap_no_console_base(root C.TSNode, abs_path string, mut 
 		if t.typ(object) != .identifier || (t.string_of(object, .name) or { '' }) != 'console' {
 			continue
 		}
-		name := vncon_static_property_name(t, node) or { '' }
+		name := vue_static_property_name(t, node) or { '' }
 		if name != '' && name in allowed {
 			continue
 		}

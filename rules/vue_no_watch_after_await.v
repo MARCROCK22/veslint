@@ -24,7 +24,7 @@ fn (mut c Checker) lint_vue_no_watch_after_await(root C.TSNode, abs_path string,
 	if calls.len == 0 {
 		return findings
 	}
-	watches := c.vaa_trace_map_calls(root, t, ['watch', 'watchEffect'])
+	watches := c.vue_composition_api_calls(root, t, ['watch', 'watchEffect']).map(it.call)
 	for call in calls {
 		stats.checked++
 		if call !in watches || vnwaa_is_maybe_used_stop_handle(t, call) {

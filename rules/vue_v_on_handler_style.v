@@ -246,23 +246,6 @@ fn (c &Checker) vohs_token_info(container int) VohsTokenInfo {
 	}
 }
 
-// vohs_refers_upper_variable is hasReferenceUpperElementVariable: a reference to a variable of
-// an element entered is in [start, end).
-fn (c &Checker) vohs_refers_upper_variable(start int, end int, x &VohsCtx) bool {
-	doc := c.vue.doc
-	for element in x.upper {
-		for v in doc.nodes[element].variables {
-			for r in doc.variables[v].references {
-				rs, re := c.vue_expr_range(doc.references[r].id)
-				if start <= rs && re <= end {
-					return true
-				}
-			}
-		}
-	}
-	return false
-}
-
 // vohs_identifier_call is isIdentifierCallExpression: a call (not optional) of an Identifier.
 fn vohs_identifier_call(t &estree.EsTree, node int) bool {
 	if t.typ(node) != .call_expression || (t.flag(node, .optional) or { false }) {
@@ -333,7 +316,7 @@ fn (mut c Checker) vohs_method_for_inline(container int, on int, x &VohsCtx, mut
 	start, end := c.vue_vnode_range(on)
 	n := &doc.nodes[on]
 	if (call < 0 || (es.list(call, .arguments) or { []int{} }).len > 0)
-		&& c.vohs_refers_upper_variable(n.start, n.end, x) {
+		&& c.vue_refers_to_upper_variable(x.upper, n.start, n.end) {
 		return false
 	}
 	finding := c.vue_report(start, end, if call >= 0 {
@@ -366,7 +349,8 @@ fn (mut c Checker) vohs_method_for_inline_function(container int, function vue.E
 		call = body
 	}
 	same := call >= 0 && vohs_same_params_and_args(es, node, call)
-	if !same && c.vohs_refers_upper_variable(es.nodes[node].start, es.nodes[node].end, x) {
+	if !same && c.vue_refers_to_upper_variable(x.upper, es.nodes[node].start,
+		es.nodes[node].end) {
 		return false
 	}
 	finding := c.vue_report(es.nodes[node].start, es.nodes[node].end, if call >= 0 {
