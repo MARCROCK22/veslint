@@ -771,6 +771,7 @@ const rule_option_schemas = {
 	'svelte/no-inner-declarations':                                    '{"type":"array","items":[{"enum":["functions","both"]},{"type":"object","properties":{"blockScopedFunctions":{"enum":["allow","disallow"]}},"additionalProperties":false}],"minItems":0,"maxItems":2}'
 	'svelte/no-trailing-spaces':                                       '{"type":"array","items":[{"type":"object","properties":{"skipBlankLines":{"type":"boolean"},"ignoreComments":{"type":"boolean"}},"additionalProperties":false}],"minItems":0,"maxItems":1}'
 	'svelte/no-conflicting-module-names':                              '{"type":"array","minItems":0,"maxItems":0}'
+	'svelte/prefer-derived-over-derived-by':                           '{"type":"array","minItems":0,"maxItems":0}'
 }
 
 // eslint_rule_default_options are the meta.defaultOptions of the rules of ESLint and of
