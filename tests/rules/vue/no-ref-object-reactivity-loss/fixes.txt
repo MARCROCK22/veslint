@@ -1,0 +1,6 @@
+tests/rules/vue/no-ref-object-reactivity-loss/cases.vue:4:15	vue/no-ref-object-reactivity-loss	getValueInSameScope	Getting a value from the ref object in the same scope will cause the value to lose reactivity.	end	4	20
+tests/rules/vue/no-ref-object-reactivity-loss/cases.vue:5:7	vue/no-ref-object-reactivity-loss	getValueInSameScope	Getting a value from the ref object in the same scope will cause the value to lose reactivity.	end	5	16
+tests/rules/vue/no-ref-object-reactivity-loss/cases.vue:7:12	vue/no-ref-object-reactivity-loss	getValueInSameScope	Getting a value from the ref object in the same scope will cause the value to lose reactivity.	end	7	13
+tests/rules/vue/no-ref-object-reactivity-loss/cases.vue:12:17	vue/no-ref-object-reactivity-loss	getValueInSameScope	Getting a value from the ref object in the same scope will cause the value to lose reactivity.	end	12	22
+tests/rules/vue/no-ref-object-reactivity-loss/cases.vue:17:16	vue/no-ref-object-reactivity-loss	getValueInSameScope	Getting a value from the ref object in the same scope will cause the value to lose reactivity.	end	17	22
+tests/rules/vue/no-ref-object-reactivity-loss/model/cases.vue:3:11	vue/no-ref-object-reactivity-loss	getValueInSameScope	Getting a value from the ref object in the same scope will cause the value to lose reactivity.	end	3	16
