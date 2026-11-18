@@ -204,10 +204,23 @@
          field('type', optional($.type_annotation)),
          optional($._initializer),
        ),
-@@ -170,16 +268,55 @@
+@@ -170,16 +268,68 @@
          field('body', $.statement_block),
        ),
  
++      // veslint: a line break after `yield` ends it without an operand, as in TypeScript
++      // (parseYieldExpression; a restricted production of ECMAScript), and nothing continues it
++      // then, as after the block of an arrow function: `yield⏎(b)` and `yield⏎-b` are `yield;`
++      // and another statement.
++      yield_expression: $ => prec.right(seq(
++        'yield',
++        choice(
++          seq('*', $.expression),
++          optional($.expression),
++          seq($._restricted_automatic_semicolon, optional($._arrow_block_end)),
++        ),
++      )),
++
 +      // veslint: a line break after `return`, `break` or `continue` ends the statement.
 +      return_statement: $ => seq(
 +        'return',
@@ -261,7 +274,7 @@
          prec('member', seq(
            field('function', $.primary_expression),
            '?.',
-@@ -190,22 +327,136 @@
+@@ -190,22 +340,136 @@
  
        new_expression: $ => prec.right('new', seq(
          'new',
@@ -402,7 +415,7 @@
        primary_expression: ($, previous) => choice(
          previous,
          $.non_null_expression,
-@@ -214,11 +465,13 @@
+@@ -214,11 +478,13 @@
        // If the dialect is regular typescript, we exclude JSX expressions and
        // include type assertions. If the dialect is TSX, we do the opposite.
        expression: ($, previous) => {
@@ -417,7 +430,7 @@
          ];
  
          if (dialect === 'typescript') {
-@@ -235,6 +488,23 @@
+@@ -235,6 +501,23 @@
          return choice(...choices);
        },
  
@@ -441,7 +454,7 @@
        _jsx_start_opening_element: $ => seq(
          '<',
          optional(
-@@ -246,8 +516,8 @@
+@@ -246,8 +529,8 @@
                )),
                seq(
                  field('name', choice(
@@ -452,7 +465,7 @@
                  )),
                  field('type_arguments', optional($.type_arguments)),
                ),
-@@ -257,6 +527,31 @@
+@@ -257,6 +540,31 @@
          ),
        ),
  
@@ -484,7 +497,7 @@
        // This rule is only referenced by expression when the dialect is 'tsx'
        jsx_opening_element: $ => prec.dynamic(-1, seq(
          $._jsx_start_opening_element,
-@@ -317,20 +612,95 @@
+@@ -317,20 +625,95 @@
          $._semicolon,
        ),
  
@@ -585,7 +598,7 @@
          $.expression, '!',
        )),
  
-@@ -349,11 +719,11 @@
+@@ -349,11 +732,11 @@
  
        method_signature: $ => seq(
          optional($.accessibility_modifier),
@@ -599,7 +612,7 @@
          field('name', $._property_name),
          optional('?'),
          $._call_signature,
-@@ -362,8 +732,13 @@
+@@ -362,8 +745,13 @@
        abstract_method_signature: $ => seq(
          optional($.accessibility_modifier),
          'abstract',
@@ -614,7 +627,7 @@
          field('name', $._property_name),
          optional('?'),
          $._call_signature,
-@@ -410,6 +785,18 @@
+@@ -410,6 +798,18 @@
          field('arguments', $.arguments),
        )),
  
@@ -633,7 +646,7 @@
        decorator_parenthesized_expression: $ => seq(
          '(',
          choice(
-@@ -453,18 +840,93 @@
+@@ -453,18 +853,93 @@
        ),
  
        method_definition: $ => prec.left(seq(
@@ -730,7 +743,7 @@
        declaration: ($, previous) => choice(
          previous,
          $.function_signature,
-@@ -495,10 +957,32 @@
+@@ -495,10 +970,32 @@
          $.type,
        )),
  
@@ -766,7 +779,7 @@
  
        class_heritage: $ => choice(
          seq($.extends_clause, optional($.implements_clause)),
-@@ -584,14 +1068,43 @@
+@@ -584,14 +1081,43 @@
          field('body', optional($.statement_block)),
        )),
  
@@ -812,7 +825,7 @@
        nested_type_identifier: $ => prec('member', seq(
          field('module', choice($.identifier, $.nested_identifier)),
          '.',
-@@ -677,9 +1190,10 @@
+@@ -677,9 +1203,10 @@
          field('pattern', choice($.pattern, $.this)),
        ),
  
@@ -826,7 +839,7 @@
        type_annotation: $ => seq(
          ':',
          $.type,
-@@ -691,7 +1205,17 @@
+@@ -691,7 +1218,17 @@
        // required beforehand. This allows for parsing of annotations such as
        // foo: import('x').y.z;
        // but was a nightmare to get working.
@@ -845,7 +858,7 @@
          field('object', choice(
            $.import,
            alias($._type_query_member_expression_in_type_annotation, $.member_expression),
-@@ -702,14 +1226,14 @@
+@@ -702,14 +1239,14 @@
            $.private_property_identifier,
            alias($.identifier, $.property_identifier),
          )),
@@ -863,7 +876,7 @@
  
        asserts: $ => seq(
          'asserts',
-@@ -726,17 +1250,17 @@
+@@ -726,17 +1263,17 @@
          $.readonly_type,
          $.constructor_type,
          $.infer_type,
@@ -885,7 +898,7 @@
          '?',
          field('type', $.type_annotation),
        ),
-@@ -782,6 +1306,9 @@
+@@ -782,6 +1319,9 @@
          $.intersection_type,
          $.union_type,
          'const',
@@ -895,7 +908,7 @@
        ),
  
        template_type: $ => seq('${', choice($.primary_type, $.infer_type), '}'),
-@@ -790,6 +1317,8 @@
+@@ -790,6 +1330,8 @@
          '`',
          repeat(choice(
            alias($._template_chars, $.string_fragment),
@@ -904,7 +917,7 @@
            $.template_type,
          )),
          '`',
-@@ -818,6 +1347,8 @@
+@@ -818,6 +1360,8 @@
          field('name', choice(
            $._type_identifier,
            $.nested_type_identifier,
@@ -913,7 +926,7 @@
          )),
          field('type_arguments', $.type_arguments),
        )),
-@@ -867,9 +1398,10 @@
+@@ -867,9 +1411,10 @@
          optional('?.'),
          '[', field('index', choice($.predefined_type, $.string, $.number)), ']',
        ),
@@ -925,7 +938,7 @@
            $.identifier,
            alias($._type_query_member_expression, $.member_expression),
            alias($._type_query_subscript_expression, $.subscript_expression),
-@@ -878,13 +1410,16 @@
+@@ -878,13 +1423,16 @@
        ),
        _type_query_instantiation_expression: $ => seq(
          field('function', choice(
@@ -943,7 +956,7 @@
        type_query: $ => prec.right(seq(
          'typeof',
          choice(
-@@ -894,12 +1429,14 @@
+@@ -894,12 +1442,14 @@
            alias($._type_query_instantiation_expression, $.instantiation_expression),
            $.identifier,
            $.this,
@@ -959,7 +972,7 @@
        ),
  
        lookup_type: $ => seq(
-@@ -926,7 +1463,7 @@
+@@ -926,7 +1476,7 @@
          $.undefined,
        ),
  
@@ -968,7 +981,7 @@
          field('operator', choice('-', '+')),
          field('argument', $.number),
        )),
-@@ -960,33 +1497,42 @@
+@@ -960,33 +1510,42 @@
  
        object_type: $ => seq(
          choice('{', '{|'),
@@ -1026,7 +1039,7 @@
          field('type', optional($.type_annotation)),
        ),
  
-@@ -1003,8 +1549,12 @@
+@@ -1003,8 +1562,12 @@
        ),
  
        type_parameter: $ => seq(
@@ -1040,7 +1053,7 @@
          field('constraint', optional($.constraint)),
          field('value', optional($.default_type)),
        ),
-@@ -1027,7 +1577,11 @@
+@@ -1027,7 +1590,11 @@
          field('type', optional($.type_annotation)),
        ),
  
@@ -1052,7 +1065,7 @@
          optional(
            seq(
              field('sign', optional(choice('-', '+'))),
-@@ -1035,24 +1589,39 @@
+@@ -1035,24 +1602,39 @@
            ),
          ),
          '[',
@@ -1106,7 +1119,7 @@
        ),
  
        array_type: $ => seq($.primary_type, '[', ']'),
-@@ -1061,8 +1630,25 @@
+@@ -1061,8 +1643,25 @@
        ),
        readonly_type: $ => seq('readonly', $.type),
  
@@ -1134,7 +1147,7 @@
  
        function_type: $ => prec.left(seq(
          field('type_parameters', optional($.type_parameters)),
-@@ -1073,7 +1659,19 @@
+@@ -1073,7 +1672,19 @@
  
        _type_identifier: $ => alias($.identifier, $.type_identifier),
  
@@ -1154,7 +1167,7 @@
          'declare',
          'namespace',
          'type',
-@@ -1088,11 +1686,12 @@
+@@ -1088,11 +1699,12 @@
          'boolean',
          'string',
          'symbol',
@@ -1170,7 +1183,7 @@
        ),
      },
    });
-@@ -1147,3 +1746,29 @@
+@@ -1147,3 +1759,29 @@
  function sepBy1(sep, rule) {
    return seq(rule, repeat(seq(sep, rule)));
  }

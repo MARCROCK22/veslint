@@ -295,3 +295,9 @@ fn test_modifier_order_and_decorators() {
 	assert statements_of('abstract class A {\n  abstract public b;\n  readonly protected c = 1;\n  abstract protected m(): void;\n}') == 'program(abstract_class_declaration(type_identifier,class_body(public_field_definition(accessibility_modifier,property_identifier),public_field_definition(accessibility_modifier,property_identifier,number),abstract_method_signature(accessibility_modifier,property_identifier,formal_parameters,type_annotation(predefined_type)))))'
 	assert statements_of('@(d).e\nclass A {}') == 'program(class_declaration(decorator(member_expression(parenthesized_expression(identifier),property_identifier)),type_identifier,class_body))'
 }
+
+// A line break after `yield` ends it without an operand, and nothing continues it then: the next
+// line is another statement, unless a `,` or a `)` goes on with what is around the `yield`.
+fn test_yield_ends_at_a_line_break() {
+	assert statements_of('function *a() {\n  yield\n  (b);\n  yield\n  -b\n  f(yield\n  , 1)\n  yield *\n  b\n}') == 'program(generator_function_declaration(identifier,formal_parameters,statement_block(expression_statement(yield_expression),expression_statement(parenthesized_expression(identifier)),expression_statement(yield_expression),expression_statement(unary_expression(identifier)),expression_statement(call_expression(identifier,arguments(yield_expression,number))),expression_statement(yield_expression(identifier)))))'
+}
