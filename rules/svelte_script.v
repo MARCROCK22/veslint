@@ -434,3 +434,113 @@ fn svsc_pattern_identifiers(t &estree.EsTree, pattern int) []int {
 	}
 	return out
 }
+
+// SvscBridge maps the ESTree nodes of the lint code (what ReferenceTracker, the scopes and the
+// types are computed on) to those of the view (the document's ESTree for a .svelte file) and
+// back, by their range in the file and their type; for another file both are the same tree.
+struct SvscBridge {
+	svelte  bool
+	to_view map[string]int
+	to_lint map[string]int
+	lint    &estree.EsTree = unsafe { nil }
+	view    &estree.EsTree = unsafe { nil }
+}
+
+fn svsc_key(start int, end int, typ estree.NodeType) string {
+	return '${start}:${end}:${int(typ)}'
+}
+
+// svsc_bridge builds the bridge of a view (none when the file has syntax errors).
+fn (mut c Checker) svsc_bridge(root C.TSNode, e &SvscEs, abs_path string) ?SvscBridge {
+	lint := c.es_tree(root, abs_path)?
+	if !e.svelte {
+		return SvscBridge{
+			lint: lint
+			view: e.t
+		}
+	}
+	doc := c.svelte.doc
+	mut view_keys := map[string]int{}
+	for step in e.steps {
+		if !step.leave {
+			n := e.t.nodes[step.node]
+			key := svsc_key(n.start, n.end, n.typ)
+			if key !in view_keys {
+				view_keys[key] = step.node
+			}
+		}
+	}
+	mut to_view := map[string]int{}
+	mut to_lint := map[string]int{}
+	for i, n in lint.nodes {
+		if i in lint.foreign {
+			continue
+		}
+		start := doc.lint_to_file(n.start, false)
+		end := doc.lint_end_to_file(n.end)
+		if start < 0 || end < 0 {
+			continue
+		}
+		key := svsc_key(start, end, n.typ)
+		view := view_keys[key] or { continue }
+		lint_key := svsc_key(n.start, n.end, n.typ)
+		if lint_key !in to_view {
+			to_view[lint_key] = view
+		}
+		view_key := svsc_key(e.t.nodes[view].start, e.t.nodes[view].end, n.typ)
+		if view_key !in to_lint {
+			to_lint[view_key] = i
+		}
+	}
+	return SvscBridge{
+		svelte:  true
+		to_view: to_view
+		to_lint: to_lint
+		lint:    lint
+		view:    e.t
+	}
+}
+
+// view_of is the view's node of a lint code node.
+fn (b &SvscBridge) view_of(i int) ?int {
+	if !b.svelte {
+		return i
+	}
+	n := b.lint.nodes[i]
+	return b.to_view[svsc_key(n.start, n.end, n.typ)] or { return none }
+}
+
+// lint_of is the lint code's node of a view's node.
+fn (b &SvscBridge) lint_of(i int) ?int {
+	if !b.svelte {
+		return i
+	}
+	n := b.view.nodes[i]
+	return b.to_lint[svsc_key(n.start, n.end, n.typ)] or { return none }
+}
+
+// svsc_global_references is ReferenceTracker#iterateGlobalReferences with its globalObjectNames
+// (es_global_references has the default ones).
+fn (mut c Checker) svsc_global_references(root C.TSNode, trace map[string]EsTrace, object_names []string) []EsTraced {
+	mut out := []EsTraced{}
+	tree := c.scope_tree(root)
+	mut stack := []int{}
+	for key, next in trace {
+		v := tree.own_variable(0, key)
+		if es_is_modified_global(tree, v) {
+			continue
+		}
+		c.es_trace_variable(root, v, [key], next, true, mut stack, mut out)
+	}
+	root_trace := EsTrace{
+		children: trace
+	}
+	for key in object_names {
+		v := tree.own_variable(0, key)
+		if es_is_modified_global(tree, v) {
+			continue
+		}
+		c.es_trace_variable(root, v, []string{}, root_trace, false, mut stack, mut out)
+	}
+	return out
+}
