@@ -334,11 +334,48 @@ fn (c &Checker) file_text() string {
 }
 
 // svelte_binding_assignment: the assignment is the lint code's wrapper of a `bind:` directive's
-// name (`(0,(name)+=0);`), not an assignment of the file: its right side is the wrapper's.
+// name (`[(name)+=0];`), not an assignment of the file: its right side is the wrapper's.
 fn (c &Checker) svelte_binding_assignment(t &estree.EsTree, node int) bool {
 	if !c.is_svelte() || t.nodes[node].start < c.svelte.doc.lint_start {
 		return false
 	}
 	right := t.node(node, .right) or { return false }
 	return c.svelte.doc.lint_to_file(t.nodes[right].start, false) < 0
+}
+
+// svelte_function_shape_rules are the rules that check what a function looks like (its
+// parameters, its parentheses): the lint code's functions of {#each}, let:, {:then}, {:catch} and
+// {#snippet} are not functions for ESLint (their parameters belong to a Svelte block), so their
+// reports on those functions' heads are not ESLint's. The rules that look at the scopes (unused or
+// shadowed variables) keep theirs, as ESLint's scopes have those parameters.
+const svelte_function_shape_rules = [prefer_readonly_parameter_types, stylistic_space_before_function_paren,
+	stylistic_function_paren_newline]
+
+// svelte_drop_wrapper_function_findings drops what svelte_function_shape_rules report in the
+// head (from its start to its body) of a function of the template part that is a wrapper.
+fn (mut c Checker) svelte_drop_wrapper_function_findings(root C.TSNode, findings []Finding) []Finding {
+	if !findings.any(it.rule in svelte_function_shape_rules) {
+		return findings
+	}
+	doc := c.svelte.doc
+	mut heads := [][2]int{}
+	for f in c.nodes_of_kinds(root, ['arrow_function', 'function_declaration'], []) {
+		start := node_start(f)
+		if start < doc.lint_start || doc.lint_to_file(start, false) >= 0 {
+			continue
+		}
+		body := node_field(f, 'body') or { continue }
+		heads << [start, node_start(body)]!
+	}
+	return findings.filter(fn [heads] (f Finding) bool {
+		if f.rule !in svelte_function_shape_rules {
+			return true
+		}
+		for h in heads {
+			if f.stmt.start_byte >= h[0] && f.stmt.start_byte < h[1] {
+				return false
+			}
+		}
+		return true
+	})
 }

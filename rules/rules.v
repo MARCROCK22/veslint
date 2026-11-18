@@ -2644,7 +2644,7 @@ fn (mut c Checker) lint_file_in_lifetime(parser Parser, config LintConfig, src s
 		stats.unmatched += c.too_deep
 	}
 	if svelte_file {
-		findings = c.svelte_move_findings(findings)
+		findings = c.svelte_move_findings(c.svelte_drop_wrapper_function_findings(root, findings))
 	}
 	findings = sort_rule_findings(findings)
 	findings = c.apply_disable_directives(findings, inline, config)

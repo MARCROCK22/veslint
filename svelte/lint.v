@@ -14,7 +14,7 @@ module svelte
 //   {#snippet}     `function name(a){` … `}`     (the typings and the `return` dropped)
 //   then's preparation scripts are dropped.
 //
-//   bind:x={name} `(name)+=0;`                   (svelte-eslint-parser makes its reference read-write)
+//   bind:x={name} `[(name)+=0];`                 (svelte-eslint-parser makes its reference read-write)
 //   {name}         `(name);`                     (an attribute's shorthand: no object)
 //
 // Every wrapper statement starts with a character of its own, so what a rule reports on a
@@ -50,10 +50,10 @@ fn (mut c Conv) build_lint_code() {
 				if segs.len > 0 {
 					after := segs.last().pre_start + segs.last().len + 1
 					if l.binding && is_js_identifier(pre[segs[0].pre_start..after - 1]) {
-						// `(name);` -> `(0,(name)+=0);`: one reference that reads and writes the
-						// name, not a statement that only modifies it.
-						edits << LintEdit{l.start, l.start + 1, '(0,('}
-						edits << LintEdit{after, l.head_end - 1, '+=0)'}
+						// `(name);` -> `[(name)+=0];`: one reference that reads and writes the
+						// name, in an expression whose value is used (not one that only modifies it).
+						edits << LintEdit{l.start, l.start + 1, '[('}
+						edits << LintEdit{after, l.head_end - 1, '+=0]'}
 					} else if l.typed {
 						// `(part)as (typing);`: the typing goes.
 						edits << LintEdit{after, l.head_end - 1, ''}
