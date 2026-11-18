@@ -582,7 +582,7 @@ fn (mut s Server) lint(id i64, config string, project string, files []string, te
 			}
 		}
 		if f.note != '' {
-			out.writeln('${f.path}:0:0\t${rules.problem_rule}\twarning\t${tsv_field(f.note)}')
+			out.writeln(note_line(f.path, f.note))
 			problems++
 			warnings++
 			continue

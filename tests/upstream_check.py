@@ -210,10 +210,11 @@ class Runner:
         report = 0 if rule.startswith(('unicorn/', 'svelte/')) else 1
         # A case of eslint-plugin-vue's tests may test another rule (jsx-uses-vars' run no-unused-vars).
         tested = case.get('rule', rule) if rule.startswith('vue/') else rule
-        # ESLint's RuleTester turns the rule on as a warning (severity 1): a report without a
-        # messageId says so in its line, which tests/rules/reference.sh compares for
-        # eslint-plugin-svelte's tests (svelte/block-lang, svelte/no-target-blank report so).
-        severity = 'warn' if rule.startswith('svelte/') else 'error'
+        # ESLint's RuleTester turns the rule on as a warning (severity 1): every line says so with
+        # its `warning` field (and a report without a messageId in its place too: svelte/block-lang,
+        # svelte/no-target-blank), which tests/rules/reference.sh compares for the tests of
+        # eslint-plugin-vue and eslint-plugin-svelte, run by ESLint's RuleTester.
+        severity = 'warn' if rule.startswith(('svelte/', 'vue/')) else 'error'
         config = {'languageOptions': language, 'linterOptions': {'reportUnusedDisableDirectives': report},
                   'rules': {tested: [severity, *case.get('options', [])]}}
         # The shared settings of the case (eslint-plugin-perfectionist's tests set `settings`).

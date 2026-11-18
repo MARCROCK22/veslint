@@ -684,7 +684,7 @@ fn run_rules(opts Options, timeout time.Duration) !int {
 			if opts.summary {
 				summary.add(rules.problem_rule, f.path, true)
 			} else {
-				println('${f.path}:0:0\t${rules.problem_rule}\twarning\t${tsv_field(f.note)}')
+				println(note_line(f.path, f.note))
 			}
 		}
 		print(summary.table())
@@ -770,7 +770,7 @@ fn run_rules(opts Options, timeout time.Duration) !int {
 			if opts.summary {
 				summary.add(rules.problem_rule, f.path, true)
 			} else {
-				println('${f.path}:0:0\t${rules.problem_rule}\twarning\t${tsv_field(f.note)}')
+				println(note_line(f.path, f.note))
 			}
 			problems++
 			warnings++
@@ -1353,6 +1353,13 @@ fn fix_fields(src string, finding rules.Finding) string {
 		next += 2
 	}
 	return out.str()
+}
+
+// note_line is the line of ESLint's warning about a file it does not lint (`File ignored because of
+// a matching ignore pattern…`): a problem of the whole file, of severity 1 as in ESLint, so it ends
+// with the field `warning` like every warning.
+fn note_line(path string, note string) string {
+	return '${path}:0:0\t${rules.problem_rule}\twarning\t${tsv_field(note)}\twarning'
 }
 
 // tsv_field escapes a field of an output line: the message may carry source text (`[a,⏎ b]` in

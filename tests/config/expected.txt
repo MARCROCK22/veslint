@@ -6,7 +6,7 @@ base.ts:13:3	eslint	warning	Unused eslint-disable directive (no problems were re
 globals/a.ts:6:1	@typescript-eslint/prefer-find	preferFind	Prefer .find(...) instead of .filter(...)[0].	suggestion	preferFindSuggestion	Use .find(...) instead of .filter(...)[0].	204	239	find(x => x > 1)	end	6	41
 globals/a.ts:10:1	@typescript-eslint/prefer-find	preferFind	Prefer .find(...) instead of .filter(...)[0].	suggestion	preferFindSuggestion	Use .find(...) instead of .filter(...)[0].	457	488	find(x => x > 1)	end	10	37
 globals/a.ts:12:1	@typescript-eslint/prefer-find	preferFind	Prefer .find(...) instead of .filter(...)[0].	suggestion	preferFindSuggestion	Use .find(...) instead of .filter(...)[0].	530	566	find(x => x > 1)	end	12	42
-ignored/a.ts:0:0	eslint	warning	File ignored because of a matching ignore pattern. Use "--no-ignore" to disable file ignore settings or use "--no-warn-ignored" to suppress this warning.
+ignored/a.ts:0:0	eslint	warning	File ignored because of a matching ignore pattern. Use "--no-ignore" to disable file ignore settings or use "--no-warn-ignored" to suppress this warning.	warning
 locked/a.ts:5:3	@typescript-eslint/no-floating-promises	floatingVoid	Promises must be awaited, end with a call to .catch, end with a call to .then with a rejection handler or be explicitly marked as ignored with the `void` operator.	suggestion	floatingFixVoid	Add void operator to ignore.	144	144	void 	suggestion	floatingFixAwait	Add await operator.	144	144	await 	end	5	5
 locked/a.ts:7:3	@typescript-eslint/await-thenable	await	Unexpected `await` of a non-Promise (non-"Thenable") value.	suggestion	removeAwait	Remove unnecessary `await`.	159	165		end	7	10	warning
 locked/a.ts:9:3	eslint	warning	'// eslint-disable-next-line @typescript-eslint/no-floating-promises' has no effect because you have 'noInlineConfig' setting in your config.	end	9	70	warning
@@ -46,7 +46,7 @@ scopes/lib.ts:3:24	@typescript-eslint/naming-convention	missingUnderscore	Class 
 scopes/script.ts:5:5	@typescript-eslint/naming-convention	missingUnderscore	Variable name `unusedTop` must have one leading underscore(s).	end	5	14
 scopes/script.ts:7:10	@typescript-eslint/naming-convention	missingUnderscore	Function name `unusedFn` must have one leading underscore(s).	end	7	18
 scopes/script.ts:8:7	@typescript-eslint/naming-convention	missingUnderscore	Class name `configUnused` must have one leading underscore(s).	end	8	19
-skipped.gen.ts:0:0	eslint	warning	File ignored because of a matching ignore pattern. Use "--no-ignore" to disable file ignore settings or use "--no-warn-ignored" to suppress this warning.
+skipped.gen.ts:0:0	eslint	warning	File ignored because of a matching ignore pattern. Use "--no-ignore" to disable file ignore settings or use "--no-warn-ignored" to suppress this warning.	warning
 strict/a.ts:5:3	@typescript-eslint/no-floating-promises	floating	Promises must be awaited, end with a call to .catch, or end with a call to .then with a rejection handler.	suggestion	floatingFixAwait	Add await operator.	144	144	await 	end	5	5
 strict/a.ts:6:3	@typescript-eslint/no-floating-promises	floating	Promises must be awaited, end with a call to .catch, or end with a call to .then with a rejection handler.	suggestion	floatingFixAwait	Add await operator.	149	153	await	end	6	10
 strict/a.ts:7:3	@typescript-eslint/await-thenable	await	Unexpected `await` of a non-Promise (non-"Thenable") value.	suggestion	removeAwait	Remove unnecessary `await`.	159	165		end	7	10
