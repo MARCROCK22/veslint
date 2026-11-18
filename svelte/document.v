@@ -53,6 +53,14 @@ pub mut:
 	// reactive: the top-level `$:` statements of the script, whose type is
 	// SvelteReactiveStatement (es_type_name).
 	reactive map[int]bool
+	// virtual_code: the code svelte-eslint-parser hands typescript-eslint (the one a type checker
+	// must see as the .svelte file's content, see virtual.v); virtual_offsets and
+	// virtual_fragments map it to pre_u16 (UTF-16 offsets, RestoreContext's tables).
+	virtual_code      string
+	virtual_offsets   []VOffset
+	virtual_fragments []VRange
+	// runes: svelteParseContext.runes while parsing (`<svelte:options runes={…}>`).
+	runes RunesMode
 	// generics_code: the code `void function<…>(){}` handed to the script parser for the
 	// `generics` attribute ('' without one).
 	generics_code string
@@ -173,6 +181,10 @@ pub fn parse_svelte_with(src string, parsers &Parsers) !&Document {
 		sc:      sc
 		parsers: parsers
 	}
+	if ca.options >= 0 && ca.nodes[ca.options].has_runes {
+		c.runes = if ca.nodes[ca.options].runes { RunesMode.on } else { RunesMode.off }
+	}
+	doc.runes = c.runes
 	c.convert_root()
 	if e := c.err {
 		doc.error = e

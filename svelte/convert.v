@@ -111,18 +111,19 @@ mut:
 	letdir_stack  [][]LetParam
 	// The parse of the `generics` attribute (`void function<…>(){}`), merged into the
 	// document's ESTree after the main parse.
-	generics_es    estree.EsTree
-	generics_tree  &C.TSTree = unsafe { nil }
-	generics_at    int = -1 // file byte offset of `void function<` (value start - 14)
-	generics_toks  []SnipToken
-	generics_comms []SnipToken
-	generics_attr  int = -1
-	generics_code  string
+	generics_es     estree.EsTree
+	generics_tree   &C.TSTree = unsafe { nil }
+	generics_at     int       = -1 // file byte offset of `void function<` (value start - 14)
+	generics_toks   []SnipToken
+	generics_comms  []SnipToken
+	generics_attr   int = -1
+	generics_code   string
 	generics_offset int
-	slots         []int
-	elements      map[int]int // Svelte element → compiler node
-	snippets      []int
-	err           ?ParseError
+	runes           RunesMode
+	slots           []int
+	elements        map[int]int // Svelte element → compiler node
+	snippets        []int
+	err             ?ParseError
 }
 
 struct CloseScope {

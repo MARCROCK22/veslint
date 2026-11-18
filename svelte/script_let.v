@@ -95,6 +95,7 @@ fn (mut c Conv) restore() ! {
 	}
 	doc.es = es
 	toks, comms := snippet_tokens(root, pre, false)
+	c.build_virtual(toks, comms)
 	first_let := if c.lets.len > 0 { c.lets[0].start } else { pre.len + 1 }
 	sep := c.trimmed_len
 	// Script tokens and comments (before the first let, without the separator `;`).

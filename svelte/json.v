@@ -34,6 +34,9 @@ pub fn (d &Document) to_json() string {
 // parser_codes are the codes handed to the script parser, sorted.
 pub fn (d &Document) parser_codes() []string {
 	mut out := [d.pre_u16]
+	if d.virtual_code != '' {
+		out << d.virtual_code
+	}
 	if d.generics_code != '' {
 		out << d.generics_code
 	}
