@@ -370,6 +370,8 @@ pub fn check_options(rule string, options []json2.Any) !bool {
 		svelte_html_closing_bracket_new_line { shcbnl_options(options)! }
 		svelte_html_quotes { shq_options(options)! }
 		svelte_mustache_spacing { smsp_options(options)! }
+		svelte_no_inline_styles { snis_options(options)! }
+		svelte_max_attributes_per_line { smapl_options(options)! }
 		else { return false }
 	}
 	return true

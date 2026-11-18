@@ -1,0 +1,2 @@
+tests/rules/svelte/no-useless-children-snippet/cases.svelte:6:2	svelte/no-useless-children-snippet	uselessSnippet	Found an unnecessary children snippet.	end	8	12
+tests/rules/svelte/no-useless-children-snippet/cases.svelte:21:2	svelte/no-useless-children-snippet	uselessSnippet	Found an unnecessary children snippet.	end	21	41

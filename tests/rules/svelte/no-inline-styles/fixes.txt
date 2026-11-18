@@ -1,0 +1,13 @@
+tests/rules/svelte/no-inline-styles/cases.svelte:6:6	svelte/no-inline-styles	hasStyleAttribute	Found disallowed style attribute.	end	6	24
+tests/rules/svelte/no-inline-styles/cases.svelte:7:6	svelte/no-inline-styles	hasStyleDirective	Found disallowed style directive.	end	7	25
+tests/rules/svelte/no-inline-styles/cases.svelte:8:6	svelte/no-inline-styles	hasStyleDirective	Found disallowed style directive.	end	8	17
+tests/rules/svelte/no-inline-styles/cases.svelte:14:2	svelte/no-inline-styles	hasStyleAttribute	Found disallowed style attribute.	end	14	14
+tests/rules/svelte/no-inline-styles/cases.svelte:15:2	svelte/no-inline-styles	hasStyleDirective	Found disallowed style directive.	end	15	20
+tests/rules/svelte/no-inline-styles/no-transitions/cases.svelte:6:6	svelte/no-inline-styles	hasStyleAttribute	Found disallowed style attribute.	end	6	24
+tests/rules/svelte/no-inline-styles/no-transitions/cases.svelte:7:6	svelte/no-inline-styles	hasStyleDirective	Found disallowed style directive.	end	7	25
+tests/rules/svelte/no-inline-styles/no-transitions/cases.svelte:8:6	svelte/no-inline-styles	hasStyleDirective	Found disallowed style directive.	end	8	17
+tests/rules/svelte/no-inline-styles/no-transitions/cases.svelte:9:6	svelte/no-inline-styles	hasTransition	Found disallowed transition.	end	9	21
+tests/rules/svelte/no-inline-styles/no-transitions/cases.svelte:10:6	svelte/no-inline-styles	hasTransition	Found disallowed transition.	end	10	13
+tests/rules/svelte/no-inline-styles/no-transitions/cases.svelte:10:14	svelte/no-inline-styles	hasTransition	Found disallowed transition.	end	10	22
+tests/rules/svelte/no-inline-styles/no-transitions/cases.svelte:14:2	svelte/no-inline-styles	hasStyleAttribute	Found disallowed style attribute.	end	14	14
+tests/rules/svelte/no-inline-styles/no-transitions/cases.svelte:15:2	svelte/no-inline-styles	hasStyleDirective	Found disallowed style directive.	end	15	20

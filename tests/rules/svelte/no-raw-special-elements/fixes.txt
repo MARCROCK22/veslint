@@ -1,0 +1,7 @@
+tests/rules/svelte/no-raw-special-elements/cases.svelte:5:1	svelte/no-raw-special-elements	deprecatedElement	Special head element is deprecated in v5, use svelte:head instead.	fix	45	68	svelte:head><title>x</title></svelte:	end	5	30
+tests/rules/svelte/no-raw-special-elements/cases.svelte:6:1	svelte/no-raw-special-elements	deprecatedElement	Special body element is deprecated in v5, use svelte:body instead.	fix	75	82	svelte:body></svelte:	end	6	14
+tests/rules/svelte/no-raw-special-elements/cases.svelte:7:1	svelte/no-raw-special-elements	deprecatedElement	Special window element is deprecated in v5, use svelte:window instead.	fix	89	89	svelte:	end	7	11
+tests/rules/svelte/no-raw-special-elements/cases.svelte:8:1	svelte/no-raw-special-elements	deprecatedElement	Special document element is deprecated in v5, use svelte:document instead.	fix	100	111	svelte:document></svelte:	end	8	22
+tests/rules/svelte/no-raw-special-elements/cases.svelte:9:1	svelte/no-raw-special-elements	deprecatedElement	Special options element is deprecated in v5, use svelte:options instead.	fix	122	122	svelte:	end	9	12
+tests/rules/svelte/no-raw-special-elements/cases.svelte:10:1	svelte/no-raw-special-elements	deprecatedElement	Special element element is deprecated in v5, use svelte:element instead.	fix	134	144	svelte:element></svelte:	end	10	20
+tests/rules/svelte/no-raw-special-elements/cases.svelte:13:4	svelte/no-raw-special-elements	deprecatedElement	Special head element is deprecated in v5, use svelte:head instead.	fix	200	207	svelte:head></svelte:	end	13	17

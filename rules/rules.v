@@ -749,6 +749,14 @@ pub const svelte_html_closing_bracket_new_line = 'svelte/html-closing-bracket-ne
 pub const svelte_no_dynamic_slot_name = 'svelte/no-dynamic-slot-name'
 pub const svelte_html_quotes = 'svelte/html-quotes'
 pub const svelte_mustache_spacing = 'svelte/mustache-spacing'
+pub const svelte_no_inline_styles = 'svelte/no-inline-styles'
+pub const svelte_no_raw_special_elements = 'svelte/no-raw-special-elements'
+pub const svelte_no_nested_style_tag = 'svelte/no-nested-style-tag'
+pub const svelte_no_useless_children_snippet = 'svelte/no-useless-children-snippet'
+pub const svelte_no_dupe_on_directives = 'svelte/no-dupe-on-directives'
+pub const svelte_no_dupe_use_directives = 'svelte/no-dupe-use-directives'
+pub const svelte_prefer_attribute_interpolation = 'svelte/prefer-attribute-interpolation'
+pub const svelte_max_attributes_per_line = 'svelte/max-attributes-per-line'
 pub const names = [no_floating_promises, await_thenable, require_await, return_await,
 	no_misused_promises, no_unsafe_call, no_unsafe_member_access, no_unsafe_return,
 	no_unsafe_assignment, no_unsafe_argument, restrict_template_expressions,
@@ -970,7 +978,10 @@ pub const names = [no_floating_promises, await_thenable, require_await, return_a
 	svelte_no_dupe_else_if_blocks, svelte_no_useless_mustaches, svelte_first_attribute_linebreak,
 	svelte_shorthand_directive, svelte_html_closing_bracket_spacing,
 	svelte_html_closing_bracket_new_line, svelte_no_dynamic_slot_name, svelte_html_quotes,
-	svelte_mustache_spacing]
+	svelte_mustache_spacing, svelte_no_inline_styles, svelte_no_raw_special_elements,
+	svelte_no_nested_style_tag, svelte_no_useless_children_snippet, svelte_no_dupe_on_directives,
+	svelte_no_dupe_use_directives, svelte_prefer_attribute_interpolation,
+	svelte_max_attributes_per_line]
 
 // untyped_rules are the ported rules that need no types (`meta.docs.requiresTypeChecking` is false
 // in typescript-eslint; the eslint-plugin-unicorn rules that read the types when the parser has a
@@ -1156,7 +1167,10 @@ pub const untyped_rules = [adjacent_overload_signatures, array_type, class_liter
 	svelte_spaced_html_comment, svelte_no_dupe_else_if_blocks, svelte_no_useless_mustaches,
 	svelte_first_attribute_linebreak, svelte_shorthand_directive, svelte_html_closing_bracket_spacing,
 	svelte_html_closing_bracket_new_line, svelte_no_dynamic_slot_name, svelte_html_quotes,
-	svelte_mustache_spacing]
+	svelte_mustache_spacing, svelte_no_inline_styles, svelte_no_raw_special_elements,
+	svelte_no_nested_style_tag, svelte_no_useless_children_snippet, svelte_no_dupe_on_directives,
+	svelte_no_dupe_use_directives, svelte_prefer_attribute_interpolation,
+	svelte_max_attributes_per_line]
 
 // needs_types tells whether a rule asks tsgo for the types of the program.
 pub fn needs_types(rule string) bool {
@@ -1900,6 +1914,14 @@ pub const default_options = {
 	svelte_no_dynamic_slot_name:                      '[]'
 	svelte_html_quotes:                               '[]'
 	svelte_mustache_spacing:                          '[]'
+	svelte_no_inline_styles:                          '[]'
+	svelte_no_raw_special_elements:                   '[]'
+	svelte_no_nested_style_tag:                       '[]'
+	svelte_no_useless_children_snippet:               '[]'
+	svelte_no_dupe_on_directives:                     '[]'
+	svelte_no_dupe_use_directives:                    '[]'
+	svelte_prefer_attribute_interpolation:            '[]'
+	svelte_max_attributes_per_line:                   '[]'
 }
 
 // Finding is a problem a rule found at a node.
@@ -2820,6 +2842,14 @@ pub fn message(rule string, finding Finding) string {
 		svelte_no_dynamic_slot_name { sndsn_messages }
 		svelte_html_quotes { shq_messages }
 		svelte_mustache_spacing { smsp_messages }
+		svelte_no_inline_styles { snis_messages }
+		svelte_no_raw_special_elements { snrse_messages }
+		svelte_no_nested_style_tag { snnst_messages }
+		svelte_no_useless_children_snippet { snucs_messages }
+		svelte_no_dupe_on_directives { snddo_messages }
+		svelte_no_dupe_use_directives { snddu_messages }
+		svelte_prefer_attribute_interpolation { spai_messages }
+		svelte_max_attributes_per_line { smapl_messages }
 		else { map[string]string{} }
 	}
 	return interpolate(messages[finding.message_id] or { finding.message_id }, finding.data)
@@ -5208,6 +5238,30 @@ fn (mut c Checker) lint_rule(rule string, root C.TSNode, abs_path string, mut st
 		}
 		svelte_mustache_spacing {
 			return c.lint_svelte_mustache_spacing(root, abs_path, mut stats)!
+		}
+		svelte_no_inline_styles {
+			return c.lint_svelte_no_inline_styles(root, abs_path, mut stats)!
+		}
+		svelte_no_raw_special_elements {
+			return c.lint_svelte_no_raw_special_elements(root, abs_path, mut stats)!
+		}
+		svelte_no_nested_style_tag {
+			return c.lint_svelte_no_nested_style_tag(root, abs_path, mut stats)!
+		}
+		svelte_no_useless_children_snippet {
+			return c.lint_svelte_no_useless_children_snippet(root, abs_path, mut stats)!
+		}
+		svelte_no_dupe_on_directives {
+			return c.lint_svelte_no_dupe_on_directives(root, abs_path, mut stats)!
+		}
+		svelte_no_dupe_use_directives {
+			return c.lint_svelte_no_dupe_use_directives(root, abs_path, mut stats)!
+		}
+		svelte_prefer_attribute_interpolation {
+			return c.lint_svelte_prefer_attribute_interpolation(root, abs_path, mut stats)!
+		}
+		svelte_max_attributes_per_line {
+			return c.lint_svelte_max_attributes_per_line(root, abs_path, mut stats)!
 		}
 		else { return error('unknown rule: ${rule}') }
 	}

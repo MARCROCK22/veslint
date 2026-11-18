@@ -1,0 +1,3 @@
+tests/rules/svelte/prefer-attribute-interpolation/cases.svelte:6:12	svelte/prefer-attribute-interpolation	unexpected	Prefer attribute interpolation over a template literal.
+tests/rules/svelte/prefer-attribute-interpolation/cases.svelte:7:12	svelte/prefer-attribute-interpolation	unexpected	Prefer attribute interpolation over a template literal.
+tests/rules/svelte/prefer-attribute-interpolation/cases.svelte:13:12	svelte/prefer-attribute-interpolation	unexpected	Prefer attribute interpolation over a template literal.

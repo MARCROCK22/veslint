@@ -1,0 +1,11 @@
+tests/rules/svelte/no-dupe-on-directives/cases.svelte:6:9	svelte/no-dupe-on-directives	duplication	This `on:click` directive is the same and duplicate directives in L6.	end	6	21
+tests/rules/svelte/no-dupe-on-directives/cases.svelte:6:22	svelte/no-dupe-on-directives	duplication	This `on:click` directive is the same and duplicate directives in L6.	end	6	34
+tests/rules/svelte/no-dupe-on-directives/cases.svelte:8:9	svelte/no-dupe-on-directives	duplication	This `on:click` directive is the same and duplicate directives in L8.	end	8	17
+tests/rules/svelte/no-dupe-on-directives/cases.svelte:8:18	svelte/no-dupe-on-directives	duplication	This `on:click` directive is the same and duplicate directives in L8.	end	8	26
+tests/rules/svelte/no-dupe-on-directives/cases.svelte:11:2	svelte/no-dupe-on-directives	duplication	This `on:click` directive is the same and duplicate directives in L13.	end	11	22
+tests/rules/svelte/no-dupe-on-directives/cases.svelte:13:2	svelte/no-dupe-on-directives	duplication	This `on:click` directive is the same and duplicate directives in L11.	end	13	22
+tests/rules/svelte/no-dupe-on-directives/cases.svelte:14:2	svelte/no-dupe-on-directives	duplication	This `on:click` directive is the same and duplicate directives in L11.	end	14	20
+tests/rules/svelte/no-dupe-on-directives/cases.svelte:16:9	svelte/no-dupe-on-directives	duplication	This `on:click` directive is the same and duplicate directives in L16.	end	16	26
+tests/rules/svelte/no-dupe-on-directives/cases.svelte:16:27	svelte/no-dupe-on-directives	duplication	This `on:click` directive is the same and duplicate directives in L16.	end	16	39
+tests/rules/svelte/no-dupe-on-directives/cases.svelte:17:7	svelte/no-dupe-on-directives	duplication	This `on:custom` directive is the same and duplicate directives in L17.	end	17	20
+tests/rules/svelte/no-dupe-on-directives/cases.svelte:17:21	svelte/no-dupe-on-directives	duplication	This `on:custom` directive is the same and duplicate directives in L17.	end	17	34

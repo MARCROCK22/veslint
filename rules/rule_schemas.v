@@ -738,6 +738,14 @@ const rule_option_schemas = {
 	'svelte/no-dynamic-slot-name':                                     '{"type":"array","minItems":0,"maxItems":0}'
 	'svelte/html-quotes':                                              '{"type":"array","items":[{"type":"object","properties":{"prefer":{"enum":["double","single"]},"dynamic":{"type":"object","properties":{"quoted":{"type":"boolean"},"avoidInvalidUnquotedInHTML":{"type":"boolean"}},"additionalProperties":false}},"additionalProperties":false}],"minItems":0,"maxItems":1}'
 	'svelte/mustache-spacing':                                         '{"type":"array","items":[{"type":"object","properties":{"textExpressions":{"enum":["never","always"]},"attributesAndProps":{"enum":["never","always"]},"directiveExpressions":{"enum":["never","always"]},"tags":{"type":"object","properties":{"openingBrace":{"enum":["never","always"]},"closingBrace":{"enum":["never","always","always-after-expression"]}},"additionalProperties":false}},"additionalProperties":false}],"minItems":0,"maxItems":1}'
+	'svelte/no-inline-styles':                                         '{"type":"array","items":[{"type":"object","properties":{"allowTransitions":{"type":"boolean"}},"additionalProperties":false}],"minItems":0,"maxItems":1}'
+	'svelte/no-raw-special-elements':                                  '{"type":"array","minItems":0,"maxItems":0}'
+	'svelte/no-nested-style-tag':                                      '{"type":"array","minItems":0,"maxItems":0}'
+	'svelte/no-useless-children-snippet':                              '{"type":"array","minItems":0,"maxItems":0}'
+	'svelte/no-dupe-on-directives':                                    '{"type":"array","minItems":0,"maxItems":0}'
+	'svelte/no-dupe-use-directives':                                   '{"type":"array","minItems":0,"maxItems":0}'
+	'svelte/prefer-attribute-interpolation':                           '{"type":"array","minItems":0,"maxItems":0}'
+	'svelte/max-attributes-per-line':                                  '{"type":"array","items":[{"type":"object","properties":{"multiline":{"type":"number","minimum":1},"singleline":{"type":"number","minimum":1}},"additionalProperties":false}],"minItems":0,"maxItems":1}'
 }
 
 // eslint_rule_default_options are the meta.defaultOptions of the rules of ESLint and of

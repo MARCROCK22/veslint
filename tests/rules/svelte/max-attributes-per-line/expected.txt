@@ -1,0 +1,10 @@
+tests/rules/svelte/max-attributes-per-line/cases.svelte:6:16	svelte/max-attributes-per-line	requireNewline	'title' should be on a new line.
+tests/rules/svelte/max-attributes-per-line/cases.svelte:7:16	svelte/max-attributes-per-line	requireNewline	'title' should be on a new line.
+tests/rules/svelte/max-attributes-per-line/cases.svelte:13:12	svelte/max-attributes-per-line	requireNewline	'title' should be on a new line.
+tests/rules/svelte/max-attributes-per-line/cases.svelte:17:12	svelte/max-attributes-per-line	requireNewline	'id' should be on a new line.
+tests/rules/svelte/max-attributes-per-line/cases.svelte:18:23	svelte/max-attributes-per-line	requireNewline	'on:input' should be on a new line.
+tests/rules/svelte/max-attributes-per-line/cases.svelte:20:12	svelte/max-attributes-per-line	requireNewline	'title' should be on a new line.
+tests/rules/svelte/max-attributes-per-line/cases.svelte:23:5	svelte/max-attributes-per-line	requireNewline	'title' should be on a new line.
+tests/rules/svelte/max-attributes-per-line/limits/cases.svelte:17:19	svelte/max-attributes-per-line	requireNewline	'a' should be on a new line.
+tests/rules/svelte/max-attributes-per-line/limits/cases.svelte:18:51	svelte/max-attributes-per-line	requireNewline	'style:color' should be on a new line.
+tests/rules/svelte/max-attributes-per-line/limits/cases.svelte:20:22	svelte/max-attributes-per-line	requireNewline	'id' should be on a new line.
