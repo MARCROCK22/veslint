@@ -234,6 +234,9 @@ fn (mut c Conv) convert_directive(a int, parent int, kind string) int {
 		if shorthand && ex.end != kn.end {
 			c.ca.exprs[cn.expression].end = kn.end
 		}
+		// The type of the script parser's node must be the compiler's (processDirectiveExpression):
+		// checked for the compiler's own Identifier of `bind:x` / `class:x`.
+		check := if ex.synthetic { 'compiler:Identifier' } else { '' }
 		match kind {
 			'Binding' {
 				c.doc.nodes[d].shorthand = shorthand
@@ -250,6 +253,7 @@ fn (mut c Conv) convert_directive(a int, parent int, kind string) int {
 					setter:    .expression
 					typed:     typed
 					binding:   true
+					check:     check
 				}, text, c.current_kind)
 			}
 			'EventHandler' {
@@ -259,7 +263,7 @@ fn (mut c Conv) convert_directive(a int, parent int, kind string) int {
 			}
 			'Class' {
 				c.doc.nodes[d].shorthand = shorthand
-				c.add_expression(cn.expression, d, '', .expression, '')
+				c.add_expression(cn.expression, d, '', .expression, check)
 			}
 			'Action' {
 				typing := 'Parameters<typeof ${cn.name}>[1]'

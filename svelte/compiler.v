@@ -1418,7 +1418,7 @@ fn (p &CParser) attribute_expression(n CNode) int {
 
 // read_closing_textarea reads /<\/textarea(\s[^>]*)?>/iy.
 fn (mut p CParser) closing_textarea_at(i int) int {
-	if p.src.len - i < 11 || p.src[i..i + 11].to_lower() != '</textarea' {
+	if p.src.len - i < 10 || ascii_lower(p.src[i..i + 10]) != '</textarea' {
 		return -1
 	}
 	mut k := i + 10

@@ -522,6 +522,13 @@ fn (mut c Conv) set_expression(l ScriptLet, node int) {
 				return
 			}
 		}
+		'compiler:Identifier' {
+			// SvelteFunctionBindingsExpression counts as a SequenceExpression.
+			if typ != .identifier {
+				c.fail('Expected Identifier, but ${typ.type_name()} found.', c.doc.es.nodes[node].start)
+				return
+			}
+		}
 		'style_identifier' {
 			if typ != .identifier {
 				c.fail('Expected JS identifier or attribute value.', c.doc.es.nodes[node].start)
