@@ -33,6 +33,8 @@ pub mut:
 	// once restored; their tree-sitter nodes keep `pre` offsets: see pre_to_file).
 	es   estree.EsTree
 	tree &C.TSTree = unsafe { nil }
+	// extra_trees: other trees nodes of `es` come from (the `generics` attribute's parse).
+	extra_trees []&C.TSTree
 	// es_parent: the Svelte parent of an ESTree node grafted into the template (its ESTree
 	// parent is a wrapper of `pre` that is not in the AST).
 	es_parent map[int]int
@@ -48,6 +50,12 @@ pub mut:
 	error    ?ParseError
 	// The <script> lang (merged over the script blocks), and the generics attribute.
 	lang string
+	// reactive: the top-level `$:` statements of the script, whose type is
+	// SvelteReactiveStatement (es_type_name).
+	reactive map[int]bool
+	// generics_code: the code `void function<…>(){}` handed to the script parser for the
+	// `generics` attribute ('' without one).
+	generics_code string
 }
 
 // Parsers are the tree-sitter parsers parse_svelte_with reuses from file to file.
@@ -88,6 +96,15 @@ fn convert_es(root C.TSNode, code string) !estree.EsTree {
 	})
 }
 
+// es_type_name is the `type` of an ESTree node of the document (SvelteReactiveStatement for a
+// top-level `$:` statement).
+pub fn (d &Document) es_type_name(i int) string {
+	if i in d.reactive {
+		return 'SvelteReactiveStatement'
+	}
+	return d.es.nodes[i].typ.type_name()
+}
+
 // loc is svelte-eslint-parser's location of a byte offset of the file.
 pub fn (d &Document) loc(offset int) Loc {
 	return d.lc.loc_u16(d.index.to_u16(offset))
@@ -109,6 +126,10 @@ pub fn (mut d Document) free() {
 		treesitter.tree_delete(d.tree)
 		d.tree = unsafe { nil }
 	}
+	for t in d.extra_trees {
+		treesitter.tree_delete(t)
+	}
+	d.extra_trees = []
 }
 
 // parse_svelte parses a .svelte file (UTF-8, without BOM). To parse many files, make the
@@ -158,5 +179,6 @@ pub fn parse_svelte_with(src string, parsers &Parsers) !&Document {
 		return doc
 	}
 	c.restore()!
+	doc.generics_code = c.generics_code
 	return doc
 }

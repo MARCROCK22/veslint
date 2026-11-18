@@ -34,6 +34,9 @@ pub fn (d &Document) to_json() string {
 // parser_codes are the codes handed to the script parser, sorted.
 pub fn (d &Document) parser_codes() []string {
 	mut out := [d.pre_u16]
+	if d.generics_code != '' {
+		out << d.generics_code
+	}
 	out.sort()
 	return out
 }
@@ -385,7 +388,7 @@ fn (d &Document) json_opt_snode(mut b strings.Builder, i int) {
 fn (d &Document) json_es(mut b strings.Builder, i int, type_override string) {
 	es := &d.es
 	n := es.nodes[i]
-	typ := if type_override != '' { type_override } else { n.typ.type_name() }
+	typ := if type_override != '' { type_override } else { d.es_type_name(i) }
 	b.write_string('{"type":"${typ}",')
 	d.json_range_loc(mut b, n.start, n.end)
 	for p in n.props {

@@ -109,7 +109,7 @@ fn (mut c Conv) restore() ! {
 			typ:   t.typ
 			start: t.start
 			end:   t.end
-			value: pre[t.start..t.end]
+			value: token_value(pre, t)
 		}
 	}
 	for t in comms {
@@ -145,6 +145,7 @@ fn (mut c Conv) restore() ! {
 			stack << kids[i]
 		}
 	}
+	c.merge_generics()
 	for i, l in c.lets {
 		c.restore_let(l, matched[i], toks, comms)
 		if c.err != none {
@@ -167,6 +168,13 @@ fn (mut c Conv) restore() ! {
 			continue
 		}
 		statements << st
+		// parseScriptInSvelte: a top-level `$:` statement is a SvelteReactiveStatement.
+		if doc.es.nodes[st].typ == .labeled_statement {
+			label := c.es_node(st, .label)
+			if label >= 0 && (doc.es.string_of(label, .name) or { '' }) == '\$' {
+				doc.reactive[st] = true
+			}
+		}
 	}
 	sort_tokens(mut doc.comments)
 	sort_tokens(mut doc.tokens)
@@ -312,7 +320,7 @@ fn (mut c Conv) let_tokens(l ScriptLet, toks []SnipToken, comms []SnipToken) {
 				typ:   t.typ
 				start: t.start + delta
 				end:   t.end + delta
-				value: pre[t.start..t.end]
+				value: token_value(pre, t)
 			}
 		}
 		lc := lower_bound_tokens(comms, s.pre_start)
@@ -446,6 +454,32 @@ fn (mut c Conv) restore_let(l ScriptLet, m int, toks []SnipToken, comms []SnipTo
 			c.doc.nodes[l.target].id = eref(id)
 			c.doc.nodes[l.target].params = params
 			c.set_parent(id, l.target)
+		}
+		.generic_alias, .generic_default {
+			id := c.es_node(m, .id)
+			ta := c.es_node(m, .type_annotation)
+			param := l.param + c.generics_offset
+			if l.kind == .generic_alias {
+				c.remap(id, [l.segments[0]])
+				c.set_prop_node(param, .name, id)
+				c.set_parent(id, -1)
+				if l.has_constraint {
+					c.remap(ta, [l.segments[1]])
+					c.set_prop_node(param, .constraint, ta)
+					// The `=` of `type T =     C;` is the `extends` keyword, with a stale loc.
+					c.doc.tokens << Token{
+						typ:       'Keyword'
+						start:     l.part_start
+						end:       l.part_start + 7
+						value:     'extends'
+						loc_start: l.part_start + 1
+						loc_end:   l.part_start + 2
+					}
+				}
+			} else {
+				c.remap(ta, l.segments)
+				c.set_prop_node(param, .default_, ta)
+			}
 		}
 		.block {}
 		.block_params {
@@ -670,5 +704,93 @@ fn type_info(es &estree.EsTree, n int) bool {
 		else {
 			return false
 		}
+	}
+}
+
+// token_value is a token's `value`: its text (a PrivateIdentifier's without the `#`).
+fn token_value(src string, t SnipToken) string {
+	if t.typ == 'PrivateIdentifier' {
+		return src[t.start + 1..t.end]
+	}
+	return src[t.start..t.end]
+}
+
+fn (mut c Conv) set_prop_node(i int, key estree.Key, value int) {
+	for k, p in c.doc.es.nodes[i].props {
+		if p.key == key {
+			c.doc.es.nodes[i].props[k] = estree.Prop{
+				key:  key
+				kind: .node
+				idx:  value
+			}
+			return
+		}
+	}
+}
+
+// merge_generics appends the ESTree of the generics parse to the document's (positions moved to
+// the file) and gives the SvelteGenericsDirective its params, with the parse's tokens and
+// comments that are outside them.
+fn (mut c Conv) merge_generics() {
+	if c.generics_tree == unsafe { nil } {
+		return
+	}
+	mut doc := c.doc
+	doc.extra_trees << c.generics_tree
+	g := &c.generics_es
+	off := doc.es.nodes.len
+	loff := doc.es.lists.len
+	c.generics_offset = off
+	for n in g.nodes {
+		mut dup := n
+		dup.start += c.generics_at
+		dup.end += c.generics_at
+		if dup.parent >= 0 {
+			dup.parent += off
+		}
+		mut props := []estree.Prop{cap: n.props.len}
+		for p in n.props {
+			props << match p.kind {
+				.node {
+					estree.Prop{
+						...p
+						idx: p.idx + off
+					}
+				}
+				.list {
+					estree.Prop{
+						...p
+						idx: p.idx + loff
+					}
+				}
+				else {
+					p
+				}
+			}
+		}
+		dup.props = props
+		doc.es.nodes << dup
+	}
+	for list in g.lists {
+		doc.es.lists << list.map(if it >= 0 { it + off } else { it })
+	}
+	fn_expr := c.generics_fn()
+	tparams := g.node(fn_expr, .type_parameters) or { -1 }
+	params := g.list(tparams, .params) or { []int{} }
+	doc.nodes[c.generics_attr].generic_params = params.map(it + off)
+	for p in params {
+		doc.es_parent[p + off] = c.generics_attr
+	}
+	gcode := c.generics_code
+	for t in c.generics_toks {
+		doc.tokens << Token{
+			typ:   t.typ
+			start: t.start + c.generics_at
+			end:   t.end + c.generics_at
+			value: token_value(gcode, t)
+		}
+	}
+	for t in c.generics_comms {
+		doc.comments << comment_token(gcode, t, t.start + c.generics_at, t.end + c.generics_at)
 	}
 }

@@ -1,5 +1,6 @@
 module svelte
 
+import estree
 import strings
 
 // The conversion of the compiler AST to svelte-eslint-parser's AST (src/parser/converts/*.ts),
@@ -108,6 +109,16 @@ mut:
 	close_stack   []CloseScope
 	unique        UniqueIds
 	letdir_stack  [][]LetParam
+	// The parse of the `generics` attribute (`void function<…>(){}`), merged into the
+	// document's ESTree after the main parse.
+	generics_es    estree.EsTree
+	generics_tree  &C.TSTree = unsafe { nil }
+	generics_at    int = -1 // file byte offset of `void function<` (value start - 14)
+	generics_toks  []SnipToken
+	generics_comms []SnipToken
+	generics_attr  int = -1
+	generics_code  string
+	generics_offset int
 	slots         []int
 	elements      map[int]int // Svelte element → compiler node
 	snippets      []int
@@ -1455,10 +1466,6 @@ fn json_quote(s string) string {
 	}
 	b.write_u8(`"`)
 	return b.str()
-}
-
-// convert_generics is convertGenericsAttribute (root.ts): not done yet.
-fn (mut c Conv) convert_generics(script int) {
 }
 
 // js_slice is String#slice: a negative index counts from the end; an empty string when start
