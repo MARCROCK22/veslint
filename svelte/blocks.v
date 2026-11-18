@@ -379,8 +379,13 @@ fn parse_attribute_mustache(code string, i0 int) ?Mustache {
 // SourceCode is the Context's split of the document.
 struct SourceCode {
 mut:
-	template     string // bytes: the file with block contents blanked (same length)
-	script_raw   string // bytes: the file with everything but script contents blanked
+	template   string // bytes: the file with block contents blanked (same length)
+	script_raw string // bytes: the file with everything but script contents blanked
+	// script_u16: the same as JavaScript blanks it (one space per UTF-16 unit), the text of the
+	// code handed to the script parser; trimmed_len: the byte length of script_raw.trimEnd()
+	// (computed once, before any stripCode).
+	script_u16   string
+	trimmed_len  int
 	script_attrs map[string]string
 	// attrs merged over the script blocks with a text value (lang, generics, context…); a
 	// name with a non-text value maps to '\x00undefined'.
@@ -397,6 +402,7 @@ fn split_document(code string) SourceCode {
 	blocks := extract_blocks(code, mut sc.block_attrs)
 	mut template := []u8{cap: code.len}
 	mut script := []u8{cap: code.len}
+	mut script16 := []u8{cap: code.len}
 	mut start := 0
 	blank := fn [code] (from int, to int, mut out []u8) {
 		for k in from .. to {
@@ -434,6 +440,7 @@ fn split_document(code string) SourceCode {
 			}
 			template << code[b.start_start + 1 + b.tag.len..b.start_end].bytes()
 			blank(start, b.start_end, mut script)
+			script16 << blank_u16(code[start..b.start_end]).bytes()
 			start = b.start_end
 		} else {
 			template << code[start..b.content_s].bytes()
@@ -441,6 +448,8 @@ fn split_document(code string) SourceCode {
 			if b.tag == 'script' {
 				blank(start, b.content_s, mut script)
 				script << code[b.content_s..b.content_e].bytes()
+				script16 << blank_u16(code[start..b.content_s]).bytes()
+				script16 << code[b.content_s..b.content_e].bytes()
 				for a in b.attrs {
 					an := sc.block_attrs.ast.nodes[a]
 					if an.value_kind == .array {
@@ -454,14 +463,18 @@ fn split_document(code string) SourceCode {
 				}
 			} else {
 				blank(start, b.content_e, mut script)
+				script16 << blank_u16(code[start..b.content_e]).bytes()
 			}
 			start = b.content_e
 		}
 	}
 	template << code[start..].bytes()
 	blank(start, code.len, mut script)
+	script16 << blank_u16(code[start..]).bytes()
 	sc.template = template.bytestr()
 	sc.script_raw = script.bytestr()
+	sc.script_u16 = script16.bytestr()
+	sc.trimmed_len = js_trim_end_len(sc.script_raw)
 	return sc
 }
 

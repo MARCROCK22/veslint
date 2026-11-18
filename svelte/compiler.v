@@ -1318,6 +1318,7 @@ fn (mut p CParser) element() ! {
 					start:     chunk.start
 					end:       chunk.end
 					raw:       "'${chunk.raw}'"
+					name:      chunk.data
 					synthetic: true
 				})
 			} else {

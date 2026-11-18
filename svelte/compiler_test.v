@@ -10,5 +10,5 @@ fn test_compile_basic() {
 	kids := ast.fragments[div.fragment]
 	assert ast.nodes[kids[0]].data == 'x & '
 	ex := ast.exprs[ast.nodes[kids[1]].expression]
-	assert ex.kind == .identifier && ex.start == 29 && ex.end == 30
+	assert ex.kind == .identifier && ex.start == 28 && ex.end == 29
 }
