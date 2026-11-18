@@ -711,7 +711,7 @@ for config in ok bad num; do
 	(cd tests/rules/svelte/system/settings && ../../../../../veslint --config "$config.json" sys.svelte 2> /dev/null) |
 		sed "s|^|$config: |" >> "$TMP/svelte-system.out"
 done
-if diff -u tests/rules/svelte/system/settings/expected.txt "$TMP/svelte-system.out"; then
+if diff -u tests/rules/svelte/system/settings/ignore-warnings.txt "$TMP/svelte-system.out"; then
 	ok "svelte/system: settings.svelte.ignoreWarnings"
 else
 	ko "svelte/system: settings.svelte.ignoreWarnings"
