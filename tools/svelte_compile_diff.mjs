@@ -157,6 +157,7 @@ if (fs.existsSync(knownFile)) {
 
 const strip = s => JSON.stringify(s);
 let same = 0;
+let sameNonEmpty = 0;
 let differ = 0;
 let expected = 0;
 let skipped = 0;
@@ -197,11 +198,12 @@ for (const file of list) {
     diffs.push(`${rel}${known.has(rel) ? ` (known: ${known.get(rel)})` : ''}\n  ${diff}`);
   } else {
     same++;
+    if (o.error || o.warnings.length) sameNonEmpty++;
     if (known.has(rel)) diffs.push(`${rel}: listed in known.txt but identical`);
   }
 }
 fs.writeFileSync(path.join(out, 'diff.txt'), diffs.join('\n') + '\n');
-console.log(`${same} identical, ${expected} known differences, ${differ} unexpected differences, ${skipped} rejected by svelte-eslint-parser (not compared)${misses ? `, ${misses} template expressions without an ESTree node` : ''}`);
+console.log(`${same} identical (${sameNonEmpty} with warnings or an error), ${expected} known differences, ${differ} unexpected differences, ${skipped} rejected by svelte-eslint-parser (not compared)${misses ? `, ${misses} template expressions without an ESTree node` : ''}`);
 if (byCode.size) console.log('first differing warning codes: ' + [...byCode].sort((a, b) => b[1] - a[1]).map(([k, n]) => `${k} ${n}`).join(', '));
 if (unexpected.length) console.log(`see ${path.join(out, 'diff.txt')}`);
 process.exit(differ ? 1 : 0);

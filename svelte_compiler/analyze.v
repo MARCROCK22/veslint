@@ -495,7 +495,8 @@ fn (mut z Analyzer) analyze_component() ! {
 			}
 		}
 	}
-	z.custom_element = z.opts.custom_element || z.custom_element_options()
+	ce_options := z.custom_element_options()
+	z.custom_element = z.opts.custom_element || ce_options
 	// Scope.generate for the component name: it only reserves a name.
 	z.s.generate(m.scope, 'Component')
 
@@ -625,14 +626,10 @@ fn (mut z Analyzer) analyze_component() ! {
 		}
 	}
 	if z.uses_render_tags && (z.uses_slots || (!z.custom_element && z.slot_names.len > 0)) {
-		mut pos := -1
 		for _, v in z.slot_names {
-			pos = z.t.nodes[v].start
-			break
+			return z.error_at(v, e_slot_snippet_conflict())
 		}
-		if pos < 0 {
-			pos = z.c.src.index('\$\$slot') or { -1 }
-		}
+		pos := z.c.src.index('\$\$slot') or { -1 }
 		return z.error_range(pos, pos, e_slot_snippet_conflict())
 	}
 	if c.css >= 0 {

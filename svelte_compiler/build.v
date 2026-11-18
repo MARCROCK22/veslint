@@ -62,6 +62,9 @@ mut:
 	// transpiled: the scripts are what TypeScript's transpileModule gives (eslint-plugin-svelte
 	// compiles that): TypeScript-only constructs are erased instead of rejected.
 	transpiled bool
+	// opaque: inside an import or `export default`/`export *` declaration, whose children
+	// remove_typescript_nodes does not visit (no TypeScript error comes from them).
+	opaque int
 }
 
 // build_component builds the Component of a parsed .svelte file. `transpiled`: see Builder.
@@ -90,6 +93,24 @@ pub fn build_component(doc &svelte.Document, transpiled bool) !&Component {
 		}
 	}
 	ca := b.ca
+	// A self-closing top-level <script /> or <style />: the compiler's parser wants `>` where
+	// svelte-eslint-parser accepts the `/`.
+	for blk in [ca.instance, ca.module, ca.css] {
+		if blk < 0 {
+			continue
+		}
+		bn := ca.nodes[blk]
+		mut pos := bn.start + 1 + (if bn.typ == .script { 6 } else { 5 })
+		if bn.attributes.len > 0 {
+			pos = ca.nodes[bn.attributes.last()].end
+		}
+		for pos < c.src.len && c.src[pos] in [` `, `\t`, `\n`, `\r`] {
+			pos++
+		}
+		if pos < c.src.len && c.src[pos] == `/` {
+			return compile_err(e_expected_token('>'), pos, pos)
+		}
+	}
 	c.fragment = b.fragment(ca.fragment, false)!
 	if ca.instance >= 0 {
 		c.instance = b.script(ca.instance)!
@@ -233,7 +254,7 @@ fn (mut b Builder) template_node(n int) !int {
 		}
 		.key_block {
 			b.c.t.set_node(i, .expression, b.expr(cn.expression)!)
-			b.c.t.set_node(i, .fragment, b.fragment(cn.fragment, false)!)
+			b.c.t.set_node(i, .fragment, b.fragment(cn.body, false)!)
 		}
 		.snippet_block {
 			b.c.t.set_node(i, .expression, b.expr(cn.expression)!)
@@ -387,7 +408,7 @@ fn (mut b Builder) expr(e int) !int {
 		found := b.find_es(ce.start, ce.end, '')
 		if found >= 0 {
 			i := b.js(found)!
-			b.attach_comments(i, ce.start, ce.end, false)
+			b.attach_comments(i, b.read_start(ce.start), ce.end, false)
 			return i
 		}
 		b.c.misses++
@@ -401,6 +422,32 @@ fn (mut b Builder) expr(e int) !int {
 	}
 	i := b.c.t.new_node('Identifier', ce.start, ce.end)
 	b.c.t.set_str(i, .name, ce.name)
+	return i
+}
+
+// read_start: where acorn starts reading an expression (the comments from there on are its):
+// back over the white space and comments before it.
+fn (b &Builder) read_start(start int) int {
+	src := b.c.src
+	mut i := start
+	for i > 0 {
+		c := src[i - 1]
+		if c in [` `, `\t`, `\n`, `\r`] {
+			i--
+			continue
+		}
+		mut moved := false
+		for cm in b.c.t.comments {
+			if cm.end == i {
+				i = cm.start
+				moved = true
+				break
+			}
+		}
+		if !moved {
+			break
+		}
+	}
 	return i
 }
 
@@ -483,6 +530,11 @@ const es_keys = {
 	'accessor':     Key.accessor
 }
 
+// quiet: TypeScript features are not rejected (see transpiled and opaque).
+fn (b &Builder) quiet() bool {
+	return b.transpiled || b.opaque > 0
+}
+
 fn (mut b Builder) empty() int {
 	return b.c.t.new_node('EmptyStatement', no_pos, no_pos)
 }
@@ -506,13 +558,13 @@ fn (mut b Builder) js(e int) !int {
 			return b.empty()
 		}
 		'TSEnumDeclaration' {
-			if !b.transpiled {
+			if !b.quiet() {
 				return compile_err(e_typescript_invalid_feature('enums'), n.start, n.end)
 			}
 			return b.empty()
 		}
 		'TSModuleDeclaration' {
-			if !b.transpiled {
+			if !b.quiet() {
 				body := b.es.node(e, .body) or { -1 }
 				if body >= 0 {
 					for st in b.es.list(body, .body) or { []int{} } {
@@ -527,7 +579,7 @@ fn (mut b Builder) js(e int) !int {
 			return b.empty()
 		}
 		'TSParameterProperty' {
-			if !b.transpiled && (b.es.flag(e, .readonly) or { false }
+			if !b.quiet() && (b.es.flag(e, .readonly) or { false }
 				|| b.es.string_of(e, .accessibility) or { '' } != '') {
 				return compile_err(e_typescript_invalid_feature('accessibility modifiers on constructor parameters'),
 					n.start, n.end)
@@ -538,6 +590,9 @@ fn (mut b Builder) js(e int) !int {
 			return b.empty()
 		}
 		'Decorator' {
+			if b.quiet() {
+				return b.empty()
+			}
 			return compile_err(e_typescript_invalid_feature('decorators (related TSC proposal is not stage 4 yet)'),
 				n.start, n.end)
 		}
@@ -558,6 +613,15 @@ fn (mut b Builder) js(e int) !int {
 		if value >= 0 && b.es_type(value) == 'TSEmptyBodyFunctionExpression' {
 			// An overload signature: acorn-typescript does not keep it.
 			return b.empty()
+		}
+	}
+	opaque := typ in ['ImportDeclaration', 'ExportDefaultDeclaration', 'ExportAllDeclaration']
+	if opaque {
+		b.opaque++
+	}
+	defer {
+		if opaque {
+			b.opaque--
 		}
 	}
 	mut start := n.start
@@ -596,7 +660,7 @@ fn (mut b Builder) js(e int) !int {
 			b.c.t.set_null(i, .value)
 			continue
 		}
-		if name == 'decorators' && p.kind == .list && b.es.lists[p.idx].len > 0 && !b.transpiled {
+		if name == 'decorators' && p.kind == .list && b.es.lists[p.idx].len > 0 && !b.quiet() {
 			d := b.es.nodes[b.es.lists[p.idx][0]]
 			return compile_err(e_typescript_invalid_feature('decorators (related TSC proposal is not stage 4 yet)'),
 				d.start, d.end)
@@ -671,7 +735,7 @@ fn (mut b Builder) js(e int) !int {
 			b.c.t.set_list(i, .body, kept)
 		}
 		'PropertyDefinition' {
-			if b.c.t.flag(i, .accessor) && !b.transpiled {
+			if b.c.t.flag(i, .accessor) && !b.quiet() {
 				return compile_err(e_typescript_invalid_feature('accessor fields (related TSC proposal is not stage 4 yet)'),
 					start, end)
 			}
