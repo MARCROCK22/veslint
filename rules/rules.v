@@ -680,6 +680,8 @@ pub const vue_no_ref_as_operand = 'vue/no-ref-as-operand'
 pub const vue_no_ref_object_reactivity_loss = 'vue/no-ref-object-reactivity-loss'
 pub const vue_no_setup_props_reactivity_loss = 'vue/no-setup-props-reactivity-loss'
 pub const vue_require_expose = 'vue/require-expose'
+pub const vue_no_side_effects_in_computed_properties = 'vue/no-side-effects-in-computed-properties'
+pub const vue_no_async_in_computed_properties = 'vue/no-async-in-computed-properties'
 pub const names = [no_floating_promises, await_thenable, require_await, return_await,
 	no_misused_promises, no_unsafe_call, no_unsafe_member_access, no_unsafe_return,
 	no_unsafe_assignment, no_unsafe_argument, restrict_template_expressions,
@@ -877,7 +879,8 @@ pub const names = [no_floating_promises, await_thenable, require_await, return_a
 	vue_next_tick_style, vue_valid_next_tick, vue_no_boolean_default,
 	vue_no_required_prop_with_default, vue_require_default_prop, vue_require_valid_default_prop,
 	vue_no_restricted_props, vue_require_typed_ref, vue_no_ref_as_operand,
-	vue_no_ref_object_reactivity_loss, vue_no_setup_props_reactivity_loss, vue_require_expose]
+	vue_no_ref_object_reactivity_loss, vue_no_setup_props_reactivity_loss, vue_require_expose,
+	vue_no_side_effects_in_computed_properties, vue_no_async_in_computed_properties]
 
 // untyped_rules are the ported rules that need no types (`meta.docs.requiresTypeChecking` is false
 // in typescript-eslint; the eslint-plugin-unicorn rules that read the types when the parser has a
@@ -1043,7 +1046,8 @@ pub const untyped_rules = [adjacent_overload_signatures, array_type, class_liter
 	vue_html_comment_indent, vue_no_multi_spaces, vue_block_order, vue_no_lifecycle_after_await,
 	vue_no_watch_after_await, vue_no_expose_after_await, vue_no_restricted_call_after_await,
 	vue_next_tick_style, vue_valid_next_tick, vue_require_typed_ref, vue_no_ref_object_reactivity_loss,
-	vue_no_setup_props_reactivity_loss, vue_require_expose]
+	vue_no_setup_props_reactivity_loss, vue_require_expose, vue_no_side_effects_in_computed_properties,
+	vue_no_async_in_computed_properties]
 
 // needs_types tells whether a rule asks tsgo for the types of the program.
 pub fn needs_types(rule string) bool {
@@ -1718,6 +1722,8 @@ pub const default_options = {
 	vue_no_ref_object_reactivity_loss:               '[]'
 	vue_no_setup_props_reactivity_loss:              '[]'
 	vue_require_expose:                              '[]'
+	vue_no_side_effects_in_computed_properties:      '[]'
+	vue_no_async_in_computed_properties:             '[]'
 }
 
 // Finding is a problem a rule found at a node.
@@ -2549,6 +2555,10 @@ pub fn message(rule string, finding Finding) string {
 		vue_no_ref_object_reactivity_loss { vue_no_ref_object_reactivity_loss_messages }
 		vue_no_setup_props_reactivity_loss { vue_no_setup_props_reactivity_loss_messages }
 		vue_require_expose { vue_require_expose_messages }
+		vue_no_side_effects_in_computed_properties {
+			vue_no_side_effects_in_computed_properties_messages
+		}
+		vue_no_async_in_computed_properties { vue_no_async_in_computed_properties_messages }
 		else { map[string]string{} }
 	}
 	return interpolate(messages[finding.message_id] or { finding.message_id }, finding.data)
@@ -4698,6 +4708,12 @@ fn (mut c Checker) lint_rule(rule string, root C.TSNode, abs_path string, mut st
 		}
 		vue_require_expose {
 			return c.lint_vue_require_expose(root, abs_path, mut stats)!
+		}
+		vue_no_side_effects_in_computed_properties {
+			return c.lint_vue_no_side_effects_in_computed_properties(root, abs_path, mut stats)!
+		}
+		vue_no_async_in_computed_properties {
+			return c.lint_vue_no_async_in_computed_properties(root, abs_path, mut stats)!
 		}
 		else { return error('unknown rule: ${rule}') }
 	}
