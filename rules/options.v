@@ -295,6 +295,8 @@ pub fn check_options(rule string, options []json2.Any) !bool {
 		vue_no_template_shadow { vnts_options(options)! }
 		vue_no_undef_directives { vnud_options(options)! }
 		vue_component_name_in_template_casing { vcnitc_options(options)! }
+		vue_custom_event_name_casing { vcenc_options(options)! }
+		vue_no_restricted_custom_event { vnrce_options(options)! }
 		else { return false }
 	}
 	return true

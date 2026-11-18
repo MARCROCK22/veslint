@@ -198,3 +198,32 @@ fn vue_module_scope(tree &ScopeTree) int {
 	}
 	return -1
 }
+
+// VueTemplateRoots are the ESTree nodes of the template's snippets whose parent is a V* node (a
+// VExpressionContainer, VOnExpression, VForExpression…): in a snippet's EsTree their parent is
+// the wrapper vue-eslint-parser parses them in (`0(…)`), which the rules must not see.
+struct VueTemplateRoots {
+	roots map[u64]bool
+}
+
+// vue_template_roots are the roots of the template's expressions.
+fn (mut c Checker) vue_template_roots() VueTemplateRoots {
+	mut roots := map[u64]bool{}
+	for v in c.vue_template_vnodes() {
+		for child in vue_tnode_children(c.vue.doc, vue_vnode(v)) {
+			if child.kind == .estree {
+				roots[(u64(child.snippet) << 32) | u64(child.es)] = true
+			}
+		}
+	}
+	return VueTemplateRoots{roots}
+}
+
+// parent is the parent of a node of a snippet's EsTree as the template's rules see it: -1 for a
+// root (its parent is a V* node).
+fn (r &VueTemplateRoots) parent(es &estree.EsTree, snippet int, node int) int {
+	if (u64(snippet) << 32) | u64(node) in r.roots {
+		return -1
+	}
+	return es.nodes[node].parent
+}

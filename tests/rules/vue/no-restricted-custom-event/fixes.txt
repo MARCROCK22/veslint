@@ -1,0 +1,6 @@
+tests/rules/vue/no-restricted-custom-event/options/cases.vue:2:25	vue/no-restricted-custom-event	restrictedEvent	Using `bad` event is not allowed.	end	2	30
+tests/rules/vue/no-restricted-custom-event/options/cases.vue:4:25	vue/no-restricted-custom-event	restrictedEvent	No regex events.	end	4	36
+tests/rules/vue/no-restricted-custom-event/options/cases.vue:15:18	vue/no-restricted-custom-event	restrictedEvent	Using `bad` event is not allowed.	end	15	23
+tests/rules/vue/no-restricted-custom-event/options/cases.vue:16:18	vue/no-restricted-custom-event	restrictedEvent	Using `quoted` event is not allowed.	suggestion	instead	Instead, change to `it's "new"`.	348	356	"it\\'s \\"new\\""	end	16	26
+tests/rules/vue/no-restricted-custom-event/options/cases.vue:17:18	vue/no-restricted-custom-event	restrictedEvent	Using `tpl` event is not allowed.	suggestion	instead	Instead, change to `tpl2`.	375	380	`tpl2`	end	17	23
+tests/rules/vue/no-restricted-custom-event/options/cases.vue:21:10	vue/no-restricted-custom-event	restrictedEvent	No regex events.	end	21	21

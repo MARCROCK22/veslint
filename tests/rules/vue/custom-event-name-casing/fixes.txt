@@ -1,0 +1,14 @@
+tests/rules/vue/custom-event-name-casing/cases.vue:3:25	vue/custom-event-name-casing	unexpected	Custom event name 'foo-bar' must be camelCase.	end	3	34
+tests/rules/vue/custom-event-name-casing/cases.vue:4:24	vue/custom-event-name-casing	unexpected	Custom event name 'my-event' must be camelCase.	end	4	34
+tests/rules/vue/custom-event-name-casing/cases.vue:7:25	vue/custom-event-name-casing	unexpected	Custom event name 'update:model-value' must be camelCase.	end	7	45
+tests/rules/vue/custom-event-name-casing/cases.vue:11:6	vue/custom-event-name-casing	unexpected	Custom event name 'setup-event' must be camelCase.	end	11	19
+tests/rules/vue/custom-event-name-casing/cases.vue:13:8	vue/custom-event-name-casing	unexpected	Custom event name 'opt-event' must be camelCase.	end	13	19
+tests/rules/vue/custom-event-name-casing/cases.vue:19:18	vue/custom-event-name-casing	unexpected	Custom event name 'options-event' must be camelCase.	end	19	33
+tests/rules/vue/custom-event-name-casing/cases.vue:21:19	vue/custom-event-name-casing	unexpected	Custom event name 'any-object' must be camelCase.	end	21	31
+tests/rules/vue/custom-event-name-casing/cases.vue:22:18	vue/custom-event-name-casing	unexpected	Custom event name 'tpl-event' must be camelCase.	end	22	29
+tests/rules/vue/custom-event-name-casing/cases.vue:27:10	vue/custom-event-name-casing	unexpected	Custom event name 'setup-ctx-event' must be camelCase.	end	27	27
+tests/rules/vue/custom-event-name-casing/context/cases.vue:8:10	vue/custom-event-name-casing	unexpected	Custom event name 'in-setup' must be camelCase.	end	8	20
+tests/rules/vue/custom-event-name-casing/default-param/cases.vue:4:14	vue/custom-event-name-casing	unexpected	Custom event name 'with-default' must be camelCase.	end	4	28
+tests/rules/vue/custom-event-name-casing/kebab/cases.vue:2:25	vue/custom-event-name-casing	unexpected	Custom event name 'fooBar' must be kebab-case.	end	2	33
+tests/rules/vue/custom-event-name-casing/kebab/cases.vue:9:18	vue/custom-event-name-casing	unexpected	Custom event name 'ctxEvent' must be kebab-case.	end	9	28
+tests/rules/vue/custom-event-name-casing/kebab/cases.vue:11:19	vue/custom-event-name-casing	unexpected	Custom event name 'ctxOpt' must be kebab-case.	end	11	27
