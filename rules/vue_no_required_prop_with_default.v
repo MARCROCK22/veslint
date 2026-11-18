@@ -64,7 +64,7 @@ fn (mut c Checker) vnrpwd_handle(root C.TSNode, t &estree.EsTree, prop VueProp, 
 			return
 		}
 		node := vue_property_value(t, required)
-		if node >= 0 && t.typ(node) == .literal && vx6_literal_truthy(t, node) {
+		if node >= 0 && t.typ(node) == .literal && vue_literal_truthy(t, node) {
 			findings << c.vnrpwd_report(t, prop, fix_replace_range(t.nodes[node].start,
 				t.nodes[node].end, 'false'), autofix)!
 		}

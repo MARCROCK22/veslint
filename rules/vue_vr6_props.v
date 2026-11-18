@@ -325,7 +325,7 @@ fn (mut c Checker) vx6_runtime_kind(target TypeResponse) !string {
 	is_object := target.flags & type_flag_object != 0
 	if (is_object && target.object_flags & vx6_object_flag_array_like != 0)
 		|| (is_object && target.object_flags & vx6_object_flag_class_or_interface != 0
-		&& symbol.parent == 0 && symbol.name in ['Array', 'ReadonlyArray']) {
+			&& symbol.parent == 0 && symbol.name in ['Array', 'ReadonlyArray']) {
 		return 'Array'
 	}
 	if is_object {
@@ -451,19 +451,6 @@ fn vx6_destructure_defaults(t &estree.EsTree, call int) map[string]Vx6Destructur
 	return out
 }
 
-// vx6_literal_truthy is Boolean(literal.value) of a Literal.
-fn vx6_literal_truthy(t &estree.EsTree, literal int) bool {
-	value := t.get(literal, .value)
-	return match value {
-		bool { value }
-		string { value != '' }
-		f64 { value != 0 && value == value }
-		estree.BigIntValue { value.digits.trim_left('0') != '' }
-		estree.RegExpValue { true }
-		else { false }
-	}
-}
-
 // vx6_define_props_calls are the defineProps calls of `<script setup>` (onDefinePropsEnter).
 fn (mut c Checker) vx6_define_props_calls(t &estree.EsTree) []int {
 	return c.vue_macros_named(t, 'defineProps')
@@ -513,7 +500,7 @@ fn (mut c Checker) vx6_is_ref_object_type(t &estree.EsTree, node int) bool {
 	for property in c.properties(typ) or { return false } {
 		if property.name.starts_with('__@RefSymbol@')
 			|| (property.name.len > 1 && property.name[0] == 0xfe
-			&& property.name[1..].starts_with('@RefSymbol@')) {
+				&& property.name[1..].starts_with('@RefSymbol@')) {
 			return true
 		}
 	}
