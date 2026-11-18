@@ -26,8 +26,8 @@ fn (mut c Checker) lint_svelte_no_unused_class_name(root C.TSNode, abs_path stri
 		return []
 	}
 	doc := c.svelte.doc
-	mut used := [][]int{} // [element, attribute] with its classes in `names`
-	mut names := []string{}
+	mut used := [][]int{} // [element, attribute] with its classes in `class_names`
+	mut class_names := []string{}
 	for el in c.sv_snodes_of(.element) {
 		n := doc.nodes[el]
 		if n.kind != 'html' || n.start_tag < 0 {
@@ -36,7 +36,7 @@ fn (mut c Checker) lint_svelte_no_unused_class_name(root C.TSNode, abs_path stri
 		for a in doc.nodes[n.start_tag].attributes {
 			for class_name in c.svaf_classes_in_attribute(a) {
 				used << [n.start_tag]
-				names << class_name
+				class_names << class_name
 			}
 		}
 	}
@@ -49,7 +49,7 @@ fn (mut c Checker) lint_svelte_no_unused_class_name(root C.TSNode, abs_path stri
 		snucn_classes_of_node(&ctx.root, 0, mut in_style)
 	}
 	mut findings := []Finding{}
-	for k, class_name in names {
+	for k, class_name in class_names {
 		if allowed.any(it.test(class_name)) || class_name in in_style {
 			continue
 		}
