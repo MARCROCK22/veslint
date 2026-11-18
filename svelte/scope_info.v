@@ -450,7 +450,13 @@ fn (mut c Conv) reactive_scope() {
 			continue
 		}
 		id := ref.identifier
-		assign := c.doc.es.nodes[id].parent
+		// The assignment whose left side (a name or a pattern) holds the identifier (the
+		// parent of the reference's writeExpr).
+		mut assign := c.doc.es.nodes[id].parent
+		for assign >= 0 && c.doc.es.nodes[assign].typ in [.property, .object_pattern, .array_pattern,
+			.rest_element, .assignment_pattern] {
+			assign = c.doc.es.nodes[assign].parent
+		}
 		if assign < 0 || c.doc.es.nodes[assign].typ != .assignment_expression {
 			continue
 		}
