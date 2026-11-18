@@ -1,0 +1,5 @@
+tests/rules/vue/require-typed-ref/cases.vue:3:11	vue/require-typed-ref	noType	Specify type parameter for `ref` function, otherwise created variable will not be typechecked.	end	3	16
+tests/rules/vue/require-typed-ref/cases.vue:4:11	vue/require-typed-ref	noType	Specify type parameter for `ref` function, otherwise created variable will not be typechecked.	end	4	20
+tests/rules/vue/require-typed-ref/cases.vue:5:11	vue/require-typed-ref	noType	Specify type parameter for `shallowRef` function, otherwise created variable will not be typechecked.	end	5	32
+tests/rules/vue/require-typed-ref/cases.vue:14:18	vue/require-typed-ref	noType	Specify type parameter for `ref` function, otherwise created variable will not be typechecked.	end	14	23
+tests/rules/vue/require-typed-ref/plain/cases.ts:2:18	vue/require-typed-ref	noType	Specify type parameter for `ref` function, otherwise created variable will not be typechecked.	end	2	23

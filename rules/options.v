@@ -324,6 +324,7 @@ pub fn check_options(rule string, options []json2.Any) !bool {
 		vue_next_tick_style { vue_next_tick_style_options(options)! }
 		vue_no_boolean_default { vue_no_boolean_default_options(options)! }
 		vue_no_required_prop_with_default { vue_no_required_prop_with_default_options(options)! }
+		vue_no_restricted_props { vue_no_restricted_props_options(options)! }
 		else { return false }
 	}
 	return true
