@@ -1,0 +1,8 @@
+tests/rules/vue/block-order/bad-selector/cases.vue:0:1	vue/block-order	error	Unknown combinator: >>.
+tests/rules/vue/block-order/cases.vue:4:1	vue/block-order	unexpected	'<template>' should be above '<style>' on line 1.
+tests/rules/vue/block-order/cases.vue:7:1	vue/block-order	unexpected	'<script setup lang=ts>' should be above '<style>' on line 1.
+tests/rules/vue/block-order/custom/cases.vue:4:1	vue/block-order	unexpected	'<template>' should be above '<i18n lang=json>' on line 1.
+tests/rules/vue/block-order/custom/cases.vue:7:1	vue/block-order	unexpected	'<script lang=ts setup>' should be above '<template>' on line 4.
+tests/rules/vue/block-order/custom/cases.vue:10:1	vue/block-order	unexpected	'<script lang=ts>' should be above '<script lang=ts setup>' on line 7.
+tests/rules/vue/block-order/custom/cases.vue:13:1	vue/block-order	unexpected	'<style scoped>' should be above '<i18n lang=json>' on line 1.
+tests/rules/vue/block-order/custom/cases.vue:16:1	vue/block-order	unexpected	'<docs>' should be above '<i18n lang=json>' on line 1.

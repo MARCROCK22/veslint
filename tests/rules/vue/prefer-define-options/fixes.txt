@@ -1,0 +1,3 @@
+tests/rules/vue/prefer-define-options/cases.vue:2:1	vue/prefer-define-options	preferDefineOptions	Use `defineOptions` instead of default export.	fix	0	162	\n<script setup lang="ts">\nimport { ref } from 'vue'\nimport type { Ref } from 'vue'\ndefineOptions({ name: 'Foo', inheritAttrs: false })\n	end	2	52
+tests/rules/vue/prefer-define-options/defined/cases.vue:2:1	vue/prefer-define-options	preferDefineOptions	Use `defineOptions` instead of default export.	end	2	31
+tests/rules/vue/prefer-define-options/mixed/cases.vue:3:3	vue/prefer-define-options	preferDefineOptions	Use `defineOptions` instead of default export.	fix	35	110	\n</script>\n<script setup lang="ts">\ndefineOptions({\n    name: 'Bar',\n  })\n	end	5	4

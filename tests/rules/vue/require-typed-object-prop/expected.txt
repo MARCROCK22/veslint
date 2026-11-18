@@ -1,0 +1,9 @@
+tests/rules/vue/require-typed-object-prop/cases.ts:2:31	vue/require-typed-object-prop	expectedTypeAnnotation	Expected type annotation on object prop.
+tests/rules/vue/require-typed-object-prop/cases.vue:5:8	vue/require-typed-object-prop	expectedTypeAnnotation	Expected type annotation on object prop.
+tests/rules/vue/require-typed-object-prop/cases.vue:6:8	vue/require-typed-object-prop	expectedTypeAnnotation	Expected type annotation on object prop.
+tests/rules/vue/require-typed-object-prop/cases.vue:7:9	vue/require-typed-object-prop	expectedTypeAnnotation	Expected type annotation on object prop.
+tests/rules/vue/require-typed-object-prop/cases.vue:7:25	vue/require-typed-object-prop	expectedTypeAnnotation	Expected type annotation on object prop.
+tests/rules/vue/require-typed-object-prop/cases.vue:8:16	vue/require-typed-object-prop	expectedTypeAnnotation	Expected type annotation on object prop.
+tests/rules/vue/require-typed-object-prop/cases.vue:9:17	vue/require-typed-object-prop	expectedTypeAnnotation	Expected type annotation on object prop.
+tests/rules/vue/require-typed-object-prop/setup/cases.vue:2:18	vue/require-typed-object-prop	expectedTypeAnnotation	Expected type annotation on object prop.
+tests/rules/vue/require-typed-object-prop/setup/cases.vue:2:37	vue/require-typed-object-prop	expectedTypeAnnotation	Expected type annotation on object prop.

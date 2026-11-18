@@ -1,0 +1,6 @@
+tests/rules/vue/valid-next-tick/cases.vue:11:5	vue/valid-next-tick	missingCallbackOrAwait	Await the Promise returned by `nextTick` or pass a callback function.
+tests/rules/vue/valid-next-tick/cases.vue:12:10	vue/valid-next-tick	shouldBeFunction	`nextTick` is a function.
+tests/rules/vue/valid-next-tick/cases.vue:14:5	vue/valid-next-tick	tooManyParameters	`nextTick` expects zero or one parameters.
+tests/rules/vue/valid-next-tick/cases.vue:15:11	vue/valid-next-tick	eitherAwaitOrCallback	Either await the Promise or pass a callback function to `nextTick`.
+tests/rules/vue/valid-next-tick/cases.vue:20:43	vue/valid-next-tick	shouldBeFunction	`nextTick` is a function.
+tests/rules/vue/valid-next-tick/define/cases.ts:7:5	vue/valid-next-tick	shouldBeFunction	`nextTick` is a function.

@@ -1,0 +1,6 @@
+<template>
+  <!--
+    multi
+    line
+  -->
+</template>

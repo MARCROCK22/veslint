@@ -1,0 +1,9 @@
+tests/rules/vue/html-comment-content-newline/always/cases.vue:2:7	vue/html-comment-content-newline	expectedAfterHTMLCommentOpen	Expected line break after '<!--'.
+tests/rules/vue/html-comment-content-newline/always/cases.vue:2:14	vue/html-comment-content-newline	expectedBeforeHTMLCommentOpen	Expected line break before '-->'.
+tests/rules/vue/html-comment-content-newline/always/cases.vue:6:10	vue/html-comment-content-newline	expectedAfterExceptionBlock	Expected line break after exception block.
+tests/rules/vue/html-comment-content-newline/always/cases.vue:6:15	vue/html-comment-content-newline	expectedBeforeExceptionBlock	Expected line break before exception block.
+tests/rules/vue/html-comment-content-newline/cases.vue:5:9	vue/html-comment-content-newline	expectedBeforeHTMLCommentOpen	Expected line break before '-->'.
+tests/rules/vue/html-comment-content-newline/cases.vue:6:7	vue/html-comment-content-newline	expectedAfterHTMLCommentOpen	Expected line break after '<!--'.
+tests/rules/vue/html-comment-content-newline/never/cases.vue:2:7	vue/html-comment-content-newline	unexpectedAfterHTMLCommentOpen	Unexpected line breaks after '<!--'.
+tests/rules/vue/html-comment-content-newline/never/cases.vue:4:9	vue/html-comment-content-newline	unexpectedBeforeHTMLCommentOpen	Unexpected line breaks before '-->'.
+tests/rules/vue/html-comment-content-newline/outside/cases.vue:7:8	vue/html-comment-content-newline	expectedBeforeHTMLCommentOpen	Expected line break before '-->'.

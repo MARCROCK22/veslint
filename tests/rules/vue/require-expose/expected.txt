@@ -1,0 +1,5 @@
+tests/rules/vue/require-expose/cases.vue:2:16	vue/require-expose	requireExpose	The public properties of the component must be explicitly declared using `expose`. If the component does not have public properties, declare it empty.
+tests/rules/vue/require-expose/others/cases.ts:2:38	vue/require-expose	requireExpose	The public properties of the component must be explicitly declared using `expose`. If the component does not have public properties, declare it empty.
+tests/rules/vue/require-expose/others/cases.ts:3:39	vue/require-expose	requireExpose	The public properties of the component must be explicitly declared using `expose`. If the component does not have public properties, declare it empty.
+tests/rules/vue/require-expose/others/cases.ts:21:42	vue/require-expose	requireExpose	The public properties of the component must be explicitly declared using `expose`. If the component does not have public properties, declare it empty.
+tests/rules/vue/require-expose/others/cases.ts:23:44	vue/require-expose	requireExpose	The public properties of the component must be explicitly declared using `expose`. If the component does not have public properties, declare it empty.

@@ -680,6 +680,54 @@ pub const vue_no_mutating_props = 'vue/no-mutating-props'
 pub const vue_no_use_computed_property_like_method = 'vue/no-use-computed-property-like-method'
 pub const vue_no_unused_properties = 'vue/no-unused-properties'
 pub const vue_no_undef_properties = 'vue/no-undef-properties'
+pub const vue_prefer_define_options = 'vue/prefer-define-options'
+pub const vue_multi_word_component_names = 'vue/multi-word-component-names'
+pub const vue_no_multiple_template_root = 'vue/no-multiple-template-root'
+pub const vue_no_potential_component_option_typo = 'vue/no-potential-component-option-typo'
+pub const vue_no_deprecated_model_definition = 'vue/no-deprecated-model-definition'
+pub const vue_match_component_file_name = 'vue/match-component-file-name'
+pub const vue_enforce_style_attribute = 'vue/enforce-style-attribute'
+pub const vue_require_direct_export = 'vue/require-direct-export'
+pub const vue_no_restricted_component_names = 'vue/no-restricted-component-names'
+pub const vue_no_restricted_component_options = 'vue/no-restricted-component-options'
+pub const vue_prefer_import_from_vue = 'vue/prefer-import-from-vue'
+pub const vue_new_line_between_multi_line_property = 'vue/new-line-between-multi-line-property'
+pub const vue_component_api_style = 'vue/component-api-style'
+pub const vue_no_reserved_component_names = 'vue/no-reserved-component-names'
+pub const vue_require_typed_object_prop = 'vue/require-typed-object-prop'
+pub const vue_return_in_emits_validator = 'vue/return-in-emits-validator'
+pub const vue_valid_define_props = 'vue/valid-define-props'
+pub const vue_valid_define_emits = 'vue/valid-define-emits'
+pub const vue_valid_define_options = 'vue/valid-define-options'
+pub const vue_require_prop_comment = 'vue/require-prop-comment'
+pub const vue_define_macros_order = 'vue/define-macros-order'
+pub const vue_order_in_components = 'vue/order-in-components'
+pub const vue_padding_lines_in_component_definition = 'vue/padding-lines-in-component-definition'
+pub const vue_sort_keys = 'vue/sort-keys'
+pub const vue_html_comment_content_spacing = 'vue/html-comment-content-spacing'
+pub const vue_html_comment_content_newline = 'vue/html-comment-content-newline'
+pub const vue_html_comment_indent = 'vue/html-comment-indent'
+pub const vue_no_multi_spaces = 'vue/no-multi-spaces'
+pub const vue_block_order = 'vue/block-order'
+pub const vue_no_lifecycle_after_await = 'vue/no-lifecycle-after-await'
+pub const vue_no_watch_after_await = 'vue/no-watch-after-await'
+pub const vue_no_expose_after_await = 'vue/no-expose-after-await'
+pub const vue_no_restricted_call_after_await = 'vue/no-restricted-call-after-await'
+pub const vue_next_tick_style = 'vue/next-tick-style'
+pub const vue_valid_next_tick = 'vue/valid-next-tick'
+pub const vue_no_boolean_default = 'vue/no-boolean-default'
+pub const vue_no_required_prop_with_default = 'vue/no-required-prop-with-default'
+pub const vue_require_default_prop = 'vue/require-default-prop'
+pub const vue_require_valid_default_prop = 'vue/require-valid-default-prop'
+pub const vue_no_restricted_props = 'vue/no-restricted-props'
+pub const vue_require_typed_ref = 'vue/require-typed-ref'
+pub const vue_no_ref_as_operand = 'vue/no-ref-as-operand'
+pub const vue_no_ref_object_reactivity_loss = 'vue/no-ref-object-reactivity-loss'
+pub const vue_no_setup_props_reactivity_loss = 'vue/no-setup-props-reactivity-loss'
+pub const vue_require_expose = 'vue/require-expose'
+pub const vue_no_side_effects_in_computed_properties = 'vue/no-side-effects-in-computed-properties'
+pub const vue_no_async_in_computed_properties = 'vue/no-async-in-computed-properties'
+pub const vue_no_dupe_keys = 'vue/no-dupe-keys'
 pub const names = [no_floating_promises, await_thenable, require_await, return_await,
 	no_misused_promises, no_unsafe_call, no_unsafe_member_access, no_unsafe_return,
 	no_unsafe_assignment, no_unsafe_argument, restrict_template_expressions,
@@ -877,7 +925,23 @@ pub const names = [no_floating_promises, await_thenable, require_await, return_a
 	vue_no_restricted_custom_event, vue_no_unused_emit_declarations, vue_prefer_single_event_payload,
 	vue_no_shadow_native_events, vue_require_explicit_emits, vue_no_undef_components,
 	vue_v_on_handler_style, vue_no_mutating_props, vue_no_use_computed_property_like_method,
-	vue_no_unused_properties, vue_no_undef_properties]
+	vue_no_unused_properties, vue_no_undef_properties,
+	vue_prefer_define_options, vue_multi_word_component_names, vue_no_multiple_template_root,
+	vue_no_potential_component_option_typo, vue_no_deprecated_model_definition,
+	vue_match_component_file_name, vue_enforce_style_attribute, vue_require_direct_export,
+	vue_no_restricted_component_names, vue_no_restricted_component_options, vue_prefer_import_from_vue,
+	vue_new_line_between_multi_line_property, vue_component_api_style, vue_no_reserved_component_names,
+	vue_require_typed_object_prop, vue_return_in_emits_validator, vue_valid_define_props,
+	vue_valid_define_emits, vue_valid_define_options, vue_require_prop_comment,
+	vue_define_macros_order, vue_order_in_components, vue_padding_lines_in_component_definition,
+	vue_sort_keys, vue_html_comment_content_spacing, vue_html_comment_content_newline,
+	vue_html_comment_indent, vue_no_multi_spaces, vue_block_order, vue_no_lifecycle_after_await,
+	vue_no_watch_after_await, vue_no_expose_after_await, vue_no_restricted_call_after_await,
+	vue_next_tick_style, vue_valid_next_tick, vue_no_boolean_default,
+	vue_no_required_prop_with_default, vue_require_default_prop, vue_require_valid_default_prop,
+	vue_no_restricted_props, vue_require_typed_ref, vue_no_ref_as_operand,
+	vue_no_ref_object_reactivity_loss, vue_no_setup_props_reactivity_loss, vue_require_expose,
+	vue_no_side_effects_in_computed_properties, vue_no_async_in_computed_properties, vue_no_dupe_keys]
 
 // untyped_rules are the ported rules that need no types (`meta.docs.requiresTypeChecking` is false
 // in typescript-eslint; the eslint-plugin-unicorn rules that read the types when the parser has a
@@ -1042,7 +1106,21 @@ pub const untyped_rules = [adjacent_overload_signatures, array_type, class_liter
 	vue_prefer_use_template_ref, vue_no_duplicate_attr_inheritance, vue_no_unused_components,
 	vue_no_undef_directives, vue_component_name_in_template_casing, vue_no_unused_refs,
 	vue_custom_event_name_casing, vue_no_restricted_custom_event, vue_no_undef_components,
-	vue_v_on_handler_style, vue_no_use_computed_property_like_method]
+	vue_v_on_handler_style, vue_no_use_computed_property_like_method,
+	vue_prefer_define_options, vue_multi_word_component_names, vue_no_multiple_template_root,
+	vue_no_potential_component_option_typo, vue_no_deprecated_model_definition,
+	vue_match_component_file_name, vue_enforce_style_attribute, vue_require_direct_export,
+	vue_no_restricted_component_names, vue_no_restricted_component_options, vue_prefer_import_from_vue,
+	vue_new_line_between_multi_line_property, vue_component_api_style, vue_no_reserved_component_names,
+	vue_require_typed_object_prop, vue_return_in_emits_validator, vue_valid_define_props,
+	vue_valid_define_emits, vue_valid_define_options, vue_require_prop_comment,
+	vue_define_macros_order, vue_order_in_components, vue_padding_lines_in_component_definition,
+	vue_sort_keys, vue_html_comment_content_spacing, vue_html_comment_content_newline,
+	vue_html_comment_indent, vue_no_multi_spaces, vue_block_order, vue_no_lifecycle_after_await,
+	vue_no_watch_after_await, vue_no_expose_after_await, vue_no_restricted_call_after_await,
+	vue_next_tick_style, vue_valid_next_tick, vue_require_typed_ref, vue_no_ref_object_reactivity_loss,
+	vue_no_setup_props_reactivity_loss, vue_require_expose, vue_no_side_effects_in_computed_properties,
+	vue_no_async_in_computed_properties]
 
 // needs_types tells whether a rule asks tsgo for the types of the program.
 pub fn needs_types(rule string) bool {
@@ -1717,6 +1795,54 @@ pub const default_options = {
 	vue_no_use_computed_property_like_method:        '[]'
 	vue_no_unused_properties:                        '[]'
 	vue_no_undef_properties:                         '[]'
+	vue_prefer_define_options:                       '[]'
+	vue_multi_word_component_names:                  '[]'
+	vue_no_multiple_template_root:                   '[]'
+	vue_no_potential_component_option_typo:          '[]'
+	vue_no_deprecated_model_definition:              '[]'
+	vue_match_component_file_name:                   '[]'
+	vue_enforce_style_attribute:                     '[]'
+	vue_require_direct_export:                       '[]'
+	vue_no_restricted_component_names:               '[]'
+	vue_no_restricted_component_options:             '[]'
+	vue_prefer_import_from_vue:                      '[]'
+	vue_new_line_between_multi_line_property:        '[]'
+	vue_component_api_style:                         '[]'
+	vue_no_reserved_component_names:                 '[]'
+	vue_require_typed_object_prop:                   '[]'
+	vue_return_in_emits_validator:                   '[]'
+	vue_valid_define_props:                          '[]'
+	vue_valid_define_emits:                          '[]'
+	vue_valid_define_options:                        '[]'
+	vue_require_prop_comment:                        '[]'
+	vue_define_macros_order:                         '[]'
+	vue_order_in_components:                         '[]'
+	vue_padding_lines_in_component_definition:       '[]'
+	vue_sort_keys:                                   '[]'
+	vue_html_comment_content_spacing:                '[]'
+	vue_html_comment_content_newline:                '[]'
+	vue_html_comment_indent:                         '[]'
+	vue_no_multi_spaces:                             '[]'
+	vue_block_order:                                 '[]'
+	vue_no_lifecycle_after_await:                    '[]'
+	vue_no_watch_after_await:                        '[]'
+	vue_no_expose_after_await:                       '[]'
+	vue_no_restricted_call_after_await:              '[]'
+	vue_next_tick_style:                             '[]'
+	vue_valid_next_tick:                             '[]'
+	vue_no_boolean_default:                          '[]'
+	vue_no_required_prop_with_default:               '[]'
+	vue_require_default_prop:                        '[]'
+	vue_require_valid_default_prop:                  '[]'
+	vue_no_restricted_props:                         '[]'
+	vue_require_typed_ref:                           '[]'
+	vue_no_ref_as_operand:                           '[]'
+	vue_no_ref_object_reactivity_loss:               '[]'
+	vue_no_setup_props_reactivity_loss:              '[]'
+	vue_require_expose:                              '[]'
+	vue_no_side_effects_in_computed_properties:      '[]'
+	vue_no_async_in_computed_properties:             '[]'
+	vue_no_dupe_keys:                                '[]'
 }
 
 // Finding is a problem a rule found at a node.
@@ -1759,6 +1885,9 @@ pub:
 	line_loc         bool
 	fixed_end_line   int
 	fixed_end_column int
+	// The report's `loc` is a line and a column without an end (`{ line: 0, column: 0 }`, a
+	// selector error of vue/block-order): the line has no end with --fixes.
+	no_end bool
 }
 
 // problem_rule is the `rule` of the problems ESLint reports without a rule (`ruleId: null`).
@@ -2559,6 +2688,60 @@ pub fn message(rule string, finding Finding) string {
 		}
 		vue_no_unused_properties { vue_no_unused_properties_messages }
 		vue_no_undef_properties { vue_no_undef_properties_messages }
+		vue_prefer_define_options { vue_prefer_define_options_messages }
+		vue_multi_word_component_names { vue_multi_word_component_names_messages }
+		vue_no_multiple_template_root { vue_no_multiple_template_root_messages }
+		vue_no_potential_component_option_typo { vue_no_potential_component_option_typo_messages }
+		vue_no_deprecated_model_definition { vue_no_deprecated_model_definition_messages }
+		vue_match_component_file_name { vue_match_component_file_name_messages }
+		vue_enforce_style_attribute { vue_enforce_style_attribute_messages }
+		vue_require_direct_export { vue_require_direct_export_messages }
+		vue_no_restricted_component_names { vue_no_restricted_component_names_messages }
+		vue_no_restricted_component_options { vue_no_restricted_component_options_messages }
+		vue_prefer_import_from_vue { vue_prefer_import_from_vue_messages }
+		vue_new_line_between_multi_line_property {
+			vue_new_line_between_multi_line_property_messages
+		}
+		vue_component_api_style { vue_component_api_style_messages }
+		vue_no_reserved_component_names { vue_no_reserved_component_names_messages }
+		vue_require_typed_object_prop { vue_require_typed_object_prop_messages }
+		vue_return_in_emits_validator { vue_return_in_emits_validator_messages }
+		vue_valid_define_props { vue_valid_define_props_messages }
+		vue_valid_define_emits { vue_valid_define_emits_messages }
+		vue_valid_define_options { vue_valid_define_options_messages }
+		vue_require_prop_comment { vue_require_prop_comment_messages }
+		vue_define_macros_order { vue_define_macros_order_messages }
+		vue_order_in_components { vue_order_in_components_messages }
+		vue_padding_lines_in_component_definition {
+			vue_padding_lines_in_component_definition_messages
+		}
+		vue_sort_keys { vue_sort_keys_messages }
+		vue_html_comment_content_spacing { vue_html_comment_content_spacing_messages }
+		vue_html_comment_content_newline { vue_html_comment_content_newline_messages }
+		vue_html_comment_indent { vue_html_comment_indent_messages }
+		vue_no_multi_spaces { vue_no_multi_spaces_messages }
+		vue_block_order { vue_block_order_messages }
+		vue_no_lifecycle_after_await { vue_no_lifecycle_after_await_messages }
+		vue_no_watch_after_await { vue_no_watch_after_await_messages }
+		vue_no_expose_after_await { vue_no_expose_after_await_messages }
+		vue_no_restricted_call_after_await { vue_no_restricted_call_after_await_messages }
+		vue_next_tick_style { vue_next_tick_style_messages }
+		vue_valid_next_tick { vue_valid_next_tick_messages }
+		vue_no_boolean_default { vue_no_boolean_default_messages }
+		vue_no_required_prop_with_default { vue_no_required_prop_with_default_messages }
+		vue_require_default_prop { vue_require_default_prop_messages }
+		vue_require_valid_default_prop { vue_require_valid_default_prop_messages }
+		vue_no_restricted_props { vue_no_restricted_props_messages }
+		vue_require_typed_ref { vue_require_typed_ref_messages }
+		vue_no_ref_as_operand { vue_no_ref_as_operand_messages }
+		vue_no_ref_object_reactivity_loss { vue_no_ref_object_reactivity_loss_messages }
+		vue_no_setup_props_reactivity_loss { vue_no_setup_props_reactivity_loss_messages }
+		vue_require_expose { vue_require_expose_messages }
+		vue_no_side_effects_in_computed_properties {
+			vue_no_side_effects_in_computed_properties_messages
+		}
+		vue_no_async_in_computed_properties { vue_no_async_in_computed_properties_messages }
+		vue_no_dupe_keys { vue_no_dupe_keys_messages }
 		else { map[string]string{} }
 	}
 	return interpolate(messages[finding.message_id] or { finding.message_id }, finding.data)
@@ -4708,6 +4891,150 @@ fn (mut c Checker) lint_rule(rule string, root C.TSNode, abs_path string, mut st
 		}
 		vue_no_undef_properties {
 			return c.lint_vue_no_undef_properties(root, abs_path, mut stats)!
+		}
+		vue_prefer_define_options {
+			return c.lint_vue_prefer_define_options(root, abs_path, mut stats)!
+		}
+		vue_multi_word_component_names {
+			return c.lint_vue_multi_word_component_names(root, abs_path, mut stats)!
+		}
+		vue_no_multiple_template_root {
+			return c.lint_vue_no_multiple_template_root(root, abs_path, mut stats)!
+		}
+		vue_no_potential_component_option_typo {
+			return c.lint_vue_no_potential_component_option_typo(root, abs_path, mut stats)!
+		}
+		vue_no_deprecated_model_definition {
+			return c.lint_vue_no_deprecated_model_definition(root, abs_path, mut stats)!
+		}
+		vue_match_component_file_name {
+			return c.lint_vue_match_component_file_name(root, abs_path, mut stats)!
+		}
+		vue_enforce_style_attribute {
+			return c.lint_vue_enforce_style_attribute(root, abs_path, mut stats)!
+		}
+		vue_require_direct_export {
+			return c.lint_vue_require_direct_export(root, abs_path, mut stats)!
+		}
+		vue_no_restricted_component_names {
+			return c.lint_vue_no_restricted_component_names(root, abs_path, mut stats)!
+		}
+		vue_no_restricted_component_options {
+			return c.lint_vue_no_restricted_component_options(root, abs_path, mut stats)!
+		}
+		vue_prefer_import_from_vue {
+			return c.lint_vue_prefer_import_from_vue(root, abs_path, mut stats)!
+		}
+		vue_new_line_between_multi_line_property {
+			return c.lint_vue_new_line_between_multi_line_property(root, abs_path, mut stats)!
+		}
+		vue_component_api_style {
+			return c.lint_vue_component_api_style(root, abs_path, mut stats)!
+		}
+		vue_no_reserved_component_names {
+			return c.lint_vue_no_reserved_component_names(root, abs_path, mut stats)!
+		}
+		vue_require_typed_object_prop {
+			return c.lint_vue_require_typed_object_prop(root, abs_path, mut stats)!
+		}
+		vue_return_in_emits_validator {
+			return c.lint_vue_return_in_emits_validator(root, abs_path, mut stats)!
+		}
+		vue_valid_define_props {
+			return c.lint_vue_valid_define_props(root, abs_path, mut stats)!
+		}
+		vue_valid_define_emits {
+			return c.lint_vue_valid_define_emits(root, abs_path, mut stats)!
+		}
+		vue_valid_define_options {
+			return c.lint_vue_valid_define_options(root, abs_path, mut stats)!
+		}
+		vue_require_prop_comment {
+			return c.lint_vue_require_prop_comment(root, abs_path, mut stats)!
+		}
+		vue_define_macros_order {
+			return c.lint_vue_define_macros_order(root, abs_path, mut stats)!
+		}
+		vue_order_in_components {
+			return c.lint_vue_order_in_components(root, abs_path, mut stats)!
+		}
+		vue_padding_lines_in_component_definition {
+			return c.lint_vue_padding_lines_in_component_definition(root, abs_path, mut stats)!
+		}
+		vue_sort_keys {
+			return c.lint_vue_sort_keys(root, abs_path, mut stats)!
+		}
+		vue_html_comment_content_spacing {
+			return c.lint_vue_html_comment_content_spacing(root, abs_path, mut stats)!
+		}
+		vue_html_comment_content_newline {
+			return c.lint_vue_html_comment_content_newline(root, abs_path, mut stats)!
+		}
+		vue_html_comment_indent {
+			return c.lint_vue_html_comment_indent(root, abs_path, mut stats)!
+		}
+		vue_no_multi_spaces {
+			return c.lint_vue_no_multi_spaces(root, abs_path, mut stats)!
+		}
+		vue_block_order {
+			return c.lint_vue_block_order(root, abs_path, mut stats)!
+		}
+		vue_no_lifecycle_after_await {
+			return c.lint_vue_no_lifecycle_after_await(root, abs_path, mut stats)!
+		}
+		vue_no_watch_after_await {
+			return c.lint_vue_no_watch_after_await(root, abs_path, mut stats)!
+		}
+		vue_no_expose_after_await {
+			return c.lint_vue_no_expose_after_await(root, abs_path, mut stats)!
+		}
+		vue_no_restricted_call_after_await {
+			return c.lint_vue_no_restricted_call_after_await(root, abs_path, mut stats)!
+		}
+		vue_next_tick_style {
+			return c.lint_vue_next_tick_style(root, abs_path, mut stats)!
+		}
+		vue_valid_next_tick {
+			return c.lint_vue_valid_next_tick(root, abs_path, mut stats)!
+		}
+		vue_no_boolean_default {
+			return c.lint_vue_no_boolean_default(root, abs_path, mut stats)!
+		}
+		vue_no_required_prop_with_default {
+			return c.lint_vue_no_required_prop_with_default(root, abs_path, mut stats)!
+		}
+		vue_require_default_prop {
+			return c.lint_vue_require_default_prop(root, abs_path, mut stats)!
+		}
+		vue_require_valid_default_prop {
+			return c.lint_vue_require_valid_default_prop(root, abs_path, mut stats)!
+		}
+		vue_no_restricted_props {
+			return c.lint_vue_no_restricted_props(root, abs_path, mut stats)!
+		}
+		vue_require_typed_ref {
+			return c.lint_vue_require_typed_ref(root, abs_path, mut stats)!
+		}
+		vue_no_ref_as_operand {
+			return c.lint_vue_no_ref_as_operand(root, abs_path, mut stats)!
+		}
+		vue_no_ref_object_reactivity_loss {
+			return c.lint_vue_no_ref_object_reactivity_loss(root, abs_path, mut stats)!
+		}
+		vue_no_setup_props_reactivity_loss {
+			return c.lint_vue_no_setup_props_reactivity_loss(root, abs_path, mut stats)!
+		}
+		vue_require_expose {
+			return c.lint_vue_require_expose(root, abs_path, mut stats)!
+		}
+		vue_no_side_effects_in_computed_properties {
+			return c.lint_vue_no_side_effects_in_computed_properties(root, abs_path, mut stats)!
+		}
+		vue_no_async_in_computed_properties {
+			return c.lint_vue_no_async_in_computed_properties(root, abs_path, mut stats)!
+		}
+		vue_no_dupe_keys {
+			return c.lint_vue_no_dupe_keys(root, abs_path, mut stats)!
 		}
 		else { return error('unknown rule: ${rule}') }
 	}

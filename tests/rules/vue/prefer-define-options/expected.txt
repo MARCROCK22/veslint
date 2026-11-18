@@ -1,0 +1,3 @@
+tests/rules/vue/prefer-define-options/cases.vue:2:1	vue/prefer-define-options	preferDefineOptions	Use `defineOptions` instead of default export.
+tests/rules/vue/prefer-define-options/defined/cases.vue:2:1	vue/prefer-define-options	preferDefineOptions	Use `defineOptions` instead of default export.
+tests/rules/vue/prefer-define-options/mixed/cases.vue:3:3	vue/prefer-define-options	preferDefineOptions	Use `defineOptions` instead of default export.

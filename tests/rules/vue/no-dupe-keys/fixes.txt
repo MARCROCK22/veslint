@@ -1,0 +1,10 @@
+tests/rules/vue/no-dupe-keys/cases.vue:5:5	vue/no-dupe-keys	duplicateKey	Duplicate key 'a'. May cause name collision in script or template tag.	end	5	6
+tests/rules/vue/no-dupe-keys/cases.vue:10:14	vue/no-dupe-keys	duplicateKey	Duplicate key 'b'. May cause name collision in script or template tag.	end	10	15
+tests/rules/vue/no-dupe-keys/cases.vue:12:14	vue/no-dupe-keys	duplicateKey	Duplicate key 'c'. May cause name collision in script or template tag.	end	12	15
+tests/rules/vue/no-dupe-keys/destructure/cases.vue:3:7	vue/no-dupe-keys	duplicateKey	Duplicate key 'b'. May cause name collision in script or template tag.	end	3	12
+tests/rules/vue/no-dupe-keys/groups/cases.ts:4:10	vue/no-dupe-keys	duplicateKey	Duplicate key 'd'. May cause name collision in script or template tag.	end	4	11
+tests/rules/vue/no-dupe-keys/setup/cases.vue:3:10	vue/no-dupe-keys	duplicateKey	Duplicate key 'e'. May cause name collision in script or template tag.	end	3	11
+tests/rules/vue/no-dupe-keys/setup/cases.vue:7:7	vue/no-dupe-keys	duplicateKey	Duplicate key 'c'. May cause name collision in script or template tag.	end	7	18
+tests/rules/vue/no-dupe-keys/setup/cases.vue:8:1	vue/no-dupe-keys	duplicateKey	Duplicate key 'd'. May cause name collision in script or template tag.	end	8	16
+tests/rules/vue/no-dupe-keys/setup/cases.vue:10:35	vue/no-dupe-keys	duplicateKey	Duplicate key 'a'. May cause name collision in script or template tag.	end	10	38
+tests/rules/vue/no-dupe-keys/setup/cases.vue:13:7	vue/no-dupe-keys	duplicateKey	Duplicate key 'h'. May cause name collision in script or template tag.	end	13	12

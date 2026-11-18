@@ -1,0 +1,17 @@
+tests/rules/vue/no-ref-as-operand/cases.vue:9:5	vue/no-ref-as-operand	requireDotValue	Must use `.value` to read or write the value wrapped by `ref()`.	fix	338	338	.value	end	9	10
+tests/rules/vue/no-ref-as-operand/cases.vue:10:1	vue/no-ref-as-operand	requireDotValue	Must use `.value` to read or write the value wrapped by `ref()`.	fix	348	348	.value	end	10	6
+tests/rules/vue/no-ref-as-operand/cases.vue:11:13	vue/no-ref-as-operand	requireDotValue	Must use `.value` to read or write the value wrapped by `ref()`.	fix	368	368	.value	end	11	18
+tests/rules/vue/no-ref-as-operand/cases.vue:11:21	vue/no-ref-as-operand	requireDotValue	Must use `.value` to read or write the value wrapped by `computed()`.	fix	378	378	.value	end	11	28
+tests/rules/vue/no-ref-as-operand/cases.vue:12:14	vue/no-ref-as-operand	requireDotValue	Must use `.value` to read or write the value wrapped by `ref()`.	fix	397	397	.value	end	12	19
+tests/rules/vue/no-ref-as-operand/cases.vue:13:14	vue/no-ref-as-operand	requireDotValue	Must use `.value` to read or write the value wrapped by `ref()`.	fix	416	416	.value	end	13	19
+tests/rules/vue/no-ref-as-operand/cases.vue:14:11	vue/no-ref-as-operand	requireDotValue	Must use `.value` to read or write the value wrapped by `ref()`.	fix	434	434	.value	end	14	16
+tests/rules/vue/no-ref-as-operand/cases.vue:15:11	vue/no-ref-as-operand	requireDotValue	Must use `.value` to read or write the value wrapped by `ref()`.	fix	458	458	.value	end	15	16
+tests/rules/vue/no-ref-as-operand/cases.vue:16:11	vue/no-ref-as-operand	requireDotValue	Must use `.value` to read or write the value wrapped by `ref()`.	fix	479	479	.value	end	16	16
+tests/rules/vue/no-ref-as-operand/cases.vue:18:1	vue/no-ref-as-operand	requireDotValue	Must use `.value` to read or write the value wrapped by `ref()`.	fix	511	511	.value	end	18	6
+tests/rules/vue/no-ref-as-operand/cases.vue:19:11	vue/no-ref-as-operand	requireDotValue	Must use `.value` to read or write the value wrapped by `toRefs()`.	fix	529	529	.value	end	19	12
+tests/rules/vue/no-ref-as-operand/cases.vue:19:15	vue/no-ref-as-operand	requireDotValue	Must use `.value` to read or write the value wrapped by `toRefs()`.	fix	534	534	.value	end	19	17
+tests/rules/vue/no-ref-as-operand/cases.vue:21:16	vue/no-ref-as-operand	requireDotValue	Must use `.value` to read or write the value wrapped by `ref()`.	fix	575	575	.value	end	21	21
+tests/rules/vue/no-ref-as-operand/cases.vue:22:9	vue/no-ref-as-operand	requireDotValue	Must use `.value` to read or write the value wrapped by `ref()`.	fix	590	590	.value	end	22	14
+tests/rules/vue/no-ref-as-operand/cases.vue:23:1	vue/no-ref-as-operand	requireDotValue	Must use `.value` to read or write the value wrapped by `ref()`.	fix	600	600	.value	end	23	6
+tests/rules/vue/no-ref-as-operand/options/cases.ts:5:20	vue/no-ref-as-operand	requireDotValue	Must use `.value` to read or write the value wrapped by `ref()`.	fix	140	140	.value	end	5	21
+tests/rules/vue/no-ref-as-operand/options/cases.ts:6:17	vue/no-ref-as-operand	requireDotValue	Must use `.value` to read or write the value wrapped by `ref()`.	fix	159	159	.value	end	6	18

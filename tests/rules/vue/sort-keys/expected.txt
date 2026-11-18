@@ -1,0 +1,11 @@
+tests/rules/vue/sort-keys/cases.vue:7:7	vue/sort-keys	sortKeys	Expected object keys to be in ascending order. 'a' should be before 'z'.
+tests/rules/vue/sort-keys/cases.vue:12:5	vue/sort-keys	sortKeys	Expected object keys to be in ascending order. 'a' should be before 'z'.
+tests/rules/vue/sort-keys/cases.vue:17:22	vue/sort-keys	sortKeys	Expected object keys to be in ascending order. 'x' should be before 'y'.
+tests/rules/vue/sort-keys/cases.vue:21:21	vue/sort-keys	sortKeys	Expected object keys to be in ascending order. 'a' should be before 'b'.
+tests/rules/vue/sort-keys/cases.vue:21:39	vue/sort-keys	sortKeys	Expected object keys to be in ascending order. 'c' should be before 'd'.
+tests/rules/vue/sort-keys/cases.vue:21:53	vue/sort-keys	sortKeys	Expected object keys to be in ascending order. 'B' should be before 'k'.
+tests/rules/vue/sort-keys/desc/cases.ts:1:19	vue/sort-keys	sortKeys	Expected object keys to be in natural insensitive descending order. 'b' should be before 'a'.
+tests/rules/vue/sort-keys/desc/cases.ts:1:25	vue/sort-keys	sortKeys	Expected object keys to be in natural insensitive descending order. 'C' should be before 'b'.
+tests/rules/vue/sort-keys/desc/cases.ts:1:31	vue/sort-keys	sortKeys	Expected object keys to be in natural insensitive descending order. 'c10' should be before 'C'.
+tests/rules/vue/sort-keys/desc/cases.ts:6:4	vue/sort-keys	sortKeys	Expected object keys to be in natural insensitive descending order. 'x' should be before 'a'.
+tests/rules/vue/sort-keys/ignore/cases.vue:5:24	vue/sort-keys	sortKeys	Expected object keys to be in ascending order. 'default' should be before 'type'.

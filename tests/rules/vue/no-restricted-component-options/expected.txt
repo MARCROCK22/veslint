@@ -1,0 +1,9 @@
+tests/rules/vue/no-restricted-component-options/opts/cases.vue:3:3	vue/no-restricted-component-options	restrictedOption	Using `init` is not allowed.
+tests/rules/vue/no-restricted-component-options/opts/cases.vue:3:3	vue/no-restricted-component-options	restrictedOption	Using `*` is not allowed.
+tests/rules/vue/no-restricted-component-options/opts/cases.vue:4:3	vue/no-restricted-component-options	restrictedOption	Using `*` is not allowed.
+tests/rules/vue/no-restricted-component-options/opts/cases.vue:5:26	vue/no-restricted-component-options	restrictedOption	Using `props.*.required` is not allowed.
+tests/rules/vue/no-restricted-component-options/opts/cases.vue:8:3	vue/no-restricted-component-options	restrictedOption	Using `*` is not allowed.
+tests/rules/vue/no-restricted-component-options/opts/cases.vue:9:3	vue/no-restricted-component-options	restrictedOption	Using `*` is not allowed.
+tests/rules/vue/no-restricted-component-options/opts/cases.vue:10:5	vue/no-restricted-component-options	restrictedOption	No a.
+tests/rules/vue/no-restricted-component-options/opts/cases.vue:16:17	vue/no-restricted-component-options	restrictedOption	Using `init` is not allowed.
+tests/rules/vue/no-restricted-component-options/opts/cases.vue:16:17	vue/no-restricted-component-options	restrictedOption	Using `*` is not allowed.

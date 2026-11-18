@@ -1,0 +1,11 @@
+tests/rules/vue/no-boolean-default/cases.vue:4:34	vue/no-boolean-default	noBooleanDefault	Boolean prop should not set a default (Vue defaults it to false).
+tests/rules/vue/no-boolean-default/cases.vue:5:34	vue/no-boolean-default	noBooleanDefault	Boolean prop should not set a default (Vue defaults it to false).
+tests/rules/vue/no-boolean-default/destructure/cases.vue:2:13	vue/no-boolean-default	noBooleanDefault	Boolean prop should not set a default (Vue defaults it to false).
+tests/rules/vue/no-boolean-default/destructure/cases.vue:2:23	vue/no-boolean-default	noBooleanDefault	Boolean prop should not set a default (Vue defaults it to false).
+tests/rules/vue/no-boolean-default/false-destructure/cases.vue:2:13	vue/no-boolean-default	defaultFalse	Boolean prop should only be defaulted to false.
+tests/rules/vue/no-boolean-default/false-setup/cases.vue:5:6	vue/no-boolean-default	defaultFalse	Boolean prop should only be defaulted to false.
+tests/rules/vue/no-boolean-default/false-setup/cases.vue:7:6	vue/no-boolean-default	defaultFalse	Boolean prop should only be defaulted to false.
+tests/rules/vue/no-boolean-default/false/cases.vue:4:34	vue/no-boolean-default	defaultFalse	Boolean prop should only be defaulted to false.
+tests/rules/vue/no-boolean-default/setup/cases.vue:5:6	vue/no-boolean-default	noBooleanDefault	Boolean prop should not set a default (Vue defaults it to false).
+tests/rules/vue/no-boolean-default/setup/cases.vue:6:6	vue/no-boolean-default	noBooleanDefault	Boolean prop should not set a default (Vue defaults it to false).
+tests/rules/vue/no-boolean-default/setup/cases.vue:7:6	vue/no-boolean-default	noBooleanDefault	Boolean prop should not set a default (Vue defaults it to false).

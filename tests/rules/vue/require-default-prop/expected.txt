@@ -1,0 +1,6 @@
+tests/rules/vue/require-default-prop/cases.vue:4:5	vue/require-default-prop	missingDefault	Prop 'a' requires default value to be set.
+tests/rules/vue/require-default-prop/cases.vue:5:5	vue/require-default-prop	missingDefault	Prop 'b' requires default value to be set.
+tests/rules/vue/require-default-prop/cases.vue:12:5	vue/require-default-prop	missingDefault	Prop '['i' + 'j']' requires default value to be set.
+tests/rules/vue/require-default-prop/destructure/cases.vue:2:53	vue/require-default-prop	missingDefault	Prop 'b' requires default value to be set.
+tests/rules/vue/require-default-prop/setup/cases.vue:3:40	vue/require-default-prop	missingDefault	Prop 'b' requires default value to be set.
+tests/rules/vue/require-default-prop/setup/cases.vue:3:93	vue/require-default-prop	missingDefault	Prop 'f' requires default value to be set.

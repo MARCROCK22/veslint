@@ -982,7 +982,9 @@ fn file_report(path string, src string, result rules.FileLint, fixes bool, doc &
 		out.write_string('${path}:${d.line}:${col}\t${finding.rule}\t${finding.message_id}\t${msg}')
 		if fixes {
 			out.write_string(fix_fields(src, finding))
-			if finding.stmt.row < 0 {
+			if finding.no_end {
+				// A `loc` of line 0 without an end (a selector error of vue/block-order).
+			} else if finding.stmt.row < 0 {
 				// A problem of the whole file (`loc` 0:0 to 0:0): ESLint ends it at 0:1 too.
 				out.write_string('\tend\t0\t1')
 			} else if finding.stmt.end_byte >= 0 {

@@ -319,6 +319,45 @@ pub fn check_options(rule string, options []json2.Any) !bool {
 		vue_no_mutating_props { vnmp_options(options)! }
 		vue_no_unused_properties { vnup_options(options)! }
 		vue_no_undef_properties { vnudp_options(options)! }
+		vue_multi_word_component_names { vue_multi_word_component_names_options(options)! }
+		vue_no_multiple_template_root { vue_no_multiple_template_root_options(options)! }
+		vue_no_potential_component_option_typo {
+			vue_no_potential_component_option_typo_options(options)!
+		}
+		vue_no_deprecated_model_definition { vue_no_deprecated_model_definition_options(options)! }
+		vue_match_component_file_name { vue_match_component_file_name_options(options)! }
+		vue_enforce_style_attribute { vue_enforce_style_attribute_options(options)! }
+		vue_require_direct_export { vue_require_direct_export_options(options)! }
+		vue_no_restricted_component_names { vue_no_restricted_component_names_options(options)! }
+		vue_no_restricted_component_options {
+			vue_no_restricted_component_options_options(options)!
+		}
+		vue_new_line_between_multi_line_property {
+			vue_new_line_between_multi_line_property_options(options)!
+		}
+		vue_component_api_style { vue_component_api_style_options(options)! }
+		vue_no_reserved_component_names { vue_no_reserved_component_names_options(options)! }
+		vue_require_prop_comment { vue_require_prop_comment_options(options)! }
+		vue_define_macros_order { vue_define_macros_order_options(options)! }
+		vue_order_in_components { vue_order_in_components_options(options)! }
+		vue_padding_lines_in_component_definition {
+			vue_padding_lines_in_component_definition_options(options)!
+		}
+		vue_sort_keys { vue_sort_keys_options(options)! }
+		vue_html_comment_content_spacing { vue_html_comment_content_spacing_options(options)! }
+		vue_html_comment_content_newline { vue_html_comment_content_newline_options(options)! }
+		vue_html_comment_indent { vue_html_comment_indent_options(options)! }
+		vue_no_multi_spaces { vue_no_multi_spaces_options(options)! }
+		vue_block_order { vue_block_order_options(options)! }
+		vue_no_restricted_call_after_await { vue_no_restricted_call_after_await_options(options)! }
+		vue_next_tick_style { vue_next_tick_style_options(options)! }
+		vue_no_boolean_default { vue_no_boolean_default_options(options)! }
+		vue_no_required_prop_with_default { vue_no_required_prop_with_default_options(options)! }
+		vue_no_restricted_props { vue_no_restricted_props_options(options)! }
+		vue_no_async_in_computed_properties {
+			vue_no_async_in_computed_properties_options(options)!
+		}
+		vue_no_dupe_keys { vue_no_dupe_keys_options(options)! }
 		else { return false }
 	}
 	return true
