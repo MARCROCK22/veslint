@@ -124,7 +124,7 @@ fn (mut c Checker) lint_vue_require_explicit_emits(root C.TSNode, abs_path strin
 		// defineScriptSetupVisitor's listeners, then defineVueVisitor's.
 		match macros[node] or { '' } {
 			'defineEmits' {
-				emits := c.vue_define_emits_typed(root, t, node, abs_path, mut stats)
+				emits := c.vue_define_emits(root, t, node, abs_path, true, mut stats)
 				st.emits[vue_program_context] = emits
 				if st.template_type == 'setup' {
 					st.template_define.emits = emits

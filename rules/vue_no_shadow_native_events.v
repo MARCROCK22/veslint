@@ -47,8 +47,7 @@ fn (mut c Checker) lint_vue_no_shadow_native_events(root C.TSNode, abs_path stri
 		}
 		// defineScriptSetupVisitor's listeners, then defineVueVisitor's.
 		if node in define_emits {
-			c.vnsne_verify_declarations(t, c.vue_define_emits_typed(root, t, node, abs_path, mut
-				stats), mut findings)
+			c.vnsne_verify_declarations(t, c.vue_define_emits(root, t, node, abs_path, true, mut stats), mut findings)
 			parent := t.nodes[node].parent
 			template_emit_name = ''
 			if parent >= 0 && t.typ(parent) == .variable_declarator {
@@ -164,7 +163,7 @@ fn (c &Checker) vnsne_verify_declarations(t &estree.EsTree, emits []VueProp, mut
 		}
 		findings << c.vue_report(t.nodes[emit.node].start, t.nodes[emit.node].end, 'violation',
 			{
-			'name': emit.name
-		})
+				'name': emit.name
+			})
 	}
 }

@@ -246,26 +246,6 @@ fn vue_emit_call_of_context(t &estree.EsTree, call int, ctx VueSetupContext) boo
 	return name == 'emit' && t.typ(object) == .identifier && object in ctx.context_ids
 }
 
-// vue_define_emits_typed is getComponentEmitsFromDefineEmits with the types the checker gives:
-// vue_define_emits, but the parts of the type argument that are not type literals, interfaces
-// nor function types are read with the checker (getComponentEmitsFromTypeDefineTypes).
-fn (mut c Checker) vue_define_emits_typed(root C.TSNode, t &estree.EsTree, call int, abs_path string, mut stats Stats) []VueProp {
-	args := t.list(call, .arguments) or { []int{} }
-	params := vue_type_arguments(t, call)
-	if args.len > 0 || params.len == 0 {
-		return c.vue_define_emits(root, t, call)
-	}
-	mut out := []VueProp{}
-	for def in c.vue_flatten_type_nodes(root, t, params[0]) {
-		if t.typ(def) in [.ts_function_type, .ts_interface_body, .ts_type_literal] {
-			out << c.vue_emits_from_type_define(root, t, def)
-		} else {
-			out << c.vue_emits_from_type_checker(t, def, abs_path, mut stats)
-		}
-	}
-	return out
-}
-
 // vue_symbol_flags_function_or_method are SymbolFlags.Function | SymbolFlags.Method.
 const vue_symbol_flags_function_or_method = u32(16 | 8192)
 

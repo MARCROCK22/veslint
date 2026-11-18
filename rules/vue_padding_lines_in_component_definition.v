@@ -84,7 +84,7 @@ fn (mut c Checker) lint_vue_padding_lines_in_component_definition(root C.TSNode,
 			list := if m.name == 'defineProps' {
 				c.vue_define_props(root, t, m.call, abs_path, false, mut stats)
 			} else {
-				c.vue_define_emits(root, t, m.call)
+				c.vue_define_emits(root, t, m.call, abs_path, false, mut stats)
 			}
 			nodes := list.filter(it.kind != .infer_type && it.node >= 0
 				&& t.typ(it.node) in [.property, .spread_element]).map(it.node)
