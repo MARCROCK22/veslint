@@ -74,6 +74,10 @@ mut:
 	// Declaration ({let}): the part's range (file bytes).
 	part_start int
 	part_end   int
+	// core_start/core_end: the extent of the compiler's expression (without the comments the
+	// range was widened over), -1 when the let has none.
+	core_start int = -1
+	core_end   int = -1
 }
 
 // ParamSetter is where a param of nestBlock goes.
@@ -1181,6 +1185,8 @@ fn (c &Conv) is_ts() bool {
 fn (mut c Conv) add_expression(expr int, target int, typing string, setter Setter, check string) {
 	s, e := c.node_range(expr)
 	c.add_expression_from_range(s, e, target, typing, setter, check)
+	c.lets[c.lets.len - 1].core_start = c.ca.exprs[expr].start
+	c.lets[c.lets.len - 1].core_end = c.ca.exprs[expr].end
 }
 
 fn (mut c Conv) add_expression_from_range(s int, e int, target int, typing string, setter Setter, check string) {

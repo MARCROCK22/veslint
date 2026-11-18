@@ -246,7 +246,12 @@ fn (mut c Conv) syntax_error(root C.TSNode) {
 	for l in c.lets {
 		for s in l.segments {
 			if s.pre_start <= at && at <= s.pre_start + s.len {
-				part := c.code[s.file_start..s.file_start + s.len]
+				// What the compiler read (acorn): the expression without the comments around.
+				part := if l.core_start >= 0 {
+					c.code[l.core_start..l.core_end]
+				} else {
+					c.code[s.file_start..s.file_start + s.len]
+				}
 				if !c.expression_parses(part) {
 					c.doc.error = ParseError{
 						message: 'Unexpected token\nhttps://svelte.dev/e/js_parse_error'
