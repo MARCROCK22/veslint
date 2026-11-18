@@ -297,6 +297,7 @@ pub fn check_options(rule string, options []json2.Any) !bool {
 		vue_component_name_in_template_casing { vcnitc_options(options)! }
 		vue_custom_event_name_casing { vcenc_options(options)! }
 		vue_no_restricted_custom_event { vnrce_options(options)! }
+		vue_require_explicit_emits { vree_options(options)! }
 		else { return false }
 	}
 	return true
