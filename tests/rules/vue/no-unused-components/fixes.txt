@@ -1,0 +1,4 @@
+tests/rules/vue/no-unused-components/binding-off/cases.vue:5:32	vue/no-unused-components	unused	The "Unused" component has been registered but not used.	end	5	42
+tests/rules/vue/no-unused-components/cases.vue:19:5	vue/no-unused-components	unused	The "Unused" component has been registered but not used.	end	19	15
+tests/rules/vue/no-unused-components/cases.vue:24:5	vue/no-unused-components	unused	The "kebab-unused" component has been registered but not used.	end	24	23
+tests/rules/vue/no-unused-components/cases.vue:25:5	vue/no-unused-components	unused	The "Computed" component has been registered but not used.	end	25	21

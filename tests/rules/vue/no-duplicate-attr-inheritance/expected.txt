@@ -1,0 +1,4 @@
+tests/rules/vue/no-duplicate-attr-inheritance/define-options/cases.vue:2:16	vue/no-duplicate-attr-inheritance	noDuplicateAttrInheritance	Set "inheritAttrs" to false.
+tests/rules/vue/no-duplicate-attr-inheritance/if-chain/cases.vue:2:25	vue/no-duplicate-attr-inheritance	noDuplicateAttrInheritance	Set "inheritAttrs" to false.
+tests/rules/vue/no-duplicate-attr-inheritance/if-chain/cases.vue:4:23	vue/no-duplicate-attr-inheritance	noDuplicateAttrInheritance	Set "inheritAttrs" to false.
+tests/rules/vue/no-duplicate-attr-inheritance/multi-check/cases.vue:2:16	vue/no-duplicate-attr-inheritance	noDuplicateAttrInheritance	Set "inheritAttrs" to false.
