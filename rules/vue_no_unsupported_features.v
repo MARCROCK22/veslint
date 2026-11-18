@@ -65,9 +65,9 @@ fn vnuf_options(options []json2.Any) !VnufOptions {
 		version = value as string
 	}
 	ignores := o.string_list('ignores')!
-	names := vnuf_features.map(it[0])
+	feature_names := vnuf_features.map(it[0])
 	for i, ignore in ignores {
-		if ignore !in names || ignore in ignores[..i] {
+		if ignore !in feature_names || ignore in ignores[..i] {
 			return error('option `ignores` of `${vue_no_unsupported_features}` must be distinct syntax names')
 		}
 	}

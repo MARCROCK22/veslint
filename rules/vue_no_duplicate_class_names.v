@@ -169,23 +169,23 @@ fn vndcn_remove_duplicates(raw string) string {
 	return quote + kept.join('') + quote
 }
 
-fn vndcn_names_data(names []string) map[string]string {
+fn vndcn_names_data(list []string) map[string]string {
 	return {
-		'names':  names.map("'${it}'").join(', ')
-		'plural': if names.len > 1 { 's' } else { '' }
+		'names':  list.map("'${it}'").join(', ')
+		'plural': if list.len > 1 { 's' } else { '' }
 	}
 }
 
 // vndcn_report_duplicates is reportDuplicateClasses on [start, end) with the class list `list`:
 // the report with its fix, and the duplicate names (none when there are none).
 fn (c &Checker) vndcn_report_duplicates(start int, end int, list string, mut findings []Finding) ![]string {
-	names := vndcn_class_names(list)
-	if names.len <= 1 {
+	class_names := vndcn_class_names(list)
+	if class_names.len <= 1 {
 		return []
 	}
 	mut seen := map[string]bool{}
 	mut duplicates := []string{}
-	for name in names {
+	for name in class_names {
 		if name in seen {
 			if name !in duplicates {
 				duplicates << name
@@ -288,8 +288,8 @@ fn (c &Checker) vndcn_directive(attr int, mut findings []Finding) ! {
 				reported << name
 			}
 		}
-		names := vndcn_class_names(list)
-		for name in names {
+		class_names := vndcn_class_names(list)
+		for name in class_names {
 			if name in reported {
 				continue
 			}
@@ -314,7 +314,7 @@ fn (c &Checker) vndcn_directive(attr int, mut findings []Finding) ! {
 			}
 		}
 		statics := static_classes or { continue }
-		intersection := names.filter(it in statics)
+		intersection := class_names.filter(it in statics)
 		if intersection.len > 0 {
 			findings << c.vue_report_vnode(start_tag, 'duplicateClassNames', vndcn_names_data(intersection))
 		}
