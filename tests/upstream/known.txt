@@ -1747,6 +1747,30 @@ veslint	vue/no-restricted-syntax/i1	selectors on vue-eslint-parser's V* nodes ar
 veslint	no-restricted-call-after-await/i6	a relative `module` needs the file in the current directory
 veslint	no-restricted-call-after-await/i7	a relative `module` needs the file in the current directory
 veslint	no-restricted-call-after-await/i8	an absolute `module` resolved through the clone's package.json
+# vue/html-indent and vue/script-indent: their fixtures write some code one token per line, which
+# tree-sitter's grammar reads otherwise than TypeScript (an automatic `;` at a line break where
+# TypeScript goes on): the rule sees other nodes, or none when the script has a syntax error.
+veslint	html-indent/i36	tree-sitter ends a class member at a line break where TypeScript goes on (one token per line): a syntax error
+veslint	script-indent/i24	tree-sitter ends a class member at a line break where TypeScript goes on (one token per line): a syntax error
+veslint	script-indent/i70	tree-sitter ends a class member at a line break where TypeScript goes on (one token per line): a syntax error
+veslint	script-indent/i80	tree-sitter ends a class member at a line break where TypeScript goes on (one token per line): a syntax error
+veslint	script-indent/i87	tree-sitter ends a class member at a line break where TypeScript goes on (one token per line): a syntax error
+veslint	script-indent/i103	tree-sitter ends a class member at a line break where TypeScript goes on (one token per line): a syntax error
+veslint	script-indent/i115	tree-sitter ends a class member at a line break where TypeScript goes on (one token per line): a syntax error
+veslint	script-indent/i116	tree-sitter ends a class member at a line break where TypeScript goes on (one token per line): a syntax error
+veslint	script-indent/i127	tree-sitter ends a class member at a line break where TypeScript goes on (one token per line): a syntax error
+veslint	script-indent/i133	tree-sitter ends a class member at a line break where TypeScript goes on (one token per line): a syntax error
+veslint	script-indent/i169	tree-sitter ends a class member at a line break where TypeScript goes on (one token per line): a syntax error
+veslint	script-indent/i233	tree-sitter ends a class member at a line break where TypeScript goes on (one token per line): a syntax error
+veslint	script-indent/i247	tree-sitter ends a class member at a line break where TypeScript goes on (one token per line): a syntax error
+veslint	script-indent/v36	tree-sitter reads `export { … }`, a line break and `from` as three statements
+veslint	script-indent/v116	tree-sitter reads `export { … }`, a line break and `from` as three statements
+veslint	script-indent/v243	tree-sitter reads `export { … }`, a line break and `from` as three statements
+veslint	script-indent/i36	tree-sitter reads `export { … }`, a line break and `from` as three statements
+veslint	script-indent/i111	tree-sitter reads `export { … }`, a line break and `from` as three statements
+veslint	script-indent/i232	tree-sitter reads `export { … }`, a line break and `from` as three statements
+veslint	script-indent/v171	tree-sitter reads a method signature whose `(` starts a line as a property and a call signature
+veslint	script-indent/i165	tree-sitter reads a method signature whose `(` starts a line as a property and a call signature
 # svelte/no-unused-svelte-ignore: eslint-plugin-svelte transforms a <style lang="…"> before it
 # compiles (postcss with the package's postcss.config.cjs, sass, less, stylus); veslint ports none
 # of them and strips the style (as eslint-plugin-svelte does when it cannot transform it), so the

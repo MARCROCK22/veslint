@@ -827,8 +827,11 @@ fn test_rule_schemas_are_those_of_eslint() {
 		}
 		// The cases name the typescript-eslint rules without their prefix.
 		// The rules of ESLint core are `core/<id>` (dot-notation is also a typescript-eslint name).
-		key := if name.contains('/') {
+		// (A wrapper of another plugin, like svelte/@typescript-eslint/…, keeps its whole name.)
+		key := if name.starts_with(typescript_eslint_prefix) {
 			name.all_after(typescript_eslint_prefix)
+		} else if name.contains('/') {
+			name
 		} else {
 			'core/' + name
 		}

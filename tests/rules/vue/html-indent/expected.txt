@@ -1,0 +1,20 @@
+tests/rules/vue/html-indent/cases.vue:4:1	vue/html-indent	error	Expected indentation of 4 spaces but found 6 spaces.
+tests/rules/vue/html-indent/cases.vue:8:1	vue/html-indent	error	Expected indentation of 4 spaces but found 6 spaces.
+tests/rules/vue/html-indent/cases.vue:10:1	vue/html-indent	error	Expected indentation of 4 spaces but found 8 spaces.
+tests/rules/vue/html-indent/cases.vue:12:1	vue/html-indent	error	Expected indentation of 4 spaces but found 2 spaces.
+tests/rules/vue/html-indent/cases.vue:38:1	vue/html-indent	error	Expected indentation of 4 spaces but found 5 spaces.
+tests/rules/vue/html-indent/cases.vue:43:1	vue/html-indent	error	Expected indentation of 6 spaces but found 8 spaces.
+tests/rules/vue/html-indent/cases.vue:44:1	vue/html-indent	error	Expected indentation of 8 spaces but found 10 spaces.
+tests/rules/vue/html-indent/cases.vue:45:1	vue/html-indent	error	Expected indentation of 8 spaces but found 10 spaces.
+tests/rules/vue/html-indent/cases.vue:46:1	vue/html-indent	error	Expected indentation of 6 spaces but found 8 spaces.
+tests/rules/vue/html-indent/cases.vue:49:1	vue/html-indent	error	Expected " " character, but found "\\t" character.
+tests/rules/vue/html-indent/edge/cases.vue:3:1	vue/html-indent	error	Expected indentation of 4 spaces but found 0 spaces.
+tests/rules/vue/html-indent/edge/cases.vue:5:1	vue/html-indent	error	Expected indentation of 4 spaces but found 2 spaces.
+tests/rules/vue/html-indent/four/cases.vue:4:1	vue/html-indent	error	Expected indentation of 8 spaces but found 6 spaces.
+tests/rules/vue/html-indent/ignores/cases.vue:10:1	vue/html-indent	error	Expected indentation of 4 spaces but found 6 spaces.
+tests/rules/vue/html-indent/options/cases.vue:4:1	vue/html-indent	error	Expected indentation of 4 spaces but found 2 spaces.
+tests/rules/vue/html-indent/options/cases.vue:7:1	vue/html-indent	error	Expected indentation of 6 spaces but found 5 spaces.
+tests/rules/vue/html-indent/options/cases.vue:10:1	vue/html-indent	error	Expected indentation of 4 spaces but found 2 spaces.
+tests/rules/vue/html-indent/options/cases.vue:12:1	vue/html-indent	error	Expected indentation of 4 spaces but found 2 spaces.
+tests/rules/vue/html-indent/tab/cases.vue:6:2	vue/html-indent	error	Expected "\\t" character, but found " " character.
+tests/rules/vue/html-indent/tab/cases.vue:7:1	vue/html-indent	error	Expected "\\t" character, but found " " character.
