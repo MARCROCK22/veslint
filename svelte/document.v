@@ -68,6 +68,11 @@ pub mut:
 	// generics_code: the code `void function<…>(){}` handed to the script parser for the
 	// `generics` attribute ('' without one).
 	generics_code string
+	// lint_code: the code veslint's rules parse (lint.v), lint_start: where its template part
+	// starts, lint_segments: the template text in it (pre_start: lint code offset).
+	lint_code     string
+	lint_start    int
+	lint_segments []Segment
 }
 
 // Parsers are the tree-sitter parsers parse_svelte_with reuses from file to file.
@@ -89,6 +94,16 @@ pub fn new_parsers() !&Parsers {
 
 pub fn (p &Parsers) close() {
 	C.ts_parser_delete(p.ts)
+}
+
+// token_ends are the ends of the tokens of TypeScript code (bytes, sorted): veslint gets where
+// TypeScript's nodes of the virtual code start (they include the trivia before them) from them.
+pub fn (p &Parsers) token_ends(code string) ![]int {
+	tree := parse_ts(p.ts, code)!
+	defer {
+		treesitter.tree_delete(tree)
+	}
+	return treesitter.token_ends(treesitter.root_node(tree)).ends
 }
 
 fn parse_ts(parser &C.TSParser, code string) !&C.TSTree {

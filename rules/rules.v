@@ -808,8 +808,8 @@ pub const names = [no_floating_promises, await_thenable, require_await, return_a
 	vue_component_options_name_casing, vue_max_lines_per_block, vue_no_multiple_slot_args,
 	vue_no_reserved_keys, vue_no_deprecated_delete_set, vue_require_prop_types,
 	vue_return_in_computed_property, vue_no_deprecated_props_default_this,
-	vue_require_slots_as_functions, vue_require_name_property, vue_arrow_spacing,
-	vue_camelcase, vue_comma_dangle, vue_dot_location, vue_no_empty_pattern, vue_no_sparse_arrays,
+	vue_require_slots_as_functions, vue_require_name_property, vue_arrow_spacing, vue_camelcase,
+	vue_comma_dangle, vue_dot_location, vue_no_empty_pattern, vue_no_sparse_arrays,
 	vue_operator_linebreak, vue_array_bracket_newline, vue_array_bracket_spacing,
 	vue_array_element_newline, vue_block_spacing, vue_brace_style, vue_dot_notation, vue_eqeqeq,
 	vue_key_spacing, vue_keyword_spacing, vue_no_restricted_syntax, vue_no_useless_concat,
@@ -961,8 +961,8 @@ pub const untyped_rules = [adjacent_overload_signatures, array_type, class_liter
 	vue_define_emits_declaration, vue_require_prop_type_constructor, vue_no_restricted_block,
 	vue_component_options_name_casing, vue_max_lines_per_block, vue_no_multiple_slot_args,
 	vue_no_deprecated_delete_set, vue_require_prop_types, vue_no_deprecated_props_default_this,
-	vue_require_slots_as_functions, vue_require_name_property, vue_arrow_spacing,
-	vue_camelcase, vue_comma_dangle, vue_dot_location, vue_no_empty_pattern, vue_no_sparse_arrays,
+	vue_require_slots_as_functions, vue_require_name_property, vue_arrow_spacing, vue_camelcase,
+	vue_comma_dangle, vue_dot_location, vue_no_empty_pattern, vue_no_sparse_arrays,
 	vue_operator_linebreak, vue_array_bracket_newline, vue_array_bracket_spacing,
 	vue_array_element_newline, vue_block_spacing, vue_brace_style, vue_dot_notation, vue_eqeqeq,
 	vue_key_spacing, vue_keyword_spacing, vue_no_restricted_syntax, vue_no_useless_concat,
@@ -2532,11 +2532,30 @@ pub fn (mut c Checker) lint_file(parser Parser, config LintConfig, src string, a
 fn (mut c Checker) lint_file_in_lifetime(parser Parser, config LintConfig, src string, abs_path string, mut stats Stats) !FileLint {
 	sw := time.new_stopwatch()
 	// A .vue file comes parsed: its tree is the one of its masked script (vue_file.v), which the
-	// document owns; tsgo knows it by its twin.
+	// document owns; tsgo knows it by its twin. A .svelte file's tree is the one of its lint code
+	// (svelte_file.v).
 	vue_file := c.is_vue()
-	ts_path := if vue_file { c.vue.ts_path } else { abs_path }
+	svelte_file := c.is_svelte()
+	ts_path := if vue_file {
+		c.vue.ts_path
+	} else if svelte_file {
+		c.svelte.ts_path
+	} else {
+		abs_path
+	}
+	if svelte_file && c.svelte.doc.error != none {
+		fatal := c.svelte_parsing_error()
+		c.svelte = SvelteView{}
+		stats.findings++
+		return FileLint{
+			findings:      fatal
+			parsing_error: true
+		}
+	}
 	mut owned := !vue_file || c.vue.doc.script.tree == unsafe { nil }
-	mut tree := if !vue_file {
+	mut tree := if svelte_file {
+		parser.parse(c.svelte.doc.lint_code)!
+	} else if !vue_file {
 		parser.parse(src)!
 	} else if owned {
 		parser.parse(c.vue.doc.script.masked)!
@@ -2550,9 +2569,11 @@ fn (mut c Checker) lint_file_in_lifetime(parser Parser, config LintConfig, src s
 			tree_delete(tree)
 		}
 		c.vue = VueView{}
+		c.svelte = SvelteView{}
 	}
 	mut root := root_node(tree)
-	c.src = src
+	// The text of a .svelte file's nodes: the file, then the template part of the lint code.
+	c.src = if svelte_file { c.svelte.doc.lint_text() } else { src }
 	c.tokens = c.file_token_ends(root)
 	c.node_index = treesitter.new_node_index(root)
 	c.ast_path = ''
@@ -2567,7 +2588,7 @@ fn (mut c Checker) lint_file_in_lifetime(parser Parser, config LintConfig, src s
 		stats.parse_ms += ms(sw.elapsed())
 		stats.findings++
 		return FileLint{
-			findings:      fatal
+			findings:      if svelte_file { c.svelte_move_findings(fatal) } else { fatal }
 			parsing_error: true
 		}
 	}
@@ -2621,6 +2642,9 @@ fn (mut c Checker) lint_file_in_lifetime(parser Parser, config LintConfig, src s
 			}
 		}
 		stats.unmatched += c.too_deep
+	}
+	if svelte_file {
+		findings = c.svelte_move_findings(findings)
 	}
 	findings = sort_rule_findings(findings)
 	findings = c.apply_disable_directives(findings, inline, config)
@@ -4518,6 +4542,8 @@ mut:
 	jsdoc_deprecation_cache map[int]string
 	// the .vue file being linted (vue_file.v), set before lint_file by set_vue
 	vue VueView
+	// the .svelte file being linted (svelte_file.v), set before lint_file by set_svelte
+	svelte SvelteView
 	// what the vue/* script rules share about the file being linted (vue_component.v), built on
 	// first use (per file)
 	vue_script_info VueScript

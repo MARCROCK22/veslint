@@ -404,7 +404,7 @@ fn split_document(code string) SourceCode {
 	mut script := []u8{cap: code.len}
 	mut script16 := []u8{cap: code.len}
 	mut start := 0
-	blank := fn [code] (from int, to int, mut out []u8) {
+	blank_range := fn [code] (from int, to int, mut out []u8) {
 		for k in from .. to {
 			c := code[k]
 			out << if c == `\n` || c == `\r` { c } else { ` ` }
@@ -439,14 +439,14 @@ fn split_document(code string) SourceCode {
 				template << `-`
 			}
 			template << code[b.start_start + 1 + b.tag.len..b.start_end].bytes()
-			blank(start, b.start_end, mut script)
+			blank_range(start, b.start_end, mut script)
 			script16 << blank_u16(code[start..b.start_end]).bytes()
 			start = b.start_end
 		} else {
 			template << code[start..b.content_s].bytes()
-			blank(b.content_s, b.content_e, mut template)
+			blank_range(b.content_s, b.content_e, mut template)
 			if b.tag == 'script' {
-				blank(start, b.content_s, mut script)
+				blank_range(start, b.content_s, mut script)
 				script << code[b.content_s..b.content_e].bytes()
 				script16 << blank_u16(code[start..b.content_s]).bytes()
 				script16 << code[b.content_s..b.content_e].bytes()
@@ -462,14 +462,14 @@ fn split_document(code string) SourceCode {
 					}
 				}
 			} else {
-				blank(start, b.content_e, mut script)
+				blank_range(start, b.content_e, mut script)
 				script16 << blank_u16(code[start..b.content_e]).bytes()
 			}
 			start = b.content_e
 		}
 	}
 	template << code[start..].bytes()
-	blank(start, code.len, mut script)
+	blank_range(start, code.len, mut script)
 	script16 << blank_u16(code[start..]).bytes()
 	sc.template = template.bytestr()
 	sc.script_raw = script.bytestr()

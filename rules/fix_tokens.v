@@ -137,6 +137,15 @@ fn (mut c Checker) source_tokens(n C.TSNode) &SourceTokens {
 		if c.is_vue() {
 			c.file_tokens = c.vue_tag_tokens(c.file_tokens, root)
 		}
+		if c.is_svelte() && c.svelte.doc.separator >= 0 {
+			// The separator `;` is not a token of svelte-eslint-parser.
+			sep := c.svelte.doc.separator + 1
+			c.file_tokens = &SourceTokens{
+				tokens:   c.file_tokens.tokens.filter(it.start != sep)
+				comments: c.file_tokens.comments
+				all:      c.file_tokens.all.filter(it.start != sep)
+			}
+		}
 	}
 	return c.file_tokens
 }

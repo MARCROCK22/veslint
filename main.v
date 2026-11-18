@@ -8,6 +8,7 @@ import strings
 import time
 import treesitter
 import tsgo
+import svelte
 import vue
 
 // veslint: parses TypeScript with tree-sitter and asks tsgo (`tsc --api`) for the types.
@@ -49,8 +50,9 @@ struct FileWork {
 	src      string // content without the BOM, as Node decodes it
 	not_utf8 bool   // the bytes are not valid UTF-8: tsgo is served `src`
 	// A .vue file: tsgo has its script in a virtual twin at ts_path (vue_files.v), with the text
-	// twin_code; ts_path is abs_path for any other file.
+	// twin_code; ts_path is abs_path for any other file. A .svelte file too (svelte_files.v).
 	vue       bool
+	svelte    bool
 	ts_path   string
 	twin_code string
 }
@@ -438,10 +440,20 @@ fn run(opts Options, timeout time.Duration) !int {
 	// tsconfig of each file.
 	mut works := []FileWork{cap: opts.files.len}
 	mut vue_parsers := VueParsers{}
+	mut svelte_parsers := SvelteParsers{}
 	defer {
 		vue_parsers.close()
+		svelte_parsers.close()
 	}
 	for path in opts.files {
+		if rules.is_svelte_path(path) {
+			work := prepare_svelte_file(mut svelte_parsers, parser, path, project_override,
+				opts.all_identifiers, mut bench)!
+			if work.svelte {
+				works << work
+			}
+			continue
+		}
 		if rules.is_vue_path(path) {
 			work := prepare_vue_file(mut vue_parsers, parser, path, project_override, opts.all_identifiers, mut
 				bench)!
@@ -469,7 +481,7 @@ fn run(opts Options, timeout time.Duration) !int {
 	mut served := map[string]string{}
 	mut virtual := map[string]string{}
 	for w in works {
-		if w.vue {
+		if w.vue || w.svelte {
 			virtual[w.ts_path] = w.twin_code
 		} else if w.not_utf8 {
 			served[w.abs_path] = w.src
@@ -487,7 +499,7 @@ fn run(opts Options, timeout time.Duration) !int {
 	if virtual.len > 0 {
 		mut twins := map[string][]string{}
 		for w in works {
-			if w.vue {
+			if w.vue || w.svelte {
 				twins[w.tsconfig] << w.ts_path
 			}
 		}
@@ -541,8 +553,9 @@ struct RuleFile {
 	not_utf8 bool   // the bytes are not valid UTF-8: tsgo is served `src`
 	note     string // ESLint's message for a file it does not lint (ignored, or without configuration)
 	// A .vue file: tsgo has its script in a virtual twin, at ts_path with the text twin_code
-	// (vue_files.v); ts_path is abs_path for any other file.
+	// (vue_files.v); ts_path is abs_path for any other file. A .svelte file too (svelte_files.v).
 	vue       bool
+	svelte    bool
 	ts_path   string
 	twin_code string
 }
@@ -578,8 +591,10 @@ fn run_rules(opts Options, timeout time.Duration) !int {
 	mut files := []RuleFile{cap: opts.files.len}
 	mut tsconfigs := []string{}
 	mut vue_parsers := VueParsers{}
+	mut svelte_parsers := SvelteParsers{}
 	defer {
 		vue_parsers.close()
+		svelte_parsers.close()
 	}
 	for path in opts.files {
 		abs_path := os.abs_path(path)
@@ -593,11 +608,21 @@ fn run_rules(opts Options, timeout time.Duration) !int {
 		}
 		src, has_bom, not_utf8 := read_source(path)!
 		is_vue := rules.is_vue_path(path)
+		is_svelte := rules.is_svelte_path(path)
 		mut twin_code := ''
 		if is_vue {
 			code, linted := vue_parsers.twin_code(src) or { return error('${path}: ${err.msg()}') }
 			if !linted {
 				eprintln(vue_javascript_warning(path))
+				continue
+			}
+			twin_code = code
+		} else if is_svelte {
+			code, linted := svelte_parsers.twin_code(src) or {
+				return error('${path}: ${err.msg()}')
+			}
+			if !linted {
+				eprintln(svelte_javascript_warning(path))
 				continue
 			}
 			twin_code = code
@@ -631,7 +656,14 @@ fn run_rules(opts Options, timeout time.Duration) !int {
 			has_bom:   has_bom
 			not_utf8:  not_utf8
 			vue:       is_vue
-			ts_path:   if is_vue { rules.vue_twin_path(abs_path) } else { abs_path }
+			svelte:    is_svelte
+			ts_path:   if is_vue {
+				rules.vue_twin_path(abs_path)
+			} else if is_svelte {
+				rules.svelte_twin_path(abs_path)
+			} else {
+				abs_path
+			}
 			twin_code: twin_code
 		}
 	}
@@ -654,7 +686,7 @@ fn run_rules(opts Options, timeout time.Duration) !int {
 	mut served := map[string]string{}
 	mut virtual := map[string]string{}
 	for f in files {
-		if f.vue {
+		if f.vue || f.svelte {
 			virtual[f.ts_path] = f.twin_code
 		} else if f.not_utf8 {
 			served[f.abs_path] = f.src
@@ -672,7 +704,7 @@ fn run_rules(opts Options, timeout time.Duration) !int {
 	if virtual.len > 0 {
 		mut twins := map[string][]string{}
 		for f in files {
-			if f.vue && f.tsconfig != '' {
+			if (f.vue || f.svelte) && f.tsconfig != '' {
 				twins[f.tsconfig] << f.ts_path
 			}
 		}
@@ -753,6 +785,11 @@ fn run_rules(opts Options, timeout time.Duration) !int {
 		if f.vue {
 			doc = vue_parsers.parse(src) or { return error('${f.path}: ${err.msg()}') }
 		}
+		// The document of a .svelte file, the same way.
+		mut sdoc := &svelte.Document(unsafe { nil })
+		if f.svelte {
+			sdoc = svelte_parsers.parse(src) or { return error('${f.path}: ${err.msg()}') }
+		}
 		// --fix ports ESLint's verifyAndFix: lint, apply the fixes that do not overlap, and lint the
 		// result again, up to 10 passes or until two passes give the same text. tsgo only reads
 		// files, so each pass is written to disk and a new snapshot is taken.
@@ -790,9 +827,11 @@ fn run_rules(opts Options, timeout time.Duration) !int {
 			}
 			if f.vue {
 				checker.set_vue(doc, f.ts_path)
+			} else if f.svelte {
+				checker.set_svelte(sdoc, f.ts_path, svelte_parsers.parsers)
 			}
 			result = checker.lint_file(if (f.vue && uses_tsx_grammar(doc))
-				|| (!f.vue && treesitter.uses_jsx_dialect(f.path)) {
+				|| (!f.vue && !f.svelte && treesitter.uses_jsx_dialect(f.path)) {
 				tsx_parser
 			} else {
 				parser
@@ -832,6 +871,10 @@ fn run_rules(opts Options, timeout time.Duration) !int {
 				doc.free()
 				doc = vue_parsers.parse(src) or { return error('${f.path}: ${err.msg()}') }
 				client.serve(f.ts_path, doc.script.code)
+			} else if f.svelte {
+				sdoc.free()
+				sdoc = svelte_parsers.parse(src) or { return error('${f.path}: ${err.msg()}') }
+				client.serve(f.ts_path, sdoc.virtual_code)
 			} else {
 				// What is on disk now is valid UTF-8: tsgo reads it from there.
 				client.stop_serving(f.abs_path)
@@ -857,9 +900,12 @@ fn run_rules(opts Options, timeout time.Duration) !int {
 				checkers.delete(project)
 			}
 		}
-		report := file_report(f.path, src, result, opts.fixes, doc)
+		report := file_report(f.path, src, result, opts.fixes, doc, sdoc)
 		if f.vue {
 			doc.free()
+		}
+		if f.svelte {
+			sdoc.free()
 		}
 		eprint(report.stderr)
 		if opts.summary {
@@ -925,7 +971,7 @@ struct FileReport {
 
 // file_report writes the findings of a file (`path` as it is printed) and the warnings about how
 // it was read.
-fn file_report(path string, src string, result rules.FileLint, fixes bool, doc &vue.Document) FileReport {
+fn file_report(path string, src string, result rules.FileLint, fixes bool, doc &vue.Document, sdoc &svelte.Document) FileReport {
 	mut errors := strings.new_builder(0)
 	if result.syntax_errors {
 		errors.writeln('warning: ${path}: tree-sitter found syntax errors; results may be partial')
@@ -944,6 +990,8 @@ fn file_report(path string, src string, result rules.FileLint, fixes bool, doc &
 	mut ends := []offsets.DisplayPos{}
 	if doc != unsafe { nil } {
 		display, ends = vue_report_positions(doc, findings, fixes)
+	} else if sdoc != unsafe { nil } {
+		display, ends = svelte_report_positions(sdoc, findings, fixes)
 	} else {
 		_, display = offsets.utf16_positions(src, findings.map(it.stmt))
 		if fixes {

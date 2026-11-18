@@ -25,6 +25,10 @@ fn (mut c Checker) es_tree(root C.TSNode, abs_path string) ?&estree.EsTree {
 		for {
 			top = node_parent(top) or { break }
 		}
+		if c.is_svelte() {
+			c.svelte_es_tree(top)
+			return if c.file_es_state == .built { &c.file_es } else { none }
+		}
 		if c.is_vue() {
 			c.vue_es_tree(top)
 			return if c.file_es_state == .built { &c.file_es } else { none }
