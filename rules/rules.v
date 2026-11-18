@@ -635,6 +635,11 @@ pub const vue_no_constant_condition = 'vue/no-constant-condition'
 pub const vue_no_console = 'vue/no-console'
 pub const vue_quote_props = 'vue/quote-props'
 pub const vue_no_extra_parens = 'vue/no-extra-parens'
+pub const vue_max_attributes_per_line = 'vue/max-attributes-per-line'
+pub const vue_no_useless_mustaches = 'vue/no-useless-mustaches'
+pub const vue_no_negated_v_if_condition = 'vue/no-negated-v-if-condition'
+pub const vue_use_v_on_exact = 'vue/use-v-on-exact'
+pub const vue_prefer_v_model = 'vue/prefer-v-model'
 pub const names = [no_floating_promises, await_thenable, require_await, return_await,
 	no_misused_promises, no_unsafe_call, no_unsafe_member_access, no_unsafe_return,
 	no_unsafe_assignment, no_unsafe_argument, restrict_template_expressions,
@@ -808,8 +813,8 @@ pub const names = [no_floating_promises, await_thenable, require_await, return_a
 	vue_component_options_name_casing, vue_max_lines_per_block, vue_no_multiple_slot_args,
 	vue_no_reserved_keys, vue_no_deprecated_delete_set, vue_require_prop_types,
 	vue_return_in_computed_property, vue_no_deprecated_props_default_this,
-	vue_require_slots_as_functions, vue_require_name_property, vue_arrow_spacing,
-	vue_camelcase, vue_comma_dangle, vue_dot_location, vue_no_empty_pattern, vue_no_sparse_arrays,
+	vue_require_slots_as_functions, vue_require_name_property, vue_arrow_spacing, vue_camelcase,
+	vue_comma_dangle, vue_dot_location, vue_no_empty_pattern, vue_no_sparse_arrays,
 	vue_operator_linebreak, vue_array_bracket_newline, vue_array_bracket_spacing,
 	vue_array_element_newline, vue_block_spacing, vue_brace_style, vue_dot_notation, vue_eqeqeq,
 	vue_key_spacing, vue_keyword_spacing, vue_no_restricted_syntax, vue_no_useless_concat,
@@ -817,7 +822,9 @@ pub const names = [no_floating_promises, await_thenable, require_await, return_a
 	vue_prefer_template, vue_no_implicit_coercion, vue_no_loss_of_precision, vue_no_negated_condition,
 	vue_object_shorthand, vue_space_infix_ops, vue_space_unary_ops, vue_template_curly_spacing,
 	vue_comma_spacing, vue_multiline_ternary, vue_space_in_parens, vue_func_call_spacing,
-	vue_comma_style, vue_no_constant_condition, vue_no_console, vue_quote_props, vue_no_extra_parens]
+	vue_comma_style, vue_no_constant_condition, vue_no_console, vue_quote_props, vue_no_extra_parens,
+	vue_max_attributes_per_line, vue_no_useless_mustaches, vue_no_negated_v_if_condition,
+	vue_use_v_on_exact, vue_prefer_v_model]
 
 // untyped_rules are the ported rules that need no types (`meta.docs.requiresTypeChecking` is false
 // in typescript-eslint; the eslint-plugin-unicorn rules that read the types when the parser has a
@@ -961,8 +968,8 @@ pub const untyped_rules = [adjacent_overload_signatures, array_type, class_liter
 	vue_define_emits_declaration, vue_require_prop_type_constructor, vue_no_restricted_block,
 	vue_component_options_name_casing, vue_max_lines_per_block, vue_no_multiple_slot_args,
 	vue_no_deprecated_delete_set, vue_require_prop_types, vue_no_deprecated_props_default_this,
-	vue_require_slots_as_functions, vue_require_name_property, vue_arrow_spacing,
-	vue_camelcase, vue_comma_dangle, vue_dot_location, vue_no_empty_pattern, vue_no_sparse_arrays,
+	vue_require_slots_as_functions, vue_require_name_property, vue_arrow_spacing, vue_camelcase,
+	vue_comma_dangle, vue_dot_location, vue_no_empty_pattern, vue_no_sparse_arrays,
 	vue_operator_linebreak, vue_array_bracket_newline, vue_array_bracket_spacing,
 	vue_array_element_newline, vue_block_spacing, vue_brace_style, vue_dot_notation, vue_eqeqeq,
 	vue_key_spacing, vue_keyword_spacing, vue_no_restricted_syntax, vue_no_useless_concat,
@@ -970,7 +977,9 @@ pub const untyped_rules = [adjacent_overload_signatures, array_type, class_liter
 	vue_prefer_template, vue_no_implicit_coercion, vue_no_loss_of_precision, vue_no_negated_condition,
 	vue_object_shorthand, vue_space_infix_ops, vue_space_unary_ops, vue_template_curly_spacing,
 	vue_comma_spacing, vue_multiline_ternary, vue_space_in_parens, vue_func_call_spacing,
-	vue_comma_style, vue_no_constant_condition, vue_no_console, vue_quote_props, vue_no_extra_parens]
+	vue_comma_style, vue_no_constant_condition, vue_no_console, vue_quote_props, vue_no_extra_parens,
+	vue_max_attributes_per_line, vue_no_useless_mustaches, vue_no_negated_v_if_condition,
+	vue_use_v_on_exact, vue_prefer_v_model]
 
 // needs_types tells whether a rule asks tsgo for the types of the program.
 pub fn needs_types(rule string) bool {
@@ -1600,6 +1609,11 @@ pub const default_options = {
 	vue_no_console:                                  '[]'
 	vue_quote_props:                                 '["always"]'
 	vue_no_extra_parens:                             '["all"]'
+	vue_max_attributes_per_line:                     '[]'
+	vue_no_useless_mustaches:                        '[]'
+	vue_no_negated_v_if_condition:                   '[]'
+	vue_use_v_on_exact:                              '[]'
+	vue_prefer_v_model:                              '[]'
 }
 
 // Finding is a problem a rule found at a node.
@@ -2382,6 +2396,11 @@ pub fn message(rule string, finding Finding) string {
 		vue_no_console { vncon_messages }
 		vue_quote_props { sqp_messages }
 		vue_no_extra_parens { snep_messages }
+		vue_max_attributes_per_line { vmapl_messages }
+		vue_no_useless_mustaches { vnum_messages }
+		vue_no_negated_v_if_condition { vnvic_messages }
+		vue_use_v_on_exact { vuvoe_messages }
+		vue_prefer_v_model { vpvm_messages }
 		else { map[string]string{} }
 	}
 	return interpolate(messages[finding.message_id] or { finding.message_id }, finding.data)
@@ -4396,6 +4415,21 @@ fn (mut c Checker) lint_rule(rule string, root C.TSNode, abs_path string, mut st
 		vue_comma_style, vue_no_constant_condition, vue_no_console, vue_quote_props,
 		vue_no_extra_parens {
 			return c.lint_vue_wrap(rule, root, abs_path, mut stats)!
+		}
+		vue_max_attributes_per_line {
+			return c.lint_vue_max_attributes_per_line(root, abs_path, mut stats)!
+		}
+		vue_no_useless_mustaches {
+			return c.lint_vue_no_useless_mustaches(root, abs_path, mut stats)!
+		}
+		vue_no_negated_v_if_condition {
+			return c.lint_vue_no_negated_v_if_condition(root, abs_path, mut stats)!
+		}
+		vue_use_v_on_exact {
+			return c.lint_vue_use_v_on_exact(root, abs_path, mut stats)!
+		}
+		vue_prefer_v_model {
+			return c.lint_vue_prefer_v_model(root, abs_path, mut stats)!
 		}
 		else { return error('unknown rule: ${rule}') }
 	}

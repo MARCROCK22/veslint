@@ -290,6 +290,8 @@ pub fn check_options(rule string, options []json2.Any) !bool {
 		vue_max_lines_per_block { vue_max_lines_per_block_options(options)! }
 		vue_no_reserved_keys { vue_no_reserved_keys_options(options)! }
 		vue_return_in_computed_property { vue_return_in_computed_property_options(options)! }
+		vue_max_attributes_per_line { vmapl_options(options)! }
+		vue_no_useless_mustaches { vnum_options(options)! }
 		else { return false }
 	}
 	return true
