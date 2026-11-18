@@ -1696,9 +1696,6 @@ veslint	sort-classes/r1/i241	tree-sitter's grammar: `abstract override` before a
 veslint	sort-classes/r1/i39	tree-sitter's grammar: an index signature without a type (`[k: string];`) is a syntax error
 veslint	sort-classes/r1/i164	tree-sitter's grammar: an index signature without a type (`[k: string];`) is a syntax error
 veslint	sort-classes/r1/i253	tree-sitter's grammar: an index signature without a type (`[k: string];`) is a syntax error
-veslint	sort-classes/r1/i37	tree-sitter reads the computed field `[key in O]` as an index signature
-veslint	sort-classes/r1/i162	tree-sitter reads the computed field `[key in O]` as an index signature
-veslint	sort-classes/r1/i251	tree-sitter reads the computed field `[key in O]` as an index signature
 # perfectionist/sort-imports (P2): as for sort-array-includes; v138 and v142 mock the tsconfig the rule reads
 # (vi.spyOn of readClosestTsConfigByPath) and i257 has `settings` the test does not give the rule.
 eslint	sort-imports/r0/i264	disables rule-to-test/sort-imports, the name the tester gives the rule
