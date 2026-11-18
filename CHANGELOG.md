@@ -4,6 +4,9 @@ Each version is a release on GitHub with the veslint binaries (Linux x64, Window
 
 ## 0.35.0
 
+- **eslint-plugin-svelte complete: all 86 rules.** `svelte/valid-compile` and the `unused` message of `svelte/no-unused-svelte-ignore` give the Svelte compiler's warnings (accessibility, unused CSS selectors, runes, `$:`…) from a port of the analysis of Svelte 5.56.0's `compile()` to V (`svelte_compiler/`), with no JavaScript runtime: identical to `compile()` on 6,319 files. `svelte/indent` and `svelte/@typescript-eslint/no-unnecessary-condition` complete the plugin. `<style>` blocks in sass, less or stylus are left out of the compiler's input (their CSS warnings are missing).
+- **`svelte.config.js` is read** without running it, as svelte-eslint-parser reads it: `compilerOptions.runes` and `kit.files` (`parserOptions.svelteConfig` takes precedence).
+- **eslint-plugin-vue complete: all 256 rules**, with `vue/html-indent` and `vue/script-indent` (eslint-plugin-vue's indent engine).
 - **Warnings are told from errors, as in ESLint:** a problem of a rule set to `"warn"` ends its line with the field `warning`, in the output, with `--fixes` and in the answers of `--server` (README, "The line format"); the line of an error is the same as before.
 - **VS Code extension:** each problem is shown with its rule's level, an error as an error and a warning as a warning, as the ESLint extension does. `veslint.severity` is now `auto` by default; `error`, `warning`, `information` or `hint` still show every problem of a rule with that severity. With an older veslint, `auto` shows them all as errors.
 
