@@ -655,6 +655,7 @@ pub const vue_no_undef_components = 'vue/no-undef-components'
 pub const vue_v_on_handler_style = 'vue/v-on-handler-style'
 pub const vue_no_mutating_props = 'vue/no-mutating-props'
 pub const vue_no_use_computed_property_like_method = 'vue/no-use-computed-property-like-method'
+pub const vue_no_unused_properties = 'vue/no-unused-properties'
 pub const names = [no_floating_promises, await_thenable, require_await, return_await,
 	no_misused_promises, no_unsafe_call, no_unsafe_member_access, no_unsafe_return,
 	no_unsafe_assignment, no_unsafe_argument, restrict_template_expressions,
@@ -844,7 +845,8 @@ pub const names = [no_floating_promises, await_thenable, require_await, return_a
 	vue_component_name_in_template_casing, vue_no_unused_refs, vue_custom_event_name_casing,
 	vue_no_restricted_custom_event, vue_no_unused_emit_declarations, vue_prefer_single_event_payload,
 	vue_no_shadow_native_events, vue_require_explicit_emits, vue_no_undef_components,
-	vue_v_on_handler_style, vue_no_mutating_props, vue_no_use_computed_property_like_method]
+	vue_v_on_handler_style, vue_no_mutating_props, vue_no_use_computed_property_like_method,
+	vue_no_unused_properties]
 
 // untyped_rules are the ported rules that need no types (`meta.docs.requiresTypeChecking` is false
 // in typescript-eslint; the eslint-plugin-unicorn rules that read the types when the parser has a
@@ -1652,6 +1654,7 @@ pub const default_options = {
 	vue_v_on_handler_style:                          '[]'
 	vue_no_mutating_props:                           '[]'
 	vue_no_use_computed_property_like_method:        '[]'
+	vue_no_unused_properties:                        '[]'
 }
 
 // Finding is a problem a rule found at a node.
@@ -2458,6 +2461,7 @@ pub fn message(rule string, finding Finding) string {
 		vue_no_use_computed_property_like_method {
 			vue_no_use_computed_property_like_method_messages
 		}
+		vue_no_unused_properties { vue_no_unused_properties_messages }
 		else { map[string]string{} }
 	}
 	return interpolate(messages[finding.message_id] or { finding.message_id }, finding.data)
@@ -4532,6 +4536,9 @@ fn (mut c Checker) lint_rule(rule string, root C.TSNode, abs_path string, mut st
 		}
 		vue_no_use_computed_property_like_method {
 			return c.lint_vue_no_use_computed_property_like_method(root, abs_path, mut stats)!
+		}
+		vue_no_unused_properties {
+			return c.lint_vue_no_unused_properties(root, abs_path, mut stats)!
 		}
 		else { return error('unknown rule: ${rule}') }
 	}

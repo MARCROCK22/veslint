@@ -301,6 +301,7 @@ pub fn check_options(rule string, options []json2.Any) !bool {
 		vue_no_undef_components { vnuco_options(options)! }
 		vue_v_on_handler_style { vohs_options(options)! }
 		vue_no_mutating_props { vnmp_options(options)! }
+		vue_no_unused_properties { vnup_options(options)! }
 		else { return false }
 	}
 	return true
