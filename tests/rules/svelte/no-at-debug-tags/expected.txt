@@ -1,0 +1,5 @@
+tests/rules/svelte/no-at-debug-tags/cases.svelte:6:1	svelte/no-at-debug-tags	unexpected	Unexpected `{@debug}`.
+tests/rules/svelte/no-at-debug-tags/cases.svelte:7:1	svelte/no-at-debug-tags	unexpected	Unexpected `{@debug}`.
+tests/rules/svelte/no-at-debug-tags/cases.svelte:8:1	svelte/no-at-debug-tags	unexpected	Unexpected `{@debug}`.
+tests/rules/svelte/no-at-debug-tags/cases.svelte:9:6	svelte/no-at-debug-tags	unexpected	Unexpected `{@debug}`.
+tests/rules/svelte/no-at-debug-tags/cases.svelte:11:2	svelte/no-at-debug-tags	unexpected	Unexpected `{@debug}`.

@@ -358,6 +358,7 @@ pub fn check_options(rule string, options []json2.Any) !bool {
 			vue_no_async_in_computed_properties_options(options)!
 		}
 		vue_no_dupe_keys { vue_no_dupe_keys_options(options)! }
+		svelte_comment_directive { svcd_options(options)! }
 		else { return false }
 	}
 	return true
@@ -401,7 +402,8 @@ pub fn effective_options(name string, options []json2.Any) ![]json2.Any {
 			return error(err.msg().replace_once('`${base}`', '`${name}`'))
 		}
 	}
-	if name.starts_with('perfectionist/') || name.starts_with('vue/') {
+	// So have those of eslint-plugin-svelte.
+	if name.starts_with('perfectionist/') || name.starts_with('vue/') || name.starts_with('svelte/') {
 		check_options(name, options) or { return error('`${name}`: ${err.msg()}') }
 		return options
 	}

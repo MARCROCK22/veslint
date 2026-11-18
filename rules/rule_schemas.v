@@ -717,6 +717,10 @@ const rule_option_schemas = {
 	'vue/no-side-effects-in-computed-properties':                      '{"type":"array","minItems":0,"maxItems":0}'
 	'vue/no-async-in-computed-properties':                             '{"type":"array","items":[{"type":"object","properties":{"ignoredObjectNames":{"type":"array","items":{"type":"string"},"uniqueItems":true}},"additionalProperties":false}],"minItems":0,"maxItems":1}'
 	'vue/no-dupe-keys':                                                '{"type":"array","items":[{"type":"object","properties":{"groups":{"type":"array","items":{"type":"string"}}},"additionalProperties":false}],"minItems":0,"maxItems":1}'
+	'svelte/comment-directive':                                        '{"type":"array","items":[{"type":"object","properties":{"reportUnusedDisableDirectives":{"type":"boolean"}},"additionalProperties":false}],"minItems":0,"maxItems":1}'
+	'svelte/system':                                                   '{"type":"array","minItems":0,"maxItems":0}'
+	'svelte/no-at-html-tags':                                          '{"type":"array","minItems":0,"maxItems":0}'
+	'svelte/no-at-debug-tags':                                         '{"type":"array","minItems":0,"maxItems":0}'
 }
 
 // eslint_rule_default_options are the meta.defaultOptions of the rules of ESLint and of
@@ -905,6 +909,8 @@ const eslint_rule_default_options = {
 	'sort-keys':                                         '["asc",{"allowLineSeparatedGroups":false,"caseSensitive":true,"ignoreComputedKeys":false,"minKeys":2,"natural":false}]'
 	'sort-vars':                                         '[{"ignoreCase":false}]'
 	'strict':                                            '["safe"]'
+	'svelte/no-inner-declarations':                      '["functions",{"blockScopedFunctions":"allow"}]'
+	'svelte/prefer-const':                               '[{"destructuring":"any","ignoreReadBeforeAssign":false}]'
 	'unicode-bom':                                       '["never"]'
 	'unicorn/catch-error-name':                          '[{"name":"error","ignore":[]}]'
 	'unicorn/class-reference-in-static-methods':         '[{"preferThis":true,"preferSuper":true}]'

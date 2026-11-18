@@ -728,6 +728,10 @@ pub const vue_require_expose = 'vue/require-expose'
 pub const vue_no_side_effects_in_computed_properties = 'vue/no-side-effects-in-computed-properties'
 pub const vue_no_async_in_computed_properties = 'vue/no-async-in-computed-properties'
 pub const vue_no_dupe_keys = 'vue/no-dupe-keys'
+pub const svelte_comment_directive = 'svelte/comment-directive'
+pub const svelte_system = 'svelte/system'
+pub const svelte_no_at_html_tags = 'svelte/no-at-html-tags'
+pub const svelte_no_at_debug_tags = 'svelte/no-at-debug-tags'
 pub const names = [no_floating_promises, await_thenable, require_await, return_await,
 	no_misused_promises, no_unsafe_call, no_unsafe_member_access, no_unsafe_return,
 	no_unsafe_assignment, no_unsafe_argument, restrict_template_expressions,
@@ -941,7 +945,8 @@ pub const names = [no_floating_promises, await_thenable, require_await, return_a
 	vue_no_required_prop_with_default, vue_require_default_prop, vue_require_valid_default_prop,
 	vue_no_restricted_props, vue_require_typed_ref, vue_no_ref_as_operand,
 	vue_no_ref_object_reactivity_loss, vue_no_setup_props_reactivity_loss, vue_require_expose,
-	vue_no_side_effects_in_computed_properties, vue_no_async_in_computed_properties, vue_no_dupe_keys]
+	vue_no_side_effects_in_computed_properties, vue_no_async_in_computed_properties, vue_no_dupe_keys,
+	svelte_comment_directive, svelte_system, svelte_no_at_html_tags, svelte_no_at_debug_tags]
 
 // untyped_rules are the ported rules that need no types (`meta.docs.requiresTypeChecking` is false
 // in typescript-eslint; the eslint-plugin-unicorn rules that read the types when the parser has a
@@ -1120,7 +1125,8 @@ pub const untyped_rules = [adjacent_overload_signatures, array_type, class_liter
 	vue_no_watch_after_await, vue_no_expose_after_await, vue_no_restricted_call_after_await,
 	vue_next_tick_style, vue_valid_next_tick, vue_require_typed_ref, vue_no_ref_object_reactivity_loss,
 	vue_no_setup_props_reactivity_loss, vue_require_expose, vue_no_side_effects_in_computed_properties,
-	vue_no_async_in_computed_properties]
+	vue_no_async_in_computed_properties, svelte_comment_directive, svelte_system,
+	svelte_no_at_html_tags, svelte_no_at_debug_tags]
 
 // needs_types tells whether a rule asks tsgo for the types of the program.
 pub fn needs_types(rule string) bool {
@@ -1843,6 +1849,10 @@ pub const default_options = {
 	vue_no_side_effects_in_computed_properties:      '[]'
 	vue_no_async_in_computed_properties:             '[]'
 	vue_no_dupe_keys:                                '[]'
+	svelte_comment_directive:                        '[]'
+	svelte_system:                                   '[]'
+	svelte_no_at_html_tags:                          '[]'
+	svelte_no_at_debug_tags:                         '[]'
 }
 
 // Finding is a problem a rule found at a node.
@@ -2742,6 +2752,10 @@ pub fn message(rule string, finding Finding) string {
 		}
 		vue_no_async_in_computed_properties { vue_no_async_in_computed_properties_messages }
 		vue_no_dupe_keys { vue_no_dupe_keys_messages }
+		svelte_comment_directive { svcd_messages }
+		svelte_system { map[string]string{} }
+		svelte_no_at_html_tags { svnaht_messages }
+		svelte_no_at_debug_tags { svnadt_messages }
 		else { map[string]string{} }
 	}
 	return interpolate(messages[finding.message_id] or { finding.message_id }, finding.data)
@@ -3018,6 +3032,12 @@ fn (mut c Checker) lint_file_in_lifetime(parser Parser, config LintConfig, src s
 				findings = c.vue_comment_directive_postprocess(findings, setting)!
 			}
 		}
+	}
+	// The template's directive comments of a .svelte file and settings.svelte.ignoreWarnings: the
+	// postprocess of eslint-plugin-svelte's processor, with svelte/comment-directive or
+	// svelte/system on (svelte_comment_directive.v).
+	if svelte_file && inline.rules.any(it.name in [svelte_comment_directive, svelte_system]) {
+		findings = c.svelte_comment_directive_postprocess(findings, inline.rules)!
 	}
 	stats.findings += findings.len
 	return FileLint{
@@ -5061,6 +5081,18 @@ fn (mut c Checker) lint_rule(rule string, root C.TSNode, abs_path string, mut st
 		}
 		vue_no_dupe_keys {
 			return c.lint_vue_no_dupe_keys(root, abs_path, mut stats)!
+		}
+		svelte_comment_directive {
+			return c.lint_svelte_comment_directive(root, abs_path, mut stats)!
+		}
+		svelte_system {
+			return c.lint_svelte_system(root, abs_path, mut stats)!
+		}
+		svelte_no_at_html_tags {
+			return c.lint_svelte_no_at_html_tags(root, abs_path, mut stats)!
+		}
+		svelte_no_at_debug_tags {
+			return c.lint_svelte_no_at_debug_tags(root, abs_path, mut stats)!
 		}
 		else { return error('unknown rule: ${rule}') }
 	}

@@ -1,0 +1,7 @@
+tests/rules/svelte/comment-directive/report-unused/cases.svelte:5:1	svelte/comment-directive	unused	Unused eslint-disable directive (no problems were reported).	end	5	24
+tests/rules/svelte/comment-directive/report-unused/cases.svelte:8:21	svelte/comment-directive	unusedRule	Unused eslint-disable directive (no problems were reported from 'svelte/no-at-html-tags').	end	8	43
+tests/rules/svelte/comment-directive/report-unused/cases.svelte:8:45	svelte/comment-directive	unusedRule	Unused eslint-disable directive (no problems were reported from 'svelte/no-at-debug-tags').	end	8	68
+tests/rules/svelte/comment-directive/report-unused/cases.svelte:12:31	svelte/comment-directive	unusedRule	Unused eslint-disable-next-line directive (no problems were reported from 'svelte/no-at-html-tags').	end	12	53
+tests/rules/svelte/comment-directive/report-unused/cases.svelte:16:26	svelte/comment-directive	unusedRule	Unused eslint-disable directive (no problems were reported from 'a').	end	16	27
+tests/rules/svelte/comment-directive/report-unused/cases.svelte:16:29	svelte/comment-directive	unusedRule	Unused eslint-disable directive (no problems were reported from 'b').	end	16	30
+tests/rules/svelte/comment-directive/report-unused/cases.svelte:16:33	svelte/comment-directive	unusedRule	Unused eslint-disable directive (no problems were reported from 'c').	end	16	34

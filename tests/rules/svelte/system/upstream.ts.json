@@ -1,0 +1,7 @@
+{"rule":"svelte/system","upstream":"eslint-plugin-svelte v3.24.1","files":["tests/src/rules/system.ts"],"messages":{},"generator":"tests/rules/svelte/upstream_ts.mjs","cases":[
+
+],"lints":[
+
+],"skipped":[
+
+]}
