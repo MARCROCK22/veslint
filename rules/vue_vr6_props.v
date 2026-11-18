@@ -489,3 +489,33 @@ fn (mut c Checker) vx6_infer_type_props(t &estree.EsTree, node int, abs_path str
 	}
 	return out
 }
+
+// vx6_resolve_types asks the checker for the types of the nodes at once (none without types):
+// node_type of each node's tree-sitter node then answers.
+fn (mut c Checker) vx6_resolve_types(t &estree.EsTree, nodes []int, abs_path string, mut stats Stats) bool {
+	if !c.scope_setup.type_information || nodes.len == 0 {
+		return false
+	}
+	mut spans := []Span{}
+	for node in nodes {
+		ts := t.ts_node(node) or { continue }
+		spans << node_span(ts)
+	}
+	c.resolve_spans(spans, abs_path, mut stats) or { return false }
+	return true
+}
+
+// vx6_is_ref_object_type is isRefObjectType for a node whose type was resolved: a property of
+// its type is the `[RefSymbol]` marker of `Ref` (`__@RefSymbol@…`; tsgo names it with `\xFE`).
+fn (mut c Checker) vx6_is_ref_object_type(t &estree.EsTree, node int) bool {
+	ts := t.ts_node(node) or { return false }
+	typ := c.node_type(ts) or { return false }
+	for property in c.properties(typ) or { return false } {
+		if property.name.starts_with('__@RefSymbol@')
+			|| (property.name.len > 1 && property.name[0] == 0xfe
+			&& property.name[1..].starts_with('@RefSymbol@')) {
+			return true
+		}
+	}
+	return false
+}
