@@ -1,0 +1,14 @@
+tests/rules/svelte/html-closing-bracket-new-line/cases.svelte:5:15	svelte/html-closing-bracket-new-line	expectedBeforeClosingBracket	Expected no line breaks before closing bracket, but 1 line break found.
+tests/rules/svelte/html-closing-bracket-new-line/cases.svelte:8:11	svelte/html-closing-bracket-new-line	expectedBeforeClosingBracket	Expected 1 line break before closing bracket, but no line breaks found.
+tests/rules/svelte/html-closing-bracket-new-line/cases.svelte:12:15	svelte/html-closing-bracket-new-line	expectedBeforeClosingBracket	Expected no line breaks before closing bracket, but 2 line breaks found.
+tests/rules/svelte/html-closing-bracket-new-line/cases.svelte:16:11	svelte/html-closing-bracket-new-line	expectedBeforeClosingBracket	Expected 1 line break before closing bracket, but no line breaks found.
+tests/rules/svelte/html-closing-bracket-new-line/cases.svelte:20:17	svelte/html-closing-bracket-new-line	expectedBeforeClosingBracket	Expected no line breaks before closing bracket, but 1 line break found.
+tests/rules/svelte/html-closing-bracket-new-line/cases.svelte:22:12	svelte/html-closing-bracket-new-line	expectedBeforeClosingBracket	Expected no line breaks before closing bracket, but 1 line break found.
+tests/rules/svelte/html-closing-bracket-new-line/cases.svelte:25:11	svelte/html-closing-bracket-new-line	expectedBeforeClosingBracket	Expected 1 line break before closing bracket, but no line breaks found.
+tests/rules/svelte/html-closing-bracket-new-line/cases.svelte:25:17	svelte/html-closing-bracket-new-line	expectedBeforeClosingBracket	Expected no line breaks before closing bracket, but 1 line break found.
+tests/rules/svelte/html-closing-bracket-new-line/opts/cases.svelte:1:18	svelte/html-closing-bracket-new-line	expectedBeforeClosingBracket	Expected 1 line break before closing bracket, but no line breaks found.
+tests/rules/svelte/html-closing-bracket-new-line/opts/cases.svelte:10:11	svelte/html-closing-bracket-new-line	expectedBeforeClosingBracket	Expected no line breaks before closing bracket, but 1 line break found.
+tests/rules/svelte/html-closing-bracket-new-line/opts/cases.svelte:12:15	svelte/html-closing-bracket-new-line	expectedBeforeClosingBracket	Expected 1 line break before closing bracket, but 2 line breaks found.
+tests/rules/svelte/html-closing-bracket-new-line/opts/cases.svelte:16:11	svelte/html-closing-bracket-new-line	expectedBeforeClosingBracket	Expected 1 line break before closing bracket, but no line breaks found.
+tests/rules/svelte/html-closing-bracket-new-line/opts/cases.svelte:22:5	svelte/html-closing-bracket-new-line	expectedBeforeClosingBracket	Expected 1 line break before closing bracket, but no line breaks found.
+tests/rules/svelte/html-closing-bracket-new-line/opts/cases.svelte:27:3	svelte/html-closing-bracket-new-line	expectedBeforeClosingBracket	Expected 1 line break before closing bracket, but no line breaks found.

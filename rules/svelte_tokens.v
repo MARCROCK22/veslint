@@ -140,3 +140,24 @@ fn (c &Checker) sv_tokens_between(left_end int, right_start int, include_comment
 fn sv_is_punctuator(t svelte.Token, value string) bool {
 	return t.typ == 'Punctuator' && t.value == value
 }
+
+// sv_token_loc_start and sv_token_loc_end are where a token's `loc` starts and ends (bytes of the
+// file): its range, but where svelte-eslint-parser keeps a stale loc (Token.loc_start/loc_end).
+fn sv_token_loc_start(t svelte.Token) int {
+	return if t.loc_start >= 0 { t.loc_start } else { t.start }
+}
+
+fn sv_token_loc_end(t svelte.Token) int {
+	return if t.loc_end >= 0 { t.loc_end } else { t.end }
+}
+
+// sv_line is the line (from 1) of svelte-eslint-parser's location of a byte offset.
+fn (c &Checker) sv_line(offset int) int {
+	return c.svelte.doc.loc(offset).line
+}
+
+// sv_snode_loc_end is where a Svelte node's `loc` ends.
+fn (c &Checker) sv_snode_loc_end(i int) int {
+	n := &c.svelte.doc.nodes[i]
+	return if n.loc_end >= 0 { n.loc_end } else { n.end }
+}

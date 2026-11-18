@@ -742,6 +742,11 @@ pub const svelte_no_spaces_around_equal_signs_in_attribute = 'svelte/no-spaces-a
 pub const svelte_spaced_html_comment = 'svelte/spaced-html-comment'
 pub const svelte_no_dupe_else_if_blocks = 'svelte/no-dupe-else-if-blocks'
 pub const svelte_no_useless_mustaches = 'svelte/no-useless-mustaches'
+pub const svelte_first_attribute_linebreak = 'svelte/first-attribute-linebreak'
+pub const svelte_shorthand_directive = 'svelte/shorthand-directive'
+pub const svelte_html_closing_bracket_spacing = 'svelte/html-closing-bracket-spacing'
+pub const svelte_html_closing_bracket_new_line = 'svelte/html-closing-bracket-new-line'
+pub const svelte_no_dynamic_slot_name = 'svelte/no-dynamic-slot-name'
 pub const names = [no_floating_promises, await_thenable, require_await, return_await,
 	no_misused_promises, no_unsafe_call, no_unsafe_member_access, no_unsafe_return,
 	no_unsafe_assignment, no_unsafe_argument, restrict_template_expressions,
@@ -960,7 +965,9 @@ pub const names = [no_floating_promises, await_thenable, require_await, return_a
 	svelte_button_has_type, svelte_no_target_blank, svelte_require_each_key, svelte_valid_each_key,
 	svelte_no_object_in_text_mustaches, svelte_shorthand_attribute,
 	svelte_no_spaces_around_equal_signs_in_attribute, svelte_spaced_html_comment,
-	svelte_no_dupe_else_if_blocks, svelte_no_useless_mustaches]
+	svelte_no_dupe_else_if_blocks, svelte_no_useless_mustaches, svelte_first_attribute_linebreak,
+	svelte_shorthand_directive, svelte_html_closing_bracket_spacing,
+	svelte_html_closing_bracket_new_line, svelte_no_dynamic_slot_name]
 
 // untyped_rules are the ported rules that need no types (`meta.docs.requiresTypeChecking` is false
 // in typescript-eslint; the eslint-plugin-unicorn rules that read the types when the parser has a
@@ -1143,7 +1150,9 @@ pub const untyped_rules = [adjacent_overload_signatures, array_type, class_liter
 	svelte_no_at_html_tags, svelte_no_at_debug_tags, svelte_button_has_type, svelte_no_target_blank,
 	svelte_require_each_key, svelte_valid_each_key, svelte_no_object_in_text_mustaches,
 	svelte_shorthand_attribute, svelte_no_spaces_around_equal_signs_in_attribute,
-	svelte_spaced_html_comment, svelte_no_dupe_else_if_blocks, svelte_no_useless_mustaches]
+	svelte_spaced_html_comment, svelte_no_dupe_else_if_blocks, svelte_no_useless_mustaches,
+	svelte_first_attribute_linebreak, svelte_shorthand_directive, svelte_html_closing_bracket_spacing,
+	svelte_html_closing_bracket_new_line, svelte_no_dynamic_slot_name]
 
 // needs_types tells whether a rule asks tsgo for the types of the program.
 pub fn needs_types(rule string) bool {
@@ -1880,6 +1889,11 @@ pub const default_options = {
 	svelte_spaced_html_comment:                       '[]'
 	svelte_no_dupe_else_if_blocks:                    '[]'
 	svelte_no_useless_mustaches:                      '[]'
+	svelte_first_attribute_linebreak:                 '[]'
+	svelte_shorthand_directive:                       '[]'
+	svelte_html_closing_bracket_spacing:              '[]'
+	svelte_html_closing_bracket_new_line:             '[]'
+	svelte_no_dynamic_slot_name:                      '[]'
 }
 
 // Finding is a problem a rule found at a node.
@@ -2793,6 +2807,11 @@ pub fn message(rule string, finding Finding) string {
 		svelte_spaced_html_comment { sshc_messages }
 		svelte_no_dupe_else_if_blocks { sndeib_messages }
 		svelte_no_useless_mustaches { snum_messages }
+		svelte_first_attribute_linebreak { sfal_messages }
+		svelte_shorthand_directive { svshd_messages }
+		svelte_html_closing_bracket_spacing { shcbs_messages }
+		svelte_html_closing_bracket_new_line { shcbnl_messages }
+		svelte_no_dynamic_slot_name { sndsn_messages }
 		else { map[string]string{} }
 	}
 	return interpolate(messages[finding.message_id] or { finding.message_id }, finding.data)
@@ -5160,6 +5179,21 @@ fn (mut c Checker) lint_rule(rule string, root C.TSNode, abs_path string, mut st
 		}
 		svelte_no_useless_mustaches {
 			return c.lint_svelte_no_useless_mustaches(root, abs_path, mut stats)!
+		}
+		svelte_first_attribute_linebreak {
+			return c.lint_svelte_first_attribute_linebreak(root, abs_path, mut stats)!
+		}
+		svelte_shorthand_directive {
+			return c.lint_svelte_shorthand_directive(root, abs_path, mut stats)!
+		}
+		svelte_html_closing_bracket_spacing {
+			return c.lint_svelte_html_closing_bracket_spacing(root, abs_path, mut stats)!
+		}
+		svelte_html_closing_bracket_new_line {
+			return c.lint_svelte_html_closing_bracket_new_line(root, abs_path, mut stats)!
+		}
+		svelte_no_dynamic_slot_name {
+			return c.lint_svelte_no_dynamic_slot_name(root, abs_path, mut stats)!
 		}
 		else { return error('unknown rule: ${rule}') }
 	}

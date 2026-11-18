@@ -731,6 +731,11 @@ const rule_option_schemas = {
 	'svelte/spaced-html-comment':                                      '{"type":"array","items":[{"enum":["always","never"]}],"minItems":0,"maxItems":1}'
 	'svelte/no-dupe-else-if-blocks':                                   '{"type":"array","minItems":0,"maxItems":0}'
 	'svelte/no-useless-mustaches':                                     '{"type":"array","items":[{"type":"object","properties":{"ignoreIncludesComment":{"type":"boolean"},"ignoreStringEscape":{"type":"boolean"}},"additionalProperties":false}],"minItems":0,"maxItems":1}'
+	'svelte/first-attribute-linebreak':                                '{"type":"array","items":[{"type":"object","properties":{"multiline":{"enum":["below","beside"]},"singleline":{"enum":["below","beside"]}},"additionalProperties":false}],"minItems":0,"maxItems":1}'
+	'svelte/shorthand-directive':                                      '{"type":"array","items":[{"type":"object","properties":{"prefer":{"enum":["always","never"]}},"additionalProperties":false}],"minItems":0,"maxItems":1}'
+	'svelte/html-closing-bracket-spacing':                             '{"type":"array","items":[{"type":"object","properties":{"startTag":{"enum":["always","never","ignore"]},"endTag":{"enum":["always","never","ignore"]},"selfClosingTag":{"enum":["always","never","ignore"]}},"additionalProperties":false}],"minItems":0,"maxItems":1}'
+	'svelte/html-closing-bracket-new-line':                            '{"type":"array","items":[{"type":"object","properties":{"singleline":{"enum":["always","never"]},"multiline":{"enum":["always","never"]},"selfClosingTag":{"type":"object","properties":{"singleline":{"enum":["always","never"]},"multiline":{"enum":["always","never"]}},"additionalProperties":false,"minProperties":1}},"additionalProperties":false}],"minItems":0,"maxItems":1}'
+	'svelte/no-dynamic-slot-name':                                     '{"type":"array","minItems":0,"maxItems":0}'
 }
 
 // eslint_rule_default_options are the meta.defaultOptions of the rules of ESLint and of

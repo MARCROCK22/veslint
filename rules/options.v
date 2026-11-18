@@ -364,6 +364,10 @@ pub fn check_options(rule string, options []json2.Any) !bool {
 		svelte_shorthand_attribute { svsha_options(options)! }
 		svelte_spaced_html_comment { sshc_options(options)! }
 		svelte_no_useless_mustaches { snum_options(options)! }
+		svelte_first_attribute_linebreak { sfal_options(options)! }
+		svelte_shorthand_directive { svshd_options(options)! }
+		svelte_html_closing_bracket_spacing { shcbs_options(options)! }
+		svelte_html_closing_bracket_new_line { shcbnl_options(options)! }
 		else { return false }
 	}
 	return true

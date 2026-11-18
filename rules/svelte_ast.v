@@ -1,5 +1,6 @@
 module rules
 
+import estree
 import svelte
 
 // eslint-plugin-svelte's src/utils/ast-utils.ts (and element-types.ts) for the svelte/* rules, on
@@ -406,4 +407,115 @@ fn (c &Checker) sv_scope_of(r svelte.Ref) int {
 		node = c.sv_parent(n)
 	}
 	return 0
+}
+
+// sv_innermost_scope is eslint-utils' getInnermostScope: from `scope` down, the deepest child
+// scope whose block contains [start, end).
+fn (c &Checker) sv_innermost_scope(scope int, start int, end int) int {
+	info := &c.svelte.doc.scope
+	mut current := scope
+	outer: for {
+		for child in info.scopes[current].children {
+			s, e := c.sv_ref_range(info.scopes[child].block)
+			if s <= start && end <= e {
+				current = child
+				continue outer
+			}
+		}
+		break
+	}
+	return current
+}
+
+// sv_find_variable_named is eslint-utils' findVariable by name: the variable of that name in the
+// scope or the closest upper one (an index of doc.scope.variables), -1 for none.
+fn (c &Checker) sv_find_variable_named(scope int, name string) int {
+	info := &c.svelte.doc.scope
+	mut s := scope
+	for s >= 0 {
+		for v in info.scopes[s].variables {
+			if info.variables[v].name == name {
+				return v
+			}
+		}
+		s = info.scopes[s].upper
+	}
+	return -1
+}
+
+// sv_find_variable is findVariable of ast-utils.ts for an Identifier of doc.es: the variable it
+// refers to, looked up from its innermost scope, and for a `$name` not found the store `name`.
+fn (c &Checker) sv_find_variable(id int) int {
+	doc := c.svelte.doc
+	node := doc.es.nodes[id]
+	scope := c.sv_innermost_scope(c.sv_scope_of(sv_es_ref(id)), node.start, node.end)
+	name := doc.es.string_of(id, .name) or { return -1 }
+	v := c.sv_find_variable_named(scope, name)
+	if v >= 0 || !name.starts_with('\$') {
+		return v
+	}
+	return c.sv_find_variable_named(scope, name[1..])
+}
+
+// sv_def_declarator is the VariableDeclarator of a definition's name (its def.node when its type
+// is Variable), -1 for another kind of definition.
+fn (c &Checker) sv_def_declarator(name int) int {
+	es := &c.svelte.doc.es
+	mut node := name
+	for {
+		parent := es.nodes[node].parent
+		if parent < 0 {
+			return -1
+		}
+		match es.nodes[parent].typ {
+			.variable_declarator {
+				return if (es.node(parent, .id) or { -1 }) == node { parent } else { -1 }
+			}
+			.object_pattern, .array_pattern, .property, .assignment_pattern, .rest_element {
+				node = parent
+			}
+			else {
+				return -1
+			}
+		}
+	}
+	return -1
+}
+
+// sv_string_if_constant is getStringIfConstant of an ESTree node of the document: a string
+// Literal's value, a TemplateLiteral or `+` of constant strings, none otherwise.
+fn (c &Checker) sv_string_if_constant(node int) ?string {
+	es := &c.svelte.doc.es
+	match es.nodes[node].typ {
+		.literal {
+			value := es.get(node, .value)
+			if value is string {
+				return value
+			}
+		}
+		.template_literal {
+			mut s := ''
+			quasis := es.list(node, .quasis) or { []int{} }
+			expressions := es.list(node, .expressions) or { []int{} }
+			for k, quasi in quasis {
+				value := es.get(quasi, .value)
+				if value is estree.TemplateValue {
+					s += value.cooked
+				}
+				if k < expressions.len {
+					s += c.sv_string_if_constant(expressions[k])?
+				}
+			}
+			return s
+		}
+		.binary_expression {
+			if (es.string_of(node, .operator) or { '' }) == '+' {
+				left := c.sv_string_if_constant(es.node(node, .left)?)?
+				right := c.sv_string_if_constant(es.node(node, .right)?)?
+				return left + right
+			}
+		}
+		else {}
+	}
+	return none
 }
