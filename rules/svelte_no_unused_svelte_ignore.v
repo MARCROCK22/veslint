@@ -3,11 +3,11 @@ module rules
 import postcss
 import svelte
 
-// Port of the `svelte/no-unused-svelte-ignore` rule of eslint-plugin-svelte 3.24.1, in part: a
-// `svelte-ignore` comment (a script comment or an HTML comment) without a code is reported
-// (missingCode). Not ported: `unused`, a code no warning of the Svelte compiler uses, which needs
-// the compiler's warnings (shared/svelte-compile-warns runs `compile()`; to come with
-// svelte/valid-compile): those cases are in tests/upstream/known.txt.
+// Port of the `svelte/no-unused-svelte-ignore` rule of eslint-plugin-svelte 3.24.1: a
+// `svelte-ignore` comment (a script comment or an HTML comment) without a code (missingCode), and
+// a code no warning of the Svelte compiler uses (unused; the warnings come from
+// svelte_compile_warns.v). A code of a runtime warning Svelte 5 lets one silence is never
+// reported (the compiler cannot tell); in runes mode only the codes Svelte reads count.
 
 const snusi_messages = {
 	'unused':      'svelte-ignore comment is used, but not warned'
@@ -80,5 +80,27 @@ fn (mut c Checker) lint_svelte_no_unused_svelte_ignore(root C.TSNode, abs_path s
 	for t in items {
 		findings << c.sv_report(sv_token_loc_start(t), sv_token_loc_end(t), 'missingCode', {})
 	}
+	// The items with a code (getSvelteIgnoreItems) decide whether the compiler runs.
+	if !c.svc_ignore_items().any(!it.missing) {
+		return findings
+	}
+	result := c.svc_warnings()
+	if result.is_error {
+		return findings
+	}
+	for item in result.unused_ignores {
+		if snusi_runtime_warning_ignore(item, result.runes) {
+			continue
+		}
+		findings << c.sv_report_text(item.start, item.end, 'unused', {})
+	}
 	return findings
+}
+
+// snusi_runtime_warning_ignore is isRuntimeWarningIgnore.
+fn snusi_runtime_warning_ignore(item SvcIgnoreItem, runes bool) bool {
+	if runes {
+		return item.read_in_runes_mode && item.code in svc_runtime_warning_codes
+	}
+	return item.code_for_v5 in svc_runtime_warning_codes
 }

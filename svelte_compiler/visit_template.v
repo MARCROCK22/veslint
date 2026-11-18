@@ -617,9 +617,14 @@ fn (mut z Analyzer) v_bind(node int, st State) ! {
 		if exprs.len != 2 {
 			return z.error_at(node, e_bind_invalid_expression())
 		}
+		mut has_await := false
 		for f in exprs {
 			target := if t.typ(f) == 'ArrowFunctionExpression' { t.get(f, .body) } else { f }
 			z.child(node, target, z.with_expression(st))!
+			has_await = has_await || t.has_await_expression(target)
+		}
+		if has_await {
+			return z.error_at(node, e_illegal_await_expression())
 		}
 		return
 	}
@@ -651,6 +656,9 @@ fn (mut z Analyzer) v_bind(node int, st State) ! {
 		z.warn(bn, w_bind_invalid_each_rest(t.name(bn)))
 	}
 	z.next(node, z.with_expression(st))!
+	if t.has_await_expression(expr) {
+		return z.error_at(node, e_illegal_await_expression())
+	}
 }
 
 // ---------------------------------------------------------------------------------------------

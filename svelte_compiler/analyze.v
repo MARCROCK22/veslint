@@ -12,6 +12,10 @@ pub:
 	custom_element bool
 	// transpiled: the scripts were transpiled by TypeScript first (see Builder).
 	transpiled bool
+	// runes: the `runes` compiler option (-1 not given, 0 false, 1 true); async:
+	// experimental.async.
+	runes int = -1
+	async bool
 }
 
 // Warning is a warning of the compiler: code, message and range (no_pos: none).
@@ -395,7 +399,7 @@ fn (mut z Analyzer) analyze_component() ! {
 	tmpl := z.create_scopes(c.fragment, false, inst.scope)!
 	z.template_scope = tmpl.scope
 
-	runes_option := z.options_runes()
+	runes_option := if z.options_runes() >= 0 { z.options_runes() } else { z.opts.runes }
 	mut synthetic_checks := []int{}
 	// create synthetic bindings for store subscriptions
 	module_refs := z.s.scopes[m.scope].references.clone()

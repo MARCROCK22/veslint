@@ -70,6 +70,10 @@ mut:
 	// (which runs after parsing).
 	parse_errs []CompileError
 	ts_err     ?CompileError
+	// es5: the TypeScript target is ES5 (es5.v); in_script: building a <script>'s statements.
+	es5       bool
+	es5_temps int
+	in_script bool
 }
 
 fn (mut b Builder) ts_fail(d Diag, start int, end int) {
@@ -90,6 +94,11 @@ fn (mut b Builder) parse_fail(e ?CompileError) {
 
 // build_component builds the Component of a parsed .svelte file. `transpiled`: see Builder.
 pub fn build_component(doc &svelte.Document, transpiled bool) !&Component {
+	return build_component_with(doc, transpiled, false)
+}
+
+// build_component_with: `es5`, the scripts are transpiled for an ES5 target (es5.v).
+pub fn build_component_with(doc &svelte.Document, transpiled bool, es5 bool) !&Component {
 	mut c := &Component{
 		src: doc.src
 		ts:  doc.cast.ts
@@ -100,6 +109,7 @@ pub fn build_component(doc &svelte.Document, transpiled bool) !&Component {
 		ca:         &doc.cast
 		es:         &doc.es
 		transpiled: transpiled
+		es5:        transpiled && es5
 	}
 	for i, n in doc.es.nodes {
 		key := (u64(u32(n.start)) << 32) | u64(u32(n.end))
@@ -428,6 +438,10 @@ fn (mut b Builder) script(s int) !int {
 	b.c.t.set_list(i, .attributes, attrs)
 	prog := b.c.t.new_node('Program', cn.content_start, cn.content_end)
 	mut body := []int{}
+	b.in_script = true
+	defer {
+		b.in_script = false
+	}
 	if b.es.root >= 0 {
 		for st in b.es.list(b.es.root, .body) or { []int{} } {
 			n := b.es.nodes[st]
@@ -482,7 +496,11 @@ fn (mut b Builder) expr(e int) !int {
 	}
 	ce := b.ca.exprs[e]
 	if !ce.synthetic {
-		found := b.find_es(ce.start, ce.end, '')
+		mut found := b.find_es(ce.start, ce.end, '')
+		if found < 0 && ce.ann_end > ce.end {
+			// A pattern with a type annotation: typescript-estree's node covers it.
+			found = b.find_es(ce.start, ce.ann_end, '')
+		}
 		if found >= 0 {
 			i := b.js(found)!
 			b.attach_comments(i, b.read_start(ce.start), ce.end, false)
@@ -638,6 +656,10 @@ fn (mut b Builder) js(e int) !int {
 		'TSEnumDeclaration' {
 			if !b.quiet() {
 				b.ts_fail(e_typescript_invalid_feature('enums'), n.start, n.end)
+				return b.empty()
+			}
+			if b.transpiled && b.in_script {
+				return b.transpiled_enum(e)!
 			}
 			return b.empty()
 		}
@@ -817,6 +839,11 @@ fn (mut b Builder) js(e int) !int {
 				&& b.c.t.flag(it, .declare)) && b.c.t.typ(it) != 'EmptyStatement')
 			b.c.t.set_list(i, .body, kept)
 		}
+		'VariableDeclaration' {
+			if b.es5 && b.in_script {
+				b.es5_declaration(i)
+			}
+		}
 		'PropertyDefinition' {
 			if b.c.t.flag(i, .accessor) && !b.quiet() {
 				b.ts_fail(e_typescript_invalid_feature('accessor fields (related TSC proposal is not stage 4 yet)'),
@@ -836,4 +863,36 @@ fn (mut b Builder) js(e int) !int {
 		else {}
 	}
 	return i
+}
+
+// transpiled_enum is what TypeScript emits for `enum E {…}`: `var E; (function (E) {…})(E || (E =
+// {}));`, kept as far as the compiler sees it (a block: one node for two statements; a `var` in
+// it belongs to the scope around it).
+fn (mut b Builder) transpiled_enum(e int) !int {
+	id := b.js(b.es.node(e, .id) or { -1 })!
+	if id < 0 {
+		return b.empty()
+	}
+	name := b.c.t.name(id)
+	decl := b.c.t.new_node('VariableDeclaration', no_pos, no_pos)
+	b.c.t.set_str(decl, .kind, 'var')
+	d := b.c.t.new_node('VariableDeclarator', no_pos, no_pos)
+	b.c.t.set_node(d, .id, id)
+	b.c.t.set_null(d, .init)
+	b.c.t.set_list(decl, .declarations, [d])
+	assign := b.c.t.new_node('AssignmentExpression', no_pos, no_pos)
+	b.c.t.set_str(assign, .operator, '=')
+	b.c.t.set_node(assign, .left, b.c.t.id(name))
+	obj := b.c.t.new_node('ObjectExpression', no_pos, no_pos)
+	b.c.t.set_list(obj, .properties, [])
+	b.c.t.set_node(assign, .right, obj)
+	or_ := b.c.t.new_node('LogicalExpression', no_pos, no_pos)
+	b.c.t.set_str(or_, .operator, '||')
+	b.c.t.set_node(or_, .left, b.c.t.id(name))
+	b.c.t.set_node(or_, .right, assign)
+	st := b.c.t.new_node('ExpressionStatement', no_pos, no_pos)
+	b.c.t.set_node(st, .expression, or_)
+	block := b.c.t.new_node('BlockStatement', no_pos, no_pos)
+	b.c.t.set_list(block, .body, [decl, st])
+	return block
 }

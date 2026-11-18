@@ -415,8 +415,12 @@ fn (mut z Analyzer) v_await(node int, st State) ! {
 		suspend = true
 	}
 	if suspend {
-		// experimental.async is off.
-		return z.error_at(node, e_experimental_async())
+		if !z.opts.async {
+			return z.error_at(node, e_experimental_async())
+		}
+		if !z.runes {
+			return z.error_at(node, e_legacy_await_invalid())
+		}
 	}
 	z.next(node, st)!
 }
@@ -871,6 +875,29 @@ fn (mut z Analyzer) v_identifier(node int, st State) ! {
 	}
 	if st.reactive_statement >= 0 && b.scope == z.module_scope && b.reassigned {
 		z.warn(node, w_reactive_declaration_module_script_dependency())
+	}
+	if b.is_template_declaration && z.opts.async {
+		// A {@const}/{let} of an implicit children snippet read from a snippet beside it.
+		mut snippet_name := ''
+		for k := z.path.len - 1; k >= 0; k-- {
+			anc := z.path[k]
+			grand := if k > 0 { z.path[k - 1] } else { -1 }
+			if t.typ(anc) == 'SnippetBlock' {
+				snippet_name = t.name(t.get(anc, .expression))
+			} else if snippet_name != '' && grand >= 0 && t.typ(anc) == 'Fragment'
+				&& (t.is_component_node(grand) || (t.typ(grand) == 'SvelteBoundary'
+				&& snippet_name in ['failed', 'pending'])) {
+				owner := if t.is_component_node(grand) {
+					(z.component_scopes[grand] or { map[string]int{} })['default'] or { -1 }
+				} else {
+					z.s.of[anc] or { -1 }
+				}
+				if owner == b.scope {
+					return z.error_at(node, e_const_tag_invalid_reference(name))
+				}
+				break
+			}
+		}
 	}
 }
 
