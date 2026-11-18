@@ -81,12 +81,13 @@ def unescape(text):
 
 def parse_line(line, prefix):
     """A line of `veslint --fixes`: position, rule, messageId, message, then the fix and the
-    suggestions, each a range in UTF-16 units and a text."""
+    suggestions, each a range in UTF-16 units and a text, where the problem ends, and `warning` last
+    for a problem of severity 1."""
     head, rule, message_id, message, *rest = line.split('\t')
     line_number, column = head[len(prefix):].split(':')
     finding = {'line': int(line_number), 'column': int(column), 'rule': rule, 'messageId': message_id,
                'message': unescape(message), 'fix': None, 'suggestions': [], 'endLine': None,
-               'endColumn': None}
+               'endColumn': None, 'severity': 2}
     i = 0
     while i < len(rest):
         if rest[i] == 'fix':
@@ -99,6 +100,9 @@ def parse_line(line, prefix):
         elif rest[i] == 'end':
             finding['endLine'], finding['endColumn'] = int(rest[i + 1]), int(rest[i + 2])
             i += 3
+        elif rest[i] == 'warning' and i == len(rest) - 1:
+            finding['severity'] = 1
+            i += 1
         else:
             raise ValueError(f'unexpected field {rest[i]!r} in {line!r}')
     return finding
@@ -349,9 +353,10 @@ def check_lint(runner, rule, lint):
             break
         text = fixed
         passes += 1
-    keys = ('ruleId', 'messageId', 'message', 'line', 'column', 'endLine', 'endColumn')
-    got = [{'ruleId': None if f['rule'] == 'eslint' else f['rule'], 'messageId': f['messageId'], 'message': f['message'],
-            'line': f['line'], 'column': f['column'], 'endLine': f['endLine'], 'endColumn': f['endColumn']} for f in findings]
+    keys = ('ruleId', 'severity', 'messageId', 'message', 'line', 'column', 'endLine', 'endColumn')
+    got = [{'ruleId': None if f['rule'] == 'eslint' else f['rule'], 'severity': f['severity'], 'messageId': f['messageId'],
+            'message': f['message'], 'line': f['line'], 'column': f['column'], 'endLine': f['endLine'],
+            'endColumn': f['endColumn']} for f in findings]
     wanted = [{key: m.get(key) for key in keys} for m in lint['messages']]
     # A problem without a messageId (an unused disable directive) is compared without it.
     got = [{**g, 'messageId': g['messageId'] if w['messageId'] is not None else None} for g, w in zip(got, wanted)] + got[len(wanted):]

@@ -20,7 +20,26 @@ test('a problem with two suggestions', () => {
     ],
     endLine: null,
     endColumn: null,
+    severity: 2,
   });
+});
+
+test('a warning ends with the field `warning`, after everything else', () => {
+  const plain = parseLine('a.ts:2:1\t@typescript-eslint/await-thenable\tawait\tUnexpected `await` of a non-Promise (non-"Thenable") value.\twarning');
+  assert.equal(plain.severity, 1);
+  assert.equal(plain.message, 'Unexpected `await` of a non-Promise (non-"Thenable") value.');
+  const fixes = parseLine('a.ts:2:1\teqeqeq\tunexpected\tExpected \'===\'.\tsuggestion\tx\tUse \'===\'.\t3\t5\t===\tend\t2\t9\twarning');
+  assert.equal(fixes.severity, 1);
+  assert.equal(fixes.suggestions.length, 1);
+  assert.equal(fixes.endColumn, 9);
+  // An error has no such field, whatever its message or its fix says.
+  assert.equal(parseLine('a.ts:2:1\tr\tm\twarning').severity, 2);
+  assert.equal(parseLine('a.ts:2:1\tr\tm\tmessage\tfix\t1\t2\twarning').severity, 2);
+  assert.equal(parseLine('a.ts:2:1\tr\tm\tmessage\tfix\t1\t2\twarning').fix.text, 'warning');
+  // An unused directive reported as a warning says so twice: in the place of its messageId and at the end.
+  const directive = parseLine('a.ts:1:1\teslint\twarning\tUnused eslint-disable directive.\tfix\t0\t20\t\tend\t1\t21\twarning');
+  assert.equal(directive.messageId, 'warning');
+  assert.equal(directive.severity, 1);
 });
 
 test('where a problem ends, after its fix and its suggestions', () => {

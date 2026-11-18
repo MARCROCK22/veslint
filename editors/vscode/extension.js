@@ -23,7 +23,9 @@ const selector = [
   { language: 'svelte', scheme: 'file' },
 ];
 const fixAllKind = vscode.CodeActionKind.SourceFixAll.append('veslint');
+// `veslint.severity`: `auto` (null) shows each problem with its level, the others force one.
 const severities = {
+  auto: null,
   error: vscode.DiagnosticSeverity.Error,
   warning: vscode.DiagnosticSeverity.Warning,
   information: vscode.DiagnosticSeverity.Information,
@@ -102,7 +104,7 @@ function settings(uri) {
     project: config.get('project', ''),
     run: runSetting(config),
     typingDelay: delaySetting(config),
-    severity: severities[config.get('severity', 'warning')] ?? vscode.DiagnosticSeverity.Warning,
+    severity: severities[config.get('severity', 'auto')] ?? null,
     timeout: config.get('timeout', 120000),
   };
 }
@@ -165,9 +167,17 @@ function problemRange(document, problem) {
   return new vscode.Range(start, end);
 }
 
-function problemSeverity(problem, fallback) {
-  if (problem.rule !== 'eslint') return fallback;
-  return problem.messageId === 'warning' ? vscode.DiagnosticSeverity.Warning : vscode.DiagnosticSeverity.Error;
+/**
+ * A problem's severity: that of its level (`error` or `warn`), as the ESLint extension shows it,
+ * unless `veslint.severity` forces one (`override`, null for `auto`). The problems that are not of a
+ * rule (unused directive comments, configuration and parse errors) always keep their own.
+ */
+function problemSeverity(problem, override) {
+  if (problem.rule === 'eslint') {
+    return problem.messageId === 'warning' ? vscode.DiagnosticSeverity.Warning : vscode.DiagnosticSeverity.Error;
+  }
+  if (override !== null && override !== undefined) return override;
+  return problem.severity === 1 ? vscode.DiagnosticSeverity.Warning : vscode.DiagnosticSeverity.Error;
 }
 
 function toDiagnostic(document, problem, severity) {

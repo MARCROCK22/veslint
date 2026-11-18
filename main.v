@@ -563,8 +563,9 @@ struct RuleFile {
 }
 
 // run_rules applies the rules to the files and prints one line per problem:
-// `path:line:col<TAB>rule<TAB>messageId<TAB>message`. Returns how many errors there were (findings
-// of rules set to "warn" do not count).
+// `path:line:col<TAB>rule<TAB>messageId<TAB>message`, with `<TAB>warning` at the end for a finding
+// of a rule set to "warn" (README.md, "The line format"). Returns how many errors there were
+// (findings of rules set to "warn" do not count).
 fn run_rules(opts Options, timeout time.Duration) !int {
 	total := time.new_stopwatch()
 	selected := opts.rules.map(it.name)
@@ -1058,10 +1059,14 @@ fn file_report(path string, src string, result rules.FileLint, fixes bool, doc &
 				out.write_string('\tend\t${ends[i].line}\t${ends[i].col}')
 			}
 		}
-		out.writeln('')
 		if finding.severity == 1 {
+			// A warning ends with a field of its own, after everything else, so that the line of an
+			// error stays as it was and a parser that stops at a field it does not know still reads
+			// the rest. Fields are escaped and counted, so a message cannot fake it.
+			out.write_string('\twarning')
 			warnings++
 		}
+		out.writeln('')
 	}
 	return FileReport{
 		stdout:   out.str()

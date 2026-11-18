@@ -45,7 +45,7 @@ veslint . --summary                # a table of the rules that report problems
 veslint --rule @typescript-eslint/no-floating-promises src/index.ts
 ```
 
-Each problem is one line: `path:line:column`, the rule, its `messageId` and the message, separated by tabs.
+Each problem is one line: `path:line:column`, the rule, its `messageId` and the message, separated by tabs, and `warning` at the end when its rule is set to `warn` (see [the line format](#the-line-format)).
 
 ```
 src/index.ts:12:3	@typescript-eslint/no-floating-promises	floatingVoid	Promises must be awaited, end with a call to .catch, end with a call to .then with a rejection handler or be explicitly marked as ignored with the `void` operator.
@@ -73,6 +73,20 @@ veslint <file.ts | directory>... [--config <file>] [--rule <rule> [--no-config-l
 | `--print-config` | Prints the configuration resolved for the files, a JSON that `--config` reads without running JavaScript. |
 | `--server` | A process for editors that stays alive between lints (the VS Code extension uses it). |
 | `--version` | Prints the version. |
+
+### The line format
+
+Each problem is one line of fields separated by tabs:
+
+```
+path:line:column  rule  messageId  message  [fix  start  end  text]  [suggestion  messageId  message  start  end  text]...  [end  line  column]  [warning]
+```
+
+- Lines and columns start at 1, and columns count UTF-16 units, as ESLint's do.
+- A problem that is not of a rule (an unused directive comment, a configuration or parse error) has the rule `eslint` and `fatal`, `error` or `warning` in the place of the `messageId`.
+- `fix`, `suggestion` and `end` come only with `--fixes` (and from `--server` when a request asks for them): the fix, each suggestion (a range in UTF-16 units from the start of the text, without the BOM, and the text that replaces it) and where the problem ends (ESLint's `endLine` and `endColumn`).
+- **`warning`**, the last field, marks a problem of severity 1: a rule set to `"warn"` (or `1`), or an unused directive reported as a warning. A problem without it is an error; only errors make the exit code 1.
+- In a message or a text, a backslash, a line feed, a carriage return and a tab are written `\\`, `\n`, `\r` and `\t`, so no field contains a tab and the fields can be counted.
 
 With files and neither `--config` nor `--rule`, veslint prints the type TypeScript infers for each declared name, a mode for debugging.
 

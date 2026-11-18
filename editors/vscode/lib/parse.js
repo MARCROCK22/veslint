@@ -1,14 +1,16 @@
 'use strict';
 // The output of `veslint --fixes`: one line per problem, with TAB-separated fields:
 //
-//   path:line:col  rule  messageId  message  [fix  start  end  text]  [suggestion  messageId  message  start  end  text]...  [end  line  col]
+//   path:line:col  rule  messageId  message  [fix  start  end  text]  [suggestion  messageId  message  start  end  text]...  [end  line  col]  [warning]
 //
 // Lines and columns start at 1 and columns count UTF-16 units, like ESLint's (`end` is where the
 // problem ends, ESLint's endLine and endColumn, when it has one); the ranges of fixes
 // and suggestions are offsets in UTF-16 units from the start of the text (without the BOM). In a
 // message or a text, a backslash, a line feed, a carriage return and a tab are written `\\`, `\n`,
 // `\r` and `\t`. A problem that is not of a rule (a directive comment, a parse error) has the rule
-// `eslint` and `fatal`, `error` or `warning` in the place of the messageId.
+// `eslint` and `fatal`, `error` or `warning` in the place of the messageId. A problem of severity 1
+// (a rule set to `warn`, or an unused directive reported as a warning) ends with the field
+// `warning` (veslint 0.35.0 and later); one without it is an error.
 
 /** Undoes the escaping of a field. */
 function unescapeField(text) {
@@ -35,6 +37,7 @@ function parseLine(line) {
     suggestions: [],
     endLine: null,
     endColumn: null,
+    severity: 2,
   };
   let i = 4;
   while (i < fields.length) {
@@ -54,6 +57,9 @@ function parseLine(line) {
       problem.endLine = Number(fields[i + 1]);
       problem.endColumn = Number(fields[i + 2]);
       i += 3;
+    } else if (fields[i] === 'warning' && i === fields.length - 1) {
+      problem.severity = 1;
+      i += 1;
     } else {
       // A field this version does not know: the problem is still a problem.
       break;
