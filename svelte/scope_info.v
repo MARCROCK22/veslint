@@ -39,6 +39,8 @@ pub mut:
 	references []int
 	// global: a Svelte global or an implicit lib variable (no definition).
 	global bool
+	// eslint_used: a `$bindable()` prop (svelte-eslint-parser marks it used).
+	eslint_used bool
 }
 
 pub struct SReference {
@@ -50,6 +52,10 @@ pub mut:
 	write      bool
 	is_type    bool
 	is_value   bool
+	// virtual: made by svelte-eslint-parser (a prop's sveltePropReference: read and write,
+	// in the variable's references only).
+	virtual bool
+	prop    bool
 }
 
 pub struct ScopeInfo {
@@ -108,11 +114,26 @@ fn (mut c Conv) build_scope(an &Analyzer, pre_starts []int, typed_lets []ScriptL
 	}
 	mut keep := []bool{len: an.scopes.len, init: true}
 	mut new_index := []int{len: an.scopes.len, init: -1}
+	// The scopes of the conditional, function, mapped and constructor types of the typings go
+	// with their references (extractTypeNodeScopes + removeScope).
+	mut scope_of_block := map[int]int{}
+	for k, sc in an.scopes {
+		if sc.block !in scope_of_block {
+			scope_of_block[sc.block] = k
+		}
+	}
+	for l in typed_lets {
+		if l.matched < 0 {
+			continue
+		}
+		tsas := c.es_node(l.matched, .expression)
+		c.mark_type_scopes(c.es_node(tsas, .type_annotation), scope_of_block, mut keep)
+	}
 	for k, s in an.scopes {
 		if k < 2 {
 			continue
 		}
-		if s.upper >= 0 && !keep[s.upper] {
+		if !keep[k] || (s.upper >= 0 && !keep[s.upper]) {
 			keep[k] = false
 			continue
 		}
@@ -202,6 +223,30 @@ fn (mut c Conv) build_scope(an &Analyzer, pre_starts []int, typed_lets []ScriptL
 			info.variables[resolved].references << info.references.len - 1
 		}
 	}
+	// The implicit lib variables that are used, in the global scope's order.
+	mut lib_refs := map[string][]int{}
+	for k, r in info.references {
+		if r.resolved == -2 {
+			name := doc.es.string_of(r.identifier, .name) or { '' }
+			lib_refs[name] << k
+		}
+	}
+	if lib_refs.len > 0 && info.scopes.len > 0 {
+		for name in lib_global_order {
+			refs := lib_refs[name] or { continue }
+			v := info.variables.len
+			info.variables << SVariable{
+				name:       name
+				scope:      0
+				references: refs
+				global:     true
+			}
+			info.scopes[0].variables << v
+			for r in refs {
+				info.references[r].resolved = v
+			}
+		}
+	}
 	for k, s in an.scopes {
 		si := new_index[k]
 		if si < 0 {
@@ -215,6 +260,12 @@ fn (mut c Conv) build_scope(an &Analyzer, pre_starts []int, typed_lets []ScriptL
 	}
 	doc.scope = info
 	c.scope_edits()
+	// References are kept sorted by position (merged scopes are, upstream).
+	for mut v in doc.scope.variables {
+		v.references.sort_with_compare(fn [doc] (a &int, b &int) int {
+			return doc.es.nodes[doc.scope.references[*a].identifier].start - doc.es.nodes[doc.scope.references[*b].identifier].start
+		})
+	}
 }
 
 // in_typing: the offset is in the typing of a typed expression (`(e)as (typing);`).
@@ -385,5 +436,164 @@ fn (mut c Conv) add_global_variables() {
 			through << r
 		}
 		c.doc.scope.scopes[0].through = through
+	}
+}
+
+// mark_type_scopes is extractTypeNodeScopes: the scopes a typing's type nodes make.
+fn (c &Conv) mark_type_scopes(n int, scope_of_block map[int]int, mut keep []bool) {
+	if n < 0 {
+		return
+	}
+	typ := c.doc.es.nodes[n].typ
+	match typ {
+		.ts_conditional_type {
+			if s := scope_of_block[n] {
+				keep[s] = false
+			}
+			c.mark_type_scopes(c.es_node(n, .false_type), scope_of_block, mut keep)
+		}
+		.ts_function_type, .ts_mapped_type, .ts_constructor_type {
+			if s := scope_of_block[n] {
+				keep[s] = false
+			}
+		}
+		else {
+			for ch in c.doc.es.children(n) {
+				c.mark_type_scopes(ch, scope_of_block, mut keep)
+			}
+		}
+	}
+}
+
+// props_scope is analyzePropsScope for a script element: a virtual reference to each exported
+// variable and `$bindable()` prop.
+fn (mut c Conv) props_scope(script int) {
+	if c.doc.scope.scopes.len < 2 {
+		return
+	}
+	for st in c.doc.nodes[script].body {
+		typ := c.doc.es.nodes[st].typ
+		if typ == .export_named_declaration {
+			decl := c.es_node(st, .declaration)
+			if decl >= 0 {
+				if c.doc.es.nodes[decl].typ == .variable_declaration {
+					for d in c.es_list(decl, .declarations) {
+						for p in c.extract_pattern(c.es_node(d, .id)) {
+							if c.doc.es.nodes[p].typ == .identifier {
+								c.add_prop_reference(p)
+							}
+						}
+					}
+				}
+			} else {
+				for sp in c.es_list(st, .specifiers) {
+					local := c.es_node(sp, .local)
+					if local >= 0 && c.doc.es.nodes[local].typ != .literal {
+						c.add_prop_reference(local)
+					}
+				}
+			}
+		} else if typ == .variable_declaration && c.runes != .off {
+			for d in c.es_list(st, .declarations) {
+				mut init := c.es_node(d, .init)
+				for init >= 0 && c.doc.es.nodes[init].typ in [.ts_non_null_expression, .ts_as_expression,
+					.ts_satisfies_expression, .ts_type_assertion] {
+					init = c.es_node(init, .expression)
+				}
+				if init < 0 || c.doc.es.nodes[init].typ != .call_expression {
+					continue
+				}
+				callee := c.es_node(init, .callee)
+				id := c.es_node(d, .id)
+				if callee < 0 || c.doc.es.nodes[callee].typ != .identifier
+					|| (c.doc.es.string_of(callee, .name) or { '' }) != '\$props'
+					|| c.doc.es.nodes[id].typ != .object_pattern {
+					continue
+				}
+				for p in c.extract_pattern(id) {
+					if c.doc.es.nodes[p].typ != .assignment_pattern {
+						continue
+					}
+					left := c.es_node(p, .left)
+					right := c.es_node(p, .right)
+					if left < 0 || c.doc.es.nodes[left].typ != .identifier || right < 0
+						|| c.doc.es.nodes[right].typ != .call_expression {
+						continue
+					}
+					rc := c.es_node(right, .callee)
+					if rc < 0 || c.doc.es.nodes[rc].typ != .identifier
+						|| (c.doc.es.string_of(rc, .name) or { '' }) != '\$bindable' {
+						continue
+					}
+					c.add_prop_reference(left)
+					name := c.doc.es.string_of(left, .name) or { '' }
+					for vi in c.doc.scope.scopes[1].variables {
+						if c.doc.scope.variables[vi].name == name {
+							c.doc.scope.variables[vi].eslint_used = true
+							break
+						}
+					}
+				}
+			}
+		}
+	}
+}
+
+// extract_pattern yields a pattern and its sub-patterns (extractPattern).
+fn (c &Conv) extract_pattern(n int) []int {
+	if n < 0 {
+		return []int{}
+	}
+	mut out := [n]
+	match c.doc.es.nodes[n].typ {
+		.object_pattern {
+			for p in c.es_list(n, .properties) {
+				if c.doc.es.nodes[p].typ == .property {
+					out << c.extract_pattern(c.es_node(p, .value))
+				} else {
+					out << c.extract_pattern(p)
+				}
+			}
+		}
+		.array_pattern {
+			for e in c.es_list(n, .elements) {
+				if e >= 0 {
+					out << c.extract_pattern(e)
+				}
+			}
+		}
+		.assignment_pattern {
+			out << c.extract_pattern(c.es_node(n, .left))
+		}
+		.rest_element {
+			out << c.extract_pattern(c.es_node(n, .argument))
+		}
+		else {}
+	}
+	return out
+}
+
+// add_prop_reference is addPropReference: a read-write virtual reference to every module
+// variable of that name that has none yet.
+fn (mut c Conv) add_prop_reference(id int) {
+	name := c.doc.es.string_of(id, .name) or { return }
+	for vi in c.doc.scope.scopes[1].variables {
+		if c.doc.scope.variables[vi].name != name {
+			continue
+		}
+		if c.doc.scope.variables[vi].references.any(c.doc.scope.references[it].prop) {
+			continue
+		}
+		c.doc.scope.references << SReference{
+			identifier: id
+			from:       1
+			resolved:   vi
+			read:       true
+			write:      true
+			is_value:   true
+			virtual:    true
+			prop:       true
+		}
+		c.add_reference_sorted(vi, c.doc.scope.references.len - 1)
 	}
 }

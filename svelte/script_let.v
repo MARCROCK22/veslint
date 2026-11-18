@@ -237,6 +237,25 @@ fn (mut c Conv) restore() ! {
 	typed := c.lets.filter(it.typed)
 	an := c.an
 	c.build_scope(&an, pre_starts, typed)
+	for script in scripts {
+		if !c.is_context_module(script) {
+			c.props_scope(script)
+		}
+	}
+}
+
+// is_context_module: the script element has `context="module"`.
+fn (c &Conv) is_context_module(script int) bool {
+	st := c.doc.nodes[c.doc.nodes[script].start_tag]
+	for a in st.attributes {
+		an := c.doc.nodes[a]
+		if an.typ == .attribute && !an.key.es && an.key.idx >= 0
+			&& c.doc.nodes[an.key.idx].name == 'context' && an.values.len == 1
+			&& c.doc.nodes[an.values[0]].typ == .literal && c.doc.nodes[an.values[0]].value == 'module' {
+			return true
+		}
+	}
+	return false
 }
 
 fn comment_token(src string, t SnipToken, start int, end int) Token {
