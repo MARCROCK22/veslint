@@ -1,0 +1,9 @@
+tests/rules/svelte/no-store-async/cases.svelte:6:24	svelte/no-store-async	unexpected	Do not pass async functions to svelte stores.	end	6	29
+tests/rules/svelte/no-store-async/cases.svelte:7:24	svelte/no-store-async	unexpected	Do not pass async functions to svelte stores.	end	7	29
+tests/rules/svelte/no-store-async/cases.svelte:8:23	svelte/no-store-async	unexpected	Do not pass async functions to svelte stores.	end	8	28
+tests/rules/svelte/no-store-async/cases.svelte:9:31	svelte/no-store-async	unexpected	Do not pass async functions to svelte stores.	end	9	36
+tests/rules/svelte/no-store-async/cases.svelte:10:17	svelte/no-store-async	unexpected	Do not pass async functions to svelte stores.	end	10	22
+tests/rules/svelte/no-store-async/cases.svelte:14:24	svelte/no-store-async	unexpected	Do not pass async functions to svelte stores.	end	14	29
+tests/rules/svelte/no-store-async/cases.svelte:15:23	svelte/no-store-async	unexpected	Do not pass async functions to svelte stores.	end	15	28
+tests/rules/svelte/no-store-async/cases.ts:3:30	svelte/no-store-async	unexpected	Do not pass async functions to svelte stores.	end	3	35
+tests/rules/svelte/no-store-async/cases.ts:4:33	svelte/no-store-async	unexpected	Do not pass async functions to svelte stores.	end	4	38

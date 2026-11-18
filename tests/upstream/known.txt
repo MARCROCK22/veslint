@@ -1770,3 +1770,5 @@ veslint	svelte/no-unused-svelte-ignore/i20	unused needs the Svelte compiler's wa
 veslint	svelte/no-unused-svelte-ignore/i21	unused needs the Svelte compiler's warnings
 veslint	svelte/no-unused-svelte-ignore/i25	unused needs the Svelte compiler's warnings
 veslint	svelte/no-unused-svelte-ignore/i26	unused needs the Svelte compiler's warnings
+# svelte/* script rules (SR2): svelte-eslint-parser's svelteConfig from svelte.config.js is not read (parserOptions.svelteConfig is)
+veslint	svelte/no-export-load-in-svelte-module-in-kit-pages/i2	kit.files.routes of the fixture's svelte.config.js (not read by veslint)

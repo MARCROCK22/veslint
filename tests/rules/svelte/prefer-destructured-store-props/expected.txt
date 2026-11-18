@@ -1,0 +1,12 @@
+tests/rules/svelte/prefer-destructured-store-props/cases.svelte:15:5	svelte/prefer-destructured-store-props	useDestructuring	Destructure bar from $foo for better change tracking & fewer redraws
+tests/rules/svelte/prefer-destructured-store-props/cases.svelte:16:5	svelte/prefer-destructured-store-props	useDestructuring	Destructure baz from $foo for better change tracking & fewer redraws
+tests/rules/svelte/prefer-destructured-store-props/cases.svelte:17:5	svelte/prefer-destructured-store-props	useDestructuring	Destructure 'bar' from $foo for better change tracking & fewer redraws
+tests/rules/svelte/prefer-destructured-store-props/cases.svelte:18:5	svelte/prefer-destructured-store-props	useDestructuring	Destructure key from $foo for better change tracking & fewer redraws
+tests/rules/svelte/prefer-destructured-store-props/cases.svelte:19:5	svelte/prefer-destructured-store-props	useDestructuring	Destructure key from $foo for better change tracking & fewer redraws
+tests/rules/svelte/prefer-destructured-store-props/cases.svelte:20:5	svelte/prefer-destructured-store-props	useDestructuring	Destructure name from $foo for better change tracking & fewer redraws
+tests/rules/svelte/prefer-destructured-store-props/cases.svelte:21:5	svelte/prefer-destructured-store-props	useDestructuring	Destructure class from $foo for better change tracking & fewer redraws
+tests/rules/svelte/prefer-destructured-store-props/cases.svelte:22:5	svelte/prefer-destructured-store-props	useDestructuring	Destructure $x from $foo for better change tracking & fewer redraws
+tests/rules/svelte/prefer-destructured-store-props/cases.svelte:23:5	svelte/prefer-destructured-store-props	useDestructuring	Destructure bar from $foo for better change tracking & fewer redraws
+tests/rules/svelte/prefer-destructured-store-props/cases.svelte:24:8	svelte/prefer-destructured-store-props	useDestructuring	Destructure items from $foo for better change tracking & fewer redraws
+tests/rules/svelte/prefer-destructured-store-props/cases.svelte:25:6	svelte/prefer-destructured-store-props	useDestructuring	Destructure items from $foo for better change tracking & fewer redraws
+tests/rules/svelte/prefer-destructured-store-props/cases.ts:2:18	svelte/prefer-destructured-store-props	useDestructuring	Destructure bar from $foo for better change tracking & fewer redraws

@@ -200,8 +200,10 @@ class Runner:
         if rule.startswith(('unicorn/', 'marcrock/')) and not case.get('via'):
             language['parserOptions'] = {**language.get('parserOptions', {}), 'projectService': False}
         # eslint-plugin-unicorn's tests (ESLint's RuleTester through eslint-ava-rule-tester) do not
-        # report unused disable directives.
-        report = 0 if rule.startswith('unicorn/') else 1
+        # report unused disable directives, nor do eslint-plugin-svelte's (ESLint 10's RuleTester
+        # verifies with a config array of its own, without the default `linterOptions`: a case's
+        # `// eslint-disable-next-line prefer-template` is not reported as unused).
+        report = 0 if rule.startswith(('unicorn/', 'svelte/')) else 1
         # A case of eslint-plugin-vue's tests may test another rule (jsx-uses-vars' run no-unused-vars).
         tested = case.get('rule', rule) if rule.startswith('vue/') else rule
         # ESLint's RuleTester turns the rule on as a warning (severity 1): a report without a

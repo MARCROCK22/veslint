@@ -1,0 +1,14 @@
+tests/rules/svelte/no-svelte-internal/cases.svelte:3:2	svelte/no-svelte-internal	unexpected	Using svelte/internal is prohibited. This will be removed in Svelte 6.	end	3	41
+tests/rules/svelte/no-svelte-internal/cases.svelte:4:2	svelte/no-svelte-internal	unexpected	Using svelte/internal is prohibited. This will be removed in Svelte 6.	end	4	53
+tests/rules/svelte/no-svelte-internal/cases.svelte:6:2	svelte/no-svelte-internal	unexpected	Using svelte/internal is prohibited. This will be removed in Svelte 6.	end	6	42
+tests/rules/svelte/no-svelte-internal/cases.svelte:7:2	svelte/no-svelte-internal	unexpected	Using svelte/internal is prohibited. This will be removed in Svelte 6.	end	7	41
+tests/rules/svelte/no-svelte-internal/cases.svelte:8:2	svelte/no-svelte-internal	unexpected	Using svelte/internal is prohibited. This will be removed in Svelte 6.	end	8	58
+tests/rules/svelte/no-svelte-internal/cases.svelte:9:15	svelte/no-svelte-internal	unexpected	Using svelte/internal is prohibited. This will be removed in Svelte 6.	end	9	40
+tests/rules/svelte/no-svelte-internal/cases.svelte:22:24	svelte/no-svelte-internal	unexpected	Using svelte/internal is prohibited. This will be removed in Svelte 6.	end	22	56
+tests/rules/svelte/no-svelte-internal/cases.svelte:23:9	svelte/no-svelte-internal	unexpected	Using svelte/internal is prohibited. This will be removed in Svelte 6.	end	23	34
+tests/rules/svelte/no-svelte-internal/cases.ts:1:1	svelte/no-svelte-internal	unexpected	Using svelte/internal is prohibited. This will be removed in Svelte 6.	end	1	40
+tests/rules/svelte/no-svelte-internal/cases.ts:2:1	svelte/no-svelte-internal	unexpected	Using svelte/internal is prohibited. This will be removed in Svelte 6.	end	2	33
+tests/rules/svelte/no-svelte-internal/cases.ts:4:1	svelte/no-svelte-internal	unexpected	Using svelte/internal is prohibited. This will be removed in Svelte 6.	end	4	41
+tests/rules/svelte/no-svelte-internal/cases.ts:5:1	svelte/no-svelte-internal	unexpected	Using svelte/internal is prohibited. This will be removed in Svelte 6.	end	5	40
+tests/rules/svelte/no-svelte-internal/cases.ts:6:1	svelte/no-svelte-internal	unexpected	Using svelte/internal is prohibited. This will be removed in Svelte 6.	end	6	51
+tests/rules/svelte/no-svelte-internal/cases.ts:7:21	svelte/no-svelte-internal	unexpected	Using svelte/internal is prohibited. This will be removed in Svelte 6.	end	7	46

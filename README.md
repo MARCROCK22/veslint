@@ -100,7 +100,7 @@ Directive comments work as in ESLint 10: `eslint-disable`, `eslint-enable`, `esl
 
 ## Rules
 
-veslint has **762 rules**, each with all its options, fixes and suggestions:
+veslint has **779 rules**, each with all its options, fixes and suggestions:
 
 <details>
 <summary><b>ESLint 10.15.0</b>: 139 rules</summary>
@@ -147,11 +147,9 @@ Its 38 wrappers of rules of ESLint core and ESLint Stylistic, which run veslint'
 </details>
 
 <details>
-<summary><b>eslint-plugin-svelte 3.24.1</b> (the templates of <code>.svelte</code> files): 50 rules</summary>
+<summary><b>eslint-plugin-svelte 3.24.1</b> (the templates and scripts of <code>.svelte</code> files, and the <code>.svelte.ts</code> modules and TypeScript files its rules also lint): 67 rules</summary>
 
-`svelte/block-lang`, `svelte/button-has-type`, `svelte/comment-directive`, `svelte/consistent-selector-style`, `svelte/experimental-require-slot-types`, `svelte/experimental-require-strict-events`, `svelte/first-attribute-linebreak`, `svelte/html-closing-bracket-new-line`, `svelte/html-closing-bracket-spacing`, `svelte/html-quotes`, `svelte/html-self-closing`, `svelte/max-attributes-per-line`, `svelte/max-lines-per-block`, `svelte/mustache-spacing`, `svelte/no-at-const-tags`, `svelte/no-at-debug-tags`, `svelte/no-at-html-tags`, `svelte/no-bind-value-on-checkable-inputs`, `svelte/no-dupe-else-if-blocks`, `svelte/no-dupe-on-directives`, `svelte/no-dupe-style-properties`, `svelte/no-dupe-use-directives`, `svelte/no-dynamic-slot-name`, `svelte/no-inline-styles`, `svelte/no-nested-style-tag`, `svelte/no-not-function-handler`, `svelte/no-object-in-text-mustaches`, `svelte/no-raw-special-elements`, `svelte/no-restricted-html-elements`, `svelte/no-shorthand-style-property-overrides`, `svelte/no-spaces-around-equal-signs-in-attribute`, `svelte/no-target-blank`, `svelte/no-unknown-style-directive-property`, `svelte/no-unused-class-name`, `svelte/no-unused-svelte-ignore`, `svelte/no-useless-children-snippet`, `svelte/no-useless-mustaches`, `svelte/prefer-attribute-interpolation`, `svelte/prefer-class-directive`, `svelte/prefer-style-directive`, `svelte/require-each-key`, `svelte/require-event-prefix`, `svelte/require-optimized-style-attribute`, `svelte/shorthand-attribute`, `svelte/shorthand-directive`, `svelte/sort-attributes`, `svelte/spaced-html-comment`, `svelte/system`, `svelte/valid-each-key`, `svelte/valid-style-parse`
-
-`svelte/no-unused-svelte-ignore` reports only the `svelte-ignore` comments without a code: its other report, a code no warning uses, needs the Svelte compiler's warnings.
+`svelte/block-lang`, `svelte/button-has-type`, `svelte/comment-directive`, `svelte/derived-has-same-inputs-outputs`, `svelte/first-attribute-linebreak`, `svelte/html-closing-bracket-new-line`, `svelte/html-closing-bracket-spacing`, `svelte/html-quotes`, `svelte/html-self-closing`, `svelte/infinite-reactive-loop`, `svelte/max-attributes-per-line`, `svelte/mustache-spacing`, `svelte/no-add-event-listener`, `svelte/no-at-const-tags`, `svelte/no-at-debug-tags`, `svelte/no-at-html-tags`, `svelte/no-conflicting-module-names`, `svelte/no-dom-manipulating`, `svelte/no-dupe-else-if-blocks`, `svelte/no-dupe-on-directives`, `svelte/no-dupe-use-directives`, `svelte/no-dynamic-slot-name`, `svelte/no-export-load-in-svelte-module-in-kit-pages`, `svelte/no-extra-reactive-curlies`, `svelte/no-goto-without-base`, `svelte/no-ignored-unsubscribe`, `svelte/no-immutable-reactive-statements`, `svelte/no-inline-styles`, `svelte/no-inner-declarations`, `svelte/no-inspect`, `svelte/no-navigation-without-base`, `svelte/no-navigation-without-resolve`, `svelte/no-nested-style-tag`, `svelte/no-not-function-handler`, `svelte/no-object-in-text-mustaches`, `svelte/no-raw-special-elements`, `svelte/no-reactive-functions`, `svelte/no-reactive-literals`, `svelte/no-reactive-reassign`, `svelte/no-spaces-around-equal-signs-in-attribute`, `svelte/no-store-async`, `svelte/no-svelte-internal`, `svelte/no-target-blank`, `svelte/no-top-level-browser-globals`, `svelte/no-trailing-spaces`, `svelte/no-unnecessary-state-wrap`, `svelte/no-unused-props`, `svelte/no-useless-children-snippet`, `svelte/no-useless-mustaches`, `svelte/prefer-attribute-interpolation`, `svelte/prefer-class-directive`, `svelte/prefer-const`, `svelte/prefer-derived-over-derived-by`, `svelte/prefer-destructured-store-props`, `svelte/prefer-svelte-reactivity`, `svelte/prefer-writable-derived`, `svelte/require-each-key`, `svelte/require-event-dispatcher-types`, `svelte/require-store-callbacks-use-set-param`, `svelte/require-store-reactive-access`, `svelte/require-stores-init`, `svelte/shorthand-attribute`, `svelte/shorthand-directive`, `svelte/spaced-html-comment`, `svelte/system`, `svelte/valid-each-key`, `svelte/valid-prop-names-in-kit-pages`
 
 </details>
 
@@ -173,7 +171,7 @@ What each version added is in the [changelog](CHANGELOG.md).
 
 ### How it is checked
 
-Every rule passes all the cases of its own upstream tests, linted as TypeScript: 29,862 cases of typescript-eslint, 14,092 of ESLint, 14,962 of eslint-plugin-unicorn, 9,528 of @stylistic/eslint-plugin, 3,278 of eslint-plugin-perfectionist, 459 of @slipher/eslint-plugin, 206 of @marcrock22/eslintcf, 10,085 of eslint-plugin-vue and 314 of eslint-plugin-svelte (their JavaScript cases with `lang="ts"`, with what ESLint gives for them). On fixtures of its own, every rule gives exactly what ESLint gives: problems, messages, positions, fixes and suggestions. The rules are also compared with ESLint on real projects (a Discord bot, zod, recharts and the TypeScript compiler).
+Every rule passes all the cases of its own upstream tests, linted as TypeScript: 29,862 cases of typescript-eslint, 14,092 of ESLint, 14,962 of eslint-plugin-unicorn, 9,528 of @stylistic/eslint-plugin, 3,278 of eslint-plugin-perfectionist, 459 of @slipher/eslint-plugin, 206 of @marcrock22/eslintcf, 10,085 of eslint-plugin-vue and 1,051 of eslint-plugin-svelte (their JavaScript cases with `lang="ts"`, with what ESLint gives for them). On fixtures of its own, every rule gives exactly what ESLint gives: problems, messages, positions, fixes and suggestions. The rules are also compared with ESLint on real projects (a Discord bot, zod, recharts and the TypeScript compiler).
 
 ## VS Code extension
 

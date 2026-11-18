@@ -1,0 +1,10 @@
+tests/rules/svelte/require-store-callbacks-use-set-param/cases.svelte:5:24	svelte/require-store-callbacks-use-set-param	unexpected	Store callbacks must use `set` param.
+tests/rules/svelte/require-store-callbacks-use-set-param/cases.svelte:6:24	svelte/require-store-callbacks-use-set-param	unexpected	Store callbacks must use `set` param.
+tests/rules/svelte/require-store-callbacks-use-set-param/cases.svelte:10:24	svelte/require-store-callbacks-use-set-param	unexpected	Store callbacks must use `set` param.
+tests/rules/svelte/require-store-callbacks-use-set-param/cases.svelte:15:24	svelte/require-store-callbacks-use-set-param	unexpected	Store callbacks must use `set` param.
+tests/rules/svelte/require-store-callbacks-use-set-param/cases.svelte:19:24	svelte/require-store-callbacks-use-set-param	unexpected	Store callbacks must use `set` param.
+tests/rules/svelte/require-store-callbacks-use-set-param/cases.svelte:22:31	svelte/require-store-callbacks-use-set-param	unexpected	Store callbacks must use `set` param.
+tests/rules/svelte/require-store-callbacks-use-set-param/cases.svelte:24:24	svelte/require-store-callbacks-use-set-param	unexpected	Store callbacks must use `set` param.
+tests/rules/svelte/require-store-callbacks-use-set-param/cases.svelte:25:24	svelte/require-store-callbacks-use-set-param	unexpected	Store callbacks must use `set` param.
+tests/rules/svelte/require-store-callbacks-use-set-param/cases.ts:3:30	svelte/require-store-callbacks-use-set-param	unexpected	Store callbacks must use `set` param.
+tests/rules/svelte/require-store-callbacks-use-set-param/cases.ts:4:30	svelte/require-store-callbacks-use-set-param	unexpected	Store callbacks must use `set` param.

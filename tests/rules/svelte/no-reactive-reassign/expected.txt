@@ -1,0 +1,32 @@
+tests/rules/svelte/no-reactive-reassign/cases.svelte:8:3	svelte/no-reactive-reassign	assignmentToReactiveValue	Assignment to reactive value 'count'.
+tests/rules/svelte/no-reactive-reassign/cases.svelte:9:3	svelte/no-reactive-reassign	assignmentToReactiveValue	Assignment to reactive value 'count'.
+tests/rules/svelte/no-reactive-reassign/cases.svelte:10:3	svelte/no-reactive-reassign	assignmentToReactiveValue	Assignment to reactive value 'count'.
+tests/rules/svelte/no-reactive-reassign/cases.svelte:11:3	svelte/no-reactive-reassign	assignmentToReactiveValueProp	Assignment to property of reactive value 'value'.
+tests/rules/svelte/no-reactive-reassign/cases.svelte:12:3	svelte/no-reactive-reassign	assignmentToReactiveValueProp	Assignment to property of reactive value 'value'.
+tests/rules/svelte/no-reactive-reassign/cases.svelte:13:3	svelte/no-reactive-reassign	assignmentToReactiveValueProp	Assignment to property of reactive value 'value'.
+tests/rules/svelte/no-reactive-reassign/cases.svelte:14:3	svelte/no-reactive-reassign	assignmentToReactiveValueProp	Assignment to property of reactive value 'value'.
+tests/rules/svelte/no-reactive-reassign/cases.svelte:15:3	svelte/no-reactive-reassign	assignmentToReactiveValueProp	Assignment to property of reactive value 'value'.
+tests/rules/svelte/no-reactive-reassign/cases.svelte:16:3	svelte/no-reactive-reassign	assignmentToReactiveValue	Assignment to reactive value 'count'.
+tests/rules/svelte/no-reactive-reassign/cases.svelte:17:3	svelte/no-reactive-reassign	assignmentToReactiveValue	Assignment to reactive value 'count'.
+tests/rules/svelte/no-reactive-reassign/cases.svelte:18:4	svelte/no-reactive-reassign	assignmentToReactiveValue	Assignment to reactive value 'count'.
+tests/rules/svelte/no-reactive-reassign/cases.svelte:19:4	svelte/no-reactive-reassign	assignmentToReactiveValue	Assignment to reactive value 'value'.
+tests/rules/svelte/no-reactive-reassign/cases.svelte:20:3	svelte/no-reactive-reassign	assignmentToReactiveValue	Assignment to reactive value 'count'.
+tests/rules/svelte/no-reactive-reassign/cases.svelte:21:3	svelte/no-reactive-reassign	assignmentToReactiveValue	Assignment to reactive value 'count'.
+tests/rules/svelte/no-reactive-reassign/cases.svelte:24:3	svelte/no-reactive-reassign	assignmentToReactiveValue	Assignment to reactive value 'items'.
+tests/rules/svelte/no-reactive-reassign/cases.svelte:29:8	svelte/no-reactive-reassign	assignmentToReactiveValue	Assignment to reactive value 'count'.
+tests/rules/svelte/no-reactive-reassign/cases.svelte:30:8	svelte/no-reactive-reassign	assignmentToReactiveValueProp	Assignment to property of reactive value 'value'.
+tests/rules/svelte/no-reactive-reassign/cases.svelte:31:8	svelte/no-reactive-reassign	assignmentToReactiveValue	Assignment to reactive value 'value'.
+tests/rules/svelte/no-reactive-reassign/cases.svelte:32:25	svelte/no-reactive-reassign	assignmentToReactiveValue	Assignment to reactive value 'items'.
+tests/rules/svelte/no-reactive-reassign/no-props/cases.svelte:8:3	svelte/no-reactive-reassign	assignmentToReactiveValue	Assignment to reactive value 'count'.
+tests/rules/svelte/no-reactive-reassign/no-props/cases.svelte:9:3	svelte/no-reactive-reassign	assignmentToReactiveValue	Assignment to reactive value 'count'.
+tests/rules/svelte/no-reactive-reassign/no-props/cases.svelte:10:3	svelte/no-reactive-reassign	assignmentToReactiveValue	Assignment to reactive value 'count'.
+tests/rules/svelte/no-reactive-reassign/no-props/cases.svelte:16:3	svelte/no-reactive-reassign	assignmentToReactiveValue	Assignment to reactive value 'count'.
+tests/rules/svelte/no-reactive-reassign/no-props/cases.svelte:17:3	svelte/no-reactive-reassign	assignmentToReactiveValue	Assignment to reactive value 'count'.
+tests/rules/svelte/no-reactive-reassign/no-props/cases.svelte:18:4	svelte/no-reactive-reassign	assignmentToReactiveValue	Assignment to reactive value 'count'.
+tests/rules/svelte/no-reactive-reassign/no-props/cases.svelte:19:4	svelte/no-reactive-reassign	assignmentToReactiveValue	Assignment to reactive value 'value'.
+tests/rules/svelte/no-reactive-reassign/no-props/cases.svelte:20:3	svelte/no-reactive-reassign	assignmentToReactiveValue	Assignment to reactive value 'count'.
+tests/rules/svelte/no-reactive-reassign/no-props/cases.svelte:21:3	svelte/no-reactive-reassign	assignmentToReactiveValue	Assignment to reactive value 'count'.
+tests/rules/svelte/no-reactive-reassign/no-props/cases.svelte:24:3	svelte/no-reactive-reassign	assignmentToReactiveValue	Assignment to reactive value 'items'.
+tests/rules/svelte/no-reactive-reassign/no-props/cases.svelte:29:8	svelte/no-reactive-reassign	assignmentToReactiveValue	Assignment to reactive value 'count'.
+tests/rules/svelte/no-reactive-reassign/no-props/cases.svelte:31:8	svelte/no-reactive-reassign	assignmentToReactiveValue	Assignment to reactive value 'value'.
+tests/rules/svelte/no-reactive-reassign/no-props/cases.svelte:32:25	svelte/no-reactive-reassign	assignmentToReactiveValue	Assignment to reactive value 'items'.

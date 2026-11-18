@@ -1,0 +1,7 @@
+tests/rules/svelte/no-reactive-functions/cases.svelte:4:2	svelte/no-reactive-functions	noReactiveFns	Do not create functions inside reactive statements unless absolutely necessary.
+tests/rules/svelte/no-reactive-functions/cases.svelte:5:2	svelte/no-reactive-functions	noReactiveFns	Do not create functions inside reactive statements unless absolutely necessary.
+tests/rules/svelte/no-reactive-functions/cases.svelte:8:2	svelte/no-reactive-functions	noReactiveFns	Do not create functions inside reactive statements unless absolutely necessary.
+tests/rules/svelte/no-reactive-functions/cases.svelte:9:2	svelte/no-reactive-functions	noReactiveFns	Do not create functions inside reactive statements unless absolutely necessary.
+tests/rules/svelte/no-reactive-functions/cases.svelte:10:2	svelte/no-reactive-functions	noReactiveFns	Do not create functions inside reactive statements unless absolutely necessary.
+tests/rules/svelte/no-reactive-functions/cases.svelte:11:2	svelte/no-reactive-functions	noReactiveFns	Do not create functions inside reactive statements unless absolutely necessary.
+tests/rules/svelte/no-reactive-functions/cases.svelte:14:2	svelte/no-reactive-functions	noReactiveFns	Do not create functions inside reactive statements unless absolutely necessary.

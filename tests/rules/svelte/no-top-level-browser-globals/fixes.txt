@@ -1,0 +1,6 @@
+tests/rules/svelte/no-top-level-browser-globals/cases.svelte:5:42	svelte/no-top-level-browser-globals	unexpectedGlobal	Unexpected top-level browser global variable "window".	end	5	48
+tests/rules/svelte/no-top-level-browser-globals/cases.svelte:6:15	svelte/no-top-level-browser-globals	unexpectedGlobal	Unexpected top-level browser global variable "location".	end	6	23
+tests/rules/svelte/no-top-level-browser-globals/cases.svelte:11:3	svelte/no-top-level-browser-globals	unexpectedGlobal	Unexpected top-level browser global variable "localStorage".	end	11	15
+tests/rules/svelte/no-top-level-browser-globals/cases.svelte:18:13	svelte/no-top-level-browser-globals	unexpectedGlobal	Unexpected top-level browser global variable "window".	end	18	19
+tests/rules/svelte/no-top-level-browser-globals/cases.svelte:37:2	svelte/no-top-level-browser-globals	unexpectedGlobal	Unexpected top-level browser global variable "location".	end	37	10
+tests/rules/svelte/no-top-level-browser-globals/cases.svelte:41:3	svelte/no-top-level-browser-globals	unexpectedGlobal	Unexpected top-level browser global variable "location".	end	41	11
