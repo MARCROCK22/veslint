@@ -88,7 +88,8 @@ def read(name):
     for line in open(f'{tmp}/{name}', encoding='utf-8', errors='replace').read().splitlines():
         parts = line.split('\t')
         if len(parts) >= 4:
-            out.append(tuple(parts[:4]))
+            # Position, rule, messageId, message, and the `warning` field of a problem of severity 1.
+            out.append(tuple(parts[:4]) + (('warning',) if parts[4:] == ['warning'] else ()))
     return out
 def path_of(finding):
     return finding[0].rsplit(':', 2)[0]

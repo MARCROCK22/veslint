@@ -15,7 +15,8 @@
 #                                                      # known-project.txt
 #   JOBS=2 tests/svelte-lint/compare.sh /some/dir      # ESLint in 2 processes, the corpus in /some/dir
 #
-# ESLint's lines are kept in WORK under a key of the corpus, the configuration and the versions:
+# ESLint's lines are kept in WORK under a key of the corpus, the configuration, the versions and
+# tests/eslint_lines.py (which writes them):
 # a second run only runs veslint. It needs build/upstream/svelte-deps (eslint-plugin-svelte's
 # oracle), build/upstream/vue-deps, build/eval/spider-byte/node_modules (tests/eval_spider_byte.sh),
 # build/upstream/perfectionist-deps and build/upstream/seyfert (tests/rules/seyfert/setup.sh), as
@@ -63,7 +64,7 @@ required = json.load(open('tests/rules/required_options.json', encoding='utf-8')
 print(json.dumps({'rules': {r: ['error', *required[r]] if r in required else 'error' for r in rules}}))
 PY
 export SVELTE_LINT_RULES=$WORK/rules.json
-key=$( (cd "$WORK" && find "${groups[@]}" "${alone[@]}" -name '*.svelte' -o -name '*.json' -o -name '*.d.ts' | LC_ALL=C sort | xargs cat; cat "$ROOT/tests/svelte-lint/eslint.svelte.config.mjs" "$ROOT/tests/svelte-lint/eslint_each.mjs" "$WORK/rules.json" "$ESLINT_PACKAGE" "$ROOT/build/upstream/svelte-deps/node_modules/svelte-eslint-parser/package.json"; echo "$mode") | sha1sum | cut -c1-16)
+key=$( (cd "$WORK" && find "${groups[@]}" "${alone[@]}" -name '*.svelte' -o -name '*.json' -o -name '*.d.ts' | LC_ALL=C sort | xargs cat; cat "$ROOT/tests/svelte-lint/eslint.svelte.config.mjs" "$ROOT/tests/svelte-lint/eslint_each.mjs" "$ROOT/tests/eslint_lines.py" "$WORK/rules.json" "$ESLINT_PACKAGE" "$ROOT/build/upstream/svelte-deps/node_modules/svelte-eslint-parser/package.json"; echo "$mode") | sha1sum | cut -c1-16)
 ESLINT_LINES=$WORK/eslint.$mode.$key.txt
 if [[ ! -f $ESLINT_LINES ]]; then
 	echo "ESLint lints the $count files in $JOBS processes"

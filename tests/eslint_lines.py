@@ -4,6 +4,7 @@ directory. A message without a rule (a directive comment without use, a parse er
 rule `eslint`, and one without a messageId has `fatal`, `error` or `warning` in its place. With
 `fixes`, each line also carries the fix, the suggestions (a suggestion without a messageId has an
 empty one) and where the problem ends (`end`, its endLine and endColumn), like `veslint --fixes`.
+A problem of severity 1 (a warning) ends with one more field, `warning`, as veslint's lines do.
 A surrogate without its pair, which ESLint's JSON has as an escape, is written as U+FFFD: that is
 what Node writes for it in UTF-8, on its output and in the file `eslint --fix` leaves."""
 import json, os, re, sys
@@ -27,6 +28,8 @@ def lines(results, fixes):
                     line += f"\tsuggestion\t{s.get('messageId', '')}\t{field(s['desc'])}\t{s['fix']['range'][0]}\t{s['fix']['range'][1]}\t{field(s['fix']['text'])}"
                 if "endLine" in m:
                     line += f"\tend\t{m['endLine']}\t{m['endColumn']}"
+            if m.get("severity") == 1:
+                line += "\twarning"
             yield line
 
 

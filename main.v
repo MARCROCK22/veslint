@@ -563,8 +563,9 @@ struct RuleFile {
 }
 
 // run_rules applies the rules to the files and prints one line per problem:
-// `path:line:col<TAB>rule<TAB>messageId<TAB>message`. Returns how many errors there were (findings
-// of rules set to "warn" do not count).
+// `path:line:col<TAB>rule<TAB>messageId<TAB>message`, with `<TAB>warning` at the end for a finding
+// of a rule set to "warn" (README.md, "The line format"). Returns how many errors there were
+// (findings of rules set to "warn" do not count).
 fn run_rules(opts Options, timeout time.Duration) !int {
 	total := time.new_stopwatch()
 	selected := opts.rules.map(it.name)
@@ -683,7 +684,7 @@ fn run_rules(opts Options, timeout time.Duration) !int {
 			if opts.summary {
 				summary.add(rules.problem_rule, f.path, true)
 			} else {
-				println('${f.path}:0:0\t${rules.problem_rule}\twarning\t${tsv_field(f.note)}')
+				println(note_line(f.path, f.note))
 			}
 		}
 		print(summary.table())
@@ -769,7 +770,7 @@ fn run_rules(opts Options, timeout time.Duration) !int {
 			if opts.summary {
 				summary.add(rules.problem_rule, f.path, true)
 			} else {
-				println('${f.path}:0:0\t${rules.problem_rule}\twarning\t${tsv_field(f.note)}')
+				println(note_line(f.path, f.note))
 			}
 			problems++
 			warnings++
@@ -1058,10 +1059,14 @@ fn file_report(path string, src string, result rules.FileLint, fixes bool, doc &
 				out.write_string('\tend\t${ends[i].line}\t${ends[i].col}')
 			}
 		}
-		out.writeln('')
 		if finding.severity == 1 {
+			// A warning ends with a field of its own, after everything else, so that the line of an
+			// error stays as it was and a parser that stops at a field it does not know still reads
+			// the rest. Fields are escaped and counted, so a message cannot fake it.
+			out.write_string('\twarning')
 			warnings++
 		}
+		out.writeln('')
 	}
 	return FileReport{
 		stdout:   out.str()
@@ -1348,6 +1353,13 @@ fn fix_fields(src string, finding rules.Finding) string {
 		next += 2
 	}
 	return out.str()
+}
+
+// note_line is the line of ESLint's warning about a file it does not lint (`File ignored because of
+// a matching ignore pattern…`): a problem of the whole file, of severity 1 as in ESLint, so it ends
+// with the field `warning` like every warning.
+fn note_line(path string, note string) string {
+	return '${path}:0:0\t${rules.problem_rule}\twarning\t${tsv_field(note)}\twarning'
 }
 
 // tsv_field escapes a field of an output line: the message may carry source text (`[a,⏎ b]` in

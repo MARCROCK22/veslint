@@ -217,6 +217,40 @@ test('the extension shows the problems and offers the fixes', { skip: !built }, 
   assert.ok(state.messages.some(message => message.includes('cannot run')));
 });
 
+test('each problem has the severity of its level, as in ESLint, unless veslint.severity forces one', { skip: !built }, async t => {
+  // tests/config/base.ts: no-floating-promises is an error, await-thenable a warning, and the unused
+  // directives are reported as warnings.
+  const expected = fs
+    .readFileSync(path.join(fixture, 'expected.txt'), 'utf8')
+    .split('\n')
+    .filter(line => line.startsWith('base.ts:'));
+  const levels = expected.map(line => line.split('\t')[1] + (line.endsWith('\twarning') ? ' warning' : ' error'));
+  assert.deepEqual(levels, [
+    '@typescript-eslint/no-floating-promises error',
+    '@typescript-eslint/await-thenable warning',
+    'eslint warning',
+    '@typescript-eslint/await-thenable warning',
+    'eslint warning',
+  ]);
+  for (const [setting, wanted] of [
+    [undefined, ['Error', 'Warning', 'Warning', 'Warning', 'Warning']],
+    ['auto', ['Error', 'Warning', 'Warning', 'Warning', 'Warning']],
+    ['error', ['Error', 'Error', 'Warning', 'Error', 'Warning']],
+    ['hint', ['Hint', 'Hint', 'Warning', 'Hint', 'Warning']],
+  ]) {
+    const { vscode, state, TextDocument, activate } = loadExtension(t);
+    const names = Object.fromEntries(Object.entries(vscode.DiagnosticSeverity).map(([name, value]) => [value, name]));
+    state.folder = fixture;
+    state.settings = { path: binary, config: 'resolved.json', ...(setting && { severity: setting }) };
+    const document = new TextDocument(path.join(fixture, 'base.ts'));
+    state.documents.push(document);
+    activate();
+    await state.commands['veslint.lintOpenFiles']();
+    const shown = state.diagnostics.get(document.uri.toString());
+    assert.deepEqual(shown.map(diagnostic => names[diagnostic.severity]), wanted, `veslint.severity: ${setting}`);
+  }
+});
+
 test('the unsaved text of a file is seen by the files that import it, until it is saved or reverted', { skip: !built }, async t => {
   const project = fs.mkdtempSync(path.join(os.tmpdir(), 'veslint-project-'));
   fs.cpSync(path.join(root, 'tests/server/project'), project, { recursive: true });

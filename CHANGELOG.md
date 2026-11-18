@@ -2,6 +2,11 @@
 
 Each version is a release on GitHub with the veslint binaries (Linux x64, Windows x64) and the VS Code extension. The section of a version is the text of its release.
 
+## 0.35.0
+
+- **Warnings are told from errors, as in ESLint:** a problem of a rule set to `"warn"` ends its line with the field `warning`, in the output, with `--fixes` and in the answers of `--server` (README, "The line format"); the line of an error is the same as before.
+- **VS Code extension:** each problem is shown with its rule's level, an error as an error and a warning as a warning, as the ESLint extension does. `veslint.severity` is now `auto` by default; `error`, `warning`, `information` or `hint` still show every problem of a rule with that severity. With an older veslint, `auto` shows them all as errors.
+
 ## 0.34.0
 
 - **eslint-plugin-svelte 3.24.1: 83 of its 88 rules**, on the template, the `<style>` and the script of `.svelte` files (and on the `.svelte.ts` modules and TypeScript files the script rules also lint):
