@@ -2,6 +2,14 @@
 
 Each version is a release on GitHub with the veslint binaries (Linux x64, Windows x64) and the VS Code extension. The section of a version is the text of its release.
 
+## 0.34.0
+
+- **eslint-plugin-svelte 3.24.1: 83 of its 88 rules**, on the template, the `<style>` and the script of `.svelte` files (and on the `.svelte.ts` modules and TypeScript files the script rules also lint):
+  - **Template:** `button-has-type`, `no-at-html-tags`, `no-target-blank`, `valid-each-key`, `require-each-key`, `html-quotes`, `html-self-closing`, `mustache-spacing`, `shorthand-attribute`, `shorthand-directive`, `sort-attributes`, `max-attributes-per-line`, `no-useless-mustaches`… and `svelte/comment-directive` with the plugin's processor (`<!-- eslint-disable -->` in templates).
+  - **Styles:** `no-dupe-style-properties`, `prefer-style-directive`, `no-unused-class-name`, `consistent-selector-style`, `valid-style-parse`…, on a port of postcss, postcss-safe-parser, postcss-scss and postcss-selector-parser (`postcss/`).
+  - **Script:** stores (`require-store-reactive-access`, `no-store-async`…), runes (`prefer-svelte-reactivity`, `prefer-writable-derived`, `no-unnecessary-state-wrap`…), `$:` reactivity (`infinite-reactive-loop`, `no-reactive-reassign`…), SvelteKit (`no-navigation-without-resolve`, `valid-prop-names-in-kit-pages`…), `no-unused-props`, and the plugin's versions of `prefer-const`, `no-inner-declarations` and `no-trailing-spaces`.
+- Each one gives what ESLint gives and passes the cases of its upstream tests (with `lang="ts"` for the JavaScript ones). Left: `svelte/indent`, `svelte/valid-compile` and the `unused` message of `svelte/no-unused-svelte-ignore`, which needs the Svelte compiler's warnings (being ported). `svelte.config.js` is not read: its `kit.files.routes` and `compilerOptions.runes` can be given as `parserOptions.svelteConfig` and `parserOptions.svelteFeatures.runes`.
+
 ## 0.33.0
 
 - **Svelte files (`.svelte`), their TypeScript script:** `veslint .` brings the `.svelte` files and the `.svelte.ts` modules, and every rule veslint has (with types) lints their `<script lang="ts">` as ESLint does with svelte-eslint-parser 1.10.1 and typescript-eslint's parser: runes, stores (`$store`), `$:` statements, props, snippets and generics as svelte-eslint-parser models them, with the same problems, positions, fixes and suggestions (compared on 1,890 Svelte files with every rule, `tests/svelte-lint`). Types come from the code typescript-eslint type-checks for a `.svelte`, given to the TypeScript 7 compiler as a file of its own that is never written to disk; in other files, `import App from './App.svelte'` keeps the type of the `*.svelte` declaration, as in ESLint. `--fix`, `--server` and the VS Code extension handle `.svelte` too. The parser (`svelte/`) is a port of svelte-eslint-parser and of the Svelte 5 compiler's template parser it reads.
