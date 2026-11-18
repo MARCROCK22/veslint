@@ -293,6 +293,8 @@ pub fn check_options(rule string, options []json2.Any) !bool {
 		vue_no_duplicate_attr_inheritance { vndai_options(options)! }
 		vue_no_unused_components { vnuc_options(options)! }
 		vue_no_template_shadow { vnts_options(options)! }
+		vue_no_undef_directives { vnud_options(options)! }
+		vue_component_name_in_template_casing { vcnitc_options(options)! }
 		else { return false }
 	}
 	return true

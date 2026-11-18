@@ -1,6 +1,7 @@
 module rules
 
 import estree
+import jsregexp
 import vue
 
 // Helpers of the vue/* rules that read both the template and the script (batch VR5): the
@@ -171,4 +172,29 @@ fn (mut c Checker) vue_define_slots(root C.TSNode, t &estree.EsTree, call int, a
 		}
 	}
 	return out
+}
+
+// vue_builtin_directive_names are BUILTIN_DIRECTIVE_NAMES (isBuiltInDirectiveName).
+const vue_builtin_directive_names = ['bind', 'on', 'text', 'html', 'show', 'if', 'else', 'else-if',
+	'for', 'model', 'slot', 'pre', 'cloak', 'once', 'memo', 'is']
+
+// vue_is_builtin_element_name is isVueBuiltInElementName (vue-builtin-elements.ts, by the name in
+// lower case).
+fn vue_is_builtin_element_name(name string) bool {
+	return vue_js_to_lower(name) in ['template', 'slot', 'component']
+}
+
+// vue_js_to_lower is String.prototype.toLowerCase.
+fn vue_js_to_lower(s string) string {
+	return utf16_to_string(jsregexp.js_to_lower(utf16_units(s)))
+}
+
+// vue_module_scope is the module scope of the file (the child of the global scope), -1 for none.
+fn vue_module_scope(tree &ScopeTree) int {
+	for child in tree.scopes[0].children {
+		if tree.scopes[child].kind == .esmodule {
+			return child
+		}
+	}
+	return -1
 }

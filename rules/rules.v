@@ -642,6 +642,8 @@ pub const vue_no_duplicate_attr_inheritance = 'vue/no-duplicate-attr-inheritance
 pub const vue_no_unused_components = 'vue/no-unused-components'
 pub const vue_no_template_shadow = 'vue/no-template-shadow'
 pub const vue_require_explicit_slots = 'vue/require-explicit-slots'
+pub const vue_no_undef_directives = 'vue/no-undef-directives'
+pub const vue_component_name_in_template_casing = 'vue/component-name-in-template-casing'
 pub const names = [no_floating_promises, await_thenable, require_await, return_await,
 	no_misused_promises, no_unsafe_call, no_unsafe_member_access, no_unsafe_return,
 	no_unsafe_assignment, no_unsafe_argument, restrict_template_expressions,
@@ -827,7 +829,8 @@ pub const names = [no_floating_promises, await_thenable, require_await, return_a
 	vue_comma_style, vue_no_constant_condition, vue_no_console, vue_quote_props, vue_no_extra_parens,
 	vue_no_deprecated_dollar_listeners_api, vue_no_deprecated_dollar_scopedslots_api,
 	vue_prefer_use_template_ref, vue_no_duplicate_attr_inheritance, vue_no_unused_components,
-	vue_no_template_shadow, vue_require_explicit_slots]
+	vue_no_template_shadow, vue_require_explicit_slots, vue_no_undef_directives,
+	vue_component_name_in_template_casing]
 
 // untyped_rules are the ported rules that need no types (`meta.docs.requiresTypeChecking` is false
 // in typescript-eslint; the eslint-plugin-unicorn rules that read the types when the parser has a
@@ -982,7 +985,8 @@ pub const untyped_rules = [adjacent_overload_signatures, array_type, class_liter
 	vue_comma_spacing, vue_multiline_ternary, vue_space_in_parens, vue_func_call_spacing,
 	vue_comma_style, vue_no_constant_condition, vue_no_console, vue_quote_props, vue_no_extra_parens,
 	vue_no_deprecated_dollar_listeners_api, vue_no_deprecated_dollar_scopedslots_api,
-	vue_prefer_use_template_ref, vue_no_duplicate_attr_inheritance, vue_no_unused_components]
+	vue_prefer_use_template_ref, vue_no_duplicate_attr_inheritance, vue_no_unused_components,
+	vue_no_undef_directives, vue_component_name_in_template_casing]
 
 // needs_types tells whether a rule asks tsgo for the types of the program.
 pub fn needs_types(rule string) bool {
@@ -1619,6 +1623,8 @@ pub const default_options = {
 	vue_no_unused_components:                        '[]'
 	vue_no_template_shadow:                          '[]'
 	vue_require_explicit_slots:                      '[]'
+	vue_no_undef_directives:                         '[]'
+	vue_component_name_in_template_casing:           '[]'
 }
 
 // Finding is a problem a rule found at a node.
@@ -2410,6 +2416,8 @@ pub fn message(rule string, finding Finding) string {
 		vue_no_unused_components { vue_no_unused_components_messages }
 		vue_no_template_shadow { vue_no_template_shadow_messages }
 		vue_require_explicit_slots { vue_require_explicit_slots_messages }
+		vue_no_undef_directives { vue_no_undef_directives_messages }
+		vue_component_name_in_template_casing { vue_component_name_in_template_casing_messages }
 		else { map[string]string{} }
 	}
 	return interpolate(messages[finding.message_id] or { finding.message_id }, finding.data)
@@ -4445,6 +4453,12 @@ fn (mut c Checker) lint_rule(rule string, root C.TSNode, abs_path string, mut st
 		}
 		vue_require_explicit_slots {
 			return c.lint_vue_require_explicit_slots(root, abs_path, mut stats)!
+		}
+		vue_no_undef_directives {
+			return c.lint_vue_no_undef_directives(root, abs_path, mut stats)!
+		}
+		vue_component_name_in_template_casing {
+			return c.lint_vue_component_name_in_template_casing(root, abs_path, mut stats)!
 		}
 		else { return error('unknown rule: ${rule}') }
 	}

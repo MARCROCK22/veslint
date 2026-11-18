@@ -1,0 +1,11 @@
+tests/rules/vue/component-name-in-template-casing/all/cases.vue:2:3	vue/component-name-in-template-casing	incorrectCase	Component name "foo-bar" is not PascalCase.	fix	13	31	<FooBar></FooBar	end	2	11
+tests/rules/vue/component-name-in-template-casing/all/cases.vue:5:3	vue/component-name-in-template-casing	incorrectCase	Component name "router-view" is not PascalCase.	fix	62	74	<RouterView	end	5	15
+tests/rules/vue/component-name-in-template-casing/cases.vue:3:5	vue/component-name-in-template-casing	incorrectCase	Component name "the-component" is not PascalCase.	fix	23	37	<TheComponent	end	3	19
+tests/rules/vue/component-name-in-template-casing/cases.vue:5:5	vue/component-name-in-template-casing	incorrectCase	Component name "the-component" is not PascalCase.	fix	79	110	<TheComponent>x</TheComponent	end	5	19
+tests/rules/vue/component-name-in-template-casing/cases.vue:7:5	vue/component-name-in-template-casing	incorrectCase	Component name "imported-comp" is not PascalCase.	fix	136	166	<ImportedComp></ImportedComp	end	7	19
+tests/rules/vue/component-name-in-template-casing/cases.vue:9:5	vue/component-name-in-template-casing	incorrectCase	Component name "ns-comp.Input" is not PascalCase.	fix	191	205	<NsComp.Input	end	9	19
+tests/rules/vue/component-name-in-template-casing/cases.vue:10:10	vue/component-name-in-template-casing	incorrectCase	Component name "the-component" is not PascalCase.	fix	218	232	<TheComponent	end	10	24
+tests/rules/vue/component-name-in-template-casing/globals/cases.vue:2:3	vue/component-name-in-template-casing	incorrectCase	Component name "router-view" is not PascalCase.	fix	13	25	<RouterView	end	2	15
+tests/rules/vue/component-name-in-template-casing/globals/cases.vue:3:3	vue/component-name-in-template-casing	incorrectCase	Component name "router-link" is not PascalCase.	fix	31	43	<RouterLink	end	3	15
+tests/rules/vue/component-name-in-template-casing/globals/cases.vue:4:3	vue/component-name-in-template-casing	incorrectCase	Component name "el-button" is not PascalCase.	fix	49	59	<ElButton	end	4	13
+tests/rules/vue/component-name-in-template-casing/kebab/cases.vue:2:3	vue/component-name-in-template-casing	incorrectCase	Component name "TheComponent" is not kebab-case.	fix	13	41	<the-component></the-component	end	2	16
