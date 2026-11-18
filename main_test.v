@@ -6,6 +6,7 @@ import time
 import treesitter { Ident }
 import offsets
 import tsgo
+import svelte
 
 // ---- main_test.v ----
 
@@ -313,4 +314,24 @@ fn test_request_queue_gives_up_superseded_requests() {
 	assert order == ['a.ts', 'b.ts', '', 'a.ts']
 	// a.ts is linted again later; b.ts, a request without files and the last a.ts are not.
 	assert stops == [true, false, false, false]
+}
+
+// A resolved configuration keeps what a runes function of parserOptions.svelteConfig gave for
+// each .svelte file (svelteConfigRunes), also saved (relative paths): the file is parsed with it,
+// the other files as their configuration says.
+fn test_resolved_svelte_config_runes() {
+	base := os.join_path(os.temp_dir(), 'veslint-runes-${os.getpid()}')
+	text := '{"configs": [{"rules": {"prefer-const": "error"}, "languageOptions": {"parserOptions": {"svelteConfig": {"compilerOptions": {}}}}}], "files": [{"path": "a.svelte", "config": 0, "svelteConfigRunes": true}, {"path": "b.svelte", "config": 0, "svelteConfigRunes": false}, {"path": "c.svelte", "config": 0}]}'
+	files := ['a.svelte', 'b.svelte', 'c.svelte'].map(os.join_path(base, it))
+	loaded := loaded_from_resolved(text, 'veslint.json', base, files) or { panic(err) }
+	assert loaded.svelte_parse_options(files[0]) == svelte.ParseOptions{
+		config: .on
+	}
+	assert loaded.svelte_parse_options(files[1]) == svelte.ParseOptions{
+		config: .off
+	}
+	assert loaded.svelte_parse_options(files[2]) == svelte.ParseOptions{}
+	assert loaded.file_language(files[1], loaded.configs[0].language).svelte_config_runes == 0
+	assert loaded.file_language(files[2], loaded.configs[0].language).svelte_config_runes == -1
+	assert loaded.resolved.contains('"svelteConfigRunes":true')
 }

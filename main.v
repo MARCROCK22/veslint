@@ -793,6 +793,13 @@ fn run_rules(opts Options, timeout time.Duration) !int {
 		}
 		config_index := opts.loaded.file_config[f.abs_path] or { 0 }
 		mut lint_config := lint_configs[config_index]
+		if f.abs_path in opts.loaded.file_runes {
+			// A runes function of the svelteConfig: what it gave for this file (file_language).
+			lint_config = rules.LintConfig{
+				...lint_config
+				language: opts.loaded.file_language(f.abs_path, lint_config.language)
+			}
+		}
 		// In a single run, the project service leaves the file to a Program made for its tsconfig,
 		// whose current directory is the one ESLint runs in, when the tsconfig is the one veslint
 		// lints the file with; only for the text on disk (the first pass of --fix).

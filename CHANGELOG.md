@@ -2,6 +2,10 @@
 
 Each version is a release on GitHub with the veslint binaries (Linux x64, Windows x64) and the VS Code extension. The section of a version is the text of its release.
 
+## 0.35.3
+
+- **Svelte: a `runes` function in `parserOptions.svelteConfig`** of an `eslint.config.*` (`runes: ({ filename }) => …`) is called for each `.svelte` file with its path when ESLint resolves the configuration, as svelte-eslint-parser and eslint-plugin-svelte call it; the parse, the types and the rules (`svelte/valid-compile`…) follow what it gives (it was taken as unset), also from a saved `--print-config`, which keeps it per file.
+
 ## 0.35.2
 
 - **`parserOptions` of an `eslint.config.*` kept whole:** `vueFeatures`, `svelteFeatures` and `svelteConfig` given in an `eslint.config.*` were lost (only a JSON configuration passed them on); now they reach the parse and the rules.

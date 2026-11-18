@@ -517,10 +517,27 @@ fn scope_svelte_compiler_option(parser map[string]json2.Any, path []string) int 
 	mut keys := ['compilerOptions']
 	keys << path
 	value := scope_svelte_config_value(parser, keys) or { return -1 }
+	return scope_svelte_boolean(value)
+}
+
+// scope_svelte_boolean is a value of the svelteConfig's compilerOptions as a boolean: -1 for
+// null, else 0 or 1 by whether it is truthy.
+fn scope_svelte_boolean(value json2.Any) int {
 	if value is json2.Null {
 		return -1
 	}
 	return if value.json_str() in ['false', '0', '""'] { 0 } else { 1 }
+}
+
+// with_svelte_config_runes is the language options of a .svelte file whose
+// parserOptions.svelteConfig.compilerOptions.runes is a function, with what it gave for the file
+// (the resolver calls it as svelte-eslint-parser and eslint-plugin-svelte do) in its place.
+pub fn (l LanguageOptions) with_svelte_config_runes(value json2.Any) LanguageOptions {
+	return LanguageOptions{
+		...l
+		svelte_config_runes:       scope_svelte_boolean(value)
+		svelte_config_runes_parse: scope_runes_mode(value)
+	}
 }
 
 // scope_name_option reads `jsxPragma` or `jsxFragmentName` of the parser options: not set, null

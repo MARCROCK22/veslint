@@ -598,6 +598,13 @@ fn (mut s Server) lint(id i64, config string, project string, files []string, te
 		}
 		config_index := loaded.file_config[f.abs_path] or { 0 }
 		mut lint_config := lint_configs[config_index]
+		if f.abs_path in loaded.file_runes {
+			// A runes function of the svelteConfig: what it gave for this file (file_language).
+			lint_config = rules.LintConfig{
+				...lint_config
+				language: loaded.file_language(f.abs_path, lint_config.language)
+			}
+		}
 		// As the command line it answers for (a single run, without --fix): the project service
 		// leaves the file to a Program made for its tsconfig, whose current directory is the one
 		// veslint runs in, when the tsconfig is the one the file is linted with.
