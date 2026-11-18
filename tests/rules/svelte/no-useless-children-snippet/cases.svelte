@@ -20,7 +20,6 @@
 <div>
 	{#snippet children()}<i>z</i>{/snippet}
 </div>
-{#snippet children()}<b>top</b>{/snippet}
 {#if true}
 	{#snippet children()}<b>in if</b>{/snippet}
 {/if}
