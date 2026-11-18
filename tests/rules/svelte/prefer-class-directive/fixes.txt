@@ -1,0 +1,29 @@
+tests/rules/svelte/prefer-class-directive/always/cases.svelte:7:12	svelte/prefer-class-directive	unexpected	Unexpected class using the ternary operator.	fix	81	111	class:active={active}	end	7	36
+tests/rules/svelte/prefer-class-directive/always/cases.svelte:8:12	svelte/prefer-class-directive	unexpected	Unexpected class using the ternary operator.	fix	124	156	class:inactive={!active}	end	8	38
+tests/rules/svelte/prefer-class-directive/always/cases.svelte:9:12	svelte/prefer-class-directive	unexpected	Unexpected class using the ternary operator.	fix	169	198	class:on={active} class:off={!active}	end	9	35
+tests/rules/svelte/prefer-class-directive/always/cases.svelte:10:15	svelte/prefer-class-directive	unexpected	Unexpected class using the ternary operator.	fix	218	240	a" class:b={active}	end	10	34
+tests/rules/svelte/prefer-class-directive/always/cases.svelte:11:15	svelte/prefer-class-directive	unexpected	Unexpected class using the ternary operator.	fix	260	284	a c" class:b={active}	end	11	34
+tests/rules/svelte/prefer-class-directive/always/cases.svelte:14:12	svelte/prefer-class-directive	unexpected	Unexpected class using the ternary operator.	fix	379	407	class:one={n === 1}	end	14	34
+tests/rules/svelte/prefer-class-directive/always/cases.svelte:15:12	svelte/prefer-class-directive	unexpected	Unexpected class using the ternary operator.	fix	420	451	class:not-one={n != 1}	end	15	37
+tests/rules/svelte/prefer-class-directive/always/cases.svelte:16:12	svelte/prefer-class-directive	unexpected	Unexpected class using the ternary operator.	fix	464	492	class:one={n === 1}	end	16	34
+tests/rules/svelte/prefer-class-directive/always/cases.svelte:17:12	svelte/prefer-class-directive	unexpected	Unexpected class using the ternary operator.	fix	505	533	class:yes={active}	end	17	34
+tests/rules/svelte/prefer-class-directive/always/cases.svelte:18:12	svelte/prefer-class-directive	unexpected	Unexpected class using the ternary operator.	fix	546	577	class:no={!(active && n)}	end	18	37
+tests/rules/svelte/prefer-class-directive/always/cases.svelte:22:12	svelte/prefer-class-directive	unexpected	Unexpected class using the ternary operator.	fix	716	743	class:a={active}	end	22	33
+tests/rules/svelte/prefer-class-directive/always/cases.svelte:23:12	svelte/prefer-class-directive	unexpected	Unexpected class using the ternary operator.	fix	756	781	class:t={active}	end	23	31
+tests/rules/svelte/prefer-class-directive/always/cases.svelte:25:36	svelte/prefer-class-directive	unexpected	Unexpected class using the ternary operator.	fix	853	878	class:a={active}	end	25	55
+tests/rules/svelte/prefer-class-directive/always/cases.svelte:27:15	svelte/prefer-class-directive	unexpected	Unexpected class using the ternary operator.	fix	947	986	x {n ? 'b' : ''} y" class:a={active}	end	27	34
+tests/rules/svelte/prefer-class-directive/always/cases.svelte:27:35	svelte/prefer-class-directive	unexpected	Unexpected class using the ternary operator.	fix	968	986	 y" class:b={n}	end	27	49
+tests/rules/svelte/prefer-class-directive/cases.svelte:7:12	svelte/prefer-class-directive	unexpected	Unexpected class using the ternary operator.	fix	81	111	class:active={active}	end	7	36
+tests/rules/svelte/prefer-class-directive/cases.svelte:8:12	svelte/prefer-class-directive	unexpected	Unexpected class using the ternary operator.	fix	124	156	class:inactive={!active}	end	8	38
+tests/rules/svelte/prefer-class-directive/cases.svelte:10:15	svelte/prefer-class-directive	unexpected	Unexpected class using the ternary operator.	fix	218	240	a" class:b={active}	end	10	34
+tests/rules/svelte/prefer-class-directive/cases.svelte:11:15	svelte/prefer-class-directive	unexpected	Unexpected class using the ternary operator.	fix	260	284	a c" class:b={active}	end	11	34
+tests/rules/svelte/prefer-class-directive/cases.svelte:14:12	svelte/prefer-class-directive	unexpected	Unexpected class using the ternary operator.	fix	379	407	class:one={n === 1}	end	14	34
+tests/rules/svelte/prefer-class-directive/cases.svelte:15:12	svelte/prefer-class-directive	unexpected	Unexpected class using the ternary operator.	fix	420	451	class:not-one={n != 1}	end	15	37
+tests/rules/svelte/prefer-class-directive/cases.svelte:16:12	svelte/prefer-class-directive	unexpected	Unexpected class using the ternary operator.	fix	464	492	class:one={n === 1}	end	16	34
+tests/rules/svelte/prefer-class-directive/cases.svelte:17:12	svelte/prefer-class-directive	unexpected	Unexpected class using the ternary operator.	fix	505	533	class:yes={active}	end	17	34
+tests/rules/svelte/prefer-class-directive/cases.svelte:18:12	svelte/prefer-class-directive	unexpected	Unexpected class using the ternary operator.	fix	546	577	class:no={!(active && n)}	end	18	37
+tests/rules/svelte/prefer-class-directive/cases.svelte:22:12	svelte/prefer-class-directive	unexpected	Unexpected class using the ternary operator.	fix	716	743	class:a={active}	end	22	33
+tests/rules/svelte/prefer-class-directive/cases.svelte:23:12	svelte/prefer-class-directive	unexpected	Unexpected class using the ternary operator.	fix	756	781	class:t={active}	end	23	31
+tests/rules/svelte/prefer-class-directive/cases.svelte:25:36	svelte/prefer-class-directive	unexpected	Unexpected class using the ternary operator.	fix	853	878	class:a={active}	end	25	55
+tests/rules/svelte/prefer-class-directive/cases.svelte:27:15	svelte/prefer-class-directive	unexpected	Unexpected class using the ternary operator.	fix	947	986	x {n ? 'b' : ''} y" class:a={active}	end	27	34
+tests/rules/svelte/prefer-class-directive/cases.svelte:27:35	svelte/prefer-class-directive	unexpected	Unexpected class using the ternary operator.	fix	968	986	 y" class:b={n}	end	27	49

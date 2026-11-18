@@ -750,6 +750,7 @@ const rule_option_schemas = {
 	'svelte/no-at-const-tags':                                         '{"type":"array","minItems":0,"maxItems":0}'
 	'svelte/no-not-function-handler':                                  '{"type":"array","minItems":0,"maxItems":0}'
 	'svelte/block-lang':                                               '{"type":"array","items":[{"type":"object","properties":{"enforceScriptPresent":{"type":"boolean"},"enforceStylePresent":{"type":"boolean"},"script":{"oneOf":[{"type":["string","null"]},{"type":"array","items":{"type":["string","null"]},"minItems":1}]},"style":{"oneOf":[{"type":["string","null"]},{"type":"array","items":{"type":["string","null"]},"minItems":1}]}},"additionalProperties":false}],"minItems":0,"maxItems":1}'
+	'svelte/prefer-class-directive':                                   '{"type":"array","items":[{"type":"object","properties":{"prefer":{"enum":["always","empty"]}},"additionalProperties":false}],"minItems":0,"maxItems":1}'
 }
 
 // eslint_rule_default_options are the meta.defaultOptions of the rules of ESLint and of

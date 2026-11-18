@@ -374,6 +374,7 @@ pub fn check_options(rule string, options []json2.Any) !bool {
 		svelte_max_attributes_per_line { smapl_options(options)! }
 		svelte_html_self_closing { shsc_options(options)! }
 		svelte_block_lang { sbl_options(options)! }
+		svelte_prefer_class_directive { spcd_options(options)! }
 		else { return false }
 	}
 	return true
