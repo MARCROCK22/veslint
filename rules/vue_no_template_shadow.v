@@ -74,7 +74,7 @@ fn (mut c Checker) lint_vue_no_template_shadow(root C.TSNode, abs_path string, m
 			scopes.pop()
 			continue
 		}
-		mut names := if scopes.len > 0 { scopes.last().clone() } else { []string{} }
+		mut scope_names := if scopes.len > 0 { scopes.last().clone() } else { []string{} }
 		for v in doc.nodes[n.v].variables {
 			variable := &doc.variables[v]
 			name := variable.name
@@ -82,16 +82,16 @@ fn (mut c Checker) lint_vue_no_template_shadow(root C.TSNode, abs_path string, m
 				continue
 			}
 			stats.checked++
-			if name in names || name in js_vars {
+			if name in scope_names || name in js_vars {
 				start, end := c.vue_expr_range(variable.id)
 				findings << c.vue_report(start, end, 'alreadyDeclaredInUpperScope', {
 					'name': name
 				})
 			} else {
-				names << name
+				scope_names << name
 			}
 		}
-		scopes << names
+		scopes << scope_names
 	}
 	stats.eval_ms += ms(sw.elapsed())
 	return findings
