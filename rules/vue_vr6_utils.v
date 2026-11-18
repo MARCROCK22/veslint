@@ -209,14 +209,3 @@ fn vx6_v8_sort(n int, cmp fn (int, int) int) []int {
 	}
 	return a
 }
-
-// vx6_find_assignment_property ports findAssignmentProperty: the first Property of an
-// ObjectPattern with that static name, -1 for none.
-fn vx6_find_assignment_property(t &estree.EsTree, pattern int, name string) int {
-	for p in t.list(pattern, .properties) or { []int{} } {
-		if t.typ(p) == .property && (vue_static_property_name(t, p) or { continue }) == name {
-			return p
-		}
-	}
-	return -1
-}

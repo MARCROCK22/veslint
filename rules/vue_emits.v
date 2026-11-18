@@ -57,14 +57,7 @@ fn vue_skip_default_param(t &estree.EsTree, node int) int {
 // ObjectPattern with that static name, -1 for none.
 fn vue_find_assignment_property(t &estree.EsTree, pattern int, name string) int {
 	for p in t.list(pattern, .properties) or { []int{} } {
-		if t.typ(p) != .property {
-			continue
-		}
-		parent := t.nodes[p].parent
-		if parent >= 0 && t.typ(parent) != .object_pattern {
-			continue
-		}
-		if (vue_static_property_name(t, p) or { continue }) == name {
+		if t.typ(p) == .property && (vue_static_property_name(t, p) or { continue }) == name {
 			return p
 		}
 	}
