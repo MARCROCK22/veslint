@@ -396,6 +396,12 @@ fn test_script_lang_decision() {
 	assert parse('<script>let a</script>').script.lang == .js
 	assert parse('<script lang="tsx">let a</script>').script.lang == .tsx
 	assert parse('<script>let a</script><script setup lang="ts">let b</script>').script.lang == .ts
+	// typescript-eslint's parser (the parser object) reads any lang: the case does not matter.
+	assert parse('<script lang="TS">let a</script>').script.lang == .ts
+	assert parse('<script lang="Ts">let a</script>').script.lang == .ts
+	assert parse('<script lang="typescript">let a</script>').script.lang == .ts
+	assert parse('<script lang="TSX">let a</script>').script.lang == .tsx
+	assert parse('<script lang="JS">let a</script>').script.lang == .js
 }
 
 fn test_generic_constraints() {

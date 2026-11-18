@@ -303,10 +303,13 @@ fn generic_constraint(name string, raw string) string {
 fn (mut c ExprContext) parse_script() {
 	mut s := &c.doc.script
 	s.scripts = c.doc.top_elements('script')
-	lang := c.doc.script_lang() or { '' }
+	// Whether veslint lints the script: vue-eslint-parser hands every lang to typescript-eslint's
+	// parser when it is the parser object, so `lang="TS"` and `lang="typescript"` are read as
+	// `lang="ts"` (only the `generic` attribute asks for the exact `ts` or `tsx`).
+	lang := (c.doc.script_lang() or { '' }).to_lower()
 	s.lang = if s.scripts.len == 0 {
 		ScriptLang.none
-	} else if lang == 'ts' {
+	} else if lang in ['ts', 'typescript'] {
 		ScriptLang.ts
 	} else if lang == 'tsx' {
 		ScriptLang.tsx

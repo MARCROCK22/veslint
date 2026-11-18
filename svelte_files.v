@@ -65,9 +65,10 @@ fn svelte_javascript_warning(path string) string {
 }
 
 // svelte_is_typescript: the document's scripts are TypeScript (the `lang` svelte-eslint-parser
-// merges over them is ts or typescript), or it has none.
+// merges over them is ts or typescript, in any case: with typescript-eslint's parser as the
+// parser object, svelte-eslint-parser parses `lang="TS"` as it parses `lang="ts"`), or it has none.
 fn svelte_is_typescript(doc &svelte.Document) bool {
-	if doc.lang in ['ts', 'typescript'] {
+	if doc.lang.to_lower() in ['ts', 'typescript'] {
 		return true
 	}
 	if doc.nodes.len == 0 {

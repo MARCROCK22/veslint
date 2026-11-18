@@ -54,7 +54,7 @@ fn new_expr_context(doc &Document, opts Options, parsers &Parsers) ExprContext {
 		parsers: parsers
 	}
 	lang := doc.script_lang() or { '' }
-	ctx.tsx_mode = lang == 'tsx'
+	ctx.tsx_mode = lang.to_lower() == 'tsx'
 	return ctx
 }
 

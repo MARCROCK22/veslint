@@ -65,6 +65,27 @@ directives.vue:7:9	vue/block-lang	unexpected	Do not specify the 'lang' attribute
 empty-script.vue:4:1	vue/no-empty-component-block	unexpected	`<script>` is empty. Empty block is not allowed.	fix	48	75		end	4	28
 empty-script.vue:4:1	vue/padding-line-between-blocks	always	Expected blank line before this block.	fix	47	47	\n	end	4	28
 empty-script.vue:4:9	vue/block-lang	unexpected	Do not specify the 'lang' attribute of '<script>'.	end	4	18
+lang-typescript.vue:1:9	vue/block-lang	unexpected	Do not specify the 'lang' attribute of '<script>'.	end	1	26
+lang-typescript.vue:3:16	vue/require-expose	requireExpose	The public properties of the component must be explicitly declared using `expose`. If the component does not have public properties, declare it empty.	suggestion	addExposeOptionForEmpty	Add the `expose` option to give an empty array.	84	84	\nexpose: [],	suggestion	addExposeOptionForAll	Add the `expose` option to declare all properties.	84	84	\nexpose: ["answer"],	end	7	2
+lang-typescript.vue:3:16	vue/require-name-property	missingName	Required name property is not set.	suggestion	addName	Add name property to component.	87	87	name: 'lang-typescript',\n  	end	7	2
+lang-typescript.vue:4:3	@typescript-eslint/explicit-function-return-type	missingReturnType	Missing return type on function.	end	4	7
+lang-typescript.vue:4:3	@typescript-eslint/explicit-module-boundary-types	missingReturnType	Missing return type on function.	end	4	7
+lang-typescript.vue:4:3	vue/component-api-style	disallowComponentOption	Options API is not allowed in your project. `data` option is part of the Options API. Use `<script setup>` or Composition API instead.	end	4	7
+lang-typescript.vue:4:7	@stylistic/space-before-function-paren	missingSpace	Missing space before function parentheses.	fix	91	91	 	end	4	8
+lang-typescript.vue:5:13	@stylistic/object-curly-spacing	unexpectedSpaceAfter	There should be no space after '{'.	fix	108	109		end	5	14
+lang-typescript.vue:5:14	@stylistic/quote-props	unquotedPropertyFound	Unquoted property 'answer' found.	fix	109	115	"answer"	end	5	34
+lang-typescript.vue:5:22	@typescript-eslint/no-magic-numbers	noMagic	No magic number: 42.	end	5	24
+lang-typescript.vue:5:34	@stylistic/object-curly-spacing	unexpectedSpaceBefore	There should be no space before '}'.	fix	129	130		end	5	35
+lang-typescript.vue:5:36	@stylistic/semi	missingSemi	Missing semicolon.	fix	131	131	;	end	6	1
+lang-typescript.vue:6:4	@stylistic/comma-dangle	unexpected	Unexpected trailing comma.	fix	134	138	}\n}	end	6	5
+lang-typescript.vue:7:2	@stylistic/semi	missingSemi	Missing semicolon.	fix	138	138	;	end	8	1
+lang-upper.vue:1:15	vue/block-lang	unexpected	Do not specify the 'lang' attribute of '<script>'.	end	1	24
+lang-upper.vue:2:81	vue/max-len	max	This line has a length of 90. Maximum allowed is 80.	end	2	91
+lang-upper.vue:3:24	@stylistic/semi	missingSemi	Missing semicolon.	fix	139	139	;	end	4	1
+lang-upper.vue:3:7	@typescript-eslint/no-inferrable-types	noInferrableType	Type number trivially inferred from a number literal, remove type annotation.	fix	127	135		end	3	24
+lang-upper.vue:4:1	no-var	unexpectedVar	Unexpected var, use let or const instead.	fix	140	169	let label = 'count' as string	end	4	30
+lang-upper.vue:4:13	@stylistic/quotes	wrongQuotes	Strings must use doublequote.	fix	152	159	"count"	end	4	20
+lang-upper.vue:4:30	@stylistic/semi	missingSemi	Missing semicolon.	fix	169	169	;	end	5	1
 line-separator.vue:2:10	no-irregular-whitespace	noIrregularWhitespace	Irregular whitespace not allowed.	end	3	1
 line-separator.vue:2:10	vue/no-irregular-whitespace	disallow	Irregular whitespace not allowed.	end	3	1
 line-separator.vue:2:6	vue/no-bare-strings-in-template	unexpected	Unexpected non-translated string used.	end	2	14
