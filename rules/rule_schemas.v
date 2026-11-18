@@ -746,6 +746,9 @@ const rule_option_schemas = {
 	'svelte/no-dupe-use-directives':                                   '{"type":"array","minItems":0,"maxItems":0}'
 	'svelte/prefer-attribute-interpolation':                           '{"type":"array","minItems":0,"maxItems":0}'
 	'svelte/max-attributes-per-line':                                  '{"type":"array","items":[{"type":"object","properties":{"multiline":{"type":"number","minimum":1},"singleline":{"type":"number","minimum":1}},"additionalProperties":false}],"minItems":0,"maxItems":1}'
+	'svelte/html-self-closing':                                        '{"type":"array","items":[{"anyOf":[{"properties":{"void":{"enum":["never","always","ignore"]},"normal":{"enum":["never","always","ignore"]},"svg":{"enum":["never","always","ignore"]},"math":{"enum":["never","always","ignore"]},"component":{"enum":["never","always","ignore"]},"svelte":{"enum":["never","always","ignore"]}},"additionalProperties":false},{"enum":["all","html","none"]}]}],"minItems":0,"maxItems":1}'
+	'svelte/no-at-const-tags':                                         '{"type":"array","minItems":0,"maxItems":0}'
+	'svelte/no-not-function-handler':                                  '{"type":"array","minItems":0,"maxItems":0}'
 }
 
 // eslint_rule_default_options are the meta.defaultOptions of the rules of ESLint and of

@@ -1,0 +1,36 @@
+tests/rules/svelte/html-self-closing/all/cases.svelte:5:5	svelte/html-self-closing	requireClosing	Require self-closing on HTML elements.
+tests/rules/svelte/html-self-closing/all/cases.svelte:7:5	svelte/html-self-closing	requireClosing	Require self-closing on HTML elements.
+tests/rules/svelte/html-self-closing/all/cases.svelte:9:4	svelte/html-self-closing	requireClosing	Require self-closing on HTML void elements.
+tests/rules/svelte/html-self-closing/all/cases.svelte:11:24	svelte/html-self-closing	requireClosing	Require self-closing on HTML void elements.
+tests/rules/svelte/html-self-closing/all/cases.svelte:12:19	svelte/html-self-closing	requireClosing	Require self-closing on SVG elements.
+tests/rules/svelte/html-self-closing/all/cases.svelte:14:10	svelte/html-self-closing	requireClosing	Require self-closing on MathML elements.
+tests/rules/svelte/html-self-closing/all/cases.svelte:16:6	svelte/html-self-closing	requireClosing	Require self-closing on Svelte custom components.
+tests/rules/svelte/html-self-closing/all/cases.svelte:18:13	svelte/html-self-closing	requireClosing	Require self-closing on Svelte special elements.
+tests/rules/svelte/html-self-closing/all/cases.svelte:20:3	svelte/html-self-closing	requireClosing	Require self-closing on HTML elements.
+tests/rules/svelte/html-self-closing/cases.svelte:6:6	svelte/html-self-closing	disallowClosing	Disallow self-closing on HTML elements.
+tests/rules/svelte/html-self-closing/cases.svelte:9:4	svelte/html-self-closing	requireClosing	Require self-closing on HTML void elements.
+tests/rules/svelte/html-self-closing/cases.svelte:11:24	svelte/html-self-closing	requireClosing	Require self-closing on HTML void elements.
+tests/rules/svelte/html-self-closing/cases.svelte:12:19	svelte/html-self-closing	requireClosing	Require self-closing on SVG elements.
+tests/rules/svelte/html-self-closing/cases.svelte:15:11	svelte/html-self-closing	disallowClosing	Disallow self-closing on MathML elements.
+tests/rules/svelte/html-self-closing/cases.svelte:16:6	svelte/html-self-closing	requireClosing	Require self-closing on Svelte custom components.
+tests/rules/svelte/html-self-closing/cases.svelte:18:13	svelte/html-self-closing	requireClosing	Require self-closing on Svelte special elements.
+tests/rules/svelte/html-self-closing/custom/cases.svelte:5:5	svelte/html-self-closing	requireClosing	Require self-closing on HTML elements.
+tests/rules/svelte/html-self-closing/custom/cases.svelte:7:5	svelte/html-self-closing	requireClosing	Require self-closing on HTML elements.
+tests/rules/svelte/html-self-closing/custom/cases.svelte:10:5	svelte/html-self-closing	disallowClosing	Disallow self-closing on HTML void elements.
+tests/rules/svelte/html-self-closing/custom/cases.svelte:12:19	svelte/html-self-closing	requireClosing	Require self-closing on SVG elements.
+tests/rules/svelte/html-self-closing/custom/cases.svelte:15:11	svelte/html-self-closing	disallowClosing	Disallow self-closing on MathML elements.
+tests/rules/svelte/html-self-closing/custom/cases.svelte:19:16	svelte/html-self-closing	disallowClosing	Disallow self-closing on Svelte special elements.
+tests/rules/svelte/html-self-closing/custom/cases.svelte:20:3	svelte/html-self-closing	requireClosing	Require self-closing on HTML elements.
+tests/rules/svelte/html-self-closing/html/cases.svelte:6:6	svelte/html-self-closing	disallowClosing	Disallow self-closing on HTML elements.
+tests/rules/svelte/html-self-closing/html/cases.svelte:9:4	svelte/html-self-closing	requireClosing	Require self-closing on HTML void elements.
+tests/rules/svelte/html-self-closing/html/cases.svelte:11:24	svelte/html-self-closing	requireClosing	Require self-closing on HTML void elements.
+tests/rules/svelte/html-self-closing/html/cases.svelte:12:19	svelte/html-self-closing	requireClosing	Require self-closing on SVG elements.
+tests/rules/svelte/html-self-closing/html/cases.svelte:15:11	svelte/html-self-closing	disallowClosing	Disallow self-closing on MathML elements.
+tests/rules/svelte/html-self-closing/html/cases.svelte:17:7	svelte/html-self-closing	disallowClosing	Disallow self-closing on Svelte custom components.
+tests/rules/svelte/html-self-closing/html/cases.svelte:18:13	svelte/html-self-closing	requireClosing	Require self-closing on Svelte special elements.
+tests/rules/svelte/html-self-closing/none/cases.svelte:6:6	svelte/html-self-closing	disallowClosing	Disallow self-closing on HTML elements.
+tests/rules/svelte/html-self-closing/none/cases.svelte:10:5	svelte/html-self-closing	disallowClosing	Disallow self-closing on HTML void elements.
+tests/rules/svelte/html-self-closing/none/cases.svelte:13:19	svelte/html-self-closing	disallowClosing	Disallow self-closing on SVG elements.
+tests/rules/svelte/html-self-closing/none/cases.svelte:15:11	svelte/html-self-closing	disallowClosing	Disallow self-closing on MathML elements.
+tests/rules/svelte/html-self-closing/none/cases.svelte:17:7	svelte/html-self-closing	disallowClosing	Disallow self-closing on Svelte custom components.
+tests/rules/svelte/html-self-closing/none/cases.svelte:19:16	svelte/html-self-closing	disallowClosing	Disallow self-closing on Svelte special elements.

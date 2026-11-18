@@ -1,0 +1,4 @@
+tests/rules/svelte/no-at-const-tags/cases.svelte:6:2	svelte/no-at-const-tags	unexpected	Use `{const ...}` declaration tag instead of legacy `{@const ...}`.
+tests/rules/svelte/no-at-const-tags/cases.svelte:7:2	svelte/no-at-const-tags	unexpected	Use `{const ...}` declaration tag instead of legacy `{@const ...}`.
+tests/rules/svelte/no-at-const-tags/cases.svelte:8:2	svelte/no-at-const-tags	unexpected	Use `{const ...}` declaration tag instead of legacy `{@const ...}`.
+tests/rules/svelte/no-at-const-tags/options-runes/cases.svelte:7:2	svelte/no-at-const-tags	unexpected	Use `{const ...}` declaration tag instead of legacy `{@const ...}`.

@@ -508,7 +508,7 @@ fn (c &Checker) sv_finding_positions(findings []Finding) []offsets.DisplayPos {
 				line: f.fixed_line
 				col:  f.fixed_column
 			}
-		} else if f.text_loc {
+		} else if f.text_loc || f.text_loc_start {
 			_, pos := offsets.utf16_positions(doc.src, [f.stmt])
 			out << pos[0]
 		} else {

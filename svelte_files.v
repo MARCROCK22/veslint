@@ -109,8 +109,45 @@ fn svelte_report_positions(doc &svelte.Document, findings []rules.Finding, ends 
 			row:        it.stmt.row
 		}))
 	}
+	// A report whose `loc` takes only its start (or only its end) from the text: that side is
+	// ESLint's, the other svelte-eslint-parser's (svelte/html-self-closing).
+	half_located := findings.filter(it.text_loc_start || it.text_loc_end)
+	mut half_starts := []offsets.DisplayPos{}
+	mut half_ends := []offsets.DisplayPos{}
+	if half_located.len > 0 {
+		_, half_starts = offsets.utf16_positions(doc.src, half_located.map(it.stmt))
+		_, half_ends = offsets.utf16_positions(doc.src, half_located.map(treesitter.Ident{
+			start_byte: if it.stmt.end_byte >= 0 { it.stmt.end_byte } else { it.stmt.start_byte }
+			row:        it.stmt.row
+		}))
+	}
 	mut next := 0
+	mut next_half := 0
 	for f in findings {
+		if f.text_loc_start || f.text_loc_end {
+			start := doc.loc(f.stmt.start_byte)
+			end := doc.loc(if f.stmt.end_byte >= 0 { f.stmt.end_byte } else { f.stmt.start_byte })
+			starts << if f.text_loc_start {
+				half_starts[next_half]
+			} else {
+				offsets.DisplayPos{
+					line: start.line
+					col:  start.column + 1
+				}
+			}
+			if ends {
+				end_positions << if f.text_loc_end {
+					half_ends[next_half]
+				} else {
+					offsets.DisplayPos{
+						line: end.line
+						col:  end.column + 1
+					}
+				}
+			}
+			next_half++
+			continue
+		}
 		if f.text_loc {
 			starts << text_starts[next]
 			if ends {
