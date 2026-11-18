@@ -2,8 +2,14 @@
 // svelte-eslint-parser 1.10.1 (svelte 5.56.0) driven by typescript-eslint's parser 8.72.2 given as
 // an object (so every file is TypeScript), without types, as ESLint 10 calls it:
 //
-//   node tools/svelte_parse_diff.mjs --out DIR [--v BIN] [--jobs N] [--keep] [file.svelte...]
+//   node tools/svelte_parse_diff.mjs --out DIR [--v BIN] [--jobs N] [--keep]
+//        [--runes true|false] [--config-runes true|false] [file.svelte...]
 //
+// --runes sets parserOptions.svelteFeatures.runes and --config-runes parserOptions.svelteConfig
+// (`{compilerOptions: {runes}}`) on both sides (without them: unset, and svelte-eslint-parser
+// looks for a svelte.config.js above the file, which the corpus directory should not have). The
+// five runs (none, --runes true/false, --config-runes true/false) cover every branch of
+// svelteParseContext.runes while parsing; with --keep they reuse DIR/corpus.
 // Without files the corpus is every `.svelte` code of tests/rules/svelte/*/upstream.json, the
 // .svelte fixtures of eslint-plugin-svelte (build/upstream/svelte/packages/eslint-plugin-svelte/
 // tests/fixtures) and of svelte-eslint-parser (build/upstream/svelte-eslint-parser/tests/fixtures),
@@ -99,6 +105,9 @@ function scopeSummary(sm) {
 }
 
 // canonical is what both sides print for a file.
+// runesOptions are the parser options of --runes and --config-runes (RUNES_OPTIONS, JSON).
+const runesOptions = JSON.parse(process.env.RUNES_OPTIONS ?? '{}');
+
 function canonical(oracle, file) {
   let code = fs.readFileSync(file, 'utf8');
   if (code.charCodeAt(0) === 0xfeff) code = code.slice(1);
@@ -123,6 +132,7 @@ function canonical(oracle, file) {
       comment: true,
       eslintScopeManager: true,
       eslintVisitorKeys: true,
+      ...runesOptions,
     });
   } catch (e) {
     return { fatal: { message: e.message, index: e.index ?? null, lineNumber: e.lineNumber ?? null, column: e.column ?? null } };
@@ -262,8 +272,21 @@ let vbin = null;
 let jobs = os.cpus().length;
 let keep = false;
 const files = [];
+// The runes options: given to the oracle (parser options) and to the V side (its arguments).
+const runes = {};
+const vRunesArgs = [];
+const runesValue = (flag, value) => {
+  if (value !== 'true' && value !== 'false') {
+    console.error(`${flag} takes true or false`);
+    process.exit(2);
+  }
+  vRunesArgs.push(flag, value);
+  return value === 'true';
+};
 for (let i = 0; i < args.length; i++) {
-  if (args[i] === '--out') out = path.resolve(args[++i]);
+  if (args[i] === '--runes') runes.svelteFeatures = { runes: runesValue(args[i], args[++i]) };
+  else if (args[i] === '--config-runes') runes.svelteConfig = { compilerOptions: { runes: runesValue(args[i], args[++i]) } };
+  else if (args[i] === '--out') out = path.resolve(args[++i]);
   else if (args[i] === '--v') vbin = path.resolve(args[++i]);
   else if (args[i] === '--jobs') jobs = Number(args[++i]);
   else if (args[i] === '--keep') keep = true;
@@ -282,7 +305,7 @@ if (!files.length) fs.writeFileSync(path.join(corpusDir, 'list.txt'), list.join(
 const run = (cmd, argv, stdoutFile) =>
   new Promise((resolve, reject) => {
     const fd = fs.openSync(stdoutFile, 'w');
-    const child = spawn(cmd, argv, { stdio: ['ignore', fd, 'inherit'] });
+    const child = spawn(cmd, argv, { stdio: ['ignore', fd, 'inherit'], env: { ...process.env, RUNES_OPTIONS: JSON.stringify(runes) } });
     child.on('exit', code => {
       fs.closeSync(fd);
       code === 0 ? resolve() : reject(new Error(`${cmd} exited with ${code}`));
@@ -301,7 +324,7 @@ await Promise.all(work);
 const tOracle = Date.now() - t0;
 const t1 = Date.now();
 fs.writeFileSync(path.join(out, 'list.all.txt'), list.join('\n') + '\n');
-await run(vbin, ['json', path.join(out, 'list.all.txt')], path.join(out, 'v.jsonl'));
+await run(vbin, ['json', path.join(out, 'list.all.txt'), ...vRunesArgs], path.join(out, 'v.jsonl'));
 const tV = Date.now() - t1;
 
 const oracleValues = new Map();
@@ -388,7 +411,8 @@ const unexpected = diffs.filter(x => !x.known).length;
 console.log(`${list.length} files: ${same} identical, ${diffs.length} different (${diffs.length - unexpected} known, ${unexpected} unexpected)`);
 console.log(`oracle ${tOracle} ms on ${shards.length} processes, V ${tV} ms on one`);
 for (const [c, n] of [...categories].sort((a, b) => b[1] - a[1]).slice(0, 25)) console.log(`  ${n}\t${c}`);
-// Only a run over the whole corpus can tell that a listed file no longer differs.
-const stale = files.length ? [] : [...known.keys()].filter(k => !diffs.some(x => x.rel === k));
+// Only a run over the whole corpus, without runes options (a known difference may be one of the
+// runes branches only), can tell that a listed file no longer differs.
+const stale = files.length || vRunesArgs.length ? [] : [...known.keys()].filter(k => !diffs.some(x => x.rel === k));
 if (stale.length) console.log(`known.txt lists ${stale.length} files that no longer differ: ${stale.slice(0, 5).join(' ')}`);
 process.exit(unexpected || stale.length ? 1 : 0);

@@ -3,6 +3,7 @@ module rules
 import estree
 import jsregexp
 import os
+import svelte
 import sync
 import treesitter
 
@@ -45,11 +46,44 @@ const svcfg_cache = &SvcfgCache{}
 // component or a `.svelte.[js|ts]` module; `path` is the file's own path): parserOptions'
 // svelteConfig when given, else the static reading of svelte.config.js.
 fn (c &Checker) svelte_config(path string) SvelteConfigValues {
-	if c.language.svelte_config_given {
+	return svelte_config_of(c.language, path)
+}
+
+// svelte_parse_options are the runes options svelte-eslint-parser parses a component with
+// (resolveSvelteParseContextForSvelte): parserOptions.svelteFeatures.runes, and the svelteConfig's
+// compilerOptions.runes (`path` is the component's own path, where svelte.config.js is looked for
+// from). A `.svelte.[js|ts]` module is always in runes mode (resolveSvelteParseContextForSvelteScript):
+// it takes no options.
+pub fn svelte_parse_options(language LanguageOptions, path string) svelte.ParseOptions {
+	if language.svelte_runes_state == .set {
+		// It wins over `<svelte:options runes>` and the config, which is then not needed.
+		return svelte.ParseOptions{
+			features_set: true
+			features:     language.svelte_runes_parse
+		}
+	}
+	config := if language.svelte_config_given {
+		if language.svelte_config_runes >= 0 {
+			language.svelte_config_runes_parse
+		} else {
+			svelte.RunesMode.unknown
+		}
+	} else {
+		runes := svelte_config_of(language, path).runes
+		if runes >= 0 { svelte.runes_mode(runes == 1) } else { svelte.RunesMode.unknown }
+	}
+	return svelte.ParseOptions{
+		config: config
+	}
+}
+
+// svelte_config_of is svelte_config for the language options of a file.
+fn svelte_config_of(language LanguageOptions, path string) SvelteConfigValues {
+	if language.svelte_config_given {
 		return SvelteConfigValues{
-			runes:  c.language.svelte_config_runes
-			routes: c.language.svelte_kit_routes
-			async:  c.language.svelte_config_async
+			runes:  language.svelte_config_runes
+			routes: language.svelte_kit_routes
+			async:  language.svelte_config_async
 		}
 	}
 	file := svcfg_find(path) or { return SvelteConfigValues{} }
