@@ -643,6 +643,14 @@ pub const vue_no_deprecated_model_definition = 'vue/no-deprecated-model-definiti
 pub const vue_match_component_file_name = 'vue/match-component-file-name'
 pub const vue_enforce_style_attribute = 'vue/enforce-style-attribute'
 pub const vue_require_direct_export = 'vue/require-direct-export'
+pub const vue_no_restricted_component_names = 'vue/no-restricted-component-names'
+pub const vue_no_restricted_component_options = 'vue/no-restricted-component-options'
+pub const vue_prefer_import_from_vue = 'vue/prefer-import-from-vue'
+pub const vue_new_line_between_multi_line_property = 'vue/new-line-between-multi-line-property'
+pub const vue_component_api_style = 'vue/component-api-style'
+pub const vue_no_reserved_component_names = 'vue/no-reserved-component-names'
+pub const vue_require_typed_object_prop = 'vue/require-typed-object-prop'
+pub const vue_return_in_emits_validator = 'vue/return-in-emits-validator'
 pub const names = [no_floating_promises, await_thenable, require_await, return_await,
 	no_misused_promises, no_unsafe_call, no_unsafe_member_access, no_unsafe_return,
 	no_unsafe_assignment, no_unsafe_argument, restrict_template_expressions,
@@ -828,7 +836,10 @@ pub const names = [no_floating_promises, await_thenable, require_await, return_a
 	vue_comma_style, vue_no_constant_condition, vue_no_console, vue_quote_props, vue_no_extra_parens,
 	vue_prefer_define_options, vue_multi_word_component_names, vue_no_multiple_template_root,
 	vue_no_potential_component_option_typo, vue_no_deprecated_model_definition,
-	vue_match_component_file_name, vue_enforce_style_attribute, vue_require_direct_export]
+	vue_match_component_file_name, vue_enforce_style_attribute, vue_require_direct_export,
+	vue_no_restricted_component_names, vue_no_restricted_component_options, vue_prefer_import_from_vue,
+	vue_new_line_between_multi_line_property, vue_component_api_style, vue_no_reserved_component_names,
+	vue_require_typed_object_prop, vue_return_in_emits_validator]
 
 // untyped_rules are the ported rules that need no types (`meta.docs.requiresTypeChecking` is false
 // in typescript-eslint; the eslint-plugin-unicorn rules that read the types when the parser has a
@@ -984,7 +995,10 @@ pub const untyped_rules = [adjacent_overload_signatures, array_type, class_liter
 	vue_comma_style, vue_no_constant_condition, vue_no_console, vue_quote_props, vue_no_extra_parens,
 	vue_prefer_define_options, vue_multi_word_component_names, vue_no_multiple_template_root,
 	vue_no_potential_component_option_typo, vue_no_deprecated_model_definition,
-	vue_match_component_file_name, vue_enforce_style_attribute, vue_require_direct_export]
+	vue_match_component_file_name, vue_enforce_style_attribute, vue_require_direct_export,
+	vue_no_restricted_component_names, vue_no_restricted_component_options, vue_prefer_import_from_vue,
+	vue_new_line_between_multi_line_property, vue_component_api_style, vue_no_reserved_component_names,
+	vue_require_typed_object_prop, vue_return_in_emits_validator]
 
 // needs_types tells whether a rule asks tsgo for the types of the program.
 pub fn needs_types(rule string) bool {
@@ -1622,6 +1636,14 @@ pub const default_options = {
 	vue_match_component_file_name:                   '[]'
 	vue_enforce_style_attribute:                     '[]'
 	vue_require_direct_export:                       '[]'
+	vue_no_restricted_component_names:               '[]'
+	vue_no_restricted_component_options:             '[]'
+	vue_prefer_import_from_vue:                      '[]'
+	vue_new_line_between_multi_line_property:        '[]'
+	vue_component_api_style:                         '[]'
+	vue_no_reserved_component_names:                 '[]'
+	vue_require_typed_object_prop:                   '[]'
+	vue_return_in_emits_validator:                   '[]'
 }
 
 // Finding is a problem a rule found at a node.
@@ -2412,6 +2434,16 @@ pub fn message(rule string, finding Finding) string {
 		vue_match_component_file_name { vue_match_component_file_name_messages }
 		vue_enforce_style_attribute { vue_enforce_style_attribute_messages }
 		vue_require_direct_export { vue_require_direct_export_messages }
+		vue_no_restricted_component_names { vue_no_restricted_component_names_messages }
+		vue_no_restricted_component_options { vue_no_restricted_component_options_messages }
+		vue_prefer_import_from_vue { vue_prefer_import_from_vue_messages }
+		vue_new_line_between_multi_line_property {
+			vue_new_line_between_multi_line_property_messages
+		}
+		vue_component_api_style { vue_component_api_style_messages }
+		vue_no_reserved_component_names { vue_no_reserved_component_names_messages }
+		vue_require_typed_object_prop { vue_require_typed_object_prop_messages }
+		vue_return_in_emits_validator { vue_return_in_emits_validator_messages }
 		else { map[string]string{} }
 	}
 	return interpolate(messages[finding.message_id] or { finding.message_id }, finding.data)
@@ -4450,6 +4482,30 @@ fn (mut c Checker) lint_rule(rule string, root C.TSNode, abs_path string, mut st
 		}
 		vue_require_direct_export {
 			return c.lint_vue_require_direct_export(root, abs_path, mut stats)!
+		}
+		vue_no_restricted_component_names {
+			return c.lint_vue_no_restricted_component_names(root, abs_path, mut stats)!
+		}
+		vue_no_restricted_component_options {
+			return c.lint_vue_no_restricted_component_options(root, abs_path, mut stats)!
+		}
+		vue_prefer_import_from_vue {
+			return c.lint_vue_prefer_import_from_vue(root, abs_path, mut stats)!
+		}
+		vue_new_line_between_multi_line_property {
+			return c.lint_vue_new_line_between_multi_line_property(root, abs_path, mut stats)!
+		}
+		vue_component_api_style {
+			return c.lint_vue_component_api_style(root, abs_path, mut stats)!
+		}
+		vue_no_reserved_component_names {
+			return c.lint_vue_no_reserved_component_names(root, abs_path, mut stats)!
+		}
+		vue_require_typed_object_prop {
+			return c.lint_vue_require_typed_object_prop(root, abs_path, mut stats)!
+		}
+		vue_return_in_emits_validator {
+			return c.lint_vue_return_in_emits_validator(root, abs_path, mut stats)!
 		}
 		else { return error('unknown rule: ${rule}') }
 	}
