@@ -102,8 +102,8 @@ fn (mut c Checker) rx_type_from_ts_type(typ TypeResponse, depth int) ?[]string {
 		members := c.members_of(typ) or { return none }
 		mut out := []string{}
 		for member in members {
-			names := c.rx_type_from_ts_type(member, depth + 1) or { continue }
-			for name in names {
+			type_names := c.rx_type_from_ts_type(member, depth + 1) or { continue }
+			for name in type_names {
 				if name !in out {
 					out << name
 				}
@@ -133,8 +133,8 @@ fn rx_is_array_like_object(typ TypeResponse) bool {
 
 // rx_is_string ports TypeTracker#isString.
 fn (mut c Checker) rx_is_string(root C.TSNode, t &estree.EsTree, abs_path string, node int) bool {
-	names := c.rx_type(root, t, abs_path, node) or { return false }
-	return 'String' in names
+	type_names := c.rx_type(root, t, abs_path, node) or { return false }
+	return 'String' in type_names
 }
 
 // rx_maybe_string ports TypeTracker#maybeString: with typescript-eslint's parser (usedTS), isString.
@@ -144,8 +144,8 @@ fn (mut c Checker) rx_maybe_string(root C.TSNode, t &estree.EsTree, abs_path str
 
 // rx_is_regexp ports TypeTracker#isRegExp.
 fn (mut c Checker) rx_is_regexp(root C.TSNode, t &estree.EsTree, abs_path string, node int) bool {
-	names := c.rx_type(root, t, abs_path, node) or { return false }
-	return 'RegExp' in names
+	type_names := c.rx_type(root, t, abs_path, node) or { return false }
+	return 'RegExp' in type_names
 }
 
 // rx_types ports TypeTracker#getTypes.
