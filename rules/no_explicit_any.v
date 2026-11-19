@@ -3,6 +3,7 @@ module rules
 import estree
 import json2
 import time
+import treesitter { node_end, node_kind, node_parent, node_start }
 
 // Port of the `@typescript-eslint/no-explicit-any` rule of typescript-eslint 8.72.2, with its
 // options `fixToUnknown` and `ignoreRestArgs`, its fix and its suggestions.
@@ -36,6 +37,38 @@ fn (mut c Checker) lint_no_explicit_any(root C.TSNode, abs_path string, mut stat
 	if !c.is_vue() && !c.is_svelte() && !c.svelte_module.on && !c.src.contains('any') {
 		stats.eval_ms += ms(sw.elapsed())
 		return findings
+	}
+	// Most TypeScript files need no ESTree either: see nea_plain_anys.
+	if !c.is_vue() && !c.is_svelte() && !c.svelte_module.on {
+		if anys := nea_plain_anys(root, &c.node_index, o.ignore_rest_args) {
+			for any in anys {
+				stats.checked++
+				start, end := node_start(any.node), node_end(any.node)
+				unknown := fix_replace_range(start, end, if any.rest_type {
+					'unknown[]'
+				} else {
+					'unknown'
+				})
+				findings << Finding{
+					stmt:        c.position_range(start, end)
+					message_id:  'unexpectedAny'
+					has_fix:     o.fix_to_unknown
+					fix:         if o.fix_to_unknown { unknown } else { Fix{} }
+					suggestions: [
+						Suggestion{
+							message_id: 'suggestUnknown'
+							fix:        unknown
+						},
+						Suggestion{
+							message_id: 'suggestNever'
+							fix:        fix_replace_range(start, end, 'never')
+						},
+					]
+				}
+			}
+			stats.eval_ms += ms(sw.elapsed())
+			return findings
+		}
 	}
 	t := c.es_tree(root, abs_path) or { return findings }
 	for node in 0 .. t.nodes.len {
@@ -91,6 +124,63 @@ fn (mut c Checker) lint_no_explicit_any(root C.TSNode, abs_path string, mut stat
 	}
 	stats.eval_ms += ms(sw.elapsed())
 	return findings
+}
+
+// NeaAny is a TSAnyKeyword the rule reports with the `unknown` and `never` suggestions: `rest_type`
+// when it is the type of a rest parameter (`...a: any`), whose fix is `unknown[]`.
+struct NeaAny {
+	node      C.TSNode
+	rest_type bool
+}
+
+// nea_plain_anys gives the TSAnyKeyword nodes of a TypeScript file's tree (the root of its tree)
+// from tree-sitter's: the `any` predefined types, which are the nodes typescript-estree makes
+// TSAnyKeyword; or none, and the rule reads the ESTree, when one of them is under `keyof` (the
+// PropertyKey suggestion) or, with ignoreRestArgs, in the type of a rest parameter. A tree with
+// syntax errors has no ESTree, so no TSAnyKeyword.
+fn nea_plain_anys(root C.TSNode, index &treesitter.NodeIndex, ignore_rest_args bool) ?[]NeaAny {
+	if C.ts_node_has_error(root) {
+		return []NeaAny{}
+	}
+	mut anys := []NeaAny{}
+	for node in index.of_kind(root, 'predefined_type') {
+		if node_end(node) - node_start(node) != 3 || node_kind(C.ts_node_child(node, 0)) != 'any' {
+			continue
+		}
+		// The ESTree parent, without the parentheses.
+		mut parent := node_parent(node) or { return none }
+		for node_kind(parent) == 'parenthesized_type' {
+			parent = node_parent(parent) or { return none }
+		}
+		if node_kind(parent) == 'index_type_query' {
+			return none
+		}
+		if ignore_rest_args {
+			mut ancestor := parent
+			for {
+				if nea_is_rest_parameter(ancestor) {
+					return none
+				}
+				ancestor = node_parent(ancestor) or { break }
+			}
+		}
+		// The TSTypeAnnotation of a RestElement in a function (isNodeRestElementInFunction).
+		rest_type := node_kind(parent) == 'type_annotation'
+			&& nea_is_rest_parameter(node_parent(parent) or { parent })
+		anys << NeaAny{node, rest_type}
+	}
+	return anys
+}
+
+// nea_is_rest_parameter: `n` is a rest parameter of a function or a signature (a RestElement in
+// one of them for typescript-estree), not of a named tuple member.
+fn nea_is_rest_parameter(n C.TSNode) bool {
+	if node_kind(n) !in ['required_parameter', 'optional_parameter']
+		|| !treesitter.has_child_kind(n, 'rest_pattern') {
+		return false
+	}
+	parent := node_parent(n) or { return false }
+	return node_kind(parent) == 'formal_parameters'
 }
 
 // nea_is_valid_function ports isNodeValidFunction: the functions and signatures a rest parameter
