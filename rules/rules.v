@@ -2231,9 +2231,11 @@ pub:
 	only_rule string
 	// plugin_rules are the rule ids of the plugins of the configuration other than
 	// typescript-eslint, when the configuration was resolved by ESLint itself (strict_plugins);
-	// without that, a rule of another plugin is assumed to exist.
-	plugin_rules   []string
-	strict_plugins bool
+	// without that, a rule of another plugin is assumed to exist. typescript_eslint: whether that
+	// configuration loads typescript-eslint's plugin.
+	plugin_rules      []string
+	strict_plugins    bool
+	typescript_eslint bool = true
 	// plugins are the namespaces of the plugins of a configuration that lists them without their
 	// rules (the output of `eslint --print-config`): a rule of another plugin does not exist.
 	plugins []string
@@ -2264,8 +2266,15 @@ pub mut:
 }
 
 // rule_exists: ESLint has a rule with that id (`config.getRuleDefinition(ruleId)`).
+// A rule of a plugin the configuration does not load does not exist, typescript-eslint's included.
 pub fn (cfg &LintConfig) rule_exists(id string) bool {
 	if id.starts_with(typescript_eslint_prefix) {
+		if cfg.strict_plugins && !cfg.typescript_eslint {
+			return false
+		}
+		if cfg.plugins.len > 0 && '@typescript-eslint' !in cfg.plugins {
+			return false
+		}
 		return id[typescript_eslint_prefix.len..] in typescript_eslint_rule_names
 	}
 	if !id.contains('/') {

@@ -21,6 +21,11 @@ const svelteParser = require('../../build/upstream/svelte-deps/node_modules/svel
 const { plugin: seyfert } = require('../../build/upstream/seyfert/node_modules/@slipher/eslint-plugin');
 const vue = require('../../build/upstream/vue-deps/node_modules/eslint-plugin-vue');
 
+// @eslint-community/eslint-plugin-eslint-comments 4.8.1 and eslint-plugin-promise 7.3.0
+// (build/upstream/plugins-new).
+const eslintComments = createRequire(import.meta.url)('../../build/upstream/plugins-new/node_modules/@eslint-community/eslint-plugin-eslint-comments');
+const promise = createRequire(import.meta.url)('../../build/upstream/plugins-new/node_modules/eslint-plugin-promise');
+
 const rules = path.join(import.meta.dirname, '..', 'rules');
 // The options of the rules whose schema needs some (tests/rules/required_options.json).
 const required = JSON.parse(fs.readFileSync(path.join(import.meta.dirname, '..', 'rules', 'required_options.json'), 'utf8'));
@@ -41,7 +46,7 @@ export default [
       parser: svelteParser,
       parserOptions: { parser: tseslint.parser, ...types, tsconfigRootDir: process.cwd(), extraFileExtensions: ['.svelte'] },
     },
-    plugins: { '@typescript-eslint': tseslint.plugin, '@stylistic': stylistic, perfectionist, marcrock, seyfert, unicorn, vue },
+    plugins: { '@typescript-eslint': tseslint.plugin, '@stylistic': stylistic, perfectionist, marcrock, promise, seyfert, unicorn, vue, '@eslint-community/eslint-comments': eslintComments },
     rules: Object.fromEntries(ported.map(rule => [rule, required[rule] ? ['error', ...required[rule]] : 'error'])),
   },
 ];

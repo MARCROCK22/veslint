@@ -262,6 +262,16 @@ else
 	ko "--config with a resolved ESLint configuration (code $code)"
 	cat "$TMP/config.err"
 fi
+# A resolved configuration saved by veslint 0.38 or older (resolved-0.38.json: no `typescriptEslint`
+# key) still has typescript-eslint's rules.
+code=0
+(cd tests/config && ../../veslint --config resolved-0.38.json --fixes "${config_files[@]}") > "$TMP/config-0.38.out" 2> "$TMP/config-0.38.err" || code=$?
+if [[ $code -eq 1 ]] && diff -u tests/config/expected.txt "$TMP/config-0.38.out"; then
+	ok "--config with a resolved configuration of veslint 0.38"
+else
+	ko "--config with a resolved configuration of veslint 0.38 (code $code)"
+	cat "$TMP/config-0.38.err"
+fi
 if command -v bun > /dev/null && [[ -d build/eval/spider-byte/node_modules/eslint ]]; then
 	code=0
 	(cd tests/config && VESLINT_ESLINT_DIR=../../build/eval/spider-byte ../../veslint --config eslint.config.mjs --fixes "${config_files[@]}") > "$TMP/config-bun.out" 2> "$TMP/config-bun.err" || code=$?
@@ -473,6 +483,28 @@ if command -v bun > /dev/null && [[ -d build/eval/spider-byte/node_modules/eslin
 		ko "--rule with the closest eslint.config.mjs"
 		rule_config --rule eqeqeq a.ts
 		rule_config --rule no-var a.ts
+	fi
+	# A directive comment that names a rule of a plugin the configuration does not load, typescript-eslint
+	# included, is ESLint's "Definition for rule … was not found" (not an unused directive).
+	mkdir -p "$TMP/no-plugin"
+	cat > "$TMP/no-plugin/eslint.config.mjs" <<-EOF
+		import tseslint from '$PWD/build/eval/spider-byte/node_modules/typescript-eslint/dist/index.js';
+		export default [{ files: ['**/*.ts'], languageOptions: { parser: tseslint.parser }, rules: { 'no-var': 'error' } }];
+	EOF
+	cat > "$TMP/no-plugin/a.ts" <<-'EOF'
+		// eslint-disable-next-line @typescript-eslint/no-explicit-any
+		export const x: any = 1;
+		// eslint-disable-next-line no-var, @typescript-eslint/no-unused-vars
+		var y = 2;
+		/* eslint @typescript-eslint/no-explicit-any: "error" */
+		export { y };
+	EOF
+	echo '{ "compilerOptions": { "strict": true, "target": "es2022", "module": "esnext" } }' > "$TMP/no-plugin/tsconfig.json"
+	if [[ "$(cd "$TMP/no-plugin" && VESLINT_ESLINT_DIR="$OLDPWD/build/eval/spider-byte" "$OLDPWD/veslint" --config eslint.config.mjs a.ts 2> /dev/null)" == $'a.ts:1:1\t@typescript-eslint/no-explicit-any\terror\tDefinition for rule \'@typescript-eslint/no-explicit-any\' was not found.\na.ts:3:1\t@typescript-eslint/no-unused-vars\terror\tDefinition for rule \'@typescript-eslint/no-unused-vars\' was not found.\na.ts:5:1\t@typescript-eslint/no-explicit-any\terror\tDefinition for rule \'@typescript-eslint/no-explicit-any\' was not found.' ]]; then
+		ok "a directive for a rule of a plugin the eslint.config.mjs does not load: the rule is not found"
+	else
+		ko "a directive for a rule of a plugin the eslint.config.mjs does not load"
+		(cd "$TMP/no-plugin" && VESLINT_ESLINT_DIR="$OLDPWD/build/eval/spider-byte" "$OLDPWD/veslint" --config eslint.config.mjs a.ts)
 	fi
 	# The cache of resolved configurations (config_cache.v), in node_modules/.cache/veslint of the
 	# project: a resolution is used again, without bun (a `bun` that fails comes first in PATH), until
