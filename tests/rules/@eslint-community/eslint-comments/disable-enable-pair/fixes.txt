@@ -1,0 +1,9 @@
+tests/rules/@eslint-community/eslint-comments/disable-enable-pair/allow-whole-file-false/cases.ts:1:19	@eslint-community/eslint-comments/disable-enable-pair	missingRulePair	Requires 'eslint-enable' directive for 'no-console'.	end	1	29
+tests/rules/@eslint-community/eslint-comments/disable-enable-pair/allow-whole-file-false/cases.ts:3:19	@eslint-community/eslint-comments/disable-enable-pair	missingRulePair	Requires 'eslint-enable' directive for 'eqeqeq'.	end	3	25
+tests/rules/@eslint-community/eslint-comments/disable-enable-pair/allow-whole-file-false/cases.ts:4:19	@eslint-community/eslint-comments/disable-enable-pair	missingRulePair	Requires 'eslint-enable' directive for 'no-var'.	end	4	25
+tests/rules/@eslint-community/eslint-comments/disable-enable-pair/allow-whole-file/cases.ts:4:19	@eslint-community/eslint-comments/disable-enable-pair	missingRulePair	Requires 'eslint-enable' directive for 'no-var'.	end	4	25
+tests/rules/@eslint-community/eslint-comments/disable-enable-pair/cases.ts:1:31	@eslint-community/eslint-comments/disable-enable-pair	missingRulePair	Requires 'eslint-enable' directive for 'eqeqeq'.	end	1	37
+tests/rules/@eslint-community/eslint-comments/disable-enable-pair/cases.ts:4:35	@eslint-community/eslint-comments/disable-enable-pair	missingRulePair	Requires 'eslint-enable' directive for 'no-var'.	end	4	41
+tests/rules/@eslint-community/eslint-comments/disable-enable-pair/cases.ts:11:2	@eslint-community/eslint-comments/disable-enable-pair	missingRulePair	Requires 'eslint-enable' directive for 'curly'.	end	11	7
+tests/rules/@eslint-community/eslint-comments/disable-enable-pair/cases.ts:15:19	@eslint-community/eslint-comments/disable-enable-pair	missingRulePair	Requires 'eslint-enable' directive for 'prefer-const'.	end	15	31
+tests/rules/@eslint-community/eslint-comments/disable-enable-pair/cases.ts:18:0	@eslint-community/eslint-comments/disable-enable-pair	missingPair	Requires 'eslint-enable' directive.	end	18	23

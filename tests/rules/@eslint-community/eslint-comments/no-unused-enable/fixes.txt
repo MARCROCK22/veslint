@@ -1,0 +1,8 @@
+tests/rules/@eslint-community/eslint-comments/no-unused-enable/cases.ts:1:0	@eslint-community/eslint-comments/no-unused-enable	unused	ESLint rules are re-enabled but those have not been disabled.	end	1	20
+tests/rules/@eslint-community/eslint-comments/no-unused-enable/cases.ts:3:30	@eslint-community/eslint-comments/no-unused-enable	unusedRule	'eqeqeq' rule is re-enabled but it has not been disabled.	end	3	36
+tests/rules/@eslint-community/eslint-comments/no-unused-enable/cases.ts:5:18	@eslint-community/eslint-comments/no-unused-enable	unusedRule	'no-console' rule is re-enabled but it has not been disabled.	end	5	28
+tests/rules/@eslint-community/eslint-comments/no-unused-enable/cases.ts:9:34	@eslint-community/eslint-comments/no-unused-enable	unusedRule	'no-undef' rule is re-enabled but it has not been disabled.	end	9	42
+tests/rules/@eslint-community/eslint-comments/no-unused-enable/cases.ts:11:17	@eslint-community/eslint-comments/no-unused-enable	unusedRule	'curly' rule is re-enabled but it has not been disabled.	end	11	22
+tests/rules/@eslint-community/eslint-comments/no-unused-enable/cases.ts:12:5	@eslint-community/eslint-comments/no-unused-enable	unusedRule	'no-empty' rule is re-enabled but it has not been disabled.	end	12	13
+tests/rules/@eslint-community/eslint-comments/no-unused-enable/cases.ts:14:24	@eslint-community/eslint-comments/no-unused-enable	unusedRule	'no-debugger' rule is re-enabled but it has not been disabled.	end	14	35
+tests/rules/@eslint-community/eslint-comments/no-unused-enable/cases.ts:15:24	@eslint-community/eslint-comments/no-unused-enable	unusedRule	'prefer-const' rule is re-enabled but it has not been disabled.	end	15	36

@@ -816,6 +816,14 @@ pub const svelte_indent = 'svelte/indent'
 pub const svelte_ts_no_unnecessary_condition = 'svelte/@typescript-eslint/no-unnecessary-condition'
 pub const vue_html_indent = 'vue/html-indent'
 pub const vue_script_indent = 'vue/script-indent'
+pub const eslint_comments_disable_enable_pair = '@eslint-community/eslint-comments/disable-enable-pair'
+pub const eslint_comments_no_aggregating_enable = '@eslint-community/eslint-comments/no-aggregating-enable'
+pub const eslint_comments_no_duplicate_disable = '@eslint-community/eslint-comments/no-duplicate-disable'
+pub const eslint_comments_no_restricted_disable = '@eslint-community/eslint-comments/no-restricted-disable'
+pub const eslint_comments_no_unlimited_disable = '@eslint-community/eslint-comments/no-unlimited-disable'
+pub const eslint_comments_no_unused_enable = '@eslint-community/eslint-comments/no-unused-enable'
+pub const eslint_comments_no_use = '@eslint-community/eslint-comments/no-use'
+pub const eslint_comments_require_description = '@eslint-community/eslint-comments/require-description'
 pub const names = [no_floating_promises, await_thenable, require_await, return_await,
 	no_misused_promises, no_unsafe_call, no_unsafe_member_access, no_unsafe_return,
 	no_unsafe_assignment, no_unsafe_argument, restrict_template_expressions,
@@ -1064,7 +1072,10 @@ pub const names = [no_floating_promises, await_thenable, require_await, return_a
 	svelte_no_top_level_browser_globals, svelte_no_navigation_without_base,
 	svelte_require_store_reactive_access, svelte_no_navigation_without_resolve, svelte_no_unused_props,
 	svelte_valid_compile, svelte_indent, svelte_ts_no_unnecessary_condition, vue_html_indent,
-	vue_script_indent]
+	vue_script_indent, eslint_comments_disable_enable_pair, eslint_comments_no_aggregating_enable,
+	eslint_comments_no_duplicate_disable, eslint_comments_no_restricted_disable,
+	eslint_comments_no_unlimited_disable, eslint_comments_no_unused_enable, eslint_comments_no_use,
+	eslint_comments_require_description]
 
 // untyped_rules are the ported rules that need no types (`meta.docs.requiresTypeChecking` is false
 // in typescript-eslint; the eslint-plugin-unicorn rules that read the types when the parser has a
@@ -1274,7 +1285,10 @@ pub const untyped_rules = [adjacent_overload_signatures, array_type, class_liter
 	svelte_no_immutable_reactive_statements, svelte_infinite_reactive_loop,
 	svelte_prefer_svelte_reactivity, svelte_prefer_destructured_store_props,
 	svelte_no_top_level_browser_globals, svelte_no_navigation_without_base, svelte_valid_compile,
-	svelte_indent, vue_html_indent, vue_script_indent]
+	svelte_indent, vue_html_indent, vue_script_indent, eslint_comments_disable_enable_pair,
+	eslint_comments_no_aggregating_enable, eslint_comments_no_duplicate_disable,
+	eslint_comments_no_restricted_disable, eslint_comments_no_unlimited_disable,
+	eslint_comments_no_unused_enable, eslint_comments_no_use, eslint_comments_require_description]
 
 // needs_types tells whether a rule asks tsgo for the types of the program.
 pub fn needs_types(rule string) bool {
@@ -2085,6 +2099,14 @@ pub const default_options = {
 	svelte_ts_no_unnecessary_condition:                  '[]'
 	vue_html_indent:                                     '[]'
 	vue_script_indent:                                   '[]'
+	eslint_comments_disable_enable_pair:                 '[]'
+	eslint_comments_no_aggregating_enable:               '[]'
+	eslint_comments_no_duplicate_disable:                '[]'
+	eslint_comments_no_restricted_disable:               '[]'
+	eslint_comments_no_unlimited_disable:                '[]'
+	eslint_comments_no_unused_enable:                    '[]'
+	eslint_comments_no_use:                              '[]'
+	eslint_comments_require_description:                 '[]'
 }
 
 // Finding is a problem a rule found at a node.
@@ -3072,6 +3094,14 @@ pub fn message(rule string, finding Finding) string {
 		svelte_ts_no_unnecessary_condition { svnuc_messages }
 		vue_html_indent { map[string]string{} }
 		vue_script_indent { map[string]string{} }
+		eslint_comments_disable_enable_pair { ec_dep_messages }
+		eslint_comments_no_aggregating_enable { ec_nae_messages }
+		eslint_comments_no_duplicate_disable { ec_ndd_messages }
+		eslint_comments_no_restricted_disable { ec_nrd_messages }
+		eslint_comments_no_unlimited_disable { ec_nud_messages }
+		eslint_comments_no_unused_enable { ec_nue_messages }
+		eslint_comments_no_use { ec_nu_messages }
+		eslint_comments_require_description { ec_rd_messages }
 		else { map[string]string{} }
 	}
 	return interpolate(messages[finding.message_id] or { finding.message_id }, finding.data)
@@ -5679,6 +5709,30 @@ fn (mut c Checker) lint_rule(rule string, root C.TSNode, abs_path string, mut st
 		}
 		vue_script_indent {
 			return c.lint_vue_script_indent(root, abs_path, mut stats)!
+		}
+		eslint_comments_disable_enable_pair {
+			return c.lint_eslint_comments_disable_enable_pair(root, abs_path, mut stats)!
+		}
+		eslint_comments_no_aggregating_enable {
+			return c.lint_eslint_comments_no_aggregating_enable(root, abs_path, mut stats)!
+		}
+		eslint_comments_no_duplicate_disable {
+			return c.lint_eslint_comments_no_duplicate_disable(root, abs_path, mut stats)!
+		}
+		eslint_comments_no_restricted_disable {
+			return c.lint_eslint_comments_no_restricted_disable(root, abs_path, mut stats)!
+		}
+		eslint_comments_no_unlimited_disable {
+			return c.lint_eslint_comments_no_unlimited_disable(root, abs_path, mut stats)!
+		}
+		eslint_comments_no_unused_enable {
+			return c.lint_eslint_comments_no_unused_enable(root, abs_path, mut stats)!
+		}
+		eslint_comments_no_use {
+			return c.lint_eslint_comments_no_use(root, abs_path, mut stats)!
+		}
+		eslint_comments_require_description {
+			return c.lint_eslint_comments_require_description(root, abs_path, mut stats)!
 		}
 		else { return error('unknown rule: ${rule}') }
 	}

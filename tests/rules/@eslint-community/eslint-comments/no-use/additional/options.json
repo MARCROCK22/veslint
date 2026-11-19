@@ -1,0 +1,1 @@
+[{"additionalDirectives": ["istanbul", "c8 ignore", "ts-check"], "allow": ["c8 ignore"]}]
