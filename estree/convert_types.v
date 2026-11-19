@@ -119,6 +119,18 @@ fn (mut c Converter) typ(n C.TSNode) int {
 			}
 			return i
 		}
+		'non_null_type' {
+			// `T!` (TypeScript's JSDocNonNullableType).
+			return c.jsdoc_type(n, .ts_js_doc_non_nullable_type, true)
+		}
+		'flow_maybe_type' {
+			// `?T` (TypeScript's JSDocNullableType, not postfix).
+			return c.jsdoc_type(n, .ts_js_doc_nullable_type, false)
+		}
+		'existential_type' {
+			// `*` (TypeScript's JSDocAllType).
+			return c.jsdoc_type(n, .ts_js_doc_all_type, false)
+		}
 		'tuple_type' {
 			i := c.mkn(.ts_tuple_type, n)
 			mut elems := []int{}
@@ -229,6 +241,37 @@ fn (mut c Converter) typ(n C.TSNode) int {
 			return c.mkn(.ts_any_keyword, n)
 		}
 	}
+}
+
+// jsdoc_type converts a JSDoc type TypeScript parses in a type (`T!`, `?T`, `*`) and the checker
+// reports: typescript-estree has no converter for them and copies the TypeScript node (deeplyCopy).
+// Its `type` (`T`) becomes a TSTypeAnnotation that, as every one convertTypeAnnotation makes,
+// starts one character before the full start of the type (the end of the token before it); `id`
+// is the node id the checker has not given, and `postfix` the field of JSDocNonNullableType and
+// JSDocNullableType. The node starts where getTokenPosOfNode puts a JSDoc node: after the white
+// space that follows the token before it, at a comment if one comes first.
+fn (mut c Converter) jsdoc_type(n C.TSNode, typ NodeType, postfix bool) int {
+	mut inner := Kid{
+		n: n
+	}
+	if typ != .ts_js_doc_all_type {
+		inner = first_named(c.kids(n)) or { return -1 }
+	}
+	i := c.mk(typ, n, c.skip_white_space(c.prev_token_end(n), c.start(n)), c.end(n))
+	if typ != .ts_js_doc_all_type {
+		ann := c.mk(.ts_type_annotation, inner.n, c.prev_token_end(inner.n) - 1, c.end(inner.n))
+		c.pnode(ann, .type_annotation, c.typ(inner.n))
+		c.pnode(i, .type_annotation, ann)
+	}
+	c.t.nodes[i].props << Prop{
+		key:  .id
+		kind: .number
+		num:  0
+	}
+	if typ != .ts_js_doc_all_type {
+		c.pbool(i, .postfix, postfix)
+	}
+	return i
 }
 
 fn (mut c Converter) flatten_types(n C.TSNode, kind string, mut out []int) {
