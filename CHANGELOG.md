@@ -2,6 +2,14 @@
 
 Each version is a release on GitHub with the veslint binaries (Linux x64, Windows x64) and the VS Code extension. The section of a version is the text of its release.
 
+## 0.37.0
+
+- **Parsing errors as ESLint gives them.** A TypeScript file its parser rejects is ESLint's fatal `Parsing error` (TypeScript's first syntactic diagnostic, at its place), not a warning with partial results; syntax only veslint's grammar does not read is still linted on with a warning. The same for the scripts of `.vue` files, at the place vue-eslint-parser gives, also with a `<script>` and a `<script setup>` together. In `.svelte` files, an error of the Svelte compiler in a template expression comes before one of the script, as in ESLint.
+- **JSX in `.vue` and `.svelte` files** is read only with `parserOptions.ecmaFeatures.jsx`, as typescript-estree reads it, whatever the `lang`: `lang="tsx"` alone is TypeScript (`<T>x` a type assertion, `<div/>` a parsing error), as in ESLint. With `ecmaFeatures.jsx`, the template's expressions and the parses without a program take JSX, and the script's parse with a program (`project`, `projectService`) does not. `.svelte` files with `lang="tsx"` are linted (they were skipped as JavaScript).
+- **Grammar:** `T!` in a type (a JSDoc non-null type, which TypeScript parses and reports) is read, and estree/ gives typescript-estree's `TSJSDocNonNullableType`, `TSJSDocNullableType` (`?T`) and `TSJSDocAllType` (`*`) (`?T` and `*` were `any`). `export as namespace a` alone is a script, as in typescript-estree.
+- **An `eslint.config.*` that loads eslint-plugin-vue** (or any plugin that prints while it loads: @stylistic/eslint-plugin-js's deprecation notice) no longer fails with "the resolved configuration is not valid JSON".
+- `make` rebuilds veslint when only the Vue, Svelte, Svelte compiler or PostCSS ports changed.
+
 ## 0.36.0
 
 - **Grammar: code written one token per line reads as TypeScript reads it.** A line break no longer splits what TypeScript reads on: a member name with its `(` or `<` on the next line (`a⏎() {}`), `static`, `get` and `set` before a name on the next line, `export { … }⏎from 'm'`, `let⏎x = 1`; and a line break after `yield` ends it, as in TypeScript. Also read now: an accessibility modifier after `abstract` or `readonly`, `@(d).e` decorators, and `[k in o]: T` after another member of a type literal (a computed property, not a mapped type). On 197,411 files only 57 trees change, all toward what typescript-estree gives; the rules see the right nodes in such code (the fixtures of the indent rules of eslint-plugin-vue and eslint-plugin-svelte are written that way), and 2,321 known differences with ESLint are gone.
