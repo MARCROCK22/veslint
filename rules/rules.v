@@ -3286,7 +3286,13 @@ fn (mut c Checker) lint_file_in_lifetime(parser Parser, config LintConfig, src s
 	c.settings = config.settings
 	c.project_programs = config.project_programs
 	c.reset_file_types()
-	fatal := c.parsing_error(ts_path)
+	mut fatal := c.parsing_error(ts_path)
+	// A TypeScript file with syntax errors is ESLint's fatal problem when TypeScript's parser
+	// finds one; when only tree-sitter does (syntax its grammar does not read), it is linted on
+	// with a warning (FileLint.syntax_errors).
+	if fatal.len == 0 && !vue_file && !svelte_file && tree_has_error(tree) {
+		fatal = c.ts_syntax_error(abs_path)
+	}
 	if fatal.len > 0 {
 		stats.parse_ms += ms(sw.elapsed())
 		stats.findings++
@@ -5912,6 +5918,35 @@ fn (mut c Checker) parsing_error(abs_path string) []Finding {
 		text:             'Parsing error: ${first.text}'
 		column_from_zero: true
 	}]
+}
+
+// ts_syntax_error is ESLint's fatal problem for a TypeScript file its parser rejects: the first
+// syntactic diagnostic of the file's text (typescript-estree throws it), parsed under the file's
+// name (its extension decides .tsx, .mts…), at its line and 0-based column. Nothing when
+// TypeScript finds no error.
+fn (mut c Checker) ts_syntax_error(abs_path string) []Finding {
+	// tsgo's transpileModule gives no diagnostics for a declaration file's name: the parser reads
+	// `x.d.ts` as `x.ts` but for ambient rules the checker reports.
+	mut name := os.base(abs_path)
+	for ext in ['.ts', '.mts', '.cts'] {
+		if name.to_lower().ends_with('.d' + ext) {
+			name = 'file' + ext
+		}
+	}
+	diagnostics := c.client.transpile_diagnostics(c.src, name) or { return [] }
+	if diagnostics.len == 0 {
+		return []
+	}
+	first := first_parse_diagnostic(diagnostics, offsets.utf16_offsets(c.src, [c.src.len])[0])
+	return [
+		Finding{
+			stmt:             c.position_at(c.file_offset_of_ts_unit(first.pos))
+			rule:             problem_rule
+			message_id:       'fatal'
+			text:             'Parsing error: ${first.text}'
+			column_from_zero: true
+		},
+	]
 }
 
 // first_parse_diagnostic is the first of TypeScript's syntactic diagnostics in the order its

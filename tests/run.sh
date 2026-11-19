@@ -300,14 +300,28 @@ else
 	ko "rule without problems (code $code)"
 fi
 
-# --rule warnings: syntax errors, and nodes the rule could not analyze (a chain of 1,002 member
-# accesses goes beyond the limit of 1,000 nesting levels).
-./veslint --rule no-debugger tests/fixtures/syntax_error.ts > /dev/null 2> "$TMP/warning.err"
-if grep -q 'syntax errors' "$TMP/warning.err"; then
-	ok "--rule warns about syntax errors"
+# A file TypeScript's parser rejects is ESLint's fatal problem, its first syntactic diagnostic at
+# its line and 0-based column, and nothing else; one only tree-sitter's grammar does not read
+# (`new new Foo()`) is linted on with a warning. Then the --rule warning about nodes the rule could
+# not analyze (a chain of 1,002 member accesses goes beyond the limit of 1,000 nesting
+# levels).
+code=0
+./veslint --rule no-debugger tests/fixtures/syntax_error.ts > "$TMP/fatal.out" 2> "$TMP/fatal.err" || code=$?
+if [[ $code -eq 1 && "$(head -1 "$TMP/fatal.out")" == $'tests/fixtures/syntax_error.ts:2:6\teslint\tfatal\tParsing error: Variable declaration expected.' && "$(wc -l < "$TMP/fatal.out")" -eq 1 ]] && ! grep -q 'syntax errors' "$TMP/fatal.err"; then
+	ok "--rule: a syntax error TypeScript reports is ESLint's fatal problem"
 else
-	ko "--rule warns about syntax errors"
-	cat "$TMP/warning.err"
+	ko "--rule: a syntax error TypeScript reports is not ESLint's fatal problem (code $code)"
+	cat "$TMP/fatal.out" "$TMP/fatal.err"
+fi
+mkdir -p "$TMP/grammar-gap"
+printf '{"compilerOptions":{"strict":true,"noEmit":true}}\n' > "$TMP/grammar-gap/tsconfig.json"
+printf 'new new Foo();\ndebugger;\n' > "$TMP/grammar-gap/gap.ts"
+./veslint --rule no-debugger "$TMP/grammar-gap/gap.ts" > "$TMP/warning.out" 2> "$TMP/warning.err"
+if grep -q 'syntax errors' "$TMP/warning.err" && grep -q $'\tno-debugger\t' "$TMP/warning.out"; then
+	ok "--rule warns about syntax only tree-sitter rejects, and lints on"
+else
+	ko "--rule: syntax only tree-sitter rejects"
+	cat "$TMP/warning.out" "$TMP/warning.err"
 fi
 # A fix that gives code TypeScript cannot parse (without `jsx`, @stylistic/comma-dangle removes the
 # comma of `<T,>` in a .tsx file, which makes it a JSX element): like ESLint, --fix writes it, stops
