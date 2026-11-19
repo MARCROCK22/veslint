@@ -1,5 +1,7 @@
 bom.vue:1:1	vue/multi-word-component-names	unexpected	Component name "bom" should always be multi-word.
 bom.vue:1:15	vue/block-lang	unexpected	Do not specify the 'lang' attribute of '<script>'.	end	1	24
+both-scripts.vue:11:0	@eslint-community/eslint-comments/no-use	disallowEslint	Unexpected ESLint directive comment.	end	11	35
+both-scripts.vue:11:0	@eslint-community/eslint-comments/require-description	missingDescription	Unexpected undescribed directive comment. Include descriptions to explain why the comment is necessary.	end	11	35
 both-scripts.vue:12:1	vars-on-top	top	All 'var' declarations must be at the top of the function scope.	end	12	21
 both-scripts.vue:12:13	@typescript-eslint/restrict-plus-operands	invalid	Invalid operand for a '+' operation. Operands must each be a number or string, allowing a string + any of: `any`, `boolean`, `null`, `RegExp`, `undefined`. Got `Window`.	end	12	16
 both-scripts.vue:12:19	@typescript-eslint/no-magic-numbers	noMagic	No magic number: 1.	end	12	20
@@ -11,6 +13,7 @@ both-scripts.vue:16:1	@typescript-eslint/no-unused-expressions	unusedExpression	
 both-scripts.vue:16:3	@typescript-eslint/no-unsafe-member-access	unsafeMemberExpression	Unsafe member access .foo on an `any` value.	end	16	6
 both-scripts.vue:1:9	vue/block-lang	unexpected	Do not specify the 'lang' attribute of '<script>'.	end	1	18
 both-scripts.vue:2:1	@typescript-eslint/require-await	missingAwait	Async function 'later' has no 'await' expression.	suggestion	removeAsync	Remove 'async'.	19	59	function later (): number	end	2	22
+both-scripts.vue:2:26	promise/no-native	name	"Promise" is not defined.	end	2	33
 both-scripts.vue:3:10	@typescript-eslint/no-magic-numbers	noMagic	No magic number: 1.	end	3	11
 both-scripts.vue:8:15	vue/block-lang	unexpected	Do not specify the 'lang' attribute of '<script>'.	end	8	24
 both-scripts.vue:9:1	@typescript-eslint/no-unsafe-call	errorCall	Unsafe call of a type that could not be resolved.	end	9	14
@@ -29,6 +32,10 @@ crlf.vue:9:13	@stylistic/list-style	shouldSpacing	Should have space between '{' 
 crlf.vue:9:13	@stylistic/quote-props	unquotedPropertyFound	Unquoted property 'text' found.	fix	132	136	"text"	end	9	23
 crlf.vue:9:13	object-shorthand	expectedPropertyShorthand	Expected property shorthand.	fix	132	142	text	end	9	23
 crlf.vue:9:23	@stylistic/list-style	shouldSpacing	Should have space between 'text' and '}'	fix	142	142	 	end	9	23
+directives.vue:11:0	@eslint-community/eslint-comments/no-use	disallowEslint	Unexpected ESLint directive comment.	end	11	27
+directives.vue:11:0	@eslint-community/eslint-comments/require-description	missingDescription	Unexpected undescribed directive comment. Include descriptions to explain why the comment is necessary.	end	11	27
+directives.vue:13:0	@eslint-community/eslint-comments/no-use	disallowEslint	Unexpected ESLint directive comment.	end	13	41
+directives.vue:13:0	@eslint-community/eslint-comments/require-description	missingDescription	Unexpected undescribed directive comment. Include descriptions to explain why the comment is necessary.	end	13	41
 directives.vue:18:16	vue/require-expose	requireExpose	The public properties of the component must be explicitly declared using `expose`. If the component does not have public properties, declare it empty.	suggestion	addExposeOptionForEmpty	Add the `expose` option to give an empty array.	374	374	\nexpose: [],	suggestion	addExposeOptionForAll	Add the `expose` option to declare all properties.	374	374	\nexpose: ["value", "unusedDirective"],	end	19	19
 directives.vue:18:16	vue/require-name-property	missingName	Required name property is not set.	suggestion	addName	Add name property to component.	374	374	name: 'directives',\n	end	19	19
 directives.vue:18:17	@typescript-eslint/explicit-function-return-type	missingReturnType	Missing return type on function.	end	18	25
@@ -38,6 +45,8 @@ directives.vue:18:39	@stylistic/list-style	shouldNotWrap	Should not have line br
 directives.vue:19:1	vue/script-indent	error	Expected indentation of 32 spaces but found 0 spaces.	fix	397	397	                                	end	19	1
 directives.vue:19:1	vue/sort-keys	sortKeys	Expected object keys to be in ascending order. 'unusedDirective' should be before 'value'.	end	19	16
 directives.vue:7:9	vue/block-lang	unexpected	Do not specify the 'lang' attribute of '<script>'.	end	7	18
+directives.vue:8:0	@eslint-community/eslint-comments/no-use	disallowEslint	Unexpected ESLint directive comment.	end	8	28
+directives.vue:8:0	@eslint-community/eslint-comments/require-description	missingDescription	Unexpected undescribed directive comment. Include descriptions to explain why the comment is necessary.	end	8	28
 lang-typescript.vue:1:9	vue/block-lang	unexpected	Do not specify the 'lang' attribute of '<script>'.	end	1	26
 lang-typescript.vue:3:16	vue/require-expose	requireExpose	The public properties of the component must be explicitly declared using `expose`. If the component does not have public properties, declare it empty.	suggestion	addExposeOptionForEmpty	Add the `expose` option to give an empty array.	84	84	\nexpose: [],	suggestion	addExposeOptionForAll	Add the `expose` option to declare all properties.	84	84	\nexpose: ["answer"],	end	7	2
 lang-typescript.vue:3:16	vue/require-name-property	missingName	Required name property is not set.	suggestion	addName	Add name property to component.	87	87	name: 'lang-typescript',\n  	end	7	2
@@ -131,6 +140,7 @@ single-script.vue:12:11	@stylistic/list-style	shouldSpacing	Should have space be
 single-script.vue:12:14	@stylistic/list-style	shouldSpacing	Should have space between 'msg' and '}'	fix	188	188	 	end	12	14
 single-script.vue:5:9	vue/block-lang	unexpected	Do not specify the 'lang' attribute of '<script>'.	end	5	18
 single-script.vue:6:1	@typescript-eslint/require-await	missingAwait	Async function 'later' has no 'await' expression.	suggestion	removeAsync	Remove 'async'.	62	102	function later (): number	end	6	22
+single-script.vue:6:26	promise/no-native	name	"Promise" is not defined.	end	6	33
 single-script.vue:7:10	@typescript-eslint/no-magic-numbers	noMagic	No magic number: 1.	end	7	11
 syntax-error-script.vue:9:9	eslint	fatal	Parsing error: Property destructuring pattern expected.
 syntax-error-setup.vue:9:6	eslint	fatal	Parsing error: Variable declaration expected.
@@ -156,6 +166,7 @@ types.vue:17:3	vue/no-ref-object-reactivity-loss	getValueInSameScope	Getting a v
 types.vue:1:1	vue/multi-word-component-names	unexpected	Component name "types" should always be multi-word.
 types.vue:1:9	vue/block-lang	unexpected	Do not specify the 'lang' attribute of '<script>'.	end	1	18
 types.vue:20:3	require-atomic-updates	nonAtomicObjectUpdate	Possible race condition: `items.value` might be assigned based on an outdated state of `items`.	end	20	48
+types.vue:22:22	promise/no-native	name	"Promise" is not defined.	end	22	29
 types.vue:22:38	@typescript-eslint/no-magic-numbers	noMagic	No magic number: 1.	end	22	39
 types.vue:23:14	vue/no-ref-object-reactivity-loss	getValueInSameScope	Getting a value from the ref object in the same scope will cause the value to lose reactivity.	end	23	19
 types.vue:23:35	@typescript-eslint/no-magic-numbers	noMagic	No magic number: 0.	end	23	36

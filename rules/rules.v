@@ -2229,9 +2229,9 @@ pub:
 	// only_rule is the rule of `--rule`, the only one that runs: a directive comment for any other
 	// rule (or for every rule) may be used by a rule that does not run, so it is never unused.
 	only_rule string
-	// plugin_rules are the rule ids of the plugins of the configuration other than
-	// typescript-eslint, when the configuration was resolved by ESLint itself (strict_plugins);
-	// without that, a rule of another plugin is assumed to exist.
+	// plugin_rules are the rule ids of the plugins of the configuration, typescript-eslint's
+	// included, when the configuration was resolved by ESLint itself (strict_plugins); without
+	// that, a rule of another plugin is assumed to exist.
 	plugin_rules   []string
 	strict_plugins bool
 	// plugins are the namespaces of the plugins of a configuration that lists them without their
@@ -2264,10 +2264,8 @@ pub mut:
 }
 
 // rule_exists: ESLint has a rule with that id (`config.getRuleDefinition(ruleId)`).
+// A rule of a plugin the configuration does not load does not exist, typescript-eslint's included.
 pub fn (cfg &LintConfig) rule_exists(id string) bool {
-	if id.starts_with(typescript_eslint_prefix) {
-		return id[typescript_eslint_prefix.len..] in typescript_eslint_rule_names
-	}
 	if !id.contains('/') {
 		return id in eslint_core_rule_names
 	}
@@ -2276,7 +2274,13 @@ pub fn (cfg &LintConfig) rule_exists(id string) bool {
 	}
 	// parseRuleId of ESLint's config.js: the plugin of `@scope/name/rule` is `@scope/name`.
 	plugin := if id.starts_with('@') { id.all_before_last('/') } else { id.all_before('/') }
-	return cfg.plugins.len == 0 || plugin in cfg.plugins
+	if cfg.plugins.len > 0 && plugin !in cfg.plugins {
+		return false
+	}
+	if id.starts_with(typescript_eslint_prefix) {
+		return id[typescript_eslint_prefix.len..] in typescript_eslint_rule_names
+	}
+	return true
 }
 
 // eslint_id is the ESLint `ruleId` of a finding: '' for a problem without a rule.

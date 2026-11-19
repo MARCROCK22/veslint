@@ -136,7 +136,7 @@ for (const file of files) {
     continue;
   }
   for (const [namespace, plugin] of Object.entries(config.plugins ?? {})) {
-    if (namespace === '@' || namespace === '@typescript-eslint') continue;
+    if (namespace === '@') continue;
     for (const name of Object.keys(plugin?.rules ?? {})) pluginRules.add(namespace + '/' + name);
   }
   // With reportUnusedInlineConfigs, ESLint compares the options of a configuration comment, on

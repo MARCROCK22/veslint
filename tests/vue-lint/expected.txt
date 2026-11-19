@@ -13,7 +13,9 @@ both-scripts.vue:15:1	vue/padding-line-between-blocks	always	Expected blank line
 both-scripts.vue:1:9	vue/block-lang	unexpected	Do not specify the 'lang' attribute of '<script>'.	end	1	18
 both-scripts.vue:2:1	@typescript-eslint/promise-function-async	missingAsync	Functions that return promises must be async.	fix	19	19	async 	end	2	15
 both-scripts.vue:2:15	@stylistic/space-before-function-paren	missingSpace	Missing space before function parentheses.	fix	33	33	 	end	2	16
+both-scripts.vue:2:19	promise/no-native	name	"Promise" is not defined.	end	2	26
 both-scripts.vue:2:35	@stylistic/brace-style	blockSameLine	Statement inside of curly braces should be on next line.	fix	54	54	\n	end	2	36
+both-scripts.vue:2:44	promise/no-native	name	"Promise" is not defined.	end	2	51
 both-scripts.vue:2:60	@typescript-eslint/no-magic-numbers	noMagic	No magic number: 1.	end	2	61
 both-scripts.vue:2:64	@stylistic/brace-style	singleLineClose	Closing curly brace should be on the same line as opening curly brace or on the line after the previous block.	fix	82	82	\n	end	2	65
 both-scripts.vue:3:1	vue/prefer-define-options	preferDefineOptions	Use `defineOptions` instead of default export.	fix	83	167	\nconst top = 1;\n</script>\n\n<script setup lang="ts">\ndefineOptions({ name: 'Both' })\n	end	3	33
@@ -23,6 +25,8 @@ both-scripts.vue:3:24	@stylistic/quotes	wrongQuotes	Strings must use doublequote
 both-scripts.vue:3:24	vue/multi-word-component-names	unexpected	Component name "Both" should always be multi-word.	end	3	30
 both-scripts.vue:3:30	@stylistic/object-curly-spacing	unexpectedSpaceBefore	There should be no space before '}'.	fix	113	114		end	3	31
 both-scripts.vue:7:15	vue/block-lang	unexpected	Do not specify the 'lang' attribute of '<script>'.	end	7	24
+both-scripts.vue:8:0	@eslint-community/eslint-comments/no-use	disallowEslint	Unexpected ESLint directive comment.	end	8	35
+both-scripts.vue:8:0	@eslint-community/eslint-comments/require-description	missingDescription	Unexpected undescribed directive comment. Include descriptions to explain why the comment is necessary.	end	8	35
 both-scripts.vue:9:1	vars-on-top	top	All 'var' declarations must be at the top of the function scope.	end	9	21
 both-scripts.vue:9:19	@typescript-eslint/no-magic-numbers	noMagic	No magic number: 1.	end	9	20
 crlf.vue:1:1	vue/multi-word-component-names	unexpected	Component name "crlf" should always be multi-word.
@@ -45,9 +49,17 @@ crlf.vue:8:35	@stylistic/comma-dangle	unexpected	Unexpected trailing comma.	fix	
 crlf.vue:8:36	@stylistic/no-trailing-spaces	trailingSpace	Trailing spaces not allowed.	fix	140	142		end	8	38
 crlf.vue:8:7	@stylistic/space-before-function-paren	missingSpace	Missing space before function parentheses.	fix	111	111	 	end	8	8
 crlf.vue:9:2	@stylistic/semi	missingSemi	Missing semicolon.	fix	145	145	;	end	10	1
+directives.vue:11:0	@eslint-community/eslint-comments/no-use	disallowEslint	Unexpected ESLint directive comment.	end	11	27
+directives.vue:11:0	@eslint-community/eslint-comments/require-description	missingDescription	Unexpected undescribed directive comment. Include descriptions to explain why the comment is necessary.	end	11	27
 directives.vue:12:1	no-var	unexpectedVar	Unexpected var, use let or const instead.	fix	224	234	let c = 3;	end	12	11
+directives.vue:13:0	@eslint-community/eslint-comments/no-use	disallowEslint	Unexpected ESLint directive comment.	end	13	41
+directives.vue:13:0	@eslint-community/eslint-comments/require-description	missingDescription	Unexpected undescribed directive comment. Include descriptions to explain why the comment is necessary.	end	13	41
+directives.vue:15:0	@eslint-community/eslint-comments/no-use	disallowEslint	Unexpected ESLint directive comment.	end	15	72
+directives.vue:15:0	@eslint-community/eslint-comments/require-description	missingDescription	Unexpected undescribed directive comment. Include descriptions to explain why the comment is necessary.	end	15	72
 directives.vue:15:16	eslint	warning	Unused eslint-disable directive (no problems were reported from '@typescript-eslint/no-unused-vars').	fix	314	370	 	warning
 directives.vue:15:5	prefer-const	useConst	'other' is never reassigned. Use 'const' instead.	fix	299	313	const other = 4;	end	15	10
+directives.vue:16:0	@eslint-community/eslint-comments/no-use	disallowEslint	Unexpected ESLint directive comment.	end	16	39
+directives.vue:16:0	@eslint-community/eslint-comments/require-description	missingDescription	Unexpected undescribed directive comment. Include descriptions to explain why the comment is necessary.	end	16	39
 directives.vue:16:1	eslint	warning	Unused eslint-disable directive (no problems were reported from 'no-console').	fix	371	409	 	warning
 directives.vue:18:16	vue/require-expose	requireExpose	The public properties of the component must be explicitly declared using `expose`. If the component does not have public properties, declare it empty.	suggestion	addExposeOptionForEmpty	Add the `expose` option to give an empty array.	465	465	\nexpose: [],	suggestion	addExposeOptionForAll	Add the `expose` option to declare all properties.	465	465	\nexpose: ["value", "unusedDirective"],	end	18	60
 directives.vue:18:16	vue/require-name-property	missingName	Required name property is not set.	suggestion	addName	Add name property to component.	466	466	name: 'directives',\n	end	18	60
@@ -62,6 +74,8 @@ directives.vue:18:40	vue/sort-keys	sortKeys	Expected object keys to be in ascend
 directives.vue:18:55	@stylistic/object-curly-spacing	unexpectedSpaceBefore	There should be no space before '}'.	fix	503	504		end	18	56
 directives.vue:18:58	@stylistic/object-curly-spacing	unexpectedSpaceBefore	There should be no space before '}'.	fix	506	507		end	18	59
 directives.vue:7:9	vue/block-lang	unexpected	Do not specify the 'lang' attribute of '<script>'.	end	7	18
+directives.vue:8:0	@eslint-community/eslint-comments/no-use	disallowEslint	Unexpected ESLint directive comment.	end	8	28
+directives.vue:8:0	@eslint-community/eslint-comments/require-description	missingDescription	Unexpected undescribed directive comment. Include descriptions to explain why the comment is necessary.	end	8	28
 empty-script.vue:4:1	vue/no-empty-component-block	unexpected	`<script>` is empty. Empty block is not allowed.	fix	48	75		end	4	28
 empty-script.vue:4:1	vue/padding-line-between-blocks	always	Expected blank line before this block.	fix	47	47	\n	end	4	28
 empty-script.vue:4:9	vue/block-lang	unexpected	Do not specify the 'lang' attribute of '<script>'.	end	4	18
@@ -195,7 +209,9 @@ single-script.vue:4:1	vue/padding-line-between-blocks	always	Expected blank line
 single-script.vue:4:9	vue/block-lang	unexpected	Do not specify the 'lang' attribute of '<script>'.	end	4	18
 single-script.vue:5:1	@typescript-eslint/promise-function-async	missingAsync	Functions that return promises must be async.	fix	61	61	async 	end	5	15
 single-script.vue:5:15	@stylistic/space-before-function-paren	missingSpace	Missing space before function parentheses.	fix	75	75	 	end	5	16
+single-script.vue:5:19	promise/no-native	name	"Promise" is not defined.	end	5	26
 single-script.vue:5:35	@stylistic/brace-style	blockSameLine	Statement inside of curly braces should be on next line.	fix	96	96	\n	end	5	36
+single-script.vue:5:44	promise/no-native	name	"Promise" is not defined.	end	5	51
 single-script.vue:5:60	@typescript-eslint/no-magic-numbers	noMagic	No magic number: 1.	end	5	61
 single-script.vue:5:64	@stylistic/brace-style	singleLineClose	Closing curly brace should be on the same line as opening curly brace or on the line after the previous block.	fix	124	124	\n	end	5	65
 single-script.vue:6:20	@stylistic/no-trailing-spaces	trailingSpace	Trailing spaces not allowed.	fix	145	148		end	6	23
@@ -256,6 +272,7 @@ types.vue:16:3	vue/no-ref-object-reactivity-loss	getValueInSameScope	Getting a v
 types.vue:19:3	require-atomic-updates	nonAtomicObjectUpdate	Possible race condition: `items.value` might be assigned based on an outdated state of `items`.	end	19	48
 types.vue:1:1	vue/multi-word-component-names	unexpected	Component name "types" should always be multi-word.
 types.vue:1:9	vue/block-lang	unexpected	Do not specify the 'lang' attribute of '<script>'.	end	1	18
+types.vue:21:22	promise/no-native	name	"Promise" is not defined.	end	21	29
 types.vue:21:38	@typescript-eslint/no-magic-numbers	noMagic	No magic number: 1.	end	21	39
 types.vue:22:14	@stylistic/multiline-ternary	expectedTestCons	Expected newline between test and consequent of ternary expression.	fix	478	479	\n	end	22	36
 types.vue:22:14	vue/no-ref-object-reactivity-loss	getValueInSameScope	Getting a value from the ref object in the same scope will cause the value to lose reactivity.	end	22	19

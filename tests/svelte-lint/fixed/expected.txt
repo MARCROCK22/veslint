@@ -19,8 +19,17 @@ crlf.svelte:3:24	@typescript-eslint/no-magic-numbers	noMagic	No magic number: 1.
 directives.svelte:12:20	@typescript-eslint/no-unnecessary-condition	comparisonBetweenLiteralTypes	Unnecessary conditional, comparison is always true, since `3 == 3` is true.	end	12	30
 directives.svelte:12:26	eqeqeq	unexpected	Expected '===' and instead saw '=='.	suggestion	replaceOperator	Use '===' instead of '=='.	292	294	===	end	12	28
 directives.svelte:12:29	@typescript-eslint/no-magic-numbers	noMagic	No magic number: 3.	end	12	30
+directives.svelte:2:0	@eslint-community/eslint-comments/no-use	disallowEslint	Unexpected ESLint directive comment.	end	2	36
+directives.svelte:2:0	@eslint-community/eslint-comments/require-description	missingDescription	Unexpected undescribed directive comment. Include descriptions to explain why the comment is necessary.	end	2	36
 directives.svelte:3:2	vars-on-top	top	All 'var' declarations must be at the top of the function scope.	end	3	16
+directives.svelte:4:0	@eslint-community/eslint-comments/no-use	disallowEslint	Unexpected ESLint directive comment.	end	4	29
+directives.svelte:4:0	@eslint-community/eslint-comments/require-description	missingDescription	Unexpected undescribed directive comment. Include descriptions to explain why the comment is necessary.	end	4	29
 directives.svelte:5:24	@typescript-eslint/no-magic-numbers	noMagic	No magic number: 1.	end	5	25
+directives.svelte:6:0	@eslint-community/eslint-comments/no-use	disallowEslint	Unexpected ESLint directive comment.	end	6	28
+directives.svelte:6:0	@eslint-community/eslint-comments/require-description	missingDescription	Unexpected undescribed directive comment. Include descriptions to explain why the comment is necessary.	end	6	28
+directives.svelte:7:0	@eslint-community/eslint-comments/no-unlimited-disable	unexpected	Unexpected unlimited 'eslint-disable-line' comment. Specify some rule names to disable.	end	7	50
+directives.svelte:7:0	@eslint-community/eslint-comments/no-use	disallowEslint	Unexpected ESLint directive comment.	end	7	50
+directives.svelte:7:0	@eslint-community/eslint-comments/require-description	missingDescription	Unexpected undescribed directive comment. Include descriptions to explain why the comment is necessary.	end	7	50
 generics.svelte:1:40	@stylistic/object-curly-spacing	unexpectedSpaceAfter	There should be no space after '{'.	fix	39	40		end	1	41
 generics.svelte:1:41	@stylistic/quote-props	unquotedPropertyFound	Unquoted property 'id' found.	fix	40	42	"id"	end	1	51
 generics.svelte:1:51	@stylistic/object-curly-spacing	unexpectedSpaceBefore	There should be no space before '}'.	fix	50	51		end	1	52
