@@ -100,7 +100,7 @@ fn declared(src string) []Ident {
 	defer {
 		treesitter.tree_delete(tree)
 	}
-	return p.identifiers(tree, src, false)
+	return p.identifiers(tree, src, false) or { panic(err) }
 }
 
 fn test_app_table_bytes_to_utf16() {
@@ -243,7 +243,7 @@ fn test_all_identifiers_includes_usages() {
 	defer {
 		treesitter.tree_delete(tree)
 	}
-	idents := p.identifiers(tree, src, true)
+	idents := p.identifiers(tree, src, true) or { panic(err) }
 	assert idents.map(it.text) == ['a', 'b', 'a', 'a']
 	assert idents.map(it.start_byte) == [6, 19, 23, 27]
 }

@@ -56,6 +56,9 @@ pub fn convert_with(root C.TSNode, src string, tsx bool, opts Options) !EsTree {
 		}
 	}
 	c.comment_ends = line_comment_ends(src)
+	// About half as many ESTree nodes as visible tree-sitter nodes (no punctuation): reserved at
+	// once rather than grown by doubling, which copied the nodes and made the collector run.
+	c.t.nodes = []EsNode{cap: int(C.ts_node_descendant_count(root)) / 2 + 16}
 	defer {
 		C.ts_tree_cursor_delete(&c.cursor)
 	}

@@ -331,6 +331,8 @@ pub fn analyze(t &estree.EsTree) Analysis {
 		t: unsafe { t }
 	}
 	a.an.events = []Event{cap: t.nodes.len * 3}
+	// About one segment per ten ESTree nodes.
+	a.an.segments = []Segment{cap: t.nodes.len / 8 + 16}
 	for step in t.steps() {
 		if step.leave {
 			a.leave_node(step.node)

@@ -174,3 +174,51 @@ fn test_node_parent_from_the_index_is_tree_sitters() {
 	}
 	assert parents_agree(root_node(tree)) > 10
 }
+
+// One walk gives the node index and the token ends that the two walks give: on the rules' own
+// fixtures (comments, `#!`, automatic `;`, ERROR nodes) and on .tsx ones (JSX children).
+fn test_node_index_and_token_ends_from_one_walk() {
+	p := new_parser() or { panic(err) }
+	tsx := new_tsx_parser() or { panic(err) }
+	defer {
+		p.close()
+		tsx.close()
+	}
+	mut files := os.walk_ext(os.join_path(@VMODROOT, 'tests', 'rules'), '.ts')
+	files.sort()
+	mut tsx_files := os.walk_ext(os.join_path(@VMODROOT, 'tests', 'rules'), '.tsx')
+	tsx_files.sort()
+	mut checked := 0
+	for file in files#[..300] {
+		checked += same_index_and_ends(p, os.read_file(file) or { panic(err) })
+	}
+	for file in tsx_files#[..100] {
+		checked += same_index_and_ends(tsx, os.read_file(file) or { panic(err) })
+	}
+	checked += same_index_and_ends(tsx, '#!/usr/bin/env node\nconst a = <div a="1" {...b}>\n  x {y} /* c */ <b/>\n</div> // d\n')
+	checked += same_index_and_ends(p, 'a\nb /* c */ ) d')
+	assert checked > 10000
+}
+
+fn same_index_and_ends(p Parser, src string) int {
+	tree := p.parse(src) or { panic(err) }
+	defer {
+		parent_cache_clear()
+		tree_delete(tree)
+	}
+	root := root_node(tree)
+	expected := token_ends(root)
+	index, ends := new_node_index_and_token_ends(root)
+	assert ends.ends == expected.ends, src
+	alone := new_node_index(root)
+	assert index.count == alone.count
+	assert index.buckets.len == alone.buckets.len
+	for i, bucket in index.buckets {
+		assert same_nodes(bucket.nodes, alone.buckets[i].nodes)
+		assert bucket.seq == alone.buckets[i].seq
+		assert bucket.last == alone.buckets[i].last
+	}
+	assert index.named == alone.named
+	assert index.anonymous == alone.anonymous
+	return expected.ends.len
+}

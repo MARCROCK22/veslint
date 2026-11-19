@@ -82,7 +82,8 @@ fn (mut c Checker) es_equal_tokens(a C.TSNode, b C.TSNode) bool {
 		return false
 	}
 	for i in 0 .. ta.len {
-		if ta[i].kind != tb[i].kind || c.src[ta[i].start..ta[i].end] != c.src[tb[i].start..tb[i].end] {
+		if ta[i].kind != tb[i].kind || src_view(c.src, ta[i].start, ta[i].end) != src_view(c.src,
+			tb[i].start, tb[i].end) {
 			return false
 		}
 	}

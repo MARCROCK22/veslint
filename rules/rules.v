@@ -4,6 +4,7 @@ import builtin.closure
 import codepath
 import estree
 import json2
+import jsregexp
 import time
 import tsgo { Client, CompilerOptions, ParameterResponse, SignatureResponse, SourceFileAst, SymbolResponse, TypeResponse }
 import treesitter { Ident, Parser, TokenEnds, children, first_named_child, named_children, node_end, node_field, node_kind, node_start, root_node, token_ends, tree_delete, tree_has_error }
@@ -3378,8 +3379,7 @@ fn (mut c Checker) lint_file_in_lifetime(parser Parser, config LintConfig, src s
 	mut root := root_node(tree)
 	// The text of a .svelte file's nodes: the file, then the template part of the lint code.
 	c.src = if svelte_file { c.svelte.doc.lint_text() } else { src }
-	c.tokens = c.file_token_ends(root)
-	c.node_index = treesitter.new_node_index(root)
+	c.index_file(root)
 	c.ast_path = ''
 	c.program_directory = config.program_directory
 	c.ecma_version = config.language.ecma_version
@@ -3414,8 +3414,7 @@ fn (mut c Checker) lint_file_in_lifetime(parser Parser, config LintConfig, src s
 		tree = parser.parse(reread)!
 		owned = true
 		root = root_node(tree)
-		c.tokens = c.file_token_ends(root)
-		c.node_index = treesitter.new_node_index(root)
+		c.index_file(root)
 	}
 	unmatched_before := stats.unmatched
 	stats.parse_ms += ms(sw.elapsed())
@@ -6008,6 +6007,25 @@ mut:
 	// from its V* nodes, while a wrapper rule runs on a snippet: their parent is none of the
 	// snippet's.
 	vue_wrap_roots map[u64]bool
+	// regex_cache: the regular expressions a rule compiles from its options, by flags and pattern,
+	// compiled once for the whole run (cached_js_regex)
+	regex_cache map[string]jsregexp.JsRegex
+	// the declared globals of the last configuration of a file without `/* global */` comments
+	// (file_declared_globals)
+	declared_globals_cache DeclaredGlobalsCache
+}
+
+// cached_js_regex is js_regex_new(pattern, flags), compiled once per Checker: a rule that reads a
+// regular expression from its options would otherwise compile it again for every file (the `iu`
+// default of no-fallthrough was 2 % of a lint). A JsRegex is not changed by matching.
+fn (mut c Checker) cached_js_regex(pattern string, flags string) !jsregexp.JsRegex {
+	key := '${flags}/${pattern}'
+	if regex := c.regex_cache[key] {
+		return regex
+	}
+	regex := jsregexp.js_regex_new(pattern, flags)!
+	c.regex_cache[key] = regex
+	return regex
 }
 
 // DeclarationAsts keeps the AstTree of the files whose declarations the rules look at, by tsgo

@@ -70,6 +70,8 @@ fn C.ts_parser_parse_string(self &C.TSParser, old_tree &C.TSTree, str &char, len
 fn C.ts_tree_delete(self &C.TSTree)
 fn C.ts_tree_root_node(self &C.TSTree) C.TSNode
 fn C.ts_node_type(self C.TSNode) &char
+fn C.ts_node_descendant_count(self C.TSNode) u32
+fn C.ts_language_symbol_for_name(self &C.TSLanguage, name &char, length u32, is_named bool) u16
 fn C.ts_node_symbol(self C.TSNode) u16
 fn C.ts_node_is_named(self C.TSNode) bool
 fn C.ts_node_has_error(self C.TSNode) bool
@@ -134,10 +136,18 @@ pub:
 pub struct Parser {
 	parser &C.TSParser
 	lang   &C.TSLanguage
-	query  &C.TSQuery
+	// The declarations query, compiled on first use (declared_names): only the identifier modes
+	// use it, and compiling it took a few milliseconds of every lint worker's start.
+	query &ParserQuery
 }
 
-// new_ts_parser prepares the TypeScript parser and compiles the declarations query.
+@[heap]
+struct ParserQuery {
+mut:
+	query &C.TSQuery = unsafe { nil }
+}
+
+// new_ts_parser prepares the TypeScript parser.
 pub fn new_parser() !Parser {
 	return new_parser_for(false)
 }
@@ -155,23 +165,33 @@ fn new_parser_for(tsx bool) !Parser {
 		C.ts_parser_delete(parser)
 		return error('the grammar uses ABI ${C.ts_language_abi_version(lang)}, which this tree-sitter runtime does not support')
 	}
-	mut err_offset := u32(0)
-	mut err_type := u32(0)
-	query := C.ts_query_new(lang, &char(declarations_query.str), u32(declarations_query.len),
-		&err_offset, voidptr(&err_type))
-	if isnil(query) {
-		C.ts_parser_delete(parser)
-		return error('the declarations query does not compile (error ${err_type} at offset ${err_offset})')
-	}
 	return Parser{
 		parser: parser
 		lang:   lang
-		query:  query
+		query:  &ParserQuery{}
 	}
 }
 
+// declarations_query compiles the declarations query once.
+fn (p &Parser) declarations_query() !&C.TSQuery {
+	mut holder := p.query
+	if isnil(holder.query) {
+		mut err_offset := u32(0)
+		mut err_type := u32(0)
+		query := C.ts_query_new(p.lang, &char(declarations_query.str), u32(declarations_query.len),
+			&err_offset, voidptr(&err_type))
+		if isnil(query) {
+			return error('the declarations query does not compile (error ${err_type} at offset ${err_offset})')
+		}
+		holder.query = query
+	}
+	return holder.query
+}
+
 pub fn (p &Parser) close() {
-	C.ts_query_delete(p.query)
+	if !isnil(p.query.query) {
+		C.ts_query_delete(p.query.query)
+	}
 	C.ts_parser_delete(p.parser)
 }
 
@@ -193,19 +213,20 @@ pub fn tree_has_error(tree &C.TSTree) bool {
 
 // identifiers returns, in order of appearance, the identifiers of `tree`: the declared names (query
 // of §3.2) or, with `all`, every `identifier` node.
-pub fn (p &Parser) identifiers(tree &C.TSTree, src string, all bool) []Ident {
+pub fn (p &Parser) identifiers(tree &C.TSTree, src string, all bool) ![]Ident {
 	root := C.ts_tree_root_node(tree)
-	mut idents := if all { all_identifiers(root, src) } else { p.declared_names(root, src) }
+	mut idents := if all { all_identifiers(root, src) } else { p.declared_names(root, src)! }
 	idents.sort(a.start_byte < b.start_byte)
 	return idents
 }
 
-fn (p &Parser) declared_names(root C.TSNode, src string) []Ident {
+fn (p &Parser) declared_names(root C.TSNode, src string) ![]Ident {
+	query := p.declarations_query()!
 	cursor := C.ts_query_cursor_new()
 	defer {
 		C.ts_query_cursor_delete(cursor)
 	}
-	C.ts_query_cursor_exec(cursor, p.query, root)
+	C.ts_query_cursor_exec(cursor, query, root)
 	mut idents := []Ident{}
 	mut m := C.TSQueryMatch{}
 	for C.ts_query_cursor_next_match(cursor, &m) {

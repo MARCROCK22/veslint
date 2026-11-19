@@ -2,7 +2,7 @@ module rules
 
 import estree
 import offsets
-import treesitter { TokenEnds, token_ends }
+import treesitter { TokenEnds }
 import vue
 
 // A .vue file is linted as ESLint lints it with vue-eslint-parser: the rules see the script as
@@ -49,11 +49,10 @@ mut:
 	wrap_snippets map[int][]VueWrapSnippet
 }
 
-// file_token_ends are the token ends of the tree (TokenEnds): for a .vue file, without the `;`
-// the masked script has between two scripts (vue-eslint-parser drops it, and a statement that
-// ends with it ends at the token before it).
-fn (c &Checker) file_token_ends(root C.TSNode) TokenEnds {
-	ends := token_ends(root)
+// file_token_ends_of are the token ends of the file from those of its tree (TokenEnds): for a
+// .vue file, without the `;` the masked script has between two scripts (vue-eslint-parser drops
+// it, and a statement that ends with it ends at the token before it).
+fn (c &Checker) file_token_ends_of(ends TokenEnds) TokenEnds {
 	if !c.is_vue() || c.vue.doc.script.split_offsets.len == 0 {
 		return ends
 	}
@@ -70,6 +69,14 @@ pub fn (mut c Checker) set_vue(doc &vue.Document, ts_path string) {
 		doc:     doc
 		ts_path: ts_path
 	}
+}
+
+// index_file builds the token ends (file_token_ends_of) and the node index of the tree of the file
+// being linted, from one walk of the tree.
+fn (mut c Checker) index_file(root C.TSNode) {
+	index, ends := treesitter.new_node_index_and_token_ends(root)
+	c.tokens = c.file_token_ends_of(ends)
+	c.node_index = index
 }
 
 // is_vue: the file being linted is a .vue file.

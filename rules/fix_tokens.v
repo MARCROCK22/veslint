@@ -126,6 +126,16 @@ const source_token_name_kinds = ['identifier', 'property_identifier', 'shorthand
 // closes a self-closing JSX element, is a `/` and a `>`).
 const source_token_split_leaves = ['?:', '-?:', '+?:', '{|', '|}', '/>']
 
+// src_view is `src[start..end]` without the copy: a string that points into `src`, for comparisons
+// that do not keep it (a slice of a string allocates; the token walks take one per token).
+@[inline]
+fn src_view(src string, start int, end int) string {
+	if start < 0 || end > src.len || start > end {
+		panic('src_view(${start}, ${end}) out of a string of ${src.len} bytes')
+	}
+	return unsafe { tos(src.str + start, end - start) }
+}
+
 // source_tokens gives the tokens of the file `n` belongs to, built on first use.
 fn (mut c Checker) source_tokens(n C.TSNode) &SourceTokens {
 	if c.file_tokens == unsafe { nil } {
@@ -142,10 +152,17 @@ fn (mut c Checker) source_tokens(n C.TSNode) &SourceTokens {
 }
 
 fn build_source_tokens(root C.TSNode, src string) &SourceTokens {
-	mut all := []SourceToken{}
+	// About 0.6 tokens and comments per visible node.
+	mut all := []SourceToken{cap: int(C.ts_node_descendant_count(root)) * 3 / 4 + 16}
 	source_tokens_walk(root, src, mut all)
 	if src.contains('<') {
-		all = source_tokens_jsx(root, all)
+		all = if language_has_jsx(root) {
+			source_tokens_jsx(root, all)
+		} else {
+			// What source_tokens_jsx gives without JSX, without its walk of the tree: the tokens in
+			// order of their start.
+			source_tokens_by_start(all)
+		}
 	}
 	return &SourceTokens{
 		tokens:   all.filter(!it.is_comment())
@@ -220,6 +237,34 @@ fn source_tokens_jsx(root C.TSNode, tokens []SourceToken) []SourceToken {
 	return out
 }
 
+// language_has_jsx tells whether the grammar of the tree has JSX elements: the TypeScript one, for
+// .ts files, has none.
+fn language_has_jsx(root C.TSNode) bool {
+	name := 'jsx_element'
+	return C.ts_language_symbol_for_name(C.ts_node_language(root), &char(name.str), u32(name.len),
+		true) != 0
+}
+
+// source_tokens_by_start sorts the tokens by their start as source_tokens_jsx does. They come in
+// that order from the walk, and with distinct starts the sort has nothing to do.
+fn source_tokens_by_start(tokens []SourceToken) []SourceToken {
+	mut ordered := true
+	for i in 1 .. tokens.len {
+		if tokens[i].start <= tokens[i - 1].start {
+			ordered = false
+			break
+		}
+	}
+	if ordered {
+		return tokens
+	}
+	mut out := tokens.clone()
+	out.sort_with_compare(fn (a &SourceToken, b &SourceToken) int {
+		return a.start - b.start
+	})
+	return out
+}
+
 struct JsxTextGap {
 	start   int
 	end     int
@@ -254,7 +299,7 @@ fn source_tokens_visit(node C.TSNode, src string, mut out []SourceToken) bool {
 	kind := if C.ts_node_is_named(node) { node_kind(node) } else { '' }
 	match kind {
 		'comment', 'html_comment' {
-			block := src[start..end].starts_with('/*')
+			block := src_view(src, start, end).starts_with('/*')
 			out << SourceToken{start, end, if block { .block_comment } else { .line_comment }, node}
 			return false
 		}
@@ -282,7 +327,7 @@ fn source_tokens_visit(node C.TSNode, src string, mut out []SourceToken) bool {
 	if end <= start {
 		return false
 	}
-	text := src[start..end]
+	text := src_view(src, start, end)
 	if text in source_token_split_leaves {
 		for i in start .. end {
 			out << SourceToken{i, i + 1, .punctuator, node}

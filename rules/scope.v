@@ -249,8 +249,8 @@ fn (mut c Checker) scope_libs(libs []string) &ScopeLibs {
 // the file and what its comments declare.
 fn (mut c Checker) file_scope_setup(config LintConfig, inline InlineConfig) ScopeSetup {
 	libs := c.scope_libs(scope_libs_of(c.scope_project, config.language))
-	setup := new_scope_setup(c.scope_project, config.language, inline.globals, inline.exported,
-		libs)
+	setup := new_scope_setup_declaring(c.scope_project, config.language, inline.exported, libs,
+		c.file_declared_globals(config.language, inline.globals))
 	if c.is_svelte() {
 		return ScopeSetup{
 			...setup
@@ -273,6 +273,38 @@ fn (mut c Checker) file_scope_setup(config LintConfig, inline InlineConfig) Scop
 		}
 	}
 	return setup
+}
+
+// DeclaredGlobalsCache keeps the declared_globals of a file without `/* global */` comments:
+// they only depend on its ecmaVersion, sourceType and globals, which the files of a run share.
+struct DeclaredGlobalsCache {
+	set          bool
+	ecma_version int
+	source_type  string
+	globals      map[string]string
+	declared     []ScopeGlobal
+}
+
+// file_declared_globals is declared_globals(language, inline), computed once for the files without
+// `/* global */` comments that share the configuration (the builder only reads the list).
+fn (mut c Checker) file_declared_globals(language LanguageOptions, inline map[string]string) []ScopeGlobal {
+	if inline.len > 0 {
+		return declared_globals(language, inline)
+	}
+	cache := c.declared_globals_cache
+	if cache.set && cache.ecma_version == language.ecma_version
+		&& cache.source_type == language.source_type && cache.globals == language.globals {
+		return cache.declared
+	}
+	declared := declared_globals(language, inline)
+	c.declared_globals_cache = DeclaredGlobalsCache{
+		set:          true
+		ecma_version: language.ecma_version
+		source_type:  language.source_type
+		globals:      language.globals.clone()
+		declared:     declared
+	}
+	return declared
 }
 
 // OptionState tells an option that is not set from one set to null.
@@ -717,6 +749,12 @@ pub fn default_scope_setup() ScopeSetup {
 // give ('readonly', 'writable' or 'off', in the order of the comments), `exported` the names of
 // its `/* exported */` comments, and `libs` the variables of scope_libs_of(project, language).
 pub fn new_scope_setup(project ScopeProject, language LanguageOptions, inline map[string]string, exported []string, libs &ScopeLibs) ScopeSetup {
+	return new_scope_setup_declaring(project, language, exported, libs, declared_globals(language,
+		inline))
+}
+
+// new_scope_setup_declaring is new_scope_setup with its declared_globals.
+fn new_scope_setup_declaring(project ScopeProject, language LanguageOptions, exported []string, libs &ScopeLibs, declared []ScopeGlobal) ScopeSetup {
 	pragma, fragment := scope_jsx_names(project, language)
 	// ESLint gives the parser its sourceType unless the parser options have their own, and the
 	// parser takes anything but "module" as a script.
@@ -727,7 +765,7 @@ pub fn new_scope_setup(project ScopeProject, language LanguageOptions, inline ma
 	}
 	return ScopeSetup{
 		libs:              libs
-		declared:          declared_globals(language, inline)
+		declared:          declared
 		exported:          exported
 		jsx_pragma:        pragma
 		jsx_fragment_name: fragment

@@ -41,19 +41,20 @@ static inline void vt_pc_insert(vt_parent_slot *slots, size_t capacity, const vo
 	slots[i].parent = parent;
 }
 
-// vt_parent_cache_begin starts the table of the tree of `root`, empty.
+// vt_parent_cache_begin starts the table of the tree of `root`, empty, sized for its nodes (at most
+// half full): clearing a table left large by a previous file cost more than the walk of a small one.
 static void vt_parent_cache_begin(TSNode root) {
-	// A table grown for a large file is given back, so that the next small file does not clear it.
-	if (vt_pc_capacity > ((size_t)1 << 18)) {
-		free(vt_pc_slots);
-		vt_pc_slots = NULL;
-		vt_pc_capacity = 0;
+	size_t capacity = (size_t)1 << 12;
+	size_t nodes = ts_node_descendant_count(root);
+	while (capacity < 2 * (nodes + 1)) {
+		capacity <<= 1;
 	}
-	if (vt_pc_slots == NULL) {
-		vt_pc_capacity = (size_t)1 << 12;
-		vt_pc_slots = calloc(vt_pc_capacity, sizeof(vt_parent_slot));
-	} else {
+	if (vt_pc_slots != NULL && vt_pc_capacity == capacity) {
 		memset(vt_pc_slots, 0, vt_pc_capacity * sizeof(vt_parent_slot));
+	} else {
+		free(vt_pc_slots);
+		vt_pc_slots = calloc(capacity, sizeof(vt_parent_slot));
+		vt_pc_capacity = vt_pc_slots == NULL ? 0 : capacity;
 	}
 	vt_pc_count = 0;
 	vt_pc_tree = vt_pc_slots == NULL ? NULL : root.tree;

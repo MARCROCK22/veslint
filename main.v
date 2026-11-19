@@ -936,7 +936,7 @@ fn prepare_file(parser treesitter.Parser, path string, project_override string, 
 	}
 	bench.read_parse_ms += ms(sw.elapsed())
 	sw.restart()
-	idents := parser.identifiers(tree, src, all)
+	idents := parser.identifiers(tree, src, all)!
 	bench.query_ms += ms(sw.elapsed())
 	sw.restart()
 	utf16, display := offsets.utf16_positions(src, idents)
@@ -977,7 +977,7 @@ fn prepare_vue_file(mut vue_parsers VueParsers, parser treesitter.Parser, path s
 	}
 	bench.read_parse_ms += ms(sw.elapsed())
 	sw.restart()
-	idents, utf16, display := vue_identifiers(parser, doc, all)
+	idents, utf16, display := vue_identifiers(parser, doc, all)!
 	bench.query_ms += ms(sw.elapsed())
 	abs_path := os.abs_path(path)
 	tsconfig := if project_override != '' { project_override } else { find_tsconfig(abs_path)! }

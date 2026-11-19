@@ -25,7 +25,7 @@ fn declared(src string) []Ident {
 	defer {
 		treesitter.tree_delete(tree)
 	}
-	return p.identifiers(tree, src, false)
+	return p.identifiers(tree, src, false) or { panic(err) }
 }
 
 fn test_unescape_leading_underscores() {
