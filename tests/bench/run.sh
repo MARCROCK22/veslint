@@ -6,6 +6,7 @@
 #   tests/bench/run.sh                     # zod, recharts and the TypeScript compiler
 #   tests/bench/run.sh zod                 # one project
 #   RUNS=10 WARMUP=2 tests/bench/run.sh    # hyperfine's runs and warmup runs (5 and 1)
+#   EDITS=20 tests/bench/run.sh            # edits timed in the editor case (10)
 #
 # Three sets of rules:
 #   - syntactic: rules without type information, the ones of @eslint/js's and typescript-eslint's
@@ -21,6 +22,11 @@
 # eslint.config.mjs; ESLint uses typescript-eslint's project service, veslint tsgo, oxlint tsgolint,
 # Biome its own inference.
 #
+# The editor case (tests/bench/server.py), for the sets syntactic and typed: each tool's long-lived
+# process (veslint --server, ESLint kept alive as the VS Code extension keeps it, oxlint --lsp, Biome
+# lsp-proxy) opens one large file of the project, then the file is edited EDITS times (unsaved text)
+# and each edit is timed until its problems come back.
+#
 # It needs hyperfine, node, the projects of tests/eval_project.sh in build/eval (run it once for each),
 # the ESLint of build/eval/spider-byte (tests/eval_spider_byte.sh) and the other tools, installed in
 # build/bench by `npm ci` of tests/bench/package.json (done here when missing). It writes
@@ -32,6 +38,7 @@ BENCH=$ROOT/build/bench
 OUT=$BENCH/results
 RUNS=${RUNS:-5}
 WARMUP=${WARMUP:-1}
+EDITS=${EDITS:-10}
 ESLINT_DIR=$ROOT/build/eval/spider-byte/node_modules
 PROJECTS=("$@")
 [[ ${#PROJECTS[@]} -gt 0 ]] || PROJECTS=(zod recharts typescript)
@@ -71,6 +78,8 @@ const rules = set === 'syntactic'
 const write = (file, value) => fs.writeFileSync(path.join(dir, file), JSON.stringify(value, null, 1) + '\n');
 write('rules.json', { rules: Object.fromEntries(rules.map(([id, setting]) => [id, setting])) });
 write('.oxlintrc.json', {
+  // typeAware: what --type-aware does on the command line, here also for the language server.
+  ...(set === 'syntactic' ? {} : { options: { typeAware: true } }),
   categories: { correctness: 'off' },
   plugins: ['typescript'],
   rules: Object.fromEntries(rules.map(([, setting, name]) => [name, setting])),
@@ -125,6 +134,15 @@ prepare() {
 	find "$copy" -maxdepth 3 -name 'biome.json*' -not -path '*/node_modules/*' -delete
 }
 
+# The file of the editor case.
+edited() {
+	case $1 in
+	zod) echo src/v4/core/schemas.ts ;;
+	recharts) echo src/state/selectors/axisSelectors.ts ;;
+	typescript) echo src/compiler/parser.ts ;;
+	esac
+}
+
 # The files tests/eval_project.sh lints.
 sources() {
 	case $1 in
@@ -139,12 +157,15 @@ for project in "${PROJECTS[@]}"; do
 	cd "$DIR"
 	mapfile -t FILES < <(sources "$project")
 	lines=$(cat "${FILES[@]}" | wc -l)
-	echo "{\"project\": \"$project\", \"files\": ${#FILES[@]}, \"lines\": $lines}" > "$OUT/$project.json"
+	edited_file=$(edited "$project")
+	echo "{\"project\": \"$project\", \"files\": ${#FILES[@]}, \"lines\": $lines, \"edited\": \"$edited_file\", \"editedLines\": $(wc -l < "$edited_file")}" > "$OUT/$project.json"
 	for set in "${SETS[@]}"; do
 		C=$BENCH/configs/$set
 		type_aware=--type-aware
 		[[ $set == syntactic ]] && type_aware=''
+		# The language servers read the configuration of the workspace.
 		cp "$C/biome.json" "$DIR/biome.json"
+		cp "$C/.oxlintrc.json" "$DIR/.oxlintrc.json"
 		declare -A COMMANDS=(
 			[eslint]="node $ESLINT_DIR/eslint/bin/eslint.js --config $C/eslint.config.mjs --format json ${FILES[*]}"
 			[veslint]="$ROOT/veslint --config $C/eslint.config.mjs ${FILES[*]}"
@@ -167,6 +188,12 @@ for project in "${PROJECTS[@]}"; do
 		for tool in "${tools[@]}"; do args+=(-n "$tool" "${COMMANDS[$tool]}"); done
 		echo "${tools[*]}" > "$OUT/$project-$set.tools"
 		hyperfine -N -i --warmup "$WARMUP" --runs "$RUNS" --export-json "$OUT/$project-$set.hyperfine.json" "${args[@]}"
+		if [[ $set != floating ]]; then
+			for tool in "${tools[@]}"; do
+				echo "editor case: $project $set $tool"
+				python3 "$ROOT/tests/bench/server.py" "$tool" "$DIR" "$C" "$(edited "$project")" "$set" "$EDITS" > "$OUT/$project-$set-$tool.server.json"
+			done
+		fi
 		unset COMMANDS
 	done
 	cd "$ROOT"
@@ -199,11 +226,20 @@ for (const name of fs.readdirSync(out).filter(f => f.endsWith('.hyperfine.json')
       memoryMiB: Number(fs.readFileSync(`${stem}.memory`, 'utf8').trim()),
       problems, matching, eslintProblems,
     });
+    // The editor case: the first answer of the long-lived process and the median of the edits.
+    if (fs.existsSync(`${stem}.server.json`)) {
+      const server = JSON.parse(fs.readFileSync(`${stem}.server.json`, 'utf8'));
+      const edits = [...server.edits_ms].sort((a, b) => a - b);
+      results.at(-1).server = {
+        firstMs: server.first_ms, editMedianMs: edits[Math.floor(edits.length / 2)], editMaxMs: edits.at(-1),
+        edits: edits.length, problems: server.problems, memoryMiB: server.memoryMiB,
+      };
+    }
   }
 }
 const projects = Object.fromEntries(fs.readdirSync(out).filter(f => /^[a-z]+\.json$/.test(f)).map(f => {
   const p = JSON.parse(fs.readFileSync(path.join(out, f), 'utf8'));
-  return [p.project, { files: p.files, lines: p.lines }];
+  return [p.project, { files: p.files, lines: p.lines, edited: p.edited, editedLines: p.editedLines }];
 }));
 fs.writeFileSync(file, JSON.stringify({
   date: new Date().toISOString().slice(0, 10),
