@@ -1,0 +1,5 @@
+tests/rules/@eslint-community/eslint-comments/no-unlimited-disable/cases.ts:3:0	@eslint-community/eslint-comments/no-unlimited-disable	unexpected	Unexpected unlimited 'eslint-disable-line' comment. Specify some rule names to disable.
+tests/rules/@eslint-community/eslint-comments/no-unlimited-disable/cases.ts:4:0	@eslint-community/eslint-comments/no-unlimited-disable	unexpected	Unexpected unlimited 'eslint-disable-next-line' comment. Specify some rule names to disable.
+tests/rules/@eslint-community/eslint-comments/no-unlimited-disable/cases.ts:6:0	@eslint-community/eslint-comments/no-unlimited-disable	unexpected	Unexpected unlimited 'eslint-disable-next-line' comment. Specify some rule names to disable.
+tests/rules/@eslint-community/eslint-comments/no-unlimited-disable/cases.ts:7:0	@eslint-community/eslint-comments/no-unlimited-disable	unexpected	Unexpected unlimited 'eslint-disable-line' comment. Specify some rule names to disable.
+tests/rules/@eslint-community/eslint-comments/no-unlimited-disable/cases.ts:11:0	@eslint-community/eslint-comments/no-unlimited-disable	unexpected	Unexpected unlimited 'eslint-disable' comment. Specify some rule names to disable.

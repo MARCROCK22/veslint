@@ -1,0 +1,13 @@
+{"rule": "@eslint-community/eslint-comments/no-unused-enable", "upstream": "@eslint-community/eslint-plugin-eslint-comments v4.8.1", "files": ["tests/lib/rules/no-unused-enable.js"],
+"messages": {"unused":"ESLint rules are re-enabled but those have not been disabled.","unusedRule":"'{{ruleId}}' rule is re-enabled but it has not been disabled."},
+"cases": [
+{"id":"no-unused-enable/v0","kind":"valid","code":"\n/*eslint no-undef:error*/\n/*eslint-disable*/\nvar a = b\n/*eslint-enable*/\n","file":"file.ts","tsconfig":null},
+{"id":"no-unused-enable/v1","kind":"valid","code":"\n/*eslint no-undef:error*/\n/*eslint-disable no-undef*/\nvar a = b\n/*eslint-enable no-undef*/\n","file":"file.ts","tsconfig":null},
+{"id":"no-unused-enable/v2","kind":"valid","code":"\n/*eslint no-undef:error*/\n/*eslint-disable no-undef*/\nvar a = b\n/*eslint-enable*/\n","file":"file.ts","tsconfig":null},
+{"id":"no-unused-enable/v3","kind":"valid","code":"\n/*eslint no-undef:error, no-unused-vars:error*/\n/*eslint-disable no-undef,no-unused-vars*/\nvar a = b\n/*eslint-enable no-undef*/\n","file":"file.ts","tsconfig":null},
+{"id":"no-unused-enable/v4","kind":"valid","code":"\n/*eslint no-undef:error, no-unused-vars:error*/\n/*eslint-disable no-undef,no-unused-vars*/\nvar a = b\n/*eslint-enable*/\n","file":"file.ts","tsconfig":null},
+{"id":"no-unused-enable/i0","kind":"invalid","code":"/*eslint-enable*/","file":"file.ts","tsconfig":null,"errors":[{"message":"ESLint rules are re-enabled but those have not been disabled.","line":1,"column":0,"endLine":1,"endColumn":18}]},
+{"id":"no-unused-enable/i1","kind":"invalid","code":"/*eslint-enable no-undef*/","file":"file.ts","tsconfig":null,"errors":[{"message":"'no-undef' rule is re-enabled but it has not been disabled.","line":1,"column":17,"endLine":1,"endColumn":25}]},
+{"id":"no-unused-enable/i2","kind":"invalid","code":"\n/*eslint-disable no-unused-vars*/\n/*eslint-enable no-undef*/\n","file":"file.ts","tsconfig":null,"errors":[{"message":"'no-undef' rule is re-enabled but it has not been disabled.","line":3,"column":17,"endLine":3,"endColumn":25}]},
+{"id":"no-unused-enable/i3","kind":"invalid","code":"/*eslint-enable -- description*/","file":"file.ts","tsconfig":null,"errors":[{"message":"ESLint rules are re-enabled but those have not been disabled.","line":1,"column":0,"endLine":1,"endColumn":33}]}
+]}

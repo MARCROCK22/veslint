@@ -1,0 +1,7 @@
+tests/rules/promise/no-multiple-resolved/cases.ts:7:3	promise/no-multiple-resolved	alreadyResolved	Promise should not be resolved multiple times. Promise is already resolved on line 6.	end	7	25
+tests/rules/promise/no-multiple-resolved/cases.ts:13:3	promise/no-multiple-resolved	potentiallyAlreadyResolved	Promise should not be resolved multiple times. Promise is potentially resolved on line 11.	end	13	25
+tests/rules/promise/no-multiple-resolved/cases.ts:43:3	promise/no-multiple-resolved	alreadyResolved	Promise should not be resolved multiple times. Promise is already resolved on line 41.	end	43	13
+tests/rules/promise/no-multiple-resolved/cases.ts:52:3	promise/no-multiple-resolved	alreadyResolved	Promise should not be resolved multiple times. Promise is already resolved on line 51.	end	52	13
+tests/rules/promise/no-multiple-resolved/cases.ts:56:3	promise/no-multiple-resolved	potentiallyAlreadyResolved	Promise should not be resolved multiple times. Promise is potentially resolved on line 55.	end	56	13
+tests/rules/promise/no-multiple-resolved/cases.ts:63:7	promise/no-multiple-resolved	potentiallyAlreadyResolved	Promise should not be resolved multiple times. Promise is potentially resolved on line 61.	end	63	16
+tests/rules/promise/no-multiple-resolved/cases.ts:72:5	promise/no-multiple-resolved	alreadyResolved	Promise should not be resolved multiple times. Promise is already resolved on line 71.	end	72	15

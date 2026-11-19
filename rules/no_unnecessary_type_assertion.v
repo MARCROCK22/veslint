@@ -292,7 +292,8 @@ fn nuta_expression_of(node C.TSNode) ?C.TSNode {
 fn (mut c Checker) nuta_check_non_null(node C.TSNode, declarators []C.TSNode, mut cache NutaCache, mut findings []Finding) ! {
 	expression := unwrap_parens(first_named(node) or { return })
 	if parent := estree_parent(node) {
-		if node_kind(parent) == 'assignment_expression' {
+		// The `!` that ends an optional chain is inside its ChainExpression, the ESTree parent.
+		if node_kind(parent) == 'assignment_expression' && !is_estree_chain_root(node) {
 			left := node_field(parent, 'left') or { return }
 			if node_key(unwrap_parens(left)) == node_key(node) {
 				findings << c.with_fixes(Finding{

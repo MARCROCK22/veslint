@@ -1,0 +1,11 @@
+tests/rules/promise/prefer-catch/cases.ts:6:9	promise/prefer-catch	preferCatchToThen	Prefer `catch` to `then(a, b)`/`then(null, b)`.
+tests/rules/promise/prefer-catch/cases.ts:7:9	promise/prefer-catch	preferCatchToThen	Prefer `catch` to `then(a, b)`/`then(null, b)`.
+tests/rules/promise/prefer-catch/cases.ts:8:9	promise/prefer-catch	preferCatchToThen	Prefer `catch` to `then(a, b)`/`then(null, b)`.
+tests/rules/promise/prefer-catch/cases.ts:9:9	promise/prefer-catch	preferCatchToThen	Prefer `catch` to `then(a, b)`/`then(null, b)`.
+tests/rules/promise/prefer-catch/cases.ts:12:9	promise/prefer-catch	preferCatchToThen	Prefer `catch` to `then(a, b)`/`then(null, b)`.
+tests/rules/promise/prefer-catch/cases.ts:13:9	promise/prefer-catch	preferCatchToThen	Prefer `catch` to `then(a, b)`/`then(null, b)`.
+tests/rules/promise/prefer-catch/cases.ts:14:9	promise/prefer-catch	preferCatchToThen	Prefer `catch` to `then(a, b)`/`then(null, b)`.
+tests/rules/promise/prefer-catch/cases.ts:15:9	promise/prefer-catch	preferCatchToThen	Prefer `catch` to `then(a, b)`/`then(null, b)`.
+tests/rules/promise/prefer-catch/cases.ts:15:32	promise/prefer-catch	preferCatchToThen	Prefer `catch` to `then(a, b)`/`then(null, b)`.
+tests/rules/promise/prefer-catch/cases.ts:16:10	promise/prefer-catch	preferCatchToThen	Prefer `catch` to `then(a, b)`/`then(null, b)`.
+tests/rules/promise/prefer-catch/cases.ts:20:9	promise/prefer-catch	preferCatchToThen	Prefer `catch` to `then(a, b)`/`then(null, b)`.

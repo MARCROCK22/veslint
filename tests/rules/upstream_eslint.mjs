@@ -38,6 +38,10 @@ const stylistic = (await import(require.resolve('@stylistic/eslint-plugin'))).de
 const perfectionist = (await import(path.join(ROOT, 'build/upstream/perfectionist-deps/node_modules/eslint-plugin-perfectionist/dist/index.js'))).default;
 // The rules of @marcrock22/eslintcf (`marcrock/*`), as build/eval has them.
 const marcrock = (await import(path.join(NM, '@marcrock22/eslint/dist/rules/_.js'))).default;
+// @eslint-community/eslint-plugin-eslint-comments 4.8.1, outside build/eval (tests/upstream/README.md).
+const eslintComments = createRequire(path.join(ROOT, 'build/upstream/plugins-new/package.json'))('@eslint-community/eslint-plugin-eslint-comments');
+// eslint-plugin-promise 7.3.0, outside build/eval (tests/upstream/README.md).
+const promise = createRequire(path.join(ROOT, 'build/upstream/plugins-new/package.json'))('eslint-plugin-promise');
 
 const { builtinRules } = require('eslint/use-at-your-own-risk');
 
@@ -52,6 +56,10 @@ function pluginOf(rule) {
   if (rule.startsWith('@stylistic/')) return ['@stylistic', stylistic, rule.slice('@stylistic/'.length)];
   if (rule.startsWith('perfectionist/')) return ['perfectionist', perfectionist, rule.slice('perfectionist/'.length)];
   if (rule.startsWith('marcrock/')) return ['marcrock', marcrock, rule.slice('marcrock/'.length)];
+  if (rule.startsWith('@eslint-community/eslint-comments/')) {
+    return ['@eslint-community/eslint-comments', eslintComments, rule.slice('@eslint-community/eslint-comments/'.length)];
+  }
+  if (rule.startsWith('promise/')) return ['promise', promise, rule.slice('promise/'.length)];
   return ['@typescript-eslint', tseslint.plugin, rule.replace('@typescript-eslint/', '')];
 }
 
@@ -71,12 +79,21 @@ function linterFor(cwd) {
 }
 
 // The passes of fixes of the RuleTester of the rule's tests: typescript-eslint's (also for
-// @slipher/eslint-plugin and @marcrock22/eslintcf) makes up to 10; ESLint's, which ESLint core and eslint-plugin-unicorn
-// (through eslint-ava-rule-tester) use, one.
+// @slipher/eslint-plugin and @marcrock22/eslintcf) makes up to 10; ESLint's, which ESLint core,
+// eslint-plugin-unicorn (through eslint-ava-rule-tester) and eslint-plugin-promise use, one.
 // eslint-vitest-rule-tester's createRuleTester (eslint-plugin-perfectionist) makes the first pass and
 // up to 11 more, and checks the text of the last one.
 const maxPassesOf = rule =>
   rule.startsWith('perfectionist/') ? 12 : rule.startsWith('@typescript-eslint/') || rule.startsWith('seyfert/') || rule.startsWith('marcrock/') ? 10 : 1;
+
+// The plugins the RuleTester of a test file defines besides the rule (`plugins` of a case: each
+// namespace with the names of its rules), which the case's directive comments name: rules that do
+// nothing, since only the tested rule is on.
+function standInPlugins(plugins = {}) {
+  return Object.fromEntries(
+    Object.entries(plugins).map(([namespace, names]) => [namespace, { rules: Object.fromEntries(names.map(name => [name, { create: () => ({}) }])) }]),
+  );
+}
 
 function configOf(rule, c, root, defaults = {}) {
   const languageOptions = { ...defaults, ...c.languageOptions };
@@ -97,9 +114,11 @@ function configOf(rule, c, root, defaults = {}) {
       files: ['**/*.ts', '**/*.tsx', '**/*.mts', '**/*.cts'],
       languageOptions: { ...languageOptions, parser: tseslint.parser, parserOptions },
       // eslint-plugin-unicorn's tests (ESLint's RuleTester through eslint-ava-rule-tester) do not
-      // report unused disable directives.
-      linterOptions: { reportUnusedDisableDirectives: rule.startsWith('unicorn/') ? 0 : 1 },
-      plugins: prefix ? { [prefix]: plugin } : {},
+      // report unused disable directives, nor do @eslint-community/eslint-plugin-eslint-comments'
+      // (ESLint 10's RuleTester).
+      // The linterOptions of a case (`noInlineConfig`) under those.
+      linterOptions: { reportUnusedDisableDirectives: rule.startsWith('unicorn/') || rule.startsWith('@eslint-community/eslint-comments/') ? 0 : 1, ...c.linterOptions },
+      plugins: { ...standInPlugins(c.plugins), ...(prefix ? { [prefix]: plugin } : {}) },
       rules: { [rule]: ['error', ...(c.options ?? [])] },
       settings: c.settings ?? {},
     },

@@ -170,6 +170,7 @@ tests/rules/@typescript-eslint/promise-function-async/cases.ts:230:1	@typescript
 tests/rules/@typescript-eslint/promise-function-async/cases.ts:245:1	@typescript-eslint/promise-function-async	missingAsyncHybridReturn	Functions that return promises must be async. Consider adding an explicit return type annotation if the function is intended to return a union of promise and non-promise types.
 tests/rules/@typescript-eslint/promise-function-async/cases.ts:249:1	@typescript-eslint/promise-function-async	missingAsync	Functions that return promises must be async.
 tests/rules/@typescript-eslint/promise-function-async/cases.ts:259:1	@typescript-eslint/promise-function-async	missingAsync	Functions that return promises must be async.
+tests/rules/@typescript-eslint/promise-function-async/constructor-like/cases.ts:3:3	@typescript-eslint/promise-function-async	missingAsync	Functions that return promises must be async.
 tests/rules/@typescript-eslint/promise-function-async/only-arrows-and-methods/cases.ts:79:18	@typescript-eslint/promise-function-async	missingAsync	Functions that return promises must be async.
 tests/rules/@typescript-eslint/promise-function-async/only-arrows-and-methods/cases.ts:80:23	@typescript-eslint/promise-function-async	missingAsync	Functions that return promises must be async.
 tests/rules/@typescript-eslint/promise-function-async/only-arrows-and-methods/cases.ts:84:37	@typescript-eslint/promise-function-async	missingAsync	Functions that return promises must be async.

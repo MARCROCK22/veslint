@@ -102,14 +102,15 @@ fn nuv_pattern(o OptionObject, key string) !NuvPattern {
 	return NuvPattern{
 		has:     true
 		program: program
-		text:    nuv_regexp_text(pattern)
+		text:    regexp_u_text(pattern)
 	}
 }
 
-// nuv_regexp_text is RegExp.prototype.toString() of `new RegExp(pattern, 'u')`, as V8 writes its
+// regexp_u_text is RegExp.prototype.toString() of `new RegExp(pattern, 'u')`, as V8 writes its
 // source: a `/` outside a class is escaped, a line terminator becomes its escape (a backslash
-// before one is dropped), and an empty source is `(?:)`.
-fn nuv_regexp_text(pattern string) string {
+// before one is dropped), and an empty source is `(?:)`. no-unused-vars and naming-convention
+// print their patterns with it.
+fn regexp_u_text(pattern string) string {
 	runes := pattern.runes()
 	mut out := []rune{}
 	mut in_class := false

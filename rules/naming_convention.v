@@ -135,54 +135,6 @@ fn nc_strings(value json2.Any, what string) ![]string {
 	return out
 }
 
-// nc_regexp_text is RegExp.prototype.toString() of `new RegExp(pattern, 'u')`: the source, with
-// its `/` and its line breaks escaped, between slashes.
-fn nc_regexp_text(pattern string) string {
-	if pattern == '' {
-		return '/(?:)/u'
-	}
-	mut out := []rune{}
-	mut escaped := false
-	mut in_class := false
-	for ch in pattern.runes() {
-		if escaped {
-			escaped = false
-			out << ch
-			continue
-		}
-		match ch {
-			`\\` {
-				escaped = true
-				out << ch
-			}
-			`[` {
-				in_class = true
-				out << ch
-			}
-			`]` {
-				in_class = false
-				out << ch
-			}
-			`/` {
-				if !in_class {
-					out << `\\`
-				}
-				out << ch
-			}
-			`\n` {
-				out << '\\n'.runes()
-			}
-			`\r` {
-				out << '\\r'.runes()
-			}
-			else {
-				out << ch
-			}
-		}
-	}
-	return '/${out.string()}/u'
-}
-
 fn nc_regex(pattern string, is_match bool) !NcRegex {
 	program := jsregexp.regexp_compile(pattern) or {
 		return error('`${naming_convention}`: veslint cannot use the regular expression `${pattern}`: ${err.msg()}')
@@ -191,7 +143,7 @@ fn nc_regex(pattern string, is_match bool) !NcRegex {
 		has:      true
 		is_match: is_match
 		program:  program
-		text:     nc_regexp_text(pattern)
+		text:     regexp_u_text(pattern)
 	}
 }
 

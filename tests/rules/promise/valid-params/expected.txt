@@ -1,0 +1,14 @@
+tests/rules/promise/valid-params/cases.ts:7:1	promise/valid-params	requireOneOptionalArgument	Promise.resolve() requires 0 or 1 arguments, but received 2
+tests/rules/promise/valid-params/cases.ts:8:1	promise/valid-params	requireOneOptionalArgument	Promise.reject() requires 0 or 1 arguments, but received 2
+tests/rules/promise/valid-params/cases.ts:9:1	promise/valid-params	requireOneArgument	Promise.all() requires 1 argument, but received 0
+tests/rules/promise/valid-params/cases.ts:10:1	promise/valid-params	requireOneArgument	Promise.all() requires 1 argument, but received 2
+tests/rules/promise/valid-params/cases.ts:12:1	promise/valid-params	requireOneArgument	Promise.any() requires 1 argument, but received 0
+tests/rules/promise/valid-params/cases.ts:13:1	promise/valid-params	requireOneArgument	Promise.race() requires 1 argument, but received 2
+tests/rules/promise/valid-params/cases.ts:14:1	promise/valid-params	requireTwoOptionalArguments	Promise.then() requires 1 or 2 arguments, but received 0
+tests/rules/promise/valid-params/cases.ts:17:1	promise/valid-params	requireTwoOptionalArguments	Promise.then() requires 1 or 2 arguments, but received 3
+tests/rules/promise/valid-params/cases.ts:18:1	promise/valid-params	requireOneArgument	Promise.catch() requires 1 argument, but received 0
+tests/rules/promise/valid-params/cases.ts:19:1	promise/valid-params	requireOneArgument	Promise.catch() requires 1 argument, but received 2
+tests/rules/promise/valid-params/cases.ts:20:1	promise/valid-params	requireOneArgument	Promise.finally() requires 1 argument, but received 0
+tests/rules/promise/valid-params/cases.ts:22:1	promise/valid-params	requireOneArgument	Promise.catch() requires 1 argument, but received 0
+tests/rules/promise/valid-params/cases.ts:22:1	promise/valid-params	requireOneArgument	Promise.finally() requires 1 argument, but received 2
+tests/rules/promise/valid-params/exclude/cases.ts:6:1	promise/valid-params	requireOneOptionalArgument	Promise.reject() requires 0 or 1 arguments, but received 2

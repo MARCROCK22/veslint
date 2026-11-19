@@ -25,7 +25,11 @@ const { plugin: seyfert } = createRequire(import.meta.url)(
 const vue = createRequire(import.meta.url)('../../build/upstream/vue-deps/node_modules/eslint-plugin-vue');
 const svelteParser = createRequire(import.meta.url)('../../build/upstream/svelte-deps/node_modules/svelte-eslint-parser');
 const svelte = createRequire(import.meta.url)('../../build/upstream/svelte-deps/node_modules/eslint-plugin-svelte');
-const plugins = { '@typescript-eslint': tseslint.plugin, '@stylistic': stylistic, perfectionist, marcrock, seyfert, unicorn, vue, svelte };
+// @eslint-community/eslint-plugin-eslint-comments 4.8.1 (build/upstream/plugins-new).
+const eslintComments = createRequire(import.meta.url)('../../build/upstream/plugins-new/node_modules/@eslint-community/eslint-plugin-eslint-comments');
+// eslint-plugin-promise 7.3.0 (build/upstream/plugins-new, tests/upstream/README.md).
+const promise = createRequire(import.meta.url)('../../build/upstream/plugins-new/node_modules/eslint-plugin-promise');
+const plugins = { '@typescript-eslint': tseslint.plugin, '@stylistic': stylistic, perfectionist, marcrock, promise, seyfert, unicorn, vue, svelte, '@eslint-community/eslint-comments': eslintComments };
 
 // The directory of a rule is the one with an expected.txt, and its path is the rule's id
 // (`@typescript-eslint/await-thenable`); the files of the packages in a node_modules do not count.
@@ -44,6 +48,11 @@ const withDefaults = ported.flatMap(rule => [
     },
     plugins,
     rules: { [rule]: 'error' },
+    // The rules of @eslint-community/eslint-plugin-eslint-comments report the directive comments
+    // themselves (an unused `eslint-enable`, a duplicate `eslint-disable`…): ESLint's own reports of
+    // unused directives are off on their fixtures, as in the RuleTester of the plugin's tests, and
+    // tests/run.sh runs veslint on them the same way.
+    ...(rule.startsWith('@eslint-community/eslint-comments/') ? { linterOptions: { reportUnusedDisableDirectives: 'off' } } : {}),
   },
   {
     files: [`**/rules/${rule}/**/cases.vue`],

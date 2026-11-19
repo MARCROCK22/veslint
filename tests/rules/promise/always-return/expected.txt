@@ -1,0 +1,16 @@
+tests/rules/promise/always-return/cases.ts:7:14	promise/always-return	thenShouldReturnOrThrow	Each then() should return a value or throw
+tests/rules/promise/always-return/cases.ts:11:3	promise/always-return	thenShouldReturnOrThrow	Each then() should return a value or throw
+tests/rules/promise/always-return/cases.ts:16:3	promise/always-return	thenShouldReturnOrThrow	Each then() should return a value or throw
+tests/rules/promise/always-return/cases.ts:23:3	promise/always-return	thenShouldReturnOrThrow	Each then() should return a value or throw
+tests/rules/promise/always-return/cases.ts:34:3	promise/always-return	thenShouldReturnOrThrow	Each then() should return a value or throw
+tests/rules/promise/always-return/cases.ts:40:30	promise/always-return	thenShouldReturnOrThrow	Each then() should return a value or throw
+tests/rules/promise/always-return/cases.ts:43:19	promise/always-return	thenShouldReturnOrThrow	Each then() should return a value or throw
+tests/rules/promise/always-return/cases.ts:46:20	promise/always-return	thenShouldReturnOrThrow	Each then() should return a value or throw
+tests/rules/promise/always-return/cases.ts:74:14	promise/always-return	thenShouldReturnOrThrow	Each then() should return a value or throw
+tests/rules/promise/always-return/cases.ts:77:14	promise/always-return	thenShouldReturnOrThrow	Each then() should return a value or throw
+tests/rules/promise/always-return/ignore-assignment-variable/cases.ts:12:14	promise/always-return	thenShouldReturnOrThrow	Each then() should return a value or throw
+tests/rules/promise/always-return/ignore-assignment-variable/cases.ts:15:27	promise/always-return	thenShouldReturnOrThrow	Each then() should return a value or throw
+tests/rules/promise/always-return/ignore-assignment-variable/cases.ts:18:14	promise/always-return	thenShouldReturnOrThrow	Each then() should return a value or throw
+tests/rules/promise/always-return/ignore-last-callback/cases.ts:11:27	promise/always-return	thenShouldReturnOrThrow	Each then() should return a value or throw
+tests/rules/promise/always-return/ignore-last-callback/cases.ts:14:14	promise/always-return	thenShouldReturnOrThrow	Each then() should return a value or throw
+tests/rules/promise/always-return/no-assignment-variable/cases.ts:4:14	promise/always-return	thenShouldReturnOrThrow	Each then() should return a value or throw

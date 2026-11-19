@@ -1,0 +1,7 @@
+tests/rules/promise/prefer-await-to-callbacks/cases.ts:8:38	promise/prefer-await-to-callbacks	error	Avoid callbacks. Prefer Async/Await.
+tests/rules/promise/prefer-await-to-callbacks/cases.ts:9:3	promise/prefer-await-to-callbacks	error	Avoid callbacks. Prefer Async/Await.
+tests/rules/promise/prefer-await-to-callbacks/cases.ts:11:17	promise/prefer-await-to-callbacks	error	Avoid callbacks. Prefer Async/Await.
+tests/rules/promise/prefer-await-to-callbacks/cases.ts:11:36	promise/prefer-await-to-callbacks	error	Avoid callbacks. Prefer Async/Await.
+tests/rules/promise/prefer-await-to-callbacks/cases.ts:12:11	promise/prefer-await-to-callbacks	error	Avoid callbacks. Prefer Async/Await.
+tests/rules/promise/prefer-await-to-callbacks/cases.ts:13:11	promise/prefer-await-to-callbacks	error	Avoid callbacks. Prefer Async/Await.
+tests/rules/promise/prefer-await-to-callbacks/cases.ts:28:25	promise/prefer-await-to-callbacks	error	Avoid callbacks. Prefer Async/Await.

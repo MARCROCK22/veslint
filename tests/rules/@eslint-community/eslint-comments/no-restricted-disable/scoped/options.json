@@ -1,0 +1,1 @@
+["@typescript-eslint/*", "no-*", "!no-var", "[ce]url[xy]", "/eqeqeq"]

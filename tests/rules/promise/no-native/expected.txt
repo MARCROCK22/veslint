@@ -1,0 +1,5 @@
+tests/rules/promise/no-native/cases.ts:5:15	promise/no-native	name	"Promise" is not defined.
+tests/rules/promise/no-native/cases.ts:6:11	promise/no-native	name	"Promise" is not defined.
+tests/rules/promise/no-native/cases.ts:7:10	promise/no-native	name	"Promise" is not defined.
+tests/rules/promise/no-native/cases.ts:8:15	promise/no-native	name	"Promise" is not defined.
+tests/rules/promise/no-native/cases.ts:9:10	promise/no-native	name	"Promise" is not defined.

@@ -1,0 +1,20 @@
+{"rule": "promise/param-names", "upstream": "eslint-plugin-promise v7.3.0", "files": ["__tests__/param-names.js"],
+"messages": {"resolveParamNames":"Promise constructor parameters must be named to match \"{{ resolvePattern }}\"","rejectParamNames":"Promise constructor parameters must be named to match \"{{ rejectPattern }}\""},
+"cases": [
+{"id":"param-names/v0","kind":"valid","code":"new Promise(function(resolve, reject) {})","file":"file.ts","tsconfig":null,"languageOptions":{"ecmaVersion":6}},
+{"id":"param-names/v1","kind":"valid","code":"new Promise(function(resolve, _reject) {})","file":"file.ts","tsconfig":null,"languageOptions":{"ecmaVersion":6}},
+{"id":"param-names/v2","kind":"valid","code":"new Promise(function(_resolve, reject) {})","file":"file.ts","tsconfig":null,"languageOptions":{"ecmaVersion":6}},
+{"id":"param-names/v3","kind":"valid","code":"new Promise(function(_resolve, _reject) {})","file":"file.ts","tsconfig":null,"languageOptions":{"ecmaVersion":6}},
+{"id":"param-names/v4","kind":"valid","code":"new Promise(function(resolve) {})","file":"file.ts","tsconfig":null,"languageOptions":{"ecmaVersion":6}},
+{"id":"param-names/v5","kind":"valid","code":"new Promise(function(_resolve) {})","file":"file.ts","tsconfig":null,"languageOptions":{"ecmaVersion":6}},
+{"id":"param-names/v6","kind":"valid","code":"new Promise(resolve => {})","file":"file.ts","tsconfig":null,"languageOptions":{"ecmaVersion":6}},
+{"id":"param-names/v7","kind":"valid","code":"new Promise((resolve, reject) => {})","file":"file.ts","tsconfig":null,"languageOptions":{"ecmaVersion":6}},
+{"id":"param-names/v8","kind":"valid","code":"new Promise(() => {})","file":"file.ts","tsconfig":null,"languageOptions":{"ecmaVersion":6}},
+{"id":"param-names/v9","kind":"valid","code":"new NonPromise()","file":"file.ts","tsconfig":null,"languageOptions":{"ecmaVersion":6}},
+{"id":"param-names/v10","kind":"valid","code":"new Promise((yes, no) => {})","options":[{"resolvePattern":"^yes$","rejectPattern":"^no$"}],"file":"file.ts","tsconfig":null,"languageOptions":{"ecmaVersion":6}},
+{"id":"param-names/i0","kind":"invalid","code":"new Promise(function(reject, resolve) {})","file":"file.ts","tsconfig":null,"languageOptions":{"ecmaVersion":6},"errors":[{"message":"Promise constructor parameters must be named to match \"^_?resolve$\""},{"message":"Promise constructor parameters must be named to match \"^_?reject$\""}]},
+{"id":"param-names/i1","kind":"invalid","code":"new Promise(function(resolve, rej) {})","file":"file.ts","tsconfig":null,"languageOptions":{"ecmaVersion":6},"errors":[{"message":"Promise constructor parameters must be named to match \"^_?reject$\""}]},
+{"id":"param-names/i2","kind":"invalid","code":"new Promise(yes => {})","file":"file.ts","tsconfig":null,"languageOptions":{"ecmaVersion":6},"errors":[{"message":"Promise constructor parameters must be named to match \"^_?resolve$\""}]},
+{"id":"param-names/i3","kind":"invalid","code":"new Promise((yes, no) => {})","file":"file.ts","tsconfig":null,"languageOptions":{"ecmaVersion":6},"errors":[{"message":"Promise constructor parameters must be named to match \"^_?resolve$\""},{"message":"Promise constructor parameters must be named to match \"^_?reject$\""}]},
+{"id":"param-names/i4","kind":"invalid","code":"new Promise(function(resolve, reject) {})","options":[{"resolvePattern":"^yes$","rejectPattern":"^no$"}],"file":"file.ts","tsconfig":null,"languageOptions":{"ecmaVersion":6},"errors":[{"message":"Promise constructor parameters must be named to match \"^yes$\""},{"message":"Promise constructor parameters must be named to match \"^no$\""}]}
+]}

@@ -1,0 +1,3 @@
+tests/rules/promise/no-return-in-finally/cases.ts:5:9	promise/no-return-in-finally	avoidReturnInFinally	No return in finally	end	5	16
+tests/rules/promise/no-return-in-finally/cases.ts:8:9	promise/no-return-in-finally	avoidReturnInFinally	No return in finally	end	8	16
+tests/rules/promise/no-return-in-finally/cases.ts:26:20	promise/no-return-in-finally	avoidReturnInFinally	No return in finally	end	26	27

@@ -145,14 +145,10 @@ fn (c &Checker) pfa_is_checked(f C.TSNode, options PfaOptions) bool {
 	}
 }
 
-// pfa_is_constructor: the class member is its constructor (MethodDefinition with kind
-// "constructor": a method named `constructor` that is neither static nor computed).
+// pfa_is_constructor: the class member is its constructor (a MethodDefinition of kind
+// "constructor", as TypeScript parses it: not static, not computed, not a generator or an accessor).
 fn (c &Checker) pfa_is_constructor(method C.TSNode) bool {
-	name := node_field(method, 'name') or { return false }
-	if has_child_kind(method, 'static') {
-		return false
-	}
-	return c.text(name) in ['constructor', "'constructor'", '"constructor"']
+	return c.cm_method_kind(method) == 'constructor'
 }
 
 // contains_all_types_by_name ports containsAllTypesByName from type-utils: the type, or every part
