@@ -1,0 +1,4 @@
+tests/rules/regexp/no-escape-backspace/cases.ts:2:21	regexp/no-escape-backspace	unexpected	Unexpected '[\\b]'. Use '\\u0008' instead.	suggestion	suggest	Use '\\u0008'.	52	54	\\u0008	end	2	23
+tests/rules/regexp/no-escape-backspace/cases.ts:3:22	regexp/no-escape-backspace	unexpected	Unexpected '[\\b]'. Use '\\u0008' instead.	suggestion	suggest	Use '\\u0008'.	79	81	\\u0008	end	3	24
+tests/rules/regexp/no-escape-backspace/cases.ts:4:32	regexp/no-escape-backspace	unexpected	Unexpected '[\\b]'. Use '\\u0008' instead.	suggestion	suggest	Use '\\u0008'.	118	121	\\\\u0008	end	4	35
+tests/rules/regexp/no-escape-backspace/cases.ts:5:33	regexp/no-escape-backspace	unexpected	Unexpected '[\\b]'. Use '\\u0008' instead.	suggestion	suggest	Use '\\u0008'.	158	161	\\\\u0008	end	5	36

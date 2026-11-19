@@ -4,7 +4,7 @@ import regexpp
 import treesitter { node_field, node_kind, node_parent }
 
 // Helpers of the rules of ESLint core about regular expressions (regexpp is the port of
-// @eslint-community/regexpp 4.12.2 in regexpp/). Patterns are UTF-16 units, like JavaScript
+// @eslint-community/regexpp 4.12.3 in regexpp/). Patterns are UTF-16 units, like JavaScript
 // strings, and regexpp's offsets are indexes of units.
 
 // es_regex_literal is node.regex of a regular expression literal: its pattern, as written between

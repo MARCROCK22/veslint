@@ -1754,3 +1754,8 @@ veslint	svelte/no-unused-svelte-ignore/i20	<style lang="less">: less is not port
 veslint	svelte/no-unused-svelte-ignore/i21	<style lang="stylus">: stylus is not ported
 veslint	svelte/no-unused-svelte-ignore/i25	<style lang="postcss">: postcss with postcss-nested (postcss.config.cjs) is not ported
 veslint	svelte/no-unused-svelte-ignore/i26	<style lang="postcss">: postcss with postcss-nested (postcss.config.cjs) is not ported
+# regexp/no-missing-g-flag with strictTypes: false on an undeclared `s`: with espree (the test) the
+# type tracker infers nothing and maybeString holds; with typescript-eslint's parser it has its
+# esTreeNodeToTSNodeMap (usedTS), maybeString is isString, and `s` is `any`: not reported.
+eslint	regexp/no-missing-g-flag/i9	maybeString is isString with typescript-eslint's parser; `s` is undeclared
+veslint	regexp/no-missing-g-flag/i9	maybeString is isString with typescript-eslint's parser; `s` is undeclared

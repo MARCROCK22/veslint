@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Differential test of regexpp/ (the V port of @eslint-community/regexpp 4.12.2) against the
+# Differential test of regexpp/ (the V port of @eslint-community/regexpp 4.12.3) against the
 # package itself: for every input (the patterns and flags of the tests of ESLint's nine rules about
 # regular expressions, and three seeded sets of generated patterns, each under ecmaVersion 5 to
 # 2025, the flags none/u/v/uv, `strict`, offsets inside a larger source and literals), the result
@@ -14,7 +14,7 @@ set -euo pipefail
 cd "$(dirname "$0")/../.."
 export V_C_ERROR_BUG_REPORT_DISABLED=1 V_MACOS_V3_NO_FALLBACK=1
 V=${V:-v}
-REGEXPP=build/eval/spider-byte/node_modules/@eslint-community/regexpp/index.js
+REGEXPP=build/upstream/plugins-new/node_modules/@eslint-community/regexpp/index.js
 OUT=build/regexpp-oracle
 mkdir -p "$OUT"
 node tools/gen_regexpp_tables.mjs "$REGEXPP" "$OUT/tables.v"

@@ -1,7 +1,7 @@
-// Runs the real regexpp 4.12.2 on cases.txt and writes the canonical dump compared against the V port (main.v).
+// Runs the real regexpp 4.12.3 on cases.txt and writes the canonical dump compared against the V port (main.v).
 "use strict";
 const fs = require("node:fs");
-const { RegExpValidator, RegExpParser, RegExpSyntaxError, visitRegExpAST } = require(require("node:path").join(__dirname, "../../build/eval/spider-byte/node_modules/@eslint-community/regexpp"));
+const { RegExpValidator, RegExpParser, RegExpSyntaxError, visitRegExpAST } = require(require("node:path").join(__dirname, "../../build/upstream/plugins-new/node_modules/@eslint-community/regexpp"));
 const lines = fs.readFileSync(process.argv[2], "utf8").split("\n").filter(Boolean);
 const fd = fs.openSync(process.argv[3], "w");
 let out = [];

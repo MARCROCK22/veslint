@@ -1,0 +1,10 @@
+{"rule": "regexp/no-non-standard-flag", "upstream": "eslint-plugin-regexp v3.3.3", "files": ["tests/lib/rules/no-non-standard-flag.ts"],
+"messages": {"unexpected":"Unexpected non-standard flag '{{flag}}'."},
+"cases": [
+{"id":"regexp/no-non-standard-flag/v0","kind":"valid","code":"/foo/gimsuy","file":"file.ts","tsconfig":null,"languageOptions":{"ecmaVersion":"latest","sourceType":"module"}},
+{"id":"regexp/no-non-standard-flag/v1","kind":"valid","code":"/foo/v","file":"file.ts","tsconfig":null,"languageOptions":{"ecmaVersion":"latest","sourceType":"module"}},
+{"id":"regexp/no-non-standard-flag/i0","kind":"invalid","code":"/fo*o*/l","file":"file.ts","tsconfig":null,"languageOptions":{"ecmaVersion":"latest","sourceType":"module"},"errors":[{"messageId":"unexpected","message":"Unexpected non-standard flag 'l'.","line":1,"column":8,"endLine":1,"endColumn":9,"suggestions":[]}]},
+{"id":"regexp/no-non-standard-flag/i1","kind":"invalid","code":"RegExp(\"foo\", \"l\")","file":"file.ts","tsconfig":null,"languageOptions":{"ecmaVersion":"latest","sourceType":"module"},"errors":[{"messageId":"unexpected","message":"Unexpected non-standard flag 'l'.","line":1,"column":16,"endLine":1,"endColumn":17,"suggestions":[]}]},
+{"id":"regexp/no-non-standard-flag/i2","kind":"invalid","code":"RegExp(someVariable, \"l\")","file":"file.ts","tsconfig":null,"languageOptions":{"ecmaVersion":"latest","sourceType":"module"},"errors":[{"messageId":"unexpected","message":"Unexpected non-standard flag 'l'.","line":1,"column":23,"endLine":1,"endColumn":24,"suggestions":[]}]},
+{"id":"regexp/no-non-standard-flag/i3","kind":"invalid","code":"RegExp(\"(\", \"l\")","file":"file.ts","tsconfig":null,"languageOptions":{"ecmaVersion":"latest","sourceType":"module"},"errors":[{"messageId":"unexpected","message":"Unexpected non-standard flag 'l'.","line":1,"column":14,"endLine":1,"endColumn":15,"suggestions":[]}]}
+]}

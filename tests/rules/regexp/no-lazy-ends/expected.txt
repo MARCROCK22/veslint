@@ -1,0 +1,11 @@
+tests/rules/regexp/no-lazy-ends/cases.ts:2:20	regexp/no-lazy-ends	uselessElement	The quantifier and the quantified element can be removed because the quantifier is lazy and has a minimum of 0.
+tests/rules/regexp/no-lazy-ends/cases.ts:3:20	regexp/no-lazy-ends	uselessElement	The quantifier and the quantified element can be removed because the quantifier is lazy and has a minimum of 0.
+tests/rules/regexp/no-lazy-ends/cases.ts:4:20	regexp/no-lazy-ends	uselessQuantifier	The quantifier can be removed because the quantifier is lazy and has a minimum of 1.
+tests/rules/regexp/no-lazy-ends/cases.ts:5:20	regexp/no-lazy-ends	uselessRange	The quantifier can be replaced with '{3}' because the quantifier is lazy and has a minimum of 3.
+tests/rules/regexp/no-lazy-ends/cases.ts:6:37	regexp/no-lazy-ends	uselessQuantifier	The quantifier can be removed because the quantifier is lazy and has a minimum of 1.
+tests/rules/regexp/no-lazy-ends/cases.ts:7:27	regexp/no-lazy-ends	uselessQuantifier	The quantifier can be removed because the quantifier is lazy and has a minimum of 1.
+tests/rules/regexp/no-lazy-ends/cases.ts:8:14	regexp/no-lazy-ends	uselessRange	The quantifier can be replaced with '{2}' because the quantifier is lazy and has a minimum of 2.
+tests/rules/regexp/no-lazy-ends/cases.ts:10:31	regexp/no-lazy-ends	uselessElement	The quantifier and the quantified element can be removed because the quantifier is lazy and has a minimum of 0.
+tests/rules/regexp/no-lazy-ends/not-partial/cases.ts:2:20	regexp/no-lazy-ends	uselessQuantifier	The quantifier can be removed because the quantifier is lazy and has a minimum of 1.
+tests/rules/regexp/no-lazy-ends/not-partial/cases.ts:3:20	regexp/no-lazy-ends	uselessQuantifier	The quantifier can be removed because the quantifier is lazy and has a minimum of 1.
+tests/rules/regexp/no-lazy-ends/not-partial/cases.ts:4:25	regexp/no-lazy-ends	uselessElement	The quantifier and the quantified element can be removed because the quantifier is lazy and has a minimum of 0.

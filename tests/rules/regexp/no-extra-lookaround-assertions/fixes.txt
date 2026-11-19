@@ -1,0 +1,8 @@
+tests/rules/regexp/no-extra-lookaround-assertions/cases.ts:2:25	regexp/no-extra-lookaround-assertions	canBeInlined	This lookahead assertion is useless and can be inlined.	fix	49	54	c	end	2	30
+tests/rules/regexp/no-extra-lookaround-assertions/cases.ts:3:25	regexp/no-extra-lookaround-assertions	canBeConvertedIntoGroup	This lookahead assertion is useless and can be converted into a group.	fix	82	89	(?:c|d)	end	3	32
+tests/rules/regexp/no-extra-lookaround-assertions/cases.ts:4:24	regexp/no-extra-lookaround-assertions	canBeInlined	This lookbehind assertion is useless and can be inlined.	fix	116	122	a	end	4	30
+tests/rules/regexp/no-extra-lookaround-assertions/cases.ts:5:24	regexp/no-extra-lookaround-assertions	canBeConvertedIntoGroup	This lookbehind assertion is useless and can be converted into a group.	fix	151	159	(?:a|b)	end	5	32
+tests/rules/regexp/no-extra-lookaround-assertions/cases.ts:6:27	regexp/no-extra-lookaround-assertions	canBeInlined	This lookahead assertion is useless and can be inlined.	fix	192	197	c	end	6	32
+tests/rules/regexp/no-extra-lookaround-assertions/cases.ts:7:36	regexp/no-extra-lookaround-assertions	canBeInlined	This lookahead assertion is useless and can be inlined.	fix	236	241	c	end	7	41
+tests/rules/regexp/no-extra-lookaround-assertions/cases.ts:8:24	regexp/no-extra-lookaround-assertions	canBeInlined	This lookahead assertion is useless and can be inlined.	fix	269	279	b(?=c)	end	8	34
+tests/rules/regexp/no-extra-lookaround-assertions/cases.ts:8:28	regexp/no-extra-lookaround-assertions	canBeInlined	This lookahead assertion is useless and can be inlined.	fix	273	278	c	end	8	33

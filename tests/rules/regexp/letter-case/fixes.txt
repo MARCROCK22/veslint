@@ -1,0 +1,15 @@
+tests/rules/regexp/letter-case/cases.ts:2:20	regexp/letter-case	unexpected	'A' is not in lowercase	fix	117	118	a	end	2	21
+tests/rules/regexp/letter-case/cases.ts:3:21	regexp/letter-case	unexpected	'B-Z' is not in lowercase	fix	142	145	b-z	end	3	24
+tests/rules/regexp/letter-case/cases.ts:4:20	regexp/letter-case	unexpected	'\\u000A' is not in lowercase	fix	169	175	\\u000a	end	4	26
+tests/rules/regexp/letter-case/cases.ts:5:20	regexp/letter-case	unexpected	'\\u{A}' is not in lowercase	fix	197	202	\\u{a}	end	5	25
+tests/rules/regexp/letter-case/cases.ts:6:20	regexp/letter-case	unexpected	'\\x0A' is not in lowercase	fix	225	229	\\x0a	end	6	24
+tests/rules/regexp/letter-case/cases.ts:7:20	regexp/letter-case	unexpected	'\\ca' is not in uppercase	fix	251	254	\\cA	end	7	23
+tests/rules/regexp/letter-case/cases.ts:8:20	regexp/letter-case	unexpected	'J' is not in lowercase	fix	276	277	j	end	8	21
+tests/rules/regexp/letter-case/cases.ts:9:32	regexp/letter-case	unexpected	'\\x0B' is not in lowercase	fix	312	317	\\\\x0b	end	9	37
+tests/rules/regexp/letter-case/uppercase/cases.ts:2:20	regexp/letter-case	unexpected	'a' is not in uppercase	fix	91	92	A	end	2	21
+tests/rules/regexp/letter-case/uppercase/cases.ts:3:21	regexp/letter-case	unexpected	'b-z' is not in uppercase	fix	116	119	B-Z	end	3	24
+tests/rules/regexp/letter-case/uppercase/cases.ts:4:20	regexp/letter-case	unexpected	'\\u000a' is not in uppercase	fix	143	149	\\u000A	end	4	26
+tests/rules/regexp/letter-case/uppercase/cases.ts:5:20	regexp/letter-case	unexpected	'\\x0b' is not in uppercase	fix	171	175	\\x0B	end	5	24
+tests/rules/regexp/letter-case/uppercase/cases.ts:6:20	regexp/letter-case	unexpected	'\\cA' is not in lowercase	fix	197	200	\\ca	end	6	23
+tests/rules/regexp/letter-case/uppercase/cases.ts:7:24	regexp/letter-case	unexpected	'a' is not in uppercase	fix	226	227	A	end	7	25
+tests/rules/regexp/letter-case/uppercase/cases.ts:7:25	regexp/letter-case	unexpected	'b' is not in uppercase	fix	227	228	B	end	7	26

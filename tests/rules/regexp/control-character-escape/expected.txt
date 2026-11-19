@@ -1,0 +1,9 @@
+tests/rules/regexp/control-character-escape/cases.ts:2:20	regexp/control-character-escape	unexpected	Unexpected control character escape '\\x00' (U+0000). Use '\\0' instead.
+tests/rules/regexp/control-character-escape/cases.ts:3:20	regexp/control-character-escape	unexpected	Unexpected control character escape '\\x0a' (U+000a). Use '\\n' instead.
+tests/rules/regexp/control-character-escape/cases.ts:4:20	regexp/control-character-escape	unexpected	Unexpected control character escape '\\u000d' (U+000d). Use '\\r' instead.
+tests/rules/regexp/control-character-escape/cases.ts:5:20	regexp/control-character-escape	unexpected	Unexpected control character escape '\\cJ' (U+000a). Use '\\n' instead.
+tests/rules/regexp/control-character-escape/cases.ts:6:21	regexp/control-character-escape	unexpected	Unexpected control character escape '\\x09' (U+0009). Use '\\t' instead.
+tests/rules/regexp/control-character-escape/cases.ts:7:20	regexp/control-character-escape	unexpected	Unexpected control character escape '\\u{b}' (U+000b). Use '\\v' instead.
+tests/rules/regexp/control-character-escape/cases.ts:8:31	regexp/control-character-escape	unexpected	Unexpected control character escape '\\x0c' (U+000c). Use '\\f' instead.
+tests/rules/regexp/control-character-escape/cases.ts:9:32	regexp/control-character-escape	unexpected	Unexpected control character escape '\\cI' (U+0009). Use '\\t' instead.
+tests/rules/regexp/control-character-escape/cases.ts:10:20	regexp/control-character-escape	unexpected	Unexpected control character escape '\t' (U+0009). Use '\\t' instead.

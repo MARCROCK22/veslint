@@ -842,6 +842,28 @@ pub const promise_no_native = 'promise/no-native'
 pub const promise_no_nesting = 'promise/no-nesting'
 pub const promise_always_return = 'promise/always-return'
 pub const promise_no_multiple_resolved = 'promise/no-multiple-resolved'
+pub const regexp_no_empty_group = 'regexp/no-empty-group'
+pub const regexp_no_invalid_regexp = 'regexp/no-invalid-regexp'
+pub const regexp_no_non_standard_flag = 'regexp/no-non-standard-flag'
+pub const regexp_no_empty_alternative = 'regexp/no-empty-alternative'
+pub const regexp_no_empty_string_literal = 'regexp/no-empty-string-literal'
+pub const regexp_no_escape_backspace = 'regexp/no-escape-backspace'
+pub const regexp_no_control_character = 'regexp/no-control-character'
+pub const regexp_control_character_escape = 'regexp/control-character-escape'
+pub const regexp_no_extra_lookaround_assertions = 'regexp/no-extra-lookaround-assertions'
+pub const regexp_no_octal = 'regexp/no-octal'
+pub const regexp_no_standalone_backslash = 'regexp/no-standalone-backslash'
+pub const regexp_hexadecimal_escape = 'regexp/hexadecimal-escape'
+pub const regexp_letter_case = 'regexp/letter-case'
+pub const regexp_no_lazy_ends = 'regexp/no-lazy-ends'
+pub const regexp_no_obscure_range = 'regexp/no-obscure-range'
+pub const regexp_no_trivially_nested_quantifier = 'regexp/no-trivially-nested-quantifier'
+pub const regexp_no_invisible_character = 'regexp/no-invisible-character'
+pub const regexp_no_useless_character_class = 'regexp/no-useless-character-class'
+pub const regexp_no_missing_g_flag = 'regexp/no-missing-g-flag'
+pub const regexp_no_legacy_features = 'regexp/no-legacy-features'
+pub const regexp_no_useless_dollar_replacements = 'regexp/no-useless-dollar-replacements'
+pub const regexp_grapheme_string_literal = 'regexp/grapheme-string-literal'
 pub const names = [no_floating_promises, await_thenable, require_await, return_await,
 	no_misused_promises, no_unsafe_call, no_unsafe_member_access, no_unsafe_return,
 	no_unsafe_assignment, no_unsafe_argument, restrict_template_expressions,
@@ -1098,7 +1120,14 @@ pub const names = [no_floating_promises, await_thenable, require_await, return_a
 	promise_valid_params, promise_no_return_wrap, promise_no_promise_in_callback,
 	promise_catch_or_return, promise_prefer_await_to_callbacks, promise_prefer_await_to_then,
 	promise_no_callback_in_promise, promise_no_native, promise_no_nesting, promise_always_return,
-	promise_no_multiple_resolved]
+	promise_no_multiple_resolved, regexp_no_empty_group, regexp_no_invalid_regexp,
+	regexp_no_non_standard_flag, regexp_no_empty_alternative, regexp_no_empty_string_literal,
+	regexp_no_escape_backspace, regexp_no_control_character, regexp_control_character_escape,
+	regexp_no_extra_lookaround_assertions, regexp_no_octal, regexp_no_standalone_backslash,
+	regexp_hexadecimal_escape, regexp_letter_case, regexp_no_lazy_ends, regexp_no_obscure_range,
+	regexp_no_trivially_nested_quantifier, regexp_no_invisible_character,
+	regexp_no_useless_character_class, regexp_no_missing_g_flag, regexp_no_legacy_features,
+	regexp_no_useless_dollar_replacements, regexp_grapheme_string_literal]
 
 // untyped_rules are the ported rules that need no types (`meta.docs.requiresTypeChecking` is false
 // in typescript-eslint; the eslint-plugin-unicorn rules that read the types when the parser has a
@@ -1316,7 +1345,13 @@ pub const untyped_rules = [adjacent_overload_signatures, array_type, class_liter
 	promise_prefer_catch, promise_spec_only, promise_valid_params, promise_no_return_wrap,
 	promise_no_promise_in_callback, promise_catch_or_return, promise_prefer_await_to_callbacks,
 	promise_prefer_await_to_then, promise_no_callback_in_promise, promise_no_native,
-	promise_no_nesting, promise_always_return, promise_no_multiple_resolved]
+	promise_no_nesting, promise_always_return, promise_no_multiple_resolved, regexp_no_empty_group,
+	regexp_no_invalid_regexp, regexp_no_non_standard_flag, regexp_no_empty_alternative,
+	regexp_no_empty_string_literal, regexp_no_escape_backspace, regexp_no_control_character,
+	regexp_control_character_escape, regexp_no_extra_lookaround_assertions, regexp_no_octal,
+	regexp_no_standalone_backslash, regexp_hexadecimal_escape, regexp_letter_case, regexp_no_lazy_ends,
+	regexp_no_obscure_range, regexp_no_trivially_nested_quantifier, regexp_no_invisible_character,
+	regexp_no_useless_character_class, regexp_grapheme_string_literal]
 
 // needs_types tells whether a rule asks tsgo for the types of the program.
 pub fn needs_types(rule string) bool {
@@ -2169,6 +2204,28 @@ pub const default_options = {
 	promise_no_nesting:                                  '[]'
 	promise_always_return:                               '[]'
 	promise_no_multiple_resolved:                        '[]'
+	regexp_no_empty_group:                               '[]'
+	regexp_no_invalid_regexp:                            '[]'
+	regexp_no_non_standard_flag:                         '[]'
+	regexp_no_empty_alternative:                         '[]'
+	regexp_no_empty_string_literal:                      '[]'
+	regexp_no_escape_backspace:                          '[]'
+	regexp_no_control_character:                         '[]'
+	regexp_control_character_escape:                     '[]'
+	regexp_no_extra_lookaround_assertions:               '[]'
+	regexp_no_octal:                                     '[]'
+	regexp_no_standalone_backslash:                      '[]'
+	regexp_hexadecimal_escape:                           '[]'
+	regexp_letter_case:                                  '[]'
+	regexp_no_lazy_ends:                                 '[]'
+	regexp_no_obscure_range:                             '[]'
+	regexp_no_trivially_nested_quantifier:               '[]'
+	regexp_no_invisible_character:                       '[]'
+	regexp_no_useless_character_class:                   '[]'
+	regexp_no_missing_g_flag:                            '[]'
+	regexp_no_legacy_features:                           '[]'
+	regexp_no_useless_dollar_replacements:               '[]'
+	regexp_grapheme_string_literal:                      '[]'
 }
 
 // Finding is a problem a rule found at a node.
@@ -3190,6 +3247,28 @@ pub fn message(rule string, finding Finding) string {
 		promise_no_nesting { prm_no_nesting_messages }
 		promise_always_return { prm_always_return_messages }
 		promise_no_multiple_resolved { prm_no_multiple_resolved_messages }
+		regexp_no_empty_group { regexp_no_empty_group_messages }
+		regexp_no_invalid_regexp { regexp_no_invalid_regexp_messages }
+		regexp_no_non_standard_flag { regexp_no_non_standard_flag_messages }
+		regexp_no_empty_alternative { regexp_no_empty_alternative_messages }
+		regexp_no_empty_string_literal { regexp_no_empty_string_literal_messages }
+		regexp_no_escape_backspace { regexp_no_escape_backspace_messages }
+		regexp_no_control_character { regexp_no_control_character_messages }
+		regexp_control_character_escape { regexp_control_character_escape_messages }
+		regexp_no_extra_lookaround_assertions { regexp_no_extra_lookaround_assertions_messages }
+		regexp_no_octal { regexp_no_octal_messages }
+		regexp_no_standalone_backslash { regexp_no_standalone_backslash_messages }
+		regexp_hexadecimal_escape { regexp_hexadecimal_escape_messages }
+		regexp_letter_case { regexp_letter_case_messages }
+		regexp_no_lazy_ends { regexp_no_lazy_ends_messages }
+		regexp_no_obscure_range { regexp_no_obscure_range_messages }
+		regexp_no_trivially_nested_quantifier { regexp_no_trivially_nested_quantifier_messages }
+		regexp_no_invisible_character { regexp_no_invisible_character_messages }
+		regexp_no_useless_character_class { regexp_no_useless_character_class_messages }
+		regexp_no_missing_g_flag { regexp_no_missing_g_flag_messages }
+		regexp_no_legacy_features { regexp_no_legacy_features_messages }
+		regexp_no_useless_dollar_replacements { regexp_no_useless_dollar_replacements_messages }
+		regexp_grapheme_string_literal { regexp_grapheme_string_literal_messages }
 		else { map[string]string{} }
 	}
 	return interpolate(messages[finding.message_id] or { finding.message_id }, finding.data)
@@ -5877,6 +5956,72 @@ fn (mut c Checker) lint_rule(rule string, root C.TSNode, abs_path string, mut st
 		promise_no_multiple_resolved {
 			return c.lint_promise_no_multiple_resolved(root, abs_path, mut stats)!
 		}
+		regexp_no_empty_group {
+			return c.lint_regexp_no_empty_group(root, abs_path, mut stats)!
+		}
+		regexp_no_invalid_regexp {
+			return c.lint_regexp_no_invalid_regexp(root, abs_path, mut stats)!
+		}
+		regexp_no_non_standard_flag {
+			return c.lint_regexp_no_non_standard_flag(root, abs_path, mut stats)!
+		}
+		regexp_no_empty_alternative {
+			return c.lint_regexp_no_empty_alternative(root, abs_path, mut stats)!
+		}
+		regexp_no_empty_string_literal {
+			return c.lint_regexp_no_empty_string_literal(root, abs_path, mut stats)!
+		}
+		regexp_no_escape_backspace {
+			return c.lint_regexp_no_escape_backspace(root, abs_path, mut stats)!
+		}
+		regexp_no_control_character {
+			return c.lint_regexp_no_control_character(root, abs_path, mut stats)!
+		}
+		regexp_control_character_escape {
+			return c.lint_regexp_control_character_escape(root, abs_path, mut stats)!
+		}
+		regexp_no_extra_lookaround_assertions {
+			return c.lint_regexp_no_extra_lookaround_assertions(root, abs_path, mut stats)!
+		}
+		regexp_no_octal {
+			return c.lint_regexp_no_octal(root, abs_path, mut stats)!
+		}
+		regexp_no_standalone_backslash {
+			return c.lint_regexp_no_standalone_backslash(root, abs_path, mut stats)!
+		}
+		regexp_hexadecimal_escape {
+			return c.lint_regexp_hexadecimal_escape(root, abs_path, mut stats)!
+		}
+		regexp_letter_case {
+			return c.lint_regexp_letter_case(root, abs_path, mut stats)!
+		}
+		regexp_no_lazy_ends {
+			return c.lint_regexp_no_lazy_ends(root, abs_path, mut stats)!
+		}
+		regexp_no_obscure_range {
+			return c.lint_regexp_no_obscure_range(root, abs_path, mut stats)!
+		}
+		regexp_no_trivially_nested_quantifier {
+			return c.lint_regexp_no_trivially_nested_quantifier(root, abs_path, mut stats)!
+		}
+		regexp_no_invisible_character {
+			return c.lint_regexp_no_invisible_character(root, abs_path, mut stats)!
+		}
+		regexp_no_useless_character_class {
+			return c.lint_regexp_no_useless_character_class(root, abs_path, mut stats)!
+		}
+		regexp_no_missing_g_flag {
+			return c.lint_regexp_no_missing_g_flag(root, abs_path, mut stats)!
+		}
+		regexp_no_legacy_features {
+			return c.lint_regexp_no_legacy_features(root, abs_path, mut stats)!
+		}
+		regexp_no_useless_dollar_replacements {
+			return c.lint_regexp_no_useless_dollar_replacements(root, abs_path, mut stats)!
+		}
+		regexp_grapheme_string_literal {
+			return c.lint_regexp_grapheme_string_literal(root, abs_path, mut stats)!
+		}
 		else { return error('unknown rule: ${rule}') }
 	}
 }
@@ -6001,7 +6146,9 @@ mut:
 	file_es_state EsFileState
 	file_es       estree.EsTree
 	// file_es_by_ts is the ESTree node of each tree-sitter node of the file (see es_index_of).
-	file_es_by_ts         map[u64]int
+	file_es_by_ts map[u64]int
+	// rx_file holds the regular expressions of the file for the `regexp/*` rules (regexp_utils.v).
+	rx_file               RxFile
 	file_code_paths       codepath.Analysis
 	file_code_paths_built bool
 	// no-deprecated: the reason of the first @deprecated tag of each symbol, or ndep_not_deprecated;
