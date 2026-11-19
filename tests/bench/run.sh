@@ -1,21 +1,25 @@
 #!/usr/bin/env bash
-# Benchmark of veslint against ESLint + typescript-eslint, oxlint (with oxlint-tsgolint, --type-aware)
-# and Biome on rules that need type information, on the sources of real projects. Not part of
+# Benchmark of veslint against ESLint + typescript-eslint, oxlint (with oxlint-tsgolint for the rules
+# that need types) and Biome, on the sources of real projects. Not part of
 # `make test`; the README's "Speed" section shows its results (tools/bench_chart.mjs draws them).
 #
 #   tests/bench/run.sh                     # zod, recharts and the TypeScript compiler
 #   tests/bench/run.sh zod                 # one project
 #   RUNS=10 WARMUP=2 tests/bench/run.sh    # hyperfine's runs and warmup runs (5 and 1)
 #
-# Two sets of rules:
+# Three sets of rules:
+#   - syntactic: rules without type information, the ones of @eslint/js's and typescript-eslint's
+#     `recommended` that every tool has (tests/bench/syntactic-rules.json, made by
+#     tools/bench_rules.mjs: 56 of 69; Biome's names are the ones `biome migrate eslint` gives);
 #   - floating: @typescript-eslint/no-floating-promises alone, which every tool has (Biome's
 #     nursery/noFloatingPromises, which infers types itself, without TypeScript);
 #   - typed: the 23 rules of typescript-eslint's recommendedTypeChecked that need types (Biome has 3
 #     of them: it is left out).
 # Every tool lints the same files with the same tsconfig.json (oxlint takes the tsconfig.json closest
 # to each file, so the projects are copied, with hard links, into build/bench/projects with one
-# tsconfig.json each) and its default number of threads. ESLint uses typescript-eslint's project
-# service, veslint its default (tsgo's), oxlint tsgolint, Biome its own inference.
+# tsconfig.json each) and its default number of threads. ESLint and veslint read the same
+# eslint.config.mjs; ESLint uses typescript-eslint's project service, veslint tsgo, oxlint tsgolint,
+# Biome its own inference.
 #
 # It needs hyperfine, node, the projects of tests/eval_project.sh in build/eval (run it once for each),
 # the ESLint of build/eval/spider-byte (tests/eval_spider_byte.sh) and the other tools, installed in
@@ -41,40 +45,59 @@ if [[ ! -x $BENCH/node_modules/.bin/oxlint ]]; then
 fi
 BIN=$BENCH/node_modules/.bin
 export OXLINT_TSGOLINT_PATH=$BENCH/node_modules/@oxlint-tsgolint/linux-x64/tsgolint
+# veslint reads the same eslint.config.mjs as ESLint, through bun and that ESLint; it caches the
+# resolved configuration, so the timed runs (after hyperfine's warmup) reuse it, as an editor or a
+# second run does.
+export VESLINT_ESLINT_DIR=$ROOT/build/eval/spider-byte
 mkdir -p "$OUT"
 
 # The configurations of each set of rules, one per tool.
-for set in floating typed; do
+SETS=(syntactic floating typed)
+for set in "${SETS[@]}"; do
 	mkdir -p "$BENCH/configs/$set"
-	node - "$ESLINT_DIR" "$BENCH/configs/$set" "$set" << 'JS'
+	node - "$ESLINT_DIR" "$BENCH/configs/$set" "$set" "$ROOT/tests/bench/syntactic-rules.json" << 'JS'
 const { createRequire } = require('node:module');
 const fs = require('node:fs');
 const path = require('node:path');
-const [eslintDir, dir, set] = process.argv.slice(2);
+const [eslintDir, dir, set, syntacticFile] = process.argv.slice(2);
 const plugin = createRequire(path.join(eslintDir, 'typescript-eslint/package.json'))('@typescript-eslint/eslint-plugin');
-const rules = set === 'floating'
-  ? ['@typescript-eslint/no-floating-promises']
-  : Object.keys(plugin.configs['recommended-type-checked-only'].rules).filter(rule => rule.startsWith('@typescript-eslint/')).sort();
+// [ESLint id, setting, oxlint name, Biome's rules ({ "<group>/<rule>": setting })].
+const typed = rule => [rule, 'error', `typescript/${rule.slice('@typescript-eslint/'.length)}`, {}];
+const rules = set === 'syntactic'
+  ? JSON.parse(fs.readFileSync(syntacticFile, 'utf8')).rules.map(r => [r.eslint, r.eslintSetting, r.oxlint, r.biome])
+  : set === 'floating'
+    ? [[...typed('@typescript-eslint/no-floating-promises').slice(0, 3), { 'nursery/noFloatingPromises': 'error' }]]
+    : Object.keys(plugin.configs['recommended-type-checked-only'].rules).filter(rule => rule.startsWith('@typescript-eslint/')).sort().map(typed);
 const write = (file, value) => fs.writeFileSync(path.join(dir, file), JSON.stringify(value, null, 1) + '\n');
-write('rules.json', { rules: Object.fromEntries(rules.map(rule => [rule, 'error'])) });
+write('rules.json', { rules: Object.fromEntries(rules.map(([id, setting]) => [id, setting])) });
 write('.oxlintrc.json', {
   categories: { correctness: 'off' },
   plugins: ['typescript'],
-  rules: Object.fromEntries(rules.map(rule => [`typescript/${rule.slice('@typescript-eslint/'.length)}`, 'error'])),
+  rules: Object.fromEntries(rules.map(([, setting, name]) => [name, setting])),
 });
+const biomeRules = { preset: 'none' };
+for (const [, , , biome] of rules) {
+  for (const [name, setting] of Object.entries(biome)) {
+    const [group, rule] = name.split('/');
+    (biomeRules[group] ??= {})[rule] = setting;
+  }
+}
 write('biome.json', {
   formatter: { enabled: false },
   assist: { enabled: false },
   vcs: { enabled: false },
   files: { includes: ['src/**'] },
-  linter: { enabled: true, rules: { preset: 'none', nursery: { noFloatingPromises: 'error' } } },
+  linter: { enabled: true, rules: biomeRules },
 });
+// The rules without types are linted as a project of typescript-eslint's `recommended` does: no
+// type information.
+const parserOptions = set === 'syntactic' ? '{}' : '{ projectService: true, tsconfigRootDir: process.cwd() }';
 fs.writeFileSync(path.join(dir, 'eslint.config.mjs'), `import fs from 'node:fs';
 import tseslint from ${JSON.stringify(path.join(eslintDir, 'typescript-eslint/dist/index.js'))};
 const { rules } = JSON.parse(fs.readFileSync(new URL('./rules.json', import.meta.url), 'utf8'));
 export default [{
   files: ['**/*.ts', '**/*.tsx'],
-  languageOptions: { parser: tseslint.parser, parserOptions: { projectService: true, tsconfigRootDir: process.cwd() } },
+  languageOptions: { parser: tseslint.parser, parserOptions: ${parserOptions} },
   plugins: { '@typescript-eslint': tseslint.plugin },
   rules,
 }];
@@ -117,16 +140,18 @@ for project in "${PROJECTS[@]}"; do
 	mapfile -t FILES < <(sources "$project")
 	lines=$(cat "${FILES[@]}" | wc -l)
 	echo "{\"project\": \"$project\", \"files\": ${#FILES[@]}, \"lines\": $lines}" > "$OUT/$project.json"
-	for set in floating typed; do
+	for set in "${SETS[@]}"; do
 		C=$BENCH/configs/$set
+		type_aware=--type-aware
+		[[ $set == syntactic ]] && type_aware=''
+		cp "$C/biome.json" "$DIR/biome.json"
 		declare -A COMMANDS=(
 			[eslint]="node $ESLINT_DIR/eslint/bin/eslint.js --config $C/eslint.config.mjs --format json ${FILES[*]}"
-			[veslint]="$ROOT/veslint --config $C/rules.json ${FILES[*]}"
-			[oxlint]="$BIN/oxlint --type-aware -c $C/.oxlintrc.json --format json ${FILES[*]}"
+			[veslint]="$ROOT/veslint --config $C/eslint.config.mjs ${FILES[*]}"
+			[oxlint]="$BIN/oxlint $type_aware -c $C/.oxlintrc.json --format json ${FILES[*]}"
 		)
 		tools=(eslint veslint oxlint)
-		if [[ $set == floating ]]; then
-			cp "$C/biome.json" "$DIR/biome.json"
+		if [[ $set != typed ]]; then
 			COMMANDS[biome]="$BIN/biome lint --reporter=json --max-diagnostics=none ${FILES[*]}"
 			tools+=(biome)
 		fi
@@ -136,7 +161,7 @@ for project in "${PROJECTS[@]}"; do
 			python3 "$ROOT/tests/bench/tree_memory.py" "$OUT/$project-$set-$tool.out" ${COMMANDS[$tool]} > "$OUT/$project-$set-$tool.memory"
 		done
 		for tool in "${tools[@]}"; do
-			python3 "$ROOT/tests/bench/parity.py" "$DIR" "$OUT/$project-$set-eslint.out" "$tool" "$OUT/$project-$set-$tool.out" > "$OUT/$project-$set-$tool.parity"
+			python3 "$ROOT/tests/bench/parity.py" "$DIR" "$OUT/$project-$set-eslint.out" "$tool" "$OUT/$project-$set-$tool.out" "$ROOT/tests/bench/syntactic-rules.json" > "$OUT/$project-$set-$tool.parity"
 		done
 		args=()
 		for tool in "${tools[@]}"; do args+=(-n "$tool" "${COMMANDS[$tool]}"); done

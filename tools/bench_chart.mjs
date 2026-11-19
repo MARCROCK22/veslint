@@ -22,6 +22,7 @@ const PROJECTS = [
   ['typescript', 'TypeScript compiler'],
 ];
 const SETS = {
+  syntactic: 'Rules without types: 56 rules of @eslint/js and typescript-eslint recommended',
   floating: 'Type-aware linting: no-floating-promises',
   typed: 'Type-aware linting: the 23 type-aware rules of recommendedTypeChecked',
 };
@@ -107,7 +108,7 @@ ${parts.join('\n')}
 // The table of the README: time, CPU time, memory and the problems that match ESLint's.
 const lines = [];
 for (const [set, title] of Object.entries(SETS)) {
-  lines.push(`**${title.replace('Type-aware linting: ', '')}**`, '', '| Project | Tool | Time | CPU time | Memory | Problems | Same as ESLint |', '|---|---|---:|---:|---:|---:|---:|');
+  lines.push(`**${title.replace(/^[^:]+: /, '')}**`, '', '| Project | Tool | Time | CPU time | Memory | Problems | Same as ESLint |', '|---|---|---:|---:|---:|---:|---:|');
   for (const [project, projectName] of PROJECTS) {
     for (const [tool, name] of TOOLS) {
       const r = results.results.find(x => x.set === set && x.project === project && x.tool === tool);
