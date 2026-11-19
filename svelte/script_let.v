@@ -80,14 +80,39 @@ fn (mut c Conv) restore() ! {
 		prefix := if c.trimmed_len + 2 > c.code.len { c.trimmed_len + 2 } else { c.code.len }
 		doc.lets_index = new_text_index(pre[prefix..])
 	}
-	tree := parse_ts(c.parsers.ts, pre)!
+	jsx := doc.options.jsx
+	tree := parse_ts(if jsx { c.parsers.tsx } else { c.parsers.ts }, pre)!
 	doc.tree = tree
 	root := treesitter.root_node(tree)
 	if C.ts_node_has_error(root) {
 		c.syntax_error(root)
 		return
 	}
-	es := convert_es(root, pre) or {
+	// The compiler parses the template's expressions without JSX (acorn), which the parse with
+	// JSX accepts in them.
+	if jsx && c.compile_expression_error() {
+		return
+	}
+	if jsx && doc.options.program {
+		// The second parse, of the virtual code, as TypeScript: its script and template parts
+		// are those of the pre-virtual code.
+		ts_tree := parse_ts(c.parsers.ts, pre)!
+		ts_root := treesitter.root_node(ts_tree)
+		if C.ts_node_has_error(ts_root) {
+			at := first_error_offset(ts_root)
+			treesitter.tree_delete(ts_tree)
+			doc.error = ParseError{
+				message:    'Parsing error.'
+				index:      if at < c.code.len { at } else { c.code.len }
+				ts_message: true
+				pre_index:  at
+			}
+			doc.virtual_error = true
+			return
+		}
+		treesitter.tree_delete(ts_tree)
+	}
+	es := convert_es_with(root, pre, jsx) or {
 		doc.error = ParseError{
 			message:    'Parsing error.'
 			index:      0
@@ -98,7 +123,7 @@ fn (mut c Conv) restore() ! {
 	}
 	doc.es = es
 	pre_starts := doc.es.nodes.map(it.start)
-	toks, comms := snippet_tokens(root, pre, false)
+	toks, comms := snippet_tokens(root, pre, jsx)
 	c.build_virtual(toks, comms)
 	first_let := if c.lets.len > 0 { c.lets[0].start } else { pre.len + 1 }
 	sep := c.trimmed_len
@@ -288,9 +313,13 @@ fn sort_tokens(mut list []Token) {
 }
 
 // syntax_error records the error of a pre-virtual code tree-sitter rejects: a compiler error
-// (acorn rejected the template expression) when the expression alone does not parse either,
-// else typescript-eslint's error at the position in the pre-virtual code.
+// (acorn rejected a template expression) when an expression alone does not parse either, the
+// first in the file (the compiler parses the template before svelte-eslint-parser parses the
+// script), else typescript-eslint's error at the position in the pre-virtual code.
 fn (mut c Conv) syntax_error(root C.TSNode) {
+	if c.compile_expression_error() {
+		return
+	}
 	at := first_error_offset(root)
 	for l in c.lets {
 		for s in l.segments {
@@ -318,6 +347,85 @@ fn (mut c Conv) syntax_error(root C.TSNode) {
 		ts_message: true
 		pre_index:  at
 	}
+}
+
+// compile_expression_error records the compiler's error for the first template expression (in
+// the file) acorn rejects, which tree-sitter tells by parsing it alone; false when none.
+fn (mut c Conv) compile_expression_error() bool {
+	mut first_bad := -1
+	for l in c.lets {
+		if l.core_start >= 0 && (first_bad < 0 || l.core_start < first_bad) {
+			if bad := c.expression_error(c.code[l.core_start..l.core_end]) {
+				first_bad = l.core_start + bad
+			}
+		}
+	}
+	if first_bad < 0 {
+		return false
+	}
+	c.doc.error = ParseError{
+		message: 'Unexpected token\nhttps://svelte.dev/e/js_parse_error'
+		index:   first_bad
+		code:    'js_parse_error'
+	}
+	return true
+}
+
+// expression_error is where tree-sitter finds the first error of an expression alone (an offset
+// of `part`), none when it parses.
+fn (c &Conv) expression_error(part string) ?int {
+	code := '(${part});'
+	tree := parse_ts(c.parsers.ts, code) or { return none }
+	defer {
+		treesitter.tree_delete(tree)
+	}
+	root := treesitter.root_node(tree)
+	if !C.ts_node_has_error(root) {
+		return none
+	}
+	at := expression_error_offset(root, code) - 1
+	return if at < 0 {
+		0
+	} else if at > part.len {
+		part.len
+	} else {
+		at
+	}
+}
+
+// expression_error_offset approximates where acorn stops in an expression tree-sitter rejects: a
+// missing node's place, or the token after the first child of the first ERROR node (`<T` of a
+// type assertion followed by what it does not take: `<i/>`, `<a href="x">`), else its start.
+fn expression_error_offset(root C.TSNode, code string) int {
+	mut cursor := C.ts_tree_cursor_new(root)
+	defer {
+		C.ts_tree_cursor_delete(&cursor)
+	}
+	for {
+		node := C.ts_tree_cursor_current_node(&cursor)
+		if C.ts_node_is_missing(node) {
+			return treesitter.node_start(node)
+		}
+		if C.ts_node_is_error(node) {
+			if C.ts_node_named_child_count(node) == 0 {
+				return treesitter.node_start(node)
+			}
+			mut at := treesitter.node_end(C.ts_node_named_child(node, 0))
+			for at < code.len && code[at] in [` `, `\t`, `\n`, `\r`] {
+				at++
+			}
+			return at
+		}
+		if C.ts_node_has_error(node) && C.ts_tree_cursor_goto_first_child(&cursor) {
+			continue
+		}
+		for !C.ts_tree_cursor_goto_next_sibling(&cursor) {
+			if !C.ts_tree_cursor_goto_parent(&cursor) {
+				return treesitter.node_start(root)
+			}
+		}
+	}
+	return 0
 }
 
 fn (c &Conv) expression_parses(part string) bool {

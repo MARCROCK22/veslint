@@ -786,14 +786,17 @@ fi
 # globals, the $props scope): parserOptions.svelteFeatures.runes, else <svelte:options runes>, else
 # the svelteConfig's compilerOptions.runes (parserOptions.svelteConfig, else svelte.config.js, which
 # says false there), as ESLint gives it for each configuration of tests/svelte-lint/runes (pinned
-# by its pin.sh), from the command line and from one --server that lints with each in turn.
+# by its pin.sh), from the command line and from one --server that lints with each in turn; and
+# where parserOptions.ecmaFeatures.jsx makes svelte-eslint-parser's parses read JSX (the jsx-*
+# files: the first parse with JSX, the virtual code's too without a program, the compiler's
+# template expressions never).
 : > "$TMP/svelte-runes.out"
 : > "$TMP/svelte-runes-server.jsonl"
-runes_configs=(config-no-runes config-true features-false features-true none)
+runes_configs=(config-no-runes config-true features-false features-true jsx jsx-no-program none)
 for config in "${runes_configs[@]}"; do
-	(cd tests/svelte-lint/runes && ../../../veslint --config "$config.json" --fixes options.svelte plain.svelte 2> /dev/null) |
+	(cd tests/svelte-lint/runes && ../../../veslint --config "$config.json" --fixes jsx-assertion.svelte jsx-script.svelte jsx-template.svelte options.svelte plain.svelte 2> /dev/null) |
 		sed "s|^|$config: |" >> "$TMP/svelte-runes.out"
-	printf '{"id": 1, "config": "%s.json", "files": ["options.svelte", "plain.svelte"]}\n' "$config" >> "$TMP/svelte-runes-server.jsonl"
+	printf '{"id": 1, "config": "%s.json", "files": ["jsx-assertion.svelte", "jsx-script.svelte", "jsx-template.svelte", "options.svelte", "plain.svelte"]}\n' "$config" >> "$TMP/svelte-runes-server.jsonl"
 done
 if diff -u <(grep -v '^function: ' tests/svelte-lint/runes/expected.txt) <(sorted "$TMP/svelte-runes.out"); then
 	ok "Svelte files: runes mode from svelteFeatures.runes, <svelte:options>, svelteConfig and svelte.config.js"

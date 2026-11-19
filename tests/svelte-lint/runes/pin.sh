@@ -10,9 +10,9 @@
 set -uo pipefail
 cd "$(dirname "$0")"
 ROOT=$(cd ../../.. && pwd)
-for config in config-no-runes config-true features-false features-true none; do
+for config in config-no-runes config-true features-false features-true jsx jsx-no-program none; do
 	RUNES_CONFIG=$config.json node "$ROOT/build/eval/spider-byte/node_modules/eslint/bin/eslint.js" \
-		--config eslint.runes.config.mjs --format json options.svelte plain.svelte 2> /dev/null |
+		--config eslint.runes.config.mjs --format json jsx-assertion.svelte jsx-script.svelte jsx-template.svelte options.svelte plain.svelte 2> /dev/null |
 		python3 "$ROOT/tests/eslint_lines.py" fixes | sed "s|^$PWD/||; s|^|$config: |"
 done > expected.tmp
 node "$ROOT/build/eval/spider-byte/node_modules/eslint/bin/eslint.js" --config eslint.runes-function.config.mjs \

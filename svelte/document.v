@@ -69,6 +69,9 @@ pub mut:
 	runes RunesMode
 	// options: what the document was parsed with (a text derived from it is parsed the same way).
 	options ParseOptions
+	// virtual_error: `error` is of the parse of the virtual code as TypeScript (ParseOptions.jsx
+	// with a program), whose first parse with JSX succeeded.
+	virtual_error bool
 	// generics_code: the code `void function<…>(){}` handed to the script parser for the
 	// `generics` attribute ('' without one).
 	generics_code string
@@ -93,22 +96,28 @@ pub mut:
 // Parsers are the tree-sitter parsers parse_svelte_with reuses from file to file.
 @[heap]
 pub struct Parsers {
-	ts &C.TSParser = unsafe { nil }
+	ts  &C.TSParser = unsafe { nil }
+	tsx &C.TSParser = unsafe { nil } // the grammar's tsx dialect, for ParseOptions.jsx
 }
 
 pub fn new_parsers() !&Parsers {
 	ts := C.ts_parser_new()
-	if !C.ts_parser_set_language(ts, C.tree_sitter_typescript()) {
+	tsx := C.ts_parser_new()
+	if !C.ts_parser_set_language(ts, C.tree_sitter_typescript())
+		|| !C.ts_parser_set_language(tsx, C.tree_sitter_tsx()) {
 		C.ts_parser_delete(ts)
+		C.ts_parser_delete(tsx)
 		return error('the TypeScript grammar uses an ABI this tree-sitter runtime does not support')
 	}
 	return &Parsers{
-		ts: ts
+		ts:  ts
+		tsx: tsx
 	}
 }
 
 pub fn (p &Parsers) close() {
 	C.ts_parser_delete(p.ts)
+	C.ts_parser_delete(p.tsx)
 }
 
 // token_ends are the ends of the tokens of TypeScript code (bytes, sorted): veslint gets where
@@ -130,7 +139,12 @@ fn parse_ts(parser &C.TSParser, code string) !&C.TSTree {
 }
 
 fn convert_es(root C.TSNode, code string) !estree.EsTree {
-	return estree.convert_with(root, code, false, estree.Options{
+	return convert_es_with(root, code, false)
+}
+
+// convert_es_with is convert_es of a tree of the grammar's tsx dialect when `jsx`.
+fn convert_es_with(root C.TSNode, code string, jsx bool) !estree.EsTree {
+	return estree.convert_with(root, code, jsx, estree.Options{
 		module:       true
 		regexp_valid: fn (pattern string, flags string) bool {
 			return jsregexp.regexp_new(estree.utf16_units(pattern), flags) != none
@@ -197,6 +211,13 @@ pub:
 	features_set bool
 	features     RunesMode
 	config       RunesMode
+	// jsx: parserOptions.ecmaFeatures.jsx, program: the parser has a program (`project`,
+	// `projectService`). typescript-estree reads a .svelte file's code with JSX only with jsx,
+	// whatever the `lang`: svelte-eslint-parser's first parse (the script and the template's
+	// expressions, without the program) then; its parse of the virtual code also needs no program
+	// (the program reads it as TypeScript).
+	jsx     bool
+	program bool
 }
 
 // runes_mode is a boolean option as a RunesMode.

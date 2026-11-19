@@ -313,7 +313,11 @@ fn (mut c Checker) svelte_parsing_error() []Finding {
 	mut line := 0
 	mut column := 0
 	if e.ts_message {
-		diagnostics := c.client.transpile_diagnostics(doc.pre_u16, 'file.ts') or {
+		diagnostics := c.client.transpile_diagnostics(doc.pre_u16, if doc.options.jsx && !doc.virtual_error {
+			'file.tsx'
+		} else {
+			'file.ts'
+		}) or {
 			[]tsgo.Diagnostic{}
 		}
 		if diagnostics.len > 0 {

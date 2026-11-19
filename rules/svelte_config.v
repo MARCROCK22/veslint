@@ -60,6 +60,8 @@ pub fn svelte_parse_options(language LanguageOptions, path string) svelte.ParseO
 		return svelte.ParseOptions{
 			features_set: true
 			features:     language.svelte_runes_parse
+			jsx:          language.jsx
+			program:      language.has_program
 		}
 	}
 	config := if language.svelte_config_given {
@@ -73,7 +75,9 @@ pub fn svelte_parse_options(language LanguageOptions, path string) svelte.ParseO
 		if runes >= 0 { svelte.runes_mode(runes == 1) } else { svelte.RunesMode.unknown }
 	}
 	return svelte.ParseOptions{
-		config: config
+		config:  config
+		jsx:     language.jsx
+		program: language.has_program
 	}
 }
 
