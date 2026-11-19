@@ -647,7 +647,7 @@ fn (mut s Server) lint(id i64, config string, project string, files []string, te
 		} else if f.module.inserted > 0 {
 			checker.set_svelte_module(f.src, f.module.code, f.module.at, f.module.inserted)
 		}
-		result := checker.lint_file(if (f.vue && uses_tsx_grammar(doc))
+		result := checker.lint_file(if (f.vue && doc.script.jsx) || (f.svelte && sdoc.options.jsx)
 			|| (!f.vue && !f.svelte && treesitter.uses_jsx_dialect(f.path)) {
 			s.tsx_parser
 		} else {

@@ -5,8 +5,6 @@
 # listed case must fail and every other case must pass; tests/rules/reference.sh does not compare the
 # two tools on a listed case.
 #
-# tree-sitter reads a `new` followed by a line break as the identifier `new` and an automatic `;`
-# (`const a = new` and then the statement `Foo()`), with no syntax error: a grammar bug.
 # tree-sitter's grammar requires the type of a mapped type: `{ [k in string]; }`, which TypeScript
 # reads as a mapped type without one, is an ERROR node.
 veslint	consistent-indexed-object-style/i56	tree-sitter reads `{ [k in string]; }` as an ERROR node
@@ -658,17 +656,24 @@ veslint	prefer-string-raw/r12/i9	a TypeScript file without types: a suggestion, 
 eslint	escape-case/r0/v0	code of another language (SOML, TOML…), linted as TypeScript
 veslint	escape-case/r0/v0	code of another language (SOML, TOML…), linted as TypeScript
 eslint	escape-case/r0/v1	code of another language (SOML, TOML…), linted as TypeScript
+veslint	escape-case/r0/v1	code of another language (SOML, TOML…), linted as TypeScript
 eslint	escape-case/r0/v4	code of another language (SOML, TOML…), linted as TypeScript
+veslint	escape-case/r0/v4	code of another language (SOML, TOML…), linted as TypeScript
 eslint	escape-case/r0/v5	code of another language (SOML, TOML…), linted as TypeScript
+veslint	escape-case/r0/v5	code of another language (SOML, TOML…), linted as TypeScript
 eslint	escape-case/r1/v1	code of another language (SOML, TOML…), linted as TypeScript
+veslint	escape-case/r1/v1	code of another language (SOML, TOML…), linted as TypeScript
 eslint	escape-case/r1/v3	code of another language (SOML, TOML…), linted as TypeScript
 veslint	escape-case/r1/v3	code of another language (SOML, TOML…), linted as TypeScript
 eslint	escape-case/r1/v4	code of another language (SOML, TOML…), linted as TypeScript
+veslint	escape-case/r1/v4	code of another language (SOML, TOML…), linted as TypeScript
 eslint	escape-case/r1/v5	code of another language (SOML, TOML…), linted as TypeScript
+veslint	escape-case/r1/v5	code of another language (SOML, TOML…), linted as TypeScript
 eslint	escape-case/r4/v4	code of another language (SOML, TOML…), linted as TypeScript
 veslint	escape-case/r4/v4	code of another language (SOML, TOML…), linted as TypeScript
 eslint	escape-case/r4/v5	code of another language (SOML, TOML…), linted as TypeScript
 eslint	escape-case/r4/v6	code of another language (SOML, TOML…), linted as TypeScript
+veslint	escape-case/r4/v6	code of another language (SOML, TOML…), linted as TypeScript
 eslint	escape-case/r4/v9	code of another language (SOML, TOML…), linted as TypeScript
 eslint	escape-case/r4/i0	code of another language (SOML, TOML…), linted as TypeScript
 veslint	escape-case/r4/i0	code of another language (SOML, TOML…), linted as TypeScript
@@ -684,6 +689,7 @@ eslint	escape-case/r5/v4	code of another language (SOML, TOML…), linted as Typ
 veslint	escape-case/r5/v4	code of another language (SOML, TOML…), linted as TypeScript
 eslint	escape-case/r5/v5	code of another language (SOML, TOML…), linted as TypeScript
 eslint	escape-case/r5/v6	code of another language (SOML, TOML…), linted as TypeScript
+veslint	escape-case/r5/v6	code of another language (SOML, TOML…), linted as TypeScript
 eslint	escape-case/r5/v9	code of another language (SOML, TOML…), linted as TypeScript
 eslint	escape-case/r5/i0	code of another language (SOML, TOML…), linted as TypeScript
 veslint	escape-case/r5/i0	code of another language (SOML, TOML…), linted as TypeScript
@@ -1748,6 +1754,3 @@ veslint	svelte/no-unused-svelte-ignore/i20	<style lang="less">: less is not port
 veslint	svelte/no-unused-svelte-ignore/i21	<style lang="stylus">: stylus is not ported
 veslint	svelte/no-unused-svelte-ignore/i25	<style lang="postcss">: postcss with postcss-nested (postcss.config.cjs) is not ported
 veslint	svelte/no-unused-svelte-ignore/i26	<style lang="postcss">: postcss with postcss-nested (postcss.config.cjs) is not ported
-# svelte/indent: an indent fixture of eslint-plugin-svelte with a JSDoc type, `T!`, which TypeScript
-# parses (and reports) and tree-sitter's grammar does not (tests/svelte/known.txt).
-veslint	svelte/indent/i72	tree-sitter: the JSDoc type `T!` is a syntax error for the grammar (tests/svelte/known.txt)

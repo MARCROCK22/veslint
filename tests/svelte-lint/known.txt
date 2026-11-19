@@ -33,10 +33,9 @@ not compared	s0419/src/parser_integrations_type-info-tests_issue226-input.svelte
 not compared	s0555/src/parser_parser_ast_ts-issue226-type-output.svelte	crash	@typescript-eslint/no-unused-vars: Cannot read properties of undefined (reading 'type')
 #
 # eslint-plugin-svelte's indent fixtures written one token per line. Their scripts parse as
-# typescript-estree reads them (tools/svelte_parse_diff.mjs) but indent_i72's, whose JSDoc type `T!`
-# tree-sitter's grammar does not read (tests/svelte/known.txt): veslint lints none of it. The others are
-# open differences of the rules on that code (the ranges of semi-style's fixes at the end of the script,
-# quotes in a tagged template, types of the virtual code), not of the parser.
+# typescript-estree reads them (tools/svelte_parse_diff.mjs); these are open differences of the rules
+# on that code (the ranges of semi-style's fixes at the end of the script, quotes in a tagged template,
+# types of the virtual code), not of the parser.
 only eslint	g00/src/indent_v0.svelte:5:11	@typescript-eslint/no-unsafe-member-access	unsafeMemberExpression	Unsafe member access .width on an `any` value.	end	5	16
 only eslint	g00/src/indent_v0.svelte:7:13	@typescript-eslint/no-unsafe-member-access	unsafeMemberExpression	Unsafe member access .height on an `any` value.	end	7	19
 only eslint	g04/src/indent_i84.svelte:9:1	@stylistic/semi-style	expectedSemiColon	Expected this semicolon to be at the end of the previous line.	fix	87	90	;\n	end	9	2
@@ -52,28 +51,6 @@ only eslint	s0035/src/indent_i26.svelte:30:1	@stylistic/semi-style	expectedSemiC
 only eslint	s0039/src/indent_i32.svelte:35:1	@stylistic/semi-style	expectedSemiColon	Expected this semicolon to be at the end of the previous line.	fix	108	111	;\n	end	35	2
 only eslint	s0066/src/indent_i63.svelte:40:1	@stylistic/semi-style	expectedSemiColon	Expected this semicolon to be at the end of the previous line.	fix	165	168	;\n	end	40	2
 only eslint	s0070/src/indent_i71.svelte:50:1	@stylistic/no-extra-parens	unexpected	Unnecessary parentheses around expression.	fix	251	262	\ninfer\nU\n	end	50	2
-only eslint	s0071/src/indent_i72.svelte:10:3	@stylistic/semi	missingSemi	Missing semicolon.	fix	74	74	;	end	11	1
-only eslint	s0071/src/indent_i72.svelte:12:6	@typescript-eslint/no-unused-vars	unusedVar	'A' is defined but never used.	end	12	7
-only eslint	s0071/src/indent_i72.svelte:13:1	@stylistic/no-whitespace-before-property	unexpectedWhitespace	Unexpected whitespace before property B.	fix	101	104	.	end	20	2
-only eslint	s0071/src/indent_i72.svelte:13:1	@typescript-eslint/consistent-type-imports	noImportTypeAnnotations	`import()` type annotations are forbidden.	end	20	2
-only eslint	s0071/src/indent_i72.svelte:15:1	@stylistic/quotes	wrongQuotes	Strings must use doublequote.	fix	94	99	"foo"	end	15	6
-only eslint	s0071/src/indent_i72.svelte:17:1	@stylistic/dot-location	expectedDotBeforeProperty	Expected dot to be on same line as property.	fix	102	104	\n.	end	17	2
-only eslint	s0071/src/indent_i72.svelte:22:1	@typescript-eslint/no-unsafe-call	errorCall	Unsafe call of a type that could not be resolved.	end	22	9
-only eslint	s0071/src/indent_i72.svelte:22:1	@typescript-eslint/no-unused-expressions	unusedExpression	Expected an assignment or function call and instead saw an expression.	end	27	2
-only eslint	s0071/src/indent_i72.svelte:22:9	@stylistic/function-call-spacing	unexpectedWhitespace	Unexpected whitespace between function name and paren.	fix	121	122		end	23	1
-only eslint	s0071/src/indent_i72.svelte:23:1	@stylistic/function-paren-newline	unexpectedAfter	Unexpected newline after '('.	fix	123	124		end	23	2
-only eslint	s0071/src/indent_i72.svelte:23:1	no-unexpected-multiline	function	Unexpected newline between function and ( of function call.	end	23	2
-only eslint	s0071/src/indent_i72.svelte:24:1	@stylistic/quotes	wrongQuotes	Strings must use doublequote.	fix	124	129	"foo"	end	24	6
-only eslint	s0071/src/indent_i72.svelte:25:1	@stylistic/function-paren-newline	unexpectedBefore	Unexpected newline before ')'.	fix	129	130		end	25	2
-only eslint	s0071/src/indent_i72.svelte:26:1	@stylistic/dot-location	expectedDotBeforeProperty	Expected dot to be on same line as property.	fix	132	134	\n.	end	26	2
-only eslint	s0071/src/indent_i72.svelte:27:1	@typescript-eslint/no-unsafe-member-access	errorMemberExpression	Unsafe member access .B on a type that cannot be resolved.	end	27	2
-only eslint	s0071/src/indent_i72.svelte:27:2	@stylistic/semi	missingSemi	Missing semicolon.	fix	135	135	;	end	28	1
-only eslint	s0071/src/indent_i72.svelte:30:1	@typescript-eslint/no-unused-vars	unusedVar	'foo' is defined but never used.	end	30	4
-only eslint	s0071/src/indent_i72.svelte:33:1	@stylistic/type-annotation-spacing	unexpectedSpaceBefore	Unexpected space before the ':'.	fix	155	156		end	33	2
-only eslint	s0071/src/indent_i72.svelte:5:1	@typescript-eslint/no-redundant-type-constituents	errorTypeOverrides	'U' is an 'error' type that acts as 'any' and overrides all other types in this union type.	end	5	2
-only eslint	s0071/src/indent_i72.svelte:7:1	perfectionist/sort-union-types	unexpectedUnionTypesOrder	Expected "null" to come before "U".	fix	53	61	null\n|\nU	end	7	5
-only eslint	s0071/src/indent_i72.svelte:7:5	@stylistic/semi	missingSemi	Missing semicolon.	fix	61	61	;	end	8	1
-only eslint	s0071/src/indent_i72.svelte:9:6	@typescript-eslint/no-unused-vars	unusedVar	'V' is defined but never used.	end	9	7
 only veslint	g04/src/indent_i49.svelte:13:1	@typescript-eslint/triple-slash-reference	tripleSlashReference	Do not use a triple slash reference for helpers.d.ts, use `import` style instead.	end	13	38
 only veslint	g04/src/indent_i49.svelte:14:1	@typescript-eslint/triple-slash-reference	tripleSlashReference	Do not use a triple slash reference for lib/rules/index.d.ts, use `import` style instead.	end	14	46
 only veslint	g04/src/indent_i84.svelte:9:1	@stylistic/semi-style	expectedSemiColon	Expected this semicolon to be at the end of the previous line.	fix	87	89	;\n	end	9	2
@@ -87,7 +64,6 @@ only veslint	s0035/src/indent_i26.svelte:16:1	@stylistic/quotes	wrongQuotes	Stri
 only veslint	s0035/src/indent_i26.svelte:30:1	@stylistic/semi-style	expectedSemiColon	Expected this semicolon to be at the end of the previous line.	fix	120	122	;\n	end	30	2
 only veslint	s0039/src/indent_i32.svelte:35:1	@stylistic/semi-style	expectedSemiColon	Expected this semicolon to be at the end of the previous line.	fix	108	110	;\n	end	35	2
 only veslint	s0066/src/indent_i63.svelte:40:1	@stylistic/semi-style	expectedSemiColon	Expected this semicolon to be at the end of the previous line.	fix	165	167	;\n	end	40	2
-only veslint	s0071/src/indent_i72.svelte:9:5	eslint	fatal	Parsing error: Parsing error.
 #
 # TypeScript 7.1 (tsgo) and 6.0.3 (typescript-eslint) give different types, as on a .ts file:
 # `Array.from(x)` of an undeclared `x` (the {#each} of the virtual code) is `unknown[]` for tsgo and

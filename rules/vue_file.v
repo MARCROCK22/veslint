@@ -302,18 +302,30 @@ fn last_end_in(ends []int, offset int) int {
 	return if lo == 0 { 0 } else { ends[lo - 1] }
 }
 
-// vue_parsing_error is ESLint's fatal problem for a .vue file whose <script setup> exports a type
-// next to a <script> (ScriptInfo.type_export): vue-eslint-parser's rewrite of the export is code
-// TypeScript's parser rejects, and the parse throws its first syntactic diagnostic (`Parsing
-// error: <message>`), at the line and 0-based column fixErrorLocation gives its offset. Nothing
-// when TypeScript finds no error in the code.
+// vue_parsing_error is ESLint's fatal problem for a .vue file whose script TypeScript's parser
+// rejects: one with syntax errors (ScriptInfo.has_error), or whose <script setup> exports a type
+// next to a <script> (ScriptInfo.type_export: vue-eslint-parser's rewrite of the export is code
+// TypeScript rejects). The parse throws TypeScript's first syntactic diagnostic (`Parsing error:
+// <message>`), at the line and 0-based column fixErrorLocation gives its offset. Nothing when
+// TypeScript finds no error in the code: tree-sitter's grammar alone failed, and veslint lints on
+// with a warning, as for a .ts file.
 fn (mut c Checker) vue_parsing_error() []Finding {
 	doc := c.vue.doc
-	diagnostics := c.client.transpile_diagnostics(doc.script.code, 'file.ts') or { return [] }
+	s := &doc.script
+	code := if s.setup_error { s.codes.last() } else { s.code }
+	// The pre-pass reads with the template's dialect, the script with its own (vue.Options).
+	jsx := if s.setup_error { doc.options.fragment_jsx } else { s.jsx }
+	diagnostics := c.client.transpile_diagnostics(code, if jsx { 'file.tsx' } else { 'file.ts' }) or {
+		return []
+	}
 	if diagnostics.len == 0 {
 		return []
 	}
-	loc := doc.error_loc(diagnostics[0].pos)
+	loc := if s.setup_error {
+		doc.loc(s.setup_start + offsets.byte_offset(code, diagnostics[0].pos))
+	} else {
+		doc.error_loc(diagnostics[0].pos)
+	}
 	return [
 		Finding{
 			stmt:             treesitter.Ident{

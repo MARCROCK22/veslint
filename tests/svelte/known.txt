@@ -1,8 +1,4 @@
 # Files of tools/svelte_parse_diff.mjs's corpus (content hash) whose difference is expected: path, reason, origin.
-# 2 are eslint-plugin-svelte's indent fixtures with a JSDoc type tree-sitter's grammar does not read.
-8d0cc61b194f.svelte	tree-sitter: `T!` (a JSDoc non-null type, which TypeScript parses and reports) is a syntax error for the grammar, and estree/ has no TSJSDocNonNullableType	indent/i72
-ffb42f2ef178.svelte	tree-sitter: `T!` (a JSDoc non-null type, which TypeScript parses and reports) is a syntax error for the grammar, and estree/ has no TSJSDocNonNullableType	build/upstream/svelte/packages/eslint-plugin-svelte/tests/fixtures/rules/indent/invalid/ts/ts-types03-output.svelte
-a6e9668444b5.svelte	error position: acorn reports an invalid each pattern at its last token, veslint where tree-sitter fails	../../svelte-spec/probes/cases/err/e9.svelte
 # Open differences of the scope summary (see the header of scope_info.v):
 25f1d0c017e7.svelte	open (scope): the references of the typings of use: (Parameters<typeof action>) are not where svelte-eslint-parser puts them	no-dupe-use-directives/v1
 94fa30a8cfdb.svelte	open (scope): the references of the typings of use: (Parameters<typeof action>) are not where svelte-eslint-parser puts them	no-dupe-use-directives/i0

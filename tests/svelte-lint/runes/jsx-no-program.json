@@ -1,0 +1,1 @@
+{"rules": {"prefer-const": "error"}, "languageOptions": {"parserOptions": {"ecmaFeatures": {"jsx": true}, "projectService": false}}}

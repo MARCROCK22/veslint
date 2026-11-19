@@ -300,14 +300,28 @@ else
 	ko "rule without problems (code $code)"
 fi
 
-# --rule warnings: syntax errors, and nodes the rule could not analyze (a chain of 1,002 member
-# accesses goes beyond the limit of 1,000 nesting levels).
-./veslint --rule no-debugger tests/fixtures/syntax_error.ts > /dev/null 2> "$TMP/warning.err"
-if grep -q 'syntax errors' "$TMP/warning.err"; then
-	ok "--rule warns about syntax errors"
+# A file TypeScript's parser rejects is ESLint's fatal problem, its first syntactic diagnostic at
+# its line and 0-based column, and nothing else; one only tree-sitter's grammar does not read
+# (`new new Foo()`) is linted on with a warning. Then the --rule warning about nodes the rule could
+# not analyze (a chain of 1,002 member accesses goes beyond the limit of 1,000 nesting
+# levels).
+code=0
+./veslint --rule no-debugger tests/fixtures/syntax_error.ts > "$TMP/fatal.out" 2> "$TMP/fatal.err" || code=$?
+if [[ $code -eq 1 && "$(head -1 "$TMP/fatal.out")" == $'tests/fixtures/syntax_error.ts:2:6\teslint\tfatal\tParsing error: Variable declaration expected.' && "$(wc -l < "$TMP/fatal.out")" -eq 1 ]] && ! grep -q 'syntax errors' "$TMP/fatal.err"; then
+	ok "--rule: a syntax error TypeScript reports is ESLint's fatal problem"
 else
-	ko "--rule warns about syntax errors"
-	cat "$TMP/warning.err"
+	ko "--rule: a syntax error TypeScript reports is not ESLint's fatal problem (code $code)"
+	cat "$TMP/fatal.out" "$TMP/fatal.err"
+fi
+mkdir -p "$TMP/grammar-gap"
+printf '{"compilerOptions":{"strict":true,"noEmit":true}}\n' > "$TMP/grammar-gap/tsconfig.json"
+printf 'new new Foo();\ndebugger;\n' > "$TMP/grammar-gap/gap.ts"
+./veslint --rule no-debugger "$TMP/grammar-gap/gap.ts" > "$TMP/warning.out" 2> "$TMP/warning.err"
+if grep -q 'syntax errors' "$TMP/warning.err" && grep -q $'\tno-debugger\t' "$TMP/warning.out"; then
+	ok "--rule warns about syntax only tree-sitter rejects, and lints on"
+else
+	ko "--rule: syntax only tree-sitter rejects"
+	cat "$TMP/warning.out" "$TMP/warning.err"
 fi
 # A fix that gives code TypeScript cannot parse (without `jsx`, @stylistic/comma-dangle removes the
 # comma of `<T,>` in a .tsx file, which makes it a JSX element): like ESLint, --fix writes it, stops
@@ -637,8 +651,8 @@ fi
 # each read as vue-eslint-parser reads it), as ESLint gives it for each configuration of
 # tests/vue-lint/features (pinned by its pin.sh); and through an eslint.config.mjs, whose resolution
 # by ESLint keeps them (and svelteFeatures and svelteConfig: the runes of tests/svelte-lint/runes).
-features_configs=(css-off falsy filter-off interpolation-off macros none)
-features_files=(filters.vue interpolation.vue macros.vue style.vue)
+features_configs=(css-off falsy filter-off interpolation-off jsx jsx-no-program macros none)
+features_files=(filters.vue interpolation.vue jsx.vue jsx-both.vue macros.vue style.vue)
 for config in "${features_configs[@]}"; do
 	(cd tests/vue-lint/features && ../../../veslint --config "$config.json" --fixes "${features_files[@]}" 2> /dev/null) |
 		sed "s|^|$config: |"
@@ -654,7 +668,7 @@ if command -v bun > /dev/null && [[ -d build/eval/spider-byte/node_modules/eslin
 		sed 's|^|falsy: |' | sorted > "$TMP/vue-features-bun.out"
 	for config in config-true features-false; do
 		(cd tests/svelte-lint/runes && RUNES_CONFIG=$PWD/$config.json VESLINT_ESLINT_DIR=../../../build/eval/spider-byte \
-			../../../veslint --config eslint.runes.config.mjs --fixes options.svelte plain.svelte 2>> "$TMP/vue-features-bun.err") |
+			../../../veslint --config eslint.runes.config.mjs --fixes jsx-assertion.svelte jsx-script.svelte jsx-template.svelte options.svelte plain.svelte 2>> "$TMP/vue-features-bun.err") |
 			sed "s|^|$config: |"
 	done | sorted > "$TMP/svelte-features-bun.out"
 	if diff -u <(grep '^falsy: ' tests/vue-lint/features/expected.txt) "$TMP/vue-features-bun.out" &&
@@ -772,14 +786,17 @@ fi
 # globals, the $props scope): parserOptions.svelteFeatures.runes, else <svelte:options runes>, else
 # the svelteConfig's compilerOptions.runes (parserOptions.svelteConfig, else svelte.config.js, which
 # says false there), as ESLint gives it for each configuration of tests/svelte-lint/runes (pinned
-# by its pin.sh), from the command line and from one --server that lints with each in turn.
+# by its pin.sh), from the command line and from one --server that lints with each in turn; and
+# where parserOptions.ecmaFeatures.jsx makes svelte-eslint-parser's parses read JSX (the jsx-*
+# files: the first parse with JSX, the virtual code's too without a program, the compiler's
+# template expressions never).
 : > "$TMP/svelte-runes.out"
 : > "$TMP/svelte-runes-server.jsonl"
-runes_configs=(config-no-runes config-true features-false features-true none)
+runes_configs=(config-no-runes config-true features-false features-true jsx jsx-no-program none)
 for config in "${runes_configs[@]}"; do
-	(cd tests/svelte-lint/runes && ../../../veslint --config "$config.json" --fixes options.svelte plain.svelte 2> /dev/null) |
+	(cd tests/svelte-lint/runes && ../../../veslint --config "$config.json" --fixes jsx-assertion.svelte jsx-script.svelte jsx-template.svelte options.svelte plain.svelte 2> /dev/null) |
 		sed "s|^|$config: |" >> "$TMP/svelte-runes.out"
-	printf '{"id": 1, "config": "%s.json", "files": ["options.svelte", "plain.svelte"]}\n' "$config" >> "$TMP/svelte-runes-server.jsonl"
+	printf '{"id": 1, "config": "%s.json", "files": ["jsx-assertion.svelte", "jsx-script.svelte", "jsx-template.svelte", "options.svelte", "plain.svelte"]}\n' "$config" >> "$TMP/svelte-runes-server.jsonl"
 done
 if diff -u <(grep -v '^function: ' tests/svelte-lint/runes/expected.txt) <(sorted "$TMP/svelte-runes.out"); then
 	ok "Svelte files: runes mode from svelteFeatures.runes, <svelte:options>, svelteConfig and svelte.config.js"

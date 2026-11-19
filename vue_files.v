@@ -107,11 +107,6 @@ fn include_twins(mut client tsgo.Client, twins map[string][]string) ![]string {
 	return served
 }
 
-// uses_tsx_grammar: the script of the document is read with the grammar's tsx dialect.
-fn uses_tsx_grammar(doc &vue.Document) bool {
-	return doc.script.lang == .tsx
-}
-
 // vue_report_positions are the line and column ESLint prints for the start (and, with `ends`, the
 // end) of each finding of a .vue file: those of vue-eslint-parser's locations, whose lines end
 // only at a line feed, for a report on a node or a token; ESLint's own (offsets.utf16_positions)

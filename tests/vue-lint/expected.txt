@@ -216,7 +216,16 @@ single-script.vue:8:41	@stylistic/semi	missingSemi	Missing semicolon.	fix	197	19
 single-script.vue:8:42	@stylistic/brace-style	singleLineClose	Closing curly brace should be on the same line as opening curly brace or on the line after the previous block.	fix	198	198	\n	end	8	43
 single-script.vue:8:43	@stylistic/object-curly-spacing	unexpectedSpaceBefore	There should be no space before '}'.	fix	199	200		end	8	44
 single-script.vue:8:45	@stylistic/semi	missingSemi	Missing semicolon.	fix	201	201	;	end	9	1
+syntax-error-script.vue:9:9	eslint	fatal	Parsing error: Property destructuring pattern expected.
+syntax-error-setup.vue:9:6	eslint	fatal	Parsing error: Variable declaration expected.
+syntax-error.vue:3:19	eslint	fatal	Parsing error: Variable declaration expected.
 template-only.vue:2:20	@stylistic/no-trailing-spaces	trailingSpace	Trailing spaces not allowed.	fix	30	33		end	2	23
+tsx-assertion.vue:1:15	vue/block-lang	unexpected	Do not specify the 'lang' attribute of '<script>'.	end	1	25
+tsx-assertion.vue:2:11	@typescript-eslint/consistent-type-assertions	as	Use 'as string' instead of '<string>'.	fix	36	58	(1 as unknown) as string	end	2	33
+tsx-assertion.vue:2:11	@typescript-eslint/no-unsafe-type-assertion	unsafeTypeAssertion	Unsafe type assertion: type 'string' is more narrow than the original type.	end	2	33
+tsx-assertion.vue:2:20	@typescript-eslint/no-magic-numbers	noMagic	No magic number: 1.	end	2	21
+tsx-assertion.vue:2:33	@stylistic/semi	missingSemi	Missing semicolon.	fix	58	58	;	end	3	1
+tsx-jsx.vue:2:15	eslint	fatal	Parsing error: '>' expected.
 tsx-lang.vue:1:9	vue/block-lang	unexpected	Do not specify the 'lang' attribute of '<script>'.	end	1	19
 tsx-lang.vue:2:16	vue/require-expose	requireExpose	The public properties of the component must be explicitly declared using `expose`. If the component does not have public properties, declare it empty.	suggestion	addExposeOptionForEmpty	Add the `expose` option to give an empty array.	50	50	,\nexpose: []	end	8	2
 tsx-lang.vue:3:3	@stylistic/quote-props	unquotedPropertyFound	Unquoted property 'name' found.	fix	39	43	"name"	end	3	14

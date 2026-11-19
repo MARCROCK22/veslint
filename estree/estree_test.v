@@ -96,3 +96,46 @@ fn test_traversal_order() {
 	assert t.children(cls).map(t.typ(it)) == [NodeType.identifier, .ts_type_parameter_declaration,
 		.identifier, .class_body]
 }
+
+fn test_jsdoc_non_nullable_type() {
+	// typescript-estree copies TypeScript's JSDocNonNullableType (deeplyCopy); its annotation
+	// starts one character before the full start of the type, and the node at the comment.
+	t := parse_ts('let y = x as /* c */ T!;')
+	body := t.list(t.root, .body) or { panic('no body') }
+	decls := t.list(body[0], .declarations) or { panic('no declarations') }
+	as_expr := t.node(decls[0], .init) or { panic('no init') }
+	assert t.typ(as_expr) == .ts_as_expression
+	nn := t.node(as_expr, .type_annotation) or { panic('no type') }
+	assert t.typ(nn).type_name() == 'TSJSDocNonNullableType'
+	assert t.nodes[nn].start == 13 && t.nodes[nn].end == 23
+	assert t.get(nn, .postfix) == Value(true)
+	assert t.get(nn, .id) == Value(f64(0))
+	ann := t.node(nn, .type_annotation) or { panic('no annotation') }
+	assert t.typ(ann) == .ts_type_annotation
+	assert t.nodes[ann].start == 11 && t.nodes[ann].end == 22
+	ref := t.node(ann, .type_annotation) or { panic('no reference') }
+	assert t.typ(ref) == .ts_type_reference
+	// ESLint visits it with the keys it falls back to for a type it does not know.
+	assert t.children(nn) == [ann]
+	// `?T` and `*`: JSDocNullableType (not postfix) and JSDocAllType, copied the same way.
+	u := parse_ts('let a: ?T, b: *;')
+	ubody := u.list(u.root, .body) or { panic('no body') }
+	udecls := u.list(ubody[0], .declarations) or { panic('no declarations') }
+	mut found := []string{}
+	for d in udecls {
+		id := u.node(d, .id) or { panic('no id') }
+		uann := u.node(id, .type_annotation) or { panic('no annotation') }
+		jt := u.node(uann, .type_annotation) or { panic('no type') }
+		postfix := if f := u.flag(jt, .postfix) { f.str() } else { 'none' }
+		found << '${u.typ(jt).type_name()} ${u.nodes[jt].start}-${u.nodes[jt].end} ${postfix}'
+	}
+	assert found == ['TSJSDocNullableType 7-9 false', 'TSJSDocAllType 14-15 none']
+}
+
+fn test_namespace_export_is_no_module_indicator() {
+	// isAnExternalModuleIndicatorNode: `export as namespace a` is not one, `export {}` is.
+	t := parse_ts('export as namespace a;')
+	assert t.get(t.root, .source_type) == Value('script')
+	m := parse_ts('export as namespace a;\nexport {};')
+	assert m.get(m.root, .source_type) == Value('module')
+}

@@ -1,7 +1,16 @@
+config-no-runes: jsx-assertion.svelte:2:7	prefer-const	useConst	'a' is never reassigned. Use 'const' instead.	fix	22	53	const a = <string>(1 as unknown);	end	2	8
+config-no-runes: jsx-script.svelte:2:15	eslint	fatal	Parsing error: ':' expected.
+config-no-runes: jsx-template.svelte:6:6	eslint	fatal	Parsing error: Unexpected token\nhttps://svelte.dev/e/js_parse_error
 config-no-runes: options.svelte:5:9	prefer-const	useConst	'label' is never reassigned. Use 'const' instead.	end	5	14
 config-no-runes: plain.svelte:4:9	prefer-const	useConst	'label' is never reassigned. Use 'const' instead.	end	4	14
+config-true: jsx-assertion.svelte:2:7	prefer-const	useConst	'a' is never reassigned. Use 'const' instead.	fix	22	53	const a = <string>(1 as unknown);	end	2	8
+config-true: jsx-script.svelte:2:15	eslint	fatal	Parsing error: ':' expected.
+config-true: jsx-template.svelte:6:6	eslint	fatal	Parsing error: Unexpected token\nhttps://svelte.dev/e/js_parse_error
 config-true: options.svelte:5:9	prefer-const	useConst	'label' is never reassigned. Use 'const' instead.	end	5	14
 config-true: plain.svelte:4:9	prefer-const	useConst	'label' is never reassigned. Use 'const' instead.	end	4	14
+features-false: jsx-assertion.svelte:2:7	prefer-const	useConst	'a' is never reassigned. Use 'const' instead.	fix	22	53	const a = <string>(1 as unknown);	end	2	8
+features-false: jsx-script.svelte:2:15	eslint	fatal	Parsing error: ':' expected.
+features-false: jsx-template.svelte:6:6	eslint	fatal	Parsing error: Unexpected token\nhttps://svelte.dev/e/js_parse_error
 features-false: options.svelte:5:16	@typescript-eslint/no-unsafe-assignment	anyAssignment	Unsafe assignment of an error typed value.	end	5	36
 features-false: options.svelte:5:16	prefer-const	useConst	'value' is never reassigned. Use 'const' instead.	fix	141	223	const { label, value = $bindable(0) }: { label: string; value?: number } = $props();	end	5	21
 features-false: options.svelte:5:24	@typescript-eslint/no-unsafe-call	errorCall	Unsafe call of a type that could not be resolved.	end	5	33
@@ -22,6 +31,9 @@ features-false: plain.svelte:5:15	@typescript-eslint/no-unsafe-call	errorCall	Un
 features-false: plain.svelte:5:7	@typescript-eslint/no-unsafe-assignment	anyAssignment	Unsafe assignment of an error typed value.	end	5	24
 features-false: plain.svelte:6:18	@typescript-eslint/no-unsafe-call	errorCall	Unsafe call of a type that could not be resolved.	end	6	26
 features-false: plain.svelte:6:9	@typescript-eslint/no-unsafe-assignment	anyAssignment	Unsafe assignment of an error typed value.	end	6	37
+features-true: jsx-assertion.svelte:2:7	prefer-const	useConst	'a' is never reassigned. Use 'const' instead.	fix	22	53	const a = <string>(1 as unknown);	end	2	8
+features-true: jsx-script.svelte:2:15	eslint	fatal	Parsing error: ':' expected.
+features-true: jsx-template.svelte:6:6	eslint	fatal	Parsing error: Unexpected token\nhttps://svelte.dev/e/js_parse_error
 features-true: options.svelte:5:9	prefer-const	useConst	'label' is never reassigned. Use 'const' instead.	end	5	14
 features-true: plain.svelte:4:9	prefer-const	useConst	'label' is never reassigned. Use 'const' instead.	end	4	14
 function: legacy.svelte:4:16	@typescript-eslint/no-unsafe-assignment	anyAssignment	Unsafe assignment of an error typed value.	end	4	36
@@ -37,6 +49,29 @@ function: legacy.svelte:6:9	@typescript-eslint/no-unsafe-assignment	anyAssignmen
 function: options.svelte:5:9	prefer-const	useConst	'label' is never reassigned. Use 'const' instead.	end	5	14
 function: plain.svelte:4:9	prefer-const	useConst	'label' is never reassigned. Use 'const' instead.	end	4	14
 function: warn.svelte:4:7	svelte/valid-compile	error	`count` is updated, but is not declared with `$state(...)`. Changing its value will not correctly trigger updates\nhttps://svelte.dev/e/non_reactive_update(non_reactive_update)	end	4	12
+jsx-no-program: jsx-assertion.svelte:2:11	eslint	fatal	Parsing error: JSX element 'string' has no corresponding closing tag.
+jsx-no-program: jsx-script.svelte:2:7	prefer-const	useConst	'a' is never reassigned. Use 'const' instead.	fix	21	40	const a = <b>{1}</b>;	end	2	8
+jsx-no-program: jsx-template.svelte:6:6	eslint	fatal	Parsing error: Unexpected token\nhttps://svelte.dev/e/js_parse_error
+jsx-no-program: options.svelte:5:9	prefer-const	useConst	'label' is never reassigned. Use 'const' instead.	end	5	14
+jsx-no-program: plain.svelte:4:16	prefer-const	useConst	'value' is never reassigned. Use 'const' instead.	fix	166	248	const { label, value = $bindable(0) }: { label: string; value?: number } = $props();	end	4	21
+jsx-no-program: plain.svelte:4:9	prefer-const	useConst	'label' is never reassigned. Use 'const' instead.	fix	166	248	const { label, value = $bindable(0) }: { label: string; value?: number } = $props();	end	4	14
+jsx: jsx-assertion.svelte:2:11	eslint	fatal	Parsing error: JSX element 'string' has no corresponding closing tag.
+jsx: jsx-script.svelte:2:15	eslint	fatal	Parsing error: ':' expected.
+jsx: jsx-template.svelte:6:6	eslint	fatal	Parsing error: Unexpected token\nhttps://svelte.dev/e/js_parse_error
+jsx: options.svelte:5:9	prefer-const	useConst	'label' is never reassigned. Use 'const' instead.	end	5	14
+jsx: plain.svelte:4:16	@typescript-eslint/no-unsafe-assignment	anyAssignment	Unsafe assignment of an error typed value.	end	4	36
+jsx: plain.svelte:4:16	prefer-const	useConst	'value' is never reassigned. Use 'const' instead.	fix	166	248	const { label, value = $bindable(0) }: { label: string; value?: number } = $props();	end	4	21
+jsx: plain.svelte:4:24	@typescript-eslint/no-unsafe-call	errorCall	Unsafe call of a type that could not be resolved.	end	4	33
+jsx: plain.svelte:4:7	@typescript-eslint/no-unsafe-assignment	anyAssignment	Unsafe assignment of an error typed value.	end	4	84
+jsx: plain.svelte:4:76	@typescript-eslint/no-unsafe-call	errorCall	Unsafe call of a type that could not be resolved.	end	4	82
+jsx: plain.svelte:4:9	prefer-const	useConst	'label' is never reassigned. Use 'const' instead.	fix	166	248	const { label, value = $bindable(0) }: { label: string; value?: number } = $props();	end	4	14
+jsx: plain.svelte:5:15	@typescript-eslint/no-unsafe-call	errorCall	Unsafe call of a type that could not be resolved.	end	5	21
+jsx: plain.svelte:5:7	@typescript-eslint/no-unsafe-assignment	anyAssignment	Unsafe assignment of an error typed value.	end	5	24
+jsx: plain.svelte:6:18	@typescript-eslint/no-unsafe-call	errorCall	Unsafe call of a type that could not be resolved.	end	6	26
+jsx: plain.svelte:6:9	@typescript-eslint/no-unsafe-assignment	anyAssignment	Unsafe assignment of an error typed value.	end	6	37
+none: jsx-assertion.svelte:2:7	prefer-const	useConst	'a' is never reassigned. Use 'const' instead.	fix	22	53	const a = <string>(1 as unknown);	end	2	8
+none: jsx-script.svelte:2:15	eslint	fatal	Parsing error: ':' expected.
+none: jsx-template.svelte:6:6	eslint	fatal	Parsing error: Unexpected token\nhttps://svelte.dev/e/js_parse_error
 none: options.svelte:5:9	prefer-const	useConst	'label' is never reassigned. Use 'const' instead.	end	5	14
 none: plain.svelte:4:16	@typescript-eslint/no-unsafe-assignment	anyAssignment	Unsafe assignment of an error typed value.	end	4	36
 none: plain.svelte:4:16	prefer-const	useConst	'value' is never reassigned. Use 'const' instead.	fix	166	248	const { label, value = $bindable(0) }: { label: string; value?: number } = $props();	end	4	21

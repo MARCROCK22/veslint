@@ -1,6 +1,7 @@
 module rules
 
 import json2
+import offsets
 import time
 import tsgo
 import vue
@@ -195,13 +196,7 @@ fn (mut c Checker) vue_document_errors() []vue.ParseError {
 		// fragment without its closing tag, JSX expressions without one parent) first, and those
 		// reported at the start of an unterminated string before the string's own.
 		ordered := vue_scanner_order(snippet.code, diagnostics)
-		mut first := ordered[0]
-		for d in ordered {
-			if d.code !in [17008, 17014, 2657] {
-				first = d
-				break
-			}
-		}
+		first := first_parse_diagnostic(ordered, offsets.utf16_offsets(snippet.code, [snippet.code.len])[0])
 		index := snippet.utf16_to_file(first.pos)
 		inserted << vue.ParseError{
 			...e

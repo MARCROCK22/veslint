@@ -301,3 +301,19 @@ fn test_modifier_order_and_decorators() {
 fn test_yield_ends_at_a_line_break() {
 	assert statements_of('function *a() {\n  yield\n  (b);\n  yield\n  -b\n  f(yield\n  , 1)\n  yield *\n  b\n}') == 'program(generator_function_declaration(identifier,formal_parameters,statement_block(expression_statement(yield_expression),expression_statement(parenthesized_expression(identifier)),expression_statement(yield_expression),expression_statement(unary_expression(identifier)),expression_statement(call_expression(identifier,arguments(yield_expression,number))),expression_statement(yield_expression(identifier)))))'
 }
+
+// `T!` in a type is a JSDoc non-null type at the level of `[]`, as TypeScript's
+// parsePostfixTypeOrHigher reads it, also after `as` and in type arguments; a `!` after a line
+// break ends the statement, and a `!=` stays the operator.
+fn test_jsdoc_non_null_type() {
+	t := 'type_identifier'
+	assert shapes('type V = A | B![] | C[]!', 'union_type') == [
+		'union_type(union_type(${t},array_type(non_null_type(${t}))),non_null_type(array_type(${t})))',
+		'union_type(${t},array_type(non_null_type(${t})))',
+	]
+	assert shapes('type V = keyof T![K]!!', 'index_type_query') == ['index_type_query(non_null_type(non_null_type(lookup_type(non_null_type(${t}),${t}))))']
+	assert statements_of('y = x as T!\ny = x as T\n!z\ny = x as T != z') == 'program(expression_statement(assignment_expression(identifier,as_expression(identifier,non_null_type(${t})))),expression_statement(assignment_expression(identifier,as_expression(identifier,${t}))),expression_statement(unary_expression(identifier)),expression_statement(assignment_expression(identifier,binary_expression(as_expression(identifier,${t}),identifier))))'
+	// With type arguments `T!`, `a < b! > (c)` is a call, as for TypeScript; before an
+	// identifier it stays two comparisons.
+	assert statements_of('a < b! > (c)\na < b! > c') == 'program(expression_statement(call_expression(identifier,type_arguments(non_null_type(${t})),arguments(identifier))),expression_statement(binary_expression(binary_expression(identifier,non_null_expression(identifier)),identifier)))'
+}

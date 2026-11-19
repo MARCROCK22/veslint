@@ -75,6 +75,13 @@ pub mut:
 	// parsing error from TypeScript then); error_index is where.
 	has_error   bool
 	error_index int
+	// setup_error: the content of the <script setup> next to a <script> has syntax errors alone:
+	// vue-eslint-parser's pre-pass (getScriptSetupCodeBlocks) throws from its parse of that
+	// content, at setup_start (the content's offset) plus the error's.
+	setup_error bool
+	setup_start int
+	// jsx: the script was read with JSX (Options.script_jsx).
+	jsx bool
 	// type_export: the <script setup> (next to a <script>) has a named export without a
 	// declaration that exports a type (`export type { X }`, `export { type X as Y }`), which
 	// getScriptSetupCodeBlocks rewrites as `( type { X });` or `({ type X });`: code TypeScript's
@@ -396,8 +403,10 @@ fn (mut c ExprContext) parse_masked(ranges [][]int) {
 		}
 	}
 	s.masked = masked.bytestr()
-	tsx := s.lang == .tsx
-	tree := parse_ts(if tsx { c.tsx } else { c.ts }, s.masked) or { return }
+	// JSX only with Options.script_jsx, whatever the `lang` (`lang="tsx"` alone does not enable
+	// it: `<div/>` is `'>' expected.` and `<T>x` a type assertion).
+	s.jsx = c.opts.script_jsx
+	tree := parse_ts(if s.jsx { c.tsx } else { c.ts }, s.masked) or { return }
 	s.tree = tree
 	root := treesitter.root_node(tree)
 	if C.ts_node_has_error(root) {
@@ -407,7 +416,7 @@ fn (mut c ExprContext) parse_masked(ranges [][]int) {
 	// A script with syntax errors is a parsing error for vue-eslint-parser: no Program then
 	// (its tokens still are).
 	if !s.has_error {
-		if es := estree.convert_with(root, s.masked, tsx, estree.Options{
+		if es := estree.convert_with(root, s.masked, s.jsx, estree.Options{
 			module:       true
 			regexp_valid: fn (pattern string, flags string) bool {
 				return jsregexp.regexp_new(estree.utf16_units(pattern), flags) != none
@@ -420,7 +429,7 @@ fn (mut c ExprContext) parse_masked(ranges [][]int) {
 			s.has_error = true
 		}
 	}
-	toks, comms := snippet_tokens(root, s.masked, tsx)
+	toks, comms := snippet_tokens(root, s.masked, s.jsx)
 	for t in toks {
 		if t.start in s.split_offsets {
 			continue
@@ -599,7 +608,27 @@ fn (mut c ExprContext) parse_combined(setup int, other int) {
 		// The pre-pass parses the setup content alone.
 		st := c.doc.nodes[setup_text]
 		s.codes << c.doc.src[st.start..st.end]
-		sb := c.setup_code_blocks(setup, setup_text) or {
+		// With a syntax error in the masked script, or when the pre-pass reads with JSX and the
+		// script without (or the reverse), the setup content is parsed alone, as the pre-pass
+		// does: an error there is the parsing error; one in the other script is TypeScript's on
+		// the combined code, which needs the setup's blocks.
+		mut alone := SetupAlone{}
+		pre_pass := !s.has_es || c.opts.fragment_jsx != s.jsx
+		if pre_pass {
+			alone = c.parse_setup_alone(setup_text)
+			if alone.tree == unsafe { nil } {
+				s.setup_error = true
+				s.setup_start = st.start
+				return
+			}
+		}
+		defer {
+			if alone.tree != unsafe { nil } {
+				treesitter.tree_delete(alone.tree)
+			}
+		}
+		sb := c.setup_code_blocks(setup, setup_text, if pre_pass { &alone.es } else { &s.es },
+			if pre_pass { alone.tokens } else { s.tokens }) or {
 			s.has_error = true
 			return
 		}
@@ -654,12 +683,7 @@ struct SetupBlocks {
 
 // setup_code_blocks is getScriptSetupCodeBlocks, on the statements of the setup content in the
 // masked script's tree.
-fn (mut c ExprContext) setup_code_blocks(setup int, text int) !SetupBlocks {
-	s := &c.doc.script
-	if !s.has_es {
-		return error('no tree')
-	}
-	es := &s.es
+fn (mut c ExprContext) setup_code_blocks(setup int, text int, es &estree.EsTree, tokens []Token) !SetupBlocks {
 	t := c.doc.nodes[text]
 	base := t.start
 	code := c.doc.src[t.start..t.end]
@@ -688,10 +712,10 @@ fn (mut c ExprContext) setup_code_blocks(setup int, text int) !SetupBlocks {
 			used = append_statement(mut export_defaults, code, base, start, end, used)
 		} else if typ == .export_named_declaration {
 			used = append_statement(mut statements, code, base, used, start, used)
-			export_index := sorted_index_by_start(s.tokens, es.nodes[st].start)
-			if export_index < s.tokens.len && s.tokens[export_index].start == es.nodes[st].start
-				&& s.tokens[export_index].value == 'export' {
-				export_token := s.tokens[export_index]
+			export_index := sorted_index_by_start(tokens, es.nodes[st].start)
+			if export_index < tokens.len && tokens[export_index].start == es.nodes[st].start
+				&& tokens[export_index].value == 'export' {
+				export_token := tokens[export_index]
 				used = append_code(mut statements, code, base, used, export_token.start - base,
 					used)
 				if (es.node(st, .declaration) or { -1 }) >= 0 {
@@ -710,12 +734,12 @@ fn (mut c ExprContext) setup_code_blocks(setup int, text int) !SetupBlocks {
 						local := es.node(spec, .local) or { continue }
 						exported := es.node(spec, .exported) or { continue }
 						if es.nodes[local].start < es.nodes[exported].start {
-							li := sorted_index_by_start(s.tokens, es.nodes[local].start)
-							if li + 2 >= s.tokens.len || s.tokens[li + 1].value != 'as' {
+							li := sorted_index_by_start(tokens, es.nodes[local].start)
+							if li + 2 >= tokens.len || tokens[li + 1].value != 'as' {
 								return error('Could not parse <script setup>.')
 							}
-							as_token := s.tokens[li + 1]
-							exported_token := s.tokens[li + 2]
+							as_token := tokens[li + 1]
+							exported_token := tokens[li + 2]
 							used = append_code(mut statements, code, base, cursor, as_token.start - base,
 								used)
 							used = append_code(mut statements, code, base, as_token.end - base,
@@ -753,6 +777,58 @@ fn (mut c ExprContext) setup_code_blocks(setup int, text int) !SetupBlocks {
 		blocks:      blocks
 		block_start: block_start
 		block_end:   block_end
+	}
+}
+
+// SetupAlone is the setup content parsed alone (parse_setup_alone); `tree` is nil when it has
+// syntax errors. Its tree outlives `es`, which keeps nodes of it.
+struct SetupAlone {
+	tree   &C.TSTree = unsafe { nil }
+	es     estree.EsTree
+	tokens []Token
+}
+
+// parse_setup_alone parses the content of the <script setup> (the text node `text`) alone, in a
+// text of the file's length with the rest blanked, so that offsets are the file's.
+fn (mut c ExprContext) parse_setup_alone(text int) SetupAlone {
+	t := c.doc.nodes[text]
+	mut bytes := blank(c.doc.src, [[t.start, t.end]]).bytes()
+	// As in parse_masked: a `//` comment at the end of the content ends there.
+	if t.end < bytes.len && bytes[t.end] == ` ` {
+		bytes[t.end] = `\r`
+	}
+	code := bytes.bytestr()
+	jsx := c.opts.fragment_jsx
+	tree := parse_ts(if jsx { c.tsx } else { c.ts }, code) or { return SetupAlone{} }
+	root := treesitter.root_node(tree)
+	if C.ts_node_has_error(root) {
+		treesitter.tree_delete(tree)
+		return SetupAlone{}
+	}
+	es := estree.convert_with(root, code, jsx, estree.Options{
+		module:       true
+		regexp_valid: fn (pattern string, flags string) bool {
+			return jsregexp.regexp_new(estree.utf16_units(pattern), flags) != none
+		}
+	}) or {
+		treesitter.tree_delete(tree)
+		return SetupAlone{}
+	}
+	toks, _ := snippet_tokens(root, code, jsx)
+	mut tokens := []Token{cap: toks.len}
+	for tok in toks {
+		value := code[tok.start..tok.end]
+		tokens << Token{
+			typ:   tok.typ
+			start: tok.start
+			end:   tok.end
+			value: if tok.typ == 'PrivateIdentifier' { value[1..] } else { value }
+		}
+	}
+	return SetupAlone{
+		tree:   tree
+		es:     es
+		tokens: tokens
 	}
 }
 

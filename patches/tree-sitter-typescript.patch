@@ -898,7 +898,15 @@
          '?',
          field('type', $.type_annotation),
        ),
-@@ -782,6 +1319,9 @@
+@@ -769,6 +1306,7 @@
+         $.generic_type,
+         $.object_type,
+         $.array_type,
++        $.non_null_type,
+         $.tuple_type,
+         $.flow_maybe_type,
+         $.type_query,
+@@ -782,6 +1320,9 @@
          $.intersection_type,
          $.union_type,
          'const',
@@ -908,7 +916,7 @@
        ),
  
        template_type: $ => seq('${', choice($.primary_type, $.infer_type), '}'),
-@@ -790,6 +1330,8 @@
+@@ -790,6 +1331,8 @@
          '`',
          repeat(choice(
            alias($._template_chars, $.string_fragment),
@@ -917,7 +925,7 @@
            $.template_type,
          )),
          '`',
-@@ -818,6 +1360,8 @@
+@@ -818,6 +1361,8 @@
          field('name', choice(
            $._type_identifier,
            $.nested_type_identifier,
@@ -926,7 +934,7 @@
          )),
          field('type_arguments', $.type_arguments),
        )),
-@@ -867,9 +1411,10 @@
+@@ -867,9 +1412,10 @@
          optional('?.'),
          '[', field('index', choice($.predefined_type, $.string, $.number)), ']',
        ),
@@ -938,7 +946,7 @@
            $.identifier,
            alias($._type_query_member_expression, $.member_expression),
            alias($._type_query_subscript_expression, $.subscript_expression),
-@@ -878,13 +1423,16 @@
+@@ -878,13 +1424,16 @@
        ),
        _type_query_instantiation_expression: $ => seq(
          field('function', choice(
@@ -956,7 +964,7 @@
        type_query: $ => prec.right(seq(
          'typeof',
          choice(
-@@ -894,12 +1442,14 @@
+@@ -894,12 +1443,14 @@
            alias($._type_query_instantiation_expression, $.instantiation_expression),
            $.identifier,
            $.this,
@@ -972,7 +980,7 @@
        ),
  
        lookup_type: $ => seq(
-@@ -926,7 +1476,7 @@
+@@ -926,7 +1477,7 @@
          $.undefined,
        ),
  
@@ -981,7 +989,7 @@
          field('operator', choice('-', '+')),
          field('argument', $.number),
        )),
-@@ -960,33 +1510,42 @@
+@@ -960,33 +1511,42 @@
  
        object_type: $ => seq(
          choice('{', '{|'),
@@ -1039,7 +1047,7 @@
          field('type', optional($.type_annotation)),
        ),
  
-@@ -1003,8 +1562,12 @@
+@@ -1003,8 +1563,12 @@
        ),
  
        type_parameter: $ => seq(
@@ -1053,7 +1061,7 @@
          field('constraint', optional($.constraint)),
          field('value', optional($.default_type)),
        ),
-@@ -1027,7 +1590,11 @@
+@@ -1027,7 +1591,11 @@
          field('type', optional($.type_annotation)),
        ),
  
@@ -1065,7 +1073,7 @@
          optional(
            seq(
              field('sign', optional(choice('-', '+'))),
-@@ -1035,24 +1602,39 @@
+@@ -1035,34 +1603,71 @@
            ),
          ),
          '[',
@@ -1119,7 +1127,13 @@
        ),
  
        array_type: $ => seq($.primary_type, '[', ']'),
-@@ -1061,8 +1643,25 @@
++      // veslint: `T!`, a JSDoc non-null type, at the level of `[]` as TypeScript's
++      // parsePostfixTypeOrHigher reads it (it parses it and the checker reports it), also in
++      // `x as T!`. A `!` after a line break ends the statement instead (the automatic semicolon
++      // comes first), as for TypeScript.
++      non_null_type: $ => prec(1, seq($.primary_type, '!')),
+       tuple_type: $ => seq(
+         '[', commaSep($._tuple_type_member), optional(','), ']',
        ),
        readonly_type: $ => seq('readonly', $.type),
  
@@ -1147,7 +1161,7 @@
  
        function_type: $ => prec.left(seq(
          field('type_parameters', optional($.type_parameters)),
-@@ -1073,7 +1672,19 @@
+@@ -1073,7 +1678,19 @@
  
        _type_identifier: $ => alias($.identifier, $.type_identifier),
  
@@ -1167,7 +1181,7 @@
          'declare',
          'namespace',
          'type',
-@@ -1088,11 +1699,12 @@
+@@ -1088,11 +1705,12 @@
          'boolean',
          'string',
          'symbol',
@@ -1183,7 +1197,7 @@
        ),
      },
    });
-@@ -1147,3 +1759,29 @@
+@@ -1147,3 +1765,29 @@
  function sepBy1(sep, rule) {
    return seq(rule, repeat(seq(sep, rule)));
  }
