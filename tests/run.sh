@@ -637,8 +637,8 @@ fi
 # each read as vue-eslint-parser reads it), as ESLint gives it for each configuration of
 # tests/vue-lint/features (pinned by its pin.sh); and through an eslint.config.mjs, whose resolution
 # by ESLint keeps them (and svelteFeatures and svelteConfig: the runes of tests/svelte-lint/runes).
-features_configs=(css-off falsy filter-off interpolation-off macros none)
-features_files=(filters.vue interpolation.vue macros.vue style.vue)
+features_configs=(css-off falsy filter-off interpolation-off jsx jsx-no-program macros none)
+features_files=(filters.vue interpolation.vue jsx.vue jsx-both.vue macros.vue style.vue)
 for config in "${features_configs[@]}"; do
 	(cd tests/vue-lint/features && ../../../veslint --config "$config.json" --fixes "${features_files[@]}" 2> /dev/null) |
 		sed "s|^|$config: |"

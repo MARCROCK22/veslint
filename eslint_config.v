@@ -31,6 +31,12 @@ import path from 'node:path';
 import { createRequire } from 'node:module';
 import { fileURLToPath } from 'node:url';
 const [, cwd, configPath, listPath, mode, inputsPath] = process.argv;
+// What the configuration or a plugin prints while it loads (eslint-plugin-vue loads
+// @stylistic/eslint-plugin-js, whose deprecation notice is a console.log) would corrupt the JSON
+// veslint reads from stdout: it goes to stderr, and only the result is written to stdout.
+const writeResult = process.stdout.write.bind(process.stdout);
+console.log = console.info = console.debug = console.error;
+process.stdout.write = process.stderr.write.bind(process.stderr);
 const { files } = JSON.parse(fs.readFileSync(listPath, 'utf8'));
 // With `inputsPath`, what the resolution read is written there for the cache of resolved
 // configurations (config_cache.v): the files read through fs, the modules loaded (in bun,
@@ -235,7 +241,7 @@ if (Object.keys(ruleDefaults).length > 0) {
   result.ruleDefaults = Object.fromEntries(Object.entries(ruleDefaults).sort(([a], [b]) => (a < b ? -1 : 1)));
 }
 // Infinity (an option of @stylistic's experimental rules) as the largest finite number, not null.
-process.stdout.write(JSON.stringify(result, (key, value) => (value === Infinity ? Number.MAX_VALUE : value === -Infinity ? -Number.MAX_VALUE : value)));
+writeResult(JSON.stringify(result, (key, value) => (value === Infinity ? Number.MAX_VALUE : value === -Infinity ? -Number.MAX_VALUE : value)));
 if (inputsPath) {
   const modules = Object.keys(require.cache).map(key => key.split('?')[0]).filter(key => path.isAbsolute(key));
   fs.writeFileSync(inputsPath, JSON.stringify({ files: [...new Set([...modules, ...reads])], env: envRead }));
@@ -253,7 +259,7 @@ if (inputsPath) {
   } else if (!message.startsWith('Key ')) {
     throw error;
   }
-  process.stdout.write(JSON.stringify({ error: message }));
+  writeResult(JSON.stringify({ error: message }));
 }
 "
 

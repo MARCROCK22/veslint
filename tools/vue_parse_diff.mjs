@@ -101,16 +101,6 @@ function error(e) {
   return out;
 }
 
-// scriptLang is getParserLangFromSFC.
-function scriptLang(doc) {
-  const scripts = doc.children.filter(c => c.type === 'VElement' && c.name === 'script');
-  const setup = s => s.startTag.attributes.some(a => !a.directive && a.key.name === 'setup');
-  const script = (scripts.length === 2 && scripts.find(setup)) || scripts[0];
-  if (!script) return null;
-  const lang = script.startTag.attributes.find(a => !a.directive && a.key.name === 'lang');
-  return lang?.value?.value || null;
-}
-
 function parseWith(oracle, code, file, jsx) {
   const codes = [];
   const parser = {
@@ -141,11 +131,9 @@ function canonical(oracle, file) {
   if (code.charCodeAt(0) === 0xfeff) code = code.slice(1);
   let parsed;
   try {
-    // The script's lang decides the dialect (lang="tsx": JSX); a parse that skips the script
-    // tells it.
-    const bare = oracle.vep.parseForESLint(code, { filePath: file, parser: false, ecmaVersion: 'latest', sourceType: 'module' });
-    const jsx = scriptLang(bare.services.getDocumentFragment()) === 'tsx';
-    parsed = parseWith(oracle, code, file, jsx);
+    // As ESLint calls it without parserOptions.ecmaFeatures.jsx: no JSX, whatever the script's
+    // lang (vue/ reads JSX only with vue.Options.script_jsx / fragment_jsx).
+    parsed = parseWith(oracle, code, file, false);
   } catch (e) {
     return { fatal: { message: e.message, index: e.index ?? null } };
   }

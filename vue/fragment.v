@@ -17,7 +17,7 @@ mut:
 	ts      &C.TSParser = unsafe { nil }
 	tsx     &C.TSParser = unsafe { nil }
 	parsers &Parsers    = unsafe { nil }
-	// tsx_mode: the script is `lang="tsx"`, so expressions are parsed with JSX.
+	// tsx_mode: expressions are parsed with JSX (Options.fragment_jsx).
 	tsx_mode bool
 	// Replacements of the document's tokens (replaceTokens), applied in order by flush_tokens.
 	replacements []Replacement
@@ -53,8 +53,7 @@ fn new_expr_context(doc &Document, opts Options, parsers &Parsers) ExprContext {
 		tsx:     parsers.tsx
 		parsers: parsers
 	}
-	lang := doc.script_lang() or { '' }
-	ctx.tsx_mode = lang.to_lower() == 'tsx'
+	ctx.tsx_mode = opts.fragment_jsx
 	return ctx
 }
 

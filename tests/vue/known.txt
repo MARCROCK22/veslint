@@ -7,3 +7,4 @@ b83be9cc9306.vue	fatal: TypeScript parse error in the <script> [script-indent/v9
 0c2ceedf2fca.vue	fatal: TypeScript parse error in the <script> [.claude/vue-parser-probes/cases/bad1.vue]
 383bb64f3f02.vue	fatal: TypeScript parse error in the <script> [.claude/vue-parser-probes/cases/bad2.vue]
 770f10cdb33e.vue	fatal: TypeScript parse error in the <script> [.claude/vue-parser-probes/cases/bad3.vue]
+30edfa46e7e3.vue	fatal: TypeScript parse error in the <script> (JSX without parserOptions.ecmaFeatures.jsx, whatever the lang) [tests/vue/tsx-script.vue]

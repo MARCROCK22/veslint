@@ -866,7 +866,7 @@ fn run_rules(opts Options, timeout time.Duration) !int {
 			} else if module.inserted > 0 {
 				checker.set_svelte_module(src, module.code, module.at, module.inserted)
 			}
-			result = checker.lint_file(if (f.vue && uses_tsx_grammar(doc))
+			result = checker.lint_file(if (f.vue && doc.script.jsx)
 				|| (!f.vue && !f.svelte && treesitter.uses_jsx_dialect(f.path)) {
 				tsx_parser
 			} else {

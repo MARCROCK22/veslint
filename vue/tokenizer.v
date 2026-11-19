@@ -106,6 +106,14 @@ pub:
 	// custom_macros: names that resolve to variables of the global scope in a <script setup>, as
 	// the compiler macros do (the strings of vueFeatures.customMacros).
 	custom_macros []string
+	// typescript-estree reads a .vue file's code with JSX only with parserOptions.ecmaFeatures.jsx
+	// (getScriptKind of an unknown extension), whatever its `lang`, and not in the program's parse
+	// of the script (`project`/`projectService`: the program reads a .vue file as TypeScript).
+	// script_jsx: the script is read with JSX (ecmaFeatures.jsx and no program); fragment_jsx: the
+	// template's expressions and the pre-pass on the <script setup> content, which never use the
+	// program, are (ecmaFeatures.jsx).
+	script_jsx   bool
+	fragment_jsx bool
 }
 
 struct Tokenizer {

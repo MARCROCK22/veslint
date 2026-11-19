@@ -3242,7 +3242,8 @@ fn (mut c Checker) lint_file_in_lifetime(parser Parser, config LintConfig, src s
 			parsing_error: true
 		}
 	}
-	if vue_file && c.vue.doc.script.type_export {
+	if vue_file && (c.vue.doc.script.type_export || c.vue.doc.script.has_error
+		|| c.vue.doc.script.setup_error) {
 		fatal := c.vue_parsing_error()
 		if fatal.len > 0 {
 			c.vue = VueView{}
@@ -5903,16 +5904,7 @@ fn (mut c Checker) parsing_error(abs_path string) []Finding {
 	if diagnostics.len <= c.syntax_baseline {
 		return []
 	}
-	// tsgo orders them by position, and typescript-estree takes the first one the parser reported:
-	// that a JSX element (17008) or fragment (17014) has no closing tag, or that JSX expressions
-	// must have one parent element (2657), is reported once what follows is parsed.
-	mut first := diagnostics[0]
-	for diagnostic in diagnostics {
-		if diagnostic.code !in [17008, 17014, 2657] {
-			first = diagnostic
-			break
-		}
-	}
+	first := first_parse_diagnostic(diagnostics, offsets.utf16_offsets(c.src, [c.src.len])[0])
 	return [Finding{
 		stmt:             c.position_at(c.file_offset_of_ts_unit(first.pos))
 		rule:             problem_rule
@@ -5920,6 +5912,25 @@ fn (mut c Checker) parsing_error(abs_path string) []Finding {
 		text:             'Parsing error: ${first.text}'
 		column_from_zero: true
 	}]
+}
+
+// first_parse_diagnostic is the first of TypeScript's syntactic diagnostics in the order its
+// parser reported them, which typescript-estree throws, from tsgo's, which are ordered by
+// position: that a JSX element (17008) or fragment (17014) has no closing tag, or that JSX
+// expressions must have one parent element (2657), is reported once what follows is parsed, so
+// after the errors inside, but before those at the end of the code (`units`, its length in
+// UTF-16), where the parser looks for the closing tag (`'</' expected.`).
+fn first_parse_diagnostic(diagnostics []tsgo.Diagnostic, units int) tsgo.Diagnostic {
+	for d in diagnostics {
+		if d.code in [17008, 17014, 2657] {
+			continue
+		}
+		if d.pos >= units && diagnostics[0].code in [17008, 17014, 2657] {
+			break
+		}
+		return d
+	}
+	return diagnostics[0]
 }
 
 // make_snapshot gives a checker made without a snapshot one with its tsconfig open: a comment

@@ -6,9 +6,9 @@
 set -uo pipefail
 cd "$(dirname "$0")"
 ROOT=$(cd ../../.. && pwd)
-for config in css-off falsy filter-off interpolation-off macros none; do
+for config in css-off falsy filter-off interpolation-off jsx jsx-no-program macros none; do
 	FEATURES_CONFIG=$config.json node "$ROOT/build/eval/spider-byte/node_modules/eslint/bin/eslint.js" \
-		--config eslint.features.config.mjs --format json filters.vue interpolation.vue macros.vue style.vue 2> /dev/null |
+		--config eslint.features.config.mjs --format json filters.vue interpolation.vue jsx.vue jsx-both.vue macros.vue style.vue 2> /dev/null |
 		python3 "$ROOT/tests/eslint_lines.py" fixes | sed "s|^$PWD/||; s|^|$config: |"
 done | LC_ALL=C sort > expected.txt
 wc -l < expected.txt

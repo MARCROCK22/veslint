@@ -439,14 +439,29 @@ pub fn parse_language_options(value json2.Any) LanguageOptions {
 		svelte_runes_parse:        runes_parse
 		svelte_config_runes_parse: scope_runes_mode(scope_svelte_config_value(parser,
 			['compilerOptions', 'runes']) or { json2.Any(json2.null) })
-		vue_features:              scope_vue_features(parser)
+		vue_features:              scope_vue_features(parser, jsx, program_keys.any(parser[it] or {
+			json2.Any(false)
+		}.json_str() !in ['false', 'null', '0', '""']))
 	}
 }
 
-// scope_vue_features reads parserOptions.vueFeatures as vue-eslint-parser does: each boolean
+// scope_vue_features gives the options a .vue file is parsed with: ecmaFeatures.jsx (`jsx`) and
+// whether typescript-estree parses the script with a program (`program`: `projectService`,
+// `project` or `programs` given, as ESLint reads them; not type_information, which is veslint's
+// own types) decide where it reads JSX (vue.Options.script_jsx and fragment_jsx), and the
+// vueFeatures are scope_vue_feature_flags'.
+fn scope_vue_features(parser map[string]json2.Any, jsx bool, program bool) vue.Options {
+	return vue.Options{
+		...scope_vue_feature_flags(parser)
+		script_jsx:   jsx && !program
+		fragment_jsx: jsx
+	}
+}
+
+// scope_vue_feature_flags reads parserOptions.vueFeatures as vue-eslint-parser does: each boolean
 // feature is `vueFeatures?.<name> ?? true` taken as a condition (null or missing is on, any falsy
 // value off), and customMacros the strings of an array.
-fn scope_vue_features(parser map[string]json2.Any) vue.Options {
+fn scope_vue_feature_flags(parser map[string]json2.Any) vue.Options {
 	value := parser['vueFeatures'] or { return vue.Options{} }
 	if value !is map[string]json2.Any {
 		return vue.Options{}

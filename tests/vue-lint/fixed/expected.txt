@@ -132,6 +132,13 @@ single-script.vue:12:14	@stylistic/list-style	shouldSpacing	Should have space be
 single-script.vue:5:9	vue/block-lang	unexpected	Do not specify the 'lang' attribute of '<script>'.	end	5	18
 single-script.vue:6:1	@typescript-eslint/require-await	missingAwait	Async function 'later' has no 'await' expression.	suggestion	removeAsync	Remove 'async'.	62	102	function later (): number	end	6	22
 single-script.vue:7:10	@typescript-eslint/no-magic-numbers	noMagic	No magic number: 1.	end	7	11
+syntax-error-script.vue:9:9	eslint	fatal	Parsing error: Property destructuring pattern expected.
+syntax-error-setup.vue:9:6	eslint	fatal	Parsing error: Variable declaration expected.
+syntax-error.vue:3:19	eslint	fatal	Parsing error: Variable declaration expected.
+tsx-assertion.vue:1:15	vue/block-lang	unexpected	Do not specify the 'lang' attribute of '<script>'.	end	1	25
+tsx-assertion.vue:2:11	@typescript-eslint/no-unsafe-type-assertion	unsafeTypeAssertion	Unsafe type assertion: type 'string' is more narrow than the original type.	end	2	35
+tsx-assertion.vue:2:12	@typescript-eslint/no-magic-numbers	noMagic	No magic number: 1.	end	2	13
+tsx-jsx.vue:2:15	eslint	fatal	Parsing error: '>' expected.
 tsx-lang.vue:1:9	vue/block-lang	unexpected	Do not specify the 'lang' attribute of '<script>'.	end	1	19
 tsx-lang.vue:2:16	vue/require-expose	requireExpose	The public properties of the component must be explicitly declared using `expose`. If the component does not have public properties, declare it empty.	suggestion	addExposeOptionForEmpty	Add the `expose` option to give an empty array.	52	52	,\nexpose: []	end	9	2
 tsx-lang.vue:3:11	vue/multi-word-component-names	unexpected	Component name "Tsx" should always be multi-word.	end	3	16
