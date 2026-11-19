@@ -1748,6 +1748,3 @@ veslint	svelte/no-unused-svelte-ignore/i20	<style lang="less">: less is not port
 veslint	svelte/no-unused-svelte-ignore/i21	<style lang="stylus">: stylus is not ported
 veslint	svelte/no-unused-svelte-ignore/i25	<style lang="postcss">: postcss with postcss-nested (postcss.config.cjs) is not ported
 veslint	svelte/no-unused-svelte-ignore/i26	<style lang="postcss">: postcss with postcss-nested (postcss.config.cjs) is not ported
-# svelte/indent: an indent fixture of eslint-plugin-svelte with a JSDoc type, `T!`, which TypeScript
-# parses (and reports) and tree-sitter's grammar does not (tests/svelte/known.txt).
-veslint	svelte/indent/i72	tree-sitter: the JSDoc type `T!` is a syntax error for the grammar (tests/svelte/known.txt)

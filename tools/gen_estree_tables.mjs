@@ -19,7 +19,11 @@ const vname = s => { const n = snake(s); return keyword.has(n) ? n + '_' : n; };
 // (deeplyCopy: `TS` + the SyntaxKind), which estree/ makes too, with the visitor keys ESLint falls
 // back to for a type it does not know (eslint-visitor-keys' getKeys: the node's own keys, of which
 // only these hold nodes).
-const extraTypes = { TSJSDocNonNullableType: ['typeAnnotation'] };
+const extraTypes = {
+	TSJSDocAllType: [],
+	TSJSDocNonNullableType: ['typeAnnotation'],
+	TSJSDocNullableType: ['typeAnnotation'],
+};
 const types = [...Object.keys(AST_NODE_TYPES), ...Object.keys(extraTypes)];
 const keysOf = t => visitorKeys[t] ?? extraTypes[t] ?? [];
 // The most properties a node of each type had over the corpus of tests/estree/run.sh (a capacity

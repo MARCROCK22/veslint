@@ -174,7 +174,9 @@ pub enum NodeType as u8 {
 	ts_union_type
 	ts_unknown_keyword
 	ts_void_keyword
+	ts_js_doc_all_type
 	ts_js_doc_non_nullable_type
+	ts_js_doc_nullable_type
 }
 
 const node_type_names = ['AccessorProperty', 'ArrayExpression', 'ArrayPattern',
@@ -214,7 +216,7 @@ const node_type_names = ['AccessorProperty', 'ArrayExpression', 'ArrayPattern',
 	'TSTypeAnnotation', 'TSTypeAssertion', 'TSTypeLiteral', 'TSTypeOperator', 'TSTypeParameter',
 	'TSTypeParameterDeclaration', 'TSTypeParameterInstantiation', 'TSTypePredicate', 'TSTypeQuery',
 	'TSTypeReference', 'TSUndefinedKeyword', 'TSUnionType', 'TSUnknownKeyword', 'TSVoidKeyword',
-	'TSJSDocNonNullableType']!
+	'TSJSDocAllType', 'TSJSDocNonNullableType', 'TSJSDocNullableType']!
 
 // Key is the name of a property of an ESTree node.
 pub enum Key as u8 {
@@ -365,7 +367,7 @@ const prop_caps = [u8(11), u8(1), u8(4), u8(8), u8(3), u8(4), u8(1), u8(3), u8(1
 	u8(1), u8(5), u8(3), u8(1), u8(1), u8(1), u8(1), u8(1), u8(1), u8(1), u8(6), u8(4), u8(6),
 	u8(4), u8(4), u8(2), u8(4), u8(1), u8(2), u8(4), u8(1), u8(1), u8(2), u8(1), u8(1), u8(4),
 	u8(1), u8(2), u8(1), u8(2), u8(6), u8(1), u8(1), u8(3), u8(2), u8(2), u8(1), u8(1), u8(1),
-	u8(1), u8(4)]!
+	u8(1), u8(4), u8(4), u8(4)]!
 
 // visitor_keys are, per NodeType, the keys ESLint's Traverser visits, in its order.
 const visitor_keys = [
@@ -539,5 +541,7 @@ const visitor_keys = [
 	[Key.types], // TSUnionType
 	[]Key{}, // TSUnknownKeyword
 	[]Key{}, // TSVoidKeyword
+	[]Key{}, // TSJSDocAllType
 	[Key.type_annotation], // TSJSDocNonNullableType
+	[Key.type_annotation], // TSJSDocNullableType
 ]

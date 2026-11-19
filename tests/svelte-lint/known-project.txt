@@ -25,10 +25,9 @@ not compared	g15/src/parser_integrations_type-info-tests_no-unnecessary-conditio
 not compared	g15/src/parser_integrations_type-info-tests_no-unnecessary-condition03-input.svelte	crash	@typescript-eslint/no-unused-vars: Cannot read properties of undefined (reading 'type')
 #
 # eslint-plugin-svelte's indent fixtures written one token per line. Their scripts parse as
-# typescript-estree reads them (tools/svelte_parse_diff.mjs) but indent_i72's, whose JSDoc type `T!`
-# tree-sitter's grammar does not read (tests/svelte/known.txt): veslint lints none of it. The others are
-# open differences of the rules on that code (the ranges of semi-style's fixes at the end of the script,
-# quotes in a tagged template, types of the virtual code), not of the parser.
+# typescript-estree reads them (tools/svelte_parse_diff.mjs); these are open differences of the rules
+# on that code (the ranges of semi-style's fixes at the end of the script, quotes in a tagged template,
+# types of the virtual code), not of the parser.
 only eslint	g00/src/indent_v0.svelte:5:11	@typescript-eslint/no-unsafe-member-access	unsafeMemberExpression	Unsafe member access .width on an `any` value.	end	5	16
 only eslint	g00/src/indent_v0.svelte:7:13	@typescript-eslint/no-unsafe-member-access	unsafeMemberExpression	Unsafe member access .height on an `any` value.	end	7	19
 only eslint	g04/src/indent_i84.svelte:9:1	@stylistic/semi-style	expectedSemiColon	Expected this semicolon to be at the end of the previous line.	fix	87	90	;\n	end	9	2

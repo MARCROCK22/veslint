@@ -117,6 +117,19 @@ fn test_jsdoc_non_nullable_type() {
 	assert t.typ(ref) == .ts_type_reference
 	// ESLint visits it with the keys it falls back to for a type it does not know.
 	assert t.children(nn) == [ann]
+	// `?T` and `*`: JSDocNullableType (not postfix) and JSDocAllType, copied the same way.
+	u := parse_ts('let a: ?T, b: *;')
+	ubody := u.list(u.root, .body) or { panic('no body') }
+	udecls := u.list(ubody[0], .declarations) or { panic('no declarations') }
+	mut found := []string{}
+	for d in udecls {
+		id := u.node(d, .id) or { panic('no id') }
+		uann := u.node(id, .type_annotation) or { panic('no annotation') }
+		jt := u.node(uann, .type_annotation) or { panic('no type') }
+		postfix := if f := u.flag(jt, .postfix) { f.str() } else { 'none' }
+		found << '${u.typ(jt).type_name()} ${u.nodes[jt].start}-${u.nodes[jt].end} ${postfix}'
+	}
+	assert found == ['TSJSDocNullableType 7-9 false', 'TSJSDocAllType 14-15 none']
 }
 
 fn test_namespace_export_is_no_module_indicator() {
