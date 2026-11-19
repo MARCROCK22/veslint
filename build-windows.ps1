@@ -79,8 +79,9 @@ if (-not (Test-Path build/libtree-sitter-typescript.a) -or -not (Test-Path $buil
 # TypeScript's API session, linked into veslint.exe (tsgo/inproc.c.v), as tsgo/inproc/build.sh builds
 # it on Linux: the Go module `tsc` of the commit of the npm package veslint uses (fetched without
 # its tests when there is no checkout), compiled with Go 1.27 and this gcc as a C archive, with
-# tsgo/inproc/main.go as a module of its own and api_inprocess.go added to internal/api by an
-# overlay. Rebuilt when one of tsgo/inproc's sources is newer than the archive.
+# tsgo/inproc/main.go as a module of its own, api_inprocess.go added to internal/api by an overlay
+# and internal/api/session.go replaced by a copy with session.patch applied. Rebuilt when one of
+# tsgo/inproc's sources is newer than the archive.
 $tsCommit = '3e9236361fa97a9e6c685f4833ac457ae2d8c50a'
 $checkout = 'build/upstream/typescript-go'
 if (-not (Test-Path "$checkout/tsc")) {
@@ -97,7 +98,7 @@ if ((git -C $module rev-parse HEAD) -ne $tsCommit) {
 }
 $inproc = (Resolve-Path tsgo/inproc).Path.Replace('\', '/')
 $archive = 'tsgo/inproc/out/libveslint_tsgo.a'
-$sources = 'main.go', 'api_inprocess.go', 'build.sh' | ForEach-Object { Get-Item "tsgo/inproc/$_" }
+$sources = 'main.go', 'api_inprocess.go', 'session.patch', 'build.sh' | ForEach-Object { Get-Item "tsgo/inproc/$_" }
 if (-not (Test-Path $archive) -or
 	($sources | Where-Object { $_.LastWriteTime -gt (Get-Item $archive).LastWriteTime })) {
 	$mod = 'tsgo/inproc/out/mod'
@@ -105,8 +106,22 @@ if (-not (Test-Path $archive) -or
 	Copy-Item tsgo/inproc/main.go, "$module/go.sum" $mod
 	Set-Content -NoNewline "$mod/go.mod" ("module github.com/microsoft/TypeScript/tsc/veslint_tsgo`n`ngo 1.27`n`n" +
 		"require github.com/microsoft/TypeScript/tsc v0.0.0`n`nreplace github.com/microsoft/TypeScript/tsc => $module`n")
+	# git applies the patch as `patch` would, outside any repository (GIT_CEILING_DIRECTORIES).
+	$out = (Resolve-Path tsgo/inproc/out).Path.Replace('\', '/')
+	Copy-Item -Force "$module/internal/api/session.go" "$out/session.go"
+	Set-ItemProperty "$out/session.go" -Name IsReadOnly -Value $false
+	Push-Location $out
+	try {
+		$env:GIT_CEILING_DIRECTORIES = $out
+		git apply "$inproc/session.patch"
+		if ($LASTEXITCODE -ne 0) { throw 'tsgo/inproc/session.patch does not apply' }
+	} finally {
+		Remove-Item Env:GIT_CEILING_DIRECTORIES
+		Pop-Location
+	}
 	Set-Content -NoNewline tsgo/inproc/out/overlay.json `
-		"{`"Replace`": {`"$module/internal/api/veslint_inprocess.go`": `"$inproc/api_inprocess.go`"}}"
+		("{`"Replace`": {`"$module/internal/api/veslint_inprocess.go`": `"$inproc/api_inprocess.go`", " +
+		"`"$module/internal/api/session.go`": `"$out/session.go`"}}")
 	# The requirements of the checkout's go.mod, as `go mod tidy` would list them.
 	$requires = (Select-String -Path "$module/go.mod" -Pattern '^\t(\S+) (v\S+)').Matches |
 		ForEach-Object { "-require=$($_.Groups[1].Value)@$($_.Groups[2].Value)" }

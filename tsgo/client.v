@@ -66,6 +66,10 @@ mut:
 	// inproc is the handle of TypeScript's session in this process (inproc.c.v); 0 with the
 	// process transport.
 	inproc i64
+	// worker is the lint worker this client asks for, 0 for the session's own checker (see
+	// worker_client); a worker's client does not close the session it shares.
+	worker int
+	shared bool
 }
 
 // binary_path returns the path of the pinned binary for the veslint executable (see
@@ -492,6 +496,9 @@ pub fn (mut c Client) shutdown() {
 		return
 	}
 	c.closed = true
+	if c.shared {
+		return
+	}
 	if c.inproc != 0 {
 		c.inproc_close()
 		return

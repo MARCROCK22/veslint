@@ -111,6 +111,7 @@ fn (mut c Client) inproc_request(method string, payload string) !string {
 	mut call := C.veslint_tsgo_call{
 		op:     op_request
 		handle: c.inproc
+		flag:   c.worker
 		a:      &char(method.str)
 		a_len:  uint(method.len)
 		b:      &char(payload.str)
@@ -129,6 +130,32 @@ fn (mut c Client) inproc_request(method string, payload string) !string {
 	}
 	c.shutdown()
 	return error('TypeScript failed during `${method}`: ${answer}')
+}
+
+// worker_client is a client of the session of `c` (TypeScript in this process) for the lint
+// worker `worker` (1 or more), whose thread asks while the others do: the session answers its
+// checker requests with a checker of the worker's own in the programs they share (see
+// api_inprocess.go), so the snapshots of `c` are the worker's too. It has caches of its own (the
+// symbols it was sent, module resolvers, exports) and does not close the session: `c` does, after
+// every worker is done. Files are served to the session, not to a client: the workers only read.
+pub fn (c &Client) worker_client(worker int) !&Client {
+	if c.inproc == 0 {
+		return error('a worker client needs TypeScript in this process')
+	}
+	if worker < 1 {
+		return error('worker numbers start at 1 (got ${worker})')
+	}
+	return &Client{
+		inproc:       c.inproc
+		worker:       worker
+		shared:       true
+		timeout:      c.timeout
+		served:       c.served.clone()
+		serves_files: c.serves_files
+		virtual:      c.virtual.clone()
+		virtual_dirs: c.virtual_dirs.clone()
+		virtual_fs:   c.virtual_fs
+	}
 }
 
 // inproc_ms is the time spent in TypeScript's requests in this process, in milliseconds.

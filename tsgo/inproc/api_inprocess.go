@@ -8,13 +8,17 @@ import (
 	"context"
 	"fmt"
 	"os"
+	"reflect"
 	"runtime"
 	"runtime/debug"
+	"strconv"
 	"strings"
 	"sync"
 	"unicode"
 
 	"github.com/microsoft/TypeScript/tsc/internal/bundled"
+	"github.com/microsoft/TypeScript/tsc/internal/checker"
+	"github.com/microsoft/TypeScript/tsc/internal/compiler"
 	"github.com/microsoft/TypeScript/tsc/internal/json"
 	"github.com/microsoft/TypeScript/tsc/internal/lsp/lsproto"
 	"github.com/microsoft/TypeScript/tsc/internal/project"
@@ -94,14 +98,23 @@ func (p *InProcess) Files() *InProcessFiles {
 // message type (MessageTypeResponse or MessageTypeError) and the payload. A panic is an error
 // whose payload is "panic: <value>\n<stack>", as the stdio server sends it. MessageTypeUnknown
 // means that the stdio server would have failed writing the answer and closed the connection.
-func (p *InProcess) Request(method string, params []byte) (messageType MessageType, payload []byte) {
+//
+// `worker` is 0 for the session's own API checker, as the stdio server answers, or the number of
+// one of veslint's lint workers, which share the session's snapshots and programs and ask on
+// threads of their own: the checker requests of a worker are answered by a checker of its own
+// (veslintWorkerCheckers), so that they do not wait for each other's.
+func (p *InProcess) Request(worker int, method string, params []byte) (messageType MessageType, payload []byte) {
 	defer func() {
 		if r := recover(); r != nil {
 			messageType = MessageTypeError
 			payload = fmt.Appendf(nil, "panic: %v\n%s", r, debug.Stack())
 		}
 	}()
-	result, err := p.session.HandleRequest(p.ctx, method, json.Value(params))
+	ctx := p.ctx
+	if worker > 0 {
+		ctx = context.WithValue(ctx, veslintWorkerKey{}, worker)
+	}
+	result, err := p.session.HandleRequest(ctx, method, json.Value(params))
 	if err != nil {
 		return MessageTypeError, []byte(err.Error())
 	}
@@ -343,4 +356,115 @@ func inProcessJoin(dir string, name string) string {
 		return dir + `\` + name
 	}
 	return dir + "/" + name
+}
+
+// A lint worker of veslint has a checker of its own in every program it asks about, as tsgolint's
+// workers have: a program hands out several checkers (its checker pool does), each with its own
+// types. The session keeps its types and signatures by project, since their ids are those of the
+// checker that made them (registerType), so a worker's requests name a project of their own: the
+// project's id, veslintWorkerSeparator and the worker's number. HandleRequest gives that name to
+// the project of each request of a worker (veslintTagProject, a line veslint's build patches into
+// session.go, see tsgo/inproc/session.patch); getProject looks the project up by its id
+// (veslintProject), setupChecker answers with the worker's checker (veslintWorkerOf), and
+// registerSymbol keeps the project's id as a symbol's canonical project, so that the answers are
+// the ones the session's own checker gives. A type or signature handle is then never resolved by
+// another checker than the one that made it.
+
+// veslintWorkerSeparator cannot be in a project's id, which is a path or a name made of letters.
+const veslintWorkerSeparator = "\x00"
+
+type veslintWorkerKey struct{}
+
+// veslintProject is the project of a project handle that may name a worker.
+func veslintProject(id project.ID) project.ID {
+	if i := strings.IndexByte(string(id), 0); i >= 0 {
+		return id[:i]
+	}
+	return id
+}
+
+// veslintWorkerOf is the worker a project handle names, or 0.
+func veslintWorkerOf(id project.ID) int {
+	i := strings.IndexByte(string(id), 0)
+	if i < 0 {
+		return 0
+	}
+	worker, err := strconv.Atoi(string(id[i+1:]))
+	if err != nil || worker < 0 {
+		return 0
+	}
+	return worker
+}
+
+var (
+	projectIDType      = reflect.TypeFor[project.ID]()
+	projectFieldsMu    sync.RWMutex
+	projectFieldByType = map[reflect.Type][]int{}
+)
+
+// projectField is the index of the field `Project` of type project.ID of the parameters of a
+// request, or nil when they have none.
+func projectField(t reflect.Type) []int {
+	projectFieldsMu.RLock()
+	index, ok := projectFieldByType[t]
+	projectFieldsMu.RUnlock()
+	if ok {
+		return index
+	}
+	if field, found := t.FieldByName("Project"); found && field.Type == projectIDType {
+		index = field.Index
+	}
+	projectFieldsMu.Lock()
+	projectFieldByType[t] = index
+	projectFieldsMu.Unlock()
+	return index
+}
+
+// veslintTagProject makes the project of the parameters of a worker's request the worker's.
+func veslintTagProject(ctx context.Context, params any) {
+	worker, _ := ctx.Value(veslintWorkerKey{}).(int)
+	if worker <= 0 || params == nil {
+		return
+	}
+	value := reflect.ValueOf(params)
+	if value.Kind() != reflect.Pointer || value.IsNil() || value.Elem().Kind() != reflect.Struct {
+		return
+	}
+	index := projectField(value.Elem().Type())
+	if index == nil {
+		return
+	}
+	field, err := value.Elem().FieldByIndexErr(index)
+	if err != nil || field.String() == "" || !field.CanSet() {
+		return
+	}
+	field.SetString(field.String() + veslintWorkerSeparator + strconv.Itoa(worker))
+}
+
+// veslintWorkerCheckers are the checkers of the workers in the programs of a snapshot; they go
+// with the snapshot when it is released.
+type veslintWorkerCheckers struct {
+	mu        sync.Mutex
+	byProgram map[*compiler.Program]map[int]*checker.Checker
+}
+
+// get is the checker of `worker` in `program`, made the first time. A worker asks on one thread,
+// one request at a time, so the checker is not held: its release does nothing.
+func (w *veslintWorkerCheckers) get(program *compiler.Program, worker int) (*checker.Checker, func()) {
+	w.mu.Lock()
+	defer w.mu.Unlock()
+	if w.byProgram == nil {
+		w.byProgram = map[*compiler.Program]map[int]*checker.Checker{}
+	}
+	checkers := w.byProgram[program]
+	if checkers == nil {
+		checkers = map[int]*checker.Checker{}
+		w.byProgram[program] = checkers
+	}
+	c := checkers[worker]
+	if c == nil {
+		c, _ = checker.NewChecker(program, nil)
+		checkers[worker] = c
+	}
+	return c, func() {}
 }

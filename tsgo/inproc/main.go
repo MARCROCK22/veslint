@@ -87,15 +87,16 @@ func veslint_tsgo_open(cwd *C.char, cwdLen C.size_t, lib *C.char, libLen C.size_
 
 // veslint_tsgo_request answers a request: it returns the message type of the msgpack protocol (4
 // a response, 5 an error, 0 a failure that closes the connection) and the payload in *out.
+// `worker` is 0 for the session's API checker, or the lint worker that asks (InProcess.Request).
 //
 //export veslint_tsgo_request
-func veslint_tsgo_request(handle C.longlong, method *C.char, methodLen C.size_t, payload *C.char, payloadLen C.size_t, out **C.char, outLen *C.size_t) C.int {
+func veslint_tsgo_request(handle C.longlong, worker C.int, method *C.char, methodLen C.size_t, payload *C.char, payloadLen C.size_t, out **C.char, outLen *C.size_t) C.int {
 	p := session(handle)
 	if p == nil {
 		cBytes([]byte("the TypeScript session is closed"), out, outLen)
 		return 0
 	}
-	messageType, answer := p.Request(goString(method, methodLen), goBytes(payload, payloadLen))
+	messageType, answer := p.Request(int(worker), goString(method, methodLen), goBytes(payload, payloadLen))
 	cBytes(answer, out, outLen)
 	return C.int(messageType)
 }
