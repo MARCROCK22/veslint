@@ -124,8 +124,6 @@ fn (mut c Converter) class_members(body C.TSNode) []int {
 	kids := c.kids(body)
 	mut out := []int{}
 	mut decorators := []Kid{}
-	mut extra := Extra{}
-	mut extra_start := -1
 	for k, kid in kids {
 		if kid.field == 'decorator' {
 			decorators << kid
@@ -134,26 +132,6 @@ fn (mut c Converter) class_members(body C.TSNode) []int {
 		if !kid.named {
 			continue
 		}
-		// `get` or `set` on a line before the name is a field to tree-sitter, an accessor to
-		// TypeScript.
-		if kid.kind == 'public_field_definition' && k + 1 < kids.len && kids[k + 1].named {
-			if more := c.lone_modifier_field(kid.n) {
-				if more.accessor == '' || kids[k + 1].kind == 'method_definition' {
-					extra = Extra{
-						accessor: if more.accessor != '' { more.accessor } else { extra.accessor }
-						static:   extra.static || more.static
-					}
-					if extra_start < 0 {
-						extra_start = if decorators.len > 0 {
-							c.start(decorators[0].n)
-						} else {
-							c.start(kid.n)
-						}
-					}
-					continue
-				}
-			}
-		}
 		mut end := c.end(kid.n)
 		if kid.kind in ['public_field_definition', 'method_signature', 'abstract_method_signature',
 			'index_signature'] {
@@ -161,14 +139,9 @@ fn (mut c Converter) class_members(body C.TSNode) []int {
 				end = c.end(kids[k + 1].n)
 			}
 		}
-		mut start := if decorators.len > 0 { c.start(decorators[0].n) } else { c.start(kid.n) }
-		if extra_start >= 0 {
-			start = extra_start
-		}
-		m := c.class_member(kid, decorators, start, end, extra)
+		start := if decorators.len > 0 { c.start(decorators[0].n) } else { c.start(kid.n) }
+		m := c.class_member(kid, decorators, start, end)
 		decorators = []Kid{}
-		extra = Extra{}
-		extra_start = -1
 		if m >= 0 {
 			out << m
 		}
@@ -249,57 +222,12 @@ fn (mut c Converter) set_accessibility(i int, m Modifiers) {
 	}
 }
 
-// Extra are the modifiers TypeScript reads on a line before a method, which tree-sitter takes for
-// a field.
-struct Extra {
-	accessor string
-	static   bool
-}
-
-// lone_modifier_field: the field is only `get`, `set` or `static` (maybe after `static`), which
-// TypeScript reads as a modifier of the member on the next line.
-fn (mut c Converter) lone_modifier_field(n C.TSNode) ?Extra {
-	kids := c.kids(n)
-	mut is_static := false
-	mut accessor := ''
-	mut seen_name := false
-	for k in kids {
-		if k.is_tok('static') && !seen_name {
-			is_static = true
-		} else if k.field == 'name' && k.kind == 'property_identifier' && c.text(k.n) in [
-			'get',
-			'set',
-			'static',
-		] {
-			seen_name = true
-			if c.text(k.n) == 'static' {
-				if is_static {
-					return none
-				}
-				is_static = true
-			} else {
-				accessor = c.text(k.n)
-			}
-		} else {
-			return none
-		}
-	}
-	if !seen_name {
-		return none
-	}
-	return Extra{
-		accessor: accessor
-		static:   is_static
-	}
-}
-
-fn (mut c Converter) class_member(kid Kid, decorators []Kid, start int, end int, extra Extra) int {
+fn (mut c Converter) class_member(kid Kid, decorators []Kid, start int, end int) int {
 	n := kid.n
 	match kid.kind {
 		'public_field_definition' {
 			kids := c.kids(n)
-			mut m := c.modifiers(kids)
-			m.static = m.static || extra.static
+			m := c.modifiers(kids)
 			typ := if m.accessor {
 				if m.abstract {
 					NodeType.ts_abstract_accessor_property
@@ -347,7 +275,7 @@ fn (mut c Converter) class_member(kid Kid, decorators []Kid, start int, end int,
 			return i
 		}
 		'method_definition', 'method_signature', 'abstract_method_signature' {
-			return c.method(n, kid.kind, decorators, start, end, false, extra)
+			return c.method(n, kid.kind, decorators, start, end, false)
 		}
 		'index_signature' {
 			return c.index_signature(n, start, end)
@@ -372,14 +300,13 @@ fn (mut c Converter) class_member(kid Kid, decorators []Kid, start int, end int,
 
 // method converts a method of a class (MethodDefinition, TSAbstractMethodDefinition) or of an
 // object literal (Property).
-fn (mut c Converter) method(n C.TSNode, kind string, decorators []Kid, start int, end int, in_object bool, extra Extra) int {
+fn (mut c Converter) method(n C.TSNode, kind string, decorators []Kid, start int, end int, in_object bool) int {
 	kids := c.kids(n)
-	mut m := c.modifiers(kids)
-	m.static = m.static || extra.static
+	m := c.modifiers(kids)
 	name := field_of(kids, 'name') or { return -1 }
 	body := field_of(kids, 'body')
-	is_get := has_tok(kids, 'get') || extra.accessor == 'get'
-	is_set := has_tok(kids, 'set') || extra.accessor == 'set'
+	is_get := has_tok(kids, 'get')
+	is_set := has_tok(kids, 'set')
 	params := field_of(kids, 'parameters') or { return -1 }
 	// A constructor: TypeScript's ConstructorDeclaration (also when static).
 	name_text := c.text(name.n)

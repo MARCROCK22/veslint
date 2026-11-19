@@ -1,6 +1,6 @@
 --- a/common/define-grammar.js
 +++ b/common/define-grammar.js
-@@ -7,6 +7,16 @@
+@@ -7,6 +7,34 @@
      externals: ($, previous) => previous.concat([
        $._function_signature_automatic_semicolon,
        $.__error_recovery,
@@ -14,10 +14,28 @@
 +      // break comes before the next token, whatever that token is (ECMAScript's restricted
 +      // productions: `return⏎-a` is `return;` and `-a;`).
 +      $._restricted_automatic_semicolon,
++      // veslint: never scanned, like `_arrow_block_end`; that one may come tells the scanner
++      // where TypeScript reads on after a line break that would otherwise end the statement or
++      // the member (see scan_automatic_semicolon):
++      // - right after the name of a class member or of a type member (and after its `?`): a
++      //   `(` or a `<` on the next line makes it a method, `a⏎()`;
++      $._member_name_end,
++      // - right after a `static` that may be a modifier: a name, a `[`, a `*` or a string on the
++      //   next line makes it one, `static⏎m() {}`;
++      $._static_end,
++      // - right after a `get` or `set` that may start an accessor: a name, a `[` or a string on
++      //   the next line makes it one, `get⏎a() {}`;
++      $._accessor_keyword_end,
++      // - right after the `{…}` of `export {…}` or `export type {…}`: a `from` on the next line
++      //   goes on with it;
++      $._export_clause_end,
++      // - right after a `let` that may start a declaration: a name that is not a reserved word,
++      //   a `[` or a `{` on the next line makes it one, `let⏎x = 1`.
++      $._let_end,
      ]),
  
      supertypes: ($, previous) => previous.concat([
-@@ -15,12 +25,45 @@
+@@ -15,12 +43,45 @@
      ]),
  
      precedences: ($, previous) => previous.concat([
@@ -64,7 +82,7 @@
          $.arrow_function,
        ],
        [
-@@ -28,13 +71,22 @@
+@@ -28,13 +89,22 @@
          'instantiation',
        ],
        [
@@ -88,7 +106,7 @@
        ],
        [$.mapped_type_clause, $.primary_expression],
        [$.accessibility_modifier, $.primary_expression],
-@@ -52,7 +104,6 @@
+@@ -52,7 +122,6 @@
        [$.nested_type_identifier, $.generic_type, $.primary_type, $.lookup_type, $.index_type_query, $.type],
        [$.as_expression, $.satisfies_expression, $.primary_type],
        [$._type_query_member_expression, $.member_expression],
@@ -96,7 +114,7 @@
        [$._type_query_member_expression, $.primary_expression],
        [$._type_query_subscript_expression, $.subscript_expression],
        [$._type_query_subscript_expression, $.primary_expression],
-@@ -64,17 +115,31 @@
+@@ -64,17 +133,31 @@
        [$.literal_type, $.pattern],
        [$.predefined_type, $.pattern],
        [$.call_expression, $._type_query_call_expression],
@@ -133,7 +151,7 @@
  
        // This appears to be necessary to parse a parenthesized class expression
        [$.class],
-@@ -98,6 +163,8 @@
+@@ -98,6 +181,8 @@
        [$.pattern, $.primary_type],
  
        [$.optional_tuple_parameter, $.primary_type],
@@ -142,7 +160,7 @@
        [$.rest_pattern, $.primary_type, $.primary_expression],
  
        [$.object, $.object_type],
-@@ -114,6 +181,9 @@
+@@ -114,6 +199,9 @@
      ]).concat(
        dialect === 'typescript' ? [
          [$.primary_type, $.type_parameter],
@@ -152,7 +170,7 @@
        ] : [
          [$.jsx_opening_element, $.type_parameter],
          [$.jsx_namespace_name, $.primary_type],
-@@ -131,6 +201,9 @@
+@@ -131,6 +219,9 @@
        ]),
  
      rules: {
@@ -162,20 +180,47 @@
        public_field_definition: $ => seq(
          repeat(field('decorator', $.decorator)),
          optional(choice(
-@@ -141,7 +214,8 @@
-           seq(optional('static'), optional($.override_modifier), optional('readonly')),
+@@ -138,13 +229,20 @@
+           seq($.accessibility_modifier, optional('declare')),
+         )),
+         choice(
+-          seq(optional('static'), optional($.override_modifier), optional('readonly')),
++          seq(optional(staticModifier($)), optional($.override_modifier), optional('readonly')),
            seq(optional('abstract'), optional('readonly')),
            seq(optional('readonly'), optional('abstract')),
 -          optional('accessor'),
++          // veslint: an accessibility modifier after `abstract` or `readonly`, which TypeScript
++          // parses (and reports): `abstract public a`, `readonly protected b = 1`.
++          seq(
++            choice(seq('abstract', optional('readonly')), seq('readonly', optional('abstract'))),
++            $.accessibility_modifier,
++          ),
 +          // veslint: `accessor` accepts `static`/`abstract` and `override` before it.
-+          seq(optional(choice('static', 'abstract')), optional($.override_modifier), 'accessor'),
++          seq(optional(choice(staticModifier($), 'abstract')), optional($.override_modifier), 'accessor'),
          ),
          field('name', $._property_name),
-         optional(choice('?', '!')),
-@@ -170,16 +244,55 @@
+-        optional(choice('?', '!')),
++        optional(choice(seq('?', optional($._member_name_end)), '!', $._member_name_end)),
+         field('type', optional($.type_annotation)),
+         optional($._initializer),
+       ),
+@@ -170,16 +268,68 @@
          field('body', $.statement_block),
        ),
  
++      // veslint: a line break after `yield` ends it without an operand, as in TypeScript
++      // (parseYieldExpression; a restricted production of ECMAScript), and nothing continues it
++      // then, as after the block of an arrow function: `yield⏎(b)` and `yield⏎-b` are `yield;`
++      // and another statement.
++      yield_expression: $ => prec.right(seq(
++        'yield',
++        choice(
++          seq('*', $.expression),
++          optional($.expression),
++          seq($._restricted_automatic_semicolon, optional($._arrow_block_end)),
++        ),
++      )),
++
 +      // veslint: a line break after `return`, `break` or `continue` ends the statement.
 +      return_statement: $ => seq(
 +        'return',
@@ -229,7 +274,7 @@
          prec('member', seq(
            field('function', $.primary_expression),
            '?.',
-@@ -190,22 +303,136 @@
+@@ -190,22 +340,136 @@
  
        new_expression: $ => prec.right('new', seq(
          'new',
@@ -370,7 +415,7 @@
        primary_expression: ($, previous) => choice(
          previous,
          $.non_null_expression,
-@@ -214,11 +441,13 @@
+@@ -214,11 +478,13 @@
        // If the dialect is regular typescript, we exclude JSX expressions and
        // include type assertions. If the dialect is TSX, we do the opposite.
        expression: ($, previous) => {
@@ -385,7 +430,7 @@
          ];
  
          if (dialect === 'typescript') {
-@@ -235,6 +464,23 @@
+@@ -235,6 +501,23 @@
          return choice(...choices);
        },
  
@@ -409,7 +454,7 @@
        _jsx_start_opening_element: $ => seq(
          '<',
          optional(
-@@ -246,8 +492,8 @@
+@@ -246,8 +529,8 @@
                )),
                seq(
                  field('name', choice(
@@ -420,7 +465,7 @@
                  )),
                  field('type_arguments', optional($.type_arguments)),
                ),
-@@ -257,6 +503,31 @@
+@@ -257,6 +540,31 @@
          ),
        ),
  
@@ -452,7 +497,7 @@
        // This rule is only referenced by expression when the dialect is 'tsx'
        jsx_opening_element: $ => prec.dynamic(-1, seq(
          $._jsx_start_opening_element,
-@@ -317,20 +588,90 @@
+@@ -317,20 +625,95 @@
          $._semicolon,
        ),
  
@@ -467,7 +512,8 @@
 +            seq('*', $._from_clause, optional($.import_attribute)),
 +            seq($.namespace_export, $._from_clause, optional($.import_attribute)),
 +            seq($.export_clause, $._from_clause, optional($.import_attribute)),
-+            $.export_clause,
++            // veslint: TypeScript reads a `from` on the next line as the clause's.
++            seq($.export_clause, optional($._export_clause_end)),
 +          ),
 +          $._semicolon,
 +        ),
@@ -501,7 +547,11 @@
 -          $.export_clause,
 -          optional($._from_clause),
 +          choice(
-+            seq($.export_clause, optional(seq($._from_clause, optional($.import_attribute)))),
++            seq($.export_clause, optional(choice(
++              seq($._from_clause, optional($.import_attribute)),
++              // veslint: TypeScript reads a `from` on the next line as the clause's.
++              $._export_clause_end,
++            ))),
 +            // veslint: `export type * from 'm'` and `export type * as ns from 'm'`.
 +            seq('*', $._from_clause, optional($.import_attribute)),
 +            seq($.namespace_export, $._from_clause, optional($.import_attribute)),
@@ -524,16 +574,16 @@
 +          'default',
 +          field('declaration', alias($._default_function_signature, $.function_signature)),
 +        ),
-+      ),
-+
+       ),
+ 
+-      non_null_expression: $ => prec.left('unary', seq(
 +      _default_function_signature: $ => seq(
 +        optional('async'),
 +        'function',
 +        $._call_signature,
 +        choice($._semicolon, $._function_signature_automatic_semicolon),
-       ),
- 
--      non_null_expression: $ => prec.left('unary', seq(
++      ),
++
 +      // veslint: a statement that starts with `{` is a block, and `{ a: f() }` a label, not an
 +      // object (tree-sitter-javascript gives labels dynamic precedence -1).
 +      labeled_statement: $ => prec.dynamic(1, seq(
@@ -548,16 +598,55 @@
          $.expression, '!',
        )),
  
-@@ -363,6 +704,8 @@
+@@ -349,11 +732,11 @@
+ 
+       method_signature: $ => seq(
          optional($.accessibility_modifier),
-         'abstract',
+-        optional('static'),
++        optional(staticModifier($)),
          optional($.override_modifier),
-+        // veslint: `abstract async m(): T`, which TypeScript parses (and reports).
-+        optional('async'),
-         optional(choice('get', 'set', '*')),
+         optional('readonly'),
+         optional('async'),
+-        optional(choice('get', 'set', '*')),
++        optional(choice(accessorKeyword($, 'get'), accessorKeyword($, 'set'), '*')),
          field('name', $._property_name),
          optional('?'),
-@@ -453,8 +796,12 @@
+         $._call_signature,
+@@ -362,8 +745,13 @@
+       abstract_method_signature: $ => seq(
+         optional($.accessibility_modifier),
+         'abstract',
++        // veslint: an accessibility modifier after `abstract`, which TypeScript parses (and
++        // reports): `abstract public m(): void`.
++        optional($.accessibility_modifier),
+         optional($.override_modifier),
+-        optional(choice('get', 'set', '*')),
++        // veslint: `abstract async m(): T`, which TypeScript parses (and reports).
++        optional('async'),
++        optional(choice(accessorKeyword($, 'get'), accessorKeyword($, 'set'), '*')),
+         field('name', $._property_name),
+         optional('?'),
+         $._call_signature,
+@@ -410,6 +798,18 @@
+         field('arguments', $.arguments),
+       )),
+ 
++      // veslint: the object of a member access may be in parentheses, `@(d).d`: TypeScript reads a
++      // decorator as any left-hand side expression.
++      decorator_member_expression: $ => prec('member', seq(
++        field('object', choice(
++          $.identifier,
++          alias($.decorator_member_expression, $.member_expression),
++          alias($.decorator_parenthesized_expression, $.parenthesized_expression),
++        )),
++        '.',
++        field('property', alias($.identifier, $.property_identifier)),
++      )),
++
+       decorator_parenthesized_expression: $ => seq(
+         '(',
+         choice(
+@@ -453,18 +853,93 @@
        ),
  
        method_definition: $ => prec.left(seq(
@@ -566,21 +655,32 @@
 +        // veslint: the accessibility modifier may also come after `static`, which TypeScript
 +        // parses (and reports): `static protected [k]() {}`.
 +        optional(choice(
-+          seq($.accessibility_modifier, optional('static')),
-+          seq('static', optional($.accessibility_modifier)),
++          seq($.accessibility_modifier, optional(staticModifier($))),
++          seq(staticModifier($), optional($.accessibility_modifier)),
 +        )),
          optional($.override_modifier),
          optional('readonly'),
          optional('async'),
-@@ -465,6 +812,70 @@
+-        optional(choice('get', 'set', '*')),
++        optional(choice(accessorKeyword($, 'get'), accessorKeyword($, 'set'), '*')),
+         field('name', $._property_name),
+         optional('?'),
+         $._call_signature,
          field('body', $.statement_block),
        )),
  
 +      // veslint: `using x = …` and `await using x = …` are lexical declarations whose kind is
 +      // `using` (with `await` before it), as in ESTree. Their names are identifiers: `using [` and
 +      // `using {` are expressions.
-+      lexical_declaration: ($, previous) => choice(
-+        previous,
++      // veslint: a `let` followed by a line break and a name that is not a reserved word, a `[` or
++      // a `{` starts a declaration, as for TypeScript (isLetDeclaration): `let⏎x = 1` is not the
++      // statement `let;` and the assignment `x = 1`.
++      lexical_declaration: $ => choice(
++        seq(
++          field('kind', choice(seq('let', optional($._let_end)), 'const')),
++          commaSep1($.variable_declarator),
++          $._semicolon,
++        ),
 +        seq(
 +          field('kind', choice('using', seq('await', 'using'))),
 +          commaSep1(alias($._using_declarator, $.variable_declarator)),
@@ -643,7 +743,7 @@
        declaration: ($, previous) => choice(
          previous,
          $.function_signature,
-@@ -495,10 +906,32 @@
+@@ -495,10 +970,32 @@
          $.type,
        )),
  
@@ -679,7 +779,7 @@
  
        class_heritage: $ => choice(
          seq($.extends_clause, optional($.implements_clause)),
-@@ -584,14 +1017,43 @@
+@@ -584,14 +1081,43 @@
          field('body', optional($.statement_block)),
        )),
  
@@ -725,7 +825,7 @@
        nested_type_identifier: $ => prec('member', seq(
          field('module', choice($.identifier, $.nested_identifier)),
          '.',
-@@ -677,9 +1139,10 @@
+@@ -677,9 +1203,10 @@
          field('pattern', choice($.pattern, $.this)),
        ),
  
@@ -739,7 +839,7 @@
        type_annotation: $ => seq(
          ':',
          $.type,
-@@ -691,7 +1154,17 @@
+@@ -691,7 +1218,17 @@
        // required beforehand. This allows for parsing of annotations such as
        // foo: import('x').y.z;
        // but was a nightmare to get working.
@@ -758,7 +858,7 @@
          field('object', choice(
            $.import,
            alias($._type_query_member_expression_in_type_annotation, $.member_expression),
-@@ -702,14 +1175,14 @@
+@@ -702,14 +1239,14 @@
            $.private_property_identifier,
            alias($.identifier, $.property_identifier),
          )),
@@ -776,7 +876,7 @@
  
        asserts: $ => seq(
          'asserts',
-@@ -726,17 +1199,17 @@
+@@ -726,17 +1263,17 @@
          $.readonly_type,
          $.constructor_type,
          $.infer_type,
@@ -798,7 +898,7 @@
          '?',
          field('type', $.type_annotation),
        ),
-@@ -782,6 +1255,9 @@
+@@ -782,6 +1319,9 @@
          $.intersection_type,
          $.union_type,
          'const',
@@ -808,7 +908,7 @@
        ),
  
        template_type: $ => seq('${', choice($.primary_type, $.infer_type), '}'),
-@@ -790,6 +1266,8 @@
+@@ -790,6 +1330,8 @@
          '`',
          repeat(choice(
            alias($._template_chars, $.string_fragment),
@@ -817,7 +917,7 @@
            $.template_type,
          )),
          '`',
-@@ -818,6 +1296,8 @@
+@@ -818,6 +1360,8 @@
          field('name', choice(
            $._type_identifier,
            $.nested_type_identifier,
@@ -826,7 +926,7 @@
          )),
          field('type_arguments', $.type_arguments),
        )),
-@@ -867,9 +1347,10 @@
+@@ -867,9 +1411,10 @@
          optional('?.'),
          '[', field('index', choice($.predefined_type, $.string, $.number)), ']',
        ),
@@ -838,7 +938,7 @@
            $.identifier,
            alias($._type_query_member_expression, $.member_expression),
            alias($._type_query_subscript_expression, $.subscript_expression),
-@@ -878,13 +1359,16 @@
+@@ -878,13 +1423,16 @@
        ),
        _type_query_instantiation_expression: $ => seq(
          field('function', choice(
@@ -856,7 +956,7 @@
        type_query: $ => prec.right(seq(
          'typeof',
          choice(
-@@ -894,12 +1378,14 @@
+@@ -894,12 +1442,14 @@
            alias($._type_query_instantiation_expression, $.instantiation_expression),
            $.identifier,
            $.this,
@@ -872,7 +972,7 @@
        ),
  
        lookup_type: $ => seq(
-@@ -926,7 +1412,7 @@
+@@ -926,7 +1476,7 @@
          $.undefined,
        ),
  
@@ -881,7 +981,65 @@
          field('operator', choice('-', '+')),
          field('argument', $.number),
        )),
-@@ -1003,8 +1489,12 @@
+@@ -960,33 +1510,42 @@
+ 
+       object_type: $ => seq(
+         choice('{', '{|'),
+-        optional(seq(
+-          optional(choice(',', ';')),
+-          sepBy1(
+-            choice(',', $._semicolon),
+-            choice(
+-              $.export_statement,
+-              $.property_signature,
+-              $.call_signature,
+-              $.construct_signature,
+-              $.index_signature,
+-              $.method_signature,
+-            ),
++        // veslint: the `[K in T]` of a mapped type only right after the `{`, as TypeScript reads
++        // it (isStartOfMappedType): after another member, `[k in o]: T` is a property whose
++        // computed name is an `in` expression.
++        optional(choice(
++          seq(
++            alias($._mapped_type_signature, $.index_signature),
++            repeat(seq(choice(',', $._semicolon), $._type_member)),
++            optional(choice(',', $._semicolon)),
++          ),
++          seq(
++            optional(choice(',', ';')),
++            sepBy1(choice(',', $._semicolon), $._type_member),
++            optional(choice(',', $._semicolon)),
+           ),
+-          optional(choice(',', $._semicolon)),
+         )),
+         choice('}', '|}'),
+       ),
+ 
++      _type_member: $ => choice(
++        $.export_statement,
++        $.property_signature,
++        $.call_signature,
++        $.construct_signature,
++        $.index_signature,
++        $.method_signature,
++      ),
++
+       call_signature: $ => $._call_signature,
+ 
+       property_signature: $ => seq(
+         optional($.accessibility_modifier),
+-        optional('static'),
++        optional(staticModifier($)),
+         optional($.override_modifier),
+         optional('readonly'),
+         field('name', $._property_name),
+-        optional('?'),
++        optional(choice(seq('?', optional($._member_name_end)), $._member_name_end)),
+         field('type', optional($.type_annotation)),
+       ),
+ 
+@@ -1003,8 +1562,12 @@
        ),
  
        type_parameter: $ => seq(
@@ -895,7 +1053,7 @@
          field('constraint', optional($.constraint)),
          field('value', optional($.default_type)),
        ),
-@@ -1027,7 +1517,11 @@
+@@ -1027,7 +1590,11 @@
          field('type', optional($.type_annotation)),
        ),
  
@@ -903,44 +1061,54 @@
 +      // parameters than one (TypeScript parses them; its checker rejects them), and a mapped type
 +      // without a type (`{ [K in T] }`).
        index_signature: $ => seq(
-+        optional('static'),
++        optional(staticModifier($)),
          optional(
            seq(
              field('sign', optional(choice('-', '+'))),
-@@ -1037,22 +1531,30 @@
+@@ -1035,24 +1602,39 @@
+           ),
+         ),
          '[',
-         choice(
+-        choice(
++        sepBy1(',', seq(
++          field('name', choice(
++            $.identifier,
++            alias($._reserved_identifier, $.identifier),
++          )),
++          ':',
++          field('index_type', $.type),
++        )),
++        ']',
++        field('type', $._index_signature_type),
++      ),
++
++      // veslint: the member of a mapped type, `[K in T]: U`, which the tree has as an
++      // index_signature with a mapped_type_clause; only the first member of an object type.
++      _mapped_type_signature: $ => seq(
++        optional(staticModifier($)),
++        optional(
            seq(
 -            field('name', choice(
 -              $.identifier,
 -              alias($._reserved_identifier, $.identifier),
-+            sepBy1(',', seq(
-+              field('name', choice(
-+                $.identifier,
-+                alias($._reserved_identifier, $.identifier),
-+              )),
-+              ':',
-+              field('index_type', $.type),
-             )),
+-            )),
 -            ':',
 -            field('index_type', $.type),
-+            ']',
-+            field('type', $._index_signature_type),
-+          ),
-+          seq(
-+            $.mapped_type_clause,
-+            ']',
-+            optional(field('type', $._index_signature_type)),
++            field('sign', optional(choice('-', '+'))),
++            'readonly',
            ),
 -          $.mapped_type_clause,
          ),
--        ']',
++        '[',
++        $.mapped_type_clause,
+         ']',
 -        field('type', choice(
 -          $.type_annotation,
 -          $.omitting_type_annotation,
 -          $.adding_type_annotation,
 -          $.opting_type_annotation,
 -        )),
++        optional(field('type', $._index_signature_type)),
 +      ),
 +
 +      _index_signature_type: $ => choice(
@@ -951,7 +1119,7 @@
        ),
  
        array_type: $ => seq($.primary_type, '[', ']'),
-@@ -1061,8 +1563,25 @@
+@@ -1061,8 +1643,25 @@
        ),
        readonly_type: $ => seq('readonly', $.type),
  
@@ -979,7 +1147,7 @@
  
        function_type: $ => prec.left(seq(
          field('type_parameters', optional($.type_parameters)),
-@@ -1073,7 +1592,19 @@
+@@ -1073,7 +1672,19 @@
  
        _type_identifier: $ => alias($.identifier, $.type_identifier),
  
@@ -999,7 +1167,7 @@
          'declare',
          'namespace',
          'type',
-@@ -1088,11 +1619,12 @@
+@@ -1088,11 +1699,12 @@
          'boolean',
          'string',
          'symbol',
@@ -1015,15 +1183,57 @@
        ),
      },
    });
+@@ -1147,3 +1759,29 @@
+ function sepBy1(sep, rule) {
+   return seq(rule, repeat(seq(sep, rule)));
+ }
++
++/**
++ * veslint: a `static` that may be a modifier, followed by the marker that tells the scanner so
++ * (a name on the next line goes on with it, as TypeScript reads it).
++ *
++ * @param {GrammarSymbols<string>} $
++ *
++ * @return {SeqRule}
++ */
++function staticModifier($) {
++  return seq('static', optional($._static_end));
++}
++
++/**
++ * veslint: a `get` or `set` that may start an accessor, followed by the marker that tells the
++ * scanner so (a name on the next line goes on with it, as TypeScript reads it).
++ *
++ * @param {GrammarSymbols<string>} $
++ *
++ * @param {string} word
++ *
++ * @return {SeqRule}
++ */
++function accessorKeyword($, word) {
++  return seq(word, optional($._accessor_keyword_end));
++}
 --- a/common/scanner.h
 +++ b/common/scanner.h
-@@ -13,12 +13,33 @@
+@@ -1,5 +1,6 @@
+ #include "tree_sitter/parser.h"
+ 
++#include <string.h>
+ #include <wctype.h>
+ 
+ enum TokenType {
+@@ -13,12 +14,38 @@
      JSX_TEXT,
      FUNCTION_SIGNATURE_AUTOMATIC_SEMICOLON,
      ERROR_RECOVERY,
 +    ARROW_BLOCK_END,
 +    INSTANTIATION_END,
 +    RESTRICTED_AUTOMATIC_SEMICOLON,
++    MEMBER_NAME_END,
++    STATIC_END,
++    ACCESSOR_KEYWORD_END,
++    EXPORT_CLAUSE_END,
++    LET_END,
  };
  
  static void advance(TSLexer *lexer) { lexer->advance(lexer, false); }
@@ -1051,7 +1261,7 @@
  static bool scan_template_chars(TSLexer *lexer) {
      lexer->result_symbol = TEMPLATE_CHARS;
      for (bool has_content = false;; has_content = true) {
-@@ -44,7 +65,7 @@
+@@ -44,7 +71,7 @@
  
  static bool scan_whitespace_and_comments(TSLexer *lexer, bool *scanned_comment) {
      for (;;) {
@@ -1060,7 +1270,7 @@
              skip(lexer);
          }
  
-@@ -53,7 +74,7 @@
+@@ -53,7 +80,7 @@
  
              if (lexer->lookahead == '/') {
                  skip(lexer);
@@ -1069,7 +1279,7 @@
                      skip(lexer);
                  }
                  *scanned_comment = true;
-@@ -70,6 +91,9 @@
+@@ -70,6 +97,9 @@
                          skip(lexer);
                      }
                  }
@@ -1079,7 +1289,7 @@
              } else {
                  return false;
              }
-@@ -79,9 +103,35 @@
+@@ -79,9 +109,140 @@
      }
  }
  
@@ -1108,6 +1318,111 @@
 +    }
 +}
 +
++// veslint: the reserved words of ECMAScript (TypeScript's FirstReservedWord to LastReservedWord),
++// which are never a binding name.
++static bool is_reserved_word(const char *word) {
++    static const char *const words[] = {
++        "break",  "case",    "catch",  "class", "const", "continue",   "debugger", "default", "delete",
++        "do",     "else",    "enum",   "export", "extends", "false",   "finally",  "for",     "function",
++        "if",     "import",  "in",     "instanceof", "new", "null",    "return",   "super",   "switch",
++        "this",   "throw",   "true",   "try",   "typeof", "var",        "void",     "while",   "with",
++    };
++    for (unsigned i = 0; i < sizeof(words) / sizeof(words[0]); i++) {
++        if (strcmp(word, words[i]) == 0) {
++            return true;
++        }
++    }
++    return false;
++}
++
++// veslint: after a line break, whether TypeScript reads on where the automatic semicolon would end
++// the statement or the member, as the markers that may come in this state say (they are never
++// scanned; see the grammar's externals). The lexer is at the first character after the line break,
++// white space and comments. `*decided` is false when no marker decides it: then the lexer has not
++// moved.
++static bool scan_line_break_continuation(TSLexer *lexer, const bool *valid_symbols, bool *scanned_comment,
++                                         bool *decided) {
++    *decided = false;
++    if (valid_symbols[ERROR_RECOVERY]) {
++        return false;
++    }
++    const bool member_name = valid_symbols[MEMBER_NAME_END];
++    const bool modifier = valid_symbols[STATIC_END] || valid_symbols[ACCESSOR_KEYWORD_END];
++    const bool let = valid_symbols[LET_END];
++    const bool export_clause = valid_symbols[EXPORT_CLAUSE_END];
++    int32_t c = lexer->lookahead;
++    switch (c) {
++        // A method: `a⏎()` and `a⏎<T>()` in a class or a type (parsePropertyOrMethodDeclaration
++        // and parsePropertyOrMethodSignature look at the `(` or `<` whatever comes before it).
++        case '(':
++        case '<':
++            *decided = member_name;
++            return member_name;
++        // A computed name after `static`, `get` or `set` (nextTokenCanFollowModifier), and an
++        // array pattern after `let` (isLetDeclaration).
++        case '[':
++            *decided = modifier || let;
++            return *decided;
++        // A string as the name after `static`, `get` or `set`.
++        case '"':
++        case '\'':
++            *decided = modifier;
++            return modifier;
++        // A private name after `static`, `get` or `set` (TypeScript's isLiteralPropertyName takes
++        // it).
++        case '#':
++            *decided = modifier;
++            return modifier;
++        // A generator method after `static` (canFollowModifier; not after `get` or `set`). After
++        // the name of a member, as after `get⏎`, the `*` starts the next member, a generator
++        // (parsePropertyOrMethodDeclaration only reads a `*` before the name).
++        case '*':
++            if (valid_symbols[STATIC_END]) {
++                *decided = true;
++                return true;
++            }
++            *decided = member_name && !valid_symbols[LOGICAL_OR];
++            return false;
++        // An object pattern after `let`. After `static`, a `{` is the block of a static block,
++        // which takes the automatic semicolon as before.
++        case '{':
++            *decided = let;
++            return let;
++    }
++    if (!is_word_char(c) || !(modifier || let || export_clause)) {
++        return false;
++    }
++    // A word: a name or a keyword (a number too, which only `static`, `get` and `set` take).
++    char word[12];
++    unsigned length = 0;
++    bool ascii = true;
++    while (is_word_char(lexer->lookahead)) {
++        if (length < sizeof(word) - 1 && lexer->lookahead < 0x80) {
++            word[length++] = (char)lexer->lookahead;
++        } else {
++            ascii = false;
++        }
++        skip(lexer);
++    }
++    word[length] = 0;
++    *decided = true;
++    if (modifier) {
++        return true;
++    }
++    if (export_clause && ascii && strcmp(word, "from") == 0) {
++        return true;
++    }
++    if (let && (!ascii || !is_reserved_word(word))) {
++        return true;
++    }
++    // As below without a marker: `in` and `instanceof` may go on with an expression, any other
++    // word starts the next statement.
++    if (ascii && (strcmp(word, "in") == 0 || strcmp(word, "instanceof") == 0)) {
++        return !scan_operator_word_is_name(lexer, valid_symbols, scanned_comment);
++    }
++    return false;
++}
++
  static bool scan_automatic_semicolon(TSLexer *lexer, const bool *valid_symbols, bool *scanned_comment) {
      lexer->result_symbol = AUTOMATIC_SEMICOLON;
      lexer->mark_end(lexer);
@@ -1115,7 +1430,7 @@
  
      for (;;) {
          if (lexer->lookahead == 0) {
-@@ -94,44 +144,112 @@
+@@ -94,44 +255,118 @@
              // Therefore, disable automatic semicolons when followed by typing
              do {
                  skip(lexer);
@@ -1206,6 +1521,12 @@
      if (!scan_whitespace_and_comments(lexer, scanned_comment)) {
 -        return false;
 +        return after_arrow_block;
++    }
++
++    bool decided = false;
++    bool continues = scan_line_break_continuation(lexer, valid_symbols, scanned_comment, &decided);
++    if (decided) {
++        return !continues;
      }
  
      switch (lexer->lookahead) {
@@ -1239,7 +1560,7 @@
  
          case '{':
              if (valid_symbols[FUNCTION_SIGNATURE_AUTOMATIC_SEMICOLON]) {
-@@ -142,9 +260,14 @@
+@@ -142,9 +377,14 @@
              // Don't insert a semicolon before a '[' or '(', unless we're parsing
              // a type. Detect whether we're parsing a type or an expression using
              // the validity of a binary operator token.
@@ -1255,7 +1576,7 @@
                  return false;
              }
              break;
-@@ -152,15 +275,15 @@
+@@ -152,15 +392,15 @@
              // Insert a semicolon before `--` and `++`, but not before binary `+` or `-`.
          case '+':
              skip(lexer);
@@ -1274,7 +1595,7 @@
  
              // Don't insert a semicolon before `in` or `instanceof`, but do insert one
              // before an identifier.
-@@ -172,8 +295,10 @@
+@@ -172,8 +412,10 @@
              }
              skip(lexer);
  
@@ -1287,7 +1608,7 @@
              }
  
              for (unsigned i = 0; i < 8; i++) {
-@@ -183,8 +308,8 @@
+@@ -183,8 +425,8 @@
                  skip(lexer);
              }
  
@@ -1298,7 +1619,7 @@
              }
              break;
      }
-@@ -194,7 +319,7 @@
+@@ -194,7 +436,7 @@
  
  static bool scan_ternary_qmark(TSLexer *lexer) {
      for (;;) {
@@ -1307,7 +1628,7 @@
              break;
          }
          skip(lexer);
-@@ -214,7 +339,7 @@
+@@ -214,7 +456,7 @@
          /* TypeScript optional arguments contain the ?: sequence, possibly
             with whitespace. */
          for (;;) {
@@ -1316,7 +1637,7 @@
                  break;
              }
              advance(lexer);
-@@ -237,7 +362,7 @@
+@@ -237,7 +479,7 @@
  }
  
  static bool scan_closing_comment(TSLexer *lexer) {
@@ -1325,7 +1646,7 @@
          skip(lexer);
      }
  
-@@ -262,8 +387,7 @@
+@@ -262,8 +504,7 @@
          return false;
      }
  
@@ -1335,7 +1656,7 @@
          advance(lexer);
      }
  
-@@ -281,40 +405,311 @@
+@@ -281,40 +522,311 @@
      // immediately follows a newline.
      bool at_newline = false;
  

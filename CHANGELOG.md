@@ -2,6 +2,11 @@
 
 Each version is a release on GitHub with the veslint binaries (Linux x64, Windows x64) and the VS Code extension. The section of a version is the text of its release.
 
+## 0.36.0
+
+- **Grammar: code written one token per line reads as TypeScript reads it.** A line break no longer splits what TypeScript reads on: a member name with its `(` or `<` on the next line (`a⏎() {}`), `static`, `get` and `set` before a name on the next line, `export { … }⏎from 'm'`, `let⏎x = 1`; and a line break after `yield` ends it, as in TypeScript. Also read now: an accessibility modifier after `abstract` or `readonly`, `@(d).e` decorators, and `[k in o]: T` after another member of a type literal (a computed property, not a mapped type). On 197,411 files only 57 trees change, all toward what typescript-estree gives; the rules see the right nodes in such code (the fixtures of the indent rules of eslint-plugin-vue and eslint-plugin-svelte are written that way), and 2,321 known differences with ESLint are gone.
+- **`@typescript-eslint/prefer-readonly`** reports an abstract property over the whole node, as ESLint does.
+
 ## 0.35.3
 
 - **Svelte: a `runes` function in `parserOptions.svelteConfig`** of an `eslint.config.*` (`runes: ({ filename }) => …`) is called for each `.svelte` file with its path when ESLint resolves the configuration, as svelte-eslint-parser and eslint-plugin-svelte call it; the parse, the types and the rules (`svelte/valid-compile`…) follow what it gives (it was taken as unset), also from a saved `--print-config`, which keeps it per file.
