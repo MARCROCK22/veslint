@@ -1,0 +1,79 @@
+--- a/session.go
++++ b/session.go
+@@ -125,6 +125,9 @@
+ 
+ 	projectRegistries   map[project.ID]*projectRegistryData
+ 	projectRegistriesMu sync.RWMutex
++
++	// veslint: the checker of each worker, by program (api_inprocess.go).
++	workerCheckers veslintWorkerCheckers
+ }
+ 
+ type moduleResolverRegistration struct {
+@@ -162,7 +165,7 @@
+ 
+ // getProject looks up a project from a project handle within this snapshot.
+ func (sd *snapshotData) getProject(projectHandle project.ID) (*project.Project, error) {
+-	proj := sd.snapshot.ProjectCollection.GetProject(projectHandle)
++	proj := sd.snapshot.ProjectCollection.GetProject(veslintProject(projectHandle))
+ 	if proj == nil {
+ 		return nil, fmt.Errorf("%w: project %s not found", ErrClientError, projectHandle)
+ 	}
+@@ -310,6 +313,7 @@
+ 	if canonicalProject == "" {
+ 		panic("registerSymbol requires a non-empty canonical project")
+ 	}
++	canonicalProject = veslintProject(canonicalProject)
+ 	id := SymbolHandle(symbol)
+ 	sd.symbolRegistryMu.Lock()
+ 	defer sd.symbolRegistryMu.Unlock()
+@@ -834,7 +838,13 @@
+ 		return checkerSetup{}, err
+ 	}
+ 
+-	c, done := program.GetTypeChecker(core.WithCheckerLifetime(ctx, core.CheckerLifetimeAPI))
++	var c *checker.Checker
++	var done func()
++	if worker := veslintWorkerOf(projectHandle); worker > 0 {
++		c, done = sd.workerCheckers.get(program, worker)
++	} else {
++		c, done = program.GetTypeChecker(core.WithCheckerLifetime(ctx, core.CheckerLifetimeAPI))
++	}
+ 	return checkerSetup{
+ 		sd:        sd,
+ 		snapshot:  snapshot,
+@@ -857,7 +867,7 @@
+ // LS operation acquires a checker exactly once; nested acquisitions (e.g. find-all-
+ // references) would deadlock on the single-slot persistent checker.
+ func (s *Session) setupLanguageService(snapshot *project.Snapshot, program *compiler.Program, projectHandle project.ID, activeFile string) (*ls.LanguageService, error) {
+-	proj := snapshot.ProjectCollection.GetProject(projectHandle)
++	proj := snapshot.ProjectCollection.GetProject(veslintProject(projectHandle))
+ 	if proj == nil {
+ 		return nil, fmt.Errorf("%w: project %s not found", ErrClientError, projectHandle)
+ 	}
+@@ -885,6 +895,7 @@
+ 	if err != nil {
+ 		return nil, fmt.Errorf("%w: %w", ErrInvalidRequest, err)
+ 	}
++	veslintTagProject(ctx, parsed)
+ 
+ 	switch method {
+ 	case string(MethodBatchRequests):
+@@ -3247,7 +3258,7 @@
+ 		defer preparedSnapshot.Deref()
+ 
+ 		workingSnapshot = preparedSnapshot
+-		proj := workingSnapshot.ProjectCollection.GetProject(projectID)
++		proj := workingSnapshot.ProjectCollection.GetProject(veslintProject(projectID))
+ 		if proj == nil {
+ 			return nil, fmt.Errorf("%w: project %s not found", ErrClientError, projectID)
+ 		}
+@@ -5521,7 +5532,7 @@
+ 			return nil, err
+ 		}
+ 		projectID := params.Project
+-		proj := preparedSnapshot.ProjectCollection.GetProject(projectID)
++		proj := preparedSnapshot.ProjectCollection.GetProject(veslintProject(projectID))
+ 		if proj == nil {
+ 			return nil, fmt.Errorf("%w: project %s not found", ErrClientError, projectID)
+ 		}

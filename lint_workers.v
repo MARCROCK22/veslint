@@ -10,18 +10,22 @@ import treesitter
 import tsgo
 import vue
 
-// A lint runs its files on workers, each a thread with a TypeScript session of its own (the
-// archive of tsgo/inproc, or a `tsc --api` process): the API session answers every request of a
-// project with one checker (its "persistent" checker, whose types the handles name), so the
-// requests of two threads on one session would wait for each other. Each worker builds the same
-// snapshot with the same requests, takes the next file not taken yet, and keeps its reports; they
-// are printed in the order of the files, as a single worker prints them. What a file gives does
-// not depend on the worker: TypeScript 7 orders types (union members, for instance) by a stable
-// order instead of the order a checker made them in, and the rules' Checker caches only what does
-// not depend on the files linted before.
+// A lint runs its files on workers, threads with tree-sitter parsers and rule checkers of their
+// own. With TypeScript in this process (the archive of tsgo/inproc), the workers share one
+// session: it is opened and its snapshot taken once (SharedSession), so every program is built
+// once, and each worker asks with a client of its own (Client.worker_client), whose checker
+// requests the session answers with a checker of the worker's (as tsgolint's workers have one
+// each), so that they do not wait for each other. Otherwise (a `tsc --api` process; no rule that
+// needs types, where a checker may make a snapshot of its own; --fix, which writes files and
+// takes new snapshots) each worker opens its own session and builds the same snapshot with the
+// same requests. A worker takes the next file not taken yet and keeps its reports; they are
+// printed in the order of the files, as a single worker prints them. What a file gives does not
+// depend on the worker: TypeScript 7 orders types (union members, for instance) by a stable order
+// instead of the order a checker made them in, and the rules' Checker caches only what does not
+// depend on the files linted before.
 
-// min_files_per_worker: a worker builds the program of every project again (the parse of every
-// file and its memory), which a few files do not pay back.
+// min_files_per_worker: a worker checks again what the others checked (each checker resolves
+// the types it needs, those of the globals and libraries too), which a few files do not pay back.
 const min_files_per_worker = 8
 
 // LintPlan is what the workers of a lint share; none of them changes it.
@@ -67,6 +71,47 @@ mut:
 	fixed_files     int
 	start_ms        f64 // starting TypeScript, until the first snapshot is asked for
 	snapshot_ms     f64
+}
+
+// SharedSession is the TypeScript session the workers of a lint share, with its snapshot; the
+// worker that opened it (`owner`) lints no file and closes it after the others are done.
+@[heap]
+struct SharedSession {
+mut:
+	owner &Worker = unsafe { nil }
+}
+
+// open_shared starts TypeScript in this process and takes the snapshot of the lint, for workers
+// that share them (worker_of).
+fn open_shared(plan &LintPlan, files []RuleFile) !&SharedSession {
+	return &SharedSession{
+		owner: open_worker(plan, files)!
+	}
+}
+
+// worker_of is the worker `number` (1 or more) of a shared session: the snapshot, projects and
+// files of the owner, and a client of its own.
+fn (s &SharedSession) worker_of(plan &LintPlan, number int) !&Worker {
+	owner := s.owner
+	mut w := &Worker{
+		client:      owner.client.worker_client(number)!
+		snap:        owner.snap
+		files:       owner.files.clone()
+		tsconfigs:   owner.tsconfigs.clone()
+		projects:    owner.projects.clone()
+		parser:      treesitter.new_parser()!
+		tsx_parser:  treesitter.new_tsx_parser()!
+		start_ms:    owner.start_ms
+		snapshot_ms: owner.snapshot_ms
+	}
+	w.mark_last_files(plan)
+	return w
+}
+
+fn (mut s SharedSession) close() {
+	if s.owner != unsafe { nil } {
+		s.owner.close()
+	}
 }
 
 // open_worker starts TypeScript and takes the snapshot of the lint.
@@ -130,9 +175,14 @@ fn (mut w Worker) open(plan &LintPlan) ! {
 	w.snap = snap
 	w.snapshot_ms = ms(sw.elapsed())
 	w.projects = map_projects(w.tsconfigs, snap)!
-	// The index of the last file of each project: without --fix (whose passes make new snapshots
-	// and checkers), the checker of a project is dropped after it, so that a run over files of many
-	// tsconfigs does not keep every checker alive (the garbage collector walks what is alive).
+	w.mark_last_files(plan)
+}
+
+// mark_last_files finds the index of the last file of each project: without --fix (whose passes
+// make new snapshots and checkers), the checker of a project is dropped after it, so that a run
+// over files of many tsconfigs does not keep every checker alive (the garbage collector walks what
+// is alive).
+fn (mut w Worker) mark_last_files(plan &LintPlan) {
 	if !plan.fix {
 		for index, f in w.files {
 			if f.note == '' {
@@ -372,22 +422,34 @@ mut:
 	error       string
 	stats       rules.Stats
 	requests    int
+	methods     map[string]tsgo.MethodStat
 	tsgo_ms     f64
 	fixed_files int
 	start_ms    f64
 	snapshot_ms f64
 }
 
-// run_worker opens a worker and lints the files the queue gives it.
-fn run_worker(plan &LintPlan, queue &FileQueue) WorkerResult {
+// run_worker opens a worker (the worker `number` of `shared`, when there is one) and lints the
+// files the queue gives it.
+fn run_worker(plan &LintPlan, queue &FileQueue, shared &SharedSession, number int) WorkerResult {
 	mut q := unsafe { queue }
 	mut out := WorkerResult{}
-	mut w := open_worker(plan, q.files) or {
-		q.halt()
-		out.failed = true
-		out.failed_at = -1
-		out.error = err.msg()
-		return out
+	mut w := if shared != unsafe { nil } {
+		shared.worker_of(plan, number) or {
+			q.halt()
+			out.failed = true
+			out.failed_at = -1
+			out.error = err.msg()
+			return out
+		}
+	} else {
+		open_worker(plan, q.files) or {
+			q.halt()
+			out.failed = true
+			out.failed_at = -1
+			out.error = err.msg()
+			return out
+		}
 	}
 	defer {
 		w.close()
@@ -408,6 +470,7 @@ fn run_worker(plan &LintPlan, queue &FileQueue) WorkerResult {
 	}
 	out.stats = w.stats
 	out.requests = w.client.request_count()
+	out.methods = w.client.method_stats().clone()
 	out.tsgo_ms = w.client.inproc_ms()
 	out.fixed_files = w.fixed_files
 	out.start_ms = w.start_ms
@@ -421,14 +484,41 @@ fn lint_files(plan &LintPlan, files []RuleFile, count int) []WorkerResult {
 	queue := &FileQueue{
 		files: files
 	}
+	no_session := &SharedSession(unsafe { nil })
 	if count <= 1 {
-		return [run_worker(plan, queue)]
+		return [run_worker(plan, queue, no_session, 0)]
+	}
+	mut shared := no_session
+	if shares_session(plan) {
+		shared = open_shared(plan, files) or {
+			return [WorkerResult{
+				failed:    true
+				failed_at: -1
+				error:     err.msg()
+			}]
+		}
 	}
 	mut threads := []thread WorkerResult{cap: count}
-	for _ in 0 .. count {
-		threads << spawn run_worker(plan, queue)
+	for number in 1 .. count + 1 {
+		threads << spawn run_worker(plan, queue, shared, number)
 	}
-	return threads.wait()
+	mut results := threads.wait()
+	if shared != unsafe { nil } {
+		// The owner's requests (the snapshot) count with the first worker's.
+		results[0].requests += shared.owner.client.request_count()
+		merge_methods(mut results[0].methods, shared.owner.client.method_stats())
+		results[0].tsgo_ms += shared.owner.client.inproc_ms()
+		mut s := unsafe { shared }
+		s.close()
+	}
+	return results
+}
+
+// shares_session tells whether the workers of a lint share one TypeScript session (see the top of
+// this file): TypeScript in this process, a rule that needs types, and no --fix.
+fn shares_session(plan &LintPlan) bool {
+	transport := tsgo.transport_from_env() or { return false }
+	return transport == .inproc && !plan.lazy && !plan.fix
 }
 
 // worker_count is how many workers lint `lintable` files on `cpus` CPUs.
@@ -437,6 +527,16 @@ fn worker_count(fix bool, lintable int, cpus int) int {
 		return 1
 	}
 	return int_max(1, int_min(cpus, lintable / min_files_per_worker))
+}
+
+// merge_methods adds the requests of each method of a client to `into`.
+fn merge_methods(mut into map[string]tsgo.MethodStat, from map[string]tsgo.MethodStat) {
+	for method, stat in from {
+		mut sum := into[method] or { tsgo.MethodStat{} }
+		sum.count += stat.count
+		sum.time += stat.time
+		into[method] = sum
+	}
 }
 
 // merge_stats adds the statistics of a worker to `into` (for --bench, whose times are then the

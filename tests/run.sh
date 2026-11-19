@@ -1340,7 +1340,8 @@ fi
 expect_error "in process: message type 5" "source file not found" ./veslint --project tsconfig.json tests/fixtures/emoji.ts
 expect_error "VESLINT_TSGO with an unknown value" "VESLINT_TSGO must be" env VESLINT_TSGO=pipe ./veslint app.ts
 # Workers (lint_workers.v): the files of 127 projects linted on one CPU and on all of them (a worker
-# per CPU, each with its own TypeScript session) print exactly the same, with either transport.
+# per CPU; in this process they share TypeScript's session, with a checker each) print exactly the
+# same, with either transport.
 printf '{"rules": {"@typescript-eslint/no-floating-promises": "error", "@typescript-eslint/no-misused-promises": "error", "@typescript-eslint/no-unnecessary-type-assertion": "error", "@typescript-eslint/unbound-method": "error", "@typescript-eslint/strict-boolean-expressions": "error", "@typescript-eslint/no-unsafe-assignment": "warn", "@typescript-eslint/no-deprecated": "error", "@typescript-eslint/naming-convention": "error"}}' > "$TMP/workers.json"
 mapfile -t worker_files < <(find tests/rules/@typescript-eslint -mindepth 2 -maxdepth 2 -name cases.ts | sorted)
 for transport in inproc process; do
@@ -1349,6 +1350,7 @@ for transport in inproc process; do
 		VESLINT_TSGO=$transport VESLINT_CPUS=$cpus ./veslint --config "$TMP/workers.json" "${worker_files[@]}" > "$TMP/workers-$cpus.out" 2> "$TMP/workers-$cpus.err" || code=$?
 		echo "$code" >> "$TMP/workers-$cpus.err"
 	done
+	[[ $transport == process ]] || cp "$TMP/workers-1.out" "$TMP/workers-inproc.out"
 	if [[ $(tail -1 "$TMP/workers-1.err") -eq 1 && -s $TMP/workers-1.out ]] && cmp -s "$TMP/workers-1.out" "$TMP/workers-0.out" &&
 		cmp -s "$TMP/workers-1.err" "$TMP/workers-0.err"; then
 		ok "workers ($transport): $(wc -l < "$TMP/workers-1.out") lines of ${#worker_files[@]} files, the same on one CPU and on all"
@@ -1358,6 +1360,19 @@ for transport in inproc process; do
 		diff "$TMP/workers-1.err" "$TMP/workers-0.err" | head -20
 	fi
 done
+# The answers about types, symbols and signatures are written (tsgo/inproc/api_fastjson.go) and read
+# (tsgo/fast_decode.v) by hand: on the same files, VESLINT_TSGO_CHECK_JSON compares each one written
+# with what json.Marshal writes, and VESLINT_CHECK_DECODE each one read with what json2 reads (a
+# difference panics), and the output does not change.
+code=0
+VESLINT_TSGO_CHECK_JSON=1 VESLINT_CHECK_DECODE=1 ./veslint --config "$TMP/workers.json" "${worker_files[@]}" > "$TMP/workers-checked.out" 2> "$TMP/workers-checked.err" || code=$?
+if [[ $code -eq 1 ]] && cmp -s "$TMP/workers-inproc.out" "$TMP/workers-checked.out"; then
+	ok "answers written and read by hand: the same as json.Marshal's and json2's"
+else
+	ko "answers written and read by hand (code $code)"
+	diff "$TMP/workers-inproc.out" "$TMP/workers-checked.out" | head -20
+	head -c 2000 "$TMP/workers-checked.err"
+fi
 
 # --server (server.v): a scenario with unsaved text, a file closed without saving, files changed on
 # disk, a reset, errors, and a declaration the server keeps between snapshots that changes

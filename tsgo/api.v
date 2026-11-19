@@ -404,7 +404,7 @@ fn (mut c Client) symbol_request(snapshot int, method string, params string) !Sy
 	if is_null_payload(payload) {
 		return SymbolResponse{}
 	}
-	return c.intern_symbol(snapshot, decode_response[SymbolResponse](method, payload)!)
+	return c.intern_symbol(snapshot, checked_decode[SymbolResponse](method, payload, fast_symbol)!)
 }
 
 // symbols_request sends a request that answers a list of symbols (`null` is none).
@@ -413,7 +413,8 @@ fn (mut c Client) symbols_request(snapshot int, method string, params string) ![
 	if is_null_payload(payload) {
 		return []SymbolResponse{}
 	}
-	return c.intern_symbols(snapshot, decode_response[[]SymbolResponse](method, payload)!)
+	return c.intern_symbols(snapshot, checked_decode[[]SymbolResponse](method, payload,
+		fast_symbols)!)
 }
 
 pub fn (mut c Client) symbols_at(snapshot int, project string, file string, positions []int) ![]SymbolResponse {
@@ -558,7 +559,7 @@ fn (mut c Client) type_request(snapshot int, method string, params string) !Type
 	if is_null_payload(payload) {
 		return TypeResponse{}
 	}
-	return c.intern_type(snapshot, decode_response[TypeResponse](method, payload)!)
+	return c.intern_type(snapshot, checked_decode[TypeResponse](method, payload, fast_type)!)
 }
 
 // types_request sends a request that answers a list of types (`null` is none).
@@ -567,7 +568,7 @@ fn (mut c Client) types_request(snapshot int, method string, params string) ![]T
 	if is_null_payload(payload) {
 		return []TypeResponse{}
 	}
-	return c.intern_types(snapshot, decode_response[[]TypeResponse](method, payload)!)
+	return c.intern_types(snapshot, checked_decode[[]TypeResponse](method, payload, fast_types)!)
 }
 
 // signature_request sends a request that answers a signature or `null` (id 0).
@@ -576,7 +577,8 @@ fn (mut c Client) signature_request(snapshot int, method string, params string) 
 	if is_null_payload(payload) {
 		return SignatureResponse{}
 	}
-	return c.intern_signature(snapshot, decode_response[SignatureResponse](method, payload)!)
+	return c.intern_signature(snapshot, checked_decode[SignatureResponse](method, payload,
+		fast_signature)!)
 }
 
 fn type_params(snapshot int, project string, type_id int) string {
@@ -608,7 +610,8 @@ pub fn (mut c Client) signatures_of_type(snapshot int, project string, type_id i
 	if is_null_payload(payload) {
 		return []SignatureResponse{}
 	}
-	signatures := decode_response[[]SignatureResponse]('getSignaturesOfType', payload)!
+	signatures := checked_decode[[]SignatureResponse]('getSignaturesOfType', payload,
+		fast_signatures)!
 	return signatures.map(c.intern_signature(snapshot, it))
 }
 

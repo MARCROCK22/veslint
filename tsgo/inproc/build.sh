@@ -2,7 +2,8 @@
 # build.sh builds tsgo/inproc/out/libveslint_tsgo.a: TypeScript's API session as a C archive that
 # veslint links (tsgo/inproc.c.v). It compiles the Go module `tsc` of the TypeScript checkout at the
 # commit of the npm package veslint uses, with this directory's two files added by `-overlay`
-# (api_inprocess.go into internal/api, main.go as cmd/veslint_tsgo): the checkout is only read.
+# (api_inprocess.go into internal/api, main.go as cmd/veslint_tsgo) and internal/api/session.go
+# replaced by a copy with session.patch applied: the checkout is only read.
 #
 # TYPESCRIPT_GO is the checkout (default build/upstream/typescript-go, the one tools/ uses), GO the
 # Go toolchain (default `go`; 1.27.x, as go.mod asks). GOBUILDFLAGS are added to `go build`.
@@ -45,9 +46,17 @@ require github.com/microsoft/TypeScript/tsc v0.0.0
 
 replace github.com/microsoft/TypeScript/tsc => $module
 MOD
+# session.patch gives the lint workers a checker each in the programs they share (api_inprocess.go).
+# git applies it as `patch` would, outside any repository (GIT_CEILING_DIRECTORIES).
+rm -f "$out/session.go"
+cp "$module/internal/api/session.go" "$out/session.go"
+chmod u+w "$out/session.go"
+(cd "$out" && GIT_CEILING_DIRECTORIES=$out git apply "$here/session.patch")
 # The overlay's paths are absolute, so it is written per machine.
 cat > "$out/overlay.json" <<JSON
-{"Replace": {"$module/internal/api/veslint_inprocess.go": "$here/api_inprocess.go"}}
+{"Replace": {"$module/internal/api/veslint_inprocess.go": "$here/api_inprocess.go",
+"$module/internal/api/veslint_fastjson.go": "$here/api_fastjson.go",
+"$module/internal/api/session.go": "$out/session.go"}}
 JSON
 cd "$out/mod"
 # The requirements of the checkout's go.mod, as `go mod tidy` would list them (without the network).

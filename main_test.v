@@ -268,9 +268,10 @@ fn test_cpus_from_env() {
 		}
 	}
 	os.unsetenv('VESLINT_CPUS')
-	assert cpus_from_env()! == 2
+	assert cpus_from_env(2)! == 2
+	assert cpus_from_env(6)! == 6
 	os.setenv('VESLINT_CPUS', '', true)
-	assert cpus_from_env()! == 2
+	assert cpus_from_env(2)! == 2
 	for raw, want in {
 		'0':   0
 		'1':   1
@@ -278,11 +279,11 @@ fn test_cpus_from_env() {
 		' 4 ': 4
 	} {
 		os.setenv('VESLINT_CPUS', raw, true)
-		assert cpus_from_env()! == want
+		assert cpus_from_env(2)! == want
 	}
 	for raw in ['two', '-1', '1.5', '007', '+2'] {
 		os.setenv('VESLINT_CPUS', raw, true)
-		if value := cpus_from_env() {
+		if value := cpus_from_env(2) {
 			assert false, '`${raw}` gave ${value}'
 		} else {
 			assert err.msg().contains('VESLINT_CPUS must be a number of CPUs'), err.msg()

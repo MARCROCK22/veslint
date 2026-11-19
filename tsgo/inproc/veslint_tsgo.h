@@ -8,7 +8,7 @@
 
 extern long long veslint_tsgo_open(char* cwd, size_t cwd_len, char* lib, size_t lib_len, char* callbacks,
 	size_t callbacks_len, char** err, size_t* err_len);
-extern int veslint_tsgo_request(long long handle, char* method, size_t method_len, char* payload,
+extern int veslint_tsgo_request(long long handle, int worker, char* method, size_t method_len, char* payload,
 	size_t payload_len, char** out, size_t* out_len);
 extern void veslint_tsgo_serve(long long handle, char* path, size_t path_len, char* text, size_t text_len);
 extern void veslint_tsgo_stop_serving(long long handle, char* path, size_t path_len);
@@ -53,7 +53,7 @@ static void* veslint_tsgo_run(void* data) {
 			&call->out, &call->out_len);
 		break;
 	case veslint_tsgo_op_request:
-		call->result = veslint_tsgo_request(call->handle, call->a, call->a_len, call->b, call->b_len,
+		call->result = veslint_tsgo_request(call->handle, call->flag, call->a, call->a_len, call->b, call->b_len,
 			&call->out, &call->out_len);
 		break;
 	case veslint_tsgo_op_serve:

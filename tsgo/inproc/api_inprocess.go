@@ -5,16 +5,24 @@
 package api
 
 import (
+	"bytes"
 	"context"
 	"fmt"
 	"os"
+	"reflect"
 	"runtime"
 	"runtime/debug"
+	"runtime/pprof"
+	"sort"
+	"strconv"
 	"strings"
 	"sync"
+	"time"
 	"unicode"
 
 	"github.com/microsoft/TypeScript/tsc/internal/bundled"
+	"github.com/microsoft/TypeScript/tsc/internal/checker"
+	"github.com/microsoft/TypeScript/tsc/internal/compiler"
 	"github.com/microsoft/TypeScript/tsc/internal/json"
 	"github.com/microsoft/TypeScript/tsc/internal/lsp/lsproto"
 	"github.com/microsoft/TypeScript/tsc/internal/project"
@@ -94,21 +102,48 @@ func (p *InProcess) Files() *InProcessFiles {
 // message type (MessageTypeResponse or MessageTypeError) and the payload. A panic is an error
 // whose payload is "panic: <value>\n<stack>", as the stdio server sends it. MessageTypeUnknown
 // means that the stdio server would have failed writing the answer and closed the connection.
-func (p *InProcess) Request(method string, params []byte) (messageType MessageType, payload []byte) {
+//
+// `worker` is 0 for the session's own API checker, as the stdio server answers, or the number of
+// one of veslint's lint workers, which share the session's snapshots and programs and ask on
+// threads of their own: the checker requests of a worker are answered by a checker of its own
+// (veslintWorkerCheckers), so that they do not wait for each other's. The answers of
+// appendFastResponse are appended to `dst`.
+func (p *InProcess) Request(worker int, method string, params []byte, dst []byte) (messageType MessageType, payload []byte) {
 	defer func() {
 		if r := recover(); r != nil {
 			messageType = MessageTypeError
 			payload = fmt.Appendf(nil, "panic: %v\n%s", r, debug.Stack())
 		}
 	}()
-	result, err := p.session.HandleRequest(p.ctx, method, json.Value(params))
+	ctx := p.ctx
+	if worker > 0 {
+		ctx = context.WithValue(ctx, veslintWorkerKey{}, worker)
+	}
+	var start time.Time
+	if profiling {
+		start = time.Now()
+	}
+	result, err := p.session.HandleRequest(ctx, method, json.Value(params))
+	var handled time.Time
+	if profiling {
+		handled = time.Now()
+	}
 	if err != nil {
 		return MessageTypeError, []byte(err.Error())
 	}
 	if raw, ok := result.(RawBinary); ok {
 		return MessageTypeResponse, raw
 	}
-	out, err := json.Marshal(result)
+	out, fast := appendFastResponse(dst, result)
+	if fast && checkFastJSON {
+		checkFastResponse(method, result, out)
+	}
+	if !fast {
+		out, err = json.Marshal(result)
+	}
+	if profiling {
+		profileRequest(method, handled.Sub(start), time.Since(handled), len(out))
+	}
 	if err != nil {
 		return MessageTypeUnknown, []byte("ipc: failed to write response: " + err.Error())
 	}
@@ -117,6 +152,7 @@ func (p *InProcess) Request(method string, params []byte) (messageType MessageTy
 
 // Close closes the session, as the stdio server does when its client goes away.
 func (p *InProcess) Close() {
+	stopProfile()
 	p.session.Close()
 	p.cancel()
 }
@@ -343,4 +379,203 @@ func inProcessJoin(dir string, name string) string {
 		return dir + `\` + name
 	}
 	return dir + "/" + name
+}
+
+// A lint worker of veslint has a checker of its own in every program it asks about, as tsgolint's
+// workers have: a program hands out several checkers (its checker pool does), each with its own
+// types. The session keeps its types and signatures by project, since their ids are those of the
+// checker that made them (registerType), so a worker's requests name a project of their own: the
+// project's id, veslintWorkerSeparator and the worker's number. HandleRequest gives that name to
+// the project of each request of a worker (veslintTagProject, a line veslint's build patches into
+// session.go, see tsgo/inproc/session.patch); getProject looks the project up by its id
+// (veslintProject), setupChecker answers with the worker's checker (veslintWorkerOf), and
+// registerSymbol keeps the project's id as a symbol's canonical project, so that the answers are
+// the ones the session's own checker gives. A type or signature handle is then never resolved by
+// another checker than the one that made it.
+
+// veslintWorkerSeparator cannot be in a project's id, which is a path or a name made of letters.
+const veslintWorkerSeparator = "\x00"
+
+type veslintWorkerKey struct{}
+
+// veslintProject is the project of a project handle that may name a worker.
+func veslintProject(id project.ID) project.ID {
+	if i := strings.IndexByte(string(id), 0); i >= 0 {
+		return id[:i]
+	}
+	return id
+}
+
+// veslintWorkerOf is the worker a project handle names, or 0.
+func veslintWorkerOf(id project.ID) int {
+	i := strings.IndexByte(string(id), 0)
+	if i < 0 {
+		return 0
+	}
+	worker, err := strconv.Atoi(string(id[i+1:]))
+	if err != nil || worker < 0 {
+		return 0
+	}
+	return worker
+}
+
+var (
+	projectIDType      = reflect.TypeFor[project.ID]()
+	projectFieldsMu    sync.RWMutex
+	projectFieldByType = map[reflect.Type][]int{}
+)
+
+// projectField is the index of the field `Project` of type project.ID of the parameters of a
+// request, or nil when they have none.
+func projectField(t reflect.Type) []int {
+	projectFieldsMu.RLock()
+	index, ok := projectFieldByType[t]
+	projectFieldsMu.RUnlock()
+	if ok {
+		return index
+	}
+	if field, found := t.FieldByName("Project"); found && field.Type == projectIDType {
+		index = field.Index
+	}
+	projectFieldsMu.Lock()
+	projectFieldByType[t] = index
+	projectFieldsMu.Unlock()
+	return index
+}
+
+// veslintTagProject makes the project of the parameters of a worker's request the worker's.
+func veslintTagProject(ctx context.Context, params any) {
+	worker, _ := ctx.Value(veslintWorkerKey{}).(int)
+	if worker <= 0 || params == nil {
+		return
+	}
+	value := reflect.ValueOf(params)
+	if value.Kind() != reflect.Pointer || value.IsNil() || value.Elem().Kind() != reflect.Struct {
+		return
+	}
+	index := projectField(value.Elem().Type())
+	if index == nil {
+		return
+	}
+	field, err := value.Elem().FieldByIndexErr(index)
+	if err != nil || field.String() == "" || !field.CanSet() {
+		return
+	}
+	field.SetString(field.String() + veslintWorkerSeparator + strconv.Itoa(worker))
+}
+
+// veslintWorkerCheckers are the checkers of the workers in the programs of a snapshot; they go
+// with the snapshot when it is released.
+type veslintWorkerCheckers struct {
+	mu        sync.Mutex
+	byProgram map[*compiler.Program]map[int]*checker.Checker
+}
+
+// get is the checker of `worker` in `program`, made the first time. A worker asks on one thread,
+// one request at a time, so the checker is not held: its release does nothing.
+func (w *veslintWorkerCheckers) get(program *compiler.Program, worker int) (*checker.Checker, func()) {
+	w.mu.Lock()
+	defer w.mu.Unlock()
+	if w.byProgram == nil {
+		w.byProgram = map[*compiler.Program]map[int]*checker.Checker{}
+	}
+	checkers := w.byProgram[program]
+	if checkers == nil {
+		checkers = map[int]*checker.Checker{}
+		w.byProgram[program] = checkers
+	}
+	c := checkers[worker]
+	if c == nil {
+		c, _ = checker.NewChecker(program, nil)
+		checkers[worker] = c
+	}
+	return c, func() {}
+}
+
+// checkFastJSON makes every answer appendFastResponse writes compared with json.Marshal's (a test
+// of tsgo/inproc, see tests/run.sh): a difference panics, and the request answers the panic.
+var checkFastJSON = os.Getenv("VESLINT_TSGO_CHECK_JSON") != ""
+
+func checkFastResponse(method string, result any, fast []byte) {
+	want, err := json.Marshal(result)
+	if err != nil || !bytes.Equal(want, fast) {
+		panic(fmt.Sprintf("veslint: the JSON of the answer to %s is not json.Marshal's:\n%s\n%s", method, fast, want))
+	}
+}
+
+// VESLINT_TSGO_PROFILE=<file> profiles TypeScript in this process (a tool to find where its time
+// goes, not a feature): Go's CPU profile of the whole process goes to <file> and, for each method,
+// the requests, the time TypeScript took to answer them, the time of their JSON and its size go
+// to <file>.methods, when the first session closes.
+var (
+	profiling   bool
+	profileFile *os.File
+	profileMu   sync.Mutex
+	profileData = map[string]*methodProfile{}
+)
+
+type methodProfile struct {
+	count          int
+	handle, encode time.Duration
+	bytes          int
+}
+
+func init() {
+	path := os.Getenv("VESLINT_TSGO_PROFILE")
+	if path == "" {
+		return
+	}
+	file, err := os.Create(path)
+	if err != nil {
+		fmt.Fprintln(os.Stderr, "veslint: VESLINT_TSGO_PROFILE:", err)
+		return
+	}
+	if err := pprof.StartCPUProfile(file); err != nil {
+		fmt.Fprintln(os.Stderr, "veslint: VESLINT_TSGO_PROFILE:", err)
+		file.Close()
+		return
+	}
+	profiling = true
+	profileFile = file
+}
+
+func profileRequest(method string, handle time.Duration, encode time.Duration, size int) {
+	profileMu.Lock()
+	defer profileMu.Unlock()
+	m := profileData[method]
+	if m == nil {
+		m = &methodProfile{}
+		profileData[method] = m
+	}
+	m.count++
+	m.handle += handle
+	m.encode += encode
+	m.bytes += size
+}
+
+func stopProfile() {
+	profileMu.Lock()
+	defer profileMu.Unlock()
+	if profileFile == nil {
+		return
+	}
+	pprof.StopCPUProfile()
+	profileFile.Close()
+	methods := make([]string, 0, len(profileData))
+	for method := range profileData {
+		methods = append(methods, method)
+	}
+	sort.Slice(methods, func(i, j int) bool {
+		return profileData[methods[i]].handle+profileData[methods[i]].encode > profileData[methods[j]].handle+profileData[methods[j]].encode
+	})
+	var table strings.Builder
+	fmt.Fprintf(&table, "%-36s %8s %10s %10s %10s\n", "method", "requests", "handle_ms", "json_ms", "json_kb")
+	for _, method := range methods {
+		m := profileData[method]
+		fmt.Fprintf(&table, "%-36s %8d %10.1f %10.1f %10d\n", method, m.count, float64(m.handle)/1e6, float64(m.encode)/1e6, m.bytes/1024)
+	}
+	if err := os.WriteFile(profileFile.Name()+".methods", []byte(table.String()), 0o644); err != nil {
+		fmt.Fprintln(os.Stderr, "veslint: VESLINT_TSGO_PROFILE:", err)
+	}
+	profileFile = nil
 }
