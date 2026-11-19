@@ -44,6 +44,8 @@ mut:
 	reader_done   bool // the final reader event (EOF or error) was already received
 	timeout       time.Duration
 	requests      int // requests sent (for --bench)
+	// time spent in TypeScript's calls with the transport of this process (for --bench)
+	inproc_time time.Duration
 	// served are the texts given to tsgo instead of the files on disk, by path (start_with_files);
 	// serves_files tells that tsgo was started with the readFile callback.
 	served       map[string]string

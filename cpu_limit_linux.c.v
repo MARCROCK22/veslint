@@ -1,6 +1,7 @@
 module main
 
 import os
+import runtime
 
 #include <sys/syscall.h>
 #include <unistd.h>
@@ -82,4 +83,10 @@ fn restrict_threads(cpus []int) {
 			C.syscall(C.SYS_sched_setaffinity, voidptr(uint(tid)), size, voidptr(&mask[0]))
 		}
 	}
+}
+
+// usable_cpus is how many CPUs veslint may run on (after limit_cpus).
+fn usable_cpus() int {
+	cpus := allowed_cpus() or { return runtime.nr_cpus() }
+	return cpus.len
 }

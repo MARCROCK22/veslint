@@ -116,7 +116,9 @@ fn (mut c Client) inproc_request(method string, payload string) !string {
 		b:      &char(payload.str)
 		b_len:  uint(payload.len)
 	}
+	sw := time.new_stopwatch()
 	C.veslint_tsgo_invoke(&call)
+	c.inproc_time += sw.elapsed()
 	c.requests++
 	answer := inproc_out(&call)
 	if call.result == i64(msg_response) {
@@ -127,6 +129,11 @@ fn (mut c Client) inproc_request(method string, payload string) !string {
 	}
 	c.shutdown()
 	return error('TypeScript failed during `${method}`: ${answer}')
+}
+
+// inproc_ms is the time spent in TypeScript's requests in this process, in milliseconds.
+pub fn (c &Client) inproc_ms() f64 {
+	return f64(c.inproc_time) / f64(time.millisecond)
 }
 
 fn (c &Client) inproc_serve(path string, text string) {
