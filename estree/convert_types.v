@@ -251,9 +251,14 @@ fn (mut c Converter) typ(n C.TSNode) int {
 // JSDocNullableType. The node starts where getTokenPosOfNode puts a JSDoc node: after the white
 // space that follows the token before it, at a comment if one comes first.
 fn (mut c Converter) jsdoc_type(n C.TSNode, typ NodeType, postfix bool) int {
+	mut inner := Kid{
+		n: n
+	}
+	if typ != .ts_js_doc_all_type {
+		inner = first_named(c.kids(n)) or { return -1 }
+	}
 	i := c.mk(typ, n, c.skip_white_space(c.prev_token_end(n), c.start(n)), c.end(n))
 	if typ != .ts_js_doc_all_type {
-		inner := first_named(c.kids(n)) or { return -1 }
 		ann := c.mk(.ts_type_annotation, inner.n, c.prev_token_end(inner.n) - 1, c.end(inner.n))
 		c.pnode(ann, .type_annotation, c.typ(inner.n))
 		c.pnode(i, .type_annotation, ann)
