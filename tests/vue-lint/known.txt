@@ -6,14 +6,18 @@
 # The script has a TypeScript syntax error: vue-eslint-parser throws it, and ESLint lints nothing.
 not compared	g00/src/fixture_type-export.vue	eslint	Parsing error: ',' expected.
 not compared	g04/src/fixture_type-export-only.vue	eslint	Parsing error: ')' expected.
-not compared	s1320/src/script-indent_v52.vue	eslint	Parsing error: Expression expected.
-not compared	s1359/src/script-indent_v93.vue	eslint	Parsing error: Type expected.
+not compared	g14/src/fixture_syntax-error-script.vue	eslint	Parsing error: Property destructuring pattern expected.
+not compared	g14/src/fixture_syntax-error-setup.vue	eslint	Parsing error: Variable declaration expected.
+not compared	s0081/src/fixture_syntax-error.vue	eslint	Parsing error: Variable declaration expected.
+not compared	s0083/src/fixture_tsx-jsx.vue	eslint	Parsing error: '>' expected.
+not compared	s0692/src/no-undef-components_i6.vue	crash	vue/no-restricted-component-names: Cannot read properties of undefined (reading 'type')
+not compared	s1323/src/script-indent_v52.vue	eslint	Parsing error: Expression expected.
+not compared	s1362/src/script-indent_v93.vue	eslint	Parsing error: Type expected.
+not compared	s1381/src/valid-define-options_i2.vue	crash	vue/no-restricted-component-names: Cannot read properties of undefined (reading 'type')
+not compared	s1382/src/valid-define-options_i3.vue	crash	vue/no-restricted-component-names: Cannot read properties of undefined (reading 'type')
 #
 # A rule of ESLint throws on the file: eslint-plugin-vue's no-restricted-component-names reads the
 # `type` of the first argument of a `defineOptions()` without one (an upstream bug).
-not compared	s0689/src/no-undef-components_i6.vue	crash	vue/no-restricted-component-names: Cannot read properties of undefined (reading 'type')
-not compared	s1378/src/valid-define-options_i2.vue	crash	vue/no-restricted-component-names: Cannot read properties of undefined (reading 'type')
-not compared	s1379/src/valid-define-options_i3.vue	crash	vue/no-restricted-component-names: Cannot read properties of undefined (reading 'type')
 #
 # The same difference on a .ts file with the code of the script: a `const` and an
 # `import … = require()` of the same name, where veslint's no-import-assign takes the `const` for an
