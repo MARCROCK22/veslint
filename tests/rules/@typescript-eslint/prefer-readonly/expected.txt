@@ -61,6 +61,7 @@ tests/rules/@typescript-eslint/prefer-readonly/cases.ts:253:3	@typescript-eslint
 tests/rules/@typescript-eslint/prefer-readonly/cases.ts:263:3	@typescript-eslint/prefer-readonly	preferReadonly	Member 'direct' is never reassigned; mark it as `readonly`.
 tests/rules/@typescript-eslint/prefer-readonly/cases.ts:264:3	@typescript-eslint/prefer-readonly	preferReadonly	Member 'inDefault' is never reassigned; mark it as `readonly`.
 tests/rules/@typescript-eslint/prefer-readonly/cases.ts:287:3	@typescript-eslint/prefer-readonly	preferReadonly	Member 'commented' is never reassigned; mark it as `readonly`.
+tests/rules/@typescript-eslint/prefer-readonly/constructor-like/cases.ts:7:3	@typescript-eslint/prefer-readonly	preferReadonly	Member 'b' is never reassigned; mark it as `readonly`.
 tests/rules/@typescript-eslint/prefer-readonly/inline-lambdas/cases.ts:40:3	@typescript-eslint/prefer-readonly	preferReadonly	Member 'declared' is never reassigned; mark it as `readonly`.
 tests/rules/@typescript-eslint/prefer-readonly/inline-lambdas/cases.ts:41:3	@typescript-eslint/prefer-readonly	preferReadonly	Member 'uninitialized' is never reassigned; mark it as `readonly`.
 tests/rules/@typescript-eslint/prefer-readonly/inline-lambdas/cases.ts:42:3	@typescript-eslint/prefer-readonly	preferReadonly	Member 'optional' is never reassigned; mark it as `readonly`.

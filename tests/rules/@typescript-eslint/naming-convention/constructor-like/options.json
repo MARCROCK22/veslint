@@ -1,0 +1,2 @@
+[{"selector": "method", "format": ["PascalCase"]},
+ {"selector": "variable", "format": null, "custom": {"regex": "a\u2028b\u2029/c", "match": true}}]
