@@ -838,6 +838,9 @@ const rule_option_schemas = {
 	'regexp/no-escape-backspace':                                      '{"type":"array","minItems":0,"maxItems":0}'
 	'regexp/no-control-character':                                     '{"type":"array","minItems":0,"maxItems":0}'
 	'regexp/control-character-escape':                                 '{"type":"array","minItems":0,"maxItems":0}'
+	'regexp/no-extra-lookaround-assertions':                           '{"type":"array","minItems":0,"maxItems":0}'
+	'regexp/no-octal':                                                 '{"type":"array","minItems":0,"maxItems":0}'
+	'regexp/no-standalone-backslash':                                  '{"type":"array","minItems":0,"maxItems":0}'
 }
 
 // eslint_rule_default_options are the meta.defaultOptions of the rules of ESLint and of

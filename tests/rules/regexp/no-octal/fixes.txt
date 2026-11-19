@@ -1,0 +1,7 @@
+tests/rules/regexp/no-octal/cases.ts:2:20	regexp/no-octal	unexpected	Unexpected octal escape sequence '\\07'.	suggestion	replaceHex	Replace the octal escape sequence with a hexadecimal escape sequence.	51	54	\\x07	end	2	23
+tests/rules/regexp/no-octal/cases.ts:3:20	regexp/no-octal	unexpected	Unexpected octal escape sequence '\\1'.	suggestion	replaceHex	Replace the octal escape sequence with a hexadecimal escape sequence.	76	78	\\x01	end	3	22
+tests/rules/regexp/no-octal/cases.ts:4:21	regexp/no-octal	unexpected	Unexpected octal escape sequence '\\00'.	suggestion	replaceHex	Replace the octal escape sequence with a hexadecimal escape sequence.	101	104	\\x00	end	4	24
+tests/rules/regexp/no-octal/cases.ts:5:20	regexp/no-octal	unexpected	Unexpected octal escape sequence '\\077'.	suggestion	replaceHex	Replace the octal escape sequence with a hexadecimal escape sequence.	127	131	\\x3f	end	5	24
+tests/rules/regexp/no-octal/cases.ts:5:24	regexp/no-octal	unexpected	Unexpected octal escape sequence '\\377'.	suggestion	replaceHex	Replace the octal escape sequence with a hexadecimal escape sequence.	131	135	\\xff	end	5	28
+tests/rules/regexp/no-octal/cases.ts:6:32	regexp/no-octal	unexpected	Unexpected octal escape sequence '\\012'.	suggestion	replaceHex	Replace the octal escape sequence with a hexadecimal escape sequence.	169	174	\\\\x0a	end	6	37
+tests/rules/regexp/no-octal/cases.ts:7:21	regexp/no-octal	unexpected	Unexpected octal escape sequence '\\001'.	suggestion	replaceHex	Replace the octal escape sequence with a hexadecimal escape sequence.	198	202	\\x01	end	7	25

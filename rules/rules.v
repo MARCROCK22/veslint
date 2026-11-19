@@ -849,6 +849,9 @@ pub const regexp_no_empty_string_literal = 'regexp/no-empty-string-literal'
 pub const regexp_no_escape_backspace = 'regexp/no-escape-backspace'
 pub const regexp_no_control_character = 'regexp/no-control-character'
 pub const regexp_control_character_escape = 'regexp/control-character-escape'
+pub const regexp_no_extra_lookaround_assertions = 'regexp/no-extra-lookaround-assertions'
+pub const regexp_no_octal = 'regexp/no-octal'
+pub const regexp_no_standalone_backslash = 'regexp/no-standalone-backslash'
 pub const names = [no_floating_promises, await_thenable, require_await, return_await,
 	no_misused_promises, no_unsafe_call, no_unsafe_member_access, no_unsafe_return,
 	no_unsafe_assignment, no_unsafe_argument, restrict_template_expressions,
@@ -1107,7 +1110,8 @@ pub const names = [no_floating_promises, await_thenable, require_await, return_a
 	promise_no_callback_in_promise, promise_no_native, promise_no_nesting, promise_always_return,
 	promise_no_multiple_resolved, regexp_no_empty_group, regexp_no_invalid_regexp,
 	regexp_no_non_standard_flag, regexp_no_empty_alternative, regexp_no_empty_string_literal,
-	regexp_no_escape_backspace, regexp_no_control_character, regexp_control_character_escape]
+	regexp_no_escape_backspace, regexp_no_control_character, regexp_control_character_escape,
+	regexp_no_extra_lookaround_assertions, regexp_no_octal, regexp_no_standalone_backslash]
 
 // untyped_rules are the ported rules that need no types (`meta.docs.requiresTypeChecking` is false
 // in typescript-eslint; the eslint-plugin-unicorn rules that read the types when the parser has a
@@ -1328,7 +1332,8 @@ pub const untyped_rules = [adjacent_overload_signatures, array_type, class_liter
 	promise_no_nesting, promise_always_return, promise_no_multiple_resolved, regexp_no_empty_group,
 	regexp_no_invalid_regexp, regexp_no_non_standard_flag, regexp_no_empty_alternative,
 	regexp_no_empty_string_literal, regexp_no_escape_backspace, regexp_no_control_character,
-	regexp_control_character_escape]
+	regexp_control_character_escape, regexp_no_extra_lookaround_assertions, regexp_no_octal,
+	regexp_no_standalone_backslash]
 
 // needs_types tells whether a rule asks tsgo for the types of the program.
 pub fn needs_types(rule string) bool {
@@ -2172,6 +2177,9 @@ pub const default_options = {
 	regexp_no_escape_backspace:                          '[]'
 	regexp_no_control_character:                         '[]'
 	regexp_control_character_escape:                     '[]'
+	regexp_no_extra_lookaround_assertions:               '[]'
+	regexp_no_octal:                                     '[]'
+	regexp_no_standalone_backslash:                      '[]'
 }
 
 // Finding is a problem a rule found at a node.
@@ -3201,6 +3209,9 @@ pub fn message(rule string, finding Finding) string {
 		regexp_no_escape_backspace { regexp_no_escape_backspace_messages }
 		regexp_no_control_character { regexp_no_control_character_messages }
 		regexp_control_character_escape { regexp_control_character_escape_messages }
+		regexp_no_extra_lookaround_assertions { regexp_no_extra_lookaround_assertions_messages }
+		regexp_no_octal { regexp_no_octal_messages }
+		regexp_no_standalone_backslash { regexp_no_standalone_backslash_messages }
 		else { map[string]string{} }
 	}
 	return interpolate(messages[finding.message_id] or { finding.message_id }, finding.data)
@@ -5907,6 +5918,15 @@ fn (mut c Checker) lint_rule(rule string, root C.TSNode, abs_path string, mut st
 		}
 		regexp_control_character_escape {
 			return c.lint_regexp_control_character_escape(root, abs_path, mut stats)!
+		}
+		regexp_no_extra_lookaround_assertions {
+			return c.lint_regexp_no_extra_lookaround_assertions(root, abs_path, mut stats)!
+		}
+		regexp_no_octal {
+			return c.lint_regexp_no_octal(root, abs_path, mut stats)!
+		}
+		regexp_no_standalone_backslash {
+			return c.lint_regexp_no_standalone_backslash(root, abs_path, mut stats)!
 		}
 		else { return error('unknown rule: ${rule}') }
 	}
