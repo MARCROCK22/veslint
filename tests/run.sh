@@ -668,7 +668,7 @@ if command -v bun > /dev/null && [[ -d build/eval/spider-byte/node_modules/eslin
 		sed 's|^|falsy: |' | sorted > "$TMP/vue-features-bun.out"
 	for config in config-true features-false; do
 		(cd tests/svelte-lint/runes && RUNES_CONFIG=$PWD/$config.json VESLINT_ESLINT_DIR=../../../build/eval/spider-byte \
-			../../../veslint --config eslint.runes.config.mjs --fixes options.svelte plain.svelte 2>> "$TMP/vue-features-bun.err") |
+			../../../veslint --config eslint.runes.config.mjs --fixes jsx-assertion.svelte jsx-script.svelte jsx-template.svelte options.svelte plain.svelte 2>> "$TMP/vue-features-bun.err") |
 			sed "s|^|$config: |"
 	done | sorted > "$TMP/svelte-features-bun.out"
 	if diff -u <(grep '^falsy: ' tests/vue-lint/features/expected.txt) "$TMP/vue-features-bun.out" &&
