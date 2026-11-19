@@ -1124,26 +1124,33 @@ fn es_def_parent(def ScopeDefinition) ?C.TSNode {
 }
 
 // es_declared_variables ports getDeclaredVariables: the variables with a definition whose node or
-// parent is the node.
+// parent is the node, in the order of the variables. Rules ask it for every declaring node of a
+// file, so the answer of every node is indexed once (a scan of the variables per node made
+// no-shadow-restricted-names take 0.6 s on a file of 5,000 lines).
 fn (mut c Checker) es_declared_variables(root C.TSNode, n C.TSNode) []int {
-	tree := c.scope_tree(root)
-	key := node_key(n)
-	mut out := []int{}
-	for v, variable in tree.variables {
-		for def in variable.defs {
-			if node_key(def.node) == key {
-				out << v
-				break
-			}
-			if parent := es_def_parent(def) {
-				if node_key(parent) == key {
-					out << v
-					break
+	mut tree := c.scope_tree(root)
+	if tree.declaring_count != tree.variables.len {
+		mut index := map[u64][]int{}
+		for v, variable in tree.variables {
+			for def in variable.defs {
+				mut keys := [node_key(def.node)]
+				if parent := es_def_parent(def) {
+					keys << node_key(parent)
+				}
+				for key in keys {
+					mut list := index[key] or { []int{} }
+					// Once per variable, however many of its definitions are of the node.
+					if list.len == 0 || list.last() != v {
+						list << v
+						index[key] = list
+					}
 				}
 			}
 		}
+		tree.declaring = index.move()
+		tree.declaring_count = tree.variables.len
 	}
-	return out
+	return (tree.declaring[node_key(n)] or { []int{} }).clone()
 }
 
 // es_modifying_references ports getModifyingReferences: the writes that are not the initializer,

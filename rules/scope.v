@@ -212,6 +212,10 @@ pub mut:
 mut:
 	by_block map[string][]int // scopes created by each block node (scope_block_key)
 	declared map[u64]int      // variable of each definition name node
+	// declaring: the variables each node declares (getDeclaredVariables, by node_key), built on
+	// first use by es_declared_variables for declaring_count variables (rebuilt if more come).
+	declaring       map[u64][]int
+	declaring_count int
 }
 
 // scope_tree is the scope tree of the file being linted, built on first use. A Checker that got
