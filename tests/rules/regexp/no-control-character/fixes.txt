@@ -1,0 +1,12 @@
+tests/rules/regexp/no-control-character/cases.ts:3:20	regexp/no-control-character	unexpected	Unexpected control character '\\x00' (U+0000).	suggestion	escape	Use '\\0' instead.	151	155	\\0	end	3	24
+tests/rules/regexp/no-control-character/cases.ts:4:20	regexp/no-control-character	unexpected	Unexpected control character '\\x0C' (U+000c).	suggestion	escape	Use '\\f' instead.	177	181	\\f	end	4	24
+tests/rules/regexp/no-control-character/cases.ts:5:20	regexp/no-control-character	unexpected	Unexpected control character '\\x1F' (U+001f).	end	5	24
+tests/rules/regexp/no-control-character/cases.ts:6:20	regexp/no-control-character	unexpected	Unexpected control character '\\u000a' (U+000a).	suggestion	escape	Use '\\n' instead.	229	235	\\n	end	6	26
+tests/rules/regexp/no-control-character/cases.ts:7:20	regexp/no-control-character	unexpected	Unexpected control character '\\u{0a}' (U+000a).	suggestion	escape	Use '\\n' instead.	257	263	\\n	end	7	26
+tests/rules/regexp/no-control-character/cases.ts:8:21	regexp/no-control-character	unexpected	Unexpected control character '\\x01' (U+0001).	end	8	25
+tests/rules/regexp/no-control-character/cases.ts:8:26	regexp/no-control-character	unexpected	Unexpected control character '\\x1f' (U+001f).	end	8	30
+tests/rules/regexp/no-control-character/cases.ts:9:31	regexp/no-control-character	unexpected	Unexpected control character '\\x0c' (U+000c).	suggestion	escape	Use '\\f' instead.	330	334	\\\\f	end	9	35
+tests/rules/regexp/no-control-character/cases.ts:10:31	regexp/no-control-character	unexpected	Unexpected control character '\\x1b' (U+001b).	end	10	36
+tests/rules/regexp/no-control-character/cases.ts:11:27	regexp/no-control-character	unexpected	Unexpected control character '\\x00' (U+0000).	suggestion	escape	Use '\\0' instead.	403	409	\\\\0	end	11	33
+tests/rules/regexp/no-control-character/cases.ts:12:38	regexp/no-control-character	unexpected	Unexpected control character '\\u0009' (U+0009).	suggestion	escape	Use '\\t' instead.	450	457	\\\\t	end	12	45
+tests/rules/regexp/no-control-character/cases.ts:13:21	regexp/no-control-character	unexpected	Unexpected control character '\t' (U+0009).	suggestion	escape	Use '\\t' instead.	481	482	\\t	end	13	22

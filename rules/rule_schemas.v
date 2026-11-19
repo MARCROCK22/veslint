@@ -830,6 +830,14 @@ const rule_option_schemas = {
 	'promise/no-nesting':                                              '{"type":"array","minItems":0,"maxItems":0}'
 	'promise/always-return':                                           '{"type":"array","items":[{"type":"object","properties":{"ignoreLastCallback":{"type":"boolean"},"ignoreAssignmentVariable":{"type":"array","items":{"type":"string","pattern":"^[\\\\w\$]+\$"},"uniqueItems":true}},"additionalProperties":false}],"minItems":0,"maxItems":1}'
 	'promise/no-multiple-resolved':                                    '{"type":"array","minItems":0,"maxItems":0}'
+	'regexp/no-empty-group':                                           '{"type":"array","minItems":0,"maxItems":0}'
+	'regexp/no-invalid-regexp':                                        '{"type":"array","minItems":0,"maxItems":0}'
+	'regexp/no-non-standard-flag':                                     '{"type":"array","minItems":0,"maxItems":0}'
+	'regexp/no-empty-alternative':                                     '{"type":"array","minItems":0,"maxItems":0}'
+	'regexp/no-empty-string-literal':                                  '{"type":"array","minItems":0,"maxItems":0}'
+	'regexp/no-escape-backspace':                                      '{"type":"array","minItems":0,"maxItems":0}'
+	'regexp/no-control-character':                                     '{"type":"array","minItems":0,"maxItems":0}'
+	'regexp/control-character-escape':                                 '{"type":"array","minItems":0,"maxItems":0}'
 }
 
 // eslint_rule_default_options are the meta.defaultOptions of the rules of ESLint and of

@@ -1,0 +1,10 @@
+tests/rules/regexp/no-empty-alternative/cases.ts:2:21	regexp/no-empty-alternative	empty	This empty alternative might be a mistake. If not, use a quantifier instead.
+tests/rules/regexp/no-empty-alternative/cases.ts:3:20	regexp/no-empty-alternative	empty	This empty alternative might be a mistake. If not, use a quantifier instead.
+tests/rules/regexp/no-empty-alternative/cases.ts:4:22	regexp/no-empty-alternative	empty	This empty alternative might be a mistake. If not, use a quantifier instead.
+tests/rules/regexp/no-empty-alternative/cases.ts:5:22	regexp/no-empty-alternative	empty	This empty alternative might be a mistake. If not, use a quantifier instead.
+tests/rules/regexp/no-empty-alternative/cases.ts:6:25	regexp/no-empty-alternative	empty	This empty alternative might be a mistake. If not, use a quantifier instead.
+tests/rules/regexp/no-empty-alternative/cases.ts:7:24	regexp/no-empty-alternative	empty	This empty alternative might be a mistake. If not, use a quantifier instead.
+tests/rules/regexp/no-empty-alternative/cases.ts:8:24	regexp/no-empty-alternative	empty	This empty alternative might be a mistake. If not, use a quantifier instead.
+tests/rules/regexp/no-empty-alternative/cases.ts:9:25	regexp/no-empty-alternative	empty	This empty alternative might be a mistake. If not, use a quantifier instead.
+tests/rules/regexp/no-empty-alternative/cases.ts:10:34	regexp/no-empty-alternative	empty	This empty alternative might be a mistake. If not, use a quantifier instead.
+tests/rules/regexp/no-empty-alternative/cases.ts:11:38	regexp/no-empty-alternative	empty	This empty alternative might be a mistake. If not, use a quantifier instead.
