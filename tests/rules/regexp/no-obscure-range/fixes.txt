@@ -1,0 +1,7 @@
+tests/rules/regexp/no-obscure-range/allowed/cases.ts:2:21	regexp/no-obscure-range	unexpected	Unexpected obscure character range. The characters of ' -~' (U+0020 - U+007e) are not obvious.	end	2	24
+tests/rules/regexp/no-obscure-range/allowed/cases.ts:3:21	regexp/no-obscure-range	unexpected	Unexpected obscure character range. The characters of ':-@' (U+003a - U+0040) are not obvious.	end	3	24
+tests/rules/regexp/no-obscure-range/cases.ts:2:21	regexp/no-obscure-range	unexpected	Unexpected obscure character range. The characters of 'A-\\x43' (U+0041 - U+0043) are not obvious.	end	2	27
+tests/rules/regexp/no-obscure-range/cases.ts:3:21	regexp/no-obscure-range	unexpected	Unexpected obscure character range. The characters of '!-$' (U+0021 - U+0024) are not obvious.	end	3	24
+tests/rules/regexp/no-obscure-range/cases.ts:4:21	regexp/no-obscure-range	unexpected	Unexpected obscure character range. The characters of ' -~' (U+0020 - U+007e) are not obvious.	end	4	24
+tests/rules/regexp/no-obscure-range/cases.ts:6:32	regexp/no-obscure-range	unexpected	Unexpected obscure character range. The characters of 'é-ü' (U+00e9 - U+00fc) are not obvious.	end	6	35
+tests/rules/regexp/no-obscure-range/cases.ts:7:21	regexp/no-obscure-range	unexpected	Unexpected obscure character range. The characters of 'a-\\u{7a}' (U+0061 - U+007a) are not obvious.	end	7	29

@@ -841,6 +841,11 @@ const rule_option_schemas = {
 	'regexp/no-extra-lookaround-assertions':                           '{"type":"array","minItems":0,"maxItems":0}'
 	'regexp/no-octal':                                                 '{"type":"array","minItems":0,"maxItems":0}'
 	'regexp/no-standalone-backslash':                                  '{"type":"array","minItems":0,"maxItems":0}'
+	'regexp/hexadecimal-escape':                                       '{"type":"array","items":[{"enum":["always","never"]}],"minItems":0,"maxItems":1}'
+	'regexp/letter-case':                                              '{"type":"array","items":[{"type":"object","properties":{"caseInsensitive":{"enum":["lowercase","uppercase","ignore"]},"unicodeEscape":{"enum":["lowercase","uppercase","ignore"]},"hexadecimalEscape":{"enum":["lowercase","uppercase","ignore"]},"controlEscape":{"enum":["lowercase","uppercase","ignore"]}},"additionalProperties":false}],"minItems":0,"maxItems":1}'
+	'regexp/no-lazy-ends':                                             '{"type":"array","items":[{"type":"object","properties":{"ignorePartial":{"type":"boolean"}},"additionalProperties":false}],"minItems":0,"maxItems":1}'
+	'regexp/no-obscure-range':                                         '{"type":"array","items":[{"type":"object","properties":{"allowed":{"anyOf":[{"enum":["all","alphanumeric"]},{"type":"array","items":[{"enum":["all","alphanumeric"]}],"minItems":1,"additionalItems":false},{"type":"array","items":{"anyOf":[{"const":"alphanumeric"},{"type":"string","pattern":"^(?:[\\\\ud800-\\\\udbff][\\\\udc00-\\\\udfff]|[^\\\\ud800-\\\\udfff])-(?:[\\\\ud800-\\\\udbff][\\\\udc00-\\\\udfff]|[^\\\\ud800-\\\\udfff])\$"}]},"uniqueItems":true,"minItems":1,"additionalItems":false}]}},"additionalProperties":false}],"minItems":0,"maxItems":1}'
+	'regexp/no-trivially-nested-quantifier':                           '{"type":"array","minItems":0,"maxItems":0}'
 }
 
 // eslint_rule_default_options are the meta.defaultOptions of the rules of ESLint and of

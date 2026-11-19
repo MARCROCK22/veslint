@@ -1,0 +1,6 @@
+tests/rules/regexp/no-trivially-nested-quantifier/cases.ts:2:20	regexp/no-trivially-nested-quantifier	nested	These two quantifiers are trivially nested and can be replaced with '*'.
+tests/rules/regexp/no-trivially-nested-quantifier/cases.ts:4:20	regexp/no-trivially-nested-quantifier	nested	These two quantifiers are trivially nested and can be replaced with '*?'.
+tests/rules/regexp/no-trivially-nested-quantifier/cases.ts:6:30	regexp/no-trivially-nested-quantifier	childSimpler	This nested quantifier can be simplified to '?'.
+tests/rules/regexp/no-trivially-nested-quantifier/cases.ts:7:23	regexp/no-trivially-nested-quantifier	childOne	This nested quantifier can be removed.
+tests/rules/regexp/no-trivially-nested-quantifier/cases.ts:8:32	regexp/no-trivially-nested-quantifier	nested	These two quantifiers are trivially nested and can be replaced with '*'.
+tests/rules/regexp/no-trivially-nested-quantifier/cases.ts:14:20	regexp/no-trivially-nested-quantifier	nested	These two quantifiers are trivially nested and can be replaced with '{4,9}'.

@@ -406,6 +406,10 @@ pub fn check_options(rule string, options []json2.Any) !bool {
 		promise_prefer_await_to_then { prm_prefer_await_to_then_options(options)! }
 		promise_no_callback_in_promise { prm_no_callback_in_promise_options(options)! }
 		promise_always_return { prm_always_return_options(options)! }
+		regexp_hexadecimal_escape { rxhe_options(options)! }
+		regexp_letter_case { rxlc_options(options)! }
+		regexp_no_lazy_ends { rxnle_options(options)! }
+		regexp_no_obscure_range { rxnor_allowed_option(options)! }
 		else { return false }
 	}
 	return true
@@ -449,10 +453,11 @@ pub fn effective_options(name string, options []json2.Any) ![]json2.Any {
 			return error(err.msg().replace_once('`${base}`', '`${name}`'))
 		}
 	}
-	// So have those of eslint-plugin-svelte, @eslint-community/eslint-plugin-eslint-comments and
-	// eslint-plugin-promise.
+	// So have those of eslint-plugin-svelte, @eslint-community/eslint-plugin-eslint-comments,
+	// eslint-plugin-promise and eslint-plugin-regexp.
 	if name.starts_with('perfectionist/') || name.starts_with('vue/') || name.starts_with('svelte/')
-		|| name.starts_with('@eslint-community/eslint-comments/') || name.starts_with('promise/') {
+		|| name.starts_with('@eslint-community/eslint-comments/') || name.starts_with('promise/')
+		|| name.starts_with('regexp/') {
 		check_options(name, options) or { return error('`${name}`: ${err.msg()}') }
 		return options
 	}
