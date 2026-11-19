@@ -92,7 +92,7 @@ With files and neither `--config` nor `--rule`, veslint prints the type TypeScri
 
 The exit code is 0 when there are no problems, 1 when there are (warnings do not count, as in ESLint) or veslint failed, and 2 for a usage error.
 
-Environment variables: `VESLINT_CPUS` (how many CPUs veslint and the compiler use: 2 by default; 0 for all. A run lints its files on that many threads when it has at least 8 files per thread, each thread with its own TypeScript program, so memory grows with them), `VESLINT_TSGO` (`process` runs the TypeScript compiler of the npm package as a separate process instead of the one linked into veslint), `VESLINT_TIMEOUT_MS` (with `VESLINT_TSGO=process`: how long to wait for each answer of the compiler, 30000 by default) and `VESLINT_CONFIG_CACHE` (`0` resolves the `eslint.config.*` again on every run, see [Configuration](#configuration)).
+Environment variables: `VESLINT_CPUS` (how many CPUs veslint and the compiler use: by default one of each core, and 2 for `--server` or with `VESLINT_TSGO=process`; 0 for all. A run lints its files on that many threads when it has at least 8 files per thread; with the compiler linked into veslint the threads share its program and each has its own type checker, whose types make memory grow with them), `VESLINT_TSGO` (`process` runs the TypeScript compiler of the npm package as a separate process instead of the one linked into veslint), `VESLINT_TIMEOUT_MS` (with `VESLINT_TSGO=process`: how long to wait for each answer of the compiler, 30000 by default) and `VESLINT_CONFIG_CACHE` (`0` resolves the `eslint.config.*` again on every run, see [Configuration](#configuration)).
 
 ## Configuration
 

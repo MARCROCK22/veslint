@@ -140,7 +140,7 @@ fn main() {
 		eprintln('veslint: ${err.msg()}')
 		exit(2)
 	}
-	cpus := cpus_from_env() or {
+	cpus := cpus_from_env(default_cpu_count(opts.server)) or {
 		eprintln('veslint: ${err.msg()}')
 		exit(2)
 	}
