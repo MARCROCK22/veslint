@@ -153,8 +153,8 @@ func veslint_tsgo_free(p *C.char) {
 
 // gcPercent is the GOGC of TypeScript in veslint when the environment does not set one. At Go's
 // default (100) its collector took a fifth of TypeScript's time in a lint of zod. With two workers,
-// 200 lints zod and recharts 6 % faster for 7 % more memory; 400 lints the TypeScript compiler 5 %
-// faster than 100 but holds 30 % more memory (3.2 GiB instead of 2.4).
+// 200 lints zod and recharts 6 % faster for 7 % more memory, and the TypeScript compiler 2 % faster
+// for 19 % more (2.9 GiB instead of 2.4); 400 is 5 % faster there and holds 3.2 GiB.
 const gcPercent = 200
 
 func init() {
