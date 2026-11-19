@@ -119,6 +119,29 @@ fn (mut c Converter) typ(n C.TSNode) int {
 			}
 			return i
 		}
+		'non_null_type' {
+			// `T!`: typescript-estree has no converter for TypeScript's JSDocNonNullableType and
+			// copies it (deeplyCopy): its `type` becomes a TSTypeAnnotation that, as every one
+			// convertTypeAnnotation makes, starts one character before the full start of the
+			// type (the end of the token before it); `id` is the node id the checker has not
+			// given, and `postfix` the field of the TypeScript node. The node starts where
+			// getTokenPosOfNode puts a JSDoc node: after the white space that follows the token
+			// before it, at a comment if one comes first.
+			inner := first_named(c.kids(n)) or { return -1 }
+			full_start := c.prev_token_end(n)
+			i := c.mk(.ts_js_doc_non_nullable_type, n, c.skip_white_space(full_start, c.start(n)),
+				c.end(n))
+			ann := c.mk(.ts_type_annotation, inner.n, full_start - 1, c.end(inner.n))
+			c.pnode(ann, .type_annotation, c.typ(inner.n))
+			c.pnode(i, .type_annotation, ann)
+			c.t.nodes[i].props << Prop{
+				key:  .id
+				kind: .number
+				num:  0
+			}
+			c.pbool(i, .postfix, true)
+			return i
+		}
 		'tuple_type' {
 			i := c.mkn(.ts_tuple_type, n)
 			mut elems := []int{}

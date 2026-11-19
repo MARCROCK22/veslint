@@ -283,6 +283,66 @@ fn (c &Converter) last_token_end(n C.TSNode) int {
 	return node_start(n)
 }
 
+// prev_token_end is the end of the last token before the node (TypeScript's full start of a node
+// that starts there), skipping comments and tokens without width; 0 at the start of the text.
+fn (c &Converter) prev_token_end(n C.TSNode) int {
+	mut cur := n
+	for {
+		mut prev := C.ts_node_prev_sibling(cur)
+		for !C.ts_node_is_null(prev) {
+			if !C.ts_node_is_extra(prev) && node_end(prev) > node_start(prev) {
+				return c.last_token_end(prev)
+			}
+			prev = C.ts_node_prev_sibling(prev)
+		}
+		parent := C.ts_node_parent(cur)
+		if C.ts_node_is_null(parent) {
+			return 0
+		}
+		cur = parent
+	}
+	return 0
+}
+
+// skip_white_space is the first offset from `from` (at most `limit`) that is not white space or a
+// line terminator as TypeScript's skipTrivia sees them (isWhiteSpaceLike), in UTF-8.
+fn (c &Converter) skip_white_space(from int, limit int) int {
+	mut i := from
+	for i < limit {
+		b := unsafe { c.src.str[i] }
+		match b {
+			`\t`, `\n`, `\v`, `\f`, `\r`, ` ` {
+				i++
+				continue
+			}
+			0xc2 {
+				// U+0085, U+00A0
+				if i + 1 < limit && unsafe { c.src.str[i + 1] } in [u8(0x85), 0xa0] {
+					i += 2
+					continue
+				}
+			}
+			0xe1, 0xe2, 0xe3, 0xef {
+				if i + 2 < limit {
+					b1 := unsafe { c.src.str[i + 1] }
+					b2 := unsafe { c.src.str[i + 2] }
+					cp := (u32(b & 0x0f) << 12) | (u32(b1 & 0x3f) << 6) | u32(b2 & 0x3f)
+					// U+1680, U+2000…U+200B, U+2028, U+2029, U+202F, U+205F, U+3000, U+FEFF
+					if cp == 0x1680 || (cp >= 0x2000 && cp <= 0x200b) || cp == 0x2028
+						|| cp == 0x2029 || cp == 0x202f || cp == 0x205f || cp == 0x3000
+						|| cp == 0xfeff {
+						i += 3
+						continue
+					}
+				}
+			}
+			else {}
+		}
+		break
+	}
+	return i
+}
+
 fn (c &Converter) text(n C.TSNode) string {
 	return c.slice(node_start(n), node_end(n))
 }
@@ -454,12 +514,20 @@ fn (mut c Converter) program(root C.TSNode) int {
 }
 
 // is_module ports TypeScript's isFileProbablyExternalModule: an import or export at the top
-// level, or `import.meta` anywhere.
+// level (isAnExternalModuleIndicatorNode), or `import.meta` anywhere.
 fn (mut c Converter) is_module(root C.TSNode, stmts []C.TSNode) bool {
 	for s in stmts {
 		match kind_of(s) {
-			'export_statement', 'import_statement' {
+			'import_statement' {
 				return true
+			}
+			'export_statement' {
+				// `export as namespace a` (a NamespaceExportDeclaration, the global name of a
+				// UMD module) is not one of them: the declaration file of a script may have it.
+				kids := c.kids(s)
+				if !(kids.len > 1 && kids[1].is_tok('as')) {
+					return true
+				}
 			}
 			else {}
 		}
