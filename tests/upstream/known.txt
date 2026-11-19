@@ -5,8 +5,6 @@
 # listed case must fail and every other case must pass; tests/rules/reference.sh does not compare the
 # two tools on a listed case.
 #
-# tree-sitter reads a `new` followed by a line break as the identifier `new` and an automatic `;`
-# (`const a = new` and then the statement `Foo()`), with no syntax error: a grammar bug.
 # tree-sitter's grammar requires the type of a mapped type: `{ [k in string]; }`, which TypeScript
 # reads as a mapped type without one, is an ERROR node.
 veslint	consistent-indexed-object-style/i56	tree-sitter reads `{ [k in string]; }` as an ERROR node
