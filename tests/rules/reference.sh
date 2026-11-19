@@ -217,7 +217,7 @@ for json in tests/config-errors/*.json; do
 	fi
 done
 # Any other message (parse errors, a rule in another rule's file) is a failure.
-if grep -vP "^tests/rules/((?:svelte/@[^/]+/|@eslint-community/eslint-comments/|@[^/]+/|seyfert/|unicorn/|perfectionist/|marcrock/|promise/|vue/|svelte/)?[^/]+)/(?:.+/)?cases\.(?:tsx?|vue|svelte):[0-9]+:[0-9]+\t\1\t" "$TMP/reference.txt" > "$TMP/others.txt"; then
+if grep -vP "^tests/rules/((?:svelte/@[^/]+/|@eslint-community/eslint-comments/|@[^/]+/|seyfert/|unicorn/|perfectionist/|marcrock/|promise/|regexp/|vue/|svelte/)?[^/]+)/(?:.+/)?cases\.(?:tsx?|vue|svelte):[0-9]+:[0-9]+\t\1\t" "$TMP/reference.txt" > "$TMP/others.txt"; then
 	echo "FAIL   unexpected ESLint messages:"
 	cat "$TMP/others.txt"
 	fail=1
@@ -308,6 +308,8 @@ upstream_tests "@marcrock22/eslintcf's tests" tests/upstream/setup.sh marcrock
 upstream_tests "@eslint-community/eslint-plugin-eslint-comments' tests" tests/upstream/setup.sh @eslint-community
 # eslint-plugin-promise's tests, the same way.
 upstream_tests "eslint-plugin-promise's tests" tests/upstream/setup.sh promise
+# eslint-plugin-regexp's tests, the same way.
+upstream_tests "eslint-plugin-regexp's tests" tests/upstream/setup.sh regexp
 # eslint-plugin-vue's tests of the vue/* rules veslint has (tests/upstream/README.md): ESLint gives
 # what each test expects on tests/rules/vue/<rule>/upstream.json; the cases converted to TypeScript
 # (upstream.ts.json) are what tests/rules/vue/upstream_ts.mjs makes of them now; and on every

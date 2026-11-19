@@ -49,6 +49,7 @@ const SVELTE_DEPS = path.join(ROOT, 'build/upstream/svelte-deps/node_modules');
 const ESLINT_COMMENTS = path.join(ROOT, 'build/upstream/eslint-comments');
 const PLUGINS_NEW = path.join(ROOT, 'build/upstream/plugins-new/node_modules');
 const PROMISE = path.join(ROOT, 'build/upstream/promise');
+const REGEXP = path.join(ROOT, 'build/upstream/regexp');
 
 // Where the tests of each plugin come from. `fixtures` is the directory the tests lint in, the one
 // the files of the cases are written relative to.
@@ -144,6 +145,31 @@ const SOURCES = {
     fixtures: realDir(path.join(TYPESCRIPT_ESLINT, 'packages/eslint-plugin/tests/fixtures')),
     modules: path.join(PROMISE, 'node_modules'),
     needs: [path.join(PROMISE, '__tests__'), path.join(PROMISE, 'rules')],
+  },
+  // eslint-plugin-regexp v3.3.3 (the `regexp/*` rules): tests/lib/rules/<rule>.ts of
+  // ota-meshi/eslint-plugin-regexp, run by mocha with eslint-snapshot-rule-tester's SnapshotRuleTester
+  // (tools/upstream/regexp-test.mjs records the cases), with the packages of build/upstream/plugins-new
+  // (ESLint 10.15.0, refa, regexp-ast-analysis…) and typescript-eslint's parser and TypeScript of
+  // build/eval in place of the clone's devDependencies. The expectation of an invalid case is its
+  // entry of tests/lib/rules/__snapshots__/<rule>.ts.eslintsnap: what ESLint gives with the
+  // configuration of the test, checked against the snapshot byte for byte (regexpSnapshotExpectation).
+  // Written for JavaScript (espree) and linted as TypeScript in the file.ts (react.tsx with JSX) of
+  // typescript-eslint's fixtures, with its program: the rules that read the types (type-tracker) get
+  // them from the program with typescript-eslint's parser, where espree gives them its own inference
+  // of JavaScript; a case with typescript-eslint's parser and no `project` is linted without a
+  // program, as upstream. The fixes make up to 10 passes and the output checked is the last one
+  // (Linter#verifyAndFix).
+  'regexp/': {
+    label: 'eslint-plugin-regexp v3.3.3',
+    regexp: true,
+    clone: REGEXP,
+    tests: path.join(REGEXP, 'tests/lib/rules'),
+    fixtures: realDir(path.join(TYPESCRIPT_ESLINT, 'packages/eslint-plugin/tests/fixtures')),
+    modules: path.join(REGEXP, 'node_modules'),
+    dependencies: PLUGINS_NEW,
+    extra: { typescript: path.join(DEPENDENCIES, 'typescript'), '@typescript-eslint/parser': path.join(DEPENDENCIES, '@typescript-eslint/parser') },
+    stubs: { 'eslint-snapshot-rule-tester': 'regexp-test.mjs' },
+    needs: [path.join(REGEXP, 'tests/lib/rules'), path.join(REGEXP, 'lib/rules'), path.join(PLUGINS_NEW, 'eslint'), path.join(PLUGINS_NEW, 'refa')],
   },
   // @marcrock22/eslintcf 0.0.1 (the `marcrock/*` rules): src/rules/__test__/<rule>.test.ts (the
   // rule's name in camel case, some with `Rule` after it) of MARCROCK22/eslintcf at 0c25278, run by
@@ -320,7 +346,7 @@ function normalize(run, raw, kind, index, prefix, source) {
   const { parser: caseParser, parserOptions: caseParserOptions, ...caseLanguageOptions } = test.languageOptions ?? {};
   // ESLint core: the RuleTester's own languageOptions (ecmaVersion, sourceType, globals) under the
   // case's, as flat config merges them.
-  const jsTests = source.core || source.unicorn || source.stylistic || source.perfectionist || source.eslintComments || source.promise;
+  const jsTests = source.core || source.unicorn || source.stylistic || source.perfectionist || source.eslintComments || source.promise || source.regexp;
   const { parser: runParser, parserOptions: _runParserOptions, ...runLanguageOptions } = jsTests
     ? (run.config.languageOptions ?? {})
     : {};
@@ -342,8 +368,12 @@ function normalize(run, raw, kind, index, prefix, source) {
   const unicornDefault = Boolean((source?.unicorn || source?.marcrock) && isObject(parserOptions.projectService)
     && parserOptions.projectService.allowDefaultProject && filename === 'file.ts');
   if (unicornDefault) filename = 'default-project.ts';
-  if (parserOptions.project) filename = path.join(root, filename);
-  const file = unicornDefault ? path.join(fixtures, filename) : path.isAbsolute(filename) ? filename : path.resolve(root, filename);
+  // eslint-plugin-regexp's cases with espree, or with typescript-eslint's parser and a `project`,
+  // have the program of the fixtures; those with typescript-eslint's parser alone have none.
+  const regexpParser = source.regexp ? (caseParser ?? runParser) : null;
+  const regexpProgram = Boolean(source.regexp && (!regexpParser || parserOptions.project || parserOptions.projectService));
+  if (parserOptions.project && !source.regexp) filename = path.join(root, filename);
+  const file = unicornDefault || source.regexp ? path.join(fixtures, filename) : path.isAbsolute(filename) ? filename : path.resolve(root, filename);
   // How the parser gets the types: the project service (the closest tsconfig.json), or the
   // program of `project`; neither: the case is only parsed. A file of the tests of
   // @slipher/eslint-plugin that the closest tsconfig.json does not have is one of the
@@ -351,7 +381,12 @@ function normalize(run, raw, kind, index, prefix, source) {
   // `defaultProject`.
   let tsconfig = null;
   let via = null;
-  if (parserOptions.projectService) {
+  if (source.regexp) {
+    if (regexpProgram) {
+      tsconfig = path.join(fixtures, 'tsconfig.json');
+      via = 'project';
+    }
+  } else if (parserOptions.projectService) {
     tsconfig = closestTsconfig(file, fixtures);
     via = 'service';
     const service = parserOptions.projectService;
@@ -388,7 +423,7 @@ function normalize(run, raw, kind, index, prefix, source) {
   out.tsconfig = tsconfig && fixtureRelative(tsconfig);
   if (via) out.via = via;
   // tsconfigRootDir, when it is not the fixtures directory itself.
-  if (tsconfig && path.resolve(root) !== fixtures && !unicornDefault) out.root = fixtureRelative(path.resolve(root));
+  if (tsconfig && path.resolve(root) !== fixtures && !unicornDefault && !source.regexp) out.root = fixtureRelative(path.resolve(root));
   if (isObject(projectService)) out.projectService = projectService;
   // An `allowDefaultProject` that names file.ts itself names the renamed file.
   if (unicornDefault && Array.isArray(projectService.allowDefaultProject)) {
@@ -409,6 +444,8 @@ function normalize(run, raw, kind, index, prefix, source) {
   if (source.promise && (caseParser ?? runParser) && (caseParser ?? runParser).meta?.name !== 'typescript-eslint/parser') {
     out.parser = (caseParser ?? runParser).meta?.name ?? 'custom';
   }
+  // So do some of eslint-plugin-regexp's.
+  if (regexpParser && regexpParser.meta?.name !== 'typescript-eslint/parser') out.parser = regexpParser.meta?.name ?? 'custom';
   // A case of @stylistic's tests with espree (`lang: 'js'`) or a parser of its own (Flow); of
   // perfectionist's without a parser (espree).
   if (source.stylistic || source.perfectionist) {
@@ -427,6 +464,8 @@ function normalize(run, raw, kind, index, prefix, source) {
   if (kind === 'invalid' && run.mode === 'snapshot') {
     out.snapshot = true;
     Object.assign(out, unicornSnapshotExpectation(run, test, source));
+  } else if (kind === 'invalid' && run.mode === 'regexp-snapshot') {
+    Object.assign(out, regexpSnapshotExpectation(run, test, index, id));
   } else if (kind === 'invalid') {
     // eslint-vitest-rule-tester: an invalid case without errors expects at least one problem.
     if (test.errors !== undefined || !(source.stylistic || source.perfectionist)) out.errors = test.errors;
@@ -456,6 +495,10 @@ function testFiles(name, source) {
   }
   if (source.unicorn || source.eslintComments || source.promise) {
     const file = path.join(source.tests, `${name}.js`);
+    return fs.existsSync(file) ? [file] : [];
+  }
+  if (source.regexp) {
+    const file = path.join(source.tests, `${name}.ts`);
     return fs.existsSync(file) ? [file] : [];
   }
   if (source === SOURCES['seyfert/']) {
@@ -514,7 +557,7 @@ function testFiles(name, source) {
 async function ruleObjectOf(name, source) {
   if (source === SOURCES['seyfert/'] || source.marcrock) return null;
   // The source of the rule, which the test file imports: the same object.
-  if (source.vue) return (await import(pathToFileURL(path.join(source.clone, 'lib/rules', `${name}.ts`)).href)).default;
+  if (source.vue || source.regexp) return (await import(pathToFileURL(path.join(source.clone, 'lib/rules', `${name}.ts`)).href)).default;
   if (source.svelte) return (await import(pathToFileURL(path.join(source.clone, 'src/rules', `${name}.ts`)).href)).default;
   if (source.unicorn) return (await unicornPlugin()).rules[name];
   if (source.stylistic) return (await stylisticPlugin()).rules[name];
@@ -556,10 +599,14 @@ export async function lintProject(files: Record<string, string>, rules: Linter.R
 // Bun's transpiler rewrites the raw text of a template literal (`String.raw\`👍\`` gives
 // `\u{1f44d}`), so a test file of ESLint core loads from a copy next to it (its relative requires
 // still resolve) where each String.raw template is the string it gives, computed from the raw
-// parts espree reads.
+// parts espree reads; so does one of eslint-plugin-regexp, a TypeScript file, read with
+// typescript-estree.
 const espree = requireDependency('espree');
-function inlineStringRaw(text) {
-  const ast = espree.parse(text, { ecmaVersion: 'latest', sourceType: 'script', range: true });
+const typescriptEstree = requireDependency('@typescript-eslint/typescript-estree');
+function inlineStringRaw(text, typescript = false) {
+  const ast = typescript
+    ? typescriptEstree.parse(text, { range: true })
+    : espree.parse(text, { ecmaVersion: 'latest', sourceType: 'script', range: true });
   const edits = [];
   const walk = node => {
     if (!node || typeof node.type !== 'string') return;
@@ -1294,6 +1341,68 @@ function unicornSnapshotExpectation(run, test, source) {
   return { errors, output: fixed.output === test.code ? null : fixed.output };
 }
 
+// What the snapshot of an invalid case of eslint-plugin-regexp's tests holds, as RuleTester
+// expectations: ESLint 10.15.0 (build/upstream/plugins-new) run as SnapshotRuleTester runs it (its
+// base configuration with espree, the tester's configuration, the case's other keys as one more
+// configuration, the rule as a warning), each problem with its messageId, message, range and
+// suggestions (with the text each one leaves), and the output of Linter#verifyAndFix (null when the
+// rule is fixable and nothing changes). What that lint gives, formatted as the snapshot tester
+// formats it, must be the snapshot of the case: otherwise the case is reported and the generator
+// fails.
+const regexpTester = await import(pathToFileURL(path.join(ROOT, 'tools/upstream/regexp-test.mjs')).href);
+const requireRegexpDependency = createRequire(path.join(PLUGINS_NEW, 'x.js'));
+const regexpEspree = createRequire(path.join(PLUGINS_NEW, 'eslint/package.json'))('espree');
+const REGEXP_TESTER_PARAMETERS = ['name', 'code', 'filename', 'options', 'only'];
+function regexpSnapshotExpectation(run, test, index, id) {
+  const { Linter: RegexpLinter } = requireRegexpDependency('eslint');
+  const linter = new RegexpLinter({ configType: 'flat', cwd: realDir(REGEXP) });
+  const ruleId = `rule-to-test/${run.name}`;
+  const itemConfig = { ...test };
+  for (const parameter of REGEXP_TESTER_PARAMETERS) delete itemConfig[parameter];
+  const configs = [
+    { files: ['**'] },
+    {
+      plugins: { 'rule-to-test': { rules: { [run.name]: run.rule } } },
+      languageOptions: { sourceType: 'module', ecmaVersion: 'latest', parser: regexpEspree, parserOptions: {} },
+    },
+    { ignores: ['**/node_modules/', '.git/'] },
+    { files: ['**/*.js', '**/*.mjs'] },
+    { files: ['**/*.cjs'], languageOptions: { sourceType: 'commonjs', ecmaVersion: 'latest' } },
+    run.config,
+    itemConfig,
+    { rules: { [ruleId]: test.options !== undefined ? [1, ...test.options] : 1 } },
+  ];
+  const messages = linter.verify(test.code, configs, test.filename);
+  const fatal = messages.find(m => m.fatal);
+  if (fatal) throw new Error(`${id}: a snapshot case does not parse: ${fatal.message}\n${test.code}`);
+  let output;
+  if (messages.some(m => m.fix)) {
+    const fixReport = linter.verifyAndFix(test.code, configs, test.filename);
+    if (fixReport.fixed && fixReport.output !== test.code) output = fixReport.output;
+  }
+  const fixable = Boolean(run.rule.meta?.fixable);
+  const formatted = regexpTester.formatReport(test, fixable, output, messages);
+  const snapshot = run.snapshotValues?.[index];
+  if (snapshot === undefined) {
+    console.error(`${id}: no snapshot`);
+    failed = true;
+  } else if (snapshot !== formatted && !(snapshot.endsWith(formatted) && snapshot.slice(0, -formatted.length).endsWith('\n\n'))) {
+    console.error(`${id}: ESLint does not give the snapshot:\n${formatted}\n--- snapshot\n${snapshot}`);
+    failed = true;
+  }
+  const errors = messages.map(m => {
+    const error = { messageId: m.messageId, message: m.message, line: m.line, column: m.column };
+    if (m.endLine !== undefined) Object.assign(error, { endLine: m.endLine, endColumn: m.endColumn });
+    error.suggestions = (m.suggestions ?? []).map(s => ({
+      ...(s.messageId ? { messageId: s.messageId } : {}),
+      desc: s.desc,
+      output: test.code.slice(0, s.fix.range[0]) + s.fix.text + test.code.slice(s.fix.range[1]),
+    }));
+    return error;
+  });
+  return fixable ? { errors, output: output ?? null } : { errors };
+}
+
 // A project recorded by `lintProject`: the file of each result as the test names it (the longest
 // name the absolute path of the temporary project ends with), and its messages.
 function normalizeProject(project, id, name) {
@@ -1362,7 +1471,9 @@ for (const rule of rules.sort()) {
   // paths they build with process.cwd() are relative to it.
   // eslint-plugin-svelte's run in its package's directory (mocha's): the routes of SvelteKit in
   // their svelte.config are relative to it, and the plugin loads typescript, sass, less… from it.
-  process.chdir(source.vue ? realDir(VUE) : source.svelte ? realDir(SVELTE_PACKAGE) : START_CWD);
+  // eslint-plugin-regexp's run in the clone's root (mocha's): typescript-eslint's parser resolves the
+  // file names of the typed cases (`tests/lib/rules/<rule>.ts`) against it.
+  process.chdir(source.vue ? realDir(VUE) : source.svelte ? realDir(SVELTE_PACKAGE) : source.regexp ? realDir(REGEXP) : START_CWD);
   if (source.svelte) globalThis.before ??= (await import(pathToFileURL(path.join(ROOT, 'tools/upstream/svelte-test.mjs')).href)).before;
   const name = rule.slice(prefix.length);
   const files = testFiles(name, source);
@@ -1381,9 +1492,9 @@ for (const rule of rules.sort()) {
     const tests = source === SOURCES['seyfert/'] || source.perfectionist || source.vue || source.svelte ? [] : undefined;
     globalThis.__veslintTests = tests;
     globalThis.__veslintSvelteSkipped = source.svelte ? [] : undefined;
-    if (source.core) {
-      const copy = file.replace(/\.js$/u, '.veslint-raw.js');
-      fs.writeFileSync(copy, inlineStringRaw(fs.readFileSync(file, 'utf8')));
+    if (source.core || source.regexp) {
+      const copy = file.replace(/\.([jt]s)$/u, '.veslint-raw.$1');
+      fs.writeFileSync(copy, inlineStringRaw(fs.readFileSync(file, 'utf8'), source.regexp));
       try {
         await import(pathToFileURL(copy).href);
       } finally {
@@ -1450,9 +1561,29 @@ for (const rule of rules.sort()) {
         failed = true;
       }
     }
+    // eslint-plugin-regexp: the snapshot of each invalid case, by its title; every entry of the
+    // snapshot file is one of the recorded invalid cases.
+    if (source.regexp) {
+      const snapshotFile = path.join(path.dirname(file), '__snapshots__', `${path.basename(file)}.eslintsnap`);
+      const entries = fs.existsSync(snapshotFile) ? regexpTester.readSnapshot(fs.readFileSync(snapshotFile, 'utf8'), snapshotFile) : new Map();
+      let invalid = 0;
+      for (const run of runs) {
+        const titles = regexpTester.snapshotTitles(run.tests.invalid ?? []);
+        invalid += titles.length;
+        run.snapshotValues = titles.map(title => entries.get(JSON.stringify([run.name, 'invalid', title])));
+      }
+      if (entries.size !== invalid) {
+        console.error(`${rule}: ${invalid} invalid cases, ${entries.size} snapshots in ${path.relative(ROOT, snapshotFile)}`);
+        failed = true;
+      }
+    }
     const stem =
       source === SOURCES['seyfert/'] || source.core || source.unicorn || source.marcrock || source.svelte || source.eslintComments || source.promise
         ? name
+        // eslint-plugin-regexp has rules named as rules of ESLint core (no-octal, no-invalid-regexp…):
+        // the ids of its cases carry the plugin, so that tests/upstream/known.txt tells them apart.
+        : source.regexp
+          ? `regexp/${name}`
         : source.vue
           ? path.relative(source.tests, file).replace(/\.test\.ts$/, '').split(path.sep).join('/')
         : source.stylistic

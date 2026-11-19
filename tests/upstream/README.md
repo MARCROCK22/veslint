@@ -243,6 +243,42 @@ mkdir -p build/upstream/plugins-new
 bun tools/gen_upstream_cases.mjs promise/avoid-new
 ```
 
+## eslint-plugin-regexp (the `regexp/*` rules)
+
+The `regexp/*` rules carry the cases of `tests/lib/rules/<rule>.ts` of eslint-plugin-regexp v3.3.3,
+whose ids carry the plugin (`regexp/no-octal/i0`: eslint-plugin-regexp has rules named as rules of
+ESLint core). Its tests run with eslint-snapshot-rule-tester 0.1.0's `SnapshotRuleTester`: an invalid
+case has no errors written, its expectation is its entry of
+`tests/lib/rules/__snapshots__/<rule>.ts.eslintsnap`. While `tools/gen_upstream_cases.mjs` loads a
+test file (from a copy where each `String.raw` template is the string it gives, as for ESLint core),
+`tools/upstream/regexp-test.mjs` stands in for the package and records the cases; the rule of the
+clone runs with the packages of `build/upstream/plugins-new` (ESLint 10.15.0, refa,
+regexp-ast-analysis…) and TypeScript 6.0.3 and typescript-eslint's parser of `build/eval`. Each
+invalid case is linted as the snapshot tester lints it (espree, the tester's configuration, the
+case's other keys as one more configuration) and what ESLint gives, formatted as the tester formats
+it, must be the snapshot of the case, byte for byte: its problems (messageId, message, range,
+suggestions with the text each one leaves) and the output of `Linter#verifyAndFix` (up to 10 passes
+of fixes, the text of the last one checked) are what the case expects. Every entry of a snapshot
+file must be one of the recorded cases.
+
+The cases are JavaScript, linted as TypeScript in the file.ts (react.tsx with JSX) of
+typescript-eslint's fixtures with its program (`via: project`): with espree the type tracker of
+eslint-plugin-regexp infers the types of JavaScript itself, with typescript-eslint's parser it asks
+the program's checker, which gives them to TypeScript. A case with typescript-eslint's parser and no
+`project` has no program, as upstream. ESLint runs the published plugin of
+`build/upstream/plugins-new` (the same `lib/` as the clone). Its type tracker loads `typescript`
+from its own directory: `build/upstream/plugins-new/node_modules/typescript` must be a link to the
+TypeScript of `build/eval` (6.0.3, the one typescript-eslint uses), as in a project that installs
+both; without it Node finds the `typescript` of veslint's own node_modules (7.1, without the
+compiler API), the type tracker fails and every type is unknown. A clone of the tag, and
+`build/upstream/plugins-new` (see eslint-plugin-promise above):
+
+```sh
+git clone --depth 1 --branch v3.3.3 https://github.com/ota-meshi/eslint-plugin-regexp build/upstream/regexp
+ln -s ../../../eval/spider-byte/node_modules/typescript build/upstream/plugins-new/node_modules/typescript
+bun tools/gen_upstream_cases.mjs regexp/no-empty-group
+```
+
 ## eslint-plugin-vue (the `vue/*` rules)
 
 The cases of `tests/lib/rules/<rule>.test.ts` (and `tests/lib/rules/<rule>/*.test.ts`, the test file

@@ -10,7 +10,7 @@ import { createRequire } from 'node:module';
 export function portedRules(root) {
   const source = fs.readFileSync(path.join(root, 'rules/rules.v'), 'utf8');
   // A rule id with a plugin, or without one (ESLint core).
-  const byConst = new Map([...source.matchAll(/^pub const (\w+) = '((?:(?:@typescript-eslint|@stylistic|@eslint-community\/eslint-comments|perfectionist|marcrock|promise|seyfert|unicorn|vue|svelte)\/)?(?:@typescript-eslint\/)?[a-z0-9-]+)'$/gm)].map(m => [m[1], m[2]]));
+  const byConst = new Map([...source.matchAll(/^pub const (\w+) = '((?:(?:@typescript-eslint|@stylistic|@eslint-community\/eslint-comments|perfectionist|marcrock|promise|regexp|seyfert|unicorn|vue|svelte)\/)?(?:@typescript-eslint\/)?[a-z0-9-]+)'$/gm)].map(m => [m[1], m[2]]));
   const list = /^pub const names = \[([^\]]+)\]/m.exec(source);
   if (!list) {
     throw new Error('rules/rules.v: `names` not found');
@@ -175,6 +175,13 @@ export function promisePlugin(root) {
   return require('eslint-plugin-promise');
 }
 
+// regexpPlugin is eslint-plugin-regexp 3.3.3, the plugin of the `regexp/*` rules, from
+// build/upstream/plugins-new (tests/upstream/README.md).
+export function regexpPlugin(root) {
+  const require = createRequire(path.join(root, 'build/upstream/plugins-new/package.json'));
+  return require('eslint-plugin-regexp');
+}
+
 // vuePlugin is eslint-plugin-vue 10.12.1, the plugin of the `vue/*` rules, from
 // build/upstream/vue-deps (tests/upstream/README.md).
 export function vuePlugin(root) {
@@ -213,6 +220,8 @@ export function pluginOf(id, plugins) {
             ? 'marcrock'
             : id.startsWith('promise/')
               ? 'promise'
+            : id.startsWith('regexp/')
+              ? 'regexp'
             : id.startsWith('vue/')
               ? 'vue'
               : id.startsWith('svelte/')
