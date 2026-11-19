@@ -38,6 +38,8 @@ const stylistic = (await import(require.resolve('@stylistic/eslint-plugin'))).de
 const perfectionist = (await import(path.join(ROOT, 'build/upstream/perfectionist-deps/node_modules/eslint-plugin-perfectionist/dist/index.js'))).default;
 // The rules of @marcrock22/eslintcf (`marcrock/*`), as build/eval has them.
 const marcrock = (await import(path.join(NM, '@marcrock22/eslint/dist/rules/_.js'))).default;
+// eslint-plugin-promise 7.3.0, outside build/eval (tests/upstream/README.md).
+const promise = createRequire(path.join(ROOT, 'build/upstream/plugins-new/package.json'))('eslint-plugin-promise');
 
 const { builtinRules } = require('eslint/use-at-your-own-risk');
 
@@ -52,6 +54,7 @@ function pluginOf(rule) {
   if (rule.startsWith('@stylistic/')) return ['@stylistic', stylistic, rule.slice('@stylistic/'.length)];
   if (rule.startsWith('perfectionist/')) return ['perfectionist', perfectionist, rule.slice('perfectionist/'.length)];
   if (rule.startsWith('marcrock/')) return ['marcrock', marcrock, rule.slice('marcrock/'.length)];
+  if (rule.startsWith('promise/')) return ['promise', promise, rule.slice('promise/'.length)];
   return ['@typescript-eslint', tseslint.plugin, rule.replace('@typescript-eslint/', '')];
 }
 
@@ -71,8 +74,8 @@ function linterFor(cwd) {
 }
 
 // The passes of fixes of the RuleTester of the rule's tests: typescript-eslint's (also for
-// @slipher/eslint-plugin and @marcrock22/eslintcf) makes up to 10; ESLint's, which ESLint core and eslint-plugin-unicorn
-// (through eslint-ava-rule-tester) use, one.
+// @slipher/eslint-plugin and @marcrock22/eslintcf) makes up to 10; ESLint's, which ESLint core,
+// eslint-plugin-unicorn (through eslint-ava-rule-tester) and eslint-plugin-promise use, one.
 // eslint-vitest-rule-tester's createRuleTester (eslint-plugin-perfectionist) makes the first pass and
 // up to 11 more, and checks the text of the last one.
 const maxPassesOf = rule =>

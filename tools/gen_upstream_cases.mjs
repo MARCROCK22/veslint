@@ -46,6 +46,7 @@ const VUE_DEPS = path.join(ROOT, 'build/upstream/vue-deps/node_modules');
 const SVELTE = path.join(ROOT, 'build/upstream/svelte');
 const SVELTE_PACKAGE = path.join(SVELTE, 'packages/eslint-plugin-svelte');
 const SVELTE_DEPS = path.join(ROOT, 'build/upstream/svelte-deps/node_modules');
+const PROMISE = path.join(ROOT, 'build/upstream/promise');
 
 // Where the tests of each plugin come from. `fixtures` is the directory the tests lint in, the one
 // the files of the cases are written relative to.
@@ -126,6 +127,21 @@ const SOURCES = {
     modules: path.join(PERFECTIONIST, 'node_modules'),
     needs: [path.join(PERFECTIONIST, 'test/rules'), path.join(PERFECTIONIST_DEPS, 'dedent'), path.join(PERFECTIONIST_DEPS, 'natural-orderby')],
     extra: { dedent: path.join(PERFECTIONIST_DEPS, 'dedent'), 'natural-orderby': path.join(PERFECTIONIST_DEPS, 'natural-orderby') },
+  },
+  // eslint-plugin-promise v7.3.0 (the `promise/*` rules): __tests__/<rule>.js, written for
+  // JavaScript and run by ESLint's RuleTester through __tests__/rule-tester.js, whose convertConfig
+  // turns the eslintrc-style parserOptions, parser, env and globals of the tester and of each case
+  // into languageOptions (ESLint 10): the wrapper runs as it is, with the recorder of
+  // tools/upstream/promise-test.mjs as ESLint's RuleTester. Linted, like ESLint core's, as
+  // TypeScript in the file.ts (react.tsx with JSX) of typescript-eslint's fixtures; one pass of fixes.
+  'promise/': {
+    label: 'eslint-plugin-promise v7.3.0',
+    promise: true,
+    clone: PROMISE,
+    tests: path.join(PROMISE, '__tests__'),
+    fixtures: realDir(path.join(TYPESCRIPT_ESLINT, 'packages/eslint-plugin/tests/fixtures')),
+    modules: path.join(PROMISE, 'node_modules'),
+    needs: [path.join(PROMISE, '__tests__'), path.join(PROMISE, 'rules')],
   },
   // @marcrock22/eslintcf 0.0.1 (the `marcrock/*` rules): src/rules/__test__/<rule>.test.ts (the
   // rule's name in camel case, some with `Rule` after it) of MARCROCK22/eslintcf at 0c25278, run by
@@ -280,7 +296,7 @@ function normalize(run, raw, kind, index, prefix, source) {
   const { parser: caseParser, parserOptions: caseParserOptions, ...caseLanguageOptions } = test.languageOptions ?? {};
   // ESLint core: the RuleTester's own languageOptions (ecmaVersion, sourceType, globals) under the
   // case's, as flat config merges them.
-  const jsTests = source.core || source.unicorn || source.stylistic || source.perfectionist;
+  const jsTests = source.core || source.unicorn || source.stylistic || source.perfectionist || source.promise;
   const { parser: runParser, parserOptions: _runParserOptions, ...runLanguageOptions } = jsTests
     ? (run.config.languageOptions ?? {})
     : {};
@@ -364,6 +380,11 @@ function normalize(run, raw, kind, index, prefix, source) {
   // one of unicorn's with the parser of `test.typescript` or `test.vue`.
   if (source.core && caseParser) out.parser = caseParser.meta?.name ?? 'custom';
   if (source.unicorn && (caseParser ?? runParser)) out.parser = (caseParser ?? runParser).meta?.name ?? 'custom';
+  // eslint-plugin-promise's tests name typescript-eslint's parser (no-native), which is the one the
+  // cases are linted with; another one would be named.
+  if (source.promise && (caseParser ?? runParser) && (caseParser ?? runParser).meta?.name !== 'typescript-eslint/parser') {
+    out.parser = (caseParser ?? runParser).meta?.name ?? 'custom';
+  }
   // A case of @stylistic's tests with espree (`lang: 'js'`) or a parser of its own (Flow); of
   // perfectionist's without a parser (espree).
   if (source.stylistic || source.perfectionist) {
@@ -402,7 +423,7 @@ function testFiles(name, source) {
     const file = path.join(source.tests, `${name}.js`);
     return fs.existsSync(file) ? [file] : [];
   }
-  if (source.unicorn) {
+  if (source.unicorn || source.promise) {
     const file = path.join(source.tests, `${name}.js`);
     return fs.existsSync(file) ? [file] : [];
   }
@@ -468,6 +489,7 @@ async function ruleObjectOf(name, source) {
   if (source.stylistic) return (await stylisticPlugin()).rules[name];
   if (source.perfectionist) return (await perfectionistPlugin()).rules[name];
   // The module the test file requires, the same object.
+  if (source.promise) return createRequire(path.join(source.clone, 'package.json'))(path.join(source.clone, 'rules', `${name}.js`));
   if (source.core) return createRequire(path.join(source.clone, 'package.json'))(path.join(source.clone, 'lib/rules', `${name}.js`));
   return (await import(pathToFileURL(path.join(source.clone, 'packages/eslint-plugin/src/rules', `${name}.ts`)).href)).default;
 }
@@ -647,6 +669,24 @@ Bun.plugin({
       return { contents: text, loader: 'ts' };
     });
     build.onLoad({ filter: /[\\/]perfectionist[\\/]rules[\\/][^\\/]+\.ts$/ }, () => ({ contents: 'export default {};', loader: 'js' }));
+  },
+});
+// The test files of eslint-plugin-promise require ESLint's RuleTester through __tests__/rule-tester.js,
+// which runs as it is (its convertConfig), but with the recorder of tools/upstream/promise-test.mjs
+// as the `RuleTester` of `eslint`. Bun takes a module a plugin loads for an ES module, where
+// `exports.RuleTester = …` exports nothing: the wrapper runs here as CommonJS, and the plugin hands
+// Bun its exports.
+const promiseTester = await import(pathToFileURL(path.join(ROOT, 'tools/upstream/promise-test.mjs')).href);
+Bun.plugin({
+  name: 'veslint-promise-tester',
+  setup(build) {
+    build.onLoad({ filter: /[\\/]promise[\\/]__tests__[\\/]rule-tester\.js$/ }, ({ path: file }) => {
+      const req = createRequire(file);
+      const module = { exports: {} };
+      const run = new Function('exports', 'require', 'module', '__filename', '__dirname', fs.readFileSync(file, 'utf8'));
+      run(module.exports, id => (id === 'eslint' ? promiseTester : req(id)), module, file, path.dirname(file));
+      return { exports: module.exports, loader: 'object' };
+    });
   },
 });
 // The test files of @marcrock22/eslintcf import their hooks from `bun:test`: the stub of vitest.
@@ -1376,7 +1416,7 @@ for (const rule of rules.sort()) {
       }
     }
     const stem =
-      source === SOURCES['seyfert/'] || source.core || source.unicorn || source.marcrock || source.svelte
+      source === SOURCES['seyfert/'] || source.core || source.unicorn || source.marcrock || source.svelte || source.promise
         ? name
         : source.vue
           ? path.relative(source.tests, file).replace(/\.test\.ts$/, '').split(path.sep).join('/')

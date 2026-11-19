@@ -110,6 +110,7 @@ fn test_rule_setup_names() {
 		assert name.starts_with(rules.typescript_eslint_prefix) || name.starts_with('seyfert/')
 			|| name.starts_with('unicorn/') || name.starts_with('@stylistic/')
 			|| name.starts_with('perfectionist/') || name.starts_with('marcrock/')
+			|| name.starts_with('promise/')
 			|| name.starts_with('vue/') || name.starts_with('svelte/'), name
 		short := name.all_after_last('/')
 		u := setup_of('{"${short}": "error"}') or { panic(err) }
