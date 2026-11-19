@@ -2,6 +2,11 @@
 
 Each version is a release on GitHub with the veslint binaries (Linux x64, Windows x64) and the VS Code extension. The section of a version is the text of its release.
 
+## 0.38.1
+
+- **A directive comment that names a rule of typescript-eslint** (`// eslint-disable-next-line @typescript-eslint/no-explicit-any`) in a project whose `eslint.config.*` does not load typescript-eslint's plugin is ESLint's error "Definition for rule '…' was not found", not an unused directive. `--print-config` now says whether the configuration loads that plugin (`typescriptEslint`); a resolved configuration saved by an older veslint keeps working as before.
+- Found comparing the 25 rules of 0.38.0 with ESLint on zod, recharts, the TypeScript compiler, ky and a Discord bot (identical) and on 5,972 `.vue` and 1,892 `.svelte` files: the Vue and Svelte comparisons of the tests load the two new plugins.
+
 ## 0.38.0
 
 - **@eslint-community/eslint-plugin-eslint-comments 4.8.1: all 8 rules** (`disable-enable-pair`, `no-aggregating-enable`, `no-duplicate-disable`, `no-restricted-disable`, `no-unlimited-disable`, `no-unused-enable`, `no-use`, `require-description`; `no-unused-disable` is deprecated and not ported), with every case of their own tests. `no-restricted-disable` matches rule names with a port of the `ignore` package 7.0.14.
