@@ -206,8 +206,9 @@ class Runner:
         # eslint-plugin-unicorn's tests (ESLint's RuleTester through eslint-ava-rule-tester) do not
         # report unused disable directives, nor do eslint-plugin-svelte's (ESLint 10's RuleTester
         # verifies with a config array of its own, without the default `linterOptions`: a case's
-        # `// eslint-disable-next-line prefer-template` is not reported as unused).
-        report = 0 if rule.startswith(('unicorn/', 'svelte/')) else 1
+        # `// eslint-disable-next-line prefer-template` is not reported as unused), nor do
+        # @eslint-community/eslint-plugin-eslint-comments' (ESLint 10's RuleTester).
+        report = 0 if rule.startswith(('unicorn/', 'svelte/', '@eslint-community/eslint-comments/')) else 1
         # A case of eslint-plugin-vue's tests may test another rule (jsx-uses-vars' run no-unused-vars).
         tested = case.get('rule', rule) if rule.startswith('vue/') else rule
         # ESLint's RuleTester turns the rule on as a warning (severity 1): every line says so with
@@ -215,7 +216,8 @@ class Runner:
         # svelte/no-target-blank), which tests/rules/reference.sh compares for the tests of
         # eslint-plugin-vue and eslint-plugin-svelte, run by ESLint's RuleTester.
         severity = 'warn' if rule.startswith(('svelte/', 'vue/')) else 'error'
-        config = {'languageOptions': language, 'linterOptions': {'reportUnusedDisableDirectives': report},
+        # The linterOptions of a case (`noInlineConfig`) under those.
+        config = {'languageOptions': language, 'linterOptions': {'reportUnusedDisableDirectives': report, **case.get('linterOptions', {})},
                   'rules': {tested: [severity, *case.get('options', [])]}}
         # The shared settings of the case (eslint-plugin-perfectionist's tests set `settings`).
         if case.get('settings'):

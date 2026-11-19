@@ -46,6 +46,8 @@ const VUE_DEPS = path.join(ROOT, 'build/upstream/vue-deps/node_modules');
 const SVELTE = path.join(ROOT, 'build/upstream/svelte');
 const SVELTE_PACKAGE = path.join(SVELTE, 'packages/eslint-plugin-svelte');
 const SVELTE_DEPS = path.join(ROOT, 'build/upstream/svelte-deps/node_modules');
+const ESLINT_COMMENTS = path.join(ROOT, 'build/upstream/eslint-comments');
+const PLUGINS_NEW = path.join(ROOT, 'build/upstream/plugins-new/node_modules');
 
 // Where the tests of each plugin come from. `fixtures` is the directory the tests lint in, the one
 // the files of the cases are written relative to.
@@ -176,6 +178,24 @@ const SOURCES = {
     dependencies: SVELTE_DEPS,
     needs: [path.join(SVELTE_PACKAGE, 'tests/src/rules'), path.join(SVELTE_PACKAGE, 'src/rules'), path.join(SVELTE_DEPS, 'eslint-plugin-svelte/lib')],
   },
+  // @eslint-community/eslint-plugin-eslint-comments v4.8.1 (the `@eslint-community/eslint-comments/*`
+  // rules): tests/lib/rules/<rule>.js of eslint-community/eslint-plugin-eslint-comments, run by mocha
+  // with ESLint's RuleTester (`run` records the cases), with the packages of build/upstream/plugins-new
+  // (ESLint 10.15.0: a test file leaves out by itself the cases of older versions) in place of the
+  // clone's devDependencies, and @eslint/css stubbed (the cases of its css/css language are skipped).
+  // Written for JavaScript and linted, like ESLint core's, as TypeScript in the file.ts of
+  // typescript-eslint's fixtures.
+  '@eslint-community/eslint-comments/': {
+    label: '@eslint-community/eslint-plugin-eslint-comments v4.8.1',
+    eslintComments: true,
+    clone: ESLINT_COMMENTS,
+    tests: path.join(ESLINT_COMMENTS, 'tests/lib/rules'),
+    fixtures: realDir(path.join(TYPESCRIPT_ESLINT, 'packages/eslint-plugin/tests/fixtures')),
+    modules: path.join(ESLINT_COMMENTS, 'node_modules'),
+    dependencies: PLUGINS_NEW,
+    stubs: { '@eslint/css': 'eslint-css.mjs' },
+    needs: [path.join(ESLINT_COMMENTS, 'tests/lib/rules'), path.join(ESLINT_COMMENTS, 'lib/rules'), path.join(PLUGINS_NEW, 'eslint')],
+  },
 };
 
 // A rule id with a plugin (`@typescript-eslint/…`, `seyfert/…`) or without one (ESLint core).
@@ -217,6 +237,10 @@ function overlay(source) {
   }
   stub('@typescript-eslint/rule-tester', 'rule-tester.mjs');
   stub('vitest', 'vitest.mjs');
+  for (const [name, file] of Object.entries(source.stubs ?? {})) {
+    fs.rmSync(path.join(nm, name), { recursive: true, force: true });
+    stub(name, file);
+  }
 }
 
 if (!fs.existsSync(DEPENDENCIES)) {
@@ -280,7 +304,7 @@ function normalize(run, raw, kind, index, prefix, source) {
   const { parser: caseParser, parserOptions: caseParserOptions, ...caseLanguageOptions } = test.languageOptions ?? {};
   // ESLint core: the RuleTester's own languageOptions (ecmaVersion, sourceType, globals) under the
   // case's, as flat config merges them.
-  const jsTests = source.core || source.unicorn || source.stylistic || source.perfectionist;
+  const jsTests = source.core || source.unicorn || source.stylistic || source.perfectionist || source.eslintComments;
   const { parser: runParser, parserOptions: _runParserOptions, ...runLanguageOptions } = jsTests
     ? (run.config.languageOptions ?? {})
     : {};
@@ -372,6 +396,13 @@ function normalize(run, raw, kind, index, prefix, source) {
     else if (parser.meta?.name !== 'typescript-eslint/parser') out.parser = parser.meta?.name ?? 'custom';
   }
   if (test.settings) out.settings = test.settings;
+  // The plugins the RuleTester of a test of @eslint-community/eslint-plugin-eslint-comments defines
+  // (`foo/no-undef`, which its directive comments name): their names and the names of their rules.
+  if (source.eslintComments && isObject(run.config.plugins)) {
+    out.plugins = Object.fromEntries(Object.entries(run.config.plugins).map(([namespace, plugin]) => [namespace, Object.keys(plugin.rules ?? {}).sort()]));
+  }
+  // Their linterOptions (`noInlineConfig`).
+  if (source.eslintComments && test.linterOptions) out.linterOptions = test.linterOptions;
   if (kind === 'invalid' && run.mode === 'snapshot') {
     out.snapshot = true;
     Object.assign(out, unicornSnapshotExpectation(run, test, source));
@@ -402,7 +433,7 @@ function testFiles(name, source) {
     const file = path.join(source.tests, `${name}.js`);
     return fs.existsSync(file) ? [file] : [];
   }
-  if (source.unicorn) {
+  if (source.unicorn || source.eslintComments) {
     const file = path.join(source.tests, `${name}.js`);
     return fs.existsSync(file) ? [file] : [];
   }
@@ -468,7 +499,7 @@ async function ruleObjectOf(name, source) {
   if (source.stylistic) return (await stylisticPlugin()).rules[name];
   if (source.perfectionist) return (await perfectionistPlugin()).rules[name];
   // The module the test file requires, the same object.
-  if (source.core) return createRequire(path.join(source.clone, 'package.json'))(path.join(source.clone, 'lib/rules', `${name}.js`));
+  if (source.core || source.eslintComments) return createRequire(path.join(source.clone, 'package.json'))(path.join(source.clone, 'lib/rules', `${name}.js`));
   return (await import(pathToFileURL(path.join(source.clone, 'packages/eslint-plugin/src/rules', `${name}.ts`)).href)).default;
 }
 
@@ -563,10 +594,13 @@ class EslintRuleTester {
     return {};
   }
 }
-function stubEslintRuleTester() {
-  const file = path.join(realDir(ESLINT), 'lib/rule-tester/rule-tester.js');
-  const req = createRequire(path.join(realDir(ESLINT), 'package.json'));
+// The tests of @eslint-community/eslint-plugin-eslint-comments require ESLint by its name (the one of
+// build/upstream/plugins-new): its RuleTester is stubbed the same way, and they need nothing else.
+function stubEslintRuleTester(eslint = ESLINT) {
+  const file = path.join(realDir(eslint), 'lib/rule-tester/rule-tester.js');
+  const req = createRequire(path.join(realDir(eslint), 'package.json'));
   req.cache[file] = { id: file, filename: file, loaded: true, exports: EslintRuleTester, children: [], paths: [] };
+  if (eslint !== ESLINT) return;
   // tests/_utils requires fs-teardown, which is not installed, for createCustomTeardown; the rule
   // tests use only its unIndent, taken from its source.
   const utils = path.join(realDir(ESLINT), 'tests/_utils/index.js');
@@ -1282,6 +1316,7 @@ for (const rule of rules.sort()) {
     overlay(source);
     overlaid.add(source);
     if (source.core) stubEslintRuleTester();
+    if (source.eslintComments) stubEslintRuleTester(path.join(PLUGINS_NEW, 'eslint'));
   }
   // eslint-plugin-vue's tests run in the clone's root (vitest's root): their file names and the
   // paths they build with process.cwd() are relative to it.
@@ -1376,7 +1411,7 @@ for (const rule of rules.sort()) {
       }
     }
     const stem =
-      source === SOURCES['seyfert/'] || source.core || source.unicorn || source.marcrock || source.svelte
+      source === SOURCES['seyfert/'] || source.core || source.unicorn || source.marcrock || source.svelte || source.eslintComments
         ? name
         : source.vue
           ? path.relative(source.tests, file).replace(/\.test\.ts$/, '').split(path.sep).join('/')

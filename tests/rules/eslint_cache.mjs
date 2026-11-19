@@ -62,6 +62,7 @@ export function oracleFingerprint() {
     'build/eval/spider-byte/package.json',
     'build/eval/spider-byte/bun.lock',
     'build/upstream/perfectionist-deps/package-lock.json',
+    'build/upstream/plugins-new/package-lock.json',
     'build/upstream/seyfert/package-lock.json',
     'build/upstream/types/package-lock.json',
   ]) {
