@@ -1,5 +1,7 @@
 module treesitter
 
+import os
+
 fn statements(src string) ([]C.TSNode, TokenEnds, &C.TSTree) {
 	p := new_parser() or { panic(err) }
 	defer {
@@ -112,4 +114,63 @@ fn test_node_index_gives_what_the_walks_give() {
 		nodes_of_kinds(function, ['array', 'identifier'], ['statement_block']))
 	// An index that was never built walks too.
 	assert same_nodes(NodeIndex{}.of_kind(root, 'array'), nodes_of_kind(root, c'array'))
+}
+
+// parents_agree walks every node under `root` with a cursor and checks node_parent (the parents the
+// index recorded) against tree-sitter's ts_node_parent.
+fn parents_agree(root C.TSNode) int {
+	mut checked := 0
+	mut cursor := C.ts_tree_cursor_new(root)
+	defer {
+		C.ts_tree_cursor_delete(&cursor)
+	}
+	for {
+		node := C.ts_tree_cursor_current_node(&cursor)
+		expected := C.ts_node_parent(node)
+		got := node_parent(node) or { C.TSNode{} }
+		if C.ts_node_is_null(expected) {
+			assert node_parent(node) == none
+		} else {
+			assert C.ts_node_eq(got, expected)
+			assert C.ts_node_start_byte(got) == C.ts_node_start_byte(expected)
+			assert C.ts_node_symbol(got) == C.ts_node_symbol(expected)
+		}
+		checked++
+		if C.ts_tree_cursor_goto_first_child(&cursor) {
+			continue
+		}
+		for !C.ts_tree_cursor_goto_next_sibling(&cursor) {
+			if !C.ts_tree_cursor_goto_parent(&cursor) {
+				return checked
+			}
+		}
+	}
+	return checked
+}
+
+fn test_node_parent_from_the_index_is_tree_sitters() {
+	p := new_parser() or { panic(err) }
+	defer {
+		p.close()
+	}
+	// The rules' own fixtures: every construct of the grammar, JSX left to the tsx parser.
+	mut files := os.walk_ext(os.join_path(@VMODROOT, 'tests', 'rules'), '.ts')
+	files.sort()
+	mut checked := 0
+	for file in files#[..400] {
+		tree := p.parse(os.read_file(file) or { panic(err) }) or { panic(err) }
+		root := root_node(tree)
+		_ := new_node_index(root)
+		checked += parents_agree(root)
+		// Forgotten before the tree is freed: tree-sitter's walk from then on.
+		parent_cache_clear()
+		tree_delete(tree)
+	}
+	assert checked > 100000
+	// A tree with no index (or another tree than the index's) is walked by tree-sitter.
+	tree := p.parse('const a = [1, (b) => b];') or { panic(err) }
+	defer {
+		tree_delete(tree)
+	}
+	assert parents_agree(root_node(tree)) > 10
 }

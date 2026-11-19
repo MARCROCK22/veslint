@@ -25,7 +25,8 @@ mut:
 }
 
 // new_node_index walks the tree under `root` once. It records the named nodes, which are the ones
-// asked for, and the anonymous nodes with children, which can only be skipped.
+// asked for, and the anonymous nodes with children, which can only be skipped; and, for
+// node_parent, the parent of every node under `root` (parent_cache.h, this thread's).
 pub fn new_node_index(root C.TSNode) NodeIndex {
 	mut ix := NodeIndex{
 		root:  root
@@ -43,8 +44,14 @@ pub fn new_node_index(root C.TSNode) NodeIndex {
 	// and its place in it.
 	mut open_buckets := []int{}
 	mut open_places := []int{}
+	// The nodes whose children are being visited, the root first.
+	mut open_nodes := []C.TSNode{}
+	C.vt_parent_cache_begin(root)
 	for {
 		node := C.ts_tree_cursor_current_node(&cursor)
+		if open_nodes.len > 0 {
+			C.vt_parent_cache_put(node, open_nodes.last())
+		}
 		is_named := C.ts_node_is_named(node)
 		mut bucket := -1
 		mut place := 0
@@ -78,6 +85,7 @@ pub fn new_node_index(root C.TSNode) NodeIndex {
 		if C.ts_tree_cursor_goto_first_child(&cursor) {
 			open_buckets << bucket
 			open_places << place
+			open_nodes << node
 			continue
 		}
 		for !C.ts_tree_cursor_goto_next_sibling(&cursor) {
@@ -92,6 +100,7 @@ pub fn new_node_index(root C.TSNode) NodeIndex {
 			}
 			open := open_buckets.pop()
 			open_place := open_places.pop()
+			open_nodes.delete_last()
 			if open >= 0 {
 				ix.buckets[open].last[open_place] = ix.count - 1
 			}

@@ -3365,8 +3365,9 @@ fn (mut c Checker) lint_file_in_lifetime(parser Parser, config LintConfig, src s
 		c.vue.doc.script.tree
 	}
 	defer {
-		// The index points into the tree.
+		// The index and the parents it recorded point into the tree.
 		c.node_index = treesitter.NodeIndex{}
+		treesitter.parent_cache_clear()
 		if owned {
 			tree_delete(tree)
 		}
@@ -3406,6 +3407,7 @@ fn (mut c Checker) lint_file_in_lifetime(parser Parser, config LintConfig, src s
 	reread := c.await_identifiers_source(root, ts_path)!
 	if reread != '' {
 		c.node_index = treesitter.NodeIndex{}
+		treesitter.parent_cache_clear()
 		if owned {
 			tree_delete(tree)
 		}

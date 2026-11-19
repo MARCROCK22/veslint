@@ -7,6 +7,7 @@ module treesitter
 #flag @VMODROOT/build/libtree-sitter-typescript.a
 #flag @VMODROOT/vendor/tree-sitter/libtree-sitter.a
 #include "tree_sitter/api.h"
+#include "@VMODROOT/treesitter/parent_cache.h"
 
 @[typedef]
 struct C.TSParser {}
@@ -82,6 +83,10 @@ fn C.ts_node_named_child(self C.TSNode, child_index u32) C.TSNode
 fn C.ts_node_named_child_count(self C.TSNode) u32
 fn C.ts_node_child_by_field_name(self C.TSNode, name &char, name_length u32) C.TSNode
 fn C.ts_node_parent(self C.TSNode) C.TSNode
+fn C.vt_node_parent(node C.TSNode) C.TSNode
+fn C.vt_parent_cache_begin(root C.TSNode)
+fn C.vt_parent_cache_put(child C.TSNode, parent C.TSNode)
+fn C.vt_parent_cache_clear()
 fn C.ts_node_prev_sibling(self C.TSNode) C.TSNode
 fn C.ts_node_prev_named_sibling(self C.TSNode) C.TSNode
 fn C.ts_node_next_sibling(self C.TSNode) C.TSNode
@@ -392,11 +397,18 @@ pub fn prev_sibling(n C.TSNode) ?C.TSNode {
 }
 
 pub fn node_parent(n C.TSNode) ?C.TSNode {
-	parent := C.ts_node_parent(n)
+	// From the parents NodeIndex recorded (parent_cache.h), or tree-sitter's walk from the root.
+	parent := C.vt_node_parent(n)
 	if C.ts_node_is_null(parent) {
 		return none
 	}
 	return parent
+}
+
+// parent_cache_clear forgets the parents recorded for the tree of the last NodeIndex of this
+// thread: call it before that tree is freed.
+pub fn parent_cache_clear() {
+	C.vt_parent_cache_clear()
 }
 
 // TokenEnds are, in order, the ends of the tokens of a tree: the leaves that are not comments

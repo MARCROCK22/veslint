@@ -295,7 +295,7 @@ fn (c &Converter) prev_token_end(n C.TSNode) int {
 			}
 			prev = C.ts_node_prev_sibling(prev)
 		}
-		parent := C.ts_node_parent(cur)
+		parent := C.vt_node_parent(cur)
 		if C.ts_node_is_null(parent) {
 			return 0
 		}
