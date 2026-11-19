@@ -10,7 +10,7 @@
 
 veslint lints TypeScript with ESLint's rules, without ESLint. It parses with tree-sitter, gets the types from the native TypeScript 7 compiler, and needs no JavaScript runtime to lint.
 
-- **Same results as ESLint.** The rules of ESLint, typescript-eslint, eslint-plugin-unicorn, @stylistic/eslint-plugin, eslint-plugin-perfectionist and @slipher/eslint-plugin are ported to V. They report the same problems, with the same messages, positions, fixes and suggestions.
+- **Same results as ESLint.** The rules of ESLint, typescript-eslint, eslint-plugin-unicorn, @stylistic/eslint-plugin, eslint-plugin-perfectionist, eslint-plugin-promise and @slipher/eslint-plugin are ported to V. They report the same problems, with the same messages, positions, fixes and suggestions.
 - **Your ESLint configuration.** veslint reads `eslint.config.*`, the directive comments (`// eslint-disable-next-line`, `/* eslint rule: … */`, `/* global */`) and rule options. A rule it does not have yet is skipped with a warning.
 - **Fast.** On a Discord bot of 65 TypeScript files, the 105 typescript-eslint rules in one run take 3.2 s with veslint and 11.7 s with ESLint (one core of an old i3). In the editor, a file is linted again about 0.1 s after you type.
 - **An editor extension** for VS Code shows the problems as you type, with quick fixes.
@@ -114,7 +114,7 @@ Directive comments work as in ESLint 10: `eslint-disable`, `eslint-enable`, `esl
 
 ## Rules
 
-veslint has **800 rules**, each with all its options, fixes and suggestions:
+veslint has **817 rules**, each with all its options, fixes and suggestions:
 
 <details>
 <summary><b>ESLint 10.15.0</b>: 139 rules</summary>
@@ -148,6 +148,13 @@ veslint has **800 rules**, each with all its options, fixes and suggestions:
 <summary><b>eslint-plugin-perfectionist 5.13.0</b>: 14 rules</summary>
 
 `perfectionist/sort-array-includes`, `perfectionist/sort-classes`, `perfectionist/sort-export-attributes`, `perfectionist/sort-exports`, `perfectionist/sort-heritage-clauses`, `perfectionist/sort-import-attributes`, `perfectionist/sort-imports`, `perfectionist/sort-intersection-types`, `perfectionist/sort-maps`, `perfectionist/sort-named-exports`, `perfectionist/sort-named-imports`, `perfectionist/sort-sets`, `perfectionist/sort-switch-case`, `perfectionist/sort-union-types`
+
+</details>
+
+<details>
+<summary><b>eslint-plugin-promise 7.3.0</b>: 17 rules</summary>
+
+`promise/always-return`, `promise/avoid-new`, `promise/catch-or-return`, `promise/no-callback-in-promise`, `promise/no-multiple-resolved`, `promise/no-native`, `promise/no-nesting`, `promise/no-new-statics`, `promise/no-promise-in-callback`, `promise/no-return-in-finally`, `promise/no-return-wrap`, `promise/param-names`, `promise/prefer-await-to-callbacks`, `promise/prefer-await-to-then`, `promise/prefer-catch`, `promise/spec-only`, `promise/valid-params`
 
 </details>
 
@@ -187,7 +194,7 @@ What each version added is in the [changelog](CHANGELOG.md).
 
 ### How it is checked
 
-Every rule passes all the cases of its own upstream tests, linted as TypeScript: 29,862 cases of typescript-eslint, 14,092 of ESLint, 14,962 of eslint-plugin-unicorn, 9,528 of @stylistic/eslint-plugin, 3,278 of eslint-plugin-perfectionist, 459 of @slipher/eslint-plugin, 206 of @marcrock22/eslintcf, 10,085 of eslint-plugin-vue and 1,090 of eslint-plugin-svelte (their JavaScript cases with `lang="ts"`, with what ESLint gives for them). On fixtures of its own, every rule gives exactly what ESLint gives: problems, messages, positions, fixes and suggestions. The rules are also compared with ESLint on real projects (a Discord bot, zod, recharts and the TypeScript compiler).
+Every rule passes all the cases of its own upstream tests, linted as TypeScript: 29,862 cases of typescript-eslint, 14,092 of ESLint, 14,962 of eslint-plugin-unicorn, 9,528 of @stylistic/eslint-plugin, 3,278 of eslint-plugin-perfectionist, 522 of eslint-plugin-promise, 459 of @slipher/eslint-plugin, 206 of @marcrock22/eslintcf, 10,085 of eslint-plugin-vue and 1,090 of eslint-plugin-svelte (their JavaScript cases with `lang="ts"`, with what ESLint gives for them). On fixtures of its own, every rule gives exactly what ESLint gives: problems, messages, positions, fixes and suggestions. The rules are also compared with ESLint on real projects (a Discord bot, zod, recharts and the TypeScript compiler).
 
 ## VS Code extension
 
