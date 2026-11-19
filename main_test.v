@@ -337,3 +337,12 @@ fn test_resolved_svelte_config_runes() {
 	assert loaded.file_language(files[2], loaded.configs[0].language).svelte_config_runes == -1
 	assert loaded.resolved.contains('"svelteConfigRunes":true')
 }
+
+// A worker per CPU, with at least 8 files each, and one with --fix.
+fn test_worker_count() {
+	assert worker_count(true, 1000, 4) == 1
+	assert worker_count(false, 7, 4) == 1
+	assert worker_count(false, 16, 4) == 2
+	assert worker_count(false, 1000, 2) == 2
+	assert worker_count(false, 0, 4) == 1
+}

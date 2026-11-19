@@ -76,6 +76,50 @@ if (-not (Test-Path build/libtree-sitter-typescript.a) -or -not (Test-Path $buil
 	Set-Content -NoNewline $built $hash
 }
 
+# TypeScript's API session, linked into veslint.exe (tsgo/inproc.c.v), as tsgo/inproc/build.sh builds
+# it on Linux: the Go module `tsc` of the commit of the npm package veslint uses (fetched without
+# its tests when there is no checkout), compiled with Go 1.27 and this gcc as a C archive, with
+# tsgo/inproc/main.go as a module of its own and api_inprocess.go added to internal/api by an
+# overlay. Rebuilt when one of tsgo/inproc's sources is newer than the archive.
+$tsCommit = '3e9236361fa97a9e6c685f4833ac457ae2d8c50a'
+$checkout = 'build/upstream/typescript-go'
+if (-not (Test-Path "$checkout/tsc")) {
+	New-Item -ItemType Directory -Force $checkout | Out-Null
+	git -C $checkout init --quiet
+	git -C $checkout remote add origin https://github.com/microsoft/TypeScript
+	git -C $checkout sparse-checkout set --no-cone '/tsc/' '!/tsc/testdata/' '!/tsc/internal/fourslash/'
+	git -C $checkout fetch --quiet --depth 1 --filter=blob:none origin $tsCommit
+	git -C $checkout -c advice.detachedHead=false checkout --quiet FETCH_HEAD
+}
+$module = (Resolve-Path "$checkout/tsc").Path.Replace('\', '/')
+if ((git -C $module rev-parse HEAD) -ne $tsCommit) {
+	throw "$module is not at $tsCommit (TypeScript 7.1.0-beta, the one veslint uses)"
+}
+$inproc = (Resolve-Path tsgo/inproc).Path.Replace('\', '/')
+$archive = 'tsgo/inproc/out/libveslint_tsgo.a'
+$sources = 'main.go', 'api_inprocess.go', 'build.sh' | ForEach-Object { Get-Item "tsgo/inproc/$_" }
+if (-not (Test-Path $archive) -or
+	($sources | Where-Object { $_.LastWriteTime -gt (Get-Item $archive).LastWriteTime })) {
+	$mod = 'tsgo/inproc/out/mod'
+	New-Item -ItemType Directory -Force $mod | Out-Null
+	Copy-Item tsgo/inproc/main.go, "$module/go.sum" $mod
+	Set-Content -NoNewline "$mod/go.mod" ("module github.com/microsoft/TypeScript/tsc/veslint_tsgo`n`ngo 1.27`n`n" +
+		"require github.com/microsoft/TypeScript/tsc v0.0.0`n`nreplace github.com/microsoft/TypeScript/tsc => $module`n")
+	Set-Content -NoNewline tsgo/inproc/out/overlay.json `
+		"{`"Replace`": {`"$module/internal/api/veslint_inprocess.go`": `"$inproc/api_inprocess.go`"}}"
+	# The requirements of the checkout's go.mod, as `go mod tidy` would list them.
+	$requires = (Select-String -Path "$module/go.mod" -Pattern '^\t(\S+) (v\S+)').Matches |
+		ForEach-Object { "-require=$($_.Groups[1].Value)@$($_.Groups[2].Value)" }
+	Push-Location $mod
+	try {
+		go mod edit @requires
+		$env:CGO_ENABLED = '1'
+		go build -buildmode=c-archive -trimpath -buildvcs=false -overlay ../overlay.json -o ../libveslint_tsgo.a .
+	} finally {
+		Pop-Location
+	}
+}
+
 # Not -prod: with MSYS2's gcc 14.2 every optimized build breaks some rule, a different one each
 # (-O3 -flto: consistent-type-assertions crashes; -O2 -flto: it gives wrong findings; -O3 without
 # LTO: no-unnecessary-type-parameters crashes). Unoptimized, every rule gives exactly its expected

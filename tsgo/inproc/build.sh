@@ -12,12 +12,13 @@ root=$(cd "$here/../.." && pwd -P)
 checkout=${TYPESCRIPT_GO:-$root/build/upstream/typescript-go}
 go=${GO:-go}
 want=3e9236361fa97a9e6c685f4833ac457ae2d8c50a
-# Without a checkout (a fresh clone, CI), only the module `tsc` at that commit is fetched.
+# Without a checkout (a fresh clone, CI), only the module `tsc` at that commit is fetched, without
+# its tests' data (357 MB) and the test-only package fourslash.
 if [[ ! -d $checkout/tsc ]]; then
 	mkdir -p "$checkout"
 	git -C "$checkout" init -q
-	git -C "$checkout" remote add origin https://github.com/microsoft/typescript-go
-	git -C "$checkout" sparse-checkout set tsc
+	git -C "$checkout" remote add origin https://github.com/microsoft/TypeScript
+	git -C "$checkout" sparse-checkout set --no-cone '/tsc/' '!/tsc/testdata/' '!/tsc/internal/fourslash/'
 	git -C "$checkout" fetch -q --depth 1 --filter=blob:none origin "$want"
 	git -C "$checkout" -c advice.detachedHead=false checkout -q FETCH_HEAD
 fi

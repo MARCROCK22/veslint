@@ -1339,6 +1339,25 @@ else
 fi
 expect_error "in process: message type 5" "source file not found" ./veslint --project tsconfig.json tests/fixtures/emoji.ts
 expect_error "VESLINT_TSGO with an unknown value" "VESLINT_TSGO must be" env VESLINT_TSGO=pipe ./veslint app.ts
+# Workers (lint_workers.v): the files of 127 projects linted on one CPU and on all of them (a worker
+# per CPU, each with its own TypeScript session) print exactly the same, with either transport.
+printf '{"rules": {"@typescript-eslint/no-floating-promises": "error", "@typescript-eslint/no-misused-promises": "error", "@typescript-eslint/no-unnecessary-type-assertion": "error", "@typescript-eslint/unbound-method": "error", "@typescript-eslint/strict-boolean-expressions": "error", "@typescript-eslint/no-unsafe-assignment": "warn", "@typescript-eslint/no-deprecated": "error", "@typescript-eslint/naming-convention": "error"}}' > "$TMP/workers.json"
+mapfile -t worker_files < <(find tests/rules/@typescript-eslint -mindepth 2 -maxdepth 2 -name cases.ts | sorted)
+for transport in inproc process; do
+	for cpus in 1 0; do
+		code=0
+		VESLINT_TSGO=$transport VESLINT_CPUS=$cpus ./veslint --config "$TMP/workers.json" "${worker_files[@]}" > "$TMP/workers-$cpus.out" 2> "$TMP/workers-$cpus.err" || code=$?
+		echo "$code" >> "$TMP/workers-$cpus.err"
+	done
+	if [[ $(tail -1 "$TMP/workers-1.err") -eq 1 && -s $TMP/workers-1.out ]] && cmp -s "$TMP/workers-1.out" "$TMP/workers-0.out" &&
+		cmp -s "$TMP/workers-1.err" "$TMP/workers-0.err"; then
+		ok "workers ($transport): $(wc -l < "$TMP/workers-1.out") lines of ${#worker_files[@]} files, the same on one CPU and on all"
+	else
+		ko "workers ($transport): one CPU and all of them differ"
+		diff "$TMP/workers-1.out" "$TMP/workers-0.out" | head -20
+		diff "$TMP/workers-1.err" "$TMP/workers-0.err" | head -20
+	fi
+done
 
 # --server (server.v): a scenario with unsaved text, a file closed without saving, files changed on
 # disk, a reset, errors, and a declaration the server keeps between snapshots that changes
@@ -1383,13 +1402,16 @@ else
 	cat "$TMP/server-pipeline.out"
 fi
 # A server keeps every thread of its own and of its tsgo on two CPUs as well (cpus.v): looked at
-# after its first lint, while both are alive (on Linux only).
-if [[ $windows -eq 1 ]]; then
-	echo "skip   --server on two CPUs: veslint restricts its CPUs on Linux only"
-elif python3 - ./veslint tests/config "${config_abs[0]}" 2> "$TMP/server-cpus.err" << 'PY'
+# after its first lint, while both are alive (on Linux only); with TypeScript in its process, the
+# threads of the Go runtime are its own.
+for transport in process inproc; do
+	if [[ $windows -eq 1 ]]; then
+		echo "skip   --server on two CPUs ($transport): veslint restricts its CPUs on Linux only"
+	elif VESLINT_TSGO=$transport python3 - ./veslint tests/config "${config_abs[0]}" 2> "$TMP/server-cpus.err" << 'PY'
 import json, os, subprocess, sys
 veslint, cwd, file = os.path.abspath(sys.argv[1]), sys.argv[2], sys.argv[3]
 want = min(2, len(os.sched_getaffinity(0)))
+in_process = os.environ['VESLINT_TSGO'] == 'inproc'
 env = {k: v for k, v in os.environ.items() if k != 'VESLINT_CPUS'}
 server = subprocess.Popen([veslint, '--server'], cwd=cwd, stdin=subprocess.PIPE, stdout=subprocess.PIPE,
                           stderr=subprocess.PIPE, text=True, env=env)
@@ -1416,16 +1438,17 @@ for pid in [server.pid] + children:
 server.stdin.close()
 code = server.wait(timeout=30)
 sets = {tuple(cpus) for cpus in seen.values()}
-if answer.get('code') not in (0, 1) or code != 0 or not children or len(sets) != 1 or len(next(iter(sets))) != want:
+if answer.get('code') not in (0, 1) or code != 0 or bool(children) == in_process or len(sets) != 1 or len(next(iter(sets))) != want:
     sys.exit(f'answer code {answer.get("code")}, exit {code}, children {children}, threads on {sets} (want {want} CPUs)')
 print(f'{len(seen)} threads in {1 + len(children)} processes on {sorted(sets)[0]}', file=sys.stderr)
 PY
-then
-	ok "--server: veslint and tsgo on two CPUs ($(tail -1 "$TMP/server-cpus.err"))"
-else
-	ko "--server: veslint and tsgo not on two CPUs"
-	cat "$TMP/server-cpus.err"
-fi
+	then
+		ok "--server ($transport): veslint and tsgo on two CPUs ($(tail -1 "$TMP/server-cpus.err"))"
+	else
+		ko "--server ($transport): veslint and tsgo not on two CPUs"
+		cat "$TMP/server-cpus.err"
+	fi
+done
 
 phase "options, --bench, tsgo and --server"
 # typescript-eslint's own tests of the ported rules (tests/upstream/README.md): every case of each

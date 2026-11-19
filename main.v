@@ -724,7 +724,12 @@ fn run_rules(opts Options, timeout time.Duration) !int {
 		virtual:      virtual
 		lazy:         !opts.fix && !configs_need_types(lint_configs)
 	}
-	workers := worker_count(opts.fix, files.filter(it.note == '').len, usable_cpus())
+	mut workers := worker_count(opts.fix, files.filter(it.note == '').len, usable_cpus())
+	// Which file validates the inline options of those rules first changes the messages: one worker
+	// validates them in the order of the files.
+	if workers > 1 && files.any(rules.mentions_order_sensitive_schema(it.src)) {
+		workers = 1
+	}
 	results := lint_files(plan, files, workers)
 	mut outcomes := map[int]FileOutcome{}
 	mut failed_at := files.len

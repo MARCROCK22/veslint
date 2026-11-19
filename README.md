@@ -92,7 +92,7 @@ With files and neither `--config` nor `--rule`, veslint prints the type TypeScri
 
 The exit code is 0 when there are no problems, 1 when there are (warnings do not count, as in ESLint) or veslint failed, and 2 for a usage error.
 
-Environment variables: `VESLINT_TIMEOUT_MS` (how long to wait for each answer of the TypeScript compiler, 30000 by default), `VESLINT_CPUS` (how many CPUs veslint and the compiler use: 2 by default, which is fastest; 0 for all) and `VESLINT_CONFIG_CACHE` (`0` resolves the `eslint.config.*` again on every run, see [Configuration](#configuration)).
+Environment variables: `VESLINT_CPUS` (how many CPUs veslint and the compiler use: 2 by default; 0 for all. A run lints its files on that many threads when it has at least 8 files per thread, each thread with its own TypeScript program, so memory grows with them), `VESLINT_TSGO` (`process` runs the TypeScript compiler of the npm package as a separate process instead of the one linked into veslint), `VESLINT_TIMEOUT_MS` (with `VESLINT_TSGO=process`: how long to wait for each answer of the compiler, 30000 by default) and `VESLINT_CONFIG_CACHE` (`0` resolves the `eslint.config.*` again on every run, see [Configuration](#configuration)).
 
 ## Configuration
 
@@ -223,6 +223,7 @@ Requirements:
 
 - [V](https://github.com/vlang/v) at commit `841595141fbb` (the release workflow builds it from the vlang/vc commit `45add16eb714`).
 - GCC, `make`, `git`, `patch` and `npm`. npm only downloads two pinned binaries: TypeScript 7.1.0-beta and the tree-sitter 0.24.4 CLI.
+- [Go](https://go.dev) 1.27 (with cgo): TypeScript is linked into veslint, built from the Go sources of the commit of TypeScript 7.1.0-beta (`tsgo/inproc/build.sh` fetches them into `build/upstream/typescript-go`). At run time veslint needs nothing else; `VESLINT_TSGO=process` runs the `tsc --api` binary of the npm package instead, over a pipe.
 
 ```sh
 make deps            # TypeScript 7, tree-sitter and the patched TypeScript grammar
@@ -231,7 +232,7 @@ make test V=<v>      # the tests (JOBS=<n> checks at once; the CPUs by default)
 VESLINT_MATRIX=1 make test V=<v>   # also each rule alone on every fixture (before a release)
 ```
 
-**Windows:** run `pwsh ./build-windows.ps1` with PowerShell 7, Git for Windows, MSYS2's UCRT64 gcc in `PATH` (`pacman -S mingw-w64-ucrt-x86_64-gcc`) and Node.js. It builds V and the dependencies itself; the generated grammar is copied from a Linux checkout of the same commit (`build/tree-sitter-typescript`, which `make` writes).
+**Windows:** run `pwsh ./build-windows.ps1` with PowerShell 7, Git for Windows, MSYS2's UCRT64 gcc in `PATH` (`pacman -S mingw-w64-ucrt-x86_64-gcc`), Go 1.27 and Node.js. It builds V and the dependencies itself; the generated grammar is copied from a Linux checkout of the same commit (`build/tree-sitter-typescript`, which `make` writes).
 
 ## Changelog
 

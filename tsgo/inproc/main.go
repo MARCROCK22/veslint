@@ -14,6 +14,8 @@ package main
 import "C"
 
 import (
+	"os"
+	"runtime/debug"
 	"strings"
 	"sync"
 	"unsafe"
@@ -147,6 +149,18 @@ func veslint_tsgo_close(handle C.longlong) {
 //export veslint_tsgo_free
 func veslint_tsgo_free(p *C.char) {
 	C.free(unsafe.Pointer(p))
+}
+
+// gcPercent is the GOGC of TypeScript in veslint when the environment does not set one. At Go's
+// default (100) its collector took a fifth of TypeScript's time in a lint of zod. With two workers,
+// 200 lints zod and recharts 6 % faster for 7 % more memory; 400 lints the TypeScript compiler 5 %
+// faster than 100 but holds 30 % more memory (3.2 GiB instead of 2.4).
+const gcPercent = 200
+
+func init() {
+	if os.Getenv("GOGC") == "" {
+		debug.SetGCPercent(gcPercent)
+	}
 }
 
 func main() {}

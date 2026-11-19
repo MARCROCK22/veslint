@@ -10,6 +10,10 @@ import os
 // took 105 to 112 ms on two CPUs instead of 182 to 267, and the 125 files of zod 11 s instead of
 // 13 to 25; the first lint of a server, which loads the project with every CPU tsgo has, took
 // 0.1 s more. So veslint keeps itself and tsgo on `default_cpus` CPUs; VESLINT_CPUS changes that.
+// With TypeScript in veslint's process there is no such wait, and a lint runs a worker per CPU
+// (lint_workers.v), each with its own program: two workers on the two cores of the minipc lint zod
+// in 3.8 s instead of 6.1 (four, on their four threads, in 3.9 s with 200 MiB more), and more
+// workers cost the memory of more programs.
 // limit_cpus does it on Linux (cpu_limit_linux.c.v); elsewhere it does nothing
 // (cpu_limit_default.c.v), and VESLINT_CPUS is only checked.
 const default_cpus = 2
