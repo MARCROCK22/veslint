@@ -1,0 +1,21 @@
+{"rule": "promise/no-new-statics", "upstream": "eslint-plugin-promise v7.3.0", "files": ["__tests__/no-new-statics.js"],
+"messages": {"avoidNewStatic":"Avoid calling 'new' on 'Promise.{{ name }}()'"},
+"cases": [
+{"id":"no-new-statics/v0","kind":"valid","code":"Promise.resolve()","file":"file.ts","tsconfig":null},
+{"id":"no-new-statics/v1","kind":"valid","code":"Promise.reject()","file":"file.ts","tsconfig":null},
+{"id":"no-new-statics/v2","kind":"valid","code":"Promise.all()","file":"file.ts","tsconfig":null},
+{"id":"no-new-statics/v3","kind":"valid","code":"Promise.race()","file":"file.ts","tsconfig":null},
+{"id":"no-new-statics/v4","kind":"valid","code":"Promise.withResolvers()","file":"file.ts","tsconfig":null},
+{"id":"no-new-statics/v5","kind":"valid","code":"new Promise(function (resolve, reject) {})","file":"file.ts","tsconfig":null},
+{"id":"no-new-statics/v6","kind":"valid","code":"new SomeClass()","file":"file.ts","tsconfig":null},
+{"id":"no-new-statics/v7","kind":"valid","code":"SomeClass.resolve()","file":"file.ts","tsconfig":null},
+{"id":"no-new-statics/v8","kind":"valid","code":"new SomeClass.resolve()","file":"file.ts","tsconfig":null},
+{"id":"no-new-statics/i0","kind":"invalid","code":"new Promise.resolve()","file":"file.ts","tsconfig":null,"errors":[{"message":"Avoid calling 'new' on 'Promise.resolve()'"}],"output":"Promise.resolve()"},
+{"id":"no-new-statics/i1","kind":"invalid","code":"new Promise.reject()","file":"file.ts","tsconfig":null,"errors":[{"message":"Avoid calling 'new' on 'Promise.reject()'"}],"output":"Promise.reject()"},
+{"id":"no-new-statics/i2","kind":"invalid","code":"new Promise.all()","file":"file.ts","tsconfig":null,"errors":[{"message":"Avoid calling 'new' on 'Promise.all()'"}],"output":"Promise.all()"},
+{"id":"no-new-statics/i3","kind":"invalid","code":"new Promise.allSettled()","file":"file.ts","tsconfig":null,"errors":[{"message":"Avoid calling 'new' on 'Promise.allSettled()'"}],"output":"Promise.allSettled()"},
+{"id":"no-new-statics/i4","kind":"invalid","code":"new Promise.any()","file":"file.ts","tsconfig":null,"errors":[{"message":"Avoid calling 'new' on 'Promise.any()'"}],"output":"Promise.any()"},
+{"id":"no-new-statics/i5","kind":"invalid","code":"new Promise.race()","file":"file.ts","tsconfig":null,"errors":[{"message":"Avoid calling 'new' on 'Promise.race()'"}],"output":"Promise.race()"},
+{"id":"no-new-statics/i6","kind":"invalid","code":"new Promise.withResolvers()","file":"file.ts","tsconfig":null,"errors":[{"message":"Avoid calling 'new' on 'Promise.withResolvers()'"}],"output":"Promise.withResolvers()"},
+{"id":"no-new-statics/i7","kind":"invalid","code":"\n        function foo() {\n          var a = getA()\n          return new Promise.resolve(a)\n        }\n      ","file":"file.ts","tsconfig":null,"errors":[{"message":"Avoid calling 'new' on 'Promise.resolve()'"}],"output":"\n        function foo() {\n          var a = getA()\n          return Promise.resolve(a)\n        }\n      "}
+]}

@@ -1,0 +1,11 @@
+tests/rules/promise/prefer-catch/cases.ts:6:9	promise/prefer-catch	preferCatchToThen	Prefer `catch` to `then(a, b)`/`then(null, b)`.	fix	225	246	catch(onError).then(onValue	end	6	13
+tests/rules/promise/prefer-catch/cases.ts:7:9	promise/prefer-catch	preferCatchToThen	Prefer `catch` to `then(a, b)`/`then(null, b)`.	fix	257	268	catch(	end	7	13
+tests/rules/promise/prefer-catch/cases.ts:8:9	promise/prefer-catch	preferCatchToThen	Prefer `catch` to `then(a, b)`/`then(null, b)`.	fix	286	302	catch(	end	8	13
+tests/rules/promise/prefer-catch/cases.ts:9:9	promise/prefer-catch	preferCatchToThen	Prefer `catch` to `then(a, b)`/`then(null, b)`.	fix	320	366	catch((error) => {\n  onError(error);\n}).then(onValue	end	9	13
+tests/rules/promise/prefer-catch/cases.ts:12:9	promise/prefer-catch	preferCatchToThen	Prefer `catch` to `then(a, b)`/`then(null, b)`.	fix	377	402	catch(onError).then((onValue)	end	12	13
+tests/rules/promise/prefer-catch/cases.ts:13:9	promise/prefer-catch	preferCatchToThen	Prefer `catch` to `then(a, b)`/`then(null, b)`.	fix	413	434	catch(onError).then(onValue	end	13	13
+tests/rules/promise/prefer-catch/cases.ts:14:9	promise/prefer-catch	preferCatchToThen	Prefer `catch` to `then(a, b)`/`then(null, b)`.	fix	446	457	catch(	end	14	13
+tests/rules/promise/prefer-catch/cases.ts:15:9	promise/prefer-catch	preferCatchToThen	Prefer `catch` to `then(a, b)`/`then(null, b)`.	fix	478	499	catch(onError).then(onValue	end	15	13
+tests/rules/promise/prefer-catch/cases.ts:15:32	promise/prefer-catch	preferCatchToThen	Prefer `catch` to `then(a, b)`/`then(null, b)`.	fix	501	512	catch(	end	15	36
+tests/rules/promise/prefer-catch/cases.ts:16:10	promise/prefer-catch	preferCatchToThen	Prefer `catch` to `then(a, b)`/`then(null, b)`.	fix	549	570	catch(onError).then(onValue	end	16	14
+tests/rules/promise/prefer-catch/cases.ts:20:9	promise/prefer-catch	preferCatchToThen	Prefer `catch` to `then(a, b)`/`then(null, b)`.	fix	663	709	catch(onError).then(/* first */ onValue	end	20	13

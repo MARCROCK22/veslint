@@ -1,0 +1,4 @@
+tests/rules/promise/avoid-new/cases.ts:5:11	promise/avoid-new	avoidNew	Avoid creating new promises.	end	5	55
+tests/rules/promise/avoid-new/cases.ts:6:11	promise/avoid-new	avoidNew	Avoid creating new promises.	end	8	3
+tests/rules/promise/avoid-new/cases.ts:9:11	promise/avoid-new	avoidNew	Avoid creating new promises.	end	9	34
+tests/rules/promise/avoid-new/cases.ts:10:11	promise/avoid-new	avoidNew	Avoid creating new promises.	end	10	22

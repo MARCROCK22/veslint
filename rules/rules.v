@@ -816,6 +816,23 @@ pub const svelte_indent = 'svelte/indent'
 pub const svelte_ts_no_unnecessary_condition = 'svelte/@typescript-eslint/no-unnecessary-condition'
 pub const vue_html_indent = 'vue/html-indent'
 pub const vue_script_indent = 'vue/script-indent'
+pub const promise_avoid_new = 'promise/avoid-new'
+pub const promise_no_new_statics = 'promise/no-new-statics'
+pub const promise_no_return_in_finally = 'promise/no-return-in-finally'
+pub const promise_param_names = 'promise/param-names'
+pub const promise_prefer_catch = 'promise/prefer-catch'
+pub const promise_spec_only = 'promise/spec-only'
+pub const promise_valid_params = 'promise/valid-params'
+pub const promise_no_return_wrap = 'promise/no-return-wrap'
+pub const promise_no_promise_in_callback = 'promise/no-promise-in-callback'
+pub const promise_catch_or_return = 'promise/catch-or-return'
+pub const promise_prefer_await_to_callbacks = 'promise/prefer-await-to-callbacks'
+pub const promise_prefer_await_to_then = 'promise/prefer-await-to-then'
+pub const promise_no_callback_in_promise = 'promise/no-callback-in-promise'
+pub const promise_no_native = 'promise/no-native'
+pub const promise_no_nesting = 'promise/no-nesting'
+pub const promise_always_return = 'promise/always-return'
+pub const promise_no_multiple_resolved = 'promise/no-multiple-resolved'
 pub const names = [no_floating_promises, await_thenable, require_await, return_await,
 	no_misused_promises, no_unsafe_call, no_unsafe_member_access, no_unsafe_return,
 	no_unsafe_assignment, no_unsafe_argument, restrict_template_expressions,
@@ -1064,7 +1081,11 @@ pub const names = [no_floating_promises, await_thenable, require_await, return_a
 	svelte_no_top_level_browser_globals, svelte_no_navigation_without_base,
 	svelte_require_store_reactive_access, svelte_no_navigation_without_resolve, svelte_no_unused_props,
 	svelte_valid_compile, svelte_indent, svelte_ts_no_unnecessary_condition, vue_html_indent,
-	vue_script_indent]
+	vue_script_indent, promise_avoid_new, promise_no_new_statics, promise_no_return_in_finally,
+	promise_param_names, promise_prefer_catch, promise_spec_only, promise_valid_params,
+	promise_no_return_wrap, promise_no_promise_in_callback, promise_catch_or_return,
+	promise_prefer_await_to_callbacks, promise_prefer_await_to_then, promise_no_callback_in_promise,
+	promise_no_native, promise_no_nesting, promise_always_return, promise_no_multiple_resolved]
 
 // untyped_rules are the ported rules that need no types (`meta.docs.requiresTypeChecking` is false
 // in typescript-eslint; the eslint-plugin-unicorn rules that read the types when the parser has a
@@ -1274,7 +1295,12 @@ pub const untyped_rules = [adjacent_overload_signatures, array_type, class_liter
 	svelte_no_immutable_reactive_statements, svelte_infinite_reactive_loop,
 	svelte_prefer_svelte_reactivity, svelte_prefer_destructured_store_props,
 	svelte_no_top_level_browser_globals, svelte_no_navigation_without_base, svelte_valid_compile,
-	svelte_indent, vue_html_indent, vue_script_indent]
+	svelte_indent, vue_html_indent, vue_script_indent, promise_avoid_new, promise_no_new_statics,
+	promise_no_return_in_finally, promise_param_names, promise_prefer_catch, promise_spec_only,
+	promise_valid_params, promise_no_return_wrap, promise_no_promise_in_callback,
+	promise_catch_or_return, promise_prefer_await_to_callbacks, promise_prefer_await_to_then,
+	promise_no_callback_in_promise, promise_no_native, promise_no_nesting, promise_always_return,
+	promise_no_multiple_resolved]
 
 // needs_types tells whether a rule asks tsgo for the types of the program.
 pub fn needs_types(rule string) bool {
@@ -2085,6 +2111,23 @@ pub const default_options = {
 	svelte_ts_no_unnecessary_condition:                  '[]'
 	vue_html_indent:                                     '[]'
 	vue_script_indent:                                   '[]'
+	promise_avoid_new:                                   '[]'
+	promise_no_new_statics:                              '[]'
+	promise_no_return_in_finally:                        '[]'
+	promise_param_names:                                 '[]'
+	promise_prefer_catch:                                '[]'
+	promise_spec_only:                                   '[]'
+	promise_valid_params:                                '[]'
+	promise_no_return_wrap:                              '[]'
+	promise_no_promise_in_callback:                      '[]'
+	promise_catch_or_return:                             '[]'
+	promise_prefer_await_to_callbacks:                   '[]'
+	promise_prefer_await_to_then:                        '[]'
+	promise_no_callback_in_promise:                      '[]'
+	promise_no_native:                                   '[]'
+	promise_no_nesting:                                  '[]'
+	promise_always_return:                               '[]'
+	promise_no_multiple_resolved:                        '[]'
 }
 
 // Finding is a problem a rule found at a node.
@@ -3072,6 +3115,23 @@ pub fn message(rule string, finding Finding) string {
 		svelte_ts_no_unnecessary_condition { svnuc_messages }
 		vue_html_indent { map[string]string{} }
 		vue_script_indent { map[string]string{} }
+		promise_avoid_new { prm_avoid_new_messages }
+		promise_no_new_statics { prm_no_new_statics_messages }
+		promise_no_return_in_finally { prm_no_return_in_finally_messages }
+		promise_param_names { prm_param_names_messages }
+		promise_prefer_catch { prm_prefer_catch_messages }
+		promise_spec_only { prm_spec_only_messages }
+		promise_valid_params { prm_valid_params_messages }
+		promise_no_return_wrap { prm_no_return_wrap_messages }
+		promise_no_promise_in_callback { prm_no_promise_in_callback_messages }
+		promise_catch_or_return { prm_catch_or_return_messages }
+		promise_prefer_await_to_callbacks { prm_prefer_await_to_callbacks_messages }
+		promise_prefer_await_to_then { prm_prefer_await_to_then_messages }
+		promise_no_callback_in_promise { prm_no_callback_in_promise_messages }
+		promise_no_native { prm_no_native_messages }
+		promise_no_nesting { prm_no_nesting_messages }
+		promise_always_return { prm_always_return_messages }
+		promise_no_multiple_resolved { prm_no_multiple_resolved_messages }
 		else { map[string]string{} }
 	}
 	return interpolate(messages[finding.message_id] or { finding.message_id }, finding.data)
@@ -5680,6 +5740,57 @@ fn (mut c Checker) lint_rule(rule string, root C.TSNode, abs_path string, mut st
 		vue_script_indent {
 			return c.lint_vue_script_indent(root, abs_path, mut stats)!
 		}
+		promise_avoid_new {
+			return c.lint_promise_avoid_new(root, abs_path, mut stats)!
+		}
+		promise_no_new_statics {
+			return c.lint_promise_no_new_statics(root, abs_path, mut stats)!
+		}
+		promise_no_return_in_finally {
+			return c.lint_promise_no_return_in_finally(root, abs_path, mut stats)!
+		}
+		promise_param_names {
+			return c.lint_promise_param_names(root, abs_path, mut stats)!
+		}
+		promise_prefer_catch {
+			return c.lint_promise_prefer_catch(root, abs_path, mut stats)!
+		}
+		promise_spec_only {
+			return c.lint_promise_spec_only(root, abs_path, mut stats)!
+		}
+		promise_valid_params {
+			return c.lint_promise_valid_params(root, abs_path, mut stats)!
+		}
+		promise_no_return_wrap {
+			return c.lint_promise_no_return_wrap(root, abs_path, mut stats)!
+		}
+		promise_no_promise_in_callback {
+			return c.lint_promise_no_promise_in_callback(root, abs_path, mut stats)!
+		}
+		promise_catch_or_return {
+			return c.lint_promise_catch_or_return(root, abs_path, mut stats)!
+		}
+		promise_prefer_await_to_callbacks {
+			return c.lint_promise_prefer_await_to_callbacks(root, abs_path, mut stats)!
+		}
+		promise_prefer_await_to_then {
+			return c.lint_promise_prefer_await_to_then(root, abs_path, mut stats)!
+		}
+		promise_no_callback_in_promise {
+			return c.lint_promise_no_callback_in_promise(root, abs_path, mut stats)!
+		}
+		promise_no_native {
+			return c.lint_promise_no_native(root, abs_path, mut stats)!
+		}
+		promise_no_nesting {
+			return c.lint_promise_no_nesting(root, abs_path, mut stats)!
+		}
+		promise_always_return {
+			return c.lint_promise_always_return(root, abs_path, mut stats)!
+		}
+		promise_no_multiple_resolved {
+			return c.lint_promise_no_multiple_resolved(root, abs_path, mut stats)!
+		}
 		else { return error('unknown rule: ${rule}') }
 	}
 }
@@ -5784,6 +5895,11 @@ mut:
 	scope_setup      ScopeSetup
 	scope_libs_cache map[string]&ScopeLibs
 	nc_unused        map[int]bool // naming-convention: the unused variables of the file
+	// prm_callbacks: the names lib/is-named-callback.js of eslint-plugin-promise still takes for
+	// callbacks (its module state, which the exceptions of its callers shrink for good), set once
+	// prm_callbacks_set (promise_utils.v)
+	prm_callbacks     []string
+	prm_callbacks_set bool
 	// file_rules are the rules that run on the file being linted (what one rule may see of
 	// another: ESLint runs them on the same scope manager)
 	file_rules []string
