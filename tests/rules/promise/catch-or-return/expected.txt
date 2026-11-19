@@ -1,0 +1,15 @@
+tests/rules/promise/catch-or-return/allow-finally/cases.ts:6:1	promise/catch-or-return	terminationMethod	Expected catch() or return
+tests/rules/promise/catch-or-return/allow-then-strict/cases.ts:5:1	promise/catch-or-return	terminationMethod	Expected catch() or return
+tests/rules/promise/catch-or-return/allow-then-strict/cases.ts:7:1	promise/catch-or-return	terminationMethod	Expected catch() or return
+tests/rules/promise/catch-or-return/allow-then/cases.ts:7:1	promise/catch-or-return	terminationMethod	Expected catch() or return
+tests/rules/promise/catch-or-return/allow-then/cases.ts:8:1	promise/catch-or-return	terminationMethod	Expected catch() or return
+tests/rules/promise/catch-or-return/cases.ts:6:1	promise/catch-or-return	terminationMethod	Expected catch() or return
+tests/rules/promise/catch-or-return/cases.ts:7:1	promise/catch-or-return	terminationMethod	Expected catch() or return
+tests/rules/promise/catch-or-return/cases.ts:8:1	promise/catch-or-return	terminationMethod	Expected catch() or return
+tests/rules/promise/catch-or-return/cases.ts:9:1	promise/catch-or-return	terminationMethod	Expected catch() or return
+tests/rules/promise/catch-or-return/cases.ts:10:1	promise/catch-or-return	terminationMethod	Expected catch() or return
+tests/rules/promise/catch-or-return/cases.ts:11:1	promise/catch-or-return	terminationMethod	Expected catch() or return
+tests/rules/promise/catch-or-return/cases.ts:15:1	promise/catch-or-return	terminationMethod	Expected catch() or return
+tests/rules/promise/catch-or-return/termination-method-empty/cases.ts:5:1	promise/catch-or-return	terminationMethod	Expected () or return
+tests/rules/promise/catch-or-return/termination-method-string/cases.ts:6:1	promise/catch-or-return	terminationMethod	Expected done() or return
+tests/rules/promise/catch-or-return/termination-method/cases.ts:7:1	promise/catch-or-return	terminationMethod	Expected catch,asCallback,done() or return

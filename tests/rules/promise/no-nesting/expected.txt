@@ -1,0 +1,6 @@
+tests/rules/promise/no-nesting/cases.ts:6:34	promise/no-nesting	avoidNesting	Avoid nesting promises.
+tests/rules/promise/no-nesting/cases.ts:11:23	promise/no-nesting	avoidNesting	Avoid nesting promises.
+tests/rules/promise/no-nesting/cases.ts:13:39	promise/no-nesting	avoidNesting	Avoid nesting promises.
+tests/rules/promise/no-nesting/cases.ts:21:25	promise/no-nesting	avoidNesting	Avoid nesting promises.
+tests/rules/promise/no-nesting/cases.ts:26:25	promise/no-nesting	avoidNesting	Avoid nesting promises.
+tests/rules/promise/no-nesting/cases.ts:30:39	promise/no-nesting	avoidNesting	Avoid nesting promises.

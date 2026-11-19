@@ -1,0 +1,7 @@
+tests/rules/promise/spec-only/allowed/cases.ts:7:1	promise/spec-only	avoidNonStandard	Avoid using non-standard 'Promise.each'	end	7	13
+tests/rules/promise/spec-only/cases.ts:7:1	promise/spec-only	avoidNonStandard	Avoid using non-standard 'Promise.done'	end	7	13
+tests/rules/promise/spec-only/cases.ts:8:1	promise/spec-only	avoidNonStandard	Avoid using non-standard 'Promise.map'	end	8	12
+tests/rules/promise/spec-only/cases.ts:9:1	promise/spec-only	avoidNonStandard	Avoid using non-standard 'Promise.delay'	end	9	17
+tests/rules/promise/spec-only/cases.ts:11:1	promise/spec-only	avoidNonStandard	Avoid using non-standard 'Promise.undefined'	end	11	15
+tests/rules/promise/spec-only/cases.ts:15:1	promise/spec-only	avoidNonStandard	Avoid using non-standard 'Promise.prototype'	end	15	18
+tests/rules/promise/spec-only/cases.ts:16:1	promise/spec-only	avoidNonStandard	Avoid using non-standard 'Promise.prototype'	end	16	18

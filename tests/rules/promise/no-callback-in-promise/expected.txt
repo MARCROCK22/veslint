@@ -1,0 +1,13 @@
+tests/rules/promise/no-callback-in-promise/cases.ts:10:21	promise/no-callback-in-promise	callback	Avoid calling back inside of a promise.
+tests/rules/promise/no-callback-in-promise/cases.ts:12:3	promise/no-callback-in-promise	callback	Avoid calling back inside of a promise.
+tests/rules/promise/no-callback-in-promise/cases.ts:14:20	promise/no-callback-in-promise	callback	Avoid calling back inside of a promise.
+tests/rules/promise/no-callback-in-promise/cases.ts:14:45	promise/no-callback-in-promise	callback	Avoid calling back inside of a promise.
+tests/rules/promise/no-callback-in-promise/cases.ts:15:14	promise/no-callback-in-promise	callback	Avoid calling back inside of a promise.
+tests/rules/promise/no-callback-in-promise/cases.ts:16:15	promise/no-callback-in-promise	callback	Avoid calling back inside of a promise.
+tests/rules/promise/no-callback-in-promise/cases.ts:17:14	promise/no-callback-in-promise	callback	Avoid calling back inside of a promise.
+tests/rules/promise/no-callback-in-promise/cases.ts:32:5	promise/no-callback-in-promise	callback	Avoid calling back inside of a promise.
+tests/rules/promise/no-callback-in-promise/timeouts-err/cases.ts:7:20	promise/no-callback-in-promise	callback	Avoid calling back inside of a promise.
+tests/rules/promise/no-callback-in-promise/timeouts-err/cases.ts:9:21	promise/no-callback-in-promise	callback	Avoid calling back inside of a promise.
+tests/rules/promise/no-callback-in-promise/timeouts-err/cases.ts:11:20	promise/no-callback-in-promise	callback	Avoid calling back inside of a promise.
+tests/rules/promise/no-callback-in-promise/with-exceptions/cases.ts:9:21	promise/no-callback-in-promise	callback	Avoid calling back inside of a promise.
+tests/rules/promise/no-callback-in-promise/with-exceptions/cases.ts:10:15	promise/no-callback-in-promise	callback	Avoid calling back inside of a promise.

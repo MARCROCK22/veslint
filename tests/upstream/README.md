@@ -217,6 +217,32 @@ The fixtures of these rules (`tests/rules/@eslint-community/eslint-comments/`) a
 reports of unused directives, by ESLint (`tests/rules/eslint.reference.config.mjs`) and by veslint
 (`tests/run.sh`): the rules report the directive comments themselves.
 
+## eslint-plugin-promise (the `promise/*` rules)
+
+The `promise/*` rules carry the cases of `__tests__/<rule>.js` of eslint-plugin-promise v7.3.0.
+They run with ESLint's RuleTester through `__tests__/rule-tester.js`, a wrapper whose
+`convertConfig` turns the eslintrc-style `parserOptions`, `parser`, `env` and `globals` of the
+tester and of each case into `languageOptions` for ESLint 10 (`env` becomes the globals of the
+`globals` package of `build/eval`). While `tools/gen_upstream_cases.mjs` loads them, the wrapper runs
+as it is with `tools/upstream/promise-test.mjs`, which records the cases, as the `RuleTester` of
+`eslint`; the rules of the clone give the messages. The cases are JavaScript, linted as TypeScript
+in the fixtures of typescript-eslint, like those of ESLint core (no-native's second tester names
+typescript-eslint's parser, which is the one they are linted with); one pass of fixes. ESLint runs
+the published plugin of `build/upstream/plugins-new` (the same `rules/` as the clone). A clone of the
+tag, and `build/upstream/plugins-new`, which is `npm ci` of its `package.json` and
+`package-lock.json` (ESLint 10.15.0 with eslint-plugin-promise 7.3.0, eslint-plugin-regexp 3.3.3,
+eslint-plugin-import-x 4.18.1 and @eslint-community/eslint-plugin-eslint-comments 4.8.1):
+
+```sh
+git clone --depth 1 --branch v7.3.0 https://github.com/eslint-community/eslint-plugin-promise build/upstream/promise
+mkdir -p build/upstream/plugins-new
+# package.json: {"private": true, "dependencies": {"eslint": "10.15.0", "eslint-plugin-regexp": "3.3.3",
+#   "eslint-plugin-import-x": "4.18.1", "@eslint-community/eslint-plugin-eslint-comments": "4.8.1",
+#   "eslint-plugin-promise": "7.3.0"}}, and its package-lock.json
+(cd build/upstream/plugins-new && npm ci)
+bun tools/gen_upstream_cases.mjs promise/avoid-new
+```
+
 ## eslint-plugin-vue (the `vue/*` rules)
 
 The cases of `tests/lib/rules/<rule>.test.ts` (and `tests/lib/rules/<rule>/*.test.ts`, the test file

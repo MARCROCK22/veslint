@@ -1,0 +1,7 @@
+tests/rules/promise/prefer-await-to-then/cases.ts:8:11	promise/prefer-await-to-then	preferAwaitToCallback	Prefer await to then()/catch()/finally().	end	8	15
+tests/rules/promise/prefer-await-to-then/cases.ts:8:24	promise/prefer-await-to-then	preferAwaitToCallback	Prefer await to then()/catch()/finally().	end	8	29
+tests/rules/promise/prefer-await-to-then/cases.ts:8:38	promise/prefer-await-to-then	preferAwaitToCallback	Prefer await to then()/catch()/finally().	end	8	45
+tests/rules/promise/prefer-await-to-then/cases.ts:21:13	promise/prefer-await-to-then	preferAwaitToCallback	Prefer await to then()/catch()/finally().	end	21	18
+tests/rules/promise/prefer-await-to-then/cases.ts:24:29	promise/prefer-await-to-then	preferAwaitToCallback	Prefer await to then()/catch()/finally().	end	24	36
+tests/rules/promise/prefer-await-to-then/strict/cases.ts:6:17	promise/prefer-await-to-then	preferAwaitToCallback	Prefer await to then()/catch()/finally().	end	6	21
+tests/rules/promise/prefer-await-to-then/strict/cases.ts:10:13	promise/prefer-await-to-then	preferAwaitToCallback	Prefer await to then()/catch()/finally().	end	10	17

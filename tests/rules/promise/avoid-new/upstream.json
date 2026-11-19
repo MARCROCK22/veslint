@@ -1,0 +1,13 @@
+{"rule": "promise/avoid-new", "upstream": "eslint-plugin-promise v7.3.0", "files": ["__tests__/avoid-new.js"],
+"messages": {"avoidNew":"Avoid creating new promises."},
+"cases": [
+{"id":"avoid-new/v0","kind":"valid","code":"Promise.resolve()","file":"file.ts","tsconfig":null,"languageOptions":{"ecmaVersion":6}},
+{"id":"avoid-new/v1","kind":"valid","code":"Promise.reject()","file":"file.ts","tsconfig":null,"languageOptions":{"ecmaVersion":6}},
+{"id":"avoid-new/v2","kind":"valid","code":"Promise.all()","file":"file.ts","tsconfig":null,"languageOptions":{"ecmaVersion":6}},
+{"id":"avoid-new/v3","kind":"valid","code":"new Horse()","file":"file.ts","tsconfig":null,"languageOptions":{"ecmaVersion":6}},
+{"id":"avoid-new/v4","kind":"valid","code":"new PromiseLikeThing()","file":"file.ts","tsconfig":null,"languageOptions":{"ecmaVersion":6}},
+{"id":"avoid-new/v5","kind":"valid","code":"new Promise.resolve()","file":"file.ts","tsconfig":null,"languageOptions":{"ecmaVersion":6}},
+{"id":"avoid-new/i0","kind":"invalid","code":"var x = new Promise(function (x, y) {})","file":"file.ts","tsconfig":null,"languageOptions":{"ecmaVersion":6},"errors":[{"message":"Avoid creating new promises."}]},
+{"id":"avoid-new/i1","kind":"invalid","code":"new Promise()","file":"file.ts","tsconfig":null,"languageOptions":{"ecmaVersion":6},"errors":[{"message":"Avoid creating new promises."}]},
+{"id":"avoid-new/i2","kind":"invalid","code":"Thing(new Promise(() => {}))","file":"file.ts","tsconfig":null,"languageOptions":{"ecmaVersion":6},"errors":[{"message":"Avoid creating new promises."}]}
+]}

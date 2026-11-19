@@ -1,0 +1,1 @@
+[{"resolvePattern":"^(ok|yes)$","rejectPattern":"^(fail|no)/$"}]

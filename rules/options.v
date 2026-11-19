@@ -397,6 +397,15 @@ pub fn check_options(rule string, options []json2.Any) !bool {
 		eslint_comments_no_restricted_disable { ec_nrd_options(options)! }
 		eslint_comments_no_use { ec_nu_options(options)! }
 		eslint_comments_require_description { ec_rd_options(options)! }
+		promise_param_names { prm_param_names_options(options)! }
+		promise_spec_only { prm_spec_only_options(options)! }
+		promise_valid_params { prm_valid_params_options(options)! }
+		promise_no_return_wrap { prm_no_return_wrap_options(options)! }
+		promise_no_promise_in_callback { prm_no_promise_in_callback_options(options)! }
+		promise_catch_or_return { prm_catch_or_return_options(options)! }
+		promise_prefer_await_to_then { prm_prefer_await_to_then_options(options)! }
+		promise_no_callback_in_promise { prm_no_callback_in_promise_options(options)! }
+		promise_always_return { prm_always_return_options(options)! }
 		else { return false }
 	}
 	return true
@@ -440,9 +449,10 @@ pub fn effective_options(name string, options []json2.Any) ![]json2.Any {
 			return error(err.msg().replace_once('`${base}`', '`${name}`'))
 		}
 	}
-	// So have those of eslint-plugin-svelte and of @eslint-community/eslint-plugin-eslint-comments.
+	// So have those of eslint-plugin-svelte, @eslint-community/eslint-plugin-eslint-comments and
+	// eslint-plugin-promise.
 	if name.starts_with('perfectionist/') || name.starts_with('vue/') || name.starts_with('svelte/')
-		|| name.starts_with('@eslint-community/eslint-comments/') {
+		|| name.starts_with('@eslint-community/eslint-comments/') || name.starts_with('promise/') {
 		check_options(name, options) or { return error('`${name}`: ${err.msg()}') }
 		return options
 	}

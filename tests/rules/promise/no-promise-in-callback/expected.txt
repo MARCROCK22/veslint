@@ -1,0 +1,6 @@
+tests/rules/promise/no-promise-in-callback/cases.ts:7:3	promise/no-promise-in-callback	avoidPromiseInCallback	Avoid using promises inside of callbacks.
+tests/rules/promise/no-promise-in-callback/cases.ts:10:3	promise/no-promise-in-callback	avoidPromiseInCallback	Avoid using promises inside of callbacks.
+tests/rules/promise/no-promise-in-callback/cases.ts:10:3	promise/no-promise-in-callback	avoidPromiseInCallback	Avoid using promises inside of callbacks.
+tests/rules/promise/no-promise-in-callback/cases.ts:13:3	promise/no-promise-in-callback	avoidPromiseInCallback	Avoid using promises inside of callbacks.
+tests/rules/promise/no-promise-in-callback/cases.ts:25:24	promise/no-promise-in-callback	avoidPromiseInCallback	Avoid using promises inside of callbacks.
+tests/rules/promise/no-promise-in-callback/exempt-declarations/cases.ts:9:3	promise/no-promise-in-callback	avoidPromiseInCallback	Avoid using promises inside of callbacks.

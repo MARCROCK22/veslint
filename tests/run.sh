@@ -1446,6 +1446,9 @@ mapfile -t marcrock_upstream < <([[ -d tests/rules/marcrock ]] && upstream_rules
 # (tests/rules/@eslint-community/eslint-comments/<rule>/upstream.json, from tests/lib/rules/<rule>.js of
 # v4.8.1), the same way.
 mapfile -t eslint_comments_upstream < <([[ -d tests/rules/@eslint-community/eslint-comments ]] && upstream_rules_of @eslint-community/eslint-comments)
+# The rules of eslint-plugin-promise (tests/rules/promise/<rule>/upstream.json, from
+# __tests__/<rule>.js of v7.3.0), the same way.
+mapfile -t promise_upstream < <([[ -d tests/rules/promise ]] && upstream_rules_of promise)
 if tests/upstream/setup.sh "$TMP/upstream" 2> "$TMP/upstream-setup.err"; then
 	upstream_check "typescript-eslint's own tests" "$TMP/upstream" "$TMP/upstream-configs" "${typescript_eslint_upstream[@]}"
 	[[ ${#core_upstream[@]} -eq 0 ]] ||
@@ -1460,6 +1463,8 @@ if tests/upstream/setup.sh "$TMP/upstream" 2> "$TMP/upstream-setup.err"; then
 		upstream_check "@marcrock22/eslintcf's own tests" "$TMP/upstream" "$TMP/upstream-marcrock-configs" "${marcrock_upstream[@]}"
 	[[ ${#eslint_comments_upstream[@]} -eq 0 ]] ||
 		upstream_check "@eslint-community/eslint-plugin-eslint-comments' own tests" "$TMP/upstream" "$TMP/upstream-eslint-comments-configs" "${eslint_comments_upstream[@]}"
+	[[ ${#promise_upstream[@]} -eq 0 ]] ||
+		upstream_check "eslint-plugin-promise's own tests" "$TMP/upstream" "$TMP/upstream-promise-configs" "${promise_upstream[@]}"
 else
 	echo "skip   typescript-eslint's own tests: $(cat "$TMP/upstream-setup.err")"
 fi

@@ -1,0 +1,18 @@
+{"rule": "promise/prefer-catch", "upstream": "eslint-plugin-promise v7.3.0", "files": ["__tests__/prefer-catch.js"],
+"messages": {"preferCatchToThen":"Prefer `catch` to `then(a, b)`/`then(null, b)`."},
+"cases": [
+{"id":"prefer-catch/v0","kind":"valid","code":"prom.then()","file":"file.ts","tsconfig":null,"languageOptions":{"ecmaVersion":8}},
+{"id":"prefer-catch/v1","kind":"valid","code":"prom.then(fn)","file":"file.ts","tsconfig":null,"languageOptions":{"ecmaVersion":8}},
+{"id":"prefer-catch/v2","kind":"valid","code":"prom.then(fn1).then(fn2)","file":"file.ts","tsconfig":null,"languageOptions":{"ecmaVersion":8}},
+{"id":"prefer-catch/v3","kind":"valid","code":"prom.then(() => {})","file":"file.ts","tsconfig":null,"languageOptions":{"ecmaVersion":8}},
+{"id":"prefer-catch/v4","kind":"valid","code":"prom.then(function () {})","file":"file.ts","tsconfig":null,"languageOptions":{"ecmaVersion":8}},
+{"id":"prefer-catch/v5","kind":"valid","code":"prom.catch()","file":"file.ts","tsconfig":null,"languageOptions":{"ecmaVersion":8}},
+{"id":"prefer-catch/v6","kind":"valid","code":"prom.catch(handleErr).then(handle)","file":"file.ts","tsconfig":null,"languageOptions":{"ecmaVersion":8}},
+{"id":"prefer-catch/v7","kind":"valid","code":"prom.catch(handleErr)","file":"file.ts","tsconfig":null,"languageOptions":{"ecmaVersion":8}},
+{"id":"prefer-catch/i0","kind":"invalid","code":"hey.then(fn1, fn2)","file":"file.ts","tsconfig":null,"languageOptions":{"ecmaVersion":8},"errors":[{"message":"Prefer `catch` to `then(a, b)`/`then(null, b)`."}],"output":"hey.catch(fn2).then(fn1)"},
+{"id":"prefer-catch/i1","kind":"invalid","code":"hey.then(fn1, (fn2))","file":"file.ts","tsconfig":null,"languageOptions":{"ecmaVersion":8},"errors":[{"message":"Prefer `catch` to `then(a, b)`/`then(null, b)`."}],"output":"hey.catch(fn2).then(fn1)"},
+{"id":"prefer-catch/i2","kind":"invalid","code":"hey.then(null, fn2)","file":"file.ts","tsconfig":null,"languageOptions":{"ecmaVersion":8},"errors":[{"message":"Prefer `catch` to `then(a, b)`/`then(null, b)`."}],"output":"hey.catch(fn2)"},
+{"id":"prefer-catch/i3","kind":"invalid","code":"hey.then(undefined, fn2)","file":"file.ts","tsconfig":null,"languageOptions":{"ecmaVersion":8},"errors":[{"message":"Prefer `catch` to `then(a, b)`/`then(null, b)`."}],"output":"hey.catch(fn2)"},
+{"id":"prefer-catch/i4","kind":"invalid","code":"function foo() { hey.then(x => {}, () => {}) }","file":"file.ts","tsconfig":null,"languageOptions":{"ecmaVersion":8},"errors":[{"message":"Prefer `catch` to `then(a, b)`/`then(null, b)`."}],"output":"function foo() { hey.catch(() => {}).then(x => {}) }"},
+{"id":"prefer-catch/i5","kind":"invalid","code":"\n        function foo() {\n          hey.then(function a() { }, function b() {}).then(fn1, fn2)\n        }\n      ","file":"file.ts","tsconfig":null,"languageOptions":{"ecmaVersion":8},"errors":[{"message":"Prefer `catch` to `then(a, b)`/`then(null, b)`."},{"message":"Prefer `catch` to `then(a, b)`/`then(null, b)`."}],"output":"\n        function foo() {\n          hey.catch(function b() {}).then(function a() { }).catch(fn2).then(fn1)\n        }\n      "}
+]}

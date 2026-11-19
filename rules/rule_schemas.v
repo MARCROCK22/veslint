@@ -813,6 +813,23 @@ const rule_option_schemas = {
 	'@eslint-community/eslint-comments/no-unused-enable':              '{"type":"array","minItems":0,"maxItems":0}'
 	'@eslint-community/eslint-comments/no-use':                        '{"type":"array","items":[{"type":"object","properties":{"additionalDirectives":{"type":"array","items":{"type":"string"},"uniqueItems":true},"allow":{"type":"array","items":{"type":"string"},"uniqueItems":true}},"additionalProperties":false}],"minItems":0,"maxItems":1}'
 	'@eslint-community/eslint-comments/require-description':           '{"type":"array","items":[{"type":"object","properties":{"additionalDirectives":{"type":"array","items":{"type":"string"}},"ignore":{"type":"array","items":{"enum":["eslint","eslint-disable","eslint-disable-line","eslint-disable-next-line","eslint-enable","eslint-env","exported","global","globals"]},"additionalItems":false,"uniqueItems":true}},"additionalProperties":false}],"minItems":0,"maxItems":1}'
+	'promise/avoid-new':                                               '{"type":"array","minItems":0,"maxItems":0}'
+	'promise/no-new-statics':                                          '{"type":"array","minItems":0,"maxItems":0}'
+	'promise/no-return-in-finally':                                    '{"type":"array","minItems":0,"maxItems":0}'
+	'promise/param-names':                                             '{"type":"array","items":[{"type":"object","properties":{"resolvePattern":{"type":"string"},"rejectPattern":{"type":"string"}},"additionalProperties":false}],"minItems":0,"maxItems":1}'
+	'promise/prefer-catch':                                            '{"type":"array","minItems":0,"maxItems":0}'
+	'promise/spec-only':                                               '{"type":"array","items":[{"type":"object","properties":{"allowedMethods":{"type":"array","items":{"type":"string"}}},"additionalProperties":false}],"minItems":0,"maxItems":1}'
+	'promise/valid-params':                                            '{"type":"array","items":[{"type":"object","properties":{"exclude":{"type":"array","items":{"type":"string"}}},"additionalProperties":false}],"minItems":0,"maxItems":1}'
+	'promise/no-return-wrap':                                          '{"type":"array","items":[{"type":"object","properties":{"allowReject":{"type":"boolean"}},"additionalProperties":false}],"minItems":0,"maxItems":1}'
+	'promise/no-promise-in-callback':                                  '{"type":"array","items":[{"type":"object","properties":{"exemptDeclarations":{"type":"boolean"}},"additionalProperties":false}],"minItems":0,"maxItems":1}'
+	'promise/catch-or-return':                                         '{"type":"array","items":[{"type":"object","properties":{"allowFinally":{"type":"boolean"},"allowThen":{"type":"boolean"},"allowThenStrict":{"type":"boolean"},"terminationMethod":{"oneOf":[{"type":"string"},{"type":"array","items":{"type":"string"}}]}},"additionalProperties":false}],"minItems":0,"maxItems":1}'
+	'promise/prefer-await-to-callbacks':                               '{"type":"array","minItems":0,"maxItems":0}'
+	'promise/prefer-await-to-then':                                    '{"type":"array","items":[{"type":"object","properties":{"strict":{"type":"boolean"}}}],"minItems":0,"maxItems":1}'
+	'promise/no-callback-in-promise':                                  '{"type":"array","items":[{"type":"object","properties":{"exceptions":{"type":"array","items":{"type":"string"}},"timeoutsErr":{"type":"boolean"}},"additionalProperties":false}],"minItems":0,"maxItems":1}'
+	'promise/no-native':                                               '{"type":"array","minItems":0,"maxItems":0}'
+	'promise/no-nesting':                                              '{"type":"array","minItems":0,"maxItems":0}'
+	'promise/always-return':                                           '{"type":"array","items":[{"type":"object","properties":{"ignoreLastCallback":{"type":"boolean"},"ignoreAssignmentVariable":{"type":"array","items":{"type":"string","pattern":"^[\\\\w\$]+\$"},"uniqueItems":true}},"additionalProperties":false}],"minItems":0,"maxItems":1}'
+	'promise/no-multiple-resolved':                                    '{"type":"array","minItems":0,"maxItems":0}'
 }
 
 // eslint_rule_default_options are the meta.defaultOptions of the rules of ESLint and of
