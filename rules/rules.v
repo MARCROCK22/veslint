@@ -857,6 +857,8 @@ pub const regexp_letter_case = 'regexp/letter-case'
 pub const regexp_no_lazy_ends = 'regexp/no-lazy-ends'
 pub const regexp_no_obscure_range = 'regexp/no-obscure-range'
 pub const regexp_no_trivially_nested_quantifier = 'regexp/no-trivially-nested-quantifier'
+pub const regexp_no_invisible_character = 'regexp/no-invisible-character'
+pub const regexp_no_useless_character_class = 'regexp/no-useless-character-class'
 pub const names = [no_floating_promises, await_thenable, require_await, return_await,
 	no_misused_promises, no_unsafe_call, no_unsafe_member_access, no_unsafe_return,
 	no_unsafe_assignment, no_unsafe_argument, restrict_template_expressions,
@@ -1118,7 +1120,8 @@ pub const names = [no_floating_promises, await_thenable, require_await, return_a
 	regexp_no_escape_backspace, regexp_no_control_character, regexp_control_character_escape,
 	regexp_no_extra_lookaround_assertions, regexp_no_octal, regexp_no_standalone_backslash,
 	regexp_hexadecimal_escape, regexp_letter_case, regexp_no_lazy_ends, regexp_no_obscure_range,
-	regexp_no_trivially_nested_quantifier]
+	regexp_no_trivially_nested_quantifier, regexp_no_invisible_character,
+	regexp_no_useless_character_class]
 
 // untyped_rules are the ported rules that need no types (`meta.docs.requiresTypeChecking` is false
 // in typescript-eslint; the eslint-plugin-unicorn rules that read the types when the parser has a
@@ -1341,7 +1344,8 @@ pub const untyped_rules = [adjacent_overload_signatures, array_type, class_liter
 	regexp_no_empty_string_literal, regexp_no_escape_backspace, regexp_no_control_character,
 	regexp_control_character_escape, regexp_no_extra_lookaround_assertions, regexp_no_octal,
 	regexp_no_standalone_backslash, regexp_hexadecimal_escape, regexp_letter_case, regexp_no_lazy_ends,
-	regexp_no_obscure_range, regexp_no_trivially_nested_quantifier]
+	regexp_no_obscure_range, regexp_no_trivially_nested_quantifier, regexp_no_invisible_character,
+	regexp_no_useless_character_class]
 
 // needs_types tells whether a rule asks tsgo for the types of the program.
 pub fn needs_types(rule string) bool {
@@ -2193,6 +2197,8 @@ pub const default_options = {
 	regexp_no_lazy_ends:                                 '[]'
 	regexp_no_obscure_range:                             '[]'
 	regexp_no_trivially_nested_quantifier:               '[]'
+	regexp_no_invisible_character:                       '[]'
+	regexp_no_useless_character_class:                   '[]'
 }
 
 // Finding is a problem a rule found at a node.
@@ -3230,6 +3236,8 @@ pub fn message(rule string, finding Finding) string {
 		regexp_no_lazy_ends { regexp_no_lazy_ends_messages }
 		regexp_no_obscure_range { regexp_no_obscure_range_messages }
 		regexp_no_trivially_nested_quantifier { regexp_no_trivially_nested_quantifier_messages }
+		regexp_no_invisible_character { regexp_no_invisible_character_messages }
+		regexp_no_useless_character_class { regexp_no_useless_character_class_messages }
 		else { map[string]string{} }
 	}
 	return interpolate(messages[finding.message_id] or { finding.message_id }, finding.data)
@@ -5960,6 +5968,12 @@ fn (mut c Checker) lint_rule(rule string, root C.TSNode, abs_path string, mut st
 		}
 		regexp_no_trivially_nested_quantifier {
 			return c.lint_regexp_no_trivially_nested_quantifier(root, abs_path, mut stats)!
+		}
+		regexp_no_invisible_character {
+			return c.lint_regexp_no_invisible_character(root, abs_path, mut stats)!
+		}
+		regexp_no_useless_character_class {
+			return c.lint_regexp_no_useless_character_class(root, abs_path, mut stats)!
 		}
 		else { return error('unknown rule: ${rule}') }
 	}

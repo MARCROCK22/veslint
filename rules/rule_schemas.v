@@ -846,6 +846,8 @@ const rule_option_schemas = {
 	'regexp/no-lazy-ends':                                             '{"type":"array","items":[{"type":"object","properties":{"ignorePartial":{"type":"boolean"}},"additionalProperties":false}],"minItems":0,"maxItems":1}'
 	'regexp/no-obscure-range':                                         '{"type":"array","items":[{"type":"object","properties":{"allowed":{"anyOf":[{"enum":["all","alphanumeric"]},{"type":"array","items":[{"enum":["all","alphanumeric"]}],"minItems":1,"additionalItems":false},{"type":"array","items":{"anyOf":[{"const":"alphanumeric"},{"type":"string","pattern":"^(?:[\\\\ud800-\\\\udbff][\\\\udc00-\\\\udfff]|[^\\\\ud800-\\\\udfff])-(?:[\\\\ud800-\\\\udbff][\\\\udc00-\\\\udfff]|[^\\\\ud800-\\\\udfff])\$"}]},"uniqueItems":true,"minItems":1,"additionalItems":false}]}},"additionalProperties":false}],"minItems":0,"maxItems":1}'
 	'regexp/no-trivially-nested-quantifier':                           '{"type":"array","minItems":0,"maxItems":0}'
+	'regexp/no-invisible-character':                                   '{"type":"array","minItems":0,"maxItems":0}'
+	'regexp/no-useless-character-class':                               '{"type":"array","items":[{"type":"object","properties":{"ignores":{"type":"array","items":{"type":"string","minLength":1},"uniqueItems":true}},"additionalProperties":false}],"minItems":0,"maxItems":1}'
 }
 
 // eslint_rule_default_options are the meta.defaultOptions of the rules of ESLint and of

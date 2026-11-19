@@ -1,0 +1,16 @@
+tests/rules/regexp/no-useless-character-class/cases.ts:2:20	regexp/no-useless-character-class	unexpectedCharacterClassWith	Unexpected character class with one character. Can remove brackets.
+tests/rules/regexp/no-useless-character-class/cases.ts:3:20	regexp/no-useless-character-class	unexpectedCharacterClassWith	Unexpected character class with one character class escape. Can remove brackets.
+tests/rules/regexp/no-useless-character-class/cases.ts:4:20	regexp/no-useless-character-class	unexpectedCharacterClassWith	Unexpected character class with one character. Can remove brackets.
+tests/rules/regexp/no-useless-character-class/cases.ts:5:20	regexp/no-useless-character-class	unexpectedCharacterClassWith	Unexpected character class with one character class range. Can remove brackets and range.
+tests/rules/regexp/no-useless-character-class/cases.ts:6:20	regexp/no-useless-character-class	unexpectedCharacterClassWith	Unexpected character class with one character. Can remove brackets.
+tests/rules/regexp/no-useless-character-class/cases.ts:7:20	regexp/no-useless-character-class	unexpectedCharacterClassWith	Unexpected character class with one character. Can remove brackets.
+tests/rules/regexp/no-useless-character-class/cases.ts:8:20	regexp/no-useless-character-class	unexpectedCharacterClassWith	Unexpected character class with one character class. Can remove brackets.
+tests/rules/regexp/no-useless-character-class/cases.ts:8:21	regexp/no-useless-character-class	unexpectedCharacterClassWith	Unexpected character class with one character. Can remove brackets.
+tests/rules/regexp/no-useless-character-class/cases.ts:9:21	regexp/no-useless-character-class	unexpectedUnnecessaryNestingCharacterClass	Unexpected unnecessary nesting character class. Can remove brackets.
+tests/rules/regexp/no-useless-character-class/cases.ts:10:21	regexp/no-useless-character-class	unexpectedUnnecessaryNestingCharacterClass	Unexpected unnecessary nesting character class. Can remove brackets.
+tests/rules/regexp/no-useless-character-class/cases.ts:11:25	regexp/no-useless-character-class	unexpectedCharacterClassWith	Unexpected character class with one character. Can remove brackets.
+tests/rules/regexp/no-useless-character-class/cases.ts:12:21	regexp/no-useless-character-class	unexpectedCharacterClassWith	Unexpected character class with one character class. Can remove brackets.
+tests/rules/regexp/no-useless-character-class/cases.ts:12:22	regexp/no-useless-character-class	unexpectedCharacterClassWith	Unexpected character class with one string literal. Can remove brackets.
+tests/rules/regexp/no-useless-character-class/cases.ts:13:33	regexp/no-useless-character-class	unexpectedCharacterClassWith	Unexpected character class with one character class escape. Can remove brackets.
+tests/rules/regexp/no-useless-character-class/no-ignores/cases.ts:2:20	regexp/no-useless-character-class	unexpectedCharacterClassWith	Unexpected character class with one character. Can remove brackets.
+tests/rules/regexp/no-useless-character-class/no-ignores/cases.ts:3:20	regexp/no-useless-character-class	unexpectedCharacterClassWith	Unexpected character class with one character. Can remove brackets.
