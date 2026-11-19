@@ -4,7 +4,7 @@ module estree
 
 fn (mut c Converter) decorator(n C.TSNode) int {
 	i := c.mkn(.decorator, n)
-	if e := first_named(c.kids(n)) {
+	if e := c.first_named_kid(n) {
 		c.pnode(i, .expression, c.expr(e.n))
 	}
 	return i
@@ -453,7 +453,7 @@ fn (mut c Converter) param(p C.TSNode, optional bool, with_decorators bool) int 
 	if pat.kind == 'rest_pattern' {
 		parameter = c.mk(.rest_element, p, c.start(p), c.end(p))
 		result = parameter
-		if arg := first_named(c.kids(pat.n)) {
+		if arg := c.first_named_kid(pat.n) {
 			c.pnode(parameter, .argument, c.pattern(arg.n))
 		}
 		c.plist(parameter, .decorators, [])

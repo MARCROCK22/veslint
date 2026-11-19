@@ -31,6 +31,12 @@ fn (mut c Checker) lint_no_explicit_any(root C.TSNode, abs_path string, mut stat
 	sw := time.new_stopwatch()
 	o := nea_options(c.rule_options(no_explicit_any))!
 	mut findings := []Finding{}
+	// A TSAnyKeyword is the text `any`: without it a TypeScript file needs no ESTree for this rule
+	// (built on first use). The code of a .vue or .svelte file has more than its text.
+	if !c.is_vue() && !c.is_svelte() && !c.svelte_module.on && !c.src.contains('any') {
+		stats.eval_ms += ms(sw.elapsed())
+		return findings
+	}
 	t := c.es_tree(root, abs_path) or { return findings }
 	for node in 0 .. t.nodes.len {
 		if t.typ(node) != .ts_any_keyword {

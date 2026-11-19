@@ -306,7 +306,7 @@ fn (mut c Converter) import_decl(s C.TSNode, ctx Ctx) int {
 				}
 				'namespace_import' {
 					sp := c.mkn(.import_namespace_specifier, part.n)
-					if id := first_named(c.kids(part.n)) {
+					if id := c.first_named_kid(part.n) {
 						c.pnode(sp, .local, c.ident(id.n))
 					}
 					specifiers << sp
@@ -352,7 +352,7 @@ fn (mut c Converter) import_attributes(kids []Kid) []int {
 		if k.kind != 'import_attribute' {
 			continue
 		}
-		obj := first_named(c.kids(k.n)) or { continue }
+		obj := c.first_named_kid(k.n) or { continue }
 		for pair in c.kids(obj.n) {
 			if pair.kind != 'pair' {
 				continue
@@ -497,7 +497,7 @@ fn (mut c Converter) export_stmt(s C.TSNode, mut out []int) {
 		mut exported := -1
 		for k in kids {
 			if k.kind == 'namespace_export' {
-				if name := first_named(c.kids(k.n)) {
+				if name := c.first_named_kid(k.n) {
 					exported = c.module_name(name.n)
 				}
 			}

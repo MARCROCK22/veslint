@@ -141,15 +141,75 @@ fn (mut c Converter) kind_name(n C.TSNode) string {
 	return node_kind(n)
 }
 
-// named are the named children (no comments).
+// named are the named children (no comments): kids(n).filter(it.named), without the array of
+// all the kids.
 fn (mut c Converter) named(n C.TSNode) []Kid {
-	return c.kids(n).filter(it.named)
+	C.ts_tree_cursor_reset(&c.cursor, n)
+	mut out := []Kid{cap: int(C.ts_node_named_child_count(n))}
+	if !C.ts_tree_cursor_goto_first_child(&c.cursor) {
+		return out
+	}
+	for {
+		k := C.ts_tree_cursor_current_node(&c.cursor)
+		if !C.ts_node_is_extra(k) && C.ts_node_is_named(k) {
+			out << Kid{
+				n:     k
+				kind:  c.kind_name(k)
+				field: c.field_names[C.ts_tree_cursor_current_field_id(&c.cursor)]
+				named: true
+			}
+		}
+		if !C.ts_tree_cursor_goto_next_sibling(&c.cursor) {
+			break
+		}
+	}
+	return out
 }
 
+// first_named_kid is first_named(c.kids(n)), without the array of the kids.
+fn (mut c Converter) first_named_kid(n C.TSNode) ?Kid {
+	C.ts_tree_cursor_reset(&c.cursor, n)
+	if !C.ts_tree_cursor_goto_first_child(&c.cursor) {
+		return none
+	}
+	for {
+		k := C.ts_tree_cursor_current_node(&c.cursor)
+		if !C.ts_node_is_extra(k) && C.ts_node_is_named(k) {
+			return Kid{
+				n:     k
+				kind:  c.kind_name(k)
+				field: c.field_names[C.ts_tree_cursor_current_field_id(&c.cursor)]
+				named: true
+			}
+		}
+		if !C.ts_tree_cursor_goto_next_sibling(&c.cursor) {
+			break
+		}
+	}
+	return none
+}
+
+// field is the first kid with that field name, found without the array of the kids.
 fn (mut c Converter) field(n C.TSNode, name string) ?Kid {
-	for k in c.kids(n) {
-		if k.field == name {
-			return k
+	C.ts_tree_cursor_reset(&c.cursor, n)
+	if !C.ts_tree_cursor_goto_first_child(&c.cursor) {
+		return none
+	}
+	for {
+		k := C.ts_tree_cursor_current_node(&c.cursor)
+		if !C.ts_node_is_extra(k) {
+			field := c.field_names[C.ts_tree_cursor_current_field_id(&c.cursor)]
+			if field == name {
+				return Kid{
+					n:     k
+					kind:  c.kind_name(k)
+					field: field
+					named: C.ts_node_is_named(k)
+				}
+			}
+		}
+		if !C.ts_tree_cursor_goto_next_sibling(&c.cursor) {
+			break
 		}
 	}
 	return none
@@ -687,7 +747,7 @@ fn (mut c Converter) stmt(s C.TSNode) int {
 			i := c.mkn(.if_statement, s)
 			mut alt := -1
 			if e := field_of(kids, 'alternative') {
-				if inner := first_named(c.kids(e.n)) {
+				if inner := c.first_named_kid(e.n) {
 					alt = c.stmt(inner.n)
 				}
 			}
@@ -742,7 +802,7 @@ fn (mut c Converter) stmt(s C.TSNode) int {
 			} else {
 				NodeType.throw_statement
 			}, s)
-			arg := first_named(c.kids(s)) or {
+			arg := c.first_named_kid(s) or {
 				c.pnull(i, .argument)
 				return i
 			}

@@ -64,7 +64,7 @@ fn (mut c Converter) typ(n C.TSNode) int {
 			return c.mkn(.ts_this_type, n)
 		}
 		'literal_type' {
-			inner := first_named(c.kids(n)) or { return -1 }
+			inner := c.first_named_kid(n) or { return -1 }
 			match inner.kind {
 				'null' {
 					return c.mkn(.ts_null_keyword, inner.n)
@@ -98,7 +98,7 @@ fn (mut c Converter) typ(n C.TSNode) int {
 				sub_start := c.start(k.n)
 				quasis << c.template_element(k.n, seg, sub_start + 2, seg + 1, sub_start,
 					false, false)
-				if t := first_named(c.kids(k.n)) {
+				if t := c.first_named_kid(k.n) {
 					types << c.typ(t.n)
 				}
 				seg = node_end_of(k.n) - 1
@@ -114,7 +114,7 @@ fn (mut c Converter) typ(n C.TSNode) int {
 		}
 		'array_type' {
 			i := c.mkn(.ts_array_type, n)
-			if t := first_named(c.kids(n)) {
+			if t := c.first_named_kid(n) {
 				c.pnode(i, .element_type, c.typ(t.n))
 			}
 			return i
@@ -205,7 +205,7 @@ fn (mut c Converter) typ(n C.TSNode) int {
 		'index_type_query', 'readonly_type' {
 			i := c.mkn(.ts_type_operator, n)
 			c.pstr(i, .operator, if kind == 'readonly_type' { 'readonly' } else { 'keyof' })
-			if t := first_named(c.kids(n)) {
+			if t := c.first_named_kid(n) {
 				c.pnode(i, .type_annotation, c.typ(t.n))
 			}
 			return i
@@ -217,19 +217,19 @@ fn (mut c Converter) typ(n C.TSNode) int {
 			return c.import_type(n, n, none)
 		}
 		'parenthesized_type' {
-			inner := first_named(c.kids(n)) or { return -1 }
+			inner := c.first_named_kid(n) or { return -1 }
 			return c.typ(inner.n)
 		}
 		'optional_type' {
 			i := c.mkn(.ts_optional_type, n)
-			if t := first_named(c.kids(n)) {
+			if t := c.first_named_kid(n) {
 				c.pnode(i, .type_annotation, c.typ(t.n))
 			}
 			return i
 		}
 		'rest_type' {
 			i := c.mkn(.ts_rest_type, n)
-			if t := first_named(c.kids(n)) {
+			if t := c.first_named_kid(n) {
 				c.pnode(i, .type_annotation, c.typ(t.n))
 			}
 			return i
@@ -255,7 +255,7 @@ fn (mut c Converter) jsdoc_type(n C.TSNode, typ NodeType, postfix bool) int {
 		n: n
 	}
 	if typ != .ts_js_doc_all_type {
-		inner = first_named(c.kids(n)) or { return -1 }
+		inner = c.first_named_kid(n) or { return -1 }
 	}
 	i := c.mk(typ, n, c.skip_white_space(c.prev_token_end(n), c.start(n)), c.end(n))
 	if typ != .ts_js_doc_all_type {
@@ -295,9 +295,9 @@ fn (mut c Converter) tuple_member(k Kid) int {
 	kids := c.kids(k.n)
 	name := field_of(kids, 'name') or { field_of(kids, 'pattern') or { return -1 } }
 	t := field_of(kids, 'type') or { return -1 }
-	inner := first_named(c.kids(t.n)) or { return -1 }
+	inner := c.first_named_kid(t.n) or { return -1 }
 	if name.kind == 'rest_pattern' {
-		label := first_named(c.kids(name.n)) or { return -1 }
+		label := c.first_named_kid(name.n) or { return -1 }
 		rest := c.mkn(.ts_rest_type, k.n)
 		member := c.mk(.ts_named_tuple_member, k.n, c.start(label.n), c.end(k.n))
 		c.pnode(member, .element_type, c.typ(inner.n))
@@ -315,7 +315,7 @@ fn (mut c Converter) tuple_member(k Kid) int {
 
 fn (mut c Converter) type_annotation(n C.TSNode) int {
 	i := c.mkn(.ts_type_annotation, n)
-	if t := first_named(c.kids(n)) {
+	if t := c.first_named_kid(n) {
 		c.pnode(i, .type_annotation, c.typ(t.n))
 	}
 	return i
@@ -327,7 +327,7 @@ fn (mut c Converter) return_type(rt C.TSNode, fn_kids []Kid) int {
 	match kind_of(rt) {
 		'type_annotation', 'type_predicate_annotation', 'asserts_annotation' {
 			i := c.mkn(.ts_type_annotation, rt)
-			if t := first_named(c.kids(rt)) {
+			if t := c.first_named_kid(rt) {
 				c.pnode(i, .type_annotation, c.typ(t.n))
 			}
 			return i
@@ -395,12 +395,12 @@ fn (mut c Converter) type_parameters(n C.TSNode) int {
 		p := c.mkn(.ts_type_parameter, k.n)
 		c.pbool(p, .const_, has_tok(pk, 'const'))
 		if con := field_of(pk, 'constraint') {
-			if t := first_named(c.kids(con.n)) {
+			if t := c.first_named_kid(con.n) {
 				c.pnode(p, .constraint, c.typ(t.n))
 			}
 		}
 		if def := field_of(pk, 'value') {
-			if t := first_named(c.kids(def.n)) {
+			if t := c.first_named_kid(def.n) {
 				c.pnode(p, .default_, c.typ(t.n))
 			}
 		}
@@ -549,7 +549,7 @@ fn (mut c Converter) mapped_type(n C.TSNode, ik []Kid, clause Kid) int {
 			}
 			else {}
 		}
-		if inner := first_named(c.kids(t.n)) {
+		if inner := c.first_named_kid(t.n) {
 			c.pnode(i, .type_annotation, c.typ(inner.n))
 		}
 	}
@@ -577,7 +577,7 @@ fn (mut c Converter) mapped_type(n C.TSNode, ik []Kid, clause Kid) int {
 
 fn (mut c Converter) type_query(n C.TSNode) int {
 	i := c.mkn(.ts_type_query, n)
-	inner := first_named(c.kids(n)) or { return i }
+	inner := c.first_named_kid(n) or { return i }
 	match inner.kind {
 		'import_type' {
 			c.pnode(i, .expr_name, c.import_type(inner.n, inner.n, none))
@@ -620,7 +620,7 @@ fn (mut c Converter) query_name(n C.TSNode) int {
 // the type arguments `ta` (a generic_type) or `n` itself.
 fn (mut c Converter) import_type(n C.TSNode, whole C.TSNode, type_args ?C.TSNode) int {
 	i := c.mkn(.ts_import_type, whole)
-	mut call := first_named(c.kids(n)) or { return i }
+	mut call := c.first_named_kid(n) or { return i }
 	mut qualifier := -1
 	if call.kind == 'member_expression' {
 		// The qualifier: the names after the call.
