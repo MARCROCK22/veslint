@@ -2,7 +2,7 @@ module regexpp
 
 import math
 
-// RegExpValidator (with its Reader) ported from regexpp 4.12.2. The parser (RegExpParserState) is built in: when
+// RegExpValidator (with its Reader) ported from regexpp 4.12.3. The parser (RegExpParserState) is built in: when
 // `build` is set, every validator event also builds the AST (see state.v); when `record` is set, onPatternEnter,
 // onPatternLeave and onCharacter are recorded as ValidatorEvent.
 
