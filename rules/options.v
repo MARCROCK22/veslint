@@ -393,6 +393,10 @@ pub fn check_options(rule string, options []json2.Any) !bool {
 		svelte_valid_compile { svc_valid_compile_options(options)! }
 		svelte_indent { svi_options(options)! }
 		svelte_ts_no_unnecessary_condition { svnuc_options(options)! }
+		eslint_comments_disable_enable_pair { ec_dep_options(options)! }
+		eslint_comments_no_restricted_disable { ec_nrd_options(options)! }
+		eslint_comments_no_use { ec_nu_options(options)! }
+		eslint_comments_require_description { ec_rd_options(options)! }
 		else { return false }
 	}
 	return true
@@ -436,8 +440,9 @@ pub fn effective_options(name string, options []json2.Any) ![]json2.Any {
 			return error(err.msg().replace_once('`${base}`', '`${name}`'))
 		}
 	}
-	// So have those of eslint-plugin-svelte.
-	if name.starts_with('perfectionist/') || name.starts_with('vue/') || name.starts_with('svelte/') {
+	// So have those of eslint-plugin-svelte and of @eslint-community/eslint-plugin-eslint-comments.
+	if name.starts_with('perfectionist/') || name.starts_with('vue/') || name.starts_with('svelte/')
+		|| name.starts_with('@eslint-community/eslint-comments/') {
 		check_options(name, options) or { return error('`${name}`: ${err.msg()}') }
 		return options
 	}

@@ -20,7 +20,9 @@ const { plugin: seyfert } = createRequire(import.meta.url)(
 const vue = createRequire(import.meta.url)('../../build/upstream/vue-deps/node_modules/eslint-plugin-vue');
 const svelteParser = createRequire(import.meta.url)('../../build/upstream/svelte-deps/node_modules/svelte-eslint-parser');
 const svelte = createRequire(import.meta.url)('../../build/upstream/svelte-deps/node_modules/eslint-plugin-svelte');
-const plugins = { '@typescript-eslint': tseslint.plugin, '@stylistic': stylistic, perfectionist, marcrock, seyfert, unicorn, vue, svelte };
+// @eslint-community/eslint-plugin-eslint-comments 4.8.1 (build/upstream/plugins-new).
+const eslintComments = createRequire(import.meta.url)('../../build/upstream/plugins-new/node_modules/@eslint-community/eslint-plugin-eslint-comments');
+const plugins = { '@typescript-eslint': tseslint.plugin, '@stylistic': stylistic, perfectionist, marcrock, seyfert, unicorn, vue, svelte, '@eslint-community/eslint-comments': eslintComments };
 
 const root = import.meta.dirname;
 // The directory of a rule is the one with an expected.txt, and its path is the rule's id; the files

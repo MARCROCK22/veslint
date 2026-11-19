@@ -184,6 +184,39 @@ git -C build/upstream/eslintcf checkout 0c25278
 bun tools/gen_upstream_cases.mjs marcrock/prefer-at
 ```
 
+## @eslint-community/eslint-plugin-eslint-comments (the `@eslint-community/eslint-comments/*` rules)
+
+The 8 rules of batch EC1 carry the cases of `tests/lib/rules/<rule>.js` of
+eslint-community/eslint-plugin-eslint-comments v4.8.1 (`no-unused-disable`, deprecated, is not
+ported): 204 cases, and 15 more of the `css/css` language of @eslint/css skipped. Their directory is
+`tests/rules/@eslint-community/eslint-comments/<rule>`, and a case's id starts with the rule's name
+(`no-use/i3`). The tests run with mocha and ESLint's RuleTester, which the generator stubs as for
+ESLint core's (`run` records the cases); they load ESLint, semver and the plugin's own dependencies
+from `build/upstream/plugins-new` (ESLint 10.15.0: each test file leaves out by itself the cases of
+older versions of ESLint), and @eslint/css from `tools/upstream/eslint-css.mjs`. The cases are
+JavaScript, linted as TypeScript in the fixtures of typescript-eslint, like those of ESLint core.
+ESLint's RuleTester makes one pass of fixes and does not report unused disable directives; the
+plugins a test file gives its RuleTester (`foo/no-undef`, which directive comments name) are the
+`plugins` of its cases, which `tests/rules/upstream_eslint.mjs` defines as rules that do nothing.
+ESLint runs the published plugin of `build/upstream/plugins-new` (the same files as the clone's
+`lib/`). A clone and the packages:
+
+```sh
+git clone --depth 1 --branch v4.8.1 https://github.com/eslint-community/eslint-plugin-eslint-comments \
+  build/upstream/eslint-comments
+mkdir -p build/upstream/plugins-new && cd build/upstream/plugins-new
+# package.json: {"private": true, "dependencies": {"eslint": "10.15.0", "eslint-plugin-regexp": "3.3.3",
+#   "eslint-plugin-import-x": "4.18.1", "@eslint-community/eslint-plugin-eslint-comments": "4.8.1",
+#   "eslint-plugin-promise": "7.3.0"}}, with its package-lock.json
+npm ci --ignore-scripts --no-audit --no-fund
+cd ../../..
+bun tools/gen_upstream_cases.mjs @eslint-community/eslint-comments/no-use
+```
+
+The fixtures of these rules (`tests/rules/@eslint-community/eslint-comments/`) are linted without the
+reports of unused directives, by ESLint (`tests/rules/eslint.reference.config.mjs`) and by veslint
+(`tests/run.sh`): the rules report the directive comments themselves.
+
 ## eslint-plugin-vue (the `vue/*` rules)
 
 The cases of `tests/lib/rules/<rule>.test.ts` (and `tests/lib/rules/<rule>/*.test.ts`, the test file

@@ -10,7 +10,7 @@ import { createRequire } from 'node:module';
 export function portedRules(root) {
   const source = fs.readFileSync(path.join(root, 'rules/rules.v'), 'utf8');
   // A rule id with a plugin, or without one (ESLint core).
-  const byConst = new Map([...source.matchAll(/^pub const (\w+) = '((?:(?:@typescript-eslint|@stylistic|perfectionist|marcrock|seyfert|unicorn|vue|svelte)\/)?(?:@typescript-eslint\/)?[a-z0-9-]+)'$/gm)].map(m => [m[1], m[2]]));
+  const byConst = new Map([...source.matchAll(/^pub const (\w+) = '((?:(?:@typescript-eslint|@stylistic|@eslint-community\/eslint-comments|perfectionist|marcrock|seyfert|unicorn|vue|svelte)\/)?(?:@typescript-eslint\/)?[a-z0-9-]+)'$/gm)].map(m => [m[1], m[2]]));
   const list = /^pub const names = \[([^\]]+)\]/m.exec(source);
   if (!list) {
     throw new Error('rules/rules.v: `names` not found');
@@ -182,6 +182,14 @@ export function sveltePlugin(root) {
   return require('eslint-plugin-svelte');
 }
 
+// eslintCommentsPlugin is @eslint-community/eslint-plugin-eslint-comments 4.8.1, the plugin of the
+// `@eslint-community/eslint-comments/*` rules, from build/upstream/plugins-new
+// (tests/upstream/README.md).
+export function eslintCommentsPlugin(root) {
+  const require = createRequire(path.join(root, 'build/upstream/plugins-new/package.json'));
+  return require('@eslint-community/eslint-plugin-eslint-comments');
+}
+
 // pluginOf is the namespace, the plugin and the name in it of a ported rule.
 export function pluginOf(id, plugins) {
   // ESLint core: a rule id without a plugin; plugins[''] holds its rules.
@@ -200,6 +208,8 @@ export function pluginOf(id, plugins) {
               ? 'vue'
               : id.startsWith('svelte/')
                 ? 'svelte'
-                : '@typescript-eslint';
+                : id.startsWith('@eslint-community/eslint-comments/')
+                  ? '@eslint-community/eslint-comments'
+                  : '@typescript-eslint';
   return [namespace, plugins[namespace], id.slice(namespace.length + 1)];
 }

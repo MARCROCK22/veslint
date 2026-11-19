@@ -1,0 +1,5 @@
+tests/rules/@eslint-community/eslint-comments/no-duplicate-disable/cases.ts:2:19	@eslint-community/eslint-comments/no-duplicate-disable	duplicateRule	'no-console' rule has been disabled already.	end	2	29
+tests/rules/@eslint-community/eslint-comments/no-duplicate-disable/cases.ts:3:37	@eslint-community/eslint-comments/no-duplicate-disable	duplicateRule	'eqeqeq' rule has been disabled already.	end	3	43
+tests/rules/@eslint-community/eslint-comments/no-duplicate-disable/cases.ts:5:29	@eslint-community/eslint-comments/no-duplicate-disable	duplicateRule	'no-var' rule has been disabled already.	end	5	35
+tests/rules/@eslint-community/eslint-comments/no-duplicate-disable/cases.ts:7:75	@eslint-community/eslint-comments/no-duplicate-disable	duplicateRule	'no-undef' rule has been disabled already.	end	7	83
+tests/rules/@eslint-community/eslint-comments/no-duplicate-disable/cases.ts:9:18	@eslint-community/eslint-comments/no-duplicate-disable	duplicateRule	'no-debugger' rule has been disabled already.	end	9	29

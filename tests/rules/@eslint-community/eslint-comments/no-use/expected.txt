@@ -1,0 +1,16 @@
+tests/rules/@eslint-community/eslint-comments/no-use/additional/cases.ts:1:0	@eslint-community/eslint-comments/no-use	disallow	Unexpected directive comment.
+tests/rules/@eslint-community/eslint-comments/no-use/additional/cases.ts:2:0	@eslint-community/eslint-comments/no-use	disallow	Unexpected directive comment.
+tests/rules/@eslint-community/eslint-comments/no-use/additional/cases.ts:6:0	@eslint-community/eslint-comments/no-use	disallow	Unexpected directive comment.
+tests/rules/@eslint-community/eslint-comments/no-use/additional/cases.ts:7:0	@eslint-community/eslint-comments/no-use	disallowEslint	Unexpected ESLint directive comment.
+tests/rules/@eslint-community/eslint-comments/no-use/allow/cases.ts:4:0	@eslint-community/eslint-comments/no-use	disallowEslint	Unexpected ESLint directive comment.
+tests/rules/@eslint-community/eslint-comments/no-use/allow/cases.ts:5:0	@eslint-community/eslint-comments/no-use	disallowEslint	Unexpected ESLint directive comment.
+tests/rules/@eslint-community/eslint-comments/no-use/allow/cases.ts:6:0	@eslint-community/eslint-comments/no-use	disallowEslint	Unexpected ESLint directive comment.
+tests/rules/@eslint-community/eslint-comments/no-use/cases.ts:1:0	@eslint-community/eslint-comments/no-use	disallowEslint	Unexpected ESLint directive comment.
+tests/rules/@eslint-community/eslint-comments/no-use/cases.ts:2:0	@eslint-community/eslint-comments/no-use	disallowEslint	Unexpected ESLint directive comment.
+tests/rules/@eslint-community/eslint-comments/no-use/cases.ts:3:0	@eslint-community/eslint-comments/no-use	disallowEslint	Unexpected ESLint directive comment.
+tests/rules/@eslint-community/eslint-comments/no-use/cases.ts:4:0	@eslint-community/eslint-comments/no-use	disallowEslint	Unexpected ESLint directive comment.
+tests/rules/@eslint-community/eslint-comments/no-use/cases.ts:5:0	@eslint-community/eslint-comments/no-use	disallowEslint	Unexpected ESLint directive comment.
+tests/rules/@eslint-community/eslint-comments/no-use/cases.ts:6:0	@eslint-community/eslint-comments/no-use	disallowEslint	Unexpected ESLint directive comment.
+tests/rules/@eslint-community/eslint-comments/no-use/cases.ts:7:0	@eslint-community/eslint-comments/no-use	disallowEslint	Unexpected ESLint directive comment.
+tests/rules/@eslint-community/eslint-comments/no-use/cases.ts:8:0	@eslint-community/eslint-comments/no-use	disallowEslint	Unexpected ESLint directive comment.
+tests/rules/@eslint-community/eslint-comments/no-use/cases.ts:9:0	@eslint-community/eslint-comments/no-use	disallowEslint	Unexpected ESLint directive comment.
