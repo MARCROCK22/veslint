@@ -98,7 +98,7 @@ if ((git -C $module rev-parse HEAD) -ne $tsCommit) {
 }
 $inproc = (Resolve-Path tsgo/inproc).Path.Replace('\', '/')
 $archive = 'tsgo/inproc/out/libveslint_tsgo.a'
-$sources = 'main.go', 'api_inprocess.go', 'session.patch', 'build.sh' | ForEach-Object { Get-Item "tsgo/inproc/$_" }
+$sources = 'main.go', 'api_inprocess.go', 'api_fastjson.go', 'session.patch', 'build.sh' | ForEach-Object { Get-Item "tsgo/inproc/$_" }
 if (-not (Test-Path $archive) -or
 	($sources | Where-Object { $_.LastWriteTime -gt (Get-Item $archive).LastWriteTime })) {
 	$mod = 'tsgo/inproc/out/mod'
@@ -121,6 +121,7 @@ if (-not (Test-Path $archive) -or
 	}
 	Set-Content -NoNewline tsgo/inproc/out/overlay.json `
 		("{`"Replace`": {`"$module/internal/api/veslint_inprocess.go`": `"$inproc/api_inprocess.go`", " +
+		"`"$module/internal/api/veslint_fastjson.go`": `"$inproc/api_fastjson.go`", " +
 		"`"$module/internal/api/session.go`": `"$out/session.go`"}}")
 	# The requirements of the checkout's go.mod, as `go mod tidy` would list them.
 	$requires = (Select-String -Path "$module/go.mod" -Pattern '^\t(\S+) (v\S+)').Matches |

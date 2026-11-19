@@ -422,6 +422,7 @@ mut:
 	error       string
 	stats       rules.Stats
 	requests    int
+	methods     map[string]tsgo.MethodStat
 	tsgo_ms     f64
 	fixed_files int
 	start_ms    f64
@@ -469,6 +470,7 @@ fn run_worker(plan &LintPlan, queue &FileQueue, shared &SharedSession, number in
 	}
 	out.stats = w.stats
 	out.requests = w.client.request_count()
+	out.methods = w.client.method_stats().clone()
 	out.tsgo_ms = w.client.inproc_ms()
 	out.fixed_files = w.fixed_files
 	out.start_ms = w.start_ms
@@ -504,6 +506,7 @@ fn lint_files(plan &LintPlan, files []RuleFile, count int) []WorkerResult {
 	if shared != unsafe { nil } {
 		// The owner's requests (the snapshot) count with the first worker's.
 		results[0].requests += shared.owner.client.request_count()
+		merge_methods(mut results[0].methods, shared.owner.client.method_stats())
 		results[0].tsgo_ms += shared.owner.client.inproc_ms()
 		mut s := unsafe { shared }
 		s.close()
@@ -524,6 +527,16 @@ fn worker_count(fix bool, lintable int, cpus int) int {
 		return 1
 	}
 	return int_max(1, int_min(cpus, lintable / min_files_per_worker))
+}
+
+// merge_methods adds the requests of each method of a client to `into`.
+fn merge_methods(mut into map[string]tsgo.MethodStat, from map[string]tsgo.MethodStat) {
+	for method, stat in from {
+		mut sum := into[method] or { tsgo.MethodStat{} }
+		sum.count += stat.count
+		sum.time += stat.time
+		into[method] = sum
+	}
 }
 
 // merge_stats adds the statistics of a worker to `into` (for --bench, whose times are then the

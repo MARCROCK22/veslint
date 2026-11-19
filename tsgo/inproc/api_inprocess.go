@@ -5,15 +5,19 @@
 package api
 
 import (
+	"bytes"
 	"context"
 	"fmt"
 	"os"
 	"reflect"
 	"runtime"
 	"runtime/debug"
+	"runtime/pprof"
+	"sort"
 	"strconv"
 	"strings"
 	"sync"
+	"time"
 	"unicode"
 
 	"github.com/microsoft/TypeScript/tsc/internal/bundled"
@@ -102,8 +106,9 @@ func (p *InProcess) Files() *InProcessFiles {
 // `worker` is 0 for the session's own API checker, as the stdio server answers, or the number of
 // one of veslint's lint workers, which share the session's snapshots and programs and ask on
 // threads of their own: the checker requests of a worker are answered by a checker of its own
-// (veslintWorkerCheckers), so that they do not wait for each other's.
-func (p *InProcess) Request(worker int, method string, params []byte) (messageType MessageType, payload []byte) {
+// (veslintWorkerCheckers), so that they do not wait for each other's. The answers of
+// appendFastResponse are appended to `dst`.
+func (p *InProcess) Request(worker int, method string, params []byte, dst []byte) (messageType MessageType, payload []byte) {
 	defer func() {
 		if r := recover(); r != nil {
 			messageType = MessageTypeError
@@ -114,14 +119,31 @@ func (p *InProcess) Request(worker int, method string, params []byte) (messageTy
 	if worker > 0 {
 		ctx = context.WithValue(ctx, veslintWorkerKey{}, worker)
 	}
+	var start time.Time
+	if profiling {
+		start = time.Now()
+	}
 	result, err := p.session.HandleRequest(ctx, method, json.Value(params))
+	var handled time.Time
+	if profiling {
+		handled = time.Now()
+	}
 	if err != nil {
 		return MessageTypeError, []byte(err.Error())
 	}
 	if raw, ok := result.(RawBinary); ok {
 		return MessageTypeResponse, raw
 	}
-	out, err := json.Marshal(result)
+	out, fast := appendFastResponse(dst, result)
+	if fast && checkFastJSON {
+		checkFastResponse(method, result, out)
+	}
+	if !fast {
+		out, err = json.Marshal(result)
+	}
+	if profiling {
+		profileRequest(method, handled.Sub(start), time.Since(handled), len(out))
+	}
 	if err != nil {
 		return MessageTypeUnknown, []byte("ipc: failed to write response: " + err.Error())
 	}
@@ -130,6 +152,7 @@ func (p *InProcess) Request(worker int, method string, params []byte) (messageTy
 
 // Close closes the session, as the stdio server does when its client goes away.
 func (p *InProcess) Close() {
+	stopProfile()
 	p.session.Close()
 	p.cancel()
 }
@@ -467,4 +490,92 @@ func (w *veslintWorkerCheckers) get(program *compiler.Program, worker int) (*che
 		checkers[worker] = c
 	}
 	return c, func() {}
+}
+
+// checkFastJSON makes every answer appendFastResponse writes compared with json.Marshal's (a test
+// of tsgo/inproc, see tests/run.sh): a difference panics, and the request answers the panic.
+var checkFastJSON = os.Getenv("VESLINT_TSGO_CHECK_JSON") != ""
+
+func checkFastResponse(method string, result any, fast []byte) {
+	want, err := json.Marshal(result)
+	if err != nil || !bytes.Equal(want, fast) {
+		panic(fmt.Sprintf("veslint: the JSON of the answer to %s is not json.Marshal's:\n%s\n%s", method, fast, want))
+	}
+}
+
+// VESLINT_TSGO_PROFILE=<file> profiles TypeScript in this process (a tool to find where its time
+// goes, not a feature): Go's CPU profile of the whole process goes to <file> and, for each method,
+// the requests, the time TypeScript took to answer them, the time of their JSON and its size go
+// to <file>.methods, when the first session closes.
+var (
+	profiling   bool
+	profileFile *os.File
+	profileMu   sync.Mutex
+	profileData = map[string]*methodProfile{}
+)
+
+type methodProfile struct {
+	count          int
+	handle, encode time.Duration
+	bytes          int
+}
+
+func init() {
+	path := os.Getenv("VESLINT_TSGO_PROFILE")
+	if path == "" {
+		return
+	}
+	file, err := os.Create(path)
+	if err != nil {
+		fmt.Fprintln(os.Stderr, "veslint: VESLINT_TSGO_PROFILE:", err)
+		return
+	}
+	if err := pprof.StartCPUProfile(file); err != nil {
+		fmt.Fprintln(os.Stderr, "veslint: VESLINT_TSGO_PROFILE:", err)
+		file.Close()
+		return
+	}
+	profiling = true
+	profileFile = file
+}
+
+func profileRequest(method string, handle time.Duration, encode time.Duration, size int) {
+	profileMu.Lock()
+	defer profileMu.Unlock()
+	m := profileData[method]
+	if m == nil {
+		m = &methodProfile{}
+		profileData[method] = m
+	}
+	m.count++
+	m.handle += handle
+	m.encode += encode
+	m.bytes += size
+}
+
+func stopProfile() {
+	profileMu.Lock()
+	defer profileMu.Unlock()
+	if profileFile == nil {
+		return
+	}
+	pprof.StopCPUProfile()
+	profileFile.Close()
+	methods := make([]string, 0, len(profileData))
+	for method := range profileData {
+		methods = append(methods, method)
+	}
+	sort.Slice(methods, func(i, j int) bool {
+		return profileData[methods[i]].handle+profileData[methods[i]].encode > profileData[methods[j]].handle+profileData[methods[j]].encode
+	})
+	var table strings.Builder
+	fmt.Fprintf(&table, "%-36s %8s %10s %10s %10s\n", "method", "requests", "handle_ms", "json_ms", "json_kb")
+	for _, method := range methods {
+		m := profileData[method]
+		fmt.Fprintf(&table, "%-36s %8d %10.1f %10.1f %10d\n", method, m.count, float64(m.handle)/1e6, float64(m.encode)/1e6, m.bytes/1024)
+	}
+	if err := os.WriteFile(profileFile.Name()+".methods", []byte(table.String()), 0o644); err != nil {
+		fmt.Fprintln(os.Stderr, "veslint: VESLINT_TSGO_PROFILE:", err)
+	}
+	profileFile = nil
 }

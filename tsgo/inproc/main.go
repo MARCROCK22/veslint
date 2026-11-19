@@ -96,10 +96,25 @@ func veslint_tsgo_request(handle C.longlong, worker C.int, method *C.char, metho
 		cBytes([]byte("the TypeScript session is closed"), out, outLen)
 		return 0
 	}
-	messageType, answer := p.Request(int(worker), goString(method, methodLen), goBytes(payload, payloadLen))
+	buffer := answerBuffers.Get().(*[]byte)
+	messageType, answer := p.Request(int(worker), goString(method, methodLen), goBytes(payload, payloadLen), (*buffer)[:0])
 	cBytes(answer, out, outLen)
+	if cap(answer) <= maxPooledAnswer {
+		*buffer = answer[:0]
+		answerBuffers.Put(buffer)
+	}
 	return C.int(messageType)
 }
+
+// answerBuffers are the buffers the answers are written in before they are copied to C memory: a
+// lint asks tens of thousands of questions, whose answers would otherwise be as many buffers for
+// Go's collector. One that grew past maxPooledAnswer (the answer about a huge file) is dropped.
+var answerBuffers = sync.Pool{New: func() any {
+	buffer := make([]byte, 0, 64<<10)
+	return &buffer
+}}
+
+const maxPooledAnswer = 4 << 20
 
 // veslint_tsgo_serve makes `text` the content of `path` for the readFile callback.
 //

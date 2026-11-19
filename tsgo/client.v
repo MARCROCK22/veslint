@@ -44,6 +44,8 @@ mut:
 	reader_done   bool // the final reader event (EOF or error) was already received
 	timeout       time.Duration
 	requests      int // requests sent (for --bench)
+	// the requests of each method and their time, from the call to the answer (for --bench)
+	methods map[string]MethodStat
 	// time spent in TypeScript's calls with the transport of this process (for --bench)
 	inproc_time time.Duration
 	// served are the texts given to tsgo instead of the files on disk, by path (start_with_files);
@@ -458,6 +460,7 @@ fn (mut c Client) request(method string, payload string) !string {
 		if f.typ != msg_response {
 			return c.fail('protocol: unknown message type (${f.typ}) in the response to `${method}`')
 		}
+		c.count_method(method, sw.elapsed())
 		return f.payload
 	}
 	return error('unreachable')
@@ -527,6 +530,27 @@ pub fn (mut c Client) shutdown() {
 	c.stderr_tail = c.stderr_reader.wait()
 	c.proc.close()
 	release_pipes(mut c.proc)
+}
+
+// MethodStat is how many requests of a method a client sent and how long they took, from the
+// request to its answer (with TypeScript in this process: the call, which includes TypeScript's
+// decoding of the parameters and its encoding of the answer, not the client's decoding).
+pub struct MethodStat {
+pub mut:
+	count int
+	time  time.Duration
+}
+
+// method_stats are the requests of each method (for --bench).
+pub fn (c &Client) method_stats() map[string]MethodStat {
+	return c.methods
+}
+
+fn (mut c Client) count_method(method string, elapsed time.Duration) {
+	mut stat := c.methods[method] or { MethodStat{} }
+	stat.count++
+	stat.time += elapsed
+	c.methods[method] = stat
 }
 
 // request_count gives how many requests were sent (for --bench).

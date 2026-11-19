@@ -95,6 +95,9 @@ mut:
 	tsgo_ms f64
 	// Every rule that ran, `<rule> <ms>`, slowest first.
 	slowest_rules []string
+	// The requests to TypeScript of each method, `<method> <count> <ms>`, slowest first (the sum
+	// of the workers').
+	tsgo_methods []string
 }
 
 fn (mut b BenchReport) add_symbols(elapsed f64) {
@@ -731,6 +734,7 @@ fn run_rules(opts Options, timeout time.Duration) !int {
 		workers = 1
 	}
 	results := lint_files(plan, files, workers)
+	mut methods := map[string]tsgo.MethodStat{}
 	mut outcomes := map[int]FileOutcome{}
 	mut failed_at := files.len
 	mut failure := ''
@@ -748,6 +752,7 @@ fn run_rules(opts Options, timeout time.Duration) !int {
 		merge_stats(mut stats, r.stats)
 		bench.tsgo_requests += r.requests
 		bench.tsgo_ms += r.tsgo_ms
+		merge_methods(mut methods, r.methods)
 		if i == 0 {
 			bench.spawn_version_init_ms = r.start_ms
 			bench.update_snapshot_ms = r.snapshot_ms
@@ -807,6 +812,19 @@ fn run_rules(opts Options, timeout time.Duration) !int {
 		}
 	})
 	bench.slowest_rules = by_time.map('${it} ${stats.rule_ms[it]:.1f}')
+	mut by_method := methods.keys()
+	by_method.sort_with_compare(fn [methods] (a &string, b &string) int {
+		ta := methods[*a].time
+		tb := methods[*b].time
+		return if ta > tb {
+			-1
+		} else if ta < tb {
+			1
+		} else {
+			compare_strings(a, b)
+		}
+	})
+	bench.tsgo_methods = by_method.map('${it} ${methods[it].count} ${f64(methods[it].time) / f64(time.millisecond):.1f}')
 	print(summary.table())
 	fixed_note := if opts.fix { '; ${fixed_files} files fixed' } else { '' }
 	eprintln(summary_line(problems, files.len, warnings) + fixed_note)

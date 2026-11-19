@@ -55,6 +55,7 @@ chmod u+w "$out/session.go"
 # The overlay's paths are absolute, so it is written per machine.
 cat > "$out/overlay.json" <<JSON
 {"Replace": {"$module/internal/api/veslint_inprocess.go": "$here/api_inprocess.go",
+"$module/internal/api/veslint_fastjson.go": "$here/api_fastjson.go",
 "$module/internal/api/session.go": "$out/session.go"}}
 JSON
 cd "$out/mod"

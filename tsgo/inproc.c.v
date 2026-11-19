@@ -119,7 +119,9 @@ fn (mut c Client) inproc_request(method string, payload string) !string {
 	}
 	sw := time.new_stopwatch()
 	C.veslint_tsgo_invoke(&call)
-	c.inproc_time += sw.elapsed()
+	elapsed := sw.elapsed()
+	c.inproc_time += elapsed
+	c.count_method(method, elapsed)
 	c.requests++
 	answer := inproc_out(&call)
 	if call.result == i64(msg_response) {
