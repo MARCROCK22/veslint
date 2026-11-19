@@ -66,6 +66,13 @@ fn (mut c Checker) lint_no_fallthrough(root C.TSNode, abs_path string, mut stats
 	sw := time.new_stopwatch()
 	opts := c.nft_lint_options(c.rule_options(no_fallthrough))!
 	mut findings := []Finding{}
+	// Only the SwitchCase nodes matter: a TypeScript file without a `switch` needs neither its
+	// ESTree nor its code paths (built on first use, they were a fifth of a lint without types).
+	// The template of a .vue or .svelte file is not in this tree.
+	if !c.is_vue() && !c.is_svelte() && c.nodes_of_kind(root, c'switch_statement').len == 0 {
+		stats.eval_ms += ms(sw.elapsed())
+		return findings
+	}
 	an := c.code_path_analysis(root, abs_path) or { return findings }
 	t := c.es_tree(root, abs_path) or { return findings }
 	tokens := c.source_tokens(t.nodes[t.root].ts)

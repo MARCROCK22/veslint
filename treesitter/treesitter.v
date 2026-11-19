@@ -8,6 +8,8 @@ module treesitter
 #flag @VMODROOT/vendor/tree-sitter/libtree-sitter.a
 #include "tree_sitter/api.h"
 #include "@VMODROOT/treesitter/parent_cache.h"
+#include "@VMODROOT/treesitter/field_cache.h"
+#include "@VMODROOT/treesitter/children.h"
 
 @[typedef]
 struct C.TSParser {}
@@ -83,7 +85,8 @@ fn C.ts_node_child(self C.TSNode, child_index u32) C.TSNode
 fn C.ts_node_child_count(self C.TSNode) u32
 fn C.ts_node_named_child(self C.TSNode, child_index u32) C.TSNode
 fn C.ts_node_named_child_count(self C.TSNode) u32
-fn C.ts_node_child_by_field_name(self C.TSNode, name &char, name_length u32) C.TSNode
+fn C.vt_node_child_by_field_name(self C.TSNode, name &char, name_length u32) C.TSNode
+fn C.vt_children(self C.TSNode, named bool, out &C.TSNode, capacity u32) int
 fn C.ts_node_parent(self C.TSNode) C.TSNode
 fn C.vt_node_parent(node C.TSNode) C.TSNode
 fn C.vt_parent_cache_begin(root C.TSNode)
@@ -331,9 +334,10 @@ pub fn node_end(n C.TSNode) int {
 	return int(C.ts_node_end_byte(n))
 }
 
-// node_field returns the child with that field name, if any.
+// node_field returns the child with that field name, if any (field_cache.h: the id of the name is
+// looked up once).
 pub fn node_field(n C.TSNode, name string) ?C.TSNode {
-	child := C.ts_node_child_by_field_name(n, &char(name.str), u32(name.len))
+	child := C.vt_node_child_by_field_name(n, &char(name.str), u32(name.len))
 	if C.ts_node_is_null(child) {
 		return none
 	}
@@ -343,22 +347,32 @@ pub fn node_field(n C.TSNode, name string) ?C.TSNode {
 // named_children returns the named children, without comments.
 pub fn named_children(n C.TSNode) []C.TSNode {
 	count := int(C.ts_node_named_child_count(n))
-	mut named := []C.TSNode{cap: count}
-	for i in 0 .. count {
-		child := C.ts_node_named_child(n, u32(i))
-		if node_kind(child) != 'comment' {
-			named << child
+	mut named := []C.TSNode{len: count}
+	if count > 0 && C.vt_children(n, true, &C.TSNode(named.data), u32(count)) != count {
+		// What children.h leaves to ts_node_named_child.
+		for i in 0 .. count {
+			named[i] = C.ts_node_named_child(n, u32(i))
 		}
 	}
+	mut kept := 0
+	for i in 0 .. count {
+		if node_kind(named[i]) != 'comment' {
+			named[kept] = named[i]
+			kept++
+		}
+	}
+	named.trim(kept)
 	return named
 }
 
 // children returns all the children, also the anonymous ones (`=>`, `async`…) and comments.
 pub fn children(n C.TSNode) []C.TSNode {
 	count := int(C.ts_node_child_count(n))
-	mut out := []C.TSNode{cap: count}
-	for i in 0 .. count {
-		out << C.ts_node_child(n, u32(i))
+	mut out := []C.TSNode{len: count}
+	if count > 0 && C.vt_children(n, false, &C.TSNode(out.data), u32(count)) != count {
+		for i in 0 .. count {
+			out[i] = C.ts_node_child(n, u32(i))
+		}
 	}
 	return out
 }

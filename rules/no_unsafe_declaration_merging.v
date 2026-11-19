@@ -14,9 +14,15 @@ fn (mut c Checker) lint_no_unsafe_declaration_merging(root C.TSNode, abs_path st
 	sw := time.new_stopwatch()
 	mut findings := []Finding{}
 	mut checked := 0
+	nodes := c.nodes_of_kinds(root, ['class_declaration', 'abstract_class_declaration',
+		'interface_declaration'], [])
+	if nodes.len == 0 {
+		// No scope tree needed (it is built on first use).
+		stats.eval_ms += ms(sw.elapsed())
+		return findings
+	}
 	tree := c.scope_tree(root)
-	for node in c.nodes_of_kinds(root, ['class_declaration', 'abstract_class_declaration',
-		'interface_declaration'], []) {
+	for node in nodes {
 		id := node_field(node, 'name') or { continue }
 		checked++
 		if node_kind(node) == 'interface_declaration' {

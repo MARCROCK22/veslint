@@ -519,7 +519,7 @@ fn (mut c Checker) es_is_parenthesised(n C.TSNode) bool {
 	tokens := c.source_tokens(n)
 	before := tokens.before(node_start(n), false) or { return false }
 	after := tokens.after(c.es_end(n), false) or { return false }
-	return c.src[before.start..before.end] == '(' && c.src[after.start..after.end] == ')'
+	return src_view(c.src, before.start, before.end) == '(' && src_view(c.src, after.start, after.end) == ')'
 }
 
 // es_for_head_position ports typescript-eslint's getForStatementHeadLoc: from the start of the
@@ -533,7 +533,7 @@ fn (mut c Checker) es_for_head_position(loop C.TSNode) Ident {
 		if token.start < node_start(loop) {
 			break
 		}
-		if c.src[token.start..token.end] == ')' {
+		if src_view(c.src, token.start, token.end) == ')' {
 			return c.position_range(node_start(loop), token.end)
 		}
 		at = token.start
@@ -656,7 +656,7 @@ fn (mut c Checker) es_params_paren(f C.TSNode) int {
 		if token.start >= node_end(f) {
 			break
 		}
-		if c.src[token.start..token.end] == '(' {
+		if src_view(c.src, token.start, token.end) == '(' {
 			return token.start
 		}
 		at = token.end
@@ -675,8 +675,8 @@ fn (mut c Checker) es_is_parenthesised_twice(n C.TSNode) bool {
 	after := tokens.after(c.es_end(n), false) or { return false }
 	outer_before := tokens.before(before.start, false) or { return false }
 	outer_after := tokens.after(after.end, false) or { return false }
-	return c.src[outer_before.start..outer_before.end] == '('
-		&& c.src[outer_after.start..outer_after.end] == ')'
+	return src_view(c.src, outer_before.start, outer_before.end) == '('
+		&& src_view(c.src, outer_after.start, outer_after.end) == ')'
 }
 
 // es_precedence ports getPrecedence of ESLint's ast-utils for the ESTree node of `n`: 20 for the

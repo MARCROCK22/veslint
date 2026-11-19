@@ -1320,7 +1320,24 @@ pub const untyped_rules = [adjacent_overload_signatures, array_type, class_liter
 
 // needs_types tells whether a rule asks tsgo for the types of the program.
 pub fn needs_types(rule string) bool {
-	return rule !in untyped_rules
+	return rule !in untyped_rule_set
+}
+
+// untyped_rule_set has the rules of untyped_rules and rule_order the place of each rule in
+// `names`: maps, as they are looked up for every rule of every file (a search of the lists
+// compared hundreds of strings each time).
+const untyped_rule_set = first_indexes(untyped_rules)
+const rule_order = first_indexes(names)
+
+// first_indexes is the index of the first occurrence of each string of the list.
+fn first_indexes(list []string) map[string]int {
+	mut out := map[string]int{}
+	for i, name in list {
+		if name !in out {
+			out[name] = i
+		}
+	}
+	return out
 }
 
 // default_options are the default options of each rule (`defaultOptions` of typescript-eslint
@@ -3494,7 +3511,11 @@ fn sort_rule_findings(findings []Finding) []Finding {
 			return if fa.stmt.start_byte < fb.stmt.start_byte { -1 } else { 1 }
 		}
 		if fa.rule != fb.rule {
-			return if names.index(fa.rule) < names.index(fb.rule) { -1 } else { 1 }
+			return if (rule_order[fa.rule] or { -1 }) < (rule_order[fb.rule] or { -1 }) {
+				-1
+			} else {
+				1
+			}
 		}
 		return *a - *b
 	})

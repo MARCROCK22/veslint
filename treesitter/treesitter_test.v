@@ -222,3 +222,65 @@ fn same_index_and_ends(p Parser, src string) int {
 	assert index.anonymous == alone.anonymous
 	return expected.ends.len
 }
+
+// children and named_children (one walk of a cursor, children.h) give what ts_node_child and
+// ts_node_named_child give, for every node of the rules' fixtures and of .tsx ones.
+fn test_children_are_tree_sitters() {
+	p := new_parser() or { panic(err) }
+	tsx := new_tsx_parser() or { panic(err) }
+	defer {
+		p.close()
+		tsx.close()
+	}
+	mut files := os.walk_ext(os.join_path(@VMODROOT, 'tests', 'rules'), '.ts')
+	files.sort()
+	mut tsx_files := os.walk_ext(os.join_path(@VMODROOT, 'tests', 'rules'), '.tsx')
+	tsx_files.sort()
+	mut checked := 0
+	for file in files#[..300] {
+		checked += same_children(p, os.read_file(file) or { panic(err) })
+	}
+	for file in tsx_files#[..100] {
+		checked += same_children(tsx, os.read_file(file) or { panic(err) })
+	}
+	checked += same_children(p, 'a\nb /* c */ ) d; { x; /* y */ z }')
+	assert checked > 100000
+}
+
+fn same_children(p Parser, src string) int {
+	tree := p.parse(src) or { panic(err) }
+	defer {
+		tree_delete(tree)
+	}
+	mut checked := 0
+	mut cursor := C.ts_tree_cursor_new(root_node(tree))
+	defer {
+		C.ts_tree_cursor_delete(&cursor)
+	}
+	for {
+		node := C.ts_tree_cursor_current_node(&cursor)
+		all := children(node)
+		assert all.len == int(C.ts_node_child_count(node))
+		for i, child in all {
+			assert C.ts_node_eq(child, C.ts_node_child(node, u32(i)))
+		}
+		mut named := []C.TSNode{}
+		for i in 0 .. int(C.ts_node_named_child_count(node)) {
+			child := C.ts_node_named_child(node, u32(i))
+			if node_kind(child) != 'comment' {
+				named << child
+			}
+		}
+		assert same_nodes(named_children(node), named), src
+		checked++
+		if C.ts_tree_cursor_goto_first_child(&cursor) {
+			continue
+		}
+		for !C.ts_tree_cursor_goto_next_sibling(&cursor) {
+			if !C.ts_tree_cursor_goto_parent(&cursor) {
+				return checked
+			}
+		}
+	}
+	return checked
+}
