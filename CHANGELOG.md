@@ -2,6 +2,12 @@
 
 Each version is a release on GitHub with the veslint binaries (Linux x64, Windows x64) and the VS Code extension. The section of a version is the text of its release.
 
+## 0.38.0
+
+- **@eslint-community/eslint-plugin-eslint-comments 4.8.1: all 8 rules** (`disable-enable-pair`, `no-aggregating-enable`, `no-duplicate-disable`, `no-restricted-disable`, `no-unlimited-disable`, `no-unused-enable`, `no-use`, `require-description`; `no-unused-disable` is deprecated and not ported), with every case of their own tests. `no-restricted-disable` matches rule names with a port of the `ignore` package 7.0.14.
+- **eslint-plugin-promise 7.3.0: all 17 rules**, with their options and the fixes of `no-new-statics` and `prefer-catch`, and every case of their own tests (522).
+- **typescript-eslint rules:** a generator or an accessor named `constructor` (`*constructor() {}`, `get constructor() {}`) is a method, not the class's constructor, in the nine rules that look for the constructor (`promise-function-async`, `naming-convention`, `no-misused-promises`, `strict-void-return`, `prefer-readonly`…); `no-unnecessary-type-assertion` no longer reports the `!` that ends an optional chain on the left of an assignment (`c?.d! = b`); `naming-convention` writes U+2028 and U+2029 of a `custom.regex` as `\u2028` and `\u2029` in its message, as ESLint does.
+
 ## 0.37.0
 
 - **Parsing errors as ESLint gives them.** A TypeScript file its parser rejects is ESLint's fatal `Parsing error` (TypeScript's first syntactic diagnostic, at its place), not a warning with partial results; syntax only veslint's grammar does not read is still linted on with a warning. The same for the scripts of `.vue` files, at the place vue-eslint-parser gives, also with a `<script>` and a `<script setup>` together. In `.svelte` files, an error of the Svelte compiler in a template expression comes before one of the script, as in ESLint.
