@@ -125,6 +125,9 @@ const eslint = new ESLint(mode === 'lookup' ? { cwd } : { cwd, overrideConfigFil
 const configs = [];
 const indexes = new Map();
 const pluginRules = new Set();
+// Whether a configuration loads typescript-eslint's plugin (as `@typescript-eslint`): without it,
+// a directive comment for one of its rules names a rule that does not exist.
+let typescriptEslint = false;
 const ruleDefaults = {};
 const out = [];
 for (const file of files) {
@@ -136,7 +139,8 @@ for (const file of files) {
     continue;
   }
   for (const [namespace, plugin] of Object.entries(config.plugins ?? {})) {
-    if (namespace === '@') continue;
+    if (namespace === '@typescript-eslint') typescriptEslint = true;
+    if (namespace === '@' || namespace === '@typescript-eslint') continue;
     for (const name of Object.keys(plugin?.rules ?? {})) pluginRules.add(namespace + '/' + name);
   }
   // With reportUnusedInlineConfigs, ESLint compares the options of a configuration comment, on
@@ -236,7 +240,7 @@ for (const file of files) {
   }
   out.push(entry);
 }
-const result = { eslint: ESLint.version, pluginRules: [...pluginRules].sort(), configs, files: out };
+const result = { eslint: ESLint.version, pluginRules: [...pluginRules].sort(), typescriptEslint, configs, files: out };
 if (Object.keys(ruleDefaults).length > 0) {
   result.ruleDefaults = Object.fromEntries(Object.entries(ruleDefaults).sort(([a], [b]) => (a < b ? -1 : 1)));
 }
@@ -532,6 +536,9 @@ struct LoadedConfig {
 	file_notes     map[string]string
 	plugin_rules   []string
 	strict_plugins bool
+	// Whether ESLint's configuration loads typescript-eslint's plugin; a resolved configuration
+	// saved by an older veslint does not say, and has it.
+	typescript_eslint bool = true
 	// The default options (meta.defaultOptions) of the rules that have them, when ESLint
 	// resolved the configuration and some part of it has reportUnusedInlineConfigs.
 	rule_defaults map[string]json2.Any
@@ -582,6 +589,7 @@ fn (l &LoadedConfig) lint_config(index int) rules.LintConfig {
 		only_rule:            l.only_rule
 		plugin_rules:         l.plugin_rules
 		strict_plugins:       l.strict_plugins
+		typescript_eslint:    l.typescript_eslint
 		plugins:              entry.plugins
 		report_unused:        entry.report_unused
 		report_unused_inline: entry.report_unused_inline
@@ -786,14 +794,15 @@ fn loaded_from_resolved(text string, path string, base_dir string, files []strin
 		}
 	}
 	return LoadedConfig{
-		configs:        configs
-		file_config:    file_config
-		file_notes:     file_notes
-		file_runes:     file_runes
-		plugin_rules:   (object['pluginRules'] or { json2.Any([]json2.Any{}) }).as_array().map(it.str())
-		strict_plugins: 'pluginRules' in object
-		rule_defaults:  (object['ruleDefaults'] or { json2.Any(map[string]json2.Any{}) }).as_map()
-		resolved:       portable_resolved(object, base_dir)
+		configs:           configs
+		file_config:       file_config
+		file_notes:        file_notes
+		file_runes:        file_runes
+		plugin_rules:      (object['pluginRules'] or { json2.Any([]json2.Any{}) }).as_array().map(it.str())
+		strict_plugins:    'pluginRules' in object
+		typescript_eslint: (object['typescriptEslint'] or { json2.Any(true) }).bool()
+		rule_defaults:     (object['ruleDefaults'] or { json2.Any(map[string]json2.Any{}) }).as_map()
+		resolved:          portable_resolved(object, base_dir)
 	}
 }
 

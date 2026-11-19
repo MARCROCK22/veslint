@@ -262,6 +262,16 @@ else
 	ko "--config with a resolved ESLint configuration (code $code)"
 	cat "$TMP/config.err"
 fi
+# A resolved configuration saved by veslint 0.38 or older (resolved-0.38.json: no `typescriptEslint`
+# key) still has typescript-eslint's rules.
+code=0
+(cd tests/config && ../../veslint --config resolved-0.38.json --fixes "${config_files[@]}") > "$TMP/config-0.38.out" 2> "$TMP/config-0.38.err" || code=$?
+if [[ $code -eq 1 ]] && diff -u tests/config/expected.txt "$TMP/config-0.38.out"; then
+	ok "--config with a resolved configuration of veslint 0.38"
+else
+	ko "--config with a resolved configuration of veslint 0.38 (code $code)"
+	cat "$TMP/config-0.38.err"
+fi
 if command -v bun > /dev/null && [[ -d build/eval/spider-byte/node_modules/eslint ]]; then
 	code=0
 	(cd tests/config && VESLINT_ESLINT_DIR=../../build/eval/spider-byte ../../veslint --config eslint.config.mjs --fixes "${config_files[@]}") > "$TMP/config-bun.out" 2> "$TMP/config-bun.err" || code=$?
