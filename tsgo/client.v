@@ -61,6 +61,9 @@ mut:
 	module_resolvers map[string]int
 	module_exports   map[string][]string
 	program_files    map[string][]string // by `snapshot:project` (source_file_names)
+	// inproc is the handle of TypeScript's session in this process (inproc.c.v); 0 with the
+	// process transport.
+	inproc i64
 }
 
 // binary_path returns the path of the pinned binary for the veslint executable (see
@@ -126,6 +129,9 @@ fn (mut c Client) add_virtual(path string) {
 	c.virtual[key] = true
 	dir := path_key(os.dir(path))
 	c.virtual_dirs[dir] << os.file_name(path)
+	if c.inproc != 0 {
+		c.inproc_set_virtual(path, true)
+	}
 }
 
 // remove_virtual makes `path` no longer a file for tsgo (tsgo has to be told it was deleted).
@@ -137,6 +143,9 @@ pub fn (mut c Client) remove_virtual(path string) {
 	name := os.file_name(path)
 	if names := c.virtual_dirs[dir] {
 		c.virtual_dirs[dir] = names.filter(it != name)
+	}
+	if c.inproc != 0 {
+		c.inproc_set_virtual(path, false)
 	}
 }
 
@@ -151,6 +160,9 @@ pub fn (c &Client) has_virtual_fs() bool {
 // this tells.
 pub fn (mut c Client) serve_virtual(path string, text string) bool {
 	c.served[path_key(path)] = text
+	if c.inproc != 0 {
+		c.inproc_serve(path, text)
+	}
 	is_new := path_key(path) !in c.virtual
 	c.add_virtual(path)
 	return is_new
@@ -166,7 +178,16 @@ fn start_process(bin string, cwd string, timeout time.Duration, files map[string
 	return start_process_with(bin, cwd, timeout, files, callbacks, false)
 }
 
+// start_process_with starts TypeScript with the transport of VESLINT_TSGO: in this process
+// (inproc.c.v) or `tsc --api` (start_tsc_process).
 fn start_process_with(bin string, cwd string, timeout time.Duration, files map[string]string, callbacks bool, virtual_fs bool) !&Client {
+	return match transport_from_env()! {
+		.inproc { start_inproc(bin, cwd, timeout, files, callbacks, virtual_fs)! }
+		.process { start_tsc_process(bin, cwd, timeout, files, callbacks, virtual_fs)! }
+	}
+}
+
+fn start_tsc_process(bin string, cwd string, timeout time.Duration, files map[string]string, callbacks bool, virtual_fs bool) !&Client {
 	if !os.is_file(bin) || !os.is_executable(bin) {
 		return missing_binary_error(bin, current_host())
 	}
@@ -206,6 +227,9 @@ fn start_process_with(bin string, cwd string, timeout time.Duration, files map[s
 // on disk (a client of start_serving).
 pub fn (mut c Client) serve(path string, text string) {
 	c.served[path_key(path)] = text
+	if c.inproc != 0 {
+		c.inproc_serve(path, text)
+	}
 }
 
 // served_by_key keys the served texts by path_key, as tsgo's readFile callback names them.
@@ -221,6 +245,9 @@ fn served_by_key(files map[string]string) map[string]string {
 // text on disk is the one to read.
 pub fn (mut c Client) stop_serving(path string) {
 	c.served.delete(path_key(path))
+	if c.inproc != 0 {
+		c.inproc_stop_serving(path)
+	}
 }
 
 // FileContent is the answer to a readFile callback that has the text (encodeFileSystemCallbackResult
@@ -365,6 +392,9 @@ fn (mut c Client) request(method string, payload string) !string {
 	if c.closed {
 		return error('tsgo is already closed')
 	}
+	if c.inproc != 0 {
+		return c.inproc_request(method, payload)
+	}
 	sw := time.new_stopwatch()
 	written := write_frame(c.proc.stdio_fd[0], encode_frame(msg_request, method, payload),
 		c.timeout) or {
@@ -460,6 +490,10 @@ pub fn (mut c Client) shutdown() {
 		return
 	}
 	c.closed = true
+	if c.inproc != 0 {
+		c.inproc_close()
+		return
+	}
 	if c.proc.stdio_fd[0] != -1 {
 		close_fd(c.proc.stdio_fd[0])
 		c.proc.stdio_fd[0] = -1

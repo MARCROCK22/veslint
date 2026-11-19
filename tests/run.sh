@@ -1136,6 +1136,10 @@ platform_package() {
 	echo "typescript-$os-$arch"
 }
 
+# The tests up to the end of section 4 are of the process transport (`tsc --api` over a pipe), so
+# they run with VESLINT_TSGO=process; with the default, TypeScript is linked into veslint and no
+# binary is needed (the tests after them).
+export VESLINT_TSGO=process
 # sandbox MODE: copies veslint to a directory whose tsgo is tests/fake_tsgo.sh MODE; on Windows,
 # tests/fake_tsgo.v compiled to tsc.exe, with the mode in a file next to it.
 # Fake tsgo processes left waiting are named `fake-tsgo-<tag>-*`, with a tag of this run (on
@@ -1322,6 +1326,19 @@ else
 		fi
 	fi
 fi
+
+unset VESLINT_TSGO
+# TypeScript in veslint's process (tsgo/inproc.c.v, the default): no binary is needed, the libs are
+# the ones embedded in it; a request TypeScript rejects is an error as over the pipe.
+veslint_out=$("$(sandbox missing)" app.ts 2>&1 || true)
+if [[ $veslint_out == "$(cat tests/expected/app.txt)" ]]; then
+	ok "in process: no TypeScript binary needed"
+else
+	ko "in process: no TypeScript binary needed"
+	echo "$veslint_out" | head -20
+fi
+expect_error "in process: message type 5" "source file not found" ./veslint --project tsconfig.json tests/fixtures/emoji.ts
+expect_error "VESLINT_TSGO with an unknown value" "VESLINT_TSGO must be" env VESLINT_TSGO=pipe ./veslint app.ts
 
 # --server (server.v): a scenario with unsaved text, a file closed without saving, files changed on
 # disk, a reset, errors, and a declaration the server keeps between snapshots that changes
