@@ -103,7 +103,31 @@ fn (k Kid) is_tok(tok string) bool {
 	return !k.named && k.kind == tok && node_end(k.n) > node_start(k.n)
 }
 
+// The children come from the flat tree (flat_tree.h) when the node is in it, else from a walk of
+// the converter's cursor: the same nodes, with the field the cursor gives them.
 fn (mut c Converter) kids(n C.TSNode) []Kid {
+	index := C.vt_flat_find(n)
+	if index >= 0 {
+		flat := C.vt_flat_nodes()
+		if i64(unsafe { flat[index].last }) == index {
+			return []Kid{}
+		}
+		mut out := []Kid{cap: int(C.ts_node_child_count(n))}
+		mut child := u32(index + 1)
+		for child != treesitter.flat_none {
+			k := unsafe { &flat[child] }
+			if k.flags & treesitter.flat_extra == 0 {
+				out << Kid{
+					n:     k.node
+					kind:  c.symbol_name(k.symbol, k.node)
+					field: c.field_names[k.field]
+					named: k.flags & treesitter.flat_named != 0
+				}
+			}
+			child = k.next
+		}
+		return out
+	}
 	C.ts_tree_cursor_reset(&c.cursor, n)
 	mut out := []Kid{cap: int(C.ts_node_child_count(n))}
 	if !C.ts_tree_cursor_goto_first_child(&c.cursor) {
@@ -128,7 +152,12 @@ fn (mut c Converter) kids(n C.TSNode) []Kid {
 
 // kind_name is node_kind with a cache per symbol.
 fn (mut c Converter) kind_name(n C.TSNode) string {
-	symbol := int(C.ts_node_symbol(n))
+	return c.symbol_name(C.ts_node_symbol(n), n)
+}
+
+// symbol_name is the kind of `n`, whose symbol is `sym`.
+fn (mut c Converter) symbol_name(sym u16, n C.TSNode) string {
+	symbol := int(sym)
 	if symbol < c.kind_names.len {
 		name := c.kind_names[symbol]
 		if name.len > 0 {
@@ -144,6 +173,28 @@ fn (mut c Converter) kind_name(n C.TSNode) string {
 // named are the named children (no comments): kids(n).filter(it.named), without the array of
 // all the kids.
 fn (mut c Converter) named(n C.TSNode) []Kid {
+	index := C.vt_flat_find(n)
+	if index >= 0 {
+		flat := C.vt_flat_nodes()
+		if i64(unsafe { flat[index].last }) == index {
+			return []Kid{}
+		}
+		mut out := []Kid{cap: int(C.ts_node_named_child_count(n))}
+		mut child := u32(index + 1)
+		for child != treesitter.flat_none {
+			k := unsafe { &flat[child] }
+			if k.flags & (treesitter.flat_extra | treesitter.flat_named) == treesitter.flat_named {
+				out << Kid{
+					n:     k.node
+					kind:  c.symbol_name(k.symbol, k.node)
+					field: c.field_names[k.field]
+					named: true
+				}
+			}
+			child = k.next
+		}
+		return out
+	}
 	C.ts_tree_cursor_reset(&c.cursor, n)
 	mut out := []Kid{cap: int(C.ts_node_named_child_count(n))}
 	if !C.ts_tree_cursor_goto_first_child(&c.cursor) {
@@ -168,6 +219,27 @@ fn (mut c Converter) named(n C.TSNode) []Kid {
 
 // first_named_kid is first_named(c.kids(n)), without the array of the kids.
 fn (mut c Converter) first_named_kid(n C.TSNode) ?Kid {
+	index := C.vt_flat_find(n)
+	if index >= 0 {
+		flat := C.vt_flat_nodes()
+		if i64(unsafe { flat[index].last }) == index {
+			return none
+		}
+		mut child := u32(index + 1)
+		for child != treesitter.flat_none {
+			k := unsafe { &flat[child] }
+			if k.flags & (treesitter.flat_extra | treesitter.flat_named) == treesitter.flat_named {
+				return Kid{
+					n:     k.node
+					kind:  c.symbol_name(k.symbol, k.node)
+					field: c.field_names[k.field]
+					named: true
+				}
+			}
+			child = k.next
+		}
+		return none
+	}
 	C.ts_tree_cursor_reset(&c.cursor, n)
 	if !C.ts_tree_cursor_goto_first_child(&c.cursor) {
 		return none
@@ -191,6 +263,30 @@ fn (mut c Converter) first_named_kid(n C.TSNode) ?Kid {
 
 // field is the first kid with that field name, found without the array of the kids.
 fn (mut c Converter) field(n C.TSNode, name string) ?Kid {
+	index := C.vt_flat_find(n)
+	if index >= 0 {
+		flat := C.vt_flat_nodes()
+		if i64(unsafe { flat[index].last }) == index {
+			return none
+		}
+		mut child := u32(index + 1)
+		for child != treesitter.flat_none {
+			k := unsafe { &flat[child] }
+			if k.flags & treesitter.flat_extra == 0 && k.field != 0 {
+				field := c.field_names[k.field]
+				if field == name {
+					return Kid{
+						n:     k.node
+						kind:  c.symbol_name(k.symbol, k.node)
+						field: field
+						named: k.flags & treesitter.flat_named != 0
+					}
+				}
+			}
+			child = k.next
+		}
+		return none
+	}
 	C.ts_tree_cursor_reset(&c.cursor, n)
 	if !C.ts_tree_cursor_goto_first_child(&c.cursor) {
 		return none

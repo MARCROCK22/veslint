@@ -223,8 +223,9 @@ fn same_index_and_ends(p Parser, src string) int {
 	return expected.ends.len
 }
 
-// children and named_children (one walk of a cursor, children.h) give what ts_node_child and
-// ts_node_named_child give, for every node of the rules' fixtures and of .tsx ones.
+// children and named_children (from the flat tree, or from one walk of a cursor without it:
+// flat_tree.h) give what ts_node_child and ts_node_named_child give, and node_parent what
+// ts_node_parent gives, for every node of the rules' fixtures and of .tsx ones.
 fn test_children_are_tree_sitters() {
 	p := new_parser() or { panic(err) }
 	tsx := new_tsx_parser() or { panic(err) }
@@ -237,20 +238,26 @@ fn test_children_are_tree_sitters() {
 	mut tsx_files := os.walk_ext(os.join_path(@VMODROOT, 'tests', 'rules'), '.tsx')
 	tsx_files.sort()
 	mut checked := 0
-	for file in files#[..300] {
-		checked += same_children(p, os.read_file(file) or { panic(err) })
+	for flat in [false, true] {
+		for file in files#[..300] {
+			checked += same_children(p, os.read_file(file) or { panic(err) }, flat)
+		}
+		for file in tsx_files#[..100] {
+			checked += same_children(tsx, os.read_file(file) or { panic(err) }, flat)
+		}
+		checked += same_children(p, 'a\nb /* c */ ) d; { x; /* y */ z }', flat)
 	}
-	for file in tsx_files#[..100] {
-		checked += same_children(tsx, os.read_file(file) or { panic(err) })
-	}
-	checked += same_children(p, 'a\nb /* c */ ) d; { x; /* y */ z }')
-	assert checked > 100000
+	assert checked > 200000
 }
 
-fn same_children(p Parser, src string) int {
+fn same_children(p Parser, src string, flat bool) int {
 	tree := p.parse(src) or { panic(err) }
 	defer {
+		parent_cache_clear()
 		tree_delete(tree)
+	}
+	if flat {
+		_ := new_node_index(root_node(tree))
 	}
 	mut checked := 0
 	mut cursor := C.ts_tree_cursor_new(root_node(tree))
@@ -272,6 +279,11 @@ fn same_children(p Parser, src string) int {
 			}
 		}
 		assert same_nodes(named_children(node), named), src
+		if parent := node_parent(node) {
+			assert C.ts_node_eq(parent, C.ts_node_parent(node)), src
+		} else {
+			assert C.ts_node_is_null(C.ts_node_parent(node)), src
+		}
 		checked++
 		if C.ts_tree_cursor_goto_first_child(&cursor) {
 			continue

@@ -15,8 +15,8 @@ mut:
 	count     int // nodes recorded
 }
 
-// KindBucket holds the nodes of a kind in preorder. `seq` is the place of each among the recorded
-// nodes of the tree, in preorder, and `last` is the place of the last one in its subtree.
+// KindBucket holds the nodes of a kind in preorder. `seq` is the place of each in the preorder of
+// the tree, and `last` is the place of the last node of its subtree.
 struct KindBucket {
 mut:
 	nodes []C.TSNode
@@ -25,8 +25,9 @@ mut:
 }
 
 // new_node_index walks the tree under `root` once. It records the named nodes, which are the ones
-// asked for, and the anonymous nodes with children, which can only be skipped; and, for
-// node_parent, the parent of every node under `root` (parent_cache.h, this thread's).
+// asked for, and the anonymous nodes with children, which can only be skipped; and makes this
+// thread's flat tree (flat_tree.h), where node_parent, children and named_children find the nodes
+// under `root`.
 pub fn new_node_index(root C.TSNode) NodeIndex {
 	ix, _ := index_tree(root, false)
 	return ix
@@ -71,43 +72,36 @@ fn symbol_flags(node C.TSNode, symbol int, mut flags_of [symbol_states]u8) u8 {
 }
 
 // index_tree is new_node_index and, with `with_ends`, the ends token_ends gives: the same
-// preorder walk, where token_ends neither enters an extra node (a comment) nor counts it.
+// preorder walk, where token_ends neither enters an extra node (a comment) nor counts it. It walks
+// the tree once into this thread's flat tree (flat_tree.h) and reads that. The place of a node in
+// the flat tree is its `seq` in the buckets, and the place of the last node of its subtree its
+// `last`.
 fn index_tree(root C.TSNode, with_ends bool) (NodeIndex, []int) {
 	mut ix := NodeIndex{
 		root:  root
 		built: true
 	}
 	mut ends := []int{}
-	mut cursor := C.ts_tree_cursor_new(root)
-	defer {
-		C.ts_tree_cursor_delete(&cursor)
+	if !C.vt_flat_build(root) {
+		panic('veslint: out of memory for the flat tree of a file')
 	}
+	count := int(C.vt_flat_count())
+	flat := C.vt_flat_nodes()
 	// The bucket of each symbol of the grammar plus one, as a named and as an anonymous node (0:
 	// not asked yet), and its symbol_flags.
 	mut named_of := [symbol_states]int{}
 	mut anonymous_of := [symbol_states]int{}
 	mut flags_of := [symbol_states]u8{}
-	// The nodes whose children are being visited: the bucket of each (-1 if it is not recorded)
-	// and its place in it.
-	mut open_buckets := []int{}
-	mut open_places := []int{}
-	// The nodes whose children are being visited, the root first, and whether each is an extra
-	// node or in one (token_ends does not walk its children).
-	mut open_nodes := []C.TSNode{}
-	mut open_extra := []bool{}
-	C.vt_parent_cache_begin(root)
-	for {
-		node := C.ts_tree_cursor_current_node(&cursor)
-		has_parent := open_nodes.len > 0
-		if has_parent {
-			C.vt_parent_cache_put(node, open_nodes.last())
-		}
-		is_named := C.ts_node_is_named(node)
-		child_count := C.ts_node_child_count(node)
-		symbol := int(C.ts_node_symbol(node))
-		mut bucket := -1
-		mut place := 0
-		if is_named || child_count > 0 {
+	// The last node of the extra node (a comment) the walk is in, if it is in one: token_ends
+	// does not enter those.
+	mut extra_until := -1
+	for i in 0 .. count {
+		entry := unsafe { &flat[i] }
+		node := entry.node
+		is_named := entry.flags & flat_named != 0
+		has_children := int(entry.last) > i
+		symbol := int(entry.symbol)
+		if is_named || has_children {
 			known := if symbol >= symbol_states {
 				0
 			} else if is_named {
@@ -115,6 +109,7 @@ fn index_tree(root C.TSNode, with_ends bool) (NodeIndex, []int) {
 			} else {
 				anonymous_of[symbol]
 			}
+			mut bucket := 0
 			if known != 0 {
 				bucket = known - 1
 			} else {
@@ -127,61 +122,35 @@ fn index_tree(root C.TSNode, with_ends bool) (NodeIndex, []int) {
 					}
 				}
 			}
-			place = ix.buckets[bucket].nodes.len
 			ix.buckets[bucket].nodes << node
-			ix.buckets[bucket].seq << ix.count
-			ix.buckets[bucket].last << ix.count
+			ix.buckets[bucket].seq << i
+			ix.buckets[bucket].last << int(entry.last)
 			ix.count++
 		}
 		// What token_ends does with the node, outside extra nodes.
-		in_extra := has_parent && open_extra.last()
-		mut extra := false
-		if with_ends && !in_extra {
-			extra = C.ts_node_is_extra(node)
-			if !extra {
-				flags := symbol_flags(node, symbol, mut flags_of)
-				// The children of a JSX element have no leading trivia for TypeScript: the
-				// white space between them is JsxText, also the one with line breaks, which
-				// tree-sitter skips. So the start of each child counts as the end of a token.
-				if flags & symbol_jsx != 0 && has_parent {
-					parent := open_nodes.last()
-					if symbol_flags(parent, int(C.ts_node_symbol(parent)), mut flags_of) & symbol_jsx_element != 0
-						&& C.ts_node_start_byte(node) > C.ts_node_start_byte(parent) {
-						ends << int(C.ts_node_start_byte(node))
-					}
-				}
-				if child_count == 0 {
-					start := int(C.ts_node_start_byte(node))
-					end := int(C.ts_node_end_byte(node))
-					if end > start && flags & symbol_hash_bang == 0 {
-						ends << end
-					}
-				}
-			}
-		}
-		if C.ts_tree_cursor_goto_first_child(&cursor) {
-			open_buckets << bucket
-			open_places << place
-			open_nodes << node
-			open_extra << (in_extra || extra)
+		if !with_ends || i <= extra_until {
 			continue
 		}
-		for !C.ts_tree_cursor_goto_next_sibling(&cursor) {
-			if !C.ts_tree_cursor_goto_parent(&cursor) {
-				// Only the root is left open.
-				for i, open in open_buckets {
-					if open >= 0 {
-						ix.buckets[open].last[open_places[i]] = ix.count - 1
-					}
-				}
-				return ix, ends
+		if entry.flags & flat_extra != 0 {
+			extra_until = int(entry.last)
+			continue
+		}
+		flags := symbol_flags(node, symbol, mut flags_of)
+		// The children of a JSX element have no leading trivia for TypeScript: the white space
+		// between them is JsxText, also the one with line breaks, which tree-sitter skips. So the
+		// start of each child counts as the end of a token.
+		if flags & symbol_jsx != 0 && entry.parent != flat_none {
+			parent := unsafe { &flat[entry.parent] }
+			if symbol_flags(parent.node, int(parent.symbol), mut flags_of) & symbol_jsx_element != 0
+				&& C.ts_node_start_byte(node) > C.ts_node_start_byte(parent.node) {
+				ends << int(C.ts_node_start_byte(node))
 			}
-			open := open_buckets.pop()
-			open_place := open_places.pop()
-			open_nodes.delete_last()
-			open_extra.delete_last()
-			if open >= 0 {
-				ix.buckets[open].last[open_place] = ix.count - 1
+		}
+		if !has_children {
+			start := int(C.ts_node_start_byte(node))
+			end := int(C.ts_node_end_byte(node))
+			if end > start && flags & symbol_hash_bang == 0 {
+				ends << end
 			}
 		}
 	}
