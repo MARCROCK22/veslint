@@ -1,0 +1,9 @@
+tests/rules/regexp/no-missing-g-flag/cases.ts:3:35	regexp/no-missing-g-flag	missingGlobalFlag	The pattern given to the argument of `String#replaceAll()` requires the `g` flag, but is missing it.
+tests/rules/regexp/no-missing-g-flag/cases.ts:4:33	regexp/no-missing-g-flag	missingGlobalFlag	The pattern given to the argument of `String#matchAll()` requires the `g` flag, but is missing it.
+tests/rules/regexp/no-missing-g-flag/cases.ts:5:34	regexp/no-missing-g-flag	missingGlobalFlag	The pattern given to the argument of `String#matchAll()` requires the `g` flag, but is missing it.
+tests/rules/regexp/no-missing-g-flag/cases.ts:6:35	regexp/no-missing-g-flag	missingGlobalFlag	The pattern given to the argument of `String#replaceAll()` requires the `g` flag, but is missing it.
+tests/rules/regexp/no-missing-g-flag/cases.ts:8:33	regexp/no-missing-g-flag	missingGlobalFlag	The pattern given to the argument of `String#matchAll()` requires the `g` flag, but is missing it.
+tests/rules/regexp/no-missing-g-flag/cases.ts:10:33	regexp/no-missing-g-flag	missingGlobalFlag	The pattern given to the argument of `String#matchAll()` requires the `g` flag, but is missing it.
+tests/rules/regexp/no-missing-g-flag/cases.ts:11:40	regexp/no-missing-g-flag	missingGlobalFlag	The pattern given to the argument of `String#replaceAll()` requires the `g` flag, but is missing it.
+tests/rules/regexp/no-missing-g-flag/cases.ts:13:16	regexp/no-missing-g-flag	missingGlobalFlag	The pattern given to the argument of `String#replaceAll()` requires the `g` flag, but is missing it.
+tests/rules/regexp/no-missing-g-flag/not-strict/cases.ts:3:33	regexp/no-missing-g-flag	missingGlobalFlag	The pattern given to the argument of `String#matchAll()` requires the `g` flag, but is missing it.

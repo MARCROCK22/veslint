@@ -411,6 +411,8 @@ pub fn check_options(rule string, options []json2.Any) !bool {
 		regexp_no_lazy_ends { rxnle_options(options)! }
 		regexp_no_obscure_range { rxnor_allowed_option(options)! }
 		regexp_no_useless_character_class { rxnucc_options(options)! }
+		regexp_no_missing_g_flag { rxnmgf_options(options)! }
+		regexp_no_legacy_features { rxnlf_options(options)! }
 		else { return false }
 	}
 	return true

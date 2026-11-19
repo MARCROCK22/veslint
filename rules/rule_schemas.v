@@ -848,6 +848,10 @@ const rule_option_schemas = {
 	'regexp/no-trivially-nested-quantifier':                           '{"type":"array","minItems":0,"maxItems":0}'
 	'regexp/no-invisible-character':                                   '{"type":"array","minItems":0,"maxItems":0}'
 	'regexp/no-useless-character-class':                               '{"type":"array","items":[{"type":"object","properties":{"ignores":{"type":"array","items":{"type":"string","minLength":1},"uniqueItems":true}},"additionalProperties":false}],"minItems":0,"maxItems":1}'
+	'regexp/no-missing-g-flag':                                        '{"type":"array","items":[{"type":"object","properties":{"strictTypes":{"type":"boolean"}},"additionalProperties":false}],"minItems":0,"maxItems":1}'
+	'regexp/no-legacy-features':                                       '{"type":"array","items":[{"type":"object","properties":{"staticProperties":{"type":"array","items":{"enum":["input","\$_","lastMatch","\$&","lastParen","\$+","leftContext","\$`","rightContext","\$\'","\$1","\$2","\$3","\$4","\$5","\$6","\$7","\$8","\$9"]},"uniqueItems":true},"prototypeMethods":{"type":"array","items":{"enum":["compile"]},"uniqueItems":true}},"additionalProperties":false}],"minItems":0,"maxItems":1}'
+	'regexp/no-useless-dollar-replacements':                           '{"type":"array","minItems":0,"maxItems":0}'
+	'regexp/grapheme-string-literal':                                  '{"type":"array","minItems":0,"maxItems":0}'
 }
 
 // eslint_rule_default_options are the meta.defaultOptions of the rules of ESLint and of
