@@ -4,6 +4,15 @@
 # be the one of patches/tree-sitter-typescript.patch. Delete a .a, or vendor/v, to rebuild it.
 $ErrorActionPreference = 'Stop'
 $PSNativeCommandUseErrorActionPreference = $true
+
+# Write-Text writes a file without a final line break. Set-Content's -NoNewline is a dynamic
+# parameter of the FileSystem provider, which the CI's PowerShell did not offer for a new file
+# ("A parameter cannot be found that matches parameter name 'NoNewline'"); .NET needs a full
+# path, since its current directory is not PowerShell's location.
+function Write-Text([string]$Path, [string]$Text) {
+	$full = [System.IO.Path]::GetFullPath((Join-Path (Get-Location).Path $Path))
+	[System.IO.File]::WriteAllText($full, $Text)
+}
 Set-Location $PSScriptRoot
 
 # V at a commit of github.com/vlang/v (an older V does not parse the project), bootstrapped as its
@@ -73,7 +82,7 @@ if (-not (Test-Path build/libtree-sitter-typescript.a) -or -not (Test-Path $buil
 	}
 	Remove-Item -ErrorAction SilentlyContinue build/libtree-sitter-typescript.a
 	ar rcs build/libtree-sitter-typescript.a @objs
-	Set-Content -NoNewline $built $hash
+	Write-Text $built $hash
 }
 
 # TypeScript's API session, linked into veslint.exe (tsgo/inproc.c.v), as tsgo/inproc/build.sh builds
@@ -104,7 +113,7 @@ if (-not (Test-Path $archive) -or
 	$mod = 'tsgo/inproc/out/mod'
 	New-Item -ItemType Directory -Force $mod | Out-Null
 	Copy-Item tsgo/inproc/main.go, "$module/go.sum" $mod
-	Set-Content -NoNewline "$mod/go.mod" ("module github.com/microsoft/TypeScript/tsc/veslint_tsgo`n`ngo 1.27`n`n" +
+	Write-Text "$mod/go.mod" ("module github.com/microsoft/TypeScript/tsc/veslint_tsgo`n`ngo 1.27`n`n" +
 		"require github.com/microsoft/TypeScript/tsc v0.0.0`n`nreplace github.com/microsoft/TypeScript/tsc => $module`n")
 	# git applies the patch as `patch` would, outside any repository (GIT_CEILING_DIRECTORIES).
 	$out = (Resolve-Path tsgo/inproc/out).Path.Replace('\', '/')
@@ -119,7 +128,7 @@ if (-not (Test-Path $archive) -or
 		Remove-Item Env:GIT_CEILING_DIRECTORIES
 		Pop-Location
 	}
-	Set-Content -NoNewline tsgo/inproc/out/overlay.json `
+	Write-Text tsgo/inproc/out/overlay.json `
 		("{`"Replace`": {`"$module/internal/api/veslint_inprocess.go`": `"$inproc/api_inprocess.go`", " +
 		"`"$module/internal/api/veslint_fastjson.go`": `"$inproc/api_fastjson.go`", " +
 		"`"$module/internal/api/session.go`": `"$out/session.go`"}}")
