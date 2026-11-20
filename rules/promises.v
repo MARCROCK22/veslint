@@ -67,8 +67,27 @@ fn (mut c Checker) builtin_symbol_like_any(t TypeResponse, names []string, depth
 	if cached := c.builtin_cache[key] {
 		return cached
 	}
-	symbol := c.symbol_of(t)!
 	mut result := false
+	if c.client.in_process() {
+		// TypeScript in this process reads the name, the flags and the files of the declarations of
+		// the symbol, which came whole otherwise, and gives the base types of a class or interface.
+		if t.symbol != 0 {
+			leaf, bases := c.client.builtin_symbol_leaf(c.snapshot, c.project, t.id, names)!
+			if leaf == 1 {
+				result = true
+			} else if leaf == 2 {
+				for base in bases {
+					if c.builtin_symbol_like_any(base, names, depth + 1)! {
+						result = true
+						break
+					}
+				}
+			}
+		}
+		c.builtin_cache[key] = result
+		return result
+	}
+	symbol := c.symbol_of(t)!
 	if !symbol.is_null() {
 		if symbol.name in names && c.from_default_library(symbol.declarations)! {
 			result = true

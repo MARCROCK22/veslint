@@ -103,3 +103,27 @@ pub fn (mut c Client) to_string_like_from_object(snapshot int, project string, t
 pub fn (mut c Client) find_property(snapshot int, project string, type_id int, name string) !SymbolResponse {
 	return c.symbol_request(snapshot, 'veslint/findProperty', '{"snapshot":${snapshot},"project":${json_text(project)},"type":${type_id},"name":${json_text(name)}}')!
 }
+
+// builtin_symbol_leaf is the step of isBuiltinSymbolLike on a type that is not a union, an
+// intersection or a type parameter, and has a symbol (builtinSymbolLeaf in
+// tsgo/inproc/api_rules.go): 0 when the symbol does not count, 1 when it is one of `names` declared
+// in a default library, 2 with its base types when it is a class or an interface.
+pub fn (mut c Client) builtin_symbol_leaf(snapshot int, project string, type_id int, names []string) !(int, []TypeResponse) {
+	answer := c.request('veslint/builtinSymbolLeaf', '{"snapshot":${snapshot},"project":${json_text(project)},"type":${type_id},"names":[${names.map(json_text(it)).join(',')}]}')!
+	match answer {
+		'0' {
+			return 0, []TypeResponse{}
+		}
+		'1' {
+			return 1, []TypeResponse{}
+		}
+		else {
+			if !answer.starts_with('2') {
+				return error('invalid response from `veslint/builtinSymbolLeaf`: ${answer}')
+			}
+			bases := checked_decode[[]TypeResponse]('veslint/builtinSymbolLeaf', answer[1..],
+				fast_types)!
+			return 2, c.intern_types(snapshot, bases)
+		}
+	}
+}

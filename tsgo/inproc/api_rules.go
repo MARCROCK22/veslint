@@ -36,6 +36,8 @@ func (p *InProcess) veslintRequest(ctx context.Context, worker int, method strin
 		return p.toStringLikeFromObject(ctx, worker, params)
 	case "findProperty":
 		return p.findProperty(ctx, worker, params)
+	case "builtinSymbolLeaf":
+		return p.builtinSymbolLeaf(ctx, worker, params)
 	}
 	return nil, fmt.Errorf("%w: unknown method %s", ErrInvalidRequest, method)
 }
@@ -414,4 +416,64 @@ func (p *InProcess) findProperty(ctx context.Context, worker int, params []byte)
 		}
 	}
 	return (*SymbolResponse)(nil), nil
+}
+
+// builtinSymbolLeafParams: a type that is not a union, an intersection or a type parameter, and
+// names of symbols.
+type builtinSymbolLeafParams struct {
+	Snapshot SnapshotID `json:"snapshot"`
+	Project  project.ID `json:"project"`
+	Type     TypeID     `json:"type"`
+	Names    []string   `json:"names"`
+}
+
+// builtinSymbolLeaf is the step of isBuiltinSymbolLike on such a type (builtin_symbol_like_any of
+// rules/promises.v), which asked the whole symbol of the type, with all its declarations, for its
+// name, flags and the files of the declarations: `0` when its symbol does not count, `1` when its
+// name is one of `names` and it is declared in a default library, and `2` followed by its base
+// types (getDeclaredTypeOfSymbol, then getBaseTypes) when it is a class or an interface, whose
+// bases the client walks.
+func (p *InProcess) builtinSymbolLeaf(ctx context.Context, worker int, params []byte) (any, error) {
+	var in builtinSymbolLeafParams
+	if err := json.Unmarshal(params, &in); err != nil {
+		return nil, fmt.Errorf("%w: %w", ErrInvalidRequest, err)
+	}
+	setup, err := p.veslintSetup(ctx, worker, in.Snapshot, in.Project)
+	if err != nil {
+		return nil, err
+	}
+	defer setup.done()
+	t, err := setup.resolveTypeHandle(in.Type)
+	if err != nil {
+		return nil, err
+	}
+	symbol := t.Symbol()
+	if symbol == nil {
+		return RawBinary("0"), nil
+	}
+	name := ast.EscapeSymbolName(symbol.Name())
+	for _, n := range in.Names {
+		if n != name {
+			continue
+		}
+		for _, declaration := range symbol.Declarations() {
+			if setup.program.IsSourceFileDefaultLibrary(ast.GetSourceFileOfNode(declaration).PathKey()) {
+				return RawBinary("1"), nil
+			}
+		}
+		break
+	}
+	if symbol.Flags()&(ast.SymbolFlagsClass|ast.SymbolFlagsInterface) == 0 {
+		return RawBinary("0"), nil
+	}
+	out := []byte("2[")
+	if declared := setup.checker.GetDeclaredTypeOfSymbol(symbol); declared != nil {
+		for i, base := range setup.checker.GetBaseTypes(declared) {
+			if i > 0 {
+				out = append(out, ',')
+			}
+			out = appendTypeResponse(out, setup.sd.newTypeResponse(setup.projectID, base, setup.checker))
+		}
+	}
+	return RawBinary(append(out, ']')), nil
 }
