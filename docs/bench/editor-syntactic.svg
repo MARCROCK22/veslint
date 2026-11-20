@@ -1,0 +1,67 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="760" height="572" viewBox="0 0 760 572" role="img" aria-label="In the editor: 56 rules of @eslint/js and typescript-eslint recommended">
+<style>
+  svg { --surface: #fcfcfb; --ink: #0b0b0b; --ink2: #52514e; --axis: #c3c2b7; --accent: #2a78d6; --rest: #898781; }
+  @media (prefers-color-scheme: dark) {
+    svg { --surface: #1a1a19; --ink: #f0efec; --ink2: #c3c2b7; --axis: #383835; --accent: #3987e5; --rest: #898781; }
+  }
+  .bg { fill: var(--surface); }
+  text { font-family: system-ui, -apple-system, "Segoe UI", sans-serif; fill: var(--ink); }
+  .title { font-size: 16px; font-weight: 600; }
+  .sub { font-size: 12px; fill: var(--ink2); font-weight: 400; }
+  .panel { font-size: 14px; font-weight: 600; }
+  .tool { font-size: 13px; }
+  .accent-text { font-weight: 700; }
+  .value { font-size: 13px; fill: var(--ink2); font-variant-numeric: tabular-nums; }
+  .parity { font-size: 12px; fill: var(--ink2); }
+  .accent { fill: var(--accent); }
+  .rest { fill: var(--rest); }
+  .axis { stroke: var(--axis); stroke-width: 1; }
+</style>
+<rect class="bg" width="760" height="572" rx="8"/>
+<text class="title" x="24" y="38">In the editor: 56 rules of @eslint/js and typescript-eslint recommended</text>
+<text class="sub" x="24" y="58">Median time to re-lint one large file after an edit, in a long-lived process (less is better):</text>
+<text class="sub" x="24" y="74">veslint --server, ESLint kept alive as its VS Code extension does, oxlint --lsp, Biome lsp-proxy.</text>
+<text class="sub" x="24" y="90">Intel Core i3-4150T CPU, 4 CPUs, Linux. Each panel has its own scale.</text>
+<text class="panel" x="24" y="121">zod<tspan class="sub" dx="8">src/v4/core/schemas.ts, 5,226 lines</tspan></text>
+<text class="tool" x="106" y="146" text-anchor="end">ESLint</text>
+<path class="rest" d="M116,132h366a4,4 0 0 1 4,4v10a4,4 0 0 1 -4,4h-366z"/>
+<text class="value" x="494" y="146">395 ms</text>
+<text class="tool accent-text" x="106" y="174" text-anchor="end">veslint</text>
+<path class="accent" d="M116,160h103.64318297009628a4,4 0 0 1 4,4v10a4,4 0 0 1 -4,4h-103.64318297009628z"/>
+<text class="value" x="231.6431829700963" y="174">115 ms</text>
+<text class="tool" x="106" y="202" text-anchor="end">oxlint</text>
+<path class="rest" d="M116,188h90.8910288900152a4,4 0 0 1 4,4v10a4,4 0 0 1 -4,4h-90.8910288900152z"/>
+<text class="value" x="218.8910288900152" y="202">101 ms</text>
+<text class="tool" x="106" y="230" text-anchor="end">Biome</text>
+<path class="rest" d="M116,216h323.33654333502284a4,4 0 0 1 4,4v10a4,4 0 0 1 -4,4h-323.33654333502284z"/>
+<text class="value" x="451.33654333502284" y="230">349 ms</text>
+<line class="axis" x1="116" y1="128" x2="116" y2="238"/>
+<text class="panel" x="24" y="273">recharts<tspan class="sub" dx="8">src/state/selectors/axisSelectors.ts, 2,417 lines</tspan></text>
+<text class="tool" x="106" y="298" text-anchor="end">ESLint</text>
+<path class="rest" d="M116,284h157.30065359477123a4,4 0 0 1 4,4v10a4,4 0 0 1 -4,4h-157.30065359477123z"/>
+<text class="value" x="285.30065359477123" y="298">133 ms</text>
+<text class="tool accent-text" x="106" y="326" text-anchor="end">veslint</text>
+<path class="accent" d="M116,312h73.38562091503269a4,4 0 0 1 4,4v10a4,4 0 0 1 -4,4h-73.38562091503269z"/>
+<text class="value" x="201.3856209150327" y="326">64 ms</text>
+<text class="tool" x="106" y="354" text-anchor="end">oxlint</text>
+<path class="rest" d="M116,340h2.2973856209150325a2.2973856209150325,2.2973856209150325 0 0 1 2.2973856209150325,2.2973856209150325v13.405228758169935a2.2973856209150325,2.2973856209150325 0 0 1 -2.2973856209150325,2.2973856209150325h-2.2973856209150325z"/>
+<text class="value" x="128.59477124183007" y="354">3.8 ms</text>
+<text class="tool" x="106" y="382" text-anchor="end">Biome</text>
+<path class="rest" d="M116,368h366a4,4 0 0 1 4,4v10a4,4 0 0 1 -4,4h-366z"/>
+<text class="value" x="494" y="382">306 ms</text>
+<line class="axis" x1="116" y1="280" x2="116" y2="390"/>
+<text class="panel" x="24" y="425">TypeScript compiler<tspan class="sub" dx="8">src/compiler/parser.ts, 10,823 lines</tspan></text>
+<text class="tool" x="106" y="450" text-anchor="end">ESLint</text>
+<path class="rest" d="M116,436h366a4,4 0 0 1 4,4v10a4,4 0 0 1 -4,4h-366z"/>
+<text class="value" x="494" y="450">925 ms</text>
+<text class="tool accent-text" x="106" y="478" text-anchor="end">veslint</text>
+<path class="accent" d="M116,464h138.08608197253164a4,4 0 0 1 4,4v10a4,4 0 0 1 -4,4h-138.08608197253164z"/>
+<text class="value" x="266.08608197253164" y="478">355 ms</text>
+<text class="tool" x="106" y="506" text-anchor="end">oxlint</text>
+<path class="rest" d="M116,492h45.215961933600084a4,4 0 0 1 4,4v10a4,4 0 0 1 -4,4h-45.215961933600084z"/>
+<text class="value" x="173.21596193360008" y="506">123 ms</text>
+<text class="tool" x="106" y="534" text-anchor="end">Biome</text>
+<path class="rest" d="M116,520h149.2096896290689a4,4 0 0 1 4,4v10a4,4 0 0 1 -4,4h-149.2096896290689z"/>
+<text class="value" x="277.20968962906886" y="534">383 ms</text>
+<line class="axis" x1="116" y1="432" x2="116" y2="542"/>
+</svg>

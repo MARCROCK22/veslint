@@ -1,6 +1,6 @@
 {
   "name": "@marcrock22/veslint-win32-x64",
-  "version": "0.38.1",
+  "version": "0.39.0",
   "description": "The veslint binary for Windows x64. Install @marcrock22/veslint, which runs it.",
   "files": [
     "veslint.exe"

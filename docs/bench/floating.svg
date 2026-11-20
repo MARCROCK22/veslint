@@ -1,0 +1,66 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="760" height="556" viewBox="0 0 760 556" role="img" aria-label="Type-aware linting: no-floating-promises">
+<style>
+  svg { --surface: #fcfcfb; --ink: #0b0b0b; --ink2: #52514e; --axis: #c3c2b7; --accent: #2a78d6; --rest: #898781; }
+  @media (prefers-color-scheme: dark) {
+    svg { --surface: #1a1a19; --ink: #f0efec; --ink2: #c3c2b7; --axis: #383835; --accent: #3987e5; --rest: #898781; }
+  }
+  .bg { fill: var(--surface); }
+  text { font-family: system-ui, -apple-system, "Segoe UI", sans-serif; fill: var(--ink); }
+  .title { font-size: 16px; font-weight: 600; }
+  .sub { font-size: 12px; fill: var(--ink2); font-weight: 400; }
+  .panel { font-size: 14px; font-weight: 600; }
+  .tool { font-size: 13px; }
+  .accent-text { font-weight: 700; }
+  .value { font-size: 13px; fill: var(--ink2); font-variant-numeric: tabular-nums; }
+  .parity { font-size: 12px; fill: var(--ink2); }
+  .accent { fill: var(--accent); }
+  .rest { fill: var(--rest); }
+  .axis { stroke: var(--axis); stroke-width: 1; }
+</style>
+<rect class="bg" width="760" height="556" rx="8"/>
+<text class="title" x="24" y="38">Type-aware linting: no-floating-promises</text>
+<text class="sub" x="24" y="58">Command line on the whole project: wall-clock time, mean of 5 runs (less is better).</text>
+<text class="sub" x="24" y="74">Intel Core i3-4150T CPU, 4 CPUs, Linux. Each panel has its own scale.</text>
+<text class="panel" x="24" y="105">zod<tspan class="sub" dx="8">125 files, 37,778 lines</tspan></text>
+<text class="tool" x="106" y="130" text-anchor="end">ESLint</text>
+<path class="rest" d="M116,116h366a4,4 0 0 1 4,4v10a4,4 0 0 1 -4,4h-366z"/>
+<text class="value" x="494" y="130">6.1 s</text>
+<text class="tool accent-text" x="106" y="158" text-anchor="end">veslint</text>
+<path class="accent" d="M116,144h42.94827504694036a4,4 0 0 1 4,4v10a4,4 0 0 1 -4,4h-42.94827504694036z"/>
+<text class="value" x="170.94827504694035" y="158">0.77 s<tspan class="parity" dx="8">same problems as ESLint</tspan></text>
+<text class="tool" x="106" y="186" text-anchor="end">oxlint</text>
+<path class="rest" d="M116,172h31.59449714944482a4,4 0 0 1 4,4v10a4,4 0 0 1 -4,4h-31.59449714944482z"/>
+<text class="value" x="159.5944971494448" y="186">0.59 s<tspan class="parity" dx="8">same problems as ESLint</tspan></text>
+<text class="tool" x="106" y="214" text-anchor="end">Biome</text>
+<path class="rest" d="M116,200h23.85511492519323a4,4 0 0 1 4,4v10a4,4 0 0 1 -4,4h-23.85511492519323z"/>
+<text class="value" x="151.85511492519322" y="214">0.46 s<tspan class="parity" dx="8">same problems as ESLint</tspan></text>
+<line class="axis" x1="116" y1="112" x2="116" y2="222"/>
+<text class="panel" x="24" y="257">recharts<tspan class="sub" dx="8">294 files, 51,054 lines</tspan></text>
+<text class="tool" x="106" y="282" text-anchor="end">ESLint</text>
+<path class="rest" d="M116,268h366a4,4 0 0 1 4,4v10a4,4 0 0 1 -4,4h-366z"/>
+<text class="value" x="494" y="282">7.8 s</text>
+<text class="tool accent-text" x="106" y="310" text-anchor="end">veslint</text>
+<path class="accent" d="M116,296h37.21893750527049a4,4 0 0 1 4,4v10a4,4 0 0 1 -4,4h-37.21893750527049z"/>
+<text class="value" x="165.2189375052705" y="310">0.86 s<tspan class="parity" dx="8">same problems as ESLint</tspan></text>
+<text class="tool" x="106" y="338" text-anchor="end">oxlint</text>
+<path class="rest" d="M116,324h29.570920309915877a4,4 0 0 1 4,4v10a4,4 0 0 1 -4,4h-29.570920309915877z"/>
+<text class="value" x="157.5709203099159" y="338">0.70 s<tspan class="parity" dx="8">same problems as ESLint</tspan></text>
+<text class="tool" x="106" y="366" text-anchor="end">Biome</text>
+<path class="rest" d="M116,352h17.396781748886337a4,4 0 0 1 4,4v10a4,4 0 0 1 -4,4h-17.396781748886337z"/>
+<text class="value" x="145.39678174888633" y="366">0.45 s<tspan class="parity" dx="8">same problems as ESLint</tspan></text>
+<line class="axis" x1="116" y1="264" x2="116" y2="374"/>
+<text class="panel" x="24" y="409">TypeScript compiler<tspan class="sub" dx="8">602 files, 381,174 lines</tspan></text>
+<text class="tool" x="106" y="434" text-anchor="end">ESLint</text>
+<path class="rest" d="M116,420h366a4,4 0 0 1 4,4v10a4,4 0 0 1 -4,4h-366z"/>
+<text class="value" x="494" y="434">32 s</text>
+<text class="tool accent-text" x="106" y="462" text-anchor="end">veslint</text>
+<path class="accent" d="M116,448h46.531806730029004a4,4 0 0 1 4,4v10a4,4 0 0 1 -4,4h-46.531806730029004z"/>
+<text class="value" x="174.53180673002902" y="462">4.3 s<tspan class="parity" dx="8">same problems as ESLint</tspan></text>
+<text class="tool" x="106" y="490" text-anchor="end">oxlint</text>
+<path class="rest" d="M116,476h17.862726390775286a4,4 0 0 1 4,4v10a4,4 0 0 1 -4,4h-17.862726390775286z"/>
+<text class="value" x="145.8627263907753" y="490">1.9 s<tspan class="parity" dx="8">same problems as ESLint</tspan></text>
+<text class="tool" x="106" y="518" text-anchor="end">Biome</text>
+<path class="rest" d="M116,504h31.263665167597864a4,4 0 0 1 4,4v10a4,4 0 0 1 -4,4h-31.263665167597864z"/>
+<text class="value" x="159.26366516759788" y="518">3.0 s<tspan class="parity" dx="8">same problems as ESLint</tspan></text>
+<line class="axis" x1="116" y1="416" x2="116" y2="526"/>
+</svg>

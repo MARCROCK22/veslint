@@ -2,6 +2,13 @@
 
 Each version is a release on GitHub with the veslint binaries (Linux x64, Windows x64) and the VS Code extension. The section of a version is the text of its release.
 
+## 0.39.0
+
+- **Much faster, with the same results.** TypeScript 7.1.0-beta is now linked into veslint itself (a Go library built from the commit of the npm package), so asking for types is a function call instead of a message to another process; the files are linted by parallel workers (one per CPU core) that share one TypeScript program, each with its own checker; and the work done for every file is cheaper (the parents of the nodes and a flat copy of the tree from one walk, getDeclaredVariables indexed, no-explicit-any on tree-sitter, fewer allocations). On the TypeScript compiler's sources with the 23 type-aware rules of recommendedTypeChecked: 50 s → 22 s; on zod: 6.6 s → 2.8 s; in the editor, a file of zod is re-linted in 0.36 s after an edit (0.62 s before). `VESLINT_TSGO=process` keeps the separate tsgo process.
+- **Speed in the README:** charts and tables of veslint, ESLint, oxlint and Biome on zod, recharts and the TypeScript compiler, on the command line and in the editor, with how many of ESLint's problems each tool reports (`tests/bench/run.sh`, `docs/bench/`).
+- **eslint-plugin-regexp 3.3.3: 22 rules** (control-character-escape, grapheme-string-literal, hexadecimal-escape, letter-case, no-control-character, no-empty-alternative, no-empty-group, no-empty-string-literal, no-escape-backspace, no-extra-lookaround-assertions, no-invalid-regexp, no-invisible-character, no-lazy-ends, no-legacy-features, no-missing-g-flag, no-non-standard-flag, no-obscure-range, no-octal, no-standalone-backslash, no-trivially-nested-quantifier, no-useless-character-class, no-useless-dollar-replacements), with every case of their own tests. The regular expression parser follows @eslint-community/regexpp 4.12.3 (Unicode 17).
+- Building veslint from source needs Go 1.27 (README, "Building from source").
+
 ## 0.38.1
 
 - **A directive comment that names a rule of typescript-eslint** (`// eslint-disable-next-line @typescript-eslint/no-explicit-any`) in a project whose `eslint.config.*` does not load typescript-eslint's plugin is ESLint's error "Definition for rule '…' was not found", not an unused directive. `--print-config` now says whether the configuration loads that plugin (`typescriptEslint`); a resolved configuration saved by an older veslint keeps working as before.
