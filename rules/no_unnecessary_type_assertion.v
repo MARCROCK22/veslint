@@ -139,9 +139,6 @@ fn (mut c Checker) lint_no_unnecessary_type_assertion(root C.TSNode, abs_path st
 	sw.restart()
 	mut cache := NutaCache{}
 	mut findings := []Finding{}
-	if non_nulls.len > 0 {
-		c.scope_tree(root)
-	}
 	for node in non_nulls {
 		c.nuta_check_non_null(node, declarators, mut cache, mut findings)!
 	}
@@ -394,12 +391,11 @@ fn (mut c Checker) nuta_possibly_used_before_assigned(identifier C.TSNode, const
 }
 
 // nuta_scope_is_ancestor: the scope of `identifier` is a strict ancestor of the scope of the
-// declarator (ESLint scopes, getScope).
-fn (c &Checker) nuta_scope_is_ancestor(identifier C.TSNode, declarator C.TSNode) bool {
-	t := c.file_scopes
-	if t == unsafe { nil } {
-		return false
-	}
+// declarator (ESLint scopes, getScope). The scopes of the file are built here, the first time a
+// `var` of the file needs them: building them for every file with a `!` was a fifth of the rule's
+// own time on zod.
+fn (mut c Checker) nuta_scope_is_ancestor(identifier C.TSNode, declarator C.TSNode) bool {
+	t := c.stv_scope_tree(identifier)
 	scope := t.get_scope(identifier)
 	mut s := t.scopes[t.get_scope(declarator)].upper
 	for s >= 0 {
