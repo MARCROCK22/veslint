@@ -4,6 +4,8 @@
 package api
 
 import (
+	"fmt"
+	"reflect"
 	"strconv"
 
 	"github.com/microsoft/TypeScript/tsc/internal/json"
@@ -327,4 +329,341 @@ func appendSignatureResponse(b []byte, s *SignatureResponse) []byte {
 		b = strconv.AppendUint(b, uint64(s.Target), 10)
 	}
 	return append(b, '}')
+}
+
+// veslintUnmarshalPayload is unmarshalPayload (proto.go) with the parameters of the requests a
+// lint sends most read by hand: those are flat objects of numbers, strings and lists of strings,
+// and json.Unmarshal's reflection took a twentieth of TypeScript's time in this process. Anything
+// the hand-written reader does not expect (another key, a key twice, an escape, a byte outside
+// printable ASCII, a number with a sign, a fraction, an exponent, a leading zero or too large for
+// its field, a null) goes to unmarshalPayload, which then answers as it always did. With
+// VESLINT_TSGO_CHECK_JSON set, every parameter read by hand is compared with unmarshalPayload's.
+func veslintUnmarshalPayload(method string, payload json.Value) (any, error) {
+	parsed := fastParams(method, payload)
+	if parsed == nil {
+		return unmarshalPayload(method, payload)
+	}
+	if checkFastJSON {
+		want, err := unmarshalPayload(method, payload)
+		if err != nil || !reflect.DeepEqual(want, parsed) {
+			panic(fmt.Sprintf("veslint: the parameters of %s read by hand are not json.Unmarshal's:\n%s\n%#v\n%#v", method, payload, parsed, want))
+		}
+	}
+	return parsed, nil
+}
+
+// fastParams reads the parameters of `method` by hand, or answers nil.
+func fastParams(method string, payload []byte) any {
+	switch Method(method) {
+	case MethodGetTypeAtLocations:
+		p := &GetTypeAtLocationsParams{}
+		if readFastParams(payload, func(r *fastParamsReader, key string) bool {
+			switch key {
+			case "snapshot":
+				return r.uint(64, (*uint64)(&p.Snapshot))
+			case "project":
+				return r.str((*string)(&p.Project))
+			case "locations":
+				return r.handles(&p.Locations)
+			}
+			return false
+		}) {
+			return p
+		}
+	case MethodGetSymbolsAtLocations:
+		p := &GetSymbolsAtLocationsParams{}
+		if readFastParams(payload, func(r *fastParamsReader, key string) bool {
+			switch key {
+			case "snapshot":
+				return r.uint(64, (*uint64)(&p.Snapshot))
+			case "project":
+				return r.str((*string)(&p.Project))
+			case "locations":
+				return r.handles(&p.Locations)
+			}
+			return false
+		}) {
+			return p
+		}
+	case MethodGetPropertyOfType, MethodGetTypeOfPropertyOfType:
+		p := &GetPropertyOfTypeParams{}
+		if readFastParams(payload, func(r *fastParamsReader, key string) bool {
+			switch key {
+			case "snapshot":
+				return r.uint(64, (*uint64)(&p.Snapshot))
+			case "project":
+				return r.str((*string)(&p.Project))
+			case "type":
+				return r.uint32((*uint32)(&p.Type))
+			case "name":
+				return r.str(&p.Name)
+			}
+			return false
+		}) {
+			return p
+		}
+	case MethodGetSignaturesOfType:
+		p := &GetSignaturesOfTypeParams{}
+		if readFastParams(payload, func(r *fastParamsReader, key string) bool {
+			switch key {
+			case "snapshot":
+				return r.uint(64, (*uint64)(&p.Snapshot))
+			case "project":
+				return r.str((*string)(&p.Project))
+			case "type":
+				return r.uint32((*uint32)(&p.Type))
+			case "kind":
+				var kind uint32
+				if !r.uint32(&kind) || kind > 1<<31-1 {
+					return false
+				}
+				p.Kind = int32(kind)
+				return true
+			}
+			return false
+		}) {
+			return p
+		}
+	case MethodGetAwaitedType, MethodGetBaseTypes, MethodGetPropertiesOfType, MethodGetIndexInfosOfType,
+		MethodGetBaseConstraintOfType, MethodGetTypeArguments, MethodIsArrayType:
+		p := &CheckerTypeParams{}
+		if readFastParams(payload, func(r *fastParamsReader, key string) bool {
+			switch key {
+			case "snapshot":
+				return r.uint(64, (*uint64)(&p.Snapshot))
+			case "project":
+				return r.str((*string)(&p.Project))
+			case "type":
+				return r.uint32((*uint32)(&p.Type))
+			}
+			return false
+		}) {
+			return p
+		}
+	case MethodGetSymbolOfType, MethodGetTargetOfType, MethodGetTypesOfType, MethodGetAliasTypeArgumentsOfType,
+		MethodGetAliasSymbolOfType, MethodGetNonNullableType, MethodGetApparentPropertiesOfType,
+		MethodGetApparentType:
+		p := &GetTypePropertyParams{}
+		if readFastParams(payload, func(r *fastParamsReader, key string) bool {
+			switch key {
+			case "snapshot":
+				return r.uint(64, (*uint64)(&p.Snapshot))
+			case "project":
+				return r.str((*string)(&p.Project))
+			case "objectId":
+				return r.uint32((*uint32)(&p.Type))
+			}
+			return false
+		}) {
+			return p
+		}
+	case MethodGetTypeParametersOfSignature, MethodGetParametersOfSignature, MethodGetReturnTypeOfSignature:
+		p := &GetSignaturePropertyParams{}
+		if readFastParams(payload, func(r *fastParamsReader, key string) bool {
+			switch key {
+			case "snapshot":
+				return r.uint(64, (*uint64)(&p.Snapshot))
+			case "project":
+				return r.str((*string)(&p.Project))
+			case "objectId":
+				return r.uint(64, (*uint64)(&p.Signature))
+			}
+			return false
+		}) {
+			return p
+		}
+	case MethodGetContextualType, MethodIsContextSensitive:
+		p := &GetContextualTypeParams{}
+		if readFastParams(payload, func(r *fastParamsReader, key string) bool {
+			switch key {
+			case "snapshot":
+				return r.uint(64, (*uint64)(&p.Snapshot))
+			case "project":
+				return r.str((*string)(&p.Project))
+			case "location":
+				return r.str((*string)(&p.Location))
+			}
+			return false
+		}) {
+			return p
+		}
+	case MethodIsTypeAssignableTo:
+		p := &IsTypeAssignableToParams{}
+		if readFastParams(payload, func(r *fastParamsReader, key string) bool {
+			switch key {
+			case "snapshot":
+				return r.uint(64, (*uint64)(&p.Snapshot))
+			case "project":
+				return r.str((*string)(&p.Project))
+			case "source":
+				return r.uint32((*uint32)(&p.Source))
+			case "target":
+				return r.uint32((*uint32)(&p.Target))
+			}
+			return false
+		}) {
+			return p
+		}
+	}
+	return nil
+}
+
+// fastParamsReader reads a JSON object of the shapes fastParams knows.
+type fastParamsReader struct {
+	b    []byte
+	i    int
+	seen []string
+}
+
+// readFastParams reads the members of the object in `b`, each with `member`, which reads the
+// value of a key it knows and reports false for any other. It reports false when anything is not
+// as expected, and nothing it read is used then.
+func readFastParams(b []byte, member func(r *fastParamsReader, key string) bool) bool {
+	r := fastParamsReader{b: b}
+	r.space()
+	if !r.byte('{') {
+		return false
+	}
+	r.space()
+	if r.byte('}') {
+		r.space()
+		return r.i == len(r.b)
+	}
+	for {
+		r.space()
+		var key string
+		if !r.str(&key) {
+			return false
+		}
+		for _, k := range r.seen {
+			if k == key {
+				return false
+			}
+		}
+		r.seen = append(r.seen, key)
+		r.space()
+		if !r.byte(':') {
+			return false
+		}
+		r.space()
+		if !member(&r, key) {
+			return false
+		}
+		r.space()
+		if r.byte(',') {
+			continue
+		}
+		if !r.byte('}') {
+			return false
+		}
+		r.space()
+		return r.i == len(r.b)
+	}
+}
+
+func (r *fastParamsReader) space() {
+	for r.i < len(r.b) {
+		switch r.b[r.i] {
+		case ' ', '\t', '\n', '\r':
+			r.i++
+		default:
+			return
+		}
+	}
+}
+
+func (r *fastParamsReader) byte(c byte) bool {
+	if r.i < len(r.b) && r.b[r.i] == c {
+		r.i++
+		return true
+	}
+	return false
+}
+
+// str reads a string of printable ASCII without escapes.
+func (r *fastParamsReader) str(out *string) bool {
+	if !r.byte('"') {
+		return false
+	}
+	start := r.i
+	for r.i < len(r.b) {
+		c := r.b[r.i]
+		if c == '"' {
+			*out = string(r.b[start:r.i])
+			r.i++
+			return true
+		}
+		if c < 0x20 || c >= 0x7f || c == '\\' {
+			return false
+		}
+		r.i++
+	}
+	return false
+}
+
+// uint reads a non-negative integer of at most `bits` bits, without a sign, a leading zero, a
+// fraction or an exponent.
+func (r *fastParamsReader) uint(bits int, out *uint64) bool {
+	start := r.i
+	limit := ^uint64(0) >> (64 - bits)
+	var v uint64
+	for r.i < len(r.b) && r.b[r.i] >= '0' && r.b[r.i] <= '9' {
+		d := uint64(r.b[r.i] - '0')
+		if v > (limit-d)/10 {
+			return false
+		}
+		v = v*10 + d
+		r.i++
+	}
+	n := r.i - start
+	if n == 0 || (n > 1 && r.b[start] == '0') {
+		return false
+	}
+	if r.i < len(r.b) {
+		switch r.b[r.i] {
+		case '.', 'e', 'E':
+			return false
+		}
+	}
+	*out = v
+	return true
+}
+
+func (r *fastParamsReader) uint32(out *uint32) bool {
+	var v uint64
+	if !r.uint(32, &v) {
+		return false
+	}
+	*out = uint32(v)
+	return true
+}
+
+// handles reads a list of node handles (strings).
+func (r *fastParamsReader) handles(out *[]NodeHandle) bool {
+	if !r.byte('[') {
+		return false
+	}
+	list := []NodeHandle{}
+	r.space()
+	if r.byte(']') {
+		*out = list
+		return true
+	}
+	for {
+		r.space()
+		var s string
+		if !r.str(&s) {
+			return false
+		}
+		list = append(list, NodeHandle(s))
+		r.space()
+		if r.byte(',') {
+			continue
+		}
+		if !r.byte(']') {
+			return false
+		}
+		*out = list
+		return true
+	}
 }

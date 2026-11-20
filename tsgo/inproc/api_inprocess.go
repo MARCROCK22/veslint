@@ -20,6 +20,7 @@ import (
 	"time"
 	"unicode"
 
+	"github.com/microsoft/TypeScript/tsc/internal/ast"
 	"github.com/microsoft/TypeScript/tsc/internal/bundled"
 	"github.com/microsoft/TypeScript/tsc/internal/checker"
 	"github.com/microsoft/TypeScript/tsc/internal/compiler"
@@ -449,6 +450,34 @@ func veslintTagProject(ctx context.Context, params any) {
 	if worker <= 0 || params == nil {
 		return
 	}
+	// The parameters of the requests a lint sends most, without reflection.
+	var id *project.ID
+	switch p := params.(type) {
+	case *GetTypeAtLocationsParams:
+		id = &p.Project
+	case *GetSymbolsAtLocationsParams:
+		id = &p.Project
+	case *GetPropertyOfTypeParams:
+		id = &p.Project
+	case *GetSignaturesOfTypeParams:
+		id = &p.Project
+	case *CheckerTypeParams:
+		id = &p.Project
+	case *GetTypePropertyParams:
+		id = &p.Project
+	case *GetSignaturePropertyParams:
+		id = &p.Project
+	case *GetContextualTypeParams:
+		id = &p.Project
+	case *IsTypeAssignableToParams:
+		id = &p.Project
+	}
+	if id != nil {
+		if *id != "" {
+			*id += project.ID(veslintWorkerSeparator + strconv.Itoa(worker))
+		}
+		return
+	}
 	value := reflect.ValueOf(params)
 	if value.Kind() != reflect.Pointer || value.IsNil() || value.Elem().Kind() != reflect.Struct {
 		return
@@ -462,6 +491,18 @@ func veslintTagProject(ctx context.Context, params any) {
 		return
 	}
 	field.SetString(field.String() + veslintWorkerSeparator + strconv.Itoa(worker))
+}
+
+// veslintNodeHandle is the handle nodeHandleFrom gives a node, `index.kind.path`, without the cost
+// of fmt.Sprintf: every declaration of every symbol of an answer has one.
+func veslintNodeHandle(index uint32, kind ast.Kind, path tspath.PathKey) NodeHandle {
+	b := make([]byte, 0, 16+len(path))
+	b = strconv.AppendUint(b, uint64(index), 10)
+	b = append(b, '.')
+	b = strconv.AppendInt(b, int64(kind), 10)
+	b = append(b, '.')
+	b = append(b, path...)
+	return NodeHandle(b)
 }
 
 // veslintWorkerCheckers are the checkers of the workers in the programs of a snapshot; they go
