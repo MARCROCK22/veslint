@@ -25,6 +25,7 @@
 #define VT_FLAT_NAMED 1
 #define VT_FLAT_EXTRA 2
 #define VT_FLAT_NONE UINT32_MAX
+#define VT_FLAT_FIELDS 2
 
 typedef struct {
 	TSNode node;
@@ -34,6 +35,11 @@ typedef struct {
 	uint16_t symbol; // ts_node_symbol
 	TSFieldId field; // ts_tree_cursor_current_field_id at the node
 	uint8_t flags; // VT_FLAT_NAMED, VT_FLAT_EXTRA
+	// What vt_node_field answered for the fields asked of this node (field_cache.h): the first
+	// VT_FLAT_FIELDS of them, each with the place of its child, VT_FLAT_NONE for none.
+	uint8_t asked;
+	TSFieldId asked_field[VT_FLAT_FIELDS];
+	uint32_t answer[VT_FLAT_FIELDS];
 } vt_flat_node;
 
 static _Thread_local vt_flat_node *vt_ft_nodes = NULL;
@@ -112,6 +118,7 @@ static bool vt_flat_build(TSNode root) {
 		entry->symbol = ts_node_symbol(node);
 		entry->field = depth == 0 ? 0 : ts_tree_cursor_current_field_id(&vt_ft_cursor);
 		entry->flags = (ts_node_is_named(node) ? VT_FLAT_NAMED : 0) | (ts_node_is_extra(node) ? VT_FLAT_EXTRA : 0);
+		entry->asked = 0;
 		if (depth > 0) {
 			if (vt_ft_prev[depth - 1] != VT_FLAT_NONE) {
 				vt_ft_nodes[vt_ft_prev[depth - 1]].next = index;

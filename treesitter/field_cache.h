@@ -7,6 +7,7 @@
 #include <stdint.h>
 #include <string.h>
 #include "tree_sitter/api.h"
+#include "flat_tree.h"
 
 #define VT_FC_SLOTS 512
 #define VT_FC_NAME 40
@@ -41,9 +42,49 @@ static TSFieldId vt_field_id(const TSLanguage *language, const char *name, uint3
 	return id;
 }
 
-// vt_node_child_by_field_name is ts_node_child_by_field_name with the field ids remembered.
+// vt_node_child_by_field_name is ts_node_child_by_field_name with the field ids remembered and,
+// for a node of the flat tree (flat_tree.h), its answers too: the rules ask the same fields of the
+// same nodes again and again (each rule walks the file), and ts_node_child_by_field_id walks the
+// children (through the hidden ones) at every call. Only the answers of tree-sitter are kept, so
+// they are the same: a child that the table does not have as tree-sitter gives it is not kept.
 static TSNode vt_node_child_by_field_name(TSNode self, const char *name, uint32_t length) {
-	return ts_node_child_by_field_id(self, vt_field_id(ts_node_language(self), name, length));
+	TSFieldId id = vt_field_id(ts_node_language(self), name, length);
+	int64_t index = vt_flat_find(self);
+	if (index < 0) {
+		return ts_node_child_by_field_id(self, id);
+	}
+	vt_flat_node *entry = &vt_ft_nodes[index];
+	for (uint8_t k = 0; k < entry->asked; k++) {
+		if (entry->asked_field[k] == id) {
+			uint32_t answer = entry->answer[k];
+			if (answer == VT_FLAT_NONE) {
+				TSNode none;
+				memset(&none, 0, sizeof none);
+				return none;
+			}
+			return vt_ft_nodes[answer].node;
+		}
+	}
+	TSNode child = ts_node_child_by_field_id(self, id);
+	uint32_t answer = VT_FLAT_NONE;
+	if (!ts_node_is_null(child)) {
+		int64_t at = vt_flat_find(child);
+		if (at < 0 || memcmp(&vt_ft_nodes[at].node, &child, sizeof child) != 0) {
+			return child;
+		}
+		answer = (uint32_t)at;
+	} else {
+		TSNode none;
+		memset(&none, 0, sizeof none);
+		if (memcmp(&none, &child, sizeof child) != 0) {
+			return child;
+		}
+	}
+	// The first fields asked stay; later ones take the last slot.
+	uint8_t slot = entry->asked < VT_FLAT_FIELDS ? entry->asked++ : VT_FLAT_FIELDS - 1;
+	entry->asked_field[slot] = id;
+	entry->answer[slot] = answer;
+	return child;
 }
 
 #endif
