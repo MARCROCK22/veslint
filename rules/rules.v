@@ -3529,6 +3529,7 @@ fn (mut c Checker) lint_file_in_lifetime(parser Parser, config LintConfig, src s
 			c.make_snapshot()!
 		}
 		c.too_deep = 0
+		c.late_unmatched = 0
 		c.options[setting.name] = setting.options
 		rule_sw := time.new_stopwatch()
 		rule_findings := c.lint_rule(setting.name, root, ts_path, mut stats)!
@@ -3548,7 +3549,7 @@ fn (mut c Checker) lint_file_in_lifetime(parser Parser, config LintConfig, src s
 				}
 			}
 		}
-		stats.unmatched += c.too_deep
+		stats.unmatched += c.too_deep + c.late_unmatched
 	}
 	if svelte_file {
 		findings = c.svelte_move_findings(c.svelte_drop_wrapper_function_findings(root, findings))
@@ -6050,6 +6051,8 @@ mut:
 	ast_path                                string                             // file `ast` belongs to ('' when it must be requested)
 	ast                                     SourceFileAst                      // tsgo AST of the file, shared by the rules
 	attempted                               map[u64]bool                       // keys already looked up in tsgo (per file)
+	typed                                   map[u64]bool                       // keys whose type was requested (per file): not a no_type span
+	late_unmatched                          int                                // nodes late_type could not analyze (per rule)
 	node_room                               int                                // the keys the maps of the requested nodes have room for (reserve_node_room)
 	too_deep                                int                                // expressions not analyzed because they are nested too deeply, or because TypeScript reads another kind of node there (per rule)
 	node_types                              map[u64]TypeResponse               // type of each requested node, by byte range (per file)

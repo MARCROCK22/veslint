@@ -44,8 +44,12 @@ fn (mut c Checker) lint_no_unsafe_assignment(root C.TSNode, abs_path string, mut
 	mut sw := time.new_stopwatch()
 	assignments, spreads := c.collect_assignments(root)
 	mut spans := []Span{}
+	// The type of a receiver is needed for few values (check_assignment): late_type asks it.
 	for a in assignments {
-		spans << node_span(a.receiver)
+		spans << Span{
+			...node_span(a.receiver)
+			no_type: true
+		}
 		spans << node_span(a.sender)
 	}
 	for spread in spreads {
@@ -271,7 +275,7 @@ fn (mut c Checker) check_assignment(a Assignment, mut findings []Finding) !bool 
 	receiver_type := if a.comparison == .contextual {
 		c.key_contextual_type(a.receiver)!
 	} else {
-		c.node_type(a.receiver) or { TypeResponse{} }
+		c.late_type(a.receiver)!
 	}
 	if receiver_type.is_null() {
 		return false
@@ -318,7 +322,7 @@ fn (mut c Checker) key_contextual_type(key C.TSNode) !TypeResponse {
 			return contextual
 		}
 	}
-	return c.node_type(key) or { TypeResponse{} }
+	return c.late_type(key)!
 }
 
 // any_text is the {{sender}} of createData without a receiver.

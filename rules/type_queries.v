@@ -376,6 +376,10 @@ struct Span {
 	end      int
 	kind     u32
 	optional bool
+	// no_type: only the tsgo node (its handle and kind) is wanted, not its type. A type costs the
+	// checker the check of the node, which a rule that only asks other things there (its symbol,
+	// its contextual type, its resolved signature) or needs it seldom (late_type) does not pay.
+	no_type bool
 }
 
 fn node_span(n C.TSNode) Span {
@@ -421,6 +425,7 @@ fn (mut c Checker) reserve_node_room(more int) {
 	room := u32(c.node_room)
 	c.attempted.reserve(room)
 	c.node_types.reserve(room)
+	c.typed.reserve(room)
 	c.node_kinds.reserve(room)
 	c.node_handles.reserve(room)
 }
@@ -434,6 +439,7 @@ fn (mut c Checker) reset_file_types() {
 	c.contextual_cache = map[u64]TypeResponse{}
 	c.resolved_cache = map[u64]SignatureResponse{}
 	c.attempted = map[u64]bool{}
+	c.typed = map[u64]bool{}
 	c.file_scopes = unsafe { nil }
 	c.file_tokens = unsafe { nil }
 	c.reset_es_file()
@@ -453,21 +459,30 @@ fn (mut c Checker) resolve_new(spans []Span, abs_path string, mut stats Stats) !
 	mut group := []int{len: spans.len}
 	mut order := []u64{}
 	mut counts := []int{}
+	mut typed := []bool{}
+	// The keys tried already whose node was found without its type, which a span now wants.
+	mut late := []u64{}
 	for j, s in spans {
 		if s.key in c.attempted {
 			group[j] = -1
+			if !s.no_type && s.key !in c.typed && s.key in c.node_handles && s.key !in late {
+				late << s.key
+			}
 			continue
 		}
 		g := group_of[s.key] or {
 			group_of[s.key] = order.len
 			order << s.key
 			counts << 0
+			typed << false
 			order.len - 1
 		}
 		group[j] = g
 		counts[g]++
+		typed[g] = typed[g] || !s.no_type
 	}
 	if order.len == 0 {
+		c.request_late_types(late, mut stats)!
 		return
 	}
 	mut starts := []int{len: order.len + 1}
@@ -513,8 +528,10 @@ fn (mut c Checker) resolve_new(spans []Span, abs_path string, mut stats Stats) !
 			handle := c.ast.handle(pos, end, s.kind) or { continue }
 			c.node_handles[key] = handle
 			c.node_kinds[key] = if s.kind != 0 { s.kind } else { c.ast.kind(pos, end) or { 0 } }
-			keys << key
-			handles << handle
+			if typed[g] {
+				keys << key
+				handles << handle
+			}
 			found = true
 		}
 		// An expression-like node inside a type query (`typeof import('./x')['default']`) is not an
@@ -523,8 +540,29 @@ fn (mut c Checker) resolve_new(spans []Span, abs_path string, mut stats Stats) !
 			stats.unmatched++
 		}
 	}
+	for key in late {
+		keys << key
+		handles << c.node_handles[key]
+	}
+	unmatched, nodes := c.request_key_types(keys, handles)!
+	stats.unmatched += unmatched
+	stats.nodes += nodes
+}
+
+// request_late_types requests the types of keys whose node was found without its type.
+fn (mut c Checker) request_late_types(keys []u64, mut stats Stats) ! {
+	handles := keys.map(c.node_handles[it])
+	unmatched, nodes := c.request_key_types(keys, handles)!
+	stats.unmatched += unmatched
+	stats.nodes += nodes
+}
+
+// request_key_types requests the types of the nodes of `keys` (their `handles`) in a single
+// getTypeAtLocations and keeps them; it gives how many failed (unanalyzed) and how many have a
+// type.
+fn (mut c Checker) request_key_types(keys []u64, handles []string) !(int, int) {
 	if handles.len == 0 {
-		return
+		return 0, 0
 	}
 	mut failed := map[int]bool{}
 	types := c.request_types(handles, 0, mut failed)!
@@ -532,6 +570,7 @@ fn (mut c Checker) resolve_new(spans []Span, abs_path string, mut stats Stats) !
 		return error('protocol: tsgo returned ${types.len} types for ${handles.len} nodes')
 	}
 	for j, key in keys {
+		c.typed[key] = true
 		if j in failed {
 			// Like a node without a tsgo counterpart: no type, no handle, and it counts as unanalyzed.
 			c.node_handles.delete(key)
@@ -540,8 +579,21 @@ fn (mut c Checker) resolve_new(spans []Span, abs_path string, mut stats Stats) !
 		}
 		c.node_types[key] = types[j]
 	}
-	stats.unmatched += failed.len
-	stats.nodes += handles.len - failed.len
+	return failed.len, handles.len - failed.len
+}
+
+// late_type is the type of a node requested with no_type, asked now (the null type when it has no
+// tsgo node): for the nodes whose type a rule seldom needs. Unanalyzed ones count in
+// late_unmatched.
+fn (mut c Checker) late_type(n C.TSNode) !TypeResponse {
+	key := node_key(n)
+	if key !in c.typed {
+		handle := c.node_handles[key] or { return TypeResponse{} }
+		unmatched, _ := c.request_key_types([key], [handle])!
+		c.late_unmatched += unmatched
+	}
+	t := c.node_types[key] or { return TypeResponse{} }
+	return t
 }
 
 // request_types asks tsgo for the types of `handles` in a single getTypeAtLocations. When tsgo
@@ -763,6 +815,7 @@ fn (c &Checker) type_node_span(n C.TSNode) Span {
 
 // span_type is the type of a span requested with resolve_spans, if tsgo knows it.
 fn (c &Checker) span_type(s Span) ?TypeResponse {
+	c.check_typed(s.key)
 	t := c.node_types[s.key] or { return none }
 	if t.is_null() {
 		return none
@@ -770,8 +823,20 @@ fn (c &Checker) span_type(s Span) ?TypeResponse {
 	return t
 }
 
+// check_typed: outside -prod builds, a type read from a node whose type was not requested (a
+// no_type span: late_type asks it) stops veslint, instead of giving no type.
+@[inline]
+fn (c &Checker) check_typed(key u64) {
+	$if !prod {
+		if key in c.node_handles && key !in c.typed {
+			panic('veslint: the type of a node requested with no_type was read without late_type')
+		}
+	}
+}
+
 // node_type is the type of a node requested with resolve_node_types, if tsgo knows it.
 fn (c &Checker) node_type(n C.TSNode) ?TypeResponse {
+	c.check_typed(node_key(n))
 	t := c.node_types[node_key(n)] or { return none }
 	if t.is_null() {
 		return none

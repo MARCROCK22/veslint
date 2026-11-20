@@ -75,18 +75,29 @@ fn (mut c Checker) lint_unbound_method(root C.TSNode, abs_path string, mut stats
 			property: property
 		}
 	}
+	// The member expressions and the keys are only asked their symbols, and a property its type
+	// seldom (late_type): their nodes, without their types.
 	mut spans := []Span{}
 	for m in members {
-		spans << node_span(m.node)
+		spans << Span{
+			...node_span(m.node)
+			no_type: true
+		}
 		spans << node_span(m.object)
-		spans << node_span(m.property)
+		spans << Span{
+			...node_span(m.property)
+			no_type: true
+		}
 	}
 	for p in patterns {
 		spans << node_span(p.pattern)
 		if init := p.init {
 			spans << node_span(init)
 		}
-		spans << p.keys.map(node_span(it))
+		spans << p.keys.map(Span{
+			...node_span(it)
+			no_type: true
+		})
 	}
 	c.resolve_spans(spans, abs_path, mut stats)!
 	// The symbols of the member expressions and of the identifiers isNativelyBound names, in one
@@ -210,7 +221,10 @@ fn (mut c Checker) ubm_accessed_property_names(m UbmMember) ![]string {
 			[]string{}
 		}
 	}
-	property_type := c.node_type(unwrap_parens(m.property)) or { return []string{} }
+	property_type := c.late_type(unwrap_parens(m.property))!
+	if property_type.is_null() {
+		return []string{}
+	}
 	mut literal_names := []string{}
 	for part in c.constituents(property_type)! {
 		if part.flags & (type_flag_string_literal | type_flag_number_literal) != 0 {
@@ -433,8 +447,8 @@ fn (mut c Checker) ubm_is_natively_bound(object C.TSNode, property C.TSNode, sym
 	if !c.builtin_symbol_like_any(object_type, ubm_supported_global_types, 0)! {
 		return false
 	}
-	property_type := c.node_type(property) or { return false }
-	if property_type.symbol == 0 {
+	property_type := c.late_type(property)!
+	if property_type.is_null() || property_type.symbol == 0 {
 		return false
 	}
 	symbol := c.symbol_of(property_type)!

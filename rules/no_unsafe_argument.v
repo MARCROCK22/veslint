@@ -75,7 +75,11 @@ fn (mut c Checker) lint_no_unsafe_argument(root C.TSNode, abs_path string, mut s
 	calls := c.collect_argument_calls(root)
 	mut spans := []Span{}
 	for call in calls {
-		spans << node_span(call.node)
+		// The call is only resolved (function_signature), for the calls with an unsafe argument.
+		spans << Span{
+			...node_span(call.node)
+			no_type: true
+		}
 		if call.await_misread {
 			spans << await_keyword_span(call.node) or { continue }
 		} else {
