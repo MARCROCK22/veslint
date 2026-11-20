@@ -29,6 +29,8 @@ func (p *InProcess) veslintRequest(ctx context.Context, worker int, method strin
 	switch strings.TrimPrefix(method, veslintMethodPrefix) {
 	case "unboundMethodChecks":
 		return p.unboundMethodChecks(ctx, worker, params)
+	case "typeContains":
+		return p.typeContains(ctx, worker, params)
 	}
 	return nil, fmt.Errorf("%w: unknown method %s", ErrInvalidRequest, method)
 }
@@ -186,4 +188,92 @@ func ubmCheckMethod(node *ast.Node, ignoreStatic bool) int {
 		return ubmUnbound
 	}
 	return ubmUnboundWithoutThisAnnotation
+}
+
+// typeContainsParams: a type and the TypeFlags looked for.
+type typeContainsParams struct {
+	Snapshot SnapshotID `json:"snapshot"`
+	Project  project.ID `json:"project"`
+	Type     TypeID     `json:"type"`
+	Flags    uint32     `json:"flags"`
+}
+
+// typeContains answers whether the type contains one with the flags (true or false): it ports
+// nuta_contains of rules/no_unnecessary_type_assertion.v, typescript-eslint's typeContains.
+func (p *InProcess) typeContains(ctx context.Context, worker int, params []byte) (any, error) {
+	var in typeContainsParams
+	if err := json.Unmarshal(params, &in); err != nil {
+		return nil, fmt.Errorf("%w: %w", ErrInvalidRequest, err)
+	}
+	setup, err := p.veslintSetup(ctx, worker, in.Snapshot, in.Project)
+	if err != nil {
+		return nil, err
+	}
+	defer setup.done()
+	t, err := setup.resolveTypeHandle(in.Type)
+	if err != nil {
+		return nil, err
+	}
+	seen := map[*checker.Type]bool{}
+	if nutaContains(setup.checker, t, checker.TypeFlags(in.Flags), seen, 0) {
+		return RawBinary("true"), nil
+	}
+	return RawBinary("false"), nil
+}
+
+// nutaMaxTypeContainsDepth is MAX_TYPE_CONTAINS_DEPTH (nuta_max_type_contains_depth).
+const nutaMaxTypeContainsDepth = 50
+
+// nutaContains: a type seen in this walk or past the depth does not count; a type counts when its
+// flags (those of the parts of a union, ORed: type_flags) have one of `flags`; a union or an
+// intersection when one of its parts does; any other type when its type arguments (those of its
+// alias, else those of a type reference), the return types of its call signatures or the types of
+// their parameters do, all of them asked before any is walked.
+func nutaContains(c *checker.Checker, t *checker.Type, flags checker.TypeFlags, seen map[*checker.Type]bool, depth int) bool {
+	if seen[t] || depth > nutaMaxTypeContainsDepth {
+		return false
+	}
+	seen[t] = true
+	if veslintTypeFlags(t)&flags != 0 {
+		return true
+	}
+	if t.Flags()&(checker.TypeFlagsUnion|checker.TypeFlagsIntersection) != 0 {
+		for _, part := range t.Types() {
+			if nutaContains(c, part, flags, seen, depth+1) {
+				return true
+			}
+		}
+		return false
+	}
+	var nested []*checker.Type
+	if alias := t.Alias(); alias != nil && len(alias.TypeArguments()) > 0 {
+		nested = append(nested, alias.TypeArguments()...)
+	} else if t.Flags()&checker.TypeFlagsObject != 0 && t.ObjectFlags()&checker.ObjectFlagsReference != 0 {
+		nested = append(nested, c.GetTypeArguments(t)...)
+	}
+	for _, sig := range c.GetSignaturesOfType(t, checker.SignatureKindCall) {
+		nested = append(nested, c.GetReturnTypeOfSignature(sig))
+		for _, param := range sig.Parameters() {
+			nested = append(nested, c.GetTypeOfSymbol(param))
+		}
+	}
+	for _, n := range nested {
+		if n != nil && nutaContains(c, n, flags, seen, depth+1) {
+			return true
+		}
+	}
+	return false
+}
+
+// veslintTypeFlags is type_flags of rules/unsafe.v: the flags of a type, or those of the parts of
+// a union ORed.
+func veslintTypeFlags(t *checker.Type) checker.TypeFlags {
+	if t.Flags()&checker.TypeFlagsUnion == 0 {
+		return t.Flags()
+	}
+	var flags checker.TypeFlags
+	for _, part := range t.Types() {
+		flags |= part.Flags()
+	}
+	return flags
 }

@@ -1360,6 +1360,17 @@ for transport in inproc process; do
 		diff "$TMP/workers-1.err" "$TMP/workers-0.err" | head -20
 	fi
 done
+# With TypeScript in this process some rules have it run their type walks (the `veslint/…` methods
+# of tsgo/inproc/api_rules.go); VESLINT_TSGO_HELPERS=0 makes them walk the types themselves through
+# TypeScript's API, as with the process transport: the output is the same.
+code=0
+VESLINT_TSGO_HELPERS=0 ./veslint --config "$TMP/workers.json" "${worker_files[@]}" > "$TMP/workers-walked.out" 2> /dev/null || code=$?
+if [[ $code -eq 1 ]] && cmp -s "$TMP/workers-inproc.out" "$TMP/workers-walked.out"; then
+	ok "type walks in TypeScript's process: the same as the rules' own"
+else
+	ko "type walks in TypeScript's process (code $code)"
+	diff "$TMP/workers-inproc.out" "$TMP/workers-walked.out" | head -20
+fi
 # The answers about types, symbols and signatures are written (tsgo/inproc/api_fastjson.go) and read
 # (tsgo/fast_decode.v) by hand: on the same files, VESLINT_TSGO_CHECK_JSON compares each one written
 # with what json.Marshal writes, and VESLINT_CHECK_DECODE each one read with what json2 reads (a

@@ -72,6 +72,9 @@ mut:
 	// worker_client); a worker's client does not close the session it shares.
 	worker int
 	shared bool
+	// no_helpers makes the rules walk types themselves even with TypeScript in this process
+	// (VESLINT_TSGO_HELPERS=0, to compare both ways; see rule_helpers.v).
+	no_helpers bool
 }
 
 // binary_path returns the path of the pinned binary for the veslint executable (see

@@ -9,9 +9,10 @@ import strings
 // API; both give the same answers.
 
 // in_process tells whether TypeScript runs in this process, where the `veslint/…` methods are
-// answered.
+// answered, and the rules use them: VESLINT_TSGO_HELPERS=0 makes them walk the types themselves
+// there too (both ways give the same answers; tests/run.sh compares them).
 pub fn (c &Client) in_process() bool {
-	return c.inproc != 0
+	return c.inproc != 0 && !c.no_helpers
 }
 
 // UnboundMethodStep is a check of unbound-method: the property `name` of the type `typ`, of each
@@ -71,4 +72,15 @@ pub fn (mut c Client) unbound_method_checks(snapshot int, project string, ignore
 		return error('invalid response from `veslint/unboundMethodChecks`: ${answer.len} answers for ${groups.len} groups')
 	}
 	return answer
+}
+
+// type_contains tells whether the type contains a type with one of the TypeFlags `flags`
+// (typescript-eslint's typeContains, as no-unnecessary-type-assertion walks it).
+pub fn (mut c Client) type_contains(snapshot int, project string, type_id int, flags u32) !bool {
+	answer := c.request('veslint/typeContains', '{"snapshot":${snapshot},"project":${json_text(project)},"type":${type_id},"flags":${flags}}')!
+	return match answer {
+		'true' { true }
+		'false' { false }
+		else { error('invalid response from `veslint/typeContains`: ${answer}') }
+	}
 }

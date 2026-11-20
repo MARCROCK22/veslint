@@ -873,8 +873,7 @@ fn (mut c Checker) nuta_contains(t TypeResponse, flags u32, mut seen map[int]boo
 fn (mut c Checker) nuta_contains_any(t TypeResponse, mut cache NutaCache) !bool {
 	key := '${t.id}:any'
 	if key !in cache.contains {
-		mut seen := map[int]bool{}
-		cache.contains[key] = c.nuta_contains(t, type_flag_any, mut seen, mut cache, 0)!
+		cache.contains[key] = c.nuta_contains_top(t, type_flag_any, mut cache)!
 	}
 	return cache.contains[key]
 }
@@ -882,11 +881,20 @@ fn (mut c Checker) nuta_contains_any(t TypeResponse, mut cache NutaCache) !bool 
 fn (mut c Checker) nuta_contains_type_variable(t TypeResponse, mut cache NutaCache) !bool {
 	key := '${t.id}:variable'
 	if key !in cache.contains {
-		mut seen := map[int]bool{}
-		cache.contains[key] = c.nuta_contains(t, nuta_type_variable_or_index, mut seen, mut
-			cache, 0)!
+		cache.contains[key] = c.nuta_contains_top(t, nuta_type_variable_or_index, mut cache)!
 	}
 	return cache.contains[key]
+}
+
+// nuta_contains_top walks a type with nuta_contains, or has TypeScript in this process walk it
+// the same way in one request (the types of the parameters and the return types of the signatures
+// of every type it reaches, each a request otherwise).
+fn (mut c Checker) nuta_contains_top(t TypeResponse, flags u32, mut cache NutaCache) !bool {
+	if c.client.in_process() {
+		return c.client.type_contains(c.snapshot, c.project, t.id, flags)!
+	}
+	mut seen := map[int]bool{}
+	return c.nuta_contains(t, flags, mut seen, mut cache, 0)!
 }
 
 // nuta_is_empty_object_type ports isEmptyObjectType.
