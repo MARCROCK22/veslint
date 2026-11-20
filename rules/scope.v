@@ -88,11 +88,13 @@ pub:
 	variable_scope int
 	body_start     int // start of the body of a function scope (-1 without body)
 pub mut:
-	children   []int
-	set        map[string]int // own variables by name
-	variables  []int          // own variables, in definition order
-	references []int          // references created in this scope, in creation order
-	through    []int          // the references it left to the upper scope, in that order (scope.through)
+	children []int
+	// own: the scope's own variables by name, but the libs' variables of the global scope (see
+	// ScopeTree.set_get); `scope.set` of ESLint.
+	own        map[string]int
+	variables  []int // own variables, in definition order
+	references []int // references created in this scope, in creation order
+	through    []int // the references it left to the upper scope, in that order (scope.through)
 }
 
 // ScopeVariable is an ESLint variable. `lib` marks an implicit variable of a lib
@@ -210,8 +212,17 @@ pub mut:
 	implicit     []ImplicitGlobal
 	implicit_set map[string]int
 mut:
-	by_block map[string][]int // scopes created by each block node (scope_block_key)
-	declared map[u64]int      // variable of each definition name node
+	// The libs whose variables are the first ones of the global scope: their names stay in the
+	// libs' map, shared by every file (see set_get). lib_hidden are the names removed from the
+	// global scope since.
+	libs       &ScopeLibs = unsafe { nil }
+	lib_hidden map[string]bool
+	by_block   map[string][]int // scopes created by each block node (scope_block_key)
+	declared   map[u64]int      // variable of each definition name node
+	// declaring: the variables each node declares (getDeclaredVariables, by node_key), built on
+	// first use by es_declared_variables for declaring_count variables (rebuilt if more come).
+	declaring       map[u64][]int
+	declaring_count int
 }
 
 // scope_tree is the scope tree of the file being linted, built on first use. A Checker that got
@@ -245,8 +256,8 @@ fn (mut c Checker) scope_libs(libs []string) &ScopeLibs {
 // the file and what its comments declare.
 fn (mut c Checker) file_scope_setup(config LintConfig, inline InlineConfig) ScopeSetup {
 	libs := c.scope_libs(scope_libs_of(c.scope_project, config.language))
-	setup := new_scope_setup(c.scope_project, config.language, inline.globals, inline.exported,
-		libs)
+	setup := new_scope_setup_declaring(c.scope_project, config.language, inline.exported, libs,
+		c.file_declared_globals(config.language, inline.globals))
 	if c.is_svelte() {
 		return ScopeSetup{
 			...setup
@@ -269,6 +280,38 @@ fn (mut c Checker) file_scope_setup(config LintConfig, inline InlineConfig) Scop
 		}
 	}
 	return setup
+}
+
+// DeclaredGlobalsCache keeps the declared_globals of a file without `/* global */` comments:
+// they only depend on its ecmaVersion, sourceType and globals, which the files of a run share.
+struct DeclaredGlobalsCache {
+	set          bool
+	ecma_version int
+	source_type  string
+	globals      map[string]string
+	declared     []ScopeGlobal
+}
+
+// file_declared_globals is declared_globals(language, inline), computed once for the files without
+// `/* global */` comments that share the configuration (the builder only reads the list).
+fn (mut c Checker) file_declared_globals(language LanguageOptions, inline map[string]string) []ScopeGlobal {
+	if inline.len > 0 {
+		return declared_globals(language, inline)
+	}
+	cache := c.declared_globals_cache
+	if cache.set && cache.ecma_version == language.ecma_version
+		&& cache.source_type == language.source_type && cache.globals == language.globals {
+		return cache.declared
+	}
+	declared := declared_globals(language, inline)
+	c.declared_globals_cache = DeclaredGlobalsCache{
+		set:          true
+		ecma_version: language.ecma_version
+		source_type:  language.source_type
+		globals:      language.globals.clone()
+		declared:     declared
+	}
+	return declared
 }
 
 // OptionState tells an option that is not set from one set to null.
@@ -713,6 +756,12 @@ pub fn default_scope_setup() ScopeSetup {
 // give ('readonly', 'writable' or 'off', in the order of the comments), `exported` the names of
 // its `/* exported */` comments, and `libs` the variables of scope_libs_of(project, language).
 pub fn new_scope_setup(project ScopeProject, language LanguageOptions, inline map[string]string, exported []string, libs &ScopeLibs) ScopeSetup {
+	return new_scope_setup_declaring(project, language, exported, libs, declared_globals(language,
+		inline))
+}
+
+// new_scope_setup_declaring is new_scope_setup with its declared_globals.
+fn new_scope_setup_declaring(project ScopeProject, language LanguageOptions, exported []string, libs &ScopeLibs, declared []ScopeGlobal) ScopeSetup {
 	pragma, fragment := scope_jsx_names(project, language)
 	// ESLint gives the parser its sourceType unless the parser options have their own, and the
 	// parser takes anything but "module" as a script.
@@ -723,7 +772,7 @@ pub fn new_scope_setup(project ScopeProject, language LanguageOptions, inline ma
 	}
 	return ScopeSetup{
 		libs:              libs
-		declared:          declared_globals(language, inline)
+		declared:          declared
 		exported:          exported
 		jsx_pragma:        pragma
 		jsx_fragment_name: fragment
@@ -961,7 +1010,7 @@ pub fn (t &ScopeTree) find_variable(scope int, name string, location int) int {
 		}
 	}
 	for s >= 0 {
-		if v := t.scopes[s].set[name] {
+		if v := t.set_get(s, name) {
 			return v
 		}
 		s = t.scopes[s].upper
@@ -969,9 +1018,41 @@ pub fn (t &ScopeTree) find_variable(scope int, name string, location int) int {
 	return -1
 }
 
+// set_get ports scope.set.get(name): the variable `name` of that scope, without the upper ones.
+pub fn (t &ScopeTree) set_get(scope int, name string) ?int {
+	if v := t.scopes[scope].own[name] {
+		return v
+	}
+	if scope == 0 && t.libs != unsafe { nil } && name !in t.lib_hidden {
+		if v := t.libs.set[name] {
+			return v
+		}
+	}
+	return none
+}
+
+// set_has ports scope.set.has(name).
+pub fn (t &ScopeTree) set_has(scope int, name string) bool {
+	_ := t.set_get(scope, name) or { return false }
+	return true
+}
+
+// set_put ports scope.set.set(name, v).
+fn (mut t ScopeTree) set_put(scope int, name string, v int) {
+	t.scopes[scope].own[name] = v
+}
+
+// set_delete ports scope.set.delete(name).
+fn (mut t ScopeTree) set_delete(scope int, name string) {
+	t.scopes[scope].own.delete(name)
+	if scope == 0 && t.libs != unsafe { nil } && name in t.libs.set {
+		t.lib_hidden[name] = true
+	}
+}
+
 // own_variable ports scope.set.get(name): only the variables of that scope.
 pub fn (t &ScopeTree) own_variable(scope int, name string) int {
-	return t.scopes[scope].set[name] or { -1 }
+	return t.set_get(scope, name) or { -1 }
 }
 
 // declared_variable is the variable a definition name node declares (getDeclaredVariables(…).find(v
@@ -1067,7 +1148,9 @@ fn build_scope_tree_with(root C.TSNode, src string, tokens TokenEnds, setup Scop
 	// populateGlobalsFromLib: the implicit variables of the libs and `const`.
 	if setup.libs != unsafe { nil } {
 		b.tree.variables = setup.libs.variables.clone()
-		b.tree.scopes[0].set = setup.libs.set.clone()
+		// The names of the libs' variables stay in the libs' map (see set_get), which every file
+		// shares: cloning it cost a string per name and file.
+		b.tree.libs = setup.libs
 		b.tree.scopes[0].variables = []int{len: setup.libs.variables.len, init: index}
 	}
 	b.current = 0
@@ -1094,7 +1177,7 @@ fn build_scope_tree_with(root C.TSNode, src string, tokens TokenEnds, setup Scop
 	b.add_globals(setup.declared)
 	// markExportedVariables: only the variables of the global scope.
 	for name in setup.exported {
-		if v := b.tree.scopes[0].set[name] {
+		if v := b.tree.set_get(0, name) {
 			b.tree.variables[v].eslint_used = true
 		}
 	}
@@ -1168,7 +1251,7 @@ fn (mut b ScopeBuilder) implicit_globals() {
 	for r in b.tree.through {
 		ref := b.tree.references[r]
 		node := ref.implicit or { continue }
-		if ref.name in b.tree.scopes[0].set {
+		if b.tree.set_has(0, ref.name) {
 			continue
 		}
 		if i := b.tree.implicit_set[ref.name] {
@@ -1291,7 +1374,7 @@ fn (mut b ScopeBuilder) close() {
 // resolve_in ports the static close of a reference in a scope.
 fn (mut b ScopeBuilder) resolve_in(s int, r int) bool {
 	ref := b.tree.references[r]
-	v := b.tree.scopes[s].set[ref.name] or { return false }
+	v := b.tree.set_get(s, ref.name) or { return false }
 	if !b.valid_resolution(b.tree.scopes[s], ref, v) {
 		return false
 	}
@@ -1329,7 +1412,7 @@ fn (b &ScopeBuilder) name_of(n C.TSNode) string {
 
 // define_variable gets or creates the variable `name` of a scope.
 fn (mut b ScopeBuilder) define_variable(scope int, name string) int {
-	if v := b.tree.scopes[scope].set[name] {
+	if v := b.tree.set_get(scope, name) {
 		return v
 	}
 	v := b.tree.variables.len
@@ -1337,7 +1420,7 @@ fn (mut b ScopeBuilder) define_variable(scope int, name string) int {
 		name:  name
 		scope: scope
 	}
-	b.tree.scopes[scope].set[name] = v
+	b.tree.set_put(scope, name, v)
 	b.tree.scopes[scope].variables << v
 	return v
 }
@@ -1407,7 +1490,7 @@ fn (mut b ScopeBuilder) read_dual(ident C.TSNode) {
 fn (mut b ScopeBuilder) reference_in_upper_scope(name string) bool {
 	mut s := b.current
 	for s >= 0 {
-		if v := b.tree.scopes[s].set[name] {
+		if v := b.tree.set_get(s, name) {
 			identifiers := b.tree.variables[v].identifiers
 			// A variable without identifiers (an implicit lib variable, a quoted enum member):
 			// typescript-eslint references `undefined` and fails when the scope closes.

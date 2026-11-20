@@ -1,6 +1,6 @@
 module regexpp
 
-// RegExpParserState ported from regexpp 4.12.2: the validator calls these methods when `build` is set. Every
+// RegExpParserState ported from regexpp 4.12.3: the validator calls these methods when `build` is set. Every
 // `throw new Error("UnknownError")` of regexpp returns UnknownError.
 
 struct ParserState {

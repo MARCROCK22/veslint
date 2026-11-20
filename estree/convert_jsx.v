@@ -49,8 +49,8 @@ fn (mut c Converter) jsx_opening(n C.TSNode, kids []Kid, self_closing bool) int 
 		if k.kind == 'jsx_expression' {
 			// {...x}
 			a := c.mkn(.jsx_spread_attribute, k.n)
-			if sp := first_named(c.kids(k.n)) {
-				if arg := first_named(c.kids(sp.n)) {
+			if sp := c.first_named_kid(k.n) {
+				if arg := c.first_named_kid(sp.n) {
 					c.pnode(a, .argument, c.expr(arg.n))
 				}
 			}
@@ -156,7 +156,7 @@ fn (mut c Converter) jsx_expression(n C.TSNode) int {
 	}
 	if inner.kind == 'spread_element' {
 		i := c.mkn(.jsx_spread_child, n)
-		if arg := first_named(c.kids(inner.n)) {
+		if arg := c.first_named_kid(inner.n) {
 			c.pnode(i, .expression, c.expr(arg.n))
 		}
 		return i

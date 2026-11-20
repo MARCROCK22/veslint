@@ -15,41 +15,93 @@ mut:
 	count     int // nodes recorded
 }
 
-// KindBucket holds the nodes of a kind in preorder. `seq` is the place of each among the recorded
-// nodes of the tree, in preorder, and `last` is the place of the last one in its subtree.
+// KindBucket holds the nodes of a kind in preorder, as their places in the flat tree (flat_tree.h),
+// which has the nodes and the last node of each subtree. Only integers: copies of the nodes, which
+// the collector scanned at every collection while the file was linted (19 MB of them for
+// src/compiler/checker.ts), are made when a rule asks for them.
 struct KindBucket {
 mut:
-	nodes []C.TSNode
-	seq   []int
-	last  []int
+	seq []int
 }
 
 // new_node_index walks the tree under `root` once. It records the named nodes, which are the ones
-// asked for, and the anonymous nodes with children, which can only be skipped.
+// asked for, and the anonymous nodes with children, which can only be skipped; and makes this
+// thread's flat tree (flat_tree.h), where node_parent, children and named_children find the nodes
+// under `root`.
 pub fn new_node_index(root C.TSNode) NodeIndex {
+	ix, _ := index_tree(root, false)
+	return ix
+}
+
+// new_node_index_and_token_ends gives what new_node_index and token_ends give, from one walk of
+// the tree.
+pub fn new_node_index_and_token_ends(root C.TSNode) (NodeIndex, TokenEnds) {
+	ix, ends := index_tree(root, true)
+	return ix, TokenEnds{
+		ends: ends
+	}
+}
+
+// What index_tree knows of a symbol of the grammar for the token ends, by its number (0: not
+// asked yet).
+const symbol_known = u8(1)
+const symbol_jsx = u8(2) // its kind starts with `jsx_`
+const symbol_jsx_element = u8(4)
+const symbol_hash_bang = u8(8)
+
+// symbol_flags is what token_ends looks at in the kind of a node.
+fn symbol_flags(node C.TSNode, symbol int, mut flags_of [symbol_states]u8) u8 {
+	mut flags := if symbol < symbol_states { flags_of[symbol] } else { u8(0) }
+	if flags == 0 {
+		kind := node_kind(node)
+		flags = symbol_known
+		if kind.starts_with('jsx_') {
+			flags |= symbol_jsx
+		}
+		if kind == 'jsx_element' {
+			flags |= symbol_jsx_element
+		}
+		if kind == 'hash_bang_line' {
+			flags |= symbol_hash_bang
+		}
+		if symbol < symbol_states {
+			flags_of[symbol] = flags
+		}
+	}
+	return flags
+}
+
+// index_tree is new_node_index and, with `with_ends`, the ends token_ends gives: the same
+// preorder walk, where token_ends neither enters an extra node (a comment) nor counts it. It walks
+// the tree once into this thread's flat tree (flat_tree.h) and reads that. The place of a node in
+// the flat tree is its `seq` in the buckets, and the place of the last node of its subtree its
+// `last`.
+fn index_tree(root C.TSNode, with_ends bool) (NodeIndex, []int) {
 	mut ix := NodeIndex{
 		root:  root
 		built: true
 	}
-	mut cursor := C.ts_tree_cursor_new(root)
-	defer {
-		C.ts_tree_cursor_delete(&cursor)
+	mut ends := []int{}
+	if !C.vt_flat_build(root) {
+		panic('veslint: no flat tree for a file (out of memory, or its nodes out of order)')
 	}
+	count := int(C.vt_flat_count())
+	flat := C.vt_flat_nodes()
 	// The bucket of each symbol of the grammar plus one, as a named and as an anonymous node (0:
-	// not asked yet).
+	// not asked yet), and its symbol_flags.
 	mut named_of := [symbol_states]int{}
 	mut anonymous_of := [symbol_states]int{}
-	// The nodes whose children are being visited: the bucket of each (-1 if it is not recorded)
-	// and its place in it.
-	mut open_buckets := []int{}
-	mut open_places := []int{}
-	for {
-		node := C.ts_tree_cursor_current_node(&cursor)
-		is_named := C.ts_node_is_named(node)
-		mut bucket := -1
-		mut place := 0
-		if is_named || C.ts_node_child_count(node) > 0 {
-			symbol := int(C.ts_node_symbol(node))
+	mut flags_of := [symbol_states]u8{}
+	// The last node of the extra node (a comment) the walk is in, if it is in one: token_ends
+	// does not enter those.
+	mut extra_until := -1
+	for i in 0 .. count {
+		entry := unsafe { &flat[i] }
+		node := entry.node
+		is_named := entry.flags & flat_named != 0
+		has_children := int(entry.last) > i
+		symbol := int(entry.symbol)
+		if is_named || has_children {
 			known := if symbol >= symbol_states {
 				0
 			} else if is_named {
@@ -57,6 +109,7 @@ pub fn new_node_index(root C.TSNode) NodeIndex {
 			} else {
 				anonymous_of[symbol]
 			}
+			mut bucket := 0
 			if known != 0 {
 				bucket = known - 1
 			} else {
@@ -69,35 +122,37 @@ pub fn new_node_index(root C.TSNode) NodeIndex {
 					}
 				}
 			}
-			place = ix.buckets[bucket].nodes.len
-			ix.buckets[bucket].nodes << node
-			ix.buckets[bucket].seq << ix.count
-			ix.buckets[bucket].last << ix.count
+			ix.buckets[bucket].seq << i
 			ix.count++
 		}
-		if C.ts_tree_cursor_goto_first_child(&cursor) {
-			open_buckets << bucket
-			open_places << place
+		// What token_ends does with the node, outside extra nodes.
+		if !with_ends || i <= extra_until {
 			continue
 		}
-		for !C.ts_tree_cursor_goto_next_sibling(&cursor) {
-			if !C.ts_tree_cursor_goto_parent(&cursor) {
-				// Only the root is left open.
-				for i, open in open_buckets {
-					if open >= 0 {
-						ix.buckets[open].last[open_places[i]] = ix.count - 1
-					}
-				}
-				return ix
+		if entry.flags & flat_extra != 0 {
+			extra_until = int(entry.last)
+			continue
+		}
+		flags := symbol_flags(node, symbol, mut flags_of)
+		// The children of a JSX element have no leading trivia for TypeScript: the white space
+		// between them is JsxText, also the one with line breaks, which tree-sitter skips. So the
+		// start of each child counts as the end of a token.
+		if flags & symbol_jsx != 0 && entry.parent != flat_none {
+			parent := unsafe { &flat[entry.parent] }
+			if symbol_flags(parent.node, int(parent.symbol), mut flags_of) & symbol_jsx_element != 0
+				&& C.ts_node_start_byte(node) > C.ts_node_start_byte(parent.node) {
+				ends << int(C.ts_node_start_byte(node))
 			}
-			open := open_buckets.pop()
-			open_place := open_places.pop()
-			if open >= 0 {
-				ix.buckets[open].last[open_place] = ix.count - 1
+		}
+		if !has_children {
+			start := int(C.ts_node_start_byte(node))
+			end := int(C.ts_node_end_byte(node))
+			if end > start && flags & symbol_hash_bang == 0 {
+				ends << end
 			}
 		}
 	}
-	return ix
+	return ix, ends
 }
 
 // bucket_of returns the bucket of a kind, which it makes if there is none yet.
@@ -117,9 +172,21 @@ fn (mut ix NodeIndex) bucket_of(kind string, is_named bool) int {
 	return ix.buckets.len - 1
 }
 
-// covers tells whether the index answers for `root`: it is the root it was built from.
+// covers tells whether the index answers for `root`: it is the root it was built from, and the
+// flat tree of this thread is still the one of that root.
 fn (ix &NodeIndex) covers(root C.TSNode) bool {
-	return ix.built && C.ts_node_eq(root, ix.root)
+	return ix.built && C.ts_node_eq(root, ix.root) && C.vt_flat_count() > 0
+		&& C.ts_node_eq(unsafe { C.vt_flat_nodes()[0].node }, root)
+}
+
+// nodes_at gives the nodes at those places of the flat tree.
+fn nodes_at(seq []int) []C.TSNode {
+	flat := C.vt_flat_nodes()
+	mut nodes := []C.TSNode{len: seq.len}
+	for i, at in seq {
+		nodes[i] = unsafe { flat[at].node }
+	}
+	return nodes
 }
 
 // of_kind gives what nodes_of_kind(root, kind) gives. It walks the tree when `root` is not the
@@ -129,7 +196,7 @@ pub fn (ix &NodeIndex) of_kind(root C.TSNode, kind string) []C.TSNode {
 		return nodes_of_kind(root, &char(kind.str))
 	}
 	bucket := ix.named[kind] or { return []C.TSNode{} }
-	return ix.buckets[bucket].nodes.clone()
+	return nodes_at(ix.buckets[bucket].seq)
 }
 
 // of_kinds gives what nodes_of_kinds(root, kinds, skip) gives. It walks the tree when `root` is
@@ -159,7 +226,7 @@ pub fn (ix &NodeIndex) of_kinds(root C.TSNode, kinds []string, skip []string) []
 		}
 	}
 	if wanted.len == 1 && skipped.len == 0 {
-		return ix.buckets[wanted[0]].nodes.clone()
+		return nodes_at(ix.buckets[wanted[0]].seq)
 	}
 	// The subtrees that are not entered, in order: a skipped node inside another one adds nothing.
 	mut skip_from := []int{}
@@ -175,7 +242,7 @@ pub fn (ix &NodeIndex) of_kinds(root C.TSNode, kinds []string, skip []string) []
 		heads[next]++
 		seq := ix.buckets[skipped[next]].seq[at]
 		if seq > covered {
-			covered = ix.buckets[skipped[next]].last[at]
+			covered = flat_last(seq)
 			skip_from << seq
 			skip_to << covered
 		}
@@ -183,6 +250,7 @@ pub fn (ix &NodeIndex) of_kinds(root C.TSNode, kinds []string, skip []string) []
 	// The wanted nodes in preorder, except the ones inside a skipped subtree. A skipped node is
 	// not inside its own subtree: the walk takes it before deciding not to enter.
 	mut nodes := []C.TSNode{}
+	flat := C.vt_flat_nodes()
 	heads = []int{len: wanted.len}
 	mut interval := 0
 	for {
@@ -199,7 +267,7 @@ pub fn (ix &NodeIndex) of_kinds(root C.TSNode, kinds []string, skip []string) []
 		if interval < skip_from.len && skip_from[interval] < seq {
 			continue
 		}
-		nodes << ix.buckets[wanted[next]].nodes[at]
+		nodes << unsafe { flat[seq].node }
 	}
 	return nodes
 }

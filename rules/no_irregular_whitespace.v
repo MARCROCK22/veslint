@@ -36,11 +36,30 @@ fn niw_options(options []json2.Any) !NiwOptions {
 	}
 }
 
+// niw_has_irregular tells whether the text has irregular whitespace or line terminators. They are
+// \f, \v and non-ASCII characters: only the runs of non-ASCII bytes are decoded (an ASCII byte
+// never continues a UTF-8 sequence, so each run decodes as in the whole text).
 fn niw_has_irregular(text string) bool {
-	for r in text.runes() {
-		if r in niw_spaces || r in niw_terminators {
-			return true
+	mut i := 0
+	for i < text.len {
+		b := text[i]
+		if b < 0x80 {
+			if b == 0x0b || b == 0x0c {
+				return true
+			}
+			i++
+			continue
 		}
+		mut j := i + 1
+		for j < text.len && text[j] >= 0x80 {
+			j++
+		}
+		for r in src_view(text, i, j).runes() {
+			if r in niw_spaces || r in niw_terminators {
+				return true
+			}
+		}
+		i = j
 	}
 	return false
 }

@@ -68,6 +68,7 @@ fn (mut c Checker) reset_es_file() {
 	c.file_es_state = .unknown
 	c.file_es = estree.EsTree{}
 	c.file_es_by_ts = map[u64]int{}
+	c.rx_file = RxFile{}
 	c.file_code_paths_built = false
 	c.file_code_paths = codepath.Analysis{}
 	c.vue_script_info = VueScript{}

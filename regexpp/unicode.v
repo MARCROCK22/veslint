@@ -1,6 +1,6 @@
 module regexpp
 
-// Character predicates and Unicode property name tables, ported from regexpp 4.12.2.
+// Character predicates and Unicode property name tables, ported from regexpp 4.12.3.
 
 pub const latest_ecma_version = 2025
 

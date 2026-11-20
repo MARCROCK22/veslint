@@ -42,6 +42,8 @@ const marcrock = (await import(path.join(NM, '@marcrock22/eslint/dist/rules/_.js
 const eslintComments = createRequire(path.join(ROOT, 'build/upstream/plugins-new/package.json'))('@eslint-community/eslint-plugin-eslint-comments');
 // eslint-plugin-promise 7.3.0, outside build/eval (tests/upstream/README.md).
 const promise = createRequire(path.join(ROOT, 'build/upstream/plugins-new/package.json'))('eslint-plugin-promise');
+// eslint-plugin-regexp 3.3.3, outside build/eval (tests/upstream/README.md).
+const regexp = createRequire(path.join(ROOT, 'build/upstream/plugins-new/package.json'))('eslint-plugin-regexp');
 
 const { builtinRules } = require('eslint/use-at-your-own-risk');
 
@@ -60,6 +62,7 @@ function pluginOf(rule) {
     return ['@eslint-community/eslint-comments', eslintComments, rule.slice('@eslint-community/eslint-comments/'.length)];
   }
   if (rule.startsWith('promise/')) return ['promise', promise, rule.slice('promise/'.length)];
+  if (rule.startsWith('regexp/')) return ['regexp', regexp, rule.slice('regexp/'.length)];
   return ['@typescript-eslint', tseslint.plugin, rule.replace('@typescript-eslint/', '')];
 }
 
@@ -82,9 +85,17 @@ function linterFor(cwd) {
 // @slipher/eslint-plugin and @marcrock22/eslintcf) makes up to 10; ESLint's, which ESLint core,
 // eslint-plugin-unicorn (through eslint-ava-rule-tester) and eslint-plugin-promise use, one.
 // eslint-vitest-rule-tester's createRuleTester (eslint-plugin-perfectionist) makes the first pass and
-// up to 11 more, and checks the text of the last one.
+// up to 11 more, and checks the text of the last one; eslint-snapshot-rule-tester's
+// SnapshotRuleTester (eslint-plugin-regexp) makes up to 10 (Linter#verifyAndFix), and its snapshot
+// holds the text of the last one.
 const maxPassesOf = rule =>
-  rule.startsWith('perfectionist/') ? 12 : rule.startsWith('@typescript-eslint/') || rule.startsWith('seyfert/') || rule.startsWith('marcrock/') ? 10 : 1;
+  rule.startsWith('perfectionist/')
+    ? 12
+    : rule.startsWith('@typescript-eslint/') || rule.startsWith('seyfert/') || rule.startsWith('marcrock/') || rule.startsWith('regexp/')
+      ? 10
+      : 1;
+// The rules whose tests check the text the last pass of fixes leaves.
+const lastOutputOf = rule => rule.startsWith('perfectionist/') || rule.startsWith('regexp/');
 
 // The plugins the RuleTester of a test file defines besides the rule (`plugins` of a case: each
 // namespace with the names of its rules), which the case's directive comments name: rules that do
@@ -202,7 +213,7 @@ function check(rule, c, messages, outputs) {
   if ('output' in c) {
     if (c.output == null) {
       if (outputs.length && outputs[0] !== c.code) say('fixed, but the test expects no fix');
-    } else if (typeof c.output === 'string' && rule.startsWith('perfectionist/')) {
+    } else if (typeof c.output === 'string' && lastOutputOf(rule)) {
       const final = outputs.length ? outputs.at(-1) : c.code;
       if (final !== c.output) say(`output differs: ${JSON.stringify(final)}\n--- expected\n${JSON.stringify(c.output)}`);
     } else if (typeof c.output === 'string') {

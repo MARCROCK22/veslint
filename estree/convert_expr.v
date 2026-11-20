@@ -9,7 +9,7 @@ fn (mut c Converter) expr(n C.TSNode) int {
 	}
 	match kind {
 		'parenthesized_expression' {
-			inner := first_named(c.kids(n)) or { return -1 }
+			inner := c.first_named_kid(n) or { return -1 }
 			return c.expr(inner.n)
 		}
 		'identifier', 'undefined', 'property_identifier', 'shorthand_property_identifier',
@@ -152,7 +152,7 @@ fn (mut c Converter) expr(n C.TSNode) int {
 		}
 		'spread_element' {
 			i := c.mkn(.spread_element, n)
-			if arg := first_named(c.kids(n)) {
+			if arg := c.first_named_kid(n) {
 				c.pnode(i, .argument, c.expr(arg.n))
 			}
 			return i
@@ -487,7 +487,7 @@ fn (mut c Converter) object(n C.TSNode) int {
 fn (mut c Converter) property_key(n C.TSNode) int {
 	match kind_of(n) {
 		'computed_property_name' {
-			inner := first_named(c.kids(n)) or { return -1 }
+			inner := c.first_named_kid(n) or { return -1 }
 			return c.expr(inner.n)
 		}
 		'string', 'number' {
@@ -571,7 +571,7 @@ fn (mut c Converter) template(n C.TSNode, tagged bool) int {
 		sub_start := c.start(k.n)
 		quasis << c.template_element(k.n, seg, sub_start + 2, seg + 1, sub_start, false,
 			tagged)
-		if e := first_named(c.kids(k.n)) {
+		if e := c.first_named_kid(k.n) {
 			exprs << c.expr(e.n)
 		}
 		seg = node_end_of(k.n) - 1
@@ -643,7 +643,7 @@ fn (mut c Converter) pattern(n C.TSNode) int {
 		}
 		'rest_pattern' {
 			i := c.mkn(.rest_element, n)
-			if arg := first_named(c.kids(n)) {
+			if arg := c.first_named_kid(n) {
 				c.pnode(i, .argument, c.pattern(arg.n))
 			}
 			c.plist(i, .decorators, [])
@@ -775,7 +775,7 @@ fn (mut c Converter) await_applied(n C.TSNode, kind string) int {
 		'parenthesized_expression' {
 			i := c.mk(.call_expression, n, start, c.end(n))
 			mut args := []int{}
-			if inner := first_named(c.kids(n)) {
+			if inner := c.first_named_kid(n) {
 				if inner.kind == 'sequence_expression' {
 					c.sequence(inner.n, mut args)
 				} else {

@@ -25,7 +25,7 @@ fn declared(src string) []Ident {
 	defer {
 		treesitter.tree_delete(tree)
 	}
-	return p.identifiers(tree, src, false)
+	return p.identifiers(tree, src, false) or { panic(err) }
 }
 
 fn test_unescape_leading_underscores() {
@@ -110,7 +110,7 @@ fn test_rule_setup_names() {
 		assert name.starts_with(rules.typescript_eslint_prefix) || name.starts_with('seyfert/')
 			|| name.starts_with('unicorn/') || name.starts_with('@stylistic/')
 			|| name.starts_with('perfectionist/') || name.starts_with('marcrock/')
-			|| name.starts_with('promise/')
+			|| name.starts_with('promise/') || name.starts_with('regexp/')
 			|| name.starts_with('vue/') || name.starts_with('svelte/')
 			|| name.starts_with('@eslint-community/eslint-comments/'), name
 		short := name.all_after_last('/')
@@ -268,9 +268,10 @@ fn test_cpus_from_env() {
 		}
 	}
 	os.unsetenv('VESLINT_CPUS')
-	assert cpus_from_env()! == 2
+	assert cpus_from_env(2)! == 2
+	assert cpus_from_env(6)! == 6
 	os.setenv('VESLINT_CPUS', '', true)
-	assert cpus_from_env()! == 2
+	assert cpus_from_env(2)! == 2
 	for raw, want in {
 		'0':   0
 		'1':   1
@@ -278,11 +279,11 @@ fn test_cpus_from_env() {
 		' 4 ': 4
 	} {
 		os.setenv('VESLINT_CPUS', raw, true)
-		assert cpus_from_env()! == want
+		assert cpus_from_env(2)! == want
 	}
 	for raw in ['two', '-1', '1.5', '007', '+2'] {
 		os.setenv('VESLINT_CPUS', raw, true)
-		if value := cpus_from_env() {
+		if value := cpus_from_env(2) {
 			assert false, '`${raw}` gave ${value}'
 		} else {
 			assert err.msg().contains('VESLINT_CPUS must be a number of CPUs'), err.msg()
@@ -336,4 +337,13 @@ fn test_resolved_svelte_config_runes() {
 	assert loaded.file_language(files[1], loaded.configs[0].language).svelte_config_runes == 0
 	assert loaded.file_language(files[2], loaded.configs[0].language).svelte_config_runes == -1
 	assert loaded.resolved.contains('"svelteConfigRunes":true')
+}
+
+// A worker per CPU, with at least 8 files each, and one with --fix.
+fn test_worker_count() {
+	assert worker_count(true, 1000, 4) == 1
+	assert worker_count(false, 7, 4) == 1
+	assert worker_count(false, 16, 4) == 2
+	assert worker_count(false, 1000, 2) == 2
+	assert worker_count(false, 0, 4) == 1
 }

@@ -1,6 +1,6 @@
 module regexpp
 
-// Expected values come from @eslint-community/regexpp 4.12.2; the full differential test is ../main.v.
+// Expected values come from @eslint-community/regexpp 4.12.3; the full differential test is ../main.v.
 
 fn syntax_error(err IError) SyntaxError {
 	if err is SyntaxError {
@@ -74,4 +74,20 @@ fn test_walk_order() {
 	assert c.events == a.visit_events()
 	q := a.nodes[a.nodes[a.nodes[a.root].alternatives[0]].elements[0]]
 	assert q.kind == .quantifier && q.min == 2 && quantifier_is_infinite(q.max) && !q.greedy
+}
+
+// The Script values regexpp 4.12.3 added (Unicode 17).
+fn test_scripts_of_4_12_3() {
+	for p in ['\\p{Script=Jurc}', '\\p{sc=Proto_Cuneiform}', '\\p{Script_Extensions=Seal}'] {
+		src := to_utf16(p)
+		validate_pattern(src, 0, src.len, PatternFlags{ unicode: true }, Options{}) or {
+			assert false, '${p}: ${err}'
+		}
+	}
+	src := to_utf16('\\p{Script=Nope}')
+	validate_pattern(src, 0, src.len, PatternFlags{ unicode: true }, Options{}) or {
+		assert syntax_error(err).message == 'Invalid regular expression: /\\p{Script=Nope}/u: Invalid property name'
+		return
+	}
+	assert false
 }

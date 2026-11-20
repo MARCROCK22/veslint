@@ -1,0 +1,57 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="760" height="472" viewBox="0 0 760 472" role="img" aria-label="Type-aware linting: the 23 type-aware rules of recommendedTypeChecked">
+<style>
+  svg { --surface: #fcfcfb; --ink: #0b0b0b; --ink2: #52514e; --axis: #c3c2b7; --accent: #2a78d6; --rest: #898781; }
+  @media (prefers-color-scheme: dark) {
+    svg { --surface: #1a1a19; --ink: #f0efec; --ink2: #c3c2b7; --axis: #383835; --accent: #3987e5; --rest: #898781; }
+  }
+  .bg { fill: var(--surface); }
+  text { font-family: system-ui, -apple-system, "Segoe UI", sans-serif; fill: var(--ink); }
+  .title { font-size: 16px; font-weight: 600; }
+  .sub { font-size: 12px; fill: var(--ink2); font-weight: 400; }
+  .panel { font-size: 14px; font-weight: 600; }
+  .tool { font-size: 13px; }
+  .accent-text { font-weight: 700; }
+  .value { font-size: 13px; fill: var(--ink2); font-variant-numeric: tabular-nums; }
+  .parity { font-size: 12px; fill: var(--ink2); }
+  .accent { fill: var(--accent); }
+  .rest { fill: var(--rest); }
+  .axis { stroke: var(--axis); stroke-width: 1; }
+</style>
+<rect class="bg" width="760" height="472" rx="8"/>
+<text class="title" x="24" y="38">Type-aware linting: the 23 type-aware rules of recommendedTypeChecked</text>
+<text class="sub" x="24" y="58">Command line on the whole project: wall-clock time, mean of 5 runs (less is better).</text>
+<text class="sub" x="24" y="74">Intel Core i3-4150T CPU, 4 CPUs, Linux. Each panel has its own scale.</text>
+<text class="panel" x="24" y="105">zod<tspan class="sub" dx="8">125 files, 37,778 lines</tspan></text>
+<text class="tool" x="106" y="130" text-anchor="end">ESLint</text>
+<path class="rest" d="M116,116h366a4,4 0 0 1 4,4v10a4,4 0 0 1 -4,4h-366z"/>
+<text class="value" x="494" y="130">14 s</text>
+<text class="tool accent-text" x="106" y="158" text-anchor="end">veslint</text>
+<path class="accent" d="M116,144h71.9019082725833a4,4 0 0 1 4,4v10a4,4 0 0 1 -4,4h-71.9019082725833z"/>
+<text class="value" x="199.90190827258328" y="158">2.8 s<tspan class="parity" dx="8">same problems as ESLint</tspan></text>
+<text class="tool" x="106" y="186" text-anchor="end">oxlint</text>
+<path class="rest" d="M116,172h44.29766035700876a4,4 0 0 1 4,4v10a4,4 0 0 1 -4,4h-44.29766035700876z"/>
+<text class="value" x="172.29766035700877" y="186">1.8 s<tspan class="parity" dx="8">1,304 of ESLint's 1,376 problems</tspan></text>
+<line class="axis" x1="116" y1="112" x2="116" y2="194"/>
+<text class="panel" x="24" y="229">recharts<tspan class="sub" dx="8">294 files, 51,054 lines</tspan></text>
+<text class="tool" x="106" y="254" text-anchor="end">ESLint</text>
+<path class="rest" d="M116,240h366a4,4 0 0 1 4,4v10a4,4 0 0 1 -4,4h-366z"/>
+<text class="value" x="494" y="254">22 s</text>
+<text class="tool accent-text" x="106" y="282" text-anchor="end">veslint</text>
+<path class="accent" d="M116,268h84.01572343164209a4,4 0 0 1 4,4v10a4,4 0 0 1 -4,4h-84.01572343164209z"/>
+<text class="value" x="212.01572343164207" y="282">5.3 s<tspan class="parity" dx="8">same problems as ESLint</tspan></text>
+<text class="tool" x="106" y="310" text-anchor="end">oxlint</text>
+<path class="rest" d="M116,296h70.03506373748768a4,4 0 0 1 4,4v10a4,4 0 0 1 -4,4h-70.03506373748768z"/>
+<text class="value" x="198.0350637374877" y="310">4.5 s<tspan class="parity" dx="8">168 of ESLint's 175 problems</tspan></text>
+<line class="axis" x1="116" y1="236" x2="116" y2="318"/>
+<text class="panel" x="24" y="353">TypeScript compiler<tspan class="sub" dx="8">602 files, 381,174 lines</tspan></text>
+<text class="tool" x="106" y="378" text-anchor="end">ESLint</text>
+<path class="rest" d="M116,364h366a4,4 0 0 1 4,4v10a4,4 0 0 1 -4,4h-366z"/>
+<text class="value" x="494" y="378">71 s</text>
+<text class="tool accent-text" x="106" y="406" text-anchor="end">veslint</text>
+<path class="accent" d="M116,392h110.18847300100184a4,4 0 0 1 4,4v10a4,4 0 0 1 -4,4h-110.18847300100184z"/>
+<text class="value" x="238.18847300100185" y="406">22 s<tspan class="parity" dx="8">same problems as ESLint</tspan></text>
+<text class="tool" x="106" y="434" text-anchor="end">oxlint</text>
+<path class="rest" d="M116,420h29.14770130118459a4,4 0 0 1 4,4v10a4,4 0 0 1 -4,4h-29.14770130118459z"/>
+<text class="value" x="157.14770130118458" y="434">6.4 s<tspan class="parity" dx="8">2,980 of ESLint's 3,790 problems</tspan></text>
+<line class="axis" x1="116" y1="360" x2="116" y2="442"/>
+</svg>

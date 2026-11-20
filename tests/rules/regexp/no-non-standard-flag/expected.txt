@@ -1,0 +1,5 @@
+tests/rules/regexp/no-non-standard-flag/cases.ts:2:34	regexp/no-non-standard-flag	unexpected	Unexpected non-standard flag 'l'.
+tests/rules/regexp/no-non-standard-flag/cases.ts:3:36	regexp/no-non-standard-flag	unexpected	Unexpected non-standard flag 'x'.
+tests/rules/regexp/no-non-standard-flag/cases.ts:5:40	regexp/no-non-standard-flag	unexpected	Unexpected non-standard flag 'q'.
+tests/rules/regexp/no-non-standard-flag/cases.ts:6:16	regexp/no-non-standard-flag	unexpected	Unexpected non-standard flag 'z'.
+tests/rules/regexp/no-non-standard-flag/cases.ts:8:35	regexp/no-non-standard-flag	unexpected	Unexpected non-standard flag 'w'.

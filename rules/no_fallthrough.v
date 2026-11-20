@@ -21,22 +21,39 @@ struct NftOptions {
 }
 
 fn nft_options(options []json2.Any) !NftOptions {
+	pattern, flags := nft_comment_pattern(options)!
+	return nft_options_with(options, jsregexp.js_regex_new(pattern, flags)!)!
+}
+
+// nft_lint_options are nft_options with the comment pattern compiled once per Checker.
+fn (mut c Checker) nft_lint_options(options []json2.Any) !NftOptions {
+	pattern, flags := nft_comment_pattern(options)!
+	return nft_options_with(options, c.cached_js_regex(pattern, flags)!)!
+}
+
+fn nft_options_with(options []json2.Any, comment_pattern jsregexp.JsRegex) !NftOptions {
 	o := option_object(no_fallthrough, options, ['commentPattern', 'allowEmptyCase',
 		'reportUnusedFallthroughComment'])!
-	value := o.values['commentPattern'] or { json2.Any('') }
-	pattern := if value is string { value } else { '' }
 	return NftOptions{
 		allow_empty_case:                  o.bool_value('allowEmptyCase') or { false }
 		report_unused_fallthrough_comment: o.bool_value('reportUnusedFallthroughComment') or {
 			false
 		}
-		// DEFAULT_FALLTHROUGH_COMMENT, or `new RegExp(commentPattern, "u")`
-		comment_pattern:                   if pattern != '' {
-			jsregexp.js_regex_new(pattern, 'u')!
-		} else {
-			jsregexp.js_regex_new('falls?\\s?through', 'iu')!
-		}
+		comment_pattern:                   comment_pattern
 	}
+}
+
+// nft_comment_pattern is the source and the flags of the comment pattern: DEFAULT_FALLTHROUGH_COMMENT,
+// or `new RegExp(commentPattern, "u")`.
+fn nft_comment_pattern(options []json2.Any) !(string, string) {
+	o := option_object(no_fallthrough, options, ['commentPattern', 'allowEmptyCase',
+		'reportUnusedFallthroughComment'])!
+	value := o.values['commentPattern'] or { json2.Any('') }
+	pattern := if value is string { value } else { '' }
+	if pattern != '' {
+		return pattern, 'u'
+	}
+	return 'falls?\\s?through', 'iu'
 }
 
 struct NftPreviousCase {
@@ -47,8 +64,15 @@ struct NftPreviousCase {
 
 fn (mut c Checker) lint_no_fallthrough(root C.TSNode, abs_path string, mut stats Stats) ![]Finding {
 	sw := time.new_stopwatch()
-	opts := nft_options(c.rule_options(no_fallthrough))!
+	opts := c.nft_lint_options(c.rule_options(no_fallthrough))!
 	mut findings := []Finding{}
+	// Only the SwitchCase nodes matter: a TypeScript file without a `switch` needs neither its
+	// ESTree nor its code paths (built on first use, they were a fifth of a lint without types).
+	// The template of a .vue or .svelte file is not in this tree.
+	if !c.is_vue() && !c.is_svelte() && c.nodes_of_kind(root, c'switch_statement').len == 0 {
+		stats.eval_ms += ms(sw.elapsed())
+		return findings
+	}
 	an := c.code_path_analysis(root, abs_path) or { return findings }
 	t := c.es_tree(root, abs_path) or { return findings }
 	tokens := c.source_tokens(t.nodes[t.root].ts)

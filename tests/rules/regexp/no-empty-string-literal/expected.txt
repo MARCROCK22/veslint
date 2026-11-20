@@ -1,0 +1,4 @@
+tests/rules/regexp/no-empty-string-literal/cases.ts:2:21	regexp/no-empty-string-literal	unexpected	Unexpected empty string literal.
+tests/rules/regexp/no-empty-string-literal/cases.ts:3:21	regexp/no-empty-string-literal	unexpected	Unexpected empty string literal.
+tests/rules/regexp/no-empty-string-literal/cases.ts:4:22	regexp/no-empty-string-literal	unexpected	Unexpected empty string literal.
+tests/rules/regexp/no-empty-string-literal/cases.ts:5:32	regexp/no-empty-string-literal	unexpected	Unexpected empty string literal.

@@ -8,12 +8,103 @@
 
 # veslint
 
-veslint lints TypeScript with ESLint's rules, without ESLint. It parses with tree-sitter, gets the types from the native TypeScript 7 compiler, and needs no JavaScript runtime to lint.
+veslint lints TypeScript with ESLint's rules, without ESLint. It parses with tree-sitter, gets the types from the native TypeScript 7 compiler linked into veslint itself, and needs no JavaScript runtime to lint.
 
-- **Same results as ESLint.** The rules of ESLint, typescript-eslint, eslint-plugin-unicorn, @stylistic/eslint-plugin, eslint-plugin-perfectionist, @eslint-community/eslint-plugin-eslint-comments, eslint-plugin-promise and @slipher/eslint-plugin are ported to V. They report the same problems, with the same messages, positions, fixes and suggestions.
+- **Same results as ESLint.** The rules of ESLint, typescript-eslint, eslint-plugin-unicorn, @stylistic/eslint-plugin, eslint-plugin-perfectionist, @eslint-community/eslint-plugin-eslint-comments, eslint-plugin-promise, eslint-plugin-regexp and @slipher/eslint-plugin are ported to V. They report the same problems, with the same messages, positions, fixes and suggestions.
 - **Your ESLint configuration.** veslint reads `eslint.config.*`, the directive comments (`// eslint-disable-next-line`, `/* eslint rule: … */`, `/* global */`) and rule options. A rule it does not have yet is skipped with a warning.
-- **Fast.** On a Discord bot of 65 TypeScript files, the 105 typescript-eslint rules in one run take 3.2 s with veslint and 11.7 s with ESLint (one core of an old i3). In the editor, a file is linted again about 0.1 s after you type.
+- **Fast.** 3 to 9 times faster than ESLint on whole projects with the same results, and faster than ESLint and oxlint at re-linting a file with type-aware rules as you type (see [Speed](#speed)).
 - **An editor extension** for VS Code shows the problems as you type, with quick fixes.
+
+## Speed
+
+![The 23 type-aware rules of recommendedTypeChecked, on the command line](docs/bench/typed.svg)
+
+![The 23 type-aware rules of recommendedTypeChecked, in the editor](docs/bench/editor-typed.svg)
+
+- **Against ESLint** (with typescript-eslint), veslint reports exactly the same problems, 3 to 9 times faster on whole projects, with less memory in most cases.
+- **In the editor**, re-linting a file after an edit with type-aware rules, veslint is faster than ESLint and oxlint on every project measured (Biome has 3 of the 23 rules, so it is left out).
+- **On the command line**, oxlint is faster, and Biome too without types. Neither reports the same problems as ESLint: the charts and the table say how many of ESLint's problems each one finds.
+
+<details>
+<summary>The other charts: <code>no-floating-promises</code> alone, and rules without types</summary>
+
+![no-floating-promises, on the command line](docs/bench/floating.svg)
+
+![Rules without types, on the command line](docs/bench/syntactic.svg)
+
+![Rules without types, in the editor](docs/bench/editor-syntactic.svg)
+
+</details>
+
+<details>
+<summary>Every measure</summary>
+
+**56 rules of @eslint/js and typescript-eslint recommended**
+
+| Project | Tool | Time | CPU time | Memory | Problems | Same as ESLint | Editor: first lint | Editor: after an edit |
+|---|---|---:|---:|---:|---:|---:|---:|---:|
+| zod | ESLint | 4.1 s ± 0.04 s | 8.1 s | 479 MiB | 972 | — | 1652 ms | 395 ms |
+| zod | **veslint** | 0.56 s ± 0.01 s | 0.98 s | 138 MiB | 972 | 972 of 972 | 948 ms | 115 ms |
+| zod | oxlint | 0.09 s ± 0.00 s | 0.15 s | 119 MiB | 924 | 895 of 972 | 165 ms | 101 ms |
+| zod | Biome | 0.44 s ± 0.04 s | 0.89 s | 207 MiB | 941 | 887 of 972 | 187 ms | 349 ms |
+| recharts | ESLint | 4.3 s ± 0.02 s | 8.6 s | 468 MiB | 380 | — | 1118 ms | 133 ms |
+| recharts | **veslint** | 0.55 s ± 0.01 s | 0.99 s | 139 MiB | 380 | 380 of 380 | 1035 ms | 64 ms |
+| recharts | oxlint | 0.08 s ± 0.00 s | 0.15 s | 112 MiB | 362 | 331 of 380 | 107 ms | 3.8 ms |
+| recharts | Biome | 0.27 s ± 0.00 s | 0.76 s | 133 MiB | 375 | 362 of 380 | 144 ms | 306 ms |
+| TypeScript compiler | ESLint | 24 s ± 0.20 s | 43 s | 1,434 MiB | 1,330 | — | 2025 ms | 925 ms |
+| TypeScript compiler | **veslint** | 5.5 s ± 0.25 s | 10 s | 633 MiB | 1,330 | 1,330 of 1,330 | 1620 ms | 355 ms |
+| TypeScript compiler | oxlint | 0.57 s ± 0.08 s | 0.89 s | 179 MiB | 1,012 | 957 of 1,330 | 184 ms | 123 ms |
+| TypeScript compiler | Biome | 2.1 s ± 0.30 s | 5.9 s | 512 MiB | 1,288 | 879 of 1,330 | 520 ms | 383 ms |
+
+**no-floating-promises**
+
+| Project | Tool | Time | CPU time | Memory | Problems | Same as ESLint | Editor: first lint | Editor: after an edit |
+|---|---|---:|---:|---:|---:|---:|---:|---:|
+| zod | ESLint | 6.1 s ± 0.03 s | 12 s | 792 MiB | 1 | — | — | — |
+| zod | **veslint** | 0.77 s ± 0.01 s | 1.4 s | 234 MiB | 1 | 1 of 1 | — | — |
+| zod | oxlint | 0.59 s ± 0.01 s | 1.8 s | 296 MiB | 1 | 1 of 1 | — | — |
+| zod | Biome | 0.46 s ± 0.00 s | 1.5 s | 174 MiB | 1 | 1 of 1 | — | — |
+| recharts | ESLint | 7.8 s ± 0.06 s | 16 s | 957 MiB | 0 | — | — | — |
+| recharts | **veslint** | 0.86 s ± 0.04 s | 1.6 s | 269 MiB | 0 | 0 of 0 | — | — |
+| recharts | oxlint | 0.70 s ± 0.02 s | 2.5 s | 336 MiB | 0 | 0 of 0 | — | — |
+| recharts | Biome | 0.45 s ± 0.01 s | 1.5 s | 170 MiB | 0 | 0 of 0 | — | — |
+| TypeScript compiler | ESLint | 32 s ± 0.25 s | 61 s | 1,852 MiB | 2 | — | — | — |
+| TypeScript compiler | **veslint** | 4.3 s ± 0.08 s | 8.2 s | 944 MiB | 2 | 2 of 2 | — | — |
+| TypeScript compiler | oxlint | 1.9 s ± 0.05 s | 6.9 s | 709 MiB | 2 | 2 of 2 | — | — |
+| TypeScript compiler | Biome | 3.0 s ± 0.01 s | 12 s | 429 MiB | 2 | 2 of 2 | — | — |
+
+**the 23 type-aware rules of recommendedTypeChecked**
+
+| Project | Tool | Time | CPU time | Memory | Problems | Same as ESLint | Editor: first lint | Editor: after an edit |
+|---|---|---:|---:|---:|---:|---:|---:|---:|
+| zod | ESLint | 14 s ± 0.15 s | 24 s | 1,060 MiB | 1,376 | — | 3782 ms | 1081 ms |
+| zod | **veslint** | 2.8 s ± 0.04 s | 5.1 s | 566 MiB | 1,376 | 1,376 of 1,376 | 1358 ms | 360 ms |
+| zod | oxlint | 1.8 s ± 0.03 s | 5.2 s | 438 MiB | 1,357 | 1,304 of 1,376 | 487 ms | 434 ms |
+| recharts | ESLint | 22 s ± 0.07 s | 38 s | 1,297 MiB | 175 | — | 5095 ms | 1177 ms |
+| recharts | **veslint** | 5.3 s ± 0.03 s | 9.8 s | 1,018 MiB | 175 | 175 of 175 | 1344 ms | 301 ms |
+| recharts | oxlint | 4.5 s ± 0.04 s | 14 s | 877 MiB | 175 | 168 of 175 | 645 ms | 532 ms |
+| TypeScript compiler | ESLint | 71 s ± 0.18 s | 114 s | 2,059 MiB | 3,790 | — | 8641 ms | 2368 ms |
+| TypeScript compiler | **veslint** | 22 s ± 2.1 s | 39 s | 2,469 MiB | 3,790 | 3,790 of 3,790 | 2725 ms | 1169 ms |
+| TypeScript compiler | oxlint | 6.4 s ± 0.27 s | 23 s | 1,100 MiB | 3,784 | 2,980 of 3,790 | 1576 ms | 1580 ms |
+
+</details>
+
+<details>
+<summary>How it was measured</summary>
+
+`tests/bench/run.sh` (2026-11-19, `docs/bench/results.json`) on an Intel Core i3-4150T (2 cores, 4 threads, 12 GB, Linux), with veslint 0.39.0 (TypeScript 7.1.0-beta), ESLint 10.15.0 with typescript-eslint 8.72.2 and TypeScript 6.0.3, oxlint 1.94.0 with oxlint-tsgolint 7.0.2007, and Biome 2.6.8.
+
+- **Projects:** zod, recharts and the TypeScript compiler's sources, each linted with one `tsconfig.json`, the same files for every tool.
+- **Rules:**
+  - the 23 rules of typescript-eslint's `recommendedTypeChecked` that need types (Biome has 3 of them, so it is left out);
+  - `no-floating-promises` alone (Biome's `noFloatingPromises` infers types itself, without TypeScript);
+  - the 56 rules of `@eslint/js` and typescript-eslint `recommended` that every tool has (Biome's names from `biome migrate eslint`).
+- **Command line:** hyperfine, 5 runs after a warmup, each tool with its default threads. ESLint and veslint read the same `eslint.config.mjs`.
+- **Editor:** each tool's long-lived process opens one large file and re-lints it after each of 10 edits of unsaved text: `veslint --server`, ESLint kept alive as its VS Code extension keeps it, `oxlint --lsp` and `biome lsp-proxy`.
+- **Memory:** the peak of all the processes of a run (veslint and oxlint each run two).
+- **Same as ESLint:** the problems at the same place for the same rule.
+
+</details>
 
 ## Install
 
@@ -92,7 +183,7 @@ With files and neither `--config` nor `--rule`, veslint prints the type TypeScri
 
 The exit code is 0 when there are no problems, 1 when there are (warnings do not count, as in ESLint) or veslint failed, and 2 for a usage error.
 
-Environment variables: `VESLINT_TIMEOUT_MS` (how long to wait for each answer of the TypeScript compiler, 30000 by default), `VESLINT_CPUS` (how many CPUs veslint and the compiler use: 2 by default, which is fastest; 0 for all) and `VESLINT_CONFIG_CACHE` (`0` resolves the `eslint.config.*` again on every run, see [Configuration](#configuration)).
+Environment variables: `VESLINT_CPUS` (how many CPUs veslint and the compiler use: by default one of each core, and 2 for `--server` or with `VESLINT_TSGO=process`; 0 for all. A run lints its files on that many threads when it has at least 8 files per thread; with the compiler linked into veslint the threads share its program and each has its own type checker, whose types make memory grow with them), `VESLINT_TSGO` (`process` runs the TypeScript compiler of the npm package as a separate process instead of the one linked into veslint), `VESLINT_TIMEOUT_MS` (with `VESLINT_TSGO=process`: how long to wait for each answer of the compiler, 30000 by default) and `VESLINT_CONFIG_CACHE` (`0` resolves the `eslint.config.*` again on every run, see [Configuration](#configuration)).
 
 ## Configuration
 
@@ -114,7 +205,7 @@ Directive comments work as in ESLint 10: `eslint-disable`, `eslint-enable`, `esl
 
 ## Rules
 
-veslint has **825 rules**, each with all its options, fixes and suggestions:
+veslint has **847 rules**, each with all its options, fixes and suggestions:
 
 <details>
 <summary><b>ESLint 10.15.0</b>: 139 rules</summary>
@@ -166,6 +257,13 @@ veslint has **825 rules**, each with all its options, fixes and suggestions:
 </details>
 
 <details>
+<summary><b>eslint-plugin-regexp 3.3.3</b>: 22 rules (3 of them use types)</summary>
+
+`regexp/control-character-escape`, `regexp/grapheme-string-literal`, `regexp/hexadecimal-escape`, `regexp/letter-case`, `regexp/no-control-character`, `regexp/no-empty-alternative`, `regexp/no-empty-group`, `regexp/no-empty-string-literal`, `regexp/no-escape-backspace`, `regexp/no-extra-lookaround-assertions`, `regexp/no-invalid-regexp`, `regexp/no-invisible-character`, `regexp/no-lazy-ends`, `regexp/no-legacy-features`, `regexp/no-missing-g-flag`, `regexp/no-non-standard-flag`, `regexp/no-obscure-range`, `regexp/no-octal`, `regexp/no-standalone-backslash`, `regexp/no-trivially-nested-quantifier`, `regexp/no-useless-character-class`, `regexp/no-useless-dollar-replacements`
+
+</details>
+
+<details>
 <summary><b>eslint-plugin-vue 10.12.1</b> (the templates and scripts of <code>.vue</code> files, and the components of TypeScript files): 256 rules</summary>
 
 `vue/array-bracket-newline`, `vue/array-bracket-spacing`, `vue/array-element-newline`, `vue/arrow-spacing`, `vue/attribute-hyphenation`, `vue/attributes-order`, `vue/block-lang`, `vue/block-order`, `vue/block-spacing`, `vue/block-tag-newline`, `vue/brace-style`, `vue/camelcase`, `vue/comma-dangle`, `vue/comma-spacing`, `vue/comma-style`, `vue/comment-directive`, `vue/component-api-style`, `vue/component-definition-name-casing`, `vue/component-name-in-template-casing`, `vue/component-options-name-casing`, `vue/custom-event-name-casing`, `vue/define-emits-declaration`, `vue/define-macros-order`, `vue/define-props-declaration`, `vue/define-props-destructuring`, `vue/dot-location`, `vue/dot-notation`, `vue/enforce-style-attribute`, `vue/eqeqeq`, `vue/first-attribute-linebreak`, `vue/func-call-spacing`, `vue/html-button-has-type`, `vue/html-closing-bracket-newline`, `vue/html-closing-bracket-spacing`, `vue/html-comment-content-newline`, `vue/html-comment-content-spacing`, `vue/html-comment-indent`, `vue/html-end-tags`, `vue/html-indent`, `vue/html-quotes`, `vue/html-self-closing`, `vue/jsx-uses-vars`, `vue/key-spacing`, `vue/keyword-spacing`, `vue/match-component-file-name`, `vue/match-component-import-name`, `vue/max-attributes-per-line`, `vue/max-len`, `vue/max-lines-per-block`, `vue/max-props`, `vue/max-template-depth`, `vue/multi-word-component-names`, `vue/multiline-html-element-content-newline`, `vue/multiline-ternary`, `vue/mustache-interpolation-spacing`, `vue/new-line-between-multi-line-property`, `vue/next-tick-style`, `vue/no-arrow-functions-in-watch`, `vue/no-async-in-computed-properties`, `vue/no-bare-strings-in-template`, `vue/no-boolean-default`, `vue/no-child-content`, `vue/no-computed-properties-in-data`, `vue/no-console`, `vue/no-constant-condition`, `vue/no-content-outside-block`, `vue/no-custom-modifiers-on-v-model`, `vue/no-define-model-default`, `vue/no-deprecated-data-object-declaration`, `vue/no-deprecated-delete-set`, `vue/no-deprecated-destroyed-lifecycle`, `vue/no-deprecated-dollar-listeners-api`, `vue/no-deprecated-dollar-scopedslots-api`, `vue/no-deprecated-events-api`, `vue/no-deprecated-filter`, `vue/no-deprecated-functional-template`, `vue/no-deprecated-html-element-is`, `vue/no-deprecated-inline-template`, `vue/no-deprecated-model-definition`, `vue/no-deprecated-props-default-this`, `vue/no-deprecated-router-link-tag-prop`, `vue/no-deprecated-scope-attribute`, `vue/no-deprecated-slot-attribute`, `vue/no-deprecated-slot-scope-attribute`, `vue/no-deprecated-v-bind-sync`, `vue/no-deprecated-v-is`, `vue/no-deprecated-v-on-native-modifier`, `vue/no-deprecated-v-on-number-modifiers`, `vue/no-deprecated-vue-config-keycodes`, `vue/no-dupe-keys`, `vue/no-dupe-v-else-if`, `vue/no-duplicate-attr-inheritance`, `vue/no-duplicate-attributes`, `vue/no-duplicate-class-names`, `vue/no-empty-component-block`, `vue/no-empty-pattern`, `vue/no-export-in-script-setup`, `vue/no-expose-after-await`, `vue/no-extra-parens`, `vue/no-implicit-coercion`, `vue/no-import-compiler-macros`, `vue/no-irregular-whitespace`, `vue/no-lifecycle-after-await`, `vue/no-literals-in-template`, `vue/no-lone-template`, `vue/no-loss-of-precision`, `vue/no-multi-spaces`, `vue/no-multiple-objects-in-class`, `vue/no-multiple-slot-args`, `vue/no-multiple-template-root`, `vue/no-mutating-props`, `vue/no-negated-condition`, `vue/no-negated-v-if-condition`, `vue/no-parsing-error`, `vue/no-potential-component-option-typo`, `vue/no-props-shadow`, `vue/no-ref-as-operand`, `vue/no-ref-object-reactivity-loss`, `vue/no-required-prop-with-default`, `vue/no-reserved-component-names`, `vue/no-reserved-keys`, `vue/no-reserved-props`, `vue/no-restricted-block`, `vue/no-restricted-call-after-await`, `vue/no-restricted-class`, `vue/no-restricted-component-names`, `vue/no-restricted-component-options`, `vue/no-restricted-custom-event`, `vue/no-restricted-html-elements`, `vue/no-restricted-props`, `vue/no-restricted-static-attribute`, `vue/no-restricted-syntax`, `vue/no-restricted-v-bind`, `vue/no-restricted-v-on`, `vue/no-root-v-if`, `vue/no-setup-props-reactivity-loss`, `vue/no-shadow-native-events`, `vue/no-shared-component-data`, `vue/no-side-effects-in-computed-properties`, `vue/no-spaces-around-equal-signs-in-attribute`, `vue/no-sparse-arrays`, `vue/no-static-inline-styles`, `vue/no-template-key`, `vue/no-template-shadow`, `vue/no-template-target-blank`, `vue/no-textarea-mustache`, `vue/no-this-in-before-route-enter`, `vue/no-undef-components`, `vue/no-undef-directives`, `vue/no-undef-properties`, `vue/no-unsupported-features`, `vue/no-unused-components`, `vue/no-unused-emit-declarations`, `vue/no-unused-properties`, `vue/no-unused-refs`, `vue/no-unused-vars`, `vue/no-use-computed-property-like-method`, `vue/no-use-v-else-with-v-for`, `vue/no-use-v-if-with-v-for`, `vue/no-useless-concat`, `vue/no-useless-mustaches`, `vue/no-useless-template-attributes`, `vue/no-useless-v-bind`, `vue/no-v-for-template-key`, `vue/no-v-for-template-key-on-child`, `vue/no-v-html`, `vue/no-v-model-argument`, `vue/no-v-text`, `vue/no-v-text-v-html-on-component`, `vue/no-watch-after-await`, `vue/object-curly-newline`, `vue/object-curly-spacing`, `vue/object-property-newline`, `vue/object-shorthand`, `vue/one-component-per-file`, `vue/operator-linebreak`, `vue/order-in-components`, `vue/padding-line-between-blocks`, `vue/padding-line-between-tags`, `vue/padding-lines-in-component-definition`, `vue/prefer-define-options`, `vue/prefer-import-from-vue`, `vue/prefer-prop-type-boolean-first`, `vue/prefer-separate-static-class`, `vue/prefer-single-event-payload`, `vue/prefer-template`, `vue/prefer-true-attribute-shorthand`, `vue/prefer-use-template-ref`, `vue/prefer-v-model`, `vue/prop-name-casing`, `vue/quote-props`, `vue/require-component-is`, `vue/require-default-export`, `vue/require-default-prop`, `vue/require-direct-export`, `vue/require-emit-validator`, `vue/require-explicit-emits`, `vue/require-explicit-slots`, `vue/require-expose`, `vue/require-macro-variable-name`, `vue/require-name-property`, `vue/require-prop-comment`, `vue/require-prop-type-constructor`, `vue/require-prop-types`, `vue/require-render-return`, `vue/require-slots-as-functions`, `vue/require-toggle-inside-transition`, `vue/require-typed-object-prop`, `vue/require-typed-ref`, `vue/require-v-for-key`, `vue/require-valid-default-prop`, `vue/restricted-component-names`, `vue/return-in-computed-property`, `vue/return-in-emits-validator`, `vue/script-indent`, `vue/singleline-html-element-content-newline`, `vue/slot-name-casing`, `vue/sort-keys`, `vue/space-in-parens`, `vue/space-infix-ops`, `vue/space-unary-ops`, `vue/static-class-names-order`, `vue/template-curly-spacing`, `vue/this-in-template`, `vue/use-v-on-exact`, `vue/v-bind-style`, `vue/v-for-delimiter-style`, `vue/v-if-else-key`, `vue/v-on-event-hyphenation`, `vue/v-on-handler-style`, `vue/v-on-style`, `vue/v-slot-style`, `vue/valid-attribute-name`, `vue/valid-define-emits`, `vue/valid-define-options`, `vue/valid-define-props`, `vue/valid-model-definition`, `vue/valid-next-tick`, `vue/valid-template-root`, `vue/valid-v-bind`, `vue/valid-v-bind-sync`, `vue/valid-v-cloak`, `vue/valid-v-else`, `vue/valid-v-else-if`, `vue/valid-v-for`, `vue/valid-v-html`, `vue/valid-v-if`, `vue/valid-v-is`, `vue/valid-v-memo`, `vue/valid-v-model`, `vue/valid-v-on`, `vue/valid-v-once`, `vue/valid-v-pre`, `vue/valid-v-show`, `vue/valid-v-slot`, `vue/valid-v-text`
@@ -201,7 +299,7 @@ What each version added is in the [changelog](CHANGELOG.md).
 
 ### How it is checked
 
-Every rule passes all the cases of its own upstream tests, linted as TypeScript: 29,862 cases of typescript-eslint, 14,092 of ESLint, 14,962 of eslint-plugin-unicorn, 9,528 of @stylistic/eslint-plugin, 3,278 of eslint-plugin-perfectionist, 204 of @eslint-community/eslint-plugin-eslint-comments, 522 of eslint-plugin-promise, 459 of @slipher/eslint-plugin, 206 of @marcrock22/eslintcf, 10,085 of eslint-plugin-vue and 1,090 of eslint-plugin-svelte (their JavaScript cases with `lang="ts"`, with what ESLint gives for them). On fixtures of its own, every rule gives exactly what ESLint gives: problems, messages, positions, fixes and suggestions. The rules are also compared with ESLint on real projects (a Discord bot, zod, recharts and the TypeScript compiler).
+Every rule passes all the cases of its own upstream tests, linted as TypeScript: 29,862 cases of typescript-eslint, 14,092 of ESLint, 14,962 of eslint-plugin-unicorn, 9,528 of @stylistic/eslint-plugin, 3,278 of eslint-plugin-perfectionist, 204 of @eslint-community/eslint-plugin-eslint-comments, 522 of eslint-plugin-promise, 572 of eslint-plugin-regexp, 459 of @slipher/eslint-plugin, 206 of @marcrock22/eslintcf, 10,085 of eslint-plugin-vue and 1,090 of eslint-plugin-svelte (their JavaScript cases with `lang="ts"`, with what ESLint gives for them). On fixtures of its own, every rule gives exactly what ESLint gives: problems, messages, positions, fixes and suggestions. The rules are also compared with ESLint on real projects (a Discord bot, zod, recharts and the TypeScript compiler).
 
 ## VS Code extension
 
@@ -223,6 +321,7 @@ Requirements:
 
 - [V](https://github.com/vlang/v) at commit `841595141fbb` (the release workflow builds it from the vlang/vc commit `45add16eb714`).
 - GCC, `make`, `git`, `patch` and `npm`. npm only downloads two pinned binaries: TypeScript 7.1.0-beta and the tree-sitter 0.24.4 CLI.
+- [Go](https://go.dev) 1.27 (with cgo): TypeScript is linked into veslint, built from the Go sources of the commit of TypeScript 7.1.0-beta (`tsgo/inproc/build.sh` fetches them into `build/upstream/typescript-go`). At run time veslint needs nothing else; `VESLINT_TSGO=process` runs the `tsc --api` binary of the npm package instead, over a pipe.
 
 ```sh
 make deps            # TypeScript 7, tree-sitter and the patched TypeScript grammar
@@ -231,7 +330,7 @@ make test V=<v>      # the tests (JOBS=<n> checks at once; the CPUs by default)
 VESLINT_MATRIX=1 make test V=<v>   # also each rule alone on every fixture (before a release)
 ```
 
-**Windows:** run `pwsh ./build-windows.ps1` with PowerShell 7, Git for Windows, MSYS2's UCRT64 gcc in `PATH` (`pacman -S mingw-w64-ucrt-x86_64-gcc`) and Node.js. It builds V and the dependencies itself; the generated grammar is copied from a Linux checkout of the same commit (`build/tree-sitter-typescript`, which `make` writes).
+**Windows:** run `pwsh ./build-windows.ps1` with PowerShell 7, Git for Windows, MSYS2's UCRT64 gcc in `PATH` (`pacman -S mingw-w64-ucrt-x86_64-gcc`), Go 1.27 and Node.js. It builds V and the dependencies itself; the generated grammar is copied from a Linux checkout of the same commit (`build/tree-sitter-typescript`, which `make` writes).
 
 ## Changelog
 

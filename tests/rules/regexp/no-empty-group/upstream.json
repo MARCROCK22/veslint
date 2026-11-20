@@ -1,0 +1,12 @@
+{"rule": "regexp/no-empty-group", "upstream": "eslint-plugin-regexp v3.3.3", "files": ["tests/lib/rules/no-empty-group.ts"],
+"messages": {"unexpected":"Unexpected empty group."},
+"cases": [
+{"id":"regexp/no-empty-group/v0","kind":"valid","code":"/(a)/","file":"file.ts","tsconfig":"tsconfig.json","via":"project","languageOptions":{"ecmaVersion":"latest","sourceType":"module"}},
+{"id":"regexp/no-empty-group/v1","kind":"valid","code":"/(a|)/","file":"file.ts","tsconfig":"tsconfig.json","via":"project","languageOptions":{"ecmaVersion":"latest","sourceType":"module"}},
+{"id":"regexp/no-empty-group/v2","kind":"valid","code":"/(?:a|)/","file":"file.ts","tsconfig":"tsconfig.json","via":"project","languageOptions":{"ecmaVersion":"latest","sourceType":"module"}},
+{"id":"regexp/no-empty-group/v3","kind":"valid","code":"/(?:a|[\\q{}])/v","file":"file.ts","tsconfig":"tsconfig.json","via":"project","languageOptions":{"ecmaVersion":"latest","sourceType":"module"}},
+{"id":"regexp/no-empty-group/i0","kind":"invalid","code":"/()/","file":"file.ts","tsconfig":"tsconfig.json","via":"project","languageOptions":{"ecmaVersion":"latest","sourceType":"module"},"errors":[{"messageId":"unexpected","message":"Unexpected empty group.","line":1,"column":2,"endLine":1,"endColumn":4,"suggestions":[]}]},
+{"id":"regexp/no-empty-group/i1","kind":"invalid","code":"/(?:)/","file":"file.ts","tsconfig":"tsconfig.json","via":"project","languageOptions":{"ecmaVersion":"latest","sourceType":"module"},"errors":[{"messageId":"unexpected","message":"Unexpected empty group.","line":1,"column":2,"endLine":1,"endColumn":6,"suggestions":[]}]},
+{"id":"regexp/no-empty-group/i2","kind":"invalid","code":"/(|)/","file":"file.ts","tsconfig":"tsconfig.json","via":"project","languageOptions":{"ecmaVersion":"latest","sourceType":"module"},"errors":[{"messageId":"unexpected","message":"Unexpected empty group.","line":1,"column":2,"endLine":1,"endColumn":5,"suggestions":[]}]},
+{"id":"regexp/no-empty-group/i3","kind":"invalid","code":"/(?:|)/","file":"file.ts","tsconfig":"tsconfig.json","via":"project","languageOptions":{"ecmaVersion":"latest","sourceType":"module"},"errors":[{"messageId":"unexpected","message":"Unexpected empty group.","line":1,"column":2,"endLine":1,"endColumn":7,"suggestions":[]}]}
+]}

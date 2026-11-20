@@ -4,6 +4,15 @@
 # be the one of patches/tree-sitter-typescript.patch. Delete a .a, or vendor/v, to rebuild it.
 $ErrorActionPreference = 'Stop'
 $PSNativeCommandUseErrorActionPreference = $true
+
+# Write-Text writes a file without a final line break. Set-Content's -NoNewline is a dynamic
+# parameter of the FileSystem provider, which the CI's PowerShell did not offer for a new file
+# ("A parameter cannot be found that matches parameter name 'NoNewline'"); .NET needs a full
+# path, since its current directory is not PowerShell's location.
+function Write-Text([string]$Path, [string]$Text) {
+	$full = [System.IO.Path]::GetFullPath((Join-Path (Get-Location).Path $Path))
+	[System.IO.File]::WriteAllText($full, $Text)
+}
 Set-Location $PSScriptRoot
 
 # V at a commit of github.com/vlang/v (an older V does not parse the project), bootstrapped as its
@@ -73,7 +82,67 @@ if (-not (Test-Path build/libtree-sitter-typescript.a) -or -not (Test-Path $buil
 	}
 	Remove-Item -ErrorAction SilentlyContinue build/libtree-sitter-typescript.a
 	ar rcs build/libtree-sitter-typescript.a @objs
-	Set-Content -NoNewline $built $hash
+	Write-Text $built $hash
+}
+
+# TypeScript's API session, linked into veslint.exe (tsgo/inproc.c.v), as tsgo/inproc/build.sh builds
+# it on Linux: the Go module `tsc` of the commit of the npm package veslint uses (fetched without
+# its tests when there is no checkout), compiled with Go 1.27 and this gcc as a C archive, with
+# tsgo/inproc/main.go as a module of its own, api_inprocess.go added to internal/api by an overlay
+# and internal/api/session.go replaced by a copy with session.patch applied. Rebuilt when one of
+# tsgo/inproc's sources is newer than the archive.
+$tsCommit = '3e9236361fa97a9e6c685f4833ac457ae2d8c50a'
+$checkout = 'build/upstream/typescript-go'
+if (-not (Test-Path "$checkout/tsc")) {
+	New-Item -ItemType Directory -Force $checkout | Out-Null
+	git -C $checkout init --quiet
+	git -C $checkout remote add origin https://github.com/microsoft/TypeScript
+	git -C $checkout sparse-checkout set --no-cone '/tsc/' '!/tsc/testdata/' '!/tsc/internal/fourslash/'
+	git -C $checkout fetch --quiet --depth 1 --filter=blob:none origin $tsCommit
+	git -C $checkout -c advice.detachedHead=false checkout --quiet FETCH_HEAD
+}
+$module = (Resolve-Path "$checkout/tsc").Path.Replace('\', '/')
+if ((git -C $module rev-parse HEAD) -ne $tsCommit) {
+	throw "$module is not at $tsCommit (TypeScript 7.1.0-beta, the one veslint uses)"
+}
+$inproc = (Resolve-Path tsgo/inproc).Path.Replace('\', '/')
+$archive = 'tsgo/inproc/out/libveslint_tsgo.a'
+$sources = 'main.go', 'api_inprocess.go', 'api_fastjson.go', 'session.patch', 'build.sh' | ForEach-Object { Get-Item "tsgo/inproc/$_" }
+if (-not (Test-Path $archive) -or
+	($sources | Where-Object { $_.LastWriteTime -gt (Get-Item $archive).LastWriteTime })) {
+	$mod = 'tsgo/inproc/out/mod'
+	New-Item -ItemType Directory -Force $mod | Out-Null
+	Copy-Item tsgo/inproc/main.go, "$module/go.sum" $mod
+	Write-Text "$mod/go.mod" ("module github.com/microsoft/TypeScript/tsc/veslint_tsgo`n`ngo 1.27`n`n" +
+		"require github.com/microsoft/TypeScript/tsc v0.0.0`n`nreplace github.com/microsoft/TypeScript/tsc => $module`n")
+	# git applies the patch as `patch` would, outside any repository (GIT_CEILING_DIRECTORIES).
+	$out = (Resolve-Path tsgo/inproc/out).Path.Replace('\', '/')
+	Copy-Item -Force "$module/internal/api/session.go" "$out/session.go"
+	Set-ItemProperty "$out/session.go" -Name IsReadOnly -Value $false
+	Push-Location $out
+	try {
+		$env:GIT_CEILING_DIRECTORIES = $out
+		git apply "$inproc/session.patch"
+		if ($LASTEXITCODE -ne 0) { throw 'tsgo/inproc/session.patch does not apply' }
+	} finally {
+		Remove-Item Env:GIT_CEILING_DIRECTORIES
+		Pop-Location
+	}
+	Write-Text tsgo/inproc/out/overlay.json `
+		("{`"Replace`": {`"$module/internal/api/veslint_inprocess.go`": `"$inproc/api_inprocess.go`", " +
+		"`"$module/internal/api/veslint_fastjson.go`": `"$inproc/api_fastjson.go`", " +
+		"`"$module/internal/api/session.go`": `"$out/session.go`"}}")
+	# The requirements of the checkout's go.mod, as `go mod tidy` would list them.
+	$requires = (Select-String -Path "$module/go.mod" -Pattern '^\t(\S+) (v\S+)').Matches |
+		ForEach-Object { "-require=$($_.Groups[1].Value)@$($_.Groups[2].Value)" }
+	Push-Location $mod
+	try {
+		go mod edit @requires
+		$env:CGO_ENABLED = '1'
+		go build -buildmode=c-archive -trimpath -buildvcs=false -overlay ../overlay.json -o ../libveslint_tsgo.a .
+	} finally {
+		Pop-Location
+	}
 }
 
 # Not -prod: with MSYS2's gcc 14.2 every optimized build breaks some rule, a different one each

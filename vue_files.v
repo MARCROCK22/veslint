@@ -204,12 +204,12 @@ fn vue_report_positions(doc &vue.Document, findings []rules.Finding, ends bool) 
 
 // vue_identifiers are the identifiers of the script of a .vue file for the type mode: where they
 // are in the file, and their UTF-16 offsets in the twin's text (what tsgo is asked).
-fn vue_identifiers(parser treesitter.Parser, doc &vue.Document, all bool) ([]treesitter.Ident, []int, []offsets.DisplayPos) {
+fn vue_identifiers(parser treesitter.Parser, doc &vue.Document, all bool) !([]treesitter.Ident, []int, []offsets.DisplayPos) {
 	script := &doc.script
 	if script.tree == unsafe { nil } {
 		return []treesitter.Ident{}, []int{}, []offsets.DisplayPos{}
 	}
-	idents := parser.identifiers(script.tree, doc.src, all).filter(script.file_to_synthetic(it.start_byte,
+	idents := parser.identifiers(script.tree, doc.src, all)!.filter(script.file_to_synthetic(it.start_byte,
 		false) >= 0)
 	code_bytes := idents.map(script.file_to_synthetic(it.start_byte, false))
 	units := offsets.utf16_offsets(script.code, code_bytes)

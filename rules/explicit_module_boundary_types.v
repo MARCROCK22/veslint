@@ -268,7 +268,7 @@ fn (mut c Checker) embt_follow_reference(mut s EmbtState, node int) {
 	ts := t.ts_node(node) or { return }
 	tree := c.scope_tree(s.root)
 	scope := tree.get_scope(ts)
-	v := tree.scopes[scope].set[t.string_of(node, .name) or { return }] or { return }
+	v := tree.set_get(scope, t.string_of(node, .name) or { return }) or { return }
 	variable := tree.variables[v]
 	for def in variable.defs {
 		if def.kind in [.catch_clause, .import_binding, .parameter] {

@@ -1,0 +1,9 @@
+tests/rules/regexp/no-legacy-features/cases.ts:2:19	regexp/no-legacy-features	forbiddenStaticProperty	'RegExp.$1' static property is forbidden.
+tests/rules/regexp/no-legacy-features/cases.ts:3:19	regexp/no-legacy-features	forbiddenStaticProperty	'RegExp.input' static property is forbidden.
+tests/rules/regexp/no-legacy-features/cases.ts:4:19	regexp/no-legacy-features	forbiddenStaticProperty	'RegExp.$&' static property is forbidden.
+tests/rules/regexp/no-legacy-features/cases.ts:5:19	regexp/no-legacy-features	forbiddenStaticProperty	'RegExp.lastMatch' static property is forbidden.
+tests/rules/regexp/no-legacy-features/cases.ts:6:9	regexp/no-legacy-features	forbiddenStaticProperty	'RegExp.leftContext' static property is forbidden.
+tests/rules/regexp/no-legacy-features/cases.ts:9:1	regexp/no-legacy-features	forbiddenPrototypeMethods	RegExp.prototype.compile method is forbidden.
+tests/rules/regexp/no-legacy-features/cases.ts:10:19	regexp/no-legacy-features	forbiddenPrototypeMethods	RegExp.prototype.compile method is forbidden.
+tests/rules/regexp/no-legacy-features/options/cases.ts:2:19	regexp/no-legacy-features	forbiddenStaticProperty	'RegExp.$1' static property is forbidden.
+tests/rules/regexp/no-legacy-features/options/cases.ts:3:19	regexp/no-legacy-features	forbiddenStaticProperty	'RegExp.input' static property is forbidden.

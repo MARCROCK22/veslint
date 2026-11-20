@@ -1,0 +1,4 @@
+tests/rules/regexp/no-standalone-backslash/cases.ts:2:20	regexp/no-standalone-backslash	unexpected	Unexpected standalone backslash (`\\`). It looks like an escape sequence, but it's a single `\\` character pattern.	end	2	21
+tests/rules/regexp/no-standalone-backslash/cases.ts:3:21	regexp/no-standalone-backslash	unexpected	Unexpected standalone backslash (`\\`). It looks like an escape sequence, but it's a single `\\` character pattern.	end	3	22
+tests/rules/regexp/no-standalone-backslash/cases.ts:4:20	regexp/no-standalone-backslash	unexpected	Unexpected standalone backslash (`\\`). It looks like an escape sequence, but it's a single `\\` character pattern.	end	4	21
+tests/rules/regexp/no-standalone-backslash/cases.ts:5:32	regexp/no-standalone-backslash	unexpected	Unexpected standalone backslash (`\\`). It looks like an escape sequence, but it's a single `\\` character pattern.	end	5	34

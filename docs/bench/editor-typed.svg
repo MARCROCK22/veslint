@@ -1,0 +1,58 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="760" height="488" viewBox="0 0 760 488" role="img" aria-label="In the editor: the 23 type-aware rules of recommendedTypeChecked">
+<style>
+  svg { --surface: #fcfcfb; --ink: #0b0b0b; --ink2: #52514e; --axis: #c3c2b7; --accent: #2a78d6; --rest: #898781; }
+  @media (prefers-color-scheme: dark) {
+    svg { --surface: #1a1a19; --ink: #f0efec; --ink2: #c3c2b7; --axis: #383835; --accent: #3987e5; --rest: #898781; }
+  }
+  .bg { fill: var(--surface); }
+  text { font-family: system-ui, -apple-system, "Segoe UI", sans-serif; fill: var(--ink); }
+  .title { font-size: 16px; font-weight: 600; }
+  .sub { font-size: 12px; fill: var(--ink2); font-weight: 400; }
+  .panel { font-size: 14px; font-weight: 600; }
+  .tool { font-size: 13px; }
+  .accent-text { font-weight: 700; }
+  .value { font-size: 13px; fill: var(--ink2); font-variant-numeric: tabular-nums; }
+  .parity { font-size: 12px; fill: var(--ink2); }
+  .accent { fill: var(--accent); }
+  .rest { fill: var(--rest); }
+  .axis { stroke: var(--axis); stroke-width: 1; }
+</style>
+<rect class="bg" width="760" height="488" rx="8"/>
+<text class="title" x="24" y="38">In the editor: the 23 type-aware rules of recommendedTypeChecked</text>
+<text class="sub" x="24" y="58">Median time to re-lint one large file after an edit, in a long-lived process (less is better):</text>
+<text class="sub" x="24" y="74">veslint --server, ESLint kept alive as its VS Code extension does, oxlint --lsp, Biome lsp-proxy.</text>
+<text class="sub" x="24" y="90">Intel Core i3-4150T CPU, 4 CPUs, Linux. Each panel has its own scale.</text>
+<text class="panel" x="24" y="121">zod<tspan class="sub" dx="8">src/v4/core/schemas.ts, 5,226 lines</tspan></text>
+<text class="tool" x="106" y="146" text-anchor="end">ESLint</text>
+<path class="rest" d="M116,132h366a4,4 0 0 1 4,4v10a4,4 0 0 1 -4,4h-366z"/>
+<text class="value" x="494" y="146">1081 ms</text>
+<text class="tool accent-text" x="106" y="174" text-anchor="end">veslint</text>
+<path class="accent" d="M116,160h119.34474463360475a4,4 0 0 1 4,4v10a4,4 0 0 1 -4,4h-119.34474463360475z"/>
+<text class="value" x="247.34474463360476" y="174">360 ms</text>
+<text class="tool" x="106" y="202" text-anchor="end">oxlint</text>
+<path class="rest" d="M116,188h144.50666173205036a4,4 0 0 1 4,4v10a4,4 0 0 1 -4,4h-144.50666173205036z"/>
+<text class="value" x="272.50666173205036" y="202">434 ms</text>
+<line class="axis" x1="116" y1="128" x2="116" y2="210"/>
+<text class="panel" x="24" y="245">recharts<tspan class="sub" dx="8">src/state/selectors/axisSelectors.ts, 2,417 lines</tspan></text>
+<text class="tool" x="106" y="270" text-anchor="end">ESLint</text>
+<path class="rest" d="M116,256h366a4,4 0 0 1 4,4v10a4,4 0 0 1 -4,4h-366z"/>
+<text class="value" x="494" y="270">1177 ms</text>
+<text class="tool accent-text" x="106" y="298" text-anchor="end">veslint</text>
+<path class="accent" d="M116,284h90.53564448976122a4,4 0 0 1 4,4v10a4,4 0 0 1 -4,4h-90.53564448976122z"/>
+<text class="value" x="218.53564448976124" y="298">301 ms</text>
+<text class="tool" x="106" y="326" text-anchor="end">oxlint</text>
+<path class="rest" d="M116,312h163.3472682470898a4,4 0 0 1 4,4v10a4,4 0 0 1 -4,4h-163.3472682470898z"/>
+<text class="value" x="291.3472682470898" y="326">532 ms</text>
+<line class="axis" x1="116" y1="252" x2="116" y2="334"/>
+<text class="panel" x="24" y="369">TypeScript compiler<tspan class="sub" dx="8">src/compiler/parser.ts, 10,823 lines</tspan></text>
+<text class="tool" x="106" y="394" text-anchor="end">ESLint</text>
+<path class="rest" d="M116,380h366a4,4 0 0 1 4,4v10a4,4 0 0 1 -4,4h-366z"/>
+<text class="value" x="494" y="394">2368 ms</text>
+<text class="tool accent-text" x="106" y="422" text-anchor="end">veslint</text>
+<path class="accent" d="M116,408h178.64082425470824a4,4 0 0 1 4,4v10a4,4 0 0 1 -4,4h-178.64082425470824z"/>
+<text class="value" x="306.64082425470826" y="422">1169 ms</text>
+<text class="tool" x="106" y="450" text-anchor="end">oxlint</text>
+<path class="rest" d="M116,436h242.77603242969346a4,4 0 0 1 4,4v10a4,4 0 0 1 -4,4h-242.77603242969346z"/>
+<text class="value" x="370.7760324296935" y="450">1580 ms</text>
+<line class="axis" x1="116" y1="376" x2="116" y2="458"/>
+</svg>

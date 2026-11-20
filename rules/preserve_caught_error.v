@@ -173,7 +173,7 @@ fn (mut c Checker) lint_preserve_caught_error(root C.TSNode, abs_path string, mu
 		tree := c.scope_tree(root)
 		mut scope := tree.get_scope(node)
 		for scope >= 0 {
-			if caught in tree.scopes[scope].set {
+			if tree.set_has(scope, caught) {
 				break
 			}
 			scope = tree.scopes[scope].upper

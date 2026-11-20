@@ -221,7 +221,7 @@ fn svelte_report_positions(doc &svelte.Document, findings []rules.Finding, ends 
 // svelte_identifiers are the identifiers of a .svelte file for the type mode (its script and its
 // template's expressions): where they are in the file, and their UTF-16 offsets in the twin's
 // text (what tsgo is asked).
-fn svelte_identifiers(parser treesitter.Parser, doc &svelte.Document, all bool) ([]treesitter.Ident, []int, []offsets.DisplayPos) {
+fn svelte_identifiers(parser treesitter.Parser, doc &svelte.Document, all bool) !([]treesitter.Ident, []int, []offsets.DisplayPos) {
 	tree := parser.parse(doc.lint_code) or {
 		return []treesitter.Ident{}, []int{}, []offsets.DisplayPos{}
 	}
@@ -232,7 +232,7 @@ fn svelte_identifiers(parser treesitter.Parser, doc &svelte.Document, all bool) 
 	mut idents := []treesitter.Ident{}
 	mut units := []int{}
 	mut display := []offsets.DisplayPos{}
-	for id in parser.identifiers(tree, text, all) {
+	for id in parser.identifiers(tree, text, all)! {
 		file := doc.lint_to_file(id.start_byte, false)
 		if file < 0 {
 			continue
@@ -280,7 +280,7 @@ fn prepare_svelte_file(mut svelte_parsers SvelteParsers, parser treesitter.Parse
 	}
 	bench.read_parse_ms += ms(sw.elapsed())
 	sw.restart()
-	idents, utf16, display := svelte_identifiers(parser, doc, all)
+	idents, utf16, display := svelte_identifiers(parser, doc, all)!
 	bench.query_ms += ms(sw.elapsed())
 	abs_path := os.abs_path(path)
 	tsconfig := if project_override != '' { project_override } else { find_tsconfig(abs_path)! }

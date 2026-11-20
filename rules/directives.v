@@ -124,6 +124,11 @@ fn directive_problem(comment DirectiveComment, level string, rule string, text s
 // parse_directive ports ConfigCommentParser.parseDirective: the label, the value and the
 // justification (what follows ` -- `) of the text of a comment; none when it is not a directive.
 fn parse_directive(value string) ?(string, string, string) {
+	// A directive starts with one of directive_labels, all of which contain one of these: most
+	// comments are not directives and need no further look.
+	if !value.contains('eslint') && !value.contains('exported') && !value.contains('global') {
+		return none
+	}
 	runes := value.runes()
 	mut directive := runes.clone()
 	mut justification := []rune{}

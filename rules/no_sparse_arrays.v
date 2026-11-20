@@ -12,13 +12,14 @@ const nsa2_messages = {
 fn (mut c Checker) lint_no_sparse_arrays(root C.TSNode, abs_path string, mut stats Stats) ![]Finding {
 	sw := time.new_stopwatch()
 	mut findings := []Finding{}
-	tokens := c.source_tokens(root)
 	for node in c.nodes_of_kinds(root, ['array'], []) {
 		stats.checked++
 		elements := es_array_elements(node)
 		if !elements.any(it.hole) {
 			continue
 		}
+		// Built on first use: only an array with a hole needs the tokens.
+		tokens := c.source_tokens(root)
 		// The comma after each element, or after the comma before a hole.
 		mut after := node_start(node) + 1
 		for i, element in elements {
@@ -29,7 +30,7 @@ fn (mut c Checker) lint_no_sparse_arrays(root C.TSNode, abs_path string, mut sta
 				after = c.es_end(element.node)
 			}
 			mut comma := tokens.after(after, false) or { break }
-			for c.src[comma.start..comma.end] != ',' {
+			for src_view(c.src, comma.start, comma.end) != ',' {
 				comma = tokens.after(comma.end, false) or { break }
 			}
 			after = comma.end

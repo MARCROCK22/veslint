@@ -27,6 +27,11 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: 22
+      # TypeScript is linked into veslint (tsgo/inproc), built from its Go sources.
+      - uses: actions/setup-go@v5
+        with:
+          go-version: 1.27.4
+          cache: false
       - name: V
         run: |
           git init -q vendor/v
@@ -76,6 +81,10 @@ jobs:
         with:
           msystem: UCRT64
           install: mingw-w64-ucrt-x86_64-gcc
+      - uses: actions/setup-go@v5
+        with:
+          go-version: 1.27.4
+          cache: false
       - name: gcc in PATH
         shell: pwsh
         run: Add-Content $env:GITHUB_PATH "${{ steps.msys2.outputs.msys2-location }}\ucrt64\bin"

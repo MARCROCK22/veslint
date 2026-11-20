@@ -108,6 +108,12 @@ pub fn line_starts(src string) LineStarts {
 	mut starts := [0]
 	mut pos := 0
 	for pos < src.len {
+		// Only `\n`, `\r` and the first byte of U+2028 and U+2029 may start a line break.
+		b := src[pos]
+		if b != `\n` && b != `\r` && b != 0xE2 {
+			pos++
+			continue
+		}
 		n := line_break_len(src, pos)
 		if n == 0 {
 			pos++

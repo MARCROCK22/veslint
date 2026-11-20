@@ -23,10 +23,11 @@ const { plugin: seyfert } = createRequire(import.meta.url)(
 // eslint-plugin-vue 10.12.1, for the vue/* rules, with its processor (as its configurations set it).
 const vue = createRequire(import.meta.url)('../../build/upstream/vue-deps/node_modules/eslint-plugin-vue');
 
-// @eslint-community/eslint-plugin-eslint-comments 4.8.1 and eslint-plugin-promise 7.3.0
-// (build/upstream/plugins-new).
+// @eslint-community/eslint-plugin-eslint-comments 4.8.1, eslint-plugin-promise 7.3.0 and
+// eslint-plugin-regexp 3.3.3 (build/upstream/plugins-new).
 const eslintComments = createRequire(import.meta.url)('../../build/upstream/plugins-new/node_modules/@eslint-community/eslint-plugin-eslint-comments');
 const promise = createRequire(import.meta.url)('../../build/upstream/plugins-new/node_modules/eslint-plugin-promise');
+const regexp = createRequire(import.meta.url)('../../build/upstream/plugins-new/node_modules/eslint-plugin-regexp');
 
 const rules = path.join(import.meta.dirname, '..', 'rules');
 // The options of the rules whose schema needs some (tests/rules/required_options.json).
@@ -48,7 +49,7 @@ export default [
       parser: vueParser,
       parserOptions: { parser: tseslint.parser, ...types, tsconfigRootDir: process.cwd(), extraFileExtensions: ['.vue'] },
     },
-    plugins: { '@typescript-eslint': tseslint.plugin, '@stylistic': stylistic, perfectionist, marcrock, promise, seyfert, unicorn, vue, '@eslint-community/eslint-comments': eslintComments },
+    plugins: { '@typescript-eslint': tseslint.plugin, '@stylistic': stylistic, perfectionist, marcrock, promise, regexp, seyfert, unicorn, vue, '@eslint-community/eslint-comments': eslintComments },
     processor: 'vue/vue',
     rules: Object.fromEntries(ported.map(rule => [rule, required[rule] ? ['error', ...required[rule]] : 'error'])),
   },

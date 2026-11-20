@@ -90,8 +90,14 @@ mut:
 	rule_types_ms  f64
 	rule_eval_ms   f64
 	tsgo_requests  int
+	// the time of those requests in TypeScript, with the transport of this process (the sum of the
+	// workers')
+	tsgo_ms f64
 	// Every rule that ran, `<rule> <ms>`, slowest first.
 	slowest_rules []string
+	// The requests to TypeScript of each method, `<method> <count> <ms>`, slowest first (the sum
+	// of the workers').
+	tsgo_methods []string
 }
 
 fn (mut b BenchReport) add_symbols(elapsed f64) {
@@ -115,6 +121,7 @@ fn ms(d time.Duration) f64 {
 }
 
 fn main() {
+	grow_initial_heap()
 	os.signal_ignore(.pipe)
 	args := os.args[1..]
 	if '-h' in args || '--help' in args {
@@ -134,7 +141,7 @@ fn main() {
 		eprintln('veslint: ${err.msg()}')
 		exit(2)
 	}
-	cpus := cpus_from_env() or {
+	cpus := cpus_from_env(default_cpu_count(opts.server)) or {
 		eprintln('veslint: ${err.msg()}')
 		exit(2)
 	}
@@ -589,13 +596,6 @@ fn run_rules(opts Options, timeout time.Duration) !int {
 		}
 		project_override = os.abs_path(opts.project)
 	}
-	parser := treesitter.new_parser()!
-	// .tsx files use the grammar's tsx dialect (JSX, and no `<T>x` assertions).
-	tsx_parser := treesitter.new_tsx_parser()!
-	defer {
-		parser.close()
-		tsx_parser.close()
-	}
 	mut files := []RuleFile{cap: opts.files.len}
 	mut tsconfigs := []string{}
 	mut vue_parsers := VueParsers{}
@@ -706,7 +706,6 @@ fn run_rules(opts Options, timeout time.Duration) !int {
 		eprintln('${files.len} problems in ${files.len} files (${files.len} of them warnings)')
 		return 0
 	}
-	mut sw := time.new_stopwatch()
 	mut served := map[string]string{}
 	mut virtual := map[string]string{}
 	for f in files {
@@ -718,69 +717,56 @@ fn run_rules(opts Options, timeout time.Duration) !int {
 			served[f.abs_path] = f.src
 		}
 	}
-	mut client := if virtual.len > 0 {
-		tsgo.start_virtual(tsgo.binary_path(), os.dir(tsconfigs[0]), timeout, served, virtual)!
-	} else {
-		tsgo.start_with_files(tsgo.binary_path(), os.dir(tsconfigs[0]), timeout, served)!
+	plan := &LintPlan{
+		loaded:       unsafe { &opts.loaded }
+		lint_configs: lint_configs
+		fix:          opts.fix
+		fixes:        opts.fixes
+		timeout:      timeout
+		tsconfigs:    tsconfigs
+		served:       served
+		virtual:      virtual
+		lazy:         !opts.fix && !configs_need_types(lint_configs)
 	}
-	defer {
-		client.shutdown()
+	mut workers := worker_count(opts.fix, files.filter(it.note == '').len, usable_cpus())
+	// Which file validates the inline options of those rules first changes the messages: one worker
+	// validates them in the order of the files.
+	if workers > 1 && files.any(rules.mentions_order_sensitive_schema(it.src)) {
+		workers = 1
 	}
-	_ = client.initialize()!
-	if virtual.len > 0 {
-		mut twins := map[string][]string{}
-		for f in files {
-			if (f.vue || f.svelte) && f.tsconfig != '' {
-				twins[f.tsconfig] << f.ts_path
-			}
-		}
-		include_twins(mut client, twins)!
-	}
-	bench.spawn_version_init_ms = ms(sw.elapsed())
-	sw.restart()
-	// When no rule of the configurations needs types, tsgo only parses the tsconfigs and builds no
-	// program: a checker makes a snapshot if a comment turns on a rule that needs them, or if an
-	// `await` may be a name (Checker.make_snapshot). --fix keeps the snapshot of every pass, as
-	// tsgo has to be told of each file it writes.
-	lazy := !opts.fix && !configs_need_types(lint_configs)
-	mut snap := if lazy {
-		config_snapshot(mut client, tsgo.UpdateSnapshotResponse{ snapshot: no_snapshot }, tsconfigs)!
-	} else {
-		client.create_snapshot(tsconfigs)!
-	}
-	opened := assign_named_projects(mut files, snap)!
-	if opened.len > 0 {
-		if lazy {
-			snap = config_snapshot(mut client, snap, opened)!
-		} else {
-			previous_snapshot := snap.snapshot
-			snap = client.update_snapshot_files(snap, opened, tsgo.FileChangeSet{})!
-			if snap.snapshot != previous_snapshot {
-				client.release_snapshot(previous_snapshot)!
-			}
-		}
-		tsconfigs << opened
-	}
-	bench.update_snapshot_ms = ms(sw.elapsed())
-	mut projects := map_projects(tsconfigs, snap)!
-	mut checkers := map[string]&rules.Checker{}
-	// The index of the last file of each project: without --fix (whose passes make new snapshots
-	// and checkers), the checker of a project is dropped after it, so that a run over files of many
-	// tsconfigs does not keep every checker alive (the garbage collector walks what is alive).
-	mut last_of_project := map[string]int{}
-	if !opts.fix {
-		for index, f in files {
-			if f.note == '' {
-				last_of_project[projects[f.tsconfig]] = index
-			}
-		}
-	}
-	mut problems := 0
-	mut warnings := 0
+	results := lint_files(plan, files, workers)
+	mut methods := map[string]tsgo.MethodStat{}
+	mut outcomes := map[int]FileOutcome{}
+	mut failed_at := files.len
+	mut failure := ''
 	mut fixed_files := 0
 	mut stats := rules.Stats{}
+	for i, r in results {
+		for index, outcome in r.outcomes {
+			outcomes[index] = outcome
+		}
+		if r.failed && r.failed_at < failed_at {
+			failed_at = r.failed_at
+			failure = r.error
+		}
+		fixed_files += r.fixed_files
+		merge_stats(mut stats, r.stats)
+		bench.tsgo_requests += r.requests
+		bench.tsgo_ms += r.tsgo_ms
+		merge_methods(mut methods, r.methods)
+		if i == 0 {
+			bench.spawn_version_init_ms = r.start_ms
+			bench.update_snapshot_ms = r.snapshot_ms
+		}
+	}
+	// The reports in the order of the files, up to the first that failed, as one worker gives them.
+	mut problems := 0
+	mut warnings := 0
 	mut summary := RuleSummary{}
-	for file_index, f in files {
+	for index, f in files {
+		if index >= failed_at {
+			break
+		}
 		if f.note != '' {
 			if opts.summary {
 				summary.add(rules.problem_rule, f.path, true)
@@ -791,174 +777,21 @@ fn run_rules(opts Options, timeout time.Duration) !int {
 			warnings++
 			continue
 		}
-		config_index := opts.loaded.file_config[f.abs_path] or { 0 }
-		mut lint_config := lint_configs[config_index]
-		if f.abs_path in opts.loaded.file_runes {
-			// A runes function of the svelteConfig: what it gave for this file (file_language).
-			lint_config = rules.LintConfig{
-				...lint_config
-				language: opts.loaded.file_language(f.abs_path, lint_config.language)
-			}
-		}
-		// In a single run, the project service leaves the file to a Program made for its tsconfig,
-		// whose current directory is the one ESLint runs in, when the tsconfig is the one veslint
-		// lints the file with; only for the text on disk (the first pass of --fix).
-		service_directory := lint_config.program_directory
-		if config_index < opts.loaded.configs.len && is_single_run(opts.fix) {
-			root := opts.loaded.configs[config_index].service_program_root
-			if root != '' && f.tsconfig != '' && single_run_tsconfig(f.abs_path, root) == f.tsconfig {
-				lint_config.program_directory = os.getwd()
-			}
-		}
-		mut src := f.src
-		mut has_bom := f.has_bom
-		mut module := f.module
-		mut result := rules.FileLint{}
-		// The document of a .vue file, parsed again after each pass of --fix.
-		mut doc := &vue.Document(unsafe { nil })
-		if f.vue {
-			doc = vue_parsers.parse(src, f.vue_options) or { return error('${f.path}: ${err.msg()}') }
-		}
-		// The document of a .svelte file, the same way.
-		mut sdoc := &svelte.Document(unsafe { nil })
-		if f.svelte {
-			sdoc = svelte_parsers.parse(src, f.svelte_options) or { return error('${f.path}: ${err.msg()}') }
-		}
-		// --fix ports ESLint's verifyAndFix: lint, apply the fixes that do not overlap, and lint the
-		// result again, up to 10 passes or until two passes give the same text. tsgo only reads
-		// files, so each pass is written to disk and a new snapshot is taken.
-		mut pass := 0
-		mut syntax_baseline := -1
-		mut previous := ''
-		mut second_previous := ''
-		for {
-			pass++
-			if pass > 1 {
-				lint_config.program_directory = service_directory
-			}
-			project := projects[f.tsconfig]
-			if project !in checkers {
-				mut new_checker := rules.new_checker(client, snap.snapshot, project, project_options(snap,
-					project))!
-				new_checker.set_project_directory(os.dir(f.tsconfig))
-				if lazy {
-					new_checker.defer_snapshot(project)
-				}
-				checkers[project] = new_checker
-			}
-			mut checker := checkers[project] or { return error('no checker for ${project}') }
-			checker.set_has_bom(has_bom)
-			// A fix may give code TypeScript cannot parse: from the second pass on, a parsing error
-			// that was not in the file is reported alone and stops the fixes, as ESLint does.
-			if opts.fix {
-				if pass == 1 {
-					// The checker may come from the passes of another file.
-					checker.check_syntax(-1)
-					syntax_baseline = checker.syntax_error_count(f.ts_path)
-				} else {
-					checker.check_syntax(syntax_baseline)
-				}
-			}
-			if f.vue {
-				checker.set_vue(doc, f.ts_path)
-			} else if f.svelte {
-				checker.set_svelte(sdoc, f.ts_path, svelte_parsers.parsers)
-			} else if module.inserted > 0 {
-				checker.set_svelte_module(src, module.code, module.at, module.inserted)
-			}
-			result = checker.lint_file(if (f.vue && doc.script.jsx) || (f.svelte && sdoc.options.jsx)
-				|| (!f.vue && !f.svelte && treesitter.uses_jsx_dialect(f.path)) {
-				tsx_parser
-			} else {
-				parser
-			},
-				lint_config, src, f.abs_path, mut stats) or {
-				return error('${f.path}: ${err.msg()}')
-			}
-			if !opts.fix || pass > max_fix_passes {
-				break
-			}
-			// ESLint does not fix a file it cannot parse (a fix of the previous pass may have broken it).
-			if result.parsing_error {
-				break
-			}
-			if result.syntax_errors {
-				if result.findings.any(it.has_fix) {
-					eprintln('warning: ${f.path}: not fixed, because tree-sitter found syntax errors')
-				}
-				break
-			}
-			fixed, output := rules.apply_fixes(src, result.findings)
-			if !fixed {
-				break
-			}
-			second_previous = previous
-			previous = src
-			src = output
-			// A fix of the range [-1, 0] removes the BOM, which is before the text (unicode-bom).
-			if result.findings.any(it.has_fix && it.fix.start < 0) {
-				has_bom = false
-			}
-			os.write_file(f.path, if has_bom { offsets.utf8_bom + src } else { src }) or {
-				return error('cannot write ${f.path}: ${err.msg()}')
-			}
-			if f.vue {
-				// The twin gets the code of the fixed script.
-				doc.free()
-				doc = vue_parsers.parse(src, f.vue_options) or { return error('${f.path}: ${err.msg()}') }
-				client.serve(f.ts_path, doc.script.code)
-			} else if f.svelte {
-				sdoc.free()
-				sdoc = svelte_parsers.parse(src, f.svelte_options) or { return error('${f.path}: ${err.msg()}') }
-				client.serve(f.ts_path, sdoc.virtual_code)
-			} else if f.module.inserted > 0 || module.inserted > 0 {
-				// The module's virtual code is made again from the fixed text.
-				module = svelte_parsers.module_virtual(src) or {
-					return error('${f.path}: ${err.msg()}')
-				}
-				client.serve(f.abs_path, module.code)
-			} else {
-				// What is on disk now is valid UTF-8: tsgo reads it from there.
-				client.stop_serving(f.abs_path)
-			}
-			if pass == 1 {
-				fixed_files++
-			}
-			previous_snapshot := snap.snapshot
-			snap = client.update_snapshot_changed(snap, [f.ts_path])!
-			projects = map_projects(tsconfigs, snap)!
-			checkers.clear()
-			if snap.snapshot != previous_snapshot {
-				client.release_snapshot(previous_snapshot)!
-			}
-			if pass > 1 && src == second_previous {
-				eprintln('warning: ${f.path}: circular fixes; stopped after ${pass} passes')
-				pass = max_fix_passes
-			}
-		}
-		if !opts.fix {
-			project := projects[f.tsconfig]
-			if last_of_project[project] == file_index {
-				checkers.delete(project)
-			}
-		}
-		report := file_report(f.path, src, result, opts.fixes, doc, sdoc)
-		if f.vue {
-			doc.free()
-		}
-		if f.svelte {
-			sdoc.free()
-		}
-		eprint(report.stderr)
+		outcome := outcomes[index] or { break }
+		eprint(outcome.warnings)
+		eprint(outcome.report.stderr)
 		if opts.summary {
-			for finding in result.findings {
+			for finding in outcome.findings {
 				summary.add(finding.rule, f.path, finding.severity == 1)
 			}
 		} else {
-			print(report.stdout)
+			print(outcome.report.stdout)
 		}
-		problems += report.problems
-		warnings += report.warnings
+		problems += outcome.report.problems
+		warnings += outcome.report.warnings
+	}
+	if failure != '' {
+		return error(failure)
 	}
 	bench.read_parse_ms = stats.parse_ms
 	bench.rule_checked = stats.checked
@@ -967,7 +800,6 @@ fn run_rules(opts Options, timeout time.Duration) !int {
 	bench.rule_findings = stats.findings
 	bench.rule_types_ms = stats.types_ms
 	bench.rule_eval_ms = stats.eval_ms
-	bench.tsgo_requests = client.request_count()
 	mut by_time := stats.rule_ms.keys()
 	by_time.sort_with_compare(fn [stats] (a &string, b &string) int {
 		ta := stats.rule_ms[*a]
@@ -981,6 +813,19 @@ fn run_rules(opts Options, timeout time.Duration) !int {
 		}
 	})
 	bench.slowest_rules = by_time.map('${it} ${stats.rule_ms[it]:.1f}')
+	mut by_method := methods.keys()
+	by_method.sort_with_compare(fn [methods] (a &string, b &string) int {
+		ta := methods[*a].time
+		tb := methods[*b].time
+		return if ta > tb {
+			-1
+		} else if ta < tb {
+			1
+		} else {
+			compare_strings(a, b)
+		}
+	})
+	bench.tsgo_methods = by_method.map('${it} ${methods[it].count} ${f64(methods[it].time) / f64(time.millisecond):.1f}')
 	print(summary.table())
 	fixed_note := if opts.fix { '; ${fixed_files} files fixed' } else { '' }
 	eprintln(summary_line(problems, files.len, warnings) + fixed_note)
@@ -1110,7 +955,7 @@ fn prepare_file(parser treesitter.Parser, path string, project_override string, 
 	}
 	bench.read_parse_ms += ms(sw.elapsed())
 	sw.restart()
-	idents := parser.identifiers(tree, src, all)
+	idents := parser.identifiers(tree, src, all)!
 	bench.query_ms += ms(sw.elapsed())
 	sw.restart()
 	utf16, display := offsets.utf16_positions(src, idents)
@@ -1151,7 +996,7 @@ fn prepare_vue_file(mut vue_parsers VueParsers, parser treesitter.Parser, path s
 	}
 	bench.read_parse_ms += ms(sw.elapsed())
 	sw.restart()
-	idents, utf16, display := vue_identifiers(parser, doc, all)
+	idents, utf16, display := vue_identifiers(parser, doc, all)!
 	bench.query_ms += ms(sw.elapsed())
 	abs_path := os.abs_path(path)
 	tsconfig := if project_override != '' { project_override } else { find_tsconfig(abs_path)! }

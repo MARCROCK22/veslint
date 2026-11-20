@@ -126,6 +126,16 @@ const source_token_name_kinds = ['identifier', 'property_identifier', 'shorthand
 // closes a self-closing JSX element, is a `/` and a `>`).
 const source_token_split_leaves = ['?:', '-?:', '+?:', '{|', '|}', '/>']
 
+// src_view is `src[start..end]` without the copy: a string that points into `src`, for comparisons
+// that do not keep it (a slice of a string allocates; the token walks take one per token).
+@[inline]
+fn src_view(src string, start int, end int) string {
+	if start < 0 || end > src.len || start > end {
+		panic('src_view(${start}, ${end}) out of a string of ${src.len} bytes')
+	}
+	return unsafe { tos(src.str + start, end - start) }
+}
+
 // source_tokens gives the tokens of the file `n` belongs to, built on first use.
 fn (mut c Checker) source_tokens(n C.TSNode) &SourceTokens {
 	if c.file_tokens == unsafe { nil } {
@@ -142,10 +152,17 @@ fn (mut c Checker) source_tokens(n C.TSNode) &SourceTokens {
 }
 
 fn build_source_tokens(root C.TSNode, src string) &SourceTokens {
-	mut all := []SourceToken{}
+	// About 0.6 tokens and comments per visible node.
+	mut all := []SourceToken{cap: int(C.ts_node_descendant_count(root)) * 3 / 4 + 16}
 	source_tokens_walk(root, src, mut all)
 	if src.contains('<') {
-		all = source_tokens_jsx(root, all)
+		all = if language_has_jsx(root) {
+			source_tokens_jsx(root, all)
+		} else {
+			// What source_tokens_jsx gives without JSX, without its walk of the tree: the tokens in
+			// order of their start.
+			source_tokens_by_start(all)
+		}
 	}
 	return &SourceTokens{
 		tokens:   all.filter(!it.is_comment())
@@ -161,6 +178,36 @@ fn build_source_tokens(root C.TSNode, src string) &SourceTokens {
 // an attribute a JSXIdentifier.
 fn source_tokens_jsx(root C.TSNode, tokens []SourceToken) []SourceToken {
 	mut gaps := []JsxTextGap{}
+	first, last := treesitter.flat_range(root)
+	if first >= 0 {
+		for i in first .. last + 1 {
+			node := treesitter.flat_node(i)
+			if node_kind(node) == 'jsx_element' {
+				source_tokens_jsx_gaps(node, mut gaps)
+			}
+		}
+	} else {
+		source_tokens_jsx_walk(root, mut gaps)
+	}
+	return source_tokens_with_gaps(tokens, gaps)
+}
+
+// source_tokens_jsx_gaps adds the gaps between the children of a JSX element.
+fn source_tokens_jsx_gaps(node C.TSNode, mut gaps []JsxTextGap) {
+	mut previous_end := -1
+	for child in named_children(node) {
+		if node_kind(child) in ['jsx_text', 'html_character_reference', 'comment'] {
+			continue
+		}
+		if previous_end >= 0 && node_start(child) > previous_end {
+			gaps << JsxTextGap{previous_end, node_start(child), node}
+		}
+		previous_end = node_end(child)
+	}
+}
+
+// source_tokens_jsx_walk adds the gaps of the JSX elements of a tree that has no flat tree.
+fn source_tokens_jsx_walk(root C.TSNode, mut gaps []JsxTextGap) {
 	mut cursor := C.ts_tree_cursor_new(root)
 	defer {
 		C.ts_tree_cursor_delete(&cursor)
@@ -168,16 +215,7 @@ fn source_tokens_jsx(root C.TSNode, tokens []SourceToken) []SourceToken {
 	for {
 		node := C.ts_tree_cursor_current_node(&cursor)
 		if node_kind(node) == 'jsx_element' {
-			mut previous_end := -1
-			for child in named_children(node) {
-				if node_kind(child) in ['jsx_text', 'html_character_reference', 'comment'] {
-					continue
-				}
-				if previous_end >= 0 && node_start(child) > previous_end {
-					gaps << JsxTextGap{previous_end, node_start(child), node}
-				}
-				previous_end = node_end(child)
-			}
+			source_tokens_jsx_gaps(node, mut gaps)
 		}
 		if C.ts_tree_cursor_goto_first_child(&cursor) {
 			continue
@@ -193,6 +231,11 @@ fn source_tokens_jsx(root C.TSNode, tokens []SourceToken) []SourceToken {
 			break
 		}
 	}
+}
+
+// source_tokens_with_gaps gives the tokens with the JSX tokens of typescript-estree: the gaps as
+// JSXText, and the strings and names of the tags and attributes made JSX tokens.
+fn source_tokens_with_gaps(tokens []SourceToken, gaps []JsxTextGap) []SourceToken {
 	mut out := []SourceToken{cap: tokens.len}
 	for token in tokens {
 		if gaps.any(token.start >= it.start && token.end <= it.end) {
@@ -220,6 +263,34 @@ fn source_tokens_jsx(root C.TSNode, tokens []SourceToken) []SourceToken {
 	return out
 }
 
+// language_has_jsx tells whether the grammar of the tree has JSX elements: the TypeScript one, for
+// .ts files, has none.
+fn language_has_jsx(root C.TSNode) bool {
+	name := 'jsx_element'
+	return C.ts_language_symbol_for_name(C.ts_node_language(root), &char(name.str), u32(name.len),
+		true) != 0
+}
+
+// source_tokens_by_start sorts the tokens by their start as source_tokens_jsx does. They come in
+// that order from the walk, and with distinct starts the sort has nothing to do.
+fn source_tokens_by_start(tokens []SourceToken) []SourceToken {
+	mut ordered := true
+	for i in 1 .. tokens.len {
+		if tokens[i].start <= tokens[i - 1].start {
+			ordered = false
+			break
+		}
+	}
+	if ordered {
+		return tokens
+	}
+	mut out := tokens.clone()
+	out.sort_with_compare(fn (a &SourceToken, b &SourceToken) int {
+		return a.start - b.start
+	})
+	return out
+}
+
 struct JsxTextGap {
 	start   int
 	end     int
@@ -228,6 +299,20 @@ struct JsxTextGap {
 
 // source_tokens_walk appends the tokens and comments of a subtree, in order.
 fn source_tokens_walk(root C.TSNode, src string, mut out []SourceToken) {
+	first, last := treesitter.flat_range(root)
+	if first >= 0 {
+		// From the flat tree: the subtree of a node whose children are not visited is jumped
+		// over.
+		mut i := first
+		for i <= last {
+			i = if source_tokens_visit(treesitter.flat_node(i), src, mut out) {
+				i + 1
+			} else {
+				treesitter.flat_last(i) + 1
+			}
+		}
+		return
+	}
 	mut cursor := C.ts_tree_cursor_new(root)
 	defer {
 		C.ts_tree_cursor_delete(&cursor)
@@ -254,7 +339,7 @@ fn source_tokens_visit(node C.TSNode, src string, mut out []SourceToken) bool {
 	kind := if C.ts_node_is_named(node) { node_kind(node) } else { '' }
 	match kind {
 		'comment', 'html_comment' {
-			block := src[start..end].starts_with('/*')
+			block := src_view(src, start, end).starts_with('/*')
 			out << SourceToken{start, end, if block { .block_comment } else { .line_comment }, node}
 			return false
 		}
@@ -282,7 +367,7 @@ fn source_tokens_visit(node C.TSNode, src string, mut out []SourceToken) bool {
 	if end <= start {
 		return false
 	}
-	text := src[start..end]
+	text := src_view(src, start, end)
 	if text in source_token_split_leaves {
 		for i in start .. end {
 			out << SourceToken{i, i + 1, .punctuator, node}

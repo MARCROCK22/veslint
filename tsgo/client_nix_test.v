@@ -19,7 +19,8 @@ fn test_shutdown_kills_and_reaps_a_process_that_ignores_stdin() {
 	wrapper := os.join_path(dir, 'tsc')
 	os.write_file(wrapper, '#!/usr/bin/env bash\nexec "${fake}" silent "$@"\n') or { panic(err) }
 	os.chmod(wrapper, 0o755) or { panic(err) }
-	mut client := start(wrapper, dir, 5 * time.second) or { panic(err) }
+	mut client := start_tsc_process(wrapper, dir, 5 * time.second, map[string]string{}, false,
+		false) or { panic(err) }
 	pid := client.proc.pid
 	sw := time.new_stopwatch()
 	client.shutdown()
@@ -50,7 +51,8 @@ fn check_version_timeout(mode string) {
 	os.chmod(wrapper, 0o755) or { panic(err) }
 	sw := time.new_stopwatch()
 	mut message := ''
-	if mut client := start(wrapper, dir, 300 * time.millisecond) {
+	if mut client := start_tsc_process(wrapper, dir, 300 * time.millisecond, map[string]string{},
+		false, false) {
 		client.shutdown()
 	} else {
 		message = err.msg()

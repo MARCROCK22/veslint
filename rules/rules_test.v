@@ -3634,3 +3634,26 @@ fn test_lone_surrogate_is_replaced() {
 	// them), but each half alone is replaced.
 	assert wu_resolve('a\xed\xa0\xbd', 'file:///a/b.html')! == 'file:///a/a%EF%BF%BD'
 }
+
+// order_sensitive_schemas lists the rules whose schema ajv may take for another one's: the same
+// stable serialization, another text.
+fn test_order_sensitive_schemas_are_the_colliding_ones() {
+	mut names_by_key := map[string][]string{}
+	mut texts_by_key := map[string][]string{}
+	for name, text in rule_option_schemas {
+		value := json2.decode[json2.Any](text) or { panic('${name}: ${err}') }
+		key := canonical_json(value)
+		names_by_key[key] << name
+		if text !in texts_by_key[key] {
+			texts_by_key[key] << text
+		}
+	}
+	mut colliding := []string{}
+	for key, group in names_by_key {
+		if texts_by_key[key].len > 1 {
+			colliding << group
+		}
+	}
+	colliding.sort()
+	assert colliding == order_sensitive_schemas
+}

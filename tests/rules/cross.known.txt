@@ -1,3 +1,4 @@
+not compared	tests/rules/@typescript-eslint/prefer-includes/static-throws/cases.ts	crash	regexp/control-character-escape: Maximum call stack size exceeded
 not compared	tests/rules/unicorn/no-useless-undefined/cases.ts	crash	@typescript-eslint/no-deprecated: Cannot read properties of undefined (reading 'kind')
 not compared	tests/rules/unicorn/prefer-number-properties/export/cases.ts	crash	@typescript-eslint/no-use-before-define: Cannot read properties of undefined (reading 'range')
 not compared	tests/rules/vue/valid-define-options/cases.vue	crash	vue/no-restricted-component-names: Cannot read properties of undefined (reading 'type')

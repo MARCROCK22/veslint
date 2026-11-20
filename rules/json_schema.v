@@ -187,6 +187,19 @@ fn compiled_schema_text(text string) string {
 	return text
 }
 
+// order_sensitive_schemas are the rules whose schema has the stable serialization of another
+// rule's schema with another text: which of the two is validated first in a run decides the text
+// of the errors about invalid options of both (compiled_schema_text). rules_test.v checks the list.
+pub const order_sensitive_schemas = ['perfectionist/sort-export-attributes',
+	'perfectionist/sort-heritage-clauses', 'perfectionist/sort-import-attributes',
+	'perfectionist/sort-maps', 'vue/no-template-shadow', 'vue/restricted-component-names']
+
+// mentions_order_sensitive_schema tells whether a configuration comment of the file may name one
+// of order_sensitive_schemas: the file has its name without the plugin's prefix.
+pub fn mentions_order_sensitive_schema(src string) bool {
+	return order_sensitive_schemas.any(src.contains(it.all_after_last('/')))
+}
+
 // rule_options_inline_reason is what ESLint says of those options in a configuration comment:
 // the linter takes the message of the error from after the rule, trimmed.
 pub fn rule_options_inline_reason(name string, options []json2.Any) string {

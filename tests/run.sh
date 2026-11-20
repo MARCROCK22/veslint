@@ -1136,6 +1136,10 @@ platform_package() {
 	echo "typescript-$os-$arch"
 }
 
+# The tests up to the end of section 4 are of the process transport (`tsc --api` over a pipe), so
+# they run with VESLINT_TSGO=process; with the default, TypeScript is linked into veslint and no
+# binary is needed (the tests after them).
+export VESLINT_TSGO=process
 # sandbox MODE: copies veslint to a directory whose tsgo is tests/fake_tsgo.sh MODE; on Windows,
 # tests/fake_tsgo.v compiled to tsc.exe, with the mode in a file next to it.
 # Fake tsgo processes left waiting are named `fake-tsgo-<tag>-*`, with a tag of this run (on
@@ -1323,6 +1327,53 @@ else
 	fi
 fi
 
+unset VESLINT_TSGO
+# TypeScript in veslint's process (tsgo/inproc.c.v, the default): no binary is needed, the libs are
+# the ones embedded in it; a request TypeScript rejects is an error as over the pipe.
+veslint_out=$("$(sandbox missing)" app.ts 2>&1 || true)
+if [[ $veslint_out == "$(cat tests/expected/app.txt)" ]]; then
+	ok "in process: no TypeScript binary needed"
+else
+	ko "in process: no TypeScript binary needed"
+	echo "$veslint_out" | head -20
+fi
+expect_error "in process: message type 5" "source file not found" ./veslint --project tsconfig.json tests/fixtures/emoji.ts
+expect_error "VESLINT_TSGO with an unknown value" "VESLINT_TSGO must be" env VESLINT_TSGO=pipe ./veslint app.ts
+# Workers (lint_workers.v): the files of 127 projects linted on one CPU and on all of them (a worker
+# per CPU; in this process they share TypeScript's session, with a checker each) print exactly the
+# same, with either transport.
+printf '{"rules": {"@typescript-eslint/no-floating-promises": "error", "@typescript-eslint/no-misused-promises": "error", "@typescript-eslint/no-unnecessary-type-assertion": "error", "@typescript-eslint/unbound-method": "error", "@typescript-eslint/strict-boolean-expressions": "error", "@typescript-eslint/no-unsafe-assignment": "warn", "@typescript-eslint/no-deprecated": "error", "@typescript-eslint/naming-convention": "error"}}' > "$TMP/workers.json"
+mapfile -t worker_files < <(find tests/rules/@typescript-eslint -mindepth 2 -maxdepth 2 -name cases.ts | sorted)
+for transport in inproc process; do
+	for cpus in 1 0; do
+		code=0
+		VESLINT_TSGO=$transport VESLINT_CPUS=$cpus ./veslint --config "$TMP/workers.json" "${worker_files[@]}" > "$TMP/workers-$cpus.out" 2> "$TMP/workers-$cpus.err" || code=$?
+		echo "$code" >> "$TMP/workers-$cpus.err"
+	done
+	[[ $transport == process ]] || cp "$TMP/workers-1.out" "$TMP/workers-inproc.out"
+	if [[ $(tail -1 "$TMP/workers-1.err") -eq 1 && -s $TMP/workers-1.out ]] && cmp -s "$TMP/workers-1.out" "$TMP/workers-0.out" &&
+		cmp -s "$TMP/workers-1.err" "$TMP/workers-0.err"; then
+		ok "workers ($transport): $(wc -l < "$TMP/workers-1.out") lines of ${#worker_files[@]} files, the same on one CPU and on all"
+	else
+		ko "workers ($transport): one CPU and all of them differ"
+		diff "$TMP/workers-1.out" "$TMP/workers-0.out" | head -20
+		diff "$TMP/workers-1.err" "$TMP/workers-0.err" | head -20
+	fi
+done
+# The answers about types, symbols and signatures are written (tsgo/inproc/api_fastjson.go) and read
+# (tsgo/fast_decode.v) by hand: on the same files, VESLINT_TSGO_CHECK_JSON compares each one written
+# with what json.Marshal writes, and VESLINT_CHECK_DECODE each one read with what json2 reads (a
+# difference panics), and the output does not change.
+code=0
+VESLINT_TSGO_CHECK_JSON=1 VESLINT_CHECK_DECODE=1 ./veslint --config "$TMP/workers.json" "${worker_files[@]}" > "$TMP/workers-checked.out" 2> "$TMP/workers-checked.err" || code=$?
+if [[ $code -eq 1 ]] && cmp -s "$TMP/workers-inproc.out" "$TMP/workers-checked.out"; then
+	ok "answers written and read by hand: the same as json.Marshal's and json2's"
+else
+	ko "answers written and read by hand (code $code)"
+	diff "$TMP/workers-inproc.out" "$TMP/workers-checked.out" | head -20
+	head -c 2000 "$TMP/workers-checked.err"
+fi
+
 # --server (server.v): a scenario with unsaved text, a file closed without saving, files changed on
 # disk, a reset, errors, and a declaration the server keeps between snapshots that changes
 # (tests/server, run on a copy, since it writes files); and on the configuration fixture, the
@@ -1366,13 +1417,16 @@ else
 	cat "$TMP/server-pipeline.out"
 fi
 # A server keeps every thread of its own and of its tsgo on two CPUs as well (cpus.v): looked at
-# after its first lint, while both are alive (on Linux only).
-if [[ $windows -eq 1 ]]; then
-	echo "skip   --server on two CPUs: veslint restricts its CPUs on Linux only"
-elif python3 - ./veslint tests/config "${config_abs[0]}" 2> "$TMP/server-cpus.err" << 'PY'
+# after its first lint, while both are alive (on Linux only); with TypeScript in its process, the
+# threads of the Go runtime are its own.
+for transport in process inproc; do
+	if [[ $windows -eq 1 ]]; then
+		echo "skip   --server on two CPUs ($transport): veslint restricts its CPUs on Linux only"
+	elif VESLINT_TSGO=$transport python3 - ./veslint tests/config "${config_abs[0]}" 2> "$TMP/server-cpus.err" << 'PY'
 import json, os, subprocess, sys
 veslint, cwd, file = os.path.abspath(sys.argv[1]), sys.argv[2], sys.argv[3]
 want = min(2, len(os.sched_getaffinity(0)))
+in_process = os.environ['VESLINT_TSGO'] == 'inproc'
 env = {k: v for k, v in os.environ.items() if k != 'VESLINT_CPUS'}
 server = subprocess.Popen([veslint, '--server'], cwd=cwd, stdin=subprocess.PIPE, stdout=subprocess.PIPE,
                           stderr=subprocess.PIPE, text=True, env=env)
@@ -1399,16 +1453,17 @@ for pid in [server.pid] + children:
 server.stdin.close()
 code = server.wait(timeout=30)
 sets = {tuple(cpus) for cpus in seen.values()}
-if answer.get('code') not in (0, 1) or code != 0 or not children or len(sets) != 1 or len(next(iter(sets))) != want:
+if answer.get('code') not in (0, 1) or code != 0 or bool(children) == in_process or len(sets) != 1 or len(next(iter(sets))) != want:
     sys.exit(f'answer code {answer.get("code")}, exit {code}, children {children}, threads on {sets} (want {want} CPUs)')
 print(f'{len(seen)} threads in {1 + len(children)} processes on {sorted(sets)[0]}', file=sys.stderr)
 PY
-then
-	ok "--server: veslint and tsgo on two CPUs ($(tail -1 "$TMP/server-cpus.err"))"
-else
-	ko "--server: veslint and tsgo not on two CPUs"
-	cat "$TMP/server-cpus.err"
-fi
+	then
+		ok "--server ($transport): veslint and tsgo on two CPUs ($(tail -1 "$TMP/server-cpus.err"))"
+	else
+		ko "--server ($transport): veslint and tsgo not on two CPUs"
+		cat "$TMP/server-cpus.err"
+	fi
+done
 
 phase "options, --bench, tsgo and --server"
 # typescript-eslint's own tests of the ported rules (tests/upstream/README.md): every case of each
@@ -1481,6 +1536,9 @@ mapfile -t eslint_comments_upstream < <([[ -d tests/rules/@eslint-community/esli
 # The rules of eslint-plugin-promise (tests/rules/promise/<rule>/upstream.json, from
 # __tests__/<rule>.js of v7.3.0), the same way.
 mapfile -t promise_upstream < <([[ -d tests/rules/promise ]] && upstream_rules_of promise)
+# The rules of eslint-plugin-regexp (tests/rules/regexp/<rule>/upstream.json, from
+# tests/lib/rules/<rule>.ts of v3.3.3 and its snapshots), the same way.
+mapfile -t regexp_upstream < <([[ -d tests/rules/regexp ]] && upstream_rules_of regexp)
 if tests/upstream/setup.sh "$TMP/upstream" 2> "$TMP/upstream-setup.err"; then
 	upstream_check "typescript-eslint's own tests" "$TMP/upstream" "$TMP/upstream-configs" "${typescript_eslint_upstream[@]}"
 	[[ ${#core_upstream[@]} -eq 0 ]] ||
@@ -1497,6 +1555,8 @@ if tests/upstream/setup.sh "$TMP/upstream" 2> "$TMP/upstream-setup.err"; then
 		upstream_check "@eslint-community/eslint-plugin-eslint-comments' own tests" "$TMP/upstream" "$TMP/upstream-eslint-comments-configs" "${eslint_comments_upstream[@]}"
 	[[ ${#promise_upstream[@]} -eq 0 ]] ||
 		upstream_check "eslint-plugin-promise's own tests" "$TMP/upstream" "$TMP/upstream-promise-configs" "${promise_upstream[@]}"
+	[[ ${#regexp_upstream[@]} -eq 0 ]] ||
+		upstream_check "eslint-plugin-regexp's own tests" "$TMP/upstream" "$TMP/upstream-regexp-configs" "${regexp_upstream[@]}"
 else
 	echo "skip   typescript-eslint's own tests: $(cat "$TMP/upstream-setup.err")"
 fi

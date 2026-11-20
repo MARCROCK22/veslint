@@ -31,6 +31,29 @@ pub fn (t &EsTree) children(i int) []int {
 	return out
 }
 
+// push_children_reversed pushes the children of `i` (what children gives) in reverse order, without
+// the array children makes: steps does it for every node of the file.
+fn (t &EsTree) push_children_reversed(i int, mut stack []int) {
+	keys := visitor_keys[int(t.nodes[i].typ)]
+	for k := keys.len - 1; k >= 0; k-- {
+		p := t.prop(i, keys[k]) or { continue }
+		match p.kind {
+			.node {
+				stack << p.idx
+			}
+			.list {
+				items := t.lists[p.idx]
+				for j := items.len - 1; j >= 0; j-- {
+					if items[j] >= 0 {
+						stack << items[j]
+					}
+				}
+			}
+			else {}
+		}
+	}
+}
+
 // Step is one event of a traversal: entering or leaving a node.
 pub struct Step {
 pub:
@@ -60,10 +83,7 @@ pub fn (t &EsTree) steps() []Step {
 			out << Step{top, false}
 		}
 		stack << -2 - top
-		kids := t.children(top)
-		for k := kids.len - 1; k >= 0; k-- {
-			stack << kids[k]
-		}
+		t.push_children_reversed(top, mut stack)
 	}
 	return out
 }

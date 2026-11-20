@@ -17,7 +17,11 @@ V ?= v
 # The V binary is a prerequisite of veslint: updating V rebuilds it.
 V_BIN := $(shell command -v $(V))
 
-LIBS    := vendor/tree-sitter/libtree-sitter.a build/libtree-sitter-typescript.a
+# TypeScript's API session linked into veslint (tsgo/inproc.c.v): a C archive built with Go from the
+# checkout of the pinned commit (tsgo/inproc/build.sh fetches it when it is missing).
+GO      ?= go
+INPROC  := tsgo/inproc/out/libveslint_tsgo.a
+LIBS    := vendor/tree-sitter/libtree-sitter.a build/libtree-sitter-typescript.a $(INPROC)
 SOURCES := $(filter-out %_test.v,$(wildcard *.v tsgo/*.v treesitter/*.v offsets/*.v rules/*.v jsregexp/*.v regexpp/*.v estree/*.v esquery/*.v codepath/*.v collation/*.v vue/*.v svelte/*.v svelte_compiler/*.v postcss/*.v))
 
 .PHONY: deps build run test bench clean
@@ -65,6 +69,9 @@ build/tsx-parser.o: $(TSX_SRC)/parser.c
 build/tsx-scanner.o: $(TSX_SRC)/parser.c
 	cc -O2 -std=c11 -fPIC -I$(TSX_SRC) -c $(TSX_SRC)/scanner.c -o $@
 
+$(INPROC): tsgo/inproc/build.sh tsgo/inproc/main.go tsgo/inproc/api_inprocess.go tsgo/inproc/api_fastjson.go tsgo/inproc/session.patch
+	GO=$(GO) tsgo/inproc/build.sh
+
 build/libtree-sitter-typescript.a: build/ts-parser.o build/ts-scanner.o build/tsx-parser.o build/tsx-scanner.o
 	ar rcs $@ $^
 
@@ -83,7 +90,7 @@ build: veslint
 # half as often. It costs about 0.5 MB of larger black-list tables (two of 256 KB instead of 32 KB),
 # and up to 16 MiB more heap from the larger steps (Spider-Byte with every rule: 96 MiB instead of
 # 86). V caches gc.o by its flags.
-veslint: $(LIBS) $(TSGO) $(SOURCES) $(V_BIN)
+veslint: $(LIBS) $(TSGO) $(SOURCES) tsgo/inproc/veslint_tsgo.h $(V_BIN)
 	$(V) -prod -cc gcc -cflags -DLARGE_CONFIG=1 -o veslint .
 
 run: veslint

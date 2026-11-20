@@ -1,0 +1,6 @@
+tests/rules/regexp/hexadecimal-escape/cases.ts:2:20	regexp/hexadecimal-escape	expectedHexEscape	Expected hexadecimal escape ('\\x0a'), but unicode escape ('\\u000a') is used.	fix	99	105	\\x0a	end	2	26
+tests/rules/regexp/hexadecimal-escape/cases.ts:3:20	regexp/hexadecimal-escape	expectedHexEscape	Expected hexadecimal escape ('\\x0a'), but unicode code point escape ('\\u{a}') is used.	fix	127	132	\\x0a	end	3	25
+tests/rules/regexp/hexadecimal-escape/cases.ts:5:32	regexp/hexadecimal-escape	expectedHexEscape	Expected hexadecimal escape ('\\x41'), but unicode escape ('\\u0041') is used.	fix	192	199	\\\\x41	end	5	39
+tests/rules/regexp/hexadecimal-escape/never/cases.ts:2:20	regexp/hexadecimal-escape	unexpectedHexEscape	Unexpected hexadecimal escape ('\\x0a').	fix	75	79	\\u000a	end	2	24
+tests/rules/regexp/hexadecimal-escape/never/cases.ts:3:21	regexp/hexadecimal-escape	unexpectedHexEscape	Unexpected hexadecimal escape ('\\xFf').	fix	102	106	\\u00Ff	end	3	25
+tests/rules/regexp/hexadecimal-escape/never/cases.ts:4:32	regexp/hexadecimal-escape	unexpectedHexEscape	Unexpected hexadecimal escape ('\\x41').	fix	141	146	\\\\u0041	end	4	37

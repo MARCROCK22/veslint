@@ -1,0 +1,7 @@
+tests/rules/regexp/no-octal/cases.ts:2:20	regexp/no-octal	unexpected	Unexpected octal escape sequence '\\07'.
+tests/rules/regexp/no-octal/cases.ts:3:20	regexp/no-octal	unexpected	Unexpected octal escape sequence '\\1'.
+tests/rules/regexp/no-octal/cases.ts:4:21	regexp/no-octal	unexpected	Unexpected octal escape sequence '\\00'.
+tests/rules/regexp/no-octal/cases.ts:5:20	regexp/no-octal	unexpected	Unexpected octal escape sequence '\\077'.
+tests/rules/regexp/no-octal/cases.ts:5:24	regexp/no-octal	unexpected	Unexpected octal escape sequence '\\377'.
+tests/rules/regexp/no-octal/cases.ts:6:32	regexp/no-octal	unexpected	Unexpected octal escape sequence '\\012'.
+tests/rules/regexp/no-octal/cases.ts:7:21	regexp/no-octal	unexpected	Unexpected octal escape sequence '\\001'.

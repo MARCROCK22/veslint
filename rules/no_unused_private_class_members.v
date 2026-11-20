@@ -572,7 +572,7 @@ fn (c &Checker) nupcm_object_class(a NupcmAnalyzer, tree &ScopeTree, member C.TS
 fn nupcm_find_variable(t &ScopeTree, n C.TSNode, name string) int {
 	mut s := nupcm_nearest_scope(t, n)
 	for s >= 0 {
-		if v := t.scopes[s].set[name] {
+		if v := t.set_get(s, name) {
 			return v
 		}
 		s = t.scopes[s].upper

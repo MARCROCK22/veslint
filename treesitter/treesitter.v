@@ -7,6 +7,8 @@ module treesitter
 #flag @VMODROOT/build/libtree-sitter-typescript.a
 #flag @VMODROOT/vendor/tree-sitter/libtree-sitter.a
 #include "tree_sitter/api.h"
+#include "@VMODROOT/treesitter/flat_tree.h"
+#include "@VMODROOT/treesitter/field_cache.h"
 
 @[typedef]
 struct C.TSParser {}
@@ -30,6 +32,23 @@ struct C.TSNode {}
 // Created by value and used by pointer; api.h defines the real layout.
 @[typedef]
 struct C.TSTreeCursor {}
+
+pub const flat_named = u8(1) // VT_FLAT_NAMED
+pub const flat_extra = u8(2) // VT_FLAT_EXTRA
+pub const flat_none = u32(0xffffffff) // VT_FLAT_NONE
+
+// A node of the flat tree (flat_tree.h).
+@[typedef]
+pub struct C.vt_flat_node {
+pub:
+	node   C.TSNode
+	parent u32
+	next   u32
+	last   u32
+	symbol u16
+	field  u16
+	flags  u8
+}
 
 @[typedef]
 struct C.TSPoint {
@@ -69,6 +88,8 @@ fn C.ts_parser_parse_string(self &C.TSParser, old_tree &C.TSTree, str &char, len
 fn C.ts_tree_delete(self &C.TSTree)
 fn C.ts_tree_root_node(self &C.TSTree) C.TSNode
 fn C.ts_node_type(self C.TSNode) &char
+fn C.ts_node_descendant_count(self C.TSNode) u32
+fn C.ts_language_symbol_for_name(self &C.TSLanguage, name &char, length u32, is_named bool) u16
 fn C.ts_node_symbol(self C.TSNode) u16
 fn C.ts_node_is_named(self C.TSNode) bool
 fn C.ts_node_has_error(self C.TSNode) bool
@@ -80,8 +101,15 @@ fn C.ts_node_child(self C.TSNode, child_index u32) C.TSNode
 fn C.ts_node_child_count(self C.TSNode) u32
 fn C.ts_node_named_child(self C.TSNode, child_index u32) C.TSNode
 fn C.ts_node_named_child_count(self C.TSNode) u32
-fn C.ts_node_child_by_field_name(self C.TSNode, name &char, name_length u32) C.TSNode
+fn C.vt_node_child_by_field_name(self C.TSNode, name &char, name_length u32) C.TSNode
+fn C.vt_children(self C.TSNode, named bool, out &C.TSNode, capacity u32) int
 fn C.ts_node_parent(self C.TSNode) C.TSNode
+fn C.vt_node_parent(node C.TSNode) C.TSNode
+fn C.vt_flat_build(root C.TSNode) bool
+fn C.vt_flat_clear()
+fn C.vt_flat_find(node C.TSNode) i64
+fn C.vt_flat_nodes() &C.vt_flat_node
+fn C.vt_flat_count() u32
 fn C.ts_node_prev_sibling(self C.TSNode) C.TSNode
 fn C.ts_node_prev_named_sibling(self C.TSNode) C.TSNode
 fn C.ts_node_next_sibling(self C.TSNode) C.TSNode
@@ -129,10 +157,18 @@ pub:
 pub struct Parser {
 	parser &C.TSParser
 	lang   &C.TSLanguage
-	query  &C.TSQuery
+	// The declarations query, compiled on first use (declared_names): only the identifier modes
+	// use it, and compiling it took a few milliseconds of every lint worker's start.
+	query &ParserQuery
 }
 
-// new_ts_parser prepares the TypeScript parser and compiles the declarations query.
+@[heap]
+struct ParserQuery {
+mut:
+	query &C.TSQuery = unsafe { nil }
+}
+
+// new_ts_parser prepares the TypeScript parser.
 pub fn new_parser() !Parser {
 	return new_parser_for(false)
 }
@@ -150,23 +186,33 @@ fn new_parser_for(tsx bool) !Parser {
 		C.ts_parser_delete(parser)
 		return error('the grammar uses ABI ${C.ts_language_abi_version(lang)}, which this tree-sitter runtime does not support')
 	}
-	mut err_offset := u32(0)
-	mut err_type := u32(0)
-	query := C.ts_query_new(lang, &char(declarations_query.str), u32(declarations_query.len),
-		&err_offset, voidptr(&err_type))
-	if isnil(query) {
-		C.ts_parser_delete(parser)
-		return error('the declarations query does not compile (error ${err_type} at offset ${err_offset})')
-	}
 	return Parser{
 		parser: parser
 		lang:   lang
-		query:  query
+		query:  &ParserQuery{}
 	}
 }
 
+// declarations_query compiles the declarations query once.
+fn (p &Parser) declarations_query() !&C.TSQuery {
+	mut holder := p.query
+	if isnil(holder.query) {
+		mut err_offset := u32(0)
+		mut err_type := u32(0)
+		query := C.ts_query_new(p.lang, &char(declarations_query.str), u32(declarations_query.len),
+			&err_offset, voidptr(&err_type))
+		if isnil(query) {
+			return error('the declarations query does not compile (error ${err_type} at offset ${err_offset})')
+		}
+		holder.query = query
+	}
+	return holder.query
+}
+
 pub fn (p &Parser) close() {
-	C.ts_query_delete(p.query)
+	if !isnil(p.query.query) {
+		C.ts_query_delete(p.query.query)
+	}
 	C.ts_parser_delete(p.parser)
 }
 
@@ -188,19 +234,20 @@ pub fn tree_has_error(tree &C.TSTree) bool {
 
 // identifiers returns, in order of appearance, the identifiers of `tree`: the declared names (query
 // of §3.2) or, with `all`, every `identifier` node.
-pub fn (p &Parser) identifiers(tree &C.TSTree, src string, all bool) []Ident {
+pub fn (p &Parser) identifiers(tree &C.TSTree, src string, all bool) ![]Ident {
 	root := C.ts_tree_root_node(tree)
-	mut idents := if all { all_identifiers(root, src) } else { p.declared_names(root, src) }
+	mut idents := if all { all_identifiers(root, src) } else { p.declared_names(root, src)! }
 	idents.sort(a.start_byte < b.start_byte)
 	return idents
 }
 
-fn (p &Parser) declared_names(root C.TSNode, src string) []Ident {
+fn (p &Parser) declared_names(root C.TSNode, src string) ![]Ident {
+	query := p.declarations_query()!
 	cursor := C.ts_query_cursor_new()
 	defer {
 		C.ts_query_cursor_delete(cursor)
 	}
-	C.ts_query_cursor_exec(cursor, p.query, root)
+	C.ts_query_cursor_exec(cursor, query, root)
 	mut idents := []Ident{}
 	mut m := C.TSQueryMatch{}
 	for C.ts_query_cursor_next_match(cursor, &m) {
@@ -215,10 +262,22 @@ fn all_identifiers(root C.TSNode, src string) []Ident {
 	return nodes_of_kind(root, c'identifier').map(ident_from_node(it, src))
 }
 
-// nodes_of_kind returns, in preorder (order of appearance), the named nodes of that kind. It walks
-// the tree with a TSTreeCursor.
+// nodes_of_kind returns, in preorder (order of appearance), the named nodes of that kind. It reads
+// the flat tree when `root` is in it, else it walks the tree with a TSTreeCursor.
 pub fn nodes_of_kind(root C.TSNode, kind &char) []C.TSNode {
 	mut nodes := []C.TSNode{}
+	first, last := flat_range(root)
+	if first >= 0 {
+		flat := C.vt_flat_nodes()
+		for i in first .. last + 1 {
+			node := unsafe { flat[i].node }
+			if unsafe { flat[i].flags } & flat_named != 0
+				&& unsafe { C.strcmp(C.ts_node_type(node), kind) } == 0 {
+				nodes << node
+			}
+		}
+		return nodes
+	}
 	mut cursor := C.ts_tree_cursor_new(root)
 	defer {
 		C.ts_tree_cursor_delete(&cursor)
@@ -251,14 +310,43 @@ const symbol_skipped = u8(4)
 // subtrees of the `skip` kinds.
 pub fn nodes_of_kinds(root C.TSNode, kinds []string, skip []string) []C.TSNode {
 	mut nodes := []C.TSNode{}
-	mut cursor := C.ts_tree_cursor_new(root)
-	defer {
-		C.ts_tree_cursor_delete(&cursor)
-	}
 	// The kind of a node is the name of its symbol in the grammar, so what a kind is in the two
 	// lists is asked once for each symbol of the tree: most of the nodes of a file are visited
 	// by every rule.
 	mut symbols := [symbol_states]u8{}
+	first, last := flat_range(root)
+	if first >= 0 {
+		// The subtree from the flat tree: a skipped node's subtree is jumped over.
+		flat := C.vt_flat_nodes()
+		mut i := first
+		for i <= last {
+			entry := unsafe { &flat[i] }
+			symbol := int(entry.symbol)
+			mut state := if symbol < symbol_states { symbols[symbol] } else { u8(0) }
+			if state == 0 {
+				kind := node_kind(entry.node)
+				state = symbol_seen
+				if kind in kinds {
+					state |= symbol_wanted
+				}
+				if kind in skip {
+					state |= symbol_skipped
+				}
+				if symbol < symbol_states {
+					symbols[symbol] = state
+				}
+			}
+			if state & symbol_wanted != 0 && entry.flags & flat_named != 0 {
+				nodes << entry.node
+			}
+			i = if state & symbol_skipped == 0 { i + 1 } else { int(entry.last) + 1 }
+		}
+		return nodes
+	}
+	mut cursor := C.ts_tree_cursor_new(root)
+	defer {
+		C.ts_tree_cursor_delete(&cursor)
+	}
 	for {
 		node := C.ts_tree_cursor_current_node(&cursor)
 		symbol := int(C.ts_node_symbol(node))
@@ -291,6 +379,29 @@ pub fn nodes_of_kinds(root C.TSNode, kinds []string, skip []string) []C.TSNode {
 	return nodes
 }
 
+// flat_range gives the places in the flat tree (flat_tree.h) of `n` and of the last node of its
+// subtree, in preorder, or (-1, -1) when `n` is not in it (not a node of the tree of this thread's
+// last NodeIndex).
+pub fn flat_range(n C.TSNode) (int, int) {
+	index := C.vt_flat_find(n)
+	if index < 0 {
+		return -1, -1
+	}
+	return int(index), int(unsafe { C.vt_flat_nodes()[index].last })
+}
+
+// flat_node is the node at a place of the flat tree (see flat_range).
+@[inline]
+pub fn flat_node(i int) C.TSNode {
+	return unsafe { C.vt_flat_nodes()[i].node }
+}
+
+// flat_last is the place of the last node of the subtree of the node at place `i` of the flat tree.
+@[inline]
+pub fn flat_last(i int) int {
+	return int(unsafe { C.vt_flat_nodes()[i].last })
+}
+
 // node_kind returns the tree-sitter node kind (`call_expression`, `&&`, `async`…). The string is
 // the grammar's own, which lives as long as the program: it is not copied.
 pub fn node_kind(n C.TSNode) string {
@@ -305,9 +416,10 @@ pub fn node_end(n C.TSNode) int {
 	return int(C.ts_node_end_byte(n))
 }
 
-// node_field returns the child with that field name, if any.
+// node_field returns the child with that field name, if any (field_cache.h: the id of the name is
+// looked up once).
 pub fn node_field(n C.TSNode, name string) ?C.TSNode {
-	child := C.ts_node_child_by_field_name(n, &char(name.str), u32(name.len))
+	child := C.vt_node_child_by_field_name(n, &char(name.str), u32(name.len))
 	if C.ts_node_is_null(child) {
 		return none
 	}
@@ -317,22 +429,32 @@ pub fn node_field(n C.TSNode, name string) ?C.TSNode {
 // named_children returns the named children, without comments.
 pub fn named_children(n C.TSNode) []C.TSNode {
 	count := int(C.ts_node_named_child_count(n))
-	mut named := []C.TSNode{cap: count}
-	for i in 0 .. count {
-		child := C.ts_node_named_child(n, u32(i))
-		if node_kind(child) != 'comment' {
-			named << child
+	mut named := []C.TSNode{len: count}
+	if count > 0 && C.vt_children(n, true, &C.TSNode(named.data), u32(count)) != count {
+		// What flat_tree.h leaves to ts_node_named_child.
+		for i in 0 .. count {
+			named[i] = C.ts_node_named_child(n, u32(i))
 		}
 	}
+	mut kept := 0
+	for i in 0 .. count {
+		if node_kind(named[i]) != 'comment' {
+			named[kept] = named[i]
+			kept++
+		}
+	}
+	named.trim(kept)
 	return named
 }
 
 // children returns all the children, also the anonymous ones (`=>`, `async`…) and comments.
 pub fn children(n C.TSNode) []C.TSNode {
 	count := int(C.ts_node_child_count(n))
-	mut out := []C.TSNode{cap: count}
-	for i in 0 .. count {
-		out << C.ts_node_child(n, u32(i))
+	mut out := []C.TSNode{len: count}
+	if count > 0 && C.vt_children(n, false, &C.TSNode(out.data), u32(count)) != count {
+		for i in 0 .. count {
+			out[i] = C.ts_node_child(n, u32(i))
+		}
 	}
 	return out
 }
@@ -347,6 +469,21 @@ pub fn first_named_child(n C.TSNode) ?C.TSNode {
 
 // has_child_kind tells whether some child, also anonymous ones like `async`, is of that kind.
 pub fn has_child_kind(n C.TSNode, kind string) bool {
+	index := C.vt_flat_find(n)
+	if index >= 0 {
+		flat := C.vt_flat_nodes()
+		if i64(unsafe { flat[index].last }) == index {
+			return false
+		}
+		mut child := u32(index + 1)
+		for child != flat_none {
+			if node_kind(unsafe { flat[child].node }) == kind {
+				return true
+			}
+			child = unsafe { flat[child].next }
+		}
+		return false
+	}
 	for i in 0 .. int(C.ts_node_child_count(n)) {
 		if node_kind(C.ts_node_child(n, u32(i))) == kind {
 			return true
@@ -392,11 +529,18 @@ pub fn prev_sibling(n C.TSNode) ?C.TSNode {
 }
 
 pub fn node_parent(n C.TSNode) ?C.TSNode {
-	parent := C.ts_node_parent(n)
+	// From the flat tree of the last NodeIndex (flat_tree.h), or tree-sitter's walk from the root.
+	parent := C.vt_node_parent(n)
 	if C.ts_node_is_null(parent) {
 		return none
 	}
 	return parent
+}
+
+// parent_cache_clear forgets the flat tree (flat_tree.h) of the last NodeIndex of this thread, and
+// so the parents and children recorded in it: call it before that tree is freed.
+pub fn parent_cache_clear() {
+	C.vt_flat_clear()
 }
 
 // TokenEnds are, in order, the ends of the tokens of a tree: the leaves that are not comments

@@ -1,0 +1,11 @@
+{"rule": "regexp/no-escape-backspace", "upstream": "eslint-plugin-regexp v3.3.3", "files": ["tests/lib/rules/no-escape-backspace.ts"],
+"messages": {"unexpected":"Unexpected '[\\b]'. Use '\\u0008' instead.","suggest":"Use '\\u0008'."},
+"cases": [
+{"id":"regexp/no-escape-backspace/v0","kind":"valid","code":"/\\b/","file":"file.ts","tsconfig":"tsconfig.json","via":"project","languageOptions":{"ecmaVersion":"latest","sourceType":"module"}},
+{"id":"regexp/no-escape-backspace/v1","kind":"valid","code":"/\\u0008/","file":"file.ts","tsconfig":"tsconfig.json","via":"project","languageOptions":{"ecmaVersion":"latest","sourceType":"module"}},
+{"id":"regexp/no-escape-backspace/v2","kind":"valid","code":"/\\ch/","file":"file.ts","tsconfig":"tsconfig.json","via":"project","languageOptions":{"ecmaVersion":"latest","sourceType":"module"}},
+{"id":"regexp/no-escape-backspace/v3","kind":"valid","code":"/\\cH/","file":"file.ts","tsconfig":"tsconfig.json","via":"project","languageOptions":{"ecmaVersion":"latest","sourceType":"module"}},
+{"id":"regexp/no-escape-backspace/v4","kind":"valid","code":"/[\\q{\\u0008}]/v","file":"file.ts","tsconfig":"tsconfig.json","via":"project","languageOptions":{"ecmaVersion":"latest","sourceType":"module"}},
+{"id":"regexp/no-escape-backspace/i0","kind":"invalid","code":"/[\\b]/","file":"file.ts","tsconfig":"tsconfig.json","via":"project","languageOptions":{"ecmaVersion":"latest","sourceType":"module"},"errors":[{"messageId":"unexpected","message":"Unexpected '[\\b]'. Use '\\u0008' instead.","line":1,"column":3,"endLine":1,"endColumn":5,"suggestions":[{"messageId":"suggest","desc":"Use '\\u0008'.","output":"/[\\u0008]/"}]}]},
+{"id":"regexp/no-escape-backspace/i1","kind":"invalid","code":"/[\\q{\\b}]/v","file":"file.ts","tsconfig":"tsconfig.json","via":"project","languageOptions":{"ecmaVersion":"latest","sourceType":"module"},"errors":[{"messageId":"unexpected","message":"Unexpected '[\\b]'. Use '\\u0008' instead.","line":1,"column":6,"endLine":1,"endColumn":8,"suggestions":[{"messageId":"suggest","desc":"Use '\\u0008'.","output":"/[\\q{\\u0008}]/v"}]}]}
+]}

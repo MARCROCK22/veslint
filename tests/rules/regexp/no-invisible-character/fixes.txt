@@ -1,0 +1,7 @@
+tests/rules/regexp/no-invisible-character/cases.ts:2:21	regexp/no-invisible-character	unexpected	Unexpected invisible character. Use '\\xa0' instead.	fix	89	90	\\xa0	end	2	22
+tests/rules/regexp/no-invisible-character/cases.ts:3:21	regexp/no-invisible-character	unexpected	Unexpected invisible character. Use '\\t' instead.	fix	114	115	\\t	end	3	22
+tests/rules/regexp/no-invisible-character/cases.ts:4:21	regexp/no-invisible-character	unexpected	Unexpected invisible character. Use '\\u200b' instead.	fix	139	140	\\u200b	end	4	22
+tests/rules/regexp/no-invisible-character/cases.ts:5:31	regexp/no-invisible-character	unexpected	Unexpected invisible character. Use '\\u3000' instead.	fix	175	176	\\u3000	end	5	32
+tests/rules/regexp/no-invisible-character/cases.ts:5:33	regexp/no-invisible-character	unexpected	Unexpected invisible character. Use '\\xa0' instead.	fix	177	178	\\xa0	end	5	34
+tests/rules/regexp/no-invisible-character/cases.ts:6:33	regexp/no-invisible-character	unexpected	Unexpected invisible character. Use '\\t' instead.	fix	214	215	\\t	end	6	34
+tests/rules/regexp/no-invisible-character/cases.ts:7:20	regexp/no-invisible-character	unexpected	Unexpected invisible character. Use '\\u2800' instead.	fix	241	242	\\u2800	end	7	21

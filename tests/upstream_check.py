@@ -200,8 +200,9 @@ class Runner:
             language['parserOptions'] = parser_options
         # eslint-plugin-unicorn reads the types only when the parser has a program
         # (withTypeInformation), which a case has with `via` alone: the others say there is none;
-        # so does @marcrock22/eslintcf's prefer-at (getParserServices(context, true)).
-        if rule.startswith(('unicorn/', 'marcrock/')) and not case.get('via'):
+        # so does @marcrock22/eslintcf's prefer-at (getParserServices(context, true)), and so does
+        # eslint-plugin-regexp's type tracker (its checker only with a program).
+        if rule.startswith(('unicorn/', 'marcrock/', 'regexp/')) and not case.get('via'):
             language['parserOptions'] = {**language.get('parserOptions', {}), 'projectService': False}
         # eslint-plugin-unicorn's tests (ESLint's RuleTester through eslint-ava-rule-tester) do not
         # report unused disable directives, nor do eslint-plugin-svelte's (ESLint 10's RuleTester
@@ -394,13 +395,14 @@ def max_passes_of(rule):
     """The passes of fixes of the RuleTester of the rule's tests: typescript-eslint's (also for
     @slipher/eslint-plugin and @marcrock22/eslintcf) makes up to 10; ESLint's, which ESLint core and eslint-plugin-unicorn
     (through eslint-ava-rule-tester) use, one; eslint-vitest-rule-tester's createRuleTester, which
-    eslint-plugin-perfectionist uses, the first and up to 11 more."""
+    eslint-plugin-perfectionist uses, the first and up to 11 more; eslint-snapshot-rule-tester's
+    SnapshotRuleTester, which eslint-plugin-regexp uses, up to 10 (Linter#verifyAndFix)."""
     if rule.startswith('perfectionist/'):
         return 12
     # eslint-plugin-vue's and eslint-plugin-svelte's tests run ESLint's own RuleTester.
     if rule.startswith(('vue/', 'svelte/')):
         return 1
-    return 10 if rule.startswith(('@typescript-eslint/', 'seyfert/', 'marcrock/')) else 1
+    return 10 if rule.startswith(('@typescript-eslint/', 'seyfert/', 'marcrock/', 'regexp/')) else 1
 
 
 def check(case, messages, findings, outputs, last_output=False):
@@ -552,7 +554,9 @@ def main():
                 # After the passes, the file keeps the text the last one left, as in RuleTester
                 # and in tests/rules/upstream_eslint.mjs.
                 outputs = fix_passes(relint, case['code'], findings, max_passes_of(rule)) if case['kind'] == 'invalid' and 'output' in case else []
-                problems = check(case, messages, findings, outputs, rule.startswith('perfectionist/'))
+                # The snapshots of eslint-plugin-regexp's tests hold the text the last pass leaves,
+                # as eslint-vitest-rule-tester checks it for eslint-plugin-perfectionist.
+                problems = check(case, messages, findings, outputs, rule.startswith(('perfectionist/', 'regexp/')))
             if problems:
                 failing.add(key)
                 if key not in known:
