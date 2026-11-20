@@ -462,23 +462,36 @@ fn (mut c Checker) reset_file_types() {
 // tsgo counterpart wins; with none, the node counts once as unanalyzed, unless all of them are
 // optional.
 fn (mut c Checker) resolve_new(spans []Span, abs_path string, mut stats Stats) ! {
+	// The keys tried already whose node was found without its type, which a span now wants; and
+	// how many spans are new. Most rules ask for nodes another rule asked for already: then nothing
+	// else is made (what follows takes room for every span).
+	mut late := []u64{}
+	mut fresh := 0
+	for s in spans {
+		if s.key in c.attempted {
+			if !s.no_type && s.key !in c.typed && s.key in c.node_handles && s.key !in late {
+				late << s.key
+			}
+		} else {
+			fresh++
+		}
+	}
+	if fresh == 0 {
+		c.request_late_types(late, mut stats)!
+		return
+	}
 	// The spans of each new key, the keys in the order they first come: `group` is the place of the
 	// key of each span in `order` (-1: tried already), and `variants` the spans grouped by key, in
 	// their order (a counting sort), without a map of arrays (one array per span).
 	mut group_of := map[u64]int{}
-	group_of.reserve(u32(spans.len))
+	group_of.reserve(u32(fresh))
 	mut group := []int{len: spans.len}
 	mut order := []u64{}
 	mut counts := []int{}
 	mut typed := []bool{}
-	// The keys tried already whose node was found without its type, which a span now wants.
-	mut late := []u64{}
 	for j, s in spans {
 		if s.key in c.attempted {
 			group[j] = -1
-			if !s.no_type && s.key !in c.typed && s.key in c.node_handles && s.key !in late {
-				late << s.key
-			}
 			continue
 		}
 		g := group_of[s.key] or {

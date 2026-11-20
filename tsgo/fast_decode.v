@@ -651,7 +651,9 @@ fn fast_types(payload string) ![]TypeResponse {
 	mut r := FastReader{
 		s: payload
 	}
-	mut out := []TypeResponse{}
+	// getTypeAtLocations answers thousands of types at once: the room for all of them, instead of
+	// copying the array (a few hundred bytes per type) each time it grows.
+	mut out := []TypeResponse{cap: element_count(payload)}
 	if r.open_array()! {
 		for {
 			out << r.type_response()!
@@ -662,6 +664,41 @@ fn fast_types(payload string) ![]TypeResponse {
 	}
 	r.end()!
 	return out
+}
+
+// element_count counts the elements of a JSON array (0 when the text is not one, or when it is
+// empty), as the room to reserve for them: it only follows strings and nesting.
+fn element_count(s string) int {
+	mut depth := 0
+	mut commas := 0
+	mut has := false
+	mut i := 0
+	for i < s.len {
+		c := s[i]
+		if c == `"` {
+			i++
+			for i < s.len && s[i] != `"` {
+				i += if s[i] == `\\` { 2 } else { 1 }
+			}
+			has = has || depth == 1
+		} else if c == `[` || c == `{` {
+			has = has || depth == 1
+			depth++
+		} else if c == `]` || c == `}` {
+			depth--
+			if depth <= 0 {
+				break
+			}
+		} else if c == `,` {
+			if depth == 1 {
+				commas++
+			}
+		} else if c != ` ` && c != `\t` && c != `\n` && c != `\r` {
+			has = has || depth == 1
+		}
+		i++
+	}
+	return if has { commas + 1 } else { 0 }
 }
 
 fn fast_symbol(payload string) !SymbolResponse {

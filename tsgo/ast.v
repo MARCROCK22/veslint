@@ -34,17 +34,23 @@ struct AstNode {
 	kind  u32
 }
 
-// SourceFileAst indexes the nodes of a file by their range (pos, end): `innermost` gives the last
-// node of the table with a range, and `outer` the node with the same range before each node (-1
-// when there is none), so the nodes of a range are walked from the innermost to the outermost.
-// A chain instead of an array per range: a file has a node per few bytes, and an array each was
-// most of the time the index took.
+// SourceFileAst indexes the nodes of a file by their range (pos, end). In preorder the `pos` of
+// the nodes never decreases (a child starts where its parent starts or later, a sibling after the
+// previous one), so the nodes that start at a unit are together in the table, the outer ones
+// first: `first` gives, for each UTF-16 unit, the first node that starts there (0 for none: the
+// SourceFile is node 1), and the nodes of a range are walked from the innermost (the last one) to
+// the outermost. It is an array of plain numbers written in order, which the collector does not
+// scan, instead of a map with an entry per node (a few for each byte of the file). When the
+// positions are not in order, `innermost` gives the last node of the table with a range and
+// `outer` the node with the same range before each node (-1 when there is none).
 pub struct SourceFileAst {
 pub:
 	path  string  // path tsgo identifies the file with
 	nodes int     // nodes of the table, not counting lists
 	tree  AstTree // the table, to navigate it
 mut:
+	ordered   bool
+	first     []u32
 	innermost map[u64]int
 	outer     []int
 }
@@ -56,16 +62,63 @@ fn range_key(pos int, end int) u64 {
 // node returns the innermost node with exactly that range or, if `kind` is not 0, the innermost
 // one of that SyntaxKind.
 fn (a &SourceFileAst) node(pos int, end int, kind u32) ?AstNode {
-	mut i := a.innermost[range_key(pos, end)] or { return none }
-	for i >= 0 {
-		node_kind := u32_at(a.tree.data, a.tree.offset_nodes + i * node_len)
+	if !a.ordered {
+		mut i := a.innermost[range_key(pos, end)] or { return none }
+		for i >= 0 {
+			node_kind := u32_at(a.tree.data, a.tree.offset_nodes + i * node_len)
+			if kind == 0 || node_kind == kind {
+				return AstNode{
+					index: i
+					kind:  node_kind
+				}
+			}
+			i = a.outer[i]
+		}
+		return none
+	}
+	if pos < 0 || pos >= a.first.len {
+		return none
+	}
+	start := int(a.first[pos])
+	if start == 0 {
+		return none
+	}
+	data := a.tree.data
+	// The last node that starts at `pos` (the lists and the nodes without a range between them
+	// are not indexed).
+	mut last := start
+	for i in start + 1 .. a.tree.count {
+		base := a.tree.offset_nodes + i * node_len
+		if u32_at(data, base) == kind_node_list {
+			continue
+		}
+		node_pos := int(i32(u32_at(data, base + node_offset_pos)))
+		node_end := int(i32(u32_at(data, base + node_offset_end)))
+		if node_pos < 0 || node_end < node_pos {
+			continue
+		}
+		if node_pos != pos {
+			break
+		}
+		last = i
+	}
+	for i := last; i >= start; i-- {
+		base := a.tree.offset_nodes + i * node_len
+		node_kind := u32_at(data, base)
+		if node_kind == kind_node_list {
+			continue
+		}
+		node_pos := int(i32(u32_at(data, base + node_offset_pos)))
+		node_end := int(i32(u32_at(data, base + node_offset_end)))
+		if node_pos != pos || node_end != end {
+			continue
+		}
 		if kind == 0 || node_kind == kind {
 			return AstNode{
 				index: i
 				kind:  node_kind
 			}
 		}
-		i = a.outer[i]
 	}
 	return none
 }
@@ -91,11 +144,57 @@ fn u32_at(data string, offset int) u32 {
 // indexes the nodes by range.
 pub fn decode_source_file(data string) !SourceFileAst {
 	tree := decode_source_file_tree(data)!
+	// Whether the positions of the nodes with a range never decrease in the table, and the
+	// largest one.
+	mut ordered := true
+	mut previous := 0
+	mut nodes := 0
+	for i in source_file_index .. tree.count {
+		base := tree.offset_nodes + i * node_len
+		if u32_at(data, base) == kind_node_list {
+			continue
+		}
+		pos := int(i32(u32_at(data, base + node_offset_pos)))
+		end := int(i32(u32_at(data, base + node_offset_end)))
+		if pos < 0 || end < pos {
+			continue
+		}
+		if pos < previous {
+			ordered = false
+		}
+		previous = pos
+		nodes++
+	}
+	if ordered {
+		mut first := []u32{len: previous + 1}
+		mut at := -1
+		for i in source_file_index .. tree.count {
+			base := tree.offset_nodes + i * node_len
+			if u32_at(data, base) == kind_node_list {
+				continue
+			}
+			pos := int(i32(u32_at(data, base + node_offset_pos)))
+			end := int(i32(u32_at(data, base + node_offset_end)))
+			if pos < 0 || end < pos {
+				continue
+			}
+			if pos != at {
+				first[pos] = u32(i)
+				at = pos
+			}
+		}
+		return SourceFileAst{
+			path:    tree.path
+			nodes:   nodes
+			tree:    tree
+			ordered: true
+			first:   first
+		}
+	}
 	mut innermost := map[u64]int{}
 	// V's maps grow by an eighth at a time: the room for every node at once.
 	innermost.reserve(u32(tree.count))
 	mut outer := []int{len: tree.count, init: -1}
-	mut nodes := 0
 	// In preorder children come after the parent: the last node with a range is the innermost.
 	for i in source_file_index .. tree.count {
 		base := tree.offset_nodes + i * node_len
@@ -111,7 +210,6 @@ pub fn decode_source_file(data string) !SourceFileAst {
 		key := range_key(pos, end)
 		outer[i] = innermost[key] or { -1 }
 		innermost[key] = i
-		nodes++
 	}
 	return SourceFileAst{
 		path:      tree.path

@@ -428,14 +428,14 @@ fn (mut c Checker) check_object_destructure(pattern C.TSNode, sender_type TypeRe
 		c.too_deep++
 		return false
 	}
-	mut properties := map[string]SymbolResponse{}
-	for prop in c.properties(sender_type)! {
-		properties[unescape_name(prop.name)] = prop
-	}
+	// The properties are looked up by name only for the keys of the pattern: a type of a React
+	// component has hundreds of properties, and a map of them for each pattern was most of what a
+	// lint of recharts allocated.
+	properties := c.properties(sender_type)!
 	mut did_report := false
 	for prop in named_children(pattern) {
 		key, value := c.pattern_property(prop) or { continue }
-		symbol := properties[key] or { continue }
+		symbol := property_by_unescaped_name(properties, key) or { continue }
 		t := c.client.type_of_symbol_at_location(c.snapshot, c.project, symbol.id, sender)!
 		if c.is_any(t)! {
 			findings << Finding{
@@ -536,6 +536,22 @@ fn (c &Checker) literal_name(n C.TSNode) ?string {
 // (`__a` is `___a`).
 fn unescape_name(name string) string {
 	return if name.starts_with('___') { name[1..] } else { name }
+}
+
+// property_by_unescaped_name is the last of the properties whose unescape_name is `key`, the one a
+// map from those names to the properties would keep.
+fn property_by_unescaped_name(properties []SymbolResponse, key string) ?SymbolResponse {
+	for i := properties.len - 1; i >= 0; i-- {
+		name := properties[i].name
+		if name.starts_with('___') {
+			if name.len == key.len + 1 && unsafe { tos(name.str + 1, name.len - 1) } == key {
+				return properties[i]
+			}
+		} else if name == key {
+			return properties[i]
+		}
+	}
+	return none
 }
 
 // nua_place is where an assignment is reported: its reporting node (a field to its `;`, the

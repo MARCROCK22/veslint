@@ -121,9 +121,9 @@ pub fn (mut c Client) builtin_symbol_leaf(snapshot int, project string, type_id 
 			if !answer.starts_with('2') {
 				return error('invalid response from `veslint/builtinSymbolLeaf`: ${answer}')
 			}
-			bases := checked_decode[[]TypeResponse]('veslint/builtinSymbolLeaf', answer[1..],
+			mut bases := checked_decode[[]TypeResponse]('veslint/builtinSymbolLeaf', answer[1..],
 				fast_types)!
-			return 2, c.intern_types(snapshot, bases)
+			return 2, c.intern_types(snapshot, mut bases)
 		}
 	}
 }

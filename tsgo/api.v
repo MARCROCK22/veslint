@@ -385,8 +385,23 @@ pub fn (s SymbolResponse) is_null() bool {
 }
 
 fn is_null_payload(payload string) bool {
-	trimmed := payload.trim_space()
-	return trimmed == '' || trimmed == 'null'
+	// Without trim_space, which copies the payload (the answers of a lint add up to tens of MB).
+	mut start := 0
+	mut end := payload.len
+	for start < end && is_json_space(payload[start]) {
+		start++
+	}
+	for end > start && is_json_space(payload[end - 1]) {
+		end--
+	}
+	return end == start || (end - start == 4 && payload[start] == `n` && payload[start + 1] == `u`
+		&& payload[start + 2] == `l` && payload[start + 3] == `l`)
+}
+
+// is_json_space: what trim_space removes.
+@[inline]
+fn is_json_space(c u8) bool {
+	return c == ` ` || (c >= `\t` && c <= `\r`)
 }
 
 fn decode_response[T](method string, payload string) !T {
@@ -556,7 +571,8 @@ fn (mut c Client) types_request(snapshot int, method string, params string) ![]T
 	if is_null_payload(payload) {
 		return []TypeResponse{}
 	}
-	return c.intern_types(snapshot, checked_decode[[]TypeResponse](method, payload, fast_types)!)
+	mut types := checked_decode[[]TypeResponse](method, payload, fast_types)!
+	return c.intern_types(snapshot, mut types)
 }
 
 // signature_request sends a request that answers a signature or `null` (id 0).
