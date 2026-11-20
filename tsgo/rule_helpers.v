@@ -84,3 +84,16 @@ pub fn (mut c Client) type_contains(snapshot int, project string, type_id int, f
 		else { error('invalid response from `veslint/typeContains`: ${answer}') }
 	}
 }
+
+// to_string_like_from_object is isToStringLikeFromObject of no-base-to-string for a type: 0 when
+// unknown, 1 when its toString and the others are those of the Object interface, 2 when one is
+// user-defined.
+pub fn (mut c Client) to_string_like_from_object(snapshot int, project string, type_id int) !int {
+	answer := c.request('veslint/toStringLikeFromObject', '{"snapshot":${snapshot},"project":${json_text(project)},"type":${type_id}}')!
+	return match answer {
+		'0' { 0 }
+		'1' { 1 }
+		'2' { 2 }
+		else { error('invalid response from `veslint/toStringLikeFromObject`: ${answer}') }
+	}
+}

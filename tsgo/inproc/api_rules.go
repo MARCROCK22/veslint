@@ -11,6 +11,7 @@ import (
 
 	"github.com/microsoft/TypeScript/tsc/internal/ast"
 	"github.com/microsoft/TypeScript/tsc/internal/checker"
+	"github.com/microsoft/TypeScript/tsc/internal/compiler"
 	"github.com/microsoft/TypeScript/tsc/internal/json"
 	"github.com/microsoft/TypeScript/tsc/internal/project"
 )
@@ -31,6 +32,8 @@ func (p *InProcess) veslintRequest(ctx context.Context, worker int, method strin
 		return p.unboundMethodChecks(ctx, worker, params)
 	case "typeContains":
 		return p.typeContains(ctx, worker, params)
+	case "toStringLikeFromObject":
+		return p.toStringLikeFromObject(ctx, worker, params)
 	}
 	return nil, fmt.Errorf("%w: unknown method %s", ErrInvalidRequest, method)
 }
@@ -276,4 +279,104 @@ func veslintTypeFlags(t *checker.Type) checker.TypeFlags {
 		flags |= part.Flags()
 	}
 	return flags
+}
+
+// veslintTypeParams: a type.
+type veslintTypeParams struct {
+	Snapshot SnapshotID `json:"snapshot"`
+	Project  project.ID `json:"project"`
+	Type     TypeID     `json:"type"`
+}
+
+// toStringLikeFromObject answers 0 (unknown), 1 (from Object) or 2 (user-defined): it ports
+// nbts_is_to_string_like_from_object of rules/no_base_to_string.v (isToStringLikeFromObject of
+// typescript-eslint's no-base-to-string).
+func (p *InProcess) toStringLikeFromObject(ctx context.Context, worker int, params []byte) (any, error) {
+	var in veslintTypeParams
+	if err := json.Unmarshal(params, &in); err != nil {
+		return nil, fmt.Errorf("%w: %w", ErrInvalidRequest, err)
+	}
+	setup, err := p.veslintSetup(ctx, worker, in.Snapshot, in.Project)
+	if err != nil {
+		return nil, err
+	}
+	defer setup.done()
+	t, err := setup.resolveTypeHandle(in.Type)
+	if err != nil {
+		return nil, err
+	}
+	return RawBinary(strconv.AppendInt(nil, int64(nbtsToStringLikeFromObject(setup.checker, setup.program, t)), 10)), nil
+}
+
+const (
+	nbtsUnknown = iota
+	nbtsFromObject
+	nbtsUserDefined
+)
+
+// nbtsToStringLikeFromObject: an explicit [Symbol.toPrimitive] method declaration (of a property
+// whose name, as the API escapes it, starts with `__@toPrimitive`) is user-defined; then each of
+// toLocaleString, toString and valueOf with declarations is from Object only when every
+// declaration is a member of an interface named Object.
+func nbtsToStringLikeFromObject(c *checker.Checker, program *compiler.Program, t *checker.Type) int {
+	for _, property := range c.GetPropertiesOfType(t) {
+		if strings.HasPrefix(ast.EscapeSymbolName(property.Name()), "__@toPrimitive") &&
+			property.ValueDeclaration() != nil && nbtsIsSymbolToPrimitiveMethod(c, program, property.ValueDeclaration()) {
+			return nbtsUserDefined
+		}
+	}
+	foundOnObject := false
+	for _, name := range []string{"toLocaleString", "toString", "valueOf"} {
+		candidate := c.GetPropertyOfType(t, name)
+		if candidate == nil || len(candidate.Declarations()) == 0 {
+			continue
+		}
+		for _, declaration := range candidate.Declarations() {
+			parent := declaration.Parent
+			if parent == nil || parent.Kind != ast.KindInterfaceDeclaration {
+				return nbtsUserDefined
+			}
+			name := parent.Name()
+			if name == nil || name.Kind != ast.KindIdentifier || name.Text() != "Object" {
+				return nbtsUserDefined
+			}
+		}
+		foundOnObject = true
+	}
+	if foundOnObject {
+		return nbtsFromObject
+	}
+	return nbtsUnknown
+}
+
+// nbtsIsSymbolToPrimitiveMethod ports isSymbolToPrimitiveMethod: a method signature named
+// `[Symbol.toPrimitive]` whose `Symbol` is declared in a default library.
+func nbtsIsSymbolToPrimitiveMethod(c *checker.Checker, program *compiler.Program, declaration *ast.Node) bool {
+	if declaration.Kind != ast.KindMethodSignature {
+		return false
+	}
+	name := declaration.Name()
+	if name == nil || name.Kind != ast.KindComputedPropertyName {
+		return false
+	}
+	access := name.Expression()
+	if access == nil || access.Kind != ast.KindPropertyAccessExpression {
+		return false
+	}
+	object := access.Expression()
+	property := access.Name()
+	if object == nil || object.Kind != ast.KindIdentifier || object.Text() != "Symbol" ||
+		property == nil || property.Kind != ast.KindIdentifier || property.Text() != "toPrimitive" {
+		return false
+	}
+	symbol := c.GetSymbolAtLocation(object)
+	if symbol == nil {
+		return false
+	}
+	for _, d := range symbol.Declarations() {
+		if program.IsSourceFileDefaultLibrary(ast.GetSourceFileOfNode(d).PathKey()) {
+			return true
+		}
+	}
+	return false
 }

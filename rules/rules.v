@@ -6089,6 +6089,8 @@ mut:
 	thenable_cache        map[int]bool
 	calls                 CheckerCalls        // caches of rules/checker_calls.v
 	awaited               map[int]AwaitedType // checker.getAwaitedType of each type asked
+	// no-base-to-string: what veslint/toStringLikeFromObject answered for each type.
+	nbts_object_cache map[int]NbtsObjectStringification
 	// no-unsafe-*
 	array_type_cache map[int]bool
 	type_args_cache  map[int][]TypeResponse
