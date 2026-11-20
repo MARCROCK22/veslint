@@ -126,7 +126,15 @@ fn (a &SourceFileAst) node(pos int, end int, kind u32) ?AstNode {
 // handle returns the handle of that node (see node).
 pub fn (a &SourceFileAst) handle(pos int, end int, kind u32) ?string {
 	node := a.node(pos, end, kind)?
-	return '${node.index}.${node.kind}.${a.path}'
+	// Written once into room of its exact size: the interpolation made a string of each number
+	// and then the handle, for every node a lint asks about.
+	mut b := []u8{cap: 24 + a.path.len}
+	push_decimal(mut b, node.index)
+	b << `.`
+	push_decimal(mut b, int(node.kind))
+	b << `.`
+	push_text(mut b, a.path)
+	return text_of(mut b)
 }
 
 // kind returns the SyntaxKind of the innermost node with that range.
