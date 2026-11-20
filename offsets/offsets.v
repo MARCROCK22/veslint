@@ -25,6 +25,18 @@ struct OffsetRef {
 // offset inside a character of 4 bytes stands for its second unit (the low surrogate): ESLint
 // reports some problems there (no-misleading-character-class).
 pub fn utf16_offsets(src string, byte_offsets []int) []int {
+	// Up to the last offset ASCII text has a unit per byte: the offsets themselves (within the
+	// text), without sorting them. Most files are ASCII, and a rule converts the offsets of its
+	// nodes once per file.
+	mut last := 0
+	for off in byte_offsets {
+		if off > last {
+			last = off
+		}
+	}
+	if is_ascii_prefix(src, last) {
+		return byte_offsets.map(if it > src.len { src.len } else { it })
+	}
 	mut refs := []OffsetRef{cap: byte_offsets.len}
 	for i, off in byte_offsets {
 		refs << OffsetRef{
@@ -57,6 +69,26 @@ pub fn utf16_offsets(src string, byte_offsets []int) []int {
 		result[r.idx] = at
 	}
 	return result
+}
+
+// is_ascii_prefix tells whether the bytes of `src` before `end` (all of them past its end) and the
+// byte at `end` are ASCII.
+fn is_ascii_prefix(src string, end int) bool {
+	limit := if end < src.len { end + 1 } else { src.len }
+	mut i := 0
+	// Eight bytes at a time: none has its high bit set.
+	for ; i + 8 <= limit; i += 8 {
+		word := unsafe { *(&u64(&u8(src.str) + i)) }
+		if word & u64(0x8080808080808080) != 0 {
+			return false
+		}
+	}
+	for ; i < limit; i++ {
+		if src[i] >= 0x80 {
+			return false
+		}
+	}
+	return true
 }
 
 // byte_offset converts a UTF-16 unit offset (tsgo's) into the UTF-8 byte offset of `src` where its

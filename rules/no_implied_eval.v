@@ -73,7 +73,6 @@ fn (mut c Checker) lint_no_implied_eval(root C.TSNode, abs_path string, mut stat
 	stats.types_ms += ms(sw.elapsed())
 	sw.restart()
 	mut findings := []Finding{}
-	scopes := c.scope_tree(root)
 	for call in calls {
 		if call.name == 'Function' {
 			t := c.node_type(call.callee) or { TypeResponse{} }
@@ -92,8 +91,9 @@ fn (mut c Checker) lint_no_implied_eval(root C.TSNode, abs_path string, mut stat
 			}
 		}
 		handler := call.handler or { continue }
+		// The scopes of the file are built only for such a call: most files have none.
 		if call.name in nie_eval_like_functions && !c.nie_is_function(handler)!
-			&& is_reference_to_global_function(scopes, call.node, call.name) {
+			&& is_reference_to_global_function(c.scope_tree(root), call.node, call.name) {
 			findings << Finding{
 				stmt:       position_of(handler)
 				message_id: 'noImpliedEvalError'

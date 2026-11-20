@@ -959,12 +959,30 @@ fn (mut c Checker) nuta_readonly_in_type(t TypeResponse, name string, mut cache 
 
 // nuta_property_of ports ts-api-utils' getPropertyOfType (by escaped name).
 fn (mut c Checker) nuta_property_of(t TypeResponse, name string) !SymbolResponse {
-	for prop in c.properties(t)! {
-		if prop.name == name {
-			return prop
+	props := c.properties(t)!
+	if props.len <= 8 {
+		for prop in props {
+			if prop.name == name {
+				return prop
+			}
 		}
+		return SymbolResponse{}
 	}
-	return SymbolResponse{}
+	// A type with many properties (the schemas of zod have hundreds) is searched by name through
+	// an index of its properties, made once per checker: the first property of each name.
+	if t.id !in c.property_names {
+		mut by_name := map[string]int{}
+		by_name.reserve(u32(props.len))
+		for i, prop in props {
+			if prop.name !in by_name {
+				by_name[prop.name] = i
+			}
+		}
+		map_room(mut c.property_names)
+		c.property_names[t.id] = by_name.move()
+	}
+	i := c.property_names[t.id][name] or { return SymbolResponse{} }
+	return props[i]
 }
 
 // nuta_readonly_index: the index signature that applies to the name (number for a numeric name,

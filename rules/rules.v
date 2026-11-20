@@ -6068,9 +6068,10 @@ mut:
 	sig_cache                               map[string][]SignatureResponse
 	return_cache                            map[int]TypeResponse
 	member_cache                            map[int][]TypeResponse
-	nuec_base_types                         map[int]TypeResponse // getBaseEnumType of each enum literal type (no-unsafe-enum-comparison)
-	nuec_enum_ids_cache                     map[int][]int        // the ids of getEnumTypes of each type (no-unsafe-enum-comparison)
-	nuec_mismatched                         map[u64]bool         // isMismatchedComparison of each pair of type ids
+	property_names                          map[int]map[string]int // the place of the first property of each name in properties_cache, for the types with many
+	nuec_base_types                         map[int]TypeResponse   // getBaseEnumType of each enum literal type (no-unsafe-enum-comparison)
+	nuec_enum_ids_cache                     map[int][]int          // the ids of getEnumTypes of each type (no-unsafe-enum-comparison)
+	nuec_mismatched                         map[u64]bool           // isMismatchedComparison of each pair of type ids
 	symbol_cache                            map[int]SymbolResponse
 	apparent_cache                          map[int]TypeResponse
 	constraint_cache                        map[int]TypeResponse
