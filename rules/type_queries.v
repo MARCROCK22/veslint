@@ -179,7 +179,7 @@ fn (mut c Checker) signatures_of(t TypeResponse, kind int) ![]SignatureResponse 
 }
 
 fn (mut c Checker) signatures(type_id int, kind int) ![]SignatureResponse {
-	key := '${type_id}:${kind}'
+	key := signatures_key(type_id, kind)
 	if key in c.sig_cache {
 		return c.sig_cache[key]
 	}
@@ -187,6 +187,13 @@ fn (mut c Checker) signatures(type_id int, kind int) ![]SignatureResponse {
 	map_room(mut c.sig_cache)
 	c.sig_cache[key] = sigs
 	return sigs
+}
+
+// signatures_key is the key of the signatures of a kind of a type in sig_cache (a number: the
+// string `id:kind` it was cost a formatting and its hash at every lookup).
+@[inline]
+fn signatures_key(type_id int, kind int) u64 {
+	return (u64(u32(type_id)) << 1) | u64(kind & 1)
 }
 
 // aliased_symbol ports checker.getAliasedSymbol, asked once for each symbol: a namespace import
@@ -310,14 +317,18 @@ fn apparent_kind(t TypeResponse) int {
 // flags do not give, and once for each kind of primitive: most types are literals, each with its
 // own id.
 fn (mut c Checker) apparent_of(t TypeResponse) !TypeResponse {
+	kind := apparent_kind(t)
+	// An object (most types asked) is its own apparent type: it is not kept.
+	if kind == apparent_itself {
+		return t
+	}
 	if t.id in c.apparent_cache {
 		return c.apparent_cache[t.id]
 	}
-	kind := apparent_kind(t)
 	mut apparent := t
 	if kind >= 0 && kind in c.apparent_kind_cache {
 		apparent = c.apparent_kind_cache[kind]
-	} else if kind != apparent_itself {
+	} else {
 		apparent = c.client.apparent_type(c.snapshot, c.project, t.id)!
 		if apparent.is_null() {
 			apparent = t

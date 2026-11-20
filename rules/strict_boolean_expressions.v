@@ -285,7 +285,7 @@ fn (mut c Checker) sbe_may_assert(call C.TSNode) !bool {
 		return true
 	}
 	if node_key(call) in c.resolved_cache
-		&& '${callee.id}:${signature_kind_call}' !in c.sig_cache {
+		&& signatures_key(callee.id, signature_kind_call) !in c.sig_cache {
 		// Another rule has resolved the call already, and the signatures of the callee would
 		// have to be asked.
 		return true
