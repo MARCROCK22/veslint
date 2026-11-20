@@ -1,9 +1,10 @@
 #!/usr/bin/env bash
 # build.sh builds tsgo/inproc/out/libveslint_tsgo.a: TypeScript's API session as a C archive that
 # veslint links (tsgo/inproc.c.v). It compiles the Go module `tsc` of the TypeScript checkout at the
-# commit of the npm package veslint uses, with this directory's two files added by `-overlay`
-# (api_inprocess.go into internal/api, main.go as cmd/veslint_tsgo) and internal/api/session.go
-# replaced by a copy with session.patch applied: the checkout is only read.
+# commit of the npm package veslint uses, with this directory's files added by `-overlay`
+# (api_inprocess.go, api_fastjson.go and api_rules.go into internal/api, main.go as
+# cmd/veslint_tsgo) and internal/api/session.go replaced by a copy with session.patch applied: the
+# checkout is only read.
 #
 # TYPESCRIPT_GO is the checkout (default build/upstream/typescript-go, the one tools/ uses), GO the
 # Go toolchain (default `go`; 1.27.x, as go.mod asks). GOBUILDFLAGS are added to `go build`.
@@ -56,6 +57,7 @@ chmod u+w "$out/session.go"
 cat > "$out/overlay.json" <<JSON
 {"Replace": {"$module/internal/api/veslint_inprocess.go": "$here/api_inprocess.go",
 "$module/internal/api/veslint_fastjson.go": "$here/api_fastjson.go",
+"$module/internal/api/veslint_rules.go": "$here/api_rules.go",
 "$module/internal/api/session.go": "$out/session.go"}}
 JSON
 cd "$out/mod"

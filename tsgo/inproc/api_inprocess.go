@@ -124,7 +124,13 @@ func (p *InProcess) Request(worker int, method string, params []byte, dst []byte
 	if profiling {
 		start = time.Now()
 	}
-	result, err := p.session.HandleRequest(ctx, method, json.Value(params))
+	var result any
+	var err error
+	if strings.HasPrefix(method, veslintMethodPrefix) {
+		result, err = p.veslintRequest(ctx, worker, method, params)
+	} else {
+		result, err = p.session.HandleRequest(ctx, method, json.Value(params))
+	}
 	var handled time.Time
 	if profiling {
 		handled = time.Now()

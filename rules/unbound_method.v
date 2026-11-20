@@ -134,6 +134,12 @@ fn (mut c Checker) lint_unbound_method(root C.TSNode, abs_path string, mut stats
 	stats.types_ms += ms(sw.elapsed())
 	sw.restart()
 	mut findings := []Finding{}
+	if c.client.in_process() {
+		findings = c.ubm_check_in_process(members, patterns, symbols, o)!
+		stats.eval_ms += ms(sw.elapsed())
+		stats.checked += members.len + patterns.len
+		return findings
+	}
 	for m in members {
 		if c.ubm_is_natively_bound(m.object, m.property, symbols)! {
 			continue
@@ -189,6 +195,97 @@ fn (mut c Checker) lint_unbound_method(root C.TSNode, abs_path string, mut stats
 	}
 	stats.eval_ms += ms(sw.elapsed())
 	stats.checked += members.len + patterns.len
+	return findings
+}
+
+// UbmGroup is a group of checks of unbound-method (tsgo.UnboundMethodStep): those of a member
+// expression or of a key of a pattern, reported at `node`.
+struct UbmGroup {
+	node  C.TSNode
+	steps []tsgo.UnboundMethodStep
+}
+
+// ubm_check_in_process makes the checks of the member expressions and patterns of a file the V
+// code below makes one by one, in their order, in one request that runs them in TypeScript's
+// process (ubm_check_union_constituents and ubm_check_if_method there): a member asked 3 to 6
+// requests, whose answers carried every declaration of the properties and made the files that
+// declare them read. What decides which checks a member or a key needs (isNativelyBound, the
+// accessed names, the types of the object, the initializer and the pattern) is the same as below.
+fn (mut c Checker) ubm_check_in_process(members []UbmMember, patterns []UbmPattern, symbols map[u64]SymbolResponse, o UbmOptions) ![]Finding {
+	mut groups := []UbmGroup{}
+	for m in members {
+		if c.ubm_is_natively_bound(m.object, m.property, symbols)! {
+			continue
+		}
+		accessed := c.ubm_accessed_property_names(m)!
+		if accessed.len == 0 {
+			continue
+		}
+		object_type := c.node_type(m.object) or { continue }
+		groups << UbmGroup{
+			node:  m.node
+			steps: accessed.map(tsgo.UnboundMethodStep{
+				typ:  object_type.id
+				name: it
+				walk: true
+			})
+		}
+	}
+	for p in patterns {
+		for key in p.keys {
+			name := c.identifier_name(key)
+			mut steps := []tsgo.UnboundMethodStep{}
+			if init := p.init {
+				if !c.ubm_is_natively_bound(init, key, symbols)! {
+					init_type := c.node_type(init) or { TypeResponse{} }
+					if !init_type.is_null() {
+						steps << tsgo.UnboundMethodStep{
+							typ:  init_type.id
+							name: name
+						}
+					}
+				} else if !p.in_assignment_pattern {
+					continue
+				}
+			}
+			if pattern_type := c.node_type(p.pattern) {
+				steps << tsgo.UnboundMethodStep{
+					typ:  pattern_type.id
+					name: name
+					walk: true
+				}
+			}
+			if steps.len > 0 {
+				groups << UbmGroup{
+					node:  key
+					steps: steps
+				}
+			}
+		}
+	}
+	if groups.len == 0 {
+		return []Finding{}
+	}
+	mut steps := []tsgo.UnboundMethodStep{}
+	for g in groups {
+		steps << g.steps
+	}
+	answers := c.client.unbound_method_checks(c.snapshot, c.project, o.ignore_static,
+		groups.map(it.steps.len), steps)!
+	mut findings := []Finding{}
+	for i, g in groups {
+		message_id := match answers[i] & 3 {
+			1 { 'unbound' }
+			2 { 'unboundWithoutThisAnnotation' }
+			else { '' }
+		}
+		if message_id != '' {
+			findings << Finding{
+				stmt:       position_of(g.node)
+				message_id: message_id
+			}
+		}
+	}
 	return findings
 }
 
