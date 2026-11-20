@@ -6,11 +6,11 @@ module main
 // zod and recharts (one worker and the default workers, without types) with the same peak memory,
 // and changed nothing on the TypeScript compiler; 64 MiB took a little more off zod but added up
 // to 32 MB to the peak.
-const initial_heap_bytes = usize(32 * 1024 * 1024)
+const initial_heap_bytes = u64(32 * 1024 * 1024)
 
 #include "@VMODROOT/gc_heap.h"
 
-fn C.GC_expand_hp(bytes usize) int
+fn C.GC_expand_hp(bytes u64) int
 
 // grow_initial_heap adds initial_heap_bytes to the heap the collector starts with (that of
 // GC_INITIAL_HEAP_SIZE, which Boehm reads before main runs, when it is set).
