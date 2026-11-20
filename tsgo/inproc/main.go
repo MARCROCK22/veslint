@@ -15,9 +15,12 @@ import "C"
 
 import (
 	"os"
+	"runtime"
 	"runtime/debug"
+	"runtime/metrics"
 	"strings"
 	"sync"
+	"sync/atomic"
 	"unsafe"
 
 	"github.com/microsoft/TypeScript/tsc/internal/api"
@@ -91,6 +94,7 @@ func veslint_tsgo_open(cwd *C.char, cwdLen C.size_t, lib *C.char, libLen C.size_
 //
 //export veslint_tsgo_request
 func veslint_tsgo_request(handle C.longlong, worker C.int, method *C.char, methodLen C.size_t, payload *C.char, payloadLen C.size_t, out **C.char, outLen *C.size_t) C.int {
+	release_ballast()
 	p := session(handle)
 	if p == nil {
 		cBytes([]byte("the TypeScript session is closed"), out, outLen)
@@ -173,9 +177,98 @@ func veslint_tsgo_free(p *C.char) {
 // for 19 % more (2.9 GiB instead of 2.4); 400 is 5 % faster there and holds 3.2 GiB.
 const gcPercent = 200
 
+// gcBallast puts off Go's first collections. A lint builds the program and fills the checkers from
+// nothing, and until then most of what Go has is still in use: GOGC's first collections (at 8 MiB,
+// then each time the heap triples) walk it again and again. `ballast`, an array of that many bytes
+// that is never written (so it takes no memory) and has no pointers (so the collector does not
+// walk it), counts as live: with GOGC gcPercent the first collection comes when the heap reaches
+// three times it, about 256 MiB besides the ballast. Once that collection has run, a request
+// drops the ballast (release_ballast) and sets the GOGC that puts the next collection where
+// gcPercent would without the ballast (the heap the collection kept, but the ballast, three
+// times); once the next one has run, gcPercent. Requests notice the collections (by their count,
+// every 64 requests) because nothing else is sure to run: a cleanup, a weak pointer (cleared when
+// its span is swept) or the background sweeper need goroutines that may not run while veslint's
+// threads keep taking Go's only P (VESLINT_CPUS=1). With two workers on the minipc, median of 3
+// alternated runs against GOGC 200 alone: zod 2.52 -> 2.38 s (53 MB more), recharts 5.23 -> 4.69
+// s (7 MB more), the TypeScript compiler the same (measured with GOGC off up to a GOMEMLIMIT of
+// 256 MiB, the same first collection); GOGC off up to 512 MiB: zod 2.32 s with 129 MB more. A GOGC
+// or GOMEMLIMIT in the environment is Go's alone.
+const gcBallast = 128 << 20
+
+// The steps of the ballast: held until a collection runs with it, then a GOGC of its own until the
+// next collection, then gcPercent.
+const (
+	ballastDone = iota
+	ballastHeld
+	ballastPaced
+)
+
+var (
+	ballast      []byte
+	ballastStep  atomic.Int32
+	ballastMutex sync.Mutex
+	// ballastCycles is how many collections had run when the step started.
+	ballastCycles uint64
+	requests      atomic.Uint64
+)
+
 func init() {
-	if os.Getenv("GOGC") == "" {
+	if os.Getenv("GOGC") != "" {
+		return
+	}
+	debug.SetGCPercent(gcPercent)
+	if os.Getenv("GOMEMLIMIT") != "" {
+		return
+	}
+	ballast = make([]byte, gcBallast)
+	// Allocating the ballast starts a collection (the heap goal starts at 8 MiB): it ends here, so
+	// that the next one is the first with the heap of a lint.
+	runtime.GC()
+	ballastCycles = gcCycles()
+	ballastStep.Store(ballastHeld)
+}
+
+// gcCycles is how many collections have run.
+func gcCycles() uint64 {
+	samples := []metrics.Sample{{Name: "/gc/cycles/total:gc-cycles"}}
+	metrics.Read(samples)
+	if samples[0].Value.Kind() != metrics.KindUint64 {
+		return 0
+	}
+	return samples[0].Value.Uint64()
+}
+
+// release_ballast takes the next step of the ballast once a collection has run since the last.
+func release_ballast() {
+	if ballastStep.Load() == ballastDone || requests.Add(1)%64 != 0 {
+		return
+	}
+	ballastMutex.Lock()
+	defer ballastMutex.Unlock()
+	cycles := gcCycles()
+	if cycles == ballastCycles {
+		return
+	}
+	switch ballastStep.Load() {
+	case ballastHeld:
+		ballast = nil
+		// The heap the collection kept counts the ballast: the goal of the next collection is
+		// that heap times 1 + GOGC/100, which this GOGC makes (the heap without the ballast)
+		// times 1 + gcPercent/100.
+		samples := []metrics.Sample{{Name: "/gc/heap/live:bytes"}}
+		metrics.Read(samples)
+		percent := gcPercent
+		if samples[0].Value.Kind() == metrics.KindUint64 && samples[0].Value.Uint64() > 0 {
+			live := int64(samples[0].Value.Uint64())
+			kept := max(live-gcBallast, live/8)
+			percent = max(int(kept*(100+gcPercent)/live)-100, 10)
+		}
+		debug.SetGCPercent(percent)
+		ballastCycles = gcCycles()
+		ballastStep.Store(ballastPaced)
+	case ballastPaced:
 		debug.SetGCPercent(gcPercent)
+		ballastStep.Store(ballastDone)
 	}
 }
 

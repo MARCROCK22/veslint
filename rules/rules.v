@@ -3529,6 +3529,7 @@ fn (mut c Checker) lint_file_in_lifetime(parser Parser, config LintConfig, src s
 			c.make_snapshot()!
 		}
 		c.too_deep = 0
+		c.late_unmatched = 0
 		c.options[setting.name] = setting.options
 		rule_sw := time.new_stopwatch()
 		rule_findings := c.lint_rule(setting.name, root, ts_path, mut stats)!
@@ -3548,7 +3549,7 @@ fn (mut c Checker) lint_file_in_lifetime(parser Parser, config LintConfig, src s
 				}
 			}
 		}
-		stats.unmatched += c.too_deep
+		stats.unmatched += c.too_deep + c.late_unmatched
 	}
 	if svelte_file {
 		findings = c.svelte_move_findings(c.svelte_drop_wrapper_function_findings(root, findings))
@@ -6050,6 +6051,9 @@ mut:
 	ast_path                                string                             // file `ast` belongs to ('' when it must be requested)
 	ast                                     SourceFileAst                      // tsgo AST of the file, shared by the rules
 	attempted                               map[u64]bool                       // keys already looked up in tsgo (per file)
+	typed                                   map[u64]bool                       // keys whose type was requested (per file): not a no_type span
+	late_unmatched                          int                                // nodes late_type could not analyze (per rule)
+	node_room                               int                                // the keys the maps of the requested nodes have room for (reserve_node_room)
 	too_deep                                int                                // expressions not analyzed because they are nested too deeply, or because TypeScript reads another kind of node there (per rule)
 	node_types                              map[u64]TypeResponse               // type of each requested node, by byte range (per file)
 	node_kinds                              map[u64]u32                        // tsgo SyntaxKind of each requested node (per file)
@@ -6064,6 +6068,10 @@ mut:
 	sig_cache                               map[string][]SignatureResponse
 	return_cache                            map[int]TypeResponse
 	member_cache                            map[int][]TypeResponse
+	property_names                          map[int]map[string]int // the place of the first property of each name in properties_cache, for the types with many
+	nuec_base_types                         map[int]TypeResponse   // getBaseEnumType of each enum literal type (no-unsafe-enum-comparison)
+	nuec_enum_ids_cache                     map[int][]int          // the ids of getEnumTypes of each type (no-unsafe-enum-comparison)
+	nuec_mismatched                         map[u64]bool           // isMismatchedComparison of each pair of type ids
 	symbol_cache                            map[int]SymbolResponse
 	apparent_cache                          map[int]TypeResponse
 	constraint_cache                        map[int]TypeResponse

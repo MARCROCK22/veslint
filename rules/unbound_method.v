@@ -75,37 +75,50 @@ fn (mut c Checker) lint_unbound_method(root C.TSNode, abs_path string, mut stats
 			property: property
 		}
 	}
+	// The member expressions and the keys are only asked their symbols, and a property its type
+	// seldom (late_type): their nodes, without their types.
 	mut spans := []Span{}
 	for m in members {
-		spans << node_span(m.node)
+		spans << Span{
+			...node_span(m.node)
+			no_type: true
+		}
 		spans << node_span(m.object)
-		spans << node_span(m.property)
+		spans << Span{
+			...node_span(m.property)
+			no_type: true
+		}
 	}
 	for p in patterns {
 		spans << node_span(p.pattern)
 		if init := p.init {
 			spans << node_span(init)
 		}
-		spans << p.keys.map(node_span(it))
+		spans << p.keys.map(Span{
+			...node_span(it)
+			no_type: true
+		})
 	}
 	c.resolve_spans(spans, abs_path, mut stats)!
-	// The symbols of the member expressions and of the identifiers isNativelyBound names, in one
-	// request.
+	// The symbols of the identifiers isNativelyBound reads, in one request: only those whose name
+	// and property are in its list of natively bound members (ubm_listed_native).
 	mut handles := []string{}
 	mut symbol_keys := []u64{}
 	for m in members {
-		for n in [m.node, m.object] {
-			if handle := c.node_handles[node_key(n)] {
+		if c.ubm_listed_native(m.object, m.property) {
+			if handle := c.node_handles[node_key(m.object)] {
 				handles << handle
-				symbol_keys << node_key(n)
+				symbol_keys << node_key(m.object)
 			}
 		}
 	}
 	for p in patterns {
 		if init := p.init {
-			if handle := c.node_handles[node_key(init)] {
-				handles << handle
-				symbol_keys << node_key(init)
+			if p.keys.any(c.ubm_listed_native(init, it)) {
+				if handle := c.node_handles[node_key(init)] {
+					handles << handle
+					symbol_keys << node_key(init)
+				}
 			}
 		}
 	}
@@ -210,7 +223,10 @@ fn (mut c Checker) ubm_accessed_property_names(m UbmMember) ![]string {
 			[]string{}
 		}
 	}
-	property_type := c.node_type(unwrap_parens(m.property)) or { return []string{} }
+	property_type := c.late_type(unwrap_parens(m.property))!
+	if property_type.is_null() {
+		return []string{}
+	}
 	mut literal_names := []string{}
 	for part in c.constituents(property_type)! {
 		if part.flags & (type_flag_string_literal | type_flag_number_literal) != 0 {
@@ -401,17 +417,23 @@ fn ubm_inside_type_declaration(n C.TSNode) bool {
 	return false
 }
 
+// ubm_listed_native: `object.property` is in the list of natively bound members (what
+// isNativelyBound checks besides the symbol of the object).
+fn (c &Checker) ubm_listed_native(object C.TSNode, property C.TSNode) bool {
+	return estree_type(object) == 'Identifier'
+		&& node_kind(property) in ['property_identifier', 'identifier',
+			'shorthand_property_identifier_pattern']
+		&& '${c.identifier_name(object)}.${c.identifier_name(property)}' in ubm_natively_bound_members
+}
+
 // ubm_is_natively_bound ports isNativelyBound: a member of a global (not imported) in the list of
 // natively bound members, or a standard library member of one of the supported global types.
 fn (mut c Checker) ubm_is_natively_bound(object C.TSNode, property C.TSNode, symbols map[u64]SymbolResponse) !bool {
-	if estree_type(object) == 'Identifier'
-		&& node_kind(property) in ['property_identifier', 'identifier',
-			'shorthand_property_identifier_pattern'] {
+	if c.ubm_listed_native(object, property) {
 		if symbol := symbols[node_key(object)] {
 			// isNotImported: the value declaration is in another file.
-			not_imported := !symbol.is_null() && symbol.value_declaration != ''
-				&& handle_path(symbol.value_declaration) != c.ast.path
-			if not_imported && '${c.identifier_name(object)}.${c.identifier_name(property)}' in ubm_natively_bound_members {
+			if !symbol.is_null() && symbol.value_declaration != ''
+				&& handle_path(symbol.value_declaration) != c.ast.path {
 				return true
 			}
 		}
@@ -433,8 +455,8 @@ fn (mut c Checker) ubm_is_natively_bound(object C.TSNode, property C.TSNode, sym
 	if !c.builtin_symbol_like_any(object_type, ubm_supported_global_types, 0)! {
 		return false
 	}
-	property_type := c.node_type(property) or { return false }
-	if property_type.symbol == 0 {
+	property_type := c.late_type(property)!
+	if property_type.is_null() || property_type.symbol == 0 {
 		return false
 	}
 	symbol := c.symbol_of(property_type)!

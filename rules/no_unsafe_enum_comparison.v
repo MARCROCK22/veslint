@@ -75,12 +75,11 @@ fn (mut c Checker) lint_no_unsafe_enum_comparison(root C.TSNode, abs_path string
 	c.resolve_spans(spans, abs_path, mut stats)!
 	stats.types_ms += ms(sw.elapsed())
 	sw.restart()
-	mut base_types := map[int]TypeResponse{}
 	mut findings := []Finding{}
 	for comparison in comparisons {
 		left := c.node_type(comparison.left) or { continue }
 		right := c.node_type(comparison.right) or { continue }
-		if !c.nuec_is_mismatched(left, right, mut base_types)! {
+		if !c.nuec_is_mismatched(left, right)! {
 			continue
 		}
 		mut suggestions := []Suggestion{}
@@ -103,16 +102,28 @@ fn (mut c Checker) lint_no_unsafe_enum_comparison(root C.TSNode, abs_path string
 	return findings
 }
 
-// nuec_is_mismatched ports isMismatchedComparison.
-fn (mut c Checker) nuec_is_mismatched(left TypeResponse, right TypeResponse, mut base_types map[int]TypeResponse) !bool {
-	left_enum_types := c.nuec_enum_types(left, mut base_types)!
-	right_enum_types := c.nuec_enum_types(right, mut base_types)!
-	if left_enum_types.len == 0 && right_enum_types.len == 0 {
+// nuec_is_mismatched ports isMismatchedComparison. Its answer depends only on the two types, so it
+// is kept by their ids for the checker's other files (a comparison with a large enum, such as
+// `node.kind === SyntaxKind.Identifier`, is in the thousands in some projects).
+fn (mut c Checker) nuec_is_mismatched(left TypeResponse, right TypeResponse) !bool {
+	key := (u64(u32(left.id)) << 32) | u64(u32(right.id))
+	if mismatched := c.nuec_mismatched[key] {
+		return mismatched
+	}
+	mismatched := c.nuec_compute_mismatched(left, right)!
+	c.nuec_mismatched[key] = mismatched
+	return mismatched
+}
+
+fn (mut c Checker) nuec_compute_mismatched(left TypeResponse, right TypeResponse) !bool {
+	left_enum_ids := c.nuec_enum_ids(left)!
+	right_enum_ids := c.nuec_enum_ids(right)!
+	if left_enum_ids.len == 0 && right_enum_ids.len == 0 {
 		return false
 	}
 	// Comparisons that share an enum type are allowed.
-	for t in left_enum_types {
-		if right_enum_types.any(it.id == t.id) {
+	for id in left_enum_ids {
+		if id in right_enum_ids {
 			return false
 		}
 	}
@@ -128,21 +139,41 @@ fn (mut c Checker) nuec_is_mismatched(left TypeResponse, right TypeResponse, mut
 }
 
 // nuec_enum_types ports getEnumTypes: the enum of each enum literal of the union (getBaseEnumType).
-fn (mut c Checker) nuec_enum_types(t TypeResponse, mut base_types map[int]TypeResponse) ![]TypeResponse {
+fn (mut c Checker) nuec_enum_types(t TypeResponse) ![]TypeResponse {
 	mut out := []TypeResponse{}
 	for part in c.constituents(t)! {
 		if part.flags & nuec_enum_literal != 0 {
-			out << c.nuec_base_enum_type(part, mut base_types)!
+			out << c.nuec_base_enum_type(part)!
 		}
 	}
 	return out
 }
 
+// nuec_enum_ids are the ids of nuec_enum_types, each once, kept by the id of the type: a union of
+// the members of a large enum has hundreds of them, all of the same enum.
+fn (mut c Checker) nuec_enum_ids(t TypeResponse) ![]int {
+	if ids := c.nuec_enum_ids_cache[t.id] {
+		return ids
+	}
+	mut ids := []int{}
+	for part in c.constituents(t)! {
+		if part.flags & nuec_enum_literal != 0 {
+			id := c.nuec_base_enum_type(part)!.id
+			if id !in ids {
+				ids << id
+			}
+		}
+	}
+	c.nuec_enum_ids_cache[t.id] = ids
+	return ids
+}
+
 // nuec_base_enum_type ports getBaseEnumType: the type of the enum declaration of a member (the
-// parent of the member's declaration, which may be in any file), or the type itself.
-fn (mut c Checker) nuec_base_enum_type(t TypeResponse, mut base_types map[int]TypeResponse) !TypeResponse {
-	if t.id in base_types {
-		return base_types[t.id]
+// parent of the member's declaration, which may be in any file), or the type itself. It is kept
+// for the checker's other files.
+fn (mut c Checker) nuec_base_enum_type(t TypeResponse) !TypeResponse {
+	if base := c.nuec_base_types[t.id] {
+		return base
 	}
 	mut result := t
 	symbol := c.symbol_of(t)!
@@ -159,7 +190,7 @@ fn (mut c Checker) nuec_base_enum_type(t TypeResponse, mut base_types map[int]Ty
 			}
 		}
 	}
-	base_types[t.id] = result
+	c.nuec_base_types[t.id] = result
 	return result
 }
 

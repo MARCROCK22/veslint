@@ -90,8 +90,12 @@ build: veslint
 # half as often. It costs about 0.5 MB of larger black-list tables (two of 256 KB instead of 32 KB),
 # and up to 16 MiB more heap from the larger steps (Spider-Byte with every rule: 96 MiB instead of
 # 86). V caches gc.o by its flags.
+# gc_parallel_mark: libgc marks with a thread per CPU. Its collections stop every lint worker, and
+# a typed lint of the TypeScript compiler collected 44 times for 2.2 s (1.7 s with it): 16.5 ->
+# 16.1 s, recharts 4.39 -> 4.31 s, zod 2.41 -> 2.38 s (median of 3 alternated runs, minipc, the
+# same memory). V's flag does nothing outside Linux and macOS.
 veslint: $(LIBS) $(TSGO) $(SOURCES) tsgo/inproc/veslint_tsgo.h $(V_BIN)
-	$(V) -prod -cc gcc -cflags -DLARGE_CONFIG=1 -o veslint .
+	$(V) -prod -d gc_parallel_mark -cc gcc -cflags -DLARGE_CONFIG=1 -o veslint .
 
 run: veslint
 	./veslint app.ts

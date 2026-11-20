@@ -380,25 +380,75 @@ fn (mut w Worker) lint(plan &LintPlan, index int) !FileOutcome {
 	}
 }
 
-// FileQueue hands the files to the workers in their order.
+// FileQueue hands the files to the workers. Each worker starts with a run of consecutive files of
+// its own (split), the files of a few directories, which use the same types: a checker of its own
+// resolves the types of those files, and the types the files of a directory share are resolved by
+// one checker instead of every worker's. A worker done with its run takes the last file of the run
+// with the most files left.
 @[heap]
 struct FileQueue {
 mut:
 	mutex &sync.Mutex = sync.new_mutex()
 	files []RuleFile
-	next  int
-	stop  bool
+	// The run of each worker: files[starts[w]..ends[w]] are left (worker numbers start at 1; 0 is
+	// the only worker of a lint without others).
+	starts []int
+	ends   []int
+	stop   bool
 }
 
-// take is the index of the next file to lint, or -1 when there is none or a worker failed.
-fn (mut q FileQueue) take() int {
+// split gives each of `count` workers a run of the files with about as many bytes of source; 0
+// gives them all to the only worker, 0.
+fn (mut q FileQueue) split(count int) {
+	if count == 0 {
+		q.starts = [0]
+		q.ends = [q.files.len]
+		return
+	}
+	mut total := u64(0)
+	for f in q.files {
+		total += u64(f.src.len)
+	}
+	q.starts = []int{len: count + 1}
+	q.ends = []int{len: count + 1}
+	mut at := 0
+	mut sum := u64(0)
+	for w in 1 .. count + 1 {
+		q.starts[w] = at
+		// The run ends where the bytes so far reach this worker's share of the total.
+		for at < q.files.len && (w == count || sum * u64(count) < total * u64(w)) {
+			sum += u64(q.files[at].src.len)
+			at++
+		}
+		q.ends[w] = at
+	}
+}
+
+// take is the index of the next file `worker` lints, or -1 when there is none or a worker failed.
+fn (mut q FileQueue) take(worker int) int {
 	q.mutex.lock()
 	defer {
 		q.mutex.unlock()
 	}
-	for !q.stop && q.next < q.files.len {
-		index := q.next
-		q.next++
+	for !q.stop {
+		mut index := -1
+		if q.starts[worker] < q.ends[worker] {
+			index = q.starts[worker]
+			q.starts[worker]++
+		} else {
+			mut most := -1
+			for w in 0 .. q.starts.len {
+				if q.ends[w] - q.starts[w] > 0
+					&& (most < 0 || q.ends[w] - q.starts[w] > q.ends[most] - q.starts[most]) {
+					most = w
+				}
+			}
+			if most < 0 {
+				return -1
+			}
+			q.ends[most]--
+			index = q.ends[most]
+		}
 		if q.files[index].note == '' {
 			return index
 		}
@@ -455,7 +505,7 @@ fn run_worker(plan &LintPlan, queue &FileQueue, shared &SharedSession, number in
 		w.close()
 	}
 	for {
-		index := q.take()
+		index := q.take(number)
 		if index < 0 {
 			break
 		}
@@ -481,13 +531,15 @@ fn run_worker(plan &LintPlan, queue &FileQueue, shared &SharedSession, number in
 // lint_files lints the files on `count` workers (one with --fix, which writes the files and takes
 // a new snapshot after each pass, which the other workers' sessions would not have).
 fn lint_files(plan &LintPlan, files []RuleFile, count int) []WorkerResult {
-	queue := &FileQueue{
+	mut queue := &FileQueue{
 		files: files
 	}
 	no_session := &SharedSession(unsafe { nil })
 	if count <= 1 {
+		queue.split(0)
 		return [run_worker(plan, queue, no_session, 0)]
 	}
+	queue.split(count)
 	mut shared := no_session
 	if shares_session(plan) {
 		shared = open_shared(plan, files) or {
