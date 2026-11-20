@@ -200,6 +200,30 @@ fn test_node_index_and_token_ends_from_one_walk() {
 	assert checked > 10000
 }
 
+// walk_of_kinds is what of_kinds gives, from a walk of a cursor.
+fn walk_of_kinds(root C.TSNode, kinds []string, skip []string) []C.TSNode {
+	mut nodes := []C.TSNode{}
+	mut cursor := C.ts_tree_cursor_new(root)
+	defer {
+		C.ts_tree_cursor_delete(&cursor)
+	}
+	for {
+		node := C.ts_tree_cursor_current_node(&cursor)
+		if C.ts_node_is_named(node) && node_kind(node) in kinds {
+			nodes << node
+		}
+		if node_kind(node) !in skip && C.ts_tree_cursor_goto_first_child(&cursor) {
+			continue
+		}
+		for !C.ts_tree_cursor_goto_next_sibling(&cursor) {
+			if !C.ts_tree_cursor_goto_parent(&cursor) {
+				return nodes
+			}
+		}
+	}
+	return nodes
+}
+
 fn same_index_and_ends(p Parser, src string) int {
 	tree := p.parse(src) or { panic(err) }
 	defer {
@@ -214,17 +238,25 @@ fn same_index_and_ends(p Parser, src string) int {
 	assert index.count == alone.count
 	assert index.buckets.len == alone.buckets.len
 	for i, bucket in index.buckets {
-		assert same_nodes(bucket.nodes, alone.buckets[i].nodes)
 		assert bucket.seq == alone.buckets[i].seq
-		assert bucket.last == alone.buckets[i].last
+	}
+	// The nodes of each kind, also without the subtrees of other kinds, are those of a walk of the
+	// tree.
+	for kind, _ in index.named {
+		assert same_nodes(index.of_kind(root, kind), walk_of_kinds(root, [kind], [])), src
+	}
+	for skip in [['function_declaration'], ['arrow_function', 'class_body'], ['comment']] {
+		kinds := ['identifier', 'call_expression', 'comment', 'property_identifier']
+		assert same_nodes(index.of_kinds(root, kinds, skip), walk_of_kinds(root, kinds, skip)), src
 	}
 	assert index.named == alone.named
 	assert index.anonymous == alone.anonymous
 	return expected.ends.len
 }
 
-// children and named_children (one walk of a cursor, children.h) give what ts_node_child and
-// ts_node_named_child give, for every node of the rules' fixtures and of .tsx ones.
+// children and named_children (from the flat tree, or from one walk of a cursor without it:
+// flat_tree.h) give what ts_node_child and ts_node_named_child give, and node_parent what
+// ts_node_parent gives, for every node of the rules' fixtures and of .tsx ones.
 fn test_children_are_tree_sitters() {
 	p := new_parser() or { panic(err) }
 	tsx := new_tsx_parser() or { panic(err) }
@@ -237,20 +269,26 @@ fn test_children_are_tree_sitters() {
 	mut tsx_files := os.walk_ext(os.join_path(@VMODROOT, 'tests', 'rules'), '.tsx')
 	tsx_files.sort()
 	mut checked := 0
-	for file in files#[..300] {
-		checked += same_children(p, os.read_file(file) or { panic(err) })
+	for flat in [false, true] {
+		for file in files#[..300] {
+			checked += same_children(p, os.read_file(file) or { panic(err) }, flat)
+		}
+		for file in tsx_files#[..100] {
+			checked += same_children(tsx, os.read_file(file) or { panic(err) }, flat)
+		}
+		checked += same_children(p, 'a\nb /* c */ ) d; { x; /* y */ z }', flat)
 	}
-	for file in tsx_files#[..100] {
-		checked += same_children(tsx, os.read_file(file) or { panic(err) })
-	}
-	checked += same_children(p, 'a\nb /* c */ ) d; { x; /* y */ z }')
-	assert checked > 100000
+	assert checked > 200000
 }
 
-fn same_children(p Parser, src string) int {
+fn same_children(p Parser, src string, flat bool) int {
 	tree := p.parse(src) or { panic(err) }
 	defer {
+		parent_cache_clear()
 		tree_delete(tree)
+	}
+	if flat {
+		_ := new_node_index(root_node(tree))
 	}
 	mut checked := 0
 	mut cursor := C.ts_tree_cursor_new(root_node(tree))
@@ -272,6 +310,11 @@ fn same_children(p Parser, src string) int {
 			}
 		}
 		assert same_nodes(named_children(node), named), src
+		if parent := node_parent(node) {
+			assert C.ts_node_eq(parent, C.ts_node_parent(node)), src
+		} else {
+			assert C.ts_node_is_null(C.ts_node_parent(node)), src
+		}
 		checked++
 		if C.ts_tree_cursor_goto_first_child(&cursor) {
 			continue

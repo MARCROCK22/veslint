@@ -121,6 +121,7 @@ fn ms(d time.Duration) f64 {
 }
 
 fn main() {
+	grow_initial_heap()
 	os.signal_ignore(.pipe)
 	args := os.args[1..]
 	if '-h' in args || '--help' in args {

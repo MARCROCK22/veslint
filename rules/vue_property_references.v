@@ -800,7 +800,7 @@ fn (mut c Checker) vpr_from_container(mut x VprExtractor, container int, ignore_
 		es := &doc.snippets[reference.id.snippet].es
 		id := reference.id.node
 		name := vue_identifier_name(es, id)
-		if ignore_globals && name in c.scope_tree(x.root).scopes[0].set {
+		if ignore_globals && c.scope_tree(x.root).set_has(0, name) {
 			continue
 		}
 		if x.functional {

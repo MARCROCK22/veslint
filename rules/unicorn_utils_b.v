@@ -1412,7 +1412,7 @@ fn (mut c Checker) unb_type_reference_definition(root C.TSNode, t &estree.EsTree
 	tree := c.scope_tree(root)
 	mut scope := from
 	for scope >= 0 {
-		if v := tree.scopes[scope].set[name] {
+		if v := tree.set_get(scope, name) {
 			for def in tree.variables[v].defs {
 				if def.kind in [.class_name, .import_binding, .ts_enum_name, .type_definition] {
 					return c.unb_definition(t, def, scope)

@@ -211,7 +211,7 @@ fn (mut c Checker) nvar_has_unsafe_hoisted_function_reference(root C.TSNode, v i
 			if node_kind(block) in ['function_declaration', 'generator_function_declaration'] {
 				if id := node_field(block, 'name') {
 					upper := tree.scopes[current].upper
-					if function_variable := tree.scopes[upper].set[c.identifier_name(id)] {
+					if function_variable := tree.set_get(upper, c.identifier_name(id)) {
 						for fr in tree.variables[function_variable].references {
 							ref_id := tree.references[fr].identifier
 							if nith_is_callee(ref_id) && node_start(ref_id) < declaration_start {

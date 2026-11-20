@@ -178,6 +178,36 @@ fn build_source_tokens(root C.TSNode, src string) &SourceTokens {
 // an attribute a JSXIdentifier.
 fn source_tokens_jsx(root C.TSNode, tokens []SourceToken) []SourceToken {
 	mut gaps := []JsxTextGap{}
+	first, last := treesitter.flat_range(root)
+	if first >= 0 {
+		for i in first .. last + 1 {
+			node := treesitter.flat_node(i)
+			if node_kind(node) == 'jsx_element' {
+				source_tokens_jsx_gaps(node, mut gaps)
+			}
+		}
+	} else {
+		source_tokens_jsx_walk(root, mut gaps)
+	}
+	return source_tokens_with_gaps(tokens, gaps)
+}
+
+// source_tokens_jsx_gaps adds the gaps between the children of a JSX element.
+fn source_tokens_jsx_gaps(node C.TSNode, mut gaps []JsxTextGap) {
+	mut previous_end := -1
+	for child in named_children(node) {
+		if node_kind(child) in ['jsx_text', 'html_character_reference', 'comment'] {
+			continue
+		}
+		if previous_end >= 0 && node_start(child) > previous_end {
+			gaps << JsxTextGap{previous_end, node_start(child), node}
+		}
+		previous_end = node_end(child)
+	}
+}
+
+// source_tokens_jsx_walk adds the gaps of the JSX elements of a tree that has no flat tree.
+fn source_tokens_jsx_walk(root C.TSNode, mut gaps []JsxTextGap) {
 	mut cursor := C.ts_tree_cursor_new(root)
 	defer {
 		C.ts_tree_cursor_delete(&cursor)
@@ -185,16 +215,7 @@ fn source_tokens_jsx(root C.TSNode, tokens []SourceToken) []SourceToken {
 	for {
 		node := C.ts_tree_cursor_current_node(&cursor)
 		if node_kind(node) == 'jsx_element' {
-			mut previous_end := -1
-			for child in named_children(node) {
-				if node_kind(child) in ['jsx_text', 'html_character_reference', 'comment'] {
-					continue
-				}
-				if previous_end >= 0 && node_start(child) > previous_end {
-					gaps << JsxTextGap{previous_end, node_start(child), node}
-				}
-				previous_end = node_end(child)
-			}
+			source_tokens_jsx_gaps(node, mut gaps)
 		}
 		if C.ts_tree_cursor_goto_first_child(&cursor) {
 			continue
@@ -210,6 +231,11 @@ fn source_tokens_jsx(root C.TSNode, tokens []SourceToken) []SourceToken {
 			break
 		}
 	}
+}
+
+// source_tokens_with_gaps gives the tokens with the JSX tokens of typescript-estree: the gaps as
+// JSXText, and the strings and names of the tags and attributes made JSX tokens.
+fn source_tokens_with_gaps(tokens []SourceToken, gaps []JsxTextGap) []SourceToken {
 	mut out := []SourceToken{cap: tokens.len}
 	for token in tokens {
 		if gaps.any(token.start >= it.start && token.end <= it.end) {
@@ -273,6 +299,20 @@ struct JsxTextGap {
 
 // source_tokens_walk appends the tokens and comments of a subtree, in order.
 fn source_tokens_walk(root C.TSNode, src string, mut out []SourceToken) {
+	first, last := treesitter.flat_range(root)
+	if first >= 0 {
+		// From the flat tree: the subtree of a node whose children are not visited is jumped
+		// over.
+		mut i := first
+		for i <= last {
+			i = if source_tokens_visit(treesitter.flat_node(i), src, mut out) {
+				i + 1
+			} else {
+				treesitter.flat_last(i) + 1
+			}
+		}
+		return
+	}
 	mut cursor := C.ts_tree_cursor_new(root)
 	defer {
 		C.ts_tree_cursor_delete(&cursor)

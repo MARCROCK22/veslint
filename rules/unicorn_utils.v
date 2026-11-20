@@ -397,7 +397,7 @@ fn un_scopes(tree &ScopeTree, scope int) []int {
 fn un_resolve_variable_name(tree &ScopeTree, name string, scope int) bool {
 	mut s := scope
 	for s >= 0 {
-		if name in tree.scopes[s].set {
+		if tree.set_has(s, name) {
 			return true
 		}
 		s = tree.scopes[s].upper

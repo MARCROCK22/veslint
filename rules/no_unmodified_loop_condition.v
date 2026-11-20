@@ -248,7 +248,7 @@ fn (c &Checker) nulc_has_modifier_in_loop(tree &ScopeTree, condition NulcConditi
 	// getVariableByName from the upper scope of the modifier's scope.
 	mut scope := tree.scopes[tree.references[modifier].from].upper
 	for scope >= 0 {
-		if v := tree.scopes[scope].set[name] {
+		if v := tree.set_get(scope, name) {
 			for r in tree.variables[v].references {
 				if nulc_is_in_loop(condition.loop, tree.references[r].identifier) {
 					return true

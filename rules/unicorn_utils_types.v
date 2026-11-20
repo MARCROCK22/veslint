@@ -1951,7 +1951,7 @@ fn (mut c Checker) un_type_reference_definition(ctx &UnCtx, name string, from_sc
 	tree := c.scope_tree(ctx.root)
 	mut scope := from_scope
 	for scope >= 0 {
-		if v := tree.scopes[scope].set[name] {
+		if v := tree.set_get(scope, name) {
 			for def in tree.variables[v].defs {
 				if def.kind in [.class_name, .import_binding, .ts_enum_name, .type_definition] {
 					return UnTypeDefinition{def, v, scope}
