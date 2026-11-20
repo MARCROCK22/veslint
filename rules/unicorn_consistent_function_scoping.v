@@ -3,7 +3,7 @@ module rules
 import estree
 import json2
 import time
-import treesitter { node_start }
+import treesitter { node_kind, node_start }
 
 // Port of the `unicorn/consistent-function-scoping` rule of eslint-plugin-unicorn 79.0.0, with its
 // option `checkArrowFunctions`. The scopes are veslint's ScopeTree (scope.v), whose blocks are
@@ -70,13 +70,13 @@ fn (mut c Checker) ucfs_acquire(tree &ScopeTree, t &estree.EsTree, node int) int
 	if c.es_index_of(t, ts) or { -1 } != node {
 		return -1
 	}
-	scopes := tree.by_block[scope_block_key(ts)] or { return -1 }
+	scopes := tree.scopes_of_block(ts) or { return -1 }
 	return if scopes.len > 0 { scopes[0] } else { -1 }
 }
 
 // ucfs_acquire_ts is ScopeManager#acquire for a tree-sitter node (the `node` of a definition).
 fn ucfs_acquire_ts(tree &ScopeTree, ts C.TSNode) int {
-	scopes := tree.by_block[scope_block_key(ts)] or { return -1 }
+	scopes := tree.scopes_of_block(ts) or { return -1 }
 	return if scopes.len > 0 { scopes[0] } else { -1 }
 }
 
@@ -86,7 +86,8 @@ fn ucfs_is_same_scope(tree &ScopeTree, a int, b int) bool {
 		return false
 	}
 	return a == b
-		|| scope_block_key(tree.scopes[a].block) == scope_block_key(tree.scopes[b].block)
+		|| (node_key(tree.scopes[a].block) == node_key(tree.scopes[b].block)
+			&& node_kind(tree.scopes[a].block) == node_kind(tree.scopes[b].block))
 }
 
 fn ucfs_is_same_scope_as_any(tree &ScopeTree, scopes []int, scope int) bool {

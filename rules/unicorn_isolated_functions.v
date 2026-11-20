@@ -128,7 +128,7 @@ fn (mut c Checker) uisf_problems(tree &ScopeTree, t &estree.EsTree, node int, re
 	mut findings := []Finding{}
 	// sourceCode.getScope(node): the innermost scope the function creates.
 	ts := t.ts_node(node) or { return findings }
-	scopes := tree.by_block[scope_block_key(ts)] or { return findings }
+	scopes := tree.scopes_of_block(ts) or { return findings }
 	if scopes.len == 0 {
 		return findings
 	}

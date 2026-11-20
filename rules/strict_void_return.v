@@ -446,7 +446,7 @@ fn (mut c Checker) svr_check_member(member SvrMember, mut state SvrState) ! {
 		return
 	}
 	handle := if member.heritage.len > 0 {
-		c.node_handles[node_key(member.name)] or { '' }
+		c.nodes.handle(node_key(member.name)) or { '' }
 	} else {
 		''
 	}
@@ -454,7 +454,7 @@ fn (mut c Checker) svr_check_member(member SvrMember, mut state SvrState) ! {
 		symbols := c.client.symbols_at_locations(c.snapshot, c.project, [handle])!
 		if symbols.len == 1 && !symbols[0].is_null() {
 			for span in member.heritage {
-				base_type := c.node_types[span.key] or { continue }
+				base_type := c.nodes.node_type(span.key) or { continue }
 				if base_type.is_null() {
 					continue
 				}

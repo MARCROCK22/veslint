@@ -89,7 +89,7 @@ fn (mut c Checker) lint_prefer_readonly_parameter_types(root C.TSNode, abs_path 
 // node whose type was asked, or the annotation of the parameter when the type asked is that of
 // the parameter (the same type, with `undefined` if it is optional). '' without one.
 fn (c &Checker) prpt_annotation(parameter PrptParameter) string {
-	handle := c.node_handles[node_key(parameter.type_node)] or { return '' }
+	handle := c.nodes.handle(node_key(parameter.type_node)) or { return '' }
 	if parameter.is_type {
 		return handle
 	}

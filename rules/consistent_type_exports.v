@@ -189,7 +189,7 @@ fn format_word_list(words []string) string {
 
 // cte_symbol_at is the symbol at a name that resolve_spans has looked up (getSymbolAtLocation).
 fn (mut c Checker) cte_symbol_at(name C.TSNode) !SymbolResponse {
-	handle := c.node_handles[node_key(name)] or { return SymbolResponse{} }
+	handle := c.nodes.handle(node_key(name)) or { return SymbolResponse{} }
 	symbols := c.client.symbols_at_locations(c.snapshot, c.project, [handle])!
 	if symbols.len != 1 {
 		return SymbolResponse{}

@@ -335,7 +335,7 @@ fn (mut c Checker) check_array_destructure_helper(receiver C.TSNode, sender C.TS
 		return false
 	}
 	t := c.node_type(sender) or { return false }
-	location := c.node_handles[node_key(sender)] or { return false }
+	location := c.nodes.handle(node_key(sender)) or { return false }
 	return c.check_array_destructure(receiver, t, location, 0, mut findings)!
 }
 
@@ -415,7 +415,7 @@ fn (mut c Checker) check_object_destructure_helper(receiver C.TSNode, sender C.T
 		return false
 	}
 	t := c.node_type(sender) or { return false }
-	location := c.node_handles[node_key(sender)] or { return false }
+	location := c.nodes.handle(node_key(sender)) or { return false }
 	return c.check_object_destructure(receiver, t, location, 0, mut findings)!
 }
 

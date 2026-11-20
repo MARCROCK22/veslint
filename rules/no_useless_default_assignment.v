@@ -273,7 +273,7 @@ fn (mut c Checker) nuda_check(p NudaPattern, mut findings []Finding) ! {
 				return
 			}
 			signatures := c.signatures_of(contextual, signature_kind_call)!
-			handle := c.node_handles[node_key(function)] or { return }
+			handle := c.nodes.handle(node_key(function)) or { return }
 			if signatures.len == 0 || signatures[0].declaration == handle {
 				return
 			}
@@ -627,7 +627,7 @@ fn (mut c Checker) nuda_parameter_type(p C.TSNode) !TypeResponse {
 	if node_kind(function) !in nuda_function_kinds {
 		return TypeResponse{}
 	}
-	handle := c.node_handles[node_key(function)] or { return TypeResponse{} }
+	handle := c.nodes.handle(node_key(function)) or { return TypeResponse{} }
 	signature := c.client.signature_from_declaration(c.snapshot, c.project, handle)!
 	if signature.id == 0 {
 		return TypeResponse{}

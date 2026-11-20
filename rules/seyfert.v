@@ -128,7 +128,7 @@ fn (mut c Checker) sy_node_of_handle(handle string) !SyNode {
 // sy_node_at is the counterpart in tsgo's AST of a tree-sitter node of the file, requested with
 // resolve_node_types (esTreeNodeToTSNodeMap); no node without one.
 fn (mut c Checker) sy_node_at(n C.TSNode) !SyNode {
-	return c.sy_node_of_handle(c.node_handles[node_key(n)] or { return SyNode{} })!
+	return c.sy_node_of_handle(c.nodes.handle(node_key(n)) or { return SyNode{} })!
 }
 
 // sy_position_of is where ESLint reports the counterpart of a node of the file being linted
@@ -174,7 +174,7 @@ fn (c &Checker) sy_place_of(n SyNode) ?treesitter.Ident {
 fn (mut c Checker) sy_prefetch_symbols(nodes []C.TSNode) ! {
 	mut handles := []string{}
 	for n in nodes {
-		handle := c.node_handles[node_key(n)] or { continue }
+		handle := c.nodes.handle(node_key(n)) or { continue }
 		if handle !in c.sy_symbols && handle !in handles {
 			handles << handle
 		}
@@ -206,7 +206,7 @@ fn (mut c Checker) sy_symbol_at_handle(handle string) !SymbolResponse {
 // sy_symbol_at is services.getSymbolAtLocation of a tree-sitter node requested with
 // resolve_node_types; sy_symbol_of the same for a node of tsgo's AST.
 fn (mut c Checker) sy_symbol_at(n C.TSNode) !SymbolResponse {
-	return c.sy_symbol_at_handle(c.node_handles[node_key(n)] or { return SymbolResponse{} })!
+	return c.sy_symbol_at_handle(c.nodes.handle(node_key(n)) or { return SymbolResponse{} })!
 }
 
 fn (mut c Checker) sy_symbol_of(n SyNode) !SymbolResponse {

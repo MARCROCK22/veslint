@@ -283,7 +283,7 @@ fn (mut c Checker) check_unsafe_arguments(call ArgumentCall, mut findings []Find
 // call and the type of each parameter as seen from it. Like typescript-eslint, only a parameter
 // declared with `...` counts as rest; those of synthesized signatures have no declaration.
 fn (mut c Checker) function_signature(call C.TSNode) !FunctionSignature {
-	handle := c.node_handles[node_key(call)] or { return FunctionSignature{} }
+	handle := c.nodes.handle(node_key(call)) or { return FunctionSignature{} }
 	signature := c.resolved_signature(call)!
 	if signature.id == 0 {
 		return FunctionSignature{}

@@ -217,8 +217,8 @@ mut:
 	// global scope since.
 	libs       &ScopeLibs = unsafe { nil }
 	lib_hidden map[string]bool
-	by_block   map[string][]int // scopes created by each block node (scope_block_key)
-	declared   map[u64]int      // variable of each definition name node
+	by_block   map[u64][]int // scopes created by each block node, by its range (scopes_of_block)
+	declared   map[u64]int   // variable of each definition name node
 	// declaring: the variables each node declares (getDeclaredVariables, by node_key), built on
 	// first use by es_declared_variables for declaring_count variables (rebuilt if more come).
 	declaring       map[u64][]int
@@ -941,7 +941,7 @@ pub fn (t &ScopeTree) get_scope(n C.TSNode) int {
 				}
 			}
 		}
-		if scopes := t.by_block[scope_block_key(node)] {
+		if scopes := t.scopes_of_block(node) {
 			mut candidates := scopes.clone()
 			// A method is not the function: its name and decorators belong to the outer scope.
 			if scope_is_method(node) && !scope_in_method_function(node, from) {
@@ -963,7 +963,7 @@ pub fn (t &ScopeTree) get_scope(n C.TSNode) int {
 
 // function_scope_of is the function scope a function or method creates, -1 if none.
 pub fn (t &ScopeTree) function_scope_of(n C.TSNode) int {
-	scopes := t.by_block[scope_block_key(n)] or { return -1 }
+	scopes := t.scopes_of_block(n) or { return -1 }
 	for i := scopes.len - 1; i >= 0; i-- {
 		if t.scopes[scopes[i]].kind == .function {
 			return scopes[i]
@@ -1061,8 +1061,28 @@ pub fn (t &ScopeTree) declared_variable(name_node C.TSNode) int {
 	return t.declared[node_key(name_node)] or { -1 }
 }
 
-fn scope_block_key(n C.TSNode) string {
-	return '${node_start(n)}-${node_end(n)}-${node_kind(n)}'
+// scopes_of_block are the scopes a block node created, in order (none if it created none). They
+// are kept by the range of the node and told apart by its kind (the node of a scope is its
+// block): a key of the range and the kind as a string was made for each lookup, and get_scope
+// looks up every ancestor of a node.
+pub fn (t &ScopeTree) scopes_of_block(n C.TSNode) ?[]int {
+	scopes := t.by_block[node_key(n)] or { return none }
+	kind := node_kind(n)
+	mut same := true
+	for s in scopes {
+		if node_kind(t.scopes[s].block) != kind {
+			same = false
+			break
+		}
+	}
+	if same {
+		return scopes
+	}
+	of_kind := scopes.filter(node_kind(t.scopes[it].block) == kind)
+	if of_kind.len == 0 {
+		return none
+	}
+	return of_kind
 }
 
 // scope_is_method: the node is a class or object method, whose function (an ESTree
@@ -1142,7 +1162,7 @@ fn build_scope_tree_with(root C.TSNode, src string, tokens TokenEnds, setup Scop
 		variable_scope: 0
 		body_start:     -1
 	}
-	b.tree.by_block[scope_block_key(root)] << 0
+	b.tree.by_block[node_key(root)] << 0
 	b.left << []int{}
 	b.tree.strict << b.is_strict_scope(0)
 	// populateGlobalsFromLib: the implicit variables of the libs and `const`.
@@ -1341,7 +1361,7 @@ fn (mut b ScopeBuilder) nest_function(kind ScopeKind, block C.TSNode, start int,
 		body_start:     body_start
 	}
 	b.tree.scopes[upper].children << index
-	b.tree.by_block[scope_block_key(block)] << index
+	b.tree.by_block[node_key(block)] << index
 	b.left << []int{}
 	b.tree.strict << b.is_strict_scope(index)
 	b.current = index

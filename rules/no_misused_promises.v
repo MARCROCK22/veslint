@@ -926,14 +926,14 @@ fn member_span(member C.TSNode) Span {
 fn (mut c Checker) inherited_method_findings(class_like ClassLike) ![]Finding {
 	mut findings := []Finding{}
 	for member in class_like.members {
-		member_type := c.node_types[member.span.key] or { continue }
+		member_type := c.nodes.node_type(member.span.key) or { continue }
 		// The member is the node its checks are asked at (`nodeMember`).
 		at := c.span_location(member.span.key, member.span.first)
 		if member_type.is_null() || !c.returns_thenable_type(member_type, at)! {
 			continue
 		}
 		for span in class_like.heritage {
-			heritage := c.node_types[span.key] or { continue }
+			heritage := c.nodes.node_type(span.key) or { continue }
 			if heritage.is_null() {
 				continue
 			}
