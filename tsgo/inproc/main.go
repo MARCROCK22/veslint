@@ -14,7 +14,9 @@ package main
 import "C"
 
 import (
+	"math"
 	"os"
+	"runtime"
 	"runtime/debug"
 	"strings"
 	"sync"
@@ -173,10 +175,37 @@ func veslint_tsgo_free(p *C.char) {
 // for 19 % more (2.9 GiB instead of 2.4); 400 is 5 % faster there and holds 3.2 GiB.
 const gcPercent = 200
 
+// gcFloor is how much memory Go takes before its first collection. A lint builds the program and
+// fills the checkers from nothing, and until then most of what Go has is still in use: GOGC's
+// first collections (at 4 MiB, then each time the heap triples) walk it again and again. So Go does
+// not collect (GOGC off, GOMEMLIMIT gcFloor) until it reaches the floor, and from the first
+// collection on it collects with GOGC gcPercent. With two workers on the minipc, median of 3
+// alternated runs against GOGC 200 from the start: zod 2.52 -> 2.38 s (53 MB more), recharts
+// 5.23 -> 4.69 s (7 MB more), the TypeScript compiler the same; with 512 MiB zod took 2.32 s and
+// 129 MB more. A GOGC or GOMEMLIMIT in the environment is Go's alone.
+const gcFloor = 256 << 20
+
 func init() {
-	if os.Getenv("GOGC") == "" {
-		debug.SetGCPercent(gcPercent)
+	if os.Getenv("GOGC") != "" {
+		return
 	}
+	if os.Getenv("GOMEMLIMIT") != "" {
+		debug.SetGCPercent(gcPercent)
+		return
+	}
+	debug.SetGCPercent(-1)
+	debug.SetMemoryLimit(gcFloor)
+	runtime.AddCleanup(&gcSentinel{}, func(int) {
+		debug.SetGCPercent(gcPercent)
+		debug.SetMemoryLimit(math.MaxInt64)
+	}, 0)
+}
+
+// gcSentinel is collected by the first collection; it has a pointer so that it is not one of the
+// tiny objects Go packs together.
+type gcSentinel struct {
+	p *int
+	_ [8]byte
 }
 
 func main() {}
