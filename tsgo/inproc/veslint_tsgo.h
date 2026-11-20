@@ -16,6 +16,13 @@ extern void veslint_tsgo_set_virtual(long long handle, char* path, size_t path_l
 extern void veslint_tsgo_close(long long handle);
 extern void veslint_tsgo_free(char* p);
 
+// Boehm's GC_do_blocking, declared here: V calls its collector through wrappers of its own and the
+// C it generates does not include gc.h, so without this the call was an implicit declaration (a
+// warning of gcc 11, an error of gcc 14, the one of the Windows build). The signature is gc.h's.
+#ifndef GC_H
+extern void* GC_do_blocking(void* (*fn)(void*), void* client_data);
+#endif
+
 // A call into Go runs on a goroutine stack, which V's garbage collector (Boehm, which stops a
 // thread with a signal and scans its stack from the stack pointer the signal finds) cannot scan.
 // So every call is made with GC_do_blocking: while Go runs, the collector does not stop the
