@@ -34,15 +34,19 @@ struct AstNode {
 	kind  u32
 }
 
-// SourceFileAst indexes the nodes of a file by their range (pos, end); nodes with the same range
-// go from the outermost to the innermost.
+// SourceFileAst indexes the nodes of a file by their range (pos, end): `innermost` gives the last
+// node of the table with a range, and `outer` the node with the same range before each node (-1
+// when there is none), so the nodes of a range are walked from the innermost to the outermost.
+// A chain instead of an array per range: a file has a node per few bytes, and an array each was
+// most of the time the index took.
 pub struct SourceFileAst {
 pub:
 	path  string  // path tsgo identifies the file with
 	nodes int     // nodes of the table, not counting lists
 	tree  AstTree // the table, to navigate it
 mut:
-	by_range map[u64][]AstNode
+	innermost map[u64]int
+	outer     []int
 }
 
 fn range_key(pos int, end int) u64 {
@@ -52,11 +56,16 @@ fn range_key(pos int, end int) u64 {
 // node returns the innermost node with exactly that range or, if `kind` is not 0, the innermost
 // one of that SyntaxKind.
 fn (a &SourceFileAst) node(pos int, end int, kind u32) ?AstNode {
-	nodes := a.by_range[range_key(pos, end)] or { return none }
-	for i := nodes.len - 1; i >= 0; i-- {
-		if kind == 0 || nodes[i].kind == kind {
-			return nodes[i]
+	mut i := a.innermost[range_key(pos, end)] or { return none }
+	for i >= 0 {
+		node_kind := u32_at(a.tree.data, a.tree.offset_nodes + i * node_len)
+		if kind == 0 || node_kind == kind {
+			return AstNode{
+				index: i
+				kind:  node_kind
+			}
 		}
+		i = a.outer[i]
 	}
 	return none
 }
@@ -82,7 +91,10 @@ fn u32_at(data string, offset int) u32 {
 // indexes the nodes by range.
 pub fn decode_source_file(data string) !SourceFileAst {
 	tree := decode_source_file_tree(data)!
-	mut by_range := map[u64][]AstNode{}
+	mut innermost := map[u64]int{}
+	// V's maps grow by an eighth at a time: the room for every node at once.
+	innermost.reserve(u32(tree.count))
+	mut outer := []int{len: tree.count, init: -1}
 	mut nodes := 0
 	// In preorder children come after the parent: the last node with a range is the innermost.
 	for i in source_file_index .. tree.count {
@@ -96,17 +108,17 @@ pub fn decode_source_file(data string) !SourceFileAst {
 		if pos < 0 || end < pos {
 			continue
 		}
-		by_range[range_key(pos, end)] << AstNode{
-			index: i
-			kind:  kind
-		}
+		key := range_key(pos, end)
+		outer[i] = innermost[key] or { -1 }
+		innermost[key] = i
 		nodes++
 	}
 	return SourceFileAst{
-		path:     tree.path
-		nodes:    nodes
-		tree:     tree
-		by_range: by_range
+		path:      tree.path
+		nodes:     nodes
+		tree:      tree
+		innermost: innermost
+		outer:     outer
 	}
 }
 

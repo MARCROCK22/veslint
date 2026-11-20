@@ -184,6 +184,7 @@ fn (mut c Checker) signatures(type_id int, kind int) ![]SignatureResponse {
 		return c.sig_cache[key]
 	}
 	sigs := c.client.signatures_of_type(c.snapshot, c.project, type_id, kind)!
+	map_room(mut c.sig_cache)
 	c.sig_cache[key] = sigs
 	return sigs
 }
@@ -192,6 +193,7 @@ fn (mut c Checker) signatures(type_id int, kind int) ![]SignatureResponse {
 // is looked at wherever it is used.
 fn (mut c Checker) aliased_symbol(symbol_id int) !SymbolResponse {
 	if symbol_id !in c.aliased_cache {
+		map_room(mut c.aliased_cache)
 		c.aliased_cache[symbol_id] = c.client.aliased_symbol(c.snapshot, c.project, symbol_id)!
 	}
 	return c.aliased_cache[symbol_id]
@@ -200,6 +202,7 @@ fn (mut c Checker) aliased_symbol(symbol_id int) !SymbolResponse {
 // index_infos ports checker.getIndexInfosOfType, asked once for each type.
 fn (mut c Checker) index_infos(type_id int) ![]tsgo.IndexInfoResponse {
 	if type_id !in c.index_infos_cache {
+		map_room(mut c.index_infos_cache)
 		c.index_infos_cache[type_id] = c.client.index_infos_of_type(c.snapshot, c.project,
 			type_id)!
 	}
@@ -211,6 +214,7 @@ fn (mut c Checker) index_infos(type_id int) ![]tsgo.IndexInfoResponse {
 fn (mut c Checker) assignable(source int, target int) !bool {
 	key := (u64(u32(source)) << 32) | u64(u32(target))
 	if key !in c.assignable_cache {
+		map_room(mut c.assignable_cache)
 		c.assignable_cache[key] = c.client.is_type_assignable_to(c.snapshot, c.project,
 			source, target)!
 	}
@@ -222,6 +226,7 @@ fn (mut c Checker) return_type(signature_id int) !TypeResponse {
 		return c.return_cache[signature_id]
 	}
 	ret := c.client.return_type_of_signature(c.snapshot, c.project, signature_id)!
+	map_room(mut c.return_cache)
 	c.return_cache[signature_id] = ret
 	return ret
 }
@@ -240,6 +245,7 @@ fn (mut c Checker) members_of(t TypeResponse) ![]TypeResponse {
 		c.too_deep++
 		[]TypeResponse{}
 	}
+	map_room(mut c.member_cache)
 	c.member_cache[t.id] = members
 	return members
 }
@@ -253,6 +259,7 @@ fn (mut c Checker) symbol_of(t TypeResponse) !SymbolResponse {
 		return c.symbol_cache[t.id]
 	}
 	symbol := c.client.symbol_of_type(c.snapshot, c.project, t.id)!
+	map_room(mut c.symbol_cache)
 	c.symbol_cache[t.id] = symbol
 	return symbol
 }
@@ -319,6 +326,7 @@ fn (mut c Checker) apparent_of(t TypeResponse) !TypeResponse {
 			c.apparent_kind_cache[kind] = apparent
 		}
 	}
+	map_room(mut c.apparent_cache)
 	c.apparent_cache[t.id] = apparent
 	return apparent
 }
@@ -328,6 +336,7 @@ fn (mut c Checker) constraint_of(t TypeResponse) !TypeResponse {
 		return c.constraint_cache[t.id]
 	}
 	constraint := c.client.constraint_of_type_parameter(c.snapshot, c.project, t.id)!
+	map_room(mut c.constraint_cache)
 	c.constraint_cache[t.id] = constraint
 	return constraint
 }
@@ -342,6 +351,7 @@ fn (mut c Checker) bases_of(symbol_id int) ![]TypeResponse {
 	if !declared.is_null() {
 		bases = c.client.base_types(c.snapshot, c.project, declared.id)!
 	}
+	map_room(mut c.base_cache)
 	c.base_cache[symbol_id] = bases
 	return bases
 }
@@ -387,8 +397,37 @@ fn (mut c Checker) resolve_spans(spans []Span, abs_path string, mut stats Stats)
 	c.resolve_new(spans, abs_path, mut stats)!
 }
 
+// map_room makes room in a map before a key is added: V's maps grow by an eighth at a time,
+// copying all their entries each time, which for the caches of a checker (thousands of types of
+// a few hundred bytes each) is much of what adding to them costs. From 64 keys on, the room
+// doubles each time the map reaches a power of two.
+@[inline]
+fn map_room[K, V](mut m map[K]V) {
+	n := m.len
+	if n >= 64 && n & (n - 1) == 0 {
+		m.reserve(u32(2 * n))
+	}
+}
+
+// reserve_node_room makes room in the maps of the requested nodes for `more` keys: V's maps grow
+// by an eighth at a time, copying all their entries each time, and a large file has tens of
+// thousands of requested nodes. The room doubles at least, so a few keys more do not copy them.
+fn (mut c Checker) reserve_node_room(more int) {
+	need := c.attempted.len + more
+	if need <= c.node_room {
+		return
+	}
+	c.node_room = int_max(need, 2 * c.node_room)
+	room := u32(c.node_room)
+	c.attempted.reserve(room)
+	c.node_types.reserve(room)
+	c.node_kinds.reserve(room)
+	c.node_handles.reserve(room)
+}
+
 // reset_file_types forgets the requested types: called when each file starts.
 fn (mut c Checker) reset_file_types() {
+	c.node_room = 0
 	c.node_types = map[u64]TypeResponse{}
 	c.node_kinds = map[u64]u32{}
 	c.node_handles = map[u64]string{}
@@ -406,40 +445,63 @@ fn (mut c Checker) reset_file_types() {
 // tsgo counterpart wins; with none, the node counts once as unanalyzed, unless all of them are
 // optional.
 fn (mut c Checker) resolve_new(spans []Span, abs_path string, mut stats Stats) ! {
-	mut variants := map[u64][]Span{}
+	// The spans of each new key, the keys in the order they first come: `group` is the place of the
+	// key of each span in `order` (-1: tried already), and `variants` the spans grouped by key, in
+	// their order (a counting sort), without a map of arrays (one array per span).
+	mut group_of := map[u64]int{}
+	group_of.reserve(u32(spans.len))
+	mut group := []int{len: spans.len}
 	mut order := []u64{}
-	for s in spans {
+	mut counts := []int{}
+	for j, s in spans {
 		if s.key in c.attempted {
+			group[j] = -1
 			continue
 		}
-		if s.key !in variants {
+		g := group_of[s.key] or {
+			group_of[s.key] = order.len
 			order << s.key
+			counts << 0
+			order.len - 1
 		}
-		variants[s.key] << s
+		group[j] = g
+		counts[g]++
 	}
 	if order.len == 0 {
 		return
 	}
-	mut bytes := []int{}
-	for key in order {
-		for s in variants[key] {
-			bytes << node_start(s.first)
-			bytes << s.end
+	mut starts := []int{len: order.len + 1}
+	for g in 0 .. order.len {
+		starts[g + 1] = starts[g] + counts[g]
+	}
+	mut variants := []Span{len: starts[order.len]}
+	mut filled := starts[..order.len].clone()
+	for j, s in spans {
+		g := group[j]
+		if g >= 0 {
+			variants[filled[g]] = s
+			filled[g]++
 		}
+	}
+	mut bytes := []int{cap: 2 * variants.len}
+	for s in variants {
+		bytes << node_start(s.first)
+		bytes << s.end
 	}
 	units := c.ts_spans(bytes)
 	if c.ast_path != abs_path {
 		c.ast = c.client.source_file_ast(c.snapshot, c.project, abs_path)!
 		c.ast_path = abs_path
 	}
+	c.reserve_node_room(order.len)
 	mut keys := []u64{cap: order.len}
 	mut handles := []string{cap: order.len}
 	mut i := 0
-	for key in order {
+	for g, key in order {
 		c.attempted[key] = true
 		mut found := false
 		mut optional := true
-		for s in variants[key] {
+		for s in variants[starts[g]..starts[g + 1]] {
 			pos, end := units[2 * i], units[2 * i + 1]
 			i++
 			// A wrapper of a .svelte file's lint code is no node of ESLint's: it has nothing to
@@ -457,7 +519,7 @@ fn (mut c Checker) resolve_new(spans []Span, abs_path string, mut stats Stats) !
 		}
 		// An expression-like node inside a type query (`typeof import('./x')['default']`) is not an
 		// expression for TypeScript: it has no counterpart and nothing to analyze.
-		if !found && !optional && !inside_type_query(variants[key][0].first) {
+		if !found && !optional && !inside_type_query(variants[starts[g]].first) {
 			stats.unmatched++
 		}
 	}
@@ -533,6 +595,7 @@ fn (mut c Checker) contextual_type(n C.TSNode) !TypeResponse {
 	key := node_key(n)
 	if key !in c.contextual_cache {
 		handle := c.node_handles[key] or { return TypeResponse{} }
+		map_room(mut c.contextual_cache)
 		c.contextual_cache[key] = c.client.contextual_type(c.snapshot, c.project, handle)!
 	}
 	return c.contextual_cache[key]
@@ -554,12 +617,14 @@ fn (mut c Checker) resolved_signature(call C.TSNode) !SignatureResponse {
 		handle := c.node_handles[key] or { return SignatureResponse{} }
 		kind := c.node_kinds[key] or { 0 }
 		if kind in resolvable_kinds {
+			map_room(mut c.resolved_cache)
 			c.resolved_cache[key] = c.client.resolved_signature(c.snapshot, c.project,
 				handle)!
 		} else {
 			if kind != syntax_kind_import_type {
 				c.too_deep++
 			}
+			map_room(mut c.resolved_cache)
 			c.resolved_cache[key] = SignatureResponse{}
 		}
 	}
@@ -569,6 +634,7 @@ fn (mut c Checker) resolved_signature(call C.TSNode) !SignatureResponse {
 // type_predicate ports checker.getTypePredicateOfSignature.
 fn (mut c Checker) type_predicate(signature_id int) !tsgo.TypePredicateResponse {
 	if signature_id !in c.predicate_cache {
+		map_room(mut c.predicate_cache)
 		c.predicate_cache[signature_id] = c.client.type_predicate_of_signature(c.snapshot,
 			c.project, signature_id)!
 	}
@@ -716,6 +782,7 @@ fn (c &Checker) node_type(n C.TSNode) ?TypeResponse {
 // type_string ports checker.typeToString.
 fn (mut c Checker) type_string(t TypeResponse) !string {
 	if t.id !in c.type_string_cache {
+		map_room(mut c.type_string_cache)
 		c.type_string_cache[t.id] = c.client.type_to_string(c.snapshot, c.project, t.id)!
 	}
 	return c.type_string_cache[t.id]
@@ -733,6 +800,7 @@ fn (mut c Checker) base_constraint(t TypeResponse) !TypeResponse {
 		return c.base_constraint_cache[t.id]
 	}
 	constraint := c.client.base_constraint_of_type(c.snapshot, c.project, t.id)!
+	map_room(mut c.base_constraint_cache)
 	c.base_constraint_cache[t.id] = constraint
 	return constraint
 }
@@ -749,6 +817,7 @@ fn (mut c Checker) property(t TypeResponse, name string) !SymbolResponse {
 		return c.property_cache[key]
 	}
 	symbol := c.client.property_of_type(c.snapshot, c.project, t.id, name)!
+	map_room(mut c.property_cache)
 	c.property_cache[key] = symbol
 	return symbol
 }
@@ -758,6 +827,7 @@ fn (mut c Checker) properties(t TypeResponse) ![]SymbolResponse {
 		return c.properties_cache[t.id]
 	}
 	props := c.client.properties_of_type(c.snapshot, c.project, t.id)!
+	map_room(mut c.properties_cache)
 	c.properties_cache[t.id] = props
 	return props
 }
@@ -767,6 +837,7 @@ fn (mut c Checker) symbol_type(symbol_id int) !TypeResponse {
 		return c.symbol_type_cache[symbol_id]
 	}
 	t := c.client.type_of_symbol(c.snapshot, c.project, symbol_id)!
+	map_room(mut c.symbol_type_cache)
 	c.symbol_type_cache[symbol_id] = t
 	return t
 }
@@ -783,6 +854,7 @@ fn (mut c Checker) number_index_type(t TypeResponse) !TypeResponse {
 			break
 		}
 	}
+	map_room(mut c.number_index_cache)
 	c.number_index_cache[t.id] = result
 	return result
 }
@@ -822,6 +894,7 @@ fn (mut c Checker) signature_parameters(sig SignatureResponse) ![]ParameterRespo
 		return c.parameters_cache[sig.id]
 	}
 	params := c.client.parameters_of_signature(c.snapshot, c.project, sig.id)!
+	map_room(mut c.parameters_cache)
 	c.parameters_cache[sig.id] = params
 	return params
 }

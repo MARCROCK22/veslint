@@ -41,7 +41,6 @@ mut:
 	checked    map[int]bool
 	mismatches map[u64]bool
 	generic    map[int]bool
-	base_enum  map[int]TypeResponse
 	findings   []Finding
 }
 
@@ -847,7 +846,7 @@ fn (mut c Checker) nuea_has_deep_mismatch(mut s NueaState, sender TypeResponse, 
 	receiver_element := c.number_index_type(cr)!
 	if !sender_element.is_null() && !receiver_element.is_null()
 		&& c.nuea_has_deep_mismatch(mut s, sender_element, receiver_element, mut visited, depth + 1, generic
-		|| within_generic_members)! {
+			|| within_generic_members)! {
 		return true
 	}
 	// { fruit: number } -> { fruit: Fruit }
@@ -855,7 +854,7 @@ fn (mut c Checker) nuea_has_deep_mismatch(mut s NueaState, sender TypeResponse, 
 		sender_property := c.property(cs, receiver_property.name)!
 		if !sender_property.is_null()
 			&& c.nuea_has_deep_mismatch(mut s, c.symbol_type(sender_property.id)!, c.symbol_type(receiver_property.id)!, mut
-			visited, depth + 1, generic || within_generic_members)! {
+				visited, depth + 1, generic || within_generic_members)! {
 			return true
 		}
 	}
@@ -867,7 +866,7 @@ fn (mut c Checker) nuea_enum_types(mut s NueaState, typ TypeResponse) ![]TypeRes
 	if typ.is_null() {
 		return []TypeResponse{}
 	}
-	return c.nuec_enum_types(typ, mut s.base_enum)!
+	return c.nuec_enum_types(typ)!
 }
 
 // nuea_describe_enum_types ports describeEnumTypes: the sorted names of the enums of the types,

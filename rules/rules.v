@@ -6050,6 +6050,7 @@ mut:
 	ast_path                                string                             // file `ast` belongs to ('' when it must be requested)
 	ast                                     SourceFileAst                      // tsgo AST of the file, shared by the rules
 	attempted                               map[u64]bool                       // keys already looked up in tsgo (per file)
+	node_room                               int                                // the keys the maps of the requested nodes have room for (reserve_node_room)
 	too_deep                                int                                // expressions not analyzed because they are nested too deeply, or because TypeScript reads another kind of node there (per rule)
 	node_types                              map[u64]TypeResponse               // type of each requested node, by byte range (per file)
 	node_kinds                              map[u64]u32                        // tsgo SyntaxKind of each requested node (per file)
@@ -6064,6 +6065,9 @@ mut:
 	sig_cache                               map[string][]SignatureResponse
 	return_cache                            map[int]TypeResponse
 	member_cache                            map[int][]TypeResponse
+	nuec_base_types                         map[int]TypeResponse // getBaseEnumType of each enum literal type (no-unsafe-enum-comparison)
+	nuec_enum_ids_cache                     map[int][]int        // the ids of getEnumTypes of each type (no-unsafe-enum-comparison)
+	nuec_mismatched                         map[u64]bool         // isMismatchedComparison of each pair of type ids
 	symbol_cache                            map[int]SymbolResponse
 	apparent_cache                          map[int]TypeResponse
 	constraint_cache                        map[int]TypeResponse
