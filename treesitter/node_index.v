@@ -83,7 +83,7 @@ fn index_tree(root C.TSNode, with_ends bool) (NodeIndex, []int) {
 	}
 	mut ends := []int{}
 	if !C.vt_flat_build(root) {
-		panic('veslint: out of memory for the flat tree of a file')
+		panic('veslint: no flat tree for a file (out of memory, or its nodes out of order)')
 	}
 	count := int(C.vt_flat_count())
 	flat := C.vt_flat_nodes()

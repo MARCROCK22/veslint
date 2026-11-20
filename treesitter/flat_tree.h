@@ -6,10 +6,13 @@
 // rules ask for come from it. tree-sitter's nodes do not know their parent (ts_node_parent descends
 // from the root at every call) and ts_node_child starts from the first child at every call.
 //
-// A node is found by its id (the address of its subtree slot, unique in a tree) in a hash table. A
-// node of another tree (a fragment of a .vue or .svelte file, a tree with no index) is not there,
-// and the functions fall back to tree-sitter's; vt_flat_clear forgets the tree before it is freed,
-// so that a new tree at the same address never finds old nodes.
+// A node is found by its start and its id (the address of its subtree slot, unique in a tree): in
+// preorder the starts of the nodes never decrease, so the nodes that start at a byte are together,
+// and the table has the first of them for each byte (vt_ft_first). That table is written in order
+// by the walk; a hash table of the ids, written at random, was most of the time of the walk on a
+// large file. A node of another tree (a fragment of a .vue or .svelte file, a tree with no index)
+// is not there, and the functions fall back to tree-sitter's; vt_flat_clear forgets the tree before
+// it is freed, so that a new tree at the same address never finds old nodes.
 #ifndef VESLINT_FLAT_TREE_H
 #define VESLINT_FLAT_TREE_H
 
@@ -33,16 +36,13 @@ typedef struct {
 	uint8_t flags; // VT_FLAT_NAMED, VT_FLAT_EXTRA
 } vt_flat_node;
 
-typedef struct {
-	const void *id; // the node's id, NULL for an empty slot
-	uint32_t index;
-} vt_flat_slot;
-
 static _Thread_local vt_flat_node *vt_ft_nodes = NULL;
 static _Thread_local uint32_t vt_ft_count = 0;
 static _Thread_local uint32_t vt_ft_capacity = 0;
-static _Thread_local vt_flat_slot *vt_ft_slots = NULL;
-static _Thread_local size_t vt_ft_slot_capacity = 0; // a power of two, at least twice vt_ft_count
+// The first node that starts at each byte of the text, for the bytes where one starts (the others
+// are left as they are: no node of the tree asks for them).
+static _Thread_local uint32_t *vt_ft_first = NULL;
+static _Thread_local size_t vt_ft_first_capacity = 0;
 static _Thread_local const TSTree *vt_ft_tree = NULL; // NULL: no tree
 // The walk's stacks: the open nodes and the last child seen of each.
 static _Thread_local uint32_t *vt_ft_open = NULL;
@@ -50,14 +50,6 @@ static _Thread_local uint32_t *vt_ft_prev = NULL;
 static _Thread_local uint32_t vt_ft_open_capacity = 0;
 static _Thread_local TSTreeCursor vt_ft_cursor;
 static _Thread_local bool vt_ft_cursor_ready = false;
-
-static inline size_t vt_ft_hash(const void *id) {
-	uint64_t x = (uint64_t)(uintptr_t)id;
-	x ^= x >> 33;
-	x *= 0xff51afd7ed558ccdULL;
-	x ^= x >> 33;
-	return (size_t)x;
-}
 
 // vt_flat_clear forgets the tree (its nodes are about to be freed).
 static void vt_flat_clear(void) {
@@ -72,8 +64,7 @@ static bool vt_ft_fail(void) {
 }
 
 // vt_flat_build walks the tree under `root` (normally the root of its tree) into the table, and
-// tells whether it could. The table is sized for the tree: clearing one left large by a previous
-// file cost more than the walk of a small one.
+// tells whether it could.
 static bool vt_flat_build(TSNode root) {
 	vt_flat_clear();
 	uint32_t nodes = ts_node_descendant_count(root);
@@ -85,20 +76,18 @@ static bool vt_flat_build(TSNode root) {
 			return vt_ft_fail();
 		}
 	}
-	size_t slots = (size_t)1 << 12;
-	while (slots < 2 * ((size_t)nodes + 1)) {
-		slots <<= 1;
-	}
-	if (vt_ft_slots != NULL && vt_ft_slot_capacity == slots) {
-		memset(vt_ft_slots, 0, slots * sizeof(vt_flat_slot));
-	} else {
-		free(vt_ft_slots);
-		vt_ft_slots = calloc(slots, sizeof(vt_flat_slot));
-		vt_ft_slot_capacity = vt_ft_slots == NULL ? 0 : slots;
-		if (vt_ft_slots == NULL) {
+	size_t bytes = (size_t)ts_node_end_byte(root) + 1;
+	if (bytes > vt_ft_first_capacity) {
+		free(vt_ft_first);
+		vt_ft_first = malloc(bytes * sizeof(uint32_t));
+		vt_ft_first_capacity = vt_ft_first == NULL ? 0 : bytes;
+		if (vt_ft_first == NULL) {
 			return vt_ft_fail();
 		}
 	}
+	// The start of the previous node: when a start comes before it (never seen), the table
+	// cannot find the nodes and is dropped.
+	uint32_t previous_start = 0;
 	if (!vt_ft_cursor_ready) {
 		vt_ft_cursor = ts_tree_cursor_new(root);
 		vt_ft_cursor_ready = true;
@@ -129,12 +118,14 @@ static bool vt_flat_build(TSNode root) {
 			}
 			vt_ft_prev[depth - 1] = index;
 		}
-		size_t i = vt_ft_hash(node.id) & (vt_ft_slot_capacity - 1);
-		while (vt_ft_slots[i].id != NULL && vt_ft_slots[i].id != node.id) {
-			i = (i + 1) & (vt_ft_slot_capacity - 1);
+		uint32_t start = ts_node_start_byte(node);
+		if (start < previous_start || start >= vt_ft_first_capacity) {
+			return vt_ft_fail();
 		}
-		vt_ft_slots[i].id = node.id;
-		vt_ft_slots[i].index = index;
+		if (index == 0 || start != previous_start) {
+			vt_ft_first[start] = index;
+		}
+		previous_start = start;
 		if (ts_tree_cursor_goto_first_child(&vt_ft_cursor)) {
 			if (depth == vt_ft_open_capacity) {
 				uint32_t capacity = vt_ft_open_capacity == 0 ? 256 : vt_ft_open_capacity * 2;
@@ -167,17 +158,23 @@ static bool vt_flat_build(TSNode root) {
 	}
 }
 
-// vt_flat_find gives the index of a node in the table, or -1 when it is not there.
+// vt_flat_find gives the index of a node in the table, or -1 when it is not there: among the
+// nodes that start where it starts, the one with its id.
 static inline int64_t vt_flat_find(TSNode node) {
 	if (vt_ft_tree == NULL || node.tree != vt_ft_tree || node.id == NULL) {
 		return -1;
 	}
-	size_t i = vt_ft_hash(node.id) & (vt_ft_slot_capacity - 1);
-	while (vt_ft_slots[i].id != NULL) {
-		if (vt_ft_slots[i].id == node.id) {
-			return vt_ft_slots[i].index;
+	uint32_t start = ts_node_start_byte(node);
+	if (start >= vt_ft_first_capacity) {
+		return -1;
+	}
+	uint32_t i = vt_ft_first[start];
+	// The node at `i` may be of an earlier tree when no node of this one starts there (a node
+	// of this tree that is not in the table, under another root).
+	for (; i < vt_ft_count && ts_node_start_byte(vt_ft_nodes[i].node) == start; i++) {
+		if (vt_ft_nodes[i].node.id == node.id) {
+			return i;
 		}
-		i = (i + 1) & (vt_ft_slot_capacity - 1);
 	}
 	return -1;
 }
