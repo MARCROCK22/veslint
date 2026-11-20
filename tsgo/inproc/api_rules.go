@@ -34,6 +34,8 @@ func (p *InProcess) veslintRequest(ctx context.Context, worker int, method strin
 		return p.typeContains(ctx, worker, params)
 	case "toStringLikeFromObject":
 		return p.toStringLikeFromObject(ctx, worker, params)
+	case "findProperty":
+		return p.findProperty(ctx, worker, params)
 	}
 	return nil, fmt.Errorf("%w: unknown method %s", ErrInvalidRequest, method)
 }
@@ -379,4 +381,37 @@ func nbtsIsSymbolToPrimitiveMethod(c *checker.Checker, program *compiler.Program
 		}
 	}
 	return false
+}
+
+// findPropertyParams: a type and the name of a property as the API escapes it.
+type findPropertyParams struct {
+	Snapshot SnapshotID `json:"snapshot"`
+	Project  project.ID `json:"project"`
+	Type     TypeID     `json:"type"`
+	Name     string     `json:"name"`
+}
+
+// findProperty answers the first property of getPropertiesOfType whose escaped name is `name`, as
+// a SymbolResponse (null when none): what the rules find by walking the list of properties
+// (property_in_list of rules/type_queries.v), without the list.
+func (p *InProcess) findProperty(ctx context.Context, worker int, params []byte) (any, error) {
+	var in findPropertyParams
+	if err := json.Unmarshal(params, &in); err != nil {
+		return nil, fmt.Errorf("%w: %w", ErrInvalidRequest, err)
+	}
+	setup, err := p.veslintSetup(ctx, worker, in.Snapshot, in.Project)
+	if err != nil {
+		return nil, err
+	}
+	defer setup.done()
+	t, err := setup.resolveTypeHandle(in.Type)
+	if err != nil {
+		return nil, err
+	}
+	for _, property := range setup.checker.GetPropertiesOfType(t) {
+		if ast.EscapeSymbolName(property.Name()) == in.Name {
+			return setup.newSymbolResponse(property), nil
+		}
+	}
+	return (*SymbolResponse)(nil), nil
 }

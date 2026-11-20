@@ -945,13 +945,28 @@ fn (mut c Checker) well_known_property_name(name string) !string {
 
 // has_well_known_property ports getWellKnownSymbolPropertyOfType(…) != null.
 fn (mut c Checker) has_well_known_property(t TypeResponse, name string) !bool {
-	expected := c.well_known_property_name(name)!
+	return !c.property_in_list(t, c.well_known_property_name(name)!)!.is_null()
+}
+
+// property_in_list is the first property of the list of properties of the type (getPropertiesOfType)
+// with that name; the null symbol when none. TypeScript in this process finds it without sending
+// the list, which for some types has hundreds of properties with all their declarations.
+fn (mut c Checker) property_in_list(t TypeResponse, name string) !SymbolResponse {
+	if c.client.in_process() {
+		key := '${t.id}:${name}'
+		if key !in c.found_property_cache {
+			map_room(mut c.found_property_cache)
+			c.found_property_cache[key] = c.client.find_property(c.snapshot, c.project, t.id,
+				name)!
+		}
+		return c.found_property_cache[key]
+	}
 	for prop in c.properties(t)! {
-		if prop.name == expected {
-			return true
+		if prop.name == name {
+			return prop
 		}
 	}
-	return false
+	return SymbolResponse{}
 }
 
 fn (mut c Checker) signature_parameters(sig SignatureResponse) ![]ParameterResponse {

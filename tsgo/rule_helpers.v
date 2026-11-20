@@ -97,3 +97,9 @@ pub fn (mut c Client) to_string_like_from_object(snapshot int, project string, t
 		else { error('invalid response from `veslint/toStringLikeFromObject`: ${answer}') }
 	}
 }
+
+// find_property is the first property of the type, in the order of getPropertiesOfType, whose
+// name is `name` (escaped as the API escapes the names of properties); the null symbol when none.
+pub fn (mut c Client) find_property(snapshot int, project string, type_id int, name string) !SymbolResponse {
+	return c.symbol_request(snapshot, 'veslint/findProperty', '{"snapshot":${snapshot},"project":${json_text(project)},"type":${type_id},"name":${json_text(name)}}')!
+}

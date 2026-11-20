@@ -6091,6 +6091,8 @@ mut:
 	awaited               map[int]AwaitedType // checker.getAwaitedType of each type asked
 	// no-base-to-string: what veslint/toStringLikeFromObject answered for each type.
 	nbts_object_cache map[int]NbtsObjectStringification
+	// property_in_list: what veslint/findProperty answered for each type and name.
+	found_property_cache map[string]SymbolResponse
 	// no-unsafe-*
 	array_type_cache map[int]bool
 	type_args_cache  map[int][]TypeResponse
