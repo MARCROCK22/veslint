@@ -2,6 +2,10 @@
 
 Each version is a release on GitHub with the veslint binaries (Linux x64, Windows x64) and the VS Code extension. The section of a version is the text of its release.
 
+## 0.40.0
+
+- **Faster type-aware linting, with the same results.** Type requests no longer pay for the growth of V's maps; no-unsafe-enum-comparison keeps the types of enums per checker instead of rebuilding unions like `SyntaxKind` at every comparison; unbound-method, no-unsafe-assignment and no-unsafe-argument stop asking types they do not read; no-implied-eval builds the scopes of a file only when a call needs them; TypeScript's Go code puts off its first garbage collection until the program is built; each worker lints a run of consecutive files, so the checkers resolve fewer of the same types; and veslint's own collector marks in parallel. With the 23 type-aware rules of recommendedTypeChecked: the TypeScript compiler's sources 22 s → 16 s, recharts 5.3 s → 4.4 s (faster than oxlint now), zod 2.8 s → 2.4 s; in the editor, a file of the TypeScript compiler is re-linted in 0.89 s after an edit (1.17 s before).
+
 ## 0.39.0
 
 - **Much faster, with the same results.** TypeScript 7.1.0-beta is now linked into veslint itself (a Go library built from the commit of the npm package), so asking for types is a function call instead of a message to another process; the files are linted by parallel workers (one per CPU core) that share one TypeScript program, each with its own checker; and the work done for every file is cheaper (the parents of the nodes and a flat copy of the tree from one walk, getDeclaredVariables indexed, no-explicit-any on tree-sitter, fewer allocations). On the TypeScript compiler's sources with the 23 type-aware rules of recommendedTypeChecked: 50 s → 22 s; on zod: 6.6 s → 2.8 s; in the editor, a file of zod is re-linted in 0.36 s after an edit (0.62 s before). `VESLINT_TSGO=process` keeps the separate tsgo process.
