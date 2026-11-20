@@ -200,6 +200,30 @@ fn test_node_index_and_token_ends_from_one_walk() {
 	assert checked > 10000
 }
 
+// walk_of_kinds is what of_kinds gives, from a walk of a cursor.
+fn walk_of_kinds(root C.TSNode, kinds []string, skip []string) []C.TSNode {
+	mut nodes := []C.TSNode{}
+	mut cursor := C.ts_tree_cursor_new(root)
+	defer {
+		C.ts_tree_cursor_delete(&cursor)
+	}
+	for {
+		node := C.ts_tree_cursor_current_node(&cursor)
+		if C.ts_node_is_named(node) && node_kind(node) in kinds {
+			nodes << node
+		}
+		if node_kind(node) !in skip && C.ts_tree_cursor_goto_first_child(&cursor) {
+			continue
+		}
+		for !C.ts_tree_cursor_goto_next_sibling(&cursor) {
+			if !C.ts_tree_cursor_goto_parent(&cursor) {
+				return nodes
+			}
+		}
+	}
+	return nodes
+}
+
 fn same_index_and_ends(p Parser, src string) int {
 	tree := p.parse(src) or { panic(err) }
 	defer {
@@ -214,9 +238,16 @@ fn same_index_and_ends(p Parser, src string) int {
 	assert index.count == alone.count
 	assert index.buckets.len == alone.buckets.len
 	for i, bucket in index.buckets {
-		assert same_nodes(bucket.nodes, alone.buckets[i].nodes)
 		assert bucket.seq == alone.buckets[i].seq
-		assert bucket.last == alone.buckets[i].last
+	}
+	// The nodes of each kind, also without the subtrees of other kinds, are those of a walk of the
+	// tree.
+	for kind, _ in index.named {
+		assert same_nodes(index.of_kind(root, kind), walk_of_kinds(root, [kind], [])), src
+	}
+	for skip in [['function_declaration'], ['arrow_function', 'class_body'], ['comment']] {
+		kinds := ['identifier', 'call_expression', 'comment', 'property_identifier']
+		assert same_nodes(index.of_kinds(root, kinds, skip), walk_of_kinds(root, kinds, skip)), src
 	}
 	assert index.named == alone.named
 	assert index.anonymous == alone.anonymous

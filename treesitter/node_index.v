@@ -15,13 +15,13 @@ mut:
 	count     int // nodes recorded
 }
 
-// KindBucket holds the nodes of a kind in preorder. `seq` is the place of each in the preorder of
-// the tree, and `last` is the place of the last node of its subtree.
+// KindBucket holds the nodes of a kind in preorder, as their places in the flat tree (flat_tree.h),
+// which has the nodes and the last node of each subtree. Only integers: copies of the nodes, which
+// the collector scanned at every collection while the file was linted (19 MB of them for
+// src/compiler/checker.ts), are made when a rule asks for them.
 struct KindBucket {
 mut:
-	nodes []C.TSNode
-	seq   []int
-	last  []int
+	seq []int
 }
 
 // new_node_index walks the tree under `root` once. It records the named nodes, which are the ones
@@ -122,9 +122,7 @@ fn index_tree(root C.TSNode, with_ends bool) (NodeIndex, []int) {
 					}
 				}
 			}
-			ix.buckets[bucket].nodes << node
 			ix.buckets[bucket].seq << i
-			ix.buckets[bucket].last << int(entry.last)
 			ix.count++
 		}
 		// What token_ends does with the node, outside extra nodes.
@@ -174,9 +172,21 @@ fn (mut ix NodeIndex) bucket_of(kind string, is_named bool) int {
 	return ix.buckets.len - 1
 }
 
-// covers tells whether the index answers for `root`: it is the root it was built from.
+// covers tells whether the index answers for `root`: it is the root it was built from, and the
+// flat tree of this thread is still the one of that root.
 fn (ix &NodeIndex) covers(root C.TSNode) bool {
-	return ix.built && C.ts_node_eq(root, ix.root)
+	return ix.built && C.ts_node_eq(root, ix.root) && C.vt_flat_count() > 0
+		&& C.ts_node_eq(unsafe { C.vt_flat_nodes()[0].node }, root)
+}
+
+// nodes_at gives the nodes at those places of the flat tree.
+fn nodes_at(seq []int) []C.TSNode {
+	flat := C.vt_flat_nodes()
+	mut nodes := []C.TSNode{len: seq.len}
+	for i, at in seq {
+		nodes[i] = unsafe { flat[at].node }
+	}
+	return nodes
 }
 
 // of_kind gives what nodes_of_kind(root, kind) gives. It walks the tree when `root` is not the
@@ -186,7 +196,7 @@ pub fn (ix &NodeIndex) of_kind(root C.TSNode, kind string) []C.TSNode {
 		return nodes_of_kind(root, &char(kind.str))
 	}
 	bucket := ix.named[kind] or { return []C.TSNode{} }
-	return ix.buckets[bucket].nodes.clone()
+	return nodes_at(ix.buckets[bucket].seq)
 }
 
 // of_kinds gives what nodes_of_kinds(root, kinds, skip) gives. It walks the tree when `root` is
@@ -216,7 +226,7 @@ pub fn (ix &NodeIndex) of_kinds(root C.TSNode, kinds []string, skip []string) []
 		}
 	}
 	if wanted.len == 1 && skipped.len == 0 {
-		return ix.buckets[wanted[0]].nodes.clone()
+		return nodes_at(ix.buckets[wanted[0]].seq)
 	}
 	// The subtrees that are not entered, in order: a skipped node inside another one adds nothing.
 	mut skip_from := []int{}
@@ -232,7 +242,7 @@ pub fn (ix &NodeIndex) of_kinds(root C.TSNode, kinds []string, skip []string) []
 		heads[next]++
 		seq := ix.buckets[skipped[next]].seq[at]
 		if seq > covered {
-			covered = ix.buckets[skipped[next]].last[at]
+			covered = flat_last(seq)
 			skip_from << seq
 			skip_to << covered
 		}
@@ -240,6 +250,7 @@ pub fn (ix &NodeIndex) of_kinds(root C.TSNode, kinds []string, skip []string) []
 	// The wanted nodes in preorder, except the ones inside a skipped subtree. A skipped node is
 	// not inside its own subtree: the walk takes it before deciding not to enter.
 	mut nodes := []C.TSNode{}
+	flat := C.vt_flat_nodes()
 	heads = []int{len: wanted.len}
 	mut interval := 0
 	for {
@@ -256,7 +267,7 @@ pub fn (ix &NodeIndex) of_kinds(root C.TSNode, kinds []string, skip []string) []
 		if interval < skip_from.len && skip_from[interval] < seq {
 			continue
 		}
-		nodes << ix.buckets[wanted[next]].nodes[at]
+		nodes << unsafe { flat[seq].node }
 	}
 	return nodes
 }
