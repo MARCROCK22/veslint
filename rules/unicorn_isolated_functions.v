@@ -197,7 +197,7 @@ fn uisf_is_builtin_global(version int, name string) bool {
 // uisf_is_global_reference ports SourceCode#isGlobalReference: the reference is one of a variable
 // of the global scope without definitions.
 fn uisf_is_global_reference(tree &ScopeTree, r int, name string) bool {
-	v := tree.scopes[0].set[name] or { return false }
+	v := tree.set_get(0, name) or { return false }
 	if tree.variables[v].defs.len > 0 {
 		return false
 	}

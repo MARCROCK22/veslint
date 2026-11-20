@@ -966,13 +966,13 @@ fn (mut c Checker) nuv_mark_declaration(node C.TSNode, tree &ScopeTree, mut mark
 		scope = tree.scopes[scope].upper
 	}
 	if node_kind(node) == 'ambient_declaration' {
-		if v := tree.scopes[scope].set['global'] {
+		if v := tree.set_get(scope, 'global') {
 			marked[v] = true
 		}
 		return
 	}
 	for name in declared {
-		if v := tree.scopes[scope].set[c.nuv_name(name)] {
+		if v := tree.set_get(scope, c.nuv_name(name)) {
 			marked[v] = true
 		}
 	}

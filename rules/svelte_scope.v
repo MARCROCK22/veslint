@@ -149,7 +149,7 @@ fn (mut b ScopeBuilder) svelte_store_scope(module int, globals []string) {
 		if !ref.name.starts_with('\$') || ref.name in globals {
 			continue
 		}
-		v := b.tree.scopes[module].set[ref.name[1..]] or { continue }
+		v := b.tree.set_get(module, ref.name[1..]) or { continue }
 		if ref.write && !ref.read {
 			write_only << r
 		}
@@ -217,7 +217,7 @@ fn (mut b ScopeBuilder) svelte_reactive_scope(module int) {
 		if !b.svelte_is_reactive_statement(label) {
 			continue
 		}
-		mut v := b.tree.scopes[module].set[ref.name] or { -1 }
+		mut v := b.tree.set_get(module, ref.name) or { -1 }
 		if v < 0 {
 			v = b.tree.variables.len
 			b.tree.variables << ScopeVariable{
@@ -232,7 +232,7 @@ fn (mut b ScopeBuilder) svelte_reactive_scope(module int) {
 					},
 				]
 			}
-			b.tree.scopes[module].set[ref.name] = v
+			b.tree.set_put(module, ref.name, v)
 			// addVariable: sorted by the first identifier.
 			start := node_start(ref.identifier)
 			mut vars := b.tree.scopes[module].variables.clone()
@@ -324,8 +324,8 @@ fn (mut b ScopeBuilder) svelte_snippets_scope(names []int) {
 			defs := variable.defs.filter(node_key(it.name) != node_key(name))
 			if defs.len == 0 {
 				b.tree.scopes[scope].variables = b.tree.scopes[scope].variables.filter(it != v)
-				if b.tree.scopes[scope].set[variable.name] or { -1 } == v {
-					b.tree.scopes[scope].set.delete(variable.name)
+				if b.tree.set_get(scope, variable.name) or { -1 } == v {
+					b.tree.set_delete(scope, variable.name)
 				}
 				b.tree.variables[v].defs = []
 				b.tree.variables[v].identifiers = []
@@ -351,7 +351,7 @@ fn (mut b ScopeBuilder) svelte_snippets_scope(names []int) {
 // svelte_add_globals is addGlobalVariables: out of the global scope's through only.
 fn (mut b ScopeBuilder) svelte_add_globals(globals []string) {
 	for g in globals {
-		if g in b.tree.scopes[0].set {
+		if b.tree.set_has(0, g) {
 			continue
 		}
 		v := b.define_variable(0, g)
@@ -442,7 +442,7 @@ fn (mut b ScopeBuilder) svelte_props_scope(module int, script svelte.ScriptRange
 							continue
 						}
 						b.svelte_add_prop_reference(module, t.ident, mut done)
-						if v := b.tree.scopes[module].set[b.name_of(t.ident)] {
+						if v := b.tree.set_get(module, b.name_of(t.ident)) {
 							b.tree.variables[v].eslint_used = true
 						}
 					}

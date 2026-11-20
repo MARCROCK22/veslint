@@ -66,7 +66,7 @@ fn (mut c Checker) svpdodb_uses_own_bindings(root C.TSNode, t &estree.EsTree, fn
 	if ts := t.ts_node(fn_node) {
 		scope := tree.function_scope_of(ts)
 		if scope >= 0 {
-			if v := tree.scopes[scope].set['arguments'] {
+			if v := tree.set_get(scope, 'arguments') {
 				if tree.variables[v].references.len > 0 {
 					return true
 				}
