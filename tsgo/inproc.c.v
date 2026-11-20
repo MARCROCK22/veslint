@@ -98,6 +98,7 @@ fn start_inproc(bin string, cwd string, timeout time.Duration, files map[string]
 		served:       served_by_key(files)
 		serves_files: callbacks
 		virtual_fs:   virtual_fs
+		no_helpers:   os.getenv('VESLINT_TSGO_HELPERS') == '0'
 	}
 	for path, text in files {
 		c.inproc_serve(path, text)
@@ -157,6 +158,7 @@ pub fn (c &Client) worker_client(worker int) !&Client {
 		virtual:      c.virtual.clone()
 		virtual_dirs: c.virtual_dirs.clone()
 		virtual_fs:   c.virtual_fs
+		no_helpers:   c.no_helpers
 	}
 }
 

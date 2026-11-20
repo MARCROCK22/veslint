@@ -402,6 +402,20 @@ enum NbtsObjectStringification {
 
 // nbts_is_to_string_like_from_object ports isToStringLikeFromObject.
 fn (mut c Checker) nbts_is_to_string_like_from_object(t TypeResponse) !NbtsObjectStringification {
+	if c.client.in_process() {
+		// TypeScript in this process walks the properties and their declarations the same way, in
+		// one request: the properties of a type were a list of hundreds of symbols, and each
+		// declaration of toString and the others the file that declares it.
+		if t.id !in c.nbts_object_cache {
+			c.nbts_object_cache[t.id] = match c.client.to_string_like_from_object(c.snapshot,
+				c.project, t.id)! {
+				1 { NbtsObjectStringification.from_object }
+				2 { NbtsObjectStringification.user_defined }
+				else { NbtsObjectStringification.unknown }
+			}
+		}
+		return c.nbts_object_cache[t.id]
+	}
 	// An explicit [Symbol.toPrimitive] method declaration is always user-defined.
 	for property in c.properties(t)! {
 		if property.name.starts_with('__@toPrimitive') && property.value_declaration != ''

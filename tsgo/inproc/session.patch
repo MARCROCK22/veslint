@@ -19,6 +19,15 @@
  	if proj == nil {
  		return nil, fmt.Errorf("%w: project %s not found", ErrClientError, projectHandle)
  	}
+@@ -295,7 +298,7 @@
+ 	sourceFile := ast.GetSourceFileOfNode(node)
+ 	table := encoder.GetNodeIndexTable(sourceFile)
+ 	idx := table.GetIndex(node)
+-	return NodeHandle(fmt.Sprintf("%d.%d.%s", idx, node.Kind, sourceFile.PathKey()))
++	return veslintNodeHandle(idx, node.Kind, sourceFile.PathKey())
+ }
+ 
+ // registerSymbol registers a symbol in the snapshot's registry and returns its handle along with
 @@ -310,6 +313,7 @@
  	if canonicalProject == "" {
  		panic("registerSymbol requires a non-empty canonical project")
@@ -51,7 +60,12 @@
  	if proj == nil {
  		return nil, fmt.Errorf("%w: project %s not found", ErrClientError, projectHandle)
  	}
-@@ -885,6 +895,7 @@
+@@ -881,10 +891,11 @@
+ 		return "pong", nil
+ 	}
+ 
+-	parsed, err := unmarshalPayload(method, params)
++	parsed, err := veslintUnmarshalPayload(method, params)
  	if err != nil {
  		return nil, fmt.Errorf("%w: %w", ErrInvalidRequest, err)
  	}

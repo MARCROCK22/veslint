@@ -139,9 +139,6 @@ fn (mut c Checker) lint_no_unnecessary_type_assertion(root C.TSNode, abs_path st
 	sw.restart()
 	mut cache := NutaCache{}
 	mut findings := []Finding{}
-	if non_nulls.len > 0 {
-		c.scope_tree(root)
-	}
 	for node in non_nulls {
 		c.nuta_check_non_null(node, declarators, mut cache, mut findings)!
 	}
@@ -394,12 +391,11 @@ fn (mut c Checker) nuta_possibly_used_before_assigned(identifier C.TSNode, const
 }
 
 // nuta_scope_is_ancestor: the scope of `identifier` is a strict ancestor of the scope of the
-// declarator (ESLint scopes, getScope).
-fn (c &Checker) nuta_scope_is_ancestor(identifier C.TSNode, declarator C.TSNode) bool {
-	t := c.file_scopes
-	if t == unsafe { nil } {
-		return false
-	}
+// declarator (ESLint scopes, getScope). The scopes of the file are built here, the first time a
+// `var` of the file needs them: building them for every file with a `!` was a fifth of the rule's
+// own time on zod.
+fn (mut c Checker) nuta_scope_is_ancestor(identifier C.TSNode, declarator C.TSNode) bool {
+	t := c.stv_scope_tree(identifier)
 	scope := t.get_scope(identifier)
 	mut s := t.scopes[t.get_scope(declarator)].upper
 	for s >= 0 {
@@ -877,8 +873,7 @@ fn (mut c Checker) nuta_contains(t TypeResponse, flags u32, mut seen map[int]boo
 fn (mut c Checker) nuta_contains_any(t TypeResponse, mut cache NutaCache) !bool {
 	key := '${t.id}:any'
 	if key !in cache.contains {
-		mut seen := map[int]bool{}
-		cache.contains[key] = c.nuta_contains(t, type_flag_any, mut seen, mut cache, 0)!
+		cache.contains[key] = c.nuta_contains_top(t, type_flag_any, mut cache)!
 	}
 	return cache.contains[key]
 }
@@ -886,11 +881,20 @@ fn (mut c Checker) nuta_contains_any(t TypeResponse, mut cache NutaCache) !bool 
 fn (mut c Checker) nuta_contains_type_variable(t TypeResponse, mut cache NutaCache) !bool {
 	key := '${t.id}:variable'
 	if key !in cache.contains {
-		mut seen := map[int]bool{}
-		cache.contains[key] = c.nuta_contains(t, nuta_type_variable_or_index, mut seen, mut
-			cache, 0)!
+		cache.contains[key] = c.nuta_contains_top(t, nuta_type_variable_or_index, mut cache)!
 	}
 	return cache.contains[key]
+}
+
+// nuta_contains_top walks a type with nuta_contains, or has TypeScript in this process walk it
+// the same way in one request (the types of the parameters and the return types of the signatures
+// of every type it reaches, each a request otherwise).
+fn (mut c Checker) nuta_contains_top(t TypeResponse, flags u32, mut cache NutaCache) !bool {
+	if c.client.in_process() {
+		return c.client.type_contains(c.snapshot, c.project, t.id, flags)!
+	}
+	mut seen := map[int]bool{}
+	return c.nuta_contains(t, flags, mut seen, mut cache, 0)!
 }
 
 // nuta_is_empty_object_type ports isEmptyObjectType.

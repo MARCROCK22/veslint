@@ -6065,7 +6065,7 @@ mut:
 	type_node_cache                         map[string]TypeResponse            // type of each queried type node of a declaration, by its handle
 	name_symbol_cache                       map[string]SymbolResponse          // symbol of each queried name of a declaration, by its handle (type_sources.v)
 	mapped_parts_cache                      map[int]MappedParts                // what the declaration of each queried mapped type tells of it (mapped_parts.v)
-	sig_cache                               map[string][]SignatureResponse
+	sig_cache                               map[u64][]SignatureResponse
 	return_cache                            map[int]TypeResponse
 	member_cache                            map[int][]TypeResponse
 	property_names                          map[int]map[string]int // the place of the first property of each name in properties_cache, for the types with many
@@ -6089,6 +6089,10 @@ mut:
 	thenable_cache        map[int]bool
 	calls                 CheckerCalls        // caches of rules/checker_calls.v
 	awaited               map[int]AwaitedType // checker.getAwaitedType of each type asked
+	// no-base-to-string: what veslint/toStringLikeFromObject answered for each type.
+	nbts_object_cache map[int]NbtsObjectStringification
+	// property_in_list: what veslint/findProperty answered for each type and name.
+	found_property_cache map[string]SymbolResponse
 	// no-unsafe-*
 	array_type_cache map[int]bool
 	type_args_cache  map[int][]TypeResponse

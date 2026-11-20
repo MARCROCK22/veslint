@@ -1070,19 +1070,17 @@ fn (mut c Checker) nmp_dispose_returns(typed C.TSNode, at C.TSNode, thenable boo
 	location := c.symbol_location(at)
 	expected := c.well_known_property_name('dispose')!
 	for part in c.constituents(c.apparent_of(t)!)! {
-		for prop in c.properties(part)! {
-			if prop.name != expected {
-				continue
-			}
-			dispose_type := c.symbol_type_at(prop, location)!
-			if thenable {
-				if c.is_thenable_returning_function_type(dispose_type, location)! {
-					return true
-				}
-			} else if c.is_void_returning_function_type(dispose_type, location)! {
+		prop := c.property_in_list(part, expected)!
+		if prop.is_null() {
+			continue
+		}
+		dispose_type := c.symbol_type_at(prop, location)!
+		if thenable {
+			if c.is_thenable_returning_function_type(dispose_type, location)! {
 				return true
 			}
-			break
+		} else if c.is_void_returning_function_type(dispose_type, location)! {
+			return true
 		}
 	}
 	return false

@@ -1,6 +1,7 @@
 module tsgo
 
 import json2
+import strings
 
 // tsgo API methods and their types. Names and fields from dist/api/sync/api.js and
 // dist/api/proto.generated.d.ts (APIMethodInfo) of TypeScript 7.1.0-beta.
@@ -512,23 +513,10 @@ pub fn (mut c Client) base_type_of_literal(snapshot int, project string, type_id
 
 // Methods the rules use. Names and fields from dist/api/sync/api.js of TypeScript 7.1.0-beta.
 
-struct ObjectParams {
-	snapshot  int
-	project   string
-	object_id int @[json: 'objectId']
-}
-
 struct SignatureParams {
 	snapshot  int
 	project   string
 	signature int
-}
-
-struct SignaturesOfTypeParams {
-	snapshot int
-	project  string
-	typ      int @[json: 'type']
-	kind     int
 }
 
 struct ResolveNameParams {
@@ -582,30 +570,47 @@ fn (mut c Client) signature_request(snapshot int, method string, params string) 
 }
 
 fn type_params(snapshot int, project string, type_id int) string {
-	return json2.encode(TypeParams{
-		snapshot: snapshot
-		project:  project
-		typ:      type_id
-	})
+	return '{"snapshot":${snapshot},"project":${json_text(project)},"type":${type_id}}'
 }
 
 // object_params are those of the properties of a type or a signature (GetTypePropertyParams,
 // GetSignaturePropertyParams).
 fn object_params(snapshot int, project string, object_id int) string {
-	return json2.encode(ObjectParams{
-		snapshot:  snapshot
-		project:   project
-		object_id: object_id
-	})
+	return '{"snapshot":${snapshot},"project":${json_text(project)},"objectId":${object_id}}'
+}
+
+// json_text is the JSON string of `s`: as it is between quotes when it is printable ASCII without
+// `"` and `\`, as json2 writes it otherwise. The parameters of the requests a lint sends most are
+// written by hand with it (json2.encode of their structs was a hundredth of a lint of zod).
+fn json_text(s string) string {
+	for c in s {
+		if c < 0x20 || c >= 0x7f || c == `"` || c == `\\` {
+			return json2.encode(s)
+		}
+	}
+	return '"${s}"'
+}
+
+// locations_params are those of getTypeAtLocations and getSymbolsAtLocations.
+fn locations_params(snapshot int, project string, locations []string) string {
+	mut b := strings.new_builder(64 + locations.len * 48)
+	b.write_string('{"snapshot":')
+	b.write_decimal(snapshot)
+	b.write_string(',"project":')
+	b.write_string(json_text(project))
+	b.write_string(',"locations":[')
+	for i, location in locations {
+		if i > 0 {
+			b.write_u8(`,`)
+		}
+		b.write_string(json_text(location))
+	}
+	b.write_string(']}')
+	return b.str()
 }
 
 pub fn (mut c Client) signatures_of_type(snapshot int, project string, type_id int, kind int) ![]SignatureResponse {
-	params := json2.encode(SignaturesOfTypeParams{
-		snapshot: snapshot
-		project:  project
-		typ:      type_id
-		kind:     kind
-	})
+	params := '{"snapshot":${snapshot},"project":${json_text(project)},"type":${type_id},"kind":${kind}}'
 	payload := c.request('getSignaturesOfType', params)!
 	if is_null_payload(payload) {
 		return []SignatureResponse{}
@@ -722,20 +727,8 @@ pub fn (mut c Client) export_symbol_of_symbol(snapshot int, project string, symb
 	return c.symbol_request(snapshot, 'getExportSymbolOfSymbol', c.symbol_property_params(symbol.id)!)!
 }
 
-struct PropertyParams {
-	snapshot int
-	project  string
-	typ      int @[json: 'type']
-	name     string
-}
-
 pub fn (mut c Client) property_of_type(snapshot int, project string, type_id int, name string) !SymbolResponse {
-	return c.symbol_request(snapshot, 'getPropertyOfType', json2.encode(PropertyParams{
-		snapshot: snapshot
-		project:  project
-		typ:      type_id
-		name:     name
-	}))!
+	return c.symbol_request(snapshot, 'getPropertyOfType', '{"snapshot":${snapshot},"project":${json_text(project)},"type":${type_id},"name":${json_text(name)}}')!
 }
 
 pub fn (mut c Client) properties_of_type(snapshot int, project string, type_id int) ![]SymbolResponse {
@@ -781,20 +774,11 @@ pub fn (mut c Client) source_file_ast_tree(snapshot int, project string, file st
 	return decode_source_file_tree(data)!
 }
 
-struct LocationsParams {
-	snapshot  int
-	project   string
-	locations []string
-}
-
 // types_at_locations gives the type of each node (handles from SourceFileAst.handle), like
 // checker.getTypeAtLocation. A node without a type becomes id 0.
 pub fn (mut c Client) types_at_locations(snapshot int, project string, locations []string) ![]TypeResponse {
-	return c.types_request(snapshot, 'getTypeAtLocations', json2.encode(LocationsParams{
-		snapshot:  snapshot
-		project:   project
-		locations: locations
-	}))!
+	return c.types_request(snapshot, 'getTypeAtLocations', locations_params(snapshot,
+		project, locations))!
 }
 
 // true_type_of_conditional and false_type_of_conditional are the branches of a conditional type
@@ -927,11 +911,8 @@ struct LocationParams {
 // symbols_at_locations gives the symbol of each node (handles of any file of the program), like
 // checker.getSymbolAtLocation. A node without a symbol gets the null symbol.
 pub fn (mut c Client) symbols_at_locations(snapshot int, project string, locations []string) ![]SymbolResponse {
-	return c.symbols_request(snapshot, 'getSymbolsAtLocations', json2.encode(LocationsParams{
-		snapshot:  snapshot
-		project:   project
-		locations: locations
-	}))!
+	return c.symbols_request(snapshot, 'getSymbolsAtLocations', locations_params(snapshot,
+		project, locations))!
 }
 
 // type_from_type_node gives the type of a type node (its handle), like
@@ -947,11 +928,7 @@ pub fn (mut c Client) type_from_type_node(snapshot int, project string, location
 // contextual_type gives the contextual type of a node (handle from SourceFileAst.handle), like
 // checker.getContextualType. Without a contextual type it returns id 0.
 pub fn (mut c Client) contextual_type(snapshot int, project string, location string) !TypeResponse {
-	return c.type_request(snapshot, 'getContextualType', json2.encode(LocationParams{
-		snapshot: snapshot
-		project:  project
-		location: location
-	}))!
+	return c.type_request(snapshot, 'getContextualType', '{"snapshot":${snapshot},"project":${json_text(project)},"location":${json_text(location)}}')!
 }
 
 // type_of_symbol_at_location gives the type of a symbol as seen from a node (handle from
@@ -1089,21 +1066,10 @@ pub fn (mut c Client) type_predicate_of_signature(snapshot int, project string, 
 	}
 }
 
-struct AssignableParams {
-	snapshot int
-	project  string
-	source   int
-	target   int
-}
-
 // is_type_assignable_to ports checker.isTypeAssignableTo.
 pub fn (mut c Client) is_type_assignable_to(snapshot int, project string, source int, target int) !bool {
-	return decode_response[bool]('isTypeAssignableTo', c.request('isTypeAssignableTo', json2.encode(AssignableParams{
-		snapshot: snapshot
-		project:  project
-		source:   source
-		target:   target
-	}))!)!
+	return decode_response[bool]('isTypeAssignableTo', c.request('isTypeAssignableTo',
+		'{"snapshot":${snapshot},"project":${json_text(project)},"source":${source},"target":${target}}')!)!
 }
 
 // target_of_type gives the target of a type reference, with its elementFlags for a tuple.
