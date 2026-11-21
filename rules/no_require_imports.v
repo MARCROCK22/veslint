@@ -37,6 +37,11 @@ fn (mut c Checker) lint_no_require_imports(root C.TSNode, abs_path string, mut s
 	o := nri_options(c.rule_options(no_require_imports))!
 	mut findings := []Finding{}
 	mut checked := 0
+	// Every report is of a `require`, which only a `\u` escape can write otherwise.
+	if !c.src.contains('require') && !c.src.contains('\\u') {
+		stats.eval_ms += ms(sw.elapsed())
+		return findings
+	}
 	for node in c.nodes_of_kinds(root, ['call_expression', 'import_require_clause'], []) {
 		if node_kind(node) == 'import_require_clause' {
 			// TSExternalModuleReference: the `require('…')` of `import x = require('…')`, whose
@@ -72,12 +77,12 @@ fn (mut c Checker) lint_no_require_imports(root C.TSNode, abs_path string, mut s
 		}
 		// `CallExpression[callee.name="require"]`, also optional (`require?.('x')`); not a tagged
 		// template.
-		args := call_arguments(node) or { continue }
 		callee := node_field(node, 'function') or { continue }
 		inner := unwrap_parens(callee)
 		if node_kind(inner) != 'identifier' || c.identifier_name(inner) != 'require' {
 			continue
 		}
+		args := call_arguments(node) or { continue }
 		checked++
 		if args.len > 0 && c.nri_is_allowed(o, args[0])! {
 			continue

@@ -12,11 +12,19 @@ const psp_messages = {
 fn (mut c Checker) lint_prefer_spread(root C.TSNode, abs_path string, mut stats Stats) ![]Finding {
 	sw := time.new_stopwatch()
 	mut findings := []Finding{}
+	// Every report is of a call of `apply`, a name only an escape (in a string or a template
+	// literal) can write otherwise.
+	if !c.src.contains('apply') && !c.src.contains('\\') {
+		stats.eval_ms += ms(sw.elapsed())
+		return findings
+	}
 	for node in c.nodes_of_kinds(root, ['call_expression'], []) {
-		args := (call_arguments(node) or { continue }).filter(node_kind(it) != 'comment')
 		callee := unwrap_parens(node_field(node, 'function') or { continue })
-		if !c.es_is_specific_member_access(callee, '', 'apply') || args.len != 2
-			|| node_kind(unwrap_parens(args[1])) in ['array', 'spread_element'] {
+		if !c.es_is_specific_member_access(callee, '', 'apply') {
+			continue
+		}
+		args := (call_arguments(node) or { continue }).filter(node_kind(it) != 'comment')
+		if args.len != 2 || node_kind(unwrap_parens(args[1])) in ['array', 'spread_element'] {
 			continue
 		}
 		stats.checked++

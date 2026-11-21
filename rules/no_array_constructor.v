@@ -14,10 +14,23 @@ fn (mut c Checker) lint_no_array_constructor(root C.TSNode, abs_path string, mut
 	sw := time.new_stopwatch()
 	mut findings := []Finding{}
 	mut checked := 0
+	// Every report is of a call of `Array`, which only a `\u` escape can write otherwise.
+	if !c.src.contains('Array') && !c.src.contains('\\u') {
+		stats.eval_ms += ms(sw.elapsed())
+		return findings
+	}
 	// CallExpression (not a tagged template nor `import()`) and NewExpression.
 	for node in c.nodes_of_kinds(root, ['call_expression', 'new_expression'], []) {
 		is_call := node_kind(node) == 'call_expression'
 		if is_call && precedence_is_import_call(node) {
+			continue
+		}
+		callee := unwrap_parens(node_field(node, if is_call { 'function' } else { 'constructor' }) or {
+			continue
+		})
+		checked++
+		// Not one argument, the callee is the identifier `Array` and there are no type arguments.
+		if node_kind(callee) != 'identifier' || c.identifier_name(callee) != 'Array' {
 			continue
 		}
 		args := if is_call {
@@ -27,12 +40,7 @@ fn (mut c Checker) lint_no_array_constructor(root C.TSNode, abs_path string, mut
 		} else {
 			[]C.TSNode{}
 		}
-		callee := unwrap_parens(node_field(node, if is_call { 'function' } else { 'constructor' }) or {
-			continue
-		})
-		checked++
-		// Not one argument, the callee is the identifier `Array` and there are no type arguments.
-		if args.len == 1 || node_kind(callee) != 'identifier' || c.identifier_name(callee) != 'Array' {
+		if args.len == 1 {
 			continue
 		}
 		if _ := node_field(node, 'type_arguments') {

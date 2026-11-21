@@ -24,6 +24,11 @@ fn (mut c Checker) lint_no_unsafe_optional_chaining(root C.TSNode, abs_path stri
 	sw := time.new_stopwatch()
 	arithmetic := nuoc_options(c.rule_options(no_unsafe_optional_chaining))!
 	mut findings := []Finding{}
+	// Every report is of a ChainExpression, whose `?.` is a token: a file without one has none.
+	if !c.src.contains('?.') {
+		stats.eval_ms += ms(sw.elapsed())
+		return findings
+	}
 	kinds := ['assignment_expression', 'assignment_pattern', 'object_assignment_pattern',
 		'required_parameter', 'optional_parameter', 'extends_clause', 'call_expression',
 		'new_expression', 'variable_declarator', 'member_expression', 'subscript_expression',
