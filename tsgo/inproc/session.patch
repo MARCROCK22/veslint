@@ -1,16 +1,19 @@
 --- a/session.go
 +++ b/session.go
-@@ -125,6 +125,9 @@
+@@ -125,6 +125,12 @@
  
  	projectRegistries   map[project.ID]*projectRegistryData
  	projectRegistriesMu sync.RWMutex
 +
 +	// veslint: the checker of each worker, by program (api_inprocess.go).
 +	workerCheckers veslintWorkerCheckers
++
++	// veslint: the range index of the file each worker last asked about (api_fastjson.go).
++	veslintRanges veslintRangeIndexes
  }
  
  type moduleResolverRegistration struct {
-@@ -144,6 +147,9 @@
+@@ -144,6 +150,9 @@
  
  	signatureRegistry   map[SignatureID]*checker.Signature
  	signatureRegistryMu sync.RWMutex
@@ -20,7 +23,7 @@
  }
  
  // getProgram looks up a program from a project handle within this snapshot.
-@@ -162,7 +168,7 @@
+@@ -162,7 +171,7 @@
  
  // getProject looks up a project from a project handle within this snapshot.
  func (sd *snapshotData) getProject(projectHandle project.ID) (*project.Project, error) {
@@ -29,7 +32,7 @@
  	if proj == nil {
  		return nil, fmt.Errorf("%w: project %s not found", ErrClientError, projectHandle)
  	}
-@@ -295,7 +301,6 @@
+@@ -295,7 +304,6 @@
  	sourceFile := ast.GetSourceFileOfNode(node)
 -	table := encoder.GetNodeIndexTable(sourceFile)
 -	idx := table.GetIndex(node)
@@ -39,7 +42,7 @@
  }
  
  // registerSymbol registers a symbol in the snapshot's registry and returns its handle along with
-@@ -310,6 +316,7 @@
+@@ -310,6 +318,7 @@
  	if canonicalProject == "" {
  		panic("registerSymbol requires a non-empty canonical project")
  	}
@@ -47,7 +50,7 @@
  	id := SymbolHandle(symbol)
  	sd.symbolRegistryMu.Lock()
  	defer sd.symbolRegistryMu.Unlock()
-@@ -834,7 +841,13 @@
+@@ -834,7 +843,13 @@
  		return checkerSetup{}, err
  	}
  
@@ -62,7 +65,7 @@
  	return checkerSetup{
  		sd:        sd,
  		snapshot:  snapshot,
-@@ -857,7 +870,7 @@
+@@ -857,7 +872,7 @@
  // LS operation acquires a checker exactly once; nested acquisitions (e.g. find-all-
  // references) would deadlock on the single-slot persistent checker.
  func (s *Session) setupLanguageService(snapshot *project.Snapshot, program *compiler.Program, projectHandle project.ID, activeFile string) (*ls.LanguageService, error) {
@@ -71,7 +74,7 @@
  	if proj == nil {
  		return nil, fmt.Errorf("%w: project %s not found", ErrClientError, projectHandle)
  	}
-@@ -881,10 +894,11 @@
+@@ -881,10 +896,11 @@
  		return "pong", nil
  	}
  
@@ -84,7 +87,7 @@
  
  	switch method {
  	case string(MethodBatchRequests):
-@@ -3247,7 +3261,7 @@
+@@ -3247,7 +3263,7 @@
  		defer preparedSnapshot.Deref()
  
  		workingSnapshot = preparedSnapshot
@@ -93,7 +96,7 @@
  		if proj == nil {
  			return nil, fmt.Errorf("%w: project %s not found", ErrClientError, projectID)
  		}
-@@ -5521,7 +5535,7 @@
+@@ -5521,7 +5537,7 @@
  			return nil, err
  		}
  		projectID := params.Project

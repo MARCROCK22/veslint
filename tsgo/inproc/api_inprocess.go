@@ -42,8 +42,6 @@ type InProcess struct {
 	files   *InProcessFiles
 	ctx     context.Context
 	cancel  context.CancelFunc
-	// The range index of the file each worker last asked about (nodesAtRanges).
-	ranges veslintRangeIndexes
 }
 
 // InProcessOptions are the flags of `tsc --api` that veslint uses.

@@ -1030,7 +1030,7 @@ func (p *InProcess) nodesAtRanges(worker int, params []byte) (any, error) {
 	if sourceFile == nil {
 		return RawBinary(nil), nil
 	}
-	index := p.rangeIndex(worker, sourceFile)
+	index := sd.veslintRanges.get(worker, sourceFile)
 	path := sourceFile.PathKey()
 	count := len(ranges) / 3
 	b := make([]byte, 0, 4+len(path)+8*count)
@@ -1134,27 +1134,29 @@ func (x *veslintRangeIndex) find(pos int32, end int32, kind uint32) (uint32, uin
 	return 0, 0
 }
 
-// veslintRangeIndexes keeps the range index of the last file each worker asked about: a worker
-// lints one file at a time and asks about it several times (once per group of rules' nodes).
+// veslintRangeIndexes keeps the range index of the last file each worker of a snapshot asked about:
+// a worker lints one file at a time and asks about it several times (once per group of rules'
+// nodes). They go with the snapshot, and with them the files of a snapshot veslint --server
+// released.
 type veslintRangeIndexes struct {
 	mu       sync.Mutex
 	byWorker map[int]*veslintRangeIndex
 }
 
-func (p *InProcess) rangeIndex(worker int, sourceFile *ast.SourceFile) *veslintRangeIndex {
-	p.ranges.mu.Lock()
-	index := p.ranges.byWorker[worker]
-	p.ranges.mu.Unlock()
+func (x *veslintRangeIndexes) get(worker int, sourceFile *ast.SourceFile) *veslintRangeIndex {
+	x.mu.Lock()
+	index := x.byWorker[worker]
+	x.mu.Unlock()
 	if index != nil && index.file == sourceFile {
 		return index
 	}
 	index = buildRangeIndex(sourceFile)
-	p.ranges.mu.Lock()
-	if p.ranges.byWorker == nil {
-		p.ranges.byWorker = map[int]*veslintRangeIndex{}
+	x.mu.Lock()
+	if x.byWorker == nil {
+		x.byWorker = map[int]*veslintRangeIndex{}
 	}
-	p.ranges.byWorker[worker] = index
-	p.ranges.mu.Unlock()
+	x.byWorker[worker] = index
+	x.mu.Unlock()
 	return index
 }
 
