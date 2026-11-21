@@ -270,6 +270,7 @@ fn (mut c Client) next_snapshot(base UpdateSnapshotResponse, changes SnapshotCha
 pub fn (mut c Client) release_snapshot(snapshot int) ! {
 	c.request('release', json2.encode(ReleaseParams{ snapshot: snapshot }))!
 	c.symbols.forget(snapshot)
+	c.forget_sent_types(snapshot)
 }
 
 struct PositionsParams {
@@ -746,7 +747,11 @@ pub fn (mut c Client) symbol_of_type(snapshot int, project string, type_id int) 
 }
 
 pub fn (mut c Client) types_of_type(snapshot int, project string, type_id int) ![]TypeResponse {
-	return c.types_request(snapshot, 'getTypesOfType', object_params(snapshot, project, type_id))!
+	params := object_params(snapshot, project, type_id)
+	if c.sends_types_once() {
+		return c.sent_types_request(snapshot, project, 'veslint/typesOfType', params)!
+	}
+	return c.types_request(snapshot, 'getTypesOfType', params)!
 }
 
 pub fn (mut c Client) apparent_type(snapshot int, project string, type_id int) !TypeResponse {
@@ -892,8 +897,46 @@ pub fn (mut c Client) source_file_ast_tree(snapshot int, project string, file st
 // types_at_locations gives the type of each node (handles from SourceFileAst.handle), like
 // checker.getTypeAtLocation. A node without a type becomes id 0.
 pub fn (mut c Client) types_at_locations(snapshot int, project string, locations []string) ![]TypeResponse {
-	return c.types_request(snapshot, 'getTypeAtLocations', locations_params(snapshot,
-		project, locations))!
+	params := locations_params(snapshot, project, locations)
+	if c.sends_types_once() {
+		return c.sent_types_request(snapshot, project, 'veslint/typesAtLocations', params)!
+	}
+	return c.types_request(snapshot, 'getTypeAtLocations', params)!
+}
+
+// types_at_nodes is types_at_locations for nodes of the file of `path` (SourceFileAst.find), and
+// gives the types where the client keeps them, which the caller only reads. With the types sent
+// once (sent_types.v) the request names the file once and each node by its index and kind, instead
+// of a handle each, and the types are the ones of SentTypes.
+pub fn (mut c Client) types_at_nodes(snapshot int, project string, path string, nodes []AstNode) ![]&TypeResponse {
+	if !c.sends_types_once() || !json_plain(path) {
+		types := c.types_at_locations(snapshot, project, nodes.map(node_handle_text(it.index,
+			it.kind, path)))!
+		mut refs := []&TypeResponse{cap: types.len}
+		for i in 0 .. types.len {
+			refs << unsafe { &types[i] }
+		}
+		return refs
+	}
+	project_json := json_text(project)
+	mut b := []u8{cap: 64 + project_json.len + path.len + 12 * nodes.len}
+	push_text(mut b, '{"snapshot":')
+	push_decimal(mut b, snapshot)
+	push_text(mut b, ',"project":')
+	push_text(mut b, project_json)
+	push_text(mut b, ',"file":"')
+	push_text(mut b, path)
+	push_text(mut b, '","nodes":[')
+	for i, node in nodes {
+		if i > 0 {
+			b << `,`
+		}
+		push_decimal(mut b, node.index)
+		b << `,`
+		push_decimal(mut b, int(node.kind))
+	}
+	push_text(mut b, ']}')
+	return c.sent_type_refs_request(snapshot, project, 'veslint/typesAtLocations', text_of(mut b))!
 }
 
 // true_type_of_conditional and false_type_of_conditional are the branches of a conditional type

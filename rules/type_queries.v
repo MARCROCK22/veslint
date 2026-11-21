@@ -517,8 +517,9 @@ fn (mut c Checker) resolve_new(spans []Span, abs_path string, mut stats Stats) !
 		c.ast = c.client.source_file_ast(c.snapshot, c.project, abs_path)!
 		c.ast_path = abs_path
 	}
+	c.nodes.path = c.ast.path
 	mut keys := []u64{cap: order.len}
-	mut handles := []string{cap: order.len}
+	mut nodes := []tsgo.AstNode{cap: order.len}
 	mut i := 0
 	for g, key in order {
 		c.nodes.set_flag(key, node_attempted)
@@ -533,12 +534,13 @@ fn (mut c Checker) resolve_new(spans []Span, abs_path string, mut stats Stats) !
 			if found {
 				continue
 			}
-			handle := c.ast.handle(pos, end, s.kind) or { continue }
-			kind := if s.kind != 0 { s.kind } else { c.ast.kind(pos, end) or { 0 } }
-			c.nodes.set_node(key, handle, kind)
+			// The kind of the node found is the span's when it has one, else the innermost node's
+			// with the range.
+			node := c.ast.find(pos, end, s.kind) or { continue }
+			c.nodes.set_node(key, node.index, node.kind)
 			if typed[g] {
 				keys << key
-				handles << handle
+				nodes << node
 			}
 			found = true
 		}
@@ -550,34 +552,34 @@ fn (mut c Checker) resolve_new(spans []Span, abs_path string, mut stats Stats) !
 	}
 	for key in late {
 		keys << key
-		handles << c.nodes.handle_or_empty(key)
+		nodes << c.nodes.ast_node(key) or { tsgo.AstNode{} }
 	}
-	unmatched, nodes := c.request_key_types(keys, handles)!
+	unmatched, typed_nodes := c.request_key_types(keys, nodes)!
 	stats.unmatched += unmatched
-	stats.nodes += nodes
+	stats.nodes += typed_nodes
 }
 
 // request_late_types requests the types of keys whose node was found without its type.
 fn (mut c Checker) request_late_types(keys []u64, mut stats Stats) ! {
-	handles := keys.map(c.nodes.handle_or_empty(it))
-	unmatched, nodes := c.request_key_types(keys, handles)!
+	nodes := keys.map(c.nodes.ast_node(it) or { tsgo.AstNode{} })
+	unmatched, typed_nodes := c.request_key_types(keys, nodes)!
 	stats.unmatched += unmatched
-	stats.nodes += nodes
+	stats.nodes += typed_nodes
 }
 
-// request_key_types requests the types of the nodes of `keys` (their `handles`) in a single
-// getTypeAtLocations and keeps them; it gives how many failed (unanalyzed) and how many have a
-// type.
-fn (mut c Checker) request_key_types(keys []u64, handles []string) !(int, int) {
-	if handles.len == 0 {
+// request_key_types requests the types of the tsgo nodes of `keys` (`nodes`, in the file of
+// c.nodes.path) in a single getTypeAtLocations and keeps them; it gives how many failed
+// (unanalyzed) and how many have a type.
+fn (mut c Checker) request_key_types(keys []u64, nodes []tsgo.AstNode) !(int, int) {
+	if nodes.len == 0 {
 		return 0, 0
 	}
 	mut failed := map[int]bool{}
-	types := c.request_types(handles, 0, mut failed)!
-	if types.len != handles.len {
-		return error('protocol: tsgo returned ${types.len} types for ${handles.len} nodes')
+	types := c.request_types(nodes, 0, mut failed)!
+	if types.len != nodes.len {
+		return error('protocol: tsgo returned ${types.len} types for ${nodes.len} nodes')
 	}
-	// The types stay in the array they were decoded into.
+	// The types stay where the client keeps them.
 	chunk := c.nodes.add_types(types)
 	for j, key in keys {
 		c.nodes.set_flag(key, node_typed)
@@ -588,7 +590,7 @@ fn (mut c Checker) request_key_types(keys []u64, handles []string) !(int, int) {
 		}
 		c.nodes.set_type(key, chunk, j)
 	}
-	return failed.len, handles.len - failed.len
+	return failed.len, nodes.len - failed.len
 }
 
 // late_type is the type of a node requested with no_type, asked now (the null type when it has no
@@ -597,31 +599,31 @@ fn (mut c Checker) request_key_types(keys []u64, handles []string) !(int, int) {
 fn (mut c Checker) late_type(n C.TSNode) !TypeResponse {
 	key := node_key(n)
 	if !c.nodes.typed(key) {
-		handle := c.nodes.handle(key) or { return TypeResponse{} }
-		unmatched, _ := c.request_key_types([key], [handle])!
+		node := c.nodes.ast_node(key) or { return TypeResponse{} }
+		unmatched, _ := c.request_key_types([key], [node])!
 		c.late_unmatched += unmatched
 	}
 	t := c.nodes.node_type(key) or { return TypeResponse{} }
 	return t
 }
 
-// request_types asks tsgo for the types of `handles` in a single getTypeAtLocations. When tsgo
-// panics on a node it rejects the whole request (7.0.2 did on an empty array literal whose type is
-// the empty tuple, like `[] as const`: microsoft/TypeScript#63869, fixed in 7.1), so the handles
-// are split in halves until the ones it panics on are alone. `failed` gets their indexes, counted
-// from `offset`, and their types stay empty.
-fn (mut c Checker) request_types(handles []string, offset int, mut failed map[int]bool) ![]TypeResponse {
-	return c.client.types_at_locations(c.snapshot, c.project, handles) or {
+// request_types asks tsgo for the types of `nodes` (of the file of c.nodes.path) in a single
+// getTypeAtLocations. When tsgo panics on a node it rejects the whole request (7.0.2 did on an
+// empty array literal whose type is the empty tuple, like `[] as const`: microsoft/TypeScript#63869,
+// fixed in 7.1), so the nodes are split in halves until the ones it panics on are alone. `failed`
+// gets their indexes, counted from `offset`, and their types stay empty.
+fn (mut c Checker) request_types(nodes []tsgo.AstNode, offset int, mut failed map[int]bool) ![]&TypeResponse {
+	return c.client.types_at_nodes(c.snapshot, c.project, c.nodes.path, nodes) or {
 		if !tsgo.is_panic(err) {
 			return err
 		}
-		if handles.len == 1 {
+		if nodes.len == 1 {
 			failed[offset] = true
-			return [TypeResponse{}]
+			return [&TypeResponse{}]
 		}
-		half := handles.len / 2
-		mut types := c.request_types(handles[..half], offset, mut failed)!
-		types << c.request_types(handles[half..], offset + half, mut failed)!
+		half := nodes.len / 2
+		mut types := c.request_types(nodes[..half], offset, mut failed)!
+		types << c.request_types(nodes[half..], offset + half, mut failed)!
 		return types
 	}
 }

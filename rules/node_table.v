@@ -2,14 +2,15 @@ module rules
 
 import tsgo { TypeResponse }
 
-// NodeTable is what the rules of a file have asked tsgo about each node key (node_key: the range
-// of a tree-sitter node): whether it was looked up in tsgo, whether its type was requested, the
-// handle and the SyntaxKind of the tsgo node found for it, and its type. One table of the keys
-// (open addressing over plain numbers, which the collector does not scan) gives each key a dense
-// id, and the rest is in arrays by id; the types stay in the arrays tsgo's answers were decoded
-// into. Five maps by key did the same: each was grown for the nodes of a large file (every rule
-// asks for tens of thousands), copying all their entries, a type of a few hundred bytes for each
-// node in one of them, and that was the largest share of what a typed lint allocated.
+// NodeTable is what the rules of a file have asked tsgo about each node key (node_key: the range of
+// a tree-sitter node): whether it was looked up in tsgo, whether its type was requested, the index
+// (which makes its handle) and the SyntaxKind of the tsgo node found for it, and its type. One
+// table of the keys (open addressing over plain numbers, which the collector does not scan) gives
+// each key a dense id, and the rest is in arrays by id; the types stay where the client keeps them
+// (Client.types_at_nodes). Five maps by key did the same: each was grown for the nodes of a large
+// file (every rule asks for tens of thousands), copying all their entries, a type of a few hundred
+// bytes for each node in one of them, and that was the largest share of what a typed lint
+// allocated.
 struct NodeTable {
 mut:
 	// slots[h] is the id of a key plus one, 0 for an empty slot; its length is a power of two,
@@ -18,12 +19,16 @@ mut:
 	keys  []u64
 	flags []u8
 	kinds []u32 // 0 when the node has none
-	// handles[id] is valid with node_has_handle.
-	handles []string
-	// The type of a node is types[type_chunk[id]][type_index[id]], with node_has_type.
+	// indexes[id] is the index of the tsgo node in the table of the file of `path`, valid with
+	// node_has_handle: its handle is made when a rule asks for it (handle), since most of them
+	// are only sent in the requests of types, which take the index (Client.types_at_nodes).
+	indexes []u32
+	path    string
+	// The type of a node is types[type_chunk[id]][type_index[id]], with node_has_type: where the
+	// client keeps it (Client.types_at_nodes).
 	type_chunk []u32
 	type_index []u32
-	types      [][]TypeResponse
+	types      [][]&TypeResponse
 	// The place of each key in the groups of a resolve_new: group[id], for the call `call` when
 	// group_call[id] is it.
 	group      []u32
@@ -83,7 +88,7 @@ fn (mut t NodeTable) add(key u64) int {
 	t.keys << key
 	t.flags << 0
 	t.kinds << 0
-	t.handles << ''
+	t.indexes << 0
 	t.type_chunk << 0
 	t.type_index << 0
 	t.group << 0
@@ -101,7 +106,7 @@ fn (mut t NodeTable) reserve(more int) {
 	t.keys.ensure_cap(need)
 	t.flags.ensure_cap(need)
 	t.kinds.ensure_cap(need)
-	t.handles.ensure_cap(need)
+	t.indexes.ensure_cap(need)
 	t.type_chunk.ensure_cap(need)
 	t.type_index.ensure_cap(need)
 	t.group.ensure_cap(need)
@@ -153,7 +158,19 @@ fn (t &NodeTable) handle(key u64) ?string {
 	if id < 0 || t.flags[id] & node_has_handle == 0 {
 		return none
 	}
-	return t.handles[id]
+	return tsgo.node_handle_text(int(t.indexes[id]), t.kinds[id], t.path)
+}
+
+// ast_node is the tsgo node of a key, if it has one.
+fn (t &NodeTable) ast_node(key u64) ?tsgo.AstNode {
+	id := t.id(key)
+	if id < 0 || t.flags[id] & node_has_handle == 0 {
+		return none
+	}
+	return tsgo.AstNode{
+		index: int(t.indexes[id])
+		kind:  t.kinds[id]
+	}
 }
 
 // handle_or_empty is handle, '' when there is none.
@@ -173,7 +190,7 @@ fn (t &NodeTable) node_type(key u64) ?TypeResponse {
 	if id < 0 || t.flags[id] & node_has_type == 0 {
 		return none
 	}
-	return t.types[t.type_chunk[id]][t.type_index[id]]
+	return *t.types[t.type_chunk[id]][t.type_index[id]]
 }
 
 fn (mut t NodeTable) set_flag(key u64, flag u8) {
@@ -181,27 +198,28 @@ fn (mut t NodeTable) set_flag(key u64, flag u8) {
 	t.flags[id] |= flag
 }
 
-// set_node is the tsgo node found for a key: its handle and its SyntaxKind.
-fn (mut t NodeTable) set_node(key u64, handle string, kind u32) {
+// set_node is the tsgo node found for a key: its index in the table of the file of `path` and its
+// SyntaxKind.
+fn (mut t NodeTable) set_node(key u64, index int, kind u32) {
 	id := t.add(key)
-	t.handles[id] = handle
+	t.indexes[id] = u32(index)
 	t.kinds[id] = kind
 	t.flags[id] |= node_has_handle
 }
 
-// drop_node forgets the tsgo node of a key (its handle and its kind).
+// drop_node forgets the tsgo node of a key (its index and its kind).
 fn (mut t NodeTable) drop_node(key u64) {
 	id := t.id(key)
 	if id < 0 {
 		return
 	}
-	t.handles[id] = ''
+	t.indexes[id] = 0
 	t.kinds[id] = 0
 	t.flags[id] &= ~node_has_handle
 }
 
 // add_types keeps an array of types answered by tsgo, and gives its place for set_type.
-fn (mut t NodeTable) add_types(types []TypeResponse) u32 {
+fn (mut t NodeTable) add_types(types []&TypeResponse) u32 {
 	t.types << types
 	return u32(t.types.len - 1)
 }
