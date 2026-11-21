@@ -190,7 +190,9 @@ mut:
 	// trees: the last tree of the files linted last, which their next text is parsed from (an
 	// edit re-parses what it changed)
 	trees &treesitter.TreeCache = unsafe { nil }
-	prof  ServerProfile
+	// config_memo: the resolutions of the configuration of the requests' files (config_cache.v)
+	config_memo ResolutionMemo
+	prof        ServerProfile
 }
 
 fn since_ms(sw time.StopWatch) f64 {
@@ -455,7 +457,7 @@ fn (mut s Server) lint(id i64, config string, project string, files []string, te
 		}
 	}
 	mut phase := time.new_stopwatch()
-	loaded := load_config_for(config, files) or {
+	loaded := load_config_for(config, files, mut s.config_memo) or {
 		return ServerAnswer{
 			id:     id
 			code:   2
@@ -852,6 +854,15 @@ fn (mut s Server) snapshot_for(tsconfigs []string, lazy bool) ! {
 		if lazy && opened.len == 0 && s.changes.is_empty() {
 			return
 		}
+		if lazy && opened.len == 0 && only_sources_changed(s.changes) {
+			// The texts of source files do not change what a tsconfig parses to (its files are
+			// found by name): only the checkers' snapshots, made by a file that asked for types,
+			// have the old texts.
+			s.forget_asts(s.changes)
+			s.drop_checkers()!
+			s.changes = tsgo.FileChangeSet{}
+			return
+		}
 		// The tsconfig files are parsed again (a change may be one of them), and the checkers'
 		// snapshots are of files that changed; the first request with a rule that needs types
 		// builds the programs.
@@ -880,6 +891,18 @@ fn (mut s Server) snapshot_for(tsconfigs []string, lazy bool) ! {
 	if previous != s.snap.snapshot {
 		s.client.release_snapshot(previous)!
 	}
+}
+
+// source_extensions are those of the files whose text a tsconfig.json does not read: what it reads
+// is JSON (itself and the files it extends) and the names of the files in its directories.
+const source_extensions = ['.ts', '.tsx', '.mts', '.cts', '.js', '.jsx', '.mjs', '.cjs', '.vue',
+	'.svelte']
+
+// only_sources_changed: the changes are only of the text of source files (none created, deleted
+// or reset), which leave the parsed tsconfig files as they are.
+fn only_sources_changed(changes tsgo.FileChangeSet) bool {
+	return changes.created.len == 0 && changes.deleted.len == 0 && !changes.invalidate_all
+		&& changes.changed.all(os.file_ext(it).to_lower() in source_extensions)
 }
 
 // include_twins runs include_twins (vue_files.v) for the twins tsgo has not been looked at for:

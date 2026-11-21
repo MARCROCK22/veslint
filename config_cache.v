@@ -35,21 +35,85 @@ const config_cache_entry_version = 2
 // Entries not used for this long are removed when another one is written.
 const config_cache_max_age = 30 * 24 * time.hour
 
+// ResolutionMemo keeps, in a process that resolves the same configuration for the same files
+// again and again (veslint --server, at every edit), each resolution by the name of the entry of
+// its files, with the entry it came from, decoded: the next resolution only checks that nothing it
+// came from changed (entry_valid), without reading and decoding the entry again.
+struct ResolutionMemo {
+mut:
+	entries map[string]MemoizedResolution
+	// sources: the entries the resolutions came from, by path (one of more files serves many)
+	sources map[string]&DecodedEntry
+}
+
+@[heap]
+struct DecodedEntry {
+	entry map[string]json2.Any
+}
+
+struct MemoizedResolution {
+	resolved string
+	source   string // the entry it came from: of these files, or of more (reuse)
+	used     i64    // when `source` was last marked as used (touch_entry)
+}
+
+// memo_resolutions is how many resolutions a ResolutionMemo keeps before it starts again.
+const memo_resolutions = 64
+
+// keep remembers the resolution of the entry `entry_path` out of `source`.
+fn (mut m ResolutionMemo) keep(entry_path string, resolved string, source string, entry map[string]json2.Any) {
+	if m.entries.len >= memo_resolutions {
+		m.entries = map[string]MemoizedResolution{}
+		m.sources = map[string]&DecodedEntry{}
+	}
+	m.entries[entry_path] = MemoizedResolution{
+		resolved: resolved
+		source:   source
+		used:     time.now().unix()
+	}
+	m.sources[source] = &DecodedEntry{
+		entry: entry
+	}
+}
+
 // resolve_cached is resolve_with_bun through the cache; with `reuse` (and without lookup), out of
-// the entry of more files when there is no entry of these files.
-fn resolve_cached(config_path string, files []string, lookup bool, reuse bool) !string {
+// the entry of more files when there is no entry of these files. With a `memo`, out of a
+// resolution it keeps while it is valid.
+fn resolve_cached(config_path string, files []string, lookup bool, reuse bool, mut memo ResolutionMemo) !string {
 	if os.getenv('VESLINT_CONFIG_CACHE') == '0' {
 		return resolve_with_bun(config_path, files, lookup)
 	}
 	dir := config_cache_dir(config_path) or { return resolve_with_bun(config_path, files, lookup) }
 	base := config_cache_base(config_path, lookup)
 	entry_path := os.join_path(dir, 'config-${base}-${config_cache_key(config_path, files, lookup)}.json')
-	if resolved := cached_resolution(entry_path, files, lookup) {
-		touch_entry(entry_path)
-		return resolved
+	if kept := memo.entries[entry_path] {
+		source := memo.sources[kept.source] or { &DecodedEntry{} }
+		if source.entry.len > 0 && entry_valid(source.entry, files, lookup) {
+			// Marked as used now and then: entries not used for a month are removed.
+			now := time.now().unix()
+			if now - kept.used > 3600 {
+				touch_entry(kept.source)
+				memo.entries[entry_path] = MemoizedResolution{
+					...kept
+					used: now
+				}
+			}
+			return kept.resolved
+		}
+		memo.entries.delete(entry_path)
+	}
+	if entry := read_entry(entry_path) {
+		if entry_valid(entry, files, lookup) {
+			if resolved := entry['resolved'] {
+				touch_entry(entry_path)
+				memo.keep(entry_path, resolved.str(), entry_path, entry)
+				return resolved.str()
+			}
+		}
 	}
 	if reuse && !lookup {
-		if resolved := subset_resolution(dir, base, files) {
+		if resolved, source, entry := subset_resolution(dir, base, files) {
+			memo.keep(entry_path, resolved, source, entry)
 			return resolved
 		}
 	}
@@ -109,16 +173,6 @@ fn config_cache_parts(config_path string, lookup bool) []string {
 	]
 }
 
-// cached_resolution is the resolved JSON of the entry when nothing it came from changed.
-fn cached_resolution(entry_path string, files []string, lookup bool) ?string {
-	entry := read_entry(entry_path)?
-	if !entry_valid(entry, files, lookup) {
-		return none
-	}
-	resolved := entry['resolved'] or { return none }
-	return resolved.str()
-}
-
 // read_entry is the object of an entry of this version of the cache.
 fn read_entry(entry_path string) ?map[string]json2.Any {
 	text := os.read_file(entry_path) or { return none }
@@ -163,7 +217,7 @@ fn entry_valid(entry map[string]json2.Any, files []string, lookup bool) bool {
 // What it gives is what bun would print for them: the configurations of the files in the order
 // they first come, the files in their order, and of `pluginRules` and `ruleDefaults` the ones the
 // files add, in the order of the entry (the order bun sorts them in).
-fn subset_resolution(dir string, base string, files []string) ?string {
+fn subset_resolution(dir string, base string, files []string) ?(string, string, map[string]json2.Any) {
 	prefix := 'config-${base}-'
 	mut names := (os.ls(dir) or { return none }).filter(it.starts_with(prefix)
 		&& it.ends_with('.json'))
@@ -196,7 +250,7 @@ fn subset_resolution(dir string, base string, files []string) ?string {
 		}
 		resolved := compose_resolution(entry, index, files) or { continue }
 		touch_entry(path)
-		return resolved
+		return resolved, path, entry
 	}
 	return none
 }
@@ -494,10 +548,11 @@ const config_cache_hashed_size = u64(1024 * 1024)
 // content too, so that a change in the same second, of the same size, is still seen. Empty when it
 // is not a file that can be read.
 fn file_stamp(path string) string {
-	if !os.is_file(path) {
+	// One stat: os.is_file would make two more.
+	info := os.stat(path) or { return '' }
+	if info.get_filetype() == .directory {
 		return ''
 	}
-	info := os.stat(path) or { return '' }
 	mut stamp := '${info.size}:${info.mtime}:${info.ctime}:${info.inode}'
 	if info.size <= config_cache_hashed_size
 		&& !path.contains('${os.path_separator}node_modules${os.path_separator}') {
