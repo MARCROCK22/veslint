@@ -26,7 +26,7 @@ INPROC  := tsgo/inproc/out/libveslint_tsgo.a
 # which made a lint without types about a tenth faster. build-windows.ps1 builds its own.
 TS_LIB  := treesitter/out/libtree-sitter.a
 LIBS    := $(TS_LIB) build/libtree-sitter-typescript.a $(INPROC)
-SOURCES := $(filter-out %_test.v,$(wildcard *.v tsgo/*.v treesitter/*.v offsets/*.v rules/*.v jsregexp/*.v regexpp/*.v estree/*.v esquery/*.v codepath/*.v collation/*.v vue/*.v svelte/*.v svelte_compiler/*.v postcss/*.v))
+SOURCES := $(filter-out %_test.v,$(wildcard *.v gcheap/*.v tsgo/*.v treesitter/*.v offsets/*.v rules/*.v jsregexp/*.v regexpp/*.v estree/*.v esquery/*.v codepath/*.v collation/*.v vue/*.v svelte/*.v svelte_compiler/*.v postcss/*.v))
 
 .PHONY: deps build run test bench clean
 

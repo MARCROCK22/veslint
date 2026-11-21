@@ -66,14 +66,15 @@ struct ServerProfile {
 mut:
 	id          i64
 	decode_ms   f64
-	config_ms   f64 // load_config_for
-	files_ms    f64 // the files' texts, documents and tsconfig files
-	snapshot_ms f64 // snapshot_for
-	checker_ms  f64 // new checkers
-	lint_ms     f64 // lint_file, whose parts are those of `stats`
-	report_ms   f64 // file_report
-	handle_ms   f64 // the whole request, without writing the answer
-	write_ms    f64 // encoding and writing the answer
+	config_ms   f64  // load_config_for, or the configuration the server keeps
+	files_ms    f64  // the files' texts, documents and tsconfig files
+	snapshot_ms f64  // snapshot_for
+	checker_ms  f64  // new checkers
+	lint_ms     f64  // lint_file, whose parts are those of `stats`
+	report_ms   f64  // file_report
+	handle_ms   f64  // the whole request, without writing the answer
+	write_ms    f64  // encoding and writing the answer
+	reused      bool // the answer of the last request again
 	stats       rules.Stats
 }
 
@@ -192,7 +193,16 @@ mut:
 	trees &treesitter.TreeCache = unsafe { nil }
 	// config_memo: the resolutions of the configuration of the requests' files (config_cache.v)
 	config_memo ResolutionMemo
-	prof        ServerProfile
+	// generation counts the times tsgo was stopped (stop)
+	generation int
+	// The last answer and what it was made of (lint_loaded): a request for the same files with
+	// the same texts and configuration, while nothing changed, gets it again.
+	last_key        string
+	last_answer     ServerAnswer
+	last_generation int
+	last_snapshot   int
+	last_typed      bool
+	prof            ServerProfile
 }
 
 fn since_ms(sw time.StopWatch) f64 {
@@ -220,7 +230,7 @@ fn (s &Server) write_profile() {
 		rules_total += t
 	}
 	mut line := strings.new_builder(1024)
-	line.write_string('{"id":${p.id},"decode":${p.decode_ms:.3f},"config":${p.config_ms:.3f},"files":${p.files_ms:.3f},"snapshot":${p.snapshot_ms:.3f},"checker":${p.checker_ms:.3f},"lint":${p.lint_ms:.3f},"parse":${st.parse_tree_sitter_ms:.3f},"index":${st.parse_index_ms:.3f},"syntax":${st.parse_syntax_ms:.3f},"await":${st.parse_await_ms:.3f},"free":${st.tree_free_ms:.3f},"rules":${rules_total:.3f},"report":${p.report_ms:.3f},"handle":${p.handle_ms:.3f},"write":${p.write_ms:.3f},"rule_ms":{')
+	line.write_string('{"id":${p.id},"decode":${p.decode_ms:.3f},"config":${p.config_ms:.3f},"files":${p.files_ms:.3f},"snapshot":${p.snapshot_ms:.3f},"checker":${p.checker_ms:.3f},"lint":${p.lint_ms:.3f},"parse":${st.parse_tree_sitter_ms:.3f},"index":${st.parse_index_ms:.3f},"syntax":${st.parse_syntax_ms:.3f},"await":${st.parse_await_ms:.3f},"free":${st.tree_free_ms:.3f},"rules":${rules_total:.3f},"report":${p.report_ms:.3f},"handle":${p.handle_ms:.3f},"write":${p.write_ms:.3f},"reused":${p.reused},"rule_ms":{')
 	for i, name in rule_names {
 		if i > 0 {
 			line.write_string(',')
@@ -280,6 +290,8 @@ fn serve(timeout time.Duration) {
 
 // stop shuts tsgo down; the next request starts it again, with what it has to serve.
 fn (mut s Server) stop() {
+	s.generation++
+	s.last_key = ''
 	if s.client != unsafe { nil } {
 		s.client.shutdown()
 		s.client = unsafe { nil }
@@ -446,7 +458,6 @@ fn (mut s Server) set_served(path string, text string) {
 // lint lints `files` (as they are given) and answers what the command line would print; `texts`
 // are the unsaved texts of the request, by absolute path, already served.
 fn (mut s Server) lint(id i64, config string, project string, files []string, texts map[string]string, fixes bool) ServerAnswer {
-	mut errors := strings.new_builder(256)
 	for path in files {
 		if !is_typescript_path(path) {
 			return ServerAnswer{
@@ -456,7 +467,7 @@ fn (mut s Server) lint(id i64, config string, project string, files []string, te
 			}
 		}
 	}
-	mut phase := time.new_stopwatch()
+	phase := time.new_stopwatch()
 	loaded := load_config_for(config, files, mut s.config_memo) or {
 		return ServerAnswer{
 			id:     id
@@ -464,6 +475,14 @@ fn (mut s Server) lint(id i64, config string, project string, files []string, te
 			stderr: 'veslint: ${err.msg()}\n'
 		}
 	}
+	s.prof.config_ms = since_ms(phase)
+	return s.lint_loaded(id, config, loaded, project, files, texts, fixes)
+}
+
+// lint_loaded is lint with the configuration loaded.
+fn (mut s Server) lint_loaded(id i64, config string, loaded LoadedConfig, project string, files []string, texts map[string]string, fixes bool) ServerAnswer {
+	mut errors := strings.new_builder(256)
+	mut phase := time.new_stopwatch()
 	// The rules and the ignored ones of every configuration, as parse_args gathers them.
 	mut selected := []string{}
 	mut ignored := []string{}
@@ -502,8 +521,6 @@ fn (mut s Server) lint(id i64, config string, project string, files []string, te
 		}
 		project_override = os.abs_path(project)
 	}
-	s.prof.config_ms = since_ms(phase)
-	phase.restart()
 	mut entries := []RuleFile{cap: files.len}
 	mut tsconfigs := []string{}
 	// The documents of the .vue files, by path as given: freed when the answer is ready.
@@ -655,6 +672,27 @@ fn (mut s Server) lint(id i64, config string, project string, files []string, te
 	mut warnings := 0
 	// No rule needs types: no program is built for them, as on the command line (Worker.open).
 	lazy := !configs_need_types(lint_configs)
+	// The same request as the last one, with the same texts (and the same files on disk) and the
+	// same resolution of its configuration, while tsgo has nothing new (no change since the last
+	// snapshot, the same snapshot): the same answer.
+	// The resolved configuration (loaded.resolved, made of the resolution, or the text of a
+	// resolved JSON) stands for the configuration; without one the answer is not kept.
+	key := if loaded.resolved == '' || !s.trees.enabled() {
+		''
+	} else {
+		answer_key(config, loaded.resolved, project, fixes, entries)
+	}
+	if key != '' && key == s.last_key && s.changes.is_empty() && s.client != unsafe { nil }
+		&& s.generation == s.last_generation && s.snap.snapshot == s.last_snapshot
+		&& s.typed == s.last_typed {
+		s.prof.files_ms = since_ms(phase)
+		s.prof.reused = true
+		return ServerAnswer{
+			...s.last_answer
+			id: id
+		}
+	}
+	s.last_key = ''
 	s.prof.files_ms = since_ms(phase)
 	phase.restart()
 	if tsconfigs.len > 0 {
@@ -799,12 +837,39 @@ fn (mut s Server) lint(id i64, config string, project string, files []string, te
 		warnings += report.warnings
 	}
 	errors.writeln(summary_line(problems, entries.len, warnings))
-	return ServerAnswer{
+	answer := ServerAnswer{
 		id:     id
 		code:   if problems - warnings > 0 { 1 } else { 0 }
 		stdout: out.str()
 		stderr: errors.str()
 	}
+	if key != '' && s.client != unsafe { nil } {
+		s.last_key = key
+		s.last_answer = answer
+		s.last_generation = s.generation
+		s.last_snapshot = s.snap.snapshot
+		s.last_typed = s.typed
+	}
+	return answer
+}
+
+// answer_key is what an answer of lint_loaded is made of: the request, the resolution of its
+// configuration and the text of each file (as read or given).
+fn answer_key(config string, resolved string, project string, fixes bool, entries []RuleFile) string {
+	mut key := strings.new_builder(1024)
+	for part in [config, resolved, project, fixes.str()] {
+		key.write_string(part.len.str())
+		key.write_u8(`:`)
+		key.write_string(part)
+	}
+	for f in entries {
+		for part in [f.path, f.note, f.tsconfig, f.named.join('\n'), f.has_bom.str(), f.src] {
+			key.write_string(part.len.str())
+			key.write_u8(`:`)
+			key.write_string(part)
+		}
+	}
+	return key.str()
 }
 
 // snapshot_for makes sure tsgo runs, has `tsconfigs` open and has read what changed: the snapshot

@@ -1,5 +1,8 @@
 module treesitter
 
+// The collector's heap is grown before the constants of the modules that import this one are made
+// (gcheap/gcheap.v).
+import gcheap as _
 import os
 
 // Minimal bindings for tree-sitter (v0.27.0) and its TypeScript grammar (v0.23.2), statically
@@ -278,7 +281,8 @@ pub fn trees_differ(a &C.TSTree, b &C.TSTree) i64 {
 // parse from it (Parser.reparse). Its trees are its own: one is freed when a file is parsed again,
 // forgotten or pushed out by others.
 //
-// VESLINT_INCREMENTAL=0 turns it off (every parse from scratch); VESLINT_INCREMENTAL_CHECK=1
+// VESLINT_INCREMENTAL=0 turns it off (every parse from scratch; veslint --server then reuses no
+// answer either); VESLINT_INCREMENTAL_CHECK=1
 // parses each new text from scratch too and compares both trees: a difference is written to
 // stderr and the tree from scratch is used.
 @[heap]
@@ -352,6 +356,11 @@ pub fn (mut c TreeCache) parse(p &Parser, key string, src string) !&C.TSTree {
 		c.forget(c.order[0])
 	}
 	return tree
+}
+
+// enabled: the cache keeps trees (not VESLINT_INCREMENTAL=0).
+pub fn (c &TreeCache) enabled() bool {
+	return !c.off
 }
 
 // owns: `tree` is one of the cache's.

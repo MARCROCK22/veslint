@@ -653,7 +653,14 @@ fn load_config_resolving(path string, files []string, lookup bool, reuse bool, m
 		}
 		resolved := resolve_cached(os.abs_path(path), files.map(os.abs_path(it)), lookup, reuse, mut
 			memo)!
-		return loaded_from_resolved(resolved, path, os.dir(os.abs_path(path)), files)!
+		// What loaded_from_resolved makes of a resolution depends on it and on the files and the
+		// configuration as given (the directory of the process does not change).
+		if kept := memo.loaded_config(resolved, path, files) {
+			return kept
+		}
+		loaded := loaded_from_resolved(resolved, path, os.dir(os.abs_path(path)), files)!
+		memo.keep_loaded(resolved, path, files, loaded)
+		return loaded
 	}
 	text := os.read_file(path) or { return error('cannot read ${path}: ${err.msg()}') }
 	root := json2.decode[json2.Any](text) or {

@@ -2,9 +2,10 @@
 """server_edits.py VESLINT SEED EDITS CWD CONFIG FILE...: random edits of each FILE (relative to
 CWD), linted after each edit as unsaved text by two `VESLINT --server`, one that parses each edit
 incrementally from the tree of the text before (with VESLINT_INCREMENTAL_CHECK=1, which also parses
-it from scratch and reports a different tree on stderr) and one that parses every text from
-scratch (VESLINT_INCREMENTAL=0): both must answer the same, and the first must find no different
-tree. The edits, seeded by SEED: insertions, deletions and replacements anywhere (of snippets with
+it from scratch and reports a different tree on stderr) and answers a request that changes nothing
+with its last answer, and one that parses every text from scratch and lints every request
+(VESLINT_INCREMENTAL=0): both must answer the same, and the first must find no different tree.
+The edits, seeded by SEED: insertions, deletions and replacements anywhere (of snippets with
 multi-byte characters, CR LF, comments, braces, or of a piece of the file), edits of whole lines,
 which often keep the file without syntax errors, the same text again and the text on disk."""
 import json
@@ -91,7 +92,9 @@ failures = 0
 requests = 0
 for file in files:
     path = os.path.join(cwd, file)
-    text = open(path, encoding='utf-8', newline='').read()
+    # An editor's text is UTF-8: a file that is not (a fixture of tsgo's decoding) is edited as
+    # the editor would show it; the requests for the text on disk read it as it is.
+    text = open(path, encoding='utf-8', errors='replace', newline='').read()
     for n in range(int(edits)):
         roll = rng.random()
         if roll < 0.05:
