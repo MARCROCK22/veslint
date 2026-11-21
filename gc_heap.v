@@ -19,3 +19,18 @@ fn grow_initial_heap() {
 		C.GC_expand_hp(initial_heap_bytes)
 	}
 }
+
+fn C.veslint_gc_unmap_env_done()
+
+// The collector keeps the free blocks of its heap on a command line instead of giving them back to
+// the system after a few collections (gc_heap.h): a lint allocates again what it freed, and each
+// page given back was a page fault and a page cleared by the kernel when it came back. On the
+// TypeScript compiler, typed, it gave back and took again about 1.2 GB (300,000 of 795,000 page
+// faults; 2.6 % of the instructions, and 0.7 s of the 2.3 s of system time), with the same peak
+// memory. A server gives back what a large lint took.
+// unmap_env_done takes GC_UNMAP_THRESHOLD out of the environment when veslint put it there.
+fn unmap_env_done() {
+	$if gcboehm ? {
+		C.veslint_gc_unmap_env_done()
+	}
+}
