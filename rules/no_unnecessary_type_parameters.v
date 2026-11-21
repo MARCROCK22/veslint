@@ -128,7 +128,7 @@ fn (mut c Checker) lint_no_unnecessary_type_parameters(root C.TSNode, abs_path s
 		mut all_declarations := map[u64]string{}
 		for parameter in check.all {
 			name_node := node_field(parameter, 'name') or { continue }
-			handle := c.nutp_declaration(name_node)
+			handle := c.nutp_declaration(name_node)!
 			if handle != '' {
 				all_declarations[node_key(parameter)] = handle
 			}
@@ -236,16 +236,17 @@ fn (c &Checker) nutp_spans(node C.TSNode) []Span {
 }
 
 // nutp_declaration is the handle of the TypeParameter declaration whose name the node is.
-fn (c &Checker) nutp_declaration(name_node C.TSNode) string {
+fn (mut c Checker) nutp_declaration(name_node C.TSNode) !string {
 	handle := c.nodes.handle(node_key(name_node)) or { return '' }
 	if tsgo.handle_kind(handle) == syntax_kind_type_parameter {
 		return handle
 	}
-	parent := c.ast.tree.node_parent(tsgo.handle_index(handle))
-	if parent == 0 || c.ast.tree.node_kind(parent) != syntax_kind_type_parameter {
+	tree := c.file_ast_tree()!
+	parent := tree.node_parent(tsgo.handle_index(handle))
+	if parent == 0 || tree.node_kind(parent) != syntax_kind_type_parameter {
 		return ''
 	}
-	return c.ast.tree.node_handle(parent)
+	return tree.node_handle(parent)
 }
 
 // nutp_type_at is the type at a node of any file (getTypeAtLocation).

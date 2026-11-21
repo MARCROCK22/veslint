@@ -1,6 +1,7 @@
 module rules
 
-import tsgo { ParameterResponse, SignatureResponse, SymbolResponse, TypeResponse }
+import os
+import tsgo { ParameterResponse, SignatureResponse, SourceFileAst, SymbolResponse, TypeResponse }
 import treesitter { children, has_child_kind, node_end, node_field, node_kind, node_parent, node_start }
 
 // Type queries to tsgo, with caches by id. The type of each expression is requested per node
@@ -513,10 +514,13 @@ fn (mut c Checker) resolve_new(spans []Span, abs_path string, mut stats Stats) !
 		bytes << s.end
 	}
 	units := c.ts_spans(bytes)
-	if c.ast_path != abs_path {
-		c.ast = c.client.source_file_ast(c.snapshot, c.project, abs_path)!
-		c.ast_path = abs_path
+	mut ranges := []int{cap: 3 * variants.len}
+	for j, s in variants {
+		ranges << units[2 * j]
+		ranges << units[2 * j + 1]
+		ranges << int(s.kind)
 	}
+	found_nodes := c.file_nodes(abs_path, ranges)!
 	c.nodes.path = c.ast.path
 	mut keys := []u64{cap: order.len}
 	mut nodes := []tsgo.AstNode{cap: order.len}
@@ -526,7 +530,7 @@ fn (mut c Checker) resolve_new(spans []Span, abs_path string, mut stats Stats) !
 		mut found := false
 		mut optional := true
 		for s in variants[starts[g]..starts[g + 1]] {
-			pos, end := units[2 * i], units[2 * i + 1]
+			node := found_nodes[i]
 			i++
 			// A wrapper of a .svelte file's lint code is no node of ESLint's: it has nothing to
 			// analyze.
@@ -536,7 +540,9 @@ fn (mut c Checker) resolve_new(spans []Span, abs_path string, mut stats Stats) !
 			}
 			// The kind of the node found is the span's when it has one, else the innermost node's
 			// with the range.
-			node := c.ast.find(pos, end, s.kind) or { continue }
+			if node.index == 0 {
+				continue
+			}
 			c.nodes.set_node(key, node.index, node.kind)
 			if typed[g] {
 				keys << key
@@ -628,13 +634,96 @@ fn (mut c Checker) request_types(nodes []tsgo.AstNode, offset int, mut failed ma
 	}
 }
 
+// file_nodes finds the tsgo nodes of the file `abs_path` by their range, as SourceFileAst.find:
+// `ranges` has the UTF-16 start and end and the SyntaxKind (0: any) of each, and each node found
+// has index 0 when there is none. The AST of the file is requested once (c.ast) unless tsgo finds
+// the nodes itself (Client.finds_nodes), which then only gives the path of the file. A range with a
+// negative end or start (no counterpart in the text tsgo has) finds nothing.
+fn (mut c Checker) file_nodes(abs_path string, ranges []int) ![]tsgo.AstNode {
+	if !c.client.finds_nodes() {
+		if c.ast_path != abs_path {
+			c.ast = c.client.source_file_ast(c.snapshot, c.project, abs_path)!
+			c.ast_path = abs_path
+			c.file_tree = c.ast.tree
+			c.file_tree_loaded = true
+		}
+		mut nodes := []tsgo.AstNode{len: ranges.len / 3}
+		for i in 0 .. nodes.len {
+			nodes[i] = c.ast.find(ranges[3 * i], ranges[3 * i + 1], u32(ranges[3 * i + 2])) or {
+				continue
+			}
+		}
+		return nodes
+	}
+	mut sent := []int{cap: ranges.len}
+	for i := 0; i + 2 < ranges.len; i += 3 {
+		if ranges[i] >= 0 && ranges[i + 1] >= 0 {
+			sent << ranges[i]
+			sent << ranges[i + 1]
+			sent << ranges[i + 2]
+		}
+	}
+	path, found := c.client.nodes_at_ranges(c.snapshot, c.project, abs_path, sent)!
+	if c.ast_path != abs_path {
+		c.ast = SourceFileAst{
+			path: path
+		}
+		c.ast_path = abs_path
+		c.file_tree_loaded = false
+	}
+	mut nodes := []tsgo.AstNode{len: ranges.len / 3}
+	mut at := 0
+	for i in 0 .. nodes.len {
+		if ranges[3 * i] >= 0 && ranges[3 * i + 1] >= 0 {
+			nodes[i] = found[at]
+			at++
+		}
+	}
+	if check_file_nodes {
+		c.check_file_nodes(abs_path, path, ranges, nodes)!
+	}
+	return nodes
+}
+
+// With VESLINT_CHECK_DECODE, the nodes tsgo finds are compared with the ones found in the whole
+// AST of the file.
+const check_file_nodes = os.getenv('VESLINT_CHECK_DECODE') != ''
+
+fn (mut c Checker) check_file_nodes(abs_path string, path string, ranges []int, nodes []tsgo.AstNode) ! {
+	if c.check_ast_path != abs_path {
+		c.check_ast = c.client.source_file_ast(c.snapshot, c.project, abs_path)!
+		c.check_ast_path = abs_path
+	}
+	if c.check_ast.path != path {
+		return error('veslint/nodesAtRanges gave the path `${path}` for `${abs_path}`, the AST `${c.check_ast.path}`')
+	}
+	for i, node in nodes {
+		want := c.check_ast.find(ranges[3 * i], ranges[3 * i + 1], u32(ranges[3 * i + 2])) or {
+			tsgo.AstNode{}
+		}
+		if want != node {
+			return error('veslint/nodesAtRanges found ${node} at ${ranges[3 * i]}..${ranges[3 * i + 1]} (kind ${ranges[3 * i + 2]}) of `${abs_path}`, the AST ${want}')
+		}
+	}
+}
+
+// file_ast_tree is the node table of the file of c.ast, requested the first time a rule walks it
+// when tsgo finds the nodes of the file itself.
+fn (mut c Checker) file_ast_tree() !tsgo.AstTree {
+	if !c.file_tree_loaded {
+		c.file_tree = c.client.source_file_ast_tree(c.snapshot, c.project, c.ast_path)!
+		c.file_tree_loaded = true
+	}
+	return c.file_tree
+}
+
 // declaration_ast is the AstTree of a program file, by the path of a tsgo handle (handle_path), to
 // look at declarations: the current file's comes from the AST already requested; other files are
 // requested once and kept for the whole run (or in the DeclarationAsts the Checker shares). An
 // AstTree only holds the binary and offsets, so the copy it returns does not copy node data.
 fn (mut c Checker) declaration_ast(path string) !tsgo.AstTree {
 	if c.ast_path != '' && path == c.ast.path {
-		return c.ast.tree
+		return c.file_ast_tree()!
 	}
 	if c.shared_asts != unsafe { nil } {
 		if tree := c.shared_asts.trees[path] {

@@ -5,6 +5,7 @@ package api
 
 import (
 	"context"
+	"encoding/binary"
 	"fmt"
 	"reflect"
 	"strconv"
@@ -853,9 +854,18 @@ func readTypesAtLocationsParams(params []byte) (*veslintTypesAtLocationsParams, 
 	return p, nil
 }
 
-// typesAtLocations is handleGetTypeAtLocations with types sent once.
-func (p *InProcess) typesAtLocations(ctx context.Context, worker int, params []byte, checked bool) (any, error) {
-	in, err := readTypesAtLocationsParams(params)
+// typesAtLocations is handleGetTypeAtLocations with types sent once. veslint/typesAtNodes takes the
+// nodes of a file in binary parameters (readBinaryParams: File and Nodes), which neither side
+// writes or reads as decimal text.
+func (p *InProcess) typesAtLocations(ctx context.Context, worker int, params []byte, checked bool, binaryParams bool) (any, error) {
+	var in *veslintTypesAtLocationsParams
+	var err error
+	if binaryParams {
+		in = &veslintTypesAtLocationsParams{}
+		in.Snapshot, in.Project, in.File, in.Nodes, err = readBinaryParams(params)
+	} else {
+		in, err = readTypesAtLocationsParams(params)
+	}
 	if err != nil {
 		return nil, fmt.Errorf("%w: %w", ErrInvalidRequest, err)
 	}
@@ -930,6 +940,218 @@ func (f veslintFile) node(index uint32, kind uint32, path string) (*ast.Node, er
 		}
 	}
 	return nil, fmt.Errorf("%w: node handle %q could not be resolved (file may not be loaded or handle may be stale)", ErrClientError, fmt.Sprintf("%d.%d.%s", index, kind, path))
+}
+
+// readBinaryParams reads the parameters of veslint/nodesAtRanges and veslint/typesAtNodes, written
+// by the client in binary, little-endian: the snapshot (64 bits), the project and the file (each a
+// length of 32 bits and its bytes) and a list of numbers of 32 bits (its length, then the numbers).
+// The lists are long (two or three numbers for each node a rule asks about), and as decimal text
+// they were a large part of what the client wrote and this process read.
+func readBinaryParams(b []byte) (SnapshotID, project.ID, string, []uint32, error) {
+	r := binaryParamsReader{b: b}
+	snapshot := SnapshotID(r.uint64())
+	projectID := project.ID(r.text())
+	file := r.text()
+	count := int(r.uint32())
+	if r.failed || count < 0 || len(r.b)-r.i != 4*count {
+		return 0, "", "", nil, fmt.Errorf("malformed binary parameters (%d bytes)", len(b))
+	}
+	values := make([]uint32, count)
+	for i := range values {
+		values[i] = binary.LittleEndian.Uint32(r.b[r.i+4*i:])
+	}
+	return snapshot, projectID, file, values, nil
+}
+
+type binaryParamsReader struct {
+	b      []byte
+	i      int
+	failed bool
+}
+
+func (r *binaryParamsReader) take(n int) []byte {
+	if r.failed || n < 0 || len(r.b)-r.i < n {
+		r.failed = true
+		return nil
+	}
+	r.i += n
+	return r.b[r.i-n : r.i]
+}
+
+func (r *binaryParamsReader) uint32() uint32 {
+	if b := r.take(4); b != nil {
+		return binary.LittleEndian.Uint32(b)
+	}
+	return 0
+}
+
+func (r *binaryParamsReader) uint64() uint64 {
+	if b := r.take(8); b != nil {
+		return binary.LittleEndian.Uint64(b)
+	}
+	return 0
+}
+
+func (r *binaryParamsReader) text() string {
+	return string(r.take(int(r.uint32())))
+}
+
+// nodesAtRanges finds nodes of a file of the program by their range, as the client found them in
+// the whole binary AST of the file (getSourceFile) before: for each range, the index (in the node
+// table getSourceFile would send) and the SyntaxKind of the innermost node with exactly that range
+// and, if the kind asked is not 0, that kind; index 0 when there is none. The answer is binary,
+// little-endian: the length of the file's path (the one of its node handles), the path, and two
+// numbers of 32 bits per range. Nothing when the program does not have the file, as getSourceFile.
+// The client needs the AST of the file only to find its nodes, nearly always: encoding every node
+// of the file (and decoding and indexing it in V) cost more than the lookups.
+func (p *InProcess) nodesAtRanges(worker int, params []byte) (any, error) {
+	snapshot, projectID, fileName, ranges, err := readBinaryParams(params)
+	if err != nil {
+		return nil, fmt.Errorf("%w: %w", ErrInvalidRequest, err)
+	}
+	if len(ranges)%3 != 0 {
+		return nil, fmt.Errorf("%w: nodesAtRanges: ranges without an end or a kind", ErrInvalidRequest)
+	}
+	if fileName == "" {
+		// As getSourceFile's parameters (DocumentIdentifier) reject it.
+		return nil, fmt.Errorf("%w: DocumentIdentifier: file name must not be empty", ErrInvalidRequest)
+	}
+	sd, err := p.session.getSnapshotData(snapshot)
+	if err != nil {
+		return nil, err
+	}
+	program, err := sd.getProgram(projectID)
+	if err != nil {
+		return nil, err
+	}
+	file := DocumentIdentifier{FileName: fileName}
+	sourceFile := program.GetSourceFile(file.ToFileName(program.BaseDirectory()))
+	if sourceFile == nil {
+		return RawBinary(nil), nil
+	}
+	index := p.rangeIndex(worker, sourceFile)
+	path := sourceFile.PathKey()
+	count := len(ranges) / 3
+	b := make([]byte, 0, 4+len(path)+8*count)
+	b = binary.LittleEndian.AppendUint32(b, uint32(len(path)))
+	b = append(b, path...)
+	for i := 0; i < len(ranges); i += 3 {
+		node, kind := index.find(int32(ranges[i]), int32(ranges[i+1]), ranges[i+2])
+		b = binary.LittleEndian.AppendUint32(b, node)
+		b = binary.LittleEndian.AppendUint32(b, kind)
+	}
+	return RawBinary(b), nil
+}
+
+// veslintRangeIndex gives the nodes of a file by the UTF-16 unit where they start (with their
+// leading trivia), as the encoder writes their positions: order[starts[u+1]:starts[u+2]] are the
+// indexes of the nodes that start at u, in the order of the node table, and ends[i] is the end of
+// node i. It is built in one pass over the file's index table (the nodes in the encoder's order)
+// and a counting sort, without encoding anything. NodeLists, which have no node, and nodes without
+// a range are not in it, as the client skipped their rows.
+type veslintRangeIndex struct {
+	file   *ast.SourceFile
+	nodes  []*ast.Node
+	starts []uint32
+	order  []uint32
+	ends   []int32
+}
+
+func buildRangeIndex(sourceFile *ast.SourceFile) *veslintRangeIndex {
+	table := encoder.GetNodeIndexTable(sourceFile)
+	positionMap := sourceFile.GetPositionMap()
+	ascii := positionMap.IsAsciiOnly()
+	// The positions as the encoder writes them (uint32 of the UTF-16 offset) and the client reads
+	// them (as int32).
+	utf16 := func(pos int) int32 {
+		if ascii {
+			return int32(uint32(pos))
+		}
+		return int32(uint32(positionMap.UTF8ToUTF16(pos)))
+	}
+	nodes := table.Nodes
+	pos := make([]int32, len(nodes))
+	ends := make([]int32, len(nodes))
+	last := int32(-1)
+	count := 0
+	for i, node := range nodes {
+		pos[i] = -1
+		if i < 1 || node == nil {
+			continue
+		}
+		start, end := utf16(node.Pos()), utf16(node.End())
+		if start < 0 || end < start {
+			continue
+		}
+		pos[i], ends[i] = start, end
+		last = max(last, start)
+		count++
+	}
+	// A counting sort: the count of each start at starts[u+1], summed up to each start, and the nodes
+	// placed from the last to the first, each at the end of the room left for its start, which leaves
+	// starts[u+1] at the first of u's and starts[u+2] at the first of the next start's (or at the
+	// count).
+	starts := make([]uint32, last+3)
+	for _, start := range pos {
+		if start >= 0 {
+			starts[start+1]++
+		}
+	}
+	for u := 1; u < len(starts)-1; u++ {
+		starts[u] += starts[u-1]
+	}
+	starts[len(starts)-1] = uint32(count)
+	order := make([]uint32, count)
+	for i := len(pos) - 1; i >= 0; i-- {
+		if start := pos[i]; start >= 0 {
+			starts[start+1]--
+			order[starts[start+1]] = uint32(i)
+		}
+	}
+	return &veslintRangeIndex{file: sourceFile, nodes: nodes, starts: starts, order: order, ends: ends}
+}
+
+// find is the innermost node (the last in the table) with that range and, if `kind` is not 0, that
+// kind: its index and kind, or 0 and 0.
+func (x *veslintRangeIndex) find(pos int32, end int32, kind uint32) (uint32, uint32) {
+	if pos < 0 || int(pos) >= len(x.starts)-2 {
+		return 0, 0
+	}
+	for at := int(x.starts[pos+2]) - 1; at >= int(x.starts[pos+1]); at-- {
+		i := x.order[at]
+		if x.ends[i] != end {
+			continue
+		}
+		nodeKind := uint32(x.nodes[i].Kind)
+		if kind == 0 || nodeKind == kind {
+			return i, nodeKind
+		}
+	}
+	return 0, 0
+}
+
+// veslintRangeIndexes keeps the range index of the last file each worker asked about: a worker
+// lints one file at a time and asks about it several times (once per group of rules' nodes).
+type veslintRangeIndexes struct {
+	mu       sync.Mutex
+	byWorker map[int]*veslintRangeIndex
+}
+
+func (p *InProcess) rangeIndex(worker int, sourceFile *ast.SourceFile) *veslintRangeIndex {
+	p.ranges.mu.Lock()
+	index := p.ranges.byWorker[worker]
+	p.ranges.mu.Unlock()
+	if index != nil && index.file == sourceFile {
+		return index
+	}
+	index = buildRangeIndex(sourceFile)
+	p.ranges.mu.Lock()
+	if p.ranges.byWorker == nil {
+		p.ranges.byWorker = map[int]*veslintRangeIndex{}
+	}
+	p.ranges.byWorker[worker] = index
+	p.ranges.mu.Unlock()
+	return index
 }
 
 // typesOfType is handleGetTypesOfType (resolveTypeArrayPropertyOfType) with types sent once: null

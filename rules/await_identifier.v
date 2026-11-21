@@ -40,15 +40,18 @@ fn (mut c Checker) await_identifiers_source(root C.TSNode, abs_path string) !str
 	}
 	units := c.ts_spans(bytes)
 	c.make_snapshot()!
-	if c.ast_path != abs_path {
-		// A file tsgo does not have is reported by the first rule that asks for its types.
-		c.ast = c.client.source_file_ast(c.snapshot, c.project, abs_path) or { return '' }
-		c.ast_path = abs_path
+	mut ranges := []int{cap: 3 * keywords.len}
+	for index in 0 .. keywords.len {
+		ranges << units[2 * index]
+		ranges << units[2 * index + 1]
+		ranges << int(syntax_kind_identifier)
 	}
+	// A file tsgo does not have is reported by the first rule that asks for its types.
+	identifiers := c.file_nodes(abs_path, ranges) or { return '' }
 	mut source := c.parse_text().bytes()
 	mut found := false
 	for index, keyword in keywords {
-		if _ := c.ast.handle(units[2 * index], units[2 * index + 1], syntax_kind_identifier) {
+		if identifiers[index].index != 0 {
 			source[node_start(keyword) + await_identifier_byte] = `_`
 			found = true
 		}
