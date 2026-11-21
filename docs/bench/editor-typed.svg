@@ -25,34 +25,34 @@
 <text class="panel" x="24" y="121">zod<tspan class="sub" dx="8">src/v4/core/schemas.ts, 5,226 lines</tspan></text>
 <text class="tool" x="106" y="146" text-anchor="end">ESLint</text>
 <path class="rest" d="M116,132h366a4,4 0 0 1 4,4v10a4,4 0 0 1 -4,4h-366z"/>
-<text class="value" x="494" y="146">1077 ms</text>
+<text class="value" x="494" y="146">1143 ms</text>
 <text class="tool accent-text" x="106" y="174" text-anchor="end">veslint</text>
-<path class="accent" d="M116,160h104.53241686791753a4,4 0 0 1 4,4v10a4,4 0 0 1 -4,4h-104.53241686791753z"/>
-<text class="value" x="232.53241686791753" y="174">316 ms</text>
+<path class="accent" d="M116,160h98.60150507525377a4,4 0 0 1 4,4v10a4,4 0 0 1 -4,4h-98.60150507525377z"/>
+<text class="value" x="226.60150507525378" y="174">317 ms</text>
 <text class="tool" x="106" y="202" text-anchor="end">oxlint</text>
-<path class="rest" d="M116,188h147.21679360951143a4,4 0 0 1 4,4v10a4,4 0 0 1 -4,4h-147.21679360951143z"/>
-<text class="value" x="275.21679360951146" y="202">440 ms</text>
+<path class="rest" d="M116,188h137.09730486524327a4,4 0 0 1 4,4v10a4,4 0 0 1 -4,4h-137.09730486524327z"/>
+<text class="value" x="265.09730486524325" y="202">436 ms</text>
 <line class="axis" x1="116" y1="128" x2="116" y2="210"/>
 <text class="panel" x="24" y="245">recharts<tspan class="sub" dx="8">src/state/selectors/axisSelectors.ts, 2,417 lines</tspan></text>
 <text class="tool" x="106" y="270" text-anchor="end">ESLint</text>
 <path class="rest" d="M116,256h366a4,4 0 0 1 4,4v10a4,4 0 0 1 -4,4h-366z"/>
-<text class="value" x="494" y="270">1180 ms</text>
+<text class="value" x="494" y="270">1149 ms</text>
 <text class="tool accent-text" x="106" y="298" text-anchor="end">veslint</text>
-<path class="accent" d="M116,284h84.14152542372882a4,4 0 0 1 4,4v10a4,4 0 0 1 -4,4h-84.14152542372882z"/>
-<text class="value" x="212.1415254237288" y="298">281 ms</text>
+<path class="accent" d="M116,284h84.19954727494343a4,4 0 0 1 4,4v10a4,4 0 0 1 -4,4h-84.19954727494343z"/>
+<text class="value" x="212.19954727494343" y="298">274 ms</text>
 <text class="tool" x="106" y="326" text-anchor="end">oxlint</text>
-<path class="rest" d="M116,312h166.2a4,4 0 0 1 4,4v10a4,4 0 0 1 -4,4h-166.2z"/>
-<text class="value" x="294.2" y="326">543 ms</text>
+<path class="rest" d="M116,312h170.4018805502351a4,4 0 0 1 4,4v10a4,4 0 0 1 -4,4h-170.4018805502351z"/>
+<text class="value" x="298.4018805502351" y="326">541 ms</text>
 <line class="axis" x1="116" y1="252" x2="116" y2="334"/>
 <text class="panel" x="24" y="369">TypeScript compiler<tspan class="sub" dx="8">src/compiler/parser.ts, 10,823 lines</tspan></text>
 <text class="tool" x="106" y="394" text-anchor="end">ESLint</text>
 <path class="rest" d="M116,380h366a4,4 0 0 1 4,4v10a4,4 0 0 1 -4,4h-366z"/>
-<text class="value" x="494" y="394">2393 ms</text>
+<text class="value" x="494" y="394">2409 ms</text>
 <text class="tool accent-text" x="106" y="422" text-anchor="end">veslint</text>
-<path class="accent" d="M116,408h118.39543726235742a4,4 0 0 1 4,4v10a4,4 0 0 1 -4,4h-118.39543726235742z"/>
-<text class="value" x="246.3954372623574" y="422">792 ms</text>
+<path class="accent" d="M116,408h112.89383248941644a4,4 0 0 1 4,4v10a4,4 0 0 1 -4,4h-112.89383248941644z"/>
+<text class="value" x="240.89383248941644" y="422">761 ms</text>
 <text class="tool" x="106" y="450" text-anchor="end">oxlint</text>
-<path class="rest" d="M116,436h235.53453390715748a4,4 0 0 1 4,4v10a4,4 0 0 1 -4,4h-235.53453390715748z"/>
-<text class="value" x="363.5345339071575" y="450">1549 ms</text>
+<path class="rest" d="M116,436h232.21399518552334a4,4 0 0 1 4,4v10a4,4 0 0 1 -4,4h-232.21399518552334z"/>
+<text class="value" x="360.21399518552334" y="450">1538 ms</text>
 <line class="axis" x1="116" y1="376" x2="116" y2="458"/>
 </svg>

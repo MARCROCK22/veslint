@@ -2,6 +2,12 @@
 
 Each version is a release on GitHub with the veslint binaries (Linux x64, Windows x64) and the VS Code extension. The section of a version is the text of its release.
 
+## 0.42.0
+
+- **Faster without types, with the same results.** no-fallthrough builds the ESTree and the code paths only of the functions that contain a `switch`; no-unused-vars, no-unsafe-optional-chaining, no-require-imports, no-array-constructor, prefer-spread and no-dupe-else-if skip work that cannot report; tree-sitter is compiled for link-time optimization. With the 56 rules of @eslint/js and typescript-eslint recommended: the TypeScript compiler's sources 5.1 s → 3.8 s (663 → 399 MiB), zod 0.52 s → 0.47 s, recharts 0.54 s → 0.49 s.
+- **A faster first lint in the editor.** `veslint --server` takes the configuration of a file out of a resolution it already saved for more files (a run on the project, or an earlier request), instead of starting bun for every new file, and builds no TypeScript program while no rule needs types. The first lint of a file: zod 0.92 s → 0.12 s without types and 1.24 s → 0.49 s with the 23 type-aware rules, the TypeScript compiler 1.53 s → 0.26 s and 2.23 s → 1.47 s.
+- `--bench` splits the parse: tree-sitter alone, the flat tree, freeing it, reading the files.
+
 ## 0.41.0
 
 - **Faster type-aware linting, with the same results.** The hot type walks of unbound-method, no-unnecessary-type-assertion and no-base-to-string, and the lookups of a property or a built-in symbol (await-thenable, no-floating-promises, no-misused-promises and others), run in TypeScript's Go code in one request each instead of many small requests from V (`VESLINT_TSGO_HELPERS=0` keeps the V walks, for comparison); the answers are read straight from Go's buffer; what the rules of a file asked about each node is kept in one table instead of five maps; tree-sitter's answers to the fields asked of each node are kept; and veslint allocates less per file and per answer. With the 23 type-aware rules of recommendedTypeChecked: the TypeScript compiler's sources 16.1 s → 13.7 s (2,421 → 1,954 MiB), recharts 4.4 s → 3.9 s, zod 2.4 s → 2.1 s; no-floating-promises alone is now faster than oxlint on zod and recharts.
