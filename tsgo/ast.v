@@ -29,7 +29,9 @@ const node_data_type_extended = u32(0x80000000)
 const node_extended_data_mask = u32(0x00FFFFFF)
 const source_file_index = 1
 
-struct AstNode {
+// AstNode is a node of the table: its index and its SyntaxKind.
+pub struct AstNode {
+pub:
 	index int
 	kind  u32
 }
@@ -126,14 +128,24 @@ fn (a &SourceFileAst) node(pos int, end int, kind u32) ?AstNode {
 // handle returns the handle of that node (see node).
 pub fn (a &SourceFileAst) handle(pos int, end int, kind u32) ?string {
 	node := a.node(pos, end, kind)?
+	return node_handle_text(node.index, node.kind, a.path)
+}
+
+// find returns that node (see node), whose handle node_handle_text writes.
+pub fn (a &SourceFileAst) find(pos int, end int, kind u32) ?AstNode {
+	return a.node(pos, end, kind)
+}
+
+// node_handle_text is the handle of the node `index` of the kind `kind` in the file of `path`.
+pub fn node_handle_text(index int, kind u32, path string) string {
 	// Written once into room of its exact size: the interpolation made a string of each number
 	// and then the handle, for every node a lint asks about.
-	mut b := []u8{cap: 24 + a.path.len}
-	push_decimal(mut b, node.index)
+	mut b := []u8{cap: 24 + path.len}
+	push_decimal(mut b, index)
 	b << `.`
-	push_decimal(mut b, int(node.kind))
+	push_decimal(mut b, int(kind))
 	b << `.`
-	push_text(mut b, a.path)
+	push_text(mut b, path)
 	return text_of(mut b)
 }
 

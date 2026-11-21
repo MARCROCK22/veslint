@@ -16,6 +16,7 @@ import (
 	"github.com/microsoft/TypeScript/tsc/internal/checker"
 	"github.com/microsoft/TypeScript/tsc/internal/compiler"
 	"github.com/microsoft/TypeScript/tsc/internal/json"
+	"github.com/microsoft/TypeScript/tsc/internal/project"
 	"github.com/microsoft/TypeScript/tsc/internal/tspath"
 )
 
@@ -646,6 +647,36 @@ func (r *fastParamsReader) uint32(out *uint32) bool {
 	return true
 }
 
+// uint32s reads a list of numbers of 32 bits.
+func (r *fastParamsReader) uint32s(out *[]uint32) bool {
+	if !r.byte('[') {
+		return false
+	}
+	list := []uint32{}
+	r.space()
+	if r.byte(']') {
+		*out = list
+		return true
+	}
+	for {
+		r.space()
+		var v uint32
+		if !r.uint32(&v) {
+			return false
+		}
+		list = append(list, v)
+		r.space()
+		if r.byte(',') {
+			continue
+		}
+		if !r.byte(']') {
+			return false
+		}
+		*out = list
+		return true
+	}
+}
+
 // handles reads a list of node handles (strings).
 func (r *fastParamsReader) handles(out *[]NodeHandle) bool {
 	if !r.byte('[') {
@@ -777,13 +808,60 @@ func (w *veslintTypeWriter) finish(b []byte) []byte {
 	return b
 }
 
+// veslintTypesAtLocationsParams are the parameters of veslint/typesAtLocations: the nodes as
+// getTypeAtLocations takes them (Locations, their handles), or the nodes of one file (File, the
+// path a handle ends with, and Nodes, the index and the kind of each node, one after the other),
+// which the client then does not write as a handle each: the path made most of the bytes of a
+// request.
+type veslintTypesAtLocationsParams struct {
+	Snapshot  SnapshotID   `json:"snapshot"`
+	Project   project.ID   `json:"project"`
+	Locations []NodeHandle `json:"locations"`
+	File      string       `json:"file"`
+	Nodes     []uint32     `json:"nodes"`
+}
+
+func readTypesAtLocationsParams(params []byte) (*veslintTypesAtLocationsParams, error) {
+	p := &veslintTypesAtLocationsParams{}
+	if !readFastParams(params, func(r *fastParamsReader, key string) bool {
+		switch key {
+		case "snapshot":
+			return r.uint(64, (*uint64)(&p.Snapshot))
+		case "project":
+			return r.str((*string)(&p.Project))
+		case "locations":
+			return r.handles(&p.Locations)
+		case "file":
+			return r.str(&p.File)
+		case "nodes":
+			return r.uint32s(&p.Nodes)
+		}
+		return false
+	}) {
+		p = &veslintTypesAtLocationsParams{}
+		if err := json.Unmarshal(params, p); err != nil {
+			return nil, err
+		}
+		return p, nil
+	}
+	if checkFastJSON {
+		want := &veslintTypesAtLocationsParams{}
+		if err := json.Unmarshal(params, want); err != nil || !reflect.DeepEqual(want, p) {
+			panic(fmt.Sprintf("veslint: the parameters of typesAtLocations read by hand are not json.Unmarshal's:\n%s\n%#v\n%#v", params, p, want))
+		}
+	}
+	return p, nil
+}
+
 // typesAtLocations is handleGetTypeAtLocations with types sent once.
 func (p *InProcess) typesAtLocations(ctx context.Context, worker int, params []byte, checked bool) (any, error) {
-	parsed, err := veslintUnmarshalPayload(string(MethodGetTypeAtLocations), params)
+	in, err := readTypesAtLocationsParams(params)
 	if err != nil {
 		return nil, fmt.Errorf("%w: %w", ErrInvalidRequest, err)
 	}
-	in := parsed.(*GetTypeAtLocationsParams)
+	if len(in.Nodes)%2 != 0 {
+		return nil, fmt.Errorf("%w: typesAtLocations: nodes without a kind", ErrInvalidRequest)
+	}
 	setup, err := p.veslintSetup(ctx, worker, in.Snapshot, in.Project)
 	if err != nil {
 		return nil, err
@@ -791,7 +869,8 @@ func (p *InProcess) typesAtLocations(ctx context.Context, worker int, params []b
 	defer setup.done()
 	w := newVeslintTypeWriter(setup, checked)
 	defer w.done()
-	b := make([]byte, 0, 8*len(in.Locations)+2)
+	count := len(in.Locations) + len(in.Nodes)/2
+	b := make([]byte, 0, 8*count+2)
 	b = append(b, '[')
 	var nodes veslintNodeResolver
 	for i, loc := range in.Locations {
@@ -805,7 +884,52 @@ func (p *InProcess) typesAtLocations(ctx context.Context, worker int, params []b
 		// GetTypeAtLocation never answers nil (handleGetTypeAtLocations).
 		b = w.append(b, setup.checker.GetTypeAtLocation(node))
 	}
+	if len(in.Nodes) > 0 {
+		file := veslintFileNodes(setup.program, in.File)
+		for i := 0; i < len(in.Nodes); i += 2 {
+			node, err := file.node(in.Nodes[i], in.Nodes[i+1], in.File)
+			if err != nil {
+				return nil, err
+			}
+			if i > 0 || len(in.Locations) > 0 {
+				b = append(b, ',')
+			}
+			b = w.append(b, setup.checker.GetTypeAtLocation(node))
+		}
+	}
 	return RawBinary(w.finish(b)), nil
+}
+
+// veslintFile is the index table of a file of a program, to resolve the nodes of the file that
+// typesAtLocations takes by index as resolveNodeHandle resolves their handles.
+type veslintFile struct {
+	valid bool // the path is one a handle may end with
+	table *encoder.NodeIndexTable
+}
+
+func veslintFileNodes(program *compiler.Program, path string) veslintFile {
+	key, ok := tspath.TryPathKeyFromCanonical(path)
+	if !ok {
+		return veslintFile{}
+	}
+	file := veslintFile{valid: true}
+	if sourceFile := program.GetSourceFileByPath(key); sourceFile != nil {
+		file.table = encoder.GetNodeIndexTable(sourceFile)
+	}
+	return file
+}
+
+// node is the node of a handle `index.kind.path`, with resolveNodeHandle's errors.
+func (f veslintFile) node(index uint32, kind uint32, path string) (*ast.Node, error) {
+	if !f.valid {
+		return nil, fmt.Errorf("%w: invalid node handle %q", ErrClientError, fmt.Sprintf("%d.%d.%s", index, kind, path))
+	}
+	if f.table != nil && int(index) < len(f.table.Nodes) {
+		if node := f.table.Nodes[index]; node != nil {
+			return node, nil
+		}
+	}
+	return nil, fmt.Errorf("%w: node handle %q could not be resolved (file may not be loaded or handle may be stale)", ErrClientError, fmt.Sprintf("%d.%d.%s", index, kind, path))
 }
 
 // typesOfType is handleGetTypesOfType (resolveTypeArrayPropertyOfType) with types sent once: null
