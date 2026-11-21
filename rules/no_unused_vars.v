@@ -351,10 +351,12 @@ fn (mut c Checker) nuv_keep(mut s NuvState, v int, used bool) !bool {
 	name := definition.name
 	is_identifier := node_kind(name) != 'string'
 	name_text := variable.name
-	// Elements of array destructuring.
-	in_array_pattern := nuv_parent_is_array_pattern(name, false)
-		|| variable.references.any(nuv_parent_is_array_pattern(tree.references[it].identifier, tree.references[it].write))
-	if in_array_pattern && is_identifier && nuv_test(o.destructured_array_pattern, name_text)! {
+	// Elements of array destructuring (the references are only looked at when the option is set:
+	// walking them for every variable was a seventh of the rule on the TypeScript compiler).
+	if o.destructured_array_pattern.has && is_identifier
+		&& (nuv_parent_is_array_pattern(name, false)
+			|| variable.references.any(nuv_parent_is_array_pattern(tree.references[it].identifier, tree.references[it].write)))
+		&& nuv_test(o.destructured_array_pattern, name_text)! {
 		if o.report_used_ignore_pattern && used {
 			c.nuv_report(mut s, v, 'usedIgnoredVar', s.nuv_used_ignored_data(v, .array_destructure))!
 		}
