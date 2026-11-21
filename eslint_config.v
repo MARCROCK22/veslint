@@ -632,26 +632,35 @@ fn (l &LoadedConfig) lint_config(index int) rules.LintConfig {
 // (and may have `linterOptions` and `languageOptions` sections, as the output of
 // `eslint --print-config` does).
 // The server's requests take the resolution of their files out of a cached resolution of more
-// files when there is one (resolve_cached).
-fn load_config_for(path string, files []string) !LoadedConfig {
-	return load_config_resolving(path, files, false, true)
+// files when there is one, and out of the resolutions the server keeps in `memo` (resolve_cached).
+fn load_config_for(path string, files []string, mut memo ResolutionMemo) !LoadedConfig {
+	return load_config_resolving(path, files, false, true, mut memo)
 }
 
 // load_config_with is load_config_for; with `lookup`, `path` is an ESLint configuration file that
 // was found, not given, and ESLint finds the configuration of each file itself (see
 // eslint_resolver).
 fn load_config_with(path string, files []string, lookup bool) !LoadedConfig {
-	return load_config_resolving(path, files, lookup, false)
+	mut memo := ResolutionMemo{}
+	return load_config_resolving(path, files, lookup, false, mut memo)
 }
 
 // load_config_resolving is load_config_with; `reuse` is resolve_cached's.
-fn load_config_resolving(path string, files []string, lookup bool, reuse bool) !LoadedConfig {
+fn load_config_resolving(path string, files []string, lookup bool, reuse bool, mut memo ResolutionMemo) !LoadedConfig {
 	if os.file_ext(path) in eslint_config_extensions {
 		if !os.is_file(path) {
 			return error('cannot read ${path}')
 		}
-		resolved := resolve_cached(os.abs_path(path), files.map(os.abs_path(it)), lookup, reuse)!
-		return loaded_from_resolved(resolved, path, os.dir(os.abs_path(path)), files)!
+		resolved := resolve_cached(os.abs_path(path), files.map(os.abs_path(it)), lookup, reuse, mut
+			memo)!
+		// What loaded_from_resolved makes of a resolution depends on it and on the files and the
+		// configuration as given (the directory of the process does not change).
+		if kept := memo.loaded_config(resolved, path, files) {
+			return kept
+		}
+		loaded := loaded_from_resolved(resolved, path, os.dir(os.abs_path(path)), files)!
+		memo.keep_loaded(resolved, path, files, loaded)
+		return loaded
 	}
 	text := os.read_file(path) or { return error('cannot read ${path}: ${err.msg()}') }
 	root := json2.decode[json2.Any](text) or {

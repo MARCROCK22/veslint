@@ -35,21 +35,227 @@ const config_cache_entry_version = 2
 // Entries not used for this long are removed when another one is written.
 const config_cache_max_age = 30 * 24 * time.hour
 
+// ResolutionMemo keeps, in a process that resolves the same configuration for the same files
+// again and again (veslint --server, at every edit), each resolution by the name of the entry of
+// its files, with the entry it came from, decoded: the next resolution only checks that nothing it
+// came from changed (DecodedEntry.valid), without reading and decoding the entry again. It also
+// keeps the name of the entry of each request's files and the configuration loaded from each
+// resolution (load_config_resolving).
+struct ResolutionMemo {
+mut:
+	entries map[string]MemoizedResolution
+	// sources: the entries the resolutions came from, by path (one of more files serves many)
+	sources map[string]&DecodedEntry
+	// paths: the name of the entry of the files of a configuration (entry_key). It is made of the
+	// version, the configuration, the files, the directory of the process and an environment
+	// variable (config_cache_parts), which do not change in a process, and of the cache's
+	// directory, the closest node_modules: one made closer later is not looked at, which changes
+	// where the resolution is saved, not what it is.
+	paths map[string]string
+	// loaded: the configuration loaded from a resolution for the configuration and the files as
+	// given (loaded_config)
+	loaded map[string]&MemoizedConfig
+}
+
+// DecodedEntry is an entry of the cache, decoded, with the stamps of its inputs read once.
+@[heap]
+struct DecodedEntry {
+	entry  map[string]json2.Any
+	inputs []InputStamp
+	broken bool // an input without its path or its stamp: never valid, as for entry_valid
+}
+
+// InputStamp is the stamp of an input of an entry (file_stamp), with its parts as numbers when it
+// has them, so that a check stats the file and compares numbers.
+struct InputStamp {
+	path   string
+	stamp  string
+	parsed bool // size, mtime, ctime and inode are those of `stamp`
+	size   u64
+	mtime  i64
+	ctime  i64
+	inode  u64
+	hash   string // the hash of the content, for a file of the project ('' for none)
+}
+
+struct MemoizedResolution {
+	resolved string
+	source   string // the entry it came from: of these files, or of more (reuse)
+	used     i64    // when `source` was last marked as used (touch_entry)
+}
+
+@[heap]
+struct MemoizedConfig {
+	resolved string
+	loaded   LoadedConfig
+}
+
+// memo_resolutions is how many resolutions a ResolutionMemo keeps before it starts again.
+const memo_resolutions = 64
+
+// decoded_entry reads the stamps of the inputs of `entry`.
+fn decoded_entry(entry map[string]json2.Any) &DecodedEntry {
+	mut inputs := []InputStamp{}
+	mut broken := false
+	if listed := entry['inputs'] {
+		for item in listed.as_array() {
+			input := item.as_map()
+			if 'path' !in input || 'stamp' !in input {
+				broken = true
+				continue
+			}
+			path := (input['path'] or { json2.Any('') }).str()
+			stamp := (input['stamp'] or { json2.Any('') }).str()
+			parts := stamp.split(':')
+			if parts.len == 4 || parts.len == 5 {
+				inputs << InputStamp{
+					path:   path
+					stamp:  stamp
+					parsed: true
+					size:   parts[0].u64()
+					mtime:  parts[1].i64()
+					ctime:  parts[2].i64()
+					inode:  parts[3].u64()
+					hash:   if parts.len == 5 { parts[4] } else { '' }
+				}
+			} else {
+				inputs << InputStamp{
+					path:  path
+					stamp: stamp
+				}
+			}
+		}
+	}
+	return &DecodedEntry{
+		entry:  entry
+		inputs: inputs
+		broken: broken
+	}
+}
+
+// valid is entry_valid for the decoded entry: an input whose stamp has its parts is checked with
+// one stat, and with its content when the stamp has its hash (file_stamp); another with file_stamp.
+fn (d &DecodedEntry) valid(files []string, lookup bool) bool {
+	if d.broken || 'inputs' !in d.entry {
+		return false
+	}
+	for input in d.inputs {
+		if !input.parsed {
+			if file_stamp(input.path) != input.stamp {
+				return false
+			}
+			continue
+		}
+		info := os.stat(input.path) or { return false }
+		if info.get_filetype() == .directory || info.size != input.size
+			|| info.mtime != input.mtime || info.ctime != input.ctime || info.inode != input.inode {
+			return false
+		}
+		if input.hash != '' || (info.size <= config_cache_hashed_size
+			&& !input.path.contains('${os.path_separator}node_modules${os.path_separator}')) {
+			// The content counts (file_stamp): the same stamp then.
+			if file_stamp(input.path) != input.stamp {
+				return false
+			}
+		}
+	}
+	return entry_environment_valid(d.entry, files, lookup)
+}
+
+// keep remembers the resolution of the entry `entry_path` out of `source`.
+fn (mut m ResolutionMemo) keep(entry_path string, resolved string, source string, entry map[string]json2.Any) {
+	if m.entries.len >= memo_resolutions {
+		m.entries = map[string]MemoizedResolution{}
+		m.sources = map[string]&DecodedEntry{}
+	}
+	m.entries[entry_path] = MemoizedResolution{
+		resolved: resolved
+		source:   source
+		used:     time.now().unix()
+	}
+	m.sources[source] = decoded_entry(entry)
+}
+
+// mark_used marks the entry a kept resolution came from as used, now and then: entries not used
+// for a month are removed.
+fn (mut m ResolutionMemo) mark_used(entry_path string) {
+	kept := m.entries[entry_path] or { return }
+	now := time.now().unix()
+	if now - kept.used > 3600 {
+		touch_entry(kept.source)
+		m.entries[entry_path] = MemoizedResolution{
+			...kept
+			used: now
+		}
+	}
+}
+
+fn entry_key(config_path string, files []string, lookup bool) string {
+	return '${lookup}\0${config_path}\0${files.join('\0')}'
+}
+
+// loaded_config is the configuration loaded from `resolved` for `files` (as given) of the
+// configuration `path` (as given), when the memo has it.
+fn (m &ResolutionMemo) loaded_config(resolved string, path string, files []string) ?LoadedConfig {
+	kept := m.loaded['${path}\0${files.join('\0')}'] or { return none }
+	if kept.resolved != resolved {
+		return none
+	}
+	return kept.loaded
+}
+
+fn (mut m ResolutionMemo) keep_loaded(resolved string, path string, files []string, loaded LoadedConfig) {
+	if m.loaded.len >= memo_resolutions {
+		m.loaded = map[string]&MemoizedConfig{}
+	}
+	m.loaded['${path}\0${files.join('\0')}'] = &MemoizedConfig{
+		resolved: resolved
+		loaded:   loaded
+	}
+}
+
+// config_entry_path is the path of the entry of a resolution in `dir`, the cache's directory.
+fn config_entry_path(dir string, base string, config_path string, files []string, lookup bool) string {
+	return os.join_path(dir, 'config-${base}-${config_cache_key(config_path, files, lookup)}.json')
+}
+
 // resolve_cached is resolve_with_bun through the cache; with `reuse` (and without lookup), out of
-// the entry of more files when there is no entry of these files.
-fn resolve_cached(config_path string, files []string, lookup bool, reuse bool) !string {
+// the entry of more files when there is no entry of these files. With a `memo`, out of a
+// resolution it keeps while it is valid.
+fn resolve_cached(config_path string, files []string, lookup bool, reuse bool, mut memo ResolutionMemo) !string {
 	if os.getenv('VESLINT_CONFIG_CACHE') == '0' {
 		return resolve_with_bun(config_path, files, lookup)
 	}
+	request_key := entry_key(config_path, files, lookup)
+	if entry_path := memo.paths[request_key] {
+		if kept := memo.entries[entry_path] {
+			source := memo.sources[kept.source] or { &DecodedEntry{} }
+			if source.valid(files, lookup) {
+				memo.mark_used(entry_path)
+				return kept.resolved
+			}
+			memo.entries.delete(entry_path)
+		}
+	}
 	dir := config_cache_dir(config_path) or { return resolve_with_bun(config_path, files, lookup) }
 	base := config_cache_base(config_path, lookup)
-	entry_path := os.join_path(dir, 'config-${base}-${config_cache_key(config_path, files, lookup)}.json')
-	if resolved := cached_resolution(entry_path, files, lookup) {
-		touch_entry(entry_path)
-		return resolved
+	entry_path := config_entry_path(dir, base, config_path, files, lookup)
+	if memo.paths.len >= memo_resolutions {
+		memo.paths = map[string]string{}
+	}
+	memo.paths[request_key] = entry_path
+	if entry := read_entry(entry_path) {
+		if entry_valid(entry, files, lookup) {
+			if resolved := entry['resolved'] {
+				touch_entry(entry_path)
+				memo.keep(entry_path, resolved.str(), entry_path, entry)
+				return resolved.str()
+			}
+		}
 	}
 	if reuse && !lookup {
-		if resolved := subset_resolution(dir, base, files) {
+		if resolved, source, entry := subset_resolution(dir, base, files) {
+			memo.keep(entry_path, resolved, source, entry)
 			return resolved
 		}
 	}
@@ -109,16 +315,6 @@ fn config_cache_parts(config_path string, lookup bool) []string {
 	]
 }
 
-// cached_resolution is the resolved JSON of the entry when nothing it came from changed.
-fn cached_resolution(entry_path string, files []string, lookup bool) ?string {
-	entry := read_entry(entry_path)?
-	if !entry_valid(entry, files, lookup) {
-		return none
-	}
-	resolved := entry['resolved'] or { return none }
-	return resolved.str()
-}
-
 // read_entry is the object of an entry of this version of the cache.
 fn read_entry(entry_path string) ?map[string]json2.Any {
 	text := os.read_file(entry_path) or { return none }
@@ -142,6 +338,12 @@ fn entry_valid(entry map[string]json2.Any, files []string, lookup bool) bool {
 			return false
 		}
 	}
+	return entry_environment_valid(entry, files, lookup)
+}
+
+// entry_environment_valid: the environment variables the resolution of the entry read have the
+// values they had, and with lookup, `files` have the closest configurations they had.
+fn entry_environment_valid(entry map[string]json2.Any, files []string, lookup bool) bool {
 	for name, value in (entry['env'] or { return false }).as_map() {
 		current := os.getenv_opt(name)
 		if value is json2.Null {
@@ -163,7 +365,7 @@ fn entry_valid(entry map[string]json2.Any, files []string, lookup bool) bool {
 // What it gives is what bun would print for them: the configurations of the files in the order
 // they first come, the files in their order, and of `pluginRules` and `ruleDefaults` the ones the
 // files add, in the order of the entry (the order bun sorts them in).
-fn subset_resolution(dir string, base string, files []string) ?string {
+fn subset_resolution(dir string, base string, files []string) ?(string, string, map[string]json2.Any) {
 	prefix := 'config-${base}-'
 	mut names := (os.ls(dir) or { return none }).filter(it.starts_with(prefix)
 		&& it.ends_with('.json'))
@@ -196,7 +398,7 @@ fn subset_resolution(dir string, base string, files []string) ?string {
 		}
 		resolved := compose_resolution(entry, index, files) or { continue }
 		touch_entry(path)
-		return resolved
+		return resolved, path, entry
 	}
 	return none
 }
@@ -494,10 +696,11 @@ const config_cache_hashed_size = u64(1024 * 1024)
 // content too, so that a change in the same second, of the same size, is still seen. Empty when it
 // is not a file that can be read.
 fn file_stamp(path string) string {
-	if !os.is_file(path) {
+	// One stat: os.is_file would make two more.
+	info := os.stat(path) or { return '' }
+	if info.get_filetype() == .directory {
 		return ''
 	}
-	info := os.stat(path) or { return '' }
 	mut stamp := '${info.size}:${info.mtime}:${info.ctime}:${info.inode}'
 	if info.size <= config_cache_hashed_size
 		&& !path.contains('${os.path_separator}node_modules${os.path_separator}') {
