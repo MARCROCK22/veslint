@@ -3363,6 +3363,13 @@ pub fn (mut c Checker) set_lint_stop(stop LintStop) {
 	c.lint_stop = stop
 }
 
+// set_tree_cache makes lint_file parse the next file through `cache`, as the file `key`: from the
+// tree of its last text there (veslint --server, which keeps the cache from request to request).
+pub fn (mut c Checker) set_tree_cache(cache &treesitter.TreeCache, key string) {
+	c.tree_cache = cache
+	c.tree_key = key
+}
+
 // set_has_bom tells the Checker whether the next file it lints had a BOM (unicode-bom): its text
 // comes without it, as ESLint's does.
 pub fn (mut c Checker) set_has_bom(has_bom bool) {
@@ -3463,14 +3470,27 @@ fn (mut c Checker) lint_file_in_lifetime(parser Parser, config LintConfig, src s
 	}
 	mut owned := !vue_file || c.vue.doc.script.tree == unsafe { nil }
 	mut part := time.new_stopwatch()
-	mut tree := if svelte_file {
-		parser.parse(c.svelte.doc.lint_code)!
+	// The tree of a TreeCache is the cache's, kept for the next text of the file.
+	mut cache := c.tree_cache
+	cache_key := c.tree_key
+	c.tree_cache = unsafe { nil }
+	c.tree_key = ''
+	parsed := if svelte_file {
+		c.svelte.doc.lint_code
 	} else if !vue_file {
-		parser.parse(src)!
-	} else if owned {
-		parser.parse(c.vue.doc.script.masked)!
+		src
 	} else {
+		c.vue.doc.script.masked
+	}
+	mut tree := if !owned {
 		c.vue.doc.script.tree
+	} else if cache != unsafe { nil } {
+		cache.parse(parser, cache_key, parsed)!
+	} else {
+		parser.parse(parsed)!
+	}
+	if cache != unsafe { nil } && owned {
+		owned = false
 	}
 	stats.parse_tree_sitter_ms += ms(part.elapsed())
 	defer {
@@ -6167,6 +6187,10 @@ mut:
 	vue_template_owner string
 	// asked before each rule of a file whether to give the lint up (set_lint_stop)
 	lint_stop LintStop = NoLintStop{}
+	// the trees of the files an editor edits, which the next file is parsed with under the key
+	// tree_key (set_tree_cache): an incremental parse from its last text
+	tree_cache &treesitter.TreeCache = unsafe { nil }
+	tree_key   string
 	// tokens and comments of the file (source_tokens), built on first use (per file)
 	file_tokens &SourceTokens = unsafe { nil }
 	// the ESTree of the file and its code path analysis (estree_bridge.v), built on first use (per

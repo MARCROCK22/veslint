@@ -54,9 +54,27 @@ struct ServerAnswer {
 
 // ServerRequest is a line of stdin as the reader thread parsed it.
 struct ServerRequest {
-	request map[string]json2.Any
-	files   string // the files it lints, joined: a later request with the same ones supersedes it
-	error   string // the error answered (code 2) to a line that is not a request object
+	request   map[string]json2.Any
+	files     string // the files it lints, joined: a later request with the same ones supersedes it
+	error     string // the error answered (code 2) to a line that is not a request object
+	decode_ms f64    // the time of the line's JSON decoding (VESLINT_SERVER_PROFILE)
+}
+
+// ServerProfile is where the time of a request went, which VESLINT_SERVER_PROFILE=1 writes to
+// stderr as a JSON line after each answer.
+struct ServerProfile {
+mut:
+	id          i64
+	decode_ms   f64
+	config_ms   f64 // load_config_for
+	files_ms    f64 // the files' texts, documents and tsconfig files
+	snapshot_ms f64 // snapshot_for
+	checker_ms  f64 // new checkers
+	lint_ms     f64 // lint_file, whose parts are those of `stats`
+	report_ms   f64 // file_report
+	handle_ms   f64 // the whole request, without writing the answer
+	write_ms    f64 // encoding and writing the answer
+	stats       rules.Stats
 }
 
 // RequestQueue holds the requests read and not answered yet: those the reader thread sends through
@@ -102,7 +120,12 @@ fn read_requests(requests chan ServerRequest) {
 		if line.trim_space().len == 0 {
 			continue
 		}
-		requests <- parse_request(line)
+		sw := time.new_stopwatch()
+		request := parse_request(line)
+		requests <- ServerRequest{
+			...request
+			decode_ms: f64(sw.elapsed()) / f64(time.millisecond)
+		}
 	}
 	requests.close()
 }
@@ -163,6 +186,47 @@ mut:
 	twin_configs   map[string]string
 	included       map[string]bool
 	served_configs []string // the tsconfig files include_twins gave tsgo with twins added
+	profile        bool     // VESLINT_SERVER_PROFILE=1
+	// trees: the last tree of the files linted last, which their next text is parsed from (an
+	// edit re-parses what it changed)
+	trees &treesitter.TreeCache = unsafe { nil }
+	prof  ServerProfile
+}
+
+fn since_ms(sw time.StopWatch) f64 {
+	return f64(sw.elapsed()) / f64(time.millisecond)
+}
+
+// write_profile writes the profile of the request answered last to stderr: the phases, then the
+// rules slowest first.
+fn (s &Server) write_profile() {
+	p := s.prof
+	st := p.stats
+	mut rule_names := st.rule_ms.keys()
+	rule_names.sort_with_compare(fn [st] (a &string, b &string) int {
+		ta, tb := st.rule_ms[*a], st.rule_ms[*b]
+		return if ta > tb {
+			-1
+		} else if ta < tb {
+			1
+		} else {
+			compare_strings(a, b)
+		}
+	})
+	mut rules_total := 0.0
+	for _, t in st.rule_ms {
+		rules_total += t
+	}
+	mut line := strings.new_builder(1024)
+	line.write_string('{"id":${p.id},"decode":${p.decode_ms:.3f},"config":${p.config_ms:.3f},"files":${p.files_ms:.3f},"snapshot":${p.snapshot_ms:.3f},"checker":${p.checker_ms:.3f},"lint":${p.lint_ms:.3f},"parse":${st.parse_tree_sitter_ms:.3f},"index":${st.parse_index_ms:.3f},"syntax":${st.parse_syntax_ms:.3f},"await":${st.parse_await_ms:.3f},"free":${st.tree_free_ms:.3f},"rules":${rules_total:.3f},"report":${p.report_ms:.3f},"handle":${p.handle_ms:.3f},"write":${p.write_ms:.3f},"rule_ms":{')
+	for i, name in rule_names {
+		if i > 0 {
+			line.write_string(',')
+		}
+		line.write_string('"${name}":${st.rule_ms[name]:.3f}')
+	}
+	line.write_string('}}')
+	eprintln(line.str())
 }
 
 // serve answers requests until stdin ends.
@@ -170,6 +234,8 @@ fn serve(timeout time.Duration) {
 	requests := chan ServerRequest{cap: 64}
 	mut s := &Server{
 		timeout:    timeout
+		profile:    os.getenv('VESLINT_SERVER_PROFILE') == '1'
+		trees:      treesitter.new_tree_cache()
 		queue:      &RequestQueue{
 			requests: requests
 		}
@@ -188,11 +254,24 @@ fn serve(timeout time.Duration) {
 		s.tsx_parser.close()
 		s.vue_parsers.close()
 		s.svelte_parsers.close()
+		s.trees.clear()
 	}
 	reader := spawn read_requests(requests)
 	for {
 		request := s.queue.next() or { break }
-		println(json2.encode(s.handle(request)))
+		s.prof = ServerProfile{
+			decode_ms: request.decode_ms
+		}
+		sw := time.new_stopwatch()
+		answer := s.handle(request)
+		s.prof.handle_ms = since_ms(sw)
+		write_sw := time.new_stopwatch()
+		println(json2.encode(answer))
+		if s.profile {
+			s.prof.id = answer.id
+			s.prof.write_ms = since_ms(write_sw)
+			s.write_profile()
+		}
 	}
 	reader.wait()
 }
@@ -292,6 +371,11 @@ fn (mut s Server) handle(item ServerRequest) ServerAnswer {
 	for path in request_paths(request, 'forget') {
 		s.stop_serving(path)
 	}
+	// A tree stays valid for its text when the file goes back to its text on disk (`forget`): only
+	// the deleted ones are dropped.
+	for path in request_paths(request, 'deleted') {
+		s.trees.forget(path)
+	}
 	mut texts := map[string]string{}
 	if value := request['texts'] {
 		if value is map[string]json2.Any {
@@ -370,6 +454,7 @@ fn (mut s Server) lint(id i64, config string, project string, files []string, te
 			}
 		}
 	}
+	mut phase := time.new_stopwatch()
 	loaded := load_config_for(config, files) or {
 		return ServerAnswer{
 			id:     id
@@ -415,6 +500,8 @@ fn (mut s Server) lint(id i64, config string, project string, files []string, te
 		}
 		project_override = os.abs_path(project)
 	}
+	s.prof.config_ms = since_ms(phase)
+	phase.restart()
 	mut entries := []RuleFile{cap: files.len}
 	mut tsconfigs := []string{}
 	// The documents of the .vue files, by path as given: freed when the answer is ready.
@@ -566,6 +653,8 @@ fn (mut s Server) lint(id i64, config string, project string, files []string, te
 	mut warnings := 0
 	// No rule needs types: no program is built for them, as on the command line (Worker.open).
 	lazy := !configs_need_types(lint_configs)
+	s.prof.files_ms = since_ms(phase)
+	phase.restart()
 	if tsconfigs.len > 0 {
 		s.snapshot_for(tsconfigs, lazy) or {
 			s.stop()
@@ -599,7 +688,11 @@ fn (mut s Server) lint(id i64, config string, project string, files []string, te
 			}
 		}
 	}
+	s.prof.snapshot_ms = since_ms(phase)
 	mut stats := rules.Stats{}
+	defer {
+		s.prof.stats = stats
+	}
 	for f in entries {
 		if s.queue.stop() {
 			return ServerAnswer{
@@ -632,6 +725,7 @@ fn (mut s Server) lint(id i64, config string, project string, files []string, te
 			}
 		}
 		project_id := s.projects[f.tsconfig] or { '' }
+		phase.restart()
 		if project_id !in s.checkers {
 			mut checker := rules.new_checker(s.client, s.snap.snapshot, project_id, project_options(s.snap,
 				project_id)) or {
@@ -655,9 +749,11 @@ fn (mut s Server) lint(id i64, config string, project string, files []string, te
 			checker.share_declaration_asts(asts)
 			s.checkers[project_id] = checker
 		}
+		s.prof.checker_ms += since_ms(phase)
 		mut checker := s.checkers[project_id] or { continue }
 		checker.set_lint_stop(s.queue)
 		checker.set_has_bom(f.has_bom)
+		checker.set_tree_cache(s.trees, f.abs_path)
 		doc := docs[f.path] or { unsafe { nil } }
 		sdoc := sdocs[f.path] or { unsafe { nil } }
 		if f.vue {
@@ -667,6 +763,7 @@ fn (mut s Server) lint(id i64, config string, project string, files []string, te
 		} else if f.module.inserted > 0 {
 			checker.set_svelte_module(f.src, f.module.code, f.module.at, f.module.inserted)
 		}
+		phase.restart()
 		result := checker.lint_file(if (f.vue && doc.script.jsx) || (f.svelte && sdoc.options.jsx)
 			|| (!f.vue && !f.svelte && treesitter.uses_jsx_dialect(f.path)) {
 			s.tsx_parser
@@ -690,7 +787,10 @@ fn (mut s Server) lint(id i64, config string, project string, files []string, te
 				stderr: errors.str()
 			}
 		}
+		s.prof.lint_ms += since_ms(phase)
+		phase.restart()
 		report := file_report(f.path, f.src, result, fixes, doc, sdoc)
+		s.prof.report_ms += since_ms(phase)
 		errors.write_string(report.stderr)
 		out.write_string(report.stdout)
 		problems += report.problems

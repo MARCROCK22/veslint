@@ -1,5 +1,7 @@
 module treesitter
 
+import os
+
 // Minimal bindings for tree-sitter (v0.27.0) and its TypeScript grammar (v0.23.2), statically
 // linked. See PROMPT.md §3.2 and §3.3.
 
@@ -16,6 +18,7 @@ $if windows {
 #include "tree_sitter/api.h"
 #include "@VMODROOT/treesitter/flat_tree.h"
 #include "@VMODROOT/treesitter/field_cache.h"
+#include "@VMODROOT/treesitter/incremental.h"
 
 @[typedef]
 struct C.TSParser {}
@@ -93,6 +96,9 @@ fn C.ts_parser_delete(self &C.TSParser)
 fn C.ts_parser_set_language(self &C.TSParser, language &C.TSLanguage) bool
 fn C.ts_parser_parse_string(self &C.TSParser, old_tree &C.TSTree, str &char, length u32) &C.TSTree
 fn C.ts_tree_delete(self &C.TSTree)
+fn C.ts_tree_language(self &C.TSTree) &C.TSLanguage
+fn C.vt_reparse(parser &C.TSParser, old &C.TSTree, old_text &char, old_length u32, new_text &char, new_length u32, outcome &int) &C.TSTree
+fn C.vt_trees_differ(a &C.TSTree, b &C.TSTree) i64
 fn C.ts_tree_root_node(self &C.TSTree) C.TSNode
 fn C.ts_node_type(self C.TSNode) &char
 fn C.ts_node_descendant_count(self C.TSNode) u32
@@ -233,6 +239,146 @@ pub fn (p &Parser) parse(src string) !&C.TSTree {
 		return error('tree-sitter could not parse the file')
 	}
 	return tree
+}
+
+// Reparse tells how Parser.reparse parsed a text.
+pub enum Reparse {
+	same        // the texts are equal: the old tree
+	incremental // from the old tree
+	fresh       // from scratch: the old tree could not be trusted for this edit (incremental.h)
+}
+
+// reparse returns the tree of `src` from `old`, the tree this parser gave for `old_src`, which it
+// takes: tree-sitter reuses the subtrees the change from `old_src` to `src` leaves as they were
+// (the bytes both texts have in common at the start and at the end), and the tree is checked to be
+// the one a parse from scratch gives, or parsed from scratch (incremental.h, vt_reparse). For equal
+// texts it is `old` itself. `old` is freed otherwise, also when the parse fails.
+pub fn (p &Parser) reparse(old &C.TSTree, old_src string, src string) !(&C.TSTree, Reparse) {
+	if i64(src.len) > i64(max_u32) {
+		C.ts_tree_delete(old)
+		return error('file too large for tree-sitter (${src.len} bytes)')
+	}
+	mut outcome := 0
+	tree := C.vt_reparse(p.parser, old, &char(old_src.str), u32(old_src.len), &char(src.str),
+		u32(src.len), &outcome)
+	if isnil(tree) {
+		return error('tree-sitter could not parse the file')
+	}
+	return tree, unsafe { Reparse(outcome) }
+}
+
+// trees_differ is the start byte of the first node in which two trees differ (kind, range,
+// flags, field or number of children, in preorder), or -1 when they are the same tree.
+pub fn trees_differ(a &C.TSTree, b &C.TSTree) i64 {
+	return C.vt_trees_differ(a, b)
+}
+
+// TreeCache keeps the last tree of a few files with the text it was parsed from, so that the next
+// parse of a new text of the same file (an edit in an editor: veslint --server) is an incremental
+// parse from it (Parser.reparse). Its trees are its own: one is freed when a file is parsed again,
+// forgotten or pushed out by others.
+//
+// VESLINT_INCREMENTAL=0 turns it off (every parse from scratch); VESLINT_INCREMENTAL_CHECK=1
+// parses each new text from scratch too and compares both trees: a difference is written to
+// stderr and the tree from scratch is used.
+@[heap]
+pub struct TreeCache {
+mut:
+	entries map[string]CachedTree
+	order   []string // the keys, the most recently parsed last
+	off     bool
+	check   bool
+pub mut:
+	// how many parses of a new text of a file were Reparse.same, .incremental and .fresh
+	reparses [3]int
+}
+
+struct CachedTree {
+	text string
+	tree &C.TSTree
+	lang &C.TSLanguage
+}
+
+// tree_cache_size is how many trees a TreeCache keeps: the files being edited.
+const tree_cache_size = 8
+
+pub fn new_tree_cache() &TreeCache {
+	return &TreeCache{
+		off:   os.getenv('VESLINT_INCREMENTAL') == '0'
+		check: os.getenv('VESLINT_INCREMENTAL_CHECK') == '1'
+	}
+}
+
+// parse is the tree of `src` for the file `key`, from the tree of its last text when it has one
+// of this parser's language. The tree is the cache's: it stays valid until the next parse of
+// `key`, forget(key) or clear().
+pub fn (mut c TreeCache) parse(p &Parser, key string, src string) !&C.TSTree {
+	mut tree := &C.TSTree(unsafe { nil })
+	if entry := c.entries[key] {
+		c.entries.delete(key)
+		c.order = c.order.filter(it != key)
+		if c.off || voidptr(entry.lang) != voidptr(p.lang) {
+			C.ts_tree_delete(entry.tree)
+			tree = p.parse(src)!
+		} else {
+			again, how := p.reparse(entry.tree, entry.text, src)!
+			tree = again
+			c.reparses[int(how)]++
+			if c.check && how == .incremental {
+				fresh := p.parse(src) or {
+					C.ts_tree_delete(tree)
+					return err
+				}
+				at := C.vt_trees_differ(tree, fresh)
+				if at >= 0 {
+					eprintln('veslint: the incremental parse of ${key} differs from a parse from scratch at byte ${at}')
+					C.ts_tree_delete(tree)
+					tree = fresh
+				} else {
+					C.ts_tree_delete(fresh)
+				}
+			}
+		}
+	} else {
+		tree = p.parse(src)!
+	}
+	c.entries[key] = CachedTree{
+		text: src
+		tree: tree
+		lang: p.lang
+	}
+	c.order << key
+	for c.order.len > tree_cache_size {
+		c.forget(c.order[0])
+	}
+	return tree
+}
+
+// owns: `tree` is one of the cache's.
+pub fn (c &TreeCache) owns(tree &C.TSTree) bool {
+	for _, entry in c.entries {
+		if voidptr(entry.tree) == voidptr(tree) {
+			return true
+		}
+	}
+	return false
+}
+
+// forget frees the tree of `key`.
+pub fn (mut c TreeCache) forget(key string) {
+	entry := c.entries[key] or { return }
+	C.ts_tree_delete(entry.tree)
+	c.entries.delete(key)
+	c.order = c.order.filter(it != key)
+}
+
+// clear frees every tree.
+pub fn (mut c TreeCache) clear() {
+	for _, entry in c.entries {
+		C.ts_tree_delete(entry.tree)
+	}
+	c.entries = map[string]CachedTree{}
+	c.order = []
 }
 
 pub fn tree_has_error(tree &C.TSTree) bool {
