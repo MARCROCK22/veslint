@@ -8,6 +8,7 @@ import (
 	"encoding/binary"
 	"fmt"
 	"reflect"
+	"slices"
 	"strconv"
 	"strings"
 	"sync"
@@ -1044,16 +1045,18 @@ func (p *InProcess) nodesAtRanges(worker int, params []byte) (any, error) {
 }
 
 // veslintRangeIndex gives the nodes of a file by the UTF-16 unit where they start (with their
-// leading trivia), as the encoder writes their positions: order[starts[u+1]:starts[u+2]] are the
-// indexes of the nodes that start at u, in the order of the node table, and ends[i] is the end of
-// node i. It is built in one pass over the file's index table (the nodes in the encoder's order)
-// and a counting sort, without encoding anything. NodeLists, which have no node, and nodes without
-// a range are not in it, as the client skipped their rows.
+// leading trivia), as the encoder writes their positions: order has the indexes of the nodes by
+// their start (begins[k] is the start of order[k]), the ones with the same start in the order of
+// the node table, and ends[i] is the end of node i. It is built in one pass over the file's index
+// table (the nodes in the encoder's order) and a counting sort, without encoding anything; what it
+// keeps is a few numbers per node, not per unit of the text (each worker keeps the index of its
+// last file). NodeLists, which have no node, and nodes without a range are not in it, as the client
+// skipped their rows.
 type veslintRangeIndex struct {
 	file   *ast.SourceFile
 	nodes  []*ast.Node
-	starts []uint32
 	order  []uint32
+	begins []int32
 	ends   []int32
 }
 
@@ -1087,37 +1090,38 @@ func buildRangeIndex(sourceFile *ast.SourceFile) *veslintRangeIndex {
 		last = max(last, start)
 		count++
 	}
-	// A counting sort: the count of each start at starts[u+1], summed up to each start, and the nodes
-	// placed from the last to the first, each at the end of the room left for its start, which leaves
-	// starts[u+1] at the first of u's and starts[u+2] at the first of the next start's (or at the
-	// count).
-	starts := make([]uint32, last+3)
+	// A counting sort: the count of each start at room[u+1], summed up to each start, and the nodes
+	// placed from the last to the first, each at the end of the room left for its start.
+	room := make([]uint32, last+2)
 	for _, start := range pos {
 		if start >= 0 {
-			starts[start+1]++
+			room[start+1]++
 		}
 	}
-	for u := 1; u < len(starts)-1; u++ {
-		starts[u] += starts[u-1]
+	for u := 1; u < len(room); u++ {
+		room[u] += room[u-1]
 	}
-	starts[len(starts)-1] = uint32(count)
 	order := make([]uint32, count)
+	begins := make([]int32, count)
 	for i := len(pos) - 1; i >= 0; i-- {
 		if start := pos[i]; start >= 0 {
-			starts[start+1]--
-			order[starts[start+1]] = uint32(i)
+			room[start+1]--
+			order[room[start+1]] = uint32(i)
+			begins[room[start+1]] = start
 		}
 	}
-	return &veslintRangeIndex{file: sourceFile, nodes: nodes, starts: starts, order: order, ends: ends}
+	return &veslintRangeIndex{file: sourceFile, nodes: nodes, order: order, begins: begins, ends: ends}
 }
 
 // find is the innermost node (the last in the table) with that range and, if `kind` is not 0, that
 // kind: its index and kind, or 0 and 0.
 func (x *veslintRangeIndex) find(pos int32, end int32, kind uint32) (uint32, uint32) {
-	if pos < 0 || int(pos) >= len(x.starts)-2 {
+	if pos < 0 {
 		return 0, 0
 	}
-	for at := int(x.starts[pos+2]) - 1; at >= int(x.starts[pos+1]); at-- {
+	// After the last node that starts at `pos`, walking back.
+	at, _ := slices.BinarySearch(x.begins, pos+1)
+	for at--; at >= 0 && x.begins[at] == pos; at-- {
 		i := x.order[at]
 		if x.ends[i] != end {
 			continue
