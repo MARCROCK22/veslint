@@ -382,3 +382,81 @@ const ast_walk_expected = '1 308 parent=0
         175 79 parent=174 type
         176 10 parent=174
   177 1 parent=1'
+
+// With TypeScript in this process, nodes_at_ranges finds the node SourceFileAst.find finds, for the
+// range of every node of the table (with any kind, its own and another), for ranges no node has,
+// and in files whose positions are not in order in the table (JSDoc comes after the children of
+// the node it documents), with UTF-16 offsets that are not byte offsets (emoji) and with a BOM.
+fn test_nodes_at_ranges_finds_what_the_source_file_ast_finds() {
+	dir := os.join_path(os.vtmp_dir(), 'veslint_nodes_at_ranges_${os.getpid()}')
+	os.mkdir_all(dir) or { panic(err) }
+	defer {
+		os.rmdir_all(dir) or {}
+	}
+	os.write_file(os.join_path(dir, 'tsconfig.json'), '{"compilerOptions":{"strict":true,"noEmit":true,"target":"es2022","lib":["es2022"]},"include":["*.ts"]}') or {
+		panic(err)
+	}
+	files := {
+		'jsdoc.ts': '/** The first. @param a the 🎉 */\nexport function f(a: number, /** b */ b = [1, (2)]): number {\n\t// x\n\treturn a + b.length; /** after */\n}\n/** @deprecated */\nexport class C<T> { /** m */ m?(x: T): void {} }\nconst s = "🎉🎉" as const, t = `\${s}🎉\${f(1)}`;\n'
+		'bom.ts':   '\xef\xbb\xbfconst x = { a: 1, "b": [x, ...[]] } satisfies object;\n'
+		'plain.ts': 'let y = (1 + 2) * 3;\ny = y!;\n'
+	}
+	for name, text in files {
+		os.write_file(os.join_path(dir, name), text) or { panic(err) }
+	}
+	mut client := start(os.join_path(@VMODROOT, rel_path), dir, 10 * time.second) or { panic(err) }
+	defer {
+		client.shutdown()
+	}
+	if !client.finds_nodes() {
+		return
+	}
+	_ = client.initialize() or { panic(err) }
+	snap := client.create_snapshot([os.join_path(dir, 'tsconfig.json')]) or { panic(err) }
+	project := snap.projects[0].id
+	mut unordered := 0
+	for name, _ in files {
+		file := os.join_path(dir, name)
+		ast := client.source_file_ast(snap.snapshot, project, file) or { panic(err) }
+		if !ast.ordered {
+			unordered++
+		}
+		mut ranges := []int{}
+		for i in source_file_index .. ast.tree.count {
+			kind := ast.tree.field(i, 0)
+			pos := int(i32(ast.tree.field(i, node_offset_pos)))
+			end := int(i32(ast.tree.field(i, node_offset_end)))
+			if pos < 0 || end < pos {
+				continue
+			}
+			for query in [[pos, end, 0], [pos, end, int(kind)], [pos, end, 1], [pos, end + 1, 0],
+				[pos + 1, end, int(kind)]] {
+				ranges << query
+			}
+		}
+		// Past the end of the file.
+		ranges << [1_000_000, 1_000_001, 0]
+		path, nodes := client.nodes_at_ranges(snap.snapshot, project, file, ranges) or {
+			panic(err)
+		}
+		assert path == ast.path
+		assert nodes.len == ranges.len / 3
+		mut found := 0
+		for i, node in nodes {
+			want := ast.find(ranges[3 * i], ranges[3 * i + 1], u32(ranges[3 * i + 2])) or {
+				AstNode{}
+			}
+			assert node == want, '${name}: ${ranges[3 * i..3 * i + 3]}'
+			if node.index != 0 {
+				found++
+			}
+		}
+		assert found > 10
+	}
+	assert unordered > 0
+	if _, _ := client.nodes_at_ranges(snap.snapshot, project, os.join_path(dir, 'none.ts'),
+		[0, 1, 0])
+	{
+		assert false, 'a file the program does not have'
+	}
+}

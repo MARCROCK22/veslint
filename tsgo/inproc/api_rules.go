@@ -39,7 +39,11 @@ func (p *InProcess) veslintRequest(ctx context.Context, worker int, method strin
 	case "builtinSymbolLeaf":
 		return p.builtinSymbolLeaf(ctx, worker, params)
 	case "typesAtLocations", "typesAtLocationsChecked":
-		return p.typesAtLocations(ctx, worker, params, strings.HasSuffix(method, "Checked"))
+		return p.typesAtLocations(ctx, worker, params, strings.HasSuffix(method, "Checked"), false)
+	case "typesAtNodes", "typesAtNodesChecked":
+		return p.typesAtLocations(ctx, worker, params, strings.HasSuffix(method, "Checked"), true)
+	case "nodesAtRanges":
+		return p.nodesAtRanges(worker, params)
 	case "typesOfType", "typesOfTypeChecked":
 		return p.typesOfType(ctx, worker, params, strings.HasSuffix(method, "Checked"))
 	}

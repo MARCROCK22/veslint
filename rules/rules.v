@@ -3513,6 +3513,8 @@ fn (mut c Checker) lint_file_in_lifetime(parser Parser, config LintConfig, src s
 	c.index_file(root)
 	stats.parse_index_ms += ms(part.elapsed())
 	c.ast_path = ''
+	c.file_tree_loaded = false
+	c.check_ast_path = ''
 	c.program_directory = config.program_directory
 	c.ecma_version = config.language.ecma_version
 	c.language = config.language
@@ -6090,7 +6092,11 @@ mut:
 	tokens                                  TokenEnds                          // token ends of the file (per file)
 	node_index                              treesitter.NodeIndex               // nodes of the file by kind (per file)
 	ast_path                                string                             // file `ast` belongs to ('' when it must be requested)
-	ast                                     SourceFileAst                      // tsgo AST of the file, shared by the rules
+	ast                                     SourceFileAst                      // tsgo AST of the file, shared by the rules; only its path when tsgo finds the nodes (Client.finds_nodes)
+	file_tree                               tsgo.AstTree                       // the node table of the file `ast` belongs to, with file_tree_loaded (file_ast_tree)
+	file_tree_loaded                        bool                               // file_tree was requested for the file (per file)
+	check_ast_path                          string                             // with VESLINT_CHECK_DECODE, the file whose whole AST check_ast is
+	check_ast                               SourceFileAst                      // whole AST of check_ast_path
 	nodes                                   NodeTable                          // what was asked of tsgo about each node key (per file)
 	late_unmatched                          int                                // nodes late_type could not analyze (per rule)
 	too_deep                                int                                // expressions not analyzed because they are nested too deeply, or because TypeScript reads another kind of node there (per rule)

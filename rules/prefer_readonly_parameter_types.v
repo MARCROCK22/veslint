@@ -71,7 +71,7 @@ fn (mut c Checker) lint_prefer_readonly_parameter_types(root C.TSNode, abs_path 
 	mut findings := []Finding{}
 	for parameter in parameters {
 		t := c.node_type(parameter.type_node) or { continue }
-		if !c.is_type_readonly(t, options.readonlyness, c.prpt_annotation(parameter))!
+		if !c.is_type_readonly(t, options.readonlyness, c.prpt_annotation(parameter)!)!
 			&& !c.is_type_branded_literal_like(t)! {
 			findings << Finding{
 				stmt:       c.prpt_place(parameter.report)
@@ -88,7 +88,7 @@ fn (mut c Checker) lint_prefer_readonly_parameter_types(root C.TSNode, abs_path 
 // prpt_annotation is the handle of the type annotation the type of a parameter comes from: the
 // node whose type was asked, or the annotation of the parameter when the type asked is that of
 // the parameter (the same type, with `undefined` if it is optional). '' without one.
-fn (c &Checker) prpt_annotation(parameter PrptParameter) string {
+fn (mut c Checker) prpt_annotation(parameter PrptParameter) !string {
 	handle := c.nodes.handle(node_key(parameter.type_node)) or { return '' }
 	if parameter.is_type {
 		return handle
@@ -96,8 +96,9 @@ fn (c &Checker) prpt_annotation(parameter PrptParameter) string {
 	if tsgo.handle_kind(handle) != syntax_kind_parameter {
 		return ''
 	}
-	annotation := c.ast.tree.node_child(tsgo.handle_index(handle), 'type')
-	return if annotation == 0 { '' } else { c.ast.tree.node_handle(annotation) }
+	tree := c.file_ast_tree()!
+	annotation := tree.node_child(tsgo.handle_index(handle), 'type')
+	return if annotation == 0 { '' } else { tree.node_handle(annotation) }
 }
 
 // prpt_parameters are the parameters of a function the options have the rule check.

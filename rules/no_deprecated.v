@@ -298,11 +298,12 @@ fn (mut c Checker) lint_no_deprecated(root C.TSNode, abs_path string, mut stats 
 	for i, chk in checks {
 		mut handle := c.nodes.handle(node_key(chk.node)) or { continue }
 		if chk.meta_name {
-			name := c.ast.tree.node_child(handle_index(handle), 'name')
+			tree := c.file_ast_tree()!
+			name := tree.node_child(handle_index(handle), 'name')
 			if name == 0 {
 				continue
 			}
-			handle = c.ast.tree.node_handle(name)
+			handle = tree.node_handle(name)
 		} else if handle_kind(handle) in [syntax_kind_type_reference,
 			syntax_kind_expression_with_type_arguments] {
 			// The symbol is that of the name of the reference.
@@ -311,11 +312,12 @@ fn (mut c Checker) lint_no_deprecated(root C.TSNode, abs_path string, mut stats 
 			} else {
 				'expression'
 			}
-			name := c.ast.tree.node_child(handle_index(handle), property)
+			tree := c.file_ast_tree()!
+			name := tree.node_child(handle_index(handle), property)
 			if name == 0 {
 				continue
 			}
-			handle = c.ast.tree.node_handle(name)
+			handle = tree.node_handle(name)
 		}
 		handles << handle
 		owners << i

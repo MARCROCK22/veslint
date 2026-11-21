@@ -1,6 +1,7 @@
 module tsgo
 
 import json2
+import os
 import strings
 
 // tsgo API methods and their types. Names and fields from dist/api/sync/api.js and
@@ -894,6 +895,79 @@ pub fn (mut c Client) source_file_ast_tree(snapshot int, project string, file st
 	return decode_source_file_tree(data)!
 }
 
+// finds_nodes asks TypeScript in this process for the nodes of a file by their range
+// (nodes_at_ranges) instead of requesting its whole AST (source_file_ast); VESLINT_TSGO_WHOLE_AST=1
+// requests the AST, as `tsc --api` in a process of its own always does.
+pub fn (c &Client) finds_nodes() bool {
+	return c.inproc != 0 && !whole_ast
+}
+
+const whole_ast = os.getenv('VESLINT_TSGO_WHOLE_AST') == '1'
+
+// nodes_at_ranges finds nodes of a project file as SourceFileAst.find finds them in its AST, without
+// requesting the AST (veslint/nodesAtRanges, TypeScript in this process only): `ranges` has three
+// numbers per node, its UTF-16 start and end (not negative) and its SyntaxKind (0: the innermost
+// node with the range). It gives the path tsgo identifies the file with (SourceFileAst.path) and
+// the node found for each range, index 0 for none.
+pub fn (mut c Client) nodes_at_ranges(snapshot int, project string, file string, ranges []int) !(string, []AstNode) {
+	view, buffer := c.inproc_request_view('veslint/nodesAtRanges', binary_params(snapshot,
+		project, file, ranges))!
+	defer {
+		unsafe { C.free(buffer) }
+	}
+	if view.len == 0 {
+		return error('tsgo does not have `${file}` in project ${project}')
+	}
+	count := ranges.len / 3
+	path_len := if view.len >= 4 { int(u32_at(view, 0)) } else { -1 }
+	if path_len < 0 || view.len != 4 + path_len + 8 * count {
+		return error('protocol: veslint/nodesAtRanges answered ${view.len} bytes for ${count} ranges')
+	}
+	path := view[4..4 + path_len].clone()
+	mut nodes := []AstNode{len: count}
+	for i in 0 .. count {
+		at := 4 + path_len + 8 * i
+		nodes[i] = AstNode{
+			index: int(u32_at(view, at))
+			kind:  u32_at(view, at + 4)
+		}
+	}
+	return path, nodes
+}
+
+// binary_params are the parameters of veslint/nodesAtRanges and veslint/typesAtNodes
+// (readBinaryParams in tsgo/inproc/api_fastjson.go), little-endian: the snapshot (64 bits), the
+// project and the file (a length of 32 bits and the bytes of each), and `values` (their count, then
+// each in 32 bits, not negative). A request has two or three numbers for each node a rule asks
+// about, which as decimal text were most of what the client wrote and TypeScript read.
+fn binary_params(snapshot int, project string, file string, values []int) string {
+	n := 20 + project.len + file.len + 4 * values.len
+	// The room text_of adds its 0 in.
+	mut b := []u8{len: n, cap: n + 1}
+	mut at := write_u32_le(mut b, 0, u32(u64(snapshot)))
+	at = write_u32_le(mut b, at, u32(u64(snapshot) >> 32))
+	at = write_u32_le(mut b, at, u32(project.len))
+	unsafe { vmemcpy(&b[at], project.str, project.len) }
+	at += project.len
+	at = write_u32_le(mut b, at, u32(file.len))
+	unsafe { vmemcpy(&b[at], file.str, file.len) }
+	at += file.len
+	at = write_u32_le(mut b, at, u32(values.len))
+	for value in values {
+		at = write_u32_le(mut b, at, u32(value))
+	}
+	return text_of(mut b)
+}
+
+@[inline]
+fn write_u32_le(mut b []u8, at int, value u32) int {
+	b[at] = u8(value)
+	b[at + 1] = u8(value >> 8)
+	b[at + 2] = u8(value >> 16)
+	b[at + 3] = u8(value >> 24)
+	return at + 4
+}
+
 // types_at_locations gives the type of each node (handles from SourceFileAst.handle), like
 // checker.getTypeAtLocation. A node without a type becomes id 0.
 pub fn (mut c Client) types_at_locations(snapshot int, project string, locations []string) ![]TypeResponse {
@@ -906,8 +980,9 @@ pub fn (mut c Client) types_at_locations(snapshot int, project string, locations
 
 // types_at_nodes is types_at_locations for nodes of the file of `path` (SourceFileAst.find), and
 // gives the types where the client keeps them, which the caller only reads. With the types sent
-// once (sent_types.v) the request names the file once and each node by its index and kind, instead
-// of a handle each, and the types are the ones of SentTypes.
+// once (sent_types.v) the request (veslint/typesAtNodes) names the file once and each node by its
+// index and kind, in binary (binary_params), instead of a handle each, and the types are the ones
+// of SentTypes.
 pub fn (mut c Client) types_at_nodes(snapshot int, project string, path string, nodes []AstNode) ![]&TypeResponse {
 	if !c.sends_types_once() || !json_plain(path) {
 		types := c.types_at_locations(snapshot, project, nodes.map(node_handle_text(it.index,
@@ -918,25 +993,13 @@ pub fn (mut c Client) types_at_nodes(snapshot int, project string, path string, 
 		}
 		return refs
 	}
-	project_json := json_text(project)
-	mut b := []u8{cap: 64 + project_json.len + path.len + 12 * nodes.len}
-	push_text(mut b, '{"snapshot":')
-	push_decimal(mut b, snapshot)
-	push_text(mut b, ',"project":')
-	push_text(mut b, project_json)
-	push_text(mut b, ',"file":"')
-	push_text(mut b, path)
-	push_text(mut b, '","nodes":[')
-	for i, node in nodes {
-		if i > 0 {
-			b << `,`
-		}
-		push_decimal(mut b, node.index)
-		b << `,`
-		push_decimal(mut b, int(node.kind))
+	mut values := []int{cap: 2 * nodes.len}
+	for node in nodes {
+		values << node.index
+		values << int(node.kind)
 	}
-	push_text(mut b, ']}')
-	return c.sent_type_refs_request(snapshot, project, 'veslint/typesAtLocations', text_of(mut b))!
+	return c.sent_type_refs_request(snapshot, project, 'veslint/typesAtNodes', binary_params(snapshot,
+		project, path, values))!
 }
 
 // true_type_of_conditional and false_type_of_conditional are the branches of a conditional type
