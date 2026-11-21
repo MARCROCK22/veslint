@@ -5,7 +5,14 @@ module treesitter
 
 #flag -I @VMODROOT/vendor/tree-sitter/lib/include
 #flag @VMODROOT/build/libtree-sitter-typescript.a
-#flag @VMODROOT/vendor/tree-sitter/libtree-sitter.a
+
+// The library the Makefile builds for link-time optimization; build-windows.ps1 builds its own.
+$if windows {
+	#flag @VMODROOT/vendor/tree-sitter/libtree-sitter.a
+} $else {
+	#flag @VMODROOT/treesitter/out/libtree-sitter.a
+}
+
 #include "tree_sitter/api.h"
 #include "@VMODROOT/treesitter/flat_tree.h"
 #include "@VMODROOT/treesitter/field_cache.h"

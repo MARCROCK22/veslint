@@ -21,7 +21,11 @@ V_BIN := $(shell command -v $(V))
 # checkout of the pinned commit (tsgo/inproc/build.sh fetches it when it is missing).
 GO      ?= go
 INPROC  := tsgo/inproc/out/libveslint_tsgo.a
-LIBS    := vendor/tree-sitter/libtree-sitter.a build/libtree-sitter-typescript.a $(INPROC)
+# tree-sitter's library, compiled for link-time optimization (with the regular code too, for a
+# build without it): the -prod link inlines veslint's calls into it (the nodes, the tree cursor),
+# which made a lint without types about a tenth faster. build-windows.ps1 builds its own.
+TS_LIB  := treesitter/out/libtree-sitter.a
+LIBS    := $(TS_LIB) build/libtree-sitter-typescript.a $(INPROC)
 SOURCES := $(filter-out %_test.v,$(wildcard *.v tsgo/*.v treesitter/*.v offsets/*.v rules/*.v jsregexp/*.v regexpp/*.v estree/*.v esquery/*.v codepath/*.v collation/*.v vue/*.v svelte/*.v svelte_compiler/*.v postcss/*.v))
 
 .PHONY: deps build run test bench clean
@@ -38,8 +42,15 @@ vendor/tree-sitter-typescript:
 vendor/tree-sitter-javascript:
 	git clone --depth 1 --branch $(TSJS_TAG) https://github.com/tree-sitter/tree-sitter-javascript $@
 
-vendor/tree-sitter/libtree-sitter.a: | vendor/tree-sitter
-	$(MAKE) -C vendor/tree-sitter libtree-sitter.a
+# The flags of vendor/tree-sitter/Makefile, on its single-file build (lib.c includes the rest).
+$(TS_LIB): | vendor/tree-sitter
+	mkdir -p $(dir $@)
+	gcc -O3 -flto -ffat-lto-objects -std=c11 -fPIC -fvisibility=hidden -D_POSIX_C_SOURCE=200112L \
+		-D_DEFAULT_SOURCE -D_BSD_SOURCE -D_DARWIN_C_SOURCE -Ivendor/tree-sitter/lib/src \
+		-Ivendor/tree-sitter/lib/src/wasm -Ivendor/tree-sitter/lib/include \
+		-c vendor/tree-sitter/lib/src/lib.c -o $(dir $@)lib.o
+	rm -f $@
+	gcc-ar rcs $@ $(dir $@)lib.o
 
 # Copies the grammar, applies the patch and regenerates parser.c with the pinned CLI (0.24.4, the one
 # upstream generated v0.23.2's with: without the patch it comes out identical). See internals.md, "Grammar".
@@ -112,4 +123,4 @@ bench: veslint
 	./veslint --bench --all-identifiers --per-identifier build/bench/src/*.ts > /dev/null
 
 clean:
-	rm -rf build veslint
+	rm -rf build veslint treesitter/out
