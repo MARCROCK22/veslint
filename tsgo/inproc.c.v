@@ -135,6 +135,36 @@ fn (mut c Client) inproc_request(method string, payload string) !string {
 	return error('TypeScript failed during `${method}`: ${answer}')
 }
 
+// inproc_request_view is inproc_request whose answer is Go's buffer itself, not a copy: the caller
+// reads it and then frees `buffer` (C.free). For the answers that are only decoded (types_request,
+// symbols_request): copying them was a tenth of what a typed lint allocated.
+fn (mut c Client) inproc_request_view(method string, payload string) !(string, voidptr) {
+	mut call := C.veslint_tsgo_call{
+		op:     op_request
+		handle: c.inproc
+		flag:   c.worker
+		a:      &char(method.str)
+		a_len:  uint(method.len)
+		b:      &char(payload.str)
+		b_len:  uint(payload.len)
+	}
+	sw := time.new_stopwatch()
+	C.veslint_tsgo_invoke(&call)
+	elapsed := sw.elapsed()
+	c.inproc_time += elapsed
+	c.count_method(method, elapsed)
+	c.requests++
+	if call.result == i64(msg_response) {
+		return unsafe { tos(&u8(call.out), int(call.out_len)) }, voidptr(call.out)
+	}
+	answer := inproc_out(&call)
+	if call.result == i64(msg_error) {
+		return error('tsgo rejected `${method}`: ${answer}')
+	}
+	c.shutdown()
+	return error('TypeScript failed during `${method}`: ${answer}')
+}
+
 // worker_client is a client of the session of `c` (TypeScript in this process) for the lint
 // worker `worker` (1 or more), whose thread asks while the others do: the session answers its
 // checker requests with a checker of the worker's own in the programs they share (see

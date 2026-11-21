@@ -424,33 +424,11 @@ fn map_room[K, V](mut m map[K]V) {
 	}
 }
 
-// reserve_node_room makes room in the maps of the requested nodes for `more` keys: V's maps grow
-// by an eighth at a time, copying all their entries each time, and a large file has tens of
-// thousands of requested nodes. The room doubles at least, so a few keys more do not copy them.
-fn (mut c Checker) reserve_node_room(more int) {
-	need := c.attempted.len + more
-	if need <= c.node_room {
-		return
-	}
-	c.node_room = int_max(need, 2 * c.node_room)
-	room := u32(c.node_room)
-	c.attempted.reserve(room)
-	c.node_types.reserve(room)
-	c.typed.reserve(room)
-	c.node_kinds.reserve(room)
-	c.node_handles.reserve(room)
-}
-
 // reset_file_types forgets the requested types: called when each file starts.
 fn (mut c Checker) reset_file_types() {
-	c.node_room = 0
-	c.node_types = map[u64]TypeResponse{}
-	c.node_kinds = map[u64]u32{}
-	c.node_handles = map[u64]string{}
+	c.nodes = NodeTable{}
 	c.contextual_cache = map[u64]TypeResponse{}
 	c.resolved_cache = map[u64]SignatureResponse{}
-	c.attempted = map[u64]bool{}
-	c.typed = map[u64]bool{}
 	c.file_scopes = unsafe { nil }
 	c.file_tokens = unsafe { nil }
 	c.reset_es_file()
@@ -462,31 +440,51 @@ fn (mut c Checker) reset_file_types() {
 // tsgo counterpart wins; with none, the node counts once as unanalyzed, unless all of them are
 // optional.
 fn (mut c Checker) resolve_new(spans []Span, abs_path string, mut stats Stats) ! {
+	// The keys tried already whose node was found without its type, which a span now wants; and
+	// how many spans are new. Most rules ask for nodes another rule asked for already: then nothing
+	// else is made (what follows takes room for every span).
+	mut late := []u64{}
+	mut fresh := 0
+	for s in spans {
+		if c.nodes.attempted(s.key) {
+			if !s.no_type && !c.nodes.typed(s.key) && c.nodes.has_handle(s.key) && s.key !in late {
+				late << s.key
+			}
+		} else {
+			fresh++
+		}
+	}
+	if fresh == 0 {
+		c.request_late_types(late, mut stats)!
+		return
+	}
 	// The spans of each new key, the keys in the order they first come: `group` is the place of the
 	// key of each span in `order` (-1: tried already), and `variants` the spans grouped by key, in
-	// their order (a counting sort), without a map of arrays (one array per span).
-	mut group_of := map[u64]int{}
-	group_of.reserve(u32(spans.len))
+	// their order (a counting sort), without a map of arrays (one array per span). The place of a
+	// key is kept by the node table for this call.
+	c.nodes.reserve(fresh)
+	c.nodes.call++
+	call := c.nodes.call
 	mut group := []int{len: spans.len}
 	mut order := []u64{}
 	mut counts := []int{}
 	mut typed := []bool{}
-	// The keys tried already whose node was found without its type, which a span now wants.
-	mut late := []u64{}
 	for j, s in spans {
-		if s.key in c.attempted {
+		id := c.nodes.add(s.key)
+		if c.nodes.flags[id] & node_attempted != 0 {
 			group[j] = -1
-			if !s.no_type && s.key !in c.typed && s.key in c.node_handles && s.key !in late {
-				late << s.key
-			}
 			continue
 		}
-		g := group_of[s.key] or {
-			group_of[s.key] = order.len
+		mut g := 0
+		if c.nodes.group_call[id] == call {
+			g = int(c.nodes.group[id])
+		} else {
+			c.nodes.group_call[id] = call
+			c.nodes.group[id] = u32(order.len)
+			g = order.len
 			order << s.key
 			counts << 0
 			typed << false
-			order.len - 1
 		}
 		group[j] = g
 		counts[g]++
@@ -519,12 +517,11 @@ fn (mut c Checker) resolve_new(spans []Span, abs_path string, mut stats Stats) !
 		c.ast = c.client.source_file_ast(c.snapshot, c.project, abs_path)!
 		c.ast_path = abs_path
 	}
-	c.reserve_node_room(order.len)
 	mut keys := []u64{cap: order.len}
 	mut handles := []string{cap: order.len}
 	mut i := 0
 	for g, key in order {
-		c.attempted[key] = true
+		c.nodes.set_flag(key, node_attempted)
 		mut found := false
 		mut optional := true
 		for s in variants[starts[g]..starts[g + 1]] {
@@ -537,8 +534,8 @@ fn (mut c Checker) resolve_new(spans []Span, abs_path string, mut stats Stats) !
 				continue
 			}
 			handle := c.ast.handle(pos, end, s.kind) or { continue }
-			c.node_handles[key] = handle
-			c.node_kinds[key] = if s.kind != 0 { s.kind } else { c.ast.kind(pos, end) or { 0 } }
+			kind := if s.kind != 0 { s.kind } else { c.ast.kind(pos, end) or { 0 } }
+			c.nodes.set_node(key, handle, kind)
 			if typed[g] {
 				keys << key
 				handles << handle
@@ -553,7 +550,7 @@ fn (mut c Checker) resolve_new(spans []Span, abs_path string, mut stats Stats) !
 	}
 	for key in late {
 		keys << key
-		handles << c.node_handles[key]
+		handles << c.nodes.handle_or_empty(key)
 	}
 	unmatched, nodes := c.request_key_types(keys, handles)!
 	stats.unmatched += unmatched
@@ -562,7 +559,7 @@ fn (mut c Checker) resolve_new(spans []Span, abs_path string, mut stats Stats) !
 
 // request_late_types requests the types of keys whose node was found without its type.
 fn (mut c Checker) request_late_types(keys []u64, mut stats Stats) ! {
-	handles := keys.map(c.node_handles[it])
+	handles := keys.map(c.nodes.handle_or_empty(it))
 	unmatched, nodes := c.request_key_types(keys, handles)!
 	stats.unmatched += unmatched
 	stats.nodes += nodes
@@ -580,15 +577,16 @@ fn (mut c Checker) request_key_types(keys []u64, handles []string) !(int, int) {
 	if types.len != handles.len {
 		return error('protocol: tsgo returned ${types.len} types for ${handles.len} nodes')
 	}
+	// The types stay in the array they were decoded into.
+	chunk := c.nodes.add_types(types)
 	for j, key in keys {
-		c.typed[key] = true
+		c.nodes.set_flag(key, node_typed)
 		if j in failed {
 			// Like a node without a tsgo counterpart: no type, no handle, and it counts as unanalyzed.
-			c.node_handles.delete(key)
-			c.node_kinds.delete(key)
+			c.nodes.drop_node(key)
 			continue
 		}
-		c.node_types[key] = types[j]
+		c.nodes.set_type(key, chunk, j)
 	}
 	return failed.len, handles.len - failed.len
 }
@@ -598,12 +596,12 @@ fn (mut c Checker) request_key_types(keys []u64, handles []string) !(int, int) {
 // late_unmatched.
 fn (mut c Checker) late_type(n C.TSNode) !TypeResponse {
 	key := node_key(n)
-	if key !in c.typed {
-		handle := c.node_handles[key] or { return TypeResponse{} }
+	if !c.nodes.typed(key) {
+		handle := c.nodes.handle(key) or { return TypeResponse{} }
 		unmatched, _ := c.request_key_types([key], [handle])!
 		c.late_unmatched += unmatched
 	}
-	t := c.node_types[key] or { return TypeResponse{} }
+	t := c.nodes.node_type(key) or { return TypeResponse{} }
 	return t
 }
 
@@ -657,7 +655,7 @@ fn (mut c Checker) declaration_ast(path string) !tsgo.AstTree {
 fn (mut c Checker) contextual_type(n C.TSNode) !TypeResponse {
 	key := node_key(n)
 	if key !in c.contextual_cache {
-		handle := c.node_handles[key] or { return TypeResponse{} }
+		handle := c.nodes.handle(key) or { return TypeResponse{} }
 		map_room(mut c.contextual_cache)
 		c.contextual_cache[key] = c.client.contextual_type(c.snapshot, c.project, handle)!
 	}
@@ -677,8 +675,8 @@ const syntax_kind_import_type = u32(207)
 fn (mut c Checker) resolved_signature(call C.TSNode) !SignatureResponse {
 	key := node_key(call)
 	if key !in c.resolved_cache {
-		handle := c.node_handles[key] or { return SignatureResponse{} }
-		kind := c.node_kinds[key] or { 0 }
+		handle := c.nodes.handle(key) or { return SignatureResponse{} }
+		kind := c.nodes.kind(key)
 		if kind in resolvable_kinds {
 			map_room(mut c.resolved_cache)
 			c.resolved_cache[key] = c.client.resolved_signature(c.snapshot, c.project,
@@ -706,7 +704,7 @@ fn (mut c Checker) type_predicate(signature_id int) !tsgo.TypePredicateResponse 
 
 // ts_kind is the SyntaxKind of the tsgo node matched with `n` (0 if there is none).
 fn (c &Checker) ts_kind(n C.TSNode) u32 {
-	return c.node_kinds[node_key(n)] or { 0 }
+	return c.nodes.kind(node_key(n))
 }
 
 // AwaitReading is how TypeScript reads a tree-sitter await_expression. Outside an async function,
@@ -827,7 +825,7 @@ fn (c &Checker) type_node_span(n C.TSNode) Span {
 // span_type is the type of a span requested with resolve_spans, if tsgo knows it.
 fn (c &Checker) span_type(s Span) ?TypeResponse {
 	c.check_typed(s.key)
-	t := c.node_types[s.key] or { return none }
+	t := c.nodes.node_type(s.key) or { return none }
 	if t.is_null() {
 		return none
 	}
@@ -839,7 +837,7 @@ fn (c &Checker) span_type(s Span) ?TypeResponse {
 @[inline]
 fn (c &Checker) check_typed(key u64) {
 	$if !prod {
-		if key in c.node_handles && key !in c.typed {
+		if c.nodes.has_handle(key) && !c.nodes.typed(key) {
 			panic('veslint: the type of a node requested with no_type was read without late_type')
 		}
 	}
@@ -848,7 +846,7 @@ fn (c &Checker) check_typed(key u64) {
 // node_type is the type of a node requested with resolve_node_types, if tsgo knows it.
 fn (c &Checker) node_type(n C.TSNode) ?TypeResponse {
 	c.check_typed(node_key(n))
-	t := c.node_types[node_key(n)] or { return none }
+	t := c.nodes.node_type(node_key(n)) or { return none }
 	if t.is_null() {
 		return none
 	}

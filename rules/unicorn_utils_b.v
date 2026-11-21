@@ -5721,7 +5721,7 @@ fn (mut c Checker) unb_is_const_enum_reference(t &estree.EsTree, node int, mut c
 	}
 	ts := t.ts_node(node) or { return false }
 	c.resolve_node_types([ts], ctx.abs_path, mut ctx.stats) or { return false }
-	handle := c.node_handles[node_key(ts)] or { return false }
+	handle := c.nodes.handle(node_key(ts)) or { return false }
 	symbols := c.client.symbols_at_locations(c.snapshot, c.project, [handle]) or { return false }
 	if symbols.len != 1 || symbols[0].is_null() {
 		return false
@@ -6254,8 +6254,8 @@ fn (mut c Checker) unb_type_safety_to_minimize(t &estree.EsTree, tokens &SourceT
 			|| consequent_signature.flags & signature_flag_has_rest_parameter != 0 {
 			return false
 		}
-		consequent_handle := c.node_handles[node_key(consequent_node)] or { return none }
-		alternate_handle := c.node_handles[node_key(alternate_node)] or { return none }
+		consequent_handle := c.nodes.handle(node_key(consequent_node)) or { return none }
+		alternate_handle := c.nodes.handle(node_key(alternate_node)) or { return none }
 		consequent_parameters := c.signature_parameters(consequent_signature) or { return none }
 		alternate_parameters := c.signature_parameters(alternate_signature) or { return none }
 		if consequent_parameters.len != alternate_parameters.len {

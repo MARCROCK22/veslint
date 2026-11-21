@@ -353,7 +353,7 @@ fn (mut c Checker) nuta_remove_exclamation(node C.TSNode) []Fix {
 
 // nuta_possibly_used_before_assigned ports isPossiblyUsedBeforeAssigned.
 fn (mut c Checker) nuta_possibly_used_before_assigned(identifier C.TSNode, constrained TypeResponse, declarators []C.TSNode, mut cache NutaCache) !bool {
-	handle := c.node_handles[node_key(identifier)] or { return true }
+	handle := c.nodes.handle(node_key(identifier)) or { return true }
 	symbols := c.client.symbols_at_locations(c.snapshot, c.project, [handle])!
 	if symbols.len != 1 || symbols[0].is_null() || symbols[0].declarations.len == 0 {
 		return true
@@ -368,7 +368,7 @@ fn (mut c Checker) nuta_possibly_used_before_assigned(identifier C.TSNode, const
 	if tree.node_kind(list) == nuta_kind_variable_declaration_list && tree.node_flags(list) == 0 {
 		// A `var` of this file: used outside a scope its declarator is nested in.
 		for declarator in declarators {
-			if c.node_handles[node_key(declarator)] or { '' } == declaration {
+			if c.nodes.handle(node_key(declarator)) or { '' } == declaration {
 				if c.nuta_scope_is_ancestor(identifier, declarator) {
 					return true
 				}

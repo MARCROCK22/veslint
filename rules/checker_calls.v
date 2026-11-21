@@ -47,7 +47,7 @@ fn (c &Checker) symbol_location(n C.TSNode) SymbolLocation {
 // span_location is the location of a span requested with resolve_spans, by its key: `n` is the
 // tree-sitter node it starts at (the node itself, for a span that is a node).
 fn (c &Checker) span_location(key u64, n C.TSNode) SymbolLocation {
-	handle := c.node_handles[key] or { return SymbolLocation{} }
+	handle := c.nodes.handle(key) or { return SymbolLocation{} }
 	kind := tsgo.handle_kind(handle)
 	return SymbolLocation{
 		handle:     handle
@@ -167,10 +167,10 @@ fn (mut c Checker) contextual_argument_type(call C.TSNode, args []C.TSNode, inde
 		return c.contextual_type(args[index])!
 	}
 	key := node_key(call)
-	handle := c.node_handles[key] or { return c.contextual_type(args[index])! }
+	handle := c.nodes.handle(key) or { return c.contextual_type(args[index])! }
 	// tsgo panics on a node that is not a call, a `new`, a tagged template, a decorator or a JSX
 	// element (see resolved_signature).
-	if (c.node_kinds[key] or { 0 }) !in resolvable_kinds {
+	if c.nodes.kind(key) !in resolvable_kinds {
 		return c.contextual_type(args[index])!
 	}
 	return c.client.contextual_type_for_argument(c.snapshot, c.project, handle, index)!

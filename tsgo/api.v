@@ -385,8 +385,23 @@ pub fn (s SymbolResponse) is_null() bool {
 }
 
 fn is_null_payload(payload string) bool {
-	trimmed := payload.trim_space()
-	return trimmed == '' || trimmed == 'null'
+	// Without trim_space, which copies the payload (the answers of a lint add up to tens of MB).
+	mut start := 0
+	mut end := payload.len
+	for start < end && is_json_space(payload[start]) {
+		start++
+	}
+	for end > start && is_json_space(payload[end - 1]) {
+		end--
+	}
+	return end == start || (end - start == 4 && payload[start] == `n` && payload[start + 1] == `u`
+		&& payload[start + 2] == `l` && payload[start + 3] == `l`)
+}
+
+// is_json_space: what trim_space removes.
+@[inline]
+fn is_json_space(c u8) bool {
+	return c == ` ` || (c >= `\t` && c <= `\r`)
 }
 
 fn decode_response[T](method string, payload string) !T {
@@ -410,6 +425,25 @@ fn (mut c Client) symbol_request(snapshot int, method string, params string) !Sy
 
 // symbols_request sends a request that answers a list of symbols (`null` is none).
 fn (mut c Client) symbols_request(snapshot int, method string, params string) ![]SymbolResponse {
+	if c.inproc != 0 {
+		// Decoded from Go's buffer (inproc_request_view): the decoders copy what they keep, and
+		// json2, which may keep pieces of its text, gets a copy.
+		view, buffer := c.inproc_request_view(method, params)!
+		defer {
+			unsafe { C.free(buffer) }
+		}
+		if is_null_payload(view) {
+			return []SymbolResponse{}
+		}
+		if check_fast_decode {
+			return c.intern_symbols(snapshot, checked_decode[[]SymbolResponse](method,
+				view.clone(), fast_symbols)!)
+		}
+		symbols := fast_symbols(view) or {
+			decode_response[[]SymbolResponse](method, view.clone())!
+		}
+		return c.intern_symbols(snapshot, symbols)
+	}
 	payload := c.request(method, params)!
 	if is_null_payload(payload) {
 		return []SymbolResponse{}
@@ -552,11 +586,30 @@ fn (mut c Client) type_request(snapshot int, method string, params string) !Type
 
 // types_request sends a request that answers a list of types (`null` is none).
 fn (mut c Client) types_request(snapshot int, method string, params string) ![]TypeResponse {
+	if c.inproc != 0 {
+		// Decoded from Go's buffer, as in symbols_request.
+		view, buffer := c.inproc_request_view(method, params)!
+		defer {
+			unsafe { C.free(buffer) }
+		}
+		if is_null_payload(view) {
+			return []TypeResponse{}
+		}
+		if check_fast_decode {
+			mut checked := checked_decode[[]TypeResponse](method, view.clone(), fast_types)!
+			return c.intern_types(snapshot, mut checked)
+		}
+		mut types := fast_types(view) or {
+			decode_response[[]TypeResponse](method, view.clone())!
+		}
+		return c.intern_types(snapshot, mut types)
+	}
 	payload := c.request(method, params)!
 	if is_null_payload(payload) {
 		return []TypeResponse{}
 	}
-	return c.intern_types(snapshot, checked_decode[[]TypeResponse](method, payload, fast_types)!)
+	mut types := checked_decode[[]TypeResponse](method, payload, fast_types)!
+	return c.intern_types(snapshot, mut types)
 }
 
 // signature_request sends a request that answers a signature or `null` (id 0).
@@ -591,22 +644,84 @@ fn json_text(s string) string {
 	return '"${s}"'
 }
 
-// locations_params are those of getTypeAtLocations and getSymbolsAtLocations.
+// json_plain tells whether `s` is its JSON string between quotes (json_text).
+@[inline]
+fn json_plain(s string) bool {
+	for c in s {
+		if c < 0x20 || c >= 0x7f || c == `"` || c == `\\` {
+			return false
+		}
+	}
+	return true
+}
+
+// locations_params are those of getTypeAtLocations and getSymbolsAtLocations. They hold a handle
+// of a hundred bytes for each node, tens of thousands for a large file: the text is written once
+// into room of its exact size, without a string per handle (json_text's quotes) nor the copies of a
+// growing builder.
 fn locations_params(snapshot int, project string, locations []string) string {
-	mut b := strings.new_builder(64 + locations.len * 48)
-	b.write_string('{"snapshot":')
-	b.write_decimal(snapshot)
-	b.write_string(',"project":')
-	b.write_string(json_text(project))
-	b.write_string(',"locations":[')
+	project_json := json_text(project)
+	// The JSON of the handles that are not plain, which seldom happens: '' for the plain ones.
+	mut encoded := []string{}
+	mut size := 48 + project_json.len + locations.len
+	for i, location in locations {
+		if json_plain(location) {
+			size += location.len + 2
+		} else {
+			if encoded.len == 0 {
+				encoded = []string{len: locations.len}
+			}
+			encoded[i] = json2.encode(location)
+			size += encoded[i].len
+		}
+	}
+	mut b := []u8{cap: size + 1}
+	push_text(mut b, '{"snapshot":')
+	push_decimal(mut b, snapshot)
+	push_text(mut b, ',"project":')
+	push_text(mut b, project_json)
+	push_text(mut b, ',"locations":[')
 	for i, location in locations {
 		if i > 0 {
-			b.write_u8(`,`)
+			b << `,`
 		}
-		b.write_string(json_text(location))
+		if encoded.len > 0 && encoded[i] != '' {
+			push_text(mut b, encoded[i])
+		} else {
+			b << `"`
+			push_text(mut b, location)
+			b << `"`
+		}
 	}
-	b.write_string(']}')
-	return b.str()
+	push_text(mut b, ']}')
+	return text_of(mut b)
+}
+
+// push_text writes the bytes of `s`.
+@[inline]
+fn push_text(mut b []u8, s string) {
+	unsafe { b.push_many(s.str, s.len) }
+}
+
+// push_decimal writes the decimal digits of `n`.
+fn push_decimal(mut b []u8, n int) {
+	if n < 0 {
+		b << `-`
+		push_decimal(mut b, -n)
+		return
+	}
+	if n >= 10 {
+		push_decimal(mut b, n / 10)
+	}
+	b << u8(`0` + n % 10)
+}
+
+// text_of is the string of the bytes written to `b` (with a 0 after them, not counted, as V's
+// strings have), without copying them: `b` is not written to after it.
+fn text_of(mut b []u8) string {
+	n := b.len
+	b << 0
+	return unsafe { tos(&u8(b.data), n) }
 }
 
 pub fn (mut c Client) signatures_of_type(snapshot int, project string, type_id int, kind int) ![]SignatureResponse {

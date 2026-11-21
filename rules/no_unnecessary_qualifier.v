@@ -281,8 +281,8 @@ fn (mut c Checker) nuq_unnecessary(accesses []NuqAccess) ![]bool {
 	mut qualifier_handles := []string{}
 	mut with_handles := []int{}
 	for i, a in accesses {
-		if handle := c.node_handles[node_key(a.qualifier)] {
-			if node_key(a.name) in c.node_handles {
+		if handle := c.nodes.handle(node_key(a.qualifier)) {
+			if c.nodes.has_handle(node_key(a.name)) {
 				qualifier_handles << handle
 				with_handles << i
 			}
@@ -299,9 +299,9 @@ fn (mut c Checker) nuq_unnecessary(accesses []NuqAccess) ![]bool {
 		if namespace.is_null() {
 			continue
 		}
-		scope := accesses[i].scope.map(c.node_handles[it] or { '' }).filter(it != '')
+		scope := accesses[i].scope.map(c.nodes.handle(it) or { '' }).filter(it != '')
 		if c.nuq_namespace_in_scope(namespace, scope, 0)! {
-			name_handles << c.node_handles[node_key(accesses[i].name)]
+			name_handles << c.nodes.handle_or_empty(node_key(accesses[i].name))
 			in_scope << i
 		}
 	}
@@ -387,12 +387,12 @@ fn nuq_outer_functions(n C.TSNode) []C.TSNode {
 // name, from the innermost scope, whose flags share a bit with `meaning`.
 fn (mut c Checker) nuq_symbol_in_scope(a NuqAccess, meaning int) !SymbolResponse {
 	name := c.text(a.name)
-	mut found := c.client.resolve_name_at(c.snapshot, c.project, name, meaning, c.node_handles[node_key(a.qualifier)],
+	mut found := c.client.resolve_name_at(c.snapshot, c.project, name, meaning, c.nodes.handle_or_empty(node_key(a.qualifier)),
 		false)!
 	// A local of a function resolveName does not see from where the qualifier is: asked from the
 	// function itself, it is the first one found.
 	for function in nuq_outer_functions(a.qualifier) {
-		handle := c.node_handles[node_key(function)] or { continue }
+		handle := c.nodes.handle(node_key(function)) or { continue }
 		local := c.client.resolve_name_at(c.snapshot, c.project, name, meaning, handle,
 			false)!
 		if !local.is_null() && local.id != found.id && c.nuq_declared_in(local, handle)!
@@ -408,7 +408,7 @@ fn (mut c Checker) nuq_symbol_in_scope(a NuqAccess, meaning int) !SymbolResponse
 			if found.is_null() || found.declarations.len != 0 || int(found.flags) & meaning != 0 {
 				break
 			}
-			handle := c.node_handles[node_key(function)] or { break }
+			handle := c.nodes.handle(node_key(function)) or { break }
 			tree := c.declaration_ast(handle_path(handle))!
 			parent := tree.node_parent(handle_index(handle))
 			if parent == 0 {

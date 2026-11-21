@@ -296,7 +296,7 @@ fn (mut c Checker) lint_no_deprecated(root C.TSNode, abs_path string, mut stats 
 	mut handles := []string{}
 	mut owners := []int{}
 	for i, chk in checks {
-		mut handle := c.node_handles[node_key(chk.node)] or { continue }
+		mut handle := c.nodes.handle(node_key(chk.node)) or { continue }
 		if chk.meta_name {
 			name := c.ast.tree.node_child(handle_index(handle), 'name')
 			if name == 0 {

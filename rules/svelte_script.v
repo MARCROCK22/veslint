@@ -796,7 +796,7 @@ fn (mut c Checker) svsc_is_callable_ts(ts C.TSNode) bool {
 // and the outermost one with the same range is the type node.
 fn (mut c Checker) svsc_type_from_type_node(b &SvscBridge, i int, abs_path string, mut stats Stats) ?TypeResponse {
 	ts := c.svsc_lint_ts(b, i, abs_path, mut stats)?
-	handle := c.node_handles[node_key(ts)] or { return none }
+	handle := c.nodes.handle(node_key(ts)) or { return none }
 	tree := c.declaration_ast(tsgo.handle_path(handle)) or { return none }
 	mut index := tsgo.handle_index(handle)
 	start := tree.node_token_start(index)

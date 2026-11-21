@@ -206,7 +206,7 @@ fn (mut c Checker) nutarg_comparison(t TypeResponse) !(int, []TypeResponse) {
 // declaration, and the tree of its file (empty when there are none).
 fn (mut c Checker) nutarg_type_parameters(check NutargCheck) !([]int, AstTree) {
 	if check.owner == .call {
-		if node_key(check.call) !in c.node_handles {
+		if !c.nodes.has_handle(node_key(check.call)) {
 			return []int{}, AstTree{}
 		}
 		signature := c.resolved_signature(check.call)!
@@ -225,7 +225,7 @@ fn (mut c Checker) nutarg_type_parameters(check NutargCheck) !([]int, AstTree) {
 // nutarg_from_type ports getTypeParametersFromType on the name: the type parameters of the first
 // declaration of its (aliased) symbol that has them.
 fn (mut c Checker) nutarg_from_type(check NutargCheck) !([]int, AstTree) {
-	handle := c.node_handles[check.name.key] or { return []int{}, AstTree{} }
+	handle := c.nodes.handle(check.name.key) or { return []int{}, AstTree{} }
 	symbols := c.client.symbols_at_locations(c.snapshot, c.project, [handle])!
 	if symbols.len != 1 || symbols[0].is_null() {
 		return []int{}, AstTree{}

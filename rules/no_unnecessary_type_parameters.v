@@ -237,7 +237,7 @@ fn (c &Checker) nutp_spans(node C.TSNode) []Span {
 
 // nutp_declaration is the handle of the TypeParameter declaration whose name the node is.
 fn (c &Checker) nutp_declaration(name_node C.TSNode) string {
-	handle := c.node_handles[node_key(name_node)] or { return '' }
+	handle := c.nodes.handle(node_key(name_node)) or { return '' }
 	if tsgo.handle_kind(handle) == syntax_kind_type_parameter {
 		return handle
 	}
@@ -291,13 +291,13 @@ fn (mut c Checker) nutp_collect(node C.TSNode, from_class bool, mut counts map[s
 	is_constructor := kind in ['method_definition', 'method_signature'] && c.pfa_is_constructor(node)
 	if kind == 'call_signature' || is_constructor {
 		walk.function_like = true
-		if handle := c.node_handles[span.key] {
+		if handle := c.nodes.handle(span.key) {
 			signature := c.client.signature_from_declaration(c.snapshot, c.project, handle)!
 			c.nutp_visit_signature(signature, mut walk, mut counts)!
 		}
 		return
 	}
-	node_type := c.node_types[span.key] or { return }
+	node_type := c.nodes.node_type(span.key) or { return }
 	c.nutp_visit_type(node_type, false, false, mut walk, mut counts)!
 }
 

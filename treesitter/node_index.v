@@ -92,6 +92,10 @@ fn index_tree(root C.TSNode, with_ends bool) (NodeIndex, []int) {
 	mut named_of := [symbol_states]int{}
 	mut anonymous_of := [symbol_states]int{}
 	mut flags_of := [symbol_states]u8{}
+	// How many nodes each bucket gets: the buckets are filled after the walk, each with room for
+	// all its nodes at once (growing them, an array per kind, was a twentieth of what a lint
+	// without types allocated).
+	mut counts := []int{}
 	// The last node of the extra node (a comment) the walk is in, if it is in one: token_ends
 	// does not enter those.
 	mut extra_until := -1
@@ -114,6 +118,9 @@ fn index_tree(root C.TSNode, with_ends bool) (NodeIndex, []int) {
 				bucket = known - 1
 			} else {
 				bucket = ix.bucket_of(node_kind(node), is_named)
+				if bucket == counts.len {
+					counts << 0
+				}
 				if symbol < symbol_states {
 					if is_named {
 						named_of[symbol] = bucket + 1
@@ -122,7 +129,7 @@ fn index_tree(root C.TSNode, with_ends bool) (NodeIndex, []int) {
 					}
 				}
 			}
-			ix.buckets[bucket].seq << i
+			counts[bucket]++
 			ix.count++
 		}
 		// What token_ends does with the node, outside extra nodes.
@@ -151,6 +158,26 @@ fn index_tree(root C.TSNode, with_ends bool) (NodeIndex, []int) {
 				ends << end
 			}
 		}
+	}
+	for b in 0 .. ix.buckets.len {
+		ix.buckets[b].seq = []int{cap: counts[b]}
+	}
+	for i in 0 .. count {
+		entry := unsafe { &flat[i] }
+		is_named := entry.flags & flat_named != 0
+		if !is_named && int(entry.last) <= i {
+			continue
+		}
+		symbol := int(entry.symbol)
+		known := if symbol >= symbol_states {
+			0
+		} else if is_named {
+			named_of[symbol]
+		} else {
+			anonymous_of[symbol]
+		}
+		bucket := if known != 0 { known - 1 } else { ix.bucket_of(node_kind(entry.node), is_named) }
+		ix.buckets[bucket].seq << i
 	}
 	return ix, ends
 }

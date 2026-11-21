@@ -215,8 +215,13 @@ fn (mut c Client) intern_type(snapshot int, t TypeResponse) TypeResponse {
 	}
 }
 
-fn (mut c Client) intern_types(snapshot int, types []TypeResponse) []TypeResponse {
-	return types.map(c.intern_type(snapshot, it))
+// intern_types interns the symbols of the types of a new array in place (a copy of the array, a
+// few hundred bytes per type, for every answer was a share of what a lint allocated).
+fn (mut c Client) intern_types(snapshot int, mut types []TypeResponse) []TypeResponse {
+	for i in 0 .. types.len {
+		types[i] = c.intern_type(snapshot, types[i])
+	}
+	return types
 }
 
 // intern_signature turns the `this` parameter of a signature into an int of SymbolTable.

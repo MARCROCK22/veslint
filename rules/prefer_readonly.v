@@ -183,7 +183,7 @@ fn (mut c Checker) lint_prefer_readonly(root C.TSNode, abs_path string, mut stat
 			continue
 		}
 		mut class_name := ''
-		if found := c.node_types[class.span.key] {
+		if found := c.nodes.node_type(class.span.key) {
 			mut class_type := found
 			if class_type.flags & type_flag_intersection != 0 {
 				parts := c.members_of(class_type)!
@@ -240,7 +240,7 @@ fn (mut c Checker) lint_prefer_readonly(root C.TSNode, abs_path string, mut stat
 				&& constructor_modifications[member.name] {
 				if _ := node_field(member.node, 'type') {
 				} else if value := node_field(member.node, 'value') {
-					violating := c.node_types[member_span(member.node).key] or { TypeResponse{} }
+					violating := c.nodes.node_type(member_span(member.node).key) or { TypeResponse{} }
 					initializer := c.node_type(unwrap_parens(value)) or { TypeResponse{} }
 					report = PrdReport{
 						...report

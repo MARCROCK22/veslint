@@ -597,7 +597,7 @@ fn nupcm_nearest_scope(t &ScopeTree, n C.TSNode) int {
 				}
 			}
 		}
-		if scopes := t.by_block[scope_block_key(node)] {
+		if scopes := t.scopes_of_block(node) {
 			mut candidates := scopes.clone()
 			if scope_is_method(node) && !scope_in_method_function(node, from) {
 				candidates = candidates.filter(t.scopes[it].kind != .function)

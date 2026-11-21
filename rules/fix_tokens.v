@@ -164,9 +164,25 @@ fn build_source_tokens(root C.TSNode, src string) &SourceTokens {
 			source_tokens_by_start(all)
 		}
 	}
+	// Two arrays of the exact size: `filter` takes room for all the tokens in each.
+	mut comment_count := 0
+	for t in all {
+		if t.is_comment() {
+			comment_count++
+		}
+	}
+	mut tokens := []SourceToken{cap: all.len - comment_count}
+	mut comments := []SourceToken{cap: comment_count}
+	for t in all {
+		if t.is_comment() {
+			comments << t
+		} else {
+			tokens << t
+		}
+	}
 	return &SourceTokens{
-		tokens:   all.filter(!it.is_comment())
-		comments: all.filter(it.is_comment())
+		tokens:   tokens
+		comments: comments
 		all:      all
 	}
 }

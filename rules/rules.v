@@ -6050,14 +6050,9 @@ mut:
 	node_index                              treesitter.NodeIndex               // nodes of the file by kind (per file)
 	ast_path                                string                             // file `ast` belongs to ('' when it must be requested)
 	ast                                     SourceFileAst                      // tsgo AST of the file, shared by the rules
-	attempted                               map[u64]bool                       // keys already looked up in tsgo (per file)
-	typed                                   map[u64]bool                       // keys whose type was requested (per file): not a no_type span
+	nodes                                   NodeTable                          // what was asked of tsgo about each node key (per file)
 	late_unmatched                          int                                // nodes late_type could not analyze (per rule)
-	node_room                               int                                // the keys the maps of the requested nodes have room for (reserve_node_room)
 	too_deep                                int                                // expressions not analyzed because they are nested too deeply, or because TypeScript reads another kind of node there (per rule)
-	node_types                              map[u64]TypeResponse               // type of each requested node, by byte range (per file)
-	node_kinds                              map[u64]u32                        // tsgo SyntaxKind of each requested node (per file)
-	node_handles                            map[u64]string                     // tsgo handle of each requested node (per file)
 	contextual_cache                        map[u64]TypeResponse               // contextual type of each queried node (per file)
 	resolved_cache                          map[u64]SignatureResponse          // resolved signature of each queried call (per file)
 	predicate_cache                         map[int]tsgo.TypePredicateResponse // type predicate of each queried signature

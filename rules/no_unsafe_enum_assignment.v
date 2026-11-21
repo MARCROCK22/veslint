@@ -201,7 +201,7 @@ fn (mut c Checker) nuea_type(mut s NueaState, node int) !TypeResponse {
 fn (mut c Checker) nuea_handle(mut s NueaState, node int) !string {
 	span := c.nuea_span(s.t, node) or { return '' }
 	c.resolve_spans([span], s.abs_path, mut s.stats)!
-	return c.node_handles[span.key] or { '' }
+	return c.nodes.handle(span.key) or { '' }
 }
 
 // nuea_contextual_type ports checker.getContextualType (the null type for undefined).

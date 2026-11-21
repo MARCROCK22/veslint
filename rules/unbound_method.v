@@ -106,7 +106,7 @@ fn (mut c Checker) lint_unbound_method(root C.TSNode, abs_path string, mut stats
 	mut symbol_keys := []u64{}
 	for m in members {
 		if c.ubm_listed_native(m.object, m.property) {
-			if handle := c.node_handles[node_key(m.object)] {
+			if handle := c.nodes.handle(node_key(m.object)) {
 				handles << handle
 				symbol_keys << node_key(m.object)
 			}
@@ -115,7 +115,7 @@ fn (mut c Checker) lint_unbound_method(root C.TSNode, abs_path string, mut stats
 	for p in patterns {
 		if init := p.init {
 			if p.keys.any(c.ubm_listed_native(init, it)) {
-				if handle := c.node_handles[node_key(init)] {
+				if handle := c.nodes.handle(node_key(init)) {
 					handles << handle
 					symbol_keys << node_key(init)
 				}
