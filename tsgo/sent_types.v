@@ -8,11 +8,14 @@ module tsgo
 // sent before (on the TypeScript compiler 1.02 million answers, 96,000 different types), and
 // reading them took most of the time of an answer.
 
-// SentTypes are the types sent whole in a snapshot and a project, by id.
+// SentTypes are the types sent whole in a snapshot and a project, by id. Each is kept once, and
+// the answers point to it (types_at_nodes): a TypeResponse is 344 bytes, and copying one for each
+// node a lint asks about was a third of a gigabyte on the TypeScript compiler. A type sent again
+// (its objectFlags changed) is a new one: what pointed to the old one still sees what it was sent.
 @[heap]
 pub struct SentTypes {
 mut:
-	types map[int]TypeResponse
+	types map[int]&TypeResponse
 }
 
 // sends_types_once tells whether the client asks for types with the methods above: TypeScript in
@@ -41,11 +44,18 @@ fn (mut c Client) forget_sent_types(snapshot int) {
 	}
 }
 
-// sent_types_request asks `method` (veslint/typesAtLocations or veslint/typesOfType). With
+// sent_types_request asks `method` (veslint/typesAtLocations or veslint/typesOfType), and gives
+// the types themselves.
+fn (mut c Client) sent_types_request(snapshot int, project string, method string, params string) ![]TypeResponse {
+	refs := c.sent_type_refs_request(snapshot, project, method, params)!
+	return refs.map(*it)
+}
+
+// sent_type_refs_request asks `method`, and gives the types the client keeps. With
 // VESLINT_CHECK_DECODE set, TypeScript also answers the JSON of getTypeAtLocations or
 // getTypesOfType for the same types (the method with `Checked`), which must be what the client
 // made of the answer.
-fn (mut c Client) sent_types_request(snapshot int, project string, method string, params string) ![]TypeResponse {
+fn (mut c Client) sent_type_refs_request(snapshot int, project string, method string, params string) ![]&TypeResponse {
 	view, buffer := c.inproc_request_view(if check_fast_decode {
 		method + 'Checked'
 	} else {
@@ -67,7 +77,7 @@ fn (mut c Client) sent_types_request(snapshot int, project string, method string
 	}
 	mut sent := c.sent_types_of(snapshot, project)
 	types := if is_null_payload(answer) {
-		[]TypeResponse{}
+		[]&TypeResponse{}
 	} else {
 		c.read_sent_types(snapshot, answer, mut sent)!
 	}
@@ -78,7 +88,7 @@ fn (mut c Client) sent_types_request(snapshot int, project string, method string
 			decode_response[[]TypeResponse](method, full.clone())!
 		}
 		want = c.intern_types(snapshot, mut want)
-		if want != types {
+		if want != types.map(*it) {
 			panic('the types of `${method}` sent once are not the ones sent whole:\n${answer}\n${full}\n${types}\n${want}')
 		}
 	}
@@ -87,11 +97,11 @@ fn (mut c Client) sent_types_request(snapshot int, project string, method string
 
 // read_sent_types reads an answer: `null`, an id of a type in `sent`, or a type, which `sent` then
 // keeps (in place of the one with its id, sent again because its objectFlags changed).
-fn (mut c Client) read_sent_types(snapshot int, payload string, mut sent SentTypes) ![]TypeResponse {
+fn (mut c Client) read_sent_types(snapshot int, payload string, mut sent SentTypes) ![]&TypeResponse {
 	mut r := FastReader{
 		s: payload
 	}
-	mut out := []TypeResponse{cap: element_count(payload)}
+	mut out := []&TypeResponse{cap: element_count(payload)}
 	if r.open_array()! {
 		for {
 			if r.peek() in [`{`, `n`] {
@@ -103,9 +113,11 @@ fn (mut c Client) read_sent_types(snapshot int, payload string, mut sent SentTyp
 					decode_response[TypeResponse]('a type', payload[start..r.i])!
 				}
 				if t.is_null() {
-					out << t
+					out << &TypeResponse{}
 				} else {
-					interned := c.intern_type(snapshot, t)
+					interned := &TypeResponse{
+						...c.intern_type(snapshot, t)
+					}
 					sent.types[t.id] = interned
 					out << interned
 				}

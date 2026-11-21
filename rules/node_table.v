@@ -2,14 +2,15 @@ module rules
 
 import tsgo { TypeResponse }
 
-// NodeTable is what the rules of a file have asked tsgo about each node key (node_key: the range
-// of a tree-sitter node): whether it was looked up in tsgo, whether its type was requested, the
-// index (which makes its handle) and the SyntaxKind of the tsgo node found for it, and its type. One table of the keys
-// (open addressing over plain numbers, which the collector does not scan) gives each key a dense
-// id, and the rest is in arrays by id; the types stay in the arrays tsgo's answers were decoded
-// into. Five maps by key did the same: each was grown for the nodes of a large file (every rule
-// asks for tens of thousands), copying all their entries, a type of a few hundred bytes for each
-// node in one of them, and that was the largest share of what a typed lint allocated.
+// NodeTable is what the rules of a file have asked tsgo about each node key (node_key: the range of
+// a tree-sitter node): whether it was looked up in tsgo, whether its type was requested, the index
+// (which makes its handle) and the SyntaxKind of the tsgo node found for it, and its type. One
+// table of the keys (open addressing over plain numbers, which the collector does not scan) gives
+// each key a dense id, and the rest is in arrays by id; the types stay where the client keeps them
+// (Client.types_at_nodes). Five maps by key did the same: each was grown for the nodes of a large
+// file (every rule asks for tens of thousands), copying all their entries, a type of a few hundred
+// bytes for each node in one of them, and that was the largest share of what a typed lint
+// allocated.
 struct NodeTable {
 mut:
 	// slots[h] is the id of a key plus one, 0 for an empty slot; its length is a power of two,
@@ -23,10 +24,11 @@ mut:
 	// are only sent in the requests of types, which take the index (Client.types_at_nodes).
 	indexes []u32
 	path    string
-	// The type of a node is types[type_chunk[id]][type_index[id]], with node_has_type.
+	// The type of a node is types[type_chunk[id]][type_index[id]], with node_has_type: where the
+	// client keeps it (Client.types_at_nodes).
 	type_chunk []u32
 	type_index []u32
-	types      [][]TypeResponse
+	types      [][]&TypeResponse
 	// The place of each key in the groups of a resolve_new: group[id], for the call `call` when
 	// group_call[id] is it.
 	group      []u32
@@ -188,7 +190,7 @@ fn (t &NodeTable) node_type(key u64) ?TypeResponse {
 	if id < 0 || t.flags[id] & node_has_type == 0 {
 		return none
 	}
-	return t.types[t.type_chunk[id]][t.type_index[id]]
+	return *t.types[t.type_chunk[id]][t.type_index[id]]
 }
 
 fn (mut t NodeTable) set_flag(key u64, flag u8) {
@@ -217,7 +219,7 @@ fn (mut t NodeTable) drop_node(key u64) {
 }
 
 // add_types keeps an array of types answered by tsgo, and gives its place for set_type.
-fn (mut t NodeTable) add_types(types []TypeResponse) u32 {
+fn (mut t NodeTable) add_types(types []&TypeResponse) u32 {
 	t.types << types
 	return u32(t.types.len - 1)
 }

@@ -579,7 +579,7 @@ fn (mut c Checker) request_key_types(keys []u64, nodes []tsgo.AstNode) !(int, in
 	if types.len != nodes.len {
 		return error('protocol: tsgo returned ${types.len} types for ${nodes.len} nodes')
 	}
-	// The types stay in the array they were decoded into.
+	// The types stay where the client keeps them.
 	chunk := c.nodes.add_types(types)
 	for j, key in keys {
 		c.nodes.set_flag(key, node_typed)
@@ -612,14 +612,14 @@ fn (mut c Checker) late_type(n C.TSNode) !TypeResponse {
 // empty array literal whose type is the empty tuple, like `[] as const`: microsoft/TypeScript#63869,
 // fixed in 7.1), so the nodes are split in halves until the ones it panics on are alone. `failed`
 // gets their indexes, counted from `offset`, and their types stay empty.
-fn (mut c Checker) request_types(nodes []tsgo.AstNode, offset int, mut failed map[int]bool) ![]TypeResponse {
+fn (mut c Checker) request_types(nodes []tsgo.AstNode, offset int, mut failed map[int]bool) ![]&TypeResponse {
 	return c.client.types_at_nodes(c.snapshot, c.project, c.nodes.path, nodes) or {
 		if !tsgo.is_panic(err) {
 			return err
 		}
 		if nodes.len == 1 {
 			failed[offset] = true
-			return [TypeResponse{}]
+			return [&TypeResponse{}]
 		}
 		half := nodes.len / 2
 		mut types := c.request_types(nodes[..half], offset, mut failed)!
