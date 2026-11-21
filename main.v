@@ -1,5 +1,6 @@
 module main
 
+import gcheap
 import json2
 import offsets
 import os
@@ -129,8 +130,7 @@ fn ms(d time.Duration) f64 {
 }
 
 fn main() {
-	grow_initial_heap()
-	unmap_env_done()
+	gcheap.unmap_env_done()
 	os.signal_ignore(.pipe)
 	args := os.args[1..]
 	if '-h' in args || '--help' in args {

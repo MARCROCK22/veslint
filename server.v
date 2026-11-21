@@ -54,9 +54,28 @@ struct ServerAnswer {
 
 // ServerRequest is a line of stdin as the reader thread parsed it.
 struct ServerRequest {
-	request map[string]json2.Any
-	files   string // the files it lints, joined: a later request with the same ones supersedes it
-	error   string // the error answered (code 2) to a line that is not a request object
+	request   map[string]json2.Any
+	files     string // the files it lints, joined: a later request with the same ones supersedes it
+	error     string // the error answered (code 2) to a line that is not a request object
+	decode_ms f64    // the time of the line's JSON decoding (VESLINT_SERVER_PROFILE)
+}
+
+// ServerProfile is where the time of a request went, which VESLINT_SERVER_PROFILE=1 writes to
+// stderr as a JSON line after each answer.
+struct ServerProfile {
+mut:
+	id          i64
+	decode_ms   f64
+	config_ms   f64  // load_config_for, or the configuration the server keeps
+	files_ms    f64  // the files' texts, documents and tsconfig files
+	snapshot_ms f64  // snapshot_for
+	checker_ms  f64  // new checkers
+	lint_ms     f64  // lint_file, whose parts are those of `stats`
+	report_ms   f64  // file_report
+	handle_ms   f64  // the whole request, without writing the answer
+	write_ms    f64  // encoding and writing the answer
+	reused      bool // the answer of the last request again
+	stats       rules.Stats
 }
 
 // RequestQueue holds the requests read and not answered yet: those the reader thread sends through
@@ -102,7 +121,12 @@ fn read_requests(requests chan ServerRequest) {
 		if line.trim_space().len == 0 {
 			continue
 		}
-		requests <- parse_request(line)
+		sw := time.new_stopwatch()
+		request := parse_request(line)
+		requests <- ServerRequest{
+			...request
+			decode_ms: f64(sw.elapsed()) / f64(time.millisecond)
+		}
 	}
 	requests.close()
 }
@@ -163,6 +187,58 @@ mut:
 	twin_configs   map[string]string
 	included       map[string]bool
 	served_configs []string // the tsconfig files include_twins gave tsgo with twins added
+	profile        bool     // VESLINT_SERVER_PROFILE=1
+	// trees: the last tree of the files linted last, which their next text is parsed from (an
+	// edit re-parses what it changed)
+	trees &treesitter.TreeCache = unsafe { nil }
+	// config_memo: the resolutions of the configuration of the requests' files (config_cache.v)
+	config_memo ResolutionMemo
+	// generation counts the times tsgo was stopped (stop)
+	generation int
+	// The last answer and what it was made of (lint_loaded): a request for the same files with
+	// the same texts and configuration, while nothing changed, gets it again.
+	last_key        string
+	last_answer     ServerAnswer
+	last_generation int
+	last_snapshot   int
+	last_typed      bool
+	prof            ServerProfile
+}
+
+fn since_ms(sw time.StopWatch) f64 {
+	return f64(sw.elapsed()) / f64(time.millisecond)
+}
+
+// write_profile writes the profile of the request answered last to stderr: the phases, then the
+// rules slowest first.
+fn (s &Server) write_profile() {
+	p := s.prof
+	st := p.stats
+	mut rule_names := st.rule_ms.keys()
+	rule_names.sort_with_compare(fn [st] (a &string, b &string) int {
+		ta, tb := st.rule_ms[*a], st.rule_ms[*b]
+		return if ta > tb {
+			-1
+		} else if ta < tb {
+			1
+		} else {
+			compare_strings(a, b)
+		}
+	})
+	mut rules_total := 0.0
+	for _, t in st.rule_ms {
+		rules_total += t
+	}
+	mut line := strings.new_builder(1024)
+	line.write_string('{"id":${p.id},"decode":${p.decode_ms:.3f},"config":${p.config_ms:.3f},"files":${p.files_ms:.3f},"snapshot":${p.snapshot_ms:.3f},"checker":${p.checker_ms:.3f},"lint":${p.lint_ms:.3f},"parse":${st.parse_tree_sitter_ms:.3f},"index":${st.parse_index_ms:.3f},"syntax":${st.parse_syntax_ms:.3f},"await":${st.parse_await_ms:.3f},"free":${st.tree_free_ms:.3f},"rules":${rules_total:.3f},"report":${p.report_ms:.3f},"handle":${p.handle_ms:.3f},"write":${p.write_ms:.3f},"reused":${p.reused},"rule_ms":{')
+	for i, name in rule_names {
+		if i > 0 {
+			line.write_string(',')
+		}
+		line.write_string('"${name}":${st.rule_ms[name]:.3f}')
+	}
+	line.write_string('}}')
+	eprintln(line.str())
 }
 
 // serve answers requests until stdin ends.
@@ -170,6 +246,8 @@ fn serve(timeout time.Duration) {
 	requests := chan ServerRequest{cap: 64}
 	mut s := &Server{
 		timeout:    timeout
+		profile:    os.getenv('VESLINT_SERVER_PROFILE') == '1'
+		trees:      treesitter.new_tree_cache()
 		queue:      &RequestQueue{
 			requests: requests
 		}
@@ -188,17 +266,32 @@ fn serve(timeout time.Duration) {
 		s.tsx_parser.close()
 		s.vue_parsers.close()
 		s.svelte_parsers.close()
+		s.trees.clear()
 	}
 	reader := spawn read_requests(requests)
 	for {
 		request := s.queue.next() or { break }
-		println(json2.encode(s.handle(request)))
+		s.prof = ServerProfile{
+			decode_ms: request.decode_ms
+		}
+		sw := time.new_stopwatch()
+		answer := s.handle(request)
+		s.prof.handle_ms = since_ms(sw)
+		write_sw := time.new_stopwatch()
+		println(json2.encode(answer))
+		if s.profile {
+			s.prof.id = answer.id
+			s.prof.write_ms = since_ms(write_sw)
+			s.write_profile()
+		}
 	}
 	reader.wait()
 }
 
 // stop shuts tsgo down; the next request starts it again, with what it has to serve.
 fn (mut s Server) stop() {
+	s.generation++
+	s.last_key = ''
 	if s.client != unsafe { nil } {
 		s.client.shutdown()
 		s.client = unsafe { nil }
@@ -292,6 +385,11 @@ fn (mut s Server) handle(item ServerRequest) ServerAnswer {
 	for path in request_paths(request, 'forget') {
 		s.stop_serving(path)
 	}
+	// A tree stays valid for its text when the file goes back to its text on disk (`forget`): only
+	// the deleted ones are dropped.
+	for path in request_paths(request, 'deleted') {
+		s.trees.forget(path)
+	}
 	mut texts := map[string]string{}
 	if value := request['texts'] {
 		if value is map[string]json2.Any {
@@ -360,7 +458,6 @@ fn (mut s Server) set_served(path string, text string) {
 // lint lints `files` (as they are given) and answers what the command line would print; `texts`
 // are the unsaved texts of the request, by absolute path, already served.
 fn (mut s Server) lint(id i64, config string, project string, files []string, texts map[string]string, fixes bool) ServerAnswer {
-	mut errors := strings.new_builder(256)
 	for path in files {
 		if !is_typescript_path(path) {
 			return ServerAnswer{
@@ -370,13 +467,22 @@ fn (mut s Server) lint(id i64, config string, project string, files []string, te
 			}
 		}
 	}
-	loaded := load_config_for(config, files) or {
+	phase := time.new_stopwatch()
+	loaded := load_config_for(config, files, mut s.config_memo) or {
 		return ServerAnswer{
 			id:     id
 			code:   2
 			stderr: 'veslint: ${err.msg()}\n'
 		}
 	}
+	s.prof.config_ms = since_ms(phase)
+	return s.lint_loaded(id, config, loaded, project, files, texts, fixes)
+}
+
+// lint_loaded is lint with the configuration loaded.
+fn (mut s Server) lint_loaded(id i64, config string, loaded LoadedConfig, project string, files []string, texts map[string]string, fixes bool) ServerAnswer {
+	mut errors := strings.new_builder(256)
+	mut phase := time.new_stopwatch()
 	// The rules and the ignored ones of every configuration, as parse_args gathers them.
 	mut selected := []string{}
 	mut ignored := []string{}
@@ -566,6 +672,29 @@ fn (mut s Server) lint(id i64, config string, project string, files []string, te
 	mut warnings := 0
 	// No rule needs types: no program is built for them, as on the command line (Worker.open).
 	lazy := !configs_need_types(lint_configs)
+	// The same request as the last one, with the same texts (and the same files on disk) and the
+	// same resolution of its configuration, while tsgo has nothing new (no change since the last
+	// snapshot, the same snapshot): the same answer.
+	// The resolved configuration (loaded.resolved, made of the resolution, or the text of a
+	// resolved JSON) stands for the configuration; without one the answer is not kept.
+	key := if loaded.resolved == '' || !s.trees.enabled() {
+		''
+	} else {
+		answer_key(config, loaded.resolved, project, fixes, entries)
+	}
+	if key != '' && key == s.last_key && s.changes.is_empty() && s.client != unsafe { nil }
+		&& s.generation == s.last_generation && s.snap.snapshot == s.last_snapshot
+		&& s.typed == s.last_typed {
+		s.prof.files_ms = since_ms(phase)
+		s.prof.reused = true
+		return ServerAnswer{
+			...s.last_answer
+			id: id
+		}
+	}
+	s.last_key = ''
+	s.prof.files_ms = since_ms(phase)
+	phase.restart()
 	if tsconfigs.len > 0 {
 		s.snapshot_for(tsconfigs, lazy) or {
 			s.stop()
@@ -599,7 +728,11 @@ fn (mut s Server) lint(id i64, config string, project string, files []string, te
 			}
 		}
 	}
+	s.prof.snapshot_ms = since_ms(phase)
 	mut stats := rules.Stats{}
+	defer {
+		s.prof.stats = stats
+	}
 	for f in entries {
 		if s.queue.stop() {
 			return ServerAnswer{
@@ -632,6 +765,7 @@ fn (mut s Server) lint(id i64, config string, project string, files []string, te
 			}
 		}
 		project_id := s.projects[f.tsconfig] or { '' }
+		phase.restart()
 		if project_id !in s.checkers {
 			mut checker := rules.new_checker(s.client, s.snap.snapshot, project_id, project_options(s.snap,
 				project_id)) or {
@@ -655,9 +789,11 @@ fn (mut s Server) lint(id i64, config string, project string, files []string, te
 			checker.share_declaration_asts(asts)
 			s.checkers[project_id] = checker
 		}
+		s.prof.checker_ms += since_ms(phase)
 		mut checker := s.checkers[project_id] or { continue }
 		checker.set_lint_stop(s.queue)
 		checker.set_has_bom(f.has_bom)
+		checker.set_tree_cache(s.trees, f.abs_path)
 		doc := docs[f.path] or { unsafe { nil } }
 		sdoc := sdocs[f.path] or { unsafe { nil } }
 		if f.vue {
@@ -667,6 +803,7 @@ fn (mut s Server) lint(id i64, config string, project string, files []string, te
 		} else if f.module.inserted > 0 {
 			checker.set_svelte_module(f.src, f.module.code, f.module.at, f.module.inserted)
 		}
+		phase.restart()
 		result := checker.lint_file(if (f.vue && doc.script.jsx) || (f.svelte && sdoc.options.jsx)
 			|| (!f.vue && !f.svelte && treesitter.uses_jsx_dialect(f.path)) {
 			s.tsx_parser
@@ -690,19 +827,49 @@ fn (mut s Server) lint(id i64, config string, project string, files []string, te
 				stderr: errors.str()
 			}
 		}
+		s.prof.lint_ms += since_ms(phase)
+		phase.restart()
 		report := file_report(f.path, f.src, result, fixes, doc, sdoc)
+		s.prof.report_ms += since_ms(phase)
 		errors.write_string(report.stderr)
 		out.write_string(report.stdout)
 		problems += report.problems
 		warnings += report.warnings
 	}
 	errors.writeln(summary_line(problems, entries.len, warnings))
-	return ServerAnswer{
+	answer := ServerAnswer{
 		id:     id
 		code:   if problems - warnings > 0 { 1 } else { 0 }
 		stdout: out.str()
 		stderr: errors.str()
 	}
+	if key != '' && s.client != unsafe { nil } {
+		s.last_key = key
+		s.last_answer = answer
+		s.last_generation = s.generation
+		s.last_snapshot = s.snap.snapshot
+		s.last_typed = s.typed
+	}
+	return answer
+}
+
+// answer_key is what an answer of lint_loaded is made of: the request, the resolution of its
+// configuration and the text of each file (as read or given).
+fn answer_key(config string, resolved string, project string, fixes bool, entries []RuleFile) string {
+	mut key := strings.new_builder(1024)
+	for part in [config, resolved, project, fixes.str()] {
+		key.write_string(part.len.str())
+		key.write_u8(`:`)
+		key.write_string(part)
+	}
+	for f in entries {
+		for part in [f.path, f.note, f.tsconfig, f.named.join('\n'), f.has_bom.str(), f.src] {
+			key.write_string(part.len.str())
+			key.write_u8(`:`)
+			key.write_string(part)
+		}
+	}
+	return key.str()
 }
 
 // snapshot_for makes sure tsgo runs, has `tsconfigs` open and has read what changed: the snapshot
@@ -752,6 +919,15 @@ fn (mut s Server) snapshot_for(tsconfigs []string, lazy bool) ! {
 		if lazy && opened.len == 0 && s.changes.is_empty() {
 			return
 		}
+		if lazy && opened.len == 0 && only_sources_changed(s.changes) {
+			// The texts of source files do not change what a tsconfig parses to (its files are
+			// found by name): only the checkers' snapshots, made by a file that asked for types,
+			// have the old texts.
+			s.forget_asts(s.changes)
+			s.drop_checkers()!
+			s.changes = tsgo.FileChangeSet{}
+			return
+		}
 		// The tsconfig files are parsed again (a change may be one of them), and the checkers'
 		// snapshots are of files that changed; the first request with a rule that needs types
 		// builds the programs.
@@ -780,6 +956,18 @@ fn (mut s Server) snapshot_for(tsconfigs []string, lazy bool) ! {
 	if previous != s.snap.snapshot {
 		s.client.release_snapshot(previous)!
 	}
+}
+
+// source_extensions are those of the files whose text a tsconfig.json does not read: what it reads
+// is JSON (itself and the files it extends) and the names of the files in its directories.
+const source_extensions = ['.ts', '.tsx', '.mts', '.cts', '.js', '.jsx', '.mjs', '.cjs', '.vue',
+	'.svelte']
+
+// only_sources_changed: the changes are only of the text of source files (none created, deleted
+// or reset), which leave the parsed tsconfig files as they are.
+fn only_sources_changed(changes tsgo.FileChangeSet) bool {
+	return changes.created.len == 0 && changes.deleted.len == 0 && !changes.invalidate_all
+		&& changes.changed.all(os.file_ext(it).to_lower() in source_extensions)
 }
 
 // include_twins runs include_twins (vue_files.v) for the twins tsgo has not been looked at for:

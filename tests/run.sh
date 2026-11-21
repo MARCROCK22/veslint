@@ -1447,6 +1447,19 @@ else
 	ko "--server: requests sent together (tests/server_pipeline.py)"
 	cat "$TMP/server-pipeline.out"
 fi
+# Random edits of files linted as unsaved text, one after the other (tests/server_edits.py): a
+# server that parses each edit from the tree of the text before answers what one that parses every
+# text from scratch answers, and the trees are the same (VESLINT_INCREMENTAL_CHECK): the TypeScript
+# files of tests/config, the Vue and the Svelte fixtures.
+mapfile -t edited_config < <(cd tests/config && find . -name '*.ts' | sed 's|^\./||' | sorted)
+if (cd tests/config && python3 ../server_edits.py ../../veslint 1 8 . resolved.json "${edited_config[@]}") > "$TMP/server-edits.out" 2>&1 &&
+	(cd tests/vue-lint/fixtures && python3 ../../server_edits.py ../../../veslint 2 6 . ../rules.json ./*.vue) >> "$TMP/server-edits.out" 2>&1 &&
+	(cd tests/svelte-lint/fixtures && python3 ../../server_edits.py ../../../veslint 3 6 . ../rules.json ./*.svelte ./*.svelte.ts) >> "$TMP/server-edits.out" 2>&1; then
+	ok "--server: random edits parsed from the tree of the text before answer as parsed from scratch ($(grep -o '^[0-9]* requests' "$TMP/server-edits.out" | awk '{n += $1} END {print n}') requests)"
+else
+	ko "--server: random edits parsed incrementally (tests/server_edits.py)"
+	cat "$TMP/server-edits.out"
+fi
 # A server keeps every thread of its own and of its tsgo on two CPUs as well (cpus.v): looked at
 # after its first lint, while both are alive (on Linux only); with TypeScript in its process, the
 # threads of the Go runtime are its own.

@@ -1,4 +1,9 @@
-module main
+// Module gcheap grows the collector's heap when the program starts, before the constants of
+// veslint's modules are made: treesitter imports it (`as _`), and _vinit initializes the modules in
+// the order of their imports, treesitter before the others of veslint. Their maps of constants
+// took the collector through several collections while its heap grew, at every start (the command
+// line and the server): `veslint --version` took 17.9 ms, 15.0 ms with the heap grown first.
+module gcheap
 
 // The collector's heap at the start. Boehm's GC collects whenever what was allocated since the
 // last collection reaches a share of the heap, and its heap starts small: a lint collected
@@ -8,13 +13,13 @@ module main
 // to 32 MB to the peak.
 const initial_heap_bytes = u64(32 * 1024 * 1024)
 
-#include "@VMODROOT/gc_heap.h"
+#include "@VMODROOT/gcheap/gc_heap.h"
 
 fn C.GC_expand_hp(bytes u64) int
 
-// grow_initial_heap adds initial_heap_bytes to the heap the collector starts with (that of
-// GC_INITIAL_HEAP_SIZE, which Boehm reads before main runs, when it is set).
-fn grow_initial_heap() {
+// init adds initial_heap_bytes to the heap the collector starts with (that of
+// GC_INITIAL_HEAP_SIZE, which Boehm reads when it starts, when it is set).
+fn init() {
 	$if gcboehm ? {
 		C.GC_expand_hp(initial_heap_bytes)
 	}
@@ -29,7 +34,7 @@ fn C.veslint_gc_unmap_env_done()
 // faults; 2.6 % of the instructions, and 0.7 s of the 2.3 s of system time), with the same peak
 // memory. A server gives back what a large lint took.
 // unmap_env_done takes GC_UNMAP_THRESHOLD out of the environment when veslint put it there.
-fn unmap_env_done() {
+pub fn unmap_env_done() {
 	$if gcboehm ? {
 		C.veslint_gc_unmap_env_done()
 	}
