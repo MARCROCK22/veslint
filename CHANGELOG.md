@@ -2,6 +2,11 @@
 
 Each version is a release on GitHub with the veslint binaries (Linux x64, Windows x64) and the VS Code extension. The section of a version is the text of its release.
 
+## 0.44.0
+
+- **Faster with types.** veslint no longer receives the whole syntax tree of every file from TypeScript: TypeScript finds the nodes veslint names, and sends a file's tree only when a rule walks it. With no-floating-promises alone: the TypeScript compiler's sources 3.79 s → 3.35 s (857 → 705 MiB), zod 0.52 s → 0.50 s; with the 23 type-aware rules: the TypeScript compiler 11.95 s → 11.51 s, zod 1.92 s → 1.88 s. `VESLINT_TSGO_WHOLE_AST=1` keeps the old way.
+- The first lint of a file in the editor with the type-aware rules: the TypeScript compiler 1.37 s → 1.29 s, zod 462 → 434 ms.
+
 ## 0.43.0
 
 - **A faster re-lint in the editor after an edit.** `veslint --server` parses the new text of a file from the tree of its last one (tree-sitter's incremental parse, kept only where it gives the tree of a parse from scratch), keeps the configuration it resolved and loaded while nothing it came from changed, and answers a request that changes nothing with its last answer. After an edit, with the 56 rules of @eslint/js and typescript-eslint recommended: zod 89 → 54 ms, recharts 45 → 25 ms, the TypeScript compiler 221 → 150 ms; with the 23 type-aware rules: zod 317 → 255 ms, recharts 274 → 252 ms, the TypeScript compiler 761 → 614 ms. `VESLINT_INCREMENTAL=0` turns the incremental parse off.

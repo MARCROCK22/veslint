@@ -43,56 +43,56 @@ veslint lints TypeScript with ESLint's rules, without ESLint. It parses with tre
 
 | Project | Tool | Time | CPU time | Memory | Problems | Same as ESLint | Editor: first lint | Editor: after an edit |
 |---|---|---:|---:|---:|---:|---:|---:|---:|
-| zod | ESLint | 4.7 s ± 1.4 s | 8.4 s | 471 MiB | 972 | — | 1541 ms | 335 ms |
-| zod | **veslint** | 0.46 s ± 0.01 s | 0.86 s | 142 MiB | 972 | 972 of 972 | 116 ms | 54 ms |
-| zod | oxlint | 0.09 s ± 0.00 s | 0.15 s | 117 MiB | 924 | 895 of 972 | 159 ms | 96 ms |
-| zod | Biome | 0.42 s ± 0.01 s | 0.88 s | 204 MiB | 941 | 887 of 972 | 162 ms | 349 ms |
-| recharts | ESLint | 4.3 s ± 0.03 s | 8.7 s | 462 MiB | 380 | — | 1148 ms | 136 ms |
-| recharts | **veslint** | 0.50 s ± 0.01 s | 0.92 s | 150 MiB | 380 | 380 of 380 | 67 ms | 25 ms |
-| recharts | oxlint | 0.08 s ± 0.00 s | 0.15 s | 116 MiB | 362 | 331 of 380 | 123 ms | 4.0 ms |
-| recharts | Biome | 0.27 s ± 0.00 s | 0.76 s | 132 MiB | 375 | 362 of 380 | 135 ms | 305 ms |
-| TypeScript compiler | ESLint | 24 s ± 0.24 s | 43 s | 1,188 MiB | 1,330 | — | 2014 ms | 646 ms |
-| TypeScript compiler | **veslint** | 3.7 s ± 0.06 s | 7.1 s | 396 MiB | 1,330 | 1,330 of 1,330 | 280 ms | 150 ms |
-| TypeScript compiler | oxlint | 0.38 s ± 0.02 s | 0.80 s | 192 MiB | 1,012 | 957 of 1,330 | 219 ms | 110 ms |
-| TypeScript compiler | Biome | 1.9 s ± 0.01 s | 5.9 s | 513 MiB | 1,288 | 879 of 1,330 | 200 ms | 383 ms |
+| zod | ESLint | 4.1 s ± 0.06 s | 8.2 s | 460 MiB | 972 | — | 1559 ms | 368 ms |
+| zod | **veslint** | 0.46 s ± 0.00 s | 0.85 s | 140 MiB | 972 | 972 of 972 | 111 ms | 51 ms |
+| zod | oxlint | 0.09 s ± 0.00 s | 0.15 s | 119 MiB | 924 | 895 of 972 | 154 ms | 96 ms |
+| zod | Biome | 0.42 s ± 0.01 s | 0.88 s | 207 MiB | 941 | 887 of 972 | 167 ms | 350 ms |
+| recharts | ESLint | 4.3 s ± 0.02 s | 8.6 s | 462 MiB | 380 | — | 1129 ms | 137 ms |
+| recharts | **veslint** | 0.49 s ± 0.00 s | 0.90 s | 142 MiB | 380 | 380 of 380 | 63 ms | 25 ms |
+| recharts | oxlint | 0.08 s ± 0.00 s | 0.15 s | 110 MiB | 362 | 331 of 380 | 131 ms | 3.3 ms |
+| recharts | Biome | 0.27 s ± 0.00 s | 0.76 s | 133 MiB | 375 | 362 of 380 | 140 ms | 306 ms |
+| TypeScript compiler | ESLint | 24 s ± 0.14 s | 43 s | 1,330 MiB | 1,330 | — | 2063 ms | 640 ms |
+| TypeScript compiler | **veslint** | 3.7 s ± 0.04 s | 7.0 s | 411 MiB | 1,330 | 1,330 of 1,330 | 262 ms | 142 ms |
+| TypeScript compiler | oxlint | 0.37 s ± 0.01 s | 0.79 s | 188 MiB | 1,012 | 957 of 1,330 | 216 ms | 109 ms |
+| TypeScript compiler | Biome | 1.9 s ± 0.03 s | 5.9 s | 513 MiB | 1,288 | 879 of 1,330 | 522 ms | 404 ms |
 
 **no-floating-promises**
 
 | Project | Tool | Time | CPU time | Memory | Problems | Same as ESLint | Editor: first lint | Editor: after an edit |
 |---|---|---:|---:|---:|---:|---:|---:|---:|
-| zod | ESLint | 6.1 s ± 0.06 s | 12 s | 792 MiB | 1 | — | — | — |
-| zod | **veslint** | 0.52 s ± 0.00 s | 0.95 s | 207 MiB | 1 | 1 of 1 | — | — |
-| zod | oxlint | 0.59 s ± 0.02 s | 1.8 s | 300 MiB | 1 | 1 of 1 | — | — |
-| zod | Biome | 0.46 s ± 0.00 s | 1.5 s | 173 MiB | 1 | 1 of 1 | — | — |
-| recharts | ESLint | 7.8 s ± 0.12 s | 16 s | 885 MiB | 0 | — | — | — |
-| recharts | **veslint** | 0.67 s ± 0.01 s | 1.2 s | 254 MiB | 0 | 0 of 0 | — | — |
-| recharts | oxlint | 0.70 s ± 0.01 s | 2.5 s | 331 MiB | 0 | 0 of 0 | — | — |
-| recharts | Biome | 0.45 s ± 0.01 s | 1.5 s | 170 MiB | 0 | 0 of 0 | — | — |
-| TypeScript compiler | ESLint | 32 s ± 0.25 s | 62 s | 1,912 MiB | 2 | — | — | — |
-| TypeScript compiler | **veslint** | 3.8 s ± 0.04 s | 7.2 s | 857 MiB | 2 | 2 of 2 | — | — |
-| TypeScript compiler | oxlint | 1.9 s ± 0.04 s | 6.8 s | 707 MiB | 2 | 2 of 2 | — | — |
-| TypeScript compiler | Biome | 3.0 s ± 0.01 s | 12 s | 428 MiB | 2 | 2 of 2 | — | — |
+| zod | ESLint | 6.1 s ± 0.05 s | 12 s | 792 MiB | 1 | — | — | — |
+| zod | **veslint** | 0.50 s ± 0.00 s | 0.92 s | 191 MiB | 1 | 1 of 1 | — | — |
+| zod | oxlint | 0.58 s ± 0.02 s | 1.7 s | 300 MiB | 1 | 1 of 1 | — | — |
+| zod | Biome | 0.46 s ± 0.01 s | 1.5 s | 174 MiB | 1 | 1 of 1 | — | — |
+| recharts | ESLint | 7.8 s ± 0.03 s | 16 s | 888 MiB | 0 | — | — | — |
+| recharts | **veslint** | 0.67 s ± 0.02 s | 1.2 s | 243 MiB | 0 | 0 of 0 | — | — |
+| recharts | oxlint | 0.71 s ± 0.02 s | 2.5 s | 318 MiB | 0 | 0 of 0 | — | — |
+| recharts | Biome | 0.45 s ± 0.01 s | 1.5 s | 181 MiB | 0 | 0 of 0 | — | — |
+| TypeScript compiler | ESLint | 32 s ± 0.17 s | 61 s | 1,886 MiB | 2 | — | — | — |
+| TypeScript compiler | **veslint** | 3.4 s ± 0.02 s | 6.3 s | 705 MiB | 2 | 2 of 2 | — | — |
+| TypeScript compiler | oxlint | 1.8 s ± 0.09 s | 6.8 s | 695 MiB | 2 | 2 of 2 | — | — |
+| TypeScript compiler | Biome | 3.0 s ± 0.00 s | 12 s | 428 MiB | 2 | 2 of 2 | — | — |
 
 **the 23 type-aware rules of recommendedTypeChecked**
 
 | Project | Tool | Time | CPU time | Memory | Problems | Same as ESLint | Editor: first lint | Editor: after an edit |
 |---|---|---:|---:|---:|---:|---:|---:|---:|
-| zod | ESLint | 14 s ± 0.13 s | 24 s | 1,031 MiB | 1,376 | — | 3908 ms | 1086 ms |
-| zod | **veslint** | 1.9 s ± 0.02 s | 3.7 s | 467 MiB | 1,376 | 1,376 of 1,376 | 462 ms | 255 ms |
-| zod | oxlint | 1.8 s ± 0.03 s | 5.3 s | 466 MiB | 1,357 | 1,304 of 1,376 | 515 ms | 432 ms |
-| recharts | ESLint | 23 s ± 1.1 s | 39 s | 1,247 MiB | 175 | — | 5100 ms | 1186 ms |
-| recharts | **veslint** | 3.7 s ± 0.03 s | 7.2 s | 843 MiB | 175 | 175 of 175 | 478 ms | 252 ms |
-| recharts | oxlint | 4.5 s ± 0.05 s | 14 s | 887 MiB | 175 | 168 of 175 | 634 ms | 537 ms |
-| TypeScript compiler | ESLint | 72 s ± 0.84 s | 115 s | 2,020 MiB | 3,790 | — | 8790 ms | 2343 ms |
-| TypeScript compiler | **veslint** | 12 s ± 0.36 s | 23 s | 1,741 MiB | 3,790 | 3,790 of 3,790 | 1370 ms | 614 ms |
-| TypeScript compiler | oxlint | 6.5 s ± 0.54 s | 23 s | 1,131 MiB | 3,784 | 2,980 of 3,790 | 1568 ms | 1544 ms |
+| zod | ESLint | 14 s ± 0.08 s | 24 s | 1,028 MiB | 1,376 | — | 3775 ms | 1131 ms |
+| zod | **veslint** | 1.9 s ± 0.02 s | 3.6 s | 483 MiB | 1,376 | 1,376 of 1,376 | 434 ms | 252 ms |
+| zod | oxlint | 1.8 s ± 0.04 s | 5.4 s | 461 MiB | 1,357 | 1,304 of 1,376 | 510 ms | 437 ms |
+| recharts | ESLint | 23 s ± 0.18 s | 38 s | 1,301 MiB | 175 | — | 5102 ms | 1166 ms |
+| recharts | **veslint** | 3.7 s ± 0.06 s | 7.1 s | 810 MiB | 175 | 175 of 175 | 463 ms | 245 ms |
+| recharts | oxlint | 4.6 s ± 0.08 s | 15 s | 911 MiB | 175 | 168 of 175 | 649 ms | 535 ms |
+| TypeScript compiler | ESLint | 72 s ± 0.70 s | 116 s | 2,012 MiB | 3,790 | — | 8850 ms | 2381 ms |
+| TypeScript compiler | **veslint** | 11 s ± 0.08 s | 22 s | 1,812 MiB | 3,790 | 3,790 of 3,790 | 1292 ms | 595 ms |
+| TypeScript compiler | oxlint | 6.3 s ± 0.14 s | 23 s | 1,094 MiB | 3,784 | 2,980 of 3,790 | 1659 ms | 1540 ms |
 
 </details>
 
 <details>
 <summary>How it was measured</summary>
 
-`tests/bench/run.sh` (2026-11-21, `docs/bench/results.json`) on an Intel Core i3-4150T (2 cores, 4 threads, 12 GB, Linux), with veslint 0.43.0 (TypeScript 7.1.0-beta), ESLint 10.15.0 with typescript-eslint 8.72.2 and TypeScript 6.0.3, oxlint 1.94.0 with oxlint-tsgolint 7.0.2007, and Biome 2.6.8.
+`tests/bench/run.sh` (2026-11-21, `docs/bench/results.json`) on an Intel Core i3-4150T (2 cores, 4 threads, 12 GB, Linux), with veslint 0.44.0 (TypeScript 7.1.0-beta), ESLint 10.15.0 with typescript-eslint 8.72.2 and TypeScript 6.0.3, oxlint 1.94.0 with oxlint-tsgolint 7.0.2007, and Biome 2.6.8.
 
 - **Projects:** zod, recharts and the TypeScript compiler's sources, each linted with one `tsconfig.json`, the same files for every tool.
 - **Rules:**
