@@ -29,11 +29,12 @@
  	if proj == nil {
  		return nil, fmt.Errorf("%w: project %s not found", ErrClientError, projectHandle)
  	}
-@@ -295,7 +301,7 @@
+@@ -295,7 +301,6 @@
  	sourceFile := ast.GetSourceFileOfNode(node)
- 	table := encoder.GetNodeIndexTable(sourceFile)
- 	idx := table.GetIndex(node)
+-	table := encoder.GetNodeIndexTable(sourceFile)
+-	idx := table.GetIndex(node)
 -	return NodeHandle(fmt.Sprintf("%d.%d.%s", idx, node.Kind, sourceFile.PathKey()))
++	idx := veslintNodeIndex(sourceFile, node)
 +	return veslintNodeHandle(idx, node.Kind, sourceFile.PathKey())
  }
  

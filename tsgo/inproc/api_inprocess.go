@@ -6,6 +6,7 @@ package api
 
 import (
 	"bytes"
+	"cmp"
 	"context"
 	"fmt"
 	"os"
@@ -13,13 +14,16 @@ import (
 	"runtime"
 	"runtime/debug"
 	"runtime/pprof"
+	"slices"
 	"sort"
 	"strconv"
 	"strings"
 	"sync"
 	"time"
 	"unicode"
+	"unsafe"
 
+	"github.com/microsoft/TypeScript/tsc/internal/api/encoder"
 	"github.com/microsoft/TypeScript/tsc/internal/ast"
 	"github.com/microsoft/TypeScript/tsc/internal/bundled"
 	"github.com/microsoft/TypeScript/tsc/internal/checker"
@@ -512,6 +516,47 @@ func veslintNodeHandle(index uint32, kind ast.Kind, path tspath.PathKey) NodeHan
 	b = append(b, path...)
 	return NodeHandle(b)
 }
+
+// veslintNodeIndex is NodeIndexTable.GetIndex: the index of a node in the node table of its file (0
+// when it is not there). GetIndex sorts the table by node id the first time, which reads every node
+// (and gives an id to each that has none) at random places in memory, and nodeHandleFrom asks it
+// for every declaration of every symbol and signature sent, so every file with a declaration was
+// sorted, the default libraries among them: that sort was 1.5% of a typed lint of the TypeScript
+// compiler. The same lookup by the address of the node sorts the addresses only, which the table
+// holds; a node is at one address and has one id, so both find the same node.
+func veslintNodeIndex(sourceFile *ast.SourceFile, node *ast.Node) uint32 {
+	table := encoder.GetNodeIndexTable(sourceFile)
+	byAddress := sourceFile.GetOrComputeData(veslintNodeIndexKey, func(*ast.SourceFile) []uint32 {
+		type entry struct {
+			address uintptr
+			index   uint32
+		}
+		entries := make([]entry, 0, len(table.Nodes))
+		for i, n := range table.Nodes {
+			if n != nil {
+				entries = append(entries, entry{uintptr(unsafe.Pointer(n)), uint32(i)})
+			}
+		}
+		slices.SortFunc(entries, func(a, b entry) int {
+			return cmp.Compare(a.address, b.address)
+		})
+		indexes := make([]uint32, len(entries))
+		for i, e := range entries {
+			indexes[i] = e.index
+		}
+		return indexes
+	})
+	target := uintptr(unsafe.Pointer(node))
+	i, found := slices.BinarySearchFunc(byAddress, target, func(index uint32, target uintptr) int {
+		return cmp.Compare(uintptr(unsafe.Pointer(table.Nodes[index])), target)
+	})
+	if found {
+		return byAddress[i]
+	}
+	return 0
+}
+
+var veslintNodeIndexKey = ast.NewSourceFileDataKey[[]uint32]()
 
 // veslintWorkerCheckers are the checkers of the workers in the programs of a snapshot; they go
 // with the snapshot when it is released.
