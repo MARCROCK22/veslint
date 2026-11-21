@@ -40,6 +40,91 @@ pub fn convert_with(root C.TSNode, src string, tsx bool, opts Options) !EsTree {
 	if !opts.allow_errors && C.ts_node_has_error(root) {
 		return error('the tree has syntax errors (ERROR or MISSING nodes)')
 	}
+	mut c := new_converter(root, src, tsx, opts)
+	// About half as many ESTree nodes as visible tree-sitter nodes (no punctuation): reserved at
+	// once rather than grown by doubling, which copied the nodes and made the collector run.
+	c.t.nodes = []EsNode{cap: int(C.ts_node_descendant_count(root)) / 2 + 16}
+	defer {
+		C.ts_tree_cursor_delete(&c.cursor)
+	}
+	c.t.root = c.program(root)
+	c.t.src = src
+	c.t.line_starts, c.t.line_units = line_index(src)
+	return c.t
+}
+
+// convert_functions builds a tree of some functions of a file only, for a rule that needs no
+// more than what happens inside them (the code paths of the functions that have a `switch`): a
+// Program (of the whole text, with no sourceType) whose body are the given functions, each
+// converted as convert_with converts it in the file. A function is a function declaration or
+// expression, an arrow function, a method of a class or of an object literal (its MethodDefinition
+// or Property, with no decorators), or a class static block; none of them may contain another.
+// The nodes of their subtrees are those of convert_with's tree (the same types, properties and
+// positions); only the functions' own range may differ, and what is around them is left out. The
+// errors are convert_with's: the whole tree is checked for syntax errors.
+pub fn convert_functions(root C.TSNode, src string, tsx bool, opts Options, functions []C.TSNode) !EsTree {
+	if !opts.allow_errors && C.ts_node_has_error(root) {
+		return error('the tree has syntax errors (ERROR or MISSING nodes)')
+	}
+	mut c := new_converter(root, src, tsx, opts)
+	mut count := 0
+	for f in functions {
+		count += int(C.ts_node_descendant_count(f))
+	}
+	c.t.nodes = []EsNode{cap: count / 2 + 16}
+	defer {
+		C.ts_tree_cursor_delete(&c.cursor)
+	}
+	program := c.mk(.program, root, 0, src.len)
+	mut body := []int{cap: functions.len}
+	for f in functions {
+		// Each one sets its own await context, as in the file; what it is around a method only
+		// matters to its computed name, which is outside the method's code path.
+		c.await_ctx = false
+		i := c.function_part(f)
+		if i >= 0 {
+			body << i
+		}
+	}
+	c.plist(program, .body, body)
+	c.t.root = program
+	c.t.src = src
+	c.t.line_starts, c.t.line_units = line_index(src)
+	return c.t
+}
+
+// function_part converts a function of convert_functions the way the conversion of its parent
+// does.
+fn (mut c Converter) function_part(n C.TSNode) int {
+	kind := kind_of(n)
+	return match kind {
+		'function_declaration', 'generator_function_declaration' {
+			c.function_decl(n, Ctx{})
+		}
+		'function_expression', 'generator_function', 'arrow_function' {
+			c.expr(n)
+		}
+		'method_definition' {
+			parent := C.vt_node_parent(n)
+			in_object := !C.ts_node_is_null(parent) && kind_of(parent) == 'object'
+			c.method(n, kind, [], c.start(n), c.end(n), in_object)
+		}
+		'class_static_block' {
+			c.class_member(Kid{
+				n:     n
+				kind:  kind
+				named: true
+			}, [], c.start(n), c.end(n))
+		}
+		else {
+			-1
+		}
+	}
+}
+
+// new_converter is a converter of the tree of `root`, with the names of the grammar's fields and
+// where the comments that run to the end of a line may end.
+fn new_converter(root C.TSNode, src string, tsx bool, opts Options) Converter {
 	lang := C.ts_node_language(root)
 	mut c := Converter{
 		src:         src
@@ -56,16 +141,7 @@ pub fn convert_with(root C.TSNode, src string, tsx bool, opts Options) !EsTree {
 		}
 	}
 	c.comment_ends = line_comment_ends(src)
-	// About half as many ESTree nodes as visible tree-sitter nodes (no punctuation): reserved at
-	// once rather than grown by doubling, which copied the nodes and made the collector run.
-	c.t.nodes = []EsNode{cap: int(C.ts_node_descendant_count(root)) / 2 + 16}
-	defer {
-		C.ts_tree_cursor_delete(&c.cursor)
-	}
-	c.t.root = c.program(root)
-	c.t.src = src
-	c.t.line_starts, c.t.line_units = line_index(src)
-	return c.t
+	return c
 }
 
 struct Converter {

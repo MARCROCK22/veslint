@@ -60,10 +60,18 @@ struct FileWork {
 // BenchReport holds the per-phase timings that `--bench` writes to stderr (PROMPT.md §8).
 struct BenchReport {
 mut:
-	mode                    string
-	files                   int
-	identifiers             int
-	read_parse_ms           f64
+	mode          string
+	files         int
+	identifiers   int
+	read_parse_ms f64
+	// --rule mode: reading the files (not in read_parse_ms) and what read_parse_ms is made of
+	// (rules.Stats), the sums of the workers'.
+	read_ms                 f64
+	parse_tree_sitter_ms    f64
+	parse_index_ms          f64
+	parse_syntax_ms         f64
+	parse_await_ms          f64
+	tree_free_ms            f64
 	query_ms                f64
 	offsets_ms              f64
 	spawn_version_init_ms   f64
@@ -614,7 +622,9 @@ fn run_rules(opts Options, timeout time.Duration) !int {
 			}
 			continue
 		}
+		read_sw := time.new_stopwatch()
 		src, has_bom, not_utf8 := read_source(path)!
+		bench.read_ms += ms(read_sw.elapsed())
 		is_vue := rules.is_vue_path(path)
 		is_svelte := rules.is_svelte_path(path)
 		mut twin_code := ''
@@ -794,6 +804,11 @@ fn run_rules(opts Options, timeout time.Duration) !int {
 		return error(failure)
 	}
 	bench.read_parse_ms = stats.parse_ms
+	bench.parse_tree_sitter_ms = stats.parse_tree_sitter_ms
+	bench.parse_index_ms = stats.parse_index_ms
+	bench.parse_syntax_ms = stats.parse_syntax_ms
+	bench.parse_await_ms = stats.parse_await_ms
+	bench.tree_free_ms = stats.tree_free_ms
 	bench.rule_checked = stats.checked
 	bench.rule_nodes = stats.nodes
 	bench.rule_unmatched = stats.unmatched

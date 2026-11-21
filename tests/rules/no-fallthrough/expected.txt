@@ -2,5 +2,20 @@ tests/rules/no-fallthrough/cases.ts:12:5	no-fallthrough	case	Expected a 'break' 
 tests/rules/no-fallthrough/cases.ts:14:5	no-fallthrough	default	Expected a 'break' statement before 'default'.
 tests/rules/no-fallthrough/cases.ts:23:5	no-fallthrough	case	Expected a 'break' statement before 'case'.
 tests/rules/no-fallthrough/cases.ts:31:5	no-fallthrough	case	Expected a 'break' statement before 'case'.
+tests/rules/no-fallthrough/functions/cases.ts:10:5	no-fallthrough	case	Expected a 'break' statement before 'case'.
+tests/rules/no-fallthrough/functions/cases.ts:18:5	no-fallthrough	case	Expected a 'break' statement before 'case'.
+tests/rules/no-fallthrough/functions/cases.ts:26:5	no-fallthrough	default	Expected a 'break' statement before 'default'.
+tests/rules/no-fallthrough/functions/cases.ts:37:5	no-fallthrough	case	Expected a 'break' statement before 'case'.
+tests/rules/no-fallthrough/functions/cases.ts:46:7	no-fallthrough	case	Expected a 'break' statement before 'case'.
+tests/rules/no-fallthrough/functions/cases.ts:54:7	no-fallthrough	case	Expected a 'break' statement before 'case'.
+tests/rules/no-fallthrough/functions/cases.ts:62:7	no-fallthrough	case	Expected a 'break' statement before 'case'.
+tests/rules/no-fallthrough/functions/cases.ts:72:7	no-fallthrough	case	Expected a 'break' statement before 'case'.
+tests/rules/no-fallthrough/functions/cases.ts:83:7	no-fallthrough	default	Expected a 'break' statement before 'default'.
+tests/rules/no-fallthrough/functions/cases.ts:93:7	no-fallthrough	case	Expected a 'break' statement before 'case'.
+tests/rules/no-fallthrough/functions/cases.ts:105:7	no-fallthrough	case	Expected a 'break' statement before 'case'.
+tests/rules/no-fallthrough/functions/cases.ts:116:7	no-fallthrough	case	Expected a 'break' statement before 'case'.
+tests/rules/no-fallthrough/functions/cases.ts:129:11	no-fallthrough	case	Expected a 'break' statement before 'case'.
+tests/rules/no-fallthrough/functions/cases.ts:133:5	no-fallthrough	case	Expected a 'break' statement before 'case'.
+tests/rules/no-fallthrough/functions/cases.ts:142:7	no-fallthrough	case	Expected a 'break' statement before 'case'.
 tests/rules/no-fallthrough/options/cases.ts:8:5	no-fallthrough	case	Expected a 'break' statement before 'case'.
 tests/rules/no-fallthrough/options/cases.ts:11:5	no-fallthrough	unusedFallthroughComment	Found a comment that would permit fallthrough, but case cannot fall through.
