@@ -2,6 +2,12 @@
 
 Each version is a release on GitHub with the veslint binaries (Linux x64, Windows x64) and the VS Code extension. The section of a version is the text of its release.
 
+## 0.43.0
+
+- **A faster re-lint in the editor after an edit.** `veslint --server` parses the new text of a file from the tree of its last one (tree-sitter's incremental parse, kept only where it gives the tree of a parse from scratch), keeps the configuration it resolved and loaded while nothing it came from changed, and answers a request that changes nothing with its last answer. After an edit, with the 56 rules of @eslint/js and typescript-eslint recommended: zod 89 → 54 ms, recharts 45 → 25 ms, the TypeScript compiler 221 → 150 ms; with the 23 type-aware rules: zod 317 → 255 ms, recharts 274 → 252 ms, the TypeScript compiler 761 → 614 ms. `VESLINT_INCREMENTAL=0` turns the incremental parse off.
+- **Faster with types, with less memory.** Each type crosses from TypeScript to veslint once per worker, rules ask for the types of nodes by index, and on the command line the collector keeps the memory it freed instead of giving it back to the system. With the 23 type-aware rules: the TypeScript compiler's sources 13.5 s → 12.0 s (1,963 → 1,741 MiB), zod 2.09 s → 1.92 s, recharts 3.90 s → 3.75 s.
+- A faster start: the collector's heap grows before veslint's constants are made.
+
 ## 0.42.0
 
 - **Faster without types, with the same results.** no-fallthrough builds the ESTree and the code paths only of the functions that contain a `switch`; no-unused-vars, no-unsafe-optional-chaining, no-require-imports, no-array-constructor, prefer-spread and no-dupe-else-if skip work that cannot report; tree-sitter is compiled for link-time optimization. With the 56 rules of @eslint/js and typescript-eslint recommended: the TypeScript compiler's sources 5.1 s → 3.8 s (663 → 399 MiB), zod 0.52 s → 0.47 s, recharts 0.54 s → 0.49 s.
