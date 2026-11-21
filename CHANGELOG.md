@@ -2,6 +2,10 @@
 
 Each version is a release on GitHub with the veslint binaries (Linux x64, Windows x64) and the VS Code extension. The section of a version is the text of its release.
 
+## 0.41.0
+
+- **Faster type-aware linting, with the same results.** The hot type walks of unbound-method, no-unnecessary-type-assertion and no-base-to-string, and the lookups of a property or a built-in symbol (await-thenable, no-floating-promises, no-misused-promises and others), run in TypeScript's Go code in one request each instead of many small requests from V (`VESLINT_TSGO_HELPERS=0` keeps the V walks, for comparison); the answers are read straight from Go's buffer; what the rules of a file asked about each node is kept in one table instead of five maps; tree-sitter's answers to the fields asked of each node are kept; and veslint allocates less per file and per answer. With the 23 type-aware rules of recommendedTypeChecked: the TypeScript compiler's sources 16.1 s → 13.7 s (2,421 → 1,954 MiB), recharts 4.4 s → 3.9 s, zod 2.4 s → 2.1 s; no-floating-promises alone is now faster than oxlint on zod and recharts.
+
 ## 0.40.0
 
 - **Faster type-aware linting, with the same results.** Type requests no longer pay for the growth of V's maps; no-unsafe-enum-comparison keeps the types of enums per checker instead of rebuilding unions like `SyntaxKind` at every comparison; unbound-method, no-unsafe-assignment and no-unsafe-argument stop asking types they do not read; no-implied-eval builds the scopes of a file only when a call needs them; TypeScript's Go code puts off its first garbage collection until the program is built; each worker lints a run of consecutive files, so the checkers resolve fewer of the same types; and veslint's own collector marks in parallel. With the 23 type-aware rules of recommendedTypeChecked: the TypeScript compiler's sources 22 s → 16 s, recharts 5.3 s → 4.4 s (faster than oxlint now), zod 2.8 s → 2.4 s; in the editor, a file of the TypeScript compiler is re-linted in 0.89 s after an edit (1.17 s before).
