@@ -2394,14 +2394,24 @@ pub:
 // Stats are the --rule mode timings and counters that `--bench` reports.
 pub struct Stats {
 pub mut:
-	parse_ms  f64
-	nodes     int // nodes whose type was requested from tsgo
-	types_ms  f64 // collecting those nodes and requesting their types
-	eval_ms   f64
-	checked   int // statements or nodes evaluated by the rule
-	unmatched int // nodes without a tsgo node with the same range (left without a type)
-	findings  int
-	rule_ms   map[string]f64 // the time of each rule, for --bench
+	parse_ms f64
+	// What parse_ms is made of, for --bench: tree-sitter's parse (ts_parser_parse), the flat tree
+	// with the node index and the token ends (index_file), asking TypeScript whether the file
+	// parses (parsing_error, tree_has_error and ts_syntax_error), the `await` identifiers
+	// (await_identifiers_source, a parse again included). Freeing the tree is after the rules and
+	// apart (tree_free_ms).
+	parse_tree_sitter_ms f64
+	parse_index_ms       f64
+	parse_syntax_ms      f64
+	parse_await_ms       f64
+	tree_free_ms         f64
+	nodes                int // nodes whose type was requested from tsgo
+	types_ms             f64 // collecting those nodes and requesting their types
+	eval_ms              f64
+	checked              int // statements or nodes evaluated by the rule
+	unmatched            int // nodes without a tsgo node with the same range (left without a type)
+	findings             int
+	rule_ms              map[string]f64 // the time of each rule, for --bench
 }
 
 // message returns the text of a finding of a rule.
@@ -3452,6 +3462,7 @@ fn (mut c Checker) lint_file_in_lifetime(parser Parser, config LintConfig, src s
 		}
 	}
 	mut owned := !vue_file || c.vue.doc.script.tree == unsafe { nil }
+	mut part := time.new_stopwatch()
 	mut tree := if svelte_file {
 		parser.parse(c.svelte.doc.lint_code)!
 	} else if !vue_file {
@@ -3461,13 +3472,16 @@ fn (mut c Checker) lint_file_in_lifetime(parser Parser, config LintConfig, src s
 	} else {
 		c.vue.doc.script.tree
 	}
+	stats.parse_tree_sitter_ms += ms(part.elapsed())
 	defer {
 		// The index and the parents it recorded point into the tree.
+		free_sw := time.new_stopwatch()
 		c.node_index = treesitter.NodeIndex{}
 		treesitter.parent_cache_clear()
 		if owned {
 			tree_delete(tree)
 		}
+		stats.tree_free_ms += ms(free_sw.elapsed())
 		c.vue = VueView{}
 		c.svelte = SvelteView{}
 		c.svelte_module = SvelteModuleView{}
@@ -3475,7 +3489,9 @@ fn (mut c Checker) lint_file_in_lifetime(parser Parser, config LintConfig, src s
 	mut root := root_node(tree)
 	// The text of a .svelte file's nodes: the file, then the template part of the lint code.
 	c.src = if svelte_file { c.svelte.doc.lint_text() } else { src }
+	part.restart()
 	c.index_file(root)
+	stats.parse_index_ms += ms(part.elapsed())
 	c.ast_path = ''
 	c.program_directory = config.program_directory
 	c.ecma_version = config.language.ecma_version
@@ -3483,6 +3499,7 @@ fn (mut c Checker) lint_file_in_lifetime(parser Parser, config LintConfig, src s
 	c.settings = config.settings
 	c.project_programs = config.project_programs
 	c.reset_file_types()
+	part.restart()
 	mut fatal := c.parsing_error(ts_path)
 	// A TypeScript file with syntax errors is ESLint's fatal problem when TypeScript's parser
 	// finds one; when only tree-sitter does (syntax its grammar does not read), it is linted on
@@ -3490,6 +3507,7 @@ fn (mut c Checker) lint_file_in_lifetime(parser Parser, config LintConfig, src s
 	if fatal.len == 0 && !vue_file && !svelte_file && tree_has_error(tree) {
 		fatal = c.ts_syntax_error(abs_path)
 	}
+	stats.parse_syntax_ms += ms(part.elapsed())
 	if fatal.len > 0 {
 		stats.parse_ms += ms(sw.elapsed())
 		stats.findings++
@@ -3500,6 +3518,7 @@ fn (mut c Checker) lint_file_in_lifetime(parser Parser, config LintConfig, src s
 	}
 	// Where TypeScript read an `await` as an identifier, the file is parsed again that way
 	// (rules/await_identifier.v).
+	part.restart()
 	reread := c.await_identifiers_source(root, ts_path)!
 	if reread != '' {
 		c.node_index = treesitter.NodeIndex{}
@@ -3512,6 +3531,7 @@ fn (mut c Checker) lint_file_in_lifetime(parser Parser, config LintConfig, src s
 		root = root_node(tree)
 		c.index_file(root)
 	}
+	stats.parse_await_ms += ms(part.elapsed())
 	unmatched_before := stats.unmatched
 	stats.parse_ms += ms(sw.elapsed())
 	// The comments that configure ESLint: they may change the rules of this file and they
@@ -6035,6 +6055,7 @@ mut:
 	client            &Client = unsafe { nil }
 	snapshot          int
 	snapshot_tsconfig string // made without a snapshot (defer_snapshot): the tsconfig make_snapshot opens
+	snapshot_made     bool   // make_snapshot made `snapshot`: whoever drops the checker releases it
 	// syntax_baseline is how many errors TypeScript's parser found in the file before --fix changed
 	// it: lint_file reports a parsing error when the fixes added one (-1: it does not check).
 	syntax_baseline                         int = -1
@@ -6257,6 +6278,12 @@ pub fn (mut c Checker) defer_snapshot(tsconfig string) {
 	c.snapshot_tsconfig = tsconfig
 }
 
+// made_snapshot is the snapshot make_snapshot made for a checker created without one
+// (defer_snapshot), when a file needed it: tsgo keeps it until it is released.
+pub fn (c &Checker) made_snapshot() ?int {
+	return if c.snapshot_made { c.snapshot } else { none }
+}
+
 // syntax_error_count is how many errors TypeScript's parser finds in the file as tsgo has it now,
 // or -1 if tsgo does not have it.
 pub fn (mut c Checker) syntax_error_count(abs_path string) int {
@@ -6356,6 +6383,7 @@ fn (mut c Checker) make_snapshot() ! {
 			c.snapshot = snap.snapshot
 			c.project = p.id
 			c.snapshot_tsconfig = ''
+			c.snapshot_made = true
 			return
 		}
 	}

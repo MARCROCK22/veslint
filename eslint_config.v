@@ -130,18 +130,32 @@ const pluginRules = new Set();
 let typescriptEslint = false;
 const ruleDefaults = {};
 const out = [];
+// Infinity (an option of @stylistic's experimental rules) as the largest finite number, not null.
+const finite = (key, value) => (value === Infinity ? Number.MAX_VALUE : value === -Infinity ? -Number.MAX_VALUE : value);
+// With inputsPath, what each file adds to pluginRules, typescriptEslint and ruleDefaults (each
+// default as its JSON), for the cache, which makes the resolution of some of the files out of the
+// resolution of more of them (config_cache.v): for each file the index of its part in `parts`, or
+// -1 for a file ESLint does not lint.
+const parts = [];
+const partIndexes = new Map();
+const fileParts = [];
 for (const file of files) {
   const config = (await eslint.isPathIgnored(file)) ? undefined : await eslint.calculateConfigForFile(file);
   if (!config) {
     // ESLint's own message for a file it does not lint.
     const [result] = await eslint.lintText('', { filePath: file, warnIgnored: true });
     out.push({ path: file, message: result?.messages[0]?.message ?? 'File ignored.' });
+    fileParts.push(-1);
     continue;
   }
+  const part = { pluginRules: [], typescriptEslint: false, ruleDefaults: {} };
   for (const [namespace, plugin] of Object.entries(config.plugins ?? {})) {
-    if (namespace === '@typescript-eslint') typescriptEslint = true;
+    if (namespace === '@typescript-eslint') typescriptEslint = part.typescriptEslint = true;
     if (namespace === '@' || namespace === '@typescript-eslint') continue;
-    for (const name of Object.keys(plugin?.rules ?? {})) pluginRules.add(namespace + '/' + name);
+    for (const name of Object.keys(plugin?.rules ?? {})) {
+      pluginRules.add(namespace + '/' + name);
+      part.pluginRules.push(namespace + '/' + name);
+    }
   }
   // With reportUnusedInlineConfigs, ESLint compares the options of a configuration comment, on
   // top of the default options of the rule, with the configured ones.
@@ -149,7 +163,10 @@ for (const file of files) {
   if (unusedInline && unusedInline !== 'off') {
     const withDefaults = (id, rule) => {
       const defaults = rule?.meta?.defaultOptions;
-      if (Array.isArray(defaults) && defaults.length > 0) ruleDefaults[id] = defaults;
+      if (Array.isArray(defaults) && defaults.length > 0) {
+        ruleDefaults[id] = defaults;
+        part.ruleDefaults[id] = JSON.stringify(defaults, finite);
+      }
     };
     for (const [name, rule] of builtinRules) withDefaults(name, rule);
     for (const [namespace, plugin] of Object.entries(config.plugins ?? {})) {
@@ -239,16 +256,23 @@ for (const file of files) {
     }
   }
   out.push(entry);
+  if (inputsPath) {
+    const partKey = JSON.stringify(part);
+    if (!partIndexes.has(partKey)) {
+      partIndexes.set(partKey, parts.length);
+      parts.push(part);
+    }
+    fileParts.push(partIndexes.get(partKey));
+  }
 }
 const result = { eslint: ESLint.version, pluginRules: [...pluginRules].sort(), typescriptEslint, configs, files: out };
 if (Object.keys(ruleDefaults).length > 0) {
   result.ruleDefaults = Object.fromEntries(Object.entries(ruleDefaults).sort(([a], [b]) => (a < b ? -1 : 1)));
 }
-// Infinity (an option of @stylistic's experimental rules) as the largest finite number, not null.
-writeResult(JSON.stringify(result, (key, value) => (value === Infinity ? Number.MAX_VALUE : value === -Infinity ? -Number.MAX_VALUE : value)));
+writeResult(JSON.stringify(result, finite));
 if (inputsPath) {
   const modules = Object.keys(require.cache).map(key => key.split('?')[0]).filter(key => path.isAbsolute(key));
-  fs.writeFileSync(inputsPath, JSON.stringify({ files: [...new Set([...modules, ...reads])], env: envRead }));
+  fs.writeFileSync(inputsPath, JSON.stringify({ files: [...new Set([...modules, ...reads])], env: envRead, parts, fileParts }));
 }
 } catch (error) {
   // An error of ESLint about the configuration has a message template, or names the key that is
@@ -607,19 +631,26 @@ fn (l &LoadedConfig) lint_config(index int) rules.LintConfig {
 // (resolved with bun), a resolved JSON, or a JSON with a `rules` section, which is for every file
 // (and may have `linterOptions` and `languageOptions` sections, as the output of
 // `eslint --print-config` does).
+// The server's requests take the resolution of their files out of a cached resolution of more
+// files when there is one (resolve_cached).
 fn load_config_for(path string, files []string) !LoadedConfig {
-	return load_config_with(path, files, false)
+	return load_config_resolving(path, files, false, true)
 }
 
 // load_config_with is load_config_for; with `lookup`, `path` is an ESLint configuration file that
 // was found, not given, and ESLint finds the configuration of each file itself (see
 // eslint_resolver).
 fn load_config_with(path string, files []string, lookup bool) !LoadedConfig {
+	return load_config_resolving(path, files, lookup, false)
+}
+
+// load_config_resolving is load_config_with; `reuse` is resolve_cached's.
+fn load_config_resolving(path string, files []string, lookup bool, reuse bool) !LoadedConfig {
 	if os.file_ext(path) in eslint_config_extensions {
 		if !os.is_file(path) {
 			return error('cannot read ${path}')
 		}
-		resolved := resolve_cached(os.abs_path(path), files.map(os.abs_path(it)), lookup)!
+		resolved := resolve_cached(os.abs_path(path), files.map(os.abs_path(it)), lookup, reuse)!
 		return loaded_from_resolved(resolved, path, os.dir(os.abs_path(path)), files)!
 	}
 	text := os.read_file(path) or { return error('cannot read ${path}: ${err.msg()}') }

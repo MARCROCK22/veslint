@@ -595,6 +595,11 @@ fn merge_methods(mut into map[string]tsgo.MethodStat, from map[string]tsgo.Metho
 // sum of the workers').
 fn merge_stats(mut into rules.Stats, s rules.Stats) {
 	into.parse_ms += s.parse_ms
+	into.parse_tree_sitter_ms += s.parse_tree_sitter_ms
+	into.parse_index_ms += s.parse_index_ms
+	into.parse_syntax_ms += s.parse_syntax_ms
+	into.parse_await_ms += s.parse_await_ms
+	into.tree_free_ms += s.tree_free_ms
 	into.nodes += s.nodes
 	into.types_ms += s.types_ms
 	into.eval_ms += s.eval_ms

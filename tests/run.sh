@@ -573,6 +573,26 @@ print(json.dumps(resolved["configs"][entry["config"]]["rules"], sort_keys=True))
 		printf '%s\n' "first $first" "again $again" "off $off" "module $module" "module_bun $module_bun" \
 			"read_file $read_file" "env_cached $env_cached" "env_bun $env_bun" "lookup_again $lookup_again" "lookup_new $lookup_new"
 	fi
+	# A request of the server takes the resolution of its files out of the entry of a run on more
+	# files (a bun that fails comes first in PATH); a file that no entry has needs bun.
+	printf 'var b = 1;\ndebugger;\n' > "$cache_project/src/b.ts"
+	echo '{"include": ["src"]}' > "$cache_project/tsconfig.json"
+	echo 'debugger;' > "$cache_project/src/c.ts"
+	(cd "$cache_project" && VESLINT_CONFIG_CACHE=1 VESLINT_ESLINT_DIR="$ROOT/build/eval/spider-byte" "$ROOT/veslint" --config eslint.config.mjs src/a.ts src/b.ts > /dev/null 2>&1)
+	printf '%s\n' '{"id": 1, "config": "eslint.config.mjs", "files": ["src/b.ts"]}' \
+		'{"id": 2, "config": "eslint.config.mjs", "files": ["src/b.ts", "src/a.ts"]}' \
+		'{"id": 3, "config": "eslint.config.mjs", "files": ["src/c.ts"]}' > "$TMP/cache-server.jsonl"
+	(cd "$cache_project" && PATH="$TMP/failing-bun:$PATH" VESLINT_CONFIG_CACHE=1 VESLINT_ESLINT_DIR="$ROOT/build/eval/spider-byte" \
+		python3 "$ROOT/tests/server_client.py" "$ROOT/veslint" . "$TMP/cache-server.jsonl") > "$TMP/cache-server.out" 2>&1
+	subset_cli() { (cd "$cache_project" && VESLINT_CONFIG_CACHE=0 VESLINT_ESLINT_DIR="$ROOT/build/eval/spider-byte" "$ROOT/veslint" --config eslint.config.mjs --fixes "$@" 2>&1); }
+	subset_answer() { python3 -I -c 'import json, sys; a = json.loads(open(sys.argv[1]).readlines()[int(sys.argv[2])]); print(a["stdout"] + a["stderr"], end="")' "$TMP/cache-server.out" "$1"; }
+	if [[ $(subset_answer 0) == "$(subset_cli src/b.ts)" && $(subset_answer 1) == "$(subset_cli src/b.ts src/a.ts)" &&
+		$(subset_answer 2) == *"$failed"* ]]; then
+		ok "the server takes the resolution of its files out of a cached resolution of more files"
+	else
+		ko "the server takes the resolution of its files out of a cached resolution of more files"
+		cat "$TMP/cache-server.out"
+	fi
 fi
 code=0
 (cd tests/config && ../../veslint --config resolved.json --summary .) > "$TMP/summary.out" 2> "$TMP/summary.err" || code=$?

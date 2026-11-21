@@ -2,5 +2,20 @@ tests/rules/no-fallthrough/cases.ts:12:5	no-fallthrough	case	Expected a 'break' 
 tests/rules/no-fallthrough/cases.ts:14:5	no-fallthrough	default	Expected a 'break' statement before 'default'.	end	15	15
 tests/rules/no-fallthrough/cases.ts:23:5	no-fallthrough	case	Expected a 'break' statement before 'case'.	end	24	15
 tests/rules/no-fallthrough/cases.ts:31:5	no-fallthrough	case	Expected a 'break' statement before 'case'.	end	33	13
+tests/rules/no-fallthrough/functions/cases.ts:10:5	no-fallthrough	case	Expected a 'break' statement before 'case'.	end	11	15
+tests/rules/no-fallthrough/functions/cases.ts:18:5	no-fallthrough	case	Expected a 'break' statement before 'case'.	end	19	15
+tests/rules/no-fallthrough/functions/cases.ts:26:5	no-fallthrough	default	Expected a 'break' statement before 'default'.	end	27	15
+tests/rules/no-fallthrough/functions/cases.ts:37:5	no-fallthrough	case	Expected a 'break' statement before 'case'.	end	38	15
+tests/rules/no-fallthrough/functions/cases.ts:46:7	no-fallthrough	case	Expected a 'break' statement before 'case'.	end	47	17
+tests/rules/no-fallthrough/functions/cases.ts:54:7	no-fallthrough	case	Expected a 'break' statement before 'case'.	end	55	17
+tests/rules/no-fallthrough/functions/cases.ts:62:7	no-fallthrough	case	Expected a 'break' statement before 'case'.	end	63	17
+tests/rules/no-fallthrough/functions/cases.ts:72:7	no-fallthrough	case	Expected a 'break' statement before 'case'.	end	73	18
+tests/rules/no-fallthrough/functions/cases.ts:83:7	no-fallthrough	default	Expected a 'break' statement before 'default'.	end	84	17
+tests/rules/no-fallthrough/functions/cases.ts:93:7	no-fallthrough	case	Expected a 'break' statement before 'case'.	end	94	17
+tests/rules/no-fallthrough/functions/cases.ts:105:7	no-fallthrough	case	Expected a 'break' statement before 'case'.	end	106	17
+tests/rules/no-fallthrough/functions/cases.ts:116:7	no-fallthrough	case	Expected a 'break' statement before 'case'.	end	117	17
+tests/rules/no-fallthrough/functions/cases.ts:129:11	no-fallthrough	case	Expected a 'break' statement before 'case'.	end	130	21
+tests/rules/no-fallthrough/functions/cases.ts:133:5	no-fallthrough	case	Expected a 'break' statement before 'case'.	end	134	15
+tests/rules/no-fallthrough/functions/cases.ts:142:7	no-fallthrough	case	Expected a 'break' statement before 'case'.	end	143	17
 tests/rules/no-fallthrough/options/cases.ts:8:5	no-fallthrough	case	Expected a 'break' statement before 'case'.	end	10	13
 tests/rules/no-fallthrough/options/cases.ts:11:5	no-fallthrough	unusedFallthroughComment	Found a comment that would permit fallthrough, but case cannot fall through.	end	11	21

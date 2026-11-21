@@ -15,6 +15,11 @@ fn (mut c Checker) lint_no_dupe_else_if(root C.TSNode, abs_path string, mut stat
 	for node in c.nodes_of_kinds(root, ['if_statement'], []) {
 		test := unwrap_parens(node_field(node, 'condition') or { continue })
 		stats.checked++
+		// Only the test of an `else if` can repeat an earlier one.
+		if _ := ndei_else_if_parent(node) {
+		} else {
+			continue
+		}
 		// The test and, when it is a `&&`, each of its operands: the or-operands of each one,
 		// each split into its and-operands.
 		mut conditions := [test]

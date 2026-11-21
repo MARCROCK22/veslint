@@ -34,12 +34,7 @@ fn (mut c Checker) es_tree(root C.TSNode, abs_path string) ?&estree.EsTree {
 			return if c.file_es_state == .built { &c.file_es } else { none }
 		}
 		tree := estree.convert_with(top, c.src, abs_path.to_lower().ends_with('.tsx'),
-			estree.Options{
-				module:       c.language.source_type == 'module'
-				regexp_valid: fn (pattern string, flags string) bool {
-					return jsregexp.regexp_new(estree.utf16_units(pattern), flags) != none
-				}
-			}) or {
+			c.es_options()) or {
 			c.file_es_state = .failed
 			return none
 		}
@@ -50,6 +45,16 @@ fn (mut c Checker) es_tree(root C.TSNode, abs_path string) ?&estree.EsTree {
 		return none
 	}
 	return &c.file_es
+}
+
+// es_options are the options of the conversion of a TypeScript file.
+fn (c &Checker) es_options() estree.Options {
+	return estree.Options{
+		module:       c.language.source_type == 'module'
+		regexp_valid: fn (pattern string, flags string) bool {
+			return jsregexp.regexp_new(estree.utf16_units(pattern), flags) != none
+		}
+	}
 }
 
 // code_path_analysis is ESLint's code path analysis of the file (its events, code paths and
