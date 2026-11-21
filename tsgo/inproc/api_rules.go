@@ -38,6 +38,10 @@ func (p *InProcess) veslintRequest(ctx context.Context, worker int, method strin
 		return p.findProperty(ctx, worker, params)
 	case "builtinSymbolLeaf":
 		return p.builtinSymbolLeaf(ctx, worker, params)
+	case "typesAtLocations", "typesAtLocationsChecked":
+		return p.typesAtLocations(ctx, worker, params, strings.HasSuffix(method, "Checked"))
+	case "typesOfType", "typesOfTypeChecked":
+		return p.typesOfType(ctx, worker, params, strings.HasSuffix(method, "Checked"))
 	}
 	return nil, fmt.Errorf("%w: unknown method %s", ErrInvalidRequest, method)
 }

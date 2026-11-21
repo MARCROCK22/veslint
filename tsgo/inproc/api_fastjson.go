@@ -4,11 +4,19 @@
 package api
 
 import (
+	"context"
 	"fmt"
 	"reflect"
 	"strconv"
+	"strings"
+	"sync"
 
+	"github.com/microsoft/TypeScript/tsc/internal/api/encoder"
+	"github.com/microsoft/TypeScript/tsc/internal/ast"
+	"github.com/microsoft/TypeScript/tsc/internal/checker"
+	"github.com/microsoft/TypeScript/tsc/internal/compiler"
 	"github.com/microsoft/TypeScript/tsc/internal/json"
+	"github.com/microsoft/TypeScript/tsc/internal/tspath"
 )
 
 // appendFastResponse appends the JSON of the answers most requests of a lint give (types, symbols
@@ -666,4 +674,221 @@ func (r *fastParamsReader) handles(out *[]NodeHandle) bool {
 		*out = list
 		return true
 	}
+}
+
+// Types sent once. A lint asks for the types of hundreds of thousands of nodes, and most of the
+// answers are a type the worker was sent before: on the TypeScript compiler 1.02 million types
+// came back as 144 MB of JSON, of 96,000 different types, and writing and reading them was a
+// tenth of the lint. The methods veslint/typesAtLocations and veslint/typesOfType answer what
+// getTypeAtLocations and getTypesOfType answer, but a type the client was already sent whole in
+// the same snapshot and project (the registry of a worker) is its id alone. The answer is a JSON
+// array whose elements are `null`, an id or a TypeResponse.
+//
+// Of what TypeResponse holds, only objectFlags changes after a type is made (the checker caches
+// what it computed about the type there, such as CouldContainTypeVariables), so a type whose flags
+// are not the ones it was sent with is sent whole again: the client then has what
+// getTypeAtLocations would have answered. The other fields that may change later (FreshType,
+// RegularType, ThisType) are not read by the client.
+
+// veslintSentTypes are the types of a project registry sent whole, with the objectFlags they were
+// sent with.
+type veslintSentTypes struct {
+	mu   sync.Mutex
+	sent map[TypeID]uint32
+}
+
+// veslintSentFlags is what a TypeResponse of `t` holds in objectFlags (newTypeResponse sets it for
+// object types only).
+func veslintSentFlags(t *checker.Type) uint32 {
+	if t.Flags()&checker.TypeFlagsObject == 0 {
+		return 0
+	}
+	return uint32(t.ObjectFlags())
+}
+
+// veslintTypeWriter writes the types of one answer; it holds the registry's sent types until done.
+type veslintTypeWriter struct {
+	setup checkerSetup
+	sent  *veslintSentTypes
+	// full: also the TypeResponse of every type, for the check of the client
+	// (veslint/typesAtLocationsChecked).
+	full []*TypeResponse
+	keep bool
+}
+
+func newVeslintTypeWriter(setup checkerSetup, keepFull bool) *veslintTypeWriter {
+	sent := &setup.sd.getOrCreateProjectRegistry(setup.projectID).veslintSent
+	sent.mu.Lock()
+	if sent.sent == nil {
+		sent.sent = map[TypeID]uint32{}
+	}
+	return &veslintTypeWriter{setup: setup, sent: sent, keep: keepFull}
+}
+
+func (w *veslintTypeWriter) done() {
+	w.sent.mu.Unlock()
+}
+
+// append writes `t`: its id when the client has it, else the TypeResponse newTypeResponse makes
+// (which also registers it).
+func (w *veslintTypeWriter) append(b []byte, t *checker.Type) []byte {
+	if t == nil {
+		if w.keep {
+			w.full = append(w.full, nil)
+		}
+		return append(b, "null"...)
+	}
+	id := TypeHandle(t)
+	flags := veslintSentFlags(t)
+	if sent, ok := w.sent.sent[id]; ok && sent == flags && !w.keep {
+		return strconv.AppendUint(b, uint64(id), 10)
+	}
+	resp := w.setup.sd.newTypeResponse(w.setup.projectID, t, w.setup.checker)
+	if w.keep {
+		w.full = append(w.full, resp)
+		if sent, ok := w.sent.sent[id]; ok && sent == flags {
+			return strconv.AppendUint(b, uint64(id), 10)
+		}
+	}
+	w.sent.sent[id] = flags
+	start := len(b)
+	b = appendTypeResponse(b, resp)
+	if checkFastJSON {
+		checkFastResponse("TypeResponse", resp, b[start:])
+	}
+	return b
+}
+
+// finish closes the array; with keepFull, a line with the JSON getTypeAtLocations would have
+// answered follows it.
+func (w *veslintTypeWriter) finish(b []byte) []byte {
+	b = append(b, ']')
+	if w.keep {
+		b = append(b, '\n')
+		if w.full == nil {
+			return append(b, "null"...)
+		}
+		out, err := json.Marshal(w.full)
+		if err != nil {
+			panic("veslint: marshaling the types: " + err.Error())
+		}
+		b = append(b, out...)
+	}
+	return b
+}
+
+// typesAtLocations is handleGetTypeAtLocations with types sent once.
+func (p *InProcess) typesAtLocations(ctx context.Context, worker int, params []byte, checked bool) (any, error) {
+	parsed, err := veslintUnmarshalPayload(string(MethodGetTypeAtLocations), params)
+	if err != nil {
+		return nil, fmt.Errorf("%w: %w", ErrInvalidRequest, err)
+	}
+	in := parsed.(*GetTypeAtLocationsParams)
+	setup, err := p.veslintSetup(ctx, worker, in.Snapshot, in.Project)
+	if err != nil {
+		return nil, err
+	}
+	defer setup.done()
+	w := newVeslintTypeWriter(setup, checked)
+	defer w.done()
+	b := make([]byte, 0, 8*len(in.Locations)+2)
+	b = append(b, '[')
+	var nodes veslintNodeResolver
+	for i, loc := range in.Locations {
+		node, err := nodes.resolve(setup.sd, setup.program, loc)
+		if err != nil {
+			return nil, err
+		}
+		if i > 0 {
+			b = append(b, ',')
+		}
+		// GetTypeAtLocation never answers nil (handleGetTypeAtLocations).
+		b = w.append(b, setup.checker.GetTypeAtLocation(node))
+	}
+	return RawBinary(w.finish(b)), nil
+}
+
+// typesOfType is handleGetTypesOfType (resolveTypeArrayPropertyOfType) with types sent once: null
+// for a type without parts.
+func (p *InProcess) typesOfType(ctx context.Context, worker int, params []byte, checked bool) (any, error) {
+	parsed, err := veslintUnmarshalPayload(string(MethodGetTypesOfType), params)
+	if err != nil {
+		return nil, fmt.Errorf("%w: %w", ErrInvalidRequest, err)
+	}
+	in := parsed.(*GetTypePropertyParams)
+	setup, err := p.veslintSetup(ctx, worker, in.Snapshot, in.Project)
+	if err != nil {
+		return nil, err
+	}
+	defer setup.done()
+	t, err := setup.resolveTypeHandle(in.Type)
+	if err != nil {
+		return nil, err
+	}
+	types := t.Types()
+	if len(types) == 0 {
+		return RawBinary("null"), nil
+	}
+	w := newVeslintTypeWriter(setup, checked)
+	defer w.done()
+	b := make([]byte, 0, 8*len(types)+2)
+	b = append(b, '[')
+	for i, sub := range types {
+		if i > 0 {
+			b = append(b, ',')
+		}
+		b = w.append(b, sub)
+	}
+	return RawBinary(w.finish(b)), nil
+}
+
+// veslintNodeResolver is snapshotData.resolveNodeHandle for the handles of one request, which are
+// nearly always in one file: the file and its index table are looked up once per file, not once
+// per handle. Its errors are resolveNodeHandle's.
+type veslintNodeResolver struct {
+	path  string
+	table *encoder.NodeIndexTable
+}
+
+func (r *veslintNodeResolver) resolve(sd *snapshotData, program *compiler.Program, handle NodeHandle) (*ast.Node, error) {
+	s := string(handle)
+	firstDot := strings.IndexByte(s, '.')
+	if firstDot == -1 {
+		return nil, fmt.Errorf("%w: invalid node handle %q", ErrClientError, handle)
+	}
+	secondDot := strings.IndexByte(s[firstDot+1:], '.')
+	if secondDot == -1 {
+		return nil, fmt.Errorf("%w: invalid node handle %q", ErrClientError, handle)
+	}
+	secondDot += firstDot + 1
+	path := s[secondDot+1:]
+	if r.table == nil || path != r.path {
+		return r.resolveSlow(sd, program, handle, path)
+	}
+	idx, err := strconv.ParseUint(s[:firstDot], 10, 32)
+	if err != nil {
+		return nil, fmt.Errorf("%w: invalid node handle %q: %w", ErrClientError, handle, err)
+	}
+	if idx < uint64(len(r.table.Nodes)) {
+		if node := r.table.Nodes[idx]; node != nil {
+			return node, nil
+		}
+	}
+	return nil, fmt.Errorf("%w: node handle %q could not be resolved (file may not be loaded or handle may be stale)", ErrClientError, handle)
+}
+
+// resolveSlow resolves a handle of a file not seen yet in the request, and keeps the file's table.
+func (r *veslintNodeResolver) resolveSlow(sd *snapshotData, program *compiler.Program, handle NodeHandle, path string) (*ast.Node, error) {
+	node, err := sd.resolveNodeHandle(program, handle)
+	if err != nil {
+		return nil, err
+	}
+	key, _ := tspath.TryPathKeyFromCanonical(path)
+	if sourceFile := program.GetSourceFileByPath(key); sourceFile != nil {
+		if table := encoder.GetNodeIndexTable(sourceFile); table != nil {
+			r.path = path
+			r.table = table
+		}
+	}
+	return node, nil
 }
