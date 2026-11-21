@@ -6055,6 +6055,7 @@ mut:
 	client            &Client = unsafe { nil }
 	snapshot          int
 	snapshot_tsconfig string // made without a snapshot (defer_snapshot): the tsconfig make_snapshot opens
+	snapshot_made     bool   // make_snapshot made `snapshot`: whoever drops the checker releases it
 	// syntax_baseline is how many errors TypeScript's parser found in the file before --fix changed
 	// it: lint_file reports a parsing error when the fixes added one (-1: it does not check).
 	syntax_baseline                         int = -1
@@ -6277,6 +6278,12 @@ pub fn (mut c Checker) defer_snapshot(tsconfig string) {
 	c.snapshot_tsconfig = tsconfig
 }
 
+// made_snapshot is the snapshot make_snapshot made for a checker created without one
+// (defer_snapshot), when a file needed it: tsgo keeps it until it is released.
+pub fn (c &Checker) made_snapshot() ?int {
+	return if c.snapshot_made { c.snapshot } else { none }
+}
+
 // syntax_error_count is how many errors TypeScript's parser finds in the file as tsgo has it now,
 // or -1 if tsgo does not have it.
 pub fn (mut c Checker) syntax_error_count(abs_path string) int {
@@ -6376,6 +6383,7 @@ fn (mut c Checker) make_snapshot() ! {
 			c.snapshot = snap.snapshot
 			c.project = p.id
 			c.snapshot_tsconfig = ''
+			c.snapshot_made = true
 			return
 		}
 	}

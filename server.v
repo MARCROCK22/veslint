@@ -135,7 +135,11 @@ mut:
 	open_projects []string // the tsconfig.json files tsgo has open
 	snap          tsgo.UpdateSnapshotResponse
 	projects      map[string]string // the project of each tsconfig.json in that snapshot
-	checkers      map[string]&rules.Checker
+	// typed: `snap` has programs. Until a request has a rule that needs types, it only has the
+	// parsed tsconfig files (config_snapshot), as a run of the command line without such a rule:
+	// its checkers make a snapshot if a file asks for one, which drop_checkers releases.
+	typed    bool
+	checkers map[string]&rules.Checker
 	// asts are the declaration ASTs of each tsconfig.json, kept from one snapshot to the next
 	// without the files tsgo reads again (forget_asts)
 	asts map[string]&rules.DeclarationAsts
@@ -204,6 +208,17 @@ fn (mut s Server) stop() {
 	s.checkers = map[string]&rules.Checker{}
 	s.asts = map[string]&rules.DeclarationAsts{}
 	s.changes = tsgo.FileChangeSet{}
+	s.typed = false
+}
+
+// drop_checkers forgets the checkers, and releases the snapshots they made.
+fn (mut s Server) drop_checkers() ! {
+	for _, checker in s.checkers {
+		if made := checker.made_snapshot() {
+			s.client.release_snapshot(made)!
+		}
+	}
+	s.checkers = map[string]&rules.Checker{}
 }
 
 // forget_asts drops the declaration ASTs of the files tsgo reads again in the next snapshot.
@@ -549,8 +564,10 @@ fn (mut s Server) lint(id i64, config string, project string, files []string, te
 	mut out := strings.new_builder(4096)
 	mut problems := 0
 	mut warnings := 0
+	// No rule needs types: no program is built for them, as on the command line (Worker.open).
+	lazy := !configs_need_types(lint_configs)
 	if tsconfigs.len > 0 {
-		s.snapshot_for(tsconfigs) or {
+		s.snapshot_for(tsconfigs, lazy) or {
 			s.stop()
 			errors.writeln('veslint: ${err.msg()}')
 			return ServerAnswer{
@@ -571,7 +588,7 @@ fn (mut s Server) lint(id i64, config string, project string, files []string, te
 		if opened.len > 0 {
 			mut all := tsconfigs.clone()
 			all << opened
-			s.snapshot_for(all) or {
+			s.snapshot_for(all, lazy) or {
 				s.stop()
 				errors.writeln('veslint: ${err.msg()}')
 				return ServerAnswer{
@@ -627,6 +644,9 @@ fn (mut s Server) lint(id i64, config string, project string, files []string, te
 				}
 			}
 			checker.set_project_directory(os.dir(f.tsconfig))
+			if !s.typed {
+				checker.defer_snapshot(project_id)
+			}
 			mut asts := s.asts[f.tsconfig] or {
 				created := &rules.DeclarationAsts{}
 				s.asts[f.tsconfig] = created
@@ -687,7 +707,8 @@ fn (mut s Server) lint(id i64, config string, project string, files []string, te
 
 // snapshot_for makes sure tsgo runs, has `tsconfigs` open and has read what changed: the snapshot
 // of the last request is kept when nothing did, with the checkers and what they already asked.
-fn (mut s Server) snapshot_for(tsconfigs []string) ! {
+// With `lazy` (no rule of the request needs types) a snapshot without programs will do.
+fn (mut s Server) snapshot_for(tsconfigs []string, lazy bool) ! {
 	if s.client == unsafe { nil } {
 		mut client := if s.twins.len > 0 {
 			tsgo.start_virtual(tsgo.binary_path(), os.dir(tsconfigs[0]), s.timeout, map[string]string{},
@@ -704,7 +725,13 @@ fn (mut s Server) snapshot_for(tsconfigs []string) ! {
 		s.served_configs = []
 		s.include_twins()!
 		s.open_projects = tsconfigs.clone()
-		s.snap = s.client.create_snapshot(s.open_projects)!
+		s.typed = !lazy
+		s.snap = if lazy {
+			config_snapshot(mut s.client, tsgo.UpdateSnapshotResponse{ snapshot: no_snapshot },
+				s.open_projects)!
+		} else {
+			s.client.create_snapshot(s.open_projects)!
+		}
 		s.projects = map_projects(s.open_projects, s.snap)!
 		s.checkers = map[string]&rules.Checker{}
 		s.asts = map[string]&rules.DeclarationAsts{}
@@ -720,6 +747,26 @@ fn (mut s Server) snapshot_for(tsconfigs []string) ! {
 			s.open_projects << tsconfig
 			opened << tsconfig
 		}
+	}
+	if !s.typed {
+		if lazy && opened.len == 0 && s.changes.is_empty() {
+			return
+		}
+		// The tsconfig files are parsed again (a change may be one of them), and the checkers'
+		// snapshots are of files that changed; the first request with a rule that needs types
+		// builds the programs.
+		s.forget_asts(s.changes)
+		s.drop_checkers()!
+		s.typed = !lazy
+		s.snap = if lazy {
+			config_snapshot(mut s.client, tsgo.UpdateSnapshotResponse{ snapshot: no_snapshot },
+				s.open_projects)!
+		} else {
+			s.client.create_snapshot(s.open_projects)!
+		}
+		s.changes = tsgo.FileChangeSet{}
+		s.projects = map_projects(s.open_projects, s.snap)!
+		return
 	}
 	if opened.len == 0 && s.changes.is_empty() {
 		return
