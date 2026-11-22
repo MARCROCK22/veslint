@@ -40,6 +40,11 @@ tests/rules/@typescript-eslint/no-unnecessary-qualifier/fixes/cases.ts:32:30	@ty
 tests/rules/@typescript-eslint/no-unnecessary-qualifier/fixes/cases.ts:32:53	@typescript-eslint/no-unnecessary-qualifier	unnecessaryQualifier	Qualifier is unnecessary since 'Name' is in scope.
 tests/rules/@typescript-eslint/no-unnecessary-qualifier/fixes/cases.ts:37:7	@typescript-eslint/no-unnecessary-qualifier	unnecessaryQualifier	Qualifier is unnecessary since 'A' is in scope.
 tests/rules/@typescript-eslint/no-unnecessary-qualifier/fixes/cases.ts:38:7	@typescript-eslint/no-unnecessary-qualifier	unnecessaryQualifier	Qualifier is unnecessary since 'A' is in scope.
+tests/rules/@typescript-eslint/no-unnecessary-qualifier/import-type/cases.ts:5:44	@typescript-eslint/no-unnecessary-qualifier	unnecessaryQualifier	Qualifier is unnecessary since 'x' is in scope.
+tests/rules/@typescript-eslint/no-unnecessary-qualifier/import-type/cases.ts:6:37	@typescript-eslint/no-unnecessary-qualifier	unnecessaryQualifier	Qualifier is unnecessary since 'I' is in scope.
+tests/rules/@typescript-eslint/no-unnecessary-qualifier/import-type/cases.ts:8:26	@typescript-eslint/no-unnecessary-qualifier	unnecessaryQualifier	Qualifier is unnecessary since 'x' is in scope.
+tests/rules/@typescript-eslint/no-unnecessary-qualifier/import-type/cases.ts:11:46	@typescript-eslint/no-unnecessary-qualifier	unnecessaryQualifier	Qualifier is unnecessary since 'y' is in scope.
+tests/rules/@typescript-eslint/no-unnecessary-qualifier/import-type/cases.ts:12:28	@typescript-eslint/no-unnecessary-qualifier	unnecessaryQualifier	Qualifier is unnecessary since 'y' is in scope.
 tests/rules/@typescript-eslint/no-unnecessary-qualifier/scopes-module/cases.ts:10:20	@typescript-eslint/no-unnecessary-qualifier	unnecessaryQualifier	Qualifier is unnecessary since 'x' is in scope.
 tests/rules/@typescript-eslint/no-unnecessary-qualifier/scopes-module/cases.ts:11:19	@typescript-eslint/no-unnecessary-qualifier	unnecessaryQualifier	Qualifier is unnecessary since 'T' is in scope.
 tests/rules/@typescript-eslint/no-unnecessary-qualifier/scopes-module/cases.ts:12:20	@typescript-eslint/no-unnecessary-qualifier	unnecessaryQualifier	Qualifier is unnecessary since 'star' is in scope.

@@ -2,7 +2,7 @@ module rules
 
 import time
 import tsgo { SymbolResponse, handle_index, handle_kind, handle_path }
-import treesitter { children, has_child_kind, next_sibling, node_end, node_field, node_kind, node_parent, node_start, position_of }
+import treesitter { Ident, children, has_child_kind, next_sibling, node_end, node_field, node_kind, node_parent, node_start, position_of }
 
 // Port of the `no-unnecessary-qualifier` rule of typescript-eslint 8.72.2 (it has no options),
 // with its fix.
@@ -33,8 +33,29 @@ const nuq_symbol_flag_alias = u32(2097152)
 struct NuqAccess {
 	node      C.vt_node
 	qualifier C.vt_node
-	name      C.vt_node
-	scope     []u64 // keys of the namespacesInScope spans when the access is visited
+	// qualifier_end: the qualifier ends there and is no node of the tree (the qualified name `A.B`
+	// of `import('x').A.B.c`, see nuq_import_qualifier_access); -1 when it is `qualifier`.
+	qualifier_end int = -1
+	name          C.vt_node
+	scope         []u64 // keys of the namespacesInScope spans when the access is visited
+}
+
+// qualifier_key is the key of the qualifier's TypeScript node (a span of the tree's nodes when
+// the tree has no node for it).
+fn (a NuqAccess) qualifier_key() u64 {
+	if a.qualifier_end < 0 {
+		return node_key(a.qualifier)
+	}
+	return (u64(node_start(a.qualifier)) << 32) | u64(a.qualifier_end)
+}
+
+// qualifier_span is the span of the qualifier's TypeScript node.
+fn (a NuqAccess) qualifier_span() Span {
+	return Span{
+		key:   a.qualifier_key()
+		first: a.qualifier
+		end:   if a.qualifier_end < 0 { node_end(a.qualifier) } else { a.qualifier_end }
+	}
 }
 
 // NuqStep is a step of the walk: entering or leaving a node.
@@ -49,7 +70,7 @@ fn (mut c Checker) lint_no_unnecessary_qualifier(root C.vt_node, abs_path string
 	mut spans := []Span{}
 	c.nuq_walk(root, mut accesses, mut spans)
 	for a in accesses {
-		spans << node_span(a.qualifier)
+		spans << a.qualifier_span()
 		spans << node_span(a.name)
 		mut functions := nuq_outer_functions(a.qualifier)
 		if c.text(a.name) == 'arguments' {
@@ -79,7 +100,10 @@ fn (mut c Checker) lint_no_unnecessary_qualifier(root C.vt_node, abs_path string
 		reported << a.node
 		// The fixer removes from the start of the qualifier to the start of the name.
 		findings << Finding{
-			stmt:       position_of(a.qualifier)
+			stmt:       Ident{
+				...position_of(a.qualifier)
+				end_byte: a.qualifier_span().end
+			}
 			message_id: 'unnecessaryQualifier'
 			data:       {
 				'name': c.text(a.name)
@@ -225,6 +249,9 @@ fn (c &Checker) nuq_innermost_module_span(module C.vt_node) Span {
 fn nuq_access(n C.vt_node) ?NuqAccess {
 	match node_kind(n) {
 		'member_expression' {
+			if nuq_in_import_type(n) {
+				return nuq_import_qualifier_access(n)
+			}
 			object := unwrap_parens(node_field(n, 'object')?)
 			if !nuq_is_entity_name(object) {
 				return none
@@ -255,6 +282,49 @@ fn nuq_access(n C.vt_node) ?NuqAccess {
 	}
 }
 
+// nuq_in_import_type: a member_expression of the names after `import('…')` in a type, which
+// tree-sitter's grammar reads as member accesses of the call and typescript-estree as the
+// qualifier of the TSImportType (an Identifier or a TSQualifiedName).
+fn nuq_in_import_type(n C.vt_node) bool {
+	mut node := n
+	for _ in 0 .. max_expression_depth {
+		parent := node_parent(node) or { return false }
+		match node_kind(parent) {
+			'member_expression' { node = parent }
+			'import_type' { return true }
+			else { return false }
+		}
+	}
+	return false
+}
+
+// nuq_import_qualifier_access is the TSQualifiedName of the names after `import('…')` that ends
+// at the member_expression `n`: in `import('x').A.B.c` the one of `.c` is `A.B` and `c`, the one of
+// `.B` is `A` and `B`, and `.A` has none (A is an Identifier). The qualifier `A.B` is no node of
+// the tree: it runs from the first name to the property of the object.
+fn nuq_import_qualifier_access(n C.vt_node) ?NuqAccess {
+	object := node_field(n, 'object')?
+	if node_kind(object) != 'member_expression' {
+		return none
+	}
+	mut first := object
+	for {
+		inner := node_field(first, 'object')?
+		if node_kind(inner) != 'member_expression' {
+			break
+		}
+		first = inner
+	}
+	qualifier := node_field(first, 'property')?
+	last := node_field(object, 'property')?
+	return NuqAccess{
+		node:          n
+		qualifier:     qualifier
+		qualifier_end: if node_key(last) == node_key(qualifier) { -1 } else { node_end(last) }
+		name:          node_field(n, 'property')?
+	}
+}
+
 // nuq_is_entity_name ports isEntityNameExpression: an identifier, or a non-computed member access
 // of one.
 fn nuq_is_entity_name(n C.vt_node) bool {
@@ -281,7 +351,7 @@ fn (mut c Checker) nuq_unnecessary(accesses []NuqAccess) ![]bool {
 	mut qualifier_handles := []string{}
 	mut with_handles := []int{}
 	for i, a in accesses {
-		if handle := c.nodes.handle(node_key(a.qualifier)) {
+		if handle := c.nodes.handle(a.qualifier_key()) {
 			if c.nodes.has_handle(node_key(a.name)) {
 				qualifier_handles << handle
 				with_handles << i
@@ -387,7 +457,7 @@ fn nuq_outer_functions(n C.vt_node) []C.vt_node {
 // name, from the innermost scope, whose flags share a bit with `meaning`.
 fn (mut c Checker) nuq_symbol_in_scope(a NuqAccess, meaning int) !SymbolResponse {
 	name := c.text(a.name)
-	mut found := c.client.resolve_name_at(c.snapshot, c.project, name, meaning, c.nodes.handle_or_empty(node_key(a.qualifier)),
+	mut found := c.client.resolve_name_at(c.snapshot, c.project, name, meaning, c.nodes.handle_or_empty(a.qualifier_key()),
 		false)!
 	// A local of a function resolveName does not see from where the qualifier is: asked from the
 	// function itself, it is the first one found.

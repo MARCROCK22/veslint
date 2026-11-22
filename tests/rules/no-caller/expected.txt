@@ -1,1 +1,2 @@
 tests/rules/no-caller/cases.ts:3:13	no-caller	unexpected	Avoid arguments.callee.
+tests/rules/no-caller/import-type/cases.ts:8:15	no-caller	unexpected	Avoid arguments.callee.

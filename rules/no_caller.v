@@ -14,6 +14,9 @@ fn (mut c Checker) lint_no_caller(root C.vt_node, abs_path string, mut stats Sta
 	mut findings := []Finding{}
 	for node in c.nodes_of_kinds(root, ['member_expression'], []) {
 		stats.checked++
+		if in_type_name(node) {
+			continue
+		}
 		object := unwrap_parens(node_field(node, 'object') or { continue })
 		property := node_field(node, 'property') or { continue }
 		if node_kind(object) != 'identifier' || c.text(object) != 'arguments'
