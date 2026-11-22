@@ -24,10 +24,15 @@ require github.com/microsoft/TypeScript/tsc v0.0.0
 
 replace github.com/microsoft/TypeScript/tsc => $module
 MOD
-# The converter's files, as tsgo/inproc/build.sh adds them to the archive.
+# The converter's files and the patched parser, as tsgo/inproc/build.sh adds them to the archive.
+rm -f "$out/parser.go"
+cp "$module/internal/parser/parser.go" "$out/parser.go"
+chmod u+w "$out/parser.go"
+(cd "$out" && GIT_CEILING_DIRECTORIES=$out git apply "$root/tsgo/inproc/parser.patch")
 cat > "$out/overlay.json" <<JSON
 {"Replace": {"$module/internal/parser/veslint_convert.go": "$root/tsgo/inproc/convert.go",
-"$module/internal/parser/veslint_convert_kinds.go": "$root/tsgo/inproc/convert_kinds.go"}}
+"$module/internal/parser/veslint_convert_kinds.go": "$root/tsgo/inproc/convert_kinds.go",
+"$module/internal/parser/parser.go": "$out/parser.go"}}
 JSON
 cd "$out/mod"
 "$go" mod edit $(sed -n 's/^\t\([^ ]*\) \(v[^ ]*\).*/-require=\1@\2/p' "$module/go.mod" | tr '\n' ' ')

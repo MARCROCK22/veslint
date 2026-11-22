@@ -219,7 +219,7 @@ fn (mut c Converter) expr(n C.vt_node) int {
 		}
 		'await_expression' {
 			kids := c.kids(n)
-			if !c.await_ctx {
+			if !c.await_ctx && !c.opts.typescript_rows {
 				if r := c.await_identifier(kids) {
 					return r
 				}

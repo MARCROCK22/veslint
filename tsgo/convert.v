@@ -2,8 +2,8 @@ module tsgo
 
 // The converter from TypeScript's AST to the rows of tree-sitter's tree (tsgo/inproc/convert.go,
 // linked in libveslint_tsgo.a): one call parses a file with TypeScript's parser and gives the rows
-// tree-sitter's parse of it would give (veslint_tsgo.h, veslint_tsgo_row). Nothing lints with it
-// yet; treesitter's rows will take them.
+// tree-sitter's parse of it would give (veslint_tsgo.h, veslint_tsgo_row), which a lint reads as
+// its tree (rules.lint_file, treesitter.rows_adopt), or the parse diagnostics.
 
 // A row: a visible node of the tree, in preorder (see veslint_tsgo.h).
 pub struct C.veslint_tsgo_row {
@@ -41,10 +41,13 @@ pub enum ConvertStatus {
 	no_language // convert_language was not called for the file's language
 }
 
-// Converted is the rows of a file, in C memory until free is called.
+// Converted is the rows of a file, in C memory until free is called, or its parse diagnostics.
 pub struct Converted {
 pub:
 	status ConvertStatus
+	// The parse diagnostics (status .diagnostics) in the order of transpile_diagnostics' (by
+	// position), with `pos` in UTF-16 units of the text and `end` unknown (= pos).
+	diagnostics []Diagnostic
 pub mut:
 	rows  &C.veslint_tsgo_row = unsafe { nil }
 	count int
@@ -86,11 +89,54 @@ pub fn convert(text string, tsx bool, script bool) Converted {
 		3 { ConvertStatus.no_language }
 		else { ConvertStatus.failed }
 	}
+	if status == .diagnostics {
+		report := unsafe { tos(&u8(call.out), int(call.out_len)) }.clone()
+		unsafe { C.free(call.out) }
+		diagnostics := parse_diagnostics_text(report) or {
+			return Converted{
+				status: .failed
+			}
+		}
+		return Converted{
+			status:      status
+			diagnostics: diagnostics
+		}
+	}
 	return Converted{
 		status: status
 		rows:   unsafe { &C.veslint_tsgo_row(call.out) }
 		count:  int(call.out_len)
 	}
+}
+
+// parse_diagnostics_text reads the converter's diagnostics: per diagnostic `code pos length` on a
+// line, then its message of `length` bytes (tsgo/inproc/main.go, diagnosticsText).
+fn parse_diagnostics_text(report string) ![]Diagnostic {
+	mut out := []Diagnostic{}
+	mut at := 0
+	for at < report.len {
+		eol := report.index_after_('\n', at)
+		if eol < 0 {
+			return error('the converter gave a diagnostic without its message')
+		}
+		head := report[at..eol].split(' ')
+		if head.len != 3 {
+			return error('the converter gave a diagnostic header `${report[at..eol]}`')
+		}
+		length := head[2].int()
+		if length < 0 || eol + 1 + length > report.len {
+			return error('the converter gave a diagnostic message beyond its text')
+		}
+		pos := head[1].int()
+		out << Diagnostic{
+			pos:  pos
+			end:  pos
+			code: head[0].int()
+			text: report[eol + 1..eol + 1 + length]
+		}
+		at = eol + 1 + length
+	}
+	return out
 }
 
 // row is the i-th row.

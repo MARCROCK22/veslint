@@ -147,6 +147,19 @@ fn test_convert_reports_parse_diagnostics() {
 	mut got := convert('const = ;\n', false, false)
 	assert got.status == .diagnostics
 	assert got.count == 0
+	assert got.diagnostics.len > 0
+	assert got.diagnostics[0].code == 1134
+	assert got.diagnostics[0].text == 'Variable declaration expected.'
+	assert got.diagnostics[0].pos == 6
+	got.free()
+	// Positions are in UTF-16 units: the two units of 😀 before the error, not its four bytes.
+	got = convert('"😀"; const = ;\n', false, false)
+	assert got.status == .diagnostics
+	assert got.diagnostics[0].pos == 12
+	// TypeScript 7.1 alone rejects `as` before `**` (microsoft/TypeScript#63527); parser.patch
+	// gives TypeScript 6's reading, `((x < 0) as any) ** 2`, without diagnostics.
+	got = convert('x < 0 as any ** 2;\n', false, false)
+	assert got.status == .rows
 	got.free()
 }
 

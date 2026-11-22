@@ -22,6 +22,9 @@ pub:
 	// allow_errors converts a tree with ERROR or MISSING nodes as well as it can (the result is
 	// then no typescript-estree tree).
 	allow_errors bool
+	// typescript_rows: the rows are TypeScript's parse (rules/parser_source.v), which reads `await`
+	// and `yield` as names where TypeScript does: an await expression is one (no await_identifier).
+	typescript_rows bool
 }
 
 // convert builds the ESTree of a file from its tree-sitter tree: `src` is the parsed text (without

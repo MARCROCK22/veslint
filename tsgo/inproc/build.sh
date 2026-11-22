@@ -4,7 +4,8 @@
 # commit of the npm package veslint uses, with this directory's files added by `-overlay`
 # (api_inprocess.go, api_fastjson.go and api_rules.go into internal/api, convert.go and
 # convert_kinds.go into internal/parser, main.go as cmd/veslint_tsgo) and internal/api/session.go
-# replaced by a copy with session.patch applied: the checkout is only read.
+# and internal/parser/parser.go replaced by copies with session.patch and parser.patch applied:
+# the checkout is only read.
 #
 # TYPESCRIPT_GO is the checkout (default build/upstream/typescript-go, the one tools/ uses), GO the
 # Go toolchain (default `go`; 1.27.x, as go.mod asks). GOBUILDFLAGS are added to `go build`.
@@ -48,17 +49,23 @@ require github.com/microsoft/TypeScript/tsc v0.0.0
 replace github.com/microsoft/TypeScript/tsc => $module
 MOD
 # session.patch gives the lint workers a checker each in the programs they share (api_inprocess.go).
-# git applies it as `patch` would, outside any repository (GIT_CEILING_DIRECTORIES).
-rm -f "$out/session.go"
+# parser.patch makes TypeScript's parser read `as` and `satisfies` before another operator as
+# TypeScript 6's parser does, typescript-estree's and so ESLint's: 7.1 rejects `x < 0 as any ** 2`
+# (microsoft/TypeScript#63527), 6.0.3 reads `((x < 0) as any) ** 2`. The program and the converter
+# share the parser, so both give ESLint's tree. git applies them as `patch` would, outside any
+# repository (GIT_CEILING_DIRECTORIES).
+rm -f "$out/session.go" "$out/parser.go"
 cp "$module/internal/api/session.go" "$out/session.go"
-chmod u+w "$out/session.go"
-(cd "$out" && GIT_CEILING_DIRECTORIES=$out git apply "$here/session.patch")
+cp "$module/internal/parser/parser.go" "$out/parser.go"
+chmod u+w "$out/session.go" "$out/parser.go"
+(cd "$out" && GIT_CEILING_DIRECTORIES=$out git apply "$here/session.patch" "$here/parser.patch")
 # The overlay's paths are absolute, so it is written per machine.
 cat > "$out/overlay.json" <<JSON
 {"Replace": {"$module/internal/api/veslint_inprocess.go": "$here/api_inprocess.go",
 "$module/internal/api/veslint_fastjson.go": "$here/api_fastjson.go",
 "$module/internal/api/veslint_rules.go": "$here/api_rules.go",
 "$module/internal/api/session.go": "$out/session.go",
+"$module/internal/parser/parser.go": "$out/parser.go",
 "$module/internal/parser/veslint_convert.go": "$here/convert.go",
 "$module/internal/parser/veslint_convert_kinds.go": "$here/convert_kinds.go"}}
 JSON

@@ -644,6 +644,7 @@ fn merge_stats(mut into rules.Stats, s rules.Stats) {
 	into.parse_syntax_ms += s.parse_syntax_ms
 	into.parse_await_ms += s.parse_await_ms
 	into.tree_free_ms += s.tree_free_ms
+	into.typescript_parses += s.typescript_parses
 	into.nodes += s.nodes
 	into.types_ms += s.types_ms
 	into.eval_ms += s.eval_ms

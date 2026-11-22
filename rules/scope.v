@@ -663,6 +663,8 @@ pub:
 	vue VueScopeSetup
 	// A .svelte file: what svelte-eslint-parser adds to the scopes (svelte_scope.v).
 	svelte SvelteScopeSetup
+	// The rows are TypeScript's parse (parser_source.v): an await expression is one.
+	typescript_rows bool
 }
 
 // ScopeLibs are the implicit variables a list of libs gives the global scope
@@ -1127,6 +1129,7 @@ struct ScopeBuilder {
 	// The names a JSX element references (ScopeSetup).
 	jsx_pragma        string
 	jsx_fragment_name string
+	typescript_rows   bool // ScopeSetup.typescript_rows
 mut:
 	tree    ScopeTree
 	current int
@@ -1150,6 +1153,7 @@ fn build_scope_tree_with(root C.vt_node, src string, tokens TokenEnds, setup Sco
 		tokens:            tokens
 		jsx_pragma:        setup.jsx_pragma
 		jsx_fragment_name: setup.jsx_fragment_name
+		typescript_rows:   setup.typescript_rows
 	}
 	// Program: its range starts at 0 (typescript-estree 8.72), whatever comes before its first token.
 	start := 0
@@ -1722,10 +1726,12 @@ fn (mut b ScopeBuilder) visit(n C.vt_node) {
 		}
 		'await_expression' {
 			// Outside an async function TypeScript reads `await (x)`, `await [x]` and `` await `…` `` as
-			// a call, an element access and a tagged template on an `await` identifier.
+			// a call, an element access and a tagged template on an `await` identifier, which
+			// tree-sitter reads as an await expression (TypeScript's rows have the call).
 			if operand := first_named(n) {
 				first := b.src[node_start(operand)]
-				if (first == `(` || first == `[` || first == `\``) && scope_outside_async(n) {
+				if !b.typescript_rows && (first == `(` || first == `[` || first == `\``)
+					&& scope_outside_async(n) {
 					if keyword := await_keyword(n) {
 						b.read_value(keyword)
 					}

@@ -100,6 +100,22 @@ static vt_rows *vt_rows_new(const void *language, uint32_t capacity) {
 	return rows;
 }
 
+// vt_rows_adopt makes rows of `count` rows another parser filled completely (next, prev and last
+// included: TypeScript's converter, tsgo/inproc/convert.go) in `buffer`, a malloc'd array the rows
+// take and free. NULL when memory runs out (the buffer is then freed).
+static vt_rows *vt_rows_adopt(const void *language, vt_row *buffer, uint32_t count) {
+	vt_rows *rows = (vt_rows *)malloc(sizeof(vt_rows));
+	if (rows == NULL) {
+		free(buffer);
+		return NULL;
+	}
+	rows->rows = buffer;
+	rows->count = count;
+	rows->capacity = count;
+	rows->language = language;
+	return rows;
+}
+
 static void vt_rows_free(vt_rows *rows) {
 	if (rows != NULL) {
 		free(rows->rows);

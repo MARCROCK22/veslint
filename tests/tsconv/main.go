@@ -100,6 +100,7 @@ import (
 	"time"
 	"unsafe"
 
+	"github.com/microsoft/TypeScript/tsc/internal/ast"
 	"github.com/microsoft/TypeScript/tsc/internal/parser"
 )
 
@@ -427,7 +428,7 @@ func main() {
 		g := pick(os.Args[2])
 		conv := parser.NewVeslintConverter(g.table)
 		rows, diagnostics := conv.Convert(text)
-		if diagnostics {
+		if len(diagnostics) > 0 {
 			fmt.Println("# TypeScript reports parse diagnostics:")
 			for _, d := range conv.Diagnostics(text) {
 				fmt.Println("#  ", d)
@@ -470,7 +471,9 @@ func main() {
 						}
 					}
 				}()
-				got, diagnostics = conv.Convert(text)
+				var parseErrors []*ast.Diagnostic
+				got, parseErrors = conv.Convert(text)
+				diagnostics = len(parseErrors) > 0
 			}()
 			tsError := want[0].Flags&16 != 0
 			switch {

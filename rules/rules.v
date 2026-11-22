@@ -2405,6 +2405,7 @@ pub mut:
 	parse_syntax_ms      f64
 	parse_await_ms       f64
 	tree_free_ms         f64
+	typescript_parses    int // files whose rows (or parsing error) TypeScript's parser gave (parser_source.v)
 	nodes                int // nodes whose type was requested from tsgo
 	types_ms             f64 // collecting those nodes and requesting their types
 	eval_ms              f64
@@ -3482,12 +3483,29 @@ fn (mut c Checker) lint_file_in_lifetime(parser Parser, config LintConfig, src s
 	} else {
 		c.vue.doc.script.masked
 	}
+	// TypeScript's parser (parser_source.v) reads a plain TypeScript file, unless --server parses it
+	// from its last tree; tree-sitter parses it when the converter fails.
+	mut typescript := TypeScriptParse{}
+	if owned && cache == unsafe { nil } && !vue_file && !svelte_file
+		&& parser_source == .typescript {
+		typescript = typescript_parse(parser, parsed, config.language, abs_path)
+	}
+	from_typescript := typescript.rows != unsafe { nil }
+	c.rows_from_typescript = from_typescript
 	mut tree := if !owned {
 		c.vue.doc.script.tree
+	} else if from_typescript {
+		typescript.rows
+	} else if typescript.diagnostics.len > 0 {
+		// ESLint's "Parsing error" alone: no rows (returned below).
+		unsafe { &C.vt_rows(nil) }
 	} else if cache != unsafe { nil } {
 		cache.parse(parser, cache_key, parsed)!
 	} else {
 		parser.parse(parsed)!
+	}
+	if from_typescript || typescript.diagnostics.len > 0 {
+		stats.typescript_parses++
 	}
 	stats.parse_tree_sitter_ms += ms(part.elapsed())
 	defer {
@@ -3501,6 +3519,16 @@ fn (mut c Checker) lint_file_in_lifetime(parser Parser, config LintConfig, src s
 		c.vue = VueView{}
 		c.svelte = SvelteView{}
 		c.svelte_module = SvelteModuleView{}
+	}
+	if typescript.diagnostics.len > 0 {
+		c.src = src
+		fatal := c.typescript_parsing_error(typescript.diagnostics)
+		stats.parse_ms += ms(sw.elapsed())
+		stats.findings++
+		return FileLint{
+			findings:      fatal
+			parsing_error: true
+		}
 	}
 	mut root := root_node(tree)
 	// The text of a .svelte file's nodes: the file, then the template part of the lint code.
@@ -3518,11 +3546,12 @@ fn (mut c Checker) lint_file_in_lifetime(parser Parser, config LintConfig, src s
 	c.project_programs = config.project_programs
 	c.reset_file_types()
 	part.restart()
-	mut fatal := c.parsing_error(ts_path)
-	// A TypeScript file with syntax errors is ESLint's fatal problem when TypeScript's parser
-	// finds one; when only tree-sitter does (syntax its grammar does not read), it is linted on
-	// with a warning (FileLint.syntax_errors).
-	if fatal.len == 0 && !vue_file && !svelte_file && tree_has_error(tree) {
+	// TypeScript's parser found no error in rows it gave (its errors returned above). Otherwise a
+	// TypeScript file with syntax errors is ESLint's fatal problem when TypeScript's parser finds
+	// one; when only tree-sitter does (syntax its grammar does not read), it is linted on with a
+	// warning (FileLint.syntax_errors).
+	mut fatal := if from_typescript { []Finding{} } else { c.parsing_error(ts_path) }
+	if fatal.len == 0 && !from_typescript && !vue_file && !svelte_file && tree_has_error(tree) {
 		fatal = c.ts_syntax_error(abs_path)
 	}
 	stats.parse_syntax_ms += ms(part.elapsed())
@@ -3534,10 +3563,10 @@ fn (mut c Checker) lint_file_in_lifetime(parser Parser, config LintConfig, src s
 			parsing_error: true
 		}
 	}
-	// Where TypeScript read an `await` as an identifier, the file is parsed again that way
-	// (rules/await_identifier.v).
+	// Where TypeScript read an `await` as an identifier, tree-sitter's rows are parsed again that
+	// way (rules/await_identifier.v); TypeScript's rows read it as TypeScript does.
 	part.restart()
-	reread := c.await_identifiers_source(root, ts_path)!
+	reread := if from_typescript { '' } else { c.await_identifiers_source(root, ts_path)! }
 	if reread != '' {
 		c.node_index = treesitter.NodeIndex{}
 		if owned {
@@ -3554,7 +3583,10 @@ fn (mut c Checker) lint_file_in_lifetime(parser Parser, config LintConfig, src s
 	// The comments that configure ESLint: they may change the rules of this file and they
 	// suppress findings.
 	inline := c.inline_config(root, config)
-	c.scope_setup = c.file_scope_setup(config, inline)
+	c.scope_setup = ScopeSetup{
+		...c.file_scope_setup(config, inline)
+		typescript_rows: from_typescript
+	}
 	mut findings := []Finding{}
 	c.file_rules = inline.rules.map(it.name)
 	c.vue_template_owner = c.vue_template_owner_of(config, inline)
@@ -6075,7 +6107,9 @@ mut:
 	snapshot_made     bool   // make_snapshot made `snapshot`: whoever drops the checker releases it
 	// syntax_baseline is how many errors TypeScript's parser found in the file before --fix changed
 	// it: lint_file reports a parsing error when the fixes added one (-1: it does not check).
-	syntax_baseline                         int = -1
+	syntax_baseline int = -1
+	// rows_from_typescript: the file's rows are TypeScript's parse (parser_source.v).
+	rows_from_typescript                    bool
 	no_implicit_this                        bool // isStrictCompilerOptionEnabled(…, 'noImplicitThis') of the project
 	strict_null_checks                      bool // isStrictCompilerOptionEnabled(…, 'strictNullChecks') of the project
 	no_unchecked_indexed_access             bool // isCompilerOptionEnabled(…, 'noUncheckedIndexedAccess') of the project
