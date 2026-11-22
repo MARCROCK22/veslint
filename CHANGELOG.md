@@ -2,6 +2,11 @@
 
 Each version is a release on GitHub with the veslint binaries (Linux x64, Windows x64) and the VS Code extension. The section of a version is the text of its release.
 
+## 0.46.0
+
+- **Faster, with less memory.** veslint reads every syntax tree through compact rows of its own and frees tree-sitter's tree as soon as they are built. With the 56 rules of @eslint/js and typescript-eslint recommended: the TypeScript compiler's sources 3.08 s → 2.59 s (495 → 375 MiB), zod 0.43 s → 0.37 s, recharts 0.42 s → 0.39 s; with the 23 type-aware rules: the TypeScript compiler 10.17 s → 9.40 s (1,940 → 1,801 MiB), zod 1.90 s → 1.83 s. In the editor, re-linting a file after an edit: without types the TypeScript compiler 145 → 101 ms and zod 50 → 38 ms, with types the TypeScript compiler 601 → 563 ms and zod 248 → 229 ms.
+- The first step towards parsing with TypeScript's own parser: a converter from TypeScript's syntax tree to the same rows, identical to tree-sitter's on zod, recharts, the TypeScript compiler and the test corpus but where tree-sitter is wrong, and 3.4–4.3 times faster. Lints do not use it yet.
+
 ## 0.45.0
 
 - **Faster on large projects.** A lint of the command line takes every CPU by default, a worker per thread as tsgolint has, instead of a CPU of each core: the type checker of a worker on the other thread of a core repeats little of the others' work. The TypeScript compiler's sources: 11.51 s → 10.17 s with the 23 type-aware rules (1,812 → 1,940 MiB), 3.35 s → 2.88 s with no-floating-promises, 3.68 s → 3.08 s with the 56 rules of @eslint/js and typescript-eslint recommended; recharts 3.71 s → 3.55 s, 0.66 s → 0.61 s and 0.48 s → 0.42 s. zod with no-floating-promises is a little slower, 0.50 s → 0.55 s (each checker resolves zod's types again), and still faster than oxlint. `VESLINT_CPUS` keeps choosing; `--server` and `VESLINT_TSGO=process` keep two CPUs.
