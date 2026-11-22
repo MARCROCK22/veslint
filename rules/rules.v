@@ -3488,7 +3488,7 @@ fn (mut c Checker) lint_file_in_lifetime(parser Parser, config LintConfig, src s
 	mut typescript := TypeScriptParse{}
 	if owned && cache == unsafe { nil } && !vue_file && !svelte_file
 		&& parser_source == .typescript {
-		typescript = typescript_parse(parser, parsed, config.language, abs_path)
+		typescript = typescript_parse(parser, parsed, config.language, abs_path, c.program_file(abs_path))
 	}
 	from_typescript := typescript.rows != unsafe { nil }
 	c.rows_from_typescript = from_typescript
@@ -6427,6 +6427,20 @@ fn first_parse_diagnostic(diagnostics []tsgo.Diagnostic, units int) tsgo.Diagnos
 		return d
 	}
 	return diagnostics[0]
+}
+
+// program_file is the file `abs_path` in the program of the checker's project, for the converter
+// (tsgo.convert_in): none without a snapshot (a lint without types builds no program).
+fn (c &Checker) program_file(abs_path string) tsgo.ProgramFile {
+	if c.client == unsafe { nil } || c.snapshot < 0 || c.snapshot_tsconfig != '' {
+		return tsgo.ProgramFile{}
+	}
+	return tsgo.ProgramFile{
+		client:   c.client
+		snapshot: c.snapshot
+		project:  c.project
+		path:     abs_path
+	}
 }
 
 // make_snapshot gives a checker made without a snapshot one with its tsconfig open: a comment

@@ -118,6 +118,10 @@ func veslint_tsgo_open(cwd *C.char, cwdLen C.size_t, lib *C.char, libLen C.size_
 //
 //export veslint_tsgo_request
 func veslint_tsgo_request(handle C.longlong, worker C.int, method *C.char, methodLen C.size_t, payload *C.char, payloadLen C.size_t, out **C.char, outLen *C.size_t) C.int {
+	name := goString(method, methodLen)
+	if name == "createSnapshot" || name == "updateSnapshot" {
+		armBallast.Do(arm_ballast)
+	}
 	release_ballast()
 	p := session(handle)
 	if p == nil {
@@ -125,7 +129,7 @@ func veslint_tsgo_request(handle C.longlong, worker C.int, method *C.char, metho
 		return 0
 	}
 	buffer := answerBuffers.Get().(*[]byte)
-	messageType, answer := p.Request(int(worker), goString(method, methodLen), goBytes(payload, payloadLen), (*buffer)[:0])
+	messageType, answer := p.Request(int(worker), name, goBytes(payload, payloadLen), (*buffer)[:0])
 	cBytes(answer, out, outLen)
 	if cap(answer) <= maxPooledAnswer {
 		*buffer = answer[:0]
@@ -196,6 +200,58 @@ var (
 	converters       [2]sync.Pool
 )
 
+// cConverter is a converter that writes its rows in C memory, which veslint takes as it is: the
+// rows of a file are not copied out of a buffer of Go's, and no converter keeps a buffer the size
+// of the largest file it converted (Go's collector counted it as live in every converter of the
+// pool: tens of megabytes for the largest files of the TypeScript compiler). Without types, median
+// of 5 alternated runs on the TypeScript compiler: peak memory 538 -> 371 MB (361 -> 233 MB with
+// VESLINT_CPUS=1), the same time.
+type cConverter struct {
+	*parser.VeslintConverter
+	// The C buffer of the rows of the file being converted, nil between files.
+	buffer unsafe.Pointer
+}
+
+func newCConverter(l *parser.VeslintLanguage) *cConverter {
+	c := &cConverter{VeslintConverter: parser.NewVeslintConverter(l)}
+	c.Grow = c.grow
+	return c
+}
+
+func (c *cConverter) grow(rows []parser.VeslintRow, need int) []parser.VeslintRow {
+	if rows == nil {
+		// A new file: a buffer left by a conversion that did not finish is freed.
+		c.free()
+	}
+	room := max(need, cap(rows)+cap(rows)/2)
+	p := C.realloc(c.buffer, C.size_t(room)*C.size_t(unsafe.Sizeof(parser.VeslintRow{})))
+	if p == nil {
+		panic("veslint_tsgo: out of memory for the rows")
+	}
+	c.buffer = p
+	return unsafe.Slice((*parser.VeslintRow)(p), room)[:len(rows)]
+}
+
+// take hands the buffer of `count` rows over to the caller, without the room left at its end.
+func (c *cConverter) take(count int) unsafe.Pointer {
+	p := c.buffer
+	c.buffer = nil
+	if p == nil {
+		return C.malloc(1)
+	}
+	if q := C.realloc(p, C.size_t(max(count, 1))*C.size_t(unsafe.Sizeof(parser.VeslintRow{}))); q != nil {
+		p = q
+	}
+	return p
+}
+
+func (c *cConverter) free() {
+	if c.buffer != nil {
+		C.free(c.buffer)
+		c.buffer = nil
+	}
+}
+
 // veslint_tsgo_convert_language gives the converter the tables of a language of veslint's grammar
 // (`tsx` 0: TypeScript, 1: TSX): `symbol` and `field` are ts_language_symbol_for_name and
 // ts_language_field_id_for_name of `language` (a `const TSLanguage *`), called here and only here.
@@ -231,7 +287,35 @@ const (
 // diagnosticsText). The caller frees either with veslint_tsgo_free; otherwise *rows is NULL.
 //
 //export veslint_tsgo_convert
-func veslint_tsgo_convert(flags C.int, text *C.char, textLen C.size_t, rows **C.veslint_tsgo_row, count *C.size_t) (result C.int) {
+func veslint_tsgo_convert(flags C.int, text *C.char, textLen C.size_t, rows **C.veslint_tsgo_row, count *C.size_t) C.int {
+	return convert(flags, text, textLen, nil, rows, count)
+}
+
+// veslint_tsgo_convert_file is veslint_tsgo_convert for a file of a program of the session
+// `handle`: it converts the program's AST of the file when it is the one a parse of `text` gives
+// (VeslintConverter.SameParse), and parses `text` otherwise. `params` name the snapshot, the
+// project and the file as the parameters of veslint/nodesAtRanges, without values
+// (InProcess.VeslintSourceFile). In a lint with types the program has parsed every file already:
+// parsing it again was about 5 % of a lint of the TypeScript compiler, and its AST was garbage that
+// brought Go's next collection closer and raised the peak (with no-floating-promises, the
+// TypeScript compiler 784 -> 648 MB and 2.59 -> 2.23 s, median of 3 alternated runs).
+//
+//export veslint_tsgo_convert_file
+func veslint_tsgo_convert_file(handle C.longlong, params *C.char, paramsLen C.size_t, flags C.int, text *C.char, textLen C.size_t, rows **C.veslint_tsgo_row, count *C.size_t) C.int {
+	var file *ast.SourceFile
+	if p := session(handle); p != nil {
+		file = p.VeslintSourceFile(unsafe.Slice((*byte)(unsafe.Pointer(params)), int(paramsLen)))
+	}
+	return convert(flags, text, textLen, file, rows, count)
+}
+
+// checkProgramAST (VESLINT_CHECK_PROGRAM_AST=1) converts the text of every file whose program's
+// AST was converted too, and reports on stderr where the rows or diagnostics differ (the text's are
+// then the ones given).
+var checkProgramAST = os.Getenv("VESLINT_CHECK_PROGRAM_AST") == "1"
+
+// convert is veslint_tsgo_convert, of the program's AST `file` when it may be converted.
+func convert(flags C.int, text *C.char, textLen C.size_t, file *ast.SourceFile, rows **C.veslint_tsgo_row, count *C.size_t) (result C.int) {
 	*rows = nil
 	*count = 0
 	tsx := flags & 1
@@ -239,14 +323,15 @@ func veslint_tsgo_convert(flags C.int, text *C.char, textLen C.size_t, rows **C.
 	if l == nil {
 		return convertNoLanguage
 	}
-	c, _ := converters[tsx].Get().(*parser.VeslintConverter)
+	c, _ := converters[tsx].Get().(*cConverter)
 	if c == nil {
-		c = parser.NewVeslintConverter(l)
+		c = newCConverter(l)
 	}
 	c.Script = flags&2 != 0
 	defer func() {
 		// A converter that panicked may hold any state: it is not reused.
 		if r := recover(); r != nil {
+			c.free()
 			*rows = nil
 			*count = 0
 			result = convertFailed
@@ -254,8 +339,30 @@ func veslint_tsgo_convert(flags C.int, text *C.char, textLen C.size_t, rows **C.
 		}
 		converters[tsx].Put(c)
 	}()
-	out, diagnostics := c.Convert(goString(text, textLen))
+	// The text is not copied: the call is synchronous, and the converter keeps nothing of the file
+	// once it returns (VeslintConverter.forget); the parser in TypeScript's pool keeps its scanner,
+	// which keeps the text but reads it again only after it is given the next one.
+	var source string
+	if textLen > 0 {
+		source = unsafe.String((*byte)(unsafe.Pointer(text)), int(textLen))
+	}
+	var out []parser.VeslintRow
+	var diagnostics []*ast.Diagnostic
+	fromProgram := false
+	if file != nil {
+		out, diagnostics, fromProgram = c.ConvertFile(file, source)
+	}
+	if !fromProgram {
+		out, diagnostics = c.Convert(source)
+	} else if checkProgramAST {
+		if want, wantDiagnostics, same := checkConverted(l, c.Script, file.FileName().AsString(), source, out, diagnostics); !same {
+			// The rows of the text, copied below.
+			c.free()
+			out, diagnostics = want, wantDiagnostics
+		}
+	}
 	if len(diagnostics) > 0 {
+		c.free()
 		report := diagnosticsText(diagnostics)
 		p := C.malloc(C.size_t(max(len(report), 1)))
 		if p == nil {
@@ -266,17 +373,48 @@ func veslint_tsgo_convert(flags C.int, text *C.char, textLen C.size_t, rows **C.
 		*count = C.size_t(len(report))
 		return convertDiagnostics
 	}
-	size := C.size_t(len(out)) * C.size_t(unsafe.Sizeof(parser.VeslintRow{}))
-	p := C.malloc(max(size, 1))
-	if p == nil {
-		return convertFailed
+	if c.buffer == nil {
+		// The rows of the text that checkConverted gave instead of the program's: a copy.
+		size := C.size_t(len(out)) * C.size_t(unsafe.Sizeof(parser.VeslintRow{}))
+		p := C.malloc(max(size, 1))
+		if p == nil {
+			return convertFailed
+		}
+		if len(out) > 0 {
+			C.memcpy(p, unsafe.Pointer(&out[0]), size)
+		}
+		*rows = (*C.veslint_tsgo_row)(p)
+		*count = C.size_t(len(out))
+		return convertRows
 	}
-	if len(out) > 0 {
-		C.memcpy(p, unsafe.Pointer(&out[0]), size)
-	}
-	*rows = (*C.veslint_tsgo_row)(p)
+	*rows = (*C.veslint_tsgo_row)(c.take(len(out)))
 	*count = C.size_t(len(out))
 	return convertRows
+}
+
+// checkConverted compares the rows and diagnostics of a program's AST (`rows` and `diagnostics`)
+// with those of a parse of `text`, which it returns, and tells whether they are the same.
+func checkConverted(l *parser.VeslintLanguage, script bool, name string, text string, rows []parser.VeslintRow, diagnostics []*ast.Diagnostic) ([]parser.VeslintRow, []*ast.Diagnostic, bool) {
+	fresh := parser.NewVeslintConverter(l)
+	fresh.Script = script
+	want, wantDiagnostics := fresh.Convert(text)
+	problem := ""
+	if got, expected := diagnosticsText(diagnostics), diagnosticsText(wantDiagnostics); got != expected {
+		problem = "the diagnostics of the program's AST differ from those of a parse of the text"
+	} else if len(rows) != len(want) {
+		problem = "the program's AST has " + strconv.Itoa(len(rows)) + " rows, a parse of the text " + strconv.Itoa(len(want))
+	} else {
+		for i := range rows {
+			if rows[i] != want[i] {
+				problem = "row " + strconv.Itoa(i) + " of the program's AST differs from that of a parse of the text"
+				break
+			}
+		}
+	}
+	if problem != "" {
+		os.Stderr.WriteString("veslint_tsgo: " + name + ": " + problem + "\n")
+	}
+	return want, wantDiagnostics, problem == ""
 }
 
 // diagnosticsText writes parse diagnostics as transpileModule's response gives them (the first is
@@ -331,6 +469,13 @@ const gcPercent = 200
 // s (7 MB more), the TypeScript compiler the same (measured with GOGC off up to a GOMEMLIMIT of
 // 256 MiB, the same first collection); GOGC off up to 512 MiB: zod 2.32 s with 129 MB more. A GOGC
 // or GOMEMLIMIT in the environment is Go's alone.
+//
+// The ballast is taken by the first createSnapshot or updateSnapshot request (arm_ballast), which
+// build programs, not when the process starts: a lint without types builds none, and there Go only
+// parses (the converter), whose garbage is all short-lived. With the ballast from the start, that
+// garbage stayed in memory until the heap reached three times the ballast: on the TypeScript
+// compiler without types, one collection in the whole lint, at 386 MB. Taken later, median of 5
+// alternated runs: peak memory 469 -> 371 MB (338 -> 233 MB with VESLINT_CPUS=1), the same time.
 const gcBallast = 128 << 20
 
 // The steps of the ballast: held until a collection runs with it, then a GOGC of its own until the
@@ -343,6 +488,7 @@ const (
 
 var (
 	ballast      []byte
+	armBallast   sync.Once
 	ballastStep  atomic.Int32
 	ballastMutex sync.Mutex
 	// ballastCycles is how many collections had run when the step started.
@@ -359,12 +505,18 @@ func init() {
 		return
 	}
 	debug.SetGCPercent(gcPercent)
-	if os.Getenv("GOMEMLIMIT") != "" {
+}
+
+// arm_ballast takes the ballast, once, unless the environment sets GOGC or GOMEMLIMIT.
+func arm_ballast() {
+	if os.Getenv("GOGC") != "" || os.Getenv("GOMEMLIMIT") != "" {
 		return
 	}
+	ballastMutex.Lock()
+	defer ballastMutex.Unlock()
 	ballast = make([]byte, gcBallast)
-	// Allocating the ballast starts a collection (the heap goal starts at 8 MiB): it ends here, so
-	// that the next one is the first with the heap of a lint.
+	// Allocating the ballast starts a collection (the heap goal is that of the small heap before
+	// it): it ends here, so that the next one is the first with the heap of the programs.
 	runtime.GC()
 	ballastCycles = gcCycles()
 	ballastStep.Store(ballastHeld)

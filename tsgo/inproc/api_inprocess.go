@@ -685,3 +685,23 @@ func stopProfile() {
 	}
 	profileFile = nil
 }
+
+// VeslintSourceFile is the file of a program that `params` name (the snapshot, the project and
+// the file, as the parameters of veslint/nodesAtRanges, without values), as getSourceFile finds
+// it, or nil when the snapshot, the project, its program or the file is not there. veslint
+// converts it instead of parsing the file's text again (veslint_tsgo_convert_file).
+func (p *InProcess) VeslintSourceFile(params []byte) *ast.SourceFile {
+	snapshot, projectID, fileName, values, err := readBinaryParams(params)
+	if err != nil || len(values) != 0 || fileName == "" {
+		return nil
+	}
+	sd, err := p.session.getSnapshotData(snapshot)
+	if err != nil {
+		return nil
+	}
+	program, err := sd.getProgram(projectID)
+	if err != nil {
+		return nil
+	}
+	return program.GetSourceFile(DocumentIdentifier{FileName: fileName}.ToFileName(program.BaseDirectory()))
+}
