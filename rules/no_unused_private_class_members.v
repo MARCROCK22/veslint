@@ -143,7 +143,9 @@ fn (mut c Checker) nupcm_visit(mut a NupcmAnalyzer, tree &ScopeTree, n C.vt_node
 		}
 		'member_expression', 'subscript_expression' {
 			c.nupcm_visit_children(mut a, tree, n, scope)
-			c.nupcm_member_expression(mut a, tree, n, scope)
+			if !in_type_name(n) {
+				c.nupcm_member_expression(mut a, tree, n, scope)
+			}
 		}
 		'private_property_identifier' {
 			parent := node_parent(n) or { return }

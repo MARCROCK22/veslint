@@ -5,7 +5,10 @@
 # of the projects of build/eval), the canonical serialization of the tree and the order of its
 # traversal must be the same, byte for byte, or both must fail to parse. It also checks that
 # estree/tables.v and estree/entities.v are what their generators make, and runs estree's unit
-# tests. The files tests/estree/known.txt lists are expected to differ (the reason is there).
+# tests. The trees are built from tree-sitter's rows and from TypeScript's (the converter of
+# tsgo/inproc/convert.go, VESLINT_PARSER=typescript): with tree-sitter's, the files
+# tests/estree/known.txt lists are expected to differ (the reason is there, all where tree-sitter
+# reads the code differently from TypeScript); with TypeScript's, none.
 # Dev-time only: it needs the node_modules of tests/eval_spider_byte.sh.
 #
 # Usage: tests/estree/run.sh   (V: the v binary, default `v`; JOBS: processes, default nproc)
@@ -27,19 +30,28 @@ node tests/estree/corpus.mjs "$PWD" "$OUT/corpus" > /dev/null
 "$V" test estree/
 for ((i = 0; i < JOBS; i++)); do
 	node tests/estree/oracle.mjs hash "$OUT/corpus/list.txt" "$i/$JOBS" > "$OUT/oracle.$i.tsv" &
-	"$OUT/estree_dump" hash "$OUT/corpus/list.txt" "$i/$JOBS" > "$OUT/v.$i.tsv" &
 done
 wait
 cat "$OUT"/oracle.*.tsv | LC_ALL=C sort > "$OUT/oracle.tsv"
-cat "$OUT"/v.*.tsv | LC_ALL=C sort > "$OUT/v.tsv"
-python3 tests/estree/compare.py "$OUT/oracle.tsv" "$OUT/v.tsv" "$OUT/corpus" "$OUT/mismatch.txt"
-# The differences, as paths relative to the corpus directory, against known.txt.
-{ sed -e "s|^$PWD/$OUT/corpus/||" -e "s|^$OUT/corpus/||" -e "s|^$PWD/||" "$OUT/mismatch.txt" | grep -v '^$' || true; } |
-	LC_ALL=C sort > "$OUT/mismatch.rel"
-{ grep -v '^#' tests/estree/known.txt || true; } | cut -f1 | LC_ALL=C sort > "$OUT/known.rel"
-if diff "$OUT/known.rel" "$OUT/mismatch.rel"; then
-	echo "estree: as typescript-estree but the $(wc -l < "$OUT/known.rel") known differences"
-else
-	echo "estree: unexpected differences (< known, > now)"
-	exit 1
-fi
+{ grep -v '^#' tests/estree/known.txt || true; } | cut -f1 | LC_ALL=C sort > "$OUT/known.tree-sitter.rel"
+: > "$OUT/known.typescript.rel"
+status=0
+for parser in tree-sitter typescript; do
+	for ((i = 0; i < JOBS; i++)); do
+		VESLINT_PARSER=$parser "$OUT/estree_dump" hash "$OUT/corpus/list.txt" "$i/$JOBS" > "$OUT/shard.$i.tsv" &
+	done
+	wait
+	cat "$OUT"/shard.*.tsv | LC_ALL=C sort > "$OUT/v.$parser.tsv"
+	rm -f "$OUT"/shard.*.tsv
+	python3 tests/estree/compare.py "$OUT/oracle.tsv" "$OUT/v.$parser.tsv" "$OUT/corpus" "$OUT/mismatch.$parser.txt"
+	# The differences, as paths relative to the corpus directory, against the known ones.
+	{ sed -e "s|^$PWD/$OUT/corpus/||" -e "s|^$OUT/corpus/||" -e "s|^$PWD/||" "$OUT/mismatch.$parser.txt" | grep -v '^$' || true; } |
+		LC_ALL=C sort > "$OUT/mismatch.$parser.rel"
+	if diff "$OUT/known.$parser.rel" "$OUT/mismatch.$parser.rel"; then
+		echo "estree ($parser's rows): as typescript-estree but the $(wc -l < "$OUT/known.$parser.rel") known differences"
+	else
+		echo "estree ($parser's rows): unexpected differences (< known, > now)"
+		status=1
+	fi
+done
+exit $status

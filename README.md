@@ -8,7 +8,7 @@
 
 # veslint
 
-veslint lints TypeScript with ESLint's rules, without ESLint. It parses with tree-sitter, gets the types from the native TypeScript 7 compiler linked into veslint itself, and needs no JavaScript runtime to lint.
+veslint lints TypeScript with ESLint's rules, without ESLint. It parses the code and gets its types with the native TypeScript 7 compiler linked into veslint itself, and needs no JavaScript runtime to lint.
 
 - **Same results as ESLint.** The rules of ESLint, typescript-eslint, eslint-plugin-unicorn, @stylistic/eslint-plugin, eslint-plugin-perfectionist, @eslint-community/eslint-plugin-eslint-comments, eslint-plugin-promise, eslint-plugin-regexp and @slipher/eslint-plugin are ported to V. They report the same problems, with the same messages, positions, fixes and suggestions.
 - **Your ESLint configuration.** veslint reads `eslint.config.*`, the directive comments (`// eslint-disable-next-line`, `/* eslint rule: … */`, `/* global */`) and rule options. A rule it does not have yet is skipped with a warning.
@@ -183,7 +183,7 @@ With files and neither `--config` nor `--rule`, veslint prints the type TypeScri
 
 The exit code is 0 when there are no problems, 1 when there are (warnings do not count, as in ESLint) or veslint failed, and 2 for a usage error.
 
-Environment variables: `VESLINT_CPUS` (how many CPUs veslint and the compiler use: by default all of them, and 2 for `--server` or with `VESLINT_TSGO=process`; 0 for all. A run lints its files on that many threads when it has at least 8 files per thread; with the compiler linked into veslint the threads share its program and each has its own type checker, whose types make memory grow with them), `VESLINT_TSGO` (`process` runs the TypeScript compiler of the npm package as a separate process instead of the one linked into veslint), `VESLINT_TIMEOUT_MS` (with `VESLINT_TSGO=process`: how long to wait for each answer of the compiler, 30000 by default) and `VESLINT_CONFIG_CACHE` (`0` resolves the `eslint.config.*` again on every run, see [Configuration](#configuration)).
+Environment variables: `VESLINT_CPUS` (how many CPUs veslint and the compiler use: by default all of them, and 2 for `--server` or with `VESLINT_TSGO=process`; 0 for all. A run lints its files on that many threads when it has at least 8 files per thread; with the compiler linked into veslint the threads share its program and each has its own type checker, whose types make memory grow with them), `VESLINT_TSGO` (`process` runs the TypeScript compiler of the npm package as a separate process instead of the one linked into veslint), `VESLINT_TIMEOUT_MS` (with `VESLINT_TSGO=process`: how long to wait for each answer of the compiler, 30000 by default) `VESLINT_CONFIG_CACHE` (`0` resolves the `eslint.config.*` again on every run, see [Configuration](#configuration)) and `VESLINT_PARSER` (`tree-sitter` parses the TypeScript files with tree-sitter's grammar, the parser veslint used before, instead of TypeScript's; the scripts of `.vue` and `.svelte` files and `veslint --server` parse with tree-sitter's for now).
 
 ## Configuration
 

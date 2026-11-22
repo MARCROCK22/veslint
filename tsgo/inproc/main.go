@@ -37,12 +37,16 @@ import (
 	"runtime"
 	"runtime/debug"
 	"runtime/metrics"
+	"strconv"
 	"strings"
 	"sync"
 	"sync/atomic"
 	"unsafe"
 
 	"github.com/microsoft/TypeScript/tsc/internal/api"
+	"github.com/microsoft/TypeScript/tsc/internal/ast"
+	"github.com/microsoft/TypeScript/tsc/internal/compiler"
+	"github.com/microsoft/TypeScript/tsc/internal/locale"
 	"github.com/microsoft/TypeScript/tsc/internal/parser"
 )
 
@@ -215,7 +219,7 @@ func veslint_tsgo_convert_language(tsx C.int, language unsafe.Pointer, symbol C.
 // The results of veslint_tsgo_convert.
 const (
 	convertRows        = 0 // *rows has *count rows
-	convertDiagnostics = 1 // TypeScript reports parse diagnostics: no rows (ESLint's "Parsing error")
+	convertDiagnostics = 1 // TypeScript reports parse diagnostics (ESLint's "Parsing error"): no rows, the diagnostics
 	convertFailed      = 2 // the converter failed: no rows (the caller parses with tree-sitter)
 	convertNoLanguage  = 3 // veslint_tsgo_convert_language was not called for the language
 )
@@ -223,7 +227,8 @@ const (
 // veslint_tsgo_convert parses `text` with TypeScript's parser and writes the rows of
 // tree-sitter's tree of it: one call per file. `flags` is 1 for TSX, plus 2 for ESLint's
 // sourceType "script". On convertRows, *rows is a malloc'd array of *count veslint_tsgo_row in
-// preorder (the caller frees it with veslint_tsgo_free); otherwise *rows is NULL.
+// preorder; on convertDiagnostics, it is the parse diagnostics as text of *count bytes (see
+// diagnosticsText). The caller frees either with veslint_tsgo_free; otherwise *rows is NULL.
 //
 //export veslint_tsgo_convert
 func veslint_tsgo_convert(flags C.int, text *C.char, textLen C.size_t, rows **C.veslint_tsgo_row, count *C.size_t) (result C.int) {
@@ -250,7 +255,15 @@ func veslint_tsgo_convert(flags C.int, text *C.char, textLen C.size_t, rows **C.
 		converters[tsx].Put(c)
 	}()
 	out, diagnostics := c.Convert(goString(text, textLen))
-	if diagnostics {
+	if len(diagnostics) > 0 {
+		report := diagnosticsText(diagnostics)
+		p := C.malloc(C.size_t(max(len(report), 1)))
+		if p == nil {
+			return convertFailed
+		}
+		C.memcpy(p, unsafe.Pointer(unsafe.StringData(report)), C.size_t(len(report)))
+		*rows = (*C.veslint_tsgo_row)(p)
+		*count = C.size_t(len(report))
 		return convertDiagnostics
 	}
 	size := C.size_t(len(out)) * C.size_t(unsafe.Sizeof(parser.VeslintRow{}))
@@ -264,6 +277,29 @@ func veslint_tsgo_convert(flags C.int, text *C.char, textLen C.size_t, rows **C.
 	*rows = (*C.veslint_tsgo_row)(p)
 	*count = C.size_t(len(out))
 	return convertRows
+}
+
+// diagnosticsText writes parse diagnostics as transpileModule's response gives them (the first is
+// ESLint's "Parsing error"): in the order of the program's syntactic diagnostics (by position,
+// SortAndDeduplicateDiagnostics), each as `code pos length` on a line, `pos` in UTF-16 units from
+// the start of the text, then its message of `length` bytes as the API localizes it.
+func diagnosticsText(diagnostics []*ast.Diagnostic) string {
+	var b strings.Builder
+	for _, d := range compiler.SortAndDeduplicateDiagnostics(diagnostics) {
+		pos := d.Pos()
+		if file := d.File(); file != nil {
+			pos = file.GetPositionMap().UTF8ToUTF16(max(0, min(pos, len(file.Text()))))
+		}
+		message := d.Localize(locale.Default)
+		b.WriteString(strconv.Itoa(int(d.Code())))
+		b.WriteByte(' ')
+		b.WriteString(strconv.Itoa(pos))
+		b.WriteByte(' ')
+		b.WriteString(strconv.Itoa(len(message)))
+		b.WriteByte('\n')
+		b.WriteString(message)
+	}
+	return b.String()
 }
 
 // veslint_tsgo_free frees what the other functions handed back.

@@ -14,6 +14,9 @@ fn (mut c Checker) lint_no_iterator(root C.vt_node, abs_path string, mut stats S
 	mut findings := []Finding{}
 	for node in c.nodes_of_kinds(root, ['member_expression', 'subscript_expression'], []) {
 		stats.checked++
+		if in_type_name(node) {
+			continue
+		}
 		if (c.es_static_property_name(node) or { continue }) == '__iterator__' {
 			findings << Finding{
 				stmt:       position_of(node)

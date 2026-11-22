@@ -651,7 +651,9 @@ fn (mut c Converter) import_type(n C.vt_node, whole C.vt_node, type_args ?C.vt_n
 		c.pnull(i, .options)
 	}
 	c.pnode(i, .qualifier, qualifier)
-	if args.len > 0 {
+	// typescript-estree's source is the string literal of the argument; `import(A)` (a name, which
+	// TypeScript reads as a type reference) has none.
+	if args.len > 0 && args[0].kind == 'string' {
 		c.pnode(i, .source, c.literal(args[0].n))
 	}
 	if ta := type_args {

@@ -1,0 +1,44 @@
+--- a/parser.go
++++ b/parser.go
+@@ -4661,7 +4661,6 @@
+ }
+ 
+ func (p *Parser) parseBinaryExpressionRest(precedence ast.OperatorPrecedence, leftOperand *ast.Expression, pos int) *ast.Expression {
+-	lastOperand := leftOperand
+ 	for {
+ 		// We either have a binary operator here, or we're finished.  We call
+ 		// reScanGreaterToken so that we merge token sequences like > and = into >=
+@@ -4704,28 +4703,19 @@
+ 				break
+ 			} else {
+ 				p.nextToken()
+-				// When we have 'a ## b as SomeType $$ c' or 'a ## b satisfies SomeType $$ c', where ## and $$
+-				// are binary operators, we want to stop parsing when $$ would bind before ## after erasing the
+-				// assertion. See https://github.com/microsoft/TypeScript/issues/63527.
+-				lastPrecedence := ast.OperatorPrecedenceHighest
+-				if ast.IsBinaryExpression(lastOperand) {
+-					lastPrecedence = ast.GetBinaryOperatorPrecedence(lastOperand.AsBinaryExpression().OperatorToken.Kind)
+-				}
++				// veslint: TypeScript 6's parser (typescript-estree's, so ESLint's) goes on after the
++				// assertion whatever operator follows, so `x < 0 as any ** 2` is `((x < 0) as any) ** 2`;
++				// 7.1 stops there when that operator would bind before the last one once the assertion
++				// is erased (https://github.com/microsoft/TypeScript/issues/63527) and reports "';'
++				// expected" for the rest.
+ 				if operator == ast.KindSatisfiesKeyword {
+ 					leftOperand = p.makeSatisfiesExpression(leftOperand, p.parseType())
+ 				} else {
+ 					leftOperand = p.makeAsExpression(leftOperand, p.parseType())
+ 				}
+-				// Stop if the next operator would bind before the last operator when the assertion is erased.
+-				nextOperator := p.reScanGreaterThanToken()
+-				nextPrecedence := ast.GetBinaryOperatorPrecedence(nextOperator)
+-				if shouldConsumeBinaryOperator(nextOperator, nextPrecedence, lastPrecedence) {
+-					break
+-				}
+ 			}
+ 		} else {
+ 			leftOperand = p.makeBinaryExpression(leftOperand, p.parseTokenNode(), p.parseBinaryExpressionOrHigher(newPrecedence), pos)
+-			lastOperand = leftOperand
+ 		}
+ 	}
+ 	return leftOperand

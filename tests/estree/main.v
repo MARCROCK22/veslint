@@ -7,7 +7,9 @@ module main
 //   estree_dump dump <file>                       prints the serialization of one file
 //   estree_dump time <file> [<runs>]              times parse and conversion
 //
-// status: `ok`, or `tserror` when tree-sitter has ERROR or MISSING nodes.
+// status: `ok`, or `tserror` when tree-sitter has ERROR or MISSING nodes (with
+// VESLINT_PARSER=typescript, the rows are TypeScript's parse, the converter's of
+// tsgo/inproc/convert.go, and `tserror` is a file with parse diagnostics).
 import os
 import time
 import crypto.sha1
@@ -16,6 +18,9 @@ import estree
 import jsregexp
 import offsets
 import treesitter
+import tsgo
+
+const typescript_rows = os.getenv('VESLINT_PARSER') == 'typescript'
 
 // read_source reads a file as veslint (and ESLint) does: decoded as UTF-8 with U+FFFD for
 // invalid bytes, without BOM.
@@ -29,7 +34,7 @@ fn read_source(path string) string {
 fn convert_file(path string, ts_parser &treesitter.Parser, tsx_parser &treesitter.Parser) ?(estree.EsTree, &C.vt_rows) {
 	src := read_source(path)
 	p := if path.ends_with('.tsx') { tsx_parser } else { ts_parser }
-	tree := p.parse(src) or { return none }
+	tree := parse(p, src, path)?
 	t := estree.convert_with(treesitter.root_node(tree), src, path.ends_with('.tsx'), options(path)) or {
 		treesitter.rows_free(tree)
 		return none
@@ -37,7 +42,30 @@ fn convert_file(path string, ts_parser &treesitter.Parser, tsx_parser &treesitte
 	return t, tree
 }
 
+// parse gives the rows of a file: tree-sitter's, or TypeScript's (typescript_rows) parsed as
+// typescript-estree parses it without a sourceType (a module when it has imports or exports, or for
+// a .mts file).
+fn parse(p &treesitter.Parser, src string, path string) ?&C.vt_rows {
+	if !typescript_rows {
+		return p.parse(src) or { return none }
+	}
+	converted := tsgo.convert(src, p.is_tsx(), !options(path).module)
+	if converted.status != .rows {
+		if converted.status != .diagnostics {
+			eprintln('${path}: the converter gave ${converted.status}')
+		}
+		return none
+	}
+	return p.adopt_rows(converted.rows, converted.count) or { return none }
+}
+
 fn main() {
+	if typescript_rows {
+		for tsx in [false, true] {
+			tables := treesitter.converter_tables(tsx)
+			tsgo.convert_language(tsx, tables.language, tables.symbol, tables.field)
+		}
+	}
 	ts_parser := treesitter.new_parser() or { panic(err) }
 	tsx_parser := treesitter.new_tsx_parser() or { panic(err) }
 	mode := os.args[1]
@@ -104,7 +132,7 @@ fn time_file(path string, runs int, ts_parser &treesitter.Parser, tsx_parser &tr
 	p := if path.ends_with('.tsx') { tsx_parser } else { ts_parser }
 	for _ in 0 .. runs {
 		mut sw := time.new_stopwatch()
-		tree := p.parse(src) or { panic(err) }
+		tree := parse(p, src, path) or { panic('${path} does not parse') }
 		parse_ms := sw.elapsed().microseconds() / 1000.0
 		sw.restart()
 		t := estree.convert_with(treesitter.root_node(tree), src, path.ends_with('.tsx'), options(path)) or {
@@ -120,10 +148,11 @@ fn time_file(path string, runs int, ts_parser &treesitter.Parser, tsx_parser &tr
 // module.
 fn options(path string) estree.Options {
 	return estree.Options{
-		module:       path.to_lower().ends_with('.mts') || os.getenv('ORACLE_MODULE') != ''
+		module:          path.to_lower().ends_with('.mts') || os.getenv('ORACLE_MODULE') != ''
 		// ESTREE_FORCE: convert also a tree with errors (to check that the conversion survives).
-		allow_errors: os.getenv('ESTREE_FORCE') != ''
-		regexp_valid: fn (pattern string, flags string) bool {
+		allow_errors:    os.getenv('ESTREE_FORCE') != ''
+		typescript_rows: typescript_rows
+		regexp_valid:    fn (pattern string, flags string) bool {
 			return jsregexp.regexp_new(estree.utf16_units(pattern), flags) != none
 		}
 	}

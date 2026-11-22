@@ -219,7 +219,7 @@ fn (mut c Converter) expr(n C.vt_node) int {
 		}
 		'await_expression' {
 			kids := c.kids(n)
-			if !c.await_ctx {
+			if !c.await_ctx && !c.opts.typescript_rows {
 				if r := c.await_identifier(kids) {
 					return r
 				}
@@ -433,7 +433,9 @@ fn (mut c Converter) elements(n C.vt_node, pattern bool) []int {
 		if !k.named {
 			continue
 		}
-		out << if pattern { c.pattern(k.n) } else { c.expr(k.n) }
+		// `[this] = x`: typescript-estree keeps the ThisExpression of an assignment target (a
+		// parameter named `this` is an Identifier).
+		out << if pattern && k.kind != 'this' { c.pattern(k.n) } else { c.expr(k.n) }
 		seen = true
 	}
 	return out
@@ -473,6 +475,11 @@ fn (mut c Converter) object(n C.vt_node) int {
 			}
 			'method_definition' {
 				props << c.method(k.n, k.kind, [], c.start(k.n), c.end(k.n), true)
+			}
+			// `{ y = 1 }` in an object literal (TypeScript's rows only): typescript-estree gives
+			// the Property of a pattern.
+			'object_assignment_pattern' {
+				props << c.pattern_property(k.n, k.kind)
 			}
 			else {
 				props << c.expr(k.n)

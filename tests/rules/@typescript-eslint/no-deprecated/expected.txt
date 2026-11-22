@@ -117,6 +117,11 @@ tests/rules/@typescript-eslint/no-deprecated/cases.ts:242:40	@typescript-eslint/
 tests/rules/@typescript-eslint/no-deprecated/cases.ts:245:8	@typescript-eslint/no-deprecated	deprecatedWithReason	`aliasedLocal` is deprecated. The alias is deprecated.
 tests/rules/@typescript-eslint/no-deprecated/cases.ts:245:22	@typescript-eslint/no-deprecated	deprecatedWithReason	`freshDeprecatedAlias` is deprecated. Deprecated re-export.
 tests/rules/@typescript-eslint/no-deprecated/cases.ts:245:44	@typescript-eslint/no-deprecated	deprecatedWithReason	`staleAgain` is deprecated. Use `fresh` instead.
+tests/rules/@typescript-eslint/no-deprecated/import-type/cases.ts:3:42	@typescript-eslint/no-deprecated	deprecatedWithReason	`old` is deprecated. use fresh
+tests/rules/@typescript-eslint/no-deprecated/import-type/cases.ts:4:45	@typescript-eslint/no-deprecated	deprecatedWithReason	`old` is deprecated. use fresh
+tests/rules/@typescript-eslint/no-deprecated/import-type/cases.ts:5:42	@typescript-eslint/no-deprecated	deprecated	`gone` is deprecated.
+tests/rules/@typescript-eslint/no-deprecated/import-type/cases.ts:9:18	@typescript-eslint/no-deprecated	deprecatedWithReason	`old` is deprecated. use fresh
+tests/rules/@typescript-eslint/no-deprecated/import-type/cases.ts:9:27	@typescript-eslint/no-deprecated	deprecatedWithReason	`old` is deprecated. use fresh
 tests/rules/@typescript-eslint/no-deprecated/jsdoc/cases.ts:6:1	@typescript-eslint/no-deprecated	deprecatedWithReason	`twice` is deprecated. First reason.
 tests/rules/@typescript-eslint/no-deprecated/jsdoc/cases.ts:27:1	@typescript-eslint/no-deprecated	deprecatedWithReason	`typedefWithParam` is deprecated. Typedef with a parameter.
 tests/rules/@typescript-eslint/no-deprecated/jsdoc/cases.ts:40:11	@typescript-eslint/no-deprecated	deprecatedWithReason	`m` is deprecated. Base reason.

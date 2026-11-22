@@ -48,7 +48,7 @@ extern int veslint_tsgo_convert_language(int tsx, void* language, veslint_tsgo_s
 // The results of veslint_tsgo_convert.
 enum {
 	veslint_tsgo_convert_rows = 0, // *rows has *count rows, freed with veslint_tsgo_free
-	veslint_tsgo_convert_diagnostics = 1, // TypeScript reports parse diagnostics: no rows
+	veslint_tsgo_convert_diagnostics = 1, // TypeScript reports parse diagnostics: *rows is their text (*count bytes), freed with veslint_tsgo_free
 	veslint_tsgo_convert_failed = 2, // the converter failed: no rows
 	veslint_tsgo_convert_no_language = 3, // no veslint_tsgo_convert_language for the language
 };

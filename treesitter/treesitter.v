@@ -28,6 +28,7 @@ $if windows {
 #include "@VMODROOT/treesitter/rows_build.h"
 #include "@VMODROOT/treesitter/field_cache.h"
 #include "@VMODROOT/treesitter/incremental.h"
+#include "@VMODROOT/treesitter/converter_tables.h"
 
 @[typedef]
 struct C.TSParser {}
@@ -108,6 +109,9 @@ fn C.vt_trees_differ(a &C.TSTree, b &C.TSTree) i64
 fn C.vt_rows_from_tree(tree &C.TSTree) &C.vt_rows
 fn C.vt_rows_check(rows &C.vt_rows, tree &C.TSTree) u64
 fn C.vt_rows_free(rows &C.vt_rows)
+fn C.vt_rows_adopt(language voidptr, buffer voidptr, count u32) &C.vt_rows
+fn C.vt_converter_symbol_fn() voidptr
+fn C.vt_converter_field_fn() voidptr
 fn C.vt_rows_dump(rows &C.vt_rows, path &char) bool
 fn C.vt_rows_load(path &char, language voidptr) &C.vt_rows
 fn C.vt_rows_root(rows &C.vt_rows) C.vt_node
@@ -176,6 +180,7 @@ pub:
 pub struct Parser {
 	parser &C.TSParser
 	lang   &C.TSLanguage
+	tsx    bool
 }
 
 // new_ts_parser prepares the TypeScript parser.
@@ -199,7 +204,46 @@ fn new_parser_for(tsx bool) !Parser {
 	return Parser{
 		parser: parser
 		lang:   lang
+		tsx:    tsx
 	}
+}
+
+// ConverterTables are what the converter from TypeScript's AST needs of a language of the grammar
+// to write its rows (tsgo.convert_language): the language and its symbol and field lookups.
+pub struct ConverterTables {
+pub:
+	language voidptr
+	symbol   voidptr
+	field    voidptr
+}
+
+// converter_tables are the ConverterTables of the TypeScript (or, `tsx`, TSX) language.
+pub fn converter_tables(tsx bool) ConverterTables {
+	return ConverterTables{
+		language: voidptr(if tsx { C.tree_sitter_tsx() } else { C.tree_sitter_typescript() })
+		symbol:   C.vt_converter_symbol_fn()
+		field:    C.vt_converter_field_fn()
+	}
+}
+
+// is_tsx: the parser reads the TSX dialect (new_tsx_parser).
+pub fn (p &Parser) is_tsx() bool {
+	return p.tsx
+}
+
+// adopt_rows gives rows of this parser's language from `count` rows another parser filled in
+// `buffer`, a malloc'd array of vt_row (tsgo.convert's rows) that the rows take: they are freed with
+// rows_free, the buffer with them.
+pub fn (p &Parser) adopt_rows(buffer voidptr, count int) !&C.vt_rows {
+	if count <= 0 {
+		unsafe { C.free(buffer) }
+		return error('the converter gave no rows')
+	}
+	rows := C.vt_rows_adopt(voidptr(p.lang), buffer, u32(count))
+	if isnil(rows) {
+		return error('out of memory for the rows of a tree')
+	}
+	return rows
 }
 
 pub fn (p &Parser) close() {

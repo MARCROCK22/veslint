@@ -73,6 +73,7 @@ mut:
 	parse_syntax_ms         f64
 	parse_await_ms          f64
 	tree_free_ms            f64
+	typescript_parses       int // the files TypeScript's parser read (rules.Stats)
 	query_ms                f64
 	offsets_ms              f64
 	spawn_version_init_ms   f64
@@ -810,6 +811,7 @@ fn run_rules(opts Options, timeout time.Duration) !int {
 	bench.parse_syntax_ms = stats.parse_syntax_ms
 	bench.parse_await_ms = stats.parse_await_ms
 	bench.tree_free_ms = stats.tree_free_ms
+	bench.typescript_parses = stats.typescript_parses
 	bench.rule_checked = stats.checked
 	bench.rule_nodes = stats.nodes
 	bench.rule_unmatched = stats.unmatched

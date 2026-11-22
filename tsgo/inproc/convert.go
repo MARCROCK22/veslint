@@ -171,28 +171,29 @@ func (c *VeslintConverter) parse(text string) *ast.SourceFile {
 	}, text, kind)
 }
 
-// Convert parses `text` (without its BOM, as veslint gives tree-sitter) and returns its rows, or
-// diagnostics = true when TypeScript reports parse diagnostics (the rows are then not meaningful).
-// The rows are the converter's buffer, valid until its next call.
-func (c *VeslintConverter) Convert(text string) (rows []VeslintRow, diagnostics bool) {
+// Convert parses `text` (without its BOM, as veslint gives tree-sitter) and returns its rows, or no
+// rows and the parse diagnostics when TypeScript reports some (ESLint's "Parsing error" is the
+// first of them). The rows are the converter's buffer, valid until its next call.
+func (c *VeslintConverter) Convert(text string) (rows []VeslintRow, diagnostics []*ast.Diagnostic) {
 	file := c.parse(text)
-	if hasParseErrors(file) {
-		return nil, true
+	if diagnostics := parseErrors(file); len(diagnostics) > 0 {
+		return nil, diagnostics
 	}
 	c.convert(file)
-	return c.rows, false
+	return c.rows, nil
 }
 
-// hasParseErrors tells whether the file has parse diagnostics TypeScript 6 (typescript-estree's,
-// so ESLint's) reports too: 7.1's "Use 'with' instead of 'assert'" (2880) for `import … assert
-// {…}` is not one, and the AST is the same.
-func hasParseErrors(file *ast.SourceFile) bool {
+// parseErrors are the parse diagnostics of the file TypeScript 6 (typescript-estree's, so ESLint's)
+// reports too: 7.1's "Use 'with' instead of 'assert'" (2880) for `import … assert {…}` is not one,
+// and the AST is the same.
+func parseErrors(file *ast.SourceFile) []*ast.Diagnostic {
+	var out []*ast.Diagnostic
 	for _, d := range file.Diagnostics() {
 		if d.Code() != 2880 {
-			return true
+			out = append(out, d)
 		}
 	}
-	return false
+	return out
 }
 
 // Diagnostics lists the parse diagnostics of `text` (code@position), for the differential test.
@@ -209,7 +210,7 @@ func (c *VeslintConverter) ConvertTimed(text string) (parse, conversion time.Dur
 	t0 := time.Now()
 	file := c.parse(text)
 	t1 := time.Now()
-	if !hasParseErrors(file) {
+	if len(parseErrors(file)) == 0 {
 		c.convert(file)
 	}
 	return t1.Sub(t0), time.Since(t1)

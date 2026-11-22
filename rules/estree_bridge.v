@@ -50,8 +50,9 @@ fn (mut c Checker) es_tree(root C.vt_node, abs_path string) ?&estree.EsTree {
 // es_options are the options of the conversion of a TypeScript file.
 fn (c &Checker) es_options() estree.Options {
 	return estree.Options{
-		module:       c.language.source_type == 'module'
-		regexp_valid: fn (pattern string, flags string) bool {
+		module:          c.language.source_type == 'module'
+		typescript_rows: c.rows_from_typescript
+		regexp_valid:    fn (pattern string, flags string) bool {
 			return jsregexp.regexp_new(estree.utf16_units(pattern), flags) != none
 		}
 	}
