@@ -90,15 +90,3 @@ fn usable_cpus() int {
 	cpus := allowed_cpus() or { return runtime.nr_cpus() }
 	return cpus.len
 }
-
-// core_count is how many cores the CPUs veslint may use belong to (a CPU the kernel says nothing
-// about is a core of its own).
-fn core_count() int {
-	cpus := allowed_cpus() or { return runtime.nr_cpus() }
-	cores := cpu_cores(cpus)
-	mut seen := map[string]bool{}
-	for cpu in cpus {
-		seen[cores[cpu] or { 'cpu ${cpu}' }] = true
-	}
-	return seen.len
-}
