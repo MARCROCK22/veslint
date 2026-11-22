@@ -194,10 +194,32 @@ pub const order_sensitive_schemas = ['perfectionist/sort-export-attributes',
 	'perfectionist/sort-heritage-clauses', 'perfectionist/sort-import-attributes',
 	'perfectionist/sort-maps', 'vue/no-template-shadow', 'vue/restricted-component-names']
 
+// order_sensitive_names are the names of order_sensitive_schemas without the plugin's prefix.
+const order_sensitive_names = order_sensitive_schemas.map(it.all_after_last('/'))
+
 // mentions_order_sensitive_schema tells whether a configuration comment of the file may name one
-// of order_sensitive_schemas: the file has its name without the plugin's prefix.
+// of order_sensitive_schemas: the file has its name without the plugin's prefix. A lint with more
+// than one worker asks it of every file before the workers start, so it walks the text once, from
+// dash to dash (memchr): every name has one, and a name in the text is where its first dash is.
+// Searching each name in the whole text took 0.15 s of the TypeScript compiler's files.
 pub fn mentions_order_sensitive_schema(src string) bool {
-	return order_sensitive_schemas.any(src.contains(it.all_after_last('/')))
+	mut at := 0
+	for at < src.len {
+		found := unsafe { C.memchr(src.str + at, `-`, uint(src.len - at)) }
+		if found == unsafe { nil } {
+			return false
+		}
+		dash := int(u64(found) - u64(src.str))
+		for name in order_sensitive_names {
+			start := dash - name.index_u8(`-`)
+			if start >= 0 && start + name.len <= src.len
+				&& unsafe { C.memcmp(src.str + start, name.str, uint(name.len)) } == 0 {
+				return true
+			}
+		}
+		at = dash + 1
+	}
+	return false
 }
 
 // rule_options_inline_reason is what ESLint says of those options in a configuration comment:

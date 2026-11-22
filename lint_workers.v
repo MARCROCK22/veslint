@@ -477,6 +477,17 @@ mut:
 	fixed_files int
 	start_ms    f64
 	snapshot_ms f64
+	// VESLINT_TIMELINE: when each file was linted and the time of TypeScript in it.
+	timeline []TimelineEntry
+}
+
+// TimelineEntry is a file a worker linted (VESLINT_TIMELINE): monotonic start and end in
+// nanoseconds, and the milliseconds of TypeScript's requests in between.
+struct TimelineEntry {
+	index    int
+	start_ns u64
+	end_ns   u64
+	tsgo_ms  f64
 }
 
 // run_worker opens a worker (the worker `number` of `shared`, when there is one) and lints the
@@ -504,11 +515,14 @@ fn run_worker(plan &LintPlan, queue &FileQueue, shared &SharedSession, number in
 	defer {
 		w.close()
 	}
+	timeline := os.getenv('VESLINT_TIMELINE') != ''
 	for {
 		index := q.take(number)
 		if index < 0 {
 			break
 		}
+		t0 := time.sys_mono_now()
+		g0 := w.client.inproc_ms()
 		outcome := w.lint(plan, index) or {
 			q.halt()
 			out.failed = true
@@ -517,6 +531,9 @@ fn run_worker(plan &LintPlan, queue &FileQueue, shared &SharedSession, number in
 			break
 		}
 		out.outcomes[index] = outcome
+		if timeline {
+			out.timeline << TimelineEntry{index, t0, time.sys_mono_now(), w.client.inproc_ms() - g0}
+		}
 	}
 	out.stats = w.stats
 	out.requests = w.client.request_count()
@@ -537,7 +554,9 @@ fn lint_files(plan &LintPlan, files []RuleFile, count int) []WorkerResult {
 	no_session := &SharedSession(unsafe { nil })
 	if count <= 1 {
 		queue.split(0)
-		return [run_worker(plan, queue, no_session, 0)]
+		results := [run_worker(plan, queue, no_session, 0)]
+		write_timeline(results, files)
+		return results
 	}
 	queue.split(count)
 	mut shared := no_session
@@ -555,6 +574,7 @@ fn lint_files(plan &LintPlan, files []RuleFile, count int) []WorkerResult {
 		threads << spawn run_worker(plan, queue, shared, number)
 	}
 	mut results := threads.wait()
+	write_timeline(results, files)
 	if shared != unsafe { nil } {
 		// The owner's requests (the snapshot) count with the first worker's.
 		results[0].requests += shared.owner.client.request_count()
@@ -564,6 +584,30 @@ fn lint_files(plan &LintPlan, files []RuleFile, count int) []WorkerResult {
 		s.close()
 	}
 	return results
+}
+
+// write_timeline writes the files each worker linted to the file VESLINT_TIMELINE names: a line
+// per file, `worker start_ms end_ms tsgo_ms bytes path`, the times from the first start.
+fn write_timeline(results []WorkerResult, files []RuleFile) {
+	path := os.getenv('VESLINT_TIMELINE')
+	if path == '' {
+		return
+	}
+	mut first := u64(0)
+	for r in results {
+		for e in r.timeline {
+			if first == 0 || e.start_ns < first {
+				first = e.start_ns
+			}
+		}
+	}
+	mut lines := []string{}
+	for worker, r in results {
+		for e in r.timeline {
+			lines << '${worker + 1} ${f64(e.start_ns - first) / 1e6:.1f} ${f64(e.end_ns - first) / 1e6:.1f} ${e.tsgo_ms:.1f} ${files[e.index].src.len} ${files[e.index].path}'
+		}
+	}
+	os.write_file(path, lines.join_lines() + '\n') or {}
 }
 
 // shares_session tells whether the workers of a lint share one TypeScript session (see the top of

@@ -3637,6 +3637,27 @@ fn test_lone_surrogate_is_replaced() {
 
 // order_sensitive_schemas lists the rules whose schema ajv may take for another one's: the same
 // stable serialization, another text.
+// mentions_order_sensitive_schema finds the names where a search of each finds them: at the start
+// and at the end of the text, next to other dashes, and not a name cut short.
+fn test_mentions_order_sensitive_schema_is_a_search_of_each_name() {
+	mut texts := ['', '-', 'sort-maps', 'xsort-mapsx', '--sort-maps--', 'sort-map', 'sort--maps',
+		'/* eslint vue/no-template-shadow: 2 */', 'no-template-shado', 'a - b',
+		'restricted-component-names', 'restricted-component-name',
+		'perfectionist/sort-heritage-clauses-', 'sort-import-attribute']
+	for name in order_sensitive_schemas {
+		short := name.all_after_last('/')
+		texts << short
+		texts << 'x' + short
+		texts << short + '-'
+		texts << short[..short.len - 1]
+		texts << short[1..]
+	}
+	for text in texts {
+		want := order_sensitive_schemas.any(text.contains(it.all_after_last('/')))
+		assert mentions_order_sensitive_schema(text) == want, text
+	}
+}
+
 fn test_order_sensitive_schemas_are_the_colliding_ones() {
 	mut names_by_key := map[string][]string{}
 	mut texts_by_key := map[string][]string{}
