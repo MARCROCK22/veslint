@@ -2,6 +2,11 @@
 
 Each version is a release on GitHub with the veslint binaries (Linux x64, Windows x64) and the VS Code extension. The section of a version is the text of its release.
 
+## 0.45.0
+
+- **Faster on large projects.** A lint of the command line takes every CPU by default, a worker per thread as tsgolint has, instead of a CPU of each core: the type checker of a worker on the other thread of a core repeats little of the others' work. The TypeScript compiler's sources: 11.51 s → 10.17 s with the 23 type-aware rules (1,812 → 1,940 MiB), 3.35 s → 2.88 s with no-floating-promises, 3.68 s → 3.08 s with the 56 rules of @eslint/js and typescript-eslint recommended; recharts 3.71 s → 3.55 s, 0.66 s → 0.61 s and 0.48 s → 0.42 s. zod with no-floating-promises is a little slower, 0.50 s → 0.55 s (each checker resolves zod's types again), and still faster than oxlint. `VESLINT_CPUS` keeps choosing; `--server` and `VESLINT_TSGO=process` keep two CPUs.
+- A lint with more than one worker no longer searches each file's text once per rule name before the workers start (0.15 s of the TypeScript compiler's sources). `VESLINT_TIMELINE=<file>` writes which worker linted each file and when.
+
 ## 0.44.0
 
 - **Faster with types.** veslint no longer receives the whole syntax tree of every file from TypeScript: TypeScript finds the nodes veslint names, and sends a file's tree only when a rule walks it. With no-floating-promises alone: the TypeScript compiler's sources 3.79 s → 3.35 s (857 → 705 MiB), zod 0.52 s → 0.50 s; with the 23 type-aware rules: the TypeScript compiler 11.95 s → 11.51 s, zod 1.92 s → 1.88 s. `VESLINT_TSGO_WHOLE_AST=1` keeps the old way.
