@@ -18,7 +18,9 @@ pub enum ParserSource {
 	typescript
 }
 
-const default_parser_source = ParserSource.tree_sitter
+// TypeScript's parser by default: it gives ESLint's tree and parse errors exactly (tree-sitter's
+// grammar reads some code otherwise) and a lint takes less time with it.
+const default_parser_source = ParserSource.typescript
 
 const parser_source = parser_source_of(os.getenv('VESLINT_PARSER'))
 

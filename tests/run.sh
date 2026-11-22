@@ -314,9 +314,10 @@ fi
 
 # A file TypeScript's parser rejects is ESLint's fatal problem, its first syntactic diagnostic at
 # its line and 0-based column, and nothing else; one only tree-sitter's grammar does not read
-# (`new new Foo()`) is linted on with a warning. Then the --rule warning about nodes the rule could
-# not analyze (a chain of 1,002 member accesses goes beyond the limit of 1,000 nesting
-# levels).
+# (`new new Foo()`) is linted on, with a warning when tree-sitter parses it (VESLINT_PARSER=
+# tree-sitter) and without one when TypeScript's parser does. Then the --rule warning about nodes
+# the rule could not analyze (a chain of 1,002 member accesses goes beyond the limit of 1,000
+# nesting levels).
 code=0
 ./veslint --rule no-debugger tests/fixtures/syntax_error.ts > "$TMP/fatal.out" 2> "$TMP/fatal.err" || code=$?
 if [[ $code -eq 1 && "$(head -1 "$TMP/fatal.out")" == $'tests/fixtures/syntax_error.ts:2:6\teslint\tfatal\tParsing error: Variable declaration expected.' && "$(wc -l < "$TMP/fatal.out")" -eq 1 ]] && ! grep -q 'syntax errors' "$TMP/fatal.err"; then
@@ -328,11 +329,18 @@ fi
 mkdir -p "$TMP/grammar-gap"
 printf '{"compilerOptions":{"strict":true,"noEmit":true}}\n' > "$TMP/grammar-gap/tsconfig.json"
 printf 'new new Foo();\ndebugger;\n' > "$TMP/grammar-gap/gap.ts"
-./veslint --rule no-debugger "$TMP/grammar-gap/gap.ts" > "$TMP/warning.out" 2> "$TMP/warning.err"
+VESLINT_PARSER=tree-sitter ./veslint --rule no-debugger "$TMP/grammar-gap/gap.ts" > "$TMP/warning.out" 2> "$TMP/warning.err"
 if grep -q 'syntax errors' "$TMP/warning.err" && grep -q $'\tno-debugger\t' "$TMP/warning.out"; then
 	ok "--rule warns about syntax only tree-sitter rejects, and lints on"
 else
 	ko "--rule: syntax only tree-sitter rejects"
+	cat "$TMP/warning.out" "$TMP/warning.err"
+fi
+VESLINT_PARSER=typescript ./veslint --rule no-debugger "$TMP/grammar-gap/gap.ts" > "$TMP/warning.out" 2> "$TMP/warning.err"
+if ! grep -q 'syntax errors' "$TMP/warning.err" && grep -q $'\tno-debugger\t' "$TMP/warning.out"; then
+	ok "--rule with TypeScript's parser: syntax tree-sitter rejects, linted without a warning"
+else
+	ko "--rule with TypeScript's parser: syntax tree-sitter rejects"
 	cat "$TMP/warning.out" "$TMP/warning.err"
 fi
 # A fix that gives code TypeScript cannot parse (without `jsx`, @stylistic/comma-dangle removes the
@@ -377,21 +385,29 @@ else
 	cat "$TMP/empty-tuple.err"
 fi
 # When no rule needs types, tsgo only parses the tsconfig, and a file gets a snapshot when a comment
-# turns on a rule that needs them or an `await` may be a name: the output is the one of a run with
-# a snapshot from the start (one rule with types more, which reports nothing there).
+# turns on a rule that needs them or (tree-sitter's rows) an `await` may be a name: the output is
+# the one of a run with a snapshot from the start (one rule with types more, which reports nothing
+# there). With tree-sitter's rows, the program (which reads await-script.ts as a script, having
+# no import or export) tells that `await (1)` calls the function `await`; with TypeScript's, the
+# file is the module ESLint's default sourceType makes it and `await (1)` an await expression, so
+# no-use-before-define reports nothing there, as ESLint (with sourceType "script" it reports it).
 printf '{"rules": {"@typescript-eslint/no-this-alias": ["error"], "@typescript-eslint/no-use-before-define": ["error"]}}' > "$TMP/untyped.json"
 printf '{"rules": {"@typescript-eslint/no-this-alias": ["error"], "@typescript-eslint/no-use-before-define": ["error"], "@typescript-eslint/no-array-delete": ["error"]}}' > "$TMP/typed.json"
 lazy_files=(tests/lazy-snapshot/plain.ts tests/lazy-snapshot/inline.ts tests/lazy-snapshot/await-script.ts)
-./veslint --config "$TMP/untyped.json" "${lazy_files[@]}" > "$TMP/lazy.out" 2> /dev/null
-./veslint --config "$TMP/typed.json" "${lazy_files[@]}" > "$TMP/eager.out" 2> /dev/null
-if cmp -s "$TMP/lazy.out" "$TMP/eager.out" \
-	&& grep -q $'inline.ts:4:1\t@typescript-eslint/no-floating-promises' "$TMP/lazy.out" \
-	&& grep -q $'await-script.ts:3:1\t@typescript-eslint/no-use-before-define' "$TMP/lazy.out"; then
-	ok "rules without types: the output of a run with a snapshot"
-else
-	ko "rules without types: the output of a run with a snapshot"
-	diff "$TMP/eager.out" "$TMP/lazy.out"
-fi
+for parser in tree-sitter typescript; do
+	VESLINT_PARSER=$parser ./veslint --config "$TMP/untyped.json" "${lazy_files[@]}" > "$TMP/lazy.out" 2> /dev/null
+	VESLINT_PARSER=$parser ./veslint --config "$TMP/typed.json" "${lazy_files[@]}" > "$TMP/eager.out" 2> /dev/null
+	await_name=0
+	grep -q $'await-script.ts:3:1\t@typescript-eslint/no-use-before-define' "$TMP/lazy.out" && await_name=1
+	if cmp -s "$TMP/lazy.out" "$TMP/eager.out" \
+		&& grep -q $'inline.ts:4:1\t@typescript-eslint/no-floating-promises' "$TMP/lazy.out" \
+		&& [[ $await_name -eq $([[ $parser == tree-sitter ]] && echo 1 || echo 0) ]]; then
+		ok "rules without types ($parser's rows): the output of a run with a snapshot"
+	else
+		ko "rules without types ($parser's rows): the output of a run with a snapshot"
+		diff "$TMP/eager.out" "$TMP/lazy.out"
+	fi
+done
 ./veslint --bench --config "$TMP/untyped.json" tests/lazy-snapshot/plain.ts > /dev/null 2> "$TMP/lazy.bench"
 if grep -q '"tsgo_requests":2[,}]' "$TMP/lazy.bench"; then
 	ok "rules without types: no snapshot when nothing needs one"
