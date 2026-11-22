@@ -8,8 +8,27 @@
 package main
 
 /*
+#include <stdbool.h>
+#include <stdint.h>
 #include <stdlib.h>
 #include <string.h>
+
+// Keep in step with veslint_tsgo.h.
+typedef struct {
+	uint32_t start_byte, end_byte, start_row, start_column, end_row, end_column;
+	uint32_t parent, next, prev, last;
+	uint16_t symbol, field;
+	uint8_t flags;
+} veslint_tsgo_row;
+typedef uint16_t (*veslint_tsgo_symbol_fn)(const void *language, const char *name, uint32_t length, bool named);
+typedef uint16_t (*veslint_tsgo_field_fn)(const void *language, const char *name, uint32_t length);
+
+static uint16_t veslint_tsgo_call_symbol(veslint_tsgo_symbol_fn f, const void *language, const char *name, uint32_t length, bool named) {
+	return f(language, name, length, named);
+}
+static uint16_t veslint_tsgo_call_field(veslint_tsgo_field_fn f, const void *language, const char *name, uint32_t length) {
+	return f(language, name, length);
+}
 */
 import "C"
 
@@ -24,6 +43,7 @@ import (
 	"unsafe"
 
 	"github.com/microsoft/TypeScript/tsc/internal/api"
+	"github.com/microsoft/TypeScript/tsc/internal/parser"
 )
 
 var (
@@ -164,6 +184,88 @@ func veslint_tsgo_close(handle C.longlong) {
 	}
 }
 
+// The converter from TypeScript's AST to the rows of tree-sitter's tree (convert.go, in
+// internal/parser): the tables of each language, set once by veslint_tsgo_convert_language, and
+// the converters, one per thread at a time.
+var (
+	convertLanguages [2]atomic.Pointer[parser.VeslintLanguage]
+	converters       [2]sync.Pool
+)
+
+// veslint_tsgo_convert_language gives the converter the tables of a language of veslint's grammar
+// (`tsx` 0: TypeScript, 1: TSX): `symbol` and `field` are ts_language_symbol_for_name and
+// ts_language_field_id_for_name of `language` (a `const TSLanguage *`), called here and only here.
+// It returns 0.
+//
+//export veslint_tsgo_convert_language
+func veslint_tsgo_convert_language(tsx C.int, language unsafe.Pointer, symbol C.veslint_tsgo_symbol_fn, field C.veslint_tsgo_field_fn) C.int {
+	l := parser.NewVeslintLanguage(tsx != 0, func(name string, named bool) uint16 {
+		cs := C.CString(name)
+		defer C.free(unsafe.Pointer(cs))
+		return uint16(C.veslint_tsgo_call_symbol(symbol, language, cs, C.uint32_t(len(name)), C.bool(named)))
+	}, func(name string) uint16 {
+		cs := C.CString(name)
+		defer C.free(unsafe.Pointer(cs))
+		return uint16(C.veslint_tsgo_call_field(field, language, cs, C.uint32_t(len(name))))
+	})
+	convertLanguages[tsx&1].Store(l)
+	return 0
+}
+
+// The results of veslint_tsgo_convert.
+const (
+	convertRows        = 0 // *rows has *count rows
+	convertDiagnostics = 1 // TypeScript reports parse diagnostics: no rows (ESLint's "Parsing error")
+	convertFailed      = 2 // the converter failed: no rows (the caller parses with tree-sitter)
+	convertNoLanguage  = 3 // veslint_tsgo_convert_language was not called for the language
+)
+
+// veslint_tsgo_convert parses `text` with TypeScript's parser and writes the rows of
+// tree-sitter's tree of it: one call per file. `flags` is 1 for TSX, plus 2 for ESLint's
+// sourceType "script". On convertRows, *rows is a malloc'd array of *count veslint_tsgo_row in
+// preorder (the caller frees it with veslint_tsgo_free); otherwise *rows is NULL.
+//
+//export veslint_tsgo_convert
+func veslint_tsgo_convert(flags C.int, text *C.char, textLen C.size_t, rows **C.veslint_tsgo_row, count *C.size_t) (result C.int) {
+	*rows = nil
+	*count = 0
+	tsx := flags & 1
+	l := convertLanguages[tsx].Load()
+	if l == nil {
+		return convertNoLanguage
+	}
+	c, _ := converters[tsx].Get().(*parser.VeslintConverter)
+	if c == nil {
+		c = parser.NewVeslintConverter(l)
+	}
+	c.Script = flags&2 != 0
+	defer func() {
+		// A converter that panicked may hold any state: it is not reused.
+		if r := recover(); r != nil {
+			*rows = nil
+			*count = 0
+			result = convertFailed
+			return
+		}
+		converters[tsx].Put(c)
+	}()
+	out, diagnostics := c.Convert(goString(text, textLen))
+	if diagnostics {
+		return convertDiagnostics
+	}
+	size := C.size_t(len(out)) * C.size_t(unsafe.Sizeof(parser.VeslintRow{}))
+	p := C.malloc(max(size, 1))
+	if p == nil {
+		return convertFailed
+	}
+	if len(out) > 0 {
+		C.memcpy(p, unsafe.Pointer(&out[0]), size)
+	}
+	*rows = (*C.veslint_tsgo_row)(p)
+	*count = C.size_t(len(out))
+	return convertRows
+}
+
 // veslint_tsgo_free frees what the other functions handed back.
 //
 //export veslint_tsgo_free
@@ -213,6 +315,10 @@ var (
 )
 
 func init() {
+	// The rows are copied to C as they are.
+	if unsafe.Sizeof(parser.VeslintRow{}) != C.sizeof_veslint_tsgo_row {
+		panic("veslint_tsgo: parser.VeslintRow and veslint_tsgo_row have different layouts")
+	}
 	if os.Getenv("GOGC") != "" {
 		return
 	}

@@ -7,19 +7,31 @@
 # TypeScript reports parse diagnostics for the file (ESLint then reports a parsing error and
 # nothing else). summary.py sums the results per class of difference and per kind.
 #
-# Usage: tests/tsconv/run.sh [LIST...]   (JOBS: processes, default 2; OUT: results directory,
-# default tsgo/inproc/out/tsconv/results)
+# Usage: tests/tsconv/run.sh [SET|LIST...]   (JOBS: processes, default 2; OUT: results
+# directory, default tsgo/inproc/out/tsconv/results). A SET is corpus (the default), fixtures
+# (every .ts and .tsx under tests/), zod, recharts or typescript (the files tests/bench/run.sh
+# lints, in build/eval); anything else is a file with one path per line.
 set -euo pipefail
 cd "$(dirname "$0")/../.."
 JOBS=${JOBS:-2}
 OUT=${OUT:-tsgo/inproc/out/tsconv/results}
 tests/tsconv/build.sh
 mkdir -p "$OUT"
-lists=("$@")
-if ((${#lists[@]} == 0)); then
-	lists=(build/estree-oracle/corpus/list.txt)
+sets=("$@")
+if ((${#sets[@]} == 0)); then
+	sets=(corpus)
 fi
-cat "${lists[@]}" > "$OUT/list.txt"
+: > "$OUT/list.txt"
+for set in "${sets[@]}"; do
+	case $set in
+	corpus) cat build/estree-oracle/corpus/list.txt ;;
+	fixtures) find "$PWD/tests" \( -name node_modules -prune \) -o \( -name '*.ts' -o -name '*.tsx' \) -type f -print | LC_ALL=C sort ;;
+	zod) (cd build/eval/zod/packages/zod && find src -name '*.ts' -not -name '*.test.ts' -not -path '*/tests/*' -not -path '*/benchmarks/*' | LC_ALL=C sort | sed "s|^|$PWD/|") ;;
+	recharts) (cd build/eval/recharts && find src \( -name '*.ts' -o -name '*.tsx' \) -not -name '*.d.ts' | LC_ALL=C sort | sed "s|^|$PWD/|") ;;
+	typescript) (cd build/eval/typescript && find src -name '*.ts' -not -path 'src/lib/*' -not -name '*.d.ts' | LC_ALL=C sort | sed "s|^|$PWD/|") ;;
+	*) cat "$set" ;;
+	esac >> "$OUT/list.txt"
+done
 for ((i = 0; i < JOBS; i++)); do
 	tsgo/inproc/out/tsconv/tsconv diff "$OUT/list.txt" "$i/$JOBS" > "$OUT/diff.$i.tsv" &
 done

@@ -2214,7 +2214,11 @@ func (c *VeslintConverter) importType(n *ast.Node, field uint16) {
 			field = c.field(fName)
 		}
 	}
-	c.openNext(c.named(sImportType), field)
+	if t.IsTypeOf || t.TypeArguments != nil {
+		c.openNext(c.named(sImportType), field)
+	} else {
+		c.open(c.named(sImportType), field, c.start(n))
+	}
 	// import("x").A.B<T>: member_expression(call_expression(import, arguments), property)…
 	callStart := c.peekStart()
 	depth := 0

@@ -22,7 +22,7 @@ const TSLanguage *tree_sitter_tsx(void);
 typedef struct {
 	uint32_t start_byte, end_byte;
 	uint32_t start_row, start_column, end_row, end_column;
-	uint32_t parent, next, last;
+	uint32_t parent, next, prev, last;
 	uint16_t symbol, field;
 	uint8_t flags;
 } tsc_row;
@@ -50,6 +50,7 @@ static int64_t tsc_rows(TSTree *tree, tsc_row *out, uint32_t cap, uint32_t *open
 		r->end_column = e.column;
 		r->parent = depth == 0 ? UINT32_MAX : open[depth - 1];
 		r->next = UINT32_MAX;
+		r->prev = UINT32_MAX;
 		r->last = index;
 		r->symbol = ts_node_symbol(node);
 		r->field = depth == 0 ? 0 : ts_tree_cursor_current_field_id(&cursor);
@@ -59,6 +60,7 @@ static int64_t tsc_rows(TSTree *tree, tsc_row *out, uint32_t cap, uint32_t *open
 		if (depth > 0) {
 			if (prev[depth - 1] != UINT32_MAX) {
 				out[prev[depth - 1]].next = index;
+				r->prev = prev[depth - 1];
 			}
 			prev[depth - 1] = index;
 		}
@@ -325,7 +327,7 @@ func compare(g *grammar, want, got []Row, text string) (class string, detail str
 		w, o := want[i], got[i]
 		at := fmt.Sprintf("row %d at %d: %q", i, w.StartByte, clip(text, w.StartByte))
 		switch {
-		case w.Next != o.Next || w.Last != o.Last:
+		case w.Next != o.Next || w.Prev != o.Prev || w.Last != o.Last:
 			class = fmt.Sprintf("shape of %s in %s", name(want, i), parentName(want, i))
 		case w.StartRow != o.StartRow || w.StartColumn != o.StartColumn || w.EndRow != o.EndRow || w.EndColumn != o.EndColumn:
 			class = fmt.Sprintf("point of %s", name(want, i))
@@ -403,6 +405,9 @@ func main() {
 	if len(os.Args) < 3 {
 		fmt.Fprintln(os.Stderr, "usage: tsconv ts|conv FILE, tsconv diff LIST [i/n], tsconv bench LIST [runs]")
 		os.Exit(2)
+	}
+	if unsafe.Sizeof(Row{}) != C.sizeof_tsc_row {
+		panic("the converter's row and tsc_row have different layouts")
 	}
 	grammars := [2]*grammar{newGrammar(false), newGrammar(true)}
 	pick := func(path string) *grammar {

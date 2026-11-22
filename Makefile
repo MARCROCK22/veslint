@@ -80,7 +80,7 @@ build/tsx-parser.o: $(TSX_SRC)/parser.c
 build/tsx-scanner.o: $(TSX_SRC)/parser.c
 	cc -O2 -std=c11 -fPIC -I$(TSX_SRC) -c $(TSX_SRC)/scanner.c -o $@
 
-$(INPROC): tsgo/inproc/build.sh tsgo/inproc/main.go tsgo/inproc/api_inprocess.go tsgo/inproc/api_fastjson.go tsgo/inproc/api_rules.go tsgo/inproc/session.patch
+$(INPROC): tsgo/inproc/build.sh tsgo/inproc/main.go tsgo/inproc/api_inprocess.go tsgo/inproc/api_fastjson.go tsgo/inproc/api_rules.go tsgo/inproc/session.patch tsgo/inproc/convert.go tsgo/inproc/convert_kinds.go
 	GO=$(GO) tsgo/inproc/build.sh
 
 build/libtree-sitter-typescript.a: build/ts-parser.o build/ts-scanner.o build/tsx-parser.o build/tsx-scanner.o

@@ -41,14 +41,16 @@ const (
 // VeslintRow is one node of tree-sitter's tree: its values as tree-sitter's API gives them
 // (ts_node_symbol, ts_tree_cursor_current_field_id, the flags, ts_node_start_byte/end_byte,
 // ts_node_start_point/end_point with columns in bytes) and its place in the preorder: the rows of
-// its parent, its next sibling and the last node of its subtree (itself for a leaf).
+// its parent, its next and previous siblings and the last node of its subtree (itself for a
+// leaf). Its layout is veslint_tsgo_row's (tsgo/inproc/veslint_tsgo.h), which is the vt_row of
+// veslint's rows, so the C side takes the buffer as it is.
 type VeslintRow struct {
-	StartByte, EndByte    uint32
-	StartRow, StartColumn uint32
-	EndRow, EndColumn     uint32
-	Parent, Next, Last    uint32
-	Symbol, Field         uint16
-	Flags                 uint8
+	StartByte, EndByte       uint32
+	StartRow, StartColumn    uint32
+	EndRow, EndColumn        uint32
+	Parent, Next, Prev, Last uint32
+	Symbol, Field            uint16
+	Flags                    uint8
 }
 
 // The symbols and fields the converter writes are named once here (namedSymbol, anonymousSymbol,
@@ -219,16 +221,17 @@ func (c *VeslintConverter) field(f fieldRef) uint16      { return c.l.fields[f] 
 // push appends a row under the innermost open node.
 func (c *VeslintConverter) push(symbol, field uint16, flags uint8, start, end int) uint32 {
 	index := uint32(len(c.rows))
-	parent := VeslintNone
+	parent, prev := VeslintNone, VeslintNone
 	if depth := len(c.stack); depth > 0 {
 		top := &c.stack[depth-1]
 		parent = top.index
-		if top.prev != VeslintNone {
-			c.rows[top.prev].Next = index
+		prev = top.prev
+		if prev != VeslintNone {
+			c.rows[prev].Next = index
 		}
 		top.prev = index
 	}
-	c.rows = append(c.rows, VeslintRow{StartByte: uint32(start), EndByte: uint32(end), Parent: parent, Next: VeslintNone, Last: index, Symbol: symbol, Field: field, Flags: flags})
+	c.rows = append(c.rows, VeslintRow{StartByte: uint32(start), EndByte: uint32(end), Parent: parent, Next: VeslintNone, Prev: prev, Last: index, Symbol: symbol, Field: field, Flags: flags})
 	return index
 }
 
