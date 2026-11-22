@@ -486,12 +486,18 @@ func (c *VeslintConverter) closeRestricted(end int) {
 }
 
 func (c *VeslintConverter) block(n *ast.Node, field uint16) {
+	c.blockIn(n, field, asiBlock)
+}
+
+// blockIn writes a statement_block that ends with tree-sitter's optional automatic semicolon in
+// the context `ctx`.
+func (c *VeslintConverter) blockIn(n *ast.Node, field uint16, ctx asiContext) {
 	c.open(c.named(sStatementBlock), field, c.start(n))
 	for _, s := range n.Statements() {
 		c.statement(s, 0)
 	}
 	c.flush(n.End())
-	c.absorbComments()
+	c.absorbComments(ctx)
 	c.closeHere()
 }
 
@@ -570,14 +576,22 @@ func (c *VeslintConverter) declarationStatement(n *ast.Node, field uint16) {
 	for ; wrappers > 0; wrappers-- {
 		c.closeHere()
 	}
+	// A `;` TypeScript keeps in the declaration that tree-sitter's rule does not end with
+	// (`declare module 'm';`) is an empty statement after it.
+	if k, start, _ := c.peek(); k == ast.KindSemicolonToken && start < n.End() {
+		c.emptyStatement(0)
+	}
 }
 
 // anonymousDefault: `export default class {}` and `export default function () {}` are a class
 // and a function_expression (the value of the export), not declarations.
 func anonymousDefault(n *ast.Node) bool {
 	switch n.Kind {
-	case ast.KindClassDeclaration, ast.KindFunctionDeclaration:
+	case ast.KindClassDeclaration:
 		return n.Name() == nil
+	case ast.KindFunctionDeclaration:
+		// `export default function (): T;` is a function_signature, the declaration.
+		return n.Name() == nil && n.Body() != nil
 	}
 	return false
 }
@@ -778,7 +792,11 @@ func (c *VeslintConverter) function(n *ast.Node, field uint16, mods []*ast.Node,
 	}
 	c.callSignature(f.TypeParameters, f.Parameters, f.Type)
 	if body != nil {
-		c.block(body, c.field(fBody))
+		ctx := asiBlock
+		if !declaration {
+			ctx = asiExpressionBlock
+		}
+		c.blockIn(body, c.field(fBody), ctx)
 		c.closeHere()
 		return
 	}
@@ -814,12 +832,12 @@ func (c *VeslintConverter) parameter(n *ast.Node) {
 	if p.DotDotDotToken != nil {
 		c.open(c.named(sRestPattern), c.field(fPattern), c.start(p.DotDotDotToken))
 		c.tokNode(p.DotDotDotToken, 0)
-		c.bindingName(p.Name(), 0)
+		c.patternName(p.Name(), 0)
 		c.close(p.Name().End())
 	} else if p.Name().Kind == ast.KindIdentifier && p.Name().Text() == "this" {
 		c.leaf(c.named(sThis), c.field(fPattern), VeslintNamed, c.start(p.Name()), p.Name().End())
 	} else {
-		c.bindingName(p.Name(), c.field(fPattern))
+		c.patternName(p.Name(), c.field(fPattern))
 	}
 	if p.QuestionToken != nil {
 		c.tokNode(p.QuestionToken, 0)
@@ -873,7 +891,7 @@ func (c *VeslintConverter) arrowFunction(n *ast.Node, field uint16) {
 	c.tokNode(n.AsArrowFunction().EqualsGreaterThanToken, 0)
 	body := n.Body()
 	if body.Kind == ast.KindBlock {
-		c.block(body, c.field(fBody))
+		c.blockIn(body, c.field(fBody), asiArrowBlock)
 	} else {
 		c.expression(body, c.field(fBody))
 	}
@@ -942,7 +960,7 @@ func (c *VeslintConverter) class(n *ast.Node, field uint16, mods []*ast.Node, de
 	c.closeAfter(ast.KindCloseBraceToken)
 	if symbol != c.named(sClass) {
 		// class_declaration ends with an optional automatic semicolon.
-		c.absorbComments()
+		c.absorbComments(asiBlock)
 	}
 	c.closeHere()
 }
@@ -1230,7 +1248,7 @@ func (c *VeslintConverter) moduleBody(body *ast.Node, field uint16) {
 		c.statement(s, 0)
 	}
 	c.flush(body.End())
-	c.absorbComments()
+	c.absorbComments(asiBlock)
 	c.closeHere()
 }
 
@@ -1746,6 +1764,16 @@ func (c *VeslintConverter) patternElement(n *ast.Node, field uint16) {
 // bindingName writes the name of a declaration or parameter: an identifier or a binding
 // pattern.
 func (c *VeslintConverter) bindingName(n *ast.Node, field uint16) {
+	c.bindingNameIn(n, field, false)
+}
+
+// patternName writes a binding name where tree-sitter has a pattern (a parameter, an element of a
+// pattern): `undefined` is its own node there.
+func (c *VeslintConverter) patternName(n *ast.Node, field uint16) {
+	c.bindingNameIn(n, field, true)
+}
+
+func (c *VeslintConverter) bindingNameIn(n *ast.Node, field uint16, pattern bool) {
 	switch n.Kind {
 	case ast.KindObjectBindingPattern:
 		c.open(c.named(sObjectPattern), field, c.start(n))
@@ -1756,7 +1784,7 @@ func (c *VeslintConverter) bindingName(n *ast.Node, field uint16) {
 			case b.DotDotDotToken != nil:
 				c.open(c.named(sRestPattern), 0, c.start(e))
 				c.tokNode(b.DotDotDotToken, 0)
-				c.bindingName(b.Name(), 0)
+				c.patternName(b.Name(), 0)
 				c.close(e.End())
 			case b.PropertyName != nil:
 				c.open(c.named(sPairPattern), 0, c.start(e))
@@ -1789,7 +1817,7 @@ func (c *VeslintConverter) bindingName(n *ast.Node, field uint16) {
 			case b.DotDotDotToken != nil:
 				c.open(c.named(sRestPattern), 0, c.start(e))
 				c.tokNode(b.DotDotDotToken, 0)
-				c.bindingName(b.Name(), 0)
+				c.patternName(b.Name(), 0)
 				c.close(e.End())
 			default:
 				c.bindingWithDefault(b.Name(), b.Initializer, 0)
@@ -1797,17 +1825,21 @@ func (c *VeslintConverter) bindingName(n *ast.Node, field uint16) {
 		}
 		c.close(n.End())
 	default:
+		if pattern && n.Text() == "undefined" {
+			c.identifier(n, c.named(sUndefined), field)
+			return
+		}
 		c.identifier(n, c.named(sIdentifier), field)
 	}
 }
 
 func (c *VeslintConverter) bindingWithDefault(name, init *ast.Node, field uint16) {
 	if init == nil {
-		c.bindingName(name, field)
+		c.patternName(name, field)
 		return
 	}
 	c.open(c.named(sAssignmentPattern), field, c.start(name))
-	c.bindingName(name, c.field(fLeft))
+	c.patternName(name, c.field(fLeft))
 	c.tok(0)
 	c.expression(init, c.field(fRight))
 	c.close(init.End())
@@ -1990,11 +2022,26 @@ func (c *VeslintConverter) typ(n *ast.Node, field uint16) {
 		c.identifier(n, c.named(sThisType), field)
 	case ast.KindLiteralType:
 		lit := n.AsLiteralTypeNode().Literal
+		if lit.Kind == ast.KindNoSubstitutionTemplateLiteral {
+			start := c.start(n)
+			c.open(c.named(sTemplateLiteralType), field, start)
+			backtick := c.l.tokens[ast.KindBacktickToken]
+			c.leaf(backtick, 0, 0, start, start+1)
+			c.stringPieces(start+1, n.End()-1, true)
+			c.leaf(backtick, 0, 0, n.End()-1, n.End())
+			c.close(n.End())
+			return
+		}
 		c.open(c.named(sLiteralType), field, c.start(n))
 		c.expression(lit, 0)
 		c.close(n.End())
 	case ast.KindTypeReference:
 		t := n.AsTypeReferenceNode()
+		if t.TypeArguments == nil && t.TypeName.Kind == ast.KindIdentifier && t.TypeName.Text() == "const" {
+			// `<const>x`: the keyword is a type of its own in tree-sitter.
+			c.tokAs(c.l.tokens[ast.KindConstKeyword], field, 0)
+			return
+		}
 		if t.TypeArguments != nil {
 			c.open(c.named(sGenericType), field, c.start(n))
 			c.entityName(t.TypeName, c.field(fName), true)
@@ -2128,6 +2175,10 @@ func (c *VeslintConverter) typ(n *ast.Node, field uint16) {
 func (c *VeslintConverter) typeQueryName(n *ast.Node, field uint16) {
 	switch n.Kind {
 	case ast.KindIdentifier:
+		if n.Text() == "this" {
+			c.identifier(n, c.named(sThis), field)
+			return
+		}
 		c.identifier(n, c.named(sIdentifier), field)
 	case ast.KindThisKeyword:
 		c.identifier(n, c.named(sThis), field)
@@ -2152,6 +2203,17 @@ func (c *VeslintConverter) importType(n *ast.Node, field uint16) {
 		c.tok(0)
 		field = 0
 	}
+	if t.TypeArguments != nil {
+		// import("x").A<T> is generic_type(name: import_type, type_arguments), and after
+		// typeof instantiation_expression(function: import_type, type_arguments).
+		if t.IsTypeOf {
+			c.openNext(c.named(sInstantiationExpression), field)
+			field = c.field(fFunction)
+		} else {
+			c.open(c.named(sGenericType), field, c.start(n))
+			field = c.field(fName)
+		}
+	}
 	c.openNext(c.named(sImportType), field)
 	// import("x").A.B<T>: member_expression(call_expression(import, arguments), property)…
 	callStart := c.peekStart()
@@ -2175,6 +2237,9 @@ func (c *VeslintConverter) importType(n *ast.Node, field uint16) {
 	c.tok(0)
 	if lt := t.Argument; lt.Kind == ast.KindLiteralType {
 		c.expression(lt.AsLiteralTypeNode().Literal, 0)
+	} else if lt.Kind == ast.KindTypeReference && lt.AsTypeReferenceNode().TypeArguments == nil {
+		// The argument is an expression in tree-sitter's grammar.
+		c.entityAsExpression(lt.AsTypeReferenceNode().TypeName, 0)
 	} else {
 		c.typ(lt, 0)
 	}
@@ -2201,6 +2266,10 @@ func (c *VeslintConverter) importType(n *ast.Node, field uint16) {
 		c.closeHere()
 	}
 	c.closeHere()
+	if t.TypeArguments != nil {
+		c.typeArguments(t.TypeArguments, c.field(fTypeArguments))
+		c.closeHere()
+	}
 	if t.IsTypeOf {
 		c.closeHere()
 	}
@@ -2241,6 +2310,14 @@ func (c *VeslintConverter) typePredicate(n *ast.Node, field uint16) {
 func (c *VeslintConverter) predicateName(n *ast.Node, field uint16) {
 	if n.Kind == ast.KindThisType {
 		c.identifier(n, c.named(sThis), field)
+		return
+	}
+	switch n.Text() {
+	case "any", "number", "boolean", "string", "symbol", "void", "unknown", "never", "object":
+		// alias($.predefined_type, $.identifier): an identifier around the keyword.
+		c.open(c.named(sIdentifier), field, c.start(n))
+		c.tokAs(c.l.tokens[scanner.StringToToken(n.Text())], 0, 0)
+		c.close(n.End())
 		return
 	}
 	c.identifier(n, c.named(sIdentifier), field)
@@ -2361,10 +2438,13 @@ func (c *VeslintConverter) typeMember(m *ast.Node) {
 			c.typeAnnotation(p.Type, c.field(fType))
 		}
 		c.closeHere()
-	case ast.KindMethodSignature:
+	case ast.KindMethodSignature, ast.KindGetAccessor, ast.KindSetAccessor:
 		f := m.FunctionLikeData()
 		c.open(c.named(sMethodSignature), 0, c.start(m))
 		c.modifiers(mods)
+		if m.Kind != ast.KindMethodSignature {
+			c.tok(0)
+		}
 		c.propertyName(m.Name(), c.field(fName))
 		if q := m.PostfixToken(); q != nil {
 			c.tokNode(q, 0)

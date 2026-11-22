@@ -135,13 +135,15 @@ type frame struct {
 // VeslintConverter converts files of one language; it keeps its buffers between files and is used
 // by one thread at a time.
 type VeslintConverter struct {
-	l     *VeslintLanguage
-	text  string
-	file  *ast.SourceFile
-	rows  []VeslintRow
-	stack []frame
-	sc    *scanner.Scanner
-	lines []uint32
+	// Script parses as ESLint's sourceType "script" (not a module).
+	Script bool
+	l      *VeslintLanguage
+	text   string
+	file   *ast.SourceFile
+	rows   []VeslintRow
+	stack  []frame
+	sc     *scanner.Scanner
+	lines  []uint32
 }
 
 func NewVeslintConverter(l *VeslintLanguage) *VeslintConverter {
@@ -158,9 +160,12 @@ func (c *VeslintConverter) parse(text string) *ast.SourceFile {
 		name = "/veslint.tsx"
 	}
 	path := tspath.RootedFilePathFromNormalized(name)
+	// ESLint's default sourceType, "module", makes typescript-estree mark every file a module,
+	// which TypeScript reads top-level `await` in.
 	return ParseSourceFile(ast.SourceFileParseOptions{
-		FileName: path,
-		PathKey:  tspath.CaseSensitive.PathKey(tspath.RootedPath(path)),
+		FileName:                       path,
+		PathKey:                        tspath.CaseSensitive.PathKey(tspath.RootedPath(path)),
+		ExternalModuleIndicatorOptions: ast.ExternalModuleIndicatorOptions{Force: !c.Script},
 	}, text, kind)
 }
 
@@ -358,12 +363,25 @@ func (c *VeslintConverter) closeAfter(kind ast.Kind) {
 	c.closeHere()
 }
 
+// The contexts of tree-sitter's automatic semicolon (scanner.h, scan_automatic_semicolon), which
+// decide whether it is inserted after a line break: after a statement TypeScript ended there; after
+// a block that ends a statement or a member (a binary operator cannot follow); after the body of a
+// function expression (one can); after the block of an arrow function (nothing continues it).
+type asiContext uint8
+
+const (
+	asiStatement asiContext = iota
+	asiBlock
+	asiExpressionBlock
+	asiArrowBlock
+)
+
 // absorbComments writes the comments tree-sitter keeps at the end of a node that ends with an
-// automatic semicolon or with the optional one after a block's `}`: its external scanner puts
-// that zero-width token after the comments on the line of the last token (a line comment, block
-// comments), when the line ends after them, or a `}` or the end of the file follows; a block
-// comment with a line break followed by more on its line ends the statement before it.
-func (c *VeslintConverter) absorbComments() {
+// automatic semicolon (or the optional one after a block's `}`): its external scanner puts that
+// zero-width token after the comments on the line of the last token when the line ends after them
+// (and the scanner then inserts it), or a `}` or the end of the file follows. A block comment with
+// a line break followed by more on its line ends the statement before it.
+func (c *VeslintConverter) absorbComments(ctx asiContext) {
 	t := c.top()
 	p := t.cursor
 	var comments [][2]int
@@ -375,8 +393,19 @@ func (c *VeslintConverter) absorbComments() {
 	}
 	for {
 		i := c.skipInlineSpace(p)
-		if i >= len(c.text) || c.text[i] == '}' || c.isLineBreak(i) {
+		switch {
+		case i >= len(c.text):
 			commit()
+			return
+		case c.text[i] == '}':
+			if c.asiBeforeBrace(i, ctx) {
+				commit()
+			}
+			return
+		case c.isLineBreak(i):
+			if len(comments) > 0 && c.asiAfterLineBreak(i, ctx) {
+				commit()
+			}
 			return
 		}
 		if c.text[i] != '/' || i+1 >= len(c.text) {
@@ -399,6 +428,7 @@ func (c *VeslintConverter) absorbComments() {
 			if c.hasLineBreak(i, end) {
 				j := c.skipInlineSpace(end)
 				if !(j >= len(c.text) || c.text[j] == '}' || c.isLineBreak(j)) {
+					// The comment's line break ends the statement before it.
 					commit()
 					return
 				}
@@ -407,6 +437,127 @@ func (c *VeslintConverter) absorbComments() {
 			p = end
 		default:
 			return
+		}
+	}
+}
+
+// asiBeforeBrace: the scanner inserts the semicolon before a `}`, unless a `:` (or `?:`) follows
+// it, as in `({a}: T) =>`, where only a ternary takes it.
+func (c *VeslintConverter) asiBeforeBrace(i int, ctx asiContext) bool {
+	j := c.skipSpace(i + 1)
+	if j < len(c.text) && c.text[j] == '?' {
+		j = c.skipSpace(j + 1)
+		if j < len(c.text) && c.text[j] == ':' {
+			return ctx == asiExpressionBlock
+		}
+		return true
+	}
+	if j < len(c.text) && c.text[j] == ':' {
+		return ctx == asiExpressionBlock
+	}
+	return true
+}
+
+func (c *VeslintConverter) skipSpace(i int) int {
+	for i < len(c.text) {
+		if j := c.skipInlineSpace(i); j != i {
+			i = j
+			continue
+		}
+		if c.isLineBreak(i) {
+			i++
+			continue
+		}
+		break
+	}
+	return i
+}
+
+// asiAfterLineBreak is the scanner's decision after the line break at text[i]: what follows the
+// line break (after white space and comments) may go on with the expression before it.
+func (c *VeslintConverter) asiAfterLineBreak(i int, ctx asiContext) bool {
+	if ctx == asiStatement {
+		return true
+	}
+	arrow := ctx == asiArrowBlock
+	logicalOr := ctx == asiExpressionBlock
+	j, ok := c.skipSpaceAndComments(i)
+	if !ok {
+		return arrow
+	}
+	if j >= len(c.text) {
+		return true
+	}
+	next := byte(0)
+	if j+1 < len(c.text) {
+		next = c.text[j+1]
+	}
+	switch c.text[j] {
+	case '.':
+		return next >= '0' && next <= '9'
+	case ',', ';', ':':
+		return false
+	case '`', '*', '%', '>', '=', '?', '^', '|', '&', '/':
+		return arrow
+	case '(', '[', '<':
+		return !(logicalOr && !arrow)
+	case '+':
+		return arrow || next == '+'
+	case '-':
+		return arrow || next == '-'
+	case '!':
+		return arrow || next != '='
+	case 'i':
+		word := j
+		for word < len(c.text) && isWordByte(c.text[word]) {
+			word++
+		}
+		if w := c.text[j:word]; w == "in" || w == "instanceof" {
+			if logicalOr {
+				return false
+			}
+			k, ok := c.skipSpaceAndComments(word)
+			if !ok {
+				return false
+			}
+			if k >= len(c.text) {
+				return true
+			}
+			return strings.IndexByte("?:(<;,}", c.text[k]) >= 0
+		}
+	}
+	return true
+}
+
+func isWordByte(ch byte) bool {
+	return ch == '_' || ch == '$' || ch == '\\' || ch >= 0x80 || (ch >= '0' && ch <= '9') || (ch >= 'a' && ch <= 'z') || (ch >= 'A' && ch <= 'Z')
+}
+
+// skipSpaceAndComments is the scanner's scan_whitespace_and_comments from text[i]: false at a `/`
+// that does not start a comment.
+func (c *VeslintConverter) skipSpaceAndComments(i int) (int, bool) {
+	for {
+		i = c.skipSpace(i)
+		if i >= len(c.text) || c.text[i] != '/' {
+			return i, true
+		}
+		if i+1 >= len(c.text) {
+			return i, false
+		}
+		switch c.text[i+1] {
+		case '/':
+			i += 2
+			for i < len(c.text) && !c.isLineBreak(i) {
+				i++
+			}
+		case '*':
+			k := strings.Index(c.text[i+2:], "*/")
+			if k < 0 {
+				return len(c.text), true
+			}
+			i += 2 + k + 2
+		default:
+			return i, false
 		}
 	}
 }
@@ -463,7 +614,7 @@ func (c *VeslintConverter) lastIsSemicolon() bool {
 func (c *VeslintConverter) closeStatement(end int) {
 	c.flush(end)
 	if !c.lastIsSemicolon() {
-		c.absorbComments()
+		c.absorbComments(asiStatement)
 	}
 	c.closeHere()
 }
