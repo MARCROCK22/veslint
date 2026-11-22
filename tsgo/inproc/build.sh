@@ -2,9 +2,9 @@
 # build.sh builds tsgo/inproc/out/libveslint_tsgo.a: TypeScript's API session as a C archive that
 # veslint links (tsgo/inproc.c.v). It compiles the Go module `tsc` of the TypeScript checkout at the
 # commit of the npm package veslint uses, with this directory's files added by `-overlay`
-# (api_inprocess.go, api_fastjson.go and api_rules.go into internal/api, main.go as
-# cmd/veslint_tsgo) and internal/api/session.go replaced by a copy with session.patch applied: the
-# checkout is only read.
+# (api_inprocess.go, api_fastjson.go and api_rules.go into internal/api, convert.go and
+# convert_kinds.go into internal/parser, main.go as cmd/veslint_tsgo) and internal/api/session.go
+# replaced by a copy with session.patch applied: the checkout is only read.
 #
 # TYPESCRIPT_GO is the checkout (default build/upstream/typescript-go, the one tools/ uses), GO the
 # Go toolchain (default `go`; 1.27.x, as go.mod asks). GOBUILDFLAGS are added to `go build`.
@@ -58,7 +58,9 @@ cat > "$out/overlay.json" <<JSON
 {"Replace": {"$module/internal/api/veslint_inprocess.go": "$here/api_inprocess.go",
 "$module/internal/api/veslint_fastjson.go": "$here/api_fastjson.go",
 "$module/internal/api/veslint_rules.go": "$here/api_rules.go",
-"$module/internal/api/session.go": "$out/session.go"}}
+"$module/internal/api/session.go": "$out/session.go",
+"$module/internal/parser/veslint_convert.go": "$here/convert.go",
+"$module/internal/parser/veslint_convert_kinds.go": "$here/convert_kinds.go"}}
 JSON
 cd "$out/mod"
 # The requirements of the checkout's go.mod, as `go mod tidy` would list them (without the network).
