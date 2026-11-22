@@ -17,7 +17,7 @@ struct VnraoCandidate {
 	check_type bool
 }
 
-fn (mut c Checker) lint_vue_no_ref_as_operand(root C.TSNode, abs_path string, mut stats Stats) ![]Finding {
+fn (mut c Checker) lint_vue_no_ref_as_operand(root C.vt_node, abs_path string, mut stats Stats) ![]Finding {
 	sw := time.new_stopwatch()
 	mut findings := []Finding{}
 	s := c.vue_script(root, abs_path) or { return findings }
@@ -129,7 +129,7 @@ fn vnrao_is_ref_init(t &estree.EsTree, data ?Vx6rRef) bool {
 // vnrao_emit_candidates are the identifier arguments of the `emit('name', …)` calls of a setup
 // context: the `emit` of defineEmits in `<script setup>`, and the `emit` (or the context's) of a
 // Vue object's setup function.
-fn (mut c Checker) vnrao_emit_candidates(root C.TSNode, t &estree.EsTree, s &VueScript) []VnraoCandidate {
+fn (mut c Checker) vnrao_emit_candidates(root C.vt_node, t &estree.EsTree, s &VueScript) []VnraoCandidate {
 	mut out := []VnraoCandidate{}
 	// The setup contexts: by owner (-1 for the program), with the preorder index they start at.
 	mut emit_ids := map[int]map[u64]bool{}
@@ -247,7 +247,7 @@ fn (mut c Checker) vnrao_emit_candidates(root C.TSNode, t &estree.EsTree, s &Vue
 	return out
 }
 
-fn (mut c Checker) vnrao_collect_references(root C.TSNode, t &estree.EsTree, id int, mut out map[u64]bool) {
+fn (mut c Checker) vnrao_collect_references(root C.vt_node, t &estree.EsTree, id int, mut out map[u64]bool) {
 	v := c.unb_find_variable(root, t, id)
 	if v < 0 {
 		return

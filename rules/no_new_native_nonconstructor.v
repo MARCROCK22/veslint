@@ -9,7 +9,7 @@ const nnnn_messages = {
 	'noNewNonconstructor': '`{{name}}` cannot be called as a constructor.'
 }
 
-fn (mut c Checker) lint_no_new_native_nonconstructor(root C.TSNode, abs_path string, mut stats Stats) ![]Finding {
+fn (mut c Checker) lint_no_new_native_nonconstructor(root C.vt_node, abs_path string, mut stats Stats) ![]Finding {
 	sw := time.new_stopwatch()
 	mut findings := []Finding{}
 	for name in ['Symbol', 'BigInt'] {

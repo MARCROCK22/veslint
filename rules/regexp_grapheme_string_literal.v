@@ -21,7 +21,7 @@ fn rxgsl_is_multiple_graphemes(ast &regexpp.Ast, alternative int) bool {
 	return sty_string_length(text) > 1
 }
 
-fn (mut c Checker) lint_regexp_grapheme_string_literal(root C.TSNode, abs_path string, mut stats Stats) ![]Finding {
+fn (mut c Checker) lint_regexp_grapheme_string_literal(root C.vt_node, abs_path string, mut stats Stats) ![]Finding {
 	sw := time.new_stopwatch()
 	mut findings := []Finding{}
 	regexps := c.rx_regexps(root, abs_path)

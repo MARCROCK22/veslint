@@ -62,12 +62,12 @@ fn rpo_string_like(o RpoOptions) string {
 
 // RpoAddition is a `+` (BinaryExpression) or a `+=` (AssignmentExpression) with its ESTree operands.
 struct RpoAddition {
-	node  C.TSNode
-	left  C.TSNode
-	right C.TSNode
+	node  C.vt_node
+	left  C.vt_node
+	right C.vt_node
 }
 
-fn (mut c Checker) lint_restrict_plus_operands(root C.TSNode, abs_path string, mut stats Stats) ![]Finding {
+fn (mut c Checker) lint_restrict_plus_operands(root C.vt_node, abs_path string, mut stats Stats) ![]Finding {
 	mut sw := time.new_stopwatch()
 	o := rpo_options(c.rule_options(restrict_plus_operands))!
 	mut additions := []RpoAddition{}

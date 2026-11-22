@@ -11,7 +11,7 @@ const svnrf_messages = {
 	'fixReactiveFns': 'Move the function out of the reactive statement'
 }
 
-fn (mut c Checker) lint_svelte_no_reactive_functions(root C.TSNode, abs_path string, mut stats Stats) ![]Finding {
+fn (mut c Checker) lint_svelte_no_reactive_functions(root C.vt_node, abs_path string, mut stats Stats) ![]Finding {
 	if !c.svsc_runes_off(abs_path) {
 		return []
 	}

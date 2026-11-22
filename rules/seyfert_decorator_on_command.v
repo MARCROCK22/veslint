@@ -17,7 +17,7 @@ const sy_doc_messages = {
 const sy_doc_command_decorators = ['Declare', 'Options', 'Middlewares', 'Locales', 'LocalesT']
 const sy_doc_component_bases = ['ComponentCommand', 'ModalCommand']
 
-fn (mut c Checker) lint_seyfert_decorator_on_command(root C.TSNode, abs_path string, mut stats Stats) ![]Finding {
+fn (mut c Checker) lint_seyfert_decorator_on_command(root C.vt_node, abs_path string, mut stats Stats) ![]Finding {
 	mut sw := time.new_stopwatch()
 	classes, asked := c.sy_decorated_classes(root)
 	c.resolve_node_types(asked, abs_path, mut stats)!

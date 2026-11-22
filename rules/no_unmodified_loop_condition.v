@@ -14,8 +14,8 @@ const nulc_messages = {
 // conditional expression without dynamic parts) it belongs to, and whether a write modifies it.
 struct NulcCondition {
 	reference int
-	loop      C.TSNode
-	group     ?C.TSNode
+	loop      C.vt_node
+	group     ?C.vt_node
 mut:
 	modified bool
 }
@@ -26,7 +26,7 @@ fn nulc_options(options []json2.Any) !bool {
 	return o.bool_value('checkConditionalExpressions')!
 }
 
-fn (mut c Checker) lint_no_unmodified_loop_condition(root C.TSNode, abs_path string, mut stats Stats) ![]Finding {
+fn (mut c Checker) lint_no_unmodified_loop_condition(root C.vt_node, abs_path string, mut stats Stats) ![]Finding {
 	sw := time.new_stopwatch()
 	check_conditional := nulc_options(c.rule_options(no_unmodified_loop_condition))!
 	tree := c.scope_tree(root)
@@ -111,7 +111,7 @@ fn nulc_is_write_reference(tree &ScopeTree, r int) bool {
 
 // nulc_is_sentinel: SENTINEL_PATTERN, a call, class, function, member, new or yield expression, a
 // statement or a declaration.
-fn nulc_is_sentinel(n C.TSNode) bool {
+fn nulc_is_sentinel(n C.vt_node) bool {
 	kind := node_kind(n)
 	if kind.ends_with('_statement') || kind.ends_with('_declaration') {
 		return true
@@ -136,7 +136,7 @@ fn nulc_is_sentinel(n C.TSNode) bool {
 
 // nulc_is_group: a binary (not logical) expression, or a conditional one unless
 // checkConditionalExpressions.
-fn nulc_is_group(n C.TSNode, check_conditional bool) bool {
+fn nulc_is_group(n C.vt_node, check_conditional bool) bool {
 	match node_kind(n) {
 		'binary_expression' { return operator_of(n) !in ['&&', '||', '??'] }
 		'ternary_expression' { return !check_conditional }
@@ -146,7 +146,7 @@ fn nulc_is_group(n C.TSNode, check_conditional bool) bool {
 
 // nulc_has_dynamic_expressions ports hasDynamicExpressions: a call, member, new, tagged template
 // or yield expression, outside of functions and classes.
-fn nulc_has_dynamic_expressions(n C.TSNode) bool {
+fn nulc_has_dynamic_expressions(n C.vt_node) bool {
 	kind := node_kind(n)
 	match kind {
 		'call_expression' {
@@ -177,7 +177,7 @@ fn nulc_loop_condition(tree &ScopeTree, r int, check_conditional bool) ?NulcCond
 	if reference.init {
 		return none
 	}
-	mut group := ?C.TSNode(none)
+	mut group := ?C.vt_node(none)
 	mut child := reference.identifier
 	mut node := node_parent(child) or { return none }
 	for {
@@ -211,7 +211,7 @@ fn nulc_loop_condition(tree &ScopeTree, r int, check_conditional bool) ?NulcCond
 }
 
 // nulc_is_in_loop ports isInLoop: the reference is in the loop (not in the init of a `for`).
-fn nulc_is_in_loop(loop C.TSNode, id C.TSNode) bool {
+fn nulc_is_in_loop(loop C.vt_node, id C.vt_node) bool {
 	if !(node_start(loop) <= node_start(id) && node_end(id) <= node_end(loop)) {
 		return false
 	}
@@ -234,7 +234,7 @@ fn (c &Checker) nulc_has_modifier_in_loop(tree &ScopeTree, condition NulcConditi
 	}
 	// getEncloseFunctionDeclaration
 	mut node := id
-	mut function := ?C.TSNode(none)
+	mut function := ?C.vt_node(none)
 	for {
 		if node_kind(node) in ['function_declaration', 'generator_function_declaration'] {
 			function = node

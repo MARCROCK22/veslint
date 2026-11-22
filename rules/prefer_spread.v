@@ -9,7 +9,7 @@ const psp_messages = {
 	'preferSpread': "Use the spread operator instead of '.apply()'."
 }
 
-fn (mut c Checker) lint_prefer_spread(root C.TSNode, abs_path string, mut stats Stats) ![]Finding {
+fn (mut c Checker) lint_prefer_spread(root C.vt_node, abs_path string, mut stats Stats) ![]Finding {
 	sw := time.new_stopwatch()
 	mut findings := []Finding{}
 	// Every report is of a call of `apply`, a name only an escape (in a string or a template

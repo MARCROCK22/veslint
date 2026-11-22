@@ -268,7 +268,7 @@ fn upt_reference_inside(reference ScopeReference, t &estree.EsTree, target int) 
 
 // upt_let_plus_if_problem ports getLetPlusIfProblem: an initialized `let` followed by one
 // conditional reassignment, with a suggestion.
-fn (mut c Checker) upt_let_plus_if_problem(root C.TSNode, t &estree.EsTree, tokens &SourceTokens, node int, o UptOptions, mut ctx UnbTypeContext) ![]Finding {
+fn (mut c Checker) upt_let_plus_if_problem(root C.vt_node, t &estree.EsTree, tokens &SourceTokens, node int, o UptOptions, mut ctx UnbTypeContext) ![]Finding {
 	consequent_body := upt_body(t, t.node(node, .consequent) or { return []Finding{} })
 	if t.typ(consequent_body) != .assignment_expression
 		|| t.string_of(consequent_body, .operator) or { '' } != '=' {
@@ -504,7 +504,7 @@ fn (mut c Checker) upt_if_branches_problem(t &estree.EsTree, tokens &SourceToken
 	return [finding]
 }
 
-fn (mut c Checker) lint_unicorn_prefer_ternary(root C.TSNode, abs_path string, mut stats Stats) ![]Finding {
+fn (mut c Checker) lint_unicorn_prefer_ternary(root C.vt_node, abs_path string, mut stats Stats) ![]Finding {
 	sw := time.new_stopwatch()
 	o := upt_options(c.rule_options(unicorn_prefer_ternary))!
 	mut findings := []Finding{}

@@ -54,7 +54,7 @@ fn os_options(options []json2.Any) !OsOptions {
 	}
 }
 
-fn (mut c Checker) lint_object_shorthand(root C.TSNode, abs_path string, mut stats Stats) ![]Finding {
+fn (mut c Checker) lint_object_shorthand(root C.vt_node, abs_path string, mut stats Stats) ![]Finding {
 	sw := time.new_stopwatch()
 	o := os_options(c.rule_options(object_shorthand))!
 	mut findings := []Finding{}
@@ -81,7 +81,7 @@ fn (mut c Checker) lint_object_shorthand(root C.TSNode, abs_path string, mut sta
 }
 
 // os_consistency ports checkConsistency.
-fn (mut c Checker) os_consistency(object C.TSNode, all []C.TSNode, check_redundancy bool, mut findings []Finding) {
+fn (mut c Checker) os_consistency(object C.vt_node, all []C.vt_node, check_redundancy bool, mut findings []Finding) {
 	properties := all.filter(node_kind(it) != 'spread_element' && es_accessor_kind(it) == 'init')
 	if properties.len == 0 {
 		return
@@ -107,7 +107,7 @@ fn (mut c Checker) os_consistency(object C.TSNode, all []C.TSNode, check_redunda
 // whose function is the first function (not an arrow) around the node, or none when that function
 // is another one, or a class field's initializer or a static block comes first. The computed key of
 // a method or of a field is in the scope around it.
-fn os_containing_object_method(n C.TSNode) ?C.TSNode {
+fn os_containing_object_method(n C.vt_node) ?C.vt_node {
 	mut child := n
 	for {
 		parent := node_parent(child) or { return none }
@@ -147,7 +147,7 @@ fn os_containing_object_method(n C.TSNode) ?C.TSNode {
 }
 
 // os_is_proto_key ports isProtoKey: a key `__proto__` that is not computed.
-fn (c &Checker) os_is_proto_key(property C.TSNode) bool {
+fn (c &Checker) os_is_proto_key(property C.vt_node) bool {
 	_, computed := es_property_key(property) or { return false }
 	if computed {
 		return false
@@ -158,7 +158,7 @@ fn (c &Checker) os_is_proto_key(property C.TSNode) bool {
 
 // os_is_redundant ports isRedundant: an anonymous function, or an identifier named as the key
 // (never for a key `__proto__`).
-fn (c &Checker) os_is_redundant(property C.TSNode) bool {
+fn (c &Checker) os_is_redundant(property C.vt_node) bool {
 	if c.os_is_proto_key(property) {
 		return false
 	}
@@ -178,7 +178,7 @@ fn (c &Checker) os_is_redundant(property C.TSNode) bool {
 }
 
 // os_property is the check of a Property at its exit.
-fn (mut c Checker) os_property(root C.TSNode, o OsOptions, property C.TSNode, methods_with_super map[u64]bool, mut findings []Finding) {
+fn (mut c Checker) os_property(root C.vt_node, o OsOptions, property C.vt_node, methods_with_super map[u64]bool, mut findings []Finding) {
 	kind := node_kind(property)
 	if kind == 'spread_element' || es_accessor_kind(property) != 'init' {
 		return
@@ -319,7 +319,7 @@ fn os_is_constructor(name string) bool {
 
 // os_has_lexical_identifiers: the arrow uses the `this`, `super`, `new.target` or `arguments` of
 // the function around it.
-fn (mut c Checker) os_has_lexical_identifiers(root C.TSNode, arrow C.TSNode) bool {
+fn (mut c Checker) os_has_lexical_identifiers(root C.vt_node, arrow C.vt_node) bool {
 	for n in c.nodes_of_kinds(arrow, ['this', 'super', 'meta_property', 'identifier'], os_function_kinds) {
 		match node_kind(n) {
 			'this', 'super' {
@@ -349,7 +349,7 @@ fn (mut c Checker) os_has_lexical_identifiers(root C.TSNode, arrow C.TSNode) boo
 }
 
 // os_key_tokens are the first and last tokens of the key, with the brackets of a computed one.
-fn (mut c Checker) os_key_tokens(root C.TSNode, property C.TSNode, key C.TSNode, computed bool) ?(SourceToken, SourceToken) {
+fn (mut c Checker) os_key_tokens(root C.vt_node, property C.vt_node, key C.vt_node, computed bool) ?(SourceToken, SourceToken) {
 	tokens := c.source_tokens(root)
 	if !computed {
 		return tokens.after(node_start(key), false)?, tokens.before(c.es_end(key), false)?
@@ -366,7 +366,7 @@ fn (mut c Checker) os_key_tokens(root C.TSNode, property C.TSNode, key C.TSNode,
 }
 
 // os_longform_fix ports makeFunctionLongform: `key: function`.
-fn (mut c Checker) os_longform_fix(root C.TSNode, method C.TSNode, key C.TSNode, computed bool) (bool, Fix) {
+fn (mut c Checker) os_longform_fix(root C.vt_node, method C.vt_node, key C.vt_node, computed bool) (bool, Fix) {
 	first, last := c.os_key_tokens(root, method, key, computed) or { return false, Fix{} }
 	mut header := 'function'
 	if es_is_async_function(method) {
@@ -379,7 +379,7 @@ fn (mut c Checker) os_longform_fix(root C.TSNode, method C.TSNode, key C.TSNode,
 }
 
 // os_shorthand_fix ports makeFunctionShorthand: `key(params) {…}`.
-fn (mut c Checker) os_shorthand_fix(root C.TSNode, property C.TSNode, key C.TSNode, computed bool, value C.TSNode) (bool, Fix) {
+fn (mut c Checker) os_shorthand_fix(root C.vt_node, property C.vt_node, key C.vt_node, computed bool, value C.vt_node) (bool, Fix) {
 	tokens := c.source_tokens(root)
 	first, last := c.os_key_tokens(root, property, key, computed) or { return false, Fix{} }
 	if tokens.comments_exist_between(last.end, node_start(value)) {

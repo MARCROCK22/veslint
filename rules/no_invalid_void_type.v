@@ -58,12 +58,12 @@ enum NivtParent {
 // whether that is the Identifier of a `this` parameter.
 struct NivtPlace {
 	parent         NivtParent
-	node           C.TSNode
+	node           C.vt_node
 	grand          string
 	this_parameter bool
 }
 
-fn (mut c Checker) lint_no_invalid_void_type(root C.TSNode, abs_path string, mut stats Stats) ![]Finding {
+fn (mut c Checker) lint_no_invalid_void_type(root C.vt_node, abs_path string, mut stats Stats) ![]Finding {
 	sw := time.new_stopwatch()
 	o := nivt_options(c.rule_options(no_invalid_void_type))!
 	mut findings := []Finding{}
@@ -86,7 +86,7 @@ fn (mut c Checker) lint_no_invalid_void_type(root C.TSNode, abs_path string, mut
 }
 
 // nivt_check ports the TSVoidKeyword visitor: the message (and its data) to report, if any.
-fn (mut c Checker) nivt_check(node C.TSNode, o NivtOptions) ?(string, map[string]string) {
+fn (mut c Checker) nivt_check(node C.vt_node, o NivtOptions) ?(string, map[string]string) {
 	place := nivt_place(node)
 	// T<..., void, ...>: allowed, or checked against the list.
 	if place.parent == .instantiation && place.grand == 'TSTypeReference' {
@@ -161,19 +161,19 @@ fn nivt_not_return_or_generic(place NivtPlace) string {
 	}
 }
 
-fn nivt_is_keyword(n C.TSNode, keyword string) bool {
+fn nivt_is_keyword(n C.vt_node, keyword string) bool {
 	return node_kind(n) == 'predefined_type' && children(n).any(node_kind(it) == keyword)
 }
 
 // nivt_default is the default of a type parameter (without parentheses), if any.
-fn nivt_default(type_parameter C.TSNode) ?C.TSNode {
+fn nivt_default(type_parameter C.vt_node) ?C.vt_node {
 	default_type := node_field(type_parameter, 'value')?
 	return unwrap_type_parens(first_named(default_type)?)
 }
 
 // nivt_place finds the ESTree parent of a type (parentheses are not nodes in ESTree) and its
 // grandparent.
-fn nivt_place(n C.TSNode) NivtPlace {
+fn nivt_place(n C.vt_node) NivtPlace {
 	parent := type_parent(n) or { return NivtPlace{} }
 	match node_kind(parent) {
 		'type_arguments' {
@@ -307,7 +307,7 @@ fn nivt_place(n C.TSNode) NivtPlace {
 
 // nivt_union_members are the types of the TSUnionType of a union_type: the ones of the unions
 // nested in it without parentheses.
-fn nivt_union_members(union_node C.TSNode, mut out []C.TSNode) {
+fn nivt_union_members(union_node C.vt_node, mut out []C.vt_node) {
 	for child in named_children(union_node) {
 		if node_kind(child) == 'union_type' {
 			nivt_union_members(child, mut out)
@@ -319,8 +319,8 @@ fn nivt_union_members(union_node C.TSNode, mut out []C.TSNode) {
 
 // nivt_is_valid_union ports isValidUnionType: every member is void, never or a TSTypeReference
 // with a void type argument.
-fn (c &Checker) nivt_is_valid_union(union_node C.TSNode) bool {
-	mut members := []C.TSNode{}
+fn (c &Checker) nivt_is_valid_union(union_node C.vt_node) bool {
+	mut members := []C.vt_node{}
 	nivt_union_members(union_node, mut members)
 	for member in members {
 		m := unwrap_type_parens(member)
@@ -341,7 +341,7 @@ fn (c &Checker) nivt_is_valid_union(union_node C.TSNode) bool {
 // nivt_parent_function_declaration ports getParentFunctionDeclarationNode: the closest
 // FunctionDeclaration (`export default function () {}` too) or MethodDefinition with a body around
 // the node.
-fn nivt_parent_function_declaration(n C.TSNode) ?C.TSNode {
+fn nivt_parent_function_declaration(n C.vt_node) ?C.vt_node {
 	mut node := n
 	for {
 		node = node_parent(node)?
@@ -364,7 +364,7 @@ fn nivt_parent_function_declaration(n C.TSNode) ?C.TSNode {
 // nivt_has_overload_signatures ports hasOverloadSignatures: a TSDeclareFunction (a function
 // signature) or a MethodDefinition without a body (a method signature) with the same name next to
 // the function, or for a default export another default export of a function signature.
-fn (mut c Checker) nivt_has_overload_signatures(function C.TSNode) bool {
+fn (mut c Checker) nivt_has_overload_signatures(function C.vt_node) bool {
 	parent := node_parent(function) or { return false }
 	if node_kind(parent) == 'export_statement' {
 		container := node_parent(parent) or { return false }
@@ -397,7 +397,7 @@ fn (mut c Checker) nivt_has_overload_signatures(function C.TSNode) bool {
 
 // nivt_function_name ports getFunctionDeclarationName: the name of a function, or the static name
 // of a method ('' when there is none).
-fn (mut c Checker) nivt_function_name(n C.TSNode) string {
+fn (mut c Checker) nivt_function_name(n C.vt_node) string {
 	if node_kind(n) in ['method_definition', 'method_signature'] {
 		return c.static_member_name(n) or { '' }
 	}

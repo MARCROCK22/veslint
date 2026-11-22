@@ -29,7 +29,7 @@ const unus_strong_precedence_types = [estree.NodeType.array_expression, .call_ex
 	.chain_expression, .identifier, .import_expression, .literal, .member_expression, .new_expression,
 	.super, .tagged_template_expression, .template_literal, .this_expression, .ts_non_null_expression]
 
-fn (mut c Checker) lint_unicorn_no_useless_spread(root C.TSNode, abs_path string, mut stats Stats) ![]Finding {
+fn (mut c Checker) lint_unicorn_no_useless_spread(root C.vt_node, abs_path string, mut stats Stats) ![]Finding {
 	sw := time.new_stopwatch()
 	mut findings := []Finding{}
 	t := c.es_tree(root, abs_path) or { return findings }

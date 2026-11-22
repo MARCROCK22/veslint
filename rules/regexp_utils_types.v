@@ -18,7 +18,7 @@ const rx_object_flag_array_literal = u32(16384)
 
 // rx_type ports getType of the tracker: the names of the type of an expression (sorted, each once),
 // none for null.
-fn (mut c Checker) rx_type(root C.TSNode, t &estree.EsTree, abs_path string, node int) ?[]string {
+fn (mut c Checker) rx_type(root C.vt_node, t &estree.EsTree, abs_path string, node int) ?[]string {
 	if node < 0 {
 		return none
 	}
@@ -132,24 +132,24 @@ fn rx_is_array_like_object(typ TypeResponse) bool {
 }
 
 // rx_is_string ports TypeTracker#isString.
-fn (mut c Checker) rx_is_string(root C.TSNode, t &estree.EsTree, abs_path string, node int) bool {
+fn (mut c Checker) rx_is_string(root C.vt_node, t &estree.EsTree, abs_path string, node int) bool {
 	type_names := c.rx_type(root, t, abs_path, node) or { return false }
 	return 'String' in type_names
 }
 
 // rx_maybe_string ports TypeTracker#maybeString: with typescript-eslint's parser (usedTS), isString.
-fn (mut c Checker) rx_maybe_string(root C.TSNode, t &estree.EsTree, abs_path string, node int) bool {
+fn (mut c Checker) rx_maybe_string(root C.vt_node, t &estree.EsTree, abs_path string, node int) bool {
 	return c.rx_is_string(root, t, abs_path, node)
 }
 
 // rx_is_regexp ports TypeTracker#isRegExp.
-fn (mut c Checker) rx_is_regexp(root C.TSNode, t &estree.EsTree, abs_path string, node int) bool {
+fn (mut c Checker) rx_is_regexp(root C.vt_node, t &estree.EsTree, abs_path string, node int) bool {
 	type_names := c.rx_type(root, t, abs_path, node) or { return false }
 	return 'RegExp' in type_names
 }
 
 // rx_types ports TypeTracker#getTypes.
-fn (mut c Checker) rx_types(root C.TSNode, t &estree.EsTree, abs_path string, node int) []string {
+fn (mut c Checker) rx_types(root C.vt_node, t &estree.EsTree, abs_path string, node int) []string {
 	return c.rx_type(root, t, abs_path, node) or { [] }
 }
 

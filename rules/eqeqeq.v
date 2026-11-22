@@ -31,7 +31,7 @@ fn eqe_options(options []json2.Any) !EqeOptions {
 	}
 }
 
-fn (mut c Checker) lint_eqeqeq(root C.TSNode, abs_path string, mut stats Stats) ![]Finding {
+fn (mut c Checker) lint_eqeqeq(root C.vt_node, abs_path string, mut stats Stats) ![]Finding {
 	sw := time.new_stopwatch()
 	o := eqe_options(c.rule_options(eqeqeq))!
 	mut findings := []Finding{}
@@ -61,14 +61,14 @@ fn (mut c Checker) lint_eqeqeq(root C.TSNode, abs_path string, mut stats Stats) 
 	return findings
 }
 
-fn (c &Checker) eqe_typeof_binary(left C.TSNode, right C.TSNode) bool {
+fn (c &Checker) eqe_typeof_binary(left C.vt_node, right C.vt_node) bool {
 	return (node_kind(left) == 'unary_expression' && operator_of(left) == 'typeof')
 		|| (node_kind(right) == 'unary_expression' && operator_of(right) == 'typeof')
 }
 
 // eqe_literal_type ports getLiteralType: `typeof value` of a Literal, 'string' for a template
 // without expressions (isStaticTemplateLiteral).
-fn (c &Checker) eqe_literal_type(n C.TSNode) string {
+fn (c &Checker) eqe_literal_type(n C.vt_node) string {
 	return match node_kind(n) {
 		'template_string' {
 			if named_children(n).any(node_kind(it) == 'template_substitution') { '' } else { 'string' }
@@ -83,14 +83,14 @@ fn (c &Checker) eqe_literal_type(n C.TSNode) string {
 	}
 }
 
-fn (c &Checker) eqe_same_type_literals(left C.TSNode, right C.TSNode) bool {
+fn (c &Checker) eqe_same_type_literals(left C.vt_node, right C.vt_node) bool {
 	a := c.eqe_literal_type(left)
 	return a != '' && a == c.eqe_literal_type(right)
 }
 
 // eqe_report reports at the operator, with a fix when both sides have the same type and a
 // suggestion otherwise.
-fn (mut c Checker) eqe_report(root C.TSNode, node C.TSNode, left C.TSNode, right C.TSNode, operator string, expected string, mut findings []Finding) ! {
+fn (mut c Checker) eqe_report(root C.vt_node, node C.vt_node, left C.vt_node, right C.vt_node, operator string, expected string, mut findings []Finding) ! {
 	tokens := c.source_tokens(root)
 	mut token := tokens.after(c.es_end(left), false) or { return }
 	for c.src[token.start..token.end] != operator {

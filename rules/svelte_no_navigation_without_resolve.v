@@ -44,7 +44,7 @@ struct SvnnwrLookup {
 struct SvnnwrContext {
 	e        SvscEs
 	b        SvscBridge
-	root     C.TSNode
+	root     C.vt_node
 	abs_path string
 	typed    bool
 	resolve  map[int]bool // view identifiers of the references to resolve and asset
@@ -626,7 +626,7 @@ fn (mut c Checker) svnnwr_has_rel_external(ctx &SvnnwrContext, start_tag int) bo
 	return false
 }
 
-fn (mut c Checker) lint_svelte_no_navigation_without_resolve(root C.TSNode, abs_path string, mut stats Stats) ![]Finding {
+fn (mut c Checker) lint_svelte_no_navigation_without_resolve(root C.vt_node, abs_path string, mut stats Stats) ![]Finding {
 	o := svnnwr_options(c.rule_options(svelte_no_navigation_without_resolve))!
 	if !c.is_svelte() && !c.src.contains('\$app/navigation') {
 		return []

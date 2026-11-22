@@ -44,7 +44,7 @@ struct TsnrIdentifier {
 	parent estree.NodeType
 }
 
-fn (mut c Checker) lint_no_redeclare(root C.TSNode, abs_path string, mut stats Stats) ![]Finding {
+fn (mut c Checker) lint_no_redeclare(root C.vt_node, abs_path string, mut stats Stats) ![]Finding {
 	sw := time.new_stopwatch()
 	o := tsnr_options(c.rule_options(no_redeclare))!
 	mut findings := []Finding{}
@@ -130,7 +130,7 @@ fn (mut c Checker) tsnr_is_checked_scope(t &estree.EsTree, tree &ScopeTree, s in
 }
 
 // tsnr_declarations ports iterateDeclarations.
-fn (mut c Checker) tsnr_declarations(root C.TSNode, t &estree.EsTree, tree &ScopeTree, identifiers map[int]int, v int, o TsnrOptions) []TsnrDeclaration {
+fn (mut c Checker) tsnr_declarations(root C.vt_node, t &estree.EsTree, tree &ScopeTree, identifiers map[int]int, v int, o TsnrOptions) []TsnrDeclaration {
 	variable := tree.variables[v]
 	mut out := []TsnrDeclaration{}
 	if o.builtin_globals && variable.eslint_implicit_global_setting in ['readonly', 'writable'] {
@@ -207,7 +207,7 @@ fn (mut c Checker) tsnr_declarations(root C.TSNode, t &estree.EsTree, tree &Scop
 // `/* global */` comment that declares the name (eslintExplicitGlobalComments), in order: the
 // name after `global`, preceded by a space or a comma and followed by the end, a space, a comma or
 // a colon (as many UTF-16 units as the name); without it, the first unit of the comment's value.
-fn (mut c Checker) tsnr_global_comment_locations(root C.TSNode, name string) map[int]int {
+fn (mut c Checker) tsnr_global_comment_locations(root C.vt_node, name string) map[int]int {
 	mut out := map[int]int{}
 	for comment in c.source_tokens(root).comments {
 		if comment.kind != .block_comment {

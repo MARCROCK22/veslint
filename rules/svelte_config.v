@@ -146,7 +146,7 @@ fn svcfg_parse(src string) SvelteConfigValues {
 	}
 	tree := parser.parse(src) or { return SvelteConfigValues{} }
 	defer {
-		treesitter.tree_delete(tree)
+		treesitter.rows_free(tree)
 	}
 	if treesitter.tree_has_error(tree) {
 		return SvelteConfigValues{}

@@ -80,7 +80,7 @@ fn (c &Checker) vpvm_assigns(t &estree.EsTree, expr int, bind_text string, name 
 		&& t.typ(right) == .identifier && (t.string_of(right, .name) or { '' }) == name
 }
 
-fn (mut c Checker) lint_vue_prefer_v_model(root C.TSNode, abs_path string, mut stats Stats) ![]Finding {
+fn (mut c Checker) lint_vue_prefer_v_model(root C.vt_node, abs_path string, mut stats Stats) ![]Finding {
 	if !c.vue_has_template() {
 		return []
 	}

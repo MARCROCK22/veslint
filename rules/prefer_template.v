@@ -9,7 +9,7 @@ const ptpl_messages = {
 	'unexpectedStringConcatenation': 'Unexpected string concatenation.'
 }
 
-fn (mut c Checker) lint_prefer_template(root C.TSNode, abs_path string, mut stats Stats) ![]Finding {
+fn (mut c Checker) lint_prefer_template(root C.vt_node, abs_path string, mut stats Stats) ![]Finding {
 	sw := time.new_stopwatch()
 	mut findings := []Finding{}
 	mut done := map[int]bool{}
@@ -58,11 +58,11 @@ fn (mut c Checker) lint_prefer_template(root C.TSNode, abs_path string, mut stat
 	return findings
 }
 
-fn ptpl_is_concatenation(n C.TSNode) bool {
+fn ptpl_is_concatenation(n C.vt_node) bool {
 	return node_kind(n) == 'binary_expression' && operator_of(n) == '+'
 }
 
-fn ptpl_operands(n C.TSNode) (C.TSNode, C.TSNode) {
+fn ptpl_operands(n C.vt_node) (C.vt_node, C.vt_node) {
 	left := unwrap_parens(node_field(n, 'left') or { n })
 	right := unwrap_parens(node_field(n, 'right') or { n })
 	return left, right
@@ -70,7 +70,7 @@ fn ptpl_operands(n C.TSNode) (C.TSNode, C.TSNode) {
 
 // ptpl_has_octal_escape ports hasOctalOrNonOctalDecimalEscapeSequence on the strings of the
 // concatenation: an escape `\1`…`\9`, or `\0` before a digit.
-fn (c &Checker) ptpl_has_octal_escape(n C.TSNode) bool {
+fn (c &Checker) ptpl_has_octal_escape(n C.vt_node) bool {
 	if ptpl_is_concatenation(n) {
 		left, right := ptpl_operands(n)
 		return c.ptpl_has_octal_escape(left) || c.ptpl_has_octal_escape(right)
@@ -99,7 +99,7 @@ fn (c &Checker) ptpl_has_octal_escape(n C.TSNode) bool {
 	return false
 }
 
-fn (c &Checker) ptpl_has_string(n C.TSNode) bool {
+fn (c &Checker) ptpl_has_string(n C.vt_node) bool {
 	if ptpl_is_concatenation(n) {
 		left, right := ptpl_operands(n)
 		return c.ptpl_has_string(right) || c.ptpl_has_string(left)
@@ -107,7 +107,7 @@ fn (c &Checker) ptpl_has_string(n C.TSNode) bool {
 	return node_kind(n) in ['string', 'template_string']
 }
 
-fn (c &Checker) ptpl_has_non_string(n C.TSNode) bool {
+fn (c &Checker) ptpl_has_non_string(n C.vt_node) bool {
 	if ptpl_is_concatenation(n) {
 		left, right := ptpl_operands(n)
 		return c.ptpl_has_non_string(right) || c.ptpl_has_non_string(left)
@@ -118,7 +118,7 @@ fn (c &Checker) ptpl_has_non_string(n C.TSNode) bool {
 // ptpl_starts_with_curly ports startsWithTemplateCurly: never for a string or a template (the
 // first quasi of a template is never empty, its range has the delimiters), always for anything
 // else.
-fn ptpl_starts_with_curly(n C.TSNode) bool {
+fn ptpl_starts_with_curly(n C.vt_node) bool {
 	if estree_binary_kind(n) == 'BinaryExpression' {
 		left, _ := ptpl_operands(n)
 		return ptpl_starts_with_curly(left)
@@ -126,7 +126,7 @@ fn ptpl_starts_with_curly(n C.TSNode) bool {
 	return node_kind(n) !in ['string', 'template_string']
 }
 
-fn ptpl_ends_with_curly(n C.TSNode) bool {
+fn ptpl_ends_with_curly(n C.vt_node) bool {
 	if estree_binary_kind(n) == 'BinaryExpression' {
 		_, right := ptpl_operands(n)
 		return ptpl_starts_with_curly(right)
@@ -135,7 +135,7 @@ fn ptpl_ends_with_curly(n C.TSNode) bool {
 }
 
 // ptpl_text_between ports getTextBetween: what is between the tokens from `start` to `end`.
-fn (mut c Checker) ptpl_text_between(n C.TSNode, start int, end int) string {
+fn (mut c Checker) ptpl_text_between(n C.vt_node, start int, end int) string {
 	tokens := c.source_tokens(n)
 	mut out := ''
 	mut previous := start
@@ -147,7 +147,7 @@ fn (mut c Checker) ptpl_text_between(n C.TSNode, start int, end int) string {
 }
 
 // ptpl_string_template ports the conversion of a string literal into a template.
-fn (c &Checker) ptpl_string_template(n C.TSNode) string {
+fn (c &Checker) ptpl_string_template(n C.vt_node) string {
 	raw := c.text(n)
 	quote := raw[0]
 	body := raw[1..raw.len - 1]
@@ -200,7 +200,7 @@ fn (c &Checker) ptpl_string_template(n C.TSNode) string {
 }
 
 // ptpl_template ports getTemplateLiteral.
-fn (mut c Checker) ptpl_template(n C.TSNode, before ?string, after ?string) string {
+fn (mut c Checker) ptpl_template(n C.vt_node, before ?string, after ?string) string {
 	kind := node_kind(n)
 	if kind == 'string' {
 		return c.ptpl_string_template(n)

@@ -68,7 +68,7 @@ fn (c &Checker) sndeib_is_subset(a SndeibAnd, b SndeibAnd) bool {
 	})
 }
 
-fn (mut c Checker) lint_svelte_no_dupe_else_if_blocks(root C.TSNode, abs_path string, mut stats Stats) ![]Finding {
+fn (mut c Checker) lint_svelte_no_dupe_else_if_blocks(root C.vt_node, abs_path string, mut stats Stats) ![]Finding {
 	if !c.is_svelte() {
 		return []
 	}

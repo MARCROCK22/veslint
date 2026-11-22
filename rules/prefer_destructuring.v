@@ -131,15 +131,15 @@ fn pd_options(options []json2.Any) !PdOptions {
 
 // PdCheck is a VariableDeclarator or an AssignmentExpression with `=`.
 struct PdCheck {
-	node           C.TSNode
+	node           C.vt_node
 	node_type      string
-	left           C.TSNode
-	right          ?C.TSNode
+	left           C.vt_node
+	right          ?C.vt_node
 	has_annotation bool
 	is_using       bool
 }
 
-fn (mut c Checker) lint_prefer_destructuring(root C.TSNode, abs_path string, mut stats Stats) ![]Finding {
+fn (mut c Checker) lint_prefer_destructuring(root C.vt_node, abs_path string, mut stats Stats) ![]Finding {
 	options := pd_options(c.rule_options(prefer_destructuring))!
 	mut sw := time.new_stopwatch()
 	mut checks := []PdCheck{}
@@ -149,7 +149,7 @@ fn (mut c Checker) lint_prefer_destructuring(root C.TSNode, abs_path string, mut
 		mut check := PdCheck{}
 		if node_kind(node) == 'variable_declarator' {
 			left := node_field(node, 'name') or { continue }
-			mut right := ?C.TSNode(none)
+			mut right := ?C.vt_node(none)
 			if value := node_field(node, 'value') {
 				right = unwrap_parens(value)
 			}
@@ -287,13 +287,13 @@ fn (mut c Checker) lint_prefer_destructuring(root C.TSNode, abs_path string, mut
 }
 
 // pd_is_member: the node is a MemberExpression, not the ChainExpression of an optional chain.
-fn pd_is_member(n C.TSNode) bool {
+fn pd_is_member(n C.vt_node) bool {
 	return is_member(n) && !is_estree_chain_root(n)
 }
 
 // pd_is_integer_index ports isArrayIndexAccess: the property is a Literal whose value is an
 // integer number.
-fn (c &Checker) pd_is_integer_index(member C.TSNode) bool {
+fn (c &Checker) pd_is_integer_index(member C.vt_node) bool {
 	if node_kind(member) != 'subscript_expression' {
 		return false
 	}
@@ -329,7 +329,7 @@ fn (mut c Checker) pd_is_any_or_iterable(t TypeResponse) !bool {
 
 // pd_fix ports fixIntoObjectDestructuring: `foo = object.foo` becomes `{foo} = object`, unless a
 // comment would be lost.
-fn (mut c Checker) pd_fix(declarator C.TSNode, object C.TSNode, name string) ?Fix {
+fn (mut c Checker) pd_fix(declarator C.vt_node, object C.vt_node, name string) ?Fix {
 	tokens := c.source_tokens(declarator)
 	if tokens.comments_inside(node_start(declarator), node_end(declarator)).len > tokens.comments_inside(node_start(object),
 		node_end(object)).len {

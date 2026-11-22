@@ -11,7 +11,7 @@ const vue_no_props_shadow_messages = {
 	'shadow': "Declaration of '{{name}}' shadows the prop with the same name."
 }
 
-fn (mut c Checker) lint_vue_no_props_shadow(root C.TSNode, abs_path string, mut stats Stats) ![]Finding {
+fn (mut c Checker) lint_vue_no_props_shadow(root C.vt_node, abs_path string, mut stats Stats) ![]Finding {
 	if !c.is_vue() {
 		return []
 	}

@@ -24,7 +24,7 @@ const pfsut_message_ids = PfMessageIds{
 // The rule's defaultOptions, with `ignoreCallableTypes: false` (what it gives the shared sort).
 const pfsut_default_options = '{"fallbackSort":{"type":"unsorted"},"newlinesInside":"newlinesBetween","specialCharacters":"keep","newlinesBetween":"ignore","partitionByNewLine":false,"partitionByComment":false,"useConfigurationIf":{},"type":"alphabetical","ignoreCase":true,"locales":"en-US","customGroups":[],"alphabet":"","order":"asc","groups":[],"ignoreCallableTypes":false}'
 
-fn (mut c Checker) lint_perfectionist_sort_union_types(root C.TSNode, abs_path string, mut stats Stats) ![]Finding {
+fn (mut c Checker) lint_perfectionist_sort_union_types(root C.vt_node, abs_path string, mut stats Stats) ![]Finding {
 	sw := time.new_stopwatch()
 	t := c.es_tree(root, abs_path) or { return []Finding{} }
 	mut ctx := c.pf_context(t, perfectionist_sort_union_types)

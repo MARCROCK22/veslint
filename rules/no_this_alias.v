@@ -25,7 +25,7 @@ fn nta_options(options []json2.Any) !NtaOptions {
 	}
 }
 
-fn (mut c Checker) lint_no_this_alias(root C.TSNode, abs_path string, mut stats Stats) ![]Finding {
+fn (mut c Checker) lint_no_this_alias(root C.vt_node, abs_path string, mut stats Stats) ![]Finding {
 	sw := time.new_stopwatch()
 	o := nta_options(c.rule_options(no_this_alias))!
 	mut findings := []Finding{}

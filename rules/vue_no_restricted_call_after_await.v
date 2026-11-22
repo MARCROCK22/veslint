@@ -74,7 +74,7 @@ fn vue_no_restricted_call_after_await_options(options []json2.Any) ![]VnrcaOptio
 	return out
 }
 
-fn (mut c Checker) lint_vue_no_restricted_call_after_await(root C.TSNode, abs_path string, mut stats Stats) ![]Finding {
+fn (mut c Checker) lint_vue_no_restricted_call_after_await(root C.vt_node, abs_path string, mut stats Stats) ![]Finding {
 	sw := time.new_stopwatch()
 	options := vue_no_restricted_call_after_await_options(c.rule_options(vue_no_restricted_call_after_await))!
 	mut findings := []Finding{}
@@ -163,7 +163,7 @@ fn (mut c Checker) lint_vue_no_restricted_call_after_await(root C.TSNode, abs_pa
 
 // vnrca_local_imports is getAllLocalImports: the relative sources of the import declarations, by
 // the path they resolve to from the file's directory.
-fn (mut c Checker) vnrca_local_imports(root C.TSNode, filename string) map[string][]string {
+fn (mut c Checker) vnrca_local_imports(root C.vt_node, filename string) map[string][]string {
 	mut out := map[string][]string{}
 	dir := os.dir(filename)
 	for statement in named_children(root) {

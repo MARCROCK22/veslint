@@ -10,7 +10,7 @@ const spsd_messages = {
 	'unexpected': 'Can use style directives instead.'
 }
 
-fn (mut c Checker) lint_svelte_prefer_style_directive(root C.TSNode, abs_path string, mut stats Stats) ![]Finding {
+fn (mut c Checker) lint_svelte_prefer_style_directive(root C.vt_node, abs_path string, mut stats Stats) ![]Finding {
 	if !c.is_svelte() {
 		return []
 	}

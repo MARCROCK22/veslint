@@ -53,7 +53,7 @@ struct VrvdpContext {
 	scope_end   int
 }
 
-fn (mut c Checker) lint_vue_require_valid_default_prop(root C.TSNode, abs_path string, mut stats Stats) ![]Finding {
+fn (mut c Checker) lint_vue_require_valid_default_prop(root C.vt_node, abs_path string, mut stats Stats) ![]Finding {
 	sw := time.new_stopwatch()
 	mut findings := []Finding{}
 	s := c.vue_script(root, abs_path) or { return findings }

@@ -34,7 +34,7 @@ fn nic_options(options []json2.Any) !NicOptions {
 	}
 }
 
-fn (mut c Checker) lint_no_implicit_coercion(root C.TSNode, abs_path string, mut stats Stats) ![]Finding {
+fn (mut c Checker) lint_no_implicit_coercion(root C.vt_node, abs_path string, mut stats Stats) ![]Finding {
 	sw := time.new_stopwatch()
 	o := nic_options(c.rule_options(no_implicit_coercion))!
 	mut findings := []Finding{}
@@ -75,7 +75,7 @@ fn first_text(c &Checker, t SourceToken) string {
 
 // nic_report reports the node with the recommendation as a fix (shouldFix) or a suggestion
 // (shouldSuggest), with a space when the token before would join its first token.
-fn (mut c Checker) nic_report(root C.TSNode, node C.TSNode, recommendation string, first_kind SourceTokenKind, first string, should_suggest bool, should_fix bool, mut findings []Finding) ! {
+fn (mut c Checker) nic_report(root C.vt_node, node C.vt_node, recommendation string, first_kind SourceTokenKind, first string, should_suggest bool, should_fix bool, mut findings []Finding) ! {
 	tokens := c.source_tokens(root)
 	start := node_start(node)
 	end := c.es_end(node)
@@ -106,7 +106,7 @@ fn (mut c Checker) nic_report(root C.TSNode, node C.TSNode, recommendation strin
 }
 
 // nic_is_numeric ports isNumeric: a number literal, or a call of Number, parseInt or parseFloat.
-fn (c &Checker) nic_is_numeric(n C.TSNode) bool {
+fn (c &Checker) nic_is_numeric(n C.vt_node) bool {
 	node := unwrap_parens(n)
 	if node_kind(node) == 'number' {
 		return !c.text(node).ends_with('n')
@@ -120,7 +120,7 @@ fn (c &Checker) nic_is_numeric(n C.TSNode) bool {
 }
 
 // nic_is_string_type ports isStringType: a string literal, a template, or a call of String.
-fn (c &Checker) nic_is_string_type(n C.TSNode) bool {
+fn (c &Checker) nic_is_string_type(n C.vt_node) bool {
 	node := unwrap_parens(n)
 	if node_kind(node) in ['string', 'template_string'] {
 		return true
@@ -132,7 +132,7 @@ fn (c &Checker) nic_is_string_type(n C.TSNode) bool {
 }
 
 // nic_is_empty_string ports isEmptyString: '' or a template that is ``.
-fn (c &Checker) nic_is_empty_string(n C.TSNode) bool {
+fn (c &Checker) nic_is_empty_string(n C.vt_node) bool {
 	node := unwrap_parens(n)
 	return match node_kind(node) {
 		'string' { (c.literal_name(node) or { 'x' }) == '' }
@@ -142,7 +142,7 @@ fn (c &Checker) nic_is_empty_string(n C.TSNode) bool {
 }
 
 // nic_is_number_one: the Literal 1.
-fn (c &Checker) nic_is_number_value(n C.TSNode, value f64) bool {
+fn (c &Checker) nic_is_number_value(n C.vt_node, value f64) bool {
 	node := unwrap_parens(n)
 	if node_kind(node) != 'number' || c.text(node).ends_with('n') {
 		return false
@@ -151,7 +151,7 @@ fn (c &Checker) nic_is_number_value(n C.TSNode, value f64) bool {
 	return v == value
 }
 
-fn (mut c Checker) nic_unary(root C.TSNode, o NicOptions, node C.TSNode, mut findings []Finding) ! {
+fn (mut c Checker) nic_unary(root C.vt_node, o NicOptions, node C.vt_node, mut findings []Finding) ! {
 	operator := operator_of(node)
 	argument := unwrap_parens(node_field(node, 'argument') or { return })
 	// `!!x`.
@@ -200,7 +200,7 @@ fn (mut c Checker) nic_unary(root C.TSNode, o NicOptions, node C.TSNode, mut fin
 	}
 }
 
-fn (mut c Checker) nic_binary(root C.TSNode, o NicOptions, node C.TSNode, mut findings []Finding) ! {
+fn (mut c Checker) nic_binary(root C.vt_node, o NicOptions, node C.vt_node, mut findings []Finding) ! {
 	if estree_binary_kind(node) != 'BinaryExpression' {
 		return
 	}
@@ -211,7 +211,7 @@ fn (mut c Checker) nic_binary(root C.TSNode, o NicOptions, node C.TSNode, mut fi
 	if '*' !in o.allow && o.number && operator == '*'
 		&& (c.nic_is_number_value(left, 1) || c.nic_is_number_value(right, 1))
 		&& !c.nic_is_fraction_of_one(node, right) {
-		mut operand := ?C.TSNode(none)
+		mut operand := ?C.vt_node(none)
 		if estree_binary_kind(right) != 'BinaryExpression' && !c.nic_is_numeric(right) {
 			operand = right
 		} else if estree_binary_kind(left) != 'BinaryExpression' && !c.nic_is_numeric(left) {
@@ -240,7 +240,7 @@ fn (mut c Checker) nic_binary(root C.TSNode, o NicOptions, node C.TSNode, mut fi
 
 // nic_is_fraction_of_one ports isMultiplyByFractionOfOne: `x * 1` as the left side of a `/`,
 // without parentheses.
-fn (mut c Checker) nic_is_fraction_of_one(node C.TSNode, right C.TSNode) bool {
+fn (mut c Checker) nic_is_fraction_of_one(node C.vt_node, right C.vt_node) bool {
 	if !c.nic_is_number_value(right, 1) {
 		return false
 	}
@@ -252,7 +252,7 @@ fn (mut c Checker) nic_is_fraction_of_one(node C.TSNode, right C.TSNode) bool {
 	return node_key(unwrap_parens(left)) == node_key(node) && !c.es_is_parenthesised(node)
 }
 
-fn (mut c Checker) nic_template(root C.TSNode, o NicOptions, node C.TSNode, mut findings []Finding) ! {
+fn (mut c Checker) nic_template(root C.vt_node, o NicOptions, node C.vt_node, mut findings []Finding) ! {
 	if !o.disallow_template_shorthand {
 		return
 	}
@@ -281,13 +281,13 @@ fn (mut c Checker) nic_template(root C.TSNode, o NicOptions, node C.TSNode, mut 
 		false, mut findings)!
 }
 
-fn node_parent_or(n C.TSNode) C.TSNode {
+fn node_parent_or(n C.vt_node) C.vt_node {
 	return treesitter.node_parent(n) or { n }
 }
 
 // nic_operand_text ports getOperandText: the text of the operand, in parentheses for a
 // SequenceExpression (whose commas would separate arguments).
-fn (c &Checker) nic_operand_text(n C.TSNode) string {
+fn (c &Checker) nic_operand_text(n C.vt_node) string {
 	text := c.es_text(n)
 	return if node_kind(n) == 'sequence_expression' { '(${text})' } else { text }
 }

@@ -115,7 +115,7 @@ fn (o SocnOptions) of(typ estree.NodeType) SocnOption {
 	}
 }
 
-fn (mut c Checker) lint_stylistic_object_curly_newline(root C.TSNode, abs_path string, mut stats Stats) ![]Finding {
+fn (mut c Checker) lint_stylistic_object_curly_newline(root C.vt_node, abs_path string, mut stats Stats) ![]Finding {
 	sw := time.new_stopwatch()
 	mut findings := []Finding{}
 	options := socn_options(c.rule_options(stylistic_object_curly_newline))!

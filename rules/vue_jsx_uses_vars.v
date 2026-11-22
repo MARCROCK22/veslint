@@ -10,14 +10,14 @@ import treesitter { named_children, node_end, node_field, node_kind, node_start 
 
 const vue_jsx_uses_vars_messages = map[string]string{}
 
-fn (mut c Checker) lint_vue_jsx_uses_vars(root C.TSNode, abs_path string, mut stats Stats) ![]Finding {
+fn (mut c Checker) lint_vue_jsx_uses_vars(root C.vt_node, abs_path string, mut stats Stats) ![]Finding {
 	return []
 }
 
 // vue_mark_jsx_uses_vars ports the rule's markVariableAsUsed: from the scope of each JSX opening
 // element (the module scope for the top level), the first variable of the name upward gets
 // eslintUsed.
-fn vue_mark_jsx_uses_vars(root C.TSNode, src string, mut tree ScopeTree) {
+fn vue_mark_jsx_uses_vars(root C.vt_node, src string, mut tree ScopeTree) {
 	mut stack := [root]
 	for stack.len > 0 {
 		n := stack.pop()
@@ -39,7 +39,7 @@ fn vue_mark_jsx_uses_vars(root C.TSNode, src string, mut tree ScopeTree) {
 
 // vue_jsx_element_variable_name is the name the rule marks: a JSXIdentifier's, or the leftmost
 // object of a JSXMemberExpression; none for a namespaced name.
-fn vue_jsx_element_variable_name(element C.TSNode, src string) ?string {
+fn vue_jsx_element_variable_name(element C.vt_node, src string) ?string {
 	mut name := node_field(element, 'name') or { return none }
 	for node_kind(name) in ['member_expression', 'nested_identifier'] {
 		name = node_field(name, 'object') or { return none }

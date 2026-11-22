@@ -27,7 +27,7 @@ fn ucfs_options(options []json2.Any) !bool {
 	return o.bool_value('checkArrowFunctions')!
 }
 
-fn (mut c Checker) lint_unicorn_consistent_function_scoping(root C.TSNode, abs_path string, mut stats Stats) ![]Finding {
+fn (mut c Checker) lint_unicorn_consistent_function_scoping(root C.vt_node, abs_path string, mut stats Stats) ![]Finding {
 	sw := time.new_stopwatch()
 	mut findings := []Finding{}
 	check_arrow_functions := ucfs_options(c.rule_options(unicorn_consistent_function_scoping))!
@@ -75,7 +75,7 @@ fn (mut c Checker) ucfs_acquire(tree &ScopeTree, t &estree.EsTree, node int) int
 }
 
 // ucfs_acquire_ts is ScopeManager#acquire for a tree-sitter node (the `node` of a definition).
-fn ucfs_acquire_ts(tree &ScopeTree, ts C.TSNode) int {
+fn ucfs_acquire_ts(tree &ScopeTree, ts C.vt_node) int {
 	scopes := tree.scopes_of_block(ts) or { return -1 }
 	return if scopes.len > 0 { scopes[0] } else { -1 }
 }

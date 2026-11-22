@@ -10,7 +10,7 @@ const vue_no_deprecated_dollar_scopedslots_api_messages = {
 	'deprecated': 'The `$scopedSlots` is deprecated.'
 }
 
-fn (mut c Checker) lint_vue_no_deprecated_dollar_scopedslots_api(root C.TSNode, abs_path string, mut stats Stats) ![]Finding {
+fn (mut c Checker) lint_vue_no_deprecated_dollar_scopedslots_api(root C.vt_node, abs_path string, mut stats Stats) ![]Finding {
 	// defineTemplateBodyVisitor gives no listener, not even the script's, outside a .vue file.
 	if !c.is_vue() {
 		return []

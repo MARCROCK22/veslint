@@ -2,7 +2,7 @@ module estree
 
 // Expressions and patterns.
 
-fn (mut c Converter) expr(n C.TSNode) int {
+fn (mut c Converter) expr(n C.vt_node) int {
 	kind := kind_of(n)
 	if c.sub_start >= 0 && c.sub_start == c.start(n) && c.sub_kind == kind {
 		return c.await_applied(n, kind)
@@ -313,7 +313,7 @@ fn (mut c Converter) expr(n C.TSNode) int {
 
 // sequence flattens nested unparenthesized sequences (TypeScript's comma operator is left
 // associative; a parenthesized sequence stays one element).
-fn (mut c Converter) sequence(n C.TSNode, mut out []int) {
+fn (mut c Converter) sequence(n C.vt_node, mut out []int) {
 	for k in c.kids(n) {
 		if !k.named {
 			continue
@@ -334,7 +334,7 @@ fn is_chain_kind(kind string) bool {
 // chain converts a member access, a call or a `!`, wrapping it in a ChainExpression when it ends
 // an optional chain. `continued`: the node is the object, callee or expression of another chain
 // element, which wraps the chain. Returns the node and whether its chain has a `?.`.
-fn (mut c Converter) chain(n C.TSNode, kind string, continued bool) (int, bool) {
+fn (mut c Converter) chain(n C.vt_node, kind string, continued bool) (int, bool) {
 	kids := c.kids(n)
 	mut optional := false
 	mut lhs_field := ''
@@ -408,7 +408,7 @@ fn (mut c Converter) chain(n C.TSNode, kind string, continued bool) (int, bool) 
 }
 
 // is_chain_element: a call is one unless it is a tagged template or `import(…)`.
-fn (mut c Converter) is_chain_element(n C.TSNode, kind string) bool {
+fn (mut c Converter) is_chain_element(n C.vt_node, kind string) bool {
 	if kind != 'call_expression' {
 		return true
 	}
@@ -419,7 +419,7 @@ fn (mut c Converter) is_chain_element(n C.TSNode, kind string) bool {
 }
 
 // elements converts the elements of an array or array pattern, with null for each hole.
-fn (mut c Converter) elements(n C.TSNode, pattern bool) []int {
+fn (mut c Converter) elements(n C.vt_node, pattern bool) []int {
 	mut out := []int{}
 	mut seen := false // an element since the last comma
 	for k in c.kids(n) {
@@ -439,7 +439,7 @@ fn (mut c Converter) elements(n C.TSNode, pattern bool) []int {
 	return out
 }
 
-fn (mut c Converter) object(n C.TSNode) int {
+fn (mut c Converter) object(n C.vt_node) int {
 	i := c.mkn(.object_expression, n)
 	mut props := []int{}
 	for k in c.kids(n) {
@@ -484,7 +484,7 @@ fn (mut c Converter) object(n C.TSNode) int {
 }
 
 // property_key converts the name of a property, method, enum member or import attribute.
-fn (mut c Converter) property_key(n C.TSNode) int {
+fn (mut c Converter) property_key(n C.vt_node) int {
 	match kind_of(n) {
 		'computed_property_name' {
 			inner := c.first_named_kid(n) or { return -1 }
@@ -499,7 +499,7 @@ fn (mut c Converter) property_key(n C.TSNode) int {
 	}
 }
 
-fn (mut c Converter) literal(n C.TSNode) int {
+fn (mut c Converter) literal(n C.vt_node) int {
 	raw := c.text(n)
 	i := c.mkn(.literal, n)
 	match kind_of(n) {
@@ -559,7 +559,7 @@ fn (mut c Converter) literal(n C.TSNode) int {
 }
 
 // template converts a template literal; in a tagged one an invalid escape makes `cooked` null.
-fn (mut c Converter) template(n C.TSNode, tagged bool) int {
+fn (mut c Converter) template(n C.vt_node, tagged bool) int {
 	i := c.mkn(.template_literal, n)
 	mut quasis := []int{}
 	mut exprs := []int{}
@@ -583,11 +583,11 @@ fn (mut c Converter) template(n C.TSNode, tagged bool) int {
 	return i
 }
 
-fn node_end_of(n C.TSNode) int {
-	return int(C.ts_node_end_byte(n))
+fn node_end_of(n C.vt_node) int {
+	return int(C.vt_node_end_byte(n))
 }
 
-fn (mut c Converter) template_element(n C.TSNode, start int, end int, raw_start int, raw_end int, tail bool, tagged bool) int {
+fn (mut c Converter) template_element(n C.vt_node, start int, end int, raw_start int, raw_end int, tail bool, tagged bool) int {
 	i := c.mk(.template_element, n, start, end)
 	raw := c.slice(raw_start, raw_end)
 	c.pbool(i, .tail, tail)
@@ -603,7 +603,7 @@ fn (mut c Converter) template_element(n C.TSNode, start int, end int, raw_start 
 }
 
 // pattern converts a binding or assignment target.
-fn (mut c Converter) pattern(n C.TSNode) int {
+fn (mut c Converter) pattern(n C.vt_node) int {
 	kind := kind_of(n)
 	match kind {
 		'identifier', 'undefined', 'shorthand_property_identifier_pattern' {
@@ -656,7 +656,7 @@ fn (mut c Converter) pattern(n C.TSNode) int {
 	}
 }
 
-fn (mut c Converter) pattern_property(n C.TSNode, kind string) int {
+fn (mut c Converter) pattern_property(n C.vt_node, kind string) int {
 	match kind {
 		'pair_pattern' {
 			kids := c.kids(n)
@@ -730,8 +730,8 @@ fn (mut c Converter) await_identifier(kids []Kid) ?int {
 		return i
 	}
 	mut leaf := arg.n
-	for C.ts_node_child_count(leaf) > 0 {
-		leaf = C.ts_node_child(leaf, 0)
+	for !C.vt_node_is_null(C.vt_node_first_child(leaf)) {
+		leaf = C.vt_node_first_child(leaf)
 	}
 	head_kind := match kind_of(leaf) {
 		'(' { 'parenthesized_expression' }
@@ -766,7 +766,7 @@ fn (mut c Converter) await_identifier(kids []Kid) ?int {
 }
 
 // await_applied converts the node after an `await` read as an identifier.
-fn (mut c Converter) await_applied(n C.TSNode, kind string) int {
+fn (mut c Converter) await_applied(n C.vt_node, kind string) int {
 	aw := c.sub_await
 	c.sub_start = -1
 	start := c.start(aw)

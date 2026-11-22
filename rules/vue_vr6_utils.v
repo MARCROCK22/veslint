@@ -109,7 +109,7 @@ fn vx6_is_within_type_node(t &estree.EsTree, node int) bool {
 // reference a variable `<script setup>` declares outside that argument (not an import; with
 // `allow_const_literals`, not a `const` initialized with a literal), out of type annotations, in
 // order. Each identifier is reported once per argument that contains it.
-fn (mut c Checker) vx6_referencing_locally(root C.TSNode, t &estree.EsTree, s &VueScript, arguments []int, allow_const_literals bool) []int {
+fn (mut c Checker) vx6_referencing_locally(root C.vt_node, t &estree.EsTree, s &VueScript, arguments []int, allow_const_literals bool) []int {
 	mut out := []int{}
 	if arguments.len == 0 {
 		return out

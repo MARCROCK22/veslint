@@ -11,7 +11,7 @@ const unaccr_messages = {
 	'no-accessor-recursion/error': 'Disallow recursive access to `this` within {{kind}}ters.'
 }
 
-fn (mut c Checker) lint_unicorn_no_accessor_recursion(root C.TSNode, abs_path string, mut stats Stats) ![]Finding {
+fn (mut c Checker) lint_unicorn_no_accessor_recursion(root C.vt_node, abs_path string, mut stats Stats) ![]Finding {
 	sw := time.new_stopwatch()
 	mut findings := []Finding{}
 	t := c.es_tree(root, abs_path) or { return findings }
@@ -47,7 +47,7 @@ fn (mut c Checker) lint_unicorn_no_accessor_recursion(root C.TSNode, abs_path st
 
 // unaccr_closest_function ports getClosestFunctionScope: the ESTree block of the closest function
 // scope of the node that is not an arrow function's, none when a class scope comes first.
-fn (mut c Checker) unaccr_closest_function(root C.TSNode, t &estree.EsTree, node int) ?int {
+fn (mut c Checker) unaccr_closest_function(root C.vt_node, t &estree.EsTree, node int) ?int {
 	ts := t.ts_node(node)?
 	tree := c.scope_tree(root)
 	for scope := tree.get_scope(ts); scope >= 0; scope = tree.scopes[scope].upper {

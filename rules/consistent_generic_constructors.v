@@ -33,13 +33,13 @@ fn cgc_option(options []json2.Any) !string {
 // AssignmentPattern of a function: its tree-sitter node, where it starts in ESTree, its type
 // annotation and its value.
 struct CgcSite {
-	node       C.TSNode
+	node       C.vt_node
 	start      int
-	annotation ?C.TSNode
-	value      C.TSNode
+	annotation ?C.vt_node
+	value      C.vt_node
 }
 
-fn (mut c Checker) lint_consistent_generic_constructors(root C.TSNode, abs_path string, mut stats Stats) ![]Finding {
+fn (mut c Checker) lint_consistent_generic_constructors(root C.vt_node, abs_path string, mut stats Stats) ![]Finding {
 	sw := time.new_stopwatch()
 	mode := cgc_option(c.rule_options(consistent_generic_constructors))!
 	mut findings := []Finding{}
@@ -111,7 +111,7 @@ fn (mut c Checker) lint_consistent_generic_constructors(root C.TSNode, abs_path 
 
 // cgc_site reads a node of the selector; none for the others (an abstract property, a parameter
 // without default, of an arrow function or with modifiers, which a TSParameterProperty holds).
-fn cgc_site(node C.TSNode) ?CgcSite {
+fn cgc_site(node C.vt_node) ?CgcSite {
 	value := node_field(node, 'value')?
 	annotation := node_field(node, 'type')
 	match node_kind(node) {
@@ -155,7 +155,7 @@ fn cgc_site(node C.TSNode) ?CgcSite {
 
 // cgc_reference_name is the name of a TSTypeReference whose typeName is an Identifier (`Foo` or
 // `Foo<T>`); none for any other type (`bigint` is a keyword for TypeScript).
-fn (c &Checker) cgc_reference_name(type_node C.TSNode) ?C.TSNode {
+fn (c &Checker) cgc_reference_name(type_node C.vt_node) ?C.vt_node {
 	name := if node_kind(type_node) == 'generic_type' {
 		node_field(type_node, 'name')?
 	} else {
@@ -169,7 +169,7 @@ fn (c &Checker) cgc_reference_name(type_node C.TSNode) ?C.TSNode {
 
 // cgc_is_builtin_array ports isBuiltInArray: one of the global typed arrays, not declared in the
 // file (isReferenceToGlobalFunction).
-fn (mut c Checker) cgc_is_builtin_array(root C.TSNode, name C.TSNode) bool {
+fn (mut c Checker) cgc_is_builtin_array(root C.vt_node, name C.vt_node) bool {
 	text := c.identifier_name(name)
 	if text !in cgc_builtin_arrays {
 		return false
@@ -216,7 +216,7 @@ fn (mut c Checker) cgc_annotation_offset(site CgcSite) int {
 
 // cgc_constructor_fixes: the annotation goes; its comments outside the type arguments, the type
 // arguments and, when the `new` has no parentheses, `()` follow the callee.
-fn (mut c Checker) cgc_constructor_fixes(annotation C.TSNode, type_arguments C.TSNode, callee C.TSNode) []Fix {
+fn (mut c Checker) cgc_constructor_fixes(annotation C.vt_node, type_arguments C.vt_node, callee C.vt_node) []Fix {
 	tokens := c.source_tokens(annotation)
 	mut has_parens := false
 	if next := tokens.after(node_end(callee), false) {

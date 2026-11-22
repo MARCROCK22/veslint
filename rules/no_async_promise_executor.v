@@ -9,7 +9,7 @@ const nape_messages = {
 	'async': 'Promise executor functions should not be async.'
 }
 
-fn (mut c Checker) lint_no_async_promise_executor(root C.TSNode, abs_path string, mut stats Stats) ![]Finding {
+fn (mut c Checker) lint_no_async_promise_executor(root C.vt_node, abs_path string, mut stats Stats) ![]Finding {
 	sw := time.new_stopwatch()
 	mut findings := []Finding{}
 	for node in c.nodes_of_kinds(root, ['new_expression'], []) {

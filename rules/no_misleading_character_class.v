@@ -41,7 +41,7 @@ mut:
 	findings []Finding
 }
 
-fn (mut c Checker) lint_no_misleading_character_class(root C.TSNode, abs_path string, mut stats Stats) ![]Finding {
+fn (mut c Checker) lint_no_misleading_character_class(root C.vt_node, abs_path string, mut stats Stats) ![]Finding {
 	sw := time.new_stopwatch()
 	mut st := NmccState{
 		allow_escape: nmcc_options(c.rule_options(no_misleading_character_class))!
@@ -58,7 +58,7 @@ fn (mut c Checker) lint_no_misleading_character_class(root C.TSNode, abs_path st
 	}
 	for traced in c.es_global_references(root, trace) {
 		stats.checked++
-		mut args := []C.TSNode{}
+		mut args := []C.vt_node{}
 		if arguments := node_field(traced.node, 'arguments') {
 			if node_kind(arguments) == 'arguments' {
 				args = named_children(arguments).filter(node_kind(it) != 'comment').map(unwrap_parens(it))
@@ -129,7 +129,7 @@ fn nmcc_valid_with_unicode_flag(ecma_version int, pattern []u16) bool {
 
 // nmcc_constructor_fix is the unicode fixer of `RegExp(…)`: a `"u"` argument, or a `u` at the
 // end of a string or template of flags.
-fn (mut c Checker) nmcc_constructor_fix(root C.TSNode, call C.TSNode, args []C.TSNode, pattern []u16, ecma_version int) ?Fix {
+fn (mut c Checker) nmcc_constructor_fix(root C.vt_node, call C.vt_node, args []C.vt_node, pattern []u16, ecma_version int) ?Fix {
 	if !nmcc_valid_with_unicode_flag(ecma_version, pattern) {
 		return none
 	}
@@ -406,7 +406,7 @@ fn (st &NmccState) find(ast &regexpp.Ast, kind string, chars []int, unfiltered [
 }
 
 // nmcc_verify ports verify.
-fn (mut c Checker) nmcc_verify(node C.TSNode, pattern []u16, flags string, fix ?Fix, mut st NmccState) {
+fn (mut c Checker) nmcc_verify(node C.vt_node, pattern []u16, flags string, fix ?Fix, mut st NmccState) {
 	ast := regexpp.parse_pattern(pattern, 0, pattern.len, es_regex_pattern_flags(flags),
 		regexpp.Options{}) or { return }
 	kind := node_kind(node)

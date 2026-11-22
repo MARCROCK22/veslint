@@ -374,7 +374,7 @@ fn (mut c Checker) bases_of(symbol_id int) ![]TypeResponse {
 // which tree-sitter sometimes puts at the end of a node). If there is none (tree-sitter and
 // TypeScript disagree, or the code does not compile), the node has no type and rules report nothing.
 
-fn node_key(n C.TSNode) u64 {
+fn node_key(n C.vt_node) u64 {
 	return (u64(node_start(n)) << 32) | u64(node_end(n))
 }
 
@@ -384,7 +384,7 @@ fn node_key(n C.TSNode) u64 {
 // count as an unanalyzed node.
 struct Span {
 	key      u64
-	first    C.TSNode
+	first    C.vt_node
 	end      int
 	kind     u32
 	optional bool
@@ -394,7 +394,7 @@ struct Span {
 	no_type bool
 }
 
-fn node_span(n C.TSNode) Span {
+fn node_span(n C.vt_node) Span {
 	return Span{
 		key:   node_key(n)
 		first: n
@@ -403,7 +403,7 @@ fn node_span(n C.TSNode) Span {
 }
 
 // resolve_node_types requests the type of each node of `nodes` in a single request.
-fn (mut c Checker) resolve_node_types(nodes []C.TSNode, abs_path string, mut stats Stats) ! {
+fn (mut c Checker) resolve_node_types(nodes []C.vt_node, abs_path string, mut stats Stats) ! {
 	c.resolve_spans(nodes.map(node_span(it)), abs_path, mut stats)!
 }
 
@@ -602,7 +602,7 @@ fn (mut c Checker) request_key_types(keys []u64, nodes []tsgo.AstNode) !(int, in
 // late_type is the type of a node requested with no_type, asked now (the null type when it has no
 // tsgo node): for the nodes whose type a rule seldom needs. Unanalyzed ones count in
 // late_unmatched.
-fn (mut c Checker) late_type(n C.TSNode) !TypeResponse {
+fn (mut c Checker) late_type(n C.vt_node) !TypeResponse {
 	key := node_key(n)
 	if !c.nodes.typed(key) {
 		node := c.nodes.ast_node(key) or { return TypeResponse{} }
@@ -743,7 +743,7 @@ fn (mut c Checker) declaration_ast(path string) !tsgo.AstTree {
 
 // contextual_type ports checker.getContextualType for a node requested with resolve_node_types.
 // Without a contextual type (or without a tsgo node) it returns the null type.
-fn (mut c Checker) contextual_type(n C.TSNode) !TypeResponse {
+fn (mut c Checker) contextual_type(n C.vt_node) !TypeResponse {
 	key := node_key(n)
 	if key !in c.contextual_cache {
 		handle := c.nodes.handle(key) or { return TypeResponse{} }
@@ -763,7 +763,7 @@ const syntax_kind_import_type = u32(207)
 // the node with the range of the call is not one TypeScript resolves: the type `import('./x')`,
 // which is a call for the grammar, or code tree-sitter and TypeScript read differently, which
 // counts as a node that is not analyzed.
-fn (mut c Checker) resolved_signature(call C.TSNode) !SignatureResponse {
+fn (mut c Checker) resolved_signature(call C.vt_node) !SignatureResponse {
 	key := node_key(call)
 	if key !in c.resolved_cache {
 		handle := c.nodes.handle(key) or { return SignatureResponse{} }
@@ -794,7 +794,7 @@ fn (mut c Checker) type_predicate(signature_id int) !tsgo.TypePredicateResponse 
 }
 
 // ts_kind is the SyntaxKind of the tsgo node matched with `n` (0 if there is none).
-fn (c &Checker) ts_kind(n C.TSNode) u32 {
+fn (c &Checker) ts_kind(n C.vt_node) u32 {
 	return c.nodes.kind(node_key(n))
 }
 
@@ -811,7 +811,7 @@ enum AwaitReading {
 
 // await_reading gives TypeScript's reading of an await_expression requested with resolve_spans.
 // Without a tsgo counterpart it counts as an `await`.
-fn (c &Checker) await_reading(n C.TSNode) AwaitReading {
+fn (c &Checker) await_reading(n C.vt_node) AwaitReading {
 	kind := c.ts_kind(n)
 	return if kind == 0 || kind == syntax_kind_await_expression {
 		.await_expr
@@ -829,7 +829,7 @@ fn (c &Checker) await_reading(n C.TSNode) AwaitReading {
 // await_keyword_span requests the type of the `await` token of an await_expression as an
 // identifier, in case TypeScript reads it that way; a real `await` has no counterpart and does
 // not count.
-fn await_keyword_span(n C.TSNode) ?Span {
+fn await_keyword_span(n C.vt_node) ?Span {
 	keyword := await_keyword(n)?
 	return Span{
 		key:      node_key(keyword)
@@ -840,7 +840,7 @@ fn await_keyword_span(n C.TSNode) ?Span {
 }
 
 // await_keyword is the `await` token of an await_expression.
-fn await_keyword(n C.TSNode) ?C.TSNode {
+fn await_keyword(n C.vt_node) ?C.vt_node {
 	for child in children(n) {
 		if node_kind(child) == 'await' {
 			return child
@@ -851,7 +851,7 @@ fn await_keyword(n C.TSNode) ?C.TSNode {
 
 // range_span requests the type of the tsgo node from the first token of `first` to the end of
 // `last` (for example, the comma expression `a, b` of `await [a, b]`, not a tree-sitter node).
-fn range_span(first C.TSNode, last C.TSNode) Span {
+fn range_span(first C.vt_node, last C.vt_node) Span {
 	return Span{
 		key:   (u64(node_start(first)) << 32) | u64(node_end(last))
 		first: first
@@ -860,7 +860,7 @@ fn range_span(first C.TSNode, last C.TSNode) Span {
 }
 
 // inside_type_query: the node is part of the operand of a `typeof` in a type.
-fn inside_type_query(n C.TSNode) bool {
+fn inside_type_query(n C.vt_node) bool {
 	mut node := n
 	for _ in 0 .. max_expression_depth {
 		node = node_parent(node) or { return false }
@@ -883,7 +883,7 @@ fn inside_type_query(n C.TSNode) bool {
 // type_identifier and `undefined` as a literal_type, but TypeScript has keyword types for them, the
 // only nodes with their range. Every rule must request type nodes this way: the first request of a
 // range in a file wins.
-fn (c &Checker) type_node_span(n C.TSNode) Span {
+fn (c &Checker) type_node_span(n C.vt_node) Span {
 	kind := match node_kind(n) {
 		'type_identifier', 'nested_type_identifier', 'generic_type' {
 			if node_kind(n) == 'type_identifier' && c.text(n) == 'bigint' {
@@ -935,7 +935,7 @@ fn (c &Checker) check_typed(key u64) {
 }
 
 // node_type is the type of a node requested with resolve_node_types, if tsgo knows it.
-fn (c &Checker) node_type(n C.TSNode) ?TypeResponse {
+fn (c &Checker) node_type(n C.vt_node) ?TypeResponse {
 	c.check_typed(node_key(n))
 	t := c.nodes.node_type(node_key(n)) or { return none }
 	if t.is_null() {

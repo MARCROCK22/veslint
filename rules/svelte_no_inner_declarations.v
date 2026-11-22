@@ -14,7 +14,7 @@ fn svnid_options(options []json2.Any) !NidOptions {
 	}
 }
 
-fn (mut c Checker) lint_svelte_no_inner_declarations(root C.TSNode, abs_path string, mut stats Stats) ![]Finding {
+fn (mut c Checker) lint_svelte_no_inner_declarations(root C.vt_node, abs_path string, mut stats Stats) ![]Finding {
 	return c.nid_lint(root, svnid_options(c.rule_options(svelte_no_inner_declarations))!, mut
 		stats)
 }

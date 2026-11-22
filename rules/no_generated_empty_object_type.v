@@ -11,7 +11,7 @@ const ngeo_messages = {
 	'noGeneratedEmptyObjectType': 'This type resolves to `{}`, the empty object type. This was likely not intentional.'
 }
 
-fn (mut c Checker) lint_no_generated_empty_object_type(root C.TSNode, abs_path string, mut stats Stats) ![]Finding {
+fn (mut c Checker) lint_no_generated_empty_object_type(root C.vt_node, abs_path string, mut stats Stats) ![]Finding {
 	mut sw := time.new_stopwatch()
 	mut findings := []Finding{}
 	t := c.es_tree(root, abs_path) or { return findings }

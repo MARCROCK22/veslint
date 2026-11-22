@@ -12,7 +12,7 @@ const vue_no_shadow_native_events_messages = {
 	'violation': 'Avoid shadowing the native event "{{ name }}".'
 }
 
-fn (mut c Checker) lint_vue_no_shadow_native_events(root C.TSNode, abs_path string, mut stats Stats) ![]Finding {
+fn (mut c Checker) lint_vue_no_shadow_native_events(root C.vt_node, abs_path string, mut stats Stats) ![]Finding {
 	if !c.is_vue() {
 		return []
 	}
@@ -88,7 +88,7 @@ fn (mut c Checker) lint_vue_no_shadow_native_events(root C.TSNode, abs_path stri
 // vnsne_setup_function is the rule's onSetupFunctionEnter: the read references of the emit or the
 // context (no default value skipped; another kind of parameter is a context that references
 // nothing).
-fn (mut c Checker) vnsne_setup_function(root C.TSNode, t &estree.EsTree, setup int, owner int, mut contexts map[int]VueSetupContext) {
+fn (mut c Checker) vnsne_setup_function(root C.vt_node, t &estree.EsTree, setup int, owner int, mut contexts map[int]VueSetupContext) {
 	params := t.list(setup, .params) or { return }
 	if params.len < 2 || t.typ(params[1]) in [.rest_element, .array_pattern] {
 		return
@@ -113,7 +113,7 @@ fn (mut c Checker) vnsne_setup_function(root C.TSNode, t &estree.EsTree, setup i
 
 // vnsne_call is the rule's callVisitor with the setup context of the call's Vue object or of the
 // Program (`has_ctx` false when there is none).
-fn (mut c Checker) vnsne_call(root C.TSNode, t &estree.EsTree, call int, ctx VueSetupContext, has_ctx bool, mut findings []Finding) {
+fn (mut c Checker) vnsne_call(root C.vt_node, t &estree.EsTree, call int, ctx VueSetupContext, has_ctx bool, mut findings []Finding) {
 	if vue_name_param(t, call) == none {
 		return
 	}

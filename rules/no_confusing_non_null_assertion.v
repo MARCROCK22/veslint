@@ -16,7 +16,7 @@ const ncnna_messages = {
 	'wrapUpLeft':         'Wrap the left-hand side in parentheses to avoid confusion with "{{operator}}" operator.'
 }
 
-fn (mut c Checker) lint_no_confusing_non_null_assertion(root C.TSNode, abs_path string, mut stats Stats) ![]Finding {
+fn (mut c Checker) lint_no_confusing_non_null_assertion(root C.vt_node, abs_path string, mut stats Stats) ![]Finding {
 	sw := time.new_stopwatch()
 	mut findings := []Finding{}
 	mut checked := 0

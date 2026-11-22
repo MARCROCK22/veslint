@@ -22,7 +22,7 @@ const pfsni_message_ids = PfMessageIds{
 	unexpected_order:       'unexpectedNamedImportsOrder'
 }
 
-fn (mut c Checker) lint_perfectionist_sort_named_imports(root C.TSNode, abs_path string, mut stats Stats) ![]Finding {
+fn (mut c Checker) lint_perfectionist_sort_named_imports(root C.vt_node, abs_path string, mut stats Stats) ![]Finding {
 	sw := time.new_stopwatch()
 	t := c.es_tree(root, abs_path) or { return []Finding{} }
 	mut ctx := c.pf_context(t, perfectionist_sort_named_imports)

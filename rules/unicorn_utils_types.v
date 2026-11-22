@@ -15,7 +15,7 @@ import treesitter { node_end }
 
 // UnCtx is the file the helpers look at, and what they remember of it while a rule runs.
 struct UnCtx {
-	root     C.TSNode
+	root     C.vt_node
 	t        &estree.EsTree
 	tokens   &SourceTokens
 	abs_path string
@@ -27,7 +27,7 @@ mut:
 }
 
 // un_ctx is the UnCtx of the file of the tree.
-fn (mut c Checker) un_ctx(root C.TSNode, t &estree.EsTree, tokens &SourceTokens, abs_path string) UnCtx {
+fn (mut c Checker) un_ctx(root C.vt_node, t &estree.EsTree, tokens &SourceTokens, abs_path string) UnCtx {
 	return unsafe {
 		UnCtx{
 			root:     root
@@ -72,7 +72,7 @@ fn un_def_names_itself(def ScopeDefinition) bool {
 }
 
 // un_es_of is the ESTree node of a tree-sitter node of the file, -1 if none.
-fn (mut c Checker) un_es_of(ctx &UnCtx, n ?C.TSNode) int {
+fn (mut c Checker) un_es_of(ctx &UnCtx, n ?C.vt_node) int {
 	node := n or { return -1 }
 	return c.es_index_of(ctx.t, node) or { -1 }
 }

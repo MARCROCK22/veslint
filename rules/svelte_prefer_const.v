@@ -42,7 +42,7 @@ fn svpc_options(options []json2.Any) !SvpcOptions {
 	}
 }
 
-fn (mut c Checker) lint_svelte_prefer_const(root C.TSNode, abs_path string, mut stats Stats) ![]Finding {
+fn (mut c Checker) lint_svelte_prefer_const(root C.vt_node, abs_path string, mut stats Stats) ![]Finding {
 	o := svpc_options(c.rule_options(svelte_prefer_const))!
 	return c.pconst_lint(root, o.core, o.excluded_runes, mut stats)
 }

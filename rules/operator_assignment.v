@@ -23,7 +23,7 @@ fn oa_never(options []json2.Any) !bool {
 	return error('the option of `${operator_assignment}` must be "always" or "never"')
 }
 
-fn (mut c Checker) lint_operator_assignment(root C.TSNode, abs_path string, mut stats Stats) ![]Finding {
+fn (mut c Checker) lint_operator_assignment(root C.vt_node, abs_path string, mut stats Stats) ![]Finding {
 	sw := time.new_stopwatch()
 	never := oa_never(c.rule_options(operator_assignment))!
 	mut findings := []Finding{}
@@ -42,7 +42,7 @@ fn (mut c Checker) lint_operator_assignment(root C.TSNode, abs_path string, mut 
 
 // oa_can_be_fixed ports canBeFixed: an identifier, or a member of an identifier or `this` with a
 // name or a literal key.
-fn oa_can_be_fixed(n C.TSNode) bool {
+fn oa_can_be_fixed(n C.vt_node) bool {
 	node := unwrap_parens(n)
 	match node_kind(node) {
 		'identifier', 'undefined' {
@@ -69,7 +69,7 @@ fn oa_can_be_fixed(n C.TSNode) bool {
 }
 
 // oa_operator_token is the token of the operator between the two sides.
-fn (mut c Checker) oa_operator_token(root C.TSNode, left C.TSNode, operator string) ?SourceToken {
+fn (mut c Checker) oa_operator_token(root C.vt_node, left C.vt_node, operator string) ?SourceToken {
 	tokens := c.source_tokens(root)
 	mut token := tokens.after(c.es_end(unwrap_parens(left)), false)?
 	for c.src[token.start..token.end] != operator {
@@ -78,7 +78,7 @@ fn (mut c Checker) oa_operator_token(root C.TSNode, left C.TSNode, operator stri
 	return token
 }
 
-fn (mut c Checker) oa_verify(root C.TSNode, node C.TSNode, mut findings []Finding) {
+fn (mut c Checker) oa_verify(root C.vt_node, node C.vt_node, mut findings []Finding) {
 	left := node_field(node, 'left') or { return }
 	expr := unwrap_parens(node_field(node, 'right') or { return })
 	if estree_binary_kind(expr) != 'BinaryExpression' {
@@ -125,7 +125,7 @@ fn (mut c Checker) oa_verify(root C.TSNode, node C.TSNode, mut findings []Findin
 	}
 }
 
-fn (mut c Checker) oa_prohibit(root C.TSNode, node C.TSNode, mut findings []Finding) {
+fn (mut c Checker) oa_prohibit(root C.vt_node, node C.vt_node, mut findings []Finding) {
 	operator := operator_of(node)
 	if operator in ['&&=', '||=', '??='] {
 		return

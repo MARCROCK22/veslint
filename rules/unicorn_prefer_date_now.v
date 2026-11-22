@@ -16,7 +16,7 @@ fn updn_is_new_date(t &estree.EsTree, node int) bool {
 	return un_is_new(t, node, names: ['Date'], arguments_length: 0)
 }
 
-fn (mut c Checker) lint_unicorn_prefer_date_now(root C.TSNode, abs_path string, mut stats Stats) ![]Finding {
+fn (mut c Checker) lint_unicorn_prefer_date_now(root C.vt_node, abs_path string, mut stats Stats) ![]Finding {
 	sw := time.new_stopwatch()
 	mut findings := []Finding{}
 	t := c.es_tree(root, abs_path) or { return findings }

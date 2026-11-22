@@ -12,7 +12,7 @@ const vue_no_deprecated_delete_set_messages = {
 	'deprecated': 'The `$delete`, `$set` is deprecated.'
 }
 
-fn (mut c Checker) lint_vue_no_deprecated_delete_set(root C.TSNode, abs_path string, mut stats Stats) ![]Finding {
+fn (mut c Checker) lint_vue_no_deprecated_delete_set(root C.vt_node, abs_path string, mut stats Stats) ![]Finding {
 	sw := time.new_stopwatch()
 	mut findings := []Finding{}
 	s := c.vue_script(root, abs_path) or { return findings }
@@ -80,7 +80,7 @@ fn (mut c Checker) lint_vue_no_deprecated_delete_set(root C.TSNode, abs_path str
 // vue_is_deprecated_delete_set_call is getVueDeprecatedCallExpression: the identifier is in the
 // callee `x.y` of a call, and is `$set` or `$delete` with `this` as `x`, or `set` or `delete` with
 // `Vue` as `x`.
-fn (mut c Checker) vue_is_deprecated_delete_set_call(root C.TSNode, t &estree.EsTree, node int) bool {
+fn (mut c Checker) vue_is_deprecated_delete_set_call(root C.vt_node, t &estree.EsTree, node int) bool {
 	member := t.nodes[node].parent
 	if member < 0 || t.typ(member) != .member_expression {
 		return false

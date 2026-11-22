@@ -13,7 +13,7 @@ const bsv_messages = {
 const bsv_scope_kinds = ['statement_block', 'for_statement', 'for_in_statement', 'switch_statement',
 	'catch_clause', 'class_static_block']
 
-fn (mut c Checker) lint_block_scoped_var(root C.TSNode, abs_path string, mut stats Stats) ![]Finding {
+fn (mut c Checker) lint_block_scoped_var(root C.vt_node, abs_path string, mut stats Stats) ![]Finding {
 	sw := time.new_stopwatch()
 	mut findings := []Finding{}
 	lines := offsets.line_starts(c.src)

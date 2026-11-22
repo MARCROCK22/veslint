@@ -73,7 +73,7 @@ fn sa_min_items(value json2.Any) int {
 	return max_i32
 }
 
-fn (mut c Checker) lint_stylistic_array_bracket_newline(root C.TSNode, abs_path string, mut stats Stats) ![]Finding {
+fn (mut c Checker) lint_stylistic_array_bracket_newline(root C.vt_node, abs_path string, mut stats Stats) ![]Finding {
 	mut findings := []Finding{}
 	given := c.rule_options(vue_wrap_array_bracket_newline)
 	option := sabn_option(if given.len > 0 { given[0] } else { json2.Any(json2.Null{}) })
@@ -215,7 +215,7 @@ fn sa_truthy(value json2.Any) bool {
 	}
 }
 
-fn (mut c Checker) lint_stylistic_array_element_newline(root C.TSNode, abs_path string, mut stats Stats) ![]Finding {
+fn (mut c Checker) lint_stylistic_array_element_newline(root C.vt_node, abs_path string, mut stats Stats) ![]Finding {
 	mut findings := []Finding{}
 	expression_option, pattern_option := saen_options(c.rule_options(vue_wrap_array_element_newline),
 		c.vue_wrap_core)

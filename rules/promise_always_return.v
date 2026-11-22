@@ -156,7 +156,7 @@ mut:
 	branch_info_map map[int]PrmBranch
 }
 
-fn (mut c Checker) lint_promise_always_return(root C.TSNode, abs_path string, mut stats Stats) ![]Finding {
+fn (mut c Checker) lint_promise_always_return(root C.vt_node, abs_path string, mut stats Stats) ![]Finding {
 	sw := time.new_stopwatch()
 	o := prm_always_return_options(c.rule_options(promise_always_return))!
 	mut findings := []Finding{}

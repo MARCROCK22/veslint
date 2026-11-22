@@ -10,7 +10,7 @@ const mufc_messages = {
 	'uppercaseFirstClassLeter': 'Start this name with an upper-case letter.'
 }
 
-fn (mut c Checker) lint_marcrock_uppercase_first_class_letter(root C.TSNode, abs_path string, mut stats Stats) ![]Finding {
+fn (mut c Checker) lint_marcrock_uppercase_first_class_letter(root C.vt_node, abs_path string, mut stats Stats) ![]Finding {
 	sw := time.new_stopwatch()
 	mut findings := []Finding{}
 	t := c.es_tree(root, abs_path) or { return findings }

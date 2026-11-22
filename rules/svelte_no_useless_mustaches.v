@@ -51,7 +51,7 @@ fn snum_unescape(text string) string {
 	return out.bytestr()
 }
 
-fn (mut c Checker) lint_svelte_no_useless_mustaches(root C.TSNode, abs_path string, mut stats Stats) ![]Finding {
+fn (mut c Checker) lint_svelte_no_useless_mustaches(root C.vt_node, abs_path string, mut stats Stats) ![]Finding {
 	options := snum_options(c.rule_options(svelte_no_useless_mustaches))!
 	if !c.is_svelte() {
 		return []

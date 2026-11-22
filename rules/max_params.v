@@ -43,7 +43,7 @@ fn tsmp_options(options []json2.Any) !TsmpOptions {
 	}
 }
 
-fn (mut c Checker) lint_max_params(root C.TSNode, abs_path string, mut stats Stats) ![]Finding {
+fn (mut c Checker) lint_max_params(root C.vt_node, abs_path string, mut stats Stats) ![]Finding {
 	sw := time.new_stopwatch()
 	o := tsmp_options(c.rule_options(max_params))!
 	mut findings := []Finding{}

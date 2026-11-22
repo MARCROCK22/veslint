@@ -43,7 +43,7 @@ fn (c &Checker) svncmn_report(message_id string, data map[string]string) Finding
 	}
 }
 
-fn (mut c Checker) lint_svelte_no_conflicting_module_names(root C.TSNode, abs_path string, mut stats Stats) ![]Finding {
+fn (mut c Checker) lint_svelte_no_conflicting_module_names(root C.vt_node, abs_path string, mut stats Stats) ![]Finding {
 	path := c.sv_file_path(abs_path)
 	if path.ends_with('.svelte') {
 		if !os.is_file(path) {

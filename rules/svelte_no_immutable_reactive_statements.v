@@ -142,7 +142,7 @@ fn (c &Checker) svnirs_has_write_reference(pattern svelte.Ref, mut ctx SvnirsSta
 	return false
 }
 
-fn (mut c Checker) lint_svelte_no_immutable_reactive_statements(root C.TSNode, abs_path string, mut stats Stats) ![]Finding {
+fn (mut c Checker) lint_svelte_no_immutable_reactive_statements(root C.vt_node, abs_path string, mut stats Stats) ![]Finding {
 	if !c.svsc_runes_off(abs_path) {
 		return []
 	}

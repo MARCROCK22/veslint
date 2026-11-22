@@ -6,6 +6,6 @@ module rules
 
 const ubr_messages = map[string]string{}
 
-fn (mut c Checker) lint_unicorn_better_regex(root C.TSNode, abs_path string, mut stats Stats) ![]Finding {
+fn (mut c Checker) lint_unicorn_better_regex(root C.vt_node, abs_path string, mut stats Stats) ![]Finding {
 	return []Finding{}
 }

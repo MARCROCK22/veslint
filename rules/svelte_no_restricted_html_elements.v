@@ -32,7 +32,7 @@ fn snrhe_options(options []json2.Any) ![]SnrheOption {
 	return out
 }
 
-fn (mut c Checker) lint_svelte_no_restricted_html_elements(root C.TSNode, abs_path string, mut stats Stats) ![]Finding {
+fn (mut c Checker) lint_svelte_no_restricted_html_elements(root C.vt_node, abs_path string, mut stats Stats) ![]Finding {
 	options := snrhe_options(c.rule_options(svelte_no_restricted_html_elements))!
 	if !c.is_svelte() || options.len == 0 {
 		return []

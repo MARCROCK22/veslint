@@ -70,13 +70,13 @@ mut:
 	hang    bool
 }
 
-fn (mut c Checker) lint_seyfert_no_hanging_middleware(root C.TSNode, abs_path string, mut stats Stats) ![]Finding {
+fn (mut c Checker) lint_seyfert_no_hanging_middleware(root C.vt_node, abs_path string, mut stats Stats) ![]Finding {
 	mut sw := time.new_stopwatch()
 	// Function and arrow function expressions (generators too) that are the first argument of a
 	// call of `createMiddleware` (an Identifier, or the name of a non-computed member).
-	mut functions := []C.TSNode{}
-	mut callees := []C.TSNode{}
-	mut asked := []C.TSNode{}
+	mut functions := []C.vt_node{}
+	mut callees := []C.vt_node{}
+	mut asked := []C.vt_node{}
 	for function in c.nodes_of_kinds(root, ['arrow_function', 'function_expression', 'function',
 		'generator_function'], []) {
 		callee := c.sy_nhm_middleware_callee(function) or { continue }
@@ -114,7 +114,7 @@ fn (mut c Checker) lint_seyfert_no_hanging_middleware(root C.TSNode, abs_path st
 
 // sy_nhm_middleware_callee is the callee of the `createMiddleware` call the function is the first
 // argument of (isSeyfertMiddlewareCallback, before the symbol is checked).
-fn (c &Checker) sy_nhm_middleware_callee(function C.TSNode) ?C.TSNode {
+fn (c &Checker) sy_nhm_middleware_callee(function C.vt_node) ?C.vt_node {
 	mut node := function
 	mut parent := treesitter.node_parent(node)?
 	for node_kind(parent) == 'parenthesized_expression' {
@@ -153,8 +153,8 @@ fn (c &Checker) sy_nhm_middleware_callee(function C.TSNode) ?C.TSNode {
 
 // sy_nhm_if_tests are the tests of the `if` statements of a function, without parentheses: their
 // types tell whether an `if` always takes a branch (definitelyAdvances).
-fn sy_nhm_if_tests(function C.TSNode) []C.TSNode {
-	mut out := []C.TSNode{}
+fn sy_nhm_if_tests(function C.vt_node) []C.vt_node {
+	mut out := []C.vt_node{}
 	for statement in treesitter.nodes_of_kind(function, c'if_statement') {
 		condition := node_field(statement, 'condition') or { continue }
 		out << unwrap_parens(condition)
@@ -164,7 +164,7 @@ fn sy_nhm_if_tests(function C.TSNode) []C.TSNode {
 
 // sy_nhm_read_advancers ports readAdvancers: the names `next` and `stop` take in an object pattern
 // that is the first parameter, or the name of the parameter.
-fn (c &Checker) sy_nhm_read_advancers(function C.TSNode) ([]string, string) {
+fn (c &Checker) sy_nhm_read_advancers(function C.vt_node) ([]string, string) {
 	mut advancers := []string{}
 	param := sy_nhm_first_parameter(function) or { return advancers, '' }
 	match node_kind(param) {
@@ -214,7 +214,7 @@ fn (c &Checker) sy_nhm_read_advancers(function C.TSNode) ([]string, string) {
 
 // sy_nhm_first_parameter is the ESTree params[0] of a function, as an Identifier or an
 // ObjectPattern (its type annotation aside); none for anything else.
-fn sy_nhm_first_parameter(function C.TSNode) ?C.TSNode {
+fn sy_nhm_first_parameter(function C.vt_node) ?C.vt_node {
 	if single := node_field(function, 'parameter') {
 		return single
 	}
@@ -236,7 +236,7 @@ fn sy_nhm_first_parameter(function C.TSNode) ?C.TSNode {
 
 // sy_nhm_is_advancer_call ports isAdvancerCall: a call of one of the advancer names, or of `next`
 // or `stop` on the parameter.
-fn (c &Checker) sy_nhm_is_advancer_call(flow SyFlow, call C.TSNode) bool {
+fn (c &Checker) sy_nhm_is_advancer_call(flow SyFlow, call C.vt_node) bool {
 	if node_kind(call) != 'call_expression' {
 		return false
 	}
@@ -257,7 +257,7 @@ fn (c &Checker) sy_nhm_is_advancer_call(flow SyFlow, call C.TSNode) bool {
 
 // sy_nhm_can_hang ports canHang: a path that has not started a call of `next` or `stop` returns
 // or reaches the end of the function.
-fn (c &Checker) sy_nhm_can_hang(mut flow SyFlow, function C.TSNode) bool {
+fn (c &Checker) sy_nhm_can_hang(mut flow SyFlow, function C.vt_node) bool {
 	body := node_field(function, 'body') or { return false }
 	start := SyPaths{
 		reach: true
@@ -274,7 +274,7 @@ fn (c &Checker) sy_nhm_can_hang(mut flow SyFlow, function C.TSNode) bool {
 	return flow.hang
 }
 
-fn (c &Checker) sy_flow_statements(mut flow SyFlow, statements []C.TSNode, paths SyPaths) SyPaths {
+fn (c &Checker) sy_flow_statements(mut flow SyFlow, statements []C.vt_node, paths SyPaths) SyPaths {
 	mut p := paths
 	for statement in statements {
 		p = c.sy_flow_statement(mut flow, statement, p, '')
@@ -332,7 +332,7 @@ fn (mut flow SyFlow) sy_flow_throwable(p SyPaths) {
 	}
 }
 
-fn (c &Checker) sy_flow_statement(mut flow SyFlow, statement C.TSNode, paths SyPaths, label string) SyPaths {
+fn (c &Checker) sy_flow_statement(mut flow SyFlow, statement C.vt_node, paths SyPaths, label string) SyPaths {
 	mut p := paths
 	match node_kind(statement) {
 		'statement_block' {
@@ -538,7 +538,7 @@ fn (c &Checker) sy_flow_statement(mut flow SyFlow, statement C.TSNode, paths SyP
 
 // sy_flow_labeled follows a labeled statement that is not a loop: a `break` with its label ends
 // it.
-fn (c &Checker) sy_flow_labeled(mut flow SyFlow, statement C.TSNode, p SyPaths, label string) SyPaths {
+fn (c &Checker) sy_flow_labeled(mut flow SyFlow, statement C.vt_node, p SyPaths, label string) SyPaths {
 	flow.targets << SyTarget{
 		label: label
 	}
@@ -547,7 +547,7 @@ fn (c &Checker) sy_flow_labeled(mut flow SyFlow, statement C.TSNode, p SyPaths, 
 	return end.join(target.broken)
 }
 
-fn (c &Checker) sy_flow_switch(mut flow SyFlow, statement C.TSNode, p SyPaths, label string) SyPaths {
+fn (c &Checker) sy_flow_switch(mut flow SyFlow, statement C.vt_node, p SyPaths, label string) SyPaths {
 	value := node_field(statement, 'value') or { return p }
 	mut chain := c.sy_flow_expression(mut flow, value, p)
 	flow.targets << SyTarget{
@@ -572,7 +572,7 @@ fn (c &Checker) sy_flow_switch(mut flow SyFlow, statement C.TSNode, p SyPaths, l
 		} else {
 			continue
 		}
-		mut statements := []C.TSNode{}
+		mut statements := []C.vt_node{}
 		for child in named_children(case) {
 			if node_kind(child) != 'comment' && !(node_kind(case) == 'switch_case'
 				&& node_key(child) == node_key(node_field(case, 'value') or { child })) {
@@ -589,7 +589,7 @@ fn (c &Checker) sy_flow_switch(mut flow SyFlow, statement C.TSNode, p SyPaths, l
 	return out
 }
 
-fn (c &Checker) sy_flow_try(mut flow SyFlow, statement C.TSNode, p SyPaths) SyPaths {
+fn (c &Checker) sy_flow_try(mut flow SyFlow, statement C.vt_node, p SyPaths) SyPaths {
 	mut has_catch := false
 	mut has_finally := false
 	mut catch_clause := statement
@@ -659,7 +659,7 @@ fn (c &Checker) sy_flow_try(mut flow SyFlow, statement C.TSNode, p SyPaths) SyPa
 // chain after its `?.` may not run; the bodies of functions and classes are other code paths. When
 // a node that may throw ends (a call, a member access, a `new`, a `yield`, a reference), it is the
 // first one of its `try` block when none came before.
-fn (c &Checker) sy_flow_expression(mut flow SyFlow, node C.TSNode, paths SyPaths) SyPaths {
+fn (c &Checker) sy_flow_expression(mut flow SyFlow, node C.vt_node, paths SyPaths) SyPaths {
 	mut p := paths
 	kind := node_kind(node)
 	match kind {
@@ -730,7 +730,7 @@ fn (c &Checker) sy_flow_expression(mut flow SyFlow, node C.TSNode, paths SyPaths
 // ends (parentheses end a chain): the paths after it, and apart the ones that skip the rest of the
 // chain at one of its `?.`, which ESLint joins at the end of the chain (a ChainExpression), so
 // that whatever comes after a `?.` in the chain (the arguments of a call too) may not run.
-fn (c &Checker) sy_flow_chain(mut flow SyFlow, node C.TSNode, paths SyPaths) (SyPaths, SyPaths) {
+fn (c &Checker) sy_flow_chain(mut flow SyFlow, node C.vt_node, paths SyPaths) (SyPaths, SyPaths) {
 	mut p := paths
 	mut skipped := sy_nowhere
 	kind := node_kind(node)
@@ -778,7 +778,7 @@ fn (c &Checker) sy_flow_chain(mut flow SyFlow, node C.TSNode, paths SyPaths) (Sy
 
 // sy_nhm_body_definitely_advances ports bodyDefinitelyAdvances: syntactically, the body calls
 // `next` or `stop`, returns such a call or throws before anything that could leave it.
-fn (mut c Checker) sy_nhm_body_definitely_advances(flow SyFlow, function C.TSNode) !bool {
+fn (mut c Checker) sy_nhm_body_definitely_advances(flow SyFlow, function C.vt_node) !bool {
 	body := node_field(function, 'body') or { return false }
 	if node_kind(body) == 'statement_block' {
 		return c.sy_nhm_definitely_advances(flow, body)!
@@ -786,7 +786,7 @@ fn (mut c Checker) sy_nhm_body_definitely_advances(flow SyFlow, function C.TSNod
 	return c.sy_nhm_is_advancer_call(flow, unwrap_parens(body))
 }
 
-fn (mut c Checker) sy_nhm_definitely_advances(flow SyFlow, node C.TSNode) !bool {
+fn (mut c Checker) sy_nhm_definitely_advances(flow SyFlow, node C.vt_node) !bool {
 	match node_kind(node) {
 		'statement_block' {
 			for statement in named_children(node) {
@@ -844,7 +844,7 @@ fn (mut c Checker) sy_nhm_definitely_advances(flow SyFlow, node C.TSNode) !bool 
 }
 
 // sy_nhm_else_statement is the `alternate` of an `if`: the statement of its `else`.
-fn sy_nhm_else_statement(statement C.TSNode) ?C.TSNode {
+fn sy_nhm_else_statement(statement C.vt_node) ?C.vt_node {
 	alternative := node_field(statement, 'alternative')?
 	return first_named(alternative)
 }

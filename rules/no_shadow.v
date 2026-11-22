@@ -43,7 +43,7 @@ fn nsh_options(options []json2.Any) !NshOptions {
 	}
 }
 
-fn (mut c Checker) lint_no_shadow(root C.TSNode, abs_path string, mut stats Stats) ![]Finding {
+fn (mut c Checker) lint_no_shadow(root C.vt_node, abs_path string, mut stats Stats) ![]Finding {
 	sw := time.new_stopwatch()
 	o := nsh_options(c.rule_options(no_shadow))!
 	tree := c.scope_tree(root)
@@ -230,7 +230,7 @@ fn nsh_is_function_type_parameter_shadow(variable ScopeVariable, shadowed ScopeV
 
 // nsh_type_parameter_owner is the node a type variable is a type parameter of: the parent of its
 // TSTypeParameterDeclaration.
-fn nsh_type_parameter_owner(variable ScopeVariable) ?C.TSNode {
+fn nsh_type_parameter_owner(variable ScopeVariable) ?C.vt_node {
 	if !variable.is_type_variable() || variable.identifiers.len == 0 {
 		return none
 	}
@@ -297,7 +297,7 @@ fn (c &Checker) nsh_is_external_declaration_merging(tree &ScopeTree, scope int, 
 }
 
 // nsh_string_value is the value of a string literal.
-fn (c &Checker) nsh_string_value(n C.TSNode) string {
+fn (c &Checker) nsh_string_value(n C.vt_node) string {
 	text := c.text(n)
 	if text.len < 2 {
 		return text
@@ -307,7 +307,7 @@ fn (c &Checker) nsh_string_value(n C.TSNode) string {
 
 // nsh_initializer ports how isOnInitializer finds the initializer of a name: the init of its
 // VariableDeclarator or the right side of its AssignmentPattern.
-fn nsh_initializer(name C.TSNode) ?C.TSNode {
+fn nsh_initializer(name C.vt_node) ?C.vt_node {
 	parent := node_parent(name)?
 	match node_kind(parent) {
 		'variable_declarator' {
@@ -333,7 +333,7 @@ fn nsh_initializer(name C.TSNode) ?C.TSNode {
 
 // nsh_unwrap_expression ports unwrapExpression: from the node up through the logical expressions
 // and the branches (not the test) of conditional expressions it is part of.
-fn nsh_unwrap_expression(n C.TSNode) C.TSNode {
+fn nsh_unwrap_expression(n C.vt_node) C.vt_node {
 	mut node := n
 	for {
 		mut parent := node_parent(node) or { return node }
@@ -377,7 +377,7 @@ fn nsh_is_on_initializer(variable ScopeVariable, shadowed ScopeVariable) bool {
 }
 
 // nsh_is_estree_call: an ESTree CallExpression (not a tagged template nor an `import()`).
-fn nsh_is_estree_call(n C.TSNode) bool {
+fn nsh_is_estree_call(n C.vt_node) bool {
 	if node_kind(n) != 'call_expression' {
 		return false
 	}

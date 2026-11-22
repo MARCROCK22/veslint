@@ -18,12 +18,12 @@ const nusta_messages = {
 const object_flag_object_literal = u32(128)
 
 struct NustaAssertion {
-	node       C.TSNode
-	expression C.TSNode
-	type_node  C.TSNode
+	node       C.vt_node
+	expression C.vt_node
+	type_node  C.vt_node
 }
 
-fn (mut c Checker) lint_no_unsafe_type_assertion(root C.TSNode, abs_path string, mut stats Stats) ![]Finding {
+fn (mut c Checker) lint_no_unsafe_type_assertion(root C.vt_node, abs_path string, mut stats Stats) ![]Finding {
 	mut sw := time.new_stopwatch()
 	// 'TSAsExpression, TSTypeAssertion'. An `as const` has no type to compare: its type is that
 	// of the expression itself, which the rule never reports.
@@ -70,7 +70,7 @@ fn nusta_any_type_name(t TypeResponse) string {
 
 // nusta_check ports checkExpression: the message of the assertion and its `type`, or '' when the
 // assertion is safe.
-fn (mut c Checker) nusta_check(expression_type TypeResponse, asserted_type TypeResponse, expression C.TSNode) !(string, string) {
+fn (mut c Checker) nusta_check(expression_type TypeResponse, asserted_type TypeResponse, expression C.vt_node) !(string, string) {
 	if expression_type.id == asserted_type.id {
 		return '', ''
 	}

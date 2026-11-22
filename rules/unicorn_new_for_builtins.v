@@ -32,7 +32,7 @@ const unfb_enforce_new = ['Object', 'Array', 'ArrayBuffer', 'DataView', 'Date', 
 const unfb_disallow_new = ['BigInt', 'Boolean', 'Number', 'String', 'Symbol']
 const unfb_disallow_call_or_new = ['Temporal.Now', 'WebAssembly', 'WebAssembly.JSTag']
 
-fn (mut c Checker) lint_unicorn_new_for_builtins(root C.TSNode, abs_path string, mut stats Stats) ![]Finding {
+fn (mut c Checker) lint_unicorn_new_for_builtins(root C.vt_node, abs_path string, mut stats Stats) ![]Finding {
 	sw := time.new_stopwatch()
 	mut findings := []Finding{}
 	t := c.es_tree(root, abs_path) or { return findings }

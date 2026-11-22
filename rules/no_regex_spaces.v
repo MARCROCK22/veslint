@@ -14,7 +14,7 @@ const nrs_messages = {
 // nrs_spaces_pattern is ESLint's spacesPattern.
 const nrs_spaces_pattern = '( {2,})(?: [+*{?]|[^+*{?]|$)'
 
-fn (mut c Checker) lint_no_regex_spaces(root C.TSNode, abs_path string, mut stats Stats) ![]Finding {
+fn (mut c Checker) lint_no_regex_spaces(root C.vt_node, abs_path string, mut stats Stats) ![]Finding {
 	sw := time.new_stopwatch()
 	mut findings := []Finding{}
 	spaces := jsregexp.regexp_compile(nrs_spaces_pattern)!
@@ -63,7 +63,7 @@ fn (mut c Checker) lint_no_regex_spaces(root C.TSNode, abs_path string, mut stat
 }
 
 // nrs_check ports checkRegex: the first run of two or more spaces outside a character class.
-fn (c &Checker) nrs_check(node C.TSNode, pattern []u16, raw string, raw_start int, flags string, spaces jsregexp.RegexpProgram, mut findings []Finding) {
+fn (c &Checker) nrs_check(node C.vt_node, pattern []u16, raw string, raw_start int, flags string, spaces jsregexp.RegexpProgram, mut findings []Finding) {
 	if !raw.contains('  ') {
 		return
 	}

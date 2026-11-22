@@ -20,7 +20,7 @@ const sy_dt_targets = {
 	'AutoLoad': 'Command'
 }
 
-fn (mut c Checker) lint_seyfert_decorator_target(root C.TSNode, abs_path string, mut stats Stats) ![]Finding {
+fn (mut c Checker) lint_seyfert_decorator_target(root C.vt_node, abs_path string, mut stats Stats) ![]Finding {
 	mut sw := time.new_stopwatch()
 	classes, asked := c.sy_decorated_classes(root)
 	c.resolve_node_types(asked, abs_path, mut stats)!
@@ -62,26 +62,26 @@ fn (mut c Checker) lint_seyfert_decorator_target(root C.TSNode, abs_path string,
 // (ESTree's, those before its `export` included), the callee of each (none when it has no
 // expression) and its superClass.
 struct SyClass {
-	node        C.TSNode
-	decorators  []C.TSNode
-	callees     []C.TSNode
+	node        C.vt_node
+	decorators  []C.vt_node
+	callees     []C.vt_node
 	has_callee  []bool
-	super_class C.TSNode
+	super_class C.vt_node
 	has_super   bool
 }
 
 // sy_decorated_classes are the classes of the file that have decorators, and the nodes to request
 // for them: the callees of the decorators and the superClass.
-fn (c &Checker) sy_decorated_classes(root C.TSNode) ([]SyClass, []C.TSNode) {
+fn (c &Checker) sy_decorated_classes(root C.vt_node) ([]SyClass, []C.vt_node) {
 	mut classes := []SyClass{}
-	mut asked := []C.TSNode{}
+	mut asked := []C.vt_node{}
 	for node in c.nodes_of_kinds(root, ['class_declaration', 'abstract_class_declaration', 'class'],
 		[]) {
 		decorators := cm_class_decorators(node)
 		if decorators.len == 0 {
 			continue
 		}
-		mut callees := []C.TSNode{}
+		mut callees := []C.vt_node{}
 		mut has_callee := []bool{}
 		for decorator in decorators {
 			if callee := sy_decorator_callee(decorator) {

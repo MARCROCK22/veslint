@@ -29,7 +29,7 @@ fn upss_set_node(t &estree.EsTree, object int) ?int {
 	return none
 }
 
-fn (mut c Checker) lint_unicorn_prefer_set_size(root C.TSNode, abs_path string, mut stats Stats) ![]Finding {
+fn (mut c Checker) lint_unicorn_prefer_set_size(root C.vt_node, abs_path string, mut stats Stats) ![]Finding {
 	sw := time.new_stopwatch()
 	mut findings := []Finding{}
 	t := c.es_tree(root, abs_path) or { return findings }

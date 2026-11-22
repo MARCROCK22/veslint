@@ -12,7 +12,7 @@ const sy_cmd_messages = {
 	'hasDescription': "A context-menu command's `@Declare` must not include a `description`."
 }
 
-fn (mut c Checker) lint_seyfert_context_menu_declare(root C.TSNode, abs_path string, mut stats Stats) ![]Finding {
+fn (mut c Checker) lint_seyfert_context_menu_declare(root C.vt_node, abs_path string, mut stats Stats) ![]Finding {
 	mut sw := time.new_stopwatch()
 	classes, mut asked := c.sy_decorated_classes(root)
 	// The first argument of each decorator that is a call: the one of `@Declare` is resolved.
@@ -85,7 +85,7 @@ fn (mut c Checker) lint_seyfert_context_menu_declare(root C.TSNode, abs_path str
 
 // sy_first_argument is the first argument of the call a decorator is, without parentheses; none
 // when the decorator is not a call, the call has no argument or it is a spread.
-fn sy_first_argument(decorator C.TSNode) ?C.TSNode {
+fn sy_first_argument(decorator C.vt_node) ?C.vt_node {
 	call := sy_decorator_call(decorator)?
 	arguments := call_arguments(call)?
 	if arguments.len == 0 || node_kind(arguments[0]) == 'spread_element' {

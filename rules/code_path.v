@@ -55,12 +55,12 @@ const code_path_function_kinds = ['function_declaration', 'function_expression',
 	'generator_function_declaration', 'arrow_function']
 
 // end_reachable: the end of the statements of a function body (or of a program) is reachable.
-fn (c &Checker) end_reachable(statements []C.TSNode) bool {
+fn (c &Checker) end_reachable(statements []C.vt_node) bool {
 	mut state := CodePathState{}
 	return c.code_path_statements(statements, true, mut state)
 }
 
-fn (c &Checker) code_path_statements(statements []C.TSNode, reachable bool, mut state CodePathState) bool {
+fn (c &Checker) code_path_statements(statements []C.vt_node, reachable bool, mut state CodePathState) bool {
 	mut current := reachable
 	for statement in statements {
 		current = c.code_path_statement(statement, current, '', mut state)
@@ -70,7 +70,7 @@ fn (c &Checker) code_path_statements(statements []C.TSNode, reachable bool, mut 
 
 // code_path_statement: the end of the statement is reachable, given whether its start is.
 // `label` is that of the LabeledStatement whose body the statement is.
-fn (c &Checker) code_path_statement(statement C.TSNode, reachable bool, label string, mut state CodePathState) bool {
+fn (c &Checker) code_path_statement(statement C.vt_node, reachable bool, label string, mut state CodePathState) bool {
 	kind := node_kind(statement)
 	match kind {
 		'comment' {
@@ -193,7 +193,7 @@ fn (c &Checker) code_path_statement(statement C.TSNode, reachable bool, label st
 				c.code_path_throwable(initializer, reachable, mut state)
 			}
 			// The test is an expression statement, or an empty one when there is none.
-			mut test := ?C.TSNode(none)
+			mut test := ?C.vt_node(none)
 			if condition := node_field(statement, 'condition') {
 				if node_kind(condition) != 'empty_statement' {
 					test = condition
@@ -263,7 +263,7 @@ fn (c &Checker) code_path_statement(statement C.TSNode, reachable bool, label st
 					// What follows the `:`. It is entered when the case matches and from the
 					// end of the case before.
 					mut after_colon := false
-					mut consequent := []C.TSNode{}
+					mut consequent := []C.vt_node{}
 					for child in children(switch_case) {
 						if !after_colon {
 							after_colon = node_kind(child) == ':'
@@ -366,7 +366,7 @@ fn code_path_throw_context(state CodePathState) ?int {
 // `try` block, the first node that may throw makes a path to the `catch` block (or to the `finally`
 // block without one), and in a `catch` block with a `finally`, to the `finally` block, from which
 // it goes on as a throw (code_path_throw_context finds that context).
-fn (c &Checker) code_path_throwable(node C.TSNode, reachable bool, mut state CodePathState) {
+fn (c &Checker) code_path_throwable(node C.vt_node, reachable bool, mut state CodePathState) {
 	if !reachable {
 		return
 	}
@@ -382,7 +382,7 @@ fn (c &Checker) code_path_throwable(node C.TSNode, reachable bool, mut state Cod
 // code_path_may_throw: the node has, outside the functions in it, a CallExpression, an
 // ImportExpression, a MemberExpression, a NewExpression, a YieldExpression or an Identifier that
 // isIdentifierReference takes for a reference.
-fn (c &Checker) code_path_may_throw(node C.TSNode) bool {
+fn (c &Checker) code_path_may_throw(node C.vt_node) bool {
 	kind := node_kind(node)
 	if kind in ['call_expression', 'new_expression', 'member_expression', 'subscript_expression',
 		'yield_expression'] {
@@ -418,7 +418,7 @@ fn (c &Checker) code_path_may_throw(node C.TSNode) bool {
 // element of an array pattern, the argument of a rest element, the parameter of a `catch`, the
 // name of a function, of a class or of a variable declarator, or the key of a property that is
 // neither computed nor shorthand.
-fn code_path_is_reference(node C.TSNode) bool {
+fn code_path_is_reference(node C.vt_node) bool {
 	parent := node_parent(node) or { return true }
 	match node_kind(parent) {
 		'array_pattern', 'rest_pattern', 'catch_clause' {
@@ -440,7 +440,7 @@ fn code_path_is_reference(node C.TSNode) bool {
 
 // code_path_true_literal ports getBooleanValueIfSimpleConstant for the test of a loop: it is a
 // Literal whose value is true.
-fn (c &Checker) code_path_true_literal(test ?C.TSNode) bool {
+fn (c &Checker) code_path_true_literal(test ?C.vt_node) bool {
 	mut node := test or { return false }
 	if node_kind(node) == 'expression_statement' {
 		node = first_named(node) or { return false }

@@ -18,7 +18,7 @@ fn vue_component_options_name_casing_options(options []json2.Any) !string {
 		'PascalCase'], 'PascalCase')!
 }
 
-fn (mut c Checker) lint_vue_component_options_name_casing(root C.TSNode, abs_path string, mut stats Stats) ![]Finding {
+fn (mut c Checker) lint_vue_component_options_name_casing(root C.vt_node, abs_path string, mut stats Stats) ![]Finding {
 	sw := time.new_stopwatch()
 	case_type := vue_component_options_name_casing_options(c.rule_options(vue_component_options_name_casing))!
 	can_auto_fix := case_type == 'PascalCase'

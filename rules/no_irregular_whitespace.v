@@ -64,7 +64,7 @@ fn niw_has_irregular(text string) bool {
 	return false
 }
 
-fn (mut c Checker) lint_no_irregular_whitespace(root C.TSNode, abs_path string, mut stats Stats) ![]Finding {
+fn (mut c Checker) lint_no_irregular_whitespace(root C.vt_node, abs_path string, mut stats Stats) ![]Finding {
 	sw := time.new_stopwatch()
 	o := niw_options(c.rule_options(no_irregular_whitespace))!
 	mut findings := []Finding{}

@@ -8,7 +8,7 @@ const snspo_messages = {
 	'unexpected': "Unexpected shorthand '{{shorthand}}' after '{{original}}'."
 }
 
-fn (mut c Checker) lint_svelte_no_shorthand_style_property_overrides(root C.TSNode, abs_path string, mut stats Stats) ![]Finding {
+fn (mut c Checker) lint_svelte_no_shorthand_style_property_overrides(root C.vt_node, abs_path string, mut stats Stats) ![]Finding {
 	if !c.is_svelte() {
 		return []
 	}

@@ -49,7 +49,7 @@ fn un_is_decimal_integer(text string) bool {
 	return true
 }
 
-fn (mut c Checker) lint_unicorn_no_zero_fractions(root C.TSNode, abs_path string, mut stats Stats) ![]Finding {
+fn (mut c Checker) lint_unicorn_no_zero_fractions(root C.vt_node, abs_path string, mut stats Stats) ![]Finding {
 	sw := time.new_stopwatch()
 	mut findings := []Finding{}
 	t := c.es_tree(root, abs_path) or { return findings }

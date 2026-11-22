@@ -11,7 +11,7 @@ const sy_roo_messages = {
 	'requiredAfterOptional': 'Required option `{{name}}` must be declared before optional options (Discord rejects required options placed after optional ones).'
 }
 
-fn (mut c Checker) lint_seyfert_required_options_order(root C.TSNode, abs_path string, mut stats Stats) ![]Finding {
+fn (mut c Checker) lint_seyfert_required_options_order(root C.vt_node, abs_path string, mut stats Stats) ![]Finding {
 	mut sw := time.new_stopwatch()
 	decorators, callees, arguments := sy_option_decorators(c.nodes_of_kind(root, c'decorator'))
 	mut asked := callees.clone()
@@ -88,10 +88,10 @@ fn (mut c Checker) lint_seyfert_required_options_order(root C.TSNode, abs_path s
 
 // sy_option_decorators are the decorators that are calls with a first argument that is not a
 // spread, with their callees and those arguments (without parentheses).
-fn sy_option_decorators(all []C.TSNode) ([]C.TSNode, []C.TSNode, []C.TSNode) {
-	mut decorators := []C.TSNode{}
-	mut callees := []C.TSNode{}
-	mut arguments := []C.TSNode{}
+fn sy_option_decorators(all []C.vt_node) ([]C.vt_node, []C.vt_node, []C.vt_node) {
+	mut decorators := []C.vt_node{}
+	mut callees := []C.vt_node{}
+	mut arguments := []C.vt_node{}
 	for decorator in all {
 		argument := sy_first_argument(decorator) or { continue }
 		callee := sy_decorator_callee(decorator) or { continue }

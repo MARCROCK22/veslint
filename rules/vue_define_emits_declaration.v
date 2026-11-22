@@ -19,7 +19,7 @@ fn vue_define_emits_declaration_options(options []json2.Any) !string {
 		'runtime'], 'type-based')!
 }
 
-fn (mut c Checker) lint_vue_define_emits_declaration(root C.TSNode, abs_path string, mut stats Stats) ![]Finding {
+fn (mut c Checker) lint_vue_define_emits_declaration(root C.vt_node, abs_path string, mut stats Stats) ![]Finding {
 	if !c.is_vue() {
 		return []
 	}

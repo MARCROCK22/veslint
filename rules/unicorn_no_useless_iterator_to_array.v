@@ -20,7 +20,7 @@ const unuita_messages = {
 const unuita_non_iterator_types = [estree.NodeType.object_expression, .array_expression, .literal,
 	.template_literal, .function_expression, .arrow_function_expression, .class_expression]
 
-fn (mut c Checker) lint_unicorn_no_useless_iterator_to_array(root C.TSNode, abs_path string, mut stats Stats) ![]Finding {
+fn (mut c Checker) lint_unicorn_no_useless_iterator_to_array(root C.vt_node, abs_path string, mut stats Stats) ![]Finding {
 	sw := time.new_stopwatch()
 	mut findings := []Finding{}
 	t := c.es_tree(root, abs_path) or { return findings }

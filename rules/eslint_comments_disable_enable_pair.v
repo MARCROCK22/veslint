@@ -22,7 +22,7 @@ fn ec_dep_options(options []json2.Any) !bool {
 	return value is bool && value
 }
 
-fn (mut c Checker) lint_eslint_comments_disable_enable_pair(root C.TSNode, abs_path string, mut stats Stats) ![]Finding {
+fn (mut c Checker) lint_eslint_comments_disable_enable_pair(root C.vt_node, abs_path string, mut stats Stats) ![]Finding {
 	sw := time.new_stopwatch()
 	allow_whole_file := ec_dep_options(c.rule_options(eslint_comments_disable_enable_pair))!
 	d := c.ec_disabled_area(root)

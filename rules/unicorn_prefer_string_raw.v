@@ -106,7 +106,7 @@ fn upsr_jest_inline_snapshot(t &estree.EsTree, node int) bool {
 	return un_is_call(t, object, names: ['expect'], arguments_length: 1, optional: false)
 }
 
-fn (mut c Checker) lint_unicorn_prefer_string_raw(root C.TSNode, abs_path string, mut stats Stats) ![]Finding {
+fn (mut c Checker) lint_unicorn_prefer_string_raw(root C.vt_node, abs_path string, mut stats Stats) ![]Finding {
 	sw := time.new_stopwatch()
 	mut findings := []Finding{}
 	t := c.es_tree(root, abs_path) or { return findings }
@@ -269,7 +269,7 @@ fn (c &Checker) upsr_binding_is_string(t &estree.EsTree, declarator int, binding
 
 // upsr_unnecessary reports a `String.raw` of the global whose template has no backslash: the fix
 // makes it a string literal.
-fn (mut c Checker) upsr_unnecessary(root C.TSNode, t &estree.EsTree, tokens &SourceTokens, node int) !(bool, Finding) {
+fn (mut c Checker) upsr_unnecessary(root C.vt_node, t &estree.EsTree, tokens &SourceTokens, node int) !(bool, Finding) {
 	quasi := t.node(node, .quasi) or { return false, Finding{} }
 	tag := t.node(node, .tag) or { return false, Finding{} }
 	if !un_is_member(t, tag, objects: ['String'], properties: ['raw'], optional: false) {

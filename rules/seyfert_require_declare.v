@@ -12,12 +12,12 @@ const sy_rd_messages = {
 	'missingDeclare': 'This class extends a Seyfert command but is missing the `@Declare` decorator.'
 }
 
-fn (mut c Checker) lint_seyfert_require_declare(root C.TSNode, abs_path string, mut stats Stats) ![]Finding {
+fn (mut c Checker) lint_seyfert_require_declare(root C.vt_node, abs_path string, mut stats Stats) ![]Finding {
 	mut sw := time.new_stopwatch()
 	// The classes with a superClass (an abstract class is skipped).
-	mut classes := []C.TSNode{}
-	mut supers := []C.TSNode{}
-	mut asked := []C.TSNode{}
+	mut classes := []C.vt_node{}
+	mut supers := []C.vt_node{}
+	mut asked := []C.vt_node{}
 	for node in c.nodes_of_kinds(root, ['class_declaration', 'class'], []) {
 		value := cm_super_class(node) or { continue }
 		super_class := unwrap_parens(value)

@@ -16,7 +16,7 @@ const nuf_sentinels = ['program', 'function_declaration', 'function_expression',
 	'abstract_class_declaration', 'class']
 const nuf_loops = ['do_statement', 'while_statement', 'for_in_statement', 'for_statement']
 
-fn (mut c Checker) lint_no_unsafe_finally(root C.TSNode, abs_path string, mut stats Stats) ![]Finding {
+fn (mut c Checker) lint_no_unsafe_finally(root C.vt_node, abs_path string, mut stats Stats) ![]Finding {
 	sw := time.new_stopwatch()
 	mut findings := []Finding{}
 	kinds := ['return_statement', 'throw_statement', 'break_statement', 'continue_statement']
@@ -52,7 +52,7 @@ fn (mut c Checker) lint_no_unsafe_finally(root C.TSNode, abs_path string, mut st
 
 // nuf_in_finally ports isInFinallyBlock: a `finally` block contains the statement before a
 // sentinel, and the statement's label, if any, is not inside that block.
-fn (c &Checker) nuf_in_finally(n C.TSNode, label string, sentinels []string) bool {
+fn (c &Checker) nuf_in_finally(n C.vt_node, label string, sentinels []string) bool {
 	mut label_inside := false
 	mut current := n
 	for node_kind(current) !in sentinels {

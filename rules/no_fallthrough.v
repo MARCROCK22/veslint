@@ -64,7 +64,7 @@ struct NftPreviousCase {
 	is_fallthrough           bool
 }
 
-fn (mut c Checker) lint_no_fallthrough(root C.TSNode, abs_path string, mut stats Stats) ![]Finding {
+fn (mut c Checker) lint_no_fallthrough(root C.vt_node, abs_path string, mut stats Stats) ![]Finding {
 	sw := time.new_stopwatch()
 	opts := c.nft_lint_options(c.rule_options(no_fallthrough))!
 	mut findings := []Finding{}
@@ -204,9 +204,9 @@ fn (mut c Checker) nft_check(an &codepath.Analysis, t &estree.EsTree, opts NftOp
 // nft_switch_functions are the outermost functions (function_part of estree.convert_functions)
 // that the `switch` statements are in, in the order of the file; none when one of them is in no
 // function (its code path is the program's).
-fn nft_switch_functions(switches []C.TSNode) ?[]C.TSNode {
+fn nft_switch_functions(switches []C.vt_node) ?[]C.vt_node {
 	mut innermost := map[u64]bool{}
-	mut found := []C.TSNode{}
+	mut found := []C.vt_node{}
 	for s in switches {
 		mut node := node_parent(s) or { return none }
 		for !nft_starts_code_path(node) {
@@ -224,7 +224,7 @@ fn nft_switch_functions(switches []C.TSNode) ?[]C.TSNode {
 	// A function inside another one of them is converted with it. The functions are told apart
 	// by their range, which no two functions share (other nodes may share a function's: the
 	// statement or the program that is only that function).
-	mut out := []C.TSNode{cap: found.len}
+	mut out := []C.vt_node{cap: found.len}
 	for f in found {
 		mut nested := false
 		mut node := f
@@ -240,7 +240,7 @@ fn nft_switch_functions(switches []C.TSNode) ?[]C.TSNode {
 			out << f
 		}
 	}
-	out.sort_with_compare(fn (a &C.TSNode, b &C.TSNode) int {
+	out.sort_with_compare(fn (a &C.vt_node, b &C.vt_node) int {
 		return int(node_start(*a)) - int(node_start(*b))
 	})
 	return out
@@ -249,7 +249,7 @@ fn nft_switch_functions(switches []C.TSNode) ?[]C.TSNode {
 // nft_starts_code_path: the node is the program, or a function, method or class static block,
 // whose code path a `switch` in it is in (a `switch` is a statement: a class field's value has it
 // in a function).
-fn nft_starts_code_path(node C.TSNode) bool {
+fn nft_starts_code_path(node C.vt_node) bool {
 	return node_kind(node) in ['program', 'function_declaration', 'generator_function_declaration',
 		'function_expression', 'generator_function', 'arrow_function', 'method_definition',
 		'class_static_block']

@@ -35,7 +35,7 @@ fn vue_no_reserved_keys_options(options []json2.Any) !VueReservedKeysOptions {
 	}
 }
 
-fn (mut c Checker) lint_vue_no_reserved_keys(root C.TSNode, abs_path string, mut stats Stats) ![]Finding {
+fn (mut c Checker) lint_vue_no_reserved_keys(root C.vt_node, abs_path string, mut stats Stats) ![]Finding {
 	sw := time.new_stopwatch()
 	o := vue_no_reserved_keys_options(c.rule_options(vue_no_reserved_keys))!
 	mut findings := []Finding{}

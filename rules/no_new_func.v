@@ -9,7 +9,7 @@ const nnf_messages = {
 	'noFunctionConstructor': 'The Function constructor is eval.'
 }
 
-fn (mut c Checker) lint_no_new_func(root C.TSNode, abs_path string, mut stats Stats) ![]Finding {
+fn (mut c Checker) lint_no_new_func(root C.vt_node, abs_path string, mut stats Stats) ![]Finding {
 	sw := time.new_stopwatch()
 	mut findings := []Finding{}
 	for id in c.es_global_variable_references(root, 'Function') {

@@ -9,7 +9,7 @@ const nlop_messages = {
 	'noLossOfPrecision': 'This number literal will lose precision at runtime.'
 }
 
-fn (mut c Checker) lint_no_loss_of_precision(root C.TSNode, abs_path string, mut stats Stats) ![]Finding {
+fn (mut c Checker) lint_no_loss_of_precision(root C.vt_node, abs_path string, mut stats Stats) ![]Finding {
 	sw := time.new_stopwatch()
 	mut findings := []Finding{}
 	for node in c.nodes_of_kinds(root, ['number'], []) {

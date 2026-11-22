@@ -79,7 +79,7 @@ fn (c &Checker) sntb_has_dynamic_link(tag int) bool {
 		|| c.sv_find_bind_directive(tag, 'href') >= 0
 }
 
-fn (mut c Checker) lint_svelte_no_target_blank(root C.TSNode, abs_path string, mut stats Stats) ![]Finding {
+fn (mut c Checker) lint_svelte_no_target_blank(root C.vt_node, abs_path string, mut stats Stats) ![]Finding {
 	options := sntb_options(c.rule_options(svelte_no_target_blank))!
 	if !c.is_svelte() {
 		return []

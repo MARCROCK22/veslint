@@ -10,11 +10,11 @@ const sy_cde_messages = {
 	'mustDefaultExport': "The result of `config.{{method}}()` must be the file's `export default`."
 }
 
-fn (mut c Checker) lint_seyfert_config_default_export(root C.TSNode, abs_path string, mut stats Stats) ![]Finding {
+fn (mut c Checker) lint_seyfert_config_default_export(root C.vt_node, abs_path string, mut stats Stats) ![]Finding {
 	mut sw := time.new_stopwatch()
-	mut calls := []C.TSNode{}
+	mut calls := []C.vt_node{}
 	mut methods := []string{}
-	mut objects := []C.TSNode{}
+	mut objects := []C.vt_node{}
 	for call in c.nodes_of_kind(root, c'call_expression') {
 		call_arguments(call) or { continue }
 		callee := unwrap_parens(node_field(call, 'function') or { continue })
@@ -61,7 +61,7 @@ fn (mut c Checker) lint_seyfert_config_default_export(root C.TSNode, abs_path st
 // sy_cde_is_default_export: the ESTree parent of the call, past `as`, `satisfies`, `!` and `<T>`,
 // is an ExportDefaultDeclaration. The parent of the outermost element of an optional chain is its
 // ChainExpression.
-fn sy_cde_is_default_export(call C.TSNode) bool {
+fn sy_cde_is_default_export(call C.vt_node) bool {
 	mut current := call
 	for {
 		if is_chain_element(current) && is_estree_chain_root(current) {

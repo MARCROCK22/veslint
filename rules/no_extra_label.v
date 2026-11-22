@@ -13,7 +13,7 @@ const nel_messages = {
 const nel_breakable = ['while_statement', 'do_statement', 'for_statement', 'for_in_statement',
 	'switch_statement']
 
-fn (mut c Checker) lint_no_extra_label(root C.TSNode, abs_path string, mut stats Stats) ![]Finding {
+fn (mut c Checker) lint_no_extra_label(root C.vt_node, abs_path string, mut stats Stats) ![]Finding {
 	sw := time.new_stopwatch()
 	mut findings := []Finding{}
 	for node in c.nodes_of_kinds(root, ['break_statement', 'continue_statement'], []) {

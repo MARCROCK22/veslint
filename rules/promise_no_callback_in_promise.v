@@ -42,7 +42,7 @@ fn prm_is_inside_timeout(t &estree.EsTree, node int) bool {
 	return name in prm_timeout_whitelist
 }
 
-fn (mut c Checker) lint_promise_no_callback_in_promise(root C.TSNode, abs_path string, mut stats Stats) ![]Finding {
+fn (mut c Checker) lint_promise_no_callback_in_promise(root C.vt_node, abs_path string, mut stats Stats) ![]Finding {
 	sw := time.new_stopwatch()
 	o := prm_no_callback_in_promise_options(c.rule_options(promise_no_callback_in_promise))!
 	mut findings := []Finding{}

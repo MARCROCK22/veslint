@@ -15,7 +15,7 @@ import treesitter { node_kind }
 // tree-sitter nodes the ESTree nodes come from.
 
 // rx_es_of is the ESTree node of a tree-sitter node of the file, -1 if none.
-fn (mut c Checker) rx_es_of(t &estree.EsTree, n ?C.TSNode) int {
+fn (mut c Checker) rx_es_of(t &estree.EsTree, n ?C.vt_node) int {
 	node := n or { return -1 }
 	return c.es_index_of(t, node) or { -1 }
 }
@@ -27,7 +27,7 @@ fn rx_parent(t &estree.EsTree, node int) int {
 
 // rx_find_variable ports findVariable(context, node) of an Identifier: its variable in the scope
 // tree, -1 if none.
-fn (mut c Checker) rx_find_variable(root C.TSNode, t &estree.EsTree, node int) int {
+fn (mut c Checker) rx_find_variable(root C.vt_node, t &estree.EsTree, node int) int {
 	if node < 0 || t.typ(node) != .identifier {
 		return -1
 	}
@@ -39,7 +39,7 @@ fn (mut c Checker) rx_find_variable(root C.TSNode, t &estree.EsTree, node int) i
 
 // rx_find_simple_variable ports findSimpleVariable: a variable of `{var,let,const} identifier
 // ( = <init> )?`, with that one definition; -1 if none.
-fn (mut c Checker) rx_find_simple_variable(root C.TSNode, t &estree.EsTree, identifier int) int {
+fn (mut c Checker) rx_find_simple_variable(root C.vt_node, t &estree.EsTree, identifier int) int {
 	v := c.rx_find_variable(root, t, identifier)
 	if v < 0 {
 		return -1
@@ -62,7 +62,7 @@ fn (mut c Checker) rx_find_simple_variable(root C.TSNode, t &estree.EsTree, iden
 // rx_dereference_owned_variable ports dereferenceOwnedVariable: the value of a variable that only
 // this expression reads (read-only, not exported, its initialization and this reference its only
 // references), followed; the expression itself otherwise.
-fn (mut c Checker) rx_dereference_owned_variable(root C.TSNode, t &estree.EsTree, expression int) int {
+fn (mut c Checker) rx_dereference_owned_variable(root C.vt_node, t &estree.EsTree, expression int) int {
 	if expression < 0 || t.typ(expression) != .identifier {
 		return expression
 	}
@@ -104,7 +104,7 @@ fn (d ScopeDefinition) node_kind_is_for_head() bool {
 
 // rx_dereference_variable ports dereferenceVariable: the initializer of a const, or of a var or
 // let only read after its initialization, followed.
-fn (mut c Checker) rx_dereference_variable(root C.TSNode, t &estree.EsTree, expression int) int {
+fn (mut c Checker) rx_dereference_variable(root C.vt_node, t &estree.EsTree, expression int) int {
 	if expression < 0 || t.typ(expression) != .identifier {
 		return expression
 	}
@@ -143,7 +143,7 @@ fn (mut c Checker) rx_dereference_variable(root C.TSNode, t &estree.EsTree, expr
 // rx_static_value ports getStaticValue of ast-utils/utils.ts: `+` of two static values,
 // `.source` of a static RegExp, a template literal of static values and a constant variable are
 // followed; anything else is eslint-utils' getStaticValue.
-fn (mut c Checker) rx_static_value(root C.TSNode, t &estree.EsTree, node int) StaticValue {
+fn (mut c Checker) rx_static_value(root C.vt_node, t &estree.EsTree, node int) StaticValue {
 	if node < 0 {
 		return StaticValue{}
 	}
@@ -213,7 +213,7 @@ fn rx_cooked(t &estree.EsTree, quasi int) []u16 {
 // rx_string_if_constant ports getStringIfConstant of ast-utils/utils.ts: String() of the static
 // value of a binary or member expression, an identifier or a template literal (which follow
 // `regexp.source`), eslint-utils' getStringIfConstant otherwise.
-fn (mut c Checker) rx_string_if_constant(root C.TSNode, t &estree.EsTree, node int) ?string {
+fn (mut c Checker) rx_string_if_constant(root C.vt_node, t &estree.EsTree, node int) ?string {
 	if node < 0 {
 		return none
 	}
@@ -230,7 +230,7 @@ fn (mut c Checker) rx_string_if_constant(root C.TSNode, t &estree.EsTree, node i
 
 // rx_property_name ports getPropertyName(node, context): the name of a non-computed property, the
 // constant string of a computed one; none for a private name.
-fn (mut c Checker) rx_property_name(root C.TSNode, t &estree.EsTree, member int) ?string {
+fn (mut c Checker) rx_property_name(root C.vt_node, t &estree.EsTree, member int) ?string {
 	prop := t.node(member, .property)?
 	if t.typ(prop) == .private_identifier {
 		return none
@@ -262,7 +262,7 @@ fn rx_property_name_unscoped(t &estree.EsTree, member int) ?string {
 
 // rx_find_function ports findFunction: the function a name stands for, through `const` aliases;
 // -1 if none.
-fn (mut c Checker) rx_find_function(root C.TSNode, t &estree.EsTree, id int) int {
+fn (mut c Checker) rx_find_function(root C.vt_node, t &estree.EsTree, id int) int {
 	mut target := id
 	mut seen := map[int]bool{}
 	for {
@@ -706,7 +706,7 @@ fn (c &Checker) rx_parse_replacements(t &estree.EsTree, node int) []RxReplacemen
 
 // rx_regexp_node_from_expression ports getRegExpNodeFromExpression: the pattern of a regular
 // expression literal, or of a static RegExp value; none when it does not parse.
-fn (mut c Checker) rx_regexp_node_from_expression(root C.TSNode, t &estree.EsTree, node int) ?regexpp.Ast {
+fn (mut c Checker) rx_regexp_node_from_expression(root C.vt_node, t &estree.EsTree, node int) ?regexpp.Ast {
 	if t.typ(node) == .literal {
 		regex := t.prop(node, .regex)?
 		pattern := regexpp.to_utf16(regex.str)
@@ -755,7 +755,7 @@ mut:
 }
 
 // rx_expression_references ports extractExpressionReferences, all of them in order.
-fn (mut c Checker) rx_expression_references(root C.TSNode, t &estree.EsTree, node int) []RxExpressionRef {
+fn (mut c Checker) rx_expression_references(root C.vt_node, t &estree.EsTree, node int) []RxExpressionRef {
 	mut checked := RxAlreadyChecked{}
 	mut out := []RxExpressionRef{}
 	c.rx_references_for_expression(root, t, node, mut checked, mut out)
@@ -763,14 +763,14 @@ fn (mut c Checker) rx_expression_references(root C.TSNode, t &estree.EsTree, nod
 }
 
 // rx_expression_references_for_variable ports extractExpressionReferencesForVariable.
-fn (mut c Checker) rx_expression_references_for_variable(root C.TSNode, t &estree.EsTree, node int) []RxExpressionRef {
+fn (mut c Checker) rx_expression_references_for_variable(root C.vt_node, t &estree.EsTree, node int) []RxExpressionRef {
 	mut checked := RxAlreadyChecked{}
 	mut out := []RxExpressionRef{}
 	c.rx_references_for_variable(root, t, node, mut checked, mut out)
 	return out
 }
 
-fn (mut c Checker) rx_references_for_expression(root C.TSNode, t &estree.EsTree, expression int, mut checked RxAlreadyChecked, mut out []RxExpressionRef) {
+fn (mut c Checker) rx_references_for_expression(root C.vt_node, t &estree.EsTree, expression int, mut checked RxAlreadyChecked, mut out []RxExpressionRef) {
 	mut node := expression
 	mut parent := rx_parent(t, node)
 	for parent >= 0 && t.typ(parent) in [.chain_expression, .ts_non_null_expression, .ts_as_expression] {
@@ -911,7 +911,7 @@ fn rx_is_used_in_test(t &estree.EsTree, parent int, node int) bool {
 	}
 }
 
-fn (mut c Checker) rx_references_for_pattern(root C.TSNode, t &estree.EsTree, expression int, pattern int, mut checked RxAlreadyChecked, mut out []RxExpressionRef) {
+fn (mut c Checker) rx_references_for_pattern(root C.vt_node, t &estree.EsTree, expression int, pattern int, mut checked RxAlreadyChecked, mut out []RxExpressionRef) {
 	mut target := pattern
 	for target >= 0 && t.typ(target) == .assignment_pattern {
 		target = t.node(target, .left) or { -1 }
@@ -932,7 +932,7 @@ fn (mut c Checker) rx_references_for_pattern(root C.TSNode, t &estree.EsTree, ex
 	}
 }
 
-fn (mut c Checker) rx_references_for_variable(root C.TSNode, t &estree.EsTree, identifier int, mut checked RxAlreadyChecked, mut out []RxExpressionRef) {
+fn (mut c Checker) rx_references_for_variable(root C.vt_node, t &estree.EsTree, identifier int, mut checked RxAlreadyChecked, mut out []RxExpressionRef) {
 	v := c.rx_find_variable(root, t, identifier)
 	if v < 0 {
 		out << RxExpressionRef{
@@ -969,7 +969,7 @@ fn (mut c Checker) rx_references_for_variable(root C.TSNode, t &estree.EsTree, i
 	}
 }
 
-fn (mut c Checker) rx_references_for_function_argument(root C.TSNode, t &estree.EsTree, expression int, f int, arg_index int, mut checked RxAlreadyChecked, mut out []RxExpressionRef) {
+fn (mut c Checker) rx_references_for_function_argument(root C.vt_node, t &estree.EsTree, expression int, f int, arg_index int, mut checked RxAlreadyChecked, mut out []RxExpressionRef) {
 	mut already := checked.functions[f] or { []int{} }
 	if arg_index in already {
 		return
@@ -998,7 +998,7 @@ enum RxUsage {
 }
 
 // rx_usage_of_pattern ports getUsageOfPattern: how the regular expression is used.
-fn (mut c Checker) rx_usage_of_pattern(root C.TSNode, t &estree.EsTree, node int) RxUsage {
+fn (mut c Checker) rx_usage_of_pattern(root C.vt_node, t &estree.EsTree, node int) RxUsage {
 	mut partial := false
 	mut whole := false
 	for ref in c.rx_expression_references(root, t, node) {

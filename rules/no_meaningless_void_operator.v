@@ -24,13 +24,13 @@ fn nmvo_options(options []json2.Any) !NmvoOptions {
 	}
 }
 
-fn (mut c Checker) lint_no_meaningless_void_operator(root C.TSNode, abs_path string, mut stats Stats) ![]Finding {
+fn (mut c Checker) lint_no_meaningless_void_operator(root C.vt_node, abs_path string, mut stats Stats) ![]Finding {
 	mut sw := time.new_stopwatch()
 	options := nmvo_options(c.rule_options(no_meaningless_void_operator))!
 	// `UnaryExpression[operator="void"]`.
-	mut voids := []C.TSNode{}
-	mut void_arguments := []C.TSNode{}
-	mut operands := []C.TSNode{}
+	mut voids := []C.vt_node{}
+	mut void_arguments := []C.vt_node{}
+	mut operands := []C.vt_node{}
 	for node in c.nodes_of_kind(root, c'unary_expression') {
 		if operator_of(node) != 'void' {
 			continue
@@ -114,7 +114,7 @@ fn (mut c Checker) lint_no_meaningless_void_operator(root C.TSNode, abs_path str
 // nmvo_unwrap_void_argument ports unwrapVoidArgument: through optional chains, `as`, `!`,
 // `satisfies`, `<T>` assertions and to the last expression of a sequence (and parentheses, which
 // ESTree does not have).
-fn nmvo_unwrap_void_argument(n C.TSNode) C.TSNode {
+fn nmvo_unwrap_void_argument(n C.vt_node) C.vt_node {
 	mut current := unwrap_parens(n)
 	for _ in 0 .. max_expression_depth {
 		next := match node_kind(current) {
@@ -145,7 +145,7 @@ fn nmvo_unwrap_void_argument(n C.TSNode) C.TSNode {
 }
 
 // nmvo_is_call: a CallExpression in ESTree (not a tagged template or `import()`).
-fn nmvo_is_call(n C.TSNode) bool {
+fn nmvo_is_call(n C.vt_node) bool {
 	if node_kind(n) != 'call_expression' {
 		return false
 	}

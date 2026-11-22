@@ -10,10 +10,10 @@ const sy_ptg_messages = {
 	'preferTypedGroup': 'Prefer the two-argument `@Group(groups, name)` overload so the group name is validated against the declared groups.'
 }
 
-fn (mut c Checker) lint_seyfert_prefer_typed_group(root C.TSNode, abs_path string, mut stats Stats) ![]Finding {
+fn (mut c Checker) lint_seyfert_prefer_typed_group(root C.vt_node, abs_path string, mut stats Stats) ![]Finding {
 	mut sw := time.new_stopwatch()
-	mut decorators := []C.TSNode{}
-	mut callees := []C.TSNode{}
+	mut decorators := []C.vt_node{}
+	mut callees := []C.vt_node{}
 	for decorator in c.nodes_of_kind(root, c'decorator') {
 		call := sy_decorator_call(decorator) or { continue }
 		arguments := call_arguments(call) or { continue }

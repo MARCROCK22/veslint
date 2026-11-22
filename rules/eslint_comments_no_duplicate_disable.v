@@ -12,7 +12,7 @@ const ec_ndd_messages = {
 	'duplicateRule': "'{{ruleId}}' rule has been disabled already."
 }
 
-fn (mut c Checker) lint_eslint_comments_no_duplicate_disable(root C.TSNode, abs_path string, mut stats Stats) ![]Finding {
+fn (mut c Checker) lint_eslint_comments_no_duplicate_disable(root C.vt_node, abs_path string, mut stats Stats) ![]Finding {
 	sw := time.new_stopwatch()
 	d := c.ec_disabled_area(root)
 	mut findings := []Finding{}

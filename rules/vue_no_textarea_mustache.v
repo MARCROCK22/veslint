@@ -9,7 +9,7 @@ const vntm_messages = {
 	'unexpected': "Unexpected mustache. Use 'v-model' instead."
 }
 
-fn (mut c Checker) lint_vue_no_textarea_mustache(root C.TSNode, abs_path string, mut stats Stats) ![]Finding {
+fn (mut c Checker) lint_vue_no_textarea_mustache(root C.vt_node, abs_path string, mut stats Stats) ![]Finding {
 	if !c.vue_has_template() {
 		return []
 	}

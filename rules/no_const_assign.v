@@ -9,7 +9,7 @@ const ncona_messages = {
 	'const': "'{{name}}' is constant."
 }
 
-fn (mut c Checker) lint_no_const_assign(root C.TSNode, abs_path string, mut stats Stats) ![]Finding {
+fn (mut c Checker) lint_no_const_assign(root C.vt_node, abs_path string, mut stats Stats) ![]Finding {
 	sw := time.new_stopwatch()
 	mut findings := []Finding{}
 	for node in c.nodes_of_kinds(root, ['lexical_declaration'], []) {

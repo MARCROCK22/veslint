@@ -134,7 +134,7 @@ fn (c &Checker) vvslot_uses_scope_var(slot int) bool {
 	return false
 }
 
-fn (mut c Checker) lint_vue_valid_v_slot(root C.TSNode, abs_path string, mut stats Stats) ![]Finding {
+fn (mut c Checker) lint_vue_valid_v_slot(root C.vt_node, abs_path string, mut stats Stats) ![]Finding {
 	if !c.vue_has_template() {
 		return []
 	}

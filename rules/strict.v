@@ -35,7 +35,7 @@ mut:
 	findings []Finding
 }
 
-fn (mut c Checker) lint_strict(root C.TSNode, abs_path string, mut stats Stats) ![]Finding {
+fn (mut c Checker) lint_strict(root C.vt_node, abs_path string, mut stats Stats) ![]Finding {
 	sw := time.new_stopwatch()
 	mut mode := strict_options(c.rule_options(strict_rule))!
 	if c.language.implied_strict {
@@ -80,14 +80,14 @@ fn strict_should_fix(mode string) bool {
 }
 
 // strict_statements are the statements of a program or block (ESTree `body`).
-fn strict_statements(n C.TSNode) []C.TSNode {
+fn strict_statements(n C.vt_node) []C.vt_node {
 	return named_children(n).filter(node_kind(it) !in ['comment', 'hash_bang_line', 'html_comment'])
 }
 
 // strict_directives ports getUseStrictDirectives: the leading statements that are the string
 // 'use strict'.
-fn (c &Checker) strict_directives(statements []C.TSNode) []C.TSNode {
-	mut out := []C.TSNode{}
+fn (c &Checker) strict_directives(statements []C.vt_node) []C.vt_node {
+	mut out := []C.vt_node{}
 	for statement in statements {
 		if node_kind(statement) != 'expression_statement' {
 			break
@@ -106,7 +106,7 @@ fn (c &Checker) strict_directives(statements []C.TSNode) []C.TSNode {
 }
 
 // strict_report ports reportSlice from `start` to the end.
-fn (c &Checker) strict_report(mut st StrictState, directives []C.TSNode, start int, message_id string, fix bool) {
+fn (c &Checker) strict_report(mut st StrictState, directives []C.vt_node, start int, message_id string, fix bool) {
 	for i in start .. directives.len {
 		st.findings << Finding{
 			stmt:       position_of(directives[i])
@@ -121,7 +121,7 @@ fn (c &Checker) strict_report(mut st StrictState, directives []C.TSNode, start i
 	}
 }
 
-fn (mut c Checker) strict_visit(n C.TSNode, function_handlers bool, mut st StrictState) {
+fn (mut c Checker) strict_visit(n C.vt_node, function_handlers bool, mut st StrictState) {
 	kind := node_kind(n)
 	is_function := kind in function_kinds
 	is_class_body := kind == 'class_body' && function_handlers
@@ -145,7 +145,7 @@ fn (mut c Checker) strict_visit(n C.TSNode, function_handlers bool, mut st Stric
 }
 
 // strict_simple_parameters ports isSimpleParameterList: every parameter is an identifier.
-fn strict_simple_parameters(f C.TSNode) bool {
+fn strict_simple_parameters(f C.vt_node) bool {
 	if _ := node_field(f, 'parameter') {
 		return true
 	}
@@ -176,8 +176,8 @@ fn strict_simple_parameters(f C.TSNode) bool {
 }
 
 // strict_enter_function ports enterFunction.
-fn (mut c Checker) strict_enter_function(f C.TSNode, mut st StrictState) {
-	mut directives := []C.TSNode{}
+fn (mut c Checker) strict_enter_function(f C.vt_node, mut st StrictState) {
+	mut directives := []C.vt_node{}
 	if body := node_field(f, 'body') {
 		if node_kind(body) == 'statement_block' {
 			directives = c.strict_directives(strict_statements(body))
@@ -202,7 +202,7 @@ fn (mut c Checker) strict_enter_function(f C.TSNode, mut st StrictState) {
 }
 
 // strict_enter_function_mode ports enterFunctionInFunctionMode.
-fn (mut c Checker) strict_enter_function_mode(f C.TSNode, directives []C.TSNode, simple bool, mut st StrictState) {
+fn (mut c Checker) strict_enter_function_mode(f C.vt_node, directives []C.vt_node, simple bool, mut st StrictState) {
 	in_class := st.classes > 0
 	parent_global := st.scopes.len == 0 && st.classes == 0
 	parent_strict := st.scopes.len > 0 && st.scopes.last()

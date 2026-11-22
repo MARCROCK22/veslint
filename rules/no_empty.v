@@ -23,7 +23,7 @@ fn ne_allow_empty_catch(options []json2.Any) !bool {
 	return o.bool_value('allowEmptyCatch')!
 }
 
-fn (mut c Checker) lint_no_empty(root C.TSNode, abs_path string, mut stats Stats) ![]Finding {
+fn (mut c Checker) lint_no_empty(root C.vt_node, abs_path string, mut stats Stats) ![]Finding {
 	sw := time.new_stopwatch()
 	allow_empty_catch := ne_allow_empty_catch(c.rule_options(no_empty))!
 	mut findings := []Finding{}

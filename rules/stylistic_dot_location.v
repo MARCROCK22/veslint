@@ -17,7 +17,7 @@ fn sdl_options(given []json2.Any) !bool {
 	return sty_option_string(options, 0, 'property') == 'object'
 }
 
-fn (mut c Checker) lint_stylistic_dot_location(root C.TSNode, abs_path string, mut stats Stats) ![]Finding {
+fn (mut c Checker) lint_stylistic_dot_location(root C.vt_node, abs_path string, mut stats Stats) ![]Finding {
 	sw := time.new_stopwatch()
 	mut findings := []Finding{}
 	on_object := sdl_options(c.rule_options(stylistic_dot_location))!

@@ -42,7 +42,7 @@ fn yoda_options(options []json2.Any) !YodaOptions {
 	}
 }
 
-fn (mut c Checker) lint_yoda(root C.TSNode, abs_path string, mut stats Stats) ![]Finding {
+fn (mut c Checker) lint_yoda(root C.vt_node, abs_path string, mut stats Stats) ![]Finding {
 	sw := time.new_stopwatch()
 	o := yoda_options(c.rule_options(yoda))!
 	mut findings := []Finding{}
@@ -86,7 +86,7 @@ fn (mut c Checker) lint_yoda(root C.TSNode, abs_path string, mut stats Stats) ![
 }
 
 // yoda_is_negative_number ports isNegativeNumericLiteral: `-` before a number.
-fn yoda_is_negative_number(n C.TSNode) bool {
+fn yoda_is_negative_number(n C.vt_node) bool {
 	if node_kind(n) != 'unary_expression' || operator_of(n) != '-' {
 		return false
 	}
@@ -95,7 +95,7 @@ fn yoda_is_negative_number(n C.TSNode) bool {
 }
 
 // yoda_looks_like_literal: a Literal, a negative number or a template without substitutions.
-fn (c &Checker) yoda_looks_like_literal(n C.TSNode) bool {
+fn (c &Checker) yoda_looks_like_literal(n C.vt_node) bool {
 	if es_is_literal(n) || yoda_is_negative_number(n) {
 		return true
 	}
@@ -107,7 +107,7 @@ fn (c &Checker) yoda_looks_like_literal(n C.TSNode) bool {
 }
 
 // yoda_value ports getNormalizedLiteral: the value of a literal-like node.
-fn (c &Checker) yoda_value(n C.TSNode) ?JsValue {
+fn (c &Checker) yoda_value(n C.vt_node) ?JsValue {
 	match node_kind(n) {
 		'number' {
 			text := c.text(n)
@@ -173,7 +173,7 @@ fn (c &Checker) yoda_value(n C.TSNode) ?JsValue {
 
 // yoda_is_range_test ports isRangeTest: `(a < x && x < b)` or `(x < a || b < x)`, in
 // parentheses, with the literals in order.
-fn (mut c Checker) yoda_is_range_test(n C.TSNode) bool {
+fn (mut c Checker) yoda_is_range_test(n C.vt_node) bool {
 	if node_kind(n) != 'binary_expression' || estree_binary_kind(n) != 'LogicalExpression' {
 		return false
 	}
@@ -198,7 +198,7 @@ fn (mut c Checker) yoda_is_range_test(n C.TSNode) bool {
 }
 
 // yoda_in_order: one side is not a literal, or the first is not greater than the second.
-fn (c &Checker) yoda_in_order(a C.TSNode, b C.TSNode) bool {
+fn (c &Checker) yoda_in_order(a C.vt_node, b C.vt_node) bool {
 	x := c.yoda_value(a)
 	y := c.yoda_value(b)
 	if x == none && y == none {
@@ -210,7 +210,7 @@ fn (c &Checker) yoda_in_order(a C.TSNode, b C.TSNode) bool {
 }
 
 // yoda_fix ports getFlippedString: the right side, the operator flipped, then the left side.
-fn (mut c Checker) yoda_fix(root C.TSNode, node C.TSNode, left C.TSNode, right C.TSNode, operator string) (bool, Fix) {
+fn (mut c Checker) yoda_fix(root C.vt_node, node C.vt_node, left C.vt_node, right C.vt_node, operator string) (bool, Fix) {
 	tokens := c.source_tokens(root)
 	mut operator_token := tokens.after(c.es_end(left), false) or { return false, Fix{} }
 	for c.src[operator_token.start..operator_token.end] != operator {

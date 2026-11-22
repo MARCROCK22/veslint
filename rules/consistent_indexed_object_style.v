@@ -38,7 +38,7 @@ enum CiosRole {
 	other      // anything else, which never references the type
 }
 
-fn (mut c Checker) lint_consistent_indexed_object_style(root C.TSNode, abs_path string, mut stats Stats) ![]Finding {
+fn (mut c Checker) lint_consistent_indexed_object_style(root C.vt_node, abs_path string, mut stats Stats) ![]Finding {
 	sw := time.new_stopwatch()
 	mode := cios_options(c.rule_options(consistent_indexed_object_style))!
 	mut findings := []Finding{}
@@ -58,7 +58,7 @@ fn (mut c Checker) lint_consistent_indexed_object_style(root C.TSNode, abs_path 
 				c.cios_mapped_type(root, node, clause, mut findings)!
 			} else {
 				// TSTypeLiteral.
-				mut parent_id := ?C.TSNode(none)
+				mut parent_id := ?C.vt_node(none)
 				if declaration := cios_parent_declaration(node) {
 					parent_id = node_field(declaration, 'name')
 				}
@@ -75,7 +75,7 @@ fn (mut c Checker) lint_consistent_indexed_object_style(root C.TSNode, abs_path 
 // cios_record_type ports the TSTypeReference listener of 'index-signature': `Record<K, V>`
 // becomes `{ [key: K]: V }`, a fix when K is `string`, `number` or `symbol` and no comment would
 // be lost, a suggestion otherwise. It tells whether the node is a reference to `Record`.
-fn (mut c Checker) cios_record_type(node C.TSNode, mut findings []Finding) !bool {
+fn (mut c Checker) cios_record_type(node C.vt_node, mut findings []Finding) !bool {
 	name := node_field(node, 'name') or { return false }
 	if node_kind(name) != 'type_identifier' || type_name_role(name) != .reference
 		|| c.identifier_name(name) != 'Record' {
@@ -111,7 +111,7 @@ fn (mut c Checker) cios_record_type(node C.TSNode, mut findings []Finding) !bool
 // cios_interface ports the TSInterfaceDeclaration listener: an interface with a single index
 // signature becomes a type alias, unless it extends something or is a default export (there is no
 // `export default type`), which are reported without a fix.
-fn (mut c Checker) cios_interface(root C.TSNode, node C.TSNode, mut findings []Finding) ! {
+fn (mut c Checker) cios_interface(root C.vt_node, node C.vt_node, mut findings []Finding) ! {
 	id := node_field(node, 'name') or { return }
 	body := node_field(node, 'body') or { return }
 	mut generic_types := ''
@@ -139,7 +139,7 @@ fn (mut c Checker) cios_interface(root C.TSNode, node C.TSNode, mut findings []F
 // cios_check_members ports checkMembers: a single index signature `[key: K]: V` makes the type
 // (from `report` to the end of `node`) a `Record<K, V>`, unless it references the type alias or
 // interface it belongs to (`parent_id`).
-fn (mut c Checker) cios_check_members(root C.TSNode, members []C.TSNode, node C.TSNode, report C.TSNode, parent_id ?C.TSNode, prefix string, postfix string, safe_fix bool, mut findings []Finding) ! {
+fn (mut c Checker) cios_check_members(root C.vt_node, members []C.vt_node, node C.vt_node, report C.vt_node, parent_id ?C.vt_node, prefix string, postfix string, safe_fix bool, mut findings []Finding) ! {
 	if members.len != 1 || node_kind(members[0]) != 'index_signature' {
 		return
 	}
@@ -186,7 +186,7 @@ fn (mut c Checker) cios_check_members(root C.TSNode, members []C.TSNode, node C.
 
 // cios_mapped_type ports the TSMappedType listener: `{ [K in T]: V }` becomes `Record<T, V>`,
 // with `Partial`, `Required` and `Readonly` for its modifiers.
-fn (mut c Checker) cios_mapped_type(root C.TSNode, node C.TSNode, clause C.TSNode, mut findings []Finding) ! {
+fn (mut c Checker) cios_mapped_type(root C.vt_node, node C.vt_node, clause C.vt_node, mut findings []Finding) ! {
 	key := node_field(clause, 'name') or { return }
 	tree := c.scope_tree(root)
 	scope := tree.get_scope(key)
@@ -248,7 +248,7 @@ fn (mut c Checker) cios_mapped_type(root C.TSNode, node C.TSNode, clause C.TSNod
 
 // cios_report reports preferRecord with getFixOrSuggest: the fix, the fix as a suggestion when a
 // comment would be lost, or neither.
-fn (mut c Checker) cios_report(report C.TSNode, can_fix bool, unpreserved bool, fix Fix, mut findings []Finding) ! {
+fn (mut c Checker) cios_report(report C.vt_node, can_fix bool, unpreserved bool, fix Fix, mut findings []Finding) ! {
 	if !can_fix {
 		findings << Finding{
 			stmt:       position_of(report)
@@ -273,7 +273,7 @@ fn (mut c Checker) cios_report(report C.TSNode, can_fix bool, unpreserved bool, 
 
 // cios_has_unpreserved_comments ports hasUnpreservedComments: a comment in [start, end) outside
 // every preserved node, which the fix would drop.
-fn (mut c Checker) cios_has_unpreserved_comments(node C.TSNode, start int, end int, preserved []C.TSNode) bool {
+fn (mut c Checker) cios_has_unpreserved_comments(node C.vt_node, start int, end int, preserved []C.vt_node) bool {
 	tokens := c.source_tokens(node)
 	for comment in tokens.comments_inside(start, end) {
 		if preserved.all(comment.start < node_start(it) || comment.end > node_end(it)) {
@@ -285,7 +285,7 @@ fn (mut c Checker) cios_has_unpreserved_comments(node C.TSNode, start int, end i
 
 // cios_parent_declaration ports findParentDeclaration: the type alias around a type, unless a
 // TSTypeAnnotation comes first.
-fn cios_parent_declaration(n C.TSNode) ?C.TSNode {
+fn cios_parent_declaration(n C.vt_node) ?C.vt_node {
 	mut node := n
 	for {
 		parent := node_parent(node) or { return none }
@@ -304,7 +304,7 @@ fn cios_parent_declaration(n C.TSNode) ?C.TSNode {
 // no node for the TSTypeAnnotation of the return type of a function type, of the type of a type
 // predicate and of the key of an index signature; the value of a mapped type and the type of a
 // named tuple member have none in ESTree.
-fn cios_is_type_annotation(parent C.TSNode, child C.TSNode) bool {
+fn cios_is_type_annotation(parent C.vt_node, child C.vt_node) bool {
 	match node_kind(parent) {
 		'type_annotation' {
 			holder := node_parent(parent) or { return true }
@@ -336,7 +336,7 @@ fn cios_is_type_annotation(parent C.TSNode, child C.TSNode) bool {
 
 // cios_signature_has_name: the index signature has a parameter (`[key: K]`), so it is not the
 // one of a mapped type.
-fn cios_signature_has_name(signature C.TSNode) bool {
+fn cios_signature_has_name(signature C.vt_node) bool {
 	if _ := node_field(signature, 'name') {
 		return true
 	}
@@ -345,7 +345,7 @@ fn cios_signature_has_name(signature C.TSNode) bool {
 
 // cios_is_tuple_member: a named member of a tuple type (`[name: T]`, `[name?: T]`,
 // `[...name: T]`), which tree-sitter reads as a parameter.
-fn cios_is_tuple_member(holder C.TSNode) bool {
+fn cios_is_tuple_member(holder C.vt_node) bool {
 	if node_kind(holder) !in ['required_parameter', 'optional_parameter'] {
 		return false
 	}
@@ -353,7 +353,7 @@ fn cios_is_tuple_member(holder C.TSNode) bool {
 	return node_kind(tuple) == 'tuple_type'
 }
 
-fn cios_field_is(parent C.TSNode, field string, child C.TSNode) bool {
+fn cios_field_is(parent C.vt_node, field string, child C.vt_node) bool {
 	value := node_field(parent, field) or { return false }
 	return node_key(value) == node_key(child)
 }
@@ -361,7 +361,7 @@ fn cios_field_is(parent C.TSNode, field string, child C.TSNode) bool {
 // cios_es_parent is the ESTree parent of a type node and what it is: parentheses are not nodes,
 // a union or an intersection is the outermost one tree-sitter nests to the left, and the parts of
 // a mapped type belong to the TSMappedType itself.
-fn cios_es_parent(n C.TSNode) (C.TSNode, CiosRole) {
+fn cios_es_parent(n C.vt_node) (C.vt_node, CiosRole) {
 	mut parent := node_parent(n) or { return n, CiosRole.other }
 	for node_kind(parent) == 'parenthesized_type' {
 		parent = node_parent(parent) or { return n, CiosRole.other }
@@ -400,14 +400,14 @@ fn cios_es_parent(n C.TSNode) (C.TSNode, CiosRole) {
 	return parent, role
 }
 
-fn cios_visit_key(n C.TSNode, role CiosRole) string {
+fn cios_visit_key(n C.vt_node, role CiosRole) string {
 	return '${node_start(n)}-${node_end(n)}-${node_kind(n)}-${int(role)}'
 }
 
 // cios_deeply_references ports isDeeplyReferencingType: whether the type references the variable
 // `super_var` of the type alias or interface it belongs to, directly or through the type aliases
 // and interfaces it names. `visited` keeps it from going round a cycle.
-fn (c &Checker) cios_deeply_references(tree &ScopeTree, n C.TSNode, role CiosRole, super_var int, mut visited map[string]bool) bool {
+fn (c &Checker) cios_deeply_references(tree &ScopeTree, n C.vt_node, role CiosRole, super_var int, mut visited map[string]bool) bool {
 	key := cios_visit_key(n, role)
 	if visited[key] {
 		// Something on the chain is circular, but not the reference being checked.
@@ -465,8 +465,8 @@ fn (c &Checker) cios_deeply_references(tree &ScopeTree, n C.TSNode, role CiosRol
 }
 
 // cios_type_references is the TypeNode part of isDeeplyReferencingType.
-fn (c &Checker) cios_type_references(tree &ScopeTree, n C.TSNode, super_var int, mut visited map[string]bool) bool {
-	mut parts := []C.TSNode{}
+fn (c &Checker) cios_type_references(tree &ScopeTree, n C.vt_node, super_var int, mut visited map[string]bool) bool {
+	mut parts := []C.vt_node{}
 	match node_kind(n) {
 		'object_type' {
 			if _ := scope_mapped_clause(n) {
@@ -535,7 +535,7 @@ fn (c &Checker) cios_type_references(tree &ScopeTree, n C.TSNode, super_var int,
 // cios_name_references is the Identifier part of isDeeplyReferencingType: a name the variable has
 // a reference with (isNodeEqual compares the names of two Identifiers), or the definitions of the
 // variable the name finds from the scope of `super_var`.
-fn (c &Checker) cios_name_references(tree &ScopeTree, n C.TSNode, super_var int, mut visited map[string]bool) bool {
+fn (c &Checker) cios_name_references(tree &ScopeTree, n C.vt_node, super_var int, mut visited map[string]bool) bool {
 	name := c.identifier_name(n)
 	variable := tree.variables[super_var]
 	for r in variable.references {

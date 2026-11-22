@@ -9,7 +9,7 @@ const prm_no_nesting_messages = {
 	'avoidNesting': 'Avoid nesting promises.'
 }
 
-fn (mut c Checker) lint_promise_no_nesting(root C.TSNode, abs_path string, mut stats Stats) ![]Finding {
+fn (mut c Checker) lint_promise_no_nesting(root C.vt_node, abs_path string, mut stats Stats) ![]Finding {
 	sw := time.new_stopwatch()
 	mut findings := []Finding{}
 	t := c.es_tree(root, abs_path) or { return findings }

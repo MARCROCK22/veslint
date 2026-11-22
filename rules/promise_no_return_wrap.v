@@ -43,7 +43,7 @@ fn prm_is_in_promise(t &estree.EsTree, node int) bool {
 	return parent >= 0 && prm_is_promise(t, parent)
 }
 
-fn (mut c Checker) lint_promise_no_return_wrap(root C.TSNode, abs_path string, mut stats Stats) ![]Finding {
+fn (mut c Checker) lint_promise_no_return_wrap(root C.vt_node, abs_path string, mut stats Stats) ![]Finding {
 	sw := time.new_stopwatch()
 	allow_reject := prm_no_return_wrap_options(c.rule_options(promise_no_return_wrap))!
 	mut findings := []Finding{}

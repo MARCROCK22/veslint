@@ -31,7 +31,7 @@ fn nec_options(options []json2.Any) !NecOptions {
 	}
 }
 
-fn (mut c Checker) lint_no_extraneous_class(root C.TSNode, abs_path string, mut stats Stats) ![]Finding {
+fn (mut c Checker) lint_no_extraneous_class(root C.vt_node, abs_path string, mut stats Stats) ![]Finding {
 	sw := time.new_stopwatch()
 	o := nec_options(c.rule_options(no_extraneous_class))!
 	mut findings := []Finding{}
@@ -57,7 +57,7 @@ fn (mut c Checker) lint_no_extraneous_class(root C.TSNode, abs_path string, mut 
 }
 
 // nec_check ports the ClassBody visitor: the message to report, if any.
-fn (c &Checker) nec_check(body C.TSNode, o NecOptions) ?string {
+fn (c &Checker) nec_check(body C.vt_node, o NecOptions) ?string {
 	members := cm_members(body)
 	if members.len == 0 {
 		return if o.allow_empty { none } else { 'empty' }
@@ -92,7 +92,7 @@ fn (c &Checker) nec_check(body C.TSNode, o NecOptions) ?string {
 
 // nec_report_node is the id of a ClassDeclaration that has one, or the class itself (a
 // ClassExpression, or the ClassDeclaration of `export default class {}`, which starts at `class`).
-fn nec_report_node(class C.TSNode) C.TSNode {
+fn nec_report_node(class C.vt_node) C.vt_node {
 	is_declaration := node_kind(class) in ['class_declaration', 'abstract_class_declaration']
 		|| node_kind(node_parent(class) or { class }) == 'export_statement'
 	if is_declaration {

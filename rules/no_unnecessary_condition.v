@@ -59,7 +59,7 @@ fn nuco_options(options []json2.Any) !NucoOptions {
 	}
 }
 
-fn (mut c Checker) lint_no_unnecessary_condition(root C.TSNode, abs_path string, mut stats Stats) ![]Finding {
+fn (mut c Checker) lint_no_unnecessary_condition(root C.vt_node, abs_path string, mut stats Stats) ![]Finding {
 	mut sw := time.new_stopwatch()
 	o := nuco_options(c.rule_options(no_unnecessary_condition))!
 	nodes := c.nodes_of_kinds(root, ['augmented_assignment_expression', 'binary_expression',
@@ -92,7 +92,7 @@ fn (mut c Checker) lint_no_unnecessary_condition(root C.TSNode, abs_path string,
 }
 
 // nuco_visit runs the visitors of the rule on a node.
-fn (mut c Checker) nuco_visit(n C.TSNode, o NucoOptions, mut findings []Finding) ! {
+fn (mut c Checker) nuco_visit(n C.vt_node, o NucoOptions, mut findings []Finding) ! {
 	match node_kind(n) {
 		'augmented_assignment_expression' {
 			left := node_field(n, 'left') or { return }
@@ -160,7 +160,7 @@ fn (mut c Checker) nuco_visit(n C.TSNode, o NucoOptions, mut findings []Finding)
 }
 
 // nuco_spans adds the nodes whose types the visitors of `n` may need (a superset).
-fn (c &Checker) nuco_spans(n C.TSNode, mut spans []Span) {
+fn (c &Checker) nuco_spans(n C.vt_node, mut spans []Span) {
 	match node_kind(n) {
 		'augmented_assignment_expression' {
 			if left := node_field(n, 'left') {
@@ -238,7 +238,7 @@ fn (c &Checker) nuco_spans(n C.TSNode, mut spans []Span) {
 }
 
 // nuco_check_spans adds the nodes checkNode looks at for `expression`.
-fn (c &Checker) nuco_check_spans(expression C.TSNode, mut spans []Span, depth int) {
+fn (c &Checker) nuco_check_spans(expression C.vt_node, mut spans []Span, depth int) {
 	if depth > max_expression_depth {
 		return
 	}
@@ -259,7 +259,7 @@ fn (c &Checker) nuco_check_spans(expression C.TSNode, mut spans []Span, depth in
 }
 
 // nuco_expr_spans adds a node and the parts of a member access or a call.
-fn nuco_expr_spans(e C.TSNode, mut spans []Span) {
+fn nuco_expr_spans(e C.vt_node, mut spans []Span) {
 	spans << node_span(e)
 	if is_member(e) {
 		if object := node_field(e, 'object') {
@@ -276,7 +276,7 @@ fn nuco_expr_spans(e C.TSNode, mut spans []Span) {
 }
 
 // nuco_chain_spans adds the elements of the chain that ends at `n`, with their parts.
-fn nuco_chain_spans(n C.TSNode, mut spans []Span) {
+fn nuco_chain_spans(n C.vt_node, mut spans []Span) {
 	mut node := n
 	for depth := 0; depth < max_expression_depth && is_chain_element(node); depth++ {
 		nuco_expr_spans(node, mut spans)
@@ -288,14 +288,14 @@ fn nuco_chain_spans(n C.TSNode, mut spans []Span) {
 
 // nuco_constrained is getConstrainedTypeAtLocation of a node, or the null type if tsgo does not
 // know it.
-fn (mut c Checker) nuco_constrained(n C.TSNode) !TypeResponse {
+fn (mut c Checker) nuco_constrained(n C.vt_node) !TypeResponse {
 	t := c.node_type(unwrap_parens(n)) or { return TypeResponse{} }
 	return c.constrained(t)!
 }
 
 // nuco_check_node ports checkNode: reports a condition whose type is always truthy, always falsy
 // or `never`, at `report`.
-fn (mut c Checker) nuco_check_node(expression C.TSNode, unary_not bool, report C.TSNode, mut findings []Finding, depth int) ! {
+fn (mut c Checker) nuco_check_node(expression C.vt_node, unary_not bool, report C.vt_node, mut findings []Finding, depth int) ! {
 	if depth > max_expression_depth {
 		c.too_deep++
 		return
@@ -344,7 +344,7 @@ fn (mut c Checker) nuco_check_node(expression C.TSNode, unary_not bool, report C
 // nuco_only_used_for_truthiness ports isOnlyUsedForTruthiness: the expression (without
 // parentheses) is the test of a condition or a loop, the left side of `&&` or an expression
 // whose value is only used for truthiness, or the argument of `!`.
-fn nuco_only_used_for_truthiness(e C.TSNode, depth int) bool {
+fn nuco_only_used_for_truthiness(e C.vt_node, depth int) bool {
 	if depth > max_expression_depth {
 		return false
 	}
@@ -375,7 +375,7 @@ fn nuco_only_used_for_truthiness(e C.TSNode, depth int) bool {
 // getComputedMemberPropertyTypes: a computed member access whose key is a union of string and
 // number literals, each the name of a property of the object, one of whose types may be neither
 // nullish nor void.
-fn (mut c Checker) nuco_possibly_non_nullish_computed_member(n C.TSNode) !bool {
+fn (mut c Checker) nuco_possibly_non_nullish_computed_member(n C.vt_node) !bool {
 	if node_kind(n) != 'subscript_expression' || estree_type(n) != 'MemberExpression' {
 		return false
 	}
@@ -410,7 +410,7 @@ fn (mut c Checker) nuco_possibly_non_nullish_computed_member(n C.TSNode) !bool {
 }
 
 // nuco_check_nullish ports checkNodeForNullish: the left side of `??` (or `??=`).
-fn (mut c Checker) nuco_check_nullish(n C.TSNode, mut findings []Finding) ! {
+fn (mut c Checker) nuco_check_nullish(n C.vt_node, mut findings []Finding) ! {
 	t := c.nuco_constrained(n)!
 	if t.is_null() {
 		return
@@ -440,7 +440,7 @@ fn (mut c Checker) nuco_check_nullish(n C.TSNode, mut findings []Finding) ! {
 }
 
 // nuco_check_comparison ports checkIfBoolExpressionIsNecessaryConditional, reporting at `node`.
-fn (mut c Checker) nuco_check_comparison(node C.TSNode, left C.TSNode, right C.TSNode, operator string, mut findings []Finding) ! {
+fn (mut c Checker) nuco_check_comparison(node C.vt_node, left C.vt_node, right C.vt_node, operator string, mut findings []Finding) ! {
 	left_type := c.nuco_constrained(left)!
 	if left_type.is_null() {
 		return
@@ -494,7 +494,7 @@ fn (mut c Checker) nuco_comparable(t TypeResponse, flag u32, loose bool) !bool {
 }
 
 // nuco_check_loop ports checkIfLoopIsNecessaryConditional.
-fn (mut c Checker) nuco_check_loop(n C.TSNode, o NucoOptions, mut findings []Finding) ! {
+fn (mut c Checker) nuco_check_loop(n C.vt_node, o NucoOptions, mut findings []Finding) ! {
 	condition := node_field(n, 'condition') or { return }
 	// `for (;;)`
 	if node_kind(condition) == 'empty_statement' {
@@ -523,7 +523,7 @@ fn (mut c Checker) nuco_check_loop(n C.TSNode, o NucoOptions, mut findings []Fin
 }
 
 // nuco_check_call ports checkCallExpression: type predicates and array predicate callbacks.
-fn (mut c Checker) nuco_check_call(call C.TSNode, o NucoOptions, mut findings []Finding) ! {
+fn (mut c Checker) nuco_check_call(call C.vt_node, o NucoOptions, mut findings []Finding) ! {
 	if o.check_type_predicates {
 		c.nuco_check_type_predicates(call, mut findings)!
 	}
@@ -591,8 +591,8 @@ fn (mut c Checker) nuco_check_call(call C.TSNode, o NucoOptions, mut findings []
 
 // nuco_check_type_predicates ports the checkTypePredicates part of checkCallExpression, with
 // findTruthinessAssertedArgument and findTypeGuardAssertedArgument.
-fn (mut c Checker) nuco_check_type_predicates(call C.TSNode, mut findings []Finding) ! {
-	mut checkable := []C.TSNode{}
+fn (mut c Checker) nuco_check_type_predicates(call C.vt_node, mut findings []Finding) ! {
+	mut checkable := []C.vt_node{}
 	for arg in call_arguments(call) or { return } {
 		if node_kind(arg) == 'spread_element' {
 			break
@@ -647,7 +647,7 @@ fn (mut c Checker) nuco_check_type_predicates(call C.TSNode, mut findings []Find
 }
 
 // nuco_check_optional_chain ports checkOptionalChain for an element with its own `?.`.
-fn (mut c Checker) nuco_check_optional_chain(n C.TSNode, mut findings []Finding) ! {
+fn (mut c Checker) nuco_check_optional_chain(n C.vt_node, mut findings []Finding) ! {
 	if !c.no_unchecked_indexed_access && c.option_chain_contains_option_array_index(n)! {
 		return
 	}
@@ -672,7 +672,7 @@ fn (mut c Checker) nuco_check_optional_chain(n C.TSNode, mut findings []Finding)
 }
 
 // option_chain_contains_option_array_index ports optionChainContainsOptionArrayIndex.
-fn (mut c Checker) option_chain_contains_option_array_index(n C.TSNode) !bool {
+fn (mut c Checker) option_chain_contains_option_array_index(n C.vt_node) !bool {
 	mut node := n
 	for depth := 0; depth < max_expression_depth; depth++ {
 		lhs := unwrap_parens(chain_lhs(node) or { return false })
@@ -689,7 +689,7 @@ fn (mut c Checker) option_chain_contains_option_array_index(n C.TSNode) !bool {
 
 // is_array_index_expression ports isArrayIndexExpression: `x[i]` on an array, or on a tuple with a
 // non-literal index.
-fn (mut c Checker) is_array_index_expression(n C.TSNode) !bool {
+fn (mut c Checker) is_array_index_expression(n C.vt_node) !bool {
 	if estree_type(n) != 'MemberExpression' || node_kind(n) != 'subscript_expression' {
 		return false
 	}
@@ -728,7 +728,7 @@ fn (mut c Checker) is_conditional_always_necessary(t TypeResponse) !bool {
 }
 
 // is_nullable_member_expression ports isNullableMemberExpression.
-fn (mut c Checker) is_nullable_member_expression(n C.TSNode) !bool {
+fn (mut c Checker) is_nullable_member_expression(n C.vt_node) !bool {
 	object := unwrap_parens(node_field(n, 'object') or { return false })
 	object_type := c.node_type(object) or { return false }
 	property := member_property(n) or { return false }
@@ -788,7 +788,7 @@ fn (mut c Checker) is_nullable_property_type(object_type TypeResponse, property_
 
 // is_optionable_expression ports isOptionableExpression: the object of a `?.` may be nullish on
 // its own.
-fn (mut c Checker) is_optionable_expression(n C.TSNode) !bool {
+fn (mut c Checker) is_optionable_expression(n C.vt_node) !bool {
 	t := c.nuco_constrained(n)!
 	if t.is_null() {
 		return true
@@ -807,7 +807,7 @@ fn (mut c Checker) is_optionable_expression(n C.TSNode) !bool {
 
 // nullable_origin_from_object ports isMemberExpressionNullableOriginFromObject: `a.b` is nullable
 // only because `a` is.
-fn (mut c Checker) nullable_origin_from_object(n C.TSNode) !bool {
+fn (mut c Checker) nullable_origin_from_object(n C.vt_node) !bool {
 	object := node_field(n, 'object') or { return false }
 	previous := c.nuco_constrained(object)!
 	if previous.is_null() {
@@ -854,7 +854,7 @@ fn (mut c Checker) nullable_origin_from_object(n C.TSNode) !bool {
 }
 
 // nullable_origin_from_callee ports isCallExpressionNullableOriginFromCallee.
-fn (mut c Checker) nullable_origin_from_callee(n C.TSNode) !bool {
+fn (mut c Checker) nullable_origin_from_callee(n C.vt_node) !bool {
 	callee := node_field(n, 'function') or { return false }
 	previous := c.nuco_constrained(callee)!
 	if previous.is_null() {

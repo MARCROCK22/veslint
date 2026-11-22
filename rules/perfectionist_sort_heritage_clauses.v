@@ -23,7 +23,7 @@ const pfhc_message_ids = PfMessageIds{
 
 const pfhc_default_options = '{"fallbackSort":{"type":"unsorted"},"newlinesInside":"newlinesBetween","specialCharacters":"keep","newlinesBetween":"ignore","partitionByNewLine":false,"partitionByComment":false,"useConfigurationIf":{},"type":"alphabetical","ignoreCase":true,"customGroups":[],"locales":"en-US","alphabet":"","order":"asc","groups":[]}'
 
-fn (mut c Checker) lint_perfectionist_sort_heritage_clauses(root C.TSNode, abs_path string, mut stats Stats) ![]Finding {
+fn (mut c Checker) lint_perfectionist_sort_heritage_clauses(root C.vt_node, abs_path string, mut stats Stats) ![]Finding {
 	sw := time.new_stopwatch()
 	t := c.es_tree(root, abs_path) or { return []Finding{} }
 	mut ctx := c.pf_context(t, perfectionist_sort_heritage_clauses)

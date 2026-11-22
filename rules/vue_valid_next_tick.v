@@ -16,7 +16,7 @@ const vue_valid_next_tick_messages = {
 	'eitherAwaitOrCallback':  'Either await the Promise or pass a callback function to `nextTick`.'
 }
 
-fn (mut c Checker) lint_vue_valid_next_tick(root C.TSNode, abs_path string, mut stats Stats) ![]Finding {
+fn (mut c Checker) lint_vue_valid_next_tick(root C.vt_node, abs_path string, mut stats Stats) ![]Finding {
 	sw := time.new_stopwatch()
 	mut findings := []Finding{}
 	s := c.vue_script(root, abs_path) or { return findings }
@@ -88,7 +88,7 @@ fn (mut c Checker) lint_vue_valid_next_tick(root C.TSNode, abs_path string, mut 
 // vvnt_next_tick_node is getVueNextTickNode: the member expression `this.$nextTick` or
 // `Vue.nextTick` the identifier is in, or the identifier when it is the `nextTick` imported from
 // `vue`; -1 for none.
-fn (mut c Checker) vvnt_next_tick_node(root C.TSNode, t &estree.EsTree, id int) int {
+fn (mut c Checker) vvnt_next_tick_node(root C.vt_node, t &estree.EsTree, id int) int {
 	parent := t.nodes[id].parent
 	if parent >= 0 && t.typ(parent) == .member_expression
 		&& c.vnts_is_vue_next_tick_member(root, t, id, parent) {

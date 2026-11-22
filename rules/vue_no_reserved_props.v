@@ -22,7 +22,7 @@ fn vue_no_reserved_props_options(options []json2.Any) ![]string {
 	}
 }
 
-fn (mut c Checker) lint_vue_no_reserved_props(root C.TSNode, abs_path string, mut stats Stats) ![]Finding {
+fn (mut c Checker) lint_vue_no_reserved_props(root C.vt_node, abs_path string, mut stats Stats) ![]Finding {
 	sw := time.new_stopwatch()
 	reserved := vue_no_reserved_props_options(c.rule_options(vue_no_reserved_props))!
 	mut findings := []Finding{}

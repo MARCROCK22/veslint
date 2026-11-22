@@ -62,7 +62,7 @@ fn (c &Checker) vue_document_tags() []int {
 	return out
 }
 
-fn (mut c Checker) lint_vue_html_closing_bracket_spacing(root C.TSNode, abs_path string, mut stats Stats) ![]Finding {
+fn (mut c Checker) lint_vue_html_closing_bracket_spacing(root C.vt_node, abs_path string, mut stats Stats) ![]Finding {
 	if !c.is_vue() {
 		return []
 	}
@@ -149,7 +149,7 @@ fn vhcbn_phrase(line_breaks int) string {
 	}
 }
 
-fn (mut c Checker) lint_vue_html_closing_bracket_newline(root C.TSNode, abs_path string, mut stats Stats) ![]Finding {
+fn (mut c Checker) lint_vue_html_closing_bracket_newline(root C.vt_node, abs_path string, mut stats Stats) ![]Finding {
 	if !c.is_vue() {
 		return []
 	}

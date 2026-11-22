@@ -27,7 +27,7 @@ fn vsnc_is_single_word(s string) bool {
 	return s.len > 0 && s.bytes().all(it >= `a` && it <= `z`)
 }
 
-fn (mut c Checker) lint_vue_slot_name_casing(root C.TSNode, abs_path string, mut stats Stats) ![]Finding {
+fn (mut c Checker) lint_vue_slot_name_casing(root C.vt_node, abs_path string, mut stats Stats) ![]Finding {
 	if !c.vue_has_template() {
 		return []
 	}

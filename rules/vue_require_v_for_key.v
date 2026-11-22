@@ -30,7 +30,7 @@ fn (c &Checker) vrvfk_check(element int, mut findings []Finding) {
 	}
 }
 
-fn (mut c Checker) lint_vue_require_v_for_key(root C.TSNode, abs_path string, mut stats Stats) ![]Finding {
+fn (mut c Checker) lint_vue_require_v_for_key(root C.vt_node, abs_path string, mut stats Stats) ![]Finding {
 	if !c.vue_has_template() {
 		return []
 	}

@@ -51,7 +51,7 @@ fn (c &Checker) svshd_never(i int) Finding {
 	}
 }
 
-fn (mut c Checker) lint_svelte_shorthand_directive(root C.TSNode, abs_path string, mut stats Stats) ![]Finding {
+fn (mut c Checker) lint_svelte_shorthand_directive(root C.vt_node, abs_path string, mut stats Stats) ![]Finding {
 	always := svshd_options(c.rule_options(svelte_shorthand_directive))!
 	if !c.is_svelte() {
 		return []

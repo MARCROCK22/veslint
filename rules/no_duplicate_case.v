@@ -9,13 +9,13 @@ const ndc_messages = {
 	'unexpected': 'Duplicate case label.'
 }
 
-fn (mut c Checker) lint_no_duplicate_case(root C.TSNode, abs_path string, mut stats Stats) ![]Finding {
+fn (mut c Checker) lint_no_duplicate_case(root C.vt_node, abs_path string, mut stats Stats) ![]Finding {
 	sw := time.new_stopwatch()
 	mut findings := []Finding{}
 	for node in c.nodes_of_kinds(root, ['switch_statement'], []) {
 		body := node_field(node, 'body') or { continue }
 		stats.checked++
-		mut previous := []C.TSNode{}
+		mut previous := []C.vt_node{}
 		for switch_case in named_children(body) {
 			if node_kind(switch_case) != 'switch_case' {
 				continue

@@ -8,7 +8,7 @@ const svnsa_messages = {
 	'unexpected': 'Do not pass async functions to svelte stores.'
 }
 
-fn (mut c Checker) lint_svelte_no_store_async(root C.TSNode, abs_path string, mut stats Stats) ![]Finding {
+fn (mut c Checker) lint_svelte_no_store_async(root C.vt_node, abs_path string, mut stats Stats) ![]Finding {
 	calls := c.svsc_store_calls(root, abs_path, ['writable', 'readable', 'derived'])
 	if calls.len == 0 {
 		return []

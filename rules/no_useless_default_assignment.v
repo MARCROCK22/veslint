@@ -55,12 +55,12 @@ enum NudaParent {
 // NudaPattern is an ESTree AssignmentPattern: a parameter with a default value, an
 // `assignment_pattern` or an `object_assignment_pattern` (`{ a = 1 }`).
 struct NudaPattern {
-	node   C.TSNode
-	right  C.TSNode // without parentheses
+	node   C.vt_node
+	right  C.vt_node // without parentheses
 	parent NudaParent
 }
 
-fn (mut c Checker) lint_no_useless_default_assignment(root C.TSNode, abs_path string, mut stats Stats) ![]Finding {
+fn (mut c Checker) lint_no_useless_default_assignment(root C.vt_node, abs_path string, mut stats Stats) ![]Finding {
 	mut sw := time.new_stopwatch()
 	o := nuda_options(c.rule_options(no_useless_default_assignment))!
 	mut patterns := []NudaPattern{}
@@ -93,7 +93,7 @@ fn (mut c Checker) lint_no_useless_default_assignment(root C.TSNode, abs_path st
 }
 
 // nuda_pattern reads an AssignmentPattern and its ESTree parent.
-fn nuda_pattern(node C.TSNode) ?NudaPattern {
+fn nuda_pattern(node C.vt_node) ?NudaPattern {
 	kind := node_kind(node)
 	if kind in ['required_parameter', 'optional_parameter'] {
 		value := node_field(node, 'value')?
@@ -119,13 +119,13 @@ fn nuda_pattern(node C.TSNode) ?NudaPattern {
 }
 
 // nuda_has_modifiers: a parameter property (`private a = 1`).
-fn nuda_has_modifiers(parameter C.TSNode) bool {
+fn nuda_has_modifiers(parameter C.vt_node) bool {
 	return has_child_kind(parameter, 'accessibility_modifier')
 		|| has_child_kind(parameter, 'override_modifier') || has_child_kind(parameter, 'readonly')
 }
 
 // nuda_function is the function of a parameter (the parent of its formal_parameters).
-fn nuda_function(parameter C.TSNode) ?C.TSNode {
+fn nuda_function(parameter C.vt_node) ?C.vt_node {
 	list := node_parent(parameter)?
 	if node_kind(list) != 'formal_parameters' {
 		return none
@@ -135,7 +135,7 @@ fn nuda_function(parameter C.TSNode) ?C.TSNode {
 
 // nuda_parameter_index is the index of a parameter in the ESTree `params` (a `this` parameter
 // included).
-fn nuda_parameter_index(parameter C.TSNode) int {
+fn nuda_parameter_index(parameter C.vt_node) int {
 	list := node_parent(parameter) or { return -1 }
 	for i, p in named_children(list) {
 		if node_key(p) == node_key(parameter) {
@@ -185,7 +185,7 @@ fn (c &Checker) nuda_pattern_spans(p NudaPattern, mut spans []Span) {
 }
 
 // nuda_source_spans requests what nuda_source_type may need for a pattern.
-fn (c &Checker) nuda_source_spans(p C.TSNode, mut spans []Span, depth int) {
+fn (c &Checker) nuda_source_spans(p C.vt_node, mut spans []Span, depth int) {
 	if depth > max_type_depth {
 		return
 	}
@@ -431,7 +431,7 @@ fn (mut c Checker) nuda_can_be_undefined(t TypeResponse) !bool {
 
 // nuda_property_type ports getTypeOfProperty for a Property of an ObjectPattern (a pair_pattern or
 // an object_assignment_pattern); the null type for null.
-fn (mut c Checker) nuda_property_type(property C.TSNode, depth int) !TypeResponse {
+fn (mut c Checker) nuda_property_type(property C.vt_node, depth int) !TypeResponse {
 	object := node_parent(property) or { return TypeResponse{} }
 	source := c.nuda_source_type(object, depth + 1)!
 	if source.is_null() {
@@ -460,7 +460,7 @@ fn (mut c Checker) nuda_property_type(property C.TSNode, depth int) !TypeRespons
 }
 
 // nuda_property_key is the ESTree key of a Property of an ObjectPattern.
-fn nuda_property_key(property C.TSNode) ?C.TSNode {
+fn nuda_property_key(property C.vt_node) ?C.vt_node {
 	if node_kind(property) == 'object_assignment_pattern' {
 		return node_field(property, 'left')
 	}
@@ -469,13 +469,13 @@ fn nuda_property_key(property C.TSNode) ?C.TSNode {
 
 // nuda_is_conditional ports the test of hasConditionalInitializer: a ConditionalExpression or a
 // LogicalExpression.
-fn nuda_is_conditional(init C.TSNode) bool {
+fn nuda_is_conditional(init C.vt_node) bool {
 	return node_kind(init) == 'ternary_expression'
 		|| estree_binary_kind(init) == 'LogicalExpression'
 }
 
 // nuda_in_all_branches ports hasPropertyInAllBranches.
-fn (c &Checker) nuda_in_all_branches(expression C.TSNode, name string, depth int) bool {
+fn (c &Checker) nuda_in_all_branches(expression C.vt_node, name string, depth int) bool {
 	e := unwrap_parens(expression)
 	if depth > max_expression_depth {
 		return false
@@ -519,7 +519,7 @@ fn (c &Checker) nuda_in_all_branches(expression C.TSNode, name string, depth int
 // nuda_property_name ports the rule's getPropertyName: the name of an Identifier, String(value)
 // of a Literal, the cooked text of a template without expressions; the key of a computed
 // property is its expression.
-fn (c &Checker) nuda_property_name(key C.TSNode) ?string {
+fn (c &Checker) nuda_property_name(key C.vt_node) ?string {
 	mut k := key
 	if node_kind(k) == 'computed_property_name' {
 		k = unwrap_parens(first_named(k)?)
@@ -556,7 +556,7 @@ fn (c &Checker) nuda_property_name(key C.TSNode) ?string {
 // nuda_source_type ports getSourceTypeForPattern: the type destructured into a pattern (an
 // object_pattern, an array_pattern, or an AssignmentPattern: an assignment_pattern or a parameter
 // with a default value). The null type for null.
-fn (mut c Checker) nuda_source_type(p C.TSNode, depth int) !TypeResponse {
+fn (mut c Checker) nuda_source_type(p C.vt_node, depth int) !TypeResponse {
 	if depth > max_type_depth {
 		return TypeResponse{}
 	}
@@ -619,7 +619,7 @@ fn (mut c Checker) nuda_source_type(p C.TSNode, depth int) !TypeResponse {
 
 // nuda_parameter_type is the type of the parameter of a function at the ESTree index of `p` (an
 // AssignmentPattern or a pattern parameter), from the signature of the function's declaration.
-fn (mut c Checker) nuda_parameter_type(p C.TSNode) !TypeResponse {
+fn (mut c Checker) nuda_parameter_type(p C.vt_node) !TypeResponse {
 	if nuda_has_modifiers(p) {
 		return TypeResponse{}
 	}
@@ -645,7 +645,7 @@ fn (mut c Checker) nuda_parameter_type(p C.TSNode) !TypeResponse {
 
 // nuda_element_index is the index of an element in the ESTree `elements` of an ArrayPattern,
 // holes included: the commas before it.
-fn nuda_element_index(array C.TSNode, element C.TSNode) int {
+fn nuda_element_index(array C.vt_node, element C.vt_node) int {
 	mut commas := 0
 	for child in children(array) {
 		if node_key(child) == node_key(element) {

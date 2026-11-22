@@ -123,8 +123,8 @@ mut:
 	// The parse of the `generics` attribute (`void function<…>(){}`), merged into the
 	// document's ESTree after the main parse.
 	generics_es     estree.EsTree
-	generics_tree   &C.TSTree = unsafe { nil }
-	generics_at     int       = -1 // file byte offset of `void function<` (value start - 14)
+	generics_tree   &C.vt_rows = unsafe { nil }
+	generics_at     int        = -1 // file byte offset of `void function<` (value start - 14)
 	generics_toks   []SnipToken
 	generics_comms  []SnipToken
 	generics_attr   int = -1

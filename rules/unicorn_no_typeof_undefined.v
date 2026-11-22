@@ -26,7 +26,7 @@ fn un_is_string_literal_of(t &estree.EsTree, node int, value string) bool {
 	return v is string && v == value
 }
 
-fn (mut c Checker) lint_unicorn_no_typeof_undefined(root C.TSNode, abs_path string, mut stats Stats) ![]Finding {
+fn (mut c Checker) lint_unicorn_no_typeof_undefined(root C.vt_node, abs_path string, mut stats Stats) ![]Finding {
 	sw := time.new_stopwatch()
 	check_globals := unty_options(c.rule_options(unicorn_no_typeof_undefined))!
 	mut findings := []Finding{}
@@ -102,7 +102,7 @@ fn (mut c Checker) lint_unicorn_no_typeof_undefined(root C.TSNode, abs_path stri
 
 // unty_resolved ports getIdentifierReference(identifier, scope)?.resolved: the variable the
 // reference of the identifier resolves to, -1 for none.
-fn (mut c Checker) unty_resolved(root C.TSNode, t &estree.EsTree, identifier int) int {
+fn (mut c Checker) unty_resolved(root C.vt_node, t &estree.EsTree, identifier int) int {
 	ts := t.ts_node(identifier) or { return -1 }
 	tree := c.scope_tree(root)
 	key := node_key(ts)
@@ -132,7 +132,7 @@ fn (mut c Checker) unty_is_ambient_definition(t &estree.EsTree, def ScopeDefinit
 
 // unty_is_ambient_variable ports isAmbientVariable: some definition is ambient and the others are
 // types.
-fn (mut c Checker) unty_is_ambient_variable(root C.TSNode, t &estree.EsTree, v int) bool {
+fn (mut c Checker) unty_is_ambient_variable(root C.vt_node, t &estree.EsTree, v int) bool {
 	if v < 0 {
 		return false
 	}

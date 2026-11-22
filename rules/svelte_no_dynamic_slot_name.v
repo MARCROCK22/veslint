@@ -37,7 +37,7 @@ fn (c &Checker) sndsn_root_expression(node int, mut visited map[int]bool) int {
 	return c.sndsn_root_expression(init, mut visited)
 }
 
-fn (mut c Checker) lint_svelte_no_dynamic_slot_name(root C.TSNode, abs_path string, mut stats Stats) ![]Finding {
+fn (mut c Checker) lint_svelte_no_dynamic_slot_name(root C.vt_node, abs_path string, mut stats Stats) ![]Finding {
 	if !c.is_svelte() {
 		return []
 	}

@@ -16,7 +16,7 @@ fn nep_allow_parameters(options []json2.Any) !bool {
 	return o.bool_value('allowObjectPatternsAsParameters')!
 }
 
-fn (mut c Checker) lint_no_empty_pattern(root C.TSNode, abs_path string, mut stats Stats) ![]Finding {
+fn (mut c Checker) lint_no_empty_pattern(root C.vt_node, abs_path string, mut stats Stats) ![]Finding {
 	sw := time.new_stopwatch()
 	allow_parameters := nep_allow_parameters(c.rule_options(no_empty_pattern))!
 	mut findings := []Finding{}
@@ -56,7 +56,7 @@ fn (mut c Checker) lint_no_empty_pattern(root C.TSNode, abs_path string, mut sta
 }
 
 // nep_is_parameter: the pattern is a parameter, or one with an empty object as its default.
-fn nep_is_parameter(pattern C.TSNode) bool {
+fn nep_is_parameter(pattern C.vt_node) bool {
 	parameter := node_parent(pattern) or { return false }
 	if node_kind(parameter) !in ['required_parameter', 'optional_parameter'] {
 		return false

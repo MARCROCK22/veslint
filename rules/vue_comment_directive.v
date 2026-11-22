@@ -39,7 +39,7 @@ fn vcd_options(options []json2.Any) !bool {
 }
 
 // The rule itself reports nothing that reaches the output but through the postprocess.
-fn (mut c Checker) lint_vue_comment_directive(root C.TSNode, abs_path string, mut stats Stats) ![]Finding {
+fn (mut c Checker) lint_vue_comment_directive(root C.vt_node, abs_path string, mut stats Stats) ![]Finding {
 	vcd_options(c.rule_options(vue_comment_directive))!
 	return []
 }

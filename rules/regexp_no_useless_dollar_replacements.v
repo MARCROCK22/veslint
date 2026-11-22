@@ -14,7 +14,7 @@ const regexp_no_useless_dollar_replacements_messages = {
 	'namedRefNamedCapturingNotFound': "'\$<{{ refText }}>' replacement will insert '\$<{{ refText }}>' because named capturing group is not found. Use '\$\$' if you want to escape '\$'."
 }
 
-fn (mut c Checker) lint_regexp_no_useless_dollar_replacements(root C.TSNode, abs_path string, mut stats Stats) ![]Finding {
+fn (mut c Checker) lint_regexp_no_useless_dollar_replacements(root C.vt_node, abs_path string, mut stats Stats) ![]Finding {
 	sw := time.new_stopwatch()
 	mut findings := []Finding{}
 	t := c.es_tree(root, abs_path) or { return findings }

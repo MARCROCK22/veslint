@@ -64,7 +64,7 @@ fn slbcm_options(given []json2.Any) !SlbcmOptions {
 	}
 }
 
-fn (mut c Checker) lint_stylistic_lines_between_class_members(root C.TSNode, abs_path string, mut stats Stats) ![]Finding {
+fn (mut c Checker) lint_stylistic_lines_between_class_members(root C.vt_node, abs_path string, mut stats Stats) ![]Finding {
 	sw := time.new_stopwatch()
 	mut findings := []Finding{}
 	options := slbcm_options(c.rule_options(stylistic_lines_between_class_members))!

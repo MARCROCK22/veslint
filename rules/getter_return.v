@@ -25,7 +25,7 @@ mut:
 	current_segments []int // a Set: insertion order, no duplicates
 }
 
-fn (mut c Checker) lint_getter_return(root C.TSNode, abs_path string, mut stats Stats) ![]Finding {
+fn (mut c Checker) lint_getter_return(root C.vt_node, abs_path string, mut stats Stats) ![]Finding {
 	sw := time.new_stopwatch()
 	allow_implicit := gr_options(c.rule_options(getter_return))!
 	mut findings := []Finding{}
@@ -99,7 +99,7 @@ fn (mut c Checker) lint_getter_return(root C.TSNode, abs_path string, mut stats 
 // gr_is_getter ports isGetter: a function with a block body that is a getter, or the `get` of a
 // property descriptor (isPropertyDescriptor: given to the global Object.defineProperty,
 // Reflect.defineProperty, Object.defineProperties or Object.create).
-fn (mut c Checker) gr_is_getter(root C.TSNode, t &estree.EsTree, node int) bool {
+fn (mut c Checker) gr_is_getter(root C.vt_node, t &estree.EsTree, node int) bool {
 	if t.typ(node) !in [.function_expression, .arrow_function_expression] {
 		return false
 	}

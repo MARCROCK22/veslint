@@ -29,7 +29,7 @@ fn vue_next_tick_style_options(options []json2.Any) !string {
 	return error('the option of `${vue_next_tick_style}` must be "promise" or "callback"')
 }
 
-fn (mut c Checker) lint_vue_next_tick_style(root C.TSNode, abs_path string, mut stats Stats) ![]Finding {
+fn (mut c Checker) lint_vue_next_tick_style(root C.vt_node, abs_path string, mut stats Stats) ![]Finding {
 	sw := time.new_stopwatch()
 	style := vue_next_tick_style_options(c.rule_options(vue_next_tick_style))!
 	mut findings := []Finding{}
@@ -72,7 +72,7 @@ fn (mut c Checker) lint_vue_next_tick_style(root C.TSNode, abs_path string, mut 
 // vnts_next_tick_call is getVueNextTickCallExpression: the call of `this.$nextTick(…)`,
 // `Vue.nextTick(…)` or of the `nextTick` imported from `vue` whose callee is the identifier, -1
 // for none.
-fn (mut c Checker) vnts_next_tick_call(root C.TSNode, t &estree.EsTree, id int) int {
+fn (mut c Checker) vnts_next_tick_call(root C.vt_node, t &estree.EsTree, id int) int {
 	parent := t.nodes[id].parent
 	if parent < 0 {
 		return -1
@@ -94,7 +94,7 @@ fn (mut c Checker) vnts_next_tick_call(root C.TSNode, t &estree.EsTree, id int) 
 
 // vnts_is_vue_next_tick_member: `$nextTick` with `this` as the object of the member expression,
 // or `nextTick` with `Vue`.
-fn (mut c Checker) vnts_is_vue_next_tick_member(root C.TSNode, t &estree.EsTree, id int, member int) bool {
+fn (mut c Checker) vnts_is_vue_next_tick_member(root C.vt_node, t &estree.EsTree, id int, member int) bool {
 	name := t.string_of(id, .name) or { return false }
 	object := t.node(member, .object) or { return false }
 	return (name == '\$nextTick' && c.vue_is_this(root, t, object)) || (name == 'nextTick'
@@ -103,7 +103,7 @@ fn (mut c Checker) vnts_is_vue_next_tick_member(root C.TSNode, t &estree.EsTree,
 
 // vnts_is_vue_next_tick_import: the identifier's variable has one definition, an
 // `import { nextTick } from 'vue'`.
-fn (mut c Checker) vnts_is_vue_next_tick_import(root C.TSNode, t &estree.EsTree, id int) bool {
+fn (mut c Checker) vnts_is_vue_next_tick_import(root C.vt_node, t &estree.EsTree, id int) bool {
 	v := c.unb_find_variable(root, t, id)
 	if v < 0 {
 		return false

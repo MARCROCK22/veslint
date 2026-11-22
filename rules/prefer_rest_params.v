@@ -9,7 +9,7 @@ const prp_messages = {
 	'preferRestParams': "Use the rest parameters instead of 'arguments'."
 }
 
-fn (mut c Checker) lint_prefer_rest_params(root C.TSNode, abs_path string, mut stats Stats) ![]Finding {
+fn (mut c Checker) lint_prefer_rest_params(root C.vt_node, abs_path string, mut stats Stats) ![]Finding {
 	sw := time.new_stopwatch()
 	mut findings := []Finding{}
 	kinds := ['function_declaration', 'function_expression', 'generator_function',

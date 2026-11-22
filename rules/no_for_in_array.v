@@ -10,11 +10,11 @@ const nfia_messages = {
 	'forInViolation': 'For-in loops over arrays skips holes, returns indices as strings, and may visit the prototype chain or other enumerable properties. Use a more robust iteration method such as for-of or array.forEach instead.'
 }
 
-fn (mut c Checker) lint_no_for_in_array(root C.TSNode, abs_path string, mut stats Stats) ![]Finding {
+fn (mut c Checker) lint_no_for_in_array(root C.vt_node, abs_path string, mut stats Stats) ![]Finding {
 	mut sw := time.new_stopwatch()
 	// ForInStatement: a tree-sitter for_in_statement whose operator is `in` (not `of`).
-	mut loops := []C.TSNode{}
-	mut rights := []C.TSNode{}
+	mut loops := []C.vt_node{}
+	mut rights := []C.vt_node{}
 	for node in c.nodes_of_kind(root, c'for_in_statement') {
 		operator := node_field(node, 'operator') or { continue }
 		if node_kind(operator) != 'in' {

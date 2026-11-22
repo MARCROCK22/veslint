@@ -9,7 +9,7 @@ const nuft_messages = {
 	'bannedFunctionType': 'The `Function` type accepts any function-like value.\nPrefer explicitly defining any function parameters and return type.'
 }
 
-fn (mut c Checker) lint_no_unsafe_function_type(root C.TSNode, abs_path string, mut stats Stats) ![]Finding {
+fn (mut c Checker) lint_no_unsafe_function_type(root C.vt_node, abs_path string, mut stats Stats) ![]Finding {
 	sw := time.new_stopwatch()
 	mut findings := []Finding{}
 	mut checked := 0

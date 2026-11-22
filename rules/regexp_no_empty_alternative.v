@@ -13,7 +13,7 @@ const regexp_no_empty_alternative_messages = {
 	'suggest': 'Use a quantifier instead.'
 }
 
-fn (mut c Checker) lint_regexp_no_empty_alternative(root C.TSNode, abs_path string, mut stats Stats) ![]Finding {
+fn (mut c Checker) lint_regexp_no_empty_alternative(root C.vt_node, abs_path string, mut stats Stats) ![]Finding {
 	sw := time.new_stopwatch()
 	mut findings := []Finding{}
 	regexps := c.rx_regexps(root, abs_path)

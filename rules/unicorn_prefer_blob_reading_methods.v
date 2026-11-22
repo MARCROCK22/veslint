@@ -9,7 +9,7 @@ const upbrm_messages = {
 	'error': 'Prefer `Blob#{{replacement}}()` over `FileReader#{{method}}(blob)`.'
 }
 
-fn (mut c Checker) lint_unicorn_prefer_blob_reading_methods(root C.TSNode, abs_path string, mut stats Stats) ![]Finding {
+fn (mut c Checker) lint_unicorn_prefer_blob_reading_methods(root C.vt_node, abs_path string, mut stats Stats) ![]Finding {
 	sw := time.new_stopwatch()
 	mut findings := []Finding{}
 	t := c.es_tree(root, abs_path) or { return findings }

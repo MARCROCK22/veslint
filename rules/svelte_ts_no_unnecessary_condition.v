@@ -67,7 +67,7 @@ mut:
 	findings []Finding
 }
 
-fn (mut c Checker) lint_svelte_ts_no_unnecessary_condition(root C.TSNode, abs_path string, mut stats Stats) ![]Finding {
+fn (mut c Checker) lint_svelte_ts_no_unnecessary_condition(root C.vt_node, abs_path string, mut stats Stats) ![]Finding {
 	o := svnuc_options(c.rule_options(svelte_ts_no_unnecessary_condition))!
 	if !c.scope_setup.type_information {
 		return []
@@ -159,7 +159,7 @@ fn (c &Checker) svnuc_scope(mut s Svnuc) {
 
 // svnuc_resolve asks tsgo the types of the nodes of `need`.
 fn (mut c Checker) svnuc_resolve(mut s Svnuc, abs_path string, mut stats Stats) ! {
-	mut nodes := []C.TSNode{}
+	mut nodes := []C.vt_node{}
 	mut indexes := []int{}
 	for i, _ in s.need {
 		if i in s.types {

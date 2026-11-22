@@ -23,7 +23,7 @@ const rx_control_char_escapes = {
 	13: '\\r'
 }
 
-fn (mut c Checker) lint_regexp_no_control_character(root C.TSNode, abs_path string, mut stats Stats) ![]Finding {
+fn (mut c Checker) lint_regexp_no_control_character(root C.vt_node, abs_path string, mut stats Stats) ![]Finding {
 	sw := time.new_stopwatch()
 	mut findings := []Finding{}
 	regexps := c.rx_regexps(root, abs_path)

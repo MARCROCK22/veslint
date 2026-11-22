@@ -188,7 +188,7 @@ fn (mut c Checker) unulc_loop_binding_in_right(ctx &UnCtx, loop int) bool {
 	return false
 }
 
-fn (mut c Checker) lint_unicorn_no_useless_length_check(root C.TSNode, abs_path string, mut stats Stats) ![]Finding {
+fn (mut c Checker) lint_unicorn_no_useless_length_check(root C.vt_node, abs_path string, mut stats Stats) ![]Finding {
 	sw := time.new_stopwatch()
 	mut findings := []Finding{}
 	t := c.es_tree(root, abs_path) or { return findings }

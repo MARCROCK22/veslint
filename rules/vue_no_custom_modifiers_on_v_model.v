@@ -10,7 +10,7 @@ const vncmovm_messages = {
 	'notSupportedModifier': "'v-model' directives don't support the modifier '{{name}}'."
 }
 
-fn (mut c Checker) lint_vue_no_custom_modifiers_on_v_model(root C.TSNode, abs_path string, mut stats Stats) ![]Finding {
+fn (mut c Checker) lint_vue_no_custom_modifiers_on_v_model(root C.vt_node, abs_path string, mut stats Stats) ![]Finding {
 	if !c.vue_has_template() {
 		return []
 	}

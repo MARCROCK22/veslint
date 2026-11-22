@@ -120,7 +120,7 @@ fn uteic_is_module_specifier(t &estree.EsTree, node int) bool {
 	return (t.node(parent, key) or { -1 }) == node
 }
 
-fn (mut c Checker) lint_unicorn_text_encoding_identifier_case(root C.TSNode, abs_path string, mut stats Stats) ![]Finding {
+fn (mut c Checker) lint_unicorn_text_encoding_identifier_case(root C.vt_node, abs_path string, mut stats Stats) ![]Finding {
 	sw := time.new_stopwatch()
 	with_dash_option := uteic_options(c.rule_options(unicorn_text_encoding_identifier_case))!
 	mut findings := []Finding{}

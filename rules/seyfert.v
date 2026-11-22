@@ -127,7 +127,7 @@ fn (mut c Checker) sy_node_of_handle(handle string) !SyNode {
 
 // sy_node_at is the counterpart in tsgo's AST of a tree-sitter node of the file, requested with
 // resolve_node_types (esTreeNodeToTSNodeMap); no node without one.
-fn (mut c Checker) sy_node_at(n C.TSNode) !SyNode {
+fn (mut c Checker) sy_node_at(n C.vt_node) !SyNode {
 	return c.sy_node_of_handle(c.nodes.handle(node_key(n)) or { return SyNode{} })!
 }
 
@@ -171,7 +171,7 @@ fn (c &Checker) sy_place_of(n SyNode) ?treesitter.Ident {
 
 // sy_prefetch_symbols asks in one request the symbols of the requested tree-sitter nodes that
 // have a counterpart and were not asked yet.
-fn (mut c Checker) sy_prefetch_symbols(nodes []C.TSNode) ! {
+fn (mut c Checker) sy_prefetch_symbols(nodes []C.vt_node) ! {
 	mut handles := []string{}
 	for n in nodes {
 		handle := c.nodes.handle(node_key(n)) or { continue }
@@ -205,7 +205,7 @@ fn (mut c Checker) sy_symbol_at_handle(handle string) !SymbolResponse {
 
 // sy_symbol_at is services.getSymbolAtLocation of a tree-sitter node requested with
 // resolve_node_types; sy_symbol_of the same for a node of tsgo's AST.
-fn (mut c Checker) sy_symbol_at(n C.TSNode) !SymbolResponse {
+fn (mut c Checker) sy_symbol_at(n C.vt_node) !SymbolResponse {
 	return c.sy_symbol_at_handle(c.nodes.handle(node_key(n)) or { return SymbolResponse{} })!
 }
 
@@ -286,7 +286,7 @@ fn (mut c Checker) sy_construct_return(t TypeResponse) !TypeResponse {
 // sy_instance_type ports instanceTypeOfExpression for an expression of the file (the superClass
 // of a class): the declared type of its symbol when it is an object type, or else what its type
 // constructs.
-fn (mut c Checker) sy_instance_type(expression C.TSNode) !TypeResponse {
+fn (mut c Checker) sy_instance_type(expression C.vt_node) !TypeResponse {
 	symbol := c.sy_symbol_at(expression)!
 	if !symbol.is_null() {
 		declared := c.sy_declared_type(c.sy_unalias(symbol)!)!
@@ -335,11 +335,11 @@ fn (mut c Checker) sy_extends_class(t TypeResponse, names []string) !bool {
 
 // sy_decorator_expression is the ESTree `expression` of a decorator (without parentheses), and
 // sy_decorator_callee the callee of the call it is, or the expression itself.
-fn sy_decorator_expression(decorator C.TSNode) ?C.TSNode {
+fn sy_decorator_expression(decorator C.vt_node) ?C.vt_node {
 	return unwrap_parens(first_named(decorator)?)
 }
 
-fn sy_decorator_callee(decorator C.TSNode) ?C.TSNode {
+fn sy_decorator_callee(decorator C.vt_node) ?C.vt_node {
 	expression := sy_decorator_expression(decorator)?
 	if estree_type(expression) == 'CallExpression' {
 		return node_field(expression, 'function')
@@ -348,14 +348,14 @@ fn sy_decorator_callee(decorator C.TSNode) ?C.TSNode {
 }
 
 // sy_decorator_call is the call of a decorator whose expression is a CallExpression.
-fn sy_decorator_call(decorator C.TSNode) ?C.TSNode {
+fn sy_decorator_call(decorator C.vt_node) ?C.vt_node {
 	expression := sy_decorator_expression(decorator)?
 	return if estree_type(expression) == 'CallExpression' { expression } else { none }
 }
 
 // sy_has_decorator ports hasSeyfertDecorator for the decorators of a class of the file: one of
 // them is a call of, or names, the seyfert export `name`.
-fn (mut c Checker) sy_has_decorator(decorators []C.TSNode, name string) !bool {
+fn (mut c Checker) sy_has_decorator(decorators []C.vt_node, name string) !bool {
 	for decorator in decorators {
 		callee := sy_decorator_callee(decorator) or { continue }
 		if c.sy_is_seyfert(c.sy_symbol_at(callee)!, name)! {
@@ -523,11 +523,11 @@ fn sy_is_option_builder(name string) bool {
 // sy_is_class_node: a ClassDeclaration or a ClassExpression of the file in tree-sitter, and
 // sy_class_of_decorator the one a decorator belongs to (ESTree's parent: the class also when the
 // decorator comes before its `export`).
-fn sy_is_class_node(n C.TSNode) bool {
+fn sy_is_class_node(n C.vt_node) bool {
 	return node_kind(n) in ['class_declaration', 'abstract_class_declaration', 'class']
 }
 
-fn sy_class_of_decorator(decorator C.TSNode) ?C.TSNode {
+fn sy_class_of_decorator(decorator C.vt_node) ?C.vt_node {
 	parent := treesitter.node_parent(decorator)?
 	if sy_is_class_node(parent) {
 		return parent

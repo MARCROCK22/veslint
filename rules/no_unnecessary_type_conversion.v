@@ -34,13 +34,13 @@ enum NutcKind {
 // where the report goes.
 struct NutcCandidate {
 	kind    NutcKind
-	node    C.TSNode // the visited node
-	operand C.TSNode // the expression whose type is checked
-	at      Ident    // start of the report
-	name    string   // the callee of builtin_call
+	node    C.vt_node // the visited node
+	operand C.vt_node // the expression whose type is checked
+	at      Ident     // start of the report
+	name    string    // the callee of builtin_call
 }
 
-fn (mut c Checker) lint_no_unnecessary_type_conversion(root C.TSNode, abs_path string, mut stats Stats) ![]Finding {
+fn (mut c Checker) lint_no_unnecessary_type_conversion(root C.vt_node, abs_path string, mut stats Stats) ![]Finding {
 	mut sw := time.new_stopwatch()
 	mut candidates := []NutcCandidate{}
 	for node in c.nodes_of_kinds(root, ['augmented_assignment_expression', 'binary_expression',
@@ -172,7 +172,7 @@ fn (mut c Checker) nutc_suggestions(candidate NutcCandidate, type_name string) !
 }
 
 // nutc_candidates ports the selectors of the rule on a node.
-fn (c &Checker) nutc_candidates(node C.TSNode, mut out []NutcCandidate) {
+fn (c &Checker) nutc_candidates(node C.vt_node, mut out []NutcCandidate) {
 	match node_kind(node) {
 		'augmented_assignment_expression' {
 			// AssignmentExpression[operator = "+="] with '' on the right.
@@ -281,7 +281,7 @@ fn (c &Checker) nutc_candidates(node C.TSNode, mut out []NutcCandidate) {
 }
 
 // nutc_is_empty_string: a string Literal whose value is ''.
-fn (c &Checker) nutc_is_empty_string(n C.TSNode) bool {
+fn (c &Checker) nutc_is_empty_string(n C.vt_node) bool {
 	if node_kind(n) != 'string' {
 		return false
 	}

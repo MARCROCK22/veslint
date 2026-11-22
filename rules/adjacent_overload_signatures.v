@@ -33,7 +33,7 @@ struct AosMethod {
 	static         AosStatic
 }
 
-fn (mut c Checker) lint_adjacent_overload_signatures(root C.TSNode, abs_path string, mut stats Stats) ![]Finding {
+fn (mut c Checker) lint_adjacent_overload_signatures(root C.vt_node, abs_path string, mut stats Stats) ![]Finding {
 	sw := time.new_stopwatch()
 	mut findings := []Finding{}
 	mut checked := 0
@@ -65,7 +65,7 @@ fn (mut c Checker) lint_adjacent_overload_signatures(root C.TSNode, abs_path str
 }
 
 // aos_check_body ports checkBodyForOverloadMethods.
-fn (mut c Checker) aos_check_body(members []C.TSNode, mut findings []Finding) {
+fn (mut c Checker) aos_check_body(members []C.vt_node, mut findings []Finding) {
 	mut last_method := ?AosMethod(none)
 	mut seen_methods := []AosMethod{}
 	for member in members {
@@ -110,7 +110,7 @@ fn aos_same(method AosMethod, other ?AosMethod) bool {
 }
 
 // aos_member_method ports getMemberMethod: none for a member that is not relevant to the rule.
-fn (mut c Checker) aos_member_method(member C.TSNode) ?AosMethod {
+fn (mut c Checker) aos_member_method(member C.vt_node) ?AosMethod {
 	match node_kind(member) {
 		'export_statement' {
 			// `export { a }`, `export default a` and `export = a` have no declaration.
@@ -163,7 +163,7 @@ fn (mut c Checker) aos_member_method(member C.TSNode) ?AosMethod {
 // aos_name_from_member ports getNameFromMember for a key: an Identifier (computed or not), a
 // private name (with its `#`), String(value) of a Literal (quoted when it requires quoting), or the
 // text of any other expression of a computed key.
-fn (c &Checker) aos_name_from_member(key C.TSNode) (string, AosNameType) {
+fn (c &Checker) aos_name_from_member(key C.vt_node) (string, AosNameType) {
 	mut node := key
 	if node_kind(node) == 'computed_property_name' {
 		node = unwrap_parens(first_named(node) or { return c.text(key), AosNameType.expression_ })

@@ -24,22 +24,22 @@ const pinc_function_like_kinds = [u32(175), 176, 178, 179, 180, 181, 182, 183, 1
 
 // PincIndexOf is a `x.indexOf(y)` compared like `includes`, pending the declarations of `indexOf`.
 struct PincIndexOf {
-	compare  C.TSNode
-	call     C.TSNode
-	property C.TSNode
+	compare  C.vt_node
+	call     C.vt_node
+	property C.vt_node
 	negative bool // isNegativeCheck: the comparison means "not included"
 	fixable  bool // allowFixing: the call is not an optional chain
 }
 
 // PincTest is a `/re/.test(x)` call whose regular expression is a plain string.
 struct PincTest {
-	call     C.TSNode
-	argument C.TSNode // without parentheses
-	text     string   // the string the regular expression matches
-	optional bool     // `/re/?.test(x)`
+	call     C.vt_node
+	argument C.vt_node // without parentheses
+	text     string    // the string the regular expression matches
+	optional bool      // `/re/?.test(x)`
 }
 
-fn (mut c Checker) lint_prefer_includes(root C.TSNode, abs_path string, mut stats Stats) ![]Finding {
+fn (mut c Checker) lint_prefer_includes(root C.vt_node, abs_path string, mut stats Stats) ![]Finding {
 	mut sw := time.new_stopwatch()
 	mut index_ofs := []PincIndexOf{}
 	mut tests := []PincTest{}
@@ -117,7 +117,7 @@ fn (mut c Checker) lint_prefer_includes(root C.TSNode, abs_path string, mut stat
 
 // pinc_compare_of is the BinaryExpression whose `left` is the call (directly or through the
 // ChainExpression of an optional chain).
-fn pinc_compare_of(call C.TSNode) ?C.TSNode {
+fn pinc_compare_of(call C.vt_node) ?C.vt_node {
 	compare := estree_parent(call)?
 	if estree_binary_kind(compare) != 'BinaryExpression' {
 		return none
@@ -131,7 +131,7 @@ fn pinc_compare_of(call C.TSNode) ?C.TSNode {
 
 // pinc_index_of ports checkArrayIndexOf up to the symbol lookup: a static `indexOf` member and a
 // comparison equivalent to `includes()`.
-fn (mut c Checker) pinc_index_of(call C.TSNode, member C.TSNode, compare C.TSNode) ?PincIndexOf {
+fn (mut c Checker) pinc_index_of(call C.vt_node, member C.vt_node, compare C.vt_node) ?PincIndexOf {
 	if !c.is_static_member_access_of_value(member, ['indexOf']) {
 		return none
 	}
@@ -189,7 +189,7 @@ fn pinc_test_fixes(test PincTest) []Fix {
 // pinc_needs_paren: the ESTree type of the argument is not one of the five that need no
 // parentheses (an optional chain is a ChainExpression, a tagged template and `import()` are not
 // CallExpressions).
-fn pinc_needs_paren(argument C.TSNode) bool {
+fn pinc_needs_paren(argument C.vt_node) bool {
 	e := es_child(argument)
 	if e.chain {
 		return true
@@ -283,7 +283,7 @@ fn (mut c Checker) pinc_parameter_texts(declaration string) ![]string {
 
 // pinc_regexp_text ports parseRegExp: the string a static RegExp without `i` nor `g` matches,
 // when its single alternative is made of characters only.
-fn (mut c Checker) pinc_regexp_text(n C.TSNode) ?string {
+fn (mut c Checker) pinc_regexp_text(n C.vt_node) ?string {
 	value := c.get_static_value(n)
 	if !value.found || value.value.kind != .regexp_ {
 		return none

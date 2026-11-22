@@ -26,7 +26,7 @@ fn nef_options(options []json2.Any) !NefOptions {
 	}
 }
 
-fn (mut c Checker) lint_no_empty_function(root C.TSNode, abs_path string, mut stats Stats) ![]Finding {
+fn (mut c Checker) lint_no_empty_function(root C.vt_node, abs_path string, mut stats Stats) ![]Finding {
 	sw := time.new_stopwatch()
 	o := nef_options(c.rule_options(no_empty_function))!
 	mut findings := []Finding{}
@@ -73,7 +73,7 @@ fn (mut c Checker) lint_no_empty_function(root C.TSNode, abs_path string, mut st
 }
 
 // nef_is_allowed ports isAllowedEmptyFunction and the checks the wrapper makes before it.
-fn (c &Checker) nef_is_allowed(node C.TSNode, o NefOptions) bool {
+fn (c &Checker) nef_is_allowed(node C.vt_node, o NefOptions) bool {
 	kind := c.nef_kind(node)
 	if kind in o.allow {
 		return true
@@ -103,7 +103,7 @@ fn (c &Checker) nef_is_allowed(node C.TSNode, o NefOptions) bool {
 
 // nef_kind ports getKind: arrowFunctions, getters, setters, constructors, or functions or methods
 // with the prefix generator or async (`generatorMethods`).
-fn (c &Checker) nef_kind(node C.TSNode) string {
+fn (c &Checker) nef_kind(node C.vt_node) string {
 	if node_kind(node) == 'arrow_function' {
 		return 'arrowFunctions'
 	}

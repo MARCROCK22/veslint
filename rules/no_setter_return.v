@@ -12,7 +12,7 @@ const nsr_messages = {
 const nsr_function_kinds = ['function_declaration', 'function_expression', 'generator_function',
 	'generator_function_declaration', 'arrow_function', 'method_definition']
 
-fn (mut c Checker) lint_no_setter_return(root C.TSNode, abs_path string, mut stats Stats) ![]Finding {
+fn (mut c Checker) lint_no_setter_return(root C.vt_node, abs_path string, mut stats Stats) ![]Finding {
 	sw := time.new_stopwatch()
 	mut findings := []Finding{}
 	for node in c.nodes_of_kinds(root, ['method_definition', 'function_expression', 'generator_function',
@@ -44,7 +44,7 @@ fn (mut c Checker) lint_no_setter_return(root C.TSNode, abs_path string, mut sta
 
 // nsr_is_setter ports isSetter: a `set` accessor, or the function of a property `set` of a
 // property descriptor.
-fn (mut c Checker) nsr_is_setter(root C.TSNode, f C.TSNode) bool {
+fn (mut c Checker) nsr_is_setter(root C.vt_node, f C.vt_node) bool {
 	if node_kind(f) == 'method_definition' {
 		if es_accessor_kind(f) == 'set' {
 			return true
@@ -72,7 +72,7 @@ fn (mut c Checker) nsr_is_setter(root C.TSNode, f C.TSNode) bool {
 // nsr_is_property_descriptor ports isPropertyDescriptor: the third argument of
 // Object.defineProperty or Reflect.defineProperty, or a value of the second argument of
 // Object.create or Object.defineProperties.
-fn (mut c Checker) nsr_is_property_descriptor(root C.TSNode, object C.TSNode) bool {
+fn (mut c Checker) nsr_is_property_descriptor(root C.vt_node, object C.vt_node) bool {
 	if c.nsr_is_argument_of(root, object, 'Object', 'defineProperty', 2)
 		|| c.nsr_is_argument_of(root, object, 'Reflect', 'defineProperty', 2) {
 		return true
@@ -93,7 +93,7 @@ fn (mut c Checker) nsr_is_property_descriptor(root C.TSNode, object C.TSNode) bo
 
 // nsr_is_argument_of ports isArgumentOfGlobalMethodCall: the node is the argument at `index` of
 // a call of `object.method` where `object` is the global one.
-fn (mut c Checker) nsr_is_argument_of(root C.TSNode, n C.TSNode, object string, method string, index int) bool {
+fn (mut c Checker) nsr_is_argument_of(root C.vt_node, n C.vt_node, object string, method string, index int) bool {
 	args_node := cti_estree_parent(n) or { return false }
 	if node_kind(args_node) != 'arguments' {
 		return false

@@ -15,7 +15,7 @@ const ncnz_messages = {
 
 const ncnz_operators = ['>', '>=', '<', '<=', '==', '===', '!=', '!==']
 
-fn (mut c Checker) lint_no_compare_neg_zero(root C.TSNode, abs_path string, mut stats Stats) ![]Finding {
+fn (mut c Checker) lint_no_compare_neg_zero(root C.vt_node, abs_path string, mut stats Stats) ![]Finding {
 	sw := time.new_stopwatch()
 	mut findings := []Finding{}
 	for node in c.nodes_of_kinds(root, ['binary_expression'], []) {
@@ -75,7 +75,7 @@ fn (mut c Checker) lint_no_compare_neg_zero(root C.TSNode, abs_path string, mut 
 
 // ncnz_is_neg_zero ports isNegZero: a UnaryExpression `-` whose argument is the number literal 0
 // (parentheses are not ESTree nodes; `-0n` is a BigInt, whose value is not 0).
-fn (c &Checker) ncnz_is_neg_zero(n C.TSNode) bool {
+fn (c &Checker) ncnz_is_neg_zero(n C.vt_node) bool {
 	unary := unwrap_parens(n)
 	if node_kind(unary) != 'unary_expression'
 		|| c.text(node_field(unary, 'operator') or { return false }) != '-' {
@@ -88,7 +88,7 @@ fn (c &Checker) ncnz_is_neg_zero(n C.TSNode) bool {
 
 // ncnz_operand_text ports getOperandText: the text of the operand, in parentheses for a
 // SequenceExpression.
-fn (c &Checker) ncnz_operand_text(operand C.TSNode) string {
+fn (c &Checker) ncnz_operand_text(operand C.vt_node) string {
 	text := c.es_text(operand)
 	return if node_kind(operand) == 'sequence_expression' { '(${text})' } else { text }
 }

@@ -31,11 +31,11 @@ const literal_or_update_kinds = ['string', 'number', 'true', 'false', 'null', 'r
 // access `await[i]` (see await_reading). The index is the element without parentheses, or `a, b`
 // if there are several.
 struct AwaitAccess {
-	node    C.TSNode // the await_expression
+	node    C.vt_node // the await_expression
 	index   Span
-	first   C.TSNode // first token of the index, where the rule reports
-	text    string   // the index as ESTree writes it (sourceCode.getText)
-	literal bool     // a literal or an `i++`, not checked as a computed name
+	first   C.vt_node // first token of the index, where the rule reports
+	text    string    // the index as ESTree writes it (sourceCode.getText)
+	literal bool      // a literal or an `i++`, not checked as a computed name
 }
 
 // numa_options reads allowOptionalChaining: an access with `?.` is not checked.
@@ -44,7 +44,7 @@ fn numa_options(options []json2.Any) !bool {
 	return o.bool_value('allowOptionalChaining')!
 }
 
-fn (mut c Checker) lint_no_unsafe_member_access(root C.TSNode, abs_path string, mut stats Stats) ![]Finding {
+fn (mut c Checker) lint_no_unsafe_member_access(root C.vt_node, abs_path string, mut stats Stats) ![]Finding {
 	mut sw := time.new_stopwatch()
 	allow_optional := numa_options(c.rule_options(no_unsafe_member_access))!
 	members := c.nodes_of_kinds(root, member_kinds, type_name_kinds)
@@ -110,7 +110,7 @@ fn (mut c Checker) lint_no_unsafe_member_access(root C.TSNode, abs_path string, 
 
 // await_accesses collects the `await [i]` TypeScript may read as an element access: without
 // holes or `...`, which would not be an index.
-fn (c &Checker) await_accesses(root C.TSNode) []AwaitAccess {
+fn (c &Checker) await_accesses(root C.vt_node) []AwaitAccess {
 	mut out := []AwaitAccess{}
 	for node in c.nodes_of_kind(root, c'await_expression') {
 		array := first_named_child(node) or { continue }
@@ -193,7 +193,7 @@ fn (mut c Checker) check_await_access(a AwaitAccess, mut findings []Finding) ! {
 // access is reported; the next ones inherit the state. Returns whether the access is unsafe. With
 // allowOptionalChaining, an access with `?.` is "chained": not checked and not unsafe, so the
 // access after it is checked on its own.
-fn (mut c Checker) check_member(m C.TSNode, depth int, allow_optional bool, mut states map[u64]bool, mut findings []Finding) !bool {
+fn (mut c Checker) check_member(m C.vt_node, depth int, allow_optional bool, mut states map[u64]bool, mut findings []Finding) !bool {
 	key := node_key(m)
 	if allow_optional && has_child_kind(m, 'optional_chain') {
 		states[key] = false

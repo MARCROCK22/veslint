@@ -117,7 +117,7 @@ struct NcOptions {
 // NcItem is a name to validate: its selector, its node and its modifiers.
 struct NcItem {
 	selector  string
-	node      C.TSNode
+	node      C.vt_node
 	modifiers int
 }
 
@@ -320,7 +320,7 @@ fn nc_compare_configs(a &NcConfig, b &NcConfig) int {
 	return b.selector - a.selector
 }
 
-fn (mut c Checker) lint_naming_convention(root C.TSNode, abs_path string, mut stats Stats) ![]Finding {
+fn (mut c Checker) lint_naming_convention(root C.vt_node, abs_path string, mut stats Stats) ![]Finding {
 	options := nc_options(c.rule_options(naming_convention))!
 	mut sw := time.new_stopwatch()
 	// The `unused` modifier needs the variables nothing uses.
@@ -362,7 +362,7 @@ fn (mut c Checker) lint_naming_convention(root C.TSNode, abs_path string, mut st
 
 // nc_name is the name the validator checks: that of an identifier or of a `#name`, or the value
 // of a literal as text.
-fn (c &Checker) nc_name(node C.TSNode) string {
+fn (c &Checker) nc_name(node C.vt_node) string {
 	match node_kind(node) {
 		'private_property_identifier' {
 			return c.text(node).trim_left('#')
@@ -665,7 +665,7 @@ fn nc_valid_underscores(name string) bool {
 // The selectors: which names of the file are validated, as what and with which modifiers.
 
 // nc_estree_parent is the parent of a declaration in ESTree: `declare` is not a node there.
-fn nc_estree_parent(node C.TSNode) ?C.TSNode {
+fn nc_estree_parent(node C.vt_node) ?C.vt_node {
 	mut parent := node_parent(node)?
 	for node_kind(parent) == 'ambient_declaration' {
 		parent = node_parent(parent)?
@@ -675,7 +675,7 @@ fn nc_estree_parent(node C.TSNode) ?C.TSNode {
 
 // nc_is_exported ports isExported: the declaration is in an `export`, or the variable with that
 // name of the scope has a reference in an `export default` or in an export specifier.
-fn (c &Checker) nc_is_exported(declaration C.TSNode, name string, tree &ScopeTree, scope int) bool {
+fn (c &Checker) nc_is_exported(declaration C.vt_node, name string, tree &ScopeTree, scope int) bool {
 	if parent := nc_estree_parent(declaration) {
 		if node_kind(parent) == 'export_statement' {
 			return true
@@ -702,7 +702,7 @@ fn nc_is_global(tree &ScopeTree, scope int) bool {
 }
 
 // nc_pattern_identifiers ports getIdentifiersFromPattern: the names a pattern declares.
-fn nc_pattern_identifiers(pattern C.TSNode, mut out []C.TSNode) {
+fn nc_pattern_identifiers(pattern C.vt_node, mut out []C.vt_node) {
 	match node_kind(pattern) {
 		'identifier', 'shorthand_property_identifier_pattern', 'this' {
 			out << pattern
@@ -738,19 +738,19 @@ fn nc_pattern_identifiers(pattern C.TSNode, mut out []C.TSNode) {
 }
 
 // nc_is_function_value: the value of a property is an arrow function or a function expression.
-fn nc_is_function_value(value ?C.TSNode) bool {
+fn nc_is_function_value(value ?C.vt_node) bool {
 	node := value or { return false }
 	return node_kind(unwrap_parens(node)) in ['arrow_function', 'function_expression',
 		'generator_function']
 }
 
-fn nc_is_async_value(value ?C.TSNode) bool {
+fn nc_is_async_value(value ?C.vt_node) bool {
 	node := value or { return false }
 	return has_child_kind(unwrap_parens(node), 'async')
 }
 
 // nc_member_modifiers ports getMemberModifiers.
-fn (c &Checker) nc_member_modifiers(member C.TSNode, key ?C.TSNode) int {
+fn (c &Checker) nc_member_modifiers(member C.vt_node, key ?C.vt_node) int {
 	mut modifiers := 0
 	mut accessibility := 'public'
 	for child in children(member) {
@@ -779,7 +779,7 @@ fn (c &Checker) nc_member_modifiers(member C.TSNode, key ?C.TSNode) int {
 }
 
 // nc_member ports handleMember: the key of a member, with `requiresQuotes` if it needs them.
-fn (c &Checker) nc_member(selector string, key C.TSNode, modifiers int) NcItem {
+fn (c &Checker) nc_member(selector string, key C.vt_node, modifiers int) NcItem {
 	mut mask := modifiers
 	if requires_quoting(c.nc_name(key)) {
 		mask |= nc_modifiers['requiresQuotes']
@@ -792,7 +792,7 @@ fn (c &Checker) nc_member(selector string, key C.TSNode, modifiers int) NcItem {
 }
 
 // nc_items collects the names every selector of the rule validates.
-fn (mut c Checker) nc_items(root C.TSNode) []NcItem {
+fn (mut c Checker) nc_items(root C.vt_node) []NcItem {
 	tree := c.scope_tree(root)
 	mut items := []NcItem{}
 	for node in c.nodes_of_kinds(root, ['function_declaration', 'generator_function_declaration',
@@ -1028,7 +1028,7 @@ fn (mut c Checker) nc_items(root C.TSNode) []NcItem {
 
 // nc_function_name is the selector of FunctionDeclaration, TSDeclareFunction and
 // FunctionExpression with a name.
-fn (mut c Checker) nc_function_name(node C.TSNode, tree &ScopeTree, mut items []NcItem) {
+fn (mut c Checker) nc_function_name(node C.vt_node, tree &ScopeTree, mut items []NcItem) {
 	id := node_field(node, 'name') or { return }
 	upper := tree.scopes[tree.get_scope(node)].upper
 	name := c.identifier_name(id)
@@ -1049,8 +1049,8 @@ fn (mut c Checker) nc_function_name(node C.TSNode, tree &ScopeTree, mut items []
 }
 
 // nc_parameters is the selector of the parameters of a function, and of TSParameterProperty.
-fn (mut c Checker) nc_parameters(node C.TSNode, tree &ScopeTree, mut items []NcItem) {
-	mut parameters := []C.TSNode{}
+fn (mut c Checker) nc_parameters(node C.vt_node, tree &ScopeTree, mut items []NcItem) {
+	mut parameters := []C.vt_node{}
 	if list := node_field(node, 'parameters') {
 		parameters = named_children(list).filter(node_kind(it) in ['required_parameter',
 			'optional_parameter'])
@@ -1058,7 +1058,7 @@ fn (mut c Checker) nc_parameters(node C.TSNode, tree &ScopeTree, mut items []NcI
 		parameters = [single]
 	}
 	for parameter in parameters {
-		mut identifiers := []C.TSNode{}
+		mut identifiers := []C.vt_node{}
 		nc_pattern_identifiers(parameter, mut identifiers)
 		is_property := has_child_kind(parameter, 'accessibility_modifier')
 			|| has_child_kind(parameter, 'readonly') || has_child_kind(parameter, 'override_modifier')
@@ -1083,7 +1083,7 @@ fn (mut c Checker) nc_parameters(node C.TSNode, tree &ScopeTree, mut items []NcI
 }
 
 // nc_imports is the selector of the default and namespace imports, and of `{ default as x }`.
-fn (mut c Checker) nc_imports(node C.TSNode, mut items []NcItem) {
+fn (mut c Checker) nc_imports(node C.vt_node, mut items []NcItem) {
 	for clause in named_children(node) {
 		if node_kind(clause) != 'import_clause' {
 			continue
@@ -1120,7 +1120,7 @@ fn (mut c Checker) nc_imports(node C.TSNode, mut items []NcItem) {
 }
 
 // nc_variables is the selector of VariableDeclarator: every name its pattern declares.
-fn (mut c Checker) nc_variables(declarator C.TSNode, id C.TSNode, declaration C.TSNode, is_const bool, init ?C.TSNode, tree &ScopeTree, mut items []NcItem) {
+fn (mut c Checker) nc_variables(declarator C.vt_node, id C.vt_node, declaration C.vt_node, is_const bool, init ?C.vt_node, tree &ScopeTree, mut items []NcItem) {
 	mut base := 0
 	if is_const {
 		base |= nc_modifiers['const']
@@ -1128,7 +1128,7 @@ fn (mut c Checker) nc_variables(declarator C.TSNode, id C.TSNode, declaration C.
 	if nc_is_global(tree, tree.get_scope(declarator)) {
 		base |= nc_modifiers['global']
 	}
-	mut identifiers := []C.TSNode{}
+	mut identifiers := []C.vt_node{}
 	nc_pattern_identifiers(id, mut identifiers)
 	for identifier in identifiers {
 		mut modifiers := base

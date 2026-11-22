@@ -9,7 +9,7 @@ const nclsa_messages = {
 	'class': "'{{name}}' is a class."
 }
 
-fn (mut c Checker) lint_no_class_assign(root C.TSNode, abs_path string, mut stats Stats) ![]Finding {
+fn (mut c Checker) lint_no_class_assign(root C.vt_node, abs_path string, mut stats Stats) ![]Finding {
 	sw := time.new_stopwatch()
 	mut findings := []Finding{}
 	for node in c.nodes_of_kinds(root, ['class_declaration', 'abstract_class_declaration', 'class'], []) {

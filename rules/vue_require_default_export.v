@@ -11,7 +11,7 @@ const vue_require_default_export_messages = {
 	'mustBeDefaultExport': 'Component must be the default export.'
 }
 
-fn (mut c Checker) lint_vue_require_default_export(root C.TSNode, abs_path string, mut stats Stats) ![]Finding {
+fn (mut c Checker) lint_vue_require_default_export(root C.vt_node, abs_path string, mut stats Stats) ![]Finding {
 	if !c.is_vue() || c.vue.doc.top_elements('script').len == 0 {
 		return []
 	}

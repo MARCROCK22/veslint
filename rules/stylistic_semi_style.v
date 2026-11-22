@@ -16,7 +16,7 @@ fn ssms_options(given []json2.Any) !string {
 		0, 'last')
 }
 
-fn (mut c Checker) lint_stylistic_semi_style(root C.TSNode, abs_path string, mut stats Stats) ![]Finding {
+fn (mut c Checker) lint_stylistic_semi_style(root C.vt_node, abs_path string, mut stats Stats) ![]Finding {
 	sw := time.new_stopwatch()
 	mut findings := []Finding{}
 	option := ssms_options(c.rule_options(stylistic_semi_style))!

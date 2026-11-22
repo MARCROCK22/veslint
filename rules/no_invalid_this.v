@@ -20,13 +20,13 @@ fn nith_options(options []json2.Any) !bool {
 	return true
 }
 
-fn (mut c Checker) lint_no_invalid_this(root C.TSNode, abs_path string, mut stats Stats) ![]Finding {
+fn (mut c Checker) lint_no_invalid_this(root C.vt_node, abs_path string, mut stats Stats) ![]Finding {
 	return c.nith_lint(root, nith_options(c.rule_options(no_invalid_this))!, false, mut stats)
 }
 
 // nith_lint is the rule; with `ts_wrapper`, as @typescript-eslint/no-invalid-this extends it
 // (rules/ts_no_invalid_this.v).
-fn (mut c Checker) nith_lint(root C.TSNode, cap_is_constructor bool, ts_wrapper bool, mut stats Stats) ![]Finding {
+fn (mut c Checker) nith_lint(root C.vt_node, cap_is_constructor bool, ts_wrapper bool, mut stats Stats) ![]Finding {
 	sw := time.new_stopwatch()
 	tree := c.scope_tree(root)
 	mut findings := []Finding{}
@@ -54,7 +54,7 @@ fn (mut c Checker) nith_lint(root C.TSNode, cap_is_constructor bool, ts_wrapper 
 		// block, class field initializer or accessor property value; the program otherwise.
 		mut child := node
 		mut current := node_parent(node) or { continue }
-		mut owner := ?C.TSNode(none)
+		mut owner := ?C.vt_node(none)
 		mut accessor_value := false
 		for {
 			kind := node_kind(current)
@@ -126,7 +126,7 @@ fn (mut c Checker) nith_lint(root C.TSNode, cap_is_constructor bool, ts_wrapper 
 
 // nith_in_method_function: `from` (a child of the method) is part of its function: the type
 // parameters, the parameters, the return type or the body.
-fn nith_in_method_function(method C.TSNode, from C.TSNode) bool {
+fn nith_in_method_function(method C.vt_node, from C.vt_node) bool {
 	for field in ['type_parameters', 'parameters', 'return_type', 'body'] {
 		if part := node_field(method, field) {
 			if node_key(part) == node_key(from) && node_kind(part) == node_kind(from) {
@@ -155,7 +155,7 @@ const nith_ts_assertion_kinds = ['as_expression', 'satisfies_expression', 'type_
 	'non_null_expression']
 
 // nith_ts_wrapped is the expression a TypeScript wrapper wraps.
-fn nith_ts_wrapped(n C.TSNode) ?C.TSNode {
+fn nith_ts_wrapped(n C.vt_node) ?C.vt_node {
 	if node_kind(n) == 'instantiation_expression' {
 		if function := node_field(n, 'function') {
 			return function
@@ -170,7 +170,7 @@ fn nith_ts_wrapped(n C.TSNode) ?C.TSNode {
 
 // nith_skip_ts_assertions ports skipTSAssertions: the expression inside `as`, `satisfies`, type
 // assertions and non-null assertions (and parentheses).
-fn nith_skip_ts_assertions(n C.TSNode) C.TSNode {
+fn nith_skip_ts_assertions(n C.vt_node) C.vt_node {
 	mut node := unwrap_parens(n)
 	for node_kind(node) in nith_ts_assertion_kinds {
 		node = unwrap_parens(nith_ts_wrapped(node) or { break })
@@ -180,7 +180,7 @@ fn nith_skip_ts_assertions(n C.TSNode) C.TSNode {
 
 // nith_skip_ts_wrappers_up ports skipTSWrappersUp: the outermost TypeScript wrapper around the node
 // (as its expression), or the node.
-fn nith_skip_ts_wrappers_up(n C.TSNode) C.TSNode {
+fn nith_skip_ts_wrappers_up(n C.vt_node) C.vt_node {
 	mut node := n
 	for {
 		parent, _ := es_estree_parent(node) or { break }
@@ -197,11 +197,11 @@ fn nith_skip_ts_wrappers_up(n C.TSNode) C.TSNode {
 }
 
 // nith_estree_parent is the ESTree parent of a node (parentheses are not nodes).
-fn nith_estree_parent(n C.TSNode) ?(C.TSNode, C.TSNode) {
+fn nith_estree_parent(n C.vt_node) ?(C.vt_node, C.vt_node) {
 	return es_estree_parent(n)
 }
 
-fn (c &Checker) nith_is_null_or_undefined(n C.TSNode) bool {
+fn (c &Checker) nith_is_null_or_undefined(n C.vt_node) bool {
 	node := nith_skip_ts_assertions(n)
 	kind := node_kind(node)
 	return kind == 'null' || (kind in ['identifier', 'undefined'] && c.text(node) == 'undefined')
@@ -210,7 +210,7 @@ fn (c &Checker) nith_is_null_or_undefined(n C.TSNode) bool {
 
 // nith_member_name is the static property name of a member expression and the name of its object
 // when it is an identifier.
-fn (c &Checker) nith_member(n C.TSNode) ?(string, string) {
+fn (c &Checker) nith_member(n C.vt_node) ?(string, string) {
 	node := unwrap_parens(n)
 	if node_kind(node) !in ['member_expression', 'subscript_expression'] {
 		return none
@@ -225,16 +225,16 @@ fn (c &Checker) nith_member(n C.TSNode) ?(string, string) {
 	return name, object_name
 }
 
-fn (c &Checker) nith_call_args(call C.TSNode) []C.TSNode {
-	arguments := node_field(call, 'arguments') or { return []C.TSNode{} }
+fn (c &Checker) nith_call_args(call C.vt_node) []C.vt_node {
+	arguments := node_field(call, 'arguments') or { return []C.vt_node{} }
 	if node_kind(arguments) != 'arguments' {
-		return []C.TSNode{}
+		return []C.vt_node{}
 	}
 	return named_children(arguments).filter(node_kind(it) != 'comment')
 }
 
 // nith_is_callee ports isCallee: the node is the callee of a CallExpression.
-fn nith_is_callee(n C.TSNode) bool {
+fn nith_is_callee(n C.vt_node) bool {
 	parent, child := es_estree_parent(n) or { return false }
 	if node_kind(parent) != 'call_expression' {
 		return false
@@ -248,7 +248,7 @@ fn nith_is_callee(n C.TSNode) bool {
 }
 
 // nith_is_default_this_binding ports astUtils.isDefaultThisBinding for a function.
-fn (mut c Checker) nith_is_default_this_binding(root C.TSNode, f C.TSNode, cap_is_constructor bool) bool {
+fn (mut c Checker) nith_is_default_this_binding(root C.vt_node, f C.vt_node, cap_is_constructor bool) bool {
 	if node_kind(f) == 'method_definition' {
 		// Its FunctionExpression is the value of a MethodDefinition or Property.
 		return false
@@ -407,7 +407,7 @@ fn (mut c Checker) nith_is_default_this_binding(root C.TSNode, f C.TSNode, cap_i
 
 // nith_has_jsdoc_this_tag ports hasJSDocThisTag: a `@this` tag in the function's JSDoc comment or
 // in a comment right before it.
-fn (mut c Checker) nith_has_jsdoc_this_tag(root C.TSNode, f C.TSNode) bool {
+fn (mut c Checker) nith_has_jsdoc_this_tag(root C.vt_node, f C.vt_node) bool {
 	tokens := c.source_tokens(root)
 	if jsdoc := c.nith_jsdoc_comment(root, f) {
 		if nith_has_this_tag(c.src[jsdoc.start + 2..jsdoc.end - 2]) {
@@ -440,7 +440,7 @@ fn nith_has_this_tag(value string) bool {
 }
 
 // nith_jsdoc_comment ports getJSDocComment for a function.
-fn (mut c Checker) nith_jsdoc_comment(root C.TSNode, f C.TSNode) ?SourceToken {
+fn (mut c Checker) nith_jsdoc_comment(root C.vt_node, f C.vt_node) ?SourceToken {
 	kind := node_kind(f)
 	if kind in ['function_declaration', 'generator_function_declaration'] {
 		mut target := f
@@ -454,7 +454,7 @@ fn (mut c Checker) nith_jsdoc_comment(root C.TSNode, f C.TSNode) ?SourceToken {
 	parent, _ := es_estree_parent(f)?
 	if node_kind(parent) !in ['call_expression', 'new_expression', 'arguments'] {
 		tokens := c.source_tokens(root)
-		mut p := ?C.TSNode(parent)
+		mut p := ?C.vt_node(parent)
 		for {
 			node := p or { break }
 			if tokens.comments_before(node_start(node)).len > 0 {
@@ -477,7 +477,7 @@ fn (mut c Checker) nith_jsdoc_comment(root C.TSNode, f C.TSNode) ?SourceToken {
 
 // nith_find_jsdoc ports findJSDocComment: a `/** */` comment right before the node, on its line or
 // the one before.
-fn (mut c Checker) nith_find_jsdoc(root C.TSNode, node C.TSNode) ?SourceToken {
+fn (mut c Checker) nith_find_jsdoc(root C.vt_node, node C.vt_node) ?SourceToken {
 	tokens := c.source_tokens(root)
 	before := tokens.before(node_start(node), true)?
 	if before.kind != .block_comment || before.end - before.start < 4

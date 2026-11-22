@@ -38,7 +38,7 @@ struct RxPropRef {
 }
 
 // rx_property_references_of ports `ref.extractPropertyReferences()`.
-fn (mut c Checker) rx_property_references_of(root C.TSNode, t &estree.EsTree, ref RxPropRef) []RxPropRef {
+fn (mut c Checker) rx_property_references_of(root C.vt_node, t &estree.EsTree, ref RxPropRef) []RxPropRef {
 	return match ref.sub {
 		.none {
 			[]RxPropRef{}
@@ -61,7 +61,7 @@ fn (mut c Checker) rx_property_references_of(root C.TSNode, t &estree.EsTree, re
 }
 
 // rx_property_references ports extractPropertyReferences.
-fn (mut c Checker) rx_property_references(root C.TSNode, t &estree.EsTree, node int) []RxPropRef {
+fn (mut c Checker) rx_property_references(root C.vt_node, t &estree.EsTree, node int) []RxPropRef {
 	if rx_is_shallow_copy(t, node) {
 		return c.rx_property_references_for_shallow_copy(root, t, node)
 	}
@@ -99,7 +99,7 @@ fn (mut c Checker) rx_property_references(root C.TSNode, t &estree.EsTree, node 
 
 // rx_property_references_for_pattern ports extractPropertyReferencesForPattern
 // (iteratePropertyReferencesForPattern).
-fn (mut c Checker) rx_property_references_for_pattern(root C.TSNode, t &estree.EsTree, node int) []RxPropRef {
+fn (mut c Checker) rx_property_references_for_pattern(root C.vt_node, t &estree.EsTree, node int) []RxPropRef {
 	mut target := node
 	for target >= 0 && t.typ(target) == .assignment_pattern {
 		target = t.node(target, .left) or { -1 }
@@ -207,7 +207,7 @@ fn rx_is_shallow_copy(t &estree.EsTree, node int) bool {
 }
 
 // rx_property_references_for_member ports iteratePropertyReferencesForMemberExpression.
-fn (mut c Checker) rx_property_references_for_member(root C.TSNode, t &estree.EsTree, node int) RxPropRef {
+fn (mut c Checker) rx_property_references_for_member(root C.vt_node, t &estree.EsTree, node int) RxPropRef {
 	if name := c.rx_property_of(root, t, node) {
 		return RxPropRef{
 			kind:     .member
@@ -226,7 +226,7 @@ fn (mut c Checker) rx_property_references_for_member(root C.TSNode, t &estree.Es
 }
 
 // rx_property_references_for_shallow_copy ports iteratePropertyReferencesForShallowCopy.
-fn (mut c Checker) rx_property_references_for_shallow_copy(root C.TSNode, t &estree.EsTree, node int) []RxPropRef {
+fn (mut c Checker) rx_property_references_for_shallow_copy(root C.vt_node, t &estree.EsTree, node int) []RxPropRef {
 	spread := rx_parent(t, node)
 	spread_parent := rx_parent(t, spread)
 	if t.typ(spread_parent) == .object_expression {
@@ -257,7 +257,7 @@ fn (mut c Checker) rx_property_references_for_shallow_copy(root C.TSNode, t &est
 
 // rx_property_of ports getProperty: the name a member expression reads or a property destructures
 // (a string or number literal key, a static computed one, an identifier); none otherwise.
-fn (mut c Checker) rx_property_of(root C.TSNode, t &estree.EsTree, node int) ?string {
+fn (mut c Checker) rx_property_of(root C.vt_node, t &estree.EsTree, node int) ?string {
 	if t.typ(node) == .member_expression {
 		property := t.node(node, .property)?
 		if t.flag(node, .computed) or { false } {

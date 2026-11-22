@@ -34,25 +34,25 @@ fn cte_options(options []json2.Any) !CteOptions {
 // CteSpecifier is an ExportSpecifier: its local name, its exported name (the same node without an
 // `as`) and whether it is an inline `type` specifier.
 struct CteSpecifier {
-	node        C.TSNode
-	local       C.TSNode
-	exported    C.TSNode
+	node        C.vt_node
+	local       C.vt_node
+	exported    C.vt_node
 	inline_type bool
 }
 
 // CteExport is an ExportNamedDeclaration with specifiers that is not an `export type`.
 struct CteExport {
-	node       C.TSNode
-	clause     C.TSNode
-	source     ?C.TSNode
+	node       C.vt_node
+	clause     C.vt_node
+	source     ?C.vt_node
 	specifiers []CteSpecifier
 }
 
-fn (mut c Checker) lint_consistent_type_exports(root C.TSNode, abs_path string, mut stats Stats) ![]Finding {
+fn (mut c Checker) lint_consistent_type_exports(root C.vt_node, abs_path string, mut stats Stats) ![]Finding {
 	options := cte_options(c.rule_options(consistent_type_exports))!
 	mut sw := time.new_stopwatch()
 	mut named := []CteExport{}
-	mut all := []C.TSNode{} // ExportAllDeclaration that is not `export type *`
+	mut all := []C.vt_node{} // ExportAllDeclaration that is not `export type *`
 	mut spans := []Span{}
 	for node in c.nodes_of_kind(root, c'export_statement') {
 		// exportKind === 'type'
@@ -188,7 +188,7 @@ fn format_word_list(words []string) string {
 }
 
 // cte_symbol_at is the symbol at a name that resolve_spans has looked up (getSymbolAtLocation).
-fn (mut c Checker) cte_symbol_at(name C.TSNode) !SymbolResponse {
+fn (mut c Checker) cte_symbol_at(name C.vt_node) !SymbolResponse {
 	handle := c.nodes.handle(node_key(name)) or { return SymbolResponse{} }
 	symbols := c.client.symbols_at_locations(c.snapshot, c.project, [handle])!
 	if symbols.len != 1 {
@@ -199,7 +199,7 @@ fn (mut c Checker) cte_symbol_at(name C.TSNode) !SymbolResponse {
 
 // cte_is_type_based ports isSymbolTypeBased on the symbol of an exported name: 1 for a type, 0
 // for a value and -1 when the specifier cannot be resolved.
-fn (mut c Checker) cte_is_type_based(exported C.TSNode) !int {
+fn (mut c Checker) cte_is_type_based(exported C.vt_node) !int {
 	mut symbol := c.cte_symbol_at(exported)!
 	// An alias chain ends at a declaration; the limit is for a chain that does not.
 	for _ in 0 .. max_type_depth {
@@ -229,7 +229,7 @@ fn (mut c Checker) cte_is_type_based(exported C.TSNode) !int {
 // a value. Like the original, it looks at the properties of the type of the module, which are its
 // value exports, and leaves out the ones getPropertyOfType does not find: those that reach the
 // module through an `export type *`.
-fn (mut c Checker) cte_has_exported_value(module_name C.TSNode) !bool {
+fn (mut c Checker) cte_has_exported_value(module_name C.vt_node) !bool {
 	symbol := c.cte_symbol_at(module_name)!
 	// Without a source file for the module (it does not resolve, or only a `declare module`
 	// declares it), the original gives up.
@@ -270,7 +270,7 @@ fn (c &Checker) cte_specifier_text(specifier CteSpecifier) string {
 }
 
 // cte_name_text is the `raw` of a string name or the `name` of an identifier.
-fn (c &Checker) cte_name_text(name C.TSNode) string {
+fn (c &Checker) cte_name_text(name C.vt_node) string {
 	return if node_kind(name) == 'string' { c.text(name) } else { c.identifier_name(name) }
 }
 

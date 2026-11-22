@@ -60,7 +60,7 @@ struct VdmoMacro {
 	node int
 }
 
-fn (mut c Checker) lint_vue_define_macros_order(root C.TSNode, abs_path string, mut stats Stats) ![]Finding {
+fn (mut c Checker) lint_vue_define_macros_order(root C.vt_node, abs_path string, mut stats Stats) ![]Finding {
 	if !c.is_vue() {
 		return []
 	}

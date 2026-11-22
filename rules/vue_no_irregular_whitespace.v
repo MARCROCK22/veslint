@@ -73,7 +73,7 @@ fn (c &Checker) vnirw_skip_es(t &estree.EsTree, node int, opts VnirwOptions, mut
 	}
 }
 
-fn (mut c Checker) lint_vue_no_irregular_whitespace(root C.TSNode, abs_path string, mut stats Stats) ![]Finding {
+fn (mut c Checker) lint_vue_no_irregular_whitespace(root C.vt_node, abs_path string, mut stats Stats) ![]Finding {
 	sw := time.new_stopwatch()
 	stats.checked++
 	mut findings := []Finding{}

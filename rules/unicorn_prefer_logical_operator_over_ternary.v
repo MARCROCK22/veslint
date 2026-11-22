@@ -75,7 +75,7 @@ fn uploot_is_const_assertion(t &estree.EsTree, node int) bool {
 // uploot_constant_variable_definition ports getConstantVariableDefinition: the only definition of
 // the variable of the identifier, a `const` of it with an initializer declared before it in the
 // same function (not in a `switch`).
-fn (mut c Checker) uploot_constant_variable_definition(root C.TSNode, t &estree.EsTree, node int) ?ScopeDefinition {
+fn (mut c Checker) uploot_constant_variable_definition(root C.vt_node, t &estree.EsTree, node int) ?ScopeDefinition {
 	tree := c.scope_tree(root)
 	scope := c.unb_scope_of(root, t, node)
 	v := c.unb_find_variable(root, t, node)
@@ -98,7 +98,7 @@ fn (mut c Checker) uploot_constant_variable_definition(root C.TSNode, t &estree.
 
 // uploot_unwrap_constant_aliases ports unwrapConstantAliases: the initializer of the constants
 // the identifier stands for.
-fn (mut c Checker) uploot_unwrap_constant_aliases(root C.TSNode, t &estree.EsTree, n int) int {
+fn (mut c Checker) uploot_unwrap_constant_aliases(root C.vt_node, t &estree.EsTree, n int) int {
 	mut node := n
 	for t.typ(node) == .identifier {
 		def := c.uploot_constant_variable_definition(root, t, node) or { break }
@@ -374,7 +374,7 @@ fn (mut c Checker) uploot_check(t &estree.EsTree, tokens &SourceTokens, node int
 	return false, Finding{}
 }
 
-fn (mut c Checker) lint_unicorn_prefer_logical_operator_over_ternary(root C.TSNode, abs_path string, mut stats Stats) ![]Finding {
+fn (mut c Checker) lint_unicorn_prefer_logical_operator_over_ternary(root C.vt_node, abs_path string, mut stats Stats) ![]Finding {
 	sw := time.new_stopwatch()
 	mut findings := []Finding{}
 	t := c.es_tree(root, abs_path) or { return findings }

@@ -23,7 +23,7 @@ fn declared(src string) []Ident {
 	}
 	tree := p.parse(src) or { panic(err) }
 	defer {
-		treesitter.tree_delete(tree)
+		treesitter.rows_free(tree)
 	}
 	return p.identifiers(tree, src, false) or { panic(err) }
 }

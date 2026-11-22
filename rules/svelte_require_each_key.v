@@ -8,7 +8,7 @@ const svrek_messages = {
 	'expectedKey': 'Each block should have a key'
 }
 
-fn (mut c Checker) lint_svelte_require_each_key(root C.TSNode, abs_path string, mut stats Stats) ![]Finding {
+fn (mut c Checker) lint_svelte_require_each_key(root C.vt_node, abs_path string, mut stats Stats) ![]Finding {
 	if !c.is_svelte() {
 		return []
 	}

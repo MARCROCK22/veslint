@@ -187,7 +187,7 @@ fn sspc_exec(re jsregexp.JsRegex, value string) !SspcMatch {
 	return m
 }
 
-fn (mut c Checker) lint_stylistic_spaced_comment(root C.TSNode, abs_path string, mut stats Stats) ![]Finding {
+fn (mut c Checker) lint_stylistic_spaced_comment(root C.vt_node, abs_path string, mut stats Stats) ![]Finding {
 	sw := time.new_stopwatch()
 	mut findings := []Finding{}
 	options := sspc_options(c.rule_options(stylistic_spaced_comment))!

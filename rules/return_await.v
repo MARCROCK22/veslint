@@ -66,14 +66,14 @@ fn rw_options(options []json2.Any) !RwOptions {
 
 // ReturnedNode is a value the function may return.
 struct ReturnedNode {
-	node     C.TSNode // the ESTree node, where the rule reports
+	node     C.vt_node // the ESTree node, where the rule reports
 	is_await bool
-	typed    C.TSNode // the node whose type counts: the operand of the await or the node itself
+	typed    C.vt_node // the node whose type counts: the operand of the await or the node itself
 mut:
 	affects bool // it is in an error-handling context (affectsExplicitErrorHandling)
 }
 
-fn (mut c Checker) lint_return_await(root C.TSNode, abs_path string, mut stats Stats) ![]Finding {
+fn (mut c Checker) lint_return_await(root C.vt_node, abs_path string, mut stats Stats) ![]Finding {
 	mut sw := time.new_stopwatch()
 	o := rw_options(c.rule_options(return_await))!
 	mut returned := []ReturnedNode{}
@@ -170,7 +170,7 @@ fn (c &Checker) rw_fix_or_suggest(finding Finding, as_fix bool, suggestion_id st
 // rw_remove_await ports removeAwait: the `await` keyword of the AwaitExpression goes, with what
 // follows it up to the next token or comment (getAwaitTokenRemovalRange), and an operand that
 // would start an arrow function body with `{` gets parentheses.
-fn (mut c Checker) rw_remove_await(node C.TSNode) []Fix {
+fn (mut c Checker) rw_remove_await(node C.vt_node) []Fix {
 	if node_kind(node) != 'await_expression' {
 		return []Fix{}
 	}
@@ -190,7 +190,7 @@ fn (mut c Checker) rw_remove_await(node C.TSNode) []Fix {
 
 // rw_insert_await ports insertAwait: `await ` before the expression, around parentheses unless
 // the expression binds tighter than `await`.
-fn rw_insert_await(node C.TSNode) []Fix {
+fn rw_insert_await(node C.vt_node) []Fix {
 	if is_higher_precedence_than_await(node) {
 		return [fix_insert_before(node, 'await ')]
 	}
@@ -199,7 +199,7 @@ fn rw_insert_await(node C.TSNode) []Fix {
 
 // possibly_returned ports findPossiblyReturnedNodes: the branches of conditionals, without
 // parentheses (they are not nodes in ESTree).
-fn (mut c Checker) possibly_returned(n C.TSNode, depth int) []ReturnedNode {
+fn (mut c Checker) possibly_returned(n C.vt_node, depth int) []ReturnedNode {
 	if depth > max_expression_depth {
 		c.too_deep++
 		return []ReturnedNode{}
@@ -236,7 +236,7 @@ fn (mut c Checker) possibly_returned(n C.TSNode, depth int) []ReturnedNode {
 // affects_resource_management ports affectsExplicitResourceManagement: a `using` or `await using`
 // declaration that ends before the node, in the scope of the node or in one around it up to the
 // function's: the blocks and the `for` headers that contain the node, inside its function.
-fn affects_resource_management(n C.TSNode) bool {
+fn affects_resource_management(n C.vt_node) bool {
 	start := node_start(n)
 	mut node := node_parent(n) or { return false }
 	for node_kind(node) !in function_kinds {
@@ -273,7 +273,7 @@ fn affects_resource_management(n C.TSNode) bool {
 }
 
 // using_declarator_before: some declarator of the declaration ends before `offset`.
-fn using_declarator_before(declaration C.TSNode, offset int) bool {
+fn using_declarator_before(declaration C.vt_node, offset int) bool {
 	for declarator in named_children(declaration) {
 		if node_kind(declarator) == 'variable_declarator' && node_end(declarator) < offset {
 			return true
@@ -285,7 +285,7 @@ fn using_declarator_before(declaration C.TSNode, offset int) bool {
 // affects_error_handling ports affectsExplicitErrorHandling: the node is in the block of a try, or
 // in a catch followed by a finally; from a catch without a finally or from a finally, the try that
 // contains them counts. The search stops at the function that contains the node.
-fn affects_error_handling(n C.TSNode) bool {
+fn affects_error_handling(n C.vt_node) bool {
 	mut child := n
 	mut node := node_parent(n) or { return false }
 	for node_kind(node) !in function_kinds {

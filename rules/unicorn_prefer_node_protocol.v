@@ -30,7 +30,7 @@ const upnpr_builtin_modules = ['node:assert', 'assert', 'node:assert/strict', 'a
 	'node:util/types', 'util/types', 'node:v8', 'v8', 'node:vfs', 'node:vm', 'vm', 'node:wasi',
 	'wasi', 'node:worker_threads', 'worker_threads', 'node:zlib', 'zlib', 'node:zlib/iter', 'zlib/iter']
 
-fn (mut c Checker) lint_unicorn_prefer_node_protocol(root C.TSNode, abs_path string, mut stats Stats) ![]Finding {
+fn (mut c Checker) lint_unicorn_prefer_node_protocol(root C.vt_node, abs_path string, mut stats Stats) ![]Finding {
 	sw := time.new_stopwatch()
 	mut findings := []Finding{}
 	t := c.es_tree(root, abs_path) or { return findings }

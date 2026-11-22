@@ -67,7 +67,7 @@ fn (c &Checker) vvbs_is_same_name(attr int) bool {
 	return vvbs_kebab_to_camel(c.vue.doc.nodes[argument].raw_name) == vvbs_kebab_to_camel(name)
 }
 
-fn (mut c Checker) lint_vue_v_bind_style(root C.TSNode, abs_path string, mut stats Stats) ![]Finding {
+fn (mut c Checker) lint_vue_v_bind_style(root C.vt_node, abs_path string, mut stats Stats) ![]Finding {
 	if !c.vue_has_template() {
 		return []
 	}

@@ -28,13 +28,13 @@ const nuec_kind_string_literal = u32(10)
 
 // NuecComparison is a comparison or a `case`, with the ESTree nodes of both sides.
 struct NuecComparison {
-	node       C.TSNode
-	left       C.TSNode
-	right      C.TSNode
+	node       C.vt_node
+	left       C.vt_node
+	right      C.vt_node
 	message_id string
 }
 
-fn (mut c Checker) lint_no_unsafe_enum_comparison(root C.TSNode, abs_path string, mut stats Stats) ![]Finding {
+fn (mut c Checker) lint_no_unsafe_enum_comparison(root C.vt_node, abs_path string, mut stats Stats) ![]Finding {
 	mut sw := time.new_stopwatch()
 	mut comparisons := []NuecComparison{}
 	for node in c.nodes_of_kinds(root, ['binary_expression', 'switch_statement'], []string{}) {
@@ -248,7 +248,7 @@ fn (mut c Checker) nuec_replace_value_with_enum(comparison NuecComparison, left 
 // the access to the first enum member of the type whose value is the static value of the node
 // (evaluated without scope: no identifier is static), as `Enum.Member`, `Enum['member name']` or
 // `Enum[computed]`; '' if none.
-fn (mut c Checker) nuec_enum_key_for_literal(t TypeResponse, value_node C.TSNode) !string {
+fn (mut c Checker) nuec_enum_key_for_literal(t TypeResponse, value_node C.vt_node) !string {
 	static_value := c.get_static_value_unscoped(value_node)
 	if !static_value.found {
 		return ''

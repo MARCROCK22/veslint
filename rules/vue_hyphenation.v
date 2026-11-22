@@ -80,7 +80,7 @@ fn vue_hyphenation_ignored(name string, ignored []string, hyphenated bool) bool 
 	return !name.contains('-')
 }
 
-fn (mut c Checker) lint_vue_attribute_hyphenation(root C.TSNode, abs_path string, mut stats Stats) ![]Finding {
+fn (mut c Checker) lint_vue_attribute_hyphenation(root C.vt_node, abs_path string, mut stats Stats) ![]Finding {
 	if !c.vue_has_template() {
 		return []
 	}
@@ -140,7 +140,7 @@ fn (mut c Checker) lint_vue_attribute_hyphenation(root C.TSNode, abs_path string
 	return findings
 }
 
-fn (mut c Checker) lint_vue_v_on_event_hyphenation(root C.TSNode, abs_path string, mut stats Stats) ![]Finding {
+fn (mut c Checker) lint_vue_v_on_event_hyphenation(root C.vt_node, abs_path string, mut stats Stats) ![]Finding {
 	if !c.vue_has_template() {
 		return []
 	}

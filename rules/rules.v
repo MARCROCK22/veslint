@@ -7,7 +7,7 @@ import json2
 import jsregexp
 import time
 import tsgo { Client, CompilerOptions, ParameterResponse, SignatureResponse, SourceFileAst, SymbolResponse, TypeResponse }
-import treesitter { Ident, Parser, TokenEnds, children, first_named_child, named_children, node_end, node_field, node_kind, node_start, root_node, token_ends, tree_delete, tree_has_error }
+import treesitter { Ident, Parser, TokenEnds, children, first_named_child, named_children, node_end, node_field, node_kind, node_start, root_node, token_ends, tree_has_error }
 import offsets
 import os
 
@@ -2395,11 +2395,11 @@ pub:
 pub struct Stats {
 pub mut:
 	parse_ms f64
-	// What parse_ms is made of, for --bench: tree-sitter's parse (ts_parser_parse), the flat tree
-	// with the node index and the token ends (index_file), asking TypeScript whether the file
-	// parses (parsing_error, tree_has_error and ts_syntax_error), the `await` identifiers
-	// (await_identifiers_source, a parse again included). Freeing the tree is after the rules and
-	// apart (tree_free_ms).
+	// What parse_ms is made of, for --bench: tree-sitter's parse (ts_parser_parse) with the rows
+	// of its tree and freeing the tree, the node index and the token ends (index_file), asking
+	// TypeScript whether the file parses (parsing_error, tree_has_error and ts_syntax_error), the
+	// `await` identifiers (await_identifiers_source, a parse again included). Freeing the rows is
+	// after the rules and apart (tree_free_ms).
 	parse_tree_sitter_ms f64
 	parse_index_ms       f64
 	parse_syntax_ms      f64
@@ -3470,7 +3470,7 @@ fn (mut c Checker) lint_file_in_lifetime(parser Parser, config LintConfig, src s
 	}
 	mut owned := !vue_file || c.vue.doc.script.tree == unsafe { nil }
 	mut part := time.new_stopwatch()
-	// The tree of a TreeCache is the cache's, kept for the next text of the file.
+	// A TreeCache keeps the tree, for the next text of the file; the rows are this lint's.
 	mut cache := c.tree_cache
 	cache_key := c.tree_key
 	c.tree_cache = unsafe { nil }
@@ -3489,17 +3489,13 @@ fn (mut c Checker) lint_file_in_lifetime(parser Parser, config LintConfig, src s
 	} else {
 		parser.parse(parsed)!
 	}
-	if cache != unsafe { nil } && owned {
-		owned = false
-	}
 	stats.parse_tree_sitter_ms += ms(part.elapsed())
 	defer {
-		// The index and the parents it recorded point into the tree.
+		// The index points into the rows.
 		free_sw := time.new_stopwatch()
 		c.node_index = treesitter.NodeIndex{}
-		treesitter.parent_cache_clear()
 		if owned {
-			tree_delete(tree)
+			treesitter.rows_free(tree)
 		}
 		stats.tree_free_ms += ms(free_sw.elapsed())
 		c.vue = VueView{}
@@ -3544,9 +3540,8 @@ fn (mut c Checker) lint_file_in_lifetime(parser Parser, config LintConfig, src s
 	reread := c.await_identifiers_source(root, ts_path)!
 	if reread != '' {
 		c.node_index = treesitter.NodeIndex{}
-		treesitter.parent_cache_clear()
 		if owned {
-			tree_delete(tree)
+			treesitter.rows_free(tree)
 		}
 		tree = parser.parse(reread)!
 		owned = true
@@ -3645,7 +3640,7 @@ fn sort_rule_findings(findings []Finding) []Finding {
 }
 
 // lint_rule applies a rule to the tree of the file prepared by lint_file.
-fn (mut c Checker) lint_rule(rule string, root C.TSNode, abs_path string, mut stats Stats) ![]Finding {
+fn (mut c Checker) lint_rule(rule string, root C.vt_node, abs_path string, mut stats Stats) ![]Finding {
 	match rule {
 		no_floating_promises { return c.lint_no_floating_promises(root, abs_path, mut stats)! }
 		await_thenable { return c.lint_await_thenable(root, abs_path, mut stats)! }
@@ -6427,7 +6422,7 @@ const max_expression_depth = 1000
 // using_kind is ESTree's `kind` of a VariableDeclaration that declares resources: 'using' or
 // 'await using' for a lexical_declaration, or for a for-in/of whose header declares one
 // (`for (using x of y)`; the `await` of `for await (…)` is not part of it). '' for any other node.
-fn using_kind(n C.TSNode) string {
+fn using_kind(n C.vt_node) string {
 	mut words := []string{}
 	mut started := node_kind(n) != 'for_in_statement'
 	for child in children(n) {
@@ -6451,7 +6446,7 @@ fn using_kind(n C.TSNode) string {
 // jsx_expression_value is the expression of a JSX `{…}` (ESTree's JSXExpressionContainer), without
 // parentheses; none for `{}` and `{/* comment */}`, whose expression is a JSXEmptyExpression, and
 // for a spread.
-fn jsx_expression_value(container C.TSNode) ?C.TSNode {
+fn jsx_expression_value(container C.vt_node) ?C.vt_node {
 	for child in named_children(container) {
 		if node_kind(child) in ['comment', 'spread_element'] {
 			continue
@@ -6462,7 +6457,7 @@ fn jsx_expression_value(container C.TSNode) ?C.TSNode {
 }
 
 // unwrap_parens removes parentheses, which are not nodes in ESTree.
-fn unwrap_parens(n C.TSNode) C.TSNode {
+fn unwrap_parens(n C.vt_node) C.vt_node {
 	mut node := n
 	for node_kind(node) == 'parenthesized_expression' {
 		node = first_named_child(node) or { return node }
@@ -6470,7 +6465,7 @@ fn unwrap_parens(n C.TSNode) C.TSNode {
 	return node
 }
 
-fn operator_of(node C.TSNode) string {
+fn operator_of(node C.vt_node) string {
 	op := node_field(node, 'operator') or { return '' }
 	return node_kind(op)
 }
@@ -6478,15 +6473,15 @@ fn operator_of(node C.TSNode) string {
 // nodes_of_kind and nodes_of_kinds give the nodes of the file treesitter's functions of the same
 // name give, from the index of the file when `root` is its root: every rule asks for the nodes of
 // some kinds, and walking the tree once for each was most of the time of veslint itself.
-fn (c &Checker) nodes_of_kind(root C.TSNode, kind &char) []C.TSNode {
+fn (c &Checker) nodes_of_kind(root C.vt_node, kind &char) []C.vt_node {
 	return c.node_index.of_kind(root, unsafe { tos2(&u8(kind)) })
 }
 
-fn (c &Checker) nodes_of_kinds(root C.TSNode, kinds []string, skip []string) []C.TSNode {
+fn (c &Checker) nodes_of_kinds(root C.vt_node, kinds []string, skip []string) []C.vt_node {
 	return c.node_index.of_kinds(root, kinds, skip)
 }
 
-fn (c &Checker) text(n C.TSNode) string {
+fn (c &Checker) text(n C.vt_node) string {
 	return c.src[node_start(n)..node_end(n)]
 }
 

@@ -50,7 +50,7 @@ fn nwc_is_word_char(ch u8) bool {
 	return ch.is_letter() || ch.is_digit() || ch == `_`
 }
 
-fn (mut c Checker) lint_no_warning_comments(root C.TSNode, abs_path string, mut stats Stats) ![]Finding {
+fn (mut c Checker) lint_no_warning_comments(root C.vt_node, abs_path string, mut stats Stats) ![]Finding {
 	sw := time.new_stopwatch()
 	o := nwc_options(c.rule_options(no_warning_comments))!
 	// convertToRegExp: the term with word boundaries (at the start of the comment, after white

@@ -45,8 +45,8 @@ fn nms_options(options []json2.Any) !NmsOptions {
 // NmsSpread is a SpreadElement: in an array or the arguments of a call (`in_object` false) or in
 // an object literal.
 struct NmsSpread {
-	node      C.TSNode
-	argument  C.TSNode
+	node      C.vt_node
+	argument  C.vt_node
 	in_object bool
 }
 
@@ -61,7 +61,7 @@ enum NmsPredicate {
 	class_declaration
 }
 
-fn (mut c Checker) lint_no_misused_spread(root C.TSNode, abs_path string, mut stats Stats) ![]Finding {
+fn (mut c Checker) lint_no_misused_spread(root C.vt_node, abs_path string, mut stats Stats) ![]Finding {
 	mut sw := time.new_stopwatch()
 	o := nms_options(c.rule_options(no_misused_spread))!
 	mut spreads := []NmsSpread{}
@@ -142,7 +142,7 @@ fn (mut c Checker) lint_no_misused_spread(root C.TSNode, abs_path string, mut st
 
 // nms_add_await ports the fixer of getPromiseSpreadSuggestions: `await ` before the argument of the
 // spread, in parentheses unless its precedence is higher than that of `await`.
-fn nms_add_await(argument C.TSNode) []Fix {
+fn nms_add_await(argument C.vt_node) []Fix {
 	if is_higher_precedence_than_await(argument) {
 		return [fix_insert_before(argument, 'await ')]
 	}

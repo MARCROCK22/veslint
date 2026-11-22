@@ -32,7 +32,7 @@ fn (c &Checker) svvpnikp_check_prop(declarator int, expected []string, mut findi
 	}
 }
 
-fn (mut c Checker) lint_svelte_valid_prop_names_in_kit_pages(root C.TSNode, abs_path string, mut stats Stats) ![]Finding {
+fn (mut c Checker) lint_svelte_valid_prop_names_in_kit_pages(root C.vt_node, abs_path string, mut stats Stats) ![]Finding {
 	if !c.is_svelte() {
 		return []
 	}

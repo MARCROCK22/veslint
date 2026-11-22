@@ -17,7 +17,7 @@ fn nga_exceptions(options []json2.Any) ![]string {
 	return value.as_array().map(it.str())
 }
 
-fn (mut c Checker) lint_no_global_assign(root C.TSNode, abs_path string, mut stats Stats) ![]Finding {
+fn (mut c Checker) lint_no_global_assign(root C.vt_node, abs_path string, mut stats Stats) ![]Finding {
 	sw := time.new_stopwatch()
 	exceptions := nga_exceptions(c.rule_options(no_global_assign))!
 	mut findings := []Finding{}

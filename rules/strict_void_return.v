@@ -34,50 +34,50 @@ fn svr_options(options []json2.Any) !SvrOptions {
 
 // SvrCall is a CallExpression or a NewExpression with arguments.
 struct SvrCall {
-	node   C.TSNode
-	callee C.TSNode
+	node   C.vt_node
+	callee C.vt_node
 	// The callee as written, with its parentheses: the node the parameter types are asked at.
-	callee_node C.TSNode
-	args        []C.TSNode
+	callee_node C.vt_node
+	args        []C.vt_node
 }
 
 // SvrObjectMethod is a method of an object literal whose name is not computed.
 struct SvrObjectMethod {
-	object C.TSNode
-	method C.TSNode
+	object C.vt_node
+	method C.vt_node
 	name   string
 }
 
 // SvrMember is a class method, or a class property with a value: its name, the function or the
 // value to report, and the base types of its class.
 struct SvrMember {
-	name      C.TSNode
-	value     C.TSNode
+	name      C.vt_node
+	value     C.vt_node
 	is_method bool
 	heritage  []Span
 	// The member: the node the types of the base members are asked at.
-	member C.TSNode
+	member C.vt_node
 }
 
 struct SvrState {
 	options  SvrOptions
-	root     C.TSNode
+	root     C.vt_node
 	abs_path string
 mut:
 	findings []Finding
 	// Function literals with a block body whose `return` statements are looked at once the
 	// types of their arguments are known.
-	pending []C.TSNode
+	pending []C.vt_node
 }
 
-fn (mut c Checker) lint_strict_void_return(root C.TSNode, abs_path string, mut stats Stats) ![]Finding {
+fn (mut c Checker) lint_strict_void_return(root C.vt_node, abs_path string, mut stats Stats) ![]Finding {
 	mut state := SvrState{
 		options:  svr_options(c.rule_options(strict_void_return))!
 		root:     root
 		abs_path: abs_path
 	}
 	mut sw := time.new_stopwatch()
-	mut expressions := []C.TSNode{} // checkExpressionNode
+	mut expressions := []C.vt_node{} // checkExpressionNode
 	mut calls := []SvrCall{}
 	mut object_methods := []SvrObjectMethod{}
 	mut members := []SvrMember{}
@@ -244,16 +244,16 @@ fn (mut c Checker) lint_strict_void_return(root C.TSNode, abs_path string, mut s
 	stats.eval_ms += ms(sw.elapsed())
 	sw.restart()
 	// The `return` statements of the function literals found so far.
-	mut returns := map[u64][]C.TSNode{}
+	mut returns := map[u64][]C.vt_node{}
 	mut return_spans := []Span{}
 	for function in state.pending {
 		// A function reported through two contexts is only walked once.
 		if node_key(function) in returns {
 			continue
 		}
-		returns[node_key(function)] = []C.TSNode{}
+		returns[node_key(function)] = []C.vt_node{}
 		body := node_field(function, 'body') or { continue }
-		mut statements := []C.TSNode{}
+		mut statements := []C.vt_node{}
 		svr_walk_statements(named_children(body), mut statements)
 		for statement in statements {
 			if node_kind(statement) != 'return_statement' {
@@ -289,13 +289,13 @@ fn (mut c Checker) lint_strict_void_return(root C.TSNode, abs_path string, mut s
 
 // svr_span is the TypeScript node of an expression that may be a function: a method is its
 // member, with its decorators.
-fn svr_span(n C.TSNode) Span {
+fn svr_span(n C.vt_node) Span {
 	return if node_kind(n) == 'method_definition' { function_span(n) } else { node_span(n) }
 }
 
 // jsx_attribute_expression is the expression of a JSX attribute whose value is an expression
 // container that is not empty.
-fn jsx_attribute_expression(attribute C.TSNode) ?C.TSNode {
+fn jsx_attribute_expression(attribute C.vt_node) ?C.vt_node {
 	for child in named_children(attribute) {
 		if node_kind(child) == 'jsx_expression' {
 			return jsx_expression_value(child)
@@ -332,7 +332,7 @@ fn (mut c Checker) svr_is_void_returning_function_type(t TypeResponse) !bool {
 // returns void when there is none), so nothing else is asked of tsgo about the expression: most
 // of them are not functions, and what their types tell is mostly known without asking
 // (apparent_of and signatures_of).
-fn (mut c Checker) svr_may_be_function(node C.TSNode) !bool {
+fn (mut c Checker) svr_may_be_function(node C.vt_node) !bool {
 	if node_kind(node) in svr_function_kinds {
 		return true
 	}
@@ -342,7 +342,7 @@ fn (mut c Checker) svr_may_be_function(node C.TSNode) !bool {
 
 // svr_check_expression ports checkExpressionNode: the contextual type of the expression is a
 // void function. Returns whether it was.
-fn (mut c Checker) svr_check_expression(node C.TSNode, mut state SvrState) !bool {
+fn (mut c Checker) svr_check_expression(node C.vt_node, mut state SvrState) !bool {
 	if !c.svr_may_be_function(node)! {
 		return false
 	}
@@ -480,7 +480,7 @@ fn (mut c Checker) svr_check_member(member SvrMember, mut state SvrState) ! {
 }
 
 // svr_report_if_non_void_function ports reportIfNonVoidFunction.
-fn (mut c Checker) svr_report_if_non_void_function(node C.TSNode, mut state SvrState) ! {
+fn (mut c Checker) svr_report_if_non_void_function(node C.vt_node, mut state SvrState) ! {
 	allowed := svr_allowed_flags(state.options)
 	node_type := c.node_type(node) or { return }
 	actual := c.apparent_of(node_type)!
@@ -555,7 +555,7 @@ fn (mut c Checker) svr_report_if_non_void_function(node C.TSNode, mut state SvrS
 // whose body has side effects (hasSideEffect of eslint-utils, default options), none otherwise:
 // addVoidToArrowFix, which makes the function sync and puts `void` before the body
 // (getWrappingFixer).
-fn (mut c Checker) svr_add_void_suggestion(function C.TSNode, body C.TSNode, mut state SvrState) ![]Suggestion {
+fn (mut c Checker) svr_add_void_suggestion(function C.vt_node, body C.vt_node, mut state SvrState) ![]Suggestion {
 	inner := unwrap_parens(body)
 	t := c.es_tree(state.root, state.abs_path) or { return []Suggestion{} }
 	index := c.es_index_of(t, inner) or { return []Suggestion{} }
@@ -571,7 +571,7 @@ fn (mut c Checker) svr_add_void_suggestion(function C.TSNode, body C.TSNode, mut
 
 // svr_make_sync_fixes ports makeSyncFuncFix: the `async` keyword goes (of the method, for a
 // method of an object literal or a class) and the return type becomes `void`.
-fn (mut c Checker) svr_make_sync_fixes(function C.TSNode) []Fix {
+fn (mut c Checker) svr_make_sync_fixes(function C.vt_node) []Fix {
 	mut fixes := []Fix{}
 	for child in children(function) {
 		if node_kind(child) == 'async' {
@@ -590,7 +590,7 @@ fn (mut c Checker) svr_make_sync_fixes(function C.TSNode) []Fix {
 // svr_wrap_in_async_iife_fixes ports wrapInAsyncIIFEFix: the function becomes sync and its body
 // goes in an async arrow function called right away, so that `this` stays the same: after the
 // `=>` of an arrow function, or in a new block of a function expression.
-fn (mut c Checker) svr_wrap_in_async_iife_fixes(function C.TSNode, body C.TSNode) []Fix {
+fn (mut c Checker) svr_wrap_in_async_iife_fixes(function C.vt_node, body C.vt_node) []Fix {
 	mut fixes := c.svr_make_sync_fixes(function)
 	if node_kind(function) == 'arrow_function' {
 		for child in children(function) {
@@ -609,7 +609,7 @@ fn (mut c Checker) svr_wrap_in_async_iife_fixes(function C.TSNode, body C.TSNode
 
 // svr_walk_statements ports walkStatements: the statements of a function body, through blocks and
 // control flow but not into other functions.
-fn svr_walk_statements(body []C.TSNode, mut out []C.TSNode) {
+fn svr_walk_statements(body []C.vt_node, mut out []C.vt_node) {
 	for statement in body {
 		match node_kind(statement) {
 			'statement_block' {
@@ -620,7 +620,7 @@ fn svr_walk_statements(body []C.TSNode, mut out []C.TSNode) {
 				for switch_case in named_children(switch_body) {
 					// The consequent: what follows the `:`.
 					mut after_colon := false
-					mut consequent := []C.TSNode{}
+					mut consequent := []C.vt_node{}
 					for child in children(switch_case) {
 						if !after_colon {
 							after_colon = node_kind(child) == ':'

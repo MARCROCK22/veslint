@@ -24,7 +24,7 @@ fn vue_component_definition_name_casing_options(options []json2.Any) !string {
 	return value as string
 }
 
-fn (mut c Checker) lint_vue_component_definition_name_casing(root C.TSNode, abs_path string, mut stats Stats) ![]Finding {
+fn (mut c Checker) lint_vue_component_definition_name_casing(root C.vt_node, abs_path string, mut stats Stats) ![]Finding {
 	sw := time.new_stopwatch()
 	case_type := vue_component_definition_name_casing_options(c.rule_options(vue_component_definition_name_casing))!
 	mut findings := []Finding{}

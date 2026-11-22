@@ -17,7 +17,7 @@ fn nen_exceptions(options []json2.Any) ![]string {
 	return value.as_array().map(it.str())
 }
 
-fn (mut c Checker) lint_no_extend_native(root C.TSNode, abs_path string, mut stats Stats) ![]Finding {
+fn (mut c Checker) lint_no_extend_native(root C.vt_node, abs_path string, mut stats Stats) ![]Finding {
 	sw := time.new_stopwatch()
 	exceptions := nen_exceptions(c.rule_options(no_extend_native))!
 	mut findings := []Finding{}

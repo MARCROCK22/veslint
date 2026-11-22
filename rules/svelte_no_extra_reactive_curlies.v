@@ -10,7 +10,7 @@ const svnerc_messages = {
 	'removeExtraCurlies': 'Remove the unnecessary curly braces.'
 }
 
-fn (mut c Checker) lint_svelte_no_extra_reactive_curlies(root C.TSNode, abs_path string, mut stats Stats) ![]Finding {
+fn (mut c Checker) lint_svelte_no_extra_reactive_curlies(root C.vt_node, abs_path string, mut stats Stats) ![]Finding {
 	if !c.svsc_runes_off(abs_path) {
 		return []
 	}

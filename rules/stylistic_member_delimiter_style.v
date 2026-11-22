@@ -70,7 +70,7 @@ fn smds_opts(type_options map[string]json2.Any, single_line bool) SmdsOpts {
 	}
 }
 
-fn (mut c Checker) lint_stylistic_member_delimiter_style(root C.TSNode, abs_path string, mut stats Stats) ![]Finding {
+fn (mut c Checker) lint_stylistic_member_delimiter_style(root C.vt_node, abs_path string, mut stats Stats) ![]Finding {
 	sw := time.new_stopwatch()
 	mut findings := []Finding{}
 	options := smds_options(c.rule_options(stylistic_member_delimiter_style))!

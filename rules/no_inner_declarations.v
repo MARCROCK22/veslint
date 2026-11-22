@@ -32,12 +32,12 @@ fn nid_options(options []json2.Any) !NidOptions {
 	}
 }
 
-fn (mut c Checker) lint_no_inner_declarations(root C.TSNode, abs_path string, mut stats Stats) ![]Finding {
+fn (mut c Checker) lint_no_inner_declarations(root C.vt_node, abs_path string, mut stats Stats) ![]Finding {
 	return c.nid_lint(root, nid_options(c.rule_options(no_inner_declarations))!, mut stats)
 }
 
 // nid_lint is the rule with its options (svelte/no-inner-declarations runs it too).
-fn (mut c Checker) nid_lint(root C.TSNode, o NidOptions, mut stats Stats) ![]Finding {
+fn (mut c Checker) nid_lint(root C.vt_node, o NidOptions, mut stats Stats) ![]Finding {
 	sw := time.new_stopwatch()
 	mut findings := []Finding{}
 	mut kinds := ['function_declaration', 'generator_function_declaration']
@@ -101,7 +101,7 @@ fn (mut c Checker) nid_lint(root C.TSNode, o NidOptions, mut stats Stats) ![]Fin
 }
 
 // nid_valid_parent: the program, an export, a static block or the body of a function.
-fn nid_valid_parent(parent C.TSNode) bool {
+fn nid_valid_parent(parent C.vt_node) bool {
 	match node_kind(parent) {
 		'program', 'export_statement' {
 			return true
@@ -117,7 +117,7 @@ fn nid_valid_parent(parent C.TSNode) bool {
 }
 
 // nid_body_description ports getAllowedBodyDescription.
-fn nid_body_description(node C.TSNode) string {
+fn nid_body_description(node C.vt_node) string {
 	mut current := node
 	for {
 		current = node_parent(current) or { break }

@@ -53,7 +53,7 @@ fn (c &Checker) svndm_verify(id int, mut findings []Finding) {
 	findings << c.sv_report_es(member, 'disallowManipulateDOM', {})
 }
 
-fn (mut c Checker) lint_svelte_no_dom_manipulating(root C.TSNode, abs_path string, mut stats Stats) ![]Finding {
+fn (mut c Checker) lint_svelte_no_dom_manipulating(root C.vt_node, abs_path string, mut stats Stats) ![]Finding {
 	if !c.is_svelte() {
 		return []
 	}

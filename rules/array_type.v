@@ -38,7 +38,7 @@ fn arty_options(options []json2.Any) !ArtyOptions {
 	}
 }
 
-fn (mut c Checker) lint_array_type(root C.TSNode, abs_path string, mut stats Stats) ![]Finding {
+fn (mut c Checker) lint_array_type(root C.vt_node, abs_path string, mut stats Stats) ![]Finding {
 	sw := time.new_stopwatch()
 	o := arty_options(c.rule_options(array_type))!
 	mut findings := []Finding{}
@@ -57,7 +57,7 @@ fn (mut c Checker) lint_array_type(root C.TSNode, abs_path string, mut stats Sta
 }
 
 // arty_array ports the TSArrayType listener: `T[]` where the option asks for `Array<T>`.
-fn (mut c Checker) arty_array(o ArtyOptions, node C.TSNode, mut findings []Finding) ! {
+fn (mut c Checker) arty_array(o ArtyOptions, node C.vt_node, mut findings []Finding) ! {
 	element := unwrap_type_parens(first_named(node) or { return })
 	// `readonly T[]`: the TSTypeOperator is reported.
 	mut is_readonly := false
@@ -93,7 +93,7 @@ fn (mut c Checker) arty_array(o ArtyOptions, node C.TSNode, mut findings []Findi
 
 // arty_reference ports the TSTypeReference listener: `Array<T>`, `ReadonlyArray<T>` or
 // `Readonly<T[]>` where the option asks for `T[]`. It tells whether the node is one of them.
-fn (mut c Checker) arty_reference(o ArtyOptions, root C.TSNode, node C.TSNode, mut findings []Finding) !bool {
+fn (mut c Checker) arty_reference(o ArtyOptions, root C.vt_node, node C.vt_node, mut findings []Finding) !bool {
 	name_node := node_field(node, 'name') or { return false }
 	if node_kind(name_node) != 'type_identifier' || type_name_role(name_node) != .reference {
 		return false
@@ -174,7 +174,7 @@ fn (mut c Checker) arty_reference(o ArtyOptions, root C.TSNode, node C.TSNode, m
 }
 
 // arty_message_type ports getMessageType: the text of a simple type, otherwise 'T'.
-fn (c &Checker) arty_message_type(n C.TSNode) string {
+fn (c &Checker) arty_message_type(n C.vt_node) string {
 	return if arty_is_simple_type(c, n) { c.text(n) } else { 'T' }
 }
 
@@ -182,7 +182,7 @@ fn (c &Checker) arty_message_type(n C.TSNode) string {
 // type_identifier in tree-sitter; `unique symbol` is a TSTypeOperator), `null`, `undefined`,
 // `this`, an array type, a name or a qualified name without type arguments, or `Array<T>` of a
 // simple type.
-fn arty_is_simple_type(c &Checker, n C.TSNode) bool {
+fn arty_is_simple_type(c &Checker, n C.vt_node) bool {
 	match node_kind(n) {
 		'predefined_type' {
 			return !c.text(n).starts_with('unique')
@@ -212,7 +212,7 @@ fn arty_is_simple_type(c &Checker, n C.TSNode) bool {
 // arty_needs_parentheses ports typeNeedsParentheses: a union, an intersection, a function or
 // constructor type, a type operator (`keyof`, `readonly`, `unique symbol`), `infer`, a conditional
 // type, or a reference to `ReadonlyArray`.
-fn arty_needs_parentheses(c &Checker, n C.TSNode) bool {
+fn arty_needs_parentheses(c &Checker, n C.vt_node) bool {
 	match node_kind(n) {
 		'union_type', 'intersection_type', 'function_type', 'constructor_type', 'readonly_type',
 		'index_type_query', 'infer_type', 'conditional_type' {

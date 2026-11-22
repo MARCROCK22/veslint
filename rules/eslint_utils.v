@@ -9,7 +9,7 @@ import treesitter { Ident, children, named_children, next_sibling, node_end, nod
 // that too.
 
 // es_is_specific_id ports isSpecificId: an Identifier with that name.
-fn (c &Checker) es_is_specific_id(n C.TSNode, name string) bool {
+fn (c &Checker) es_is_specific_id(n C.vt_node, name string) bool {
 	node := unwrap_parens(n)
 	return node_kind(node) in ['identifier', 'undefined'] && c.identifier_name(node) == name
 }
@@ -17,7 +17,7 @@ fn (c &Checker) es_is_specific_id(n C.TSNode, name string) bool {
 // es_static_property_name ports getStaticPropertyName for a MemberExpression: the name of a
 // property that is not computed (a private one is not static), or getStaticStringValue of a
 // computed one.
-fn (c &Checker) es_static_property_name(n C.TSNode) ?string {
+fn (c &Checker) es_static_property_name(n C.vt_node) ?string {
 	node := unwrap_parens(n)
 	match node_kind(node) {
 		'member_expression' {
@@ -39,7 +39,7 @@ fn (c &Checker) es_static_property_name(n C.TSNode) ?string {
 // es_static_string_value ports getStaticStringValue: String(value) of a literal, and the cooked
 // text of a template literal without substitutions. A regular expression that V8 rejects has no
 // value: it is given as written.
-fn (c &Checker) es_static_string_value(n C.TSNode) ?string {
+fn (c &Checker) es_static_string_value(n C.vt_node) ?string {
 	node := unwrap_parens(n)
 	if node_kind(node) == 'regex' {
 		pattern := node_field(node, 'pattern') or { return none }
@@ -55,7 +55,7 @@ fn (c &Checker) es_static_string_value(n C.TSNode) ?string {
 // es_is_specific_member_access ports isSpecificMemberAccess: a MemberExpression whose object is
 // the Identifier `object` (any object when it is '') and whose static property name is
 // `property` (any property when it is '').
-fn (c &Checker) es_is_specific_member_access(n C.TSNode, object string, property string) bool {
+fn (c &Checker) es_is_specific_member_access(n C.vt_node, object string, property string) bool {
 	node := unwrap_parens(n)
 	if node_kind(node) !in ['member_expression', 'subscript_expression'] {
 		return false
@@ -72,7 +72,7 @@ fn (c &Checker) es_is_specific_member_access(n C.TSNode, object string, property
 
 // es_equal_tokens ports equalTokens: the tokens of the two nodes (comments aside) have the same
 // types and values.
-fn (mut c Checker) es_equal_tokens(a C.TSNode, b C.TSNode) bool {
+fn (mut c Checker) es_equal_tokens(a C.vt_node, b C.vt_node) bool {
 	tokens := c.source_tokens(a)
 	left := unwrap_parens(a)
 	right := unwrap_parens(b)
@@ -92,7 +92,7 @@ fn (mut c Checker) es_equal_tokens(a C.TSNode, b C.TSNode) bool {
 
 // es_sequence_last is the last expression of a SequenceExpression (`expressions.at(-1)`), and the
 // node itself when it is not one.
-fn es_sequence_last(n C.TSNode) C.TSNode {
+fn es_sequence_last(n C.vt_node) C.vt_node {
 	mut node := unwrap_parens(n)
 	for node_kind(node) == 'sequence_expression' {
 		named := named_children(node).filter(node_kind(it) != 'comment')
@@ -107,7 +107,7 @@ fn es_sequence_last(n C.TSNode) C.TSNode {
 // es_reference_type is the ESTree type isSameReference compares: Super, ThisExpression,
 // Identifier, PrivateIdentifier, Literal and MemberExpression (`a.b` and `a?.b` alike: there is
 // no ChainExpression); the tree-sitter kind otherwise.
-fn es_reference_type(n C.TSNode) string {
+fn es_reference_type(n C.vt_node) string {
 	kind := node_kind(n)
 	return match kind {
 		'super' { 'Super' }
@@ -125,7 +125,7 @@ fn es_reference_type(n C.TSNode) string {
 
 // es_is_same_reference ports isSameReference: the two expressions reference the same value
 // (`a.b` and `a["b"]`, `this.#x`, `a[0]` and `a[0]`).
-fn (c &Checker) es_is_same_reference(a C.TSNode, b C.TSNode, disable_static_computed_key bool) bool {
+fn (c &Checker) es_is_same_reference(a C.vt_node, b C.vt_node, disable_static_computed_key bool) bool {
 	left := unwrap_parens(a)
 	right := unwrap_parens(b)
 	kind := es_reference_type(left)
@@ -169,7 +169,7 @@ fn (c &Checker) es_is_same_reference(a C.TSNode, b C.TSNode, disable_static_comp
 
 // es_equal_literal_value ports equalLiteralValue: regular expressions by pattern and flags, BigInt
 // literals by their `bigint` (the digits without `n` and separators), others by their value.
-fn (c &Checker) es_equal_literal_value(a C.TSNode, b C.TSNode) bool {
+fn (c &Checker) es_equal_literal_value(a C.vt_node, b C.vt_node) bool {
 	ka := node_kind(a)
 	kb := node_kind(b)
 	if ka == 'regex' || kb == 'regex' {
@@ -200,12 +200,12 @@ fn (c &Checker) es_equal_literal_value(a C.TSNode, b C.TSNode) bool {
 
 // EsElement is an element of an ArrayExpression or ArrayPattern, or a hole.
 struct EsElement {
-	node C.TSNode
+	node C.vt_node
 	hole bool
 }
 
 // es_array_elements are the `elements` of an array literal or pattern, with its holes.
-fn es_array_elements(n C.TSNode) []EsElement {
+fn es_array_elements(n C.vt_node) []EsElement {
 	mut out := []EsElement{}
 	mut expect_element := true
 	for child in children(n) {
@@ -219,7 +219,7 @@ fn es_array_elements(n C.TSNode) []EsElement {
 			expect_element = true
 			continue
 		}
-		if !C.ts_node_is_named(child) || kind == 'comment' {
+		if !C.vt_node_is_named(child) || kind == 'comment' {
 			continue
 		}
 		out << EsElement{
@@ -239,14 +239,14 @@ fn es_has_line_break(text string) bool {
 
 // es_end is where the ESTree node ends: at its last token (tree-sitter may put a comment that
 // follows a node inside it, as in `{} /* c */`).
-fn (c &Checker) es_end(n C.TSNode) int {
+fn (c &Checker) es_end(n C.vt_node) int {
 	return c.tokens.last_end(node_end(n))
 }
 
 // es_binding_end is where the ESTree node of a binding name or pattern ends: typescript-estree
 // puts its type annotation in it (`x: T` as a declarator's id, a parameter, a catch clause's
 // parameter), and the `?` of an optional parameter.
-fn (c &Checker) es_binding_end(n C.TSNode) int {
+fn (c &Checker) es_binding_end(n C.vt_node) int {
 	parent := node_parent(n) or { return c.es_end(n) }
 	field := match node_kind(parent) {
 		'required_parameter', 'optional_parameter' { 'pattern' }
@@ -265,14 +265,14 @@ fn (c &Checker) es_binding_end(n C.TSNode) int {
 }
 
 // es_binding_position is the place of a report on a binding name or pattern (es_binding_end).
-fn (c &Checker) es_binding_position(n C.TSNode) Ident {
+fn (c &Checker) es_binding_position(n C.vt_node) Ident {
 	return c.position_range(node_start(n), c.es_binding_end(n))
 }
 
 // es_declaration_position is the place of a report on a VariableDeclaration: in the head of a
 // `for`, it ends before the `;` tree-sitter puts in it, and in `for (var a in b)`, where
 // tree-sitter has no node for it, it goes from `var` to the end of the name.
-fn (c &Checker) es_declaration_position(n C.TSNode) Ident {
+fn (c &Checker) es_declaration_position(n C.vt_node) Ident {
 	if node_kind(n) == 'for_in_statement' {
 		kind := node_field(n, 'kind') or { return position_of(n) }
 		left := node_field(n, 'left') or { return position_of(kind) }
@@ -290,14 +290,14 @@ fn (c &Checker) es_declaration_position(n C.TSNode) Ident {
 }
 
 // es_text ports sourceCode.getText(node): the text of the node without a trailing comment.
-fn (c &Checker) es_text(n C.TSNode) string {
+fn (c &Checker) es_text(n C.vt_node) string {
 	return c.src[node_start(n)..c.es_end(n)]
 }
 
 // es_property_key is the key of an ESTree Property, MethodDefinition, PropertyDefinition,
 // TSPropertySignature or TSMethodSignature (the expression inside the brackets of a computed one)
 // and whether it is computed.
-fn es_property_key(n C.TSNode) ?(C.TSNode, bool) {
+fn es_property_key(n C.vt_node) ?(C.vt_node, bool) {
 	key := match node_kind(n) {
 		'pair', 'pair_pattern' {
 			node_field(n, 'key')?
@@ -325,7 +325,7 @@ fn es_property_key(n C.TSNode) ?(C.TSNode, bool) {
 // es_static_key_name ports getStaticPropertyName for a Property, MethodDefinition,
 // PropertyDefinition, TSPropertySignature or TSMethodSignature: the name of a key that is an
 // identifier, and the static string value of any other (none for a private name).
-fn (c &Checker) es_static_key_name(n C.TSNode) ?string {
+fn (c &Checker) es_static_key_name(n C.vt_node) ?string {
 	key, computed := es_property_key(n)?
 	if !computed && node_kind(key) in ['property_identifier', 'shorthand_property_identifier',
 		'shorthand_property_identifier_pattern', 'identifier'] {
@@ -339,7 +339,7 @@ fn (c &Checker) es_static_key_name(n C.TSNode) ?string {
 
 // es_accessor_kind is the `kind` of a Property or MethodDefinition: 'get' or 'set' for an
 // accessor, 'init' otherwise (a method named `get` is not an accessor).
-fn es_accessor_kind(n C.TSNode) string {
+fn es_accessor_kind(n C.vt_node) string {
 	if node_kind(n) !in ['method_definition', 'method_signature', 'abstract_method_signature'] {
 		return 'init'
 	}
@@ -356,12 +356,12 @@ fn es_accessor_kind(n C.TSNode) string {
 }
 
 // es_is_static_member: a class member with `static`.
-fn es_is_static_member(n C.TSNode) bool {
+fn es_is_static_member(n C.vt_node) bool {
 	for child in children(n) {
 		if node_kind(child) == 'static' {
 			return true
 		}
-		if C.ts_node_is_named(child) && node_kind(child) !in ['comment', 'decorator',
+		if C.vt_node_is_named(child) && node_kind(child) !in ['comment', 'decorator',
 			'accessibility_modifier', 'override_modifier'] {
 			return false
 		}
@@ -403,7 +403,7 @@ fn (c &Checker) es_can_tokens_be_adjacent(left SourceToken, right SourceToken) b
 
 // es_function_parent is the ESTree parent of a function: the member a method is, or the parent
 // without parentheses.
-fn es_function_parent(f C.TSNode) ?C.TSNode {
+fn es_function_parent(f C.vt_node) ?C.vt_node {
 	if node_kind(f) == 'method_definition' {
 		return f
 	}
@@ -411,7 +411,7 @@ fn es_function_parent(f C.TSNode) ?C.TSNode {
 }
 
 // es_is_async_function and es_is_generator_function: the function has `async` or `*`.
-fn es_is_async_function(f C.TSNode) bool {
+fn es_is_async_function(f C.vt_node) bool {
 	// The `async` before the name, the parameters or the body.
 	mut name := f
 	for field in ['name', 'parameters', 'parameter', 'body'] {
@@ -431,14 +431,14 @@ fn es_is_async_function(f C.TSNode) bool {
 	return false
 }
 
-fn es_is_generator_function(f C.TSNode) bool {
+fn es_is_generator_function(f C.vt_node) bool {
 	return node_kind(f) in ['generator_function', 'generator_function_declaration']
 		|| (node_kind(f) == 'method_definition' && children(f).any(node_kind(it) == '*'))
 }
 
 // es_function_name_with_kind ports getFunctionNameWithKind of ESLint's ast-utils:
 // "static async method 'x'", "getter 'y'", "arrow function", "function 'f'"…
-fn (c &Checker) es_function_name_with_kind(f C.TSNode) string {
+fn (c &Checker) es_function_name_with_kind(f C.vt_node) string {
 	mut tokens := []string{}
 	kind := node_kind(f)
 	parent := es_function_parent(f) or { f }
@@ -505,7 +505,7 @@ fn (c &Checker) es_function_name_with_kind(f C.TSNode) string {
 
 // es_function_id is the `id` of a function: the name of a function expression or declaration
 // (methods and arrows have none).
-fn es_function_id(f C.TSNode) ?C.TSNode {
+fn es_function_id(f C.vt_node) ?C.vt_node {
 	if node_kind(f) in ['function_expression', 'generator_function', 'function_declaration',
 		'generator_function_declaration'] {
 		return node_field(f, 'name')
@@ -515,7 +515,7 @@ fn es_function_id(f C.TSNode) ?C.TSNode {
 
 // es_is_parenthesised ports isParenthesised(sourceCode, node): the token before the node is `(`
 // and the token after it `)`, the parentheses of a call around its only argument included.
-fn (mut c Checker) es_is_parenthesised(n C.TSNode) bool {
+fn (mut c Checker) es_is_parenthesised(n C.vt_node) bool {
 	tokens := c.source_tokens(n)
 	before := tokens.before(node_start(n), false) or { return false }
 	after := tokens.after(c.es_end(n), false) or { return false }
@@ -524,7 +524,7 @@ fn (mut c Checker) es_is_parenthesised(n C.TSNode) bool {
 
 // es_for_head_position ports typescript-eslint's getForStatementHeadLoc: from the start of the
 // loop to the end of the `)` before its body.
-fn (mut c Checker) es_for_head_position(loop C.TSNode) Ident {
+fn (mut c Checker) es_for_head_position(loop C.vt_node) Ident {
 	body := node_field(loop, 'body') or { return position_of(loop) }
 	tokens := c.source_tokens(loop)
 	mut at := node_start(body)
@@ -544,7 +544,7 @@ fn (mut c Checker) es_for_head_position(loop C.TSNode) Ident {
 // es_member_end is where the ESTree node of a member ends: a class member as cm_end gives it
 // (after the `;` of a field, an overload or an abstract member), and a member of an interface or
 // a type literal after its `;` or `,`, which TypeScript puts in the member.
-fn (mut c Checker) es_member_end(member C.TSNode) int {
+fn (mut c Checker) es_member_end(member C.vt_node) int {
 	parent := node_parent(member) or { return c.es_end(member) }
 	match node_kind(parent) {
 		'class_body' {
@@ -573,41 +573,41 @@ fn (mut c Checker) es_member_end(member C.TSNode) int {
 
 // es_member_position is the place of a report on a class member, its decorators and its `;`
 // included.
-fn (mut c Checker) es_member_position(member C.TSNode) Ident {
+fn (mut c Checker) es_member_position(member C.vt_node) Ident {
 	return c.position_range(es_member_start(member), c.es_member_end(member))
 }
 
 // es_member_start is where an ESTree class member starts: at its first decorator (tree-sitter
 // puts the decorators of a method before it, in the class body).
-fn es_member_start(member C.TSNode) int {
+fn es_member_start(member C.vt_node) int {
 	mut start := node_start(member)
 	parent := node_parent(member) or { return start }
 	if node_kind(parent) != 'class_body' {
 		return start
 	}
-	mut previous := C.ts_node_prev_named_sibling(member)
-	for !C.ts_node_is_null(previous) {
+	mut previous := C.vt_node_prev_named_sibling(member)
+	for !C.vt_node_is_null(previous) {
 		kind := node_kind(previous)
 		if kind == 'decorator' {
 			start = node_start(previous)
 		} else if kind != 'comment' {
 			break
 		}
-		previous = C.ts_node_prev_named_sibling(previous)
+		previous = C.vt_node_prev_named_sibling(previous)
 	}
 	return start
 }
 
 // es_is_accessor_field: a class field with `accessor`, an ESTree AccessorProperty (not a
 // PropertyDefinition).
-fn es_is_accessor_field(n C.TSNode) bool {
+fn es_is_accessor_field(n C.vt_node) bool {
 	return node_kind(n) == 'public_field_definition' && children(n).any(node_kind(it) == 'accessor')
 }
 
 // es_function_head ports getFunctionHeadLoc of ESLint's ast-utils: from the Property,
 // MethodDefinition or PropertyDefinition the function is the value of (its decorators included),
 // or from the function, to the opening paren of its parameters; or the `=>` of another arrow.
-fn (mut c Checker) es_function_head(f C.TSNode) Ident {
+fn (mut c Checker) es_function_head(f C.vt_node) Ident {
 	if node_kind(f) == 'method_definition' {
 		return c.position_range(es_member_start(f), c.es_params_paren(f))
 	}
@@ -634,7 +634,7 @@ fn (mut c Checker) es_function_head(f C.TSNode) Ident {
 // es_params_paren ports the start of getOpeningParenOfParams: for an arrow function with a single
 // parameter, the `(` before it or the parameter itself; otherwise the first `(` after the name of
 // the function, or in the function.
-fn (mut c Checker) es_params_paren(f C.TSNode) int {
+fn (mut c Checker) es_params_paren(f C.vt_node) int {
 	tokens := c.source_tokens(f)
 	if node_kind(f) == 'arrow_function' {
 		if param := node_field(f, 'parameter') {
@@ -666,7 +666,7 @@ fn (mut c Checker) es_params_paren(f C.TSNode) int {
 
 // es_is_parenthesised_twice: two pairs of parentheses around the node (the token before the one
 // before it is `(`, and the token after the one after it `)`).
-fn (mut c Checker) es_is_parenthesised_twice(n C.TSNode) bool {
+fn (mut c Checker) es_is_parenthesised_twice(n C.vt_node) bool {
 	if !c.es_is_parenthesised(n) {
 		return false
 	}
@@ -681,7 +681,7 @@ fn (mut c Checker) es_is_parenthesised_twice(n C.TSNode) bool {
 
 // es_precedence ports getPrecedence of ESLint's ast-utils for the ESTree node of `n`: 20 for the
 // standard nodes it does not list, -1 for the others (TypeScript's).
-fn es_precedence(n C.TSNode) int {
+fn es_precedence(n C.vt_node) int {
 	node := unwrap_parens(n)
 	kind := node_kind(node)
 	match kind {
@@ -773,7 +773,7 @@ fn es_can_adjacent(lk SourceTokenKind, left_text string, rk SourceTokenKind, rig
 
 // es_property_name_unscoped ports getPropertyName of eslint-utils without a scope, for a
 // MemberExpression: a name, or the constant of a computed key where no identifier is static.
-fn (mut c Checker) es_property_name_unscoped(member C.TSNode) ?string {
+fn (mut c Checker) es_property_name_unscoped(member C.vt_node) ?string {
 	match node_kind(member) {
 		'member_expression' {
 			property := node_field(member, 'property')?
@@ -805,7 +805,7 @@ struct EsTrace {
 // EsTraced is a reference ReferenceTracker reports: the node, its path and how it is used
 // ('read', 'call' or 'construct').
 struct EsTraced {
-	node C.TSNode
+	node C.vt_node
 	path []string
 	kind string
 }
@@ -813,7 +813,7 @@ struct EsTraced {
 // es_global_references ports ReferenceTracker#iterateGlobalReferences (mode "strict"): the reads,
 // calls and constructions of the paths of the trace map from the global variables that are not
 // modified, through `globalThis`, `global`, `self` and `window`, aliases and destructurings.
-fn (mut c Checker) es_global_references(root C.TSNode, trace map[string]EsTrace) []EsTraced {
+fn (mut c Checker) es_global_references(root C.vt_node, trace map[string]EsTrace) []EsTraced {
 	mut out := []EsTraced{}
 	tree := c.scope_tree(root)
 	mut stack := []int{}
@@ -845,7 +845,7 @@ fn es_is_modified_global(tree &ScopeTree, v int) bool {
 	return variable.defs.len > 0 || variable.references.any(tree.references[it].write)
 }
 
-fn (mut c Checker) es_trace_variable(root C.TSNode, v int, path []string, trace EsTrace, report bool, mut stack []int, mut out []EsTraced) {
+fn (mut c Checker) es_trace_variable(root C.vt_node, v int, path []string, trace EsTrace, report bool, mut stack []int, mut out []EsTraced) {
 	if v in stack {
 		return
 	}
@@ -869,7 +869,7 @@ fn (mut c Checker) es_trace_variable(root C.TSNode, v int, path []string, trace 
 }
 
 // es_is_pass_through ports isPassThrough: the parent gives the value of the node.
-fn es_is_pass_through(n C.TSNode) bool {
+fn es_is_pass_through(n C.vt_node) bool {
 	parent := cti_estree_parent(n) or { return false }
 	match node_kind(parent) {
 		'ternary_expression' {
@@ -901,7 +901,7 @@ fn es_is_pass_through(n C.TSNode) bool {
 	}
 }
 
-fn (mut c Checker) es_trace_properties(root C.TSNode, from C.TSNode, path []string, trace EsTrace, mut stack []int, mut out []EsTraced) {
+fn (mut c Checker) es_trace_properties(root C.vt_node, from C.vt_node, path []string, trace EsTrace, mut stack []int, mut out []EsTraced) {
 	mut node := from
 	for es_is_pass_through(node) {
 		node = cti_estree_parent(node) or { break }
@@ -991,7 +991,7 @@ fn (mut c Checker) es_trace_properties(root C.TSNode, from C.TSNode, path []stri
 
 // es_trace_lhs ports _iterateLhsReferences: a variable the value goes to, the properties of an
 // object pattern, the target of a default value.
-fn (mut c Checker) es_trace_lhs(root C.TSNode, pattern C.TSNode, path []string, trace EsTrace, mut stack []int, mut out []EsTraced) {
+fn (mut c Checker) es_trace_lhs(root C.vt_node, pattern C.vt_node, path []string, trace EsTrace, mut stack []int, mut out []EsTraced) {
 	match node_kind(pattern) {
 		'identifier', 'shorthand_property_identifier_pattern' {
 			tree := c.scope_tree(root)
@@ -1051,17 +1051,17 @@ fn es_binary_precedence(operator string) int {
 
 // es_global_variable_references are the references of the global variable `name` when it has no
 // definition (a builtin global), in order.
-fn (mut c Checker) es_global_variable_references(root C.TSNode, name string) []C.TSNode {
+fn (mut c Checker) es_global_variable_references(root C.vt_node, name string) []C.vt_node {
 	tree := c.scope_tree(root)
 	v := tree.own_variable(0, name)
 	if v < 0 || tree.variables[v].defs.len > 0 {
-		return []C.TSNode{}
+		return []C.vt_node{}
 	}
 	return tree.variables[v].references.map(tree.references[it].identifier)
 }
 
 // es_callee_of is the call or `new` whose callee the node is.
-fn es_callee_of(n C.TSNode) ?C.TSNode {
+fn es_callee_of(n C.vt_node) ?C.vt_node {
 	parent := cti_estree_parent(n)?
 	field := match node_kind(parent) {
 		'call_expression' { 'function' }
@@ -1083,7 +1083,7 @@ fn es_callee_of(n C.TSNode) ?C.TSNode {
 
 // es_valid_this_arg ports isValidThisArg of no-useless-call and prefer-spread: the `this` of the
 // call is the object of the member applied, or null or undefined for another callee.
-fn (mut c Checker) es_valid_this_arg(applied C.TSNode, this_arg C.TSNode) bool {
+fn (mut c Checker) es_valid_this_arg(applied C.vt_node, this_arg C.vt_node) bool {
 	arg := unwrap_parens(this_arg)
 	if node_kind(applied) !in ['member_expression', 'subscript_expression'] {
 		kind := node_kind(arg)
@@ -1096,7 +1096,7 @@ fn (mut c Checker) es_valid_this_arg(applied C.TSNode, this_arg C.TSNode) bool {
 
 // es_def_parent is the `parent` of an ESLint definition: the VariableDeclaration of a variable,
 // the ImportDeclaration of an import; none for the others.
-fn es_def_parent(def ScopeDefinition) ?C.TSNode {
+fn es_def_parent(def ScopeDefinition) ?C.vt_node {
 	match def.kind {
 		.variable {
 			mut node := def.node
@@ -1128,7 +1128,7 @@ fn es_def_parent(def ScopeDefinition) ?C.TSNode {
 // parent is the node, in the order of the variables. Rules ask it for every declaring node of a
 // file, so the answer of every node is indexed once (a scan of the variables per node made
 // no-shadow-restricted-names take 0.6 s on a file of 5,000 lines).
-fn (mut c Checker) es_declared_variables(root C.TSNode, n C.TSNode) []int {
+fn (mut c Checker) es_declared_variables(root C.vt_node, n C.vt_node) []int {
 	mut tree := c.scope_tree(root)
 	if tree.declaring_count != tree.variables.len {
 		mut index := map[u64][]int{}
@@ -1175,7 +1175,7 @@ fn es_modifying_references(tree &ScopeTree, v int) []int {
 
 // es_function_position is the place of the ESTree function: the function of a method starts at its
 // type parameters or parameters and ends with the method.
-fn es_function_position(f C.TSNode) Ident {
+fn es_function_position(f C.vt_node) Ident {
 	if node_kind(f) == 'method_definition' {
 		start := node_field(f, 'type_parameters') or { node_field(f, 'parameters') or { return position_of(f) } }
 		return Ident{
@@ -1189,7 +1189,7 @@ fn es_function_position(f C.TSNode) Ident {
 // es_is_argument_of_global_method_call ports isArgumentOfGlobalMethodCall of ESLint 10.15.0: the
 // node is the argument at `index` of a call of `object.method`, where `object` references the
 // global variable.
-fn (mut c Checker) es_is_argument_of_global_method_call(root C.TSNode, n C.TSNode, object string, method string, index int) bool {
+fn (mut c Checker) es_is_argument_of_global_method_call(root C.vt_node, n C.vt_node, object string, method string, index int) bool {
 	arguments := cti_estree_parent(n) or { return false }
 	if node_kind(arguments) != 'arguments' {
 		return false
@@ -1213,7 +1213,7 @@ fn (mut c Checker) es_is_argument_of_global_method_call(root C.TSNode, n C.TSNod
 // es_is_property_descriptor ports isPropertyDescriptor of ESLint 10.15.0: the object (an
 // ObjectExpression) is the descriptor of `Object.defineProperty` or `Reflect.defineProperty`, or
 // the value of a property of the descriptors of `Object.create` or `Object.defineProperties`.
-fn (mut c Checker) es_is_property_descriptor(root C.TSNode, n C.TSNode) bool {
+fn (mut c Checker) es_is_property_descriptor(root C.vt_node, n C.vt_node) bool {
 	if c.es_is_argument_of_global_method_call(root, n, 'Object', 'defineProperty', 2)
 		|| c.es_is_argument_of_global_method_call(root, n, 'Reflect', 'defineProperty', 2) {
 		return true

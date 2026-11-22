@@ -13,7 +13,7 @@ const vue_require_emit_validator_messages = {
 	'emptyValidation': 'Replace with a validator function with no parameters.'
 }
 
-fn (mut c Checker) lint_vue_require_emit_validator(root C.TSNode, abs_path string, mut stats Stats) ![]Finding {
+fn (mut c Checker) lint_vue_require_emit_validator(root C.vt_node, abs_path string, mut stats Stats) ![]Finding {
 	sw := time.new_stopwatch()
 	mut findings := []Finding{}
 	s := c.vue_script(root, abs_path) or { return findings }

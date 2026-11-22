@@ -30,7 +30,7 @@ struct SvscEs {
 }
 
 // svsc_es is the ESTree of the file a rule reads (none when the file has syntax errors).
-fn (mut c Checker) svsc_es(root C.TSNode, abs_path string) ?SvscEs {
+fn (mut c Checker) svsc_es(root C.vt_node, abs_path string) ?SvscEs {
 	if c.is_svelte() {
 		mut steps := []estree.Step{}
 		for step in c.sv_steps() {
@@ -181,7 +181,7 @@ struct SvscStoreCall {
 
 // svsc_store_calls ports extractStoreReferences: the calls of `writable`, `readable` and `derived`
 // (those of `names`) imported from `svelte/store`, found by ReferenceTracker on the lint code.
-fn (mut c Checker) svsc_store_calls(root C.TSNode, abs_path string, names []string) []SvscStoreCall {
+fn (mut c Checker) svsc_store_calls(root C.vt_node, abs_path string, names []string) []SvscStoreCall {
 	if !c.src.contains('svelte/store') {
 		return []
 	}
@@ -211,7 +211,7 @@ fn (mut c Checker) svsc_store_calls(root C.TSNode, abs_path string, names []stri
 // svsc_find_variable_for_replacement ports findVariableForReplacement (ast-utils.ts) on the lint
 // code: whether `replacement` is referenced or declared in the scope of `node` (a conflict), and
 // else the variable of that scope named `name` (-1 for none).
-fn (mut c Checker) svsc_find_variable_for_replacement(root C.TSNode, node C.TSNode, name string, replacement string) (bool, int) {
+fn (mut c Checker) svsc_find_variable_for_replacement(root C.vt_node, node C.vt_node, name string, replacement string) (bool, int) {
 	tree := c.scope_tree(root)
 	scope := tree.get_scope(node)
 	for r in tree.scopes[scope].references {
@@ -233,7 +233,7 @@ fn (mut c Checker) svsc_find_variable_for_replacement(root C.TSNode, node C.TSNo
 
 // svsc_rename_fix is the fix of a suggestion that renames a parameter and the references of its
 // variable (one fix: ESLint merges a fixer's fixes).
-fn (mut c Checker) svsc_rename_fix(root C.TSNode, start int, end int, variable int, name string) ?Fix {
+fn (mut c Checker) svsc_rename_fix(root C.vt_node, start int, end int, variable int, name string) ?Fix {
 	mut fixes := [fix_replace_range(start, end, name)]
 	if variable >= 0 {
 		tree := c.scope_tree(root)
@@ -254,7 +254,7 @@ struct SvscToken {
 
 // svsc_token_after is sourceCode.getTokenAfter of a node or token that ends at `offset` (comments
 // left out).
-fn (mut c Checker) svsc_token_after(root C.TSNode, e &SvscEs, offset int) ?SvscToken {
+fn (mut c Checker) svsc_token_after(root C.vt_node, e &SvscEs, offset int) ?SvscToken {
 	if e.svelte {
 		token := c.sv_token_after(offset, false)?
 		return SvscToken{token.start, token.end, token.typ == 'Punctuator'}
@@ -265,7 +265,7 @@ fn (mut c Checker) svsc_token_after(root C.TSNode, e &SvscEs, offset int) ?SvscT
 
 // svsc_token_before is sourceCode.getTokenBefore of a node or token that starts at `offset`
 // (comments left out).
-fn (mut c Checker) svsc_token_before(root C.TSNode, e &SvscEs, offset int) ?SvscToken {
+fn (mut c Checker) svsc_token_before(root C.vt_node, e &SvscEs, offset int) ?SvscToken {
 	if e.svelte {
 		token := c.sv_token_before(offset, false)?
 		return SvscToken{token.start, token.end, token.typ == 'Punctuator'}
@@ -322,7 +322,7 @@ fn (c &Checker) svsc_kit_file_type(abs_path string) SvelteKitFileType {
 
 // svsc_import_variable is the variable an import specifier found by ReferenceTracker declares
 // (findVariable of its `local`), -1 for another node.
-fn (mut c Checker) svsc_import_variable(root C.TSNode, specifier C.TSNode) int {
+fn (mut c Checker) svsc_import_variable(root C.vt_node, specifier C.vt_node) int {
 	if node_kind(specifier) != 'import_specifier' {
 		return -1
 	}
@@ -452,7 +452,7 @@ fn svsc_key(start int, end int, typ estree.NodeType) string {
 }
 
 // svsc_bridge builds the bridge of a view (none when the file has syntax errors).
-fn (mut c Checker) svsc_bridge(root C.TSNode, e &SvscEs, abs_path string) ?SvscBridge {
+fn (mut c Checker) svsc_bridge(root C.vt_node, e &SvscEs, abs_path string) ?SvscBridge {
 	lint := c.es_tree(root, abs_path)?
 	if !e.svelte {
 		return SvscBridge{
@@ -522,7 +522,7 @@ fn (b &SvscBridge) lint_of(i int) ?int {
 
 // svsc_global_references is ReferenceTracker#iterateGlobalReferences with its globalObjectNames
 // (es_global_references has the default ones).
-fn (mut c Checker) svsc_global_references(root C.TSNode, trace map[string]EsTrace, object_names []string) []EsTraced {
+fn (mut c Checker) svsc_global_references(root C.vt_node, trace map[string]EsTrace, object_names []string) []EsTraced {
 	mut out := []EsTraced{}
 	tree := c.scope_tree(root)
 	mut stack := []int{}
@@ -549,7 +549,7 @@ fn (mut c Checker) svsc_global_references(root C.TSNode, trace map[string]EsTrac
 // svsc_declarator_init is what the expression-affixes.ts helpers ask of an identifier: the
 // initializer of the one declarator of its variable (findVariable through a FindVariableContext,
 // `visited`: an identifier seen before gives no variable), none otherwise.
-fn (mut c Checker) svsc_declarator_init(root C.TSNode, e &SvscEs, id int, mut visited map[int]bool) ?int {
+fn (mut c Checker) svsc_declarator_init(root C.vt_node, e &SvscEs, id int, mut visited map[int]bool) ?int {
 	if visited[id] {
 		return none
 	}
@@ -605,7 +605,7 @@ fn svsc_raw(t &estree.EsTree, quasi int) string {
 
 // svsc_prefix_variable is extractExpressionPrefixVariable (expression-affixes.ts): the identifier a
 // URL expression starts with, followed through `const` initializers.
-fn (mut c Checker) svsc_prefix_variable(root C.TSNode, e &SvscEs, expression int, mut visited map[int]bool) ?int {
+fn (mut c Checker) svsc_prefix_variable(root C.vt_node, e &SvscEs, expression int, mut visited map[int]bool) ?int {
 	t := e.t
 	match t.typ(expression) {
 		.binary_expression {
@@ -644,7 +644,7 @@ fn (mut c Checker) svsc_prefix_variable(root C.TSNode, e &SvscEs, expression int
 // svsc_base_references are extractBasePathReferences of the navigation rules: the identifiers of
 // the references to `base` of `$app/paths`, and the `base` of a member access of the module
 // (nodes of the view).
-fn (mut c Checker) svsc_base_references(root C.TSNode, b &SvscBridge) map[int]bool {
+fn (mut c Checker) svsc_base_references(root C.vt_node, b &SvscBridge) map[int]bool {
 	mut out := map[int]bool{}
 	tree := c.scope_tree(root)
 	for traced in c.es_esm_references(root, {
@@ -698,7 +698,7 @@ fn svsc_url_is_absolute(url string) bool {
 
 // svsc_lint_ts is the tree-sitter node of the lint code a view's node is (whose type tsgo can
 // give), its type requested.
-fn (mut c Checker) svsc_lint_ts(b &SvscBridge, i int, abs_path string, mut stats Stats) ?C.TSNode {
+fn (mut c Checker) svsc_lint_ts(b &SvscBridge, i int, abs_path string, mut stats Stats) ?C.vt_node {
 	lint := b.lint_of(i)?
 	ts := b.lint.ts_node(lint)?
 	c.resolve_node_types([ts], abs_path, mut stats) or { return none }
@@ -708,7 +708,7 @@ fn (mut c Checker) svsc_lint_ts(b &SvscBridge, i int, abs_path string, mut stats
 // svsc_is_store_ts is createStoreCheckerForTS (reference-helpers/svelte-store.ts): the apparent
 // type of the node has a `subscribe` whose signatures take two functions (with `consistent`, every
 // type of a union does).
-fn (mut c Checker) svsc_is_store_ts(ts C.TSNode, consistent bool) bool {
+fn (mut c Checker) svsc_is_store_ts(ts C.vt_node, consistent bool) bool {
 	t := c.node_type(ts) or { return false }
 	apparent := c.apparent_of(t) or { return false }
 	return c.svsc_store_type(apparent, consistent, c.symbol_location(ts))
@@ -785,7 +785,7 @@ fn (mut c Checker) svsc_has_call_signatures(t TypeResponse, apparent bool) bool 
 }
 
 // svsc_is_callable_ts is createCallableChecker's check.
-fn (mut c Checker) svsc_is_callable_ts(ts C.TSNode) bool {
+fn (mut c Checker) svsc_is_callable_ts(ts C.vt_node) bool {
 	t := c.node_type(ts) or { return false }
 	apparent := c.apparent_of(t) or { return false }
 	return c.svsc_has_call_signatures(apparent, true)

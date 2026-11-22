@@ -26,7 +26,7 @@ fn nir_options(options []json2.Any) ![]string {
 	return allowed
 }
 
-fn (mut c Checker) lint_no_invalid_regexp(root C.TSNode, abs_path string, mut stats Stats) ![]Finding {
+fn (mut c Checker) lint_no_invalid_regexp(root C.vt_node, abs_path string, mut stats Stats) ![]Finding {
 	sw := time.new_stopwatch()
 	allowed := nir_options(c.rule_options(no_invalid_regexp))!
 	mut all_flags := nir_valid_flags.split('')
@@ -43,7 +43,7 @@ fn (mut c Checker) lint_no_invalid_regexp(root C.TSNode, abs_path string, mut st
 			|| !c.es_is_global_reference(root, callee) {
 			continue
 		}
-		mut args := []C.TSNode{}
+		mut args := []C.vt_node{}
 		if arguments := node_field(node, 'arguments') {
 			if node_kind(arguments) != 'arguments' {
 				continue
@@ -94,7 +94,7 @@ fn (mut c Checker) lint_no_invalid_regexp(root C.TSNode, abs_path string, mut st
 	return findings
 }
 
-fn nir_report(node C.TSNode, message string) Finding {
+fn nir_report(node C.vt_node, message string) Finding {
 	return Finding{
 		stmt:       position_of(node)
 		message_id: 'regexMessage'

@@ -61,23 +61,23 @@ enum NbtsCheckKind {
 }
 
 struct NbtsCheck {
-	node C.TSNode
+	node C.vt_node
 	kind NbtsCheckKind
 }
 
 // NbtsAddition is a `+` or `+=` whose operands are checked against each other.
 struct NbtsAddition {
-	left  C.TSNode
-	right C.TSNode
+	left  C.vt_node
+	right C.vt_node
 }
 
-fn (mut c Checker) lint_no_base_to_string(root C.TSNode, abs_path string, mut stats Stats) ![]Finding {
+fn (mut c Checker) lint_no_base_to_string(root C.vt_node, abs_path string, mut stats Stats) ![]Finding {
 	mut sw := time.new_stopwatch()
 	o := nbts_options(c.rule_options(no_base_to_string))!
 	mut additions := []NbtsAddition{}
 	mut checks := []NbtsCheck{}
-	mut string_calls := []C.TSNode{} // `String(x)` calls and their argument
-	mut string_args := []C.TSNode{}
+	mut string_calls := []C.vt_node{} // `String(x)` calls and their argument
+	mut string_args := []C.vt_node{}
 	for node in c.nodes_of_kinds(root, ['binary_expression', 'augmented_assignment_expression',
 		'call_expression', 'template_string'], []string{}) {
 		match node_kind(node) {
@@ -207,12 +207,12 @@ fn (mut c Checker) lint_no_base_to_string(root C.TSNode, abs_path string, mut st
 }
 
 // nbts_text is sourceCode.getText of an ESTree node (its tokens, without a trailing comment).
-fn (c &Checker) nbts_text(n C.TSNode) string {
+fn (c &Checker) nbts_text(n C.vt_node) string {
 	return c.src[node_start(n)..c.tokens.last_end(node_end(n))]
 }
 
 // nbts_check_expression ports checkExpression.
-fn (mut c Checker) nbts_check_expression(n C.TSNode, t TypeResponse, o NbtsOptions, mut findings []Finding) ! {
+fn (mut c Checker) nbts_check_expression(n C.vt_node, t TypeResponse, o NbtsOptions, mut findings []Finding) ! {
 	if estree_type(n) == 'Literal' {
 		return
 	}

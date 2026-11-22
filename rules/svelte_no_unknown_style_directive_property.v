@@ -35,7 +35,7 @@ fn snusdp_options(options []json2.Any) !SnusdpOptions {
 	}
 }
 
-fn (mut c Checker) lint_svelte_no_unknown_style_directive_property(root C.TSNode, abs_path string, mut stats Stats) ![]Finding {
+fn (mut c Checker) lint_svelte_no_unknown_style_directive_property(root C.vt_node, abs_path string, mut stats Stats) ![]Finding {
 	options := snusdp_options(c.rule_options(svelte_no_unknown_style_directive_property))!
 	if !c.is_svelte() {
 		return []

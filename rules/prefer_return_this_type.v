@@ -29,20 +29,20 @@ const prtt_return_containers = ['statement_block', 'if_statement', 'else_clause'
 // PrttReturn is the expression of a `return` of a block body; `this_keyword` is the fast check
 // (a bare `this`, whose type is not requested).
 struct PrttReturn {
-	expression   C.TSNode
+	expression   C.vt_node
 	this_keyword bool
 }
 
 // PrttCandidate is a function of a class member whose return type names the class.
 struct PrttCandidate {
-	report     C.TSNode // the type reference with the name of the class
-	class_span Span     // the class, for getTypeAtLocation
-	block      bool     // the body is a block
+	report     C.vt_node // the type reference with the name of the class
+	class_span Span      // the class, for getTypeAtLocation
+	block      bool      // the body is a block
 	returns    []PrttReturn
-	body       C.TSNode // the expression body of an arrow function
+	body       C.vt_node // the expression body of an arrow function
 }
 
-fn (mut c Checker) lint_prefer_return_this_type(root C.TSNode, abs_path string, mut stats Stats) ![]Finding {
+fn (mut c Checker) lint_prefer_return_this_type(root C.vt_node, abs_path string, mut stats Stats) ![]Finding {
 	mut sw := time.new_stopwatch()
 	mut candidates := []PrttCandidate{}
 	mut spans := []Span{}
@@ -90,7 +90,7 @@ fn (mut c Checker) lint_prefer_return_this_type(root C.TSNode, abs_path string, 
 // prtt_class_span requests the type of a class like getTypeAtLocation on its ESTree node: the
 // declared type of a ClassDeclaration, the constructor type of a ClassExpression. An exported
 // declaration starts at `export` (a modifier in TypeScript) and a decorated one at its decorator.
-fn prtt_class_span(class C.TSNode) Span {
+fn prtt_class_span(class C.vt_node) Span {
 	// `export default class {}` is a declaration without a name, which tree-sitter reads as an
 	// expression.
 	mut is_default_export := false
@@ -129,7 +129,7 @@ fn prtt_class_span(class C.TSNode) Span {
 // prtt_member_function gives the function of a member the rule visits: a MethodDefinition (not
 // an abstract one) or the function or arrow function value of a PropertyDefinition or
 // AccessorProperty (not an abstract one).
-fn prtt_member_function(member C.TSNode) ?C.TSNode {
+fn prtt_member_function(member C.vt_node) ?C.vt_node {
 	match node_kind(member) {
 		'method_definition' {
 			return member
@@ -152,7 +152,7 @@ fn prtt_member_function(member C.TSNode) ?C.TSNode {
 
 // prtt_check_function ports checkFunction up to the type checks: the return type must name the
 // class, the first parameter must not be `this` and the function must have a body.
-fn (c &Checker) prtt_check_function(func C.TSNode, class_name string, class_span Span) ?PrttCandidate {
+fn (c &Checker) prtt_check_function(func C.vt_node, class_name string, class_span Span) ?PrttCandidate {
 	annotation := node_field(func, 'return_type')?
 	if node_kind(annotation) != 'type_annotation' {
 		return none
@@ -190,7 +190,7 @@ fn (c &Checker) prtt_check_function(func C.TSNode, class_name string, class_span
 
 // prtt_name_in_type ports tryGetNameInType: a type reference whose name is the class (type
 // arguments allowed), alone or in a union.
-fn (c &Checker) prtt_name_in_type(name string, type_node C.TSNode) ?C.TSNode {
+fn (c &Checker) prtt_name_in_type(name string, type_node C.vt_node) ?C.vt_node {
 	t := unwrap_type_parens(type_node)
 	match node_kind(t) {
 		'type_identifier' {
@@ -218,7 +218,7 @@ fn (c &Checker) prtt_name_in_type(name string, type_node C.TSNode) ?C.TSNode {
 
 // prtt_collect_returns ports the walk of forEachReturnStatement: the `return` statements of the
 // body outside nested functions and classes, in order.
-fn prtt_collect_returns(n C.TSNode, mut out []PrttReturn, depth int) {
+fn prtt_collect_returns(n C.vt_node, mut out []PrttReturn, depth int) {
 	if depth > max_expression_depth {
 		return
 	}

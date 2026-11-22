@@ -37,7 +37,7 @@ fn (c &Checker) rx_allowed_character_ranges_setting() []string {
 	return []
 }
 
-fn (mut c Checker) lint_regexp_no_obscure_range(root C.TSNode, abs_path string, mut stats Stats) ![]Finding {
+fn (mut c Checker) lint_regexp_no_obscure_range(root C.vt_node, abs_path string, mut stats Stats) ![]Finding {
 	sw := time.new_stopwatch()
 	allowed := rx_allowed_char_ranges(rxnor_allowed_option(c.rule_options(regexp_no_obscure_range))!,
 		c.rx_allowed_character_ranges_setting())!

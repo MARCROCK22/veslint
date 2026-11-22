@@ -9,7 +9,7 @@ const ndd_messages = {
 	'dynamicDelete': 'Do not delete dynamically computed property keys.'
 }
 
-fn (mut c Checker) lint_no_dynamic_delete(root C.TSNode, abs_path string, mut stats Stats) ![]Finding {
+fn (mut c Checker) lint_no_dynamic_delete(root C.vt_node, abs_path string, mut stats Stats) ![]Finding {
 	sw := time.new_stopwatch()
 	mut findings := []Finding{}
 	mut checked := 0
@@ -40,7 +40,7 @@ fn (mut c Checker) lint_no_dynamic_delete(root C.TSNode, abs_path string, mut st
 
 // ndd_is_acceptable_index ports isAcceptableIndexExpression: a Literal whose value is a number or
 // a string (not a BigInt), or `-` and a number Literal.
-fn (c &Checker) ndd_is_acceptable_index(property C.TSNode) bool {
+fn (c &Checker) ndd_is_acceptable_index(property C.vt_node) bool {
 	return match node_kind(property) {
 		'string' {
 			true

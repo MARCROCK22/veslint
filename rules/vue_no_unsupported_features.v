@@ -101,7 +101,7 @@ fn vnuf_forbidden(o VnufOptions) !map[string]bool {
 	return out
 }
 
-fn (mut c Checker) lint_vue_no_unsupported_features(root C.TSNode, abs_path string, mut stats Stats) ![]Finding {
+fn (mut c Checker) lint_vue_no_unsupported_features(root C.vt_node, abs_path string, mut stats Stats) ![]Finding {
 	if !c.is_vue() {
 		return []
 	}

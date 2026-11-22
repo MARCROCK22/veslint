@@ -161,7 +161,7 @@ fn (c &Checker) svelte_lint_offset_of_ts_unit(unit int, end bool) int {
 }
 
 // svelte_es_tree is es_tree for a .svelte file: the ESTree of the lint tree.
-fn (mut c Checker) svelte_es_tree(top C.TSNode) {
+fn (mut c Checker) svelte_es_tree(top C.vt_node) {
 	mut tree := estree.convert_with(top, c.src, false, estree.Options{
 		module: true
 	}) or {
@@ -371,7 +371,7 @@ fn ts_line_and_character(text string, unit int) (int, int) {
 
 // is_svelte_reactive_statement: a top-level `$:` statement of a .svelte file's script, which is a
 // SvelteReactiveStatement for ESLint, not a LabeledStatement (the rules about labels skip it).
-fn (c &Checker) is_svelte_reactive_statement(n C.TSNode) bool {
+fn (c &Checker) is_svelte_reactive_statement(n C.vt_node) bool {
 	if !c.is_svelte() || node_kind(n) != 'labeled_statement'
 		|| node_start(n) >= c.svelte.doc.lint_start {
 		return false
@@ -410,7 +410,7 @@ const svelte_function_shape_rules = [prefer_readonly_parameter_types,
 
 // svelte_drop_wrapper_function_findings drops what svelte_function_shape_rules report in the
 // head (from its start to its body) of a function of the template part that is a wrapper.
-fn (mut c Checker) svelte_drop_wrapper_function_findings(root C.TSNode, findings []Finding) []Finding {
+fn (mut c Checker) svelte_drop_wrapper_function_findings(root C.vt_node, findings []Finding) []Finding {
 	if !findings.any(it.rule in svelte_function_shape_rules) {
 		return findings
 	}
@@ -440,7 +440,7 @@ fn (mut c Checker) svelte_drop_wrapper_function_findings(root C.TSNode, findings
 // svelte_wrapper_parameter: the name is a parameter of a function of the lint code that is a
 // wrapper (of {#each}, let:, {:then}, {:catch} or {#snippet}): for ESLint its parent is the Svelte
 // block, not a function.
-fn (c &Checker) svelte_wrapper_parameter(name C.TSNode) bool {
+fn (c &Checker) svelte_wrapper_parameter(name C.vt_node) bool {
 	if !c.is_svelte() || node_start(name) < c.svelte.doc.lint_start {
 		return false
 	}
@@ -492,7 +492,7 @@ const svelte_generics_alias_rules = [stylistic_space_infix_ops, stylistic_semi_s
 
 // svelte_wrapper_statement: the statement is a wrapper of the lint code's template part (it starts
 // with a character of its own): its expression is in no statement for ESLint.
-fn (c &Checker) svelte_wrapper_statement(n C.TSNode) bool {
+fn (c &Checker) svelte_wrapper_statement(n C.vt_node) bool {
 	return c.is_svelte() && node_start(n) >= c.svelte.doc.lint_start
 		&& c.svelte.doc.lint_to_file(node_start(n), false) < 0
 }
@@ -568,6 +568,6 @@ fn (c &Checker) svelte_module_file_byte(b int) int {
 
 // svelte_wrapper_node: the node starts on a character of a wrapper of the lint code's template
 // part (it has no counterpart in the virtual code, and is no node of ESLint's).
-fn (c &Checker) svelte_wrapper_node(n C.TSNode) bool {
+fn (c &Checker) svelte_wrapper_node(n C.vt_node) bool {
 	return c.svelte_wrapper_statement(n)
 }

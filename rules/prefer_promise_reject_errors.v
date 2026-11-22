@@ -33,17 +33,17 @@ fn ppre_options(options []json2.Any) !PpreOptions {
 // PpreCall is a call checkRejectCall looks at: `X.reject(…)` (with the ESTree object of its callee)
 // or a call of the `reject` parameter of a Promise executor.
 struct PpreCall {
-	node     C.TSNode
-	argument ?C.TSNode // the first argument (a spread included), without parentheses
-	object   ?C.TSNode // `X` of `X.reject(…)`, whose type must be like a Promise
+	node     C.vt_node
+	argument ?C.vt_node // the first argument (a spread included), without parentheses
+	object   ?C.vt_node // `X` of `X.reject(…)`, whose type must be like a Promise
 }
 
-fn (mut c Checker) lint_prefer_promise_reject_errors(root C.TSNode, abs_path string, mut stats Stats) ![]Finding {
+fn (mut c Checker) lint_prefer_promise_reject_errors(root C.vt_node, abs_path string, mut stats Stats) ![]Finding {
 	mut sw := time.new_stopwatch()
 	o := ppre_options(c.rule_options(prefer_promise_reject_errors))!
 	mut calls := []PpreCall{}
 	// NewExpression of a Promise constructor: its callee, with the calls of its reject parameter.
-	mut constructions := []C.TSNode{}
+	mut constructions := []C.vt_node{}
 	mut reject_calls := [][]PpreCall{}
 	for node in c.nodes_of_kinds(root, ['call_expression', 'new_expression'], []string{}) {
 		if node_kind(node) == 'call_expression' {
@@ -124,7 +124,7 @@ fn (mut c Checker) lint_prefer_promise_reject_errors(root C.TSNode, abs_path str
 
 // ppre_member_reject_call: a call (not a tagged template) whose callee, without its
 // ChainExpression, is a MemberExpression.
-fn ppre_member_reject_call(node C.TSNode) ?PpreCall {
+fn ppre_member_reject_call(node C.vt_node) ?PpreCall {
 	args := node_field(node, 'arguments')?
 	if node_kind(args) != 'arguments' {
 		return none
@@ -141,7 +141,7 @@ fn ppre_member_reject_call(node C.TSNode) ?PpreCall {
 }
 
 // ppre_first_argument is `arguments.at(0)`: the first argument, without parentheses.
-fn ppre_first_argument(args C.TSNode) ?C.TSNode {
+fn ppre_first_argument(args C.vt_node) ?C.vt_node {
 	for child in named_children(args) {
 		if node_kind(child) != 'comment' {
 			return unwrap_parens(child)
@@ -153,7 +153,7 @@ fn ppre_first_argument(args C.TSNode) ?C.TSNode {
 // ppre_executor_reject_calls are the calls of the reject parameter of the executor of a `new`
 // expression (its first argument, a function whose second parameter is an identifier): the
 // references to the parameter that are the callee of a call.
-fn (mut c Checker) ppre_executor_reject_calls(root C.TSNode, node C.TSNode) []PpreCall {
+fn (mut c Checker) ppre_executor_reject_calls(root C.vt_node, node C.vt_node) []PpreCall {
 	mut out := []PpreCall{}
 	args := node_field(node, 'arguments') or { return out }
 	executor := ppre_first_argument(args) or { return out }

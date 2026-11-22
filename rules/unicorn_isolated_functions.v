@@ -77,7 +77,7 @@ fn uisf_js_lower(s string) string {
 	return stv_units_string(jsregexp.js_to_lower(utf16_units(s)))
 }
 
-fn (mut c Checker) lint_unicorn_isolated_functions(root C.TSNode, abs_path string, mut stats Stats) ![]Finding {
+fn (mut c Checker) lint_unicorn_isolated_functions(root C.vt_node, abs_path string, mut stats Stats) ![]Finding {
 	sw := time.new_stopwatch()
 	mut findings := []Finding{}
 	opts := uisf_options(c.rule_options(unicorn_isolated_functions))!

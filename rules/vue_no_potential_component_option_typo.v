@@ -77,7 +77,7 @@ struct VpcotTypo {
 	index    int
 }
 
-fn (mut c Checker) lint_vue_no_potential_component_option_typo(root C.TSNode, abs_path string, mut stats Stats) ![]Finding {
+fn (mut c Checker) lint_vue_no_potential_component_option_typo(root C.vt_node, abs_path string, mut stats Stats) ![]Finding {
 	sw := time.new_stopwatch()
 	o := vue_no_potential_component_option_typo_options(c.rule_options(vue_no_potential_component_option_typo))!
 	mut findings := []Finding{}

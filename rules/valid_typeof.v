@@ -21,7 +21,7 @@ fn vt_options(options []json2.Any) !bool {
 	return o.bool_value('requireStringLiterals')!
 }
 
-fn (mut c Checker) lint_valid_typeof(root C.TSNode, abs_path string, mut stats Stats) ![]Finding {
+fn (mut c Checker) lint_valid_typeof(root C.vt_node, abs_path string, mut stats Stats) ![]Finding {
 	sw := time.new_stopwatch()
 	require_strings := vt_options(c.rule_options(valid_typeof))!
 	mut findings := []Finding{}
@@ -79,7 +79,7 @@ fn (mut c Checker) lint_valid_typeof(root C.TSNode, abs_path string, mut stats S
 }
 
 // vt_is_typeof ports isTypeofExpression: a UnaryExpression `typeof`.
-fn (c &Checker) vt_is_typeof(n C.TSNode) bool {
+fn (c &Checker) vt_is_typeof(n C.vt_node) bool {
 	if node_kind(n) != 'unary_expression' {
 		return false
 	}
@@ -89,7 +89,7 @@ fn (c &Checker) vt_is_typeof(n C.TSNode) bool {
 
 // vt_is_literal is whether a node is an ESTree Literal or a template literal without
 // substitutions (isStaticTemplateLiteral).
-fn (c &Checker) vt_is_literal(n C.TSNode) bool {
+fn (c &Checker) vt_is_literal(n C.vt_node) bool {
 	return match node_kind(n) {
 		'string', 'number', 'true', 'false', 'null', 'regex' {
 			true
@@ -105,7 +105,7 @@ fn (c &Checker) vt_is_literal(n C.TSNode) bool {
 
 // vt_literal_value is the value of a string Literal or of a template literal without
 // substitutions (its cooked text); none for any other node.
-fn (c &Checker) vt_literal_value(n C.TSNode) ?string {
+fn (c &Checker) vt_literal_value(n C.vt_node) ?string {
 	if node_kind(n) !in ['string', 'template_string'] {
 		return none
 	}

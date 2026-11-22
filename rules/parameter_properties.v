@@ -58,7 +58,7 @@ fn (mut p PprClass) get(name string) PprNodes {
 	return p.nodes[name]
 }
 
-fn (mut c Checker) lint_parameter_properties(root C.TSNode, abs_path string, mut stats Stats) ![]Finding {
+fn (mut c Checker) lint_parameter_properties(root C.vt_node, abs_path string, mut stats Stats) ![]Finding {
 	sw := time.new_stopwatch()
 	o := ppr_options(c.rule_options(parameter_properties))!
 	mut findings := []Finding{}

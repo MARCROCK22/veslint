@@ -42,7 +42,7 @@ fn upaf_is_definitely_non_array(t &estree.EsTree, node int) bool {
 }
 
 // upaf_non_array_receiver ports isObviouslyNonArrayFlatMapReceiver.
-fn (mut c Checker) upaf_non_array_receiver(root C.TSNode, t &estree.EsTree, node int, pascal &jsregexp.JsRegex) bool {
+fn (mut c Checker) upaf_non_array_receiver(root C.vt_node, t &estree.EsTree, node int, pascal &jsregexp.JsRegex) bool {
 	initializer := c.un_const_initializer(root, t, node) or { -1 }
 	if t.typ(node) == .identifier
 		&& (pascal.test(utf16_units(t.string_of(node, .name) or { '' })) or { false })
@@ -52,7 +52,7 @@ fn (mut c Checker) upaf_non_array_receiver(root C.TSNode, t &estree.EsTree, node
 	return initializer >= 0 && upaf_is_definitely_non_array(t, initializer)
 }
 
-fn (mut c Checker) upaf_cases(root C.TSNode, t &estree.EsTree, node int, functions []string, pascal &jsregexp.JsRegex) []UpafCase {
+fn (mut c Checker) upaf_cases(root C.vt_node, t &estree.EsTree, node int, functions []string, pascal &jsregexp.JsRegex) []UpafCase {
 	mut cases := []UpafCase{}
 	callee := t.node(node, .callee) or { -1 }
 	arguments := t.list(node, .arguments) or { []int{} }
@@ -134,7 +134,7 @@ fn (mut c Checker) upaf_cases(root C.TSNode, t &estree.EsTree, node int, functio
 	return cases
 }
 
-fn (mut c Checker) lint_unicorn_prefer_array_flat(root C.TSNode, abs_path string, mut stats Stats) ![]Finding {
+fn (mut c Checker) lint_unicorn_prefer_array_flat(root C.vt_node, abs_path string, mut stats Stats) ![]Finding {
 	sw := time.new_stopwatch()
 	mut functions := upaf_options(c.rule_options(unicorn_prefer_array_flat))!
 	functions << ['_.flatten', 'lodash.flatten', 'underscore.flatten']

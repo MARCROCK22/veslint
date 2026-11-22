@@ -20,7 +20,7 @@ fn vue_new_line_between_multi_line_property_options(options []json2.Any) !f64 {
 	return if n != 0 { n } else { 2 }
 }
 
-fn (mut c Checker) lint_vue_new_line_between_multi_line_property(root C.TSNode, abs_path string, mut stats Stats) ![]Finding {
+fn (mut c Checker) lint_vue_new_line_between_multi_line_property(root C.vt_node, abs_path string, mut stats Stats) ![]Finding {
 	sw := time.new_stopwatch()
 	min_lines := vue_new_line_between_multi_line_property_options(c.rule_options(vue_new_line_between_multi_line_property))!
 	mut findings := []Finding{}

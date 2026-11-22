@@ -12,7 +12,7 @@ const vue_require_typed_ref_messages = {
 	'noType': 'Specify type parameter for `{{name}}` function, otherwise created variable will not be typechecked.'
 }
 
-fn (mut c Checker) lint_vue_require_typed_ref(root C.TSNode, abs_path string, mut stats Stats) ![]Finding {
+fn (mut c Checker) lint_vue_require_typed_ref(root C.vt_node, abs_path string, mut stats Stats) ![]Finding {
 	sw := time.new_stopwatch()
 	mut findings := []Finding{}
 	s := c.vue_script(root, abs_path) or { return findings }
@@ -80,7 +80,7 @@ fn vrtr_has_type_annotation(t &estree.EsTree, node int) bool {
 }
 
 // vrtr_definition is findDefinition: the only definition of the identifier's variable.
-fn (mut c Checker) vrtr_definition(root C.TSNode, t &estree.EsTree, id int) ?ScopeDefinition {
+fn (mut c Checker) vrtr_definition(root C.vt_node, t &estree.EsTree, id int) ?ScopeDefinition {
 	v := c.unb_find_variable(root, t, id)
 	if v < 0 {
 		return none
@@ -91,7 +91,7 @@ fn (mut c Checker) vrtr_definition(root C.TSNode, t &estree.EsTree, id int) ?Sco
 }
 
 // vrtr_find_function is the rule's findFunction.
-fn (mut c Checker) vrtr_find_function(root C.TSNode, t &estree.EsTree, id int) int {
+fn (mut c Checker) vrtr_find_function(root C.vt_node, t &estree.EsTree, id int) int {
 	def := c.vrtr_definition(root, t, id) or { return -1 }
 	if def.kind == .function_name {
 		return c.es_index_of(t, def.node) or { -1 }
@@ -105,7 +105,7 @@ fn (mut c Checker) vrtr_find_function(root C.TSNode, t &estree.EsTree, id int) i
 }
 
 // vrtr_is_in_typed_position is isInTypedPosition.
-fn (mut c Checker) vrtr_is_in_typed_position(root C.TSNode, t &estree.EsTree, node int) bool {
+fn (mut c Checker) vrtr_is_in_typed_position(root C.vt_node, t &estree.EsTree, node int) bool {
 	parent := t.nodes[node].parent
 	if parent < 0 {
 		return false

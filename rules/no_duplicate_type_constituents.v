@@ -29,7 +29,7 @@ fn ndtc_options(options []json2.Any) !NdtcOptions {
 // NdtcCheck is a TSUnionType or TSIntersectionType the rule checks (checkDuplicate): one that is
 // not a constituent of another of its kind.
 struct NdtcCheck {
-	node C.TSNode
+	node C.vt_node
 	kind string // 'union_type' or 'intersection_type'
 	// forEachNodeType applies: the union annotates an optional parameter of a function.
 	optional_parameter bool
@@ -38,12 +38,12 @@ struct NdtcCheck {
 // NdtcState holds what checkDuplicate remembers while it walks the constituents of a check.
 struct NdtcState {
 mut:
-	unique []C.TSNode       // uniqueConstituents
-	forms  []string         // the ESTree shape (ndtc_shape) of each unique constituent
-	cached map[int]C.TSNode // cachedTypeMap: the first constituent of each type
+	unique []C.vt_node       // uniqueConstituents
+	forms  []string          // the ESTree shape (ndtc_shape) of each unique constituent
+	cached map[int]C.vt_node // cachedTypeMap: the first constituent of each type
 }
 
-fn (mut c Checker) lint_no_duplicate_type_constituents(root C.TSNode, abs_path string, mut stats Stats) ![]Finding {
+fn (mut c Checker) lint_no_duplicate_type_constituents(root C.vt_node, abs_path string, mut stats Stats) ![]Finding {
 	mut sw := time.new_stopwatch()
 	o := ndtc_options(c.rule_options(no_duplicate_type_constituents))!
 	mut kinds := []string{}
@@ -92,7 +92,7 @@ fn (mut c Checker) lint_no_duplicate_type_constituents(root C.TSNode, abs_path s
 }
 
 // ndtc_spans requests the type of every constituent the check may look at.
-fn (c &Checker) ndtc_spans(node C.TSNode, kind string, mut spans []Span) {
+fn (c &Checker) ndtc_spans(node C.vt_node, kind string, mut spans []Span) {
 	for member in type_members(node) {
 		spans << c.type_node_span(member)
 		if node_kind(member) == kind {
@@ -104,7 +104,7 @@ fn (c &Checker) ndtc_spans(node C.TSNode, kind string, mut spans []Span) {
 // ndtc_annotates_optional_parameter: the ESTree parent of the union is the TSTypeAnnotation of an
 // optional Identifier parameter of a function (isFunctionOrFunctionType). A parameter with
 // modifiers is a TSParameterProperty, and one with a default value an AssignmentPattern.
-fn ndtc_annotates_optional_parameter(type_parent C.TSNode) bool {
+fn ndtc_annotates_optional_parameter(type_parent C.vt_node) bool {
 	if node_kind(type_parent) != 'type_annotation' {
 		return false
 	}
@@ -124,7 +124,7 @@ fn ndtc_annotates_optional_parameter(type_parent C.TSNode) bool {
 }
 
 // ndtc_check_recursively ports checkDuplicateRecursively.
-fn (mut c Checker) ndtc_check_recursively(check NdtcCheck, constituent C.TSNode, mut state NdtcState, mut findings []Finding) ! {
+fn (mut c Checker) ndtc_check_recursively(check NdtcCheck, constituent C.vt_node, mut state NdtcState, mut findings []Finding) ! {
 	form := c.ndtc_shape(constituent)
 	// isSameAstNode first, then the type.
 	for i, previous in state.unique {
@@ -158,7 +158,7 @@ fn (mut c Checker) ndtc_check_recursively(check NdtcCheck, constituent C.TSNode,
 	}
 }
 
-fn (c &Checker) ndtc_duplicate(check NdtcCheck, constituent C.TSNode, previous C.TSNode) !Finding {
+fn (c &Checker) ndtc_duplicate(check NdtcCheck, constituent C.vt_node, previous C.vt_node) !Finding {
 	return c.with_fixes(Finding{
 		stmt:       c.ndtc_place(constituent)
 		message_id: 'duplicate'
@@ -175,7 +175,7 @@ fn (c &Checker) ndtc_duplicate(check NdtcCheck, constituent C.TSNode, previous C
 // these removals into one fix that keeps the text between them.
 // ndtc_place is where a constituent is reported: from its start to the end of the parentheses
 // around it (the brackets after it, as many as there are before it).
-fn (c &Checker) ndtc_place(constituent C.TSNode) Ident {
+fn (c &Checker) ndtc_place(constituent C.vt_node) Ident {
 	mut outer := constituent
 	for {
 		parent := node_parent(outer) or { break }
@@ -187,7 +187,7 @@ fn (c &Checker) ndtc_place(constituent C.TSNode) Ident {
 	return c.position_range(node_start(constituent), c.es_end(outer))
 }
 
-fn ndtc_removal(constituent C.TSNode) []Fix {
+fn ndtc_removal(constituent C.vt_node) []Fix {
 	mut fixes := [fix_remove(constituent)]
 	mut outer := constituent
 	for {
@@ -223,13 +223,13 @@ fn ndtc_removal(constituent C.TSNode) []Fix {
 // ndtc_shape is a text that two type nodes share when they are the same ESTree node apart from
 // their positions (isSameAstNode): kinds and tokens, without comments, parentheses or the `,`
 // and `;` separators, with unions and intersections flattened like ESTree's.
-fn (c &Checker) ndtc_shape(n C.TSNode) string {
+fn (c &Checker) ndtc_shape(n C.vt_node) string {
 	mut sb := strings.new_builder(64)
 	c.ndtc_write_shape(n, mut sb)
 	return sb.str()
 }
 
-fn (c &Checker) ndtc_write_shape(n C.TSNode, mut sb strings.Builder) {
+fn (c &Checker) ndtc_write_shape(n C.vt_node, mut sb strings.Builder) {
 	kind := node_kind(n)
 	match kind {
 		'comment', ',', ';' {
@@ -252,7 +252,7 @@ fn (c &Checker) ndtc_write_shape(n C.TSNode, mut sb strings.Builder) {
 		}
 		else {}
 	}
-	if C.ts_node_child_count(n) == 0 {
+	if C.vt_node_child_count(n) == 0 {
 		sb.write_string(kind)
 		sb.write_u8(`:`)
 		sb.write_string(c.text(n))

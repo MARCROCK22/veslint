@@ -11,7 +11,7 @@ const vue_no_ref_object_reactivity_loss_messages = {
 	'getValueInSameScope': 'Getting a value from the ref object in the same scope will cause the value to lose reactivity.'
 }
 
-fn (mut c Checker) lint_vue_no_ref_object_reactivity_loss(root C.TSNode, abs_path string, mut stats Stats) ![]Finding {
+fn (mut c Checker) lint_vue_no_ref_object_reactivity_loss(root C.vt_node, abs_path string, mut stats Stats) ![]Finding {
 	sw := time.new_stopwatch()
 	mut findings := []Finding{}
 	t := c.es_tree(root, abs_path) or { return findings }

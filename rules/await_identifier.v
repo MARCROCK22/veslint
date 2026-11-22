@@ -21,8 +21,8 @@ const await_identifier_byte = 2
 // await_identifiers_source gives the source to parse again when TypeScript read some `await` of
 // the tree as an identifier: the file with those tokens as names. Empty when there is none. A
 // checker made without a snapshot makes it here, since only the program tells.
-fn (mut c Checker) await_identifiers_source(root C.TSNode, abs_path string) !string {
-	mut keywords := []C.TSNode{}
+fn (mut c Checker) await_identifiers_source(root C.vt_node, abs_path string) !string {
+	mut keywords := []C.vt_node{}
 	for node in c.nodes_of_kind(root, c'await_expression') {
 		keyword := await_keyword(node) or { continue }
 		if !c.await_takes_operand(keyword) && !await_in_async_body(node) {
@@ -63,7 +63,7 @@ fn (mut c Checker) await_identifiers_source(root C.TSNode, abs_path string) !str
 // function or class in between, where TypeScript always reads the operator (its await context).
 // Anywhere else (the top level, a function that is not async, parameters, the members of a class)
 // tsgo is asked.
-fn await_in_async_body(await_node C.TSNode) bool {
+fn await_in_async_body(await_node C.vt_node) bool {
 	mut child := await_node
 	mut node := node_parent(await_node) or { return false }
 	for {
@@ -88,7 +88,7 @@ fn await_in_async_body(await_node C.TSNode) bool {
 // string or number literal, so TypeScript reads the operator wherever it is
 // (nextTokenIsIdentifierOrKeywordOrLiteralOnSameLine). Comments are not looked through and only
 // ASCII is told apart: any other `await` is asked to tsgo.
-fn (c &Checker) await_takes_operand(keyword C.TSNode) bool {
+fn (c &Checker) await_takes_operand(keyword C.vt_node) bool {
 	mut index := node_end(keyword)
 	for index < c.src.len && c.src[index] in [` `, `\t`] {
 		index++

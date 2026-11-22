@@ -88,7 +88,7 @@ if (-not (Test-Path build/libtree-sitter-typescript.a) -or -not (Test-Path $buil
 # TypeScript's API session, linked into veslint.exe (tsgo/inproc.c.v), as tsgo/inproc/build.sh builds
 # it on Linux: the Go module `tsc` of the commit of the npm package veslint uses (fetched without
 # its tests when there is no checkout), compiled with Go 1.27 and this gcc as a C archive, with
-# tsgo/inproc/main.go as a module of its own, api_inprocess.go added to internal/api by an overlay
+# tsgo/inproc/main.go as a module of its own, api_*.go added to internal/api and convert*.go to internal/parser by an overlay
 # and internal/api/session.go replaced by a copy with session.patch applied. Rebuilt when one of
 # tsgo/inproc's sources is newer than the archive.
 $tsCommit = '3e9236361fa97a9e6c685f4833ac457ae2d8c50a'
@@ -107,7 +107,7 @@ if ((git -C $module rev-parse HEAD) -ne $tsCommit) {
 }
 $inproc = (Resolve-Path tsgo/inproc).Path.Replace('\', '/')
 $archive = 'tsgo/inproc/out/libveslint_tsgo.a'
-$sources = 'main.go', 'api_inprocess.go', 'api_fastjson.go', 'api_rules.go', 'session.patch', 'build.sh' | ForEach-Object { Get-Item "tsgo/inproc/$_" }
+$sources = 'main.go', 'api_inprocess.go', 'api_fastjson.go', 'api_rules.go', 'convert.go', 'convert_kinds.go', 'session.patch', 'build.sh' | ForEach-Object { Get-Item "tsgo/inproc/$_" }
 if (-not (Test-Path $archive) -or
 	($sources | Where-Object { $_.LastWriteTime -gt (Get-Item $archive).LastWriteTime })) {
 	$mod = 'tsgo/inproc/out/mod'
@@ -132,6 +132,8 @@ if (-not (Test-Path $archive) -or
 		("{`"Replace`": {`"$module/internal/api/veslint_inprocess.go`": `"$inproc/api_inprocess.go`", " +
 		"`"$module/internal/api/veslint_fastjson.go`": `"$inproc/api_fastjson.go`", " +
 		"`"$module/internal/api/veslint_rules.go`": `"$inproc/api_rules.go`", " +
+		"`"$module/internal/parser/veslint_convert.go`": `"$inproc/convert.go`", " +
+		"`"$module/internal/parser/veslint_convert_kinds.go`": `"$inproc/convert_kinds.go`", " +
 		"`"$module/internal/api/session.go`": `"$out/session.go`"}}")
 	# The requirements of the checkout's go.mod, as `go mod tidy` would list them.
 	$requires = (Select-String -Path "$module/go.mod" -Pattern '^\t(\S+) (v\S+)').Matches |

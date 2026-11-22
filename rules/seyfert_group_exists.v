@@ -15,7 +15,7 @@ const sy_ge_messages = {
 	'unknownGroupAutoload': "Subcommand `{{sub}}` (`{{file}}`) uses group `{{group}}`, not declared in this command's `@Groups`/`@GroupsT`."
 }
 
-fn (mut c Checker) lint_seyfert_group_exists(root C.TSNode, abs_path string, mut stats Stats) ![]Finding {
+fn (mut c Checker) lint_seyfert_group_exists(root C.vt_node, abs_path string, mut stats Stats) ![]Finding {
 	mut sw := time.new_stopwatch()
 	classes, mut asked := c.sy_decorated_classes(root)
 	for class in classes {
@@ -343,7 +343,7 @@ fn (mut c Checker) sy_ge_declared_groups(node SyNode) !(map[string]bool, bool) {
 }
 
 // sy_ge_check_options ports checkOptions: the subcommands an `@Options` array lists.
-fn (mut c Checker) sy_ge_check_options(options C.TSNode, valid map[string]bool, mut findings []Finding) ! {
+fn (mut c Checker) sy_ge_check_options(options C.vt_node, valid map[string]bool, mut findings []Finding) ! {
 	if node_kind(options) == 'array' {
 		for element in named_children(options) {
 			if node_kind(element) == 'spread_element' {
@@ -397,7 +397,7 @@ fn (mut c Checker) sy_ge_check_options(options C.TSNode, valid map[string]bool, 
 // directory of the command and below it (fs.readdirSync with `recursive`: a directory after
 // another, the names of each in byte order), when the program has it (program.getSourceFile,
 // which on Windows ignores case and the kind of slash: tsgo.path_key).
-fn (mut c Checker) sy_ge_check_autoload(decorator C.TSNode, abs_path string, valid map[string]bool, mut findings []Finding) ! {
+fn (mut c Checker) sy_ge_check_autoload(decorator C.vt_node, abs_path string, valid map[string]bool, mut findings []Finding) ! {
 	directory := os.dir(abs_path)
 	mut program := map[string]bool{}
 	for file in c.client.source_file_names(c.snapshot, c.project)! {

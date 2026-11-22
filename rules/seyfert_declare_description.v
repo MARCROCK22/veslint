@@ -15,15 +15,15 @@ const sy_dd_messages = {
 
 const sy_dd_max_description = 100
 
-fn (mut c Checker) lint_seyfert_declare_description(root C.TSNode, abs_path string, mut stats Stats) ![]Finding {
+fn (mut c Checker) lint_seyfert_declare_description(root C.vt_node, abs_path string, mut stats Stats) ![]Finding {
 	mut sw := time.new_stopwatch()
 	// The decorators of classes that are calls with a first argument (Decorator), and every call
 	// that is not a tagged template (CallExpression).
-	mut decorators := []C.TSNode{}
-	mut callees := []C.TSNode{}
-	mut arguments := []C.TSNode{}
-	mut supers := []C.TSNode{}
-	mut asked := []C.TSNode{}
+	mut decorators := []C.vt_node{}
+	mut callees := []C.vt_node{}
+	mut arguments := []C.vt_node{}
+	mut supers := []C.vt_node{}
+	mut asked := []C.vt_node{}
 	for decorator in c.nodes_of_kind(root, c'decorator') {
 		class := sy_class_of_decorator(decorator) or { continue }
 		callee := sy_decorator_callee(decorator) or { continue }
@@ -42,7 +42,7 @@ fn (mut c Checker) lint_seyfert_declare_description(root C.TSNode, abs_path stri
 			asked << super_class
 		}
 	}
-	mut calls := []C.TSNode{}
+	mut calls := []C.vt_node{}
 	for call in c.nodes_of_kind(root, c'call_expression') {
 		call_arguments(call) or { continue }
 		calls << call

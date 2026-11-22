@@ -10,7 +10,7 @@ const uceas_messages = {
 	'consistent-empty-array-spread': 'Prefer using empty {{replacementDescription}} since the {{anotherNodePosition}} is {{anotherNodeDescription}}.'
 }
 
-fn (mut c Checker) lint_unicorn_consistent_empty_array_spread(root C.TSNode, abs_path string, mut stats Stats) ![]Finding {
+fn (mut c Checker) lint_unicorn_consistent_empty_array_spread(root C.vt_node, abs_path string, mut stats Stats) ![]Finding {
 	sw := time.new_stopwatch()
 	mut findings := []Finding{}
 	t := c.es_tree(root, abs_path) or { return findings }

@@ -71,27 +71,27 @@ fn dotn_options(options []json2.Any, core bool) !DotnOptions {
 
 // DotnComputed is a `x['name']` the core rule reports, pending the type checks of the options.
 struct DotnComputed {
-	member   C.TSNode
-	property C.TSNode // ESTree property: the literal or template, without parentheses
-	value    string   // its value as a string (`true`, `null` for those literals)
-	string   bool     // a string Literal (not a template, boolean or null)
+	member   C.vt_node
+	property C.vt_node // ESTree property: the literal or template, without parentheses
+	value    string    // its value as a string (`true`, `null` for those literals)
+	string   bool      // a string Literal (not a template, boolean or null)
 	report   Ident
 	key      string
 }
 
-fn (mut c Checker) lint_dot_notation(root C.TSNode, abs_path string, mut stats Stats) ![]Finding {
+fn (mut c Checker) lint_dot_notation(root C.vt_node, abs_path string, mut stats Stats) ![]Finding {
 	o := dotn_options(c.rule_options(dot_notation), false)!
 	return c.dotn_lint(root, abs_path, o, true, mut stats)!
 }
 
 // lint_core_dot_notation is the `dot-notation` rule of ESLint 10.15.0: typescript-eslint's without
 // the options and the checks that need types.
-fn (mut c Checker) lint_core_dot_notation(root C.TSNode, abs_path string, mut stats Stats) ![]Finding {
+fn (mut c Checker) lint_core_dot_notation(root C.vt_node, abs_path string, mut stats Stats) ![]Finding {
 	o := dotn_options(c.rule_options(core_dot_notation), true)!
 	return c.dotn_lint(root, abs_path, o, false, mut stats)!
 }
 
-fn (mut c Checker) dotn_lint(root C.TSNode, abs_path string, o DotnOptions, typed bool, mut stats Stats) ![]Finding {
+fn (mut c Checker) dotn_lint(root C.vt_node, abs_path string, o DotnOptions, typed bool, mut stats Stats) ![]Finding {
 	mut sw := time.new_stopwatch()
 	index_access := typed && (o.allow_index_signature_property_access
 		|| c.no_property_access_from_index_signature)
@@ -278,7 +278,7 @@ fn dotn_valid_identifier(value string) bool {
 
 // dotn_in_type_query: a `typeof a.b` name, which ESTree has as a TSQualifiedName (or the qualifier
 // of a TSImportType), not a MemberExpression.
-fn dotn_in_type_query(member C.TSNode) bool {
+fn dotn_in_type_query(member C.vt_node) bool {
 	mut node := member
 	for depth := 0; depth < max_expression_depth; depth++ {
 		parent := node_parent(node) or { return false }
@@ -323,7 +323,7 @@ fn (mut c Checker) dotn_use_dot_fixes(access DotnComputed) []Fix {
 // dotn_is_decimal_integer ports astUtils.isDecimalInteger: a number literal (not a BigInt)
 // written like /^(?:0|0[0-7]*[89]\d*|[1-9](?:_?\d)*)$/u, after which a `.` would be a decimal
 // point.
-fn (c &Checker) dotn_is_decimal_integer(n C.TSNode) bool {
+fn (c &Checker) dotn_is_decimal_integer(n C.vt_node) bool {
 	if node_kind(n) != 'number' {
 		return false
 	}
@@ -370,7 +370,7 @@ fn (c &Checker) dotn_can_follow_name(next SourceToken) bool {
 // dotn_use_brackets_fixes ports the fixer of `useBrackets`: the `.` goes (a `?.` stays) and the
 // name becomes `["name"]`. No fix for `let.name` (a statement that starts with `let[` is a
 // declaration) nor with a comment between the dot and the name.
-fn (mut c Checker) dotn_use_brackets_fixes(member C.TSNode, property C.TSNode, name string) []Fix {
+fn (mut c Checker) dotn_use_brackets_fixes(member C.vt_node, property C.vt_node, name string) []Fix {
 	object := unwrap_parens(node_field(member, 'object') or { return []Fix{} })
 	optional := is_optional_element(member)
 	if node_kind(object) == 'identifier' && c.identifier_name(object) == 'let' && !optional {

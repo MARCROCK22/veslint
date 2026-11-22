@@ -16,13 +16,13 @@ fn svars_options(options []json2.Any) !bool {
 	return o.bool_value('ignoreCase') or { false }
 }
 
-fn (mut c Checker) lint_sort_vars(root C.TSNode, abs_path string, mut stats Stats) ![]Finding {
+fn (mut c Checker) lint_sort_vars(root C.vt_node, abs_path string, mut stats Stats) ![]Finding {
 	sw := time.new_stopwatch()
 	ignore_case := svars_options(c.rule_options(sort_vars))!
 	mut findings := []Finding{}
 	for node in c.nodes_of_kinds(root, ['variable_declaration', 'lexical_declaration'], []) {
 		stats.checked++
-		mut declarations := []C.TSNode{}
+		mut declarations := []C.vt_node{}
 		mut sortable := [][]u16{}
 		mut unfixable := false
 		for declarator in named_children(node) {
@@ -71,7 +71,7 @@ fn (mut c Checker) lint_sort_vars(root C.TSNode, abs_path string, mut stats Stat
 }
 
 // svars_fix puts the declarators in order, each with the text that followed the one in its place.
-fn (c &Checker) svars_fix(declarations []C.TSNode, sortable [][]u16) Fix {
+fn (c &Checker) svars_fix(declarations []C.vt_node, sortable [][]u16) Fix {
 	order := svars_sort(sortable)
 	mut text := ''
 	for index, i in order {

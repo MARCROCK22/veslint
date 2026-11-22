@@ -11,7 +11,7 @@ import treesitter { has_child_kind, named_children, node_field, node_kind }
 // of the trace map from the modules the file imports (or re-exports). A module whose trace has
 // `esm` is an ES module (its named exports are the keys); for the others, the default export is
 // the module (CommonJS interop: `import x from 'm'; x.a()` is the path [m, a]).
-fn (mut c Checker) es_esm_references(root C.TSNode, trace map[string]EsTrace) []EsTraced {
+fn (mut c Checker) es_esm_references(root C.vt_node, trace map[string]EsTrace) []EsTraced {
 	mut out := []EsTraced{}
 	for statement in named_children(root) {
 		kind := node_kind(statement)
@@ -81,8 +81,8 @@ fn (mut c Checker) es_esm_references(root C.TSNode, trace map[string]EsTrace) []
 
 // es_esm_specifiers are the specifiers of an import or export statement: the identifier of a
 // default import, the namespace_import, the import_specifier and export_specifier nodes.
-fn es_esm_specifiers(statement C.TSNode) []C.TSNode {
-	mut out := []C.TSNode{}
+fn es_esm_specifiers(statement C.vt_node) []C.vt_node {
+	mut out := []C.vt_node{}
 	for part in named_children(statement) {
 		match node_kind(part) {
 			'import_clause' {
@@ -116,7 +116,7 @@ fn es_esm_specifiers(statement C.TSNode) []C.TSNode {
 }
 
 // es_import_references ports _iterateImportReferences.
-fn (mut c Checker) es_import_references(root C.TSNode, specifier C.TSNode, path []string, trace EsTrace, mut out []EsTraced) {
+fn (mut c Checker) es_import_references(root C.vt_node, specifier C.vt_node, path []string, trace EsTrace, mut out []EsTraced) {
 	tree := c.scope_tree(root)
 	mut stack := []int{}
 	match node_kind(specifier) {
@@ -178,7 +178,7 @@ fn (mut c Checker) es_import_references(root C.TSNode, specifier C.TSNode, path 
 
 // es_cjs_references ports iterateCjsReferences: the paths of the trace map from the modules the
 // global `require` loads (when it is a global the file does not modify).
-fn (mut c Checker) es_cjs_references(root C.TSNode, trace map[string]EsTrace) []EsTraced {
+fn (mut c Checker) es_cjs_references(root C.vt_node, trace map[string]EsTrace) []EsTraced {
 	mut out := []EsTraced{}
 	requires := c.es_global_references(root, {
 		'require': EsTrace{

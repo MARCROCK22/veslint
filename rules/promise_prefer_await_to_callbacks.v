@@ -17,7 +17,7 @@ fn prm_is_inside_yield_or_await(t &estree.EsTree, node int) bool {
 	return prm_ancestors(t, node).any(t.typ(it) in [.await_expression, .yield_expression])
 }
 
-fn (mut c Checker) lint_promise_prefer_await_to_callbacks(root C.TSNode, abs_path string, mut stats Stats) ![]Finding {
+fn (mut c Checker) lint_promise_prefer_await_to_callbacks(root C.vt_node, abs_path string, mut stats Stats) ![]Finding {
 	sw := time.new_stopwatch()
 	mut findings := []Finding{}
 	t := c.es_tree(root, abs_path) or { return findings }

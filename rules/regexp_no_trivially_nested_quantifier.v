@@ -15,7 +15,7 @@ const regexp_no_trivially_nested_quantifier_messages = {
 	'childSimpler': "This nested quantifier can be simplified to '{{quant}}'."
 }
 
-fn (mut c Checker) lint_regexp_no_trivially_nested_quantifier(root C.TSNode, abs_path string, mut stats Stats) ![]Finding {
+fn (mut c Checker) lint_regexp_no_trivially_nested_quantifier(root C.vt_node, abs_path string, mut stats Stats) ![]Finding {
 	sw := time.new_stopwatch()
 	mut findings := []Finding{}
 	regexps := c.rx_regexps(root, abs_path)

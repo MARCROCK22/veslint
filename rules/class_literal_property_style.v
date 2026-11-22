@@ -25,7 +25,7 @@ fn clps_options(options []json2.Any) !string {
 	return error('the option of `${class_literal_property_style}` must be "fields" or "getters"')
 }
 
-fn (mut c Checker) lint_class_literal_property_style(root C.TSNode, abs_path string, mut stats Stats) ![]Finding {
+fn (mut c Checker) lint_class_literal_property_style(root C.vt_node, abs_path string, mut stats Stats) ![]Finding {
 	sw := time.new_stopwatch()
 	style := clps_options(c.rule_options(class_literal_property_style))!
 	mut findings := []Finding{}
@@ -49,7 +49,7 @@ fn (mut c Checker) lint_class_literal_property_style(root C.TSNode, abs_path str
 
 // clps_check_getter ports the MethodDefinition visitor of 'fields': a getter, not `override`, whose
 // first statement returns a literal, and that has no setter with the same static name.
-fn (mut c Checker) clps_check_getter(node C.TSNode, mut findings []Finding) ! {
+fn (mut c Checker) clps_check_getter(node C.vt_node, mut findings []Finding) ! {
 	holder := node_parent(node) or { return }
 	if node_kind(holder) != 'class_body' || c.cm_method_kind(node) != 'get'
 		|| has_child_kind(node, 'override_modifier') {
@@ -103,7 +103,7 @@ fn (mut c Checker) clps_check_getter(node C.TSNode, mut findings []Finding) ! {
 // clps_check_fields ports the exit of a ClassBody for 'getters': its readonly fields (not
 // `declare`, not `override`) initialized with a literal, but those with a static name the
 // constructor assigns.
-fn (mut c Checker) clps_check_fields(body C.TSNode, excluded []string, mut findings []Finding) ! {
+fn (mut c Checker) clps_check_fields(body C.vt_node, excluded []string, mut findings []Finding) ! {
 	for node in cm_members(body) {
 		if cm_type(node) != 'PropertyDefinition' || !has_child_kind(node, 'readonly')
 			|| has_child_kind(node, 'declare') || has_child_kind(node, 'override_modifier') {
@@ -139,7 +139,7 @@ fn (mut c Checker) clps_check_fields(body C.TSNode, excluded []string, mut findi
 // function is a constructor and that is assigned, deleted or updated excludes its static name from
 // the fields of the innermost class around the `this` (the top of the rule's stack), by the key of
 // that class_body.
-fn (mut c Checker) clps_assigned_in_constructors(root C.TSNode) map[u64][]string {
+fn (mut c Checker) clps_assigned_in_constructors(root C.vt_node) map[u64][]string {
 	mut excluded := map[u64][]string{}
 	for this in c.nodes_of_kind(root, c'this') {
 		member := estree_parent(this) or { continue }
@@ -169,7 +169,7 @@ fn (mut c Checker) clps_assigned_in_constructors(root C.TSNode) map[u64][]string
 
 // clps_closest_function is the closest ancestor that is a function (isFunction: an arrow function,
 // a function declaration or a function expression, which a method is in ESTree).
-fn clps_closest_function(n C.TSNode) ?C.TSNode {
+fn clps_closest_function(n C.vt_node) ?C.vt_node {
 	mut node := n
 	for {
 		node = node_parent(node)?
@@ -186,7 +186,7 @@ fn clps_closest_function(n C.TSNode) ?C.TSNode {
 // `delete` or of `++`/`--`, an element or a rest element of an array pattern, the value of a
 // Property of an ObjectExpression that is an assignee, or inside a `!`, `as`, `<T>` or `satisfies`
 // that is.
-fn clps_is_assignee(n C.TSNode) bool {
+fn clps_is_assignee(n C.vt_node) bool {
 	mut child := n
 	mut parent := node_parent(child) or { return false }
 	for node_kind(parent) == 'parenthesized_expression' {
@@ -225,7 +225,7 @@ fn clps_is_assignee(n C.TSNode) bool {
 
 // clps_is_supported_literal ports isSupportedLiteral: a Literal, a template without expressions, or
 // a tagged template whose template has none.
-fn clps_is_supported_literal(n C.TSNode) bool {
+fn clps_is_supported_literal(n C.vt_node) bool {
 	match node_kind(n) {
 		'string', 'number', 'true', 'false', 'null', 'regex' {
 			return true
@@ -246,7 +246,7 @@ fn clps_is_supported_literal(n C.TSNode) bool {
 
 // clps_key is the ESTree key of a member (the expression of a computed key, without its
 // parentheses) and whether it is computed.
-fn clps_key(member C.TSNode) ?(C.TSNode, bool) {
+fn clps_key(member C.vt_node) ?(C.vt_node, bool) {
 	name := node_field(member, 'name')?
 	if node_kind(name) == 'computed_property_name' {
 		return unwrap_parens(first_named(name)?), true
@@ -255,7 +255,7 @@ fn clps_key(member C.TSNode) ?(C.TSNode, bool) {
 }
 
 // clps_modifiers ports printNodeModifiers: the accessibility, `static` and the final keyword.
-fn (c &Checker) clps_modifiers(member C.TSNode, final string) string {
+fn (c &Checker) clps_modifiers(member C.vt_node, final string) string {
 	accessibility := c.cm_accessibility(member)
 	is_static := cm_is_static(member)
 	return '${accessibility}${if is_static { ' static' } else { '' }} ${final} '.trim_left(' ')
@@ -264,7 +264,7 @@ fn (c &Checker) clps_modifiers(member C.TSNode, final string) string {
 // clps_member_key ports getStaticMemberAccessValue as a key to compare names with: `s` and the
 // name, or `y` and the identity of a symbol (a well-known one, or one of Symbol.for); '' when it is
 // not static or is the empty string, which is falsy.
-fn (mut c Checker) clps_member_key(n C.TSNode) string {
+fn (mut c Checker) clps_member_key(n C.vt_node) string {
 	key, computed := stv_member_key(n) or { return '' }
 	if !computed && node_kind(key) in ['property_identifier', 'identifier',
 		'shorthand_property_identifier', 'private_property_identifier'] {

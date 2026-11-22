@@ -14,7 +14,7 @@ const snbvci_messages = {
 	'groupSuggestion':      'Change `bind:value` to `bind:group`.'
 }
 
-fn (mut c Checker) lint_svelte_no_bind_value_on_checkable_inputs(root C.TSNode, abs_path string, mut stats Stats) ![]Finding {
+fn (mut c Checker) lint_svelte_no_bind_value_on_checkable_inputs(root C.vt_node, abs_path string, mut stats Stats) ![]Finding {
 	if !c.is_svelte() {
 		return []
 	}
@@ -73,7 +73,7 @@ fn (mut c Checker) lint_svelte_no_bind_value_on_checkable_inputs(root C.TSNode, 
 
 // snbvci_type is getType: the lower-cased value of the `type` attribute (its name in any case)
 // when it is one literal or one mustache tag with a static string.
-fn (mut c Checker) snbvci_type(root C.TSNode, abs_path string, tag int) ?string {
+fn (mut c Checker) snbvci_type(root C.vt_node, abs_path string, tag int) ?string {
 	doc := c.svelte.doc
 	for a in doc.nodes[tag].attributes {
 		an := doc.nodes[a]
@@ -98,7 +98,7 @@ fn (mut c Checker) snbvci_type(root C.TSNode, abs_path string, tag int) ?string 
 
 // snbvci_static_string is getStaticValue of a template expression as a string: the expression of
 // the lint code (where the scope manager has the template's variables) at the same place.
-fn (mut c Checker) snbvci_static_string(root C.TSNode, abs_path string, expr int) ?string {
+fn (mut c Checker) snbvci_static_string(root C.vt_node, abs_path string, expr int) ?string {
 	doc := c.svelte.doc
 	e := doc.es.nodes[expr]
 	start := c.svelte_file_to_lint(e.start, false)

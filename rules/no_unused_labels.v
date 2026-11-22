@@ -12,7 +12,7 @@ const nul_messages = {
 const nul_function_kinds = ['function_declaration', 'function_expression', 'generator_function',
 	'generator_function_declaration', 'arrow_function', 'method_definition']
 
-fn (mut c Checker) lint_no_unused_labels(root C.TSNode, abs_path string, mut stats Stats) ![]Finding {
+fn (mut c Checker) lint_no_unused_labels(root C.vt_node, abs_path string, mut stats Stats) ![]Finding {
 	sw := time.new_stopwatch()
 	mut findings := []Finding{}
 	// The labeled statements some `break` or `continue` uses: the closest one with its label.
@@ -54,7 +54,7 @@ fn (mut c Checker) lint_no_unused_labels(root C.TSNode, abs_path string, mut sta
 // nul_is_fixable ports isFixable: only the `:` between the label and the body (no comment), and
 // the body is not a string expression statement where it could become a directive, nor would it
 // continue the statement before (an ASI hazard).
-fn (mut c Checker) nul_is_fixable(root C.TSNode, node C.TSNode, label C.TSNode, body C.TSNode) bool {
+fn (mut c Checker) nul_is_fixable(root C.vt_node, node C.vt_node, label C.vt_node, body C.vt_node) bool {
 	if c.src[node_end(label)..node_start(body)].trim_space() != ':' {
 		return false
 	}

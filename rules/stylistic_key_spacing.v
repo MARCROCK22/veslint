@@ -179,7 +179,7 @@ struct SksCtx {
 	options SksOptions
 }
 
-fn (mut c Checker) lint_stylistic_key_spacing(root C.TSNode, abs_path string, mut stats Stats) ![]Finding {
+fn (mut c Checker) lint_stylistic_key_spacing(root C.vt_node, abs_path string, mut stats Stats) ![]Finding {
 	sw := time.new_stopwatch()
 	mut findings := []Finding{}
 	options := sks_options(c.rule_options(stylistic_key_spacing))!

@@ -24,13 +24,13 @@ const uuiccv_messages = {
 // UuiccvCall is a `x.catch(handler)` or `x.then(…, handler)` call: the object of its callee and the
 // functions collectFlaggedNodes finds in the handler argument.
 struct UuiccvCall {
-	callee    C.TSNode
-	object    C.TSNode
+	callee    C.vt_node
+	object    C.vt_node
 	method    string
-	functions []C.TSNode
+	functions []C.vt_node
 }
 
-fn (mut c Checker) lint_use_unknown_in_catch_callback_variable(root C.TSNode, abs_path string, mut stats Stats) ![]Finding {
+fn (mut c Checker) lint_use_unknown_in_catch_callback_variable(root C.vt_node, abs_path string, mut stats Stats) ![]Finding {
 	mut sw := time.new_stopwatch()
 	mut calls := []UuiccvCall{}
 	for node in c.nodes_of_kind(root, c'call_expression') {
@@ -50,7 +50,7 @@ fn (mut c Checker) lint_use_unknown_in_catch_callback_variable(root C.TSNode, ab
 		if args.len < index + 1 || args[..index + 1].any(node_kind(it) == 'spread_element') {
 			continue
 		}
-		mut functions := []C.TSNode{}
+		mut functions := []C.vt_node{}
 		uuiccv_collect_functions(args[index], mut functions, 0)
 		if functions.len == 0 {
 			continue
@@ -112,7 +112,7 @@ fn (mut c Checker) lint_use_unknown_in_catch_callback_variable(root C.TSNode, ab
 // uuiccv_collect_functions ports collectFlaggedNodes without the type check: the function
 // expressions the argument may evaluate to, through logical and conditional expressions and the
 // last expression of a sequence.
-fn uuiccv_collect_functions(n C.TSNode, mut out []C.TSNode, depth int) {
+fn uuiccv_collect_functions(n C.vt_node, mut out []C.vt_node, depth int) {
 	if depth > max_expression_depth {
 		return
 	}
@@ -213,8 +213,8 @@ struct UuiccvReport {
 // function, with a more precise message for a destructuring pattern and, for an identifier or a
 // rest element, the suggestion to annotate it as `unknown` (`[unknown]`) or to change its
 // annotation.
-fn uuiccv_refine_report(function C.TSNode) UuiccvReport {
-	mut first := ?C.TSNode(none)
+fn uuiccv_refine_report(function C.vt_node) UuiccvReport {
+	mut first := ?C.vt_node(none)
 	// `e => …`: isParenlessArrowFunction.
 	mut parenless := false
 	if single := node_field(function, 'parameter') {

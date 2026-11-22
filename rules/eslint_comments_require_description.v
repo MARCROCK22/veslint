@@ -20,7 +20,7 @@ fn ec_rd_options(options []json2.Any) !EcNuOptions {
 	}
 }
 
-fn (mut c Checker) lint_eslint_comments_require_description(root C.TSNode, abs_path string, mut stats Stats) ![]Finding {
+fn (mut c Checker) lint_eslint_comments_require_description(root C.vt_node, abs_path string, mut stats Stats) ![]Finding {
 	sw := time.new_stopwatch()
 	o := ec_rd_options(c.rule_options(eslint_comments_require_description))!
 	mut findings := []Finding{}

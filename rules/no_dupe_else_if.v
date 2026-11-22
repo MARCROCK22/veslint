@@ -9,7 +9,7 @@ const ndei_messages = {
 	'unexpected': 'This branch can never execute. Its condition is a duplicate or covered by previous conditions in the if-else-if chain.'
 }
 
-fn (mut c Checker) lint_no_dupe_else_if(root C.TSNode, abs_path string, mut stats Stats) ![]Finding {
+fn (mut c Checker) lint_no_dupe_else_if(root C.vt_node, abs_path string, mut stats Stats) ![]Finding {
 	sw := time.new_stopwatch()
 	mut findings := []Finding{}
 	for node in c.nodes_of_kinds(root, ['if_statement'], []) {
@@ -32,9 +32,9 @@ fn (mut c Checker) lint_no_dupe_else_if(root C.TSNode, abs_path string, mut stat
 			current = ndei_else_if_parent(current) or { break }
 			current_or := ndei_or_operands(node_field(current, 'condition') or { break })
 			// The or-operands that no or-operand of the earlier test covers.
-			mut next := [][][]C.TSNode{}
+			mut next := [][][]C.vt_node{}
 			for or_operands in list {
-				mut kept := [][]C.TSNode{}
+				mut kept := [][]C.vt_node{}
 				for or_operand in or_operands {
 					mut covered := false
 					for current_operand in current_or {
@@ -65,7 +65,7 @@ fn (mut c Checker) lint_no_dupe_else_if(root C.TSNode, abs_path string, mut stat
 
 // ndei_split ports splitByLogicalOperator: the operands of a chain of LogicalExpressions with that
 // operator (parentheses are not ESTree nodes), or the node itself.
-fn ndei_split(n C.TSNode, operator string) []C.TSNode {
+fn ndei_split(n C.vt_node, operator string) []C.vt_node {
 	node := unwrap_parens(n)
 	if estree_binary_kind(node) == 'LogicalExpression' && operator_of(node) == operator {
 		left := node_field(node, 'left') or { return [node] }
@@ -78,12 +78,12 @@ fn ndei_split(n C.TSNode, operator string) []C.TSNode {
 }
 
 // ndei_or_operands is splitByOr(node).map(splitByAnd).
-fn ndei_or_operands(n C.TSNode) [][]C.TSNode {
+fn ndei_or_operands(n C.vt_node) [][]C.vt_node {
 	return ndei_split(n, '||').map(ndei_split(it, '&&'))
 }
 
 // ndei_else_if_parent is the IfStatement whose alternate is `n` (an `else if`).
-fn ndei_else_if_parent(n C.TSNode) ?C.TSNode {
+fn ndei_else_if_parent(n C.vt_node) ?C.vt_node {
 	clause := node_parent(n)?
 	if node_kind(clause) != 'else_clause' {
 		return none
@@ -97,7 +97,7 @@ fn ndei_else_if_parent(n C.TSNode) ?C.TSNode {
 
 // ndei_equal ports equal: the same ESTree type and, for `||` and `&&` with the same operator, equal
 // operands in either order (the operators are commutative in a test); equalTokens otherwise.
-fn (mut c Checker) ndei_equal(a C.TSNode, b C.TSNode) bool {
+fn (mut c Checker) ndei_equal(a C.vt_node, b C.vt_node) bool {
 	x := unwrap_parens(a)
 	y := unwrap_parens(b)
 	if estree_type(x) != estree_type(y) {
@@ -118,7 +118,7 @@ fn (mut c Checker) ndei_equal(a C.TSNode, b C.TSNode) bool {
 }
 
 // ndei_is_subset ports isSubsetByComparator(equal, a, b): each node of `a` equals one of `b`.
-fn (mut c Checker) ndei_is_subset(a []C.TSNode, b []C.TSNode) bool {
+fn (mut c Checker) ndei_is_subset(a []C.vt_node, b []C.vt_node) bool {
 	for x in a {
 		mut found := false
 		for y in b {

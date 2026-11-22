@@ -28,7 +28,7 @@ fn nra_always(options []json2.Any) !bool {
 	return error('the option of `${no_return_assign}` must be "except-parens" or "always"')
 }
 
-fn (mut c Checker) lint_no_return_assign(root C.TSNode, abs_path string, mut stats Stats) ![]Finding {
+fn (mut c Checker) lint_no_return_assign(root C.vt_node, abs_path string, mut stats Stats) ![]Finding {
 	sw := time.new_stopwatch()
 	always := nra_always(c.rule_options(no_return_assign))!
 	mut findings := []Finding{}

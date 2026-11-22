@@ -12,7 +12,7 @@ const nobc_messages = {
 	'useLiteralAfterSemicolon': "Replace with '{{replacement}}', add preceding semicolon."
 }
 
-fn (mut c Checker) lint_no_object_constructor(root C.TSNode, abs_path string, mut stats Stats) ![]Finding {
+fn (mut c Checker) lint_no_object_constructor(root C.vt_node, abs_path string, mut stats Stats) ![]Finding {
 	sw := time.new_stopwatch()
 	mut findings := []Finding{}
 	for node in c.nodes_of_kinds(root, ['call_expression', 'new_expression'], []) {
@@ -28,7 +28,7 @@ fn (mut c Checker) lint_no_object_constructor(root C.TSNode, abs_path string, mu
 				continue
 			}
 		}
-		args := (call_arguments(node) or { []C.TSNode{} }).filter(node_kind(it) != 'comment')
+		args := (call_arguments(node) or { []C.vt_node{} }).filter(node_kind(it) != 'comment')
 		if args.len > 0 {
 			continue
 		}

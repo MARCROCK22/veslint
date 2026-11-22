@@ -31,12 +31,12 @@ fn unas_options(options []json2.Any) !bool {
 	return o.bool_value('allowExpressionStatement')!
 }
 
-fn (mut c Checker) lint_unicorn_no_array_reverse(root C.TSNode, abs_path string, mut stats Stats) ![]Finding {
+fn (mut c Checker) lint_unicorn_no_array_reverse(root C.vt_node, abs_path string, mut stats Stats) ![]Finding {
 	allow := unar_options(c.rule_options(unicorn_no_array_reverse))!
 	return c.un_no_array_mutate(root, abs_path, mut stats, 'reverse', allow)
 }
 
-fn (mut c Checker) lint_unicorn_no_array_sort(root C.TSNode, abs_path string, mut stats Stats) ![]Finding {
+fn (mut c Checker) lint_unicorn_no_array_sort(root C.vt_node, abs_path string, mut stats Stats) ![]Finding {
 	allow := unas_options(c.rule_options(unicorn_no_array_sort))!
 	return c.un_no_array_mutate(root, abs_path, mut stats, 'sort', allow)
 }
@@ -52,7 +52,7 @@ fn un_no_array_mutate_predicate(t &estree.EsTree, node int, method string) bool 
 	return !(args.len > 0 && un_is_node_value_not_function(t, args[0]))
 }
 
-fn (mut c Checker) un_no_array_mutate(root C.TSNode, abs_path string, mut stats Stats, method string, allow_expression_statement bool) ![]Finding {
+fn (mut c Checker) un_no_array_mutate(root C.vt_node, abs_path string, mut stats Stats, method string, allow_expression_statement bool) ![]Finding {
 	sw := time.new_stopwatch()
 	mut findings := []Finding{}
 	t := c.es_tree(root, abs_path) or { return findings }

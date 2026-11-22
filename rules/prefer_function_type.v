@@ -11,7 +11,7 @@ const pft_messages = {
 	'unexpectedThisOnFunctionOnlyInterface': "`this` refers to the function type '{{ interfaceName }}', did you intend to use a generic `this` parameter like `<Self>(this: Self, ...) => Self` instead?"
 }
 
-fn (mut c Checker) lint_prefer_function_type(root C.TSNode, abs_path string, mut stats Stats) ![]Finding {
+fn (mut c Checker) lint_prefer_function_type(root C.vt_node, abs_path string, mut stats Stats) ![]Finding {
 	sw := time.new_stopwatch()
 	mut findings := []Finding{}
 	mut checked := 0
@@ -36,7 +36,7 @@ fn (mut c Checker) lint_prefer_function_type(root C.TSNode, abs_path string, mut
 			continue
 		}
 		checked++
-		c.pft_check_member(members[0], node, []C.TSNode{}, mut findings)!
+		c.pft_check_member(members[0], node, []C.vt_node{}, mut findings)!
 	}
 	stats.eval_ms += ms(sw.elapsed())
 	stats.checked += checked
@@ -45,8 +45,8 @@ fn (mut c Checker) lint_prefer_function_type(root C.TSNode, abs_path string, mut
 
 // pft_has_one_supertype ports hasOneSupertype: the interface extends something other than
 // `Function` alone.
-fn (c &Checker) pft_has_one_supertype(node C.TSNode) bool {
-	mut heritage := []C.TSNode{}
+fn (c &Checker) pft_has_one_supertype(node C.vt_node) bool {
+	mut heritage := []C.vt_node{}
 	for clause in named_children(node) {
 		if node_kind(clause) == 'extends_type_clause' {
 			heritage << named_children(clause)
@@ -71,7 +71,7 @@ fn (c &Checker) pft_has_one_supertype(node C.TSNode) bool {
 // (`node`): a call or construct signature with a return type is reported, at the first `this`
 // type of the interface if it has one, else with the fix that turns the type into a function
 // type.
-fn (mut c Checker) pft_check_member(member C.TSNode, node C.TSNode, this_types []C.TSNode, mut findings []Finding) ! {
+fn (mut c Checker) pft_check_member(member C.vt_node, node C.vt_node, this_types []C.vt_node, mut findings []Finding) ! {
 	kind := node_kind(member)
 	if kind !in ['call_signature', 'construct_signature'] {
 		return
@@ -100,7 +100,7 @@ fn (mut c Checker) pft_check_member(member C.TSNode, node C.TSNode, this_types [
 	}
 	// The ESTree interface starts at its `declare`, and its parent is the export around it.
 	mut start := node_start(node)
-	mut export := ?C.TSNode(none)
+	mut export := ?C.vt_node(none)
 	mut export_default := false
 	if is_interface {
 		mut parent := node_parent(node) or { node }
@@ -126,7 +126,7 @@ fn (mut c Checker) pft_check_member(member C.TSNode, node C.TSNode, this_types [
 // `;` and in parentheses where a union, an intersection or an array holds it; an interface
 // becomes a type alias. The comments around the member go before the export of the interface,
 // or before the new text.
-fn (mut c Checker) pft_fixes(member C.TSNode, return_type C.TSNode, node C.TSNode, start int, export ?C.TSNode) []Fix {
+fn (mut c Checker) pft_fixes(member C.vt_node, return_type C.vt_node, node C.vt_node, start int, export ?C.vt_node) []Fix {
 	member_start := node_start(member)
 	member_end := c.pft_member_end(member)
 	colon := node_start(return_type) - member_start
@@ -173,7 +173,7 @@ fn (mut c Checker) pft_fixes(member C.TSNode, return_type C.TSNode, node C.TSNod
 
 // pft_member_end is where a member ends in ESTree: TypeScript gives it the `,` or `;` that
 // follows it.
-fn (mut c Checker) pft_member_end(member C.TSNode) int {
+fn (mut c Checker) pft_member_end(member C.vt_node) int {
 	end := c.tokens.last_end(node_end(member))
 	if next := c.source_tokens(member).after(end, false) {
 		if c.token_is(next, ',') || c.token_is(next, ';') {
@@ -185,13 +185,13 @@ fn (mut c Checker) pft_member_end(member C.TSNode) int {
 
 // pft_this_types are the TSThisType nodes of an interface that are not inside a TSTypeLiteral,
 // in order: `this` types, and the `this` of a type predicate or an `asserts`.
-fn pft_this_types(iface C.TSNode) []C.TSNode {
-	mut out := []C.TSNode{}
+fn pft_this_types(iface C.vt_node) []C.vt_node {
+	mut out := []C.vt_node{}
 	pft_collect_this(iface, mut out)
 	return out
 }
 
-fn pft_collect_this(n C.TSNode, mut out []C.TSNode) {
+fn pft_collect_this(n C.vt_node, mut out []C.vt_node) {
 	for child in children(n) {
 		match node_kind(child) {
 			'object_type' {
@@ -203,7 +203,7 @@ fn pft_collect_this(n C.TSNode, mut out []C.TSNode) {
 				out << child
 			}
 			'this' {
-				if node_kind(n) in ['type_predicate', 'asserts'] && C.ts_node_is_named(n) {
+				if node_kind(n) in ['type_predicate', 'asserts'] && C.vt_node_is_named(n) {
 					out << child
 				}
 			}

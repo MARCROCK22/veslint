@@ -60,14 +60,14 @@ fn sec_options(options []json2.Any) !SecOptions {
 
 // SwitchStatement is a switch with its discriminant and the tests of its `case`s without parentheses.
 struct SwitchStatement {
-	node         C.TSNode
-	discriminant C.TSNode
-	cases        []C.TSNode // its `case`s and `default`s
-	tests        []C.TSNode
+	node         C.vt_node
+	discriminant C.vt_node
+	cases        []C.vt_node // its `case`s and `default`s
+	tests        []C.vt_node
 	default_case ?Ident // the `default`, or the `no default` comment after the last case
 }
 
-fn (mut c Checker) lint_switch_exhaustiveness_check(root C.TSNode, abs_path string, mut stats Stats) ![]Finding {
+fn (mut c Checker) lint_switch_exhaustiveness_check(root C.vt_node, abs_path string, mut stats Stats) ![]Finding {
 	mut sw := time.new_stopwatch()
 	options := sec_options(c.rule_options(switch_exhaustiveness_check))!
 	mut switches := []SwitchStatement{}
@@ -76,7 +76,7 @@ fn (mut c Checker) lint_switch_exhaustiveness_check(root C.TSNode, abs_path stri
 		discriminant := unwrap_parens(node_field(node, 'value') or { continue })
 		body := node_field(node, 'body') or { continue }
 		cases := named_children(body).filter(node_kind(it) in ['switch_case', 'switch_default'])
-		mut tests := []C.TSNode{}
+		mut tests := []C.vt_node{}
 		mut default_case := ?Ident(none)
 		for case in cases {
 			if node_kind(case) == 'switch_default' {
@@ -131,7 +131,7 @@ fn (mut c Checker) lint_switch_exhaustiveness_check(root C.TSNode, abs_path stri
 
 // default_comment ports getCommentDefaultCase: the last comment after the last case. The caller
 // tests its trimmed text with the pattern (`no default`, case-insensitive, by default).
-fn (c &Checker) default_comment(body C.TSNode, last_case C.TSNode) ?C.TSNode {
+fn (c &Checker) default_comment(body C.vt_node, last_case C.vt_node) ?C.vt_node {
 	// The end of the case in ESTree: its last token, without comments tree-sitter may attach.
 	mut end := node_end(last_case)
 	for child in children(last_case).reverse() {
@@ -140,7 +140,7 @@ fn (c &Checker) default_comment(body C.TSNode, last_case C.TSNode) ?C.TSNode {
 			break
 		}
 	}
-	mut last := ?C.TSNode(none)
+	mut last := ?C.vt_node(none)
 	for comment in nodes_of_kind(body, c'comment') {
 		if node_start(comment) >= end {
 			last = comment

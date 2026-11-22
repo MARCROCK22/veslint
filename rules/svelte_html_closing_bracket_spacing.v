@@ -32,7 +32,7 @@ fn shcbs_options(options []json2.Any) !ShcbsOptions {
 	}
 }
 
-fn (mut c Checker) lint_svelte_html_closing_bracket_spacing(root C.TSNode, abs_path string, mut stats Stats) ![]Finding {
+fn (mut c Checker) lint_svelte_html_closing_bracket_spacing(root C.vt_node, abs_path string, mut stats Stats) ![]Finding {
 	options := shcbs_options(c.rule_options(svelte_html_closing_bracket_spacing))!
 	if !c.is_svelte() {
 		return []

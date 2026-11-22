@@ -9,7 +9,7 @@ const ncr_messages = {
 	'unexpected': 'Unexpected return statement in constructor.'
 }
 
-fn (mut c Checker) lint_no_constructor_return(root C.TSNode, abs_path string, mut stats Stats) ![]Finding {
+fn (mut c Checker) lint_no_constructor_return(root C.vt_node, abs_path string, mut stats Stats) ![]Finding {
 	sw := time.new_stopwatch()
 	mut findings := []Finding{}
 	for node in c.nodes_of_kinds(root, ['return_statement'], []) {

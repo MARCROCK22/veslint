@@ -72,7 +72,7 @@ fn (mut st VnudpState) context(node int) &VnudpContext {
 	return unsafe { &st.contexts[node] }
 }
 
-fn (mut c Checker) lint_vue_no_undef_properties(root C.TSNode, abs_path string, mut stats Stats) ![]Finding {
+fn (mut c Checker) lint_vue_no_undef_properties(root C.vt_node, abs_path string, mut stats Stats) ![]Finding {
 	if !c.is_vue() {
 		return []Finding{}
 	}
@@ -205,7 +205,7 @@ fn vnudp_template_context(t &estree.EsTree, st &VnudpState) int {
 }
 
 // vnudp_define_props is onDefinePropsEnter.
-fn (mut c Checker) vnudp_define_props(root C.TSNode, t &estree.EsTree, call int, abs_path string, mut st VnudpState, mut stats Stats) {
+fn (mut c Checker) vnudp_define_props(root C.vt_node, t &estree.EsTree, call int, abs_path string, mut st VnudpState, mut stats Stats) {
 	for prop in c.vue_define_props(root, t, call, abs_path, true, mut stats) {
 		if prop.kind == .unknown {
 			st.context(-1).has_unknown = true
@@ -227,7 +227,7 @@ fn (mut c Checker) vnudp_define_props(root C.TSNode, t &estree.EsTree, call int,
 }
 
 // vnudp_object_enter is onVueObjectEnter.
-fn (mut c Checker) vnudp_object_enter(root C.TSNode, t &estree.EsTree, object int, mut st VnudpState) {
+fn (mut c Checker) vnudp_object_enter(root C.vt_node, t &estree.EsTree, object int, mut st VnudpState) {
 	st.context(object)
 	// Collect store helpers before any reference is verified.
 	for group_name in ['computed', 'methods'] {
@@ -372,7 +372,7 @@ fn vnudp_option_function(t &estree.EsTree, node int, owner int) ?bool {
 
 // vnudp_setup_to_refs_names is iterateSetupToRefsNames: the names `...toRefs(reactive({…}))`
 // spreads in the objects setup() returns define.
-fn (mut c Checker) vnudp_setup_to_refs_names(root C.TSNode, t &estree.EsTree, object int, mut st VnudpState) []string {
+fn (mut c Checker) vnudp_setup_to_refs_names(root C.vt_node, t &estree.EsTree, object int, mut st VnudpState) []string {
 	setup := vue_find_property(t, object, 'setup', none)
 	if setup < 0 {
 		return []
@@ -422,7 +422,7 @@ fn (mut c Checker) vnudp_setup_to_refs_names(root C.TSNode, t &estree.EsTree, ob
 
 // vnudp_reactive_object_from_to_refs is getReactiveObjectFromToRefs: the object of
 // `toRefs(reactive({…}))` (or of a `const` initialized with `reactive({…})`), -1 for none.
-fn (mut c Checker) vnudp_reactive_object_from_to_refs(root C.TSNode, t &estree.EsTree, node int, mut st VnudpState) int {
+fn (mut c Checker) vnudp_reactive_object_from_to_refs(root C.vt_node, t &estree.EsTree, node int, mut st VnudpState) int {
 	if !st.built {
 		st.built = true
 		for call in c.vue_composition_api_calls(root, t, ['reactive']).map(it.call) {

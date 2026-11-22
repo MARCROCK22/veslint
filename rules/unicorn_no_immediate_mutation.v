@@ -44,7 +44,7 @@ struct UnimInfo {
 	assign_type    string
 }
 
-fn (mut c Checker) lint_unicorn_no_immediate_mutation(root C.TSNode, abs_path string, mut stats Stats) ![]Finding {
+fn (mut c Checker) lint_unicorn_no_immediate_mutation(root C.vt_node, abs_path string, mut stats Stats) ![]Finding {
 	sw := time.new_stopwatch()
 	check_conditionals := unim_options(c.rule_options(unicorn_no_immediate_mutation))!
 	mut findings := []Finding{}

@@ -16,7 +16,7 @@ fn svsha_options(options []json2.Any) !bool {
 	return o.string_value('prefer', ['always', 'never'])! != 'never'
 }
 
-fn (mut c Checker) lint_svelte_shorthand_attribute(root C.TSNode, abs_path string, mut stats Stats) ![]Finding {
+fn (mut c Checker) lint_svelte_shorthand_attribute(root C.vt_node, abs_path string, mut stats Stats) ![]Finding {
 	always := svsha_options(c.rule_options(svelte_shorthand_attribute))!
 	if !c.is_svelte() {
 		return []

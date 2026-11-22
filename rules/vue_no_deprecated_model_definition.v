@@ -38,7 +38,7 @@ fn vndmd_property_value(t &estree.EsTree, object int, key string) int {
 	return -1
 }
 
-fn (mut c Checker) lint_vue_no_deprecated_model_definition(root C.TSNode, abs_path string, mut stats Stats) ![]Finding {
+fn (mut c Checker) lint_vue_no_deprecated_model_definition(root C.vt_node, abs_path string, mut stats Stats) ![]Finding {
 	sw := time.new_stopwatch()
 	allow_vue3_compat := vue_no_deprecated_model_definition_options(c.rule_options(vue_no_deprecated_model_definition))!
 	mut findings := []Finding{}

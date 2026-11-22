@@ -26,7 +26,7 @@ fn nebc_options(options []json2.Any) !NebcOptions {
 	}
 }
 
-fn (mut c Checker) lint_no_extra_boolean_cast(root C.TSNode, abs_path string, mut stats Stats) ![]Finding {
+fn (mut c Checker) lint_no_extra_boolean_cast(root C.vt_node, abs_path string, mut stats Stats) ![]Finding {
 	sw := time.new_stopwatch()
 	o := nebc_options(c.rule_options(no_extra_boolean_cast))!
 	mut findings := []Finding{}
@@ -85,7 +85,7 @@ fn (mut c Checker) lint_no_extra_boolean_cast(root C.TSNode, abs_path string, mu
 
 // nebc_estree_parent is the ESTree parent: the call or `new` of an argument, the node around the
 // parentheses otherwise.
-fn nebc_estree_parent(n C.TSNode) ?C.TSNode {
+fn nebc_estree_parent(n C.vt_node) ?C.vt_node {
 	parent := cti_estree_parent(n)?
 	if node_kind(parent) == 'arguments' {
 		return node_parent(parent)
@@ -94,7 +94,7 @@ fn nebc_estree_parent(n C.TSNode) ?C.TSNode {
 }
 
 // nebc_is_boolean_call ports isBooleanFunctionOrConstructorCall.
-fn (mut c Checker) nebc_is_boolean_call(root C.TSNode, n C.TSNode) bool {
+fn (mut c Checker) nebc_is_boolean_call(root C.vt_node, n C.vt_node) bool {
 	if node_kind(n) !in ['call_expression', 'new_expression'] {
 		return false
 	}
@@ -108,7 +108,7 @@ fn (mut c Checker) nebc_is_boolean_call(root C.TSNode, n C.TSNode) bool {
 }
 
 // nebc_test_of is the test of an if, do-while, while, conditional or for.
-fn nebc_test_of(parent C.TSNode) ?C.TSNode {
+fn nebc_test_of(parent C.vt_node) ?C.vt_node {
 	match node_kind(parent) {
 		'if_statement', 'while_statement', 'do_statement', 'ternary_expression', 'for_statement' {
 			test := node_field(parent, 'condition')?
@@ -124,7 +124,7 @@ fn nebc_test_of(parent C.TSNode) ?C.TSNode {
 }
 
 // nebc_flagged ports isInFlaggedContext.
-fn (mut c Checker) nebc_flagged(root C.TSNode, o NebcOptions, n C.TSNode) bool {
+fn (mut c Checker) nebc_flagged(root C.vt_node, o NebcOptions, n C.vt_node) bool {
 	parent := nebc_estree_parent(n) or { return false }
 	key := node_key(n)
 	kind := node_kind(parent)
@@ -164,7 +164,7 @@ fn (mut c Checker) nebc_flagged(root C.TSNode, o NebcOptions, n C.TSNode) bool {
 	}
 	// isInBooleanContext.
 	if c.nebc_is_boolean_call(root, parent) {
-		args := (call_arguments(parent) or { []C.TSNode{} }).filter(node_kind(it) != 'comment')
+		args := (call_arguments(parent) or { []C.vt_node{} }).filter(node_kind(it) != 'comment')
 		if args.len > 0 && node_key(unwrap_parens(args[0])) == key {
 			return true
 		}
@@ -180,7 +180,7 @@ fn (mut c Checker) nebc_flagged(root C.TSNode, o NebcOptions, n C.TSNode) bool {
 // nebc_is_parenthesized ports eslint-utils' isParenthesized(1, node): parentheses around the node
 // that are not those of the syntax of its parent (a call's around its only argument, an if's
 // around its test…).
-fn (mut c Checker) nebc_is_parenthesized(root C.TSNode, n C.TSNode) bool {
+fn (mut c Checker) nebc_is_parenthesized(root C.vt_node, n C.vt_node) bool {
 	tokens := c.source_tokens(root)
 	before := tokens.before(node_start(n), false) or { return false }
 	after := tokens.after(c.es_end(n), false) or { return false }
@@ -213,12 +213,12 @@ fn (mut c Checker) nebc_is_parenthesized(root C.TSNode, n C.TSNode) bool {
 	return before.start != syntax
 }
 
-fn named_args(args C.TSNode) []C.TSNode {
+fn named_args(args C.vt_node) []C.vt_node {
 	return treesitter.named_children(args).filter(node_kind(it) != 'comment')
 }
 
 // nebc_needs_parens ports needsParens: the replacement needs parentheses where the cast was.
-fn (mut c Checker) nebc_needs_parens(root C.TSNode, previous C.TSNode, node C.TSNode) bool {
+fn (mut c Checker) nebc_needs_parens(root C.vt_node, previous C.vt_node, node C.vt_node) bool {
 	if c.nebc_is_parenthesized(root, previous) {
 		return false
 	}
@@ -262,17 +262,17 @@ fn (mut c Checker) nebc_needs_parens(root C.TSNode, previous C.TSNode, node C.TS
 }
 
 // es_is_mixed_logical_and_coalesce ports isMixedLogicalAndCoalesceExpressions.
-fn es_is_mixed_logical_and_coalesce(left C.TSNode, right C.TSNode) bool {
-	is_logical := fn (n C.TSNode) bool {
+fn es_is_mixed_logical_and_coalesce(left C.vt_node, right C.vt_node) bool {
+	is_logical := fn (n C.vt_node) bool {
 		return estree_binary_kind(n) == 'LogicalExpression' && operator_of(n) in ['&&', '||']
 	}
-	is_coalesce := fn (n C.TSNode) bool {
+	is_coalesce := fn (n C.vt_node) bool {
 		return estree_binary_kind(n) == 'LogicalExpression' && operator_of(n) == '??'
 	}
 	return (is_logical(left) && is_coalesce(right)) || (is_coalesce(left) && is_logical(right))
 }
 
-fn (mut c Checker) nebc_negation_fix(root C.TSNode, parent C.TSNode, argument C.TSNode) (bool, Fix) {
+fn (mut c Checker) nebc_negation_fix(root C.vt_node, parent C.vt_node, argument C.vt_node) (bool, Fix) {
 	tokens := c.source_tokens(root)
 	start := node_start(parent)
 	end := c.es_end(parent)
@@ -292,7 +292,7 @@ fn (mut c Checker) nebc_negation_fix(root C.TSNode, parent C.TSNode, argument C.
 	return true, fix_replace_range(start, end, prefix + c.es_text(argument))
 }
 
-fn (mut c Checker) nebc_call_fix(root C.TSNode, call C.TSNode, args []C.TSNode) (bool, Fix) {
+fn (mut c Checker) nebc_call_fix(root C.vt_node, call C.vt_node, args []C.vt_node) (bool, Fix) {
 	tokens := c.source_tokens(root)
 	start := node_start(call)
 	end := c.es_end(call)

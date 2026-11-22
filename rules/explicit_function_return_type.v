@@ -55,7 +55,7 @@ fn efrt_options(options []json2.Any) !EfrtOptions {
 	}
 }
 
-fn (mut c Checker) lint_explicit_function_return_type(root C.TSNode, abs_path string, mut stats Stats) ![]Finding {
+fn (mut c Checker) lint_explicit_function_return_type(root C.vt_node, abs_path string, mut stats Stats) ![]Finding {
 	sw := time.new_stopwatch()
 	o := efrt_options(c.rule_options(explicit_function_return_type))!
 	mut findings := []Finding{}

@@ -15,7 +15,7 @@ const vue_valid_define_emits_messages = {
 	'definedInBoth':      'Custom events are defined in both `defineEmits` and `export default {}`.'
 }
 
-fn (mut c Checker) lint_vue_valid_define_emits(root C.TSNode, abs_path string, mut stats Stats) ![]Finding {
+fn (mut c Checker) lint_vue_valid_define_emits(root C.vt_node, abs_path string, mut stats Stats) ![]Finding {
 	if !c.is_vue() {
 		return []
 	}

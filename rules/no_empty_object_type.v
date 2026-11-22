@@ -49,7 +49,7 @@ fn (o &NeotOptions) allowed_name(name string) !bool {
 	return tester.test(utf16_units(name))!
 }
 
-fn (mut c Checker) lint_no_empty_object_type(root C.TSNode, abs_path string, mut stats Stats) ![]Finding {
+fn (mut c Checker) lint_no_empty_object_type(root C.vt_node, abs_path string, mut stats Stats) ![]Finding {
 	sw := time.new_stopwatch()
 	o := neot_options(c.rule_options(no_empty_object_type))!
 	mut findings := []Finding{}

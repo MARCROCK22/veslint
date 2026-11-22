@@ -135,7 +135,7 @@ mut:
 
 // rx_regexps are the regular expressions of the file, in the order the shared visitor of
 // defineRegexpVisitor verifies them; none when the file has no ESTree.
-fn (mut c Checker) rx_regexps(root C.TSNode, abs_path string) []RxRegExp {
+fn (mut c Checker) rx_regexps(root C.vt_node, abs_path string) []RxRegExp {
 	if c.rx_file.built {
 		return c.rx_file.regexps
 	}
@@ -352,7 +352,7 @@ fn rx_pattern_source_from_literal(t &estree.EsTree, node int) RxPatternSource {
 
 // rx_pattern_source_from_expression ports PatternSource.fromExpression: none when the value of
 // the pattern is not known.
-fn (mut c Checker) rx_pattern_source_from_expression(root C.TSNode, t &estree.EsTree, expression int) ?RxPatternSource {
+fn (mut c Checker) rx_pattern_source_from_expression(root C.vt_node, t &estree.EsTree, expression int) ?RxPatternSource {
 	e := c.rx_dereference_owned_variable(root, t, expression)
 	if rx_is_regexp_literal(t, e) {
 		return rx_pattern_source_from_literal(t, e)
@@ -404,7 +404,7 @@ fn (mut c Checker) rx_pattern_source_from_expression(root C.TSNode, t &estree.Es
 }
 
 // rx_flatten_plus ports flattenPlus: the operands of `+`, owned constants dereferenced.
-fn (mut c Checker) rx_flatten_plus(root C.TSNode, t &estree.EsTree, e int) []int {
+fn (mut c Checker) rx_flatten_plus(root C.vt_node, t &estree.EsTree, e int) []int {
 	if t.typ(e) == .binary_expression && (t.string_of(e, .operator) or { '' }) == '+' {
 		left := t.node(e, .left) or { return [e] }
 		right := t.node(e, .right) or { return [e] }

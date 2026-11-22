@@ -52,7 +52,7 @@ const upm_suggestions = {
 
 const upm_common_js_globals = ['exports', 'require', 'module', '__filename', '__dirname']
 
-fn (mut c Checker) lint_unicorn_prefer_module(root C.TSNode, abs_path string, mut stats Stats) ![]Finding {
+fn (mut c Checker) lint_unicorn_prefer_module(root C.vt_node, abs_path string, mut stats Stats) ![]Finding {
 	sw := time.new_stopwatch()
 	mut findings := []Finding{}
 	filename := abs_path.to_lower()
@@ -131,7 +131,7 @@ fn upm_enclosing_function(t &estree.EsTree, node int) int {
 // upm_is_global_reference is sourceCode.isGlobalReference: the key of a shorthand property and
 // the exported name of a shorthand export specifier share their TypeScript node with the value,
 // but only the value is a reference.
-fn (mut c Checker) upm_is_global_reference(root C.TSNode, t &estree.EsTree, node int) bool {
+fn (mut c Checker) upm_is_global_reference(root C.vt_node, t &estree.EsTree, node int) bool {
 	parent := t.nodes[node].parent
 	if parent >= 0 && ((t.typ(parent) == .property && t.node(parent, .key) or { -1 } == node
 		&& t.node(parent, .value) or { -1 } != node)
@@ -145,7 +145,7 @@ fn (mut c Checker) upm_is_global_reference(root C.TSNode, t &estree.EsTree, node
 	return c.es_is_global_reference(root, ts)
 }
 
-fn (mut c Checker) upm_identifier(root C.TSNode, t &estree.EsTree, tokens &SourceTokens, node int) ?Finding {
+fn (mut c Checker) upm_identifier(root C.vt_node, t &estree.EsTree, tokens &SourceTokens, node int) ?Finding {
 	name := t.string_of(node, .name) or { return none }
 	if name !in upm_common_js_globals || !c.upm_is_global_reference(root, t, node) {
 		return none

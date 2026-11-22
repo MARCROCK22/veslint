@@ -7,9 +7,9 @@ import rand
 // for any edit.
 
 fn edited_tree(p &Parser, old_src string, src string) (&C.TSTree, &C.TSTree) {
-	old := p.parse(old_src) or { panic(err) }
+	old := p.parse_tree(old_src) or { panic(err) }
 	again, _ := p.reparse(old, old_src, src) or { panic(err) }
-	fresh := p.parse(src) or { panic(err) }
+	fresh := p.parse_tree(src) or { panic(err) }
 	return again, fresh
 }
 
@@ -61,9 +61,9 @@ fn test_reparse_distrusts_a_change_away_from_the_edit() {
 		'cases.ts')) or { panic(err) }
 	at := src.index('const f2') or { panic('no f2') }
 	edited := src[..at] + '// note\n' + src[at..]
-	old := p.parse(src) or { panic(err) }
+	old := p.parse_tree(src) or { panic(err) }
 	again, how := p.reparse(old, src, edited) or { panic(err) }
-	fresh := p.parse(edited) or { panic(err) }
+	fresh := p.parse_tree(edited) or { panic(err) }
 	defer {
 		tree_delete(again)
 		tree_delete(fresh)
@@ -80,9 +80,9 @@ fn test_reparse_is_incremental_for_an_edit_in_a_statement() {
 	}
 	src := 'const a = 1;\nfunction f(x: number) {\n  return x + 1;\n}\nconst b = f(a);\n'
 	edited := src.replace('x + 1', 'x + 12')
-	old := p.parse(src) or { panic(err) }
+	old := p.parse_tree(src) or { panic(err) }
 	again, how := p.reparse(old, src, edited) or { panic(err) }
-	fresh := p.parse(edited) or { panic(err) }
+	fresh := p.parse_tree(edited) or { panic(err) }
 	defer {
 		tree_delete(again)
 		tree_delete(fresh)
@@ -97,7 +97,7 @@ fn test_reparse_equal_text_keeps_the_tree() {
 		p.close()
 	}
 	src := 'const a = 1;\n'
-	old := p.parse(src) or { panic(err) }
+	old := p.parse_tree(src) or { panic(err) }
 	again, how := p.reparse(old, src, src.clone()) or { panic(err) }
 	defer {
 		tree_delete(again)
@@ -117,18 +117,18 @@ fn test_tree_cache_reuses_and_forgets() {
 	defer {
 		cache.clear()
 	}
-	first := cache.parse(p, 'a.ts', 'let a = 1;\n') or { panic(err) }
+	first := cache.parse_tree(p, 'a.ts', 'let a = 1;\n') or { panic(err) }
 	assert cache.owns(first)
-	same := cache.parse(p, 'a.ts', 'let a = 1;\n') or { panic(err) }
+	same := cache.parse_tree(p, 'a.ts', 'let a = 1;\n') or { panic(err) }
 	assert voidptr(same) == voidptr(first)
-	edited := cache.parse(p, 'a.ts', 'let a = 12;\n') or { panic(err) }
+	edited := cache.parse_tree(p, 'a.ts', 'let a = 12;\n') or { panic(err) }
 	assert !cache.owns(first) || voidptr(edited) == voidptr(first)
 	assert cache.owns(edited)
 	// Another language: parsed from scratch.
-	other := cache.parse(tsx, 'a.ts', 'let a = <b/>;\n') or { panic(err) }
+	other := cache.parse_tree(tsx, 'a.ts', 'let a = <b/>;\n') or { panic(err) }
 	assert voidptr(C.ts_tree_language(other)) == voidptr(tsx.lang)
 	for i in 0 .. tree_cache_size + 2 {
-		cache.parse(p, 'f${i}.ts', 'x;') or { panic(err) }
+		cache.parse_tree(p, 'f${i}.ts', 'x;') or { panic(err) }
 	}
 	assert cache.entries.len == tree_cache_size
 	assert 'a.ts' !in cache.entries
@@ -240,14 +240,14 @@ fn test_reparse_random_edits_of_the_fixtures() {
 		}
 		parser := if path.ends_with('.tsx') { tsx } else { p }
 		mut src := original
-		mut tree := parser.parse(src) or { panic(err) }
+		mut tree := parser.parse_tree(src) or { panic(err) }
 		for _ in 0 .. 5 {
 			next := if (rand.intn(2) or { 0 }) == 0 { random_edit(src) } else { line_edit(src) }
 			again, how := parser.reparse(tree, src, next) or { panic(err) }
 			tree = again
 			outcomes[int(how)]++
 			src = next
-			fresh := parser.parse(src) or { panic(err) }
+			fresh := parser.parse_tree(src) or { panic(err) }
 			at := trees_differ(tree, fresh)
 			tree_delete(fresh)
 			edits++
@@ -263,4 +263,34 @@ fn test_reparse_random_edits_of_the_fixtures() {
 	// from scratch.
 	assert outcomes[int(Reparse.incremental)] > edits / 10, '${outcomes}'
 	assert outcomes[int(Reparse.fresh)] > edits / 10, '${outcomes}'
+}
+
+// A parse through the cache gives new rows of the cache's tree: the rows a parse from scratch
+// gives, the caller's to free.
+fn test_tree_cache_gives_rows_of_its_tree() {
+	p := new_parser() or { panic(err) }
+	defer {
+		p.close()
+	}
+	mut cache := new_tree_cache()
+	defer {
+		cache.clear()
+	}
+	src := 'const a = 1;\nfunction f(x: number) {\n  return x + 1;\n}\n'
+	for text in [src, src.replace('x + 1', 'x + 12'), src.replace('x + 1', 'x +')] {
+		rows := cache.parse(p, 'a.ts', text) or { panic(err) }
+		fresh := p.parse(text) or { panic(err) }
+		assert rows.count == fresh.count
+		for i in 0 .. int(rows.count) {
+			a := C.vt_node_row(C.vt_node_at(rows, u32(i)))
+			b := C.vt_node_row(C.vt_node_at(fresh, u32(i)))
+			assert a.start_byte == b.start_byte && a.end_byte == b.end_byte && a.symbol == b.symbol
+				&& a.field == b.field && a.flags == b.flags && a.parent == b.parent
+				&& a.next == b.next && a.last == b.last
+		}
+		assert tree_has_error(rows) == text.contains('x +;')
+		rows_free(rows)
+		rows_free(fresh)
+	}
+	assert cache.entries.len == 1
 }

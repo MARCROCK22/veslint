@@ -9,7 +9,7 @@ const uncs_messages = {
 	'no-console-spaces': 'Do not use {{position}} space between `console.{{method}}` parameters.'
 }
 
-fn (mut c Checker) lint_unicorn_no_console_spaces(root C.TSNode, abs_path string, mut stats Stats) ![]Finding {
+fn (mut c Checker) lint_unicorn_no_console_spaces(root C.vt_node, abs_path string, mut stats Stats) ![]Finding {
 	sw := time.new_stopwatch()
 	mut findings := []Finding{}
 	t := c.es_tree(root, abs_path) or { return findings }

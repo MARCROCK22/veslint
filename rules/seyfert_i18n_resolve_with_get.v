@@ -12,11 +12,11 @@ const sy_irwg_messages = {
 	'callGet': '`ctx.t` returns a locale proxy — resolve it with `.get()` before using it as a string.'
 }
 
-fn (mut c Checker) lint_seyfert_i18n_resolve_with_get(root C.TSNode, abs_path string, mut stats Stats) ![]Finding {
+fn (mut c Checker) lint_seyfert_i18n_resolve_with_get(root C.vt_node, abs_path string, mut stats Stats) ![]Finding {
 	mut sw := time.new_stopwatch()
 	// The expressions of each TemplateLiteral, and the left and right of each BinaryExpression with
 	// `+`, in the order ESLint visits them.
-	mut expressions := []C.TSNode{}
+	mut expressions := []C.vt_node{}
 	for node in c.nodes_of_kinds(root, ['template_string', 'binary_expression'], []) {
 		if node_kind(node) == 'template_string' {
 			for substitution in named_children(node) {

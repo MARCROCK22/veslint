@@ -32,7 +32,7 @@ fn pssew_options(options []json2.Any) !PssewOptions {
 struct PssewCandidate {
 	report     Ident
 	message_id string
-	object     C.TSNode
+	object     C.vt_node
 	typed      bool = true
 	fixes      []Fix // what the fixer yields; none when it returns null
 }
@@ -43,7 +43,7 @@ struct PssewRegexp {
 	text   string
 }
 
-fn (mut c Checker) lint_prefer_string_starts_ends_with(root C.TSNode, abs_path string, mut stats Stats) ![]Finding {
+fn (mut c Checker) lint_prefer_string_starts_ends_with(root C.vt_node, abs_path string, mut stats Stats) ![]Finding {
 	mut sw := time.new_stopwatch()
 	o := pssew_options(c.rule_options(prefer_string_starts_ends_with))!
 	mut candidates := []PssewCandidate{}
@@ -113,14 +113,14 @@ fn pssew_message(starts bool) string {
 	return if starts { 'preferStartsWith' } else { 'preferEndsWith' }
 }
 
-fn pssew_is_equality(binary C.TSNode) bool {
+fn pssew_is_equality(binary C.vt_node) bool {
 	return operator_of(binary) in ['==', '===', '!=', '!==']
 }
 
 // pssew_single_element handles `foo[0] === "a"`, `foo.charAt(0) === "a"` and their last-index
 // variants; `call` is the charAt call.
-fn (mut c Checker) pssew_single_element(member C.TSNode, binary C.TSNode, call ?C.TSNode, o PssewOptions, mut out []PssewCandidate) {
-	mut index := ?C.TSNode(none)
+fn (mut c Checker) pssew_single_element(member C.vt_node, binary C.vt_node, call ?C.vt_node, o PssewOptions, mut out []PssewCandidate) {
+	mut index := ?C.vt_node(none)
 	if charat := call {
 		args := call_arguments(charat) or { return }
 		if args.len == 1 {
@@ -157,7 +157,7 @@ fn (mut c Checker) pssew_single_element(member C.TSNode, binary C.TSNode, call ?
 }
 
 // pssew_index_of handles `foo.indexOf('bar') === 0`.
-fn (mut c Checker) pssew_index_of(member C.TSNode, binary C.TSNode, call C.TSNode, args []C.TSNode, mut out []PssewCandidate) {
+fn (mut c Checker) pssew_index_of(member C.vt_node, binary C.vt_node, call C.vt_node, args []C.vt_node, mut out []PssewCandidate) {
 	if args.len != 1 || !pssew_is_equality(binary)
 		|| !c.pssew_is_number(node_field(binary, 'right') or { return }, 0) {
 		return
@@ -171,7 +171,7 @@ fn (mut c Checker) pssew_index_of(member C.TSNode, binary C.TSNode, call C.TSNod
 }
 
 // pssew_last_index_of handles `foo.lastIndexOf(bar) === foo.length - bar.length`.
-fn (mut c Checker) pssew_last_index_of(member C.TSNode, binary C.TSNode, call C.TSNode, args []C.TSNode, mut out []PssewCandidate) {
+fn (mut c Checker) pssew_last_index_of(member C.vt_node, binary C.vt_node, call C.vt_node, args []C.vt_node, mut out []PssewCandidate) {
 	if args.len != 1 || !pssew_is_equality(binary) {
 		return
 	}
@@ -193,7 +193,7 @@ fn (mut c Checker) pssew_last_index_of(member C.TSNode, binary C.TSNode, call C.
 }
 
 // pssew_match handles `foo.match(/^bar/) === null`, reported at the call.
-fn (mut c Checker) pssew_match(member C.TSNode, binary C.TSNode, call C.TSNode, args []C.TSNode, mut out []PssewCandidate) {
+fn (mut c Checker) pssew_match(member C.vt_node, binary C.vt_node, call C.vt_node, args []C.vt_node, mut out []PssewCandidate) {
 	right := c.get_static_value(node_field(binary, 'right') or { return })
 	if !right.found || !stv_is_nullish(right.value) || args.len != 1 {
 		return
@@ -221,7 +221,7 @@ fn (mut c Checker) pssew_match(member C.TSNode, binary C.TSNode, call C.TSNode, 
 
 // pssew_slice handles `foo.slice(0, 3) === 'bar'`, `foo.substring(foo.length - 3) === 'bar'` and
 // the like.
-fn (mut c Checker) pssew_slice(member C.TSNode, binary C.TSNode, args []C.TSNode, mut out []PssewCandidate) {
+fn (mut c Checker) pssew_slice(member C.vt_node, binary C.vt_node, args []C.vt_node, mut out []PssewCandidate) {
 	if !c.is_static_member_access_of_value(member, ['slice', 'substring']) || !pssew_is_equality(binary) {
 		return
 	}
@@ -252,7 +252,7 @@ fn (mut c Checker) pssew_slice(member C.TSNode, binary C.TSNode, args []C.TSNode
 
 // pssew_slice_fixes ports the fixer of the slice and substring reports, which gives up when the
 // fix could change the behavior.
-fn (mut c Checker) pssew_slice_fixes(member C.TSNode, binary C.TSNode, args []C.TSNode, object C.TSNode, is_starts bool) []Fix {
+fn (mut c Checker) pssew_slice_fixes(member C.vt_node, binary C.vt_node, args []C.vt_node, object C.vt_node, is_starts bool) []Fix {
 	right := node_field(binary, 'right') or { return []Fix{} }
 	// `==` and `!=` are only fixed against a string literal.
 	if operator_of(binary).len == 2 && node_kind(unwrap_parens(right)) != 'string' {
@@ -294,7 +294,7 @@ fn pssew_method(starts bool, optional bool) string {
 
 // pssew_property_start ports the start of getPropertyRange: the first token after the object of
 // the member that is not a `)`.
-fn (mut c Checker) pssew_property_start(member C.TSNode) ?int {
+fn (mut c Checker) pssew_property_start(member C.vt_node) ?int {
 	object := unwrap_parens(node_field(member, 'object')?)
 	tokens := c.source_tokens(member)
 	mut offset := node_end(object)
@@ -310,7 +310,7 @@ fn (mut c Checker) pssew_property_start(member C.TSNode) ?int {
 
 // pssew_fix_with_right ports fixWithRightOperand: the right operand becomes the argument of the
 // method. `foo.slice(0, 3) === 'bar'` → `foo.startsWith('bar')`.
-fn (mut c Checker) pssew_fix_with_right(binary C.TSNode, starts bool, optional bool) []Fix {
+fn (mut c Checker) pssew_fix_with_right(binary C.vt_node, starts bool, optional bool) []Fix {
 	// getLeftNode: the left side, or its callee if it is a call, must be a member.
 	mut left := unwrap_parens(node_field(binary, 'left') or { return []Fix{} })
 	if _ := call_arguments(left) {
@@ -333,7 +333,7 @@ fn (mut c Checker) pssew_fix_with_right(binary C.TSNode, starts bool, optional b
 
 // pssew_fix_with_argument ports fixWithArgument: the first argument stays as the search string.
 // `foo.indexOf('bar') === 0` → `foo.startsWith('bar')`.
-fn (mut c Checker) pssew_fix_with_argument(binary C.TSNode, call C.TSNode, callee C.TSNode, starts bool) []Fix {
+fn (mut c Checker) pssew_fix_with_argument(binary C.vt_node, call C.vt_node, callee C.vt_node, starts bool) []Fix {
 	property_start := c.pssew_property_start(callee) or { return []Fix{} }
 	mut fixes := []Fix{}
 	if operator_of(binary).starts_with('!') {
@@ -345,7 +345,7 @@ fn (mut c Checker) pssew_fix_with_argument(binary C.TSNode, call C.TSNode, calle
 }
 
 // pssew_test handles `/^bar/.test(foo)`, reported at the call; no type check.
-fn (mut c Checker) pssew_test(call C.TSNode, mut out []PssewCandidate) {
+fn (mut c Checker) pssew_test(call C.vt_node, mut out []PssewCandidate) {
 	args := call_arguments(call) or { return }
 	callee := unwrap_parens(node_field(call, 'function') or { return })
 	if node_kind(callee) != 'member_expression' || is_estree_chain_root(callee) {
@@ -378,13 +378,13 @@ fn (mut c Checker) pssew_test(call C.TSNode, mut out []PssewCandidate) {
 }
 
 // pssew_is_number ports isNumber: the static value is that number.
-fn (mut c Checker) pssew_is_number(n C.TSNode, value f64) bool {
+fn (mut c Checker) pssew_is_number(n C.vt_node, value f64) bool {
 	v := c.get_static_value(n)
 	return v.found && v.value.kind == .number_ && v.value.number == value
 }
 
 // pssew_is_last_index ports isLastIndexExpression: `foo.length - 1`.
-fn (mut c Checker) pssew_is_last_index(n C.TSNode, expected C.TSNode) bool {
+fn (mut c Checker) pssew_is_last_index(n C.vt_node, expected C.vt_node) bool {
 	node := unwrap_parens(n)
 	return estree_binary_kind(node) == 'BinaryExpression' && operator_of(node) == '-'
 		&& c.pssew_is_length(node_field(node, 'left') or { return false }, expected)
@@ -393,7 +393,7 @@ fn (mut c Checker) pssew_is_last_index(n C.TSNode, expected C.TSNode) bool {
 
 // pssew_is_length ports isLengthExpression: `x.length` of the same tokens as `expected`, or a
 // static number equal to the length of `expected`'s static string.
-fn (mut c Checker) pssew_is_length(n C.TSNode, expected C.TSNode) bool {
+fn (mut c Checker) pssew_is_length(n C.vt_node, expected C.vt_node) bool {
 	node := unwrap_parens(n)
 	if is_member(node) && !is_estree_chain_root(node) {
 		name := c.property_name(node) or { return false }
@@ -408,7 +408,7 @@ fn (mut c Checker) pssew_is_length(n C.TSNode, expected C.TSNode) bool {
 
 // pssew_is_length_ahead_of_end ports isLengthAheadOfEnd: `-substring.length` or
 // `parentString.length - substring.length`.
-fn (mut c Checker) pssew_is_length_ahead_of_end(n C.TSNode, substring C.TSNode, parent_string C.TSNode) bool {
+fn (mut c Checker) pssew_is_length_ahead_of_end(n C.vt_node, substring C.vt_node, parent_string C.vt_node) bool {
 	node := unwrap_parens(n)
 	if node_kind(node) == 'unary_expression' && operator_of(node) == '-' {
 		return c.pssew_is_length(node_field(node, 'argument') or { return false }, substring)
@@ -420,13 +420,13 @@ fn (mut c Checker) pssew_is_length_ahead_of_end(n C.TSNode, substring C.TSNode, 
 
 // pssew_tokens are the tokens of a node as ESLint's tokenizer gives them (their texts):
 // literals are single tokens, a template splits at its substitutions, comments are skipped.
-fn (c &Checker) pssew_tokens(n C.TSNode) []string {
+fn (c &Checker) pssew_tokens(n C.vt_node) []string {
 	mut out := []string{}
 	c.pssew_collect_tokens(unwrap_parens(n), mut out, 0)
 	return out
 }
 
-fn (c &Checker) pssew_collect_tokens(n C.TSNode, mut out []string, depth int) {
+fn (c &Checker) pssew_collect_tokens(n C.vt_node, mut out []string, depth int) {
 	if depth > max_expression_depth {
 		return
 	}
@@ -434,7 +434,7 @@ fn (c &Checker) pssew_collect_tokens(n C.TSNode, mut out []string, depth int) {
 	if kind == 'comment' {
 		return
 	}
-	if kind in ['string', 'number', 'regex'] || C.ts_node_child_count(n) == 0 {
+	if kind in ['string', 'number', 'regex'] || C.vt_node_child_count(n) == 0 {
 		if node_end(n) > node_start(n) {
 			out << c.text(n)
 		}
@@ -463,7 +463,7 @@ fn (c &Checker) pssew_collect_tokens(n C.TSNode, mut out []string, depth int) {
 // pssew_parse_regexp ports parseRegExp: for a static RegExp starting with `^` or (exclusively)
 // ending with `$`, without `i` nor `m`, whose other elements are characters, whether it is the
 // startsWith form.
-fn (mut c Checker) pssew_parse_regexp(n C.TSNode) ?PssewRegexp {
+fn (mut c Checker) pssew_parse_regexp(n C.vt_node) ?PssewRegexp {
 	value := c.get_static_value(n)
 	if !value.found || value.value.kind != .regexp_ {
 		return none

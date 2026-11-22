@@ -57,7 +57,7 @@ fn rxlc_convert(letter_case string, s string) string {
 	return if letter_case == 'lowercase' { s.to_lower() } else { s.to_upper() }
 }
 
-fn (mut c Checker) lint_regexp_letter_case(root C.TSNode, abs_path string, mut stats Stats) ![]Finding {
+fn (mut c Checker) lint_regexp_letter_case(root C.vt_node, abs_path string, mut stats Stats) ![]Finding {
 	sw := time.new_stopwatch()
 	options := rxlc_options(c.rule_options(regexp_letter_case))!
 	mut findings := []Finding{}

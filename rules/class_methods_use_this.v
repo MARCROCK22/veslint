@@ -48,7 +48,7 @@ mut:
 	uses_this bool
 }
 
-fn (mut c Checker) lint_class_methods_use_this(root C.TSNode, abs_path string, mut stats Stats) ![]Finding {
+fn (mut c Checker) lint_class_methods_use_this(root C.vt_node, abs_path string, mut stats Stats) ![]Finding {
 	sw := time.new_stopwatch()
 	o := cmut_options(c.rule_options(class_methods_use_this))!
 	mut findings := []Finding{}

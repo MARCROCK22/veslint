@@ -9,7 +9,7 @@ const vnvftk_messages = {
 	'disallow': "'<template v-for>' cannot be keyed. Place the key on real elements instead."
 }
 
-fn (mut c Checker) lint_vue_no_v_for_template_key(root C.TSNode, abs_path string, mut stats Stats) ![]Finding {
+fn (mut c Checker) lint_vue_no_v_for_template_key(root C.vt_node, abs_path string, mut stats Stats) ![]Finding {
 	if !c.vue_has_template() {
 		return []
 	}

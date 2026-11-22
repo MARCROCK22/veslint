@@ -28,7 +28,7 @@ fn prm_prefer_await_to_then_options(options []json2.Any) !bool {
 	return value as bool
 }
 
-fn (mut c Checker) lint_promise_prefer_await_to_then(root C.TSNode, abs_path string, mut stats Stats) ![]Finding {
+fn (mut c Checker) lint_promise_prefer_await_to_then(root C.vt_node, abs_path string, mut stats Stats) ![]Finding {
 	sw := time.new_stopwatch()
 	strict := prm_prefer_await_to_then_options(c.rule_options(promise_prefer_await_to_then))!
 	mut findings := []Finding{}

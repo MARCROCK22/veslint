@@ -82,14 +82,14 @@ fn (mut c Checker) sndd_check(kind string, data_key string) []Finding {
 	return findings
 }
 
-fn (mut c Checker) lint_svelte_no_dupe_on_directives(root C.TSNode, abs_path string, mut stats Stats) ![]Finding {
+fn (mut c Checker) lint_svelte_no_dupe_on_directives(root C.vt_node, abs_path string, mut stats Stats) ![]Finding {
 	if !c.is_svelte() {
 		return []
 	}
 	return c.sndd_check('EventHandler', 'type')
 }
 
-fn (mut c Checker) lint_svelte_no_dupe_use_directives(root C.TSNode, abs_path string, mut stats Stats) ![]Finding {
+fn (mut c Checker) lint_svelte_no_dupe_use_directives(root C.vt_node, abs_path string, mut stats Stats) ![]Finding {
 	if !c.is_svelte() {
 		return []
 	}

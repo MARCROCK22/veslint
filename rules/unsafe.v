@@ -117,12 +117,12 @@ fn (mut c Checker) type_constituents(t TypeResponse) ![]TypeResponse {
 // unsafe_assignment ports isUnsafeAssignment: assigning `any` to something that is neither `any`
 // nor `unknown`, or a generic reference to another of the same type with such an argument
 // (Set<any> to Set<string>). `sender_node` is the assigned value, if any.
-fn (mut c Checker) unsafe_assignment(sender TypeResponse, receiver TypeResponse, sender_node ?C.TSNode) !UnsafePair {
+fn (mut c Checker) unsafe_assignment(sender TypeResponse, receiver TypeResponse, sender_node ?C.vt_node) !UnsafePair {
 	mut visited := map[string]bool{}
 	return c.unsafe_assignment_worker(sender, receiver, sender_node, mut visited, 0)!
 }
 
-fn (mut c Checker) unsafe_assignment_worker(t TypeResponse, receiver TypeResponse, sender_node ?C.TSNode, mut visited map[string]bool, depth int) !UnsafePair {
+fn (mut c Checker) unsafe_assignment_worker(t TypeResponse, receiver TypeResponse, sender_node ?C.vt_node, mut visited map[string]bool, depth int) !UnsafePair {
 	if c.is_any(t)! {
 		if c.is_unknown(receiver)! {
 			return UnsafePair{}
@@ -166,7 +166,7 @@ fn (mut c Checker) unsafe_assignment_worker(t TypeResponse, receiver TypeRespons
 	return UnsafePair{}
 }
 
-fn (c &Checker) is_new_map_without_arguments(n C.TSNode) bool {
+fn (c &Checker) is_new_map_without_arguments(n C.vt_node) bool {
 	node := unwrap_parens(n)
 	if node_kind(node) != 'new_expression' {
 		return false
@@ -223,7 +223,7 @@ fn unique_types(types []TypeResponse) []TypeResponse {
 
 // this_expression ports getThisExpression: the `this` a chain of calls and member accesses starts
 // from (`this.a.b()`). A tagged template breaks the chain.
-fn this_expression(n C.TSNode) ?C.TSNode {
+fn this_expression(n C.vt_node) ?C.vt_node {
 	mut node := unwrap_parens(n)
 	for {
 		match node_kind(node) {
@@ -250,7 +250,7 @@ fn this_expression(n C.TSNode) ?C.TSNode {
 
 // this_is_any: `n` comes from a `this` whose type (with its constraint) is `any`, and the project
 // does not have `noImplicitThis`. It is the "this" variant of the messages.
-fn (mut c Checker) this_is_any(n C.TSNode) !bool {
+fn (mut c Checker) this_is_any(n C.vt_node) !bool {
 	if c.no_implicit_this {
 		return false
 	}
@@ -260,7 +260,7 @@ fn (mut c Checker) this_is_any(n C.TSNode) !bool {
 }
 
 // this_spans are the `this` the nodes come from, for the "this" variant of the messages.
-fn (c &Checker) this_spans(nodes []C.TSNode) []Span {
+fn (c &Checker) this_spans(nodes []C.vt_node) []Span {
 	if c.no_implicit_this {
 		return []Span{}
 	}
@@ -276,7 +276,7 @@ fn (c &Checker) this_spans(nodes []C.TSNode) []Span {
 // util_contextual_type ports getContextualType from type-utils, which is not the checker's: it
 // decides by the parent in the TypeScript AST, where parentheses are nodes. Returns the null type
 // when typescript-eslint would return undefined.
-fn (mut c Checker) util_contextual_type(n C.TSNode) !TypeResponse {
+fn (mut c Checker) util_contextual_type(n C.vt_node) !TypeResponse {
 	parent := node_parent(n) or { return TypeResponse{} }
 	match node_kind(parent) {
 		'arguments', 'template_substitution' {
@@ -320,7 +320,7 @@ fn (mut c Checker) util_contextual_type(n C.TSNode) !TypeResponse {
 }
 
 // util_contextual_spans are the nodes util_contextual_type may need for `n`.
-fn (c &Checker) util_contextual_spans(n C.TSNode) []Span {
+fn (c &Checker) util_contextual_spans(n C.vt_node) []Span {
 	parent := node_parent(n) or { return []Span{} }
 	mut spans := [node_span(n)]
 	match node_kind(parent) {

@@ -17,7 +17,7 @@ fn unuad_options(options []json2.Any) !int {
 	return value.int()
 }
 
-fn (mut c Checker) lint_unicorn_no_unreadable_array_destructuring(root C.TSNode, abs_path string, mut stats Stats) ![]Finding {
+fn (mut c Checker) lint_unicorn_no_unreadable_array_destructuring(root C.vt_node, abs_path string, mut stats Stats) ![]Finding {
 	sw := time.new_stopwatch()
 	maximum := unuad_options(c.rule_options(unicorn_no_unreadable_array_destructuring))!
 	mut findings := []Finding{}

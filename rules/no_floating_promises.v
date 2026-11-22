@@ -30,7 +30,7 @@ struct Unhandled {
 
 // HandlingCall is a `.catch(…)` or `.then(…)` recognized like parseCatchCall/parseThenCall.
 struct HandlingCall {
-	on_rejected ?C.TSNode
+	on_rejected ?C.vt_node
 }
 
 // NfpOptions are the options the rule applies.
@@ -61,7 +61,7 @@ fn nfp_options(options []json2.Any) !NfpOptions {
 
 // nfp_is_async_iife ports isAsyncIife: the statement is a call (not an optional chain, which is a
 // ChainExpression) of an arrow function or a function expression, async or not.
-fn nfp_is_async_iife(expr C.TSNode) bool {
+fn nfp_is_async_iife(expr C.vt_node) bool {
 	node := unwrap_parens(expr)
 	if is_optional_chain(node) {
 		return false
@@ -71,7 +71,7 @@ fn nfp_is_async_iife(expr C.TSNode) bool {
 }
 
 // nfp_void_argument is the argument of a `void` expression.
-fn nfp_void_argument(node C.TSNode) ?C.TSNode {
+fn nfp_void_argument(node C.vt_node) ?C.vt_node {
 	if node_kind(node) != 'unary_expression' || operator_of(node) != 'void' {
 		return none
 	}
@@ -80,7 +80,7 @@ fn nfp_void_argument(node C.TSNode) ?C.TSNode {
 
 // nfp_statement_callee is the callee of the expression of a statement when it is a call
 // (CallExpression in ESTree: not a tagged template).
-fn nfp_statement_callee(expr C.TSNode) ?C.TSNode {
+fn nfp_statement_callee(expr C.vt_node) ?C.vt_node {
 	node := unwrap_parens(expr)
 	if node_kind(node) != 'call_expression' {
 		return none
@@ -94,7 +94,7 @@ fn nfp_statement_callee(expr C.TSNode) ?C.TSNode {
 
 // nfp_known_safe_call ports isKnownSafePromiseCall: the statement is a call whose callee is in
 // allowForKnownSafeCalls, by its name (an identifier) or by its type.
-fn (mut c Checker) nfp_known_safe_call(expr C.TSNode, o NfpOptions) !bool {
+fn (mut c Checker) nfp_known_safe_call(expr C.vt_node, o NfpOptions) !bool {
 	callee := nfp_statement_callee(expr) or { return false }
 	t := c.node_type(callee) or { TypeResponse{} }
 	name := if node_kind(callee) in ['identifier', 'undefined'] { c.text(callee) } else { '' }
@@ -139,13 +139,13 @@ fn (mut c Checker) nfp_promise_like(t TypeResponse, at SymbolLocation, o NfpOpti
 
 // lint_no_floating_promises evaluates each expression statement. Phase 1: the type of every node
 // isUnhandledPromise may look at, in a single request. Phase 2: the rule.
-fn (mut c Checker) lint_no_floating_promises(root C.TSNode, abs_path string, mut stats Stats) ![]Finding {
+fn (mut c Checker) lint_no_floating_promises(root C.vt_node, abs_path string, mut stats Stats) ![]Finding {
 	mut sw := time.new_stopwatch()
 	o := nfp_options(c.rule_options(no_floating_promises))!
 	statements := c.nodes_of_kind(root, c'expression_statement')
 	// ArrowFunctionExpression: the body of an arrow function that is a unary expression (`() =>
 	// void p`) is checked as the expression of a statement, without the ignoreIIFE exception.
-	mut bodies := []C.TSNode{}
+	mut bodies := []C.vt_node{}
 	for arrow in c.nodes_of_kind(root, c'arrow_function') {
 		body := node_field(arrow, 'body') or { continue }
 		inner := unwrap_parens(body)
@@ -159,7 +159,7 @@ fn (mut c Checker) lint_no_floating_promises(root C.TSNode, abs_path string, mut
 			checked << expr
 		}
 	}
-	mut wanted := []C.TSNode{}
+	mut wanted := []C.vt_node{}
 	for expr in checked {
 		c.unhandled_nodes(expr, 0, o.ignore_void, mut wanted)
 		if o.safe_calls.len > 0 {
@@ -189,7 +189,7 @@ fn (mut c Checker) lint_no_floating_promises(root C.TSNode, abs_path string, mut
 
 // nfp_check_node ports checkNode: `stmt` is the node reported (the statement, or the body of an
 // arrow function) and `expr` the expression in it.
-fn (mut c Checker) nfp_check_node(stmt C.TSNode, expr C.TSNode, o NfpOptions, mut findings []Finding) ! {
+fn (mut c Checker) nfp_check_node(stmt C.vt_node, expr C.vt_node, o NfpOptions, mut findings []Finding) ! {
 	if o.safe_calls.len > 0 && c.nfp_known_safe_call(expr, o)! {
 		return
 	}
@@ -225,7 +225,7 @@ fn (mut c Checker) nfp_check_node(stmt C.TSNode, expr C.TSNode, o NfpOptions, mu
 // nfp_prefix_operator ports the fixer of `floatingFixVoid` (and the general case of addAwait): the
 // operator goes before the statement, whose expression `expr` is put in parentheses unless it is
 // parenthesized already or its precedence is higher than a unary operator's.
-fn (mut c Checker) nfp_prefix_operator(stmt C.TSNode, expr C.TSNode, operator string) []Fix {
+fn (mut c Checker) nfp_prefix_operator(stmt C.vt_node, expr C.vt_node, operator string) []Fix {
 	expression := unwrap_parens(expr)
 	// Outside an async function TypeScript reads `await (p)`, `await [p]` and `` await `p` `` as a
 	// call, an element access and a tagged template of an `await` identifier (see await_reading),
@@ -243,7 +243,7 @@ fn (mut c Checker) nfp_prefix_operator(stmt C.TSNode, expr C.TSNode, operator st
 
 // nfp_add_await ports addAwait: the `void` of a `void` expression becomes `await`; any other
 // expression gets `await` before it.
-fn (mut c Checker) nfp_add_await(stmt C.TSNode, expr C.TSNode) []Fix {
+fn (mut c Checker) nfp_add_await(stmt C.vt_node, expr C.vt_node) []Fix {
 	expression := unwrap_parens(expr)
 	if node_kind(expression) == 'unary_expression' && operator_of(expression) == 'void' {
 		start := node_start(expression)
@@ -253,7 +253,7 @@ fn (mut c Checker) nfp_add_await(stmt C.TSNode, expr C.TSNode) []Fix {
 }
 
 // unhandled_nodes records the nodes whose type is_unhandled may look at: the same ones it walks.
-fn (mut c Checker) unhandled_nodes(n C.TSNode, depth int, ignore_void bool, mut out []C.TSNode) {
+fn (mut c Checker) unhandled_nodes(n C.vt_node, depth int, ignore_void bool, mut out []C.vt_node) {
 	if depth > max_expression_depth {
 		return
 	}
@@ -311,7 +311,7 @@ fn (mut c Checker) unhandled_nodes(n C.TSNode, depth int, ignore_void bool, mut 
 // (no tsgo counterpart) is not reported. `chain_root` says the node starts an expression: if it is
 // an optional chain, in ESTree it is a ChainExpression. Only at the whole statement does
 // skipChainExpression remove it.
-fn (mut c Checker) is_unhandled(n C.TSNode, chain_root bool, depth int, o NfpOptions) !Unhandled {
+fn (mut c Checker) is_unhandled(n C.vt_node, chain_root bool, depth int, o NfpOptions) !Unhandled {
 	if depth > max_expression_depth {
 		c.too_deep++
 		return Unhandled{}
@@ -415,7 +415,7 @@ fn (mut c Checker) is_unhandled(n C.TSNode, chain_root bool, depth int, o NfpOpt
 
 // is_optional_chain: the node is a call or a member access of a chain with `?.`. Parentheses and
 // operators like `!` break the chain.
-fn is_optional_chain(n C.TSNode) bool {
+fn is_optional_chain(n C.vt_node) bool {
 	mut node := n
 	for {
 		field := match node_kind(node) {
@@ -435,7 +435,7 @@ fn is_optional_chain(n C.TSNode) bool {
 // member_call_name is the static name of the method in `x.m(…)`, like getStaticMemberAccessValue
 // (in ESTree the parentheses of the callee do not count, but `!`, `as` or `satisfies` do, and an
 // optional chain in parentheses is a ChainExpression, not a member access: `(x?.m)(…)`).
-fn (mut c Checker) member_call_name(call C.TSNode) ?string {
+fn (mut c Checker) member_call_name(call C.vt_node) ?string {
 	callee := unwrap_parens(node_field(call, 'function')?)
 	if node_kind(callee) !in ['member_expression', 'subscript_expression']
 		|| estree_type(callee) != 'MemberExpression' {
@@ -446,9 +446,9 @@ fn (mut c Checker) member_call_name(call C.TSNode) ?string {
 
 // promise_handling_call ports parseCatchCall and parseThenCall: the rejection handler is the first
 // argument of `.catch` and the second of `.then`; with a spread it is unknown which one it is.
-fn (mut c Checker) promise_handling_call(call C.TSNode) ?HandlingCall {
+fn (mut c Checker) promise_handling_call(call C.vt_node) ?HandlingCall {
 	method := c.member_call_name(call)?
-	args := call_args(call) or { []C.TSNode{} }
+	args := call_args(call) or { []C.vt_node{} }
 	if method == 'catch' {
 		if args.len >= 1 && node_kind(args[0]) != 'spread_element' {
 			return HandlingCall{
@@ -470,7 +470,7 @@ fn (mut c Checker) promise_handling_call(call C.TSNode) ?HandlingCall {
 }
 
 // finally_object ports parseFinallyCall: in `x.finally(…)` what happens to x counts.
-fn (mut c Checker) finally_object(call C.TSNode) ?C.TSNode {
+fn (mut c Checker) finally_object(call C.vt_node) ?C.vt_node {
 	if c.member_call_name(call)? != 'finally' {
 		return none
 	}
@@ -480,7 +480,7 @@ fn (mut c Checker) finally_object(call C.TSNode) ?C.TSNode {
 
 // is_valid_rejection_handler ports isValidRejectionHandler: the type of the handler has call
 // signatures. Without a type it cannot be said not to be a function, so it is taken as valid.
-fn (mut c Checker) is_valid_rejection_handler(n C.TSNode) !bool {
+fn (mut c Checker) is_valid_rejection_handler(n C.vt_node) !bool {
 	t := c.node_type(unwrap_parens(n)) or { return true }
 	return c.signatures_of(t, signature_kind_call)!.len > 0
 }

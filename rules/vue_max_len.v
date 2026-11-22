@@ -237,7 +237,7 @@ fn (c &Checker) vmaxlen_svelte_range(l &VmaxlenLines) []int {
 	return []
 }
 
-fn (mut c Checker) lint_vue_max_len(root C.TSNode, abs_path string, mut stats Stats) ![]Finding {
+fn (mut c Checker) lint_vue_max_len(root C.vt_node, abs_path string, mut stats Stats) ![]Finding {
 	sw := time.new_stopwatch()
 	stats.checked++
 	o := vmaxlen_options(c.rule_options(vue_max_len))!

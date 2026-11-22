@@ -22,7 +22,7 @@ fn fix_replace_range(start int, end int, text string) Fix {
 }
 
 // fix_replace ports fixer.replaceText for a tree-sitter node whose range is the ESTree node's.
-fn fix_replace(n C.TSNode, text string) Fix {
+fn fix_replace(n C.vt_node, text string) Fix {
 	return fix_replace_range(node_start(n), node_end(n), text)
 }
 
@@ -32,7 +32,7 @@ fn fix_remove_range(start int, end int) Fix {
 }
 
 // fix_remove ports fixer.remove.
-fn fix_remove(n C.TSNode) Fix {
+fn fix_remove(n C.vt_node) Fix {
 	return fix_replace(n, '')
 }
 
@@ -42,12 +42,12 @@ fn fix_insert_at(offset int, text string) Fix {
 }
 
 // fix_insert_before ports fixer.insertTextBefore.
-fn fix_insert_before(n C.TSNode, text string) Fix {
+fn fix_insert_before(n C.vt_node, text string) Fix {
 	return fix_insert_at(node_start(n), text)
 }
 
 // fix_insert_after ports fixer.insertTextAfter.
-fn fix_insert_after(n C.TSNode, text string) Fix {
+fn fix_insert_after(n C.vt_node, text string) Fix {
 	return fix_insert_at(node_end(n), text)
 }
 

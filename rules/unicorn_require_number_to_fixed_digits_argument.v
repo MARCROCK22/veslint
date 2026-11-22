@@ -9,7 +9,7 @@ const urntfda_messages = {
 	'require-number-to-fixed-digits-argument': 'Missing the digits argument.'
 }
 
-fn (mut c Checker) lint_unicorn_require_number_to_fixed_digits_argument(root C.TSNode, abs_path string, mut stats Stats) ![]Finding {
+fn (mut c Checker) lint_unicorn_require_number_to_fixed_digits_argument(root C.vt_node, abs_path string, mut stats Stats) ![]Finding {
 	sw := time.new_stopwatch()
 	mut findings := []Finding{}
 	t := c.es_tree(root, abs_path) or { return findings }

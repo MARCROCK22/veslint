@@ -19,7 +19,7 @@ fn vue_enforce_style_attribute_options(options []json2.Any) ![]string {
 	return if allow.len > 0 { allow } else { ['scoped'] }
 }
 
-fn (mut c Checker) lint_vue_enforce_style_attribute(root C.TSNode, abs_path string, mut stats Stats) ![]Finding {
+fn (mut c Checker) lint_vue_enforce_style_attribute(root C.vt_node, abs_path string, mut stats Stats) ![]Finding {
 	if !c.is_vue() {
 		return []
 	}

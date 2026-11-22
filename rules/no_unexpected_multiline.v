@@ -12,7 +12,7 @@ const num_messages = {
 	'division':       'Unexpected newline between numerator and division operator.'
 }
 
-fn (mut c Checker) lint_no_unexpected_multiline(root C.TSNode, abs_path string, mut stats Stats) ![]Finding {
+fn (mut c Checker) lint_no_unexpected_multiline(root C.vt_node, abs_path string, mut stats Stats) ![]Finding {
 	sw := time.new_stopwatch()
 	mut findings := []Finding{}
 	tokens := c.source_tokens(root)
@@ -41,7 +41,7 @@ fn (mut c Checker) lint_no_unexpected_multiline(root C.TSNode, abs_path string, 
 				}
 				// `import(…)` is an ImportExpression, not a CallExpression.
 				if is_optional_element(node)
-					|| !(call_arguments(node) or { []C.TSNode{} }).any(node_kind(it) != 'comment')
+					|| !(call_arguments(node) or { []C.vt_node{} }).any(node_kind(it) != 'comment')
 					|| node_kind(node_field(node, 'function') or { continue }) == 'import' {
 					continue
 				}
@@ -77,7 +77,7 @@ fn (mut c Checker) lint_no_unexpected_multiline(root C.TSNode, abs_path string, 
 
 // num_check_break_after ports checkForBreakAfter: a line break before the token that follows the
 // node (its closing parentheses aside).
-fn (mut c Checker) num_check_break_after(root C.TSNode, n C.TSNode, message_id string, mut findings []Finding) {
+fn (mut c Checker) num_check_break_after(root C.vt_node, n C.vt_node, message_id string, mut findings []Finding) {
 	tokens := c.source_tokens(root)
 	mut open := tokens.after(c.es_end(unwrap_parens(n)), false) or { return }
 	for c.src[open.start..open.end] == ')' {

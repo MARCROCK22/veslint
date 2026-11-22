@@ -44,7 +44,7 @@ fn stgs_options(given []json2.Any) !StgsOptions {
 	}
 }
 
-fn (mut c Checker) lint_stylistic_type_generic_spacing(root C.TSNode, abs_path string, mut stats Stats) ![]Finding {
+fn (mut c Checker) lint_stylistic_type_generic_spacing(root C.vt_node, abs_path string, mut stats Stats) ![]Finding {
 	sw := time.new_stopwatch()
 	mut findings := []Finding{}
 	options := stgs_options(c.rule_options(stylistic_type_generic_spacing))!

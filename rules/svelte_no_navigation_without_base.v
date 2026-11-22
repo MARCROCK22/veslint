@@ -94,7 +94,7 @@ fn svnnwb_is_empty(t &estree.EsTree, url int) bool {
 	return false
 }
 
-fn (mut c Checker) lint_svelte_no_navigation_without_base(root C.TSNode, abs_path string, mut stats Stats) ![]Finding {
+fn (mut c Checker) lint_svelte_no_navigation_without_base(root C.vt_node, abs_path string, mut stats Stats) ![]Finding {
 	o := svnnwb_options(c.rule_options(svelte_no_navigation_without_base))!
 	if !c.is_svelte() && !c.src.contains('\$app/navigation') {
 		return []

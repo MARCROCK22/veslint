@@ -12,7 +12,7 @@ const ry_messages = {
 const ry_function_kinds = ['function_declaration', 'function_expression', 'generator_function',
 	'generator_function_declaration', 'arrow_function', 'method_definition']
 
-fn (mut c Checker) lint_require_yield(root C.TSNode, abs_path string, mut stats Stats) ![]Finding {
+fn (mut c Checker) lint_require_yield(root C.vt_node, abs_path string, mut stats Stats) ![]Finding {
 	sw := time.new_stopwatch()
 	mut findings := []Finding{}
 	kinds := ['generator_function', 'generator_function_declaration', 'method_definition']

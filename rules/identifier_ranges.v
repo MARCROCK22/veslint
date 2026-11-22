@@ -9,7 +9,7 @@ import treesitter { has_child_kind, node_end, node_field, node_kind, node_parent
 // parameter takes its `?` and its type annotation (not its default value), and the name of a
 // variable declarator or of a catch clause its type annotation (typescript-estree's
 // fixParentLocation).
-fn (c &Checker) identifier_end(ident C.TSNode) int {
+fn (c &Checker) identifier_end(ident C.vt_node) int {
 	end := node_end(ident)
 	parent := node_parent(ident) or { return end }
 	match node_kind(parent) {
@@ -54,7 +54,7 @@ fn (c &Checker) identifier_end(ident C.TSNode) int {
 
 // in_range ports isInRange: the node exists and `location` is in [start, end] of its ESTree range
 // (parentheses around an expression are not part of it, and no identifier ends inside them).
-fn in_range(n ?C.TSNode, location int) bool {
+fn in_range(n ?C.vt_node, location int) bool {
 	node := unwrap_parens(n or { return false })
 	return node_start(node) <= location && location <= node_end(node)
 }
@@ -64,7 +64,7 @@ fn in_range(n ?C.TSNode, location int) bool {
 // initializer of its VariableDeclarator (or in the right side of the for-in/of loop the
 // declarator heads), or in the right side of an AssignmentPattern around it; a function, a class,
 // a catch clause, an import or a named export stops the walk.
-fn in_initializer(name C.TSNode, location int) bool {
+fn in_initializer(name C.vt_node, location int) bool {
 	mut node := name
 	for {
 		node = node_parent(node) or { return false }

@@ -8,7 +8,7 @@ const svrsi_messages = {
 	'storeDefaultValue': 'Always set a default value for svelte stores.'
 }
 
-fn (mut c Checker) lint_svelte_require_stores_init(root C.TSNode, abs_path string, mut stats Stats) ![]Finding {
+fn (mut c Checker) lint_svelte_require_stores_init(root C.vt_node, abs_path string, mut stats Stats) ![]Finding {
 	calls := c.svsc_store_calls(root, abs_path, ['writable', 'readable', 'derived'])
 	if calls.len == 0 {
 		return []

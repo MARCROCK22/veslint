@@ -32,7 +32,7 @@ fn uctle_fixed(raw string) string {
 	return out.bytestr()
 }
 
-fn (mut c Checker) lint_unicorn_consistent_template_literal_escape(root C.TSNode, abs_path string, mut stats Stats) ![]Finding {
+fn (mut c Checker) lint_unicorn_consistent_template_literal_escape(root C.vt_node, abs_path string, mut stats Stats) ![]Finding {
 	sw := time.new_stopwatch()
 	mut findings := []Finding{}
 	t := c.es_tree(root, abs_path) or { return findings }

@@ -41,7 +41,7 @@ const pfsc_known_class_elements = [estree.NodeType.ts_abstract_property_definiti
 	.ts_abstract_method_definition, .ts_abstract_accessor_property, .property_definition,
 	.method_definition, .accessor_property, .ts_index_signature, .static_block]
 
-fn (mut c Checker) lint_perfectionist_sort_classes(root C.TSNode, abs_path string, mut stats Stats) ![]Finding {
+fn (mut c Checker) lint_perfectionist_sort_classes(root C.vt_node, abs_path string, mut stats Stats) ![]Finding {
 	sw := time.new_stopwatch()
 	t := c.es_tree(root, abs_path) or { return []Finding{} }
 	mut ctx := c.pf_context(t, perfectionist_sort_classes)

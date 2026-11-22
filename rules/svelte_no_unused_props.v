@@ -87,7 +87,7 @@ mut:
 
 struct SvnupContext {
 	e      SvscEs
-	root   C.TSNode
+	root   C.vt_node
 	o      SvnupOptions
 	file   string // the file of the declarations that are internal
 	report int    // the declaration's id
@@ -486,7 +486,7 @@ fn (mut c Checker) svnup_check_properties(mut ctx SvnupContext, props_type TypeR
 	}
 }
 
-fn (mut c Checker) lint_svelte_no_unused_props(root C.TSNode, abs_path string, mut stats Stats) ![]Finding {
+fn (mut c Checker) lint_svelte_no_unused_props(root C.vt_node, abs_path string, mut stats Stats) ![]Finding {
 	o := svnup_options(c.rule_options(svelte_no_unused_props))!
 	if !c.svsc_runes_on(abs_path) || !c.scope_setup.type_information
 		|| !c.src.contains('\$props') {

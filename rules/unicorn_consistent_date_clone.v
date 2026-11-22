@@ -9,7 +9,7 @@ const ucdc_messages = {
 	'consistent-date-clone/error': 'Unnecessary `.getTime()` call.'
 }
 
-fn (mut c Checker) lint_unicorn_consistent_date_clone(root C.TSNode, abs_path string, mut stats Stats) ![]Finding {
+fn (mut c Checker) lint_unicorn_consistent_date_clone(root C.vt_node, abs_path string, mut stats Stats) ![]Finding {
 	sw := time.new_stopwatch()
 	mut findings := []Finding{}
 	t := c.es_tree(root, abs_path) or { return findings }

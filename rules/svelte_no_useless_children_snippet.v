@@ -7,7 +7,7 @@ const snucs_messages = {
 	'uselessSnippet': 'Found an unnecessary children snippet.'
 }
 
-fn (mut c Checker) lint_svelte_no_useless_children_snippet(root C.TSNode, abs_path string, mut stats Stats) ![]Finding {
+fn (mut c Checker) lint_svelte_no_useless_children_snippet(root C.vt_node, abs_path string, mut stats Stats) ![]Finding {
 	if !c.is_svelte() {
 		return []
 	}

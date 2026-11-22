@@ -9,7 +9,7 @@ const vue_one_component_per_file_messages = {
 	'tooManyComponents': 'There is more than one component in this file.'
 }
 
-fn (mut c Checker) lint_vue_one_component_per_file(root C.TSNode, abs_path string, mut stats Stats) ![]Finding {
+fn (mut c Checker) lint_vue_one_component_per_file(root C.vt_node, abs_path string, mut stats Stats) ![]Finding {
 	sw := time.new_stopwatch()
 	mut findings := []Finding{}
 	s := c.vue_script(root, abs_path) or { return findings }

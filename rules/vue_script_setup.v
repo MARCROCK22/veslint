@@ -123,7 +123,7 @@ fn vue_type_arguments(t &estree.EsTree, call int) []int {
 // vue_define_props ports getComponentPropsFromDefineProps. Without `with_types` the types the
 // checker would read (getComponentPropsFromTypeDefineTypes) are unknown props: for a rule that
 // reads only the object and array props, they are the same, and it needs no types.
-fn (mut c Checker) vue_define_props(root C.TSNode, t &estree.EsTree, call int, abs_path string, with_types bool, mut stats Stats) []VueProp {
+fn (mut c Checker) vue_define_props(root C.vt_node, t &estree.EsTree, call int, abs_path string, with_types bool, mut stats Stats) []VueProp {
 	args := t.list(call, .arguments) or { []int{} }
 	if args.len > 0 {
 		def := c.vue_object_or_array(root, t, args[0])
@@ -146,7 +146,7 @@ fn (mut c Checker) vue_define_props(root C.TSNode, t &estree.EsTree, call int, a
 
 // vue_define_emits ports getComponentEmitsFromDefineEmits. Without `with_types` the types the
 // checker would read (getComponentEmitsFromTypeDefineTypes) are unknown emits.
-fn (mut c Checker) vue_define_emits(root C.TSNode, t &estree.EsTree, call int, abs_path string, with_types bool, mut stats Stats) []VueProp {
+fn (mut c Checker) vue_define_emits(root C.vt_node, t &estree.EsTree, call int, abs_path string, with_types bool, mut stats Stats) []VueProp {
 	args := t.list(call, .arguments) or { []int{} }
 	if args.len > 0 {
 		def := c.vue_object_or_array(root, t, args[0])
@@ -204,7 +204,7 @@ fn vue_define_model(t &estree.EsTree, call int) VueModel {
 // literals and interfaces the type is made of, and the properties the checker gives the other
 // types (getComponentPropsFromTypeDefineTypes; unknown without types, or for any, unknown, never
 // and null).
-fn (mut c Checker) vue_props_from_type_define(root C.TSNode, t &estree.EsTree, node int, abs_path string, with_types bool, mut stats Stats) []VueProp {
+fn (mut c Checker) vue_props_from_type_define(root C.vt_node, t &estree.EsTree, node int, abs_path string, with_types bool, mut stats Stats) []VueProp {
 	mut out := []VueProp{}
 	for def in c.vue_flatten_type_nodes(root, t, node) {
 		if t.typ(def) in [.ts_interface_body, .ts_type_literal] {
@@ -287,7 +287,7 @@ fn (mut c Checker) vue_type_of_type_node(t &estree.EsTree, node int, abs_path st
 // vue_emits_from_type_define ports getComponentEmitsFromTypeDefine: the type literals,
 // interfaces and function types the type is made of (extractRuntimeEmits), and the emits the
 // checker gives the other types (getComponentEmitsFromTypeDefineTypes; unknown without types).
-fn (mut c Checker) vue_emits_from_type_define(root C.TSNode, t &estree.EsTree, node int, abs_path string, with_types bool, mut stats Stats) []VueProp {
+fn (mut c Checker) vue_emits_from_type_define(root C.vt_node, t &estree.EsTree, node int, abs_path string, with_types bool, mut stats Stats) []VueProp {
 	mut out := []VueProp{}
 	for def in c.vue_flatten_type_nodes(root, t, node) {
 		if t.typ(def) == .ts_function_type {
@@ -382,7 +382,7 @@ fn vue_type_members(t &estree.EsTree, node int) []int {
 
 // vue_flatten_type_nodes ports flattenTypeNodes: the parts of unions and intersections, through
 // the interfaces (their bodies) and type aliases of the file a type reference names.
-fn (mut c Checker) vue_flatten_type_nodes(root C.TSNode, t &estree.EsTree, node int) []int {
+fn (mut c Checker) vue_flatten_type_nodes(root C.vt_node, t &estree.EsTree, node int) []int {
 	mut traversed := map[int]VueTraversed{}
 	return c.vue_flatten_impl(root, t, node, mut traversed)
 }
@@ -395,7 +395,7 @@ mut:
 	finished bool
 }
 
-fn (mut c Checker) vue_flatten_impl(root C.TSNode, t &estree.EsTree, node int, mut traversed map[int]VueTraversed) []int {
+fn (mut c Checker) vue_flatten_impl(root C.vt_node, t &estree.EsTree, node int, mut traversed map[int]VueTraversed) []int {
 	if t.typ(node) in [.ts_union_type, .ts_intersection_type] {
 		mut out := []int{}
 		for part in t.list(node, .types) or { []int{} } {
@@ -436,7 +436,7 @@ fn (mut c Checker) vue_flatten_impl(root C.TSNode, t &estree.EsTree, node int, m
 
 // vue_single_type_definition is the ESTree node of the only definition of the variable an
 // Identifier names (findVariable(getScope(node), name)), -1 when it has none or several.
-fn (mut c Checker) vue_single_type_definition(root C.TSNode, t &estree.EsTree, id int) int {
+fn (mut c Checker) vue_single_type_definition(root C.vt_node, t &estree.EsTree, id int) int {
 	v := c.unb_find_variable(root, t, id)
 	if v < 0 {
 		return -1

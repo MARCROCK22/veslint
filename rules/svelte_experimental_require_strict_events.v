@@ -13,7 +13,7 @@ const serse_messages = {
 // compare with (getSvelteContext's svelteVersion).
 const svelte_compiler_major = 5
 
-fn (mut c Checker) lint_svelte_experimental_require_strict_events(root C.TSNode, abs_path string, mut stats Stats) ![]Finding {
+fn (mut c Checker) lint_svelte_experimental_require_strict_events(root C.vt_node, abs_path string, mut stats Stats) ![]Finding {
 	if !c.is_svelte() || svelte_compiler_major >= 5 {
 		return []
 	}

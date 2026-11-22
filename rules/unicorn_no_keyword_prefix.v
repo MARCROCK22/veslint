@@ -93,7 +93,7 @@ fn (mut r UnkpReporter) report(c &Checker, t &estree.EsTree, node int, keyword s
 	}
 }
 
-fn (mut c Checker) lint_unicorn_no_keyword_prefix(root C.TSNode, abs_path string, mut stats Stats) ![]Finding {
+fn (mut c Checker) lint_unicorn_no_keyword_prefix(root C.vt_node, abs_path string, mut stats Stats) ![]Finding {
 	sw := time.new_stopwatch()
 	options := unkp_options(c.rule_options(unicorn_no_keyword_prefix))!
 	t := c.es_tree(root, abs_path) or { return []Finding{} }

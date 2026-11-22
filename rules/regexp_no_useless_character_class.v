@@ -22,7 +22,7 @@ fn rxnucc_options(options []json2.Any) ![]string {
 	return o.string_list('ignores')!
 }
 
-fn (mut c Checker) lint_regexp_no_useless_character_class(root C.TSNode, abs_path string, mut stats Stats) ![]Finding {
+fn (mut c Checker) lint_regexp_no_useless_character_class(root C.vt_node, abs_path string, mut stats Stats) ![]Finding {
 	sw := time.new_stopwatch()
 	ignores := rxnucc_options(c.rule_options(regexp_no_useless_character_class))!
 	mut findings := []Finding{}

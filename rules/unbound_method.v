@@ -38,20 +38,20 @@ fn ubm_options(options []json2.Any) !UbmOptions {
 
 // UbmMember is a MemberExpression that is not a safe use, with its ESTree object and property.
 struct UbmMember {
-	node     C.TSNode
-	object   C.TSNode
-	property C.TSNode
+	node     C.vt_node
+	object   C.vt_node
+	property C.vt_node
 }
 
 // UbmPattern is an ObjectPattern with the node it is initialized from and its identifier keys.
 struct UbmPattern {
-	pattern               C.TSNode
-	init                  ?C.TSNode
+	pattern               C.vt_node
+	init                  ?C.vt_node
 	in_assignment_pattern bool
-	keys                  []C.TSNode
+	keys                  []C.vt_node
 }
 
-fn (mut c Checker) lint_unbound_method(root C.TSNode, abs_path string, mut stats Stats) ![]Finding {
+fn (mut c Checker) lint_unbound_method(root C.vt_node, abs_path string, mut stats Stats) ![]Finding {
 	mut sw := time.new_stopwatch()
 	o := ubm_options(c.rule_options(unbound_method))!
 	mut members := []UbmMember{}
@@ -201,7 +201,7 @@ fn (mut c Checker) lint_unbound_method(root C.TSNode, abs_path string, mut stats
 // UbmGroup is a group of checks of unbound-method (tsgo.UnboundMethodStep): those of a member
 // expression or of a key of a pattern, reported at `node`.
 struct UbmGroup {
-	node  C.TSNode
+	node  C.vt_node
 	steps []tsgo.UnboundMethodStep
 }
 
@@ -335,7 +335,7 @@ fn (mut c Checker) ubm_accessed_property_names(m UbmMember) ![]string {
 
 // ubm_in_type_query: the member expression is part of a `typeof` type query (a TSQualifiedName in
 // ESTree) or of an import type that tree-sitter reads as a member access.
-fn ubm_in_type_query(n C.TSNode) bool {
+fn ubm_in_type_query(n C.vt_node) bool {
 	mut node := n
 	for _ in 0 .. max_expression_depth {
 		parent := node_parent(node) or { return false }
@@ -362,7 +362,7 @@ fn ubm_in_type_query(n C.TSNode) bool {
 
 // ubm_is_safe_use ports isSafeUse on the ESTree parent (parentheses are not nodes and the
 // ChainExpression of an optional chain is transparent).
-fn (c &Checker) ubm_is_safe_use(node C.TSNode, depth int) bool {
+fn (c &Checker) ubm_is_safe_use(node C.vt_node, depth int) bool {
 	if depth >= max_expression_depth {
 		return false
 	}
@@ -422,11 +422,11 @@ fn (c &Checker) ubm_is_safe_use(node C.TSNode, depth int) bool {
 
 // ubm_pattern prepares an ObjectPattern (the ObjectPattern visitor): none inside a type
 // declaration.
-fn (c &Checker) ubm_pattern(pattern C.TSNode) ?UbmPattern {
+fn (c &Checker) ubm_pattern(pattern C.vt_node) ?UbmPattern {
 	if ubm_inside_type_declaration(pattern) {
 		return none
 	}
-	mut init := ?C.TSNode(none)
+	mut init := ?C.vt_node(none)
 	mut in_assignment_pattern := false
 	parent := node_parent(pattern)?
 	match node_kind(parent) {
@@ -454,7 +454,7 @@ fn (c &Checker) ubm_pattern(pattern C.TSNode) ?UbmPattern {
 		}
 		else {}
 	}
-	mut keys := []C.TSNode{}
+	mut keys := []C.vt_node{}
 	for property in named_children(pattern) {
 		match node_kind(property) {
 			'shorthand_property_identifier_pattern' {
@@ -491,7 +491,7 @@ fn (c &Checker) ubm_pattern(pattern C.TSNode) ?UbmPattern {
 }
 
 // ubm_inside_type_declaration ports isNodeInsideTypeDeclaration.
-fn ubm_inside_type_declaration(n C.TSNode) bool {
+fn ubm_inside_type_declaration(n C.vt_node) bool {
 	mut node := n
 	for _ in 0 .. 100000 {
 		parent := node_parent(node) or { return false }
@@ -516,7 +516,7 @@ fn ubm_inside_type_declaration(n C.TSNode) bool {
 
 // ubm_listed_native: `object.property` is in the list of natively bound members (what
 // isNativelyBound checks besides the symbol of the object).
-fn (c &Checker) ubm_listed_native(object C.TSNode, property C.TSNode) bool {
+fn (c &Checker) ubm_listed_native(object C.vt_node, property C.vt_node) bool {
 	return estree_type(object) == 'Identifier'
 		&& node_kind(property) in ['property_identifier', 'identifier',
 			'shorthand_property_identifier_pattern']
@@ -525,7 +525,7 @@ fn (c &Checker) ubm_listed_native(object C.TSNode, property C.TSNode) bool {
 
 // ubm_is_natively_bound ports isNativelyBound: a member of a global (not imported) in the list of
 // natively bound members, or a standard library member of one of the supported global types.
-fn (mut c Checker) ubm_is_natively_bound(object C.TSNode, property C.TSNode, symbols map[u64]SymbolResponse) !bool {
+fn (mut c Checker) ubm_is_natively_bound(object C.vt_node, property C.vt_node, symbols map[u64]SymbolResponse) !bool {
 	if c.ubm_listed_native(object, property) {
 		if symbol := symbols[node_key(object)] {
 			// isNotImported: the value declaration is in another file.

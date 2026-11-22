@@ -81,7 +81,7 @@ pub fn (k DefKind) is_type_definition() bool {
 pub struct Scope {
 pub:
 	kind           ScopeKind
-	block          C.TSNode
+	block          C.vt_node
 	start          int
 	end            int
 	upper          int // -1 for the global scope
@@ -110,7 +110,7 @@ pub:
 	lib_value bool
 pub mut:
 	defs        []ScopeDefinition // in order
-	identifiers []C.TSNode        // the names of its definitions
+	identifiers []C.vt_node       // the names of its definitions
 	references  []int             // the references that resolve to it, in resolution order
 	// eslint_implicit_global_setting is the value of the configuration for the global
 	// ('readonly', 'writable' or 'off'; '' without one), and `writeable` (ESLint's spelling) that
@@ -146,11 +146,11 @@ pub fn (v &ScopeVariable) is_value_variable() bool {
 pub struct ScopeDefinition {
 pub:
 	kind        DefKind
-	name        C.TSNode
-	node        C.TSNode
+	name        C.vt_node
+	node        C.vt_node
 	parent_kind string
-	decl_id     ?C.TSNode
-	init        ?C.TSNode
+	decl_id     ?C.vt_node
+	init        ?C.vt_node
 	rest        bool // a rest parameter
 }
 
@@ -158,7 +158,7 @@ pub:
 // default value or a for-in/of head.
 pub struct ScopeReference {
 pub:
-	identifier C.TSNode
+	identifier C.vt_node
 	name       string
 	from       int
 	read       bool
@@ -176,7 +176,7 @@ pub mut:
 	svelte_bind bool
 	// implicit is the node of maybeImplicitGlobal: the `=` assignment or for-in/of statement that
 	// writes it outside strict code.
-	implicit ?C.TSNode
+	implicit ?C.vt_node
 }
 
 // is_read_only ports Reference.isReadOnly.
@@ -195,8 +195,8 @@ pub mut:
 
 pub struct ImplicitGlobalDef {
 pub:
-	name C.TSNode
-	node C.TSNode
+	name C.vt_node
+	node C.vt_node
 }
 
 // ScopeTree holds the scopes of a file. The global scope is 0 and, in a module, the module
@@ -227,7 +227,7 @@ mut:
 
 // scope_tree is the scope tree of the file being linted, built on first use. A Checker that got
 // no setup for the file (lint_file gives it) takes the default one.
-fn (mut c Checker) scope_tree(root C.TSNode) &ScopeTree {
+fn (mut c Checker) scope_tree(root C.vt_node) &ScopeTree {
 	if c.file_scopes == unsafe { nil } {
 		if c.scope_setup.libs == unsafe { nil } {
 			c.scope_setup = default_scope_setup()
@@ -903,7 +903,7 @@ fn ecma_version_has_global(version int, name string) bool {
 // is_reference_to_global_function ports isReferenceToGlobalFunction (util/scopeUtils): the first
 // reference named `name` created in the scope of `node` (not necessarily the one of `node`) does
 // not resolve to a variable with a definition, a declared one.
-fn is_reference_to_global_function(t &ScopeTree, node C.TSNode, name string) bool {
+fn is_reference_to_global_function(t &ScopeTree, node C.vt_node, name string) bool {
 	scope := t.get_scope(node)
 	for r in t.scopes[scope].references {
 		ref := t.references[r]
@@ -922,12 +922,12 @@ pub fn (t &ScopeTree) global_scope() int {
 // closest ancestor. The program gives the global scope; any other node at the top level, the
 // innermost scope of the program: the module scope or, in a script, the global scope or the
 // function scope of `globalReturn`.
-pub fn (t &ScopeTree) get_scope(n C.TSNode) int {
+pub fn (t &ScopeTree) get_scope(n C.vt_node) int {
 	if node_kind(n) == 'program' {
 		return 0
 	}
 	mut node := n
-	mut from := ?C.TSNode(none)
+	mut from := ?C.vt_node(none)
 	for _ in 0 .. 100000 {
 		// The decorators of `@dec export class C {}` belong to the class.
 		if node_kind(node) == 'decorator' {
@@ -962,7 +962,7 @@ pub fn (t &ScopeTree) get_scope(n C.TSNode) int {
 }
 
 // function_scope_of is the function scope a function or method creates, -1 if none.
-pub fn (t &ScopeTree) function_scope_of(n C.TSNode) int {
+pub fn (t &ScopeTree) function_scope_of(n C.vt_node) int {
 	scopes := t.scopes_of_block(n) or { return -1 }
 	for i := scopes.len - 1; i >= 0; i-- {
 		if t.scopes[scopes[i]].kind == .function {
@@ -1057,7 +1057,7 @@ pub fn (t &ScopeTree) own_variable(scope int, name string) int {
 
 // declared_variable is the variable a definition name node declares (getDeclaredVariables(…).find(v
 // => v.identifiers.includes(node))), -1 if none.
-pub fn (t &ScopeTree) declared_variable(name_node C.TSNode) int {
+pub fn (t &ScopeTree) declared_variable(name_node C.vt_node) int {
 	return t.declared[node_key(name_node)] or { -1 }
 }
 
@@ -1065,7 +1065,7 @@ pub fn (t &ScopeTree) declared_variable(name_node C.TSNode) int {
 // are kept by the range of the node and told apart by its kind (the node of a scope is its
 // block): a key of the range and the kind as a string was made for each lookup, and get_scope
 // looks up every ancestor of a node.
-pub fn (t &ScopeTree) scopes_of_block(n C.TSNode) ?[]int {
+pub fn (t &ScopeTree) scopes_of_block(n C.vt_node) ?[]int {
 	scopes := t.by_block[node_key(n)] or { return none }
 	kind := node_kind(n)
 	mut same := true
@@ -1087,7 +1087,7 @@ pub fn (t &ScopeTree) scopes_of_block(n C.TSNode) ?[]int {
 
 // scope_is_method: the node is a class or object method, whose function (an ESTree
 // FunctionExpression or TSEmptyBodyFunctionExpression) is not a tree-sitter node.
-fn scope_is_method(n C.TSNode) bool {
+fn scope_is_method(n C.vt_node) bool {
 	kind := node_kind(n)
 	if kind in ['method_definition', 'abstract_method_signature'] {
 		return true
@@ -1101,7 +1101,7 @@ fn scope_is_method(n C.TSNode) bool {
 
 // scope_in_method_function: `from` (a child of the method) is part of its function: the type
 // parameters, the parameters, the return type or the body.
-fn scope_in_method_function(method C.TSNode, from ?C.TSNode) bool {
+fn scope_in_method_function(method C.vt_node, from ?C.vt_node) bool {
 	child := from or { return false }
 	for field in ['type_parameters', 'parameters', 'return_type', 'body'] {
 		if part := node_field(method, field) {
@@ -1116,8 +1116,8 @@ fn scope_in_method_function(method C.TSNode, from ?C.TSNode) bool {
 // ScopeTarget is an identifier a pattern binds (PatternVisitor's callback): the default values
 // around it (outermost first) and whether it is the argument of a rest element.
 struct ScopeTarget {
-	ident    C.TSNode
-	defaults []C.TSNode
+	ident    C.vt_node
+	defaults []C.vt_node
 	rest     bool
 }
 
@@ -1138,13 +1138,13 @@ mut:
 }
 
 // build_scope_tree analyzes a file (its tree and source) with default_scope_setup.
-fn build_scope_tree(root C.TSNode, src string, tokens TokenEnds) &ScopeTree {
+fn build_scope_tree(root C.vt_node, src string, tokens TokenEnds) &ScopeTree {
 	return build_scope_tree_with(root, src, tokens, default_scope_setup())
 }
 
 // build_scope_tree_with ports Referencer.Program and what ESLint does with the scope manager the
 // parser returns (SourceCode#finalize: addDeclaredGlobals and markExportedVariables).
-fn build_scope_tree_with(root C.TSNode, src string, tokens TokenEnds, setup ScopeSetup) &ScopeTree {
+fn build_scope_tree_with(root C.vt_node, src string, tokens TokenEnds, setup ScopeSetup) &ScopeTree {
 	mut b := &ScopeBuilder{
 		src:               src
 		tokens:            tokens
@@ -1238,7 +1238,7 @@ fn (b &ScopeBuilder) is_strict_scope(s int) bool {
 
 // has_use_strict: the directive prologue of a program or function body has 'use strict' (the raw
 // text between the quotes, as ESTree's `directive`).
-fn (b &ScopeBuilder) has_use_strict(body C.TSNode) bool {
+fn (b &ScopeBuilder) has_use_strict(body C.vt_node) bool {
 	for stmt in named_children(body) {
 		kind := node_kind(stmt)
 		if kind in ['comment', 'hash_bang_line', 'html_comment'] {
@@ -1323,13 +1323,13 @@ fn (mut b ScopeBuilder) add_globals(declared []ScopeGlobal) {
 }
 
 // nest creates a scope inside the current one and enters it.
-fn (mut b ScopeBuilder) nest(kind ScopeKind, block C.TSNode, start int, end int) int {
+fn (mut b ScopeBuilder) nest(kind ScopeKind, block C.vt_node, start int, end int) int {
 	return b.nest_function(kind, block, start, end, -1)
 }
 
 // block_start and block_end are the ESTree range of a node: a `declare` is part of the declaration
 // and the end is that of its last token (tree-sitter may include a trailing comment).
-fn (b &ScopeBuilder) block_start(n C.TSNode) int {
+fn (b &ScopeBuilder) block_start(n C.vt_node) int {
 	if parent := node_parent(n) {
 		if node_kind(parent) == 'ambient_declaration' {
 			return node_start(parent)
@@ -1338,11 +1338,11 @@ fn (b &ScopeBuilder) block_start(n C.TSNode) int {
 	return node_start(n)
 }
 
-fn (b &ScopeBuilder) block_end(n C.TSNode) int {
+fn (b &ScopeBuilder) block_end(n C.vt_node) int {
 	return b.tokens.last_end(node_end(n))
 }
 
-fn (mut b ScopeBuilder) nest_function(kind ScopeKind, block C.TSNode, start int, end int, body_start int) int {
+fn (mut b ScopeBuilder) nest_function(kind ScopeKind, block C.vt_node, start int, end int, body_start int) int {
 	index := b.tree.scopes.len
 	upper := b.current
 	variable_scope := if kind in [.class_field_initializer, .class_static_block, .function, .global,
@@ -1417,12 +1417,12 @@ fn (b &ScopeBuilder) valid_resolution(scope Scope, ref ScopeReference, v int) bo
 		|| (ref.value_ref && variable.is_value_variable())
 }
 
-fn (b &ScopeBuilder) text(n C.TSNode) string {
+fn (b &ScopeBuilder) text(n C.vt_node) string {
 	return b.src[node_start(n)..node_end(n)]
 }
 
 // name_of is the ESTree name of an identifier (escapes applied).
-fn (b &ScopeBuilder) name_of(n C.TSNode) string {
+fn (b &ScopeBuilder) name_of(n C.vt_node) string {
 	text := b.text(n)
 	if !text.contains('\\') {
 		return text
@@ -1446,20 +1446,20 @@ fn (mut b ScopeBuilder) define_variable(scope int, name string) int {
 }
 
 // define ports defineIdentifier: a definition named by an identifier.
-fn (mut b ScopeBuilder) define(scope int, ident C.TSNode, def ScopeDefinition) {
+fn (mut b ScopeBuilder) define(scope int, ident C.vt_node, def ScopeDefinition) {
 	v := b.define_variable(scope, b.name_of(ident))
 	b.tree.variables[v].defs << def
 	b.tree.variables[v].identifiers << ident
 	b.tree.declared[node_key(ident)] = v
 }
 
-fn (mut b ScopeBuilder) reference(ident C.TSNode, name string, read bool, write bool, init bool, type_ref bool, value_ref bool) {
+fn (mut b ScopeBuilder) reference(ident C.vt_node, name string, read bool, write bool, init bool, type_ref bool, value_ref bool) {
 	b.reference_from(b.current, ident, name, read, write, init, type_ref, value_ref)
 }
 
 // reference_from creates a reference in a scope (ScopeBase.referenceValue, referenceType and
 // referenceDualValueType).
-fn (mut b ScopeBuilder) reference_from(scope int, ident C.TSNode, name string, read bool, write bool, init bool, type_ref bool, value_ref bool) {
+fn (mut b ScopeBuilder) reference_from(scope int, ident C.vt_node, name string, read bool, write bool, init bool, type_ref bool, value_ref bool) {
 	// A MISSING node of tree-sitter's error recovery is not an identifier.
 	if node_start(ident) == node_end(ident) {
 		return
@@ -1479,16 +1479,16 @@ fn (mut b ScopeBuilder) reference_from(scope int, ident C.TSNode, name string, r
 	b.left[scope] << r
 }
 
-fn (mut b ScopeBuilder) read_value(ident C.TSNode) {
+fn (mut b ScopeBuilder) read_value(ident C.vt_node) {
 	b.reference(ident, b.name_of(ident), true, false, false, false, true)
 }
 
-fn (mut b ScopeBuilder) write_value(ident C.TSNode, read bool, init bool) {
+fn (mut b ScopeBuilder) write_value(ident C.vt_node, read bool, init bool) {
 	b.reference(ident, b.name_of(ident), read, true, init, false, true)
 }
 
 // write_implicit is a write with maybeImplicitGlobal: by `node` when the scope is not strict.
-fn (mut b ScopeBuilder) write_implicit(ident C.TSNode, node C.TSNode) {
+fn (mut b ScopeBuilder) write_implicit(ident C.vt_node, node C.vt_node) {
 	before := b.tree.references.len
 	b.write_value(ident, false, false)
 	if b.tree.references.len > before && !b.tree.strict[b.current] {
@@ -1496,11 +1496,11 @@ fn (mut b ScopeBuilder) write_implicit(ident C.TSNode, node C.TSNode) {
 	}
 }
 
-fn (mut b ScopeBuilder) read_type(ident C.TSNode) {
+fn (mut b ScopeBuilder) read_type(ident C.vt_node) {
 	b.reference(ident, b.name_of(ident), true, false, false, true, false)
 }
 
-fn (mut b ScopeBuilder) read_dual(ident C.TSNode) {
+fn (mut b ScopeBuilder) read_dual(ident C.vt_node) {
 	b.reference(ident, b.name_of(ident), true, false, false, true, true)
 }
 
@@ -1541,20 +1541,20 @@ fn (mut b ScopeBuilder) reference_jsx_fragment() {
 	b.referenced_jsx_fragment = b.reference_in_upper_scope(b.jsx_fragment_name)
 }
 
-fn (mut b ScopeBuilder) visit_children(n C.TSNode) {
+fn (mut b ScopeBuilder) visit_children(n C.vt_node) {
 	for child in named_children(n) {
 		b.visit(child)
 	}
 }
 
-fn (mut b ScopeBuilder) visit_opt(n ?C.TSNode) {
+fn (mut b ScopeBuilder) visit_opt(n ?C.vt_node) {
 	if node := n {
 		b.visit(node)
 	}
 }
 
 // visit ports Referencer.visit on statements and expressions.
-fn (mut b ScopeBuilder) visit(n C.TSNode) {
+fn (mut b ScopeBuilder) visit(n C.vt_node) {
 	match node_kind(n) {
 		'identifier', 'undefined', 'shorthand_property_identifier' {
 			b.read_value(n)
@@ -1613,7 +1613,7 @@ fn (mut b ScopeBuilder) visit(n C.TSNode) {
 			b.visit_function(n)
 		}
 		'class_declaration', 'abstract_class_declaration', 'class' {
-			b.visit_class(n, []C.TSNode{})
+			b.visit_class(n, []C.vt_node{})
 		}
 		'interface_declaration', 'type_alias_declaration' {
 			b.visit_type(n)
@@ -1770,7 +1770,7 @@ fn (mut b ScopeBuilder) visit(n C.TSNode) {
 // that starts with a lower-case letter is an intrinsic element, not a reference (unless it is
 // `this`); of a member name, the leftmost object (unless it is `this`); of a namespaced name,
 // both parts (the visitor has no method for JSXNamespacedName, so it visits its children).
-fn (mut b ScopeBuilder) visit_jsx_name(name C.TSNode) {
+fn (mut b ScopeBuilder) visit_jsx_name(name C.vt_node) {
 	match node_kind(name) {
 		'jsx_identifier' {
 			text := b.text(name)
@@ -1802,7 +1802,7 @@ fn (mut b ScopeBuilder) visit_jsx_name(name C.TSNode) {
 
 // visit_const_type references the `const` of `as const` or `<const>`: a type reference to the
 // implicit global `const`.
-fn (mut b ScopeBuilder) visit_const_type(n C.TSNode) {
+fn (mut b ScopeBuilder) visit_const_type(n C.vt_node) {
 	for child in children(n) {
 		if node_kind(child) == 'const' {
 			b.read_type(child)
@@ -1811,7 +1811,7 @@ fn (mut b ScopeBuilder) visit_const_type(n C.TSNode) {
 }
 
 // scope_outside_async: the closest enclosing function of `n` exists and is not async.
-fn scope_outside_async(n C.TSNode) bool {
+fn scope_outside_async(n C.vt_node) bool {
 	mut node := node_parent(n) or { return false }
 	for _ in 0 .. 100000 {
 		if node_kind(node) in ['function_declaration', 'generator_function_declaration',
@@ -1824,7 +1824,7 @@ fn scope_outside_async(n C.TSNode) bool {
 }
 
 // visit_variable_declaration ports Referencer.VariableDeclaration.
-fn (mut b ScopeBuilder) visit_variable_declaration(n C.TSNode) {
+fn (mut b ScopeBuilder) visit_variable_declaration(n C.vt_node) {
 	kind := if node_kind(n) == 'variable_declaration' {
 		'var'
 	} else {
@@ -1838,8 +1838,8 @@ fn (mut b ScopeBuilder) visit_variable_declaration(n C.TSNode) {
 		id := node_field(declarator, 'name') or { continue }
 		init := node_field(declarator, 'value')
 		mut targets := []ScopeTarget{}
-		mut rhs := []C.TSNode{}
-		b.collect_pattern(id, []C.TSNode{}, -1, mut targets, mut rhs)
+		mut rhs := []C.vt_node{}
+		b.collect_pattern(id, []C.vt_node{}, -1, mut targets, mut rhs)
 		for t in targets {
 			b.define(target, t.ident, ScopeDefinition{
 				kind:        .variable
@@ -1871,7 +1871,7 @@ fn (mut b ScopeBuilder) visit_variable_declaration(n C.TSNode) {
 // identifier inside is a target too: those of the type of an assertion (`[(x as T)] = a` writes
 // `x` and `T`), see collect_pattern_type. An array or object expression is walked like a
 // pattern: it is what tree-sitter reads where it has no pattern for a target (scope_recovered_pattern).
-fn (b &ScopeBuilder) collect_pattern(n C.TSNode, defaults []C.TSNode, rest_key i64, mut targets []ScopeTarget, mut rhs []C.TSNode) {
+fn (b &ScopeBuilder) collect_pattern(n C.vt_node, defaults []C.vt_node, rest_key i64, mut targets []ScopeTarget, mut rhs []C.vt_node) {
 	match node_kind(n) {
 		'identifier', 'undefined', 'shorthand_property_identifier_pattern',
 		'shorthand_property_identifier' {
@@ -2022,7 +2022,7 @@ fn (b &ScopeBuilder) collect_pattern(n C.TSNode, defaults []C.TSNode, rest_key i
 
 // collect_const_type adds the `const` of `as const` or `<const>` in a pattern: the identifier of
 // a TSTypeReference like any other.
-fn (b &ScopeBuilder) collect_const_type(n C.TSNode, defaults []C.TSNode, mut targets []ScopeTarget) {
+fn (b &ScopeBuilder) collect_const_type(n C.vt_node, defaults []C.vt_node, mut targets []ScopeTarget) {
 	for child in children(n) {
 		if node_kind(child) == 'const' {
 			targets << ScopeTarget{
@@ -2038,7 +2038,7 @@ fn (b &ScopeBuilder) collect_const_type(n C.TSNode, defaults []C.TSNode, mut tar
 // type reference, of a qualified name, of a `typeof`, of a member of a type literal, of a tuple
 // label, of a parameter, of a type parameter), and only a TSTypeAnnotation stops it (the type of a
 // property or of a parameter and the return type of a signature).
-fn (b &ScopeBuilder) collect_pattern_type(n C.TSNode, defaults []C.TSNode, mut targets []ScopeTarget, mut rhs []C.TSNode) {
+fn (b &ScopeBuilder) collect_pattern_type(n C.vt_node, defaults []C.vt_node, mut targets []ScopeTarget, mut rhs []C.vt_node) {
 	match node_kind(n) {
 		'type_identifier' {
 			// tree-sitter reads the `bigint` keyword as a name.
@@ -2164,7 +2164,7 @@ fn (b &ScopeBuilder) collect_pattern_type(n C.TSNode, defaults []C.TSNode, mut t
 
 // collect_pattern_key is the key of a member of a type literal in a pattern: an identifier is a
 // target, and a computed key is visited as a pattern.
-fn (b &ScopeBuilder) collect_pattern_key(member C.TSNode, defaults []C.TSNode, mut targets []ScopeTarget, mut rhs []C.TSNode) {
+fn (b &ScopeBuilder) collect_pattern_key(member C.vt_node, defaults []C.vt_node, mut targets []ScopeTarget, mut rhs []C.vt_node) {
 	key := node_field(member, 'name') or { return }
 	match node_kind(key) {
 		'property_identifier' {
@@ -2184,7 +2184,7 @@ fn (b &ScopeBuilder) collect_pattern_key(member C.TSNode, defaults []C.TSNode, m
 
 // collect_pattern_signature is the type parameters and the parameters of a signature or of a
 // function type in a pattern; its return type is a TSTypeAnnotation.
-fn (b &ScopeBuilder) collect_pattern_signature(n C.TSNode, defaults []C.TSNode, mut targets []ScopeTarget, mut rhs []C.TSNode) {
+fn (b &ScopeBuilder) collect_pattern_signature(n C.vt_node, defaults []C.vt_node, mut targets []ScopeTarget, mut rhs []C.vt_node) {
 	if type_parameters := node_field(n, 'type_parameters') {
 		b.collect_pattern_type(type_parameters, defaults, mut targets, mut rhs)
 	}
@@ -2205,7 +2205,7 @@ fn (b &ScopeBuilder) collect_pattern_signature(n C.TSNode, defaults []C.TSNode, 
 // no pattern for, because an element is in parentheses or is an assertion (`[(x)] = a`,
 // `[x as T] = a`, `({ k: <T>x } = o)`): it reads an array or object expression and puts after it
 // a `!` that is not in the source.
-fn scope_recovered_pattern(n C.TSNode) ?C.TSNode {
+fn scope_recovered_pattern(n C.vt_node) ?C.vt_node {
 	if node_kind(n) != 'non_null_expression' {
 		return none
 	}
@@ -2218,7 +2218,7 @@ fn scope_recovered_pattern(n C.TSNode) ?C.TSNode {
 
 // visit_function ports Referencer.visitFunction (functions, arrows, `declare function`, object
 // methods, and class methods without a body).
-fn (mut b ScopeBuilder) visit_function(n C.TSNode) {
+fn (mut b ScopeBuilder) visit_function(n C.vt_node) {
 	kind := node_kind(n)
 	name := node_field(n, 'name')
 	mut name_scope := false
@@ -2260,7 +2260,7 @@ fn (mut b ScopeBuilder) visit_function(n C.TSNode) {
 
 // nest_function_scope enters the function scope of a function or method (`arguments` included,
 // except in arrows). The block of a method's function starts at its type parameters or its `(`.
-fn (mut b ScopeBuilder) nest_function_scope(n C.TSNode) {
+fn (mut b ScopeBuilder) nest_function_scope(n C.vt_node) {
 	mut start := b.block_start(n)
 	if scope_is_method(n) {
 		if type_parameters := node_field(n, 'type_parameters') {
@@ -2290,7 +2290,7 @@ fn (mut b ScopeBuilder) nest_function_scope(n C.TSNode) {
 
 // visit_parameters defines the parameters of a function in the current scope, with their default
 // values, type annotations and (if `decorators`) decorators.
-fn (mut b ScopeBuilder) visit_parameters(function C.TSNode, decorators bool) {
+fn (mut b ScopeBuilder) visit_parameters(function C.vt_node, decorators bool) {
 	if parameter := node_field(function, 'parameter') {
 		// `x => …`
 		b.define(b.current, parameter, ScopeDefinition{
@@ -2307,12 +2307,12 @@ fn (mut b ScopeBuilder) visit_parameters(function C.TSNode, decorators bool) {
 		}
 		pattern := node_field(p, 'pattern') or { node_field(p, 'name') or { continue } }
 		mut targets := []ScopeTarget{}
-		mut rhs := []C.TSNode{}
+		mut rhs := []C.vt_node{}
 		if value := node_field(p, 'value') {
 			b.collect_pattern(pattern, [value], -1, mut targets, mut rhs)
 			rhs << value
 		} else {
-			b.collect_pattern(pattern, []C.TSNode{}, -1, mut targets, mut rhs)
+			b.collect_pattern(pattern, []C.vt_node{}, -1, mut targets, mut rhs)
 		}
 		for t in targets {
 			b.define(b.current, t.ident, ScopeDefinition{
@@ -2335,7 +2335,7 @@ fn (mut b ScopeBuilder) visit_parameters(function C.TSNode, decorators bool) {
 	}
 }
 
-fn (mut b ScopeBuilder) visit_decorators(n C.TSNode) {
+fn (mut b ScopeBuilder) visit_decorators(n C.vt_node) {
 	for child in named_children(n) {
 		if node_kind(child) == 'decorator' {
 			b.visit_children(child)
@@ -2345,7 +2345,7 @@ fn (mut b ScopeBuilder) visit_decorators(n C.TSNode) {
 
 // visit_class ports ClassVisitor.visitClass; `outer_decorators` are those tree-sitter puts before
 // `export`.
-fn (mut b ScopeBuilder) visit_class(n C.TSNode, outer_decorators []C.TSNode) {
+fn (mut b ScopeBuilder) visit_class(n C.vt_node, outer_decorators []C.vt_node) {
 	name := node_field(n, 'name')
 	if node_kind(n) != 'class' {
 		if id := name {
@@ -2368,8 +2368,8 @@ fn (mut b ScopeBuilder) visit_class(n C.TSNode, outer_decorators []C.TSNode) {
 			node: n
 		})
 	}
-	mut extends := []C.TSNode{}
-	mut implements := []C.TSNode{}
+	mut extends := []C.vt_node{}
+	mut implements := []C.vt_node{}
 	for child in named_children(n) {
 		if node_kind(child) != 'class_heritage' {
 			continue
@@ -2408,8 +2408,8 @@ fn (mut b ScopeBuilder) visit_class(n C.TSNode, outer_decorators []C.TSNode) {
 
 // visit_class_body ports the ClassVisitor members. tree-sitter puts the decorators of a method
 // before it, as siblings.
-fn (mut b ScopeBuilder) visit_class_body(body C.TSNode) {
-	mut pending := []C.TSNode{}
+fn (mut b ScopeBuilder) visit_class_body(body C.vt_node) {
+	mut pending := []C.vt_node{}
 	for member in named_children(body) {
 		match node_kind(member) {
 			'decorator' {
@@ -2456,7 +2456,7 @@ fn (mut b ScopeBuilder) visit_class_body(body C.TSNode) {
 	}
 }
 
-fn (mut b ScopeBuilder) visit_computed_key(member C.TSNode) {
+fn (mut b ScopeBuilder) visit_computed_key(member C.vt_node) {
 	key := node_field(member, 'name') or { return }
 	if node_kind(key) == 'computed_property_name' {
 		b.visit_children(key)
@@ -2465,7 +2465,7 @@ fn (mut b ScopeBuilder) visit_computed_key(member C.TSNode) {
 
 // visit_method_function ports ClassVisitor.visitMethodFunction: the decorators of the parameters
 // first, in the class scope.
-fn (mut b ScopeBuilder) visit_method_function(n C.TSNode) {
+fn (mut b ScopeBuilder) visit_method_function(n C.vt_node) {
 	if parameters := node_field(n, 'parameters') {
 		for p in named_children(parameters) {
 			b.visit_decorators(p)
@@ -2482,7 +2482,7 @@ fn (mut b ScopeBuilder) visit_method_function(n C.TSNode) {
 }
 
 // visit_object ports the Property visits of an ObjectExpression.
-fn (mut b ScopeBuilder) visit_object(n C.TSNode) {
+fn (mut b ScopeBuilder) visit_object(n C.vt_node) {
 	for property in named_children(n) {
 		match node_kind(property) {
 			'pair' {
@@ -2505,7 +2505,7 @@ fn (mut b ScopeBuilder) visit_object(n C.TSNode) {
 }
 
 // visit_enum ports Referencer.TSEnumDeclaration.
-fn (mut b ScopeBuilder) visit_enum(n C.TSNode) {
+fn (mut b ScopeBuilder) visit_enum(n C.vt_node) {
 	if id := node_field(n, 'name') {
 		b.define(b.current, id, ScopeDefinition{
 			kind: .ts_enum_name
@@ -2551,7 +2551,7 @@ fn (mut b ScopeBuilder) visit_enum(n C.TSNode) {
 }
 
 // visit_module ports Referencer.TSModuleDeclaration (`namespace N {}`, `module 'm' {}`).
-fn (mut b ScopeBuilder) visit_module(n C.TSNode) {
+fn (mut b ScopeBuilder) visit_module(n C.vt_node) {
 	if id := node_field(n, 'name') {
 		if node_kind(id) == 'identifier' {
 			b.define(b.current, id, ScopeDefinition{
@@ -2585,7 +2585,7 @@ fn (mut b ScopeBuilder) visit_module(n C.TSNode) {
 }
 
 // visit_import ports ImportVisitor and TSImportEqualsDeclaration (`import x = require('m')`).
-fn (mut b ScopeBuilder) visit_import(n C.TSNode) {
+fn (mut b ScopeBuilder) visit_import(n C.vt_node) {
 	for part in named_children(n) {
 		match node_kind(part) {
 			'import_clause' {
@@ -2625,7 +2625,7 @@ fn (mut b ScopeBuilder) visit_import(n C.TSNode) {
 	}
 }
 
-fn (mut b ScopeBuilder) define_import(id C.TSNode, node C.TSNode) {
+fn (mut b ScopeBuilder) define_import(id C.vt_node, node C.vt_node) {
 	b.define(b.current, id, ScopeDefinition{
 		kind: .import_binding
 		name: id
@@ -2635,7 +2635,7 @@ fn (mut b ScopeBuilder) define_import(id C.TSNode, node C.TSNode) {
 
 // visit_import_alias ports TSImportEqualsDeclaration with an entity name (`import A = B.C`): the
 // leftmost name is a value reference.
-fn (mut b ScopeBuilder) visit_import_alias(n C.TSNode) {
+fn (mut b ScopeBuilder) visit_import_alias(n C.vt_node) {
 	parts := named_children(n)
 	if parts.len < 2 {
 		return
@@ -2652,7 +2652,7 @@ fn (mut b ScopeBuilder) visit_import_alias(n C.TSNode) {
 
 // visit_export ports ExportNamedDeclaration, ExportDefaultDeclaration, TSExportAssignment and
 // ExportVisitor.
-fn (mut b ScopeBuilder) visit_export(n C.TSNode) {
+fn (mut b ScopeBuilder) visit_export(n C.vt_node) {
 	if declaration := node_field(n, 'declaration') {
 		if node_kind(declaration) in ['class_declaration', 'abstract_class_declaration'] {
 			b.visit_class(declaration, named_children(n).filter(node_kind(it) == 'decorator'))
@@ -2711,7 +2711,7 @@ fn (mut b ScopeBuilder) visit_export(n C.TSNode) {
 
 // scope_expression_target ports visitExpressionTarget: one `as`, `<T>` or `!` around an assignment
 // target is unwrapped (the type of an assertion is visited).
-fn (mut b ScopeBuilder) expression_target(n C.TSNode) C.TSNode {
+fn (mut b ScopeBuilder) expression_target(n C.vt_node) C.vt_node {
 	node := unwrap_parens(n)
 	match node_kind(node) {
 		'as_expression' {
@@ -2745,21 +2745,21 @@ fn (mut b ScopeBuilder) expression_target(n C.TSNode) C.TSNode {
 }
 
 // scope_is_pattern ports PatternVisitor.isPattern.
-fn scope_is_pattern(n C.TSNode) bool {
+fn scope_is_pattern(n C.vt_node) bool {
 	return node_kind(n) in ['identifier', 'undefined', 'object_pattern', 'array_pattern', 'rest_pattern',
 		'assignment_pattern']
 }
 
 // visit_assignment ports Referencer.AssignmentExpression.
-fn (mut b ScopeBuilder) visit_assignment(n C.TSNode) {
+fn (mut b ScopeBuilder) visit_assignment(n C.vt_node) {
 	left0 := node_field(n, 'left') or { return }
 	recovered := scope_recovered_pattern(unwrap_parens(left0))
 	left := recovered or { b.expression_target(left0) }
 	if recovered != none || scope_is_pattern(left) {
 		if node_kind(n) == 'assignment_expression' {
 			mut targets := []ScopeTarget{}
-			mut rhs := []C.TSNode{}
-			b.collect_pattern(left, []C.TSNode{}, -1, mut targets, mut rhs)
+			mut rhs := []C.vt_node{}
+			b.collect_pattern(left, []C.vt_node{}, -1, mut targets, mut rhs)
 			for t in targets {
 				for _ in t.defaults {
 					b.write_implicit(t.ident, n)
@@ -2779,13 +2779,13 @@ fn (mut b ScopeBuilder) visit_assignment(n C.TSNode) {
 }
 
 // visit_update ports Referencer.UpdateExpression.
-fn (mut b ScopeBuilder) visit_update(n C.TSNode) {
+fn (mut b ScopeBuilder) visit_update(n C.vt_node) {
 	argument := node_field(n, 'argument') or { return }
 	target := b.expression_target(argument)
 	if scope_is_pattern(target) {
 		mut targets := []ScopeTarget{}
-		mut rhs := []C.TSNode{}
-		b.collect_pattern(target, []C.TSNode{}, -1, mut targets, mut rhs)
+		mut rhs := []C.vt_node{}
+		b.collect_pattern(target, []C.vt_node{}, -1, mut targets, mut rhs)
 		for t in targets {
 			b.write_value(t.ident, true, false)
 		}
@@ -2795,7 +2795,7 @@ fn (mut b ScopeBuilder) visit_update(n C.TSNode) {
 }
 
 // visit_for_in ports Referencer.visitForIn (for-in and for-of).
-fn (mut b ScopeBuilder) visit_for_in(n C.TSNode) {
+fn (mut b ScopeBuilder) visit_for_in(n C.vt_node) {
 	left := node_field(n, 'left') or { return }
 	if kind_node := node_field(n, 'kind') {
 		kind := b.text(kind_node)
@@ -2806,8 +2806,8 @@ fn (mut b ScopeBuilder) visit_for_in(n C.TSNode) {
 		target := if kind == 'var' { b.tree.scopes[b.current].variable_scope } else { b.current }
 		init := node_field(n, 'value')
 		mut targets := []ScopeTarget{}
-		mut rhs := []C.TSNode{}
-		b.collect_pattern(left, []C.TSNode{}, -1, mut targets, mut rhs)
+		mut rhs := []C.vt_node{}
+		b.collect_pattern(left, []C.vt_node{}, -1, mut targets, mut rhs)
 		for t in targets {
 			b.define(target, t.ident, ScopeDefinition{
 				kind:        .variable
@@ -2840,8 +2840,8 @@ fn (mut b ScopeBuilder) visit_for_in(n C.TSNode) {
 		return
 	}
 	mut targets := []ScopeTarget{}
-	mut rhs := []C.TSNode{}
-	b.collect_pattern(unwrap_parens(left), []C.TSNode{}, -1, mut targets, mut rhs)
+	mut rhs := []C.vt_node{}
+	b.collect_pattern(unwrap_parens(left), []C.vt_node{}, -1, mut targets, mut rhs)
 	for t in targets {
 		for _ in t.defaults {
 			b.write_implicit(t.ident, n)
@@ -2856,12 +2856,12 @@ fn (mut b ScopeBuilder) visit_for_in(n C.TSNode) {
 }
 
 // visit_catch ports Referencer.CatchClause (the type annotation of the parameter is not visited).
-fn (mut b ScopeBuilder) visit_catch(n C.TSNode) {
+fn (mut b ScopeBuilder) visit_catch(n C.vt_node) {
 	b.nest(.catch_clause, n, b.block_start(n), b.block_end(n))
 	if parameter := node_field(n, 'parameter') {
 		mut targets := []ScopeTarget{}
-		mut rhs := []C.TSNode{}
-		b.collect_pattern(parameter, []C.TSNode{}, -1, mut targets, mut rhs)
+		mut rhs := []C.vt_node{}
+		b.collect_pattern(parameter, []C.vt_node{}, -1, mut targets, mut rhs)
 		for t in targets {
 			b.define(b.current, t.ident, ScopeDefinition{
 				kind: .catch_clause
@@ -2880,14 +2880,14 @@ fn (mut b ScopeBuilder) visit_catch(n C.TSNode) {
 	b.close()
 }
 
-fn (mut b ScopeBuilder) visit_type_opt(n ?C.TSNode) {
+fn (mut b ScopeBuilder) visit_type_opt(n ?C.vt_node) {
 	if node := n {
 		b.visit_type(node)
 	}
 }
 
 // visit_type ports TypeVisitor.
-fn (mut b ScopeBuilder) visit_type(n C.TSNode) {
+fn (mut b ScopeBuilder) visit_type(n C.vt_node) {
 	match node_kind(n) {
 		'type_identifier' {
 			// tree-sitter reads the `bigint` keyword, and `intrinsic` as the whole value of a type alias
@@ -3001,16 +3001,16 @@ fn (mut b ScopeBuilder) visit_type(n C.TSNode) {
 	}
 }
 
-fn scope_is_alias_value(n C.TSNode) bool {
+fn scope_is_alias_value(n C.vt_node) bool {
 	parent := node_parent(n) or { return false }
 	value := node_field(parent, 'value') or { return false }
 	return node_kind(parent) == 'type_alias_declaration' && node_key(value) == node_key(n)
 }
 
 // visit_type_query ports TypeVisitor.TSTypeQuery: `typeof x.y` references the value x.
-fn (mut b ScopeBuilder) visit_type_query(n C.TSNode) {
+fn (mut b ScopeBuilder) visit_type_query(n C.vt_node) {
 	mut expression := first_named(n) or { return }
-	mut type_arguments := ?C.TSNode(none)
+	mut type_arguments := ?C.vt_node(none)
 	if node_kind(expression) == 'instantiation_expression' {
 		type_arguments = node_field(expression, 'type_arguments')
 		expression = node_field(expression, 'function') or {
@@ -3027,7 +3027,7 @@ fn (mut b ScopeBuilder) visit_type_query(n C.TSNode) {
 }
 
 // visit_function_type ports TypeVisitor.visitFunctionType: parameters only visible inside.
-fn (mut b ScopeBuilder) visit_function_type(n C.TSNode) {
+fn (mut b ScopeBuilder) visit_function_type(n C.vt_node) {
 	// The ESTree range of a member of an interface or a type literal includes its `;` or `,`.
 	mut end := b.block_end(n)
 	if node_kind(n) in ['call_signature', 'construct_signature', 'method_signature'] {
@@ -3046,8 +3046,8 @@ fn (mut b ScopeBuilder) visit_function_type(n C.TSNode) {
 			}
 			pattern := node_field(p, 'pattern') or { node_field(p, 'name') or { continue } }
 			mut targets := []ScopeTarget{}
-			mut rhs := []C.TSNode{}
-			b.collect_pattern(pattern, []C.TSNode{}, -1, mut targets, mut rhs)
+			mut rhs := []C.vt_node{}
+			b.collect_pattern(pattern, []C.vt_node{}, -1, mut targets, mut rhs)
 			for t in targets {
 				b.define(b.current, t.ident, ScopeDefinition{
 					kind: .parameter
@@ -3068,7 +3068,7 @@ fn (mut b ScopeBuilder) visit_function_type(n C.TSNode) {
 
 // scope_mapped_clause is the mapped_type_clause of an object type that is a mapped type
 // (`{ [K in T]: U }`, a TSMappedType in ESTree).
-fn scope_mapped_clause(n C.TSNode) ?C.TSNode {
+fn scope_mapped_clause(n C.vt_node) ?C.vt_node {
 	members := named_children(n)
 	if members.len != 1 || node_kind(members[0]) != 'index_signature' {
 		return none
@@ -3082,7 +3082,7 @@ fn scope_mapped_clause(n C.TSNode) ?C.TSNode {
 }
 
 // visit_mapped_type ports TypeVisitor.TSMappedType.
-fn (mut b ScopeBuilder) visit_mapped_type(n C.TSNode, clause C.TSNode) {
+fn (mut b ScopeBuilder) visit_mapped_type(n C.vt_node, clause C.vt_node) {
 	b.nest(.mapped_type, n, b.block_start(n), b.block_end(n))
 	if name := node_field(clause, 'name') {
 		b.define(b.current, name, ScopeDefinition{
@@ -3101,7 +3101,7 @@ fn (mut b ScopeBuilder) visit_mapped_type(n C.TSNode, clause C.TSNode) {
 
 // visit_infer ports TypeVisitor.TSInferType: the inferred name belongs to the conditional type
 // that contains it (through function type and mapped type scopes).
-fn (mut b ScopeBuilder) visit_infer(n C.TSNode) {
+fn (mut b ScopeBuilder) visit_infer(n C.vt_node) {
 	parts := named_children(n)
 	if parts.len == 0 {
 		return
@@ -3133,7 +3133,7 @@ fn (mut b ScopeBuilder) visit_infer(n C.TSNode) {
 
 // visit_type_declaration ports TSInterfaceDeclaration and TSTypeAliasDeclaration: the type
 // parameters live in their own scope.
-fn (mut b ScopeBuilder) visit_type_declaration(n C.TSNode) {
+fn (mut b ScopeBuilder) visit_type_declaration(n C.vt_node) {
 	if name := node_field(n, 'name') {
 		b.define(b.current, name, ScopeDefinition{
 			kind: .type_definition

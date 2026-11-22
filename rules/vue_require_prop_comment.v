@@ -20,7 +20,7 @@ fn vue_require_prop_comment_options(options []json2.Any) !string {
 	return if value is string && value != '' { value } else { 'JSDoc' }
 }
 
-fn (mut c Checker) lint_vue_require_prop_comment(root C.TSNode, abs_path string, mut stats Stats) ![]Finding {
+fn (mut c Checker) lint_vue_require_prop_comment(root C.vt_node, abs_path string, mut stats Stats) ![]Finding {
 	sw := time.new_stopwatch()
 	typ := vue_require_prop_comment_options(c.rule_options(vue_require_prop_comment))!
 	mut findings := []Finding{}

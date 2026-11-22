@@ -34,7 +34,7 @@ fn prm_is_permitted_property(t &estree.EsTree, expression int, standard []string
 	return false
 }
 
-fn (mut c Checker) lint_promise_spec_only(root C.TSNode, abs_path string, mut stats Stats) ![]Finding {
+fn (mut c Checker) lint_promise_spec_only(root C.vt_node, abs_path string, mut stats Stats) ![]Finding {
 	sw := time.new_stopwatch()
 	allowed := prm_spec_only_options(c.rule_options(promise_spec_only))!
 	mut findings := []Finding{}

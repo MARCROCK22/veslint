@@ -22,7 +22,7 @@ fn vue_define_props_destructuring_options(options []json2.Any) !string {
 	return o.string_value('destructure', ['only-when-assigned', 'always', 'never'])!
 }
 
-fn (mut c Checker) lint_vue_define_props_destructuring(root C.TSNode, abs_path string, mut stats Stats) ![]Finding {
+fn (mut c Checker) lint_vue_define_props_destructuring(root C.vt_node, abs_path string, mut stats Stats) ![]Finding {
 	if !c.is_vue() {
 		return []
 	}

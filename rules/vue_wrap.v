@@ -309,7 +309,7 @@ fn vue_wrap_doc_token(doc &vue.Document, start int, end int, comment bool) ?vue.
 // vue_wrap_tokens are the tokens of a snippet the template token store has, and the snippet's
 // code as the rules read it: where the store has another punctuator of the same length (the
 // parentheses of a v-for, which its snippet's wrapper makes brackets), the store's.
-fn vue_wrap_tokens(doc &vue.Document, s &vue.Snippet, root C.TSNode) (&SourceTokens, string) {
+fn vue_wrap_tokens(doc &vue.Document, s &vue.Snippet, root C.vt_node) (&SourceTokens, string) {
 	all := build_source_tokens(root, s.code)
 	mut kept := []SourceToken{cap: all.all.len}
 	mut code := []u8{}
@@ -398,7 +398,7 @@ struct VueWrapCached {
 	ends   treesitter.TokenEnds
 }
 
-fn (mut c Checker) vue_wrap_cached(snippet int, top C.TSNode) VueWrapCached {
+fn (mut c Checker) vue_wrap_cached(snippet int, top C.vt_node) VueWrapCached {
 	if cached := c.vue.wrap_cache[snippet] {
 		return cached
 	}
@@ -932,7 +932,7 @@ const vue_wrap_array_element_newline = '@stylistic/array-element-newline'
 const vue_wrap_no_console = 'vue/no-console:base'
 
 // vue_wrap_base runs a base rule on the snippet the Checker is on.
-fn (mut c Checker) vue_wrap_base(base string, root C.TSNode, abs_path string, mut stats Stats) ![]Finding {
+fn (mut c Checker) vue_wrap_base(base string, root C.vt_node, abs_path string, mut stats Stats) ![]Finding {
 	return match base {
 		vue_wrap_no_console { c.vue_wrap_no_console_base(root, abs_path, mut stats)! }
 		vue_wrap_camelcase { c.lint_camelcase_base(root, abs_path, mut stats)! }
@@ -950,7 +950,7 @@ fn (mut c Checker) vue_wrap_base(base string, root C.TSNode, abs_path string, mu
 }
 
 // lint_vue_wrap lints a wrapper rule.
-fn (mut c Checker) lint_vue_wrap(rule string, root C.TSNode, abs_path string, mut stats Stats) ![]Finding {
+fn (mut c Checker) lint_vue_wrap(rule string, root C.vt_node, abs_path string, mut stats Stats) ![]Finding {
 	if !c.is_vue() {
 		return []
 	}

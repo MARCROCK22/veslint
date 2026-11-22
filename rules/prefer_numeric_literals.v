@@ -9,7 +9,7 @@ const pnl_messages = {
 	'useLiteral': 'Use {{system}} literals instead of {{functionName}}().'
 }
 
-fn (mut c Checker) lint_prefer_numeric_literals(root C.TSNode, abs_path string, mut stats Stats) ![]Finding {
+fn (mut c Checker) lint_prefer_numeric_literals(root C.vt_node, abs_path string, mut stats Stats) ![]Finding {
 	sw := time.new_stopwatch()
 	mut findings := []Finding{}
 	tokens := c.source_tokens(root)
@@ -79,7 +79,7 @@ fn (mut c Checker) lint_prefer_numeric_literals(root C.TSNode, abs_path string, 
 }
 
 // pnl_is_parse_int ports isParseInt: the global `parseInt`, or `parseInt` of the global `Number`.
-fn (mut c Checker) pnl_is_parse_int(root C.TSNode, callee C.TSNode) bool {
+fn (mut c Checker) pnl_is_parse_int(root C.vt_node, callee C.vt_node) bool {
 	if c.es_is_specific_id(callee, 'parseInt') {
 		return c.es_is_global_reference(root, callee)
 	}

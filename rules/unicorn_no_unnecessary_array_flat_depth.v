@@ -9,7 +9,7 @@ const unuafd_messages = {
 	'no-unnecessary-array-flat-depth': 'Passing `1` as the `depth` argument is unnecessary.'
 }
 
-fn (mut c Checker) lint_unicorn_no_unnecessary_array_flat_depth(root C.TSNode, abs_path string, mut stats Stats) ![]Finding {
+fn (mut c Checker) lint_unicorn_no_unnecessary_array_flat_depth(root C.vt_node, abs_path string, mut stats Stats) ![]Finding {
 	sw := time.new_stopwatch()
 	mut findings := []Finding{}
 	t := c.es_tree(root, abs_path) or { return findings }

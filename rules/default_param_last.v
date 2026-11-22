@@ -10,7 +10,7 @@ const dpl_messages = {
 	'shouldBeLast': 'Default parameters should be last.'
 }
 
-fn (mut c Checker) lint_default_param_last(root C.TSNode, abs_path string, mut stats Stats) ![]Finding {
+fn (mut c Checker) lint_default_param_last(root C.vt_node, abs_path string, mut stats Stats) ![]Finding {
 	sw := time.new_stopwatch()
 	mut findings := []Finding{}
 	t := c.es_tree(root, abs_path) or { return findings }

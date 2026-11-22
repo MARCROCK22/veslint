@@ -20,12 +20,12 @@ enum NmeAllowed {
 // NmeEnum is an enum declaration with its members (ESTree TSEnumMember: an enum_assignment or a
 // bare name).
 struct NmeEnum {
-	node    C.TSNode
-	name    C.TSNode
-	members []C.TSNode
+	node    C.vt_node
+	name    C.vt_node
+	members []C.vt_node
 }
 
-fn nme_enum(node C.TSNode) ?NmeEnum {
+fn nme_enum(node C.vt_node) ?NmeEnum {
 	name := node_field(node, 'name')?
 	body := node_field(node, 'body')?
 	return NmeEnum{
@@ -36,14 +36,14 @@ fn nme_enum(node C.TSNode) ?NmeEnum {
 }
 
 // nme_initializer is the ESTree initializer of a member (without parentheses), if any.
-fn nme_initializer(member C.TSNode) ?C.TSNode {
+fn nme_initializer(member C.vt_node) ?C.vt_node {
 	if node_kind(member) != 'enum_assignment' {
 		return none
 	}
 	return unwrap_parens(node_field(member, 'value')?)
 }
 
-fn (mut c Checker) lint_no_mixed_enums(root C.TSNode, abs_path string, mut stats Stats) ![]Finding {
+fn (mut c Checker) lint_no_mixed_enums(root C.vt_node, abs_path string, mut stats Stats) ![]Finding {
 	mut sw := time.new_stopwatch()
 	mut enums := []NmeEnum{}
 	mut spans := []Span{}
@@ -165,7 +165,7 @@ fn (mut c Checker) nme_desired_type(scopes &ScopeTree, e NmeEnum) !NmeAllowed {
 // nme_enclosing_scopes ports getEnclosingScopes of an enum or a module declaration: the scope
 // around it and, when it is exported from a namespace, the scopes of every declaration of that
 // namespace in the scopes around it (getMergedScopes).
-fn (c &Checker) nme_enclosing_scopes(scopes &ScopeTree, node C.TSNode, depth int) []int {
+fn (c &Checker) nme_enclosing_scopes(scopes &ScopeTree, node C.vt_node, depth int) []int {
 	enclosing := scopes.scopes[scopes.get_scope(node)].upper
 	if enclosing < 0 {
 		return []int{}
@@ -193,7 +193,7 @@ fn (c &Checker) nme_enclosing_scopes(scopes &ScopeTree, node C.TSNode, depth int
 
 // nme_is_exported: the ESTree parent of the declaration (a `declare` is part of it) is an
 // ExportNamedDeclaration.
-fn nme_is_exported(node C.TSNode) bool {
+fn nme_is_exported(node C.vt_node) bool {
 	mut parent := node_parent(node) or { return false }
 	if node_kind(parent) == 'ambient_declaration' {
 		parent = node_parent(parent) or { return false }
@@ -203,7 +203,7 @@ fn nme_is_exported(node C.TSNode) bool {
 
 // nme_module_name ports getModuleName for the block of a module scope: the JSON of a string name,
 // `global`, or the name with its qualifiers (`A.B.C`), which are only compared with each other.
-fn (c &Checker) nme_module_name(block C.TSNode) string {
+fn (c &Checker) nme_module_name(block C.vt_node) string {
 	if node_kind(block) == 'ambient_declaration' {
 		return 'global'
 	}
@@ -248,7 +248,7 @@ fn (mut c Checker) nme_handle_string_like(handle string) !bool {
 }
 
 // nme_member_type ports getMemberType.
-fn (mut c Checker) nme_member_type(member C.TSNode) !NmeAllowed {
+fn (mut c Checker) nme_member_type(member C.vt_node) !NmeAllowed {
 	initializer := nme_initializer(member) or { return NmeAllowed.number }
 	match node_kind(initializer) {
 		'number' {

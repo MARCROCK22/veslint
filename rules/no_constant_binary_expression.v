@@ -23,7 +23,7 @@ fn ncbe_options(options []json2.Any) !bool {
 	return o.bool_value('checkRelationalComparisons')!
 }
 
-fn (mut c Checker) lint_no_constant_binary_expression(root C.TSNode, abs_path string, mut stats Stats) ![]Finding {
+fn (mut c Checker) lint_no_constant_binary_expression(root C.vt_node, abs_path string, mut stats Stats) ![]Finding {
 	sw := time.new_stopwatch()
 	relational := ncbe_options(c.rule_options(no_constant_binary_expression))!
 	mut findings := []Finding{}
@@ -109,7 +109,7 @@ fn (mut c Checker) lint_no_constant_binary_expression(root C.TSNode, abs_path st
 
 // ncbe_constant_operand ports findBinaryExpressionConstantOperand: `b` compares constantly with
 // `a`.
-fn (mut c Checker) ncbe_constant_operand(root C.TSNode, a C.TSNode, b C.TSNode, operator string) bool {
+fn (mut c Checker) ncbe_constant_operand(root C.vt_node, a C.vt_node, b C.vt_node, operator string) bool {
 	if operator in ['==', '!='] {
 		return (c.ncbe_null_or_undefined(root, a) && c.ncbe_constant_nullishness(root, b, false))
 			|| (c.ncbe_static_boolean(root, a) && c.ncbe_loose_boolean(root, b))
@@ -122,19 +122,19 @@ fn (mut c Checker) ncbe_constant_operand(root C.TSNode, a C.TSNode, b C.TSNode, 
 }
 
 // ncbe_null_or_undefined ports isNullOrUndefined: `null`, the global `undefined` or a `void`.
-fn (mut c Checker) ncbe_null_or_undefined(root C.TSNode, n C.TSNode) bool {
+fn (mut c Checker) ncbe_null_or_undefined(root C.vt_node, n C.vt_node) bool {
 	node := unwrap_parens(n)
 	return node_kind(node) == 'null' || c.es_is_global_undefined(root, node)
 		|| (node_kind(node) == 'unary_expression' && operator_of(node) == 'void')
 }
 
 // ncbe_is_logical_assignment: `||=`, `&&=` or `??=`.
-fn ncbe_is_logical_assignment(n C.TSNode) bool {
+fn ncbe_is_logical_assignment(n C.vt_node) bool {
 	return operator_of(n) in ['||=', '&&=', '??=']
 }
 
 // ncbe_constant_nullishness ports hasConstantNullishness.
-fn (mut c Checker) ncbe_constant_nullishness(root C.TSNode, n C.TSNode, non_nullish bool) bool {
+fn (mut c Checker) ncbe_constant_nullishness(root C.vt_node, n C.vt_node, non_nullish bool) bool {
 	node := unwrap_parens(n)
 	if non_nullish && c.ncbe_null_or_undefined(root, node) {
 		return false
@@ -178,7 +178,7 @@ fn (mut c Checker) ncbe_constant_nullishness(root C.TSNode, n C.TSNode, non_null
 }
 
 // ncbe_static_boolean ports isStaticBoolean.
-fn (mut c Checker) ncbe_static_boolean(root C.TSNode, n C.TSNode) bool {
+fn (mut c Checker) ncbe_static_boolean(root C.vt_node, n C.vt_node) bool {
 	node := unwrap_parens(n)
 	match node_kind(node) {
 		'true', 'false' {
@@ -199,7 +199,7 @@ fn (mut c Checker) ncbe_static_boolean(root C.TSNode, n C.TSNode) bool {
 }
 
 // ncbe_loose_boolean ports hasConstantLooseBooleanComparison.
-fn (mut c Checker) ncbe_loose_boolean(root C.TSNode, n C.TSNode) bool {
+fn (mut c Checker) ncbe_loose_boolean(root C.vt_node, n C.vt_node) bool {
 	node := unwrap_parens(n)
 	match node_kind(node) {
 		'object', 'class', 'arrow_function', 'function_expression', 'generator_function', 'string',
@@ -247,7 +247,7 @@ fn (mut c Checker) ncbe_loose_boolean(root C.TSNode, n C.TSNode) bool {
 }
 
 // ncbe_strict_boolean ports hasConstantStrictBooleanComparison.
-fn (mut c Checker) ncbe_strict_boolean(root C.TSNode, n C.TSNode) bool {
+fn (mut c Checker) ncbe_strict_boolean(root C.vt_node, n C.vt_node) bool {
 	node := unwrap_parens(n)
 	match node_kind(node) {
 		'object', 'array', 'arrow_function', 'function_expression', 'generator_function', 'class',
@@ -297,7 +297,7 @@ fn (mut c Checker) ncbe_strict_boolean(root C.TSNode, n C.TSNode) bool {
 }
 
 // ncbe_always_new ports isAlwaysNew: a value that is a new object each time.
-fn (mut c Checker) ncbe_always_new(root C.TSNode, n C.TSNode) bool {
+fn (mut c Checker) ncbe_always_new(root C.vt_node, n C.vt_node) bool {
 	node := unwrap_parens(n)
 	match node_kind(node) {
 		'object', 'array', 'arrow_function', 'function_expression', 'generator_function', 'class',
@@ -329,7 +329,7 @@ fn (mut c Checker) ncbe_always_new(root C.TSNode, n C.TSNode) bool {
 }
 
 // ncbe_static_literal ports isStaticLiteral.
-fn (mut c Checker) ncbe_static_literal(root C.TSNode, n C.TSNode) bool {
+fn (mut c Checker) ncbe_static_literal(root C.vt_node, n C.vt_node) bool {
 	node := unwrap_parens(n)
 	match node_kind(node) {
 		'string', 'number', 'true', 'false', 'null', 'regex' {

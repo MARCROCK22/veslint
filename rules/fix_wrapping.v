@@ -161,7 +161,7 @@ fn (mut c Checker) is_missing_semicolon_before(e EsNode) bool {
 // wrapping_previous_statement is the statement before `statement` in the body of its Program or
 // BlockStatement (the body of a `namespace`, a `module` or a `global` is a TSModuleBlock and a
 // `static` block a StaticBlock: they do not count).
-fn wrapping_previous_statement(statement C.TSNode) ?C.TSNode {
+fn wrapping_previous_statement(statement C.vt_node) ?C.vt_node {
 	block := node_parent(statement)?
 	match node_kind(block) {
 		'program' {}
@@ -177,7 +177,7 @@ fn wrapping_previous_statement(statement C.TSNode) ?C.TSNode {
 		}
 	}
 	mut previous := prev_sibling(statement)?
-	for !C.ts_node_is_named(previous) || node_kind(previous) in ['comment', 'hash_bang_line'] {
+	for !C.vt_node_is_named(previous) || node_kind(previous) in ['comment', 'hash_bang_line'] {
 		previous = prev_sibling(previous)?
 	}
 	return previous

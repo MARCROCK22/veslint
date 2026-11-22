@@ -3,7 +3,7 @@ module estree
 // Declarations: functions, interfaces, type aliases, enums, modules, `declare`, imports and
 // exports.
 
-fn (mut c Converter) decl(s C.TSNode, ctx Ctx) int {
+fn (mut c Converter) decl(s C.vt_node, ctx Ctx) int {
 	kind := kind_of(s)
 	match kind {
 		'lexical_declaration', 'variable_declaration' {
@@ -61,12 +61,12 @@ fn (mut c Converter) decl(s C.TSNode, ctx Ctx) int {
 	}
 }
 
-fn (mut c Converter) stmt_fallback(s C.TSNode) int {
+fn (mut c Converter) stmt_fallback(s C.vt_node) int {
 	// Unknown statement kinds are converted as expressions when they are some.
 	return c.expr(s)
 }
 
-fn (mut c Converter) function_decl(s C.TSNode, ctx Ctx) int {
+fn (mut c Converter) function_decl(s C.vt_node, ctx Ctx) int {
 	kids := c.kids(s)
 	body := field_of(kids, 'body')
 	typ := if body == none { NodeType.ts_declare_function } else { NodeType.function_declaration }
@@ -116,7 +116,7 @@ fn (mut c Converter) function_signature(i int, kids []Kid, param_decorators bool
 	}
 }
 
-fn (mut c Converter) interface_decl(s C.TSNode, ctx Ctx) int {
+fn (mut c Converter) interface_decl(s C.vt_node, ctx Ctx) int {
 	kids := c.kids(s)
 	i := c.mk(.ts_interface_declaration, s, ctx.start_or(c.start(s)), c.end(s))
 	if b := field_of(kids, 'body') {
@@ -143,7 +143,7 @@ fn (mut c Converter) interface_decl(s C.TSNode, ctx Ctx) int {
 	return i
 }
 
-fn (mut c Converter) type_alias(s C.TSNode, ctx Ctx) int {
+fn (mut c Converter) type_alias(s C.vt_node, ctx Ctx) int {
 	kids := c.kids(s)
 	i := c.mk(.ts_type_alias_declaration, s, ctx.start_or(c.start(s)), c.end(s))
 	c.pbool(i, .declare_, ctx.declare)
@@ -160,7 +160,7 @@ fn (mut c Converter) type_alias(s C.TSNode, ctx Ctx) int {
 	return i
 }
 
-fn (mut c Converter) enum_decl(s C.TSNode, ctx Ctx) int {
+fn (mut c Converter) enum_decl(s C.vt_node, ctx Ctx) int {
 	kids := c.kids(s)
 	i := c.mk(.ts_enum_declaration, s, ctx.start_or(c.start(s)), c.end(s))
 	if b := field_of(kids, 'body') {
@@ -191,7 +191,7 @@ fn (mut c Converter) enum_decl(s C.TSNode, ctx Ctx) int {
 }
 
 // module_decl converts `module`, `namespace` and `declare global`.
-fn (mut c Converter) module_decl(s C.TSNode, ctx Ctx) int {
+fn (mut c Converter) module_decl(s C.vt_node, ctx Ctx) int {
 	kids := c.kids(s)
 	i := c.mk(.ts_module_declaration, s, ctx.start_or(c.start(s)), c.end(s))
 	name := field_of(kids, 'name') or { return i }
@@ -215,7 +215,7 @@ fn (mut c Converter) module_decl(s C.TSNode, ctx Ctx) int {
 
 // entity_name converts a name of identifiers separated by dots to an Identifier or nested
 // TSQualifiedName.
-fn (mut c Converter) entity_name(n C.TSNode) int {
+fn (mut c Converter) entity_name(n C.vt_node) int {
 	match kind_of(n) {
 		'nested_identifier', 'member_expression' {
 			kids := c.kids(n)
@@ -244,7 +244,7 @@ fn (mut c Converter) entity_name(n C.TSNode) int {
 	}
 }
 
-fn (mut c Converter) ambient(s C.TSNode, ctx Ctx) int {
+fn (mut c Converter) ambient(s C.vt_node, ctx Ctx) int {
 	kids := c.kids(s)
 	start := ctx.start_or(c.start(s))
 	if has_tok(kids, 'global') {
@@ -275,7 +275,7 @@ fn (mut c Converter) ambient(s C.TSNode, ctx Ctx) int {
 
 // --- Imports ---
 
-fn (mut c Converter) import_decl(s C.TSNode, ctx Ctx) int {
+fn (mut c Converter) import_decl(s C.vt_node, ctx Ctx) int {
 	kids := c.kids(s)
 	for req in kids {
 		if req.kind == 'import_require_clause' {
@@ -339,7 +339,7 @@ fn (mut c Converter) import_decl(s C.TSNode, ctx Ctx) int {
 }
 
 // module_name is an imported or exported name: an Identifier or a string Literal.
-fn (mut c Converter) module_name(n C.TSNode) int {
+fn (mut c Converter) module_name(n C.vt_node) int {
 	if kind_of(n) == 'string' {
 		return c.literal(n)
 	}
@@ -368,7 +368,7 @@ fn (mut c Converter) import_attributes(kids []Kid) []int {
 }
 
 // import_require converts `import x = require('y')`.
-fn (mut c Converter) import_require(s C.TSNode, kids []Kid, req Kid, ctx Ctx) int {
+fn (mut c Converter) import_require(s C.vt_node, kids []Kid, req Kid, ctx Ctx) int {
 	i := c.mk(.ts_import_equals_declaration, s, ctx.start_or(c.start(s)), c.end(s))
 	rk := c.kids(req.n)
 	if id := first_named(rk) {
@@ -385,7 +385,7 @@ fn (mut c Converter) import_require(s C.TSNode, kids []Kid, req Kid, ctx Ctx) in
 }
 
 // import_alias converts `import x = A.B`.
-fn (mut c Converter) import_alias(s C.TSNode, ctx Ctx) int {
+fn (mut c Converter) import_alias(s C.vt_node, ctx Ctx) int {
 	kids := c.kids(s)
 	i := c.mk(.ts_import_equals_declaration, s, ctx.start_or(c.start(s)), c.end(s))
 	named := kids.filter(it.named)
@@ -400,7 +400,7 @@ fn (mut c Converter) import_alias(s C.TSNode, ctx Ctx) int {
 
 // --- Exports ---
 
-fn (mut c Converter) export_stmt(s C.TSNode, mut out []int) {
+fn (mut c Converter) export_stmt(s C.vt_node, mut out []int) {
 	kids := c.kids(s)
 	export_tok := tok_of(kids, 'export') or { return }
 	export_start := c.start(export_tok.n)

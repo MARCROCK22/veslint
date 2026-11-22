@@ -16,7 +16,7 @@ const snoitm_phrases = {
 	'ClassExpression':         'class'
 }
 
-fn (mut c Checker) lint_svelte_no_object_in_text_mustaches(root C.TSNode, abs_path string, mut stats Stats) ![]Finding {
+fn (mut c Checker) lint_svelte_no_object_in_text_mustaches(root C.vt_node, abs_path string, mut stats Stats) ![]Finding {
 	if !c.is_svelte() {
 		return []
 	}

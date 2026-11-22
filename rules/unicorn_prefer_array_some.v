@@ -116,7 +116,7 @@ fn (mut c Checker) upas_find_index_fix(t &estree.EsTree, tokens &SourceTokens, n
 	return c.merge_fixes(fixes)!
 }
 
-fn (mut c Checker) lint_unicorn_prefer_array_some(root C.TSNode, abs_path string, mut stats Stats) ![]Finding {
+fn (mut c Checker) lint_unicorn_prefer_array_some(root C.vt_node, abs_path string, mut stats Stats) ![]Finding {
 	sw := time.new_stopwatch()
 	mut findings := []Finding{}
 	t := c.es_tree(root, abs_path) or { return findings }

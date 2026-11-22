@@ -32,7 +32,7 @@ fn nca_always(options []json2.Any) !bool {
 	return error('the option of `${no_cond_assign}` must be "except-parens" or "always"')
 }
 
-fn (mut c Checker) lint_no_cond_assign(root C.TSNode, abs_path string, mut stats Stats) ![]Finding {
+fn (mut c Checker) lint_no_cond_assign(root C.vt_node, abs_path string, mut stats Stats) ![]Finding {
 	sw := time.new_stopwatch()
 	always := nca_always(c.rule_options(no_cond_assign))!
 	mut findings := []Finding{}
@@ -82,7 +82,7 @@ fn (mut c Checker) lint_no_cond_assign(root C.TSNode, abs_path string, mut stats
 
 // nca_test is the `test` of a statement or a conditional expression, with its parentheses (those
 // of an if, while or do...while statement included).
-fn nca_test(n C.TSNode) ?C.TSNode {
+fn nca_test(n C.vt_node) ?C.vt_node {
 	test := node_field(n, 'condition')?
 	if node_kind(test) in [';', 'empty_statement'] {
 		return none
@@ -92,7 +92,7 @@ fn nca_test(n C.TSNode) ?C.TSNode {
 
 // nca_conditional_ancestor ports findConditionalAncestor: the closest statement or conditional
 // expression whose test contains the node, without crossing a function.
-fn nca_conditional_ancestor(n C.TSNode) ?C.TSNode {
+fn nca_conditional_ancestor(n C.vt_node) ?C.vt_node {
 	mut current := n
 	for {
 		parent := cti_estree_parent(current) or { return none }
@@ -119,7 +119,7 @@ fn nca_conditional_ancestor(n C.TSNode) ?C.TSNode {
 }
 
 // nca_child_of is the child of `ancestor` that contains `n`.
-fn nca_child_of(n C.TSNode, ancestor C.TSNode) C.TSNode {
+fn nca_child_of(n C.vt_node, ancestor C.vt_node) C.vt_node {
 	mut node := n
 	for {
 		parent := node_parent(node) or { return node }

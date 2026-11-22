@@ -10,7 +10,7 @@ const regexp_no_escape_backspace_messages = {
 	'suggest':    "Use '\\u0008'."
 }
 
-fn (mut c Checker) lint_regexp_no_escape_backspace(root C.TSNode, abs_path string, mut stats Stats) ![]Finding {
+fn (mut c Checker) lint_regexp_no_escape_backspace(root C.vt_node, abs_path string, mut stats Stats) ![]Finding {
 	sw := time.new_stopwatch()
 	mut findings := []Finding{}
 	regexps := c.rx_regexps(root, abs_path)

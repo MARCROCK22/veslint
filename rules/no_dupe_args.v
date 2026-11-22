@@ -9,7 +9,7 @@ const nda_messages = {
 	'unexpected': "Duplicate param '{{name}}'."
 }
 
-fn (mut c Checker) lint_no_dupe_args(root C.TSNode, abs_path string, mut stats Stats) ![]Finding {
+fn (mut c Checker) lint_no_dupe_args(root C.vt_node, abs_path string, mut stats Stats) ![]Finding {
 	sw := time.new_stopwatch()
 	mut findings := []Finding{}
 	kinds := ['function_declaration', 'function_expression', 'generator_function',

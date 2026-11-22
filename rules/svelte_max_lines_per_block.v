@@ -194,7 +194,7 @@ fn smlpb_css_comment_lines(lines [][]u16, start_line int, end_line int) map[int]
 	return out
 }
 
-fn (mut c Checker) lint_svelte_max_lines_per_block(root C.TSNode, abs_path string, mut stats Stats) ![]Finding {
+fn (mut c Checker) lint_svelte_max_lines_per_block(root C.vt_node, abs_path string, mut stats Stats) ![]Finding {
 	options := smlpb_options(c.rule_options(svelte_max_lines_per_block))!
 	if !c.is_svelte() {
 		return []

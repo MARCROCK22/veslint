@@ -13,7 +13,7 @@ const niec_messages = {
 
 const niec_eval_like = ['setInterval', 'setTimeout', 'execScript']
 
-fn (mut c Checker) lint_core_no_implied_eval(root C.TSNode, abs_path string, mut stats Stats) ![]Finding {
+fn (mut c Checker) lint_core_no_implied_eval(root C.vt_node, abs_path string, mut stats Stats) ![]Finding {
 	sw := time.new_stopwatch()
 	mut findings := []Finding{}
 	mut reported := map[u64]bool{}
@@ -55,7 +55,7 @@ fn (mut c Checker) lint_core_no_implied_eval(root C.TSNode, abs_path string, mut
 }
 
 // niec_is_evaluated_string ports isEvaluatedString: a string, a template, or a `+` with one.
-fn niec_is_evaluated_string(n C.TSNode) bool {
+fn niec_is_evaluated_string(n C.vt_node) bool {
 	node := unwrap_parens(n)
 	if node_kind(node) in ['string', 'template_string'] {
 		return true
@@ -68,7 +68,7 @@ fn niec_is_evaluated_string(n C.TSNode) bool {
 }
 
 // niec_report ports reportImpliedEvalCallExpression: a first argument that is a string.
-fn (mut c Checker) niec_report(root C.TSNode, call C.TSNode, mut findings []Finding, mut reported map[u64]bool) {
+fn (mut c Checker) niec_report(root C.vt_node, call C.vt_node, mut findings []Finding, mut reported map[u64]bool) {
 	args := (call_arguments(call) or { return }).filter(node_kind(it) != 'comment')
 	if args.len == 0 {
 		return

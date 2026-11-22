@@ -88,7 +88,7 @@ fn (c &Checker) shsc_element_type(i int) string {
 	}
 }
 
-fn (mut c Checker) lint_svelte_html_self_closing(root C.TSNode, abs_path string, mut stats Stats) ![]Finding {
+fn (mut c Checker) lint_svelte_html_self_closing(root C.vt_node, abs_path string, mut stats Stats) ![]Finding {
 	options := shsc_options(c.rule_options(svelte_html_self_closing))!
 	if !c.is_svelte() {
 		return []

@@ -61,14 +61,14 @@ mut:
 
 // VucpCtx is what the rule's functions share.
 struct VucpCtx {
-	root C.TSNode
+	root C.vt_node
 	t    &estree.EsTree = unsafe { nil }
 mut:
 	components []VucpComponent
 	findings   []Finding
 }
 
-fn (mut c Checker) lint_vue_no_use_computed_property_like_method(root C.TSNode, abs_path string, mut stats Stats) ![]Finding {
+fn (mut c Checker) lint_vue_no_use_computed_property_like_method(root C.vt_node, abs_path string, mut stats Stats) ![]Finding {
 	sw := time.new_stopwatch()
 	s := c.vue_script(root, abs_path) or { return []Finding{} }
 	if s.objects.len == 0 {

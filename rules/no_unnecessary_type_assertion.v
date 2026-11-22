@@ -90,11 +90,11 @@ fn nuta_options(options []json2.Any) !NutaOptions {
 
 // NutaAssertion is a TSAsExpression or TSTypeAssertion.
 struct NutaAssertion {
-	node       C.TSNode
-	expression C.TSNode // without parentheses
-	type_node  C.TSNode // the type annotation, without parentheses (the `const` token of a const assertion)
-	is_const   bool     // isConstAssertion
-	type_text  string   // sourceCode.getText(node.typeAnnotation)
+	node       C.vt_node
+	expression C.vt_node // without parentheses
+	type_node  C.vt_node // the type annotation, without parentheses (the `const` token of a const assertion)
+	is_const   bool      // isConstAssertion
+	type_text  string    // sourceCode.getText(node.typeAnnotation)
 }
 
 // NutaCache keeps the results of the type walks of a file.
@@ -105,11 +105,11 @@ mut:
 	void_type  TypeResponse
 }
 
-fn (mut c Checker) lint_no_unnecessary_type_assertion(root C.TSNode, abs_path string, mut stats Stats) ![]Finding {
+fn (mut c Checker) lint_no_unnecessary_type_assertion(root C.vt_node, abs_path string, mut stats Stats) ![]Finding {
 	mut sw := time.new_stopwatch()
 	o := nuta_options(c.rule_options(no_unnecessary_type_assertion))!
 	mut assertions := []NutaAssertion{}
-	mut non_nulls := []C.TSNode{}
+	mut non_nulls := []C.vt_node{}
 	mut spans := []Span{}
 	for node in c.nodes_of_kinds(root, ['as_expression', 'type_assertion', 'non_null_expression'],
 		[]string{}) {
@@ -125,7 +125,7 @@ fn (mut c Checker) lint_no_unnecessary_type_assertion(root C.TSNode, abs_path st
 		assertions << a
 	}
 	// The `var` declarators, to find the one of a declaration (isPossiblyUsedBeforeAssigned).
-	mut declarators := []C.TSNode{}
+	mut declarators := []C.vt_node{}
 	for declaration in c.nodes_of_kinds(root, ['variable_declaration'], []string{}) {
 		for declarator in named_children(declaration) {
 			if node_kind(declarator) == 'variable_declarator' {
@@ -151,7 +151,7 @@ fn (mut c Checker) lint_no_unnecessary_type_assertion(root C.TSNode, abs_path st
 }
 
 // nuta_assertion reads `x as T` or `<T>x`.
-fn (c &Checker) nuta_assertion(node C.TSNode) ?NutaAssertion {
+fn (c &Checker) nuta_assertion(node C.vt_node) ?NutaAssertion {
 	if node_kind(node) == 'as_expression' {
 		parts := named_children(node)
 		if parts.len == 0 {
@@ -241,7 +241,7 @@ fn (c &Checker) nuta_assertion_spans(a NutaAssertion, mut spans []Span) {
 }
 
 // nuta_callee is the callee of a call (not a tagged template) or of a `new`, without parentheses.
-fn nuta_callee(n C.TSNode) ?C.TSNode {
+fn nuta_callee(n C.vt_node) ?C.vt_node {
 	match node_kind(n) {
 		'call_expression' {
 			call_arguments(n)?
@@ -258,7 +258,7 @@ fn nuta_callee(n C.TSNode) ?C.TSNode {
 
 // nuta_original_expression ports getOriginalExpression: the expression under all the nested
 // assertions.
-fn nuta_original_expression(node C.TSNode) C.TSNode {
+fn nuta_original_expression(node C.vt_node) C.vt_node {
 	mut current := nuta_expression_of(node) or { return node }
 	for depth := 0; depth < max_expression_depth; depth++ {
 		if node_kind(current) !in ['as_expression', 'type_assertion'] {
@@ -270,7 +270,7 @@ fn nuta_original_expression(node C.TSNode) C.TSNode {
 }
 
 // nuta_expression_of is the expression of an assertion, without parentheses.
-fn nuta_expression_of(node C.TSNode) ?C.TSNode {
+fn nuta_expression_of(node C.vt_node) ?C.vt_node {
 	parts := named_children(node)
 	if parts.len == 0 {
 		return none
@@ -286,7 +286,7 @@ fn nuta_expression_of(node C.TSNode) ?C.TSNode {
 
 // --- TSNonNullExpression
 
-fn (mut c Checker) nuta_check_non_null(node C.TSNode, declarators []C.TSNode, mut cache NutaCache, mut findings []Finding) ! {
+fn (mut c Checker) nuta_check_non_null(node C.vt_node, declarators []C.vt_node, mut cache NutaCache, mut findings []Finding) ! {
 	expression := unwrap_parens(first_named(node) or { return })
 	if parent := estree_parent(node) {
 		// The `!` that ends an optional chain is inside its ChainExpression, the ESTree parent.
@@ -341,7 +341,7 @@ fn (mut c Checker) nuta_check_non_null(node C.TSNode, declarators []C.TSNode, mu
 }
 
 // nuta_remove_exclamation ports removeExclamationFix: the last `!` token of the node goes.
-fn (mut c Checker) nuta_remove_exclamation(node C.TSNode) []Fix {
+fn (mut c Checker) nuta_remove_exclamation(node C.vt_node) []Fix {
 	tokens := c.node_tokens(node)
 	for i := tokens.len - 1; i >= 0; i-- {
 		if c.token_text(tokens[i]) == '!' {
@@ -352,7 +352,7 @@ fn (mut c Checker) nuta_remove_exclamation(node C.TSNode) []Fix {
 }
 
 // nuta_possibly_used_before_assigned ports isPossiblyUsedBeforeAssigned.
-fn (mut c Checker) nuta_possibly_used_before_assigned(identifier C.TSNode, constrained TypeResponse, declarators []C.TSNode, mut cache NutaCache) !bool {
+fn (mut c Checker) nuta_possibly_used_before_assigned(identifier C.vt_node, constrained TypeResponse, declarators []C.vt_node, mut cache NutaCache) !bool {
 	handle := c.nodes.handle(node_key(identifier)) or { return true }
 	symbols := c.client.symbols_at_locations(c.snapshot, c.project, [handle])!
 	if symbols.len != 1 || symbols[0].is_null() || symbols[0].declarations.len == 0 {
@@ -394,7 +394,7 @@ fn (mut c Checker) nuta_possibly_used_before_assigned(identifier C.TSNode, const
 // declarator (ESLint scopes, getScope). The scopes of the file are built here, the first time a
 // `var` of the file needs them: building them for every file with a `!` was a fifth of the rule's
 // own time on zod.
-fn (mut c Checker) nuta_scope_is_ancestor(identifier C.TSNode, declarator C.TSNode) bool {
+fn (mut c Checker) nuta_scope_is_ancestor(identifier C.vt_node, declarator C.vt_node) bool {
 	t := c.stv_scope_tree(identifier)
 	scope := t.get_scope(identifier)
 	mut s := t.scopes[t.get_scope(declarator)].upper
@@ -504,7 +504,7 @@ fn (mut c Checker) nuta_check_assertion(a NutaAssertion, o NutaOptions, mut cach
 }
 
 // nuta_node_end is the end of a node in ESTree: the end of its last token.
-fn (mut c Checker) nuta_node_end(node C.TSNode) int {
+fn (mut c Checker) nuta_node_end(node C.vt_node) int {
 	token := c.last_token(node) or { return node_end(node) }
 	return token.end
 }
@@ -551,7 +551,7 @@ fn (mut c Checker) nuta_assertion_fixes(a NutaAssertion) []Fix {
 // nuta_innermost_call ports getInnermostCall: the call an expression ends in, through `await`, an
 // optional chain, a non-null assertion and the last expression of a sequence (not a tagged
 // template, `import()` or `new`).
-fn nuta_innermost_call(n C.TSNode, depth int) ?C.TSNode {
+fn nuta_innermost_call(n C.vt_node, depth int) ?C.vt_node {
 	if depth > max_expression_depth {
 		return none
 	}
@@ -579,7 +579,7 @@ fn nuta_innermost_call(n C.TSNode, depth int) ?C.TSNode {
 
 // nuta_generic_call_with_inferred_type_arguments ports isGenericCallWithInferredTypeArguments: the
 // innermost call has no type arguments, and its callee has a generic call signature.
-fn (mut c Checker) nuta_generic_call_with_inferred_type_arguments(expression C.TSNode) !bool {
+fn (mut c Checker) nuta_generic_call_with_inferred_type_arguments(expression C.vt_node) !bool {
 	call := nuta_innermost_call(expression, 0) or { return false }
 	if _ := node_field(call, 'type_arguments') {
 		return false
@@ -666,7 +666,7 @@ fn nuta_is_type_literal(t TypeResponse) bool {
 
 // nuta_is_skip_parent: SKIP_PARENT_TYPES (TSAsExpression, TSTypeAssertion, SpreadElement,
 // TSSatisfiesExpression).
-fn nuta_is_skip_parent(parent C.TSNode) bool {
+fn nuta_is_skip_parent(parent C.vt_node) bool {
 	return node_kind(parent) in ['as_expression', 'type_assertion', 'spread_element',
 		'satisfies_expression']
 }
@@ -692,19 +692,19 @@ fn (c &Checker) nuta_implicitly_narrowed_literal(a NutaAssertion) bool {
 	return false
 }
 
-fn nuta_is_template_with_expressions(n C.TSNode) bool {
+fn nuta_is_template_with_expressions(n C.vt_node) bool {
 	return node_kind(n) == 'template_string' && has_child_kind(n, 'template_substitution')
 }
 
 // nuta_is_conceptually_literal: CONCEPTUALLY_LITERAL_TYPES.
-fn nuta_is_conceptually_literal(n C.TSNode) bool {
+fn nuta_is_conceptually_literal(n C.vt_node) bool {
 	return node_kind(n) in ['string', 'number', 'true', 'false', 'null', 'regex', 'array', 'object',
 		'template_string', 'class', 'function_expression', 'generator_function', 'arrow_function',
 		'jsx_element', 'jsx_self_closing_element']
 }
 
 // nuta_type_unchanged ports isTypeUnchanged.
-fn (mut c Checker) nuta_type_unchanged(a NutaAssertion, expression C.TSNode, uncast TypeResponse, cast TypeResponse, mut cache NutaCache) !bool {
+fn (mut c Checker) nuta_type_unchanged(a NutaAssertion, expression C.vt_node, uncast TypeResponse, cast TypeResponse, mut cache NutaCache) !bool {
 	if uncast.id == cast.id {
 		return true
 	}
@@ -1228,7 +1228,7 @@ fn (mut c Checker) nuta_const_call_argument(tree AstTree, call int, argument int
 // --- contextual type fallback
 
 // nuta_skip_contextual ports shouldSkipContextualTypeFallback.
-fn (mut c Checker) nuta_skip_contextual(a NutaAssertion, parent C.TSNode, cast_is_any bool, mut cache NutaCache) !bool {
+fn (mut c Checker) nuta_skip_contextual(a NutaAssertion, parent C.vt_node, cast_is_any bool, mut cache NutaCache) !bool {
 	if cast_is_any {
 		return estree_binary_kind(parent) == 'LogicalExpression' || c.nuta_in_generic_context(a.node)!
 	}
@@ -1252,7 +1252,7 @@ fn (mut c Checker) nuta_skip_contextual(a NutaAssertion, parent C.TSNode, cast_i
 
 // nuta_argument_index is the index of the node in the arguments of the call or `new` it is an
 // argument of, or -1.
-fn nuta_argument_index(node C.TSNode) int {
+fn nuta_argument_index(node C.vt_node) int {
 	parent := estree_parent(node) or { return -1 }
 	if node_kind(parent) != 'arguments' {
 		return -1
@@ -1270,7 +1270,7 @@ fn nuta_argument_index(node C.TSNode) int {
 }
 
 // nuta_in_destructuring_declaration ports isInDestructuringDeclaration.
-fn nuta_in_destructuring_declaration(node C.TSNode, parent C.TSNode) bool {
+fn nuta_in_destructuring_declaration(node C.vt_node, parent C.vt_node) bool {
 	if node_kind(parent) != 'variable_declarator' {
 		return false
 	}
@@ -1283,7 +1283,7 @@ fn nuta_in_destructuring_declaration(node C.TSNode, parent C.TSNode) bool {
 }
 
 // nuta_property_in_problematic_context ports isPropertyInProblematicContext.
-fn (mut c Checker) nuta_property_in_problematic_context(a NutaAssertion, parent C.TSNode) !bool {
+fn (mut c Checker) nuta_property_in_problematic_context(a NutaAssertion, parent C.vt_node) !bool {
 	if node_kind(parent) != 'pair' {
 		return false
 	}
@@ -1323,7 +1323,7 @@ fn (mut c Checker) nuta_property_in_problematic_context(a NutaAssertion, parent 
 }
 
 // nuta_assignment_in_non_statement_context ports isAssignmentInNonStatementContext.
-fn nuta_assignment_in_non_statement_context(node C.TSNode, parent C.TSNode) bool {
+fn nuta_assignment_in_non_statement_context(node C.vt_node, parent C.vt_node) bool {
 	if node_kind(parent) !in ['assignment_expression', 'augmented_assignment_expression'] {
 		return false
 	}
@@ -1336,7 +1336,7 @@ fn nuta_assignment_in_non_statement_context(node C.TSNode, parent C.TSNode) bool
 }
 
 // nuta_right_of_logical_assignment ports isRightHandSideOfLogicalAssignment.
-fn nuta_right_of_logical_assignment(node C.TSNode, parent C.TSNode) bool {
+fn nuta_right_of_logical_assignment(node C.vt_node, parent C.vt_node) bool {
 	if node_kind(parent) != 'augmented_assignment_expression'
 		|| operator_of(parent) !in ['&&=', '||=', '??='] {
 		return false
@@ -1402,7 +1402,7 @@ fn (mut c Checker) nuta_is_rest_parameter(handle string, mut cache NutaCache) !b
 // nuta_in_generic_context ports isInGenericContext: the node is (through at most one arrow
 // function with an expression body) an argument of a call or `new` of a generic function without
 // explicit type arguments.
-fn (mut c Checker) nuta_in_generic_context(node C.TSNode) !bool {
+fn (mut c Checker) nuta_in_generic_context(node C.vt_node) !bool {
 	mut seen_function := false
 	mut current := node
 	for depth := 0; depth < max_expression_depth; depth++ {

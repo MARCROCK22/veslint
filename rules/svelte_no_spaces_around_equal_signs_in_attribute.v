@@ -8,7 +8,7 @@ const snsaes_messages = {
 	'noSpaces': 'Unexpected spaces found around equal signs.'
 }
 
-fn (mut c Checker) lint_svelte_no_spaces_around_equal_signs_in_attribute(root C.TSNode, abs_path string, mut stats Stats) ![]Finding {
+fn (mut c Checker) lint_svelte_no_spaces_around_equal_signs_in_attribute(root C.vt_node, abs_path string, mut stats Stats) ![]Finding {
 	if !c.is_svelte() {
 		return []
 	}

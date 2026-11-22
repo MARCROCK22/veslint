@@ -10,11 +10,11 @@ const sy_ar_messages = {
 	'useRespond': 'Use `.respond()` on an autocomplete interaction; `.reply()` is internal and throws.'
 }
 
-fn (mut c Checker) lint_seyfert_autocomplete_respond(root C.TSNode, abs_path string, mut stats Stats) ![]Finding {
+fn (mut c Checker) lint_seyfert_autocomplete_respond(root C.vt_node, abs_path string, mut stats Stats) ![]Finding {
 	mut sw := time.new_stopwatch()
 	// CallExpression whose callee is a non-computed MemberExpression with the Identifier `reply`.
-	mut properties := []C.TSNode{}
-	mut objects := []C.TSNode{}
+	mut properties := []C.vt_node{}
+	mut objects := []C.vt_node{}
 	for call in c.nodes_of_kind(root, c'call_expression') {
 		call_arguments(call) or { continue }
 		callee := unwrap_parens(node_field(call, 'function') or { continue })

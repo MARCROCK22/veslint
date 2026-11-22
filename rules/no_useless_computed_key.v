@@ -16,7 +16,7 @@ fn nuck_class_members(options []json2.Any) !bool {
 	return o.bool_value('enforceForClassMembers')!
 }
 
-fn (mut c Checker) lint_no_useless_computed_key(root C.TSNode, abs_path string, mut stats Stats) ![]Finding {
+fn (mut c Checker) lint_no_useless_computed_key(root C.vt_node, abs_path string, mut stats Stats) ![]Finding {
 	sw := time.new_stopwatch()
 	class_members := nuck_class_members(c.rule_options(no_useless_computed_key))!
 	mut findings := []Finding{}
@@ -72,7 +72,7 @@ fn (mut c Checker) lint_no_useless_computed_key(root C.TSNode, abs_path string, 
 
 // nuck_fix replaces the brackets and the key with the key as written, with a space when the token
 // before would join it.
-fn (mut c Checker) nuck_fix(root C.TSNode, key C.TSNode) (bool, Fix) {
+fn (mut c Checker) nuck_fix(root C.vt_node, key C.vt_node) (bool, Fix) {
 	tokens := c.source_tokens(root)
 	mut left := tokens.before(node_start(key), false) or { return false, Fix{} }
 	for c.src[left.start..left.end] != '[' {

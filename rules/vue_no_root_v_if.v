@@ -9,7 +9,7 @@ const vue_no_root_v_if_messages = {
 	'noRootVIf': '`v-if` should not be used on root element without `v-else`.'
 }
 
-fn (mut c Checker) lint_vue_no_root_v_if(root C.TSNode, abs_path string, mut stats Stats) ![]Finding {
+fn (mut c Checker) lint_vue_no_root_v_if(root C.vt_node, abs_path string, mut stats Stats) ![]Finding {
 	if !c.vue_has_template() {
 		return []
 	}

@@ -80,7 +80,7 @@ fn (c &Checker) upmmm_call_argument_text(t &estree.EsTree, tokens &SourceTokens,
 	return if t.typ(node) == .sequence_expression { '(${text})' } else { text }
 }
 
-fn (mut c Checker) lint_unicorn_prefer_math_min_max(root C.TSNode, abs_path string, mut stats Stats) ![]Finding {
+fn (mut c Checker) lint_unicorn_prefer_math_min_max(root C.vt_node, abs_path string, mut stats Stats) ![]Finding {
 	sw := time.new_stopwatch()
 	mut findings := []Finding{}
 	t := c.es_tree(root, abs_path) or { return findings }

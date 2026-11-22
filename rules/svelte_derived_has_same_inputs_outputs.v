@@ -14,7 +14,7 @@ const svdhsio_messages = {
 }
 
 // svdhsio_check reports a parameter `param` (an Identifier) that should be named `expected`.
-fn (mut c Checker) svdhsio_check(root C.TSNode, t &estree.EsTree, body C.TSNode, param int, expected string, mut findings []Finding) {
+fn (mut c Checker) svdhsio_check(root C.vt_node, t &estree.EsTree, body C.vt_node, param int, expected string, mut findings []Finding) {
 	name := t.string_of(param, .name) or { return }
 	if name == expected {
 		return
@@ -45,7 +45,7 @@ fn (mut c Checker) svdhsio_check(root C.TSNode, t &estree.EsTree, body C.TSNode,
 	}
 }
 
-fn (mut c Checker) lint_svelte_derived_has_same_inputs_outputs(root C.TSNode, abs_path string, mut stats Stats) ![]Finding {
+fn (mut c Checker) lint_svelte_derived_has_same_inputs_outputs(root C.vt_node, abs_path string, mut stats Stats) ![]Finding {
 	calls := c.svsc_store_calls(root, abs_path, ['derived'])
 	if calls.len == 0 {
 		return []

@@ -33,7 +33,7 @@ fn vue_require_macro_variable_name_options(options []json2.Any) !map[string]stri
 	return variable_names
 }
 
-fn (mut c Checker) lint_vue_require_macro_variable_name(root C.TSNode, abs_path string, mut stats Stats) ![]Finding {
+fn (mut c Checker) lint_vue_require_macro_variable_name(root C.vt_node, abs_path string, mut stats Stats) ![]Finding {
 	if !c.is_vue() {
 		return []
 	}

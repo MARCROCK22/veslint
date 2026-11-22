@@ -12,7 +12,7 @@ const nutcon_messages = {
 	'unnecessaryConstraint':       'Constraining the generic type `{{name}}` to `{{constraint}}` does nothing and is unnecessary.'
 }
 
-fn (mut c Checker) lint_no_unnecessary_type_constraint(root C.TSNode, abs_path string, mut stats Stats) ![]Finding {
+fn (mut c Checker) lint_no_unnecessary_type_constraint(root C.vt_node, abs_path string, mut stats Stats) ![]Finding {
 	sw := time.new_stopwatch()
 	mut findings := []Finding{}
 	mut checked := 0
@@ -59,12 +59,12 @@ fn (mut c Checker) lint_no_unnecessary_type_constraint(root C.TSNode, abs_path s
 	return findings
 }
 
-fn nutcon_parameter_count(list C.TSNode) int {
+fn nutcon_parameter_count(list C.vt_node) int {
 	return children_of_kind(list, 'type_parameter').len
 }
 
 // nutcon_followed_by_comma: the token after the type parameter is a `,`.
-fn nutcon_followed_by_comma(n C.TSNode) bool {
+fn nutcon_followed_by_comma(n C.vt_node) bool {
 	next := next_sibling(n) or { return false }
 	return node_kind(next) == ','
 }

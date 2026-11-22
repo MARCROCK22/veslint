@@ -44,17 +44,17 @@ struct ClassLike {
 
 struct MisusedTargets {
 mut:
-	flag_unions string     // checksConditionals.flagUnions
-	conditions  []C.TSNode // values used as a condition
-	predicates  []C.TSNode // calls to a predicate method (`x.filter(cb)`)
-	calls       []C.TSNode // calls and `new` with arguments
-	variables   []C.TSNode // variable_declarator with a value and an annotation that may be a function
-	assignments []C.TSNode
-	properties  []C.TSNode // properties of object literals
-	attributes  []C.TSNode // the `{…}` value of JSX attributes, with an expression inside
-	returns     []C.TSNode // return_statement with a value
+	flag_unions string      // checksConditionals.flagUnions
+	conditions  []C.vt_node // values used as a condition
+	predicates  []C.vt_node // calls to a predicate method (`x.filter(cb)`)
+	calls       []C.vt_node // calls and `new` with arguments
+	variables   []C.vt_node // variable_declarator with a value and an annotation that may be a function
+	assignments []C.vt_node
+	properties  []C.vt_node // properties of object literals
+	attributes  []C.vt_node // the `{…}` value of JSX attributes, with an expression inside
+	returns     []C.vt_node // return_statement with a value
 	classes     []ClassLike
-	spreads     []C.TSNode
+	spreads     []C.vt_node
 }
 
 // NmpOptions are the checks the options turn on: checksConditionals, checksSpreads and the parts
@@ -130,7 +130,7 @@ fn nmp_options(options []json2.Any) !NmpOptions {
 	}
 }
 
-fn (mut c Checker) lint_no_misused_promises(root C.TSNode, abs_path string, mut stats Stats) ![]Finding {
+fn (mut c Checker) lint_no_misused_promises(root C.vt_node, abs_path string, mut stats Stats) ![]Finding {
 	mut sw := time.new_stopwatch()
 	o := nmp_options(c.rule_options(no_misused_promises))!
 	mut t := MisusedTargets{
@@ -203,7 +203,7 @@ fn (mut c Checker) lint_no_misused_promises(root C.TSNode, abs_path string, mut 
 		}
 	}
 	if o.inherited_methods {
-		mut class_nodes := []C.TSNode{}
+		mut class_nodes := []C.vt_node{}
 		class_nodes << c.nodes_of_kind(root, c'class_declaration')
 		class_nodes << c.nodes_of_kind(root, c'abstract_class_declaration')
 		class_nodes << c.nodes_of_kind(root, c'class')
@@ -233,7 +233,7 @@ fn (mut c Checker) lint_no_misused_promises(root C.TSNode, abs_path string, mut 
 
 // misused_spans are the nodes whose type (or contextual type) may be needed.
 fn misused_spans(t MisusedTargets) []Span {
-	mut nodes := []C.TSNode{}
+	mut nodes := []C.vt_node{}
 	nodes << t.conditions
 	for call in t.predicates {
 		callee := unwrap_parens(node_field(call, 'function') or { continue })
@@ -252,7 +252,7 @@ fn misused_spans(t MisusedTargets) []Span {
 				nodes << object
 			}
 		}
-		args := call_args(call) or { []C.TSNode{} }
+		args := call_args(call) or { []C.vt_node{} }
 		for arg in args {
 			nodes << arg
 			nodes << unwrap_parens(arg)
@@ -477,12 +477,12 @@ fn (mut c Checker) check_no_misused_promises(t MisusedTargets) ![]Finding {
 
 // is_jsx_spread tells whether a spread is the one of a JSX attribute (`<a {...x} />`) or of a JSX
 // child (`<a>{...x}</a>`).
-fn is_jsx_spread(spread C.TSNode) bool {
+fn is_jsx_spread(spread C.vt_node) bool {
 	parent := node_parent(spread) or { return false }
 	return node_kind(parent) == 'jsx_expression'
 }
 
-fn finding_at(node C.TSNode, message_id string) Finding {
+fn finding_at(node C.vt_node, message_id string) Finding {
 	return Finding{
 		stmt:       position_of(node)
 		message_id: message_id
@@ -504,12 +504,12 @@ fn compare_findings(a &Finding, b &Finding) int {
 
 // conditional_operands ports the checksConditionals handlers (checkTestConditional and
 // checkConditional): the values used as a condition, without repeating any.
-fn (mut c Checker) conditional_operands(root C.TSNode) []C.TSNode {
+fn (mut c Checker) conditional_operands(root C.vt_node) []C.vt_node {
 	mut checked := map[u64]bool{}
-	mut out := []C.TSNode{}
+	mut out := []C.vt_node{}
 	// First the conditions (test of if, while, do, for and ?:, and the operand of `!`): they are
 	// ancestors of the logical expressions they contain and ESLint visits them first.
-	mut tests := []C.TSNode{}
+	mut tests := []C.vt_node{}
 	tests << c.nodes_of_kind(root, c'if_statement')
 	tests << c.nodes_of_kind(root, c'while_statement')
 	tests << c.nodes_of_kind(root, c'do_statement')
@@ -540,7 +540,7 @@ fn (mut c Checker) conditional_operands(root C.TSNode) []C.TSNode {
 
 // check_conditional ports checkConditional: of a logical expression it checks the left side
 // (except for `??` outside a condition) and, inside a condition, the right side too.
-fn (mut c Checker) check_conditional(n C.TSNode, is_test bool, depth int, mut checked map[u64]bool, mut out []C.TSNode) {
+fn (mut c Checker) check_conditional(n C.vt_node, is_test bool, depth int, mut checked map[u64]bool, mut out []C.vt_node) {
 	if depth > max_expression_depth {
 		c.too_deep++
 		return
@@ -569,7 +569,7 @@ fn (mut c Checker) check_conditional(n C.TSNode, is_test bool, depth int, mut ch
 
 // call_args are the arguments of a call or a `new` (not of a tagged template nor of a `new X`
 // without parentheses).
-fn call_args(call C.TSNode) ?[]C.TSNode {
+fn call_args(call C.vt_node) ?[]C.vt_node {
 	args := node_field(call, 'arguments')?
 	if node_kind(args) != 'arguments' {
 		return none
@@ -577,16 +577,16 @@ fn call_args(call C.TSNode) ?[]C.TSNode {
 	return named_children(args)
 }
 
-fn call_callee(call C.TSNode) ?C.TSNode {
+fn call_callee(call C.vt_node) ?C.vt_node {
 	field := if node_kind(call) == 'new_expression' { 'constructor' } else { 'function' }
 	return node_field(call, field)
 }
 
 // member_children counts the MemberExpression children of a call in ESTree: the callee and the
 // arguments that are member accesses.
-fn member_children(call C.TSNode) int {
+fn member_children(call C.vt_node) int {
 	mut count := 1
-	for arg in call_args(call) or { []C.TSNode{} } {
+	for arg in call_args(call) or { []C.vt_node{} } {
 		if node_kind(unwrap_parens(arg)) in ['member_expression', 'subscript_expression'] {
 			count++
 		}
@@ -596,14 +596,14 @@ fn member_children(call C.TSNode) int {
 
 // array_predicate_callback ports isArrayMethodCallWithPredicate and returns the first argument of
 // `x.filter(…)` and the like when x is an array or a tuple (empty list otherwise).
-fn (mut c Checker) array_predicate_callback(call C.TSNode) ![]C.TSNode {
-	callee := unwrap_parens(node_field(call, 'function') or { return []C.TSNode{} })
-	object := node_field(callee, 'object') or { return []C.TSNode{} }
-	args := call_args(call) or { return []C.TSNode{} }
+fn (mut c Checker) array_predicate_callback(call C.vt_node) ![]C.vt_node {
+	callee := unwrap_parens(node_field(call, 'function') or { return []C.vt_node{} })
+	object := node_field(callee, 'object') or { return []C.vt_node{} }
+	args := call_args(call) or { return []C.vt_node{} }
 	if args.len == 0 {
-		return []C.TSNode{}
+		return []C.vt_node{}
 	}
-	object_type := c.node_type(object) or { return []C.TSNode{} }
+	object_type := c.node_type(object) or { return []C.vt_node{} }
 	for part in c.constituents(c.constrained(object_type)!)! {
 		for inner in c.intersection_parts(part)! {
 			if c.is_array(inner)! || c.is_tuple(inner)! {
@@ -611,7 +611,7 @@ fn (mut c Checker) array_predicate_callback(call C.TSNode) ![]C.TSNode {
 			}
 		}
 	}
-	return []C.TSNode{}
+	return []C.vt_node{}
 }
 
 fn (mut c Checker) intersection_parts(t TypeResponse) ![]TypeResponse {
@@ -622,7 +622,7 @@ fn (mut c Checker) intersection_parts(t TypeResponse) ![]TypeResponse {
 }
 
 // is_promise_finally_call ports isPromiseFinallyMethod: `p.finally(…)` with p a Promise.
-fn (mut c Checker) is_promise_finally_call(call C.TSNode) !bool {
+fn (mut c Checker) is_promise_finally_call(call C.vt_node) !bool {
 	if node_kind(call) != 'call_expression' {
 		return false
 	}
@@ -638,7 +638,7 @@ fn (mut c Checker) is_promise_finally_call(call C.TSNode) !bool {
 // void_function_arguments ports voidFunctionArguments: the indexes of the arguments that take a
 // void-returning function (and not also a promise-returning one), looking at all the signatures
 // of the type of the callee.
-fn (mut c Checker) void_function_arguments(call C.TSNode, args []C.TSNode) ![]int {
+fn (mut c Checker) void_function_arguments(call C.vt_node, args []C.vt_node) ![]int {
 	callee := call_callee(call) or { return []int{} }
 	callee_type := c.node_type(callee) or { return []int{} }
 	kind := if node_kind(call) == 'new_expression' {
@@ -689,8 +689,8 @@ fn (mut c Checker) void_function_arguments(call C.TSNode, args []C.TSNode) ![]in
 // VoidArguments is the state of voidFunctionArguments for a call: its arguments, the node the
 // types are asked at and the indexes found so far (thenableReturnIndices and voidReturnIndices).
 struct VoidArguments {
-	call C.TSNode
-	args []C.TSNode
+	call C.vt_node
+	args []C.vt_node
 	at   SymbolLocation
 mut:
 	thenable map[int]bool
@@ -716,7 +716,7 @@ fn (mut c Checker) check_thenable_or_void(t TypeResponse, index int, mut indices
 
 // misused_property ports checkProperty and returns where to report (empty list when it should
 // not).
-fn (mut c Checker) misused_property(prop C.TSNode) ![]Ident {
+fn (mut c Checker) misused_property(prop C.vt_node) ![]Ident {
 	match node_kind(prop) {
 		'pair' {
 			value := node_field(prop, 'value') or { return []Ident{} }
@@ -778,7 +778,7 @@ fn (mut c Checker) misused_property(prop C.TSNode) ![]Ident {
 
 // function_report_position: a function is reported at its annotated return type or, without one,
 // at the start of getFunctionHeadLoc; any other value, at its start.
-fn (mut c Checker) function_report_position(value C.TSNode) Ident {
+fn (mut c Checker) function_report_position(value C.vt_node) Ident {
 	if node_kind(value) !in ['arrow_function', 'function_expression', 'generator_function',
 		'method_definition'] {
 		return position_of(value)
@@ -793,7 +793,7 @@ fn (mut c Checker) function_report_position(value C.TSNode) Ident {
 
 // is_possibly_function_type ports isPossiblyFunctionType on a type annotation: a syntactic check
 // that rules out types that cannot be a function.
-fn is_possibly_function_type(annotation C.TSNode) bool {
+fn is_possibly_function_type(annotation C.vt_node) bool {
 	if node_kind(annotation) != 'type_annotation' {
 		return false // asserts and type predicates
 	}
@@ -823,7 +823,7 @@ fn is_possibly_function_type(annotation C.TSNode) bool {
 
 // class_like gathers the heritage types (`extends`/`implements`) and the non-static named members
 // of a class or interface.
-fn (c &Checker) class_like(node C.TSNode) ClassLike {
+fn (c &Checker) class_like(node C.vt_node) ClassLike {
 	mut heritage := []Span{}
 	for child in named_children(node) {
 		match node_kind(child) {
@@ -887,7 +887,7 @@ fn (c &Checker) class_like(node C.TSNode) ClassLike {
 // heritage_span is the TypeScript node of a heritage type (`X<T>`) that starts at `first`: the
 // ExpressionWithTypeArguments of a class's `extends`, and since TypeScript 7.1 a TypeReference in
 // `implements` and in an interface's `extends`.
-fn heritage_span(first C.TSNode, end int, kind u32) Span {
+fn heritage_span(first C.vt_node, end int, kind u32) Span {
 	return Span{
 		key:   ((u64(node_start(first)) << 32) | u64(end)) | heritage_key_bit
 		first: first
@@ -898,7 +898,7 @@ fn heritage_span(first C.TSNode, end int, kind u32) Span {
 
 // member_span covers what TypeScript considers the member: its decorators (which in tree-sitter
 // come before, as siblings) and the `;` or `,` that closes it.
-fn member_span(member C.TSNode) Span {
+fn member_span(member C.vt_node) Span {
 	mut first := member
 	for {
 		prev := prev_sibling(first) or { break }
@@ -972,7 +972,7 @@ fn (mut c Checker) member_if_exists(t TypeResponse, name string) !SymbolResponse
 
 // returns_thenable ports returnsThenable(checker, node): some signature of the apparent type of
 // the node returns a thenable. Without a known type, no.
-fn (mut c Checker) returns_thenable(n C.TSNode) !bool {
+fn (mut c Checker) returns_thenable(n C.vt_node) !bool {
 	t := c.node_type(n) or { return false }
 	return c.returns_thenable_type(t, c.symbol_location(n))!
 }
@@ -1024,7 +1024,7 @@ fn (mut c Checker) is_void_returning_function_type(t TypeResponse, at SymbolLoca
 
 // is_always_thenable ports isAlwaysThenable: every part of the apparent type has a `then` with
 // some signature whose first parameter is a function.
-fn (mut c Checker) is_always_thenable(n C.TSNode) !bool {
+fn (mut c Checker) is_always_thenable(n C.vt_node) !bool {
 	t := c.node_type(n) or { return false }
 	at := c.symbol_location(n)
 	for part in c.constituents(c.apparent_of(t)!)! {
@@ -1065,7 +1065,7 @@ fn (mut c Checker) is_function_param(param ParameterResponse, at SymbolLocation)
 // nmp_dispose_returns ports hasWellKnownSymbolWithThenableReturn (`thenable`) and
 // hasWellKnownSymbolWithVoidReturn: some part of the apparent type of `typed` has a
 // `[Symbol.dispose]` whose type, at `at`, is a function returning a thenable (or void).
-fn (mut c Checker) nmp_dispose_returns(typed C.TSNode, at C.TSNode, thenable bool) !bool {
+fn (mut c Checker) nmp_dispose_returns(typed C.vt_node, at C.vt_node, thenable bool) !bool {
 	t := c.node_type(typed) or { return false }
 	location := c.symbol_location(at)
 	expected := c.well_known_property_name('dispose')!
@@ -1089,7 +1089,7 @@ fn (mut c Checker) nmp_dispose_returns(typed C.TSNode, at C.TSNode, thenable boo
 // nmp_matching_promise_type_argument ports hasMatchingPromiseTypeArgument: a union with thenable
 // parts whose other parts are, both ways, the parts of what the thenable ones await (mutually
 // assignable): `Promise<T> | T`, not `Promise<T> | U`.
-fn (mut c Checker) nmp_matching_promise_type_argument(n C.TSNode) !bool {
+fn (mut c Checker) nmp_matching_promise_type_argument(n C.vt_node) !bool {
 	t := c.node_type(n) or { return false }
 	at := c.symbol_location(n)
 	parts := c.constituents(c.apparent_of(t)!)!
@@ -1139,7 +1139,7 @@ fn (mut c Checker) nmp_matching_promise_type_argument(n C.TSNode) !bool {
 }
 
 // is_sometimes_thenable ports isSometimesThenable: some part of the apparent type is thenable.
-fn (mut c Checker) is_sometimes_thenable(n C.TSNode) !bool {
+fn (mut c Checker) is_sometimes_thenable(n C.vt_node) !bool {
 	t := c.node_type(n) or { return false }
 	at := c.symbol_location(n)
 	for part in c.constituents(c.apparent_of(t)!)! {

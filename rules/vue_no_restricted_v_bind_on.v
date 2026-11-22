@@ -172,7 +172,7 @@ fn (c &Checker) vnrvo_default_message(attr int, option &VnrvOption) string {
 	return 'Using `${von}${arg}${mod}` is not allowed on this ${element}.'
 }
 
-fn (mut c Checker) lint_vue_no_restricted_v_bind(root C.TSNode, abs_path string, mut stats Stats) ![]Finding {
+fn (mut c Checker) lint_vue_no_restricted_v_bind(root C.vt_node, abs_path string, mut stats Stats) ![]Finding {
 	if !c.vue_has_template() {
 		return []
 	}
@@ -191,7 +191,7 @@ fn (mut c Checker) lint_vue_no_restricted_v_bind(root C.TSNode, abs_path string,
 	return findings
 }
 
-fn (mut c Checker) lint_vue_no_restricted_v_on(root C.TSNode, abs_path string, mut stats Stats) ![]Finding {
+fn (mut c Checker) lint_vue_no_restricted_v_on(root C.vt_node, abs_path string, mut stats Stats) ![]Finding {
 	if !c.vue_has_template() {
 		return []
 	}

@@ -27,7 +27,7 @@ fn nur_options(options []json2.Any) !NurOptions {
 	}
 }
 
-fn (mut c Checker) lint_no_useless_rename(root C.TSNode, abs_path string, mut stats Stats) ![]Finding {
+fn (mut c Checker) lint_no_useless_rename(root C.vt_node, abs_path string, mut stats Stats) ![]Finding {
 	sw := time.new_stopwatch()
 	o := nur_options(c.rule_options(no_useless_rename))!
 	mut findings := []Finding{}
@@ -100,7 +100,7 @@ fn (mut c Checker) lint_no_useless_rename(root C.TSNode, abs_path string, mut st
 }
 
 // nur_export_name ports getModuleExportName: an identifier's name or a string's value.
-fn (c &Checker) nur_export_name(n C.TSNode) string {
+fn (c &Checker) nur_export_name(n C.vt_node) string {
 	if node_kind(n) == 'string' {
 		return c.literal_name(n) or { '' }
 	}
@@ -110,7 +110,7 @@ fn (c &Checker) nur_export_name(n C.TSNode) string {
 // nur_report reports the node, with the fix that leaves the replacement alone: none when that
 // would lose a comment or the parentheses of the target of a default value. The fix replaces from
 // the initial name (after the `type` of a specifier) to the end of the node.
-fn (mut c Checker) nur_report(root C.TSNode, node C.TSNode, initial C.TSNode, replacement C.TSNode, name string, kind string, mut findings []Finding) {
+fn (mut c Checker) nur_report(root C.vt_node, node C.vt_node, initial C.vt_node, replacement C.vt_node, name string, kind string, mut findings []Finding) {
 	tokens := c.source_tokens(root)
 	end := c.es_end(node)
 	mut has_fix := tokens.comments_inside(node_start(node), end).len <= tokens.comments_inside(node_start(replacement),

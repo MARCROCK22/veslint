@@ -14,7 +14,7 @@ const vue_prefer_single_event_payload_messages = {
 	'preferSinglePayloadInDeclaration': 'Declare a single payload parameter instead of multiple parameters for the "{{name}}" event.'
 }
 
-fn (mut c Checker) lint_vue_prefer_single_event_payload(root C.TSNode, abs_path string, mut stats Stats) ![]Finding {
+fn (mut c Checker) lint_vue_prefer_single_event_payload(root C.vt_node, abs_path string, mut stats Stats) ![]Finding {
 	if !c.is_vue() {
 		return []
 	}

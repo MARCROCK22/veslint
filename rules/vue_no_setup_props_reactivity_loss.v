@@ -24,7 +24,7 @@ mut:
 	from       int
 }
 
-fn (mut c Checker) lint_vue_no_setup_props_reactivity_loss(root C.TSNode, abs_path string, mut stats Stats) ![]Finding {
+fn (mut c Checker) lint_vue_no_setup_props_reactivity_loss(root C.vt_node, abs_path string, mut stats Stats) ![]Finding {
 	sw := time.new_stopwatch()
 	mut findings := []Finding{}
 	s := c.vue_script(root, abs_path) or { return findings }
@@ -148,7 +148,7 @@ fn vnsprl_unwrap(t &estree.EsTree, node int) int {
 }
 
 // vnsprl_process is processPropId.
-fn (mut c Checker) vnsprl_process(root C.TSNode, t &estree.EsTree, id VnsprlPropId, scope_node int, scope_name string, from int, mut scopes map[int]VnsprlScope, mut findings []Finding) {
+fn (mut c Checker) vnsprl_process(root C.vt_node, t &estree.EsTree, id VnsprlPropId, scope_node int, scope_name string, from int, mut scopes map[int]VnsprlScope, mut findings []Finding) {
 	node := id.node
 	if node < 0 || t.typ(node) in [.rest_element, .assignment_pattern, .member_expression] {
 		return

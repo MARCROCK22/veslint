@@ -28,7 +28,7 @@ fn nea_options(options []json2.Any) !NeaOptions {
 	}
 }
 
-fn (mut c Checker) lint_no_explicit_any(root C.TSNode, abs_path string, mut stats Stats) ![]Finding {
+fn (mut c Checker) lint_no_explicit_any(root C.vt_node, abs_path string, mut stats Stats) ![]Finding {
 	sw := time.new_stopwatch()
 	o := nea_options(c.rule_options(no_explicit_any))!
 	mut findings := []Finding{}
@@ -129,7 +129,7 @@ fn (mut c Checker) lint_no_explicit_any(root C.TSNode, abs_path string, mut stat
 // NeaAny is a TSAnyKeyword the rule reports with the `unknown` and `never` suggestions: `rest_type`
 // when it is the type of a rest parameter (`...a: any`), whose fix is `unknown[]`.
 struct NeaAny {
-	node      C.TSNode
+	node      C.vt_node
 	rest_type bool
 }
 
@@ -138,13 +138,13 @@ struct NeaAny {
 // TSAnyKeyword; or none, and the rule reads the ESTree, when one of them is under `keyof` (the
 // PropertyKey suggestion) or, with ignoreRestArgs, in the type of a rest parameter. A tree with
 // syntax errors has no ESTree, so no TSAnyKeyword.
-fn nea_plain_anys(root C.TSNode, index &treesitter.NodeIndex, ignore_rest_args bool) ?[]NeaAny {
-	if C.ts_node_has_error(root) {
+fn nea_plain_anys(root C.vt_node, index &treesitter.NodeIndex, ignore_rest_args bool) ?[]NeaAny {
+	if C.vt_node_has_error(root) {
 		return []NeaAny{}
 	}
 	mut anys := []NeaAny{}
 	for node in index.of_kind(root, 'predefined_type') {
-		if node_end(node) - node_start(node) != 3 || node_kind(C.ts_node_child(node, 0)) != 'any' {
+		if node_end(node) - node_start(node) != 3 || node_kind(C.vt_node_child(node, 0)) != 'any' {
 			continue
 		}
 		// The ESTree parent, without the parentheses.
@@ -174,7 +174,7 @@ fn nea_plain_anys(root C.TSNode, index &treesitter.NodeIndex, ignore_rest_args b
 
 // nea_is_rest_parameter: `n` is a rest parameter of a function or a signature (a RestElement in
 // one of them for typescript-estree), not of a named tuple member.
-fn nea_is_rest_parameter(n C.TSNode) bool {
+fn nea_is_rest_parameter(n C.vt_node) bool {
 	if node_kind(n) !in ['required_parameter', 'optional_parameter']
 		|| !treesitter.has_child_kind(n, 'rest_pattern') {
 		return false

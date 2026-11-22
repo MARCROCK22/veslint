@@ -16,17 +16,17 @@ const nute_syntax_kind_enum_member = u32(307)
 
 // NuteTemplate is a TemplateLiteral (not tagged) or a TSTemplateLiteralType with interpolations.
 struct NuteTemplate {
-	node           C.TSNode
-	is_type        bool       // a TSTemplateLiteralType
-	substitutions  []C.TSNode // `template_substitution` or `template_type` (`${…}`) nodes
-	interpolations []C.TSNode // the ESTree expression or type of each one, without parentheses
-	quasis         []string   // raw text of each quasi: substitutions.len + 1
+	node           C.vt_node
+	is_type        bool        // a TSTemplateLiteralType
+	substitutions  []C.vt_node // `template_substitution` or `template_type` (`${…}`) nodes
+	interpolations []C.vt_node // the ESTree expression or type of each one, without parentheses
+	quasis         []string    // raw text of each quasi: substitutions.len + 1
 mut:
 	awaited    bool // the template follows an `await`, which TypeScript may read as a tag
-	await_node C.TSNode
+	await_node C.vt_node
 }
 
-fn (mut c Checker) lint_no_unnecessary_template_expression(root C.TSNode, abs_path string, mut stats Stats) ![]Finding {
+fn (mut c Checker) lint_no_unnecessary_template_expression(root C.vt_node, abs_path string, mut stats Stats) ![]Finding {
 	mut sw := time.new_stopwatch()
 	mut templates := []NuteTemplate{}
 	mut spans := []Span{}
@@ -99,10 +99,10 @@ fn (mut c Checker) lint_no_unnecessary_template_expression(root C.TSNode, abs_pa
 
 // nute_template reads the quasis and interpolations of a template; none if it has no
 // interpolations (a template type without them is a TSLiteralType in ESTree).
-fn (c &Checker) nute_template(node C.TSNode, is_type bool) ?NuteTemplate {
+fn (c &Checker) nute_template(node C.vt_node, is_type bool) ?NuteTemplate {
 	substitution_kind := if is_type { 'template_type' } else { 'template_substitution' }
-	mut substitutions := []C.TSNode{}
-	mut interpolations := []C.TSNode{}
+	mut substitutions := []C.vt_node{}
+	mut interpolations := []C.vt_node{}
 	mut quasis := []string{}
 	mut quasi_start := node_start(node) + 1
 	mut closed := false
@@ -139,7 +139,7 @@ fn (c &Checker) nute_is_trivial(t NuteTemplate) bool {
 }
 
 // nute_has_comments ports hasCommentsBetweenQuasi: a comment inside the `${…}`.
-fn nute_has_comments(substitution C.TSNode) bool {
+fn nute_has_comments(substitution C.vt_node) bool {
 	return nodes_of_kind(substitution, c'comment').len > 0
 }
 
@@ -297,7 +297,7 @@ fn (mut c Checker) nute_fixes(t NuteTemplate, unnecessary []int) ![]Fix {
 }
 
 // nute_literal ports getLiteral: the Literal an interpolation is, or the one of its TSLiteralType.
-fn nute_literal(interpolation C.TSNode) ?C.TSNode {
+fn nute_literal(interpolation C.vt_node) ?C.vt_node {
 	mut node := interpolation
 	if node_kind(node) == 'literal_type' {
 		node = first_named(node)?
@@ -314,7 +314,7 @@ fn nute_literal(interpolation C.TSNode) ?C.TSNode {
 
 // nute_is_template ports getTemplateLiteral: a TemplateLiteral, or the TSLiteralType of one (a
 // template type without interpolations).
-fn nute_is_template(interpolation C.TSNode) bool {
+fn nute_is_template(interpolation C.vt_node) bool {
 	if node_kind(interpolation) == 'template_string' {
 		return true
 	}
@@ -323,7 +323,7 @@ fn nute_is_template(interpolation C.TSNode) bool {
 }
 
 // nute_quasis are the raw texts of the quasis of a template.
-fn (c &Checker) nute_quasis(template C.TSNode) []string {
+fn (c &Checker) nute_quasis(template C.vt_node) []string {
 	mut quasis := []string{}
 	mut start := node_start(template) + 1
 	for child in children(template) {
@@ -340,7 +340,7 @@ fn (c &Checker) nute_quasis(template C.TSNode) []string {
 // nute_literal_text is what a literal contributes to the template: the raw text of a string
 // without its quotes, or `String(value)` with every backslash doubled (a number, a BigInt, a
 // boolean, `null`, or a RegExp, which is null if it is not valid).
-fn (mut c Checker) nute_literal_text(literal C.TSNode) string {
+fn (mut c Checker) nute_literal_text(literal C.vt_node) string {
 	text := c.text(literal)
 	return match node_kind(literal) {
 		'string' {
@@ -407,7 +407,7 @@ fn nute_ends_with_unescaped_dollar(s string) bool {
 
 // nute_literal_allowed: a literal is unnecessary unless it is a whitespace string followed by a
 // line break (allow trailing whitespace literal).
-fn (c &Checker) nute_literal_allowed(literal C.TSNode, next string) bool {
+fn (c &Checker) nute_literal_allowed(literal C.vt_node, next string) bool {
 	if !nute_starts_with_line_break(next) {
 		return true
 	}
@@ -420,7 +420,7 @@ fn (c &Checker) nute_literal_allowed(literal C.TSNode, next string) bool {
 }
 
 // nute_template_allowed: the same for a template without interpolations, on its raw text.
-fn (c &Checker) nute_template_allowed(template C.TSNode, next string) bool {
+fn (c &Checker) nute_template_allowed(template C.vt_node, next string) bool {
 	if !nute_starts_with_line_break(next) {
 		return true
 	}
@@ -451,7 +451,7 @@ fn nute_starts_with_line_break(s string) bool {
 
 // nute_position_before is the position `units` UTF-16 code units before the start of `n`, like
 // sourceCode.getLocFromIndex(range[0] - units).
-fn (c &Checker) nute_position_before(n C.TSNode, units int) Ident {
+fn (c &Checker) nute_position_before(n C.vt_node, units int) Ident {
 	mut offset := node_start(n)
 	mut left := units
 	for left > 0 && offset > 0 {

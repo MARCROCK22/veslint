@@ -11,7 +11,7 @@ const nnnaoc_messages = {
 	'suggestRemovingNonNull': 'You should remove the non-null assertion.'
 }
 
-fn (mut c Checker) lint_no_non_null_asserted_optional_chain(root C.TSNode, abs_path string, mut stats Stats) ![]Finding {
+fn (mut c Checker) lint_no_non_null_asserted_optional_chain(root C.vt_node, abs_path string, mut stats Stats) ![]Finding {
 	sw := time.new_stopwatch()
 	mut findings := []Finding{}
 	mut assertions := 0

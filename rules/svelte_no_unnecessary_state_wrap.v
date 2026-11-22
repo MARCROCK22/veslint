@@ -43,7 +43,7 @@ fn svnusw_is_state_call(t &estree.EsTree, i int) bool {
 }
 
 // svnusw_report is reportUnnecessaryStateWrap.
-fn (mut c Checker) svnusw_report(root C.TSNode, t &estree.EsTree, o SvnuswOptions, state int, target int, class_name string, declarator int, mut findings []Finding) {
+fn (mut c Checker) svnusw_report(root C.vt_node, t &estree.EsTree, o SvnuswOptions, state int, target int, class_name string, declarator int, mut findings []Finding) {
 	id := t.node(declarator, .id) or { return }
 	if o.allow_reassign {
 		// getDeclaredVariables(declarator): any write but the declarator's own.
@@ -82,7 +82,7 @@ fn svnusw_declarator(t &estree.EsTree, state int) int {
 	return if t.typ(id) == .identifier { parent } else { -1 }
 }
 
-fn (mut c Checker) lint_svelte_no_unnecessary_state_wrap(root C.TSNode, abs_path string, mut stats Stats) ![]Finding {
+fn (mut c Checker) lint_svelte_no_unnecessary_state_wrap(root C.vt_node, abs_path string, mut stats Stats) ![]Finding {
 	o := svnusw_options(c.rule_options(svelte_no_unnecessary_state_wrap))!
 	if !c.svsc_runes_on(abs_path) || !c.src.contains('\$state') {
 		return []

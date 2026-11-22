@@ -10,7 +10,7 @@ const unna_messages = {
 	'spread': 'Spread the argument.'
 }
 
-fn (mut c Checker) lint_unicorn_no_new_array(root C.TSNode, abs_path string, mut stats Stats) ![]Finding {
+fn (mut c Checker) lint_unicorn_no_new_array(root C.vt_node, abs_path string, mut stats Stats) ![]Finding {
 	sw := time.new_stopwatch()
 	mut findings := []Finding{}
 	t := c.es_tree(root, abs_path) or { return findings }

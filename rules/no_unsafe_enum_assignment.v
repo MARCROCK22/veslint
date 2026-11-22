@@ -44,7 +44,7 @@ mut:
 	findings   []Finding
 }
 
-fn (mut c Checker) lint_no_unsafe_enum_assignment(root C.TSNode, abs_path string, mut stats Stats) ![]Finding {
+fn (mut c Checker) lint_no_unsafe_enum_assignment(root C.vt_node, abs_path string, mut stats Stats) ![]Finding {
 	mut sw := time.new_stopwatch()
 	t := c.es_tree(root, abs_path) or { return []Finding{} }
 	mut s := NueaState{

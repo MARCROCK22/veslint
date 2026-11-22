@@ -11,7 +11,7 @@ const regexp_no_invisible_character_messages = {
 	'unexpected': "Unexpected invisible character. Use '{{instead}}' instead."
 }
 
-fn (mut c Checker) lint_regexp_no_invisible_character(root C.TSNode, abs_path string, mut stats Stats) ![]Finding {
+fn (mut c Checker) lint_regexp_no_invisible_character(root C.vt_node, abs_path string, mut stats Stats) ![]Finding {
 	sw := time.new_stopwatch()
 	mut findings := []Finding{}
 	regexps := c.rx_regexps(root, abs_path)

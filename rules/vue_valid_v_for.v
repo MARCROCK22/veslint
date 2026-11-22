@@ -93,7 +93,7 @@ fn (c &Checker) vvfor_alias(alias vue.Expr, expr int, allow_empty bool, mut find
 	})
 }
 
-fn (mut c Checker) lint_vue_valid_v_for(root C.TSNode, abs_path string, mut stats Stats) ![]Finding {
+fn (mut c Checker) lint_vue_valid_v_for(root C.vt_node, abs_path string, mut stats Stats) ![]Finding {
 	if !c.vue_has_template() {
 		return []
 	}

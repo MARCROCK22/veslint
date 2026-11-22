@@ -237,7 +237,7 @@ const precedence_cases = [
 
 // precedence_test_argument is the first argument of the call to `t`, as ESTree has it (without
 // parentheses).
-fn precedence_test_argument(root C.TSNode, src string) C.TSNode {
+fn precedence_test_argument(root C.vt_node, src string) C.vt_node {
 	for call in nodes_of_kind(root, c'call_expression') {
 		function := node_field(call, 'function') or { continue }
 		if node_kind(function) == 'identifier' && src[treesitter.node_start(function)..treesitter.node_end(function)] == 't' {
@@ -373,11 +373,11 @@ fn fix_token_cases() ([]string, []FixTokenCase) {
 }
 
 // fix_token_node finds the named node with that range and one of those kinds.
-fn fix_token_node(n C.TSNode, start int, end int, kinds []string) ?C.TSNode {
+fn fix_token_node(n C.vt_node, start int, end int, kinds []string) ?C.vt_node {
 	if node_start(n) > start || node_end(n) < end {
 		return none
 	}
-	if node_start(n) == start && node_end(n) == end && C.ts_node_is_named(n) && node_kind(n) in kinds {
+	if node_start(n) == start && node_end(n) == end && C.vt_node_is_named(n) && node_kind(n) in kinds {
 		return n
 	}
 	for child in children(n) {
@@ -429,7 +429,7 @@ fn test_fix_token_utilities() {
 				failures << '${label}:\n  expected ${t}\n  got      ${got}'
 			}
 		}
-		treesitter.tree_delete(tree)
+		treesitter.rows_free(tree)
 	}
 	assert failures.len == 0, failures.join('\n')
 }
@@ -459,7 +459,7 @@ fn test_es_child() {
 		assert (first.parent() or { panic('no parent') }) == es_inner(call)
 		assert (second.parent() or { panic('no parent') }) == es_inner(call)
 	}
-	treesitter.tree_delete(tree)
+	treesitter.rows_free(tree)
 }
 
 // The token queries of SourceCode.
@@ -493,7 +493,7 @@ fn test_source_tokens() {
 	assert !tokens.comments_exist_between(f, end)
 	assert tokens.inside(f, end, false).len == 8
 	assert tokens.inside(before.end, f, true).len == 2
-	treesitter.tree_delete(tree)
+	treesitter.rows_free(tree)
 }
 
 // ---- gitignore_test.v ----
@@ -2620,7 +2620,7 @@ fn test_scopes_match_eslint() {
 
 // ---- scope_test.v ----
 
-fn scope_test_tree(src string) (&ScopeTree, C.TSNode) {
+fn scope_test_tree(src string) (&ScopeTree, C.vt_node) {
 	parser := treesitter.new_parser() or { panic(err) }
 	tree := parser.parse(src) or { panic(err) }
 	root := root_node(tree)
@@ -2629,7 +2629,7 @@ fn scope_test_tree(src string) (&ScopeTree, C.TSNode) {
 
 // scope_test_node is the identifier-like node of `src` that starts at the i-th occurrence of
 // `name` (0-based).
-fn scope_test_node(root C.TSNode, src string, name string, occurrence int) C.TSNode {
+fn scope_test_node(root C.vt_node, src string, name string, occurrence int) C.vt_node {
 	mut seen := 0
 	for n in nodes_of_kinds(root, ['identifier', 'type_identifier', 'property_identifier',
 		'shorthand_property_identifier', 'shorthand_property_identifier_pattern', 'undefined',
@@ -3179,7 +3179,7 @@ fn stv_test_serialize(v JsAny, depth int) string {
 	}
 }
 
-fn stv_test_checker(src string) (Checker, C.TSNode) {
+fn stv_test_checker(src string) (Checker, C.vt_node) {
 	parser := treesitter.new_parser() or { panic(err) }
 	tree := parser.parse(src) or { panic(err) }
 	root := root_node(tree)
