@@ -2,6 +2,11 @@
 
 Each version is a release on GitHub with the veslint binaries (Linux x64, Windows x64) and the VS Code extension. The section of a version is the text of its release.
 
+## 0.47.0
+
+- **TypeScript's own parser.** veslint parses TypeScript files with TypeScript 7's parser instead of tree-sitter's grammar, through a converter that gives the same tree, so every rule reports the same problems. With the 56 rules of @eslint/js and typescript-eslint recommended: the TypeScript compiler's sources 2.59 s → 1.76 s, zod 0.37 s → 0.29 s, recharts 0.39 s → 0.32 s; with no-floating-promises: 2.84 s → 2.21 s, 0.54 s → 0.46 s, 0.60 s → 0.52 s; with the 23 type-aware rules: the TypeScript compiler 9.40 s → 8.52 s, recharts 3.50 s → 3.39 s. It uses more memory for now (the TypeScript compiler without types 375 → 574 MiB). `VESLINT_PARSER=tree-sitter` parses with tree-sitter's grammar as before; `.vue` and `.svelte` scripts and `veslint --server` still do.
+- Closer to ESLint: code TypeScript rejects (such as the octal literal `010`) gives ESLint's parsing error instead of being linted; `await (1)` in a module is an `await` expression; no-proto, no-iterator and no-caller no longer report inside `typeof a.b` and `import()` types, and no-unnecessary-qualifier reports the qualifiers of `import()` types, as ESLint does. `x as T ** 2` is read as TypeScript 6 and ESLint read it.
+
 ## 0.46.0
 
 - **Faster, with less memory.** veslint reads every syntax tree through compact rows of its own and frees tree-sitter's tree as soon as they are built. With the 56 rules of @eslint/js and typescript-eslint recommended: the TypeScript compiler's sources 3.08 s → 2.59 s (495 → 375 MiB), zod 0.43 s → 0.37 s, recharts 0.42 s → 0.39 s; with the 23 type-aware rules: the TypeScript compiler 10.17 s → 9.40 s (1,940 → 1,801 MiB), zod 1.90 s → 1.83 s. In the editor, re-linting a file after an edit: without types the TypeScript compiler 145 → 101 ms and zod 50 → 38 ms, with types the TypeScript compiler 601 → 563 ms and zod 248 → 229 ms.
