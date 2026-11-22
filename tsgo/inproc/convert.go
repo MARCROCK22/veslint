@@ -306,26 +306,49 @@ func (c *VeslintConverter) leaf(symbol, field uint16, flags uint8, start, end in
 
 // peek scans the next token after the cursor (comments and whitespace skipped).
 func (c *VeslintConverter) peek() (kind ast.Kind, start, end int) {
+	kind, start, end, _ = c.peekComments()
+	return
+}
+
+// peekComments is peek, and tells whether comments come before the token.
+func (c *VeslintConverter) peekComments() (kind ast.Kind, start, end int, comments bool) {
 	c.sc.ResetTokenState(c.top().cursor)
 	for {
 		kind = c.sc.Scan()
 		switch kind {
-		case ast.KindWhitespaceTrivia, ast.KindNewLineTrivia, ast.KindSingleLineCommentTrivia, ast.KindMultiLineCommentTrivia:
+		case ast.KindWhitespaceTrivia, ast.KindNewLineTrivia:
+			continue
+		case ast.KindSingleLineCommentTrivia, ast.KindMultiLineCommentTrivia:
+			comments = true
 			continue
 		}
-		return kind, c.sc.TokenStart(), c.sc.TokenEnd()
+		return kind, c.sc.TokenStart(), c.sc.TokenEnd(), comments
 	}
 }
 
 // tok writes the next token as an anonymous row with `field`, and returns its kind.
 func (c *VeslintConverter) tok(field uint16) ast.Kind {
-	kind, start, end := c.peek()
+	kind, start, end, comments := c.peekComments()
 	symbol := c.l.tokens[kind]
 	if symbol == 0 {
 		symbol = c.l.unknown
 	}
+	if !comments {
+		// Only white space before it: nothing to scan again.
+		c.top().cursor = start
+	}
 	c.leaf(symbol, field, 0, start, end)
 	return kind
+}
+
+// tokLess writes the `<` that opens type arguments or parameters: the scanner reads `<<` (and
+// `<=`) as one token where the parser re-scans it (`A<<T>() => T>`).
+func (c *VeslintConverter) tokLess(field uint16) {
+	_, start, _, comments := c.peekComments()
+	if !comments {
+		c.top().cursor = start
+	}
+	c.leaf(c.l.tokens[ast.KindLessThanToken], field, 0, start, start+1)
 }
 
 // tokAs writes the next token as a row of `symbol`.

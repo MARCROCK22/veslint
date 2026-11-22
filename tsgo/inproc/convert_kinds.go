@@ -1587,7 +1587,7 @@ func (c *VeslintConverter) expression(n *ast.Node, field uint16) {
 		e := n.AsTypeAssertion()
 		c.open(c.named(sTypeAssertion), field, c.start(n))
 		c.openNext(c.named(sTypeArguments), 0)
-		c.tok(0)
+		c.tokLess(0)
 		c.typ(e.Type, 0)
 		c.closeAfter(ast.KindGreaterThanToken)
 		c.expression(e.Expression, 0)
@@ -2382,7 +2382,7 @@ func (c *VeslintConverter) typeArguments(args *ast.NodeList, field uint16) {
 		return
 	}
 	c.openNext(c.named(sTypeArguments), field)
-	c.tok(0)
+	c.tokLess(0)
 	for _, t := range args.Nodes {
 		c.typ(t, 0)
 	}
@@ -2394,7 +2394,7 @@ func (c *VeslintConverter) typeParameters(tps *ast.NodeList, field uint16) {
 		return
 	}
 	c.openNext(c.named(sTypeParameters), field)
-	c.tok(0)
+	c.tokLess(0)
 	for _, p := range tps.Nodes {
 		tp := p.AsTypeParameterDeclaration()
 		c.open(c.named(sTypeParameter), 0, c.start(p))

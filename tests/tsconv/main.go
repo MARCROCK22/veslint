@@ -93,6 +93,7 @@ import (
 	"os"
 	"runtime"
 	"runtime/debug"
+	"runtime/pprof"
 	"sort"
 	"strconv"
 	"strings"
@@ -504,6 +505,18 @@ func main() {
 		convs := [2]*parser.VeslintConverter{parser.NewVeslintConverter(grammars[0].table), parser.NewVeslintConverter(grammars[1].table)}
 		var side tsSide
 		var tsMs, parseMs, convMs []float64
+		// TSCONV_PROFILE: a CPU profile of the TypeScript half (parse and conversion) to that file.
+		if path := os.Getenv("TSCONV_PROFILE"); path != "" {
+			f, err := os.Create(path)
+			if err != nil {
+				panic(err)
+			}
+			defer f.Close()
+			if err := pprof.StartCPUProfile(f); err != nil {
+				panic(err)
+			}
+			defer pprof.StopCPUProfile()
+		}
 		for run := 0; run < runs; run++ {
 			runtime.GC()
 			t0 := time.Now()
