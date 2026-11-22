@@ -477,7 +477,11 @@ func main() {
 			case crash != "":
 				fmt.Fprintf(out, "%s\tcrash\t%s\t\t%d\t0\t\t\n", path, crash, len(want))
 			case diagnostics:
-				fmt.Fprintf(out, "%s\tdiagnostics\t\t\t%d\t0\t\t\n", path, len(want))
+				codes := conv.Diagnostics(text)
+				for i, d := range codes {
+					codes[i] = d[:strings.IndexByte(d, '@')]
+				}
+				fmt.Fprintf(out, "%s\tdiagnostics\t%s\t\t%d\t0\t\t\n", path, strings.Join(codes, ","), len(want))
 			default:
 				class, detail, same, missing, extra := compare(g, want, got, text)
 				status := "same"

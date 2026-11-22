@@ -176,11 +176,23 @@ func (c *VeslintConverter) parse(text string) *ast.SourceFile {
 // The rows are the converter's buffer, valid until its next call.
 func (c *VeslintConverter) Convert(text string) (rows []VeslintRow, diagnostics bool) {
 	file := c.parse(text)
-	if len(file.Diagnostics()) > 0 {
+	if hasParseErrors(file) {
 		return nil, true
 	}
 	c.convert(file)
 	return c.rows, false
+}
+
+// hasParseErrors tells whether the file has parse diagnostics TypeScript 6 (typescript-estree's,
+// so ESLint's) reports too: 7.1's "Use 'with' instead of 'assert'" (2880) for `import … assert
+// {…}` is not one, and the AST is the same.
+func hasParseErrors(file *ast.SourceFile) bool {
+	for _, d := range file.Diagnostics() {
+		if d.Code() != 2880 {
+			return true
+		}
+	}
+	return false
 }
 
 // Diagnostics lists the parse diagnostics of `text` (code@position), for the differential test.
@@ -197,7 +209,7 @@ func (c *VeslintConverter) ConvertTimed(text string) (parse, conversion time.Dur
 	t0 := time.Now()
 	file := c.parse(text)
 	t1 := time.Now()
-	if len(file.Diagnostics()) == 0 {
+	if !hasParseErrors(file) {
 		c.convert(file)
 	}
 	return t1.Sub(t0), time.Since(t1)
