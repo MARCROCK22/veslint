@@ -13,11 +13,19 @@ import tsgo
 // 0.1 s more. So veslint keeps itself and tsgo on `default_cpus` CPUs; VESLINT_CPUS changes that.
 // With TypeScript in veslint's process there is no such wait, and a lint runs a worker per CPU
 // (lint_workers.v), which share TypeScript's program and have a checker each: on a command line
-// veslint takes a CPU of each core (core_count), as many workers as cores. On the minipc (two
-// cores, four threads) the TypeScript compiler took 43 s with one worker (2.0 GiB), 30.5 s with
-// two (2.3 GiB) and 30.7 s with four (2.8 GiB): a worker on the other thread of a core gains
-// nothing, and each worker costs the types of its checker. A server (one file at a time) keeps
-// two CPUs.
+// veslint takes every CPU, as tsgolint takes a worker per thread. On an i3-4150T (two cores, four
+// threads; median of 3 to 5 alternated runs, veslint 0.44.0) four workers against two (a CPU of
+// each core): the TypeScript compiler 11.28 -> 10.01 s with the 23 type-aware rules of
+// recommendedTypeChecked (1,737 -> 1,887 MB), 3.22 -> 2.88 s with no-floating-promises, 3.60 ->
+// 3.11 s without types; recharts 3.69 -> 3.53, 0.64 -> 0.61 and 0.48 -> 0.43 s; zod 2.03 ->
+// 1.87 s and 0.45 -> 0.43 s, but 0.50 -> 0.56 s with no-floating-promises (each checker resolves
+// zod's types again, about a fifth more instructions there). A worker on the other thread of a
+// core runs at about half its speed, its checker repeats little (on the TypeScript compiler 0.2 G
+// of the 6.5 G instructions four workers add; the collectors of V and Go take most of the rest),
+// and the work is shared to the end (the workers finished within 0.1 s of each other). Two
+// workers sharing a checker per core, each holding it for a request, took 10.75 s there: they wait
+// for each other about as long as the checker works. A server (one file at a time) keeps two
+// CPUs.
 // limit_cpus does it on Linux (cpu_limit_linux.c.v); elsewhere it does nothing
 // (cpu_limit_default.c.v), and VESLINT_CPUS is only checked.
 const default_cpus = 2
@@ -36,14 +44,14 @@ fn cpus_from_env(default_count int) !int {
 	return value
 }
 
-// default_cpu_count is how many CPUs veslint takes without VESLINT_CPUS: a CPU of each core for a
+// default_cpu_count is how many CPUs veslint takes without VESLINT_CPUS: all of them (0) for a
 // lint with TypeScript in this process, default_cpus for a server or the `tsc --api` process.
 fn default_cpu_count(server bool) int {
 	transport := tsgo.transport_from_env() or { tsgo.Transport.process }
 	if server || transport != .inproc {
 		return default_cpus
 	}
-	return core_count()
+	return 0
 }
 
 // choose_cpus picks `count` of the `allowed` CPUs: `current` first and then, going round from it,
