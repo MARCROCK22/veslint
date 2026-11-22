@@ -413,6 +413,11 @@ fn (mut c Converter) index_signature(n C.vt_node, start int, end int) int {
 	colons := kids.filter(it.is_tok(':'))
 	for k, name in names {
 		id := c.ident(name.n)
+		// `[i?: number]` (TypeScript's rows only): an optional parameter.
+		next := C.vt_node_next_sibling(name.n)
+		if !C.vt_node_is_null(next) && kind_of(next) == '?' {
+			c.set_bool_prop(id, .optional, true)
+		}
 		if k < types.len && k < colons.len {
 			t := types[k]
 			ta := c.mk(.ts_type_annotation, t.n, c.start(colons[k].n), c.end(t.n))

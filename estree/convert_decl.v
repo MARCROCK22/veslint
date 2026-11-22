@@ -403,7 +403,12 @@ fn (mut c Converter) import_alias(s C.vt_node, ctx Ctx) int {
 fn (mut c Converter) export_stmt(s C.vt_node, mut out []int) {
 	kids := c.kids(s)
 	export_tok := tok_of(kids, 'export') or { return }
-	export_start := c.start(export_tok.n)
+	// `declare export …` (TypeScript's rows only): the `declare` is a modifier of the export.
+	export_start := if d := tok_of(kids, 'declare') {
+		if c.start(d.n) < c.start(export_tok.n) { c.start(d.n) } else { c.start(export_tok.n) }
+	} else {
+		c.start(export_tok.n)
+	}
 	is_default := has_tok(kids, 'default')
 	decorators := fields_of(kids, 'decorator')
 	if d := field_of(kids, 'declaration') {

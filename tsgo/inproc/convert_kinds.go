@@ -1665,7 +1665,13 @@ func (c *VeslintConverter) binary(n *ast.Node, field uint16) {
 		c.close(n.End())
 	case ast.IsCompoundAssignment(op):
 		c.open(c.named(sAugmentedAssignmentExpression), field, c.start(n))
-		c.expression(e.Left, c.field(fLeft))
+		if l := ast.SkipParentheses(e.Left); l.Kind == ast.KindObjectLiteralExpression || l.Kind == ast.KindArrayLiteralExpression {
+			// `{} /= x` (an error of the checker, not of the parser): typescript-estree converts
+			// the left side of any assignment operator as a pattern.
+			c.assignmentTarget(e.Left, c.field(fLeft))
+		} else {
+			c.expression(e.Left, c.field(fLeft))
+		}
 		c.tokNode(e.OperatorToken, c.field(fOperator))
 		c.expression(e.Right, c.field(fRight))
 		c.close(n.End())
@@ -1858,7 +1864,18 @@ func (c *VeslintConverter) object(n *ast.Node, field uint16) {
 			c.expression(pa.Initializer, c.field(fValue))
 			c.close(p.End())
 		case ast.KindShorthandPropertyAssignment:
-			c.identifier(p.Name(), c.named(sShorthandPropertyIdentifier), 0)
+			if init := p.AsShorthandPropertyAssignment().ObjectAssignmentInitializer; init != nil {
+				// `{ y = 1 }` outside a pattern (TypeScript reports it when checking, not when
+				// parsing): tree-sitter's grammar has it only in patterns, typescript-estree gives
+				// the Property of a pattern (an AssignmentPattern value).
+				c.open(c.named(sObjectAssignmentPattern), 0, c.start(p))
+				c.identifier(p.Name(), c.named(sShorthandPropertyIdentifierPat), c.field(fLeft))
+				c.tok(0)
+				c.expression(init, c.field(fRight))
+				c.close(p.End())
+			} else {
+				c.identifier(p.Name(), c.named(sShorthandPropertyIdentifier), 0)
+			}
 		case ast.KindSpreadAssignment:
 			c.open(c.named(sSpreadElement), 0, c.start(p))
 			c.tok(0)
